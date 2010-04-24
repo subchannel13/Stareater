@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Prototip</RootNamespace>
+    <AssemblyName>Zvjezdojedac</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>zvjezdoj.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Alati.cs" />
+    <Compile Include="GUI\frmFlote.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\frmFlote.Designer.cs">
+      <DependentUpon>frmFlote.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\frmGradnja.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\frmGradnja.Designer.cs">
+      <DependentUpon>frmGradnja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\frmIgra.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\frmIgra.Designer.cs">
+      <DependentUpon>frmIgra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\frmMain.Designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\frmNovaIgra.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\frmNovaIgra.Designer.cs">
+      <DependentUpon>frmNovaIgra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\frmPlanetInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\frmPlanetInfo.Designer.cs">
+      <DependentUpon>frmPlanetInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\frmPoruke.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\frmPoruke.Designer.cs">
+      <DependentUpon>frmPoruke.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\frmTechIzbor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\frmTechIzbor.Designer.cs">
+      <DependentUpon>frmTechIzbor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\frmVojnaGradnja.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\frmVojnaGradnja.Designer.cs">
+      <DependentUpon>frmVojnaGradnja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PrikazMape.cs" />
+    <Compile Include="Igra\Brodovi\Brod.cs" />
+    <Compile Include="Igra\Brodovi\DizajnZgrada.cs" />
+    <Compile Include="Igra\Brodovi\Komponenta.cs" />
+    <Compile Include="Igra\Brodovi\AKomponentaInfo.cs" />
+    <Compile Include="Igra\Brodovi\Dizajn.cs" />
+    <Compile Include="Igra\Brodovi\MZPogon.cs" />
+    <Compile Include="Igra\Brodovi\Oklop.cs" />
+    <Compile Include="Igra\Brodovi\Oruzje.cs" />
+    <Compile Include="Igra\Brodovi\Potisnici.cs" />
+    <Compile Include="Igra\Brodovi\PredefiniraniDizajn.cs" />
+    <Compile Include="Igra\Brodovi\Reaktor.cs" />
+    <Compile Include="Igra\Brodovi\Senzor.cs" />
+    <Compile Include="Igra\Brodovi\SpecijalnaOprema.cs" />
+    <Compile Include="Igra\Brodovi\Stit.cs" />
+    <Compile Include="Igra\Brodovi\Taktika.cs" />
+    <Compile Include="Igra\Brodovi\Trup.cs" />
+    <Compile Include="Igra\Flota.cs" />
+    <Compile Include="Igra\Igra.cs" />
+    <Compile Include="Igra\Igrac.cs" />
+    <Compile Include="Igra\Kolonija.cs" />
+    <Compile Include="Igra\Mapa.cs" />
+    <Compile Include="Igra\Poruke.cs" />
+    <Compile Include="Igra\Tehnologija.cs" />
+    <Compile Include="Igra\Zgrada.cs" />
+    <Compile Include="Podaci\Formule\Formula.cs" />
+    <Compile Include="Podaci\Formule\KonstantnaFormula.cs" />
+    <Compile Include="Podaci\Formule\VarijabilnaFormula.cs" />
+    <Compile Include="Podaci\Organizacije.cs" />
+    <Compile Include="Igra\Planet.cs" />
+    <Compile Include="Podaci\PocetnaPozicija.cs" />
+    <Compile Include="Podaci\Podaci.cs" />
+    <Compile Include="Podaci\Postavke.cs" />
+    <Compile Include="Podaci\Slike.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GUI\frmFlote.resx">
+      <DependentUpon>frmFlote.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\frmGradnja.resx">
+      <DependentUpon>frmGradnja.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\frmIgra.resx">
+      <DependentUpon>frmIgra.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\frmNovaIgra.resx">
+      <DependentUpon>frmNovaIgra.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\frmPlanetInfo.resx">
+      <DependentUpon>frmPlanetInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\frmPoruke.resx">
+      <DependentUpon>frmPoruke.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\frmTechIzbor.resx">
+      <DependentUpon>frmTechIzbor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\frmVojnaGradnja.resx">
+      <DependentUpon>frmVojnaGradnja.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Igra\Zvijezda.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="zvjezdoj.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
