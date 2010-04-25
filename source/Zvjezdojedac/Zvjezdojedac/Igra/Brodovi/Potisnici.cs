@@ -20,7 +20,7 @@ namespace Prototip
 				List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
-				Formula brzina = Formula.NaciniFormulu(podaci["BRZINA"]);
+				Formula brzina = Formula.IzStringa(podaci["BRZINA"]);
 
 				Potisnici.Add(new PotisnikInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,

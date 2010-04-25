@@ -21,13 +21,13 @@ namespace Prototip
 				List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
-				Formula izdrzljivost = Formula.NaciniFormulu(podaci["IZDRZLJIVOST"]);
-				Formula debljina = Formula.NaciniFormulu(podaci["DEBLJINA"]);
-				Formula obnavljanje = Formula.NaciniFormulu(podaci["OBNAVLJANJE"]);
-				Formula potrosnjaSnage = Formula.NaciniFormulu(podaci["SNAGA"]);
-				Formula prikrivanje = Formula.NaciniFormulu(podaci["PRIKRIVANJE"]);
-				Formula ometanje = Formula.NaciniFormulu(podaci["OMETANJE"]);
-				Formula cijena = Formula.NaciniFormulu(podaci["CIJENA"]);
+				Formula izdrzljivost = Formula.IzStringa(podaci["IZDRZLJIVOST"]);
+				Formula debljina = Formula.IzStringa(podaci["DEBLJINA"]);
+				Formula obnavljanje = Formula.IzStringa(podaci["OBNAVLJANJE"]);
+				Formula potrosnjaSnage = Formula.IzStringa(podaci["SNAGA"]);
+				Formula prikrivanje = Formula.IzStringa(podaci["PRIKRIVANJE"]);
+				Formula ometanje = Formula.IzStringa(podaci["OMETANJE"]);
+				Formula cijena = Formula.IzStringa(podaci["CIJENA"]);
 
 				StitInfo info = new StitInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,

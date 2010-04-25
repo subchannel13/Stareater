@@ -25,7 +25,7 @@ namespace Prototip
 				List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
-				Formula razlucivost = Formula.NaciniFormulu(podaci["RAZLUCIVOST"]);
+				Formula razlucivost = Formula.IzStringa(podaci["RAZLUCIVOST"]);
 
 				Senzori.Add(new SenzorInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,

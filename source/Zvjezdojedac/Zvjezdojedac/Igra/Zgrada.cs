@@ -54,7 +54,7 @@ namespace Prototip
 
 			public override Ucinak napraviSe(string[] parametri)
 			{
-				return new UcinakSetVar(parametri[1], Formula.NaciniFormulu(parametri[2]));
+				return new UcinakSetVar(parametri[1], Formula.IzStringa(parametri[2]));
 			}
 
 			public override void djeluj(Kolonija kolonija, Dictionary<string, double> varijable)
@@ -126,9 +126,9 @@ namespace Prototip
 			List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 			ZgradaInfo zgradaInfo = new ZgradaInfo(
 				podaci["IME"],
-				Formula.NaciniFormulu(podaci["CIJENA"]),
-				Formula.NaciniFormulu(podaci["KOLICINA"]),
-				Formula.NaciniFormulu(podaci["ODRZAVANJE"]),
+				Formula.IzStringa(podaci["CIJENA"]),
+				Formula.IzStringa(podaci["KOLICINA"]),
+				Formula.IzStringa(podaci["ODRZAVANJE"]),
 				Image.FromFile(podaci["SLIKA"]),
 				podaci["KOD"],
 				podaci["OPIS"],

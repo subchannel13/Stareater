@@ -22,16 +22,16 @@ namespace Prototip
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
 				int velicina = int.Parse(podaci["VELICINA"]);
-				Formula kapacitetPrikrivanja = Formula.NaciniFormulu(podaci["KAPACITET_PRIKRIVANJA"]);
-				Formula velicina_MZPogona_p = Formula.NaciniFormulu(podaci["VELICINA_MZPOGONA"]);
-				Formula velicina_reaktora_p = Formula.NaciniFormulu(podaci["VELICINA_REAKTORA"]);
-				Formula velicina_stita_p = Formula.NaciniFormulu(podaci["VELICINA_STITA"]);
-				Formula nosivost = Formula.NaciniFormulu(podaci["NOSIVOST"]);
-				Formula tromost = Formula.NaciniFormulu(podaci["TROMOST"]);
-				Formula bazaOklopa = Formula.NaciniFormulu(podaci["BAZA_OKLOPA"]);
-				Formula bazaStita = Formula.NaciniFormulu(podaci["BAZA_STITA"]);
-				Formula cijena = Formula.NaciniFormulu(podaci["CIJENA"]);
-				Formula brojSenzora = Formula.NaciniFormulu(podaci["BR_SENZORA"]);
+				Formula kapacitetPrikrivanja = Formula.IzStringa(podaci["KAPACITET_PRIKRIVANJA"]);
+				Formula velicina_MZPogona_p = Formula.IzStringa(podaci["VELICINA_MZPOGONA"]);
+				Formula velicina_reaktora_p = Formula.IzStringa(podaci["VELICINA_REAKTORA"]);
+				Formula velicina_stita_p = Formula.IzStringa(podaci["VELICINA_STITA"]);
+				Formula nosivost = Formula.IzStringa(podaci["NOSIVOST"]);
+				Formula tromost = Formula.IzStringa(podaci["TROMOST"]);
+				Formula bazaOklopa = Formula.IzStringa(podaci["BAZA_OKLOPA"]);
+				Formula bazaStita = Formula.IzStringa(podaci["BAZA_STITA"]);
+				Formula cijena = Formula.IzStringa(podaci["CIJENA"]);
+				Formula brojSenzora = Formula.IzStringa(podaci["BR_SENZORA"]);
 
 				TrupInfo trupInfo = new TrupInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,

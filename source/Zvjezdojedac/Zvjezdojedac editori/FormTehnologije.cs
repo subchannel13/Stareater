@@ -62,7 +62,7 @@ namespace Zvjezdojedac_editori
 			Tehnologija.TechInfo info = (Tehnologija.TechInfo)lstvTehnologije.Items[indeks].Tag;
 			info.ime = txtNaziv.Text.Trim();
 			info.kod = txtKod.Text.Trim();
-			info.cijena = Formula.NaciniFormulu(txtCijena.Text);
+			info.cijena = Formula.IzStringa(txtCijena.Text);
 			info.maxNivo = long.Parse(txtMaxNivo.Text);
 		}
 

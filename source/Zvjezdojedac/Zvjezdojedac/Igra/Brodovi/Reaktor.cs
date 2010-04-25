@@ -20,8 +20,8 @@ namespace Prototip
 				List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
-				Formula minVelicina = Formula.NaciniFormulu(podaci["VELICINA_MIN"]);
-				Formula snaga = Formula.NaciniFormulu(podaci["SNAGA"]);
+				Formula minVelicina = Formula.IzStringa(podaci["VELICINA_MIN"]);
+				Formula snaga = Formula.IzStringa(podaci["SNAGA"]);
 
 				Reaktori.Add(new ReaktorInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,

@@ -20,10 +20,10 @@ namespace Prototip
 				List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
-				Formula minVelicina = Formula.NaciniFormulu(podaci["VELICINA_MIN"]);
-				Formula brzina = Formula.NaciniFormulu(podaci["BRZINA"]);
-				Formula snaga = Formula.NaciniFormulu(podaci["SNAGA"]);
-				Formula cijena = Formula.NaciniFormulu(podaci["CIJENA"]);
+				Formula minVelicina = Formula.IzStringa(podaci["VELICINA_MIN"]);
+				Formula brzina = Formula.IzStringa(podaci["BRZINA"]);
+				Formula snaga = Formula.IzStringa(podaci["SNAGA"]);
+				Formula cijena = Formula.IzStringa(podaci["CIJENA"]);
 
 				MZPogoni.Add(new MZPogonInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,

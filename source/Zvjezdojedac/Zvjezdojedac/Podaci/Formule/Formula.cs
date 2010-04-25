@@ -341,9 +341,69 @@ namespace Prototip
 			}
 		}
 
+		public class OperatorDiv : BinarniOperator
+		{
+			public OperatorDiv()
+				: this(null, null)
+			{ }
+
+			public OperatorDiv(Element lijeviOpernad, Element desniOperand)
+			{
+				this.lijeviOpernad = lijeviOpernad;
+				this.desniOperand = desniOperand;
+			}
+
+			public override double vrijednost()
+			{
+				return Math.Truncate(lijeviOpernad.vrijednost() / desniOperand.vrijednost());
+			}
+
+			public override Operator naciniOperator(Stack<string> niz)
+			{
+				Element desniOperand = Element.naciniElement(niz);
+				Element lijeviOpernad = Element.naciniElement(niz);
+				return new OperatorDiv(lijeviOpernad, desniOperand);
+			}
+
+			public override string ToString()
+			{
+				return "DIV " + lijeviOpernad + " " + desniOperand;
+			}
+		}
+
+		public class OperatorMod : BinarniOperator
+		{
+			public OperatorMod()
+				: this(null, null)
+			{ }
+
+			public OperatorMod(Element lijeviOpernad, Element desniOperand)
+			{
+				this.lijeviOpernad = lijeviOpernad;
+				this.desniOperand = desniOperand;
+			}
+
+			public override double vrijednost()
+			{
+				double d = lijeviOpernad.vrijednost() / desniOperand.vrijednost();
+				return d - Math.Floor(d);
+			}
+
+			public override Operator naciniOperator(Stack<string> niz)
+			{
+				Element desniOperand = Element.naciniElement(niz);
+				Element lijeviOpernad = Element.naciniElement(niz);
+				return new OperatorMod(lijeviOpernad, desniOperand);
+			}
+
+			public override string ToString()
+			{
+				return "MOD " + lijeviOpernad + " " + desniOperand;
+			}
+		}
 		#endregion
 
-		public static Formula NaciniFormulu(string niz)
+		public static Formula IzStringa(string niz)
 		{
 			niz.Replace("+", " + ");
 			niz.Replace("-", " - ");
@@ -386,7 +446,7 @@ namespace Prototip
 		{
 			try
 			{
-				Formula formula = NaciniFormulu(niz);
+				Formula formula = IzStringa(niz);
 			}
 			catch (Exception)
 			{

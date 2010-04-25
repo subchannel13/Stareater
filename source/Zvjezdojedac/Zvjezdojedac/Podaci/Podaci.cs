@@ -130,7 +130,7 @@ namespace Prototip
 			if (citac.dalje())
 			{
 				foreach (string efekt in citac.podatci.Keys)
-					ret.Add(efekt, Formula.NaciniFormulu(citac.podatci[efekt]));
+					ret.Add(efekt, Formula.IzStringa(citac.podatci[efekt]));
 			}
 
 			return ret;

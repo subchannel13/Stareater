@@ -16,16 +16,7 @@ namespace Zvjezdojedac_editori
 		public FormMain()
 		{
 			InitializeComponent();
-
-			string zvjDirFajla = Application.ExecutablePath + "_zvjDir.txt";
-			if (File.Exists(zvjDirFajla))
-			{
-				StreamReader citac = new StreamReader(zvjDirFajla);
-				putanja = citac.ReadLine();
-				citac.Close();
-			}
-			else
-				txtPutanja.Text = Environment.CurrentDirectory;
+			txtPutanja.Text = Environment.CurrentDirectory;
 		}
 
 		private bool _dostupniPodaci = false;
@@ -39,18 +30,31 @@ namespace Zvjezdojedac_editori
 				_dostupniPodaci = value;
 			}
 		}
+		
 		public string putanja
 		{
 			get { return Environment.CurrentDirectory; }
 			set
 			{
-				Environment.CurrentDirectory = value;
-				txtPutanja.Text = value;
+				try
+				{
+					Environment.CurrentDirectory = value;
+				}
+				catch (Exception) { }
+				txtPutanja.Text = Environment.CurrentDirectory;
 			}
 		}
 
 		private void FormMain_Load(object sender, EventArgs e)
 		{
+			string zvjDirFajla = Application.ExecutablePath + "_zvjDir.txt";
+			if (File.Exists(zvjDirFajla))
+			{
+				StreamReader citac = new StreamReader(zvjDirFajla);
+				putanja = citac.ReadLine();
+				citac.Close();
+			}
+
 			try
 			{
 				dostupniPodaci = false;

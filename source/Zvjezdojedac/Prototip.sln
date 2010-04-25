@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zvjezdojedac editori", "Zvjezdojedac editori\Zvjezdojedac editori.csproj", "{0976210E-AC0E-4237-BC9C-1E1ADAA6DF92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zvjezdojedac", "Prototip\Zvjezdojedac.csproj", "{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zvjezdojedac", "Zvjezdojedac\Zvjezdojedac.csproj", "{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

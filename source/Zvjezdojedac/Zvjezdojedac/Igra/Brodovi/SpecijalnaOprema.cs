@@ -25,14 +25,14 @@ namespace Prototip
 				Dictionary<string, Formula> efekti = new Dictionary<string,Formula>();
 				string[] naziviEfekata = podaci["EFEKTI"].Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
 				for(int i = 0; i < naziviEfekata.Length; i++)
-					efekti.Add(naziviEfekata[i].Trim(), Formula.NaciniFormulu(podaci["FORMULA" + i]));
+					efekti.Add(naziviEfekata[i].Trim(), Formula.IzStringa(podaci["FORMULA" + i]));
 
 				SpecijalnaOpremaInfo info = new SpecijalnaOpremaInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,
 					efekti,
-					Formula.NaciniFormulu(podaci["CIJENA"]),
-					Formula.NaciniFormulu(podaci["VELICINA"]),
-					Formula.NaciniFormulu(podaci["MAX_KOLICINA"])
+					Formula.IzStringa(podaci["CIJENA"]),
+					Formula.IzStringa(podaci["VELICINA"]),
+					Formula.IzStringa(podaci["MAX_KOLICINA"])
 					);
 				SpecijalnaOprema.Add(info);
 				Kodovi.Add(podaci["KOD"], info);

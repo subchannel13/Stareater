@@ -20,7 +20,7 @@ namespace Prototip
 				List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
-				Formula izdrzljivost = Formula.NaciniFormulu(podaci["IZDRZLJIVOST"]);
+				Formula izdrzljivost = Formula.IzStringa(podaci["IZDRZLJIVOST"]);
 
 				Oklopi.Add(new OklopInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,

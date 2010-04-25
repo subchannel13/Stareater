@@ -16,7 +16,7 @@ namespace Prototip
 				List<Preduvjet> ret = new List<Preduvjet>();
 				string[] preduvjetiStr = podaci.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 				for (int i = 0; i < preduvjetiStr.Length; i += 2)
-					ret.Add(new Preduvjet(preduvjetiStr[i].Trim(), Formula.NaciniFormulu(preduvjetiStr[i + 1])));
+					ret.Add(new Preduvjet(preduvjetiStr[i].Trim(), Formula.IzStringa(preduvjetiStr[i + 1])));
 				return ret;
 			}
 
@@ -61,7 +61,7 @@ namespace Prototip
 						podaci["IME"],
 						podaci["OPIS"],
 						podaci["KOD"],
-						Formula.NaciniFormulu(podaci["CIJENA"]),
+						Formula.IzStringa(podaci["CIJENA"]),
 						maxNivo,
 						preduvjeti,
 						Image.FromFile(podaci["SLIKA"]),

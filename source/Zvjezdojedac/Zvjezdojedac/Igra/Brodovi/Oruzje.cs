@@ -94,12 +94,12 @@ namespace Prototip
 				OruzjeInfo info = new OruzjeInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,
 					misija, StringUCiljanje[podaci["CILJANJE"]],
-					Formula.NaciniFormulu(podaci["VATRENA_MOC"]),
-					Formula.NaciniFormulu(podaci["BR_NAPADA"]),
-					Formula.NaciniFormulu(podaci["PRECIZNOST"]),
-					Formula.NaciniFormulu(podaci["CIJENA"]),
-					Formula.NaciniFormulu(podaci["SNAGA"]),
-					Formula.NaciniFormulu(podaci["VELICINA"])
+					Formula.IzStringa(podaci["VATRENA_MOC"]),
+					Formula.IzStringa(podaci["BR_NAPADA"]),
+					Formula.IzStringa(podaci["PRECIZNOST"]),
+					Formula.IzStringa(podaci["CIJENA"]),
+					Formula.IzStringa(podaci["SNAGA"]),
+					Formula.IzStringa(podaci["VELICINA"])
 					);
 				Oruzja[misija].Add(info);
 				KodoviOruzja.Add(podaci["KOD"], info);
