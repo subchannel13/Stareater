@@ -78,6 +78,7 @@ namespace Prototip
 			fajla.Close();
 		}
 		#endregion
+
 		public static void spremi(StreamWriter datoteka, Dictionary<string, string> podatci, string razred)
 		{
 			datoteka.WriteLine("<" + razred + ">");
@@ -124,7 +125,7 @@ namespace Prototip
 
 		public static Dictionary<string, Formula> ucitajBazuEfekata()
 		{
-			Podaci citac = new Podaci("osnovni_efekti.txt");
+			Podaci citac = new Podaci("./podaci/osnovni_efekti.txt");
 			Dictionary<string, Formula> ret = new Dictionary<string, Formula>();
 
 			if (citac.dalje())
@@ -145,7 +146,7 @@ namespace Prototip
         }
 
 		private static Podaci citac = null;
-		private static void ucitajBrodove()
+		/*private static void ucitajBrodove()
 		{
 			citac = new Podaci("podaci/brod_trup.txt");
 			while (citac.dalje())
@@ -208,35 +209,35 @@ namespace Prototip
 				else if (citac.tip == "<TAKTIKA_BROD>")
 					Taktika.DodajTaktikuBroda(citac.podatci);
 			citac.zatvori();
-		}
-		private static void ucitajMape()
+		}*/
+		/*private static void ucitajMape()
 		{
-			citac = new Podaci("mapa.txt");
+			citac = new Podaci("./podaci/mapa.txt");
 
 			while(citac.dalje())
 				if (citac.tip == "<VELICINA MAPE>")
 					Mapa.dodajVelicinuMape(citac.podatci);
 			citac.zatvori();
-		}
-		private static void ucitajOrganizacije()
+		}*/
+		/*private static void ucitajOrganizacije()
 		{
-			citac = new Podaci("organizacije.txt");
+			citac = new Podaci("./podaci/organizacije.txt");
 
 			while (citac.dalje())
 				if (citac.tip == "<ORGANIZACIJA>")
 					Organizacije.dodajOrganizaciju(citac.podatci);
 			citac.zatvori();
-		}
-		private static void ucitajPlanete()
+		}*/
+		/*private static void ucitajPlanete()
 		{
-			citac = new Podaci("planeti.txt");
+			citac = new Podaci("./podaci/planeti.txt");
 
 			while (citac.dalje())
 				if (citac.tip == "<PLANET>")
 					Planet.TipInfo.noviTip(citac.podatci);
 			citac.zatvori();
-		}
-		private static void ucitajPocetnePozicije()
+		}*/
+		/*private static void ucitajPocetnePozicije()
 		{
 			citac = new Podaci("pocetne_pozicije.txt");
 
@@ -244,7 +245,7 @@ namespace Prototip
 				if (citac.tip == "<POCETNA_POZICIJA>")
 					PocetnaPozicija.novaKonfiguracija(citac.podatci);
 			citac.zatvori();
-		}
+		}*/
 		private static void ucitajPostavke()
 		{
 			citac = new Podaci("postavke.txt");
@@ -254,15 +255,15 @@ namespace Prototip
 					Postavke.ProslaIgra.postavi(citac.podatci);
 			citac.zatvori();
 		}
-		private static void ucitajPredefDizajnove()
+		/*private static void ucitajPredefDizajnove()
 		{
 			citac = new Podaci("./podaci/predef_dizajnovi.txt");
 
 			while (citac.dalje())
 				if (citac.tip == "<DIZAJN>")
-					PredefiniraniDizajn.UcitajPredefiniraniDizajn(citac.podatci);
+					PredefiniraniDizajn.Dodaj(citac.podatci);
 			citac.zatvori();
-		}
+		}*/
 		private static void ucitajSlike()
 		{
 			citac = new Podaci("slika.txt");
@@ -272,7 +273,7 @@ namespace Prototip
 					Slike.DodajSliku(citac.podatci);
 			citac.zatvori();
 		}
-		private static void ucitajTehnologije()
+		/*private static void ucitajTehnologije()
 		{
 			citac = new Podaci("./podaci/teh_razvoj.txt");
 
@@ -287,8 +288,8 @@ namespace Prototip
 				if (citac.tip == "<TEHNOLOGIJA>")
 					Tehnologija.TechInfo.dodajTehnologiju(citac.podatci, Tehnologija.Kategorija.ISTRAZIVANJE);
 			citac.zatvori();
-		}
-		private static void ucitajZgrade()
+		}*/
+		/*private static void ucitajZgrade()
 		{
 			citac = new Podaci("./podaci/zgrade_civ.txt");
 			while (citac.dalje())
@@ -301,8 +302,8 @@ namespace Prototip
 				if (citac.tip == "<ZGRADA>")
 					Zgrada.ucitajInfoZgrade(citac.podatci, false);
 			citac.zatvori();
-		}
-		private static void ucitajZvijezde()
+		}*/
+		/*private static void ucitajZvijezde()
 		{
 			citac = new Podaci("./podaci/zvijezde.txt");
 
@@ -310,7 +311,7 @@ namespace Prototip
 				if (citac.tip == "<ZVIJEZDA>")
 					Zvijezda.TipInfo.noviTip(citac.podatci);
 			citac.zatvori();
-		}
+		}*/
 		private static void ucitajZvjezdja()
 		{
 			citac = new Podaci("./podaci/ime_zvijezde.txt");
@@ -336,26 +337,105 @@ namespace Prototip
 			citac.zatvori();
 		}
 
-		public static void ucitajPodatke()
+		private static List<Dictionary<string, string>> pokupi(string datoteka, string tag)
+		{
+			List<Dictionary<string, string>> rez = new List<Dictionary<string, string>>();
+			citac = new Podaci(datoteka);
+
+			while (citac.dalje())
+				if (citac.tip == tag)
+					rez.Add(new Dictionary<string, string>(citac.podatci));
+			citac.zatvori();
+
+			return rez;
+		}
+
+		public const string MapaTag = "MAPA";
+		public const string MZpogonTag = "MZ_POGON";
+		public const string OklopTag = "OKLOP";
+		public const string OrgTag = "ORG";
+		public const string OruzjeTag = "ORUZJE";
+		public const string PlanetTag = "PLANET";
+		public const string PocetnaPozTag = "POCETNA_POZ";
+		public const string PotisnikTag = "POTISNIK";
+		public const string PredefDizjanTag = "PREDEF_DIZ";
+		public const string ReaktorTag = "REAKTOR";
+		public const string SenzorTag = "SENZOR";
+		public const string SpecOpremaTag = "SPEC_OPREMA";
+		public const string StitTag = "STIT";
+		public const string TaktikaProjTag = "TAKTIKA_PROJEKTIL";
+		public const string TaktikaBrodTag = "TAKTIKA_BROD";
+		public const string TehnoIstTag = "TEH_IST";
+		public const string TehnoRazTag = "TEH_RAZ";
+		public const string TrupTag = "TRUP";
+		public const string ZgradeCivTag = "ZGRADE_CIV";
+		public const string ZgradVojTag = "ZGRADE_VOJ";
+		public const string ZvijezdeTag = "ZVIJEZDE";
+
+		public static Dictionary<string, List<Dictionary<string, string>>> ucitajPodatke()
+		{
+			Dictionary<string, List<Dictionary<string, string>>> ret = new Dictionary<string, List<Dictionary<string, string>>>();
+
+			ret.Add(ZvijezdeTag, pokupi("./podaci/zvijezde.txt", "<ZVIJEZDA>"));
+			ret.Add(ZgradeCivTag, pokupi("./podaci/zgrade_civ.txt", "<ZGRADA>"));
+			ret.Add(ZgradVojTag, pokupi("./podaci/zgrade_voj.txt", "<ZGRADA>"));
+			ret.Add(TehnoRazTag, pokupi("./podaci/teh_razvoj.txt", "<TEHNOLOGIJA>"));
+			ret.Add(TehnoIstTag, pokupi("./podaci/teh_istrazivanje.txt", "<TEHNOLOGIJA>"));
+			ret.Add(PredefDizjanTag, pokupi("./podaci/predef_dizajnovi.txt", "<DIZAJN>"));
+			ret.Add(PocetnaPozTag, pokupi("./podaci/pocetne_pozicije.txt", "<POCETNA_POZICIJA>"));
+			ret.Add(PlanetTag, pokupi("./podaci/planeti.txt", "<PLANET>"));
+			ret.Add(OrgTag, pokupi("./podaci/organizacije.txt", "<ORGANIZACIJA>"));
+			ret.Add(MapaTag, pokupi("./podaci/mapa.txt", "<VELICINA MAPE>"));
+
+			ret.Add(TrupTag, pokupi("./podaci/brod_trup.txt", "<TRUP>"));
+			ret.Add(OklopTag, pokupi("./podaci/brod_oklop.txt", "<OKLOP>"));
+			ret.Add(MZpogonTag, pokupi("./podaci/brod_MZpogon.txt", "<MZ_POGON>"));
+			ret.Add(ReaktorTag, pokupi("./podaci/brod_reaktor.txt", "<REAKTOR>"));
+			ret.Add(OruzjeTag, pokupi("./podaci/brod_oruzje.txt", "<ORUZJE>"));
+			ret.Add(PotisnikTag, pokupi("./podaci/brod_potisnici.txt", "<POTISNIK>"));
+			ret.Add(SenzorTag, pokupi("./podaci/brod_senzor.txt", "<SENZOR>"));
+			ret.Add(SpecOpremaTag, pokupi("./podaci/brod_spec_oprema.txt", "<SPEC_OPREMA>"));
+			ret.Add(StitTag, pokupi("./podaci/brod_stit.txt", "<STIT>"));
+			ret.Add(TaktikaProjTag, pokupi("./podaci/taktike.txt", "<TAKTIKA_PROJEKTIL>"));
+			ret.Add(TaktikaBrodTag, pokupi("./podaci/taktike.txt", "<TAKTIKA_BROD>"));
+
+			return ret;
+		}
+
+		public static void postaviPodatke()
 		{
 #if !DEBUG
 			try
 			{
 #endif
+				Dictionary<string, List<Dictionary<string, string>>> podaci = ucitajPodatke();
 				ucitajPostavke();
-				ucitajMape();
-				ucitajOrganizacije();
-				ucitajPlanete();
+				foreach (Dictionary<string, string> unos in podaci[MapaTag]) Mapa.dodajVelicinuMape(unos);
+				foreach (Dictionary<string, string> unos in podaci[OrgTag]) Organizacije.dodajOrganizaciju(unos);
+				foreach (Dictionary<string, string> unos in podaci[PlanetTag]) Planet.TipInfo.noviTip(unos);
 				
 				ucitajSlike();
-				ucitajTehnologije();
-				ucitajZgrade();
-				ucitajZvijezde();
+				foreach (Dictionary<string, string> unos in podaci[TehnoRazTag]) Tehnologija.TechInfo.Dodaj(unos, Tehnologija.Kategorija.RAZVOJ);
+				foreach (Dictionary<string, string> unos in podaci[TehnoIstTag]) Tehnologija.TechInfo.Dodaj(unos, Tehnologija.Kategorija.ISTRAZIVANJE);
+				foreach (Dictionary<string, string> unos in podaci[ZgradeCivTag]) Zgrada.ucitajInfoZgrade(unos, true);
+				foreach (Dictionary<string, string> unos in podaci[ZgradVojTag]) Zgrada.ucitajInfoZgrade(unos, false);
+				foreach (Dictionary<string, string> unos in podaci[ZvijezdeTag]) Zvijezda.TipInfo.noviTip(unos);
 				ucitajZvjezdja();
+				foreach (Dictionary<string, string> unos in podaci[PocetnaPozTag]) PocetnaPozicija.novaKonfiguracija(unos);
+				
+				foreach (Dictionary<string, string> unos in podaci[TrupTag]) Trup.TrupInfo.UcitajTrupInfo(unos);
+				foreach (Dictionary<string, string> unos in podaci[OklopTag]) Oklop.OklopInfo.UcitajOklopInfo(unos);
+				foreach (Dictionary<string, string> unos in podaci[MZpogonTag]) MZPogon.MZPogonInfo.UcitajMZPogonInfo(unos);
+				foreach (Dictionary<string, string> unos in podaci[ReaktorTag]) Reaktor.ReaktorInfo.UcitajReaktorInfo(unos);
+				foreach (Dictionary<string, string> unos in podaci[OruzjeTag]) Oruzje.OruzjeInfo.UcitajOruzjeInfo(unos);
+				foreach (Dictionary<string, string> unos in podaci[PotisnikTag]) Potisnici.PotisnikInfo.UcitajPotisnikInfo(unos);
+				foreach (Dictionary<string, string> unos in podaci[SenzorTag]) Senzor.SenzorInfo.UcitajSenzorInfo(unos);
+				foreach (Dictionary<string, string> unos in podaci[SpecOpremaTag]) SpecijalnaOprema.SpecijalnaOpremaInfo.UcitajSpecijalnaOpremaInfo(unos);
+				foreach (Dictionary<string, string> unos in podaci[StitTag]) Stit.StitInfo.UcitajStitInfo(unos);
+				foreach (Dictionary<string, string> unos in podaci[TaktikaProjTag]) Taktika.DodajTaktikuProjektila(unos);
+				foreach (Dictionary<string, string> unos in podaci[TaktikaBrodTag]) Taktika.DodajTaktikuBroda(unos);
 
-				ucitajPocetnePozicije();
-				ucitajBrodove();
-				ucitajPredefDizajnove();
+				foreach (Dictionary<string, string> unos in podaci["PREDEF_DIZ"]) PredefiniraniDizajn.Dodaj(unos);
 #if !DEBUG
 			}
 			catch (FileNotFoundException e)

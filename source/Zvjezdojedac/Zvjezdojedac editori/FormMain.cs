@@ -13,13 +13,15 @@ namespace Zvjezdojedac_editori
 {
 	public partial class FormMain : Form
 	{
+		private bool _dostupniPodaci = false;
+		private Dictionary<string, List<Dictionary<string, string>>> podaci = null;
+
 		public FormMain()
 		{
 			InitializeComponent();
 			txtPutanja.Text = Environment.CurrentDirectory;
 		}
 
-		private bool _dostupniPodaci = false;
 		public bool dostupniPodaci 
 		{
 			get { return _dostupniPodaci; }
@@ -58,7 +60,7 @@ namespace Zvjezdojedac_editori
 			try
 			{
 				dostupniPodaci = false;
-				Podaci.ucitajPodatke();
+				podaci = Podaci.ucitajPodatke();
 				dostupniPodaci = true;
 			}
 			catch (FileNotFoundException exc)
@@ -79,7 +81,7 @@ namespace Zvjezdojedac_editori
 				try
 				{
 					dostupniPodaci = false;
-					Podaci.ucitajPodatke();
+					podaci = Podaci.ucitajPodatke();
 					dostupniPodaci = true;
 				}
 				catch (FileNotFoundException exc)
@@ -97,7 +99,8 @@ namespace Zvjezdojedac_editori
 		{
 			if (!dostupniPodaci) return;
 
-			new FormTehnologije().Show();
+			new FormTehnologije(podaci[Podaci.TehnoIstTag], podaci[Podaci.TehnoRazTag]).Show();
+			WindowState = FormWindowState.Normal;
 		}
 	}
 }

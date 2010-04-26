@@ -7,6 +7,8 @@ namespace Prototip
 {
 	public class Igra
 	{
+		public const int maxIgraca = 4;
+
 		private List<Igrac> igraci;
 
 		private Mapa _mapa;

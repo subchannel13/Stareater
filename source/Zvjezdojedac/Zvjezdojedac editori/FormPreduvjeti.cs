@@ -40,16 +40,17 @@ namespace Zvjezdojedac_editori
 			List<Formula.Varijabla> varijable = nivo.popisVarijabli();
 
 			if (varijable.Count == 1) return;
-			//???
 		}
 
 		protected override bool valid()
 		{
-			return base.valid();
+			if (!base.valid()) return false;
 
 			Formula nivo = Formula.IzStringa(txtNivo.Text);
 			List<Formula.Varijabla> varijable = nivo.popisVarijabli();
-			//???
+			
+			if (varijable.Count == 1) return true;
+			else return false;
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e)

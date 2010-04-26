@@ -69,6 +69,111 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Zvjezdojedac\Alati.cs">
+      <Link>Zvjezdojedac\Alati.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\AKomponentaInfo.cs">
+      <Link>Zvjezdojedac\AKomponentaInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\Brod.cs">
+      <Link>Zvjezdojedac\Brod.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\Dizajn.cs">
+      <Link>Zvjezdojedac\Dizajn.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\DizajnZgrada.cs">
+      <Link>Zvjezdojedac\DizajnZgrada.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\Komponenta.cs">
+      <Link>Zvjezdojedac\Komponenta.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\MZPogon.cs">
+      <Link>Zvjezdojedac\MZPogon.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\Oklop.cs">
+      <Link>Zvjezdojedac\Oklop.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\Oruzje.cs">
+      <Link>Zvjezdojedac\Oruzje.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\Potisnici.cs">
+      <Link>Zvjezdojedac\Potisnici.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\PredefiniraniDizajn.cs">
+      <Link>Zvjezdojedac\PredefiniraniDizajn.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\Reaktor.cs">
+      <Link>Zvjezdojedac\Reaktor.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\Senzor.cs">
+      <Link>Zvjezdojedac\Senzor.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\SpecijalnaOprema.cs">
+      <Link>Zvjezdojedac\SpecijalnaOprema.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\Stit.cs">
+      <Link>Zvjezdojedac\Stit.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\Taktika.cs">
+      <Link>Zvjezdojedac\Taktika.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\Trup.cs">
+      <Link>Zvjezdojedac\Trup.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Flota.cs">
+      <Link>Zvjezdojedac\Flota.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Igra.cs">
+      <Link>Zvjezdojedac\Igra.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Igrac.cs">
+      <Link>Zvjezdojedac\Igrac.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Kolonija.cs">
+      <Link>Zvjezdojedac\Kolonija.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Mapa.cs">
+      <Link>Zvjezdojedac\Mapa.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Planet.cs">
+      <Link>Zvjezdojedac\Planet.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Poruke.cs">
+      <Link>Zvjezdojedac\Poruke.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Tehnologija.cs">
+      <Link>Zvjezdojedac\Tehnologija.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Zgrada.cs">
+      <Link>Zvjezdojedac\Zgrada.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Zvijezda.cs">
+      <Link>Zvjezdojedac\Zvijezda.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Formule\Formula.cs">
+      <Link>Zvjezdojedac\Formula.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Formule\KonstantnaFormula.cs">
+      <Link>Zvjezdojedac\KonstantnaFormula.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Formule\VarijabilnaFormula.cs">
+      <Link>Zvjezdojedac\VarijabilnaFormula.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Organizacije.cs">
+      <Link>Zvjezdojedac\Organizacije.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\PocetnaPozicija.cs">
+      <Link>Zvjezdojedac\PocetnaPozicija.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Podaci.cs">
+      <Link>Zvjezdojedac\Podaci.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Postavke.cs">
+      <Link>Zvjezdojedac\Postavke.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Slike.cs">
+      <Link>Zvjezdojedac\Slike.cs</Link>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,12 +258,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Zvjezdojedac\Zvjezdojedac.csproj">
-      <Project>{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}</Project>
-      <Name>Zvjezdojedac</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

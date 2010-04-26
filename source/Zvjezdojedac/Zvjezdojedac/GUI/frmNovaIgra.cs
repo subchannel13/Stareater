@@ -11,8 +11,6 @@ namespace Prototip
 {
 	public partial class frmNovaIgra : Form
 	{
-		public static readonly int maxIgraca = 4;
-
 		public List<Igrac.ZaStvoriti> igraci;
 
 		public Mapa.GraditeljMape mapa;
@@ -33,7 +31,7 @@ namespace Prototip
 				cbOrganizacija.Items.Add(org.naziv);
 			cbOrganizacija.SelectedIndex = Postavke.ProslaIgra.organizacija;
 
-			for (int i = 2; i <= maxIgraca; i++)
+			for (int i = 2; i <= Igra.maxIgraca; i++)
 				cbBrIgraca.Items.Add(i);
 			cbBrIgraca.SelectedIndex = Postavke.ProslaIgra.brIgraca-2;
 

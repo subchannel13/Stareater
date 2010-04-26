@@ -52,6 +52,7 @@
 			this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
 			this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
 			this.btnPreduvjeti = new System.Windows.Forms.Button();
+			this.txtSlika = new System.Windows.Forms.TextBox();
 			((System.ComponentModel.ISupportInitialize)(this.picSlika)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -101,7 +102,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(372, 51);
+			this.label1.Location = new System.Drawing.Point(372, 38);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(37, 13);
 			this.label1.TabIndex = 3;
@@ -109,7 +110,7 @@
 			// 
 			// txtNaziv
 			// 
-			this.txtNaziv.Location = new System.Drawing.Point(417, 48);
+			this.txtNaziv.Location = new System.Drawing.Point(417, 35);
 			this.txtNaziv.Name = "txtNaziv";
 			this.txtNaziv.Size = new System.Drawing.Size(196, 20);
 			this.txtNaziv.TabIndex = 4;
@@ -117,7 +118,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(286, 35);
+			this.label2.Location = new System.Drawing.Point(372, 142);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(33, 13);
 			this.label2.TabIndex = 5;
@@ -125,7 +126,7 @@
 			// 
 			// picSlika
 			// 
-			this.picSlika.Location = new System.Drawing.Point(286, 51);
+			this.picSlika.Location = new System.Drawing.Point(286, 35);
 			this.picSlika.Name = "picSlika";
 			this.picSlika.Size = new System.Drawing.Size(80, 80);
 			this.picSlika.TabIndex = 6;
@@ -133,7 +134,7 @@
 			// 
 			// txtKod
 			// 
-			this.txtKod.Location = new System.Drawing.Point(417, 74);
+			this.txtKod.Location = new System.Drawing.Point(417, 61);
 			this.txtKod.Name = "txtKod";
 			this.txtKod.Size = new System.Drawing.Size(196, 20);
 			this.txtKod.TabIndex = 8;
@@ -142,7 +143,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(372, 77);
+			this.label3.Location = new System.Drawing.Point(372, 64);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(29, 13);
 			this.label3.TabIndex = 7;
@@ -150,7 +151,7 @@
 			// 
 			// txtCijena
 			// 
-			this.txtCijena.Location = new System.Drawing.Point(417, 100);
+			this.txtCijena.Location = new System.Drawing.Point(417, 87);
 			this.txtCijena.Name = "txtCijena";
 			this.txtCijena.Size = new System.Drawing.Size(196, 20);
 			this.txtCijena.TabIndex = 10;
@@ -158,7 +159,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(372, 103);
+			this.label4.Location = new System.Drawing.Point(372, 90);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(39, 13);
 			this.label4.TabIndex = 9;
@@ -169,7 +170,7 @@
 			this.lblCijenaGreska.AutoSize = true;
 			this.lblCijenaGreska.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.lblCijenaGreska.ForeColor = System.Drawing.Color.Red;
-			this.lblCijenaGreska.Location = new System.Drawing.Point(619, 103);
+			this.lblCijenaGreska.Location = new System.Drawing.Point(619, 90);
 			this.lblCijenaGreska.Name = "lblCijenaGreska";
 			this.lblCijenaGreska.Size = new System.Drawing.Size(16, 13);
 			this.lblCijenaGreska.TabIndex = 11;
@@ -178,7 +179,7 @@
 			// 
 			// txtMaxNivo
 			// 
-			this.txtMaxNivo.Location = new System.Drawing.Point(440, 126);
+			this.txtMaxNivo.Location = new System.Drawing.Point(440, 113);
 			this.txtMaxNivo.Name = "txtMaxNivo";
 			this.txtMaxNivo.Size = new System.Drawing.Size(173, 20);
 			this.txtMaxNivo.TabIndex = 13;
@@ -186,7 +187,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(372, 129);
+			this.label5.Location = new System.Drawing.Point(372, 116);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(62, 13);
 			this.label5.TabIndex = 12;
@@ -197,7 +198,7 @@
 			this.lblMaxNivoGreska.AutoSize = true;
 			this.lblMaxNivoGreska.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.lblMaxNivoGreska.ForeColor = System.Drawing.Color.Red;
-			this.lblMaxNivoGreska.Location = new System.Drawing.Point(619, 129);
+			this.lblMaxNivoGreska.Location = new System.Drawing.Point(619, 116);
 			this.lblMaxNivoGreska.Name = "lblMaxNivoGreska";
 			this.lblMaxNivoGreska.Size = new System.Drawing.Size(16, 13);
 			this.lblMaxNivoGreska.TabIndex = 14;
@@ -209,7 +210,7 @@
 			this.lblKodGreska.AutoSize = true;
 			this.lblKodGreska.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.lblKodGreska.ForeColor = System.Drawing.Color.Red;
-			this.lblKodGreska.Location = new System.Drawing.Point(619, 77);
+			this.lblKodGreska.Location = new System.Drawing.Point(619, 64);
 			this.lblKodGreska.Name = "lblKodGreska";
 			this.lblKodGreska.Size = new System.Drawing.Size(16, 13);
 			this.lblKodGreska.TabIndex = 15;
@@ -218,7 +219,7 @@
 			// 
 			// btnSlika
 			// 
-			this.btnSlika.Location = new System.Drawing.Point(319, 137);
+			this.btnSlika.Location = new System.Drawing.Point(566, 165);
 			this.btnSlika.Name = "btnSlika";
 			this.btnSlika.Size = new System.Drawing.Size(47, 23);
 			this.btnSlika.TabIndex = 16;
@@ -231,7 +232,7 @@
 			this.lblSlikaGreska.AutoSize = true;
 			this.lblSlikaGreska.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.lblSlikaGreska.ForeColor = System.Drawing.Color.Red;
-			this.lblSlikaGreska.Location = new System.Drawing.Point(297, 142);
+			this.lblSlikaGreska.Location = new System.Drawing.Point(619, 142);
 			this.lblSlikaGreska.Name = "lblSlikaGreska";
 			this.lblSlikaGreska.Size = new System.Drawing.Size(16, 13);
 			this.lblSlikaGreska.TabIndex = 17;
@@ -241,7 +242,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(372, 149);
+			this.label6.Location = new System.Drawing.Point(372, 193);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(57, 13);
 			this.label6.TabIndex = 18;
@@ -255,7 +256,7 @@
 			this.lstvPreduvjeti.FullRowSelect = true;
 			this.lstvPreduvjeti.GridLines = true;
 			this.lstvPreduvjeti.HideSelection = false;
-			this.lstvPreduvjeti.Location = new System.Drawing.Point(375, 165);
+			this.lstvPreduvjeti.Location = new System.Drawing.Point(375, 209);
 			this.lstvPreduvjeti.MultiSelect = false;
 			this.lstvPreduvjeti.Name = "lstvPreduvjeti";
 			this.lstvPreduvjeti.Size = new System.Drawing.Size(238, 96);
@@ -275,7 +276,7 @@
 			// 
 			// btnPreduvjeti
 			// 
-			this.btnPreduvjeti.Location = new System.Drawing.Point(538, 267);
+			this.btnPreduvjeti.Location = new System.Drawing.Point(538, 311);
 			this.btnPreduvjeti.Name = "btnPreduvjeti";
 			this.btnPreduvjeti.Size = new System.Drawing.Size(75, 23);
 			this.btnPreduvjeti.TabIndex = 20;
@@ -283,11 +284,19 @@
 			this.btnPreduvjeti.UseVisualStyleBackColor = true;
 			this.btnPreduvjeti.Click += new System.EventHandler(this.btnPreduvjeti_Click);
 			// 
+			// txtSlika
+			// 
+			this.txtSlika.Location = new System.Drawing.Point(417, 139);
+			this.txtSlika.Name = "txtSlika";
+			this.txtSlika.Size = new System.Drawing.Size(196, 20);
+			this.txtSlika.TabIndex = 21;
+			// 
 			// FormTehnologije
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(644, 308);
+			this.ClientSize = new System.Drawing.Size(644, 391);
+			this.Controls.Add(this.txtSlika);
 			this.Controls.Add(this.btnPreduvjeti);
 			this.Controls.Add(this.lstvPreduvjeti);
 			this.Controls.Add(this.label6);
@@ -343,5 +352,6 @@
 		private System.Windows.Forms.ColumnHeader columnHeader1;
 		private System.Windows.Forms.ColumnHeader columnHeader2;
 		private System.Windows.Forms.Button btnPreduvjeti;
+		private System.Windows.Forms.TextBox txtSlika;
 	}
 }
