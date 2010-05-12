@@ -1,0 +1,19 @@
+﻿<REAKTOR>
+IME = Nuklearni reaktor
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+VELICINA_MIN = 5
+SNAGA = * 10 - VELICINA 4
+----
+
+<REAKTOR>
+IME = Kemijski reaktor
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+VELICINA_MIN = 1
+SNAGA = * 2 VELICINA
+----

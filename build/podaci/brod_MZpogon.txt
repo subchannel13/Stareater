@@ -1,0 +1,11 @@
+﻿<MZ_POGON>
+IME = Nuklearni pogon
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+VELICINA_MIN = 5
+BRZINA = 0.8
+SNAGA = * 200 VELICINA
+CIJENA = * 100 VELICINA
+----

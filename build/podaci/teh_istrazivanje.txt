@@ -1,0 +1,39 @@
+﻿<TEHNOLOGIJA>
+IME = Biologija
+OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
+KOD = BIO
+CIJENA = * 5000 + LVL ^ 2 LVL
+MAX_LVL = 20
+PREDUVJETI =
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+----
+
+<TEHNOLOGIJA>
+IME = Fizika
+OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
+KOD = FIZ
+CIJENA = * 1000000 + LVL ^ 2 LVL
+MAX_LVL = 20
+PREDUVJETI =
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+----
+
+<TEHNOLOGIJA>
+IME = Kemija
+OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
+KOD = KEM
+CIJENA = * 1000000 + LVL ^ 2 LVL
+MAX_LVL = 20
+PREDUVJETI =
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+----
+
+<TEHNOLOGIJA>
+IME = Matematika
+OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
+KOD = MAT
+CIJENA = * 1000000 + LVL ^ 2 LVL
+MAX_LVL = 20
+PREDUVJETI =
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+----

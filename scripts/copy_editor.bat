@@ -1,2 +1,2 @@
 @echo off
-copy ZvjEdit.exe ..\..\..\..\..\editors\
+copy ZvjEdit.exe ..\..\..\..\editors\

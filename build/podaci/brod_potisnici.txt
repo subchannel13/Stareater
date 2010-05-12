@@ -1,0 +1,8 @@
+﻿<POTISNIK>
+IME = Kemijski mlažnjak
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+BRZINA = 50
+----

@@ -53,6 +53,10 @@
 			this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
 			this.btnPreduvjeti = new System.Windows.Forms.Button();
 			this.txtSlika = new System.Windows.Forms.TextBox();
+			this.btnGore = new System.Windows.Forms.Button();
+			this.btnDolje = new System.Windows.Forms.Button();
+			this.btnNovaTeh = new System.Windows.Forms.Button();
+			this.btnUkloni = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.picSlika)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -66,6 +70,7 @@
 			this.radRazvoj.TabStop = true;
 			this.radRazvoj.Text = "Razvoj";
 			this.radRazvoj.UseVisualStyleBackColor = true;
+			this.radRazvoj.CheckedChanged += new System.EventHandler(this.radRazvoj_CheckedChanged);
 			// 
 			// radIstrazivanje
 			// 
@@ -77,6 +82,7 @@
 			this.radIstrazivanje.TabStop = true;
 			this.radIstrazivanje.Text = "Istraživanje";
 			this.radIstrazivanje.UseVisualStyleBackColor = true;
+			this.radIstrazivanje.CheckedChanged += new System.EventHandler(this.radIstrazivanje_CheckedChanged);
 			// 
 			// lstvTehnologije
 			// 
@@ -291,11 +297,55 @@
 			this.txtSlika.Size = new System.Drawing.Size(196, 20);
 			this.txtSlika.TabIndex = 21;
 			// 
+			// btnGore
+			// 
+			this.btnGore.Location = new System.Drawing.Point(286, 142);
+			this.btnGore.Name = "btnGore";
+			this.btnGore.Size = new System.Drawing.Size(42, 23);
+			this.btnGore.TabIndex = 22;
+			this.btnGore.Text = "/\\";
+			this.btnGore.UseVisualStyleBackColor = true;
+			this.btnGore.Click += new System.EventHandler(this.btnGore_Click);
+			// 
+			// btnDolje
+			// 
+			this.btnDolje.Location = new System.Drawing.Point(286, 171);
+			this.btnDolje.Name = "btnDolje";
+			this.btnDolje.Size = new System.Drawing.Size(42, 23);
+			this.btnDolje.TabIndex = 23;
+			this.btnDolje.Text = "\\/";
+			this.btnDolje.UseVisualStyleBackColor = true;
+			this.btnDolje.Click += new System.EventHandler(this.btnDolje_Click);
+			// 
+			// btnNovaTeh
+			// 
+			this.btnNovaTeh.Location = new System.Drawing.Point(205, 302);
+			this.btnNovaTeh.Name = "btnNovaTeh";
+			this.btnNovaTeh.Size = new System.Drawing.Size(75, 23);
+			this.btnNovaTeh.TabIndex = 24;
+			this.btnNovaTeh.Text = "&Nova";
+			this.btnNovaTeh.UseVisualStyleBackColor = true;
+			this.btnNovaTeh.Click += new System.EventHandler(this.btnNovaTeh_Click);
+			// 
+			// btnUkloni
+			// 
+			this.btnUkloni.Location = new System.Drawing.Point(12, 302);
+			this.btnUkloni.Name = "btnUkloni";
+			this.btnUkloni.Size = new System.Drawing.Size(75, 23);
+			this.btnUkloni.TabIndex = 25;
+			this.btnUkloni.Text = "&Ukoni";
+			this.btnUkloni.UseVisualStyleBackColor = true;
+			this.btnUkloni.Click += new System.EventHandler(this.btnUkloni_Click);
+			// 
 			// FormTehnologije
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(644, 391);
+			this.Controls.Add(this.btnUkloni);
+			this.Controls.Add(this.btnNovaTeh);
+			this.Controls.Add(this.btnDolje);
+			this.Controls.Add(this.btnGore);
 			this.Controls.Add(this.txtSlika);
 			this.Controls.Add(this.btnPreduvjeti);
 			this.Controls.Add(this.lstvPreduvjeti);
@@ -353,5 +403,9 @@
 		private System.Windows.Forms.ColumnHeader columnHeader2;
 		private System.Windows.Forms.Button btnPreduvjeti;
 		private System.Windows.Forms.TextBox txtSlika;
+		private System.Windows.Forms.Button btnGore;
+		private System.Windows.Forms.Button btnDolje;
+		private System.Windows.Forms.Button btnNovaTeh;
+		private System.Windows.Forms.Button btnUkloni;
 	}
 }

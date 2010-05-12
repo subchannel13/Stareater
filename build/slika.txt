@@ -1,0 +1,77 @@
+#<SLIKA>
+#DATOTEKA = ./slike/mapa/Crvena zvijezda.gif
+#SKUPINA = zvjezda_mapa
+#INDEKS = 1
+#----
+
+#<SLIKA>
+#DATOTEKA = ./slike/mapa/Plava zvijezda.gif
+#SKUPINA = zvjezda_mapa
+#INDEKS = 2
+#----
+
+#<SLIKA>
+#DATOTEKA = ./slike/mapa/Zelena zvijezda.gif
+#SKUPINA = zvjezda_mapa
+#INDEKS = 3
+#----
+
+#<SLIKA>
+#DATOTEKA = ./slike/mapa/Zuta zvijezda.gif
+#SKUPINA = zvjezda_mapa
+#INDEKS = 0
+#----
+
+#<SLIKA>
+#DATOTEKA = ./slike/tab/Zuto sunce.gif
+#SKUPINA = zvjezda_tab
+#INDEKS = 0
+#----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Nema planeta.gif
+SKUPINA = planet_tab
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Asteroidi.gif
+SKUPINA = planet_tab
+INDEKS = 1
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Zemljoliki planet.gif
+SKUPINA = planet_tab
+INDEKS = 2
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Plinoviti div.gif
+SKUPINA = planet_tab
+INDEKS = 3
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/flota.bmp
+SKUPINA = flota_tab
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/mapa/Odabrana zvijezda.gif
+SKUPINA = odabir_zvijezde
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Poruka.gif
+SKUPINA = poruka
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/mapa/flota.bmp
+SKUPINA = flota
+INDEKS = 0
+----

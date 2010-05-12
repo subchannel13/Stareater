@@ -13,13 +13,14 @@ namespace Zvjezdojedac_editori
 	public partial class FormTehnologije : ValidatorForm
 	{
 		const int OdgodaPromjene = 300;
-		const string imeTag = "IME";
-		const string opisTag = "OPIS";
-		const string kodTag = "KOD";
-		const string cijenaTag = "CIJENA";
-		const string maxNivoTag = "MAX_LVL";
-		const string preduvjetiTag = "PREDUVJETI";
-		const string slikaTag = "SLIKA";
+		public const string imeTag = "IME";
+		public const string opisTag = "OPIS";
+		public const string kodTag = "KOD";
+		public const string cijenaTag = "CIJENA";
+		public const string maxNivoTag = "MAX_LVL";
+		public const string preduvjetiTag = "PREDUVJETI";
+		public const string slikaTag = "SLIKA";
+		public const string novaTag = "NOVA";
 
 		private int selektiranaTehnologija = -1;
 		List<Dictionary<string, string>> tehnologijeIst = null;
@@ -42,6 +43,11 @@ namespace Zvjezdojedac_editori
 
 			addValidation(new Validation(txtCijena, InputType.Forumla, lblCijenaGreska));
 			addValidation(new Validation(txtMaxNivo, InputType.IntegerNum, lblMaxNivoGreska));
+
+			foreach (Dictionary<string, string> info in tehnologijeIst)
+				kodovi.Add(info[kodTag]);
+			foreach (Dictionary<string, string> info in tehnologijeRaz)
+				kodovi.Add(info[kodTag]);
 		}
 
 		private void postaviPopis()
@@ -52,14 +58,16 @@ namespace Zvjezdojedac_editori
 				ListViewItem item = new ListViewItem(info[imeTag]);
 				item.Tag = info;
 				lstvTehnologije.Items.Add(item);
-
-				kodovi.Add(info[kodTag]);
 			}
 		}
 
 		private void postaviPreduvjete(string preduvjetiString)
 		{
-			List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(preduvjetiString, false);
+			postaviPreduvjete(Tehnologija.Preduvjet.NaciniPreduvjete(preduvjetiString, false));
+		}
+
+		private void postaviPreduvjete(List<Tehnologija.Preduvjet> preduvjeti)
+		{
 			lstvPreduvjeti.Items.Clear();
 			foreach (Tehnologija.Preduvjet p in preduvjeti)
 			{
@@ -81,7 +89,7 @@ namespace Zvjezdojedac_editori
 			info[kodTag] = txtKod.Text.Trim();
 			info[cijenaTag] = txtCijena.Text;
 			info[maxNivoTag] = txtMaxNivo.Text;
-			info[preduvjetiTag] = Tehnologija.Preduvjet.UString(preduvjeti, true);
+			info[preduvjetiTag] = Tehnologija.Preduvjet.UString(preduvjeti, false);
 			info[slikaTag] = txtSlika.Text;
 		}
 
@@ -107,7 +115,7 @@ namespace Zvjezdojedac_editori
 				return;
 
 			if (selektiranaTehnologija >= 0 && selektiranaTehnologija != lstvTehnologije.SelectedIndices[0])
-				if (!valid())
+				if (valid())
 				{
 					spremiTehnologiju(selektiranaTehnologija);
 					kodovi.Add(txtKod.Text.Trim());
@@ -120,12 +128,19 @@ namespace Zvjezdojedac_editori
 			stariKod = info[kodTag];
 			kodovi.Remove(info[kodTag]);
 
+			Image img = null;
+			try
+			{
+				img = Image.FromFile(info[slikaTag]);
+			} catch
+			{}
+
 			txtNaziv.Text = info[imeTag];
 			txtKod.Text = info[kodTag];
 			txtCijena.Text = info[cijenaTag];
 			txtMaxNivo.Text = info[maxNivoTag];
 			txtSlika.Text = info[slikaTag];
-			picSlika.Image = Image.FromFile(info[slikaTag]);
+			picSlika.Image = img;
 			postaviPreduvjete(info[preduvjetiTag]);
 		}
 
@@ -167,10 +182,105 @@ namespace Zvjezdojedac_editori
 			if (lstvTehnologije.SelectedIndices.Count == 0)
 				return;
 
-			/*FormPreduvjeti forma = new FormPreduvjeti(preduvjeti);
+			FormPreduvjeti forma = new FormPreduvjeti(preduvjeti, tehnologijeIst, tehnologijeRaz);
 			if (forma.ShowDialog() == DialogResult.OK)
 				postaviPreduvjete(forma.preduvjeti);
-			 */
+		}
+
+		private void btnGore_Click(object sender, EventArgs e)
+		{
+			if (lstvTehnologije.SelectedItems.Count == 0)
+				return;
+
+			int indeks = lstvTehnologije.SelectedIndices[0];
+			if (indeks == 0) 
+				return;
+
+			popis.Reverse(indeks - 1, 2);
+
+			ListViewItem item = lstvTehnologije.Items[indeks];
+			lstvTehnologije.Items.Remove(item);
+			lstvTehnologije.Items.Insert(indeks - 1, item);
+		}
+
+		private void btnDolje_Click(object sender, EventArgs e)
+		{
+			if (lstvTehnologije.SelectedItems.Count == 0)
+				return;
+
+			int indeks = lstvTehnologije.SelectedIndices[0];
+			if (indeks + 1 >= lstvTehnologije.Items.Count)
+				return;
+
+			popis.Reverse(indeks, 2);
+
+			ListViewItem item = lstvTehnologije.Items[indeks];
+			lstvTehnologije.Items.Remove(item);
+			lstvTehnologije.Items.Insert(indeks + 1, item);
+		}
+
+		private void btnNovaTeh_Click(object sender, EventArgs e)
+		{
+			string kod = "";
+			Random rand = new Random();
+			while(kodovi.Contains(kod) || kod.Length < 3)
+				kod = kod + (char)('A' + rand.Next('Z' - 'A'));
+			kodovi.Add(kod);
+
+			Dictionary<string, string> teh = new Dictionary<string, string>();
+			teh[imeTag] = "Nova tehnologija";
+			teh[opisTag] = "Bez opisa";
+			teh[kodTag] = kod;
+			teh[cijenaTag] = "0";
+			teh[maxNivoTag] = "1";
+			teh[preduvjetiTag] = "";
+			teh[slikaTag] = "";
+			teh[novaTag] = "";
+			popis.Add(teh);
+
+			ListViewItem item = new ListViewItem(teh[imeTag]);
+			item.Tag = teh;
+			lstvTehnologije.Items.Add(item);
+			item.Selected = true;
+		}
+
+		private void radRazvoj_CheckedChanged(object sender, EventArgs e)
+		{
+			if (!radRazvoj.Checked) return;
+
+			if (valid())
+			{
+				spremiTehnologiju(selektiranaTehnologija);
+				kodovi.Add(txtKod.Text.Trim());
+			}
+			popis = tehnologijeRaz;
+			postaviPopis();
+		}
+
+		private void radIstrazivanje_CheckedChanged(object sender, EventArgs e)
+		{
+			if (!radIstrazivanje.Checked) return;
+
+			if (valid())
+			{
+				spremiTehnologiju(selektiranaTehnologija);
+				kodovi.Add(txtKod.Text.Trim());
+			}
+			popis = tehnologijeIst;
+			postaviPopis();
+		}
+
+		private void btnUkloni_Click(object sender, EventArgs e)
+		{
+			if (lstvTehnologije.SelectedItems.Count == 0)
+				return;
+
+			int indeks = lstvTehnologije.SelectedIndices[0];
+			lstvTehnologije.Items.RemoveAt(indeks);
+			popis.RemoveAt(indeks);
+
+			if (lstvTehnologije.Items.Count > indeks)
+				lstvTehnologije.Items[indeks].Selected = true;
 		}
 
 	}

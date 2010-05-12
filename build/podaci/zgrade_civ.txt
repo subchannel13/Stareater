@@ -1,0 +1,25 @@
+﻿<ZGRADA>
+IME = Industrijalizacija
+KOD = IND
+OPIS = Izgradnja dodatnih industrijskih postrojenja.
+CIJENA = - 30 IND_LVL
+ODRZAVANJE = 0
+KOLICINA = - POP_MAX RAD_MJ_UK
+SVOJSTVA = NE_OSTAJE PONAVLJA_SE
+PREDUVJETI =
+UCINAK0 = SET_VAR | RAD_MJ_DELTA | + BR_ZGRADA RAD_MJ_DELTA
+SLIKA = ./slike/zgrade/tvornica.bmp
+----
+
+<ZGRADA>
+IME = Kolonizacija
+KOD = POP
+OPIS = Poticaji stanovništvu da prošire koloniju.
+CIJENA = 10
+ODRZAVANJE = 0
+KOLICINA = MIN - POP_MAX POP * NATALITET POP
+SVOJSTVA = NE_OSTAJE PONAVLJA_SE
+PREDUVJETI =
+UCINAK0 = SET_VAR | POP_DELTA | + BR_ZGRADA POP_DELTA
+SLIKA = ./slike/zgrade/kolonizacija.bmp
+----

@@ -1,0 +1,26 @@
+﻿<OKLOP>
+IME = Titanij
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+IZDRZLJIVOST = 1
+----
+
+<OKLOP>
+IME = Duraplast
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+IZDRZLJIVOST = 2
+----
+
+<OKLOP>
+IME = Duraloj
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+IZDRZLJIVOST = 3
+----

@@ -11,19 +11,40 @@ namespace Zvjezdojedac_editori
 {
 	public partial class FormPreduvjeti : ValidatorForm
 	{
+		public const string imeTag = FormTehnologije.imeTag;
+		public const string kodTag = FormTehnologije.kodTag;
+		public const string preduvjetiTag = FormTehnologije.preduvjetiTag;
+
+		struct TechId
+		{
+			public string naziv;
+			public string kod;
+
+			public TechId(string naziv, string kod)
+			{
+				this.naziv = naziv;
+				this.kod = kod;
+			}
+
+			public override string ToString()
+			{
+				return naziv;
+			}
+		}
+
 		public List<Tehnologija.Preduvjet> preduvjeti { get; private set; }
 		private Dictionary<string, string> tehKodovi = new Dictionary<string,string>();
-		
-		public FormPreduvjeti(List<Tehnologija.Preduvjet> preduvjeti)
+
+		public FormPreduvjeti(List<Tehnologija.Preduvjet> preduvjeti, List<Dictionary<string, string>> tehnologijeIst, List<Dictionary<string, string>> tehnologijeRaz)
 		{
 			InitializeComponent();
 
 			addValidation(new Validation(txtNivo, InputType.Forumla, lblNivoGreska));
 
-			foreach(Tehnologija.TechInfo teh in Tehnologija.TechInfo.tehnologijeIstrazivanje)
-				tehKodovi.Add(teh.kod + "_LVL", teh.ime);
-			foreach(Tehnologija.TechInfo teh in Tehnologija.TechInfo.tehnologijeRazvoj)
-				tehKodovi.Add(teh.kod + "_LVL", teh.ime);
+			foreach (Dictionary<string, string> teh in tehnologijeIst)
+				tehKodovi.Add(teh[kodTag], teh[imeTag]);
+			foreach (Dictionary<string, string> teh in tehnologijeRaz)
+				tehKodovi.Add(teh[kodTag], teh[imeTag]);
 
 			this.preduvjeti = new List<Tehnologija.Preduvjet>(preduvjeti);
 			foreach (Tehnologija.Preduvjet p in preduvjeti)
@@ -32,14 +53,31 @@ namespace Zvjezdojedac_editori
 				item.SubItems.Add(p.nivo.ToString());
 				lstvPreduvjeti.Items.Add(item);
 			}
+
+			foreach(string kod in tehKodovi.Keys)
+				cbTehno.Items.Add(new TechId(tehKodovi[kod], kod));
+			cbTehno.SelectedIndex = 0;
 		}
 
 		protected override void addoditionalChangeHandle()
 		{
-			Formula nivo = Formula.IzStringa(txtNivo.Text);
-			List<Formula.Varijabla> varijable = nivo.popisVarijabli();
+			List<Formula.Varijabla> varijable = null;
+			bool ok = true;
 
-			if (varijable.Count == 1) return;
+			try
+			{
+				Formula nivo = Formula.IzStringa(txtNivo.Text);
+				varijable = nivo.popisVarijabli();
+				if (varijable.Count > 1) 
+					ok = false;
+			}
+			catch
+			{
+				ok = false;
+			}
+
+			if (ok) lblNivoGreska.Visible = false;
+			else lblNivoGreska.Visible = true;
 		}
 
 		protected override bool valid()
@@ -49,8 +87,10 @@ namespace Zvjezdojedac_editori
 			Formula nivo = Formula.IzStringa(txtNivo.Text);
 			List<Formula.Varijabla> varijable = nivo.popisVarijabli();
 			
-			if (varijable.Count == 1) return true;
-			else return false;
+			if (varijable.Count > 1) return false;
+			if (cbTehno.SelectedItem == null) return false;
+
+			return true;
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e)
@@ -63,7 +103,51 @@ namespace Zvjezdojedac_editori
 			if (lstvPreduvjeti.SelectedItems.Count == 0)
 				return;
 
-			lstvPreduvjeti.Items.RemoveAt(lstvPreduvjeti.SelectedIndices[0]);
+			int indeks = lstvPreduvjeti.SelectedIndices[0];
+			preduvjeti.RemoveAt(indeks);
+			lstvPreduvjeti.Items.RemoveAt(indeks);
+		}
+
+		private void lstvPreduvjeti_ItemActivate(object sender, EventArgs e)
+		{
+			if (lstvPreduvjeti.SelectedItems.Count == 0) return;
+
+			int predI = lstvPreduvjeti.SelectedIndices[0];
+			string kod = preduvjeti[predI].kod;
+
+			for (int i = 0; i < cbTehno.Items.Count; i++)
+			{
+				TechId techId = (TechId)cbTehno.Items[i];
+				if (techId.kod == kod)
+				{
+					cbTehno.SelectedIndex = i;
+					break;
+				}
+			}
+
+			txtNivo.Text = preduvjeti[predI].nivo.ToString();
+		}
+
+		private void btnDodaj_Click(object sender, EventArgs e)
+		{
+			if (!valid()) return;
+
+			TechId tehId = (TechId)cbTehno.SelectedItem;
+			Tehnologija.Preduvjet pred = new Tehnologija.Preduvjet(tehId.kod, Formula.IzStringa(txtNivo.Text), false);
+
+			preduvjeti.Add(pred);
+
+			ListViewItem item = new ListViewItem(tehId.naziv);
+			item.SubItems.Add(pred.nivo.ToString());
+			lstvPreduvjeti.Items.Add(item);
+		}
+
+		private void btnOk_Click(object sender, EventArgs e)
+		{
+			if (!valid()) return;
+
+			DialogResult = DialogResult.OK;
+			Close();
 		}
 	}
 }

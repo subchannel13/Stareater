@@ -1,0 +1,12 @@
+﻿<ZGRADA>
+IME = Radijacijski štit
+KOD = RAD_STIT
+OPIS = Štiti koloniju od kozmičkog i solarnog zračenja te štiti koloniju tokom opsade.
+CIJENA = * 1000000 PLANET_VELICINA
+ODRZAVANJE = 0
+KOLICINA = 1
+SVOJSTVA = 
+PREDUVJETI =
+UCINAK0 = SET_VAR | TERAFORM_ZRACENJE | + TERAFORM_ZRACENJE 1
+SLIKA = ./slike/zgrade/radijacijski stit.bmp
+----

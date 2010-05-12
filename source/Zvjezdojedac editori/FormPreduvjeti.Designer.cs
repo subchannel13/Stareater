@@ -57,6 +57,7 @@
 			this.lstvPreduvjeti.TabIndex = 0;
 			this.lstvPreduvjeti.UseCompatibleStateImageBehavior = false;
 			this.lstvPreduvjeti.View = System.Windows.Forms.View.Details;
+			this.lstvPreduvjeti.ItemActivate += new System.EventHandler(this.lstvPreduvjeti_ItemActivate);
 			// 
 			// columnHeader1
 			// 
@@ -84,6 +85,7 @@
 			this.cbTehno.Location = new System.Drawing.Point(12, 131);
 			this.cbTehno.Name = "cbTehno";
 			this.cbTehno.Size = new System.Drawing.Size(126, 21);
+			this.cbTehno.Sorted = true;
 			this.cbTehno.TabIndex = 2;
 			// 
 			// label2
@@ -121,6 +123,7 @@
 			this.btnDodaj.TabIndex = 6;
 			this.btnDodaj.Text = "&Dodaj";
 			this.btnDodaj.UseVisualStyleBackColor = true;
+			this.btnDodaj.Click += new System.EventHandler(this.btnDodaj_Click);
 			// 
 			// btnUkloni
 			// 
@@ -140,6 +143,7 @@
 			this.btnOk.TabIndex = 8;
 			this.btnOk.Text = "Prihvati";
 			this.btnOk.UseVisualStyleBackColor = true;
+			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
 			// 
 			// btnCancel
 			// 

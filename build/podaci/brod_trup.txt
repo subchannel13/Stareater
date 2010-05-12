@@ -1,0 +1,39 @@
+﻿<TRUP>
+IME = Lovac
+OPIS = Brod veličine torpednog čamca ili zračnog lovca.
+SLIKA = ./slike/tehnologije/lovac.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+KOD = LOVAC
+VELICINA = 10
+KAPACITET_PRIKRIVANJA = 1000
+VELICINA_MZPOGONA = 2
+VELICINA_REAKTORA = 2
+VELICINA_STITA = 2
+NOSIVOST = 10
+TROMOST = 10
+BAZA_OKLOPA = 10
+BAZA_STITA = 10
+CIJENA = 1000000
+BR_SENZORA = 1
+----
+
+<TRUP>
+IME = Mali brod
+OPIS = Brod veličine između lovca i broda srednje veličine.
+SLIKA = ./slike/tehnologije/mali brod.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+KOD = MALI
+VELICINA = 50
+KAPACITET_PRIKRIVANJA = 750
+VELICINA_MZPOGONA = 10
+VELICINA_REAKTORA = 10
+VELICINA_STITA = 10
+NOSIVOST = 50
+TROMOST = 15
+BAZA_OKLOPA = 75
+BAZA_STITA = 50
+CIJENA = 6000000
+BR_SENZORA = 2
+----

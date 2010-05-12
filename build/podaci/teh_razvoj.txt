@@ -1,0 +1,59 @@
+﻿<TEHNOLOGIJA>
+IME = Hidroponične farme
+OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
+KOD = HIDRO_FARME
+CIJENA = * 50000 + LVL ^ 3 LVL
+MAX_LVL = 8
+PREDUVJETI = BIO | - / + LVL 2 3 1
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+----
+
+<TEHNOLOGIJA>
+IME = Industrija
+OPIS = Pojeftinjenje industrijskih postrijenja.
+KOD = IND
+CIJENA = * 50000 + LVL ^ 2 LVL
+MAX_LVL = 10
+PREDUVJETI =
+SLIKA = ./slike/tehnologije/industrija.bmp
+----
+
+<TEHNOLOGIJA>
+IME = Robotika
+OPIS = Poboljšanje učinkovitosti industrijske proizvodnje.
+KOD = ROBO
+CIJENA = * 50000 + LVL ^ 2 LVL
+MAX_LVL = 10
+PREDUVJETI = IND | 5
+SLIKA = ./slike/tehnologije/industrija.bmp
+----
+
+<TEHNOLOGIJA>
+IME = Laseri
+OPIS = Laser kao takov
+KOD = LASER
+CIJENA = * 50000 + LVL ^ 2 LVL
+MAX_LVL = 10
+PREDUVJETI =
+SLIKA = ./slike/tehnologije/laser.bmp
+----
+
+<TEHNOLOGIJA>
+IME = ECM
+OPIS = ECM kao takov
+KOD = ECM
+CIJENA = * 50000 + LVL ^ 2 LVL
+MAX_LVL = 10
+PREDUVJETI =
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+----
+
+<TEHNOLOGIJA>
+IME = EM štit
+OPIS = ECM kao takov
+KOD = EM_STIT
+CIJENA = * 50000 + LVL ^ 2 LVL
+PREDUVJETI = ECM | 5
+MAX_LVL = 10
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+----

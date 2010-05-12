@@ -1,0 +1,8 @@
+﻿<SENZOR>
+IME = EM senzor
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+RAZLUCIVOST = 10
+----

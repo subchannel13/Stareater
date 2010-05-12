@@ -1,0 +1,84 @@
+﻿<ORUZJE>
+IME = Laserski top
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+KOD = LASER
+MISIJA = DIREKTNO_ORUZJE
+CILJANJE = NORMALNO
+VATRENA_MOC = 10
+BR_NAPADA = 1
+PRECIZNOST = 200
+CIJENA = 200
+SNAGA = 20
+VELICINA = 5
+----
+
+<ORUZJE>
+IME = Obrambeni laser
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+KOD = PD_LASER
+MISIJA = DIREKTNO_ORUZJE
+CILJANJE = OBRANA
+BR_NAPADA = 0.5
+VATRENA_MOC = 2
+PRECIZNOST = 200
+CIJENA = 50
+SNAGA = 4
+VELICINA = 1
+----
+
+<ORUZJE>
+IME = Protuoklopne granate
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+KOD = GRANATE
+MISIJA = DIREKTNO_ORUZJE
+CILJANJE = VELIKI_BRODOVI
+VATRENA_MOC = 50
+BR_NAPADA = 2
+PRECIZNOST = 30
+CIJENA = 400
+SNAGA = 0
+VELICINA = 10
+----
+
+<ORUZJE>
+IME = Obrambena strojnica
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+KOD = PD_STROJ
+MISIJA = DIREKTNO_ORUZJE
+CILJANJE = OBRANA
+BR_NAPADA = 0.5
+VATRENA_MOC = 6
+PRECIZNOST = 50
+CIJENA = 50
+SNAGA = 0
+VELICINA = 2
+----
+
+<ORUZJE>
+IME = Strojnica
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 0
+PREDUVJETI =
+KOD = STROJ
+MISIJA = DIREKTNO_ORUZJE
+CILJANJE = NORMALNO
+BR_NAPADA = 0.3
+VATRENA_MOC = 12
+PRECIZNOST = 50
+CIJENA = 100
+SNAGA = 0
+VELICINA = 1
+----
