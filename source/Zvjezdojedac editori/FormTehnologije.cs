@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using Prototip;
@@ -87,6 +87,7 @@ namespace Zvjezdojedac_editori
 			Dictionary<string, string> info = (Dictionary<string, string>)lstvTehnologije.Items[indeks].Tag;
 			info[imeTag] = txtNaziv.Text.Trim();
 			info[kodTag] = txtKod.Text.Trim();
+			info[opisTag] = txtOpis.Text.Trim();
 			info[cijenaTag] = txtCijena.Text;
 			info[maxNivoTag] = txtMaxNivo.Text;
 			info[preduvjetiTag] = Tehnologija.Preduvjet.UString(preduvjeti, false);
@@ -119,6 +120,7 @@ namespace Zvjezdojedac_editori
 				{
 					spremiTehnologiju(selektiranaTehnologija);
 					kodovi.Add(txtKod.Text.Trim());
+					lstvTehnologije.Items[selektiranaTehnologija].Text = txtNaziv.Text;
 				}
 				else if (stariKod != null)
 					kodovi.Add(stariKod);
@@ -137,6 +139,7 @@ namespace Zvjezdojedac_editori
 
 			txtNaziv.Text = info[imeTag];
 			txtKod.Text = info[kodTag];
+			txtOpis.Text = info[opisTag];
 			txtCijena.Text = info[cijenaTag];
 			txtMaxNivo.Text = info[maxNivoTag];
 			txtSlika.Text = info[slikaTag];
@@ -167,6 +170,7 @@ namespace Zvjezdojedac_editori
 
 					info[slikaTag] = putanja;
 					picSlika.Image = slika;
+					txtSlika.Text = putanja;
 				}
 				catch (Exception) { }
 			}
@@ -281,6 +285,40 @@ namespace Zvjezdojedac_editori
 
 			if (lstvTehnologije.Items.Count > indeks)
 				lstvTehnologije.Items[indeks].Selected = true;
+		}
+
+		private void zapisi(StreamWriter pisac, Dictionary<string, string> podaci)
+		{
+			if (podaci.ContainsKey(novaTag))
+				if (podaci[slikaTag].Trim().Length == 0)
+					return;
+
+			pisac.WriteLine("<TEHNOLOGIJA>");
+			pisac.WriteLine("IME = " + podaci[imeTag]);
+			pisac.WriteLine("OPIS = " + podaci[opisTag]);
+			pisac.WriteLine("KOD = " + podaci[kodTag]);
+			pisac.WriteLine("CIJENA = " + podaci[cijenaTag]);
+			pisac.WriteLine("MAX_LVL = " + podaci[maxNivoTag]);
+			pisac.WriteLine("PREDUVJETI = " + podaci[preduvjetiTag]);
+			pisac.WriteLine("SLIKA = " + podaci[slikaTag]);
+			pisac.WriteLine("----");
+			pisac.WriteLine();
+		}
+
+		private void FormTehnologije_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (valid())
+				spremiTehnologiju(selektiranaTehnologija);
+
+			StreamWriter pisac = new StreamWriter("./podaci/teh_razvoj.txt");
+			foreach (Dictionary<string, string> teh in tehnologijeRaz)
+				zapisi(pisac, teh);
+			pisac.Close();
+
+			pisac = new StreamWriter("./podaci/teh_istrazivanje.txt");
+			foreach (Dictionary<string, string> teh in tehnologijeIst)
+				zapisi(pisac, teh);
+			pisac.Close();
 		}
 
 	}

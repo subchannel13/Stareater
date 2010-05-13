@@ -57,6 +57,8 @@
 			this.btnDolje = new System.Windows.Forms.Button();
 			this.btnNovaTeh = new System.Windows.Forms.Button();
 			this.btnUkloni = new System.Windows.Forms.Button();
+			this.txtOpis = new System.Windows.Forms.TextBox();
+			this.label7 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.picSlika)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -94,7 +96,7 @@
 			this.lstvTehnologije.Location = new System.Drawing.Point(12, 35);
 			this.lstvTehnologije.MultiSelect = false;
 			this.lstvTehnologije.Name = "lstvTehnologije";
-			this.lstvTehnologije.Size = new System.Drawing.Size(268, 261);
+			this.lstvTehnologije.Size = new System.Drawing.Size(268, 296);
 			this.lstvTehnologije.TabIndex = 2;
 			this.lstvTehnologije.UseCompatibleStateImageBehavior = false;
 			this.lstvTehnologije.View = System.Windows.Forms.View.Details;
@@ -124,7 +126,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(372, 142);
+			this.label2.Location = new System.Drawing.Point(372, 168);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(33, 13);
 			this.label2.TabIndex = 5;
@@ -157,7 +159,7 @@
 			// 
 			// txtCijena
 			// 
-			this.txtCijena.Location = new System.Drawing.Point(417, 87);
+			this.txtCijena.Location = new System.Drawing.Point(417, 113);
 			this.txtCijena.Name = "txtCijena";
 			this.txtCijena.Size = new System.Drawing.Size(196, 20);
 			this.txtCijena.TabIndex = 10;
@@ -165,7 +167,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(372, 90);
+			this.label4.Location = new System.Drawing.Point(372, 116);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(39, 13);
 			this.label4.TabIndex = 9;
@@ -176,7 +178,7 @@
 			this.lblCijenaGreska.AutoSize = true;
 			this.lblCijenaGreska.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.lblCijenaGreska.ForeColor = System.Drawing.Color.Red;
-			this.lblCijenaGreska.Location = new System.Drawing.Point(619, 90);
+			this.lblCijenaGreska.Location = new System.Drawing.Point(619, 145);
 			this.lblCijenaGreska.Name = "lblCijenaGreska";
 			this.lblCijenaGreska.Size = new System.Drawing.Size(16, 13);
 			this.lblCijenaGreska.TabIndex = 11;
@@ -185,7 +187,7 @@
 			// 
 			// txtMaxNivo
 			// 
-			this.txtMaxNivo.Location = new System.Drawing.Point(440, 113);
+			this.txtMaxNivo.Location = new System.Drawing.Point(440, 139);
 			this.txtMaxNivo.Name = "txtMaxNivo";
 			this.txtMaxNivo.Size = new System.Drawing.Size(173, 20);
 			this.txtMaxNivo.TabIndex = 13;
@@ -193,7 +195,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(372, 116);
+			this.label5.Location = new System.Drawing.Point(372, 142);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(62, 13);
 			this.label5.TabIndex = 12;
@@ -204,7 +206,7 @@
 			this.lblMaxNivoGreska.AutoSize = true;
 			this.lblMaxNivoGreska.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.lblMaxNivoGreska.ForeColor = System.Drawing.Color.Red;
-			this.lblMaxNivoGreska.Location = new System.Drawing.Point(619, 116);
+			this.lblMaxNivoGreska.Location = new System.Drawing.Point(619, 171);
 			this.lblMaxNivoGreska.Name = "lblMaxNivoGreska";
 			this.lblMaxNivoGreska.Size = new System.Drawing.Size(16, 13);
 			this.lblMaxNivoGreska.TabIndex = 14;
@@ -225,7 +227,7 @@
 			// 
 			// btnSlika
 			// 
-			this.btnSlika.Location = new System.Drawing.Point(566, 165);
+			this.btnSlika.Location = new System.Drawing.Point(566, 191);
 			this.btnSlika.Name = "btnSlika";
 			this.btnSlika.Size = new System.Drawing.Size(47, 23);
 			this.btnSlika.TabIndex = 16;
@@ -238,7 +240,7 @@
 			this.lblSlikaGreska.AutoSize = true;
 			this.lblSlikaGreska.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.lblSlikaGreska.ForeColor = System.Drawing.Color.Red;
-			this.lblSlikaGreska.Location = new System.Drawing.Point(619, 142);
+			this.lblSlikaGreska.Location = new System.Drawing.Point(619, 197);
 			this.lblSlikaGreska.Name = "lblSlikaGreska";
 			this.lblSlikaGreska.Size = new System.Drawing.Size(16, 13);
 			this.lblSlikaGreska.TabIndex = 17;
@@ -248,7 +250,7 @@
 			// label6
 			// 
 			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(372, 193);
+			this.label6.Location = new System.Drawing.Point(372, 219);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(57, 13);
 			this.label6.TabIndex = 18;
@@ -262,7 +264,7 @@
 			this.lstvPreduvjeti.FullRowSelect = true;
 			this.lstvPreduvjeti.GridLines = true;
 			this.lstvPreduvjeti.HideSelection = false;
-			this.lstvPreduvjeti.Location = new System.Drawing.Point(375, 209);
+			this.lstvPreduvjeti.Location = new System.Drawing.Point(375, 235);
 			this.lstvPreduvjeti.MultiSelect = false;
 			this.lstvPreduvjeti.Name = "lstvPreduvjeti";
 			this.lstvPreduvjeti.Size = new System.Drawing.Size(238, 96);
@@ -282,7 +284,7 @@
 			// 
 			// btnPreduvjeti
 			// 
-			this.btnPreduvjeti.Location = new System.Drawing.Point(538, 311);
+			this.btnPreduvjeti.Location = new System.Drawing.Point(538, 337);
 			this.btnPreduvjeti.Name = "btnPreduvjeti";
 			this.btnPreduvjeti.Size = new System.Drawing.Size(75, 23);
 			this.btnPreduvjeti.TabIndex = 20;
@@ -292,7 +294,7 @@
 			// 
 			// txtSlika
 			// 
-			this.txtSlika.Location = new System.Drawing.Point(417, 139);
+			this.txtSlika.Location = new System.Drawing.Point(417, 165);
 			this.txtSlika.Name = "txtSlika";
 			this.txtSlika.Size = new System.Drawing.Size(196, 20);
 			this.txtSlika.TabIndex = 21;
@@ -319,7 +321,7 @@
 			// 
 			// btnNovaTeh
 			// 
-			this.btnNovaTeh.Location = new System.Drawing.Point(205, 302);
+			this.btnNovaTeh.Location = new System.Drawing.Point(123, 337);
 			this.btnNovaTeh.Name = "btnNovaTeh";
 			this.btnNovaTeh.Size = new System.Drawing.Size(75, 23);
 			this.btnNovaTeh.TabIndex = 24;
@@ -329,7 +331,7 @@
 			// 
 			// btnUkloni
 			// 
-			this.btnUkloni.Location = new System.Drawing.Point(12, 302);
+			this.btnUkloni.Location = new System.Drawing.Point(204, 337);
 			this.btnUkloni.Name = "btnUkloni";
 			this.btnUkloni.Size = new System.Drawing.Size(75, 23);
 			this.btnUkloni.TabIndex = 25;
@@ -337,11 +339,29 @@
 			this.btnUkloni.UseVisualStyleBackColor = true;
 			this.btnUkloni.Click += new System.EventHandler(this.btnUkloni_Click);
 			// 
+			// txtOpis
+			// 
+			this.txtOpis.Location = new System.Drawing.Point(417, 87);
+			this.txtOpis.Name = "txtOpis";
+			this.txtOpis.Size = new System.Drawing.Size(196, 20);
+			this.txtOpis.TabIndex = 27;
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(372, 90);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(31, 13);
+			this.label7.TabIndex = 26;
+			this.label7.Text = "Opis:";
+			// 
 			// FormTehnologije
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(644, 391);
+			this.ClientSize = new System.Drawing.Size(644, 375);
+			this.Controls.Add(this.txtOpis);
+			this.Controls.Add(this.label7);
 			this.Controls.Add(this.btnUkloni);
 			this.Controls.Add(this.btnNovaTeh);
 			this.Controls.Add(this.btnDolje);
@@ -370,6 +390,7 @@
 			this.Controls.Add(this.radRazvoj);
 			this.Name = "FormTehnologije";
 			this.Text = "Tehnologije";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormTehnologije_FormClosing);
 			((System.ComponentModel.ISupportInitialize)(this.picSlika)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -407,5 +428,7 @@
 		private System.Windows.Forms.Button btnDolje;
 		private System.Windows.Forms.Button btnNovaTeh;
 		private System.Windows.Forms.Button btnUkloni;
+		private System.Windows.Forms.TextBox txtOpis;
+		private System.Windows.Forms.Label label7;
 	}
 }

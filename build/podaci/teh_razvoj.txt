@@ -1,4 +1,4 @@
-﻿<TEHNOLOGIJA>
+<TEHNOLOGIJA>
 IME = Hidroponične farme
 OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
 KOD = HIDRO_FARME
@@ -14,7 +14,7 @@ OPIS = Pojeftinjenje industrijskih postrijenja.
 KOD = IND
 CIJENA = * 50000 + LVL ^ 2 LVL
 MAX_LVL = 10
-PREDUVJETI =
+PREDUVJETI = 
 SLIKA = ./slike/tehnologije/industrija.bmp
 ----
 
@@ -34,7 +34,7 @@ OPIS = Laser kao takov
 KOD = LASER
 CIJENA = * 50000 + LVL ^ 2 LVL
 MAX_LVL = 10
-PREDUVJETI =
+PREDUVJETI = 
 SLIKA = ./slike/tehnologije/laser.bmp
 ----
 
@@ -44,7 +44,7 @@ OPIS = ECM kao takov
 KOD = ECM
 CIJENA = * 50000 + LVL ^ 2 LVL
 MAX_LVL = 10
-PREDUVJETI =
+PREDUVJETI = 
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 ----
 
@@ -53,7 +53,28 @@ IME = EM štit
 OPIS = ECM kao takov
 KOD = EM_STIT
 CIJENA = * 50000 + LVL ^ 2 LVL
-PREDUVJETI = ECM | 5
 MAX_LVL = 10
+PREDUVJETI = ECM | 5
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 ----
+
+<TEHNOLOGIJA>
+IME = Titanijski oklop
+OPIS = Bez opisa
+KOD = TITANIJ
+CIJENA = * 1000000 ^ LVL 2
+MAX_LVL = 10
+PREDUVJETI = 
+SLIKA = ./slike/tehnologije/industrija.bmp
+----
+
+<TEHNOLOGIJA>
+IME = Duraplast
+OPIS = Bez opisa
+KOD = DURAPLAST
+CIJENA = * 5000000 ^ LVL 2
+MAX_LVL = 10
+PREDUVJETI = BIO | 4 | KEM | 2
+SLIKA = ./slike/tehnologije/industrija.bmp
+----
+
