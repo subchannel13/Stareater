@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using Prototip;
+using Zvjezdojedac_editori.Validation;
 
 namespace Zvjezdojedac_editori
 {
@@ -29,6 +30,7 @@ namespace Zvjezdojedac_editori
 		private HashSet<string> kodovi = new HashSet<string>();
 		private List<Tehnologija.Preduvjet> preduvjeti = null;
 		private string stariKod = null;
+		private ValidTextBoxImage slikaValidator = null;
 
 		public FormTehnologije(List<Dictionary<string, string>> tehnologijeIst, List<Dictionary<string, string>> tehnologijeRaz)
 		{
@@ -41,8 +43,11 @@ namespace Zvjezdojedac_editori
 				this.popis = tehnologijeRaz;
 			postaviPopis();
 
-			addValidation(new Validation(txtCijena, InputType.Forumla, lblCijenaGreska));
-			addValidation(new Validation(txtMaxNivo, InputType.IntegerNum, lblMaxNivoGreska));
+			addValidation(new ValidTextBoxFormula(txtCijena, lblCijenaGreska));
+			addValidation(new ValidTextBoxInteger(txtMaxNivo, lblMaxNivoGreska));
+			addValidation(new ValidTextBoxSetUniqeness(txtKod, lblKodGreska, kodovi));
+			this.slikaValidator = new ValidTextBoxImage(txtSlika, lblSlikaGreska, new Size(80, 80));
+			addValidation(slikaValidator);
 
 			foreach (Dictionary<string, string> info in tehnologijeIst)
 				kodovi.Add(info[kodTag]);
@@ -94,20 +99,11 @@ namespace Zvjezdojedac_editori
 			info[slikaTag] = txtSlika.Text;
 		}
 
-		protected override void addoditionalChangeHandle()
+		protected override void changeOccured(HashSet<Control> changedControles)
 		{
-			lblSlikaGreska.Visible = (picSlika.Image == null);
-			lblKodGreska.Visible = (kodovi.Contains(txtKod.Text.Trim()) || txtKod.Text.Trim().Length == 0);
-		}
-
-		protected override bool valid()
-		{
-			if (!base.valid()) return false;
-			
-			if (picSlika.Image == null) return false;
-			if (kodovi.Contains(txtKod.Text.Trim()) || txtKod.Text.Trim().Length == 0) return false;
-
-			return true;
+			if (changedControles.Contains(txtSlika))
+				if (slikaValidator.valid())
+					picSlika.Image = Image.FromFile(txtSlika.Text);
 		}
 
 		private void lstvTehnologije_SelectedIndexChanged(object sender, EventArgs e)
@@ -164,21 +160,10 @@ namespace Zvjezdojedac_editori
 					if (putanja.StartsWith(Environment.CurrentDirectory))
 						putanja = "." + putanja.Remove(0, Environment.CurrentDirectory.Length).Replace('\\', '/');
 					
-					Image slika = Image.FromFile(putanja);
-					if (slika.Width != 80 || slika.Height != 80)
-						throw new ArgumentException();
-
-					info[slikaTag] = putanja;
-					picSlika.Image = slika;
 					txtSlika.Text = putanja;
 				}
 				catch (Exception) { }
 			}
-		}
-
-		private void txtKod_TextChanged(object sender, EventArgs e)
-		{
-			postChange();
 		}
 
 		private void btnPreduvjeti_Click(object sender, EventArgs e)

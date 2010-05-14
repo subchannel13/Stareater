@@ -146,7 +146,6 @@
 			this.txtKod.Name = "txtKod";
 			this.txtKod.Size = new System.Drawing.Size(196, 20);
 			this.txtKod.TabIndex = 8;
-			this.txtKod.TextChanged += new System.EventHandler(this.txtKod_TextChanged);
 			// 
 			// label3
 			// 
@@ -178,7 +177,7 @@
 			this.lblCijenaGreska.AutoSize = true;
 			this.lblCijenaGreska.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.lblCijenaGreska.ForeColor = System.Drawing.Color.Red;
-			this.lblCijenaGreska.Location = new System.Drawing.Point(619, 145);
+			this.lblCijenaGreska.Location = new System.Drawing.Point(616, 116);
 			this.lblCijenaGreska.Name = "lblCijenaGreska";
 			this.lblCijenaGreska.Size = new System.Drawing.Size(16, 13);
 			this.lblCijenaGreska.TabIndex = 11;
@@ -206,7 +205,7 @@
 			this.lblMaxNivoGreska.AutoSize = true;
 			this.lblMaxNivoGreska.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.lblMaxNivoGreska.ForeColor = System.Drawing.Color.Red;
-			this.lblMaxNivoGreska.Location = new System.Drawing.Point(619, 171);
+			this.lblMaxNivoGreska.Location = new System.Drawing.Point(616, 142);
 			this.lblMaxNivoGreska.Name = "lblMaxNivoGreska";
 			this.lblMaxNivoGreska.Size = new System.Drawing.Size(16, 13);
 			this.lblMaxNivoGreska.TabIndex = 14;
@@ -240,7 +239,7 @@
 			this.lblSlikaGreska.AutoSize = true;
 			this.lblSlikaGreska.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.lblSlikaGreska.ForeColor = System.Drawing.Color.Red;
-			this.lblSlikaGreska.Location = new System.Drawing.Point(619, 197);
+			this.lblSlikaGreska.Location = new System.Drawing.Point(616, 168);
 			this.lblSlikaGreska.Name = "lblSlikaGreska";
 			this.lblSlikaGreska.Size = new System.Drawing.Size(16, 13);
 			this.lblSlikaGreska.TabIndex = 17;

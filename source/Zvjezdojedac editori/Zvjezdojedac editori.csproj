@@ -230,6 +230,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Validation\AValidTextBox.cs" />
+    <Compile Include="Validation\AValid.cs" />
+    <Compile Include="Validation\ValidTextBoxFormula.cs" />
+    <Compile Include="Validation\ValidTextBoxImage.cs" />
+    <Compile Include="Validation\ValidTextBoxInteger.cs" />
+    <Compile Include="Validation\ValidTextBoxReal.cs" />
+    <Compile Include="Validation\ValidTextBoxSetUniqeness.cs" />
     <Compile Include="ValidatorForm.cs">
       <SubType>Form</SubType>
     </Compile>

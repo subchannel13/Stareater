@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Prototip;
+using Zvjezdojedac_editori.Validation;
 
 namespace Zvjezdojedac_editori
 {
@@ -32,6 +33,28 @@ namespace Zvjezdojedac_editori
 			}
 		}
 
+		/*class ValidNivo : ValidTextBoxFormula
+		{
+			public ValidNivo(TextBox txtInput, Label lblReport)
+				: base(txtInput, lblReport)
+			{ }
+
+			public override bool valid()
+			{
+				if (!base.valid())
+					return false;
+
+				Formula nivo = Formula.IzStringa(txtInput.Text);
+				List<Formula.Varijabla> varijable = null;
+				
+				varijable = nivo.popisVarijabli();
+				if (varijable.Count > 1)
+					return false;
+				else
+					return true;
+			}
+		}*/
+
 		public List<Tehnologija.Preduvjet> preduvjeti { get; private set; }
 		private Dictionary<string, string> tehKodovi = new Dictionary<string,string>();
 
@@ -39,7 +62,7 @@ namespace Zvjezdojedac_editori
 		{
 			InitializeComponent();
 
-			addValidation(new Validation(txtNivo, InputType.Forumla, lblNivoGreska));
+			addValidation(new ValidTextBoxFormula(txtNivo, lblNivoGreska, new string[]{"LVL"}));
 
 			foreach (Dictionary<string, string> teh in tehnologijeIst)
 				tehKodovi.Add(teh[kodTag], teh[imeTag]);
@@ -57,40 +80,6 @@ namespace Zvjezdojedac_editori
 			foreach(string kod in tehKodovi.Keys)
 				cbTehno.Items.Add(new TechId(tehKodovi[kod], kod));
 			cbTehno.SelectedIndex = 0;
-		}
-
-		protected override void addoditionalChangeHandle()
-		{
-			List<Formula.Varijabla> varijable = null;
-			bool ok = true;
-
-			try
-			{
-				Formula nivo = Formula.IzStringa(txtNivo.Text);
-				varijable = nivo.popisVarijabli();
-				if (varijable.Count > 1) 
-					ok = false;
-			}
-			catch
-			{
-				ok = false;
-			}
-
-			if (ok) lblNivoGreska.Visible = false;
-			else lblNivoGreska.Visible = true;
-		}
-
-		protected override bool valid()
-		{
-			if (!base.valid()) return false;
-
-			Formula nivo = Formula.IzStringa(txtNivo.Text);
-			List<Formula.Varijabla> varijable = nivo.popisVarijabli();
-			
-			if (varijable.Count > 1) return false;
-			if (cbTehno.SelectedItem == null) return false;
-
-			return true;
 		}
 
 		private void btnCancel_Click(object sender, EventArgs e)
