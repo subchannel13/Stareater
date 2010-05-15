@@ -186,6 +186,7 @@ namespace Zvjezdojedac_editori
 				return;
 
 			popis.Reverse(indeks - 1, 2);
+			selektiranaTehnologija--;
 
 			ListViewItem item = lstvTehnologije.Items[indeks];
 			lstvTehnologije.Items.Remove(item);
@@ -202,6 +203,7 @@ namespace Zvjezdojedac_editori
 				return;
 
 			popis.Reverse(indeks, 2);
+			selektiranaTehnologija++;
 
 			ListViewItem item = lstvTehnologije.Items[indeks];
 			lstvTehnologije.Items.Remove(item);

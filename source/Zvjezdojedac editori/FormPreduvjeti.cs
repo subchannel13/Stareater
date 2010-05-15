@@ -33,28 +33,6 @@ namespace Zvjezdojedac_editori
 			}
 		}
 
-		/*class ValidNivo : ValidTextBoxFormula
-		{
-			public ValidNivo(TextBox txtInput, Label lblReport)
-				: base(txtInput, lblReport)
-			{ }
-
-			public override bool valid()
-			{
-				if (!base.valid())
-					return false;
-
-				Formula nivo = Formula.IzStringa(txtInput.Text);
-				List<Formula.Varijabla> varijable = null;
-				
-				varijable = nivo.popisVarijabli();
-				if (varijable.Count > 1)
-					return false;
-				else
-					return true;
-			}
-		}*/
-
 		public List<Tehnologija.Preduvjet> preduvjeti { get; private set; }
 		private Dictionary<string, string> tehKodovi = new Dictionary<string,string>();
 
