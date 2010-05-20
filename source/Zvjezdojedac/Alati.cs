@@ -46,14 +46,6 @@ namespace Alati
 				return ret.Substring(0, 5) + prefiksi[prefIndex];
 			else
 				return ret + prefiksi[prefIndex];
-			/*long decimale = broj - (broj / tezina) * tezina;
-			for (int j = ret.Length; j < 4; j++)
-				decimale *= 10;
-
-			if (decimale > tezina)
-				return ret + "." + (decimale / tezina).ToString() + prefiksi[prefIndex];
-			else
-				return ret + prefiksi[prefIndex];*/
 		}
 
 		public static double IntegralPolinoma(double x, double redPolinoma)
@@ -63,6 +55,7 @@ namespace Alati
 			else
 				return Math.Pow(x, redPolinoma + 1) / (redPolinoma + 1);
 		}
+
 	}
 
 	public class Sazetak

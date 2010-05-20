@@ -87,12 +87,6 @@ namespace Prototip
 
 		private void odaberiZvijezdu(Zvijezda zvijezda, bool promjeniTab)
 		{
-			/*if (igrac.odabranaZvijezda == zvijezda)
-			{
-				if (promjeniTab) tabCtrlDesno.SelectedTab = tabPageZvijezda;
-				return;
-			}*/
-
 			igrac.odabranaZvijezda = zvijezda;
 			if (promjeniTab) tabCtrlDesno.SelectedTab = tabPageZvijezda;
 			listViewPlaneti.Items.Clear();
@@ -113,7 +107,7 @@ namespace Prototip
 				Flota flota = igrac.floteStacionarne[zvijezda];
 				foreach (Dictionary<Dizajn, Brod> brodovi in flota.brodovi.Values)
 					foreach (Brod brod in brodovi.Values)
-						nodeStacionarnaFloata.Nodes.Add(brod.dizajn.ime);
+						nodeStacionarnaFloata.Nodes.Add(brod.dizajn.ime + " x " + Fje.PrefiksFormater(brod.kolicina));
 			}
 
 			lblImeZvjezde.Text = zvijezda.ime + "\nZračenje: " + zvijezda.zracenje();

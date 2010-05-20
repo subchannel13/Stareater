@@ -361,6 +361,8 @@ namespace Prototip
 					opis.Add("Civilni transport");
 					opis.Add(oruzje.komponenta.naziv);
 					opis.Add("");
+					if (oruzje.komponenta.maxNivo > 0)
+						opis.Add("Nivo: " + oruzje.komponenta.nivo);
 					opis.Add("Kapacitet: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc) + " stan.");
 					break;
 
@@ -368,6 +370,8 @@ namespace Prototip
 					opis.Add("Oružje");
 					opis.Add(Fje.PrefiksFormater(oruzje.kolicina) + " x " + oruzje.komponenta.naziv);
 					opis.Add("");
+					if (oruzje.komponenta.maxNivo > 0)
+						opis.Add("Nivo: " + oruzje.komponenta.nivo);
 					opis.Add("Vatrena moć: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc));
 					opis.Add("Učinkovitost štitova: x" + oruzje.komponenta.brNapada.ToString("0.##"));
 					opis.Add("Ciljanje: " + Oruzje.OruzjeInfo.OpisCiljanja[oruzje.komponenta.ciljanje]);
@@ -383,6 +387,8 @@ namespace Prototip
 					opis.Add("Kolonizacija");
 					opis.Add(oruzje.komponenta.naziv);
 					opis.Add("");
+					if (oruzje.komponenta.maxNivo > 0)
+						opis.Add("Nivo: " + oruzje.komponenta.nivo);
 					opis.Add("Br. kolonista: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc));
 					break;
 
@@ -390,6 +396,8 @@ namespace Prototip
 					opis.Add("Popravak i nadogradnja");
 					opis.Add(oruzje.komponenta.naziv);
 					opis.Add("");
+					if (oruzje.komponenta.maxNivo > 0)
+						opis.Add("Nivo: " + oruzje.komponenta.nivo);
 					opis.Add("Poeni industrije: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc));
 					break;
 
@@ -397,6 +405,8 @@ namespace Prototip
 					opis.Add("Oružje (projektil)");
 					opis.Add(Fje.PrefiksFormater(oruzje.kolicina) + " x " + oruzje.komponenta.naziv);
 					opis.Add("");
+					if (oruzje.komponenta.maxNivo > 0)
+						opis.Add("Nivo: " + oruzje.komponenta.nivo);
 					opis.Add("Vatrena moć: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc));
 					opis.Add("Učinkovitost štitova: x" + oruzje.komponenta.brNapada.ToString("0.##"));
 					opis.Add("Ciljanje: " + Oruzje.OruzjeInfo.OpisCiljanja[oruzje.komponenta.ciljanje]);
@@ -412,6 +422,8 @@ namespace Prototip
 					opis.Add("Špijunaža");
 					opis.Add(Fje.PrefiksFormater(oruzje.kolicina) + " x " + oruzje.komponenta.naziv);
 					opis.Add("");
+					if (oruzje.komponenta.maxNivo > 0)
+						opis.Add("Nivo: " + oruzje.komponenta.nivo);
 					opis.Add("Učinkovitost:");
 					opis.Add("Špijunaža: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc));
 					opis.Add("Infiltracija" + Fje.PrefiksFormater(oruzje.komponenta.brNapada));
@@ -427,6 +439,8 @@ namespace Prototip
 					opis.Add("Tegljenje");
 					opis.Add(oruzje.komponenta.naziv);
 					opis.Add("");
+					if (oruzje.komponenta.maxNivo > 0)
+						opis.Add("Nivo: " + oruzje.komponenta.nivo);
 					opis.Add("Kapacitet: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc));
 					break;
 
@@ -434,6 +448,8 @@ namespace Prototip
 					opis.Add("Vojni transport");
 					opis.Add(oruzje.komponenta.naziv);
 					opis.Add("");
+					if (oruzje.komponenta.maxNivo > 0)
+						opis.Add("Nivo: " + oruzje.komponenta.nivo);
 					opis.Add("Kapacitet: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc) + " jedinica");
 					if (cijene)
 					{
@@ -466,6 +482,9 @@ namespace Prototip
 						opis.Add("Brod nema međuzvjezdani pogon.");
 					else
 					{
+						opis.Add(dizajn.MZPogon.info.naziv);
+						if (dizajn.MZPogon.maxNivo > 0)
+							opis.Add("Nivo: " + dizajn.MZPogon.nivo);
 						opis.Add("Brzina: " + dizajn.MZbrzina.ToString("0.###"));
 						if (cijene)
 						{
@@ -479,6 +498,8 @@ namespace Prototip
 					opis.Add("Pokretljivost");
 					opis.Add("");
 					opis.Add(dizajn.potisnici.naziv);
+					if (dizajn.potisnici.maxNivo > 0)
+						opis.Add("Nivo: " + dizajn.potisnici.nivo);
 					opis.Add("Stupanj tromosti: " + dizajn.inercija);
 					opis.Add("Pokretljivost: " + Fje.PrefiksFormater(dizajn.pokretljivost));
 					break;
@@ -491,6 +512,8 @@ namespace Prototip
 					opis.Add("Reaktor");
 					opis.Add("");
 					opis.Add(dizajn.reaktor.naziv);
+					if (dizajn.reaktor.maxNivo > 0)
+						opis.Add("Nivo: " + dizajn.reaktor.nivo);
 					opis.Add("Opterečenje: " + Fje.PrefiksFormater(dizajn.opterecenjeReaktora));
 					opis.Add("Dostupna snaga: " + Fje.PrefiksFormater(dizajn.snagaReaktora) + " (" + (dizajn.koefSnageReaktora * 100).ToString("0") + "%)");
 					break;
@@ -503,6 +526,8 @@ namespace Prototip
 					opis.Add("Senzori i prikrivanje");
 					opis.Add("");
 					opis.Add(Fje.PrefiksFormater(dizajn.brSenzora) + " x " + dizajn.senzor.naziv);
+					if (dizajn.senzor.maxNivo > 0)
+						opis.Add("Nivo: " + dizajn.senzor.nivo);
 					opis.Add("Snaga senzora: " + Fje.PrefiksFormater(dizajn.snagaSenzora));
 					opis.Add("Ometanje: " + Fje.PrefiksFormater(dizajn.ometanje));
 					opis.Add("Prikrivanje: " + Fje.PrefiksFormater(dizajn.prikrivenost));
@@ -515,6 +540,8 @@ namespace Prototip
 						opis.Add(dizajn.specijalnaOprema[specijalnaOpremaZaOpis] + " x " + specijalnaOpremaZaOpis.naziv);
 					else
 						opis.Add(specijalnaOpremaZaOpis.naziv);
+					if (specijalnaOpremaZaOpis.maxNivo > 0)
+						opis.Add("Nivo: " + specijalnaOpremaZaOpis.nivo);
 					opis.AddRange(specijalnaOpremaZaOpis.opisEfekata);
 					if (cijene)
 					{
@@ -533,6 +560,8 @@ namespace Prototip
 					else
 					{
 						opis.Add(dizajn.stit.naziv);
+						if (dizajn.stit.maxNivo > 0)
+							opis.Add("Nivo: " + dizajn.stit.nivo);
 						opis.Add("Izdržljivost: " + Fje.PrefiksFormater(dizajn.stit.izdrzljivost));
 						opis.Add("Brzina obnavljanja: " + Fje.PrefiksFormater(dizajn.stit.obnavljanje));
 						opis.Add("Debljina: " + Fje.PrefiksFormater(dizajn.stit.debljina));
@@ -812,6 +841,16 @@ namespace Prototip
 
 		private void btnSpremi_Click(object sender, EventArgs e)
 		{
+			HashSet<Sazetak> postojeciDizajnovi = new HashSet<Sazetak>();
+			foreach (DizajnZgrada dizajnZgrada in igrac.dizajnoviBrodova)
+				postojeciDizajnovi.Add(dizajnZgrada.dizajn.stil);
+
+			if (postojeciDizajnovi.Contains(dizajner.dizajn.stil))
+			{
+				MessageBox.Show("Dizajn istih karakteristika već postoji", "Postojeći dizajn", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				return;
+			}
+
 			igrac.dodajDizajn(dizajner.dizajn);
 			dodajDizajn(dizajner.dizajn);
 			tabCtrlFlote.SelectedTab = tabDizajnovi;
