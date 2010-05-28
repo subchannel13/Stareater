@@ -1,55 +1,55 @@
-#<SLIKA>
-#DATOTEKA = ./slike/mapa/Crvena zvijezda.gif
-#SKUPINA = zvjezda_mapa
-#INDEKS = 1
-#----
-
-#<SLIKA>
-#DATOTEKA = ./slike/mapa/Plava zvijezda.gif
-#SKUPINA = zvjezda_mapa
-#INDEKS = 2
-#----
-
-#<SLIKA>
-#DATOTEKA = ./slike/mapa/Zelena zvijezda.gif
-#SKUPINA = zvjezda_mapa
-#INDEKS = 3
-#----
-
-#<SLIKA>
-#DATOTEKA = ./slike/mapa/Zuta zvijezda.gif
-#SKUPINA = zvjezda_mapa
-#INDEKS = 0
-#----
-
-#<SLIKA>
-#DATOTEKA = ./slike/tab/Zuto sunce.gif
-#SKUPINA = zvjezda_tab
-#INDEKS = 0
-#----
-
 <SLIKA>
 DATOTEKA = ./slike/tab/Nema planeta.gif
 SKUPINA = planet_tab
 INDEKS = 0
+ATM_GUST = 0
+ATM_KVAL = 0
+TEMPERATURA = 0
 ----
 
 <SLIKA>
 DATOTEKA = ./slike/tab/Asteroidi.gif
 SKUPINA = planet_tab
 INDEKS = 1
+ATM_GUST = 0
+ATM_KVAL = 0
+TEMPERATURA = 0
 ----
 
 <SLIKA>
 DATOTEKA = ./slike/tab/Zemljoliki planet.gif
 SKUPINA = planet_tab
 INDEKS = 2
+ATM_GUST = 10
+ATM_KVAL = 1
+TEMPERATURA = 10
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Zemljoliki planet 2.png
+SKUPINA = planet_tab
+INDEKS = 2
+ATM_GUST = 3
+ATM_KVAL = 0.8
+TEMPERATURA = 7
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Zemljoliki planet 3.png
+SKUPINA = planet_tab
+INDEKS = 2
+ATM_GUST = 5
+ATM_KVAL = 0.6
+TEMPERATURA = 4
 ----
 
 <SLIKA>
 DATOTEKA = ./slike/tab/Plinoviti div.gif
 SKUPINA = planet_tab
 INDEKS = 3
+ATM_GUST = 0
+ATM_KVAL = 0
+TEMPERATURA = 4
 ----
 
 <SLIKA>

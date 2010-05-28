@@ -33,7 +33,7 @@ namespace Prototip
 			tabCtrlDesno.ImageList = new ImageList();
 			tabCtrlDesno.ImageList.ImageSize = new Size(32, 32);
 			tabCtrlDesno.ImageList.Images.Add(new Bitmap(1, 1));
-			tabCtrlDesno.ImageList.Images.Add(Slike.PlanetTab[Planet.Tip.ASTEROIDI]);
+			tabCtrlDesno.ImageList.Images.Add(Slike.PlanetTab[Planet.Tip.ASTEROIDI][0].image);
 			tabCtrlDesno.ImageList.Images.Add(Slike.FlotaTab);
 			tabPageZvijezda.ImageIndex = 0;
 			tabPagePlanet.ImageIndex = 1;
@@ -41,8 +41,12 @@ namespace Prototip
 
 			listViewPlaneti.LargeImageList = new ImageList();
 			listViewPlaneti.LargeImageList.ImageSize = new Size(32, 32);
-			foreach(Planet.Tip tip in Enum.GetValues(typeof(Planet.Tip)))
-				listViewPlaneti.LargeImageList.Images.Add(Slike.PlanetTab[tip]);
+			//foreach(Planet.Tip tip in Enum.GetValues(typeof(Planet.Tip)))
+			//	listViewPlaneti.LargeImageList.Images.Add(Slike.PlanetTab[tip]);
+			Image[] planetImages = new Image[Slike.PlanetImageIndex.Count];
+			foreach (Image img in Slike.PlanetImageIndex.Keys)
+				planetImages[Slike.PlanetImageIndex[img]] = img;
+			listViewPlaneti.LargeImageList.Images.AddRange(planetImages);
 
 			btnCivilnaGradnja.Text = "";
             btnVojnaGradnja.Text = "";
@@ -95,7 +99,7 @@ namespace Prototip
 			{
 				Planet planet = zvijezda.planeti[i];
 				ListViewItem item = new ListViewItem("Planet " + (i+1));
-				item.ImageIndex = (int)planet.tip;
+				item.ImageIndex = Slike.PlanetImageIndex[planet.slika];
 				listViewPlaneti.Items.Add(item);
 			}
 

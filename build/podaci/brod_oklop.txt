@@ -2,7 +2,7 @@
 IME = Titanij
 OPIS = 
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
-MAX_NIVO = 0
+MAX_NIVO = 10
 PREDUVJETI =
 IZDRZLJIVOST = 1
 ----
@@ -11,7 +11,7 @@ IZDRZLJIVOST = 1
 IME = Duraplast
 OPIS = 
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
-MAX_NIVO = 0
+MAX_NIVO = 10
 PREDUVJETI =
 IZDRZLJIVOST = 2
 ----
@@ -20,7 +20,7 @@ IZDRZLJIVOST = 2
 IME = Duraloj
 OPIS = 
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
-MAX_NIVO = 0
+MAX_NIVO = 10
 PREDUVJETI =
 IZDRZLJIVOST = 3
 ----

@@ -26,7 +26,13 @@ namespace Prototip
 			public double dubinskiMineraliMin;
 			public double dubinskiMineraliMax;
 
-			private TipInfo(int velicinaMin, int velicinaMax, double povrsinskiMineraliMin, double povrsinskiMineraliMax, double dubinskiMineraliMin, double dubinskiMineraliMax)
+			public double slikaAtmGustKoef;
+			public double slikaAtmKvalKoef;
+			public double slikaAtmTempKoef;
+
+			private TipInfo(int velicinaMin, int velicinaMax, 
+				double povrsinskiMineraliMin, double povrsinskiMineraliMax, double dubinskiMineraliMin, double dubinskiMineraliMax,
+				double slikaAtmGustKoef, double slikaAtmKvalKoef, double slikaAtmTempKoef)
 			{
 				this.velicinaMax = velicinaMax;
 				this.velicinaMin = velicinaMin;
@@ -34,6 +40,9 @@ namespace Prototip
 				this.povrsinskiMineraliMax = povrsinskiMineraliMax;
 				this.dubinskiMineraliMin = dubinskiMineraliMin;
 				this.dubinskiMineraliMax = dubinskiMineraliMax;
+				this.slikaAtmGustKoef = slikaAtmGustKoef;
+				this.slikaAtmKvalKoef = slikaAtmKvalKoef;
+				this.slikaAtmTempKoef = slikaAtmTempKoef;
 			}
 
 			public static void noviTip(Dictionary<string, string> podatci)
@@ -50,8 +59,14 @@ namespace Prototip
                 double povrsinskiMineraliMax = Double.Parse(podatci["POVRSINSKI_MINERALI_MAX"], Podaci.DecimalnaTocka);
                 double dubinskiMineraliMin = Double.Parse(podatci["DUBINSKI_MINERALI_MIN"], Podaci.DecimalnaTocka);
                 double dubinskiMineraliMax = Double.Parse(podatci["DUBINSKI_MINERALI_MAX"], Podaci.DecimalnaTocka);
+				
+				double slikaAtmGustKoef = double.Parse(podatci["SLIKA_KOEF_ATM_GUST"]);
+				double slikaAtmKvalKoef = double.Parse(podatci["SLIKA_KOEF_ATM_KVAL"]);
+				double slikaAtmTempKoef = double.Parse(podatci["SLIKA_KOEF_ATM_TEMP"]);
 
-				tipovi.Add(tip, new TipInfo(velicinaMin, velicinaMax, povrsinskiMineraliMin, povrsinskiMineraliMax, dubinskiMineraliMin, dubinskiMineraliMax));
+				tipovi.Add(tip, new TipInfo(velicinaMin, velicinaMax, 
+					povrsinskiMineraliMin, povrsinskiMineraliMax, dubinskiMineraliMin, dubinskiMineraliMax,
+					slikaAtmGustKoef, slikaAtmKvalKoef, slikaAtmTempKoef));
 			}
 		}
 
@@ -90,7 +105,10 @@ namespace Prototip
 			this.mineraliPovrsinski = Fje.IzIntervala(mineraliPovrsinski, tipovi[tip].povrsinskiMineraliMin, tipovi[tip].povrsinskiMineraliMax);
 			this.mineraliDubinski = Fje.IzIntervala(mineraliDubinski, this.mineraliPovrsinski, tipovi[tip].dubinskiMineraliMax);
 
-			slika = Slike.PlanetTab[tip];
+			if (zvjezda != null)
+				slika = Slike.OdrediSlikuPlaneta(tip, this.gustocaAtmosfere, this.kvalitetaAtmosfere, this.temperatura());
+			else
+				slika = null;
 		}
 
 		public Planet(Planet predlozak, Zvijezda zvjezda, Kolonija kolonija)
@@ -107,6 +125,8 @@ namespace Prototip
 			this.gustocaAtmosfere = predlozak.gustocaAtmosfere;
 			this.mineraliDubinski = predlozak.mineraliDubinski;
 			this.mineraliPovrsinski = predlozak.mineraliPovrsinski;
+
+			slika = Slike.OdrediSlikuPlaneta(tip, this.gustocaAtmosfere, this.kvalitetaAtmosfere, this.temperatura());
 		}
 
 		public double gravitacija()

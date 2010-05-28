@@ -147,18 +147,21 @@ namespace Prototip
 
 					//Određivanje raspodijeljivih planeta
 					Dictionary<int, Alati.Vadjenje<Planet.Tip>[]> tipoviPlaneta = new Dictionary<int, Alati.Vadjenje<Planet.Tip>[]>();
+					Planet.Tip[] enumTipova = new Planet.Tip[] { Planet.Tip.NIKAKAV, Planet.Tip.ASTEROIDI, Planet.Tip.KAMENI, Planet.Tip.PLINOVITI };
+					Dictionary<Planet.Tip, int> brPlanetaPoTipu = new Dictionary<Planet.Tip, int>();
+					foreach(Planet.Tip tip in enumTipova)
+						brPlanetaPoTipu.Add(tip, 0);
 					foreach (int tipZvj in zvijezdePoTipu.Keys)
 					{
 						if (tipZvj == Zvijezda.Tip_Nikakva)
 							continue;
 
-						Planet.Tip[] enumTipova = new Planet.Tip[] { Planet.Tip.NIKAKAV, Planet.Tip.ASTEROIDI, Planet.Tip.KAMENI, Planet.Tip.PLINOVITI };
 						Dictionary<Planet.Tip, double[]> tipoviPoPozicijama = new Dictionary<Planet.Tip, double[]>();
 						foreach (Planet.Tip tipPlaneta in enumTipova)
 						{
 							tipoviPoPozicijama[tipPlaneta] = new double[BR_PLANETA];
 							Zvijezda.TipInfo.PojavnostPlaneta parametri = Zvijezda.Tipovi[tipZvj].pojavnostPlaneta[tipPlaneta];
-
+							
 							double suma = 0;
 							for (int i = 0; i < BR_PLANETA; i++)
 							{
@@ -186,12 +189,32 @@ namespace Prototip
 							foreach (Planet.Tip tipPlaneta in enumTipova)
 							{
 								double n = tipoviPoPozicijama[tipPlaneta][i] * zvijezdePoTipu[tipZvj].Count / suma;
+								brPlanetaPoTipu[tipPlaneta] += (int)n;
 								for (int j = 1; j <= n; j++)
 									tipoviPlaneta[tipZvj][i].dodaj(tipPlaneta);
 							}
 
 							while (tipoviPlaneta[tipZvj][i].kolicina() < zvijezdePoTipu[tipZvj].Count)
 								tipoviPlaneta[tipZvj][i].dodaj(Planet.Tip.NIKAKAV);
+						}
+					}
+					Dictionary<Planet.Tip, Alati.Vadjenje<double>> randVelicina = new Dictionary<Planet.Tip, Alati.Vadjenje<double>>();
+					Dictionary<Planet.Tip, Alati.Vadjenje<double>> randAtmKval = new Dictionary<Planet.Tip, Alati.Vadjenje<double>>();
+					Dictionary<Planet.Tip, Alati.Vadjenje<double>> randAtmGust = new Dictionary<Planet.Tip, Alati.Vadjenje<double>>();
+					Dictionary<Planet.Tip, Alati.Vadjenje<double>> randMinerPov = new Dictionary<Planet.Tip, Alati.Vadjenje<double>>();
+					Dictionary<Planet.Tip, Alati.Vadjenje<double>> randMinerDub = new Dictionary<Planet.Tip, Alati.Vadjenje<double>>();
+					foreach (Planet.Tip tipPl in enumTipova) {
+						randAtmGust.Add(tipPl, new Alati.Vadjenje<double>());
+						randAtmKval.Add(tipPl, new Alati.Vadjenje<double>());
+						randMinerDub.Add(tipPl, new Alati.Vadjenje<double>());
+						randMinerPov.Add(tipPl, new Alati.Vadjenje<double>());
+						randVelicina.Add(tipPl, new Alati.Vadjenje<double>());
+						for (double i = 0; i < brPlanetaPoTipu[tipPl]; i++) {
+							randAtmGust[tipPl].dodaj(i / brPlanetaPoTipu[tipPl]);
+							randAtmKval[tipPl].dodaj(i / brPlanetaPoTipu[tipPl]);
+							randMinerDub[tipPl].dodaj(i / brPlanetaPoTipu[tipPl]);
+							randMinerPov[tipPl].dodaj(i / brPlanetaPoTipu[tipPl]);
+							randVelicina[tipPl].dodaj(i / brPlanetaPoTipu[tipPl]);
 						}
 					}
 
@@ -205,7 +228,15 @@ namespace Prototip
 						for (int i = 0; i < BR_PLANETA; i++)
 						{
 							Planet.Tip tip = tipoviPlaneta[zvj.tip][i].izvadi();
-							zvj.planeti.Add(new Planet(tip, i, zvj, rnd.NextDouble(), rnd.NextDouble(), rnd.NextDouble(), rnd.NextDouble(), rnd.NextDouble()));
+							double velicina = randVelicina[tip].izvadi();
+							double AtmGust = randAtmGust[tip].izvadi();
+							double AtmKval = randAtmKval[tip].izvadi();
+							double MinerPov = randMinerPov[tip].izvadi();
+							double MinerDub = randMinerDub[tip].izvadi();
+							zvj.planeti.Add(
+								new Planet(tip, i, zvj, velicina, 
+									AtmKval, AtmGust, 
+									MinerPov, MinerDub));
 						}
 					}
 				}

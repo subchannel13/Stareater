@@ -2,7 +2,7 @@
 IME = Biologija
 OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
 KOD = BIO
-CIJENA = * 5000 + LVL ^ 2 LVL
+CIJENA = * 10000 + LVL ^ 2 LVL
 MAX_LVL = 20
 PREDUVJETI = 
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
