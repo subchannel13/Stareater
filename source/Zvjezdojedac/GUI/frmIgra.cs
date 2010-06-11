@@ -5,6 +5,8 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
+using System.IO.Compression;
 using Alati;
 
 namespace Prototip
@@ -334,6 +336,27 @@ namespace Prototip
 		{
 			frmFlote formaFlote = new frmFlote(igrac);
 			formaFlote.ShowDialog();
+		}
+
+		private void btnSpremi_Click(object sender, EventArgs e)
+		{
+			SaveFileDialog dialog = new SaveFileDialog();
+			dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
+			dialog.FileName = "sejv.igra";
+			dialog.Filter = "Zvjezdojedac igra (*.igra)|*.igra";
+
+			if (dialog.ShowDialog() == DialogResult.OK) {
+				FileStream pisac = new FileStream(dialog.FileName, FileMode.Create);
+
+				MemoryStream zipMemory = new MemoryStream();
+				GZipStream zipStream = new GZipStream(zipMemory, CompressionMode.Compress);
+				byte[] toZip = Encoding.UTF8.GetBytes(igra.spremi());
+				zipStream.Write(toZip, 0, toZip.Length);
+
+				pisac.Write(zipMemory.ToArray(), 0, (int)zipMemory.Length);
+				
+				pisac.Close();
+			}
 		}
 	}
 }

@@ -52,6 +52,8 @@
 			this.lblPopulacija = new System.Windows.Forms.Label();
 			this.lblImePlaneta = new System.Windows.Forms.Label();
 			this.tabPageFlote = new System.Windows.Forms.TabPage();
+			this.tvFlota = new System.Windows.Forms.TreeView();
+			this.panel1 = new System.Windows.Forms.Panel();
 			this.pnlMapa = new System.Windows.Forms.Panel();
 			this.picMapa = new System.Windows.Forms.PictureBox();
 			this.btnEndTurn = new System.Windows.Forms.Button();
@@ -65,8 +67,7 @@
 			this.btnFlote = new System.Windows.Forms.Button();
 			this.btnPoruke = new System.Windows.Forms.Button();
 			this.btnTech = new System.Windows.Forms.Button();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.tvFlota = new System.Windows.Forms.TreeView();
+			this.btnSpremi = new System.Windows.Forms.Button();
 			this.tabCtrlDesno.SuspendLayout();
 			this.tabPageZvijezda.SuspendLayout();
 			this.pnlOpisZvjezde.SuspendLayout();
@@ -314,6 +315,22 @@
 			this.tabPageFlote.Size = new System.Drawing.Size(154, 407);
 			this.tabPageFlote.TabIndex = 2;
 			// 
+			// tvFlota
+			// 
+			this.tvFlota.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tvFlota.Location = new System.Drawing.Point(3, 103);
+			this.tvFlota.Name = "tvFlota";
+			this.tvFlota.Size = new System.Drawing.Size(148, 301);
+			this.tvFlota.TabIndex = 1;
+			// 
+			// panel1
+			// 
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.panel1.Location = new System.Drawing.Point(3, 3);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(148, 100);
+			this.panel1.TabIndex = 0;
+			// 
 			// pnlMapa
 			// 
 			this.pnlMapa.AutoScroll = true;
@@ -391,6 +408,7 @@
 			// 
 			// pnlKomande
 			// 
+			this.pnlKomande.Controls.Add(this.btnSpremi);
 			this.pnlKomande.Controls.Add(this.pnlKomandeDesno);
 			this.pnlKomande.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.pnlKomande.Location = new System.Drawing.Point(0, 363);
@@ -441,21 +459,15 @@
 			this.btnTech.UseVisualStyleBackColor = true;
 			this.btnTech.Click += new System.EventHandler(this.btnTech_Click);
 			// 
-			// panel1
+			// btnSpremi
 			// 
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel1.Location = new System.Drawing.Point(3, 3);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(148, 100);
-			this.panel1.TabIndex = 0;
-			// 
-			// tvFlota
-			// 
-			this.tvFlota.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tvFlota.Location = new System.Drawing.Point(3, 103);
-			this.tvFlota.Name = "tvFlota";
-			this.tvFlota.Size = new System.Drawing.Size(148, 301);
-			this.tvFlota.TabIndex = 1;
+			this.btnSpremi.Location = new System.Drawing.Point(12, 6);
+			this.btnSpremi.Name = "btnSpremi";
+			this.btnSpremi.Size = new System.Drawing.Size(75, 23);
+			this.btnSpremi.TabIndex = 1;
+			this.btnSpremi.Text = "Spremi";
+			this.btnSpremi.UseVisualStyleBackColor = true;
+			this.btnSpremi.Click += new System.EventHandler(this.btnSpremi_Click);
 			// 
 			// frmIgra
 			// 
@@ -536,5 +548,6 @@
 		private System.Windows.Forms.TabPage tabPageFlote;
 		private System.Windows.Forms.TreeView tvFlota;
 		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Button btnSpremi;
 	}
 }

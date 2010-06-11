@@ -5,7 +5,7 @@ using Alati;
 
 namespace Prototip
 {
-	public class Zvijezda
+	public class Zvijezda :IPohranjivoSB
 	{
 		public const int Tip_Nikakva = -1;
 		public const int Tip_PocetnaPozicija = -2;
@@ -158,5 +158,24 @@ namespace Prototip
 		{
 			return Math.Sqrt((this.x - zvj.x) * (this.x - zvj.x) + (this.y - zvj.y) * (this.y - zvj.y));
 		}
+
+		#region Pohrana
+		public const string PohranaTip = "ZVIJEZDA";
+		public const string PohTip = "TIP";
+		public const string PohX = "X";
+		public const string PohY = "Y";
+		public const string PohVelicina = "VELICINA";
+		public const string PohIme = "IME";
+		public void pohrani(PodaciPisac izlaz)
+		{
+			izlaz.dodaj(PohTip, tip);
+			izlaz.dodaj(PohX, x);
+			izlaz.dodaj(PohY, y);
+			izlaz.dodaj(PohVelicina, velicina);
+			izlaz.dodaj(PohIme, ime);
+			for (int i = 0; i < planeti.Count; i++)
+				izlaz.dodaj(Planet.PohranaTip + i, planeti[i]);
+		}
+		#endregion
 	}
 }

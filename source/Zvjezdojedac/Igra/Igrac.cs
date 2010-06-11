@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace Prototip
 {
-	public class Igrac
+	public class Igrac : IIdentifiable
 	{
 		public enum Tip
 		{
@@ -29,14 +29,15 @@ namespace Prototip
 				this.boja = boja;
 			}
 
-			public Igrac stvoriIgraca()
+			public Igrac stvoriIgraca(int id)
 			{
-				return new Igrac(tip, ime, organizacija, boja);
+				return new Igrac(tip, ime, organizacija, boja, id);
 			}
 		}
 
 		public static Color[] BojeIgraca = new Color[]{Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.DarkViolet, Color.Turquoise};
 
+		public int id { get; private set; }
 		public Tip tip;
 		private string ime;
 		public System.Drawing.Color boja;
@@ -65,8 +66,10 @@ namespace Prototip
 		public Dictionary<Zvijezda, Flota> floteStacionarne = new Dictionary<Zvijezda,Flota>();
 		public HashSet<Flota> flotePokretne = new HashSet<Flota>();
 
-		public Igrac(Tip tip, string ime, Organizacije organizacija, System.Drawing.Color boja)
+		public Igrac(Tip tip, string ime, Organizacije organizacija, 
+			System.Drawing.Color boja, int id)
 		{
+			this.id = id;
 			this.tip = tip;
 			this.ime = ime;
 			this.boja = boja;

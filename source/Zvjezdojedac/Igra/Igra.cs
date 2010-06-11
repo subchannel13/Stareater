@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Prototip
@@ -34,11 +33,11 @@ namespace Prototip
 
 			foreach (Igrac.ZaStvoriti igrac in igraci)
 				if (igrac.tip == Igrac.Tip.COVJEK)
-					this.igraci.Add(igrac.stvoriIgraca());
+					this.igraci.Add(igrac.stvoriIgraca(this.igraci.Count));
 
 			foreach (Igrac.ZaStvoriti igrac in igraci)
 				if (igrac.tip != Igrac.Tip.COVJEK)
-					this.igraci.Add(igrac.stvoriIgraca());
+					this.igraci.Add(igrac.stvoriIgraca(this.igraci.Count));
 
 			Alati.Vadjenje<Planet> pocetnePozicije = new Alati.Vadjenje<Planet>();
 			foreach (Planet pl in mapa.pocetnePozicije)
@@ -107,6 +106,15 @@ namespace Prototip
 		public Igrac trenutniIgrac()
 		{
 			return igraci[trenutniIgracIndex];
+		}
+
+		public string spremi()
+		{
+			PodaciPisac podaci = new PodaciPisac("IGRA");
+
+			podaci.dodaj("MAPA", mapa);
+
+			return podaci.ToString();
 		}
 	}
 }

@@ -6,7 +6,7 @@ using Alati;
 
 namespace Prototip
 {
-	public class Kolonija
+	public class Kolonija : IPohranjivoSB
 	{
 		public Dictionary<string, double> efekti;
 		public const string Populacija = "POP";
@@ -60,8 +60,6 @@ namespace Prototip
 
 		private long _populacija;
 		private long radnaMjesta;
-		//public double industrija;	// omjer industrije i istrazivanja
-		//public double vojnaIndustrija;	//omjer civilne i vojne industrije
 		private double udioCivilneIndustrije;
 		private double udioVojneIndustrije;
 
@@ -364,5 +362,43 @@ namespace Prototip
 					return "Za " + Fje.PrefiksFormater(brKrugova) + " krugova";
 			}
 		}
+
+		#region Pohrana
+		public const string PohranaTip = "KOLONIJA";
+		public const string PohIgrac = "IGRAC";
+		public const string PohPopulacija = "POP";
+		public const string PohRadnaMj = "RADNA_MJ";
+		public const string PohCivGradUdio = "UDIO_CIV";
+		public const string PohVojGradUdio = "UDIO_VOJ";
+		public const string PohCivGradOst = "CIV_OST";
+		public const string PohVojGradOst = "VOJ_OST";
+		public const string PohCivGrad = "CIV_GRAD";
+		public const string PohVojGrad = "VOJ_GRAD";
+		public const string PohZgrada = "ZGRADA";
+		public void pohrani(PodaciPisac izlaz)
+		{
+			izlaz.dodaj(PohIgrac, igrac.id);
+			izlaz.dodaj(PohPopulacija, populacija);
+			izlaz.dodaj(PohRadnaMj, radnaMjesta);
+			izlaz.dodaj(PohCivGradUdio,civilnaIndustrija);
+			izlaz.dodaj(PohVojGradUdio, vojnaIndustrija);
+			izlaz.dodaj(PohCivGradOst,ostatakCivilneGradnje);
+			izlaz.dodaj(PohVojGradOst,ostatakVojneGradnje);
+
+
+			foreach (Zgrada zgrada in zgrade)
+				izlaz.dodaj(PohZgrada, zgrada);
+
+			int i = 0;
+			izlaz.dodaj(PohCivGrad, redCivilneGradnje.Count);
+			foreach (Zgrada.ZgradaInfo zgrada in redCivilneGradnje) {
+				izlaz.dodaj(PohCivGrad + i, zgrada);
+			}
+			izlaz.dodaj(PohVojGrad, redVojneGradnje.Count);
+			foreach (Zgrada.ZgradaInfo zgrada in redVojneGradnje) {
+				izlaz.dodaj(PohVojGrad + i, zgrada);
+			}
+		}
+		#endregion
 	}
 }

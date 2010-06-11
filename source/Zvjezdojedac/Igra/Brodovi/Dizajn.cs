@@ -5,7 +5,7 @@ using Alati;
 
 namespace Prototip
 {
-	public class Dizajn
+	public class Dizajn : IIdentifiable
 	{
 		public class Koef
 		{
@@ -89,6 +89,12 @@ namespace Prototip
 			}
 		}
 
+		private static int _SlijedeciId = 0;
+		private static int SlijedeciId()
+		{
+			return ++_SlijedeciId;
+		}
+
 		public Trup trup { get; private set; }
 		public Zbir<Oruzje> primarnoOruzje { get; private set; }
 		public Zbir<Oruzje> sekundarnoOruzje { get; private set; }
@@ -100,6 +106,7 @@ namespace Prototip
 		public MZPogon MZPogon { get; private set; }
 		public Reaktor reaktor { get; private set; }
 
+		public int id { get; private set; }
 		public string ime { get; private set; }
 		public double cijena { get; private set; }
 		private Dictionary<string, double> efekti = new Dictionary<string,double>();
@@ -112,6 +119,7 @@ namespace Prototip
 			Oklop oklop, Stit stit, Dictionary<SpecijalnaOprema, int> specijalnaOprema,
 			Senzor senzor, Potisnici potisnici, MZPogon MZPogon, Reaktor reaktor, Taktika taktika)
 		{
+			id = SlijedeciId();
 			brojBrodova = 0;
 			this.ime = ime;
 			this.trup = trup;

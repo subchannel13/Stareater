@@ -6,7 +6,7 @@ using Alati;
 
 namespace Prototip
 {
-	public class Planet
+	public class Planet : IPohranjivoSB
 	{
 		public enum Tip
 		{
@@ -16,7 +16,7 @@ namespace Prototip
 			PLINOVITI
 		};
 
-		public class TipInfo
+		public class TipInfo : IIdentifiable
 		{
 			public int velicinaMin;
 			public int velicinaMax;
@@ -30,9 +30,11 @@ namespace Prototip
 			public double slikaAtmKvalKoef;
 			public double slikaAtmTempKoef;
 
+			public int id { get; private set; }
+
 			private TipInfo(int velicinaMin, int velicinaMax, 
 				double povrsinskiMineraliMin, double povrsinskiMineraliMax, double dubinskiMineraliMin, double dubinskiMineraliMax,
-				double slikaAtmGustKoef, double slikaAtmKvalKoef, double slikaAtmTempKoef)
+				double slikaAtmGustKoef, double slikaAtmKvalKoef, double slikaAtmTempKoef, int id)
 			{
 				this.velicinaMax = velicinaMax;
 				this.velicinaMin = velicinaMin;
@@ -43,6 +45,7 @@ namespace Prototip
 				this.slikaAtmGustKoef = slikaAtmGustKoef;
 				this.slikaAtmKvalKoef = slikaAtmKvalKoef;
 				this.slikaAtmTempKoef = slikaAtmTempKoef;
+				this.id = id;
 			}
 
 			public static void noviTip(Dictionary<string, string> podatci)
@@ -66,7 +69,7 @@ namespace Prototip
 
 				tipovi.Add(tip, new TipInfo(velicinaMin, velicinaMax, 
 					povrsinskiMineraliMin, povrsinskiMineraliMax, dubinskiMineraliMin, dubinskiMineraliMax,
-					slikaAtmGustKoef, slikaAtmKvalKoef, slikaAtmTempKoef));
+					slikaAtmGustKoef, slikaAtmKvalKoef, slikaAtmTempKoef, tipovi.Count));
 			}
 		}
 
@@ -167,5 +170,29 @@ namespace Prototip
 
 			return (gravitacija() - MIN_ZA_GRAVITACIJU) * MAX_FAKTOR_ZA_GRAVITACIJU;
 		}
+
+		#region Pohrana
+		public const string PohranaTip = "PLANET";
+		public const string PohTip = "TIP";
+		public const string PohIme = "IME";
+		public const string PohVelicina = "VELICINA";
+		public const string PohAtmKval = "ATM_KVAL";
+		public const string PohAtmGust = "ATM_GUST";
+		public const string PohMineralPov = "MINERAL_POV";
+		public const string PohMineralDub = "MINERAL_DUB";
+		public void pohrani(PodaciPisac izlaz)
+		{
+			izlaz.dodaj(PohTip, tipovi[tip]);
+			izlaz.dodaj(PohIme, ime);
+			izlaz.dodaj(PohVelicina, velicina);
+			izlaz.dodaj(PohAtmKval, kvalitetaAtmosfere);
+			izlaz.dodaj(PohAtmGust, gustocaAtmosfere);
+			izlaz.dodaj(PohMineralPov, mineraliPovrsinski);
+			izlaz.dodaj(PohMineralDub, mineraliDubinski);
+			if (kolonija != null)
+				izlaz.dodaj(Kolonija.PohranaTip, kolonija);
+		}
+		#endregion
+
 	}
 }

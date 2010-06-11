@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace Prototip
 {
-	public class Zgrada
+	public class Zgrada : IPohranjivoSB
 	{
 		public const string BrojZgrada = "BR_ZGRADA";
 
@@ -64,31 +64,33 @@ namespace Prototip
 		}
 		#endregion
 
-		public class ZgradaInfo
+		public class ZgradaInfo : IIdentifiable
 		{
-			public string ime;
+			public string ime { get; private set; }
+			public int id { get; private set; }
 
-			public Formula cijenaGradnje;
-			public Formula dopustenaKolicina;
-			public Formula cijenaOdrzavanja;
-			public List<Tehnologija.Preduvjet> preduvjeti;
+			public Formula cijenaGradnje { get; private set; }
+			public Formula dopustenaKolicina { get; private set; }
+			public Formula cijenaOdrzavanja { get; private set; }
+			public List<Tehnologija.Preduvjet> preduvjeti { get; private set; }
 
-			public Image slika;
+			public Image slika { get; private set; }
 
-			public string kod;
+			public string kod { get; private set; }
 
-			public string opis;
+			public string opis { get; private set; }
 
-			public List<Ucinak> ucinci;
+			public List<Ucinak> ucinci { get; private set; }
 
 			public bool orbitalna { get; private set; }
 			public bool ostaje { get; private set; }
 			public bool ponavljaSe { get; private set; }
 
-			public ZgradaInfo(string ime, Formula cijenaGradnje, Formula dopustenaKolicina,
+			public ZgradaInfo(int id, string ime, Formula cijenaGradnje, Formula dopustenaKolicina,
 				Formula cijenaOdrzavanja, Image slika, string kod, string opis,
 				List<Ucinak> ucinci, string svojstva, List<Tehnologija.Preduvjet> preduvjeti)
 			{
+				this.id = id;
 				this.ime = ime;
 				this.cijenaGradnje = cijenaGradnje;
 				this.dopustenaKolicina = dopustenaKolicina;
@@ -115,6 +117,7 @@ namespace Prototip
 			}
 		}
 
+		#region Statičko
 		public static List<ZgradaInfo> civilneZgradeInfo = new List<ZgradaInfo>();
 		public static List<ZgradaInfo> vojneZgradeInfo = new List<ZgradaInfo>();
 
@@ -124,7 +127,15 @@ namespace Prototip
 			for(int i = 0; podaci.ContainsKey("UCINAK" + i); i++)
 				ucinci.Add(Ucinak.napraviUcinak(podaci["UCINAK" + i]));
 			List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
-			ZgradaInfo zgradaInfo = new ZgradaInfo(
+			
+			List<ZgradaInfo> popis = null;
+			if (jeLiCivilna)
+				popis = civilneZgradeInfo;
+			else
+				popis = vojneZgradeInfo;
+
+			popis.Add(new ZgradaInfo(
+				SlijedeciId(),
 				podaci["IME"],
 				Formula.IzStringa(podaci["CIJENA"]),
 				Formula.IzStringa(podaci["KOLICINA"]),
@@ -134,11 +145,15 @@ namespace Prototip
 				podaci["OPIS"],
 				ucinci,
 				podaci["SVOJSTVA"],
-				preduvjeti);
-
-			if (jeLiCivilna) civilneZgradeInfo.Add(zgradaInfo);
-			else vojneZgradeInfo.Add(zgradaInfo);
+				preduvjeti));
 		}
+
+		private static int _SlijedeciId = 0;
+		public static int SlijedeciId()
+		{
+			return ++_SlijedeciId;
+		}
+		#endregion
 
 		public ZgradaInfo tip;
 
@@ -157,5 +172,16 @@ namespace Prototip
 		{
 			return tip.ime;
 		}
+
+		#region Pohrana
+		public const string PohranaTip = "ZGRADA";
+		public const string PohTip = "TIP";
+
+		public void pohrani(PodaciPisac izlaz)
+		{
+			izlaz.dodaj(PohranaTip, tip);
+		}
+
+		#endregion
 	}
 }

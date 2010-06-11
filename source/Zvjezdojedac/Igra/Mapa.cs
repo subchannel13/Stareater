@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Prototip
 {
-	public class Mapa
+	public class Mapa : IPohranjivoSB
 	{
 		public class GraditeljMape
 		{
@@ -21,7 +21,7 @@ namespace Prototip
 
 				Random rnd = new Random();
 				double x, y;
-				int velicinaMape = _velicinaMape[tipMape].velicina;
+				int velicinaMape = Mapa.velicinaMape[tipMape].velicina;
 				const int BR_PLANETA = 15;
 				HashSet<Zvijezda> pozicijeIgraca = new HashSet<Zvijezda>();
 
@@ -31,7 +31,7 @@ namespace Prototip
 
 					for (y = 0; y < velicinaMape; y++)
 						for (x = 0; x < velicinaMape; x++)
-							mapa._zvijezde.Add(new Zvijezda(
+							mapa.zvijezde.Add(new Zvijezda(
 								Zvijezda.Tip_Nedodijeljen,
 								(x + OSTUPANJE_ZVJ * 2 * rnd.NextDouble()) * UDALJENOST,
 								(y + OSTUPANJE_ZVJ * 2 * rnd.NextDouble()) * UDALJENOST
@@ -53,7 +53,7 @@ namespace Prototip
 						double minR = double.MaxValue;
 						Zvijezda zvjNajbolja = null; ;
 
-						foreach (Zvijezda zvj in mapa._zvijezde)
+						foreach (Zvijezda zvj in mapa.zvijezde)
 						{
 							double r = Math.Sqrt((x - zvj.x) * (x - zvj.x) + (y - zvj.y) * (y - zvj.y));
 							if (r < minR)
@@ -82,7 +82,7 @@ namespace Prototip
 					for (i = 0; i < Podaci.zvijezdja.Count; i++)
 						vz.dodaj(i);
 
-					for (i = 0; i < _velicinaMape[tipMape].brZvijezdja; i++)
+					for (i = 0; i < Mapa.velicinaMape[tipMape].brZvijezdja; i++)
 					{
 						zvje = vz.izvadi();
 						for (int j = 0; j < 8; j++)
@@ -90,7 +90,7 @@ namespace Prototip
 					}
 
 					vz = new Alati.Vadjenje<int>(zvjezdja);
-					foreach (Zvijezda zvj in mapa._zvijezde)
+					foreach (Zvijezda zvj in mapa.zvijezde)
 					{
 						zvje = vz.izvadi();
 						if (!zvjezdeUZvjezdju.ContainsKey(zvje))
@@ -119,7 +119,7 @@ namespace Prototip
 				#region Dodijela tipa zvijezdama i stvaranje planeta
 				{
 					Alati.Vadjenje<int> tipovi = new Alati.Vadjenje<int>();
-					int brZvj = mapa._zvijezde.Count - brIgraca;
+					int brZvj = mapa.zvijezde.Count - brIgraca;
 					double kontrolniBroj = 0;
 
 					//Određivanje broja zvijezda pojedinog tipa
@@ -137,7 +137,7 @@ namespace Prototip
 
 					//Pridjeljivanje tipova
 					Dictionary<int, List<Zvijezda>> zvijezdePoTipu = new Dictionary<int, List<Zvijezda>>();
-					foreach (Zvijezda zvj in mapa._zvijezde)
+					foreach (Zvijezda zvj in mapa.zvijezde)
 						if (zvj.tip != Zvijezda.Tip_PocetnaPozicija)
 						{
 							zvj.tip = tipovi.izvadi();
@@ -219,7 +219,7 @@ namespace Prototip
 					}
 
 					//Dodavanje planeta
-					foreach (Zvijezda zvj in mapa._zvijezde)
+					foreach (Zvijezda zvj in mapa.zvijezde)
 					{
 						//if (zvj.tip == Zvijezda.Tip_Nikakva || mapa.pozicijeIgraca.Contains(zvj))
 						if (zvj.tip == Zvijezda.Tip_Nikakva || zvj.tip == Zvijezda.Tip_PocetnaPozicija)
@@ -261,27 +261,25 @@ namespace Prototip
 			}
 		}
 
-		private List<Zvijezda> _zvijezde;
-
 		public List<Zvijezda> zvijezde
 		{
-			get { return _zvijezde;  }
+			get;
+			private set;
 		}
-
-		//public HashSet<Zvijezda> pozicijeIgraca;
-
-		private static List<VelicinaMape> _velicinaMape = new List<VelicinaMape>();
 
 		public static List<VelicinaMape> velicinaMape
 		{
-			get { return _velicinaMape; }
+			get;
+			private set;
 		}
 
 		public static void dodajVelicinuMape(Dictionary<string, string> podatci)
 		{
+			if (velicinaMape == null)
+				velicinaMape = new List<VelicinaMape>();
 			int velicina = int.Parse(podatci["VELICINA"]);
 			int brZvijezda = int.Parse(podatci["BR_ZVIJEZDJA"]);
-			_velicinaMape.Add(new VelicinaMape(velicina, podatci["NAZIV"], brZvijezda));
+			velicinaMape.Add(new VelicinaMape(velicina, podatci["NAZIV"], brZvijezda));
 		}
 
 		public class VelicinaMape
@@ -302,7 +300,7 @@ namespace Prototip
 
 		public Mapa()
 		{
-			this._zvijezde = new List<Zvijezda>();
+			this.zvijezde = new List<Zvijezda>();
 		}
 
 		public Zvijezda najblizaZvijezda(double x, double y, double r)
@@ -310,7 +308,7 @@ namespace Prototip
 			double minR = double.MaxValue;
 			Zvijezda ret = null;
 
-			foreach (Zvijezda zvj in this._zvijezde)
+			foreach (Zvijezda zvj in this.zvijezde)
 			{
 				if (zvj.tip == Zvijezda.Tip_Nikakva) continue;
 				double tr = Math.Sqrt((zvj.x - x) * (zvj.x - x) + (zvj.y - y) * (zvj.y - y));
@@ -326,5 +324,17 @@ namespace Prototip
 
 			return ret;
 		}
+
+		#region Pohrana
+		public const string PohranaTip = "MAPA";
+		public const string PohBrZijezda = "BR_ZVIJEZDA";
+		public void pohrani(PodaciPisac izlaz)
+		{
+			izlaz.dodaj(PohBrZijezda, zvijezde.Count);
+			for (int i = 0; i < zvijezde.Count; i++)
+				izlaz.dodaj(Zvijezda.PohranaTip + i, zvijezde[i]);
+		}
+		#endregion
+
 	}
 }

@@ -146,106 +146,7 @@ namespace Prototip
         }
 
 		private static Podaci citac = null;
-		/*private static void ucitajBrodove()
-		{
-			citac = new Podaci("podaci/brod_trup.txt");
-			while (citac.dalje())
-				if (citac.tip == "<TRUP>")
-					Trup.TrupInfo.UcitajTrupInfo(citac.podatci);
-			citac.zatvori();
-
-			citac = new Podaci("podaci/brod_oklop.txt");
-			while (citac.dalje())
-				if (citac.tip == "<OKLOP>")
-					Oklop.OklopInfo.UcitajOklopInfo(citac.podatci);
-			citac.zatvori();
-
-			citac = new Podaci("podaci/brod_MZpogon.txt");
-			while (citac.dalje())
-				if (citac.tip == "<MZ_POGON>")
-					MZPogon.MZPogonInfo.UcitajMZPogonInfo(citac.podatci);
-			citac.zatvori();
-
-			citac = new Podaci("podaci/brod_reaktor.txt");
-			while (citac.dalje())
-				if (citac.tip == "<REAKTOR>")
-					Reaktor.ReaktorInfo.UcitajReaktorInfo(citac.podatci);
-			citac.zatvori();
-
-			citac = new Podaci("podaci/brod_oruzje.txt");
-			while (citac.dalje())
-				if (citac.tip == "<ORUZJE>")
-					Oruzje.OruzjeInfo.UcitajOruzjeInfo(citac.podatci);
-			citac.zatvori();
-
-			citac = new Podaci("podaci/brod_potisnici.txt");
-			while (citac.dalje())
-				if (citac.tip == "<POTISNIK>")
-					Potisnici.PotisnikInfo.UcitajPotisnikInfo(citac.podatci);
-			citac.zatvori();
-
-			citac = new Podaci("podaci/brod_senzor.txt");
-			while (citac.dalje())
-				if (citac.tip == "<SENZOR>")
-					Senzor.SenzorInfo.UcitajSenzorInfo(citac.podatci);
-			citac.zatvori();
-
-			citac = new Podaci("podaci/brod_spec_oprema.txt");
-			while (citac.dalje())
-				if (citac.tip == "<SPEC_OPREMA>")
-					SpecijalnaOprema.SpecijalnaOpremaInfo.UcitajSpecijalnaOpremaInfo(citac.podatci);
-			citac.zatvori();
-
-			citac = new Podaci("podaci/brod_stit.txt");
-			while (citac.dalje())
-				if (citac.tip == "<STIT>")
-					Stit.StitInfo.UcitajStitInfo(citac.podatci);
-			citac.zatvori();
-
-			citac = new Podaci("podaci/taktike.txt");
-			while (citac.dalje())
-				if (citac.tip == "<TAKTIKA_PROJEKTIL>")
-					Taktika.DodajTaktikuProjektila(citac.podatci);
-				else if (citac.tip == "<TAKTIKA_BROD>")
-					Taktika.DodajTaktikuBroda(citac.podatci);
-			citac.zatvori();
-		}*/
-		/*private static void ucitajMape()
-		{
-			citac = new Podaci("./podaci/mapa.txt");
-
-			while(citac.dalje())
-				if (citac.tip == "<VELICINA MAPE>")
-					Mapa.dodajVelicinuMape(citac.podatci);
-			citac.zatvori();
-		}*/
-		/*private static void ucitajOrganizacije()
-		{
-			citac = new Podaci("./podaci/organizacije.txt");
-
-			while (citac.dalje())
-				if (citac.tip == "<ORGANIZACIJA>")
-					Organizacije.dodajOrganizaciju(citac.podatci);
-			citac.zatvori();
-		}*/
-		/*private static void ucitajPlanete()
-		{
-			citac = new Podaci("./podaci/planeti.txt");
-
-			while (citac.dalje())
-				if (citac.tip == "<PLANET>")
-					Planet.TipInfo.noviTip(citac.podatci);
-			citac.zatvori();
-		}*/
-		/*private static void ucitajPocetnePozicije()
-		{
-			citac = new Podaci("pocetne_pozicije.txt");
-
-			while (citac.dalje())
-				if (citac.tip == "<POCETNA_POZICIJA>")
-					PocetnaPozicija.novaKonfiguracija(citac.podatci);
-			citac.zatvori();
-		}*/
+		
 		private static void ucitajPostavke()
 		{
 			try
@@ -265,15 +166,6 @@ namespace Prototip
 				citac.zatvori();
 			}
 		}
-		/*private static void ucitajPredefDizajnove()
-		{
-			citac = new Podaci("./podaci/predef_dizajnovi.txt");
-
-			while (citac.dalje())
-				if (citac.tip == "<DIZAJN>")
-					PredefiniraniDizajn.Dodaj(citac.podatci);
-			citac.zatvori();
-		}*/
 		private static void ucitajSlike()
 		{
 			citac = new Podaci("slika.txt");
@@ -283,45 +175,6 @@ namespace Prototip
 					Slike.DodajSliku(citac.podatci);
 			citac.zatvori();
 		}
-		/*private static void ucitajTehnologije()
-		{
-			citac = new Podaci("./podaci/teh_razvoj.txt");
-
-			while (citac.dalje())
-				if (citac.tip == "<TEHNOLOGIJA>")
-					Tehnologija.TechInfo.dodajTehnologiju(citac.podatci, Tehnologija.Kategorija.RAZVOJ);
-			citac.zatvori();
-
-			citac = new Podaci("./podaci/teh_istrazivanje.txt");
-
-			while (citac.dalje())
-				if (citac.tip == "<TEHNOLOGIJA>")
-					Tehnologija.TechInfo.dodajTehnologiju(citac.podatci, Tehnologija.Kategorija.ISTRAZIVANJE);
-			citac.zatvori();
-		}*/
-		/*private static void ucitajZgrade()
-		{
-			citac = new Podaci("./podaci/zgrade_civ.txt");
-			while (citac.dalje())
-				if (citac.tip == "<ZGRADA>")
-					Zgrada.ucitajInfoZgrade(citac.podatci, true);
-			citac.zatvori();
-
-			citac = new Podaci("./podaci/zgrade_voj.txt");
-			while (citac.dalje())
-				if (citac.tip == "<ZGRADA>")
-					Zgrada.ucitajInfoZgrade(citac.podatci, false);
-			citac.zatvori();
-		}*/
-		/*private static void ucitajZvijezde()
-		{
-			citac = new Podaci("./podaci/zvijezde.txt");
-
-			while (citac.dalje())
-				if (citac.tip == "<ZVIJEZDA>")
-					Zvijezda.TipInfo.noviTip(citac.podatci);
-			citac.zatvori();
-		}*/
 		private static void ucitajZvjezdja()
 		{
 			citac = new Podaci("./podaci/ime_zvijezde.txt");

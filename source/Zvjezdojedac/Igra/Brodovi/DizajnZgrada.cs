@@ -29,7 +29,7 @@ namespace Prototip
 		public Dizajn dizajn { get; private set; }
 
 		public DizajnZgrada(Dizajn dizajn)
-			: base(dizajn.ime, new KonstantnaFormula(dizajn.cijena),
+			: base(Zgrada.SlijedeciId(), dizajn.ime, new KonstantnaFormula(dizajn.cijena),
 			new KonstantnaFormula(int.MaxValue),
 			new KonstantnaFormula(0),
 			dizajn.trup.info.slika,
