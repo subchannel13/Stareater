@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Prototip
 {
-	public class Taktika
+	public class Taktika :IIdentifiable
 	{
 		#region Statično
 		/// <summary>
@@ -28,6 +28,7 @@ namespace Prototip
 		private static Taktika NaciniTaktiku(Dictionary<string, string> podaci)
 		{
 			Taktika taktika = new Taktika(
+				Kodovi.Count,
 				podaci["NAZIV"],
 				double.Parse(podaci["KOEF_OMENANJE"]),
 				double.Parse(podaci["KOEF_PRECIZNOST"]),
@@ -40,6 +41,7 @@ namespace Prototip
 		}
 		#endregion
 
+		public int id { get; private set; }
 		public string naziv { get; private set; }
 
 		public double koefOmetanje { get; private set; }
@@ -47,10 +49,11 @@ namespace Prototip
 		public double koefPrikrivanje { get; private set; }
 		public double koefSnagaSenzora { get; private set; }
 
-		public Taktika(string naziv, double koefOmetanje,
+		public Taktika(int id, string naziv, double koefOmetanje,
 			double koefPreciznost, double koefPrikrivanje,
 			double koefSnagaSenzora)
 		{
+			this.id = id;
 			this.naziv = naziv;
 			this.koefOmetanje = koefOmetanje;
 			this.koefPreciznost = koefPreciznost;

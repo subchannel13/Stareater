@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Prototip
 {
-	public class Poruka
+	public class Poruka : IPohranjivoSB
 	{
 		public enum Tip
 		{
-			Prica,
+			Prica = 0,
 			Tehnologija
 		};
 
@@ -28,5 +28,16 @@ namespace Prototip
 			this.tekst = tekst;
 			//this.procitana = false;
 		}
+
+		#region Pohrana
+		public const string PohranaTip = "PORUKA";
+		public const string PohTip = "TIP";
+
+		public void pohrani(PodaciPisac izlaz)
+		{
+			izlaz.dodaj(PohranaTip, (int)tip);
+		}
+
+		#endregion
 	}
 }

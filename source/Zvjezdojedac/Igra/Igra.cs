@@ -112,6 +112,9 @@ namespace Prototip
 		{
 			PodaciPisac podaci = new PodaciPisac("IGRA");
 
+			foreach (Igrac igrac in igraci)
+				podaci.dodaj(Igrac.PohranaTip, (IPohranjivoSB)igrac);
+
 			podaci.dodaj("MAPA", mapa);
 
 			return podaci.ToString();

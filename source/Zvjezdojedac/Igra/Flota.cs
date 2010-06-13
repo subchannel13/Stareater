@@ -5,7 +5,7 @@ using Alati;
 
 namespace Prototip
 {
-	public class Flota
+	public class Flota : IPohranjivoSB
 	{
 		public Dictionary<Sazetak, Dictionary<Dizajn, Brod>> brodovi;
 		public double x;
@@ -29,5 +29,24 @@ namespace Prototip
 			else
 				brodovi[stil].Add(brod.dizajn, brod);
 		}
+
+		#region Pohrana
+		public const string PohranaTip = "FLOTA";
+		public const string PohX = "X";
+		public const string PohY = "Y";
+		public void pohrani(PodaciPisac izlaz)
+		{
+			izlaz.dodaj(PohX, x);
+			izlaz.dodaj(PohY, y);
+
+			HashSet<Brod> brodovi = new HashSet<Brod>();
+			foreach (Dictionary<Dizajn, Brod> dizajnovi in this.brodovi.Values)
+				brodovi.UnionWith(dizajnovi.Values);
+
+			izlaz.dodaj(Brod.PohranaTip, brodovi.Count);
+			izlaz.dodajKolekciju(Brod.PohranaTip, brodovi);
+			
+		}
+		#endregion
 	}
 }

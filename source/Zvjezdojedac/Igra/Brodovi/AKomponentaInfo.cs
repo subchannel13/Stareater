@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Prototip
 {
-	public class AKomponentaInfo
+	public class AKomponentaInfo : IIdentifiable
 	{
 		#region Statično
 		private static Dictionary<string, double> varNivo = new Dictionary<string, double>();
@@ -92,6 +92,11 @@ namespace Prototip
 		public uint brojIndeksa()
 		{
 			return slijedeciIndeks[GetType()];
+		}
+
+		public int id 
+		{ 
+			get { return (int)indeks; } 
 		}
 	}
 }

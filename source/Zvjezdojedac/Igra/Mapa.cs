@@ -32,6 +32,7 @@ namespace Prototip
 					for (y = 0; y < velicinaMape; y++)
 						for (x = 0; x < velicinaMape; x++)
 							mapa.zvijezde.Add(new Zvijezda(
+								mapa.zvijezde.Count,
 								Zvijezda.Tip_Nedodijeljen,
 								(x + OSTUPANJE_ZVJ * 2 * rnd.NextDouble()) * UDALJENOST,
 								(y + OSTUPANJE_ZVJ * 2 * rnd.NextDouble()) * UDALJENOST
@@ -332,7 +333,7 @@ namespace Prototip
 		{
 			izlaz.dodaj(PohBrZijezda, zvijezde.Count);
 			for (int i = 0; i < zvijezde.Count; i++)
-				izlaz.dodaj(Zvijezda.PohranaTip + i, zvijezde[i]);
+				izlaz.dodaj(Zvijezda.PohranaTip + i, (IPohranjivoSB)zvijezde[i]);
 		}
 		#endregion
 

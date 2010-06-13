@@ -66,5 +66,10 @@ namespace Prototip
 		{
 			get { return info.slika; }
 		}
+
+		public string pohrani()
+		{
+			return info.id + " " + nivo;
+		}
 	}
 }

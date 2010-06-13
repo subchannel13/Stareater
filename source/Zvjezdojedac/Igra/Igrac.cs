@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace Prototip
 {
-	public class Igrac : IIdentifiable
+	public class Igrac : IIdentifiable, IPohranjivoSB
 	{
 		public enum Tip
 		{
@@ -251,5 +251,67 @@ namespace Prototip
 						dodajDizajn(pd.naciniDizajn(efekti));
 					}
 		}
+
+		#region Pohrana
+		public const string PohranaTip = "IGRAC";
+		public const string PohId = "ID";
+		public const string PohTip = "TIP", PohTipCovjek = "COVJEK", PohTipRacunalo = "RACUNALO";
+		public const string PohIme = "IME";
+		public const string PohBoja = "BOJA";
+		public const string PohOrganizacija = "ORGANIZACIJA";
+		public const string PohPogledZvj = "POGLED_ZVJ";
+		public const string PohPogledPlanet = "POGLED_PLANET";
+		public const string PohPoruka = "PORUKA";
+		public const string PohDizajn = "DIZAJN";
+		public const string PohTehnologija = "TEHNO";
+		public const string PohTehURazvoju = "TEH_U_RAZ";
+		public const string PohTehUIstraz = "TEH_U_IST";
+		public const string PohTehRazKonc = "TEH_RAZ_KONC";
+		public const string PohPosjeceneZvj = "ZVJ_POSJET";
+		public const string PohFloteStac = "FLOTE_STAC";
+		public const string PohFlotePokret = "FLOTE_POK";
+		public void pohrani(PodaciPisac izlaz)
+		{
+			
+			if (tip == Tip.COVJEK)
+				izlaz.dodaj(PohTip, PohTipCovjek);
+			else
+				izlaz.dodaj(PohTip, PohTipRacunalo);
+
+			izlaz.dodaj(PohId, id);
+			izlaz.dodaj(PohIme, ime);
+			izlaz.dodaj(PohBoja, boja.R + " " + boja.G + " " + boja.B);
+			izlaz.dodaj(PohOrganizacija, organizacija);
+
+			izlaz.dodaj(PohPogledZvj, odabranaZvijezda.x + " " + odabranaZvijezda.y);
+			izlaz.dodaj(PohPogledPlanet, odabranPlanet.pozicija);
+
+			izlaz.dodaj(PohPoruka, poruke.Count);
+			izlaz.dodajKolekciju(PohPoruka, poruke);
+
+			izlaz.dodaj(PohDizajn, dizajnoviBrodova.Count);
+			for (int i = 0; i < dizajnoviBrodova.Count; i++)
+				izlaz.dodaj(PohDizajn+i, (IPohranjivoSB)dizajnoviBrodova[i].dizajn);
+
+			izlaz.dodajKolekciju(PohTehnologija, tehnologije.Values);
+			izlaz.dodaj(PohTehRazKonc, koncentracijaPoenaRazvoja);
+			izlaz.dodaj(PohTehURazvoju, tehnologijeURazvoju.Count);
+			izlaz.dodaj(PohTehUIstraz, tehnologijeUIstrazivanju.Count);
+			izlaz.dodajKolekciju(PohTehURazvoju, tehnologijeURazvoju);
+			izlaz.dodajKolekciju(PohTehUIstraz, tehnologijeUIstrazivanju);
+
+			izlaz.dodajIdeve(PohPosjeceneZvj, posjeceneZvjezde);
+
+			List<Zvijezda> zvjezde = new List<Zvijezda>(floteStacionarne.Keys);
+			List<Flota> flote = new List<Flota>();
+			foreach (Zvijezda zvj in zvjezde)
+				flote.Add(floteStacionarne[zvj]);
+			izlaz.dodajIdeve(PohFloteStac, zvjezde);
+			izlaz.dodajKolekciju(PohFloteStac, flote);
+
+			izlaz.dodaj(PohFlotePokret, flotePokretne.Count);
+			izlaz.dodajKolekciju(PohFlotePokret, flotePokretne);
+		}
+		#endregion
 	}
 }

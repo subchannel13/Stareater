@@ -5,7 +5,7 @@ using Alati;
 
 namespace Prototip
 {
-	public class Zvijezda :IPohranjivoSB
+	public class Zvijezda : IPohranjivoSB, IIdentifiable
 	{
 		public const int Tip_Nikakva = -1;
 		public const int Tip_PocetnaPozicija = -2;
@@ -95,19 +95,16 @@ namespace Prototip
 		private static Random random = new Random();
 
 		private int _tip;
-
 		public double x;
-
 		public double y;
-
 		public List<Planet> planeti;
-
 		public double velicina;
-
 		public string ime;
+		public int id { get; private set; }
 
-		public Zvijezda(int tip, double x, double y)
+		public Zvijezda(int id, int tip, double x, double y)
 		{
+			this.id = id;
 			this._tip = tip;
 			this.x = x;
 			this.y = y;

@@ -394,6 +394,7 @@ namespace Prototip
 			foreach (Zgrada.ZgradaInfo zgrada in redCivilneGradnje) {
 				izlaz.dodaj(PohCivGrad + i, zgrada);
 			}
+			i = 0;
 			izlaz.dodaj(PohVojGrad, redVojneGradnje.Count);
 			foreach (Zgrada.ZgradaInfo zgrada in redVojneGradnje) {
 				izlaz.dodaj(PohVojGrad + i, zgrada);

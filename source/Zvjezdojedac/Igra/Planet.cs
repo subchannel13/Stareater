@@ -86,7 +86,7 @@ namespace Prototip
 		public double mineraliDubinski;
 
 		public Zvijezda zvjezda;
-		private int pozicija;
+		public int pozicija { get; private set; }
 		public Kolonija kolonija;
 
 		public Image slika;

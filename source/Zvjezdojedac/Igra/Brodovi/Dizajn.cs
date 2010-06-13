@@ -5,7 +5,7 @@ using Alati;
 
 namespace Prototip
 {
-	public class Dizajn : IIdentifiable
+	public class Dizajn : IIdentifiable, IPohranjivoSB
 	{
 		public class Koef
 		{
@@ -418,6 +418,47 @@ namespace Prototip
 		public double snagaSenzora
 		{
 			get { return efekti[Iznos.SnageSenzora]; }
+		}
+		#endregion
+
+		#region Pohrana
+		public const string PohranaTip = "DIZAJN";
+		public const string PohId = "ID";
+		public const string PohIme = "IME";
+		public const string PohCijena = "CIJENA";
+		public const string PohTaktika = "TAKTIKA";
+		public const string PohTrup = "TRUP";
+		public const string PohPrimOruzje = "PRIM_OR";
+		public const string PohSekOruzje = "SEK_OR";
+		public const string PohOklop = "OKLOP";
+		public const string PohStit = "STIT";
+		public const string PohSpecOp = "SPEC_OP";
+		public const string PohSenzor = "SENZOR";
+		public const string PohPotisnici = "POTISNICI";
+		public const string PohMZPogon = "MZ_POGON";
+		public const string PohReaktor = "REAKTOR";
+		public void pohrani(PodaciPisac izlaz)
+		{
+			izlaz.dodaj(PohId, id);
+			izlaz.dodaj(PohIme, ime);
+			izlaz.dodaj(PohCijena, cijena);
+			izlaz.dodaj(PohTaktika, taktika);
+		 
+			izlaz.dodaj(PohTrup, trup.pohrani());
+			if (primarnoOruzje != null)	izlaz.dodaj(PohPrimOruzje, primarnoOruzje.komponenta.pohrani() + " " + primarnoOruzje.kolicina);
+			if (sekundarnoOruzje != null) izlaz.dodaj(PohSekOruzje, sekundarnoOruzje.komponenta.pohrani() + " " + sekundarnoOruzje.komponenta);
+			if (stit != null) izlaz.dodaj(PohStit, stit.pohrani());
+			if (MZPogon != null) izlaz.dodaj(PohMZPogon, MZPogon.pohrani());
+			izlaz.dodaj(PohOklop, oklop.pohrani());
+			izlaz.dodaj(PohSenzor, senzor.pohrani());
+			izlaz.dodaj(PohPotisnici, potisnici.pohrani());
+			izlaz.dodaj(PohReaktor, reaktor.pohrani());
+			int i = 0;
+			izlaz.dodaj(PohSpecOp, specijalnaOprema.Count);
+			foreach (SpecijalnaOprema so in specijalnaOprema.Keys) {
+				izlaz.dodaj(PohSpecOp + i, so.pohrani() + " " + specijalnaOprema[so]);
+				i++;
+			}
 		}
 		#endregion
 	}

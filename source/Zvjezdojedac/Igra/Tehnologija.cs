@@ -7,7 +7,7 @@ using Alati;
 
 namespace Prototip
 {
-	public class Tehnologija
+	public class Tehnologija : IPohranjivoSB
 	{
 		public class Preduvjet
 		{
@@ -71,11 +71,11 @@ namespace Prototip
 
 		public enum Kategorija
 		{
-			ISTRAZIVANJE,
+			ISTRAZIVANJE = 0,
 			RAZVOJ
 		}
 
-		public class TechInfo
+		public class TechInfo : IIdentifiable
 		{
 			public static List<TechInfo> tehnologijeRazvoj = new List<TechInfo>();
 			public static List<TechInfo> tehnologijeIstrazivanje = new List<TechInfo>();
@@ -88,21 +88,26 @@ namespace Prototip
 				foreach (Preduvjet pred in preduvjeti)
 					pred.nivo.preimenujVarijablu("LVL", podaci["KOD"] + "_LVL");
 
-				TechInfo techInfo = new TechInfo(
-						podaci["IME"],
-						podaci["OPIS"],
-						podaci["KOD"],
-						Formula.IzStringa(podaci["CIJENA"]),
-						maxNivo,
-						preduvjeti,
-						Image.FromFile(podaci["SLIKA"]));
-
+				List<TechInfo> popis;
 				if (kategorija == Kategorija.RAZVOJ)
-					tehnologijeRazvoj.Add(techInfo);
+					popis = tehnologijeRazvoj;
 				else
-					tehnologijeIstrazivanje.Add(techInfo);
+					popis = tehnologijeIstrazivanje;
+
+				popis.Add(new TechInfo(
+					popis.Count,
+					podaci["IME"],
+					podaci["OPIS"],
+					podaci["KOD"],
+					Formula.IzStringa(podaci["CIJENA"]),
+					maxNivo,
+					preduvjeti,
+					Image.FromFile(podaci["SLIKA"])
+					));
+
 			}
 
+			public int id { get; private set; }
 			public string ime;
 			public string kod;
 			public string opis;
@@ -111,8 +116,9 @@ namespace Prototip
 			public long maxNivo;
 			public Image slika;
 
-			private TechInfo(string ime, string opis, string kod, Formula cijena, long maxNivo, List<Preduvjet> preduvjeti, Image slika)
+			private TechInfo(int id, string ime, string opis, string kod, Formula cijena, long maxNivo, List<Preduvjet> preduvjeti, Image slika)
 			{
+				this.id = id;
 				this.ime = ime;
 				this.opis = opis;
 				this.kod = kod;
@@ -195,5 +201,29 @@ namespace Prototip
 			
 			return ulog;
 		}
+
+		#region Pohrana
+		public const string PohranaTip = "MAPA";
+		public const string PohKategorija = "KATEG";
+		public const string PohTip = "TIP";
+		public const string PohNivo = "NIVO";
+		public const string PohUlozeno = "ULOZENO";
+		public void pohrani(PodaciPisac izlaz)
+		{
+			bool istrazivanje = false;
+			if (tip.id < TechInfo.tehnologijeIstrazivanje.Count)
+				if (TechInfo.tehnologijeIstrazivanje[tip.id] == tip)
+					istrazivanje = true;
+
+			if (istrazivanje)
+				izlaz.dodaj(PohKategorija, (int)Kategorija.ISTRAZIVANJE);
+			else
+				izlaz.dodaj(PohKategorija, (int)Kategorija.RAZVOJ);
+
+			izlaz.dodaj(PohTip, tip);
+			izlaz.dodaj(PohNivo, nivo);
+			izlaz.dodaj(PohUlozeno, ulozenoPoena);
+		}
+		#endregion
 	}
 }
