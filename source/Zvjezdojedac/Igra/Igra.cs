@@ -9,24 +9,16 @@ namespace Prototip
 		public const int maxIgraca = 4;
 
 		private List<Igrac> igraci;
-
-		private Mapa _mapa;
-
-		public Mapa mapa
-		{
-			get { return _mapa;  }
-		}
-
 		private int trenutniIgracIndex;
 
-		public Dictionary<string, Formula> osnovniEfekti;
-
+		public Mapa mapa { get; private set; }
 		public int brKruga;
+		public Dictionary<string, Formula> osnovniEfekti;
 
 		public Igra(List<Igrac.ZaStvoriti> igraci, Mapa.GraditeljMape mapa)
 		{
 			this.igraci = new List<Igrac>();
-			this._mapa = mapa.mapa;
+			this.mapa = mapa.mapa;
 			trenutniIgracIndex = 0;
 			brKruga = 0;
 			osnovniEfekti = Podaci.ucitajBazuEfekata();
@@ -108,14 +100,18 @@ namespace Prototip
 			return igraci[trenutniIgracIndex];
 		}
 
+		private const string PohKrug = "KRUG";
+		private const string PohTrenutniIgrac = "TREN_IGRAC";
 		public string spremi()
 		{
 			PodaciPisac podaci = new PodaciPisac("IGRA");
 
-			foreach (Igrac igrac in igraci)
-				podaci.dodaj(Igrac.PohranaTip, (IPohranjivoSB)igrac);
+			podaci.dodaj(PohKrug, brKruga);
+			podaci.dodaj(PohTrenutniIgrac, trenutniIgracIndex);
 
-			podaci.dodaj("MAPA", mapa);
+			podaci.dodaj(Mapa.PohranaTip, mapa);
+			podaci.dodajKolekciju(Igrac.PohranaTip, igraci);
+			podaci.dodajKolekciju(Kolonija.PohranaTip, mapa.kolonije());
 
 			return podaci.ToString();
 		}

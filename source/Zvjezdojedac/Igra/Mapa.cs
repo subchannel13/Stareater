@@ -326,6 +326,17 @@ namespace Prototip
 			return ret;
 		}
 
+		public HashSet<Kolonija> kolonije()
+		{
+			HashSet<Kolonija> rez = new HashSet<Kolonija>();
+			
+			foreach (Zvijezda zvj in zvijezde)
+				foreach (Planet pl in zvj.planeti)
+					if (pl.kolonija != null)
+						rez.Add(pl.kolonija);
+			return rez;
+		}
+
 		#region Pohrana
 		public const string PohranaTip = "MAPA";
 		public const string PohBrZijezda = "BR_ZVIJEZDA";

@@ -366,6 +366,8 @@ namespace Prototip
 		#region Pohrana
 		public const string PohranaTip = "KOLONIJA";
 		public const string PohIgrac = "IGRAC";
+		public const string PohZvijezda = "ZVJ";
+		public const string PohPlanet = "PLANET";
 		public const string PohPopulacija = "POP";
 		public const string PohRadnaMj = "RADNA_MJ";
 		public const string PohCivGradUdio = "UDIO_CIV";
@@ -378,6 +380,8 @@ namespace Prototip
 		public void pohrani(PodaciPisac izlaz)
 		{
 			izlaz.dodaj(PohIgrac, igrac.id);
+			izlaz.dodaj(PohZvijezda, planet.zvjezda.id);
+			izlaz.dodaj(PohPlanet, planet.pozicija);
 			izlaz.dodaj(PohPopulacija, populacija);
 			izlaz.dodaj(PohRadnaMj, radnaMjesta);
 			izlaz.dodaj(PohCivGradUdio,civilnaIndustrija);

@@ -189,8 +189,9 @@ namespace Prototip
 			izlaz.dodaj(PohAtmGust, gustocaAtmosfere);
 			izlaz.dodaj(PohMineralPov, mineraliPovrsinski);
 			izlaz.dodaj(PohMineralDub, mineraliDubinski);
-			if (kolonija != null)
-				izlaz.dodaj(Kolonija.PohranaTip, kolonija);
+			// Kolonije se pamte odvojeno
+			//if (kolonija != null)
+			//	izlaz.dodaj(Kolonija.PohranaTip, kolonija);
 		}
 		#endregion
 
