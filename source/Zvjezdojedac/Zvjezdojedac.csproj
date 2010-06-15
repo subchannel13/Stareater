@@ -138,6 +138,7 @@
     <Compile Include="Igra\Planet.cs" />
     <Compile Include="Podaci\PocetnaPozicija.cs" />
     <Compile Include="Podaci\Podaci.cs" />
+    <Compile Include="Podaci\PodaciCitac.cs" />
     <Compile Include="Podaci\PodaciPisac.cs" />
     <Compile Include="Podaci\Postavke.cs" />
     <Compile Include="Podaci\Slike.cs" />

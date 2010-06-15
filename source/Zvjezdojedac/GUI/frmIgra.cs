@@ -354,6 +354,7 @@ namespace Prototip
 				zipStream.Write(toZip, 0, toZip.Length);
 
 				pisac.Write(zipMemory.ToArray(), 0, (int)zipMemory.Length);
+				//pisac.Write(toZip, 0, toZip.Length);
 				
 				pisac.Close();
 			}

@@ -111,7 +111,10 @@ namespace Prototip
 
 			podaci.dodaj(Mapa.PohranaTip, mapa);
 			podaci.dodajKolekciju(Igrac.PohranaTip, igraci);
-			podaci.dodajKolekciju(Kolonija.PohranaTip, mapa.kolonije());
+			
+			HashSet<Kolonija> kolonije =  mapa.kolonije();
+			podaci.dodaj(Kolonija.PohranaTip, kolonije.Count);
+			podaci.dodajKolekciju(Kolonija.PohranaTip, kolonije);
 
 			return podaci.ToString();
 		}

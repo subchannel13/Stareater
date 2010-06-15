@@ -63,11 +63,11 @@
 			this.pnlDesnoGore = new System.Windows.Forms.Panel();
 			this.lblBrojKruga = new System.Windows.Forms.Label();
 			this.pnlKomande = new System.Windows.Forms.Panel();
+			this.btnSpremi = new System.Windows.Forms.Button();
 			this.pnlKomandeDesno = new System.Windows.Forms.Panel();
 			this.btnFlote = new System.Windows.Forms.Button();
 			this.btnPoruke = new System.Windows.Forms.Button();
 			this.btnTech = new System.Windows.Forms.Button();
-			this.btnSpremi = new System.Windows.Forms.Button();
 			this.tabCtrlDesno.SuspendLayout();
 			this.tabPageZvijezda.SuspendLayout();
 			this.pnlOpisZvjezde.SuspendLayout();
@@ -97,7 +97,7 @@
 			this.tabCtrlDesno.Multiline = true;
 			this.tabCtrlDesno.Name = "tabCtrlDesno";
 			this.tabCtrlDesno.SelectedIndex = 0;
-			this.tabCtrlDesno.Size = new System.Drawing.Size(200, 415);
+			this.tabCtrlDesno.Size = new System.Drawing.Size(200, 492);
 			this.tabCtrlDesno.TabIndex = 0;
 			// 
 			// tabPageZvijezda
@@ -108,7 +108,7 @@
 			this.tabPageZvijezda.Location = new System.Drawing.Point(4, 4);
 			this.tabPageZvijezda.Name = "tabPageZvijezda";
 			this.tabPageZvijezda.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageZvijezda.Size = new System.Drawing.Size(154, 407);
+			this.tabPageZvijezda.Size = new System.Drawing.Size(154, 484);
 			this.tabPageZvijezda.TabIndex = 0;
 			// 
 			// listViewPlaneti
@@ -119,7 +119,7 @@
 			this.listViewPlaneti.Location = new System.Drawing.Point(3, 40);
 			this.listViewPlaneti.MultiSelect = false;
 			this.listViewPlaneti.Name = "listViewPlaneti";
-			this.listViewPlaneti.Size = new System.Drawing.Size(148, 364);
+			this.listViewPlaneti.Size = new System.Drawing.Size(148, 441);
 			this.listViewPlaneti.TabIndex = 0;
 			this.listViewPlaneti.UseCompatibleStateImageBehavior = false;
 			this.listViewPlaneti.View = System.Windows.Forms.View.Tile;
@@ -338,7 +338,7 @@
 			this.pnlMapa.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlMapa.Location = new System.Drawing.Point(0, 0);
 			this.pnlMapa.Name = "pnlMapa";
-			this.pnlMapa.Size = new System.Drawing.Size(432, 363);
+			this.pnlMapa.Size = new System.Drawing.Size(484, 440);
 			this.pnlMapa.TabIndex = 1;
 			// 
 			// picMapa
@@ -383,9 +383,9 @@
 			this.pnlDesno.Controls.Add(this.tabCtrlDesno);
 			this.pnlDesno.Controls.Add(this.pnlDesnoGore);
 			this.pnlDesno.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlDesno.Location = new System.Drawing.Point(432, 0);
+			this.pnlDesno.Location = new System.Drawing.Point(484, 0);
 			this.pnlDesno.Name = "pnlDesno";
-			this.pnlDesno.Size = new System.Drawing.Size(200, 446);
+			this.pnlDesno.Size = new System.Drawing.Size(200, 523);
 			this.pnlDesno.TabIndex = 1;
 			// 
 			// pnlDesnoGore
@@ -408,30 +408,41 @@
 			// 
 			// pnlKomande
 			// 
-			this.pnlKomande.Controls.Add(this.btnSpremi);
+			this.pnlKomande.Controls.Add(this.btnPoruke);
+			this.pnlKomande.Controls.Add(this.btnFlote);
 			this.pnlKomande.Controls.Add(this.pnlKomandeDesno);
 			this.pnlKomande.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlKomande.Location = new System.Drawing.Point(0, 363);
+			this.pnlKomande.Location = new System.Drawing.Point(0, 440);
 			this.pnlKomande.Name = "pnlKomande";
-			this.pnlKomande.Size = new System.Drawing.Size(432, 83);
+			this.pnlKomande.Size = new System.Drawing.Size(484, 83);
 			this.pnlKomande.TabIndex = 1;
+			// 
+			// btnSpremi
+			// 
+			this.btnSpremi.Location = new System.Drawing.Point(166, 48);
+			this.btnSpremi.Name = "btnSpremi";
+			this.btnSpremi.Size = new System.Drawing.Size(75, 23);
+			this.btnSpremi.TabIndex = 1;
+			this.btnSpremi.Text = "Spremi";
+			this.btnSpremi.UseVisualStyleBackColor = true;
+			this.btnSpremi.Click += new System.EventHandler(this.btnSpremi_Click);
 			// 
 			// pnlKomandeDesno
 			// 
-			this.pnlKomandeDesno.Controls.Add(this.btnFlote);
-			this.pnlKomandeDesno.Controls.Add(this.btnPoruke);
+			this.pnlKomandeDesno.Controls.Add(this.btnSpremi);
 			this.pnlKomandeDesno.Controls.Add(this.btnTech);
 			this.pnlKomandeDesno.Controls.Add(this.trackBarZoom);
 			this.pnlKomandeDesno.Controls.Add(this.btnEndTurn);
 			this.pnlKomandeDesno.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlKomandeDesno.Location = new System.Drawing.Point(119, 0);
+			this.pnlKomandeDesno.Location = new System.Drawing.Point(171, 0);
 			this.pnlKomandeDesno.Name = "pnlKomandeDesno";
 			this.pnlKomandeDesno.Size = new System.Drawing.Size(313, 83);
 			this.pnlKomandeDesno.TabIndex = 0;
 			// 
 			// btnFlote
 			// 
-			this.btnFlote.Location = new System.Drawing.Point(135, 19);
+			this.btnFlote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnFlote.Location = new System.Drawing.Point(90, 35);
 			this.btnFlote.Name = "btnFlote";
 			this.btnFlote.Size = new System.Drawing.Size(75, 23);
 			this.btnFlote.TabIndex = 4;
@@ -441,7 +452,8 @@
 			// 
 			// btnPoruke
 			// 
-			this.btnPoruke.Location = new System.Drawing.Point(54, 19);
+			this.btnPoruke.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnPoruke.Location = new System.Drawing.Point(90, 6);
 			this.btnPoruke.Name = "btnPoruke";
 			this.btnPoruke.Size = new System.Drawing.Size(75, 23);
 			this.btnPoruke.TabIndex = 3;
@@ -451,7 +463,7 @@
 			// 
 			// btnTech
 			// 
-			this.btnTech.Location = new System.Drawing.Point(54, 48);
+			this.btnTech.Location = new System.Drawing.Point(54, 6);
 			this.btnTech.Name = "btnTech";
 			this.btnTech.Size = new System.Drawing.Size(75, 23);
 			this.btnTech.TabIndex = 2;
@@ -459,22 +471,12 @@
 			this.btnTech.UseVisualStyleBackColor = true;
 			this.btnTech.Click += new System.EventHandler(this.btnTech_Click);
 			// 
-			// btnSpremi
-			// 
-			this.btnSpremi.Location = new System.Drawing.Point(12, 6);
-			this.btnSpremi.Name = "btnSpremi";
-			this.btnSpremi.Size = new System.Drawing.Size(75, 23);
-			this.btnSpremi.TabIndex = 1;
-			this.btnSpremi.Text = "Spremi";
-			this.btnSpremi.UseVisualStyleBackColor = true;
-			this.btnSpremi.Click += new System.EventHandler(this.btnSpremi_Click);
-			// 
 			// frmIgra
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(632, 446);
+			this.ClientSize = new System.Drawing.Size(684, 523);
 			this.Controls.Add(this.pnlMapa);
 			this.Controls.Add(this.pnlKomande);
 			this.Controls.Add(this.pnlDesno);

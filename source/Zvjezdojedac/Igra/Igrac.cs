@@ -297,8 +297,8 @@ namespace Prototip
 			izlaz.dodaj(PohTehRazKonc, koncentracijaPoenaRazvoja);
 			izlaz.dodaj(PohTehURazvoju, tehnologijeURazvoju.Count);
 			izlaz.dodaj(PohTehUIstraz, tehnologijeUIstrazivanju.Count);
-			izlaz.dodajKolekciju(PohTehURazvoju, tehnologijeURazvoju);
-			izlaz.dodajKolekciju(PohTehUIstraz, tehnologijeUIstrazivanju);
+			izlaz.dodajIdeve(PohTehURazvoju, tehnologijeURazvoju);
+			izlaz.dodajIdeve(PohTehUIstraz, tehnologijeUIstrazivanju);
 
 			izlaz.dodajIdeve(PohPosjeceneZvj, posjeceneZvjezde);
 

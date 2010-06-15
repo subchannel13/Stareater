@@ -446,7 +446,7 @@ namespace Prototip
 		 
 			izlaz.dodaj(PohTrup, trup.pohrani());
 			if (primarnoOruzje != null)	izlaz.dodaj(PohPrimOruzje, primarnoOruzje.komponenta.pohrani() + " " + primarnoOruzje.kolicina);
-			if (sekundarnoOruzje != null) izlaz.dodaj(PohSekOruzje, sekundarnoOruzje.komponenta.pohrani() + " " + sekundarnoOruzje.komponenta);
+			if (sekundarnoOruzje != null) izlaz.dodaj(PohSekOruzje, sekundarnoOruzje.komponenta.pohrani() + " " + sekundarnoOruzje.kolicina);
 			if (stit != null) izlaz.dodaj(PohStit, stit.pohrani());
 			if (MZPogon != null) izlaz.dodaj(PohMZPogon, MZPogon.pohrani());
 			izlaz.dodaj(PohOklop, oklop.pohrani());

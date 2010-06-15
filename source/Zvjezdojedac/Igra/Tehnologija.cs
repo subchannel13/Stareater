@@ -7,7 +7,7 @@ using Alati;
 
 namespace Prototip
 {
-	public class Tehnologija : IPohranjivoSB
+	public class Tehnologija : IPohranjivoSB, IIdentifiable
 	{
 		public class Preduvjet
 		{
@@ -202,10 +202,15 @@ namespace Prototip
 			return ulog;
 		}
 
+		public int id
+		{
+			get { return tip.id; }
+		}
+
 		#region Pohrana
 		public const string PohranaTip = "MAPA";
 		public const string PohKategorija = "KATEG";
-		public const string PohTip = "TIP";
+		public const string PohId = "ID";
 		public const string PohNivo = "NIVO";
 		public const string PohUlozeno = "ULOZENO";
 		public void pohrani(PodaciPisac izlaz)
@@ -220,7 +225,7 @@ namespace Prototip
 			else
 				izlaz.dodaj(PohKategorija, (int)Kategorija.RAZVOJ);
 
-			izlaz.dodaj(PohTip, tip);
+			izlaz.dodaj(PohId, tip);
 			izlaz.dodaj(PohNivo, nivo);
 			izlaz.dodaj(PohUlozeno, ulozenoPoena);
 		}

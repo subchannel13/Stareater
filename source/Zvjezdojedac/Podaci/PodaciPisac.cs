@@ -93,8 +93,9 @@ namespace Prototip
 
 			for(int i = 0; i < linije.Count; i++) {
 				sb.Append(linije[i]);
-				sb.Append(Environment.NewLine);
+				sb.Append('\n');
 			}
+			sb.Append("----");
 
 			return sb.ToString();
 		}
