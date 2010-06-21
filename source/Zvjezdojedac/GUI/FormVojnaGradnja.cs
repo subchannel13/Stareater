@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace Prototip.GUI
 {
-	public partial class frmVojnaGradnja : Form
+	public partial class FormVojnaGradnja : Form
 	{
-		public frmVojnaGradnja()
+		public FormVojnaGradnja()
 		{
 			InitializeComponent();
 		}

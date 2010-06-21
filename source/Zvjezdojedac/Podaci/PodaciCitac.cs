@@ -24,22 +24,66 @@ namespace Prototip
 			return false;
 		}
 		
-		public PodaciCitac podObjekt(string kljuc)
+		public PodaciCitac this[string kljuc]
 		{
-			return podObjekti[kljuc];
-		}
-		
-		public string this[string kljuc]
-		{
-			get { return podaci[kljuc]; }
+			get { return podObjekti[kljuc]; }
 		}
 
+		public int podatakInt(string kljuc)
+		{
+			return int.Parse(podaci[kljuc]);
+		}
+
+		public long podatakLong(string kljuc)
+		{
+			return long.Parse(podaci[kljuc]);
+		}
+
+		public double podatakDouble(string kljuc)
+		{
+			return double.Parse(podaci[kljuc], Podaci.DecimalnaTocka);
+		}
+
+		public string podatak(string kljuc)
+		{
+			return podaci[kljuc];
+		}
+
+		public int[] podatakIntPolje(string kljuc)
+		{
+			return podatakIntPolje(kljuc, ' ');
+		}
+
+		public int[] podatakIntPolje(string kljuc, char medja)
+		{
+			string[] vrijednosti = podaci[kljuc].Split(new char[] { medja }, StringSplitOptions.RemoveEmptyEntries);
+			int[] rez = new int[vrijednosti.Length];
+			
+			for (int i = 0; i < vrijednosti.Length; i++)
+				rez[i] = int.Parse(vrijednosti[i]);
+			
+			return rez;
+		}
+
+		public Formula podatakFormula(string kljuc)
+		{
+			return Formula.IzStringa(podaci[kljuc]);
+		}
+
+		#region Staticno
 		public static PodaciCitac Procitaj(string ulaz)
 		{
-			return Procitaj(new Queue<string>(
+			Queue<string> red =	new Queue<string>(
 				ulaz.Split(new char[] { '\n' }, 
-				StringSplitOptions.RemoveEmptyEntries)
-				));
+				StringSplitOptions.RemoveEmptyEntries));
+
+			string linija = null;
+			do
+			{
+				linija = red.Dequeue();
+			} while (!linija.StartsWith("<") || !linija.EndsWith(">"));
+
+			return Procitaj(red);
 		}
 
 		public static PodaciCitac Procitaj(Queue<string> ulaz)
@@ -65,5 +109,6 @@ namespace Prototip
 
 			return new PodaciCitac(podaci, podObjekti);
 		}
+		#endregion
 	}
 }

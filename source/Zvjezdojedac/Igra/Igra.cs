@@ -45,6 +45,25 @@ namespace Prototip
 			}
 		}
 
+		private Igra(List<Igrac> igraci, int trenutniIgracIndex,
+			Mapa mapa, int brKruga)
+		{
+			this.igraci = igraci;
+			this.trenutniIgracIndex = trenutniIgracIndex;
+			this.mapa = mapa;
+			this.brKruga = brKruga;
+
+			osnovniEfekti = Podaci.ucitajBazuEfekata();
+			for (int i = 0; i < igraci.Count; i++) {
+				this.igraci[i].izracunajEfekte(this);
+				this.igraci[i].staviNoveTehnologije(this);
+				this.igraci[i].izracunajPoeneIstrazivanja(this);
+				this.igraci[i].staviPredefiniraneDizajnove();
+				foreach (Kolonija kolonija in igraci[i].kolonije)
+					kolonija.resetirajEfekte();
+			}
+		}
+
 		private void postaviIgraca(Igrac igrac, Planet pocetniPlanet)
 		{
 			igrac.odabranaZvijezda = pocetniPlanet.zvjezda;
@@ -100,14 +119,17 @@ namespace Prototip
 			return igraci[trenutniIgracIndex];
 		}
 
+		#region Pohrana
 		private const string PohKrug = "KRUG";
 		private const string PohTrenutniIgrac = "TREN_IGRAC";
+		private const string PohBrIgraca = "BR_IGRACA";
 		public string spremi()
 		{
 			PodaciPisac podaci = new PodaciPisac("IGRA");
 
 			podaci.dodaj(PohKrug, brKruga);
 			podaci.dodaj(PohTrenutniIgrac, trenutniIgracIndex);
+			podaci.dodaj(PohBrIgraca, igraci.Count);
 
 			podaci.dodaj(Mapa.PohranaTip, mapa);
 			podaci.dodajKolekciju(Igrac.PohranaTip, igraci);
@@ -118,5 +140,35 @@ namespace Prototip
 
 			return podaci.ToString();
 		}
+
+		public static Igra Ucitaj(string ulaz)
+		{
+			PodaciCitac citac = PodaciCitac.Procitaj(ulaz);
+
+			int brKruga = citac.podatakInt(PohKrug);
+			int trenutniIgrac = citac.podatakInt(PohTrenutniIgrac);
+			int brIgraca = citac.podatakInt(PohBrIgraca);
+
+			Mapa mapa = Mapa.Ucitaj(citac[Mapa.PohranaTip]);
+			List<Igrac> igraci = new List<Igrac>();
+			for (int i = 0; i < brIgraca; i++)
+				igraci.Add(Igrac.Ucitaj(citac[Igrac.PohranaTip + i], mapa));
+
+			Dictionary<int, Zvijezda> zvijezdeID = new Dictionary<int,Zvijezda>();
+			foreach(Zvijezda zvj in mapa.zvijezde)
+				zvijezdeID.Add(zvj.id, zvj);
+
+			int brKolonija = citac.podatakInt(Kolonija.PohranaTip);
+			for (int i = 0; i < brKolonija; i++) {
+				Kolonija kolonija = Kolonija.Ucitaj(
+					citac[Kolonija.PohranaTip + i],
+					igraci,
+					zvijezdeID);
+				kolonija.planet.kolonija = kolonija;
+			}
+
+			return new Igra(igraci, trenutniIgrac, mapa, brKruga);
+		}
+		#endregion
 	}
 }

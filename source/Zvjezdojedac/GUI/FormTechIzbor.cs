@@ -9,7 +9,7 @@ using Alati;
 
 namespace Prototip
 {
-	public partial class frmTechIzbor : Form
+	public partial class FormTechIzbor : Form
 	{
 		private Igrac igrac;
 
@@ -17,7 +17,7 @@ namespace Prototip
 
 		private int raspodijelaPoena;
 
-		public frmTechIzbor(Igrac igrac)
+		public FormTechIzbor(Igrac igrac)
 		{
 			InitializeComponent();
 			this.igrac = igrac;

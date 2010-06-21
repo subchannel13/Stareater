@@ -11,7 +11,7 @@ using Alati;
 
 namespace Prototip
 {
-	public partial class frmIgra : Form
+	public partial class FormIgra : Form
 	{
 		private PrikazMape prikazMape;
 
@@ -21,7 +21,7 @@ namespace Prototip
 
 		private Alati.Tocka<double> pomakPogleda;
 
-		public frmIgra(Igra igra)
+		public FormIgra(Igra igra)
 		{
 			InitializeComponent();
 
@@ -63,16 +63,21 @@ namespace Prototip
 		{
 			lblBrojKruga.Text = igra.brKruga + ". krug";
 			odaberiZvijezdu(igrac.odabranaZvijezda, false);
+			centrirajZvijezdu(igrac.odabranaZvijezda);
+
+			btnPoruke.Text = "Novosti (" + igrac.poruke.Count + ")";
+
+			odabariPlanet(igrac.odabranPlanet, true);			
+		}
+
+		private void centrirajZvijezdu(Zvijezda zvijezda)
+		{
 			int x = prikazMape.XsaMape(igrac.odabranaZvijezda.x);
 			int y = prikazMape.YsaMape(igrac.odabranaZvijezda.y);
 			x = odrediPomakScrolla(picMapa.Width, pnlMapa.Width, pnlMapa.HorizontalScroll, x, 0);
 			y = odrediPomakScrolla(picMapa.Height, pnlMapa.Height, pnlMapa.VerticalScroll, y, 0);
 			pnlMapa.HorizontalScroll.Value += x;
 			pnlMapa.VerticalScroll.Value += y;
-
-			btnPoruke.Text = "Novosti (" + igrac.poruke.Count + ")";
-
-			odabariPlanet(igrac.odabranPlanet, true);			
 		}
 
 		private void picMapa_Click(object sender, EventArgs e)
@@ -230,7 +235,7 @@ namespace Prototip
 		{
 			if (igrac.odabranPlanet.kolonija != null)
 			{
-				frmPlanetInfo planetInfo = new frmPlanetInfo(igrac.odabranPlanet.kolonija);
+				FormPlanetInfo planetInfo = new FormPlanetInfo(igrac.odabranPlanet.kolonija);
 				planetInfo.ShowDialog();
 				osvjeziPogledNaKoloniju();
 			}
@@ -303,7 +308,7 @@ namespace Prototip
 
 		private void btnCivilnaGradnja_Click(object sender, EventArgs e)
 		{
-			frmGradnja frmGradnja = new frmGradnja(igrac.odabranPlanet.kolonija, true);
+			FormGradnja frmGradnja = new FormGradnja(igrac.odabranPlanet.kolonija, true);
 
 			if (frmGradnja.ShowDialog() == DialogResult.OK)
 				osvjeziLabele();
@@ -311,7 +316,7 @@ namespace Prototip
 
 		private void btnVojnaGradnja_Click(object sender, EventArgs e)
 		{
-			frmGradnja frmGradnja = new frmGradnja(igrac.odabranPlanet.kolonija, false);
+			FormGradnja frmGradnja = new FormGradnja(igrac.odabranPlanet.kolonija, false);
 
 			if (frmGradnja.ShowDialog() == DialogResult.OK)
 				osvjeziLabele();
@@ -319,13 +324,13 @@ namespace Prototip
 
 		private void btnTech_Click(object sender, EventArgs e)
 		{
-			frmTechIzbor frmTech = new frmTechIzbor(igrac);
+			FormTechIzbor frmTech = new FormTechIzbor(igrac);
 			frmTech.ShowDialog();
 		}
 
 		private void btnPoruke_Click(object sender, EventArgs e)
 		{
-			frmPoruke poruke = new frmPoruke(igrac);
+			FormPoruke poruke = new FormPoruke(igrac);
 			if (poruke.ShowDialog() == DialogResult.OK)
 				if (poruke.odabranaProuka != null)
 					if (poruke.odabranaProuka.tip == Poruka.Tip.Tehnologija)
@@ -334,7 +339,7 @@ namespace Prototip
 
 		private void btnFlote_Click(object sender, EventArgs e)
 		{
-			frmFlote formaFlote = new frmFlote(igrac);
+			FormFlote formaFlote = new FormFlote(igrac);
 			formaFlote.ShowDialog();
 		}
 
@@ -346,17 +351,50 @@ namespace Prototip
 			dialog.Filter = "Zvjezdojedac igra (*.igra)|*.igra";
 
 			if (dialog.ShowDialog() == DialogResult.OK) {
-				FileStream pisac = new FileStream(dialog.FileName, FileMode.Create);
+/*				FileStream pisac = new FileStream(dialog.FileName, FileMode.Create);
 
 				MemoryStream zipMemory = new MemoryStream();
-				GZipStream zipStream = new GZipStream(zipMemory, CompressionMode.Compress);
+				GZipStream zipStream = new GZipStream(zipMemory, CompressionMode.Compress, false);
 				byte[] toZip = Encoding.UTF8.GetBytes(igra.spremi());
 				zipStream.Write(toZip, 0, toZip.Length);
 
 				pisac.Write(zipMemory.ToArray(), 0, (int)zipMemory.Length);
 				//pisac.Write(toZip, 0, toZip.Length);
-				
+
+				zipStream.Close();
+				pisac.Close();*/
+
+				GZipStream zipStream = new GZipStream(new FileStream(dialog.FileName, FileMode.Create), CompressionMode.Compress);
+				StreamWriter pisac = new StreamWriter(zipStream);
+				pisac.Write(igra.spremi());
 				pisac.Close();
+			}
+		}
+
+		private void btnUcitaj_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog dialog = new OpenFileDialog();
+			dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
+			dialog.FileName = "sejv.igra";
+			dialog.Filter = "Zvjezdojedac igra (*.igra)|*.igra";
+
+			if (dialog.ShowDialog() == DialogResult.OK) {
+
+				GZipStream zipStream = new GZipStream(new FileStream(dialog.FileName, FileMode.Open), CompressionMode.Decompress);
+				StreamReader citac = new StreamReader(zipStream);
+
+				string ucitanaIgra = citac.ReadToEnd();
+				citac.Close();
+
+				this.igra = Igra.Ucitaj(ucitanaIgra);
+				igrac = igra.trenutniIgrac();
+
+				pomakPogleda = null;
+				prikazMape = new PrikazMape(igra);
+				this.picMapa.Image = prikazMape.slikaMape;
+				odaberiZvijezdu(igrac.odabranaZvijezda, false);
+				odabariPlanet(igrac.odabranPlanet, true);
+				centrirajZvijezdu(igrac.odabranaZvijezda);
 			}
 		}
 	}

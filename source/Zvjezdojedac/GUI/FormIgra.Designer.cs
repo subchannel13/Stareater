@@ -1,6 +1,6 @@
 ﻿namespace Prototip
 {
-	partial class frmIgra
+	partial class FormIgra
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmIgra));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormIgra));
 			this.tabCtrlDesno = new System.Windows.Forms.TabControl();
 			this.tabPageZvijezda = new System.Windows.Forms.TabPage();
 			this.listViewPlaneti = new System.Windows.Forms.ListView();
@@ -63,10 +63,11 @@
 			this.pnlDesnoGore = new System.Windows.Forms.Panel();
 			this.lblBrojKruga = new System.Windows.Forms.Label();
 			this.pnlKomande = new System.Windows.Forms.Panel();
-			this.btnSpremi = new System.Windows.Forms.Button();
-			this.pnlKomandeDesno = new System.Windows.Forms.Panel();
-			this.btnFlote = new System.Windows.Forms.Button();
 			this.btnPoruke = new System.Windows.Forms.Button();
+			this.btnFlote = new System.Windows.Forms.Button();
+			this.pnlKomandeDesno = new System.Windows.Forms.Panel();
+			this.btnUcitaj = new System.Windows.Forms.Button();
+			this.btnSpremi = new System.Windows.Forms.Button();
 			this.btnTech = new System.Windows.Forms.Button();
 			this.tabCtrlDesno.SuspendLayout();
 			this.tabPageZvijezda.SuspendLayout();
@@ -156,7 +157,7 @@
 			this.tabPagePlanet.Location = new System.Drawing.Point(4, 4);
 			this.tabPagePlanet.Name = "tabPagePlanet";
 			this.tabPagePlanet.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPagePlanet.Size = new System.Drawing.Size(154, 407);
+			this.tabPagePlanet.Size = new System.Drawing.Size(154, 484);
 			this.tabPagePlanet.TabIndex = 1;
 			// 
 			// groupBox2
@@ -312,7 +313,7 @@
 			this.tabPageFlote.Location = new System.Drawing.Point(4, 4);
 			this.tabPageFlote.Name = "tabPageFlote";
 			this.tabPageFlote.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageFlote.Size = new System.Drawing.Size(154, 407);
+			this.tabPageFlote.Size = new System.Drawing.Size(154, 484);
 			this.tabPageFlote.TabIndex = 2;
 			// 
 			// tvFlota
@@ -320,7 +321,7 @@
 			this.tvFlota.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tvFlota.Location = new System.Drawing.Point(3, 103);
 			this.tvFlota.Name = "tvFlota";
-			this.tvFlota.Size = new System.Drawing.Size(148, 301);
+			this.tvFlota.Size = new System.Drawing.Size(148, 378);
 			this.tvFlota.TabIndex = 1;
 			// 
 			// panel1
@@ -417,27 +418,16 @@
 			this.pnlKomande.Size = new System.Drawing.Size(484, 83);
 			this.pnlKomande.TabIndex = 1;
 			// 
-			// btnSpremi
+			// btnPoruke
 			// 
-			this.btnSpremi.Location = new System.Drawing.Point(166, 48);
-			this.btnSpremi.Name = "btnSpremi";
-			this.btnSpremi.Size = new System.Drawing.Size(75, 23);
-			this.btnSpremi.TabIndex = 1;
-			this.btnSpremi.Text = "Spremi";
-			this.btnSpremi.UseVisualStyleBackColor = true;
-			this.btnSpremi.Click += new System.EventHandler(this.btnSpremi_Click);
-			// 
-			// pnlKomandeDesno
-			// 
-			this.pnlKomandeDesno.Controls.Add(this.btnSpremi);
-			this.pnlKomandeDesno.Controls.Add(this.btnTech);
-			this.pnlKomandeDesno.Controls.Add(this.trackBarZoom);
-			this.pnlKomandeDesno.Controls.Add(this.btnEndTurn);
-			this.pnlKomandeDesno.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlKomandeDesno.Location = new System.Drawing.Point(171, 0);
-			this.pnlKomandeDesno.Name = "pnlKomandeDesno";
-			this.pnlKomandeDesno.Size = new System.Drawing.Size(313, 83);
-			this.pnlKomandeDesno.TabIndex = 0;
+			this.btnPoruke.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnPoruke.Location = new System.Drawing.Point(90, 6);
+			this.btnPoruke.Name = "btnPoruke";
+			this.btnPoruke.Size = new System.Drawing.Size(75, 23);
+			this.btnPoruke.TabIndex = 3;
+			this.btnPoruke.Text = "&Novosti";
+			this.btnPoruke.UseVisualStyleBackColor = true;
+			this.btnPoruke.Click += new System.EventHandler(this.btnPoruke_Click);
 			// 
 			// btnFlote
 			// 
@@ -450,16 +440,38 @@
 			this.btnFlote.UseVisualStyleBackColor = true;
 			this.btnFlote.Click += new System.EventHandler(this.btnFlote_Click);
 			// 
-			// btnPoruke
+			// pnlKomandeDesno
 			// 
-			this.btnPoruke.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnPoruke.Location = new System.Drawing.Point(90, 6);
-			this.btnPoruke.Name = "btnPoruke";
-			this.btnPoruke.Size = new System.Drawing.Size(75, 23);
-			this.btnPoruke.TabIndex = 3;
-			this.btnPoruke.Text = "&Novosti";
-			this.btnPoruke.UseVisualStyleBackColor = true;
-			this.btnPoruke.Click += new System.EventHandler(this.btnPoruke_Click);
+			this.pnlKomandeDesno.Controls.Add(this.btnUcitaj);
+			this.pnlKomandeDesno.Controls.Add(this.btnSpremi);
+			this.pnlKomandeDesno.Controls.Add(this.btnTech);
+			this.pnlKomandeDesno.Controls.Add(this.trackBarZoom);
+			this.pnlKomandeDesno.Controls.Add(this.btnEndTurn);
+			this.pnlKomandeDesno.Dock = System.Windows.Forms.DockStyle.Right;
+			this.pnlKomandeDesno.Location = new System.Drawing.Point(171, 0);
+			this.pnlKomandeDesno.Name = "pnlKomandeDesno";
+			this.pnlKomandeDesno.Size = new System.Drawing.Size(313, 83);
+			this.pnlKomandeDesno.TabIndex = 0;
+			// 
+			// btnUcitaj
+			// 
+			this.btnUcitaj.Location = new System.Drawing.Point(166, 53);
+			this.btnUcitaj.Name = "btnUcitaj";
+			this.btnUcitaj.Size = new System.Drawing.Size(75, 23);
+			this.btnUcitaj.TabIndex = 3;
+			this.btnUcitaj.Text = "Učitaj";
+			this.btnUcitaj.UseVisualStyleBackColor = true;
+			this.btnUcitaj.Click += new System.EventHandler(this.btnUcitaj_Click);
+			// 
+			// btnSpremi
+			// 
+			this.btnSpremi.Location = new System.Drawing.Point(166, 19);
+			this.btnSpremi.Name = "btnSpremi";
+			this.btnSpremi.Size = new System.Drawing.Size(75, 23);
+			this.btnSpremi.TabIndex = 1;
+			this.btnSpremi.Text = "Spremi";
+			this.btnSpremi.UseVisualStyleBackColor = true;
+			this.btnSpremi.Click += new System.EventHandler(this.btnSpremi_Click);
 			// 
 			// btnTech
 			// 
@@ -471,7 +483,7 @@
 			this.btnTech.UseVisualStyleBackColor = true;
 			this.btnTech.Click += new System.EventHandler(this.btnTech_Click);
 			// 
-			// frmIgra
+			// FormIgra
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -481,7 +493,7 @@
 			this.Controls.Add(this.pnlKomande);
 			this.Controls.Add(this.pnlDesno);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Name = "frmIgra";
+			this.Name = "FormIgra";
 			this.Text = "Zvjezdojedac";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.Load += new System.EventHandler(this.frmIgra_Load);
@@ -551,5 +563,6 @@
 		private System.Windows.Forms.TreeView tvFlota;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Button btnSpremi;
+		private System.Windows.Forms.Button btnUcitaj;
 	}
 }

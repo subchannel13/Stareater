@@ -47,6 +47,14 @@ namespace Prototip
 
 				return naj;
 			}
+
+			public static OklopInfo IzIda(int id)
+			{
+				foreach (OklopInfo info in Oklopi)
+					if (info.id == id)
+						return info;
+				throw new ArgumentException("Nepostojeći id oklopa.");
+			}
 			#endregion
 
 			private Formula izdrzljivost;
@@ -63,6 +71,11 @@ namespace Prototip
 			public Oklop naciniKomponentu(Dictionary<string, double> varijable)
 			{
 				int nivo = maxDostupanNivo(varijable);
+				return naciniKomponentu(nivo);
+			}
+
+			public Oklop naciniKomponentu(int nivo)
+			{
 				return new Oklop(
 					this, 
 					nivo, 

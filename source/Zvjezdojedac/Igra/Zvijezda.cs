@@ -115,6 +115,17 @@ namespace Prototip
 				this.velicina = random.NextDouble();
 		}
 
+		private Zvijezda(int id, int tip, double x, double y, double velicina, string ime)
+		{
+			this.id = id;
+			this._tip = tip;
+			this.x = x;
+			this.y = y;
+			this.planeti = new List<Planet>();
+			this.velicina = velicina;
+			this.ime = ime;
+		}
+
 		public int tip
 		{
 			get
@@ -158,11 +169,12 @@ namespace Prototip
 
 		#region Pohrana
 		public const string PohranaTip = "ZVIJEZDA";
-		public const string PohTip = "TIP";
-		public const string PohX = "X";
-		public const string PohY = "Y";
-		public const string PohVelicina = "VELICINA";
-		public const string PohIme = "IME";
+		private const string PohTip = "TIP";
+		private const string PohX = "X";
+		private const string PohY = "Y";
+		private const string PohVelicina = "VELICINA";
+		private const string PohIme = "IME";
+		
 		public void pohrani(PodaciPisac izlaz)
 		{
 			izlaz.dodaj(PohTip, tip);
@@ -172,6 +184,25 @@ namespace Prototip
 			izlaz.dodaj(PohIme, ime);
 			for (int i = 0; i < planeti.Count; i++)
 				izlaz.dodaj(Planet.PohranaTip + i, planeti[i]);
+		}
+
+		public static Zvijezda Ucitaj(PodaciCitac ulaz, int id)
+		{
+			int tip = ulaz.podatakInt(PohTip);
+			double x = ulaz.podatakDouble(PohX);
+			double y = ulaz.podatakDouble(PohY);
+			double velicina = ulaz.podatakDouble(PohVelicina);
+			string ime = ulaz.podatak(PohIme);
+
+			if (ime.ToLower().StartsWith("doma"))
+				tip = tip;
+
+			Zvijezda zvj = new Zvijezda(id, tip, x, y, velicina, ime);
+			if (tip >= 0)
+				for (int i = 0; i < Mapa.GraditeljMape.BR_PLANETA; i++)
+					zvj.planeti.Add(Planet.Ucitaj(ulaz[Planet.PohranaTip + i], zvj, i));
+
+			return zvj;
 		}
 		#endregion
 	}

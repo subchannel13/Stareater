@@ -273,7 +273,7 @@ namespace Prototip
 #endif
 				Dictionary<string, List<Dictionary<string, string>>> podaci = ucitajPodatke();
 				foreach (Dictionary<string, string> unos in podaci[MapaTag]) Mapa.dodajVelicinuMape(unos);
-				foreach (Dictionary<string, string> unos in podaci[OrgTag]) Organizacije.dodajOrganizaciju(unos);
+				foreach (Dictionary<string, string> unos in podaci[OrgTag]) Organizacija.dodajOrganizaciju(unos);
 				ucitajPostavke();
 				foreach (Dictionary<string, string> unos in podaci[PlanetTag]) Planet.TipInfo.noviTip(unos);
 				

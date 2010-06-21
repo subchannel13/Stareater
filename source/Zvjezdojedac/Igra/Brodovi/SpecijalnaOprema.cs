@@ -43,8 +43,16 @@ namespace Prototip
 				List<SpecijalnaOprema> ret = new List<SpecijalnaOprema>();
 				foreach (SpecijalnaOpremaInfo soi in SpecijalnaOprema)
 					if (soi.dostupno(varijable))
-						ret.Add(soi.napraviKomponentu(varijable, velicinaTrupa));
+						ret.Add(soi.naciniKomponentu(varijable, velicinaTrupa));
 				return ret;
+			}
+
+			public static SpecijalnaOpremaInfo IzIda(int id)
+			{
+				foreach (SpecijalnaOpremaInfo info in SpecijalnaOprema)
+					if (info.id == id)
+						return info;
+				throw new ArgumentException("Nepostojeći id specijalne opreme.");
 			}
 			#endregion
 
@@ -76,9 +84,14 @@ namespace Prototip
 				}
 			}
 
-			public SpecijalnaOprema napraviKomponentu(Dictionary<string, double> varijable, double velicinaTrupa)
+			public SpecijalnaOprema naciniKomponentu(Dictionary<string, double> varijable, double velicinaTrupa)
 			{
 				int nivo = maxDostupanNivo(varijable);
+				return naciniKomponentu(nivo, velicinaTrupa);
+			}
+
+			public SpecijalnaOprema naciniKomponentu(int nivo, double velicinaTrupa)
+			{
 				Dictionary<string, double> efekti = new Dictionary<string, double>();
 				foreach (string s in this.efekti.Keys)
 					efekti.Add(s, Evaluiraj(this.efekti[s], nivo, velicinaTrupa));

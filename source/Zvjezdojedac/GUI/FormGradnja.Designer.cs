@@ -1,6 +1,6 @@
 ﻿namespace Prototip
 {
-	partial class frmGradnja
+	partial class FormGradnja
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmGradnja));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGradnja));
 			this.lstMoguceGradit = new System.Windows.Forms.ListBox();
 			this.picSlikaZgrade = new System.Windows.Forms.PictureBox();
 			this.lblZgradaInfo = new System.Windows.Forms.Label();
@@ -147,7 +147,7 @@
 			this.btnOk.UseVisualStyleBackColor = true;
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
 			// 
-			// frmGradnja
+			// FormGradnja
 			// 
 			this.AcceptButton = this.btnOk;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -168,7 +168,7 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "frmGradnja";
+			this.Name = "FormGradnja";
 			this.ShowInTaskbar = false;
 			this.Text = "Civilna gradnja";
 			((System.ComponentModel.ISupportInitialize)(this.picSlikaZgrade)).EndInit();

@@ -25,6 +25,14 @@ namespace Prototip
 			Taktike.Add(NaciniTaktiku(podaci), int.Parse(podaci["POZICIJA"]));
 		}
 
+		public static Taktika IzIda(int id)
+		{
+			foreach (Taktika taktika in Kodovi.Values)
+				if (taktika.id == id)
+					return taktika;
+			throw new ArgumentException("Nepostojeći id taktike.");
+		}
+
 		private static Taktika NaciniTaktiku(Dictionary<string, string> podaci)
 		{
 			Taktika taktika = new Taktika(

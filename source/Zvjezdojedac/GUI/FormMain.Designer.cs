@@ -1,6 +1,6 @@
 ﻿namespace Prototip
 {
-	partial class frmMain
+	partial class FormMain
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
 			this.btnNovaIgra = new System.Windows.Forms.Button();
 			this.btnUcitaj = new System.Windows.Forms.Button();
 			this.btnUgasi = new System.Windows.Forms.Button();
@@ -54,6 +54,7 @@
 			this.btnUcitaj.TabIndex = 2;
 			this.btnUcitaj.Text = "Učitaj igru";
 			this.btnUcitaj.UseVisualStyleBackColor = true;
+			this.btnUcitaj.Click += new System.EventHandler(this.btnUcitaj_Click);
 			// 
 			// btnUgasi
 			// 
@@ -84,7 +85,7 @@
 			this.label2.TabIndex = 4;
 			this.label2.Text = "Ivan Kravarščan 2010.";
 			// 
-			// frmMain
+			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -97,10 +98,9 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
-			this.Name = "frmMain";
+			this.Name = "FormMain";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Zvjezdojedac";
-			this.Load += new System.EventHandler(this.frmMain_Load);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
 			this.ResumeLayout(false);
 			this.PerformLayout();

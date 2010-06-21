@@ -9,13 +9,13 @@ using System.Windows.Forms;
 
 namespace Prototip
 {
-	public partial class frmPoruke : Form
+	public partial class FormPoruke : Form
 	{
 		//public delegate void FokusNaPlanet(Planet planet);
 
 		public Poruka odabranaProuka;
 
-		public frmPoruke(Igrac igrac)
+		public FormPoruke(Igrac igrac)
 		{
 			InitializeComponent();
 

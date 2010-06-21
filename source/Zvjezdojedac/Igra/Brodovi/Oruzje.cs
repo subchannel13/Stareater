@@ -113,10 +113,18 @@ namespace Prototip
 					ret.Add(misija, new List<Oruzje>());
 					foreach(OruzjeInfo oi in Oruzja[misija])
 						if (oi.dostupno(varijable))
-							ret[misija].Add(oi.napraviKomponentu(varijable));
+							ret[misija].Add(oi.naciniKomponentu(varijable));
 				}
 
 				return ret;
+			}
+
+			public static OruzjeInfo IzIda(int id)
+			{
+				foreach (OruzjeInfo info in KodoviOruzja.Values)
+					if (info.id == id)
+						return info;
+				throw new ArgumentException("Nepostojeći id oružja.");
 			}
 			#endregion
 
@@ -147,9 +155,14 @@ namespace Prototip
 				this.velicina = velicina;
 			}
 
-			public Oruzje napraviKomponentu(Dictionary<string, double> varijable)
+			public Oruzje naciniKomponentu(Dictionary<string, double> varijable)
 			{
 				int nivo = maxDostupanNivo(varijable);
+				return naciniKomponentu(nivo);
+			}
+
+			public Oruzje naciniKomponentu(int nivo)
+			{
 				return new Oruzje(
 					this,
 					nivo,

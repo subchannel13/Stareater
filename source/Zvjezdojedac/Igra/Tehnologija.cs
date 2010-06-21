@@ -94,7 +94,7 @@ namespace Prototip
 				else
 					popis = tehnologijeIstrazivanje;
 
-				popis.Add(new TechInfo(
+				TechInfo techInfo = new TechInfo(
 					popis.Count,
 					podaci["IME"],
 					podaci["OPIS"],
@@ -103,8 +103,8 @@ namespace Prototip
 					maxNivo,
 					preduvjeti,
 					Image.FromFile(podaci["SLIKA"])
-					));
-
+					);
+				popis.Add(techInfo);
 			}
 
 			public int id { get; private set; }
@@ -166,6 +166,13 @@ namespace Prototip
 			ulozenoPoena = 0;
 		}
 
+		private Tehnologija(TechInfo techInfo, long nivo, long ulozenoPoena)
+		{
+			tip = techInfo;
+			this.nivo = nivo;
+			this.ulozenoPoena = ulozenoPoena;
+		}
+
 		public bool istrazivo(Dictionary<string, double> varijable)
 		{
 			if (nivo >= tip.maxNivo) return false;
@@ -209,10 +216,10 @@ namespace Prototip
 
 		#region Pohrana
 		public const string PohranaTip = "MAPA";
-		public const string PohKategorija = "KATEG";
-		public const string PohId = "ID";
-		public const string PohNivo = "NIVO";
-		public const string PohUlozeno = "ULOZENO";
+		private const string PohKategorija = "KATEG";
+		private const string PohId = "ID";
+		private const string PohNivo = "NIVO";
+		private const string PohUlozeno = "ULOZENO";
 		public void pohrani(PodaciPisac izlaz)
 		{
 			bool istrazivanje = false;
@@ -228,6 +235,23 @@ namespace Prototip
 			izlaz.dodaj(PohId, tip);
 			izlaz.dodaj(PohNivo, nivo);
 			izlaz.dodaj(PohUlozeno, ulozenoPoena);
+		}
+
+		public static Tehnologija Ucitaj(PodaciCitac ulaz)
+		{
+			Kategorija kategorija = (Kategorija)ulaz.podatakInt(PohKategorija);
+
+			TechInfo info = null;
+			int id = ulaz.podatakInt(PohId);
+			if (kategorija == Kategorija.ISTRAZIVANJE)
+				info = TechInfo.tehnologijeIstrazivanje[id];
+			else
+				info = TechInfo.tehnologijeRazvoj[id];
+
+			long nivo = ulaz.podatakLong(PohNivo);
+			long ulozeno = ulaz.podatakLong(PohUlozeno);
+
+			return new Tehnologija(info, nivo, ulozeno);
 		}
 		#endregion
 	}

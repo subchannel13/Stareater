@@ -9,7 +9,7 @@ using Alati;
 
 namespace Prototip
 {
-	public partial class frmFlote : Form
+	public partial class FormFlote : Form
 	{
 		private class Komponente
 		{
@@ -252,7 +252,7 @@ namespace Prototip
 		private int prethodnaNDsekMisija = 0;
 		private SpecijalnaOprema specijalnaOpremaZaOpis = null;
 
-		public frmFlote(Igrac igrac)
+		public FormFlote(Igrac igrac)
 		{
 			InitializeComponent();
 			this.igrac = igrac;

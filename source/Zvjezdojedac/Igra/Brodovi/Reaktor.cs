@@ -51,6 +51,14 @@ namespace Prototip
 
 				return naj;
 			}
+
+			public static ReaktorInfo IzIda(int id)
+			{
+				foreach (ReaktorInfo info in Reaktori)
+					if (info.id == id)
+						return info;
+				throw new ArgumentException("Nepostojeći id reaktora.");
+			}
 			#endregion
 
 			private Formula snaga;
@@ -74,6 +82,11 @@ namespace Prototip
 			public Reaktor naciniKomponentu(Dictionary<string, double> varijable, double velicinaReaktora)
 			{
 				int nivo = maxDostupanNivo(varijable);
+				return naciniKomponentu(nivo, velicinaReaktora);
+			}
+
+			public Reaktor naciniKomponentu(int nivo, double velicinaReaktora)
+			{
 				return new Reaktor(
 					this,
 					nivo,

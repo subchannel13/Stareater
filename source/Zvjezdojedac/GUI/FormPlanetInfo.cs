@@ -9,19 +9,19 @@ using Alati;
 
 namespace Prototip
 {
-	public partial class frmPlanetInfo : Form
+	public partial class FormPlanetInfo : Form
 	{
 		private Kolonija kolonija;
 		private static bool PrikazKolicina = true;
 
-		public frmPlanetInfo()
+		public FormPlanetInfo()
 		{
 			InitializeComponent();
 			if (PrikazKolicina)
 				radKolicina.Select();
 		}
 
-		public frmPlanetInfo(Kolonija kolonija) : this()
+		public FormPlanetInfo(Kolonija kolonija) : this()
 		{
 			this.kolonija = kolonija;
 			this.Text = kolonija.ime;
@@ -129,7 +129,7 @@ namespace Prototip
 
 		private void btnCivilnaGradnja_Click(object sender, EventArgs e)
 		{
-            frmGradnja frmGradnja = new frmGradnja(kolonija, true);
+            FormGradnja frmGradnja = new FormGradnja(kolonija, true);
 
 			if (frmGradnja.ShowDialog() == DialogResult.OK)
 				//osvjeziPogledNaKoloniju(true);
@@ -138,7 +138,7 @@ namespace Prototip
 
 		private void btnVojnaGradnja_Click(object sender, EventArgs e)
 		{
-			frmGradnja frmGradnja = new frmGradnja(kolonija, false);
+			FormGradnja frmGradnja = new FormGradnja(kolonija, false);
 
 			if (frmGradnja.ShowDialog() == DialogResult.OK)
 				//osvjeziPogledNaKoloniju(true);

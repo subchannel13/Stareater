@@ -1,6 +1,6 @@
 ﻿namespace Prototip
 {
-	partial class frmNovaIgra
+	partial class FormNovaIgra
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmNovaIgra));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormNovaIgra));
 			this.label1 = new System.Windows.Forms.Label();
 			this.cbVelicinaMape = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
@@ -153,7 +153,7 @@
 			this.btnOdustani.UseVisualStyleBackColor = true;
 			this.btnOdustani.Click += new System.EventHandler(this.btnOdustani_Click);
 			// 
-			// frmNovaIgra
+			// FormNovaIgra
 			// 
 			this.AcceptButton = this.btnKreni;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -175,7 +175,7 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
-			this.Name = "frmNovaIgra";
+			this.Name = "FormNovaIgra";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Nova igra";
 			this.Load += new System.EventHandler(this.frmNovaIgra_Load);

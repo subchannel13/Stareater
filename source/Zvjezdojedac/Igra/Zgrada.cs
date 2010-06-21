@@ -120,6 +120,7 @@ namespace Prototip
 		#region Statičko
 		public static List<ZgradaInfo> civilneZgradeInfo = new List<ZgradaInfo>();
 		public static List<ZgradaInfo> vojneZgradeInfo = new List<ZgradaInfo>();
+		public static Dictionary<int, ZgradaInfo> ZgradaInfoID = new Dictionary<int, ZgradaInfo>();
 
 		public static void ucitajInfoZgrade(Dictionary<string, string> podaci, bool jeLiCivilna)
 		{
@@ -134,7 +135,7 @@ namespace Prototip
 			else
 				popis = vojneZgradeInfo;
 
-			popis.Add(new ZgradaInfo(
+			ZgradaInfo zgradaInfo = new ZgradaInfo(
 				SlijedeciId(),
 				podaci["IME"],
 				Formula.IzStringa(podaci["CIJENA"]),
@@ -145,7 +146,10 @@ namespace Prototip
 				podaci["OPIS"],
 				ucinci,
 				podaci["SVOJSTVA"],
-				preduvjeti));
+				preduvjeti);
+			
+			popis.Add(zgradaInfo);
+			ZgradaInfoID.Add(zgradaInfo.id, zgradaInfo);
 		}
 
 		private static int _SlijedeciId = 0;
@@ -179,9 +183,13 @@ namespace Prototip
 
 		public void pohrani(PodaciPisac izlaz)
 		{
-			izlaz.dodaj(PohranaTip, tip);
+			izlaz.dodaj(PohTip, tip);
 		}
 
+		public static Zgrada Ucitaj(PodaciCitac ulaz)
+		{
+			return new Zgrada(ZgradaInfoID[ulaz.podatakInt(PohTip)]);
+		}
 		#endregion
 	}
 }

@@ -93,18 +93,18 @@ namespace Prototip
 
 		public Dizajn naciniDizajn(Dictionary<string, double> varijable)
 		{
-			Trup trup = this.trup.napraviKomponentu(varijable);
-			Oruzje primarnoOruzje = this.primarnoOruzje.napraviKomponentu(varijable);
-			Oruzje sekundarnoOruzje = this.sekundarnoOruzje.napraviKomponentu(varijable);
+			Trup trup = this.trup.naciniKomponentu(varijable);
+			Oruzje primarnoOruzje = this.primarnoOruzje.naciniKomponentu(varijable);
+			Oruzje sekundarnoOruzje = this.sekundarnoOruzje.naciniKomponentu(varijable);
 			Oklop oklop = Oklop.OklopInfo.NajboljiOklop(varijable);
-			Stit stit = this.stit.napraviKomponentu(varijable, trup.velicina_stita);
+			Stit stit = this.stit.naciniKomponentu(varijable, trup.velicina_stita);
 			Senzor senzor = Senzor.SenzorInfo.NajboljiSenzor(varijable);
 			Potisnici potisnici = Potisnici.PotisnikInfo.NajboljiPotisnici(varijable);
 			Reaktor reaktor = Reaktor.ReaktorInfo.NajboljiReaktor(varijable, trup.velicina_reaktora);
 
 			Dictionary<SpecijalnaOprema, int> specijalnaOprema = new Dictionary<SpecijalnaOprema,int>();
 			foreach(SpecijalnaOprema.SpecijalnaOpremaInfo soi in this.specijalnaOprema.Keys)
-				specijalnaOprema.Add(soi.napraviKomponentu(varijable, trup.velicina), this.specijalnaOprema[soi]);
+				specijalnaOprema.Add(soi.naciniKomponentu(varijable, trup.velicina), this.specijalnaOprema[soi]);
 
 			MZPogon mzPogon = null;
 			if (this.mzPogon) mzPogon = MZPogon.MZPogonInfo.NajboljiMZPogon(varijable, trup.velicina_MZPogona);

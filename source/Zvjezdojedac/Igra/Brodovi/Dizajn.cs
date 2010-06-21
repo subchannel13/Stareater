@@ -423,25 +423,25 @@ namespace Prototip
 
 		#region Pohrana
 		public const string PohranaTip = "DIZAJN";
-		public const string PohId = "ID";
-		public const string PohIme = "IME";
-		public const string PohCijena = "CIJENA";
-		public const string PohTaktika = "TAKTIKA";
-		public const string PohTrup = "TRUP";
-		public const string PohPrimOruzje = "PRIM_OR";
-		public const string PohSekOruzje = "SEK_OR";
-		public const string PohOklop = "OKLOP";
-		public const string PohStit = "STIT";
-		public const string PohSpecOp = "SPEC_OP";
-		public const string PohSenzor = "SENZOR";
-		public const string PohPotisnici = "POTISNICI";
-		public const string PohMZPogon = "MZ_POGON";
-		public const string PohReaktor = "REAKTOR";
+		private const string PohId = "ID";
+		private const string PohIme = "IME";
+		private const string PohCijena = "CIJENA";
+		private const string PohTaktika = "TAKTIKA";
+		private const string PohTrup = "TRUP";
+		private const string PohPrimOruzje = "PRIM_OR";
+		private const string PohSekOruzje = "SEK_OR";
+		private const string PohOklop = "OKLOP";
+		private const string PohStit = "STIT";
+		private const string PohSpecOp = "SPEC_OP";
+		private const string PohSenzor = "SENZOR";
+		private const string PohPotisnici = "POTISNICI";
+		private const string PohMZPogon = "MZ_POGON";
+		private const string PohReaktor = "REAKTOR";
 		public void pohrani(PodaciPisac izlaz)
 		{
 			izlaz.dodaj(PohId, id);
 			izlaz.dodaj(PohIme, ime);
-			izlaz.dodaj(PohCijena, cijena);
+			//izlaz.dodaj(PohCijena, cijena);
 			izlaz.dodaj(PohTaktika, taktika);
 		 
 			izlaz.dodaj(PohTrup, trup.pohrani());
@@ -460,6 +460,124 @@ namespace Prototip
 				i++;
 			}
 		}
+
+		private struct UcitanaKomp
+		{
+			public int idInfa;
+			public int nivo;
+			public int kolicina;
+
+			public UcitanaKomp(int idInfa, int nivo, int kolicina)
+			{
+				this.idInfa = idInfa;
+				this.nivo = nivo;
+				this.kolicina = kolicina;
+			}
+		}
+
+		private static UcitanaKomp ucitajKomponentu(string str)
+		{
+			string[] parametri = str.Split(new char[] { ' ' });
+			
+			int kolicina = 1;
+			if (parametri.Length > 2) kolicina = int.Parse(parametri[2]);
+
+			return new UcitanaKomp(
+				int.Parse(parametri[0]),
+				int.Parse(parametri[1]),
+				kolicina);
+		}
+
+		public static Dizajn Ucitaj(PodaciCitac ulaz)
+		{
+			int id = ulaz.podatakInt(PohId);
+			string ime = ulaz.podatak(PohIme);
+			Taktika taktika = Taktika.IzIda(ulaz.podatakInt(PohTaktika));
+
+			UcitanaKomp komp = ucitajKomponentu(ulaz.podatak(PohTrup));
+			Trup trup = Trup.TrupInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo);
+
+			Zbir<Oruzje> primOruzje = null;
+			if (ulaz.ima(PohPrimOruzje)) {
+				komp = ucitajKomponentu(ulaz.podatak(PohPrimOruzje));
+				primOruzje = new Zbir<Oruzje>(
+					Oruzje.OruzjeInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo),
+					komp.kolicina);
+			}
+
+			Zbir<Oruzje> sekOruzje = null;
+			if (ulaz.ima(PohSekOruzje)) {
+				komp = ucitajKomponentu(ulaz.podatak(PohSekOruzje));
+				sekOruzje = new Zbir<Oruzje>(
+					Oruzje.OruzjeInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo),
+					komp.kolicina);
+			}
+
+			Stit stit = null;
+			if (ulaz.ima(PohStit)) {
+				komp = ucitajKomponentu(ulaz.podatak(PohStit));
+				stit = Stit.StitInfo.
+					IzIda(komp.idInfa).
+					naciniKomponentu(komp.nivo, trup.velicina_stita);
+			}
+
+			MZPogon mzPogon = null;
+			if (ulaz.ima(PohMZPogon)) {
+				komp = ucitajKomponentu(ulaz.podatak(PohMZPogon));
+				mzPogon = MZPogon.MZPogonInfo.
+					IzIda(komp.idInfa).
+					naciniKomponentu(komp.nivo, trup.velicina_MZPogona);
+			}
+
+			komp = ucitajKomponentu(ulaz.podatak(PohOklop));
+			Oklop oklop = Oklop.OklopInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo);
+
+			komp = ucitajKomponentu(ulaz.podatak(PohSenzor));
+			Senzor senzor = Senzor.SenzorInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo);
+
+			komp = ucitajKomponentu(ulaz.podatak(PohPotisnici));
+			Potisnici potisnici = Potisnici.PotisnikInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo);
+
+			komp = ucitajKomponentu(ulaz.podatak(PohReaktor));
+			Reaktor reaktor = Reaktor.ReaktorInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo, trup.velicina_reaktora);
+
+			int brSpecOp = ulaz.podatakInt(PohSpecOp);
+			Dictionary<SpecijalnaOprema, int> specOprema = new Dictionary<SpecijalnaOprema, int>();
+			for (int i = 0; i < brSpecOp; i++) {
+				komp = ucitajKomponentu(ulaz.podatak(PohSpecOp + i));
+				SpecijalnaOprema so = SpecijalnaOprema.SpecijalnaOpremaInfo.
+					IzIda(komp.idInfa).
+					naciniKomponentu(komp.nivo, trup.velicina);
+
+				specOprema.Add(so, komp.kolicina);
+			}
+
+			double udio = 0;
+			{
+				double udioPrim = 0, udioSek = 0, ukupno = 0;
+				if (primOruzje != null) {
+					ukupno += primOruzje.komponenta.velicina * primOruzje.kolicina;
+					udioPrim = primOruzje.komponenta.velicina * primOruzje.kolicina;
+				}
+				else
+					primOruzje = new Zbir<Oruzje>(null, 0);
+				if (sekOruzje != null) {
+					ukupno += sekOruzje.komponenta.velicina * sekOruzje.kolicina;
+					udioPrim = sekOruzje.komponenta.velicina * sekOruzje.kolicina;
+				}
+				else
+					sekOruzje = new Zbir<Oruzje>(null, 0);
+				udioPrim /= ukupno;
+				udioSek /= ukupno;
+				udio = (udioPrim + udioSek) / 2;
+			}
+
+
+			return new Dizajn(ime, trup, primOruzje.komponenta, sekOruzje.komponenta,
+				udio, oklop, stit, specOprema, senzor, potisnici, mzPogon, reaktor,
+				taktika);
+		}
 		#endregion
 	}
 }
+

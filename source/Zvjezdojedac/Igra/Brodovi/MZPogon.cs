@@ -53,6 +53,14 @@ namespace Prototip
 
 				return naj;
 			}
+
+			public static MZPogonInfo IzIda(int id)
+			{
+				foreach (MZPogonInfo info in MZPogoni)
+					if (info.id == id)
+						return info;
+				throw new ArgumentException("Nepostojeći id MZ pogona.");
+			}
 			#endregion
 
 			private Formula brzina;
@@ -76,6 +84,11 @@ namespace Prototip
 			public MZPogon naciniKomponentu(Dictionary<string, double> varijable, double velicinaTrupa)
 			{
 				int nivo = maxDostupanNivo(varijable);
+				return naciniKomponentu(nivo, velicinaTrupa);
+			}
+
+			public MZPogon naciniKomponentu(int nivo, double velicinaTrupa)
+			{
 				return new MZPogon(
 					this,
 					nivo,

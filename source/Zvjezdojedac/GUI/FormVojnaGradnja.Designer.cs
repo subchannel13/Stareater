@@ -1,6 +1,6 @@
 ﻿namespace Prototip.GUI
 {
-	partial class frmVojnaGradnja
+	partial class FormVojnaGradnja
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmVojnaGradnja));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormVojnaGradnja));
 			this.SuspendLayout();
 			// 
 			// frmVojnaGradnja

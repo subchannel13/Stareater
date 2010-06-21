@@ -8,7 +8,6 @@ namespace Prototip
 {
 	public class Kolonija : IPohranjivoSB
 	{
-		public Dictionary<string, double> efekti;
 		public const string Populacija = "POP";
 		public const string PopulacijaMax = "POP_MAX";
 		public const string PopulacijaPromjena = "POP_DELTA";
@@ -54,6 +53,8 @@ namespace Prototip
 		public const string BrRudara = "BR_RUDARA";
 		public const string BrOdrzavatelja = "BR_ODRZAVATELJA";
 		public const string BrRadnika = "BR_RADNIKA";
+		
+		public Dictionary<string, double> efekti = new Dictionary<string, double>();
 
 		public Igrac igrac;
 		public Planet planet { get; private set; }
@@ -82,13 +83,36 @@ namespace Prototip
 			this.redCivilneGradnje = new LinkedList<Zgrada.ZgradaInfo>();
 			this.redVojneGradnje = new LinkedList<Zgrada.ZgradaInfo>();
 			this.ostatakCivilneGradnje = 0;
-			this.efekti = new Dictionary<string, double>();
 
-			resetirajEfekte();
+			inicijalizirajEfekte();
 			izracunajEfekte();
 		}
 
-		private void resetirajEfekte()
+		private Kolonija(Igrac igrac, Planet planet, long populacija, long radnaMjesta,
+			double udioCivilneIndustrije, double udioVojneIndustrije, List<Zgrada> zgrade,
+			long ostatakCivilneGradnje, long ostatakVojneGradnje,
+			LinkedList<Zgrada.ZgradaInfo> redCivilneGradnje, LinkedList<Zgrada.ZgradaInfo> redVojneGradnje)
+		{
+			this.igrac = igrac;
+			this.planet = planet;
+			this._populacija = populacija;
+			this.radnaMjesta = radnaMjesta;
+			this.udioCivilneIndustrije = udioCivilneIndustrije;
+			this.udioVojneIndustrije = udioVojneIndustrije;
+			this.zgrade = zgrade;
+			this.ostatakCivilneGradnje = ostatakCivilneGradnje;
+			this.ostatakVojneGradnje = ostatakVojneGradnje;
+			this.redCivilneGradnje = redCivilneGradnje;
+			this.redVojneGradnje = redVojneGradnje;
+		}
+
+		public void resetirajEfekte()
+		{
+			inicijalizirajEfekte();
+			izracunajEfekte();
+		}
+
+		private void inicijalizirajEfekte()
 		{
 			efekti[Populacija] = _populacija;
 			efekti[PopulacijaMax] = 10000000 * (Math.Pow(planet.velicina, 1.5));
@@ -219,7 +243,7 @@ namespace Prototip
 			_populacija = (long)Math.Min(efekti[PopulacijaPromjena] + _populacija, efekti[PopulacijaMax]);
 			radnaMjesta += (long)efekti[RadnaMjestaDelta];
 
-			resetirajEfekte();
+			inicijalizirajEfekte();
 
 			foreach (Zgrada z in zgrade)
 				z.djeluj(this, igrac.efekti);
@@ -365,18 +389,18 @@ namespace Prototip
 
 		#region Pohrana
 		public const string PohranaTip = "KOLONIJA";
-		public const string PohIgrac = "IGRAC";
-		public const string PohZvijezda = "ZVJ";
-		public const string PohPlanet = "PLANET";
-		public const string PohPopulacija = "POP";
-		public const string PohRadnaMj = "RADNA_MJ";
-		public const string PohCivGradUdio = "UDIO_CIV";
-		public const string PohVojGradUdio = "UDIO_VOJ";
-		public const string PohCivGradOst = "CIV_OST";
-		public const string PohVojGradOst = "VOJ_OST";
-		public const string PohCivGrad = "CIV_GRAD";
-		public const string PohVojGrad = "VOJ_GRAD";
-		public const string PohZgrada = "ZGRADA";
+		private const string PohIgrac = "IGRAC";
+		private const string PohZvijezda = "ZVJ";
+		private const string PohPlanet = "PLANET";
+		private const string PohPopulacija = "POP";
+		private const string PohRadnaMj = "RADNA_MJ";
+		private const string PohCivGradUdio = "UDIO_CIV";
+		private const string PohVojGradUdio = "UDIO_VOJ";
+		private const string PohCivGradOst = "CIV_OST";
+		private const string PohVojGradOst = "VOJ_OST";
+		private const string PohCivGrad = "CIV_GRAD";
+		private const string PohVojGrad = "VOJ_GRAD";
+		private const string PohZgrada = "ZGRADA";
 		public void pohrani(PodaciPisac izlaz)
 		{
 			izlaz.dodaj(PohIgrac, igrac.id);
@@ -384,25 +408,48 @@ namespace Prototip
 			izlaz.dodaj(PohPlanet, planet.pozicija);
 			izlaz.dodaj(PohPopulacija, populacija);
 			izlaz.dodaj(PohRadnaMj, radnaMjesta);
-			izlaz.dodaj(PohCivGradUdio,civilnaIndustrija);
+			izlaz.dodaj(PohCivGradUdio, civilnaIndustrija);
 			izlaz.dodaj(PohVojGradUdio, vojnaIndustrija);
-			izlaz.dodaj(PohCivGradOst,ostatakCivilneGradnje);
-			izlaz.dodaj(PohVojGradOst,ostatakVojneGradnje);
+			izlaz.dodaj(PohCivGradOst, ostatakCivilneGradnje);
+			izlaz.dodaj(PohVojGradOst, ostatakVojneGradnje);
 
+			izlaz.dodaj(PohZgrada, zgrade.Count);
+			izlaz.dodajKolekciju(PohZgrada, zgrade);
 
-			foreach (Zgrada zgrada in zgrade)
-				izlaz.dodaj(PohZgrada, zgrada);
+			izlaz.dodajIdeve(PohCivGrad, redCivilneGradnje);
+			izlaz.dodajIdeve(PohVojGrad, redVojneGradnje);
+		}
 
-			int i = 0;
-			izlaz.dodaj(PohCivGrad, redCivilneGradnje.Count);
-			foreach (Zgrada.ZgradaInfo zgrada in redCivilneGradnje) {
-				izlaz.dodaj(PohCivGrad + i, zgrada);
-			}
-			i = 0;
-			izlaz.dodaj(PohVojGrad, redVojneGradnje.Count);
-			foreach (Zgrada.ZgradaInfo zgrada in redVojneGradnje) {
-				izlaz.dodaj(PohVojGrad + i, zgrada);
-			}
+		public static Kolonija Ucitaj(PodaciCitac ulaz, List<Igrac> igraci, Dictionary<int, Zvijezda> zvijezde)
+		{
+			Igrac igrac = igraci[ulaz.podatakInt(PohIgrac)];
+			Planet planet = zvijezde[ulaz.podatakInt(PohZvijezda)].
+				planeti[ulaz.podatakInt(PohPlanet)];
+			long populacija = ulaz.podatakLong(PohPopulacija);
+			long radnaMjesta = ulaz.podatakLong(PohRadnaMj);
+			double civilnaInd = ulaz.podatakDouble(PohCivGradUdio);
+			double vojnaInd = ulaz.podatakDouble(PohVojGradUdio);
+			long ostatakCivilneGradnje = ulaz.podatakLong(PohCivGradOst);
+			long ostatakVojneGradnje = ulaz.podatakLong(PohVojGradOst);
+
+			int brZgrada = ulaz.podatakInt(PohZgrada);
+			List<Zgrada> zgrade = new List<Zgrada>();
+			for (int i = 0; i < brZgrada; i++)
+				zgrade.Add(Zgrada.Ucitaj(ulaz[PohZgrada + i]));
+
+			int[] zgradeID  = ulaz.podatakIntPolje(PohCivGrad);
+			LinkedList<Zgrada.ZgradaInfo> redCivilneGradnje = new LinkedList<Zgrada.ZgradaInfo>();
+			for (int i = 0; i < zgradeID.Length; i++)
+				redCivilneGradnje.AddLast(Zgrada.ZgradaInfoID[zgradeID[i]]);
+
+			zgradeID = ulaz.podatakIntPolje(PohVojGrad);
+			LinkedList<Zgrada.ZgradaInfo> redVojneGradnje = new LinkedList<Zgrada.ZgradaInfo>();
+			for (int i = 0; i < zgradeID.Length; i++)
+				redVojneGradnje.AddLast(Zgrada.ZgradaInfoID[zgradeID[i]]);
+
+			return new Kolonija(igrac, planet, populacija, radnaMjesta, civilnaInd,
+				vojnaInd, zgrade, ostatakCivilneGradnje, ostatakVojneGradnje,
+				redCivilneGradnje, redVojneGradnje);
 		}
 		#endregion
 	}

@@ -52,6 +52,14 @@ namespace Prototip
 
 				return naj;
 			}
+
+			public static SenzorInfo IzIda(int id)
+			{
+				foreach (SenzorInfo info in Senzori)
+					if (info.id == id)
+						return info;
+				throw new ArgumentException("Nepostojeći id senzora.");
+			}
 			#endregion
 
 			private Formula razlucivost;
@@ -68,6 +76,11 @@ namespace Prototip
 			public Senzor naciniKomponentu(Dictionary<string, double> varijable)
 			{
 				int nivo = maxDostupanNivo(varijable);
+				return naciniKomponentu(nivo);
+			}
+
+			public Senzor naciniKomponentu(int nivo)
+			{
 				return new Senzor(
 					this, 
 					nivo,

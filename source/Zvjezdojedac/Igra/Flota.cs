@@ -32,8 +32,8 @@ namespace Prototip
 
 		#region Pohrana
 		public const string PohranaTip = "FLOTA";
-		public const string PohX = "X";
-		public const string PohY = "Y";
+		private const string PohX = "X";
+		private const string PohY = "Y";
 		public void pohrani(PodaciPisac izlaz)
 		{
 			izlaz.dodaj(PohX, x);
@@ -46,6 +46,19 @@ namespace Prototip
 			izlaz.dodaj(Brod.PohranaTip, brodovi.Count);
 			izlaz.dodajKolekciju(Brod.PohranaTip, brodovi);
 			
+		}
+
+		public static Flota Ucitaj(PodaciCitac ulaz, Dictionary<int, Dizajn> dizajnovi)
+		{
+			double x = ulaz.podatakDouble(PohX);
+			double y = ulaz.podatakDouble(PohY);
+			Flota flota = new Flota(x, y);
+			
+			int brBrodova = ulaz.podatakInt(Brod.PohranaTip);
+			for (int i = 0; i < brBrodova; i++)
+				flota.dodajBrod(Brod.Ucitaj(ulaz[Brod.PohranaTip + i], dizajnovi));
+
+			return flota;
 		}
 		#endregion
 	}

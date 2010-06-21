@@ -31,13 +31,19 @@ namespace Prototip
 
 		#region Pohrana
 		public const string PohranaTip = "PORUKA";
-		public const string PohTip = "TIP";
+		private const string PohTip = "TIP";
 
 		public void pohrani(PodaciPisac izlaz)
 		{
 			izlaz.dodaj(PohranaTip, (int)tip);
 		}
+		
+		public static Poruka Ucitaj(PodaciCitac ulaz)
+		{
+			int tip = ulaz.podatakInt(PohTip);
 
+			return new Poruka((Tip)tip, "");
+		}
 		#endregion
 	}
 }

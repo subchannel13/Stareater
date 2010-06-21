@@ -50,59 +50,59 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alati.cs" />
-    <Compile Include="GUI\frmFlote.cs">
+    <Compile Include="GUI\FormFlote.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\frmFlote.Designer.cs">
-      <DependentUpon>frmFlote.cs</DependentUpon>
+    <Compile Include="GUI\FormFlote.Designer.cs">
+      <DependentUpon>FormFlote.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\frmGradnja.cs">
+    <Compile Include="GUI\FormGradnja.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\frmGradnja.Designer.cs">
-      <DependentUpon>frmGradnja.cs</DependentUpon>
+    <Compile Include="GUI\FormGradnja.Designer.cs">
+      <DependentUpon>FormGradnja.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\frmIgra.cs">
+    <Compile Include="GUI\FormIgra.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\frmIgra.Designer.cs">
-      <DependentUpon>frmIgra.cs</DependentUpon>
+    <Compile Include="GUI\FormIgra.Designer.cs">
+      <DependentUpon>FormIgra.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\frmMain.cs">
+    <Compile Include="GUI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\frmMain.Designer.cs">
-      <DependentUpon>frmMain.cs</DependentUpon>
+    <Compile Include="GUI\FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\frmNovaIgra.cs">
+    <Compile Include="GUI\FormNovaIgra.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\frmNovaIgra.Designer.cs">
-      <DependentUpon>frmNovaIgra.cs</DependentUpon>
+    <Compile Include="GUI\FormNovaIgra.Designer.cs">
+      <DependentUpon>FormNovaIgra.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\frmPlanetInfo.cs">
+    <Compile Include="GUI\FormPlanetInfo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\frmPlanetInfo.Designer.cs">
-      <DependentUpon>frmPlanetInfo.cs</DependentUpon>
+    <Compile Include="GUI\FormPlanetInfo.Designer.cs">
+      <DependentUpon>FormPlanetInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\frmPoruke.cs">
+    <Compile Include="GUI\FormPoruke.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\frmPoruke.Designer.cs">
-      <DependentUpon>frmPoruke.cs</DependentUpon>
+    <Compile Include="GUI\FormPoruke.Designer.cs">
+      <DependentUpon>FormPoruke.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\frmTechIzbor.cs">
+    <Compile Include="GUI\FormTechIzbor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\frmTechIzbor.Designer.cs">
-      <DependentUpon>frmTechIzbor.cs</DependentUpon>
+    <Compile Include="GUI\FormTechIzbor.Designer.cs">
+      <DependentUpon>FormTechIzbor.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\frmVojnaGradnja.cs">
+    <Compile Include="GUI\FormVojnaGradnja.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\frmVojnaGradnja.Designer.cs">
-      <DependentUpon>frmVojnaGradnja.cs</DependentUpon>
+    <Compile Include="GUI\FormVojnaGradnja.Designer.cs">
+      <DependentUpon>FormVojnaGradnja.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\PrikazMape.cs" />
     <Compile Include="Igra\Brodovi\Brod.cs" />
@@ -144,40 +144,40 @@
     <Compile Include="Podaci\Slike.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="GUI\frmFlote.resx">
-      <DependentUpon>frmFlote.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\FormFlote.resx">
+      <DependentUpon>FormFlote.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\frmGradnja.resx">
-      <DependentUpon>frmGradnja.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\FormGradnja.resx">
+      <DependentUpon>FormGradnja.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\frmIgra.resx">
-      <DependentUpon>frmIgra.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\FormIgra.resx">
+      <DependentUpon>FormIgra.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\frmMain.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\frmNovaIgra.resx">
-      <DependentUpon>frmNovaIgra.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\FormNovaIgra.resx">
+      <DependentUpon>FormNovaIgra.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\frmPlanetInfo.resx">
-      <DependentUpon>frmPlanetInfo.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\FormPlanetInfo.resx">
+      <DependentUpon>FormPlanetInfo.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\frmPoruke.resx">
-      <DependentUpon>frmPoruke.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\FormPoruke.resx">
+      <DependentUpon>FormPoruke.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\frmTechIzbor.resx">
-      <DependentUpon>frmTechIzbor.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\FormTechIzbor.resx">
+      <DependentUpon>FormTechIzbor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\frmVojnaGradnja.resx">
-      <DependentUpon>frmVojnaGradnja.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\FormVojnaGradnja.resx">
+      <DependentUpon>FormVojnaGradnja.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

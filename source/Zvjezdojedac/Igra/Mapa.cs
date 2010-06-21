@@ -10,6 +10,7 @@ namespace Prototip
 		public class GraditeljMape
 		{
 			public const double UDALJENOST = 3;	//Udaljenost izmedju zvijezda
+			public const int BR_PLANETA = 15;
 
 			public Mapa mapa;
 			public List<Planet> pocetnePozicije;
@@ -22,7 +23,6 @@ namespace Prototip
 				Random rnd = new Random();
 				double x, y;
 				int velicinaMape = Mapa.velicinaMape[tipMape].velicina;
-				const int BR_PLANETA = 15;
 				HashSet<Zvijezda> pozicijeIgraca = new HashSet<Zvijezda>();
 
 				#region Stvaranje zvijezda
@@ -261,28 +261,7 @@ namespace Prototip
 				}
 			}
 		}
-
-		public List<Zvijezda> zvijezde
-		{
-			get;
-			private set;
-		}
-
-		public static List<VelicinaMape> velicinaMape
-		{
-			get;
-			private set;
-		}
-
-		public static void dodajVelicinuMape(Dictionary<string, string> podatci)
-		{
-			if (velicinaMape == null)
-				velicinaMape = new List<VelicinaMape>();
-			int velicina = int.Parse(podatci["VELICINA"]);
-			int brZvijezda = int.Parse(podatci["BR_ZVIJEZDJA"]);
-			velicinaMape.Add(new VelicinaMape(velicina, podatci["NAZIV"], brZvijezda));
-		}
-
+		
 		public class VelicinaMape
 		{
 			public int velicina;
@@ -299,9 +278,33 @@ namespace Prototip
 			}
 		}
 
+		#region Staticno
+		public static List<VelicinaMape> velicinaMape
+		{
+			get;
+			private set;
+		}
+
+		public static void dodajVelicinuMape(Dictionary<string, string> podatci)
+		{
+			if (velicinaMape == null)
+				velicinaMape = new List<VelicinaMape>();
+			int velicina = int.Parse(podatci["VELICINA"]);
+			int brZvijezda = int.Parse(podatci["BR_ZVIJEZDJA"]);
+			velicinaMape.Add(new VelicinaMape(velicina, podatci["NAZIV"], brZvijezda));
+		}
+		#endregion
+
+		public List<Zvijezda> zvijezde { get; private set; }
+
 		public Mapa()
 		{
 			this.zvijezde = new List<Zvijezda>();
+		}
+
+		private Mapa(List<Zvijezda> zvijezde)
+		{
+			this.zvijezde = zvijezde;
 		}
 
 		public Zvijezda najblizaZvijezda(double x, double y, double r)
@@ -339,12 +342,23 @@ namespace Prototip
 
 		#region Pohrana
 		public const string PohranaTip = "MAPA";
-		public const string PohBrZijezda = "BR_ZVIJEZDA";
+		private const string PohBrZijezda = "BR_ZVIJEZDA";
+
 		public void pohrani(PodaciPisac izlaz)
 		{
 			izlaz.dodaj(PohBrZijezda, zvijezde.Count);
 			for (int i = 0; i < zvijezde.Count; i++)
 				izlaz.dodaj(Zvijezda.PohranaTip + i, (IPohranjivoSB)zvijezde[i]);
+		}
+
+		public static Mapa Ucitaj(PodaciCitac ulaz)
+		{
+			int brZvjezda = ulaz.podatakInt(PohBrZijezda);
+			List<Zvijezda> zvijezde = new List<Zvijezda>();
+			for (int i = 0; i < brZvjezda; i++)
+				zvijezde.Add(Zvijezda.Ucitaj(ulaz[Zvijezda.PohranaTip + i], i));
+
+			return new Mapa(zvijezde);
 		}
 		#endregion
 

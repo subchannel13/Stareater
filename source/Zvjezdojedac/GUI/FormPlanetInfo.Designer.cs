@@ -1,6 +1,6 @@
 ﻿namespace Prototip
 {
-	partial class frmPlanetInfo
+	partial class FormPlanetInfo
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPlanetInfo));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPlanetInfo));
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.lblZracenje = new System.Windows.Forms.Label();
 			this.lblAtmoTemperatura = new System.Windows.Forms.Label();
@@ -62,6 +62,7 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.lblPoRudaru = new System.Windows.Forms.Label();
 			this.groupBox6 = new System.Windows.Forms.GroupBox();
+			this.lblOdrzavanjeZgrada = new System.Windows.Forms.Label();
 			this.lblOdrzavanjeUkupno = new System.Windows.Forms.Label();
 			this.lblOdrzavanjeTempAtm = new System.Windows.Forms.Label();
 			this.lblOdrzavanjeKvalAtm = new System.Windows.Forms.Label();
@@ -74,12 +75,11 @@
 			this.radPostotak = new System.Windows.Forms.RadioButton();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tabPageProizvodnja = new System.Windows.Forms.TabPage();
+			this.lblKoefOrbitalne = new System.Windows.Forms.Label();
 			this.tabPageZgrade = new System.Windows.Forms.TabPage();
 			this.lblZgradaInfo = new System.Windows.Forms.Label();
 			this.picZgrada = new System.Windows.Forms.PictureBox();
 			this.lstZgrade = new System.Windows.Forms.ListBox();
-			this.lblOdrzavanjeZgrada = new System.Windows.Forms.Label();
-			this.lblKoefOrbitalne = new System.Windows.Forms.Label();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.groupBox4.SuspendLayout();
@@ -417,6 +417,15 @@
 			this.groupBox6.TabStop = false;
 			this.groupBox6.Text = "Održavanje";
 			// 
+			// lblOdrzavanjeZgrada
+			// 
+			this.lblOdrzavanjeZgrada.AutoSize = true;
+			this.lblOdrzavanjeZgrada.Location = new System.Drawing.Point(109, 16);
+			this.lblOdrzavanjeZgrada.Name = "lblOdrzavanjeZgrada";
+			this.lblOdrzavanjeZgrada.Size = new System.Drawing.Size(80, 13);
+			this.lblOdrzavanjeZgrada.TabIndex = 7;
+			this.lblOdrzavanjeZgrada.Text = "Zgrade: xx.xx X";
+			// 
 			// lblOdrzavanjeUkupno
 			// 
 			this.lblOdrzavanjeUkupno.AutoSize = true;
@@ -543,6 +552,15 @@
 			this.tabPageProizvodnja.TabIndex = 0;
 			this.tabPageProizvodnja.Text = "Proizvodnja";
 			// 
+			// lblKoefOrbitalne
+			// 
+			this.lblKoefOrbitalne.AutoSize = true;
+			this.lblKoefOrbitalne.Location = new System.Drawing.Point(31, 153);
+			this.lblKoefOrbitalne.Name = "lblKoefOrbitalne";
+			this.lblKoefOrbitalne.Size = new System.Drawing.Size(151, 13);
+			this.lblKoefOrbitalne.TabIndex = 28;
+			this.lblKoefOrbitalne.Text = "Cijena orbitalne gradnje: xxx.xx";
+			// 
 			// tabPageZgrade
 			// 
 			this.tabPageZgrade.BackColor = System.Drawing.SystemColors.Control;
@@ -583,25 +601,7 @@
 			this.lstZgrade.TabIndex = 0;
 			this.lstZgrade.SelectedIndexChanged += new System.EventHandler(this.lstZgrade_SelectedIndexChanged);
 			// 
-			// lblOdrzavanjeZgrada
-			// 
-			this.lblOdrzavanjeZgrada.AutoSize = true;
-			this.lblOdrzavanjeZgrada.Location = new System.Drawing.Point(109, 16);
-			this.lblOdrzavanjeZgrada.Name = "lblOdrzavanjeZgrada";
-			this.lblOdrzavanjeZgrada.Size = new System.Drawing.Size(80, 13);
-			this.lblOdrzavanjeZgrada.TabIndex = 7;
-			this.lblOdrzavanjeZgrada.Text = "Zgrade: xx.xx X";
-			// 
-			// lblKoefOrbitalne
-			// 
-			this.lblKoefOrbitalne.AutoSize = true;
-			this.lblKoefOrbitalne.Location = new System.Drawing.Point(31, 153);
-			this.lblKoefOrbitalne.Name = "lblKoefOrbitalne";
-			this.lblKoefOrbitalne.Size = new System.Drawing.Size(151, 13);
-			this.lblKoefOrbitalne.TabIndex = 28;
-			this.lblKoefOrbitalne.Text = "Cijena orbitalne gradnje: xxx.xx";
-			// 
-			// frmPlanetInfo
+			// FormPlanetInfo
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -621,7 +621,7 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "frmPlanetInfo";
+			this.Name = "FormPlanetInfo";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "frmPlanetInfo";

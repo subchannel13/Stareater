@@ -9,13 +9,13 @@ using System.Windows.Forms;
 
 namespace Prototip
 {
-	public partial class frmGradnja : Form
+	public partial class FormGradnja : Form
 	{
 		private Kolonija kolonija;
         private LinkedList<Zgrada.ZgradaInfo> redGradnje;
         private bool civilnaGradnja;
 
-		public frmGradnja(Kolonija kolonija, bool civilnaGradnja)
+		public FormGradnja(Kolonija kolonija, bool civilnaGradnja)
 		{
 			InitializeComponent();
 			lblZgradaInfo.Text = "";

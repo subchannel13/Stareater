@@ -9,13 +9,13 @@ using System.Windows.Forms;
 
 namespace Prototip
 {
-	public partial class frmNovaIgra : Form
+	public partial class FormNovaIgra : Form
 	{
 		public List<Igrac.ZaStvoriti> igraci;
 
 		public Mapa.GraditeljMape mapa;
 
-		public frmNovaIgra()
+		public FormNovaIgra()
 		{
 			InitializeComponent();
 			igraci = new List<Igrac.ZaStvoriti>();
@@ -27,7 +27,7 @@ namespace Prototip
 				cbVelicinaMape.Items.Add(vm.naziv);
 			cbVelicinaMape.SelectedIndex = Postavke.ProslaIgra.velicinaMape;
 
-			foreach (Organizacije org in Organizacije.lista)
+			foreach (Organizacija org in Organizacija.lista)
 				cbOrganizacija.Items.Add(org.naziv);
 			cbOrganizacija.SelectedIndex = Postavke.ProslaIgra.organizacija;
 
@@ -46,7 +46,7 @@ namespace Prototip
 
 		private void cbOrganizacija_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			Organizacije org = Organizacije.lista[cbOrganizacija.SelectedIndex];
+			Organizacija org = Organizacija.lista[cbOrganizacija.SelectedIndex];
 			lblOpisOrg.Text = org.opis;
 		}
 
@@ -64,16 +64,16 @@ namespace Prototip
 			Postavke.ProslaIgra.organizacija = cbOrganizacija.SelectedIndex;
 			Postavke.ProslaIgra.velicinaMape = cbVelicinaMape.SelectedIndex;
 
-			Alati.Vadjenje<Organizacije> organizacije = new Alati.Vadjenje<Organizacije>();
-			for (int i = 0; i < Organizacije.lista.Count; i++)
+			Alati.Vadjenje<Organizacija> organizacije = new Alati.Vadjenje<Organizacija>();
+			for (int i = 0; i < Organizacija.lista.Count; i++)
 				if (i != cbOrganizacija.SelectedIndex)
-					organizacije.dodaj(Organizacije.lista[i]);
+					organizacije.dodaj(Organizacija.lista[i]);
 
 			Alati.Vadjenje<Color> boje = new Alati.Vadjenje<Color>();
 			foreach (Color boja in Igrac.BojeIgraca)
 				boje.dodaj(boja);
 			
-			igraci.Add(new Igrac.ZaStvoriti(Igrac.Tip.COVJEK, txtIme.Text, Organizacije.lista[cbOrganizacija.SelectedIndex], boje.izvadi()));
+			igraci.Add(new Igrac.ZaStvoriti(Igrac.Tip.COVJEK, txtIme.Text, Organizacija.lista[cbOrganizacija.SelectedIndex], boje.izvadi()));
 			for (int i = 1; i < brIgraca; i++)
 				igraci.Add(new Igrac.ZaStvoriti(Igrac.Tip.RACUNALO, "Komp " + i, organizacije.izvadi(), boje.izvadi()));
 

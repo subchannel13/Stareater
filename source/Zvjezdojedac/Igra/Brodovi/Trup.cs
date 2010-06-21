@@ -50,8 +50,16 @@ namespace Prototip
 				List<Trup> ret = new List<Trup>();
 				foreach (TrupInfo ti in Trupovi)
 					if (ti.dostupno(varijable))
-						ret.Add(ti.napraviKomponentu(varijable));
+						ret.Add(ti.naciniKomponentu(varijable));
 				return ret;
+			}
+
+			public static TrupInfo IzIda(int id)
+			{
+				foreach (TrupInfo info in Trupovi)
+					if (info.id == id)
+						return info;
+				throw new ArgumentException("Nepostojeći id taktike.");
 			}
 			#endregion
 
@@ -90,9 +98,14 @@ namespace Prototip
 				this.cijena = cijena;
 			}
 
-			public Trup napraviKomponentu(Dictionary<string, double> varijable)
+			public Trup naciniKomponentu(Dictionary<string, double> varijable)
 			{
 				int nivo = maxDostupanNivo(varijable);
+				return naciniKomponentu(nivo);
+			}
+
+			public Trup naciniKomponentu(int nivo)
+			{
 				return new Trup(
 					this,
 					nivo,

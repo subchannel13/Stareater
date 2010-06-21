@@ -1,6 +1,6 @@
 ﻿namespace Prototip
 {
-	partial class frmFlote
+	partial class FormFlote
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmFlote));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormFlote));
 			this.tabCtrlFlote = new System.Windows.Forms.TabControl();
 			this.tabDizajnovi = new System.Windows.Forms.TabPage();
 			this.btnUkloniDizajn = new System.Windows.Forms.Button();
@@ -542,7 +542,7 @@
 			this.picNDSlika.TabIndex = 0;
 			this.picNDSlika.TabStop = false;
 			// 
-			// frmFlote
+			// FormFlote
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -551,7 +551,7 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
-			this.Name = "frmFlote";
+			this.Name = "FormFlote";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Flote";
 			this.tabCtrlFlote.ResumeLayout(false);

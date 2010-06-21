@@ -44,8 +44,16 @@ namespace Prototip
 				List<Stit> ret = new List<Stit>();
 				foreach (StitInfo si in Stitovi)
 					if (si.dostupno(varijable))
-						ret.Add(si.napraviKomponentu(varijable, velicinaTrupa));
+						ret.Add(si.naciniKomponentu(varijable, velicinaTrupa));
 				return ret;
+			}
+
+			public static StitInfo IzIda(int id)
+			{
+				foreach (StitInfo info in Stitovi)
+					if (info.id == id)
+						return info;
+				throw new ArgumentException("Nepostojeći id štita.");
 			}
 			#endregion
 
@@ -74,9 +82,14 @@ namespace Prototip
 				this.cijena = cijena;
 			}
 
-			public Stit napraviKomponentu(Dictionary<string, double> varijable, double velicinaStita)
+			public Stit naciniKomponentu(Dictionary<string, double> varijable, double velicinaStita)
 			{
 				int nivo = maxDostupanNivo(varijable);
+				return naciniKomponentu(nivo, velicinaStita);
+			}
+
+			public Stit naciniKomponentu(int nivo, double velicinaStita)
+			{
 				return new Stit(
 					this,
 					nivo,

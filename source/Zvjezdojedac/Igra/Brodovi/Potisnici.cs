@@ -47,6 +47,14 @@ namespace Prototip
 
 				return naj;
 			}
+
+			public static PotisnikInfo IzIda(int id)
+			{
+				foreach (PotisnikInfo info in Potisnici)
+					if (info.id == id)
+						return info;
+				throw new ArgumentException("Nepostojeći id potisnika.");
+			}
 			#endregion
 
 			private Formula brzina;
@@ -63,6 +71,11 @@ namespace Prototip
 			public Potisnici naciniKomponentu(Dictionary<string, double> varijable)
 			{
 				int nivo = maxDostupanNivo(varijable);
+				return naciniKomponentu(nivo);
+			}
+
+			public Potisnici naciniKomponentu(int nivo)
+			{
 				return new Potisnici(
 					this,
 					nivo,

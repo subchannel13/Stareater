@@ -5,9 +5,10 @@ using System.Text;
 
 namespace Prototip
 {
-	public class Organizacije : IIdentifiable
+	public class Organizacija : IIdentifiable
 	{
-		public static List<Organizacije> lista
+		#region Statično
+		public static List<Organizacija> lista
 		{
 			get;
 			private set;
@@ -15,23 +16,30 @@ namespace Prototip
 
 		public static void dodajOrganizaciju(Dictionary<string, string> podatci)
 		{
-			if (lista == null) lista = new List<Organizacije>();
+			if (lista == null) lista = new List<Organizacija>();
 
 			List<string> pocetneTehnologije = new List<string>();
 			foreach (string tehKod in podatci.Keys)
 				if (tehKod.StartsWith("TECH"))
 					pocetneTehnologije.Add(podatci[tehKod]);
 			
-			lista.Add(new Organizacije(podatci["NAZIV"], podatci["OPIS"], pocetneTehnologije));
+			lista.Add(new Organizacija(
+				lista.Count,
+				podatci["NAZIV"], 
+				podatci["OPIS"], 
+				pocetneTehnologije));
 		}
+
+		#endregion
 
 		public int id { get; private set; }
 		public string naziv { get; private set; }
 		public string opis { get; private set; }
 		public List<string> pocetneTehnologije { get; private set; }
 
-		public Organizacije(string naziv, string opis, List<string> pocetneTehnologije)
+		public Organizacija(int id, string naziv, string opis, List<string> pocetneTehnologije)
 		{
+			this.id = id;
 			this.naziv = naziv;
 			this.opis = opis;
 			this.pocetneTehnologije = pocetneTehnologije;

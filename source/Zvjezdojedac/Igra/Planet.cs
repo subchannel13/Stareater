@@ -132,6 +132,23 @@ namespace Prototip
 			slika = Slike.OdrediSlikuPlaneta(tip, this.gustocaAtmosfere, this.kvalitetaAtmosfere, this.temperatura());
 		}
 
+		private Planet(Tip tip, int pozicija, Zvijezda zvjezda, int velicina, double kvalitetaAtmosfere, double gustocaAtmosfere, double mineraliPovrsinski, double mineraliDubinski)
+		{
+			this.tip = tip;
+			this.zvjezda = zvjezda;
+			this.pozicija = pozicija;
+			ime = zvjezda.ime + " " + rimskiBrojevi[pozicija];
+			this.kolonija = null;
+
+			this.velicina = velicina;
+			this.kvalitetaAtmosfere = kvalitetaAtmosfere;
+			this.gustocaAtmosfere = gustocaAtmosfere;
+			this.mineraliPovrsinski = mineraliPovrsinski;
+			this.mineraliDubinski = mineraliDubinski;
+
+			slika = Slike.OdrediSlikuPlaneta(tip, this.gustocaAtmosfere, this.kvalitetaAtmosfere, this.temperatura());
+		}
+
 		public double gravitacija()
 		{
 			if (tip == Tip.KAMENI)
@@ -180,18 +197,31 @@ namespace Prototip
 		public const string PohAtmGust = "ATM_GUST";
 		public const string PohMineralPov = "MINERAL_POV";
 		public const string PohMineralDub = "MINERAL_DUB";
+		
 		public void pohrani(PodaciPisac izlaz)
 		{
-			izlaz.dodaj(PohTip, tipovi[tip]);
-			izlaz.dodaj(PohIme, ime);
+			izlaz.dodaj(PohTip, (int)tip);
+			//izlaz.dodaj(PohIme, ime);
 			izlaz.dodaj(PohVelicina, velicina);
 			izlaz.dodaj(PohAtmKval, kvalitetaAtmosfere);
 			izlaz.dodaj(PohAtmGust, gustocaAtmosfere);
 			izlaz.dodaj(PohMineralPov, mineraliPovrsinski);
 			izlaz.dodaj(PohMineralDub, mineraliDubinski);
 			// Kolonije se pamte odvojeno
-			//if (kolonija != null)
-			//	izlaz.dodaj(Kolonija.PohranaTip, kolonija);
+		}
+
+		public static Planet Ucitaj(PodaciCitac ulaz, Zvijezda zvijezda, int pozicija)
+		{
+			Tip tip = (Tip)ulaz.podatakInt(PohTip);
+			int velicina = ulaz.podatakInt(PohVelicina);
+			
+			double kvalitetaAtmosfere = ulaz.podatakDouble(PohAtmKval);
+			double gustocaAtmosfere = ulaz.podatakDouble(PohAtmGust);
+			double mineraliPovrsinski = ulaz.podatakDouble(PohMineralPov);
+			double mineraliDubinski = ulaz.podatakDouble(PohMineralDub);
+
+			return new Planet(tip, pozicija, zvijezda, velicina, kvalitetaAtmosfere,
+				gustocaAtmosfere, mineraliPovrsinski, mineraliDubinski);
 		}
 		#endregion
 

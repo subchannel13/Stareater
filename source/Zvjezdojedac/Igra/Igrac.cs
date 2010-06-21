@@ -18,10 +18,10 @@ namespace Prototip
 		{
 			public Tip tip;
 			public string ime;
-			public Organizacije organizacija;
+			public Organizacija organizacija;
 			public Color boja;
 
-			public ZaStvoriti(Tip tip, string ime, Organizacije organizacija, Color boja)
+			public ZaStvoriti(Tip tip, string ime, Organizacija organizacija, Color boja)
 			{
 				this.tip = tip;
 				this.ime = ime;
@@ -43,7 +43,7 @@ namespace Prototip
 		public System.Drawing.Color boja;
 		private Random random;
 
-		private Organizacije organizacija;
+		private Organizacija organizacija;
 
 		public Zvijezda odabranaZvijezda;
 		private Planet _odabranPlanet;
@@ -66,7 +66,7 @@ namespace Prototip
 		public Dictionary<Zvijezda, Flota> floteStacionarne = new Dictionary<Zvijezda,Flota>();
 		public HashSet<Flota> flotePokretne = new HashSet<Flota>();
 
-		public Igrac(Tip tip, string ime, Organizacije organizacija, 
+		public Igrac(Tip tip, string ime, Organizacija organizacija, 
 			System.Drawing.Color boja, int id)
 		{
 			this.id = id;
@@ -84,6 +84,33 @@ namespace Prototip
 
 			foreach (Tehnologija.TechInfo t in Tehnologija.TechInfo.tehnologijeIstrazivanje)
 				tehnologije.Add(t.kod, new Tehnologija(t));
+		}
+
+		private Igrac(int id, Tip tip, string ime, Color boja, Organizacija organizacija,
+			 Zvijezda odabranaZvijezda, Planet odabranPlanet, LinkedList<Poruka> poruke,
+			List<DizajnZgrada> dizajnoviBrodova, Dictionary<string, Tehnologija> tehnologije,
+			LinkedList<Tehnologija> tehnologijeURazvoju, double koncentracijaPoenaRazvoja,
+			LinkedList<Tehnologija> tehnologijeUIstrazivanju, HashSet<Zvijezda> posjeceneZvjezde,
+			Dictionary<Zvijezda, Flota> floteStacionarne, HashSet<Flota> flotePokretne)
+		{
+			this.id = id;
+			this.tip = tip;
+			this.ime = ime;
+			this.boja = boja;
+			this.organizacija = organizacija;
+			this.odabranaZvijezda = odabranaZvijezda;
+			this._odabranPlanet = odabranPlanet;
+			this.poruke = poruke;
+			this.dizajnoviBrodova = dizajnoviBrodova;
+			this.tehnologije = tehnologije;
+			this.tehnologijeURazvoju = tehnologijeURazvoju;
+			this.koncentracijaPoenaRazvoja = koncentracijaPoenaRazvoja;
+			this.tehnologijeUIstrazivanju = tehnologijeUIstrazivanju;
+			this.posjeceneZvjezde = posjeceneZvjezde;
+			this.floteStacionarne = floteStacionarne;
+			this.flotePokretne = flotePokretne;
+
+			random = new Random();
 		}
 
 		public void staviNoveTehnologije(Igra igra)
@@ -254,22 +281,22 @@ namespace Prototip
 
 		#region Pohrana
 		public const string PohranaTip = "IGRAC";
-		public const string PohId = "ID";
-		public const string PohTip = "TIP", PohTipCovjek = "COVJEK", PohTipRacunalo = "RACUNALO";
-		public const string PohIme = "IME";
-		public const string PohBoja = "BOJA";
-		public const string PohOrganizacija = "ORGANIZACIJA";
-		public const string PohPogledZvj = "POGLED_ZVJ";
-		public const string PohPogledPlanet = "POGLED_PLANET";
-		public const string PohPoruka = "PORUKA";
-		public const string PohDizajn = "DIZAJN";
-		public const string PohTehnologija = "TEHNO";
-		public const string PohTehURazvoju = "TEH_U_RAZ";
-		public const string PohTehUIstraz = "TEH_U_IST";
-		public const string PohTehRazKonc = "TEH_RAZ_KONC";
-		public const string PohPosjeceneZvj = "ZVJ_POSJET";
-		public const string PohFloteStac = "FLOTE_STAC";
-		public const string PohFlotePokret = "FLOTE_POK";
+		private const string PohId = "ID";
+		private const string PohTip = "TIP", PohTipCovjek = "COVJEK", PohTipRacunalo = "RACUNALO";
+		private const string PohIme = "IME";
+		private const string PohBoja = "BOJA";
+		private const string PohOrganizacija = "ORGANIZACIJA";
+		private const string PohPogledZvj = "POGLED_ZVJ";
+		private const string PohPogledPlanet = "POGLED_PLANET";
+		private const string PohPoruka = "PORUKA";
+		private const string PohDizajn = "DIZAJN";
+		private const string PohTehnologija = "TEHNO";
+		private const string PohTehURazvoju = "TEH_U_RAZ";
+		private const string PohTehUIstraz = "TEH_U_IST";
+		private const string PohTehRazKonc = "TEH_RAZ_KONC";
+		private const string PohPosjeceneZvj = "ZVJ_POSJET";
+		private const string PohFloteStac = "FLOTE_STAC";
+		private const string PohFlotePokret = "FLOTE_POK";
 		public void pohrani(PodaciPisac izlaz)
 		{
 			
@@ -283,7 +310,10 @@ namespace Prototip
 			izlaz.dodaj(PohBoja, boja.R + " " + boja.G + " " + boja.B);
 			izlaz.dodaj(PohOrganizacija, organizacija);
 
-			izlaz.dodaj(PohPogledZvj, odabranaZvijezda.x + " " + odabranaZvijezda.y);
+			izlaz.dodaj(PohPogledZvj, 
+				odabranaZvijezda.x.ToString(Podaci.DecimalnaTocka) 
+				+ " " 
+				+ odabranaZvijezda.y.ToString(Podaci.DecimalnaTocka));
 			izlaz.dodaj(PohPogledPlanet, odabranPlanet.pozicija);
 
 			izlaz.dodaj(PohPoruka, poruke.Count);
@@ -293,10 +323,11 @@ namespace Prototip
 			for (int i = 0; i < dizajnoviBrodova.Count; i++)
 				izlaz.dodaj(PohDizajn+i, (IPohranjivoSB)dizajnoviBrodova[i].dizajn);
 
+			izlaz.dodaj(PohTehnologija, tehnologije.Count);
 			izlaz.dodajKolekciju(PohTehnologija, tehnologije.Values);
 			izlaz.dodaj(PohTehRazKonc, koncentracijaPoenaRazvoja);
-			izlaz.dodaj(PohTehURazvoju, tehnologijeURazvoju.Count);
-			izlaz.dodaj(PohTehUIstraz, tehnologijeUIstrazivanju.Count);
+			//izlaz.dodaj(PohTehURazvoju, tehnologijeURazvoju.Count);
+			//izlaz.dodaj(PohTehUIstraz, tehnologijeUIstrazivanju.Count);
 			izlaz.dodajIdeve(PohTehURazvoju, tehnologijeURazvoju);
 			izlaz.dodajIdeve(PohTehUIstraz, tehnologijeUIstrazivanju);
 
@@ -311,6 +342,96 @@ namespace Prototip
 
 			izlaz.dodaj(PohFlotePokret, flotePokretne.Count);
 			izlaz.dodajKolekciju(PohFlotePokret, flotePokretne);
+		}
+
+		private static Color OdrediBoju(string bojaString)
+		{
+			string[] kanali = bojaString.Split(new char[] { ' ' });
+			return Color.FromArgb(
+				int.Parse(kanali[0]), 
+				int.Parse(kanali[1]), 
+				int.Parse(kanali[2]));
+		}
+
+		private static Zvijezda OdrediOdabranuZvj(Mapa mapa, string zvjString)
+		{
+			string[] pozicija = zvjString.Split(new char[] { ' ' });
+			return mapa.najblizaZvijezda(
+				double.Parse(pozicija[0], Podaci.DecimalnaTocka),
+				double.Parse(pozicija[1], Podaci.DecimalnaTocka),
+				-1);
+		}
+
+		public static Igrac Ucitaj(PodaciCitac ulaz, Mapa mapa)
+		{
+			Tip tip = Tip.COVJEK;
+			if (ulaz.podatak(PohTip) != PohTipCovjek)
+				tip = Tip.RACUNALO;
+
+			int id = ulaz.podatakInt(PohId);
+			string ime = ulaz.podatak(PohIme);
+			Color boja = OdrediBoju(ulaz.podatak(PohBoja));
+			Organizacija organizacija = Organizacija.lista[ulaz.podatakInt(PohOrganizacija)];
+
+			Zvijezda odabranaZvj = OdrediOdabranuZvj(mapa, ulaz.podatak(PohPogledZvj));
+			Planet odabranPlanet = odabranaZvj.planeti[ulaz.podatakInt(PohPogledPlanet)];
+
+			int brPoruka = ulaz.podatakInt(PohPoruka);
+			LinkedList<Poruka> poruke = new LinkedList<Poruka>();
+			for (int i = 0; i < brPoruka; i++)
+				poruke.AddLast(Poruka.Ucitaj(ulaz[PohPoruka + i]));
+
+			int brDizajnova = ulaz.podatakInt(PohDizajn);
+			List<DizajnZgrada> dizajnovi = new List<DizajnZgrada>();
+			for (int i = 0; i < brDizajnova; i++) {
+				Dizajn dizajn = Dizajn.Ucitaj(ulaz[PohDizajn + i]);
+				dizajnovi.Add(new DizajnZgrada(dizajn));
+			}
+
+			int brTeh = ulaz.podatakInt(PohTehnologija);
+			Dictionary<string, Tehnologija> tehnologije = new Dictionary<string, Tehnologija>();
+			for (int i = 0; i < brTeh; i++) {
+				Tehnologija teh = Tehnologija.Ucitaj(ulaz[PohTehnologija + i]);
+				tehnologije.Add(teh.tip.kod, teh);
+			}
+			double koncPoenaRazvoja = ulaz.podatakDouble(PohTehRazKonc);
+
+			int[] tmpIntovi = ulaz.podatakIntPolje(PohTehURazvoju);
+			LinkedList<Tehnologija> tehURazvoju = new LinkedList<Tehnologija>();
+			foreach(int tehId in tmpIntovi)
+				tehURazvoju.AddLast(tehnologije[Tehnologija.TechInfo.tehnologijeRazvoj[tehId].kod]);
+			
+			tmpIntovi = ulaz.podatakIntPolje(PohTehUIstraz);
+			LinkedList<Tehnologija> tehUIstraz = new LinkedList<Tehnologija>();
+			foreach (int tehId in tmpIntovi)
+				tehUIstraz.AddLast(tehnologije[Tehnologija.TechInfo.tehnologijeIstrazivanje[tehId].kod]);
+
+			Dictionary<int, Zvijezda> zvijezdeID = new Dictionary<int,Zvijezda>();
+			foreach(Zvijezda zvj in mapa.zvijezde)
+				zvijezdeID.Add(zvj.id, zvj);
+			tmpIntovi = ulaz.podatakIntPolje(PohPosjeceneZvj);
+			HashSet<Zvijezda> posjeceneZvijezde = new HashSet<Zvijezda>();
+			foreach (int zvjId in tmpIntovi)
+				posjeceneZvijezde.Add(zvijezdeID[zvjId]);
+
+			Dictionary<int, Dizajn> dizajnID = new Dictionary<int, Dizajn>();
+			foreach (DizajnZgrada dizajnZgrada in dizajnovi)
+				dizajnID.Add(dizajnZgrada.dizajn.id, dizajnZgrada.dizajn);
+			tmpIntovi = ulaz.podatakIntPolje(PohFloteStac);
+			Dictionary<Zvijezda, Flota> floteStacionarne = new Dictionary<Zvijezda,Flota>();
+			for (int zvjId = 0; zvjId < tmpIntovi.Length; zvjId++)
+				floteStacionarne.Add(
+					zvijezdeID[zvjId],
+					Flota.Ucitaj(ulaz[PohFloteStac + zvjId], dizajnID));
+
+			int brPokFlota = ulaz.podatakInt(PohFlotePokret);
+			HashSet<Flota> flotePokretne = new HashSet<Flota>();
+			for (int i = 0; i < brPokFlota; i++)
+				flotePokretne.Add(Flota.Ucitaj(ulaz[PohFlotePokret + i], dizajnID));
+
+			return new Igrac(id, tip, ime, boja, organizacija, odabranaZvj, odabranPlanet,
+				poruke, dizajnovi, tehnologije, tehURazvoju, koncPoenaRazvoja, tehUIstraz,
+				posjeceneZvijezde, floteStacionarne, flotePokretne);
 		}
 		#endregion
 	}
