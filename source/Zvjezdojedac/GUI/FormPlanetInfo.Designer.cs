@@ -555,7 +555,7 @@
 			// lblKoefOrbitalne
 			// 
 			this.lblKoefOrbitalne.AutoSize = true;
-			this.lblKoefOrbitalne.Location = new System.Drawing.Point(31, 153);
+			this.lblKoefOrbitalne.Location = new System.Drawing.Point(31, 173);
 			this.lblKoefOrbitalne.Name = "lblKoefOrbitalne";
 			this.lblKoefOrbitalne.Size = new System.Drawing.Size(151, 13);
 			this.lblKoefOrbitalne.TabIndex = 28;

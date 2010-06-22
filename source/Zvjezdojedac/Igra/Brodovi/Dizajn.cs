@@ -118,8 +118,18 @@ namespace Prototip
 			Oruzje primarnoOruzje, Oruzje sekundarnoOruzje, double udioPrimarnogOruzja,
 			Oklop oklop, Stit stit, Dictionary<SpecijalnaOprema, int> specijalnaOprema,
 			Senzor senzor, Potisnici potisnici, MZPogon MZPogon, Reaktor reaktor, Taktika taktika)
+			:
+			this(SlijedeciId(), ime, trup, primarnoOruzje, sekundarnoOruzje, 
+			udioPrimarnogOruzja, oklop, stit, specijalnaOprema, senzor, potisnici, 
+			MZPogon, reaktor, taktika)
+		{ }
+
+		private Dizajn(int id, string ime, Trup trup,
+			Oruzje primarnoOruzje, Oruzje sekundarnoOruzje, double udioPrimarnogOruzja,
+			Oklop oklop, Stit stit, Dictionary<SpecijalnaOprema, int> specijalnaOprema,
+			Senzor senzor, Potisnici potisnici, MZPogon MZPogon, Reaktor reaktor, Taktika taktika)
 		{
-			id = SlijedeciId();
+			this.id = id;
 			brojBrodova = 0;
 			this.ime = ime;
 			this.trup = trup;
@@ -563,17 +573,17 @@ namespace Prototip
 					primOruzje = new Zbir<Oruzje>(null, 0);
 				if (sekOruzje != null) {
 					ukupno += sekOruzje.komponenta.velicina * sekOruzje.kolicina;
-					udioPrim = sekOruzje.komponenta.velicina * sekOruzje.kolicina;
+					udioSek = sekOruzje.komponenta.velicina * sekOruzje.kolicina;
 				}
 				else
 					sekOruzje = new Zbir<Oruzje>(null, 0);
 				udioPrim /= ukupno;
 				udioSek /= ukupno;
-				udio = (udioPrim + udioSek) / 2;
+				udio = (udioPrim + 1 - udioSek) / 2;
 			}
 
 
-			return new Dizajn(ime, trup, primOruzje.komponenta, sekOruzje.komponenta,
+			return new Dizajn(id, ime, trup, primOruzje.komponenta, sekOruzje.komponenta,
 				udio, oklop, stit, specOprema, senzor, potisnici, mzPogon, reaktor,
 				taktika);
 		}

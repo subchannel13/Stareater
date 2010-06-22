@@ -18,24 +18,28 @@ namespace Prototip
 
 			public abstract void djeluj(Kolonija kolonija, Dictionary<string, double> varijable);
 
-			public abstract Ucinak napraviSe(string[] parametri);
+			public abstract void noviKrug(Kolonija kolonija, Dictionary<string, double> varijable);
+			//public abstract Ucinak napraviSe(string[] parametri);
 
-			private static Dictionary<string, Ucinak> prototipovi = null;
+			#region Statično
+			protected delegate Ucinak TvornicaUcinka(string[] parametri);
+			private static Dictionary<string, TvornicaUcinka> prototipovi = null;
 
 			public static Ucinak napraviUcinak(string tip)
 			{
 				if (prototipovi == null)
 				{
-					prototipovi = new Dictionary<string, Ucinak>();
-					prototipovi.Add("SET_VAR", new UcinakSetVar());
+					prototipovi = new Dictionary<string, TvornicaUcinka>();
+					prototipovi.Add("SET_VAR", UcinakSetVar.NapraviSe);
 				}
 
 				string[] parametriStr = tip.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 				for (int i = 0; i < parametriStr.Length; i++)
 					parametriStr[i] = parametriStr[i].Trim();
 
-				return prototipovi[parametriStr[0]].napraviSe(parametriStr);
+				return prototipovi[parametriStr[0]](parametriStr);
 			}
+			#endregion
 		}
 
 		public class UcinakSetVar : Ucinak
@@ -52,7 +56,7 @@ namespace Prototip
 				this.formula = formula;
 			}
 
-			public override Ucinak napraviSe(string[] parametri)
+			public static Ucinak NapraviSe(string[] parametri)
 			{
 				return new UcinakSetVar(parametri[1], Formula.IzStringa(parametri[2]));
 			}
@@ -61,6 +65,9 @@ namespace Prototip
 			{
 				kolonija.efekti[varijabla] = formula.iznos(varijable);
 			}
+
+			public override void noviKrug(Kolonija kolonija, Dictionary<string, double> varijable)
+			{ }
 		}
 		#endregion
 
@@ -75,9 +82,7 @@ namespace Prototip
 			public List<Tehnologija.Preduvjet> preduvjeti { get; private set; }
 
 			public Image slika { get; private set; }
-
 			public string kod { get; private set; }
-
 			public string opis { get; private set; }
 
 			public List<Ucinak> ucinci { get; private set; }
@@ -109,6 +114,18 @@ namespace Prototip
 				if (svojstvaSet.Contains("ORBITALNA")) orbitalna = true; else orbitalna = false;
 				if (!svojstvaSet.Contains("NE_OSTAJE")) ostaje = true; else ostaje = false;
 				if (svojstvaSet.Contains("PONAVLJA_SE")) ponavljaSe = true; else ponavljaSe = false;
+			}
+
+			public bool dostupna(Dictionary<string, double> varijable, long prisutnaKolicina)
+			{
+				foreach (Tehnologija.Preduvjet pred in preduvjeti)
+					if (!pred.zadovoljen(varijable))
+						return false;
+
+				if ((long)dopustenaKolicina.iznos(varijable) <= prisutnaKolicina)
+					return false;
+
+				return true;
 			}
 
 			public override string ToString()
@@ -157,19 +174,33 @@ namespace Prototip
 		{
 			return ++_SlijedeciId;
 		}
+		public static int ZadnjiId()
+		{
+			return _SlijedeciId;
+		}
 		#endregion
 
-		public ZgradaInfo tip;
+		public ZgradaInfo tip { get; private set; }
+		public long kolicina;
 
-		public Zgrada(ZgradaInfo tip)
+		public Zgrada(ZgradaInfo tip, long kolicina)
 		{
 			this.tip = tip;
+			this.kolicina = kolicina;
 		}
 
 		public void djeluj(Kolonija kolonija, Dictionary<string, double> varijable)
 		{
+			varijable["BR_ZGRADA"] = kolicina;
 			foreach (Ucinak u in tip.ucinci)
 				u.djeluj(kolonija, varijable);
+		}
+
+		public void noviKrug(Kolonija kolonija, Dictionary<string, double> varijable)
+		{
+			varijable["BR_ZGRADA"] = kolicina;
+			foreach (Ucinak u in tip.ucinci)
+				u.noviKrug(kolonija, varijable);
 		}
 
 		public override string ToString()
@@ -179,16 +210,19 @@ namespace Prototip
 
 		#region Pohrana
 		public const string PohranaTip = "ZGRADA";
-		public const string PohTip = "TIP";
-
+		private const string PohTip = "TIP";
+		private const string PohKolicina = "KOL";
 		public void pohrani(PodaciPisac izlaz)
 		{
 			izlaz.dodaj(PohTip, tip);
+			izlaz.dodaj(PohKolicina, kolicina);
 		}
 
 		public static Zgrada Ucitaj(PodaciCitac ulaz)
 		{
-			return new Zgrada(ZgradaInfoID[ulaz.podatakInt(PohTip)]);
+			ZgradaInfo tip = ZgradaInfoID[ulaz.podatakInt(PohTip)];
+			long kolicina = ulaz.podatakLong(PohKolicina);
+			return new Zgrada(tip, kolicina);
 		}
 		#endregion
 	}

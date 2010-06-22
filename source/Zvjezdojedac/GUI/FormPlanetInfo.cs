@@ -121,7 +121,7 @@ namespace Prototip
 			hscrCivilnaIndustrija.Value = (int)(kolonija.civilnaIndustrija * hscrCivilnaIndustrija.Maximum);
 			hscrVojnaIndustrija.Value = (int)(kolonija.vojnaIndustrija * hscrVojnaIndustrija.Maximum);
 
-			foreach (Zgrada z in kolonija.zgrade)
+			foreach (Zgrada z in kolonija.zgrade.Values)
 				lstZgrade.Items.Add(z);
 
 			osvjeziLabele();

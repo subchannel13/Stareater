@@ -8,6 +8,7 @@ namespace Prototip
 {
 	public class Kolonija : IPohranjivoSB
 	{
+		#region Ključevi efekata
 		public const string Populacija = "POP";
 		public const string PopulacijaMax = "POP_MAX";
 		public const string PopulacijaPromjena = "POP_DELTA";
@@ -53,7 +54,8 @@ namespace Prototip
 		public const string BrRudara = "BR_RUDARA";
 		public const string BrOdrzavatelja = "BR_ODRZAVATELJA";
 		public const string BrRadnika = "BR_RADNIKA";
-		
+		#endregion
+
 		public Dictionary<string, double> efekti = new Dictionary<string, double>();
 
 		public Igrac igrac;
@@ -64,7 +66,7 @@ namespace Prototip
 		private double udioCivilneIndustrije;
 		private double udioVojneIndustrije;
 
-		public List<Zgrada> zgrade;
+		public Dictionary<Zgrada.ZgradaInfo, Zgrada> zgrade = new Dictionary<Zgrada.ZgradaInfo, Zgrada>();
 
 		public long ostatakCivilneGradnje;
 		public long ostatakVojneGradnje;
@@ -79,7 +81,6 @@ namespace Prototip
 			this.radnaMjesta = radnaMjesta;
 			this.udioVojneIndustrije = 0;
 			this.udioCivilneIndustrije = 0.5;
-			this.zgrade = new List<Zgrada>();
 			this.redCivilneGradnje = new LinkedList<Zgrada.ZgradaInfo>();
 			this.redVojneGradnje = new LinkedList<Zgrada.ZgradaInfo>();
 			this.ostatakCivilneGradnje = 0;
@@ -99,11 +100,13 @@ namespace Prototip
 			this.radnaMjesta = radnaMjesta;
 			this.udioCivilneIndustrije = udioCivilneIndustrije;
 			this.udioVojneIndustrije = udioVojneIndustrije;
-			this.zgrade = zgrade;
 			this.ostatakCivilneGradnje = ostatakCivilneGradnje;
 			this.ostatakVojneGradnje = ostatakVojneGradnje;
 			this.redCivilneGradnje = redCivilneGradnje;
 			this.redVojneGradnje = redVojneGradnje;
+
+			foreach (Zgrada zgrada in zgrade)
+				this.zgrade.Add(zgrada.tip, zgrada);
 		}
 
 		public void resetirajEfekte()
@@ -143,6 +146,10 @@ namespace Prototip
 
 		private void izracunajEfekte()
 		{
+			postaviEfekteIgracu();
+			foreach (Zgrada z in zgrade.Values)
+				z.djeluj(this, igrac.efekti);
+
 			efekti[Gravitacija] = planet.gravitacija() + efekti[TeraformGravitacija] * Math.Sign(igrac.efekti["OPTIMUM_GRAVITACIJA"] - planet.gravitacija());
 			efekti[Zracenje] = planet.ozracenost() + efekti[TeraformZracenje] * Math.Sign(igrac.efekti["OPTIMUM_ZRACENJE"] - planet.gravitacija());
 			efekti[Temperatura] = planet.temperatura() + efekti[TeraformTemperatura] * Math.Sign(igrac.efekti["OPTIMUM_TEMP_ATM"] - planet.gravitacija());
@@ -182,8 +189,9 @@ namespace Prototip
 				odstupZracenja * igrac.efekti["VELICINA_ZRACENJE"];
 
 			efekti[PopulacijaMax] /= efekti[NedostupanDioPlaneta];
+			efekti[PopulacijaMax] = Math.Floor(efekti[PopulacijaMax]);
 			efekti[OdrzavanjeZgrada] = 0;
-			foreach (Zgrada zgrada in zgrade)
+			foreach (Zgrada zgrada in zgrade.Values)
 				efekti[OdrzavanjeZgrada] += zgrada.tip.cijenaOdrzavanja.iznos(efekti);
 			efekti[OdrzavanjeUkupno] += efekti[OdrzavanjeZgrada];
 		}
@@ -194,37 +202,61 @@ namespace Prototip
 			LinkedListNode<Zgrada.ZgradaInfo> uGradnji = redGradnje.First;
 			while (uGradnji != null)
 			{
-				double cijena = uGradnji.Value.cijenaGradnje.iznos(igrac.efekti);
-				if (uGradnji.Value.orbitalna) cijena *= efekti[FaktorCijeneOrbitalnih];
+				Zgrada.ZgradaInfo zgradaTip = uGradnji.Value;
+				double cijena = zgradaTip.cijenaGradnje.iznos(igrac.efekti);
+				if (zgradaTip.orbitalna) cijena *= efekti[FaktorCijeneOrbitalnih];
 
 				long brZgrada = (long)(ostatakGradnje / cijena);
-				long dopustenaKolicina = (long)uGradnji.Value.dopustenaKolicina.iznos(igrac.efekti);
+				long dopustenaKolicina = (long)zgradaTip.dopustenaKolicina.iznos(igrac.efekti);
 				brZgrada = Fje.Ogranici(brZgrada, 0, dopustenaKolicina);
 
 				if (brZgrada > 0)
 				{
 					ostatakGradnje -= (long)(cijena * brZgrada);
-					Zgrada z = new Zgrada(uGradnji.Value);
+					Zgrada z = new Zgrada(zgradaTip, brZgrada);
 
-					if (z.tip.ostaje)
-						zgrade.Add(z);
-					else
-					{
-						igrac.efekti["BR_ZGRADA"] = brZgrada;
-						z.djeluj(this, igrac.efekti);
+					if (z.tip.ostaje) {
+						if (zgrade.ContainsKey(z.tip))
+							zgrade[z.tip].kolicina += brZgrada;
+						else
+							zgrade.Add(z.tip, z);
 					}
-					if (!z.tip.ponavljaSe) redGradnje.Remove(uGradnji);
+					else 
+						z.djeluj(this, igrac.efekti);
+					
+					//if (!z.tip.ponavljaSe) redGradnje.Remove(uGradnji);
 				}
-				else if (dopustenaKolicina <= 0)
-				{
-					redGradnje.Remove(uGradnji);
+
+				long brNovih = brZgrada;
+				if (zgrade.ContainsKey(zgradaTip))
+					brZgrada = zgrade[zgradaTip].kolicina;
+				else
+					brZgrada = 0;
+
+				if (brNovih < dopustenaKolicina)
 					break;
-				}
 
 				uGradnji = uGradnji.Next;
 			}
 
 			return ostatakGradnje;
+		}
+
+		private void osvjeziRedGradnje(LinkedList<Zgrada.ZgradaInfo> redGradnje)
+		{
+			for (LinkedListNode<Zgrada.ZgradaInfo> uGradnji = redGradnje.First; uGradnji != null; ) {
+				Zgrada.ZgradaInfo zgradaTip = uGradnji.Value;
+				long kolicina = 0;
+				if (zgrade.ContainsKey(zgradaTip)) kolicina = zgrade[zgradaTip].kolicina;
+
+				if (!zgradaTip.dostupna(igrac.efekti, kolicina)) {
+					LinkedListNode<Zgrada.ZgradaInfo> slijedeci = uGradnji.Next;
+					redGradnje.Remove(uGradnji);
+					uGradnji = slijedeci;
+				}
+				else
+					uGradnji = uGradnji.Next;
+			}
 		}
 
 		public void postaviEfekteIgracu()
@@ -243,12 +275,15 @@ namespace Prototip
 			_populacija = (long)Math.Min(efekti[PopulacijaPromjena] + _populacija, efekti[PopulacijaMax]);
 			radnaMjesta += (long)efekti[RadnaMjestaDelta];
 
+			foreach (Zgrada z in zgrade.Values)
+				z.noviKrug(this, igrac.efekti);
+
 			inicijalizirajEfekte();
-
-			foreach (Zgrada z in zgrade)
-				z.djeluj(this, igrac.efekti);
-
 			izracunajEfekte();
+			postaviEfekteIgracu();
+
+			osvjeziRedGradnje(redCivilneGradnje);
+			osvjeziRedGradnje(redVojneGradnje);
 		}
 
 		public string ime
@@ -301,8 +336,13 @@ namespace Prototip
 
 			List<Zgrada.ZgradaInfo> ret = new List<Zgrada.ZgradaInfo>();
 			foreach (Zgrada.ZgradaInfo z in popis)
-				if (!uRedu.Contains(z))
-					ret.Add(z);
+				if (!uRedu.Contains(z)) {
+					long prisutnaKolicina = 0;
+					if (zgrade.ContainsKey(z))
+						prisutnaKolicina = zgrade[z].kolicina;
+					if (z.dostupna(igrac.efekti, prisutnaKolicina))
+						ret.Add(z);
+				}
 
 			return ret;
 		}
@@ -414,13 +454,15 @@ namespace Prototip
 			izlaz.dodaj(PohVojGradOst, ostatakVojneGradnje);
 
 			izlaz.dodaj(PohZgrada, zgrade.Count);
-			izlaz.dodajKolekciju(PohZgrada, zgrade);
+			izlaz.dodajKolekciju(PohZgrada, zgrade.Values);
 
 			izlaz.dodajIdeve(PohCivGrad, redCivilneGradnje);
 			izlaz.dodajIdeve(PohVojGrad, redVojneGradnje);
 		}
 
-		public static Kolonija Ucitaj(PodaciCitac ulaz, List<Igrac> igraci, Dictionary<int, Zvijezda> zvijezde)
+		public static Kolonija Ucitaj(PodaciCitac ulaz, List<Igrac> igraci, 
+			Dictionary<int, Zvijezda> zvijezde, 
+			Dictionary<int, Zgrada.ZgradaInfo> zgradeInfoID)
 		{
 			Igrac igrac = igraci[ulaz.podatakInt(PohIgrac)];
 			Planet planet = zvijezde[ulaz.podatakInt(PohZvijezda)].
@@ -440,12 +482,12 @@ namespace Prototip
 			int[] zgradeID  = ulaz.podatakIntPolje(PohCivGrad);
 			LinkedList<Zgrada.ZgradaInfo> redCivilneGradnje = new LinkedList<Zgrada.ZgradaInfo>();
 			for (int i = 0; i < zgradeID.Length; i++)
-				redCivilneGradnje.AddLast(Zgrada.ZgradaInfoID[zgradeID[i]]);
+				redCivilneGradnje.AddLast(zgradeInfoID[zgradeID[i]]);
 
 			zgradeID = ulaz.podatakIntPolje(PohVojGrad);
 			LinkedList<Zgrada.ZgradaInfo> redVojneGradnje = new LinkedList<Zgrada.ZgradaInfo>();
 			for (int i = 0; i < zgradeID.Length; i++)
-				redVojneGradnje.AddLast(Zgrada.ZgradaInfoID[zgradeID[i]]);
+				redVojneGradnje.AddLast(zgradeInfoID[zgradeID[i]]);
 
 			return new Kolonija(igrac, planet, populacija, radnaMjesta, civilnaInd,
 				vojnaInd, zgrade, ostatakCivilneGradnje, ostatakVojneGradnje,

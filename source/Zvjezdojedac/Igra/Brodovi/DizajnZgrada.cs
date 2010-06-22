@@ -20,16 +20,15 @@ namespace Prototip
 				kolonija.igrac.dodajBrod(dizajn, (int)varijable[Zgrada.BrojZgrada], kolonija.planet.zvjezda);
 			}
 
-			public override Zgrada.Ucinak napraviSe(string[] parametri)
-			{
-				throw new InvalidOperationException();
-			}
+			public override void noviKrug(Kolonija kolonija, Dictionary<string, double> varijable)
+			{ }
 		}
 
 		public Dizajn dizajn { get; private set; }
 
 		public DizajnZgrada(Dizajn dizajn)
-			: base(Zgrada.SlijedeciId(), dizajn.ime, new KonstantnaFormula(dizajn.cijena),
+			: base(Zgrada.ZadnjiId() + dizajn.id, dizajn.ime, 
+			new KonstantnaFormula(dizajn.cijena),
 			new KonstantnaFormula(int.MaxValue),
 			new KonstantnaFormula(0),
 			dizajn.trup.info.slika,

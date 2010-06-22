@@ -35,7 +35,7 @@ namespace Prototip
 
 		public void pohrani(PodaciPisac izlaz)
 		{
-			izlaz.dodaj(PohranaTip, (int)tip);
+			izlaz.dodaj(PohTip, (int)tip);
 		}
 		
 		public static Poruka Ucitaj(PodaciCitac ulaz)

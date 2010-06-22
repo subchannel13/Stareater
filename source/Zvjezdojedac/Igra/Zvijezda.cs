@@ -194,9 +194,6 @@ namespace Prototip
 			double velicina = ulaz.podatakDouble(PohVelicina);
 			string ime = ulaz.podatak(PohIme);
 
-			if (ime.ToLower().StartsWith("doma"))
-				tip = tip;
-
 			Zvijezda zvj = new Zvijezda(id, tip, x, y, velicina, ime);
 			if (tip >= 0)
 				for (int i = 0; i < Mapa.GraditeljMape.BR_PLANETA; i++)

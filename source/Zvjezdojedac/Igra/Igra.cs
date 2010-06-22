@@ -98,14 +98,26 @@ namespace Prototip
 
 		private void zavrsiKrug()
 		{
+			List<long> poeniRazvoja = new List<long>();
+			List<long> poeniIstraz = new List<long>();
+			foreach (Igrac igrac in igraci) {
+				poeniRazvoja.Add(igrac.poeniRazvoja());
+				igrac.izracunajPoeneIstrazivanja(this);
+				poeniIstraz.Add(igrac.poeniIstrazivanja());
+			}
+
 			foreach (Zvijezda zvj in mapa.zvijezde)
 				foreach (Planet planet in zvj.planeti)
 					if (planet.kolonija != null)
 						planet.kolonija.noviKrug();
 
-			foreach (Igrac igr in igraci)
-				igr.noviKrug(this);
+			for (int i = 0; i < igraci.Count; i++)
+				igraci[i].noviKrug(this, poeniRazvoja[i], poeniIstraz[i]);
 
+			foreach (Zvijezda zvj in mapa.zvijezde)
+				foreach (Planet planet in zvj.planeti)
+					if (planet.kolonija != null)
+						planet.kolonija.resetirajEfekte();
 			brKruga++;
 		}
 
@@ -158,12 +170,18 @@ namespace Prototip
 			foreach(Zvijezda zvj in mapa.zvijezde)
 				zvijezdeID.Add(zvj.id, zvj);
 
+			Dictionary<int, Zgrada.ZgradaInfo> zgradeInfoID = new Dictionary<int, Zgrada.ZgradaInfo>(Zgrada.ZgradaInfoID);
+			foreach (Igrac igrac in igraci)
+				foreach (DizajnZgrada dizajZgrada in igrac.dizajnoviBrodova)
+					zgradeInfoID.Add(dizajZgrada.id, dizajZgrada);
+
 			int brKolonija = citac.podatakInt(Kolonija.PohranaTip);
 			for (int i = 0; i < brKolonija; i++) {
 				Kolonija kolonija = Kolonija.Ucitaj(
 					citac[Kolonija.PohranaTip + i],
 					igraci,
-					zvijezdeID);
+					zvijezdeID,
+					zgradeInfoID);
 				kolonija.planet.kolonija = kolonija;
 			}
 

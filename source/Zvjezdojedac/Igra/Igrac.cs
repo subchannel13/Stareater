@@ -111,6 +111,16 @@ namespace Prototip
 			this.flotePokretne = flotePokretne;
 
 			random = new Random();
+			PrebrojiBrodove(this.flotePokretne);
+			PrebrojiBrodove(this.floteStacionarne.Values);
+		}
+
+		private static void PrebrojiBrodove(IEnumerable<Flota> flote)
+		{
+			foreach(Flota flota in flote)
+				foreach(Dictionary<Dizajn, Brod> brodovi in flota.brodovi.Values)
+					foreach(Dizajn dizajn in brodovi.Keys)
+						dizajn.brojBrodova += brodovi[dizajn].kolicina;
 		}
 
 		public void staviNoveTehnologije(Igra igra)
@@ -132,14 +142,14 @@ namespace Prototip
 						tehnologijeUIstrazivanju.AddLast(tehnologije[t.kod]);
 		}
 
-		public void noviKrug(Igra igra)
+		public void noviKrug(Igra igra, long poeniRazvoja, long poeniIstrazivanja)
 		{
 			poruke.Clear();
-			izracunajPoeneIstrazivanja(igra);
-			istraziTehnologije(igra);
+			istraziTehnologije(igra, poeniRazvoja, poeniIstrazivanja);
 			izracunajEfekte(igra);
 			staviNoveTehnologije(igra);
-			staviPredefiniraneDizajnove();			
+			staviPredefiniraneDizajnove();
+			izracunajPoeneIstrazivanja(igra);
 		}
 
 		public void izracunajEfekte(Igra igra)
@@ -182,6 +192,11 @@ namespace Prototip
 			}
 		}
 
+		public long poeniIstrazivanja()
+		{
+			return istrazivanjePoSustavu[istrazivanjeSustav];
+		}
+
 		public long poeniRazvoja()
 		{
 			long sum = 0;
@@ -191,9 +206,9 @@ namespace Prototip
 			return sum;
 		}
 
-		private void istraziTehnologije(Igra igra)
+		private void istraziTehnologije(Igra igra, long poeniRazvoja, long poeniIstrazivanja)
 		{
-			List<long> rasporedPoena = Tehnologija.RasporedPoena(poeniRazvoja(), tehnologijeURazvoju.Count, koncentracijaPoenaRazvoja);
+			List<long> rasporedPoena = Tehnologija.RasporedPoena(poeniRazvoja, tehnologijeURazvoju.Count, koncentracijaPoenaRazvoja);
 			int i = 0;
 			long ulog = 0;
 			foreach(Tehnologija teh in tehnologijeURazvoju)
@@ -206,7 +221,7 @@ namespace Prototip
 				i++;
 			}
 
-			rasporedPoena = Tehnologija.RasporedPoena(istrazivanjePoSustavu[istrazivanjeSustav], tehnologijeUIstrazivanju.Count, 0.5 + random.NextDouble());
+			rasporedPoena = Tehnologija.RasporedPoena(poeniIstrazivanja, tehnologijeUIstrazivanju.Count, 0.5 + random.NextDouble());
 			i = 0;
 			ulog = 0;
 			foreach (Tehnologija teh in tehnologijeUIstrazivanju)
@@ -326,8 +341,6 @@ namespace Prototip
 			izlaz.dodaj(PohTehnologija, tehnologije.Count);
 			izlaz.dodajKolekciju(PohTehnologija, tehnologije.Values);
 			izlaz.dodaj(PohTehRazKonc, koncentracijaPoenaRazvoja);
-			//izlaz.dodaj(PohTehURazvoju, tehnologijeURazvoju.Count);
-			//izlaz.dodaj(PohTehUIstraz, tehnologijeUIstrazivanju.Count);
 			izlaz.dodajIdeve(PohTehURazvoju, tehnologijeURazvoju);
 			izlaz.dodajIdeve(PohTehUIstraz, tehnologijeUIstrazivanju);
 
@@ -370,8 +383,11 @@ namespace Prototip
 
 			int id = ulaz.podatakInt(PohId);
 			string ime = ulaz.podatak(PohIme);
-			Color boja = OdrediBoju(ulaz.podatak(PohBoja));
 			Organizacija organizacija = Organizacija.lista[ulaz.podatakInt(PohOrganizacija)];
+			Color boja = OdrediBoju(ulaz.podatak(PohBoja));
+			foreach (Color color in BojeIgraca)
+				if (boja.R == color.R && boja.G == color.G && boja.B == color.B)
+					boja = color;
 
 			Zvijezda odabranaZvj = OdrediOdabranuZvj(mapa, ulaz.podatak(PohPogledZvj));
 			Planet odabranPlanet = odabranaZvj.planeti[ulaz.podatakInt(PohPogledPlanet)];
@@ -419,10 +435,10 @@ namespace Prototip
 				dizajnID.Add(dizajnZgrada.dizajn.id, dizajnZgrada.dizajn);
 			tmpIntovi = ulaz.podatakIntPolje(PohFloteStac);
 			Dictionary<Zvijezda, Flota> floteStacionarne = new Dictionary<Zvijezda,Flota>();
-			for (int zvjId = 0; zvjId < tmpIntovi.Length; zvjId++)
+			for (int i = 0; i < tmpIntovi.Length; i++)
 				floteStacionarne.Add(
-					zvijezdeID[zvjId],
-					Flota.Ucitaj(ulaz[PohFloteStac + zvjId], dizajnID));
+					zvijezdeID[tmpIntovi[i]],
+					Flota.Ucitaj(ulaz[PohFloteStac + i], dizajnID));
 
 			int brPokFlota = ulaz.podatakInt(PohFlotePokret);
 			HashSet<Flota> flotePokretne = new HashSet<Flota>();

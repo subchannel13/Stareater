@@ -195,6 +195,10 @@ namespace Prototip
 			igrac.tehnologijeURazvoju.Clear();
 			foreach (ListViewItem item in lstRazvoj.Items)
 				igrac.tehnologijeURazvoju.AddLast((Tehnologija)item.Tag);
+			
+			igrac.tehnologijeUIstrazivanju.Clear();
+			foreach (ListViewItem item in lstIstrazivanje.Items)
+				igrac.tehnologijeUIstrazivanju.AddLast((Tehnologija)item.Tag);
 		}
 
 		private void lstIstrazivanje_SelectedIndexChanged(object sender, EventArgs e)
