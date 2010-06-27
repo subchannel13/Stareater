@@ -93,3 +93,51 @@ DATOTEKA = ./slike/mapa/flota.bmp
 SKUPINA = flota
 INDEKS = 0
 ----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod direktno oruzje.png
+SKUPINA = brod_misija
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod projektil.png
+SKUPINA = brod_misija
+INDEKS = 1
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod kolonizacija.png
+SKUPINA = brod_misija
+INDEKS = 2
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod popravak.png
+SKUPINA = brod_misija
+INDEKS = 3
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod nema slike.png
+SKUPINA = brod_misija
+INDEKS = 4
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod nema slike.png
+SKUPINA = brod_misija
+INDEKS = 5
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod nema slike.png
+SKUPINA = brod_misija
+INDEKS = 6
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod nema slike.png
+SKUPINA = brod_misija
+INDEKS = 7
+----

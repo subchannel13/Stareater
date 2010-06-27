@@ -8,7 +8,7 @@ namespace Prototip
 	{
 		public const int maxIgraca = 4;
 
-		private List<Igrac> igraci;
+		public List<Igrac> igraci { get; private set; }
 		private int trenutniIgracIndex;
 
 		public Mapa mapa { get; private set; }

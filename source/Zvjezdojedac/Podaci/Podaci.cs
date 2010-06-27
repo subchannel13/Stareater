@@ -168,7 +168,7 @@ namespace Prototip
 		}
 		private static void ucitajSlike()
 		{
-			citac = new Podaci("slika.txt");
+			citac = new Podaci("./slike/slike.txt");
 
 			while (citac.dalje())
 				if (citac.tip == "<SLIKA>")

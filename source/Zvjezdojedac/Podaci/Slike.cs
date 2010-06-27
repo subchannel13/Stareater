@@ -31,9 +31,14 @@ namespace Prototip
 		public static Dictionary<Image, int> PlanetImageIndex = new Dictionary<Image, int>();
 		public static Dictionary<Color, Image> Flota = new Dictionary<Color,Image>();
 
+		private static Dictionary<Oruzje.Misija, Image> MisijaBroda = new Dictionary<Oruzje.Misija, Image>();
+
 		public static Image FlotaTab = null;
 		public static Image SlikaOdabiraZvijezde;
 		public static Image Poruka;
+
+		private Slike()
+		{ }
 
 		public static void DodajSliku(Dictionary<string, string> podatci)
 		{
@@ -41,26 +46,40 @@ namespace Prototip
 			string skupina = podatci["SKUPINA"].Trim().ToLower();
 			int indeks = int.Parse(podatci["INDEKS"]);
 
-			Image img = Image.FromFile(putanja);
+			Image slika = Image.FromFile(putanja);
 
-			if (skupina == "flota_tab") FlotaTab = img;
-			if (skupina == "planet_tab") {
-				Planet.Tip tip = (Planet.Tip)indeks;
-				double atmGust = double.Parse(podatci["ATM_GUST"]);
-				double atmKval = double.Parse(podatci["ATM_KVAL"]);
-				double temp = double.Parse(podatci["TEMPERATURA"]);
+			switch (skupina) {
+				case "flota_tab":
+					FlotaTab = slika;
+					break;
+				case "planet_tab":
+					Planet.Tip tip = (Planet.Tip)indeks;
+					double atmGust = double.Parse(podatci["ATM_GUST"]);
+					double atmKval = double.Parse(podatci["ATM_KVAL"]);
+					double temp = double.Parse(podatci["TEMPERATURA"]);
 
-				if (!PlanetTab.ContainsKey(tip))
-					PlanetTab.Add(tip, new List<SlikaPlaneta>());
-				
-				PlanetTab[tip].Add(new SlikaPlaneta(img, atmGust, atmKval, temp));
-				PlanetImageIndex.Add(img, PlanetImageIndex.Count);
+					if (!PlanetTab.ContainsKey(tip))
+						PlanetTab.Add(tip, new List<SlikaPlaneta>());
+
+					PlanetTab[tip].Add(new SlikaPlaneta(slika, atmGust, atmKval, temp));
+					PlanetImageIndex.Add(slika, PlanetImageIndex.Count);
+					break;
+				case "odabir_zvijezde":
+					SlikaOdabiraZvijezde = slika;
+					break;
+				case "poruka":
+					Poruka = slika;
+					break;
+				case "flota":
+					foreach (Color boja in Igrac.BojeIgraca)
+						Flota.Add(boja, ModulirajBoju(slika, boja));
+					break;
+				case "brod_misija":
+					MisijaBroda.Add((Oruzje.Misija)indeks, slika);
+					break;
+				default:
+					throw new ArgumentException("Invalid picture group \"" + skupina + "\" in ./slike/slike.txt");
 			}
-			if (skupina == "odabir_zvijezde") SlikaOdabiraZvijezde = img;
-			if (skupina == "poruka") Poruka = img;
-			if (skupina == "flota")
-				foreach (Color boja in Igrac.BojeIgraca)
-					Flota.Add(boja, ModulirajBoju(img, boja));
 		}
 
 		public static void DodajZvjezdaMapaSliku(string datoteka, int indeks)
@@ -107,6 +126,22 @@ namespace Prototip
 			}
 
 			return ret;
+		}
+
+		public static Image NaciniIkonuBroda(Trup.TrupInfo trup, Oruzje primMisija, Oruzje sekMisija)
+		{
+			Image rez = new Bitmap(60, 40);
+			Graphics g = Graphics.FromImage(rez);
+			
+			g.Clear(Color.Black);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Bicubic;
+			g.DrawImage(trup.slika, new Rectangle(0, 0, 40, 40), 0, 0, trup.slika.Width, trup.slika.Height, GraphicsUnit.Pixel);
+			
+			if (primMisija != null) g.DrawImage(MisijaBroda[primMisija.misija], 40, 0);
+			if (sekMisija != null) g.DrawImage(MisijaBroda[sekMisija.misija], 40, 20);
+			g.Dispose();
+
+			return rez;
 		}
 	}
 }

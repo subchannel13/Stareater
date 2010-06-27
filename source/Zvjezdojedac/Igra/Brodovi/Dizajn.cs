@@ -108,6 +108,7 @@ namespace Prototip
 
 		public int id { get; private set; }
 		public string ime { get; private set; }
+		public Image ikona { get; private set; }
 		public double cijena { get; private set; }
 		private Dictionary<string, double> efekti = new Dictionary<string,double>();
 		public Taktika taktika { get; private set; }
@@ -132,6 +133,7 @@ namespace Prototip
 			this.id = id;
 			brojBrodova = 0;
 			this.ime = ime;
+			this.ikona = Slike.NaciniIkonuBroda(trup.info, primarnoOruzje, sekundarnoOruzje);
 			this.trup = trup;
 			this.oklop = oklop;
 			this.specijalnaOprema = specijalnaOprema;

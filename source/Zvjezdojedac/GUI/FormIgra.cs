@@ -43,8 +43,6 @@ namespace Prototip
 
 			listViewPlaneti.LargeImageList = new ImageList();
 			listViewPlaneti.LargeImageList.ImageSize = new Size(32, 32);
-			//foreach(Planet.Tip tip in Enum.GetValues(typeof(Planet.Tip)))
-			//	listViewPlaneti.LargeImageList.Images.Add(Slike.PlanetTab[tip]);
 			Image[] planetImages = new Image[Slike.PlanetImageIndex.Count];
 			foreach (Image img in Slike.PlanetImageIndex.Keys)
 				planetImages[Slike.PlanetImageIndex[img]] = img;
@@ -52,6 +50,9 @@ namespace Prototip
 
 			btnCivilnaGradnja.Text = "";
             btnVojnaGradnja.Text = "";
+			
+			tvFlota.ImageList = new ImageList();
+			tvFlota.ImageList.ImageSize = new Size(20, 20);
 		}
 
 		private void frmIgra_Load(object sender, EventArgs e)
@@ -111,15 +112,26 @@ namespace Prototip
 			}
 
 			tvFlota.Nodes.Clear();
+			tvFlota.ImageList.Images.Clear();
+			foreach (Igrac _igrac in igra.igraci)
+				tvFlota.ImageList.Images.Add(Slike.Flota[_igrac.boja]);
+
 			if (igrac.floteStacionarne.ContainsKey(zvijezda))
 			{
 				TreeNode nodeStacionarnaFloata = new TreeNode("Obrana");
+				nodeStacionarnaFloata.ImageIndex = igrac.id;
 				tvFlota.Nodes.Add(nodeStacionarnaFloata);
 				Flota flota = igrac.floteStacionarne[zvijezda];
 				foreach (Dictionary<Dizajn, Brod> brodovi in flota.brodovi.Values)
-					foreach (Brod brod in brodovi.Values)
-						nodeStacionarnaFloata.Nodes.Add(brod.dizajn.ime + " x " + Fje.PrefiksFormater(brod.kolicina));
+					foreach (Brod brod in brodovi.Values) {
+						TreeNode node = new TreeNode(brod.dizajn.ime + " x " + Fje.PrefiksFormater(brod.kolicina));
+						tvFlota.ImageList.Images.Add(brod.dizajn.trup.slika);
+						node.ImageIndex = tvFlota.ImageList.Images.Count - 1;
+						node.SelectedImageIndex = node.ImageIndex;
+						nodeStacionarnaFloata.Nodes.Add(node);
+					}
 			}
+			tvFlota.ExpandAll();
 
 			lblImeZvjezde.Text = zvijezda.ime + "\nZračenje: " + zvijezda.zracenje();
 			picMapa.Image = prikazMape.osvjezi();
@@ -204,8 +216,6 @@ namespace Prototip
 			
 			if (dx == 0 && dy == 0)
 					pomakPogleda = null;
-			//if (dx != 0 || dy != 0)
-			//	lstvPoruke.Items.Add(pomakPogleda.x + ", " + pomakPogleda.y + "(" + dx + ", " + dy + ")");
 		}
 
 		private void trackBarZoom_Scroll(object sender, EventArgs e)
@@ -351,19 +361,6 @@ namespace Prototip
 			dialog.Filter = "Zvjezdojedac igra (*.igra)|*.igra";
 
 			if (dialog.ShowDialog() == DialogResult.OK) {
-/*				FileStream pisac = new FileStream(dialog.FileName, FileMode.Create);
-
-				MemoryStream zipMemory = new MemoryStream();
-				GZipStream zipStream = new GZipStream(zipMemory, CompressionMode.Compress, false);
-				byte[] toZip = Encoding.UTF8.GetBytes(igra.spremi());
-				zipStream.Write(toZip, 0, toZip.Length);
-
-				pisac.Write(zipMemory.ToArray(), 0, (int)zipMemory.Length);
-				//pisac.Write(toZip, 0, toZip.Length);
-
-				zipStream.Close();
-				pisac.Close();*/
-
 				GZipStream zipStream = new GZipStream(new FileStream(dialog.FileName, FileMode.Create), CompressionMode.Compress);
 				StreamWriter pisac = new StreamWriter(zipStream);
 				pisac.Write(igra.spremi());

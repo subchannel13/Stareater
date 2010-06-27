@@ -255,6 +255,8 @@ namespace Prototip
 		public FormFlote(Igrac igrac)
 		{
 			InitializeComponent();
+			lstvDizajnovi.SmallImageList = new ImageList();
+			lstvDizajnovi.SmallImageList.ImageSize = new Size(60, 40);
 			this.igrac = igrac;
 
 			nazivInfoStranice.Add(InfoStranice.MZPogon, "MZ pogon");
@@ -872,6 +874,9 @@ namespace Prototip
 			ListViewItem item = new ListViewItem(dizajn.ime);
 			item.SubItems.Add(Fje.PrefiksFormater(dizajn.brojBrodova));
 			item.Tag = dizajn;
+			
+			lstvDizajnovi.SmallImageList.Images.Add(dizajn.ikona);
+			item.ImageIndex = lstvDizajnovi.SmallImageList.Images.Count - 1;
 
 			lstvDizajnovi.Items.Add(item);
 		}

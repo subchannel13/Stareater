@@ -9,7 +9,7 @@ namespace Prototip
 	{
 		public enum Misija
 		{
-			DirektnoOruzje,
+			DirektnoOruzje = 0,
 			Projektil,
 			Kolonizacija,
 			Popravak,
