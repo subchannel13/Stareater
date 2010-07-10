@@ -115,7 +115,9 @@
 			// listViewPlaneti
 			// 
 			this.listViewPlaneti.AutoArrange = false;
+			this.listViewPlaneti.BackColor = System.Drawing.Color.Black;
 			this.listViewPlaneti.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.listViewPlaneti.ForeColor = System.Drawing.Color.White;
 			this.listViewPlaneti.FullRowSelect = true;
 			this.listViewPlaneti.Location = new System.Drawing.Point(3, 40);
 			this.listViewPlaneti.MultiSelect = false;

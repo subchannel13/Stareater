@@ -103,13 +103,21 @@ namespace Prototip
 			if (promjeniTab) tabCtrlDesno.SelectedTab = tabPageZvijezda;
 			listViewPlaneti.Items.Clear();
 
-			for (int i = 0; i < zvijezda.planeti.Count; i++)
-			{
-				Planet planet = zvijezda.planeti[i];
-				ListViewItem item = new ListViewItem("Planet " + (i+1));
-				item.ImageIndex = Slike.PlanetImageIndex[planet.slika];
-				listViewPlaneti.Items.Add(item);
-			}
+			if (igrac.posjeceneZvjezde.Contains(zvijezda))
+				for (int i = 0; i < zvijezda.planeti.Count; i++) {
+					Planet planet = zvijezda.planeti[i];
+					ListViewItem item = new ListViewItem();
+					item.ImageIndex = Slike.PlanetImageIndex[planet.slika];
+
+					if (planet.tip != Planet.Tip.NIKAKAV) {
+						item.Text = planet.ime;
+						if (planet.kolonija != null)
+							item.ForeColor = planet.kolonija.igrac.boja;
+					}
+					listViewPlaneti.Items.Add(item);
+				}
+			else
+				listViewPlaneti.Items.Add("Neistraženo");
 
 			tvFlota.Nodes.Clear();
 			tvFlota.ImageList.Images.Clear();
