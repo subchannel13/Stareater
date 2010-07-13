@@ -59,6 +59,41 @@ namespace Prototip
 			osvjeziPogledNaKoloniju();
 		}
 
+		public FormPlanetInfo(Planet planet)
+			: this()
+		{
+			this.kolonija = null;
+			this.Text = planet.ime;
+
+			lblPrikaz.Visible = false;
+			radKolicina.Visible = false;
+			radPostotak.Visible = false;
+
+			picSlika.Image = planet.slika;
+
+			lblGravitacija.Text = "Gravitacija: " + String.Format("{0:0.##}", planet.gravitacija());
+			lblZracenje.Text = "Zračenje: " + String.Format("{0:0.##}", planet.ozracenost());
+			lblAtmGustoca.Text = "Gustoča: " + String.Format("{0:0.##}", planet.gustocaAtmosfere);
+			lblAtmKvaliteta.Text = "Kvaliteta: " + (int)(planet.kvalitetaAtmosfere * 100) + "%";
+			lblAtmoTemperatura.Text = "Temperatura: " + String.Format("{0:0.##}", planet.temperatura());
+
+			lblPopBr.Text = "Nenaseljeno";
+			lblPopDelta.Text = "";
+			lblPopMax.Text = "";
+			lblRadnaMjesta.Text = "";
+
+			groupHrana.Visible = false;
+
+			lblPoRudaru.Text = "";
+			lblBrRudara.Text = "";
+			lblMinPovrsina.Text = "Površina: " + String.Format("{0:0.##}", planet.mineraliPovrsinski);
+			lblMinDubina.Text = "Dubina: " + String.Format("{0:0.##}", planet.mineraliDubinski);
+
+			groupOdrzavanje.Visible = false;
+
+			tabControl.Visible = false;
+		}
+
 		private void postaviTekstove()
 		{
 			if (kolonija == null) return;

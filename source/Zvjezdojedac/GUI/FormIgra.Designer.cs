@@ -35,13 +35,13 @@
 			this.listViewPlaneti = new System.Windows.Forms.ListView();
 			this.pnlOpisZvjezde = new System.Windows.Forms.Panel();
 			this.lblImeZvjezde = new System.Windows.Forms.Label();
-			this.tabPagePlanet = new System.Windows.Forms.TabPage();
-			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.tabPageKolonija = new System.Windows.Forms.TabPage();
+			this.groupCivGradnja = new System.Windows.Forms.GroupBox();
 			this.btnCivilnaGradnja = new System.Windows.Forms.Button();
 			this.hscrCivilnaIndustrija = new System.Windows.Forms.HScrollBar();
 			this.lblProcjenaCivilneGradnje = new System.Windows.Forms.Label();
 			this.lblCivilnaIndustrija = new System.Windows.Forms.Label();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.groupVojGradnja = new System.Windows.Forms.GroupBox();
 			this.btnVojnaGradnja = new System.Windows.Forms.Button();
 			this.lblProcjenaVojneGradnje = new System.Windows.Forms.Label();
 			this.hscrVojnaIndustrija = new System.Windows.Forms.HScrollBar();
@@ -69,12 +69,18 @@
 			this.btnUcitaj = new System.Windows.Forms.Button();
 			this.btnSpremi = new System.Windows.Forms.Button();
 			this.btnTech = new System.Windows.Forms.Button();
+			this.groupPoStan = new System.Windows.Forms.GroupBox();
+			this.lblHranaPoStan = new System.Windows.Forms.Label();
+			this.lblRudePoStan = new System.Windows.Forms.Label();
+			this.lblIndustrijaPoStan = new System.Windows.Forms.Label();
+			this.lblRazvojPoStan = new System.Windows.Forms.Label();
+			this.lblOdrzavanjePoStan = new System.Windows.Forms.Label();
 			this.tabCtrlDesno.SuspendLayout();
 			this.tabPageZvijezda.SuspendLayout();
 			this.pnlOpisZvjezde.SuspendLayout();
-			this.tabPagePlanet.SuspendLayout();
-			this.groupBox2.SuspendLayout();
-			this.groupBox1.SuspendLayout();
+			this.tabPageKolonija.SuspendLayout();
+			this.groupCivGradnja.SuspendLayout();
+			this.groupVojGradnja.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlikaPlaneta)).BeginInit();
 			this.tabPageFlote.SuspendLayout();
 			this.pnlMapa.SuspendLayout();
@@ -84,13 +90,14 @@
 			this.pnlDesnoGore.SuspendLayout();
 			this.pnlKomande.SuspendLayout();
 			this.pnlKomandeDesno.SuspendLayout();
+			this.groupPoStan.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabCtrlDesno
 			// 
 			this.tabCtrlDesno.Alignment = System.Windows.Forms.TabAlignment.Right;
 			this.tabCtrlDesno.Controls.Add(this.tabPageZvijezda);
-			this.tabCtrlDesno.Controls.Add(this.tabPagePlanet);
+			this.tabCtrlDesno.Controls.Add(this.tabPageKolonija);
 			this.tabCtrlDesno.Controls.Add(this.tabPageFlote);
 			this.tabCtrlDesno.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabCtrlDesno.ItemSize = new System.Drawing.Size(10, 38);
@@ -98,7 +105,7 @@
 			this.tabCtrlDesno.Multiline = true;
 			this.tabCtrlDesno.Name = "tabCtrlDesno";
 			this.tabCtrlDesno.SelectedIndex = 0;
-			this.tabCtrlDesno.Size = new System.Drawing.Size(200, 492);
+			this.tabCtrlDesno.Size = new System.Drawing.Size(200, 531);
 			this.tabCtrlDesno.TabIndex = 0;
 			// 
 			// tabPageZvijezda
@@ -146,34 +153,35 @@
 			this.lblImeZvjezde.TabIndex = 0;
 			this.lblImeZvjezde.Text = "Ime zvijezde\r\nZračenje";
 			// 
-			// tabPagePlanet
+			// tabPageKolonija
 			// 
-			this.tabPagePlanet.BackColor = System.Drawing.SystemColors.Control;
-			this.tabPagePlanet.Controls.Add(this.groupBox2);
-			this.tabPagePlanet.Controls.Add(this.groupBox1);
-			this.tabPagePlanet.Controls.Add(this.lblRazvoj);
-			this.tabPagePlanet.Controls.Add(this.picSlikaPlaneta);
-			this.tabPagePlanet.Controls.Add(this.btnPlanetInfo);
-			this.tabPagePlanet.Controls.Add(this.lblPopulacija);
-			this.tabPagePlanet.Controls.Add(this.lblImePlaneta);
-			this.tabPagePlanet.Location = new System.Drawing.Point(4, 4);
-			this.tabPagePlanet.Name = "tabPagePlanet";
-			this.tabPagePlanet.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPagePlanet.Size = new System.Drawing.Size(154, 484);
-			this.tabPagePlanet.TabIndex = 1;
+			this.tabPageKolonija.BackColor = System.Drawing.SystemColors.Control;
+			this.tabPageKolonija.Controls.Add(this.groupPoStan);
+			this.tabPageKolonija.Controls.Add(this.lblRazvoj);
+			this.tabPageKolonija.Controls.Add(this.groupCivGradnja);
+			this.tabPageKolonija.Controls.Add(this.groupVojGradnja);
+			this.tabPageKolonija.Controls.Add(this.picSlikaPlaneta);
+			this.tabPageKolonija.Controls.Add(this.btnPlanetInfo);
+			this.tabPageKolonija.Controls.Add(this.lblPopulacija);
+			this.tabPageKolonija.Controls.Add(this.lblImePlaneta);
+			this.tabPageKolonija.Location = new System.Drawing.Point(4, 4);
+			this.tabPageKolonija.Name = "tabPageKolonija";
+			this.tabPageKolonija.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPageKolonija.Size = new System.Drawing.Size(154, 523);
+			this.tabPageKolonija.TabIndex = 1;
 			// 
-			// groupBox2
+			// groupCivGradnja
 			// 
-			this.groupBox2.Controls.Add(this.btnCivilnaGradnja);
-			this.groupBox2.Controls.Add(this.hscrCivilnaIndustrija);
-			this.groupBox2.Controls.Add(this.lblProcjenaCivilneGradnje);
-			this.groupBox2.Controls.Add(this.lblCivilnaIndustrija);
-			this.groupBox2.Location = new System.Drawing.Point(9, 88);
-			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(138, 152);
-			this.groupBox2.TabIndex = 29;
-			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Civilna gradnja";
+			this.groupCivGradnja.Controls.Add(this.btnCivilnaGradnja);
+			this.groupCivGradnja.Controls.Add(this.hscrCivilnaIndustrija);
+			this.groupCivGradnja.Controls.Add(this.lblProcjenaCivilneGradnje);
+			this.groupCivGradnja.Controls.Add(this.lblCivilnaIndustrija);
+			this.groupCivGradnja.Location = new System.Drawing.Point(6, 164);
+			this.groupCivGradnja.Name = "groupCivGradnja";
+			this.groupCivGradnja.Size = new System.Drawing.Size(138, 152);
+			this.groupCivGradnja.TabIndex = 29;
+			this.groupCivGradnja.TabStop = false;
+			this.groupCivGradnja.Text = "Civilna gradnja";
 			// 
 			// btnCivilnaGradnja
 			// 
@@ -212,18 +220,18 @@
 			this.lblCivilnaIndustrija.TabIndex = 12;
 			this.lblCivilnaIndustrija.Text = "xx.xx X";
 			// 
-			// groupBox1
+			// groupVojGradnja
 			// 
-			this.groupBox1.Controls.Add(this.btnVojnaGradnja);
-			this.groupBox1.Controls.Add(this.lblProcjenaVojneGradnje);
-			this.groupBox1.Controls.Add(this.hscrVojnaIndustrija);
-			this.groupBox1.Controls.Add(this.lblVojnaGradnja);
-			this.groupBox1.Location = new System.Drawing.Point(9, 246);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(138, 153);
-			this.groupBox1.TabIndex = 28;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Vojna gradnja";
+			this.groupVojGradnja.Controls.Add(this.btnVojnaGradnja);
+			this.groupVojGradnja.Controls.Add(this.lblProcjenaVojneGradnje);
+			this.groupVojGradnja.Controls.Add(this.hscrVojnaIndustrija);
+			this.groupVojGradnja.Controls.Add(this.lblVojnaGradnja);
+			this.groupVojGradnja.Location = new System.Drawing.Point(6, 322);
+			this.groupVojGradnja.Name = "groupVojGradnja";
+			this.groupVojGradnja.Size = new System.Drawing.Size(138, 153);
+			this.groupVojGradnja.TabIndex = 28;
+			this.groupVojGradnja.TabStop = false;
+			this.groupVojGradnja.Text = "Vojna gradnja";
 			// 
 			// btnVojnaGradnja
 			// 
@@ -265,7 +273,7 @@
 			// lblRazvoj
 			// 
 			this.lblRazvoj.AutoSize = true;
-			this.lblRazvoj.Location = new System.Drawing.Point(6, 67);
+			this.lblRazvoj.Location = new System.Drawing.Point(6, 478);
 			this.lblRazvoj.Name = "lblRazvoj";
 			this.lblRazvoj.Size = new System.Drawing.Size(79, 13);
 			this.lblRazvoj.TabIndex = 13;
@@ -341,7 +349,7 @@
 			this.pnlMapa.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlMapa.Location = new System.Drawing.Point(0, 0);
 			this.pnlMapa.Name = "pnlMapa";
-			this.pnlMapa.Size = new System.Drawing.Size(484, 440);
+			this.pnlMapa.Size = new System.Drawing.Size(484, 479);
 			this.pnlMapa.TabIndex = 1;
 			// 
 			// picMapa
@@ -388,7 +396,7 @@
 			this.pnlDesno.Dock = System.Windows.Forms.DockStyle.Right;
 			this.pnlDesno.Location = new System.Drawing.Point(484, 0);
 			this.pnlDesno.Name = "pnlDesno";
-			this.pnlDesno.Size = new System.Drawing.Size(200, 523);
+			this.pnlDesno.Size = new System.Drawing.Size(200, 562);
 			this.pnlDesno.TabIndex = 1;
 			// 
 			// pnlDesnoGore
@@ -415,7 +423,7 @@
 			this.pnlKomande.Controls.Add(this.btnFlote);
 			this.pnlKomande.Controls.Add(this.pnlKomandeDesno);
 			this.pnlKomande.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlKomande.Location = new System.Drawing.Point(0, 440);
+			this.pnlKomande.Location = new System.Drawing.Point(0, 479);
 			this.pnlKomande.Name = "pnlKomande";
 			this.pnlKomande.Size = new System.Drawing.Size(484, 83);
 			this.pnlKomande.TabIndex = 1;
@@ -485,12 +493,71 @@
 			this.btnTech.UseVisualStyleBackColor = true;
 			this.btnTech.Click += new System.EventHandler(this.btnTech_Click);
 			// 
+			// groupPoStan
+			// 
+			this.groupPoStan.Controls.Add(this.lblOdrzavanjePoStan);
+			this.groupPoStan.Controls.Add(this.lblRazvojPoStan);
+			this.groupPoStan.Controls.Add(this.lblIndustrijaPoStan);
+			this.groupPoStan.Controls.Add(this.lblRudePoStan);
+			this.groupPoStan.Controls.Add(this.lblHranaPoStan);
+			this.groupPoStan.Location = new System.Drawing.Point(6, 70);
+			this.groupPoStan.Name = "groupPoStan";
+			this.groupPoStan.Size = new System.Drawing.Size(137, 88);
+			this.groupPoStan.TabIndex = 30;
+			this.groupPoStan.TabStop = false;
+			this.groupPoStan.Text = "Po stanovniku";
+			// 
+			// lblHranaPoStan
+			// 
+			this.lblHranaPoStan.AutoSize = true;
+			this.lblHranaPoStan.Location = new System.Drawing.Point(6, 16);
+			this.lblHranaPoStan.Name = "lblHranaPoStan";
+			this.lblHranaPoStan.Size = new System.Drawing.Size(60, 13);
+			this.lblHranaPoStan.TabIndex = 0;
+			this.lblHranaPoStan.Text = "Hrana: xx.x";
+			// 
+			// lblRudePoStan
+			// 
+			this.lblRudePoStan.AutoSize = true;
+			this.lblRudePoStan.Location = new System.Drawing.Point(6, 29);
+			this.lblRudePoStan.Name = "lblRudePoStan";
+			this.lblRudePoStan.Size = new System.Drawing.Size(57, 13);
+			this.lblRudePoStan.TabIndex = 1;
+			this.lblRudePoStan.Text = "Rude: xx.x";
+			// 
+			// lblIndustrijaPoStan
+			// 
+			this.lblIndustrijaPoStan.AutoSize = true;
+			this.lblIndustrijaPoStan.Location = new System.Drawing.Point(6, 55);
+			this.lblIndustrijaPoStan.Name = "lblIndustrijaPoStan";
+			this.lblIndustrijaPoStan.Size = new System.Drawing.Size(73, 13);
+			this.lblIndustrijaPoStan.TabIndex = 2;
+			this.lblIndustrijaPoStan.Text = "Industrija: xx.x";
+			// 
+			// lblRazvojPoStan
+			// 
+			this.lblRazvojPoStan.AutoSize = true;
+			this.lblRazvojPoStan.Location = new System.Drawing.Point(6, 68);
+			this.lblRazvojPoStan.Name = "lblRazvojPoStan";
+			this.lblRazvojPoStan.Size = new System.Drawing.Size(64, 13);
+			this.lblRazvojPoStan.TabIndex = 3;
+			this.lblRazvojPoStan.Text = "Razvoj: xx.x";
+			// 
+			// lblOdrzavanjePoStan
+			// 
+			this.lblOdrzavanjePoStan.AutoSize = true;
+			this.lblOdrzavanjePoStan.Location = new System.Drawing.Point(6, 42);
+			this.lblOdrzavanjePoStan.Name = "lblOdrzavanjePoStan";
+			this.lblOdrzavanjePoStan.Size = new System.Drawing.Size(85, 13);
+			this.lblOdrzavanjePoStan.TabIndex = 4;
+			this.lblOdrzavanjePoStan.Text = "Održavanje: xx.x";
+			// 
 			// FormIgra
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(684, 523);
+			this.ClientSize = new System.Drawing.Size(684, 562);
 			this.Controls.Add(this.pnlMapa);
 			this.Controls.Add(this.pnlKomande);
 			this.Controls.Add(this.pnlDesno);
@@ -503,12 +570,12 @@
 			this.tabPageZvijezda.ResumeLayout(false);
 			this.pnlOpisZvjezde.ResumeLayout(false);
 			this.pnlOpisZvjezde.PerformLayout();
-			this.tabPagePlanet.ResumeLayout(false);
-			this.tabPagePlanet.PerformLayout();
-			this.groupBox2.ResumeLayout(false);
-			this.groupBox2.PerformLayout();
-			this.groupBox1.ResumeLayout(false);
-			this.groupBox1.PerformLayout();
+			this.tabPageKolonija.ResumeLayout(false);
+			this.tabPageKolonija.PerformLayout();
+			this.groupCivGradnja.ResumeLayout(false);
+			this.groupCivGradnja.PerformLayout();
+			this.groupVojGradnja.ResumeLayout(false);
+			this.groupVojGradnja.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlikaPlaneta)).EndInit();
 			this.tabPageFlote.ResumeLayout(false);
 			this.pnlMapa.ResumeLayout(false);
@@ -521,6 +588,8 @@
 			this.pnlKomande.ResumeLayout(false);
 			this.pnlKomandeDesno.ResumeLayout(false);
 			this.pnlKomandeDesno.PerformLayout();
+			this.groupPoStan.ResumeLayout(false);
+			this.groupPoStan.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -536,7 +605,7 @@
 		private System.Windows.Forms.Panel pnlOpisZvjezde;
 		private System.Windows.Forms.ListView listViewPlaneti;
 		private System.Windows.Forms.Label lblImeZvjezde;
-		private System.Windows.Forms.TabPage tabPagePlanet;
+		private System.Windows.Forms.TabPage tabPageKolonija;
 		private System.Windows.Forms.Label lblImePlaneta;
 		private System.Windows.Forms.Label lblPopulacija;
 		private System.Windows.Forms.Button btnEndTurn;
@@ -558,13 +627,19 @@
 		private System.Windows.Forms.Label lblVojnaGradnja;
 		private System.Windows.Forms.Label lblProcjenaVojneGradnje;
 		private System.Windows.Forms.Label lblProcjenaCivilneGradnje;
-		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.GroupBox groupCivGradnja;
+		private System.Windows.Forms.GroupBox groupVojGradnja;
 		private System.Windows.Forms.Button btnFlote;
 		private System.Windows.Forms.TabPage tabPageFlote;
 		private System.Windows.Forms.TreeView tvFlota;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Button btnSpremi;
 		private System.Windows.Forms.Button btnUcitaj;
+		private System.Windows.Forms.GroupBox groupPoStan;
+		private System.Windows.Forms.Label lblHranaPoStan;
+		private System.Windows.Forms.Label lblRudePoStan;
+		private System.Windows.Forms.Label lblIndustrijaPoStan;
+		private System.Windows.Forms.Label lblOdrzavanjePoStan;
+		private System.Windows.Forms.Label lblRazvojPoStan;
 	}
 }

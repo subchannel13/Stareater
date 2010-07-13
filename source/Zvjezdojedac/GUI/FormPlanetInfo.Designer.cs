@@ -51,7 +51,7 @@
 			this.lblRazvoj = new System.Windows.Forms.Label();
 			this.lblCivilnaIndustrija = new System.Windows.Forms.Label();
 			this.hscrCivilnaIndustrija = new System.Windows.Forms.HScrollBar();
-			this.groupBox4 = new System.Windows.Forms.GroupBox();
+			this.groupHrana = new System.Windows.Forms.GroupBox();
 			this.lblPoFarmeru = new System.Windows.Forms.Label();
 			this.lblBrFarmera = new System.Windows.Forms.Label();
 			this.lblBrRudara = new System.Windows.Forms.Label();
@@ -61,7 +61,7 @@
 			this.lblMinPovrsina = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.lblPoRudaru = new System.Windows.Forms.Label();
-			this.groupBox6 = new System.Windows.Forms.GroupBox();
+			this.groupOdrzavanje = new System.Windows.Forms.GroupBox();
 			this.lblOdrzavanjeZgrada = new System.Windows.Forms.Label();
 			this.lblOdrzavanjeUkupno = new System.Windows.Forms.Label();
 			this.lblOdrzavanjeTempAtm = new System.Windows.Forms.Label();
@@ -70,7 +70,7 @@
 			this.label5 = new System.Windows.Forms.Label();
 			this.lblOdrzavanjeZrac = new System.Windows.Forms.Label();
 			this.lblOdrzavanjeGrav = new System.Windows.Forms.Label();
-			this.label7 = new System.Windows.Forms.Label();
+			this.lblPrikaz = new System.Windows.Forms.Label();
 			this.radKolicina = new System.Windows.Forms.RadioButton();
 			this.radPostotak = new System.Windows.Forms.RadioButton();
 			this.tabControl = new System.Windows.Forms.TabControl();
@@ -82,10 +82,10 @@
 			this.lstZgrade = new System.Windows.Forms.ListBox();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
-			this.groupBox4.SuspendLayout();
+			this.groupHrana.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlika)).BeginInit();
 			this.groupBox5.SuspendLayout();
-			this.groupBox6.SuspendLayout();
+			this.groupOdrzavanje.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.tabPageProizvodnja.SuspendLayout();
 			this.tabPageZgrade.SuspendLayout();
@@ -303,16 +303,16 @@
 			this.hscrCivilnaIndustrija.TabIndex = 16;
 			this.hscrCivilnaIndustrija.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscrIndustrijaRazvoj_Scroll);
 			// 
-			// groupBox4
+			// groupHrana
 			// 
-			this.groupBox4.Controls.Add(this.lblPoFarmeru);
-			this.groupBox4.Controls.Add(this.lblBrFarmera);
-			this.groupBox4.Location = new System.Drawing.Point(12, 141);
-			this.groupBox4.Name = "groupBox4";
-			this.groupBox4.Size = new System.Drawing.Size(110, 54);
-			this.groupBox4.TabIndex = 4;
-			this.groupBox4.TabStop = false;
-			this.groupBox4.Text = "Hrana:";
+			this.groupHrana.Controls.Add(this.lblPoFarmeru);
+			this.groupHrana.Controls.Add(this.lblBrFarmera);
+			this.groupHrana.Location = new System.Drawing.Point(12, 141);
+			this.groupHrana.Name = "groupHrana";
+			this.groupHrana.Size = new System.Drawing.Size(110, 54);
+			this.groupHrana.TabIndex = 4;
+			this.groupHrana.TabStop = false;
+			this.groupHrana.Text = "Hrana:";
 			// 
 			// lblPoFarmeru
 			// 
@@ -400,22 +400,22 @@
 			this.lblPoRudaru.TabIndex = 2;
 			this.lblPoRudaru.Text = "Po rudaru: xx.x";
 			// 
-			// groupBox6
+			// groupOdrzavanje
 			// 
-			this.groupBox6.Controls.Add(this.lblOdrzavanjeZgrada);
-			this.groupBox6.Controls.Add(this.lblOdrzavanjeUkupno);
-			this.groupBox6.Controls.Add(this.lblOdrzavanjeTempAtm);
-			this.groupBox6.Controls.Add(this.lblOdrzavanjeKvalAtm);
-			this.groupBox6.Controls.Add(this.lblOdrzavanjeGustAtm);
-			this.groupBox6.Controls.Add(this.label5);
-			this.groupBox6.Controls.Add(this.lblOdrzavanjeZrac);
-			this.groupBox6.Controls.Add(this.lblOdrzavanjeGrav);
-			this.groupBox6.Location = new System.Drawing.Point(343, 12);
-			this.groupBox6.Name = "groupBox6";
-			this.groupBox6.Size = new System.Drawing.Size(216, 109);
-			this.groupBox6.TabIndex = 7;
-			this.groupBox6.TabStop = false;
-			this.groupBox6.Text = "Održavanje";
+			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeZgrada);
+			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeUkupno);
+			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeTempAtm);
+			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeKvalAtm);
+			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeGustAtm);
+			this.groupOdrzavanje.Controls.Add(this.label5);
+			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeZrac);
+			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeGrav);
+			this.groupOdrzavanje.Location = new System.Drawing.Point(343, 12);
+			this.groupOdrzavanje.Name = "groupOdrzavanje";
+			this.groupOdrzavanje.Size = new System.Drawing.Size(216, 109);
+			this.groupOdrzavanje.TabIndex = 7;
+			this.groupOdrzavanje.TabStop = false;
+			this.groupOdrzavanje.Text = "Održavanje";
 			// 
 			// lblOdrzavanjeZgrada
 			// 
@@ -489,14 +489,14 @@
 			this.lblOdrzavanjeGrav.TabIndex = 0;
 			this.lblOdrzavanjeGrav.Text = "Gravitacija: xx.xx X";
 			// 
-			// label7
+			// lblPrikaz
 			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(12, 79);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(39, 13);
-			this.label7.TabIndex = 8;
-			this.label7.Text = "Prikaz:";
+			this.lblPrikaz.AutoSize = true;
+			this.lblPrikaz.Location = new System.Drawing.Point(12, 79);
+			this.lblPrikaz.Name = "lblPrikaz";
+			this.lblPrikaz.Size = new System.Drawing.Size(39, 13);
+			this.lblPrikaz.TabIndex = 8;
+			this.lblPrikaz.Text = "Prikaz:";
 			// 
 			// radKolicina
 			// 
@@ -609,11 +609,11 @@
 			this.Controls.Add(this.tabControl);
 			this.Controls.Add(this.radPostotak);
 			this.Controls.Add(this.radKolicina);
-			this.Controls.Add(this.label7);
-			this.Controls.Add(this.groupBox6);
+			this.Controls.Add(this.lblPrikaz);
+			this.Controls.Add(this.groupOdrzavanje);
 			this.Controls.Add(this.groupBox5);
 			this.Controls.Add(this.picSlika);
-			this.Controls.Add(this.groupBox4);
+			this.Controls.Add(this.groupHrana);
 			this.Controls.Add(this.btnZatvori);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox1);
@@ -629,13 +629,13 @@
 			this.groupBox1.PerformLayout();
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
-			this.groupBox4.ResumeLayout(false);
-			this.groupBox4.PerformLayout();
+			this.groupHrana.ResumeLayout(false);
+			this.groupHrana.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlika)).EndInit();
 			this.groupBox5.ResumeLayout(false);
 			this.groupBox5.PerformLayout();
-			this.groupBox6.ResumeLayout(false);
-			this.groupBox6.PerformLayout();
+			this.groupOdrzavanje.ResumeLayout(false);
+			this.groupOdrzavanje.PerformLayout();
 			this.tabControl.ResumeLayout(false);
 			this.tabPageProizvodnja.ResumeLayout(false);
 			this.tabPageProizvodnja.PerformLayout();
@@ -660,7 +660,7 @@
 		private System.Windows.Forms.Label lblGravitacija;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label lblRadnaMjesta;
-		private System.Windows.Forms.GroupBox groupBox4;
+		private System.Windows.Forms.GroupBox groupHrana;
 		private System.Windows.Forms.PictureBox picSlika;
 		private System.Windows.Forms.Label lblBrRudara;
 		private System.Windows.Forms.Label lblBrFarmera;
@@ -672,7 +672,7 @@
 		private System.Windows.Forms.Label lblMinDubina;
 		private System.Windows.Forms.Label lblMinPovrsina;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.GroupBox groupBox6;
+		private System.Windows.Forms.GroupBox groupOdrzavanje;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label lblOdrzavanjeZrac;
 		private System.Windows.Forms.Label lblOdrzavanjeGrav;
@@ -684,7 +684,7 @@
 		private System.Windows.Forms.Label lblCivilnaIndustrija;
 		private System.Windows.Forms.HScrollBar hscrCivilnaIndustrija;
 		private System.Windows.Forms.Button btnCivilnaGradnja;
-		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label lblPrikaz;
 		private System.Windows.Forms.RadioButton radKolicina;
 		private System.Windows.Forms.RadioButton radPostotak;
 		private System.Windows.Forms.Label lblVojnaIndustrija;

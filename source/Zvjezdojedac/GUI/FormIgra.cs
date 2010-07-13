@@ -38,7 +38,7 @@ namespace Prototip
 			tabCtrlDesno.ImageList.Images.Add(Slike.PlanetTab[Planet.Tip.ASTEROIDI][0].image);
 			tabCtrlDesno.ImageList.Images.Add(Slike.FlotaTab);
 			tabPageZvijezda.ImageIndex = 0;
-			tabPagePlanet.ImageIndex = 1;
+			tabPageKolonija.ImageIndex = 1;
 			tabPageFlote.ImageIndex = 2;
 
 			listViewPlaneti.LargeImageList = new ImageList();
@@ -151,13 +151,17 @@ namespace Prototip
 		{
 			if (planet.tip == Planet.Tip.NIKAKAV) return;
 			igrac.odabranPlanet = planet;
-			if (promjeniTab) tabCtrlDesno.SelectedTab = tabPagePlanet;
+			if (promjeniTab) tabCtrlDesno.SelectedTab = tabPageKolonija;
 			tabCtrlDesno.ImageList.Images[1] = planet.slika;
 
 			picSlikaPlaneta.Image = planet.slika;
 			lblImePlaneta.Text = planet.ime;
-			if (planet.kolonija != null)
-			{
+			if (planet.kolonija != null) {
+				groupPoStan.Visible = true;
+				groupCivGradnja.Visible = true;
+				groupVojGradnja.Visible = true;
+				lblRazvoj.Visible = true;
+
 				lblPopulacija.Text = "Populacija: " + Fje.PrefiksFormater((long)planet.kolonija.efekti[Kolonija.Populacija]);
 				hscrCivilnaIndustrija.Enabled = true;
 				btnCivilnaGradnja.Enabled = true;
@@ -166,21 +170,12 @@ namespace Prototip
 				btnVojnaGradnja.Enabled = true;
 				osvjeziPogledNaKoloniju();
 			}
-			else
-			{
+			else {
 				lblPopulacija.Text = "Nenaseljeno";
-				hscrCivilnaIndustrija.Enabled = false;
-				lblCivilnaIndustrija.Text = "";
-				lblProcjenaCivilneGradnje.Text = "";
-				lblRazvoj.Text = "";
-				btnCivilnaGradnja.Enabled = false;
-				btnCivilnaGradnja.Image = null;
-
-				hscrVojnaIndustrija.Enabled = false;
-				lblVojnaGradnja.Text = "";
-				lblProcjenaVojneGradnje.Text = "";
-				btnVojnaGradnja.Enabled = false;
-				btnVojnaGradnja.Image = null;
+				groupPoStan.Visible = false;
+				groupCivGradnja.Visible = false;
+				groupVojGradnja.Visible = false;
+				lblRazvoj.Visible = false;
 			}
 		}
 
@@ -257,15 +252,27 @@ namespace Prototip
 				planetInfo.ShowDialog();
 				osvjeziPogledNaKoloniju();
 			}
+			else {
+				FormPlanetInfo planetInfo = new FormPlanetInfo(igrac.odabranPlanet);
+				planetInfo.ShowDialog();
+			}
 		}
 
 		private void osvjeziLabele()
 		{
-			lblCivilnaIndustrija.Text = Fje.PrefiksFormater(igrac.odabranPlanet.kolonija.poeniCivilneIndustrije()) + " ind";
-			lblVojnaGradnja.Text = Fje.PrefiksFormater(igrac.odabranPlanet.kolonija.poeniVojneIndustrije()) + " ind";
-			lblProcjenaCivilneGradnje.Text = igrac.odabranPlanet.kolonija.procjenaVremenaCivilneGradnje();
-			lblProcjenaVojneGradnje.Text = igrac.odabranPlanet.kolonija.procjenaVremenaVojneGradnje();
-			lblRazvoj.Text = "Razvoj: " + Fje.PrefiksFormater(igrac.odabranPlanet.kolonija.poeniRazvoja());
+			Kolonija kolonija = igrac.odabranPlanet.kolonija;
+			
+			lblHranaPoStan.Text = "Hrana: " + kolonija.efekti[Kolonija.HranaPoFarmeru].ToString("0.##");
+			lblRudePoStan.Text = "Rude: " + kolonija.efekti[Kolonija.RudePoRudaru].ToString("0.##");
+			lblOdrzavanjePoStan.Text = "Održavanje: " + (kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]).ToString("0.##");
+			lblIndustrijaPoStan.Text = "Industrija: " + kolonija.efekti[Kolonija.IndustrijaPoRadniku].ToString("0.##");
+			lblRazvojPoStan.Text = "Razvoj: " + kolonija.efekti[Kolonija.RazvojPoRadniku].ToString("0.##");
+			
+			lblCivilnaIndustrija.Text = Fje.PrefiksFormater(kolonija.poeniCivilneIndustrije()) + " ind";
+			lblVojnaGradnja.Text = Fje.PrefiksFormater(kolonija.poeniVojneIndustrije()) + " ind";
+			lblProcjenaCivilneGradnje.Text = kolonija.procjenaVremenaCivilneGradnje();
+			lblProcjenaVojneGradnje.Text = kolonija.procjenaVremenaVojneGradnje();
+			lblRazvoj.Text = "Razvoj: " + Fje.PrefiksFormater(kolonija.poeniRazvoja());
 
 			if (igrac.odabranPlanet.kolonija.redCivilneGradnje.Count > 0)
 			{
