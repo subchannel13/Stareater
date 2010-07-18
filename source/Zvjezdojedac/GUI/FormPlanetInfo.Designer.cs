@@ -30,6 +30,8 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPlanetInfo));
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.lblVelicina = new System.Windows.Forms.Label();
+			this.lblKoefOrbitalne = new System.Windows.Forms.Label();
 			this.lblZracenje = new System.Windows.Forms.Label();
 			this.lblAtmoTemperatura = new System.Windows.Forms.Label();
 			this.lblGravitacija = new System.Windows.Forms.Label();
@@ -51,17 +53,13 @@
 			this.lblRazvoj = new System.Windows.Forms.Label();
 			this.lblCivilnaIndustrija = new System.Windows.Forms.Label();
 			this.hscrCivilnaIndustrija = new System.Windows.Forms.HScrollBar();
-			this.groupHrana = new System.Windows.Forms.GroupBox();
-			this.lblPoFarmeru = new System.Windows.Forms.Label();
 			this.lblBrFarmera = new System.Windows.Forms.Label();
 			this.lblBrRudara = new System.Windows.Forms.Label();
 			this.picSlika = new System.Windows.Forms.PictureBox();
 			this.groupBox5 = new System.Windows.Forms.GroupBox();
+			this.lblMinOstvareno = new System.Windows.Forms.Label();
 			this.lblMinDubina = new System.Windows.Forms.Label();
 			this.lblMinPovrsina = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.lblPoRudaru = new System.Windows.Forms.Label();
-			this.groupOdrzavanje = new System.Windows.Forms.GroupBox();
 			this.lblOdrzavanjeZgrada = new System.Windows.Forms.Label();
 			this.lblOdrzavanjeUkupno = new System.Windows.Forms.Label();
 			this.lblOdrzavanjeTempAtm = new System.Windows.Forms.Label();
@@ -75,25 +73,38 @@
 			this.radPostotak = new System.Windows.Forms.RadioButton();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tabPageProizvodnja = new System.Windows.Forms.TabPage();
-			this.lblKoefOrbitalne = new System.Windows.Forms.Label();
 			this.tabPageZgrade = new System.Windows.Forms.TabPage();
 			this.lblZgradaInfo = new System.Windows.Forms.Label();
 			this.picZgrada = new System.Windows.Forms.PictureBox();
 			this.lstZgrade = new System.Windows.Forms.ListBox();
+			this.tabPageResursi = new System.Windows.Forms.TabPage();
+			this.groupRadnici = new System.Windows.Forms.GroupBox();
+			this.lblBrOdrzavatelja = new System.Windows.Forms.Label();
+			this.groupPoStan = new System.Windows.Forms.GroupBox();
+			this.lblOdrzavanjePoStan = new System.Windows.Forms.Label();
+			this.lblRazvojPoStan = new System.Windows.Forms.Label();
+			this.lblIndustrijaPoStan = new System.Windows.Forms.Label();
+			this.lblRudePoStan = new System.Windows.Forms.Label();
+			this.lblHranaPoStan = new System.Windows.Forms.Label();
+			this.tabPageOdrzavanje = new System.Windows.Forms.TabPage();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
-			this.groupHrana.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlika)).BeginInit();
 			this.groupBox5.SuspendLayout();
-			this.groupOdrzavanje.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.tabPageProizvodnja.SuspendLayout();
 			this.tabPageZgrade.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picZgrada)).BeginInit();
+			this.tabPageResursi.SuspendLayout();
+			this.groupRadnici.SuspendLayout();
+			this.groupPoStan.SuspendLayout();
+			this.tabPageOdrzavanje.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.lblVelicina);
+			this.groupBox1.Controls.Add(this.lblKoefOrbitalne);
 			this.groupBox1.Controls.Add(this.lblZracenje);
 			this.groupBox1.Controls.Add(this.lblAtmoTemperatura);
 			this.groupBox1.Controls.Add(this.lblGravitacija);
@@ -102,15 +113,33 @@
 			this.groupBox1.Controls.Add(this.lblAtmGustoca);
 			this.groupBox1.Location = new System.Drawing.Point(227, 12);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(110, 109);
+			this.groupBox1.Size = new System.Drawing.Size(200, 123);
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Uvjeti";
+			this.groupBox1.Text = "Planet";
+			// 
+			// lblVelicina
+			// 
+			this.lblVelicina.AutoSize = true;
+			this.lblVelicina.Location = new System.Drawing.Point(6, 16);
+			this.lblVelicina.Name = "lblVelicina";
+			this.lblVelicina.Size = new System.Drawing.Size(83, 13);
+			this.lblVelicina.TabIndex = 29;
+			this.lblVelicina.Text = "Veličina: xx.xx X";
+			// 
+			// lblKoefOrbitalne
+			// 
+			this.lblKoefOrbitalne.AutoSize = true;
+			this.lblKoefOrbitalne.Location = new System.Drawing.Point(6, 106);
+			this.lblKoefOrbitalne.Name = "lblKoefOrbitalne";
+			this.lblKoefOrbitalne.Size = new System.Drawing.Size(151, 13);
+			this.lblKoefOrbitalne.TabIndex = 28;
+			this.lblKoefOrbitalne.Text = "Cijena orbitalne gradnje: xxx.xx";
 			// 
 			// lblZracenje
 			// 
 			this.lblZracenje.AutoSize = true;
-			this.lblZracenje.Location = new System.Drawing.Point(6, 29);
+			this.lblZracenje.Location = new System.Drawing.Point(6, 42);
 			this.lblZracenje.Name = "lblZracenje";
 			this.lblZracenje.Size = new System.Drawing.Size(73, 13);
 			this.lblZracenje.TabIndex = 5;
@@ -119,7 +148,7 @@
 			// lblAtmoTemperatura
 			// 
 			this.lblAtmoTemperatura.AutoSize = true;
-			this.lblAtmoTemperatura.Location = new System.Drawing.Point(6, 94);
+			this.lblAtmoTemperatura.Location = new System.Drawing.Point(93, 55);
 			this.lblAtmoTemperatura.Name = "lblAtmoTemperatura";
 			this.lblAtmoTemperatura.Size = new System.Drawing.Size(97, 13);
 			this.lblAtmoTemperatura.TabIndex = 4;
@@ -128,7 +157,7 @@
 			// lblGravitacija
 			// 
 			this.lblGravitacija.AutoSize = true;
-			this.lblGravitacija.Location = new System.Drawing.Point(6, 16);
+			this.lblGravitacija.Location = new System.Drawing.Point(6, 29);
 			this.lblGravitacija.Name = "lblGravitacija";
 			this.lblGravitacija.Size = new System.Drawing.Size(81, 13);
 			this.lblGravitacija.TabIndex = 3;
@@ -137,7 +166,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(6, 55);
+			this.label1.Location = new System.Drawing.Point(93, 16);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(57, 13);
 			this.label1.TabIndex = 2;
@@ -146,7 +175,7 @@
 			// lblAtmKvaliteta
 			// 
 			this.lblAtmKvaliteta.AutoSize = true;
-			this.lblAtmKvaliteta.Location = new System.Drawing.Point(6, 81);
+			this.lblAtmKvaliteta.Location = new System.Drawing.Point(93, 42);
 			this.lblAtmKvaliteta.Name = "lblAtmKvaliteta";
 			this.lblAtmKvaliteta.Size = new System.Drawing.Size(72, 13);
 			this.lblAtmKvaliteta.TabIndex = 1;
@@ -155,7 +184,7 @@
 			// lblAtmGustoca
 			// 
 			this.lblAtmGustoca.AutoSize = true;
-			this.lblAtmGustoca.Location = new System.Drawing.Point(6, 68);
+			this.lblAtmGustoca.Location = new System.Drawing.Point(93, 29);
 			this.lblAtmGustoca.Name = "lblAtmGustoca";
 			this.lblAtmGustoca.Size = new System.Drawing.Size(71, 13);
 			this.lblAtmGustoca.TabIndex = 0;
@@ -212,7 +241,7 @@
 			// 
 			// btnZatvori
 			// 
-			this.btnZatvori.Location = new System.Drawing.Point(47, 359);
+			this.btnZatvori.Location = new System.Drawing.Point(64, 375);
 			this.btnZatvori.Name = "btnZatvori";
 			this.btnZatvori.Size = new System.Drawing.Size(75, 23);
 			this.btnZatvori.TabIndex = 2;
@@ -303,30 +332,10 @@
 			this.hscrCivilnaIndustrija.TabIndex = 16;
 			this.hscrCivilnaIndustrija.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscrIndustrijaRazvoj_Scroll);
 			// 
-			// groupHrana
-			// 
-			this.groupHrana.Controls.Add(this.lblPoFarmeru);
-			this.groupHrana.Controls.Add(this.lblBrFarmera);
-			this.groupHrana.Location = new System.Drawing.Point(12, 141);
-			this.groupHrana.Name = "groupHrana";
-			this.groupHrana.Size = new System.Drawing.Size(110, 54);
-			this.groupHrana.TabIndex = 4;
-			this.groupHrana.TabStop = false;
-			this.groupHrana.Text = "Hrana:";
-			// 
-			// lblPoFarmeru
-			// 
-			this.lblPoFarmeru.AutoSize = true;
-			this.lblPoFarmeru.Location = new System.Drawing.Point(6, 17);
-			this.lblPoFarmeru.Name = "lblPoFarmeru";
-			this.lblPoFarmeru.Size = new System.Drawing.Size(82, 13);
-			this.lblPoFarmeru.TabIndex = 1;
-			this.lblPoFarmeru.Text = "Po farmeru: xx.x";
-			// 
 			// lblBrFarmera
 			// 
 			this.lblBrFarmera.AutoSize = true;
-			this.lblBrFarmera.Location = new System.Drawing.Point(6, 30);
+			this.lblBrFarmera.Location = new System.Drawing.Point(6, 16);
 			this.lblBrFarmera.Name = "lblBrFarmera";
 			this.lblBrFarmera.Size = new System.Drawing.Size(97, 13);
 			this.lblBrFarmera.TabIndex = 0;
@@ -352,22 +361,29 @@
 			// 
 			// groupBox5
 			// 
+			this.groupBox5.Controls.Add(this.lblMinOstvareno);
 			this.groupBox5.Controls.Add(this.lblMinDubina);
 			this.groupBox5.Controls.Add(this.lblMinPovrsina);
-			this.groupBox5.Controls.Add(this.label2);
-			this.groupBox5.Controls.Add(this.lblPoRudaru);
-			this.groupBox5.Controls.Add(this.lblBrRudara);
-			this.groupBox5.Location = new System.Drawing.Point(12, 201);
+			this.groupBox5.Location = new System.Drawing.Point(149, 6);
 			this.groupBox5.Name = "groupBox5";
-			this.groupBox5.Size = new System.Drawing.Size(110, 98);
+			this.groupBox5.Size = new System.Drawing.Size(110, 68);
 			this.groupBox5.TabIndex = 6;
 			this.groupBox5.TabStop = false;
 			this.groupBox5.Text = "Rude:";
 			// 
+			// lblMinOstvareno
+			// 
+			this.lblMinOstvareno.AutoSize = true;
+			this.lblMinOstvareno.Location = new System.Drawing.Point(6, 42);
+			this.lblMinOstvareno.Name = "lblMinOstvareno";
+			this.lblMinOstvareno.Size = new System.Drawing.Size(80, 13);
+			this.lblMinOstvareno.TabIndex = 6;
+			this.lblMinOstvareno.Text = "Ostvareno: xx,x";
+			// 
 			// lblMinDubina
 			// 
 			this.lblMinDubina.AutoSize = true;
-			this.lblMinDubina.Location = new System.Drawing.Point(6, 79);
+			this.lblMinDubina.Location = new System.Drawing.Point(6, 29);
 			this.lblMinDubina.Name = "lblMinDubina";
 			this.lblMinDubina.Size = new System.Drawing.Size(65, 13);
 			this.lblMinDubina.TabIndex = 5;
@@ -376,51 +392,16 @@
 			// lblMinPovrsina
 			// 
 			this.lblMinPovrsina.AutoSize = true;
-			this.lblMinPovrsina.Location = new System.Drawing.Point(6, 66);
+			this.lblMinPovrsina.Location = new System.Drawing.Point(6, 16);
 			this.lblMinPovrsina.Name = "lblMinPovrsina";
 			this.lblMinPovrsina.Size = new System.Drawing.Size(72, 13);
 			this.lblMinPovrsina.TabIndex = 4;
 			this.lblMinPovrsina.Text = "Površina: xx.x";
 			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(6, 53);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(56, 13);
-			this.label2.TabIndex = 3;
-			this.label2.Text = "Potencijal:";
-			// 
-			// lblPoRudaru
-			// 
-			this.lblPoRudaru.AutoSize = true;
-			this.lblPoRudaru.Location = new System.Drawing.Point(6, 16);
-			this.lblPoRudaru.Name = "lblPoRudaru";
-			this.lblPoRudaru.Size = new System.Drawing.Size(77, 13);
-			this.lblPoRudaru.TabIndex = 2;
-			this.lblPoRudaru.Text = "Po rudaru: xx.x";
-			// 
-			// groupOdrzavanje
-			// 
-			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeZgrada);
-			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeUkupno);
-			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeTempAtm);
-			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeKvalAtm);
-			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeGustAtm);
-			this.groupOdrzavanje.Controls.Add(this.label5);
-			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeZrac);
-			this.groupOdrzavanje.Controls.Add(this.lblOdrzavanjeGrav);
-			this.groupOdrzavanje.Location = new System.Drawing.Point(343, 12);
-			this.groupOdrzavanje.Name = "groupOdrzavanje";
-			this.groupOdrzavanje.Size = new System.Drawing.Size(216, 109);
-			this.groupOdrzavanje.TabIndex = 7;
-			this.groupOdrzavanje.TabStop = false;
-			this.groupOdrzavanje.Text = "Održavanje";
-			// 
 			// lblOdrzavanjeZgrada
 			// 
 			this.lblOdrzavanjeZgrada.AutoSize = true;
-			this.lblOdrzavanjeZgrada.Location = new System.Drawing.Point(109, 16);
+			this.lblOdrzavanjeZgrada.Location = new System.Drawing.Point(6, 39);
 			this.lblOdrzavanjeZgrada.Name = "lblOdrzavanjeZgrada";
 			this.lblOdrzavanjeZgrada.Size = new System.Drawing.Size(80, 13);
 			this.lblOdrzavanjeZgrada.TabIndex = 7;
@@ -429,7 +410,7 @@
 			// lblOdrzavanjeUkupno
 			// 
 			this.lblOdrzavanjeUkupno.AutoSize = true;
-			this.lblOdrzavanjeUkupno.Location = new System.Drawing.Point(109, 55);
+			this.lblOdrzavanjeUkupno.Location = new System.Drawing.Point(6, 90);
 			this.lblOdrzavanjeUkupno.Name = "lblOdrzavanjeUkupno";
 			this.lblOdrzavanjeUkupno.Size = new System.Drawing.Size(101, 13);
 			this.lblOdrzavanjeUkupno.TabIndex = 6;
@@ -438,7 +419,7 @@
 			// lblOdrzavanjeTempAtm
 			// 
 			this.lblOdrzavanjeTempAtm.AutoSize = true;
-			this.lblOdrzavanjeTempAtm.Location = new System.Drawing.Point(6, 94);
+			this.lblOdrzavanjeTempAtm.Location = new System.Drawing.Point(127, 52);
 			this.lblOdrzavanjeTempAtm.Name = "lblOdrzavanjeTempAtm";
 			this.lblOdrzavanjeTempAtm.Size = new System.Drawing.Size(106, 13);
 			this.lblOdrzavanjeTempAtm.TabIndex = 5;
@@ -447,7 +428,7 @@
 			// lblOdrzavanjeKvalAtm
 			// 
 			this.lblOdrzavanjeKvalAtm.AutoSize = true;
-			this.lblOdrzavanjeKvalAtm.Location = new System.Drawing.Point(6, 81);
+			this.lblOdrzavanjeKvalAtm.Location = new System.Drawing.Point(127, 39);
 			this.lblOdrzavanjeKvalAtm.Name = "lblOdrzavanjeKvalAtm";
 			this.lblOdrzavanjeKvalAtm.Size = new System.Drawing.Size(87, 13);
 			this.lblOdrzavanjeKvalAtm.TabIndex = 4;
@@ -456,7 +437,7 @@
 			// lblOdrzavanjeGustAtm
 			// 
 			this.lblOdrzavanjeGustAtm.AutoSize = true;
-			this.lblOdrzavanjeGustAtm.Location = new System.Drawing.Point(6, 68);
+			this.lblOdrzavanjeGustAtm.Location = new System.Drawing.Point(127, 26);
 			this.lblOdrzavanjeGustAtm.Name = "lblOdrzavanjeGustAtm";
 			this.lblOdrzavanjeGustAtm.Size = new System.Drawing.Size(86, 13);
 			this.lblOdrzavanjeGustAtm.TabIndex = 3;
@@ -465,7 +446,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(6, 55);
+			this.label5.Location = new System.Drawing.Point(127, 13);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(57, 13);
 			this.label5.TabIndex = 2;
@@ -474,7 +455,7 @@
 			// lblOdrzavanjeZrac
 			// 
 			this.lblOdrzavanjeZrac.AutoSize = true;
-			this.lblOdrzavanjeZrac.Location = new System.Drawing.Point(6, 29);
+			this.lblOdrzavanjeZrac.Location = new System.Drawing.Point(6, 26);
 			this.lblOdrzavanjeZrac.Name = "lblOdrzavanjeZrac";
 			this.lblOdrzavanjeZrac.Size = new System.Drawing.Size(88, 13);
 			this.lblOdrzavanjeZrac.TabIndex = 1;
@@ -483,7 +464,7 @@
 			// lblOdrzavanjeGrav
 			// 
 			this.lblOdrzavanjeGrav.AutoSize = true;
-			this.lblOdrzavanjeGrav.Location = new System.Drawing.Point(6, 16);
+			this.lblOdrzavanjeGrav.Location = new System.Drawing.Point(6, 13);
 			this.lblOdrzavanjeGrav.Name = "lblOdrzavanjeGrav";
 			this.lblOdrzavanjeGrav.Size = new System.Drawing.Size(96, 13);
 			this.lblOdrzavanjeGrav.TabIndex = 0;
@@ -526,7 +507,9 @@
 			// 
 			this.tabControl.Controls.Add(this.tabPageProizvodnja);
 			this.tabControl.Controls.Add(this.tabPageZgrade);
-			this.tabControl.Location = new System.Drawing.Point(128, 127);
+			this.tabControl.Controls.Add(this.tabPageResursi);
+			this.tabControl.Controls.Add(this.tabPageOdrzavanje);
+			this.tabControl.Location = new System.Drawing.Point(64, 141);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
 			this.tabControl.Size = new System.Drawing.Size(305, 228);
@@ -535,7 +518,6 @@
 			// tabPageProizvodnja
 			// 
 			this.tabPageProizvodnja.BackColor = System.Drawing.SystemColors.Control;
-			this.tabPageProizvodnja.Controls.Add(this.lblKoefOrbitalne);
 			this.tabPageProizvodnja.Controls.Add(this.lblProcjenaVojneGradnje);
 			this.tabPageProizvodnja.Controls.Add(this.btnCivilnaGradnja);
 			this.tabPageProizvodnja.Controls.Add(this.lblProcjenaCivilneGradnje);
@@ -551,15 +533,6 @@
 			this.tabPageProizvodnja.Size = new System.Drawing.Size(297, 202);
 			this.tabPageProizvodnja.TabIndex = 0;
 			this.tabPageProizvodnja.Text = "Proizvodnja";
-			// 
-			// lblKoefOrbitalne
-			// 
-			this.lblKoefOrbitalne.AutoSize = true;
-			this.lblKoefOrbitalne.Location = new System.Drawing.Point(31, 173);
-			this.lblKoefOrbitalne.Name = "lblKoefOrbitalne";
-			this.lblKoefOrbitalne.Size = new System.Drawing.Size(151, 13);
-			this.lblKoefOrbitalne.TabIndex = 28;
-			this.lblKoefOrbitalne.Text = "Cijena orbitalne gradnje: xxx.xx";
 			// 
 			// tabPageZgrade
 			// 
@@ -601,19 +574,127 @@
 			this.lstZgrade.TabIndex = 0;
 			this.lstZgrade.SelectedIndexChanged += new System.EventHandler(this.lstZgrade_SelectedIndexChanged);
 			// 
+			// tabPageResursi
+			// 
+			this.tabPageResursi.BackColor = System.Drawing.SystemColors.Control;
+			this.tabPageResursi.Controls.Add(this.groupRadnici);
+			this.tabPageResursi.Controls.Add(this.groupPoStan);
+			this.tabPageResursi.Controls.Add(this.groupBox5);
+			this.tabPageResursi.Location = new System.Drawing.Point(4, 22);
+			this.tabPageResursi.Name = "tabPageResursi";
+			this.tabPageResursi.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPageResursi.Size = new System.Drawing.Size(297, 202);
+			this.tabPageResursi.TabIndex = 2;
+			this.tabPageResursi.Text = "Resursi";
+			// 
+			// groupRadnici
+			// 
+			this.groupRadnici.Controls.Add(this.lblBrOdrzavatelja);
+			this.groupRadnici.Controls.Add(this.lblBrFarmera);
+			this.groupRadnici.Controls.Add(this.lblBrRudara);
+			this.groupRadnici.Location = new System.Drawing.Point(6, 100);
+			this.groupRadnici.Name = "groupRadnici";
+			this.groupRadnici.Size = new System.Drawing.Size(137, 96);
+			this.groupRadnici.TabIndex = 32;
+			this.groupRadnici.TabStop = false;
+			this.groupRadnici.Text = "Radnici:";
+			// 
+			// lblBrOdrzavatelja
+			// 
+			this.lblBrOdrzavatelja.AutoSize = true;
+			this.lblBrOdrzavatelja.Location = new System.Drawing.Point(6, 42);
+			this.lblBrOdrzavatelja.Name = "lblBrOdrzavatelja";
+			this.lblBrOdrzavatelja.Size = new System.Drawing.Size(100, 13);
+			this.lblBrOdrzavatelja.TabIndex = 2;
+			this.lblBrOdrzavatelja.Text = "Održavanje: xx.xx X";
+			// 
+			// groupPoStan
+			// 
+			this.groupPoStan.Controls.Add(this.lblOdrzavanjePoStan);
+			this.groupPoStan.Controls.Add(this.lblRazvojPoStan);
+			this.groupPoStan.Controls.Add(this.lblIndustrijaPoStan);
+			this.groupPoStan.Controls.Add(this.lblRudePoStan);
+			this.groupPoStan.Controls.Add(this.lblHranaPoStan);
+			this.groupPoStan.Location = new System.Drawing.Point(6, 6);
+			this.groupPoStan.Name = "groupPoStan";
+			this.groupPoStan.Size = new System.Drawing.Size(137, 88);
+			this.groupPoStan.TabIndex = 31;
+			this.groupPoStan.TabStop = false;
+			this.groupPoStan.Text = "Po stanovniku";
+			// 
+			// lblOdrzavanjePoStan
+			// 
+			this.lblOdrzavanjePoStan.AutoSize = true;
+			this.lblOdrzavanjePoStan.Location = new System.Drawing.Point(6, 42);
+			this.lblOdrzavanjePoStan.Name = "lblOdrzavanjePoStan";
+			this.lblOdrzavanjePoStan.Size = new System.Drawing.Size(85, 13);
+			this.lblOdrzavanjePoStan.TabIndex = 4;
+			this.lblOdrzavanjePoStan.Text = "Održavanje: xx.x";
+			// 
+			// lblRazvojPoStan
+			// 
+			this.lblRazvojPoStan.AutoSize = true;
+			this.lblRazvojPoStan.Location = new System.Drawing.Point(6, 68);
+			this.lblRazvojPoStan.Name = "lblRazvojPoStan";
+			this.lblRazvojPoStan.Size = new System.Drawing.Size(64, 13);
+			this.lblRazvojPoStan.TabIndex = 3;
+			this.lblRazvojPoStan.Text = "Razvoj: xx.x";
+			// 
+			// lblIndustrijaPoStan
+			// 
+			this.lblIndustrijaPoStan.AutoSize = true;
+			this.lblIndustrijaPoStan.Location = new System.Drawing.Point(6, 55);
+			this.lblIndustrijaPoStan.Name = "lblIndustrijaPoStan";
+			this.lblIndustrijaPoStan.Size = new System.Drawing.Size(73, 13);
+			this.lblIndustrijaPoStan.TabIndex = 2;
+			this.lblIndustrijaPoStan.Text = "Industrija: xx.x";
+			// 
+			// lblRudePoStan
+			// 
+			this.lblRudePoStan.AutoSize = true;
+			this.lblRudePoStan.Location = new System.Drawing.Point(6, 29);
+			this.lblRudePoStan.Name = "lblRudePoStan";
+			this.lblRudePoStan.Size = new System.Drawing.Size(57, 13);
+			this.lblRudePoStan.TabIndex = 1;
+			this.lblRudePoStan.Text = "Rude: xx.x";
+			// 
+			// lblHranaPoStan
+			// 
+			this.lblHranaPoStan.AutoSize = true;
+			this.lblHranaPoStan.Location = new System.Drawing.Point(6, 16);
+			this.lblHranaPoStan.Name = "lblHranaPoStan";
+			this.lblHranaPoStan.Size = new System.Drawing.Size(60, 13);
+			this.lblHranaPoStan.TabIndex = 0;
+			this.lblHranaPoStan.Text = "Hrana: xx.x";
+			// 
+			// tabPageOdrzavanje
+			// 
+			this.tabPageOdrzavanje.BackColor = System.Drawing.SystemColors.Control;
+			this.tabPageOdrzavanje.Controls.Add(this.lblOdrzavanjeZgrada);
+			this.tabPageOdrzavanje.Controls.Add(this.lblOdrzavanjeZrac);
+			this.tabPageOdrzavanje.Controls.Add(this.lblOdrzavanjeUkupno);
+			this.tabPageOdrzavanje.Controls.Add(this.lblOdrzavanjeGrav);
+			this.tabPageOdrzavanje.Controls.Add(this.lblOdrzavanjeTempAtm);
+			this.tabPageOdrzavanje.Controls.Add(this.label5);
+			this.tabPageOdrzavanje.Controls.Add(this.lblOdrzavanjeKvalAtm);
+			this.tabPageOdrzavanje.Controls.Add(this.lblOdrzavanjeGustAtm);
+			this.tabPageOdrzavanje.Location = new System.Drawing.Point(4, 22);
+			this.tabPageOdrzavanje.Name = "tabPageOdrzavanje";
+			this.tabPageOdrzavanje.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPageOdrzavanje.Size = new System.Drawing.Size(297, 202);
+			this.tabPageOdrzavanje.TabIndex = 3;
+			this.tabPageOdrzavanje.Text = "Održavanje";
+			// 
 			// FormPlanetInfo
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(564, 388);
+			this.ClientSize = new System.Drawing.Size(432, 412);
 			this.Controls.Add(this.tabControl);
 			this.Controls.Add(this.radPostotak);
 			this.Controls.Add(this.radKolicina);
 			this.Controls.Add(this.lblPrikaz);
-			this.Controls.Add(this.groupOdrzavanje);
-			this.Controls.Add(this.groupBox5);
 			this.Controls.Add(this.picSlika);
-			this.Controls.Add(this.groupHrana);
 			this.Controls.Add(this.btnZatvori);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox1);
@@ -629,19 +710,22 @@
 			this.groupBox1.PerformLayout();
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
-			this.groupHrana.ResumeLayout(false);
-			this.groupHrana.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlika)).EndInit();
 			this.groupBox5.ResumeLayout(false);
 			this.groupBox5.PerformLayout();
-			this.groupOdrzavanje.ResumeLayout(false);
-			this.groupOdrzavanje.PerformLayout();
 			this.tabControl.ResumeLayout(false);
 			this.tabPageProizvodnja.ResumeLayout(false);
 			this.tabPageProizvodnja.PerformLayout();
 			this.tabPageZgrade.ResumeLayout(false);
 			this.tabPageZgrade.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picZgrada)).EndInit();
+			this.tabPageResursi.ResumeLayout(false);
+			this.groupRadnici.ResumeLayout(false);
+			this.groupRadnici.PerformLayout();
+			this.groupPoStan.ResumeLayout(false);
+			this.groupPoStan.PerformLayout();
+			this.tabPageOdrzavanje.ResumeLayout(false);
+			this.tabPageOdrzavanje.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -660,19 +744,14 @@
 		private System.Windows.Forms.Label lblGravitacija;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label lblRadnaMjesta;
-		private System.Windows.Forms.GroupBox groupHrana;
 		private System.Windows.Forms.PictureBox picSlika;
 		private System.Windows.Forms.Label lblBrRudara;
 		private System.Windows.Forms.Label lblBrFarmera;
 		private System.Windows.Forms.Label lblZracenje;
 		private System.Windows.Forms.Label lblAtmoTemperatura;
-		private System.Windows.Forms.Label lblPoFarmeru;
 		private System.Windows.Forms.GroupBox groupBox5;
-		private System.Windows.Forms.Label lblPoRudaru;
 		private System.Windows.Forms.Label lblMinDubina;
 		private System.Windows.Forms.Label lblMinPovrsina;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.GroupBox groupOdrzavanje;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label lblOdrzavanjeZrac;
 		private System.Windows.Forms.Label lblOdrzavanjeGrav;
@@ -700,5 +779,17 @@
 		private System.Windows.Forms.PictureBox picZgrada;
 		private System.Windows.Forms.Label lblOdrzavanjeZgrada;
 		private System.Windows.Forms.Label lblKoefOrbitalne;
+		private System.Windows.Forms.TabPage tabPageResursi;
+		private System.Windows.Forms.GroupBox groupPoStan;
+		private System.Windows.Forms.Label lblOdrzavanjePoStan;
+		private System.Windows.Forms.Label lblRazvojPoStan;
+		private System.Windows.Forms.Label lblIndustrijaPoStan;
+		private System.Windows.Forms.Label lblRudePoStan;
+		private System.Windows.Forms.Label lblHranaPoStan;
+		private System.Windows.Forms.GroupBox groupRadnici;
+		private System.Windows.Forms.Label lblMinOstvareno;
+		private System.Windows.Forms.Label lblBrOdrzavatelja;
+		private System.Windows.Forms.TabPage tabPageOdrzavanje;
+		private System.Windows.Forms.Label lblVelicina;
 	}
 }

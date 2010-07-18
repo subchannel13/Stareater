@@ -109,13 +109,35 @@ namespace Prototip
 				this.zgrade.Add(zgrada.tip, zgrada);
 		}
 
+		/// <summary>
+		/// Nanovo izračunava efekte za trenutno stanje.
+		/// Ne utječe na stanje kolonije.
+		/// </summary>
 		public void resetirajEfekte()
 		{
 			inicijalizirajEfekte();
 			izracunajEfekte();
 		}
 
+		public Dictionary<string, double> maxEfekti()
+		{
+			Dictionary<string, double> rez = new Dictionary<string, double>();
+			inicijalizirajEfekte(rez);
+			
+			rez[Populacija] = rez[PopulacijaMax];
+			rez[RadnaMjesta] = rez[Populacija];
+			rez[AktivnaRadnaMjesta] = rez[RadnaMjesta];
+
+			izracunajEfekte(rez);
+			return rez;
+		}
+
 		private void inicijalizirajEfekte()
+		{
+			inicijalizirajEfekte(efekti);
+		}
+
+		private void inicijalizirajEfekte(Dictionary<string, double> efekti)
 		{
 			efekti[Populacija] = _populacija;
 			efekti[PopulacijaMax] = 10000000 * (Math.Pow(planet.velicina, 1.5));
@@ -146,6 +168,11 @@ namespace Prototip
 
 		private void izracunajEfekte()
 		{
+			izracunajEfekte(efekti);
+		}
+
+		private void izracunajEfekte(Dictionary<string, double> efekti)
+		{
 			postaviEfekteIgracu();
 			foreach (Zgrada z in zgrade.Values)
 				z.djeluj(this, igrac.efekti);
@@ -162,23 +189,23 @@ namespace Prototip
 			double odstupAtmGustoce = Math.Pow(Math.Abs(efekti[AtmGustoca] - igrac.efekti["OPTIMUM_GUST_ATM"]), 2);
 			double odstupAtmKvalitete = Math.Pow(Math.Abs(efekti[AtmKvaliteta] - igrac.efekti["OPTIMUM_KVAL_ATM"]), 2);
 
-			efekti[OdrzavanjeGravitacija] = igrac.efekti["ODRZAVANJE_GRAVITACIJA"] * _populacija * odstupGravitacije;
-			efekti[OdrzavanjeZracenje] = igrac.efekti["ODRZAVANJE_ZRACENJE"] * _populacija * odstupZracenja;
-			efekti[OdrzavanjeTemperatura] = igrac.efekti["ODRZAVANJE_TEMP_ATM"] * _populacija * odstupTemperature;
-			efekti[OdrzavanjeAtmGustoca] = igrac.efekti["ODRZAVANJE_GUST_ATM"] * _populacija * odstupAtmGustoce;
-			efekti[OdrzavanjeAtmKvaliteta] = igrac.efekti["ODRZAVANJE_KVAL_ATM"] * _populacija * odstupAtmKvalitete;
+			efekti[OdrzavanjeGravitacija] = igrac.efekti["ODRZAVANJE_GRAVITACIJA"] * efekti[Populacija] * odstupGravitacije;
+			efekti[OdrzavanjeZracenje] = igrac.efekti["ODRZAVANJE_ZRACENJE"] * efekti[Populacija] * odstupZracenja;
+			efekti[OdrzavanjeTemperatura] = igrac.efekti["ODRZAVANJE_TEMP_ATM"] * efekti[Populacija] * odstupTemperature;
+			efekti[OdrzavanjeAtmGustoca] = igrac.efekti["ODRZAVANJE_GUST_ATM"] * efekti[Populacija] * odstupAtmGustoce;
+			efekti[OdrzavanjeAtmKvaliteta] = igrac.efekti["ODRZAVANJE_KVAL_ATM"] * efekti[Populacija] * odstupAtmKvalitete;
 			efekti[OdrzavanjeUkupno] = efekti[OdrzavanjeGravitacija] + efekti[OdrzavanjeZracenje] + efekti[OdrzavanjeTemperatura] + efekti[OdrzavanjeAtmKvaliteta] + efekti[OdrzavanjeAtmGustoca];
 
-			efekti[HranaPoFarmeru] = Fje.IzIntervala(efekti[AktivnaRadnaMjesta] / (double)_populacija, igrac.efekti["HRANA_PO_STANOVNIKU"], igrac.efekti["HRANA_PO_FARMERU"]);
-			efekti[IndustrijaPoRadniku] = Fje.IzIntervala(efekti[AktivnaRadnaMjesta] / (double)_populacija, igrac.efekti["INDUSTRIJA_PO_STANOVNIKU"], igrac.efekti["INDUSTRIJA_PO_TVORNICI"]);
-			efekti[RazvojPoRadniku] = Fje.IzIntervala(efekti[AktivnaRadnaMjesta] / (double)_populacija, igrac.efekti["RAZVOJ_PO_STANOVNIKU"], igrac.efekti["RAZVOJ_PO_LABORATORIJU"]);
-			efekti[RudePoIndustriji] = 1 + Fje.IzIntervala(efekti[AktivnaRadnaMjesta] / (double)_populacija, igrac.efekti["MINERALI_PO_STANOVNIKU"], igrac.efekti["MINERALI_PO_RUDNIKU"]) * efekti[RudeEfektivno];
+			efekti[HranaPoFarmeru] = Fje.IzIntervala(efekti[AktivnaRadnaMjesta] / (double)efekti[Populacija], igrac.efekti["HRANA_PO_STANOVNIKU"], igrac.efekti["HRANA_PO_FARMERU"]);
+			efekti[IndustrijaPoRadniku] = Fje.IzIntervala(efekti[AktivnaRadnaMjesta] / (double)efekti[Populacija], igrac.efekti["INDUSTRIJA_PO_STANOVNIKU"], igrac.efekti["INDUSTRIJA_PO_TVORNICI"]);
+			efekti[RazvojPoRadniku] = Fje.IzIntervala(efekti[AktivnaRadnaMjesta] / (double)efekti[Populacija], igrac.efekti["RAZVOJ_PO_STANOVNIKU"], igrac.efekti["RAZVOJ_PO_LABORATORIJU"]);
+			efekti[RudePoIndustriji] = 1 + Fje.IzIntervala(efekti[AktivnaRadnaMjesta] / (double)efekti[Populacija], igrac.efekti["MINERALI_PO_STANOVNIKU"], igrac.efekti["MINERALI_PO_RUDNIKU"]) * efekti[RudeEfektivno];
 			efekti[RudePoRudaru] = efekti[RudePoIndustriji] * efekti[IndustrijaPoRadniku];
 
-			efekti[BrFarmera] = Math.Ceiling(_populacija / efekti[HranaPoFarmeru]);
+			efekti[BrFarmera] = Math.Ceiling(efekti[Populacija] / efekti[HranaPoFarmeru]);
 			efekti[BrOdrzavatelja] = Math.Ceiling(efekti[OdrzavanjeUkupno] / efekti[IndustrijaPoRadniku]);
-			efekti[BrRudara] = Math.Ceiling((_populacija - efekti[BrFarmera]) / (1 + efekti[RudePoIndustriji]));
-			efekti[BrRadnika] = _populacija - efekti[BrFarmera] - efekti[BrOdrzavatelja] - efekti[BrRudara];
+			efekti[BrRudara] = Math.Ceiling((efekti[Populacija] - efekti[BrFarmera]) / (1 + efekti[RudePoIndustriji]));
+			efekti[BrRadnika] = efekti[Populacija] - efekti[BrFarmera] - efekti[BrOdrzavatelja] - efekti[BrRudara];
 
 			efekti[FaktorCijeneOrbitalnih] = 1 + Math.Pow(planet.gravitacija(), 2) + planet.gustocaAtmosfere;
 			efekti[NedostupanDioPlaneta] = 1 +

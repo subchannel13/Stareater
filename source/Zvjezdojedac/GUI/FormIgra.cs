@@ -253,7 +253,7 @@ namespace Prototip
 				osvjeziPogledNaKoloniju();
 			}
 			else {
-				FormPlanetInfo planetInfo = new FormPlanetInfo(igrac.odabranPlanet);
+				FormPlanetInfo planetInfo = new FormPlanetInfo(igrac, igrac.odabranPlanet);
 				planetInfo.ShowDialog();
 			}
 		}

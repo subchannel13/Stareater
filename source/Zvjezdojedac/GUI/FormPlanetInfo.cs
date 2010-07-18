@@ -29,6 +29,7 @@ namespace Prototip
 
 			picSlika.Image = kolonija.slika;
 
+			lblVelicina.Text = "Veličina: " + Fje.PrefiksFormater(kolonija.planet.velicina);
 			lblGravitacija.Text = "Gravitacija: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.Gravitacija]);
 			lblZracenje.Text = "Zračenje: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.Zracenje]);
 			lblAtmGustoca.Text = "Gustoča: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.AtmGustoca]);
@@ -42,11 +43,15 @@ namespace Prototip
 			lblPopDelta.Text = "Promjena: " + predznak + Fje.PrefiksFormater(kolonija.efekti[Kolonija.PopulacijaPromjena]);
 			lblPopMax.Text = "Maksimum: " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.PopulacijaMax]);
 
-			lblPoFarmeru.Text = "Po farmeru: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.HranaPoFarmeru]);
-
-			lblPoRudaru.Text = "Po rudaru: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudePoRudaru]);
+			/*lblHranaPoStan.Text = "Po farmeru: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.HranaPoFarmeru]);
+			lblRudePoStan.Text = "Po rudaru: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudePoRudaru]);
+			lblOdrzavanjePoStan.Text = "Održavanje: " + (kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]).ToString("0.##");
+			lblIndustrijaPoStan.Text = "Industrija: " + kolonija.efekti[Kolonija.IndustrijaPoRadniku].ToString("0.##");
+			lblRazvojPoStan.Text = "Razvoj: " + kolonija.efekti[Kolonija.RazvojPoRadniku].ToString("0.##");
+			*/
 			lblMinPovrsina.Text = "Površina: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudePovrsinske]);
 			lblMinDubina.Text = "Dubina: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudeDubinske]);
+			lblMinOstvareno.Text = "Ostvareno: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudeEfektivno]);
 
 			lblOdrzavanjeGrav.Text = "Gravitacija: " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.OdrzavanjeGravitacija]);
 			lblOdrzavanjeZrac.Text = "Zračenje: " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.OdrzavanjeZracenje]);
@@ -54,16 +59,18 @@ namespace Prototip
 			lblOdrzavanjeGustAtm.Text = "Gustoča: " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.OdrzavanjeAtmGustoca]);
 			lblOdrzavanjeTempAtm.Text = "Temperatura: " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.OdrzavanjeTemperatura]);
 			lblOdrzavanjeZgrada.Text = "Zgrade: " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.OdrzavanjeZgrada]);
+			lblOdrzavanjeUkupno.Text = "Ukupno: " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.OdrzavanjeUkupno]);
 
 			lblZgradaInfo.Text = "";
 			osvjeziPogledNaKoloniju();
 		}
 
-		public FormPlanetInfo(Planet planet)
+		public FormPlanetInfo(Igrac igrac, Planet planet)
 			: this()
 		{
-			this.kolonija = null;
+			this.kolonija = new Kolonija(igrac, planet, 100000, 0);
 			this.Text = planet.ime;
+			postaviTekstove();
 
 			lblPrikaz.Visible = false;
 			radKolicina.Visible = false;
@@ -71,27 +78,27 @@ namespace Prototip
 
 			picSlika.Image = planet.slika;
 
+			lblVelicina.Text = "Veličina: " + Fje.PrefiksFormater(planet.velicina);
 			lblGravitacija.Text = "Gravitacija: " + String.Format("{0:0.##}", planet.gravitacija());
 			lblZracenje.Text = "Zračenje: " + String.Format("{0:0.##}", planet.ozracenost());
 			lblAtmGustoca.Text = "Gustoča: " + String.Format("{0:0.##}", planet.gustocaAtmosfere);
 			lblAtmKvaliteta.Text = "Kvaliteta: " + (int)(planet.kvalitetaAtmosfere * 100) + "%";
 			lblAtmoTemperatura.Text = "Temperatura: " + String.Format("{0:0.##}", planet.temperatura());
+			lblKoefOrbitalne.Text = "Cijena orbitalne gradnje: x" + kolonija.efekti[Kolonija.FaktorCijeneOrbitalnih].ToString("0.##");
 
 			lblPopBr.Text = "Nenaseljeno";
 			lblPopDelta.Text = "";
 			lblPopMax.Text = "";
 			lblRadnaMjesta.Text = "";
 
-			groupHrana.Visible = false;
+			tabControl.TabPages.Clear();
+			tabControl.TabPages.Add(tabPageResursi);
 
-			lblPoRudaru.Text = "";
-			lblBrRudara.Text = "";
-			lblMinPovrsina.Text = "Površina: " + String.Format("{0:0.##}", planet.mineraliPovrsinski);
-			lblMinDubina.Text = "Dubina: " + String.Format("{0:0.##}", planet.mineraliDubinski);
+			groupRadnici.Hide();
 
-			groupOdrzavanje.Visible = false;
-
-			tabControl.Visible = false;
+			lblMinPovrsina.Text = "Površina: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudePovrsinske]);
+			lblMinDubina.Text = "Dubina: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudeDubinske]);
+			lblMinOstvareno.Text = "Ostvareno: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudeEfektivno]);
 		}
 
 		private void postaviTekstove()
@@ -103,15 +110,23 @@ namespace Prototip
 				lblRadnaMjesta.Text = "Br. radnih mjesta: " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.RadnaMjesta]);
 				lblBrFarmera.Text = "Br. farmera: " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.BrFarmera]);
 				lblBrRudara.Text = "Br. rudara: " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.BrRudara]);
-				lblOdrzavanjeUkupno.Text = "Ukupno: " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.OdrzavanjeUkupno]) + " ind";
+				lblBrOdrzavatelja.Text = "Održavanje: " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.BrOdrzavatelja]);
 			}
 			else
 			{
-				lblRadnaMjesta.Text = "Br. radnih mjesta: " + String.Format("{0:0.##}", 100 * kolonija.efekti[Kolonija.RadnaMjesta] / kolonija.efekti[Kolonija.Populacija]) + "%";
-				lblBrFarmera.Text = "Br. farmera: " + String.Format("{0:0.##}", 100 * kolonija.efekti[Kolonija.BrFarmera] / kolonija.efekti[Kolonija.Populacija]) + "%";
-				lblBrRudara.Text = "Br. rudara: " + String.Format("{0:0.##}", 100 * kolonija.efekti[Kolonija.BrRudara] / kolonija.efekti[Kolonija.Populacija]) + "%";
-				lblOdrzavanjeUkupno.Text = "Ukupno: " + String.Format("{0:0.##}", 100 * kolonija.efekti[Kolonija.BrOdrzavatelja] / kolonija.efekti[Kolonija.Populacija]) + "% pop";
+				double koef = 100 / kolonija.efekti[Kolonija.Populacija];
+				lblRadnaMjesta.Text = "Br. radnih mjesta: " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.RadnaMjesta] ) + "%";
+				lblBrFarmera.Text = "Br. farmera: " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.BrFarmera]) + "%";
+				lblBrRudara.Text = "Br. rudara: " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.BrRudara]) + "%";
+				lblBrOdrzavatelja.Text = "Održavanje: " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.BrOdrzavatelja]) + "%";
 			}
+
+			Dictionary<string, double> maxEfekti = kolonija.maxEfekti();
+			lblHranaPoStan.Text = String.Format("Po farmeru: {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.HranaPoFarmeru], maxEfekti[Kolonija.HranaPoFarmeru]);
+			lblRudePoStan.Text = String.Format("Po rudaru: {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.RudePoRudaru], maxEfekti[Kolonija.RudePoRudaru]);
+			lblOdrzavanjePoStan.Text = String.Format("Održavanje: {0:0.##}", (kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]));
+			lblIndustrijaPoStan.Text = String.Format("Industrija: {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.IndustrijaPoRadniku], maxEfekti[Kolonija.IndustrijaPoRadniku]);
+			lblRazvojPoStan.Text = String.Format("Razvoj: {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.RazvojPoRadniku], maxEfekti[Kolonija.RazvojPoRadniku]);
 		}
 
 		private void btnZatvori_Click(object sender, EventArgs e)
@@ -126,7 +141,7 @@ namespace Prototip
 			lblProcjenaCivilneGradnje.Text = kolonija.procjenaVremenaCivilneGradnje();
 			lblProcjenaVojneGradnje.Text = kolonija.procjenaVremenaVojneGradnje();
 			lblRazvoj.Text = "Razvoj: " + Fje.PrefiksFormater(kolonija.poeniRazvoja());
-			lblKoefOrbitalne.Text = "Cijena orbitalne gradnje: x"+kolonija.efekti[Kolonija.FaktorCijeneOrbitalnih].ToString("0.##");
+			lblKoefOrbitalne.Text = "Cijena orbitalne gradnje: x" + kolonija.efekti[Kolonija.FaktorCijeneOrbitalnih].ToString("0.##");
 
 			if (kolonija.redCivilneGradnje.Count > 0)
 			{
