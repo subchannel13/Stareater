@@ -110,6 +110,7 @@
     <Compile Include="Igra\Brodovi\Komponenta.cs" />
     <Compile Include="Igra\Brodovi\AKomponentaInfo.cs" />
     <Compile Include="Igra\Brodovi\Dizajn.cs" />
+    <Compile Include="Igra\Brodovi\Misija.cs" />
     <Compile Include="Igra\Brodovi\MZPogon.cs" />
     <Compile Include="Igra\Brodovi\Oklop.cs" />
     <Compile Include="Igra\Brodovi\Oruzje.cs" />

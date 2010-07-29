@@ -31,7 +31,7 @@ namespace Prototip
 		public static Dictionary<Image, int> PlanetImageIndex = new Dictionary<Image, int>();
 		public static Dictionary<Color, Image> Flota = new Dictionary<Color,Image>();
 
-		private static Dictionary<Oruzje.Misija, Image> MisijaBroda = new Dictionary<Oruzje.Misija, Image>();
+		private static Dictionary<Misija.Tip, Image> MisijaBroda = new Dictionary<Misija.Tip, Image>();
 
 		public static Image FlotaTab = null;
 		public static Image SlikaOdabiraZvijezde;
@@ -75,7 +75,7 @@ namespace Prototip
 						Flota.Add(boja, ModulirajBoju(slika, boja));
 					break;
 				case "brod_misija":
-					MisijaBroda.Add((Oruzje.Misija)indeks, slika);
+					MisijaBroda.Add((Misija.Tip)indeks, slika);
 					break;
 				default:
 					throw new ArgumentException("Invalid picture group \"" + skupina + "\" in ./slike/slike.txt");

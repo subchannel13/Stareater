@@ -7,18 +7,6 @@ namespace Prototip
 {
 	public class Oruzje : Komponenta<Oruzje.OruzjeInfo>
 	{
-		public enum Misija
-		{
-			DirektnoOruzje = 0,
-			Projektil,
-			Kolonizacija,
-			Popravak,
-			Spijunaza,
-			Tegljenje,
-			CivilniTransport,
-			VojniTransport,
-		}
-
 		public enum Ciljanje
 		{
 			Obrana,
@@ -29,26 +17,11 @@ namespace Prototip
 		public class OruzjeInfo : AKomponentaInfo
 		{
 			#region Statično
-			public static Dictionary<Misija, List<OruzjeInfo>> Oruzja = new Dictionary<Misija,List<OruzjeInfo>>();
+			public static Dictionary<Misija.Tip, List<OruzjeInfo>> Oruzja = new Dictionary<Misija.Tip, List<OruzjeInfo>>();
 			public static Dictionary<string, OruzjeInfo> KodoviOruzja = new Dictionary<string, OruzjeInfo>();
-			public static Dictionary<Misija, string> OpisMisije = initOpisMisija();
 			public static Dictionary<Ciljanje, string> OpisCiljanja = initOpisCiljanja();
-			private static Dictionary<string, Misija> StringUMisiju = initStringUMisiju();
 			private static Dictionary<string, Ciljanje> StringUCiljanje = initStringUCiljanje();
 
-			private static Dictionary<string, Misija> initStringUMisiju()
-			{
-				Dictionary<string, Misija> stringUMisiju = new Dictionary<string,Misija>();
-				stringUMisiju.Add("DIREKTNO_ORUZJE", Misija.DirektnoOruzje);
-				stringUMisiju.Add("PROJEKTIL", Misija.Projektil);
-				stringUMisiju.Add("KOLONIZACIJA", Misija.Kolonizacija);
-				stringUMisiju.Add("POPRAVAK", Misija.Popravak);
-				stringUMisiju.Add("SPIJUNAZA", Misija.Spijunaza);
-				stringUMisiju.Add("TEGLJENJE", Misija.Tegljenje);
-				stringUMisiju.Add("CIV_TRANSPORT", Misija.CivilniTransport);
-				stringUMisiju.Add("VOJNI_TRANSPORT", Misija.VojniTransport);
-				return stringUMisiju;
-			}
 			private static Dictionary<string, Ciljanje> initStringUCiljanje()
 			{
 				Dictionary<string, Ciljanje> stringUCiljanje = new Dictionary<string, Ciljanje>();
@@ -56,19 +29,6 @@ namespace Prototip
 				stringUCiljanje.Add("NORMALNO", Ciljanje.Normalno);
 				stringUCiljanje.Add("VELIKI_BRODOVI", Ciljanje.Veliki_brodovi);
 				return stringUCiljanje;
-			}
-			private static Dictionary<Misija, string> initOpisMisija()
-			{
-				Dictionary<Misija, string> ret = new Dictionary<Misija, string>();
-				ret.Add(Misija.DirektnoOruzje, "direktno oružje");
-				ret.Add(Misija.Projektil, "projektil");
-				ret.Add(Misija.Kolonizacija, "moduli za uspostavljanje kolonije");
-				ret.Add(Misija.Popravak, "postrojenje za popravak i nadogradnju brodova");
-				ret.Add(Misija.Spijunaza, "spijunska oprema");
-				ret.Add(Misija.Tegljenje, "međuzvjezdani transport brodova");
-				ret.Add(Misija.CivilniTransport, "civilni transport");
-				ret.Add(Misija.VojniTransport, "vojni transport");
-				return ret;
 			}
 			private static Dictionary<Ciljanje, string> initOpisCiljanja()
 			{
@@ -86,29 +46,32 @@ namespace Prototip
 				Image slika = Image.FromFile(podaci["SLIKA"]);
 				List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
-				Misija misija = StringUMisiju[podaci["MISIJA"]];
+				Misija.Tip misijaTip = Misija.StringUMisiju[podaci["MISIJA"]];
 
-				if (!Oruzja.ContainsKey(misija))
-					Oruzja.Add(misija, new List<OruzjeInfo>());
+				Misija misija = Misija.Opisnici[misijaTip];
+				Formula[] parametri = new Formula[misija.brParametara];
+				for (int i = 0; i < misija.brParametara; i++)
+					parametri[i] = Formula.IzStringa(podaci[misija.parametri[i].kod]);
+
+				if (!Oruzja.ContainsKey(misijaTip))
+					Oruzja.Add(misijaTip, new List<OruzjeInfo>());
 
 				OruzjeInfo info = new OruzjeInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,
-					misija, StringUCiljanje[podaci["CILJANJE"]],
-					Formula.IzStringa(podaci["VATRENA_MOC"]),
-					Formula.IzStringa(podaci["BR_NAPADA"]),
-					Formula.IzStringa(podaci["PRECIZNOST"]),
+					misijaTip, StringUCiljanje[podaci["CILJANJE"]],
+					parametri,
 					Formula.IzStringa(podaci["CIJENA"]),
 					Formula.IzStringa(podaci["SNAGA"]),
 					Formula.IzStringa(podaci["VELICINA"])
 					);
-				Oruzja[misija].Add(info);
+				Oruzja[misijaTip].Add(info);
 				KodoviOruzja.Add(podaci["KOD"], info);
 			}
 
-			public static Dictionary<Misija, List<Oruzje>> DostupnaOruzja(Dictionary<string, double> varijable)
+			public static Dictionary<Misija.Tip, List<Oruzje>> DostupnaOruzja(Dictionary<string, double> varijable)
 			{
-				Dictionary<Misija, List<Oruzje>> ret = new Dictionary<Misija, List<Oruzje>>();
-				foreach (Misija misija in Oruzja.Keys)
+				Dictionary<Misija.Tip, List<Oruzje>> ret = new Dictionary<Misija.Tip, List<Oruzje>>();
+				foreach (Misija.Tip misija in Oruzja.Keys)
 				{
 					ret.Add(misija, new List<Oruzje>());
 					foreach(OruzjeInfo oi in Oruzja[misija])
@@ -128,28 +91,23 @@ namespace Prototip
 			}
 			#endregion
 
-			public Misija misija { get; private set; }
+			public Misija.Tip misija { get; private set; }
 			public Ciljanje ciljanje { get; private set; }
-			private Formula vatrenaMoc;
-			private Formula brNapada;
-			private Formula preciznost;
+			private Formula[] parametri;
 			private Formula snaga;
 			private Formula cijena;
 			private Formula velicina;
 
 			private OruzjeInfo(string naziv, string opis, Image slika,
 				List<Tehnologija.Preduvjet> preduvjeti, int maxNivo,
-				Misija misija, Ciljanje ciljanje, Formula moc, Formula brNapada,
-				Formula preciznost, Formula cijena, Formula snaga,
-				Formula velicina)
+				Misija.Tip misija, Ciljanje ciljanje, Formula[] parametri,
+				Formula cijena, Formula snaga, Formula velicina)
 				:
 				base(naziv, opis, slika, preduvjeti, maxNivo)
 			{
 				this.misija = misija;
 				this.ciljanje = ciljanje;
-				this.vatrenaMoc = moc;
-				this.brNapada = brNapada;
-				this.preciznost = preciznost;
+				this.parametri = parametri;
 				this.cijena = cijena;
 				this.snaga = snaga;
 				this.velicina = velicina;
@@ -163,48 +121,74 @@ namespace Prototip
 
 			public Oruzje naciniKomponentu(int nivo)
 			{
+				double[] parametri = new double[this.parametri.Length];
+				
+				for (int i = 0; i < parametri.Length; i++)
+					parametri[i] = Evaluiraj(this.parametri[i], nivo);
+
 				return new Oruzje(
 					this,
 					nivo,
-					Evaluiraj(vatrenaMoc, nivo),
-					Evaluiraj(brNapada, nivo),
-					Evaluiraj(preciznost, nivo),
+					parametri,
 					Evaluiraj(cijena, nivo),
 					Evaluiraj(snaga, nivo),
 					Evaluiraj(velicina, nivo)
 					);
-					
 			}
-
 		}
 
-		public double vatrenaMoc { get; private set; }
-		public double brNapada { get; private set; }
-		public double preciznost { get; private set; }
+		public double[] parametri { get; private set; }
 		public double cijena { get; private set; }
 		public double snaga { get; private set; }
 		public double velicina { get; private set; }
 
 		public Oruzje(OruzjeInfo info, int nivo,
-			double vatrenaMoc, double brNapada,
-			double preciznost, double cijena, double snaga, double velicina)
+			double[] parametri, double cijena, double snaga, double velicina)
 			: base(info, nivo)
 		{
-			this.vatrenaMoc = vatrenaMoc;
-			this.brNapada = brNapada;
-			this.preciznost = preciznost;
+			this.parametri = parametri;
 			this.cijena = cijena;
 			this.snaga = snaga;
 			this.velicina = velicina;
 		}
 
-		public Misija misija 
+		public Misija.Tip misija 
 		{
 			get { return info.misija; }
 		}
 		public Ciljanje ciljanje 
 		{
 			get { return info.ciljanje; }
+		}
+
+		public double vatrenaMoc
+		{
+			get { return parametri[Misija.VatrenaMoc]; }
+		}
+
+		public double brNapada
+		{
+			get { return parametri[Misija.UcinkovitostStitova]; }
+		}
+
+		public double preciznost
+		{
+			get { return parametri[Misija.Preciznost]; }
+		}
+
+		public double brKolonista
+		{
+			get { return parametri[Misija.BrKolonista]; }
+		}
+
+		public double radnaMjesta
+		{
+			get { return parametri[Misija.RadnaMjesta]; }
+		}
+
+		public double kapacitet
+		{
+			get { return parametri[Misija.Kapacitet]; }
 		}
 	}
 }

@@ -31,7 +31,7 @@ namespace Prototip
 		{
 			public Oklop oklop { get; private set; }
 			public Potisnici potisnici { get; private set; }
-			public Dictionary<Oruzje.Misija, List<Oruzje>> oruzja { get; private set; }
+			public Dictionary<Misija.Tip, List<Oruzje>> oruzja { get; private set; }
 			public Senzor senzor { get; private set; }
 			public List<Trup> trupovi { get; private set; }
 			public Dictionary<Trup, Komponente> komponente { get; private set; }
@@ -288,7 +288,7 @@ namespace Prototip
 
 				cbNDprimMisija.Items.Add(new TagTekst<Oruzje>(null, "ništa"));
 				cbNDsekMisija.Items.Add(new TagTekst<Oruzje>(null, "ništa"));
-				foreach (Oruzje.Misija misija in dizajner.oruzja.Keys)
+				foreach (Misija.Tip misija in dizajner.oruzja.Keys)
 				{
 					if (dizajner.oruzja[misija].Count == 0) continue;
 					cbNDprimMisija.Items.Add(new TagTekst<Oruzje>(null, SeparatorNDGrupa));
@@ -357,112 +357,36 @@ namespace Prototip
 				return opis;
 			}
 
-			switch (oruzje.komponenta.misija)
-			{
-				case Oruzje.Misija.CivilniTransport:
-					opis.Add("Civilni transport");
-					opis.Add(oruzje.komponenta.naziv);
-					opis.Add("");
-					if (oruzje.komponenta.maxNivo > 0)
-						opis.Add("Nivo: " + oruzje.komponenta.nivo);
-					opis.Add("Kapacitet: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc) + " stan.");
-					break;
+			Misija.Tip misijaTip = oruzje.komponenta.misija;
+			Misija misija = Misija.Opisnici[misijaTip];
 
-				case Oruzje.Misija.DirektnoOruzje:
-					opis.Add("Oružje");
-					opis.Add(Fje.PrefiksFormater(oruzje.kolicina) + " x " + oruzje.komponenta.naziv);
-					opis.Add("");
-					if (oruzje.komponenta.maxNivo > 0)
-						opis.Add("Nivo: " + oruzje.komponenta.nivo);
-					opis.Add("Vatrena moć: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc));
-					opis.Add("Učinkovitost štitova: x" + oruzje.komponenta.brNapada.ToString("0.##"));
-					opis.Add("Ciljanje: " + Oruzje.OruzjeInfo.OpisCiljanja[oruzje.komponenta.ciljanje]);
-					opis.Add("Preciznost: " + Fje.PrefiksFormater(oruzje.komponenta.preciznost));
-					if (cijene)
-					{
-						opis.Add("");
-						opis.Add("Potrebna snaga: " + Fje.PrefiksFormater(oruzje.komponenta.snaga));
-					}
-					break;
+			opis.Add(misija.naziv);
+			opis.Add((misija.grupirana) ? 
+				oruzje.komponenta.naziv :
+				Fje.PrefiksFormater(oruzje.kolicina) + " x " + oruzje.komponenta.naziv);
+			opis.Add("");
+			if (oruzje.komponenta.maxNivo > 0) opis.Add("Nivo: " + oruzje.komponenta.nivo);
+			if (misija.imaCiljanje) opis.Add("Ciljanje: " + Oruzje.OruzjeInfo.OpisCiljanja[oruzje.komponenta.ciljanje]);
 
-				case Oruzje.Misija.Kolonizacija:
-					opis.Add("Kolonizacija");
-					opis.Add(oruzje.komponenta.naziv);
-					opis.Add("");
-					if (oruzje.komponenta.maxNivo > 0)
-						opis.Add("Nivo: " + oruzje.komponenta.nivo);
-					opis.Add("Br. kolonista: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc));
-					break;
-
-				case Oruzje.Misija.Popravak:
-					opis.Add("Popravak i nadogradnja");
-					opis.Add(oruzje.komponenta.naziv);
-					opis.Add("");
-					if (oruzje.komponenta.maxNivo > 0)
-						opis.Add("Nivo: " + oruzje.komponenta.nivo);
-					opis.Add("Poeni industrije: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc));
-					break;
-
-				case Oruzje.Misija.Projektil:
-					opis.Add("Oružje (projektil)");
-					opis.Add(Fje.PrefiksFormater(oruzje.kolicina) + " x " + oruzje.komponenta.naziv);
-					opis.Add("");
-					if (oruzje.komponenta.maxNivo > 0)
-						opis.Add("Nivo: " + oruzje.komponenta.nivo);
-					opis.Add("Vatrena moć: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc));
-					opis.Add("Učinkovitost štitova: x" + oruzje.komponenta.brNapada.ToString("0.##"));
-					opis.Add("Ciljanje: " + Oruzje.OruzjeInfo.OpisCiljanja[oruzje.komponenta.ciljanje]);
-					opis.Add("Preciznost: " + Fje.PrefiksFormater(oruzje.komponenta.preciznost));
-					if (cijene)
-					{
-						opis.Add("");
-						opis.Add("Potrebna snaga: " + Fje.PrefiksFormater(oruzje.komponenta.snaga));
-					}
-					break;
-
-				case Oruzje.Misija.Spijunaza:
-					opis.Add("Špijunaža");
-					opis.Add(Fje.PrefiksFormater(oruzje.kolicina) + " x " + oruzje.komponenta.naziv);
-					opis.Add("");
-					if (oruzje.komponenta.maxNivo > 0)
-						opis.Add("Nivo: " + oruzje.komponenta.nivo);
-					opis.Add("Učinkovitost:");
-					opis.Add("Špijunaža: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc));
-					opis.Add("Infiltracija" + Fje.PrefiksFormater(oruzje.komponenta.brNapada));
-					opis.Add("Preciznost: " + Fje.PrefiksFormater(oruzje.komponenta.preciznost));
-					if (cijene)
-					{
-						opis.Add("");
-						opis.Add("Potrebna snaga: " + Fje.PrefiksFormater(oruzje.komponenta.snaga));
-					}
-					break;
-
-				case Oruzje.Misija.Tegljenje:
-					opis.Add("Tegljenje");
-					opis.Add(oruzje.komponenta.naziv);
-					opis.Add("");
-					if (oruzje.komponenta.maxNivo > 0)
-						opis.Add("Nivo: " + oruzje.komponenta.nivo);
-					opis.Add("Kapacitet: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc));
-					break;
-
-				case Oruzje.Misija.VojniTransport:
-					opis.Add("Vojni transport");
-					opis.Add(oruzje.komponenta.naziv);
-					opis.Add("");
-					if (oruzje.komponenta.maxNivo > 0)
-						opis.Add("Nivo: " + oruzje.komponenta.nivo);
-					opis.Add("Kapacitet: " + Fje.PrefiksFormater(oruzje.komponenta.vatrenaMoc) + " jedinica");
-					if (cijene)
-					{
-						opis.Add("");
-						opis.Add("Potrebna snaga: " + Fje.PrefiksFormater(oruzje.komponenta.snaga));
-					}
-					break;
+			for (int i = 0; i < misija.brParametara; i++) {
+				double vrijednost = oruzje.komponenta.parametri[i];
+				if (misija.parametri[i].mnoziKolicinom)
+					vrijednost *= oruzje.kolicina;
+				switch (misija.parametri[i].tip) {
+					case Misija.TipParameta.Cijelobrojni:
+						opis.Add(misija.parametri[i].opis + ": " + Fje.PrefiksFormater(vrijednost));
+						break;
+					case Misija.TipParameta.Postotak:
+						opis.Add(misija.parametri[i].opis + ": " + vrijednost.ToString("0.##"));
+						break;
+				}
 			}
 
-			if (cijene)
+			if (cijene) {
+				opis.Add("");
+				opis.Add("Potrebna snaga: " + Fje.PrefiksFormater(oruzje.komponenta.snaga));
 				opis.Add("Cijena: " + Fje.PrefiksFormater(oruzje.komponenta.cijena * oruzje.kolicina));
+			}
 
 			return opis;
 		}

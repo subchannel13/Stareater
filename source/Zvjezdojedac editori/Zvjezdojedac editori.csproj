@@ -87,6 +87,9 @@
     <Compile Include="..\Zvjezdojedac\Igra\Brodovi\Komponenta.cs">
       <Link>Zvjezdojedac\Komponenta.cs</Link>
     </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Brodovi\Misija.cs">
+      <Link>Misija.cs</Link>
+    </Compile>
     <Compile Include="..\Zvjezdojedac\Igra\Brodovi\MZPogon.cs">
       <Link>Zvjezdojedac\MZPogon.cs</Link>
     </Compile>

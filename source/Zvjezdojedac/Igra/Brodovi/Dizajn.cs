@@ -146,7 +146,6 @@ namespace Prototip
 
 			#region Postavljanje primarnog i sekundarnog oružja/misije
 			{
-				if (primarnoOruzje == null) udioPrimarnogOruzja = 0;
 				if (sekundarnoOruzje == null) udioPrimarnogOruzja = 1;
 				/*
 				 * slobodan prostor za oruzja/misije
