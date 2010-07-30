@@ -111,14 +111,41 @@ namespace Prototip
 					if (planet.kolonija != null)
 						planet.kolonija.noviKrug();
 
-			for (int i = 0; i < igraci.Count; i++)
+			for (int i = 0; i < igraci.Count; i++) {
 				igraci[i].noviKrug(this, poeniRazvoja[i], poeniIstraz[i]);
+
+				Dictionary<Zvijezda, List<Planet>> naseljivo = mozeKolonizirati(igraci[i]);
+				if (naseljivo.Count > 0) {
+					FormKolonizacija formKolonizacija = new FormKolonizacija(this, igraci[i], naseljivo);
+					formKolonizacija.ShowDialog();
+				}
+			}
 
 			foreach (Zvijezda zvj in mapa.zvijezde)
 				foreach (Planet planet in zvj.planeti)
 					if (planet.kolonija != null)
 						planet.kolonija.resetirajEfekte();
 			brKruga++;
+		}
+
+		private Dictionary<Zvijezda, List<Planet>> mozeKolonizirati(Igrac igrac)
+		{
+			Dictionary<Zvijezda, List<Planet>> rez = new Dictionary<Zvijezda, List<Planet>>();
+
+			foreach (KeyValuePair<Zvijezda, Flota> par in igrac.floteStacionarne) {
+				if (!par.Value.imaMisiju(Misija.Tip.Kolonizacija))
+					continue;
+
+				List<Planet> naseljiviPlaneti = new List<Planet>();
+				foreach (Planet planet in par.Key.planeti)
+					if (planet.kolonija == null)
+						naseljiviPlaneti.Add(planet);
+
+				if (naseljiviPlaneti.Count > 0)
+					rez.Add(par.Key, naseljiviPlaneti);
+			}
+
+			return rez;
 		}
 
 		private void igraj()

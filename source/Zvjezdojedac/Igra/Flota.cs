@@ -7,6 +7,7 @@ namespace Prototip
 {
 	public class Flota : IPohranjivoSB
 	{
+		private HashSet<Misija.Tip> misije = new HashSet<Misija.Tip>();
 		public Dictionary<Sazetak, Dictionary<Dizajn, Brod>> brodovi;
 		public double x;
 		public double y;
@@ -20,14 +21,23 @@ namespace Prototip
 
 		public void dodajBrod(Brod brod)
 		{
-			Sazetak stil = brod.dizajn.stil;
+			Dizajn dizajn = brod.dizajn;
+			Sazetak stil = dizajn.stil;
 			if (!brodovi.ContainsKey(stil))
 				brodovi.Add(stil, new Dictionary<Dizajn, Brod>());
 
-			if (brodovi[stil].ContainsKey(brod.dizajn))
-				brodovi[stil][brod.dizajn].dodaj(brod);
+			if (brodovi[stil].ContainsKey(dizajn))
+				brodovi[stil][dizajn].dodaj(brod);
 			else
-				brodovi[stil].Add(brod.dizajn, brod);
+				brodovi[stil].Add(dizajn, brod);
+
+			if (dizajn.primarnoOruzje != null) misije.Add(dizajn.primarnoOruzje.komponenta.misija);
+			if (dizajn.sekundarnoOruzje != null) misije.Add(dizajn.sekundarnoOruzje.komponenta.misija);
+		}
+
+		public bool imaMisiju(Misija.Tip misija)
+		{
+			return misije.Contains(misija);
 		}
 
 		#region Pohrana

@@ -1,4 +1,8 @@
-﻿<ORUZJE>
+﻿#
+#  Direktna oružja
+#
+
+<ORUZJE>
 IME = Laserski top
 OPIS = 
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
@@ -81,4 +85,23 @@ PRECIZNOST = 50
 CIJENA = 100000
 SNAGA = 0
 VELICINA = 1
+----
+
+#
+#  Kolonizatori
+#
+
+<ORUZJE>
+IME = Kolonizator
+OPIS = 
+SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
+MAX_NIVO = 1
+PREDUVJETI =
+KOD = KOLONIJA
+MISIJA = KOLONIZACIJA
+POP = 100
+RADNA_MJ = 100
+CIJENA = 4000000
+SNAGA = 0
+VELICINA = 100
 ----

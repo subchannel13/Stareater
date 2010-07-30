@@ -155,8 +155,6 @@ namespace Prototip
 		public string opis { get; private set; }
 		public bool imaCiljanje { get; private set; }
 		public bool grupirana { get; private set; }
-		//public string[] kodoviParametra { get; private set; }
-		//public string[] opisParametra { get; private set; }
 		public Parametar[] parametri { get; private set; }
 
 		private Misija(string naziv, string opis, 

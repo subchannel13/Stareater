@@ -72,6 +72,14 @@
     <Compile Include="..\Zvjezdojedac\Alati.cs">
       <Link>Zvjezdojedac\Alati.cs</Link>
     </Compile>
+    <Compile Include="..\Zvjezdojedac\GUI\FormKolonizacija.cs">
+      <Link>FormKolonizacija.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\GUI\FormKolonizacija.designer.cs">
+      <Link>FormKolonizacija.designer.cs</Link>
+      <DependentUpon>FormKolonizacija.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\Zvjezdojedac\Igra\Brodovi\AKomponentaInfo.cs">
       <Link>Zvjezdojedac\AKomponentaInfo.cs</Link>
     </Compile>
@@ -209,6 +217,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="..\Zvjezdojedac\GUI\FormKolonizacija.resx">
+      <Link>FormKolonizacija.resx</Link>
+      <DependentUpon>FormKolonizacija.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
       <SubType>Designer</SubType>

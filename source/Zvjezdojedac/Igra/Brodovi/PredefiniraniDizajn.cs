@@ -94,10 +94,10 @@ namespace Prototip
 		public Dizajn naciniDizajn(Dictionary<string, double> varijable)
 		{
 			Trup trup = this.trup.naciniKomponentu(varijable);
-			Oruzje primarnoOruzje = this.primarnoOruzje.naciniKomponentu(varijable);
-			Oruzje sekundarnoOruzje = this.sekundarnoOruzje.naciniKomponentu(varijable);
+			Oruzje primarnoOruzje = (this.primarnoOruzje != null) ? this.primarnoOruzje.naciniKomponentu(varijable) : null;
+			Oruzje sekundarnoOruzje = (this.sekundarnoOruzje != null) ? this.sekundarnoOruzje.naciniKomponentu(varijable) : null;
 			Oklop oklop = Oklop.OklopInfo.NajboljiOklop(varijable);
-			Stit stit = this.stit.naciniKomponentu(varijable, trup.velicina_stita);
+			Stit stit = (this.stit != null) ? this.stit.naciniKomponentu(varijable, trup.velicina_stita) : null;
 			Senzor senzor = Senzor.SenzorInfo.NajboljiSenzor(varijable);
 			Potisnici potisnici = Potisnici.PotisnikInfo.NajboljiPotisnici(varijable);
 			Reaktor reaktor = Reaktor.ReaktorInfo.NajboljiReaktor(varijable, trup.velicina_reaktora);

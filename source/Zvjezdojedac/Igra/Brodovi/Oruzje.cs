@@ -53,12 +53,15 @@ namespace Prototip
 				for (int i = 0; i < misija.brParametara; i++)
 					parametri[i] = Formula.IzStringa(podaci[misija.parametri[i].kod]);
 
+				Ciljanje ciljanje = Ciljanje.Normalno;
+				if (misija.imaCiljanje) ciljanje = StringUCiljanje[podaci["CILJANJE"]];
+
 				if (!Oruzja.ContainsKey(misijaTip))
 					Oruzja.Add(misijaTip, new List<OruzjeInfo>());
 
 				OruzjeInfo info = new OruzjeInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,
-					misijaTip, StringUCiljanje[podaci["CILJANJE"]],
+					misijaTip, ciljanje,
 					parametri,
 					Formula.IzStringa(podaci["CIJENA"]),
 					Formula.IzStringa(podaci["SNAGA"]),
