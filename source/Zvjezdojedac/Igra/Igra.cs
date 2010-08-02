@@ -114,11 +114,42 @@ namespace Prototip
 			for (int i = 0; i < igraci.Count; i++) {
 				igraci[i].noviKrug(this, poeniRazvoja[i], poeniIstraz[i]);
 
-				Dictionary<Zvijezda, List<Planet>> naseljivo = mozeKolonizirati(igraci[i]);
-				if (naseljivo.Count > 0) {
-					FormKolonizacija formKolonizacija = new FormKolonizacija(this, igraci[i], naseljivo);
-					formKolonizacija.ShowDialog();
+				HashSet<Zvijezda> prazneFloteStac = new HashSet<Zvijezda>();
+				foreach (KeyValuePair<Zvijezda, Flota> flotaStac in igraci[i].floteStacionarne) {
+					Zvijezda zvijezda = flotaStac.Key;
+					Flota flota = flotaStac.Value;
+					foreach (Flota.Kolonizacija kolonizacija in flota.kolonizacije) {
+						Planet planet = zvijezda.planeti[kolonizacija.planet];
+						double maxDodatnaPopulacija = 0;
+						if (planet.kolonija == null) {
+							Kolonija kolonija = new Kolonija(igraci[i], planet, 10, 0);
+							maxDodatnaPopulacija = kolonija.efekti[Kolonija.PopulacijaMax];
+						}
+						else
+							maxDodatnaPopulacija = (planet.kolonija.efekti[Kolonija.PopulacijaMax] - planet.kolonija.populacija);
+						
+						long populacijaBroda = kolonizacija.brod.dizajn.populacijaKolonizatora;
+						long radnaMjestaBroda = kolonizacija.brod.dizajn.radnaMjestaKolonizatora;
+						long brBrodova = (long)(Math.Min(kolonizacija.brBrodova, Math.Ceiling(maxDodatnaPopulacija / populacijaBroda)));
+						if (planet.kolonija == null)
+							planet.kolonija = new Kolonija(
+								igraci[i],
+								planet,
+								populacijaBroda * brBrodova,
+								radnaMjestaBroda * brBrodova);
+						else
+							planet.kolonija.dodajKolonizator(
+								populacijaBroda * brBrodova, 
+								radnaMjestaBroda * brBrodova);
+
+						flota.ukloniBrod(kolonizacija.brod.dizajn, brBrodova);
+					}
+					flota.kolonizacije.Clear();
+					if (flota.brodovi.Count == 0)
+						prazneFloteStac.Add(zvijezda);
 				}
+				foreach (Zvijezda zvj in prazneFloteStac)
+					igraci[i].floteStacionarne.Remove(zvj);
 			}
 
 			foreach (Zvijezda zvj in mapa.zvijezde)

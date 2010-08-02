@@ -130,6 +130,13 @@ namespace Prototip
 			Oklop oklop, Stit stit, Dictionary<SpecijalnaOprema, int> specijalnaOprema,
 			Senzor senzor, Potisnici potisnici, MZPogon MZPogon, Reaktor reaktor, Taktika taktika)
 		{
+			if (primarnoOruzje != null && sekundarnoOruzje != null)
+				if (Misija.Opisnici[primarnoOruzje.misija].jednokratna &&
+					Misija.Opisnici[sekundarnoOruzje.misija].jednokratna)
+					sekundarnoOruzje = null;
+
+			if (sekundarnoOruzje == null) udioPrimarnogOruzja = 1;
+
 			this.id = id;
 			brojBrodova = 0;
 			this.ime = ime;
@@ -146,7 +153,6 @@ namespace Prototip
 
 			#region Postavljanje primarnog i sekundarnog oružja/misije
 			{
-				if (sekundarnoOruzje == null) udioPrimarnogOruzja = 1;
 				/*
 				 * slobodan prostor za oruzja/misije
 				 */
@@ -416,9 +422,45 @@ namespace Prototip
 			get { return efekti[Iznos.Pokretljivosti]; }
 		}
 
+		public long populacijaKolonizatora
+		{
+			get
+			{
+				long rez = 0;
+
+				if (primarnoOruzje != null)
+					if (primarnoOruzje.komponenta.misija == Misija.Tip.Kolonizacija)
+						rez += (long)primarnoOruzje.komponenta.parametri[Misija.BrKolonista] * primarnoOruzje.kolicina;
+
+				if (sekundarnoOruzje != null)
+					if (sekundarnoOruzje.komponenta.misija == Misija.Tip.Kolonizacija)
+						rez += (long)sekundarnoOruzje.komponenta.parametri[Misija.BrKolonista] * sekundarnoOruzje.kolicina;
+
+				return rez;
+			}
+		}
+
 		public double prikrivenost
 		{
 			get { return efekti[Iznos.Prikrivanje]; }
+		}
+
+		public long radnaMjestaKolonizatora
+		{
+			get
+			{
+				long rez = 0;
+
+				if (primarnoOruzje != null)
+					if (primarnoOruzje.komponenta.misija == Misija.Tip.Kolonizacija)
+						rez += (long)primarnoOruzje.komponenta.parametri[Misija.RadnaMjesta] * primarnoOruzje.kolicina;
+
+				if (sekundarnoOruzje != null)
+					if (sekundarnoOruzje.komponenta.misija == Misija.Tip.Kolonizacija)
+						rez += (long)sekundarnoOruzje.komponenta.parametri[Misija.RadnaMjesta] * sekundarnoOruzje.kolicina;
+
+				return rez;
+			}
 		}
 
 		public double snagaReaktora

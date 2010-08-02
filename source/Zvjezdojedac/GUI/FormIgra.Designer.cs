@@ -36,6 +36,13 @@
 			this.pnlOpisZvjezde = new System.Windows.Forms.Panel();
 			this.lblImeZvjezde = new System.Windows.Forms.Label();
 			this.tabPageKolonija = new System.Windows.Forms.TabPage();
+			this.groupPoStan = new System.Windows.Forms.GroupBox();
+			this.lblOdrzavanjePoStan = new System.Windows.Forms.Label();
+			this.lblRazvojPoStan = new System.Windows.Forms.Label();
+			this.lblIndustrijaPoStan = new System.Windows.Forms.Label();
+			this.lblRudePoStan = new System.Windows.Forms.Label();
+			this.lblHranaPoStan = new System.Windows.Forms.Label();
+			this.lblRazvoj = new System.Windows.Forms.Label();
 			this.groupCivGradnja = new System.Windows.Forms.GroupBox();
 			this.btnCivilnaGradnja = new System.Windows.Forms.Button();
 			this.hscrCivilnaIndustrija = new System.Windows.Forms.HScrollBar();
@@ -46,7 +53,6 @@
 			this.lblProcjenaVojneGradnje = new System.Windows.Forms.Label();
 			this.hscrVojnaIndustrija = new System.Windows.Forms.HScrollBar();
 			this.lblVojnaGradnja = new System.Windows.Forms.Label();
-			this.lblRazvoj = new System.Windows.Forms.Label();
 			this.picSlikaPlaneta = new System.Windows.Forms.PictureBox();
 			this.btnPlanetInfo = new System.Windows.Forms.Button();
 			this.lblPopulacija = new System.Windows.Forms.Label();
@@ -69,16 +75,11 @@
 			this.btnUcitaj = new System.Windows.Forms.Button();
 			this.btnSpremi = new System.Windows.Forms.Button();
 			this.btnTech = new System.Windows.Forms.Button();
-			this.groupPoStan = new System.Windows.Forms.GroupBox();
-			this.lblHranaPoStan = new System.Windows.Forms.Label();
-			this.lblRudePoStan = new System.Windows.Forms.Label();
-			this.lblIndustrijaPoStan = new System.Windows.Forms.Label();
-			this.lblRazvojPoStan = new System.Windows.Forms.Label();
-			this.lblOdrzavanjePoStan = new System.Windows.Forms.Label();
 			this.tabCtrlDesno.SuspendLayout();
 			this.tabPageZvijezda.SuspendLayout();
 			this.pnlOpisZvjezde.SuspendLayout();
 			this.tabPageKolonija.SuspendLayout();
+			this.groupPoStan.SuspendLayout();
 			this.groupCivGradnja.SuspendLayout();
 			this.groupVojGradnja.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlikaPlaneta)).BeginInit();
@@ -90,7 +91,6 @@
 			this.pnlDesnoGore.SuspendLayout();
 			this.pnlKomande.SuspendLayout();
 			this.pnlKomandeDesno.SuspendLayout();
-			this.groupPoStan.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabCtrlDesno
@@ -116,7 +116,7 @@
 			this.tabPageZvijezda.Location = new System.Drawing.Point(4, 4);
 			this.tabPageZvijezda.Name = "tabPageZvijezda";
 			this.tabPageZvijezda.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageZvijezda.Size = new System.Drawing.Size(154, 484);
+			this.tabPageZvijezda.Size = new System.Drawing.Size(154, 523);
 			this.tabPageZvijezda.TabIndex = 0;
 			// 
 			// listViewPlaneti
@@ -129,7 +129,7 @@
 			this.listViewPlaneti.Location = new System.Drawing.Point(3, 40);
 			this.listViewPlaneti.MultiSelect = false;
 			this.listViewPlaneti.Name = "listViewPlaneti";
-			this.listViewPlaneti.Size = new System.Drawing.Size(148, 441);
+			this.listViewPlaneti.Size = new System.Drawing.Size(148, 480);
 			this.listViewPlaneti.TabIndex = 0;
 			this.listViewPlaneti.UseCompatibleStateImageBehavior = false;
 			this.listViewPlaneti.View = System.Windows.Forms.View.Tile;
@@ -169,6 +169,74 @@
 			this.tabPageKolonija.Padding = new System.Windows.Forms.Padding(3);
 			this.tabPageKolonija.Size = new System.Drawing.Size(154, 523);
 			this.tabPageKolonija.TabIndex = 1;
+			// 
+			// groupPoStan
+			// 
+			this.groupPoStan.Controls.Add(this.lblOdrzavanjePoStan);
+			this.groupPoStan.Controls.Add(this.lblRazvojPoStan);
+			this.groupPoStan.Controls.Add(this.lblIndustrijaPoStan);
+			this.groupPoStan.Controls.Add(this.lblRudePoStan);
+			this.groupPoStan.Controls.Add(this.lblHranaPoStan);
+			this.groupPoStan.Location = new System.Drawing.Point(6, 70);
+			this.groupPoStan.Name = "groupPoStan";
+			this.groupPoStan.Size = new System.Drawing.Size(137, 88);
+			this.groupPoStan.TabIndex = 30;
+			this.groupPoStan.TabStop = false;
+			this.groupPoStan.Text = "Po stanovniku";
+			// 
+			// lblOdrzavanjePoStan
+			// 
+			this.lblOdrzavanjePoStan.AutoSize = true;
+			this.lblOdrzavanjePoStan.Location = new System.Drawing.Point(6, 42);
+			this.lblOdrzavanjePoStan.Name = "lblOdrzavanjePoStan";
+			this.lblOdrzavanjePoStan.Size = new System.Drawing.Size(85, 13);
+			this.lblOdrzavanjePoStan.TabIndex = 4;
+			this.lblOdrzavanjePoStan.Text = "Održavanje: xx.x";
+			// 
+			// lblRazvojPoStan
+			// 
+			this.lblRazvojPoStan.AutoSize = true;
+			this.lblRazvojPoStan.Location = new System.Drawing.Point(6, 68);
+			this.lblRazvojPoStan.Name = "lblRazvojPoStan";
+			this.lblRazvojPoStan.Size = new System.Drawing.Size(64, 13);
+			this.lblRazvojPoStan.TabIndex = 3;
+			this.lblRazvojPoStan.Text = "Razvoj: xx.x";
+			// 
+			// lblIndustrijaPoStan
+			// 
+			this.lblIndustrijaPoStan.AutoSize = true;
+			this.lblIndustrijaPoStan.Location = new System.Drawing.Point(6, 55);
+			this.lblIndustrijaPoStan.Name = "lblIndustrijaPoStan";
+			this.lblIndustrijaPoStan.Size = new System.Drawing.Size(73, 13);
+			this.lblIndustrijaPoStan.TabIndex = 2;
+			this.lblIndustrijaPoStan.Text = "Industrija: xx.x";
+			// 
+			// lblRudePoStan
+			// 
+			this.lblRudePoStan.AutoSize = true;
+			this.lblRudePoStan.Location = new System.Drawing.Point(6, 29);
+			this.lblRudePoStan.Name = "lblRudePoStan";
+			this.lblRudePoStan.Size = new System.Drawing.Size(57, 13);
+			this.lblRudePoStan.TabIndex = 1;
+			this.lblRudePoStan.Text = "Rude: xx.x";
+			// 
+			// lblHranaPoStan
+			// 
+			this.lblHranaPoStan.AutoSize = true;
+			this.lblHranaPoStan.Location = new System.Drawing.Point(6, 16);
+			this.lblHranaPoStan.Name = "lblHranaPoStan";
+			this.lblHranaPoStan.Size = new System.Drawing.Size(60, 13);
+			this.lblHranaPoStan.TabIndex = 0;
+			this.lblHranaPoStan.Text = "Hrana: xx.x";
+			// 
+			// lblRazvoj
+			// 
+			this.lblRazvoj.AutoSize = true;
+			this.lblRazvoj.Location = new System.Drawing.Point(6, 478);
+			this.lblRazvoj.Name = "lblRazvoj";
+			this.lblRazvoj.Size = new System.Drawing.Size(79, 13);
+			this.lblRazvoj.TabIndex = 13;
+			this.lblRazvoj.Text = "Razvoj: xx.xx X";
 			// 
 			// groupCivGradnja
 			// 
@@ -270,15 +338,6 @@
 			this.lblVojnaGradnja.TabIndex = 25;
 			this.lblVojnaGradnja.Text = "xx.xx X";
 			// 
-			// lblRazvoj
-			// 
-			this.lblRazvoj.AutoSize = true;
-			this.lblRazvoj.Location = new System.Drawing.Point(6, 478);
-			this.lblRazvoj.Name = "lblRazvoj";
-			this.lblRazvoj.Size = new System.Drawing.Size(79, 13);
-			this.lblRazvoj.TabIndex = 13;
-			this.lblRazvoj.Text = "Razvoj: xx.xx X";
-			// 
 			// picSlikaPlaneta
 			// 
 			this.picSlikaPlaneta.Location = new System.Drawing.Point(6, 6);
@@ -323,7 +382,7 @@
 			this.tabPageFlote.Location = new System.Drawing.Point(4, 4);
 			this.tabPageFlote.Name = "tabPageFlote";
 			this.tabPageFlote.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageFlote.Size = new System.Drawing.Size(154, 484);
+			this.tabPageFlote.Size = new System.Drawing.Size(154, 523);
 			this.tabPageFlote.TabIndex = 2;
 			// 
 			// tvFlota
@@ -331,8 +390,9 @@
 			this.tvFlota.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tvFlota.Location = new System.Drawing.Point(3, 103);
 			this.tvFlota.Name = "tvFlota";
-			this.tvFlota.Size = new System.Drawing.Size(148, 378);
+			this.tvFlota.Size = new System.Drawing.Size(148, 417);
 			this.tvFlota.TabIndex = 1;
+			this.tvFlota.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvFlota_NodeMouseDoubleClick);
 			// 
 			// panel1
 			// 
@@ -493,65 +553,6 @@
 			this.btnTech.UseVisualStyleBackColor = true;
 			this.btnTech.Click += new System.EventHandler(this.btnTech_Click);
 			// 
-			// groupPoStan
-			// 
-			this.groupPoStan.Controls.Add(this.lblOdrzavanjePoStan);
-			this.groupPoStan.Controls.Add(this.lblRazvojPoStan);
-			this.groupPoStan.Controls.Add(this.lblIndustrijaPoStan);
-			this.groupPoStan.Controls.Add(this.lblRudePoStan);
-			this.groupPoStan.Controls.Add(this.lblHranaPoStan);
-			this.groupPoStan.Location = new System.Drawing.Point(6, 70);
-			this.groupPoStan.Name = "groupPoStan";
-			this.groupPoStan.Size = new System.Drawing.Size(137, 88);
-			this.groupPoStan.TabIndex = 30;
-			this.groupPoStan.TabStop = false;
-			this.groupPoStan.Text = "Po stanovniku";
-			// 
-			// lblHranaPoStan
-			// 
-			this.lblHranaPoStan.AutoSize = true;
-			this.lblHranaPoStan.Location = new System.Drawing.Point(6, 16);
-			this.lblHranaPoStan.Name = "lblHranaPoStan";
-			this.lblHranaPoStan.Size = new System.Drawing.Size(60, 13);
-			this.lblHranaPoStan.TabIndex = 0;
-			this.lblHranaPoStan.Text = "Hrana: xx.x";
-			// 
-			// lblRudePoStan
-			// 
-			this.lblRudePoStan.AutoSize = true;
-			this.lblRudePoStan.Location = new System.Drawing.Point(6, 29);
-			this.lblRudePoStan.Name = "lblRudePoStan";
-			this.lblRudePoStan.Size = new System.Drawing.Size(57, 13);
-			this.lblRudePoStan.TabIndex = 1;
-			this.lblRudePoStan.Text = "Rude: xx.x";
-			// 
-			// lblIndustrijaPoStan
-			// 
-			this.lblIndustrijaPoStan.AutoSize = true;
-			this.lblIndustrijaPoStan.Location = new System.Drawing.Point(6, 55);
-			this.lblIndustrijaPoStan.Name = "lblIndustrijaPoStan";
-			this.lblIndustrijaPoStan.Size = new System.Drawing.Size(73, 13);
-			this.lblIndustrijaPoStan.TabIndex = 2;
-			this.lblIndustrijaPoStan.Text = "Industrija: xx.x";
-			// 
-			// lblRazvojPoStan
-			// 
-			this.lblRazvojPoStan.AutoSize = true;
-			this.lblRazvojPoStan.Location = new System.Drawing.Point(6, 68);
-			this.lblRazvojPoStan.Name = "lblRazvojPoStan";
-			this.lblRazvojPoStan.Size = new System.Drawing.Size(64, 13);
-			this.lblRazvojPoStan.TabIndex = 3;
-			this.lblRazvojPoStan.Text = "Razvoj: xx.x";
-			// 
-			// lblOdrzavanjePoStan
-			// 
-			this.lblOdrzavanjePoStan.AutoSize = true;
-			this.lblOdrzavanjePoStan.Location = new System.Drawing.Point(6, 42);
-			this.lblOdrzavanjePoStan.Name = "lblOdrzavanjePoStan";
-			this.lblOdrzavanjePoStan.Size = new System.Drawing.Size(85, 13);
-			this.lblOdrzavanjePoStan.TabIndex = 4;
-			this.lblOdrzavanjePoStan.Text = "Održavanje: xx.x";
-			// 
 			// FormIgra
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -572,6 +573,8 @@
 			this.pnlOpisZvjezde.PerformLayout();
 			this.tabPageKolonija.ResumeLayout(false);
 			this.tabPageKolonija.PerformLayout();
+			this.groupPoStan.ResumeLayout(false);
+			this.groupPoStan.PerformLayout();
 			this.groupCivGradnja.ResumeLayout(false);
 			this.groupCivGradnja.PerformLayout();
 			this.groupVojGradnja.ResumeLayout(false);
@@ -588,8 +591,6 @@
 			this.pnlKomande.ResumeLayout(false);
 			this.pnlKomandeDesno.ResumeLayout(false);
 			this.pnlKomandeDesno.PerformLayout();
-			this.groupPoStan.ResumeLayout(false);
-			this.groupPoStan.PerformLayout();
 			this.ResumeLayout(false);
 
 		}

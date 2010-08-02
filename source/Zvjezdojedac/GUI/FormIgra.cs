@@ -128,7 +128,9 @@ namespace Prototip
 			{
 				TreeNode nodeStacionarnaFloata = new TreeNode("Obrana");
 				nodeStacionarnaFloata.ImageIndex = igrac.id;
+				nodeStacionarnaFloata.Tag = null;
 				tvFlota.Nodes.Add(nodeStacionarnaFloata);
+
 				Flota flota = igrac.floteStacionarne[zvijezda];
 				foreach (Dictionary<Dizajn, Brod> brodovi in flota.brodovi.Values)
 					foreach (Brod brod in brodovi.Values) {
@@ -136,6 +138,7 @@ namespace Prototip
 						tvFlota.ImageList.Images.Add(brod.dizajn.trup.slika);
 						node.ImageIndex = tvFlota.ImageList.Images.Count - 1;
 						node.SelectedImageIndex = node.ImageIndex;
+						node.Tag = brod;
 						nodeStacionarnaFloata.Nodes.Add(node);
 					}
 			}
@@ -407,6 +410,22 @@ namespace Prototip
 				odaberiZvijezdu(igrac.odabranaZvijezda, false);
 				odabariPlanet(igrac.odabranPlanet, true);
 				centrirajZvijezdu(igrac.odabranaZvijezda);
+			}
+		}
+
+		private void tvFlota_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+		{
+			if (e.Node.Tag == null) return;
+
+			Brod brod = (Brod)e.Node.Tag;
+			
+			HashSet<Misija.Tip> misije = new HashSet<Misija.Tip>();
+			if (brod.dizajn.primarnoOruzje != null) misije.Add(brod.dizajn.primarnoOruzje.komponenta.misija);
+			if (brod.dizajn.sekundarnoOruzje != null) misije.Add(brod.dizajn.sekundarnoOruzje.komponenta.misija);
+
+			if (misije.Contains(Misija.Tip.Kolonizacija)) {
+				FormKolonizacija formKolonizacija = new FormKolonizacija(igra, igrac, brod, igrac.odabranaZvijezda);
+				formKolonizacija.ShowDialog();
 			}
 		}
 	}

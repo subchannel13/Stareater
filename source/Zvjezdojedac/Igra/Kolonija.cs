@@ -250,8 +250,6 @@ namespace Prototip
 					}
 					else 
 						z.djeluj(this, igrac.efekti);
-					
-					//if (!z.tip.ponavljaSe) redGradnje.Remove(uGradnji);
 				}
 
 				long brNovih = brZgrada;
@@ -286,6 +284,12 @@ namespace Prototip
 			}
 		}
 
+		public void dodajKolonizator(long populacija, long radnaMjesta)
+		{
+			_populacija = (long)Math.Min(_populacija + populacija, efekti[PopulacijaMax]);
+			this.radnaMjesta = (long)Math.Min(this.radnaMjesta + radnaMjesta, efekti[PopulacijaMax]);
+		}
+
 		public void postaviEfekteIgracu()
 		{
 			foreach (string s in efekti.Keys)
@@ -300,7 +304,7 @@ namespace Prototip
 			ostatakVojneGradnje = gradi(ostatakVojneGradnje, poeniVojneIndustrije(), redVojneGradnje);
 
 			_populacija = (long)Math.Min(efekti[PopulacijaPromjena] + _populacija, efekti[PopulacijaMax]);
-			radnaMjesta += (long)efekti[RadnaMjestaDelta];
+			radnaMjesta = (long)Math.Min(efekti[RadnaMjestaDelta] + radnaMjesta, efekti[PopulacijaMax]);
 
 			foreach (Zgrada z in zgrade.Values)
 				z.noviKrug(this, igrac.efekti);

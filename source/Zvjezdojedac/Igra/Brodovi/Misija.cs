@@ -64,7 +64,7 @@ namespace Prototip
 			ret.Add(Tip.DirektnoOruzje, 
 				new Misija("Oružje",
 					"direktno oružje",
-					true, false,
+					true, false, false,
 					new Parametar[] { 
 						new Parametar("VATRENA_MOC", "Vatrena moć", TipParameta.Cijelobrojni, false),
 						new Parametar("BR_NAPADA", "Učinkovitost štitova", TipParameta.Postotak, false),
@@ -74,7 +74,7 @@ namespace Prototip
 			ret.Add(Tip.Projektil,
 				new Misija("Oružje (projektil)",
 					"projektil",
-					true, false,
+					true, false, false,
 					new Parametar[] { 
 						new Parametar("VATRENA_MOC", "Vatrena moć", TipParameta.Cijelobrojni, false),
 						new Parametar("BR_NAPADA", "Učinkovitost štitova", TipParameta.Postotak, false),
@@ -84,7 +84,7 @@ namespace Prototip
 			ret.Add(Tip.Kolonizacija, 
 				new Misija("Kolonizacija",
 					"moduli za uspostavljanje kolonije",
-					false, true,
+					false, true, true,
 					new Parametar[] { 
 						new Parametar("POP", "Br. kolonista", TipParameta.Cijelobrojni, true),
 						new Parametar("RADNA_MJ", "Radna mjesta", TipParameta.Postotak, true)
@@ -93,7 +93,7 @@ namespace Prototip
 			ret.Add(Tip.Popravak, 
 				new Misija("Popravak i nadogradnja",
 					"postrojenje za popravak i nadogradnju brodova",
-					false, true,
+					false, false, true,
 					new Parametar[] { 
 						new Parametar("IND", "Industrija", TipParameta.Cijelobrojni, true)
 					}));
@@ -101,7 +101,7 @@ namespace Prototip
 			ret.Add(Tip.Spijunaza, 
 				new Misija("Špijunaža",
 					"spijunska oprema",
-					true, false,
+					true, false, false,
 					new Parametar[] { 
 						new Parametar("INFILTRACIJA", "Infiltracija", TipParameta.Cijelobrojni, false),
 						new Parametar("BR_NAPADA", "Učinkovitost štitova", TipParameta.Postotak, false),
@@ -112,7 +112,7 @@ namespace Prototip
 			ret.Add(Tip.Tegljenje, 
 				new Misija("Tegljenje",
 					"međuzvjezdani transport brodova",
-					false, true,
+					false, false, true,
 					new Parametar[] { 
 						new Parametar("KAPACITET", "Kapacitet", TipParameta.Cijelobrojni, true)
 					}));
@@ -120,7 +120,7 @@ namespace Prototip
 			ret.Add(Tip.CivilniTransport, 
 				new Misija("Civilni transport",
 					"civilni transport",
-					false, true,
+					false, true, true,
 					new Parametar[] { 
 						new Parametar("KAPACITET", "Kapacitet", TipParameta.Cijelobrojni, true)
 					}));
@@ -128,7 +128,7 @@ namespace Prototip
 			ret.Add(Tip.VojniTransport,
 				new Misija("Vojni transport",
 					"vojni transport",
-					false, true,
+					false, true, true,
 					new Parametar[] { 
 						new Parametar("KAPACITET", "Kapacitet", TipParameta.Cijelobrojni, true)
 					}));
@@ -154,16 +154,18 @@ namespace Prototip
 		public string naziv { get; private set; }
 		public string opis { get; private set; }
 		public bool imaCiljanje { get; private set; }
+		public bool jednokratna { get; private set; }
 		public bool grupirana { get; private set; }
 		public Parametar[] parametri { get; private set; }
 
 		private Misija(string naziv, string opis, 
-			bool imaCiljanje, bool grupirana,
+			bool imaCiljanje, bool jednokratna, bool grupirana,
 			Parametar[] parametri)
 		{
 			this.naziv = naziv;
 			this.opis = opis;
 			this.imaCiljanje = imaCiljanje;
+			this.jednokratna = jednokratna;
 			this.grupirana = grupirana;
 			this.parametri = parametri;
 		}

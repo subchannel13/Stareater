@@ -43,12 +43,6 @@ namespace Prototip
 			lblPopDelta.Text = "Promjena: " + predznak + Fje.PrefiksFormater(kolonija.efekti[Kolonija.PopulacijaPromjena]);
 			lblPopMax.Text = "Maksimum: " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.PopulacijaMax]);
 
-			/*lblHranaPoStan.Text = "Po farmeru: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.HranaPoFarmeru]);
-			lblRudePoStan.Text = "Po rudaru: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudePoRudaru]);
-			lblOdrzavanjePoStan.Text = "Održavanje: " + (kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]).ToString("0.##");
-			lblIndustrijaPoStan.Text = "Industrija: " + kolonija.efekti[Kolonija.IndustrijaPoRadniku].ToString("0.##");
-			lblRazvojPoStan.Text = "Razvoj: " + kolonija.efekti[Kolonija.RazvojPoRadniku].ToString("0.##");
-			*/
 			lblMinPovrsina.Text = "Površina: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudePovrsinske]);
 			lblMinDubina.Text = "Dubina: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudeDubinske]);
 			lblMinOstvareno.Text = "Ostvareno: " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudeEfektivno]);

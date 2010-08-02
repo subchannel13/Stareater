@@ -20,6 +20,11 @@ namespace Prototip
 			kolicina += brod.kolicina;
 		}
 
+		public void ukloni(long kolicina)
+		{
+			this.kolicina = Math.Max(this.kolicina - kolicina, 0);
+		}
+
 		#region Pohrana
 		public const string PohranaTip = "BROD";
 		private const string PohDizajn = "DIZAJN";
