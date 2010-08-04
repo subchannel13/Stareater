@@ -250,11 +250,13 @@ namespace Prototip
 		private InfoStranice prethodniNDinfo = InfoStranice.PrimarnaMisija;
 		private int prethodnaNDprimMisija = 0;
 		private int prethodnaNDsekMisija = 0;
+		private bool zadrziNDInfo = false;
 		private SpecijalnaOprema specijalnaOpremaZaOpis = null;
 
 		public FormFlote(Igrac igrac)
 		{
 			InitializeComponent();
+			btnNDZadrziInfo.Text = "";
 			lstvDizajnovi.SmallImageList = new ImageList();
 			lstvDizajnovi.SmallImageList.ImageSize = new Size(60, 40);
 			this.igrac = igrac;
@@ -462,18 +464,19 @@ namespace Prototip
 				case InfoStranice.SpecijalnaOprema:
 					opis.Add("Specijalna oprema");
 					opis.Add("");
-					if (dizajn.specijalnaOprema.ContainsKey(specijalnaOpremaZaOpis))
-						opis.Add(dizajn.specijalnaOprema[specijalnaOpremaZaOpis] + " x " + specijalnaOpremaZaOpis.naziv);
-					else
-						opis.Add(specijalnaOpremaZaOpis.naziv);
-					if (specijalnaOpremaZaOpis.maxNivo > 0)
-						opis.Add("Nivo: " + specijalnaOpremaZaOpis.nivo);
-					opis.AddRange(specijalnaOpremaZaOpis.opisEfekata);
-					if (cijene)
-					{
-						opis.Add("");
-						opis.Add("Veličina: " + Fje.PrefiksFormater(specijalnaOpremaZaOpis.velicina));
-						opis.Add("Cijena: " + Fje.PrefiksFormater(specijalnaOpremaZaOpis.cijena));
+					if (specijalnaOpremaZaOpis != null) {
+						if (dizajn.specijalnaOprema.ContainsKey(specijalnaOpremaZaOpis))
+							opis.Add(dizajn.specijalnaOprema[specijalnaOpremaZaOpis] + " x " + specijalnaOpremaZaOpis.naziv);
+						else
+							opis.Add(specijalnaOpremaZaOpis.naziv);
+						if (specijalnaOpremaZaOpis.maxNivo > 0)
+							opis.Add("Nivo: " + specijalnaOpremaZaOpis.nivo);
+						opis.AddRange(specijalnaOpremaZaOpis.opisEfekata);
+						if (cijene) {
+							opis.Add("");
+							opis.Add("Veličina: " + Fje.PrefiksFormater(specijalnaOpremaZaOpis.velicina));
+							opis.Add("Cijena: " + Fje.PrefiksFormater(specijalnaOpremaZaOpis.cijena));
+						}
 					}
 
 					break;
@@ -520,6 +523,7 @@ namespace Prototip
 		private void ispisiOpis(InfoStranice stranica, Dizajn dizajn)
 		{
 			txtNDinfo.Lines = opis(stranica, dizajn).ToArray();
+			prethodniNDinfo = stranica;
 		}
 
 		private void osvjeziNDstatistike()
@@ -577,6 +581,8 @@ namespace Prototip
 
 		private void prebaciNDopis(InfoStranice stranica)
 		{
+			if (zadrziNDInfo) return;
+
 			if (cbNDinfoStrana.SelectedIndex == (int)stranica)
 				ispisiOpis(stranica, dizajner.dizajn);
 			else
@@ -791,6 +797,18 @@ namespace Prototip
 			hscrUdioMisija.Value = hscrUdioMisija.Value;
 			txtNDnaziv.Text = "";
 		}
+		
+		private void bntNDZadrziInfo_Click(object sender, EventArgs e)
+		{
+			if (zadrziNDInfo) {
+				zadrziNDInfo = false;
+				btnNDZadrziInfo.Text = "";
+			}
+			else {
+				zadrziNDInfo = true;
+				btnNDZadrziInfo.Text = "*";
+			}
+		}
 		#endregion
 
 		private void dodajDizajn(Dizajn dizajn)
@@ -861,5 +879,7 @@ namespace Prototip
 				lstvDizajnovi.Items.RemoveAt(indeks);
 			}
 		}
+
+		
 	}
 }

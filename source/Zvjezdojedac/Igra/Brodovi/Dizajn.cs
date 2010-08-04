@@ -111,9 +111,12 @@ namespace Prototip
 		public Image ikona { get; private set; }
 		public double cijena { get; private set; }
 		private Dictionary<string, double> efekti = new Dictionary<string,double>();
+		private double udioPrimarneMisije = 0;
 		public Taktika taktika { get; private set; }
+		
 		public Sazetak stil { get; private set; }
 		public long brojBrodova;
+		public Dizajn nadogradnja { get; private set; }
 
 		public Dizajn(string ime, Trup trup,
 			Oruzje primarnoOruzje, Oruzje sekundarnoOruzje, double udioPrimarnogOruzja,
@@ -139,6 +142,7 @@ namespace Prototip
 
 			this.id = id;
 			brojBrodova = 0;
+			nadogradnja = null;
 			this.ime = ime;
 			this.ikona = Slike.NaciniIkonuBroda(trup.info, primarnoOruzje, sekundarnoOruzje);
 			this.trup = trup;
@@ -150,6 +154,7 @@ namespace Prototip
 			this.stit = stit;
 			this.reaktor = reaktor;
 			this.taktika = taktika;
+			this.udioPrimarneMisije = udioPrimarnogOruzja;
 
 			#region Postavljanje primarnog i sekundarnog oružja/misije
 			{
@@ -361,6 +366,65 @@ namespace Prototip
 			return true;
 		}
 
+		public void traziNadogradnju(Dictionary<string, double> varijable)
+		{
+			if (nadogradnja != null) {
+				if (nadogradnja.nadogradnja != null)
+					nadogradnja = nadogradnja.nadogradnja;
+			}
+			else {
+				bool nadogradiv = false;
+
+				Trup trup = this.trup.info.naciniKomponentu(varijable);
+				Oklop oklop = this.oklop.info.naciniKomponentu(varijable);;
+				Senzor senzor = this.senzor.info.naciniKomponentu(varijable);
+				Potisnici potisnici = this.potisnici.info.naciniKomponentu(varijable);
+				Reaktor reaktor = this.reaktor.info.naciniKomponentu(varijable, trup.velicina_reaktora);
+
+				nadogradiv |= trup.nivo > this.trup.nivo;
+				nadogradiv |= oklop.nivo > this.oklop.nivo;
+				nadogradiv |= senzor.nivo > this.senzor.nivo;
+				nadogradiv |= potisnici.nivo > this.potisnici.nivo;
+				nadogradiv |= reaktor.nivo > this.reaktor.nivo;
+
+				Oruzje primarnoOruzje = null;
+				if (this.primarnoOruzje != null) {
+					primarnoOruzje = this.primarnoOruzje.komponenta.info.naciniKomponentu(varijable);
+					nadogradiv |= primarnoOruzje.nivo > this.primarnoOruzje.komponenta.nivo;
+				}
+				
+				Oruzje sekundarnoOruzje = null;
+				if (this.sekundarnoOruzje != null) {
+					sekundarnoOruzje = this.sekundarnoOruzje.komponenta.info.naciniKomponentu(varijable);
+					nadogradiv |= sekundarnoOruzje.nivo > this.sekundarnoOruzje.komponenta.nivo;
+				}
+
+				Stit stit = null;
+				if (this.stit != null) {
+					stit = this.stit.info.naciniKomponentu(varijable, trup.velicina_stita);
+					nadogradiv |= stit.nivo > this.stit.nivo;
+				}
+
+				MZPogon MZPogon = null;
+				if (this.MZPogon != null) {
+					MZPogon = this.MZPogon.info.naciniKomponentu(varijable, trup.velicina_MZPogona);
+					nadogradiv |= MZPogon.nivo > this.MZPogon.nivo;
+				}
+
+				Dictionary<SpecijalnaOprema, int> specijalnaOprema = new Dictionary<SpecijalnaOprema, int>();
+				foreach (KeyValuePair<SpecijalnaOprema, int> par in this.specijalnaOprema) {
+					SpecijalnaOprema so = par.Key.info.naciniKomponentu(varijable, trup.velicina);
+					specijalnaOprema.Add(so, par.Value);
+					nadogradiv |= so.nivo > par.Key.nivo;
+				}
+
+				if (nadogradiv)
+					nadogradnja = new Dizajn(ime, trup, primarnoOruzje, sekundarnoOruzje,
+						udioPrimarneMisije, oklop, stit, specijalnaOprema, senzor, potisnici,
+						MZPogon, reaktor, taktika);
+			}
+		}
+
 		#region Getteri
 		public Image slika
 		{
@@ -422,7 +486,7 @@ namespace Prototip
 			get { return efekti[Iznos.Pokretljivosti]; }
 		}
 
-		public long populacijaKolonizatora
+		public long populacija
 		{
 			get
 			{
@@ -445,7 +509,7 @@ namespace Prototip
 			get { return efekti[Iznos.Prikrivanje]; }
 		}
 
-		public long radnaMjestaKolonizatora
+		public long radnaMjesta
 		{
 			get
 			{
@@ -494,7 +558,6 @@ namespace Prototip
 		{
 			izlaz.dodaj(PohId, id);
 			izlaz.dodaj(PohIme, ime);
-			//izlaz.dodaj(PohCijena, cijena);
 			izlaz.dodaj(PohTaktika, taktika);
 		 
 			izlaz.dodaj(PohTrup, trup.pohrani());

@@ -149,6 +149,7 @@ namespace Prototip
 			izracunajEfekte(igra);
 			staviNoveTehnologije(igra);
 			staviPredefiniraneDizajnove();
+			staviNadogradjeneDizajnove();
 			izracunajPoeneIstrazivanja(igra);
 		}
 
@@ -281,6 +282,36 @@ namespace Prototip
 		public void dodajDizajn(Dizajn dizajn)
 		{
 			dizajnoviBrodova.Add(new DizajnZgrada(dizajn));
+		}
+
+		public void prebrojiBrodove()
+		{
+			foreach (DizajnZgrada dizajnZgrada in dizajnoviBrodova)
+				dizajnZgrada.dizajn.brojBrodova = 0;
+
+			PrebrojiBrodove(this.flotePokretne);
+			PrebrojiBrodove(this.floteStacionarne.Values);
+		}
+
+		private void staviNadogradjeneDizajnove()
+		{
+			HashSet<Dizajn> nadogradiviOdPrije = new HashSet<Dizajn>();
+			List<Dizajn> noviDizajnovi = new List<Dizajn>();
+
+			foreach (DizajnZgrada dizajnZgrada in dizajnoviBrodova)
+				if (dizajnZgrada.dizajn.nadogradnja != null)
+					nadogradiviOdPrije.Add(dizajnZgrada.dizajn);
+				else {
+					dizajnZgrada.dizajn.traziNadogradnju(efekti);
+					if (dizajnZgrada.dizajn.nadogradnja != null)
+						noviDizajnovi.Add(dizajnZgrada.dizajn.nadogradnja);
+				}
+
+			foreach (Dizajn dizajn in nadogradiviOdPrije)
+				dizajn.traziNadogradnju(efekti);
+
+			foreach (Dizajn dizajn in noviDizajnovi)
+				dodajDizajn(dizajn);
 		}
 
 		public void staviPredefiniraneDizajnove()

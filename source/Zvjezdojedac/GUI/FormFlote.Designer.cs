@@ -74,6 +74,7 @@
 			this.txtNDnaziv = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.picNDSlika = new System.Windows.Forms.PictureBox();
+			this.btnNDZadrziInfo = new System.Windows.Forms.Button();
 			this.tabCtrlFlote.SuspendLayout();
 			this.tabDizajnovi.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlikaDizajna)).BeginInit();
@@ -110,7 +111,7 @@
 			// btnUkloniDizajn
 			// 
 			this.btnUkloniDizajn.Enabled = false;
-			this.btnUkloniDizajn.Location = new System.Drawing.Point(8, 278);
+			this.btnUkloniDizajn.Location = new System.Drawing.Point(8, 341);
 			this.btnUkloniDizajn.Name = "btnUkloniDizajn";
 			this.btnUkloniDizajn.Size = new System.Drawing.Size(75, 23);
 			this.btnUkloniDizajn.TabIndex = 5;
@@ -139,7 +140,7 @@
 			this.lstvDizajnovi.HideSelection = false;
 			this.lstvDizajnovi.Location = new System.Drawing.Point(8, 92);
 			this.lstvDizajnovi.Name = "lstvDizajnovi";
-			this.lstvDizajnovi.Size = new System.Drawing.Size(365, 180);
+			this.lstvDizajnovi.Size = new System.Drawing.Size(365, 243);
 			this.lstvDizajnovi.TabIndex = 3;
 			this.lstvDizajnovi.UseCompatibleStateImageBehavior = false;
 			this.lstvDizajnovi.View = System.Windows.Forms.View.Details;
@@ -148,7 +149,7 @@
 			// columnHeader4
 			// 
 			this.columnHeader4.Text = "Dizajn";
-			this.columnHeader4.Width = 294;
+			this.columnHeader4.Width = 271;
 			// 
 			// columnHeader5
 			// 
@@ -175,6 +176,7 @@
 			// tabNoviDizajn
 			// 
 			this.tabNoviDizajn.BackColor = System.Drawing.SystemColors.Control;
+			this.tabNoviDizajn.Controls.Add(this.btnNDZadrziInfo);
 			this.tabNoviDizajn.Controls.Add(this.lblNDcijena);
 			this.tabNoviDizajn.Controls.Add(this.cbNDinfoStrana);
 			this.tabNoviDizajn.Controls.Add(this.btnNDinfoSlijedeca);
@@ -235,7 +237,7 @@
 			// 
 			// btnNDinfoSlijedeca
 			// 
-			this.btnNDinfoSlijedeca.Location = new System.Drawing.Point(451, 69);
+			this.btnNDinfoSlijedeca.Location = new System.Drawing.Point(486, 69);
 			this.btnNDinfoSlijedeca.Name = "btnNDinfoSlijedeca";
 			this.btnNDinfoSlijedeca.Size = new System.Drawing.Size(29, 23);
 			this.btnNDinfoSlijedeca.TabIndex = 29;
@@ -295,7 +297,7 @@
 			this.lstvNDspecOprema.Location = new System.Drawing.Point(110, 246);
 			this.lstvNDspecOprema.MultiSelect = false;
 			this.lstvNDspecOprema.Name = "lstvNDspecOprema";
-			this.lstvNDspecOprema.Size = new System.Drawing.Size(370, 104);
+			this.lstvNDspecOprema.Size = new System.Drawing.Size(405, 104);
 			this.lstvNDspecOprema.TabIndex = 24;
 			this.lstvNDspecOprema.UseCompatibleStateImageBehavior = false;
 			this.lstvNDspecOprema.View = System.Windows.Forms.View.Details;
@@ -310,7 +312,7 @@
 			// columnHeader2
 			// 
 			this.columnHeader2.Text = "Naziv";
-			this.columnHeader2.Width = 269;
+			this.columnHeader2.Width = 285;
 			// 
 			// columnHeader3
 			// 
@@ -472,7 +474,7 @@
 			this.txtNDinfo.Name = "txtNDinfo";
 			this.txtNDinfo.ReadOnly = true;
 			this.txtNDinfo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtNDinfo.Size = new System.Drawing.Size(186, 142);
+			this.txtNDinfo.Size = new System.Drawing.Size(221, 142);
 			this.txtNDinfo.TabIndex = 1;
 			this.txtNDinfo.Text = "1 red\r\n2 reda\r\n3 reda\r\n4 reda\r\n5 redova\r\n6 redova\r\n7 redova\r\n8 redova\r\n9 redova\r\n" +
 				"10 redova";
@@ -541,6 +543,16 @@
 			this.picNDSlika.Size = new System.Drawing.Size(80, 80);
 			this.picNDSlika.TabIndex = 0;
 			this.picNDSlika.TabStop = false;
+			// 
+			// btnNDZadrziInfo
+			// 
+			this.btnNDZadrziInfo.Location = new System.Drawing.Point(451, 69);
+			this.btnNDZadrziInfo.Name = "btnNDZadrziInfo";
+			this.btnNDZadrziInfo.Size = new System.Drawing.Size(29, 23);
+			this.btnNDZadrziInfo.TabIndex = 32;
+			this.btnNDZadrziInfo.Text = "*";
+			this.btnNDZadrziInfo.UseVisualStyleBackColor = true;
+			this.btnNDZadrziInfo.Click += new System.EventHandler(this.bntNDZadrziInfo_Click);
 			// 
 			// FormFlote
 			// 
@@ -612,5 +624,6 @@
 		private System.Windows.Forms.ColumnHeader columnHeader5;
 		private System.Windows.Forms.Button btnUkloniDizajn;
 		private System.Windows.Forms.TextBox txtDizajnInfo;
+		private System.Windows.Forms.Button btnNDZadrziInfo;
 	}
 }

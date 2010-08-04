@@ -128,8 +128,8 @@ namespace Prototip
 						else
 							maxDodatnaPopulacija = (planet.kolonija.efekti[Kolonija.PopulacijaMax] - planet.kolonija.populacija);
 						
-						long populacijaBroda = kolonizacija.brod.dizajn.populacijaKolonizatora;
-						long radnaMjestaBroda = kolonizacija.brod.dizajn.radnaMjestaKolonizatora;
+						long populacijaBroda = kolonizacija.brod.dizajn.populacija;
+						long radnaMjestaBroda = kolonizacija.brod.dizajn.radnaMjesta;
 						long brBrodova = (long)(Math.Min(kolonizacija.brBrodova, Math.Ceiling(maxDodatnaPopulacija / populacijaBroda)));
 						if (planet.kolonija == null)
 							planet.kolonija = new Kolonija(
@@ -150,6 +150,8 @@ namespace Prototip
 				}
 				foreach (Zvijezda zvj in prazneFloteStac)
 					igraci[i].floteStacionarne.Remove(zvj);
+
+				igraci[i].prebrojiBrodove();
 			}
 
 			foreach (Zvijezda zvj in mapa.zvijezde)

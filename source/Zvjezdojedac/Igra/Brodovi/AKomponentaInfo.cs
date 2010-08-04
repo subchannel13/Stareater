@@ -66,16 +66,20 @@ namespace Prototip
 			if (dostupno(varijable, maxNivo)) return maxNivo;
 			int min = 1, max = maxNivo;
 
-			while (max > min)
+			while (max - min > 1)
 			{
 				int sredina = (max + min) / 2;
+				
 				if (dostupno(varijable, sredina))
 					min = sredina;
 				else
 					max = sredina;
 			}
+			for (; min < max; min++)
+				if (!dostupno(varijable, min))
+					return min - 1;
 
-			return max;
+			return min;
 		}
 
 		private uint noviIndeks()
