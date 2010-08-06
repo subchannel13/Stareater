@@ -30,12 +30,33 @@ namespace Prototip
 		public static Dictionary<Planet.Tip, List<SlikaPlaneta>> PlanetTab = new Dictionary<Planet.Tip, List<SlikaPlaneta>>();
 		public static Dictionary<Image, int> PlanetImageIndex = new Dictionary<Image, int>();
 		public static Dictionary<Color, Image> Flota = new Dictionary<Color,Image>();
+		public static Dictionary<Poruka.Tip, Image> TipPoruke = initTipPoruke();
 
 		private static Dictionary<Misija.Tip, Image> MisijaBroda = new Dictionary<Misija.Tip, Image>();
 
 		public static Image FlotaTab = null;
 		public static Image SlikaOdabiraZvijezde;
-		public static Image Poruka;
+		//public static Image Poruka;
+
+		private static Dictionary<Poruka.Tip, Image> initTipPoruke()
+		{
+			Dictionary<Poruka.Tip, Image> rez = new Dictionary<Poruka.Tip, Image>();
+			rez.Add(Poruka.Tip.Brod, smallImageKvadrat(Color.Gray));
+			rez.Add(Poruka.Tip.Kolonija, smallImageKvadrat(Color.Brown));
+			rez.Add(Poruka.Tip.Prica, smallImageKvadrat(Color.Blue));
+			rez.Add(Poruka.Tip.Tehnologija, smallImageKvadrat(Color.Turquoise));
+			rez.Add(Poruka.Tip.Zgrada, smallImageKvadrat(Color.LightGray));
+			return rez;
+		}
+
+		private static Image smallImageKvadrat(Color boja)
+		{
+			Image rez = new Bitmap(32, 32);
+			Graphics g = Graphics.FromImage(rez);
+			g.Clear(boja);
+			g.Dispose();
+			return rez;
+		}
 
 		private Slike()
 		{ }
@@ -67,9 +88,9 @@ namespace Prototip
 				case "odabir_zvijezde":
 					SlikaOdabiraZvijezde = slika;
 					break;
-				case "poruka":
+/*				case "poruka":
 					Poruka = slika;
-					break;
+					break;*/
 				case "flota":
 					foreach (Color boja in Igrac.BojeIgraca)
 						Flota.Add(boja, ModulirajBoju(slika, boja));

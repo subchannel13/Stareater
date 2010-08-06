@@ -94,6 +94,11 @@ namespace Prototip
 		{
 			return ++_SlijedeciId;
 		}
+		public static void ProvjeriId(Dizajn dizajn)
+		{
+			if (dizajn.id >= _SlijedeciId)
+				_SlijedeciId = dizajn.id + 1;
+		}
 
 		public Trup trup { get; private set; }
 		public Zbir<Oruzje> primarnoOruzje { get; private set; }

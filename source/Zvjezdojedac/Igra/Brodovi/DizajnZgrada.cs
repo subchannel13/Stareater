@@ -17,7 +17,9 @@ namespace Prototip
 
 			public override void djeluj(Kolonija kolonija, Dictionary<string, double> varijable)
 			{
-				kolonija.igrac.dodajBrod(dizajn, (int)varijable[Zgrada.BrojZgrada], kolonija.planet.zvjezda);
+				long kolicina = (long)varijable[Zgrada.BrojZgrada];
+				kolonija.igrac.dodajBrod(dizajn, kolicina, kolonija.planet.zvjezda);
+				kolonija.igrac.poruke.AddLast(Poruka.NoviBrod(kolonija, dizajn, kolicina));
 			}
 
 			public override void noviKrug(Kolonija kolonija, Dictionary<string, double> varijable)
@@ -35,7 +37,7 @@ namespace Prototip
 			"",
 			dizajn.trup.info.opis,
 			new List<Zgrada.Ucinak>(),
-			"PONAVLJA_SE NE_OSTAJE ORBITALNA",
+			"PONAVLJA_SE NE_OSTAJE ORBITALNA BROD",
 			new List<Tehnologija.Preduvjet>())
 		{
 			ucinci.Add(new UcinakSagradiBrod(dizajn));

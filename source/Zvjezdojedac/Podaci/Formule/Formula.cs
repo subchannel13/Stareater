@@ -29,6 +29,7 @@ namespace Prototip
 				operatoriDict.Add("%", OperatorMod.naciniOperator);
 				operatoriDict.Add("MOD", OperatorMod.naciniOperator);
 
+				operatoriDict.Add("ABS", OperatorAbs.naciniOperator);
 				operatoriDict.Add("INT", OperatorInt.naciniOperator);
 				operatoriDict.Add("FIX", OperatorInt.naciniOperator);
 				operatoriDict.Add("TRUNC", OperatorInt.naciniOperator);
@@ -189,7 +190,7 @@ namespace Prototip
 
 			public override double vrijednost()
 			{
-				return Math.Round(operand.vrijednost());
+				return Math.Round(operand.vrijednost(), MidpointRounding.AwayFromZero);
 			}
 
 			public override string ToString()

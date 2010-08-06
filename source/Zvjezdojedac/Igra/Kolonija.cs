@@ -80,7 +80,7 @@ namespace Prototip
 			this._populacija = populacija;
 			this.radnaMjesta = radnaMjesta;
 			this.udioVojneIndustrije = 0;
-			this.udioCivilneIndustrije = 0.5;
+			this.udioCivilneIndustrije = 0;
 			this.redCivilneGradnje = new LinkedList<Zgrada.ZgradaInfo>();
 			this.redVojneGradnje = new LinkedList<Zgrada.ZgradaInfo>();
 			this.ostatakCivilneGradnje = 0;
@@ -250,6 +250,9 @@ namespace Prototip
 					}
 					else 
 						z.djeluj(this, igrac.efekti);
+
+					if (!z.tip.brod)
+						igrac.poruke.AddLast(Poruka.NovaZgrada(this, z.tip));
 				}
 
 				long brNovih = brZgrada;

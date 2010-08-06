@@ -101,6 +101,7 @@ namespace Prototip
 			List<long> poeniRazvoja = new List<long>();
 			List<long> poeniIstraz = new List<long>();
 			foreach (Igrac igrac in igraci) {
+				igrac.poruke.Clear();
 				poeniRazvoja.Add(igrac.poeniRazvoja());
 				igrac.izracunajPoeneIstrazivanja(this);
 				poeniIstraz.Add(igrac.poeniIstrazivanja());
@@ -111,48 +112,8 @@ namespace Prototip
 					if (planet.kolonija != null)
 						planet.kolonija.noviKrug();
 
-			for (int i = 0; i < igraci.Count; i++) {
+			for (int i = 0; i < igraci.Count; i++)
 				igraci[i].noviKrug(this, poeniRazvoja[i], poeniIstraz[i]);
-
-				HashSet<Zvijezda> prazneFloteStac = new HashSet<Zvijezda>();
-				foreach (KeyValuePair<Zvijezda, Flota> flotaStac in igraci[i].floteStacionarne) {
-					Zvijezda zvijezda = flotaStac.Key;
-					Flota flota = flotaStac.Value;
-					foreach (Flota.Kolonizacija kolonizacija in flota.kolonizacije) {
-						Planet planet = zvijezda.planeti[kolonizacija.planet];
-						double maxDodatnaPopulacija = 0;
-						if (planet.kolonija == null) {
-							Kolonija kolonija = new Kolonija(igraci[i], planet, 10, 0);
-							maxDodatnaPopulacija = kolonija.efekti[Kolonija.PopulacijaMax];
-						}
-						else
-							maxDodatnaPopulacija = (planet.kolonija.efekti[Kolonija.PopulacijaMax] - planet.kolonija.populacija);
-						
-						long populacijaBroda = kolonizacija.brod.dizajn.populacija;
-						long radnaMjestaBroda = kolonizacija.brod.dizajn.radnaMjesta;
-						long brBrodova = (long)(Math.Min(kolonizacija.brBrodova, Math.Ceiling(maxDodatnaPopulacija / populacijaBroda)));
-						if (planet.kolonija == null)
-							planet.kolonija = new Kolonija(
-								igraci[i],
-								planet,
-								populacijaBroda * brBrodova,
-								radnaMjestaBroda * brBrodova);
-						else
-							planet.kolonija.dodajKolonizator(
-								populacijaBroda * brBrodova, 
-								radnaMjestaBroda * brBrodova);
-
-						flota.ukloniBrod(kolonizacija.brod.dizajn, brBrodova);
-					}
-					flota.kolonizacije.Clear();
-					if (flota.brodovi.Count == 0)
-						prazneFloteStac.Add(zvijezda);
-				}
-				foreach (Zvijezda zvj in prazneFloteStac)
-					igraci[i].floteStacionarne.Remove(zvj);
-
-				igraci[i].prebrojiBrodove();
-			}
 
 			foreach (Zvijezda zvj in mapa.zvijezde)
 				foreach (Planet planet in zvj.planeti)
@@ -232,8 +193,10 @@ namespace Prototip
 
 			Dictionary<int, Zgrada.ZgradaInfo> zgradeInfoID = new Dictionary<int, Zgrada.ZgradaInfo>(Zgrada.ZgradaInfoID);
 			foreach (Igrac igrac in igraci)
-				foreach (DizajnZgrada dizajZgrada in igrac.dizajnoviBrodova)
+				foreach (DizajnZgrada dizajZgrada in igrac.dizajnoviBrodova) {
 					zgradeInfoID.Add(dizajZgrada.id, dizajZgrada);
+					Dizajn.ProvjeriId(dizajZgrada.dizajn);
+				}
 
 			int brKolonija = citac.podatakInt(Kolonija.PohranaTip);
 			for (int i = 0; i < brKolonija; i++) {

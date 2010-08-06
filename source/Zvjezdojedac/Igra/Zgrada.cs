@@ -90,6 +90,7 @@ namespace Prototip
 			public bool orbitalna { get; private set; }
 			public bool ostaje { get; private set; }
 			public bool ponavljaSe { get; private set; }
+			public bool brod { get; private set; }
 
 			public ZgradaInfo(int id, string ime, Formula cijenaGradnje, Formula dopustenaKolicina,
 				Formula cijenaOdrzavanja, Image slika, string kod, string opis,
@@ -114,6 +115,7 @@ namespace Prototip
 				if (svojstvaSet.Contains("ORBITALNA")) orbitalna = true; else orbitalna = false;
 				if (!svojstvaSet.Contains("NE_OSTAJE")) ostaje = true; else ostaje = false;
 				if (svojstvaSet.Contains("PONAVLJA_SE")) ponavljaSe = true; else ponavljaSe = false;
+				if (svojstvaSet.Contains("BROD")) brod = true; else brod = false;
 			}
 
 			public bool dostupna(Dictionary<string, double> varijable, long prisutnaKolicina)

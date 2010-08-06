@@ -14,12 +14,9 @@ namespace Prototip
 	public partial class FormIgra : Form
 	{
 		private PrikazMape prikazMape;
-
 		private Igra igra;
-
 		private Igrac igrac;
-
-		private Alati.Tocka<double> pomakPogleda;
+		private Tocka<double> pomakPogleda;
 
 		public FormIgra(Igra igra)
 		{
@@ -68,7 +65,7 @@ namespace Prototip
 
 			btnPoruke.Text = "Novosti (" + igrac.poruke.Count + ")";
 
-			odabariPlanet(igrac.odabranPlanet, true);			
+			odaberiPlanet(igrac.odabranPlanet, true);			
 		}
 
 		private void centrirajZvijezdu(Zvijezda zvijezda)
@@ -79,6 +76,7 @@ namespace Prototip
 			y = odrediPomakScrolla(picMapa.Height, pnlMapa.Height, pnlMapa.VerticalScroll, y, 0);
 			pnlMapa.HorizontalScroll.Value += x;
 			pnlMapa.VerticalScroll.Value += y;
+			pomakPogleda = null;
 		}
 
 		private void picMapa_Click(object sender, EventArgs e)
@@ -94,7 +92,7 @@ namespace Prototip
 			if (odabranaZvijezda != null)
 				odaberiZvijezdu(odabranaZvijezda,true);
 
-			pomakPogleda = new Alati.Tocka<double>(x / (double)picMapa.Width, y / (double)picMapa.Height);
+			pomakPogleda = new Tocka<double>(x / (double)picMapa.Width, y / (double)picMapa.Height);
 		}
 
 		private void odaberiZvijezdu(Zvijezda zvijezda, bool promjeniTab)
@@ -150,7 +148,7 @@ namespace Prototip
 			tabCtrlDesno.Refresh();
 		}
 
-		private void odabariPlanet(Planet planet, bool promjeniTab)
+		private void odaberiPlanet(Planet planet, bool promjeniTab)
 		{
 			if (planet.tip == Planet.Tip.NIKAKAV) return;
 			igrac.odabranPlanet = planet;
@@ -235,7 +233,7 @@ namespace Prototip
 
 		private void listViewPlaneti_Click(object sender, EventArgs e)
 		{
-			odabariPlanet(igrac.odabranaZvijezda.planeti[listViewPlaneti.SelectedIndices[0]], true);
+			odaberiPlanet(igrac.odabranaZvijezda.planeti[listViewPlaneti.SelectedIndices[0]], true);
 		}
 
 		private void btnEndTurn_Click(object sender, EventArgs e)
@@ -358,11 +356,31 @@ namespace Prototip
 
 		private void btnPoruke_Click(object sender, EventArgs e)
 		{
-			FormPoruke poruke = new FormPoruke(igrac);
-			if (poruke.ShowDialog() == DialogResult.OK)
-				if (poruke.odabranaProuka != null)
-					if (poruke.odabranaProuka.tip == Poruka.Tip.Tehnologija)
-						btnTech_Click(sender, e);
+			FormPoruke formPoruke = new FormPoruke(igrac);
+			if (formPoruke.ShowDialog() == DialogResult.OK)
+				if (formPoruke.odabranaProuka != null) {
+					Poruka poruka = formPoruke.odabranaProuka;
+					switch (formPoruke.odabranaProuka.tip) {
+						case Poruka.Tip.Brod:
+							odaberiZvijezdu(poruka.izvorZvijezda, false);
+							tabCtrlDesno.SelectedTab = tabPageFlote;
+							centrirajZvijezdu(poruka.izvorZvijezda);
+							break;
+						case Poruka.Tip.Kolonija:
+							odaberiZvijezdu(poruka.izvorZvijezda, false);
+							odaberiPlanet(poruka.izvorPlanet, true);
+							centrirajZvijezdu(poruka.izvorZvijezda);
+							break;
+						case Poruka.Tip.Tehnologija:
+							btnTech_Click(sender, e);
+							break;
+						case Poruka.Tip.Zgrada:
+							odaberiZvijezdu(poruka.izvorZvijezda, false);
+							odaberiPlanet(poruka.izvorPlanet, true);
+							centrirajZvijezdu(poruka.izvorZvijezda);
+							break;
+					}
+				}
 		}
 
 		private void btnFlote_Click(object sender, EventArgs e)
@@ -407,9 +425,7 @@ namespace Prototip
 				pomakPogleda = null;
 				prikazMape = new PrikazMape(igra);
 				this.picMapa.Image = prikazMape.slikaMape;
-				odaberiZvijezdu(igrac.odabranaZvijezda, false);
-				odabariPlanet(igrac.odabranPlanet, true);
-				centrirajZvijezdu(igrac.odabranaZvijezda);
+				noviKrugPogled();
 			}
 		}
 

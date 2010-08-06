@@ -41,7 +41,7 @@ BR_SENZORA = 2
 <TRUP>
 IME = Mala krstarica
 OPIS = Brod srednje veličine.
-SLIKA = ./slike/tehnologije/mali brod.bmp
+SLIKA = ./slike/tehnologije/mala krstarica.bmp
 MAX_NIVO = 0
 PREDUVJETI =
 KOD = SREDNJA_KRST

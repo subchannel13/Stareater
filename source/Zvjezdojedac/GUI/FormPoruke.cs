@@ -11,18 +11,24 @@ namespace Prototip
 {
 	public partial class FormPoruke : Form
 	{
-		//public delegate void FokusNaPlanet(Planet planet);
-
 		public Poruka odabranaProuka;
 
 		public FormPoruke(Igrac igrac)
 		{
 			InitializeComponent();
 
+			lstvPoruke.SmallImageList = new ImageList();
+			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.Prica]);
+			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.Tehnologija]);
+			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.Kolonija]);
+			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.Zgrada]);
+			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.Brod]);
+
 			foreach (Poruka poruka in igrac.poruke)
 			{
 				ListViewItem item = new ListViewItem(poruka.tekst);
 				item.Tag = poruka;
+				item.ImageIndex = (int)poruka.tip;
 				lstvPoruke.Items.Add(item);				
 			}
 

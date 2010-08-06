@@ -35,7 +35,7 @@ namespace Prototip
 			}
 		}
 
-		public static Color[] BojeIgraca = new Color[]{Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.DarkViolet, Color.Turquoise};
+		public static Color[] BojeIgraca = new Color[]{Color.LimeGreen, Color.LightGreen, Color.Blue, Color.Yellow, Color.DarkViolet, Color.DarkCyan};
 
 		public int id { get; private set; }
 		public Tip tip;
@@ -65,6 +65,14 @@ namespace Prototip
 		public HashSet<Zvijezda> posjeceneZvjezde = new HashSet<Zvijezda>();
 		public Dictionary<Zvijezda, Flota> floteStacionarne = new Dictionary<Zvijezda,Flota>();
 		public HashSet<Flota> flotePokretne = new HashSet<Flota>();
+
+		private static void PrebrojiBrodove(IEnumerable<Flota> flote)
+		{
+			foreach (Flota flota in flote)
+				foreach (Dictionary<Dizajn, Brod> brodovi in flota.brodovi.Values)
+					foreach (Dizajn dizajn in brodovi.Keys)
+						dizajn.brojBrodova += brodovi[dizajn].kolicina;
+		}
 
 		public Igrac(Tip tip, string ime, Organizacija organizacija, 
 			System.Drawing.Color boja, int id)
@@ -115,14 +123,6 @@ namespace Prototip
 			PrebrojiBrodove(this.floteStacionarne.Values);
 		}
 
-		private static void PrebrojiBrodove(IEnumerable<Flota> flote)
-		{
-			foreach(Flota flota in flote)
-				foreach(Dictionary<Dizajn, Brod> brodovi in flota.brodovi.Values)
-					foreach(Dizajn dizajn in brodovi.Keys)
-						dizajn.brojBrodova += brodovi[dizajn].kolicina;
-		}
-
 		public void staviNoveTehnologije(Igra igra)
 		{
 			HashSet<Tehnologija.TechInfo> uProucavanju = new HashSet<Tehnologija.TechInfo>();
@@ -144,13 +144,63 @@ namespace Prototip
 
 		public void noviKrug(Igra igra, long poeniRazvoja, long poeniIstrazivanja)
 		{
-			poruke.Clear();
+			//poruke.Clear();
 			istraziTehnologije(igra, poeniRazvoja, poeniIstrazivanja);
 			izracunajEfekte(igra);
+			pomakniFlote();
 			staviNoveTehnologije(igra);
 			staviPredefiniraneDizajnove();
 			staviNadogradjeneDizajnove();
 			izracunajPoeneIstrazivanja(igra);
+		}
+
+		private void pomakniFlote()
+		{
+			HashSet<Zvijezda> prazneFloteStac = new HashSet<Zvijezda>();
+			foreach (KeyValuePair<Zvijezda, Flota> flotaStac in floteStacionarne) {
+				Zvijezda zvijezda = flotaStac.Key;
+				Flota flota = flotaStac.Value;
+				
+				#region Kolonizacija
+				foreach (Flota.Kolonizacija kolonizacija in flota.kolonizacije) {
+					Planet planet = zvijezda.planeti[kolonizacija.planet];
+					double maxDodatnaPopulacija = 0;
+					if (planet.kolonija == null) {
+						Kolonija kolonija = new Kolonija(this, planet, 10, 0);
+						maxDodatnaPopulacija = kolonija.efekti[Kolonija.PopulacijaMax];
+					}
+					else
+						maxDodatnaPopulacija = (planet.kolonija.efekti[Kolonija.PopulacijaMax] - planet.kolonija.populacija);
+
+					long populacijaBroda = kolonizacija.brod.dizajn.populacija;
+					long radnaMjestaBroda = kolonizacija.brod.dizajn.radnaMjesta;
+					long brBrodova = (long)(Math.Min(kolonizacija.brBrodova, Math.Ceiling(maxDodatnaPopulacija / populacijaBroda)));
+					if (planet.kolonija == null) {
+						planet.kolonija = new Kolonija(
+							this,
+							planet,
+							populacijaBroda * brBrodova,
+							radnaMjestaBroda * brBrodova);
+						poruke.AddLast(Poruka.NovaKolonija(planet.kolonija));
+					}
+					else
+						planet.kolonija.dodajKolonizator(
+							populacijaBroda * brBrodova,
+							radnaMjestaBroda * brBrodova);
+
+					flota.ukloniBrod(kolonizacija.brod.dizajn, brBrodova);
+				}
+				flota.kolonizacije.Clear();
+				#endregion
+
+				if (flota.brodovi.Count == 0)
+					prazneFloteStac.Add(zvijezda);
+			}
+
+			foreach (Zvijezda zvj in prazneFloteStac)
+				floteStacionarne.Remove(zvj);
+
+			prebrojiBrodove();
 		}
 
 		public void izracunajEfekte(Igra igra)
@@ -270,13 +320,27 @@ namespace Prototip
 			}
 		}
 
-		public void dodajBrod(Dizajn dizajn, int kolicina, Zvijezda zvijezda)
+		public void dodajBrod(Dizajn dizajn, long kolicina, Zvijezda zvijezda)
 		{
 			if (!floteStacionarne.ContainsKey(zvijezda))
 				floteStacionarne.Add(zvijezda, new Flota(zvijezda.x, zvijezda.y));
 
 			floteStacionarne[zvijezda].dodajBrod(new Brod(dizajn, kolicina));
 			dizajn.brojBrodova += kolicina;
+		}
+
+		public HashSet<Dizajn> dizajnoviUGradnji()
+		{
+			HashSet<Zgrada.ZgradaInfo> dizajnovi = new HashSet<Zgrada.ZgradaInfo>();
+			foreach (DizajnZgrada dizajnZgrada in dizajnoviBrodova)
+				dizajnovi.Add(dizajnZgrada);
+
+			HashSet<Dizajn> rez = new HashSet<Dizajn>();
+			foreach (Kolonija kolonija in kolonije)
+				foreach (Zgrada.ZgradaInfo zgrada in kolonija.redVojneGradnje)
+					if (dizajnovi.Contains(zgrada))
+						rez.Add(((DizajnZgrada)zgrada).dizajn);
+			return rez;
 		}
 
 		public void dodajDizajn(Dizajn dizajn)
@@ -312,6 +376,17 @@ namespace Prototip
 
 			foreach (Dizajn dizajn in noviDizajnovi)
 				dodajDizajn(dizajn);
+
+			HashSet<Dizajn> uGradnji = dizajnoviUGradnji();
+			List<DizajnZgrada> bezZastarjelih = new List<DizajnZgrada>();
+			foreach(DizajnZgrada dizajnZgrada in dizajnoviBrodova)
+			{
+				Dizajn dizajn = dizajnZgrada.dizajn;
+				if (dizajn.nadogradnja == null || dizajn.brojBrodova > 0 || uGradnji.Contains(dizajn))
+					bezZastarjelih.Add(dizajnZgrada);
+			}
+
+			dizajnoviBrodova = bezZastarjelih;
 		}
 
 		public void staviPredefiniraneDizajnove()
@@ -423,10 +498,13 @@ namespace Prototip
 			Zvijezda odabranaZvj = OdrediOdabranuZvj(mapa, ulaz.podatak(PohPogledZvj));
 			Planet odabranPlanet = odabranaZvj.planeti[ulaz.podatakInt(PohPogledPlanet)];
 
+			Dictionary<int, Zvijezda> zvijezdeID = new Dictionary<int, Zvijezda>();
+			foreach (Zvijezda zvj in mapa.zvijezde)
+				zvijezdeID.Add(zvj.id, zvj);
 			int brPoruka = ulaz.podatakInt(PohPoruka);
 			LinkedList<Poruka> poruke = new LinkedList<Poruka>();
 			for (int i = 0; i < brPoruka; i++)
-				poruke.AddLast(Poruka.Ucitaj(ulaz[PohPoruka + i]));
+				poruke.AddLast(Poruka.Ucitaj(ulaz[PohPoruka + i], zvijezdeID));
 
 			int brDizajnova = ulaz.podatakInt(PohDizajn);
 			List<DizajnZgrada> dizajnovi = new List<DizajnZgrada>();
@@ -453,9 +531,6 @@ namespace Prototip
 			foreach (int tehId in tmpIntovi)
 				tehUIstraz.AddLast(tehnologije[Tehnologija.TechInfo.tehnologijeIstrazivanje[tehId].kod]);
 
-			Dictionary<int, Zvijezda> zvijezdeID = new Dictionary<int,Zvijezda>();
-			foreach(Zvijezda zvj in mapa.zvijezde)
-				zvijezdeID.Add(zvj.id, zvj);
 			tmpIntovi = ulaz.podatakIntPolje(PohPosjeceneZvj);
 			HashSet<Zvijezda> posjeceneZvijezde = new HashSet<Zvijezda>();
 			foreach (int zvjId in tmpIntovi)

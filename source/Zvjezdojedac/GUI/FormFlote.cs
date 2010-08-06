@@ -875,8 +875,11 @@ namespace Prototip
 
 			if (igrac.dizajnoviBrodova[indeks].dizajn.brojBrodova == 0)
 			{
-				igrac.dizajnoviBrodova.RemoveAt(indeks);
-				lstvDizajnovi.Items.RemoveAt(indeks);
+				DizajnZgrada dizajnZgrada = igrac.dizajnoviBrodova[indeks];
+				if (!igrac.dizajnoviUGradnji().Contains(dizajnZgrada.dizajn)) {
+					igrac.dizajnoviBrodova.RemoveAt(indeks);
+					lstvDizajnovi.Items.RemoveAt(indeks);
+				}
 			}
 		}
 

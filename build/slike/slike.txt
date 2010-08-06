@@ -83,12 +83,6 @@ INDEKS = 0
 ----
 
 <SLIKA>
-DATOTEKA = ./slike/tab/Poruka.gif
-SKUPINA = poruka
-INDEKS = 0
-----
-
-<SLIKA>
 DATOTEKA = ./slike/mapa/flota.bmp
 SKUPINA = flota
 INDEKS = 0
