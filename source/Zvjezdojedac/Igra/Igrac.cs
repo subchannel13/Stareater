@@ -47,6 +47,7 @@ namespace Prototip
 
 		public Zvijezda odabranaZvijezda;
 		private Planet _odabranPlanet;
+		public Dictionary<Poruka.Tip, bool> filtarPoruka = new Dictionary<Poruka.Tip,bool>();
 
 		public List<Kolonija> kolonije = new List<Kolonija>();
 		public LinkedList<Poruka> poruke = new LinkedList<Poruka>();
@@ -92,6 +93,12 @@ namespace Prototip
 
 			foreach (Tehnologija.TechInfo t in Tehnologija.TechInfo.tehnologijeIstrazivanje)
 				tehnologije.Add(t.kod, new Tehnologija(t));
+
+			filtarPoruka.Add(Poruka.Tip.Brod, true);
+			filtarPoruka.Add(Poruka.Tip.Kolonija, true);
+			filtarPoruka.Add(Poruka.Tip.Prica, true);
+			filtarPoruka.Add(Poruka.Tip.Tehnologija, true);
+			filtarPoruka.Add(Poruka.Tip.Zgrada, true);
 		}
 
 		private Igrac(int id, Tip tip, string ime, Color boja, Organizacija organizacija,
@@ -121,6 +128,12 @@ namespace Prototip
 			random = new Random();
 			PrebrojiBrodove(this.flotePokretne);
 			PrebrojiBrodove(this.floteStacionarne.Values);
+
+			filtarPoruka.Add(Poruka.Tip.Brod, true);
+			filtarPoruka.Add(Poruka.Tip.Kolonija, true);
+			filtarPoruka.Add(Poruka.Tip.Prica, true);
+			filtarPoruka.Add(Poruka.Tip.Tehnologija, true);
+			filtarPoruka.Add(Poruka.Tip.Zgrada, true);
 		}
 
 		public void staviNoveTehnologije(Igra igra)

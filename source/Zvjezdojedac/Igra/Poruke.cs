@@ -17,6 +17,7 @@ namespace Prototip
 			Brod
 		};
 
+		#region Tvornice
 		public static Poruka NovaTehnologija(Tehnologija tehnologija)
 		{
 			return new Poruka(Tip.Tehnologija, tehnologija.tip.ime + " " + tehnologija.nivo + ". nivo", null, null);
@@ -39,6 +40,7 @@ namespace Prototip
 				kolonija.planet.zvjezda, 
 				kolonija.planet);
 		}
+		#endregion
 
 		public Tip tip { get; private set; }
 		public string tekst { get; private set; }

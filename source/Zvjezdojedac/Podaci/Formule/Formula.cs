@@ -490,7 +490,7 @@ namespace Prototip
 
 			public override double vrijednost()
 			{
-				return Math.Truncate(lijeviOperand.vrijednost() / desniOperand.vrijednost());
+				return Math.Floor(lijeviOperand.vrijednost() / desniOperand.vrijednost());
 			}
 
 			public override string ToString()
