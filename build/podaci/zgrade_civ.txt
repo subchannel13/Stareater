@@ -2,7 +2,7 @@
 IME = Industrijalizacija
 KOD = IND
 OPIS = Izgradnja dodatnih industrijskih postrojenja.
-CIJENA = - 30 IND_LVL
+CIJENA = - 30 * 2 IND_LVL
 ODRZAVANJE = 0
 KOLICINA = - POP_MAX RAD_MJ_UK
 SVOJSTVA = NE_OSTAJE PONAVLJA_SE

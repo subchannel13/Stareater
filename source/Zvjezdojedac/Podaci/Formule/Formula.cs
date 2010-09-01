@@ -67,7 +67,7 @@ namespace Prototip
 					return op[s](niz);
 				}
 
-				else if (Double.TryParse(s.ToLower(), NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent , Podaci.DecimalnaTocka, out x))
+				else if (Double.TryParse(s.ToLower(), NumberStyles.Float, Podaci.DecimalnaTocka, out x))
 					return new Konstanta(x);
 				else
 					return new Varijabla(s);
@@ -653,8 +653,8 @@ namespace Prototip
 				double min = srednjiOpernad.vrijednost(); ;
 				double max = desniOperand.vrijednost(); ;
 
-				if (t <= min) return min;
-				if (t >= max) return max;
+				if (t <= 1) return min;
+				if (t >= 0) return max;
 				return min + t * (max - min);
 			}
 

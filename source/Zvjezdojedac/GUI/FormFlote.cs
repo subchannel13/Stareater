@@ -18,12 +18,23 @@ namespace Prototip
 			public List<SpecijalnaOprema> specijalnaOprema { get; private set; }
 			public List<Stit> stitovi { get; private set; }
 
+			public Dictionary<SpecijalnaOprema.SpecijalnaOpremaInfo, SpecijalnaOprema> specijalnaOpremaInfo { get; private set; }
+			public Dictionary<Stit.StitInfo, Stit> stitoviInfo { get; private set; }
+
 			public Komponente(Igrac igrac, Trup trup)
 			{
 				mzPogon = MZPogon.MZPogonInfo.NajboljiMZPogon(igrac.efekti, trup.velicina_MZPogona);
 				reaktor = Reaktor.ReaktorInfo.NajboljiReaktor(igrac.efekti, trup.velicina_reaktora);
 				specijalnaOprema = SpecijalnaOprema.SpecijalnaOpremaInfo.DostupnaOprema(igrac.efekti, trup.velicina);
 				stitovi = Stit.StitInfo.DostupniStitovi(igrac.efekti, trup.velicina_stita);
+
+				specijalnaOpremaInfo = new Dictionary<SpecijalnaOprema.SpecijalnaOpremaInfo, SpecijalnaOprema>();
+				foreach (SpecijalnaOprema so in specijalnaOprema)
+					specijalnaOpremaInfo.Add(so.info, so);
+
+				stitoviInfo = new Dictionary<Stit.StitInfo, Stit>();
+				foreach (Stit stit in stitovi)
+					stitoviInfo.Add(stit.info, stit);
 			}
 		}
 
@@ -77,7 +88,21 @@ namespace Prototip
 				get { return _dizajnTrup; }
 				set
 				{
+					
 					_dizajnTrup = value;
+					Komponente komponente = this.komponente[_dizajnTrup];
+
+					if (_dizajnStit != null)
+						_dizajnStit = komponente.stitoviInfo[_dizajnStit.info];
+
+					Dictionary<SpecijalnaOprema, int> novaSpecOprema = new Dictionary<SpecijalnaOprema, int>();
+					if (_dizajnSpecOprema != null)
+						foreach (KeyValuePair<SpecijalnaOprema, int> par in _dizajnSpecOprema)
+							novaSpecOprema.Add(
+								komponente.specijalnaOpremaInfo[par.Key.info],
+								par.Value);
+					_dizajnSpecOprema = novaSpecOprema;
+
 					promjenjenDizajn = true;
 				}
 			}
@@ -154,8 +179,7 @@ namespace Prototip
 				if (!dizajnSpecOprema.ContainsKey(so) && so.maxKolicina > 0)
 					dizajnSpecOprema.Add(so, 0);
 
-				if (dizajnSpecOprema[so] < so.maxKolicina)
-				{
+				if (dizajnSpecOprema[so] < so.maxKolicina) {
 					dizajnSpecOprema[so]++;
 					promjenjenDizajn = true;
 				}
@@ -173,8 +197,7 @@ namespace Prototip
 				dizajnSpecOprema[so]--;
 				promjenjenDizajn = true;
 
-				if (dizajnSpecOprema[so] <= 0)
-				{
+				if (dizajnSpecOprema[so] <= 0) {
 					dizajnSpecOprema.Remove(so);
 					return 0;
 				}
@@ -187,10 +210,10 @@ namespace Prototip
 			{
 				get
 				{
-					if (promjenjenDizajn)
-					{
+					if (promjenjenDizajn) {
 						MZPogon mzPogon = null;
 						if (dizajnMZPogon) mzPogon = komponente[odabranTrup].mzPogon;
+						//if (dizajnStit) dizajnStit = dizajnStit.info.naciniKomponentu(
 
 						dizajn = new Dizajn(_dizajnIme, odabranTrup,
 							dizajnPrimMisija, dizajnSekMisija, dizajnUdioPrimMisije,
@@ -273,8 +296,7 @@ namespace Prototip
 
 			#region Dizajnovi
 			{
-				foreach(DizajnZgrada dizajnZgrada in igrac.dizajnoviBrodova)
-				{
+				foreach (DizajnZgrada dizajnZgrada in igrac.dizajnoviBrodova) {
 					Dizajn dizajn = dizajnZgrada.dizajn;
 					dodajDizajn(dizajn);
 				}
@@ -290,14 +312,12 @@ namespace Prototip
 
 				cbNDprimMisija.Items.Add(new TagTekst<Oruzje>(null, "ništa"));
 				cbNDsekMisija.Items.Add(new TagTekst<Oruzje>(null, "ništa"));
-				foreach (Misija.Tip misija in dizajner.oruzja.Keys)
-				{
+				foreach (Misija.Tip misija in dizajner.oruzja.Keys) {
 					if (dizajner.oruzja[misija].Count == 0) continue;
 					cbNDprimMisija.Items.Add(new TagTekst<Oruzje>(null, SeparatorNDGrupa));
 					cbNDsekMisija.Items.Add(new TagTekst<Oruzje>(null, SeparatorNDGrupa));
 
-					foreach (Oruzje oruzje in dizajner.oruzja[misija])
-					{
+					foreach (Oruzje oruzje in dizajner.oruzja[misija]) {
 						cbNDprimMisija.Items.Add(new TagTekst<Oruzje>(oruzje, oruzje.info.naziv));
 						cbNDsekMisija.Items.Add(new TagTekst<Oruzje>(oruzje, oruzje.info.naziv));
 					}
@@ -305,8 +325,7 @@ namespace Prototip
 
 				cbNDstit.Items.Add(new TagTekst<int>(-1, "nikakav"));
 				int i = 0;
-				foreach (Stit stit in dizajner.trupKomponente.stitovi)
-				{
+				foreach (Stit stit in dizajner.trupKomponente.stitovi) {
 					cbNDstit.Items.Add(new TagTekst<int>(i, stit.info.naziv));
 					i++;
 				}
@@ -315,8 +334,7 @@ namespace Prototip
 					cbNDtaktika.Items.Add(new TagTekst<Taktika>(taktika, taktika.naziv));
 
 				i = 0;
-				foreach (SpecijalnaOprema so in dizajner.trupKomponente.specijalnaOprema)
-				{
+				foreach (SpecijalnaOprema so in dizajner.trupKomponente.specijalnaOprema) {
 					ListViewItem item = new ListViewItem("");
 					item.SubItems.Add(so.naziv);
 					item.SubItems.Add(so.velicina.ToString());
@@ -350,8 +368,7 @@ namespace Prototip
 			if (primarno) opis.Add("Primarna misija: ");
 			else opis.Add("Sekundarna misija: ");
 
-			if (oruzje == null)
-			{
+			if (oruzje == null) {
 				opis.Add("");
 				if (primarno) opis.Add("Brod nema primarnu misiju.");
 				else opis.Add("Brod nema sekundarnu misiju");
@@ -363,7 +380,7 @@ namespace Prototip
 			Misija misija = Misija.Opisnici[misijaTip];
 
 			opis.Add(misija.naziv);
-			opis.Add((misija.grupirana) ? 
+			opis.Add((misija.grupirana) ?
 				oruzje.komponenta.naziv :
 				Fje.PrefiksFormater(oruzje.kolicina) + " x " + oruzje.komponenta.naziv);
 			opis.Add("");
@@ -401,21 +418,18 @@ namespace Prototip
 		private List<string> opis(InfoStranice stranica, Dizajn dizajn, bool cijene)
 		{
 			List<string> opis = new List<string>();
-			switch (stranica)
-			{
+			switch (stranica) {
 				case InfoStranice.MZPogon:
 					opis.Add("MZ pogon");
 					opis.Add("");
 					if (dizajn.MZPogon == null)
 						opis.Add("Brod nema međuzvjezdani pogon.");
-					else
-					{
+					else {
 						opis.Add(dizajn.MZPogon.info.naziv);
 						if (dizajn.MZPogon.maxNivo > 0)
 							opis.Add("Nivo: " + dizajn.MZPogon.nivo);
 						opis.Add("Brzina: " + dizajn.MZbrzina.ToString("0.###"));
-						if (cijene)
-						{
+						if (cijene) {
 							opis.Add("Potrebna snaga: " + Fje.PrefiksFormater(dizajn.MZPogon.snaga));
 							opis.Add("Cijena: " + Fje.PrefiksFormater(dizajn.MZPogon.cijena));
 						}
@@ -486,8 +500,7 @@ namespace Prototip
 					opis.Add("");
 					if (dizajn.stit == null)
 						opis.Add("Brod nema štit.");
-					else
-					{
+					else {
 						opis.Add(dizajn.stit.naziv);
 						if (dizajn.stit.maxNivo > 0)
 							opis.Add("Nivo: " + dizajn.stit.nivo);
@@ -496,8 +509,7 @@ namespace Prototip
 						opis.Add("Debljina: " + Fje.PrefiksFormater(dizajn.stit.debljina));
 						opis.Add("Ometanje: x" + dizajn.stit.ometanje.ToString("0.##"));
 						opis.Add("Prikrivanje: +" + Fje.PrefiksFormater(dizajn.stit.prikrivanje));
-						if (cijene)
-						{
+						if (cijene) {
 							opis.Add("");
 							opis.Add("Potrebna snaga: " + Fje.PrefiksFormater(dizajn.stit.snaga));
 							opis.Add("Cijena: " + Fje.PrefiksFormater(dizajn.stit.cijena));
@@ -539,11 +551,9 @@ namespace Prototip
 
 			if (dizajn.primarnoOruzje != null)
 				cbNDprimMisija.Items[cbNDprimMisija.SelectedIndex] = new TagTekst<Oruzje>(dizajn.primarnoOruzje.komponenta, Fje.PrefiksFormater(dizajn.primarnoOruzje.kolicina) + " x " + dizajn.primarnoOruzje.komponenta.naziv);
-			else if (cbNDprimMisija.SelectedItem != null)
-			{
+			else if (cbNDprimMisija.SelectedItem != null) {
 				TagTekst<Oruzje> tagOruzje = (TagTekst<Oruzje>)cbNDprimMisija.SelectedItem;
-				if (tagOruzje.tag != null)
-				{
+				if (tagOruzje.tag != null) {
 					tagOruzje.tekst = tagOruzje.tag.naziv;
 					cbNDprimMisija.Items[cbNDprimMisija.SelectedIndex] = tagOruzje;
 				}
@@ -551,11 +561,9 @@ namespace Prototip
 
 			if (dizajn.sekundarnoOruzje != null)
 				cbNDsekMisija.Items[cbNDsekMisija.SelectedIndex] = new TagTekst<Oruzje>(dizajn.sekundarnoOruzje.komponenta, Fje.PrefiksFormater(dizajn.sekundarnoOruzje.kolicina) + " x " + dizajn.sekundarnoOruzje.komponenta.naziv);
-			else if (cbNDsekMisija.SelectedItem != null)
-			{
+			else if (cbNDsekMisija.SelectedItem != null) {
 				TagTekst<Oruzje> tagOruzje = (TagTekst<Oruzje>)cbNDsekMisija.SelectedItem;
-				if (tagOruzje.tag != null)
-				{
+				if (tagOruzje.tag != null) {
 					tagOruzje.tekst = tagOruzje.tag.naziv;
 					cbNDsekMisija.Items[cbNDsekMisija.SelectedIndex] = tagOruzje;
 				}
@@ -581,7 +589,10 @@ namespace Prototip
 
 		private void prebaciNDopis(InfoStranice stranica)
 		{
-			if (zadrziNDInfo) return;
+			if (zadrziNDInfo) {
+				ispisiOpis(prethodniNDinfo, dizajner.dizajn);
+				return;
+			}
 
 			if (cbNDinfoStrana.SelectedIndex == (int)stranica)
 				ispisiOpis(stranica, dizajner.dizajn);
@@ -596,18 +607,21 @@ namespace Prototip
 			Trup trup = (Trup)cbNDvelicina.SelectedItem;
 			dizajner.odabranTrup = trup;
 
-			if (dizajner.komponente[trup].mzPogon == null)
-			{
+			if (dizajner.komponente[trup].mzPogon == null) {
 				chNDMZpogon.Checked = false;
 				chNDMZpogon.Enabled = false;
 			}
 			else
 				chNDMZpogon.Enabled = true;
 
-			foreach (ListViewItem item in lstvNDspecOprema.Items)
-			{
+			foreach (ListViewItem item in lstvNDspecOprema.Items) {
 				int indeks = (int)item.Tag;
 				item.SubItems[2].Text = dizajner.trupKomponente.specijalnaOprema[indeks].velicina.ToString();
+			}
+
+			if (lstvNDspecOprema.SelectedItems.Count != 0) {
+				SpecijalnaOprema so = dizajner.trupKomponente.specijalnaOprema[lstvNDspecOprema.SelectedIndices[0]];
+				specijalnaOpremaZaOpis = so;
 			}
 
 			osvjeziNDstatistike();
@@ -619,8 +633,7 @@ namespace Prototip
 			if (prethodnaNDprimMisija == cbNDprimMisija.SelectedIndex)
 				return;
 
-			if (dizajner.dizajnPrimMisija != null)
-			{
+			if (dizajner.dizajnPrimMisija != null) {
 				TagTekst<Oruzje> tagTekst = (TagTekst<Oruzje>)cbNDprimMisija.Items[prethodnaNDprimMisija];
 				cbNDprimMisija.Items[prethodnaNDprimMisija] = new TagTekst<Oruzje>(tagTekst.tag, tagTekst.tag.naziv);
 			}
@@ -637,8 +650,7 @@ namespace Prototip
 			if (prethodnaNDsekMisija == cbNDsekMisija.SelectedIndex)
 				return;
 
-			if (dizajner.dizajnSekMisija != null)
-			{
+			if (dizajner.dizajnSekMisija != null) {
 				TagTekst<Oruzje> tagTekst = (TagTekst<Oruzje>)cbNDsekMisija.Items[prethodnaNDsekMisija];
 				cbNDsekMisija.Items[prethodnaNDsekMisija] = new TagTekst<Oruzje>(tagTekst.tag, tagTekst.tag.naziv);
 			}
@@ -777,8 +789,7 @@ namespace Prototip
 			foreach (DizajnZgrada dizajnZgrada in igrac.dizajnoviBrodova)
 				postojeciDizajnovi.Add(dizajnZgrada.dizajn.stil);
 
-			if (postojeciDizajnovi.Contains(dizajner.dizajn.stil))
-			{
+			if (postojeciDizajnovi.Contains(dizajner.dizajn.stil)) {
 				MessageBox.Show("Dizajn istih karakteristika već postoji", "Postojeći dizajn", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 				return;
 			}
@@ -797,7 +808,7 @@ namespace Prototip
 			hscrUdioMisija.Value = hscrUdioMisija.Value;
 			txtNDnaziv.Text = "";
 		}
-		
+
 		private void bntNDZadrziInfo_Click(object sender, EventArgs e)
 		{
 			if (zadrziNDInfo) {
@@ -816,7 +827,7 @@ namespace Prototip
 			ListViewItem item = new ListViewItem(dizajn.ime);
 			item.SubItems.Add(Fje.PrefiksFormater(dizajn.brojBrodova));
 			item.Tag = dizajn;
-			
+
 			lstvDizajnovi.SmallImageList.Images.Add(dizajn.ikona);
 			item.ImageIndex = lstvDizajnovi.SmallImageList.Images.Count - 1;
 
@@ -836,23 +847,19 @@ namespace Prototip
 			opisDizajna.Add(dizajn.trup.naziv);
 			opisDizajna.Add("");
 
-			foreach (InfoStranice stranica in Enum.GetValues(typeof(InfoStranice)))
-			{
+			foreach (InfoStranice stranica in Enum.GetValues(typeof(InfoStranice))) {
 				if (stranica == InfoStranice.SpecijalnaOprema)
-					foreach (SpecijalnaOprema so in dizajn.specijalnaOprema.Keys)
-					{
+					foreach (SpecijalnaOprema so in dizajn.specijalnaOprema.Keys) {
 						specijalnaOpremaZaOpis = so;
 						opisDizajna.AddRange(opis(stranica, dizajn, false));
 						opisDizajna.Add("");
 					}
-				else
-				{
+				else {
 					opisDizajna.AddRange(opis(stranica, dizajn, false));
 					opisDizajna.Add("");
 				}
 
-				if (stranica == InfoStranice.SekundarnaMisija)
-				{
+				if (stranica == InfoStranice.SekundarnaMisija) {
 					opisDizajna.Add("Oklop:");
 					opisDizajna.Add("");
 					opisDizajna.Add(dizajn.oklop.naziv);
@@ -873,8 +880,7 @@ namespace Prototip
 				return;
 			int indeks = lstvDizajnovi.SelectedIndices[0];
 
-			if (igrac.dizajnoviBrodova[indeks].dizajn.brojBrodova == 0)
-			{
+			if (igrac.dizajnoviBrodova[indeks].dizajn.brojBrodova == 0) {
 				DizajnZgrada dizajnZgrada = igrac.dizajnoviBrodova[indeks];
 				if (!igrac.dizajnoviUGradnji().Contains(dizajnZgrada.dizajn)) {
 					igrac.dizajnoviBrodova.RemoveAt(indeks);
@@ -883,6 +889,6 @@ namespace Prototip
 			}
 		}
 
-		
+
 	}
 }
