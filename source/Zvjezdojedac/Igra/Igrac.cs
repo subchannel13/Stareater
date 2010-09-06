@@ -445,9 +445,9 @@ namespace Prototip
 			izlaz.dodaj(PohOrganizacija, organizacija);
 
 			izlaz.dodaj(PohPogledZvj, 
-				odabranaZvijezda.x.ToString(Podaci.DecimalnaTocka) 
+				odabranaZvijezda.x.ToString(PodaciAlat.DecimalnaTocka) 
 				+ " " 
-				+ odabranaZvijezda.y.ToString(Podaci.DecimalnaTocka));
+				+ odabranaZvijezda.y.ToString(PodaciAlat.DecimalnaTocka));
 			izlaz.dodaj(PohPogledPlanet, odabranPlanet.pozicija);
 
 			izlaz.dodaj(PohPoruka, poruke.Count);
@@ -489,8 +489,8 @@ namespace Prototip
 		{
 			string[] pozicija = zvjString.Split(new char[] { ' ' });
 			return mapa.najblizaZvijezda(
-				double.Parse(pozicija[0], Podaci.DecimalnaTocka),
-				double.Parse(pozicija[1], Podaci.DecimalnaTocka),
+				double.Parse(pozicija[0], PodaciAlat.DecimalnaTocka),
+				double.Parse(pozicija[1], PodaciAlat.DecimalnaTocka),
 				-1);
 		}
 

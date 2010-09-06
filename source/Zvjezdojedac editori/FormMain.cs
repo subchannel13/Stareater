@@ -52,7 +52,7 @@ namespace Zvjezdojedac_editori
 			try
 			{
 				dostupniPodaci = false;
-				podaci = Podaci.ucitajPodatke();
+				podaci = PodaciAlat.ucitajPodatke();
 				dostupniPodaci = true;
 			}
 			catch (FileNotFoundException exc)
@@ -102,7 +102,7 @@ namespace Zvjezdojedac_editori
 		{
 			if (!dostupniPodaci) return;
 
-			new FormTehnologije(podaci[Podaci.TehnoIstTag], podaci[Podaci.TehnoRazTag]).Show();
+			new FormTehnologije(podaci[PodaciAlat.TehnoIstTag], podaci[PodaciAlat.TehnoRazTag]).Show();
 			WindowState = FormWindowState.Normal;
 		}
 	}

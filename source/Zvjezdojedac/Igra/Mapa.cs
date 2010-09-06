@@ -80,7 +80,7 @@ namespace Prototip
 
 					Alati.Vadjenje<int> vz = new Alati.Vadjenje<int>();
 					Alati.Vadjenje<int> dodZ = new Alati.Vadjenje<int>();
-					for (i = 0; i < Podaci.zvijezdja.Count; i++)
+					for (i = 0; i < PodaciAlat.zvijezdja.Count; i++)
 						vz.dodaj(i);
 
 					for (i = 0; i < Mapa.velicinaMape[tipMape].brZvijezdja; i++)
@@ -103,15 +103,15 @@ namespace Prototip
 					foreach (int izvj in zvjezdeUZvjezdju.Keys)
 					{
 						if (zvjezdeUZvjezdju[izvj].Count == 1)
-							zvjezdeUZvjezdju[izvj][0].ime = Podaci.zvijezdja[izvj].nominativ;
+							zvjezdeUZvjezdju[izvj][0].ime = PodaciAlat.zvijezdja[izvj].nominativ;
 						else
 						{
 							Alati.Vadjenje<Zvijezda> vZvj = new Alati.Vadjenje<Zvijezda>(zvjezdeUZvjezdju[izvj]);
 							for (int j = 0; j < zvjezdeUZvjezdju[izvj].Count; j++)
 								vZvj.izvadi().ime =
-									Podaci.prefiksZvijezdja[(Podaci.PrefiksZvijezdja)j] +
+									PodaciAlat.prefiksZvijezdja[(PodaciAlat.PrefiksZvijezdja)j] +
 									" " +
-									Podaci.zvijezdja[izvj].genitiv;
+									PodaciAlat.zvijezdja[izvj].genitiv;
 						}
 					}
 				}

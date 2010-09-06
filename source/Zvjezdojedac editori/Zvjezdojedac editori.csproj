@@ -182,8 +182,8 @@
     <Compile Include="..\Zvjezdojedac\Podaci\PocetnaPozicija.cs">
       <Link>Zvjezdojedac\PocetnaPozicija.cs</Link>
     </Compile>
-    <Compile Include="..\Zvjezdojedac\Podaci\Podaci.cs">
-      <Link>Zvjezdojedac\Podaci.cs</Link>
+    <Compile Include="..\Zvjezdojedac\Podaci\PodaciAlat.cs">
+      <Link>Zvjezdojedac\PodaciAlat.cs</Link>
     </Compile>
     <Compile Include="..\Zvjezdojedac\Podaci\PodaciCitac.cs">
       <Link>Zvjezdojedac\PodaciCitac.cs</Link>

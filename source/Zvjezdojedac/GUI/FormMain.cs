@@ -16,12 +16,13 @@ namespace Prototip
 		public FormMain()
 		{
 			InitializeComponent();
+
 #if DEBUG
 #else
 			try
 			{
 #endif
-				Podaci.postaviPodatke();
+				PodaciAlat.postaviPodatke();
 #if DEBUG
 #else
 			}

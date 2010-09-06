@@ -67,7 +67,7 @@ namespace Prototip
 					return op[s](niz);
 				}
 
-				else if (Double.TryParse(s.ToLower(), NumberStyles.Float, Podaci.DecimalnaTocka, out x))
+				else if (Double.TryParse(s.ToLower(), NumberStyles.Float, PodaciAlat.DecimalnaTocka, out x))
 					return new Konstanta(x);
 				else
 					return new Varijabla(s);
@@ -104,7 +104,7 @@ namespace Prototip
 
 			public override string ToString()
 			{
-				return iznos.ToString(Podaci.DecimalnaTocka);
+				return iznos.ToString(PodaciAlat.DecimalnaTocka);
 			}
 		}
 
@@ -653,8 +653,8 @@ namespace Prototip
 				double min = srednjiOpernad.vrijednost(); ;
 				double max = desniOperand.vrijednost(); ;
 
-				if (t <= 1) return min;
-				if (t >= 0) return max;
+				if (t <= 0) return min;
+				if (t >= 1) return max;
 				return min + t * (max - min);
 			}
 
@@ -716,6 +716,11 @@ namespace Prototip
 				return false;
 			}
 			return true;
+		}
+
+		public bool istina(Dictionary<string, double> varijable)
+		{
+			return iznos(varijable) >= 0;
 		}
 
 		public abstract double iznos(Dictionary<string, double> varijable);

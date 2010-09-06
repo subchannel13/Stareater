@@ -16,7 +16,7 @@ namespace Zvjezdojedac_editori.Validation
 		public override bool valid()
 		{
 			double x;
-			return double.TryParse(txtInput.Text, NumberStyles.AllowDecimalPoint, Podaci.DecimalnaTocka, out x);
+			return double.TryParse(txtInput.Text, NumberStyles.AllowDecimalPoint, PodaciAlat.DecimalnaTocka, out x);
 		}
 	}
 }

@@ -53,11 +53,11 @@ namespace Prototip
 			{
 				string[] pojediniPodatci= podatci.Split(new char[]{','});
 
-                double tezinaPojave = Double.Parse(pojediniPodatci[0], Podaci.DecimalnaTocka);
-                double gomiliste = Double.Parse(pojediniPodatci[1], Podaci.DecimalnaTocka);
-                double unutarnjaUcestalost = Double.Parse(pojediniPodatci[2], Podaci.DecimalnaTocka);
-                double vanjskaUcestalost = Double.Parse(pojediniPodatci[3], Podaci.DecimalnaTocka);
-                double odstupanje = Double.Parse(pojediniPodatci[4], Podaci.DecimalnaTocka);
+                double tezinaPojave = Double.Parse(pojediniPodatci[0], PodaciAlat.DecimalnaTocka);
+                double gomiliste = Double.Parse(pojediniPodatci[1], PodaciAlat.DecimalnaTocka);
+                double unutarnjaUcestalost = Double.Parse(pojediniPodatci[2], PodaciAlat.DecimalnaTocka);
+                double vanjskaUcestalost = Double.Parse(pojediniPodatci[3], PodaciAlat.DecimalnaTocka);
+                double odstupanje = Double.Parse(pojediniPodatci[4], PodaciAlat.DecimalnaTocka);
 
 				return new PojavnostPlaneta(tezinaPojave, gomiliste, unutarnjaUcestalost, vanjskaUcestalost, odstupanje);
 			}
@@ -76,10 +76,10 @@ namespace Prototip
                 
 				imeTipa.Add(podatci["TIP"], tip);
 				Tipovi.Add(new TipInfo(
-                        double.Parse(podatci["VELICINA_MIN"], Podaci.DecimalnaTocka),
-                        double.Parse(podatci["VELICINA_MAX"], Podaci.DecimalnaTocka),
-                        double.Parse(podatci["UCESTALOST"], Podaci.DecimalnaTocka),
-                        int.Parse(podatci["ZRACENJE"], Podaci.DecimalnaTocka),
+                        double.Parse(podatci["VELICINA_MIN"], PodaciAlat.DecimalnaTocka),
+                        double.Parse(podatci["VELICINA_MAX"], PodaciAlat.DecimalnaTocka),
+                        double.Parse(podatci["UCESTALOST"], PodaciAlat.DecimalnaTocka),
+                        int.Parse(podatci["ZRACENJE"], PodaciAlat.DecimalnaTocka),
 						pojavnostPlaneta
 						));
 

@@ -47,18 +47,18 @@ namespace Prototip
 				else if (tipPlaneta[i] == "P") tip = Planet.Tip.PLINOVITI;
 				else if (tipPlaneta[i] == "N") tip = Planet.Tip.NIKAKAV;
 
-                double velicina = double.Parse(velPlaneta[i], Podaci.DecimalnaTocka); ;
-                double gustocaAtmosfere = double.Parse(gustocaAtm[i], Podaci.DecimalnaTocka);
-                double kvalitetaAtmosfere = double.Parse(kvalAtm[i], Podaci.DecimalnaTocka);
-                double mineraliPovrsinski = double.Parse(minerlPov[i], Podaci.DecimalnaTocka);
-                double mineraliDubinski = double.Parse(minerlDub[i], Podaci.DecimalnaTocka);
+                double velicina = double.Parse(velPlaneta[i], PodaciAlat.DecimalnaTocka); ;
+                double gustocaAtmosfere = double.Parse(gustocaAtm[i], PodaciAlat.DecimalnaTocka);
+                double kvalitetaAtmosfere = double.Parse(kvalAtm[i], PodaciAlat.DecimalnaTocka);
+                double mineraliPovrsinski = double.Parse(minerlPov[i], PodaciAlat.DecimalnaTocka);
+                double mineraliDubinski = double.Parse(minerlDub[i], PodaciAlat.DecimalnaTocka);
 				planeti.Add(new Planet(tip, i, null, velicina, kvalitetaAtmosfere, gustocaAtmosfere, mineraliPovrsinski, mineraliDubinski));
 			}
 
 			konfiguracije.Add(
 				new PocetnaPozicija(
 					Zvijezda.imeTipa[splitano[0]],
-                    double.Parse(splitano[1], Podaci.DecimalnaTocka), 
+                    double.Parse(splitano[1], PodaciAlat.DecimalnaTocka), 
 					planeti, 
 					int.Parse(podatci["MATICNI_PLANET"])
 					));

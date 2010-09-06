@@ -21,7 +21,7 @@ namespace Prototip
 
 		public override string ToString()
 		{
-			return _iznos.ToString(Podaci.DecimalnaTocka);
+			return _iznos.ToString(PodaciAlat.DecimalnaTocka);
 		}
 
 		public override List<Varijabla> popisVarijabli()

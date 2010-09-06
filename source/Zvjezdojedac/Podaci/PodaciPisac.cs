@@ -44,7 +44,7 @@ namespace Prototip
 
 		public void dodaj(string kljuc, double vrijednost)
 		{
-			linije.Add(uvlacenje + kljuc + " = " + vrijednost.ToString(Podaci.DecimalnaTocka));
+			linije.Add(uvlacenje + kljuc + " = " + vrijednost.ToString(PodaciAlat.DecimalnaTocka));
 		}
 
 		public void dodaj(PodaciPisac podaci)

@@ -48,7 +48,7 @@ namespace Prototip
 				podatci.Add("BR_IGRACA", brIgraca.ToString());
 				podatci.Add("ORGANIZACIJA", organizacija.ToString());
 				podatci.Add("VELICINA_MAPE", velicinaMape.ToString());
-				Podaci.spremi(fajla, podatci, "PROSLA_IGRA");
+				PodaciAlat.spremi(fajla, podatci, "PROSLA_IGRA");
 				fajla.Close();
 			}
 		}

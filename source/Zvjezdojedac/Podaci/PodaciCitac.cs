@@ -41,7 +41,7 @@ namespace Prototip
 
 		public double podatakDouble(string kljuc)
 		{
-			return double.Parse(podaci[kljuc], Podaci.DecimalnaTocka);
+			return double.Parse(podaci[kljuc], PodaciAlat.DecimalnaTocka);
 		}
 
 		public string podatak(string kljuc)

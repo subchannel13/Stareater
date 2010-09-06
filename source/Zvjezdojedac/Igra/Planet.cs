@@ -58,10 +58,10 @@ namespace Prototip
 
 				int velicinaMax = Int32.Parse(podatci["VELICINA_MAX"]);
 				int velicinaMin = Int32.Parse(podatci["VELICINA_MIN"]);
-                double povrsinskiMineraliMin = Double.Parse(podatci["POVRSINSKI_MINERALI_MIN"], Podaci.DecimalnaTocka);
-                double povrsinskiMineraliMax = Double.Parse(podatci["POVRSINSKI_MINERALI_MAX"], Podaci.DecimalnaTocka);
-                double dubinskiMineraliMin = Double.Parse(podatci["DUBINSKI_MINERALI_MIN"], Podaci.DecimalnaTocka);
-                double dubinskiMineraliMax = Double.Parse(podatci["DUBINSKI_MINERALI_MAX"], Podaci.DecimalnaTocka);
+                double povrsinskiMineraliMin = Double.Parse(podatci["POVRSINSKI_MINERALI_MIN"], PodaciAlat.DecimalnaTocka);
+                double povrsinskiMineraliMax = Double.Parse(podatci["POVRSINSKI_MINERALI_MAX"], PodaciAlat.DecimalnaTocka);
+                double dubinskiMineraliMin = Double.Parse(podatci["DUBINSKI_MINERALI_MIN"], PodaciAlat.DecimalnaTocka);
+                double dubinskiMineraliMax = Double.Parse(podatci["DUBINSKI_MINERALI_MAX"], PodaciAlat.DecimalnaTocka);
 				
 				double slikaAtmGustKoef = double.Parse(podatci["SLIKA_KOEF_ATM_GUST"]);
 				double slikaAtmKvalKoef = double.Parse(podatci["SLIKA_KOEF_ATM_KVAL"]);

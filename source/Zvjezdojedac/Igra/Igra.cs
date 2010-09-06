@@ -21,7 +21,7 @@ namespace Prototip
 			this.mapa = mapa.mapa;
 			trenutniIgracIndex = 0;
 			brKruga = 0;
-			osnovniEfekti = Podaci.ucitajBazuEfekata();
+			osnovniEfekti = PodaciAlat.ucitajBazuEfekata();
 
 			foreach (Igrac.ZaStvoriti igrac in igraci)
 				if (igrac.tip == Igrac.Tip.COVJEK)
@@ -53,7 +53,7 @@ namespace Prototip
 			this.mapa = mapa;
 			this.brKruga = brKruga;
 
-			osnovniEfekti = Podaci.ucitajBazuEfekata();
+			osnovniEfekti = PodaciAlat.ucitajBazuEfekata();
 			for (int i = 0; i < igraci.Count; i++) {
 				this.igraci[i].izracunajEfekte(this);
 				this.igraci[i].staviNoveTehnologije(this);
