@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Alati;
 
-namespace Prototip.Podaci.Jezik.Elementi
+namespace Prototip.Podaci.Jezici.Elementi
 {
 	public class Vrijednost : ITekst
 	{

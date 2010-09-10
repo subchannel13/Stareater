@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Prototip.Podaci.Jezik.Elementi
+namespace Prototip.Podaci.Jezici.Elementi
 {
 	public class Literal: ITekst
 	{
@@ -10,16 +10,24 @@ namespace Prototip.Podaci.Jezik.Elementi
 		{
 			StringBuilder sb = new StringBuilder();
 			bool citaj = true;
+			bool prvaRijec = true;
 
 			do {
 				string rijec = linija.Dequeue();
-				if (rijec.StartsWith("\""))
-					rijec.Remove(0, 1);
+				//if (rijec.StartsWith("\""))
+				if (prvaRijec) {
+					rijec = rijec.Remove(0, 1);
+					prvaRijec = false;
+				}
 				
 				if (rijec.EndsWith("\"")) {
-					rijec.Remove(rijec.Length - 1, 1);
-					if (!rijec.EndsWith("\"\""))
+					rijec = rijec.Remove(rijec.Length - 1, 1);
+					if (!rijec.EndsWith("\""))
 						citaj = false;
+					if (rijec.EndsWith("\"\"")) {
+						rijec = rijec.Remove(rijec.Length - 1, 1);
+						citaj = false;
+					}
 				}
 				sb.Append(rijec);
 				if (citaj) sb.Append(" ");

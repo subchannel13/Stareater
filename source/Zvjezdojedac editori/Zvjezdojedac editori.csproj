@@ -176,6 +176,27 @@
     <Compile Include="..\Zvjezdojedac\Podaci\IPohranjivoSB.cs">
       <Link>Zvjezdojedac\IPohranjivoSB.cs</Link>
     </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Jezici\Elementi\Literal.cs">
+      <Link>Zvjezdojedac\Literal.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Jezici\Elementi\UvjetniLiteral.cs">
+      <Link>Zvjezdojedac\UvjetniLiteral.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Jezici\Elementi\Vrijednost.cs">
+      <Link>Zvjezdojedac\Vrijednost.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Jezici\ITekst.cs">
+      <Link>Zvjezdojedac\ITekst.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Jezici\Jezik.cs">
+      <Link>Zvjezdojedac\Jezik.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Jezici\Kontekst.cs">
+      <Link>Zvjezdojedac\Kontekst.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Podaci\Jezici\Tekst.cs">
+      <Link>Zvjezdojedac\Tekst.cs</Link>
+    </Compile>
     <Compile Include="..\Zvjezdojedac\Podaci\Organizacije.cs">
       <Link>Zvjezdojedac\Organizacije.cs</Link>
     </Compile>

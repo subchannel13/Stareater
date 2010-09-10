@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
+using Prototip.Podaci;
+using Prototip.Podaci.Jezici;
 
 namespace Prototip
 {
@@ -199,6 +201,16 @@ namespace Prototip
 			}
 			citac.zatvori();
 		}
+		private static void ucitajPopisJezika()
+		{
+			StreamReader citac = new StreamReader("./jezici/popis.txt");
+			while (!citac.EndOfStream) {
+				string linija = citac.ReadLine().Trim();
+				if (linija.Length > 0)
+					Jezik.Popis.Add(linija);
+			}
+			citac.Close();
+		}
 
 		private static List<Dictionary<string, string>> pokupi(string datoteka, string tag)
 		{
@@ -271,6 +283,7 @@ namespace Prototip
 			try
 			{
 #endif
+				ucitajPopisJezika();
 				Dictionary<string, List<Dictionary<string, string>>> podaci = ucitajPodatke();
 				foreach (Dictionary<string, string> unos in podaci[MapaTag]) Mapa.dodajVelicinuMape(unos);
 				foreach (Dictionary<string, string> unos in podaci[OrgTag]) Organizacija.dodajOrganizaciju(unos);

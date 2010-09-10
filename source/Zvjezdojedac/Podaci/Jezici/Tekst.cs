@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace Prototip.Podaci.Jezik
+namespace Prototip.Podaci.Jezici
 {
 	public class Tekst : ITekst
 	{
@@ -105,7 +105,7 @@ namespace Prototip.Podaci.Jezik
 			List<ITekst> elementi = new List<ITekst>();
 			int pocetak = 0;
 			foreach (Supstitucija sups in supstitucije) {
-				int duljinaLiterala = sups.pozicija - 1 - pocetak;
+				int duljinaLiterala = sups.pozicija - pocetak;
 				if (duljinaLiterala > 0)
 					elementi.Add(new Elementi.Literal(tekst.Substring(pocetak, duljinaLiterala)));
 				elementi.Add(sups.element);

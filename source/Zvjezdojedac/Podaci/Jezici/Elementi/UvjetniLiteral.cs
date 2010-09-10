@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Prototip.Podaci.Jezik.Elementi
+namespace Prototip.Podaci.Jezici.Elementi
 {
 	public class UvjetniLiteral : ITekst
 	{

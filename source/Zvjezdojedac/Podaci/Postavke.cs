@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using Prototip.Podaci.Jezici;
 
-namespace Prototip
+namespace Prototip.Podaci
 {
 	public class Postavke
 	{
@@ -17,6 +18,8 @@ namespace Prototip
 			public static int organizacija;
 			
 			public static int velicinaMape;
+
+			public static Jezik jezik;
 
 			public static void postavi(Dictionary<string, string> podatci)
 			{
@@ -38,6 +41,13 @@ namespace Prototip
 				if (podatci.ContainsKey("VELICINA_MAPE"))
 					if (!int.TryParse(podatci["VELICINA_MAPE"], out velicinaMape))
 						velicinaMape = Mapa.velicinaMape.Count / 2;
+
+				string jezikKod;
+				if (podatci.ContainsKey("JEZIK"))
+					jezikKod = podatci["JEZIK"];
+				else
+					jezikKod = Jezik.Popis[0];
+				jezik = Jezik.IzDatoteka("./jezici/" + jezikKod + "/");
 			}
 
 			public static void spremi()

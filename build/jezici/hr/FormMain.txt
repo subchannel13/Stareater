@@ -1,0 +1,2 @@
+::FORM_MAIN
+NOVA_IGRA = Nova igra
