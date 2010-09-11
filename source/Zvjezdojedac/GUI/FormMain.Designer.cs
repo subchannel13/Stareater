@@ -34,11 +34,12 @@
 			this.btnUgasi = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
+			this.btnPostavke = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// btnNovaIgra
 			// 
-			this.btnNovaIgra.Location = new System.Drawing.Point(109, 87);
+			this.btnNovaIgra.Location = new System.Drawing.Point(109, 64);
 			this.btnNovaIgra.Name = "btnNovaIgra";
 			this.btnNovaIgra.Size = new System.Drawing.Size(75, 30);
 			this.btnNovaIgra.TabIndex = 1;
@@ -48,7 +49,7 @@
 			// 
 			// btnUcitaj
 			// 
-			this.btnUcitaj.Location = new System.Drawing.Point(109, 123);
+			this.btnUcitaj.Location = new System.Drawing.Point(109, 100);
 			this.btnUcitaj.Name = "btnUcitaj";
 			this.btnUcitaj.Size = new System.Drawing.Size(75, 30);
 			this.btnUcitaj.TabIndex = 2;
@@ -58,7 +59,7 @@
 			// 
 			// btnUgasi
 			// 
-			this.btnUgasi.Location = new System.Drawing.Point(109, 159);
+			this.btnUgasi.Location = new System.Drawing.Point(109, 172);
 			this.btnUgasi.Name = "btnUgasi";
 			this.btnUgasi.Size = new System.Drawing.Size(75, 30);
 			this.btnUgasi.TabIndex = 3;
@@ -85,11 +86,22 @@
 			this.label2.TabIndex = 4;
 			this.label2.Text = "Ivan Kravarščan 2010.";
 			// 
+			// btnPostavke
+			// 
+			this.btnPostavke.Location = new System.Drawing.Point(109, 136);
+			this.btnPostavke.Name = "btnPostavke";
+			this.btnPostavke.Size = new System.Drawing.Size(75, 30);
+			this.btnPostavke.TabIndex = 5;
+			this.btnPostavke.Text = "Postavke";
+			this.btnPostavke.UseVisualStyleBackColor = true;
+			this.btnPostavke.Click += new System.EventHandler(this.btnPostavke_Click);
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(292, 266);
+			this.Controls.Add(this.btnPostavke);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.btnUgasi);
@@ -114,6 +126,7 @@
 		private System.Windows.Forms.Button btnUgasi;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Button btnPostavke;
 	}
 }
 

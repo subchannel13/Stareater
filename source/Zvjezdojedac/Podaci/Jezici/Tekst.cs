@@ -14,7 +14,7 @@ namespace Prototip.Podaci.Jezici
 			List<KeyValuePair<string, ITekst>> rez = new List<KeyValuePair<string, ITekst>>();
 
 			while (ulaz.Count > 0) {
-				Queue<string> linija = new Queue<string>(ulaz.Dequeue().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+				Queue<string> linija = new Queue<string>(ulaz.Dequeue().Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
 				string kljuc = linija.Dequeue();
 				ITekst vrijedost = null;
 

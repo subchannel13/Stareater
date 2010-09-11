@@ -1,0 +1,6 @@
+﻿::FORM_POSTAVKE
+BTN_OK = Ok
+LBL_JEZIK = Language:
+
+::WINDOWS_DIJALOZI
+TIP_SEJVA = Zvjezdojedac game

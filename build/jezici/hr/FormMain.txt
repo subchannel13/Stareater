@@ -1,2 +1,5 @@
-::FORM_MAIN
+﻿::FORM_MAIN
 NOVA_IGRA = Nova igra
+POSTAVKE = Postavke
+UCITAJ = Učitaj igru
+UGASI = Ugasi

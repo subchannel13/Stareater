@@ -7,19 +7,24 @@ namespace Prototip.Podaci.Jezici
 {
 	public class Jezik
 	{
-		public static List<string> Popis = new List<string>();
+		public static Dictionary<string, string> Popis = new Dictionary<string,string>();
+		public static string UobicajeniJezik;
 
 		private static Dictionary<string, Kontekst> StringUKontekst = initStringUKontekst();
 		private static Dictionary<string, Kontekst> initStringUKontekst()
 		{
 			Dictionary<string, Kontekst> rez = new Dictionary<string,Kontekst>();
 			rez.Add("FORM_MAIN", Kontekst.FormMain);
+			rez.Add("FORM_NOVA_IGRA", Kontekst.FormNovaIgra);
+			rez.Add("FORM_POSTAVKE", Kontekst.FormPostavke);
+			rez.Add("WINDOWS_DIJALOZI", Kontekst.WindowsDijalozi);
 
 			return rez;
 		}
 
-		public static Jezik IzDatoteka(string infoPut)
+		public static Jezik IzDatoteka(string kod)
 		{
+			string infoPut = "./jezici/" + kod + "/";
 			StreamReader citacPopisa = new StreamReader(infoPut + "info.txt");
 			string nazivJezika = citacPopisa.ReadLine();
 
@@ -58,16 +63,28 @@ namespace Prototip.Podaci.Jezici
 					tablica[kontekst].Add(redak.Key, redak.Value);
 			}
 
-			return new Jezik(nazivJezika, tablica);
+			return new Jezik(nazivJezika, kod, tablica);
 		}
 
-		private Jezik(string nazivJezika, Dictionary<Kontekst, Dictionary<string, ITekst>> tablica)
+		private Jezik(string nazivJezika, string kod, Dictionary<Kontekst, Dictionary<string, ITekst>> tablica)
 		{
+			this.kod = kod;
 			this.naziv = nazivJezika;
 			this.tablica = tablica;
 		}
 
 		public string naziv { get; private set; }
+		public string kod { get; private set; }
 		private Dictionary<Kontekst, Dictionary<string, ITekst>> tablica;
+
+		public Dictionary<string, ITekst> this[Kontekst kontekst]
+		{
+			get { return tablica[kontekst]; }
+		}
+
+		public ITekst this[Kontekst kontekst, string kljuc]
+		{
+			get { return tablica[kontekst][kljuc]; }
+		}
 	}
 }

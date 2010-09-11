@@ -29,28 +29,28 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormNovaIgra));
-			this.label1 = new System.Windows.Forms.Label();
+			this.lblVelicinaMape = new System.Windows.Forms.Label();
 			this.cbVelicinaMape = new System.Windows.Forms.ComboBox();
-			this.label2 = new System.Windows.Forms.Label();
+			this.lblImeIgraca = new System.Windows.Forms.Label();
 			this.txtIme = new System.Windows.Forms.TextBox();
-			this.label3 = new System.Windows.Forms.Label();
+			this.lblOrganizacija = new System.Windows.Forms.Label();
 			this.cbOrganizacija = new System.Windows.Forms.ComboBox();
 			this.lblOpisMape = new System.Windows.Forms.Label();
 			this.lblOpisOrg = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
+			this.lblBrojIgraca = new System.Windows.Forms.Label();
 			this.cbBrIgraca = new System.Windows.Forms.ComboBox();
 			this.btnKreni = new System.Windows.Forms.Button();
 			this.btnOdustani = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
-			// label1
+			// lblVelicinaMape
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(217, 63);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(76, 13);
-			this.label1.TabIndex = 5;
-			this.label1.Text = "Veličina mape:";
+			this.lblVelicinaMape.AutoSize = true;
+			this.lblVelicinaMape.Location = new System.Drawing.Point(217, 63);
+			this.lblVelicinaMape.Name = "lblVelicinaMape";
+			this.lblVelicinaMape.Size = new System.Drawing.Size(76, 13);
+			this.lblVelicinaMape.TabIndex = 5;
+			this.lblVelicinaMape.Text = "Veličina mape:";
 			// 
 			// cbVelicinaMape
 			// 
@@ -62,14 +62,14 @@
 			this.cbVelicinaMape.TabIndex = 6;
 			this.cbVelicinaMape.SelectedIndexChanged += new System.EventHandler(this.cbVelicinaMape_SelectedIndexChanged);
 			// 
-			// label2
+			// lblImeIgraca
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(12, 28);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(59, 13);
-			this.label2.TabIndex = 0;
-			this.label2.Text = "Ime igrača:";
+			this.lblImeIgraca.AutoSize = true;
+			this.lblImeIgraca.Location = new System.Drawing.Point(12, 28);
+			this.lblImeIgraca.Name = "lblImeIgraca";
+			this.lblImeIgraca.Size = new System.Drawing.Size(59, 13);
+			this.lblImeIgraca.TabIndex = 0;
+			this.lblImeIgraca.Text = "Ime igrača:";
 			// 
 			// txtIme
 			// 
@@ -78,14 +78,14 @@
 			this.txtIme.Size = new System.Drawing.Size(100, 20);
 			this.txtIme.TabIndex = 1;
 			// 
-			// label3
+			// lblOrganizacija
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(12, 63);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(68, 13);
-			this.label3.TabIndex = 2;
-			this.label3.Text = "Organizacija:";
+			this.lblOrganizacija.AutoSize = true;
+			this.lblOrganizacija.Location = new System.Drawing.Point(12, 63);
+			this.lblOrganizacija.Name = "lblOrganizacija";
+			this.lblOrganizacija.Size = new System.Drawing.Size(68, 13);
+			this.lblOrganizacija.TabIndex = 2;
+			this.lblOrganizacija.Text = "Organizacija:";
 			// 
 			// cbOrganizacija
 			// 
@@ -114,20 +114,20 @@
 			this.lblOpisOrg.TabIndex = 4;
 			this.lblOpisOrg.Text = "label4";
 			// 
-			// label4
+			// lblBrojIgraca
 			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(12, 149);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(60, 13);
-			this.label4.TabIndex = 8;
-			this.label4.Text = "Broj igrača:";
+			this.lblBrojIgraca.AutoSize = true;
+			this.lblBrojIgraca.Location = new System.Drawing.Point(12, 149);
+			this.lblBrojIgraca.Name = "lblBrojIgraca";
+			this.lblBrojIgraca.Size = new System.Drawing.Size(60, 13);
+			this.lblBrojIgraca.TabIndex = 8;
+			this.lblBrojIgraca.Text = "Broj igrača:";
 			// 
 			// cbBrIgraca
 			// 
 			this.cbBrIgraca.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbBrIgraca.FormattingEnabled = true;
-			this.cbBrIgraca.Location = new System.Drawing.Point(86, 146);
+			this.cbBrIgraca.Location = new System.Drawing.Point(130, 146);
 			this.cbBrIgraca.Name = "cbBrIgraca";
 			this.cbBrIgraca.Size = new System.Drawing.Size(56, 21);
 			this.cbBrIgraca.TabIndex = 9;
@@ -163,15 +163,15 @@
 			this.Controls.Add(this.btnOdustani);
 			this.Controls.Add(this.btnKreni);
 			this.Controls.Add(this.cbBrIgraca);
-			this.Controls.Add(this.label4);
+			this.Controls.Add(this.lblBrojIgraca);
 			this.Controls.Add(this.lblOpisOrg);
 			this.Controls.Add(this.lblOpisMape);
 			this.Controls.Add(this.cbOrganizacija);
-			this.Controls.Add(this.label3);
+			this.Controls.Add(this.lblOrganizacija);
 			this.Controls.Add(this.txtIme);
-			this.Controls.Add(this.label2);
+			this.Controls.Add(this.lblImeIgraca);
 			this.Controls.Add(this.cbVelicinaMape);
-			this.Controls.Add(this.label1);
+			this.Controls.Add(this.lblVelicinaMape);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
@@ -186,15 +186,15 @@
 
 		#endregion
 
-		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label lblVelicinaMape;
 		private System.Windows.Forms.ComboBox cbVelicinaMape;
-		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label lblImeIgraca;
 		private System.Windows.Forms.TextBox txtIme;
-		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label lblOrganizacija;
 		private System.Windows.Forms.ComboBox cbOrganizacija;
 		private System.Windows.Forms.Label lblOpisMape;
 		private System.Windows.Forms.Label lblOpisOrg;
-		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Label lblBrojIgraca;
 		private System.Windows.Forms.ComboBox cbBrIgraca;
 		private System.Windows.Forms.Button btnKreni;
 		private System.Windows.Forms.Button btnOdustani;

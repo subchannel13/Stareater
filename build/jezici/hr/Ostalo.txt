@@ -1,0 +1,6 @@
+﻿::FORM_POSTAVKE
+BTN_OK = U redu
+LBL_JEZIK = Jezik:
+
+::WINDOWS_DIJALOZI
+TIP_SEJVA = Zvjezdojedac igra

@@ -157,11 +157,13 @@ namespace Prototip
 
 				while (citac.dalje())
 					if (citac.tip == "<PROSLA_IGRA>")
-						Postavke.ProslaIgra.postavi(citac.podatci);
+						Postavke.ProslaIgra.Postavi(citac.podatci);
+					else if (citac.tip == "<POSTAVKE>")
+						Postavke.Ucitaj(citac.podatci);
 			}
 			catch (IOException)
 			{
-				Postavke.ProslaIgra.postavi(new Dictionary<string, string>());
+				Postavke.ProslaIgra.Postavi(new Dictionary<string, string>());
 			}
 			finally
 			{
@@ -204,12 +206,20 @@ namespace Prototip
 		private static void ucitajPopisJezika()
 		{
 			StreamReader citac = new StreamReader("./jezici/popis.txt");
+			List<string> popisKodova = new List<string>();
 			while (!citac.EndOfStream) {
 				string linija = citac.ReadLine().Trim();
 				if (linija.Length > 0)
-					Jezik.Popis.Add(linija);
+					popisKodova.Add(linija);
 			}
 			citac.Close();
+			Jezik.UobicajeniJezik = popisKodova[0];
+
+			foreach (string kod in popisKodova) {
+				citac = new StreamReader("./jezici/" + kod + "/info.txt");
+				string nazivJezika = citac.ReadLine();
+				Jezik.Popis.Add(kod, nazivJezika);
+			}
 		}
 
 		private static List<Dictionary<string, string>> pokupi(string datoteka, string tag)

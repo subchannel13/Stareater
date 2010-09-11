@@ -1,0 +1,7 @@
+﻿::FORM_NOVA_IGRA
+BTN_KRENI = Start
+BTN_ODUSTANI = Cancel
+LBL_BR_IGRACA = Number of players:
+LBL_IME_IGRACA = Player name:
+LBL_ORGANIZACIJA = Organization:
+LBL_VELICINA_MAPE = Map size:

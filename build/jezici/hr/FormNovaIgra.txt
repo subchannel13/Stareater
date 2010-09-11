@@ -1,0 +1,7 @@
+﻿::FORM_NOVA_IGRA
+BTN_KRENI = Kreni
+BTN_ODUSTANI = Odustani
+LBL_BR_IGRACA = Broj igrača:
+LBL_IME_IGRACA = Ime igrača:
+LBL_ORGANIZACIJA = Organizacija:
+LBL_VELICINA_MAPE = Veličina mape:

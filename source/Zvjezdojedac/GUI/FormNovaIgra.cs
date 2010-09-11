@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Prototip.Podaci;
+using Prototip.Podaci.Jezici;
 
 namespace Prototip
 {
@@ -20,6 +21,21 @@ namespace Prototip
 		{
 			InitializeComponent();
 			igraci = new List<Igrac.ZaStvoriti>();
+
+			postaviJezik();
+		}
+
+		private void postaviJezik()
+		{
+			Jezik jezik = Postavke.jezik;
+
+			btnKreni.Text = jezik[Kontekst.FormNovaIgra, "BTN_KRENI"].tekst(null);
+			btnOdustani.Text = jezik[Kontekst.FormNovaIgra, "BTN_ODUSTANI"].tekst(null);
+
+			lblBrojIgraca.Text = jezik[Kontekst.FormNovaIgra, "LBL_BR_IGRACA"].tekst(null);
+			lblImeIgraca.Text = jezik[Kontekst.FormNovaIgra, "LBL_IME_IGRACA"].tekst(null);
+			lblOrganizacija.Text = jezik[Kontekst.FormNovaIgra, "LBL_ORGANIZACIJA"].tekst(null);
+			lblVelicinaMape.Text = jezik[Kontekst.FormNovaIgra, "LBL_VELICINA_MAPE"].tekst(null);
 		}
 
 		private void frmNovaIgra_Load(object sender, EventArgs e)

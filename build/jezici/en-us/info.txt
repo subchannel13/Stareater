@@ -1,4 +1,4 @@
-﻿Hrvatski
+﻿English US
 
 FormMain.txt
 FormNovaIgra.txt

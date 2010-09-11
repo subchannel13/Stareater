@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using System.IO;
 using System.IO.Compression;
 using Alati;
+using Prototip.Podaci;
+using Prototip.Podaci.Jezici;
 
 namespace Prototip
 {
@@ -394,7 +396,7 @@ namespace Prototip
 			SaveFileDialog dialog = new SaveFileDialog();
 			dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
 			dialog.FileName = "sejv.igra";
-			dialog.Filter = "Zvjezdojedac igra (*.igra)|*.igra";
+			dialog.Filter = Postavke.jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"] + " (*.igra)|*.igra";
 
 			if (dialog.ShowDialog() == DialogResult.OK) {
 				GZipStream zipStream = new GZipStream(new FileStream(dialog.FileName, FileMode.Create), CompressionMode.Compress);
@@ -409,7 +411,7 @@ namespace Prototip
 			OpenFileDialog dialog = new OpenFileDialog();
 			dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
 			dialog.FileName = "sejv.igra";
-			dialog.Filter = "Zvjezdojedac igra (*.igra)|*.igra";
+			dialog.Filter = Postavke.jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"] + " (*.igra)|*.igra";
 
 			if (dialog.ShowDialog() == DialogResult.OK) {
 
