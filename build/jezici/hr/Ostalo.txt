@@ -2,5 +2,16 @@
 BTN_OK = U redu
 LBL_JEZIK = Jezik:
 
+::VELICINA_MAPE
+Minijaturna = Minijaturna
+Jako_mala = Jako mala
+Mala = Mala
+Srednje_mala = Srednje mala
+Srednja = Srednja
+Srednje_velika = Srednje velika
+Velika = Velika
+Jako_velika = Jako velika
+Ogromna = Ogromna
+
 ::WINDOWS_DIJALOZI
 TIP_SEJVA = Zvjezdojedac igra

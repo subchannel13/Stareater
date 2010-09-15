@@ -1,7 +1,9 @@
 ﻿::FORM_NOVA_IGRA
+NASLOV = New game
 BTN_KRENI = Start
 BTN_ODUSTANI = Cancel
 LBL_BR_IGRACA = Number of players:
 LBL_IME_IGRACA = Player name:
+LBL_OPIS_MAPE := "Numder of stars: " $ D BR #
 LBL_ORGANIZACIJA = Organization:
 LBL_VELICINA_MAPE = Map size:

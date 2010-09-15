@@ -27,15 +27,17 @@ namespace Prototip
 
 		private void postaviJezik()
 		{
-			Jezik jezik = Postavke.jezik;
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormNovaIgra];
 
-			btnKreni.Text = jezik[Kontekst.FormNovaIgra, "BTN_KRENI"].tekst(null);
-			btnOdustani.Text = jezik[Kontekst.FormNovaIgra, "BTN_ODUSTANI"].tekst(null);
+			this.Text = jezik["NASLOV"].tekst(null);
 
-			lblBrojIgraca.Text = jezik[Kontekst.FormNovaIgra, "LBL_BR_IGRACA"].tekst(null);
-			lblImeIgraca.Text = jezik[Kontekst.FormNovaIgra, "LBL_IME_IGRACA"].tekst(null);
-			lblOrganizacija.Text = jezik[Kontekst.FormNovaIgra, "LBL_ORGANIZACIJA"].tekst(null);
-			lblVelicinaMape.Text = jezik[Kontekst.FormNovaIgra, "LBL_VELICINA_MAPE"].tekst(null);
+			btnKreni.Text = jezik["BTN_KRENI"].tekst(null);
+			btnOdustani.Text = jezik["BTN_ODUSTANI"].tekst(null);
+
+			lblBrojIgraca.Text = jezik["LBL_BR_IGRACA"].tekst(null);
+			lblImeIgraca.Text = jezik["LBL_IME_IGRACA"].tekst(null);
+			lblOrganizacija.Text = jezik["LBL_ORGANIZACIJA"].tekst(null);
+			lblVelicinaMape.Text = jezik["LBL_VELICINA_MAPE"].tekst(null);
 		}
 
 		private void frmNovaIgra_Load(object sender, EventArgs e)
@@ -58,7 +60,10 @@ namespace Prototip
 		private void cbVelicinaMape_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			Mapa.VelicinaMape vm = Mapa.velicinaMape[cbVelicinaMape.SelectedIndex];
-			lblOpisMape.Text ="Broj zvijezda: " + (vm.velicina * vm.velicina);
+			
+			Dictionary<string, double> varijable = new Dictionary<string, double>();
+			varijable.Add("BR", vm.velicina * vm.velicina);
+			lblOpisMape.Text = Postavke.jezik[Kontekst.FormNovaIgra, "LBL_OPIS_MAPE"].tekst(varijable);
 		}
 
 		private void cbOrganizacija_SelectedIndexChanged(object sender, EventArgs e)

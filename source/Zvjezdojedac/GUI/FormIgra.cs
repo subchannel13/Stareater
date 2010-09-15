@@ -61,11 +61,16 @@ namespace Prototip
 
 		private void noviKrugPogled()
 		{
-			lblBrojKruga.Text = igra.brKruga + ". krug";
+			Dictionary<string, double> vars = new Dictionary<string, double>();
+			vars.Add("KRUG", igra.brKruga);
+			vars.Add("BR_PORUKA", igrac.poruke.Count);
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
+
+			lblBrojKruga.Text = jezik["lblBrojKruga"].tekst(vars);
 			odaberiZvijezdu(igrac.odabranaZvijezda, false);
 			centrirajZvijezdu(igrac.odabranaZvijezda);
 
-			btnPoruke.Text = "Novosti (" + igrac.poruke.Count + ")";
+			btnPoruke.Text = jezik["btnPoruke"].tekst(vars);
 
 			odaberiPlanet(igrac.odabranPlanet, true);			
 		}
@@ -99,6 +104,8 @@ namespace Prototip
 
 		private void odaberiZvijezdu(Zvijezda zvijezda, bool promjeniTab)
 		{
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
+
 			igrac.odabranaZvijezda = zvijezda;
 			if (promjeniTab) tabCtrlDesno.SelectedTab = tabPageZvijezda;
 			listViewPlaneti.Items.Clear();
@@ -117,7 +124,7 @@ namespace Prototip
 					listViewPlaneti.Items.Add(item);
 				}
 			else
-				listViewPlaneti.Items.Add("Neistraženo");
+				listViewPlaneti.Items.Add(jezik["neistrazeno"].tekst(null));
 
 			tvFlota.Nodes.Clear();
 			tvFlota.ImageList.Images.Clear();
@@ -126,7 +133,7 @@ namespace Prototip
 
 			if (igrac.floteStacionarne.ContainsKey(zvijezda))
 			{
-				TreeNode nodeStacionarnaFloata = new TreeNode("Obrana");
+				TreeNode nodeStacionarnaFloata = new TreeNode(jezik["flotaObrana"].tekst(null));
 				nodeStacionarnaFloata.ImageIndex = igrac.id;
 				nodeStacionarnaFloata.Tag = null;
 				tvFlota.Nodes.Add(nodeStacionarnaFloata);
@@ -152,6 +159,8 @@ namespace Prototip
 
 		private void odaberiPlanet(Planet planet, bool promjeniTab)
 		{
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
+
 			if (planet.tip == Planet.Tip.NIKAKAV) return;
 			igrac.odabranPlanet = planet;
 			if (promjeniTab) tabCtrlDesno.SelectedTab = tabPageKolonija;
@@ -165,7 +174,10 @@ namespace Prototip
 				groupVojGradnja.Visible = true;
 				lblRazvoj.Visible = true;
 
-				lblPopulacija.Text = "Populacija: " + Fje.PrefiksFormater((long)planet.kolonija.efekti[Kolonija.Populacija]);
+				Dictionary<string, double> vars = new Dictionary<string, double>();
+				vars.Add("POP", planet.kolonija.efekti[Kolonija.Populacija]);
+
+				lblPopulacija.Text = jezik["plPopulacija"].tekst(vars);
 				hscrCivilnaIndustrija.Enabled = true;
 				btnCivilnaGradnja.Enabled = true;
 
@@ -174,7 +186,7 @@ namespace Prototip
 				osvjeziPogledNaKoloniju();
 			}
 			else {
-				lblPopulacija.Text = "Nenaseljeno";
+				lblPopulacija.Text = jezik["plNenaseljeno"].tekst(null);
 				groupPoStan.Visible = false;
 				groupCivGradnja.Visible = false;
 				groupVojGradnja.Visible = false;
@@ -264,12 +276,20 @@ namespace Prototip
 		private void osvjeziLabele()
 		{
 			Kolonija kolonija = igrac.odabranPlanet.kolonija;
-			
-			lblHranaPoStan.Text = "Hrana: " + kolonija.efekti[Kolonija.HranaPoFarmeru].ToString("0.##");
-			lblRudePoStan.Text = "Rude: " + kolonija.efekti[Kolonija.RudePoRudaru].ToString("0.##");
-			lblOdrzavanjePoStan.Text = "Održavanje: " + (kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]).ToString("0.##");
-			lblIndustrijaPoStan.Text = "Industrija: " + kolonija.efekti[Kolonija.IndustrijaPoRadniku].ToString("0.##");
-			lblRazvojPoStan.Text = "Razvoj: " + kolonija.efekti[Kolonija.RazvojPoRadniku].ToString("0.##");
+
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
+			Dictionary<string, double> vars = new Dictionary<string, double>();
+			vars.Add("KOL_HRANA", kolonija.efekti[Kolonija.HranaPoFarmeru]);
+			vars.Add("KOL_RUDE", kolonija.efekti[Kolonija.RudePoRudaru]);
+			vars.Add("KOL_ODRZAVANJE", kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]);
+			vars.Add("KOL_IND", kolonija.efekti[Kolonija.IndustrijaPoRadniku]);
+			vars.Add("KOL_RAZVOJ", kolonija.efekti[Kolonija.RazvojPoRadniku]);
+
+			lblHranaPoStan.Text = jezik["lblHranaPoStan"].tekst(vars);
+			lblRudePoStan.Text = jezik["lblRudePoStan"].tekst(vars);
+			lblOdrzavanjePoStan.Text = jezik["lblOdrzavanjePoStan"].tekst(vars);
+			lblIndustrijaPoStan.Text = jezik["lblIndustrijaPoStan"].tekst(vars);
+			lblRazvojPoStan.Text = jezik["lblRazvojPoStan"].tekst(vars);
 			
 			lblCivilnaIndustrija.Text = Fje.PrefiksFormater(kolonija.poeniCivilneIndustrije()) + " ind";
 			lblVojnaGradnja.Text = Fje.PrefiksFormater(kolonija.poeniVojneIndustrije()) + " ind";
@@ -396,7 +416,7 @@ namespace Prototip
 			SaveFileDialog dialog = new SaveFileDialog();
 			dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
 			dialog.FileName = "sejv.igra";
-			dialog.Filter = Postavke.jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"] + " (*.igra)|*.igra";
+			dialog.Filter = Postavke.jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"].tekst(null) + " (*.igra)|*.igra";
 
 			if (dialog.ShowDialog() == DialogResult.OK) {
 				GZipStream zipStream = new GZipStream(new FileStream(dialog.FileName, FileMode.Create), CompressionMode.Compress);
@@ -411,7 +431,7 @@ namespace Prototip
 			OpenFileDialog dialog = new OpenFileDialog();
 			dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
 			dialog.FileName = "sejv.igra";
-			dialog.Filter = Postavke.jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"] + " (*.igra)|*.igra";
+			dialog.Filter = Postavke.jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"].tekst(null) + " (*.igra)|*.igra";
 
 			if (dialog.ShowDialog() == DialogResult.OK) {
 

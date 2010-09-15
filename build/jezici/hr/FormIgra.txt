@@ -1,0 +1,14 @@
+﻿::FORM_IGRA
+btnPoruke := "Novosti (" $ P BR_PORUKA # ")"
+lblBrojKruga := $ D + KRUG 1 # ". krug"
+
+lblHranaPoStan := "Hrana: " $ D KOL_HRANA #
+lblIndustrijaPoStan := "Industrija: " $ D KOL_IND #
+lblOdrzavanjePoStan := "Održavanje: " $ D KOL_ODRZAVANJE #
+lblRazvojPoStan := "Razvoj: " $ D KOL_RAZVOJ #
+lblRudePoStan := "Rude: " $ D KOL_RUDE #
+
+flotaObrana = Obrana
+plNenaseljeno = Nenaseljeno
+plPopulacija := "Populacija: " $ P POP #
+zvjNeistrazeno = Neistraženo

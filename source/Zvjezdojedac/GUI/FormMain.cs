@@ -38,24 +38,24 @@ namespace Prototip
 
 		private void postaviJezik()
 		{
-			Jezik jezik = Postavke.jezik;
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormMain];
 
-			btnNovaIgra.Text = jezik[Kontekst.FormMain, "NOVA_IGRA"].tekst(null);
-			btnPostavke.Text = jezik[Kontekst.FormMain, "POSTAVKE"].tekst(null);
-			btnUcitaj.Text = jezik[Kontekst.FormMain, "UCITAJ"].tekst(null);
-			btnUgasi.Text = jezik[Kontekst.FormMain, "UGASI"].tekst(null);
+			btnNovaIgra.Text = jezik["NOVA_IGRA"].tekst(null);
+			btnPostavke.Text = jezik["POSTAVKE"].tekst(null);
+			btnUcitaj.Text = jezik["UCITAJ"].tekst(null);
+			btnUgasi.Text = jezik["UGASI"].tekst(null);
 		}
 
 		private void btnNovaIgra_Click(object sender, EventArgs e)
 		{
 			FormNovaIgra novaIgra = new FormNovaIgra();
-			this.Visible = false;
+			this.Hide();
 			if (novaIgra.ShowDialog() == DialogResult.OK)
 			{
 				FormIgra igra = new FormIgra(new Igra(novaIgra.igraci, novaIgra.mapa));
 				igra.ShowDialog();
 			}
-			this.Visible = true;
+			this.Show();
 		}
 
 		private void btnUgasi_Click(object sender, EventArgs e)
@@ -73,7 +73,7 @@ namespace Prototip
 			OpenFileDialog dialog = new OpenFileDialog();
 			dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
 			dialog.FileName = "sejv.igra";
-			dialog.Filter = Postavke.jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"] + " (*.igra)|*.igra";
+			dialog.Filter = Postavke.jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"].tekst(null) + " (*.igra)|*.igra";
 
 			if (dialog.ShowDialog() == DialogResult.OK) {
 

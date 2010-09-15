@@ -2,5 +2,16 @@
 BTN_OK = Ok
 LBL_JEZIK = Language:
 
+::VELICINA_MAPE
+Minijaturna = Miniature
+Jako_mala = Very small
+Mala = Small
+Srednje_mala = Medium-small
+Srednja = Medium
+Srednje_velika = Medium-large
+Velika = Large
+Jako_velika = Very large
+Ogromna = Enormous
+
 ::WINDOWS_DIJALOZI
 TIP_SEJVA = Zvjezdojedac game

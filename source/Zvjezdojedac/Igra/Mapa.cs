@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Prototip.Podaci;
+using Prototip.Podaci.Jezici;
 
 namespace Prototip
 {
@@ -264,17 +266,20 @@ namespace Prototip
 		
 		public class VelicinaMape
 		{
-			public int velicina;
+			private string nazivKljuc;
+			public int velicina { get; private set; }
+			public int brZvijezdja { get; private set; }
 
-			public string naziv;
-
-			public int brZvijezdja;
-
-			public VelicinaMape(int velicina, string naziv, int brZvijezdja)
+			public VelicinaMape(int velicina, string nazivKljuc, int brZvijezdja)
 			{
-				this.naziv = naziv;
+				this.nazivKljuc = nazivKljuc;
 				this.velicina = velicina;
 				this.brZvijezdja = brZvijezdja;
+			}
+
+			public string naziv
+			{
+				get { return Postavke.jezik[Kontekst.VelicinaMape, nazivKljuc].tekst(null); }
 			}
 		}
 

@@ -35,8 +35,10 @@ namespace Prototip.Podaci.Jezici.Elementi
 		{
 			if (format == "D")
 				return String.Format("{0:0.##}", formula.iznos(varijable));
-			else
+			else if (format == "P")
 				return Fje.PrefiksFormater(formula.iznos(varijable));
+
+			throw new FormatException();
 		}
 
 		#endregion

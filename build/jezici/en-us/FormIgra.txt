@@ -1,0 +1,14 @@
+﻿::FORM_IGRA
+btnPoruke := "News (" $ P BR_PORUKA # ")"
+lblBrojKruga := $ D + KRUG 1 # ? = KRUG 0 : "st" ? = KRUG 1 : "nd" ? = KRUG 2 : "rd" ? > KRUG 2 : "th" " turn"
+
+lblHranaPoStan := "Food: " $ D KOL_HRANA #
+lblIndustrijaPoStan := "Industry: " $ D KOL_IND #
+lblOdrzavanjePoStan := "Maintenance: " $ D KOL_ODRZAVANJE #
+lblRazvojPoStan := "Development: " $ D KOL_RAZVOJ #
+lblRudePoStan := "Ores: " $ D KOL_RUDE #
+
+flotaObrana = Defense
+plNenaseljeno = Uninhabited
+plPopulacija := "Population: " $ P POP #
+zvjNeistrazeno = Unknown

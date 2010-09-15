@@ -28,6 +28,16 @@ namespace Prototip
 				operatoriDict.Add("DIV", OperatorDiv.naciniOperator);
 				operatoriDict.Add("%", OperatorMod.naciniOperator);
 				operatoriDict.Add("MOD", OperatorMod.naciniOperator);
+				
+				operatoriDict.Add("<", OperatorManje.naciniOperator);
+				operatoriDict.Add("<=", OperatorManjeJednako.naciniOperator);
+				operatoriDict.Add(">", OperatorVece.naciniOperator);
+				operatoriDict.Add(">=", OperatorVeceJednako.naciniOperator);
+				operatoriDict.Add("=", OperatorJednako.naciniOperator);
+				operatoriDict.Add("!=", OperatorRazlicito.naciniOperator);
+				operatoriDict.Add("&", OperatorAnd.naciniOperator);
+				operatoriDict.Add("|", OperatorOr.naciniOperator);
+				operatoriDict.Add("XOR", OperatorXOR.naciniOperator);
 
 				operatoriDict.Add("ABS", OperatorAbs.naciniOperator);
 				operatoriDict.Add("INT", OperatorInt.naciniOperator);
@@ -38,6 +48,7 @@ namespace Prototip
 				operatoriDict.Add("SIGN", OperatorSignum.naciniOperator);
 				operatoriDict.Add("FLOOR", OperatorFloor.naciniOperator);
 				operatoriDict.Add("CEIL", OperatorCeiling.naciniOperator);
+				operatoriDict.Add("!", OperatorNe.naciniOperator);
 
 				operatoriDict.Add("ITE", OperatorITE.naciniOperator);
 				operatoriDict.Add("IF", OperatorITE.naciniOperator);
@@ -286,6 +297,31 @@ namespace Prototip
 				return "CEIL " + operand;
 			}
 		}
+		public class OperatorNe : UnarniOperator
+		{
+			public static Element naciniOperator(Stack<string> niz)
+			{
+				Element operand = Element.naciniElement(niz);
+				return new OperatorNe(operand);
+			}
+
+			public OperatorNe(Element operand)
+				: base(operand)
+			{ }
+
+			public override double vrijednost()
+			{
+				if (operand.vrijednost() >= 0)
+					return -1;
+				else
+					return 1;
+			}
+
+			public override string ToString()
+			{
+				return "! " + operand;
+			}
+		}
 
 		public abstract class BinarniOperator : Element
 		{
@@ -520,6 +556,241 @@ namespace Prototip
 			public override string ToString()
 			{
 				return "MOD " + lijeviOperand + " " + desniOperand;
+			}
+		}
+		
+		public class OperatorManje : BinarniOperator
+		{
+			public static Element naciniOperator(Stack<string> niz)
+			{
+				Element desniOperand = Element.naciniElement(niz);
+				Element lijeviOperand = Element.naciniElement(niz);
+				return new OperatorManje(lijeviOperand, desniOperand);
+			}
+
+			public OperatorManje(Element lijeviOperand, Element desniOperand)
+				: base(lijeviOperand, desniOperand)
+			{ }
+
+			public override double vrijednost()
+			{
+				if (lijeviOperand.vrijednost() < desniOperand.vrijednost())
+					return 1;
+				else
+					return -1;
+			}
+
+			public override string ToString()
+			{
+				return "< " + lijeviOperand + " " + desniOperand;
+			}
+		}
+		public class OperatorManjeJednako : BinarniOperator
+		{
+			public static Element naciniOperator(Stack<string> niz)
+			{
+				Element desniOperand = Element.naciniElement(niz);
+				Element lijeviOperand = Element.naciniElement(niz);
+				return new OperatorManjeJednako(lijeviOperand, desniOperand);
+			}
+
+			public OperatorManjeJednako(Element lijeviOperand, Element desniOperand)
+				: base(lijeviOperand, desniOperand)
+			{ }
+
+			public override double vrijednost()
+			{
+				if (lijeviOperand.vrijednost() <= desniOperand.vrijednost())
+					return 1;
+				else
+					return -1;
+			}
+
+			public override string ToString()
+			{
+				return "<= " + lijeviOperand + " " + desniOperand;
+			}
+		}
+		public class OperatorVece : BinarniOperator
+		{
+			public static Element naciniOperator(Stack<string> niz)
+			{
+				Element desniOperand = Element.naciniElement(niz);
+				Element lijeviOperand = Element.naciniElement(niz);
+				return new OperatorVece(lijeviOperand, desniOperand);
+			}
+
+			public OperatorVece(Element lijeviOperand, Element desniOperand)
+				: base(lijeviOperand, desniOperand)
+			{ }
+
+			public override double vrijednost()
+			{
+				if (lijeviOperand.vrijednost() > desniOperand.vrijednost())
+					return 1;
+				else
+					return -1;
+			}
+
+			public override string ToString()
+			{
+				return "> " + lijeviOperand + " " + desniOperand;
+			}
+		}
+		public class OperatorVeceJednako : BinarniOperator
+		{
+			public static Element naciniOperator(Stack<string> niz)
+			{
+				Element desniOperand = Element.naciniElement(niz);
+				Element lijeviOperand = Element.naciniElement(niz);
+				return new OperatorVeceJednako(lijeviOperand, desniOperand);
+			}
+
+			public OperatorVeceJednako(Element lijeviOperand, Element desniOperand)
+				: base(lijeviOperand, desniOperand)
+			{ }
+
+			public override double vrijednost()
+			{
+				if (lijeviOperand.vrijednost() >= desniOperand.vrijednost())
+					return 1;
+				else
+					return -1;
+			}
+
+			public override string ToString()
+			{
+				return ">= " + lijeviOperand + " " + desniOperand;
+			}
+		}
+		public class OperatorJednako : BinarniOperator
+		{
+			public static Element naciniOperator(Stack<string> niz)
+			{
+				Element desniOperand = Element.naciniElement(niz);
+				Element lijeviOperand = Element.naciniElement(niz);
+				return new OperatorJednako(lijeviOperand, desniOperand);
+			}
+
+			public OperatorJednako(Element lijeviOperand, Element desniOperand)
+				: base(lijeviOperand, desniOperand)
+			{ }
+
+			public override double vrijednost()
+			{
+				if (lijeviOperand.vrijednost() == desniOperand.vrijednost())
+					return 1;
+				else
+					return -1;
+			}
+
+			public override string ToString()
+			{
+				return "= " + lijeviOperand + " " + desniOperand;
+			}
+		}
+		public class OperatorRazlicito : BinarniOperator
+		{
+			public static Element naciniOperator(Stack<string> niz)
+			{
+				Element desniOperand = Element.naciniElement(niz);
+				Element lijeviOperand = Element.naciniElement(niz);
+				return new OperatorRazlicito(lijeviOperand, desniOperand);
+			}
+
+			public OperatorRazlicito(Element lijeviOperand, Element desniOperand)
+				: base(lijeviOperand, desniOperand)
+			{ }
+
+			public override double vrijednost()
+			{
+				if (lijeviOperand.vrijednost() != desniOperand.vrijednost())
+					return 1;
+				else
+					return -1;
+			}
+
+			public override string ToString()
+			{
+				return "!= " + lijeviOperand + " " + desniOperand;
+			}
+		}
+		public class OperatorAnd : BinarniOperator
+		{
+			public static Element naciniOperator(Stack<string> niz)
+			{
+				Element desniOperand = Element.naciniElement(niz);
+				Element lijeviOperand = Element.naciniElement(niz);
+				return new OperatorAnd(lijeviOperand, desniOperand);
+			}
+
+			public OperatorAnd(Element lijeviOperand, Element desniOperand)
+				: base(lijeviOperand, desniOperand)
+			{ }
+
+			public override double vrijednost()
+			{
+				if ((lijeviOperand.vrijednost() >= 0) && (desniOperand.vrijednost() >= 0))
+					return 1;
+				else
+					return -1;
+			}
+
+			public override string ToString()
+			{
+				return "& " + lijeviOperand + " " + desniOperand;
+			}
+		}
+		public class OperatorOr : BinarniOperator
+		{
+			public static Element naciniOperator(Stack<string> niz)
+			{
+				Element desniOperand = Element.naciniElement(niz);
+				Element lijeviOperand = Element.naciniElement(niz);
+				return new OperatorOr(lijeviOperand, desniOperand);
+			}
+
+			public OperatorOr(Element lijeviOperand, Element desniOperand)
+				: base(lijeviOperand, desniOperand)
+			{ }
+
+			public override double vrijednost()
+			{
+				if ((lijeviOperand.vrijednost() >= 0) || (desniOperand.vrijednost() >= 0))
+					return 1;
+				else
+					return -1;
+			}
+
+			public override string ToString()
+			{
+				return "| " + lijeviOperand + " " + desniOperand;
+			}
+		}
+		public class OperatorXOR : BinarniOperator
+		{
+			public static Element naciniOperator(Stack<string> niz)
+			{
+				Element desniOperand = Element.naciniElement(niz);
+				Element lijeviOperand = Element.naciniElement(niz);
+				return new OperatorXOR(lijeviOperand, desniOperand);
+			}
+
+			public OperatorXOR(Element lijeviOperand, Element desniOperand)
+				: base(lijeviOperand, desniOperand)
+			{ }
+
+			public override double vrijednost()
+			{
+				if ((lijeviOperand.vrijednost() >= 0) ^ (desniOperand.vrijednost() >= 0))
+					return 1;
+				else
+					return -1;
+			}
+
+			public override string ToString()
+			{
+				return "XOR " + lijeviOperand + " " + desniOperand;
 			}
 		}
 

@@ -1,5 +1,6 @@
 ﻿English US
 
+FormIgra.txt
 FormMain.txt
 FormNovaIgra.txt
 Ostalo.txt
