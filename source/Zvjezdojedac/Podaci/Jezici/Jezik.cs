@@ -18,6 +18,7 @@ namespace Prototip.Podaci.Jezici
 			rez.Add("FORM_MAIN", Kontekst.FormMain);
 			rez.Add("FORM_NOVA_IGRA", Kontekst.FormNovaIgra);
 			rez.Add("FORM_POSTAVKE", Kontekst.FormPostavke);
+			rez.Add("KOLONIJA", Kontekst.Kolonija);
 			rez.Add("VELICINA_MAPE", Kontekst.VelicinaMape);
 			rez.Add("WINDOWS_DIJALOZI", Kontekst.WindowsDijalozi);
 

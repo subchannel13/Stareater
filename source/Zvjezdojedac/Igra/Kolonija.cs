@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using Alati;
+using Prototip.Podaci.Jezici;
+using Prototip.Podaci;
 
 namespace Prototip
 {
@@ -435,29 +437,35 @@ namespace Prototip
 			double cijena = uGradnji.cijenaGradnje.iznos(igrac.efekti);
 			if (uGradnji.orbitalna) cijena *= efekti[FaktorCijeneOrbitalnih];
 
-			long brZgrada = (long)((ostatakGradnje + poeniIndustrije) / cijena);
-			if (brZgrada > 0)
+			double brZgrada = (ostatakGradnje + poeniIndustrije) / cijena;
+			
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.Kolonija];
+			Dictionary<string, double> vars = new Dictionary<string, double>();
+
+			if (brZgrada >= 1)
 			{
 				long dopustenaKolicina = (long)uGradnji.dopustenaKolicina.iznos(igrac.efekti);
 				brZgrada = Fje.Ogranici(brZgrada, 0, dopustenaKolicina);
-				return Fje.PrefiksFormater(brZgrada) + " po krugu";
+				
+				vars.Add("BR_ZGRADA", brZgrada);
+				return jezik["gradPoKrugu"].tekst(vars);
 			}
 			else
 			{
 				if (poeniIndustrije == 0)
-					return "nikad";
+					return jezik["gradNikad"].tekst();
 
 				double brKrugova = (cijena - ostatakGradnje) / (double)poeniIndustrije;
 				double zaokruzeno = Math.Ceiling(brKrugova * 10) / 10;
 				long tmp = (long)Math.Ceiling(brKrugova * 10);
-				if (tmp == 10 || tmp == 1)
-					return "Za " + zaokruzeno.ToString("0.#") + " krug";
-				else if (tmp <= 40)
-					return "Za " + zaokruzeno.ToString("0.#") + " kruga";
-				else if (tmp <= 100)
-					return "Za " + zaokruzeno.ToString("0.#") + " krugova";
+
+				vars.Add("BR_KRUGOVA", Math.Ceiling(brKrugova * 10) / 10);
+				vars.Add("DECIMALA", ((long)Math.Ceiling(brKrugova * 10)) % 10);
+
+				if (brKrugova < 10)
+					return jezik["gradVrijemeDec"].tekst(vars);
 				else
-					return "Za " + Fje.PrefiksFormater(brKrugova) + " krugova";
+					return jezik["gradVrijemePref"].tekst(vars);
 			}
 		}
 

@@ -21,6 +21,13 @@ namespace Alati
 			else return sto;
 		}
 
+		public static double Ogranici(double sto, double min, double max)
+		{
+			if (sto < min) return min;
+			if (sto > max) return max;
+			else return sto;
+		}
+
 		public static double IzIntervala(double vrijednost, double min, double max)
 		{
 			return min + vrijednost * (max - min);

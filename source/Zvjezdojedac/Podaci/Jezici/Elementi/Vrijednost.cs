@@ -31,10 +31,17 @@ namespace Prototip.Podaci.Jezici.Elementi
 
 		#region ITekst Members
 
+		public string tekst()
+		{
+			return tekst(null);
+		}
+
 		public string tekst(Dictionary<string, double> varijable)
 		{
-			if (format == "D")
+			if (format == "D" || format == "D2")
 				return String.Format("{0:0.##}", formula.iznos(varijable));
+			if (format == "D1")
+				return String.Format("{0:0.#}", formula.iznos(varijable));
 			else if (format == "P")
 				return Fje.PrefiksFormater(formula.iznos(varijable));
 

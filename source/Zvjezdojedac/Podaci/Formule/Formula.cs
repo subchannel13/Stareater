@@ -162,7 +162,9 @@ namespace Prototip
 			}
 
 			public override void obrniOperande()
-			{ }
+			{
+				operand.obrniOperande();
+			}
 		}
 
 		public class OperatorInt : UnarniOperator
@@ -549,8 +551,10 @@ namespace Prototip
 
 			public override double vrijednost()
 			{
-				double d = lijeviOperand.vrijednost() / desniOperand.vrijednost();
-				return d - Math.Floor(d);
+				double lijevo = lijeviOperand.vrijednost();
+				double desno = desniOperand.vrijednost();
+				double d = lijevo / desno;
+				return lijevo - Math.Floor(d) * desno;
 			}
 
 			public override string ToString()
@@ -809,6 +813,12 @@ namespace Prototip
 			{
 				base.popisiVarijable(varijable);
 				srednjiOpernad.popisiVarijable(varijable);
+			}
+
+			public override void obrniOperande()
+			{
+				base.obrniOperande();
+				srednjiOpernad.obrniOperande();
 			}
 		}
 

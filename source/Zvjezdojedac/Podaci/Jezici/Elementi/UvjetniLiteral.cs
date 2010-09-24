@@ -15,8 +15,10 @@ namespace Prototip.Podaci.Jezici.Elementi
 			}
 
 			Formula formula = Formula.IzStringa(sb.ToString());
-			if (linija.Peek() == "$")
+			if (linija.Peek() == "$") {
+				linija.Dequeue();
 				return new UvjetniLiteral(formula, Vrijednost.Nacini(linija));
+			}
 			else
 				return new UvjetniLiteral(formula, Literal.Nacini(linija));
 		}
@@ -31,6 +33,11 @@ namespace Prototip.Podaci.Jezici.Elementi
 		private ITekst izlaz;
 
 		#region ITekst Members
+
+		public string tekst()
+		{
+			return tekst(null);
+		}
 
 		public string tekst(Dictionary<string, double> varijable)
 		{

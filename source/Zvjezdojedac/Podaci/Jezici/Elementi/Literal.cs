@@ -14,7 +14,7 @@ namespace Prototip.Podaci.Jezici.Elementi
 
 			do {
 				string rijec = linija.Dequeue();
-				//if (rijec.StartsWith("\""))
+
 				if (prvaRijec) {
 					rijec = rijec.Remove(0, 1);
 					prvaRijec = false;
@@ -44,6 +44,11 @@ namespace Prototip.Podaci.Jezici.Elementi
 		private string _tekst;
 
 		#region ITekstElement Members
+
+		public string tekst()
+		{
+			return tekst(null);
+		}
 
 		public string tekst(Dictionary<string, double> varijable)
 		{

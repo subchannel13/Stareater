@@ -141,6 +141,11 @@ namespace Prototip.Podaci.Jezici
 
 		#region ITekst Members
 
+		public string tekst()
+		{
+			return tekst(null);
+		}
+
 		public string tekst(Dictionary<string, double> varijable)
 		{
 			StringBuilder sb = new StringBuilder();

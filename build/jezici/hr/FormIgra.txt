@@ -1,14 +1,32 @@
 ﻿::FORM_IGRA
-btnPoruke := "Novosti (" $ P BR_PORUKA # ")"
+btnCivilnaGradnja = Civilna gradnja
+btnEndTurn = Završi &krug
+btnFlote = &Flote
+btnPlanetInfo = &Detaljnije
+btnPoruke := "&Novosti (" $ P BR_PORUKA # ")"
+btnSpremi = &Spremi
+btnTech = &Tehnologije
+btnUcitaj = &Učitaj
+btnVojnaGradnja = Vojna gradnja
 lblBrojKruga := $ D + KRUG 1 # ". krug"
-
-lblHranaPoStan := "Hrana: " $ D KOL_HRANA #
-lblIndustrijaPoStan := "Industrija: " $ D KOL_IND #
-lblOdrzavanjePoStan := "Održavanje: " $ D KOL_ODRZAVANJE #
-lblRazvojPoStan := "Razvoj: " $ D KOL_RAZVOJ #
-lblRudePoStan := "Rude: " $ D KOL_RUDE #
 
 flotaObrana = Obrana
 plNenaseljeno = Nenaseljeno
 plPopulacija := "Populacija: " $ P POP #
 zvjNeistrazeno = Neistraženo
+
+::KOLONIJA
+jedInd = ind
+lblRazvoj := "Razvoj: " $ P RAZVOJ #
+groupPoStan = Po stanovniku
+
+gradNikad = Nikad
+gradPoKrugu := ? < BR_ZGRADA 10 : $ D1 BR_ZGRADA # ? >= BR_ZGRADA 10 : $ P BR_ZGRADA # " po krugu"
+gradVrijemeDec := "Za " $ D1 BR_KRUGOVA # " krug" ? & > INT DECIMALA 1 <= DECIMALA 4 : "a" ? | > DECIMALA 4 = INT DECIMALA 0 : "ova"
+gradVrijemePref := "Za " $ P BR_KRUGOVA # " krug" ? & > BR_KRUGOVA 20 & > INT MOD BR_KRUGOVA 10 1 < INT MOD BR_KRUGOVA 10 5 : "a" ? | < BR_KRUGOVA 20 | > MOD INT BR_KRUGOVA 10 4 = 0 INT MOD BR_KRUGOVA 10 : "ova"
+
+HranaPoStan := "Hrana: " $ D KOL_HRANA #
+IndustrijaPoStan := "Industrija: " $ D KOL_IND #
+OdrzavanjePoStan := "Održavanje: " $ D KOL_ODRZAVANJE #
+RazvojPoStan := "Razvoj: " $ D KOL_RAZVOJ #
+RudePoStan := "Rude: " $ D KOL_RUDE #

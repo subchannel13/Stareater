@@ -12,6 +12,7 @@ namespace Prototip.Podaci.Jezici
 		FormMain,
 		FormNovaIgra,
 		FormPostavke,
+		Kolonija,
 		VelicinaMape,
 		WindowsDijalozi
 	}

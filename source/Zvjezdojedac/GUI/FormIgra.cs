@@ -52,6 +52,21 @@ namespace Prototip
 			
 			tvFlota.ImageList = new ImageList();
 			tvFlota.ImageList.ImageSize = new Size(20, 20);
+			postaviJezik();
+		}
+
+		private void postaviJezik()
+		{
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
+
+			btnEndTurn.Text = jezik["btnEndTurn"].tekst();
+			btnFlote.Text = jezik["btnFlote"].tekst();
+			btnPlanetInfo.Text = jezik["btnPlanetInfo"].tekst();
+			btnSpremi.Text = jezik["btnSpremi"].tekst();
+			btnTech.Text = jezik["btnTech"].tekst();
+			btnUcitaj.Text = jezik["btnUcitaj"].tekst();
+
+			groupPoStan.Text = Postavke.jezik[Kontekst.Kolonija, "groupPoStan"].tekst();
 		}
 
 		private void frmIgra_Load(object sender, EventArgs e)
@@ -278,24 +293,26 @@ namespace Prototip
 			Kolonija kolonija = igrac.odabranPlanet.kolonija;
 
 			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
+			Dictionary<string, ITekst> jezikKolonija = Postavke.jezik[Kontekst.Kolonija];
 			Dictionary<string, double> vars = new Dictionary<string, double>();
 			vars.Add("KOL_HRANA", kolonija.efekti[Kolonija.HranaPoFarmeru]);
 			vars.Add("KOL_RUDE", kolonija.efekti[Kolonija.RudePoRudaru]);
 			vars.Add("KOL_ODRZAVANJE", kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]);
 			vars.Add("KOL_IND", kolonija.efekti[Kolonija.IndustrijaPoRadniku]);
 			vars.Add("KOL_RAZVOJ", kolonija.efekti[Kolonija.RazvojPoRadniku]);
+			vars.Add("RAZVOJ", kolonija.poeniRazvoja());
 
-			lblHranaPoStan.Text = jezik["lblHranaPoStan"].tekst(vars);
-			lblRudePoStan.Text = jezik["lblRudePoStan"].tekst(vars);
-			lblOdrzavanjePoStan.Text = jezik["lblOdrzavanjePoStan"].tekst(vars);
-			lblIndustrijaPoStan.Text = jezik["lblIndustrijaPoStan"].tekst(vars);
-			lblRazvojPoStan.Text = jezik["lblRazvojPoStan"].tekst(vars);
-			
-			lblCivilnaIndustrija.Text = Fje.PrefiksFormater(kolonija.poeniCivilneIndustrije()) + " ind";
-			lblVojnaGradnja.Text = Fje.PrefiksFormater(kolonija.poeniVojneIndustrije()) + " ind";
+			lblHranaPoStan.Text = jezikKolonija["HranaPoStan"].tekst(vars);
+			lblRudePoStan.Text = jezikKolonija["RudePoStan"].tekst(vars);
+			lblOdrzavanjePoStan.Text = jezikKolonija["OdrzavanjePoStan"].tekst(vars);
+			lblIndustrijaPoStan.Text = jezikKolonija["IndustrijaPoStan"].tekst(vars);
+			lblRazvojPoStan.Text = jezikKolonija["RazvojPoStan"].tekst(vars);
+
+			lblCivilnaIndustrija.Text = Fje.PrefiksFormater(kolonija.poeniCivilneIndustrije()) + " " + jezikKolonija["jedInd"].tekst();
+			lblVojnaGradnja.Text = Fje.PrefiksFormater(kolonija.poeniVojneIndustrije()) + " " + jezikKolonija["jedInd"].tekst();
 			lblProcjenaCivilneGradnje.Text = kolonija.procjenaVremenaCivilneGradnje();
 			lblProcjenaVojneGradnje.Text = kolonija.procjenaVremenaVojneGradnje();
-			lblRazvoj.Text = "Razvoj: " + Fje.PrefiksFormater(kolonija.poeniRazvoja());
+			lblRazvoj.Text = jezikKolonija["lblRazvoj"].tekst(vars);
 
 			if (igrac.odabranPlanet.kolonija.redCivilneGradnje.Count > 0)
 			{
@@ -305,7 +322,7 @@ namespace Prototip
 			else
 			{
 				btnCivilnaGradnja.Image = null;
-				btnCivilnaGradnja.Text = "Civilna gradnja";
+				btnCivilnaGradnja.Text = jezik["btnCivilnaGradnja"].tekst();
 			}
 
 			if (igrac.odabranPlanet.kolonija.redVojneGradnje.Count > 0)
@@ -316,7 +333,7 @@ namespace Prototip
 			else
 			{
 				btnVojnaGradnja.Image = null;
-				btnVojnaGradnja.Text = "Vojna gradnja";
+				btnVojnaGradnja.Text = jezik["btnVojnaGradnja"].tekst();
 			}
 		}
 
@@ -345,8 +362,8 @@ namespace Prototip
 		{
 			if (igrac.odabranPlanet.kolonija != null)
 			{
-				igrac.odabranPlanet.kolonija.vojnaIndustrija = hscrVojnaIndustrija.Value / (double)hscrVojnaIndustrija.Maximum;
-				int val = (int)(igrac.odabranPlanet.kolonija.vojnaIndustrija * hscrVojnaIndustrija.Maximum);
+				igrac.odabranPlanet.kolonija.vojnaIndustrija = e.NewValue / (double)hscrVojnaIndustrija.Maximum;
+				int val = (int)Math.Round(igrac.odabranPlanet.kolonija.vojnaIndustrija * hscrVojnaIndustrija.Maximum, MidpointRounding.AwayFromZero);
 				if (hscrVojnaIndustrija.Value != val)
 					e.NewValue = val;
 				else

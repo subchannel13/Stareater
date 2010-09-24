@@ -547,7 +547,7 @@
 			// 
 			this.btnTech.Location = new System.Drawing.Point(54, 6);
 			this.btnTech.Name = "btnTech";
-			this.btnTech.Size = new System.Drawing.Size(75, 23);
+			this.btnTech.Size = new System.Drawing.Size(85, 23);
 			this.btnTech.TabIndex = 2;
 			this.btnTech.Text = "&Tehnologije";
 			this.btnTech.UseVisualStyleBackColor = true;
