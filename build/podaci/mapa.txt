@@ -6,7 +6,7 @@ BR_ZVIJEZDJA = 12
 
 <VELICINA MAPE>
 VELICINA = 7
-NAZIV = Jako mala
+NAZIV = Jako_mala
 BR_ZVIJEZDJA = 15
 ----
 
@@ -18,7 +18,7 @@ BR_ZVIJEZDJA = 16
 
 <VELICINA MAPE>
 VELICINA = 9
-NAZIV = Srednje mala
+NAZIV = Srednje_mala
 BR_ZVIJEZDJA = 20
 ----
 
@@ -30,7 +30,7 @@ BR_ZVIJEZDJA = 22
 
 <VELICINA MAPE>
 VELICINA = 11
-NAZIV = Srednje velika
+NAZIV = Srednje_velika
 BR_ZVIJEZDJA = 24
 ----
 
@@ -42,7 +42,7 @@ BR_ZVIJEZDJA = 26
 
 <VELICINA MAPE>
 VELICINA = 13
-NAZIV = Jako velika
+NAZIV = Jako_velika
 BR_ZVIJEZDJA = 28
 ----
 
