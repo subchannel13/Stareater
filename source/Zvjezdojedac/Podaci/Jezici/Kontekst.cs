@@ -11,6 +11,7 @@ namespace Prototip.Podaci.Jezici
 		FormIgra,
 		FormMain,
 		FormNovaIgra,
+		FormPlanetInfo,
 		FormPostavke,
 		Kolonija,
 		VelicinaMape,

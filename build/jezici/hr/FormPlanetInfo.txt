@@ -1,0 +1,26 @@
+﻿::FORM_PLANET_INFO
+btnZatvori = Zatvori
+groupPlanet = Planet
+groupPopulacija = Populacija
+groupPoStan = Po stanovniku
+groupRadnici = Radnici
+groupRude = Rude
+lblAtmosfera = Atmosfera:
+lblPrikaz = Prikaz
+radKolicina = Količina
+radPostotak = Postotak
+tabPageOdrz = Održavanje
+tabPageProiz = Proizvodnja
+tabPageResursi = Resursi
+tabPageZgrade = Zgrade
+
+plAtmGustoca = Gustoča
+plAtmKvaliteta = Kvaliteta
+plAtmTemperatura = Temperatura
+plCijenaOrbGradnje = Cijena orbitalne gradnje
+plGravitacija = Gravitacija
+plVelicina = Veličina
+plZracenje = Zračenje
+plZgrade = Zgrade
+
+ukupno = Ukupno

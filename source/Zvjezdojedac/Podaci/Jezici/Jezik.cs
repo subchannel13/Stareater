@@ -17,6 +17,7 @@ namespace Prototip.Podaci.Jezici
 			rez.Add("FORM_IGRA", Kontekst.FormIgra);
 			rez.Add("FORM_MAIN", Kontekst.FormMain);
 			rez.Add("FORM_NOVA_IGRA", Kontekst.FormNovaIgra);
+			rez.Add("FORM_PLANET_INFO", Kontekst.FormPlanetInfo);
 			rez.Add("FORM_POSTAVKE", Kontekst.FormPostavke);
 			rez.Add("KOLONIJA", Kontekst.Kolonija);
 			rez.Add("VELICINA_MAPE", Kontekst.VelicinaMape);

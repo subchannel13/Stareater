@@ -3,4 +3,5 @@
 FormIgra.txt
 FormMain.txt
 FormNovaIgra.txt
+FormPlanetInfo.txt
 Ostalo.txt

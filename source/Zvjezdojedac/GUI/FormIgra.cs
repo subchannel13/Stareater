@@ -66,7 +66,10 @@ namespace Prototip
 			btnTech.Text = jezik["btnTech"].tekst();
 			btnUcitaj.Text = jezik["btnUcitaj"].tekst();
 
-			groupPoStan.Text = Postavke.jezik[Kontekst.Kolonija, "groupPoStan"].tekst();
+			jezik = Postavke.jezik[Kontekst.Kolonija];
+			groupPoStan.Text = jezik["groupPoStan"].tekst();
+			groupCivGradnja.Text = jezik["Civilna_Gradnja"].tekst();
+			groupVojGradnja.Text = jezik["Vojna_Gradnja"].tekst();
 		}
 
 		private void frmIgra_Load(object sender, EventArgs e)
@@ -174,7 +177,7 @@ namespace Prototip
 
 		private void odaberiPlanet(Planet planet, bool promjeniTab)
 		{
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.Kolonija];
 
 			if (planet.tip == Planet.Tip.NIKAKAV) return;
 			igrac.odabranPlanet = planet;
@@ -189,10 +192,7 @@ namespace Prototip
 				groupVojGradnja.Visible = true;
 				lblRazvoj.Visible = true;
 
-				Dictionary<string, double> vars = new Dictionary<string, double>();
-				vars.Add("POP", planet.kolonija.efekti[Kolonija.Populacija]);
-
-				lblPopulacija.Text = jezik["plPopulacija"].tekst(vars);
+				lblPopulacija.Text = jezik["plPopulacija"].tekst() + ": " + Fje.PrefiksFormater(planet.kolonija.efekti[Kolonija.Populacija]);
 				hscrCivilnaIndustrija.Enabled = true;
 				btnCivilnaGradnja.Enabled = true;
 
@@ -201,7 +201,7 @@ namespace Prototip
 				osvjeziPogledNaKoloniju();
 			}
 			else {
-				lblPopulacija.Text = jezik["plNenaseljeno"].tekst(null);
+				lblPopulacija.Text = jezik["plNenaseljeno"].tekst();
 				groupPoStan.Visible = false;
 				groupCivGradnja.Visible = false;
 				groupVojGradnja.Visible = false;
@@ -292,27 +292,19 @@ namespace Prototip
 		{
 			Kolonija kolonija = igrac.odabranPlanet.kolonija;
 
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
-			Dictionary<string, ITekst> jezikKolonija = Postavke.jezik[Kontekst.Kolonija];
-			Dictionary<string, double> vars = new Dictionary<string, double>();
-			vars.Add("KOL_HRANA", kolonija.efekti[Kolonija.HranaPoFarmeru]);
-			vars.Add("KOL_RUDE", kolonija.efekti[Kolonija.RudePoRudaru]);
-			vars.Add("KOL_ODRZAVANJE", kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]);
-			vars.Add("KOL_IND", kolonija.efekti[Kolonija.IndustrijaPoRadniku]);
-			vars.Add("KOL_RAZVOJ", kolonija.efekti[Kolonija.RazvojPoRadniku]);
-			vars.Add("RAZVOJ", kolonija.poeniRazvoja());
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.Kolonija];
 
-			lblHranaPoStan.Text = jezikKolonija["HranaPoStan"].tekst(vars);
-			lblRudePoStan.Text = jezikKolonija["RudePoStan"].tekst(vars);
-			lblOdrzavanjePoStan.Text = jezikKolonija["OdrzavanjePoStan"].tekst(vars);
-			lblIndustrijaPoStan.Text = jezikKolonija["IndustrijaPoStan"].tekst(vars);
-			lblRazvojPoStan.Text = jezikKolonija["RazvojPoStan"].tekst(vars);
+			lblHranaPoStan.Text = jezik["HranaPoStan"].tekst() + ": " + kolonija.efekti[Kolonija.HranaPoFarmeru].ToString("0.##");
+			lblRudePoStan.Text = jezik["RudePoStan"].tekst() + ": " + kolonija.efekti[Kolonija.RudePoRudaru].ToString("0.##");
+			lblOdrzavanjePoStan.Text = jezik["OdrzavanjePoStan"].tekst() + ": " + (kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]).ToString("0.##");
+			lblIndustrijaPoStan.Text = jezik["IndustrijaPoStan"].tekst() + ": " + kolonija.efekti[Kolonija.IndustrijaPoRadniku].ToString("0.##");
+			lblRazvojPoStan.Text = jezik["RazvojPoStan"].tekst() + ": " + kolonija.efekti[Kolonija.RazvojPoRadniku].ToString("0.##");
 
-			lblCivilnaIndustrija.Text = Fje.PrefiksFormater(kolonija.poeniCivilneIndustrije()) + " " + jezikKolonija["jedInd"].tekst();
-			lblVojnaGradnja.Text = Fje.PrefiksFormater(kolonija.poeniVojneIndustrije()) + " " + jezikKolonija["jedInd"].tekst();
+			lblCivilnaIndustrija.Text = Fje.PrefiksFormater(kolonija.poeniCivilneIndustrije()) + " " + jezik["jedInd"].tekst();
+			lblVojnaGradnja.Text = Fje.PrefiksFormater(kolonija.poeniVojneIndustrije()) + " " + jezik["jedInd"].tekst();
 			lblProcjenaCivilneGradnje.Text = kolonija.procjenaVremenaCivilneGradnje();
 			lblProcjenaVojneGradnje.Text = kolonija.procjenaVremenaVojneGradnje();
-			lblRazvoj.Text = jezikKolonija["lblRazvoj"].tekst(vars);
+			lblRazvoj.Text = jezik["lblRazvoj"].tekst() + Fje.PrefiksFormater(kolonija.poeniRazvoja());
 
 			if (igrac.odabranPlanet.kolonija.redCivilneGradnje.Count > 0)
 			{
@@ -322,7 +314,7 @@ namespace Prototip
 			else
 			{
 				btnCivilnaGradnja.Image = null;
-				btnCivilnaGradnja.Text = jezik["btnCivilnaGradnja"].tekst();
+				btnCivilnaGradnja.Text = jezik["Civilna_Gradnja"].tekst();
 			}
 
 			if (igrac.odabranPlanet.kolonija.redVojneGradnje.Count > 0)
@@ -333,7 +325,7 @@ namespace Prototip
 			else
 			{
 				btnVojnaGradnja.Image = null;
-				btnVojnaGradnja.Text = jezik["btnVojnaGradnja"].tekst();
+				btnVojnaGradnja.Text = jezik["Vojna_Gradnja"].tekst();
 			}
 		}
 
@@ -349,8 +341,8 @@ namespace Prototip
 		{
 			if (igrac.odabranPlanet.kolonija != null)
 			{
-				igrac.odabranPlanet.kolonija.civilnaIndustrija = hscrCivilnaIndustrija.Value / (double)hscrCivilnaIndustrija.Maximum;
-				int val = (int)(igrac.odabranPlanet.kolonija.civilnaIndustrija * hscrCivilnaIndustrija.Maximum);
+				igrac.odabranPlanet.kolonija.civilnaIndustrija = e.NewValue / (double)hscrCivilnaIndustrija.Maximum;
+				int val = (int)Math.Round(igrac.odabranPlanet.kolonija.civilnaIndustrija * hscrCivilnaIndustrija.Maximum, MidpointRounding.AwayFromZero);
 				if (hscrCivilnaIndustrija.Value != val)
 					e.NewValue = val;
 				else

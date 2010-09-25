@@ -1,5 +1,4 @@
 ﻿::FORM_IGRA
-btnCivilnaGradnja = Civil construction
 btnEndTurn = End t&urn
 btnFlote = &Fleet
 btnPlanetInfo = &Details
@@ -7,26 +6,37 @@ btnPoruke := "&News (" $ P BR_PORUKA # ")"
 btnSpremi = &Save
 btnTech = &Technologies
 btnUcitaj = &Load
-btnVojnaGradnja = Military construction
 lblBrojKruga := $ D + KRUG 1 # ? = KRUG 0 : "st" ? = KRUG 1 : "nd" ? = KRUG 2 : "rd" ? > KRUG 2 : "th" " turn"
 
 flotaObrana = Defense
-plNenaseljeno = Uninhabited
-plPopulacija := "Population: " $ P POP #
 zvjNeistrazeno = Unknown
 
 ::KOLONIJA
+Civilna_Gradnja = Civil construction
+Vojna_Gradnja = Military construction
 jedInd = ind
-lblRazvoj := "Develpoment: " $ P RAZVOJ #
-groupPoStan = Per populant
+lblRazvoj := "Develpoment: "
+
+plBrFarmera = Farmers
+plBrOdrz = Maintenance
+plBrRudara = Miners
+plMinDubina = Deep
+plMinOstvareno = Mined
+plMinPovrsina = Surface
+plNenaseljeno = Uninhabited
+plPopMax = Maximum
+plPopulacija = Population
+plPromjenaPop = Change
+plRadnaMjesta = Work places
 
 gradNikad = Never
 gradPoKrugu := ? < BR_ZGRADA 10 : $ D1 BR_ZGRADA # ? >= BR_ZGRADA 10 : $ P BR_ZGRADA # " per turn"
 gradVrijemeDec := "In " $ D1 BR_KRUGOVA # " turn" ? != 1 INT DECIMALA : "s"
 gradVrijemePref := "In " $ P BR_KRUGOVA # " turn" ? | < BR_KRUGOVA 20 != 1 INT MOD BR_KRUGOVA 10 : "s"
 
-HranaPoStan := "Food: " $ D KOL_HRANA #
-IndustrijaPoStan := "Industry: " $ D KOL_IND #
-OdrzavanjePoStan := "Maintenance: " $ D KOL_ODRZAVANJE #
-RazvojPoStan := "Development: " $ D KOL_RAZVOJ #
-RudePoStan := "Ores: " $ D KOL_RUDE #
+groupPoStan = Per populant
+HranaPoStan = Food
+IndustrijaPoStan = Industry
+OdrzavanjePoStan = Maintenance
+RazvojPoStan = Development
+RudePoStan = Ores

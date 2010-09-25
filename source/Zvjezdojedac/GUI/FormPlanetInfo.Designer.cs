@@ -29,16 +29,16 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPlanetInfo));
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.groupPlanet = new System.Windows.Forms.GroupBox();
 			this.lblVelicina = new System.Windows.Forms.Label();
 			this.lblKoefOrbitalne = new System.Windows.Forms.Label();
 			this.lblZracenje = new System.Windows.Forms.Label();
-			this.lblAtmoTemperatura = new System.Windows.Forms.Label();
+			this.lblAtmTemperatura = new System.Windows.Forms.Label();
 			this.lblGravitacija = new System.Windows.Forms.Label();
-			this.label1 = new System.Windows.Forms.Label();
+			this.lblAtmosfera1 = new System.Windows.Forms.Label();
 			this.lblAtmKvaliteta = new System.Windows.Forms.Label();
 			this.lblAtmGustoca = new System.Windows.Forms.Label();
-			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.groupPopulacija = new System.Windows.Forms.GroupBox();
 			this.lblRadnaMjesta = new System.Windows.Forms.Label();
 			this.lblPopMax = new System.Windows.Forms.Label();
 			this.lblPopDelta = new System.Windows.Forms.Label();
@@ -56,7 +56,7 @@
 			this.lblBrFarmera = new System.Windows.Forms.Label();
 			this.lblBrRudara = new System.Windows.Forms.Label();
 			this.picSlika = new System.Windows.Forms.PictureBox();
-			this.groupBox5 = new System.Windows.Forms.GroupBox();
+			this.groupRude = new System.Windows.Forms.GroupBox();
 			this.lblMinOstvareno = new System.Windows.Forms.Label();
 			this.lblMinDubina = new System.Windows.Forms.Label();
 			this.lblMinPovrsina = new System.Windows.Forms.Label();
@@ -65,7 +65,7 @@
 			this.lblOdrzavanjeTempAtm = new System.Windows.Forms.Label();
 			this.lblOdrzavanjeKvalAtm = new System.Windows.Forms.Label();
 			this.lblOdrzavanjeGustAtm = new System.Windows.Forms.Label();
-			this.label5 = new System.Windows.Forms.Label();
+			this.lblAtmosfera2 = new System.Windows.Forms.Label();
 			this.lblOdrzavanjeZrac = new System.Windows.Forms.Label();
 			this.lblOdrzavanjeGrav = new System.Windows.Forms.Label();
 			this.lblPrikaz = new System.Windows.Forms.Label();
@@ -87,10 +87,10 @@
 			this.lblRudePoStan = new System.Windows.Forms.Label();
 			this.lblHranaPoStan = new System.Windows.Forms.Label();
 			this.tabPageOdrzavanje = new System.Windows.Forms.TabPage();
-			this.groupBox1.SuspendLayout();
-			this.groupBox2.SuspendLayout();
+			this.groupPlanet.SuspendLayout();
+			this.groupPopulacija.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlika)).BeginInit();
-			this.groupBox5.SuspendLayout();
+			this.groupRude.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.tabPageProizvodnja.SuspendLayout();
 			this.tabPageZgrade.SuspendLayout();
@@ -101,22 +101,22 @@
 			this.tabPageOdrzavanje.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// groupBox1
+			// groupPlanet
 			// 
-			this.groupBox1.Controls.Add(this.lblVelicina);
-			this.groupBox1.Controls.Add(this.lblKoefOrbitalne);
-			this.groupBox1.Controls.Add(this.lblZracenje);
-			this.groupBox1.Controls.Add(this.lblAtmoTemperatura);
-			this.groupBox1.Controls.Add(this.lblGravitacija);
-			this.groupBox1.Controls.Add(this.label1);
-			this.groupBox1.Controls.Add(this.lblAtmKvaliteta);
-			this.groupBox1.Controls.Add(this.lblAtmGustoca);
-			this.groupBox1.Location = new System.Drawing.Point(227, 12);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(200, 123);
-			this.groupBox1.TabIndex = 0;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Planet";
+			this.groupPlanet.Controls.Add(this.lblVelicina);
+			this.groupPlanet.Controls.Add(this.lblKoefOrbitalne);
+			this.groupPlanet.Controls.Add(this.lblZracenje);
+			this.groupPlanet.Controls.Add(this.lblAtmTemperatura);
+			this.groupPlanet.Controls.Add(this.lblGravitacija);
+			this.groupPlanet.Controls.Add(this.lblAtmosfera1);
+			this.groupPlanet.Controls.Add(this.lblAtmKvaliteta);
+			this.groupPlanet.Controls.Add(this.lblAtmGustoca);
+			this.groupPlanet.Location = new System.Drawing.Point(227, 12);
+			this.groupPlanet.Name = "groupPlanet";
+			this.groupPlanet.Size = new System.Drawing.Size(200, 123);
+			this.groupPlanet.TabIndex = 0;
+			this.groupPlanet.TabStop = false;
+			this.groupPlanet.Text = "Planet";
 			// 
 			// lblVelicina
 			// 
@@ -145,14 +145,14 @@
 			this.lblZracenje.TabIndex = 5;
 			this.lblZracenje.Text = "Zracenje: xx.x";
 			// 
-			// lblAtmoTemperatura
+			// lblAtmTemperatura
 			// 
-			this.lblAtmoTemperatura.AutoSize = true;
-			this.lblAtmoTemperatura.Location = new System.Drawing.Point(93, 55);
-			this.lblAtmoTemperatura.Name = "lblAtmoTemperatura";
-			this.lblAtmoTemperatura.Size = new System.Drawing.Size(97, 13);
-			this.lblAtmoTemperatura.TabIndex = 4;
-			this.lblAtmoTemperatura.Text = "Temperatura: ?xx.x";
+			this.lblAtmTemperatura.AutoSize = true;
+			this.lblAtmTemperatura.Location = new System.Drawing.Point(93, 55);
+			this.lblAtmTemperatura.Name = "lblAtmTemperatura";
+			this.lblAtmTemperatura.Size = new System.Drawing.Size(97, 13);
+			this.lblAtmTemperatura.TabIndex = 4;
+			this.lblAtmTemperatura.Text = "Temperatura: ?xx.x";
 			// 
 			// lblGravitacija
 			// 
@@ -163,14 +163,14 @@
 			this.lblGravitacija.TabIndex = 3;
 			this.lblGravitacija.Text = "Gravitacija: xx.x";
 			// 
-			// label1
+			// lblAtmosfera1
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(93, 16);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(57, 13);
-			this.label1.TabIndex = 2;
-			this.label1.Text = "Atmosfera:";
+			this.lblAtmosfera1.AutoSize = true;
+			this.lblAtmosfera1.Location = new System.Drawing.Point(93, 16);
+			this.lblAtmosfera1.Name = "lblAtmosfera1";
+			this.lblAtmosfera1.Size = new System.Drawing.Size(57, 13);
+			this.lblAtmosfera1.TabIndex = 2;
+			this.lblAtmosfera1.Text = "Atmosfera:";
 			// 
 			// lblAtmKvaliteta
 			// 
@@ -190,18 +190,18 @@
 			this.lblAtmGustoca.TabIndex = 0;
 			this.lblAtmGustoca.Text = "Gustoća: xx.x";
 			// 
-			// groupBox2
+			// groupPopulacija
 			// 
-			this.groupBox2.Controls.Add(this.lblRadnaMjesta);
-			this.groupBox2.Controls.Add(this.lblPopMax);
-			this.groupBox2.Controls.Add(this.lblPopDelta);
-			this.groupBox2.Controls.Add(this.lblPopBr);
-			this.groupBox2.Location = new System.Drawing.Point(82, 12);
-			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(136, 88);
-			this.groupBox2.TabIndex = 1;
-			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Populacija";
+			this.groupPopulacija.Controls.Add(this.lblRadnaMjesta);
+			this.groupPopulacija.Controls.Add(this.lblPopMax);
+			this.groupPopulacija.Controls.Add(this.lblPopDelta);
+			this.groupPopulacija.Controls.Add(this.lblPopBr);
+			this.groupPopulacija.Location = new System.Drawing.Point(82, 12);
+			this.groupPopulacija.Name = "groupPopulacija";
+			this.groupPopulacija.Size = new System.Drawing.Size(136, 88);
+			this.groupPopulacija.TabIndex = 1;
+			this.groupPopulacija.TabStop = false;
+			this.groupPopulacija.Text = "Populacija";
 			// 
 			// lblRadnaMjesta
 			// 
@@ -359,17 +359,17 @@
 			this.picSlika.TabIndex = 5;
 			this.picSlika.TabStop = false;
 			// 
-			// groupBox5
+			// groupRude
 			// 
-			this.groupBox5.Controls.Add(this.lblMinOstvareno);
-			this.groupBox5.Controls.Add(this.lblMinDubina);
-			this.groupBox5.Controls.Add(this.lblMinPovrsina);
-			this.groupBox5.Location = new System.Drawing.Point(149, 6);
-			this.groupBox5.Name = "groupBox5";
-			this.groupBox5.Size = new System.Drawing.Size(110, 68);
-			this.groupBox5.TabIndex = 6;
-			this.groupBox5.TabStop = false;
-			this.groupBox5.Text = "Rude:";
+			this.groupRude.Controls.Add(this.lblMinOstvareno);
+			this.groupRude.Controls.Add(this.lblMinDubina);
+			this.groupRude.Controls.Add(this.lblMinPovrsina);
+			this.groupRude.Location = new System.Drawing.Point(149, 6);
+			this.groupRude.Name = "groupRude";
+			this.groupRude.Size = new System.Drawing.Size(110, 68);
+			this.groupRude.TabIndex = 6;
+			this.groupRude.TabStop = false;
+			this.groupRude.Text = "Rude:";
 			// 
 			// lblMinOstvareno
 			// 
@@ -443,14 +443,14 @@
 			this.lblOdrzavanjeGustAtm.TabIndex = 3;
 			this.lblOdrzavanjeGustAtm.Text = "Gustoća: xx.xx X";
 			// 
-			// label5
+			// lblAtmosfera2
 			// 
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(127, 13);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(57, 13);
-			this.label5.TabIndex = 2;
-			this.label5.Text = "Atmosfera:";
+			this.lblAtmosfera2.AutoSize = true;
+			this.lblAtmosfera2.Location = new System.Drawing.Point(127, 13);
+			this.lblAtmosfera2.Name = "lblAtmosfera2";
+			this.lblAtmosfera2.Size = new System.Drawing.Size(57, 13);
+			this.lblAtmosfera2.TabIndex = 2;
+			this.lblAtmosfera2.Text = "Atmosfera:";
 			// 
 			// lblOdrzavanjeZrac
 			// 
@@ -579,7 +579,7 @@
 			this.tabPageResursi.BackColor = System.Drawing.SystemColors.Control;
 			this.tabPageResursi.Controls.Add(this.groupRadnici);
 			this.tabPageResursi.Controls.Add(this.groupPoStan);
-			this.tabPageResursi.Controls.Add(this.groupBox5);
+			this.tabPageResursi.Controls.Add(this.groupRude);
 			this.tabPageResursi.Location = new System.Drawing.Point(4, 22);
 			this.tabPageResursi.Name = "tabPageResursi";
 			this.tabPageResursi.Padding = new System.Windows.Forms.Padding(3);
@@ -675,7 +675,7 @@
 			this.tabPageOdrzavanje.Controls.Add(this.lblOdrzavanjeUkupno);
 			this.tabPageOdrzavanje.Controls.Add(this.lblOdrzavanjeGrav);
 			this.tabPageOdrzavanje.Controls.Add(this.lblOdrzavanjeTempAtm);
-			this.tabPageOdrzavanje.Controls.Add(this.label5);
+			this.tabPageOdrzavanje.Controls.Add(this.lblAtmosfera2);
 			this.tabPageOdrzavanje.Controls.Add(this.lblOdrzavanjeKvalAtm);
 			this.tabPageOdrzavanje.Controls.Add(this.lblOdrzavanjeGustAtm);
 			this.tabPageOdrzavanje.Location = new System.Drawing.Point(4, 22);
@@ -696,8 +696,8 @@
 			this.Controls.Add(this.lblPrikaz);
 			this.Controls.Add(this.picSlika);
 			this.Controls.Add(this.btnZatvori);
-			this.Controls.Add(this.groupBox2);
-			this.Controls.Add(this.groupBox1);
+			this.Controls.Add(this.groupPopulacija);
+			this.Controls.Add(this.groupPlanet);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
@@ -706,13 +706,13 @@
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "frmPlanetInfo";
-			this.groupBox1.ResumeLayout(false);
-			this.groupBox1.PerformLayout();
-			this.groupBox2.ResumeLayout(false);
-			this.groupBox2.PerformLayout();
+			this.groupPlanet.ResumeLayout(false);
+			this.groupPlanet.PerformLayout();
+			this.groupPopulacija.ResumeLayout(false);
+			this.groupPopulacija.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlika)).EndInit();
-			this.groupBox5.ResumeLayout(false);
-			this.groupBox5.PerformLayout();
+			this.groupRude.ResumeLayout(false);
+			this.groupRude.PerformLayout();
 			this.tabControl.ResumeLayout(false);
 			this.tabPageProizvodnja.ResumeLayout(false);
 			this.tabPageProizvodnja.PerformLayout();
@@ -733,8 +733,8 @@
 
 		#endregion
 
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.GroupBox groupPlanet;
+		private System.Windows.Forms.GroupBox groupPopulacija;
 		private System.Windows.Forms.Label lblAtmGustoca;
 		private System.Windows.Forms.Label lblAtmKvaliteta;
 		private System.Windows.Forms.Label lblPopMax;
@@ -742,17 +742,17 @@
 		private System.Windows.Forms.Label lblPopBr;
 		private System.Windows.Forms.Button btnZatvori;
 		private System.Windows.Forms.Label lblGravitacija;
-		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label lblAtmosfera1;
 		private System.Windows.Forms.Label lblRadnaMjesta;
 		private System.Windows.Forms.PictureBox picSlika;
 		private System.Windows.Forms.Label lblBrRudara;
 		private System.Windows.Forms.Label lblBrFarmera;
 		private System.Windows.Forms.Label lblZracenje;
-		private System.Windows.Forms.Label lblAtmoTemperatura;
-		private System.Windows.Forms.GroupBox groupBox5;
+		private System.Windows.Forms.Label lblAtmTemperatura;
+		private System.Windows.Forms.GroupBox groupRude;
 		private System.Windows.Forms.Label lblMinDubina;
 		private System.Windows.Forms.Label lblMinPovrsina;
-		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label lblAtmosfera2;
 		private System.Windows.Forms.Label lblOdrzavanjeZrac;
 		private System.Windows.Forms.Label lblOdrzavanjeGrav;
 		private System.Windows.Forms.Label lblOdrzavanjeTempAtm;
