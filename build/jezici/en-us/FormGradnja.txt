@@ -1,0 +1,10 @@
+﻿::FORM_GRADNJA
+btnKasnije = Down
+btnOk = Ok
+btnPrije = Up
+btnUkloni = Remove
+lblMogucnosti = Available buildings
+lblPopis = Building queue
+
+naslovCivGradnja = Civil construction
+naslovVojGradnja = Military construction

@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Prototip.Podaci.Jezici;
+using Prototip.Podaci;
 
 namespace Prototip
 {
@@ -31,6 +33,19 @@ namespace Prototip
 
             foreach (Zgrada.ZgradaInfo z in redGradnje)
 				lstRedGradnje.Items.Add(z);
+
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormGradnja];
+			btnKasnije.Text = jezik["btnKasnije"].tekst();
+			btnOk.Text = jezik["btnOk"].tekst();
+			btnPrije.Text = jezik["btnPrije"].tekst();
+			btnUkloni.Text = jezik["btnUkloni"].tekst();
+			lblMogucnosti.Text = jezik["lblMogucnosti"].tekst() + ":";
+			lblPopis.Text = jezik["lblPopis"].tekst() + ":";
+
+			if (civilnaGradnja)
+				this.Text = jezik["naslovCivGradnja"].tekst();
+			else
+				this.Text = jezik["naslovVojGradnja"].tekst();
 		}
 
 		private void btnOk_Click(object sender, EventArgs e)

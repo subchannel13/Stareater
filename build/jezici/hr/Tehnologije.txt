@@ -1,0 +1,26 @@
+﻿::TEHNOLOGIJE
+BIO_IME = Biologija
+BIO_OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
+FIZ_IME = Fizika
+FIZ_OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
+KEM_IME = Kemija
+KEM_OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
+MAT_IME = Matematika
+MAT_OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
+
+HIDRO_FARME_IME = Hidroponične farme
+HIDRO_FARME_OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
+IND_IME = Industrija
+IND_OPIS = Pojeftinjenje industrijskih postrijenja.
+ROBO_IME = Robotika
+ROBO_OPIS = Poboljšanje učinkovitosti industrijske proizvodnje.
+LASER_IME = Laseri
+LASER_OPIS = Laser kao takov
+ECM_IME = ECM
+ECM_OPIS = ECM kao takov
+EM_STIT_IME = EM štit
+EM_STIT_OPIS = EM štit kao takov
+TITANIJ_IME = Titanijski oklop
+TITANIJ_OPIS = Bez opisa
+DURAPLAST_IME = Duraplast
+DURAPLAST_OPIS = Bez opisa

@@ -4,6 +4,8 @@ using System.Text;
 using System.IO;
 using System.Drawing;
 using Alati;
+using Prototip.Podaci;
+using Prototip.Podaci.Jezici;
 
 namespace Prototip
 {
@@ -108,9 +110,9 @@ namespace Prototip
 			}
 
 			public int id { get; private set; }
-			public string ime;
+			private string _ime;
 			public string kod;
-			public string opis;
+			private string _opis;
 			public Formula cijena;
 			public List<Preduvjet> preduvjeti;
 			public long maxNivo;
@@ -119,8 +121,8 @@ namespace Prototip
 			private TechInfo(int id, string ime, string opis, string kod, Formula cijena, long maxNivo, List<Preduvjet> preduvjeti, Image slika)
 			{
 				this.id = id;
-				this.ime = ime;
-				this.opis = opis;
+				this._ime = ime;
+				this._opis = opis;
 				this.kod = kod;
 				this.cijena = cijena;
 				this.preduvjeti = preduvjeti;
@@ -128,6 +130,21 @@ namespace Prototip
 				this.slika = slika;
 				
 				cijena.preimenujVarijablu("LVL", kod + "_LVL");
+			}
+
+			public string ime
+			{
+				get
+				{
+					return Postavke.jezik[Kontekst.Tehnologije, _ime].tekst();
+				}
+			}
+
+			public string opis(long nivo)
+			{
+				Dictionary<string, double> vars = new Dictionary<string, double>();
+				vars.Add("LVL", nivo);
+				return Postavke.jezik[Kontekst.Tehnologije, _opis].tekst();
 			}
 		}
 
@@ -207,6 +224,14 @@ namespace Prototip
 			}
 			
 			return ulog;
+		}
+
+		public string opis
+		{
+			get
+			{
+				return tip.opis(nivo);
+			}
 		}
 
 		public int id

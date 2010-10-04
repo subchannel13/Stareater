@@ -1,6 +1,6 @@
 <TEHNOLOGIJA>
-IME = Hidroponične farme
-OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
+IME = HIDRO_FARME_IME
+OPIS = HIDRO_FARME_OPIS
 KOD = HIDRO_FARME
 CIJENA = * 5e6 + LVL ^ 3 LVL
 MAX_LVL = 8
@@ -9,8 +9,8 @@ SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 ----
 
 <TEHNOLOGIJA>
-IME = Industrija
-OPIS = Pojeftinjenje industrijskih postrijenja.
+IME = IND_IME
+OPIS = IND_OPIS
 KOD = IND
 CIJENA = * 20e6 + LVL ^ 2 LVL
 MAX_LVL = 10
@@ -19,8 +19,8 @@ SLIKA = ./slike/tehnologije/industrija.bmp
 ----
 
 <TEHNOLOGIJA>
-IME = Robotika
-OPIS = Poboljšanje učinkovitosti industrijske proizvodnje.
+IME = ROBO_IME
+OPIS = ROBO_OPIS
 KOD = ROBO
 CIJENA = * 5e9 + LVL ^ 2 LVL
 MAX_LVL = 10
@@ -29,8 +29,8 @@ SLIKA = ./slike/tehnologije/industrija.bmp
 ----
 
 <TEHNOLOGIJA>
-IME = Laseri
-OPIS = Laser kao takov
+IME = LASER_IME
+OPIS = LASER_OPIS
 KOD = LASER
 CIJENA = * 1e9 + LVL ^ 2 LVL
 MAX_LVL = 10
@@ -39,8 +39,8 @@ SLIKA = ./slike/tehnologije/laser.bmp
 ----
 
 <TEHNOLOGIJA>
-IME = ECM
-OPIS = ECM kao takov
+IME = ECM_IME
+OPIS = ECM_OPIS
 KOD = ECM
 CIJENA = * 1e9 + LVL ^ 2 LVL
 MAX_LVL = 10
@@ -49,8 +49,8 @@ SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 ----
 
 <TEHNOLOGIJA>
-IME = EM štit
-OPIS = ECM kao takov
+IME = EM_STIT_IME
+OPIS = EM_STIT_OPIS
 KOD = EM_STIT
 CIJENA = * 50e9 + LVL ^ 2 LVL
 MAX_LVL = 10
@@ -59,8 +59,8 @@ SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 ----
 
 <TEHNOLOGIJA>
-IME = Titanijski oklop
-OPIS = Bez opisa
+IME = TITANIJ_IME
+OPIS = TITANIJ_OPIS
 KOD = TITANIJ
 CIJENA = * 1e9 ^ + LVL 1 2
 MAX_LVL = 10
@@ -69,8 +69,8 @@ SLIKA = ./slike/tehnologije/industrija.bmp
 ----
 
 <TEHNOLOGIJA>
-IME = Duraplast
-OPIS = Bez opisa
+IME = DURAPLAST_IME
+OPIS = DURAPLAST_OPIS
 KOD = DURAPLAST
 CIJENA = * 5e9 ^ LVL 2
 MAX_LVL = 10

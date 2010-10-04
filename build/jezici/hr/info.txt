@@ -1,7 +1,9 @@
 ﻿Hrvatski
 
+FormGradnja.txt
 FormIgra.txt
 FormMain.txt
 FormNovaIgra.txt
 FormPlanetInfo.txt
 Ostalo.txt
+Tehnologije.txt

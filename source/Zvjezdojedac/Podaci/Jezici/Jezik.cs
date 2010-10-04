@@ -14,12 +14,14 @@ namespace Prototip.Podaci.Jezici
 		private static Dictionary<string, Kontekst> initStringUKontekst()
 		{
 			Dictionary<string, Kontekst> rez = new Dictionary<string,Kontekst>();
+			rez.Add("FORM_GRADNJA", Kontekst.FormGradnja);
 			rez.Add("FORM_IGRA", Kontekst.FormIgra);
 			rez.Add("FORM_MAIN", Kontekst.FormMain);
 			rez.Add("FORM_NOVA_IGRA", Kontekst.FormNovaIgra);
 			rez.Add("FORM_PLANET_INFO", Kontekst.FormPlanetInfo);
 			rez.Add("FORM_POSTAVKE", Kontekst.FormPostavke);
 			rez.Add("KOLONIJA", Kontekst.Kolonija);
+			rez.Add("TEHNOLOGIJE", Kontekst.Tehnologije);
 			rez.Add("VELICINA_MAPE", Kontekst.VelicinaMape);
 			rez.Add("WINDOWS_DIJALOZI", Kontekst.WindowsDijalozi);
 

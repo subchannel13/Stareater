@@ -171,8 +171,9 @@ namespace Prototip
 			if (lstRazvoj.SelectedItems.Count == 0) return;
 
 			ListViewItem tmp = lstRazvoj.SelectedItems[0];
-			lblRazOpis.Text = ((Tehnologija)tmp.Tag).tip.opis;
-			picRazSlika.Image = ((Tehnologija)tmp.Tag).tip.slika;
+			Tehnologija teh = ((Tehnologija)tmp.Tag);
+			lblRazOpis.Text = teh.opis;
+			picRazSlika.Image = teh.tip.slika;
 		}
 
 		private void trkRazKoncentracija_Scroll(object sender, EventArgs e)
@@ -206,8 +207,9 @@ namespace Prototip
 			if (lstIstrazivanje.SelectedItems.Count == 0) return;
 
 			ListViewItem tmp = lstIstrazivanje.SelectedItems[0];
-			lblIstOpis.Text = ((Tehnologija)tmp.Tag).tip.opis;
-			picIstSlika.Image = ((Tehnologija)tmp.Tag).tip.slika;
+			Tehnologija teh = ((Tehnologija)tmp.Tag);
+			lblIstOpis.Text = teh.opis;
+			picIstSlika.Image = teh.tip.slika;
 		}
 	}
 }

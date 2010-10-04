@@ -8,12 +8,14 @@ namespace Prototip.Podaci.Jezici
 	public enum Kontekst
 	{
 		Opcenito,
+		FormGradnja,
 		FormIgra,
 		FormMain,
 		FormNovaIgra,
 		FormPlanetInfo,
 		FormPostavke,
 		Kolonija,
+		Tehnologije,
 		VelicinaMape,
 		WindowsDijalozi
 	}

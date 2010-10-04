@@ -34,8 +34,8 @@
 			this.lblZgradaInfo = new System.Windows.Forms.Label();
 			this.lstRedGradnje = new System.Windows.Forms.ListBox();
 			this.btnDodaj = new System.Windows.Forms.Button();
-			this.label2 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
+			this.lblMogucnosti = new System.Windows.Forms.Label();
+			this.lblPopis = new System.Windows.Forms.Label();
 			this.btnPrije = new System.Windows.Forms.Button();
 			this.btnKasnije = new System.Windows.Forms.Button();
 			this.btnUkloni = new System.Windows.Forms.Button();
@@ -89,29 +89,29 @@
 			this.btnDodaj.UseVisualStyleBackColor = true;
 			this.btnDodaj.Click += new System.EventHandler(this.btnDodaj_Click);
 			// 
-			// label2
+			// lblMogucnosti
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(9, 9);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(103, 13);
-			this.label2.TabIndex = 5;
-			this.label2.Text = "Mogućnosti gradnje:";
+			this.lblMogucnosti.AutoSize = true;
+			this.lblMogucnosti.Location = new System.Drawing.Point(9, 9);
+			this.lblMogucnosti.Name = "lblMogucnosti";
+			this.lblMogucnosti.Size = new System.Drawing.Size(103, 13);
+			this.lblMogucnosti.TabIndex = 5;
+			this.lblMogucnosti.Text = "Mogućnosti gradnje:";
 			// 
-			// label3
+			// lblPopis
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(183, 9);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(88, 13);
-			this.label3.TabIndex = 6;
-			this.label3.Text = "Popis za gradnju:";
+			this.lblPopis.AutoSize = true;
+			this.lblPopis.Location = new System.Drawing.Point(183, 9);
+			this.lblPopis.Name = "lblPopis";
+			this.lblPopis.Size = new System.Drawing.Size(88, 13);
+			this.lblPopis.TabIndex = 6;
+			this.lblPopis.Text = "Popis za gradnju:";
 			// 
 			// btnPrije
 			// 
 			this.btnPrije.Location = new System.Drawing.Point(312, 25);
 			this.btnPrije.Name = "btnPrije";
-			this.btnPrije.Size = new System.Drawing.Size(53, 23);
+			this.btnPrije.Size = new System.Drawing.Size(75, 23);
 			this.btnPrije.TabIndex = 7;
 			this.btnPrije.Text = "Prije";
 			this.btnPrije.UseVisualStyleBackColor = true;
@@ -121,7 +121,7 @@
 			// 
 			this.btnKasnije.Location = new System.Drawing.Point(312, 54);
 			this.btnKasnije.Name = "btnKasnije";
-			this.btnKasnije.Size = new System.Drawing.Size(53, 23);
+			this.btnKasnije.Size = new System.Drawing.Size(75, 23);
 			this.btnKasnije.TabIndex = 8;
 			this.btnKasnije.Text = "Kasnije";
 			this.btnKasnije.UseVisualStyleBackColor = true;
@@ -131,7 +131,7 @@
 			// 
 			this.btnUkloni.Location = new System.Drawing.Point(312, 97);
 			this.btnUkloni.Name = "btnUkloni";
-			this.btnUkloni.Size = new System.Drawing.Size(53, 23);
+			this.btnUkloni.Size = new System.Drawing.Size(75, 23);
 			this.btnUkloni.TabIndex = 9;
 			this.btnUkloni.Text = "Ukloni";
 			this.btnUkloni.UseVisualStyleBackColor = true;
@@ -157,8 +157,8 @@
 			this.Controls.Add(this.btnUkloni);
 			this.Controls.Add(this.btnKasnije);
 			this.Controls.Add(this.btnPrije);
-			this.Controls.Add(this.label3);
-			this.Controls.Add(this.label2);
+			this.Controls.Add(this.lblPopis);
+			this.Controls.Add(this.lblMogucnosti);
 			this.Controls.Add(this.btnDodaj);
 			this.Controls.Add(this.lstRedGradnje);
 			this.Controls.Add(this.lblZgradaInfo);
@@ -184,8 +184,8 @@
 		private System.Windows.Forms.Label lblZgradaInfo;
 		private System.Windows.Forms.ListBox lstRedGradnje;
 		private System.Windows.Forms.Button btnDodaj;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label lblMogucnosti;
+		private System.Windows.Forms.Label lblPopis;
 		private System.Windows.Forms.Button btnPrije;
 		private System.Windows.Forms.Button btnKasnije;
 		private System.Windows.Forms.Button btnUkloni;
