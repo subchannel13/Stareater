@@ -1,0 +1,5 @@
+﻿::FORM_PORUKE
+chTipBrod = New ships
+chTipKolonija = New colonies
+chTipTehnologije = New technologies
+chTipZgrade = New buildings

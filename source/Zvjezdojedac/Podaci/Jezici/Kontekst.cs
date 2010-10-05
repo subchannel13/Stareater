@@ -13,10 +13,12 @@ namespace Prototip.Podaci.Jezici
 		FormMain,
 		FormNovaIgra,
 		FormPlanetInfo,
+		FormPoruke,
 		FormPostavke,
 		Kolonija,
 		Tehnologije,
 		VelicinaMape,
-		WindowsDijalozi
+		WindowsDijalozi,
+		Zgrade
 	}
 }

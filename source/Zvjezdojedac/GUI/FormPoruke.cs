@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Prototip.Podaci.Jezici;
+using Prototip.Podaci;
 
 namespace Prototip
 {
@@ -43,6 +45,12 @@ namespace Prototip
 			postaviPoruke();
 
 			odabranaProuka = null;
+
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormPoruke];
+			chTipBrod.Text = jezik["chTipBrod"].tekst();
+			chTipKolonija.Text = jezik["chTipKolonija"].tekst();
+			chTipTehnologije.Text = jezik["chTipTehnologije"].tekst();
+			chTipZgrade.Text = jezik["chTipZgrade"].tekst();
 		}
 
 		private void postaviPoruke()

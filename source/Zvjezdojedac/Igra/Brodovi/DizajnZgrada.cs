@@ -43,5 +43,15 @@ namespace Prototip
 			ucinci.Add(new UcinakSagradiBrod(dizajn));
 			this.dizajn = dizajn;
 		}
+
+		public override string ime
+		{
+			get { return _ime; }
+		}
+
+		public override string opis
+		{
+			get { return _opis; }
+		}
 	}
 }

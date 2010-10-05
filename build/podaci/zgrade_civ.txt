@@ -1,7 +1,7 @@
 ﻿<ZGRADA>
-IME = Industrijalizacija
+IME = IND_IME
 KOD = IND
-OPIS = Izgradnja dodatnih industrijskih postrojenja.
+OPIS = IND_OPIS
 CIJENA = - 30 * 2 IND_LVL
 ODRZAVANJE = 0
 KOLICINA = - POP_MAX RAD_MJ_UK
@@ -12,9 +12,9 @@ SLIKA = ./slike/zgrade/tvornica.bmp
 ----
 
 <ZGRADA>
-IME = Kolonizacija
+IME = POP_IME
 KOD = POP
-OPIS = Poticaji stanovništvu da prošire koloniju.
+OPIS = POP_OPIS
 CIJENA = 10
 ODRZAVANJE = 0
 KOLICINA = LIMIT - - POP_MAX POP * NATALITET POP 0 * NATALITET POP

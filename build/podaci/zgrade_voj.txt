@@ -1,7 +1,7 @@
 ﻿<ZGRADA>
-IME = Radijacijski štit
+IME = RAD_STIT_IME
 KOD = RAD_STIT
-OPIS = Štiti koloniju od kozmičkog i solarnog zračenja te štiti koloniju tokom opsade.
+OPIS = RAD_STIT_OPIS
 CIJENA = * 1000000 PLANET_VELICINA
 ODRZAVANJE = 0
 KOLICINA = 1

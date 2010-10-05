@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using Prototip.Podaci;
+using Prototip.Podaci.Jezici;
 
 namespace Prototip
 {
@@ -73,7 +75,7 @@ namespace Prototip
 
 		public class ZgradaInfo : IIdentifiable
 		{
-			public string ime { get; private set; }
+			protected string _ime;
 			public int id { get; private set; }
 
 			public Formula cijenaGradnje { get; private set; }
@@ -83,7 +85,7 @@ namespace Prototip
 
 			public Image slika { get; private set; }
 			public string kod { get; private set; }
-			public string opis { get; private set; }
+			protected string _opis;
 
 			public List<Ucinak> ucinci { get; private set; }
 
@@ -97,13 +99,13 @@ namespace Prototip
 				List<Ucinak> ucinci, string svojstva, List<Tehnologija.Preduvjet> preduvjeti)
 			{
 				this.id = id;
-				this.ime = ime;
+				this._ime = ime;
 				this.cijenaGradnje = cijenaGradnje;
 				this.dopustenaKolicina = dopustenaKolicina;
 				this.cijenaOdrzavanja = cijenaOdrzavanja;
 				this.slika = slika;
 				this.kod = kod;
-				this.opis = opis;
+				this._opis = opis;
 				this.ucinci = ucinci;
 				this.preduvjeti = preduvjeti;
 
@@ -128,6 +130,16 @@ namespace Prototip
 					return false;
 
 				return true;
+			}
+
+			public virtual string ime
+			{
+				get { return Postavke.jezik[Kontekst.Zgrade, _ime].tekst(); }
+			}
+
+			public virtual string opis
+			{
+				get { return Postavke.jezik[Kontekst.Zgrade, _opis].tekst(); }
 			}
 
 			public override string ToString()

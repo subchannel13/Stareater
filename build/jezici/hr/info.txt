@@ -5,5 +5,7 @@ FormIgra.txt
 FormMain.txt
 FormNovaIgra.txt
 FormPlanetInfo.txt
+FormPoruke.txt
 Ostalo.txt
 Tehnologije.txt
+Zgrade.txt

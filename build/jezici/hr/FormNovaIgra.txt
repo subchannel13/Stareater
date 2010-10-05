@@ -1,5 +1,5 @@
 ﻿::FORM_NOVA_IGRA
-NASLOV = New game
+NASLOV = Nova igra
 BTN_KRENI = Kreni
 BTN_ODUSTANI = Odustani
 LBL_BR_IGRACA = Broj igrača:
