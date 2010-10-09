@@ -21,6 +21,7 @@ namespace Prototip.Podaci.Jezici
 			rez.Add("FORM_PLANET_INFO", Kontekst.FormPlanetInfo);
 			rez.Add("FORM_PORUKE", Kontekst.FormPoruke);
 			rez.Add("FORM_POSTAVKE", Kontekst.FormPostavke);
+			rez.Add("FORM_TECH", Kontekst.FormTech);
 			rez.Add("KOLONIJA", Kontekst.Kolonija);
 			rez.Add("TEHNOLOGIJE", Kontekst.Tehnologije);
 			rez.Add("VELICINA_MAPE", Kontekst.VelicinaMape);

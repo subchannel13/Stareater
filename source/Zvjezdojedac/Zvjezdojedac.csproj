@@ -129,11 +129,15 @@
     <Compile Include="Igra\Brodovi\Taktika.cs" />
     <Compile Include="Igra\Brodovi\Trup.cs" />
     <Compile Include="Igra\Flota.cs" />
-    <Compile Include="Igra\Igra.cs" />
+    <Compile Include="Igra\IgraZvj.cs" />
     <Compile Include="Igra\Igrac.cs" />
     <Compile Include="Igra\Kolonija.cs" />
     <Compile Include="Igra\Mapa.cs" />
-    <Compile Include="Igra\Poruke.cs" />
+    <Compile Include="Igra\Poruka.cs" />
+    <Compile Include="Igra\Poruke\PorukaBrod.cs" />
+    <Compile Include="Igra\Poruke\PorukaKolonija.cs" />
+    <Compile Include="Igra\Poruke\PorukaTehnologija.cs" />
+    <Compile Include="Igra\Poruke\PorukaZgrada.cs" />
     <Compile Include="Igra\Tehnologija.cs" />
     <Compile Include="Igra\Zgrada.cs" />
     <Compile Include="Podaci\Formule\Formula.cs" />

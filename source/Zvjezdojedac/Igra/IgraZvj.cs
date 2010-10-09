@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Prototip
 {
-	public class Igra
+	public class IgraZvj
 	{
 		public const int maxIgraca = 4;
 
@@ -15,7 +15,7 @@ namespace Prototip
 		public int brKruga;
 		public Dictionary<string, Formula> osnovniEfekti;
 
-		public Igra(List<Igrac.ZaStvoriti> igraci, Mapa.GraditeljMape mapa)
+		public IgraZvj(List<Igrac.ZaStvoriti> igraci, Mapa.GraditeljMape mapa)
 		{
 			this.igraci = new List<Igrac>();
 			this.mapa = mapa.mapa;
@@ -45,7 +45,7 @@ namespace Prototip
 			}
 		}
 
-		private Igra(List<Igrac> igraci, int trenutniIgracIndex,
+		private IgraZvj(List<Igrac> igraci, int trenutniIgracIndex,
 			Mapa mapa, int brKruga)
 		{
 			this.igraci = igraci;
@@ -174,7 +174,7 @@ namespace Prototip
 			return podaci.ToString();
 		}
 
-		public static Igra Ucitaj(string ulaz)
+		public static IgraZvj Ucitaj(string ulaz)
 		{
 			PodaciCitac citac = PodaciCitac.Procitaj(ulaz);
 
@@ -208,7 +208,7 @@ namespace Prototip
 				kolonija.planet.kolonija = kolonija;
 			}
 
-			return new Igra(igraci, trenutniIgrac, mapa, brKruga);
+			return new IgraZvj(igraci, trenutniIgrac, mapa, brKruga);
 		}
 		#endregion
 	}

@@ -52,7 +52,7 @@ namespace Prototip
 			this.Hide();
 			if (novaIgra.ShowDialog() == DialogResult.OK)
 			{
-				FormIgra igra = new FormIgra(new Igra(novaIgra.igraci, novaIgra.mapa));
+				FormIgra igra = new FormIgra(new IgraZvj(novaIgra.igraci, novaIgra.mapa));
 				igra.ShowDialog();
 			}
 			this.Show();
@@ -83,7 +83,7 @@ namespace Prototip
 				string ucitanaIgra = citac.ReadToEnd();
 				citac.Close();
 
-				Igra igra = Igra.Ucitaj(ucitanaIgra);
+				IgraZvj igra = IgraZvj.Ucitaj(ucitanaIgra);
 				
 				this.Visible = false;
 				FormIgra frmIgra = new FormIgra(igra);

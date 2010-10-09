@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Alati;
+using Prototip.Podaci.Jezici;
+using Prototip.Podaci;
 
 namespace Prototip
 {
@@ -20,10 +22,40 @@ namespace Prototip
 		public FormTechIzbor(Igrac igrac)
 		{
 			InitializeComponent();
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormTech];
+			btnIstDno.Text = jezik["btnDno"].tekst();
+			btnIstDolje.Text = jezik["btnDolje"].tekst();
+			btnIstGore.Text = jezik["btnGore"].tekst();
+			btnIstVrh.Text = jezik["btnVrh"].tekst();
+			btnOk.Text = jezik["btnOk"].tekst();
+			btnRazDno.Text = jezik["btnDno"].tekst(); ;
+			btnRazDolje.Text = jezik["btnDolje"].tekst();
+			btnRazGore.Text = jezik["btnGore"].tekst();
+			btnRazVrh.Text = jezik["btnVrh"].tekst();
+
+			chIstNaziv.Text = jezik["chNaziv"].tekst();
+			chIstNivo.Text = jezik["chNivo"].tekst();
+			chIstPoeni.Text = jezik["chPoeni"].tekst();
+			chIstPrioritet.Text = jezik["chIstPrioritet"].tekst();
+			chRazNaziv.Text = jezik["chNaziv"].tekst();
+			chRazNivo.Text = jezik["chNivo"].tekst();
+			chRazPoeni.Text = jezik["chPoeni"].tekst();
+			chRazUlaganje.Text = jezik["chRazUlaganje"].tekst();
+
+			lblFokusirano.Text = jezik["lblFokusirano"].tekst();
+			lblRaspodjela.Text = jezik["lblRaspodjela"].tekst();
+			lblRavnomjerno.Text = jezik["lblRavnomjerno"].tekst();
+			lblUIstrazivanju.Text = jezik["lblUIstrazivanju"].tekst() + ":";
+			lblURazvoju.Text = jezik["lblURazvoju"].tekst() + ":";
+
+			this.Text = jezik["naslov"].tekst();
+			tabIstrazivanje.Text = jezik["tabIst"].tekst();
+			tabRazvoj.Text = jezik["tabRaz"].tekst();
+
 			this.igrac = igrac;
 			lblRazOpis.Text = "";
 			lblIstOpis.Text = "";
-			lblIstPoeni.Text = "Poeni istraživanja: " + Fje.PrefiksFormater(igrac.istrazivanjePoSustavu[igrac.istrazivanjeSustav]);
+			lblIstPoeni.Text = jezik["lblIstPoeni"].tekst() + ": " + Fje.PrefiksFormater(igrac.istrazivanjePoSustavu[igrac.istrazivanjeSustav]);
 			lblIstSustav.Text = " (" + igrac.istrazivanjeSustav.ime + ")";
 			
 			raspodijelaPoena = 0;

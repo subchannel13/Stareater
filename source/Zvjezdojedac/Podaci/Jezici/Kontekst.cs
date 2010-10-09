@@ -15,6 +15,7 @@ namespace Prototip.Podaci.Jezici
 		FormPlanetInfo,
 		FormPoruke,
 		FormPostavke,
+		FormTech,
 		Kolonija,
 		Tehnologije,
 		VelicinaMape,

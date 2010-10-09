@@ -136,7 +136,7 @@ namespace Prototip
 			filtarPoruka.Add(Poruka.Tip.Zgrada, true);
 		}
 
-		public void staviNoveTehnologije(Igra igra)
+		public void staviNoveTehnologije(IgraZvj igra)
 		{
 			HashSet<Tehnologija.TechInfo> uProucavanju = new HashSet<Tehnologija.TechInfo>();
 			foreach (Tehnologija teh in tehnologijeURazvoju)
@@ -155,7 +155,7 @@ namespace Prototip
 						tehnologijeUIstrazivanju.AddLast(tehnologije[t.kod]);
 		}
 
-		public void noviKrug(Igra igra, long poeniRazvoja, long poeniIstrazivanja)
+		public void noviKrug(IgraZvj igra, long poeniRazvoja, long poeniIstrazivanja)
 		{
 			//poruke.Clear();
 			istraziTehnologije(igra, poeniRazvoja, poeniIstrazivanja);
@@ -216,7 +216,7 @@ namespace Prototip
 			prebrojiBrodove();
 		}
 
-		public void izracunajEfekte(Igra igra)
+		public void izracunajEfekte(IgraZvj igra)
 		{
 			kolonije.Clear();
 			foreach (Zvijezda zvj in igra.mapa.zvijezde)
@@ -230,7 +230,7 @@ namespace Prototip
 			foreach (string s in igra.osnovniEfekti.Keys) efekti.Add(s, igra.osnovniEfekti[s].iznos(efekti));
 		}
 
-		public void izracunajPoeneIstrazivanja(Igra igra)
+		public void izracunajPoeneIstrazivanja(IgraZvj igra)
 		{
 			Dictionary<Zvijezda, long> istrazivanjePoSustavuBaza = new Dictionary<Zvijezda,long>();
 
@@ -270,7 +270,7 @@ namespace Prototip
 			return sum;
 		}
 
-		private void istraziTehnologije(Igra igra, long poeniRazvoja, long poeniIstrazivanja)
+		private void istraziTehnologije(IgraZvj igra, long poeniRazvoja, long poeniIstrazivanja)
 		{
 			List<long> rasporedPoena = Tehnologija.RasporedPoena(poeniRazvoja, tehnologijeURazvoju.Count, koncentracijaPoenaRazvoja);
 			int i = 0;
@@ -281,7 +281,7 @@ namespace Prototip
 				ulog += rasporedPoena[i];
 				ulog = teh.uloziPoene(ulog, efekti);
 				if (teh.nivo != nivo)
-					poruke.AddLast(Poruka.NovaTehnologija(teh));
+					poruke.AddLast(Poruka.NovaTehnologija(teh, false));
 				i++;
 			}
 
@@ -294,7 +294,7 @@ namespace Prototip
 				ulog += rasporedPoena[i];
 				ulog = teh.uloziPoene(ulog, efekti);
 				if (teh.nivo != nivo)
-					poruke.AddLast(Poruka.NovaTehnologija(teh));
+					poruke.AddLast(Poruka.NovaTehnologija(teh, true));
 				i++;
 			}
 
@@ -514,10 +514,6 @@ namespace Prototip
 			Dictionary<int, Zvijezda> zvijezdeID = new Dictionary<int, Zvijezda>();
 			foreach (Zvijezda zvj in mapa.zvijezde)
 				zvijezdeID.Add(zvj.id, zvj);
-			int brPoruka = ulaz.podatakInt(PohPoruka);
-			LinkedList<Poruka> poruke = new LinkedList<Poruka>();
-			for (int i = 0; i < brPoruka; i++)
-				poruke.AddLast(Poruka.Ucitaj(ulaz[PohPoruka + i], zvijezdeID));
 
 			int brDizajnova = ulaz.podatakInt(PohDizajn);
 			List<DizajnZgrada> dizajnovi = new List<DizajnZgrada>();
@@ -563,6 +559,11 @@ namespace Prototip
 			HashSet<Flota> flotePokretne = new HashSet<Flota>();
 			for (int i = 0; i < brPokFlota; i++)
 				flotePokretne.Add(Flota.Ucitaj(ulaz[PohFlotePokret + i], dizajnID));
+
+			int brPoruka = ulaz.podatakInt(PohPoruka);
+			LinkedList<Poruka> poruke = new LinkedList<Poruka>();
+			for (int i = 0; i < brPoruka; i++)
+				poruke.AddLast(Poruka.Ucitaj(ulaz[PohPoruka + i], zvijezdeID, dizajnID));
 
 			return new Igrac(id, tip, ime, boja, organizacija, odabranaZvj, odabranPlanet,
 				poruke, dizajnovi, tehnologije, tehURazvoju, koncPoenaRazvoja, tehUIstraz,

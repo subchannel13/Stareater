@@ -11,7 +11,7 @@ namespace Prototip
 {
 	public partial class FormKolonizacija : Form
 	{
-		private Igra igra;
+		private IgraZvj igra;
 		private Igrac igrac;
 		private Brod brod;
 		private Zvijezda zvijezda;
@@ -21,7 +21,7 @@ namespace Prototip
 		private long[] brBrodova = new long[Mapa.GraditeljMape.BR_PLANETA];
 		private long[] dodatnaPopulacija = new long[Mapa.GraditeljMape.BR_PLANETA];
 
-		public FormKolonizacija(Igra igra, Igrac igrac, Brod brod, Zvijezda zvijezda)
+		public FormKolonizacija(IgraZvj igra, Igrac igrac, Brod brod, Zvijezda zvijezda)
 		{
 			InitializeComponent();
 		

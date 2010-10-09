@@ -8,7 +8,7 @@ namespace Prototip
 {
 	public class PrikazMape
 	{
-		private Igra igra;
+		private IgraZvj igra;
 
 		private double minX;
 
@@ -35,7 +35,7 @@ namespace Prototip
 
 		public const int POCETNA_SKALA_MAPE = 50;
 
-		public PrikazMape(Igra igra)
+		public PrikazMape(IgraZvj igra)
 		{
 			this.igra = igra;
 			this.skala = POCETNA_SKALA_MAPE;

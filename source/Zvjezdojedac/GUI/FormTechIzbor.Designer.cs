@@ -30,11 +30,11 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTechIzbor));
 			this.tabControlTech = new System.Windows.Forms.TabControl();
-			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.tabRazvoj = new System.Windows.Forms.TabPage();
 			this.btnOk = new System.Windows.Forms.Button();
-			this.label4 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
+			this.lblFokusirano = new System.Windows.Forms.Label();
+			this.lblRavnomjerno = new System.Windows.Forms.Label();
+			this.lblRaspodjela = new System.Windows.Forms.Label();
 			this.trkRazKoncentracija = new System.Windows.Forms.TrackBar();
 			this.trackBar1 = new System.Windows.Forms.TrackBar();
 			this.lblRazOpis = new System.Windows.Forms.Label();
@@ -43,12 +43,12 @@
 			this.btnRazDolje = new System.Windows.Forms.Button();
 			this.btnRazGore = new System.Windows.Forms.Button();
 			this.btnRazVrh = new System.Windows.Forms.Button();
-			this.label1 = new System.Windows.Forms.Label();
+			this.lblURazvoju = new System.Windows.Forms.Label();
 			this.lstRazvoj = new System.Windows.Forms.ListView();
-			this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+			this.chRazNaziv = new System.Windows.Forms.ColumnHeader();
+			this.chRazNivo = new System.Windows.Forms.ColumnHeader();
+			this.chRazPoeni = new System.Windows.Forms.ColumnHeader();
+			this.chRazUlaganje = new System.Windows.Forms.ColumnHeader();
 			this.tabIstrazivanje = new System.Windows.Forms.TabPage();
 			this.btnIstDno = new System.Windows.Forms.Button();
 			this.btnIstDolje = new System.Windows.Forms.Button();
@@ -59,17 +59,13 @@
 			this.lblIstOpis = new System.Windows.Forms.Label();
 			this.picIstSlika = new System.Windows.Forms.PictureBox();
 			this.lstIstrazivanje = new System.Windows.Forms.ListView();
-			this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
-			this.label5 = new System.Windows.Forms.Label();
-			this.chNazivIstr = new System.Windows.Forms.ColumnHeader();
-			this.chNivoIstr = new System.Windows.Forms.ColumnHeader();
-			this.chPoeniIstr = new System.Windows.Forms.ColumnHeader();
-			this.chPoeniPlus = new System.Windows.Forms.ColumnHeader();
+			this.chIstNaziv = new System.Windows.Forms.ColumnHeader();
+			this.chIstNivo = new System.Windows.Forms.ColumnHeader();
+			this.chIstPoeni = new System.Windows.Forms.ColumnHeader();
+			this.chIstPrioritet = new System.Windows.Forms.ColumnHeader();
+			this.lblUIstrazivanju = new System.Windows.Forms.Label();
 			this.tabControlTech.SuspendLayout();
-			this.tabPage1.SuspendLayout();
+			this.tabRazvoj.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trkRazKoncentracija)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picRazSlika)).BeginInit();
@@ -79,7 +75,7 @@
 			// 
 			// tabControlTech
 			// 
-			this.tabControlTech.Controls.Add(this.tabPage1);
+			this.tabControlTech.Controls.Add(this.tabRazvoj);
 			this.tabControlTech.Controls.Add(this.tabIstrazivanje);
 			this.tabControlTech.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControlTech.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -89,30 +85,30 @@
 			this.tabControlTech.Size = new System.Drawing.Size(594, 448);
 			this.tabControlTech.TabIndex = 0;
 			// 
-			// tabPage1
+			// tabRazvoj
 			// 
-			this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
-			this.tabPage1.Controls.Add(this.btnOk);
-			this.tabPage1.Controls.Add(this.label4);
-			this.tabPage1.Controls.Add(this.label3);
-			this.tabPage1.Controls.Add(this.label2);
-			this.tabPage1.Controls.Add(this.trkRazKoncentracija);
-			this.tabPage1.Controls.Add(this.trackBar1);
-			this.tabPage1.Controls.Add(this.lblRazOpis);
-			this.tabPage1.Controls.Add(this.picRazSlika);
-			this.tabPage1.Controls.Add(this.btnRazDno);
-			this.tabPage1.Controls.Add(this.btnRazDolje);
-			this.tabPage1.Controls.Add(this.btnRazGore);
-			this.tabPage1.Controls.Add(this.btnRazVrh);
-			this.tabPage1.Controls.Add(this.label1);
-			this.tabPage1.Controls.Add(this.lstRazvoj);
-			this.tabPage1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.tabPage1.Location = new System.Drawing.Point(4, 29);
-			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(586, 415);
-			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "Razvoj";
+			this.tabRazvoj.BackColor = System.Drawing.SystemColors.Control;
+			this.tabRazvoj.Controls.Add(this.btnOk);
+			this.tabRazvoj.Controls.Add(this.lblFokusirano);
+			this.tabRazvoj.Controls.Add(this.lblRavnomjerno);
+			this.tabRazvoj.Controls.Add(this.lblRaspodjela);
+			this.tabRazvoj.Controls.Add(this.trkRazKoncentracija);
+			this.tabRazvoj.Controls.Add(this.trackBar1);
+			this.tabRazvoj.Controls.Add(this.lblRazOpis);
+			this.tabRazvoj.Controls.Add(this.picRazSlika);
+			this.tabRazvoj.Controls.Add(this.btnRazDno);
+			this.tabRazvoj.Controls.Add(this.btnRazDolje);
+			this.tabRazvoj.Controls.Add(this.btnRazGore);
+			this.tabRazvoj.Controls.Add(this.btnRazVrh);
+			this.tabRazvoj.Controls.Add(this.lblURazvoju);
+			this.tabRazvoj.Controls.Add(this.lstRazvoj);
+			this.tabRazvoj.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.tabRazvoj.Location = new System.Drawing.Point(4, 29);
+			this.tabRazvoj.Name = "tabRazvoj";
+			this.tabRazvoj.Padding = new System.Windows.Forms.Padding(3);
+			this.tabRazvoj.Size = new System.Drawing.Size(586, 415);
+			this.tabRazvoj.TabIndex = 0;
+			this.tabRazvoj.Text = "Razvoj";
 			// 
 			// btnOk
 			// 
@@ -125,35 +121,35 @@
 			this.btnOk.UseVisualStyleBackColor = true;
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
 			// 
-			// label4
+			// lblFokusirano
 			// 
-			this.label4.AutoSize = true;
-			this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.label4.Location = new System.Drawing.Point(519, 248);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(59, 13);
-			this.label4.TabIndex = 18;
-			this.label4.Text = "Fokusirano";
+			this.lblFokusirano.AutoSize = true;
+			this.lblFokusirano.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.lblFokusirano.Location = new System.Drawing.Point(519, 248);
+			this.lblFokusirano.Name = "lblFokusirano";
+			this.lblFokusirano.Size = new System.Drawing.Size(59, 13);
+			this.lblFokusirano.TabIndex = 18;
+			this.lblFokusirano.Text = "Fokusirano";
 			// 
-			// label3
+			// lblRavnomjerno
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.label3.Location = new System.Drawing.Point(394, 248);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(70, 13);
-			this.label3.TabIndex = 17;
-			this.label3.Text = "Ravnomjerno";
+			this.lblRavnomjerno.AutoSize = true;
+			this.lblRavnomjerno.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.lblRavnomjerno.Location = new System.Drawing.Point(394, 248);
+			this.lblRavnomjerno.Name = "lblRavnomjerno";
+			this.lblRavnomjerno.Size = new System.Drawing.Size(70, 13);
+			this.lblRavnomjerno.TabIndex = 17;
+			this.lblRavnomjerno.Text = "Ravnomjerno";
 			// 
-			// label2
+			// lblRaspodjela
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.label2.Location = new System.Drawing.Point(394, 184);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(96, 13);
-			this.label2.TabIndex = 16;
-			this.label2.Text = "Raspodjela poena:";
+			this.lblRaspodjela.AutoSize = true;
+			this.lblRaspodjela.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.lblRaspodjela.Location = new System.Drawing.Point(394, 184);
+			this.lblRaspodjela.Name = "lblRaspodjela";
+			this.lblRaspodjela.Size = new System.Drawing.Size(96, 13);
+			this.lblRaspodjela.TabIndex = 16;
+			this.lblRaspodjela.Text = "Raspodjela poena:";
 			// 
 			// trkRazKoncentracija
 			// 
@@ -232,23 +228,23 @@
 			this.btnRazVrh.UseVisualStyleBackColor = true;
 			this.btnRazVrh.Click += new System.EventHandler(this.btnRazVrh_Click);
 			// 
-			// label1
+			// lblURazvoju
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.label1.Location = new System.Drawing.Point(8, 3);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(55, 13);
-			this.label1.TabIndex = 7;
-			this.label1.Text = "U razvoju:";
+			this.lblURazvoju.AutoSize = true;
+			this.lblURazvoju.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.lblURazvoju.Location = new System.Drawing.Point(8, 3);
+			this.lblURazvoju.Name = "lblURazvoju";
+			this.lblURazvoju.Size = new System.Drawing.Size(55, 13);
+			this.lblURazvoju.TabIndex = 7;
+			this.lblURazvoju.Text = "U razvoju:";
 			// 
 			// lstRazvoj
 			// 
 			this.lstRazvoj.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4});
+            this.chRazNaziv,
+            this.chRazNivo,
+            this.chRazPoeni,
+            this.chRazUlaganje});
 			this.lstRazvoj.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.lstRazvoj.FullRowSelect = true;
 			this.lstRazvoj.HideSelection = false;
@@ -261,27 +257,27 @@
 			this.lstRazvoj.View = System.Windows.Forms.View.Details;
 			this.lstRazvoj.SelectedIndexChanged += new System.EventHandler(this.lstRazvoj_SelectedIndexChanged);
 			// 
-			// columnHeader1
+			// chRazNaziv
 			// 
-			this.columnHeader1.Text = "Naziv";
-			this.columnHeader1.Width = 150;
+			this.chRazNaziv.Text = "Naziv";
+			this.chRazNaziv.Width = 150;
 			// 
-			// columnHeader2
+			// chRazNivo
 			// 
-			this.columnHeader2.Text = "Nivo";
-			this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.columnHeader2.Width = 45;
+			this.chRazNivo.Text = "Nivo";
+			this.chRazNivo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.chRazNivo.Width = 45;
 			// 
-			// columnHeader3
+			// chRazPoeni
 			// 
-			this.columnHeader3.Text = "Poeni";
-			this.columnHeader3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.columnHeader3.Width = 115;
+			this.chRazPoeni.Text = "Poeni";
+			this.chRazPoeni.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.chRazPoeni.Width = 115;
 			// 
-			// columnHeader4
+			// chRazUlaganje
 			// 
-			this.columnHeader4.Text = "Ulaganje";
-			this.columnHeader4.Width = 65;
+			this.chRazUlaganje.Text = "Ulaganje";
+			this.chRazUlaganje.Width = 65;
 			// 
 			// tabIstrazivanje
 			// 
@@ -295,7 +291,7 @@
 			this.tabIstrazivanje.Controls.Add(this.lblIstOpis);
 			this.tabIstrazivanje.Controls.Add(this.picIstSlika);
 			this.tabIstrazivanje.Controls.Add(this.lstIstrazivanje);
-			this.tabIstrazivanje.Controls.Add(this.label5);
+			this.tabIstrazivanje.Controls.Add(this.lblUIstrazivanju);
 			this.tabIstrazivanje.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.tabIstrazivanje.Location = new System.Drawing.Point(4, 29);
 			this.tabIstrazivanje.Name = "tabIstrazivanje";
@@ -386,10 +382,10 @@
 			// lstIstrazivanje
 			// 
 			this.lstIstrazivanje.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader5,
-            this.columnHeader6,
-            this.columnHeader7,
-            this.columnHeader8});
+            this.chIstNaziv,
+            this.chIstNivo,
+            this.chIstPoeni,
+            this.chIstPrioritet});
 			this.lstIstrazivanje.FullRowSelect = true;
 			this.lstIstrazivanje.Location = new System.Drawing.Point(8, 19);
 			this.lstIstrazivanje.MultiSelect = false;
@@ -400,55 +396,36 @@
 			this.lstIstrazivanje.View = System.Windows.Forms.View.Details;
 			this.lstIstrazivanje.SelectedIndexChanged += new System.EventHandler(this.lstIstrazivanje_SelectedIndexChanged);
 			// 
-			// columnHeader5
+			// chIstNaziv
 			// 
-			this.columnHeader5.Text = "Naziv";
-			this.columnHeader5.Width = 150;
+			this.chIstNaziv.Text = "Naziv";
+			this.chIstNaziv.Width = 150;
 			// 
-			// columnHeader6
+			// chIstNivo
 			// 
-			this.columnHeader6.Text = "Nivo";
-			this.columnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.columnHeader6.Width = 45;
+			this.chIstNivo.Text = "Nivo";
+			this.chIstNivo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.chIstNivo.Width = 45;
 			// 
-			// columnHeader7
+			// chIstPoeni
 			// 
-			this.columnHeader7.Text = "Poeni";
-			this.columnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.columnHeader7.Width = 115;
+			this.chIstPoeni.Text = "Poeni";
+			this.chIstPoeni.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.chIstPoeni.Width = 115;
 			// 
-			// columnHeader8
+			// chIstPrioritet
 			// 
-			this.columnHeader8.Text = "Prioritet";
-			this.columnHeader8.Width = 50;
+			this.chIstPrioritet.Text = "Prioritet";
+			this.chIstPrioritet.Width = 50;
 			// 
-			// label5
+			// lblUIstrazivanju
 			// 
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(8, 3);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(73, 13);
-			this.label5.TabIndex = 0;
-			this.label5.Text = "U istraživajnu:";
-			// 
-			// chNazivIstr
-			// 
-			this.chNazivIstr.Text = "Naziv";
-			this.chNazivIstr.Width = 99;
-			// 
-			// chNivoIstr
-			// 
-			this.chNivoIstr.Text = "Nivo";
-			// 
-			// chPoeniIstr
-			// 
-			this.chPoeniIstr.Text = "Poeni";
-			this.chPoeniIstr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.chPoeniIstr.Width = 89;
-			// 
-			// chPoeniPlus
-			// 
-			this.chPoeniPlus.Text = "Ulaganje";
+			this.lblUIstrazivanju.AutoSize = true;
+			this.lblUIstrazivanju.Location = new System.Drawing.Point(8, 3);
+			this.lblUIstrazivanju.Name = "lblUIstrazivanju";
+			this.lblUIstrazivanju.Size = new System.Drawing.Size(73, 13);
+			this.lblUIstrazivanju.TabIndex = 0;
+			this.lblUIstrazivanju.Text = "U istraživajnu:";
 			// 
 			// FormTechIzbor
 			// 
@@ -466,8 +443,8 @@
 			this.Text = "Istraživanje i razovj";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmTechIzbor_FormClosing);
 			this.tabControlTech.ResumeLayout(false);
-			this.tabPage1.ResumeLayout(false);
-			this.tabPage1.PerformLayout();
+			this.tabRazvoj.ResumeLayout(false);
+			this.tabRazvoj.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trkRazKoncentracija)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.picRazSlika)).EndInit();
@@ -481,40 +458,36 @@
 		#endregion
 
 		private System.Windows.Forms.TabControl tabControlTech;
-		private System.Windows.Forms.TabPage tabPage1;
+		private System.Windows.Forms.TabPage tabRazvoj;
 		private System.Windows.Forms.TabPage tabIstrazivanje;
 		private System.Windows.Forms.Button btnRazDno;
 		private System.Windows.Forms.Button btnRazDolje;
 		private System.Windows.Forms.Button btnRazGore;
 		private System.Windows.Forms.Button btnRazVrh;
-		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label lblURazvoju;
 		private System.Windows.Forms.ListView lstRazvoj;
-		private System.Windows.Forms.ColumnHeader columnHeader1;
-		private System.Windows.Forms.ColumnHeader columnHeader2;
-		private System.Windows.Forms.ColumnHeader columnHeader3;
-		private System.Windows.Forms.ColumnHeader columnHeader4;
-		private System.Windows.Forms.ColumnHeader chNazivIstr;
-		private System.Windows.Forms.ColumnHeader chNivoIstr;
-		private System.Windows.Forms.ColumnHeader chPoeniIstr;
-		private System.Windows.Forms.ColumnHeader chPoeniPlus;
+		private System.Windows.Forms.ColumnHeader chRazNaziv;
+		private System.Windows.Forms.ColumnHeader chRazNivo;
+		private System.Windows.Forms.ColumnHeader chRazPoeni;
+		private System.Windows.Forms.ColumnHeader chRazUlaganje;
 		private System.Windows.Forms.Label lblRazOpis;
 		private System.Windows.Forms.PictureBox picRazSlika;
 		private System.Windows.Forms.TrackBar trackBar1;
 		private System.Windows.Forms.TrackBar trkRazKoncentracija;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Label lblRavnomjerno;
+		private System.Windows.Forms.Label lblRaspodjela;
+		private System.Windows.Forms.Label lblFokusirano;
 		private System.Windows.Forms.Button btnOk;
 		private System.Windows.Forms.ListView lstIstrazivanje;
-		private System.Windows.Forms.ColumnHeader columnHeader5;
-		private System.Windows.Forms.ColumnHeader columnHeader6;
-		private System.Windows.Forms.ColumnHeader columnHeader7;
-		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.ColumnHeader chIstNaziv;
+		private System.Windows.Forms.ColumnHeader chIstNivo;
+		private System.Windows.Forms.ColumnHeader chIstPoeni;
+		private System.Windows.Forms.Label lblUIstrazivanju;
 		private System.Windows.Forms.Label lblIstOpis;
 		private System.Windows.Forms.PictureBox picIstSlika;
 		private System.Windows.Forms.Label lblIstPoeni;
 		private System.Windows.Forms.Label lblIstSustav;
-		private System.Windows.Forms.ColumnHeader columnHeader8;
+		private System.Windows.Forms.ColumnHeader chIstPrioritet;
 		private System.Windows.Forms.Button btnIstDno;
 		private System.Windows.Forms.Button btnIstDolje;
 		private System.Windows.Forms.Button btnIstGore;

@@ -50,7 +50,7 @@ namespace Prototip
 				cbOrganizacija.Items.Add(org.naziv);
 			cbOrganizacija.SelectedIndex = Postavke.ProslaIgra.organizacija;
 
-			for (int i = 2; i <= Igra.maxIgraca; i++)
+			for (int i = 2; i <= IgraZvj.maxIgraca; i++)
 				cbBrIgraca.Items.Add(i);
 			cbBrIgraca.SelectedIndex = Postavke.ProslaIgra.brIgraca-2;
 

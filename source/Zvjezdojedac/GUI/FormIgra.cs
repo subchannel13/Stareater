@@ -10,17 +10,18 @@ using System.IO.Compression;
 using Alati;
 using Prototip.Podaci;
 using Prototip.Podaci.Jezici;
+using Prototip.Igra.Poruke;
 
 namespace Prototip
 {
 	public partial class FormIgra : Form
 	{
 		private PrikazMape prikazMape;
-		private Igra igra;
+		private IgraZvj igra;
 		private Igrac igrac;
 		private Tocka<double> pomakPogleda;
 
-		public FormIgra(Igra igra)
+		public FormIgra(IgraZvj igra)
 		{
 			InitializeComponent();
 
@@ -388,27 +389,32 @@ namespace Prototip
 		private void btnPoruke_Click(object sender, EventArgs e)
 		{
 			FormPoruke formPoruke = new FormPoruke(igrac);
+			Zvijezda zvj = null;
+			Planet planet = null;
 			if (formPoruke.ShowDialog() == DialogResult.OK)
 				if (formPoruke.odabranaProuka != null) {
 					Poruka poruka = formPoruke.odabranaProuka;
 					switch (formPoruke.odabranaProuka.tip) {
 						case Poruka.Tip.Brod:
-							odaberiZvijezdu(poruka.izvorZvijezda, false);
+							zvj = ((PorukaBrod)poruka).zvijezda;
+							odaberiZvijezdu(zvj, false);
 							tabCtrlDesno.SelectedTab = tabPageFlote;
-							centrirajZvijezdu(poruka.izvorZvijezda);
+							centrirajZvijezdu(zvj);
 							break;
 						case Poruka.Tip.Kolonija:
-							odaberiZvijezdu(poruka.izvorZvijezda, false);
-							odaberiPlanet(poruka.izvorPlanet, true);
-							centrirajZvijezdu(poruka.izvorZvijezda);
+							planet = ((PorukaKolonija)poruka).planet;
+							odaberiZvijezdu(planet.zvjezda, false);
+							odaberiPlanet(planet, true);
+							centrirajZvijezdu(planet.zvjezda);
 							break;
 						case Poruka.Tip.Tehnologija:
 							btnTech_Click(sender, e);
 							break;
 						case Poruka.Tip.Zgrada:
-							odaberiZvijezdu(poruka.izvorZvijezda, false);
-							odaberiPlanet(poruka.izvorPlanet, true);
-							centrirajZvijezdu(poruka.izvorZvijezda);
+							planet = ((PorukaZgrada)poruka).planet;
+							odaberiZvijezdu(planet.zvjezda, false);
+							odaberiPlanet(planet, true);
+							centrirajZvijezdu(planet.zvjezda);
 							break;
 					}
 				}
@@ -450,7 +456,7 @@ namespace Prototip
 				string ucitanaIgra = citac.ReadToEnd();
 				citac.Close();
 
-				this.igra = Igra.Ucitaj(ucitanaIgra);
+				this.igra = IgraZvj.Ucitaj(ucitanaIgra);
 				igrac = igra.trenutniIgrac();
 
 				pomakPogleda = null;

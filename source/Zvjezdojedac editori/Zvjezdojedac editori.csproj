@@ -134,11 +134,11 @@
     <Compile Include="..\Zvjezdojedac\Igra\Flota.cs">
       <Link>Zvjezdojedac\Flota.cs</Link>
     </Compile>
-    <Compile Include="..\Zvjezdojedac\Igra\Igra.cs">
-      <Link>Zvjezdojedac\Igra.cs</Link>
-    </Compile>
     <Compile Include="..\Zvjezdojedac\Igra\Igrac.cs">
       <Link>Zvjezdojedac\Igrac.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\IgraZvj.cs">
+      <Link>Zvjezdojedac\IgraZvj.cs</Link>
     </Compile>
     <Compile Include="..\Zvjezdojedac\Igra\Kolonija.cs">
       <Link>Zvjezdojedac\Kolonija.cs</Link>
@@ -149,8 +149,20 @@
     <Compile Include="..\Zvjezdojedac\Igra\Planet.cs">
       <Link>Zvjezdojedac\Planet.cs</Link>
     </Compile>
-    <Compile Include="..\Zvjezdojedac\Igra\Poruke.cs">
-      <Link>Zvjezdojedac\Poruke.cs</Link>
+    <Compile Include="..\Zvjezdojedac\Igra\Poruka.cs">
+      <Link>Zvjezdojedac\Poruka.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Poruke\PorukaBrod.cs">
+      <Link>Zvjezdojedac\PorukaBrod.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Poruke\PorukaKolonija.cs">
+      <Link>Zvjezdojedac\PorukaKolonija.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Poruke\PorukaTehnologija.cs">
+      <Link>Zvjezdojedac\PorukaTehnologija.cs</Link>
+    </Compile>
+    <Compile Include="..\Zvjezdojedac\Igra\Poruke\PorukaZgrada.cs">
+      <Link>Zvjezdojedac\PorukaZgrada.cs</Link>
     </Compile>
     <Compile Include="..\Zvjezdojedac\Igra\Tehnologija.cs">
       <Link>Zvjezdojedac\Tehnologija.cs</Link>

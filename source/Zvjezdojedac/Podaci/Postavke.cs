@@ -28,7 +28,7 @@ namespace Prototip.Podaci
 					if (!int.TryParse(podatci["BR_IGRACA"], out brIgraca))
 						brIgraca = 4;
 				if (brIgraca < 1) brIgraca = 1;
-				if (brIgraca > Igra.maxIgraca) brIgraca = Igra.maxIgraca;
+				if (brIgraca > IgraZvj.maxIgraca) brIgraca = IgraZvj.maxIgraca;
 
 				organizacija = 0;
 				if (podatci.ContainsKey("ORGANIZACIJA"))
