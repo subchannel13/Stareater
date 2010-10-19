@@ -3,3 +3,8 @@ chTipBrod = Novi brodovi
 chTipKolonija = Nove kolonije
 chTipTehnologije = Nove tehnologije
 chTipZgrade = Nove zgrade
+
+porukaBrod := "Izgrađeno " # P KOLICINA # " x " $ DIZAJN " kod " $ SUSTAV "."
+porukaKolonija := "Nova kolonija utemeljena " $ PLANET "."
+porukaTehnologija := "Nova tehnologija: " $ TEH_NAZIV ", " # P NIVO # ". nivo."
+porukaZgrada := $ ZGRADA " izgrađen na " $ PLANET "."

@@ -145,6 +145,7 @@
     <Compile Include="Podaci\Formule\VarijabilnaFormula.cs" />
     <Compile Include="Podaci\IIdentifiable.cs" />
     <Compile Include="Podaci\IPohranjivoSB.cs" />
+    <Compile Include="Podaci\Jezici\Elementi\TekstVrijednost.cs" />
     <Compile Include="Podaci\Jezici\Kontekst.cs" />
     <Compile Include="Podaci\Jezici\Elementi\Literal.cs" />
     <Compile Include="Podaci\Jezici\Elementi\UvjetniLiteral.cs" />

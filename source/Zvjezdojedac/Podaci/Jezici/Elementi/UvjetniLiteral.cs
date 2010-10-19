@@ -15,9 +15,13 @@ namespace Prototip.Podaci.Jezici.Elementi
 			}
 
 			Formula formula = Formula.IzStringa(sb.ToString());
-			if (linija.Peek() == "$") {
+			if (linija.Peek() == "#") {
 				linija.Dequeue();
 				return new UvjetniLiteral(formula, Vrijednost.Nacini(linija));
+			}
+			else if (linija.Peek() == "$") {
+				linija.Dequeue();
+				return new UvjetniLiteral(formula, TekstVrijednost.Nacini(linija));
 			}
 			else
 				return new UvjetniLiteral(formula, Literal.Nacini(linija));
@@ -36,13 +40,21 @@ namespace Prototip.Podaci.Jezici.Elementi
 
 		public string tekst()
 		{
-			return tekst(null);
+			return tekst(null, null);
 		}
 
 		public string tekst(Dictionary<string, double> varijable)
 		{
 			if (uvjet.istina(varijable))
 				return izlaz.tekst(varijable);
+			else
+				return "";
+		}
+
+		public string tekst(Dictionary<string, double> varijable, Dictionary<string, string> tekstVarijable)
+		{
+			if (uvjet.istina(varijable))
+				return izlaz.tekst(varijable, tekstVarijable);
 			else
 				return "";
 		}

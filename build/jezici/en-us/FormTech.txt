@@ -1,0 +1,20 @@
+﻿::FORM_TECH
+btnDno = Last
+btnDolje = Down
+btnGore = Up
+btnVrh = First
+btnOk = Ok
+chNaziv = Name
+chNivo = Level
+chPoeni = Points
+chIstPrioritet = Priority
+chRazUlaganje = Investment
+lblFokusirano = Focused
+lblIstPoeni = Research points
+lblRaspodjela = Distribution
+lblRavnomjerno = Even
+lblUIstrazivanju = Research
+lblURazvoju = In development
+naslov = Research & development
+tabIst = Research
+tabRaz = Development

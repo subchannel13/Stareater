@@ -1,7 +1,7 @@
 ﻿::ZGRADE
 IND_IME = Industrialisation
 IND_OPIS = No description
-POP_IME = Kolonization
+POP_IME = Colonization
 POP_OPIS = No description
 RAD_STIT_IME = Radiation shield
 RAD_STIT_OPIS = No description

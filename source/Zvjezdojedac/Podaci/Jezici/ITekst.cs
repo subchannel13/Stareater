@@ -8,5 +8,6 @@ namespace Prototip.Podaci.Jezici
 	{
 		string tekst();
 		string tekst(Dictionary<string, double> varijable);
+		string tekst(Dictionary<string, double> varijable, Dictionary<string, string> tekstVarijable);
 	}
 }

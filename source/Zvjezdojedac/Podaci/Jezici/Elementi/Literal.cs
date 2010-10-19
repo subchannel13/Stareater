@@ -47,7 +47,7 @@ namespace Prototip.Podaci.Jezici.Elementi
 
 		public string tekst()
 		{
-			return tekst(null);
+			return _tekst;
 		}
 
 		public string tekst(Dictionary<string, double> varijable)
@@ -55,6 +55,10 @@ namespace Prototip.Podaci.Jezici.Elementi
 			return _tekst;
 		}
 
+		public string tekst(Dictionary<string, double> varijable, Dictionary<string, string> tekstVarijable)
+		{
+			return _tekst;
+		}
 		#endregion
 	}
 }

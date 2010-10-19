@@ -48,6 +48,11 @@ namespace Prototip.Podaci.Jezici.Elementi
 			throw new FormatException();
 		}
 
+		public string tekst(Dictionary<string, double> varijable, Dictionary<string, string> tekstVarijable)
+		{
+			return tekst(varijable);
+		}
+
 		#endregion
 	}
 }

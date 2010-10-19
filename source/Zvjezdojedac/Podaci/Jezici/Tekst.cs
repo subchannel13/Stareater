@@ -125,8 +125,10 @@ namespace Prototip.Podaci.Jezici
 			string tip = linija.Dequeue();
 			if (tip == "?")
 				return Elementi.UvjetniLiteral.Nacini(linija);
-			else if (tip == "$")
+			else if (tip == "#")
 				return Elementi.Vrijednost.Nacini(linija);
+			else if (tip == "$")
+				return Elementi.TekstVrijednost.Nacini(linija);
 
 			throw new FormatException();
 		}
@@ -143,18 +145,22 @@ namespace Prototip.Podaci.Jezici
 
 		public string tekst()
 		{
-			return tekst(null);
+			return tekst(null, null);
 		}
 
 		public string tekst(Dictionary<string, double> varijable)
 		{
+			return tekst(varijable, null);
+		}
+
+		public string tekst(Dictionary<string, double> varijable, Dictionary<string, string> tekstVarijable)
+		{
 			StringBuilder sb = new StringBuilder();
 			foreach (ITekst element in elementi)
-				sb.Append(element.tekst(varijable));
+				sb.Append(element.tekst(varijable, tekstVarijable));
 
 			return sb.ToString();
 		}
-
 		#endregion
 	}
 }
