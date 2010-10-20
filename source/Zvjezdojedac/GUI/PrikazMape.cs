@@ -6,21 +6,18 @@ using System.Drawing;
 
 namespace Prototip
 {
-	public class PrikazMape
+	public class PrikazMape : IDisposable
 	{
 		private IgraZvj igra;
 
 		private double minX;
-
 		private double maxX;
-
+		
 		private double minY;
-
 		private double maxY;
 
 		private double skala;
-
-		private Image _slikaMape;
+		private Image _slikaMape = null;
 
 		public Image slikaMape
 		{
@@ -59,6 +56,9 @@ namespace Prototip
 
 		public Image osvjezi()
 		{
+			if (_slikaMape != null)
+				_slikaMape.Dispose();
+
 			Bitmap bmpSlika = new Bitmap((int) (skala * (maxX - minX + 2)), (int) (skala * (maxY - minY + 2)));
 			Graphics g = Graphics.FromImage(bmpSlika);
 			g.Clear(Color.Black);
@@ -128,5 +128,15 @@ namespace Prototip
 			this.skala = MIN_SKALA_MAPE + skala * (MAX_SKALA_MAPE - MIN_SKALA_MAPE);
 			osvjezi();
 		}
+
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+			if (_slikaMape != null)
+				_slikaMape.Dispose();
+		}
+
+		#endregion
 	}
 }

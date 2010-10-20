@@ -567,6 +567,7 @@
 			this.Text = "Zvjezdojedac";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.Load += new System.EventHandler(this.frmIgra_Load);
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormIgra_FormClosed);
 			this.tabCtrlDesno.ResumeLayout(false);
 			this.tabPageZvijezda.ResumeLayout(false);
 			this.pnlOpisZvjezde.ResumeLayout(false);

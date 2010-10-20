@@ -36,7 +36,6 @@ namespace Prototip
 
 		public static Image FlotaTab = null;
 		public static Image SlikaOdabiraZvijezde;
-		//public static Image Poruka;
 
 		private static Dictionary<Poruka.Tip, Image> initTipPoruke()
 		{
@@ -88,9 +87,6 @@ namespace Prototip
 				case "odabir_zvijezde":
 					SlikaOdabiraZvijezde = slika;
 					break;
-/*				case "poruka":
-					Poruka = slika;
-					break;*/
 				case "flota":
 					foreach (Color boja in Igrac.BojeIgraca)
 						Flota.Add(boja, ModulirajBoju(slika, boja));

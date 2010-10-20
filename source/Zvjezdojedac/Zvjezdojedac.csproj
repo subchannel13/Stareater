@@ -112,6 +112,8 @@
     </Compile>
     <Compile Include="GUI\PrikazMape.cs" />
     <Compile Include="Igra\Brodovi\Brod.cs" />
+    <Compile Include="Igra\Brodovi\Dizajner\Dizajner.cs" />
+    <Compile Include="Igra\Brodovi\Dizajner\Komponente.cs" />
     <Compile Include="Igra\Brodovi\DizajnZgrada.cs" />
     <Compile Include="Igra\Brodovi\Komponenta.cs" />
     <Compile Include="Igra\Brodovi\AKomponentaInfo.cs" />

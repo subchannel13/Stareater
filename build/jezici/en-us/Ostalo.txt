@@ -1,4 +1,10 @@
-﻿::FORM_POSTAVKE
+﻿::FORM_KOLONIZACIJA
+btnPrihvati = Confirm
+groupPoStan = Estimate (per populant)
+lblBrBrodova = Num. of ships
+naslov = Colonization
+
+::FORM_POSTAVKE
 BTN_OK = Ok
 LBL_JEZIK = Language:
 

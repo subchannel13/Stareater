@@ -45,7 +45,7 @@
 			this.lblZracenje = new System.Windows.Forms.Label();
 			this.lblAtmoTemperatura = new System.Windows.Forms.Label();
 			this.lblGravitacija = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
+			this.lblAtmosfera = new System.Windows.Forms.Label();
 			this.lblAtmKvaliteta = new System.Windows.Forms.Label();
 			this.lblAtmGustoca = new System.Windows.Forms.Label();
 			this.lblBrRadnihMjesta = new System.Windows.Forms.Label();
@@ -176,7 +176,7 @@
 			this.groupPlanet.Controls.Add(this.lblZracenje);
 			this.groupPlanet.Controls.Add(this.lblAtmoTemperatura);
 			this.groupPlanet.Controls.Add(this.lblGravitacija);
-			this.groupPlanet.Controls.Add(this.label3);
+			this.groupPlanet.Controls.Add(this.lblAtmosfera);
 			this.groupPlanet.Controls.Add(this.lblAtmKvaliteta);
 			this.groupPlanet.Controls.Add(this.lblAtmGustoca);
 			this.groupPlanet.Location = new System.Drawing.Point(166, 12);
@@ -231,14 +231,14 @@
 			this.lblGravitacija.TabIndex = 3;
 			this.lblGravitacija.Text = "Gravitacija: xx.x";
 			// 
-			// label3
+			// lblAtmosfera
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(152, 16);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(57, 13);
-			this.label3.TabIndex = 2;
-			this.label3.Text = "Atmosfera:";
+			this.lblAtmosfera.AutoSize = true;
+			this.lblAtmosfera.Location = new System.Drawing.Point(152, 16);
+			this.lblAtmosfera.Name = "lblAtmosfera";
+			this.lblAtmosfera.Size = new System.Drawing.Size(57, 13);
+			this.lblAtmosfera.TabIndex = 2;
+			this.lblAtmosfera.Text = "Atmosfera:";
 			// 
 			// lblAtmKvaliteta
 			// 
@@ -358,7 +358,7 @@
 		private System.Windows.Forms.Label lblZracenje;
 		private System.Windows.Forms.Label lblAtmoTemperatura;
 		private System.Windows.Forms.Label lblGravitacija;
-		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label lblAtmosfera;
 		private System.Windows.Forms.Label lblAtmKvaliteta;
 		private System.Windows.Forms.Label lblAtmGustoca;
 		private System.Windows.Forms.Label lblBrRadnihMjesta;

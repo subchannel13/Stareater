@@ -1,4 +1,10 @@
-﻿::FORM_POSTAVKE
+﻿::FORM_KOLONIZACIJA
+btnPrihvati = Prihvati
+groupPoStan = Procjena (po stanovniku)
+lblBrBrodova = Br. brodova
+naslov = Kolonizacija
+
+::FORM_POSTAVKE
 BTN_OK = U redu
 LBL_JEZIK = Jezik:
 

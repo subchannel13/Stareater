@@ -10,6 +10,7 @@ namespace Prototip.Podaci.Jezici
 		Opcenito,
 		FormGradnja,
 		FormIgra,
+		FormKolonizacija,
 		FormMain,
 		FormNovaIgra,
 		FormPlanetInfo,

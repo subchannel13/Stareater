@@ -143,7 +143,7 @@ namespace Prototip
 					listViewPlaneti.Items.Add(item);
 				}
 			else
-				listViewPlaneti.Items.Add(jezik["neistrazeno"].tekst(null));
+				listViewPlaneti.Items.Add(jezik["zvjNeistrazeno"].tekst(null));
 
 			tvFlota.Nodes.Clear();
 			tvFlota.ImageList.Images.Clear();
@@ -480,6 +480,11 @@ namespace Prototip
 				FormKolonizacija formKolonizacija = new FormKolonizacija(igra, igrac, brod, igrac.odabranaZvijezda);
 				formKolonizacija.ShowDialog();
 			}
+		}
+
+		private void FormIgra_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			prikazMape.Dispose();
 		}
 	}
 }
