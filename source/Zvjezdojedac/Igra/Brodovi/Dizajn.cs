@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Alati;
+using Prototip.Podaci;
+using Prototip.Podaci.Jezici;
 
 namespace Prototip
 {
@@ -30,13 +32,25 @@ namespace Prototip
 		}
 		public class PrivEfektInfo
 		{
-			public string opis { get; private set; }
+			private string opisKod;
 			public PrivEfektTip tip { get; private set; }
 
 			public PrivEfektInfo(string opis, PrivEfektTip tip)
 			{
 				this.opis = opis;
 				this.tip = tip;
+			}
+
+			public string opis 
+			{
+				get
+				{
+					return Postavke.jezik[Kontekst.Komponente, opisKod].tekst();
+				}
+				private set
+				{
+					opisKod = value;
+				}
 			}
 		}
 
@@ -45,17 +59,17 @@ namespace Prototip
 		{
 			Dictionary<string, PrivEfektInfo> ret = new Dictionary<string, PrivEfektInfo>();
 
-			ret.Add(Koef.Brzine, new PrivEfektInfo("Pokretljivost", PrivEfektTip.Koeficijent));
-			ret.Add(Koef.Izdrzljivosti, new PrivEfektInfo("Izdržljivost oklopa", PrivEfektTip.Koeficijent));
-			ret.Add(Koef.Ometanja, new PrivEfektInfo("Ometanje", PrivEfektTip.Koeficijent));
-			ret.Add(Koef.StitDebljina, new PrivEfektInfo("Debljina štita", PrivEfektTip.Koeficijent));
-			ret.Add(Koef.StitIzdrzljivost, new PrivEfektInfo("Izdržljivost štita", PrivEfektTip.Koeficijent));
-			ret.Add(Koef.StitObnavljanje, new PrivEfektInfo("Obnavljanje štita", PrivEfektTip.Koeficijent));
+			ret.Add(Koef.Brzine, new PrivEfektInfo("SOE_KOEF_BRZINE", PrivEfektTip.Koeficijent));
+			ret.Add(Koef.Izdrzljivosti, new PrivEfektInfo("SOE_KOEF_IZDRZ", PrivEfektTip.Koeficijent));
+			ret.Add(Koef.Ometanja, new PrivEfektInfo("SOE_KOEF_OMET", PrivEfektTip.Koeficijent));
+			ret.Add(Koef.StitDebljina, new PrivEfektInfo("SOE_KOEF_STIT_DEB", PrivEfektTip.Koeficijent));
+			ret.Add(Koef.StitIzdrzljivost, new PrivEfektInfo("SOE_KOEF_STIT_IZD", PrivEfektTip.Koeficijent));
+			ret.Add(Koef.StitObnavljanje, new PrivEfektInfo("SOE_KOEF_STIT_OBN", PrivEfektTip.Koeficijent));
 
-			ret.Add(Plus.BrSenzora, new PrivEfektInfo("Br. senzora", PrivEfektTip.Pribrojnik));
-			ret.Add(Plus.Inercija, new PrivEfektInfo("Tromost", PrivEfektTip.Pribrojnik));
-			ret.Add(Plus.Prikrivanje, new PrivEfektInfo("Prikrivanje", PrivEfektTip.Pribrojnik));
-			ret.Add(Plus.VelicinaReaktora, new PrivEfektInfo("Veličina reaktora", PrivEfektTip.Pribrojnik));
+			ret.Add(Plus.BrSenzora, new PrivEfektInfo("SOE_PLUS_SENZORI", PrivEfektTip.Pribrojnik));
+			ret.Add(Plus.Inercija, new PrivEfektInfo("SOE_PLUS_INERC", PrivEfektTip.Pribrojnik));
+			ret.Add(Plus.Prikrivanje, new PrivEfektInfo("SOE_PLUS_PRIK", PrivEfektTip.Pribrojnik));
+			ret.Add(Plus.VelicinaReaktora, new PrivEfektInfo("SOE_PLUS_REAKTOR", PrivEfektTip.Pribrojnik));
 			return ret;
 		}
 

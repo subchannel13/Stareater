@@ -19,7 +19,7 @@ namespace Prototip
 			#region Statično
 			public static Dictionary<Misija.Tip, List<OruzjeInfo>> Oruzja = new Dictionary<Misija.Tip, List<OruzjeInfo>>();
 			public static Dictionary<string, OruzjeInfo> KodoviOruzja = new Dictionary<string, OruzjeInfo>();
-			public static Dictionary<Ciljanje, string> OpisCiljanja = initOpisCiljanja();
+			public static Dictionary<Ciljanje, string> CiljanjeKod = initOpisCiljanja();
 			private static Dictionary<string, Ciljanje> StringUCiljanje = initStringUCiljanje();
 
 			private static Dictionary<string, Ciljanje> initStringUCiljanje()
@@ -33,9 +33,9 @@ namespace Prototip
 			private static Dictionary<Ciljanje, string> initOpisCiljanja()
 			{
 				Dictionary<Ciljanje, string> ret = new Dictionary<Ciljanje, string>();
-				ret.Add(Ciljanje.Obrana, "mali objekti");
-				ret.Add(Ciljanje.Normalno, "normalno");
-				ret.Add(Ciljanje.Veliki_brodovi, "veliki brodovi");
+				ret.Add(Ciljanje.Obrana, "CILJ_OBRANA");
+				ret.Add(Ciljanje.Normalno, "CILJ_NORMALNO");
+				ret.Add(Ciljanje.Veliki_brodovi, "CILJ_VELIKI");
 				return ret;
 			}
 

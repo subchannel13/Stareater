@@ -29,16 +29,17 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormFlote));
-			this.tabCtrlFlote = new System.Windows.Forms.TabControl();
+			this.tabvCtrlFlote = new System.Windows.Forms.TabControl();
 			this.tabDizajnovi = new System.Windows.Forms.TabPage();
 			this.btnUkloniDizajn = new System.Windows.Forms.Button();
 			this.txtDizajnInfo = new System.Windows.Forms.TextBox();
 			this.lstvDizajnovi = new System.Windows.Forms.ListView();
-			this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
+			this.chDizajnNaziv = new System.Windows.Forms.ColumnHeader();
+			this.chBrojBrodova = new System.Windows.Forms.ColumnHeader();
 			this.picSlikaDizajna = new System.Windows.Forms.PictureBox();
-			this.label1 = new System.Windows.Forms.Label();
+			this.lblDizajn = new System.Windows.Forms.Label();
 			this.tabNoviDizajn = new System.Windows.Forms.TabPage();
+			this.btnNDZadrziInfo = new System.Windows.Forms.Button();
 			this.lblNDcijena = new System.Windows.Forms.Label();
 			this.cbNDinfoStrana = new System.Windows.Forms.ComboBox();
 			this.btnNDinfoSlijedeca = new System.Windows.Forms.Button();
@@ -47,21 +48,21 @@
 			this.btnNDspecOpremaMinus = new System.Windows.Forms.Button();
 			this.btnNDspecOpremaPlus = new System.Windows.Forms.Button();
 			this.lstvNDspecOprema = new System.Windows.Forms.ListView();
-			this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
-			this.label9 = new System.Windows.Forms.Label();
-			this.label8 = new System.Windows.Forms.Label();
+			this.chSpecOpKolicina = new System.Windows.Forms.ColumnHeader();
+			this.chSpecOpNaziv = new System.Windows.Forms.ColumnHeader();
+			this.chSpecOpVelicina = new System.Windows.Forms.ColumnHeader();
+			this.lblSpecOprema = new System.Windows.Forms.Label();
+			this.lblTaktika = new System.Windows.Forms.Label();
 			this.cbNDtaktika = new System.Windows.Forms.ComboBox();
 			this.lblNDnosivost = new System.Windows.Forms.Label();
 			this.lblNDoklop = new System.Windows.Forms.Label();
 			this.lblNDsenzori = new System.Windows.Forms.Label();
 			this.lblNDpokretljivost = new System.Windows.Forms.Label();
 			this.lblNDudioMisija = new System.Windows.Forms.Label();
-			this.label7 = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
-			this.label5 = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
+			this.lblUdioSek = new System.Windows.Forms.Label();
+			this.lblStit = new System.Windows.Forms.Label();
+			this.lblSekMisija = new System.Windows.Forms.Label();
+			this.lblPrimMisija = new System.Windows.Forms.Label();
 			this.cbNDprimMisija = new System.Windows.Forms.ComboBox();
 			this.cbNDsekMisija = new System.Windows.Forms.ComboBox();
 			this.cbNDstit = new System.Windows.Forms.ComboBox();
@@ -70,28 +71,27 @@
 			this.chNDMZpogon = new System.Windows.Forms.CheckBox();
 			this.btnSpremi = new System.Windows.Forms.Button();
 			this.cbNDvelicina = new System.Windows.Forms.ComboBox();
-			this.label3 = new System.Windows.Forms.Label();
+			this.lblVelicina = new System.Windows.Forms.Label();
 			this.txtNDnaziv = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
+			this.lblNaziv = new System.Windows.Forms.Label();
 			this.picNDSlika = new System.Windows.Forms.PictureBox();
-			this.btnNDZadrziInfo = new System.Windows.Forms.Button();
-			this.tabCtrlFlote.SuspendLayout();
+			this.tabvCtrlFlote.SuspendLayout();
 			this.tabDizajnovi.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlikaDizajna)).BeginInit();
 			this.tabNoviDizajn.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picNDSlika)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// tabCtrlFlote
+			// tabvCtrlFlote
 			// 
-			this.tabCtrlFlote.Controls.Add(this.tabDizajnovi);
-			this.tabCtrlFlote.Controls.Add(this.tabNoviDizajn);
-			this.tabCtrlFlote.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabCtrlFlote.Location = new System.Drawing.Point(0, 0);
-			this.tabCtrlFlote.Name = "tabCtrlFlote";
-			this.tabCtrlFlote.SelectedIndex = 0;
-			this.tabCtrlFlote.Size = new System.Drawing.Size(588, 476);
-			this.tabCtrlFlote.TabIndex = 0;
+			this.tabvCtrlFlote.Controls.Add(this.tabDizajnovi);
+			this.tabvCtrlFlote.Controls.Add(this.tabNoviDizajn);
+			this.tabvCtrlFlote.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tabvCtrlFlote.Location = new System.Drawing.Point(0, 0);
+			this.tabvCtrlFlote.Name = "tabvCtrlFlote";
+			this.tabvCtrlFlote.SelectedIndex = 0;
+			this.tabvCtrlFlote.Size = new System.Drawing.Size(588, 476);
+			this.tabvCtrlFlote.TabIndex = 0;
 			// 
 			// tabDizajnovi
 			// 
@@ -100,7 +100,7 @@
 			this.tabDizajnovi.Controls.Add(this.txtDizajnInfo);
 			this.tabDizajnovi.Controls.Add(this.lstvDizajnovi);
 			this.tabDizajnovi.Controls.Add(this.picSlikaDizajna);
-			this.tabDizajnovi.Controls.Add(this.label1);
+			this.tabDizajnovi.Controls.Add(this.lblDizajn);
 			this.tabDizajnovi.Location = new System.Drawing.Point(4, 22);
 			this.tabDizajnovi.Name = "tabDizajnovi";
 			this.tabDizajnovi.Padding = new System.Windows.Forms.Padding(3);
@@ -132,8 +132,8 @@
 			// lstvDizajnovi
 			// 
 			this.lstvDizajnovi.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader4,
-            this.columnHeader5});
+            this.chDizajnNaziv,
+            this.chBrojBrodova});
 			this.lstvDizajnovi.FullRowSelect = true;
 			this.lstvDizajnovi.GridLines = true;
 			this.lstvDizajnovi.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -146,15 +146,15 @@
 			this.lstvDizajnovi.View = System.Windows.Forms.View.Details;
 			this.lstvDizajnovi.SelectedIndexChanged += new System.EventHandler(this.lstvDizajnovi_SelectedIndexChanged);
 			// 
-			// columnHeader4
+			// chDizajnNaziv
 			// 
-			this.columnHeader4.Text = "Dizajn";
-			this.columnHeader4.Width = 271;
+			this.chDizajnNaziv.Text = "Dizajn";
+			this.chDizajnNaziv.Width = 271;
 			// 
-			// columnHeader5
+			// chBrojBrodova
 			// 
-			this.columnHeader5.Text = "Br. brodova";
-			this.columnHeader5.Width = 67;
+			this.chBrojBrodova.Text = "Br. brodova";
+			this.chBrojBrodova.Width = 67;
 			// 
 			// picSlikaDizajna
 			// 
@@ -164,14 +164,14 @@
 			this.picSlikaDizajna.TabIndex = 2;
 			this.picSlikaDizajna.TabStop = false;
 			// 
-			// label1
+			// lblDizajn
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(379, 6);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(39, 13);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Dizajn:";
+			this.lblDizajn.AutoSize = true;
+			this.lblDizajn.Location = new System.Drawing.Point(379, 6);
+			this.lblDizajn.Name = "lblDizajn";
+			this.lblDizajn.Size = new System.Drawing.Size(39, 13);
+			this.lblDizajn.TabIndex = 0;
+			this.lblDizajn.Text = "Dizajn:";
 			// 
 			// tabNoviDizajn
 			// 
@@ -185,18 +185,18 @@
 			this.tabNoviDizajn.Controls.Add(this.btnNDspecOpremaMinus);
 			this.tabNoviDizajn.Controls.Add(this.btnNDspecOpremaPlus);
 			this.tabNoviDizajn.Controls.Add(this.lstvNDspecOprema);
-			this.tabNoviDizajn.Controls.Add(this.label9);
-			this.tabNoviDizajn.Controls.Add(this.label8);
+			this.tabNoviDizajn.Controls.Add(this.lblSpecOprema);
+			this.tabNoviDizajn.Controls.Add(this.lblTaktika);
 			this.tabNoviDizajn.Controls.Add(this.cbNDtaktika);
 			this.tabNoviDizajn.Controls.Add(this.lblNDnosivost);
 			this.tabNoviDizajn.Controls.Add(this.lblNDoklop);
 			this.tabNoviDizajn.Controls.Add(this.lblNDsenzori);
 			this.tabNoviDizajn.Controls.Add(this.lblNDpokretljivost);
 			this.tabNoviDizajn.Controls.Add(this.lblNDudioMisija);
-			this.tabNoviDizajn.Controls.Add(this.label7);
-			this.tabNoviDizajn.Controls.Add(this.label6);
-			this.tabNoviDizajn.Controls.Add(this.label5);
-			this.tabNoviDizajn.Controls.Add(this.label4);
+			this.tabNoviDizajn.Controls.Add(this.lblUdioSek);
+			this.tabNoviDizajn.Controls.Add(this.lblStit);
+			this.tabNoviDizajn.Controls.Add(this.lblSekMisija);
+			this.tabNoviDizajn.Controls.Add(this.lblPrimMisija);
 			this.tabNoviDizajn.Controls.Add(this.cbNDprimMisija);
 			this.tabNoviDizajn.Controls.Add(this.cbNDsekMisija);
 			this.tabNoviDizajn.Controls.Add(this.cbNDstit);
@@ -205,9 +205,9 @@
 			this.tabNoviDizajn.Controls.Add(this.chNDMZpogon);
 			this.tabNoviDizajn.Controls.Add(this.btnSpremi);
 			this.tabNoviDizajn.Controls.Add(this.cbNDvelicina);
-			this.tabNoviDizajn.Controls.Add(this.label3);
+			this.tabNoviDizajn.Controls.Add(this.lblVelicina);
 			this.tabNoviDizajn.Controls.Add(this.txtNDnaziv);
-			this.tabNoviDizajn.Controls.Add(this.label2);
+			this.tabNoviDizajn.Controls.Add(this.lblNaziv);
 			this.tabNoviDizajn.Controls.Add(this.picNDSlika);
 			this.tabNoviDizajn.Location = new System.Drawing.Point(4, 22);
 			this.tabNoviDizajn.Name = "tabNoviDizajn";
@@ -215,6 +215,16 @@
 			this.tabNoviDizajn.Size = new System.Drawing.Size(580, 450);
 			this.tabNoviDizajn.TabIndex = 1;
 			this.tabNoviDizajn.Text = "Novi dizajn";
+			// 
+			// btnNDZadrziInfo
+			// 
+			this.btnNDZadrziInfo.Location = new System.Drawing.Point(451, 69);
+			this.btnNDZadrziInfo.Name = "btnNDZadrziInfo";
+			this.btnNDZadrziInfo.Size = new System.Drawing.Size(29, 23);
+			this.btnNDZadrziInfo.TabIndex = 32;
+			this.btnNDZadrziInfo.Text = "*";
+			this.btnNDZadrziInfo.UseVisualStyleBackColor = true;
+			this.btnNDZadrziInfo.Click += new System.EventHandler(this.bntNDZadrziInfo_Click);
 			// 
 			// lblNDcijena
 			// 
@@ -287,9 +297,9 @@
 			// lstvNDspecOprema
 			// 
 			this.lstvNDspecOprema.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
+            this.chSpecOpKolicina,
+            this.chSpecOpNaziv,
+            this.chSpecOpVelicina});
 			this.lstvNDspecOprema.FullRowSelect = true;
 			this.lstvNDspecOprema.GridLines = true;
 			this.lstvNDspecOprema.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -304,37 +314,37 @@
 			this.lstvNDspecOprema.ItemActivate += new System.EventHandler(this.lstvNDspecOprema_ItemActivate);
 			this.lstvNDspecOprema.SelectedIndexChanged += new System.EventHandler(this.lstvNDspecOprema_SelectedIndexChanged);
 			// 
-			// columnHeader1
+			// chSpecOpKolicina
 			// 
-			this.columnHeader1.Text = "";
-			this.columnHeader1.Width = 35;
+			this.chSpecOpKolicina.Text = "";
+			this.chSpecOpKolicina.Width = 35;
 			// 
-			// columnHeader2
+			// chSpecOpNaziv
 			// 
-			this.columnHeader2.Text = "Naziv";
-			this.columnHeader2.Width = 285;
+			this.chSpecOpNaziv.Text = "Naziv";
+			this.chSpecOpNaziv.Width = 285;
 			// 
-			// columnHeader3
+			// chSpecOpVelicina
 			// 
-			this.columnHeader3.Text = "Velicina";
+			this.chSpecOpVelicina.Text = "Velicina";
 			// 
-			// label9
+			// lblSpecOprema
 			// 
-			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(8, 246);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(97, 13);
-			this.label9.TabIndex = 23;
-			this.label9.Text = "Specijalna oprema:";
+			this.lblSpecOprema.AutoSize = true;
+			this.lblSpecOprema.Location = new System.Drawing.Point(8, 246);
+			this.lblSpecOprema.Name = "lblSpecOprema";
+			this.lblSpecOprema.Size = new System.Drawing.Size(97, 13);
+			this.lblSpecOprema.TabIndex = 23;
+			this.lblSpecOprema.Text = "Specijalna oprema:";
 			// 
-			// label8
+			// lblTaktika
 			// 
-			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(8, 222);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(46, 13);
-			this.label8.TabIndex = 22;
-			this.label8.Text = "Taktika:";
+			this.lblTaktika.AutoSize = true;
+			this.lblTaktika.Location = new System.Drawing.Point(8, 222);
+			this.lblTaktika.Name = "lblTaktika";
+			this.lblTaktika.Size = new System.Drawing.Size(46, 13);
+			this.lblTaktika.TabIndex = 22;
+			this.lblTaktika.Text = "Taktika:";
 			// 
 			// cbNDtaktika
 			// 
@@ -391,41 +401,41 @@
 			this.lblNDudioMisija.TabIndex = 15;
 			this.lblNDudioMisija.Text = "xx %";
 			// 
-			// label7
+			// lblUdioSek
 			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(8, 153);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(91, 13);
-			this.label7.TabIndex = 14;
-			this.label7.Text = "Udio sekundarne:";
+			this.lblUdioSek.AutoSize = true;
+			this.lblUdioSek.Location = new System.Drawing.Point(8, 153);
+			this.lblUdioSek.Name = "lblUdioSek";
+			this.lblUdioSek.Size = new System.Drawing.Size(91, 13);
+			this.lblUdioSek.TabIndex = 14;
+			this.lblUdioSek.Text = "Udio sekundarne:";
 			// 
-			// label6
+			// lblStit
 			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(8, 172);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(25, 13);
-			this.label6.TabIndex = 13;
-			this.label6.Text = "Štit:";
+			this.lblStit.AutoSize = true;
+			this.lblStit.Location = new System.Drawing.Point(8, 172);
+			this.lblStit.Name = "lblStit";
+			this.lblStit.Size = new System.Drawing.Size(25, 13);
+			this.lblStit.TabIndex = 13;
+			this.lblStit.Text = "Štit:";
 			// 
-			// label5
+			// lblSekMisija
 			// 
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(8, 128);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(96, 13);
-			this.label5.TabIndex = 12;
-			this.label5.Text = "Sekundarna misija:";
+			this.lblSekMisija.AutoSize = true;
+			this.lblSekMisija.Location = new System.Drawing.Point(8, 128);
+			this.lblSekMisija.Name = "lblSekMisija";
+			this.lblSekMisija.Size = new System.Drawing.Size(96, 13);
+			this.lblSekMisija.TabIndex = 12;
+			this.lblSekMisija.Text = "Sekundarna misija:";
 			// 
-			// label4
+			// lblPrimMisija
 			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(8, 101);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(79, 13);
-			this.label4.TabIndex = 11;
-			this.label4.Text = "Primarna misija:";
+			this.lblPrimMisija.AutoSize = true;
+			this.lblPrimMisija.Location = new System.Drawing.Point(8, 101);
+			this.lblPrimMisija.Name = "lblPrimMisija";
+			this.lblPrimMisija.Size = new System.Drawing.Size(79, 13);
+			this.lblPrimMisija.TabIndex = 11;
+			this.lblPrimMisija.Text = "Primarna misija:";
 			// 
 			// cbNDprimMisija
 			// 
@@ -510,14 +520,14 @@
 			this.cbNDvelicina.TabIndex = 4;
 			this.cbNDvelicina.SelectedIndexChanged += new System.EventHandler(this.cbNDvelicina_SelectedIndexChanged);
 			// 
-			// label3
+			// lblVelicina
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(94, 35);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(47, 13);
-			this.label3.TabIndex = 3;
-			this.label3.Text = "Veličina:";
+			this.lblVelicina.AutoSize = true;
+			this.lblVelicina.Location = new System.Drawing.Point(94, 35);
+			this.lblVelicina.Name = "lblVelicina";
+			this.lblVelicina.Size = new System.Drawing.Size(47, 13);
+			this.lblVelicina.TabIndex = 3;
+			this.lblVelicina.Text = "Veličina:";
 			// 
 			// txtNDnaziv
 			// 
@@ -527,14 +537,14 @@
 			this.txtNDnaziv.TabIndex = 2;
 			this.txtNDnaziv.TextChanged += new System.EventHandler(this.txtNDnaziv_TextChanged);
 			// 
-			// label2
+			// lblNaziv
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(94, 9);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(37, 13);
-			this.label2.TabIndex = 1;
-			this.label2.Text = "Naziv:";
+			this.lblNaziv.AutoSize = true;
+			this.lblNaziv.Location = new System.Drawing.Point(94, 9);
+			this.lblNaziv.Name = "lblNaziv";
+			this.lblNaziv.Size = new System.Drawing.Size(37, 13);
+			this.lblNaziv.TabIndex = 1;
+			this.lblNaziv.Text = "Naziv:";
 			// 
 			// picNDSlika
 			// 
@@ -544,29 +554,19 @@
 			this.picNDSlika.TabIndex = 0;
 			this.picNDSlika.TabStop = false;
 			// 
-			// btnNDZadrziInfo
-			// 
-			this.btnNDZadrziInfo.Location = new System.Drawing.Point(451, 69);
-			this.btnNDZadrziInfo.Name = "btnNDZadrziInfo";
-			this.btnNDZadrziInfo.Size = new System.Drawing.Size(29, 23);
-			this.btnNDZadrziInfo.TabIndex = 32;
-			this.btnNDZadrziInfo.Text = "*";
-			this.btnNDZadrziInfo.UseVisualStyleBackColor = true;
-			this.btnNDZadrziInfo.Click += new System.EventHandler(this.bntNDZadrziInfo_Click);
-			// 
 			// FormFlote
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(588, 476);
-			this.Controls.Add(this.tabCtrlFlote);
+			this.Controls.Add(this.tabvCtrlFlote);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "FormFlote";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Flote";
-			this.tabCtrlFlote.ResumeLayout(false);
+			this.tabvCtrlFlote.ResumeLayout(false);
 			this.tabDizajnovi.ResumeLayout(false);
 			this.tabDizajnovi.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlikaDizajna)).EndInit();
@@ -579,16 +579,16 @@
 
 		#endregion
 
-		private System.Windows.Forms.TabControl tabCtrlFlote;
+		private System.Windows.Forms.TabControl tabvCtrlFlote;
 		private System.Windows.Forms.TabPage tabDizajnovi;
 		private System.Windows.Forms.TabPage tabNoviDizajn;
 		private System.Windows.Forms.PictureBox picSlikaDizajna;
-		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label lblDizajn;
 		private System.Windows.Forms.PictureBox picNDSlika;
 		private System.Windows.Forms.ComboBox cbNDvelicina;
-		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label lblVelicina;
 		private System.Windows.Forms.TextBox txtNDnaziv;
-		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label lblNaziv;
 		private System.Windows.Forms.HScrollBar hscrUdioMisija;
 		private System.Windows.Forms.ComboBox cbNDstit;
 		private System.Windows.Forms.ComboBox cbNDsekMisija;
@@ -596,32 +596,32 @@
 		private System.Windows.Forms.TextBox txtNDinfo;
 		private System.Windows.Forms.ComboBox cbNDprimMisija;
 		private System.Windows.Forms.CheckBox chNDMZpogon;
-		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Label lblPrimMisija;
 		private System.Windows.Forms.Label lblNDudioMisija;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label lblUdioSek;
+		private System.Windows.Forms.Label lblStit;
+		private System.Windows.Forms.Label lblSekMisija;
 		private System.Windows.Forms.Label lblNDsenzori;
 		private System.Windows.Forms.Label lblNDpokretljivost;
 		private System.Windows.Forms.Label lblNDnosivost;
 		private System.Windows.Forms.Label lblNDoklop;
-		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.Label lblTaktika;
 		private System.Windows.Forms.ComboBox cbNDtaktika;
-		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Label lblSpecOprema;
 		private System.Windows.Forms.ListView lstvNDspecOprema;
-		private System.Windows.Forms.ColumnHeader columnHeader1;
-		private System.Windows.Forms.ColumnHeader columnHeader2;
+		private System.Windows.Forms.ColumnHeader chSpecOpKolicina;
+		private System.Windows.Forms.ColumnHeader chSpecOpNaziv;
 		private System.Windows.Forms.Button btnNDspecOpremaMinus;
 		private System.Windows.Forms.Button btnNDspecOpremaPlus;
 		private System.Windows.Forms.Label lblNDslobodno;
-		private System.Windows.Forms.ColumnHeader columnHeader3;
+		private System.Windows.Forms.ColumnHeader chSpecOpVelicina;
 		private System.Windows.Forms.Button btnNDinfoPrethodna;
 		private System.Windows.Forms.ComboBox cbNDinfoStrana;
 		private System.Windows.Forms.Button btnNDinfoSlijedeca;
 		private System.Windows.Forms.Label lblNDcijena;
 		private System.Windows.Forms.ListView lstvDizajnovi;
-		private System.Windows.Forms.ColumnHeader columnHeader4;
-		private System.Windows.Forms.ColumnHeader columnHeader5;
+		private System.Windows.Forms.ColumnHeader chDizajnNaziv;
+		private System.Windows.Forms.ColumnHeader chBrojBrodova;
 		private System.Windows.Forms.Button btnUkloniDizajn;
 		private System.Windows.Forms.TextBox txtDizajnInfo;
 		private System.Windows.Forms.Button btnNDZadrziInfo;

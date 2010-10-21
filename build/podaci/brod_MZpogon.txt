@@ -1,6 +1,6 @@
 ﻿<MZ_POGON>
-IME = Nuklearni pogon
-OPIS = 
+IME = MZ_NUKLEARNI_IME
+OPIS = MZ_NUKLEARNI_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =

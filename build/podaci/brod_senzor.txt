@@ -1,6 +1,6 @@
 ﻿<SENZOR>
-IME = EM senzor
-OPIS = 
+IME = SE_EM_IME
+OPIS = SE_EM_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =

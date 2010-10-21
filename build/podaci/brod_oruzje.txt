@@ -3,8 +3,8 @@
 #
 
 <ORUZJE>
-IME = Laserski top
-OPIS = 
+IME = OR_LASER_TOP_IME
+OPIS = OR_LASER_TOP_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI = LASER | LVL
@@ -20,8 +20,8 @@ VELICINA = 5
 ----
 
 <ORUZJE>
-IME = Obrambeni laser
-OPIS = 
+IME = OR_LASER_OB_IME
+OPIS = OR_LASER_OB_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =
@@ -37,8 +37,8 @@ VELICINA = 1
 ----
 
 <ORUZJE>
-IME = Protuoklopne granate
-OPIS = 
+IME = OR_GRANATE_IME
+OPIS = OR_GRANATE_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =
@@ -54,8 +54,8 @@ VELICINA = 10
 ----
 
 <ORUZJE>
-IME = Obrambena strojnica
-OPIS = 
+IME = OR_STROJNICA_OB_IME
+OPIS = OR_STROJNICA_OB_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =
@@ -71,8 +71,8 @@ VELICINA = 2
 ----
 
 <ORUZJE>
-IME = Strojnica
-OPIS = 
+IME = OR_STROJNICA_IME
+OPIS = OR_STROJNICA_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =
@@ -92,8 +92,8 @@ VELICINA = 1
 #
 
 <ORUZJE>
-IME = Kolonizator
-OPIS = 
+IME = OR_KOLONIZATOR_IME
+OPIS = OR_KOLONIZATOR_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 1
 PREDUVJETI =

@@ -1,6 +1,6 @@
 ﻿<STIT>
-IME = ECM
-OPIS = 
+IME = ST_ECM_IME
+OPIS = ST_ECM_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 8
 PREDUVJETI =
@@ -15,8 +15,8 @@ CIJENA = * 100000 VELICINA
 ----
 
 <STIT>
-IME = EM štit
-OPIS = 
+IME = ST_EM_IME
+OPIS = ST_EM_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =

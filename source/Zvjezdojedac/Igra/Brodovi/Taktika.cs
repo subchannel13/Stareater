@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Prototip.Podaci;
+using Prototip.Podaci.Jezici;
 
 namespace Prototip
 {
@@ -50,7 +52,7 @@ namespace Prototip
 		#endregion
 
 		public int id { get; private set; }
-		public string naziv { get; private set; }
+		private string nazivKod;
 
 		public double koefOmetanje { get; private set; }
 		public double koefPreciznost { get; private set; }
@@ -62,11 +64,23 @@ namespace Prototip
 			double koefSnagaSenzora)
 		{
 			this.id = id;
-			this.naziv = naziv;
+			this.nazivKod = naziv;
 			this.koefOmetanje = koefOmetanje;
 			this.koefPreciznost = koefPreciznost;
 			this.koefPrikrivanje = koefPrikrivanje;
 			this.koefSnagaSenzora = koefSnagaSenzora;
+		}
+
+		public string naziv
+		{
+			get
+			{
+				return Postavke.jezik[Kontekst.Komponente, nazivKod].tekst();
+			}
+			private set
+			{
+				nazivKod = value;
+			}
 		}
 	}
 }

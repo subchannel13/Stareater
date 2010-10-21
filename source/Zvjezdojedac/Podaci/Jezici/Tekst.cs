@@ -15,6 +15,9 @@ namespace Prototip.Podaci.Jezici
 
 			while (ulaz.Count > 0) {
 				Queue<string> linija = new Queue<string>(ulaz.Dequeue().Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+				if (linija.Count == 0)
+					continue;
+
 				string kljuc = linija.Dequeue();
 				ITekst vrijedost = null;
 

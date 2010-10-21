@@ -1,6 +1,6 @@
 ﻿<REAKTOR>
-IME = Nuklearni reaktor
-OPIS = 
+IME = RE_NUKLEARNI_IME
+OPIS = RE_NUKLEARNI_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =
@@ -9,8 +9,8 @@ SNAGA = * 5 - VELICINA 4
 ----
 
 <REAKTOR>
-IME = Kemijski reaktor
-OPIS = 
+IME = RE_KEMIJSKI_IME
+OPIS = RE_KEMIJSKI_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =

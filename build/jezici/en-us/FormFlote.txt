@@ -1,0 +1,75 @@
+﻿::FORM_FLOTE
+btnSpremi = Add
+btnUkloniDizajn = Remove
+chBrojBrodova = Ships
+chDizajnNaziv = Design
+chSpecOpNaziv = Name
+chSpecOpVelicina = Size
+chNDMZpogon = IS drive
+lblDizajn = Design
+lblNaziv = Name
+lblNDcijena = Cost
+lblNDnosivost = Capacity
+lblNDoklop = Armor strength
+lblNDpokretljivost = Mobility
+lblNDsenzori = Sensor strength
+lblNDslobodno = Free space
+lblPrimMisija = Primary mission
+lblSekMisija = Secondary mission
+lblSpecOprema = Special equipment
+lblStit = Shield
+lblTaktika = Tactic
+lblUdioSek = Sec. mission ratio
+lblVelicina = Size
+tabDizajnovi = Designs
+tabNoviDizajn = New design
+
+bezMisije = nothing
+bezStita = none
+
+infoMZPogon = IS drive
+infoPokret = Mobility
+infoPrimMisija = Primary mission
+infoReaktor = Reactor
+infoSekMisija = Secondary mission
+infoSenzori = Sensors
+infoSpecOprema = Special equipment
+infoStit = Shield
+infoTaktika = Tactic
+			
+naslov = Fleet
+
+opIstiDizajnTekst = Design with the same characteristics already exists
+opIstiDizajnNaslov = Existing design
+
+opisCijena = Cost
+opisCiljanje = Aim
+opisMZPogon = IS drive
+opisMZPogonBrz = Speed
+opisNemaMZPogon = Design has no interstellar drive.
+opisNemaPrimMis = Design has no primary mission.
+opisNemaSekMis = Design has no secondary mission.
+opisNemaStit = Design has no shield.
+opisNivo = Level
+opisOklop = Armor
+opisOklopIzd = Strength
+opisPokret = Mobility
+opisPrimMis = Primary mission
+opisReaktor = Reactor
+opisReaktorDost = Power
+opisReaktorOp = Usage
+opisSekMis = Secondary mission
+opisSenzor = Sensors and stealth
+opisSenzorOm = Jamming
+opisSenzorSn = Sensor strength
+opisSenzorPrik = Cloaking
+opisSnaga = Power usage
+opisSpecOp = Special equipment
+opisStit = Shield
+opisStitDeb = Thickness
+opisStitIzd = Strength
+opisStitObn = Recovery speed
+opisTaktika = Tactic
+opisTaktikaPrec = Precision
+opisTromost = Inertia level
+opisVelicina = Size

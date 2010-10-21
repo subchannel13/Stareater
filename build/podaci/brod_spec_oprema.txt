@@ -1,6 +1,6 @@
 ﻿<SPEC_OPREMA>
-IME = Pojačan oklop
-OPIS = 
+IME = SO_OKLOP_IME
+OPIS = SO_OKLOP_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =
@@ -14,8 +14,8 @@ MAX_KOLICINA = 2
 ----
 
 <SPEC_OPREMA>
-IME = Dodatni potisnici
-OPIS = 
+IME = SO_POTISNICI_IME
+OPIS = SO_POTISNICI_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =
@@ -28,8 +28,8 @@ MAX_KOLICINA = 2
 ----
 
 <SPEC_OPREMA>
-IME = Proširenje reaktora
-OPIS = 
+IME = SO_REAKTOR_IME
+OPIS = SO_REAKTOR_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =

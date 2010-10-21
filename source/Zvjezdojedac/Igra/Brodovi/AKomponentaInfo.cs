@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using Prototip.Podaci;
+using Prototip.Podaci.Jezici;
 
 namespace Prototip
 {
@@ -26,8 +28,8 @@ namespace Prototip
 		}
 		#endregion
 
-		public string naziv { get; private set; }
-		public string opis { get; private set; }
+		private string nazivKljuc;
+		private string opisKljuc;
 		public Image slika { get; private set; }
 		public List<Tehnologija.Preduvjet> preduvjeti { get; private set; }
 		public int maxNivo { get; private set; }
@@ -101,6 +103,30 @@ namespace Prototip
 		public int id 
 		{ 
 			get { return (int)indeks; } 
+		}
+
+		public string naziv 
+		{
+			get
+			{
+				return Postavke.jezik[Kontekst.Komponente, nazivKljuc].tekst();
+			}
+			private set
+			{
+				nazivKljuc = value;
+			}
+		}
+
+		public string opis 
+		{
+			get
+			{
+				return Postavke.jezik[Kontekst.Komponente, opisKljuc].tekst();
+			}
+			private set
+			{
+				opisKljuc = value;
+			}
 		}
 	}
 }

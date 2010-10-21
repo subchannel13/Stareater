@@ -14,6 +14,7 @@ namespace Prototip.Podaci.Jezici
 		private static Dictionary<string, Kontekst> initStringUKontekst()
 		{
 			Dictionary<string, Kontekst> rez = new Dictionary<string,Kontekst>();
+			rez.Add("FORM_FLOTE", Kontekst.FormFlote);
 			rez.Add("FORM_GRADNJA", Kontekst.FormGradnja);
 			rez.Add("FORM_IGRA", Kontekst.FormIgra);
 			rez.Add("FORM_KOLONIZACIJA", Kontekst.FormKolonizacija);
@@ -24,6 +25,8 @@ namespace Prototip.Podaci.Jezici
 			rez.Add("FORM_POSTAVKE", Kontekst.FormPostavke);
 			rez.Add("FORM_TECH", Kontekst.FormTech);
 			rez.Add("KOLONIJA", Kontekst.Kolonija);
+			rez.Add("KOMPONENTE", Kontekst.Komponente);
+			rez.Add("MISIJA", Kontekst.Misije);
 			rez.Add("TEHNOLOGIJE", Kontekst.Tehnologije);
 			rez.Add("VELICINA_MAPE", Kontekst.VelicinaMape);
 			rez.Add("WINDOWS_DIJALOZI", Kontekst.WindowsDijalozi);

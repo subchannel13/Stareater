@@ -8,6 +8,7 @@ namespace Prototip.Podaci.Jezici
 	public enum Kontekst
 	{
 		Opcenito,
+		FormFlote,
 		FormGradnja,
 		FormIgra,
 		FormKolonizacija,
@@ -18,6 +19,8 @@ namespace Prototip.Podaci.Jezici
 		FormPostavke,
 		FormTech,
 		Kolonija,
+		Komponente,
+		Misije,
 		Tehnologije,
 		VelicinaMape,
 		WindowsDijalozi,

@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Forms;
 using Alati;
 using Prototip.Igra.Brodovi.Dizajner;
+using Prototip.Podaci.Jezici;
+using Prototip.Podaci;
 
 namespace Prototip
 {
@@ -43,15 +45,16 @@ namespace Prototip
 			lstvDizajnovi.SmallImageList.ImageSize = new Size(60, 40);
 			this.igrac = igrac;
 
-			nazivInfoStranice.Add(InfoStranice.MZPogon, "MZ pogon");
-			nazivInfoStranice.Add(InfoStranice.Pokretljivost, "Pokretljivost");
-			nazivInfoStranice.Add(InfoStranice.PrimarnaMisija, "Prim. misija");
-			nazivInfoStranice.Add(InfoStranice.Reaktor, "Reaktor");
-			nazivInfoStranice.Add(InfoStranice.SekundarnaMisija, "Sek. misija");
-			nazivInfoStranice.Add(InfoStranice.Senzori, "Senzori");
-			nazivInfoStranice.Add(InfoStranice.SpecijalnaOprema, "Spec. oprema");
-			nazivInfoStranice.Add(InfoStranice.Stit, "Štit");
-			nazivInfoStranice.Add(InfoStranice.Taktika, "Taktika");
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+			nazivInfoStranice.Add(InfoStranice.MZPogon, jezik["infoMZPogon"].tekst());
+			nazivInfoStranice.Add(InfoStranice.Pokretljivost, jezik["infoPokret"].tekst());
+			nazivInfoStranice.Add(InfoStranice.PrimarnaMisija, jezik["infoPrimMisija"].tekst());
+			nazivInfoStranice.Add(InfoStranice.Reaktor, jezik["infoReaktor"].tekst());
+			nazivInfoStranice.Add(InfoStranice.SekundarnaMisija, jezik["infoSekMisija"].tekst());
+			nazivInfoStranice.Add(InfoStranice.Senzori, jezik["infoSenzori"].tekst());
+			nazivInfoStranice.Add(InfoStranice.SpecijalnaOprema, jezik["infoSpecOprema"].tekst());
+			nazivInfoStranice.Add(InfoStranice.Stit, jezik["infoStit"].tekst());
+			nazivInfoStranice.Add(InfoStranice.Taktika, jezik["infoTaktika"].tekst());
 
 			#region Dizajnovi
 			{
@@ -69,8 +72,8 @@ namespace Prototip
 				foreach (Trup trup in dizajner.trupovi)
 					cbNDvelicina.Items.Add(trup);
 
-				cbNDprimMisija.Items.Add(new TagTekst<Oruzje>(null, "ništa"));
-				cbNDsekMisija.Items.Add(new TagTekst<Oruzje>(null, "ništa"));
+				cbNDprimMisija.Items.Add(new TagTekst<Oruzje>(null, jezik["bezMisije"].tekst()));
+				cbNDsekMisija.Items.Add(new TagTekst<Oruzje>(null, jezik["bezMisije"].tekst()));
 				foreach (Misija.Tip misija in dizajner.oruzja.Keys) {
 					if (dizajner.oruzja[misija].Count == 0) continue;
 					cbNDprimMisija.Items.Add(new TagTekst<Oruzje>(null, SeparatorNDGrupa));
@@ -82,7 +85,7 @@ namespace Prototip
 					}
 				}
 
-				cbNDstit.Items.Add(new TagTekst<int>(-1, "nikakav"));
+				cbNDstit.Items.Add(new TagTekst<int>(-1, jezik["bezStita"].tekst()));
 				int i = 0;
 				foreach (Stit stit in dizajner.trupKomponente.stitovi) {
 					cbNDstit.Items.Add(new TagTekst<int>(i, stit.info.naziv));
@@ -113,6 +116,26 @@ namespace Prototip
 				hscrUdioMisija.Value = 33;
 			}
 			#endregion
+
+			btnSpremi.Text = jezik["btnSpremi"].tekst();
+			btnUkloniDizajn.Text = jezik["btnUkloniDizajn"].tekst();
+			chBrojBrodova.Text = jezik["chBrojBrodova"].tekst();
+			chDizajnNaziv.Text = jezik["chDizajnNaziv"].tekst();
+			chSpecOpNaziv.Text = jezik["chSpecOpNaziv"].tekst();
+			chSpecOpVelicina.Text = jezik["chSpecOpVelicina"].tekst();
+			chNDMZpogon.Text = jezik["chNDMZpogon"].tekst();
+			lblDizajn.Text = jezik["lblDizajn"].tekst() + ":";
+			lblNaziv.Text = jezik["lblNaziv"].tekst() + ":";
+			lblPrimMisija.Text = jezik["lblPrimMisija"].tekst() + ":";
+			lblSekMisija.Text = jezik["lblSekMisija"].tekst() + ":";
+			lblSpecOprema.Text = jezik["lblSpecOprema"].tekst() + ":";
+			lblStit.Text = jezik["lblStit"].tekst() + ":";
+			lblTaktika.Text = jezik["lblTaktika"].tekst() + ":";
+			lblUdioSek.Text = jezik["lblUdioSek"].tekst() + ":";
+			lblVelicina.Text = jezik["lblVelicina"].tekst() + ":";
+			tabDizajnovi.Text = jezik["tabDizajnovi"].tekst();
+			tabNoviDizajn.Text = jezik["tabNoviDizajn"].tekst();
+			this.Text = jezik["naslov"].tekst();
 		}
 
 		private T izvadiTag<T>(ComboBox cb)
@@ -124,27 +147,28 @@ namespace Prototip
 		{
 			List<string> opis = new List<string>();
 
-			if (primarno) opis.Add("Primarna misija: ");
-			else opis.Add("Sekundarna misija: ");
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+			if (primarno) opis.Add(jezik["opisPrimMis"].tekst() + ": ");
+			else opis.Add(jezik["opisSekMis"].tekst() + ": ");
 
 			if (oruzje == null) {
 				opis.Add("");
-				if (primarno) opis.Add("Brod nema primarnu misiju.");
-				else opis.Add("Brod nema sekundarnu misiju");
+				if (primarno) opis.Add(jezik["opisNemaPrimMis"].tekst());
+				else opis.Add(jezik["opisNemaSekMis"].tekst());
 
 				return opis;
 			}
 
 			Misija.Tip misijaTip = oruzje.komponenta.misija;
 			Misija misija = Misija.Opisnici[misijaTip];
-
+			
 			opis.Add(misija.naziv);
 			opis.Add((misija.grupirana) ?
 				oruzje.komponenta.naziv :
 				Fje.PrefiksFormater(oruzje.kolicina) + " x " + oruzje.komponenta.naziv);
 			opis.Add("");
-			if (oruzje.komponenta.maxNivo > 0) opis.Add("Nivo: " + oruzje.komponenta.nivo);
-			if (misija.imaCiljanje) opis.Add("Ciljanje: " + Oruzje.OruzjeInfo.OpisCiljanja[oruzje.komponenta.ciljanje]);
+			if (oruzje.komponenta.maxNivo > 0) opis.Add(jezik["opisNivo"].tekst() + ": " + oruzje.komponenta.nivo);
+			if (misija.imaCiljanje) opis.Add(jezik["opisCiljanje"].tekst() + ": " + Postavke.jezik[Kontekst.Misije, Oruzje.OruzjeInfo.CiljanjeKod[oruzje.komponenta.ciljanje]].tekst());
 
 			for (int i = 0; i < misija.brParametara; i++) {
 				double vrijednost = oruzje.komponenta.parametri[i];
@@ -162,8 +186,8 @@ namespace Prototip
 
 			if (cijene) {
 				opis.Add("");
-				opis.Add("Potrebna snaga: " + Fje.PrefiksFormater(oruzje.komponenta.snaga));
-				opis.Add("Cijena: " + Fje.PrefiksFormater(oruzje.komponenta.cijena * oruzje.kolicina));
+				opis.Add(jezik["opisSnaga"].tekst() + ": " + Fje.PrefiksFormater(oruzje.komponenta.snaga));
+				opis.Add(jezik["opisCijena"].tekst() + ": " + Fje.PrefiksFormater(oruzje.komponenta.cijena * oruzje.kolicina));
 			}
 
 			return opis;
@@ -177,32 +201,34 @@ namespace Prototip
 		private List<string> opis(InfoStranice stranica, Dizajn dizajn, bool cijene)
 		{
 			List<string> opis = new List<string>();
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+
 			switch (stranica) {
 				case InfoStranice.MZPogon:
-					opis.Add("MZ pogon");
+					opis.Add(jezik["opisMZPogon"].tekst());
 					opis.Add("");
 					if (dizajn.MZPogon == null)
-						opis.Add("Brod nema međuzvjezdani pogon.");
+						opis.Add(jezik["opisNemaMZPogon"].tekst());
 					else {
 						opis.Add(dizajn.MZPogon.info.naziv);
 						if (dizajn.MZPogon.maxNivo > 0)
-							opis.Add("Nivo: " + dizajn.MZPogon.nivo);
-						opis.Add("Brzina: " + dizajn.MZbrzina.ToString("0.###"));
+							opis.Add(jezik["opisNivo"].tekst() + ": " + dizajn.MZPogon.nivo);
+						opis.Add(jezik["opisMZPogonBrz"].tekst() + ": " + dizajn.MZbrzina.ToString("0.###"));
 						if (cijene) {
-							opis.Add("Potrebna snaga: " + Fje.PrefiksFormater(dizajn.MZPogon.snaga));
-							opis.Add("Cijena: " + Fje.PrefiksFormater(dizajn.MZPogon.cijena));
+							opis.Add(jezik["opisSnaga"].tekst() + ": " + Fje.PrefiksFormater(dizajn.MZPogon.snaga));
+							opis.Add(jezik["opisCijena"].tekst() + ": " + Fje.PrefiksFormater(dizajn.MZPogon.cijena));
 						}
 					}
 					break;
 
 				case InfoStranice.Pokretljivost:
-					opis.Add("Pokretljivost");
+					opis.Add(jezik["opisPokret"].tekst());
 					opis.Add("");
 					opis.Add(dizajn.potisnici.naziv);
 					if (dizajn.potisnici.maxNivo > 0)
 						opis.Add("Nivo: " + dizajn.potisnici.nivo);
-					opis.Add("Stupanj tromosti: " + dizajn.inercija);
-					opis.Add("Pokretljivost: " + Fje.PrefiksFormater(dizajn.pokretljivost));
+					opis.Add(jezik["opisTromost"].tekst() + ": " + dizajn.inercija);
+					opis.Add(jezik["opisPokret"].tekst() + ": " + Fje.PrefiksFormater(dizajn.pokretljivost));
 					break;
 
 				case InfoStranice.PrimarnaMisija:
@@ -210,13 +236,13 @@ namespace Prototip
 					break;
 
 				case InfoStranice.Reaktor:
-					opis.Add("Reaktor");
+					opis.Add(jezik["opisReaktor"].tekst());
 					opis.Add("");
 					opis.Add(dizajn.reaktor.naziv);
 					if (dizajn.reaktor.maxNivo > 0)
-						opis.Add("Nivo: " + dizajn.reaktor.nivo);
-					opis.Add("Opterečenje: " + Fje.PrefiksFormater(dizajn.opterecenjeReaktora));
-					opis.Add("Dostupna snaga: " + Fje.PrefiksFormater(dizajn.snagaReaktora) + " (" + (dizajn.koefSnageReaktora * 100).ToString("0") + "%)");
+						opis.Add(jezik["opisNivo"].tekst() + ": " + dizajn.reaktor.nivo);
+					opis.Add(jezik["opisReaktorOp"].tekst() + ": " + Fje.PrefiksFormater(dizajn.opterecenjeReaktora));
+					opis.Add(jezik["opisReaktorDost"].tekst() + ": " + Fje.PrefiksFormater(dizajn.snagaReaktora) + " (" + (dizajn.koefSnageReaktora * 100).ToString("0") + "%)");
 					break;
 
 				case InfoStranice.SekundarnaMisija:
@@ -224,18 +250,18 @@ namespace Prototip
 					break;
 
 				case InfoStranice.Senzori:
-					opis.Add("Senzori i prikrivanje");
+					opis.Add(jezik["opisSenzor"].tekst());
 					opis.Add("");
 					opis.Add(Fje.PrefiksFormater(dizajn.brSenzora) + " x " + dizajn.senzor.naziv);
 					if (dizajn.senzor.maxNivo > 0)
-						opis.Add("Nivo: " + dizajn.senzor.nivo);
-					opis.Add("Snaga senzora: " + Fje.PrefiksFormater(dizajn.snagaSenzora));
-					opis.Add("Ometanje: " + Fje.PrefiksFormater(dizajn.ometanje));
-					opis.Add("Prikrivanje: " + Fje.PrefiksFormater(dizajn.prikrivenost));
+						opis.Add(jezik["opisNivo"].tekst() + ": " + dizajn.senzor.nivo);
+					opis.Add(jezik["opisSenzorSn"].tekst() + ": " + Fje.PrefiksFormater(dizajn.snagaSenzora));
+					opis.Add(jezik["opisSenzorOm"].tekst() + ": " + Fje.PrefiksFormater(dizajn.ometanje));
+					opis.Add(jezik["opisSenzorPrik"].tekst() + ": " + Fje.PrefiksFormater(dizajn.prikrivenost));
 					break;
 
 				case InfoStranice.SpecijalnaOprema:
-					opis.Add("Specijalna oprema");
+					opis.Add(jezik["opisSpecOp"].tekst());
 					opis.Add("");
 					if (specijalnaOpremaZaOpis != null) {
 						if (dizajn.specijalnaOprema.ContainsKey(specijalnaOpremaZaOpis))
@@ -243,47 +269,47 @@ namespace Prototip
 						else
 							opis.Add(specijalnaOpremaZaOpis.naziv);
 						if (specijalnaOpremaZaOpis.maxNivo > 0)
-							opis.Add("Nivo: " + specijalnaOpremaZaOpis.nivo);
+							opis.Add(jezik["opisNivo"].tekst() + ": " + specijalnaOpremaZaOpis.nivo);
 						opis.AddRange(specijalnaOpremaZaOpis.opisEfekata);
 						if (cijene) {
 							opis.Add("");
-							opis.Add("Veličina: " + Fje.PrefiksFormater(specijalnaOpremaZaOpis.velicina));
-							opis.Add("Cijena: " + Fje.PrefiksFormater(specijalnaOpremaZaOpis.cijena));
+							opis.Add(jezik["opisVelicina"].tekst() + ": " + Fje.PrefiksFormater(specijalnaOpremaZaOpis.velicina));
+							opis.Add(jezik["opisCijena"].tekst() + ": " + Fje.PrefiksFormater(specijalnaOpremaZaOpis.cijena));
 						}
 					}
 
 					break;
 
 				case InfoStranice.Stit:
-					opis.Add("Štit");
+					opis.Add(jezik["opisStit"].tekst());
 					opis.Add("");
 					if (dizajn.stit == null)
-						opis.Add("Brod nema štit.");
+						opis.Add(jezik["opisNemaStit"].tekst());
 					else {
 						opis.Add(dizajn.stit.naziv);
 						if (dizajn.stit.maxNivo > 0)
-							opis.Add("Nivo: " + dizajn.stit.nivo);
-						opis.Add("Izdržljivost: " + Fje.PrefiksFormater(dizajn.stit.izdrzljivost));
-						opis.Add("Brzina obnavljanja: " + Fje.PrefiksFormater(dizajn.stit.obnavljanje));
-						opis.Add("Debljina: " + Fje.PrefiksFormater(dizajn.stit.debljina));
-						opis.Add("Ometanje: x" + dizajn.stit.ometanje.ToString("0.##"));
-						opis.Add("Prikrivanje: +" + Fje.PrefiksFormater(dizajn.stit.prikrivanje));
+							opis.Add(jezik["opisNivo"].tekst() + ": " + dizajn.stit.nivo);
+						opis.Add(jezik["opisStitIzd"].tekst() + ": " + Fje.PrefiksFormater(dizajn.stit.izdrzljivost));
+						opis.Add(jezik["opisStitObn"].tekst() + ": " + Fje.PrefiksFormater(dizajn.stit.obnavljanje));
+						opis.Add(jezik["opisStitDeb"].tekst() + ": " + Fje.PrefiksFormater(dizajn.stit.debljina));
+						opis.Add(jezik["opisSenzorOm"].tekst() + ": x" + dizajn.stit.ometanje.ToString("0.##"));
+						opis.Add(jezik["opisSenzorPrik"].tekst() + ": +" + Fje.PrefiksFormater(dizajn.stit.prikrivanje));
 						if (cijene) {
 							opis.Add("");
-							opis.Add("Potrebna snaga: " + Fje.PrefiksFormater(dizajn.stit.snaga));
-							opis.Add("Cijena: " + Fje.PrefiksFormater(dizajn.stit.cijena));
+							opis.Add(jezik["opisSnaga"].tekst() + ": " + Fje.PrefiksFormater(dizajn.stit.snaga));
+							opis.Add(jezik["opisCijena"].tekst() + ": " + Fje.PrefiksFormater(dizajn.stit.cijena));
 						}
 					}
 					break;
 
 				case InfoStranice.Taktika:
-					opis.Add("Taktika");
+					opis.Add(jezik["opisTaktika"].tekst());
 					opis.Add("");
 					opis.Add(dizajn.taktika.naziv);
-					opis.Add("Preciznost: x" + dizajn.taktika.koefPreciznost);
-					opis.Add("Snaga senzora: x" + dizajn.taktika.koefSnagaSenzora);
-					opis.Add("Ometanje: x" + dizajn.taktika.koefOmetanje);
-					opis.Add("Prikrivanje: x" + dizajn.taktika.koefPrikrivanje);
+					opis.Add(jezik["opisTaktikaPrec"].tekst() + ": x" + dizajn.taktika.koefPreciznost);
+					opis.Add(jezik["opisSenzorSn"].tekst() + ": x" + dizajn.taktika.koefSnagaSenzora);
+					opis.Add(jezik["opisSenzorOm"].tekst() + ": x" + dizajn.taktika.koefOmetanje);
+					opis.Add(jezik["opisSenzorPrik"].tekst() + ": x" + dizajn.taktika.koefPrikrivanje);
 					break;
 			}
 
@@ -300,13 +326,14 @@ namespace Prototip
 		private void osvjeziNDstatistike()
 		{
 			Dizajn dizajn = dizajner.dizajn;
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
 
-			lblNDnosivost.Text = "Nosivost: " + Fje.PrefiksFormater(dizajner.odabranTrup.nosivost);
-			lblNDoklop.Text = "Izdržljivost okolopa (" + dizajn.oklop.naziv + "): " + Fje.PrefiksFormater(dizajn.izdrzljivostOklopa);
-			lblNDpokretljivost.Text = "Pokretljivost (" + dizajn.potisnici.naziv + "): " + Fje.PrefiksFormater(dizajn.pokretljivost);
-			lblNDsenzori.Text = "Snaga senzora (" + dizajn.senzor.naziv + "): " + Fje.PrefiksFormater(dizajn.snagaSenzora);
+			lblNDnosivost.Text = jezik["lblNDnosivost"].tekst() + ": " + Fje.PrefiksFormater(dizajner.odabranTrup.nosivost);
+			lblNDoklop.Text = jezik["lblNDoklop"].tekst() + " (" + dizajn.oklop.naziv + "): " + Fje.PrefiksFormater(dizajn.izdrzljivostOklopa);
+			lblNDpokretljivost.Text = jezik["lblNDpokretljivost"].tekst() + " (" + dizajn.potisnici.naziv + "): " + Fje.PrefiksFormater(dizajn.pokretljivost);
+			lblNDsenzori.Text = jezik["lblNDsenzori"].tekst() + " (" + dizajn.senzor.naziv + "): " + Fje.PrefiksFormater(dizajn.snagaSenzora);
 			picNDSlika.Image = dizajner.odabranTrup.slika;
-			lblNDcijena.Text = "Cijena: " + Fje.PrefiksFormater(dizajn.cijena);
+			lblNDcijena.Text = jezik["lblNDcijena"].tekst() + ": " + Fje.PrefiksFormater(dizajn.cijena);
 
 			if (dizajn.primarnoOruzje != null)
 				cbNDprimMisija.Items[cbNDprimMisija.SelectedIndex] = new TagTekst<Oruzje>(dizajn.primarnoOruzje.komponenta, Fje.PrefiksFormater(dizajn.primarnoOruzje.kolicina) + " x " + dizajn.primarnoOruzje.komponenta.naziv);
@@ -328,7 +355,7 @@ namespace Prototip
 				}
 			}
 
-			lblNDslobodno.Text = "Slobodan prostor: " + Fje.PrefiksFormater(dizajner.slobodnaNosivost);
+			lblNDslobodno.Text = jezik["lblNDslobodno"].tekst() + ": " + Fje.PrefiksFormater(dizajner.slobodnaNosivost);
 			ispisiOpis(prethodniNDinfo, dizajn);
 			provjeriDizajn();
 		}
@@ -549,13 +576,14 @@ namespace Prototip
 				postojeciDizajnovi.Add(dizajnZgrada.dizajn.stil);
 
 			if (postojeciDizajnovi.Contains(dizajner.dizajn.stil)) {
-				MessageBox.Show("Dizajn istih karakteristika već postoji", "Postojeći dizajn", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+				MessageBox.Show(jezik["opIstiDizajnTekst"].tekst(), jezik["opIstiDizajnNaslov"].tekst(), MessageBoxButtons.OK, MessageBoxIcon.Stop);
 				return;
 			}
 
 			igrac.dodajDizajn(dizajner.dizajn);
 			dodajDizajn(dizajner.dizajn);
-			tabCtrlFlote.SelectedTab = tabDizajnovi;
+			tabvCtrlFlote.SelectedTab = tabDizajnovi;
 
 			dizajner.reset(igrac);
 			cbNDvelicina.SelectedItem = cbNDvelicina.SelectedItem;
@@ -606,6 +634,7 @@ namespace Prototip
 			opisDizajna.Add(dizajn.trup.naziv);
 			opisDizajna.Add("");
 
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
 			foreach (InfoStranice stranica in Enum.GetValues(typeof(InfoStranice))) {
 				if (stranica == InfoStranice.SpecijalnaOprema)
 					foreach (SpecijalnaOprema so in dizajn.specijalnaOprema.Keys) {
@@ -619,10 +648,10 @@ namespace Prototip
 				}
 
 				if (stranica == InfoStranice.SekundarnaMisija) {
-					opisDizajna.Add("Oklop:");
+					opisDizajna.Add(jezik["opisOklop"] + ":");
 					opisDizajna.Add("");
 					opisDizajna.Add(dizajn.oklop.naziv);
-					opisDizajna.Add("Izdržljivost: " + dizajn.izdrzljivostOklopa);
+					opisDizajna.Add(jezik["opisOklopIzd"] + ": " + dizajn.izdrzljivostOklopa);
 					opisDizajna.Add("");
 				}
 			}
@@ -647,7 +676,5 @@ namespace Prototip
 				}
 			}
 		}
-
-
 	}
 }

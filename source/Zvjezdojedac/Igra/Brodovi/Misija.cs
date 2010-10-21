@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Prototip.Podaci;
+using Prototip.Podaci.Jezici;
 
 namespace Prototip
 {
@@ -40,17 +42,22 @@ namespace Prototip
 		public struct Parametar
 		{
 			public string kod;
-			public string opis;
 			public TipParameta tip;
 			public bool mnoziKolicinom;
 
-			public Parametar(string kod, string opis,
-				TipParameta tip, bool mnoziKolicinom)
+			public Parametar(string kod,TipParameta tip, bool mnoziKolicinom)
 			{
 				this.kod = kod;
 				this.mnoziKolicinom = mnoziKolicinom;
-				this.opis = opis;
 				this.tip = tip;
+			}
+
+			public string opis
+			{
+				get
+				{
+					return Postavke.jezik[Kontekst.Misije, kod].tekst();
+				}
 			}
 		}
 
@@ -61,76 +68,76 @@ namespace Prototip
 		private static Dictionary<Tip, Misija> initOpisniciMisija()
 		{
 			Dictionary<Tip, Misija> ret = new Dictionary<Tip,Misija>();
-			ret.Add(Tip.DirektnoOruzje, 
-				new Misija("Oružje",
-					"direktno oružje",
+			ret.Add(Tip.DirektnoOruzje,
+				new Misija("MIS_DIREKT_IME",
+					"MIS_DIREKT_OPIS",
 					true, false, false,
 					new Parametar[] { 
-						new Parametar("VATRENA_MOC", "Vatrena moć", TipParameta.Cijelobrojni, false),
-						new Parametar("BR_NAPADA", "Učinkovitost štitova", TipParameta.Postotak, false),
-						new Parametar("PRECIZNOST", "Preciznost", TipParameta.Cijelobrojni, false)
+						new Parametar("VATRENA_MOC", TipParameta.Cijelobrojni, false),
+						new Parametar("BR_NAPADA", TipParameta.Postotak, false),
+						new Parametar("PRECIZNOST", TipParameta.Cijelobrojni, false)
 					}));
 
 			ret.Add(Tip.Projektil,
-				new Misija("Oružje (projektil)",
-					"projektil",
+				new Misija("MIS_PROJEKTIL_IME",
+					"MIS_PROJEKTIL_OPIS",
 					true, false, false,
 					new Parametar[] { 
-						new Parametar("VATRENA_MOC", "Vatrena moć", TipParameta.Cijelobrojni, false),
-						new Parametar("BR_NAPADA", "Učinkovitost štitova", TipParameta.Postotak, false),
-						new Parametar("PRECIZNOST", "Preciznost", TipParameta.Cijelobrojni, false)
+						new Parametar("VATRENA_MOC", TipParameta.Cijelobrojni, false),
+						new Parametar("BR_NAPADA", TipParameta.Postotak, false),
+						new Parametar("PRECIZNOST", TipParameta.Cijelobrojni, false)
 					}));
 
-			ret.Add(Tip.Kolonizacija, 
-				new Misija("Kolonizacija",
-					"moduli za uspostavljanje kolonije",
+			ret.Add(Tip.Kolonizacija,
+				new Misija("MIS_KOLONIZ_IME",
+					"MIS_KOLONIZ_OPIS",
 					false, true, true,
 					new Parametar[] { 
-						new Parametar("POP", "Br. kolonista", TipParameta.Cijelobrojni, true),
-						new Parametar("RADNA_MJ", "Radna mjesta", TipParameta.Postotak, true)
+						new Parametar("POP", TipParameta.Cijelobrojni, true),
+						new Parametar("RADNA_MJ", TipParameta.Postotak, true)
 					}));
 
-			ret.Add(Tip.Popravak, 
-				new Misija("Popravak i nadogradnja",
-					"postrojenje za popravak i nadogradnju brodova",
+			ret.Add(Tip.Popravak,
+				new Misija("MIS_POPRAVAK_IME",
+					"MIS_POPRAVAK_OPIS",
 					false, false, true,
 					new Parametar[] { 
-						new Parametar("IND", "Industrija", TipParameta.Cijelobrojni, true)
+						new Parametar("IND", TipParameta.Cijelobrojni, true)
 					}));
 
-			ret.Add(Tip.Spijunaza, 
-				new Misija("Špijunaža",
-					"spijunska oprema",
+			ret.Add(Tip.Spijunaza,
+				new Misija("MIS_SPIJUNAZ_IME",
+					"MIS_SPIJUNAZ_OPIS",
 					true, false, false,
 					new Parametar[] { 
-						new Parametar("INFILTRACIJA", "Infiltracija", TipParameta.Cijelobrojni, false),
-						new Parametar("BR_NAPADA", "Učinkovitost štitova", TipParameta.Postotak, false),
-						new Parametar("PRECIZNOST", "Preciznost", TipParameta.Cijelobrojni, false),
-						new Parametar("SPIJUNAZA", "Špijunaža", TipParameta.Cijelobrojni, true)
+						new Parametar("INFILTRACIJA", TipParameta.Cijelobrojni, false),
+						new Parametar("BR_NAPADA", TipParameta.Postotak, false),
+						new Parametar("PRECIZNOST", TipParameta.Cijelobrojni, false),
+						new Parametar("SPIJUNAZA", TipParameta.Cijelobrojni, true)
 					}));
 
-			ret.Add(Tip.Tegljenje, 
-				new Misija("Tegljenje",
-					"međuzvjezdani transport brodova",
+			ret.Add(Tip.Tegljenje,
+				new Misija("MIS_TEGLJA_IME",
+					"MIS_TEGLJA_OPIS",
 					false, false, true,
 					new Parametar[] { 
-						new Parametar("KAPACITET", "Kapacitet", TipParameta.Cijelobrojni, true)
+						new Parametar("KAPACITET", TipParameta.Cijelobrojni, true)
 					}));
 
-			ret.Add(Tip.CivilniTransport, 
-				new Misija("Civilni transport",
-					"civilni transport",
+			ret.Add(Tip.CivilniTransport,
+				new Misija("MIS_CIV_TRANS_IME",
+					"MIS_CIV_TRANS_OPIS",
 					false, true, true,
 					new Parametar[] { 
-						new Parametar("KAPACITET", "Kapacitet", TipParameta.Cijelobrojni, true)
+						new Parametar("KAPACITET", TipParameta.Cijelobrojni, true)
 					}));
 
 			ret.Add(Tip.VojniTransport,
-				new Misija("Vojni transport",
-					"vojni transport",
+				new Misija("MIS_VOJ_TRANS_IME",
+					"MIS_VOJ_TRANS_OPIS",
 					false, true, true,
 					new Parametar[] { 
-						new Parametar("KAPACITET", "Kapacitet", TipParameta.Cijelobrojni, true)
+						new Parametar("KAPACITET", TipParameta.Cijelobrojni, true)
 					}));
 
 			return ret;
@@ -151,8 +158,8 @@ namespace Prototip
 		}
 		#endregion
 
-		public string naziv { get; private set; }
-		public string opis { get; private set; }
+		private string nazivKod;
+		private string opisKod;
 		public bool imaCiljanje { get; private set; }
 		public bool jednokratna { get; private set; }
 		public bool grupirana { get; private set; }
@@ -173,6 +180,30 @@ namespace Prototip
 		public int brParametara
 		{
 			get { return parametri.Length; }
+		}
+
+		public string naziv
+		{
+			get
+			{
+				return Postavke.jezik[Kontekst.Misije, nazivKod].tekst();
+			}
+			private set
+			{
+				nazivKod = value;
+			}
+		}
+
+		public string opis
+		{
+			get
+			{
+				return Postavke.jezik[Kontekst.Misije, opisKod].tekst();
+			}
+			private set
+			{
+				opisKod = value;
+			}
 		}
 	}
 }

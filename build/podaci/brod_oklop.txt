@@ -1,6 +1,6 @@
 ﻿<OKLOP>
-IME = Titanij
-OPIS = 
+IME = OK_TITANIJ_IME
+OPIS = OK_TITANIJ_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =
@@ -8,8 +8,8 @@ IZDRZLJIVOST = 1
 ----
 
 <OKLOP>
-IME = Duraplast
-OPIS = 
+IME = OK_DURAPLAST_IME
+OPIS = OK_DURAPLAST_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =
@@ -17,8 +17,8 @@ IZDRZLJIVOST = 2
 ----
 
 <OKLOP>
-IME = Duraloj
-OPIS = 
+IME = OK_DURALOJ_IME
+OPIS = OK_DURALOJ_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =
