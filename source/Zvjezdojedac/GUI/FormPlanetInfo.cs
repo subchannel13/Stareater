@@ -89,7 +89,7 @@ namespace Prototip
 			lblKoefOrbitalne.Text = jezik["plCijenaOrbGradnje"].tekst() + ": x" + kolonija.efekti[Kolonija.FaktorCijeneOrbitalnih].ToString("0.##");
 
 			Dictionary<string, ITekst> jezikKl = Postavke.jezik[Kontekst.Kolonija];
-			lblPopBr.Text = jezik["plNenaseljeno"].tekst();
+			lblPopBr.Text = jezikKl["plNenaseljeno"].tekst();
 			lblPopDelta.Text = "";
 			lblPopMax.Text = "";
 			lblRadnaMjesta.Text = "";

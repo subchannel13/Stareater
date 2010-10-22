@@ -648,10 +648,10 @@ namespace Prototip
 				}
 
 				if (stranica == InfoStranice.SekundarnaMisija) {
-					opisDizajna.Add(jezik["opisOklop"] + ":");
+					opisDizajna.Add(jezik["opisOklop"].tekst() + ":");
 					opisDizajna.Add("");
 					opisDizajna.Add(dizajn.oklop.naziv);
-					opisDizajna.Add(jezik["opisOklopIzd"] + ": " + dizajn.izdrzljivostOklopa);
+					opisDizajna.Add(jezik["opisOklopIzd"].tekst() + ": " + dizajn.izdrzljivostOklopa);
 					opisDizajna.Add("");
 				}
 			}
