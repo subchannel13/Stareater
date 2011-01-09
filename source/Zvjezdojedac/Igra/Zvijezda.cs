@@ -100,7 +100,8 @@ namespace Prototip
 		public List<Planet> planeti;
 		public double velicina;
 		public string ime;
-		public int id { get; private set; }
+		public int id { get; set; }
+		public List<Zvijezda> crvotocine = new List<Zvijezda>();
 
 		public Zvijezda(int id, int tip, double x, double y)
 		{
@@ -174,6 +175,7 @@ namespace Prototip
 		private const string PohY = "Y";
 		private const string PohVelicina = "VELICINA";
 		private const string PohIme = "IME";
+		private const string PohCrvotocine = "CRVOTOCINE";
 		
 		public void pohrani(PodaciPisac izlaz)
 		{
@@ -184,6 +186,7 @@ namespace Prototip
 			izlaz.dodaj(PohIme, ime);
 			for (int i = 0; i < planeti.Count; i++)
 				izlaz.dodaj(Planet.PohranaTip + i, planeti[i]);
+			izlaz.dodajKolekciju(PohCrvotocine, crvotocine);
 		}
 
 		public static Zvijezda Ucitaj(PodaciCitac ulaz, int id)
@@ -200,6 +203,11 @@ namespace Prototip
 					zvj.planeti.Add(Planet.Ucitaj(ulaz[Planet.PohranaTip + i], zvj, i));
 
 			return zvj;
+		}
+
+		public static int[] UcitajCrvotocine(PodaciCitac ulaz)
+		{
+			return ulaz.podatakIntPolje(PohCrvotocine);
 		}
 		#endregion
 	}

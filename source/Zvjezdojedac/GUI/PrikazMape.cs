@@ -54,6 +54,14 @@ namespace Prototip
 			osvjezi();
 		}
 
+		private Point xyZvijezde(Zvijezda zvj)
+		{
+			return new Point(
+				(int)((zvj.x - minX + 1) * skala),
+				(int)((zvj.y - minY + 1) * skala)
+				);
+		}
+
 		public Image osvjezi()
 		{
 			if (_slikaMape != null)
@@ -64,19 +72,23 @@ namespace Prototip
 			g.Clear(Color.Black);
 			Font font = new Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold);
 			Igrac igrac = igra.trenutniIgrac();
+			Pen crvPen = new Pen(Color.DarkBlue);
 
 			foreach (Zvijezda zvj in igra.mapa.zvijezde)
 			{
 				if (zvj.tip == Zvijezda.Tip_Nikakva)
 					continue;
 
-				int x = (int) ((zvj.x - minX + 1) * skala);
-				int y = (int) ((zvj.y - minY + 1) * skala);
-                int d = (int)(Math.Sqrt(zvj.velicina) * VELICINA_SLIKE_ZVIJEZDE);
+				Point xy = xyZvijezde(zvj);
+				int d = (int)(Math.Sqrt(zvj.velicina) * VELICINA_SLIKE_ZVIJEZDE);
+
+				foreach (Zvijezda odrediste in zvj.crvotocine)
+					if (odrediste.id > zvj.id)
+						g.DrawLine(crvPen, xy, xyZvijezde(odrediste));
 
 				g.DrawImage(
 					Slike.ZvijezdaMapa[zvj.tip],
-					new Rectangle(x - d/2, y - d/2, d, d)
+					new Rectangle(xy.X - d/2, xy.Y - d/2, d, d)
 					);
 
 				if (skala >= VELICINA_SLIKE_ZVIJEZDE / 2)
@@ -84,16 +96,16 @@ namespace Prototip
 					Brush bojaImena = new SolidBrush(Color.FromArgb(64, 64, 64));
 					if (igrac.posjeceneZvjezde.Contains(zvj))
 						bojaImena = new SolidBrush(igrac.boja);
-					g.DrawString(zvj.ime, font, bojaImena, x - g.MeasureString(zvj.ime, font).Width / 2, y + VELICINA_SLIKE_ZVIJEZDE / 2);
+					g.DrawString(zvj.ime, font, bojaImena, xy.X - g.MeasureString(zvj.ime, font).Width / 2, xy.Y + VELICINA_SLIKE_ZVIJEZDE / 2);
 				}
 
 				if (igrac.floteStacionarne.ContainsKey(zvj))
-					g.DrawImage(Slike.Flota[igrac.boja], x + VELICINA_SLIKE_ZVIJEZDE / 2, y - VELICINA_SLIKE_ZVIJEZDE / 2);
+					g.DrawImage(Slike.Flota[igrac.boja], xy.X + VELICINA_SLIKE_ZVIJEZDE / 2, xy.Y - VELICINA_SLIKE_ZVIJEZDE / 2);
 
 				if (zvj == igrac.odabranaZvijezda)
 				{
 					Image img = Slike.SlikaOdabiraZvijezde;
-					g.DrawImage(img, new Rectangle(x - img.Width/2, y - img.Height/2, img.Width, img.Height));
+					g.DrawImage(img, new Rectangle(xy.X - img.Width/2, xy.Y - img.Height/2, img.Width, img.Height));
 				}
 			}
 

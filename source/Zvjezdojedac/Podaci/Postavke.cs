@@ -55,7 +55,7 @@ namespace Prototip.Podaci
 			if (podatci.ContainsKey("JEZIK"))
 				jezikKod = podatci["JEZIK"];
 			else
-				jezikKod = Jezik.Popis[Jezik.UobicajeniJezik];
+				jezikKod = Jezik.UobicajeniJezik;
 			jezik = Jezik.IzDatoteka(jezikKod);
 		}
 

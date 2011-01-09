@@ -164,6 +164,7 @@ namespace Prototip
 			catch (IOException)
 			{
 				Postavke.ProslaIgra.Postavi(new Dictionary<string, string>());
+				Postavke.Ucitaj(new Dictionary<string,string>());
 			}
 			finally
 			{

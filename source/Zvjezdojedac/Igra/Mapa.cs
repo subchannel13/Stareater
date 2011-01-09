@@ -13,6 +13,8 @@ namespace Prototip
 		{
 			public const double UDALJENOST = 3;	//Udaljenost izmedju zvijezda
 			public const int BR_PLANETA = 15;
+			public const double MaxDometCrvotocine = 4;
+			public const int MaxCrvotocinaPoZvj = 4;
 
 			public Mapa mapa;
 			public List<Planet> pocetnePozicije;
@@ -125,7 +127,7 @@ namespace Prototip
 					int brZvj = mapa.zvijezde.Count - brIgraca;
 					double kontrolniBroj = 0;
 
-					//Određivanje broja zvijezda pojedinog tipa
+					#region  Određivanje broja zvijezda pojedinog tipa
 					for (int tip = 0; tip < Zvijezda.Tipovi.Count; tip++)
 					{
 						for (int i = 0; i < Zvijezda.Tipovi[tip].udioPojave * brZvj; i++)
@@ -137,8 +139,9 @@ namespace Prototip
 					}
 					for (int i = 0; brZvj > tipovi.kolicina(); i++)
 						tipovi.dodaj(Zvijezda.Tip_Nikakva);
+					#endregion
 
-					//Pridjeljivanje tipova
+					#region Pridjeljivanje tipova
 					Dictionary<int, List<Zvijezda>> zvijezdePoTipu = new Dictionary<int, List<Zvijezda>>();
 					foreach (Zvijezda zvj in mapa.zvijezde)
 						if (zvj.tip != Zvijezda.Tip_PocetnaPozicija)
@@ -147,8 +150,14 @@ namespace Prototip
 							if (!zvijezdePoTipu.ContainsKey(zvj.tip)) zvijezdePoTipu[zvj.tip] = new List<Zvijezda>();
 							zvijezdePoTipu[zvj.tip].Add(zvj);
 						}
+					for (int i = mapa.zvijezde.Count - 1; i > 0; i--)
+						if (mapa.zvijezde[i].tip == Zvijezda.Tip_Nikakva)
+							mapa.zvijezde.RemoveAt(i);
+					for (int i = 0; i < mapa.zvijezde.Count; i++)
+						mapa.zvijezde[i].id = i;
+					#endregion
 
-					//Određivanje raspodijeljivih planeta
+					#region Određivanje raspodijeljivih planeta
 					Dictionary<int, Alati.Vadjenje<Planet.Tip>[]> tipoviPlaneta = new Dictionary<int, Alati.Vadjenje<Planet.Tip>[]>();
 					Planet.Tip[] enumTipova = new Planet.Tip[] { Planet.Tip.NIKAKAV, Planet.Tip.ASTEROIDI, Planet.Tip.KAMENI, Planet.Tip.PLINOVITI };
 					Dictionary<Planet.Tip, int> brPlanetaPoTipu = new Dictionary<Planet.Tip, int>();
@@ -220,8 +229,9 @@ namespace Prototip
 							randVelicina[tipPl].dodaj(i / brPlanetaPoTipu[tipPl]);
 						}
 					}
+					#endregion
 
-					//Dodavanje planeta
+					#region Dodavanje planeta
 					foreach (Zvijezda zvj in mapa.zvijezde)
 					{
 						//if (zvj.tip == Zvijezda.Tip_Nikakva || mapa.pozicijeIgraca.Contains(zvj))
@@ -242,6 +252,27 @@ namespace Prototip
 									MinerPov, MinerDub));
 						}
 					}
+					#endregion
+
+					#region Dodavanje crvotočina
+					Alati.Vadjenje<Zvijezda> zvijezdeIshodista = new Alati.Vadjenje<Zvijezda>(mapa.zvijezde);
+					while (zvijezdeIshodista.kolicina() > 0) {
+						Zvijezda ishodiste = zvijezdeIshodista.izvadi();
+						
+						List<Alati.Usporediv<Zvijezda, double>> odredista = new List<Alati.Usporediv<Zvijezda,double>>();
+						foreach (Zvijezda zvj in mapa.zvijezde)
+							if (zvj != ishodiste && zvj.crvotocine.Count < MaxCrvotocinaPoZvj)
+								if (ishodiste.udaljenost(zvj) <= MaxDometCrvotocine)
+									odredista.Add(new Alati.Usporediv<Zvijezda,double>(zvj, ishodiste.udaljenost(zvj)));
+						odredista.Sort();
+
+						int brNovihCrvotocina = Math.Min(MaxCrvotocinaPoZvj - ishodiste.crvotocine.Count, odredista.Count);
+						for (int i = 0; i < brNovihCrvotocina; i++) {
+							ishodiste.crvotocine.Add(odredista[i].objekt);
+							odredista[i].objekt.crvotocine.Add(ishodiste);
+						}
+					}
+					#endregion
 				}
 				#endregion
 
@@ -301,6 +332,7 @@ namespace Prototip
 		#endregion
 
 		public List<Zvijezda> zvijezde { get; private set; }
+		
 
 		public Mapa()
 		{
@@ -360,8 +392,14 @@ namespace Prototip
 		{
 			int brZvjezda = ulaz.podatakInt(PohBrZijezda);
 			List<Zvijezda> zvijezde = new List<Zvijezda>();
-			for (int i = 0; i < brZvjezda; i++)
+			List<int[]> tmpCrvotocine = new List<int[]>();
+			for (int i = 0; i < brZvjezda; i++) {
 				zvijezde.Add(Zvijezda.Ucitaj(ulaz[Zvijezda.PohranaTip + i], i));
+				tmpCrvotocine.Add(Zvijezda.UcitajCrvotocine(ulaz[Zvijezda.PohranaTip + i]));
+			}
+			for (int i = 0; i < brZvjezda; i++)
+				foreach (int veza in tmpCrvotocine[i])
+					zvijezde[i].crvotocine.Add(zvijezde[veza]);
 
 			return new Mapa(zvijezde);
 		}
