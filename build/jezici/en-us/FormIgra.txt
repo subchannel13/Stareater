@@ -1,6 +1,7 @@
 ﻿::FORM_IGRA
 btnEndTurn = End t&urn
 btnFlote = &Fleet
+btnFlotaPokret = Move
 btnPlanetInfo = &Details
 btnPoruke := "&News (" # P BR_PORUKA # ")"
 btnSpremi = &Save

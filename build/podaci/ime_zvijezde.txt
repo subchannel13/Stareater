@@ -110,6 +110,11 @@ GENITIV = Lisice
 ----
 
 <ZVIJEZDJE>
+NOMINATIV = Lovac
+GENITIV = Lovca
+----
+
+<ZVIJEZDJE>
 NOMINATIV = Mač
 GENITIV = Mača
 ----
@@ -150,11 +155,6 @@ GENITIV = Pingvina
 ----
 
 <ZVIJEZDJE>
-NOMINATIV = Puma
-GENITIV = Pume
-----
-
-<ZVIJEZDJE>
 NOMINATIV = Prsten
 GENITIV = Prstena
 ----
@@ -170,8 +170,13 @@ GENITIV = Ribe
 ----
 
 <ZVIJEZDJE>
-NOMINATIV = Ruka
-GENITIV = Ruke
+NOMINATIV = Rijeka
+GENITIV = Rijeke
+----
+
+<ZVIJEZDJE>
+NOMINATIV = Ruža
+GENITIV = Ruže
 ----
 
 <ZVIJEZDJE>
@@ -195,13 +200,18 @@ GENITIV = Srne
 ----
 
 <ZVIJEZDJE>
-NOMINATIV = Svinja
-GENITIV = Svinje
+NOMINATIV = Srp
+GENITIV = Srpa
 ----
 
 <ZVIJEZDJE>
 NOMINATIV = Šišmiš
 GENITIV = Šišmiša
+----
+
+<ZVIJEZDJE>
+NOMINATIV = Tigar
+GENITIV = Tigra
 ----
 
 <ZVIJEZDJE>
@@ -212,11 +222,6 @@ GENITIV = Trokuta
 <ZVIJEZDJE>
 NOMINATIV = Vepar
 GENITIV = Vepra
-----
-
-<ZVIJEZDJE>
-NOMINATIV = Vila
-GENITIV = Vile
 ----
 
 <ZVIJEZDJE>

@@ -101,7 +101,7 @@ namespace Prototip
 		public double velicina;
 		public string ime;
 		public int id { get; set; }
-		public List<Zvijezda> crvotocine = new List<Zvijezda>();
+		public HashSet<Zvijezda> crvotocine = new HashSet<Zvijezda>();
 
 		public Zvijezda(int id, int tip, double x, double y)
 		{
@@ -186,7 +186,7 @@ namespace Prototip
 			izlaz.dodaj(PohIme, ime);
 			for (int i = 0; i < planeti.Count; i++)
 				izlaz.dodaj(Planet.PohranaTip + i, planeti[i]);
-			izlaz.dodajKolekciju(PohCrvotocine, crvotocine);
+			izlaz.dodajIdeve(PohCrvotocine, crvotocine);
 		}
 
 		public static Zvijezda Ucitaj(PodaciCitac ulaz, int id)

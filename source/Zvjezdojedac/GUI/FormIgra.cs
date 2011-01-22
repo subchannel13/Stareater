@@ -54,6 +54,7 @@ namespace Prototip
 			tvFlota.ImageList = new ImageList();
 			tvFlota.ImageList.ImageSize = new Size(20, 20);
 			postaviJezik();
+			postaviAkcijeBroda();
 		}
 
 		private void postaviJezik()
@@ -62,6 +63,7 @@ namespace Prototip
 
 			btnEndTurn.Text = jezik["btnEndTurn"].tekst();
 			btnFlote.Text = jezik["btnFlote"].tekst();
+			btnFlotaPokret.Text = jezik["btnFlotaPokret"].tekst();
 			btnPlanetInfo.Text = jezik["btnPlanetInfo"].tekst();
 			btnSpremi.Text = jezik["btnSpremi"].tekst();
 			btnTech.Text = jezik["btnTech"].tekst();
@@ -174,6 +176,7 @@ namespace Prototip
 			picMapa.Image = prikazMape.osvjezi();
 			tabCtrlDesno.ImageList.Images[0] = Slike.ZvijezdaTab[zvijezda.tip];
 			tabCtrlDesno.Refresh();
+			postaviAkcijeBroda();
 		}
 
 		private void odaberiPlanet(Planet planet, bool promjeniTab)
@@ -338,6 +341,28 @@ namespace Prototip
 			osvjeziLabele();
 		}
 
+		private void postaviAkcijeBroda()
+		{
+			if (tvFlota.SelectedNode == null) {
+				btnPrimAkcijaBroda.Visible = false;
+				btnSekAkcija.Visible = false;
+				btnFlotaPokret.Enabled = false;
+				return;
+			}
+
+			if (tvFlota.SelectedNode.Parent == null) {
+				btnPrimAkcijaBroda.Visible = false;
+				btnSekAkcija.Visible = false;
+				btnFlotaPokret.Enabled = true;
+			}
+			else if (tvFlota.SelectedNode.Tag != null) {
+				Brod brod = (Brod)tvFlota.SelectedNode.Tag;
+				btnPrimAkcijaBroda.Visible = brod.dizajn.primarnoOruzje != null;
+				btnSekAkcija.Visible = brod.dizajn.sekundarnoOruzje != null;
+				btnFlotaPokret.Enabled = brod.dizajn.MZPogon != null;
+			}
+		}
+
 		private void hscrCivilnaIndustrija_Scroll(object sender, ScrollEventArgs e)
 		{
 			if (igrac.odabranPlanet.kolonija != null)
@@ -485,6 +510,19 @@ namespace Prototip
 		private void FormIgra_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			prikazMape.Dispose();
+		}
+
+		private void tvFlota_AfterSelect(object sender, TreeViewEventArgs e)
+		{
+			postaviAkcijeBroda();
+		}
+
+		private void btnFlotaPokret_Click(object sender, EventArgs e)
+		{
+			FormFlotaPokret frmPokret = new FormFlotaPokret();
+			this.AddOwnedForm(frmPokret);
+
+			frmPokret.Show();
 		}
 	}
 }

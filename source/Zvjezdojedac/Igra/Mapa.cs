@@ -13,8 +13,9 @@ namespace Prototip
 		{
 			public const double UDALJENOST = 3;	//Udaljenost izmedju zvijezda
 			public const int BR_PLANETA = 15;
-			public const double MaxDometCrvotocine = 4;
-			public const int MaxCrvotocinaPoZvj = 4;
+			public const double MaxDometCrvotocine = 6;
+			public const int MinCrvotocinaPoZvj = 2;
+			public const int MaxCrvotocinaPoZvj = 5;
 
 			public Mapa mapa;
 			public List<Planet> pocetnePozicije;
@@ -258,15 +259,18 @@ namespace Prototip
 					Alati.Vadjenje<Zvijezda> zvijezdeIshodista = new Alati.Vadjenje<Zvijezda>(mapa.zvijezde);
 					while (zvijezdeIshodista.kolicina() > 0) {
 						Zvijezda ishodiste = zvijezdeIshodista.izvadi();
-						
+
 						List<Alati.Usporediv<Zvijezda, double>> odredista = new List<Alati.Usporediv<Zvijezda,double>>();
-						foreach (Zvijezda zvj in mapa.zvijezde)
-							if (zvj != ishodiste && zvj.crvotocine.Count < MaxCrvotocinaPoZvj)
-								if (ishodiste.udaljenost(zvj) <= MaxDometCrvotocine)
-									odredista.Add(new Alati.Usporediv<Zvijezda,double>(zvj, ishodiste.udaljenost(zvj)));
+						foreach (Zvijezda zvj in mapa.zvijezde) {
+							if (zvj.crvotocine.Count < MaxCrvotocinaPoZvj)
+							if (ishodiste.udaljenost(zvj) <= MaxDometCrvotocine)
+							if (!zvj.crvotocine.Contains(ishodiste) && !ishodiste.crvotocine.Contains(zvj))
+							if (zvj != ishodiste)
+								odredista.Add(new Alati.Usporediv<Zvijezda, double>(zvj, ishodiste.udaljenost(zvj)));
+						}
 						odredista.Sort();
 
-						int brNovihCrvotocina = Math.Min(MaxCrvotocinaPoZvj - ishodiste.crvotocine.Count, odredista.Count);
+						int brNovihCrvotocina = Math.Min(MinCrvotocinaPoZvj - ishodiste.crvotocine.Count, odredista.Count);
 						for (int i = 0; i < brNovihCrvotocina; i++) {
 							ishodiste.crvotocine.Add(odredista[i].objekt);
 							odredista[i].objekt.crvotocine.Add(ishodiste);

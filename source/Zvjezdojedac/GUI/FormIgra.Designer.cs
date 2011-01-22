@@ -60,6 +60,7 @@
 			this.tabPageFlote = new System.Windows.Forms.TabPage();
 			this.tvFlota = new System.Windows.Forms.TreeView();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.btnPrimAkcijaBroda = new System.Windows.Forms.Button();
 			this.pnlMapa = new System.Windows.Forms.Panel();
 			this.picMapa = new System.Windows.Forms.PictureBox();
 			this.btnEndTurn = new System.Windows.Forms.Button();
@@ -75,6 +76,8 @@
 			this.btnUcitaj = new System.Windows.Forms.Button();
 			this.btnSpremi = new System.Windows.Forms.Button();
 			this.btnTech = new System.Windows.Forms.Button();
+			this.btnSekAkcija = new System.Windows.Forms.Button();
+			this.btnFlotaPokret = new System.Windows.Forms.Button();
 			this.tabCtrlDesno.SuspendLayout();
 			this.tabPageZvijezda.SuspendLayout();
 			this.pnlOpisZvjezde.SuspendLayout();
@@ -84,6 +87,7 @@
 			this.groupVojGradnja.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlikaPlaneta)).BeginInit();
 			this.tabPageFlote.SuspendLayout();
+			this.panel1.SuspendLayout();
 			this.pnlMapa.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picMapa)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBarZoom)).BeginInit();
@@ -393,14 +397,27 @@
 			this.tvFlota.Size = new System.Drawing.Size(148, 417);
 			this.tvFlota.TabIndex = 1;
 			this.tvFlota.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvFlota_NodeMouseDoubleClick);
+			this.tvFlota.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFlota_AfterSelect);
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.btnFlotaPokret);
+			this.panel1.Controls.Add(this.btnSekAkcija);
+			this.panel1.Controls.Add(this.btnPrimAkcijaBroda);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel1.Location = new System.Drawing.Point(3, 3);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(148, 100);
 			this.panel1.TabIndex = 0;
+			// 
+			// btnPrimAkcijaBroda
+			// 
+			this.btnPrimAkcijaBroda.Location = new System.Drawing.Point(3, 13);
+			this.btnPrimAkcijaBroda.Name = "btnPrimAkcijaBroda";
+			this.btnPrimAkcijaBroda.Size = new System.Drawing.Size(75, 23);
+			this.btnPrimAkcijaBroda.TabIndex = 0;
+			this.btnPrimAkcijaBroda.Text = "Prim akcija";
+			this.btnPrimAkcijaBroda.UseVisualStyleBackColor = true;
 			// 
 			// pnlMapa
 			// 
@@ -553,6 +570,25 @@
 			this.btnTech.UseVisualStyleBackColor = true;
 			this.btnTech.Click += new System.EventHandler(this.btnTech_Click);
 			// 
+			// btnSekAkcija
+			// 
+			this.btnSekAkcija.Location = new System.Drawing.Point(3, 42);
+			this.btnSekAkcija.Name = "btnSekAkcija";
+			this.btnSekAkcija.Size = new System.Drawing.Size(75, 23);
+			this.btnSekAkcija.TabIndex = 1;
+			this.btnSekAkcija.Text = "Sek akcija";
+			this.btnSekAkcija.UseVisualStyleBackColor = true;
+			// 
+			// btnFlotaPokret
+			// 
+			this.btnFlotaPokret.Location = new System.Drawing.Point(3, 71);
+			this.btnFlotaPokret.Name = "btnFlotaPokret";
+			this.btnFlotaPokret.Size = new System.Drawing.Size(75, 23);
+			this.btnFlotaPokret.TabIndex = 2;
+			this.btnFlotaPokret.Text = "Pokret";
+			this.btnFlotaPokret.UseVisualStyleBackColor = true;
+			this.btnFlotaPokret.Click += new System.EventHandler(this.btnFlotaPokret_Click);
+			// 
 			// FormIgra
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -582,6 +618,7 @@
 			this.groupVojGradnja.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlikaPlaneta)).EndInit();
 			this.tabPageFlote.ResumeLayout(false);
+			this.panel1.ResumeLayout(false);
 			this.pnlMapa.ResumeLayout(false);
 			this.pnlMapa.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picMapa)).EndInit();
@@ -643,5 +680,8 @@
 		private System.Windows.Forms.Label lblIndustrijaPoStan;
 		private System.Windows.Forms.Label lblOdrzavanjePoStan;
 		private System.Windows.Forms.Label lblRazvojPoStan;
+		private System.Windows.Forms.Button btnPrimAkcijaBroda;
+		private System.Windows.Forms.Button btnFlotaPokret;
+		private System.Windows.Forms.Button btnSekAkcija;
 	}
 }

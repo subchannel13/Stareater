@@ -50,6 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alati.cs" />
+    <Compile Include="GUI\FormFlotaPokret.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormFlotaPokret.Designer.cs">
+      <DependentUpon>FormFlotaPokret.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormFlote.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -165,6 +171,9 @@
     <Compile Include="Podaci\Slike.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GUI\FormFlotaPokret.resx">
+      <DependentUpon>FormFlotaPokret.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormFlote.resx">
       <DependentUpon>FormFlote.cs</DependentUpon>
       <SubType>Designer</SubType>

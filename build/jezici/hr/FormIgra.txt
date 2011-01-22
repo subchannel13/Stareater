@@ -1,13 +1,14 @@
 ﻿::FORM_IGRA
 btnEndTurn = Završi &krug
 btnFlote = &Flote
+btnFlotaPokret = Pokret
 btnPlanetInfo = &Detaljnije
 btnPoruke := "&Novosti (" # P BR_PORUKA # ")"
 btnSpremi = &Spremi
 btnTech = &Tehnologije
 btnUcitaj = &Učitaj
 lblBrojKruga := # D + KRUG 1 # ". krug"
-
+			
 flotaObrana = Obrana
 zvjNeistrazeno = Neistraženo
 
