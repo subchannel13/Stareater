@@ -84,7 +84,7 @@
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(115, 13);
 			this.label2.TabIndex = 4;
-			this.label2.Text = "Ivan Kravarščan 2010.";
+			this.label2.Text = "Ivan Kravarščan 2011.";
 			// 
 			// btnPostavke
 			// 

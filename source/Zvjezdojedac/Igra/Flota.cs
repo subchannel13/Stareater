@@ -44,13 +44,19 @@ namespace Prototip
 		private HashSet<Misija.Tip> misije = new HashSet<Misija.Tip>();
 
 		public Dictionary<Sazetak, Dictionary<Dizajn, Brod>> brodovi { get; private set; }
+		public int id { get; private set; }
 		public double x { get; private set; }
 		public double y { get; private set; }
 		public List<Kolonizacija> kolonizacije { get; private set; }
 
-		public Flota(double x, double y)
+		public Flota(Zvijezda zvijezda, int id)
+			: this(zvijezda.x, zvijezda.y, id)
+		{ }
+
+		public Flota(double x, double y, int id)
 		{
 			this.brodovi = new Dictionary<Sazetak, Dictionary<Dizajn, Brod>>();
+			this.id = id;
 			this.x = x;
 			this.y = y;
 
@@ -111,10 +117,12 @@ namespace Prototip
 
 		#region Pohrana
 		public const string PohranaTip = "FLOTA";
+		private const string PohId = "id";
 		private const string PohX = "X";
 		private const string PohY = "Y";
 		public void pohrani(PodaciPisac izlaz)
 		{
+			izlaz.dodaj(PohId, id);
 			izlaz.dodaj(PohX, x);
 			izlaz.dodaj(PohY, y);
 
@@ -130,9 +138,10 @@ namespace Prototip
 
 		public static Flota Ucitaj(PodaciCitac ulaz, Dictionary<int, Dizajn> dizajnovi)
 		{
+			int id = ulaz.podatakInt(PohId);
 			double x = ulaz.podatakDouble(PohX);
 			double y = ulaz.podatakDouble(PohY);
-			Flota flota = new Flota(x, y);
+			Flota flota = new Flota(x, y, id);
 			
 			int brBrodova = ulaz.podatakInt(Brod.PohranaTip);
 			for (int i = 0; i < brBrodova; i++)

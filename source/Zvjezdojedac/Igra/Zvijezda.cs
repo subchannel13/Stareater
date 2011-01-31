@@ -168,6 +168,11 @@ namespace Prototip
 			return Math.Sqrt((this.x - zvj.x) * (this.x - zvj.x) + (this.y - zvj.y) * (this.y - zvj.y));
 		}
 
+		public double udaljenost(double x, double y)
+		{
+			return Math.Sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
+		}
+
 		#region Pohrana
 		public const string PohranaTip = "ZVIJEZDA";
 		private const string PohTip = "TIP";

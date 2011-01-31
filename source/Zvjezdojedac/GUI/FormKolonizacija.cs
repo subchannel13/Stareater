@@ -194,7 +194,7 @@ namespace Prototip
 		private void hscrBrBrodova_Scroll(object sender, ScrollEventArgs e)
 		{
 			int planetI = lstvPlaneti.SelectedIndices[0];
-			brBrodova[planetI] = (e.NewValue == 0) ? 0 : (long)Math.Pow(maxBrodova(), e.NewValue / (double)hscrBrBrodova.Maximum);
+			brBrodova[planetI] = (e.NewValue == 0) ? 0 : (long)(Math.Ceiling(Math.Pow(e.NewValue / (double)hscrBrBrodova.Maximum, 2) * maxBrodova()));
 
 			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.Kolonija];
 			lblBrBrodova.Text = Postavke.jezik[Kontekst.FormKolonizacija, "lblBrBrodova"].tekst() + ": " + Fje.PrefiksFormater(brBrodova[planetI]);

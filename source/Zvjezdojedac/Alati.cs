@@ -101,7 +101,8 @@ namespace Alati
 			foreach(uint i in sadrzaj)
 			{
 				hash *= 31;
-				hash += i.GetHashCode();
+				hash += i.GetHashCode() & 0xff;
+				hash &= 0x003fffff;
 			}
 		}
 

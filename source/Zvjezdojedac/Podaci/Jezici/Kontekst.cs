@@ -9,6 +9,7 @@ namespace Prototip.Podaci.Jezici
 	{
 		Opcenito,
 		FormFlote,
+		FormFlotaPokret,
 		FormGradnja,
 		FormIgra,
 		FormKolonizacija,

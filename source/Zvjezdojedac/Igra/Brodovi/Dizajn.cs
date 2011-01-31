@@ -566,6 +566,7 @@ namespace Prototip
 		private const string PohTrup = "TRUP";
 		private const string PohPrimOruzje = "PRIM_OR";
 		private const string PohSekOruzje = "SEK_OR";
+		private const string PohUdioPrimOruzja = "UDIO";
 		private const string PohOklop = "OKLOP";
 		private const string PohStit = "STIT";
 		private const string PohSpecOp = "SPEC_OP";
@@ -582,6 +583,7 @@ namespace Prototip
 			izlaz.dodaj(PohTrup, trup.pohrani());
 			if (primarnoOruzje != null)	izlaz.dodaj(PohPrimOruzje, primarnoOruzje.komponenta.pohrani() + " " + primarnoOruzje.kolicina);
 			if (sekundarnoOruzje != null) izlaz.dodaj(PohSekOruzje, sekundarnoOruzje.komponenta.pohrani() + " " + sekundarnoOruzje.kolicina);
+			izlaz.dodaj(PohUdioPrimOruzja, udioPrimarneMisije);
 			if (stit != null) izlaz.dodaj(PohStit, stit.pohrani());
 			if (MZPogon != null) izlaz.dodaj(PohMZPogon, MZPogon.pohrani());
 			izlaz.dodaj(PohOklop, oklop.pohrani());
@@ -632,21 +634,27 @@ namespace Prototip
 			UcitanaKomp komp = ucitajKomponentu(ulaz.podatak(PohTrup));
 			Trup trup = Trup.TrupInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo);
 
-			Zbir<Oruzje> primOruzje = null;
+			Zbir<Oruzje> primOruzje;
 			if (ulaz.ima(PohPrimOruzje)) {
 				komp = ucitajKomponentu(ulaz.podatak(PohPrimOruzje));
 				primOruzje = new Zbir<Oruzje>(
 					Oruzje.OruzjeInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo),
 					komp.kolicina);
 			}
+			else
+				primOruzje = new Zbir<Oruzje>(null, 0);
 
-			Zbir<Oruzje> sekOruzje = null;
+			Zbir<Oruzje> sekOruzje;
 			if (ulaz.ima(PohSekOruzje)) {
 				komp = ucitajKomponentu(ulaz.podatak(PohSekOruzje));
 				sekOruzje = new Zbir<Oruzje>(
 					Oruzje.OruzjeInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo),
 					komp.kolicina);
 			}
+			else
+				sekOruzje = new Zbir<Oruzje>(null, 0);
+
+			double udio = ulaz.podatakDouble(PohUdioPrimOruzja);
 
 			Stit stit = null;
 			if (ulaz.ima(PohStit)) {
@@ -686,28 +694,7 @@ namespace Prototip
 
 				specOprema.Add(so, komp.kolicina);
 			}
-
-			double udio = 0;
-			{
-				double udioPrim = 0, udioSek = 0, ukupno = 0;
-				if (primOruzje != null) {
-					ukupno += primOruzje.komponenta.velicina * primOruzje.kolicina;
-					udioPrim = primOruzje.komponenta.velicina * primOruzje.kolicina;
-				}
-				else
-					primOruzje = new Zbir<Oruzje>(null, 0);
-				if (sekOruzje != null) {
-					ukupno += sekOruzje.komponenta.velicina * sekOruzje.kolicina;
-					udioSek = sekOruzje.komponenta.velicina * sekOruzje.kolicina;
-				}
-				else
-					sekOruzje = new Zbir<Oruzje>(null, 0);
-				udioPrim /= ukupno;
-				udioSek /= ukupno;
-				udio = (udioPrim + 1 - udioSek) / 2;
-			}
-
-
+			
 			return new Dizajn(id, ime, trup, primOruzje.komponenta, sekOruzje.komponenta,
 				udio, oklop, stit, specOprema, senzor, potisnici, mzPogon, reaktor,
 				taktika);

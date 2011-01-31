@@ -15,6 +15,7 @@ namespace Prototip.Podaci.Jezici
 		{
 			Dictionary<string, Kontekst> rez = new Dictionary<string,Kontekst>();
 			rez.Add("FORM_FLOTE", Kontekst.FormFlote);
+			rez.Add("FORM_FLOTA_POKRET", Kontekst.FormFlotaPokret);
 			rez.Add("FORM_GRADNJA", Kontekst.FormGradnja);
 			rez.Add("FORM_IGRA", Kontekst.FormIgra);
 			rez.Add("FORM_KOLONIZACIJA", Kontekst.FormKolonizacija);

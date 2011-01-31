@@ -21,12 +21,17 @@ namespace Prototip
 		private Igrac igrac;
 		private Tocka<double> pomakPogleda;
 
+		private FormFlotaPokret frmFlotaPokret;
+
 		public FormIgra(IgraZvj igra)
 		{
 			InitializeComponent();
 
 			this.igra = igra;
 			igrac = igra.trenutniIgrac();
+
+			this.frmFlotaPokret = new FormFlotaPokret(igra);
+			this.AddOwnedForm(frmFlotaPokret);
 
 			pomakPogleda = null;
 			prikazMape = new PrikazMape(igra);
@@ -123,6 +128,36 @@ namespace Prototip
 			pomakPogleda = new Tocka<double>(x / (double)picMapa.Width, y / (double)picMapa.Height);
 		}
 
+		private void prikaziFlotu(Zvijezda zvijezda)
+		{
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
+
+			tvFlota.Nodes.Clear();
+			tvFlota.ImageList.Images.Clear();
+			foreach (Igrac _igrac in igra.igraci)
+				tvFlota.ImageList.Images.Add(Slike.Flota[_igrac.boja]);
+
+			if (igrac.floteStacionarne.ContainsKey(zvijezda)) {
+				Flota flota = igrac.floteStacionarne[zvijezda];
+				TreeNode nodeStacionarnaFloata = new TreeNode(jezik["flotaObrana"].tekst(null));
+				nodeStacionarnaFloata.ImageIndex = igrac.id;
+				nodeStacionarnaFloata.Tag = flota;
+				tvFlota.Nodes.Add(nodeStacionarnaFloata);
+
+				foreach (Dictionary<Dizajn, Brod> brodovi in flota.brodovi.Values)
+					foreach (Brod brod in brodovi.Values) {
+						TreeNode node = new TreeNode(brod.dizajn.ime + " x " + Fje.PrefiksFormater(brod.kolicina));
+						tvFlota.ImageList.Images.Add(brod.dizajn.trup.slika);
+						node.ImageIndex = tvFlota.ImageList.Images.Count - 1;
+						node.SelectedImageIndex = node.ImageIndex;
+						node.Tag = brod;
+						nodeStacionarnaFloata.Nodes.Add(node);
+					}
+			}
+			tvFlota.ExpandAll();
+			postaviAkcijeBroda();
+		}
+
 		private void odaberiZvijezdu(Zvijezda zvijezda, bool promjeniTab)
 		{
 			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
@@ -147,36 +182,12 @@ namespace Prototip
 			else
 				listViewPlaneti.Items.Add(jezik["zvjNeistrazeno"].tekst(null));
 
-			tvFlota.Nodes.Clear();
-			tvFlota.ImageList.Images.Clear();
-			foreach (Igrac _igrac in igra.igraci)
-				tvFlota.ImageList.Images.Add(Slike.Flota[_igrac.boja]);
-
-			if (igrac.floteStacionarne.ContainsKey(zvijezda))
-			{
-				TreeNode nodeStacionarnaFloata = new TreeNode(jezik["flotaObrana"].tekst(null));
-				nodeStacionarnaFloata.ImageIndex = igrac.id;
-				nodeStacionarnaFloata.Tag = null;
-				tvFlota.Nodes.Add(nodeStacionarnaFloata);
-
-				Flota flota = igrac.floteStacionarne[zvijezda];
-				foreach (Dictionary<Dizajn, Brod> brodovi in flota.brodovi.Values)
-					foreach (Brod brod in brodovi.Values) {
-						TreeNode node = new TreeNode(brod.dizajn.ime + " x " + Fje.PrefiksFormater(brod.kolicina));
-						tvFlota.ImageList.Images.Add(brod.dizajn.trup.slika);
-						node.ImageIndex = tvFlota.ImageList.Images.Count - 1;
-						node.SelectedImageIndex = node.ImageIndex;
-						node.Tag = brod;
-						nodeStacionarnaFloata.Nodes.Add(node);
-					}
-			}
-			tvFlota.ExpandAll();
+			prikaziFlotu(zvijezda);			
 
 			lblImeZvjezde.Text = zvijezda.ime + "\nZračenje: " + zvijezda.zracenje();
 			picMapa.Image = prikazMape.osvjezi();
 			tabCtrlDesno.ImageList.Images[0] = Slike.ZvijezdaTab[zvijezda.tip];
-			tabCtrlDesno.Refresh();
-			postaviAkcijeBroda();
+			tabCtrlDesno.Refresh();			
 		}
 
 		private void odaberiPlanet(Planet planet, bool promjeniTab)
@@ -494,6 +505,7 @@ namespace Prototip
 		private void tvFlota_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
 		{
 			if (e.Node.Tag == null) return;
+			if (e.Node.Parent == null) return;
 
 			Brod brod = (Brod)e.Node.Tag;
 			
@@ -519,10 +531,17 @@ namespace Prototip
 
 		private void btnFlotaPokret_Click(object sender, EventArgs e)
 		{
-			FormFlotaPokret frmPokret = new FormFlotaPokret();
-			this.AddOwnedForm(frmPokret);
+			if (tvFlota.SelectedNode == null) {
+				btnFlotaPokret.Enabled = false;
+				return;
+			}
 
-			frmPokret.Show();
+			if (tvFlota.SelectedNode.Parent == null)
+				frmFlotaPokret.pomicanjeFlote((Flota)tvFlota.SelectedNode.Tag, igrac);
+			else if (tvFlota.SelectedNode.Tag != null) {
+				Flota flota = (Flota)tvFlota.SelectedNode.Parent.Tag;
+				frmFlotaPokret.pomicanjeBroda(flota, (Brod)tvFlota.SelectedNode.Tag, igrac);
+			}
 		}
 	}
 }

@@ -41,3 +41,9 @@ IndustrijaPoStan = Industrija
 OdrzavanjePoStan = Održavanje
 RazvojPoStan = Razvoj
 RudePoStan = Rude
+
+::FORM_FLOTA_POKRET
+lblNazivFlote := # D ID # ". flota"
+lblKolicina = Količina:
+lblBrPoteza := # D BR_POTEZA # " potez" ? | != % BR_POTEZA 10 1 != BR_POTEZA 11 : "a"
+lblBrPotezaNikad = Nikad

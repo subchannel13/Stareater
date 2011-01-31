@@ -336,7 +336,7 @@ namespace Prototip
 		public void dodajBrod(Dizajn dizajn, long kolicina, Zvijezda zvijezda)
 		{
 			if (!floteStacionarne.ContainsKey(zvijezda))
-				floteStacionarne.Add(zvijezda, new Flota(zvijezda.x, zvijezda.y));
+				floteStacionarne.Add(zvijezda, new Flota(zvijezda.x, zvijezda.y, noviIdFlote()));
 
 			floteStacionarne[zvijezda].dodajBrod(new Brod(dizajn, kolicina));
 			dizajn.brojBrodova += kolicina;
@@ -358,6 +358,10 @@ namespace Prototip
 
 		public void dodajDizajn(Dizajn dizajn)
 		{
+			foreach (DizajnZgrada dizajnZ in dizajnoviBrodova)
+				if (dizajnZ.dizajn.stil.Equals(dizajn.stil))
+					return;
+
 			dizajnoviBrodova.Add(new DizajnZgrada(dizajn));
 		}
 
@@ -412,6 +416,34 @@ namespace Prototip
 						dodajDizajn(pd.naciniDizajn(efekti));
 					}
 		}
+
+		public int noviIdFlote()
+		{
+			HashSet<int> zauzetiBrojevi = new HashSet<int>();
+			foreach (Flota flota in flotePokretne)
+				zauzetiBrojevi.Add(flota.id);
+			foreach (Flota flota in floteStacionarne.Values)
+				zauzetiBrojevi.Add(flota.id);
+
+			int rez = 1;
+			while (zauzetiBrojevi.Contains(rez)) 
+				rez++;
+			return rez;
+		}
+
+		public double procjenaBrzineFlote(List<Brod> brodovi)		
+		{
+			if (brodovi.Count == 0)
+				return 0;
+
+			double rez = double.MaxValue;
+			foreach (Brod brod in brodovi)
+				if (brod.kolicina > 0)
+					rez = Math.Min(brod.dizajn.MZbrzina, rez);
+			
+			return rez;
+		}
+	
 
 		#region Pohrana
 		public const string PohranaTip = "IGRAC";
