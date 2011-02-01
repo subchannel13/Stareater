@@ -440,8 +440,11 @@ namespace Prototip
 			foreach (Brod brod in brodovi)
 				if (brod.kolicina > 0)
 					rez = Math.Min(brod.dizajn.MZbrzina, rez);
-			
-			return rez;
+
+			if (rez == double.MaxValue)
+				return 0;
+			else
+				return rez;
 		}
 	
 

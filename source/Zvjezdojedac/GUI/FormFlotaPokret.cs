@@ -80,7 +80,11 @@ namespace Prototip
 				lstBrodovi.Items.Add(new TagTekst<Dizajn>(dizajn, stavkaListe(dizajn)));
 
 			lblKolicina.Text = jezik["lblKolicina"].tekst();
-			
+
+			lblKolicina.Hide();
+			hscbKolicina.Hide();
+			txtKolicina.Hide();
+
 			lblPridruzi.Hide();
 			cbPridruzi.Hide();
 		}
@@ -118,10 +122,76 @@ namespace Prototip
 			}
 		}
 
+		private void postaviKolicinu(long trenutno)
+		{
+			TagTekst<Dizajn> tagDizajn = (TagTekst<Dizajn>)lstBrodovi.SelectedItem;
+			long max = izvornaFlota[tagDizajn.tag].kolicina;
+			if (trenutno > max) trenutno = max;
+			if (trenutno < 0) trenutno = 0;
+
+			if (trenutno.ToString().CompareTo(txtKolicina.Text) != 0)
+				txtKolicina.Text = trenutno.ToString();
+			
+			int novaHScBPoz = (int)Math.Ceiling(Math.Sqrt(trenutno / (double) max) * hscbKolicina.Maximum);
+			if (novaHScBPoz > hscbKolicina.Maximum) novaHScBPoz = hscbKolicina.Maximum;
+			if (hscbKolicina.Value != novaHScBPoz)
+				hscbKolicina.Value = novaHScBPoz;
+
+			if (poslaniBrodovi[tagDizajn.tag] != trenutno) {
+				poslaniBrodovi[tagDizajn.tag] = trenutno;
+				tagDizajn.tekst = stavkaListe(tagDizajn.tag);
+				lstBrodovi.Items[lstBrodovi.SelectedIndex] = tagDizajn;
+				procjenaBrzine();
+			}
+		}
+
+		private Dizajn trenutniDizajn()
+		{
+			return ((TagTekst<Dizajn>)lstBrodovi.SelectedItem).tag;
+		}
+
 		private void cbOdrediste_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (cbOdrediste.SelectedItem != null)
 				procjenaBrzine();
+		}
+
+		private void lstBrodovi_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (lstBrodovi.SelectedItem == null) {
+				lblKolicina.Hide();
+				hscbKolicina.Hide();
+				txtKolicina.Hide();
+				return;
+			}
+
+			lblKolicina.Show();
+			hscbKolicina.Show();
+			txtKolicina.Show();
+
+			postaviKolicinu(poslaniBrodovi[trenutniDizajn()]);
+		}
+
+		private void hscbKolicina_Scroll(object sender, ScrollEventArgs e)
+		{
+			if (e.NewValue == e.OldValue) return;
+
+			long izvornaKolicina = izvornaFlota[trenutniDizajn()].kolicina;
+			long trenutno = (long)Math.Ceiling(Math.Pow(e.NewValue / (double)hscbKolicina.Maximum, 2) * izvornaKolicina);
+			postaviKolicinu(trenutno);
+		}
+
+		private void txtKolicina_TextChanged(object sender, EventArgs e)
+		{
+			try {
+				long trenutno = long.Parse(txtKolicina.Text);
+				long izvornaKolicina = izvornaFlota[trenutniDizajn()].kolicina;
+				if (trenutno <= izvornaKolicina)
+					postaviKolicinu(trenutno);
+			}
+			catch (FormatException) {
+				return;
+			}
 		}
 	}
 }

@@ -115,6 +115,11 @@ namespace Prototip
 				brodovi.Remove(dizajn.stil);
 		}
 
+		public Brod this[Dizajn dizajn]
+		{
+			get { return brodovi[dizajn.stil][dizajn]; }
+		}
+
 		#region Pohrana
 		public const string PohranaTip = "FLOTA";
 		private const string PohId = "id";

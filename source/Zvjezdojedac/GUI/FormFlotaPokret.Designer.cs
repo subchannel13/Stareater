@@ -107,10 +107,12 @@
 			// 
 			// hscbKolicina
 			// 
+			this.hscbKolicina.LargeChange = 1;
 			this.hscbKolicina.Location = new System.Drawing.Point(172, 146);
 			this.hscbKolicina.Name = "hscbKolicina";
 			this.hscbKolicina.Size = new System.Drawing.Size(125, 17);
 			this.hscbKolicina.TabIndex = 8;
+			this.hscbKolicina.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscbKolicina_Scroll);
 			// 
 			// lblKolicina
 			// 
@@ -127,6 +129,7 @@
 			this.txtKolicina.Name = "txtKolicina";
 			this.txtKolicina.Size = new System.Drawing.Size(79, 20);
 			this.txtKolicina.TabIndex = 10;
+			this.txtKolicina.TextChanged += new System.EventHandler(this.txtKolicina_TextChanged);
 			// 
 			// lblBrPoteza
 			// 
@@ -144,6 +147,7 @@
 			this.lstBrodovi.Name = "lstBrodovi";
 			this.lstBrodovi.Size = new System.Drawing.Size(154, 147);
 			this.lstBrodovi.TabIndex = 12;
+			this.lstBrodovi.SelectedIndexChanged += new System.EventHandler(this.lstBrodovi_SelectedIndexChanged);
 			// 
 			// FormFlotaPokret
 			// 

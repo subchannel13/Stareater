@@ -535,6 +535,12 @@ namespace Prototip
 				btnFlotaPokret.Enabled = false;
 				return;
 			}
+			
+			if (frmFlotaPokret.IsDisposed) {
+				this.RemoveOwnedForm(frmFlotaPokret);
+				this.frmFlotaPokret = new FormFlotaPokret(igra);
+				this.AddOwnedForm(frmFlotaPokret);
+			}
 
 			if (tvFlota.SelectedNode.Parent == null)
 				frmFlotaPokret.pomicanjeFlote((Flota)tvFlota.SelectedNode.Tag, igrac);
