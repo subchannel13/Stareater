@@ -104,8 +104,12 @@ namespace Prototip
 
 				if (zvj == igrac.odabranaZvijezda)
 				{
-					Image img = Slike.SlikaOdabiraZvijezde;
+					Image img = Slike.SlikaOdabiraZvijezde[0];
 					g.DrawImage(img, new Rectangle(xy.X - img.Width/2, xy.Y - img.Height/2, img.Width, img.Height));
+				}
+				else if (zvj == igrac.odredisnaZvijezda) {
+					Image img = Slike.SlikaOdabiraZvijezde[1];
+					g.DrawImage(img, new Rectangle(xy.X - img.Width / 2, xy.Y - img.Height / 2, img.Width, img.Height));
 				}
 			}
 

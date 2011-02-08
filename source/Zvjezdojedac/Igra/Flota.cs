@@ -35,19 +35,19 @@ namespace Prototip
 			{
 				return new Kolonizacija(
 					ulaz.podatakInt(PohPlanet),
-					flota.brodSDizajnom(dizajnovi[ulaz.podatakInt(PohBrodovi)]),
+					flota[dizajnovi[ulaz.podatakInt(PohBrodovi)]],
 					ulaz.podatakLong(PohBrBrodova));
 			}
 			#endregion
 		}
 
-		private HashSet<Misija.Tip> misije = new HashSet<Misija.Tip>();
+		protected HashSet<Misija.Tip> misije = new HashSet<Misija.Tip>();
 
-		public Dictionary<Sazetak, Dictionary<Dizajn, Brod>> brodovi { get; private set; }
-		public int id { get; private set; }
-		public double x { get; private set; }
-		public double y { get; private set; }
-		public List<Kolonizacija> kolonizacije { get; private set; }
+		public Dictionary<Dizajn, Brod> brodovi { get; protected set; }
+		public int id { get; protected set; }
+		public double x { get; protected set; }
+		public double y { get; protected set; }
+		public List<Kolonizacija> kolonizacije { get; protected set; }
 
 		public Flota(Zvijezda zvijezda, int id)
 			: this(zvijezda.x, zvijezda.y, id)
@@ -55,7 +55,7 @@ namespace Prototip
 
 		public Flota(double x, double y, int id)
 		{
-			this.brodovi = new Dictionary<Sazetak, Dictionary<Dizajn, Brod>>();
+			this.brodovi = new Dictionary<Dizajn,Brod>();
 			this.id = id;
 			this.x = x;
 			this.y = y;
@@ -63,22 +63,15 @@ namespace Prototip
 			this.kolonizacije = new List<Kolonizacija>();
 		}
 
-		public Brod brodSDizajnom(Dizajn dizajn)
-		{
-			return brodovi[dizajn.stil][dizajn];
-		}
-
 		public void dodajBrod(Brod brod)
 		{
 			Dizajn dizajn = brod.dizajn;
 			Sazetak stil = dizajn.stil;
-			if (!brodovi.ContainsKey(stil))
-				brodovi.Add(stil, new Dictionary<Dizajn, Brod>());
 
-			if (brodovi[stil].ContainsKey(dizajn))
-				brodovi[stil][dizajn].dodaj(brod);
+			if (brodovi.ContainsKey(dizajn))
+				brodovi[dizajn].dodaj(brod);
 			else
-				brodovi[stil].Add(dizajn, brod);
+				brodovi.Add(dizajn, brod);
 
 			if (dizajn.primarnoOruzje != null) misije.Add(dizajn.primarnoOruzje.komponenta.misija);
 			if (dizajn.sekundarnoOruzje != null) misije.Add(dizajn.sekundarnoOruzje.komponenta.misija);
@@ -87,7 +80,7 @@ namespace Prototip
 		public void dodajKolonizacije(Brod brod, long[] brodoviPoPlanetu)
 		{
 			kolonizacije.RemoveAll(kolonizacija => kolonizacija.brod == brod);
-			brod = brodovi[brod.dizajn.stil][brod.dizajn];
+			brod = brodovi[brod.dizajn];
 			long raspoloziviBrodovi = brod.kolicina;
 
 			for (int i = 0; (i < brodoviPoPlanetu.Length) && (raspoloziviBrodovi > 0); i++) {
@@ -106,37 +99,30 @@ namespace Prototip
 
 		public void ukloniBrod(Dizajn dizajn, long kolicina)
 		{
-			brodovi[dizajn.stil][dizajn].ukloni(kolicina);
+			brodovi[dizajn].ukloni(kolicina);
 
-			if (brodovi[dizajn.stil][dizajn].kolicina <= 0)
-				brodovi[dizajn.stil].Remove(dizajn);
-
-			if (brodovi[dizajn.stil].Count == 0)
-				brodovi.Remove(dizajn.stil);
+			if (brodovi[dizajn].kolicina <= 0)
+				brodovi.Remove(dizajn);
 		}
 
 		public Brod this[Dizajn dizajn]
 		{
-			get { return brodovi[dizajn.stil][dizajn]; }
+			get { return brodovi[dizajn]; }
 		}
 
 		#region Pohrana
 		public const string PohranaTip = "FLOTA";
-		private const string PohId = "id";
-		private const string PohX = "X";
-		private const string PohY = "Y";
+		protected const string PohId = "id";
+		protected const string PohX = "X";
+		protected const string PohY = "Y";
 		public void pohrani(PodaciPisac izlaz)
 		{
 			izlaz.dodaj(PohId, id);
 			izlaz.dodaj(PohX, x);
 			izlaz.dodaj(PohY, y);
 
-			HashSet<Brod> brodovi = new HashSet<Brod>();
-			foreach (Dictionary<Dizajn, Brod> dizajnovi in this.brodovi.Values)
-				brodovi.UnionWith(dizajnovi.Values);
-
 			izlaz.dodaj(Brod.PohranaTip, brodovi.Count);
-			izlaz.dodajKolekciju(Brod.PohranaTip, brodovi);
+			izlaz.dodajKolekciju(Brod.PohranaTip, brodovi.Values);
 			izlaz.dodaj(Kolonizacija.PohranaTip, kolonizacije.Count);
 			izlaz.dodajKolekciju(Kolonizacija.PohranaTip, kolonizacije);
 		}

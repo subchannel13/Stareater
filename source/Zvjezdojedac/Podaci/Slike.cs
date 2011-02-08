@@ -35,7 +35,7 @@ namespace Prototip
 		private static Dictionary<Misija.Tip, Image> MisijaBroda = new Dictionary<Misija.Tip, Image>();
 
 		public static Image FlotaTab = null;
-		public static Image SlikaOdabiraZvijezde;
+		public static Image[] SlikaOdabiraZvijezde = new Image[2];
 
 		private static Dictionary<Poruka.Tip, Image> initTipPoruke()
 		{
@@ -85,7 +85,7 @@ namespace Prototip
 					PlanetImageIndex.Add(slika, PlanetImageIndex.Count);
 					break;
 				case "odabir_zvijezde":
-					SlikaOdabiraZvijezde = slika;
+					SlikaOdabiraZvijezde[indeks] = slika;
 					break;
 				case "flota":
 					foreach (Color boja in Igrac.BojeIgraca)

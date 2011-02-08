@@ -171,6 +171,7 @@
 			this.MinimizeBox = false;
 			this.Name = "FormFlotaPokret";
 			this.Text = "Usmjeravanje flote";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormFlotaPokret_FormClosing);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

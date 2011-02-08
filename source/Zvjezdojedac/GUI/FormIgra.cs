@@ -30,7 +30,7 @@ namespace Prototip
 			this.igra = igra;
 			igrac = igra.trenutniIgrac();
 
-			this.frmFlotaPokret = new FormFlotaPokret(igra);
+			this.frmFlotaPokret = new FormFlotaPokret(igra, this);
 			this.AddOwnedForm(frmFlotaPokret);
 
 			pomakPogleda = null;
@@ -122,6 +122,12 @@ namespace Prototip
 				prikazMape.XnaMapi(x),
 				prikazMape.YnaMapi(y), 0.5);
 
+			if (frmFlotaPokret != null)
+				if (frmFlotaPokret.Visible) {
+					frmFlotaPokret.postaviOdrediste(odabranaZvijezda);
+					return;
+				}
+
 			if (odabranaZvijezda != null)
 				odaberiZvijezdu(odabranaZvijezda,true);
 
@@ -144,15 +150,14 @@ namespace Prototip
 				nodeStacionarnaFloata.Tag = flota;
 				tvFlota.Nodes.Add(nodeStacionarnaFloata);
 
-				foreach (Dictionary<Dizajn, Brod> brodovi in flota.brodovi.Values)
-					foreach (Brod brod in brodovi.Values) {
-						TreeNode node = new TreeNode(brod.dizajn.ime + " x " + Fje.PrefiksFormater(brod.kolicina));
-						tvFlota.ImageList.Images.Add(brod.dizajn.trup.slika);
-						node.ImageIndex = tvFlota.ImageList.Images.Count - 1;
-						node.SelectedImageIndex = node.ImageIndex;
-						node.Tag = brod;
-						nodeStacionarnaFloata.Nodes.Add(node);
-					}
+				foreach (Brod brod in flota.brodovi.Values) {
+					TreeNode node = new TreeNode(brod.dizajn.ime + " x " + Fje.PrefiksFormater(brod.kolicina));
+					tvFlota.ImageList.Images.Add(brod.dizajn.trup.slika);
+					node.ImageIndex = tvFlota.ImageList.Images.Count - 1;
+					node.SelectedImageIndex = node.ImageIndex;
+					node.Tag = brod;
+					nodeStacionarnaFloata.Nodes.Add(node);
+				}
 			}
 			tvFlota.ExpandAll();
 			postaviAkcijeBroda();
@@ -185,9 +190,14 @@ namespace Prototip
 			prikaziFlotu(zvijezda);			
 
 			lblImeZvjezde.Text = zvijezda.ime + "\nZračenje: " + zvijezda.zracenje();
-			picMapa.Image = prikazMape.osvjezi();
+			osvjeziMapu();
 			tabCtrlDesno.ImageList.Images[0] = Slike.ZvijezdaTab[zvijezda.tip];
 			tabCtrlDesno.Refresh();			
+		}
+
+		public void osvjeziMapu()
+		{
+			picMapa.Image = prikazMape.osvjezi();
 		}
 
 		private void odaberiPlanet(Planet planet, bool promjeniTab)
@@ -538,7 +548,7 @@ namespace Prototip
 			
 			if (frmFlotaPokret.IsDisposed) {
 				this.RemoveOwnedForm(frmFlotaPokret);
-				this.frmFlotaPokret = new FormFlotaPokret(igra);
+				this.frmFlotaPokret = new FormFlotaPokret(igra, this);
 				this.AddOwnedForm(frmFlotaPokret);
 			}
 

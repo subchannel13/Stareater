@@ -46,6 +46,7 @@ namespace Prototip
 		private Organizacija organizacija;
 
 		public Zvijezda odabranaZvijezda;
+		public Zvijezda odredisnaZvijezda = null;
 		private Planet _odabranPlanet;
 		public Dictionary<Poruka.Tip, bool> filtarPoruka = new Dictionary<Poruka.Tip,bool>();
 
@@ -70,9 +71,8 @@ namespace Prototip
 		private static void PrebrojiBrodove(IEnumerable<Flota> flote)
 		{
 			foreach (Flota flota in flote)
-				foreach (Dictionary<Dizajn, Brod> brodovi in flota.brodovi.Values)
-					foreach (Dizajn dizajn in brodovi.Keys)
-						dizajn.brojBrodova += brodovi[dizajn].kolicina;
+				foreach (KeyValuePair<Dizajn, Brod> par in flota.brodovi)
+					par.Key.brojBrodova += par.Value.kolicina;
 		}
 
 		public Igrac(Tip tip, string ime, Organizacija organizacija, 

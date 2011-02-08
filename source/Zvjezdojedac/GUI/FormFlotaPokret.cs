@@ -18,25 +18,26 @@ namespace Prototip
 
 		private IgraZvj igra;
 		private Igrac igrac;
+		private FormIgra frmIgra;
 		
 		private Flota izvornaFlota;
 		
 		private Dictionary<Dizajn, long> poslaniBrodovi = new Dictionary<Dizajn,long>();
 		private Zvijezda polaznaZvijezda = null;
 
-		public FormFlotaPokret(IgraZvj igra)
+		public FormFlotaPokret(IgraZvj igra, FormIgra frmIgra)
 		{
 			InitializeComponent();
 
+			this.frmIgra = frmIgra;
 			this.igra = igra;
 		}
 
 		private void initPoslaniBrodovi()
 		{
 			poslaniBrodovi.Clear();
-			foreach (Dictionary<Dizajn, Brod> dizajnovi in izvornaFlota.brodovi.Values)
-				foreach (Dizajn dizajn in dizajnovi.Keys)
-					poslaniBrodovi.Add(dizajn, 0);
+			foreach (Dizajn dizajn in izvornaFlota.brodovi.Keys)
+				poslaniBrodovi.Add(dizajn, 0);
 		}
 
 		public void pomicanjeBroda(Flota izvornaFlota, Brod brod, Igrac igrac)
@@ -150,10 +151,22 @@ namespace Prototip
 			return ((TagTekst<Dizajn>)lstBrodovi.SelectedItem).tag;
 		}
 
+		public void postaviOdrediste(Zvijezda zvj)
+		{
+			foreach(object o in cbOdrediste.Items)
+				if (((TagTekst<Zvijezda>)o).tag.id == zvj.id) {
+					cbOdrediste.SelectedItem = o;
+					return;
+				}
+		}
+
 		private void cbOdrediste_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (cbOdrediste.SelectedItem != null)
-				procjenaBrzine();
+			if (cbOdrediste.SelectedItem == null) return;
+			
+			igrac.odredisnaZvijezda = ((TagTekst<Zvijezda>)cbOdrediste.SelectedItem).tag;
+			frmIgra.osvjeziMapu();
+			procjenaBrzine();
 		}
 
 		private void lstBrodovi_SelectedIndexChanged(object sender, EventArgs e)
@@ -175,7 +188,7 @@ namespace Prototip
 		private void hscbKolicina_Scroll(object sender, ScrollEventArgs e)
 		{
 			if (e.NewValue == e.OldValue) return;
-
+			
 			long izvornaKolicina = izvornaFlota[trenutniDizajn()].kolicina;
 			long trenutno = (long)Math.Ceiling(Math.Pow(e.NewValue / (double)hscbKolicina.Maximum, 2) * izvornaKolicina);
 			postaviKolicinu(trenutno);
@@ -192,6 +205,13 @@ namespace Prototip
 			catch (FormatException) {
 				return;
 			}
+		}
+
+		private void FormFlotaPokret_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			igrac.odredisnaZvijezda = null;
+			frmIgra.osvjeziMapu();
+			frmIgra = null;
 		}
 	}
 }

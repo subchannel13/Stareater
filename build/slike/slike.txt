@@ -83,6 +83,12 @@ INDEKS = 0
 ----
 
 <SLIKA>
+DATOTEKA = ./slike/mapa/Odredisna zvijezda.gif
+SKUPINA = odabir_zvijezde
+INDEKS = 1
+----
+
+<SLIKA>
 DATOTEKA = ./slike/mapa/flota.bmp
 SKUPINA = flota
 INDEKS = 0

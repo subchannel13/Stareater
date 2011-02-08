@@ -141,6 +141,7 @@
     <Compile Include="Igra\Igrac.cs" />
     <Compile Include="Igra\Kolonija.cs" />
     <Compile Include="Igra\Mapa.cs" />
+    <Compile Include="Igra\PokretnaFlota.cs" />
     <Compile Include="Igra\Poruka.cs" />
     <Compile Include="Igra\Poruke\PorukaBrod.cs" />
     <Compile Include="Igra\Poruke\PorukaKolonija.cs" />
