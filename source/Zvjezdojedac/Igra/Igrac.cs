@@ -66,9 +66,16 @@ namespace Prototip
 
 		public HashSet<Zvijezda> posjeceneZvjezde = new HashSet<Zvijezda>();
 		public Dictionary<Zvijezda, Flota> floteStacionarne = new Dictionary<Zvijezda,Flota>();
-		public HashSet<Flota> flotePokretne = new HashSet<Flota>();
+		public HashSet<PokretnaFlota> flotePokretne = new HashSet<PokretnaFlota>();
 
 		private static void PrebrojiBrodove(IEnumerable<Flota> flote)
+		{
+			foreach (Flota flota in flote)
+				foreach (KeyValuePair<Dizajn, Brod> par in flota.brodovi)
+					par.Key.brojBrodova += par.Value.kolicina;
+		}
+
+		private static void PrebrojiBrodove(IEnumerable<PokretnaFlota> flote)
 		{
 			foreach (Flota flota in flote)
 				foreach (KeyValuePair<Dizajn, Brod> par in flota.brodovi)
@@ -106,7 +113,7 @@ namespace Prototip
 			List<DizajnZgrada> dizajnoviBrodova, Dictionary<string, Tehnologija> tehnologije,
 			LinkedList<Tehnologija> tehnologijeURazvoju, double koncentracijaPoenaRazvoja,
 			LinkedList<Tehnologija> tehnologijeUIstrazivanju, HashSet<Zvijezda> posjeceneZvjezde,
-			Dictionary<Zvijezda, Flota> floteStacionarne, HashSet<Flota> flotePokretne)
+			Dictionary<Zvijezda, Flota> floteStacionarne, HashSet<PokretnaFlota> flotePokretne)
 		{
 			this.id = id;
 			this.tip = tip;
@@ -157,7 +164,6 @@ namespace Prototip
 
 		public void noviKrug(IgraZvj igra, long poeniRazvoja, long poeniIstrazivanja)
 		{
-			//poruke.Clear();
 			istraziTehnologije(igra, poeniRazvoja, poeniIstrazivanja);
 			izracunajEfekte(igra);
 			pomakniFlote();
@@ -210,10 +216,47 @@ namespace Prototip
 					prazneFloteStac.Add(zvijezda);
 			}
 
+			HashSet<PokretnaFlota> prazneFlotePok = new HashSet<PokretnaFlota>();
+			foreach (PokretnaFlota flota in flotePokretne) {
+				double brzina = procjenaBrzineFlote(flota.brodovi.Values);
+				if (flota.polaznaZvj.crvotocine.Contains(flota.odredisnaZvj))
+					brzina += efekti["BRZINA_CRVOTOCINA"];
+
+				if (flota.primakniCilju(brzina)) {
+					if (floteStacionarne.ContainsKey(flota.odredisnaZvj))
+						floteStacionarne[flota.odredisnaZvj].dodajBrodove(flota);
+					else {
+						Flota flotaStac = new Flota(flota.odredisnaZvj, noviIdFlote());
+						flotaStac.dodajBrodove(flota);
+						floteStacionarne.Add(flota.odredisnaZvj, flotaStac);
+					}
+					prazneFlotePok.Add(flota);
+				}
+			}
+
 			foreach (Zvijezda zvj in prazneFloteStac)
 				floteStacionarne.Remove(zvj);
 
+			foreach (PokretnaFlota flota in prazneFlotePok)
+				flotePokretne.Remove(flota);
+
 			prebrojiBrodove();
+		}
+
+		public List<Flota> slicneFlote(Zvijezda polaziste, Zvijezda odrediste)
+		{
+			List<Flota> rez = new List<Flota>();
+			if (polaziste.id == odrediste.id || odrediste == null) {
+				if (floteStacionarne.ContainsKey(polaziste))
+					rez.Add(floteStacionarne[polaziste]);
+				return rez;
+			}
+			else {
+				foreach (PokretnaFlota flota in flotePokretne)
+					if (flota.polaznaZvj.id == polaziste.id && flota.odredisnaZvj.id == odrediste.id)
+						rez.Add(flota);
+				return rez;
+			}
 		}
 
 		public void izracunajEfekte(IgraZvj igra)
@@ -431,22 +474,35 @@ namespace Prototip
 			return rez;
 		}
 
-		public double procjenaBrzineFlote(List<Brod> brodovi)		
+		public double procjenaBrzineFlote(IEnumerable<Brod> brodovi)		
 		{
-			if (brodovi.Count == 0)
-				return 0;
-
+			bool imaBrodova = false;
 			double rez = double.MaxValue;
 			foreach (Brod brod in brodovi)
-				if (brod.kolicina > 0)
+				if (brod.kolicina > 0) {
+					imaBrodova = true;
 					rez = Math.Min(brod.dizajn.MZbrzina, rez);
+				}
 
-			if (rez == double.MaxValue)
+			if (rez == double.MaxValue || !imaBrodova)
 				return 0;
 			else
 				return rez;
 		}
-	
+
+		public void dodajPokretnuFlotu(Dictionary<Dizajn, long> brodovi, Flota izvornaFlota, 
+			Zvijezda polaziste, Zvijezda odrediste, Flota pridruzi)
+		{
+			if (izvornaFlota == pridruzi) return;
+
+			if (pridruzi != null)
+				pridruzi.preuzmiBrodove(izvornaFlota, brodovi);
+			else {
+				PokretnaFlota flota = new PokretnaFlota(polaziste, odrediste, noviIdFlote());
+				flota.preuzmiBrodove(izvornaFlota, brodovi);
+				flotePokretne.Add(flota);
+			}
+		}
 
 		#region Pohrana
 		public const string PohranaTip = "IGRAC";
@@ -591,9 +647,9 @@ namespace Prototip
 					Flota.Ucitaj(ulaz[PohFloteStac + i], dizajnID));
 
 			int brPokFlota = ulaz.podatakInt(PohFlotePokret);
-			HashSet<Flota> flotePokretne = new HashSet<Flota>();
+			HashSet<PokretnaFlota> flotePokretne = new HashSet<PokretnaFlota>();
 			for (int i = 0; i < brPokFlota; i++)
-				flotePokretne.Add(Flota.Ucitaj(ulaz[PohFlotePokret + i], dizajnID));
+				flotePokretne.Add(PokretnaFlota.Ucitaj(ulaz[PohFlotePokret + i], dizajnID, zvijezdeID));
 
 			int brPoruka = ulaz.podatakInt(PohPoruka);
 			LinkedList<Poruka> poruke = new LinkedList<Poruka>();

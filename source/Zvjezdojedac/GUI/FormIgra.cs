@@ -30,7 +30,7 @@ namespace Prototip
 			this.igra = igra;
 			igrac = igra.trenutniIgrac();
 
-			this.frmFlotaPokret = new FormFlotaPokret(igra, this);
+			this.frmFlotaPokret = new FormFlotaPokret(this);
 			this.AddOwnedForm(frmFlotaPokret);
 
 			pomakPogleda = null;
@@ -548,15 +548,15 @@ namespace Prototip
 			
 			if (frmFlotaPokret.IsDisposed) {
 				this.RemoveOwnedForm(frmFlotaPokret);
-				this.frmFlotaPokret = new FormFlotaPokret(igra, this);
+				this.frmFlotaPokret = new FormFlotaPokret(this);
 				this.AddOwnedForm(frmFlotaPokret);
 			}
 
 			if (tvFlota.SelectedNode.Parent == null)
-				frmFlotaPokret.pomicanjeFlote((Flota)tvFlota.SelectedNode.Tag, igrac);
+				frmFlotaPokret.pomicanjeFlote((Flota)tvFlota.SelectedNode.Tag, igrac, igra);
 			else if (tvFlota.SelectedNode.Tag != null) {
 				Flota flota = (Flota)tvFlota.SelectedNode.Parent.Tag;
-				frmFlotaPokret.pomicanjeBroda(flota, (Brod)tvFlota.SelectedNode.Tag, igrac);
+				frmFlotaPokret.pomicanjeBroda(flota, (Brod)tvFlota.SelectedNode.Tag, igrac, igra);
 			}
 		}
 	}

@@ -62,6 +62,14 @@ namespace Prototip
 				);
 		}
 
+		private Point xyFlote(Flota flota)
+		{
+			return new Point(
+				(int)((flota.x - minX + 1) * skala),
+				(int)((flota.y - minY + 1) * skala)
+				);
+		}
+
 		public Image osvjezi()
 		{
 			if (_slikaMape != null)
@@ -111,6 +119,13 @@ namespace Prototip
 					Image img = Slike.SlikaOdabiraZvijezde[1];
 					g.DrawImage(img, new Rectangle(xy.X - img.Width / 2, xy.Y - img.Height / 2, img.Width, img.Height));
 				}
+			}
+
+			foreach (PokretnaFlota flota in igrac.flotePokretne) {
+				Point xy = xyFlote(flota);
+				xy.X -= Slike.Flota[igrac.boja].Size.Width / 2;
+				xy.Y -= Slike.Flota[igrac.boja].Size.Height / 2;
+				g.DrawImage(Slike.Flota[igrac.boja], xy.X, xy.Y);
 			}
 
 			g.Dispose();

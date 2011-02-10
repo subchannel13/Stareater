@@ -43,7 +43,12 @@ RazvojPoStan = Development
 RudePoStan = Ores
 
 ::FORM_FLOTA_POKRET
-lblNazivFlote := # D ID # ? | > % ID 10 3 = % / ID 10 10 1 : "th" ? & = % ID 10 1 != % / ID 10 10 1 : "st" ? & = % ID 10 2 != % / ID 10 10 1 : "nd" ? & = % ID 10 3 != % / ID 10 10 1 : "rd" " fleet"
-lblKolicina = Quantity:
+btnPosalji = Send
 lblBrPoteza := "ETA: " # D BR_POTEZA # " turn" ? | != % BR_POTEZA 10 1 != BR_POTEZA 11 : "s"
 lblBrPotezaNikad = Never
+lblKolicina = Quantity:
+lblNazivFlote := # D ID # ? | > % ID 10 3 = % / ID 10 10 1 : "th" ? & = % ID 10 1 != % / ID 10 10 1 : "st" ? & = % ID 10 2 != % / ID 10 10 1 : "nd" ? & = % ID 10 3 != % / ID 10 10 1 : "rd" " fleet"
+lblOdrediste = Destination:
+lblPridruzi = Join with fleet:
+
+nePridruzuj = None

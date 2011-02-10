@@ -77,6 +77,12 @@ namespace Prototip
 			if (dizajn.sekundarnoOruzje != null) misije.Add(dizajn.sekundarnoOruzje.komponenta.misija);
 		}
 
+		public void dodajBrodove(Flota flota)
+		{
+			foreach (Brod brod in flota.brodovi.Values)
+				dodajBrod(brod);
+		}
+
 		public void dodajKolonizacije(Brod brod, long[] brodoviPoPlanetu)
 		{
 			kolonizacije.RemoveAll(kolonizacija => kolonizacija.brod == brod);
@@ -95,6 +101,15 @@ namespace Prototip
 		public bool imaMisiju(Misija.Tip misija)
 		{
 			return misije.Contains(misija);
+		}
+
+		public void preuzmiBrodove(Flota izvornaFlota, Dictionary<Dizajn, long> brodovi)
+		{
+			foreach (KeyValuePair<Dizajn, long> brod in brodovi)
+				izvornaFlota.ukloniBrod(brod.Key, brod.Value);
+			foreach (KeyValuePair<Dizajn, long> brod in brodovi)
+				if (brod.Value > 0)
+					dodajBrod(new Brod(brod.Key, brod.Value));
 		}
 
 		public void ukloniBrod(Dizajn dizajn, long kolicina)

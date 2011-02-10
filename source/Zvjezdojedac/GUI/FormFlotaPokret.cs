@@ -15,6 +15,7 @@ namespace Prototip
 	public partial class FormFlotaPokret : Form
 	{
 		private const double Epsilon = 1e-3;
+		Dictionary<string, ITekst> jezik;
 
 		private IgraZvj igra;
 		private Igrac igrac;
@@ -25,12 +26,11 @@ namespace Prototip
 		private Dictionary<Dizajn, long> poslaniBrodovi = new Dictionary<Dizajn,long>();
 		private Zvijezda polaznaZvijezda = null;
 
-		public FormFlotaPokret(IgraZvj igra, FormIgra frmIgra)
+		public FormFlotaPokret(FormIgra frmIgra)
 		{
 			InitializeComponent();
 
 			this.frmIgra = frmIgra;
-			this.igra = igra;
 		}
 
 		private void initPoslaniBrodovi()
@@ -40,20 +40,22 @@ namespace Prototip
 				poslaniBrodovi.Add(dizajn, 0);
 		}
 
-		public void pomicanjeBroda(Flota izvornaFlota, Brod brod, Igrac igrac)
+		public void pomicanjeBroda(Flota izvornaFlota, Brod brod, Igrac igrac, IgraZvj igra)
 		{
 			this.izvornaFlota = izvornaFlota;
 			this.igrac = igrac;
+			this.igra = igra;
 			initPoslaniBrodovi();
 			poslaniBrodovi[brod.dizajn] = brod.kolicina;
 			postaviGUI();
 			Show();
 		}
 
-		public void pomicanjeFlote(Flota izvornaFlota, Igrac igrac)
+		public void pomicanjeFlote(Flota izvornaFlota, Igrac igrac, IgraZvj igra)
 		{
 			this.izvornaFlota = izvornaFlota;
 			this.igrac = igrac;
+			this.igra = igra;
 			initPoslaniBrodovi();
 			postaviGUI();
 			Show();
@@ -62,7 +64,7 @@ namespace Prototip
 		private void postaviGUI()
 		{
 			this.polaznaZvijezda = igra.mapa.najblizaZvijezda(izvornaFlota.x, izvornaFlota.y, Epsilon);
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlotaPokret];
+			this.jezik = Postavke.jezik[Kontekst.FormFlotaPokret];
 			Dictionary<string, double> varijable = new Dictionary<string, double>();
 
 			lblPolaznaZvijezda.Text = polaznaZvijezda.ime;
@@ -80,14 +82,14 @@ namespace Prototip
 			foreach(Dizajn dizajn in sortiraniDizajnovi)
 				lstBrodovi.Items.Add(new TagTekst<Dizajn>(dizajn, stavkaListe(dizajn)));
 
+			btnPosalji.Text = jezik["btnPosalji"].tekst();
+			lblOdrediste.Text = jezik["lblOdrediste"].tekst();
 			lblKolicina.Text = jezik["lblKolicina"].tekst();
+			lblPridruzi.Text = jezik["lblPridruzi"].tekst();
 
 			lblKolicina.Hide();
 			hscbKolicina.Hide();
 			txtKolicina.Hide();
-
-			lblPridruzi.Hide();
-			cbPridruzi.Hide();
 		}
 
 		private int dizajnSort(Dizajn a, Dizajn b)
@@ -100,19 +102,30 @@ namespace Prototip
 			return Fje.PrefiksFormater(poslaniBrodovi[dizajn]) + " x " + dizajn.ime;
 		}
 
+		private List<Brod> listaBrodova()
+		{
+			List<Brod> rez = new List<Brod>();
+			foreach (KeyValuePair<Dizajn, long> brod in poslaniBrodovi)
+				rez.Add(new Brod(brod.Key, brod.Value));
+
+			return rez;
+		}
+
 		private void procjenaBrzine()
 		{
-			List<Brod> brodovi = new List<Brod>();
-			foreach (KeyValuePair<Dizajn, long> brod in poslaniBrodovi)
-				brodovi.Add(new Brod(brod.Key, brod.Value));
-
-			double brzina = igrac.procjenaBrzineFlote(brodovi);
 			Zvijezda odredisnaZvj = ((TagTekst<Zvijezda>)cbOdrediste.SelectedItem).tag;
+			if (odredisnaZvj.id == polaznaZvijezda.id) {
+				lblBrPoteza.Hide();
+				return;
+			}
+			else if (!lblBrPoteza.Visible)
+				lblBrPoteza.Show();
+
+			double brzina = igrac.procjenaBrzineFlote(listaBrodova());
 			if (brzina > 0 && polaznaZvijezda != null)
 				if (polaznaZvijezda.crvotocine.Contains(odredisnaZvj))
 					brzina += igrac.efekti["BRZINA_CRVOTOCINA"];
 
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlotaPokret];
 			Dictionary<string, double> varijable = new Dictionary<string, double>();
 
 			if (brzina == 0)
@@ -160,6 +173,35 @@ namespace Prototip
 				}
 		}
 
+		private void pridruzivanjaNema()
+		{
+			cbPridruzi.Items.Clear();
+			cbPridruzi.Items.Add(new TagTekst<Flota>(null, jezik["nePridruzuj"].tekst()));
+			cbPridruzi.SelectedIndex = 0;
+		}
+
+		private void pridruziPokretnojFloti(List<Flota> slicneFlote)
+		{
+			cbPridruzi.Items.Clear();
+			cbPridruzi.Items.Add(new TagTekst<Flota>(null, jezik["nePridruzuj"].tekst()));
+
+			Dictionary<string, double> varijable = new Dictionary<string, double>();
+			foreach (Flota flota in slicneFlote) {
+				varijable.Add("ID", flota.id);
+				cbPridruzi.Items.Add(new TagTekst<Flota>(null, jezik["lblNazivFlote"].tekst(varijable)));
+			}
+			cbPridruzi.SelectedIndex = 0;
+		}
+
+		private void pridruziStacFloti()
+		{
+			cbPridruzi.Items.Clear();
+			cbPridruzi.Items.Add(new TagTekst<Flota>(
+				igrac.floteStacionarne[polaznaZvijezda],
+				Postavke.jezik[Kontekst.FormIgra]["flotaObrana"].tekst()));
+			cbPridruzi.SelectedIndex = 0;
+		}
+
 		private void cbOdrediste_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (cbOdrediste.SelectedItem == null) return;
@@ -167,6 +209,15 @@ namespace Prototip
 			igrac.odredisnaZvijezda = ((TagTekst<Zvijezda>)cbOdrediste.SelectedItem).tag;
 			frmIgra.osvjeziMapu();
 			procjenaBrzine();
+
+			List<Flota> slicneFlote = igrac.slicneFlote(polaznaZvijezda, igrac.odredisnaZvijezda);
+			if (polaznaZvijezda.id == igrac.odredisnaZvijezda.id)
+				if (slicneFlote.Count == 0)
+					pridruzivanjaNema();
+				else
+					pridruziStacFloti();
+			else
+				pridruziPokretnojFloti(slicneFlote);
 		}
 
 		private void lstBrodovi_SelectedIndexChanged(object sender, EventArgs e)
@@ -212,6 +263,18 @@ namespace Prototip
 			igrac.odredisnaZvijezda = null;
 			frmIgra.osvjeziMapu();
 			frmIgra = null;
+		}
+
+		private void btnPosalji_Click(object sender, EventArgs e)
+		{
+			igrac.dodajPokretnuFlotu(
+				poslaniBrodovi,
+				izvornaFlota,
+				polaznaZvijezda,
+				((TagTekst<Zvijezda>)cbOdrediste.SelectedItem).tag,
+				((TagTekst<Flota>)cbPridruzi.SelectedItem).tag);
+			DialogResult = DialogResult.OK;
+			Close();
 		}
 	}
 }

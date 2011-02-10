@@ -77,6 +77,7 @@
 			this.btnPosalji.TabIndex = 4;
 			this.btnPosalji.Text = "Pošalji";
 			this.btnPosalji.UseVisualStyleBackColor = true;
+			this.btnPosalji.Click += new System.EventHandler(this.btnPosalji_Click);
 			// 
 			// lblPridruzi
 			// 
