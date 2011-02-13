@@ -15,6 +15,7 @@ namespace Prototip
 	public partial class FormFlotaPokret : Form
 	{
 		private const double Epsilon = 1e-3;
+		private const int hscrKolicinaMax = 20;
 		Dictionary<string, ITekst> jezik;
 
 		private IgraZvj igra;
@@ -57,6 +58,8 @@ namespace Prototip
 			this.igrac = igrac;
 			this.igra = igra;
 			initPoslaniBrodovi();
+			foreach (Brod brod in izvornaFlota.brodovi.Values)
+				poslaniBrodovi[brod.dizajn] = brod.kolicina;
 			postaviGUI();
 			Show();
 		}
@@ -66,6 +69,8 @@ namespace Prototip
 			this.polaznaZvijezda = igra.mapa.najblizaZvijezda(izvornaFlota.x, izvornaFlota.y, Epsilon);
 			this.jezik = Postavke.jezik[Kontekst.FormFlotaPokret];
 			Dictionary<string, double> varijable = new Dictionary<string, double>();
+
+			this.Text = jezik["naslov"].tekst();
 
 			lblPolaznaZvijezda.Text = polaznaZvijezda.ime;
 			varijable.Add("ID", igrac.noviIdFlote());
@@ -82,6 +87,7 @@ namespace Prototip
 			foreach(Dizajn dizajn in sortiraniDizajnovi)
 				lstBrodovi.Items.Add(new TagTekst<Dizajn>(dizajn, stavkaListe(dizajn)));
 
+			btnOdustani.Text = jezik["btnOdustani"].tekst();
 			btnPosalji.Text = jezik["btnPosalji"].tekst();
 			lblOdrediste.Text = jezik["lblOdrediste"].tekst();
 			lblKolicina.Text = jezik["lblKolicina"].tekst();
@@ -128,11 +134,14 @@ namespace Prototip
 
 			Dictionary<string, double> varijable = new Dictionary<string, double>();
 
-			if (brzina == 0)
+			if (brzina == 0) {
 				lblBrPoteza.Text = jezik["lblBrPotezaNikad"].tekst();
+				btnPosalji.Enabled = false;
+			}
 			else {
 				varijable.Add("BR_POTEZA", Math.Ceiling(odredisnaZvj.udaljenost(izvornaFlota.x, izvornaFlota.y) / brzina));
 				lblBrPoteza.Text = jezik["lblBrPoteza"].tekst(varijable);
+				btnPosalji.Enabled = true;
 			}
 		}
 
@@ -145,7 +154,11 @@ namespace Prototip
 
 			if (trenutno.ToString().CompareTo(txtKolicina.Text) != 0)
 				txtKolicina.Text = trenutno.ToString();
-			
+
+			if (max < hscrKolicinaMax)
+				hscbKolicina.Maximum = (int)max;
+			else
+				hscbKolicina.Maximum = hscrKolicinaMax;
 			int novaHScBPoz = (int)Math.Ceiling(Math.Sqrt(trenutno / (double) max) * hscbKolicina.Maximum);
 			if (novaHScBPoz > hscbKolicina.Maximum) novaHScBPoz = hscbKolicina.Maximum;
 			if (hscbKolicina.Value != novaHScBPoz)
@@ -241,7 +254,11 @@ namespace Prototip
 			if (e.NewValue == e.OldValue) return;
 			
 			long izvornaKolicina = izvornaFlota[trenutniDizajn()].kolicina;
-			long trenutno = (long)Math.Ceiling(Math.Pow(e.NewValue / (double)hscbKolicina.Maximum, 2) * izvornaKolicina);
+			long trenutno;
+			if (izvornaKolicina <= hscrKolicinaMax)
+				trenutno = (long)Math.Ceiling((e.NewValue / (double)hscbKolicina.Maximum) * izvornaKolicina);
+			else
+				trenutno = (long)Math.Ceiling(Math.Pow(e.NewValue / (double)hscbKolicina.Maximum, 2) * izvornaKolicina);
 			postaviKolicinu(trenutno);
 		}
 
@@ -273,7 +290,14 @@ namespace Prototip
 				polaznaZvijezda,
 				((TagTekst<Zvijezda>)cbOdrediste.SelectedItem).tag,
 				((TagTekst<Flota>)cbPridruzi.SelectedItem).tag);
+			frmIgra.prikaziFlotu(polaznaZvijezda);
 			DialogResult = DialogResult.OK;
+			Close();
+		}
+
+		private void bnOdustani_Click(object sender, EventArgs e)
+		{
+			DialogResult = DialogResult.Cancel;
 			Close();
 		}
 	}

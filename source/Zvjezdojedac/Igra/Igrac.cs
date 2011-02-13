@@ -230,6 +230,7 @@ namespace Prototip
 						flotaStac.dodajBrodove(flota);
 						floteStacionarne.Add(flota.odredisnaZvj, flotaStac);
 					}
+					posjeceneZvjezde.Add(flota.odredisnaZvj);
 					prazneFlotePok.Add(flota);
 				}
 			}
@@ -502,6 +503,10 @@ namespace Prototip
 				flota.preuzmiBrodove(izvornaFlota, brodovi);
 				flotePokretne.Add(flota);
 			}
+
+			if (izvornaFlota.brodovi.Count == 0)
+				if (floteStacionarne[polaziste].id == izvornaFlota.id)
+					floteStacionarne.Remove(polaziste);
 		}
 
 		#region Pohrana

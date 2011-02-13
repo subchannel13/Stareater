@@ -134,14 +134,14 @@ namespace Prototip
 			pomakPogleda = new Tocka<double>(x / (double)picMapa.Width, y / (double)picMapa.Height);
 		}
 
-		private void prikaziFlotu(Zvijezda zvijezda)
+		public void prikaziFlotu(Zvijezda zvijezda)
 		{
 			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
 
 			tvFlota.Nodes.Clear();
 			tvFlota.ImageList.Images.Clear();
 			foreach (Igrac _igrac in igra.igraci)
-				tvFlota.ImageList.Images.Add(Slike.Flota[_igrac.boja]);
+				tvFlota.ImageList.Images.Add(Slike.FlotaTabBoja[_igrac.boja]);
 
 			if (igrac.floteStacionarne.ContainsKey(zvijezda)) {
 				Flota flota = igrac.floteStacionarne[zvijezda];

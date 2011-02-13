@@ -85,7 +85,7 @@ namespace Alati
 					trenutni = 0;
 				}
 
-				trenutni = sadrzaj[i] * faktor;
+				trenutni += sadrzaj[i] * faktor;
 
 				uint faktorKorak = 2;
 				while (faktorKorak < maxVelicina[i])

@@ -39,6 +39,7 @@
 			this.txtKolicina = new System.Windows.Forms.TextBox();
 			this.lblBrPoteza = new System.Windows.Forms.Label();
 			this.lstBrodovi = new System.Windows.Forms.ListBox();
+			this.btnOdustani = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// lblPolaznaZvijezda
@@ -71,7 +72,7 @@
 			// 
 			// btnPosalji
 			// 
-			this.btnPosalji.Location = new System.Drawing.Point(222, 212);
+			this.btnPosalji.Location = new System.Drawing.Point(141, 212);
 			this.btnPosalji.Name = "btnPosalji";
 			this.btnPosalji.Size = new System.Drawing.Size(75, 23);
 			this.btnPosalji.TabIndex = 4;
@@ -150,11 +151,22 @@
 			this.lstBrodovi.TabIndex = 12;
 			this.lstBrodovi.SelectedIndexChanged += new System.EventHandler(this.lstBrodovi_SelectedIndexChanged);
 			// 
+			// btnOdustani
+			// 
+			this.btnOdustani.Location = new System.Drawing.Point(222, 212);
+			this.btnOdustani.Name = "btnOdustani";
+			this.btnOdustani.Size = new System.Drawing.Size(75, 23);
+			this.btnOdustani.TabIndex = 13;
+			this.btnOdustani.Text = "Odustani";
+			this.btnOdustani.UseVisualStyleBackColor = true;
+			this.btnOdustani.Click += new System.EventHandler(this.bnOdustani_Click);
+			// 
 			// FormFlotaPokret
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(306, 255);
+			this.Controls.Add(this.btnOdustani);
 			this.Controls.Add(this.lstBrodovi);
 			this.Controls.Add(this.lblBrPoteza);
 			this.Controls.Add(this.txtKolicina);
@@ -192,5 +204,6 @@
 		private System.Windows.Forms.TextBox txtKolicina;
 		private System.Windows.Forms.Label lblBrPoteza;
 		private System.Windows.Forms.ListBox lstBrodovi;
+		private System.Windows.Forms.Button btnOdustani;
 	}
 }

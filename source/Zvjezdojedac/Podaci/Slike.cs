@@ -30,6 +30,7 @@ namespace Prototip
 		public static Dictionary<Planet.Tip, List<SlikaPlaneta>> PlanetTab = new Dictionary<Planet.Tip, List<SlikaPlaneta>>();
 		public static Dictionary<Image, int> PlanetImageIndex = new Dictionary<Image, int>();
 		public static Dictionary<Color, Image> Flota = new Dictionary<Color,Image>();
+		public static Dictionary<Color, Image> FlotaTabBoja = new Dictionary<Color, Image>();
 		public static Dictionary<Poruka.Tip, Image> TipPoruke = initTipPoruke();
 
 		private static Dictionary<Misija.Tip, Image> MisijaBroda = new Dictionary<Misija.Tip, Image>();
@@ -70,7 +71,11 @@ namespace Prototip
 
 			switch (skupina) {
 				case "flota_tab":
-					FlotaTab = slika;
+					if (indeks == 0)
+						FlotaTab = slika;
+					else if (indeks == 1)
+						foreach (Color boja in Igrac.BojeIgraca)
+							FlotaTabBoja.Add(boja, ModulirajBoju(slika, boja));
 					break;
 				case "planet_tab":
 					Planet.Tip tip = (Planet.Tip)indeks;
@@ -119,6 +124,7 @@ namespace Prototip
 			for (int y = 0; y < ret.Height; y++)
 				for (int x = 0; x < ret.Width; x++)
 					ret.SetPixel(x, y, Color.FromArgb(
+						ret.GetPixel(x, y).A,
 						(int)(ret.GetPixel(x, y).R * rf),
 						(int)(ret.GetPixel(x, y).G * gf),
 						(int)(ret.GetPixel(x, y).B * bf)));

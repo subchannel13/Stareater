@@ -130,7 +130,7 @@ namespace Prototip
 		protected const string PohId = "id";
 		protected const string PohX = "X";
 		protected const string PohY = "Y";
-		public void pohrani(PodaciPisac izlaz)
+		public virtual void pohrani(PodaciPisac izlaz)
 		{
 			izlaz.dodaj(PohId, id);
 			izlaz.dodaj(PohX, x);

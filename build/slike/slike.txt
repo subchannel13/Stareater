@@ -77,6 +77,12 @@ INDEKS = 0
 ----
 
 <SLIKA>
+DATOTEKA = ./slike/tab/flota.bmp
+SKUPINA = flota_tab
+INDEKS = 1
+----
+
+<SLIKA>
 DATOTEKA = ./slike/mapa/Odabrana zvijezda.gif
 SKUPINA = odabir_zvijezde
 INDEKS = 0
@@ -89,7 +95,7 @@ INDEKS = 1
 ----
 
 <SLIKA>
-DATOTEKA = ./slike/mapa/flota.bmp
+DATOTEKA = ./slike/mapa/flota.png
 SKUPINA = flota
 INDEKS = 0
 ----

@@ -81,6 +81,13 @@ namespace Prototip
 			Font font = new Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold);
 			Igrac igrac = igra.trenutniIgrac();
 			Pen crvPen = new Pen(Color.DarkBlue);
+			Pen linijaOdredistePen = new Pen(Color.Green);
+
+			foreach (Zvijezda zvj in igra.mapa.zvijezde)
+				if (igrac.posjeceneZvjezde.Contains(zvj))
+					foreach (Zvijezda odrediste in zvj.crvotocine)
+						if (odrediste.id > zvj.id || !igrac.posjeceneZvjezde.Contains(odrediste))
+							g.DrawLine(crvPen, xyZvijezde(zvj), xyZvijezde(odrediste));
 
 			foreach (Zvijezda zvj in igra.mapa.zvijezde)
 			{
@@ -90,20 +97,25 @@ namespace Prototip
 				Point xy = xyZvijezde(zvj);
 				int d = (int)(Math.Sqrt(zvj.velicina) * VELICINA_SLIKE_ZVIJEZDE);
 
-				foreach (Zvijezda odrediste in zvj.crvotocine)
-					if (odrediste.id > zvj.id)
-						g.DrawLine(crvPen, xy, xyZvijezde(odrediste));
-
 				g.DrawImage(
 					Slike.ZvijezdaMapa[zvj.tip],
 					new Rectangle(xy.X - d/2, xy.Y - d/2, d, d)
 					);
 
-				if (skala >= VELICINA_SLIKE_ZVIJEZDE / 2)
-				{
-					Brush bojaImena = new SolidBrush(Color.FromArgb(64, 64, 64));
-					if (igrac.posjeceneZvjezde.Contains(zvj))
-						bojaImena = new SolidBrush(igrac.boja);
+				if (skala >= VELICINA_SLIKE_ZVIJEZDE / 2) {
+					Brush bojaImena;
+					if (igrac.posjeceneZvjezde.Contains(zvj)) {
+						bool imaKoloniju = false;
+						foreach (Planet planet in zvj.planeti)
+							if (planet.kolonija != null)
+								if (planet.kolonija.igrac.id == igrac.id)
+									imaKoloniju = true;
+						bojaImena = (imaKoloniju) ? 
+							new SolidBrush(igrac.boja) :
+							new SolidBrush(Color.FromArgb(192, 192, 192));
+					}
+					else
+						bojaImena = new SolidBrush(Color.FromArgb(64, 64, 64));
 					g.DrawString(zvj.ime, font, bojaImena, xy.X - g.MeasureString(zvj.ime, font).Width / 2, xy.Y + VELICINA_SLIKE_ZVIJEZDE / 2);
 				}
 
@@ -123,9 +135,12 @@ namespace Prototip
 
 			foreach (PokretnaFlota flota in igrac.flotePokretne) {
 				Point xy = xyFlote(flota);
+				Point xyOdrediste = xyZvijezde(flota.odredisnaZvj);
+				g.DrawLine(linijaOdredistePen, xy, xyOdrediste);
+
 				xy.X -= Slike.Flota[igrac.boja].Size.Width / 2;
 				xy.Y -= Slike.Flota[igrac.boja].Size.Height / 2;
-				g.DrawImage(Slike.Flota[igrac.boja], xy.X, xy.Y);
+				g.DrawImage(Slike.Flota[igrac.boja], xy);
 			}
 
 			g.Dispose();

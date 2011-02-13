@@ -47,7 +47,7 @@ namespace Prototip
 		public new const string PohranaTip = "POK_FLOTA";
 		public const string PohPolaznaZvj = "POLAZ";
 		public const string PohOdredisnaZvj = "CILJ";
-		public new void pohrani(PodaciPisac izlaz)
+		public override void pohrani(PodaciPisac izlaz)
 		{
 			izlaz.dodaj(PohId, id);
 			izlaz.dodaj(PohX, x);
