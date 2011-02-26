@@ -17,4 +17,7 @@ lblUIstrazivanju = Research
 lblURazvoju = In development
 naslov = Research & development
 tabIst = Research
+tabKnjiz = Library
 tabRaz = Development
+
+nemaTeh = Library is empty

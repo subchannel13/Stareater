@@ -74,7 +74,8 @@ namespace Prototip
 		public enum Kategorija
 		{
 			ISTRAZIVANJE = 0,
-			RAZVOJ
+			RAZVOJ,
+			NISTA
 		}
 
 		public class TechInfo : IIdentifiable
@@ -104,39 +105,43 @@ namespace Prototip
 					Formula.IzStringa(podaci["CIJENA"]),
 					maxNivo,
 					preduvjeti,
-					Image.FromFile(podaci["SLIKA"])
-					);
+					Image.FromFile(podaci["SLIKA"]),
+					kategorija);
 				popis.Add(techInfo);
 			}
 
 			public int id { get; private set; }
-			private string _ime;
+			private string naziv_m;
 			public string kod;
 			private string _opis;
 			public Formula cijena;
 			public List<Preduvjet> preduvjeti;
 			public long maxNivo;
 			public Image slika;
+			public Kategorija kategorija { get; private set; }
 
-			private TechInfo(int id, string ime, string opis, string kod, Formula cijena, long maxNivo, List<Preduvjet> preduvjeti, Image slika)
+			private TechInfo(int id, string ime, string opis, string kod, 
+				Formula cijena, long maxNivo, List<Preduvjet> preduvjeti,
+				Image slika, Kategorija kategorija)
 			{
 				this.id = id;
-				this._ime = ime;
+				this.naziv_m = ime;
 				this._opis = opis;
 				this.kod = kod;
 				this.cijena = cijena;
 				this.preduvjeti = preduvjeti;
 				this.maxNivo = maxNivo;
 				this.slika = slika;
+				this.kategorija = kategorija;
 				
 				cijena.preimenujVarijablu("LVL", kod + "_LVL");
 			}
 
-			public string ime
+			public string naziv
 			{
 				get
 				{
-					return Postavke.jezik[Kontekst.Tehnologije, _ime].tekst();
+					return Postavke.jezik[Kontekst.Tehnologije, naziv_m].tekst();
 				}
 			}
 
@@ -146,6 +151,20 @@ namespace Prototip
 				vars.Add("LVL", nivo);
 				return Postavke.jezik[Kontekst.Tehnologije, _opis].tekst();
 			}
+		}
+
+		public class KnjiznicaSort : IComparer<Tehnologija>
+		{
+			#region IComparer<Tehnologija> Members
+			public int Compare(Tehnologija x, Tehnologija y)
+			{
+				int kategorijaX = (int)x.tip.kategorija;
+				int kategorijaY = (int)y.tip.kategorija;
+				if (kategorijaX != kategorijaY)
+					return kategorijaX.CompareTo(kategorijaY);
+				return x.tip.naziv.CompareTo(y.tip.naziv);
+			}
+			#endregion
 		}
 
 		public static List<long> RasporedPoena(long ukupnoPoena, int brTehnologija, double koncentracija)

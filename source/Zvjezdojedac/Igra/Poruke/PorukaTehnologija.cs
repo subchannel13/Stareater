@@ -36,7 +36,7 @@ namespace Prototip.Igra.Poruke
 				Dictionary<string, double> doubleVars = new Dictionary<string, double>();
 				Dictionary<string, string> stringVars = new Dictionary<string, string>();
 				doubleVars.Add("NIVO", nivo);
-				stringVars.Add("TEH_NAZIV", tehnologija.ime);
+				stringVars.Add("TEH_NAZIV", tehnologija.naziv);
 				return Postavke.jezik[Kontekst.FormPoruke, "porukaTehnologija"].tekst(doubleVars, stringVars);
 			}
 		}

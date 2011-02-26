@@ -17,4 +17,7 @@ lblUIstrazivanju = U istraživanju
 lblURazvoju = U razvoju
 naslov = Istraživanje i razvoj
 tabIst = Istraživanje
+tabKnjiz = Knjižnica
 tabRaz = Razvoj
+
+nemaTeh = Knjiznica prazna

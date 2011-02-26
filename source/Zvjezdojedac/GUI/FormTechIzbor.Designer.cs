@@ -64,6 +64,13 @@
 			this.chIstPoeni = new System.Windows.Forms.ColumnHeader();
 			this.chIstPrioritet = new System.Windows.Forms.ColumnHeader();
 			this.lblUIstrazivanju = new System.Windows.Forms.Label();
+			this.tabKnjiznica = new System.Windows.Forms.TabPage();
+			this.txtKnjizOpis = new System.Windows.Forms.TextBox();
+			this.picKnjizSlika = new System.Windows.Forms.PictureBox();
+			this.lstKnjiznica = new System.Windows.Forms.ListView();
+			this.chKnjizNaziv = new System.Windows.Forms.ColumnHeader();
+			this.chKnjizNivo = new System.Windows.Forms.ColumnHeader();
+			this.lblKnjizNaziv = new System.Windows.Forms.Label();
 			this.tabControlTech.SuspendLayout();
 			this.tabRazvoj.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trkRazKoncentracija)).BeginInit();
@@ -71,14 +78,17 @@
 			((System.ComponentModel.ISupportInitialize)(this.picRazSlika)).BeginInit();
 			this.tabIstrazivanje.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picIstSlika)).BeginInit();
+			this.tabKnjiznica.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picKnjizSlika)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabControlTech
 			// 
 			this.tabControlTech.Controls.Add(this.tabRazvoj);
 			this.tabControlTech.Controls.Add(this.tabIstrazivanje);
+			this.tabControlTech.Controls.Add(this.tabKnjiznica);
 			this.tabControlTech.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControlTech.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.tabControlTech.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.tabControlTech.Location = new System.Drawing.Point(0, 0);
 			this.tabControlTech.Name = "tabControlTech";
 			this.tabControlTech.SelectedIndex = 0;
@@ -103,10 +113,10 @@
 			this.tabRazvoj.Controls.Add(this.lblURazvoju);
 			this.tabRazvoj.Controls.Add(this.lstRazvoj);
 			this.tabRazvoj.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.tabRazvoj.Location = new System.Drawing.Point(4, 29);
+			this.tabRazvoj.Location = new System.Drawing.Point(4, 22);
 			this.tabRazvoj.Name = "tabRazvoj";
 			this.tabRazvoj.Padding = new System.Windows.Forms.Padding(3);
-			this.tabRazvoj.Size = new System.Drawing.Size(586, 415);
+			this.tabRazvoj.Size = new System.Drawing.Size(586, 422);
 			this.tabRazvoj.TabIndex = 0;
 			this.tabRazvoj.Text = "Razvoj";
 			// 
@@ -293,10 +303,10 @@
 			this.tabIstrazivanje.Controls.Add(this.lstIstrazivanje);
 			this.tabIstrazivanje.Controls.Add(this.lblUIstrazivanju);
 			this.tabIstrazivanje.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.tabIstrazivanje.Location = new System.Drawing.Point(4, 29);
+			this.tabIstrazivanje.Location = new System.Drawing.Point(4, 22);
 			this.tabIstrazivanje.Name = "tabIstrazivanje";
 			this.tabIstrazivanje.Padding = new System.Windows.Forms.Padding(3);
-			this.tabIstrazivanje.Size = new System.Drawing.Size(586, 415);
+			this.tabIstrazivanje.Size = new System.Drawing.Size(586, 422);
 			this.tabIstrazivanje.TabIndex = 1;
 			this.tabIstrazivanje.Text = "Istraživanje";
 			// 
@@ -427,6 +437,75 @@
 			this.lblUIstrazivanju.TabIndex = 0;
 			this.lblUIstrazivanju.Text = "U istraživajnu:";
 			// 
+			// tabKnjiznica
+			// 
+			this.tabKnjiznica.BackColor = System.Drawing.SystemColors.Control;
+			this.tabKnjiznica.Controls.Add(this.lblKnjizNaziv);
+			this.tabKnjiznica.Controls.Add(this.txtKnjizOpis);
+			this.tabKnjiznica.Controls.Add(this.picKnjizSlika);
+			this.tabKnjiznica.Controls.Add(this.lstKnjiznica);
+			this.tabKnjiznica.Location = new System.Drawing.Point(4, 22);
+			this.tabKnjiznica.Name = "tabKnjiznica";
+			this.tabKnjiznica.Padding = new System.Windows.Forms.Padding(3);
+			this.tabKnjiznica.Size = new System.Drawing.Size(586, 422);
+			this.tabKnjiznica.TabIndex = 2;
+			this.tabKnjiznica.Text = "Knjižnica";
+			// 
+			// txtKnjizOpis
+			// 
+			this.txtKnjizOpis.BackColor = System.Drawing.SystemColors.Control;
+			this.txtKnjizOpis.Location = new System.Drawing.Point(230, 92);
+			this.txtKnjizOpis.Multiline = true;
+			this.txtKnjizOpis.Name = "txtKnjizOpis";
+			this.txtKnjizOpis.ReadOnly = true;
+			this.txtKnjizOpis.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+			this.txtKnjizOpis.Size = new System.Drawing.Size(348, 322);
+			this.txtKnjizOpis.TabIndex = 5;
+			this.txtKnjizOpis.Text = "Opis tehnologije\r\n...";
+			// 
+			// picKnjizSlika
+			// 
+			this.picKnjizSlika.Location = new System.Drawing.Point(230, 6);
+			this.picKnjizSlika.Name = "picKnjizSlika";
+			this.picKnjizSlika.Size = new System.Drawing.Size(80, 80);
+			this.picKnjizSlika.TabIndex = 4;
+			this.picKnjizSlika.TabStop = false;
+			// 
+			// lstKnjiznica
+			// 
+			this.lstKnjiznica.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chKnjizNaziv,
+            this.chKnjizNivo});
+			this.lstKnjiznica.FullRowSelect = true;
+			this.lstKnjiznica.Location = new System.Drawing.Point(8, 6);
+			this.lstKnjiznica.MultiSelect = false;
+			this.lstKnjiznica.Name = "lstKnjiznica";
+			this.lstKnjiznica.Size = new System.Drawing.Size(216, 408);
+			this.lstKnjiznica.TabIndex = 3;
+			this.lstKnjiznica.UseCompatibleStateImageBehavior = false;
+			this.lstKnjiznica.View = System.Windows.Forms.View.Details;
+			this.lstKnjiznica.SelectedIndexChanged += new System.EventHandler(this.lstKnjiznica_SelectedIndexChanged);
+			// 
+			// chKnjizNaziv
+			// 
+			this.chKnjizNaziv.Text = "Naziv";
+			this.chKnjizNaziv.Width = 150;
+			// 
+			// chKnjizNivo
+			// 
+			this.chKnjizNivo.Text = "Nivo";
+			this.chKnjizNivo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.chKnjizNivo.Width = 45;
+			// 
+			// lblKnjizNaziv
+			// 
+			this.lblKnjizNaziv.AutoSize = true;
+			this.lblKnjizNaziv.Location = new System.Drawing.Point(316, 18);
+			this.lblKnjizNaziv.Name = "lblKnjizNaziv";
+			this.lblKnjizNaziv.Size = new System.Drawing.Size(35, 13);
+			this.lblKnjizNaziv.TabIndex = 6;
+			this.lblKnjizNaziv.Text = "label1";
+			// 
 			// FormTechIzbor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -451,6 +530,9 @@
 			this.tabIstrazivanje.ResumeLayout(false);
 			this.tabIstrazivanje.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picIstSlika)).EndInit();
+			this.tabKnjiznica.ResumeLayout(false);
+			this.tabKnjiznica.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picKnjizSlika)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -492,5 +574,12 @@
 		private System.Windows.Forms.Button btnIstDolje;
 		private System.Windows.Forms.Button btnIstGore;
 		private System.Windows.Forms.Button btnIstVrh;
+		private System.Windows.Forms.TabPage tabKnjiznica;
+		private System.Windows.Forms.PictureBox picKnjizSlika;
+		private System.Windows.Forms.ListView lstKnjiznica;
+		private System.Windows.Forms.ColumnHeader chKnjizNaziv;
+		private System.Windows.Forms.ColumnHeader chKnjizNivo;
+		private System.Windows.Forms.TextBox txtKnjizOpis;
+		private System.Windows.Forms.Label lblKnjizNaziv;
 	}
 }

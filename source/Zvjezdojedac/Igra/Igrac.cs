@@ -363,6 +363,16 @@ namespace Prototip
 				}
 		}
 
+		public List<Tehnologija> istrazeneTehnologije()
+		{
+			List<Tehnologija> rez = new List<Tehnologija>();
+			foreach (Tehnologija teh in tehnologije.Values)
+				if (teh.nivo > 0)
+					rez.Add(teh);
+			rez.Sort(new Tehnologija.KnjiznicaSort());
+			return rez;
+		}
+
 		public Planet odabranPlanet
 		{
 			get

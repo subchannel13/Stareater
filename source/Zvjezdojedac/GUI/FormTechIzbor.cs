@@ -37,6 +37,8 @@ namespace Prototip
 			chIstNivo.Text = jezik["chNivo"].tekst();
 			chIstPoeni.Text = jezik["chPoeni"].tekst();
 			chIstPrioritet.Text = jezik["chIstPrioritet"].tekst();
+			chKnjizNaziv.Text = jezik["chNaziv"].tekst();
+			chKnjizNivo.Text = jezik["chNivo"].tekst();
 			chRazNaziv.Text = jezik["chNaziv"].tekst();
 			chRazNivo.Text = jezik["chNivo"].tekst();
 			chRazPoeni.Text = jezik["chPoeni"].tekst();
@@ -50,6 +52,7 @@ namespace Prototip
 
 			this.Text = jezik["naslov"].tekst();
 			tabIstrazivanje.Text = jezik["tabIst"].tekst();
+			tabKnjiznica.Text = jezik["tabKnjiz"].tekst();
 			tabRazvoj.Text = jezik["tabRaz"].tekst();
 
 			this.igrac = igrac;
@@ -57,6 +60,8 @@ namespace Prototip
 			lblIstOpis.Text = "";
 			lblIstPoeni.Text = jezik["lblIstPoeni"].tekst() + ": " + Fje.PrefiksFormater(igrac.istrazivanjePoSustavu[igrac.istrazivanjeSustav]);
 			lblIstSustav.Text = " (" + igrac.istrazivanjeSustav.ime + ")";
+			lblKnjizNaziv.Text = "";
+			txtKnjizOpis.Text = "";
 			
 			raspodijelaPoena = 0;
 			for (int i = 0; i < RaspodijelaPoena.Length; i++)
@@ -67,7 +72,7 @@ namespace Prototip
 			
 			foreach (Tehnologija t in igrac.tehnologijeURazvoju)
 			{
-				ListViewItem item = new ListViewItem(t.tip.ime);
+				ListViewItem item = new ListViewItem(t.tip.naziv);
 				item.SubItems.Add("" + (t.nivo + 1));
 				item.SubItems.Add("");
 				item.SubItems.Add("");
@@ -78,13 +83,42 @@ namespace Prototip
 			int j = 1;
 			foreach (Tehnologija t in igrac.tehnologijeUIstrazivanju)
 			{
-				ListViewItem item = new ListViewItem(t.tip.ime);
+				ListViewItem item = new ListViewItem(t.tip.naziv);
 				item.SubItems.Add("" + (t.nivo + 1));
 				item.SubItems.Add(Fje.PrefiksFormater(t.ulozenoPoena) + " / " + Fje.PrefiksFormater(t.cijena(igrac.efekti)));
 				item.SubItems.Add(j + ".");
 				item.Tag = t;
 				lstIstrazivanje.Items.Add(item);
 				j++;
+			}
+
+			List<Tehnologija> tehnologije = igrac.istrazeneTehnologije();
+			if (tehnologije.Count == 0) {
+				ListViewItem item = new ListViewItem(jezik["nemaTeh"].tekst());
+				item.Font = new Font(lstKnjiznica.Font, FontStyle.Italic);
+				lstKnjiznica.Items.Add(item);
+			}
+			else {
+				Font kategorijaFont = new Font(lstKnjiznica.Font, FontStyle.Bold);
+				ListViewItem itemIstrazivanje = new ListViewItem(jezik["tabIst"].tekst());
+				ListViewItem itemRazvoj = new ListViewItem(jezik["tabRaz"].tekst());
+				itemIstrazivanje.Font = kategorijaFont;
+				itemRazvoj.Font = kategorijaFont;
+				Tehnologija.Kategorija zadanjaKategorija = Tehnologija.Kategorija.NISTA;
+				
+				foreach (Tehnologija t in igrac.istrazeneTehnologije()) {
+					if (t.tip.kategorija != zadanjaKategorija) {
+						if (t.tip.kategorija == Tehnologija.Kategorija.ISTRAZIVANJE)
+							lstKnjiznica.Items.Add(itemIstrazivanje);
+						else if (t.tip.kategorija == Tehnologija.Kategorija.RAZVOJ)
+							lstKnjiznica.Items.Add(itemRazvoj);
+						zadanjaKategorija = t.tip.kategorija;
+					}
+					ListViewItem item = new ListViewItem(t.tip.naziv);
+					item.SubItems.Add(t.nivo.ToString());
+					item.Tag = t;
+					lstKnjiznica.Items.Add(item);
+				}
 			}
 
 			izracunajPoeneRazvoja();
@@ -242,6 +276,17 @@ namespace Prototip
 			Tehnologija teh = ((Tehnologija)tmp.Tag);
 			lblIstOpis.Text = teh.opis;
 			picIstSlika.Image = teh.tip.slika;
+		}
+
+		private void lstKnjiznica_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (lstKnjiznica.SelectedItems.Count == 0) return;
+			if (lstKnjiznica.SelectedItems[0].Tag == null) return;
+
+			Tehnologija teh = (Tehnologija)lstKnjiznica.SelectedItems[0].Tag;
+			picKnjizSlika.Image = teh.tip.slika;
+			lblKnjizNaziv.Text = teh.tip.naziv;
+			txtKnjizOpis.Text = teh.opis;
 		}
 	}
 }
