@@ -1,0 +1,23 @@
+﻿::FORM_TECH
+btnDno = Na dno
+btnDolje = Dolje
+btnGore = Gore
+btnVrh = Na vrh
+btnOk = U redu
+chNaziv = Naziv
+chNivo = Nivo
+chPoeni = Poeni
+chIstPrioritet = Prioritet
+chRazUlaganje = Ulaganje
+lblFokusirano = Fokusirano
+lblIstPoeni = Poeni istraživanja
+lblRaspodjela = Raspodjela
+lblRavnomjerno = Ravnomjerno
+lblUIstrazivanju = U istraživanju
+lblURazvoju = U razvoju
+naslov = Istraživanje i razvoj
+tabIst = Istraživanje
+tabKnjiz = Knjižnica
+tabRaz = Razvoj
+
+nemaTeh = Knjiznica prazna

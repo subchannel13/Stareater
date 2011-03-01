@@ -1,0 +1,56 @@
+﻿::FORM_KOLONIZACIJA
+btnPrihvati = Confirm
+groupPoStan = Estimate (per populant)
+lblBrBrodova = Num. of ships
+naslov = Colonization
+
+::FORM_POSTAVKE
+BTN_OK = Ok
+LBL_JEZIK = Language:
+
+::MISIJA
+CILJ_OBRANA = small objects
+CILJ_NORMALNO = normal
+CILJ_VELIKI = big ships
+
+MIS_DIREKT_IME = Weapon
+MIS_DIREKT_OPIS = directno attack
+MIS_PROJEKTIL_IME = Weapon (projectile)
+MIS_PROJEKTIL_OPIS = projectile
+MIS_KOLONIZ_IME = Colonization
+MIS_KOLONIZ_OPIS = module for establishing colony
+MIS_POPRAVAK_IME = Repair and upgrade
+MIS_POPRAVAK_OPIS = facilities for repairing and upgrading ships
+MIS_SPIJUNAZ_IME = Espionage
+MIS_SPIJUNAZ_OPIS = espionage equipment
+MIS_TEGLJA_IME = Towing
+MIS_TEGLJA_OPIS = insterstellar ship tranport
+MIS_CIV_TRANS_IME = Civil transport
+MIS_CIV_TRANS_OPIS = civil transport
+MIS_VOJ_TRANS_IME = Millitary transport
+MIS_VOJ_TRANS_OPIS = millitary transport
+
+BR_NAPADA = Shield efficiency
+IND = Industry
+INFILTRACIJA = Infiltration
+KAPACITET = Capacity
+POP = Num. of colonists
+PRECIZNOST = Precision
+RADNA_MJ = Work places
+SPIJUNAZA = Espionage
+VATRENA_MOC = Fire power
+
+
+::VELICINA_MAPE
+Minijaturna = Miniature
+Jako_mala = Very small
+Mala = Small
+Srednje_mala = Medium-small
+Srednja = Medium
+Srednje_velika = Medium-large
+Velika = Large
+Jako_velika = Very large
+Ogromna = Enormous
+
+::WINDOWS_DIJALOZI
+TIP_SEJVA = Zvjezdojedac game

@@ -1,0 +1,10 @@
+﻿::FORM_PORUKE
+chTipBrod = New ships
+chTipKolonija = New colonies
+chTipTehnologije = New technologies
+chTipZgrade = New buildings
+
+porukaBrod := # P KOLICINA # " x " $ DIZAJN " constructed at " $ SUSTAV "."
+porukaKolonija := "New colony found at " $ PLANET "."
+porukaTehnologija := $ TEH_NAZIV " level " # P NIVO # " available."
+porukaZgrada := $ ZGRADA " built on " $ PLANET "."
