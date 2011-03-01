@@ -1,6 +1,5 @@
 syntax: glob
 *.pidb
-generated.cs
 *.userprefs
 *.resources
 source/Zvjezdojedac/bin/*
