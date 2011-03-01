@@ -1,4 +1,12 @@
+syntax: glob
+*.pidb
+generated.cs
+*.userprefs
+*.resources
+source/Zvjezdojedac/bin/*
+source/Zvjezdojedac editori/bin/*
 glob:source/Zvjezdojedac editori/bin/*
 glob:source/Zvjezdojedac editori/obj/*
 glob:source/Zvjezdojedac/bin/*
 glob:source/Zvjezdojedac/obj/*
+
