@@ -19,15 +19,13 @@ namespace Prototip
 		{
 			InitializeComponent();
 
-#if DEBUG
-#else
+#if !DEBUG
 			try
 			{
 #endif
 				PodaciAlat.postaviPodatke();
 				postaviJezik();
-#if DEBUG
-#else
+#if !DEBUG
 			}
 			catch (Exception e)
 			{
