@@ -1,0 +1,7 @@
+﻿::ZGRADE
+IND_IME = Industrijalizacija
+IND_OPIS = Izgradnja dodatnih industrijskih postrojenja.
+POP_IME = Kolonizacija
+POP_OPIS = Poticaji stanovništvu da prošire koloniju.
+RAD_STIT_IME = Radijacijski štit
+RAD_STIT_OPIS = Štiti koloniju od kozmičkog i solarnog zračenja te štiti koloniju tokom opsade.
