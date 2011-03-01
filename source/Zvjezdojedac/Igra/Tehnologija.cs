@@ -149,7 +149,7 @@ namespace Prototip
 			{
 				Dictionary<string, double> vars = new Dictionary<string, double>();
 				vars.Add("LVL", nivo);
-				return Postavke.jezik[Kontekst.Tehnologije, _opis].tekst();
+				return Postavke.jezik[Kontekst.Tehnologije, _opis].tekst(vars);
 			}
 		}
 
@@ -250,6 +250,14 @@ namespace Prototip
 			get
 			{
 				return tip.opis(nivo);
+			}
+		}
+
+		public string slijedeciNivoOpis
+		{
+			get
+			{
+				return tip.opis(nivo + 1);
 			}
 		}
 

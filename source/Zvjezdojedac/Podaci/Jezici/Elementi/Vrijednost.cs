@@ -7,6 +7,11 @@ namespace Prototip.Podaci.Jezici.Elementi
 {
 	public class Vrijednost : ITekst
 	{
+		private enum FormatTip
+		{
+			Decimalan,
+			Prefiks
+		}
 		public static Vrijednost Nacini(Queue<string> linija)
 		{
 			string formaterTip = linija.Dequeue();
@@ -22,10 +27,25 @@ namespace Prototip.Podaci.Jezici.Elementi
 
 		public Vrijednost(string format, Formula formula)
 		{
-			this.format = format;
 			this.formula = formula;
+
+			if (format.StartsWith("D")) {
+				this.formatTip = FormatTip.Decimalan;
+				if (format.Length > 1) {
+					int preciznost = int.Parse(format.Substring(1));
+					this.format = "0:0.";
+					for (int i = 0; i < preciznost; i++)
+						this.format += "#";
+					this.format = "{" + this.format + "}";
+				}
+				else
+					this.format = "{0:0.##}";
+			}
+			else
+				formatTip = FormatTip.Prefiks;
 		}
 
+		private FormatTip formatTip;
 		private string format;
 		private Formula formula;
 
@@ -38,11 +58,9 @@ namespace Prototip.Podaci.Jezici.Elementi
 
 		public string tekst(Dictionary<string, double> varijable)
 		{
-			if (format == "D" || format == "D2")
-				return String.Format("{0:0.##}", formula.iznos(varijable));
-			if (format == "D1")
-				return String.Format("{0:0.#}", formula.iznos(varijable));
-			else if (format == "P")
+			if (formatTip == FormatTip.Decimalan)
+				return String.Format(format, formula.iznos(varijable));
+			else 
 				return Fje.PrefiksFormater(formula.iznos(varijable));
 
 			throw new FormatException();

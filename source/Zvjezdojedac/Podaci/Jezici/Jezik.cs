@@ -57,7 +57,6 @@ namespace Prototip.Podaci.Jezici
 
 				while (!citac.EndOfStream) {
 					string linija = citac.ReadLine();
-					if (linija.Length == 0) continue;
 
 					if (linija.StartsWith("::")) {
 						kontekst = StringUKontekst[linija.Substring(2)];

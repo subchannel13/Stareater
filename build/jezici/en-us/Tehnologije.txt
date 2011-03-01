@@ -9,7 +9,18 @@ MAT_IME = Mathematics
 MAT_OPIS = No description
 
 HIDRO_FARME_IME = Hydroponic farms
-HIDRO_FARME_OPIS = No description
+HIDRO_FARME_OPIS {
+Improved hidrophonic farming.
+
+Food per population: +E1
+Food per farmer: +E2
+Population growth: +E3%
+} 0
+E1 # D3 * LVL 0.125 #
+E2 # D2 LVL 0.25 * #
+E3 # D3 * LVL 0.005 #
+;
+
 IND_IME = Industry
 IND_OPIS = No description
 ROBO_IME = Robotics

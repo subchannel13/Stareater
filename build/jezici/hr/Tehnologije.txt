@@ -9,7 +9,18 @@ MAT_IME = Matematika
 MAT_OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
 
 HIDRO_FARME_IME = Hidroponične farme
-HIDRO_FARME_OPIS = Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
+HIDRO_FARME_OPIS {
+Poboljšanje tehnika i tehnologija za uzgoj hrane u zatvorenom prostoru.
+
+Hrana po stanovniku: +E1
+Hrana po farmeru: +E2
+Natalitet: +E3%
+} 0
+E1 # D3 * LVL 0.125 #
+E2 # D2 LVL 0.25 * #
+E3 # D3 * LVL 0.005 #
+;
+
 IND_IME = Industrija
 IND_OPIS = Pojeftinjenje industrijskih postrijenja.
 ROBO_IME = Robotika

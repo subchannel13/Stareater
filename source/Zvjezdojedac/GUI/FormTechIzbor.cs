@@ -238,7 +238,7 @@ namespace Prototip
 
 			ListViewItem tmp = lstRazvoj.SelectedItems[0];
 			Tehnologija teh = ((Tehnologija)tmp.Tag);
-			lblRazOpis.Text = teh.opis;
+			lblRazOpis.Text = teh.slijedeciNivoOpis;
 			picRazSlika.Image = teh.tip.slika;
 		}
 
@@ -274,7 +274,7 @@ namespace Prototip
 
 			ListViewItem tmp = lstIstrazivanje.SelectedItems[0];
 			Tehnologija teh = ((Tehnologija)tmp.Tag);
-			lblIstOpis.Text = teh.opis;
+			lblIstOpis.Text = teh.slijedeciNivoOpis;
 			picIstSlika.Image = teh.tip.slika;
 		}
 
@@ -286,7 +286,7 @@ namespace Prototip
 			Tehnologija teh = (Tehnologija)lstKnjiznica.SelectedItems[0].Tag;
 			picKnjizSlika.Image = teh.tip.slika;
 			lblKnjizNaziv.Text = teh.tip.naziv;
-			txtKnjizOpis.Text = teh.opis;
+			txtKnjizOpis.Lines = teh.opis.Split(new char[] { '\n' });
 		}
 	}
 }
