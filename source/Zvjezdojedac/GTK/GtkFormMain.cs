@@ -1,3 +1,4 @@
+#if __MonoCS__
 using System;
 using System.Collections.Generic;
 using Prototip.Podaci.Jezici;
@@ -41,4 +42,4 @@ namespace Prototip
 		
 	}
 }
-
+#endif
