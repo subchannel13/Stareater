@@ -3,3 +3,5 @@ syntax: glob
 generated.cs
 *.userprefs
 *.resources
+source/Zvjezdojedac/bin/*
+source/Zvjezdojedac editori/bin/*
