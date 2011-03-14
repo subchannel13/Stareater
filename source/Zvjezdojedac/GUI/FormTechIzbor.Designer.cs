@@ -45,10 +45,10 @@
 			this.btnRazVrh = new System.Windows.Forms.Button();
 			this.lblURazvoju = new System.Windows.Forms.Label();
 			this.lstRazvoj = new System.Windows.Forms.ListView();
-			this.chRazNaziv = new System.Windows.Forms.ColumnHeader();
-			this.chRazNivo = new System.Windows.Forms.ColumnHeader();
-			this.chRazPoeni = new System.Windows.Forms.ColumnHeader();
-			this.chRazUlaganje = new System.Windows.Forms.ColumnHeader();
+			this.chRazNaziv = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.chRazNivo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.chRazPoeni = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.chRazUlaganje = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabIstrazivanje = new System.Windows.Forms.TabPage();
 			this.btnIstDno = new System.Windows.Forms.Button();
 			this.btnIstDolje = new System.Windows.Forms.Button();
@@ -59,18 +59,26 @@
 			this.lblIstOpis = new System.Windows.Forms.Label();
 			this.picIstSlika = new System.Windows.Forms.PictureBox();
 			this.lstIstrazivanje = new System.Windows.Forms.ListView();
-			this.chIstNaziv = new System.Windows.Forms.ColumnHeader();
-			this.chIstNivo = new System.Windows.Forms.ColumnHeader();
-			this.chIstPoeni = new System.Windows.Forms.ColumnHeader();
-			this.chIstPrioritet = new System.Windows.Forms.ColumnHeader();
+			this.chIstNaziv = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.chIstNivo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.chIstPoeni = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.chIstPrioritet = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.lblUIstrazivanju = new System.Windows.Forms.Label();
 			this.tabKnjiznica = new System.Windows.Forms.TabPage();
+			this.lblKnjizNaziv = new System.Windows.Forms.Label();
 			this.txtKnjizOpis = new System.Windows.Forms.TextBox();
 			this.picKnjizSlika = new System.Windows.Forms.PictureBox();
 			this.lstKnjiznica = new System.Windows.Forms.ListView();
-			this.chKnjizNaziv = new System.Windows.Forms.ColumnHeader();
-			this.chKnjizNivo = new System.Windows.Forms.ColumnHeader();
-			this.lblKnjizNaziv = new System.Windows.Forms.Label();
+			this.chKnjizNaziv = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.chKnjizNivo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.tabOprema = new System.Windows.Forms.TabPage();
+			this.cbOpKategorija = new System.Windows.Forms.ComboBox();
+			this.lblOpNaziv = new System.Windows.Forms.Label();
+			this.txtOpOpis = new System.Windows.Forms.TextBox();
+			this.picOpSlika = new System.Windows.Forms.PictureBox();
+			this.lstOprema = new System.Windows.Forms.ListView();
+			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabControlTech.SuspendLayout();
 			this.tabRazvoj.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trkRazKoncentracija)).BeginInit();
@@ -80,6 +88,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.picIstSlika)).BeginInit();
 			this.tabKnjiznica.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picKnjizSlika)).BeginInit();
+			this.tabOprema.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picOpSlika)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tabControlTech
@@ -87,6 +97,7 @@
 			this.tabControlTech.Controls.Add(this.tabRazvoj);
 			this.tabControlTech.Controls.Add(this.tabIstrazivanje);
 			this.tabControlTech.Controls.Add(this.tabKnjiznica);
+			this.tabControlTech.Controls.Add(this.tabOprema);
 			this.tabControlTech.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControlTech.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.tabControlTech.Location = new System.Drawing.Point(0, 0);
@@ -451,6 +462,15 @@
 			this.tabKnjiznica.TabIndex = 2;
 			this.tabKnjiznica.Text = "Knjižnica";
 			// 
+			// lblKnjizNaziv
+			// 
+			this.lblKnjizNaziv.AutoSize = true;
+			this.lblKnjizNaziv.Location = new System.Drawing.Point(316, 18);
+			this.lblKnjizNaziv.Name = "lblKnjizNaziv";
+			this.lblKnjizNaziv.Size = new System.Drawing.Size(35, 13);
+			this.lblKnjizNaziv.TabIndex = 6;
+			this.lblKnjizNaziv.Text = "label1";
+			// 
 			// txtKnjizOpis
 			// 
 			this.txtKnjizOpis.BackColor = System.Drawing.SystemColors.Control;
@@ -497,14 +517,85 @@
 			this.chKnjizNivo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.chKnjizNivo.Width = 45;
 			// 
-			// lblKnjizNaziv
+			// tabOprema
 			// 
-			this.lblKnjizNaziv.AutoSize = true;
-			this.lblKnjizNaziv.Location = new System.Drawing.Point(316, 18);
-			this.lblKnjizNaziv.Name = "lblKnjizNaziv";
-			this.lblKnjizNaziv.Size = new System.Drawing.Size(35, 13);
-			this.lblKnjizNaziv.TabIndex = 6;
-			this.lblKnjizNaziv.Text = "label1";
+			this.tabOprema.BackColor = System.Drawing.SystemColors.Control;
+			this.tabOprema.Controls.Add(this.cbOpKategorija);
+			this.tabOprema.Controls.Add(this.lblOpNaziv);
+			this.tabOprema.Controls.Add(this.txtOpOpis);
+			this.tabOprema.Controls.Add(this.picOpSlika);
+			this.tabOprema.Controls.Add(this.lstOprema);
+			this.tabOprema.Location = new System.Drawing.Point(4, 22);
+			this.tabOprema.Name = "tabOprema";
+			this.tabOprema.Padding = new System.Windows.Forms.Padding(3);
+			this.tabOprema.Size = new System.Drawing.Size(586, 422);
+			this.tabOprema.TabIndex = 3;
+			this.tabOprema.Text = "Komponente brodova";
+			// 
+			// cbOpKategorija
+			// 
+			this.cbOpKategorija.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbOpKategorija.FormattingEnabled = true;
+			this.cbOpKategorija.Location = new System.Drawing.Point(8, 6);
+			this.cbOpKategorija.Name = "cbOpKategorija";
+			this.cbOpKategorija.Size = new System.Drawing.Size(216, 21);
+			this.cbOpKategorija.TabIndex = 11;
+			this.cbOpKategorija.SelectedIndexChanged += new System.EventHandler(this.cbOpKategorija_SelectedIndexChanged);
+			// 
+			// lblOpNaziv
+			// 
+			this.lblOpNaziv.AutoSize = true;
+			this.lblOpNaziv.Location = new System.Drawing.Point(316, 19);
+			this.lblOpNaziv.Name = "lblOpNaziv";
+			this.lblOpNaziv.Size = new System.Drawing.Size(35, 13);
+			this.lblOpNaziv.TabIndex = 10;
+			this.lblOpNaziv.Text = "label1";
+			// 
+			// txtOpOpis
+			// 
+			this.txtOpOpis.BackColor = System.Drawing.SystemColors.Control;
+			this.txtOpOpis.Location = new System.Drawing.Point(230, 93);
+			this.txtOpOpis.Multiline = true;
+			this.txtOpOpis.Name = "txtOpOpis";
+			this.txtOpOpis.ReadOnly = true;
+			this.txtOpOpis.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+			this.txtOpOpis.Size = new System.Drawing.Size(348, 322);
+			this.txtOpOpis.TabIndex = 9;
+			this.txtOpOpis.Text = "Opis tehnologije\r\n...";
+			// 
+			// picOpSlika
+			// 
+			this.picOpSlika.Location = new System.Drawing.Point(230, 7);
+			this.picOpSlika.Name = "picOpSlika";
+			this.picOpSlika.Size = new System.Drawing.Size(80, 80);
+			this.picOpSlika.TabIndex = 8;
+			this.picOpSlika.TabStop = false;
+			// 
+			// lstOprema
+			// 
+			this.lstOprema.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2});
+			this.lstOprema.FullRowSelect = true;
+			this.lstOprema.Location = new System.Drawing.Point(8, 33);
+			this.lstOprema.MultiSelect = false;
+			this.lstOprema.Name = "lstOprema";
+			this.lstOprema.Size = new System.Drawing.Size(216, 382);
+			this.lstOprema.TabIndex = 7;
+			this.lstOprema.UseCompatibleStateImageBehavior = false;
+			this.lstOprema.View = System.Windows.Forms.View.Details;
+			this.lstOprema.SelectedIndexChanged += new System.EventHandler(this.lstOprema_SelectedIndexChanged);
+			// 
+			// columnHeader1
+			// 
+			this.columnHeader1.Text = "Naziv";
+			this.columnHeader1.Width = 150;
+			// 
+			// columnHeader2
+			// 
+			this.columnHeader2.Text = "Nivo";
+			this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.columnHeader2.Width = 45;
 			// 
 			// FormTechIzbor
 			// 
@@ -533,6 +624,9 @@
 			this.tabKnjiznica.ResumeLayout(false);
 			this.tabKnjiznica.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picKnjizSlika)).EndInit();
+			this.tabOprema.ResumeLayout(false);
+			this.tabOprema.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picOpSlika)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -581,5 +675,13 @@
 		private System.Windows.Forms.ColumnHeader chKnjizNivo;
 		private System.Windows.Forms.TextBox txtKnjizOpis;
 		private System.Windows.Forms.Label lblKnjizNaziv;
+		private System.Windows.Forms.TabPage tabOprema;
+		private System.Windows.Forms.ComboBox cbOpKategorija;
+		private System.Windows.Forms.Label lblOpNaziv;
+		private System.Windows.Forms.TextBox txtOpOpis;
+		private System.Windows.Forms.PictureBox picOpSlika;
+		private System.Windows.Forms.ListView lstOprema;
+		private System.Windows.Forms.ColumnHeader columnHeader1;
+		private System.Windows.Forms.ColumnHeader columnHeader2;
 	}
 }

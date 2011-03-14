@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Prototip
 {
-	public class Komponenta<Info> where Info : AKomponentaInfo
+	public class Komponenta<Info> : IKomponenta where Info : AKomponentaInfo
 	{
 		/// <summary>
 		/// Nivo komponente.

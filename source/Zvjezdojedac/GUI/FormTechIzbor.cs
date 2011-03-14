@@ -13,11 +13,14 @@ namespace Prototip
 {
 	public partial class FormTechIzbor : Form
 	{
-		private Igrac igrac;
-
 		public static double[] RaspodijelaPoena = new double[] { 0, 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 5};
 
+		private delegate void PrikazKomponente(IKomponenta komponenta);
+
+		private Igrac igrac;
 		private int raspodijelaPoena;
+		private Dictionary<KategorijaOpreme, ListViewItem[]> opremaStavke = new Dictionary<KategorijaOpreme, ListViewItem[]>();
+		private Dictionary<KategorijaOpreme, PrikazKomponente> prikaziKomponenti = new Dictionary<KategorijaOpreme, PrikazKomponente>();
 
 		public FormTechIzbor(Igrac igrac)
 		{
@@ -62,27 +65,21 @@ namespace Prototip
 			lblIstSustav.Text = " (" + igrac.istrazivanjeSustav.ime + ")";
 			lblKnjizNaziv.Text = "";
 			txtKnjizOpis.Text = "";
-			
-			raspodijelaPoena = 0;
-			for (int i = 0; i < RaspodijelaPoena.Length; i++)
-				if (Math.Abs(RaspodijelaPoena[i] - igrac.koncentracijaPoenaRazvoja) < Math.Abs(RaspodijelaPoena[raspodijelaPoena] - igrac.koncentracijaPoenaRazvoja))
-					raspodijelaPoena = i;
-			trkRazKoncentracija.Maximum = RaspodijelaPoena.Length - 1;
-			trkRazKoncentracija.Value = raspodijelaPoena;
-			
-			foreach (Tehnologija t in igrac.tehnologijeURazvoju)
-			{
-				ListViewItem item = new ListViewItem(t.tip.naziv);
-				item.SubItems.Add("" + (t.nivo + 1));
-				item.SubItems.Add("");
-				item.SubItems.Add("");
-				item.Tag = t;
-				lstRazvoj.Items.Add(item);
-			}
+			lblOpNaziv.Text = "";
+			txtOpOpis.Text = "";
 
+			InizijalizirajRazvoj();
+			InicijalizirajIstrazivanje();
+			InicijalizirajKnjiznicu();
+			InicijalizirajOpremu();
+
+			izracunajPoeneRazvoja();
+		}
+
+		private void InicijalizirajIstrazivanje()
+		{
 			int j = 1;
-			foreach (Tehnologija t in igrac.tehnologijeUIstrazivanju)
-			{
+			foreach (Tehnologija t in igrac.tehnologijeUIstrazivanju) {
 				ListViewItem item = new ListViewItem(t.tip.naziv);
 				item.SubItems.Add("" + (t.nivo + 1));
 				item.SubItems.Add(Fje.PrefiksFormater(t.ulozenoPoena) + " / " + Fje.PrefiksFormater(t.cijena(igrac.efekti)));
@@ -91,7 +88,10 @@ namespace Prototip
 				lstIstrazivanje.Items.Add(item);
 				j++;
 			}
-
+		}
+		private void InicijalizirajKnjiznicu()
+		{
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormTech];
 			List<Tehnologija> tehnologije = igrac.istrazeneTehnologije();
 			if (tehnologije.Count == 0) {
 				ListViewItem item = new ListViewItem(jezik["nemaTeh"].tekst());
@@ -105,7 +105,7 @@ namespace Prototip
 				itemIstrazivanje.Font = kategorijaFont;
 				itemRazvoj.Font = kategorijaFont;
 				Tehnologija.Kategorija zadanjaKategorija = Tehnologija.Kategorija.NISTA;
-				
+
 				foreach (Tehnologija t in igrac.istrazeneTehnologije()) {
 					if (t.tip.kategorija != zadanjaKategorija) {
 						if (t.tip.kategorija == Tehnologija.Kategorija.ISTRAZIVANJE)
@@ -120,8 +120,50 @@ namespace Prototip
 					lstKnjiznica.Items.Add(item);
 				}
 			}
+		}
+		private void InicijalizirajOpremu()
+		{
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormTech];
+			List<ListViewItem> items = new List<ListViewItem>();
+			Font fontNema = new Font(lstOprema.Font, FontStyle.Italic);
 
-			izracunajPoeneRazvoja();
+			#region Trupovi
+			cbOpKategorija.Items.Add(new TagTekst<KategorijaOpreme>(KategorijaOpreme.Trup, jezik["opKatTrup"].tekst()));
+			items = new List<ListViewItem>();
+			foreach (Trup trup in Trup.TrupInfo.DostupniTrupovi(igrac.efekti)) {
+				ListViewItem item = new ListViewItem(trup.naziv);
+				item.SubItems.Add(trup.nivo.ToString());
+				item.Tag = trup;
+				items.Add(item);
+			}
+			if (items.Count == 0) {
+				ListViewItem item = new ListViewItem(jezik["nemaOp"].tekst());
+				item.Font = fontNema;
+				items.Add(item);
+			}
+			opremaStavke.Add(KategorijaOpreme.Trup, items.ToArray());
+			prikaziKomponenti.Add(KategorijaOpreme.Trup, prikazTrupa);
+			#endregion
+
+			cbOpKategorija.SelectedIndex = 0;
+		}
+		private void InizijalizirajRazvoj()
+		{
+			raspodijelaPoena = 0;
+			for (int i = 0; i < RaspodijelaPoena.Length; i++)
+				if (Math.Abs(RaspodijelaPoena[i] - igrac.koncentracijaPoenaRazvoja) < Math.Abs(RaspodijelaPoena[raspodijelaPoena] - igrac.koncentracijaPoenaRazvoja))
+					raspodijelaPoena = i;
+			trkRazKoncentracija.Maximum = RaspodijelaPoena.Length - 1;
+			trkRazKoncentracija.Value = raspodijelaPoena;
+
+			foreach (Tehnologija t in igrac.tehnologijeURazvoju) {
+				ListViewItem item = new ListViewItem(t.tip.naziv);
+				item.SubItems.Add("" + (t.nivo + 1));
+				item.SubItems.Add("");
+				item.SubItems.Add("");
+				item.Tag = t;
+				lstRazvoj.Items.Add(item);
+			}
 		}
 
 		private void izracunajPoeneRazvoja()
@@ -138,6 +180,19 @@ namespace Prototip
 				item.SubItems[3].Text = Fje.PrefiksFormater(rasporedPoena[i]);
 			}
 		}
+
+		#region Prikazi komponenti
+		private void uobicajeniPrikaz(IKomponenta komponentaObj)
+		{
+			picOpSlika.Image = komponentaObj.slika;
+			lblOpNaziv.Text = komponentaObj.naziv;
+			txtOpOpis.Text = komponentaObj.opis;
+		}
+		private void prikazTrupa(IKomponenta komponentaObj)
+		{
+			Trup trup = (Trup)komponentaObj;
+		}
+		#endregion
 
 		private void premjestiListViewItem(int indeks1, int indeks2, ListView listView)
 		{
@@ -287,6 +342,26 @@ namespace Prototip
 			picKnjizSlika.Image = teh.tip.slika;
 			lblKnjizNaziv.Text = teh.tip.naziv;
 			txtKnjizOpis.Lines = teh.opis.Split(new char[] { '\n' });
+		}
+
+		private void cbOpKategorija_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (cbOpKategorija.SelectedItem == null) return;
+
+			KategorijaOpreme kategorija = ((TagTekst<KategorijaOpreme>)cbOpKategorija.SelectedItem).tag;
+			lstOprema.Items.Clear();
+			lstOprema.Items.AddRange(opremaStavke[kategorija]);
+		}
+
+		private void lstOprema_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (lstOprema.SelectedItems.Count == 0)	return;
+			if (lstOprema.SelectedItems[0].Tag == null) return;
+
+			KategorijaOpreme kategorija = ((TagTekst<KategorijaOpreme>)cbOpKategorija.SelectedItem).tag;
+			IKomponenta komponenta = (IKomponenta)lstOprema.SelectedItems[0].Tag;
+			uobicajeniPrikaz(komponenta);
+			prikaziKomponenti[kategorija](komponenta);
 		}
 	}
 }
