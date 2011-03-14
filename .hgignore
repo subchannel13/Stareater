@@ -1,0 +1,5 @@
+glob:source/Zvjezdojedac editori/bin/*
+glob:source/Zvjezdojedac editori/obj/*
+glob:source/Zvjezdojedac/bin/*
+glob:source/Zvjezdojedac/obj/*
+glob:*.suo
