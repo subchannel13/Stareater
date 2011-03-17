@@ -18,6 +18,28 @@ lblURazvoju = U razvoju
 naslov = Istraživanje i razvoj
 tabIst = Istraživanje
 tabKnjiz = Knjižnica
+tabOprema = Komponente brodova
 tabRaz = Razvoj
 
 nemaTeh = Knjiznica prazna
+nemaOp = Nema dostupnih
+
+opKatTrup = Veličine trupova
+opKatMisija = Misije
+
+opCijena = Cijena
+opSnaga = Snaga
+opVelicina = Veličina
+
+opTrupVelicina = Veličina
+opTrupProstor = Prostor
+opTrupTromost = Tromost
+opTrupOklop = Baza oklopa
+opTrupStit = Baza stita
+opTrupPrik = Prikrivanje
+opTrupSenzori = Snaga senzora
+opTrupVelReak = Veličina reaktora
+opTrupVelMZ = Veličina MZ pogona
+opTrupVelStit = Veličina štita
+
+opOruzjeCilj = Ciljanje
