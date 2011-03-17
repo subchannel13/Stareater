@@ -18,6 +18,28 @@ lblURazvoju = In development
 naslov = Research & development
 tabIst = Research
 tabKnjiz = Library
+tabOprema = Ship components
 tabRaz = Development
 
 nemaTeh = Library is empty
+nemaOp = None available
+
+opKatTrup = Hull sizes
+opKatMisija = Missions
+
+opCijena = Cost
+opSnaga = Power
+opVelicina = Size
+
+opTrupVelicina = Size
+opTrupProstor = Capacity
+opTrupTromost = Inertia
+opTrupOklop = Armor base
+opTrupStit = Shield base
+opTrupPrik = Stealth
+opTrupSenzori = Sensor strength
+opTrupVelReak = Reactor size
+opTrupVelMZ = IS drive size
+opTrupVelStit = Shield size
+
+opOruzjeCilj = Aim

@@ -20,10 +20,10 @@ Global
 		{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Zvjezdojedac\Zvjezdojedac.csproj
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Zvjezdojedac\Zvjezdojedac.csproj
 	EndGlobalSection
 EndGlobal

@@ -55,6 +55,7 @@ namespace Prototip
 
 			this.Text = jezik["naslov"].tekst();
 			tabIstrazivanje.Text = jezik["tabIst"].tekst();
+			tabOprema.Text = jezik["tabOprema"].tekst();
 			tabKnjiznica.Text = jezik["tabKnjiz"].tekst();
 			tabRazvoj.Text = jezik["tabRaz"].tekst();
 
@@ -125,7 +126,8 @@ namespace Prototip
 		{
 			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormTech];
 			List<ListViewItem> items = new List<ListViewItem>();
-			Font fontNema = new Font(lstOprema.Font, FontStyle.Italic);
+			Font fontBold = new Font(lstOprema.Font, FontStyle.Bold);
+			Font fontItalic = new Font(lstOprema.Font, FontStyle.Italic);
 
 			#region Trupovi
 			cbOpKategorija.Items.Add(new TagTekst<KategorijaOpreme>(KategorijaOpreme.Trup, jezik["opKatTrup"].tekst()));
@@ -136,15 +138,40 @@ namespace Prototip
 				item.Tag = trup;
 				items.Add(item);
 			}
-			if (items.Count == 0) {
-				ListViewItem item = new ListViewItem(jezik["nemaOp"].tekst());
-				item.Font = fontNema;
-				items.Add(item);
-			}
 			opremaStavke.Add(KategorijaOpreme.Trup, items.ToArray());
 			prikaziKomponenti.Add(KategorijaOpreme.Trup, prikazTrupa);
 			#endregion
 
+			#region Misije
+			cbOpKategorija.Items.Add(new TagTekst<KategorijaOpreme>(KategorijaOpreme.Misija, jezik["opKatMisija"].tekst()));
+			items = new List<ListViewItem>();
+			Dictionary<Misija.Tip, List<Oruzje>> misije = Oruzje.OruzjeInfo.DostupnaOruzja(igrac.efekti);
+			for (int misijaId = 0; misijaId < (int)Misija.Tip.N; misijaId++) {
+				Misija.Tip misijaTip = (Misija.Tip)misijaId;
+				if (!misije.ContainsKey(misijaTip)) 
+					continue;
+
+				ListViewItem item = new ListViewItem(Misija.Opisnici[misijaTip].naziv);
+				item.Font = fontBold;
+				items.Add(item);
+
+				foreach (Oruzje oruzje in misije[misijaTip]) {
+					item = new ListViewItem(oruzje.naziv);
+					item.SubItems.Add(oruzje.nivo.ToString());
+					item.Tag = oruzje;
+					items.Add(item);
+				}
+			}
+			opremaStavke.Add(KategorijaOpreme.Misija, items.ToArray());
+			prikaziKomponenti.Add(KategorijaOpreme.Misija, prikazOruzja);
+			#endregion
+
+			foreach (var kategorija in opremaStavke.Keys)
+				if (opremaStavke[kategorija].Length == 0) {
+					ListViewItem item = new ListViewItem(jezik["nemaOp"].tekst());
+					item.Font = fontItalic;
+					opremaStavke[kategorija] = new ListViewItem[] { item };
+				}
 			cbOpKategorija.SelectedIndex = 0;
 		}
 		private void InizijalizirajRazvoj()
@@ -191,6 +218,50 @@ namespace Prototip
 		private void prikazTrupa(IKomponenta komponentaObj)
 		{
 			Trup trup = (Trup)komponentaObj;
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormTech];
+
+			StringBuilder sb = new StringBuilder(txtOpOpis.Text);
+			sb.AppendLine();
+			sb.AppendLine();
+			sb.AppendLine(jezik["opTrupVelicina"].tekst() + ": " + Fje.PrefiksFormater(trup.velicina));
+			sb.AppendLine(jezik["opTrupProstor"].tekst() + ": " + Fje.PrefiksFormater(trup.nosivost));
+			sb.AppendLine(jezik["opTrupTromost"].tekst() + ": " + trup.tromost);
+			sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(trup.cijena));
+			sb.AppendLine();
+			sb.AppendLine(jezik["opTrupOklop"].tekst() + ": " + Fje.PrefiksFormater(trup.bazaOklopa));
+			sb.AppendLine(jezik["opTrupStit"].tekst() + ": " + Fje.PrefiksFormater(trup.bazaStita));
+			sb.AppendLine(jezik["opTrupPrik"].tekst() + ": " + trup.kapacitetPrikrivanja);
+			sb.AppendLine(jezik["opTrupSenzori"].tekst() + ": x" + Senzor.BonusKolicine(trup.brojSenzora).ToString("0.##"));
+			sb.AppendLine();
+			sb.AppendLine(jezik["opTrupVelReak"].tekst() + ": " + trup.velicina_reaktora);
+			sb.AppendLine(jezik["opTrupVelMZ"].tekst() + ": " + trup.velicina_MZPogona);
+			sb.AppendLine(jezik["opTrupVelStit"].tekst() + ": " + trup.velicina_stita);
+			txtOpOpis.Text = sb.ToString();
+		}
+		private void prikazOruzja(IKomponenta komponentaObj)
+		{
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormTech];
+			Oruzje oruzje = (Oruzje)komponentaObj;
+			Misija misija = Misija.Opisnici[oruzje.misija];
+
+			StringBuilder sb = new StringBuilder(txtOpOpis.Text);
+			sb.AppendLine();
+			sb.AppendLine();
+			for (int paramI = 0; paramI < misija.brParametara; paramI++) {
+				Misija.Parametar parametar = misija.parametri[paramI];
+				sb.Append(parametar.opis);
+				if (parametar.tip == Misija.TipParameta.Cijelobrojni)
+					sb.AppendLine(": " + Fje.PrefiksFormater(oruzje.parametri[paramI]));
+				else if (parametar.tip == Misija.TipParameta.Postotak)
+					sb.AppendLine(": x" + oruzje.parametri[paramI].ToString("0.##"));
+			}
+			if (misija.imaCiljanje)
+				sb.AppendLine(jezik["opOruzjeCilj"].tekst() + ": " + Postavke.jezik[Kontekst.Misije, Oruzje.OruzjeInfo.CiljanjeKod[oruzje.ciljanje]].tekst());
+			sb.AppendLine();
+			sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(oruzje.cijena));
+			sb.AppendLine(jezik["opSnaga"].tekst() + ": " + Fje.PrefiksFormater(oruzje.snaga));
+			sb.AppendLine(jezik["opVelicina"].tekst() + ": " + Fje.PrefiksFormater(oruzje.velicina));
+			txtOpOpis.Text = sb.ToString();
 		}
 		#endregion
 

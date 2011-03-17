@@ -19,6 +19,7 @@ namespace Prototip
 			Tegljenje,
 			CivilniTransport,
 			VojniTransport,
+			N
 		}
 
 		public const int VatrenaMoc = 0;
@@ -94,7 +95,7 @@ namespace Prototip
 					false, true, true,
 					new Parametar[] { 
 						new Parametar("POP", TipParameta.Cijelobrojni, true),
-						new Parametar("RADNA_MJ", TipParameta.Postotak, true)
+						new Parametar("RADNA_MJ", TipParameta.Cijelobrojni, true)
 					}));
 
 			ret.Add(Tip.Popravak,
