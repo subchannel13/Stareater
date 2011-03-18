@@ -129,6 +129,7 @@ namespace Prototip
 			Font fontBold = new Font(lstOprema.Font, FontStyle.Bold);
 			Font fontItalic = new Font(lstOprema.Font, FontStyle.Italic);
 
+			Trup najveci = null;
 			#region Trupovi
 			cbOpKategorija.Items.Add(new TagTekst<KategorijaOpreme>(KategorijaOpreme.Trup, jezik["opKatTrup"].tekst()));
 			items = new List<ListViewItem>();
@@ -137,6 +138,11 @@ namespace Prototip
 				item.SubItems.Add(trup.nivo.ToString());
 				item.Tag = trup;
 				items.Add(item);
+				
+				if (najveci == null) najveci = trup;
+				if (trup.velicina > najveci.velicina) najveci = trup;
+
+				cbOpVelicine.Items.Add(new TagTekst<Trup>(trup, trup.naziv));
 			}
 			opremaStavke.Add(KategorijaOpreme.Trup, items.ToArray());
 			prikaziKomponenti.Add(KategorijaOpreme.Trup, prikazTrupa);
@@ -166,6 +172,19 @@ namespace Prototip
 			prikaziKomponenti.Add(KategorijaOpreme.Misija, prikazOruzja);
 			#endregion
 
+			#region Stitovi
+			cbOpKategorija.Items.Add(new TagTekst<KategorijaOpreme>(KategorijaOpreme.Stit, jezik["opKatStit"].tekst()));
+			items = new List<ListViewItem>();
+			foreach (Stit stit in Stit.StitInfo.DostupniStitovi(igrac.efekti, najveci.velicina_stita)) {
+				ListViewItem item = new ListViewItem(stit.naziv);
+				item.SubItems.Add(stit.nivo.ToString());
+				item.Tag = stit;
+				items.Add(item);
+			}
+			opremaStavke.Add(KategorijaOpreme.Stit, items.ToArray());
+			prikaziKomponenti.Add(KategorijaOpreme.Stit, prikazStita);
+			#endregion
+
 			foreach (var kategorija in opremaStavke.Keys)
 				if (opremaStavke[kategorija].Length == 0) {
 					ListViewItem item = new ListViewItem(jezik["nemaOp"].tekst());
@@ -173,6 +192,7 @@ namespace Prototip
 					opremaStavke[kategorija] = new ListViewItem[] { item };
 				}
 			cbOpKategorija.SelectedIndex = 0;
+			cbOpVelicine.SelectedIndex = 0;
 		}
 		private void InizijalizirajRazvoj()
 		{
@@ -235,7 +255,7 @@ namespace Prototip
 			sb.AppendLine();
 			sb.AppendLine(jezik["opTrupVelReak"].tekst() + ": " + trup.velicina_reaktora);
 			sb.AppendLine(jezik["opTrupVelMZ"].tekst() + ": " + trup.velicina_MZPogona);
-			sb.AppendLine(jezik["opTrupVelStit"].tekst() + ": " + trup.velicina_stita);
+			//sb.AppendLine(jezik["opTrupVelStit"].tekst() + ": " + trup.velicina_stita);
 			txtOpOpis.Text = sb.ToString();
 		}
 		private void prikazOruzja(IKomponenta komponentaObj)
@@ -263,9 +283,31 @@ namespace Prototip
 			sb.AppendLine(jezik["opVelicina"].tekst() + ": " + Fje.PrefiksFormater(oruzje.velicina));
 			txtOpOpis.Text = sb.ToString();
 		}
+		private void prikazStita(IKomponenta komponentaObj)
+		{
+			Trup trup = ((TagTekst<Trup>)cbOpVelicine.SelectedItem).tag;
+			Stit stit = (Stit)komponentaObj;
+			stit = stit.info.naciniKomponentu(stit.nivo, trup.velicina_stita);
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+
+			StringBuilder sb = new StringBuilder(txtOpOpis.Text);
+			sb.AppendLine();
+			sb.AppendLine();
+			sb.AppendLine(jezik["opisStitIzd"].tekst() + ": " + Fje.PrefiksFormater(stit.izdrzljivost));
+			sb.AppendLine(jezik["opisStitDeb"].tekst() + ": " + Fje.PrefiksFormater(stit.debljina));
+			sb.AppendLine(jezik["opisStitObn"].tekst() + ": " + Fje.PrefiksFormater(stit.obnavljanje));
+			sb.AppendLine(jezik["opisSenzorOm"].tekst() + ": x" + stit.ometanje.ToString("0.##"));
+			sb.AppendLine(jezik["opisSenzorPrik"].tekst() + ": +" + Fje.PrefiksFormater(stit.prikrivanje));
+			sb.AppendLine();
+			jezik = Postavke.jezik[Kontekst.FormTech];
+			sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(stit.cijena));
+			sb.AppendLine(jezik["opSnaga"].tekst() + ": " + Fje.PrefiksFormater(stit.snaga));
+			sb.AppendLine(jezik["opVelicina"].tekst() + ": " + Fje.PrefiksFormater(trup.velicina_stita));
+			txtOpOpis.Text = sb.ToString();
+		}
 		#endregion
 
-		private void premjestiListViewItem(int indeks1, int indeks2, ListView listView)
+		private static void premjestiListViewItem(int indeks1, int indeks2, ListView listView)
 		{
 			ListViewItem tmp = listView.Items[indeks1];
 			listView.Items.RemoveAt(indeks1);
@@ -276,6 +318,7 @@ namespace Prototip
 			listView.Items[indeks2].SubItems[3].Text = tmpStr;
 		}
 
+		#region Razvoj
 		private void btnRazGore_Click(object sender, EventArgs e)
 		{
 			if (lstRazvoj.SelectedIndices.Count < 1) return;
@@ -317,7 +360,28 @@ namespace Prototip
 			lstRazvoj.Items.Insert(0, tmp);
 			izracunajPoeneRazvoja();
 		}
+		
+		private void lstRazvoj_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (lstRazvoj.SelectedItems.Count == 0) return;
 
+			ListViewItem tmp = lstRazvoj.SelectedItems[0];
+			Tehnologija teh = ((Tehnologija)tmp.Tag);
+			lblRazOpis.Text = teh.slijedeciNivoOpis;
+			picRazSlika.Image = teh.tip.slika;
+		}
+		
+		private void trkRazKoncentracija_Scroll(object sender, EventArgs e)
+		{
+			if (raspodijelaPoena != trkRazKoncentracija.Value)
+			{
+				raspodijelaPoena = trkRazKoncentracija.Value;
+				izracunajPoeneRazvoja();
+			}
+		}
+		#endregion
+
+		#region Istrazivanje
 		private void btnIstVrh_Click(object sender, EventArgs e)
 		{
 			if (lstIstrazivanje.SelectedIndices.Count < 1) return;
@@ -358,42 +422,6 @@ namespace Prototip
 			lstIstrazivanje.Items.Add(tmp);
 		}
 
-		private void lstRazvoj_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (lstRazvoj.SelectedItems.Count == 0) return;
-
-			ListViewItem tmp = lstRazvoj.SelectedItems[0];
-			Tehnologija teh = ((Tehnologija)tmp.Tag);
-			lblRazOpis.Text = teh.slijedeciNivoOpis;
-			picRazSlika.Image = teh.tip.slika;
-		}
-
-		private void trkRazKoncentracija_Scroll(object sender, EventArgs e)
-		{
-			if (raspodijelaPoena != trkRazKoncentracija.Value)
-			{
-				raspodijelaPoena = trkRazKoncentracija.Value;
-				izracunajPoeneRazvoja();
-			}
-		}
-
-		private void btnOk_Click(object sender, EventArgs e)
-		{
-			Close();
-		}
-
-		private void frmTechIzbor_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			igrac.koncentracijaPoenaRazvoja = RaspodijelaPoena[raspodijelaPoena];
-			igrac.tehnologijeURazvoju.Clear();
-			foreach (ListViewItem item in lstRazvoj.Items)
-				igrac.tehnologijeURazvoju.AddLast((Tehnologija)item.Tag);
-			
-			igrac.tehnologijeUIstrazivanju.Clear();
-			foreach (ListViewItem item in lstIstrazivanje.Items)
-				igrac.tehnologijeUIstrazivanju.AddLast((Tehnologija)item.Tag);
-		}
-
 		private void lstIstrazivanje_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (lstIstrazivanje.SelectedItems.Count == 0) return;
@@ -414,6 +442,24 @@ namespace Prototip
 			lblKnjizNaziv.Text = teh.tip.naziv;
 			txtKnjizOpis.Lines = teh.opis.Split(new char[] { '\n' });
 		}
+		#endregion
+
+		private void btnOk_Click(object sender, EventArgs e)
+		{
+			Close();
+		}
+
+		private void frmTechIzbor_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			igrac.koncentracijaPoenaRazvoja = RaspodijelaPoena[raspodijelaPoena];
+			igrac.tehnologijeURazvoju.Clear();
+			foreach (ListViewItem item in lstRazvoj.Items)
+				igrac.tehnologijeURazvoju.AddLast((Tehnologija)item.Tag);
+			
+			igrac.tehnologijeUIstrazivanju.Clear();
+			foreach (ListViewItem item in lstIstrazivanje.Items)
+				igrac.tehnologijeUIstrazivanju.AddLast((Tehnologija)item.Tag);
+		}
 
 		private void cbOpKategorija_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -424,15 +470,28 @@ namespace Prototip
 			lstOprema.Items.AddRange(opremaStavke[kategorija]);
 		}
 
-		private void lstOprema_SelectedIndexChanged(object sender, EventArgs e)
+		private void prikaziStavku()
 		{
-			if (lstOprema.SelectedItems.Count == 0)	return;
+			if (lstOprema.SelectedItems.Count == 0) return;
 			if (lstOprema.SelectedItems[0].Tag == null) return;
+			if (cbOpVelicine.SelectedItem == null) return;
 
 			KategorijaOpreme kategorija = ((TagTekst<KategorijaOpreme>)cbOpKategorija.SelectedItem).tag;
+			cbOpVelicine.Visible = (kategorija == KategorijaOpreme.Stit || kategorija == KategorijaOpreme.Specijalno);
+
 			IKomponenta komponenta = (IKomponenta)lstOprema.SelectedItems[0].Tag;
 			uobicajeniPrikaz(komponenta);
 			prikaziKomponenti[kategorija](komponenta);
+		}
+
+		private void lstOprema_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			prikaziStavku();
+		}
+
+		private void cbOpVelicine_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			prikaziStavku();
 		}
 	}
 }

@@ -26,6 +26,9 @@ nemaOp = Nema dostupnih
 
 opKatTrup = Veličine trupova
 opKatMisija = Misije
+opKatStit = Štitovi
+opKatSpecOp = Specijalna oprema
+opKatOstalo = Ostalo
 
 opCijena = Cijena
 opSnaga = Snaga
