@@ -79,6 +79,7 @@
 			this.lstOprema = new System.Windows.Forms.ListView();
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.cbOpVelicine = new System.Windows.Forms.ComboBox();
 			this.tabControlTech.SuspendLayout();
 			this.tabRazvoj.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trkRazKoncentracija)).BeginInit();
@@ -520,6 +521,7 @@
 			// tabOprema
 			// 
 			this.tabOprema.BackColor = System.Drawing.SystemColors.Control;
+			this.tabOprema.Controls.Add(this.cbOpVelicine);
 			this.tabOprema.Controls.Add(this.cbOpKategorija);
 			this.tabOprema.Controls.Add(this.lblOpNaziv);
 			this.tabOprema.Controls.Add(this.txtOpOpis);
@@ -596,6 +598,17 @@
 			this.columnHeader2.Text = "Nivo";
 			this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.columnHeader2.Width = 45;
+			// 
+			// cbOpVelicine
+			// 
+			this.cbOpVelicine.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbOpVelicine.FormattingEnabled = true;
+			this.cbOpVelicine.Location = new System.Drawing.Point(443, 66);
+			this.cbOpVelicine.Name = "cbOpVelicine";
+			this.cbOpVelicine.Size = new System.Drawing.Size(135, 21);
+			this.cbOpVelicine.TabIndex = 12;
+			this.cbOpVelicine.Visible = false;
+			this.cbOpVelicine.SelectedIndexChanged += new System.EventHandler(this.cbOpVelicine_SelectedIndexChanged);
 			// 
 			// FormTechIzbor
 			// 
@@ -683,5 +696,6 @@
 		private System.Windows.Forms.ListView lstOprema;
 		private System.Windows.Forms.ColumnHeader columnHeader1;
 		private System.Windows.Forms.ColumnHeader columnHeader2;
+		private System.Windows.Forms.ComboBox cbOpVelicine;
 	}
 }

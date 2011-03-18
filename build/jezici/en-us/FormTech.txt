@@ -26,6 +26,9 @@ nemaOp = None available
 
 opKatTrup = Hull sizes
 opKatMisija = Missions
+opKatStit = Shields
+opKatSpecOp = Special equipment
+opKatOstalo = Other
 
 opCijena = Cost
 opSnaga = Power
