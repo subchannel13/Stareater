@@ -15,6 +15,7 @@ namespace Prototip
 		Reaktor,
 		Senzor,
 		Specijalno,
-		Stit
+		Stit,
+		Ostalo
 	}
 }

@@ -29,6 +29,17 @@ namespace Prototip
 					);
 			}
 
+			public static IEnumerable<Reaktor> Dostupni(Dictionary<string, double> varijable)
+			{
+				List<Reaktor> rez = new List<Reaktor>();
+				foreach (ReaktorInfo reaktor in Reaktori)
+					if (reaktor.dostupno(varijable)) {
+						int nivo = reaktor.maxDostupanNivo(varijable);
+						rez.Add(reaktor.naciniKomponentu(nivo, reaktor.minimalnaVelicina(nivo)));
+					}
+				return rez;
+			}
+
 			public static Reaktor NajboljiReaktor(Dictionary<string, double> varijable, double velicinaReaktora)
 			{
 				double max = double.MinValue;
