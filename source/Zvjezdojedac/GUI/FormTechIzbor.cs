@@ -20,6 +20,7 @@ namespace Prototip
 		private Igrac igrac;
 		private int raspodijelaPoena;
 		private Dictionary<KategorijaOpreme, ListViewItem[]> opremaStavke = new Dictionary<KategorijaOpreme, ListViewItem[]>();
+		private int[] opremaOstaloZadnjiIndeks = new int[4];
 		private Dictionary<KategorijaOpreme, PrikazKomponente> prikaziKomponenti = new Dictionary<KategorijaOpreme, PrikazKomponente>();
 
 		public FormTechIzbor(Igrac igrac)
@@ -134,10 +135,7 @@ namespace Prototip
 			cbOpKategorija.Items.Add(new TagTekst<KategorijaOpreme>(KategorijaOpreme.Trup, jezik["opKatTrup"].tekst()));
 			items = new List<ListViewItem>();
 			foreach (Trup trup in Trup.TrupInfo.DostupniTrupovi(igrac.efekti)) {
-				ListViewItem item = new ListViewItem(trup.naziv);
-				item.SubItems.Add(trup.nivo.ToString());
-				item.Tag = trup;
-				items.Add(item);
+				items.Add(komponentaListViewItem(trup));
 				
 				if (najveci == null) najveci = trup;
 				if (trup.velicina > najveci.velicina) najveci = trup;
@@ -156,17 +154,10 @@ namespace Prototip
 				Misija.Tip misijaTip = (Misija.Tip)misijaId;
 				if (!misije.ContainsKey(misijaTip)) 
 					continue;
-
-				ListViewItem item = new ListViewItem(Misija.Opisnici[misijaTip].naziv);
-				item.Font = fontBold;
-				items.Add(item);
-
-				foreach (Oruzje oruzje in misije[misijaTip]) {
-					item = new ListViewItem(oruzje.naziv);
-					item.SubItems.Add(oruzje.nivo.ToString());
-					item.Tag = oruzje;
-					items.Add(item);
-				}
+				
+				items.Add(specLVItem(Misija.Opisnici[misijaTip].naziv, fontBold));
+				foreach (Oruzje oruzje in misije[misijaTip])
+					items.Add(komponentaListViewItem(oruzje));
 			}
 			opremaStavke.Add(KategorijaOpreme.Misija, items.ToArray());
 			prikaziKomponenti.Add(KategorijaOpreme.Misija, prikazOruzja);
@@ -175,20 +166,53 @@ namespace Prototip
 			#region Stitovi
 			cbOpKategorija.Items.Add(new TagTekst<KategorijaOpreme>(KategorijaOpreme.Stit, jezik["opKatStit"].tekst()));
 			items = new List<ListViewItem>();
-			foreach (Stit stit in Stit.StitInfo.DostupniStitovi(igrac.efekti, najveci.velicina_stita)) {
-				ListViewItem item = new ListViewItem(stit.naziv);
-				item.SubItems.Add(stit.nivo.ToString());
-				item.Tag = stit;
-				items.Add(item);
-			}
+			foreach (Stit stit in Stit.StitInfo.DostupniStitovi(igrac.efekti, najveci.velicina_stita))
+				items.Add(komponentaListViewItem(stit));
 			opremaStavke.Add(KategorijaOpreme.Stit, items.ToArray());
 			prikaziKomponenti.Add(KategorijaOpreme.Stit, prikazStita);
 			#endregion
 
+			#region Specijalna oprema
+			cbOpKategorija.Items.Add(new TagTekst<KategorijaOpreme>(KategorijaOpreme.Specijalno, jezik["opKatSpecOp"].tekst()));
+			items = new List<ListViewItem>();
+			foreach (SpecijalnaOprema so in SpecijalnaOprema.SpecijalnaOpremaInfo.DostupnaOprema(igrac.efekti, najveci.velicina))
+				items.Add(komponentaListViewItem(so));
+			opremaStavke.Add(KategorijaOpreme.Specijalno, items.ToArray());
+			prikaziKomponenti.Add(KategorijaOpreme.Specijalno, prikazSpecOp);
+			#endregion
+
+			#region Ostalo
+			cbOpKategorija.Items.Add(new TagTekst<KategorijaOpreme>(KategorijaOpreme.Ostalo, jezik["opKatOstalo"].tekst()));
+			items = new List<ListViewItem>();
+			jezik = Postavke.jezik[Kontekst.FormFlote];
+			
+			items.Add(specLVItem(jezik["infoMZPogon"].tekst(), fontBold));
+			foreach (MZPogon komp in MZPogon.MZPogonInfo.Dostupni(igrac.efekti))
+				items.Add(komponentaListViewItem(komp));
+			opremaOstaloZadnjiIndeks[0] = items.Count;
+
+			items.Add(specLVItem(jezik["infoPotisnici"].tekst(), fontBold));
+			foreach (Potisnici komp in Potisnici.PotisnikInfo.Dostupni(igrac.efekti))
+				items.Add(komponentaListViewItem(komp));
+			opremaOstaloZadnjiIndeks[1] = items.Count;
+
+			items.Add(specLVItem(jezik["infoReaktor"].tekst(), fontBold));
+			foreach (Reaktor komp in Reaktor.ReaktorInfo.Dostupni(igrac.efekti))
+				items.Add(komponentaListViewItem(komp));
+			opremaOstaloZadnjiIndeks[2] = items.Count;
+
+			items.Add(specLVItem(jezik["infoSenzori"].tekst(), fontBold));
+			foreach (Senzor komp in Senzor.SenzorInfo.Dostupni(igrac.efekti))
+				items.Add(komponentaListViewItem(komp));
+			opremaOstaloZadnjiIndeks[3] = items.Count;
+
+			opremaStavke.Add(KategorijaOpreme.Ostalo, items.ToArray());
+			prikaziKomponenti.Add(KategorijaOpreme.Ostalo, prikazOstalog);
+			#endregion
+
 			foreach (var kategorija in opremaStavke.Keys)
 				if (opremaStavke[kategorija].Length == 0) {
-					ListViewItem item = new ListViewItem(jezik["nemaOp"].tekst());
-					item.Font = fontItalic;
+					ListViewItem item = specLVItem(jezik["nemaOp"].tekst(), fontItalic);
 					opremaStavke[kategorija] = new ListViewItem[] { item };
 				}
 			cbOpKategorija.SelectedIndex = 0;
@@ -253,9 +277,8 @@ namespace Prototip
 			sb.AppendLine(jezik["opTrupPrik"].tekst() + ": " + trup.kapacitetPrikrivanja);
 			sb.AppendLine(jezik["opTrupSenzori"].tekst() + ": x" + Senzor.BonusKolicine(trup.brojSenzora).ToString("0.##"));
 			sb.AppendLine();
-			sb.AppendLine(jezik["opTrupVelReak"].tekst() + ": " + trup.velicina_reaktora);
+			sb.AppendLine(jezik["opTrupVelReak"].tekst() + ": " + trup.velicina_reaktora + " " + jezik["opTrupRezerv"].tekst());
 			sb.AppendLine(jezik["opTrupVelMZ"].tekst() + ": " + trup.velicina_MZPogona);
-			//sb.AppendLine(jezik["opTrupVelStit"].tekst() + ": " + trup.velicina_stita);
 			txtOpOpis.Text = sb.ToString();
 		}
 		private void prikazOruzja(IKomponenta komponentaObj)
@@ -305,6 +328,76 @@ namespace Prototip
 			sb.AppendLine(jezik["opVelicina"].tekst() + ": " + Fje.PrefiksFormater(trup.velicina_stita));
 			txtOpOpis.Text = sb.ToString();
 		}
+		private void prikazSpecOp(IKomponenta komponentaObj)
+		{
+			Trup trup = ((TagTekst<Trup>)cbOpVelicine.SelectedItem).tag;
+			SpecijalnaOprema so = (SpecijalnaOprema)komponentaObj;
+			so = so.info.naciniKomponentu(so.nivo, trup.velicina);
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+
+			StringBuilder sb = new StringBuilder(txtOpOpis.Text);
+			sb.AppendLine();
+			sb.AppendLine();
+			foreach (string efekt in so.opisEfekata)
+				sb.AppendLine(efekt);
+			sb.AppendLine();
+			jezik = Postavke.jezik[Kontekst.FormTech];
+			sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(so.cijena));
+			sb.AppendLine(jezik["opVelicina"].tekst() + ": " + Fje.PrefiksFormater(so.velicina));
+			txtOpOpis.Text = sb.ToString();
+		}
+		private void prikazOstalog(IKomponenta komponentaObj)
+		{
+			Trup trup = ((TagTekst<Trup>)cbOpVelicine.SelectedItem).tag;
+			int indeks = lstOprema.SelectedIndices[0];
+
+			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+			Dictionary<string, ITekst> jezikTech = Postavke.jezik[Kontekst.FormTech];
+			StringBuilder sb = new StringBuilder(txtOpOpis.Text);
+			sb.AppendLine();
+			sb.AppendLine();
+
+			if (indeks < opremaOstaloZadnjiIndeks[0]) {
+				cbOpVelicine.Visible = true;
+				MZPogon pogon = (MZPogon)komponentaObj;
+				pogon = pogon.info.naciniKomponentu(pogon.nivo, trup.velicina_MZPogona);
+
+				jezik = jezikTech;
+				if (trup.velicina_MZPogona >= pogon.info.minimalnaVelicina(pogon.nivo)) {	
+					sb.AppendLine(jezik["opMZbrzina"].tekst() + ": " + pogon.brzina.ToString("0.###"));
+					sb.AppendLine();
+					sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(pogon.cijena));
+					sb.AppendLine(jezik["opSnaga"].tekst() + ": " + Fje.PrefiksFormater(pogon.snaga));
+					sb.AppendLine(jezik["opVelicina"].tekst() + ": " + Fje.PrefiksFormater(trup.velicina_MZPogona));
+				}
+				else {
+					sb.AppendLine(jezik["opMinVel"].tekst() + ": " +  Fje.PrefiksFormater(pogon.info.minimalnaVelicina(pogon.nivo)));
+					sb.AppendLine(jezik["opNeStane"].tekst());
+				}
+			}
+			else if (indeks < opremaOstaloZadnjiIndeks[1]) {
+				cbOpVelicine.Visible = false;
+				Potisnici potisnici = (Potisnici)komponentaObj;
+				sb.AppendLine(jezik["opisPokret"].tekst() + ": " + Fje.PrefiksFormater(potisnici.brzina));
+			}
+			else if (indeks < opremaOstaloZadnjiIndeks[2]) {
+				cbOpVelicine.Visible = true;
+				Reaktor reaktor = (Reaktor)komponentaObj;
+				reaktor = reaktor.info.naciniKomponentu(reaktor.nivo, trup.velicina_reaktora);
+
+				sb.AppendLine(jezikTech["opMinVel"].tekst() + ": " + Fje.PrefiksFormater(reaktor.info.minimalnaVelicina(reaktor.nivo)));
+				if (trup.velicina_reaktora >= reaktor.info.minimalnaVelicina(reaktor.nivo))
+					sb.AppendLine(jezik["opisReaktorDost"].tekst() + ": " + Fje.PrefiksFormater(reaktor.snaga));
+				else
+					sb.AppendLine(jezikTech["opNeStane"].tekst());
+			}
+			else if (indeks < opremaOstaloZadnjiIndeks[3]) {
+				cbOpVelicine.Visible = false;
+				Senzor senzor = (Senzor)komponentaObj;
+				sb.AppendLine(jezik["opisSenzorSn"].tekst() + ": " + Fje.PrefiksFormater(senzor.razlucivost));
+			}
+			txtOpOpis.Text = sb.ToString();
+		}
 		#endregion
 
 		private static void premjestiListViewItem(int indeks1, int indeks2, ListView listView)
@@ -316,6 +409,19 @@ namespace Prototip
 			string tmpStr = listView.Items[indeks1].SubItems[3].Text;
 			listView.Items[indeks1].SubItems[3].Text = listView.Items[indeks2].SubItems[3].Text;
 			listView.Items[indeks2].SubItems[3].Text = tmpStr;
+		}
+		private static ListViewItem komponentaListViewItem(IKomponenta komponenta)
+		{
+			ListViewItem item = new ListViewItem(komponenta.naziv);
+			item.SubItems.Add(komponenta.nivo.ToString());
+			item.Tag = komponenta;
+			return item;
+		}
+		private static ListViewItem specLVItem(string tekst, Font font)
+		{
+			ListViewItem item = new ListViewItem(tekst);
+			item.Font = font;
+			return item;
 		}
 
 		#region Razvoj
@@ -477,7 +583,8 @@ namespace Prototip
 			if (cbOpVelicine.SelectedItem == null) return;
 
 			KategorijaOpreme kategorija = ((TagTekst<KategorijaOpreme>)cbOpKategorija.SelectedItem).tag;
-			cbOpVelicine.Visible = (kategorija == KategorijaOpreme.Stit || kategorija == KategorijaOpreme.Specijalno);
+			if (kategorija != KategorijaOpreme.Ostalo)
+				cbOpVelicine.Visible = (kategorija == KategorijaOpreme.Stit || kategorija == KategorijaOpreme.Specijalno);
 
 			IKomponenta komponenta = (IKomponenta)lstOprema.SelectedItems[0].Tag;
 			uobicajeniPrikaz(komponenta);

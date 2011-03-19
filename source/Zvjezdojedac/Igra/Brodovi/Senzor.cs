@@ -33,6 +33,15 @@ namespace Prototip
 					);
 			}
 
+			public static IEnumerable<Senzor> Dostupni(Dictionary<string, double> varijable)
+			{
+				List<Senzor> rez = new List<Senzor>();
+				foreach (SenzorInfo si in Senzori)
+					if (si.dostupno(varijable))
+						rez.Add(si.naciniKomponentu(varijable));
+				return rez;
+			}
+
 			public static Senzor NajboljiSenzor(Dictionary<string, double> varijable)
 			{
 				double max = double.MinValue;

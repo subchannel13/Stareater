@@ -28,6 +28,15 @@ namespace Prototip
 					);
 			}
 
+			public static IEnumerable<Potisnici> Dostupni(Dictionary<string, double> varijable)
+			{
+				List<Potisnici> rez = new List<Potisnici>();
+				foreach (PotisnikInfo pi in Potisnici)
+					if (pi.dostupno(varijable))
+						rez.Add(pi.naciniKomponentu(varijable));
+				return rez;
+			}
+
 			public static Potisnici NajboljiPotisnici(Dictionary<string, double> varijable)
 			{
 				double max = double.MinValue;

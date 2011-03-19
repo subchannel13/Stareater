@@ -31,13 +31,24 @@ namespace Prototip
 					);
 			}
 
+			public static List<MZPogon> Dostupni(Dictionary<string, double> varijable)
+			{
+				List<MZPogon> ret = new List<MZPogon>();
+				foreach (MZPogonInfo pogonInfo in MZPogoni)
+					if (pogonInfo.dostupno(varijable)) {
+						int nivo = pogonInfo.maxDostupanNivo(varijable);
+						ret.Add(pogonInfo.naciniKomponentu(nivo, pogonInfo.minimalnaVelicina(nivo)));
+					}
+				return ret;
+			}
+
 			public static MZPogon NajboljiMZPogon(Dictionary<string, double> varijable, double velicinaMZPogona)
 			{
 				double max = double.MinValue;
 				MZPogon naj = null;
 
 				foreach (MZPogonInfo mzpi in MZPogoni)
-					if (mzpi.dostupno(varijable, 0))
+					if (mzpi.dostupno(varijable))
 					{
 						int nivo = mzpi.maxDostupanNivo(varijable);
 						if (mzpi.minimalnaVelicina(nivo) > velicinaMZPogona)
