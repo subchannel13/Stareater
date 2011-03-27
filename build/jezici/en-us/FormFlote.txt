@@ -29,6 +29,7 @@ bezStita = none
 
 infoMZPogon = IS drive
 infoPokret = Mobility
+infoPotisnici = Thrusters
 infoPrimMisija = Primary mission
 infoReaktor = Reactor
 infoSekMisija = Secondary mission

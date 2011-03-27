@@ -61,8 +61,8 @@ namespace Prototip
 			tabRazvoj.Text = jezik["tabRaz"].tekst();
 
 			this.igrac = igrac;
-			lblRazOpis.Text = "";
-			lblIstOpis.Text = "";
+			txtRazOpis.Text = "";
+			txtIstOpis.Text = "";
 			lblIstPoeni.Text = jezik["lblIstPoeni"].tekst() + ": " + Fje.PrefiksFormater(igrac.istrazivanjePoSustavu[igrac.istrazivanjeSustav]);
 			lblIstSustav.Text = " (" + igrac.istrazivanjeSustav.ime + ")";
 			lblKnjizNaziv.Text = "";
@@ -473,8 +473,13 @@ namespace Prototip
 
 			ListViewItem tmp = lstRazvoj.SelectedItems[0];
 			Tehnologija teh = ((Tehnologija)tmp.Tag);
-			lblRazOpis.Text = teh.slijedeciNivoOpis;
+			txtRazOpis.Lines = teh.slijedeciNivoOpis.Split(new char[] { '\n' });
 			picRazSlika.Image = teh.tip.slika;
+
+			/*Tehnologija teh = (Tehnologija)lstKnjiznica.SelectedItems[0].Tag;
+			picKnjizSlika.Image = teh.tip.slika;
+			lblKnjizNaziv.Text = teh.tip.naziv;
+			txtKnjizOpis.Lines = teh.opis.Split(new char[] { '\n' });*/
 		}
 		
 		private void trkRazKoncentracija_Scroll(object sender, EventArgs e)
@@ -534,7 +539,7 @@ namespace Prototip
 
 			ListViewItem tmp = lstIstrazivanje.SelectedItems[0];
 			Tehnologija teh = ((Tehnologija)tmp.Tag);
-			lblIstOpis.Text = teh.slijedeciNivoOpis;
+			txtIstOpis.Lines = teh.slijedeciNivoOpis.Split(new char[] { '\n' });
 			picIstSlika.Image = teh.tip.slika;
 		}
 

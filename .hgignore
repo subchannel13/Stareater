@@ -3,11 +3,12 @@ syntax: glob
 *.userprefs
 *.resources
 source/Zvjezdojedac/bin/*
+source/Zvjezdojedac/obj/*
 source/Zvjezdojedac editori/bin/*
-glob:source/Zvjezdojedac editori/bin/*
-glob:source/Zvjezdojedac editori/obj/*
-glob:source/Zvjezdojedac/bin/*
-glob:source/Zvjezdojedac/obj/*
-glob:*.suo
-glob:*.csproj.user
-glob:*.csproj.vs10x
+source/Zvjezdojedac editori/obj/*
+*.suo
+*.csproj.user
+*.csproj.vs10x
+build/Zvjezdojedac.exe
+build/postavke.txt
+release/*
