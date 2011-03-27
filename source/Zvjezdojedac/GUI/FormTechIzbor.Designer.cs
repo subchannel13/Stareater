@@ -37,7 +37,6 @@
 			this.lblRaspodjela = new System.Windows.Forms.Label();
 			this.trkRazKoncentracija = new System.Windows.Forms.TrackBar();
 			this.trackBar1 = new System.Windows.Forms.TrackBar();
-			this.lblRazOpis = new System.Windows.Forms.Label();
 			this.picRazSlika = new System.Windows.Forms.PictureBox();
 			this.btnRazDno = new System.Windows.Forms.Button();
 			this.btnRazDolje = new System.Windows.Forms.Button();
@@ -56,7 +55,6 @@
 			this.btnIstVrh = new System.Windows.Forms.Button();
 			this.lblIstSustav = new System.Windows.Forms.Label();
 			this.lblIstPoeni = new System.Windows.Forms.Label();
-			this.lblIstOpis = new System.Windows.Forms.Label();
 			this.picIstSlika = new System.Windows.Forms.PictureBox();
 			this.lstIstrazivanje = new System.Windows.Forms.ListView();
 			this.chIstNaziv = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -72,6 +70,7 @@
 			this.chKnjizNaziv = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.chKnjizNivo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabOprema = new System.Windows.Forms.TabPage();
+			this.cbOpVelicine = new System.Windows.Forms.ComboBox();
 			this.cbOpKategorija = new System.Windows.Forms.ComboBox();
 			this.lblOpNaziv = new System.Windows.Forms.Label();
 			this.txtOpOpis = new System.Windows.Forms.TextBox();
@@ -79,7 +78,8 @@
 			this.lstOprema = new System.Windows.Forms.ListView();
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.cbOpVelicine = new System.Windows.Forms.ComboBox();
+			this.txtRazOpis = new System.Windows.Forms.TextBox();
+			this.txtIstOpis = new System.Windows.Forms.TextBox();
 			this.tabControlTech.SuspendLayout();
 			this.tabRazvoj.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trkRazKoncentracija)).BeginInit();
@@ -110,13 +110,13 @@
 			// tabRazvoj
 			// 
 			this.tabRazvoj.BackColor = System.Drawing.SystemColors.Control;
+			this.tabRazvoj.Controls.Add(this.txtRazOpis);
 			this.tabRazvoj.Controls.Add(this.btnOk);
 			this.tabRazvoj.Controls.Add(this.lblFokusirano);
 			this.tabRazvoj.Controls.Add(this.lblRavnomjerno);
 			this.tabRazvoj.Controls.Add(this.lblRaspodjela);
 			this.tabRazvoj.Controls.Add(this.trkRazKoncentracija);
 			this.tabRazvoj.Controls.Add(this.trackBar1);
-			this.tabRazvoj.Controls.Add(this.lblRazOpis);
 			this.tabRazvoj.Controls.Add(this.picRazSlika);
 			this.tabRazvoj.Controls.Add(this.btnRazDno);
 			this.tabRazvoj.Controls.Add(this.btnRazDolje);
@@ -141,6 +141,7 @@
 			this.btnOk.TabIndex = 19;
 			this.btnOk.Text = "U redu";
 			this.btnOk.UseVisualStyleBackColor = true;
+			this.btnOk.Visible = false;
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
 			// 
 			// lblFokusirano
@@ -187,16 +188,6 @@
 			this.trackBar1.Name = "trackBar1";
 			this.trackBar1.Size = new System.Drawing.Size(104, 45);
 			this.trackBar1.TabIndex = 14;
-			// 
-			// lblRazOpis
-			// 
-			this.lblRazOpis.AutoSize = true;
-			this.lblRazOpis.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.lblRazOpis.Location = new System.Drawing.Point(94, 275);
-			this.lblRazOpis.Name = "lblRazOpis";
-			this.lblRazOpis.Size = new System.Drawing.Size(80, 13);
-			this.lblRazOpis.TabIndex = 13;
-			this.lblRazOpis.Text = "opis tehnologije";
 			// 
 			// picRazSlika
 			// 
@@ -304,13 +295,13 @@
 			// tabIstrazivanje
 			// 
 			this.tabIstrazivanje.BackColor = System.Drawing.SystemColors.Control;
+			this.tabIstrazivanje.Controls.Add(this.txtIstOpis);
 			this.tabIstrazivanje.Controls.Add(this.btnIstDno);
 			this.tabIstrazivanje.Controls.Add(this.btnIstDolje);
 			this.tabIstrazivanje.Controls.Add(this.btnIstGore);
 			this.tabIstrazivanje.Controls.Add(this.btnIstVrh);
 			this.tabIstrazivanje.Controls.Add(this.lblIstSustav);
 			this.tabIstrazivanje.Controls.Add(this.lblIstPoeni);
-			this.tabIstrazivanje.Controls.Add(this.lblIstOpis);
 			this.tabIstrazivanje.Controls.Add(this.picIstSlika);
 			this.tabIstrazivanje.Controls.Add(this.lstIstrazivanje);
 			this.tabIstrazivanje.Controls.Add(this.lblUIstrazivanju);
@@ -383,15 +374,6 @@
 			this.lblIstPoeni.Size = new System.Drawing.Size(89, 13);
 			this.lblIstPoeni.TabIndex = 4;
 			this.lblIstPoeni.Text = "Poeni istraživanja";
-			// 
-			// lblIstOpis
-			// 
-			this.lblIstOpis.AutoSize = true;
-			this.lblIstOpis.Location = new System.Drawing.Point(94, 275);
-			this.lblIstOpis.Name = "lblIstOpis";
-			this.lblIstOpis.Size = new System.Drawing.Size(80, 13);
-			this.lblIstOpis.TabIndex = 3;
-			this.lblIstOpis.Text = "opis tehnologije";
 			// 
 			// picIstSlika
 			// 
@@ -534,6 +516,17 @@
 			this.tabOprema.TabIndex = 3;
 			this.tabOprema.Text = "Komponente brodova";
 			// 
+			// cbOpVelicine
+			// 
+			this.cbOpVelicine.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbOpVelicine.FormattingEnabled = true;
+			this.cbOpVelicine.Location = new System.Drawing.Point(443, 66);
+			this.cbOpVelicine.Name = "cbOpVelicine";
+			this.cbOpVelicine.Size = new System.Drawing.Size(135, 21);
+			this.cbOpVelicine.TabIndex = 12;
+			this.cbOpVelicine.Visible = false;
+			this.cbOpVelicine.SelectedIndexChanged += new System.EventHandler(this.cbOpVelicine_SelectedIndexChanged);
+			// 
 			// cbOpKategorija
 			// 
 			this.cbOpKategorija.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -599,16 +592,29 @@
 			this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.columnHeader2.Width = 45;
 			// 
-			// cbOpVelicine
+			// txtRazOpis
 			// 
-			this.cbOpVelicine.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbOpVelicine.FormattingEnabled = true;
-			this.cbOpVelicine.Location = new System.Drawing.Point(443, 66);
-			this.cbOpVelicine.Name = "cbOpVelicine";
-			this.cbOpVelicine.Size = new System.Drawing.Size(135, 21);
-			this.cbOpVelicine.TabIndex = 12;
-			this.cbOpVelicine.Visible = false;
-			this.cbOpVelicine.SelectedIndexChanged += new System.EventHandler(this.cbOpVelicine_SelectedIndexChanged);
+			this.txtRazOpis.BackColor = System.Drawing.SystemColors.Control;
+			this.txtRazOpis.Location = new System.Drawing.Point(94, 275);
+			this.txtRazOpis.Multiline = true;
+			this.txtRazOpis.Name = "txtRazOpis";
+			this.txtRazOpis.ReadOnly = true;
+			this.txtRazOpis.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+			this.txtRazOpis.Size = new System.Drawing.Size(294, 105);
+			this.txtRazOpis.TabIndex = 20;
+			this.txtRazOpis.Text = "Opis tehnologije\r\n...";
+			// 
+			// txtIstOpis
+			// 
+			this.txtIstOpis.BackColor = System.Drawing.SystemColors.Control;
+			this.txtIstOpis.Location = new System.Drawing.Point(94, 275);
+			this.txtIstOpis.Multiline = true;
+			this.txtIstOpis.Name = "txtIstOpis";
+			this.txtIstOpis.ReadOnly = true;
+			this.txtIstOpis.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+			this.txtIstOpis.Size = new System.Drawing.Size(278, 105);
+			this.txtIstOpis.TabIndex = 21;
+			this.txtIstOpis.Text = "Opis tehnologije\r\n...";
 			// 
 			// FormTechIzbor
 			// 
@@ -659,7 +665,6 @@
 		private System.Windows.Forms.ColumnHeader chRazNivo;
 		private System.Windows.Forms.ColumnHeader chRazPoeni;
 		private System.Windows.Forms.ColumnHeader chRazUlaganje;
-		private System.Windows.Forms.Label lblRazOpis;
 		private System.Windows.Forms.PictureBox picRazSlika;
 		private System.Windows.Forms.TrackBar trackBar1;
 		private System.Windows.Forms.TrackBar trkRazKoncentracija;
@@ -672,7 +677,6 @@
 		private System.Windows.Forms.ColumnHeader chIstNivo;
 		private System.Windows.Forms.ColumnHeader chIstPoeni;
 		private System.Windows.Forms.Label lblUIstrazivanju;
-		private System.Windows.Forms.Label lblIstOpis;
 		private System.Windows.Forms.PictureBox picIstSlika;
 		private System.Windows.Forms.Label lblIstPoeni;
 		private System.Windows.Forms.Label lblIstSustav;
@@ -697,5 +701,7 @@
 		private System.Windows.Forms.ColumnHeader columnHeader1;
 		private System.Windows.Forms.ColumnHeader columnHeader2;
 		private System.Windows.Forms.ComboBox cbOpVelicine;
+		private System.Windows.Forms.TextBox txtRazOpis;
+		private System.Windows.Forms.TextBox txtIstOpis;
 	}
 }

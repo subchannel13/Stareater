@@ -31,6 +31,8 @@ opKatSpecOp = Special equipment
 opKatOstalo = Other
 
 opCijena = Cost
+opMinVel = Min. size
+opNeStane = Too large for selected hull
 opSnaga = Power
 opVelicina = Size
 
@@ -43,6 +45,8 @@ opTrupPrik = Stealth
 opTrupSenzori = Sensor strength
 opTrupVelReak = Reactor size
 opTrupVelMZ = IS drive size
-opTrupVelStit = Shield size
+opTrupRezerv = (reserved)
 
 opOruzjeCilj = Aim
+opMZbrzina = Max. speed
+opReaktorMinVel = Min. size

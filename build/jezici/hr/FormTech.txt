@@ -31,6 +31,8 @@ opKatSpecOp = Specijalna oprema
 opKatOstalo = Ostalo
 
 opCijena = Cijena
+opMinVel = Min. velicina
+opNeStane = Prevelik za odabran trup
 opSnaga = Snaga
 opVelicina = Veličina
 
@@ -43,6 +45,7 @@ opTrupPrik = Prikrivanje
 opTrupSenzori = Snaga senzora
 opTrupVelReak = Veličina reaktora
 opTrupVelMZ = Veličina MZ pogona
-opTrupVelStit = Veličina štita
+opTrupRezerv = (rezervirano)
 
 opOruzjeCilj = Ciljanje
+opMZbrzina = Max. brzina

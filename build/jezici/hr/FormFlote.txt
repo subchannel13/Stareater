@@ -29,6 +29,7 @@ bezStita = nikakav
 
 infoMZPogon = MZ pogon
 infoPokret = Pokretljivost
+infoPotisnici = Potisnici
 infoPrimMisija = Prim. misija
 infoReaktor = Reaktor
 infoSekMisija = Sek. misija
