@@ -54,7 +54,6 @@
 			this.lblCivilnaIndustrija = new System.Windows.Forms.Label();
 			this.hscrCivilnaIndustrija = new System.Windows.Forms.HScrollBar();
 			this.lblBrFarmera = new System.Windows.Forms.Label();
-			this.lblBrRudara = new System.Windows.Forms.Label();
 			this.picSlika = new System.Windows.Forms.PictureBox();
 			this.groupRude = new System.Windows.Forms.GroupBox();
 			this.lblMinOstvareno = new System.Windows.Forms.Label();
@@ -79,6 +78,7 @@
 			this.lstZgrade = new System.Windows.Forms.ListBox();
 			this.tabPageResursi = new System.Windows.Forms.TabPage();
 			this.groupRadnici = new System.Windows.Forms.GroupBox();
+			this.lblBrRadnika = new System.Windows.Forms.Label();
 			this.lblBrOdrzavatelja = new System.Windows.Forms.Label();
 			this.groupPoStan = new System.Windows.Forms.GroupBox();
 			this.lblOdrzavanjePoStan = new System.Windows.Forms.Label();
@@ -341,15 +341,6 @@
 			this.lblBrFarmera.TabIndex = 0;
 			this.lblBrFarmera.Text = "Br. farmera: xx.xx X";
 			// 
-			// lblBrRudara
-			// 
-			this.lblBrRudara.AutoSize = true;
-			this.lblBrRudara.Location = new System.Drawing.Point(6, 29);
-			this.lblBrRudara.Name = "lblBrRudara";
-			this.lblBrRudara.Size = new System.Drawing.Size(92, 13);
-			this.lblBrRudara.TabIndex = 1;
-			this.lblBrRudara.Text = "Br. rudara: xx.xx X";
-			// 
 			// picSlika
 			// 
 			this.picSlika.Location = new System.Drawing.Point(12, 12);
@@ -366,7 +357,7 @@
 			this.groupRude.Controls.Add(this.lblMinPovrsina);
 			this.groupRude.Location = new System.Drawing.Point(149, 6);
 			this.groupRude.Name = "groupRude";
-			this.groupRude.Size = new System.Drawing.Size(110, 68);
+			this.groupRude.Size = new System.Drawing.Size(142, 68);
 			this.groupRude.TabIndex = 6;
 			this.groupRude.TabStop = false;
 			this.groupRude.Text = "Rude:";
@@ -589,9 +580,9 @@
 			// 
 			// groupRadnici
 			// 
+			this.groupRadnici.Controls.Add(this.lblBrRadnika);
 			this.groupRadnici.Controls.Add(this.lblBrOdrzavatelja);
 			this.groupRadnici.Controls.Add(this.lblBrFarmera);
-			this.groupRadnici.Controls.Add(this.lblBrRudara);
 			this.groupRadnici.Location = new System.Drawing.Point(6, 100);
 			this.groupRadnici.Name = "groupRadnici";
 			this.groupRadnici.Size = new System.Drawing.Size(137, 96);
@@ -599,10 +590,19 @@
 			this.groupRadnici.TabStop = false;
 			this.groupRadnici.Text = "Radnici:";
 			// 
+			// lblBrRadnika
+			// 
+			this.lblBrRadnika.AutoSize = true;
+			this.lblBrRadnika.Location = new System.Drawing.Point(6, 57);
+			this.lblBrRadnika.Name = "lblBrRadnika";
+			this.lblBrRadnika.Size = new System.Drawing.Size(121, 13);
+			this.lblBrRadnika.TabIndex = 3;
+			this.lblBrRadnika.Text = "Slobodni radnici: xx.xx X";
+			// 
 			// lblBrOdrzavatelja
 			// 
 			this.lblBrOdrzavatelja.AutoSize = true;
-			this.lblBrOdrzavatelja.Location = new System.Drawing.Point(6, 42);
+			this.lblBrOdrzavatelja.Location = new System.Drawing.Point(6, 29);
 			this.lblBrOdrzavatelja.Name = "lblBrOdrzavatelja";
 			this.lblBrOdrzavatelja.Size = new System.Drawing.Size(100, 13);
 			this.lblBrOdrzavatelja.TabIndex = 2;
@@ -745,7 +745,6 @@
 		private System.Windows.Forms.Label lblAtmosfera1;
 		private System.Windows.Forms.Label lblRadnaMjesta;
 		private System.Windows.Forms.PictureBox picSlika;
-		private System.Windows.Forms.Label lblBrRudara;
 		private System.Windows.Forms.Label lblBrFarmera;
 		private System.Windows.Forms.Label lblZracenje;
 		private System.Windows.Forms.Label lblAtmTemperatura;
@@ -791,5 +790,6 @@
 		private System.Windows.Forms.Label lblBrOdrzavatelja;
 		private System.Windows.Forms.TabPage tabPageOdrzavanje;
 		private System.Windows.Forms.Label lblVelicina;
+		private System.Windows.Forms.Label lblBrRadnika;
 	}
 }
