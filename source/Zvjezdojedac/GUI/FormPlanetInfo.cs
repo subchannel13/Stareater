@@ -22,6 +22,8 @@ namespace Prototip
 			if (PrikazKolicina)
 				radKolicina.Select();
 			postaviJezik();
+
+			radKolicina.Checked = true;
 		}
 
 		public FormPlanetInfo(Kolonija kolonija) : this()
@@ -134,24 +136,26 @@ namespace Prototip
 			{
 				lblRadnaMjesta.Text = jezik["plRadnaMjesta"].tekst() + ": " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.RadnaMjesta]);
 				lblBrFarmera.Text = jezik["plBrFarmera"].tekst() + ": " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.BrFarmera]);
-				lblBrRudara.Text = jezik["plBrRudara"].tekst() + ": " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.BrRudara]);
+				//lblBrRudara.Text = jezik["plBrRudara"].tekst() + ": " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.BrRudara]);
 				lblBrOdrzavatelja.Text = jezik["plBrOdrz"].tekst() + ": " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.BrOdrzavatelja]);
+				lblBrRadnika.Text = jezik["plBrRadnika"].tekst() + ": " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.BrRadnika]);
 			}
 			else
 			{
 				double koef = 100 / kolonija.efekti[Kolonija.Populacija];
 				lblRadnaMjesta.Text = jezik["plRadnaMjesta"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.RadnaMjesta]) + "%";
 				lblBrFarmera.Text = jezik["plBrFarmera"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.BrFarmera]) + "%";
-				lblBrRudara.Text = jezik["plBrRudara"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.BrRudara]) + "%";
+				//lblBrRudara.Text = jezik["plBrRudara"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.BrRudara]) + "%";
 				lblBrOdrzavatelja.Text = jezik["plBrOdrz"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.BrOdrzavatelja]) + "%";
+				lblBrRadnika.Text = jezik["plBrRadnika"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.BrRadnika]) + "%";
 			}
 
 			Dictionary<string, double> maxEfekti = kolonija.maxEfekti();
 			lblHranaPoStan.Text = jezik["HranaPoStan"].tekst() + String.Format(": {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.HranaPoFarmeru], maxEfekti[Kolonija.HranaPoFarmeru]);
 			lblRudePoStan.Text = jezik["RudePoStan"].tekst() + String.Format(": {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.RudePoRudaru], maxEfekti[Kolonija.RudePoRudaru]);
 			lblOdrzavanjePoStan.Text = jezik["OdrzavanjePoStan"].tekst() + String.Format(": {0:0.##}", (kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]));
-			lblIndustrijaPoStan.Text = jezik["IndustrijaPoStan"].tekst() + String.Format(": {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.IndustrijaPoRadniku], maxEfekti[Kolonija.IndustrijaPoRadniku]);
-			lblRazvojPoStan.Text = jezik["RazvojPoStan"].tekst() + String.Format(": {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.RazvojPoRadniku], maxEfekti[Kolonija.RazvojPoRadniku]);
+			lblIndustrijaPoStan.Text = jezik["IndustrijaPoStan"].tekst() + String.Format(": {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.IndPoRadnikuEfektivno], maxEfekti[Kolonija.IndPoRadnikuEfektivno]);
+			lblRazvojPoStan.Text = jezik["RazvojPoStan"].tekst() + String.Format(": {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.RazPoRadnikuEfektivno], maxEfekti[Kolonija.RazPoRadnikuEfektivno]);
 		}
 
 		private void btnZatvori_Click(object sender, EventArgs e)
@@ -228,6 +232,8 @@ namespace Prototip
 				e.NewValue = val;
 			else
 				osvjeziLabele();
+			
+			hscrVojnaIndustrija.Value = (int)(kolonija.vojnaIndustrija * hscrVojnaIndustrija.Maximum);
 		}
 
 		private void hscrVojnaIndustrija_Scroll(object sender, ScrollEventArgs e)
@@ -238,6 +244,8 @@ namespace Prototip
 				e.NewValue = val;
 			else
 				osvjeziLabele();
+
+			hscrCivilnaIndustrija.Value = (int)(kolonija.civilnaIndustrija * hscrCivilnaIndustrija.Maximum);
 		}
 
 		private void radKolicina_CheckedChanged(object sender, EventArgs e)

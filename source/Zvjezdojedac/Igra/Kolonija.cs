@@ -49,11 +49,17 @@ namespace Prototip
 		public const string HranaPoFarmeru = "HRANA_PO_FARM";
 		public const string IndustrijaPoRadniku = "IND_PO_RAD";
 		public const string RazvojPoRadniku = "RAZVOJ_PO_RAD";
-		public const string RudePoIndustriji = "RUDE_PO_IND";
 		public const string RudePoRudaru = "RUDE_PO_RUD";
+		
+		public const string RudariPoGraditelju = "RUDARI_PO_IND";
+		public const string RudariPoOdrzavatelju = "RUDARI_PO_ODRZ";
+		public const string RudariPoZnanstveniku = "RUDARI_PO_RAZ";
+
+		public const string IndPoRadnikuEfektivno = "IND_PO_RAD_EF";
+		public const string RazPoRadnikuEfektivno = "RAZ_PO_RAD_EF";
 
 		public const string BrFarmera = "BR_FARMERA";
-		public const string BrRudara = "BR_RUDARA";
+		//public const string BrRudara = "BR_RUDARA";
 		public const string BrOdrzavatelja = "BR_ODRZAVATELJA";
 		public const string BrRadnika = "BR_RADNIKA";
 		#endregion
@@ -198,16 +204,23 @@ namespace Prototip
 			efekti[OdrzavanjeAtmKvaliteta] = igrac.efekti["ODRZAVANJE_KVAL_ATM"] * efekti[Populacija] * odstupAtmKvalitete;
 			efekti[OdrzavanjeUkupno] = efekti[OdrzavanjeGravitacija] + efekti[OdrzavanjeZracenje] + efekti[OdrzavanjeTemperatura] + efekti[OdrzavanjeAtmKvaliteta] + efekti[OdrzavanjeAtmGustoca];
 
-			efekti[HranaPoFarmeru] = Fje.IzIntervala(efekti[AktivnaRadnaMjesta] / (double)efekti[Populacija], igrac.efekti["HRANA_PO_STANOVNIKU"], igrac.efekti["HRANA_PO_FARMERU"]);
-			efekti[IndustrijaPoRadniku] = Fje.IzIntervala(efekti[AktivnaRadnaMjesta] / (double)efekti[Populacija], igrac.efekti["INDUSTRIJA_PO_STANOVNIKU"], igrac.efekti["INDUSTRIJA_PO_TVORNICI"]);
-			efekti[RazvojPoRadniku] = Fje.IzIntervala(efekti[AktivnaRadnaMjesta] / (double)efekti[Populacija], igrac.efekti["RAZVOJ_PO_STANOVNIKU"], igrac.efekti["RAZVOJ_PO_LABORATORIJU"]);
-			efekti[RudePoIndustriji] = 1 + Fje.IzIntervala(efekti[AktivnaRadnaMjesta] / (double)efekti[Populacija], igrac.efekti["MINERALI_PO_STANOVNIKU"], igrac.efekti["MINERALI_PO_RUDNIKU"]) * efekti[RudeEfektivno];
-			efekti[RudePoRudaru] = efekti[RudePoIndustriji] * efekti[IndustrijaPoRadniku];
+			double zaposlenost = efekti[AktivnaRadnaMjesta] / (double)efekti[Populacija];
+			efekti[HranaPoFarmeru] = Fje.IzIntervala(zaposlenost, igrac.efekti["HRANA_PO_STANOVNIKU"], igrac.efekti["HRANA_PO_FARMERU"]);
+			efekti[RudePoRudaru] = Fje.IzIntervala(zaposlenost, igrac.efekti["MINERALI_PO_STANOVNIKU"], igrac.efekti["MINERALI_PO_RUDNIKU"]) * efekti[RudeEfektivno];
+
+			efekti[IndustrijaPoRadniku] = Fje.IzIntervala(zaposlenost, igrac.efekti["INDUSTRIJA_PO_STANOVNIKU"], igrac.efekti["INDUSTRIJA_PO_TVORNICI"]);
+			efekti[RazvojPoRadniku] = Fje.IzIntervala(zaposlenost, igrac.efekti["RAZVOJ_PO_STANOVNIKU"], igrac.efekti["RAZVOJ_PO_LABORATORIJU"]);
+
+			efekti[RudariPoGraditelju] = efekti[IndustrijaPoRadniku] * igrac.efekti["RUDE_PO_IND"] / efekti[RudePoRudaru];
+			efekti[RudariPoOdrzavatelju] = efekti[RudariPoGraditelju] * igrac.efekti["RUDE_ZA_ODRZAVANJE"];
+			efekti[RudariPoZnanstveniku] = (efekti[RazvojPoRadniku] * igrac.efekti["RUDE_ZA_RAZVOJ"] + igrac.efekti["RUDE_PO_ZNAN"]) / efekti[RudePoRudaru];
+
+			efekti[IndPoRadnikuEfektivno] = efekti[IndustrijaPoRadniku] / (1 + efekti[RudariPoGraditelju]);
+			efekti[RazPoRadnikuEfektivno] = efekti[RazvojPoRadniku] / (1 + efekti[RudariPoZnanstveniku]);
 
 			efekti[BrFarmera] = Math.Ceiling(efekti[Populacija] / efekti[HranaPoFarmeru]);
 			efekti[BrOdrzavatelja] = Math.Ceiling(efekti[OdrzavanjeUkupno] / efekti[IndustrijaPoRadniku]);
-			efekti[BrRudara] = Math.Ceiling((efekti[Populacija] - efekti[BrFarmera]) / (1 + efekti[RudePoIndustriji]));
-			efekti[BrRadnika] = efekti[Populacija] - efekti[BrFarmera] - efekti[BrOdrzavatelja] - efekti[BrRudara];
+			efekti[BrRadnika] = efekti[Populacija] - efekti[BrFarmera] - efekti[BrOdrzavatelja] * (1 + efekti[RudariPoOdrzavatelju]);
 
 			efekti[FaktorCijeneOrbitalnih] = 1 + Math.Pow(planet.gravitacija(), 2) + planet.gustocaAtmosfere;
 			efekti[NedostupanDioPlaneta] = 1 +
@@ -253,7 +266,7 @@ namespace Prototip
 					else 
 						z.djeluj(this, igrac.efekti);
 
-					if (!z.tip.brod)
+					if (!z.tip.brod && !z.tip.ponavljaSe)
 						igrac.poruke.AddLast(Poruka.NovaZgrada(this, z.tip));
 				}
 
@@ -280,6 +293,8 @@ namespace Prototip
 				if (zgrade.ContainsKey(zgradaTip)) kolicina = zgrade[zgradaTip].kolicina;
 
 				if (!zgradaTip.dostupna(igrac.efekti, kolicina)) {
+					if (zgradaTip.ponavljaSe)
+						igrac.poruke.AddLast(Poruka.NovaZgrada(this, zgradaTip));
 					LinkedListNode<Zgrada.ZgradaInfo> slijedeci = uGradnji.Next;
 					redGradnje.Remove(uGradnji);
 					uGradnji = slijedeci;
@@ -391,7 +406,8 @@ namespace Prototip
 			}
 			set
 			{
-				udioCivilneIndustrije = Math.Min(value, 1 - udioVojneIndustrije);
+				udioCivilneIndustrije = value;
+				udioVojneIndustrije = Math.Min(udioVojneIndustrije, 1 - udioCivilneIndustrije);
 			}
 		}
 
@@ -403,7 +419,8 @@ namespace Prototip
 			}
 			set
 			{
-				udioVojneIndustrije = Math.Min(value, 1 - udioCivilneIndustrije);
+				udioVojneIndustrije = value;
+				udioCivilneIndustrije = Math.Min(udioCivilneIndustrije, 1 - udioVojneIndustrije);
 			}
 		}
 

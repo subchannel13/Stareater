@@ -322,8 +322,8 @@ namespace Prototip
 			lblHranaPoStan.Text = jezik["HranaPoStan"].tekst() + ": " + kolonija.efekti[Kolonija.HranaPoFarmeru].ToString("0.##");
 			lblRudePoStan.Text = jezik["RudePoStan"].tekst() + ": " + kolonija.efekti[Kolonija.RudePoRudaru].ToString("0.##");
 			lblOdrzavanjePoStan.Text = jezik["OdrzavanjePoStan"].tekst() + ": " + (kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]).ToString("0.##");
-			lblIndustrijaPoStan.Text = jezik["IndustrijaPoStan"].tekst() + ": " + kolonija.efekti[Kolonija.IndustrijaPoRadniku].ToString("0.##");
-			lblRazvojPoStan.Text = jezik["RazvojPoStan"].tekst() + ": " + kolonija.efekti[Kolonija.RazvojPoRadniku].ToString("0.##");
+			lblIndustrijaPoStan.Text = jezik["IndustrijaPoStan"].tekst() + ": " + kolonija.efekti[Kolonija.IndPoRadnikuEfektivno].ToString("0.##");
+			lblRazvojPoStan.Text = jezik["RazvojPoStan"].tekst() + ": " + kolonija.efekti[Kolonija.RazPoRadnikuEfektivno].ToString("0.##");
 
 			lblCivilnaIndustrija.Text = Fje.PrefiksFormater(kolonija.poeniCivilneIndustrije()) + " " + jezik["jedInd"].tekst();
 			lblVojnaGradnja.Text = Fje.PrefiksFormater(kolonija.poeniVojneIndustrije()) + " " + jezik["jedInd"].tekst();
@@ -394,6 +394,8 @@ namespace Prototip
 					e.NewValue = val;
 				else
 					osvjeziLabele();
+
+				hscrVojnaIndustrija.Value = (int)(igrac.odabranPlanet.kolonija.vojnaIndustrija * hscrVojnaIndustrija.Maximum);
 			}
 		}
 
@@ -407,6 +409,8 @@ namespace Prototip
 					e.NewValue = val;
 				else
 					osvjeziLabele();
+
+				hscrCivilnaIndustrija.Value = (int)(igrac.odabranPlanet.kolonija.civilnaIndustrija * hscrCivilnaIndustrija.Maximum);
 			}
 		}
 

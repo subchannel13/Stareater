@@ -184,8 +184,8 @@ namespace Prototip
 				lblHranaPoStan.Text = jezikKol["HranaPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.HranaPoFarmeru], maxEfekti[Kolonija.HranaPoFarmeru]);
 				lblRudePoStan.Text = jezikKol["RudePoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.RudePoRudaru], maxEfekti[Kolonija.RudePoRudaru]);
 				lblOdrzavanjePoStan.Text = jezikKol["OdrzavanjePoStan"].tekst() + ": " + String.Format("{0:0.##}", (kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]));
-				lblIndustrijaPoStan.Text = jezikKol["IndustrijaPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.IndustrijaPoRadniku], maxEfekti[Kolonija.IndustrijaPoRadniku]);
-				lblRazvojPoStan.Text = jezikKol["RazvojPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.RazvojPoRadniku], maxEfekti[Kolonija.RazvojPoRadniku]);
+				lblIndustrijaPoStan.Text = jezikKol["IndustrijaPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.IndPoRadnikuEfektivno], maxEfekti[Kolonija.IndPoRadnikuEfektivno]);
+				lblRazvojPoStan.Text = jezikKol["RazvojPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.RazPoRadnikuEfektivno], maxEfekti[Kolonija.RazPoRadnikuEfektivno]);
 				
 				postaviBrBrodova();
 			}
