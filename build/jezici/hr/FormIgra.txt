@@ -20,6 +20,7 @@ lblRazvoj := "Razvoj: "
 
 plBrFarmera = Br. farmera
 plBrOdrz = Održavanje
+plBrRadnika = Slobodni radnici
 plBrRudara = Br. rudara
 plMinDubina = Dubina
 plMinOstvareno = Ostvareno
