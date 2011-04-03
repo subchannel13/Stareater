@@ -20,6 +20,7 @@ lblRazvoj := "Develpoment: "
 
 plBrFarmera = Farmers
 plBrOdrz = Maintenance
+plBrRadnika = Free workers
 plBrRudara = Miners
 plMinDubina = Deep
 plMinOstvareno = Mined
