@@ -51,6 +51,8 @@ namespace Prototip
 			chTipKolonija.Text = jezik["chTipKolonija"].tekst();
 			chTipTehnologije.Text = jezik["chTipTehnologije"].tekst();
 			chTipZgrade.Text = jezik["chTipZgrade"].tekst();
+
+			this.Text = jezik["naslov"].tekst();
 		}
 
 		private void postaviPoruke()

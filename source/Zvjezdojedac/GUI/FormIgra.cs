@@ -180,7 +180,7 @@ namespace Prototip
 					if (planet.tip != Planet.Tip.NIKAKAV) {
 						item.Text = planet.ime;
 						if (planet.kolonija != null)
-							sitem.ForeColor = planet.kolonija.igrac.boja;
+							item.ForeColor = planet.kolonija.igrac.boja;
 					}
 					listViewPlaneti.Items.Add(item);
 				}

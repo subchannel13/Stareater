@@ -226,7 +226,7 @@ namespace Prototip
 					opis.Add("");
 					opis.Add(dizajn.potisnici.naziv);
 					if (dizajn.potisnici.maxNivo > 0)
-						opis.Add("Nivo: " + dizajn.potisnici.nivo);
+						opis.Add(jezik["opisNivo"].tekst() + ": " + dizajn.reaktor.nivo);
 					opis.Add(jezik["opisTromost"].tekst() + ": " + dizajn.inercija);
 					opis.Add(jezik["opisPokret"].tekst() + ": " + Fje.PrefiksFormater(dizajn.pokretljivost));
 					break;
