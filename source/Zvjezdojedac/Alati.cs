@@ -1,11 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Collections;
 
 namespace Alati
 {
 	public static class Fje
 	{
+		public static int BinarySearch(IList list, object obj, Comparison<object> comparator)
+		{
+			int min = 0;
+			int max = list.Count;
+
+			while (max != min) {
+				int testI = (min + max) / 2;
+				int equality = comparator(list[testI], obj);
+
+				if (equality == 0)
+					return testI;
+				else if (equality < 0)
+					min = ((max - min) % 2 == 0) ? testI : testI + 1;
+				else
+					max = testI;
+			}
+
+			return min;
+		}
 
 		public static int Ogranici(int sto, int min, int max)
 		{

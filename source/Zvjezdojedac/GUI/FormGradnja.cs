@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Prototip.Podaci.Jezici;
 using Prototip.Podaci;
+using Alati;
 
 namespace Prototip
 {
@@ -15,6 +16,7 @@ namespace Prototip
 	{
 		private Kolonija kolonija;
         private LinkedList<Zgrada.ZgradaInfo> redGradnje;
+		private Dictionary<Zgrada.ZgradaInfo, int> redoslijedPonuda = new Dictionary<Zgrada.ZgradaInfo, int>();
         private bool civilnaGradnja;
 
 		public FormGradnja(Kolonija kolonija, bool civilnaGradnja)
@@ -28,8 +30,14 @@ namespace Prototip
 
             this.civilnaGradnja = civilnaGradnja;
 			this.kolonija = kolonija;
-			foreach (Zgrada.ZgradaInfo z in kolonija.moguceGraditi(civilnaGradnja))
-				lstMoguceGradit.Items.Add(z);
+			
+			HashSet<Zgrada.ZgradaInfo> uRedu = new HashSet<Zgrada.ZgradaInfo>(redGradnje);
+			List<Zgrada.ZgradaInfo> izgradivo = kolonija.moguceGraditi(civilnaGradnja);
+			for (int i = 0; i < izgradivo.Count; i++) {
+				redoslijedPonuda.Add(izgradivo[i], i);
+				if (!uRedu.Contains(izgradivo[i]))
+					lstMoguceGradit.Items.Add(izgradivo[i]);
+			}
 
             foreach (Zgrada.ZgradaInfo z in redGradnje)
 				lstRedGradnje.Items.Add(z);
@@ -48,17 +56,13 @@ namespace Prototip
 				this.Text = jezik["naslovVojGradnja"].tekst();
 		}
 
+		private int sorterPonuda(object lijeva, object desna)
+		{
+			return redoslijedPonuda[(Zgrada.ZgradaInfo)lijeva].CompareTo(redoslijedPonuda[(Zgrada.ZgradaInfo)desna]);
+		}
+
 		private void btnOk_Click(object sender, EventArgs e)
 		{
-            List<Zgrada.ZgradaInfo> ret = new List<Zgrada.ZgradaInfo>();
-			foreach (object o in lstRedGradnje.Items)
-				ret.Add((Zgrada.ZgradaInfo)o);
-
-            redGradnje.Clear();
-            foreach (Zgrada.ZgradaInfo z in ret)
-                redGradnje.AddLast(z);
-
-			DialogResult = DialogResult.OK;
 			Close();
 		}
 
@@ -76,7 +80,13 @@ namespace Prototip
 			if (lstRedGradnje.SelectedItem == null)
 				return;
 
-			lstMoguceGradit.Items.Add(lstRedGradnje.SelectedItem);
+			object zInfo = lstRedGradnje.SelectedItem;
+			int pozicija = Fje.BinarySearch(lstMoguceGradit.Items, zInfo, sorterPonuda);
+			if (pozicija < lstMoguceGradit.Items.Count)
+				if (sorterPonuda(lstMoguceGradit.Items[pozicija], zInfo) < 0)
+					pozicija++;
+
+			lstMoguceGradit.Items.Insert(pozicija, lstRedGradnje.SelectedItem);
 			lstRedGradnje.Items.Remove(lstRedGradnje.SelectedItem);
 		}
 
@@ -120,6 +130,19 @@ namespace Prototip
 		private void lstRedGradnje_DoubleClick(object sender, EventArgs e)
 		{
 			btnUkloni_Click(sender, e);
+		}
+
+		private void FormGradnja_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			List<Zgrada.ZgradaInfo> ret = new List<Zgrada.ZgradaInfo>();
+			foreach (object o in lstRedGradnje.Items)
+				ret.Add((Zgrada.ZgradaInfo)o);
+
+			redGradnje.Clear();
+			foreach (Zgrada.ZgradaInfo z in ret)
+				redGradnje.AddLast(z);
+
+			DialogResult = DialogResult.OK;
 		}
 
 	}

@@ -370,16 +370,16 @@ namespace Prototip
 
 		public List<Zgrada.ZgradaInfo> moguceGraditi(bool civilnaGradnja)
 		{
-			HashSet<Zgrada.ZgradaInfo> uRedu;
+			//HashSet<Zgrada.ZgradaInfo> uRedu;
 			List<Zgrada.ZgradaInfo> popis;
 			if (civilnaGradnja)
 			{
-				uRedu = new HashSet<Zgrada.ZgradaInfo>(redCivilneGradnje);
+				//uRedu = new HashSet<Zgrada.ZgradaInfo>(redCivilneGradnje);
 				popis = Zgrada.civilneZgradeInfo;
 			}
 			else
 			{
-				uRedu = new HashSet<Zgrada.ZgradaInfo>(redVojneGradnje);
+				//uRedu = new HashSet<Zgrada.ZgradaInfo>(redVojneGradnje);
 				popis = new List<Zgrada.ZgradaInfo>(Zgrada.vojneZgradeInfo);
 				foreach (Zgrada.ZgradaInfo zi in igrac.dizajnoviBrodova)
 					popis.Add(zi);
@@ -387,7 +387,8 @@ namespace Prototip
 
 			List<Zgrada.ZgradaInfo> ret = new List<Zgrada.ZgradaInfo>();
 			foreach (Zgrada.ZgradaInfo z in popis)
-				if (!uRedu.Contains(z)) {
+				//if (!uRedu.Contains(z)) 
+				{
 					long prisutnaKolicina = 0;
 					if (zgrade.ContainsKey(z))
 						prisutnaKolicina = zgrade[z].kolicina;
