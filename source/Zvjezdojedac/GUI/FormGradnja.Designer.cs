@@ -139,6 +139,7 @@
 			// 
 			// btnOk
 			// 
+			this.btnOk.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.btnOk.Location = new System.Drawing.Point(119, 239);
 			this.btnOk.Name = "btnOk";
 			this.btnOk.Size = new System.Drawing.Size(75, 23);
@@ -152,6 +153,7 @@
 			this.AcceptButton = this.btnOk;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.btnOk;
 			this.ClientSize = new System.Drawing.Size(399, 266);
 			this.Controls.Add(this.btnOk);
 			this.Controls.Add(this.btnUkloni);
@@ -171,6 +173,7 @@
 			this.Name = "FormGradnja";
 			this.ShowInTaskbar = false;
 			this.Text = "Civilna gradnja";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGradnja_FormClosing);
 			((System.ComponentModel.ISupportInitialize)(this.picSlikaZgrade)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
