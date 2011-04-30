@@ -60,6 +60,8 @@
 			this.tabPageFlote = new System.Windows.Forms.TabPage();
 			this.tvFlota = new System.Windows.Forms.TreeView();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.btnFlotaPokret = new System.Windows.Forms.Button();
+			this.btnSekAkcija = new System.Windows.Forms.Button();
 			this.btnPrimAkcijaBroda = new System.Windows.Forms.Button();
 			this.pnlMapa = new System.Windows.Forms.Panel();
 			this.picMapa = new System.Windows.Forms.PictureBox();
@@ -76,8 +78,6 @@
 			this.btnUcitaj = new System.Windows.Forms.Button();
 			this.btnSpremi = new System.Windows.Forms.Button();
 			this.btnTech = new System.Windows.Forms.Button();
-			this.btnSekAkcija = new System.Windows.Forms.Button();
-			this.btnFlotaPokret = new System.Windows.Forms.Button();
 			this.tabCtrlDesno.SuspendLayout();
 			this.tabPageZvijezda.SuspendLayout();
 			this.pnlOpisZvjezde.SuspendLayout();
@@ -396,8 +396,8 @@
 			this.tvFlota.Name = "tvFlota";
 			this.tvFlota.Size = new System.Drawing.Size(148, 417);
 			this.tvFlota.TabIndex = 1;
-			this.tvFlota.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvFlota_NodeMouseDoubleClick);
 			this.tvFlota.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFlota_AfterSelect);
+			this.tvFlota.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvFlota_NodeMouseDoubleClick);
 			// 
 			// panel1
 			// 
@@ -410,6 +410,25 @@
 			this.panel1.Size = new System.Drawing.Size(148, 100);
 			this.panel1.TabIndex = 0;
 			// 
+			// btnFlotaPokret
+			// 
+			this.btnFlotaPokret.Location = new System.Drawing.Point(3, 71);
+			this.btnFlotaPokret.Name = "btnFlotaPokret";
+			this.btnFlotaPokret.Size = new System.Drawing.Size(75, 23);
+			this.btnFlotaPokret.TabIndex = 2;
+			this.btnFlotaPokret.Text = "Pokret";
+			this.btnFlotaPokret.UseVisualStyleBackColor = true;
+			this.btnFlotaPokret.Click += new System.EventHandler(this.btnFlotaPokret_Click);
+			// 
+			// btnSekAkcija
+			// 
+			this.btnSekAkcija.Location = new System.Drawing.Point(3, 42);
+			this.btnSekAkcija.Name = "btnSekAkcija";
+			this.btnSekAkcija.Size = new System.Drawing.Size(75, 23);
+			this.btnSekAkcija.TabIndex = 1;
+			this.btnSekAkcija.Text = "Sek akcija";
+			this.btnSekAkcija.UseVisualStyleBackColor = true;
+			// 
 			// btnPrimAkcijaBroda
 			// 
 			this.btnPrimAkcijaBroda.Location = new System.Drawing.Point(3, 13);
@@ -418,6 +437,7 @@
 			this.btnPrimAkcijaBroda.TabIndex = 0;
 			this.btnPrimAkcijaBroda.Text = "Prim akcija";
 			this.btnPrimAkcijaBroda.UseVisualStyleBackColor = true;
+			this.btnPrimAkcijaBroda.Click += new System.EventHandler(this.btnPrimAkcijaBroda_Click);
 			// 
 			// pnlMapa
 			// 
@@ -570,25 +590,6 @@
 			this.btnTech.UseVisualStyleBackColor = true;
 			this.btnTech.Click += new System.EventHandler(this.btnTech_Click);
 			// 
-			// btnSekAkcija
-			// 
-			this.btnSekAkcija.Location = new System.Drawing.Point(3, 42);
-			this.btnSekAkcija.Name = "btnSekAkcija";
-			this.btnSekAkcija.Size = new System.Drawing.Size(75, 23);
-			this.btnSekAkcija.TabIndex = 1;
-			this.btnSekAkcija.Text = "Sek akcija";
-			this.btnSekAkcija.UseVisualStyleBackColor = true;
-			// 
-			// btnFlotaPokret
-			// 
-			this.btnFlotaPokret.Location = new System.Drawing.Point(3, 71);
-			this.btnFlotaPokret.Name = "btnFlotaPokret";
-			this.btnFlotaPokret.Size = new System.Drawing.Size(75, 23);
-			this.btnFlotaPokret.TabIndex = 2;
-			this.btnFlotaPokret.Text = "Pokret";
-			this.btnFlotaPokret.UseVisualStyleBackColor = true;
-			this.btnFlotaPokret.Click += new System.EventHandler(this.btnFlotaPokret_Click);
-			// 
 			// FormIgra
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -602,8 +603,8 @@
 			this.Name = "FormIgra";
 			this.Text = "Zvjezdojedac";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-			this.Load += new System.EventHandler(this.frmIgra_Load);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormIgra_FormClosed);
+			this.Load += new System.EventHandler(this.frmIgra_Load);
 			this.tabCtrlDesno.ResumeLayout(false);
 			this.tabPageZvijezda.ResumeLayout(false);
 			this.pnlOpisZvjezde.ResumeLayout(false);

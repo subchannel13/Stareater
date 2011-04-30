@@ -132,12 +132,14 @@ namespace Prototip
 
 			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.Kolonija];
 
+			double brOdrzavatelja = kolonija.efekti[Kolonija.BrOdrzavatelja] * (1 + kolonija.efekti[Kolonija.RudariPoOdrzavatelju]);
+
 			if (PrikazKolicina)
 			{
 				lblRadnaMjesta.Text = jezik["plRadnaMjesta"].tekst() + ": " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.RadnaMjesta]);
 				lblBrFarmera.Text = jezik["plBrFarmera"].tekst() + ": " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.BrFarmera]);
 				//lblBrRudara.Text = jezik["plBrRudara"].tekst() + ": " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.BrRudara]);
-				lblBrOdrzavatelja.Text = jezik["plBrOdrz"].tekst() + ": " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.BrOdrzavatelja]);
+				lblBrOdrzavatelja.Text = jezik["plBrOdrz"].tekst() + ": " + Fje.PrefiksFormater(brOdrzavatelja);
 				lblBrRadnika.Text = jezik["plBrRadnika"].tekst() + ": " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.BrRadnika]);
 			}
 			else
@@ -146,7 +148,7 @@ namespace Prototip
 				lblRadnaMjesta.Text = jezik["plRadnaMjesta"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.RadnaMjesta]) + "%";
 				lblBrFarmera.Text = jezik["plBrFarmera"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.BrFarmera]) + "%";
 				//lblBrRudara.Text = jezik["plBrRudara"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.BrRudara]) + "%";
-				lblBrOdrzavatelja.Text = jezik["plBrOdrz"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.BrOdrzavatelja]) + "%";
+				lblBrOdrzavatelja.Text = jezik["plBrOdrz"].tekst() + ": " + String.Format("{0:0.##}", koef * brOdrzavatelja) + "%";
 				lblBrRadnika.Text = jezik["plBrRadnika"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.BrRadnika]) + "%";
 			}
 

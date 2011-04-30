@@ -528,6 +528,11 @@ namespace Prototip
 			get { return efekti[Iznos.Prikrivanje]; }
 		}
 
+		public Misija.Tip primarnaMisija
+		{
+			get { return (primarnoOruzje == null) ? Misija.Tip.N : primarnoOruzje.komponenta.misija; }
+		}
+
 		public long radnaMjesta
 		{
 			get
@@ -546,6 +551,11 @@ namespace Prototip
 			}
 		}
 
+		public Misija.Tip sekundarnaMisija
+		{
+			get { return (sekundarnoOruzje == null) ? Misija.Tip.N : sekundarnoOruzje.komponenta.misija; }
+		}
+		
 		public double snagaReaktora
 		{
 			get { return efekti[Iznos.SnageReaktora]; }
