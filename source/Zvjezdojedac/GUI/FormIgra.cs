@@ -122,14 +122,16 @@ namespace Prototip
 				prikazMape.XnaMapi(x),
 				prikazMape.YnaMapi(y), 0.5);
 
-			if (frmFlotaPokret != null)
-				if (frmFlotaPokret.Visible) {
-					frmFlotaPokret.postaviOdrediste(odabranaZvijezda);
-					return;
+			if (odabranaZvijezda != null) {
+				if (frmFlotaPokret != null) {
+					if (frmFlotaPokret.Visible) {
+						frmFlotaPokret.postaviOdrediste(odabranaZvijezda);
+						return;
+					}
 				}
-
-			if (odabranaZvijezda != null)
-				odaberiZvijezdu(odabranaZvijezda,true);
+				else
+					odaberiZvijezdu(odabranaZvijezda, true);
+			}
 
 			pomakPogleda = new Tocka<double>(x / (double)picMapa.Width, y / (double)picMapa.Height);
 		}
