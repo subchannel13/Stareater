@@ -380,9 +380,23 @@ namespace Prototip
 			}
 			else if (tvFlota.SelectedNode.Tag != null) {
 				Brod brod = (Brod)tvFlota.SelectedNode.Tag;
-				btnPrimAkcijaBroda.Visible = brod.dizajn.primarnoOruzje != null;
-				btnSekAkcija.Visible = brod.dizajn.sekundarnoOruzje != null;
+
+				if (brod.dizajn.primarnoOruzje != null) {
+					btnPrimAkcijaBroda.Visible = (brod.dizajn.primarnaMisija == Misija.Tip.Kolonizacija);
+					btnPrimAkcijaBroda.Text = Misija.Opisnici[brod.dizajn.primarnaMisija].naziv;
+				}
+				else
+					btnPrimAkcijaBroda.Visible = false;
+
+				if (brod.dizajn.sekundarnoOruzje != null) {
+					btnSekAkcija.Visible = (brod.dizajn.sekundarnaMisija == Misija.Tip.Kolonizacija);
+					btnSekAkcija.Text = Misija.Opisnici[brod.dizajn.sekundarnaMisija].naziv;
+				}
+				else
+					btnSekAkcija.Visible = false;
+
 				btnFlotaPokret.Enabled = brod.dizajn.MZPogon != null;
+
 			}
 		}
 
@@ -563,6 +577,21 @@ namespace Prototip
 			else if (tvFlota.SelectedNode.Tag != null) {
 				Flota flota = (Flota)tvFlota.SelectedNode.Parent.Tag;
 				frmFlotaPokret.pomicanjeBroda(flota, (Brod)tvFlota.SelectedNode.Tag, igrac, igra);
+			}
+		}
+
+		private void btnPrimAkcijaBroda_Click(object sender, EventArgs e)
+		{
+			if (tvFlota.SelectedNode.Tag == null) return;
+			if (tvFlota.SelectedNode.Parent == null) return;
+
+			Brod brod = (Brod)tvFlota.SelectedNode.Tag;
+
+			switch (brod.dizajn.primarnaMisija) {
+				case Misija.Tip.Kolonizacija:
+					FormKolonizacija formKolonizacija = new FormKolonizacija(igra, igrac, brod, igrac.odabranaZvijezda);
+					formKolonizacija.ShowDialog();
+					break;
 			}
 		}
 	}

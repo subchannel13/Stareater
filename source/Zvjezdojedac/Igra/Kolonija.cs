@@ -204,6 +204,11 @@ namespace Prototip
 			efekti[OdrzavanjeAtmKvaliteta] = igrac.efekti["ODRZAVANJE_KVAL_ATM"] * efekti[Populacija] * odstupAtmKvalitete;
 			efekti[OdrzavanjeUkupno] = efekti[OdrzavanjeGravitacija] + efekti[OdrzavanjeZracenje] + efekti[OdrzavanjeTemperatura] + efekti[OdrzavanjeAtmKvaliteta] + efekti[OdrzavanjeAtmGustoca];
 
+			efekti[OdrzavanjeZgrada] = 0;
+			foreach (Zgrada zgrada in zgrade.Values)
+				efekti[OdrzavanjeZgrada] += zgrada.tip.cijenaOdrzavanja.iznos(efekti);
+			efekti[OdrzavanjeUkupno] += efekti[OdrzavanjeZgrada];
+
 			double zaposlenost = efekti[AktivnaRadnaMjesta] / (double)efekti[Populacija];
 			efekti[HranaPoFarmeru] = Fje.IzIntervala(zaposlenost, igrac.efekti["HRANA_PO_STANOVNIKU"], igrac.efekti["HRANA_PO_FARMERU"]);
 			efekti[RudePoRudaru] = Fje.IzIntervala(zaposlenost, igrac.efekti["MINERALI_PO_STANOVNIKU"], igrac.efekti["MINERALI_PO_RUDNIKU"]) * efekti[RudeEfektivno];
@@ -222,6 +227,11 @@ namespace Prototip
 			efekti[BrOdrzavatelja] = Math.Ceiling(efekti[OdrzavanjeUkupno] / efekti[IndustrijaPoRadniku]);
 			efekti[BrRadnika] = efekti[Populacija] - efekti[BrFarmera] - efekti[BrOdrzavatelja] * (1 + efekti[RudariPoOdrzavatelju]);
 
+			if (efekti[BrRadnika] / efekti[Populacija] < igrac.efekti["MIN_UDIO_RADNIKA"]) {
+				efekti[BrRadnika] = efekti[Populacija] * igrac.efekti["MIN_UDIO_RADNIKA"];
+				efekti[BrOdrzavatelja] = (efekti[Populacija] - efekti[BrFarmera] - efekti[BrRadnika]) / (1 + efekti[RudariPoOdrzavatelju]);
+			}
+
 			efekti[FaktorCijeneOrbitalnih] = 1 + Math.Pow(planet.gravitacija(), 2) + planet.gustocaAtmosfere;
 			efekti[NedostupanDioPlaneta] = 1 +
 				odstupAtmGustoce * igrac.efekti["VELICINA_GUST_ATM"] +
@@ -232,10 +242,6 @@ namespace Prototip
 
 			efekti[PopulacijaMax] /= efekti[NedostupanDioPlaneta];
 			efekti[PopulacijaMax] = Math.Floor(efekti[PopulacijaMax]);
-			efekti[OdrzavanjeZgrada] = 0;
-			foreach (Zgrada zgrada in zgrade.Values)
-				efekti[OdrzavanjeZgrada] += zgrada.tip.cijenaOdrzavanja.iznos(efekti);
-			efekti[OdrzavanjeUkupno] += efekti[OdrzavanjeZgrada];
 		}
 
 		private long gradi(long ostatakGradnje, long poeniIndustrije, LinkedList<Zgrada.ZgradaInfo> redGradnje)
