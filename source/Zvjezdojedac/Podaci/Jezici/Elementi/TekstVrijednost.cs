@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Prototip.Podaci.Jezici.Elementi
+namespace Zvjezdojedac.Podaci.Jezici.Elementi
 {
 	public class TekstVrijednost : ITekst
 	{

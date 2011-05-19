@@ -6,11 +6,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Prototip.Podaci.Jezici;
-using Prototip.Podaci;
-using Alati;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Igra;
 
-namespace Prototip
+namespace Zvjezdojedac.GUI
 {
 	public partial class FormGradnja : Form
 	{

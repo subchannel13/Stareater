@@ -8,10 +8,11 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.IO.Compression;
-using Prototip.Podaci;
-using Prototip.Podaci.Jezici;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Igra;
 
-namespace Prototip
+namespace Zvjezdojedac.GUI
 {
 	public partial class FormMain : Form
 	{

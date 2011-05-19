@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Alati;
-using Prototip.Igra.Poruke;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Igra.Poruke;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Igra.Brodovi;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra.Poruke
 {
 	public abstract class Poruka : IPohranjivoSB
 	{

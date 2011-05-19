@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace Prototip.Podaci.Jezici
+namespace Zvjezdojedac.Podaci.Jezici
 {
 	public class Tekst : ITekst
 	{

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Prototip.Podaci.Jezici
+namespace Zvjezdojedac.Podaci.Jezici
 {
 	public interface ITekst
 	{

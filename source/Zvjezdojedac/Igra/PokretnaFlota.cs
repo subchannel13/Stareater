@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Igra.Brodovi;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra
 {
 	public class PokretnaFlota : Flota
 	{

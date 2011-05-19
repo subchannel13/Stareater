@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Zvjezdojedac.Podaci.Formule;
+using Zvjezdojedac.Igra.Poruke;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra.Brodovi
 {
 	public class DizajnZgrada : Zgrada.ZgradaInfo
 	{

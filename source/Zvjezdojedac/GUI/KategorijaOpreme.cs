@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Prototip
+namespace Zvjezdojedac.GUI
 {
 	enum KategorijaOpreme
 	{

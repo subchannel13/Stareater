@@ -5,11 +5,13 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using Alati;
-using Prototip.Podaci.Jezici;
-using Prototip.Podaci;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Igra;
+using Zvjezdojedac.Igra.Brodovi;
 
-namespace Prototip
+namespace Zvjezdojedac.GUI
 {
 	public partial class FormKolonizacija : Form
 	{

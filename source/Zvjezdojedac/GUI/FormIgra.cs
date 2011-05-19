@@ -7,12 +7,14 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.IO.Compression;
-using Alati;
-using Prototip.Podaci;
-using Prototip.Podaci.Jezici;
-using Prototip.Igra.Poruke;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Igra.Poruke;
+using Zvjezdojedac.Igra;
+using Zvjezdojedac.Igra.Brodovi;
 
-namespace Prototip
+namespace Zvjezdojedac.GUI
 {
 	public partial class FormIgra : Form
 	{

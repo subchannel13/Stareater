@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Zvjezdojedac.Igra;
 
-namespace Prototip
+namespace Zvjezdojedac.Podaci
 {
 	public class PocetnaPozicija
 	{

@@ -8,7 +8,7 @@
     <ProjectGuid>{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Prototip</RootNamespace>
+    <RootNamespace>Zvjezdojedac</RootNamespace>
     <AssemblyName>Zvjezdojedac</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -69,7 +69,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Alati.cs" />
+    <Compile Include="Alati\Fje.cs" />
+    <Compile Include="Alati\Sazetak.cs" />
+    <Compile Include="Alati\TagTekst.cs" />
+    <Compile Include="Alati\Tocka.cs" />
+    <Compile Include="Alati\Usporediv.cs" />
+    <Compile Include="Alati\Vadjenje.cs" />
     <Compile Include="GUI\FormFlotaPokret.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,7 +166,7 @@
     <Compile Include="Igra\Kolonija.cs" />
     <Compile Include="Igra\Mapa.cs" />
     <Compile Include="Igra\PokretnaFlota.cs" />
-    <Compile Include="Igra\Poruka.cs" />
+    <Compile Include="Igra\Poruke\Poruka.cs" />
     <Compile Include="Igra\Poruke\PorukaBrod.cs" />
     <Compile Include="Igra\Poruke\PorukaKolonija.cs" />
     <Compile Include="Igra\Poruke\PorukaTehnologija.cs" />
@@ -181,7 +186,7 @@
     <Compile Include="Podaci\Jezici\Jezik.cs" />
     <Compile Include="Podaci\Jezici\Tekst.cs" />
     <Compile Include="Podaci\Jezici\ITekst.cs" />
-    <Compile Include="Podaci\Organizacije.cs" />
+    <Compile Include="Igra\Organizacije.cs" />
     <Compile Include="Igra\Planet.cs" />
     <Compile Include="Podaci\PocetnaPozicija.cs" />
     <Compile Include="Podaci\PodaciAlat.cs" />
@@ -252,12 +257,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Igra\Zvijezda.cs" />
-    <EmbeddedResource Include="gtk-gui\gui.stetic">
-      <LogicalName>gui.stetic</LogicalName>
-    </EmbeddedResource>
-    <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="gtk-gui\Prototip.GtkFormMain.cs" />
-    <Compile Include="GTK\GtkFormMain.cs" />
     <Compile Include="GUI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>

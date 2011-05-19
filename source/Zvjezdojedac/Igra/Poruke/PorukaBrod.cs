@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Alati;
-using Prototip.Podaci;
-using Prototip.Podaci.Jezici;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Igra.Brodovi;
 
-namespace Prototip.Igra.Poruke
+namespace Zvjezdojedac.Igra.Poruke
 {
 	public class PorukaBrod : Poruka
 	{

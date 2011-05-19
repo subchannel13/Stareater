@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
-using Alati;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Podaci;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra
 {
 	public class Planet : IPohranjivoSB
 	{
@@ -25,6 +26,7 @@ namespace Prototip
 			public double povrsinskiMineraliMax;
 			public double dubinskiMineraliMin;
 			public double dubinskiMineraliMax;
+			public double mineraliMaxRazlika;
 
 			public double slikaAtmGustKoef;
 			public double slikaAtmKvalKoef;
@@ -33,7 +35,8 @@ namespace Prototip
 			public int id { get; private set; }
 
 			private TipInfo(int velicinaMin, int velicinaMax, 
-				double povrsinskiMineraliMin, double povrsinskiMineraliMax, double dubinskiMineraliMin, double dubinskiMineraliMax,
+				double povrsinskiMineraliMin, double povrsinskiMineraliMax, 
+				double dubinskiMineraliMin, double dubinskiMineraliMax, double mineraliMaxRazlika,
 				double slikaAtmGustKoef, double slikaAtmKvalKoef, double slikaAtmTempKoef, int id)
 			{
 				this.velicinaMax = velicinaMax;
@@ -42,6 +45,7 @@ namespace Prototip
 				this.povrsinskiMineraliMax = povrsinskiMineraliMax;
 				this.dubinskiMineraliMin = dubinskiMineraliMin;
 				this.dubinskiMineraliMax = dubinskiMineraliMax;
+				this.mineraliMaxRazlika = mineraliMaxRazlika;
 				this.slikaAtmGustKoef = slikaAtmGustKoef;
 				this.slikaAtmKvalKoef = slikaAtmKvalKoef;
 				this.slikaAtmTempKoef = slikaAtmTempKoef;
@@ -62,13 +66,15 @@ namespace Prototip
                 double povrsinskiMineraliMax = Double.Parse(podatci["POVRSINSKI_MINERALI_MAX"], PodaciAlat.DecimalnaTocka);
                 double dubinskiMineraliMin = Double.Parse(podatci["DUBINSKI_MINERALI_MIN"], PodaciAlat.DecimalnaTocka);
                 double dubinskiMineraliMax = Double.Parse(podatci["DUBINSKI_MINERALI_MAX"], PodaciAlat.DecimalnaTocka);
+				double mineraliMaxRazlika = Double.Parse(podatci["MINERALI_MAX_RAZLIKA"], PodaciAlat.DecimalnaTocka);
 				
 				double slikaAtmGustKoef = double.Parse(podatci["SLIKA_KOEF_ATM_GUST"]);
 				double slikaAtmKvalKoef = double.Parse(podatci["SLIKA_KOEF_ATM_KVAL"]);
 				double slikaAtmTempKoef = double.Parse(podatci["SLIKA_KOEF_ATM_TEMP"]);
 
 				tipovi.Add(tip, new TipInfo(velicinaMin, velicinaMax, 
-					povrsinskiMineraliMin, povrsinskiMineraliMax, dubinskiMineraliMin, dubinskiMineraliMax,
+					povrsinskiMineraliMin, povrsinskiMineraliMax, 
+					dubinskiMineraliMin, dubinskiMineraliMax, mineraliMaxRazlika,
 					slikaAtmGustKoef, slikaAtmKvalKoef, slikaAtmTempKoef, tipovi.Count));
 			}
 		}
@@ -107,6 +113,9 @@ namespace Prototip
 			this.gustocaAtmosfere = Fje.IzIntervala(gustocaAtmosfere, minGustocaAtmosfere(), maxGustocaAtmosfere());
 			this.mineraliPovrsinski = Fje.IzIntervala(mineraliPovrsinski, tipovi[tip].povrsinskiMineraliMin, tipovi[tip].povrsinskiMineraliMax);
 			this.mineraliDubinski = Fje.IzIntervala(mineraliDubinski, this.mineraliPovrsinski, tipovi[tip].dubinskiMineraliMax);
+
+			if (this.mineraliDubinski - this.mineraliPovrsinski > tipovi[tip].mineraliMaxRazlika)
+				this.mineraliDubinski = this.mineraliPovrsinski + tipovi[tip].mineraliMaxRazlika;
 
 			if (zvjezda != null)
 				slika = Slike.OdrediSlikuPlaneta(tip, this.gustocaAtmosfere, this.kvalitetaAtmosfere, this.temperatura());

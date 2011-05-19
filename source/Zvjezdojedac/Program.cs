@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Zvjezdojedac.GUI;
 #if __MonoCS__
 using Gtk;
 #endif
 
-namespace Prototip
+namespace Zvjezdojedac
 {
 	static class Program
 	{
