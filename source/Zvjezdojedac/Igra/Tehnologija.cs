@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Drawing;
-using Alati;
-using Prototip.Podaci;
-using Prototip.Podaci.Jezici;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Podaci.Formule;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra
 {
 	public class Tehnologija : IPohranjivoSB, IIdentifiable
 	{

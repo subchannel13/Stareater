@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Prototip.Igra.Brodovi.Dizajner
+namespace Zvjezdojedac.Igra.Brodovi.Dizajner
 {
 	public class Dizajner
 	{

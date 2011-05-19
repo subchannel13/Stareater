@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using Zvjezdojedac.Podaci.Formule;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra.Brodovi
 {
 	public class Stit : Komponenta<Stit.StitInfo>
 	{
@@ -67,7 +68,7 @@ namespace Prototip
 
 			private StitInfo(string naziv, string opis, Image slika,
 				List<Tehnologija.Preduvjet> preduvjeti, int maxNivo,
-				Formula izdrzljivost,	Formula debljina,
+				Formula izdrzljivost, Formula debljina,
 				Formula obnavljanje, Formula snaga, Formula prikrivanje,
 				Formula ometanje, Formula cijena)
 				:

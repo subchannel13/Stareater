@@ -6,10 +6,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Prototip.Podaci.Jezici;
-using Prototip.Podaci;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Igra;
+using Zvjezdojedac.Igra.Poruke;
 
-namespace Prototip
+namespace Zvjezdojedac.GUI
 {
 	public partial class FormPoruke : Form
 	{

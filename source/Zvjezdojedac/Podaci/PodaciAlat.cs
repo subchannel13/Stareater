@@ -4,10 +4,13 @@ using System.Globalization;
 using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
-using Prototip.Podaci;
-using Prototip.Podaci.Jezici;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Podaci.Formule;
+using Zvjezdojedac.Igra;
+using Zvjezdojedac.Igra.Brodovi;
 
-namespace Prototip
+namespace Zvjezdojedac.Podaci
 {
 	public class PodaciAlat
 	{

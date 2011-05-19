@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra.Brodovi
 {
 	public class Komponenta<Info> : IKomponenta where Info : AKomponentaInfo
 	{

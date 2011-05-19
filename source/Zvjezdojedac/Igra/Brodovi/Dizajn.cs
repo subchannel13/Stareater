@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Alati;
-using Prototip.Podaci;
-using Prototip.Podaci.Jezici;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Podaci.Jezici;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra.Brodovi
 {
 	public class Dizajn : IIdentifiable, IPohranjivoSB
 	{

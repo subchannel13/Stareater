@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Podaci.Formule;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Igra.Brodovi;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra
 {
 	public class IgraZvj
 	{
@@ -31,7 +35,7 @@ namespace Prototip
 				if (igrac.tip != Igrac.Tip.COVJEK)
 					this.igraci.Add(igrac.stvoriIgraca(this.igraci.Count));
 
-			Alati.Vadjenje<Planet> pocetnePozicije = new Alati.Vadjenje<Planet>();
+			Vadjenje<Planet> pocetnePozicije = new Vadjenje<Planet>();
 			foreach (Planet pl in mapa.pocetnePozicije)
 				pocetnePozicije.dodaj(pl);
 

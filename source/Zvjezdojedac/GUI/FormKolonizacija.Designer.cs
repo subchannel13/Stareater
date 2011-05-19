@@ -1,4 +1,4 @@
-﻿namespace Prototip
+﻿namespace Zvjezdojedac.GUI
 {
 	partial class FormKolonizacija
 	{

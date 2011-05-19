@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using Prototip.Podaci.Jezici;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Igra;
 
-namespace Prototip.Podaci
+namespace Zvjezdojedac.Podaci
 {
 	public class Postavke
 	{

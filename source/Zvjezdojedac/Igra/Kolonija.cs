@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
-using Alati;
-using Prototip.Podaci.Jezici;
-using Prototip.Podaci;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Igra.Poruke;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra
 {
 	public class Kolonija : IPohranjivoSB
 	{
@@ -154,9 +155,9 @@ namespace Prototip
 			efekti[RadnaMjestaDelta] = 0;
 			efekti[AktivnaRadnaMjesta] = Math.Min(_populacija, radnaMjesta);
 
-			efekti[RudeDubina] = igrac.efekti["DUBINA_RUDARENJA"];
+			efekti[RudeDubina] = (planet.tip == Planet.Tip.ASTEROIDI) ? 1 : igrac.efekti["DUBINA_RUDARENJA"];
 			efekti[RudeDubinske] = planet.mineraliDubinski;
-			efekti[RudeEfektivno] = Fje.IzIntervala(igrac.efekti["DUBINA_RUDARENJA"], planet.mineraliPovrsinski, planet.mineraliDubinski);
+			efekti[RudeEfektivno] = Fje.IzIntervala(efekti[RudeDubina], planet.mineraliPovrsinski, planet.mineraliDubinski);
 			efekti[RudePovrsinske] = planet.mineraliPovrsinski;
 
 			efekti[VelicinaPlaneta] = planet.velicina;

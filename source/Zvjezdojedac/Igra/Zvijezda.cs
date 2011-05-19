@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Alati;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Podaci;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra
 {
 	public class Zvijezda : IPohranjivoSB, IIdentifiable
 	{

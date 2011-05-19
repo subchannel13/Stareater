@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using Zvjezdojedac.Podaci.Formule;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra.Brodovi
 {
 	public class MZPogon : Komponenta<MZPogon.MZPogonInfo>
 	{

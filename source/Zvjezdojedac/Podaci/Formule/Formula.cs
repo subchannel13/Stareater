@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
-namespace Prototip
+namespace Zvjezdojedac.Podaci.Formule
 {
 	public abstract class Formula
 	{

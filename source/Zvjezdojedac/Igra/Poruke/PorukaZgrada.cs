@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Prototip.Podaci.Jezici;
-using Prototip.Podaci;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Podaci;
 
-namespace Prototip.Igra.Poruke
+namespace Zvjezdojedac.Igra.Poruke
 {
 	public class PorukaZgrada : Poruka
 	{

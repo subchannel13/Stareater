@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace Prototip.Podaci.Jezici
+namespace Zvjezdojedac.Podaci.Jezici
 {
 	public class Jezik
 	{

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
-using Alati;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Podaci.Formule;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra.Brodovi
 {
 	public class SpecijalnaOprema : Komponenta<SpecijalnaOprema.SpecijalnaOpremaInfo>
 	{

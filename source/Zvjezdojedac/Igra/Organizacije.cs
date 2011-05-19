@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Zvjezdojedac.Podaci;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra
 {
 	public class Organizacija : IIdentifiable
 	{

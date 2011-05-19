@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Prototip.Podaci;
-using Prototip.Podaci.Jezici;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Podaci.Jezici;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra.Brodovi
 {
 	public class Taktika :IIdentifiable
 	{

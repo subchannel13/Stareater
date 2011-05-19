@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Zvjezdojedac.Podaci.Formule;
 
-namespace Prototip.Podaci.Jezici.Elementi
+namespace Zvjezdojedac.Podaci.Jezici.Elementi
 {
 	public class UvjetniLiteral : ITekst
 	{

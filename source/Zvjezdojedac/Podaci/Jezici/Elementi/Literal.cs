@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Prototip.Podaci.Jezici.Elementi
+namespace Zvjezdojedac.Podaci.Jezici.Elementi
 {
 	public class Literal: ITekst
 	{

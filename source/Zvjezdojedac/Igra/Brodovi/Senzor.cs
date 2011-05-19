@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using Zvjezdojedac.Podaci.Formule;
 
-namespace Prototip
+namespace Zvjezdojedac.Igra.Brodovi
 {
 	public class Senzor : Komponenta<Senzor.SenzorInfo>
 	{

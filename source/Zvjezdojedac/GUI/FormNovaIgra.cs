@@ -6,10 +6,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Prototip.Podaci;
-using Prototip.Podaci.Jezici;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Igra;
 
-namespace Prototip
+namespace Zvjezdojedac.GUI
 {
 	public partial class FormNovaIgra : Form
 	{
@@ -86,12 +88,12 @@ namespace Prototip
 			Postavke.ProslaIgra.organizacija = cbOrganizacija.SelectedIndex;
 			Postavke.ProslaIgra.velicinaMape = cbVelicinaMape.SelectedIndex;
 
-			Alati.Vadjenje<Organizacija> organizacije = new Alati.Vadjenje<Organizacija>();
+			Vadjenje<Organizacija> organizacije = new Vadjenje<Organizacija>();
 			for (int i = 0; i < Organizacija.lista.Count; i++)
 				if (i != cbOrganizacija.SelectedIndex)
 					organizacije.dodaj(Organizacija.lista[i]);
 
-			Alati.Vadjenje<Color> boje = new Alati.Vadjenje<Color>();
+			Vadjenje<Color> boje = new Vadjenje<Color>();
 			foreach (Color boja in Igrac.BojeIgraca)
 				boje.dodaj(boja);
 			

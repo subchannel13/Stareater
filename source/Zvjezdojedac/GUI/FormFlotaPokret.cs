@@ -6,11 +6,13 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Prototip.Podaci;
-using Prototip.Podaci.Jezici;
-using Alati;
+using Zvjezdojedac.Podaci;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Alati;
+using Zvjezdojedac.Igra;
+using Zvjezdojedac.Igra.Brodovi;
 
-namespace Prototip
+namespace Zvjezdojedac.GUI
 {
 	public partial class FormFlotaPokret : Form
 	{

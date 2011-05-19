@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using Zvjezdojedac.Igra;
+using Zvjezdojedac.Igra.Brodovi;
+using Zvjezdojedac.Igra.Poruke;
 
-namespace Prototip
+namespace Zvjezdojedac.Podaci
 {
 	public class Slike
 	{
