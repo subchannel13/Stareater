@@ -86,7 +86,7 @@ namespace Zvjezdojedac.Podaci.Formule
 
 			public abstract double vrijednost();
 
-			public abstract void popisiVarijable(List<Varijabla> varijable);
+			public abstract void popisiVarijable(ICollection<Varijabla> varijable);
 
 			public abstract void obrniOperande();
 
@@ -107,7 +107,7 @@ namespace Zvjezdojedac.Podaci.Formule
 				return iznos;
 			}
 
-			public override void popisiVarijable(List<Varijabla> varijable)
+			public override void popisiVarijable(ICollection<Varijabla> varijable)
 			{}
 
 			public override void obrniOperande()
@@ -133,7 +133,7 @@ namespace Zvjezdojedac.Podaci.Formule
 				iznos = v;
 			}
 
-			public override void popisiVarijable(List<Varijabla> varijable)
+			public override void popisiVarijable(ICollection<Varijabla> varijable)
 			{
 				varijable.Add(this);
 			}
@@ -156,7 +156,7 @@ namespace Zvjezdojedac.Podaci.Formule
 				this.operand = operand;
 			}
 
-			public override void popisiVarijable(List<Varijabla> varijable)
+			public override void popisiVarijable(ICollection<Varijabla> varijable)
 			{
 				operand.popisiVarijable(varijable);
 			}
@@ -336,7 +336,7 @@ namespace Zvjezdojedac.Podaci.Formule
 				this.desniOperand = desniOperand;
 			}
 
-			public override void popisiVarijable(List<Varijabla> varijable)
+			public override void popisiVarijable(ICollection<Varijabla> varijable)
 			{
 				lijeviOperand.popisiVarijable(varijable);
 				desniOperand.popisiVarijable(varijable);
@@ -809,7 +809,7 @@ namespace Zvjezdojedac.Podaci.Formule
 				this.srednjiOpernad = srednjiOpernad;
 			}
 
-			public override void popisiVarijable(List<Varijabla> varijable)
+			public override void popisiVarijable(ICollection<Varijabla> varijable)
 			{
 				base.popisiVarijable(varijable);
 				srednjiOpernad.popisiVarijable(varijable);

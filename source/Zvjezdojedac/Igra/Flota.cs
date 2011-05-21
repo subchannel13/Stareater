@@ -68,7 +68,6 @@ namespace Zvjezdojedac.Igra
 		public void dodajBrod(Brod brod)
 		{
 			Dizajn dizajn = brod.dizajn;
-			Sazetak stil = dizajn.stil;
 
 			if (brodovi.ContainsKey(dizajn))
 				brodovi[dizajn].dodaj(brod);

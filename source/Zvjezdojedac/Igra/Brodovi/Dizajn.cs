@@ -9,7 +9,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 {
 	public class Dizajn : IIdentifiable, IPohranjivoSB
 	{
-		public class Koef
+		static class Koef
 		{
 			public const string Brzine = "BRZINA_KOEF";
 			public const string Izdrzljivosti = "IZDRZLJIVOST_KOEF";
@@ -18,7 +18,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			public const string StitIzdrzljivost = "STIT_IZDRZLJIVOST_KOEF";
 			public const string StitObnavljanje = "STIT_OBNAVLJANJE_KOEF";
 		}
-		public class Plus
+		static class Plus
 		{
 			public const string BrSenzora = "BR_SENZORA_PLUS";
 			public const string Inercija = "INERCIJA_PLUS";
@@ -73,7 +73,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			return ret;
 		}
 
-		class Iznos
+		static class Iznos
 		{
 			public const string BrSenzora = "BR_SENZORA";
 			public const string KoefSnage = "KOEF_SNAGE_REAKTORA";

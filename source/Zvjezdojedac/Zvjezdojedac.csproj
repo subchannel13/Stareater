@@ -41,7 +41,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>BasicDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -57,16 +57,8 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alati\Fje.cs" />
@@ -173,21 +165,21 @@
     <Compile Include="Igra\Poruke\PorukaZgrada.cs" />
     <Compile Include="Igra\Tehnologija.cs" />
     <Compile Include="Igra\Zgrada.cs" />
+    <Compile Include="Igra\Organizacije.cs" />
+    <Compile Include="Igra\Planet.cs" />
     <Compile Include="Podaci\Formule\Formula.cs" />
     <Compile Include="Podaci\Formule\KonstantnaFormula.cs" />
     <Compile Include="Podaci\Formule\VarijabilnaFormula.cs" />
     <Compile Include="Podaci\IIdentifiable.cs" />
     <Compile Include="Podaci\IPohranjivoSB.cs" />
-    <Compile Include="Podaci\Jezici\Elementi\TekstVrijednost.cs" />
-    <Compile Include="Podaci\Jezici\Kontekst.cs" />
     <Compile Include="Podaci\Jezici\Elementi\Literal.cs" />
+    <Compile Include="Podaci\Jezici\Elementi\TekstVrijednost.cs" />
     <Compile Include="Podaci\Jezici\Elementi\UvjetniLiteral.cs" />
     <Compile Include="Podaci\Jezici\Elementi\Vrijednost.cs" />
-    <Compile Include="Podaci\Jezici\Jezik.cs" />
-    <Compile Include="Podaci\Jezici\Tekst.cs" />
     <Compile Include="Podaci\Jezici\ITekst.cs" />
-    <Compile Include="Igra\Organizacije.cs" />
-    <Compile Include="Igra\Planet.cs" />
+    <Compile Include="Podaci\Jezici\Jezik.cs" />
+    <Compile Include="Podaci\Jezici\Kontekst.cs" />
+    <Compile Include="Podaci\Jezici\Tekst.cs" />
     <Compile Include="Podaci\PocetnaPozicija.cs" />
     <Compile Include="Podaci\PodaciAlat.cs" />
     <Compile Include="Podaci\PodaciCitac.cs" />
@@ -289,5 +281,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup />
 </Project>
