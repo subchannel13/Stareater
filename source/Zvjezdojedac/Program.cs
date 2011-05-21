@@ -7,6 +7,7 @@ using Zvjezdojedac.GUI;
 using Gtk;
 #endif
 
+[assembly: CLSCompliant(false)]
 namespace Zvjezdojedac
 {
 	static class Program

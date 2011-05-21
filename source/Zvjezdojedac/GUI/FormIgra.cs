@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -125,11 +124,9 @@ namespace Zvjezdojedac.GUI
 				prikazMape.YnaMapi(y), 0.5);
 
 			if (odabranaZvijezda != null) {
-				if (frmFlotaPokret != null) {
-					if (frmFlotaPokret.Visible) {
-						frmFlotaPokret.postaviOdrediste(odabranaZvijezda);
-						return;
-					}
+				if (frmFlotaPokret != null && frmFlotaPokret.Visible) {
+					frmFlotaPokret.postaviOdrediste(odabranaZvijezda);
+					return;
 				}
 				else
 					odaberiZvijezdu(odabranaZvijezda, true);
@@ -438,6 +435,8 @@ namespace Zvjezdojedac.GUI
 
 			if (frmGradnja.ShowDialog() == DialogResult.OK)
 				osvjeziLabele();
+
+			frmGradnja.Dispose();
 		}
 
 		private void btnVojnaGradnja_Click(object sender, EventArgs e)

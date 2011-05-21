@@ -64,20 +64,20 @@
 			this.btnSekAkcija = new System.Windows.Forms.Button();
 			this.btnPrimAkcijaBroda = new System.Windows.Forms.Button();
 			this.pnlMapa = new System.Windows.Forms.Panel();
-			this.picMapa = new System.Windows.Forms.PictureBox();
+			this.btnUcitaj = new System.Windows.Forms.Button();
 			this.btnEndTurn = new System.Windows.Forms.Button();
+			this.btnPoruke = new System.Windows.Forms.Button();
+			this.btnSpremi = new System.Windows.Forms.Button();
+			this.picMapa = new System.Windows.Forms.PictureBox();
+			this.btnFlote = new System.Windows.Forms.Button();
 			this.trackBarZoom = new System.Windows.Forms.TrackBar();
+			this.btnTech = new System.Windows.Forms.Button();
 			this.timerAnimacija = new System.Windows.Forms.Timer(this.components);
 			this.pnlDesno = new System.Windows.Forms.Panel();
 			this.pnlDesnoGore = new System.Windows.Forms.Panel();
 			this.lblBrojKruga = new System.Windows.Forms.Label();
-			this.pnlKomande = new System.Windows.Forms.Panel();
-			this.btnPoruke = new System.Windows.Forms.Button();
-			this.btnFlote = new System.Windows.Forms.Button();
-			this.pnlKomandeDesno = new System.Windows.Forms.Panel();
-			this.btnUcitaj = new System.Windows.Forms.Button();
-			this.btnSpremi = new System.Windows.Forms.Button();
-			this.btnTech = new System.Windows.Forms.Button();
+			this.pnlDno = new System.Windows.Forms.Panel();
+			this.panel2 = new System.Windows.Forms.Panel();
 			this.tabCtrlDesno.SuspendLayout();
 			this.tabPageZvijezda.SuspendLayout();
 			this.pnlOpisZvjezde.SuspendLayout();
@@ -93,8 +93,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.trackBarZoom)).BeginInit();
 			this.pnlDesno.SuspendLayout();
 			this.pnlDesnoGore.SuspendLayout();
-			this.pnlKomande.SuspendLayout();
-			this.pnlKomandeDesno.SuspendLayout();
+			this.pnlDno.SuspendLayout();
+			this.panel2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabCtrlDesno
@@ -446,8 +446,50 @@
 			this.pnlMapa.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlMapa.Location = new System.Drawing.Point(0, 0);
 			this.pnlMapa.Name = "pnlMapa";
-			this.pnlMapa.Size = new System.Drawing.Size(484, 479);
+			this.pnlMapa.Size = new System.Drawing.Size(625, 494);
 			this.pnlMapa.TabIndex = 1;
+			// 
+			// btnUcitaj
+			// 
+			this.btnUcitaj.Location = new System.Drawing.Point(226, 40);
+			this.btnUcitaj.Name = "btnUcitaj";
+			this.btnUcitaj.Size = new System.Drawing.Size(75, 23);
+			this.btnUcitaj.TabIndex = 3;
+			this.btnUcitaj.Text = "Učitaj";
+			this.btnUcitaj.UseVisualStyleBackColor = true;
+			this.btnUcitaj.Click += new System.EventHandler(this.btnUcitaj_Click);
+			// 
+			// btnEndTurn
+			// 
+			this.btnEndTurn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnEndTurn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.btnEndTurn.Location = new System.Drawing.Point(559, 6);
+			this.btnEndTurn.Name = "btnEndTurn";
+			this.btnEndTurn.Size = new System.Drawing.Size(60, 52);
+			this.btnEndTurn.TabIndex = 1;
+			this.btnEndTurn.Text = "Završi &krug";
+			this.btnEndTurn.UseVisualStyleBackColor = true;
+			this.btnEndTurn.Click += new System.EventHandler(this.btnEndTurn_Click);
+			// 
+			// btnPoruke
+			// 
+			this.btnPoruke.Location = new System.Drawing.Point(3, 6);
+			this.btnPoruke.Name = "btnPoruke";
+			this.btnPoruke.Size = new System.Drawing.Size(75, 23);
+			this.btnPoruke.TabIndex = 3;
+			this.btnPoruke.Text = "&Novosti";
+			this.btnPoruke.UseVisualStyleBackColor = true;
+			this.btnPoruke.Click += new System.EventHandler(this.btnPoruke_Click);
+			// 
+			// btnSpremi
+			// 
+			this.btnSpremi.Location = new System.Drawing.Point(226, 6);
+			this.btnSpremi.Name = "btnSpremi";
+			this.btnSpremi.Size = new System.Drawing.Size(75, 23);
+			this.btnSpremi.TabIndex = 1;
+			this.btnSpremi.Text = "Spremi";
+			this.btnSpremi.UseVisualStyleBackColor = true;
+			this.btnSpremi.Click += new System.EventHandler(this.btnSpremi_Click);
 			// 
 			// picMapa
 			// 
@@ -459,26 +501,35 @@
 			this.picMapa.TabStop = false;
 			this.picMapa.Click += new System.EventHandler(this.picMapa_Click);
 			// 
-			// btnEndTurn
+			// btnFlote
 			// 
-			this.btnEndTurn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.btnEndTurn.Location = new System.Drawing.Point(247, 19);
-			this.btnEndTurn.Name = "btnEndTurn";
-			this.btnEndTurn.Size = new System.Drawing.Size(60, 52);
-			this.btnEndTurn.TabIndex = 1;
-			this.btnEndTurn.Text = "Završi &krug";
-			this.btnEndTurn.UseVisualStyleBackColor = true;
-			this.btnEndTurn.Click += new System.EventHandler(this.btnEndTurn_Click);
+			this.btnFlote.Location = new System.Drawing.Point(3, 35);
+			this.btnFlote.Name = "btnFlote";
+			this.btnFlote.Size = new System.Drawing.Size(75, 23);
+			this.btnFlote.TabIndex = 4;
+			this.btnFlote.Text = "&Flote";
+			this.btnFlote.UseVisualStyleBackColor = true;
+			this.btnFlote.Click += new System.EventHandler(this.btnFlote_Click);
 			// 
 			// trackBarZoom
 			// 
-			this.trackBarZoom.Location = new System.Drawing.Point(3, 6);
+			this.trackBarZoom.Location = new System.Drawing.Point(175, 0);
 			this.trackBarZoom.Name = "trackBarZoom";
 			this.trackBarZoom.Orientation = System.Windows.Forms.Orientation.Vertical;
-			this.trackBarZoom.Size = new System.Drawing.Size(45, 73);
+			this.trackBarZoom.Size = new System.Drawing.Size(45, 66);
 			this.trackBarZoom.TabIndex = 0;
 			this.trackBarZoom.Value = 4;
 			this.trackBarZoom.Scroll += new System.EventHandler(this.trackBarZoom_Scroll);
+			// 
+			// btnTech
+			// 
+			this.btnTech.Location = new System.Drawing.Point(84, 35);
+			this.btnTech.Name = "btnTech";
+			this.btnTech.Size = new System.Drawing.Size(85, 23);
+			this.btnTech.TabIndex = 2;
+			this.btnTech.Text = "&Tehnologije";
+			this.btnTech.UseVisualStyleBackColor = true;
+			this.btnTech.Click += new System.EventHandler(this.btnTech_Click);
 			// 
 			// timerAnimacija
 			// 
@@ -491,7 +542,7 @@
 			this.pnlDesno.Controls.Add(this.tabCtrlDesno);
 			this.pnlDesno.Controls.Add(this.pnlDesnoGore);
 			this.pnlDesno.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlDesno.Location = new System.Drawing.Point(484, 0);
+			this.pnlDesno.Location = new System.Drawing.Point(625, 0);
 			this.pnlDesno.Name = "pnlDesno";
 			this.pnlDesno.Size = new System.Drawing.Size(200, 562);
 			this.pnlDesno.TabIndex = 1;
@@ -514,90 +565,38 @@
 			this.lblBrojKruga.TabIndex = 1;
 			this.lblBrojKruga.Text = "Broj kruga";
 			// 
-			// pnlKomande
+			// pnlDno
 			// 
-			this.pnlKomande.Controls.Add(this.btnPoruke);
-			this.pnlKomande.Controls.Add(this.btnFlote);
-			this.pnlKomande.Controls.Add(this.pnlKomandeDesno);
-			this.pnlKomande.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlKomande.Location = new System.Drawing.Point(0, 479);
-			this.pnlKomande.Name = "pnlKomande";
-			this.pnlKomande.Size = new System.Drawing.Size(484, 83);
-			this.pnlKomande.TabIndex = 1;
+			this.pnlDno.Controls.Add(this.panel2);
+			this.pnlDno.Controls.Add(this.btnEndTurn);
+			this.pnlDno.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.pnlDno.Location = new System.Drawing.Point(0, 494);
+			this.pnlDno.Name = "pnlDno";
+			this.pnlDno.Size = new System.Drawing.Size(625, 68);
+			this.pnlDno.TabIndex = 5;
 			// 
-			// btnPoruke
+			// panel2
 			// 
-			this.btnPoruke.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnPoruke.Location = new System.Drawing.Point(90, 6);
-			this.btnPoruke.Name = "btnPoruke";
-			this.btnPoruke.Size = new System.Drawing.Size(75, 23);
-			this.btnPoruke.TabIndex = 3;
-			this.btnPoruke.Text = "&Novosti";
-			this.btnPoruke.UseVisualStyleBackColor = true;
-			this.btnPoruke.Click += new System.EventHandler(this.btnPoruke_Click);
-			// 
-			// btnFlote
-			// 
-			this.btnFlote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnFlote.Location = new System.Drawing.Point(90, 35);
-			this.btnFlote.Name = "btnFlote";
-			this.btnFlote.Size = new System.Drawing.Size(75, 23);
-			this.btnFlote.TabIndex = 4;
-			this.btnFlote.Text = "&Flote";
-			this.btnFlote.UseVisualStyleBackColor = true;
-			this.btnFlote.Click += new System.EventHandler(this.btnFlote_Click);
-			// 
-			// pnlKomandeDesno
-			// 
-			this.pnlKomandeDesno.Controls.Add(this.btnUcitaj);
-			this.pnlKomandeDesno.Controls.Add(this.btnSpremi);
-			this.pnlKomandeDesno.Controls.Add(this.btnTech);
-			this.pnlKomandeDesno.Controls.Add(this.trackBarZoom);
-			this.pnlKomandeDesno.Controls.Add(this.btnEndTurn);
-			this.pnlKomandeDesno.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlKomandeDesno.Location = new System.Drawing.Point(171, 0);
-			this.pnlKomandeDesno.Name = "pnlKomandeDesno";
-			this.pnlKomandeDesno.Size = new System.Drawing.Size(313, 83);
-			this.pnlKomandeDesno.TabIndex = 0;
-			// 
-			// btnUcitaj
-			// 
-			this.btnUcitaj.Location = new System.Drawing.Point(166, 53);
-			this.btnUcitaj.Name = "btnUcitaj";
-			this.btnUcitaj.Size = new System.Drawing.Size(75, 23);
-			this.btnUcitaj.TabIndex = 3;
-			this.btnUcitaj.Text = "Učitaj";
-			this.btnUcitaj.UseVisualStyleBackColor = true;
-			this.btnUcitaj.Click += new System.EventHandler(this.btnUcitaj_Click);
-			// 
-			// btnSpremi
-			// 
-			this.btnSpremi.Location = new System.Drawing.Point(166, 19);
-			this.btnSpremi.Name = "btnSpremi";
-			this.btnSpremi.Size = new System.Drawing.Size(75, 23);
-			this.btnSpremi.TabIndex = 1;
-			this.btnSpremi.Text = "Spremi";
-			this.btnSpremi.UseVisualStyleBackColor = true;
-			this.btnSpremi.Click += new System.EventHandler(this.btnSpremi_Click);
-			// 
-			// btnTech
-			// 
-			this.btnTech.Location = new System.Drawing.Point(54, 6);
-			this.btnTech.Name = "btnTech";
-			this.btnTech.Size = new System.Drawing.Size(85, 23);
-			this.btnTech.TabIndex = 2;
-			this.btnTech.Text = "&Tehnologije";
-			this.btnTech.UseVisualStyleBackColor = true;
-			this.btnTech.Click += new System.EventHandler(this.btnTech_Click);
+			this.panel2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			this.panel2.Controls.Add(this.btnUcitaj);
+			this.panel2.Controls.Add(this.btnPoruke);
+			this.panel2.Controls.Add(this.btnSpremi);
+			this.panel2.Controls.Add(this.btnFlote);
+			this.panel2.Controls.Add(this.btnTech);
+			this.panel2.Controls.Add(this.trackBarZoom);
+			this.panel2.Location = new System.Drawing.Point(159, 0);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(307, 66);
+			this.panel2.TabIndex = 2;
 			// 
 			// FormIgra
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(684, 562);
+			this.ClientSize = new System.Drawing.Size(825, 562);
 			this.Controls.Add(this.pnlMapa);
-			this.Controls.Add(this.pnlKomande);
+			this.Controls.Add(this.pnlDno);
 			this.Controls.Add(this.pnlDesno);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "FormIgra";
@@ -627,9 +626,9 @@
 			this.pnlDesno.ResumeLayout(false);
 			this.pnlDesnoGore.ResumeLayout(false);
 			this.pnlDesnoGore.PerformLayout();
-			this.pnlKomande.ResumeLayout(false);
-			this.pnlKomandeDesno.ResumeLayout(false);
-			this.pnlKomandeDesno.PerformLayout();
+			this.pnlDno.ResumeLayout(false);
+			this.panel2.ResumeLayout(false);
+			this.panel2.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -654,8 +653,6 @@
 		private System.Windows.Forms.Panel pnlDesnoGore;
 		private System.Windows.Forms.Button btnPlanetInfo;
 		private System.Windows.Forms.PictureBox picSlikaPlaneta;
-		private System.Windows.Forms.Panel pnlKomande;
-		private System.Windows.Forms.Panel pnlKomandeDesno;
 		private System.Windows.Forms.HScrollBar hscrCivilnaIndustrija;
 		private System.Windows.Forms.Label lblRazvoj;
 		private System.Windows.Forms.Label lblCivilnaIndustrija;
@@ -684,5 +681,7 @@
 		private System.Windows.Forms.Button btnPrimAkcijaBroda;
 		private System.Windows.Forms.Button btnFlotaPokret;
 		private System.Windows.Forms.Button btnSekAkcija;
+		private System.Windows.Forms.Panel pnlDno;
+		private System.Windows.Forms.Panel panel2;
 	}
 }

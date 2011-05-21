@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -18,7 +17,6 @@ namespace Zvjezdojedac.GUI
 		private Kolonija kolonija;
         private LinkedList<Zgrada.ZgradaInfo> redGradnje;
 		private Dictionary<Zgrada.ZgradaInfo, int> redoslijedPonuda = new Dictionary<Zgrada.ZgradaInfo, int>();
-        private bool civilnaGradnja;
 
 		public FormGradnja(Kolonija kolonija, bool civilnaGradnja)
 		{
@@ -29,7 +27,6 @@ namespace Zvjezdojedac.GUI
             else
                 redGradnje = kolonija.redVojneGradnje;
 
-            this.civilnaGradnja = civilnaGradnja;
 			this.kolonija = kolonija;
 			
 			HashSet<Zgrada.ZgradaInfo> uRedu = new HashSet<Zgrada.ZgradaInfo>(redGradnje);

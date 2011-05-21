@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -140,12 +139,12 @@ namespace Zvjezdojedac.GUI
 			this.Text = jezik["naslov"].tekst();
 		}
 
-		private T izvadiTag<T>(ComboBox cb)
+		private static T izvadiTag<T>(ComboBox cb)
 		{
 			return ((TagTekst<T>)cb.SelectedItem).tag;
 		}
 
-		private List<string> opisOruzja(bool primarno, Dizajn.Zbir<Oruzje> oruzje, bool cijene)
+		private static List<string> opisOruzja(bool primarno, Dizajn.Zbir<Oruzje> oruzje, bool cijene)
 		{
 			List<string> opis = new List<string>();
 
