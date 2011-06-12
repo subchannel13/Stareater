@@ -12,6 +12,12 @@ namespace Zvjezdojedac.Igra
 		public const int Tip_PocetnaPozicija = -2;
 		public const int Tip_Nedodijeljen = -3;
 
+		private static string[] KljuceviEfekata = new string[]
+		{
+			Kolonija.PopulacijaVisak,
+			Kolonija.MigracijaMax
+		};
+
 		public class TipInfo
 		{
 			public double udioPojave;
@@ -103,6 +109,7 @@ namespace Zvjezdojedac.Igra
 		public string ime;
 		public int id { get; set; }
 		public HashSet<Zvijezda> crvotocine = new HashSet<Zvijezda>();
+		public List<Dictionary<string, double>> efektiPoIgracu = new List<Dictionary<string, double>>();
 
 		public Zvijezda(int id, int tip, double x, double y)
 		{
@@ -172,6 +179,59 @@ namespace Zvjezdojedac.Igra
 		public double udaljenost(double x, double y)
 		{
 			return Math.Sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
+		}
+
+		public void IzracunajEfekte(List<Igrac> igraci)
+		{
+			while (efektiPoIgracu.Count < igraci.Count)
+				efektiPoIgracu.Add(new Dictionary<string, double>());
+			
+			for (int i = 0; i < igraci.Count; i++ ) {
+				Dictionary<string, double> efekti = efektiPoIgracu[i];
+				efekti.Clear();
+
+				foreach (string kljuc in KljuceviEfekata)
+					efekti.Add(kljuc, 0);
+			}
+
+			foreach(Planet pl in planeti)
+				if (pl.kolonija != null) {
+					int igracIndex = igraci.IndexOf(pl.kolonija.igrac);
+					Dictionary<string, double> efektiZvj = efektiPoIgracu[igracIndex];
+					Dictionary<string, double> efektiPl =  pl.kolonija.efekti;
+
+					foreach(string kljuc in KljuceviEfekata)
+						efektiZvj[kljuc] += efektiPl[kljuc];
+				}
+
+			for (int i = 0; i < igraci.Count; i++) {
+				Dictionary<string, double> efektiZvj = efektiPoIgracu[i];
+				
+				efektiZvj[Kolonija.PopulacijaVisak] = Math.Min(efektiZvj[Kolonija.PopulacijaVisak], efektiZvj[Kolonija.MigracijaMax]);
+			}
+		}
+
+		public void NoviKrug(List<Igrac> igraci)
+		{
+			IzracunajEfekte(igraci);
+
+			List<Kolonija> kolonije = new List<Kolonija>();
+			foreach (Planet pl in planeti)
+				if (pl.kolonija != null)
+					kolonije.Add(pl.kolonija);
+
+			kolonije.Sort((k1, k2) => k1.OdrzavanjePoStan.CompareTo(k2.OdrzavanjePoStan));
+
+			foreach (Kolonija kolonija in kolonije) {
+				int igracIndex = igraci.IndexOf(kolonija.igrac);
+				Dictionary<string, double> efektiZvj = efektiPoIgracu[igracIndex];
+				Dictionary<string, double> efektiPl =  kolonija.efekti;
+
+				double imigranti = kolonija.dodajMigrante(efektiZvj[Kolonija.PopulacijaVisak]);
+				efektiZvj[Kolonija.PopulacijaVisak] -= imigranti;
+
+				kolonija.resetirajEfekte();
+			}
 		}
 
 		#region Pohrana

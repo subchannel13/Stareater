@@ -78,3 +78,13 @@ PREDUVJETI = BIO | 4 | KEM | 2
 SLIKA = ./slike/tehnologije/industrija.bmp
 ----
 
+<TEHNOLOGIJA>
+IME = KOLONIZATOR_IME
+OPIS = KOLONIZATOR_OPIS
+KOD = KOLONIZATOR
+CIJENA = * 2000000 ^ + LVL 1 2
+MAX_LVL = 10
+PREDUVJETI = BIO | - LVL 5
+SLIKA = ./slike/tehnologije/industrija.bmp
+----
+

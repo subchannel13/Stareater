@@ -15,10 +15,12 @@ namespace Zvjezdojedac.Igra
 		public const string Populacija = "POP";
 		public const string PopulacijaMax = "POP_MAX";
 		public const string PopulacijaPromjena = "POP_DELTA";
+		public const string PopulacijaVisak = "POP_VISAK";
 		public const string RadnaMjesta = "RAD_MJ_UK";
 		public const string RadnaMjestaDelta = "RAD_MJ_DELTA";
 		public const string AktivnaRadnaMjesta = "RAD_MJ";
-		public const string FaktorCijeneOrbitalnih = "ORBITALNI_KOEF"; 
+		public const string FaktorCijeneOrbitalnih = "ORBITALNI_KOEF";
+		public const string MigracijaMax = "MIGRACIJA_MAX"; 
 
 		public const string RudePovrsinske = "RUDE_POV";
 		public const string RudeDubinske = "RUDE_DUB";
@@ -154,6 +156,7 @@ namespace Zvjezdojedac.Igra
 			efekti[RadnaMjesta] = radnaMjesta;
 			efekti[RadnaMjestaDelta] = 0;
 			efekti[AktivnaRadnaMjesta] = Math.Min(_populacija, radnaMjesta);
+			efekti[MigracijaMax] = 0;
 
 			efekti[RudeDubina] = (planet.tip == Planet.Tip.ASTEROIDI) ? 1 : igrac.efekti["DUBINA_RUDARENJA"];
 			efekti[RudeDubinske] = planet.mineraliDubinski;
@@ -323,6 +326,16 @@ namespace Zvjezdojedac.Igra
 				igrac.efekti[s] = efekti[s];
 		}
 
+		public double dodajMigrante(double imigrantiUkupno)
+		{
+			double imigranti = Math.Floor(Math.Min(imigrantiUkupno, efekti[PopulacijaMax] - _populacija));
+			
+			efekti[PopulacijaPromjena] += imigranti;
+			_populacija += (long)imigranti;
+
+			return imigranti;
+		}
+
 		public void noviKrug()
 		{
 			postaviEfekteIgracu();
@@ -330,7 +343,10 @@ namespace Zvjezdojedac.Igra
 			ostatakCivilneGradnje = gradi(ostatakCivilneGradnje, poeniCivilneIndustrije(), redCivilneGradnje);
 			ostatakVojneGradnje = gradi(ostatakVojneGradnje, poeniVojneIndustrije(), redVojneGradnje);
 
-			_populacija = (long)Math.Min(efekti[PopulacijaPromjena] + _populacija, efekti[PopulacijaMax]);
+			double populacijaTmp = efekti[PopulacijaPromjena] + _populacija;
+			efekti[PopulacijaVisak] = Math.Max(efekti[PopulacijaMax] - populacijaTmp, 0);
+
+			_populacija = (long)Math.Min(populacijaTmp, efekti[PopulacijaMax]);
 			radnaMjesta = (long)Math.Min(efekti[RadnaMjestaDelta] + radnaMjesta, efekti[PopulacijaMax]);
 
 			foreach (Zgrada z in zgrade.Values)
@@ -439,6 +455,12 @@ namespace Zvjezdojedac.Igra
 				return _populacija;
 			}
 		}
+
+		public double OdrzavanjePoStan
+		{
+			get { return efekti[OdrzavanjeUkupno] / _populacija; }
+		}
+
 
 		public string procjenaVremenaCivilneGradnje()
 		{

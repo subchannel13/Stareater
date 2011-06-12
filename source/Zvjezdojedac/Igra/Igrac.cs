@@ -416,7 +416,7 @@ namespace Zvjezdojedac.Igra
 		public void dodajDizajn(Dizajn dizajn)
 		{
 			foreach (DizajnZgrada dizajnZ in dizajnoviBrodova)
-				if (dizajnZ.dizajn.stil.Equals(dizajn.stil))
+				if (dizajnZ.dizajn.nadogradnja != dizajn && dizajnZ.dizajn.stil.Equals(dizajn.stil))
 					return;
 
 			dizajnoviBrodova.Add(new DizajnZgrada(dizajn));

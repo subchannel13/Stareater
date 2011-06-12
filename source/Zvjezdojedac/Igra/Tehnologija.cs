@@ -135,7 +135,7 @@ namespace Zvjezdojedac.Igra
 				this.slika = slika;
 				this.kategorija = kategorija;
 				
-				cijena.preimenujVarijablu("LVL", kod + "_LVL");
+				//cijena.preimenujVarijablu("LVL", kod + "_LVL");
 			}
 
 			public string naziv
@@ -221,6 +221,11 @@ namespace Zvjezdojedac.Igra
 
 		public long cijena(Dictionary<string, double> varijable)
 		{
+			if (varijable.ContainsKey("LVL"))
+				varijable["LVL"] = nivo + 1;
+			else
+				varijable.Add("LVL", nivo + 1);
+
 			return (long)tip.cijena.iznos(varijable);
 		}
 
