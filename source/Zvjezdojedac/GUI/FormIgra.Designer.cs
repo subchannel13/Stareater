@@ -36,6 +36,8 @@
 			this.pnlOpisZvjezde = new System.Windows.Forms.Panel();
 			this.lblImeZvjezde = new System.Windows.Forms.Label();
 			this.tabPageKolonija = new System.Windows.Forms.TabPage();
+			this.btnSlijedecaKolonija = new System.Windows.Forms.Button();
+			this.btnPrethodnaKolonija = new System.Windows.Forms.Button();
 			this.groupPoStan = new System.Windows.Forms.GroupBox();
 			this.lblOdrzavanjePoStan = new System.Windows.Forms.Label();
 			this.lblRazvojPoStan = new System.Windows.Forms.Label();
@@ -64,11 +66,11 @@
 			this.btnSekAkcija = new System.Windows.Forms.Button();
 			this.btnPrimAkcijaBroda = new System.Windows.Forms.Button();
 			this.pnlMapa = new System.Windows.Forms.Panel();
+			this.picMapa = new System.Windows.Forms.PictureBox();
 			this.btnUcitaj = new System.Windows.Forms.Button();
 			this.btnEndTurn = new System.Windows.Forms.Button();
 			this.btnPoruke = new System.Windows.Forms.Button();
 			this.btnSpremi = new System.Windows.Forms.Button();
-			this.picMapa = new System.Windows.Forms.PictureBox();
 			this.btnFlote = new System.Windows.Forms.Button();
 			this.trackBarZoom = new System.Windows.Forms.TrackBar();
 			this.btnTech = new System.Windows.Forms.Button();
@@ -109,7 +111,7 @@
 			this.tabCtrlDesno.Multiline = true;
 			this.tabCtrlDesno.Name = "tabCtrlDesno";
 			this.tabCtrlDesno.SelectedIndex = 0;
-			this.tabCtrlDesno.Size = new System.Drawing.Size(200, 531);
+			this.tabCtrlDesno.Size = new System.Drawing.Size(200, 585);
 			this.tabCtrlDesno.TabIndex = 0;
 			// 
 			// tabPageZvijezda
@@ -120,7 +122,7 @@
 			this.tabPageZvijezda.Location = new System.Drawing.Point(4, 4);
 			this.tabPageZvijezda.Name = "tabPageZvijezda";
 			this.tabPageZvijezda.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageZvijezda.Size = new System.Drawing.Size(154, 523);
+			this.tabPageZvijezda.Size = new System.Drawing.Size(154, 577);
 			this.tabPageZvijezda.TabIndex = 0;
 			// 
 			// listViewPlaneti
@@ -133,7 +135,7 @@
 			this.listViewPlaneti.Location = new System.Drawing.Point(3, 40);
 			this.listViewPlaneti.MultiSelect = false;
 			this.listViewPlaneti.Name = "listViewPlaneti";
-			this.listViewPlaneti.Size = new System.Drawing.Size(148, 480);
+			this.listViewPlaneti.Size = new System.Drawing.Size(148, 534);
 			this.listViewPlaneti.TabIndex = 0;
 			this.listViewPlaneti.UseCompatibleStateImageBehavior = false;
 			this.listViewPlaneti.View = System.Windows.Forms.View.Tile;
@@ -160,6 +162,8 @@
 			// tabPageKolonija
 			// 
 			this.tabPageKolonija.BackColor = System.Drawing.SystemColors.Control;
+			this.tabPageKolonija.Controls.Add(this.btnSlijedecaKolonija);
+			this.tabPageKolonija.Controls.Add(this.btnPrethodnaKolonija);
 			this.tabPageKolonija.Controls.Add(this.groupPoStan);
 			this.tabPageKolonija.Controls.Add(this.lblRazvoj);
 			this.tabPageKolonija.Controls.Add(this.groupCivGradnja);
@@ -171,8 +175,30 @@
 			this.tabPageKolonija.Location = new System.Drawing.Point(4, 4);
 			this.tabPageKolonija.Name = "tabPageKolonija";
 			this.tabPageKolonija.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageKolonija.Size = new System.Drawing.Size(154, 523);
+			this.tabPageKolonija.Size = new System.Drawing.Size(154, 577);
 			this.tabPageKolonija.TabIndex = 1;
+			// 
+			// btnSlijedecaKolonija
+			// 
+			this.btnSlijedecaKolonija.Location = new System.Drawing.Point(117, 6);
+			this.btnSlijedecaKolonija.Name = "btnSlijedecaKolonija";
+			this.btnSlijedecaKolonija.Size = new System.Drawing.Size(31, 23);
+			this.btnSlijedecaKolonija.TabIndex = 32;
+			this.btnSlijedecaKolonija.Text = "->";
+			this.btnSlijedecaKolonija.UseVisualStyleBackColor = true;
+			this.btnSlijedecaKolonija.Visible = false;
+			this.btnSlijedecaKolonija.Click += new System.EventHandler(this.btnSlijedecaKolonija_Click);
+			// 
+			// btnPrethodnaKolonija
+			// 
+			this.btnPrethodnaKolonija.Location = new System.Drawing.Point(6, 6);
+			this.btnPrethodnaKolonija.Name = "btnPrethodnaKolonija";
+			this.btnPrethodnaKolonija.Size = new System.Drawing.Size(31, 23);
+			this.btnPrethodnaKolonija.TabIndex = 31;
+			this.btnPrethodnaKolonija.Text = "<-";
+			this.btnPrethodnaKolonija.UseVisualStyleBackColor = true;
+			this.btnPrethodnaKolonija.Visible = false;
+			this.btnPrethodnaKolonija.Click += new System.EventHandler(this.btnPrethodnaKolonija_Click);
 			// 
 			// groupPoStan
 			// 
@@ -181,7 +207,7 @@
 			this.groupPoStan.Controls.Add(this.lblIndustrijaPoStan);
 			this.groupPoStan.Controls.Add(this.lblRudePoStan);
 			this.groupPoStan.Controls.Add(this.lblHranaPoStan);
-			this.groupPoStan.Location = new System.Drawing.Point(6, 70);
+			this.groupPoStan.Location = new System.Drawing.Point(6, 115);
 			this.groupPoStan.Name = "groupPoStan";
 			this.groupPoStan.Size = new System.Drawing.Size(137, 88);
 			this.groupPoStan.TabIndex = 30;
@@ -236,7 +262,7 @@
 			// lblRazvoj
 			// 
 			this.lblRazvoj.AutoSize = true;
-			this.lblRazvoj.Location = new System.Drawing.Point(6, 478);
+			this.lblRazvoj.Location = new System.Drawing.Point(6, 523);
 			this.lblRazvoj.Name = "lblRazvoj";
 			this.lblRazvoj.Size = new System.Drawing.Size(79, 13);
 			this.lblRazvoj.TabIndex = 13;
@@ -248,7 +274,7 @@
 			this.groupCivGradnja.Controls.Add(this.hscrCivilnaIndustrija);
 			this.groupCivGradnja.Controls.Add(this.lblProcjenaCivilneGradnje);
 			this.groupCivGradnja.Controls.Add(this.lblCivilnaIndustrija);
-			this.groupCivGradnja.Location = new System.Drawing.Point(6, 164);
+			this.groupCivGradnja.Location = new System.Drawing.Point(6, 209);
 			this.groupCivGradnja.Name = "groupCivGradnja";
 			this.groupCivGradnja.Size = new System.Drawing.Size(138, 152);
 			this.groupCivGradnja.TabIndex = 29;
@@ -298,7 +324,7 @@
 			this.groupVojGradnja.Controls.Add(this.lblProcjenaVojneGradnje);
 			this.groupVojGradnja.Controls.Add(this.hscrVojnaIndustrija);
 			this.groupVojGradnja.Controls.Add(this.lblVojnaGradnja);
-			this.groupVojGradnja.Location = new System.Drawing.Point(6, 322);
+			this.groupVojGradnja.Location = new System.Drawing.Point(6, 367);
 			this.groupVojGradnja.Name = "groupVojGradnja";
 			this.groupVojGradnja.Size = new System.Drawing.Size(138, 153);
 			this.groupVojGradnja.TabIndex = 28;
@@ -344,7 +370,7 @@
 			// 
 			// picSlikaPlaneta
 			// 
-			this.picSlikaPlaneta.Location = new System.Drawing.Point(6, 6);
+			this.picSlikaPlaneta.Location = new System.Drawing.Point(5, 42);
 			this.picSlikaPlaneta.Name = "picSlikaPlaneta";
 			this.picSlikaPlaneta.Size = new System.Drawing.Size(32, 32);
 			this.picSlikaPlaneta.TabIndex = 7;
@@ -352,7 +378,7 @@
 			// 
 			// btnPlanetInfo
 			// 
-			this.btnPlanetInfo.Location = new System.Drawing.Point(6, 41);
+			this.btnPlanetInfo.Location = new System.Drawing.Point(6, 86);
 			this.btnPlanetInfo.Name = "btnPlanetInfo";
 			this.btnPlanetInfo.Size = new System.Drawing.Size(142, 23);
 			this.btnPlanetInfo.TabIndex = 6;
@@ -363,7 +389,7 @@
 			// lblPopulacija
 			// 
 			this.lblPopulacija.AutoSize = true;
-			this.lblPopulacija.Location = new System.Drawing.Point(44, 19);
+			this.lblPopulacija.Location = new System.Drawing.Point(43, 42);
 			this.lblPopulacija.Name = "lblPopulacija";
 			this.lblPopulacija.Size = new System.Drawing.Size(55, 13);
 			this.lblPopulacija.TabIndex = 1;
@@ -372,7 +398,7 @@
 			// lblImePlaneta
 			// 
 			this.lblImePlaneta.AutoSize = true;
-			this.lblImePlaneta.Location = new System.Drawing.Point(44, 6);
+			this.lblImePlaneta.Location = new System.Drawing.Point(43, 11);
 			this.lblImePlaneta.Name = "lblImePlaneta";
 			this.lblImePlaneta.Size = new System.Drawing.Size(23, 13);
 			this.lblImePlaneta.TabIndex = 0;
@@ -386,7 +412,7 @@
 			this.tabPageFlote.Location = new System.Drawing.Point(4, 4);
 			this.tabPageFlote.Name = "tabPageFlote";
 			this.tabPageFlote.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageFlote.Size = new System.Drawing.Size(154, 523);
+			this.tabPageFlote.Size = new System.Drawing.Size(154, 577);
 			this.tabPageFlote.TabIndex = 2;
 			// 
 			// tvFlota
@@ -446,8 +472,18 @@
 			this.pnlMapa.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlMapa.Location = new System.Drawing.Point(0, 0);
 			this.pnlMapa.Name = "pnlMapa";
-			this.pnlMapa.Size = new System.Drawing.Size(625, 494);
+			this.pnlMapa.Size = new System.Drawing.Size(625, 548);
 			this.pnlMapa.TabIndex = 1;
+			// 
+			// picMapa
+			// 
+			this.picMapa.Location = new System.Drawing.Point(0, 0);
+			this.picMapa.Name = "picMapa";
+			this.picMapa.Size = new System.Drawing.Size(40, 128);
+			this.picMapa.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+			this.picMapa.TabIndex = 0;
+			this.picMapa.TabStop = false;
+			this.picMapa.Click += new System.EventHandler(this.picMapa_Click);
 			// 
 			// btnUcitaj
 			// 
@@ -490,16 +526,6 @@
 			this.btnSpremi.Text = "Spremi";
 			this.btnSpremi.UseVisualStyleBackColor = true;
 			this.btnSpremi.Click += new System.EventHandler(this.btnSpremi_Click);
-			// 
-			// picMapa
-			// 
-			this.picMapa.Location = new System.Drawing.Point(0, 0);
-			this.picMapa.Name = "picMapa";
-			this.picMapa.Size = new System.Drawing.Size(40, 128);
-			this.picMapa.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-			this.picMapa.TabIndex = 0;
-			this.picMapa.TabStop = false;
-			this.picMapa.Click += new System.EventHandler(this.picMapa_Click);
 			// 
 			// btnFlote
 			// 
@@ -544,7 +570,7 @@
 			this.pnlDesno.Dock = System.Windows.Forms.DockStyle.Right;
 			this.pnlDesno.Location = new System.Drawing.Point(625, 0);
 			this.pnlDesno.Name = "pnlDesno";
-			this.pnlDesno.Size = new System.Drawing.Size(200, 562);
+			this.pnlDesno.Size = new System.Drawing.Size(200, 616);
 			this.pnlDesno.TabIndex = 1;
 			// 
 			// pnlDesnoGore
@@ -570,7 +596,7 @@
 			this.pnlDno.Controls.Add(this.panel2);
 			this.pnlDno.Controls.Add(this.btnEndTurn);
 			this.pnlDno.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnlDno.Location = new System.Drawing.Point(0, 494);
+			this.pnlDno.Location = new System.Drawing.Point(0, 548);
 			this.pnlDno.Name = "pnlDno";
 			this.pnlDno.Size = new System.Drawing.Size(625, 68);
 			this.pnlDno.TabIndex = 5;
@@ -594,7 +620,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(825, 562);
+			this.ClientSize = new System.Drawing.Size(825, 616);
 			this.Controls.Add(this.pnlMapa);
 			this.Controls.Add(this.pnlDno);
 			this.Controls.Add(this.pnlDesno);
@@ -683,5 +709,7 @@
 		private System.Windows.Forms.Button btnSekAkcija;
 		private System.Windows.Forms.Panel pnlDno;
 		private System.Windows.Forms.Panel panel2;
+		private System.Windows.Forms.Button btnSlijedecaKolonija;
+		private System.Windows.Forms.Button btnPrethodnaKolonija;
 	}
 }
