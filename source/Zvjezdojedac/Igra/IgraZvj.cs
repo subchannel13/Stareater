@@ -120,7 +120,7 @@ namespace Zvjezdojedac.Igra
 			}
 
 			for (int i = 0; i < igraci.Count; i++)
-				igraci[i].noviKrug(this, poeniRazvoja[i], poeniIstraz[i]);
+				igraci[i].NoviKrug(this, poeniRazvoja[i], poeniIstraz[i]);
 
 			foreach (Zvijezda zvj in mapa.zvijezde)
 				foreach (Planet planet in zvj.planeti)

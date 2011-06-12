@@ -172,6 +172,7 @@ namespace Zvjezdojedac.GUI
 			if (promjeniTab) tabCtrlDesno.SelectedTab = tabPageZvijezda;
 			listViewPlaneti.Items.Clear();
 
+			bool imaKoloniju = false;
 			if (igrac.posjeceneZvjezde.Contains(zvijezda))
 				for (int i = 0; i < zvijezda.planeti.Count; i++) {
 					Planet planet = zvijezda.planeti[i];
@@ -184,6 +185,9 @@ namespace Zvjezdojedac.GUI
 							item.ForeColor = planet.kolonija.igrac.boja;
 					}
 					listViewPlaneti.Items.Add(item);
+
+					if (planet.kolonija != null && planet.kolonija.igrac == igrac)
+						imaKoloniju = true;
 				}
 			else
 				listViewPlaneti.Items.Add(jezik["zvjNeistrazeno"].tekst(null));
@@ -193,7 +197,10 @@ namespace Zvjezdojedac.GUI
 			lblImeZvjezde.Text = zvijezda.ime + "\nZračenje: " + zvijezda.zracenje();
 			osvjeziMapu();
 			tabCtrlDesno.ImageList.Images[0] = Slike.ZvijezdaTab[zvijezda.tip];
-			tabCtrlDesno.Refresh();			
+			tabCtrlDesno.Refresh();
+
+			btnSlijedecaKolonija.Visible = imaKoloniju;
+			btnPrethodnaKolonija.Visible = imaKoloniju;
 		}
 
 		public void osvjeziMapu()
@@ -218,7 +225,7 @@ namespace Zvjezdojedac.GUI
 				groupVojGradnja.Visible = true;
 				lblRazvoj.Visible = true;
 
-				lblPopulacija.Text = jezik["plPopulacija"].tekst() + ": " + Fje.PrefiksFormater(planet.kolonija.efekti[Kolonija.Populacija]);
+				lblPopulacija.Text = jezik["plPopulacija"].tekst() + ":\n" + Fje.PrefiksFormater(planet.kolonija.populacija) + " / " + Fje.PrefiksFormater(planet.kolonija.efekti[Kolonija.PopulacijaMax]);
 				hscrCivilnaIndustrija.Enabled = true;
 				btnCivilnaGradnja.Enabled = true;
 
@@ -594,6 +601,29 @@ namespace Zvjezdojedac.GUI
 					formKolonizacija.ShowDialog();
 					break;
 			}
+		}
+
+		private void odaberiDruguKoloniju(int smjer)
+		{
+			Zvijezda zvj = igrac.odabranPlanet.zvjezda;
+			for (int planetIndeks = igrac.odabranPlanet.pozicija + smjer; planetIndeks >= 0 && planetIndeks < zvj.planeti.Count; planetIndeks += smjer) {
+				Kolonija kolonija = zvj.planeti[planetIndeks].kolonija;
+				
+				if (kolonija != null && kolonija.igrac == igrac) {
+					odaberiPlanet(zvj.planeti[planetIndeks], false);
+					return;
+				}
+			}
+		}
+
+		private void btnPrethodnaKolonija_Click(object sender, EventArgs e)
+		{
+			odaberiDruguKoloniju(-1);
+		}
+
+		private void btnSlijedecaKolonija_Click(object sender, EventArgs e)
+		{
+			odaberiDruguKoloniju(1);
 		}
 	}
 }

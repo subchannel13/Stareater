@@ -165,7 +165,7 @@ namespace Zvjezdojedac.Igra
 						tehnologijeUIstrazivanju.AddLast(tehnologije[t.kod]);
 		}
 
-		public void noviKrug(IgraZvj igra, long poeniRazvoja, long poeniIstrazivanja)
+		public void NoviKrug(IgraZvj igra, long poeniRazvoja, long poeniIstrazivanja)
 		{
 			istraziTehnologije(igra, poeniRazvoja, poeniIstrazivanja);
 			izracunajEfekte(igra);
@@ -408,8 +408,36 @@ namespace Zvjezdojedac.Igra
 			HashSet<Dizajn> rez = new HashSet<Dizajn>();
 			foreach (Kolonija kolonija in kolonije)
 				foreach (Zgrada.ZgradaInfo zgrada in kolonija.redVojneGradnje)
-					if (dizajnovi.Contains(zgrada))
-						rez.Add(((DizajnZgrada)zgrada).dizajn);
+					rez.Add((zgrada as DizajnZgrada).dizajn);
+
+			return rez;
+		}
+
+		private HashSet<Dizajn> nadogradiDizajnoveUGradnji()
+		{
+			HashSet<Zgrada.ZgradaInfo> dizajnovi = new HashSet<Zgrada.ZgradaInfo>();
+			Dictionary<Dizajn, DizajnZgrada> dizajnoviZgrade = new Dictionary<Dizajn, DizajnZgrada>();
+			foreach (DizajnZgrada dizajnZgrada in dizajnoviBrodova) {
+				dizajnovi.Add(dizajnZgrada);
+				dizajnoviZgrade.Add(dizajnZgrada.dizajn, dizajnZgrada);
+			}
+
+			HashSet<Dizajn> rez = new HashSet<Dizajn>();
+			foreach (Kolonija kolonija in kolonije)
+				for (LinkedListNode<Zgrada.ZgradaInfo> zgradaCvor = kolonija.redVojneGradnje.First; zgradaCvor != null; zgradaCvor = zgradaCvor.Next) {
+					Zgrada.ZgradaInfo zgrada = zgradaCvor.Value;
+
+					if (dizajnovi.Contains(zgrada)) {
+						Dizajn dizajn = (zgrada as DizajnZgrada).dizajn;
+
+						if (dizajn.nadogradnja != null) {
+							dizajn = dizajn.nadogradnja;
+							zgradaCvor.Value = dizajnoviZgrade[dizajn];
+						}
+
+						rez.Add(dizajn);
+					}
+				}
 			return rez;
 		}
 
@@ -451,7 +479,7 @@ namespace Zvjezdojedac.Igra
 			foreach (Dizajn dizajn in noviDizajnovi)
 				dodajDizajn(dizajn);
 
-			HashSet<Dizajn> uGradnji = dizajnoviUGradnji();
+			HashSet<Dizajn> uGradnji = nadogradiDizajnoveUGradnji();
 			List<DizajnZgrada> bezZastarjelih = new List<DizajnZgrada>();
 			foreach(DizajnZgrada dizajnZgrada in dizajnoviBrodova)
 			{
