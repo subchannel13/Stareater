@@ -155,7 +155,7 @@ namespace Zvjezdojedac.GUI
 			Dictionary<string, double> maxEfekti = kolonija.maxEfekti();
 			lblHranaPoStan.Text = jezik["HranaPoStan"].tekst() + String.Format(": {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.HranaPoFarmeru], maxEfekti[Kolonija.HranaPoFarmeru]);
 			lblRudePoStan.Text = jezik["RudePoStan"].tekst() + String.Format(": {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.RudePoRudaru], maxEfekti[Kolonija.RudePoRudaru]);
-			lblOdrzavanjePoStan.Text = jezik["OdrzavanjePoStan"].tekst() + String.Format(": {0:0.##}", (kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]));
+			lblOdrzavanjePoStan.Text = jezik["OdrzavanjePoStan"].tekst() + String.Format(": {0:0.##}", (kolonija.OdrzavanjePoStan));
 			lblIndustrijaPoStan.Text = jezik["IndustrijaPoStan"].tekst() + String.Format(": {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.IndPoRadnikuEfektivno], maxEfekti[Kolonija.IndPoRadnikuEfektivno]);
 			lblRazvojPoStan.Text = jezik["RazvojPoStan"].tekst() + String.Format(": {0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.RazPoRadnikuEfektivno], maxEfekti[Kolonija.RazPoRadnikuEfektivno]);
 		}

@@ -111,10 +111,13 @@ namespace Zvjezdojedac.Igra
 				poeniIstraz.Add(igrac.poeniIstrazivanja());
 			}
 
-			foreach (Zvijezda zvj in mapa.zvijezde)
+			foreach (Zvijezda zvj in mapa.zvijezde) {
 				foreach (Planet planet in zvj.planeti)
 					if (planet.kolonija != null)
 						planet.kolonija.noviKrug();
+
+				zvj.NoviKrug(igraci);
+			}
 
 			for (int i = 0; i < igraci.Count; i++)
 				igraci[i].noviKrug(this, poeniRazvoja[i], poeniIstraz[i]);

@@ -67,22 +67,23 @@ namespace Zvjezdojedac.Igra.Brodovi
 		{
 			if (maxNivo == 0) return 0;
 			if (dostupno(varijable, maxNivo)) return maxNivo;
-			int min = 1, max = maxNivo;
+			int min = 0, max = maxNivo;
 
 			while (max - min > 1)
 			{
 				int sredina = (max + min) / 2;
-				
+
 				if (dostupno(varijable, sredina))
 					min = sredina;
 				else
 					max = sredina;
 			}
-			for (; min < max; min++)
-				if (!dostupno(varijable, min))
-					return min - 1;
 
-			return min;
+			
+			if (dostupno(varijable, max))
+				return max;
+			else
+				return min;
 		}
 
 		private uint noviIndeks()

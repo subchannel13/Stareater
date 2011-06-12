@@ -35,3 +35,5 @@ TITANIJ_IME = Titanium armour
 TITANIJ_OPIS = No description
 DURAPLAST_IME = Duraplast
 DURAPLAST_OPIS = No description
+KOLONIZATOR_IME = Colonizer
+KOLONIZATOR_OPIS = Improves colonizer capacity

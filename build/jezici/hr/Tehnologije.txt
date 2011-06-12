@@ -35,3 +35,5 @@ TITANIJ_IME = Titanijski oklop
 TITANIJ_OPIS = Bez opisa
 DURAPLAST_IME = Duraplast
 DURAPLAST_OPIS = Bez opisa
+KOLONIZATOR_IME = Kolinizator
+KOLONIZATOR_OPIS = Povećava nosivost kolonizatora
