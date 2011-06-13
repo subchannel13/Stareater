@@ -88,3 +88,13 @@ PREDUVJETI = BIO | - LVL 5
 SLIKA = ./slike/tehnologije/industrija.bmp
 ----
 
+<TEHNOLOGIJA>
+IME = SVEMIRSKI_PROGRAM_IME
+OPIS = SVEMIRSKI_PROGRAM_OPIS
+KOD = SVEMIRSKI_PROGRAM
+CIJENA = * 2000000 ^ + LVL 1 2
+MAX_LVL = 10
+PREDUVJETI = 
+SLIKA = ./slike/tehnologije/industrija.bmp
+----
+

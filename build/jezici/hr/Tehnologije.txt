@@ -37,3 +37,5 @@ DURAPLAST_IME = Duraplast
 DURAPLAST_OPIS = Bez opisa
 KOLONIZATOR_IME = Kolinizator
 KOLONIZATOR_OPIS = Povećava nosivost kolonizatora
+SVEMIRSKI_PROGRAM_IME = Svemirski program
+SVEMIRSKI_PROGRAM_OPIS = Poboljšanje učinkovitosti svemirskog programa

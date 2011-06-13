@@ -192,9 +192,11 @@ namespace Zvjezdojedac.GUI
 			else
 				listViewPlaneti.Items.Add(jezik["zvjNeistrazeno"].tekst(null));
 
-			prikaziFlotu(zvijezda);			
+			prikaziFlotu(zvijezda);
 
-			lblImeZvjezde.Text = zvijezda.ime + "\nZračenje: " + zvijezda.zracenje();
+			lblImeZvjezde.Text = zvijezda.ime + "\n" + 
+				jezik["lblZracenje"].tekst() + ": " + zvijezda.zracenje() + "\n"+
+				jezik["lblMigracija"].tekst() + ": " + Fje.PrefiksFormater(zvijezda.efektiPoIgracu[igrac.id][Kolonija.MigracijaMax]);
 			osvjeziMapu();
 			tabCtrlDesno.ImageList.Images[0] = Slike.ZvijezdaTab[zvijezda.tip];
 			tabCtrlDesno.Refresh();
