@@ -8,6 +8,8 @@ btnSpremi = &Spremi
 btnTech = &Tehnologije
 btnUcitaj = &Učitaj
 lblBrojKruga := # D + KRUG 1 # ". krug"
+lblMigracija = Max migracija
+lblZracenje = Zračenje
 			
 flotaObrana = Obrana
 zvjNeistrazeno = Neistraženo

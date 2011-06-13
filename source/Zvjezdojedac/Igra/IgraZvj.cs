@@ -47,6 +47,13 @@ namespace Zvjezdojedac.Igra
 				this.igraci[i].izracunajPoeneIstrazivanja(this);
 				this.igraci[i].staviPredefiniraneDizajnove();
 			}
+
+			foreach (Zvijezda zvj in this.mapa.zvijezde) {
+				foreach (Planet pl in zvj.planeti)
+					if (pl.kolonija != null)
+						pl.kolonija.resetirajEfekte();
+				zvj.IzracunajEfekte(this.igraci);
+			}
 		}
 
 		private IgraZvj(List<Igrac> igraci, int trenutniIgracIndex,
@@ -66,6 +73,9 @@ namespace Zvjezdojedac.Igra
 				foreach (Kolonija kolonija in igraci[i].kolonije)
 					kolonija.resetirajEfekte();
 			}
+
+			foreach (Zvijezda zvj in mapa.zvijezde)
+				zvj.IzracunajEfekte(igraci);
 		}
 
 		private void postaviIgraca(Igrac igrac, Planet pocetniPlanet)

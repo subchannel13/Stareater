@@ -8,6 +8,8 @@ btnSpremi = &Save
 btnTech = &Technologies
 btnUcitaj = &Load
 lblBrojKruga := # D + KRUG 1 # ? = KRUG 0 : "st" ? = KRUG 1 : "nd" ? = KRUG 2 : "rd" ? > KRUG 2 : "th" " turn"
+lblMigracija = Max migration
+lblZracenje = Radiation
 
 flotaObrana = Defense
 zvjNeistrazeno = Unknown

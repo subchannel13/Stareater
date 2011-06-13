@@ -132,10 +132,10 @@
 			this.listViewPlaneti.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.listViewPlaneti.ForeColor = System.Drawing.Color.White;
 			this.listViewPlaneti.FullRowSelect = true;
-			this.listViewPlaneti.Location = new System.Drawing.Point(3, 40);
+			this.listViewPlaneti.Location = new System.Drawing.Point(3, 51);
 			this.listViewPlaneti.MultiSelect = false;
 			this.listViewPlaneti.Name = "listViewPlaneti";
-			this.listViewPlaneti.Size = new System.Drawing.Size(148, 534);
+			this.listViewPlaneti.Size = new System.Drawing.Size(148, 523);
 			this.listViewPlaneti.TabIndex = 0;
 			this.listViewPlaneti.UseCompatibleStateImageBehavior = false;
 			this.listViewPlaneti.View = System.Windows.Forms.View.Tile;
@@ -147,7 +147,7 @@
 			this.pnlOpisZvjezde.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pnlOpisZvjezde.Location = new System.Drawing.Point(3, 3);
 			this.pnlOpisZvjezde.Name = "pnlOpisZvjezde";
-			this.pnlOpisZvjezde.Size = new System.Drawing.Size(148, 37);
+			this.pnlOpisZvjezde.Size = new System.Drawing.Size(148, 48);
 			this.pnlOpisZvjezde.TabIndex = 1;
 			// 
 			// lblImeZvjezde
@@ -155,9 +155,9 @@
 			this.lblImeZvjezde.AutoSize = true;
 			this.lblImeZvjezde.Location = new System.Drawing.Point(3, 2);
 			this.lblImeZvjezde.Name = "lblImeZvjezde";
-			this.lblImeZvjezde.Size = new System.Drawing.Size(65, 26);
+			this.lblImeZvjezde.Size = new System.Drawing.Size(71, 39);
 			this.lblImeZvjezde.TabIndex = 0;
-			this.lblImeZvjezde.Text = "Ime zvijezde\r\nZračenje";
+			this.lblImeZvjezde.Text = "Ime zvijezde\r\nZračenje\r\nMax migracija";
 			// 
 			// tabPageKolonija
 			// 

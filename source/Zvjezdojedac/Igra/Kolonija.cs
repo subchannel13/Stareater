@@ -157,6 +157,8 @@ namespace Zvjezdojedac.Igra
 			efekti[RadnaMjestaDelta] = 0;
 			efekti[AktivnaRadnaMjesta] = Math.Min(_populacija, radnaMjesta);
 			efekti[MigracijaMax] = 0;
+			if (!efekti.ContainsKey(PopulacijaVisak))
+				efekti[PopulacijaVisak] = 0;
 
 			efekti[RudeDubina] = (planet.tip == Planet.Tip.ASTEROIDI) ? 1 : igrac.efekti["DUBINA_RUDARENJA"];
 			efekti[RudeDubinske] = planet.mineraliDubinski;
