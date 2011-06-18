@@ -166,35 +166,49 @@ namespace Zvjezdojedac.Igra
 				return 0;
 		}
 
+		private double magnetskoPolje
+		{
+			get
+			{
+				return (tip == Tip.ASTEROIDI || tip == Tip.NIKAKAV) ? 0 : velicina / 10;
+			}
+		}
+
 		public double ozracenost()
 		{
-			double ret = zvjezda.zracenje() - pozicija - gustocaAtmosfere / 5;
-			if (ret < 0)
-				return 0;
-			else
-				return ret;
+			double minus = (tip == Tip.KAMENI) ? gustocaAtmosfere : 0;
+
+			double ret = Math.Pow(zvjezda.zracenje() - pozicija, 2) - magnetskoPolje - minus;
+
+			return Math.Max(ret, 0);
 		}
 
 		public double temperatura()
 		{
-			return ozracenost() + gustocaAtmosfere*2 / 5;
+			double zracenje = Math.Pow(zvjezda.zracenje() - pozicija, 2) - magnetskoPolje;
+
+			//if (zracenje < gustocaAtmosfere)
+			return Math.Max(zracenje, gustocaAtmosfere / 5);
+			//else
+				//return zracenje;
 		}
 
 		const double MIN_ZA_GRAVITACIJU = 0.5;
 		const double MAX_FAKTOR_ZA_GRAVITACIJU = 2;
-
+		const double FaktorGustoceAtmosfere = 20;
+			 
 		public double minGustocaAtmosfere()
 		{
 			if (gravitacija() <= MIN_ZA_GRAVITACIJU) return 0;
 
-			return gravitacija() - MIN_ZA_GRAVITACIJU;
+			return (gravitacija() - MIN_ZA_GRAVITACIJU) * FaktorGustoceAtmosfere;
 		}
 
 		public double maxGustocaAtmosfere()
 		{
 			if (gravitacija() <= MIN_ZA_GRAVITACIJU) return 0;
 
-			return (gravitacija() - MIN_ZA_GRAVITACIJU) * MAX_FAKTOR_ZA_GRAVITACIJU;
+			return (gravitacija() - MIN_ZA_GRAVITACIJU) * MAX_FAKTOR_ZA_GRAVITACIJU * FaktorGustoceAtmosfere;
 		}
 
 		#region Pohrana

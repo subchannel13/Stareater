@@ -40,6 +40,11 @@ RADNA_MJ = Radna mjesta
 SPIJUNAZA = Špijunaža
 VATRENA_MOC = Vatrena moć
 
+::POCETNA_POZICIJA
+popMinimalna = Skromna
+popSrednja = Osrednja
+popVelika = Brojna
+
 ::VELICINA_MAPE
 Minijaturna = Minijaturna
 Jako_mala = Jako mala

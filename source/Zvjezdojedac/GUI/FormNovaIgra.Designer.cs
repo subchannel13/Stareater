@@ -41,12 +41,16 @@
 			this.cbBrIgraca = new System.Windows.Forms.ComboBox();
 			this.btnKreni = new System.Windows.Forms.Button();
 			this.btnOdustani = new System.Windows.Forms.Button();
+			this.cbPocetnaPop = new System.Windows.Forms.ComboBox();
+			this.lblPocetnaPop = new System.Windows.Forms.Label();
+			this.lblPopulacija = new System.Windows.Forms.Label();
+			this.lblBrKolonija = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// lblVelicinaMape
 			// 
 			this.lblVelicinaMape.AutoSize = true;
-			this.lblVelicinaMape.Location = new System.Drawing.Point(217, 63);
+			this.lblVelicinaMape.Location = new System.Drawing.Point(213, 28);
 			this.lblVelicinaMape.Name = "lblVelicinaMape";
 			this.lblVelicinaMape.Size = new System.Drawing.Size(76, 13);
 			this.lblVelicinaMape.TabIndex = 5;
@@ -56,7 +60,7 @@
 			// 
 			this.cbVelicinaMape.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbVelicinaMape.FormattingEnabled = true;
-			this.cbVelicinaMape.Location = new System.Drawing.Point(220, 79);
+			this.cbVelicinaMape.Location = new System.Drawing.Point(216, 44);
 			this.cbVelicinaMape.Name = "cbVelicinaMape";
 			this.cbVelicinaMape.Size = new System.Drawing.Size(121, 21);
 			this.cbVelicinaMape.TabIndex = 6;
@@ -100,11 +104,11 @@
 			// lblOpisMape
 			// 
 			this.lblOpisMape.AutoSize = true;
-			this.lblOpisMape.Location = new System.Drawing.Point(217, 103);
+			this.lblOpisMape.Location = new System.Drawing.Point(213, 68);
 			this.lblOpisMape.Name = "lblOpisMape";
-			this.lblOpisMape.Size = new System.Drawing.Size(35, 13);
+			this.lblOpisMape.Size = new System.Drawing.Size(64, 26);
 			this.lblOpisMape.TabIndex = 7;
-			this.lblOpisMape.Text = "label4";
+			this.lblOpisMape.Text = "Br. zvijezda:\r\ndrugi red";
 			// 
 			// lblOpisOrg
 			// 
@@ -153,6 +157,43 @@
 			this.btnOdustani.UseVisualStyleBackColor = true;
 			this.btnOdustani.Click += new System.EventHandler(this.btnOdustani_Click);
 			// 
+			// cbPocetnaPop
+			// 
+			this.cbPocetnaPop.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbPocetnaPop.FormattingEnabled = true;
+			this.cbPocetnaPop.Location = new System.Drawing.Point(216, 110);
+			this.cbPocetnaPop.Name = "cbPocetnaPop";
+			this.cbPocetnaPop.Size = new System.Drawing.Size(121, 21);
+			this.cbPocetnaPop.TabIndex = 12;
+			this.cbPocetnaPop.SelectedIndexChanged += new System.EventHandler(this.cbPocetnaPop_SelectedIndexChanged);
+			// 
+			// lblPocetnaPop
+			// 
+			this.lblPocetnaPop.AutoSize = true;
+			this.lblPocetnaPop.Location = new System.Drawing.Point(213, 94);
+			this.lblPocetnaPop.Name = "lblPocetnaPop";
+			this.lblPocetnaPop.Size = new System.Drawing.Size(101, 13);
+			this.lblPocetnaPop.TabIndex = 13;
+			this.lblPocetnaPop.Text = "Početna populacija:";
+			// 
+			// lblPopulacija
+			// 
+			this.lblPopulacija.AutoSize = true;
+			this.lblPopulacija.Location = new System.Drawing.Point(213, 134);
+			this.lblPopulacija.Name = "lblPopulacija";
+			this.lblPopulacija.Size = new System.Drawing.Size(95, 13);
+			this.lblPopulacija.TabIndex = 14;
+			this.lblPopulacija.Text = "Populacija: xx.xx X";
+			// 
+			// lblBrKolonija
+			// 
+			this.lblBrKolonija.AutoSize = true;
+			this.lblBrKolonija.Location = new System.Drawing.Point(213, 147);
+			this.lblBrKolonija.Name = "lblBrKolonija";
+			this.lblBrKolonija.Size = new System.Drawing.Size(70, 13);
+			this.lblBrKolonija.TabIndex = 15;
+			this.lblBrKolonija.Text = "Br. kolonija: x";
+			// 
 			// FormNovaIgra
 			// 
 			this.AcceptButton = this.btnKreni;
@@ -160,6 +201,10 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btnOdustani;
 			this.ClientSize = new System.Drawing.Size(380, 266);
+			this.Controls.Add(this.lblBrKolonija);
+			this.Controls.Add(this.lblPopulacija);
+			this.Controls.Add(this.lblPocetnaPop);
+			this.Controls.Add(this.cbPocetnaPop);
 			this.Controls.Add(this.btnOdustani);
 			this.Controls.Add(this.btnKreni);
 			this.Controls.Add(this.cbBrIgraca);
@@ -198,5 +243,9 @@
 		private System.Windows.Forms.ComboBox cbBrIgraca;
 		private System.Windows.Forms.Button btnKreni;
 		private System.Windows.Forms.Button btnOdustani;
+		private System.Windows.Forms.ComboBox cbPocetnaPop;
+		private System.Windows.Forms.Label lblPocetnaPop;
+		private System.Windows.Forms.Label lblPopulacija;
+		private System.Windows.Forms.Label lblBrKolonija;
 	}
 }

@@ -50,7 +50,7 @@ namespace Zvjezdojedac.GUI
 			this.Hide();
 			if (novaIgra.ShowDialog() == DialogResult.OK)
 			{
-				FormIgra igra = new FormIgra(new IgraZvj(novaIgra.igraci, novaIgra.mapa));
+				FormIgra igra = new FormIgra(new IgraZvj(novaIgra.igraci, novaIgra.mapa, novaIgra.PocetnaPop));
 				igra.ShowDialog();
 			}
 			this.Show();

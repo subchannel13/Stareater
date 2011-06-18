@@ -22,6 +22,7 @@ namespace Zvjezdojedac.Podaci.Jezici
 		Kolonija,
 		Komponente,
 		Misije,
+		PocetnaPopulacija,
 		Tehnologije,
 		VelicinaMape,
 		WindowsDijalozi,

@@ -19,12 +19,12 @@ namespace Zvjezdojedac.Igra
 			public const int MaxCrvotocinaPoZvj = 5;
 
 			public Mapa mapa;
-			public List<Planet> pocetnePozicije;
+			public List<Zvijezda> pocetnePozicije;
 
 			public GraditeljMape(int tipMape, int brIgraca)
 			{
 				mapa = new Mapa();
-				pocetnePozicije = new List<Planet>();
+				pocetnePozicije = new List<Zvijezda>();
 
 				Random rnd = new Random();
 				double x, y;
@@ -292,10 +292,9 @@ namespace Zvjezdojedac.Igra
 					for (int i = 0; i < BR_PLANETA; i++)
 					{
 						Planet planet = new Planet(konf.planeti[i], zvj, null);
-						if (konf.maticniPlanet == i)
-							pocetnePozicije.Add(planet);
 						zvj.planeti.Add(planet);
 					}
+					pocetnePozicije.Add(zvj);
 				}
 			}
 		}

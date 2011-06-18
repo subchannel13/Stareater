@@ -19,7 +19,7 @@ namespace Zvjezdojedac.Igra
 		public int brKruga;
 		public Dictionary<string, Formula> osnovniEfekti;
 
-		public IgraZvj(List<Igrac.ZaStvoriti> igraci, Mapa.GraditeljMape mapa)
+		public IgraZvj(List<Igrac.ZaStvoriti> igraci, Mapa.GraditeljMape mapa, PocetnaPopulacija pocetnaPop)
 		{
 			this.igraci = new List<Igrac>();
 			this.mapa = mapa.mapa;
@@ -35,14 +35,14 @@ namespace Zvjezdojedac.Igra
 				if (igrac.tip != Igrac.Tip.COVJEK)
 					this.igraci.Add(igrac.stvoriIgraca(this.igraci.Count));
 
-			Vadjenje<Planet> pocetnePozicije = new Vadjenje<Planet>();
-			foreach (Planet pl in mapa.pocetnePozicije)
+			Vadjenje<Zvijezda> pocetnePozicije = new Vadjenje<Zvijezda>();
+			foreach (Zvijezda pl in mapa.pocetnePozicije)
 				pocetnePozicije.dodaj(pl);
 
 			for (int i = 0; i < igraci.Count; i++)
 			{
 				this.igraci[i].izracunajEfekte(this);
-				postaviIgraca(this.igraci[i], pocetnePozicije.izvadi());
+				postaviIgraca(this.igraci[i], pocetnePozicije.izvadi(), pocetnaPop);
 				this.igraci[i].staviNoveTehnologije(this);
 				this.igraci[i].izracunajPoeneIstrazivanja(this);
 				this.igraci[i].staviPredefiniraneDizajnove();
@@ -53,6 +53,11 @@ namespace Zvjezdojedac.Igra
 					if (pl.kolonija != null)
 						pl.kolonija.resetirajEfekte();
 				zvj.IzracunajEfekte(this.igraci);
+
+				//	Za potrebe debugiranja
+				  
+				/* for (int i = 0; i < igraci.Count; i++)
+					this.igraci[i].posjeceneZvjezde.Add(zvj); */
 			}
 		}
 
@@ -78,18 +83,73 @@ namespace Zvjezdojedac.Igra
 				zvj.IzracunajEfekte(igraci);
 		}
 
-		private void postaviIgraca(Igrac igrac, Planet pocetniPlanet)
+		private void postaviIgraca(Igrac igrac, Zvijezda pocetnaZvj, PocetnaPopulacija pocetnaPop)
 		{
-			igrac.odabranaZvijezda = pocetniPlanet.zvjezda;
-			igrac.posjeceneZvjezde.Add(igrac.odabranaZvijezda);
+			igrac.odabranaZvijezda = pocetnaZvj;
+			igrac.posjeceneZvjezde.Add(pocetnaZvj);
 
-			pocetniPlanet.kolonija = new Kolonija(
-				igrac,
-				pocetniPlanet,
-				(long)osnovniEfekti["POCETNA_POPULACIJA"].iznos(null),
-				(long)osnovniEfekti["POCETNA_RADNA_MJESTA"].iznos(null));
-			igrac.odabranPlanet = pocetniPlanet;
-			igrac.kolonije.Add(pocetniPlanet.kolonija);
+			List<PotencijalnaPocetnaKolonija> potencijalneKolonije = new List<PotencijalnaPocetnaKolonija>();
+			foreach (Planet pl in pocetnaZvj.planeti)
+				if (pl.tip != Planet.Tip.NIKAKAV) {
+					Dictionary<string, double> efekti = new Kolonija(igrac, pl, 1000, 1000).maxEfekti();
+					potencijalneKolonije.Add(new PotencijalnaPocetnaKolonija(
+						pl,
+						efekti[Kolonija.BrRadnika] / efekti[Kolonija.Populacija],
+						efekti[Kolonija.PopulacijaMax],
+						efekti[Kolonija.RudePoRudaru]));
+				}
+
+			potencijalneKolonije.Sort(
+				(k1, k2) =>
+					(k1.prikladnost != k2.prikladnost) ?
+					-(k1.prikladnost).CompareTo(k2.prikladnost) :
+					-(k1.rudePoRudaru).CompareTo(k2.rudePoRudaru));
+
+			if (potencijalneKolonije.Count > pocetnaPop.BrKolonija)
+				potencijalneKolonije.RemoveRange(pocetnaPop.BrKolonija, potencijalneKolonije.Count - pocetnaPop.BrKolonija);
+
+			double[] dodjeljenaPop = new double[potencijalneKolonije.Count];
+			double preostalaPop = pocetnaPop.Populacija;
+			double ukupnaPop = pocetnaPop.Populacija;
+			double sumaDobrota = 0;
+
+			for (int i = 0; i < dodjeljenaPop.Length; i++)
+				sumaDobrota += potencijalneKolonije[i].prikladnost;
+
+			for (int i = 0; i < dodjeljenaPop.Length; i++) {
+				double dodjela = ukupnaPop * potencijalneKolonije[i].prikladnost / sumaDobrota;
+				dodjela = Math.Floor(Math.Min(dodjela, potencijalneKolonije[i].populacijaMax));
+				preostalaPop -= dodjela;
+				dodjeljenaPop[i] = dodjela;
+			}
+
+			int najboljiPlanet = 0;
+			for (int i = 0; i < dodjeljenaPop.Length; i++) {
+				double dodjela = Math.Floor(
+					Math.Min(
+						preostalaPop, 
+						potencijalneKolonije[i].populacijaMax - dodjeljenaPop[i])
+					);
+
+				preostalaPop -= dodjela;
+				dodjeljenaPop[i] += dodjela;
+
+				if (dodjeljenaPop[i] > dodjeljenaPop[najboljiPlanet]) najboljiPlanet = i;
+			}
+
+			for (int i = 0; i < dodjeljenaPop.Length; i++) {
+				Planet pl = potencijalneKolonije[i].planet;
+
+				pl.kolonija = new Kolonija(
+					igrac,
+					pl,
+					(long)dodjeljenaPop[i],
+					(long)Math.Floor(dodjeljenaPop[i] * pocetnaPop.UdioRadnihMjesta));
+				
+				igrac.kolonije.Add(pl.kolonija);
+			}
+
+			igrac.odabranPlanet = potencijalneKolonije[najboljiPlanet].planet;
 		}
 
 		public void slijedeciIgrac()
