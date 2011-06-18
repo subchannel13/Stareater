@@ -28,6 +28,7 @@ namespace Zvjezdojedac.Podaci.Jezici
 			rez.Add("KOLONIJA", Kontekst.Kolonija);
 			rez.Add("KOMPONENTE", Kontekst.Komponente);
 			rez.Add("MISIJA", Kontekst.Misije);
+			rez.Add("POCETNA_POZICIJA", Kontekst.PocetnaPopulacija);
 			rez.Add("TEHNOLOGIJE", Kontekst.Tehnologije);
 			rez.Add("VELICINA_MAPE", Kontekst.VelicinaMape);
 			rez.Add("WINDOWS_DIJALOZI", Kontekst.WindowsDijalozi);

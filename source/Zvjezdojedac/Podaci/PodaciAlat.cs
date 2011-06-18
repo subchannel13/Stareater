@@ -246,6 +246,7 @@ namespace Zvjezdojedac.Podaci
 		public const string OruzjeTag = "ORUZJE";
 		public const string PlanetTag = "PLANET";
 		public const string PocetnaPozTag = "POCETNA_POZ";
+		public const string PocetnaPopTag = "POCETNA_POP";
 		public const string PotisnikTag = "POTISNIK";
 		public const string PredefDizjanTag = "PREDEF_DIZ";
 		public const string ReaktorTag = "REAKTOR";
@@ -272,6 +273,7 @@ namespace Zvjezdojedac.Podaci
 			ret.Add(TehnoIstTag, pokupi("./podaci/teh_istrazivanje.txt", "<TEHNOLOGIJA>"));
 			ret.Add(PredefDizjanTag, pokupi("./podaci/predef_dizajnovi.txt", "<DIZAJN>"));
 			ret.Add(PocetnaPozTag, pokupi("./podaci/pocetne_pozicije.txt", "<POCETNA_POZICIJA>"));
+			ret.Add(PocetnaPopTag, pokupi("./podaci/pocetne_pozicije.txt", "<POCETNA_POPULACIJA>"));
 			ret.Add(PlanetTag, pokupi("./podaci/planeti.txt", "<PLANET>"));
 			ret.Add(OrgTag, pokupi("./podaci/organizacije.txt", "<ORGANIZACIJA>"));
 			ret.Add(MapaTag, pokupi("./podaci/mapa.txt", "<VELICINA MAPE>"));
@@ -301,7 +303,6 @@ namespace Zvjezdojedac.Podaci
 				Dictionary<string, List<Dictionary<string, string>>> podaci = ucitajPodatke();
 				foreach (Dictionary<string, string> unos in podaci[MapaTag]) Mapa.dodajVelicinuMape(unos);
 				foreach (Dictionary<string, string> unos in podaci[OrgTag]) Organizacija.dodajOrganizaciju(unos);
-				ucitajPostavke();
 				foreach (Dictionary<string, string> unos in podaci[PlanetTag]) Planet.TipInfo.noviTip(unos);
 				
 				ucitajSlike();
@@ -312,6 +313,7 @@ namespace Zvjezdojedac.Podaci
 				foreach (Dictionary<string, string> unos in podaci[ZvijezdeTag]) Zvijezda.TipInfo.noviTip(unos);
 				ucitajZvjezdja();
 				foreach (Dictionary<string, string> unos in podaci[PocetnaPozTag]) PocetnaPozicija.novaKonfiguracija(unos);
+				foreach (Dictionary<string, string> unos in podaci[PocetnaPopTag]) PocetnaPopulacija.novaKonfiguracija(unos);
 				
 				foreach (Dictionary<string, string> unos in podaci[TrupTag]) Trup.TrupInfo.UcitajTrupInfo(unos);
 				foreach (Dictionary<string, string> unos in podaci[OklopTag]) Oklop.OklopInfo.UcitajOklopInfo(unos);
@@ -326,6 +328,8 @@ namespace Zvjezdojedac.Podaci
 				foreach (Dictionary<string, string> unos in podaci[TaktikaBrodTag]) Taktika.DodajTaktikuBroda(unos);
 
 				foreach (Dictionary<string, string> unos in podaci["PREDEF_DIZ"]) PredefiniraniDizajn.Dodaj(unos);
+
+				ucitajPostavke();
 #if !DEBUG
 			}
 			catch (FileNotFoundException e)

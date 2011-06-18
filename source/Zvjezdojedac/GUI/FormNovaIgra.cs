@@ -12,11 +12,11 @@ using Zvjezdojedac.Igra;
 
 namespace Zvjezdojedac.GUI
 {
-	public partial class FormNovaIgra : Form
+	partial class FormNovaIgra : Form
 	{
 		public List<Igrac.ZaStvoriti> igraci;
-
 		public Mapa.GraditeljMape mapa;
+		public PocetnaPopulacija PocetnaPop;
 
 		public FormNovaIgra()
 		{
@@ -35,27 +35,34 @@ namespace Zvjezdojedac.GUI
 			btnKreni.Text = jezik["BTN_KRENI"].tekst(null);
 			btnOdustani.Text = jezik["BTN_ODUSTANI"].tekst(null);
 
-			lblBrojIgraca.Text = jezik["LBL_BR_IGRACA"].tekst(null);
-			lblImeIgraca.Text = jezik["LBL_IME_IGRACA"].tekst(null);
-			lblOrganizacija.Text = jezik["LBL_ORGANIZACIJA"].tekst(null);
-			lblVelicinaMape.Text = jezik["LBL_VELICINA_MAPE"].tekst(null);
+			lblBrojIgraca.Text = jezik["LBL_BR_IGRACA"].tekst();
+			lblImeIgraca.Text = jezik["LBL_IME_IGRACA"].tekst();
+			lblOrganizacija.Text = jezik["LBL_ORGANIZACIJA"].tekst();
+			lblPocetnaPop.Text = jezik["lblPocetnaPop"].tekst();
+			lblVelicinaMape.Text = jezik["LBL_VELICINA_MAPE"].tekst();
 		}
 
 		private void frmNovaIgra_Load(object sender, EventArgs e)
 		{
 			foreach (Mapa.VelicinaMape vm in Mapa.velicinaMape)
 				cbVelicinaMape.Items.Add(vm.naziv);
-			cbVelicinaMape.SelectedIndex = Postavke.ProslaIgra.velicinaMape;
+			cbVelicinaMape.SelectedIndex = Postavke.ProslaIgra.VelicinaMape;
 
 			foreach (Organizacija org in Organizacija.lista)
 				cbOrganizacija.Items.Add(org.naziv);
-			cbOrganizacija.SelectedIndex = Postavke.ProslaIgra.organizacija;
+			cbOrganizacija.SelectedIndex = Postavke.ProslaIgra.Organizacija;
 
 			for (int i = 2; i <= IgraZvj.maxIgraca; i++)
 				cbBrIgraca.Items.Add(i);
-			cbBrIgraca.SelectedIndex = Postavke.ProslaIgra.brIgraca-2;
+			cbBrIgraca.SelectedIndex = Postavke.ProslaIgra.BrIgraca-2;
 
-			txtIme.Text = Postavke.ProslaIgra.imeIgraca;
+			foreach(var pocentaPop in PocetnaPopulacija.konfiguracije)
+				cbPocetnaPop.Items.Add(new TagTekst<PocetnaPopulacija>(
+					pocentaPop,
+					Postavke.jezik[Kontekst.PocetnaPopulacija][pocentaPop.NazivKod].tekst()));
+			cbPocetnaPop.SelectedIndex = Postavke.ProslaIgra.PocetnaPop;
+
+			txtIme.Text = Postavke.ProslaIgra.ImeIgraca;
 		}
 
 		private void cbVelicinaMape_SelectedIndexChanged(object sender, EventArgs e)
@@ -82,10 +89,11 @@ namespace Zvjezdojedac.GUI
 		private void btnKreni_Click(object sender, EventArgs e)
 		{
 			int brIgraca = cbBrIgraca.SelectedIndex + 2;
-			Postavke.ProslaIgra.brIgraca = brIgraca;
-			Postavke.ProslaIgra.imeIgraca = txtIme.Text;
-			Postavke.ProslaIgra.organizacija = cbOrganizacija.SelectedIndex;
-			Postavke.ProslaIgra.velicinaMape = cbVelicinaMape.SelectedIndex;
+			Postavke.ProslaIgra.BrIgraca = brIgraca;
+			Postavke.ProslaIgra.ImeIgraca = txtIme.Text;
+			Postavke.ProslaIgra.Organizacija = cbOrganizacija.SelectedIndex;
+			Postavke.ProslaIgra.PocetnaPop = cbPocetnaPop.SelectedIndex;
+			Postavke.ProslaIgra.VelicinaMape = cbVelicinaMape.SelectedIndex;
 
 			Vadjenje<Organizacija> organizacije = new Vadjenje<Organizacija>();
 			for (int i = 0; i < Organizacija.lista.Count; i++)
@@ -104,8 +112,21 @@ namespace Zvjezdojedac.GUI
 				cbVelicinaMape.SelectedIndex,
 				brIgraca);
 
+			PocetnaPop = (cbPocetnaPop.SelectedItem as TagTekst<PocetnaPopulacija>).tag;
+
 			this.DialogResult = DialogResult.OK;
 			this.Close();
+		}
+
+		private void cbPocetnaPop_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (cbPocetnaPop.SelectedItem == null) return;
+
+			PocetnaPopulacija pocetnaPop = (cbPocetnaPop.SelectedItem as TagTekst<PocetnaPopulacija>).tag;
+			var jezik = Postavke.jezik[Kontekst.FormNovaIgra];
+
+			lblBrKolonija.Text = jezik["lblBrKolonija"].tekst() + ": " + pocetnaPop.BrKolonija;
+			lblPopulacija.Text = jezik["lblPopulacija"].tekst() + ": " + Fje.PrefiksFormater(pocetnaPop.Populacija);
 		}
 	}
 }

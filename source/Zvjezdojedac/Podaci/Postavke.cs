@@ -12,34 +12,40 @@ namespace Zvjezdojedac.Podaci
 	{
 		public class ProslaIgra
 		{
-			public static int brIgraca;
+			public static int BrIgraca;
 
-			public static string imeIgraca;
+			public static string ImeIgraca;
 
-			public static int organizacija;
+			public static int Organizacija;
 			
-			public static int velicinaMape;
+			public static int PocetnaPop;
+
+			public static int VelicinaMape;
 
 			public static void Postavi(Dictionary<string, string> podatci)
 			{
-				imeIgraca = (podatci.ContainsKey("IME_IGRACA")) ? podatci["IME_IGRACA"] : "Marko Kovač";
+				ImeIgraca = (podatci.ContainsKey("IME_IGRACA")) ? podatci["IME_IGRACA"] : "Marko Kovač";
 
-				brIgraca = 4;
+				BrIgraca = 4;
 				if (podatci.ContainsKey("BR_IGRACA"))
-					if (!int.TryParse(podatci["BR_IGRACA"], out brIgraca))
-						brIgraca = 4;
-				if (brIgraca < 1) brIgraca = 1;
-				if (brIgraca > IgraZvj.maxIgraca) brIgraca = IgraZvj.maxIgraca;
+					if (!int.TryParse(podatci["BR_IGRACA"], out BrIgraca))
+						BrIgraca = 4;
+				if (BrIgraca < 1) BrIgraca = 1;
+				if (BrIgraca > IgraZvj.maxIgraca) BrIgraca = IgraZvj.maxIgraca;
 
-				organizacija = 0;
+				Organizacija = 0;
 				if (podatci.ContainsKey("ORGANIZACIJA"))
-					if (!int.TryParse(podatci["ORGANIZACIJA"], out organizacija))
-						organizacija = 0;
+					if (!int.TryParse(podatci["ORGANIZACIJA"], out Organizacija))
+						Organizacija = 0;
 
-				velicinaMape = Mapa.velicinaMape.Count / 2;
+				PocetnaPop = PocetnaPopulacija.konfiguracije.Count / 2;
+				if (podatci.ContainsKey("POCETNA_POPULACIJA"))
+					if (!int.TryParse(podatci["POCETNA_POPULACIJA"], out PocetnaPop))
+
+				VelicinaMape = Mapa.velicinaMape.Count / 2;
 				if (podatci.ContainsKey("VELICINA_MAPE"))
-					if (!int.TryParse(podatci["VELICINA_MAPE"], out velicinaMape))
-						velicinaMape = Mapa.velicinaMape.Count / 2;
+					if (!int.TryParse(podatci["VELICINA_MAPE"], out VelicinaMape))
+						VelicinaMape = Mapa.velicinaMape.Count / 2;
 			}
 		}
 
@@ -64,10 +70,11 @@ namespace Zvjezdojedac.Podaci
 		{
 			StreamWriter fajla = new StreamWriter("postavke.txt");
 			Dictionary<string, string> podatci = new Dictionary<string, string>();
-			podatci.Add("IME_IGRACA", ProslaIgra.imeIgraca);
-			podatci.Add("BR_IGRACA", ProslaIgra.brIgraca.ToString());
-			podatci.Add("ORGANIZACIJA", ProslaIgra.organizacija.ToString());
-			podatci.Add("VELICINA_MAPE", ProslaIgra.velicinaMape.ToString());
+			podatci.Add("IME_IGRACA", ProslaIgra.ImeIgraca);
+			podatci.Add("BR_IGRACA", ProslaIgra.BrIgraca.ToString());
+			podatci.Add("ORGANIZACIJA", ProslaIgra.Organizacija.ToString());
+			podatci.Add("VELICINA_MAPE", ProslaIgra.VelicinaMape.ToString());
+			podatci.Add("POCETNA_POPULACIJA", ProslaIgra.PocetnaPop.ToString());
 			PodaciAlat.spremi(fajla, podatci, "PROSLA_IGRA");
 
 			podatci.Clear();

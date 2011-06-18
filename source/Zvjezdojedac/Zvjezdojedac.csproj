@@ -32,6 +32,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,6 +52,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Zvjezdojedac.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -163,6 +167,7 @@
     <Compile Include="Igra\Poruke\PorukaKolonija.cs" />
     <Compile Include="Igra\Poruke\PorukaTehnologija.cs" />
     <Compile Include="Igra\Poruke\PorukaZgrada.cs" />
+    <Compile Include="Igra\PotencijalnaPocetnaKolonija.cs" />
     <Compile Include="Igra\Tehnologija.cs" />
     <Compile Include="Igra\Zgrada.cs" />
     <Compile Include="Igra\Organizacije.cs" />
@@ -180,6 +185,7 @@
     <Compile Include="Podaci\Jezici\Jezik.cs" />
     <Compile Include="Podaci\Jezici\Kontekst.cs" />
     <Compile Include="Podaci\Jezici\Tekst.cs" />
+    <Compile Include="Podaci\PocetnaPopulacija.cs" />
     <Compile Include="Podaci\PocetnaPozicija.cs" />
     <Compile Include="Podaci\PodaciAlat.cs" />
     <Compile Include="Podaci\PodaciCitac.cs" />

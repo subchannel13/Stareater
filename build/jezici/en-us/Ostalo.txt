@@ -40,6 +40,10 @@ RADNA_MJ = Work places
 SPIJUNAZA = Espionage
 VATRENA_MOC = Fire power
 
+::POCETNA_POZICIJA
+popMinimalna = Humble
+popSrednja = Average
+popVelika = Numerious
 
 ::VELICINA_MAPE
 Minijaturna = Miniature

@@ -198,10 +198,12 @@ namespace Zvjezdojedac.Igra
 			efekti[AtmKvaliteta] = planet.kvalitetaAtmosfere + efekti[TeraformAtmKvaliteta] * Math.Sign(igrac.efekti["OPTIMUM_KVAL_ATM"] - planet.gravitacija());
 
 			double odstupGravitacije = Math.Pow(Math.Abs(efekti[Gravitacija] - igrac.efekti["OPTIMUM_GRAVITACIJA"]), 2);
-			double odstupZracenja = Math.Pow(Math.Abs(efekti[Zracenje] - igrac.efekti["OPTIMUM_ZRACENJE"]), 2);
-			double odstupTemperature = Math.Pow(Math.Abs(efekti[Temperatura] - igrac.efekti["OPTIMUM_TEMP_ATM"]), 2);
-			double odstupAtmGustoce = Math.Pow(Math.Abs(efekti[AtmGustoca] - igrac.efekti["OPTIMUM_GUST_ATM"]), 2);
+			double odstupZracenja = Math.Pow(Math.Abs(efekti[Zracenje] - igrac.efekti["OPTIMUM_ZRACENJE"]), 1);
+			double odstupTemperature = Math.Pow(Math.Abs(efekti[Temperatura] - igrac.efekti["OPTIMUM_TEMP_ATM"]), 1);
+			double odstupAtmGustoce = Math.Pow(Math.Abs(efekti[AtmGustoca] - igrac.efekti["OPTIMUM_GUST_ATM"]), 1);
 			double odstupAtmKvalitete = Math.Pow(Math.Abs(efekti[AtmKvaliteta] - igrac.efekti["OPTIMUM_KVAL_ATM"]), 2);
+			
+			odstupAtmKvalitete *= Math.Min(efekti[AtmGustoca], igrac.efekti["OPTIMUM_GUST_ATM"]);
 
 			efekti[OdrzavanjeGravitacija] = igrac.efekti["ODRZAVANJE_GRAVITACIJA"] * efekti[Populacija] * odstupGravitacije;
 			efekti[OdrzavanjeZracenje] = igrac.efekti["ODRZAVANJE_ZRACENJE"] * efekti[Populacija] * odstupZracenja;
@@ -238,15 +240,17 @@ namespace Zvjezdojedac.Igra
 				efekti[BrOdrzavatelja] = (efekti[Populacija] - efekti[BrFarmera] - efekti[BrRadnika]) / (1 + efekti[RudariPoOdrzavatelju]);
 			}
 
-			efekti[FaktorCijeneOrbitalnih] = 1 + Math.Pow(planet.gravitacija(), 2) + planet.gustocaAtmosfere;
-			efekti[NedostupanDioPlaneta] = 1 +
+			efekti[FaktorCijeneOrbitalnih] = 1 + Math.Pow(planet.gravitacija(), 2) * 2 + planet.gustocaAtmosfere / 5;
+			double negostoljubivost =
 				odstupAtmGustoce * igrac.efekti["VELICINA_GUST_ATM"] +
-				odstupAtmKvalitete * planet.gustocaAtmosfere * igrac.efekti["VELICINA_KVAL_ATM"] +
+				odstupAtmKvalitete * igrac.efekti["VELICINA_KVAL_ATM"] +
 				odstupGravitacije * igrac.efekti["VELICINA_GRAVITACIJA"] +
 				odstupTemperature * igrac.efekti["VELICINA_TEMP_ATM"] +
 				odstupZracenja * igrac.efekti["VELICINA_ZRACENJE"];
 
-			efekti[PopulacijaMax] /= efekti[NedostupanDioPlaneta];
+			efekti[NedostupanDioPlaneta] = Math.Pow(2, -negostoljubivost);
+
+			efekti[PopulacijaMax] *= efekti[NedostupanDioPlaneta];
 			efekti[PopulacijaMax] = Math.Floor(efekti[PopulacijaMax]);
 		}
 
