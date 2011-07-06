@@ -111,7 +111,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 		{
 			get
 			{
-				return Postavke.jezik[Kontekst.Komponente, nazivKljuc].tekst();
+				return Postavke.Jezik[Kontekst.Komponente, nazivKljuc].tekst();
 			}
 			private set
 			{
@@ -123,7 +123,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 		{
 			get
 			{
-				return Postavke.jezik[Kontekst.Komponente, opisKljuc].tekst();
+				return Postavke.Jezik[Kontekst.Komponente, opisKljuc].tekst();
 			}
 			private set
 			{

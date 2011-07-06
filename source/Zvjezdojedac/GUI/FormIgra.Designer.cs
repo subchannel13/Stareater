@@ -625,11 +625,13 @@
 			this.Controls.Add(this.pnlDno);
 			this.Controls.Add(this.pnlDesno);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.KeyPreview = true;
 			this.Name = "FormIgra";
 			this.Text = "Zvjezdojedac";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormIgra_FormClosed);
 			this.Load += new System.EventHandler(this.frmIgra_Load);
+			this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FormIgra_KeyPress);
 			this.tabCtrlDesno.ResumeLayout(false);
 			this.tabPageZvijezda.ResumeLayout(false);
 			this.pnlOpisZvjezde.ResumeLayout(false);

@@ -75,7 +75,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 		{
 			get
 			{
-				return Postavke.jezik[Kontekst.Komponente, nazivKod].tekst();
+				return Postavke.Jezik[Kontekst.Komponente, nazivKod].tekst();
 			}
 			private set
 			{

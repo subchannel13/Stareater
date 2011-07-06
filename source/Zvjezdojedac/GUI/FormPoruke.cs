@@ -47,7 +47,7 @@ namespace Zvjezdojedac.GUI
 
 			odabranaProuka = null;
 
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormPoruke];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormPoruke];
 			chTipBrod.Text = jezik["chTipBrod"].tekst();
 			chTipKolonija.Text = jezik["chTipKolonija"].tekst();
 			chTipTehnologije.Text = jezik["chTipTehnologije"].tekst();
@@ -104,6 +104,17 @@ namespace Zvjezdojedac.GUI
 		private void chTipZgrade_CheckedChanged(object sender, EventArgs e)
 		{
 			promjenaFiltra(chTipZgrade);
+		}
+
+		private void btnOk_Click(object sender, EventArgs e)
+		{
+			Close();
+		}
+
+		private void FormPoruke_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (e.KeyChar == ' ')
+				Close();
 		}
 	}
 }

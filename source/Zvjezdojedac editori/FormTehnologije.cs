@@ -6,8 +6,9 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using Prototip;
+using Zvjezdojedac;
 using Zvjezdojedac_editori.Validation;
+using Zvjezdojedac.Igra;
 
 namespace Zvjezdojedac_editori
 {

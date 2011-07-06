@@ -314,7 +314,7 @@ namespace Zvjezdojedac.Igra
 
 			public string naziv
 			{
-				get { return Postavke.jezik[Kontekst.VelicinaMape, nazivKljuc].tekst(null); }
+				get { return Postavke.Jezik[Kontekst.VelicinaMape, nazivKljuc].tekst(null); }
 			}
 		}
 

@@ -65,7 +65,7 @@ namespace Zvjezdojedac.GUI
 
 		private void postaviJezik()
 		{
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormIgra];
 
 			btnEndTurn.Text = jezik["btnEndTurn"].tekst();
 			btnFlote.Text = jezik["btnFlote"].tekst();
@@ -75,7 +75,7 @@ namespace Zvjezdojedac.GUI
 			btnTech.Text = jezik["btnTech"].tekst();
 			btnUcitaj.Text = jezik["btnUcitaj"].tekst();
 
-			jezik = Postavke.jezik[Kontekst.Kolonija];
+			jezik = Postavke.Jezik[Kontekst.Kolonija];
 			groupPoStan.Text = jezik["groupPoStan"].tekst();
 			groupCivGradnja.Text = jezik["Civilna_Gradnja"].tekst();
 			groupVojGradnja.Text = jezik["Vojna_Gradnja"].tekst();
@@ -91,7 +91,7 @@ namespace Zvjezdojedac.GUI
 			Dictionary<string, double> vars = new Dictionary<string, double>();
 			vars.Add("KRUG", igra.brKruga);
 			vars.Add("BR_PORUKA", igrac.poruke.Count);
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormIgra];
 
 			lblBrojKruga.Text = jezik["lblBrojKruga"].tekst(vars);
 			odaberiZvijezdu(igrac.odabranaZvijezda, false);
@@ -137,7 +137,7 @@ namespace Zvjezdojedac.GUI
 
 		public void prikaziFlotu(Zvijezda zvijezda)
 		{
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormIgra];
 
 			tvFlota.Nodes.Clear();
 			tvFlota.ImageList.Images.Clear();
@@ -166,7 +166,7 @@ namespace Zvjezdojedac.GUI
 
 		private void odaberiZvijezdu(Zvijezda zvijezda, bool promjeniTab)
 		{
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormIgra];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormIgra];
 
 			igrac.odabranaZvijezda = zvijezda;
 			if (promjeniTab) tabCtrlDesno.SelectedTab = tabPageZvijezda;
@@ -212,7 +212,7 @@ namespace Zvjezdojedac.GUI
 
 		private void odaberiPlanet(Planet planet, bool promjeniTab)
 		{
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.Kolonija];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.Kolonija];
 
 			if (planet.tip == Planet.Tip.NIKAKAV) return;
 			igrac.odabranPlanet = planet;
@@ -327,7 +327,7 @@ namespace Zvjezdojedac.GUI
 		{
 			Kolonija kolonija = igrac.odabranPlanet.kolonija;
 
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.Kolonija];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.Kolonija];
 
 			lblHranaPoStan.Text = jezik["HranaPoStan"].tekst() + ": " + kolonija.efekti[Kolonija.HranaPoFarmeru].ToString("0.##");
 			lblRudePoStan.Text = jezik["RudePoStan"].tekst() + ": " + kolonija.efekti[Kolonija.RudePoRudaru].ToString("0.##");
@@ -507,7 +507,7 @@ namespace Zvjezdojedac.GUI
 			SaveFileDialog dialog = new SaveFileDialog();
 			dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
 			dialog.FileName = "sejv.igra";
-			dialog.Filter = Postavke.jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"].tekst(null) + " (*.igra)|*.igra";
+			dialog.Filter = Postavke.Jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"].tekst(null) + " (*.igra)|*.igra";
 
 			if (dialog.ShowDialog() == DialogResult.OK) {
 				GZipStream zipStream = new GZipStream(new FileStream(dialog.FileName, FileMode.Create), CompressionMode.Compress);
@@ -522,7 +522,7 @@ namespace Zvjezdojedac.GUI
 			OpenFileDialog dialog = new OpenFileDialog();
 			dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
 			dialog.FileName = "sejv.igra";
-			dialog.Filter = Postavke.jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"].tekst(null) + " (*.igra)|*.igra";
+			dialog.Filter = Postavke.Jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"].tekst(null) + " (*.igra)|*.igra";
 
 			if (dialog.ShowDialog() == DialogResult.OK) {
 
@@ -626,6 +626,12 @@ namespace Zvjezdojedac.GUI
 		private void btnSlijedecaKolonija_Click(object sender, EventArgs e)
 		{
 			odaberiDruguKoloniju(1);
+		}
+
+		private void FormIgra_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (e.KeyChar == ' ')
+				btnPoruke_Click(sender, e);
 		}
 	}
 }

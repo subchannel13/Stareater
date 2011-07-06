@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Windows.Forms;
-using Prototip;
+using Zvjezdojedac;
+using Zvjezdojedac.Podaci;
 
 namespace Zvjezdojedac_editori.Validation
 {

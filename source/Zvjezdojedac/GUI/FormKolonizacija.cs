@@ -75,8 +75,8 @@ namespace Zvjezdojedac.GUI
 				else
 					dodatnaPopulacija[kolonizacija.planet] += kolonizacija.brod.dizajn.populacija * kolonizacija.brBrodova;
 
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormKolonizacija];
-			Dictionary<string, ITekst> jezikPl = Postavke.jezik[Kontekst.FormPlanetInfo];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormKolonizacija];
+			Dictionary<string, ITekst> jezikPl = Postavke.Jezik[Kontekst.FormPlanetInfo];
 			btnPrihvati.Text = jezik["btnPrihvati"].tekst();
 			lblAtmosfera.Text = jezikPl["lblAtmosfera"].tekst();
 			groupPlanet.Text = jezikPl["groupPlanet"].tekst();
@@ -111,9 +111,9 @@ namespace Zvjezdojedac.GUI
 		private void postaviBrBrodova()
 		{
 			int planetI = lstvPlaneti.SelectedIndices[0];
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.Kolonija];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.Kolonija];
 
-			lblBrBrodova.Text = Postavke.jezik[Kontekst.FormKolonizacija, "lblBrBrodova"].tekst() + ": " + Fje.PrefiksFormater(brBrodova[planetI]);
+			lblBrBrodova.Text = Postavke.Jezik[Kontekst.FormKolonizacija, "lblBrBrodova"].tekst() + ": " + Fje.PrefiksFormater(brBrodova[planetI]);
 			lblBrStanovnika.Text = jezik["plPopulacija"].tekst() + ": " + Fje.PrefiksFormater(brBrodova[planetI] * brodPopulacija);
 			lblBrRadnihMjesta.Text = jezik["plRadnaMjesta"].tekst() + ": " + Fje.PrefiksFormater(brBrodova[planetI] * brodRadnaMjesta);
 
@@ -167,8 +167,8 @@ namespace Zvjezdojedac.GUI
 					new Kolonija(igrac, planet, brodPopulacija, brodRadnaMjesta) :
 					planet.kolonija;
 
-				Dictionary<string, ITekst> jezikKol = Postavke.jezik[Kontekst.Kolonija];
-				Dictionary<string, ITekst> jezikPl = Postavke.jezik[Kontekst.FormPlanetInfo];
+				Dictionary<string, ITekst> jezikKol = Postavke.Jezik[Kontekst.Kolonija];
+				Dictionary<string, ITekst> jezikPl = Postavke.Jezik[Kontekst.FormPlanetInfo];
 				lblVelicina.Text = jezikPl["plVelicina"].tekst() + ": " + Fje.PrefiksFormater(planet.velicina);
 				lblGravitacija.Text = jezikPl["plGravitacija"].tekst() + ": " + String.Format("{0:0.##}", planet.gravitacija());
 				lblZracenje.Text = jezikPl["plZracenje"].tekst() + ": " + String.Format("{0:0.##}", planet.ozracenost());
@@ -197,8 +197,8 @@ namespace Zvjezdojedac.GUI
 			int planetI = lstvPlaneti.SelectedIndices[0];
 			brBrodova[planetI] = (e.NewValue == 0) ? 0 : (long)(Math.Ceiling(Math.Pow(e.NewValue / (double)hscrBrBrodova.Maximum, 2) * maxBrodova()));
 
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.Kolonija];
-			lblBrBrodova.Text = Postavke.jezik[Kontekst.FormKolonizacija, "lblBrBrodova"].tekst() + ": " + Fje.PrefiksFormater(brBrodova[planetI]);
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.Kolonija];
+			lblBrBrodova.Text = Postavke.Jezik[Kontekst.FormKolonizacija, "lblBrBrodova"].tekst() + ": " + Fje.PrefiksFormater(brBrodova[planetI]);
 			lblBrStanovnika.Text = jezik["plPopulacija"].tekst() + ": " + Fje.PrefiksFormater(brBrodova[planetI] * brodPopulacija);
 			lblBrRadnihMjesta.Text = jezik["plRadnaMjesta"].tekst() + ": " + Fje.PrefiksFormater(brBrodova[planetI] * brodRadnaMjesta);
 

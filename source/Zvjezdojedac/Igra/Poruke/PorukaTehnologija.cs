@@ -37,7 +37,7 @@ namespace Zvjezdojedac.Igra.Poruke
 				Dictionary<string, string> stringVars = new Dictionary<string, string>();
 				doubleVars.Add("NIVO", nivo);
 				stringVars.Add("TEH_NAZIV", tehnologija.naziv);
-				return Postavke.jezik[Kontekst.FormPoruke, "porukaTehnologija"].tekst(doubleVars, stringVars);
+				return Postavke.Jezik[Kontekst.FormPoruke, "porukaTehnologija"].tekst(doubleVars, stringVars);
 			}
 		}
 

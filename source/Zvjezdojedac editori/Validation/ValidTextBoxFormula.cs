@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Text;
-using Prototip;
+using Zvjezdojedac;
+using Zvjezdojedac.Podaci.Formule;
 
 namespace Zvjezdojedac_editori.Validation
 {

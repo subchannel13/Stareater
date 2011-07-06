@@ -30,6 +30,8 @@
 			this.lblJezik = new System.Windows.Forms.Label();
 			this.cbJezik = new System.Windows.Forms.ComboBox();
 			this.btnOk = new System.Windows.Forms.Button();
+			this.lblVelicina = new System.Windows.Forms.Label();
+			this.cbVelicina = new System.Windows.Forms.ComboBox();
 			this.SuspendLayout();
 			// 
 			// lblJezik
@@ -47,12 +49,13 @@
 			this.cbJezik.FormattingEnabled = true;
 			this.cbJezik.Location = new System.Drawing.Point(12, 39);
 			this.cbJezik.Name = "cbJezik";
-			this.cbJezik.Size = new System.Drawing.Size(141, 21);
+			this.cbJezik.Size = new System.Drawing.Size(150, 21);
 			this.cbJezik.TabIndex = 1;
 			// 
 			// btnOk
 			// 
-			this.btnOk.Location = new System.Drawing.Point(125, 81);
+			this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnOk.Location = new System.Drawing.Point(90, 111);
 			this.btnOk.Name = "btnOk";
 			this.btnOk.Size = new System.Drawing.Size(75, 23);
 			this.btnOk.TabIndex = 3;
@@ -60,12 +63,33 @@
 			this.btnOk.UseVisualStyleBackColor = true;
 			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
 			// 
+			// lblVelicina
+			// 
+			this.lblVelicina.AutoSize = true;
+			this.lblVelicina.Location = new System.Drawing.Point(12, 72);
+			this.lblVelicina.Name = "lblVelicina";
+			this.lblVelicina.Size = new System.Drawing.Size(83, 13);
+			this.lblVelicina.TabIndex = 4;
+			this.lblVelicina.Text = "Velicina sučelja:";
+			// 
+			// cbVelicina
+			// 
+			this.cbVelicina.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbVelicina.FormattingEnabled = true;
+			this.cbVelicina.Location = new System.Drawing.Point(101, 69);
+			this.cbVelicina.Name = "cbVelicina";
+			this.cbVelicina.Size = new System.Drawing.Size(61, 21);
+			this.cbVelicina.TabIndex = 5;
+			this.cbVelicina.SelectedIndexChanged += new System.EventHandler(this.cbVelicina_SelectedIndexChanged);
+			// 
 			// FormPostavke
 			// 
 			this.AcceptButton = this.btnOk;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(212, 116);
+			this.ClientSize = new System.Drawing.Size(177, 146);
+			this.Controls.Add(this.cbVelicina);
+			this.Controls.Add(this.lblVelicina);
 			this.Controls.Add(this.btnOk);
 			this.Controls.Add(this.cbJezik);
 			this.Controls.Add(this.lblJezik);
@@ -85,5 +109,7 @@
 		private System.Windows.Forms.Label lblJezik;
 		private System.Windows.Forms.ComboBox cbJezik;
 		private System.Windows.Forms.Button btnOk;
+		private System.Windows.Forms.Label lblVelicina;
+		private System.Windows.Forms.ComboBox cbVelicina;
 	}
 }

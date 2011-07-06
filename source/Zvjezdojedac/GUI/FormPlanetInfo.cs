@@ -34,7 +34,7 @@ namespace Zvjezdojedac.GUI
 
 			picSlika.Image = kolonija.slika;
 			
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormPlanetInfo];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormPlanetInfo];
 
 			lblVelicina.Text = jezik["plVelicina"].tekst() + ": " + Fje.PrefiksFormater(kolonija.planet.velicina);
 			lblGravitacija.Text = jezik["plGravitacija"].tekst() + ": " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.Gravitacija]);
@@ -47,7 +47,7 @@ namespace Zvjezdojedac.GUI
 			if (kolonija.efekti[Kolonija.PopulacijaPromjena] < 0) predznak = "-";
 			else if (kolonija.efekti[Kolonija.PopulacijaPromjena] > 0) predznak = "+";
 			
-			Dictionary<string, ITekst> jezikKl = Postavke.jezik[Kontekst.Kolonija];
+			Dictionary<string, ITekst> jezikKl = Postavke.Jezik[Kontekst.Kolonija];
 			lblPopBr.Text = jezikKl["plPopulacija"].tekst() + ": " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.Populacija]);
 			lblPopDelta.Text = jezikKl["plPromjenaPop"].tekst() + ": " + predznak + Fje.PrefiksFormater(kolonija.efekti[Kolonija.PopulacijaPromjena]);
 			lblPopMax.Text = jezikKl["plPopMax"].tekst() + ": " + Fje.PrefiksFormater(kolonija.efekti[Kolonija.PopulacijaMax]);
@@ -81,7 +81,7 @@ namespace Zvjezdojedac.GUI
 
 			picSlika.Image = planet.slika;
 
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormPlanetInfo];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormPlanetInfo];
 			lblVelicina.Text = jezik["plVelicina"].tekst() + ": " + Fje.PrefiksFormater(planet.velicina);
 			lblGravitacija.Text = jezik["plGravitacija"].tekst() + ": " + String.Format("{0:0.##}", planet.gravitacija());
 			lblZracenje.Text = jezik["plZracenje"].tekst() + ": " + String.Format("{0:0.##}", planet.ozracenost());
@@ -90,7 +90,7 @@ namespace Zvjezdojedac.GUI
 			lblAtmTemperatura.Text = jezik["plAtmTemperatura"].tekst() + ": " + String.Format("{0:0.##}", planet.temperatura());
 			lblKoefOrbitalne.Text = jezik["plCijenaOrbGradnje"].tekst() + ": x" + kolonija.efekti[Kolonija.FaktorCijeneOrbitalnih].ToString("0.##");
 
-			Dictionary<string, ITekst> jezikKl = Postavke.jezik[Kontekst.Kolonija];
+			Dictionary<string, ITekst> jezikKl = Postavke.Jezik[Kontekst.Kolonija];
 			lblPopBr.Text = jezikKl["plNenaseljeno"].tekst();
 			lblPopDelta.Text = "";
 			lblPopMax.Text = "";
@@ -108,7 +108,7 @@ namespace Zvjezdojedac.GUI
 
 		private void postaviJezik()
 		{
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormPlanetInfo];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormPlanetInfo];
 			btnZatvori.Text = jezik["btnZatvori"].tekst();
 			groupPlanet.Text = jezik["groupPlanet"].tekst();
 			groupPopulacija.Text = jezik["groupPopulacija"].tekst();
@@ -130,7 +130,7 @@ namespace Zvjezdojedac.GUI
 		{
 			if (kolonija == null) return;
 
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.Kolonija];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.Kolonija];
 
 			double brOdrzavatelja = kolonija.efekti[Kolonija.BrOdrzavatelja] * (1 + kolonija.efekti[Kolonija.RudariPoOdrzavatelju]);
 
@@ -167,14 +167,14 @@ namespace Zvjezdojedac.GUI
 
 		private void osvjeziLabele()
 		{
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.Kolonija];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.Kolonija];
 
 			lblCivilnaIndustrija.Text = Fje.PrefiksFormater(kolonija.poeniCivilneIndustrije()) + " " + jezik["jedInd"].tekst();
 			lblVojnaIndustrija.Text = Fje.PrefiksFormater(kolonija.poeniVojneIndustrije()) + " " + jezik["jedInd"].tekst();
 			lblProcjenaCivilneGradnje.Text = kolonija.procjenaVremenaCivilneGradnje();
 			lblProcjenaVojneGradnje.Text = kolonija.procjenaVremenaVojneGradnje();
 			lblRazvoj.Text = jezik["lblRazvoj"].tekst() + Fje.PrefiksFormater(kolonija.poeniRazvoja());
-			lblKoefOrbitalne.Text = Postavke.jezik[Kontekst.FormPlanetInfo, "plCijenaOrbGradnje"].tekst() + ": x" + kolonija.efekti[Kolonija.FaktorCijeneOrbitalnih].ToString("0.##");
+			lblKoefOrbitalne.Text = Postavke.Jezik[Kontekst.FormPlanetInfo, "plCijenaOrbGradnje"].tekst() + ": x" + kolonija.efekti[Kolonija.FaktorCijeneOrbitalnih].ToString("0.##");
 
 			if (kolonija.redCivilneGradnje.Count > 0)
 			{

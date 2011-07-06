@@ -15,9 +15,12 @@ namespace Zvjezdojedac.GUI
 {
 	public partial class FormMain : Form
 	{
+		Font pocetniFont;
+
 		public FormMain()
 		{
 			InitializeComponent();
+			this.pocetniFont = Font;
 
 #if !DEBUG
 			try
@@ -25,6 +28,7 @@ namespace Zvjezdojedac.GUI
 #endif
 				PodaciAlat.postaviPodatke();
 				postaviJezik();
+				this.Font = Postavke.FontSucelja(pocetniFont);
 #if !DEBUG
 			}
 			catch (Exception e)
@@ -36,7 +40,7 @@ namespace Zvjezdojedac.GUI
 
 		private void postaviJezik()
 		{
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormMain];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormMain];
 
 			btnNovaIgra.Text = jezik["NOVA_IGRA"].tekst(null);
 			btnPostavke.Text = jezik["POSTAVKE"].tekst(null);
@@ -71,7 +75,7 @@ namespace Zvjezdojedac.GUI
 			OpenFileDialog dialog = new OpenFileDialog();
 			dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
 			dialog.FileName = "sejv.igra";
-			dialog.Filter = Postavke.jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"].tekst(null) + " (*.igra)|*.igra";
+			dialog.Filter = Postavke.Jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"].tekst(null) + " (*.igra)|*.igra";
 
 			if (dialog.ShowDialog() == DialogResult.OK) {
 
@@ -93,8 +97,10 @@ namespace Zvjezdojedac.GUI
 		private void btnPostavke_Click(object sender, EventArgs e)
 		{
 			FormPostavke frmPostavke = new FormPostavke();
-			if (frmPostavke.ShowDialog() == DialogResult.OK)
+			if (frmPostavke.ShowDialog() == DialogResult.OK) {
 				postaviJezik();
+				this.Font = Postavke.FontSucelja(pocetniFont);
+			}
 		}
 	}
 }

@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Globalization;
-using Prototip;
+using Zvjezdojedac;
 using Zvjezdojedac_editori.Validation;
 
 namespace Zvjezdojedac_editori

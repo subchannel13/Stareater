@@ -5,8 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using Prototip;
+using Zvjezdojedac;
 using Zvjezdojedac_editori.Validation;
+using Zvjezdojedac.Igra;
+using Zvjezdojedac.Podaci.Formule;
 
 namespace Zvjezdojedac_editori
 {
