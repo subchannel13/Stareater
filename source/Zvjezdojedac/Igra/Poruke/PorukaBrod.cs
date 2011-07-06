@@ -32,7 +32,7 @@ namespace Zvjezdojedac.Igra.Poruke
 				doubleVars.Add("KOLICINA", kolicina);
 				stringVars.Add("DIZAJN", dizajn.ime);
 				stringVars.Add("SUSTAV", zvijezda.ime);
-				return Postavke.jezik[Kontekst.FormPoruke, "porukaBrod"].tekst(doubleVars, stringVars);
+				return Postavke.Jezik[Kontekst.FormPoruke, "porukaBrod"].tekst(doubleVars, stringVars);
 			}
 		}
 

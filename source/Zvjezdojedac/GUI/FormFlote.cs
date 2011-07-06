@@ -46,7 +46,7 @@ namespace Zvjezdojedac.GUI
 			lstvDizajnovi.SmallImageList.ImageSize = new Size(60, 40);
 			this.igrac = igrac;
 
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
 			nazivInfoStranice.Add(InfoStranice.MZPogon, jezik["infoMZPogon"].tekst());
 			nazivInfoStranice.Add(InfoStranice.Pokretljivost, jezik["infoPokret"].tekst());
 			nazivInfoStranice.Add(InfoStranice.PrimarnaMisija, jezik["infoPrimMisija"].tekst());
@@ -148,7 +148,7 @@ namespace Zvjezdojedac.GUI
 		{
 			List<string> opis = new List<string>();
 
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
 			if (primarno) opis.Add(jezik["opisPrimMis"].tekst() + ": ");
 			else opis.Add(jezik["opisSekMis"].tekst() + ": ");
 
@@ -169,7 +169,7 @@ namespace Zvjezdojedac.GUI
 				Fje.PrefiksFormater(oruzje.kolicina) + " x " + oruzje.komponenta.naziv);
 			opis.Add("");
 			if (oruzje.komponenta.maxNivo > 0) opis.Add(jezik["opisNivo"].tekst() + ": " + oruzje.komponenta.nivo);
-			if (misija.imaCiljanje) opis.Add(jezik["opisCiljanje"].tekst() + ": " + Postavke.jezik[Kontekst.Misije, Oruzje.OruzjeInfo.CiljanjeKod[oruzje.komponenta.ciljanje]].tekst());
+			if (misija.imaCiljanje) opis.Add(jezik["opisCiljanje"].tekst() + ": " + Postavke.Jezik[Kontekst.Misije, Oruzje.OruzjeInfo.CiljanjeKod[oruzje.komponenta.ciljanje]].tekst());
 
 			for (int i = 0; i < misija.brParametara; i++) {
 				double vrijednost = oruzje.komponenta.parametri[i];
@@ -202,7 +202,7 @@ namespace Zvjezdojedac.GUI
 		private List<string> opis(InfoStranice stranica, Dizajn dizajn, bool cijene)
 		{
 			List<string> opis = new List<string>();
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
 
 			switch (stranica) {
 				case InfoStranice.MZPogon:
@@ -327,7 +327,7 @@ namespace Zvjezdojedac.GUI
 		private void osvjeziNDstatistike()
 		{
 			Dizajn dizajn = dizajner.dizajn;
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
 
 			lblNDnosivost.Text = jezik["lblNDnosivost"].tekst() + ": " + Fje.PrefiksFormater(dizajner.odabranTrup.nosivost);
 			lblNDoklop.Text = jezik["lblNDoklop"].tekst() + " (" + dizajn.oklop.naziv + "): " + Fje.PrefiksFormater(dizajn.izdrzljivostOklopa);
@@ -577,7 +577,7 @@ namespace Zvjezdojedac.GUI
 				postojeciDizajnovi.Add(dizajnZgrada.dizajn.stil);
 
 			if (postojeciDizajnovi.Contains(dizajner.dizajn.stil)) {
-				Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+				Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
 				MessageBox.Show(jezik["opIstiDizajnTekst"].tekst(), jezik["opIstiDizajnNaslov"].tekst(), MessageBoxButtons.OK, MessageBoxIcon.Stop);
 				return;
 			}
@@ -635,7 +635,7 @@ namespace Zvjezdojedac.GUI
 			opisDizajna.Add(dizajn.trup.naziv);
 			opisDizajna.Add("");
 
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
 			foreach (InfoStranice stranica in Enum.GetValues(typeof(InfoStranice))) {
 				if (stranica == InfoStranice.SpecijalnaOprema)
 					foreach (SpecijalnaOprema so in dizajn.specijalnaOprema.Keys) {

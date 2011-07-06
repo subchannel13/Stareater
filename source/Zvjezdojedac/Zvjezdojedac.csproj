@@ -71,6 +71,7 @@
     <Compile Include="Alati\Tocka.cs" />
     <Compile Include="Alati\Usporediv.cs" />
     <Compile Include="Alati\Vadjenje.cs" />
+    <Compile Include="Alati\Yielder.cs" />
     <Compile Include="GUI\FormFlotaPokret.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -68,7 +68,7 @@ namespace Zvjezdojedac.GUI
 		private void postaviGUI()
 		{
 			this.polaznaZvijezda = igra.mapa.najblizaZvijezda(izvornaFlota.x, izvornaFlota.y, Epsilon);
-			this.jezik = Postavke.jezik[Kontekst.FormFlotaPokret];
+			this.jezik = Postavke.Jezik[Kontekst.FormFlotaPokret];
 			Dictionary<string, double> varijable = new Dictionary<string, double>();
 
 			this.Text = jezik["naslov"].tekst();
@@ -212,7 +212,7 @@ namespace Zvjezdojedac.GUI
 			cbPridruzi.Items.Clear();
 			cbPridruzi.Items.Add(new TagTekst<Flota>(
 				igrac.floteStacionarne[polaznaZvijezda],
-				Postavke.jezik[Kontekst.FormIgra]["flotaObrana"].tekst()));
+				Postavke.Jezik[Kontekst.FormIgra]["flotaObrana"].tekst()));
 			cbPridruzi.SelectedIndex = 0;
 		}
 

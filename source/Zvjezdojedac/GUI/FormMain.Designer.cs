@@ -62,7 +62,7 @@
 			this.btnUgasi.Location = new System.Drawing.Point(109, 172);
 			this.btnUgasi.Name = "btnUgasi";
 			this.btnUgasi.Size = new System.Drawing.Size(75, 30);
-			this.btnUgasi.TabIndex = 3;
+			this.btnUgasi.TabIndex = 4;
 			this.btnUgasi.Text = "Ugasi";
 			this.btnUgasi.UseVisualStyleBackColor = true;
 			this.btnUgasi.Click += new System.EventHandler(this.btnUgasi_Click);
@@ -83,7 +83,7 @@
 			this.label2.Location = new System.Drawing.Point(165, 244);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(115, 13);
-			this.label2.TabIndex = 4;
+			this.label2.TabIndex = 5;
 			this.label2.Text = "Ivan Kravarščan 2011.";
 			// 
 			// btnPostavke
@@ -91,7 +91,7 @@
 			this.btnPostavke.Location = new System.Drawing.Point(109, 136);
 			this.btnPostavke.Name = "btnPostavke";
 			this.btnPostavke.Size = new System.Drawing.Size(75, 30);
-			this.btnPostavke.TabIndex = 5;
+			this.btnPostavke.TabIndex = 3;
 			this.btnPostavke.Text = "Postavke";
 			this.btnPostavke.UseVisualStyleBackColor = true;
 			this.btnPostavke.Click += new System.EventHandler(this.btnPostavke_Click);

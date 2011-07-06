@@ -57,7 +57,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			{
 				get
 				{
-					return Postavke.jezik[Kontekst.Misije, kod].tekst();
+					return Postavke.Jezik[Kontekst.Misije, kod].tekst();
 				}
 			}
 		}
@@ -187,7 +187,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 		{
 			get
 			{
-				return Postavke.jezik[Kontekst.Misije, nazivKod].tekst();
+				return Postavke.Jezik[Kontekst.Misije, nazivKod].tekst();
 			}
 			private set
 			{
@@ -199,7 +199,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 		{
 			get
 			{
-				return Postavke.jezik[Kontekst.Misije, opisKod].tekst();
+				return Postavke.Jezik[Kontekst.Misije, opisKod].tekst();
 			}
 			private set
 			{

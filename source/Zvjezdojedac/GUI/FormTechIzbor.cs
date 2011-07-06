@@ -27,7 +27,7 @@ namespace Zvjezdojedac.GUI
 		public FormTechIzbor(Igrac igrac)
 		{
 			InitializeComponent();
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormTech];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormTech];
 			btnIstDno.Text = jezik["btnDno"].tekst();
 			btnIstDolje.Text = jezik["btnDolje"].tekst();
 			btnIstGore.Text = jezik["btnGore"].tekst();
@@ -94,7 +94,7 @@ namespace Zvjezdojedac.GUI
 		}
 		private void InicijalizirajKnjiznicu()
 		{
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormTech];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormTech];
 			List<Tehnologija> tehnologije = igrac.istrazeneTehnologije();
 			if (tehnologije.Count == 0) {
 				ListViewItem item = new ListViewItem(jezik["nemaTeh"].tekst());
@@ -126,7 +126,7 @@ namespace Zvjezdojedac.GUI
 		}
 		private void InicijalizirajOpremu()
 		{
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormTech];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormTech];
 			List<ListViewItem> items = new List<ListViewItem>();
 			Font fontBold = new Font(lstOprema.Font, FontStyle.Bold);
 			Font fontItalic = new Font(lstOprema.Font, FontStyle.Italic);
@@ -185,7 +185,7 @@ namespace Zvjezdojedac.GUI
 			#region Ostalo
 			cbOpKategorija.Items.Add(new TagTekst<KategorijaOpreme>(KategorijaOpreme.Ostalo, jezik["opKatOstalo"].tekst()));
 			items = new List<ListViewItem>();
-			jezik = Postavke.jezik[Kontekst.FormFlote];
+			jezik = Postavke.Jezik[Kontekst.FormFlote];
 			
 			items.Add(specLVItem(jezik["infoMZPogon"].tekst(), fontBold));
 			foreach (MZPogon komp in MZPogon.MZPogonInfo.Dostupni(igrac.efekti))
@@ -263,7 +263,7 @@ namespace Zvjezdojedac.GUI
 		private void prikazTrupa(IKomponenta komponentaObj)
 		{
 			Trup trup = (Trup)komponentaObj;
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormTech];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormTech];
 
 			StringBuilder sb = new StringBuilder(txtOpOpis.Text);
 			sb.AppendLine();
@@ -284,7 +284,7 @@ namespace Zvjezdojedac.GUI
 		}
 		private void prikazOruzja(IKomponenta komponentaObj)
 		{
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormTech];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormTech];
 			Oruzje oruzje = (Oruzje)komponentaObj;
 			Misija misija = Misija.Opisnici[oruzje.misija];
 
@@ -300,7 +300,7 @@ namespace Zvjezdojedac.GUI
 					sb.AppendLine(": x" + oruzje.parametri[paramI].ToString("0.##"));
 			}
 			if (misija.imaCiljanje)
-				sb.AppendLine(jezik["opOruzjeCilj"].tekst() + ": " + Postavke.jezik[Kontekst.Misije, Oruzje.OruzjeInfo.CiljanjeKod[oruzje.ciljanje]].tekst());
+				sb.AppendLine(jezik["opOruzjeCilj"].tekst() + ": " + Postavke.Jezik[Kontekst.Misije, Oruzje.OruzjeInfo.CiljanjeKod[oruzje.ciljanje]].tekst());
 			sb.AppendLine();
 			sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(oruzje.cijena));
 			sb.AppendLine(jezik["opSnaga"].tekst() + ": " + Fje.PrefiksFormater(oruzje.snaga));
@@ -312,7 +312,7 @@ namespace Zvjezdojedac.GUI
 			Trup trup = ((TagTekst<Trup>)cbOpVelicine.SelectedItem).tag;
 			Stit stit = (Stit)komponentaObj;
 			stit = stit.info.naciniKomponentu(stit.nivo, trup.velicina_stita);
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
 
 			StringBuilder sb = new StringBuilder(txtOpOpis.Text);
 			sb.AppendLine();
@@ -323,7 +323,7 @@ namespace Zvjezdojedac.GUI
 			sb.AppendLine(jezik["opisSenzorOm"].tekst() + ": x" + stit.ometanje.ToString("0.##"));
 			sb.AppendLine(jezik["opisSenzorPrik"].tekst() + ": +" + Fje.PrefiksFormater(stit.prikrivanje));
 			sb.AppendLine();
-			jezik = Postavke.jezik[Kontekst.FormTech];
+			jezik = Postavke.Jezik[Kontekst.FormTech];
 			sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(stit.cijena));
 			sb.AppendLine(jezik["opSnaga"].tekst() + ": " + Fje.PrefiksFormater(stit.snaga));
 			sb.AppendLine(jezik["opVelicina"].tekst() + ": " + Fje.PrefiksFormater(trup.velicina_stita));
@@ -334,7 +334,7 @@ namespace Zvjezdojedac.GUI
 			Trup trup = ((TagTekst<Trup>)cbOpVelicine.SelectedItem).tag;
 			SpecijalnaOprema so = (SpecijalnaOprema)komponentaObj;
 			so = so.info.naciniKomponentu(so.nivo, trup.velicina);
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
 
 			StringBuilder sb = new StringBuilder(txtOpOpis.Text);
 			sb.AppendLine();
@@ -342,7 +342,7 @@ namespace Zvjezdojedac.GUI
 			foreach (string efekt in so.opisEfekata)
 				sb.AppendLine(efekt);
 			sb.AppendLine();
-			jezik = Postavke.jezik[Kontekst.FormTech];
+			jezik = Postavke.Jezik[Kontekst.FormTech];
 			sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(so.cijena));
 			sb.AppendLine(jezik["opVelicina"].tekst() + ": " + Fje.PrefiksFormater(so.velicina));
 			txtOpOpis.Text = sb.ToString();
@@ -352,8 +352,8 @@ namespace Zvjezdojedac.GUI
 			Trup trup = ((TagTekst<Trup>)cbOpVelicine.SelectedItem).tag;
 			int indeks = lstOprema.SelectedIndices[0];
 
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormFlote];
-			Dictionary<string, ITekst> jezikTech = Postavke.jezik[Kontekst.FormTech];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
+			Dictionary<string, ITekst> jezikTech = Postavke.Jezik[Kontekst.FormTech];
 			StringBuilder sb = new StringBuilder(txtOpOpis.Text);
 			sb.AppendLine();
 			sb.AppendLine();

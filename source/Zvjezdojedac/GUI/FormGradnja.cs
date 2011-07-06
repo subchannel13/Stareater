@@ -40,7 +40,7 @@ namespace Zvjezdojedac.GUI
             foreach (Zgrada.ZgradaInfo z in redGradnje)
 				lstRedGradnje.Items.Add(z);
 
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormGradnja];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormGradnja];
 			btnKasnije.Text = jezik["btnKasnije"].tekst();
 			btnOk.Text = jezik["btnOk"].tekst();
 			btnPrije.Text = jezik["btnPrije"].tekst();

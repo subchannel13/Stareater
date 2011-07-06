@@ -135,12 +135,12 @@ namespace Zvjezdojedac.Igra
 
 			public virtual string ime
 			{
-				get { return Postavke.jezik[Kontekst.Zgrade, _ime].tekst(); }
+				get { return Postavke.Jezik[Kontekst.Zgrade, _ime].tekst(); }
 			}
 
 			public virtual string opis
 			{
-				get { return Postavke.jezik[Kontekst.Zgrade, _opis].tekst(); }
+				get { return Postavke.Jezik[Kontekst.Zgrade, _opis].tekst(); }
 			}
 
 			public override string ToString()

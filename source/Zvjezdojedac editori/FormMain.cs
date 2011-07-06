@@ -7,7 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using Prototip;
+using Zvjezdojedac;
+using Zvjezdojedac.Podaci;
 
 namespace Zvjezdojedac_editori
 {

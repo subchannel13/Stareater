@@ -142,7 +142,7 @@ namespace Zvjezdojedac.Igra
 			{
 				get
 				{
-					return Postavke.jezik[Kontekst.Tehnologije, naziv_m].tekst();
+					return Postavke.Jezik[Kontekst.Tehnologije, naziv_m].tekst();
 				}
 			}
 
@@ -150,7 +150,7 @@ namespace Zvjezdojedac.Igra
 			{
 				Dictionary<string, double> vars = new Dictionary<string, double>();
 				vars.Add("LVL", nivo);
-				return Postavke.jezik[Kontekst.Tehnologije, _opis].tekst(vars);
+				return Postavke.Jezik[Kontekst.Tehnologije, _opis].tekst(vars);
 			}
 		}
 

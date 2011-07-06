@@ -28,7 +28,7 @@ namespace Zvjezdojedac.GUI
 
 		private void postaviJezik()
 		{
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.FormNovaIgra];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormNovaIgra];
 
 			this.Text = jezik["NASLOV"].tekst(null);
 
@@ -59,7 +59,7 @@ namespace Zvjezdojedac.GUI
 			foreach(var pocentaPop in PocetnaPopulacija.konfiguracije)
 				cbPocetnaPop.Items.Add(new TagTekst<PocetnaPopulacija>(
 					pocentaPop,
-					Postavke.jezik[Kontekst.PocetnaPopulacija][pocentaPop.NazivKod].tekst()));
+					Postavke.Jezik[Kontekst.PocetnaPopulacija][pocentaPop.NazivKod].tekst()));
 			cbPocetnaPop.SelectedIndex = Postavke.ProslaIgra.PocetnaPop;
 
 			txtIme.Text = Postavke.ProslaIgra.ImeIgraca;
@@ -71,7 +71,7 @@ namespace Zvjezdojedac.GUI
 			
 			Dictionary<string, double> varijable = new Dictionary<string, double>();
 			varijable.Add("BR", vm.velicina * vm.velicina);
-			lblOpisMape.Text = Postavke.jezik[Kontekst.FormNovaIgra, "LBL_OPIS_MAPE"].tekst(varijable);
+			lblOpisMape.Text = Postavke.Jezik[Kontekst.FormNovaIgra, "LBL_OPIS_MAPE"].tekst(varijable);
 		}
 
 		private void cbOrganizacija_SelectedIndexChanged(object sender, EventArgs e)
@@ -123,7 +123,7 @@ namespace Zvjezdojedac.GUI
 			if (cbPocetnaPop.SelectedItem == null) return;
 
 			PocetnaPopulacija pocetnaPop = (cbPocetnaPop.SelectedItem as TagTekst<PocetnaPopulacija>).tag;
-			var jezik = Postavke.jezik[Kontekst.FormNovaIgra];
+			var jezik = Postavke.Jezik[Kontekst.FormNovaIgra];
 
 			lblBrKolonija.Text = jezik["lblBrKolonija"].tekst() + ": " + pocetnaPop.BrKolonija;
 			lblPopulacija.Text = jezik["lblPopulacija"].tekst() + ": " + Fje.PrefiksFormater(pocetnaPop.Populacija);

@@ -23,7 +23,7 @@ namespace Zvjezdojedac.Igra.Poruke
 			{
 				Dictionary<string, string> stringVars = new Dictionary<string, string>();
 				stringVars.Add("PLANET", planet.ime);
-				return Postavke.jezik[Kontekst.FormPoruke, "porukaKolonija"].tekst(null, stringVars);
+				return Postavke.Jezik[Kontekst.FormPoruke, "porukaKolonija"].tekst(null, stringVars);
 			}
 		}
 

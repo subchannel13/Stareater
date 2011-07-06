@@ -26,7 +26,7 @@ namespace Zvjezdojedac.Igra.Poruke
 				Dictionary<string, string> stringVars = new Dictionary<string, string>();
 				stringVars.Add("PLANET", planet.ime);
 				stringVars.Add("ZGRADA", zgradaInfo.ime);
-				return Postavke.jezik[Kontekst.FormPoruke, "porukaZgrada"].tekst(null, stringVars);
+				return Postavke.Jezik[Kontekst.FormPoruke, "porukaZgrada"].tekst(null, stringVars);
 			}
 		}
 

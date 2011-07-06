@@ -30,11 +30,12 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormPoruke));
 			this.lstvPoruke = new System.Windows.Forms.ListView();
-			this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.chTipBrod = new System.Windows.Forms.CheckBox();
 			this.chTipKolonija = new System.Windows.Forms.CheckBox();
 			this.chTipTehnologije = new System.Windows.Forms.CheckBox();
 			this.chTipZgrade = new System.Windows.Forms.CheckBox();
+			this.btnOk = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// lstvPoruke
@@ -101,11 +102,26 @@
 			this.chTipZgrade.UseVisualStyleBackColor = true;
 			this.chTipZgrade.CheckedChanged += new System.EventHandler(this.chTipZgrade_CheckedChanged);
 			// 
+			// btnOk
+			// 
+			this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnOk.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.btnOk.Location = new System.Drawing.Point(277, 279);
+			this.btnOk.Name = "btnOk";
+			this.btnOk.Size = new System.Drawing.Size(75, 23);
+			this.btnOk.TabIndex = 5;
+			this.btnOk.Text = "Zatvori";
+			this.btnOk.UseVisualStyleBackColor = true;
+			this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+			// 
 			// FormPoruke
 			// 
+			this.AcceptButton = this.btnOk;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.btnOk;
 			this.ClientSize = new System.Drawing.Size(364, 314);
+			this.Controls.Add(this.btnOk);
 			this.Controls.Add(this.chTipZgrade);
 			this.Controls.Add(this.chTipTehnologije);
 			this.Controls.Add(this.chTipKolonija);
@@ -113,11 +129,13 @@
 			this.Controls.Add(this.lstvPoruke);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.KeyPreview = true;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "FormPoruke";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Poruke";
+			this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FormPoruke_KeyPress);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -131,6 +149,7 @@
 		private System.Windows.Forms.CheckBox chTipKolonija;
 		private System.Windows.Forms.CheckBox chTipTehnologije;
 		private System.Windows.Forms.CheckBox chTipZgrade;
+		private System.Windows.Forms.Button btnOk;
 
 	}
 }

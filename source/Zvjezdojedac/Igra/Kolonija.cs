@@ -492,7 +492,7 @@ namespace Zvjezdojedac.Igra
 
 			double brZgrada = (ostatakGradnje + poeniIndustrije) / cijena;
 			
-			Dictionary<string, ITekst> jezik = Postavke.jezik[Kontekst.Kolonija];
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.Kolonija];
 			Dictionary<string, double> vars = new Dictionary<string, double>();
 
 			if (brZgrada >= 1)

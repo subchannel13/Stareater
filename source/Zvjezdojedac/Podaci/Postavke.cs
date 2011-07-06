@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using Zvjezdojedac.Podaci.Jezici;
 using Zvjezdojedac.Igra;
+using System.Drawing;
 
 namespace Zvjezdojedac.Podaci
 {
@@ -49,11 +50,18 @@ namespace Zvjezdojedac.Podaci
 			}
 		}
 
-		public static Jezik jezik { get; private set; }
+		public static Jezik Jezik { get; private set; }
+
+		public static int VelicinaSucelja = 100;
 
 		public static void PostaviJezik(string kod)
 		{
-			jezik = Jezik.IzDatoteka(kod);
+			Jezik = Jezik.IzDatoteka(kod);
+		}
+
+		public static Font FontSucelja(Font prototip)
+		{
+			return new Font(prototip.FontFamily, prototip.Size * VelicinaSucelja / 100f);
 		}
 
 		public static void Ucitaj(Dictionary<string, string> podatci)
@@ -63,7 +71,14 @@ namespace Zvjezdojedac.Podaci
 				jezikKod = podatci["JEZIK"];
 			else
 				jezikKod = Jezik.UobicajeniJezik;
-			jezik = Jezik.IzDatoteka(jezikKod);
+			Jezik = Jezik.IzDatoteka(jezikKod);
+
+			VelicinaSucelja = 100;
+			if (podatci.ContainsKey("VELICINA_SUCELJA"))
+				try {
+					VelicinaSucelja = int.Parse(podatci["VELICINA_SUCELJA"]);
+				}
+				catch { }
 		}
 
 		public static void Spremi()
@@ -78,7 +93,7 @@ namespace Zvjezdojedac.Podaci
 			PodaciAlat.spremi(fajla, podatci, "PROSLA_IGRA");
 
 			podatci.Clear();
-			podatci.Add("JEZIK", jezik.kod);
+			podatci.Add("JEZIK", Jezik.kod);
 			PodaciAlat.spremi(fajla, podatci, "POSTAVKE");
 			fajla.Close();
 		}
