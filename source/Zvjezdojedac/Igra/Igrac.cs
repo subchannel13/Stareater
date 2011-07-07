@@ -146,6 +146,22 @@ namespace Zvjezdojedac.Igra
 			filtarPoruka.Add(Poruka.Tip.Zgrada, true);
 		}
 
+		public Dictionary<Poruka.Tip, List<Poruka>> FiltriranePoruke()
+		{
+			Dictionary<Poruka.Tip, List<Poruka>> rez = new Dictionary<Poruka.Tip, List<Poruka>>();
+
+			rez.Add(Poruka.Tip.Brod, new List<Poruka>());
+			rez.Add(Poruka.Tip.Kolonija, new List<Poruka>());
+			rez.Add(Poruka.Tip.Prica, new List<Poruka>());
+			rez.Add(Poruka.Tip.Tehnologija, new List<Poruka>());
+			rez.Add(Poruka.Tip.Zgrada, new List<Poruka>());
+
+			foreach (Poruka poruka in poruke)
+				rez[poruka.tip].Add(poruka);
+
+			return rez;
+		}
+		
 		public void staviNoveTehnologije(IgraZvj igra)
 		{
 			HashSet<Tehnologija.TechInfo> uProucavanju = new HashSet<Tehnologija.TechInfo>();

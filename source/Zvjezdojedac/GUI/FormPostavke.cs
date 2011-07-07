@@ -56,6 +56,7 @@ namespace Zvjezdojedac.GUI
 
 			btnOk.Text = jezik[Kontekst.FormPostavke, "BTN_OK"].tekst(null);
 			lblJezik.Text = jezik[Kontekst.FormPostavke, "LBL_JEZIK"].tekst(null);
+			lblVelicina.Text = jezik[Kontekst.FormPostavke, "lblVelicina"].tekst(null);
 		}
 
 		private void btnOk_Click(object sender, EventArgs e)

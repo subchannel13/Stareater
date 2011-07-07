@@ -61,6 +61,8 @@ namespace Zvjezdojedac.GUI
 			tvFlota.ImageList.ImageSize = new Size(20, 20);
 			postaviJezik();
 			postaviAkcijeBroda();
+
+			this.Font = Postavke.FontSucelja(this.Font);
 		}
 
 		private void postaviJezik()
@@ -305,7 +307,14 @@ namespace Zvjezdojedac.GUI
 			igra.slijedeciIgrac();
 			noviKrugPogled();
 
-			if (igrac.poruke.Count > 0)
+			bool imaPoruka = false;
+			var filtriranePoruke = igrac.FiltriranePoruke();
+
+			foreach (Poruka.Tip tip in filtriranePoruke.Keys)
+				if (igrac.filtarPoruka[tip] && filtriranePoruke[tip].Count > 0)
+					imaPoruka = true;
+
+			if (imaPoruka)
 				btnPoruke_Click(this, null);
 		}
 

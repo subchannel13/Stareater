@@ -7,6 +7,7 @@ naslov = Colonization
 ::FORM_POSTAVKE
 BTN_OK = Ok
 LBL_JEZIK = Language:
+lblVelicina = Interface size:
 
 ::MISIJA
 CILJ_OBRANA = small objects

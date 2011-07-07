@@ -52,6 +52,8 @@ namespace Zvjezdojedac.GUI
 				this.Text = jezik["naslovCivGradnja"].tekst();
 			else
 				this.Text = jezik["naslovVojGradnja"].tekst();
+
+			this.Font = Postavke.FontSucelja(this.Font);
 		}
 
 		private int sorterPonuda(object lijeva, object desna)

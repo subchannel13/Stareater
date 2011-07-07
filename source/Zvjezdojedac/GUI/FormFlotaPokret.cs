@@ -33,6 +33,7 @@ namespace Zvjezdojedac.GUI
 			InitializeComponent();
 
 			this.frmIgra = frmIgra;
+			this.Font = Postavke.FontSucelja(this.Font);
 		}
 
 		private void initPoslaniBrodovi()

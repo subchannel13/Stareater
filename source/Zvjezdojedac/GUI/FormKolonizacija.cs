@@ -85,6 +85,7 @@ namespace Zvjezdojedac.GUI
 			this.Text = jezik["naslov"].tekst();
 
 			postaviZvjezdice();
+			this.Font = Postavke.FontSucelja(this.Font);
 		}
 
 		private long maxBrodova()

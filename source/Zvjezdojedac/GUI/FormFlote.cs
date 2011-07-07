@@ -137,6 +137,8 @@ namespace Zvjezdojedac.GUI
 			tabDizajnovi.Text = jezik["tabDizajnovi"].tekst();
 			tabNoviDizajn.Text = jezik["tabNoviDizajn"].tekst();
 			this.Text = jezik["naslov"].tekst();
+
+			this.Font = Postavke.FontSucelja(this.Font);
 		}
 
 		private static T izvadiTag<T>(ComboBox cb)
