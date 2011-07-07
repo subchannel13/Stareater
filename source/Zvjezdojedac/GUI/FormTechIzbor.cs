@@ -77,6 +77,7 @@ namespace Zvjezdojedac.GUI
 			InicijalizirajOpremu();
 
 			izracunajPoeneRazvoja();
+			this.Font = Postavke.FontSucelja(this.Font);
 		}
 
 		private void InicijalizirajIstrazivanje()

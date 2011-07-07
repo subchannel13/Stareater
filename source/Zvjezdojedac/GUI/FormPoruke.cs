@@ -48,12 +48,16 @@ namespace Zvjezdojedac.GUI
 			odabranaProuka = null;
 
 			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormPoruke];
-			chTipBrod.Text = jezik["chTipBrod"].tekst();
-			chTipKolonija.Text = jezik["chTipKolonija"].tekst();
-			chTipTehnologije.Text = jezik["chTipTehnologije"].tekst();
-			chTipZgrade.Text = jezik["chTipZgrade"].tekst();
+			var filtrirano = igrac.FiltriranePoruke();
+
+			chTipBrod.Text = jezik["chTipBrod"].tekst() + " (" + filtrirano[Poruka.Tip.Brod].Count + ")";
+			chTipKolonija.Text = jezik["chTipKolonija"].tekst()+" (" + filtrirano[Poruka.Tip.Kolonija].Count + ")";
+			chTipTehnologije.Text = jezik["chTipTehnologije"].tekst()+" (" + filtrirano[Poruka.Tip.Tehnologija].Count + ")";
+			chTipZgrade.Text = jezik["chTipZgrade"].tekst() + " (" + filtrirano[Poruka.Tip.Zgrada].Count + ")";
 
 			this.Text = jezik["naslov"].tekst();
+			this.Font = Postavke.FontSucelja(this.Font);
+			this.Refresh();
 		}
 
 		private void postaviPoruke()

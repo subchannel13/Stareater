@@ -94,6 +94,7 @@ namespace Zvjezdojedac.Podaci
 
 			podatci.Clear();
 			podatci.Add("JEZIK", Jezik.kod);
+			podatci.Add("VELICINA_SUCELJA", VelicinaSucelja.ToString());
 			PodaciAlat.spremi(fajla, podatci, "POSTAVKE");
 			fajla.Close();
 		}

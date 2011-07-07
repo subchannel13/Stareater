@@ -24,6 +24,7 @@ namespace Zvjezdojedac.GUI
 			postaviJezik();
 
 			radKolicina.Checked = true;
+			this.Font = Postavke.FontSucelja(this.Font);
 		}
 
 		public FormPlanetInfo(Kolonija kolonija) : this()

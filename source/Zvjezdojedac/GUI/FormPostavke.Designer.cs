@@ -49,13 +49,13 @@
 			this.cbJezik.FormattingEnabled = true;
 			this.cbJezik.Location = new System.Drawing.Point(12, 39);
 			this.cbJezik.Name = "cbJezik";
-			this.cbJezik.Size = new System.Drawing.Size(150, 21);
+			this.cbJezik.Size = new System.Drawing.Size(176, 21);
 			this.cbJezik.TabIndex = 1;
 			// 
 			// btnOk
 			// 
 			this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnOk.Location = new System.Drawing.Point(90, 111);
+			this.btnOk.Location = new System.Drawing.Point(113, 111);
 			this.btnOk.Name = "btnOk";
 			this.btnOk.Size = new System.Drawing.Size(75, 23);
 			this.btnOk.TabIndex = 3;
@@ -76,7 +76,7 @@
 			// 
 			this.cbVelicina.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbVelicina.FormattingEnabled = true;
-			this.cbVelicina.Location = new System.Drawing.Point(101, 69);
+			this.cbVelicina.Location = new System.Drawing.Point(127, 69);
 			this.cbVelicina.Name = "cbVelicina";
 			this.cbVelicina.Size = new System.Drawing.Size(61, 21);
 			this.cbVelicina.TabIndex = 5;
@@ -87,7 +87,7 @@
 			this.AcceptButton = this.btnOk;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(177, 146);
+			this.ClientSize = new System.Drawing.Size(200, 146);
 			this.Controls.Add(this.cbVelicina);
 			this.Controls.Add(this.lblVelicina);
 			this.Controls.Add(this.btnOk);

@@ -24,6 +24,7 @@ namespace Zvjezdojedac.GUI
 			igraci = new List<Igrac.ZaStvoriti>();
 
 			postaviJezik();
+			this.Font = Postavke.FontSucelja(this.Font);
 		}
 
 		private void postaviJezik()
