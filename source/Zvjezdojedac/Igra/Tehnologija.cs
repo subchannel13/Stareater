@@ -221,6 +221,11 @@ namespace Zvjezdojedac.Igra
 
 		public long cijena(Dictionary<string, double> varijable)
 		{
+			if (varijable.ContainsKey("LVL0"))
+				varijable["LVL0"] = nivo;
+			else
+				varijable.Add("LVL0", nivo);
+
 			if (varijable.ContainsKey("LVL"))
 				varijable["LVL"] = nivo + 1;
 			else

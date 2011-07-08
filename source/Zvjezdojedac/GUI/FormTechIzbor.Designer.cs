@@ -31,6 +31,7 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTechIzbor));
 			this.tabControlTech = new System.Windows.Forms.TabControl();
 			this.tabRazvoj = new System.Windows.Forms.TabPage();
+			this.txtRazOpis = new System.Windows.Forms.TextBox();
 			this.btnOk = new System.Windows.Forms.Button();
 			this.lblFokusirano = new System.Windows.Forms.Label();
 			this.lblRavnomjerno = new System.Windows.Forms.Label();
@@ -49,6 +50,7 @@
 			this.chRazPoeni = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.chRazUlaganje = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabIstrazivanje = new System.Windows.Forms.TabPage();
+			this.txtIstOpis = new System.Windows.Forms.TextBox();
 			this.btnIstDno = new System.Windows.Forms.Button();
 			this.btnIstDolje = new System.Windows.Forms.Button();
 			this.btnIstGore = new System.Windows.Forms.Button();
@@ -78,8 +80,7 @@
 			this.lstOprema = new System.Windows.Forms.ListView();
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.txtRazOpis = new System.Windows.Forms.TextBox();
-			this.txtIstOpis = new System.Windows.Forms.TextBox();
+			this.lblRazPoeni = new System.Windows.Forms.Label();
 			this.tabControlTech.SuspendLayout();
 			this.tabRazvoj.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trkRazKoncentracija)).BeginInit();
@@ -110,6 +111,7 @@
 			// tabRazvoj
 			// 
 			this.tabRazvoj.BackColor = System.Drawing.SystemColors.Control;
+			this.tabRazvoj.Controls.Add(this.lblRazPoeni);
 			this.tabRazvoj.Controls.Add(this.txtRazOpis);
 			this.tabRazvoj.Controls.Add(this.btnOk);
 			this.tabRazvoj.Controls.Add(this.lblFokusirano);
@@ -131,6 +133,18 @@
 			this.tabRazvoj.Size = new System.Drawing.Size(586, 422);
 			this.tabRazvoj.TabIndex = 0;
 			this.tabRazvoj.Text = "Razvoj";
+			// 
+			// txtRazOpis
+			// 
+			this.txtRazOpis.BackColor = System.Drawing.SystemColors.Control;
+			this.txtRazOpis.Location = new System.Drawing.Point(94, 275);
+			this.txtRazOpis.Multiline = true;
+			this.txtRazOpis.Name = "txtRazOpis";
+			this.txtRazOpis.ReadOnly = true;
+			this.txtRazOpis.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+			this.txtRazOpis.Size = new System.Drawing.Size(294, 105);
+			this.txtRazOpis.TabIndex = 20;
+			this.txtRazOpis.Text = "Opis tehnologije\r\n...";
 			// 
 			// btnOk
 			// 
@@ -312,6 +326,18 @@
 			this.tabIstrazivanje.Size = new System.Drawing.Size(586, 422);
 			this.tabIstrazivanje.TabIndex = 1;
 			this.tabIstrazivanje.Text = "Istraživanje";
+			// 
+			// txtIstOpis
+			// 
+			this.txtIstOpis.BackColor = System.Drawing.SystemColors.Control;
+			this.txtIstOpis.Location = new System.Drawing.Point(94, 275);
+			this.txtIstOpis.Multiline = true;
+			this.txtIstOpis.Name = "txtIstOpis";
+			this.txtIstOpis.ReadOnly = true;
+			this.txtIstOpis.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+			this.txtIstOpis.Size = new System.Drawing.Size(278, 105);
+			this.txtIstOpis.TabIndex = 21;
+			this.txtIstOpis.Text = "Opis tehnologije\r\n...";
 			// 
 			// btnIstDno
 			// 
@@ -592,29 +618,14 @@
 			this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.columnHeader2.Width = 45;
 			// 
-			// txtRazOpis
+			// lblRazPoeni
 			// 
-			this.txtRazOpis.BackColor = System.Drawing.SystemColors.Control;
-			this.txtRazOpis.Location = new System.Drawing.Point(94, 275);
-			this.txtRazOpis.Multiline = true;
-			this.txtRazOpis.Name = "txtRazOpis";
-			this.txtRazOpis.ReadOnly = true;
-			this.txtRazOpis.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-			this.txtRazOpis.Size = new System.Drawing.Size(294, 105);
-			this.txtRazOpis.TabIndex = 20;
-			this.txtRazOpis.Text = "Opis tehnologije\r\n...";
-			// 
-			// txtIstOpis
-			// 
-			this.txtIstOpis.BackColor = System.Drawing.SystemColors.Control;
-			this.txtIstOpis.Location = new System.Drawing.Point(94, 275);
-			this.txtIstOpis.Multiline = true;
-			this.txtIstOpis.Name = "txtIstOpis";
-			this.txtIstOpis.ReadOnly = true;
-			this.txtIstOpis.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-			this.txtIstOpis.Size = new System.Drawing.Size(278, 105);
-			this.txtIstOpis.TabIndex = 21;
-			this.txtIstOpis.Text = "Opis tehnologije\r\n...";
+			this.lblRazPoeni.AutoSize = true;
+			this.lblRazPoeni.Location = new System.Drawing.Point(394, 275);
+			this.lblRazPoeni.Name = "lblRazPoeni";
+			this.lblRazPoeni.Size = new System.Drawing.Size(35, 13);
+			this.lblRazPoeni.TabIndex = 21;
+			this.lblRazPoeni.Text = "label1";
 			// 
 			// FormTechIzbor
 			// 
@@ -703,5 +714,6 @@
 		private System.Windows.Forms.ComboBox cbOpVelicine;
 		private System.Windows.Forms.TextBox txtRazOpis;
 		private System.Windows.Forms.TextBox txtIstOpis;
+		private System.Windows.Forms.Label lblRazPoeni;
 	}
 }

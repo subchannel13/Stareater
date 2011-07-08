@@ -13,6 +13,7 @@ lblFokusirano = Fokusirano
 lblIstPoeni = Poeni istraživanja
 lblRaspodjela = Raspodjela
 lblRavnomjerno = Ravnomjerno
+lblRazPoeni = Poeni razvoja
 lblUIstrazivanju = U istraživanju
 lblURazvoju = U razvoju
 naslov = Istraživanje i razvoj
