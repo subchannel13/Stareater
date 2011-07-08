@@ -65,6 +65,7 @@ namespace Zvjezdojedac.GUI
 			txtRazOpis.Text = "";
 			txtIstOpis.Text = "";
 			lblIstPoeni.Text = jezik["lblIstPoeni"].tekst() + ": " + Fje.PrefiksFormater(igrac.istrazivanjePoSustavu[igrac.istrazivanjeSustav]);
+			lblRazPoeni.Text = jezik["lblRazPoeni"].tekst() + ": " + Fje.PrefiksFormater(igrac.poeniRazvoja());
 			lblIstSustav.Text = " (" + igrac.istrazivanjeSustav.ime + ")";
 			lblKnjizNaziv.Text = "";
 			txtKnjizOpis.Text = "";

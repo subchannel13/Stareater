@@ -13,6 +13,7 @@ lblFokusirano = Focused
 lblIstPoeni = Research points
 lblRaspodjela = Distribution
 lblRavnomjerno = Even
+lblRazPoeni = Development poins
 lblUIstrazivanju = Research
 lblURazvoju = In development
 naslov = Research & development
