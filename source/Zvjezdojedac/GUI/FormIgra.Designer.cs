@@ -111,7 +111,7 @@
 			this.tabCtrlDesno.Multiline = true;
 			this.tabCtrlDesno.Name = "tabCtrlDesno";
 			this.tabCtrlDesno.SelectedIndex = 0;
-			this.tabCtrlDesno.Size = new System.Drawing.Size(200, 585);
+			this.tabCtrlDesno.Size = new System.Drawing.Size(250, 585);
 			this.tabCtrlDesno.TabIndex = 0;
 			// 
 			// tabPageZvijezda
@@ -175,12 +175,13 @@
 			this.tabPageKolonija.Location = new System.Drawing.Point(4, 4);
 			this.tabPageKolonija.Name = "tabPageKolonija";
 			this.tabPageKolonija.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageKolonija.Size = new System.Drawing.Size(154, 577);
+			this.tabPageKolonija.Size = new System.Drawing.Size(204, 577);
 			this.tabPageKolonija.TabIndex = 1;
 			// 
 			// btnSlijedecaKolonija
 			// 
-			this.btnSlijedecaKolonija.Location = new System.Drawing.Point(117, 6);
+			this.btnSlijedecaKolonija.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnSlijedecaKolonija.Location = new System.Drawing.Point(167, 6);
 			this.btnSlijedecaKolonija.Name = "btnSlijedecaKolonija";
 			this.btnSlijedecaKolonija.Size = new System.Drawing.Size(31, 23);
 			this.btnSlijedecaKolonija.TabIndex = 32;
@@ -202,6 +203,8 @@
 			// 
 			// groupPoStan
 			// 
+			this.groupPoStan.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.groupPoStan.Controls.Add(this.lblOdrzavanjePoStan);
 			this.groupPoStan.Controls.Add(this.lblRazvojPoStan);
 			this.groupPoStan.Controls.Add(this.lblIndustrijaPoStan);
@@ -209,7 +212,7 @@
 			this.groupPoStan.Controls.Add(this.lblHranaPoStan);
 			this.groupPoStan.Location = new System.Drawing.Point(6, 115);
 			this.groupPoStan.Name = "groupPoStan";
-			this.groupPoStan.Size = new System.Drawing.Size(137, 88);
+			this.groupPoStan.Size = new System.Drawing.Size(187, 88);
 			this.groupPoStan.TabIndex = 30;
 			this.groupPoStan.TabStop = false;
 			this.groupPoStan.Text = "Po stanovniku";
@@ -270,20 +273,23 @@
 			// 
 			// groupCivGradnja
 			// 
+			this.groupCivGradnja.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.groupCivGradnja.Controls.Add(this.btnCivilnaGradnja);
 			this.groupCivGradnja.Controls.Add(this.hscrCivilnaIndustrija);
 			this.groupCivGradnja.Controls.Add(this.lblProcjenaCivilneGradnje);
 			this.groupCivGradnja.Controls.Add(this.lblCivilnaIndustrija);
 			this.groupCivGradnja.Location = new System.Drawing.Point(6, 209);
 			this.groupCivGradnja.Name = "groupCivGradnja";
-			this.groupCivGradnja.Size = new System.Drawing.Size(138, 152);
+			this.groupCivGradnja.Size = new System.Drawing.Size(188, 152);
 			this.groupCivGradnja.TabIndex = 29;
 			this.groupCivGradnja.TabStop = false;
 			this.groupCivGradnja.Text = "Civilna gradnja";
 			// 
 			// btnCivilnaGradnja
 			// 
-			this.btnCivilnaGradnja.Location = new System.Drawing.Point(30, 19);
+			this.btnCivilnaGradnja.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			this.btnCivilnaGradnja.Location = new System.Drawing.Point(52, 19);
 			this.btnCivilnaGradnja.Name = "btnCivilnaGradnja";
 			this.btnCivilnaGradnja.Size = new System.Drawing.Size(84, 84);
 			this.btnCivilnaGradnja.TabIndex = 22;
@@ -293,10 +299,12 @@
 			// 
 			// hscrCivilnaIndustrija
 			// 
+			this.hscrCivilnaIndustrija.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.hscrCivilnaIndustrija.LargeChange = 1;
 			this.hscrCivilnaIndustrija.Location = new System.Drawing.Point(3, 106);
 			this.hscrCivilnaIndustrija.Name = "hscrCivilnaIndustrija";
-			this.hscrCivilnaIndustrija.Size = new System.Drawing.Size(134, 18);
+			this.hscrCivilnaIndustrija.Size = new System.Drawing.Size(182, 18);
 			this.hscrCivilnaIndustrija.TabIndex = 11;
 			this.hscrCivilnaIndustrija.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscrCivilnaIndustrija_Scroll);
 			// 
@@ -320,20 +328,23 @@
 			// 
 			// groupVojGradnja
 			// 
+			this.groupVojGradnja.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.groupVojGradnja.Controls.Add(this.btnVojnaGradnja);
 			this.groupVojGradnja.Controls.Add(this.lblProcjenaVojneGradnje);
 			this.groupVojGradnja.Controls.Add(this.hscrVojnaIndustrija);
 			this.groupVojGradnja.Controls.Add(this.lblVojnaGradnja);
 			this.groupVojGradnja.Location = new System.Drawing.Point(6, 367);
 			this.groupVojGradnja.Name = "groupVojGradnja";
-			this.groupVojGradnja.Size = new System.Drawing.Size(138, 153);
+			this.groupVojGradnja.Size = new System.Drawing.Size(188, 153);
 			this.groupVojGradnja.TabIndex = 28;
 			this.groupVojGradnja.TabStop = false;
 			this.groupVojGradnja.Text = "Vojna gradnja";
 			// 
 			// btnVojnaGradnja
 			// 
-			this.btnVojnaGradnja.Location = new System.Drawing.Point(28, 15);
+			this.btnVojnaGradnja.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			this.btnVojnaGradnja.Location = new System.Drawing.Point(52, 15);
 			this.btnVojnaGradnja.Name = "btnVojnaGradnja";
 			this.btnVojnaGradnja.Size = new System.Drawing.Size(84, 84);
 			this.btnVojnaGradnja.TabIndex = 23;
@@ -352,10 +363,12 @@
 			// 
 			// hscrVojnaIndustrija
 			// 
+			this.hscrVojnaIndustrija.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.hscrVojnaIndustrija.LargeChange = 1;
 			this.hscrVojnaIndustrija.Location = new System.Drawing.Point(3, 102);
 			this.hscrVojnaIndustrija.Name = "hscrVojnaIndustrija";
-			this.hscrVojnaIndustrija.Size = new System.Drawing.Size(134, 18);
+			this.hscrVojnaIndustrija.Size = new System.Drawing.Size(182, 18);
 			this.hscrVojnaIndustrija.TabIndex = 24;
 			this.hscrVojnaIndustrija.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscrVojnaIndustrija_Scroll);
 			// 
@@ -378,9 +391,11 @@
 			// 
 			// btnPlanetInfo
 			// 
+			this.btnPlanetInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.btnPlanetInfo.Location = new System.Drawing.Point(6, 86);
 			this.btnPlanetInfo.Name = "btnPlanetInfo";
-			this.btnPlanetInfo.Size = new System.Drawing.Size(142, 23);
+			this.btnPlanetInfo.Size = new System.Drawing.Size(192, 23);
 			this.btnPlanetInfo.TabIndex = 6;
 			this.btnPlanetInfo.Text = "&Detaljnije";
 			this.btnPlanetInfo.UseVisualStyleBackColor = true;
@@ -472,7 +487,7 @@
 			this.pnlMapa.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlMapa.Location = new System.Drawing.Point(0, 0);
 			this.pnlMapa.Name = "pnlMapa";
-			this.pnlMapa.Size = new System.Drawing.Size(625, 548);
+			this.pnlMapa.Size = new System.Drawing.Size(575, 548);
 			this.pnlMapa.TabIndex = 1;
 			// 
 			// picMapa
@@ -499,7 +514,7 @@
 			// 
 			this.btnEndTurn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnEndTurn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.btnEndTurn.Location = new System.Drawing.Point(559, 6);
+			this.btnEndTurn.Location = new System.Drawing.Point(509, 6);
 			this.btnEndTurn.Name = "btnEndTurn";
 			this.btnEndTurn.Size = new System.Drawing.Size(60, 52);
 			this.btnEndTurn.TabIndex = 1;
@@ -568,9 +583,9 @@
 			this.pnlDesno.Controls.Add(this.tabCtrlDesno);
 			this.pnlDesno.Controls.Add(this.pnlDesnoGore);
 			this.pnlDesno.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlDesno.Location = new System.Drawing.Point(625, 0);
+			this.pnlDesno.Location = new System.Drawing.Point(575, 0);
 			this.pnlDesno.Name = "pnlDesno";
-			this.pnlDesno.Size = new System.Drawing.Size(200, 616);
+			this.pnlDesno.Size = new System.Drawing.Size(250, 616);
 			this.pnlDesno.TabIndex = 1;
 			// 
 			// pnlDesnoGore
@@ -579,7 +594,7 @@
 			this.pnlDesnoGore.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pnlDesnoGore.Location = new System.Drawing.Point(0, 0);
 			this.pnlDesnoGore.Name = "pnlDesnoGore";
-			this.pnlDesnoGore.Size = new System.Drawing.Size(200, 31);
+			this.pnlDesnoGore.Size = new System.Drawing.Size(250, 31);
 			this.pnlDesnoGore.TabIndex = 2;
 			// 
 			// lblBrojKruga
@@ -598,7 +613,7 @@
 			this.pnlDno.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.pnlDno.Location = new System.Drawing.Point(0, 548);
 			this.pnlDno.Name = "pnlDno";
-			this.pnlDno.Size = new System.Drawing.Size(625, 68);
+			this.pnlDno.Size = new System.Drawing.Size(575, 68);
 			this.pnlDno.TabIndex = 5;
 			// 
 			// panel2
@@ -610,7 +625,7 @@
 			this.panel2.Controls.Add(this.btnFlote);
 			this.panel2.Controls.Add(this.btnTech);
 			this.panel2.Controls.Add(this.trackBarZoom);
-			this.panel2.Location = new System.Drawing.Point(159, 0);
+			this.panel2.Location = new System.Drawing.Point(134, 0);
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(307, 66);
 			this.panel2.TabIndex = 2;

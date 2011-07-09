@@ -62,7 +62,7 @@ TRUP_MALI_BROD_IME = Mali brod
 TRUP_MALI_BROD_OPIS = Brod veličine između lovca i broda srednje veličine.
 TRUP_MALA_KRSTARICA_IME = Mala krstarica
 TRUP_MALA_KRSTARICA_OPIS = Brod srednje veličine.
-TRUP_KRSTARICA_IME = Mala krstarica
+TRUP_KRSTARICA_IME = Krstarica
 TRUP_KRSTARICA_OPIS = Brod srednje veličine.
 
 TAK_PROJEKTIL = Projektil
