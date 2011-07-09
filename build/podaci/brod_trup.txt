@@ -61,7 +61,7 @@ BR_SENZORA = 5
 <TRUP>
 IME = TRUP_KRSTARICA_IME
 OPIS = TRUP_KRSTARICA_OPIS
-SLIKA = ./slike/tehnologije/mala krstarica.bmp
+SLIKA = ./slike/tehnologije/krstarica.png
 MAX_NIVO = 0
 PREDUVJETI =
 KOD = KRSTARICA

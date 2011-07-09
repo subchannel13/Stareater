@@ -62,6 +62,8 @@ TRUP_MALI_BROD_IME = Small ship
 TRUP_MALI_BROD_OPIS = 
 TRUP_MALA_KRSTARICA_IME = Small cruiser
 TRUP_MALA_KRSTARICA_OPIS = Medium sized ship.
+TRUP_KRSTARICA_IME = Cruiser
+TRUP_KRSTARICA_OPIS = Medium sized ship.
 
 TAK_PROJEKTIL = Projectile
 TAK_BROD0 = Close combat

@@ -178,19 +178,16 @@ namespace Zvjezdojedac.Igra
 		{
 			double minus = (tip == Tip.KAMENI) ? gustocaAtmosfere : 0;
 
-			double ret = Math.Pow(zvjezda.zracenje() - pozicija, 2) - magnetskoPolje - minus;
+			double ret = Math.Pow(Math.Max(zvjezda.zracenje() - pozicija, 0), 2) - magnetskoPolje - minus;
 
 			return Math.Max(ret, 0);
 		}
 
 		public double temperatura()
 		{
-			double zracenje = Math.Pow(zvjezda.zracenje() - pozicija, 2) - magnetskoPolje;
+			double zracenje = Math.Pow(Math.Max(zvjezda.zracenje() - pozicija, 0), 2) - magnetskoPolje;
 
-			//if (zracenje < gustocaAtmosfere)
 			return Math.Max(zracenje, gustocaAtmosfere / 5);
-			//else
-				//return zracenje;
 		}
 
 		const double MIN_ZA_GRAVITACIJU = 0.5;
