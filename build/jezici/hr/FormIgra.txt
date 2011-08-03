@@ -1,15 +1,20 @@
 ﻿::FORM_IGRA
 btnEndTurn = Završi &krug
-btnFlote = &Flote
 btnFlotaPokret = Pokret
 btnPlanetInfo = &Detaljnije
-btnPoruke := "&Novosti (" # P BR_PORUKA # ")"
-btnSpremi = &Spremi
-btnTech = &Tehnologije
-btnUcitaj = &Učitaj
 lblBrojKruga := # D + KRUG 1 # ". krug"
 lblMigracija = Max migracija
 lblZracenje = Zračenje
+
+floteMenu = &Flote
+izbornikMenu = &Izbornik
+izlazMenu = I&zlaz
+kolonijeMenu = &Kolonije
+novaIgraMenu = &Nova igra
+novostiMenu := "&Novosti (" # P BR_PORUKA # ")"
+spremiMenu = &Spremi
+tehnologijeMenu = &Tehnologije
+ucitajMenu = &Učitaj
 			
 flotaObrana = Obrana
 zvjNeistrazeno = Neistraženo

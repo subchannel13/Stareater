@@ -67,19 +67,24 @@
 			this.btnPrimAkcijaBroda = new System.Windows.Forms.Button();
 			this.pnlMapa = new System.Windows.Forms.Panel();
 			this.picMapa = new System.Windows.Forms.PictureBox();
-			this.btnUcitaj = new System.Windows.Forms.Button();
 			this.btnEndTurn = new System.Windows.Forms.Button();
-			this.btnPoruke = new System.Windows.Forms.Button();
-			this.btnSpremi = new System.Windows.Forms.Button();
-			this.btnFlote = new System.Windows.Forms.Button();
 			this.trackBarZoom = new System.Windows.Forms.TrackBar();
-			this.btnTech = new System.Windows.Forms.Button();
 			this.timerAnimacija = new System.Windows.Forms.Timer(this.components);
 			this.pnlDesno = new System.Windows.Forms.Panel();
 			this.pnlDesnoGore = new System.Windows.Forms.Panel();
 			this.lblBrojKruga = new System.Windows.Forms.Label();
 			this.pnlDno = new System.Windows.Forms.Panel();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.menuStrip = new System.Windows.Forms.MenuStrip();
+			this.novostiMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.kolonijeMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.floteMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.tehnologijeMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.izbornikMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.novaIgraMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.spremiMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.ucitajMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.izlazMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabCtrlDesno.SuspendLayout();
 			this.tabPageZvijezda.SuspendLayout();
 			this.pnlOpisZvjezde.SuspendLayout();
@@ -97,21 +102,24 @@
 			this.pnlDesnoGore.SuspendLayout();
 			this.pnlDno.SuspendLayout();
 			this.panel2.SuspendLayout();
+			this.menuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabCtrlDesno
 			// 
 			this.tabCtrlDesno.Alignment = System.Windows.Forms.TabAlignment.Right;
+			this.tabCtrlDesno.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.tabCtrlDesno.Controls.Add(this.tabPageZvijezda);
 			this.tabCtrlDesno.Controls.Add(this.tabPageKolonija);
 			this.tabCtrlDesno.Controls.Add(this.tabPageFlote);
-			this.tabCtrlDesno.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabCtrlDesno.ItemSize = new System.Drawing.Size(10, 38);
 			this.tabCtrlDesno.Location = new System.Drawing.Point(0, 31);
 			this.tabCtrlDesno.Multiline = true;
 			this.tabCtrlDesno.Name = "tabCtrlDesno";
 			this.tabCtrlDesno.SelectedIndex = 0;
-			this.tabCtrlDesno.Size = new System.Drawing.Size(250, 585);
+			this.tabCtrlDesno.Size = new System.Drawing.Size(250, 493);
 			this.tabCtrlDesno.TabIndex = 0;
 			// 
 			// tabPageZvijezda
@@ -122,7 +130,7 @@
 			this.tabPageZvijezda.Location = new System.Drawing.Point(4, 4);
 			this.tabPageZvijezda.Name = "tabPageZvijezda";
 			this.tabPageZvijezda.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageZvijezda.Size = new System.Drawing.Size(154, 577);
+			this.tabPageZvijezda.Size = new System.Drawing.Size(204, 485);
 			this.tabPageZvijezda.TabIndex = 0;
 			// 
 			// listViewPlaneti
@@ -135,7 +143,7 @@
 			this.listViewPlaneti.Location = new System.Drawing.Point(3, 51);
 			this.listViewPlaneti.MultiSelect = false;
 			this.listViewPlaneti.Name = "listViewPlaneti";
-			this.listViewPlaneti.Size = new System.Drawing.Size(148, 523);
+			this.listViewPlaneti.Size = new System.Drawing.Size(198, 431);
 			this.listViewPlaneti.TabIndex = 0;
 			this.listViewPlaneti.UseCompatibleStateImageBehavior = false;
 			this.listViewPlaneti.View = System.Windows.Forms.View.Tile;
@@ -147,7 +155,7 @@
 			this.pnlOpisZvjezde.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pnlOpisZvjezde.Location = new System.Drawing.Point(3, 3);
 			this.pnlOpisZvjezde.Name = "pnlOpisZvjezde";
-			this.pnlOpisZvjezde.Size = new System.Drawing.Size(148, 48);
+			this.pnlOpisZvjezde.Size = new System.Drawing.Size(198, 48);
 			this.pnlOpisZvjezde.TabIndex = 1;
 			// 
 			// lblImeZvjezde
@@ -175,7 +183,7 @@
 			this.tabPageKolonija.Location = new System.Drawing.Point(4, 4);
 			this.tabPageKolonija.Name = "tabPageKolonija";
 			this.tabPageKolonija.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageKolonija.Size = new System.Drawing.Size(204, 577);
+			this.tabPageKolonija.Size = new System.Drawing.Size(204, 485);
 			this.tabPageKolonija.TabIndex = 1;
 			// 
 			// btnSlijedecaKolonija
@@ -427,7 +435,7 @@
 			this.tabPageFlote.Location = new System.Drawing.Point(4, 4);
 			this.tabPageFlote.Name = "tabPageFlote";
 			this.tabPageFlote.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageFlote.Size = new System.Drawing.Size(154, 577);
+			this.tabPageFlote.Size = new System.Drawing.Size(204, 485);
 			this.tabPageFlote.TabIndex = 2;
 			// 
 			// tvFlota
@@ -435,7 +443,7 @@
 			this.tvFlota.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tvFlota.Location = new System.Drawing.Point(3, 103);
 			this.tvFlota.Name = "tvFlota";
-			this.tvFlota.Size = new System.Drawing.Size(148, 417);
+			this.tvFlota.Size = new System.Drawing.Size(198, 379);
 			this.tvFlota.TabIndex = 1;
 			this.tvFlota.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFlota_AfterSelect);
 			this.tvFlota.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvFlota_NodeMouseDoubleClick);
@@ -448,7 +456,7 @@
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel1.Location = new System.Drawing.Point(3, 3);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(148, 100);
+			this.panel1.Size = new System.Drawing.Size(198, 100);
 			this.panel1.TabIndex = 0;
 			// 
 			// btnFlotaPokret
@@ -485,9 +493,9 @@
 			this.pnlMapa.AutoScroll = true;
 			this.pnlMapa.Controls.Add(this.picMapa);
 			this.pnlMapa.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlMapa.Location = new System.Drawing.Point(0, 0);
+			this.pnlMapa.Location = new System.Drawing.Point(0, 24);
 			this.pnlMapa.Name = "pnlMapa";
-			this.pnlMapa.Size = new System.Drawing.Size(575, 548);
+			this.pnlMapa.Size = new System.Drawing.Size(575, 524);
 			this.pnlMapa.TabIndex = 1;
 			// 
 			// picMapa
@@ -500,57 +508,17 @@
 			this.picMapa.TabStop = false;
 			this.picMapa.Click += new System.EventHandler(this.picMapa_Click);
 			// 
-			// btnUcitaj
-			// 
-			this.btnUcitaj.Location = new System.Drawing.Point(226, 40);
-			this.btnUcitaj.Name = "btnUcitaj";
-			this.btnUcitaj.Size = new System.Drawing.Size(75, 23);
-			this.btnUcitaj.TabIndex = 3;
-			this.btnUcitaj.Text = "Učitaj";
-			this.btnUcitaj.UseVisualStyleBackColor = true;
-			this.btnUcitaj.Click += new System.EventHandler(this.btnUcitaj_Click);
-			// 
 			// btnEndTurn
 			// 
-			this.btnEndTurn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnEndTurn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnEndTurn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.btnEndTurn.Location = new System.Drawing.Point(509, 6);
+			this.btnEndTurn.Location = new System.Drawing.Point(140, 524);
 			this.btnEndTurn.Name = "btnEndTurn";
-			this.btnEndTurn.Size = new System.Drawing.Size(60, 52);
+			this.btnEndTurn.Size = new System.Drawing.Size(68, 68);
 			this.btnEndTurn.TabIndex = 1;
 			this.btnEndTurn.Text = "Završi &krug";
 			this.btnEndTurn.UseVisualStyleBackColor = true;
 			this.btnEndTurn.Click += new System.EventHandler(this.btnEndTurn_Click);
-			// 
-			// btnPoruke
-			// 
-			this.btnPoruke.Location = new System.Drawing.Point(3, 6);
-			this.btnPoruke.Name = "btnPoruke";
-			this.btnPoruke.Size = new System.Drawing.Size(75, 23);
-			this.btnPoruke.TabIndex = 3;
-			this.btnPoruke.Text = "&Novosti";
-			this.btnPoruke.UseVisualStyleBackColor = true;
-			this.btnPoruke.Click += new System.EventHandler(this.btnPoruke_Click);
-			// 
-			// btnSpremi
-			// 
-			this.btnSpremi.Location = new System.Drawing.Point(226, 6);
-			this.btnSpremi.Name = "btnSpremi";
-			this.btnSpremi.Size = new System.Drawing.Size(75, 23);
-			this.btnSpremi.TabIndex = 1;
-			this.btnSpremi.Text = "Spremi";
-			this.btnSpremi.UseVisualStyleBackColor = true;
-			this.btnSpremi.Click += new System.EventHandler(this.btnSpremi_Click);
-			// 
-			// btnFlote
-			// 
-			this.btnFlote.Location = new System.Drawing.Point(3, 35);
-			this.btnFlote.Name = "btnFlote";
-			this.btnFlote.Size = new System.Drawing.Size(75, 23);
-			this.btnFlote.TabIndex = 4;
-			this.btnFlote.Text = "&Flote";
-			this.btnFlote.UseVisualStyleBackColor = true;
-			this.btnFlote.Click += new System.EventHandler(this.btnFlote_Click);
 			// 
 			// trackBarZoom
 			// 
@@ -562,16 +530,6 @@
 			this.trackBarZoom.Value = 4;
 			this.trackBarZoom.Scroll += new System.EventHandler(this.trackBarZoom_Scroll);
 			// 
-			// btnTech
-			// 
-			this.btnTech.Location = new System.Drawing.Point(84, 35);
-			this.btnTech.Name = "btnTech";
-			this.btnTech.Size = new System.Drawing.Size(85, 23);
-			this.btnTech.TabIndex = 2;
-			this.btnTech.Text = "&Tehnologije";
-			this.btnTech.UseVisualStyleBackColor = true;
-			this.btnTech.Click += new System.EventHandler(this.btnTech_Click);
-			// 
 			// timerAnimacija
 			// 
 			this.timerAnimacija.Enabled = true;
@@ -580,12 +538,13 @@
 			// 
 			// pnlDesno
 			// 
+			this.pnlDesno.Controls.Add(this.btnEndTurn);
 			this.pnlDesno.Controls.Add(this.tabCtrlDesno);
 			this.pnlDesno.Controls.Add(this.pnlDesnoGore);
 			this.pnlDesno.Dock = System.Windows.Forms.DockStyle.Right;
-			this.pnlDesno.Location = new System.Drawing.Point(575, 0);
+			this.pnlDesno.Location = new System.Drawing.Point(575, 24);
 			this.pnlDesno.Name = "pnlDesno";
-			this.pnlDesno.Size = new System.Drawing.Size(250, 616);
+			this.pnlDesno.Size = new System.Drawing.Size(250, 592);
 			this.pnlDesno.TabIndex = 1;
 			// 
 			// pnlDesnoGore
@@ -609,7 +568,6 @@
 			// pnlDno
 			// 
 			this.pnlDno.Controls.Add(this.panel2);
-			this.pnlDno.Controls.Add(this.btnEndTurn);
 			this.pnlDno.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.pnlDno.Location = new System.Drawing.Point(0, 548);
 			this.pnlDno.Name = "pnlDno";
@@ -619,16 +577,95 @@
 			// panel2
 			// 
 			this.panel2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.panel2.Controls.Add(this.btnUcitaj);
-			this.panel2.Controls.Add(this.btnPoruke);
-			this.panel2.Controls.Add(this.btnSpremi);
-			this.panel2.Controls.Add(this.btnFlote);
-			this.panel2.Controls.Add(this.btnTech);
 			this.panel2.Controls.Add(this.trackBarZoom);
 			this.panel2.Location = new System.Drawing.Point(134, 0);
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(307, 66);
 			this.panel2.TabIndex = 2;
+			// 
+			// menuStrip
+			// 
+			this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.novostiMenu,
+            this.kolonijeMenu,
+            this.floteMenu,
+            this.tehnologijeMenu,
+            this.izbornikMenu});
+			this.menuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+			this.menuStrip.Location = new System.Drawing.Point(0, 0);
+			this.menuStrip.Name = "menuStrip";
+			this.menuStrip.Size = new System.Drawing.Size(825, 24);
+			this.menuStrip.TabIndex = 6;
+			this.menuStrip.Text = "menuStrip1";
+			// 
+			// novostiMenu
+			// 
+			this.novostiMenu.Name = "novostiMenu";
+			this.novostiMenu.ShortcutKeys = System.Windows.Forms.Keys.F1;
+			this.novostiMenu.Size = new System.Drawing.Size(60, 20);
+			this.novostiMenu.Text = "Novosti";
+			this.novostiMenu.Click += new System.EventHandler(this.novostiMenu_Click);
+			// 
+			// kolonijeMenu
+			// 
+			this.kolonijeMenu.Name = "kolonijeMenu";
+			this.kolonijeMenu.ShortcutKeys = System.Windows.Forms.Keys.F2;
+			this.kolonijeMenu.Size = new System.Drawing.Size(62, 20);
+			this.kolonijeMenu.Text = "Kolonije";
+			// 
+			// floteMenu
+			// 
+			this.floteMenu.Name = "floteMenu";
+			this.floteMenu.ShortcutKeys = System.Windows.Forms.Keys.F3;
+			this.floteMenu.Size = new System.Drawing.Size(45, 20);
+			this.floteMenu.Text = "Flote";
+			this.floteMenu.Click += new System.EventHandler(this.floteMenu_Click);
+			// 
+			// tehnologijeMenu
+			// 
+			this.tehnologijeMenu.Name = "tehnologijeMenu";
+			this.tehnologijeMenu.ShortcutKeys = System.Windows.Forms.Keys.F4;
+			this.tehnologijeMenu.Size = new System.Drawing.Size(82, 20);
+			this.tehnologijeMenu.Text = "Tehnologije";
+			this.tehnologijeMenu.Click += new System.EventHandler(this.tehnologijeMenu_Click);
+			// 
+			// izbornikMenu
+			// 
+			this.izbornikMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.novaIgraMenu,
+            this.spremiMenu,
+            this.ucitajMenu,
+            this.izlazMenu});
+			this.izbornikMenu.Name = "izbornikMenu";
+			this.izbornikMenu.ShortcutKeyDisplayString = "";
+			this.izbornikMenu.Size = new System.Drawing.Size(61, 20);
+			this.izbornikMenu.Text = "Izbornik";
+			// 
+			// novaIgraMenu
+			// 
+			this.novaIgraMenu.Name = "novaIgraMenu";
+			this.novaIgraMenu.Size = new System.Drawing.Size(152, 22);
+			this.novaIgraMenu.Text = "Nova igra";
+			// 
+			// spremiMenu
+			// 
+			this.spremiMenu.Name = "spremiMenu";
+			this.spremiMenu.Size = new System.Drawing.Size(152, 22);
+			this.spremiMenu.Text = "Spremi";
+			this.spremiMenu.Click += new System.EventHandler(this.spremiMenu_Click);
+			// 
+			// ucitajMenu
+			// 
+			this.ucitajMenu.Name = "ucitajMenu";
+			this.ucitajMenu.Size = new System.Drawing.Size(152, 22);
+			this.ucitajMenu.Text = "Učitaj";
+			this.ucitajMenu.Click += new System.EventHandler(this.ucitajMenu_Click);
+			// 
+			// izlazMenu
+			// 
+			this.izlazMenu.Name = "izlazMenu";
+			this.izlazMenu.Size = new System.Drawing.Size(152, 22);
+			this.izlazMenu.Text = "Izlaz";
 			// 
 			// FormIgra
 			// 
@@ -639,9 +676,12 @@
 			this.Controls.Add(this.pnlMapa);
 			this.Controls.Add(this.pnlDno);
 			this.Controls.Add(this.pnlDesno);
+			this.Controls.Add(this.menuStrip);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.KeyPreview = true;
+			this.MainMenuStrip = this.menuStrip;
 			this.Name = "FormIgra";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Zvjezdojedac";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormIgra_FormClosed);
@@ -672,7 +712,10 @@
 			this.pnlDno.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
+			this.menuStrip.ResumeLayout(false);
+			this.menuStrip.PerformLayout();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -700,8 +743,6 @@
 		private System.Windows.Forms.Label lblRazvoj;
 		private System.Windows.Forms.Label lblCivilnaIndustrija;
 		private System.Windows.Forms.Button btnCivilnaGradnja;
-        private System.Windows.Forms.Button btnTech;
-		private System.Windows.Forms.Button btnPoruke;
 		private System.Windows.Forms.HScrollBar hscrVojnaIndustrija;
 		private System.Windows.Forms.Button btnVojnaGradnja;
 		private System.Windows.Forms.Label lblVojnaGradnja;
@@ -709,12 +750,9 @@
 		private System.Windows.Forms.Label lblProcjenaCivilneGradnje;
 		private System.Windows.Forms.GroupBox groupCivGradnja;
 		private System.Windows.Forms.GroupBox groupVojGradnja;
-		private System.Windows.Forms.Button btnFlote;
 		private System.Windows.Forms.TabPage tabPageFlote;
 		private System.Windows.Forms.TreeView tvFlota;
 		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Button btnSpremi;
-		private System.Windows.Forms.Button btnUcitaj;
 		private System.Windows.Forms.GroupBox groupPoStan;
 		private System.Windows.Forms.Label lblHranaPoStan;
 		private System.Windows.Forms.Label lblRudePoStan;
@@ -728,5 +766,15 @@
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Button btnSlijedecaKolonija;
 		private System.Windows.Forms.Button btnPrethodnaKolonija;
+		private System.Windows.Forms.MenuStrip menuStrip;
+		private System.Windows.Forms.ToolStripMenuItem izbornikMenu;
+		private System.Windows.Forms.ToolStripMenuItem spremiMenu;
+		private System.Windows.Forms.ToolStripMenuItem novaIgraMenu;
+		private System.Windows.Forms.ToolStripMenuItem ucitajMenu;
+		private System.Windows.Forms.ToolStripMenuItem izlazMenu;
+		private System.Windows.Forms.ToolStripMenuItem novostiMenu;
+		private System.Windows.Forms.ToolStripMenuItem kolonijeMenu;
+		private System.Windows.Forms.ToolStripMenuItem floteMenu;
+		private System.Windows.Forms.ToolStripMenuItem tehnologijeMenu;
 	}
 }

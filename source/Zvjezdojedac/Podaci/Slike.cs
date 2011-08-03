@@ -70,7 +70,9 @@ namespace Zvjezdojedac.Podaci
 			string skupina = podatci["SKUPINA"].Trim().ToLower();
 			int indeks = int.Parse(podatci["INDEKS"]);
 
-			Image slika = Image.FromFile(putanja);
+			Image slikaIzDatoteke = Image.FromFile(putanja);
+			Image slika = new Bitmap(slikaIzDatoteke);
+			slikaIzDatoteke.Dispose();
 
 			switch (skupina) {
 				case "flota_tab":
