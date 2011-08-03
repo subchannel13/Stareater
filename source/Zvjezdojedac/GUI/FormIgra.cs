@@ -70,12 +70,17 @@ namespace Zvjezdojedac.GUI
 			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormIgra];
 
 			btnEndTurn.Text = jezik["btnEndTurn"].tekst();
-			btnFlote.Text = jezik["btnFlote"].tekst();
 			btnFlotaPokret.Text = jezik["btnFlotaPokret"].tekst();
 			btnPlanetInfo.Text = jezik["btnPlanetInfo"].tekst();
-			btnSpremi.Text = jezik["btnSpremi"].tekst();
-			btnTech.Text = jezik["btnTech"].tekst();
-			btnUcitaj.Text = jezik["btnUcitaj"].tekst();
+
+			floteMenu.Text = jezik["floteMenu"].tekst();
+			izbornikMenu.Text = jezik["izbornikMenu"].tekst();
+			izlazMenu.Text = jezik["izlazMenu"].tekst();
+			kolonijeMenu.Text = jezik["kolonijeMenu"].tekst();
+			novaIgraMenu.Text = jezik["novaIgraMenu"].tekst();
+			spremiMenu.Text = jezik["spremiMenu"].tekst();
+			tehnologijeMenu.Text = jezik["tehnologijeMenu"].tekst();
+			ucitajMenu.Text = jezik["ucitajMenu"].tekst();
 
 			jezik = Postavke.Jezik[Kontekst.Kolonija];
 			groupPoStan.Text = jezik["groupPoStan"].tekst();
@@ -99,7 +104,7 @@ namespace Zvjezdojedac.GUI
 			odaberiZvijezdu(igrac.odabranaZvijezda, false);
 			centrirajZvijezdu(igrac.odabranaZvijezda);
 
-			btnPoruke.Text = jezik["btnPoruke"].tekst(vars);
+			novostiMenu.Text = jezik["novostiMenu"].tekst(vars);
 
 			odaberiPlanet(igrac.odabranPlanet, true);			
 		}
@@ -315,7 +320,7 @@ namespace Zvjezdojedac.GUI
 					imaPoruka = true;
 
 			if (imaPoruka)
-				btnPoruke_Click(this, null);
+				novostiMenu_Click(this, null);
 		}
 
 		private void btnPlanetInfo_Click(object sender, EventArgs e)
@@ -465,92 +470,6 @@ namespace Zvjezdojedac.GUI
 				osvjeziLabele();
 		}
 
-		private void btnTech_Click(object sender, EventArgs e)
-		{
-			FormTechIzbor frmTech = new FormTechIzbor(igrac);
-			frmTech.ShowDialog();
-		}
-
-		private void btnPoruke_Click(object sender, EventArgs e)
-		{
-			FormPoruke formPoruke = new FormPoruke(igrac);
-			Zvijezda zvj = null;
-			Planet planet = null;
-			if (formPoruke.ShowDialog() == DialogResult.OK)
-				if (formPoruke.odabranaProuka != null) {
-					Poruka poruka = formPoruke.odabranaProuka;
-					switch (formPoruke.odabranaProuka.tip) {
-						case Poruka.Tip.Brod:
-							zvj = ((PorukaBrod)poruka).zvijezda;
-							odaberiZvijezdu(zvj, false);
-							tabCtrlDesno.SelectedTab = tabPageFlote;
-							centrirajZvijezdu(zvj);
-							break;
-						case Poruka.Tip.Kolonija:
-							planet = ((PorukaKolonija)poruka).planet;
-							odaberiZvijezdu(planet.zvjezda, false);
-							odaberiPlanet(planet, true);
-							centrirajZvijezdu(planet.zvjezda);
-							break;
-						case Poruka.Tip.Tehnologija:
-							btnTech_Click(sender, e);
-							break;
-						case Poruka.Tip.Zgrada:
-							planet = ((PorukaZgrada)poruka).planet;
-							odaberiZvijezdu(planet.zvjezda, false);
-							odaberiPlanet(planet, true);
-							centrirajZvijezdu(planet.zvjezda);
-							break;
-					}
-				}
-		}
-
-		private void btnFlote_Click(object sender, EventArgs e)
-		{
-			FormFlote formaFlote = new FormFlote(igrac);
-			formaFlote.ShowDialog();
-		}
-
-		private void btnSpremi_Click(object sender, EventArgs e)
-		{
-			SaveFileDialog dialog = new SaveFileDialog();
-			dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
-			dialog.FileName = "sejv.igra";
-			dialog.Filter = Postavke.Jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"].tekst(null) + " (*.igra)|*.igra";
-
-			if (dialog.ShowDialog() == DialogResult.OK) {
-				GZipStream zipStream = new GZipStream(new FileStream(dialog.FileName, FileMode.Create), CompressionMode.Compress);
-				StreamWriter pisac = new StreamWriter(zipStream);
-				pisac.Write(igra.spremi());
-				pisac.Close();
-			}
-		}
-
-		private void btnUcitaj_Click(object sender, EventArgs e)
-		{
-			OpenFileDialog dialog = new OpenFileDialog();
-			dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
-			dialog.FileName = "sejv.igra";
-			dialog.Filter = Postavke.Jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"].tekst(null) + " (*.igra)|*.igra";
-
-			if (dialog.ShowDialog() == DialogResult.OK) {
-
-				GZipStream zipStream = new GZipStream(new FileStream(dialog.FileName, FileMode.Open), CompressionMode.Decompress);
-				StreamReader citac = new StreamReader(zipStream);
-
-				string ucitanaIgra = citac.ReadToEnd();
-				citac.Close();
-
-				this.igra = IgraZvj.Ucitaj(ucitanaIgra);
-				igrac = igra.trenutniIgrac();
-
-				pomakPogleda = null;
-				prikazMape = new PrikazMape(igra);
-				this.picMapa.Image = prikazMape.slikaMape;
-				noviKrugPogled();
-			}
-		}
-
 		private void tvFlota_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
 		{
 			if (e.Node.Tag == null) return;
@@ -640,7 +559,98 @@ namespace Zvjezdojedac.GUI
 		private void FormIgra_KeyPress(object sender, KeyPressEventArgs e)
 		{
 			if (e.KeyChar == ' ')
-				btnPoruke_Click(sender, e);
+				novostiMenu_Click(sender, e);
 		}
+
+		private void novostiMenu_Click(object sender, EventArgs e)
+		{
+			using (FormPoruke formPoruke = new FormPoruke(igrac)) {
+				Zvijezda zvj = null;
+				Planet planet = null;
+
+				if (formPoruke.ShowDialog() == DialogResult.OK)
+					if (formPoruke.odabranaProuka != null) {
+						Poruka poruka = formPoruke.odabranaProuka;
+						switch (formPoruke.odabranaProuka.tip) {
+							case Poruka.Tip.Brod:
+								zvj = ((PorukaBrod)poruka).zvijezda;
+								odaberiZvijezdu(zvj, false);
+								tabCtrlDesno.SelectedTab = tabPageFlote;
+								centrirajZvijezdu(zvj);
+								break;
+							case Poruka.Tip.Kolonija:
+								planet = ((PorukaKolonija)poruka).planet;
+								odaberiZvijezdu(planet.zvjezda, false);
+								odaberiPlanet(planet, true);
+								centrirajZvijezdu(planet.zvjezda);
+								break;
+							case Poruka.Tip.Tehnologija:
+								tehnologijeMenu_Click(sender, e);
+								break;
+							case Poruka.Tip.Zgrada:
+								planet = ((PorukaZgrada)poruka).planet;
+								odaberiZvijezdu(planet.zvjezda, false);
+								odaberiPlanet(planet, true);
+								centrirajZvijezdu(planet.zvjezda);
+								break;
+						}
+					}
+			}
+		}
+
+		private void floteMenu_Click(object sender, EventArgs e)
+		{
+			using (FormFlote formaFlote = new FormFlote(igrac))
+				formaFlote.ShowDialog();
+		}
+
+		private void tehnologijeMenu_Click(object sender, EventArgs e)
+		{
+			using (FormTechIzbor frmTech = new FormTechIzbor(igrac))
+				frmTech.ShowDialog();
+		}
+
+		private void spremiMenu_Click(object sender, EventArgs e)
+		{
+			using (SaveFileDialog dialog = new SaveFileDialog()) {
+				dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
+				dialog.FileName = "sejv.igra";
+				dialog.Filter = Postavke.Jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"].tekst(null) + " (*.igra)|*.igra";
+
+				if (dialog.ShowDialog() == DialogResult.OK) {
+					GZipStream zipStream = new GZipStream(new FileStream(dialog.FileName, FileMode.Create), CompressionMode.Compress);
+					StreamWriter pisac = new StreamWriter(zipStream);
+					pisac.Write(igra.spremi());
+					pisac.Close();
+				}
+			}
+		}
+
+		private void ucitajMenu_Click(object sender, EventArgs e)
+		{
+			using (OpenFileDialog dialog = new OpenFileDialog()) {
+				dialog.InitialDirectory = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "pohranjeno";
+				dialog.FileName = "sejv.igra";
+				dialog.Filter = Postavke.Jezik[Kontekst.WindowsDijalozi, "TIP_SEJVA"].tekst(null) + " (*.igra)|*.igra";
+
+				if (dialog.ShowDialog() == DialogResult.OK) {
+
+					GZipStream zipStream = new GZipStream(new FileStream(dialog.FileName, FileMode.Open), CompressionMode.Decompress);
+					StreamReader citac = new StreamReader(zipStream);
+
+					string ucitanaIgra = citac.ReadToEnd();
+					citac.Close();
+
+					this.igra = IgraZvj.Ucitaj(ucitanaIgra);
+					igrac = igra.trenutniIgrac();
+
+					pomakPogleda = null;
+					prikazMape = new PrikazMape(igra);
+					this.picMapa.Image = prikazMape.slikaMape;
+					noviKrugPogled();
+				}
+			}
+		}
+
 	}
 }
