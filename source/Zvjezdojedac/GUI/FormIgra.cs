@@ -17,12 +17,16 @@ namespace Zvjezdojedac.GUI
 {
 	public partial class FormIgra : Form
 	{
+		const int RazineUvecanja = 10;
+
 		private PrikazMape prikazMape;
 		private IgraZvj igra;
 		private Igrac igrac;
 		private Tocka<double> pomakPogleda;
 
-		private FormFlotaPokret frmFlotaPokret;
+		FormFlotaPokret frmFlotaPokret;
+		int razinaUvecanja = 4;
+		BriefPlanetItem[] planetInfoi = new BriefPlanetItem[15];
 
 		public FormIgra(IgraZvj igra)
 		{
@@ -47,12 +51,12 @@ namespace Zvjezdojedac.GUI
 			tabPageKolonija.ImageIndex = 1;
 			tabPageFlote.ImageIndex = 2;
 
-			listViewPlaneti.LargeImageList = new ImageList();
-			listViewPlaneti.LargeImageList.ImageSize = new Size(32, 32);
-			Image[] planetImages = new Image[Slike.PlanetImageIndex.Count];
-			foreach (Image img in Slike.PlanetImageIndex.Keys)
-				planetImages[Slike.PlanetImageIndex[img]] = img;
-			listViewPlaneti.LargeImageList.Images.AddRange(planetImages);
+			//listViewPlaneti.LargeImageList = new ImageList();
+			//listViewPlaneti.LargeImageList.ImageSize = new Size(32, 32);
+			//Image[] planetImages = new Image[Slike.PlanetImageIndex.Count];
+			//foreach (Image img in Slike.PlanetImageIndex.Keys)
+			//	planetImages[Slike.PlanetImageIndex[img]] = img;
+			//listViewPlaneti.LargeImageList.Images.AddRange(planetImages);
 
 			btnCivilnaGradnja.Text = "";
             btnVojnaGradnja.Text = "";
@@ -61,6 +65,14 @@ namespace Zvjezdojedac.GUI
 			tvFlota.ImageList.ImageSize = new Size(20, 20);
 			postaviJezik();
 			postaviAkcijeBroda();
+
+			for (int i = 0; i < 15; i++) {
+				BriefPlanetItem planetInfo = new BriefPlanetItem();
+				planetInfo.Click += this.listViewPlaneti_Click;
+
+				planetInfoi[i] = planetInfo;
+				planetiFlowPanel.Controls.Add(planetInfo);
+			}
 
 			this.Font = Postavke.FontSucelja(this.Font);
 		}
@@ -177,12 +189,12 @@ namespace Zvjezdojedac.GUI
 
 			igrac.odabranaZvijezda = zvijezda;
 			if (promjeniTab) tabCtrlDesno.SelectedTab = tabPageZvijezda;
-			listViewPlaneti.Items.Clear();
-
+			//listViewPlaneti.Items.Clear();
+			
 			bool imaKoloniju = false;
-			if (igrac.posjeceneZvjezde.Contains(zvijezda))
+			
 				for (int i = 0; i < zvijezda.planeti.Count; i++) {
-					Planet planet = zvijezda.planeti[i];
+					/*Planet planet = zvijezda.planeti[i];
 					ListViewItem item = new ListViewItem();
 					item.ImageIndex = Slike.PlanetImageIndex[planet.slika];
 
@@ -195,9 +207,14 @@ namespace Zvjezdojedac.GUI
 
 					if (planet.kolonija != null && planet.kolonija.igrac == igrac)
 						imaKoloniju = true;
+					*/
+					if (igrac.posjeceneZvjezde.Contains(zvijezda))
+						planetInfoi[i].PostaviPlanet(zvijezda.planeti[i], igrac);
+					else
+						planetInfoi[i].PostaviNeistrazeno(i);
 				}
-			else
-				listViewPlaneti.Items.Add(jezik["zvjNeistrazeno"].tekst(null));
+			//else
+				//listViewPlaneti.Items.Add(jezik["zvjNeistrazeno"].tekst(null));
 
 			prikaziFlotu(zvijezda);
 
@@ -293,18 +310,10 @@ namespace Zvjezdojedac.GUI
 					pomakPogleda = null;
 		}
 
-		private void trackBarZoom_Scroll(object sender, EventArgs e)
-		{
-			prikazMape.zoom(
-				(trackBarZoom.Value - trackBarZoom.Minimum) / 
-				(double)(trackBarZoom.Maximum - trackBarZoom.Minimum));
-
-			picMapa.Image = prikazMape.slikaMape;
-		}
-
 		private void listViewPlaneti_Click(object sender, EventArgs e)
 		{
-			odaberiPlanet(igrac.odabranaZvijezda.planeti[listViewPlaneti.SelectedIndices[0]], true);
+			BriefPlanetItem planetInfo = sender as BriefPlanetItem;
+			odaberiPlanet(planetInfo.Planet, true);
 		}
 
 		private void btnEndTurn_Click(object sender, EventArgs e)
@@ -650,6 +659,28 @@ namespace Zvjezdojedac.GUI
 					noviKrugPogled();
 				}
 			}
+		}
+
+		void postaviZoom()
+		{
+			if (razinaUvecanja < 0) razinaUvecanja = 0;
+			if (razinaUvecanja > RazineUvecanja) razinaUvecanja = RazineUvecanja;
+
+			prikazMape.zoom(razinaUvecanja / (double)RazineUvecanja);
+
+			picMapa.Image = prikazMape.slikaMape;
+		}
+
+		private void uvecajMenu_Click(object sender, EventArgs e)
+		{
+			razinaUvecanja++;
+			postaviZoom();
+		}
+
+		private void umanjiMenu_Click(object sender, EventArgs e)
+		{
+			razinaUvecanja--;
+			postaviZoom();
 		}
 
 	}

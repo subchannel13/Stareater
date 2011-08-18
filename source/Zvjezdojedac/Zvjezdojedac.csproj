@@ -61,8 +61,10 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alati\Fje.cs" />
@@ -72,6 +74,12 @@
     <Compile Include="Alati\Usporediv.cs" />
     <Compile Include="Alati\Vadjenje.cs" />
     <Compile Include="Alati\Yielder.cs" />
+    <Compile Include="GUI\BriefPlanetItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\BriefPlanetItem.Designer.cs">
+      <DependentUpon>BriefPlanetItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormFlotaPokret.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -195,6 +203,9 @@
     <Compile Include="Podaci\Slike.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GUI\BriefPlanetItem.resx">
+      <DependentUpon>BriefPlanetItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormFlotaPokret.resx">
       <DependentUpon>FormFlotaPokret.cs</DependentUpon>
     </EmbeddedResource>
