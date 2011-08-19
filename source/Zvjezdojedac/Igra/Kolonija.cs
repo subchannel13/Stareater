@@ -467,6 +467,10 @@ namespace Zvjezdojedac.Igra
 			get { return efekti[OdrzavanjeUkupno] / _populacija; }
 		}
 
+		public double Razvijenost
+		{
+			get { return (efekti[AktivnaRadnaMjesta] * 2 / 3.0 + _populacija / 3) / efekti[PopulacijaMax]; }
+		}
 
 		public string procjenaVremenaCivilneGradnje()
 		{
