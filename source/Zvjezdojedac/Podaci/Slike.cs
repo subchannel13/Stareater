@@ -9,7 +9,7 @@ using Zvjezdojedac.Igra.Poruke;
 
 namespace Zvjezdojedac.Podaci
 {
-	public class Slike
+	public static class Slike
 	{
 		public class SlikaPlaneta
 		{
@@ -41,6 +41,11 @@ namespace Zvjezdojedac.Podaci
 		public static Image FlotaTab = null;
 		public static Image[] SlikaOdabiraZvijezde = new Image[2];
 
+		private static Image prazanRazvoj = null;
+		private static Image punRazvoj = null;
+		private static int razvojYVrh;
+		private static int razvojYDno;
+
 		private static Dictionary<Poruka.Tip, Image> initTipPoruke()
 		{
 			Dictionary<Poruka.Tip, Image> rez = new Dictionary<Poruka.Tip, Image>();
@@ -60,10 +65,7 @@ namespace Zvjezdojedac.Podaci
 			g.Dispose();
 			return rez;
 		}
-
-		private Slike()
-		{ }
-
+		
 		public static void DodajSliku(Dictionary<string, string> podatci)
 		{
 			string putanja = podatci["DATOTEKA"];
@@ -93,6 +95,17 @@ namespace Zvjezdojedac.Podaci
 
 					PlanetTab[tip].Add(new SlikaPlaneta(slika, atmGust, atmKval, temp));
 					PlanetImageIndex.Add(slika, PlanetImageIndex.Count);
+					break;
+				case "planet_info":
+					if (indeks == 0)
+						prazanRazvoj = slika;
+					else {
+						punRazvoj = slika;
+						
+						string[] yInterval = podatci["Y_INTERVAL"].Split(',');
+						razvojYVrh = int.Parse(yInterval[0].Trim());
+						razvojYDno = int.Parse(yInterval[1].Trim());
+					}
 					break;
 				case "odabir_zvijezde":
 					SlikaOdabiraZvijezde[indeks] = slika;
@@ -170,6 +183,14 @@ namespace Zvjezdojedac.Podaci
 			g.Dispose();
 
 			return rez;
+		}
+
+		public static void NacrtajRazvijenost(Graphics ploha, float x, float y, double razvijenost)
+		{
+			float granica = (float)(razvijenost * razvojYVrh + (1 - razvijenost) * razvojYDno);
+
+			ploha.DrawImage(prazanRazvoj, x, y, new RectangleF(0, 0, prazanRazvoj.Width, granica), GraphicsUnit.Pixel);
+			ploha.DrawImage(punRazvoj, x, y + granica, new RectangleF(0, granica, punRazvoj.Width, punRazvoj.Height), GraphicsUnit.Pixel);
 		}
 	}
 }

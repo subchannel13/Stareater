@@ -19,10 +19,12 @@ namespace Zvjezdojedac.GUI
 		static Font italicFont;
 
 		public Planet Planet { get; private set; }
+		Image imageCanvas;
 
 		public BriefPlanetItem()
 		{
 			InitializeComponent();
+			imageCanvas = new Bitmap(planetImage.Width, planetImage.Height);
 
 			if (normalniFont == null) normalniFont = planetInfo1.Font;
 			if (italicFont == null) italicFont = new Font(planetInfo1.Font, FontStyle.Italic);
@@ -33,7 +35,7 @@ namespace Zvjezdojedac.GUI
 		public void PostaviNeistrazeno(int indeks)
 		{
 			if (indeks == 0) {
-				Visible = true;
+				postaviVidljivost(true);
 				planetInfo1.Text = Postavke.Jezik[Kontekst.FormIgra]["zvjNeistrazeno"].tekst();
 				planetInfo1.Font = italicFont;
 
@@ -41,7 +43,7 @@ namespace Zvjezdojedac.GUI
 				planetImage.Image = null;
 			}
 			else
-				Visible = false;
+				postaviVidljivost(false);
 
 			Planet = null;
 		}
@@ -49,10 +51,12 @@ namespace Zvjezdojedac.GUI
 		public void PostaviPlanet(Planet planet, Igrac igrac)
 		{
 			if (planet.tip == Planet.Tip.NIKAKAV)
-				Visible = false;
+				postaviVidljivost(false);
 			else {
-				Visible = true;
-				planetImage.Image = planet.slika;
+				postaviVidljivost(true);
+
+				bool igracevPlanet = (planet.kolonija != null && planet.kolonija.igrac == igrac);
+				planetImage.Image = sastaviSlikuPlaneta(planet, igracevPlanet);
 				planetInfo1.Text = planet.ime;
 				planetInfo1.Font = normalniFont;
 
@@ -60,7 +64,7 @@ namespace Zvjezdojedac.GUI
 					planetInfo1.ForeColor = planet.kolonija.igrac.boja;
 					planetInfo2.ForeColor = planet.kolonija.igrac.boja;
 
-					if (planet.kolonija.igrac == igrac)
+					if (igracevPlanet)
 						planetInfo2.Text = Fje.PrefiksFormater(planet.kolonija.populacija) + " / " + Fje.PrefiksFormater(planet.kolonija.efekti[Kolonija.PopulacijaMax]);
 					else
 						planetInfo2.Text = "";
@@ -73,6 +77,25 @@ namespace Zvjezdojedac.GUI
 
 				this.Planet = planet;
 			}
+		}
+
+		private Image sastaviSlikuPlaneta(Planet planet, bool igracevPlanet)
+		{
+			Graphics g = Graphics.FromImage(imageCanvas);
+			g.Clear(Color.Transparent);
+
+			if (igracevPlanet)
+				Slike.NacrtajRazvijenost(g, 0, 0, planet.kolonija.Razvijenost);
+			g.DrawImage(planet.slika, imageCanvas.Width - planet.slika.Width, 0);
+			g.Dispose();
+
+			return imageCanvas;
+		}
+
+		private void postaviVidljivost(bool seVidi)
+		{
+			foreach (Control dijete in this.Controls)
+				dijete.Visible = seVidi;
 		}
 
 		private void ChildControl_Click(object sender, EventArgs e)

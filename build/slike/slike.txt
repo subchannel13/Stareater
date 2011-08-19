@@ -71,6 +71,19 @@ TEMPERATURA = 1
 ----
 
 <SLIKA>
+DATOTEKA = ./slike/tab/prazan razvoj.png
+SKUPINA = planet_info
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/pun razvoj.png
+SKUPINA = planet_info
+INDEKS = 1
+Y_INTERVAL = 3, 29
+----
+
+<SLIKA>
 DATOTEKA = ./slike/tab/flota.bmp
 SKUPINA = flota_tab
 INDEKS = 0
