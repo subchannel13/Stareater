@@ -17,14 +17,14 @@ namespace Zvjezdojedac.Igra.Brodovi
 				this.dizajn = dizajn;
 			}
 
-			public override void djeluj(Kolonija kolonija, Dictionary<string, double> varijable)
+			public override void djeluj(IGradiliste gradiliste, Dictionary<string, double> varijable)
 			{
 				long kolicina = (long)varijable[Zgrada.BrojZgrada];
-				kolonija.igrac.dodajBrod(dizajn, kolicina, kolonija.planet.zvjezda);
-				kolonija.igrac.poruke.AddLast(Poruka.NoviBrod(kolonija, dizajn, kolicina));
+				gradiliste.Igrac.dodajBrod(dizajn, kolicina, gradiliste.LokacijaZvj);
+				gradiliste.Igrac.poruke.AddLast(Poruka.NoviBrod(gradiliste, dizajn, kolicina));
 			}
 
-			public override void noviKrug(Kolonija kolonija, Dictionary<string, double> varijable)
+			public override void noviKrug(IGradiliste gradiliste, Dictionary<string, double> varijable)
 			{ }
 		}
 

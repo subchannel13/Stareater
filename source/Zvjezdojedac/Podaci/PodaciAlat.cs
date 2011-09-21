@@ -308,8 +308,8 @@ namespace Zvjezdojedac.Podaci
 				ucitajSlike();
 				foreach (Dictionary<string, string> unos in podaci[TehnoRazTag]) Tehnologija.TechInfo.Dodaj(unos, Tehnologija.Kategorija.RAZVOJ);
 				foreach (Dictionary<string, string> unos in podaci[TehnoIstTag]) Tehnologija.TechInfo.Dodaj(unos, Tehnologija.Kategorija.ISTRAZIVANJE);
-				foreach (Dictionary<string, string> unos in podaci[ZgradeCivTag]) Zgrada.ucitajInfoZgrade(unos, true);
-				foreach (Dictionary<string, string> unos in podaci[ZgradVojTag]) Zgrada.ucitajInfoZgrade(unos, false);
+				foreach (Dictionary<string, string> unos in podaci[ZgradeCivTag]) Zgrada.UcitajInfoZgrade(unos, true);
+				foreach (Dictionary<string, string> unos in podaci[ZgradVojTag]) Zgrada.UcitajInfoZgrade(unos, false);
 				foreach (Dictionary<string, string> unos in podaci[ZvijezdeTag]) Zvijezda.TipInfo.noviTip(unos);
 				ucitajZvjezdja();
 				foreach (Dictionary<string, string> unos in podaci[PocetnaPozTag]) PocetnaPozicija.novaKonfiguracija(unos);

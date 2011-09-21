@@ -7,10 +7,10 @@ using Zvjezdojedac.Podaci;
 
 namespace Zvjezdojedac.Igra.Poruke
 {
-	public class PorukaZgrada : Poruka
+	public class PorukaZgradaKolonija : Poruka
 	{
-		public PorukaZgrada(Planet planet, Zgrada.ZgradaInfo zgradaInfo)
-			: base(Tip.Zgrada)
+		public PorukaZgradaKolonija(Planet planet, Zgrada.ZgradaInfo zgradaInfo)
+			: base(Tip.ZgradaKolonija)
 		{
 			this.planet = planet;
 			this.zgradaInfo = zgradaInfo;
@@ -24,8 +24,8 @@ namespace Zvjezdojedac.Igra.Poruke
 			get 
 			{
 				Dictionary<string, string> stringVars = new Dictionary<string, string>();
-				stringVars.Add("PLANET", planet.ime);
 				stringVars.Add("ZGRADA", zgradaInfo.ime);
+				stringVars.Add("PLANET", planet.ime);
 				return Postavke.Jezik[Kontekst.FormPoruke, "porukaZgrada"].tekst(null, stringVars);
 			}
 		}
@@ -36,18 +36,18 @@ namespace Zvjezdojedac.Igra.Poruke
 		public override void pohrani(PodaciPisac izlaz)
 		{
 			izlaz.dodaj(PohTip, (int)tip);
-			izlaz.dodaj(PohIzvor, planet.zvjezda.id + " " + planet.pozicija);
 			izlaz.dodaj(PohZgrada, zgradaInfo);
+			izlaz.dodaj(PohIzvor, planet.zvjezda.id + " " + planet.pozicija);
 		}
 
 		public static Poruka Ucitaj(PodaciCitac ulaz, Dictionary<int, Zvijezda> zvijezdeID)
 		{
 			string[] izvor = ulaz.podatak(PohIzvor).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 			Zvijezda zvj = zvijezdeID[int.Parse(izvor[0])];
-			int planetId = int.Parse(izvor[1]);
 			int zgradaId = ulaz.podatakInt(PohZgrada);
 
-			return new PorukaZgrada(zvj.planeti[planetId], Zgrada.ZgradaInfoID[zgradaId]);
+			int planetId = int.Parse(izvor[1]);
+			return new PorukaZgradaKolonija(zvj.planeti[planetId], Zgrada.ZgradaInfoID[zgradaId]);
 		}
 		#endregion
 	}

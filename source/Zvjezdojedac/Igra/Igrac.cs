@@ -108,7 +108,7 @@ namespace Zvjezdojedac.Igra
 			filtarPoruka.Add(Poruka.Tip.Kolonija, true);
 			filtarPoruka.Add(Poruka.Tip.Prica, true);
 			filtarPoruka.Add(Poruka.Tip.Tehnologija, true);
-			filtarPoruka.Add(Poruka.Tip.Zgrada, true);
+			filtarPoruka.Add(Poruka.Tip.ZgradaKolonija, true);
 		}
 
 		private Igrac(int id, Tip tip, string ime, Color boja, Organizacija organizacija,
@@ -143,7 +143,7 @@ namespace Zvjezdojedac.Igra
 			filtarPoruka.Add(Poruka.Tip.Kolonija, true);
 			filtarPoruka.Add(Poruka.Tip.Prica, true);
 			filtarPoruka.Add(Poruka.Tip.Tehnologija, true);
-			filtarPoruka.Add(Poruka.Tip.Zgrada, true);
+			filtarPoruka.Add(Poruka.Tip.ZgradaKolonija, true);
 		}
 
 		public Dictionary<Poruka.Tip, List<Poruka>> FiltriranePoruke()
@@ -154,7 +154,7 @@ namespace Zvjezdojedac.Igra
 			rez.Add(Poruka.Tip.Kolonija, new List<Poruka>());
 			rez.Add(Poruka.Tip.Prica, new List<Poruka>());
 			rez.Add(Poruka.Tip.Tehnologija, new List<Poruka>());
-			rez.Add(Poruka.Tip.Zgrada, new List<Poruka>());
+			rez.Add(Poruka.Tip.ZgradaKolonija, new List<Poruka>());
 
 			foreach (Poruka poruka in poruke)
 				rez[poruka.tip].Add(poruka);
@@ -201,14 +201,16 @@ namespace Zvjezdojedac.Igra
 				
 				#region Kolonizacija
 				foreach (Flota.Kolonizacija kolonizacija in flota.kolonizacije) {
+					zvijezda.Naseli(this);
+
 					Planet planet = zvijezda.planeti[kolonizacija.planet];
 					double maxDodatnaPopulacija = 0;
 					if (planet.kolonija == null) {
 						Kolonija kolonija = new Kolonija(this, planet, 10, 0);
-						maxDodatnaPopulacija = kolonija.efekti[Kolonija.PopulacijaMax];
+						maxDodatnaPopulacija = kolonija.Efekti[Kolonija.PopulacijaMax];
 					}
 					else
-						maxDodatnaPopulacija = (planet.kolonija.efekti[Kolonija.PopulacijaMax] - planet.kolonija.populacija);
+						maxDodatnaPopulacija = (planet.kolonija.Efekti[Kolonija.PopulacijaMax] - planet.kolonija.populacija);
 
 					long populacijaBroda = kolonizacija.brod.dizajn.populacija;
 					long radnaMjestaBroda = kolonizacija.brod.dizajn.radnaMjesta;
@@ -285,7 +287,7 @@ namespace Zvjezdojedac.Igra
 			foreach (Zvijezda zvj in igra.mapa.zvijezde)
 				foreach (Planet pl in zvj.planeti)
 					if (pl.kolonija != null)
-						if (pl.kolonija.igrac == this)
+						if (pl.kolonija.Igrac == this)
 							kolonije.Add(pl.kolonija);
 
 			efekti.Clear();
@@ -302,7 +304,7 @@ namespace Zvjezdojedac.Igra
 				istrazivanjePoSustavuBaza[zvj] = 0;
 				foreach(Planet pl in zvj.planeti)
 					if (pl.kolonija != null)
-						if (pl.kolonija.igrac == this)
+						if (pl.kolonija.Igrac == this)
 							istrazivanjePoSustavuBaza[zvj] += (long)(pl.kolonija.populacija * efekti["ISTRAZIVANJE_PO_STANOVNIKU"]);
 				istrazivanjePoSustavuBaza[zvj] = (long)Math.Floor(Math.Sqrt(istrazivanjePoSustavuBaza[zvj]));
 			}
@@ -392,7 +394,7 @@ namespace Zvjezdojedac.Igra
 			return rez;
 		}
 
-		public Planet odabranPlanet
+		public Planet OdabranPlanet
 		{
 			get
 			{
@@ -404,6 +406,11 @@ namespace Zvjezdojedac.Igra
 				if (_odabranPlanet.kolonija != null)
 					_odabranPlanet.kolonija.postaviEfekteIgracu();
 			}
+		}
+
+		public ZvjezdanaUprava OdabranSustav
+		{
+			get { return odabranaZvijezda.efektiPoIgracu[id]; }
 		}
 
 		public void dodajBrod(Dizajn dizajn, long kolicina, Zvijezda zvijezda)
@@ -421,12 +428,9 @@ namespace Zvjezdojedac.Igra
 			foreach (DizajnZgrada dizajnZgrada in dizajnoviBrodova)
 				dizajnovi.Add(dizajnZgrada);
 
-			HashSet<Dizajn> rez = new HashSet<Dizajn>();
-			foreach (Kolonija kolonija in kolonije)
-				foreach (Zgrada.ZgradaInfo zgrada in kolonija.redVojneGradnje)
-					rez.Add((zgrada as DizajnZgrada).dizajn);
+			// TODO!!!
 
-			return rez;
+			return new HashSet<Dizajn>();
 		}
 
 		private HashSet<Dizajn> nadogradiDizajnoveUGradnji()
@@ -438,8 +442,8 @@ namespace Zvjezdojedac.Igra
 				dizajnoviZgrade.Add(dizajnZgrada.dizajn, dizajnZgrada);
 			}
 
-			HashSet<Dizajn> rez = new HashSet<Dizajn>();
-			foreach (Kolonija kolonija in kolonije)
+			HashSet<Dizajn> rez = new HashSet<Dizajn>();	// TODO
+			/*foreach (Kolonija kolonija in kolonije)
 				for (LinkedListNode<Zgrada.ZgradaInfo> zgradaCvor = kolonija.redVojneGradnje.First; zgradaCvor != null; zgradaCvor = zgradaCvor.Next) {
 					Zgrada.ZgradaInfo zgrada = zgradaCvor.Value;
 
@@ -453,7 +457,7 @@ namespace Zvjezdojedac.Igra
 
 						rez.Add(dizajn);
 					}
-				}
+				}*/
 			return rez;
 		}
 
@@ -601,7 +605,7 @@ namespace Zvjezdojedac.Igra
 				odabranaZvijezda.x.ToString(PodaciAlat.DecimalnaTocka) 
 				+ " " 
 				+ odabranaZvijezda.y.ToString(PodaciAlat.DecimalnaTocka));
-			izlaz.dodaj(PohPogledPlanet, odabranPlanet.pozicija);
+			izlaz.dodaj(PohPogledPlanet, OdabranPlanet.pozicija);
 
 			izlaz.dodaj(PohPoruka, poruke.Count);
 			izlaz.dodajKolekciju(PohPoruka, poruke);

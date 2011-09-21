@@ -53,7 +53,7 @@ namespace Zvjezdojedac.GUI
 				cbOrganizacija.Items.Add(org.naziv);
 			cbOrganizacija.SelectedIndex = Postavke.ProslaIgra.Organizacija;
 
-			for (int i = 2; i <= IgraZvj.maxIgraca; i++)
+			for (int i = 2; i <= IgraZvj.MaxIgraca; i++)
 				cbBrIgraca.Items.Add(i);
 			cbBrIgraca.SelectedIndex = Postavke.ProslaIgra.BrIgraca-2;
 

@@ -6,6 +6,7 @@ using System.Drawing;
 using Zvjezdojedac.Podaci;
 using Zvjezdojedac.Podaci.Jezici;
 using Zvjezdojedac.Podaci.Formule;
+using Zvjezdojedac.Alati;
 
 namespace Zvjezdojedac.Igra
 {
@@ -19,10 +20,9 @@ namespace Zvjezdojedac.Igra
 		{
 			protected Formula intenzitet;
 
-			public abstract void djeluj(Kolonija kolonija, Dictionary<string, double> varijable);
+			public abstract void djeluj(IGradiliste gradiliste, Dictionary<string, double> varijable);
 
-			public abstract void noviKrug(Kolonija kolonija, Dictionary<string, double> varijable);
-			//public abstract Ucinak napraviSe(string[] parametri);
+			public abstract void noviKrug(IGradiliste gradiliste, Dictionary<string, double> varijable);
 
 			#region Statično
 			protected delegate Ucinak TvornicaUcinka(string[] parametri);
@@ -64,12 +64,12 @@ namespace Zvjezdojedac.Igra
 				return new UcinakSetVar(parametri[1], Formula.IzStringa(parametri[2]));
 			}
 
-			public override void djeluj(Kolonija kolonija, Dictionary<string, double> varijable)
+			public override void djeluj(IGradiliste gradiliste, Dictionary<string, double> varijable)
 			{
-				kolonija.efekti[varijabla] = formula.iznos(varijable);
+				gradiliste.Efekti[varijabla] = formula.iznos(varijable);
 			}
 
-			public override void noviKrug(Kolonija kolonija, Dictionary<string, double> varijable)
+			public override void noviKrug(IGradiliste gradiliste, Dictionary<string, double> varijable)
 			{ }
 		}
 		#endregion
@@ -154,7 +154,7 @@ namespace Zvjezdojedac.Igra
 		public static List<ZgradaInfo> vojneZgradeInfo = new List<ZgradaInfo>();
 		public static Dictionary<int, ZgradaInfo> ZgradaInfoID = new Dictionary<int, ZgradaInfo>();
 
-		public static void ucitajInfoZgrade(Dictionary<string, string> podaci, bool jeLiCivilna)
+		public static void UcitajInfoZgrade(Dictionary<string, string> podaci, bool jeLiCivilna)
 		{
 			List<Ucinak> ucinci = new List<Ucinak>();
 			for(int i = 0; podaci.ContainsKey("UCINAK" + i); i++)
@@ -184,6 +184,41 @@ namespace Zvjezdojedac.Igra
 			ZgradaInfoID.Add(zgradaInfo.id, zgradaInfo);
 		}
 
+		public static string ProcjenaVremenaGradnje(double poeniIndustrije, double ostatakGradnje, Zgrada.ZgradaInfo uGradnji, Igrac igrac)
+		{
+			if (uGradnji == null) return "";
+			double cijena = uGradnji.cijenaGradnje.iznos(igrac.efekti);
+
+			double brZgrada = (ostatakGradnje + poeniIndustrije) / cijena;
+
+			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.Kolonija];
+			Dictionary<string, double> vars = new Dictionary<string, double>();
+
+			if (brZgrada >= 1) {
+				long dopustenaKolicina = (long)uGradnji.dopustenaKolicina.iznos(igrac.efekti);
+				brZgrada = Fje.Ogranici(brZgrada, 0, dopustenaKolicina);
+
+				vars.Add("BR_ZGRADA", brZgrada);
+				return jezik["gradPoKrugu"].tekst(vars);
+			}
+			else {
+				if (poeniIndustrije == 0)
+					return jezik["gradNikad"].tekst();
+
+				double brKrugova = (cijena - ostatakGradnje) / (double)poeniIndustrije;
+				double zaokruzeno = Math.Ceiling(brKrugova * 10) / 10;
+				long tmp = (long)Math.Ceiling(brKrugova * 10);
+
+				vars.Add("BR_KRUGOVA", Math.Ceiling(brKrugova * 10) / 10);
+				vars.Add("DECIMALA", ((long)Math.Ceiling(brKrugova * 10)) % 10);
+
+				if (brKrugova < 10)
+					return jezik["gradVrijemeDec"].tekst(vars);
+				else
+					return jezik["gradVrijemePref"].tekst(vars);
+			}
+		}
+
 		private static int _SlijedeciId = 0;
 		public static int SlijedeciId()
 		{
@@ -204,18 +239,18 @@ namespace Zvjezdojedac.Igra
 			this.kolicina = kolicina;
 		}
 
-		public void djeluj(Kolonija kolonija, Dictionary<string, double> varijable)
+		public void djeluj(IGradiliste gradiliste, Dictionary<string, double> varijable)
 		{
 			varijable["BR_ZGRADA"] = kolicina;
 			foreach (Ucinak u in tip.ucinci)
-				u.djeluj(kolonija, varijable);
+				u.djeluj(gradiliste, varijable);
 		}
 
-		public void noviKrug(Kolonija kolonija, Dictionary<string, double> varijable)
+		public void noviKrug(IGradiliste gradiliste, Dictionary<string, double> varijable)
 		{
 			varijable["BR_ZGRADA"] = kolicina;
 			foreach (Ucinak u in tip.ucinci)
-				u.noviKrug(kolonija, varijable);
+				u.noviKrug(gradiliste, varijable);
 		}
 
 		public override string ToString()

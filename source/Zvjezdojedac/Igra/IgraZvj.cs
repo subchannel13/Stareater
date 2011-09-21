@@ -10,7 +10,7 @@ namespace Zvjezdojedac.Igra
 {
 	public class IgraZvj
 	{
-		public const int maxIgraca = 4;
+		public const int MaxIgraca = 4;
 
 		public List<Igrac> igraci { get; private set; }
 		private int trenutniIgracIndex;
@@ -52,7 +52,7 @@ namespace Zvjezdojedac.Igra
 				foreach (Planet pl in zvj.planeti)
 					if (pl.kolonija != null)
 						pl.kolonija.resetirajEfekte();
-				zvj.IzracunajEfekte(this.igraci);
+				zvj.IzracunajEfekte();
 
 				//	Za potrebe debugiranja
 				  
@@ -80,13 +80,14 @@ namespace Zvjezdojedac.Igra
 			}
 
 			foreach (Zvijezda zvj in mapa.zvijezde)
-				zvj.IzracunajEfekte(igraci);
+				zvj.IzracunajEfekte();
 		}
 
 		private void postaviIgraca(Igrac igrac, Zvijezda pocetnaZvj, PocetnaPopulacija pocetnaPop)
 		{
 			igrac.odabranaZvijezda = pocetnaZvj;
 			igrac.posjeceneZvjezde.Add(pocetnaZvj);
+			pocetnaZvj.Naseli(igrac);
 
 			List<PotencijalnaPocetnaKolonija> potencijalneKolonije = new List<PotencijalnaPocetnaKolonija>();
 			foreach (Planet pl in pocetnaZvj.planeti)
@@ -149,7 +150,7 @@ namespace Zvjezdojedac.Igra
 				igrac.kolonije.Add(pl.kolonija);
 			}
 
-			igrac.odabranPlanet = potencijalneKolonije[najboljiPlanet].planet;
+			igrac.OdabranPlanet = potencijalneKolonije[najboljiPlanet].planet;
 		}
 
 		public void slijedeciIgrac()
@@ -186,7 +187,7 @@ namespace Zvjezdojedac.Igra
 					if (planet.kolonija != null)
 						planet.kolonija.noviKrug();
 
-				zvj.NoviKrug(igraci);
+				zvj.NoviKrug();
 			}
 
 			for (int i = 0; i < igraci.Count; i++)

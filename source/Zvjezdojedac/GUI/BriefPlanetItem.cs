@@ -55,17 +55,17 @@ namespace Zvjezdojedac.GUI
 			else {
 				postaviVidljivost(true);
 
-				bool igracevPlanet = (planet.kolonija != null && planet.kolonija.igrac == igrac);
+				bool igracevPlanet = (planet.kolonija != null && planet.kolonija.Igrac == igrac);
 				planetImage.Image = sastaviSlikuPlaneta(planet, igracevPlanet);
 				planetInfo1.Text = planet.ime;
 				planetInfo1.Font = normalniFont;
 
 				if (planet.kolonija != null) {
-					planetInfo1.ForeColor = planet.kolonija.igrac.boja;
-					planetInfo2.ForeColor = planet.kolonija.igrac.boja;
+					planetInfo1.ForeColor = planet.kolonija.Igrac.boja;
+					planetInfo2.ForeColor = planet.kolonija.Igrac.boja;
 
 					if (igracevPlanet)
-						planetInfo2.Text = Fje.PrefiksFormater(planet.kolonija.populacija) + " / " + Fje.PrefiksFormater(planet.kolonija.efekti[Kolonija.PopulacijaMax]);
+						planetInfo2.Text = Fje.PrefiksFormater(planet.kolonija.populacija) + " / " + Fje.PrefiksFormater(planet.kolonija.Efekti[Kolonija.PopulacijaMax]);
 					else
 						planetInfo2.Text = "";
 				}

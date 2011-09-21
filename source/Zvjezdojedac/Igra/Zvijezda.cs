@@ -12,12 +12,7 @@ namespace Zvjezdojedac.Igra
 		public const int Tip_PocetnaPozicija = -2;
 		public const int Tip_Nedodijeljen = -3;
 
-		private static string[] KljuceviEfekata = new string[]
-		{
-			Kolonija.PopulacijaVisak,
-			Kolonija.MigracijaMax
-		};
-
+		#region Statično i podrazred TipInfo
 		public class TipInfo
 		{
 			public double udioPojave;
@@ -98,8 +93,7 @@ namespace Zvjezdojedac.Igra
 		public static List<TipInfo> Tipovi = new List<TipInfo>();
 
 		public static Dictionary<string, int> imeTipa = new Dictionary<string, int>();
-
-		private static Random random = new Random();
+		#endregion
 
 		private int _tip;
 		public double x;
@@ -109,7 +103,7 @@ namespace Zvjezdojedac.Igra
 		public string ime;
 		public int id { get; set; }
 		public HashSet<Zvijezda> crvotocine = new HashSet<Zvijezda>();
-		public List<Dictionary<string, double>> efektiPoIgracu = new List<Dictionary<string, double>>();
+		public ZvjezdanaUprava[] efektiPoIgracu = new ZvjezdanaUprava[IgraZvj.MaxIgraca];
 
 		public Zvijezda(int id, int tip, double x, double y)
 		{
@@ -118,10 +112,11 @@ namespace Zvjezdojedac.Igra
 			this.x = x;
 			this.y = y;
 			this.planeti = new List<Planet>();
+
 			if (tip > Tip_Nikakva)
-				this.velicina = Fje.IzIntervala(random.NextDouble(), Tipovi[tip].velicinaMin, Tipovi[tip].velicinaMax);					
+				this.velicina = Fje.IzIntervala(Fje.Random.NextDouble(), Tipovi[tip].velicinaMin, Tipovi[tip].velicinaMax);					
 			else
-				this.velicina = random.NextDouble();
+				this.velicina = Fje.Random.NextDouble();
 		}
 
 		private Zvijezda(int id, int tip, double x, double y, double velicina, string ime)
@@ -181,57 +176,24 @@ namespace Zvjezdojedac.Igra
 			return Math.Sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
 		}
 
-		public void IzracunajEfekte(List<Igrac> igraci)
+		public void Naseli(Igrac igrac)
 		{
-			while (efektiPoIgracu.Count < igraci.Count)
-				efektiPoIgracu.Add(new Dictionary<string, double>());
-			
-			for (int i = 0; i < igraci.Count; i++ ) {
-				Dictionary<string, double> efekti = efektiPoIgracu[i];
-				efekti.Clear();
-
-				foreach (string kljuc in KljuceviEfekata)
-					efekti.Add(kljuc, 0);
-			}
-
-			foreach(Planet pl in planeti)
-				if (pl.kolonija != null) {
-					int igracIndex = igraci.IndexOf(pl.kolonija.igrac);
-					Dictionary<string, double> efektiZvj = efektiPoIgracu[igracIndex];
-					Dictionary<string, double> efektiPl =  pl.kolonija.efekti;
-
-					foreach(string kljuc in KljuceviEfekata)
-						efektiZvj[kljuc] += efektiPl[kljuc];
-				}
-
-			for (int i = 0; i < igraci.Count; i++) {
-				Dictionary<string, double> efektiZvj = efektiPoIgracu[i];
-				
-				efektiZvj[Kolonija.PopulacijaVisak] = Math.Min(efektiZvj[Kolonija.PopulacijaVisak], efektiZvj[Kolonija.MigracijaMax]);
-			}
+			if (efektiPoIgracu[igrac.id] == null)
+				efektiPoIgracu[igrac.id] = new ZvjezdanaUprava(this, igrac);
 		}
 
-		public void NoviKrug(List<Igrac> igraci)
+		public void IzracunajEfekte()
 		{
-			IzracunajEfekte(igraci);
+			foreach (var uprava in efektiPoIgracu)
+				if (uprava != null)
+					uprava.IzracunajEfekte();
+		}
 
-			List<Kolonija> kolonije = new List<Kolonija>();
-			foreach (Planet pl in planeti)
-				if (pl.kolonija != null)
-					kolonije.Add(pl.kolonija);
-
-			kolonije.Sort((k1, k2) => k1.OdrzavanjePoStan.CompareTo(k2.OdrzavanjePoStan));
-
-			foreach (Kolonija kolonija in kolonije) {
-				int igracIndex = igraci.IndexOf(kolonija.igrac);
-				Dictionary<string, double> efektiZvj = efektiPoIgracu[igracIndex];
-				Dictionary<string, double> efektiPl =  kolonija.efekti;
-
-				double imigranti = kolonija.dodajMigrante(efektiZvj[Kolonija.PopulacijaVisak]);
-				efektiZvj[Kolonija.PopulacijaVisak] -= imigranti;
-
-				kolonija.resetirajEfekte();
-			}
+		public void NoviKrug()
+		{
+			foreach (var uprava in efektiPoIgracu)
+				if (uprava != null)
+					uprava.NoviKrug();
 		}
 
 		#region Pohrana

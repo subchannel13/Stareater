@@ -14,23 +14,23 @@ namespace Zvjezdojedac.GUI
 {
 	public partial class FormGradnja : Form
 	{
-		private Kolonija kolonija;
+		private IGradiliste gradiliste;
         private LinkedList<Zgrada.ZgradaInfo> redGradnje;
 		private Dictionary<Zgrada.ZgradaInfo, int> redoslijedPonuda = new Dictionary<Zgrada.ZgradaInfo, int>();
 
-		public FormGradnja(Kolonija kolonija, bool civilnaGradnja)
+		public FormGradnja(IGradiliste gradiliste)
 		{
 			InitializeComponent();
 			lblZgradaInfo.Text = "";
-            if (civilnaGradnja)
-                redGradnje = kolonija.redCivilneGradnje;
-            else
-                redGradnje = kolonija.redVojneGradnje;
+            //if (civilnaGradnja)
+                redGradnje = gradiliste.RedGradnje;
+            /*else
+                redGradnje = kolonija.redVojneGradnje;*/
 
-			this.kolonija = kolonija;
+			this.gradiliste = gradiliste;
 			
 			HashSet<Zgrada.ZgradaInfo> uRedu = new HashSet<Zgrada.ZgradaInfo>(redGradnje);
-			List<Zgrada.ZgradaInfo> izgradivo = kolonija.moguceGraditi(civilnaGradnja);
+			List<Zgrada.ZgradaInfo> izgradivo = gradiliste.MoguceGraditi();
 			for (int i = 0; i < izgradivo.Count; i++) {
 				redoslijedPonuda.Add(izgradivo[i], i);
 				if (!uRedu.Contains(izgradivo[i]))
@@ -48,10 +48,10 @@ namespace Zvjezdojedac.GUI
 			lblMogucnosti.Text = jezik["lblMogucnosti"].tekst() + ":";
 			lblPopis.Text = jezik["lblPopis"].tekst() + ":";
 
-			if (civilnaGradnja)
+			//if (civilnaGradnja)
 				this.Text = jezik["naslovCivGradnja"].tekst();
-			else
-				this.Text = jezik["naslovVojGradnja"].tekst();
+			/*else
+				this.Text = jezik["naslovVojGradnja"].tekst();*/
 
 			this.Font = Postavke.FontSucelja(this.Font);
 		}
