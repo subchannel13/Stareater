@@ -64,7 +64,7 @@ namespace Zvjezdojedac.GUI
 				if (planet.tip != Planet.Tip.NIKAKAV) {
 					item.Text = planet.ime;
 					if (planet.kolonija != null)
-						item.ForeColor = planet.kolonija.igrac.boja;
+						item.ForeColor = planet.kolonija.Igrac.boja;
 				}
 				lstvPlaneti.Items.Add(item);
 			}
@@ -100,10 +100,10 @@ namespace Zvjezdojedac.GUI
 			double planetMax = 0;
 			if (zvijezda.planeti[planetI].kolonija == null){
 				Kolonija kolonija = new Kolonija(igrac, zvijezda.planeti[planetI], brodPopulacija, brodRadnaMjesta);
-				planetMax = (kolonija.efekti[Kolonija.PopulacijaMax] - dodatnaPopulacija[planetI]) / brodPopulacija;
+				planetMax = (kolonija.Efekti[Kolonija.PopulacijaMax] - dodatnaPopulacija[planetI]) / brodPopulacija;
 			} else{
 				Kolonija kolonija = zvijezda.planeti[planetI].kolonija;
-				planetMax = (kolonija.efekti[Kolonija.PopulacijaMax] - kolonija.populacija - dodatnaPopulacija[planetI]) / brodPopulacija;
+				planetMax = (kolonija.Efekti[Kolonija.PopulacijaMax] - kolonija.populacija - dodatnaPopulacija[planetI]) / brodPopulacija;
 			}
 
 			return (long)Math.Min(rez, Math.Ceiling(planetMax));
@@ -176,18 +176,18 @@ namespace Zvjezdojedac.GUI
 				lblAtmGustoca.Text = jezikPl["plAtmGustoca"].tekst() + ": " + String.Format("{0:0.##}", planet.gustocaAtmosfere);
 				lblAtmKvaliteta.Text = jezikPl["plAtmKvaliteta"].tekst() + ": " + (int)(planet.kvalitetaAtmosfere * 100) + "%";
 				lblAtmoTemperatura.Text = jezikPl["plAtmTemperatura"].tekst() + ": " + String.Format("{0:0.##}", planet.temperatura());
-				lblKoefOrbitalne.Text = jezikPl["plCijenaOrbGradnje"].tekst() + ": x" + kolonija.efekti[Kolonija.FaktorCijeneOrbitalnih].ToString("0.##");
+				lblKoefOrbitalne.Text = jezikPl["plCijenaOrbGradnje"].tekst() + ": x" + kolonija.Efekti[Kolonija.FaktorCijeneOrbitalnih].ToString("0.##");
 
-				lblMinPovrsina.Text = jezikKol["plMinPovrsina"].tekst() + ": " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudePovrsinske]);
-				lblMinDubina.Text = jezikKol["plMinDubina"].tekst() + ": " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudeDubinske]);
-				lblMinOstvareno.Text = jezikKol["plMinOstvareno"].tekst() + ": " + String.Format("{0:0.##}", kolonija.efekti[Kolonija.RudeEfektivno]);
+				lblMinPovrsina.Text = jezikKol["plMinPovrsina"].tekst() + ": " + String.Format("{0:0.##}", kolonija.Efekti[Kolonija.RudePovrsinske]);
+				lblMinDubina.Text = jezikKol["plMinDubina"].tekst() + ": " + String.Format("{0:0.##}", kolonija.Efekti[Kolonija.RudeDubinske]);
+				lblMinOstvareno.Text = jezikKol["plMinOstvareno"].tekst() + ": " + String.Format("{0:0.##}", kolonija.Efekti[Kolonija.RudeEfektivno]);
 
 				Dictionary<string, double> maxEfekti = kolonija.maxEfekti();
-				lblHranaPoStan.Text = jezikKol["HranaPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.HranaPoFarmeru], maxEfekti[Kolonija.HranaPoFarmeru]);
-				lblRudePoStan.Text = jezikKol["RudePoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.RudePoRudaru], maxEfekti[Kolonija.RudePoRudaru]);
-				lblOdrzavanjePoStan.Text = jezikKol["OdrzavanjePoStan"].tekst() + ": " + String.Format("{0:0.##}", (kolonija.efekti[Kolonija.OdrzavanjeUkupno] / kolonija.efekti[Kolonija.Populacija]));
-				lblIndustrijaPoStan.Text = jezikKol["IndustrijaPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.IndPoRadnikuEfektivno], maxEfekti[Kolonija.IndPoRadnikuEfektivno]);
-				lblRazvojPoStan.Text = jezikKol["RazvojPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.efekti[Kolonija.RazPoRadnikuEfektivno], maxEfekti[Kolonija.RazPoRadnikuEfektivno]);
+				lblHranaPoStan.Text = jezikKol["HranaPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.Efekti[Kolonija.HranaPoFarmeru], maxEfekti[Kolonija.HranaPoFarmeru]);
+				lblRudePoStan.Text = jezikKol["RudePoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.Efekti[Kolonija.RudePoRudaru], maxEfekti[Kolonija.RudePoRudaru]);
+				lblOdrzavanjePoStan.Text = jezikKol["OdrzavanjePoStan"].tekst() + ": " + String.Format("{0:0.##}", (kolonija.Efekti[Kolonija.OdrzavanjeUkupno] / kolonija.Efekti[Kolonija.Populacija]));
+				lblIndustrijaPoStan.Text = jezikKol["IndustrijaPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.Efekti[Kolonija.IndPoRadnikuEfektivno], maxEfekti[Kolonija.IndPoRadnikuEfektivno]);
+				lblRazvojPoStan.Text = jezikKol["RazvojPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.Efekti[Kolonija.RazPoRadnikuEfektivno], maxEfekti[Kolonija.RazPoRadnikuEfektivno]);
 				
 				postaviBrBrodova();
 			}

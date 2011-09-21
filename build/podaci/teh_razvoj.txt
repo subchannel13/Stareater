@@ -95,6 +95,6 @@ KOD = SVEMIRSKI_PROGRAM
 CIJENA = * 80e9 ^ LVL 2
 MAX_LVL = 10
 PREDUVJETI = 
-SLIKA = ./slike/tehnologije/industrija.bmp
+SLIKA = ./slike/tehnologije/raketodrom.png
 ----
 

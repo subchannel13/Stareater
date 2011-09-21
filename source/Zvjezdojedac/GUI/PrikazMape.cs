@@ -110,7 +110,7 @@ namespace Zvjezdojedac.GUI
 						bool imaKoloniju = false;
 						foreach (Planet planet in zvj.planeti)
 							if (planet.kolonija != null)
-								if (planet.kolonija.igrac.id == igrac.id)
+								if (planet.kolonija.Igrac.id == igrac.id)
 									imaKoloniju = true;
 						bojaImena = (imaKoloniju) ? 
 							new SolidBrush(igrac.boja) :

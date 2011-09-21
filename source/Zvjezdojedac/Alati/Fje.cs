@@ -7,6 +7,9 @@ namespace Zvjezdojedac.Alati
 {
 	public static class Fje
 	{
+		public static Random Random = new Random();
+
+
 		public static int BinarySearch(IList list, object obj, Comparison<object> comparator)
 		{
 			int min = 0;
@@ -82,7 +85,6 @@ namespace Zvjezdojedac.Alati
 			else
 				return Math.Pow(x, redPolinoma + 1) / (redPolinoma + 1);
 		}
-
 	}
 }
 

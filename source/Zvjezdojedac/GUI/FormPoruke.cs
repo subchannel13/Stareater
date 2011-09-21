@@ -28,19 +28,19 @@ namespace Zvjezdojedac.GUI
 			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.Prica]);
 			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.Tehnologija]);
 			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.Kolonija]);
-			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.Zgrada]);
+			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.ZgradaKolonija]);
 			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.Brod]);
 
 			this.Enabled = false;
 			chTipBrod.Checked = igrac.filtarPoruka[Poruka.Tip.Brod];
 			chTipKolonija.Checked = igrac.filtarPoruka[Poruka.Tip.Kolonija];
 			chTipTehnologije.Checked = igrac.filtarPoruka[Poruka.Tip.Tehnologija];
-			chTipZgrade.Checked = igrac.filtarPoruka[Poruka.Tip.Zgrada];
+			chTipZgrade.Checked = igrac.filtarPoruka[Poruka.Tip.ZgradaKolonija];
 
 			tipZaCheckBox.Add(chTipBrod, Poruka.Tip.Brod);
 			tipZaCheckBox.Add(chTipKolonija, Poruka.Tip.Kolonija);
 			tipZaCheckBox.Add(chTipTehnologije, Poruka.Tip.Tehnologija);
-			tipZaCheckBox.Add(chTipZgrade, Poruka.Tip.Zgrada);
+			tipZaCheckBox.Add(chTipZgrade, Poruka.Tip.ZgradaKolonija);
 			this.Enabled = true;
 
 			postaviPoruke();
@@ -53,7 +53,7 @@ namespace Zvjezdojedac.GUI
 			chTipBrod.Text = jezik["chTipBrod"].tekst() + " (" + filtrirano[Poruka.Tip.Brod].Count + ")";
 			chTipKolonija.Text = jezik["chTipKolonija"].tekst()+" (" + filtrirano[Poruka.Tip.Kolonija].Count + ")";
 			chTipTehnologije.Text = jezik["chTipTehnologije"].tekst()+" (" + filtrirano[Poruka.Tip.Tehnologija].Count + ")";
-			chTipZgrade.Text = jezik["chTipZgrade"].tekst() + " (" + filtrirano[Poruka.Tip.Zgrada].Count + ")";
+			chTipZgrade.Text = jezik["chTipZgrade"].tekst() + " (" + filtrirano[Poruka.Tip.ZgradaKolonija].Count + ")";
 
 			this.Text = jezik["naslov"].tekst();
 			this.Font = Postavke.FontSucelja(this.Font);

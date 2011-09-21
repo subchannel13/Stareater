@@ -53,7 +53,7 @@ namespace Zvjezdojedac.Podaci
 			rez.Add(Poruka.Tip.Kolonija, smallImageKvadrat(Color.Brown));
 			rez.Add(Poruka.Tip.Prica, smallImageKvadrat(Color.Blue));
 			rez.Add(Poruka.Tip.Tehnologija, smallImageKvadrat(Color.Turquoise));
-			rez.Add(Poruka.Tip.Zgrada, smallImageKvadrat(Color.LightGray));
+			rez.Add(Poruka.Tip.ZgradaKolonija, smallImageKvadrat(Color.LightGray));
 			return rez;
 		}
 

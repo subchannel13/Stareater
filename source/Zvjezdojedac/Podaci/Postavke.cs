@@ -32,7 +32,7 @@ namespace Zvjezdojedac.Podaci
 					if (!int.TryParse(podatci["BR_IGRACA"], out BrIgraca))
 						BrIgraca = 4;
 				if (BrIgraca < 1) BrIgraca = 1;
-				if (BrIgraca > IgraZvj.maxIgraca) BrIgraca = IgraZvj.maxIgraca;
+				if (BrIgraca > IgraZvj.MaxIgraca) BrIgraca = IgraZvj.MaxIgraca;
 
 				Organizacija = 0;
 				if (podatci.ContainsKey("ORGANIZACIJA"))

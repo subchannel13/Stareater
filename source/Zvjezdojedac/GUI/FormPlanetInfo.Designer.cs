@@ -44,11 +44,7 @@
 			this.lblPopDelta = new System.Windows.Forms.Label();
 			this.lblPopBr = new System.Windows.Forms.Label();
 			this.btnZatvori = new System.Windows.Forms.Button();
-			this.lblProcjenaVojneGradnje = new System.Windows.Forms.Label();
 			this.lblProcjenaCivilneGradnje = new System.Windows.Forms.Label();
-			this.lblVojnaIndustrija = new System.Windows.Forms.Label();
-			this.hscrVojnaIndustrija = new System.Windows.Forms.HScrollBar();
-			this.btnVojnaGradnja = new System.Windows.Forms.Button();
 			this.btnCivilnaGradnja = new System.Windows.Forms.Button();
 			this.lblRazvoj = new System.Windows.Forms.Label();
 			this.lblCivilnaIndustrija = new System.Windows.Forms.Label();
@@ -249,15 +245,6 @@
 			this.btnZatvori.UseVisualStyleBackColor = true;
 			this.btnZatvori.Click += new System.EventHandler(this.btnZatvori_Click);
 			// 
-			// lblProcjenaVojneGradnje
-			// 
-			this.lblProcjenaVojneGradnje.AutoSize = true;
-			this.lblProcjenaVojneGradnje.Location = new System.Drawing.Point(153, 140);
-			this.lblProcjenaVojneGradnje.Name = "lblProcjenaVojneGradnje";
-			this.lblProcjenaVojneGradnje.Size = new System.Drawing.Size(82, 13);
-			this.lblProcjenaVojneGradnje.TabIndex = 27;
-			this.lblProcjenaVojneGradnje.Text = "xx.xx X krugova";
-			// 
 			// lblProcjenaCivilneGradnje
 			// 
 			this.lblProcjenaCivilneGradnje.AutoSize = true;
@@ -266,34 +253,6 @@
 			this.lblProcjenaCivilneGradnje.Size = new System.Drawing.Size(82, 13);
 			this.lblProcjenaCivilneGradnje.TabIndex = 26;
 			this.lblProcjenaCivilneGradnje.Text = "xx.xx X krugova";
-			// 
-			// lblVojnaIndustrija
-			// 
-			this.lblVojnaIndustrija.AutoSize = true;
-			this.lblVojnaIndustrija.Location = new System.Drawing.Point(153, 127);
-			this.lblVojnaIndustrija.Name = "lblVojnaIndustrija";
-			this.lblVojnaIndustrija.Size = new System.Drawing.Size(40, 13);
-			this.lblVojnaIndustrija.TabIndex = 25;
-			this.lblVojnaIndustrija.Text = "xx.xx X";
-			// 
-			// hscrVojnaIndustrija
-			// 
-			this.hscrVojnaIndustrija.LargeChange = 1;
-			this.hscrVojnaIndustrija.Location = new System.Drawing.Point(156, 106);
-			this.hscrVojnaIndustrija.Name = "hscrVojnaIndustrija";
-			this.hscrVojnaIndustrija.Size = new System.Drawing.Size(109, 18);
-			this.hscrVojnaIndustrija.TabIndex = 23;
-			this.hscrVojnaIndustrija.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscrVojnaIndustrija_Scroll);
-			// 
-			// btnVojnaGradnja
-			// 
-			this.btnVojnaGradnja.Location = new System.Drawing.Point(168, 19);
-			this.btnVojnaGradnja.Name = "btnVojnaGradnja";
-			this.btnVojnaGradnja.Size = new System.Drawing.Size(84, 84);
-			this.btnVojnaGradnja.TabIndex = 22;
-			this.btnVojnaGradnja.Text = "slika vojne zgrade";
-			this.btnVojnaGradnja.UseVisualStyleBackColor = true;
-			this.btnVojnaGradnja.Click += new System.EventHandler(this.btnVojnaGradnja_Click);
 			// 
 			// btnCivilnaGradnja
 			// 
@@ -509,15 +468,11 @@
 			// tabPageProizvodnja
 			// 
 			this.tabPageProizvodnja.BackColor = System.Drawing.SystemColors.Control;
-			this.tabPageProizvodnja.Controls.Add(this.lblProcjenaVojneGradnje);
 			this.tabPageProizvodnja.Controls.Add(this.btnCivilnaGradnja);
 			this.tabPageProizvodnja.Controls.Add(this.lblProcjenaCivilneGradnje);
 			this.tabPageProizvodnja.Controls.Add(this.hscrCivilnaIndustrija);
-			this.tabPageProizvodnja.Controls.Add(this.lblVojnaIndustrija);
 			this.tabPageProizvodnja.Controls.Add(this.lblCivilnaIndustrija);
-			this.tabPageProizvodnja.Controls.Add(this.hscrVojnaIndustrija);
 			this.tabPageProizvodnja.Controls.Add(this.lblRazvoj);
-			this.tabPageProizvodnja.Controls.Add(this.btnVojnaGradnja);
 			this.tabPageProizvodnja.Location = new System.Drawing.Point(4, 22);
 			this.tabPageProizvodnja.Name = "tabPageProizvodnja";
 			this.tabPageProizvodnja.Padding = new System.Windows.Forms.Padding(3);
@@ -765,10 +720,6 @@
 		private System.Windows.Forms.Label lblPrikaz;
 		private System.Windows.Forms.RadioButton radKolicina;
 		private System.Windows.Forms.RadioButton radPostotak;
-		private System.Windows.Forms.Label lblVojnaIndustrija;
-        private System.Windows.Forms.HScrollBar hscrVojnaIndustrija;
-        private System.Windows.Forms.Button btnVojnaGradnja;
-		private System.Windows.Forms.Label lblProcjenaVojneGradnje;
 		private System.Windows.Forms.Label lblProcjenaCivilneGradnje;
 		private System.Windows.Forms.TabControl tabControl;
 		private System.Windows.Forms.TabPage tabPageProizvodnja;

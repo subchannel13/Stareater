@@ -16,7 +16,8 @@ namespace Zvjezdojedac.Igra.Poruke
 			Prica = 0,
 			Tehnologija,
 			Kolonija,
-			Zgrada,
+			ZgradaKolonija,
+			ZgradaSustav,
 			Brod
 		};
 
@@ -33,12 +34,17 @@ namespace Zvjezdojedac.Igra.Poruke
 
 		public static Poruka NovaZgrada(Kolonija kolonija, Zgrada.ZgradaInfo zgrada)
 		{
-			return new PorukaZgrada(kolonija.planet, zgrada);
+			return new PorukaZgradaKolonija(kolonija.planet, zgrada);
 		}
 
-		public static Poruka NoviBrod(Kolonija kolonija, Dizajn dizajn, long kolicina)
+		public static Poruka NovaZgrada(Zvijezda zvijezda, Zgrada.ZgradaInfo zgrada)
 		{
-			return new PorukaBrod(kolonija.planet.zvjezda, dizajn, kolicina);
+			return new PorukaZgradaSustav(zvijezda, zgrada);
+		}
+
+		public static Poruka NoviBrod(IGradiliste gradiliste, Dizajn dizajn, long kolicina)
+		{
+			return new PorukaBrod(gradiliste.LokacijaZvj, dizajn, kolicina);
 		}
 		#endregion
 
@@ -67,8 +73,8 @@ namespace Zvjezdojedac.Igra.Poruke
 					return PorukaKolonija.Ucitaj(ulaz, zvijezdeID);
 				case Tip.Brod:
 					return PorukaBrod.Ucitaj(ulaz, zvijezdeID, dizajnID);
-				case Tip.Zgrada:
-					return PorukaZgrada.Ucitaj(ulaz, zvijezdeID);
+				case Tip.ZgradaKolonija:
+					return PorukaZgradaKolonija.Ucitaj(ulaz, zvijezdeID);
 				default:
 					throw new ArgumentException();
 			}
