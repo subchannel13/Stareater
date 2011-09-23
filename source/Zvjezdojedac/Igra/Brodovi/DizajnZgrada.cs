@@ -34,6 +34,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			: base(Zgrada.ZadnjiId() + dizajn.id, dizajn.ime, 
 			new KonstantnaFormula(dizajn.cijena),
 			new KonstantnaFormula(int.MaxValue),
+			new KonstantnaFormula(int.MaxValue),
 			new KonstantnaFormula(0),
 			dizajn.trup.info.slika,
 			"",

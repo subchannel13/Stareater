@@ -207,7 +207,7 @@ namespace Zvjezdojedac.Igra
 
 			efekti[OdrzavanjeZgrada] = 0;
 			foreach (Zgrada zgrada in zgrade.Values)
-				efekti[OdrzavanjeZgrada] += zgrada.tip.cijenaOdrzavanja.iznos(efekti);
+				efekti[OdrzavanjeZgrada] += zgrada.tip.CijenaOdrzavanja.iznos(efekti);
 			efekti[OdrzavanjeUkupno] += efekti[OdrzavanjeZgrada];
 
 			double zaposlenost = efekti[AktivnaRadnaMjesta] / (double)efekti[Populacija];
@@ -272,11 +272,13 @@ namespace Zvjezdojedac.Igra
 			LinkedListNode<Zgrada.ZgradaInfo> uGradnji = RedGradnje.First;
 			while (uGradnji != null) {
 				Zgrada.ZgradaInfo zgradaTip = uGradnji.Value;
-				double cijena = zgradaTip.cijenaGradnje.iznos(Igrac.efekti);
+				double cijena = zgradaTip.CijenaGradnje.iznos(Igrac.efekti);
 				if (zgradaTip.orbitalna) cijena *= Efekti[FaktorCijeneOrbitalnih];
 
 				long brZgrada = (long)(ostatakGradnje / cijena);
-				long dopustenaKolicina = (long)zgradaTip.dopustenaKolicina.iznos(Igrac.efekti);
+				long dopustenaKolicina = (long)Math.Min(
+					zgradaTip.DopustenaKolicina.iznos(Igrac.efekti),
+					zgradaTip.DopustenaKolicinaPoKrugu.iznos(Igrac.efekti));
 				brZgrada = Fje.Ogranici(brZgrada, 0, dopustenaKolicina);
 
 				if (brZgrada > 0) {

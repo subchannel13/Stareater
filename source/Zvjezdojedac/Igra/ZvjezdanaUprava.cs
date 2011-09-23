@@ -50,10 +50,12 @@ namespace Zvjezdojedac.Igra
 			LinkedListNode<Zgrada.ZgradaInfo> uGradnji = RedGradnje.First;
 			while (uGradnji != null) {
 				Zgrada.ZgradaInfo zgradaTip = uGradnji.Value;
-				double cijena = zgradaTip.cijenaGradnje.iznos(Igrac.efekti);
+				double cijena = zgradaTip.CijenaGradnje.iznos(Igrac.efekti);
 
 				long brZgrada = (long)(ostatakGradnje / cijena);
-				long dopustenaKolicina = (long)zgradaTip.dopustenaKolicina.iznos(Igrac.efekti);
+				long dopustenaKolicina = (long)Math.Min(
+					zgradaTip.DopustenaKolicina.iznos(Igrac.efekti),
+					zgradaTip.DopustenaKolicinaPoKrugu.iznos(Igrac.efekti));
 				brZgrada = Fje.Ogranici(brZgrada, 0, dopustenaKolicina);
 
 				if (brZgrada > 0) {

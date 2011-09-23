@@ -79,9 +79,10 @@ namespace Zvjezdojedac.Igra
 			protected string _ime;
 			public int id { get; private set; }
 
-			public Formula cijenaGradnje { get; private set; }
-			public Formula dopustenaKolicina { get; private set; }
-			public Formula cijenaOdrzavanja { get; private set; }
+			public Formula CijenaGradnje { get; private set; }
+			public Formula CijenaOdrzavanja { get; private set; }
+			public Formula DopustenaKolicina { get; private set; }
+			public Formula DopustenaKolicinaPoKrugu { get; private set; }
 			public List<Tehnologija.Preduvjet> preduvjeti { get; private set; }
 
 			public Image slika { get; private set; }
@@ -96,14 +97,15 @@ namespace Zvjezdojedac.Igra
 			public bool brod { get; private set; }
 
 			public ZgradaInfo(int id, string ime, Formula cijenaGradnje, Formula dopustenaKolicina,
-				Formula cijenaOdrzavanja, Image slika, string kod, string opis,
-				List<Ucinak> ucinci, string svojstva, List<Tehnologija.Preduvjet> preduvjeti)
+				Formula dopustenaKolicinaPoKrugu, Formula cijenaOdrzavanja, Image slika, string kod, 
+				string opis, List<Ucinak> ucinci, string svojstva, List<Tehnologija.Preduvjet> preduvjeti)
 			{
 				this.id = id;
 				this._ime = ime;
-				this.cijenaGradnje = cijenaGradnje;
-				this.dopustenaKolicina = dopustenaKolicina;
-				this.cijenaOdrzavanja = cijenaOdrzavanja;
+				this.CijenaGradnje = cijenaGradnje;
+				this.DopustenaKolicina = dopustenaKolicina;
+				this.DopustenaKolicinaPoKrugu = dopustenaKolicinaPoKrugu;
+				this.CijenaOdrzavanja = cijenaOdrzavanja;
 				this.slika = slika;
 				this.kod = kod;
 				this._opis = opis;
@@ -127,7 +129,7 @@ namespace Zvjezdojedac.Igra
 					if (!pred.zadovoljen(varijable))
 						return false;
 
-				if ((long)dopustenaKolicina.iznos(varijable) <= prisutnaKolicina)
+				if ((long)DopustenaKolicina.iznos(varijable) <= prisutnaKolicina)
 					return false;
 
 				return true;
@@ -172,6 +174,7 @@ namespace Zvjezdojedac.Igra
 				podaci["IME"],
 				Formula.IzStringa(podaci["CIJENA"]),
 				Formula.IzStringa(podaci["KOLICINA"]),
+				Formula.IzStringa(podaci["PO_KRUGU"]),
 				Formula.IzStringa(podaci["ODRZAVANJE"]),
 				Image.FromFile(podaci["SLIKA"]),
 				podaci["KOD"],
@@ -187,7 +190,7 @@ namespace Zvjezdojedac.Igra
 		public static string ProcjenaVremenaGradnje(double poeniIndustrije, double ostatakGradnje, Zgrada.ZgradaInfo uGradnji, Igrac igrac)
 		{
 			if (uGradnji == null) return "";
-			double cijena = uGradnji.cijenaGradnje.iznos(igrac.efekti);
+			double cijena = uGradnji.CijenaGradnje.iznos(igrac.efekti);
 
 			double brZgrada = (ostatakGradnje + poeniIndustrije) / cijena;
 
@@ -195,7 +198,9 @@ namespace Zvjezdojedac.Igra
 			Dictionary<string, double> vars = new Dictionary<string, double>();
 
 			if (brZgrada >= 1) {
-				long dopustenaKolicina = (long)uGradnji.dopustenaKolicina.iznos(igrac.efekti);
+				long dopustenaKolicina = (long)Math.Min(
+					uGradnji.DopustenaKolicina.iznos(igrac.efekti),
+					uGradnji.DopustenaKolicinaPoKrugu.iznos(igrac.efekti));
 				brZgrada = Fje.Ogranici(brZgrada, 0, dopustenaKolicina);
 
 				vars.Add("BR_ZGRADA", brZgrada);

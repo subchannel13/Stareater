@@ -80,6 +80,10 @@ namespace Zvjezdojedac.Podaci.Formule
 
 				else if (Double.TryParse(s.ToLower(), NumberStyles.Float, PodaciAlat.DecimalnaTocka, out x))
 					return new Konstanta(x);
+				else if (s.ToLower() == "inf")
+					return new Konstanta(double.PositiveInfinity);
+				else if (s.ToLower() == "-inf")
+					return new Konstanta(double.NegativeInfinity);
 				else
 					return new Varijabla(s);
 			}
