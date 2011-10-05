@@ -1,0 +1,29 @@
+<ORGANIZACIJA>
+NAZIV = NASA
+OPIS = North American Space Agency.
+TECH0 = 0
+----
+
+<ORGANIZACIJA>
+NAZIV = ESA
+OPIS = European Space Agency.
+TECH0 = 0
+----
+
+<ORGANIZACIJA>
+NAZIV = JSA
+OPIS = Japanise Space Agency.
+TECH0 = 0
+----
+
+<ORGANIZACIJA>
+NAZIV = ChSA
+OPIS = Chinese Space Agency.
+TECH0 = 0
+----
+
+<ORGANIZACIJA>
+NAZIV = ASA
+OPIS = Australian Space Agency.
+TECH0 = 0
+----

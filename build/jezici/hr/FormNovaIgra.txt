@@ -1,0 +1,14 @@
+﻿::FORM_NOVA_IGRA
+NASLOV = Nova igra
+BTN_KRENI = Kreni
+BTN_ODUSTANI = Odustani
+LBL_BR_IGRACA = Broj igrača:
+lblBrKolonija = Br. kolonija
+LBL_IME_IGRACA = Ime igrača:
+LBL_OPIS_MAPE := "Broj zvijezda: " # D BR #
+LBL_ORGANIZACIJA = Organizacija:
+lblPocetnaPop = Početna populacija:
+lblPopulacija = Populacija
+LBL_VELICINA_MAPE = Veličina mape:
+
+

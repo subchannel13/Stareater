@@ -1,0 +1,162 @@
+<SLIKA>
+DATOTEKA = ./slike/tab/Nema planeta.gif
+SKUPINA = planet_tab
+INDEKS = 0
+ATM_GUST = 0
+ATM_KVAL = 0
+TEMPERATURA = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Asteroidi.gif
+SKUPINA = planet_tab
+INDEKS = 1
+ATM_GUST = 0
+ATM_KVAL = 0
+TEMPERATURA = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Zemljoliki planet.gif
+SKUPINA = planet_tab
+INDEKS = 2
+ATM_GUST = 10
+ATM_KVAL = 1
+TEMPERATURA = 10
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Zemljoliki planet 2.png
+SKUPINA = planet_tab
+INDEKS = 2
+ATM_GUST = 3
+ATM_KVAL = 0.8
+TEMPERATURA = 7
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Zemljoliki planet 3.png
+SKUPINA = planet_tab
+INDEKS = 2
+ATM_GUST = 5
+ATM_KVAL = 0.6
+TEMPERATURA = 4
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Plinoviti div.gif
+SKUPINA = planet_tab
+INDEKS = 3
+ATM_GUST = 0
+ATM_KVAL = 0
+TEMPERATURA = 4
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Plinoviti div 2.png
+SKUPINA = planet_tab
+INDEKS = 3
+ATM_GUST = 0
+ATM_KVAL = 0
+TEMPERATURA = 2.5
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/Plinoviti div 3.png
+SKUPINA = planet_tab
+INDEKS = 3
+ATM_GUST = 0
+ATM_KVAL = 0
+TEMPERATURA = 1
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/prazan razvoj.png
+SKUPINA = planet_info
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/pun razvoj.png
+SKUPINA = planet_info
+INDEKS = 1
+Y_INTERVAL = 3, 29
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/flota.bmp
+SKUPINA = flota_tab
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/flota.bmp
+SKUPINA = flota_tab
+INDEKS = 1
+----
+
+<SLIKA>
+DATOTEKA = ./slike/mapa/Odabrana zvijezda.gif
+SKUPINA = odabir_zvijezde
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/mapa/Odredisna zvijezda.gif
+SKUPINA = odabir_zvijezde
+INDEKS = 1
+----
+
+<SLIKA>
+DATOTEKA = ./slike/mapa/flota.png
+SKUPINA = flota
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod direktno oruzje.png
+SKUPINA = brod_misija
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod projektil.png
+SKUPINA = brod_misija
+INDEKS = 1
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod kolonizacija.png
+SKUPINA = brod_misija
+INDEKS = 2
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod popravak.png
+SKUPINA = brod_misija
+INDEKS = 3
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod nema slike.png
+SKUPINA = brod_misija
+INDEKS = 4
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod nema slike.png
+SKUPINA = brod_misija
+INDEKS = 5
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod nema slike.png
+SKUPINA = brod_misija
+INDEKS = 6
+----
+
+<SLIKA>
+DATOTEKA = ./slike/tab/brod nema slike.png
+SKUPINA = brod_misija
+INDEKS = 7
+----

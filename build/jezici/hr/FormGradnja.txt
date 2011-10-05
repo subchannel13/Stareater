@@ -1,0 +1,10 @@
+﻿::FORM_GRADNJA
+btnKasnije = Kasnije
+btnOk = U redu
+btnPrije = Prije
+btnUkloni = Ukloni
+lblMogucnosti = Mogućnosti gradnje
+lblPopis = Popis za gradnju
+
+naslovCivGradnja = Civilna gradnja
+naslovVojGradnja = Vojna gradnja

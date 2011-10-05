@@ -1,0 +1,71 @@
+﻿::KOMPONENTE
+MZ_NUKLEARNI_IME = Nuklearni pogon
+MZ_NUKLEARNI_OPIS =
+
+OK_TITANIJ_IME = Titanij
+OK_TITANIJ_OPIS = 
+OK_DURAPLAST_IME = Duraplast
+OK_DURAPLAST_OPIS = 
+OK_DURALOJ_IME = Duraloj
+OK_DURALOJ_OPIS = 
+
+OR_LASER_TOP_IME = Laserski top
+OR_LASER_TOP_OPIS =
+OR_LASER_OB_IME = Obrambeni laser
+OR_LASER_OB_OPIS =
+OR_GRANATE_IME = Protuoklopne granate
+OR_GRANATE_OPIS =
+OR_STROJNICA_OB_IME = Obrambena strojnica
+OR_STROJNICA_OB_OPIS =
+OR_STROJNICA_IME = Strojnica
+OR_STROJNICA_OPIS =
+OR_KOLONIZATOR_IME = Kolonizator
+OR_KOLONIZATOR_OPIS =
+
+POT_KEMIJSKI_IME = Kemijski mlažnjak
+POT_KEMIJSKI_OPIS =
+
+RE_NUKLEARNI_IME = Nuklearni reaktor
+RE_NUKLEARNI_OPIS =
+RE_KEMIJSKI_IME = Kemijski reaktor
+RE_KEMIJSKI_OPIS =
+
+SE_EM_IME = EM senzor
+SE_EM_OPIS =
+
+SO_OKLOP_IME = Pojačan oklop
+SO_OKLOP_OPIS =
+SO_POTISNICI_IME = Dodatni potisnici
+SO_POTISNICI_OPIS =
+SO_REAKTOR_IME = Proširenje reaktora
+SO_REAKTOR_OPIS =
+
+SOE_KOEF_BRZINE = Pokretljivost
+SOE_KOEF_IZDRZ = Izdržljivost oklopa
+SOE_KOEF_OMET = Ometanje
+SOE_KOEF_STIT_DEB = Debljina štita
+SOE_KOEF_STIT_IZD = Izdržljivost štita
+SOE_KOEF_STIT_OBN = Obnavljanje štita
+SOE_PLUS_SENZORI = Br. senzora
+SOE_PLUS_INERC = Tromost
+SOE_PLUS_PRIK = Prikrivanje
+SOE_PLUS_REAKTOR = Veličina reaktora
+
+ST_ECM_IME = ECM
+ST_ECM_OPIS =
+ST_EM_IME = EM štit
+ST_EM_OPIS =
+
+TRUP_LOVAC_IME = Lovac
+TRUP_LOVAC_OPIS = Brod veličine torpednog čamca ili zračnog lovca.
+TRUP_MALI_BROD_IME = Mali brod
+TRUP_MALI_BROD_OPIS = Brod veličine između lovca i broda srednje veličine.
+TRUP_MALA_KRSTARICA_IME = Mala krstarica
+TRUP_MALA_KRSTARICA_OPIS = Brod srednje veličine.
+TRUP_KRSTARICA_IME = Krstarica
+TRUP_KRSTARICA_OPIS = Brod srednje veličine.
+
+TAK_PROJEKTIL = Projektil
+TAK_BROD0 = Bliska borba
+TAK_BROD1 = Uobičajena
+TAK_BROD2 = Izbjegavanje
