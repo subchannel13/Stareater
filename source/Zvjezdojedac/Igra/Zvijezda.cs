@@ -103,7 +103,7 @@ namespace Zvjezdojedac.Igra
 		public string ime;
 		public int id { get; set; }
 		public HashSet<Zvijezda> crvotocine = new HashSet<Zvijezda>();
-		public ZvjezdanaUprava[] efektiPoIgracu = new ZvjezdanaUprava[IgraZvj.MaxIgraca];
+		public ZvjezdanaUprava[] uprave = new ZvjezdanaUprava[IgraZvj.MaxIgraca];
 
 		public Zvijezda(int id, int tip, double x, double y)
 		{
@@ -178,27 +178,27 @@ namespace Zvjezdojedac.Igra
 
 		public void Naseli(Igrac igrac)
 		{
-			if (efektiPoIgracu[igrac.id] == null)
-				efektiPoIgracu[igrac.id] = new ZvjezdanaUprava(this, igrac);
+			if (uprave[igrac.id] == null)
+				uprave[igrac.id] = new ZvjezdanaUprava(this, igrac);
 		}
 
 		public void IzracunajEfekte()
 		{
-			foreach (var uprava in efektiPoIgracu)
+			foreach (var uprava in uprave)
 				if (uprava != null)
 					uprava.IzracunajEfekte();
 		}
 
 		public void NoviKrugPriprema()
 		{
-			foreach (var uprava in efektiPoIgracu)
+			foreach (var uprava in uprave)
 				if (uprava != null)
 					uprava.NoviKrugPriprema();
 		}
 
 		public void NoviKrug()
 		{
-			foreach (var uprava in efektiPoIgracu)
+			foreach (var uprava in uprave)
 				if (uprava != null)
 					uprava.NoviKrug();
 		}

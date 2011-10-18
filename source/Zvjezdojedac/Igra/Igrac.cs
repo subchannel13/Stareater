@@ -412,7 +412,7 @@ namespace Zvjezdojedac.Igra
 
 		public ZvjezdanaUprava OdabranSustav
 		{
-			get { return odabranaZvijezda.efektiPoIgracu[id]; }
+			get { return odabranaZvijezda.uprave[id]; }
 		}
 
 		public void dodajBrod(Dizajn dizajn, long kolicina, Zvijezda zvijezda)

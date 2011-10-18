@@ -143,7 +143,7 @@ namespace Zvjezdojedac.GUI
 				prikazMape.YnaMapi(y), 0.5);
 
 			if (odabranaZvijezda != null) {
-				if (frmFlotaPokret != null && frmFlotaPokret.Visible) {
+				if (frmFlotaPokret != null && frmFlotaPokret.Visible && frmFlotaPokret.Enabled) {
 					frmFlotaPokret.postaviOdrediste(odabranaZvijezda);
 					return;
 				}
@@ -222,7 +222,7 @@ namespace Zvjezdojedac.GUI
 				hscrZvjezdaGradnja.Value = (int)(igrac.OdabranSustav.UdioGradnje * hscrZvjezdaGradnja.Maximum);
 				lblImeZvjezde.Text = zvijezda.ime + "\n" +
 					jezik["lblZracenje"].tekst() + ": " + zvijezda.zracenje() + "\n" +
-					jezik["lblMigracija"].tekst() + ": " + Fje.PrefiksFormater(zvijezda.efektiPoIgracu[igrac.id][Kolonija.MigracijaMax]);
+					jezik["lblMigracija"].tekst() + ": " + Fje.PrefiksFormater(zvijezda.uprave[igrac.id][Kolonija.MigracijaMax]);
 			}
 			else
 				lblImeZvjezde.Text = zvijezda.ime + "\n" +
@@ -321,20 +321,19 @@ namespace Zvjezdojedac.GUI
 			odaberiPlanet(planetInfo.Planet, true);
 		}
 
+		private void zakljucajSucelje(bool zakljucaj)
+		{
+			pnlDesno.Enabled = !zakljucaj;
+			pnlDno.Enabled = !zakljucaj;
+
+			if (frmFlotaPokret != null)
+				frmFlotaPokret.Enabled = !zakljucaj;
+		}
+
 		private void btnEndTurn_Click(object sender, EventArgs e)
 		{
-			igra.slijedeciIgrac();
-			noviKrugPogled();
-
-			bool imaPoruka = false;
-			var filtriranePoruke = igrac.FiltriranePoruke();
-
-			foreach (Poruka.Tip tip in filtriranePoruke.Keys)
-				if (igrac.filtarPoruka[tip] && filtriranePoruke[tip].Count > 0)
-					imaPoruka = true;
-
-			if (imaPoruka)
-				novostiMenu_Click(this, null);
+			zakljucajSucelje(true);
+			backgroundTurnProcessor.RunWorkerAsync();
 		}
 
 		private void btnPlanetInfo_Click(object sender, EventArgs e)
@@ -473,7 +472,7 @@ namespace Zvjezdojedac.GUI
 
 		private void btnVojnaGradnja_Click(object sender, EventArgs e)
 		{
-			using (FormGradnja frmGradnja = new FormGradnja(igrac.odabranaZvijezda.efektiPoIgracu[igrac.id])) {
+			using (FormGradnja frmGradnja = new FormGradnja(igrac.odabranaZvijezda.uprave[igrac.id])) {
 
 				if (frmGradnja.ShowDialog() == DialogResult.OK)
 					osvjeziLabele();
@@ -682,6 +681,28 @@ namespace Zvjezdojedac.GUI
 		{
 			razinaUvecanja--;
 			postaviZoom();
+		}
+
+		private void backgroundTurnProcessor_DoWork(object sender, DoWorkEventArgs e)
+		{
+			igra.slijedeciIgrac();
+		}
+
+		private void backgroundTurnProcessor_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			noviKrugPogled();
+
+			bool imaPoruka = false;
+			var filtriranePoruke = igrac.FiltriranePoruke();
+
+			foreach (Poruka.Tip tip in filtriranePoruke.Keys)
+				if (igrac.filtarPoruka[tip] && filtriranePoruke[tip].Count > 0)
+					imaPoruka = true;
+
+			zakljucajSucelje(false);
+
+			if (imaPoruka)
+				novostiMenu_Click(this, null);
 		}
 
 	}

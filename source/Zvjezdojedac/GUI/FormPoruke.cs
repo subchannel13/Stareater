@@ -29,6 +29,7 @@ namespace Zvjezdojedac.GUI
 			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.Tehnologija]);
 			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.Kolonija]);
 			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.ZgradaKolonija]);
+			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.ZgradaSustav]);
 			lstvPoruke.SmallImageList.Images.Add(Slike.TipPoruke[Poruka.Tip.Brod]);
 
 			this.Enabled = false;

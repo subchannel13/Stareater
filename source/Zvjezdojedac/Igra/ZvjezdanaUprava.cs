@@ -26,7 +26,7 @@ namespace Zvjezdojedac.Igra
 
 		private Zvijezda zvijezda;
 		private double ostatakGradnje = 0;
-		private double udioGradnje;
+		private double udioGradnje = 0;
 
 		public Dictionary<string, double> Efekti { get; private set; }
 		public Igrac Igrac { get; private set; }
@@ -39,6 +39,23 @@ namespace Zvjezdojedac.Igra
 			this.zvijezda = zvijezda;
 			this.Efekti = new Dictionary<string, double>();
 			this.RedGradnje = new LinkedList<Zgrada.ZgradaInfo>();
+
+			foreach (string kljuc in KljuceviEfekata)
+				Efekti.Add(kljuc, 0);
+		}
+
+		public ZvjezdanaUprava(Zvijezda zvijezda, Igrac igrac, double ostatakGradnje, double udioGradnje,
+			LinkedList<Zgrada.ZgradaInfo> RedGradnje, IEnumerable<Zgrada> zgrade)
+		{
+			this.Igrac = igrac;
+			this.zvijezda = zvijezda;
+			this.Efekti = new Dictionary<string, double>();
+			this.RedGradnje = RedGradnje;
+			this.udioGradnje = udioGradnje;
+			this.ostatakGradnje = ostatakGradnje;
+
+			foreach (Zgrada zgrada in zgrade)
+				this.Zgrade.Add(zgrada.tip, zgrada);
 
 			foreach (string kljuc in KljuceviEfekata)
 				Efekti.Add(kljuc, 0);
@@ -214,9 +231,50 @@ namespace Zvjezdojedac.Igra
 			get { return Efekti[svojstvo]; }
 		}
 
+		#region Pohrana
+		public const string PohranaTip = "ZVJ_UP";
+		private const string PohIgrac = "IGRAC";
+		private const string PohZvijezda = "ZVJ";
+		private const string PohGradUdio = "UDIO_GRAD";
+		private const string PohGradOst = "GRAD_OST";
+		private const string PohGrad = "GRADNJA";
+		private const string PohZgrada = "ZGRADA";
+
 		public void pohrani(PodaciPisac izlaz)
 		{
-			throw new NotImplementedException();
+			izlaz.dodaj(PohIgrac, Igrac.id);
+			izlaz.dodaj(PohZvijezda, zvijezda.id);
+			izlaz.dodaj(PohGradUdio, udioGradnje);
+			izlaz.dodaj(PohGradOst, ostatakGradnje);
+
+			izlaz.dodaj(PohZgrada, Zgrade.Count);
+			izlaz.dodajKolekciju(PohZgrada, Zgrade.Values);
+
+			izlaz.dodajIdeve(PohGrad, RedGradnje);
 		}
+
+		public static ZvjezdanaUprava Ucitaj(PodaciCitac ulaz, List<Igrac> igraci,
+			Dictionary<int, Zvijezda> zvijezde,
+			Dictionary<int, Zgrada.ZgradaInfo> zgradeInfoID)
+		{
+			Igrac igrac = igraci[ulaz.podatakInt(PohIgrac)];
+			Zvijezda zvijezda = zvijezde[ulaz.podatakInt(PohZvijezda)];
+			double udioInd = ulaz.podatakDouble(PohGradUdio);
+			double ostatakGradnje = ulaz.podatakDouble(PohGradOst);
+
+			int brZgrada = ulaz.podatakInt(PohZgrada);
+			List<Zgrada> zgrade = new List<Zgrada>();
+			for (int i = 0; i < brZgrada; i++)
+				zgrade.Add(Zgrada.Ucitaj(ulaz[PohZgrada + i]));
+
+			int[] zgradeID = ulaz.podatakIntPolje(PohGrad);
+			LinkedList<Zgrada.ZgradaInfo> redCivilneGradnje = new LinkedList<Zgrada.ZgradaInfo>();
+			for (int i = 0; i < zgradeID.Length; i++)
+				redCivilneGradnje.AddLast(zgradeInfoID[zgradeID[i]]);
+
+			return new ZvjezdanaUprava(zvijezda, igrac, ostatakGradnje, udioInd, 
+				redCivilneGradnje, zgrade);
+		}
+		#endregion
 	}
 }
