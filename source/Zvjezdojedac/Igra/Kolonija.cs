@@ -487,9 +487,7 @@ namespace Zvjezdojedac.Igra
 		private const string PohPopulacija = "POP";
 		private const string PohRadnaMj = "RADNA_MJ";
 		private const string PohCivGradUdio = "UDIO_CIV";
-		private const string PohVojGradUdio = "UDIO_VOJ";
 		private const string PohCivGradOst = "CIV_OST";
-		private const string PohVojGradOst = "VOJ_OST";
 		private const string PohCivGrad = "GRADNJA";
 		private const string PohZgrada = "ZGRADA";
 		public void pohrani(PodaciPisac izlaz)
@@ -518,9 +516,7 @@ namespace Zvjezdojedac.Igra
 			long populacija = ulaz.podatakLong(PohPopulacija);
 			long radnaMjesta = ulaz.podatakLong(PohRadnaMj);
 			double civilnaInd = ulaz.podatakDouble(PohCivGradUdio);
-			double vojnaInd = ulaz.podatakDouble(PohVojGradUdio);
 			long ostatakCivilneGradnje = ulaz.podatakLong(PohCivGradOst);
-			long ostatakVojneGradnje = ulaz.podatakLong(PohVojGradOst);
 
 			int brZgrada = ulaz.podatakInt(PohZgrada);
 			List<Zgrada> zgrade = new List<Zgrada>();

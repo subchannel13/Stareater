@@ -251,10 +251,14 @@ namespace Zvjezdojedac.Igra
 
 			podaci.dodaj(Mapa.PohranaTip, mapa);
 			podaci.dodajKolekciju(Igrac.PohranaTip, igraci);
-			
-			HashSet<Kolonija> kolonije =  mapa.kolonije();
+
+			ICollection<Kolonija> kolonije = mapa.Kolonije();
 			podaci.dodaj(Kolonija.PohranaTip, kolonije.Count);
 			podaci.dodajKolekciju(Kolonija.PohranaTip, kolonije);
+
+			ICollection<ZvjezdanaUprava> uprave = mapa.ZvjezdaneUprave();
+			podaci.dodaj(ZvjezdanaUprava.PohranaTip, uprave.Count);
+			podaci.dodajKolekciju(ZvjezdanaUprava.PohranaTip, uprave);
 
 			return podaci.ToString();
 		}
@@ -291,6 +295,16 @@ namespace Zvjezdojedac.Igra
 					zvijezdeID,
 					zgradeInfoID);
 				kolonija.planet.kolonija = kolonija;
+			}
+
+			int brUprava = citac.podatakInt(ZvjezdanaUprava.PohranaTip);
+			for (int i = 0; i < brUprava; i++) {
+				ZvjezdanaUprava zvjUprava = ZvjezdanaUprava.Ucitaj(
+					citac[ZvjezdanaUprava.PohranaTip + i],
+					igraci,
+					zvijezdeID,
+					zgradeInfoID);
+				zvjUprava.LokacijaZvj.uprave[zvjUprava.Igrac.id] = zvjUprava;
 			}
 
 			return new IgraZvj(igraci, trenutniIgrac, mapa, brKruga);

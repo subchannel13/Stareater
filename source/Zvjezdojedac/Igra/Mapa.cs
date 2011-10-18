@@ -370,7 +370,7 @@ namespace Zvjezdojedac.Igra
 			return ret;
 		}
 
-		public HashSet<Kolonija> kolonije()
+		public ICollection<Kolonija> Kolonije()
 		{
 			HashSet<Kolonija> rez = new HashSet<Kolonija>();
 			
@@ -380,6 +380,19 @@ namespace Zvjezdojedac.Igra
 						rez.Add(pl.kolonija);
 			return rez;
 		}
+
+		public ICollection<ZvjezdanaUprava> ZvjezdaneUprave()
+		{
+			HashSet<ZvjezdanaUprava> rez = new HashSet<ZvjezdanaUprava>();
+
+			foreach (Zvijezda zvj in zvijezde)
+				foreach (ZvjezdanaUprava zvjUp in zvj.uprave)
+					if (zvjUp != null)
+						rez.Add(zvjUp);
+			return rez;
+		}
+
+		
 
 		#region Pohrana
 		public const string PohranaTip = "MAPA";
