@@ -189,6 +189,13 @@ namespace Zvjezdojedac.Igra
 					uprava.IzracunajEfekte();
 		}
 
+		public void NoviKrugPriprema()
+		{
+			foreach (var uprava in efektiPoIgracu)
+				if (uprava != null)
+					uprava.NoviKrugPriprema();
+		}
+
 		public void NoviKrug()
 		{
 			foreach (var uprava in efektiPoIgracu)

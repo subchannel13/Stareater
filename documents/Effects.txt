@@ -1,0 +1,12 @@
+Effects
+
+"Effects" in Zvjezdojedac is set of data that can be used as variables in
+formulas.
+
+Domains (short name - description):
+
+teh - technology levels
+baza - results of evaluated functions from BAZA_EFEKATA
+zvj - star and star system effects
+pl - planet effects
+kol - colony effects

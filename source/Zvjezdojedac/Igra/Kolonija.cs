@@ -266,7 +266,7 @@ namespace Zvjezdojedac.Igra
 			}
 		}
 
-		private long gradi(long ostatakGradnje, long poeniIndustrije)
+		private void gradi(long poeniIndustrije)
 		{
 			ostatakGradnje += poeniIndustrije;
 			LinkedListNode<Zgrada.ZgradaInfo> uGradnji = RedGradnje.First;
@@ -285,14 +285,14 @@ namespace Zvjezdojedac.Igra
 					ostatakGradnje -= (long)(cijena * brZgrada);
 					Zgrada z = new Zgrada(zgradaTip, brZgrada);
 
-					if (z.tip.ostaje) {
+					if (z.tip.instantEfekt)
+						z.djeluj(this, Igrac.efekti);
+					else {
 						if (zgrade.ContainsKey(z.tip))
 							zgrade[z.tip].kolicina += brZgrada;
 						else
 							zgrade.Add(z.tip, z);
 					}
-					else
-						z.djeluj(this, Igrac.efekti);
 
 					if (!z.tip.brod && !z.tip.ponavljaSe)
 						Igrac.poruke.AddLast(Poruka.NovaZgrada(this, z.tip));
@@ -309,8 +309,6 @@ namespace Zvjezdojedac.Igra
 
 				uGradnji = uGradnji.Next;
 			}
-
-			return ostatakGradnje;
 		}
 
 		public void dodajKolonizator(long populacija, long radnaMjesta)
@@ -335,20 +333,35 @@ namespace Zvjezdojedac.Igra
 			return imigranti;
 		}
 
-		public void noviKrug()
+		public void NoviKrugPrviProlaz()
 		{
 			postaviEfekteIgracu();
 
-			ostatakGradnje = gradi(ostatakGradnje, poeniIndustrije());
+			gradi(poeniIndustrije());
+
+			/*
+			 * TODO: terraforming
+			 */
 
 			double populacijaTmp = Efekti[PopulacijaPromjena] + _populacija;
 			Efekti[PopulacijaVisak] = Math.Max(Efekti[PopulacijaMax] - populacijaTmp, 0);
 
 			_populacija = (long)Math.Min(populacijaTmp, Efekti[PopulacijaMax]);
+		}
+
+		public void NoviKrugDrugiProlaz()
+		{
 			radnaMjesta = (long)Math.Min(Efekti[RadnaMjestaDelta] + radnaMjesta, Efekti[PopulacijaMax]);
 
-			foreach (Zgrada z in zgrade.Values)
+			List<Zgrada.ZgradaInfo> zaUklonit = new List<Zgrada.ZgradaInfo>();
+			foreach (Zgrada z in zgrade.Values) {
 				z.noviKrug(this, Igrac.efekti);
+				if (!z.tip.ostaje)
+					zaUklonit.Add(z.tip);
+			}
+
+			foreach (var ukloni in zaUklonit)
+				zgrade.Remove(ukloni);
 
 			inicijalizirajEfekte();
 			izracunajEfekte();

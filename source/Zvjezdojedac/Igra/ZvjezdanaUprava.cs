@@ -88,10 +88,21 @@ namespace Zvjezdojedac.Igra
 			}
 		}
 
-		public void IzracunajEfekte()
+		public void postaviEfekteIgracu()
+		{
+			foreach (string s in Efekti.Keys)
+				Igrac.efekti[s] = Efekti[s];
+		}
+
+		public void ResetirajEfekte()
 		{
 			foreach (string kljuc in KljuceviEfekata)
 				Efekti[kljuc] = 0;
+		}
+
+		public void IzracunajEfekte()
+		{
+			ResetirajEfekte();
 			
 			foreach (Planet pl in zvijezda.planeti)
 				if (pl.kolonija != null && pl.kolonija.Igrac == Igrac) {
@@ -105,6 +116,15 @@ namespace Zvjezdojedac.Igra
 				}
 
 			Efekti[Kolonija.PopulacijaVisak] = Math.Min(Efekti[Kolonija.PopulacijaVisak], Efekti[Kolonija.MigracijaMax]);
+		}
+
+		public void NoviKrugPriprema()
+		{
+			ResetirajEfekte();
+			postaviEfekteIgracu();
+
+			foreach (Zgrada zgrada in Zgrade.Values)
+				zgrada.djeluj(this, Igrac.efekti);
 		}
 
 		public void NoviKrug()
@@ -128,7 +148,7 @@ namespace Zvjezdojedac.Igra
 				kolonija.resetirajEfekte();
 			}
 
-			IzracunajEfekte();
+			//IzracunajEfekte();
 		}
 
 		public List<Zgrada.ZgradaInfo> MoguceGraditi()
