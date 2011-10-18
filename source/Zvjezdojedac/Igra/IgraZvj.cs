@@ -173,21 +173,28 @@ namespace Zvjezdojedac.Igra
 
 		private void zavrsiKrug()
 		{
-			List<long> poeniRazvoja = new List<long>();
-			List<long> poeniIstraz = new List<long>();
-			foreach (Igrac igrac in igraci) {
-				igrac.poruke.Clear();
-				poeniRazvoja.Add(igrac.poeniRazvoja());
-				igrac.izracunajPoeneIstrazivanja(this);
-				poeniIstraz.Add(igrac.poeniIstrazivanja());
+			long[] poeniRazvoja = new long[igraci.Count];
+			long[] poeniIstraz = new long[igraci.Count];
+			for (int i = 0; i < igraci.Count; i++) {
+				igraci[i].poruke.Clear();
+				igraci[i].izracunajPoeneIstrazivanja(this);
+
+				poeniRazvoja[i] = igraci[i].poeniRazvoja();
+				poeniIstraz[i] = igraci[i].poeniIstrazivanja();
 			}
 
 			foreach (Zvijezda zvj in mapa.zvijezde) {
+				zvj.NoviKrugPriprema();
 				foreach (Planet planet in zvj.planeti)
 					if (planet.kolonija != null)
-						planet.kolonija.noviKrug();
+						planet.kolonija.NoviKrugPrviProlaz();
 
 				zvj.NoviKrug();
+			}
+
+			foreach (Igrac igrac in igraci) {
+				igrac.IzvrsiKolonizacije();
+				igrac.PomakniFlote();
 			}
 
 			for (int i = 0; i < igraci.Count; i++)
@@ -196,7 +203,7 @@ namespace Zvjezdojedac.Igra
 			foreach (Zvijezda zvj in mapa.zvijezde)
 				foreach (Planet planet in zvj.planeti)
 					if (planet.kolonija != null)
-						planet.kolonija.resetirajEfekte();
+						planet.kolonija.NoviKrugDrugiProlaz();
 			brKruga++;
 		}
 

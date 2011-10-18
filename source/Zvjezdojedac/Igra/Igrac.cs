@@ -181,24 +181,13 @@ namespace Zvjezdojedac.Igra
 						tehnologijeUIstrazivanju.AddLast(tehnologije[t.kod]);
 		}
 
-		public void NoviKrug(IgraZvj igra, long poeniRazvoja, long poeniIstrazivanja)
-		{
-			istraziTehnologije(igra, poeniRazvoja, poeniIstrazivanja);
-			izracunajEfekte(igra);
-			pomakniFlote();
-			staviNoveTehnologije(igra);
-			staviPredefiniraneDizajnove();
-			staviNadogradjeneDizajnove();
-			izracunajPoeneIstrazivanja(igra);
-		}
-
-		private void pomakniFlote()
+		public void IzvrsiKolonizacije()
 		{
 			HashSet<Zvijezda> prazneFloteStac = new HashSet<Zvijezda>();
 			foreach (KeyValuePair<Zvijezda, Flota> flotaStac in floteStacionarne) {
 				Zvijezda zvijezda = flotaStac.Key;
 				Flota flota = flotaStac.Value;
-				
+
 				#region Kolonizacija
 				foreach (Flota.Kolonizacija kolonizacija in flota.kolonizacije) {
 					zvijezda.Naseli(this);
@@ -237,6 +226,22 @@ namespace Zvjezdojedac.Igra
 					prazneFloteStac.Add(zvijezda);
 			}
 
+			foreach (Zvijezda zvj in prazneFloteStac)
+				floteStacionarne.Remove(zvj);
+		}
+
+		public void NoviKrug(IgraZvj igra, long poeniRazvoja, long poeniIstrazivanja)
+		{
+			istraziTehnologije(igra, poeniRazvoja, poeniIstrazivanja);
+			izracunajEfekte(igra);
+			staviNoveTehnologije(igra);
+			staviPredefiniraneDizajnove();
+			staviNadogradjeneDizajnove();
+			izracunajPoeneIstrazivanja(igra);
+		}
+
+		public void PomakniFlote()
+		{
 			HashSet<PokretnaFlota> prazneFlotePok = new HashSet<PokretnaFlota>();
 			foreach (PokretnaFlota flota in flotePokretne) {
 				double brzina = procjenaBrzineFlote(flota.brodovi.Values);
@@ -255,9 +260,6 @@ namespace Zvjezdojedac.Igra
 					prazneFlotePok.Add(flota);
 				}
 			}
-
-			foreach (Zvijezda zvj in prazneFloteStac)
-				floteStacionarne.Remove(zvj);
 
 			foreach (PokretnaFlota flota in prazneFlotePok)
 				flotePokretne.Remove(flota);

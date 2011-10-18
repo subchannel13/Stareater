@@ -92,6 +92,7 @@ namespace Zvjezdojedac.Igra
 			public List<Ucinak> ucinci { get; private set; }
 
 			public bool orbitalna { get; private set; }
+			public bool instantEfekt { get; private set; }
 			public bool ostaje { get; private set; }
 			public bool ponavljaSe { get; private set; }
 			public bool brod { get; private set; }
@@ -117,10 +118,11 @@ namespace Zvjezdojedac.Igra
 				foreach (string s in svojstvaArray)
 					svojstvaSet.Add(s.Trim());
 
-				if (svojstvaSet.Contains("ORBITALNA")) orbitalna = true; else orbitalna = false;
-				if (!svojstvaSet.Contains("NE_OSTAJE")) ostaje = true; else ostaje = false;
-				if (svojstvaSet.Contains("PONAVLJA_SE")) ponavljaSe = true; else ponavljaSe = false;
-				if (svojstvaSet.Contains("BROD")) brod = true; else brod = false;
+				orbitalna = svojstvaSet.Contains("ORBITALNA");
+				instantEfekt = svojstvaSet.Contains("INSTANT");
+				ostaje = !svojstvaSet.Contains("NE_OSTAJE");
+				ponavljaSe = svojstvaSet.Contains("PONAVLJA_SE");
+				brod = svojstvaSet.Contains("BROD");
 			}
 
 			public bool dostupna(Dictionary<string, double> varijable, long prisutnaKolicina)
