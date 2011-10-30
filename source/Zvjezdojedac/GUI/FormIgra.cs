@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -189,44 +189,36 @@ namespace Zvjezdojedac.GUI
 
 			igrac.odabranaZvijezda = zvijezda;
 			if (promjeniTab) tabCtrlDesno.SelectedTab = tabPageZvijezda;
-			//listViewPlaneti.Items.Clear();
 			
 			bool imaKoloniju = false;
 			
 				for (int i = 0; i < zvijezda.planeti.Count; i++) {
-					/*Planet planet = zvijezda.planeti[i];
-					ListViewItem item = new ListViewItem();
-					item.ImageIndex = Slike.PlanetImageIndex[planet.slika];
-
-					if (planet.tip != Planet.Tip.NIKAKAV) {
-						item.Text = planet.ime;
-						if (planet.kolonija != null)
-							item.ForeColor = planet.kolonija.igrac.boja;
-					}
-					listViewPlaneti.Items.Add(item);
-
-					if (planet.kolonija != null && planet.kolonija.igrac == igrac)
-						imaKoloniju = true;
-					*/
 					if (igrac.posjeceneZvjezde.Contains(zvijezda))
 						planetInfoi[i].PostaviPlanet(zvijezda.planeti[i], igrac);
 					else
 						planetInfoi[i].PostaviNeistrazeno(i);
 				}
-			//else
-				//listViewPlaneti.Items.Add(jezik["zvjNeistrazeno"].tekst(null));
 
 			prikaziFlotu(zvijezda);
 
-			if (igrac.OdabranSustav != null) {
+			bool igracevSustav = (igrac.OdabranSustav != null);
+
+			if (igracevSustav) {
 				hscrZvjezdaGradnja.Value = (int)(igrac.OdabranSustav.UdioGradnje * hscrZvjezdaGradnja.Maximum);
 				lblImeZvjezde.Text = zvijezda.ime + "\n" +
 					jezik["lblZracenje"].tekst() + ": " + zvijezda.zracenje() + "\n" +
 					jezik["lblMigracija"].tekst() + ": " + Fje.PrefiksFormater(zvijezda.uprave[igrac.id][Kolonija.MigracijaMax]);
 			}
-			else
+			else {
 				lblImeZvjezde.Text = zvijezda.ime + "\n" +
 					jezik["lblZracenje"].tekst() + ": " + zvijezda.zracenje();
+			}
+
+			btnVojnaGradnja.Visible = igracevSustav;
+			hscrZvjezdaGradnja.Visible = igracevSustav;
+			lblVojnaGradnja.Visible = igracevSustav;
+			lblProcjenaVojneGradnje.Visible = igracevSustav;
+			lblRazvoj.Visible = igracevSustav;
 
 			osvjeziMapu();
 			tabCtrlDesno.ImageList.Images[0] = Slike.ZvijezdaTab[zvijezda.tip];
@@ -358,17 +350,22 @@ namespace Zvjezdojedac.GUI
 
 			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.Kolonija];
 
-			lblHranaPoStan.Text = jezik["HranaPoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.HranaPoFarmeru].ToString("0.##");
-			lblRudePoStan.Text = jezik["RudePoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.RudePoRudaru].ToString("0.##");
-			lblOdrzavanjePoStan.Text = jezik["OdrzavanjePoStan"].tekst() + ": " + (kolonija.Efekti[Kolonija.OdrzavanjeUkupno] / kolonija.Efekti[Kolonija.Populacija]).ToString("0.##");
-			lblIndustrijaPoStan.Text = jezik["IndustrijaPoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.IndPoRadnikuEfektivno].ToString("0.##");
-			lblRazvojPoStan.Text = jezik["RazvojPoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.RazPoRadnikuEfektivno].ToString("0.##");
+			if (kolonija != null) {
+				lblHranaPoStan.Text = jezik["HranaPoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.HranaPoFarmeru].ToString("0.##");
+				lblRudePoStan.Text = jezik["RudePoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.RudePoRudaru].ToString("0.##");
+				lblOdrzavanjePoStan.Text = jezik["OdrzavanjePoStan"].tekst() + ": " + (kolonija.Efekti[Kolonija.OdrzavanjeUkupno] / kolonija.Efekti[Kolonija.Populacija]).ToString("0.##");
+				lblIndustrijaPoStan.Text = jezik["IndustrijaPoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.IndPoRadnikuEfektivno].ToString("0.##");
+				lblRazvojPoStan.Text = jezik["RazvojPoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.RazPoRadnikuEfektivno].ToString("0.##");
 
-			lblCivilnaIndustrija.Text = Fje.PrefiksFormater(kolonija.poeniIndustrije()) + " " + jezik["jedInd"].tekst();
-			lblVojnaGradnja.Text = Fje.PrefiksFormater(sustav.PoeniIndustrije) + " " + jezik["jedInd"].tekst();
-			lblProcjenaCivilneGradnje.Text = kolonija.ProcjenaVremenaGradnje();
-			lblProcjenaVojneGradnje.Text = sustav.ProcjenaVremenaGradnje();
-			lblRazvoj.Text = jezik["lblRazvoj"].tekst() + Fje.PrefiksFormater(sustav.PoeniRazvoja);
+				lblCivilnaIndustrija.Text = Fje.PrefiksFormater(kolonija.poeniIndustrije()) + " " + jezik["jedInd"].tekst();
+				lblProcjenaCivilneGradnje.Text = kolonija.ProcjenaVremenaGradnje();
+			}
+
+			if (sustav != null) {
+				lblVojnaGradnja.Text = Fje.PrefiksFormater(sustav.PoeniIndustrije) + " " + jezik["jedInd"].tekst();
+				lblProcjenaVojneGradnje.Text = sustav.ProcjenaVremenaGradnje();
+				lblRazvoj.Text = jezik["lblRazvoj"].tekst() + Fje.PrefiksFormater(sustav.PoeniRazvoja);
+			}
 
 			if (igrac.OdabranPlanet.kolonija.RedGradnje.Count > 0)
 			{
@@ -462,21 +459,27 @@ namespace Zvjezdojedac.GUI
 
 		private void btnCivilnaGradnja_Click(object sender, EventArgs e)
 		{
-			FormGradnja frmGradnja = new FormGradnja(igrac.OdabranPlanet.kolonija);
+			IGradiliste kolonija = igrac.OdabranPlanet.kolonija;
 
-			if (frmGradnja.ShowDialog() == DialogResult.OK)
-				osvjeziLabele();
+			if (FormGradnja.JeValjanoGradiliste(kolonija, igrac)) {
+				using (FormGradnja frmGradnja = new FormGradnja(kolonija)) {
 
-			frmGradnja.Dispose();
+					if (frmGradnja.ShowDialog() == DialogResult.OK)
+						osvjeziLabele();
+				}
+			}
 		}
 
 		private void btnVojnaGradnja_Click(object sender, EventArgs e)
 		{
-			using (FormGradnja frmGradnja = new FormGradnja(igrac.odabranaZvijezda.uprave[igrac.id])) {
+			IGradiliste uprava = igrac.odabranaZvijezda.efektiPoIgracu[igrac.id];
 
-				if (frmGradnja.ShowDialog() == DialogResult.OK)
-					osvjeziLabele();
-			}
+			if (FormGradnja.JeValjanoGradiliste(uprava, igrac))
+				using (FormGradnja frmGradnja = new FormGradnja(uprava)) {
+
+					if (frmGradnja.ShowDialog() == DialogResult.OK)
+						osvjeziLabele();
+				}
 		}
 
 		private void tvFlota_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
