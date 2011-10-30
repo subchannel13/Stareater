@@ -82,7 +82,6 @@ namespace Zvjezdojedac.GUI
 			foreach (Zvijezda zvj in igra.mapa.zvijezde)
 				cbOdrediste.Items.Add(new TagTekst<Zvijezda>(zvj, zvj.ime));
 			cbOdrediste.Sorted = true;
-			cbOdrediste.SelectedIndex = 0;
 
 			List<Dizajn> sortiraniDizajnovi = new List<Dizajn>(poslaniBrodovi.Keys);
 			sortiraniDizajnovi.Sort(dizajnSort);
@@ -98,6 +97,8 @@ namespace Zvjezdojedac.GUI
 			lblKolicina.Hide();
 			hscbKolicina.Hide();
 			txtKolicina.Hide();
+
+			postaviOdrediste(polaznaZvijezda);
 		}
 
 		private int dizajnSort(Dizajn a, Dizajn b)
