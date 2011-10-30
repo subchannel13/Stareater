@@ -69,6 +69,9 @@
   <ItemGroup>
     <Compile Include="Alati\Fje.cs" />
     <Compile Include="Alati\Sazetak.cs" />
+    <Compile Include="Alati\Strukture\IDelayedRemoval.cs" />
+    <Compile Include="Alati\Strukture\MyDictionary.cs" />
+    <Compile Include="Alati\Strukture\MySet.cs" />
     <Compile Include="Alati\TagTekst.cs" />
     <Compile Include="Alati\Tocka.cs" />
     <Compile Include="Alati\Usporediv.cs" />

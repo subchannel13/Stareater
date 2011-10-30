@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +6,7 @@ using System.Drawing;
 using Zvjezdojedac.Podaci;
 using Zvjezdojedac.Igra.Brodovi;
 using Zvjezdojedac.Igra.Poruke;
+using Zvjezdojedac.Alati.Strukture;
 
 namespace Zvjezdojedac.Igra
 {
@@ -68,8 +69,8 @@ namespace Zvjezdojedac.Igra
 		public LinkedList<Tehnologija> tehnologijeUIstrazivanju = new LinkedList<Tehnologija>();
 
 		public HashSet<Zvijezda> posjeceneZvjezde = new HashSet<Zvijezda>();
-		public Dictionary<Zvijezda, Flota> floteStacionarne = new Dictionary<Zvijezda,Flota>();
-		public HashSet<PokretnaFlota> flotePokretne = new HashSet<PokretnaFlota>();
+		public MyDictionary<Zvijezda, Flota> floteStacionarne = new MyDictionary<Zvijezda, Flota>();
+		public MySet<PokretnaFlota> flotePokretne = new MySet<PokretnaFlota>();
 
 		private static void PrebrojiBrodove(IEnumerable<Flota> flote)
 		{
@@ -116,7 +117,7 @@ namespace Zvjezdojedac.Igra
 			List<DizajnZgrada> dizajnoviBrodova, Dictionary<string, Tehnologija> tehnologije,
 			LinkedList<Tehnologija> tehnologijeURazvoju, double koncentracijaPoenaRazvoja,
 			LinkedList<Tehnologija> tehnologijeUIstrazivanju, HashSet<Zvijezda> posjeceneZvjezde,
-			Dictionary<Zvijezda, Flota> floteStacionarne, HashSet<PokretnaFlota> flotePokretne)
+			MyDictionary<Zvijezda, Flota> floteStacionarne, MySet<PokretnaFlota> flotePokretne)
 		{
 			this.id = id;
 			this.tip = tip;
@@ -183,7 +184,6 @@ namespace Zvjezdojedac.Igra
 
 		public void IzvrsiKolonizacije()
 		{
-			HashSet<Zvijezda> prazneFloteStac = new HashSet<Zvijezda>();
 			foreach (KeyValuePair<Zvijezda, Flota> flotaStac in floteStacionarne) {
 				Zvijezda zvijezda = flotaStac.Key;
 				Flota flota = flotaStac.Value;
@@ -223,10 +223,11 @@ namespace Zvjezdojedac.Igra
 				#endregion
 
 				if (flota.brodovi.Count == 0)
-					prazneFloteStac.Add(zvijezda);
+					floteStacionarne.PendRemove(zvijezda);
 			}
+			floteStacionarne.ApplyRemove();
 
-			foreach (Zvijezda zvj in prazneFloteStac)
+			//HashSet<PokretnaFlota> prazneFlotePok = new HashSet<PokretnaFlota>();
 				floteStacionarne.Remove(zvj);
 		}
 
@@ -242,7 +243,6 @@ namespace Zvjezdojedac.Igra
 
 		public void PomakniFlote()
 		{
-			HashSet<PokretnaFlota> prazneFlotePok = new HashSet<PokretnaFlota>();
 			foreach (PokretnaFlota flota in flotePokretne) {
 				double brzina = procjenaBrzineFlote(flota.brodovi.Values);
 				if (flota.polaznaZvj.crvotocine.Contains(flota.odredisnaZvj))
@@ -257,12 +257,10 @@ namespace Zvjezdojedac.Igra
 						floteStacionarne.Add(flota.odredisnaZvj, flotaStac);
 					}
 					posjeceneZvjezde.Add(flota.odredisnaZvj);
-					prazneFlotePok.Add(flota);
+					flotePokretne.PendRemove(flota);
 				}
 			}
-
-			foreach (PokretnaFlota flota in prazneFlotePok)
-				flotePokretne.Remove(flota);
+			flotePokretne.ApplyRemove();
 
 			prebrojiBrodove();
 		}
@@ -708,14 +706,14 @@ namespace Zvjezdojedac.Igra
 			foreach (DizajnZgrada dizajnZgrada in dizajnovi)
 				dizajnID.Add(dizajnZgrada.dizajn.id, dizajnZgrada.dizajn);
 			tmpIntovi = ulaz.podatakIntPolje(PohFloteStac);
-			Dictionary<Zvijezda, Flota> floteStacionarne = new Dictionary<Zvijezda,Flota>();
+			MyDictionary<Zvijezda, Flota> floteStacionarne = new MyDictionary<Zvijezda,Flota>();
 			for (int i = 0; i < tmpIntovi.Length; i++)
 				floteStacionarne.Add(
 					zvijezdeID[tmpIntovi[i]],
 					Flota.Ucitaj(ulaz[PohFloteStac + i], dizajnID));
 
 			int brPokFlota = ulaz.podatakInt(PohFlotePokret);
-			HashSet<PokretnaFlota> flotePokretne = new HashSet<PokretnaFlota>();
+			MySet<PokretnaFlota> flotePokretne = new MySet<PokretnaFlota>();
 			for (int i = 0; i < brPokFlota; i++)
 				flotePokretne.Add(PokretnaFlota.Ucitaj(ulaz[PohFlotePokret + i], dizajnID, zvijezdeID));
 

@@ -14,6 +14,7 @@ namespace Zvjezdojedac.GUI
 {
 	public partial class FormGradnja : Form
 	{
+
 		private IGradiliste gradiliste;
         private LinkedList<Zgrada.ZgradaInfo> redGradnje;
 		private Dictionary<Zgrada.ZgradaInfo, int> redoslijedPonuda = new Dictionary<Zgrada.ZgradaInfo, int>();
@@ -22,11 +23,8 @@ namespace Zvjezdojedac.GUI
 		{
 			InitializeComponent();
 			lblZgradaInfo.Text = "";
-            //if (civilnaGradnja)
-                redGradnje = gradiliste.RedGradnje;
-            /*else
-                redGradnje = kolonija.redVojneGradnje;*/
-
+            
+            redGradnje = gradiliste.RedGradnje;
 			this.gradiliste = gradiliste;
 			
 			HashSet<Zgrada.ZgradaInfo> uRedu = new HashSet<Zgrada.ZgradaInfo>(redGradnje);
@@ -54,6 +52,11 @@ namespace Zvjezdojedac.GUI
 				this.Text = jezik["naslovVojGradnja"].tekst();*/
 
 			this.Font = Postavke.FontSucelja(this.Font);
+		}
+
+		public static bool JeValjanoGradiliste(IGradiliste gradiliste, Igrac igrac)
+		{
+			return (gradiliste != null) && (gradiliste.Igrac == igrac);
 		}
 
 		private int sorterPonuda(object lijeva, object desna)
