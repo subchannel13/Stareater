@@ -226,9 +226,6 @@ namespace Zvjezdojedac.Igra
 					floteStacionarne.PendRemove(zvijezda);
 			}
 			floteStacionarne.ApplyRemove();
-
-			//HashSet<PokretnaFlota> prazneFlotePok = new HashSet<PokretnaFlota>();
-				floteStacionarne.Remove(zvj);
 		}
 
 		public void NoviKrug(IgraZvj igra, long poeniRazvoja, long poeniIstrazivanja)
