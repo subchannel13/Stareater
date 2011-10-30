@@ -472,7 +472,7 @@ namespace Zvjezdojedac.GUI
 
 		private void btnVojnaGradnja_Click(object sender, EventArgs e)
 		{
-			IGradiliste uprava = igrac.odabranaZvijezda.efektiPoIgracu[igrac.id];
+			IGradiliste uprava = igrac.odabranaZvijezda.uprave[igrac.id];
 
 			if (FormGradnja.JeValjanoGradiliste(uprava, igrac))
 				using (FormGradnja frmGradnja = new FormGradnja(uprava)) {
