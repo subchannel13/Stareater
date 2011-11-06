@@ -45,7 +45,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				string naziv = podaci["IME"];
 				string opis = podaci["OPIS"];
 				Image slika = Image.FromFile(podaci["SLIKA"]);
-				List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
+				List<Preduvjet> preduvjeti = Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 				Misija.Tip misijaTip = Misija.StringUMisiju[podaci["MISIJA"]];
 
@@ -103,7 +103,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			private Formula velicina;
 
 			private OruzjeInfo(string naziv, string opis, Image slika,
-				List<Tehnologija.Preduvjet> preduvjeti, int maxNivo,
+				List<Preduvjet> preduvjeti, int maxNivo,
 				Misija.Tip misija, Ciljanje ciljanje, Formula[] parametri,
 				Formula cijena, Formula snaga, Formula velicina)
 				:

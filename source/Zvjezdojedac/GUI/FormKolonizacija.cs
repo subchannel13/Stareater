@@ -103,7 +103,7 @@ namespace Zvjezdojedac.GUI
 				planetMax = (kolonija.Efekti[Kolonija.PopulacijaMax] - dodatnaPopulacija[planetI]) / brodPopulacija;
 			} else{
 				Kolonija kolonija = zvijezda.planeti[planetI].kolonija;
-				planetMax = (kolonija.Efekti[Kolonija.PopulacijaMax] - kolonija.populacija - dodatnaPopulacija[planetI]) / brodPopulacija;
+				planetMax = (kolonija.Efekti[Kolonija.PopulacijaMax] - kolonija.Populacija - dodatnaPopulacija[planetI]) / brodPopulacija;
 			}
 
 			return (long)Math.Min(rez, Math.Ceiling(planetMax));
@@ -185,7 +185,7 @@ namespace Zvjezdojedac.GUI
 				Dictionary<string, double> maxEfekti = kolonija.maxEfekti();
 				lblHranaPoStan.Text = jezikKol["HranaPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.Efekti[Kolonija.HranaPoFarmeru], maxEfekti[Kolonija.HranaPoFarmeru]);
 				lblRudePoStan.Text = jezikKol["RudePoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.Efekti[Kolonija.RudePoRudaru], maxEfekti[Kolonija.RudePoRudaru]);
-				lblOdrzavanjePoStan.Text = jezikKol["OdrzavanjePoStan"].tekst() + ": " + String.Format("{0:0.##}", (kolonija.Efekti[Kolonija.OdrzavanjeUkupno] / kolonija.Efekti[Kolonija.Populacija]));
+				lblOdrzavanjePoStan.Text = jezikKol["OdrzavanjePoStan"].tekst() + ": " + String.Format("{0:0.##}", (kolonija.Efekti[Kolonija.OdrzavanjeUkupno] / kolonija.Efekti[Kolonija.PopulacijaBr]));
 				lblIndustrijaPoStan.Text = jezikKol["IndustrijaPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.Efekti[Kolonija.IndPoRadnikuEfektivno], maxEfekti[Kolonija.IndPoRadnikuEfektivno]);
 				lblRazvojPoStan.Text = jezikKol["RazvojPoStan"].tekst() + ": " + String.Format("{0:0.##} / {1:0.##}", kolonija.Efekti[Kolonija.RazPoRadnikuEfektivno], maxEfekti[Kolonija.RazPoRadnikuEfektivno]);
 				

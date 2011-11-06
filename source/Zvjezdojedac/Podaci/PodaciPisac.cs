@@ -82,6 +82,15 @@ namespace Zvjezdojedac.Podaci
 			}
 		}
 
+		public void dodajRjecnik(string tip, IDictionary<string, double> rjecnik, Predicate<double> filter)
+		{
+			StringBuilder sb = new StringBuilder();
+			foreach (var element in rjecnik)
+				if (filter(element.Value))
+					sb.Append(element.Key + " " + element.Value + " ");
+			linije.Add(uvlacenje + tip + " = " + sb.ToString());
+		}
+
 		public void noviRed()
 		{
 			linije.Add("");

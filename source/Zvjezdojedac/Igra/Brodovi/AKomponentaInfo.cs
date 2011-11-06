@@ -32,11 +32,11 @@ namespace Zvjezdojedac.Igra.Brodovi
 		private string nazivKljuc;
 		private string opisKljuc;
 		public Image slika { get; private set; }
-		public List<Tehnologija.Preduvjet> preduvjeti { get; private set; }
+		public List<Preduvjet> preduvjeti { get; private set; }
 		public int maxNivo { get; private set; }
 		public uint indeks { get; private set; }
 
-		protected AKomponentaInfo(string naziv, string opis, Image slika, List<Tehnologija.Preduvjet> preduvjeti, int maxNivo)
+		protected AKomponentaInfo(string naziv, string opis, Image slika, List<Preduvjet> preduvjeti, int maxNivo)
 		{
 			this.naziv = naziv;
 			this.opis = opis;
@@ -56,7 +56,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			if (preduvjeti.Count > 0)
 			{
 				varijable["LVL"] = nivo;
-				foreach (Tehnologija.Preduvjet p in preduvjeti)
+				foreach (Preduvjet p in preduvjeti)
 					if (!p.zadovoljen(varijable))
 						return false;
 			}

@@ -49,7 +49,7 @@ namespace Zvjezdojedac.GUI
 			else if (kolonija.Efekti[Kolonija.PopulacijaPromjena] > 0) predznak = "+";
 			
 			Dictionary<string, ITekst> jezikKl = Postavke.Jezik[Kontekst.Kolonija];
-			lblPopBr.Text = jezikKl["plPopulacija"].tekst() + ": " + Fje.PrefiksFormater(kolonija.Efekti[Kolonija.Populacija]);
+			lblPopBr.Text = jezikKl["plPopulacija"].tekst() + ": " + Fje.PrefiksFormater(kolonija.Efekti[Kolonija.PopulacijaBr]);
 			lblPopDelta.Text = jezikKl["plPromjenaPop"].tekst() + ": " + predznak + Fje.PrefiksFormater(kolonija.Efekti[Kolonija.PopulacijaPromjena]);
 			lblPopMax.Text = jezikKl["plPopMax"].tekst() + ": " + Fje.PrefiksFormater(kolonija.Efekti[Kolonija.PopulacijaMax]);
 
@@ -145,7 +145,7 @@ namespace Zvjezdojedac.GUI
 			}
 			else
 			{
-				double koef = 100 / kolonija.Efekti[Kolonija.Populacija];
+				double koef = 100 / kolonija.Efekti[Kolonija.PopulacijaBr];
 				lblRadnaMjesta.Text = jezik["plRadnaMjesta"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.Efekti[Kolonija.RadnaMjesta]) + "%";
 				lblBrFarmera.Text = jezik["plBrFarmera"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.Efekti[Kolonija.BrFarmera]) + "%";
 				//lblBrRudara.Text = jezik["plBrRudara"].tekst() + ": " + String.Format("{0:0.##}", koef * kolonija.efekti[Kolonija.BrRudara]) + "%";
@@ -189,9 +189,9 @@ namespace Zvjezdojedac.GUI
 
 		private void osvjeziPogledNaKoloniju()
 		{
-			hscrCivilnaIndustrija.Value = (int)(kolonija.CivilnaIndustrija * hscrCivilnaIndustrija.Maximum);
+			hscrCivilnaIndustrija.Value = (int)(kolonija.UdioIndustrije * hscrCivilnaIndustrija.Maximum);
 
-			foreach (Zgrada z in kolonija.zgrade.Values)
+			foreach (Zgrada z in kolonija.Zgrade.Values)
 				lstZgrade.Items.Add(z);
 
 			osvjeziLabele();
@@ -215,8 +215,8 @@ namespace Zvjezdojedac.GUI
 
 		private void hscrIndustrijaRazvoj_Scroll(object sender, ScrollEventArgs e)
 		{
-			kolonija.CivilnaIndustrija = e.NewValue / (double)hscrCivilnaIndustrija.Maximum;
-			int val = (int)Math.Round(kolonija.CivilnaIndustrija * hscrCivilnaIndustrija.Maximum, MidpointRounding.AwayFromZero);
+			kolonija.UdioIndustrije = e.NewValue / (double)hscrCivilnaIndustrija.Maximum;
+			int val = (int)Math.Round(kolonija.UdioIndustrije * hscrCivilnaIndustrija.Maximum, MidpointRounding.AwayFromZero);
 			if (hscrCivilnaIndustrija.Value != val)
 				e.NewValue = val;
 			else
@@ -243,7 +243,7 @@ namespace Zvjezdojedac.GUI
 
 			Zgrada zgrada = (Zgrada)lstZgrade.SelectedItem;
 			picZgrada.Image = zgrada.tip.slika;
-			lblZgradaInfo.Text = zgrada.tip.opis;
+			lblZgradaInfo.Text = zgrada.tip.Opis;
 		}
 	}
 }

@@ -169,7 +169,7 @@
     <Compile Include="Igra\Brodovi\Taktika.cs" />
     <Compile Include="Igra\Brodovi\Trup.cs" />
     <Compile Include="Igra\Flota.cs" />
-    <Compile Include="Igra\IGradiliste.cs" />
+    <Compile Include="Igra\AGradiliste.cs" />
     <Compile Include="Igra\IgraZvj.cs" />
     <Compile Include="Igra\Igrac.cs" />
     <Compile Include="Igra\Kolonija.cs" />
@@ -182,6 +182,7 @@
     <Compile Include="Igra\Poruke\PorukaTehnologija.cs" />
     <Compile Include="Igra\Poruke\PorukaZgradaKolonija.cs" />
     <Compile Include="Igra\PotencijalnaPocetnaKolonija.cs" />
+    <Compile Include="Igra\Preduvjet.cs" />
     <Compile Include="Igra\Tehnologija.cs" />
     <Compile Include="Igra\Zgrada.cs" />
     <Compile Include="Igra\Organizacije.cs" />

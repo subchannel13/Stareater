@@ -249,7 +249,7 @@ namespace Zvjezdojedac.GUI
 				groupCivGradnja.Visible = true;
 				lblRazvoj.Visible = true;
 
-				lblPopulacija.Text = jezik["plPopulacija"].tekst() + ":\n" + Fje.PrefiksFormater(planet.kolonija.populacija) + " / " + Fje.PrefiksFormater(planet.kolonija.Efekti[Kolonija.PopulacijaMax]);
+				lblPopulacija.Text = jezik["plPopulacija"].tekst() + ":\n" + Fje.PrefiksFormater(planet.kolonija.Populacija) + " / " + Fje.PrefiksFormater(planet.kolonija.Efekti[Kolonija.PopulacijaMax]);
 				hscrCivilnaIndustrija.Enabled = true;
 				btnCivilnaGradnja.Enabled = true;
 
@@ -353,7 +353,7 @@ namespace Zvjezdojedac.GUI
 			if (kolonija != null) {
 				lblHranaPoStan.Text = jezik["HranaPoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.HranaPoFarmeru].ToString("0.##");
 				lblRudePoStan.Text = jezik["RudePoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.RudePoRudaru].ToString("0.##");
-				lblOdrzavanjePoStan.Text = jezik["OdrzavanjePoStan"].tekst() + ": " + (kolonija.Efekti[Kolonija.OdrzavanjeUkupno] / kolonija.Efekti[Kolonija.Populacija]).ToString("0.##");
+				lblOdrzavanjePoStan.Text = jezik["OdrzavanjePoStan"].tekst() + ": " + (kolonija.Efekti[Kolonija.OdrzavanjeUkupno] / kolonija.Efekti[Kolonija.PopulacijaBr]).ToString("0.##");
 				lblIndustrijaPoStan.Text = jezik["IndustrijaPoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.IndPoRadnikuEfektivno].ToString("0.##");
 				lblRazvojPoStan.Text = jezik["RazvojPoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.RazPoRadnikuEfektivno].ToString("0.##");
 
@@ -390,7 +390,7 @@ namespace Zvjezdojedac.GUI
 
 		private void osvjeziPogledNaKoloniju()
 		{
-			hscrCivilnaIndustrija.Value = (int)(igrac.OdabranPlanet.kolonija.CivilnaIndustrija * hscrCivilnaIndustrija.Maximum);
+			hscrCivilnaIndustrija.Value = (int)(igrac.OdabranPlanet.kolonija.UdioIndustrije * hscrCivilnaIndustrija.Maximum);
 
 			osvjeziLabele();
 		}
@@ -435,8 +435,8 @@ namespace Zvjezdojedac.GUI
 		{
 			if (igrac.OdabranPlanet.kolonija != null)
 			{
-				igrac.OdabranPlanet.kolonija.CivilnaIndustrija = e.NewValue / (double)hscrCivilnaIndustrija.Maximum;
-				int val = (int)Math.Round(igrac.OdabranPlanet.kolonija.CivilnaIndustrija * hscrCivilnaIndustrija.Maximum, MidpointRounding.AwayFromZero);
+				igrac.OdabranPlanet.kolonija.UdioIndustrije = e.NewValue / (double)hscrCivilnaIndustrija.Maximum;
+				int val = (int)Math.Round(igrac.OdabranPlanet.kolonija.UdioIndustrije * hscrCivilnaIndustrija.Maximum, MidpointRounding.AwayFromZero);
 				if (hscrCivilnaIndustrija.Value != val)
 					e.NewValue = val;
 				else
@@ -459,7 +459,7 @@ namespace Zvjezdojedac.GUI
 
 		private void btnCivilnaGradnja_Click(object sender, EventArgs e)
 		{
-			IGradiliste kolonija = igrac.OdabranPlanet.kolonija;
+			AGradiliste kolonija = igrac.OdabranPlanet.kolonija;
 
 			if (FormGradnja.JeValjanoGradiliste(kolonija, igrac)) {
 				using (FormGradnja frmGradnja = new FormGradnja(kolonija)) {
@@ -472,7 +472,7 @@ namespace Zvjezdojedac.GUI
 
 		private void btnVojnaGradnja_Click(object sender, EventArgs e)
 		{
-			IGradiliste uprava = igrac.odabranaZvijezda.uprave[igrac.id];
+			AGradiliste uprava = igrac.odabranaZvijezda.uprave[igrac.id];
 
 			if (FormGradnja.JeValjanoGradiliste(uprava, igrac))
 				using (FormGradnja frmGradnja = new FormGradnja(uprava)) {

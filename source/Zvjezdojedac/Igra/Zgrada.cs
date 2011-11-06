@@ -20,9 +20,9 @@ namespace Zvjezdojedac.Igra
 		{
 			protected Formula intenzitet;
 
-			public abstract void djeluj(IGradiliste gradiliste, Dictionary<string, double> varijable);
+			public abstract void djeluj(AGradiliste gradiliste, Dictionary<string, double> varijable);
 
-			public abstract void noviKrug(IGradiliste gradiliste, Dictionary<string, double> varijable);
+			public abstract void noviKrug(AGradiliste gradiliste, Dictionary<string, double> varijable);
 
 			#region Statično
 			protected delegate Ucinak TvornicaUcinka(string[] parametri);
@@ -64,12 +64,12 @@ namespace Zvjezdojedac.Igra
 				return new UcinakSetVar(parametri[1], Formula.IzStringa(parametri[2]));
 			}
 
-			public override void djeluj(IGradiliste gradiliste, Dictionary<string, double> varijable)
+			public override void djeluj(AGradiliste gradiliste, Dictionary<string, double> varijable)
 			{
 				gradiliste.Efekti[varijabla] = formula.iznos(varijable);
 			}
 
-			public override void noviKrug(IGradiliste gradiliste, Dictionary<string, double> varijable)
+			public override void noviKrug(AGradiliste gradiliste, Dictionary<string, double> varijable)
 			{ }
 		}
 		#endregion
@@ -83,11 +83,12 @@ namespace Zvjezdojedac.Igra
 			public Formula CijenaOdrzavanja { get; private set; }
 			public Formula DopustenaKolicina { get; private set; }
 			public Formula DopustenaKolicinaPoKrugu { get; private set; }
-			public List<Tehnologija.Preduvjet> preduvjeti { get; private set; }
+			public List<Preduvjet> preduvjeti { get; private set; }
 
 			public Image slika { get; private set; }
 			public string kod { get; private set; }
-			protected string _opis;
+			public string grupa { get; private set; }
+			protected string opis;
 
 			public List<Ucinak> ucinci { get; private set; }
 
@@ -97,9 +98,10 @@ namespace Zvjezdojedac.Igra
 			public bool ponavljaSe { get; private set; }
 			public bool brod { get; private set; }
 
-			public ZgradaInfo(int id, string ime, Formula cijenaGradnje, Formula dopustenaKolicina,
-				Formula dopustenaKolicinaPoKrugu, Formula cijenaOdrzavanja, Image slika, string kod, 
-				string opis, List<Ucinak> ucinci, string svojstva, List<Tehnologija.Preduvjet> preduvjeti)
+			public ZgradaInfo(int id, string ime, string grupa, Formula cijenaGradnje, 
+				Formula dopustenaKolicina, Formula dopustenaKolicinaPoKrugu, Formula cijenaOdrzavanja,
+				Image slika, string kod, string opis, List<Ucinak> ucinci, string svojstva, 
+				List<Preduvjet> preduvjeti)
 			{
 				this.id = id;
 				this._ime = ime;
@@ -109,7 +111,7 @@ namespace Zvjezdojedac.Igra
 				this.CijenaOdrzavanja = cijenaOdrzavanja;
 				this.slika = slika;
 				this.kod = kod;
-				this._opis = opis;
+				this.opis = opis;
 				this.ucinci = ucinci;
 				this.preduvjeti = preduvjeti;
 
@@ -127,7 +129,7 @@ namespace Zvjezdojedac.Igra
 
 			public bool dostupna(Dictionary<string, double> varijable, long prisutnaKolicina)
 			{
-				foreach (Tehnologija.Preduvjet pred in preduvjeti)
+				foreach (Preduvjet pred in preduvjeti)
 					if (!pred.zadovoljen(varijable))
 						return false;
 
@@ -137,43 +139,53 @@ namespace Zvjezdojedac.Igra
 				return true;
 			}
 
-			public virtual string ime
+			public virtual string Ime
 			{
 				get { return Postavke.Jezik[Kontekst.Zgrade, _ime].tekst(); }
 			}
 
-			public virtual string opis
+			public virtual string Opis
 			{
-				get { return Postavke.Jezik[Kontekst.Zgrade, _opis].tekst(); }
+				get { return Postavke.Jezik[Kontekst.Zgrade, opis].tekst(); }
 			}
 
 			public override string ToString()
 			{
-				return ime;
+				return Ime;
 			}
 		}
 
 		#region Statičko
-		public static List<ZgradaInfo> civilneZgradeInfo = new List<ZgradaInfo>();
-		public static List<ZgradaInfo> vojneZgradeInfo = new List<ZgradaInfo>();
+		public static List<ZgradaInfo> CivilneZgradeInfo = new List<ZgradaInfo>();
+		public static List<ZgradaInfo> VojneZgradeInfo = new List<ZgradaInfo>();
 		public static Dictionary<int, ZgradaInfo> ZgradaInfoID = new Dictionary<int, ZgradaInfo>();
+		public static HashSet<string> Grupe = initGrupe();
+
+		private static HashSet<string> initGrupe()
+		{
+			HashSet<string> grupe = new HashSet<string>();
+			grupe.Add(Zvjezdojedac.Igra.Brodovi.DizajnZgrada.Grupa);
+
+			return grupe;
+		}
 
 		public static void UcitajInfoZgrade(Dictionary<string, string> podaci, bool jeLiCivilna)
 		{
 			List<Ucinak> ucinci = new List<Ucinak>();
 			for(int i = 0; podaci.ContainsKey("UCINAK" + i); i++)
 				ucinci.Add(Ucinak.napraviUcinak(podaci["UCINAK" + i]));
-			List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
+			List<Preduvjet> preduvjeti = Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 			
 			List<ZgradaInfo> popis = null;
 			if (jeLiCivilna)
-				popis = civilneZgradeInfo;
+				popis = CivilneZgradeInfo;
 			else
-				popis = vojneZgradeInfo;
+				popis = VojneZgradeInfo;
 
 			ZgradaInfo zgradaInfo = new ZgradaInfo(
 				SlijedeciId(),
 				podaci["IME"],
+				podaci["GRUPA"],
 				Formula.IzStringa(podaci["CIJENA"]),
 				Formula.IzStringa(podaci["KOLICINA"]),
 				Formula.IzStringa(podaci["PO_KRUGU"]),
@@ -187,6 +199,7 @@ namespace Zvjezdojedac.Igra
 			
 			popis.Add(zgradaInfo);
 			ZgradaInfoID.Add(zgradaInfo.id, zgradaInfo);
+			Grupe.Add(podaci["GRUPA"]);
 		}
 
 		public static string ProcjenaVremenaGradnje(double poeniIndustrije, double ostatakGradnje, Zgrada.ZgradaInfo uGradnji, Igrac igrac)
@@ -246,14 +259,14 @@ namespace Zvjezdojedac.Igra
 			this.kolicina = kolicina;
 		}
 
-		public void djeluj(IGradiliste gradiliste, Dictionary<string, double> varijable)
+		public void djeluj(AGradiliste gradiliste, Dictionary<string, double> varijable)
 		{
 			varijable["BR_ZGRADA"] = kolicina;
 			foreach (Ucinak u in tip.ucinci)
 				u.djeluj(gradiliste, varijable);
 		}
 
-		public void noviKrug(IGradiliste gradiliste, Dictionary<string, double> varijable)
+		public void noviKrug(AGradiliste gradiliste, Dictionary<string, double> varijable)
 		{
 			varijable["BR_ZGRADA"] = kolicina;
 			foreach (Ucinak u in tip.ucinci)
@@ -262,7 +275,7 @@ namespace Zvjezdojedac.Igra
 
 		public override string ToString()
 		{
-			return tip.ime;
+			return tip.Ime;
 		}
 
 		#region Pohrana

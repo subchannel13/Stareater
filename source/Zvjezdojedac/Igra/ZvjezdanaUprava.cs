@@ -8,7 +8,7 @@ using Zvjezdojedac.Igra.Poruke;
 
 namespace Zvjezdojedac.Igra
 {
-	public class ZvjezdanaUprava : IPohranjivoSB, IGradiliste
+	public class ZvjezdanaUprava : AGradiliste, IPohranjivoSB
 	{
 		#region Statično i konstante
 
@@ -25,34 +25,23 @@ namespace Zvjezdojedac.Igra
 		#endregion
 
 		private Zvijezda zvijezda;
-		private double ostatakGradnje = 0;
 		private double udioGradnje = 0;
 
-		public Dictionary<string, double> Efekti { get; private set; }
-		public Igrac Igrac { get; private set; }
-		public LinkedList<Zgrada.ZgradaInfo> RedGradnje { get; private set; }
-		public Dictionary<Zgrada.ZgradaInfo, Zgrada> Zgrade = new Dictionary<Zgrada.ZgradaInfo, Zgrada>();
-
 		public ZvjezdanaUprava(Zvijezda zvijezda, Igrac igrac)
+			: base (igrac)
 		{
-			this.Igrac = igrac;
 			this.zvijezda = zvijezda;
-			this.Efekti = new Dictionary<string, double>();
-			this.RedGradnje = new LinkedList<Zgrada.ZgradaInfo>();
-
+		
 			foreach (string kljuc in KljuceviEfekata)
 				Efekti.Add(kljuc, 0);
 		}
 
-		public ZvjezdanaUprava(Zvijezda zvijezda, Igrac igrac, double ostatakGradnje, double udioGradnje,
-			LinkedList<Zgrada.ZgradaInfo> RedGradnje, IEnumerable<Zgrada> zgrade)
+		public ZvjezdanaUprava(Zvijezda zvijezda, Igrac igrac, Dictionary<string, double> ostatakGradnje,
+			double udioGradnje, LinkedList<Zgrada.ZgradaInfo> redGradnje, IEnumerable<Zgrada> zgrade)
+			: base (igrac, redGradnje, ostatakGradnje)
 		{
-			this.Igrac = igrac;
 			this.zvijezda = zvijezda;
-			this.Efekti = new Dictionary<string, double>();
-			this.RedGradnje = RedGradnje;
 			this.udioGradnje = udioGradnje;
-			this.ostatakGradnje = ostatakGradnje;
 
 			foreach (Zgrada zgrada in zgrade)
 				this.Zgrade.Add(zgrada.tip, zgrada);
@@ -63,20 +52,30 @@ namespace Zvjezdojedac.Igra
 
 		private void gradi()
 		{
-			ostatakGradnje += Efekti[Gradnja];
+			double poeniGradnje = Efekti[Gradnja];
 			LinkedListNode<Zgrada.ZgradaInfo> uGradnji = RedGradnje.First;
-			while (uGradnji != null) {
+
+			while (uGradnji != null && poeniGradnje > 0) {
 				Zgrada.ZgradaInfo zgradaTip = uGradnji.Value;
 				double cijena = zgradaTip.CijenaGradnje.iznos(Igrac.efekti);
+				poeniGradnje += ostatakGradnje[zgradaTip.grupa];
 
-				long brZgrada = (long)(ostatakGradnje / cijena);
+				long brZgrada = (long)((poeniGradnje) / cijena);
 				long dopustenaKolicina = (long)Math.Min(
 					zgradaTip.DopustenaKolicina.iznos(Igrac.efekti),
 					zgradaTip.DopustenaKolicinaPoKrugu.iznos(Igrac.efekti));
-				brZgrada = Fje.Ogranici(brZgrada, 0, dopustenaKolicina);
+
+				if (brZgrada < dopustenaKolicina) {
+					ostatakGradnje[zgradaTip.grupa] += poeniGradnje - brZgrada * cijena;
+					poeniGradnje = 0;
+				}
+				else {
+					brZgrada = dopustenaKolicina;
+					poeniGradnje = poeniGradnje - (brZgrada * cijena - ostatakGradnje[zgradaTip.grupa]);
+					ostatakGradnje[zgradaTip.grupa] = 0;
+				}
 
 				if (brZgrada > 0) {
-					ostatakGradnje -= (long)(cijena * brZgrada);
 					Zgrada z = new Zgrada(zgradaTip, brZgrada);
 
 					if (z.tip.ostaje) {
@@ -128,8 +127,8 @@ namespace Zvjezdojedac.Igra
 					Efekti[Kolonija.PopulacijaVisak] += efektiPl[Kolonija.PopulacijaVisak];
 					Efekti[Kolonija.MigracijaMax] += efektiPl[Kolonija.MigracijaMax];
 
-					Efekti[Gradnja] += efektiPl[Kolonija.BrRadnika] * (1-pl.kolonija.CivilnaIndustrija) * efektiPl[Kolonija.IndPoRadnikuEfektivno] * UdioGradnje / efektiPl[Kolonija.FaktorCijeneOrbitalnih];
-					Efekti[Razvoj] += efektiPl[Kolonija.BrRadnika] * (1-pl.kolonija.CivilnaIndustrija) * efektiPl[Kolonija.RazPoRadnikuEfektivno] * (1 - UdioGradnje);
+					Efekti[Gradnja] += efektiPl[Kolonija.BrRadnika] * (1-pl.kolonija.UdioIndustrije) * efektiPl[Kolonija.IndPoRadnikuEfektivno] * UdioGradnje / efektiPl[Kolonija.FaktorCijeneOrbitalnih];
+					Efekti[Razvoj] += efektiPl[Kolonija.BrRadnika] * (1-pl.kolonija.UdioIndustrije) * efektiPl[Kolonija.RazPoRadnikuEfektivno] * (1 - UdioGradnje);
 				}
 
 			Efekti[Kolonija.PopulacijaVisak] = Math.Min(Efekti[Kolonija.PopulacijaVisak], Efekti[Kolonija.MigracijaMax]);
@@ -168,10 +167,10 @@ namespace Zvjezdojedac.Igra
 			//IzracunajEfekte();
 		}
 
-		public List<Zgrada.ZgradaInfo> MoguceGraditi()
+		public override List<Zgrada.ZgradaInfo> MoguceGraditi()
 		{
 			//HashSet<Zgrada.ZgradaInfo> uRedu = new HashSet<Zgrada.ZgradaInfo>(RedGradnje);
-			List<Zgrada.ZgradaInfo> popis = new List<Zgrada.ZgradaInfo>(Zgrada.vojneZgradeInfo);
+			List<Zgrada.ZgradaInfo> popis = new List<Zgrada.ZgradaInfo>(Zgrada.VojneZgradeInfo);
 			foreach (Zgrada.ZgradaInfo zi in Igrac.dizajnoviBrodova)
 				popis.Add(zi);
 			
@@ -192,16 +191,17 @@ namespace Zvjezdojedac.Igra
 		public string ProcjenaVremenaGradnje()
 		{
 			if (RedGradnje.First != null) {
+				Zgrada.ZgradaInfo zgrada = RedGradnje.First.Value;
 				return Zgrada.ProcjenaVremenaGradnje(
 					PoeniIndustrije,
-					ostatakGradnje,
-					RedGradnje.First.Value, Igrac);
+					ostatakGradnje[zgrada.grupa],
+					zgrada, Igrac);
 			}
 			else
 				return "";
 		}
 
-		public Zvijezda LokacijaZvj 
+		public override Zvijezda LokacijaZvj 
 		{
 			get { return zvijezda; }
 		}
@@ -245,7 +245,7 @@ namespace Zvjezdojedac.Igra
 			izlaz.dodaj(PohIgrac, Igrac.id);
 			izlaz.dodaj(PohZvijezda, zvijezda.id);
 			izlaz.dodaj(PohGradUdio, udioGradnje);
-			izlaz.dodaj(PohGradOst, ostatakGradnje);
+			izlaz.dodajRjecnik(PohGradOst, ostatakGradnje, x => (x > 0));
 
 			izlaz.dodaj(PohZgrada, Zgrade.Count);
 			izlaz.dodajKolekciju(PohZgrada, Zgrade.Values);
@@ -260,7 +260,7 @@ namespace Zvjezdojedac.Igra
 			Igrac igrac = igraci[ulaz.podatakInt(PohIgrac)];
 			Zvijezda zvijezda = zvijezde[ulaz.podatakInt(PohZvijezda)];
 			double udioInd = ulaz.podatakDouble(PohGradUdio);
-			double ostatakGradnje = ulaz.podatakDouble(PohGradOst);
+			Dictionary<string, double> ostatakGradnje = ulaz.podatakDoubleRjecnik(PohGradOst);
 
 			int brZgrada = ulaz.podatakInt(PohZgrada);
 			List<Zgrada> zgrade = new List<Zgrada>();

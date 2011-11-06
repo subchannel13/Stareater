@@ -95,7 +95,7 @@ namespace Zvjezdojedac.Igra
 					Dictionary<string, double> efekti = new Kolonija(igrac, pl, 1000, 1000).maxEfekti();
 					potencijalneKolonije.Add(new PotencijalnaPocetnaKolonija(
 						pl,
-						efekti[Kolonija.BrRadnika] / efekti[Kolonija.Populacija],
+						efekti[Kolonija.BrRadnika] / efekti[Kolonija.PopulacijaBr],
 						efekti[Kolonija.PopulacijaMax],
 						efekti[Kolonija.RudePoRudaru]));
 				}

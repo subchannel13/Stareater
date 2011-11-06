@@ -19,7 +19,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				string naziv = podaci["IME"];
 				string opis = podaci["OPIS"];
 				Image slika = Image.FromFile(podaci["SLIKA"]);
-				List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
+				List<Preduvjet> preduvjeti = Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
 				int velicina = int.Parse(podaci["VELICINA"]);
@@ -77,7 +77,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			private Formula brojSenzora;
 
 			private TrupInfo(string naziv, string opis, Image slika,
-				List<Tehnologija.Preduvjet> preduvjeti, int maxNivo,
+				List<Preduvjet> preduvjeti, int maxNivo,
 				int velicina, Formula kapacitetPrikrivanja,
 				Formula velicina_MZPogona, Formula velicina_reaktora,
 				Formula velicina_stita,	Formula nosivost, Formula tromost,

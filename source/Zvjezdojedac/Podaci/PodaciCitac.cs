@@ -66,6 +66,21 @@ namespace Zvjezdojedac.Podaci
 			return rez;
 		}
 
+		public Dictionary<string, double> podatakDoubleRjecnik(string kljuc)
+		{
+			Queue<string> vrijednosti = new Queue<string>(podaci[kljuc].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
+			Dictionary<string, double> rez = new Dictionary<string, double>();
+
+			while (vrijednosti.Count > 0) {
+				string rezKljuc = vrijednosti.Dequeue();
+				double rezVrijednost = double.Parse(vrijednosti.Dequeue(), PodaciAlat.DecimalnaTocka);
+
+				rez.Add(rezKljuc, rezVrijednost);
+			}
+
+			return rez;
+		}
+
 		public Formula podatakFormula(string kljuc)
 		{
 			return Formula.IzStringa(podaci[kljuc]);
