@@ -42,7 +42,7 @@ namespace Zvjezdojedac.Igra.Poruke
 			return new PorukaZgradaSustav(zvijezda, zgrada);
 		}
 
-		public static Poruka NoviBrod(IGradiliste gradiliste, Dizajn dizajn, long kolicina)
+		public static Poruka NoviBrod(AGradiliste gradiliste, Dizajn dizajn, long kolicina)
 		{
 			return new PorukaBrod(gradiliste.LokacijaZvj, dizajn, kolicina);
 		}

@@ -18,7 +18,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				string naziv = podaci["IME"];
 				string opis = podaci["OPIS"];
 				Image slika = Image.FromFile(podaci["SLIKA"]);
-				List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
+				List<Preduvjet> preduvjeti = Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
 				Formula izdrzljivost = Formula.IzStringa(podaci["IZDRZLJIVOST"]);
@@ -61,7 +61,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			private Formula izdrzljivost;
 
 			private OklopInfo(string naziv, string opis, Image slika,
-				List<Tehnologija.Preduvjet> preduvjeti, int maxNivo,
+				List<Preduvjet> preduvjeti, int maxNivo,
 				Formula izdrzljivost)
 				:
 				base(naziv, opis, slika, preduvjeti, maxNivo)

@@ -23,7 +23,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				string naziv = podaci["IME"];
 				string opis = podaci["OPIS"];
 				Image slika = Image.FromFile(podaci["SLIKA"]);
-				List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
+				List<Preduvjet> preduvjeti = Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
 				Formula razlucivost = Formula.IzStringa(podaci["RAZLUCIVOST"]);
@@ -75,7 +75,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			private Formula razlucivost;
 
 			private SenzorInfo(string naziv, string opis, Image slika,
-				List<Tehnologija.Preduvjet> preduvjeti, int maxNivo,
+				List<Preduvjet> preduvjeti, int maxNivo,
 				Formula razlucivost)
 				:
 				base(naziv, opis, slika, preduvjeti, maxNivo)

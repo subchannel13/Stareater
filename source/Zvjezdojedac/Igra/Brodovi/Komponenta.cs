@@ -22,7 +22,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 		public bool dostupno(Dictionary<string, double> varijable)
 		{
-			foreach(Tehnologija.Preduvjet preduvjet in info.preduvjeti)
+			foreach(Preduvjet preduvjet in info.preduvjeti)
 				if (!preduvjet.zadovoljen(varijable))
 					return false;
 			return true;
@@ -57,7 +57,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			get { return info.opis; }
 		}
 
-		public List<Tehnologija.Preduvjet> preduvjeti
+		public List<Preduvjet> preduvjeti
 		{
 			get { return info.preduvjeti; }
 		}

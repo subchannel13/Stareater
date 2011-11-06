@@ -15,11 +15,11 @@ namespace Zvjezdojedac.GUI
 	public partial class FormGradnja : Form
 	{
 
-		private IGradiliste gradiliste;
+		private AGradiliste gradiliste;
         private LinkedList<Zgrada.ZgradaInfo> redGradnje;
 		private Dictionary<Zgrada.ZgradaInfo, int> redoslijedPonuda = new Dictionary<Zgrada.ZgradaInfo, int>();
 
-		public FormGradnja(IGradiliste gradiliste)
+		public FormGradnja(AGradiliste gradiliste)
 		{
 			InitializeComponent();
 			lblZgradaInfo.Text = "";
@@ -54,7 +54,7 @@ namespace Zvjezdojedac.GUI
 			this.Font = Postavke.FontSucelja(this.Font);
 		}
 
-		public static bool JeValjanoGradiliste(IGradiliste gradiliste, Igrac igrac)
+		public static bool JeValjanoGradiliste(AGradiliste gradiliste, Igrac igrac)
 		{
 			return (gradiliste != null) && (gradiliste.Igrac == igrac);
 		}
@@ -100,7 +100,7 @@ namespace Zvjezdojedac.GUI
 
 			Zgrada.ZgradaInfo zgrada = (Zgrada.ZgradaInfo)lstMoguceGradit.SelectedItem;
 			picSlikaZgrade.Image = zgrada.slika;
-			lblZgradaInfo.Text = zgrada.opis;
+			lblZgradaInfo.Text = zgrada.Opis;
 		}
 
 		private void lstMoguceGradit_DoubleClick(object sender, EventArgs e)

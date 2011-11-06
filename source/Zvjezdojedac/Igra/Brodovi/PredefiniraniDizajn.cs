@@ -18,7 +18,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				specijalnaOprema.Add(SpecijalnaOprema.SpecijalnaOpremaInfo.Kodovi[soPodatak[0]], int.Parse(soPodatak[1]));
 			}
 
-			List<Tehnologija.Preduvjet> preduvjeti = Tehnologija.Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
+			List<Preduvjet> preduvjeti = Preduvjet.NaciniPreduvjete(podaci["PREDUVJETI"]);
 			
 			Oruzje.OruzjeInfo primOruzje = null;
 			Oruzje.OruzjeInfo sekOruzje = null;
@@ -50,9 +50,9 @@ namespace Zvjezdojedac.Igra.Brodovi
 		public double udioPrimarnogOruzja { get; private set; }
 		public bool mzPogon { get; private set; }
 		public Taktika taktika { get; private set; }
-		public List<Tehnologija.Preduvjet> preduvjeti { get; private set; }
+		public List<Preduvjet> preduvjeti { get; private set; }
 
-		private PredefiniraniDizajn(string naziv, List<Tehnologija.Preduvjet> preduvjeti,
+		private PredefiniraniDizajn(string naziv, List<Preduvjet> preduvjeti,
 			Trup.TrupInfo trup,	Oruzje.OruzjeInfo primarnoOruzje, 
 			Oruzje.OruzjeInfo sekundarnoOruzje, Stit.StitInfo stit, 
 			Dictionary<SpecijalnaOprema.SpecijalnaOpremaInfo, int> specijalnaOprema,
@@ -72,7 +72,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 		public bool dostupan(Dictionary<string, double> varijable)
 		{
-			foreach (Tehnologija.Preduvjet pred in preduvjeti)
+			foreach (Preduvjet pred in preduvjeti)
 				if (!pred.zadovoljen(varijable))
 					return false;
 

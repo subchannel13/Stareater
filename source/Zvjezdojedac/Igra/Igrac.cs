@@ -199,7 +199,7 @@ namespace Zvjezdojedac.Igra
 						maxDodatnaPopulacija = kolonija.Efekti[Kolonija.PopulacijaMax];
 					}
 					else
-						maxDodatnaPopulacija = (planet.kolonija.Efekti[Kolonija.PopulacijaMax] - planet.kolonija.populacija);
+						maxDodatnaPopulacija = (planet.kolonija.Efekti[Kolonija.PopulacijaMax] - planet.kolonija.Populacija);
 
 					long populacijaBroda = kolonizacija.brod.dizajn.populacija;
 					long radnaMjestaBroda = kolonizacija.brod.dizajn.radnaMjesta;
@@ -302,7 +302,7 @@ namespace Zvjezdojedac.Igra
 				foreach(Planet pl in zvj.planeti)
 					if (pl.kolonija != null)
 						if (pl.kolonija.Igrac == this)
-							istrazivanjePoSustavuBaza[zvj] += (long)(pl.kolonija.populacija * efekti["ISTRAZIVANJE_PO_STANOVNIKU"]);
+							istrazivanjePoSustavuBaza[zvj] += (long)(pl.kolonija.Populacija * efekti["ISTRAZIVANJE_PO_STANOVNIKU"]);
 				istrazivanjePoSustavuBaza[zvj] = (long)Math.Floor(Math.Sqrt(istrazivanjePoSustavuBaza[zvj]));
 			}
 

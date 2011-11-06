@@ -65,7 +65,7 @@ namespace Zvjezdojedac.GUI
 					planetInfo2.ForeColor = planet.kolonija.Igrac.boja;
 
 					if (igracevPlanet)
-						planetInfo2.Text = Fje.PrefiksFormater(planet.kolonija.populacija) + " / " + Fje.PrefiksFormater(planet.kolonija.Efekti[Kolonija.PopulacijaMax]);
+						planetInfo2.Text = Fje.PrefiksFormater(planet.kolonija.Populacija) + " / " + Fje.PrefiksFormater(planet.kolonija.Efekti[Kolonija.PopulacijaMax]);
 					else
 						planetInfo2.Text = "";
 				}
