@@ -24,9 +24,9 @@ namespace Zvjezdojedac.Igra
 
 			this.ostatakGradnje = new Dictionary<string, double>();
 			foreach (string grupa in Zgrada.Grupe)
-				ostatakGradnje.Add(grupa, 0);
+				this.ostatakGradnje.Add(grupa, 0);
 			foreach (var element in ostatakGradnje)
-				ostatakGradnje[element.Key] = element.Value;
+				this.ostatakGradnje[element.Key] = element.Value;
 		}
 
 		public AGradiliste(Igrac igrac)

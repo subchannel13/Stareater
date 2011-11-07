@@ -62,7 +62,6 @@ namespace Zvjezdojedac.Igra
 		public const string RazPoRadnikuEfektivno = "RAZ_PO_RAD_EF";
 
 		public const string BrFarmera = "BR_FARMERA";
-		//public const string BrRudara = "BR_RUDARA";
 		public const string BrOdrzavatelja = "BR_ODRZAVATELJA";
 		public const string BrRadnika = "BR_RADNIKA";
 		#endregion
@@ -71,11 +70,8 @@ namespace Zvjezdojedac.Igra
 
 		private long populacija;
 		private long radnaMjesta;
-		private double udioIndustrije;
-
-		//public Dictionary<Zgrada.ZgradaInfo, Zgrada> zgrade = new Dictionary<Zgrada.ZgradaInfo, Zgrada>();
-
-		//public long ostatakGradnje;
+		private double udioGradnje;
+		private long neiskoristeni;
 
 		public Kolonija(Igrac igrac, Planet planet, long populacija, long radnaMjesta)
 			: base(igrac)
@@ -83,8 +79,7 @@ namespace Zvjezdojedac.Igra
 			this.planet = planet;
 			this.populacija = populacija;
 			this.radnaMjesta = radnaMjesta;
-			this.udioIndustrije = 0;
-			//this.ostatakGradnje = 0;
+			this.udioGradnje = 0;
 
 			inicijalizirajEfekte();
 			izracunajEfekte();
@@ -98,7 +93,7 @@ namespace Zvjezdojedac.Igra
 			this.planet = planet;
 			this.populacija = populacija;
 			this.radnaMjesta = radnaMjesta;
-			this.udioIndustrije = udioCivilneIndustrije;
+			this.udioGradnje = udioCivilneIndustrije;
 			//this.ostatakGradnje = ostatakCivilneGradnje;
 			
 			foreach (Zgrada zgrada in zgrade)
@@ -163,6 +158,8 @@ namespace Zvjezdojedac.Igra
 			efekti[TeraformTemperatura] = 0;
 			efekti[TeraformAtmGustoca] = 0;
 			efekti[TeraformAtmKvaliteta] = 0;
+
+			neiskoristeni = 0;
 		}
 
 		private void izracunajEfekte()
@@ -260,13 +257,15 @@ namespace Zvjezdojedac.Igra
 
 		private void gradi()
 		{
-			double poeniGradnje = poeniIndustrije();
+			double pocetniPoeniGradnje = poeniIndustrije();
+			double poeniGradnje = pocetniPoeniGradnje;
 			LinkedListNode<Zgrada.ZgradaInfo> uGradnji = RedGradnje.First;
 
 			while (uGradnji != null && poeniGradnje > 0) {
 				Zgrada.ZgradaInfo zgradaTip = uGradnji.Value;
 				double cijena = zgradaTip.CijenaGradnje.iznos(Igrac.efekti);
 				if (zgradaTip.orbitalna) cijena *= Efekti[FaktorCijeneOrbitalnih];
+				poeniGradnje += ostatakGradnje[zgradaTip.grupa];
 
 				long brZgrada = (long)(poeniGradnje / cijena);
 				long dopustenaKolicina = (long)Math.Min(
@@ -274,7 +273,7 @@ namespace Zvjezdojedac.Igra
 					zgradaTip.DopustenaKolicinaPoKrugu.iznos(Igrac.efekti));
 
 				if (brZgrada < dopustenaKolicina) {
-					ostatakGradnje[zgradaTip.grupa] += poeniGradnje - brZgrada * cijena;
+					ostatakGradnje[zgradaTip.grupa] = poeniGradnje - brZgrada * cijena;
 					poeniGradnje = 0;
 				}
 				else {
@@ -310,6 +309,9 @@ namespace Zvjezdojedac.Igra
 
 				uGradnji = uGradnji.Next;
 			}
+
+			double preostaliPoeni = Efekti[BrRadnika] * Efekti[IndustrijaPoRadniku] * (1 - udioGradnje) + poeniGradnje;
+			neiskoristeni = (long)(preostaliPoeni / Efekti[IndustrijaPoRadniku]);
 		}
 
 		public void dodajKolonizator(long populacija, long radnaMjesta)
@@ -394,12 +396,12 @@ namespace Zvjezdojedac.Igra
 
 		public long poeniIndustrije()
 		{
-			return (long)(Efekti[BrRadnika] * Efekti[IndustrijaPoRadniku] * udioIndustrije);
+			return (long)(Efekti[BrRadnika] * Efekti[IndustrijaPoRadniku] * udioGradnje);
 		}
 
 		public long poeniRazvoja()
 		{
-			return (long)(Efekti[BrRadnika] * Efekti[RazvojPoRadniku] * (1 - udioIndustrije));
+			return (long)(Efekti[BrRadnika] * Efekti[RazvojPoRadniku] * (1 - udioGradnje));
 		}
 
 		public override List<Zgrada.ZgradaInfo> MoguceGraditi()
@@ -416,15 +418,20 @@ namespace Zvjezdojedac.Igra
 			return ret;
 		}
 
+		public double NeiskoristenaPopulacija
+		{
+			get { return neiskoristeni; }
+		}
+
 		public double UdioIndustrije
 		{
 			get
 			{
-				return udioIndustrije;
+				return udioGradnje;
 			}
 			set
 			{
-				udioIndustrije = value;
+				udioGradnje = value;
 			}
 		}
 

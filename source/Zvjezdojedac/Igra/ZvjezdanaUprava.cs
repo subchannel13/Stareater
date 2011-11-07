@@ -66,7 +66,7 @@ namespace Zvjezdojedac.Igra
 					zgradaTip.DopustenaKolicinaPoKrugu.iznos(Igrac.efekti));
 
 				if (brZgrada < dopustenaKolicina) {
-					ostatakGradnje[zgradaTip.grupa] += poeniGradnje - brZgrada * cijena;
+					ostatakGradnje[zgradaTip.grupa] = poeniGradnje - brZgrada * cijena;
 					poeniGradnje = 0;
 				}
 				else {
@@ -127,8 +127,8 @@ namespace Zvjezdojedac.Igra
 					Efekti[Kolonija.PopulacijaVisak] += efektiPl[Kolonija.PopulacijaVisak];
 					Efekti[Kolonija.MigracijaMax] += efektiPl[Kolonija.MigracijaMax];
 
-					Efekti[Gradnja] += efektiPl[Kolonija.BrRadnika] * (1-pl.kolonija.UdioIndustrije) * efektiPl[Kolonija.IndPoRadnikuEfektivno] * UdioGradnje / efektiPl[Kolonija.FaktorCijeneOrbitalnih];
-					Efekti[Razvoj] += efektiPl[Kolonija.BrRadnika] * (1-pl.kolonija.UdioIndustrije) * efektiPl[Kolonija.RazPoRadnikuEfektivno] * (1 - UdioGradnje);
+					Efekti[Gradnja] += pl.kolonija.NeiskoristenaPopulacija * efektiPl[Kolonija.IndPoRadnikuEfektivno] * UdioGradnje / efektiPl[Kolonija.FaktorCijeneOrbitalnih];
+					Efekti[Razvoj] += pl.kolonija.NeiskoristenaPopulacija * efektiPl[Kolonija.RazPoRadnikuEfektivno] * (1 - UdioGradnje);
 				}
 
 			Efekti[Kolonija.PopulacijaVisak] = Math.Min(Efekti[Kolonija.PopulacijaVisak], Efekti[Kolonija.MigracijaMax]);

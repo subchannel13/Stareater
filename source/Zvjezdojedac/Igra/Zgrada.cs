@@ -105,6 +105,7 @@ namespace Zvjezdojedac.Igra
 			{
 				this.id = id;
 				this._ime = ime;
+				this.grupa = grupa;
 				this.CijenaGradnje = cijenaGradnje;
 				this.DopustenaKolicina = dopustenaKolicina;
 				this.DopustenaKolicinaPoKrugu = dopustenaKolicinaPoKrugu;
