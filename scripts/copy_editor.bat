@@ -5,4 +5,8 @@ rem
 rem Used as post build action in Zvjezdojedac editori
 rem project.
 
+IF EXIST ..\..\..\..\editors\ GOTO do_copy
+mkdir ..\..\..\..\editors\
+
+:do_copy
 copy ZvjEdit.exe ..\..\..\..\editors\

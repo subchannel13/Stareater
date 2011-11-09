@@ -347,6 +347,7 @@ namespace Zvjezdojedac.GUI
 			Kolonija kolonija = igrac.OdabranPlanet.kolonija;
 			ZvjezdanaUprava sustav = igrac.OdabranSustav;
 			sustav.IzracunajEfekte();
+			sustav.OsvjeziInfoGradnje();
 
 			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.Kolonija];
 
@@ -357,12 +358,12 @@ namespace Zvjezdojedac.GUI
 				lblIndustrijaPoStan.Text = jezik["IndustrijaPoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.IndPoRadnikuEfektivno].ToString("0.##");
 				lblRazvojPoStan.Text = jezik["RazvojPoStan"].tekst() + ": " + kolonija.Efekti[Kolonija.RazPoRadnikuEfektivno].ToString("0.##");
 
-				lblCivilnaIndustrija.Text = Fje.PrefiksFormater(kolonija.poeniIndustrije()) + " " + jezik["jedInd"].tekst();
+				lblCivilnaIndustrija.Text = Fje.PrefiksFormater(kolonija.UtroseniPoeniIndustrije) + " " + jezik["jedInd"].tekst();
 				lblProcjenaCivilneGradnje.Text = kolonija.ProcjenaVremenaGradnje();
 			}
 
 			if (sustav != null) {
-				lblVojnaGradnja.Text = Fje.PrefiksFormater(sustav.PoeniIndustrije) + " " + jezik["jedInd"].tekst();
+				lblVojnaGradnja.Text = Fje.PrefiksFormater(sustav.UtroseniPoeniIndustrije) + " " + jezik["jedInd"].tekst();
 				lblProcjenaVojneGradnje.Text = sustav.ProcjenaVremenaGradnje();
 				lblRazvoj.Text = jezik["lblRazvoj"].tekst() + Fje.PrefiksFormater(sustav.PoeniRazvoja);
 			}

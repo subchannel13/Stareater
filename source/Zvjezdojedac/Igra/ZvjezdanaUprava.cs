@@ -12,15 +12,15 @@ namespace Zvjezdojedac.Igra
 	{
 		#region Statično i konstante
 
-		const string Razvoj = "RAZVOJ";
-		const string Gradnja = "GRADNJA";
+		const string MaxRazvoj = "MAX_RAZVOJ";
+		const string MaxGradnja = "MAX_GRADNJA";
 
 		private static string[] KljuceviEfekata = new string[]
 		{
 			Kolonija.PopulacijaVisak,
 			Kolonija.MigracijaMax,
-			Razvoj,
-			Gradnja
+			MaxRazvoj,
+			MaxGradnja
 		};
 		#endregion
 
@@ -50,10 +50,16 @@ namespace Zvjezdojedac.Igra
 				Efekti.Add(kljuc, 0);
 		}
 
-		private void gradi()
+		protected override void gradi(bool simulacija)
 		{
-			double poeniGradnje = Efekti[Gradnja];
+			double poeniGradnje = poeniIndustrije;
 			LinkedListNode<Zgrada.ZgradaInfo> uGradnji = RedGradnje.First;
+
+			Dictionary<string, double> ostatakGradnje;
+			if (simulacija)
+				ostatakGradnje = new Dictionary<string, double>(this.ostatakGradnje);
+			else
+				ostatakGradnje = this.ostatakGradnje;
 
 			while (uGradnji != null && poeniGradnje > 0) {
 				Zgrada.ZgradaInfo zgradaTip = uGradnji.Value;
@@ -75,33 +81,35 @@ namespace Zvjezdojedac.Igra
 					ostatakGradnje[zgradaTip.grupa] = 0;
 				}
 
-				if (brZgrada > 0) {
-					Zgrada z = new Zgrada(zgradaTip, brZgrada);
+				if (!simulacija) {
+					if (brZgrada > 0) {
+						Zgrada z = new Zgrada(zgradaTip, brZgrada);
 
-					if (z.tip.ostaje) {
-						if (Zgrade.ContainsKey(z.tip))
-							Zgrade[z.tip].kolicina += brZgrada;
+						if (z.tip.ostaje) {
+							if (Zgrade.ContainsKey(z.tip))
+								Zgrade[z.tip].kolicina += brZgrada;
+							else
+								Zgrade.Add(z.tip, z);
+						}
 						else
-							Zgrade.Add(z.tip, z);
+							z.djeluj(this, Igrac.efekti);
+
+						if (!z.tip.brod && !z.tip.ponavljaSe)
+							Igrac.poruke.AddLast(Poruka.NovaZgrada(this.zvijezda, z.tip));
 					}
+
+					long brNovih = brZgrada;
+					if (Zgrade.ContainsKey(zgradaTip))
+						brZgrada = Zgrade[zgradaTip].kolicina;
 					else
-						z.djeluj(this, Igrac.efekti);
-
-					if (!z.tip.brod && !z.tip.ponavljaSe)
-						Igrac.poruke.AddLast(Poruka.NovaZgrada(this.zvijezda, z.tip));
+						brZgrada = 0;
 				}
-
-				long brNovih = brZgrada;
-				if (Zgrade.ContainsKey(zgradaTip))
-					brZgrada = Zgrade[zgradaTip].kolicina;
-				else
-					brZgrada = 0;
-
-				if (brNovih < dopustenaKolicina)
-					break;
-
+				
 				uGradnji = uGradnji.Next;
 			}
+
+			this.UtroseniPoeniIndustrije = poeniIndustrije - poeniGradnje;
+			this.UtrosenUdioIndustrije = UtroseniPoeniIndustrije / Efekti[MaxGradnja];
 		}
 
 		public void postaviEfekteIgracu()
@@ -127,8 +135,8 @@ namespace Zvjezdojedac.Igra
 					Efekti[Kolonija.PopulacijaVisak] += efektiPl[Kolonija.PopulacijaVisak];
 					Efekti[Kolonija.MigracijaMax] += efektiPl[Kolonija.MigracijaMax];
 
-					Efekti[Gradnja] += pl.kolonija.NeiskoristenaPopulacija * efektiPl[Kolonija.IndPoRadnikuEfektivno] * UdioGradnje / efektiPl[Kolonija.FaktorCijeneOrbitalnih];
-					Efekti[Razvoj] += pl.kolonija.NeiskoristenaPopulacija * efektiPl[Kolonija.RazPoRadnikuEfektivno] * (1 - UdioGradnje);
+					Efekti[MaxGradnja] += efektiPl[Kolonija.BrRadnika] * (1 - pl.kolonija.UtrosenUdioIndustrije) * efektiPl[Kolonija.IndPoRadnikuEfektivno] / efektiPl[Kolonija.FaktorCijeneOrbitalnih];
+					Efekti[MaxRazvoj] += efektiPl[Kolonija.BrRadnika] * (1 - pl.kolonija.UtrosenUdioIndustrije) * efektiPl[Kolonija.RazPoRadnikuEfektivno];
 				}
 
 			Efekti[Kolonija.PopulacijaVisak] = Math.Min(Efekti[Kolonija.PopulacijaVisak], Efekti[Kolonija.MigracijaMax]);
@@ -146,7 +154,7 @@ namespace Zvjezdojedac.Igra
 		public void NoviKrug()
 		{
 			IzracunajEfekte();
-			gradi();
+			gradi(false);
 
 			List<Kolonija> kolonije = new List<Kolonija>();
 			foreach (Planet pl in zvijezda.planeti)
@@ -163,20 +171,16 @@ namespace Zvjezdojedac.Igra
 
 				kolonija.resetirajEfekte();
 			}
-
-			//IzracunajEfekte();
 		}
 
 		public override List<Zgrada.ZgradaInfo> MoguceGraditi()
 		{
-			//HashSet<Zgrada.ZgradaInfo> uRedu = new HashSet<Zgrada.ZgradaInfo>(RedGradnje);
 			List<Zgrada.ZgradaInfo> popis = new List<Zgrada.ZgradaInfo>(Zgrada.VojneZgradeInfo);
 			foreach (Zgrada.ZgradaInfo zi in Igrac.dizajnoviBrodova)
 				popis.Add(zi);
 			
 			List<Zgrada.ZgradaInfo> ret = new List<Zgrada.ZgradaInfo>();
 			foreach (Zgrada.ZgradaInfo z in popis)
-			//if (!uRedu.Contains(z)) 
 			{
 				long prisutnaKolicina = 0;
 				if (Zgrade.ContainsKey(z))
@@ -193,7 +197,7 @@ namespace Zvjezdojedac.Igra
 			if (RedGradnje.First != null) {
 				Zgrada.ZgradaInfo zgrada = RedGradnje.First.Value;
 				return Zgrada.ProcjenaVremenaGradnje(
-					PoeniIndustrije,
+					UtroseniPoeniIndustrije,
 					ostatakGradnje[zgrada.grupa],
 					zgrada, Igrac);
 			}
@@ -206,14 +210,14 @@ namespace Zvjezdojedac.Igra
 			get { return zvijezda; }
 		}
 
-		public double PoeniIndustrije
+		private double poeniIndustrije
 		{
-			get { return Efekti[Gradnja]; }
+			get { return Efekti[MaxGradnja] * udioGradnje; }
 		}
 
 		public double PoeniRazvoja
 		{
-			get { return Efekti[Razvoj]; }
+			get { return Efekti[MaxRazvoj] * (1 - UtrosenUdioIndustrije); }
 		}
 
 		public double UdioGradnje
