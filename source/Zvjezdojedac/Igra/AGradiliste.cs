@@ -11,6 +11,9 @@ namespace Zvjezdojedac.Igra
 		public Igrac Igrac { get; protected set; }
 		public LinkedList<Zgrada.ZgradaInfo> RedGradnje { get; private set; }
 		public Dictionary<Zgrada.ZgradaInfo, Zgrada> Zgrade { get; private set; }
+		
+		public double UtroseniPoeniIndustrije { get; protected set; }
+		public double UtrosenUdioIndustrije { get; protected set; }
 
 		protected Dictionary<string, double> ostatakGradnje { get; private set; }
 
@@ -20,6 +23,8 @@ namespace Zvjezdojedac.Igra
 			this.Efekti = new Dictionary<string, double>();
 			this.Igrac = igrac;
 			this.RedGradnje = redGradnje;
+			this.UtroseniPoeniIndustrije = 0;
+			this.UtrosenUdioIndustrije = 0;
 			this.Zgrade = new Dictionary<Zgrada.ZgradaInfo, Zgrada>();
 
 			this.ostatakGradnje = new Dictionary<string, double>();
@@ -35,5 +40,13 @@ namespace Zvjezdojedac.Igra
 
 		public abstract Zvijezda LokacijaZvj { get; }
 		public abstract List<Zgrada.ZgradaInfo> MoguceGraditi();
+		protected abstract void gradi(bool simulacija);
+
+		public void OsvjeziInfoGradnje()
+		{
+			gradi(true);
+		}
+
+
 	}
 }

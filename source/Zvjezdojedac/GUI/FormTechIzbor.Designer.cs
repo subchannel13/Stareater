@@ -31,6 +31,7 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTechIzbor));
 			this.tabControlTech = new System.Windows.Forms.TabControl();
 			this.tabRazvoj = new System.Windows.Forms.TabPage();
+			this.lblRazPoeni = new System.Windows.Forms.Label();
 			this.txtRazOpis = new System.Windows.Forms.TextBox();
 			this.btnOk = new System.Windows.Forms.Button();
 			this.lblFokusirano = new System.Windows.Forms.Label();
@@ -80,7 +81,6 @@
 			this.lstOprema = new System.Windows.Forms.ListView();
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.lblRazPoeni = new System.Windows.Forms.Label();
 			this.tabControlTech.SuspendLayout();
 			this.tabRazvoj.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trkRazKoncentracija)).BeginInit();
@@ -133,6 +133,15 @@
 			this.tabRazvoj.Size = new System.Drawing.Size(586, 422);
 			this.tabRazvoj.TabIndex = 0;
 			this.tabRazvoj.Text = "Razvoj";
+			// 
+			// lblRazPoeni
+			// 
+			this.lblRazPoeni.AutoSize = true;
+			this.lblRazPoeni.Location = new System.Drawing.Point(394, 275);
+			this.lblRazPoeni.Name = "lblRazPoeni";
+			this.lblRazPoeni.Size = new System.Drawing.Size(35, 13);
+			this.lblRazPoeni.TabIndex = 21;
+			this.lblRazPoeni.Text = "label1";
 			// 
 			// txtRazOpis
 			// 
@@ -617,15 +626,6 @@
 			this.columnHeader2.Text = "Nivo";
 			this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.columnHeader2.Width = 45;
-			// 
-			// lblRazPoeni
-			// 
-			this.lblRazPoeni.AutoSize = true;
-			this.lblRazPoeni.Location = new System.Drawing.Point(394, 275);
-			this.lblRazPoeni.Name = "lblRazPoeni";
-			this.lblRazPoeni.Size = new System.Drawing.Size(35, 13);
-			this.lblRazPoeni.TabIndex = 21;
-			this.lblRazPoeni.Text = "label1";
 			// 
 			// FormTechIzbor
 			// 

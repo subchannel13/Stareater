@@ -29,7 +29,7 @@ namespace Zvjezdojedac_editori
 		List<Dictionary<string, string>> tehnologijeRaz = null;
 		List<Dictionary<string, string>> popis = null;
 		private HashSet<string> kodovi = new HashSet<string>();
-		private List<Tehnologija.Preduvjet> preduvjeti = null;
+		private List<Preduvjet> preduvjeti = null;
 		private string stariKod = null;
 		private ValidTextBoxImage slikaValidator = null;
 
@@ -69,20 +69,20 @@ namespace Zvjezdojedac_editori
 
 		private void postaviPreduvjete(string preduvjetiString)
 		{
-			postaviPreduvjete(Tehnologija.Preduvjet.NaciniPreduvjete(preduvjetiString, false));
+			postaviPreduvjete(Preduvjet.NaciniPreduvjete(preduvjetiString, false));
 		}
 
-		private void postaviPreduvjete(List<Tehnologija.Preduvjet> preduvjeti)
+		private void postaviPreduvjete(List<Preduvjet> preduvjeti)
 		{
 			lstvPreduvjeti.Items.Clear();
-			foreach (Tehnologija.Preduvjet p in preduvjeti)
+			foreach (Preduvjet p in preduvjeti)
 			{
 				ListViewItem item = new ListViewItem(p.kod);
 				item.SubItems.Add(p.nivo.ToString());
 				lstvPreduvjeti.Items.Add(item);
 			}
 
-			this.preduvjeti = new List<Tehnologija.Preduvjet>(preduvjeti);
+			this.preduvjeti = new List<Preduvjet>(preduvjeti);
 		}
 
 		private void spremiTehnologiju(int indeks)
@@ -96,7 +96,7 @@ namespace Zvjezdojedac_editori
 			info[opisTag] = txtOpis.Text.Trim();
 			info[cijenaTag] = txtCijena.Text;
 			info[maxNivoTag] = txtMaxNivo.Text;
-			info[preduvjetiTag] = Tehnologija.Preduvjet.UString(preduvjeti, false);
+			info[preduvjetiTag] = Preduvjet.UString(preduvjeti, false);
 			info[slikaTag] = txtSlika.Text;
 		}
 

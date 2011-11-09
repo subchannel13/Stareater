@@ -12,3 +12,4 @@ source/Zvjezdojedac editori/obj/*
 build/Zvjezdojedac.exe
 build/postavke.txt
 release/*
+editors/*

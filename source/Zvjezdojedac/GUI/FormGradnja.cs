@@ -145,6 +145,7 @@ namespace Zvjezdojedac.GUI
 			foreach (Zgrada.ZgradaInfo z in ret)
 				redGradnje.AddLast(z);
 
+			gradiliste.OsvjeziInfoGradnje();
 			DialogResult = DialogResult.OK;
 		}
 

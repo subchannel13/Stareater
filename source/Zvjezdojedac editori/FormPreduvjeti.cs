@@ -35,10 +35,10 @@ namespace Zvjezdojedac_editori
 			}
 		}
 
-		public List<Tehnologija.Preduvjet> preduvjeti { get; private set; }
+		public List<Preduvjet> preduvjeti { get; private set; }
 		private Dictionary<string, string> tehKodovi = new Dictionary<string,string>();
 
-		public FormPreduvjeti(List<Tehnologija.Preduvjet> preduvjeti, List<Dictionary<string, string>> tehnologijeIst, List<Dictionary<string, string>> tehnologijeRaz)
+		public FormPreduvjeti(List<Preduvjet> preduvjeti, List<Dictionary<string, string>> tehnologijeIst, List<Dictionary<string, string>> tehnologijeRaz)
 		{
 			InitializeComponent();
 
@@ -49,8 +49,8 @@ namespace Zvjezdojedac_editori
 			foreach (Dictionary<string, string> teh in tehnologijeRaz)
 				tehKodovi.Add(teh[kodTag], teh[imeTag]);
 
-			this.preduvjeti = new List<Tehnologija.Preduvjet>(preduvjeti);
-			foreach (Tehnologija.Preduvjet p in preduvjeti)
+			this.preduvjeti = new List<Preduvjet>(preduvjeti);
+			foreach (Preduvjet p in preduvjeti)
 			{
 				ListViewItem item = new ListViewItem(tehKodovi[p.kod]);
 				item.SubItems.Add(p.nivo.ToString());
@@ -102,7 +102,7 @@ namespace Zvjezdojedac_editori
 			if (!valid()) return;
 
 			TechId tehId = (TechId)cbTehno.SelectedItem;
-			Tehnologija.Preduvjet pred = new Tehnologija.Preduvjet(tehId.kod, Formula.IzStringa(txtNivo.Text), false);
+			Preduvjet pred = new Preduvjet(tehId.kod, Formula.IzStringa(txtNivo.Text), false);
 
 			preduvjeti.Add(pred);
 
