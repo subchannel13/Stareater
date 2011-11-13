@@ -1,7 +1,7 @@
 ﻿<TRUP>
 IME = TRUP_LOVAC_IME
 OPIS = TRUP_LOVAC_OPIS
-SLIKA = ./slike/brodovi/lovac.png
+SLIKA = ./slike/brodovi/lovac 1.png
 MAX_NIVO = 0
 PREDUVJETI =
 KOD = LOVAC
