@@ -1,7 +1,7 @@
 ﻿<TRUP>
 IME = TRUP_LOVAC_IME
 OPIS = TRUP_LOVAC_OPIS
-SLIKA = ./slike/tehnologije/lovac.bmp
+SLIKA = ./slike/brodovi/lovac.png
 MAX_NIVO = 0
 PREDUVJETI =
 KOD = LOVAC
@@ -21,7 +21,7 @@ BR_SENZORA = 1
 <TRUP>
 IME = TRUP_MALI_BROD_IME
 OPIS = TRUP_MALI_BROD_OPIS
-SLIKA = ./slike/tehnologije/mali brod.bmp
+SLIKA = ./slike/brodovi/mali brod.png
 MAX_NIVO = 0
 PREDUVJETI =
 KOD = MALI
@@ -41,7 +41,7 @@ BR_SENZORA = 2
 <TRUP>
 IME = TRUP_MALA_KRSTARICA_IME
 OPIS = TRUP_MALA_KRSTARICA_OPIS
-SLIKA = ./slike/tehnologije/mala krstarica.bmp
+SLIKA = ./slike/brodovi/mala krstarica.png
 MAX_NIVO = 0
 PREDUVJETI =
 KOD = SREDNJA_KRST
@@ -61,7 +61,7 @@ BR_SENZORA = 5
 <TRUP>
 IME = TRUP_KRSTARICA_IME
 OPIS = TRUP_KRSTARICA_OPIS
-SLIKA = ./slike/tehnologije/krstarica.png
+SLIKA = ./slike/brodovi/krstarica.png
 MAX_NIVO = 0
 PREDUVJETI =
 KOD = KRSTARICA
