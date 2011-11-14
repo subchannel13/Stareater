@@ -20,7 +20,7 @@ namespace Zvjezdojedac.GUI
 		Dictionary<string, ITekst> jezik;
 
 		private IgraZvj igra;
-		private Igrac igrac;
+		private Igrac igrac = null;
 		private FormIgra frmIgra;
 		
 		private Flota izvornaFlota;
@@ -280,7 +280,8 @@ namespace Zvjezdojedac.GUI
 
 		private void FormFlotaPokret_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			igrac.odredisnaZvijezda = null;
+			if (igrac != null)
+				igrac.odredisnaZvijezda = null;
 			frmIgra.osvjeziMapu();
 			frmIgra = null;
 		}

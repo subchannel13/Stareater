@@ -257,12 +257,17 @@ namespace Zvjezdojedac.Igra
 					#endregion
 
 					#region Dodavanje crvotočina
-					Vadjenje<Zvijezda> zvijezdeIshodista = new Vadjenje<Zvijezda>(mapa.zvijezde);
+					List<Zvijezda> popisZvijezda = new List<Zvijezda>();
+					foreach (Zvijezda zvj in mapa.zvijezde)
+						if (zvj.tip != Zvijezda.Tip_Nikakva && zvj.tip != Zvijezda.Tip_Nedodijeljen)
+							popisZvijezda.Add(zvj);
+
+					Vadjenje<Zvijezda> zvijezdeIshodista = new Vadjenje<Zvijezda>(popisZvijezda);
 					while (zvijezdeIshodista.kolicina() > 0) {
 						Zvijezda ishodiste = zvijezdeIshodista.izvadi();
 
 						List<Usporediv<Zvijezda, double>> odredista = new List<Usporediv<Zvijezda,double>>();
-						foreach (Zvijezda zvj in mapa.zvijezde) {
+						foreach (Zvijezda zvj in popisZvijezda) {
 							if (zvj.crvotocine.Count < MaxCrvotocinaPoZvj)
 							if (ishodiste.udaljenost(zvj) <= MaxDometCrvotocine)
 							if (!zvj.crvotocine.Contains(ishodiste) && !ishodiste.crvotocine.Contains(zvj))

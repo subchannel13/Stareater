@@ -23,7 +23,9 @@ namespace Zvjezdojedac
 			{
 				System.Windows.Forms.Application.EnableVisualStyles();
 				System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-				System.Windows.Forms.Application.Run(new FormMain());
+
+				ZvjezdojedacAppContext.GetInstance.MainForm = new FormMain();
+				Application.Run(ZvjezdojedacAppContext.GetInstance);
 			}
 #if __MonoCS__
 			else
