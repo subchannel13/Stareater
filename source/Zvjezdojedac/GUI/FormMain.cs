@@ -51,18 +51,20 @@ namespace Zvjezdojedac.GUI
 		private void btnNovaIgra_Click(object sender, EventArgs e)
 		{
 			FormNovaIgra novaIgra = new FormNovaIgra();
-			this.Hide();
+			//this.Hide();
 			if (novaIgra.ShowDialog() == DialogResult.OK)
 			{
 				FormIgra igra = new FormIgra(new IgraZvj(novaIgra.igraci, novaIgra.mapa, novaIgra.PocetnaPop));
-				igra.ShowDialog();
+				ZvjezdojedacAppContext.GetInstance.PushNextForm(igra);
+				//Close();
+				//igra.ShowDialog();
 			}
-			this.Show();
+			//this.Show();
 		}
 
 		private void btnUgasi_Click(object sender, EventArgs e)
 		{
-			Close();
+			Application.Exit();
 		}
 
 		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -87,10 +89,10 @@ namespace Zvjezdojedac.GUI
 
 				IgraZvj igra = IgraZvj.Ucitaj(ucitanaIgra);
 				
-				this.Visible = false;
+				//this.Visible = false;
 				FormIgra frmIgra = new FormIgra(igra);
-				frmIgra.ShowDialog();
-				this.Visible = true;
+				ZvjezdojedacAppContext.GetInstance.PushNextForm(frmIgra);
+				//this.Visible = true;
 			}
 		}
 
