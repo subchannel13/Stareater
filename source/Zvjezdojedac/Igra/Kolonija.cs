@@ -113,8 +113,8 @@ namespace Zvjezdojedac.Igra
 		{
 			Dictionary<string, double> rez = new Dictionary<string, double>();
 			inicijalizirajEfekte(rez);
-			
-			rez[PopulacijaBr] = rez[PopulacijaMax];
+
+			rez[PopulacijaBr] = rez[PopulacijaMax] * Efekti[NedostupanDioPlaneta];
 			rez[RadnaMjesta] = rez[PopulacijaBr];
 			rez[AktivnaRadnaMjesta] = rez[RadnaMjesta];
 
@@ -210,16 +210,6 @@ namespace Zvjezdojedac.Igra
 			efekti[IndPoRadnikuEfektivno] = efekti[IndustrijaPoRadniku] / (1 + efekti[RudariPoGraditelju]);
 			efekti[RazPoRadnikuEfektivno] = efekti[RazvojPoRadniku] / (1 + efekti[RudariPoZnanstveniku]);
 
-			efekti[BrFarmera] = Math.Ceiling(efekti[PopulacijaBr] / efekti[HranaPoFarmeru]);
-			efekti[BrOdrzavatelja] = Math.Ceiling(efekti[OdrzavanjeUkupno] / efekti[IndustrijaPoRadniku]);
-			efekti[BrRadnika] = efekti[PopulacijaBr] - efekti[BrFarmera] - efekti[BrOdrzavatelja] * (1 + efekti[RudariPoOdrzavatelju]);
-
-			if (efekti[BrRadnika] / efekti[PopulacijaBr] < Igrac.efekti["MIN_UDIO_RADNIKA"]) {
-				efekti[BrRadnika] = efekti[PopulacijaBr] * Igrac.efekti["MIN_UDIO_RADNIKA"];
-				efekti[BrOdrzavatelja] = (efekti[PopulacijaBr] - efekti[BrFarmera] - efekti[BrRadnika]) / (1 + efekti[RudariPoOdrzavatelju]);
-			}
-
-			efekti[FaktorCijeneOrbitalnih] = 1 + Math.Pow(planet.gravitacija(), 2) * 2 + planet.gustocaAtmosfere / 5;
 			double negostoljubivost =
 				odstupAtmGustoce * Igrac.efekti["VELICINA_GUST_ATM"] +
 				odstupAtmKvalitete * Igrac.efekti["VELICINA_KVAL_ATM"] +
@@ -231,6 +221,28 @@ namespace Zvjezdojedac.Igra
 
 			efekti[PopulacijaMax] *= efekti[NedostupanDioPlaneta];
 			efekti[PopulacijaMax] = Math.Floor(efekti[PopulacijaMax]);
+
+			efekti[BrFarmera] = Math.Ceiling(efekti[PopulacijaBr] / efekti[HranaPoFarmeru]);
+			
+			double normalniFarmeri = efekti[PopulacijaMax] * Igrac.efekti["OBRADIVO"];
+			if (efekti[BrFarmera] > normalniFarmeri) {
+				double a = Igrac.efekti["HRANA_MIN"];
+				double b = efekti[HranaPoFarmeru] - a;
+				double y = (efekti[PopulacijaBr] - efekti[HranaPoFarmeru] * normalniFarmeri) / normalniFarmeri;
+				double q = y - a - b;
+
+				efekti[BrFarmera] = normalniFarmeri * (1 + (Math.Sqrt(q * q + 4 * a * y) + q) / 2 * a);
+			}
+
+			efekti[BrOdrzavatelja] = Math.Ceiling(efekti[OdrzavanjeUkupno] / efekti[IndustrijaPoRadniku]);
+			efekti[BrRadnika] = efekti[PopulacijaBr] - efekti[BrFarmera] - efekti[BrOdrzavatelja] * (1 + efekti[RudariPoOdrzavatelju]);
+
+			if (efekti[BrRadnika] / efekti[PopulacijaBr] < Igrac.efekti["MIN_UDIO_RADNIKA"]) {
+				efekti[BrRadnika] = efekti[PopulacijaBr] * Igrac.efekti["MIN_UDIO_RADNIKA"];
+				efekti[BrOdrzavatelja] = (efekti[PopulacijaBr] - efekti[BrFarmera] - efekti[BrRadnika]) / (1 + efekti[RudariPoOdrzavatelju]);
+			}
+
+			efekti[FaktorCijeneOrbitalnih] = 1 + Math.Pow(planet.gravitacija(), 2) * 2 + planet.gustocaAtmosfere / 5;
 		}
 
 		private void osvjeziRedGradnje()
