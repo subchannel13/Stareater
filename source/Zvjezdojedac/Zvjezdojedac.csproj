@@ -171,6 +171,8 @@
     <Compile Include="Igra\Brodovi\Trup.cs" />
     <Compile Include="Igra\Flota.cs" />
     <Compile Include="Igra\AGradiliste.cs" />
+    <Compile Include="Igra\Igraci\ARacunalniIgrac.cs" />
+    <Compile Include="Igra\Igraci\AUpravljacGalaksijom.cs" />
     <Compile Include="Igra\IgraZvj.cs" />
     <Compile Include="Igra\Igrac.cs" />
     <Compile Include="Igra\Kolonija.cs" />
