@@ -171,8 +171,12 @@
     <Compile Include="Igra\Brodovi\Trup.cs" />
     <Compile Include="Igra\Flota.cs" />
     <Compile Include="Igra\AGradiliste.cs" />
-    <Compile Include="Igra\Igraci\ARacunalniIgrac.cs" />
-    <Compile Include="Igra\Igraci\AUpravljacGalaksijom.cs" />
+    <Compile Include="Igra\Igraci\OsnovniRI\ASlojUpravljanja.cs" />
+    <Compile Include="Igra\Igraci\IUpravljacIgraca.cs" />
+    <Compile Include="Igra\Igraci\OsnovniRI\ORIGalaktickiSloj.cs" />
+    <Compile Include="Igra\Igraci\OsnovniRI\ORIKoordinator.cs" />
+    <Compile Include="Igra\Igraci\OsnovniRI\ORIPlanetarniSloj.cs" />
+    <Compile Include="Igra\Igraci\OsnovniRI\ORIZvijezdaniSloj.cs" />
     <Compile Include="Igra\IgraZvj.cs" />
     <Compile Include="Igra\Igrac.cs" />
     <Compile Include="Igra\Kolonija.cs" />
