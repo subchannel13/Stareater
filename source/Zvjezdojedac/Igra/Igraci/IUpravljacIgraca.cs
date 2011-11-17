@@ -7,6 +7,6 @@ namespace Zvjezdojedac.Igra.Igraci
 {
 	public interface IUpravljacIgraca
 	{
-		void OdigrajKrug();
+		void OdigrajKrug(IgraZvj igra);
 	}
 }

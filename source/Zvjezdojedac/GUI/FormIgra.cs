@@ -192,12 +192,12 @@ namespace Zvjezdojedac.GUI
 			
 			bool imaKoloniju = false;
 			
-				for (int i = 0; i < zvijezda.planeti.Count; i++) {
-					if (igrac.posjeceneZvjezde.Contains(zvijezda))
-						planetInfoi[i].PostaviPlanet(zvijezda.planeti[i], igrac);
-					else
-						planetInfoi[i].PostaviNeistrazeno(i);
-				}
+			for (int i = 0; i < zvijezda.planeti.Count; i++) {
+				if (igrac.posjeceneZvjezde.Contains(zvijezda))
+					planetInfoi[i].PostaviPlanet(zvijezda.planeti[i], igrac);
+				else
+					planetInfoi[i].PostaviNeistrazeno(i);
+			}
 
 			prikaziFlotu(zvijezda);
 
@@ -346,9 +346,7 @@ namespace Zvjezdojedac.GUI
 		{
 			Kolonija kolonija = igrac.OdabranPlanet.kolonija;
 			ZvjezdanaUprava sustav = igrac.OdabranSustav;
-			sustav.IzracunajEfekte();
-			sustav.OsvjeziInfoGradnje();
-
+			
 			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.Kolonija];
 
 			if (kolonija != null) {
@@ -360,32 +358,33 @@ namespace Zvjezdojedac.GUI
 
 				lblCivilnaIndustrija.Text = Fje.PrefiksFormater(kolonija.UtroseniPoeniIndustrije) + " " + jezik["jedInd"].tekst();
 				lblProcjenaCivilneGradnje.Text = kolonija.ProcjenaVremenaGradnje();
+
+				if (kolonija.RedGradnje.Count > 0) {
+					btnCivilnaGradnja.Image = kolonija.RedGradnje.First.Value.slika;
+					btnCivilnaGradnja.Text = "";
+				}
+				else {
+					btnCivilnaGradnja.Image = null;
+					btnCivilnaGradnja.Text = jezik["Civilna_Gradnja"].tekst();
+				}
 			}
 
 			if (sustav != null) {
+				sustav.IzracunajEfekte();
+				sustav.OsvjeziInfoGradnje();
+
 				lblVojnaGradnja.Text = Fje.PrefiksFormater(sustav.UtroseniPoeniIndustrije) + " " + jezik["jedInd"].tekst();
 				lblProcjenaVojneGradnje.Text = sustav.ProcjenaVremenaGradnje();
 				lblRazvoj.Text = jezik["lblRazvoj"].tekst() + Fje.PrefiksFormater(sustav.PoeniRazvoja);
-			}
 
-			if (igrac.OdabranPlanet.kolonija.RedGradnje.Count > 0)
-			{
-				btnCivilnaGradnja.Image = igrac.OdabranPlanet.kolonija.RedGradnje.First.Value.slika;
-				btnCivilnaGradnja.Text = "";
-			}
-			else
-			{
-				btnCivilnaGradnja.Image = null;
-				btnCivilnaGradnja.Text = jezik["Civilna_Gradnja"].tekst();
-			}
-
-			if (igrac.OdabranSustav.RedGradnje.Count > 0) {
-				btnVojnaGradnja.Image = igrac.OdabranSustav.RedGradnje.First.Value.slika;
-				btnVojnaGradnja.Text = "";
-			}
-			else {
-				btnVojnaGradnja.Image = null;
-				btnVojnaGradnja.Text = jezik["Vojna_Gradnja"].tekst();
+				if (sustav.RedGradnje.Count > 0) {
+					btnVojnaGradnja.Image = sustav.RedGradnje.First.Value.slika;
+					btnVojnaGradnja.Text = "";
+				}
+				else {
+					btnVojnaGradnja.Image = null;
+					btnVojnaGradnja.Text = jezik["Vojna_Gradnja"].tekst();
+				}
 			}
 		}
 

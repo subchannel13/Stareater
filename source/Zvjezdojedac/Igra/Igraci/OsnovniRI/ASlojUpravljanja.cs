@@ -16,7 +16,7 @@ namespace Zvjezdojedac.Igra.Igraci.OsnovniRI
 			this.koordinator = koordinator;
 		}
 
-		public abstract void OdrediZahtjeve();
-		public abstract void Djeluj();
+		public abstract void OdrediZahtjeve(IgraZvj igra);
+		public abstract void Djeluj(IgraZvj igra);
 	}
 }
