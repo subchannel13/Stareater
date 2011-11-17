@@ -11,12 +11,12 @@ namespace Zvjezdojedac.Igra.Igraci.OsnovniRI
 			: base(koordinator)
 		{ }
 
-		public override void OdrediZahtjeve()
+		public override void OdrediZahtjeve(IgraZvj igra)
 		{
 			// ne radi nista
 		}
 
-		public override void Djeluj()
+		public override void Djeluj(IgraZvj igra)
 		{
 			foreach (var kolonija in igrac.kolonije)
 				kolonija.UdioIndustrije = 0;

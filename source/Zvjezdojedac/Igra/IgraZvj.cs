@@ -166,7 +166,7 @@ namespace Zvjezdojedac.Igra
 				}
 
 				if (igraci[trenutniIgracIndex].tip != Igrac.Tip.COVJEK)
-					igraci[trenutniIgracIndex].Upravljac.OdigrajKrug();
+					igraci[trenutniIgracIndex].Upravljac.OdigrajKrug(this);
 				else
 					break;
 			}

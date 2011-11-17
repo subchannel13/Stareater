@@ -22,14 +22,14 @@ namespace Zvjezdojedac.Igra.Igraci.OsnovniRI
 			};
 		}
 
-		public void OdigrajKrug()
+		public void OdigrajKrug(IgraZvj igra)
 		{
 			// pozivi moraju biti asocijativni i komutativni (neovisni o redoslijedu)
 			foreach (var sloj in podSlojevi)
-				sloj.OdrediZahtjeve();
+				sloj.OdrediZahtjeve(igra);
 
 			foreach (var sloj in podSlojevi)
-				sloj.Djeluj();
+				sloj.Djeluj(igra);
 		}
 	}
 }

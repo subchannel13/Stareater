@@ -81,14 +81,14 @@ namespace Zvjezdojedac.GUI
 			Graphics g = Graphics.FromImage(bmpSlika);
 			g.Clear(Color.Black);
 			Font font = new Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold);
-			Igrac igrac = igra.trenutniIgrac();
+			Igrac trenutniIgrac = igra.trenutniIgrac();
 			Pen crvPen = new Pen(Color.DarkBlue);
 			Pen linijaOdredistePen = new Pen(Color.Green);
 
 			foreach (Zvijezda zvj in igra.mapa.zvijezde)
-				if (igrac.posjeceneZvjezde.Contains(zvj))
+				if (trenutniIgrac.posjeceneZvjezde.Contains(zvj))
 					foreach (Zvijezda odrediste in zvj.crvotocine)
-						if (odrediste.id > zvj.id || !igrac.posjeceneZvjezde.Contains(odrediste))
+						if (odrediste.id > zvj.id || !trenutniIgrac.posjeceneZvjezde.Contains(odrediste))
 							g.DrawLine(crvPen, xyZvijezde(zvj), xyZvijezde(odrediste));
 
 			foreach (Zvijezda zvj in igra.mapa.zvijezde)
@@ -106,14 +106,14 @@ namespace Zvjezdojedac.GUI
 
 				if (skala >= VELICINA_SLIKE_ZVIJEZDE / 2) {
 					Brush bojaImena;
-					if (igrac.posjeceneZvjezde.Contains(zvj)) {
+					if (trenutniIgrac.posjeceneZvjezde.Contains(zvj)) {
 						bool imaKoloniju = false;
 						foreach (Planet planet in zvj.planeti)
 							if (planet.kolonija != null)
-								if (planet.kolonija.Igrac.id == igrac.id)
+								if (planet.kolonija.Igrac.id == trenutniIgrac.id)
 									imaKoloniju = true;
 						bojaImena = (imaKoloniju) ? 
-							new SolidBrush(igrac.boja) :
+							new SolidBrush(trenutniIgrac.boja) :
 							new SolidBrush(Color.FromArgb(192, 192, 192));
 					}
 					else
@@ -121,28 +121,32 @@ namespace Zvjezdojedac.GUI
 					g.DrawString(zvj.ime, font, bojaImena, xy.X - g.MeasureString(zvj.ime, font).Width / 2, xy.Y + VELICINA_SLIKE_ZVIJEZDE / 2);
 				}
 
-				if (igrac.floteStacionarne.ContainsKey(zvj))
-					g.DrawImage(Slike.Flota[igrac.boja], xy.X + VELICINA_SLIKE_ZVIJEZDE / 2, xy.Y - VELICINA_SLIKE_ZVIJEZDE / 2);
+				bool imaFlote = false;
+				foreach (Igrac igrac in igra.igraci)
+					if (igrac.floteStacionarne.ContainsKey(zvj))
+						imaFlote = true;
+				if (imaFlote)
+					g.DrawImage(Slike.Flota[trenutniIgrac.boja], xy.X + VELICINA_SLIKE_ZVIJEZDE / 2, xy.Y - VELICINA_SLIKE_ZVIJEZDE / 2);
 
-				if (zvj == igrac.odabranaZvijezda)
+				if (zvj == trenutniIgrac.odabranaZvijezda)
 				{
 					Image img = Slike.SlikaOdabiraZvijezde[0];
 					g.DrawImage(img, new Rectangle(xy.X - img.Width/2, xy.Y - img.Height/2, img.Width, img.Height));
 				}
-				else if (zvj == igrac.odredisnaZvijezda) {
+				else if (zvj == trenutniIgrac.odredisnaZvijezda) {
 					Image img = Slike.SlikaOdabiraZvijezde[1];
 					g.DrawImage(img, new Rectangle(xy.X - img.Width / 2, xy.Y - img.Height / 2, img.Width, img.Height));
 				}
 			}
 
-			foreach (PokretnaFlota flota in igrac.flotePokretne) {
+			foreach (PokretnaFlota flota in trenutniIgrac.flotePokretne) {
 				Point xy = xyFlote(flota);
 				Point xyOdrediste = xyZvijezde(flota.odredisnaZvj);
 				g.DrawLine(linijaOdredistePen, xy, xyOdrediste);
 
-				xy.X -= Slike.Flota[igrac.boja].Size.Width / 2;
-				xy.Y -= Slike.Flota[igrac.boja].Size.Height / 2;
-				g.DrawImage(Slike.Flota[igrac.boja], xy);
+				xy.X -= Slike.Flota[trenutniIgrac.boja].Size.Width / 2;
+				xy.Y -= Slike.Flota[trenutniIgrac.boja].Size.Height / 2;
+				g.DrawImage(Slike.Flota[trenutniIgrac.boja], xy);
 			}
 
 			g.Dispose();
