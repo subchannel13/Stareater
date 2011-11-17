@@ -7,6 +7,8 @@ using Zvjezdojedac.Podaci;
 using Zvjezdojedac.Igra.Brodovi;
 using Zvjezdojedac.Igra.Poruke;
 using Zvjezdojedac.Alati.Strukture;
+using Zvjezdojedac.Igra.Igraci;
+using Zvjezdojedac.Igra.Igraci.OsnovniRI;
 
 namespace Zvjezdojedac.Igra
 {
@@ -37,12 +39,21 @@ namespace Zvjezdojedac.Igra
 			{
 				return new Igrac(tip, ime, organizacija, boja, id);
 			}
+
+			public Igrac stvoriRacunalnogIgraca(int id)
+			{
+				Igrac rez = new Igrac(tip, ime, organizacija, boja, id);
+				rez.Upravljac = new ORIKoordinator(rez);
+
+				return rez;
+			}
 		}
 
 		public static Color[] BojeIgraca = new Color[]{Color.LimeGreen, Color.LightGreen, Color.Blue, Color.Yellow, Color.DarkViolet, Color.DarkCyan};
 
 		public int id { get; private set; }
 		public Tip tip;
+		public IUpravljacIgraca Upravljac = null;
 		private string ime;
 		public System.Drawing.Color boja;
 		private Random random;

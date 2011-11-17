@@ -5,6 +5,7 @@ using Zvjezdojedac.Alati;
 using Zvjezdojedac.Podaci.Formule;
 using Zvjezdojedac.Podaci;
 using Zvjezdojedac.Igra.Brodovi;
+using Zvjezdojedac.Igra.Igraci.OsnovniRI;
 
 namespace Zvjezdojedac.Igra
 {
@@ -32,8 +33,8 @@ namespace Zvjezdojedac.Igra
 					this.igraci.Add(igrac.stvoriIgraca(this.igraci.Count));
 
 			foreach (Igrac.ZaStvoriti igrac in igraci)
-				if (igrac.tip != Igrac.Tip.COVJEK)
-					this.igraci.Add(igrac.stvoriIgraca(this.igraci.Count));
+				if (igrac.tip == Igrac.Tip.RACUNALO)
+					this.igraci.Add(igrac.stvoriRacunalnogIgraca(this.igraci.Count));
 
 			Vadjenje<Zvijezda> pocetnePozicije = new Vadjenje<Zvijezda>();
 			foreach (Zvijezda pl in mapa.pocetnePozicije)
@@ -164,8 +165,8 @@ namespace Zvjezdojedac.Igra
 					trenutniIgracIndex = 0;
 				}
 
-				if (igraci[trenutniIgracIndex].tip == Igrac.Tip.RACUNALO)
-					igraj();
+				if (igraci[trenutniIgracIndex].tip != Igrac.Tip.COVJEK)
+					igraci[trenutniIgracIndex].Upravljac.OdigrajKrug();
 				else
 					break;
 			}
@@ -227,11 +228,6 @@ namespace Zvjezdojedac.Igra
 			return rez;
 		}
 
-		private void igraj()
-		{
-			//TODO
-		}
-
 		public Igrac trenutniIgrac()
 		{
 			return igraci[trenutniIgracIndex];
@@ -273,8 +269,14 @@ namespace Zvjezdojedac.Igra
 
 			Mapa mapa = Mapa.Ucitaj(citac[Mapa.PohranaTip]);
 			List<Igrac> igraci = new List<Igrac>();
-			for (int i = 0; i < brIgraca; i++)
-				igraci.Add(Igrac.Ucitaj(citac[Igrac.PohranaTip + i], mapa));
+			for (int i = 0; i < brIgraca; i++) {
+				Igrac igrac = Igrac.Ucitaj(citac[Igrac.PohranaTip + i], mapa);
+				
+				if(igrac.tip == Igrac.Tip.RACUNALO)
+					igrac.Upravljac = new ORIKoordinator(igrac);
+
+				igraci.Add(igrac);
+			}
 
 			Dictionary<int, Zvijezda> zvijezdeID = new Dictionary<int,Zvijezda>();
 			foreach(Zvijezda zvj in mapa.zvijezde)
