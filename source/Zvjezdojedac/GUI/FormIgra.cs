@@ -163,22 +163,23 @@ namespace Zvjezdojedac.GUI
 			foreach (Igrac _igrac in igra.igraci)
 				tvFlota.ImageList.Images.Add(Slike.FlotaTabBoja[_igrac.boja]);
 
-			if (igrac.floteStacionarne.ContainsKey(zvijezda)) {
-				Flota flota = igrac.floteStacionarne[zvijezda];
-				TreeNode nodeStacionarnaFloata = new TreeNode(jezik["flotaObrana"].tekst(null));
-				nodeStacionarnaFloata.ImageIndex = igrac.id;
-				nodeStacionarnaFloata.Tag = flota;
-				tvFlota.Nodes.Add(nodeStacionarnaFloata);
+			foreach (Igrac _igrac in igra.igraci)
+				if (_igrac.floteStacionarne.ContainsKey(zvijezda)) {
+					Flota flota = _igrac.floteStacionarne[zvijezda];
+					TreeNode nodeStacionarnaFloata = new TreeNode(jezik["flotaObrana"].tekst(null));
+					nodeStacionarnaFloata.ImageIndex = _igrac.id;
+					nodeStacionarnaFloata.Tag = flota;
+					tvFlota.Nodes.Add(nodeStacionarnaFloata);
 
-				foreach (Brod brod in flota.brodovi.Values) {
-					TreeNode node = new TreeNode(brod.dizajn.ime + " x " + Fje.PrefiksFormater(brod.kolicina));
-					tvFlota.ImageList.Images.Add(brod.dizajn.trup.slika);
-					node.ImageIndex = tvFlota.ImageList.Images.Count - 1;
-					node.SelectedImageIndex = node.ImageIndex;
-					node.Tag = brod;
-					nodeStacionarnaFloata.Nodes.Add(node);
+					foreach (Brod brod in flota.brodovi.Values) {
+						TreeNode node = new TreeNode(brod.dizajn.ime + " x " + Fje.PrefiksFormater(brod.kolicina));
+						tvFlota.ImageList.Images.Add(brod.dizajn.trup.slika);
+						node.ImageIndex = tvFlota.ImageList.Images.Count - 1;
+						node.SelectedImageIndex = node.ImageIndex;
+						node.Tag = brod;
+						nodeStacionarnaFloata.Nodes.Add(node);
+					}
 				}
-			}
 			tvFlota.ExpandAll();
 			postaviAkcijeBroda();
 		}

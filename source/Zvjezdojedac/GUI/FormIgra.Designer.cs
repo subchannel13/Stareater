@@ -75,10 +75,6 @@
 			this.pnlDesnoGore = new System.Windows.Forms.Panel();
 			this.lblBrojKruga = new System.Windows.Forms.Label();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
-			this.novostiMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.kolonijeMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.floteMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.tehnologijeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.izbornikMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.novaIgraMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.spremiMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -87,6 +83,10 @@
 			this.uvecajMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.umanjiMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.izlazMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.novostiMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.kolonijeMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.floteMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.tehnologijeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.backgroundTurnProcessor = new System.ComponentModel.BackgroundWorker();
 			this.tabCtrlDesno.SuspendLayout();
 			this.tabPageZvijezda.SuspendLayout();
@@ -109,9 +109,9 @@
 			// tabCtrlDesno
 			// 
 			this.tabCtrlDesno.Alignment = System.Windows.Forms.TabAlignment.Right;
-			this.tabCtrlDesno.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.tabCtrlDesno.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.tabCtrlDesno.Controls.Add(this.tabPageZvijezda);
 			this.tabCtrlDesno.Controls.Add(this.tabPageKolonija);
 			this.tabCtrlDesno.Controls.Add(this.tabPageFlote);
@@ -194,8 +194,8 @@
 			// 
 			// groupPoStan
 			// 
-			this.groupPoStan.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupPoStan.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.groupPoStan.Controls.Add(this.lblOdrzavanjePoStan);
 			this.groupPoStan.Controls.Add(this.lblRazvojPoStan);
 			this.groupPoStan.Controls.Add(this.lblIndustrijaPoStan);
@@ -255,8 +255,8 @@
 			// 
 			// groupCivGradnja
 			// 
-			this.groupCivGradnja.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupCivGradnja.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.groupCivGradnja.Controls.Add(this.btnCivilnaGradnja);
 			this.groupCivGradnja.Controls.Add(this.hscrCivilnaIndustrija);
 			this.groupCivGradnja.Controls.Add(this.lblProcjenaCivilneGradnje);
@@ -281,8 +281,8 @@
 			// 
 			// hscrCivilnaIndustrija
 			// 
-			this.hscrCivilnaIndustrija.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.hscrCivilnaIndustrija.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.hscrCivilnaIndustrija.LargeChange = 1;
 			this.hscrCivilnaIndustrija.Location = new System.Drawing.Point(3, 106);
 			this.hscrCivilnaIndustrija.Name = "hscrCivilnaIndustrija";
@@ -318,8 +318,8 @@
 			// 
 			// btnPlanetInfo
 			// 
-			this.btnPlanetInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
+			this.btnPlanetInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnPlanetInfo.Location = new System.Drawing.Point(6, 86);
 			this.btnPlanetInfo.Name = "btnPlanetInfo";
 			this.btnPlanetInfo.Size = new System.Drawing.Size(192, 23);
@@ -362,7 +362,7 @@
 			this.tvFlota.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tvFlota.Location = new System.Drawing.Point(3, 103);
 			this.tvFlota.Name = "tvFlota";
-			this.tvFlota.Size = new System.Drawing.Size(198, 379);
+			this.tvFlota.Size = new System.Drawing.Size(198, 279);
 			this.tvFlota.TabIndex = 1;
 			this.tvFlota.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvFlota_AfterSelect);
 			this.tvFlota.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvFlota_NodeMouseDoubleClick);
@@ -576,6 +576,72 @@
 			this.menuStrip.TabIndex = 6;
 			this.menuStrip.Text = "menuStrip1";
 			// 
+			// izbornikMenu
+			// 
+			this.izbornikMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.novaIgraMenu,
+            this.spremiMenu,
+            this.ucitajMenu,
+            this.uvećanjeToolStripMenuItem,
+            this.izlazMenu});
+			this.izbornikMenu.Name = "izbornikMenu";
+			this.izbornikMenu.ShortcutKeyDisplayString = "";
+			this.izbornikMenu.Size = new System.Drawing.Size(61, 20);
+			this.izbornikMenu.Text = "Izbornik";
+			// 
+			// novaIgraMenu
+			// 
+			this.novaIgraMenu.Name = "novaIgraMenu";
+			this.novaIgraMenu.Size = new System.Drawing.Size(125, 22);
+			this.novaIgraMenu.Text = "Nova igra";
+			// 
+			// spremiMenu
+			// 
+			this.spremiMenu.Name = "spremiMenu";
+			this.spremiMenu.Size = new System.Drawing.Size(125, 22);
+			this.spremiMenu.Text = "Spremi";
+			this.spremiMenu.Click += new System.EventHandler(this.spremiMenu_Click);
+			// 
+			// ucitajMenu
+			// 
+			this.ucitajMenu.Name = "ucitajMenu";
+			this.ucitajMenu.Size = new System.Drawing.Size(125, 22);
+			this.ucitajMenu.Text = "Učitaj";
+			this.ucitajMenu.Click += new System.EventHandler(this.ucitajMenu_Click);
+			// 
+			// uvećanjeToolStripMenuItem
+			// 
+			this.uvećanjeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.uvecajMenu,
+            this.umanjiMenu});
+			this.uvećanjeToolStripMenuItem.Name = "uvećanjeToolStripMenuItem";
+			this.uvećanjeToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+			this.uvećanjeToolStripMenuItem.Text = "Mapa";
+			// 
+			// uvecajMenu
+			// 
+			this.uvecajMenu.Name = "uvecajMenu";
+			this.uvecajMenu.ShortcutKeyDisplayString = "Ctrl++";
+			this.uvecajMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
+			this.uvecajMenu.Size = new System.Drawing.Size(151, 22);
+			this.uvecajMenu.Text = "Uvećaj";
+			this.uvecajMenu.Click += new System.EventHandler(this.uvecajMenu_Click);
+			// 
+			// umanjiMenu
+			// 
+			this.umanjiMenu.Name = "umanjiMenu";
+			this.umanjiMenu.ShortcutKeyDisplayString = "Ctrl--";
+			this.umanjiMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
+			this.umanjiMenu.Size = new System.Drawing.Size(151, 22);
+			this.umanjiMenu.Text = "Umanji";
+			this.umanjiMenu.Click += new System.EventHandler(this.umanjiMenu_Click);
+			// 
+			// izlazMenu
+			// 
+			this.izlazMenu.Name = "izlazMenu";
+			this.izlazMenu.Size = new System.Drawing.Size(125, 22);
+			this.izlazMenu.Text = "Izlaz";
+			// 
 			// novostiMenu
 			// 
 			this.novostiMenu.Name = "novostiMenu";
@@ -606,72 +672,6 @@
 			this.tehnologijeMenu.Size = new System.Drawing.Size(82, 20);
 			this.tehnologijeMenu.Text = "Tehnologije";
 			this.tehnologijeMenu.Click += new System.EventHandler(this.tehnologijeMenu_Click);
-			// 
-			// izbornikMenu
-			// 
-			this.izbornikMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.novaIgraMenu,
-            this.spremiMenu,
-            this.ucitajMenu,
-            this.uvećanjeToolStripMenuItem,
-            this.izlazMenu});
-			this.izbornikMenu.Name = "izbornikMenu";
-			this.izbornikMenu.ShortcutKeyDisplayString = "";
-			this.izbornikMenu.Size = new System.Drawing.Size(61, 20);
-			this.izbornikMenu.Text = "Izbornik";
-			// 
-			// novaIgraMenu
-			// 
-			this.novaIgraMenu.Name = "novaIgraMenu";
-			this.novaIgraMenu.Size = new System.Drawing.Size(152, 22);
-			this.novaIgraMenu.Text = "Nova igra";
-			// 
-			// spremiMenu
-			// 
-			this.spremiMenu.Name = "spremiMenu";
-			this.spremiMenu.Size = new System.Drawing.Size(152, 22);
-			this.spremiMenu.Text = "Spremi";
-			this.spremiMenu.Click += new System.EventHandler(this.spremiMenu_Click);
-			// 
-			// ucitajMenu
-			// 
-			this.ucitajMenu.Name = "ucitajMenu";
-			this.ucitajMenu.Size = new System.Drawing.Size(152, 22);
-			this.ucitajMenu.Text = "Učitaj";
-			this.ucitajMenu.Click += new System.EventHandler(this.ucitajMenu_Click);
-			// 
-			// uvećanjeToolStripMenuItem
-			// 
-			this.uvećanjeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.uvecajMenu,
-            this.umanjiMenu});
-			this.uvećanjeToolStripMenuItem.Name = "uvećanjeToolStripMenuItem";
-			this.uvećanjeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.uvećanjeToolStripMenuItem.Text = "Mapa";
-			// 
-			// uvecajMenu
-			// 
-			this.uvecajMenu.Name = "uvecajMenu";
-			this.uvecajMenu.ShortcutKeyDisplayString = "Ctrl++";
-			this.uvecajMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
-			this.uvecajMenu.Size = new System.Drawing.Size(151, 22);
-			this.uvecajMenu.Text = "Uvećaj";
-			this.uvecajMenu.Click += new System.EventHandler(this.uvecajMenu_Click);
-			// 
-			// umanjiMenu
-			// 
-			this.umanjiMenu.Name = "umanjiMenu";
-			this.umanjiMenu.ShortcutKeyDisplayString = "Ctrl--";
-			this.umanjiMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
-			this.umanjiMenu.Size = new System.Drawing.Size(151, 22);
-			this.umanjiMenu.Text = "Umanji";
-			this.umanjiMenu.Click += new System.EventHandler(this.umanjiMenu_Click);
-			// 
-			// izlazMenu
-			// 
-			this.izlazMenu.Name = "izlazMenu";
-			this.izlazMenu.Size = new System.Drawing.Size(152, 22);
-			this.izlazMenu.Text = "Izlaz";
 			// 
 			// backgroundTurnProcessor
 			// 
