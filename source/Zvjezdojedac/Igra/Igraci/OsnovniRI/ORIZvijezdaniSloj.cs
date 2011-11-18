@@ -23,9 +23,10 @@ namespace Zvjezdojedac.Igra.Igraci.OsnovniRI
 				if (zvj.uprave[igrac.id] != null) {
 					ZvjezdanaUprava uprava = zvj.uprave[igrac.id];
 
-					if (uprava.RedGradnje.Count == 0) {
+					if (uprava.RedGradnje.Count == 0 || koordinator.PromjeniRedGradnje.Contains(zvj)) {
 						Vadjenje<Zgrada.ZgradaInfo> moguceGraditi = new Vadjenje<Zgrada.ZgradaInfo>(uprava.MoguceGraditi());
 
+						uprava.RedGradnje.Clear();
 						if (moguceGraditi.lista.Count > 0)
 							uprava.RedGradnje.AddLast(moguceGraditi.izvadi());
 					}
