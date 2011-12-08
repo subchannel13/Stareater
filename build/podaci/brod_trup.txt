@@ -21,7 +21,7 @@ BR_SENZORA = 1
 <TRUP>
 IME = TRUP_MALI_BROD_IME
 OPIS = TRUP_MALI_BROD_OPIS
-SLIKA = ./slike/brodovi/mali brod.png
+SLIKA = ./slike/brodovi/mali brod 1.png
 MAX_NIVO = 0
 PREDUVJETI =
 KOD = MALI
