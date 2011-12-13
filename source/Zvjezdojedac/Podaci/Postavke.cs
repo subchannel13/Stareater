@@ -14,13 +14,9 @@ namespace Zvjezdojedac.Podaci
 		public class ProslaIgra
 		{
 			public static int BrIgraca;
-
 			public static string ImeIgraca;
-
 			public static int Organizacija;
-			
 			public static int PocetnaPop;
-
 			public static int VelicinaMape;
 
 			public static void Postavi(Dictionary<string, string> podatci)
@@ -51,8 +47,9 @@ namespace Zvjezdojedac.Podaci
 		}
 
 		public static Jezik Jezik { get; private set; }
-
 		public static int VelicinaSucelja = 100;
+
+		public static int PrethodnaVelicinaBroda = 0;
 
 		public static void PostaviJezik(string kod)
 		{

@@ -83,6 +83,18 @@
     <Compile Include="GUI\BriefPlanetItem.Designer.cs">
       <DependentUpon>BriefPlanetItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FormDizajn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormDizajn.Designer.cs">
+      <DependentUpon>FormDizajn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormDizajnMisija.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormDizajnMisija.Designer.cs">
+      <DependentUpon>FormDizajnMisija.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormFlotaPokret.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -219,6 +231,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="GUI\BriefPlanetItem.resx">
       <DependentUpon>BriefPlanetItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormDizajn.resx">
+      <DependentUpon>FormDizajn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormDizajnMisija.resx">
+      <DependentUpon>FormDizajnMisija.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormFlotaPokret.resx">
       <DependentUpon>FormFlotaPokret.cs</DependentUpon>

@@ -88,6 +88,7 @@
 			this.floteMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.tehnologijeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.backgroundTurnProcessor = new System.ComponentModel.BackgroundWorker();
+			this.dizjnoviToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabCtrlDesno.SuspendLayout();
 			this.tabPageZvijezda.SuspendLayout();
 			this.tabPageKolonija.SuspendLayout();
@@ -568,7 +569,8 @@
             this.novostiMenu,
             this.kolonijeMenu,
             this.floteMenu,
-            this.tehnologijeMenu});
+            this.tehnologijeMenu,
+            this.dizjnoviToolStripMenuItem});
 			this.menuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
@@ -678,6 +680,13 @@
 			this.backgroundTurnProcessor.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundTurnProcessor_DoWork);
 			this.backgroundTurnProcessor.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundTurnProcessor_RunWorkerCompleted);
 			// 
+			// dizjnoviToolStripMenuItem
+			// 
+			this.dizjnoviToolStripMenuItem.Name = "dizjnoviToolStripMenuItem";
+			this.dizjnoviToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+			this.dizjnoviToolStripMenuItem.Text = "Dizajnovi";
+			this.dizjnoviToolStripMenuItem.Click += new System.EventHandler(this.dizajnoviToolStripMenuItem_Click);
+			// 
 			// FormIgra
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -786,5 +795,6 @@
 		private System.Windows.Forms.Panel dnoSredinaPanel;
 		private System.Windows.Forms.PictureBox zvijezdaPicBox;
 		private System.ComponentModel.BackgroundWorker backgroundTurnProcessor;
+		private System.Windows.Forms.ToolStripMenuItem dizjnoviToolStripMenuItem;
 	}
 }

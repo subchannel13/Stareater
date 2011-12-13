@@ -709,5 +709,10 @@ namespace Zvjezdojedac.GUI
 				novostiMenu_Click(this, null);
 		}
 
+		private void dizajnoviToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (FormDizajn frmDizajnovi = new FormDizajn(igrac))
+				frmDizajnovi.ShowDialog();
+		}
 	}
 }
