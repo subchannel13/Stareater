@@ -89,11 +89,11 @@
     <Compile Include="GUI\FormDizajn.Designer.cs">
       <DependentUpon>FormDizajn.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FormDizajnMisija.cs">
+    <Compile Include="GUI\FormDizajnKomponenta.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\FormDizajnMisija.Designer.cs">
-      <DependentUpon>FormDizajnMisija.cs</DependentUpon>
+    <Compile Include="GUI\FormDizajnKomponenta.Designer.cs">
+      <DependentUpon>FormDizajnKomponenta.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FormFlotaPokret.cs">
       <SubType>Form</SubType>
@@ -235,8 +235,8 @@
     <EmbeddedResource Include="GUI\FormDizajn.resx">
       <DependentUpon>FormDizajn.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\FormDizajnMisija.resx">
-      <DependentUpon>FormDizajnMisija.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\FormDizajnKomponenta.resx">
+      <DependentUpon>FormDizajnKomponenta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormFlotaPokret.resx">
       <DependentUpon>FormFlotaPokret.cs</DependentUpon>

@@ -34,8 +34,8 @@
 			this.btnUkloniDizajn = new System.Windows.Forms.Button();
 			this.txtDizajnInfo = new System.Windows.Forms.TextBox();
 			this.lstvDizajnovi = new System.Windows.Forms.ListView();
-			this.chDizajnNaziv = new System.Windows.Forms.ColumnHeader();
-			this.chBrojBrodova = new System.Windows.Forms.ColumnHeader();
+			this.chDizajnNaziv = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.chBrojBrodova = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.picSlikaDizajna = new System.Windows.Forms.PictureBox();
 			this.lblDizajn = new System.Windows.Forms.Label();
 			this.tabNoviDizajn = new System.Windows.Forms.TabPage();
@@ -48,9 +48,9 @@
 			this.btnNDspecOpremaMinus = new System.Windows.Forms.Button();
 			this.btnNDspecOpremaPlus = new System.Windows.Forms.Button();
 			this.lstvNDspecOprema = new System.Windows.Forms.ListView();
-			this.chSpecOpKolicina = new System.Windows.Forms.ColumnHeader();
-			this.chSpecOpNaziv = new System.Windows.Forms.ColumnHeader();
-			this.chSpecOpVelicina = new System.Windows.Forms.ColumnHeader();
+			this.chSpecOpKolicina = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.chSpecOpNaziv = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.chSpecOpVelicina = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.lblSpecOprema = new System.Windows.Forms.Label();
 			this.lblTaktika = new System.Windows.Forms.Label();
 			this.cbNDtaktika = new System.Windows.Forms.ComboBox();
@@ -487,7 +487,7 @@
 			this.txtNDinfo.Size = new System.Drawing.Size(221, 142);
 			this.txtNDinfo.TabIndex = 1;
 			this.txtNDinfo.Text = "1 red\r\n2 reda\r\n3 reda\r\n4 reda\r\n5 redova\r\n6 redova\r\n7 redova\r\n8 redova\r\n9 redova\r\n" +
-				"10 redova";
+    "10 redova";
 			// 
 			// chNDMZpogon
 			// 

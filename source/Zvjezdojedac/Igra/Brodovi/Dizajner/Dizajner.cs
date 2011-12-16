@@ -18,7 +18,7 @@ namespace Zvjezdojedac.Igra.Brodovi.Dizajner
 		private string _dizajnIme;
 		private Oruzje _dizajnPrimMisija;
 		private Oruzje _dizajnSekMisija;
-		private double _dizajnUdioPrimMisije;
+		private double _dizajnUdioPrimMisije = 1;
 		private Stit _dizajnStit;
 		private Dictionary<SpecijalnaOprema, int> _dizajnSpecOprema;
 		private bool _dizajnMZPogon;

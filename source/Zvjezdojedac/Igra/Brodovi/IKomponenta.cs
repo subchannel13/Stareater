@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace Zvjezdojedac.Igra.Brodovi
 {
-	interface IKomponenta
+	public interface IKomponenta
 	{
 		int nivo { get; }
 		string naziv { get; }
