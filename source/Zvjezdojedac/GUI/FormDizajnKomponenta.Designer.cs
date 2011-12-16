@@ -1,6 +1,6 @@
 ﻿namespace Zvjezdojedac.GUI
 {
-	partial class FormDizajnMisija
+	partial class FormDizajnKomponenta<T>
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -47,12 +47,15 @@
 			this.ControlBox = false;
 			this.Controls.Add(this.flowPanel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			this.KeyPreview = true;
 			this.MaximizeBox = false;
 			this.Name = "FormDizajnMisija";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Select mission";
 			this.Load += new System.EventHandler(this.FormDizajnMisija_Load);
+			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormDizajnMisija_KeyUp);
 			this.ResumeLayout(false);
 
 		}
