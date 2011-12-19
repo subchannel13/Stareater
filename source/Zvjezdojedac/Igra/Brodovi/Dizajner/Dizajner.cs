@@ -201,9 +201,9 @@ namespace Zvjezdojedac.Igra.Brodovi.Dizajner
 		{
 			get
 			{
-				double suma = _dizajnTrup.nosivost;
-				if (_dizajnStit != null) suma -= _dizajnTrup.velicina_stita;
-				if (_dizajnMZPogon) suma -= _dizajnTrup.velicina_MZPogona;
+				double suma = _dizajnTrup.Nosivost;
+				if (_dizajnStit != null) suma -= _dizajnTrup.VelicinaStita;
+				if (_dizajnMZPogon) suma -= _dizajnTrup.VelicinaMZPogona;
 				foreach (SpecijalnaOprema so in _dizajnSpecOprema.Keys)
 					suma -= so.velicina * _dizajnSpecOprema[so];
 

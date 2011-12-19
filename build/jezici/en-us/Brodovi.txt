@@ -40,14 +40,14 @@ SO_POTISNICI_OPIS =
 SO_REAKTOR_IME = Extended reactor
 SO_REAKTOR_OPIS =
 
-SOE_KOEF_BRZINE = Mobility
 SOE_KOEF_IZDRZ = Armor strength
-SOE_KOEF_OMET = Jamming
 SOE_KOEF_STIT_DEB = Shield thickness
 SOE_KOEF_STIT_IZD = Shield strength
 SOE_KOEF_STIT_OBN = Shield recovery
+SOE_PLUS_BRZINA = Mobility
 SOE_PLUS_SENZORI = Num. of sensors
 SOE_PLUS_INERC = Inertia
+SOE_PLUS_OMET = Jamming
 SOE_PLUS_PRIK = Cloaking
 SOE_PLUS_REAKTOR = Reactor size
 

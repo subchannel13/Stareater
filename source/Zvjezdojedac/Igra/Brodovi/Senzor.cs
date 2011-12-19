@@ -8,11 +8,6 @@ namespace Zvjezdojedac.Igra.Brodovi
 {
 	public class Senzor : Komponenta<Senzor.SenzorInfo>
 	{
-		public static double BonusKolicine(double kolicina)
-		{
-			return Math.Pow(kolicina, 1 / 3.0);
-		}
-
 		public class SenzorInfo : AKomponentaInfo
 		{
 			#region Statično

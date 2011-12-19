@@ -15,10 +15,10 @@ namespace Zvjezdojedac.Igra.Brodovi.Dizajner
 
 		public Komponente(Igrac igrac, Trup trup)
 		{
-			mzPogon = MZPogon.MZPogonInfo.NajboljiMZPogon(igrac.efekti, trup.velicina_MZPogona);
-			reaktor = Reaktor.ReaktorInfo.NajboljiReaktor(igrac.efekti, trup.velicina_reaktora);
+			mzPogon = MZPogon.MZPogonInfo.NajboljiMZPogon(igrac.efekti, trup.VelicinaMZPogona);
+			reaktor = Reaktor.ReaktorInfo.NajboljiReaktor(igrac.efekti, trup.VelicinaReaktora);
 			specijalnaOprema = SpecijalnaOprema.SpecijalnaOpremaInfo.DostupnaOprema(igrac.efekti, trup.velicina);
-			stitovi = Stit.StitInfo.DostupniStitovi(igrac.efekti, trup.velicina_stita);
+			stitovi = Stit.StitInfo.DostupniStitovi(igrac.efekti, trup.VelicinaStita);
 
 			specijalnaOpremaInfo = new Dictionary<SpecijalnaOprema.SpecijalnaOpremaInfo, SpecijalnaOprema>();
 			foreach (SpecijalnaOprema so in specijalnaOprema)
