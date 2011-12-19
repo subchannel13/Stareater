@@ -29,17 +29,17 @@
 		{
 			this.lblCijena = new System.Windows.Forms.Label();
 			this.lblSlobodno = new System.Windows.Forms.Label();
-			this.btnNDspecOpremaMinus = new System.Windows.Forms.Button();
-			this.btnNDspecOpremaPlus = new System.Windows.Forms.Button();
-			this.lstvNDspecOprema = new System.Windows.Forms.ListView();
+			this.btnSpecOpremaMinus = new System.Windows.Forms.Button();
+			this.btnSpecOpremaPlus = new System.Windows.Forms.Button();
+			this.lstvSpecOprema = new System.Windows.Forms.ListView();
 			this.chSpecOpKolicina = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.chSpecOpNaziv = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.lblSpecOprema = new System.Windows.Forms.Label();
 			this.lblTaktika = new System.Windows.Forms.Label();
-			this.cbNDtaktika = new System.Windows.Forms.ComboBox();
-			this.lblNDoklop = new System.Windows.Forms.Label();
-			this.lblNDsenzori = new System.Windows.Forms.Label();
-			this.lblNDpokretljivost = new System.Windows.Forms.Label();
+			this.cbTaktika = new System.Windows.Forms.ComboBox();
+			this.lblOklop = new System.Windows.Forms.Label();
+			this.lblSenzori = new System.Windows.Forms.Label();
+			this.lblPokretljivost = new System.Windows.Forms.Label();
 			this.lblUdioMisija = new System.Windows.Forms.Label();
 			this.lblUdioSek = new System.Windows.Forms.Label();
 			this.lblStit = new System.Windows.Forms.Label();
@@ -80,40 +80,42 @@
 			this.lblSlobodno.TabIndex = 60;
 			this.lblSlobodno.Text = "Slobodan prostor: xx.xx X / xx.xx X";
 			// 
-			// btnNDspecOpremaMinus
+			// btnSpecOpremaMinus
 			// 
-			this.btnNDspecOpremaMinus.Location = new System.Drawing.Point(375, 225);
-			this.btnNDspecOpremaMinus.Name = "btnNDspecOpremaMinus";
-			this.btnNDspecOpremaMinus.Size = new System.Drawing.Size(33, 23);
-			this.btnNDspecOpremaMinus.TabIndex = 59;
-			this.btnNDspecOpremaMinus.Text = "-";
-			this.btnNDspecOpremaMinus.UseVisualStyleBackColor = true;
+			this.btnSpecOpremaMinus.Location = new System.Drawing.Point(375, 225);
+			this.btnSpecOpremaMinus.Name = "btnSpecOpremaMinus";
+			this.btnSpecOpremaMinus.Size = new System.Drawing.Size(33, 23);
+			this.btnSpecOpremaMinus.TabIndex = 59;
+			this.btnSpecOpremaMinus.Text = "-";
+			this.btnSpecOpremaMinus.UseVisualStyleBackColor = true;
+			this.btnSpecOpremaMinus.Click += new System.EventHandler(this.btnSpecOpremaMinus_Click);
 			// 
-			// btnNDspecOpremaPlus
+			// btnSpecOpremaPlus
 			// 
-			this.btnNDspecOpremaPlus.Location = new System.Drawing.Point(336, 225);
-			this.btnNDspecOpremaPlus.Name = "btnNDspecOpremaPlus";
-			this.btnNDspecOpremaPlus.Size = new System.Drawing.Size(33, 23);
-			this.btnNDspecOpremaPlus.TabIndex = 58;
-			this.btnNDspecOpremaPlus.Text = "+";
-			this.btnNDspecOpremaPlus.UseVisualStyleBackColor = true;
+			this.btnSpecOpremaPlus.Location = new System.Drawing.Point(336, 225);
+			this.btnSpecOpremaPlus.Name = "btnSpecOpremaPlus";
+			this.btnSpecOpremaPlus.Size = new System.Drawing.Size(33, 23);
+			this.btnSpecOpremaPlus.TabIndex = 58;
+			this.btnSpecOpremaPlus.Text = "+";
+			this.btnSpecOpremaPlus.UseVisualStyleBackColor = true;
+			this.btnSpecOpremaPlus.Click += new System.EventHandler(this.btnSpecOpremaPlus_Click);
 			// 
-			// lstvNDspecOprema
+			// lstvSpecOprema
 			// 
-			this.lstvNDspecOprema.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+			this.lstvSpecOprema.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chSpecOpKolicina,
             this.chSpecOpNaziv});
-			this.lstvNDspecOprema.FullRowSelect = true;
-			this.lstvNDspecOprema.GridLines = true;
-			this.lstvNDspecOprema.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-			this.lstvNDspecOprema.HideSelection = false;
-			this.lstvNDspecOprema.Location = new System.Drawing.Point(298, 115);
-			this.lstvNDspecOprema.MultiSelect = false;
-			this.lstvNDspecOprema.Name = "lstvNDspecOprema";
-			this.lstvNDspecOprema.Size = new System.Drawing.Size(324, 104);
-			this.lstvNDspecOprema.TabIndex = 57;
-			this.lstvNDspecOprema.UseCompatibleStateImageBehavior = false;
-			this.lstvNDspecOprema.View = System.Windows.Forms.View.Details;
+			this.lstvSpecOprema.FullRowSelect = true;
+			this.lstvSpecOprema.GridLines = true;
+			this.lstvSpecOprema.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lstvSpecOprema.HideSelection = false;
+			this.lstvSpecOprema.Location = new System.Drawing.Point(298, 115);
+			this.lstvSpecOprema.MultiSelect = false;
+			this.lstvSpecOprema.Name = "lstvSpecOprema";
+			this.lstvSpecOprema.Size = new System.Drawing.Size(324, 104);
+			this.lstvSpecOprema.TabIndex = 57;
+			this.lstvSpecOprema.UseCompatibleStateImageBehavior = false;
+			this.lstvSpecOprema.View = System.Windows.Forms.View.Details;
 			// 
 			// chSpecOpKolicina
 			// 
@@ -143,41 +145,42 @@
 			this.lblTaktika.TabIndex = 55;
 			this.lblTaktika.Text = "Taktika:";
 			// 
-			// cbNDtaktika
+			// cbTaktika
 			// 
-			this.cbNDtaktika.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbNDtaktika.FormattingEnabled = true;
-			this.cbNDtaktika.Location = new System.Drawing.Point(153, 65);
-			this.cbNDtaktika.Name = "cbNDtaktika";
-			this.cbNDtaktika.Size = new System.Drawing.Size(139, 21);
-			this.cbNDtaktika.TabIndex = 54;
+			this.cbTaktika.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbTaktika.FormattingEnabled = true;
+			this.cbTaktika.Location = new System.Drawing.Point(153, 65);
+			this.cbTaktika.Name = "cbTaktika";
+			this.cbTaktika.Size = new System.Drawing.Size(139, 21);
+			this.cbTaktika.TabIndex = 54;
+			this.cbTaktika.SelectedIndexChanged += new System.EventHandler(this.cbTaktika_SelectedIndexChanged);
 			// 
-			// lblNDoklop
+			// lblOklop
 			// 
-			this.lblNDoklop.AutoSize = true;
-			this.lblNDoklop.Location = new System.Drawing.Point(320, 25);
-			this.lblNDoklop.Name = "lblNDoklop";
-			this.lblNDoklop.Size = new System.Drawing.Size(135, 13);
-			this.lblNDoklop.TabIndex = 52;
-			this.lblNDoklop.Text = "Izdržljivost okolopa: xx.xx X";
+			this.lblOklop.AutoSize = true;
+			this.lblOklop.Location = new System.Drawing.Point(320, 25);
+			this.lblOklop.Name = "lblOklop";
+			this.lblOklop.Size = new System.Drawing.Size(135, 13);
+			this.lblOklop.TabIndex = 52;
+			this.lblOklop.Text = "Izdržljivost okolopa: xx.xx X";
 			// 
-			// lblNDsenzori
+			// lblSenzori
 			// 
-			this.lblNDsenzori.AutoSize = true;
-			this.lblNDsenzori.Location = new System.Drawing.Point(320, 51);
-			this.lblNDsenzori.Name = "lblNDsenzori";
-			this.lblNDsenzori.Size = new System.Drawing.Size(94, 13);
-			this.lblNDsenzori.TabIndex = 51;
-			this.lblNDsenzori.Text = "Snaga senzora: xx";
+			this.lblSenzori.AutoSize = true;
+			this.lblSenzori.Location = new System.Drawing.Point(320, 51);
+			this.lblSenzori.Name = "lblSenzori";
+			this.lblSenzori.Size = new System.Drawing.Size(94, 13);
+			this.lblSenzori.TabIndex = 51;
+			this.lblSenzori.Text = "Snaga senzora: xx";
 			// 
-			// lblNDpokretljivost
+			// lblPokretljivost
 			// 
-			this.lblNDpokretljivost.AutoSize = true;
-			this.lblNDpokretljivost.Location = new System.Drawing.Point(320, 12);
-			this.lblNDpokretljivost.Name = "lblNDpokretljivost";
-			this.lblNDpokretljivost.Size = new System.Drawing.Size(80, 13);
-			this.lblNDpokretljivost.TabIndex = 50;
-			this.lblNDpokretljivost.Text = "Pokretljivost: xx";
+			this.lblPokretljivost.AutoSize = true;
+			this.lblPokretljivost.Location = new System.Drawing.Point(320, 12);
+			this.lblPokretljivost.Name = "lblPokretljivost";
+			this.lblPokretljivost.Size = new System.Drawing.Size(80, 13);
+			this.lblPokretljivost.TabIndex = 50;
+			this.lblPokretljivost.Text = "Pokretljivost: xx";
 			// 
 			// lblUdioMisija
 			// 
@@ -367,15 +370,15 @@
 			this.Controls.Add(this.btnPrimMisija);
 			this.Controls.Add(this.lblCijena);
 			this.Controls.Add(this.lblSlobodno);
-			this.Controls.Add(this.btnNDspecOpremaMinus);
-			this.Controls.Add(this.btnNDspecOpremaPlus);
-			this.Controls.Add(this.lstvNDspecOprema);
+			this.Controls.Add(this.btnSpecOpremaMinus);
+			this.Controls.Add(this.btnSpecOpremaPlus);
+			this.Controls.Add(this.lstvSpecOprema);
 			this.Controls.Add(this.lblSpecOprema);
 			this.Controls.Add(this.lblTaktika);
-			this.Controls.Add(this.cbNDtaktika);
-			this.Controls.Add(this.lblNDoklop);
-			this.Controls.Add(this.lblNDsenzori);
-			this.Controls.Add(this.lblNDpokretljivost);
+			this.Controls.Add(this.cbTaktika);
+			this.Controls.Add(this.lblOklop);
+			this.Controls.Add(this.lblSenzori);
+			this.Controls.Add(this.lblPokretljivost);
 			this.Controls.Add(this.lblUdioMisija);
 			this.Controls.Add(this.lblUdioSek);
 			this.Controls.Add(this.lblStit);
@@ -407,17 +410,17 @@
 
 		private System.Windows.Forms.Label lblCijena;
 		private System.Windows.Forms.Label lblSlobodno;
-		private System.Windows.Forms.Button btnNDspecOpremaMinus;
-		private System.Windows.Forms.Button btnNDspecOpremaPlus;
-		private System.Windows.Forms.ListView lstvNDspecOprema;
+		private System.Windows.Forms.Button btnSpecOpremaMinus;
+		private System.Windows.Forms.Button btnSpecOpremaPlus;
+		private System.Windows.Forms.ListView lstvSpecOprema;
 		private System.Windows.Forms.ColumnHeader chSpecOpKolicina;
 		private System.Windows.Forms.ColumnHeader chSpecOpNaziv;
 		private System.Windows.Forms.Label lblSpecOprema;
 		private System.Windows.Forms.Label lblTaktika;
-		private System.Windows.Forms.ComboBox cbNDtaktika;
-		private System.Windows.Forms.Label lblNDoklop;
-		private System.Windows.Forms.Label lblNDsenzori;
-		private System.Windows.Forms.Label lblNDpokretljivost;
+		private System.Windows.Forms.ComboBox cbTaktika;
+		private System.Windows.Forms.Label lblOklop;
+		private System.Windows.Forms.Label lblSenzori;
+		private System.Windows.Forms.Label lblPokretljivost;
 		private System.Windows.Forms.Label lblUdioMisija;
 		private System.Windows.Forms.Label lblUdioSek;
 		private System.Windows.Forms.Label lblStit;

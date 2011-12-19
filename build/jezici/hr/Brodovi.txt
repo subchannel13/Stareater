@@ -40,14 +40,14 @@ SO_POTISNICI_OPIS =
 SO_REAKTOR_IME = Proširenje reaktora
 SO_REAKTOR_OPIS =
 
-SOE_KOEF_BRZINE = Pokretljivost
 SOE_KOEF_IZDRZ = Izdržljivost oklopa
-SOE_KOEF_OMET = Ometanje
 SOE_KOEF_STIT_DEB = Debljina štita
 SOE_KOEF_STIT_IZD = Izdržljivost štita
 SOE_KOEF_STIT_OBN = Obnavljanje štita
+SOE_PLUS_BRZINA = Pokretljivost
 SOE_PLUS_SENZORI = Br. senzora
 SOE_PLUS_INERC = Tromost
+SOE_PLUS_OMET = Ometanje
 SOE_PLUS_PRIK = Prikrivanje
 SOE_PLUS_REAKTOR = Veličina reaktora
 

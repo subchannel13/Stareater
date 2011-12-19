@@ -255,7 +255,7 @@ namespace Zvjezdojedac.GUI
 				case InfoStranice.Senzori:
 					opis.Add(jezik["opisSenzor"].tekst());
 					opis.Add("");
-					opis.Add(Fje.PrefiksFormater(dizajn.brSenzora) + " x " + dizajn.senzor.naziv);
+					//opis.Add(Fje.PrefiksFormater(dizajn.brSenzora) + " x " + dizajn.senzor.naziv);
 					if (dizajn.senzor.maxNivo > 0)
 						opis.Add(jezik["opisNivo"].tekst() + ": " + dizajn.senzor.nivo);
 					opis.Add(jezik["opisSenzorSn"].tekst() + ": " + Fje.PrefiksFormater(dizajn.snagaSenzora));
@@ -331,7 +331,7 @@ namespace Zvjezdojedac.GUI
 			Dizajn dizajn = dizajner.dizajn;
 			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
 
-			lblNDnosivost.Text = jezik["lblNDnosivost"].tekst() + ": " + Fje.PrefiksFormater(dizajner.odabranTrup.nosivost);
+			lblNDnosivost.Text = jezik["lblNDnosivost"].tekst() + ": " + Fje.PrefiksFormater(dizajner.odabranTrup.Nosivost);
 			lblNDoklop.Text = jezik["lblNDoklop"].tekst() + " (" + dizajn.oklop.naziv + "): " + Fje.PrefiksFormater(dizajn.izdrzljivostOklopa);
 			lblNDpokretljivost.Text = jezik["lblNDpokretljivost"].tekst() + " (" + dizajn.potisnici.naziv + "): " + Fje.PrefiksFormater(dizajn.pokretljivost);
 			lblNDsenzori.Text = jezik["lblNDsenzori"].tekst() + " (" + dizajn.senzor.naziv + "): " + Fje.PrefiksFormater(dizajn.snagaSenzora);

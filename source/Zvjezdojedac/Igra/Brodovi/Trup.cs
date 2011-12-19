@@ -23,7 +23,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
 				int velicina = int.Parse(podaci["VELICINA"]);
-				Formula kapacitetPrikrivanja = Formula.IzStringa(podaci["KAPACITET_PRIKRIVANJA"]);
+				Formula kapacitetPrikrivanja = Formula.IzStringa(podaci["OMETANJE"]);
 				Formula velicina_MZPogona_p = Formula.IzStringa(podaci["VELICINA_MZPOGONA"]);
 				Formula velicina_reaktora_p = Formula.IzStringa(podaci["VELICINA_REAKTORA"]);
 				Formula velicina_stita_p = Formula.IzStringa(podaci["VELICINA_STITA"]);
@@ -32,7 +32,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				Formula bazaOklopa = Formula.IzStringa(podaci["BAZA_OKLOPA"]);
 				Formula bazaStita = Formula.IzStringa(podaci["BAZA_STITA"]);
 				Formula cijena = Formula.IzStringa(podaci["CIJENA"]);
-				Formula brojSenzora = Formula.IzStringa(podaci["BR_SENZORA"]);
+				Formula brojSenzora = Formula.IzStringa(podaci["SENZOR_PLUS"]);
 
 				TrupInfo trupInfo = new TrupInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,
@@ -65,7 +65,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			#endregion
 
 			public int velicina { get; private set; }
-			private Formula kapacitetPrikrivanja;
+			private Formula ometanje;
 			private Formula nosivost;
 			private Formula velicina_MZPogona;
 			private Formula velicina_reaktora;
@@ -74,7 +74,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			private Formula bazaOklopa;
 			private Formula bazaStita;
 			private Formula cijena;
-			private Formula brojSenzora;
+			private Formula senzorPlus;
 
 			private TrupInfo(string naziv, string opis, Image slika,
 				List<Preduvjet> preduvjeti, int maxNivo,
@@ -87,7 +87,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				base(naziv, opis, slika, preduvjeti, maxNivo)
 			{
 				this.velicina = velicina;
-				this.kapacitetPrikrivanja = kapacitetPrikrivanja;
+				this.ometanje = kapacitetPrikrivanja;
 				this.velicina_MZPogona = velicina_MZPogona;
 				this.velicina_reaktora = velicina_reaktora;
 				this.velicina_stita = velicina_stita;
@@ -95,7 +95,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				this.nosivost = nosivost;
 				this.bazaOklopa = bazaOklopa;
 				this.bazaStita = bazaStita;
-				this.brojSenzora = brojSenzora;
+				this.senzorPlus = brojSenzora;
 				this.cijena = cijena;
 			}
 
@@ -110,7 +110,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				return new Trup(
 					this,
 					nivo,
-					Evaluiraj(kapacitetPrikrivanja, nivo),
+					Evaluiraj(ometanje, nivo),
 					Evaluiraj(velicina_MZPogona, nivo),
 					Evaluiraj(velicina_reaktora, nivo),
 					Evaluiraj(velicina_stita, nivo),
@@ -118,22 +118,22 @@ namespace Zvjezdojedac.Igra.Brodovi
 					Evaluiraj(tromost, nivo),
 					Evaluiraj(bazaOklopa, nivo),
 					Evaluiraj(bazaStita, nivo),
-					(int)Evaluiraj(brojSenzora, nivo),
+					(int)Evaluiraj(senzorPlus, nivo),
 					Evaluiraj(cijena, nivo)
 					);
 			}
 		}
 
-		public double kapacitetPrikrivanja { get; private set; }
-		public double velicina_MZPogona { get; private set; }
-		public double velicina_reaktora { get; private set; }
-		public double velicina_stita { get; private set; }
-		public double nosivost { get; private set; }
-		public double tromost { get; private set; }
-		public double bazaOklopa { get; private set; }
-		public double bazaStita { get; private set; }
-		public int brojSenzora { get; private set; }
-		public double cijena { get; private set; }
+		public double OmetanjeBaza { get; private set; }
+		public double VelicinaMZPogona { get; private set; }
+		public double VelicinaReaktora { get; private set; }
+		public double VelicinaStita { get; private set; }
+		public double Nosivost { get; private set; }
+		public double Tromost { get; private set; }
+		public double BazaOklopa { get; private set; }
+		public double BazaStita { get; private set; }
+		public int SenzorPlus { get; private set; }
+		public double Cijena { get; private set; }
 
 		private Trup(TrupInfo info, int nivo,
 			double kapacitetPrikrivanja, double velicina_MZPogona,
@@ -142,16 +142,16 @@ namespace Zvjezdojedac.Igra.Brodovi
 			double cijena)
 			: base(info, nivo)
 		{			
-			this.kapacitetPrikrivanja = kapacitetPrikrivanja;
-			this.velicina_MZPogona = velicina_MZPogona;
-			this.velicina_reaktora = velicina_reaktora;
-			this.velicina_stita = velicina_stita;
-			this.nosivost = nosivost;
-			this.tromost = tromost;
-			this.bazaOklopa = bazaOklopa;
-			this.bazaStita = bazaStita;
-			this.brojSenzora = brojSenzora;
-			this.cijena = cijena;
+			this.OmetanjeBaza = kapacitetPrikrivanja;
+			this.VelicinaMZPogona = velicina_MZPogona;
+			this.VelicinaReaktora = velicina_reaktora;
+			this.VelicinaStita = velicina_stita;
+			this.Nosivost = nosivost;
+			this.Tromost = tromost;
+			this.BazaOklopa = bazaOklopa;
+			this.BazaStita = bazaStita;
+			this.SenzorPlus = brojSenzora;
+			this.Cijena = cijena;
 		}
 
 		public int velicina

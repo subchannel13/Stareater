@@ -11,18 +11,18 @@ namespace Zvjezdojedac.Igra.Brodovi
 	{
 		static class Koef
 		{
-			public const string Brzine = "BRZINA_KOEF";
 			public const string Izdrzljivosti = "IZDRZLJIVOST_KOEF";
-			public const string Ometanja = "OMETANJE_KOEF";
 			public const string StitDebljina = "STIT_DEBLJINA_KOEF";
 			public const string StitIzdrzljivost = "STIT_IZDRZLJIVOST_KOEF";
 			public const string StitObnavljanje = "STIT_OBNAVLJANJE_KOEF";
 		}
 		static class Plus
 		{
-			public const string BrSenzora = "BR_SENZORA_PLUS";
+			public const string Brzina = "BRZINA_PLUS";
 			public const string Inercija = "INERCIJA_PLUS";
+			public const string Ometanje = "OMETANJE_PLUS";
 			public const string Prikrivanje = "PRIKRIVANJE_PLUS";
+			public const string SnagaSenzora = "SENZOR_PLUS";
 			public const string VelicinaReaktora = "REAKTOR_PLUS";
 		}
 		public enum PrivEfektTip
@@ -59,15 +59,15 @@ namespace Zvjezdojedac.Igra.Brodovi
 		{
 			Dictionary<string, PrivEfektInfo> ret = new Dictionary<string, PrivEfektInfo>();
 
-			ret.Add(Koef.Brzine, new PrivEfektInfo("SOE_KOEF_BRZINE", PrivEfektTip.Koeficijent));
 			ret.Add(Koef.Izdrzljivosti, new PrivEfektInfo("SOE_KOEF_IZDRZ", PrivEfektTip.Koeficijent));
-			ret.Add(Koef.Ometanja, new PrivEfektInfo("SOE_KOEF_OMET", PrivEfektTip.Koeficijent));
 			ret.Add(Koef.StitDebljina, new PrivEfektInfo("SOE_KOEF_STIT_DEB", PrivEfektTip.Koeficijent));
 			ret.Add(Koef.StitIzdrzljivost, new PrivEfektInfo("SOE_KOEF_STIT_IZD", PrivEfektTip.Koeficijent));
 			ret.Add(Koef.StitObnavljanje, new PrivEfektInfo("SOE_KOEF_STIT_OBN", PrivEfektTip.Koeficijent));
 
-			ret.Add(Plus.BrSenzora, new PrivEfektInfo("SOE_PLUS_SENZORI", PrivEfektTip.Pribrojnik));
+			ret.Add(Plus.Brzina, new PrivEfektInfo("SOE_PLUS_BRZINA", PrivEfektTip.Pribrojnik));
+			ret.Add(Plus.SnagaSenzora, new PrivEfektInfo("SOE_PLUS_SENZORI", PrivEfektTip.Pribrojnik));
 			ret.Add(Plus.Inercija, new PrivEfektInfo("SOE_PLUS_INERC", PrivEfektTip.Pribrojnik));
+			ret.Add(Plus.Ometanje, new PrivEfektInfo("SOE_PLUS_OMET", PrivEfektTip.Pribrojnik));
 			ret.Add(Plus.Prikrivanje, new PrivEfektInfo("SOE_PLUS_PRIK", PrivEfektTip.Pribrojnik));
 			ret.Add(Plus.VelicinaReaktora, new PrivEfektInfo("SOE_PLUS_REAKTOR", PrivEfektTip.Pribrojnik));
 			return ret;
@@ -75,7 +75,6 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 		static class Iznos
 		{
-			public const string BrSenzora = "BR_SENZORA";
 			public const string KoefSnage = "KOEF_SNAGE_REAKTORA";
 			public const string Inercija = "INERCIJA";
 			public const string Izdrzljivosti = "OKLOP";
@@ -180,9 +179,9 @@ namespace Zvjezdojedac.Igra.Brodovi
 				/*
 				 * slobodan prostor za oruzja/misije
 				 */
-				double preostaliProstor = trup.nosivost;
-				if (stit != null) preostaliProstor -= trup.velicina_stita;
-				if (MZPogon != null) preostaliProstor -= trup.velicina_MZPogona;
+				double preostaliProstor = trup.Nosivost;
+				if (stit != null) preostaliProstor -= trup.VelicinaStita;
+				if (MZPogon != null) preostaliProstor -= trup.VelicinaMZPogona;
 				foreach (SpecijalnaOprema so in specijalnaOprema.Keys)
 					preostaliProstor -= so.velicina * specijalnaOprema[so];
 				/*
@@ -224,7 +223,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 			#region Cijena
 			{
-				cijena = trup.cijena;
+				cijena = trup.Cijena;
 				if (MZPogon != null) cijena += MZPogon.cijena;
 				if (this.primarnoOruzje != null) cijena += primarnoOruzje.cijena * this.primarnoOruzje.kolicina;
 				if (this.sekundarnoOruzje != null) cijena += sekundarnoOruzje.cijena * this.sekundarnoOruzje.kolicina;
@@ -237,14 +236,14 @@ namespace Zvjezdojedac.Igra.Brodovi
 			#region Efekti
 			{
 				Dictionary<string, double> privremeniEfekti = new Dictionary<string, double>();
-				privremeniEfekti[Koef.Brzine] = 1;
 				privremeniEfekti[Koef.Izdrzljivosti] = 1;
-				privremeniEfekti[Koef.Ometanja] = (stit != null) ? stit.ometanje : 1;
 				privremeniEfekti[Koef.StitDebljina] = 1;
 				privremeniEfekti[Koef.StitIzdrzljivost] = 1;
 				privremeniEfekti[Koef.StitObnavljanje] = 1;
-				privremeniEfekti[Plus.BrSenzora] = 0;
+				privremeniEfekti[Plus.Brzina] = 0;
+				privremeniEfekti[Plus.SnagaSenzora] = 0;
 				privremeniEfekti[Plus.Inercija] = 0;
+				privremeniEfekti[Plus.Ometanje] = (stit != null) ? stit.ometanje : 0;
 				privremeniEfekti[Plus.Prikrivanje] = (stit != null) ? stit.prikrivanje : 0;
 				privremeniEfekti[Plus.VelicinaReaktora] = 0;
 				foreach (SpecijalnaOprema so in specijalnaOprema.Keys)
@@ -252,7 +251,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 						privremeniEfekti[e] += so.efekti[e] * specijalnaOprema[so];
 
 				#region Reaktor
-				double snagaReaktora = reaktor.snaga * (trup.velicina_reaktora + privremeniEfekti[Plus.VelicinaReaktora]) / trup.velicina_reaktora;
+				double snagaReaktora = reaktor.snaga * (trup.VelicinaReaktora + privremeniEfekti[Plus.VelicinaReaktora]) / trup.VelicinaReaktora;
 				{
 					double opterecenjeReaktora = 0;
 					if (stit != null) opterecenjeReaktora += stit.snaga;
@@ -268,7 +267,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				#endregion
 
 				#region Oklop
-				efekti[Iznos.Izdrzljivosti] = Math.Round(trup.bazaOklopa * oklop.izdrzljivost * privremeniEfekti[Koef.Izdrzljivosti]);
+				efekti[Iznos.Izdrzljivosti] = Math.Round(trup.BazaOklopa * oklop.izdrzljivost * privremeniEfekti[Koef.Izdrzljivosti]);
 				#endregion
 
 				#region MZ pogon
@@ -280,17 +279,15 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 				#region Pokretljivost
 				{
-					double inercija = Math.Max(Math.Round(trup.tromost + privremeniEfekti[Plus.Inercija]), 0);
+					double inercija = Math.Max(Math.Round(trup.Tromost + privremeniEfekti[Plus.Inercija]), 0);
 					efekti[Iznos.Inercija] = inercija;
-					efekti[Iznos.Pokretljivosti] = Math.Round(potisnici.brzina * Math.Pow(2, -inercija / 10) * privremeniEfekti[Koef.Brzine]);
+					efekti[Iznos.Pokretljivosti] = Math.Round(potisnici.brzina - inercija + privremeniEfekti[Plus.Brzina]);
 				}
 				#endregion
 
 				#region Senzori
 				{
-					double brojSenzora = Math.Round(trup.brojSenzora + privremeniEfekti[Plus.BrSenzora]);
-					efekti[Iznos.BrSenzora] = brojSenzora;
-					efekti[Iznos.SnageSenzora] = Math.Round(senzor.razlucivost * Senzor.BonusKolicine(brojSenzora));
+					efekti[Iznos.SnageSenzora] = Math.Round(trup.SenzorPlus + senzor.razlucivost + privremeniEfekti[Plus.SnagaSenzora]);
 				}
 				#endregion
 
@@ -299,8 +296,8 @@ namespace Zvjezdojedac.Igra.Brodovi
 					if (stit != null)
 					{
 						efekti[Iznos.StitDebljina] = Math.Round(stit.debljina * Math.Max(privremeniEfekti[Koef.StitDebljina], 0));
-						efekti[Iznos.StitIzdrzljivost] = Math.Round(trup.bazaStita * stit.izdrzljivost * Math.Max(privremeniEfekti[Koef.StitIzdrzljivost], 0));
-						efekti[Iznos.StitObnavljanje] = Math.Round(trup.bazaStita * stit.obnavljanje * Math.Max(privremeniEfekti[Koef.StitObnavljanje], 0));
+						efekti[Iznos.StitIzdrzljivost] = Math.Round(trup.BazaStita * stit.izdrzljivost * Math.Max(privremeniEfekti[Koef.StitIzdrzljivost], 0));
+						efekti[Iznos.StitObnavljanje] = Math.Round(trup.BazaStita * stit.obnavljanje * Math.Max(privremeniEfekti[Koef.StitObnavljanje], 0));
 					}
 					else
 					{
@@ -313,7 +310,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 				#region Prikrivanje
 				{
-					efekti[Iznos.Ometanje] = Math.Round(trup.kapacitetPrikrivanja * Math.Max(privremeniEfekti[Koef.Ometanja], 0));
+					efekti[Iznos.Ometanje] = Math.Round(trup.OmetanjeBaza + Math.Max(privremeniEfekti[Plus.Ometanje], 0));
 					efekti[Iznos.Prikrivanje] = Math.Round(Math.Max(privremeniEfekti[Plus.Prikrivanje], 0));
 				}
 				#endregion
@@ -398,7 +395,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				Oklop oklop = this.oklop.info.naciniKomponentu(varijable);;
 				Senzor senzor = this.senzor.info.naciniKomponentu(varijable);
 				Potisnici potisnici = this.potisnici.info.naciniKomponentu(varijable);
-				Reaktor reaktor = this.reaktor.info.naciniKomponentu(varijable, trup.velicina_reaktora);
+				Reaktor reaktor = this.reaktor.info.naciniKomponentu(varijable, trup.VelicinaReaktora);
 
 				nadogradiv |= trup.nivo > this.trup.nivo;
 				nadogradiv |= oklop.nivo > this.oklop.nivo;
@@ -420,13 +417,13 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 				Stit stit = null;
 				if (this.stit != null) {
-					stit = this.stit.info.naciniKomponentu(varijable, trup.velicina_stita);
+					stit = this.stit.info.naciniKomponentu(varijable, trup.VelicinaStita);
 					nadogradiv |= stit.nivo > this.stit.nivo;
 				}
 
 				MZPogon MZPogon = null;
 				if (this.MZPogon != null) {
-					MZPogon = this.MZPogon.info.naciniKomponentu(varijable, trup.velicina_MZPogona);
+					MZPogon = this.MZPogon.info.naciniKomponentu(varijable, trup.VelicinaMZPogona);
 					nadogradiv |= MZPogon.nivo > this.MZPogon.nivo;
 				}
 
@@ -468,11 +465,6 @@ namespace Zvjezdojedac.Igra.Brodovi
 		public double debljinaStita
 		{
 			get { return efekti[Iznos.StitDebljina]; }
-		}
-
-		public double brSenzora
-		{
-			get { return efekti[Iznos.BrSenzora]; }
 		}
 
 		public double inercija
@@ -671,7 +663,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				komp = ucitajKomponentu(ulaz.podatak(PohStit));
 				stit = Stit.StitInfo.
 					IzIda(komp.idInfa).
-					naciniKomponentu(komp.nivo, trup.velicina_stita);
+					naciniKomponentu(komp.nivo, trup.VelicinaStita);
 			}
 
 			MZPogon mzPogon = null;
@@ -679,7 +671,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				komp = ucitajKomponentu(ulaz.podatak(PohMZPogon));
 				mzPogon = MZPogon.MZPogonInfo.
 					IzIda(komp.idInfa).
-					naciniKomponentu(komp.nivo, trup.velicina_MZPogona);
+					naciniKomponentu(komp.nivo, trup.VelicinaMZPogona);
 			}
 
 			komp = ucitajKomponentu(ulaz.podatak(PohOklop));
@@ -692,7 +684,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			Potisnici potisnici = Potisnici.PotisnikInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo);
 
 			komp = ucitajKomponentu(ulaz.podatak(PohReaktor));
-			Reaktor reaktor = Reaktor.ReaktorInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo, trup.velicina_reaktora);
+			Reaktor reaktor = Reaktor.ReaktorInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo, trup.VelicinaReaktora);
 
 			int brSpecOp = ulaz.podatakInt(PohSpecOp);
 			Dictionary<SpecijalnaOprema, int> specOprema = new Dictionary<SpecijalnaOprema, int>();

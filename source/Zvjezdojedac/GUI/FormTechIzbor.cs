@@ -169,7 +169,7 @@ namespace Zvjezdojedac.GUI
 			#region Stitovi
 			cbOpKategorija.Items.Add(new TagTekst<KategorijaOpreme>(KategorijaOpreme.Stit, jezik["opKatStit"].tekst()));
 			items = new List<ListViewItem>();
-			foreach (Stit stit in Stit.StitInfo.DostupniStitovi(igrac.efekti, najveci.velicina_stita))
+			foreach (Stit stit in Stit.StitInfo.DostupniStitovi(igrac.efekti, najveci.VelicinaStita))
 				items.Add(komponentaListViewItem(stit));
 			opremaStavke.Add(KategorijaOpreme.Stit, items.ToArray());
 			prikaziKomponenti.Add(KategorijaOpreme.Stit, prikazStita);
@@ -271,17 +271,17 @@ namespace Zvjezdojedac.GUI
 			sb.AppendLine();
 			sb.AppendLine();
 			sb.AppendLine(jezik["opTrupVelicina"].tekst() + ": " + Fje.PrefiksFormater(trup.velicina));
-			sb.AppendLine(jezik["opTrupProstor"].tekst() + ": " + Fje.PrefiksFormater(trup.nosivost));
-			sb.AppendLine(jezik["opTrupTromost"].tekst() + ": " + trup.tromost);
-			sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(trup.cijena));
+			sb.AppendLine(jezik["opTrupProstor"].tekst() + ": " + Fje.PrefiksFormater(trup.Nosivost));
+			sb.AppendLine(jezik["opTrupTromost"].tekst() + ": " + trup.Tromost);
+			sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(trup.Cijena));
 			sb.AppendLine();
-			sb.AppendLine(jezik["opTrupOklop"].tekst() + ": " + Fje.PrefiksFormater(trup.bazaOklopa));
-			sb.AppendLine(jezik["opTrupStit"].tekst() + ": " + Fje.PrefiksFormater(trup.bazaStita));
-			sb.AppendLine(jezik["opTrupPrik"].tekst() + ": " + trup.kapacitetPrikrivanja);
-			sb.AppendLine(jezik["opTrupSenzori"].tekst() + ": x" + Senzor.BonusKolicine(trup.brojSenzora).ToString("0.##"));
+			sb.AppendLine(jezik["opTrupOklop"].tekst() + ": " + Fje.PrefiksFormater(trup.BazaOklopa));
+			sb.AppendLine(jezik["opTrupStit"].tekst() + ": " + Fje.PrefiksFormater(trup.BazaStita));
+			sb.AppendLine(jezik["opTrupPrik"].tekst() + ": " + trup.OmetanjeBaza);
+			sb.AppendLine(jezik["opTrupSenzori"].tekst() + ": " + trup.SenzorPlus.ToString("+0;-0"));
 			sb.AppendLine();
-			sb.AppendLine(jezik["opTrupVelReak"].tekst() + ": " + trup.velicina_reaktora + " " + jezik["opTrupRezerv"].tekst());
-			sb.AppendLine(jezik["opTrupVelMZ"].tekst() + ": " + trup.velicina_MZPogona);
+			sb.AppendLine(jezik["opTrupVelReak"].tekst() + ": " + trup.VelicinaReaktora + " " + jezik["opTrupRezerv"].tekst());
+			sb.AppendLine(jezik["opTrupVelMZ"].tekst() + ": " + trup.VelicinaMZPogona);
 			txtOpOpis.Text = sb.ToString();
 		}
 		private void prikazOruzja(IKomponenta komponentaObj)
@@ -313,7 +313,7 @@ namespace Zvjezdojedac.GUI
 		{
 			Trup trup = ((TagTekst<Trup>)cbOpVelicine.SelectedItem).tag;
 			Stit stit = (Stit)komponentaObj;
-			stit = stit.info.naciniKomponentu(stit.nivo, trup.velicina_stita);
+			stit = stit.info.naciniKomponentu(stit.nivo, trup.VelicinaStita);
 			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
 
 			StringBuilder sb = new StringBuilder(txtOpOpis.Text);
@@ -328,7 +328,7 @@ namespace Zvjezdojedac.GUI
 			jezik = Postavke.Jezik[Kontekst.FormTech];
 			sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(stit.cijena));
 			sb.AppendLine(jezik["opSnaga"].tekst() + ": " + Fje.PrefiksFormater(stit.snaga));
-			sb.AppendLine(jezik["opVelicina"].tekst() + ": " + Fje.PrefiksFormater(trup.velicina_stita));
+			sb.AppendLine(jezik["opVelicina"].tekst() + ": " + Fje.PrefiksFormater(trup.VelicinaStita));
 			txtOpOpis.Text = sb.ToString();
 		}
 		private void prikazSpecOp(IKomponenta komponentaObj)
@@ -363,15 +363,15 @@ namespace Zvjezdojedac.GUI
 			if (indeks < opremaOstaloZadnjiIndeks[0]) {
 				cbOpVelicine.Visible = true;
 				MZPogon pogon = (MZPogon)komponentaObj;
-				pogon = pogon.info.naciniKomponentu(pogon.nivo, trup.velicina_MZPogona);
+				pogon = pogon.info.naciniKomponentu(pogon.nivo, trup.VelicinaMZPogona);
 
 				jezik = jezikTech;
-				if (trup.velicina_MZPogona >= pogon.info.minimalnaVelicina(pogon.nivo)) {	
+				if (trup.VelicinaMZPogona >= pogon.info.minimalnaVelicina(pogon.nivo)) {	
 					sb.AppendLine(jezik["opMZbrzina"].tekst() + ": " + pogon.brzina.ToString("0.###"));
 					sb.AppendLine();
 					sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(pogon.cijena));
 					sb.AppendLine(jezik["opSnaga"].tekst() + ": " + Fje.PrefiksFormater(pogon.snaga));
-					sb.AppendLine(jezik["opVelicina"].tekst() + ": " + Fje.PrefiksFormater(trup.velicina_MZPogona));
+					sb.AppendLine(jezik["opVelicina"].tekst() + ": " + Fje.PrefiksFormater(trup.VelicinaMZPogona));
 				}
 				else {
 					sb.AppendLine(jezik["opMinVel"].tekst() + ": " +  Fje.PrefiksFormater(pogon.info.minimalnaVelicina(pogon.nivo)));
@@ -386,10 +386,10 @@ namespace Zvjezdojedac.GUI
 			else if (indeks < opremaOstaloZadnjiIndeks[2]) {
 				cbOpVelicine.Visible = true;
 				Reaktor reaktor = (Reaktor)komponentaObj;
-				reaktor = reaktor.info.naciniKomponentu(reaktor.nivo, trup.velicina_reaktora);
+				reaktor = reaktor.info.naciniKomponentu(reaktor.nivo, trup.VelicinaReaktora);
 
 				sb.AppendLine(jezikTech["opMinVel"].tekst() + ": " + Fje.PrefiksFormater(reaktor.info.minimalnaVelicina(reaktor.nivo)));
-				if (trup.velicina_reaktora >= reaktor.info.minimalnaVelicina(reaktor.nivo))
+				if (trup.VelicinaReaktora >= reaktor.info.minimalnaVelicina(reaktor.nivo))
 					sb.AppendLine(jezik["opisReaktorDost"].tekst() + ": " + Fje.PrefiksFormater(reaktor.snaga));
 				else
 					sb.AppendLine(jezikTech["opNeStane"].tekst());

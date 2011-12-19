@@ -97,17 +97,17 @@ namespace Zvjezdojedac.Igra.Brodovi
 			Oruzje primarnoOruzje = (this.primarnoOruzje != null) ? this.primarnoOruzje.naciniKomponentu(varijable) : null;
 			Oruzje sekundarnoOruzje = (this.sekundarnoOruzje != null) ? this.sekundarnoOruzje.naciniKomponentu(varijable) : null;
 			Oklop oklop = Oklop.OklopInfo.NajboljiOklop(varijable);
-			Stit stit = (this.stit != null) ? this.stit.naciniKomponentu(varijable, trup.velicina_stita) : null;
+			Stit stit = (this.stit != null) ? this.stit.naciniKomponentu(varijable, trup.VelicinaStita) : null;
 			Senzor senzor = Senzor.SenzorInfo.NajboljiSenzor(varijable);
 			Potisnici potisnici = Potisnici.PotisnikInfo.NajboljiPotisnici(varijable);
-			Reaktor reaktor = Reaktor.ReaktorInfo.NajboljiReaktor(varijable, trup.velicina_reaktora);
+			Reaktor reaktor = Reaktor.ReaktorInfo.NajboljiReaktor(varijable, trup.VelicinaReaktora);
 
 			Dictionary<SpecijalnaOprema, int> specijalnaOprema = new Dictionary<SpecijalnaOprema,int>();
 			foreach(SpecijalnaOprema.SpecijalnaOpremaInfo soi in this.specijalnaOprema.Keys)
 				specijalnaOprema.Add(soi.naciniKomponentu(varijable, trup.velicina), this.specijalnaOprema[soi]);
 
 			MZPogon mzPogon = null;
-			if (this.mzPogon) mzPogon = MZPogon.MZPogonInfo.NajboljiMZPogon(varijable, trup.velicina_MZPogona);
+			if (this.mzPogon) mzPogon = MZPogon.MZPogonInfo.NajboljiMZPogon(varijable, trup.VelicinaMZPogona);
 
 			return new Dizajn(naziv, trup, primarnoOruzje, sekundarnoOruzje,
 				udioPrimarnogOruzja, oklop, stit, specijalnaOprema,
