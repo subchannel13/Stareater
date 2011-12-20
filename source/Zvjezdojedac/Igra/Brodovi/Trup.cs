@@ -30,16 +30,18 @@ namespace Zvjezdojedac.Igra.Brodovi
 				Formula nosivost = Formula.IzStringa(podaci["NOSIVOST"]);
 				Formula tromost = Formula.IzStringa(podaci["TROMOST"]);
 				Formula bazaOklopa = Formula.IzStringa(podaci["BAZA_OKLOPA"]);
+				Formula bazaOklopUblazavanja = Formula.IzStringa(podaci["BAZA_OKLOP_UBL"]);
 				Formula bazaStita = Formula.IzStringa(podaci["BAZA_STITA"]);
 				Formula cijena = Formula.IzStringa(podaci["CIJENA"]);
-				Formula brojSenzora = Formula.IzStringa(podaci["SENZOR_PLUS"]);
+				Formula senzorPlus = Formula.IzStringa(podaci["SENZOR_PLUS"]);
 
 				TrupInfo trupInfo = new TrupInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,
 					velicina, kapacitetPrikrivanja, 
 					velicina_MZPogona_p, velicina_reaktora_p,
-					velicina_stita_p, nosivost, tromost, bazaOklopa,
-					bazaStita, brojSenzora, cijena
+					velicina_stita_p, nosivost, tromost, 
+					bazaOklopa, bazaOklopUblazavanja, bazaStita,
+					senzorPlus, cijena
 					);
 				
 				Trupovi.Add(trupInfo);
@@ -72,6 +74,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			private Formula velicina_stita;
 			private Formula tromost;
 			private Formula bazaOklopa;
+			private Formula bazaOklopUblazavanja;
 			private Formula bazaStita;
 			private Formula cijena;
 			private Formula senzorPlus;
@@ -81,7 +84,8 @@ namespace Zvjezdojedac.Igra.Brodovi
 				int velicina, Formula kapacitetPrikrivanja,
 				Formula velicina_MZPogona, Formula velicina_reaktora,
 				Formula velicina_stita,	Formula nosivost, Formula tromost,
-				Formula bazaOklopa, Formula bazaStita, Formula brojSenzora,
+				Formula bazaOklopa, Formula bazaOklopUblazavanja, Formula bazaStita, 
+				Formula senzorPlus,
 				Formula cijena)
 				: 
 				base(naziv, opis, slika, preduvjeti, maxNivo)
@@ -94,8 +98,9 @@ namespace Zvjezdojedac.Igra.Brodovi
 				this.tromost = tromost;
 				this.nosivost = nosivost;
 				this.bazaOklopa = bazaOklopa;
+				this.bazaOklopUblazavanja = bazaOklopUblazavanja;
 				this.bazaStita = bazaStita;
-				this.senzorPlus = brojSenzora;
+				this.senzorPlus = senzorPlus;
 				this.cijena = cijena;
 			}
 
@@ -117,6 +122,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 					Evaluiraj(nosivost, nivo),
 					Evaluiraj(tromost, nivo),
 					Evaluiraj(bazaOklopa, nivo),
+					Evaluiraj(bazaOklopUblazavanja, nivo),
 					Evaluiraj(bazaStita, nivo),
 					(int)Evaluiraj(senzorPlus, nivo),
 					Evaluiraj(cijena, nivo)
@@ -131,6 +137,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 		public double Nosivost { get; private set; }
 		public double Tromost { get; private set; }
 		public double BazaOklopa { get; private set; }
+		public double BazaOklopUblazavanja { get; private set; }
 		public double BazaStita { get; private set; }
 		public int SenzorPlus { get; private set; }
 		public double Cijena { get; private set; }
@@ -138,7 +145,8 @@ namespace Zvjezdojedac.Igra.Brodovi
 		private Trup(TrupInfo info, int nivo,
 			double kapacitetPrikrivanja, double velicina_MZPogona,
 			double velicina_reaktora, double velicina_stita, double nosivost,
-			double tromost, double bazaOklopa, double bazaStita, int brojSenzora,
+			double tromost, double bazaOklopa, double bazaOklopUblazavanja, double bazaStita,
+			int senzorPlus,
 			double cijena)
 			: base(info, nivo)
 		{			
@@ -149,8 +157,9 @@ namespace Zvjezdojedac.Igra.Brodovi
 			this.Nosivost = nosivost;
 			this.Tromost = tromost;
 			this.BazaOklopa = bazaOklopa;
+			this.BazaOklopUblazavanja = bazaOklopUblazavanja;
 			this.BazaStita = bazaStita;
-			this.SenzorPlus = brojSenzora;
+			this.SenzorPlus = senzorPlus;
 			this.Cijena = cijena;
 		}
 

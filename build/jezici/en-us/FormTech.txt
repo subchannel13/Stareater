@@ -41,6 +41,7 @@ opTrupVelicina = Size
 opTrupProstor = Capacity
 opTrupTromost = Inertia
 opTrupOklop = Armor base
+opTrupOklopUblBaza = Armor damage reduction
 opTrupStit = Shield base
 opTrupPrik = Stealth
 opTrupSenzori = Sensor strength

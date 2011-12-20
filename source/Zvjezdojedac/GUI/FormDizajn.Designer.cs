@@ -256,6 +256,7 @@
 			this.btnSpremi.TabIndex = 43;
 			this.btnSpremi.Text = "Spremi";
 			this.btnSpremi.UseVisualStyleBackColor = true;
+			this.btnSpremi.Click += new System.EventHandler(this.btnSpremi_Click);
 			// 
 			// cbVelicina
 			// 
@@ -398,6 +399,7 @@
 			this.Name = "FormDizajn";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "FormDizajn";
 			this.Load += new System.EventHandler(this.FormDizajn_Load);
 			((System.ComponentModel.ISupportInitialize)(this.picSlika)).EndInit();

@@ -22,10 +22,12 @@ namespace Zvjezdojedac.Igra.Brodovi
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
 				Formula izdrzljivost = Formula.IzStringa(podaci["IZDRZLJIVOST"]);
+				Formula ublazavanjeSteteKoef = Formula.IzStringa(podaci["UBLAZAVANJE_KOEF"]);
+				Formula ublazavanjeSteteMax = Formula.IzStringa(podaci["UBLAZAVANJE_MAX"]);
 
 				Oklopi.Add(new OklopInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,
-					izdrzljivost)
+					izdrzljivost, ublazavanjeSteteKoef, ublazavanjeSteteMax)
 					);
 			}
 
@@ -49,6 +51,16 @@ namespace Zvjezdojedac.Igra.Brodovi
 				return naj;
 			}
 
+			public static List<Oklop> Dostupni(Dictionary<string, double> varijable)
+			{
+				List<Oklop> ret = new List<Oklop>();
+				foreach (OklopInfo oklopInfo in Oklopi)
+					if (oklopInfo.dostupno(varijable))
+						ret.Add(oklopInfo.naciniKomponentu(varijable));
+
+				return ret;
+			}
+
 			public static OklopInfo IzIda(int id)
 			{
 				foreach (OklopInfo info in Oklopi)
@@ -59,14 +71,18 @@ namespace Zvjezdojedac.Igra.Brodovi
 			#endregion
 
 			private Formula izdrzljivost;
+			private Formula ublazavanjeSteteKoef;
+			private Formula ublazavanjeSteteMax;
 
 			private OklopInfo(string naziv, string opis, Image slika,
 				List<Preduvjet> preduvjeti, int maxNivo,
-				Formula izdrzljivost)
+				Formula izdrzljivost, Formula ublazavanjeSteteKoef, Formula ublazavanjeSteteMax)
 				:
 				base(naziv, opis, slika, preduvjeti, maxNivo)
 			{
 				this.izdrzljivost = izdrzljivost;
+				this.ublazavanjeSteteKoef = ublazavanjeSteteKoef;
+				this.ublazavanjeSteteMax = ublazavanjeSteteMax;
 			}
 
 			public Oklop naciniKomponentu(Dictionary<string, double> varijable)
@@ -80,17 +96,24 @@ namespace Zvjezdojedac.Igra.Brodovi
 				return new Oklop(
 					this, 
 					nivo, 
-					Evaluiraj(izdrzljivost, nivo)
+					Evaluiraj(izdrzljivost, nivo),
+					Evaluiraj(ublazavanjeSteteKoef, nivo),
+					Evaluiraj(ublazavanjeSteteMax, nivo)
 					);
 			}
 		}
 
 		public double izdrzljivost { get; private set; }
+		public double ublazavanjeSteteKoef { get; private set; }
+		public double ublazavanjeSteteMax { get; private set; }
 
-		public Oklop(OklopInfo info, int nivo, double izdrzljivost)
+		public Oklop(OklopInfo info, int nivo, double izdrzljivost,
+			double ublazavanjeSteteKoef, double ublazavanjeSteteMax)
 			: base(info, nivo)
 		{
 			this.izdrzljivost = izdrzljivost;
+			this.ublazavanjeSteteKoef = ublazavanjeSteteKoef;
+			this.ublazavanjeSteteMax = ublazavanjeSteteMax;
 		}
 	}
 }

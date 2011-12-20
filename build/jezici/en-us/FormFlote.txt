@@ -31,6 +31,7 @@ bezMisije = nothing
 bezStita = none
 
 infoMZPogon = IS drive
+infoOklop = Armor
 infoPokret = Mobility
 infoPotisnici = Thrusters
 infoPrimMisija = Primary mission
@@ -45,6 +46,8 @@ naslov = Fleet
 
 opIstiDizajnTekst = Design with the same characteristics already exists
 opIstiDizajnNaslov = Existing design
+opNazivDizajnaTekst = Design name has to have a name
+opNazivDizajnaNaslov = Design name
 
 opisCijena = Cost
 opisCiljanje = Aim
@@ -57,6 +60,8 @@ opisNemaStit = Design has no shield.
 opisNivo = Level
 opisOklop = Armor
 opisOklopIzd = Strength
+opisOklopUblKoef = Damage reduction
+opisOklopUblMax = Damage reduction max.
 opisPokret = Mobility
 opisPrimMis = Primary mission
 opisReaktor = Reactor
@@ -72,6 +77,8 @@ opisSpecOp = Special equipment
 opisStit = Shield
 opisStitDeb = Thickness
 opisStitIzd = Strength
+opisStitUbl = Damage reduction
+opisStitUblInf = Full
 opisStitObn = Recovery speed
 opisTaktika = Tactic
 opisTaktikaPrec = Precision

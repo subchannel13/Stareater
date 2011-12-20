@@ -119,6 +119,7 @@ namespace Zvjezdojedac.GUI
 			#endregion
 
 			btnSpremi.Text = jezik["btnSpremi"].tekst();
+			btnNoviDizajn.Text = jezik["tabNoviDizajn"].tekst();
 			btnUkloniDizajn.Text = jezik["btnUkloniDizajn"].tekst();
 			chBrojBrodova.Text = jezik["chBrojBrodova"].tekst();
 			chDizajnNaziv.Text = jezik["chDizajnNaziv"].tekst();
@@ -295,7 +296,7 @@ namespace Zvjezdojedac.GUI
 						opis.Add(jezik["opisStitIzd"].tekst() + ": " + Fje.PrefiksFormater(dizajn.stit.izdrzljivost));
 						opis.Add(jezik["opisStitObn"].tekst() + ": " + Fje.PrefiksFormater(dizajn.stit.obnavljanje));
 						opis.Add(jezik["opisStitDeb"].tekst() + ": " + Fje.PrefiksFormater(dizajn.stit.debljina));
-						opis.Add(jezik["opisSenzorOm"].tekst() + ": x" + dizajn.stit.ometanje.ToString("0.##"));
+						opis.Add(jezik["opisSenzorOm"].tekst() + ": " + dizajn.stit.ometanje.ToString("+0;-0"));
 						opis.Add(jezik["opisSenzorPrik"].tekst() + ": +" + Fje.PrefiksFormater(dizajn.stit.prikrivanje));
 						if (cijene) {
 							opis.Add("");
@@ -678,6 +679,15 @@ namespace Zvjezdojedac.GUI
 					lstvDizajnovi.Items.RemoveAt(indeks);
 				}
 			}
+		}
+
+		private void btnNoviDizajn_Click(object sender, EventArgs e)
+		{
+			using(var formDizajn = new FormDizajn(igrac))
+				if (formDizajn.ShowDialog() == DialogResult.OK) {
+					igrac.dodajDizajn(formDizajn.Dizajn);
+					dodajDizajn(formDizajn.Dizajn);
+				}
 		}
 	}
 }
