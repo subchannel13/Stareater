@@ -41,6 +41,7 @@ opTrupVelicina = Veličina
 opTrupProstor = Prostor
 opTrupTromost = Tromost
 opTrupOklop = Baza oklopa
+opTrupOklopUblBaza = Ublažavanje štete na oklopu
 opTrupStit = Baza stita
 opTrupPrik = Prikrivanje
 opTrupSenzori = Snaga senzora

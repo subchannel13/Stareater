@@ -24,6 +24,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 				Formula izdrzljivost = Formula.IzStringa(podaci["IZDRZLJIVOST"]);
 				Formula debljina = Formula.IzStringa(podaci["DEBLJINA"]);
+				Formula ublazavanjeStete = Formula.IzStringa(podaci["UBLAZAVANJE"]);
 				Formula obnavljanje = Formula.IzStringa(podaci["OBNAVLJANJE"]);
 				Formula potrosnjaSnage = Formula.IzStringa(podaci["SNAGA"]);
 				Formula prikrivanje = Formula.IzStringa(podaci["PRIKRIVANJE"]);
@@ -32,7 +33,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 				StitInfo info = new StitInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,
-					izdrzljivost, debljina, obnavljanje,
+					izdrzljivost, debljina, ublazavanjeStete, obnavljanje,
 					potrosnjaSnage, prikrivanje, ometanje, cijena
 					);
 
@@ -60,6 +61,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 			private Formula izdrzljivost;
 			private Formula debljina;
+			private Formula ublazavanjeStete;
 			private Formula obnavljanje;
 			private Formula snaga;
 			private Formula prikrivanje;
@@ -68,7 +70,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 			private StitInfo(string naziv, string opis, Image slika,
 				List<Preduvjet> preduvjeti, int maxNivo,
-				Formula izdrzljivost, Formula debljina,
+				Formula izdrzljivost, Formula debljina, Formula ublazavanjeStete,
 				Formula obnavljanje, Formula snaga, Formula prikrivanje,
 				Formula ometanje, Formula cijena)
 				:
@@ -76,6 +78,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			{
 				this.izdrzljivost = izdrzljivost;
 				this.debljina = debljina;
+				this.ublazavanjeStete = ublazavanjeStete;
 				this.obnavljanje = obnavljanje;
 				this.snaga = snaga;
 				this.prikrivanje = prikrivanje;
@@ -96,6 +99,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 					nivo,
 					Evaluiraj(izdrzljivost, nivo, velicinaStita),
 					Evaluiraj(debljina, nivo, velicinaStita),
+					Evaluiraj(ublazavanjeStete, nivo, velicinaStita),
 					Evaluiraj(obnavljanje, nivo, velicinaStita),
 					Evaluiraj(snaga, nivo, velicinaStita),
 					Evaluiraj(prikrivanje, nivo, velicinaStita),
@@ -107,6 +111,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 		public double izdrzljivost { get; private set; }
 		public double debljina { get; private set; }
+		public double ublazavanjeStete { get; private set; }
 		public double obnavljanje { get; private set; }
 		public double snaga { get; private set; }
 		public double prikrivanje { get; private set; }
@@ -114,12 +119,13 @@ namespace Zvjezdojedac.Igra.Brodovi
 		public double cijena { get; private set; }
 
 		public Stit(StitInfo info, int nivo,
-			double izdrzljivost, double debljina, double obnavljanje,
+			double izdrzljivost, double debljina, double ublazavanjeStete, double obnavljanje,
 			double snaga, double prikrivanje, double ometanje, double cijena)
 			: base(info, nivo)
 		{	
 			this.izdrzljivost = izdrzljivost;
 			this.debljina = debljina;
+			this.ublazavanjeStete = ublazavanjeStete;
 			this.obnavljanje = obnavljanje;
 			this.snaga = snaga;
 			this.prikrivanje = prikrivanje;

@@ -14,13 +14,13 @@ namespace Zvjezdojedac.Igra.Brodovi.Dizajner
 
 		private bool promjenjenDizajn;
 		private Dizajn _dizajn;
-		private Trup _dizajnTrup;
+		private Trup _dizajnTrup = null;
 		private string _dizajnIme;
 		private Oruzje _dizajnPrimMisija;
 		private Oruzje _dizajnSekMisija;
 		private double _dizajnUdioPrimMisije = 1;
 		private Stit _dizajnStit;
-		private Dictionary<SpecijalnaOprema, int> _dizajnSpecOprema;
+		private Dictionary<SpecijalnaOprema, int> _dizajnSpecOprema = new Dictionary<SpecijalnaOprema,int>();
 		private bool _dizajnMZPogon;
 		private Taktika _dizajnTaktika;
 
@@ -42,8 +42,7 @@ namespace Zvjezdojedac.Igra.Brodovi.Dizajner
 				komponente.Add(trup, new Komponente(igrac, trup));
 
 			_dizajn = null;
-			odabranTrup = trupovi[0];
-			_dizajnSpecOprema = new Dictionary<SpecijalnaOprema, int>();
+			odabranTrup = odabranTrup ?? trupovi[0];
 			promjenjenDizajn = true;
 		}
 

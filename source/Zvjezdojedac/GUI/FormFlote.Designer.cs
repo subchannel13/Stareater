@@ -75,6 +75,7 @@
 			this.txtNDnaziv = new System.Windows.Forms.TextBox();
 			this.lblNaziv = new System.Windows.Forms.Label();
 			this.picNDSlika = new System.Windows.Forms.PictureBox();
+			this.btnNoviDizajn = new System.Windows.Forms.Button();
 			this.tabvCtrlFlote.SuspendLayout();
 			this.tabDizajnovi.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlikaDizajna)).BeginInit();
@@ -96,6 +97,7 @@
 			// tabDizajnovi
 			// 
 			this.tabDizajnovi.BackColor = System.Drawing.SystemColors.Control;
+			this.tabDizajnovi.Controls.Add(this.btnNoviDizajn);
 			this.tabDizajnovi.Controls.Add(this.btnUkloniDizajn);
 			this.tabDizajnovi.Controls.Add(this.txtDizajnInfo);
 			this.tabDizajnovi.Controls.Add(this.lstvDizajnovi);
@@ -111,7 +113,7 @@
 			// btnUkloniDizajn
 			// 
 			this.btnUkloniDizajn.Enabled = false;
-			this.btnUkloniDizajn.Location = new System.Drawing.Point(8, 341);
+			this.btnUkloniDizajn.Location = new System.Drawing.Point(298, 341);
 			this.btnUkloniDizajn.Name = "btnUkloniDizajn";
 			this.btnUkloniDizajn.Size = new System.Drawing.Size(75, 23);
 			this.btnUkloniDizajn.TabIndex = 5;
@@ -554,6 +556,16 @@
 			this.picNDSlika.TabIndex = 0;
 			this.picNDSlika.TabStop = false;
 			// 
+			// btnNoviDizajn
+			// 
+			this.btnNoviDizajn.Location = new System.Drawing.Point(8, 341);
+			this.btnNoviDizajn.Name = "btnNoviDizajn";
+			this.btnNoviDizajn.Size = new System.Drawing.Size(75, 23);
+			this.btnNoviDizajn.TabIndex = 6;
+			this.btnNoviDizajn.Text = "Novi dizajn";
+			this.btnNoviDizajn.UseVisualStyleBackColor = true;
+			this.btnNoviDizajn.Click += new System.EventHandler(this.btnNoviDizajn_Click);
+			// 
 			// FormFlote
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -625,5 +637,6 @@
 		private System.Windows.Forms.Button btnUkloniDizajn;
 		private System.Windows.Forms.TextBox txtDizajnInfo;
 		private System.Windows.Forms.Button btnNDZadrziInfo;
+		private System.Windows.Forms.Button btnNoviDizajn;
 	}
 }

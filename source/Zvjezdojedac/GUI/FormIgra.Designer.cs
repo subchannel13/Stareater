@@ -88,7 +88,6 @@
 			this.floteMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.tehnologijeMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.backgroundTurnProcessor = new System.ComponentModel.BackgroundWorker();
-			this.dizjnoviToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabCtrlDesno.SuspendLayout();
 			this.tabPageZvijezda.SuspendLayout();
 			this.tabPageKolonija.SuspendLayout();
@@ -569,8 +568,7 @@
             this.novostiMenu,
             this.kolonijeMenu,
             this.floteMenu,
-            this.tehnologijeMenu,
-            this.dizjnoviToolStripMenuItem});
+            this.tehnologijeMenu});
 			this.menuStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
@@ -594,20 +592,20 @@
 			// novaIgraMenu
 			// 
 			this.novaIgraMenu.Name = "novaIgraMenu";
-			this.novaIgraMenu.Size = new System.Drawing.Size(125, 22);
+			this.novaIgraMenu.Size = new System.Drawing.Size(152, 22);
 			this.novaIgraMenu.Text = "Nova igra";
 			// 
 			// spremiMenu
 			// 
 			this.spremiMenu.Name = "spremiMenu";
-			this.spremiMenu.Size = new System.Drawing.Size(125, 22);
+			this.spremiMenu.Size = new System.Drawing.Size(152, 22);
 			this.spremiMenu.Text = "Spremi";
 			this.spremiMenu.Click += new System.EventHandler(this.spremiMenu_Click);
 			// 
 			// ucitajMenu
 			// 
 			this.ucitajMenu.Name = "ucitajMenu";
-			this.ucitajMenu.Size = new System.Drawing.Size(125, 22);
+			this.ucitajMenu.Size = new System.Drawing.Size(152, 22);
 			this.ucitajMenu.Text = "Učitaj";
 			this.ucitajMenu.Click += new System.EventHandler(this.ucitajMenu_Click);
 			// 
@@ -617,7 +615,7 @@
             this.uvecajMenu,
             this.umanjiMenu});
 			this.uvećanjeToolStripMenuItem.Name = "uvećanjeToolStripMenuItem";
-			this.uvećanjeToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+			this.uvećanjeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.uvećanjeToolStripMenuItem.Text = "Mapa";
 			// 
 			// uvecajMenu
@@ -641,7 +639,7 @@
 			// izlazMenu
 			// 
 			this.izlazMenu.Name = "izlazMenu";
-			this.izlazMenu.Size = new System.Drawing.Size(125, 22);
+			this.izlazMenu.Size = new System.Drawing.Size(152, 22);
 			this.izlazMenu.Text = "Izlaz";
 			// 
 			// novostiMenu
@@ -679,13 +677,6 @@
 			// 
 			this.backgroundTurnProcessor.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundTurnProcessor_DoWork);
 			this.backgroundTurnProcessor.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundTurnProcessor_RunWorkerCompleted);
-			// 
-			// dizjnoviToolStripMenuItem
-			// 
-			this.dizjnoviToolStripMenuItem.Name = "dizjnoviToolStripMenuItem";
-			this.dizjnoviToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
-			this.dizjnoviToolStripMenuItem.Text = "Dizajnovi";
-			this.dizjnoviToolStripMenuItem.Click += new System.EventHandler(this.dizajnoviToolStripMenuItem_Click);
 			// 
 			// FormIgra
 			// 
@@ -795,6 +786,5 @@
 		private System.Windows.Forms.Panel dnoSredinaPanel;
 		private System.Windows.Forms.PictureBox zvijezdaPicBox;
 		private System.ComponentModel.BackgroundWorker backgroundTurnProcessor;
-		private System.Windows.Forms.ToolStripMenuItem dizjnoviToolStripMenuItem;
 	}
 }

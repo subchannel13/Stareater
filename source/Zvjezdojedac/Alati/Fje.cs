@@ -61,6 +61,14 @@ namespace Zvjezdojedac.Alati
 			return PrefiksFormater((long)broj);
 		}
 
+		public static string PrefiksFormater(double broj, string infinityText)
+		{
+			if (double.IsPositiveInfinity(broj))
+				return infinityText;
+			else
+				return PrefiksFormater((long)broj);
+		}
+
 		public static string PrefiksFormater(long broj)
 		{
 			string[] prefiksi = new string[] { "", " k", " M", " G", " T", " P", " E", " Z", " Y" };

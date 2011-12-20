@@ -22,6 +22,8 @@ namespace Zvjezdojedac.GUI
 		
 		Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
 
+		public Dizajn Dizajn = null;
+
 		public FormDizajn(Igrac igrac)
 		{
 			this.igrac = igrac;
@@ -193,6 +195,32 @@ namespace Zvjezdojedac.GUI
 		private void cbTaktika_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			dizajner.dizajnTaktika = ((TagTekst<Taktika>)cbTaktika.SelectedItem).tag;
+		}
+
+		private void btnSpremi_Click(object sender, EventArgs e)
+		{
+			HashSet<Sazetak> postojeciDizajnovi = new HashSet<Sazetak>();
+			foreach (DizajnZgrada dizajnZgrada in igrac.dizajnoviBrodova)
+				postojeciDizajnovi.Add(dizajnZgrada.dizajn.stil);
+
+			if (postojeciDizajnovi.Contains(dizajner.dizajn.stil)) {
+				MessageBox.Show(jezik["opIstiDizajnTekst"].tekst(), jezik["opIstiDizajnNaslov"].tekst(), MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				return;
+			}
+
+			if (String.IsNullOrEmpty(txtNaziv.Text.Trim())) {
+				MessageBox.Show(jezik["opNazivDizajnaTekst"].tekst(), jezik["opNazivDizajnaNaslov"].tekst(), MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				return;
+			}
+			else
+				dizajner.dizajnIme = txtNaziv.Text.Trim();
+
+			this.Dizajn = dizajner.dizajn;
+			//igrac.dodajDizajn(dizajner.dizajn);
+			//dizajner.reset(igrac);
+			
+			DialogResult = DialogResult.OK;
+			Close();
 		}
 	}
 }

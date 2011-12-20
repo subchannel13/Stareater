@@ -21,7 +21,7 @@ namespace Zvjezdojedac.GUI
 		private Igrac igrac;
 		private int raspodijelaPoena;
 		private Dictionary<KategorijaOpreme, ListViewItem[]> opremaStavke = new Dictionary<KategorijaOpreme, ListViewItem[]>();
-		private int[] opremaOstaloZadnjiIndeks = new int[4];
+		private int[] opremaOstaloZadnjiIndeks = new int[5];
 		private Dictionary<KategorijaOpreme, PrikazKomponente> prikaziKomponenti = new Dictionary<KategorijaOpreme, PrikazKomponente>();
 
 		public FormTechIzbor(Igrac igrac)
@@ -188,26 +188,31 @@ namespace Zvjezdojedac.GUI
 			cbOpKategorija.Items.Add(new TagTekst<KategorijaOpreme>(KategorijaOpreme.Ostalo, jezik["opKatOstalo"].tekst()));
 			items = new List<ListViewItem>();
 			jezik = Postavke.Jezik[Kontekst.FormFlote];
-			
+
+			items.Add(specLVItem(jezik["infoOklop"].tekst(), fontBold));
+			foreach (Oklop komp in Oklop.OklopInfo.Dostupni(igrac.efekti))
+				items.Add(komponentaListViewItem(komp));
+			opremaOstaloZadnjiIndeks[0] = items.Count;
+
 			items.Add(specLVItem(jezik["infoMZPogon"].tekst(), fontBold));
 			foreach (MZPogon komp in MZPogon.MZPogonInfo.Dostupni(igrac.efekti))
 				items.Add(komponentaListViewItem(komp));
-			opremaOstaloZadnjiIndeks[0] = items.Count;
+			opremaOstaloZadnjiIndeks[1] = items.Count;
 
 			items.Add(specLVItem(jezik["infoPotisnici"].tekst(), fontBold));
 			foreach (Potisnici komp in Potisnici.PotisnikInfo.Dostupni(igrac.efekti))
 				items.Add(komponentaListViewItem(komp));
-			opremaOstaloZadnjiIndeks[1] = items.Count;
+			opremaOstaloZadnjiIndeks[2] = items.Count;
 
 			items.Add(specLVItem(jezik["infoReaktor"].tekst(), fontBold));
 			foreach (Reaktor komp in Reaktor.ReaktorInfo.Dostupni(igrac.efekti))
 				items.Add(komponentaListViewItem(komp));
-			opremaOstaloZadnjiIndeks[2] = items.Count;
+			opremaOstaloZadnjiIndeks[3] = items.Count;
 
 			items.Add(specLVItem(jezik["infoSenzori"].tekst(), fontBold));
 			foreach (Senzor komp in Senzor.SenzorInfo.Dostupni(igrac.efekti))
 				items.Add(komponentaListViewItem(komp));
-			opremaOstaloZadnjiIndeks[3] = items.Count;
+			opremaOstaloZadnjiIndeks[4] = items.Count;
 
 			opremaStavke.Add(KategorijaOpreme.Ostalo, items.ToArray());
 			prikaziKomponenti.Add(KategorijaOpreme.Ostalo, prikazOstalog);
@@ -239,7 +244,7 @@ namespace Zvjezdojedac.GUI
 				lstRazvoj.Items.Add(item);
 			}
 		}
-
+		
 		private void izracunajPoeneRazvoja()
 		{
 			int brTehnologija = lstRazvoj.Items.Count;
@@ -276,6 +281,7 @@ namespace Zvjezdojedac.GUI
 			sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(trup.Cijena));
 			sb.AppendLine();
 			sb.AppendLine(jezik["opTrupOklop"].tekst() + ": " + Fje.PrefiksFormater(trup.BazaOklopa));
+			sb.AppendLine(jezik["opTrupOklopUblBaza"].tekst() + ": x" + trup.BazaOklopUblazavanja.ToString("0.##"));
 			sb.AppendLine(jezik["opTrupStit"].tekst() + ": " + Fje.PrefiksFormater(trup.BazaStita));
 			sb.AppendLine(jezik["opTrupPrik"].tekst() + ": " + trup.OmetanjeBaza);
 			sb.AppendLine(jezik["opTrupSenzori"].tekst() + ": " + trup.SenzorPlus.ToString("+0;-0"));
@@ -321,8 +327,9 @@ namespace Zvjezdojedac.GUI
 			sb.AppendLine();
 			sb.AppendLine(jezik["opisStitIzd"].tekst() + ": " + Fje.PrefiksFormater(stit.izdrzljivost));
 			sb.AppendLine(jezik["opisStitDeb"].tekst() + ": " + Fje.PrefiksFormater(stit.debljina));
+			sb.AppendLine(jezik["opisStitUbl"].tekst() + ": " + Fje.PrefiksFormater(stit.ublazavanjeStete, jezik["opisStitUblInf"].tekst()));
 			sb.AppendLine(jezik["opisStitObn"].tekst() + ": " + Fje.PrefiksFormater(stit.obnavljanje));
-			sb.AppendLine(jezik["opisSenzorOm"].tekst() + ": x" + stit.ometanje.ToString("0.##"));
+			sb.AppendLine(jezik["opisSenzorOm"].tekst() + ": " + stit.ometanje.ToString("+0;-0"));
 			sb.AppendLine(jezik["opisSenzorPrik"].tekst() + ": +" + Fje.PrefiksFormater(stit.prikrivanje));
 			sb.AppendLine();
 			jezik = Postavke.Jezik[Kontekst.FormTech];
@@ -361,6 +368,13 @@ namespace Zvjezdojedac.GUI
 			sb.AppendLine();
 
 			if (indeks < opremaOstaloZadnjiIndeks[0]) {
+				cbOpVelicine.Visible = false;
+				Oklop oklop = (Oklop)komponentaObj;
+				sb.AppendLine(jezik["opisOklopIzd"].tekst() + ": x" + oklop.izdrzljivost.ToString("0.##"));
+				sb.AppendLine(jezik["opisOklopUblKoef"].tekst() + ": " + oklop.ublazavanjeSteteKoef.ToString("0.##"));
+				sb.AppendLine(jezik["opisOklopUblMax"].tekst() + ": x" + oklop.ublazavanjeSteteMax.ToString("0.##"));
+			}
+			else if (indeks < opremaOstaloZadnjiIndeks[1]) {
 				cbOpVelicine.Visible = true;
 				MZPogon pogon = (MZPogon)komponentaObj;
 				pogon = pogon.info.naciniKomponentu(pogon.nivo, trup.VelicinaMZPogona);
@@ -378,12 +392,12 @@ namespace Zvjezdojedac.GUI
 					sb.AppendLine(jezik["opNeStane"].tekst());
 				}
 			}
-			else if (indeks < opremaOstaloZadnjiIndeks[1]) {
+			else if (indeks < opremaOstaloZadnjiIndeks[2]) {
 				cbOpVelicine.Visible = false;
 				Potisnici potisnici = (Potisnici)komponentaObj;
 				sb.AppendLine(jezik["opisPokret"].tekst() + ": " + Fje.PrefiksFormater(potisnici.brzina));
 			}
-			else if (indeks < opremaOstaloZadnjiIndeks[2]) {
+			else if (indeks < opremaOstaloZadnjiIndeks[3]) {
 				cbOpVelicine.Visible = true;
 				Reaktor reaktor = (Reaktor)komponentaObj;
 				reaktor = reaktor.info.naciniKomponentu(reaktor.nivo, trup.VelicinaReaktora);
@@ -394,7 +408,7 @@ namespace Zvjezdojedac.GUI
 				else
 					sb.AppendLine(jezikTech["opNeStane"].tekst());
 			}
-			else if (indeks < opremaOstaloZadnjiIndeks[3]) {
+			else if (indeks < opremaOstaloZadnjiIndeks[4]) {
 				cbOpVelicine.Visible = false;
 				Senzor senzor = (Senzor)komponentaObj;
 				sb.AppendLine(jezik["opisSenzorSn"].tekst() + ": " + Fje.PrefiksFormater(senzor.razlucivost));
