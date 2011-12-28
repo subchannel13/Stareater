@@ -689,24 +689,34 @@ namespace Zvjezdojedac.GUI
 
 		private void backgroundTurnProcessor_DoWork(object sender, DoWorkEventArgs e)
 		{
-			igra.slijedeciIgrac();
+			e.Result = igra.slijedecaFaza();
 		}
 
 		private void backgroundTurnProcessor_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			noviKrugPogled();
+			FazaIgre faza = (FazaIgre)e.Result;
 
-			bool imaPoruka = false;
-			var filtriranePoruke = igrac.FiltriranePoruke();
+			switch (faza) {
+				case FazaIgre.NoviKrug:
+					noviKrugPogled();
 
-			foreach (Poruka.Tip tip in filtriranePoruke.Keys)
-				if (igrac.filtarPoruka[tip] && filtriranePoruke[tip].Count > 0)
-					imaPoruka = true;
+					bool imaPoruka = false;
+					var filtriranePoruke = igrac.FiltriranePoruke();
 
-			zakljucajSucelje(false);
+					foreach (Poruka.Tip tip in filtriranePoruke.Keys)
+						if (igrac.filtarPoruka[tip] && filtriranePoruke[tip].Count > 0)
+							imaPoruka = true;
 
-			if (imaPoruka)
-				novostiMenu_Click(this, null);
+					zakljucajSucelje(false);
+
+					if (imaPoruka)
+						novostiMenu_Click(this, null);
+					break;
+				
+				case FazaIgre.Bitke:
+					backgroundTurnProcessor.RunWorkerAsync();
+					break;
+			}
 		}
 
 		private void dizajnoviToolStripMenuItem_Click(object sender, EventArgs e)

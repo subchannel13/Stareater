@@ -158,6 +158,7 @@
     <Compile Include="GUI\FormTechIzbor.Designer.cs">
       <DependentUpon>FormTechIzbor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Igra\FazaIgre.cs" />
     <Compile Include="GUI\KategorijaOpreme.cs" />
     <Compile Include="GUI\PrikazMape.cs" />
     <Compile Include="GUI\ZvjezdojedacAppContext.cs" />

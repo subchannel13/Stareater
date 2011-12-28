@@ -15,6 +15,9 @@ namespace Zvjezdojedac.Igra
 
 		public List<Igrac> igraci { get; private set; }
 		private int trenutniIgracIndex;
+		private FazaIgre fazaIgre;
+		private long[] tempPoeniRazvoja;
+		private long[] tempPoeniIstraz;
 
 		public Mapa mapa { get; private set; }
 		public int brKruga;
@@ -25,7 +28,10 @@ namespace Zvjezdojedac.Igra
 			this.igraci = new List<Igrac>();
 			this.mapa = mapa.mapa;
 			trenutniIgracIndex = 0;
+			fazaIgre = FazaIgre.NoviKrug;
 			brKruga = 0;
+			tempPoeniRazvoja = new long[igraci.Count];
+			tempPoeniIstraz = new long[igraci.Count];
 			osnovniEfekti = PodaciAlat.ucitajBazuEfekata();
 
 			foreach (Igrac.ZaStvoriti igrac in igraci)
@@ -154,8 +160,27 @@ namespace Zvjezdojedac.Igra
 			igrac.OdabranPlanet = potencijalneKolonije[najboljiPlanet].planet;
 		}
 
-		public void slijedeciIgrac()
+		public FazaIgre slijedecaFaza()
 		{
+			switch (fazaIgre) {
+				case FazaIgre.NoviKrug:
+					for (trenutniIgracIndex++; trenutniIgracIndex < igraci.Count; trenutniIgracIndex++)
+						if (igraci[trenutniIgracIndex].tip != Igrac.Tip.COVJEK)
+							igraci[trenutniIgracIndex].Upravljac.OdigrajKrug(this);
+						else
+							return FazaIgre.NoviKrug;
+
+					pocetakKrajaKruga();
+					fazaIgre = FazaIgre.Bitke;
+					return fazaIgre;
+				
+				case FazaIgre.Bitke:
+					zavrsiKrug();
+					trenutniIgracIndex = 0;
+					fazaIgre = FazaIgre.NoviKrug;
+					return fazaIgre;
+			}
+
 			while(true)
 			{
 				trenutniIgracIndex++;
@@ -168,20 +193,20 @@ namespace Zvjezdojedac.Igra
 				if (igraci[trenutniIgracIndex].tip != Igrac.Tip.COVJEK)
 					igraci[trenutniIgracIndex].Upravljac.OdigrajKrug(this);
 				else
-					break;
+					return FazaIgre.NoviKrug;
 			}
 		}
 
-		private void zavrsiKrug()
+		private void pocetakKrajaKruga()
 		{
-			long[] poeniRazvoja = new long[igraci.Count];
-			long[] poeniIstraz = new long[igraci.Count];
+			tempPoeniRazvoja = new long[igraci.Count];
+			tempPoeniIstraz = new long[igraci.Count];
 			for (int i = 0; i < igraci.Count; i++) {
 				igraci[i].poruke.Clear();
 				igraci[i].izracunajPoeneIstrazivanja(this);
 
-				poeniRazvoja[i] = igraci[i].poeniRazvoja();
-				poeniIstraz[i] = igraci[i].poeniIstrazivanja();
+				tempPoeniRazvoja[i] = igraci[i].poeniRazvoja();
+				tempPoeniIstraz[i] = igraci[i].poeniIstrazivanja();
 			}
 
 			foreach (Zvijezda zvj in mapa.zvijezde) {
@@ -197,9 +222,12 @@ namespace Zvjezdojedac.Igra
 				igrac.IzvrsiKolonizacije();
 				igrac.PomakniFlote();
 			}
+		}
 
+		private void zavrsiKrug()
+		{
 			for (int i = 0; i < igraci.Count; i++)
-				igraci[i].NoviKrug(this, poeniRazvoja[i], poeniIstraz[i]);
+				igraci[i].NoviKrug(this, tempPoeniRazvoja[i], tempPoeniIstraz[i]);
 
 			foreach (Zvijezda zvj in mapa.zvijezde)
 				foreach (Planet planet in zvj.planeti)
