@@ -41,6 +41,12 @@ namespace Zvjezdojedac.Podaci
 		public static Image FlotaTab = null;
 		public static Image[] SlikaOdabiraZvijezde = new Image[2];
 
+		public static Image BoracStacionarni = null;
+		public static Image BoracJedanPomak = null;
+		public static Image BoracMimoilazak = null;
+		public static Dictionary<Color, Image> BoracZastavica = new Dictionary<Color,Image>();
+		public static Image BoraciSvi = null;
+
 		private static Image prazanRazvoj = null;
 		private static Image punRazvoj = null;
 		private static int razvojYVrh;
@@ -117,6 +123,15 @@ namespace Zvjezdojedac.Podaci
 					break;
 				case "brod_misija":
 					MisijaBroda.Add((Misija.Tip)indeks, slika);
+					break;
+				case "pozicija_borca":
+					if (indeks == 0) BoracStacionarni = slika;
+					if (indeks == 1) BoracJedanPomak = slika;
+					if (indeks == 2) BoracMimoilazak = slika;
+					if (indeks == 3) 
+						foreach (Color boja in Igrac.BojeIgraca)
+							BoracZastavica.Add(boja, ModulirajBoju(slika, boja));
+					if (indeks == 4) BoraciSvi = slika;
 					break;
 				default:
 					throw new ArgumentException("Invalid picture group \"" + skupina + "\" in ./slike/slike.txt");

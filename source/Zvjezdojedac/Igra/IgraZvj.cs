@@ -6,6 +6,7 @@ using Zvjezdojedac.Podaci.Formule;
 using Zvjezdojedac.Podaci;
 using Zvjezdojedac.Igra.Brodovi;
 using Zvjezdojedac.Igra.Igraci.OsnovniRI;
+using Zvjezdojedac.Igra.Bitka;
 
 namespace Zvjezdojedac.Igra
 {
@@ -18,6 +19,7 @@ namespace Zvjezdojedac.Igra
 		private FazaIgre fazaIgre;
 		private long[] tempPoeniRazvoja;
 		private long[] tempPoeniIstraz;
+		private Queue<Konflikt> konflikti;
 
 		public Mapa mapa { get; private set; }
 		public int brKruga;
@@ -32,6 +34,7 @@ namespace Zvjezdojedac.Igra
 			brKruga = 0;
 			tempPoeniRazvoja = new long[igraci.Count];
 			tempPoeniIstraz = new long[igraci.Count];
+			konflikti = new Queue<Konflikt>();
 			osnovniEfekti = PodaciAlat.ucitajBazuEfekata();
 
 			foreach (Igrac.ZaStvoriti igrac in igraci)
@@ -75,6 +78,7 @@ namespace Zvjezdojedac.Igra
 			this.trenutniIgracIndex = trenutniIgracIndex;
 			this.mapa = mapa;
 			this.brKruga = brKruga;
+			this.konflikti = new Queue<Konflikt>();
 
 			osnovniEfekti = PodaciAlat.ucitajBazuEfekata();
 			for (int i = 0; i < igraci.Count; i++) {
@@ -197,6 +201,17 @@ namespace Zvjezdojedac.Igra
 			}
 		}
 
+		public Konflikt SlijedeciKonflikt()
+		{
+			while (konflikti.Count > 0 && konflikti.Peek().Razrijesen)
+				konflikti.Dequeue();
+
+			if (konflikti.Count > 0)
+				return konflikti.Peek();
+			else
+				return null;
+		}
+
 		private void pocetakKrajaKruga()
 		{
 			tempPoeniRazvoja = new long[igraci.Count];
@@ -221,6 +236,18 @@ namespace Zvjezdojedac.Igra
 			foreach (Igrac igrac in igraci) {
 				igrac.IzvrsiKolonizacije();
 				igrac.PomakniFlote();
+			}
+
+			konflikti.Clear();
+			foreach (Zvijezda zvj in mapa.zvijezde) {
+				
+				HashSet<Igrac> strane = new HashSet<Igrac>();
+				foreach (Igrac igrac in igraci)
+					if (igrac.floteStacionarne.ContainsKey(zvj))
+						strane.Add(igrac);
+
+				if (strane.Count > 1)
+					konflikti.Enqueue(new Konflikt(strane, zvj));
 			}
 		}
 

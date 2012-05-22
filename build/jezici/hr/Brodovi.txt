@@ -39,11 +39,15 @@ SO_POTISNICI_IME = Dodatni potisnici
 SO_POTISNICI_OPIS =
 SO_REAKTOR_IME = Proširenje reaktora
 SO_REAKTOR_OPIS =
+SO_TERET_IME = Teretni prostor
+SO_TERET_OPIS = 
 
 SOE_KOEF_IZDRZ = Izdržljivost oklopa
+SOE_KOEF_INV_IZDRZ = Izdržljivost oklopa
 SOE_KOEF_STIT_DEB = Debljina štita
 SOE_KOEF_STIT_IZD = Izdržljivost štita
 SOE_KOEF_STIT_OBN = Obnavljanje štita
+SOE_KOEF_TERET = Nosivost
 SOE_PLUS_BRZINA = Pokretljivost
 SOE_PLUS_SENZORI = Br. senzora
 SOE_PLUS_INERC = Tromost
@@ -64,8 +68,5 @@ TRUP_MALA_KRSTARICA_IME = Mala krstarica
 TRUP_MALA_KRSTARICA_OPIS = Brod srednje veličine.
 TRUP_KRSTARICA_IME = Krstarica
 TRUP_KRSTARICA_OPIS = Brod srednje veličine.
-
-TAK_PROJEKTIL = Projektil
-TAK_BROD0 = Bliska borba
-TAK_BROD1 = Uobičajena
-TAK_BROD2 = Izbjegavanje
+TRUP_RAZARAC_IME = Razarač
+TRUP_RAZARAC_OPIS = 

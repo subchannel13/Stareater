@@ -23,8 +23,9 @@ namespace Zvjezdojedac.Igra.Brodovi
 		}
 
 		public const int VatrenaMoc = 0;
-		public const int UcinkovitostStitova = 1;
-		public const int Preciznost = 2;
+		public const int Preciznost = 1;
+		public const int PenetracijaStita = 2;
+		public const int PenetracijaOklopa = 3;
 
 		public const int BrKolonista = 0;
 		public const int RadnaMjesta = 1;
@@ -75,8 +76,9 @@ namespace Zvjezdojedac.Igra.Brodovi
 					true, false, false,
 					new Parametar[] { 
 						new Parametar("VATRENA_MOC", TipParameta.Cijelobrojni, false),
-						new Parametar("BR_NAPADA", TipParameta.Postotak, false),
-						new Parametar("PRECIZNOST", TipParameta.Cijelobrojni, false)
+						new Parametar("PRECIZNOST", TipParameta.Cijelobrojni, false),
+						new Parametar("ANTI_STIT", TipParameta.Cijelobrojni, false),
+						new Parametar("ANTI_OKLOP", TipParameta.Cijelobrojni, false),
 					}));
 
 			ret.Add(Tip.Projektil,
@@ -85,8 +87,9 @@ namespace Zvjezdojedac.Igra.Brodovi
 					true, false, false,
 					new Parametar[] { 
 						new Parametar("VATRENA_MOC", TipParameta.Cijelobrojni, false),
-						new Parametar("BR_NAPADA", TipParameta.Postotak, false),
-						new Parametar("PRECIZNOST", TipParameta.Cijelobrojni, false)
+						new Parametar("PRECIZNOST", TipParameta.Cijelobrojni, false),
+						new Parametar("ANTI_STIT", TipParameta.Cijelobrojni, false),
+						new Parametar("ANTI_OKLOP", TipParameta.Cijelobrojni, false),
 					}));
 
 			ret.Add(Tip.Kolonizacija,

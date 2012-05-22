@@ -1,4 +1,10 @@
-﻿::FORM_KOLONIZACIJA
+﻿::BITKA
+POZ_0 = Bliska borba
+POZ_1 = Srednja
+POZ_2 = Srednje daleka
+POZ_3 = Dalekometna borba
+
+::FORM_KOLONIZACIJA
 btnPrihvati = Prihvati
 groupPoStan = Procjena (po stanovniku)
 lblBrBrodova = Br. brodova
@@ -31,7 +37,8 @@ MIS_CIV_TRANS_OPIS = civilni transport
 MIS_VOJ_TRANS_IME = Vojni transport
 MIS_VOJ_TRANS_OPIS = vojni transport
 
-BR_NAPADA = Učinkovitost štitova
+ANTI_STIT = Proboj štita
+ANTI_OKLOP = Proboj oklopa
 IND = Industrija
 INFILTRACIJA = Infiltracija
 KAPACITET = Kapacitet

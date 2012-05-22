@@ -20,5 +20,18 @@ namespace Zvjezdojedac.Alati
 		{
 			return usporedjivac.CompareTo(other.usporedjivac);
 		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj == null || obj.GetType() != this.GetType())
+				return false;
+
+			return (this.CompareTo(obj as Usporediv<T, C>) == 0);
+		}
+
+		public override int GetHashCode()
+		{
+			return objekt.GetHashCode();
+		}
 	}
 }

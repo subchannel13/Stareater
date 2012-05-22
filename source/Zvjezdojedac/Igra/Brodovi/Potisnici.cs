@@ -22,10 +22,11 @@ namespace Zvjezdojedac.Igra.Brodovi
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
 				Formula brzina = Formula.IzStringa(podaci["BRZINA"]);
+				Formula pokretljivost = Formula.IzStringa(podaci["POKRETLJIVOST"]);
 
 				Potisnici.Add(new PotisnikInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,
-					brzina)
+					brzina, pokretljivost)
 					);
 			}
 
@@ -68,14 +69,16 @@ namespace Zvjezdojedac.Igra.Brodovi
 			#endregion
 
 			private Formula brzina;
+			private Formula pokretljivost;
 
 			private PotisnikInfo(string naziv, string opis, Image slika,
 				List<Preduvjet> preduvjeti, int maxNivo,
-				Formula brzina)
+				Formula brzina, Formula pokretljivost)
 				:
 				base(naziv, opis, slika, preduvjeti, maxNivo)
 			{
 				this.brzina = brzina;
+				this.pokretljivost = pokretljivost;
 			}
 
 			public Potisnici naciniKomponentu(Dictionary<string, double> varijable)
@@ -89,17 +92,20 @@ namespace Zvjezdojedac.Igra.Brodovi
 				return new Potisnici(
 					this,
 					nivo,
-					Evaluiraj(brzina, nivo)
+					Evaluiraj(brzina, nivo),
+					Evaluiraj(pokretljivost, nivo)
 					);
 			}
 		}
 
 		public double brzina { get; private set; }
+		public double pokretljivost { get; private set; }
 
-		private Potisnici(PotisnikInfo info, int nivo, double brzina)
+		private Potisnici(PotisnikInfo info, int nivo, double brzina, double pokretljivost)
 			: base(info, nivo)
 		{
 			this.brzina = brzina;
+			this.pokretljivost = pokretljivost;
 		}
 	}
 }

@@ -36,8 +36,8 @@ namespace Zvjezdojedac.GUI
 			foreach (Trup trup in dizajner.trupovi)
 				cbVelicina.Items.Add(trup);
 
-			foreach (Taktika taktika in Taktika.Taktike.Keys)
-				cbTaktika.Items.Add(new TagTekst<Taktika>(taktika, taktika.naziv));
+			foreach (int pozicija in Pozicije.PonudjenePozicije())
+				cbTaktika.Items.Add(new TagTekst<int>(pozicija, Pozicije.Naziv(pozicija)));
 			
 			foreach (SpecijalnaOprema so in dizajner.trupKomponente.specijalnaOprema) {
 				ListViewItem item = new ListViewItem("");
@@ -95,7 +95,7 @@ namespace Zvjezdojedac.GUI
 			lblSenzori.Text = jezik["lblNDsenzori"].tekst() + ": " + Fje.PrefiksFormater(dizajn.snagaSenzora);
 
 			lblCijena.Text = jezik["lblNDcijena"].tekst() + ": " + Fje.PrefiksFormater(dizajn.cijena);
-			lblSlobodno.Text = jezik["lblNDslobodno"].tekst() + ": " + Fje.PrefiksFormater(dizajner.slobodnaNosivost) + " / " + Fje.PrefiksFormater(dizajn.trup.Nosivost);
+			lblSlobodno.Text = jezik["lblNDslobodno"].tekst() + ": " + Fje.PrefiksFormater(dizajner.slobodnaNosivost) + " / " + Fje.PrefiksFormater(dizajn.nosivost);
 		}
 
 		private void cbVelicina_SelectedIndexChanged(object sender, EventArgs e)
@@ -194,7 +194,7 @@ namespace Zvjezdojedac.GUI
 
 		private void cbTaktika_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			dizajner.dizajnTaktika = ((TagTekst<Taktika>)cbTaktika.SelectedItem).tag;
+			dizajner.dizajnPozicija = ((TagTekst<int>)cbTaktika.SelectedItem).tag;
 		}
 
 		private void btnSpremi_Click(object sender, EventArgs e)

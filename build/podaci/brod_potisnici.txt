@@ -4,5 +4,6 @@ OPIS = POT_KEMIJSKI_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =
-BRZINA = 50
+BRZINA = / 1 3
+POKRETLJIVOST = 20
 ----

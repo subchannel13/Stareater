@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Alati\Fje.cs" />
     <Compile Include="Alati\Sazetak.cs" />
+    <Compile Include="Alati\Strukture\BinaryIndexedTree.cs" />
     <Compile Include="Alati\Strukture\IDelayedRemoval.cs" />
     <Compile Include="Alati\Strukture\MyDictionary.cs" />
     <Compile Include="Alati\Strukture\MySet.cs" />
@@ -82,6 +83,19 @@
     </Compile>
     <Compile Include="GUI\BriefPlanetItem.Designer.cs">
       <DependentUpon>BriefPlanetItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\CombatantPositions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\CombatantPositions.Designer.cs">
+      <DependentUpon>CombatantPositions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Events\ObjectEventArgs.cs" />
+    <Compile Include="GUI\FormBorba.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormBorba.Designer.cs">
+      <DependentUpon>FormBorba.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FormDizajn.cs">
       <SubType>Form</SubType>
@@ -125,6 +139,12 @@
     <Compile Include="GUI\FormKolonizacija.Designer.cs">
       <DependentUpon>FormKolonizacija.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FormBombardiranje.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormBombardiranje.Designer.cs">
+      <DependentUpon>FormBombardiranje.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
@@ -158,6 +178,21 @@
     <Compile Include="GUI\FormTechIzbor.Designer.cs">
       <DependentUpon>FormTechIzbor.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\CombatantItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\CombatantItem.Designer.cs">
+      <DependentUpon>CombatantItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SmallData\CombatSlotDelta.cs" />
+    <Compile Include="GUI\SmallData\CombatGUI.cs" />
+    <Compile Include="GUI\SmallData\FuzzyCombatPosition.cs" />
+    <Compile Include="Igra\Bitka\Borac.cs" />
+    <Compile Include="Igra\Bitka\PopisMeta.cs" />
+    <Compile Include="Igra\Bitka\IgracevKonflikt.cs" />
+    <Compile Include="Igra\Bitka\ModeratorBorbe.cs" />
+    <Compile Include="Igra\Bitka\Strana.cs" />
+    <Compile Include="Igra\Brodovi\Pozicije.cs" />
     <Compile Include="Igra\FazaIgre.cs" />
     <Compile Include="GUI\KategorijaOpreme.cs" />
     <Compile Include="GUI\PrikazMape.cs" />
@@ -180,7 +215,6 @@
     <Compile Include="Igra\Brodovi\Senzor.cs" />
     <Compile Include="Igra\Brodovi\SpecijalnaOprema.cs" />
     <Compile Include="Igra\Brodovi\Stit.cs" />
-    <Compile Include="Igra\Brodovi\Taktika.cs" />
     <Compile Include="Igra\Brodovi\Trup.cs" />
     <Compile Include="Igra\Flota.cs" />
     <Compile Include="Igra\AGradiliste.cs" />
@@ -193,6 +227,7 @@
     <Compile Include="Igra\IgraZvj.cs" />
     <Compile Include="Igra\Igrac.cs" />
     <Compile Include="Igra\Kolonija.cs" />
+    <Compile Include="Igra\Bitka\Konflikt.cs" />
     <Compile Include="Igra\Mapa.cs" />
     <Compile Include="Igra\PokretnaFlota.cs" />
     <Compile Include="Igra\Poruke\PorukaZgradaSustav.cs" />
@@ -203,6 +238,7 @@
     <Compile Include="Igra\Poruke\PorukaZgradaKolonija.cs" />
     <Compile Include="Igra\PotencijalnaPocetnaKolonija.cs" />
     <Compile Include="Igra\Preduvjet.cs" />
+    <Compile Include="Igra\Bitka\StanjeKonflikta.cs" />
     <Compile Include="Igra\Tehnologija.cs" />
     <Compile Include="Igra\Zgrada.cs" />
     <Compile Include="Igra\Organizacije.cs" />
@@ -233,6 +269,12 @@
     <EmbeddedResource Include="GUI\BriefPlanetItem.resx">
       <DependentUpon>BriefPlanetItem.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\CombatantPositions.resx">
+      <DependentUpon>CombatantPositions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormBorba.resx">
+      <DependentUpon>FormBorba.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormDizajn.resx">
       <DependentUpon>FormDizajn.cs</DependentUpon>
     </EmbeddedResource>
@@ -257,6 +299,9 @@
     <EmbeddedResource Include="GUI\FormKolonizacija.resx">
       <DependentUpon>FormKolonizacija.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormBombardiranje.resx">
+      <DependentUpon>FormBombardiranje.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -279,6 +324,9 @@
     <EmbeddedResource Include="GUI\FormTechIzbor.resx">
       <DependentUpon>FormTechIzbor.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\CombatantItem.resx">
+      <DependentUpon>CombatantItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

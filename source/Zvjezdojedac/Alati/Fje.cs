@@ -93,6 +93,15 @@ namespace Zvjezdojedac.Alati
 			else
 				return Math.Pow(x, redPolinoma + 1) / (redPolinoma + 1);
 		}
+
+		public static int Multikriterij(params int[] kriteriji)
+		{
+			for (int i = 0; i < kriteriji.Length; i++)
+				if (kriteriji[i] != 0)
+					return kriteriji[i];
+
+			return 0;
+		}
 	}
 }
 

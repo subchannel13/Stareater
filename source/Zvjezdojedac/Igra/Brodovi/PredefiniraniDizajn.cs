@@ -38,7 +38,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				specijalnaOprema,
 				double.Parse(podaci["UDIO_PRIM_ORUZJA"]),
 				podaci.ContainsKey("MZ_POGON"),
-				Taktika.Kodovi[podaci["TAKTIKA"]]));
+				int.Parse(podaci["POZICIJA"])));
 		}
 
 		public string naziv { get; private set; }
@@ -49,14 +49,14 @@ namespace Zvjezdojedac.Igra.Brodovi
 		public Dictionary<SpecijalnaOprema.SpecijalnaOpremaInfo, int> specijalnaOprema { get; private set; }
 		public double udioPrimarnogOruzja { get; private set; }
 		public bool mzPogon { get; private set; }
-		public Taktika taktika { get; private set; }
+		public int pozeljnaPozicija { get; private set; }
 		public List<Preduvjet> preduvjeti { get; private set; }
 
 		private PredefiniraniDizajn(string naziv, List<Preduvjet> preduvjeti,
 			Trup.TrupInfo trup,	Oruzje.OruzjeInfo primarnoOruzje, 
 			Oruzje.OruzjeInfo sekundarnoOruzje, Stit.StitInfo stit, 
 			Dictionary<SpecijalnaOprema.SpecijalnaOpremaInfo, int> specijalnaOprema,
-			double udioPrimarnogOruzja, bool mzPogon, Taktika taktika)
+			double udioPrimarnogOruzja, bool mzPogon, int pozeljnaPozicija)
 		{
 			this.naziv = naziv;
 			this.preduvjeti = preduvjeti;
@@ -67,7 +67,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			this.specijalnaOprema = specijalnaOprema;
 			this.udioPrimarnogOruzja = udioPrimarnogOruzja;
 			this.mzPogon = mzPogon;
-			this.taktika = taktika;
+			this.pozeljnaPozicija = pozeljnaPozicija;
 		}
 
 		public bool dostupan(Dictionary<string, double> varijable)
@@ -111,7 +111,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 			return new Dizajn(naziv, trup, primarnoOruzje, sekundarnoOruzje,
 				udioPrimarnogOruzja, oklop, stit, specijalnaOprema,
-				senzor, potisnici, mzPogon, reaktor, taktika);
+				senzor, potisnici, mzPogon, reaktor, pozeljnaPozicija);
 		}
 	}
 }

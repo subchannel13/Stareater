@@ -12,13 +12,18 @@ namespace Zvjezdojedac.Igra.Brodovi
 		static class Koef
 		{
 			public const string Izdrzljivosti = "IZDRZLJIVOST_KOEF";
+			public const string InvIzdrzljivosti = "IZDRZLJIVOST_INV_KOEF";
+			public const string UblazavanjeStete = "UBLAZAVANJE_KOEF";
 			public const string StitDebljina = "STIT_DEBLJINA_KOEF";
 			public const string StitIzdrzljivost = "STIT_IZDRZLJIVOST_KOEF";
 			public const string StitObnavljanje = "STIT_OBNAVLJANJE_KOEF";
+			public const string StitUblazavanjeStete = "STIT_UBLAZAVANJE_KOEF";
+			public const string Nosivost = "NOSIVOST_KOEF";
 		}
 		static class Plus
 		{
 			public const string Brzina = "BRZINA_PLUS";
+			public const string Pokretljivost = "POKRETLJIVOST_PLUS";
 			public const string Inercija = "INERCIJA_PLUS";
 			public const string Ometanje = "OMETANJE_PLUS";
 			public const string Prikrivanje = "PRIKRIVANJE_PLUS";
@@ -28,6 +33,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 		public enum PrivEfektTip
 		{
 			Koeficijent,
+			InvKoeficijent,
 			Pribrojnik
 		}
 		public class PrivEfektInfo
@@ -60,10 +66,12 @@ namespace Zvjezdojedac.Igra.Brodovi
 			Dictionary<string, PrivEfektInfo> ret = new Dictionary<string, PrivEfektInfo>();
 
 			ret.Add(Koef.Izdrzljivosti, new PrivEfektInfo("SOE_KOEF_IZDRZ", PrivEfektTip.Koeficijent));
+			ret.Add(Koef.InvIzdrzljivosti, new PrivEfektInfo("SOE_KOEF_INV_IZDRZ", PrivEfektTip.InvKoeficijent));
 			ret.Add(Koef.StitDebljina, new PrivEfektInfo("SOE_KOEF_STIT_DEB", PrivEfektTip.Koeficijent));
 			ret.Add(Koef.StitIzdrzljivost, new PrivEfektInfo("SOE_KOEF_STIT_IZD", PrivEfektTip.Koeficijent));
 			ret.Add(Koef.StitObnavljanje, new PrivEfektInfo("SOE_KOEF_STIT_OBN", PrivEfektTip.Koeficijent));
-
+			ret.Add(Koef.Nosivost, new PrivEfektInfo("SOE_KOEF_TERET", PrivEfektTip.Koeficijent));
+			
 			ret.Add(Plus.Brzina, new PrivEfektInfo("SOE_PLUS_BRZINA", PrivEfektTip.Pribrojnik));
 			ret.Add(Plus.SnagaSenzora, new PrivEfektInfo("SOE_PLUS_SENZORI", PrivEfektTip.Pribrojnik));
 			ret.Add(Plus.Inercija, new PrivEfektInfo("SOE_PLUS_INERC", PrivEfektTip.Pribrojnik));
@@ -78,16 +86,20 @@ namespace Zvjezdojedac.Igra.Brodovi
 			public const string KoefSnage = "KOEF_SNAGE_REAKTORA";
 			public const string Inercija = "INERCIJA";
 			public const string Izdrzljivosti = "OKLOP";
+			public const string UblazavanjaStete = "OKLOP_UBLAZAVANJE";
 			public const string MZBrzina = "MZ_BRZINA";
 			public const string Ometanje = "OMETANJE";
 			public const string OpterecenjeReaktora = "OPTERECENJE_REAKTORA";
-			public const string Pokretljivosti = "BRZINA";
+			public const string Nosivost = "NOSIVOST";
+			public const string Brzina = "BRZINA";
+			public const string Pokretljivosti = "POKRETLJIVOST";
 			public const string Prikrivanje = "PRIKRIVANJE";
 			public const string SnageReaktora = "SNAGA_REAKTORA";
 			public const string SnageSenzora = "SENZORI_BONUS";
 			public const string StitDebljina = "STIT_DEBLJINA";
 			public const string StitIzdrzljivost = "STIT_IZDRZLJIVOST";
 			public const string StitObnavljanje = "STIT_OBNAVLJANJE";
+			public const string StitUblazavanjaStete = "STIT_UBLAZAVANJE";
 		}
 
 		public class Zbir<T>
@@ -130,7 +142,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 		public double cijena { get; private set; }
 		private Dictionary<string, double> efekti = new Dictionary<string,double>();
 		private double udioPrimarneMisije = 0;
-		public Taktika taktika { get; private set; }
+		public int pozeljnaPozicija { get; private set; }
 		
 		public Sazetak stil { get; private set; }
 		public long brojBrodova;
@@ -139,17 +151,17 @@ namespace Zvjezdojedac.Igra.Brodovi
 		public Dizajn(string ime, Trup trup,
 			Oruzje primarnoOruzje, Oruzje sekundarnoOruzje, double udioPrimarnogOruzja,
 			Oklop oklop, Stit stit, Dictionary<SpecijalnaOprema, int> specijalnaOprema,
-			Senzor senzor, Potisnici potisnici, MZPogon MZPogon, Reaktor reaktor, Taktika taktika)
+			Senzor senzor, Potisnici potisnici, MZPogon MZPogon, Reaktor reaktor, int pozeljnaPozicija)
 			:
 			this(SlijedeciId(), ime, trup, primarnoOruzje, sekundarnoOruzje, 
 			udioPrimarnogOruzja, oklop, stit, specijalnaOprema, senzor, potisnici, 
-			MZPogon, reaktor, taktika)
+			MZPogon, reaktor, pozeljnaPozicija)
 		{ }
 
 		private Dizajn(int id, string ime, Trup trup,
 			Oruzje primarnoOruzje, Oruzje sekundarnoOruzje, double udioPrimarnogOruzja,
 			Oklop oklop, Stit stit, Dictionary<SpecijalnaOprema, int> specijalnaOprema,
-			Senzor senzor, Potisnici potisnici, MZPogon MZPogon, Reaktor reaktor, Taktika taktika)
+			Senzor senzor, Potisnici potisnici, MZPogon MZPogon, Reaktor reaktor, int pozeljnaPozicija)
 		{
 			if (primarnoOruzje != null && sekundarnoOruzje != null)
 				if (Misija.Opisnici[primarnoOruzje.misija].jednokratna &&
@@ -171,15 +183,23 @@ namespace Zvjezdojedac.Igra.Brodovi
 			this.MZPogon = MZPogon;
 			this.stit = stit;
 			this.reaktor = reaktor;
-			this.taktika = taktika;
+			this.pozeljnaPozicija = pozeljnaPozicija;
 			this.udioPrimarneMisije = udioPrimarnogOruzja;
+
+			Dictionary<string, double> privremeniEfekti = new Dictionary<string, double>();
 
 			#region Postavljanje primarnog i sekundarnog oružja/misije
 			{
+				privremeniEfekti[Koef.Nosivost] = 1;
+				foreach (SpecijalnaOprema so in specijalnaOprema.Keys)
+					if (so.efekti.ContainsKey(Koef.Nosivost))
+						privremeniEfekti[Koef.Nosivost] += so.efekti[Koef.Nosivost] * specijalnaOprema[so];
+				efekti[Iznos.Nosivost] = trup.Nosivost * privremeniEfekti[Koef.Nosivost];
+
 				/*
 				 * slobodan prostor za oruzja/misije
 				 */
-				double preostaliProstor = trup.Nosivost;
+				double preostaliProstor = efekti[Iznos.Nosivost];
 				if (stit != null) preostaliProstor -= trup.VelicinaStita;
 				if (MZPogon != null) preostaliProstor -= trup.VelicinaMZPogona;
 				foreach (SpecijalnaOprema so in specijalnaOprema.Keys)
@@ -235,12 +255,15 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 			#region Efekti
 			{
-				Dictionary<string, double> privremeniEfekti = new Dictionary<string, double>();
 				privremeniEfekti[Koef.Izdrzljivosti] = 1;
+				privremeniEfekti[Koef.InvIzdrzljivosti] = 1;
+				privremeniEfekti[Koef.UblazavanjeStete] = 1;
 				privremeniEfekti[Koef.StitDebljina] = 1;
 				privremeniEfekti[Koef.StitIzdrzljivost] = 1;
 				privremeniEfekti[Koef.StitObnavljanje] = 1;
+				privremeniEfekti[Koef.StitUblazavanjeStete] = 1;
 				privremeniEfekti[Plus.Brzina] = 0;
+				privremeniEfekti[Plus.Pokretljivost] = 0;
 				privremeniEfekti[Plus.SnagaSenzora] = 0;
 				privremeniEfekti[Plus.Inercija] = 0;
 				privremeniEfekti[Plus.Ometanje] = (stit != null) ? stit.ometanje : 0;
@@ -267,7 +290,8 @@ namespace Zvjezdojedac.Igra.Brodovi
 				#endregion
 
 				#region Oklop
-				efekti[Iznos.Izdrzljivosti] = Math.Round(trup.BazaOklopa * oklop.izdrzljivost * privremeniEfekti[Koef.Izdrzljivosti]);
+				efekti[Iznos.Izdrzljivosti] = Math.Round(trup.BazaOklopa * oklop.izdrzljivost * privremeniEfekti[Koef.Izdrzljivosti] / privremeniEfekti[Koef.InvIzdrzljivosti]);
+				efekti[Iznos.UblazavanjaStete] = Math.Min(oklop.ublazavanjeSteteMax, oklop.ublazavanjeSteteKoef * trup.BazaOklopUblazavanja * privremeniEfekti[Koef.UblazavanjeStete]);
 				#endregion
 
 				#region MZ pogon
@@ -281,7 +305,8 @@ namespace Zvjezdojedac.Igra.Brodovi
 				{
 					double inercija = Math.Max(Math.Round(trup.Tromost + privremeniEfekti[Plus.Inercija]), 0);
 					efekti[Iznos.Inercija] = inercija;
-					efekti[Iznos.Pokretljivosti] = Math.Round(potisnici.brzina - inercija + privremeniEfekti[Plus.Brzina]);
+					efekti[Iznos.Brzina] = potisnici.brzina + privremeniEfekti[Plus.Brzina];
+					efekti[Iznos.Pokretljivosti] = potisnici.pokretljivost - inercija + privremeniEfekti[Plus.Pokretljivost];
 				}
 				#endregion
 
@@ -298,12 +323,14 @@ namespace Zvjezdojedac.Igra.Brodovi
 						efekti[Iznos.StitDebljina] = Math.Round(stit.debljina * Math.Max(privremeniEfekti[Koef.StitDebljina], 0));
 						efekti[Iznos.StitIzdrzljivost] = Math.Round(trup.BazaStita * stit.izdrzljivost * Math.Max(privremeniEfekti[Koef.StitIzdrzljivost], 0));
 						efekti[Iznos.StitObnavljanje] = Math.Round(trup.BazaStita * stit.obnavljanje * Math.Max(privremeniEfekti[Koef.StitObnavljanje], 0));
+						efekti[Iznos.StitUblazavanjaStete] = stit.ublazavanjeStete * privremeniEfekti[Koef.StitUblazavanjeStete];
 					}
 					else
 					{
 						efekti[Iznos.StitDebljina] = 0;
 						efekti[Iznos.StitIzdrzljivost] = 0;
 						efekti[Iznos.StitObnavljanje] = 0;
+						efekti[Iznos.StitUblazavanjaStete] = 0;
 					}
 				}
 				#endregion
@@ -437,7 +464,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				if (nadogradiv)
 					nadogradnja = new Dizajn(ime, trup, primarnoOruzje, sekundarnoOruzje,
 						udioPrimarneMisije, oklop, stit, specijalnaOprema, senzor, potisnici,
-						MZPogon, reaktor, taktika);
+						MZPogon, reaktor, pozeljnaPozicija);
 			}
 		}
 
@@ -457,6 +484,16 @@ namespace Zvjezdojedac.Igra.Brodovi
 			get { return efekti[Iznos.StitIzdrzljivost]; }
 		}
 
+		public double ublazavanjeSteteOklopa
+		{
+			get { return efekti[Iznos.UblazavanjaStete]; }
+		}
+
+		public double ublazavanjeSteteStita
+		{
+			get { return efekti[Iznos.StitUblazavanjaStete]; }
+		}
+
 		public double obnavljanjeStita
 		{
 			get { return efekti[Iznos.StitObnavljanje]; }
@@ -470,6 +507,11 @@ namespace Zvjezdojedac.Igra.Brodovi
 		public double inercija
 		{
 			get { return efekti[Iznos.Inercija]; }
+		}
+
+		public double nosivost
+		{
+			get { return efekti[Iznos.Nosivost]; }
 		}
 
 		public double koefSnageReaktora
@@ -490,6 +532,11 @@ namespace Zvjezdojedac.Igra.Brodovi
 		public double opterecenjeReaktora
 		{
 			get { return efekti[Iznos.OpterecenjeReaktora]; }
+		}
+
+		public double brzina
+		{
+			get { return efekti[Iznos.Brzina]; }
 		}
 
 		public double pokretljivost
@@ -564,7 +611,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 		private const string PohId = "ID";
 		private const string PohIme = "IME";
 		private const string PohCijena = "CIJENA";
-		private const string PohTaktika = "TAKTIKA";
+		private const string PohPozicija = "POZICIJA";
 		private const string PohTrup = "TRUP";
 		private const string PohPrimOruzje = "PRIM_OR";
 		private const string PohSekOruzje = "SEK_OR";
@@ -580,7 +627,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 		{
 			izlaz.dodaj(PohId, id);
 			izlaz.dodaj(PohIme, ime);
-			izlaz.dodaj(PohTaktika, taktika);
+			izlaz.dodaj(PohPozicija, pozeljnaPozicija);
 		 
 			izlaz.dodaj(PohTrup, trup.pohrani());
 			if (primarnoOruzje != null)	izlaz.dodaj(PohPrimOruzje, primarnoOruzje.komponenta.pohrani() + " " + primarnoOruzje.kolicina);
@@ -631,7 +678,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 		{
 			int id = ulaz.podatakInt(PohId);
 			string ime = ulaz.podatak(PohIme);
-			Taktika taktika = Taktika.IzIda(ulaz.podatakInt(PohTaktika));
+			int pozeljnaPozicija = ulaz.podatakInt(PohPozicija);
 
 			UcitanaKomp komp = ucitajKomponentu(ulaz.podatak(PohTrup));
 			Trup trup = Trup.TrupInfo.IzIda(komp.idInfa).naciniKomponentu(komp.nivo);
@@ -699,7 +746,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 			
 			return new Dizajn(id, ime, trup, primOruzje.komponenta, sekOruzje.komponenta,
 				udio, oklop, stit, specOprema, senzor, potisnici, mzPogon, reaktor,
-				taktika);
+				pozeljnaPozicija);
 		}
 		#endregion
 	}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Zvjezdojedac.Igra.Poruke;
+using Zvjezdojedac.Igra.Bitka;
 
 namespace Zvjezdojedac.Igra.Igraci.OsnovniRI
 {
@@ -40,6 +41,10 @@ namespace Zvjezdojedac.Igra.Igraci.OsnovniRI
 
 			foreach (var sloj in podSlojevi)
 				sloj.Djeluj(igra);
+		}
+
+		public void OdigrajKrugBitke(ModeratorBorbe bitka)
+		{
 		}
 	}
 }

@@ -14,6 +14,7 @@ namespace Zvjezdojedac.Podaci.Jezici
 		private static Dictionary<string, Kontekst> initStringUKontekst()
 		{
 			Dictionary<string, Kontekst> rez = new Dictionary<string,Kontekst>();
+			rez.Add("BITKA", Kontekst.Bitka);
 			rez.Add("FORM_FLOTE", Kontekst.FormFlote);
 			rez.Add("FORM_FLOTA_POKRET", Kontekst.FormFlotaPokret);
 			rez.Add("FORM_GRADNJA", Kontekst.FormGradnja);
