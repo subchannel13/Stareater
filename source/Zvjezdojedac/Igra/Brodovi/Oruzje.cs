@@ -170,9 +170,14 @@ namespace Zvjezdojedac.Igra.Brodovi
 			get { return parametri[Misija.VatrenaMoc]; }
 		}
 
-		public double brNapada
+		public double penetracijaOklopa
 		{
-			get { return parametri[Misija.UcinkovitostStitova]; }
+			get { return parametri[Misija.PenetracijaOklopa]; }
+		}
+
+		public double penetracijaStita
+		{
+			get { return parametri[Misija.PenetracijaStita]; }
 		}
 
 		public double preciznost

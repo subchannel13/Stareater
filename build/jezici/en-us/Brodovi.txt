@@ -39,11 +39,15 @@ SO_POTISNICI_IME = Additional thrusters
 SO_POTISNICI_OPIS =
 SO_REAKTOR_IME = Extended reactor
 SO_REAKTOR_OPIS =
+SO_TERET_IME = Cargo hold
+SO_TERET_OPIS = 
 
 SOE_KOEF_IZDRZ = Armor strength
+SOE_KOEF_INV_IZDRZ = Armor strength
 SOE_KOEF_STIT_DEB = Shield thickness
 SOE_KOEF_STIT_IZD = Shield strength
 SOE_KOEF_STIT_OBN = Shield recovery
+SOE_KOEF_TERET = Capacity
 SOE_PLUS_BRZINA = Mobility
 SOE_PLUS_SENZORI = Num. of sensors
 SOE_PLUS_INERC = Inertia
@@ -64,8 +68,5 @@ TRUP_MALA_KRSTARICA_IME = Small cruiser
 TRUP_MALA_KRSTARICA_OPIS = Medium sized ship.
 TRUP_KRSTARICA_IME = Cruiser
 TRUP_KRSTARICA_OPIS = Medium sized ship.
-
-TAK_PROJEKTIL = Projectile
-TAK_BROD0 = Close combat
-TAK_BROD1 = Normal
-TAK_BROD2 = Evasion
+TRUP_RAZARAC_IME = Destroyer
+TRUP_RAZARAC_OPIS = 

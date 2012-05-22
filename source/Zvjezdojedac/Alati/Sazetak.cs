@@ -10,7 +10,7 @@ namespace Zvjezdojedac.Alati
 		private uint[] sadrzaj;
 		private int hash;
 
-		public Sazetak(List<uint> sadrzaj, List<uint> maxVelicina)
+		public Sazetak(IList<uint> sadrzaj, IList<uint> maxVelicina)
 		{
 			List<uint> tmpSadrzaj = new List<uint>();
 			uint trenutni = 0;

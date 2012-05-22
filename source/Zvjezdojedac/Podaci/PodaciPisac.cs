@@ -87,7 +87,7 @@ namespace Zvjezdojedac.Podaci
 			StringBuilder sb = new StringBuilder();
 			foreach (var element in rjecnik)
 				if (filter(element.Value))
-					sb.Append(element.Key + " " + element.Value + " ");
+					sb.Append(element.Key + " " + element.Value.ToString(PodaciAlat.DecimalnaTocka) + " ");
 			linije.Add(uvlacenje + tip + " = " + sb.ToString());
 		}
 

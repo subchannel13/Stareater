@@ -16,6 +16,23 @@ namespace Zvjezdojedac.Alati
 			this.tekst = tekst;
 		}
 
+		public override bool Equals(object obj)
+		{
+			if (obj == null)
+				return false;
+
+			if (this.GetType() != obj.GetType())
+				return false;
+
+			TagTekst<T> other = obj as TagTekst<T>;
+			return tag.Equals(other.tag);
+		}
+
+		public override int GetHashCode()
+		{
+			return tag.GetHashCode();
+		}
+
 		public override string ToString()
 		{
 			return tekst;

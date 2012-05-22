@@ -1,4 +1,10 @@
-﻿::FORM_KOLONIZACIJA
+﻿::BITKA
+POZ_0 = Close
+POZ_1 = Middle range
+POZ_2 = Middle long
+POZ_3 = Long range
+
+::FORM_KOLONIZACIJA
 btnPrihvati = Confirm
 groupPoStan = Estimate (per populant)
 lblBrBrodova = Num. of ships
@@ -31,7 +37,8 @@ MIS_CIV_TRANS_OPIS = civil transport
 MIS_VOJ_TRANS_IME = Millitary transport
 MIS_VOJ_TRANS_OPIS = millitary transport
 
-BR_NAPADA = Shield efficiency
+ANTI_STIT = Shield penetration
+ANTI_OKLOP = Armor penetration
 IND = Industry
 INFILTRACIJA = Infiltration
 KAPACITET = Capacity

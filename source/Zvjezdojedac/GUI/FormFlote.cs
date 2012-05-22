@@ -93,9 +93,9 @@ namespace Zvjezdojedac.GUI
 					i++;
 				}
 
-				foreach (Taktika taktika in Taktika.Taktike.Keys)
-					cbNDtaktika.Items.Add(new TagTekst<Taktika>(taktika, taktika.naziv));
-
+				/*foreach (Pozicije taktika in Pozicije.Taktike.Keys)
+					cbNDtaktika.Items.Add(new TagTekst<Pozicije>(taktika, taktika.naziv));
+				*/
 				i = 0;
 				foreach (SpecijalnaOprema so in dizajner.trupKomponente.specijalnaOprema) {
 					ListViewItem item = new ListViewItem("");
@@ -113,7 +113,7 @@ namespace Zvjezdojedac.GUI
 				cbNDprimMisija.SelectedIndex = 0;
 				cbNDsekMisija.SelectedIndex = 0;
 				cbNDstit.SelectedIndex = 0;
-				cbNDtaktika.SelectedIndex = 0;
+				//cbNDtaktika.SelectedIndex = 0;
 				hscrUdioMisija.Value = 33;
 			}
 			#endregion
@@ -260,8 +260,8 @@ namespace Zvjezdojedac.GUI
 					if (dizajn.senzor.maxNivo > 0)
 						opis.Add(jezik["opisNivo"].tekst() + ": " + dizajn.senzor.nivo);
 					opis.Add(jezik["opisSenzorSn"].tekst() + ": " + Fje.PrefiksFormater(dizajn.snagaSenzora));
-					opis.Add(jezik["opisSenzorOm"].tekst() + ": " + Fje.PrefiksFormater(dizajn.ometanje));
-					opis.Add(jezik["opisSenzorPrik"].tekst() + ": " + Fje.PrefiksFormater(dizajn.prikrivenost));
+					//opis.Add(jezik["opisSenzorOm"].tekst() + ": " + Fje.PrefiksFormater(dizajn.ometanje));
+					//opis.Add(jezik["opisSenzorPrik"].tekst() + ": " + Fje.PrefiksFormater(dizajn.prikrivenost));
 					break;
 
 				case InfoStranice.SpecijalnaOprema:
@@ -307,13 +307,12 @@ namespace Zvjezdojedac.GUI
 					break;
 
 				case InfoStranice.Taktika:
+					Pozicije.EfektUdaljenosti efektUdaljenosti = Pozicije.EfektUdaljenosti.Izracunaj(dizajn.pozeljnaPozicija + Pozicije.UobicajenaPozicija);
 					opis.Add(jezik["opisTaktika"].tekst());
 					opis.Add("");
-					opis.Add(dizajn.taktika.naziv);
-					opis.Add(jezik["opisTaktikaPrec"].tekst() + ": x" + dizajn.taktika.koefPreciznost);
-					opis.Add(jezik["opisSenzorSn"].tekst() + ": x" + dizajn.taktika.koefSnagaSenzora);
-					opis.Add(jezik["opisSenzorOm"].tekst() + ": x" + dizajn.taktika.koefOmetanje);
-					opis.Add(jezik["opisSenzorPrik"].tekst() + ": x" + dizajn.taktika.koefPrikrivanje);
+					opis.Add(Pozicije.Naziv(dizajn.pozeljnaPozicija));
+					opis.Add(jezik["opisTaktikaPrec"].tekst() + ": x" + efektUdaljenosti.Preciznost);
+					opis.Add(jezik["opisSenzorSn"].tekst() + ": x" + efektUdaljenosti.SnagaSenzora);
 					break;
 			}
 
@@ -485,9 +484,9 @@ namespace Zvjezdojedac.GUI
 
 		private void cbNDtaktika_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			dizajner.dizajnTaktika = izvadiTag<Taktika>(cbNDtaktika);
+			/*dizajner.dizajnPozicija = izvadiTag<Taktika>(cbNDtaktika);
 			osvjeziNDstatistike();
-			prebaciNDopis(InfoStranice.Taktika);
+			prebaciNDopis(InfoStranice.Taktika);*/
 		}
 
 		private void btnNDspecOpremaPlus_Click(object sender, EventArgs e)

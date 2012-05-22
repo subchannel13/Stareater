@@ -253,8 +253,8 @@ namespace Zvjezdojedac.Podaci
 		public const string SenzorTag = "SENZOR";
 		public const string SpecOpremaTag = "SPEC_OPREMA";
 		public const string StitTag = "STIT";
-		public const string TaktikaProjTag = "TAKTIKA_PROJEKTIL";
-		public const string TaktikaBrodTag = "TAKTIKA_BROD";
+		public const string PozicijaTag = "POZICIJA";
+		public const string PozicijaDefTag = "POZICIJA_DEF";
 		public const string TehnoIstTag = "TEH_IST";
 		public const string TehnoRazTag = "TEH_RAZ";
 		public const string TrupTag = "TRUP";
@@ -287,8 +287,8 @@ namespace Zvjezdojedac.Podaci
 			ret.Add(SenzorTag, pokupi("./podaci/brod_senzor.txt", "<SENZOR>"));
 			ret.Add(SpecOpremaTag, pokupi("./podaci/brod_spec_oprema.txt", "<SPEC_OPREMA>"));
 			ret.Add(StitTag, pokupi("./podaci/brod_stit.txt", "<STIT>"));
-			ret.Add(TaktikaProjTag, pokupi("./podaci/taktike.txt", "<TAKTIKA_PROJEKTIL>"));
-			ret.Add(TaktikaBrodTag, pokupi("./podaci/taktike.txt", "<TAKTIKA_BROD>"));
+			ret.Add(PozicijaTag, pokupi("./podaci/pozicije.txt", "<POZICIJA>"));
+			ret.Add(PozicijaDefTag, pokupi("./podaci/pozicije.txt", "<POZICIJA_DEF>"));
 
 			return ret;
 		}
@@ -324,8 +324,8 @@ namespace Zvjezdojedac.Podaci
 				foreach (Dictionary<string, string> unos in podaci[SenzorTag]) Senzor.SenzorInfo.UcitajSenzorInfo(unos);
 				foreach (Dictionary<string, string> unos in podaci[SpecOpremaTag]) SpecijalnaOprema.SpecijalnaOpremaInfo.UcitajSpecijalnaOpremaInfo(unos);
 				foreach (Dictionary<string, string> unos in podaci[StitTag]) Stit.StitInfo.UcitajStitInfo(unos);
-				foreach (Dictionary<string, string> unos in podaci[TaktikaProjTag]) Taktika.DodajTaktikuProjektila(unos);
-				foreach (Dictionary<string, string> unos in podaci[TaktikaBrodTag]) Taktika.DodajTaktikuBroda(unos);
+				foreach (Dictionary<string, string> unos in podaci[PozicijaTag]) Pozicije.DodajImenovanuPoziciju(unos);
+				foreach (Dictionary<string, string> unos in podaci[PozicijaDefTag]) Pozicije.DefinirajPozicije(unos);
 
 				foreach (Dictionary<string, string> unos in podaci["PREDEF_DIZ"]) PredefiniraniDizajn.Dodaj(unos);
 

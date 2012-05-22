@@ -22,7 +22,7 @@ namespace Zvjezdojedac.Igra.Brodovi.Dizajner
 		private Stit _dizajnStit;
 		private Dictionary<SpecijalnaOprema, int> _dizajnSpecOprema = new Dictionary<SpecijalnaOprema,int>();
 		private bool _dizajnMZPogon;
-		private Taktika _dizajnTaktika;
+		private int _dizajnPozicija;
 
 		public Dizajner(Igrac igrac)
 		{
@@ -128,12 +128,12 @@ namespace Zvjezdojedac.Igra.Brodovi.Dizajner
 				promjenjenDizajn = true;
 			}
 		}
-		public Taktika dizajnTaktika
+		public int dizajnPozicija
 		{
-			get { return _dizajnTaktika; }
+			get { return _dizajnPozicija; }
 			set
 			{
-				_dizajnTaktika = value;
+				_dizajnPozicija = value;
 				promjenjenDizajn = true;
 			}
 		}
@@ -182,7 +182,7 @@ namespace Zvjezdojedac.Igra.Brodovi.Dizajner
 						dizajnPrimMisija, dizajnSekMisija, dizajnUdioPrimMisije,
 						oklop, dizajnStit, dizajnSpecOprema, senzor,
 						potisnici, mzPogon, komponente[odabranTrup].reaktor,
-						dizajnTaktika
+						dizajnPozicija
 						);
 					promjenjenDizajn = false;
 				}
@@ -200,7 +200,7 @@ namespace Zvjezdojedac.Igra.Brodovi.Dizajner
 		{
 			get
 			{
-				double suma = _dizajnTrup.Nosivost;
+				double suma = _dizajn.nosivost;
 				if (_dizajnStit != null) suma -= _dizajnTrup.VelicinaStita;
 				if (_dizajnMZPogon) suma -= _dizajnTrup.VelicinaMZPogona;
 				foreach (SpecijalnaOprema so in _dizajnSpecOprema.Keys)

@@ -142,11 +142,15 @@ namespace Zvjezdojedac.Igra.Brodovi
 					else
 						predznakStr = "+";
 
-					string zaDodat = Dizajn.OpisiPrivrEfekata[efekt].opis + ": " + predznakStr;
+					string zaDodat = Dizajn.OpisiPrivrEfekata[efekt].opis + ": ";
 					if (Dizajn.OpisiPrivrEfekata[efekt].tip == Dizajn.PrivEfektTip.Koeficijent)
-						zaDodat += (efekti[efekt] * predznak * 100).ToString("0.#") + "%";
+						zaDodat += (efekti[efekt] * predznak * 100).ToString("+0.#;-0.#") + "%";
+					else if (Dizajn.OpisiPrivrEfekata[efekt].tip == Dizajn.PrivEfektTip.InvKoeficijent) {
+						double vrijednost = 1 / (1 + efekti[efekt]) - 1;
+						zaDodat += (vrijednost * 100).ToString("+0.#;-0.#") + "%";
+					}
 					else
-						zaDodat += Fje.PrefiksFormater(efekti[efekt] * predznak);
+						zaDodat += predznakStr + Fje.PrefiksFormater(efekti[efekt] * predznak);
 
 					opis.Add(zaDodat);
 				}

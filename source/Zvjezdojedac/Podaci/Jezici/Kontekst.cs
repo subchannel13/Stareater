@@ -7,6 +7,7 @@ namespace Zvjezdojedac.Podaci.Jezici
 {
 	public enum Kontekst
 	{
+		Bitka,
 		Opcenito,
 		FormFlote,
 		FormFlotaPokret,

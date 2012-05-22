@@ -12,6 +12,7 @@ using Zvjezdojedac.Podaci.Jezici;
 using Zvjezdojedac.Igra.Poruke;
 using Zvjezdojedac.Igra;
 using Zvjezdojedac.Igra.Brodovi;
+using Zvjezdojedac.Igra.Bitka;
 
 namespace Zvjezdojedac.GUI
 {
@@ -714,6 +715,15 @@ namespace Zvjezdojedac.GUI
 					break;
 				
 				case FazaIgre.Bitke:
+
+					while (igra.SlijedeciKonflikt() != null) {
+						Konflikt konflikt = igra.SlijedeciKonflikt();
+
+						if (konflikt.Faza == StanjeKonflikta.SvemirskiSukob)
+							using (var formBitka = new FormBorba(konflikt.ZapocniBorbu(), konflikt.Lokacija))
+								formBitka.ShowDialog();
+					}
+
 					backgroundTurnProcessor.RunWorkerAsync();
 					break;
 			}
