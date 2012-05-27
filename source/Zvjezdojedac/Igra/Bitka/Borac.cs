@@ -17,11 +17,11 @@ namespace Zvjezdojedac.Igra.Bitka
 		public double IzdrzljivostStita;
 		public bool[] Vidljiv = new bool[IgraZvj.MaxIgraca];
 
-		public Borac(Dizajn dizajn, Igrac igrac)
+		public Borac(Dizajn dizajn, Igrac igrac, double izdrzljivostOklopa)
 		{
 			this.Dizajn = dizajn;
 			this.Igrac = igrac;
-			this.IzdrzljivostOklopa = dizajn.izdrzljivostOklopa;
+			this.IzdrzljivostOklopa = izdrzljivostOklopa;
 			this.IzdrzljivostStita = dizajn.izdrzljivostStita;
 
 			this.Pozicija = Pozicije.PocetnaPozicija;

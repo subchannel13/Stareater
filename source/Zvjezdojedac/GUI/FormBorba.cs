@@ -31,11 +31,24 @@ namespace Zvjezdojedac.GUI
 			picSelectAll.Image = Zvjezdojedac.Podaci.Slike.BoraciSvi;
 
 			postaviPozicije();
-			postaviPrikazStrana(pnlNapadac, borba.SviBorci, borba.LijevaStrana, false);
-			postaviPrikazStrana(pnlObrana, borba.SviBorci, borba.DesnaStrana, true);
+			pocetakKruga();
 
 			foreach(var pozicija in Pozicije.PonudjenePozicije())
 				cbPozicija.Items.Add(new TagTekst<int>(pozicija, Pozicije.Naziv(pozicija)));
+		}
+
+		private void pocetakKruga()
+		{
+			postaviPrikazStrana(pnlNapadac, borba.SviBorci, borba.LijevaStrana, false);
+			postaviPrikazStrana(pnlObrana, borba.SviBorci, borba.DesnaStrana, true);
+
+			if (borba.PreostaloKrugova == 0)
+				lblBrKruga.Text = IgracevKonflikt.MaxBrPoteza + " / " + IgracevKonflikt.MaxBrPoteza;
+			else
+				lblBrKruga.Text = (IgracevKonflikt.MaxBrPoteza - borba.PreostaloKrugova + 1) + " / " + IgracevKonflikt.MaxBrPoteza;
+
+			if (borba.Razrjeseno()) 
+				btnKrajKruga.Text = "Close";	
 		}
 
 		private void postaviPrikazStrana(FlowLayoutPanel panel, IEnumerable<Borac> borci, HashSet<Igrac> filtarIgraca, bool prikazPrikrivanja)
@@ -207,6 +220,8 @@ namespace Zvjezdojedac.GUI
 
 				cpNapadac.SetCombatants(borba.SviBorci);
 				cpBranitelj.SetCombatants(borba.SviBorci);
+
+				pocetakKruga();
 			}
 		}
 	}

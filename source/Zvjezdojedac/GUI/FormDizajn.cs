@@ -49,7 +49,6 @@ namespace Zvjezdojedac.GUI
 			// jezik
 			btnSpremi.Text = jezik["btnSpremi"].tekst();
 			chSpecOpNaziv.Text = jezik["chSpecOpNaziv"].tekst();
-			chMZpogon.Text = jezik["chNDMZpogon"].tekst();
 			lblNaziv.Text = jezik["lblNaziv"].tekst() + ":";
 			lblPrimMisija.Text = jezik["lblPrimMisija"].tekst() + ":";
 			lblSekMisija.Text = jezik["lblSekMisija"].tekst() + ":";
@@ -59,6 +58,13 @@ namespace Zvjezdojedac.GUI
 			lblUdioSek.Text = jezik["lblUdioSek"].tekst() + ":";
 			lblVelicina.Text = jezik["lblVelicina"].tekst() + ":";
 			this.Text = jezik["tabNoviDizajn"].tekst();
+
+			if (dizajner.dizajnMZPogon) {
+				Dictionary<string, double> varijable = new Dictionary<string, double>();
+				varijable.Add("BRZINA", dizajner.dizajn.MZbrzina);
+				chMZpogon.Text = jezik["chNDMZpogon"].tekst(varijable);
+			} else
+				chMZpogon.Text = jezik["chNDMZpogonNema"].tekst();
 		}
 
 		private void FormDizajn_Load(object sender, EventArgs e)
@@ -96,6 +102,14 @@ namespace Zvjezdojedac.GUI
 
 			lblCijena.Text = jezik["lblNDcijena"].tekst() + ": " + Fje.PrefiksFormater(dizajn.cijena);
 			lblSlobodno.Text = jezik["lblNDslobodno"].tekst() + ": " + Fje.PrefiksFormater(dizajner.slobodnaNosivost) + " / " + Fje.PrefiksFormater(dizajn.nosivost);
+
+			if (dizajner.dizajnMZPogon) {
+				Dictionary<string, double> varijable = new Dictionary<string, double>();
+				varijable.Add("BRZINA", dizajner.dizajn.MZbrzina);
+				chMZpogon.Text = jezik["chNDMZpogon"].tekst(varijable);
+			}
+			else
+				chMZpogon.Text = jezik["chNDMZpogonNema"].tekst();
 		}
 
 		private void cbVelicina_SelectedIndexChanged(object sender, EventArgs e)

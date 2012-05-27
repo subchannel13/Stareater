@@ -41,12 +41,12 @@ namespace Zvjezdojedac.Igra.Brodovi
 				Kodovi.Add(podaci["KOD"], info);
 			}
 
-			public static List<Stit> DostupniStitovi(Dictionary<string, double> varijable, double velicinaTrupa)
+			public static List<Stit> DostupniStitovi(Dictionary<string, double> varijable, double velicinaStita)
 			{
 				List<Stit> ret = new List<Stit>();
 				foreach (StitInfo si in Stitovi)
 					if (si.dostupno(varijable))
-						ret.Add(si.naciniKomponentu(varijable, velicinaTrupa));
+						ret.Add(si.naciniKomponentu(varijable, velicinaStita));
 				return ret;
 			}
 
@@ -97,13 +97,13 @@ namespace Zvjezdojedac.Igra.Brodovi
 				return new Stit(
 					this,
 					nivo,
-					Evaluiraj(izdrzljivost, nivo, velicinaStita),
-					Evaluiraj(debljina, nivo, velicinaStita),
-					Evaluiraj(ublazavanjeStete, nivo, velicinaStita),
-					Evaluiraj(obnavljanje, nivo, velicinaStita),
+					Evaluiraj(izdrzljivost, nivo),
+					Evaluiraj(debljina, nivo),
+					Evaluiraj(ublazavanjeStete, nivo),
+					Evaluiraj(obnavljanje, nivo),
 					Evaluiraj(snaga, nivo, velicinaStita),
-					Evaluiraj(prikrivanje, nivo, velicinaStita),
-					Evaluiraj(ometanje, nivo, velicinaStita),
+					Evaluiraj(prikrivanje, nivo),
+					Evaluiraj(ometanje, nivo),
 					Evaluiraj(cijena, nivo, velicinaStita)
 					);
 			}

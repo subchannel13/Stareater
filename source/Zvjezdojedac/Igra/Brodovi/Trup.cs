@@ -23,7 +23,8 @@ namespace Zvjezdojedac.Igra.Brodovi
 				int maxNivo = int.Parse(podaci["MAX_NIVO"]);
 
 				int velicina = int.Parse(podaci["VELICINA"]);
-				Formula kapacitetPrikrivanja = Formula.IzStringa(podaci["OMETANJE"]);
+				Formula ometanje = Formula.IzStringa(podaci["OMETANJE"]);
+				Formula prikrivanje = Formula.IzStringa(podaci["PRIKRIVANJE"]);
 				Formula velicina_MZPogona_p = Formula.IzStringa(podaci["VELICINA_MZPOGONA"]);
 				Formula velicina_reaktora_p = Formula.IzStringa(podaci["VELICINA_REAKTORA"]);
 				Formula velicina_stita_p = Formula.IzStringa(podaci["VELICINA_STITA"]);
@@ -37,7 +38,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 				TrupInfo trupInfo = new TrupInfo(
 					naziv, opis, slika, preduvjeti, maxNivo,
-					velicina, kapacitetPrikrivanja, 
+					velicina, ometanje, prikrivanje,
 					velicina_MZPogona_p, velicina_reaktora_p,
 					velicina_stita_p, nosivost, tromost, 
 					bazaOklopa, bazaOklopUblazavanja, bazaStita,
@@ -68,6 +69,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 			public int velicina { get; private set; }
 			private Formula ometanje;
+			private Formula prikrivanje;
 			private Formula nosivost;
 			private Formula velicina_MZPogona;
 			private Formula velicina_reaktora;
@@ -81,7 +83,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 
 			private TrupInfo(string naziv, string opis, Image slika,
 				List<Preduvjet> preduvjeti, int maxNivo,
-				int velicina, Formula kapacitetPrikrivanja,
+				int velicina, Formula ometanje, Formula prikrivanje,
 				Formula velicina_MZPogona, Formula velicina_reaktora,
 				Formula velicina_stita,	Formula nosivost, Formula tromost,
 				Formula bazaOklopa, Formula bazaOklopUblazavanja, Formula bazaStita, 
@@ -91,7 +93,8 @@ namespace Zvjezdojedac.Igra.Brodovi
 				base(naziv, opis, slika, preduvjeti, maxNivo)
 			{
 				this.velicina = velicina;
-				this.ometanje = kapacitetPrikrivanja;
+				this.ometanje = ometanje;
+				this.prikrivanje = prikrivanje;
 				this.velicina_MZPogona = velicina_MZPogona;
 				this.velicina_reaktora = velicina_reaktora;
 				this.velicina_stita = velicina_stita;
@@ -116,6 +119,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 					this,
 					nivo,
 					Evaluiraj(ometanje, nivo),
+					Evaluiraj(prikrivanje, nivo),
 					Evaluiraj(velicina_MZPogona, nivo),
 					Evaluiraj(velicina_reaktora, nivo),
 					Evaluiraj(velicina_stita, nivo),
@@ -131,6 +135,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 		}
 
 		public double OmetanjeBaza { get; private set; }
+		public double PrikrivanjeBaza { get; private set; }
 		public double VelicinaMZPogona { get; private set; }
 		public double VelicinaReaktora { get; private set; }
 		public double VelicinaStita { get; private set; }
@@ -143,14 +148,15 @@ namespace Zvjezdojedac.Igra.Brodovi
 		public double Cijena { get; private set; }
 
 		private Trup(TrupInfo info, int nivo,
-			double kapacitetPrikrivanja, double velicina_MZPogona,
+			double ometanjeBaza, double prikrivanjeBaza, double velicina_MZPogona,
 			double velicina_reaktora, double velicina_stita, double nosivost,
 			double tromost, double bazaOklopa, double bazaOklopUblazavanja, double bazaStita,
 			int senzorPlus,
 			double cijena)
 			: base(info, nivo)
-		{			
-			this.OmetanjeBaza = kapacitetPrikrivanja;
+		{
+			this.OmetanjeBaza = ometanjeBaza;
+			this.PrikrivanjeBaza = prikrivanjeBaza;
 			this.VelicinaMZPogona = velicina_MZPogona;
 			this.VelicinaReaktora = velicina_reaktora;
 			this.VelicinaStita = velicina_stita;

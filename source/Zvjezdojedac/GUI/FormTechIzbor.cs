@@ -325,12 +325,12 @@ namespace Zvjezdojedac.GUI
 			StringBuilder sb = new StringBuilder(txtOpOpis.Text);
 			sb.AppendLine();
 			sb.AppendLine();
-			sb.AppendLine(jezik["opisStitIzd"].tekst() + ": " + Fje.PrefiksFormater(stit.izdrzljivost));
+			sb.AppendLine(jezik["opisStitIzd"].tekst() + ": " + Fje.PrefiksFormater(stit.izdrzljivost * trup.BazaStita));
 			sb.AppendLine(jezik["opisStitDeb"].tekst() + ": " + Fje.PrefiksFormater(stit.debljina));
 			sb.AppendLine(jezik["opisStitUbl"].tekst() + ": " + Fje.PrefiksFormater(stit.ublazavanjeStete, jezik["opisStitUblInf"].tekst()));
-			sb.AppendLine(jezik["opisStitObn"].tekst() + ": " + Fje.PrefiksFormater(stit.obnavljanje));
-			sb.AppendLine(jezik["opisSenzorOm"].tekst() + ": " + stit.ometanje.ToString("+0;-0"));
-			sb.AppendLine(jezik["opisSenzorPrik"].tekst() + ": +" + Fje.PrefiksFormater(stit.prikrivanje));
+			sb.AppendLine(jezik["opisStitObn"].tekst() + ": " + Fje.PrefiksFormater(stit.obnavljanje * trup.BazaStita));
+			sb.AppendLine(jezik["opisStitOm"].tekst() + ": " + stit.ometanje.ToString("+0;-0"));
+			sb.AppendLine(jezik["opisStitPrik"].tekst() + ": +" + Fje.PrefiksFormater(stit.prikrivanje));
 			sb.AppendLine();
 			jezik = Postavke.Jezik[Kontekst.FormTech];
 			sb.AppendLine(jezik["opCijena"].tekst() + ": " + Fje.PrefiksFormater(stit.cijena));

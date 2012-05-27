@@ -72,6 +72,11 @@ namespace Zvjezdojedac.Igra.Bitka
 		{
 			get { return sviBorci; }
 		}
+
+		public int PreostaloKrugova
+		{
+			get { return konflikt.PreostaloKrugova; }
+		}
 		#endregion
 
 		public void SlijedecaFaza()
@@ -88,6 +93,8 @@ namespace Zvjezdojedac.Igra.Bitka
 
 					if (Razrjeseno()) {
 						konflikt.ZavrsiSvemirskuBitku();
+						foreach (var strana in strane)
+							strana.Value.BitkaZavrsena(konflikt.Lokacija);
 						break;
 					}
 				}
@@ -103,10 +110,10 @@ namespace Zvjezdojedac.Igra.Bitka
 				return true;
 
 			foreach (Strana strana in strane.Values)
-				if (sviBorci.Count != strana.Borci.Count)
-					return false;
+				if (sviBorci.Count == strana.Borci.Count)
+					return true;
 
-			return true;
+			return false;
 		}
 
 		private static double Vjerojatnost(double napadac, double meta)
@@ -163,7 +170,7 @@ namespace Zvjezdojedac.Igra.Bitka
 			foreach (Borac borac in sviBorci)
 				foreach (var strana in strane)
 					if (borac.Igrac != strana.Key) {
-						double vjerojatnost = Vjerojatnost(strana.Value.SnagaSenzora((int)Math.Round(borac.Pozicija)), borac.Dizajn.prikrivenost);
+						double vjerojatnost = Vjerojatnost(strana.Value.SnagaSenzora((int)Math.Round(-borac.Pozicija)), borac.Dizajn.prikrivenost);
 						borac.Vidljiv[strana.Key.id] = (vjerojatnost > random.NextDouble());
 					}
 		}
@@ -173,7 +180,9 @@ namespace Zvjezdojedac.Igra.Bitka
 			PopisMeta popisMeta = new PopisMeta();
 			foreach (var drugaStrana in strane.Values)
 				if (drugaStrana != strana)
-					popisMeta.Dodaj(drugaStrana.Borci);
+					foreach (var borac in drugaStrana.Borci)
+						if (borac.Vidljiv[strana.Igrac.id])
+							popisMeta.Dodaj(borac);
 
 			foreach (Borac borac in strana.Borci) {
 				Dizajn dizajn = borac.Dizajn;
@@ -203,8 +212,8 @@ namespace Zvjezdojedac.Igra.Bitka
 						meta = popisMeta.DajSlijedeci(zbir.komponenta.ciljanje, random.NextDouble());
 						efektUdaljenosti = Pozicije.EfektUdaljenosti.Izracunaj(Math.Abs(pozicijaNapadaca - Math.Round(meta.Pozicija)));
 						
-						double ometanje = Math.Max(meta.Dizajn.ometanje - strana.SnagaSenzora((int)Math.Round(meta.Pozicija)), 0);
-						vjerotanostPogotka = Vjerojatnost(oruzje.preciznost + efektUdaljenosti.Preciznost, meta.Dizajn.pokretljivost) * Math.Pow(sigmoidBase, -ometanje);
+						double ometanje = Math.Max(meta.Dizajn.ometanje - strana.SnagaSenzora((int)Math.Round(-meta.Pozicija)), 0);
+						vjerotanostPogotka = Vjerojatnost(oruzje.preciznost + efektUdaljenosti.Preciznost, meta.Dizajn.pokretljivost) * Math.Pow(sigmoidBase, ometanje);
 					}
 					else
 						break;
@@ -246,7 +255,7 @@ namespace Zvjezdojedac.Igra.Bitka
 
 					foreach (var strana in strane)
 						if (borac.Igrac != strana.Key) {
-							double vjerojatnost = Vjerojatnost(strana.Value.SnagaSenzora((int)Math.Round(borac.Pozicija)), borac.Dizajn.prikrivenost);
+							double vjerojatnost = Vjerojatnost(strana.Value.SnagaSenzora((int)Math.Round(-borac.Pozicija)), borac.Dizajn.prikrivenost);
 							
 							borac.Vidljiv[strana.Key.id] = borac.Vidljiv[strana.Key.id] && 
 								((vjerojatnost > random.NextDouble()) || 

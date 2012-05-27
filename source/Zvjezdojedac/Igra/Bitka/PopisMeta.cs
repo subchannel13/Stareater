@@ -20,13 +20,17 @@ namespace Zvjezdojedac.Igra.Bitka
 
 		public void Dodaj(IEnumerable<Borac> borci)
 		{
-			foreach (Borac borac in borci) {
-				double velicina = borac.Dizajn.trup.velicina;
+			foreach (Borac borac in borci)
+				Dodaj(borac);
+		}
 
-				mete[Oruzje.Ciljanje.Obrana].Add(borac, 1 / velicina);
-				mete[Oruzje.Ciljanje.Normalno].Add(borac, velicina);
-				mete[Oruzje.Ciljanje.Veliki_brodovi].Add(borac, velicina * velicina);
-			}
+		public void Dodaj(Borac borac)
+		{
+			double velicina = borac.Dizajn.trup.velicina;
+
+			mete[Oruzje.Ciljanje.Obrana].Add(borac, 1 / velicina);
+			mete[Oruzje.Ciljanje.Normalno].Add(borac, velicina);
+			mete[Oruzje.Ciljanje.Veliki_brodovi].Add(borac, velicina * velicina);
 		}
 
 		public Borac DajSlijedeci(Oruzje.Ciljanje kategorija, double tezina)
