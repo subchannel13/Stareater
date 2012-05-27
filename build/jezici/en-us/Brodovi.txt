@@ -1,6 +1,8 @@
 ﻿::KOMPONENTE
 MZ_NUKLEARNI_IME = Nuclear drive
 MZ_NUKLEARNI_OPIS = 
+MZ_POTPROSTOR_IME = Subspace drive
+MZ_POTPROSTOR_OPIS =
 
 OK_TITANIJ_IME = Titanium
 OK_TITANIJ_OPIS = 
@@ -59,6 +61,8 @@ ST_ECM_IME = ECM
 ST_ECM_OPIS =
 ST_EM_IME = EM shield
 ST_EM_OPIS =
+ST_CEST_IME = Particle shield
+ST_CEST_OPIS =
 
 TRUP_LOVAC_IME = Fighter
 TRUP_LOVAC_OPIS = Space version of air superiority fighter.

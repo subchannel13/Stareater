@@ -4,5 +4,5 @@ OPIS = SE_EM_OPIS
 SLIKA = ./slike/tehnologije/hidroponicne farme.bmp
 MAX_NIVO = 10
 PREDUVJETI =
-RAZLUCIVOST = 10
+RAZLUCIVOST = 15
 ----

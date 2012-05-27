@@ -9,6 +9,7 @@ namespace Zvjezdojedac.Igra.Bitka
 {
 	public class Strana
 	{
+		public Igrac Igrac { get; private set; }
 		public MySet<Borac> Borci;
 		public HashSet<Borac> PaliBorci = new HashSet<Borac>();
 		
@@ -16,14 +17,16 @@ namespace Zvjezdojedac.Igra.Bitka
 		double snagaSenzoraFlote;
 		int pozicijaSenzoraFlote;
 
-		public Strana(MySet<Borac> borci)
+		public Strana(Igrac igrac, MySet<Borac> borci)
 		{
 			this.Borci = borci;
+			this.Igrac = igrac;
 		}
 
 		public void PostaviSnaguSenzora(double[] snagaSenzora)
 		{
-			snagaSenzoraFlote = double.NegativeInfinity;
+			double snagaSenzoraFlote = double.NaN;
+			pozicijaSenzoraFlote = int.MaxValue;
 
 			for (int pozicija = 0; pozicija < snagaSenzora.Length; pozicija++) {
 				int senzorSPozicije = 0;
@@ -40,10 +43,11 @@ namespace Zvjezdojedac.Igra.Bitka
 					}
 				}
 
-				snagaSenzora[pozicija] = snagaNaPoziciji;
+				this.snagaSenzora[pozicija] = snagaNaPoziciji;
 				if (!double.IsNaN(snagaNaPoziciji)) {
 					double efektUdaljenosti = Pozicije.EfektUdaljenosti.Izracunaj(pozicija).SnagaSenzora;
-					if (snagaSenzora[senzorSPozicije] + efektUdaljenosti > snagaSenzoraFlote) {
+					if (double.IsNaN(snagaSenzoraFlote) || snagaSenzora[senzorSPozicije] + efektUdaljenosti > snagaSenzoraFlote) {
+						this.snagaSenzoraFlote = snagaSenzora[senzorSPozicije];
 						snagaSenzoraFlote = snagaSenzora[senzorSPozicije] + efektUdaljenosti;
 						pozicijaSenzoraFlote = senzorSPozicije;
 					}
@@ -59,6 +63,15 @@ namespace Zvjezdojedac.Igra.Bitka
 				var efektUdaljenosti = Pozicije.EfektUdaljenosti.Izracunaj(pozicijaSenzoraFlote - pozicija);
 				return snagaSenzoraFlote + efektUdaljenosti.SnagaSenzora;
 			}
+		}
+
+		public void BitkaZavrsena(Zvijezda lokacija)
+		{
+			Flota flota = Igrac.floteStacionarne[lokacija];
+			flota.ukloniSve();
+
+			foreach (Borac borac in Borci)
+				flota.dodajBrod(new Brod(borac.Dizajn, 1, borac.IzdrzljivostOklopa));
 		}
 	}
 }

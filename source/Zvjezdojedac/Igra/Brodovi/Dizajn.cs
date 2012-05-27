@@ -338,7 +338,7 @@ namespace Zvjezdojedac.Igra.Brodovi
 				#region Prikrivanje
 				{
 					efekti[Iznos.Ometanje] = Math.Round(trup.OmetanjeBaza + Math.Max(privremeniEfekti[Plus.Ometanje], 0));
-					efekti[Iznos.Prikrivanje] = Math.Round(Math.Max(privremeniEfekti[Plus.Prikrivanje], 0));
+					efekti[Iznos.Prikrivanje] = Math.Round(trup.PrikrivanjeBaza + Math.Max(privremeniEfekti[Plus.Prikrivanje], 0));
 				}
 				#endregion
 			}

@@ -196,7 +196,6 @@
     <Compile Include="Igra\FazaIgre.cs" />
     <Compile Include="GUI\KategorijaOpreme.cs" />
     <Compile Include="GUI\PrikazMape.cs" />
-    <Compile Include="GUI\ZvjezdojedacAppContext.cs" />
     <Compile Include="Igra\Brodovi\Brod.cs" />
     <Compile Include="Igra\Brodovi\Dizajner\Dizajner.cs" />
     <Compile Include="Igra\Brodovi\Dizajner\Komponente.cs" />

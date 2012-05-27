@@ -121,6 +121,11 @@ namespace Zvjezdojedac.Igra
 				brodovi.Remove(dizajn);
 		}
 
+		public void ukloniSve()
+		{
+			brodovi.Clear();
+		}
+
 		public Brod this[Dizajn dizajn]
 		{
 			get { return brodovi[dizajn]; }

@@ -27,11 +27,13 @@ namespace Zvjezdojedac.Igra.Bitka
 			foreach (Igrac strana in stanjeStrana.Keys) {
 				var borci = new MySet<Borac>();
 
-				foreach(Brod brod in strana.floteStacionarne[Lokacija].brodovi.Values)
-					for(int i = 0; i < brod.kolicina; i++)
-						borci.Add(new Borac(brod.dizajn, strana));
+				foreach (Brod brod in strana.floteStacionarne[Lokacija].brodovi.Values) {
+					double izdrzljivotsOklopa = brod.izdrzljivostOklopa / brod.kolicina;
+					for (int i = 0; i < brod.kolicina; i++)
+						borci.Add(new Borac(brod.dizajn, strana, izdrzljivotsOklopa));
+				}
 
-				sviBorci.Add(strana, new Strana(borci));
+				sviBorci.Add(strana, new Strana(strana, borci));
 			}
 
 			return new ModeratorBorbe(sviBorci, this);

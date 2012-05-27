@@ -40,6 +40,7 @@
 			this.cbPozicija = new System.Windows.Forms.ComboBox();
 			this.btnPosalji = new System.Windows.Forms.Button();
 			this.btnKrajKruga = new System.Windows.Forms.Button();
+			this.lblBrKruga = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.picLokacija)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.picSelectAll)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackKolicina)).BeginInit();
@@ -168,11 +169,21 @@
 			this.btnKrajKruga.UseVisualStyleBackColor = true;
 			this.btnKrajKruga.Click += new System.EventHandler(this.btnKrajKruga_Click);
 			// 
+			// lblBrKruga
+			// 
+			this.lblBrKruga.Location = new System.Drawing.Point(273, 365);
+			this.lblBrKruga.Name = "lblBrKruga";
+			this.lblBrKruga.Size = new System.Drawing.Size(117, 18);
+			this.lblBrKruga.TabIndex = 13;
+			this.lblBrKruga.Text = "x/x";
+			this.lblBrKruga.TextAlign = System.Drawing.ContentAlignment.TopRight;
+			// 
 			// FormBorba
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(744, 395);
+			this.Controls.Add(this.lblBrKruga);
 			this.Controls.Add(this.btnKrajKruga);
 			this.Controls.Add(this.btnPosalji);
 			this.Controls.Add(this.cbPozicija);
@@ -214,5 +225,6 @@
 		private System.Windows.Forms.ComboBox cbPozicija;
 		private System.Windows.Forms.Button btnPosalji;
 		private System.Windows.Forms.Button btnKrajKruga;
+		private System.Windows.Forms.Label lblBrKruga;
 	}
 }

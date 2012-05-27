@@ -125,7 +125,7 @@ namespace Zvjezdojedac.GUI
 			chDizajnNaziv.Text = jezik["chDizajnNaziv"].tekst();
 			chSpecOpNaziv.Text = jezik["chSpecOpNaziv"].tekst();
 			chSpecOpVelicina.Text = jezik["chSpecOpVelicina"].tekst();
-			chNDMZpogon.Text = jezik["chNDMZpogon"].tekst();
+			//chNDMZpogon.Text = jezik["chNDMZpogon"].tekst();
 			lblDizajn.Text = jezik["lblDizajn"].tekst() + ":";
 			lblNaziv.Text = jezik["lblNaziv"].tekst() + ":";
 			lblPrimMisija.Text = jezik["lblPrimMisija"].tekst() + ":";
