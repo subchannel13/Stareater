@@ -27,10 +27,19 @@ namespace Zvjezdojedac.GUI
 
 		public CombatantItem()
 		{
+			Selectable = true;
+
 			InitializeComponent();
 
 			group.Add(this);
 		}
+
+		[Browsable(true)]
+		[EditorBrowsable(EditorBrowsableState.Always)]
+		[DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+		[DescriptionAttribute("Indicates whether control is interactive or readonly.")]
+		[DefaultValue(true)]
+		public bool Selectable { get; set; }
 
 		[EditorBrowsable(EditorBrowsableState.Always)]
 		[Browsable(true)]
@@ -109,7 +118,7 @@ namespace Zvjezdojedac.GUI
 
 		public void SelectThis()
 		{
-			if (Selected) return;
+			if (!Selectable || Selected) return;
 
 			Selected = true;
 			OnSelect(this, new ObjectEventArgs<ICollection<Borac>>(grupaBoraca));
