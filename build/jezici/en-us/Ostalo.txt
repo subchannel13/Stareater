@@ -3,6 +3,9 @@ POZ_0 = Close
 POZ_1 = Middle range
 POZ_2 = Middle long
 POZ_3 = Long range
+lblZapovijed = Orders
+btnPosalji = Send
+btnKrajKruga = End turn
 
 ::FORM_KOLONIZACIJA
 btnPrihvati = Confirm

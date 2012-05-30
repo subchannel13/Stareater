@@ -12,6 +12,8 @@ using Zvjezdojedac.Igra.Brodovi;
 using Zvjezdojedac.Alati;
 using Zvjezdojedac.GUI.Events;
 using Zvjezdojedac.GUI.SmallData;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Podaci;
 
 namespace Zvjezdojedac.GUI
 {
@@ -35,6 +37,11 @@ namespace Zvjezdojedac.GUI
 
 			postaviPozicije();
 			pocetakKruga();
+
+			var jezik = Postavke.Jezik[Kontekst.Bitka];
+			lblZapovijed.Text = jezik["lblZapovijed"].tekst();
+			btnPosalji.Text = jezik["btnPosalji"].tekst();
+			btnKrajKruga.Text = jezik["btnKrajKruga"].tekst();
 		}
 
 		private void pocetakKruga()
@@ -206,6 +213,7 @@ namespace Zvjezdojedac.GUI
 			}
 
 			lblKolicina.Text = Fje.PrefiksFormater(borci.Count);
+			trackKolicina.Value = trackKolicina.Maximum;
 		}
 
 		private void trackKolicina_Scroll(object sender, EventArgs e)
@@ -252,6 +260,9 @@ namespace Zvjezdojedac.GUI
 			List<Borac> odredisniaLista = (listPositions.Items[novoOdrediste] as TagTekst<List<Borac>>).tag;
 			odredisniaLista.AddRange(borci.GetRange(indeksOd, kolicina));
 			borci.RemoveRange(indeksOd, kolicina);
+			foreach (Borac borac in odredisniaLista)
+				borac.CiljnaPozicija = novoOdrediste;
+
 			listPositions.Items[staroOdrediste] = new TagTekst<List<Borac>>(borci, Fje.PrefiksFormater(borci.Count) + " " + Pozicije.Naziv(staroOdrediste));
 			listPositions.Items[novoOdrediste] = new TagTekst<List<Borac>>(odredisniaLista, Fje.PrefiksFormater(odredisniaLista.Count) + " " + Pozicije.Naziv(novoOdrediste));
 			listPositions.SelectedIndex = novoOdrediste;

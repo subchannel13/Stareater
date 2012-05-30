@@ -3,6 +3,9 @@ POZ_0 = Bliska borba
 POZ_1 = Srednja
 POZ_2 = Srednje daleka
 POZ_3 = Dalekometna borba
+lblZapovijed = Zapovijed
+btnPosalji = Pošalji
+btnKrajKruga = Kraj kruga
 
 ::FORM_KOLONIZACIJA
 btnPrihvati = Prihvati
