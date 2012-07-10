@@ -90,6 +90,12 @@
     <Compile Include="GUI\CombatantPositions.Designer.cs">
       <DependentUpon>CombatantPositions.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PlanetItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PlanetItem.Designer.cs">
+      <DependentUpon>PlanetItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Events\ObjectEventArgs.cs" />
     <Compile Include="GUI\FormBorba.cs">
       <SubType>Form</SubType>
@@ -187,6 +193,12 @@
     <Compile Include="GUI\SmallData\CombatSlotDelta.cs" />
     <Compile Include="GUI\SmallData\CombatGUI.cs" />
     <Compile Include="GUI\SmallData\FuzzyCombatPosition.cs" />
+    <Compile Include="GUI\StarItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\StarItem.Designer.cs">
+      <DependentUpon>StarItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Igra\Bitka\Borac.cs" />
     <Compile Include="Igra\Bitka\PopisMeta.cs" />
     <Compile Include="Igra\Bitka\IgracevKonflikt.cs" />
@@ -271,6 +283,9 @@
     <EmbeddedResource Include="GUI\CombatantPositions.resx">
       <DependentUpon>CombatantPositions.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PlanetItem.resx">
+      <DependentUpon>PlanetItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormBorba.resx">
       <DependentUpon>FormBorba.cs</DependentUpon>
     </EmbeddedResource>
@@ -326,6 +341,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\CombatantItem.resx">
       <DependentUpon>CombatantItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\StarItem.resx">
+      <DependentUpon>StarItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
