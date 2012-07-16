@@ -12,6 +12,8 @@ using Zvjezdojedac.Igra.Brodovi;
 using Zvjezdojedac.Alati;
 using Zvjezdojedac.GUI.Events;
 using Zvjezdojedac.GUI.SmallData;
+using Zvjezdojedac.Podaci.Jezici;
+using Zvjezdojedac.Podaci;
 
 namespace Zvjezdojedac.GUI
 {
@@ -30,15 +32,21 @@ namespace Zvjezdojedac.GUI
 			this.Text = lokacija.ime;
 			picSelectAll.Image = Zvjezdojedac.Podaci.Slike.BoraciSvi;
 
+			foreach (var pozicija in Pozicije.PonudjenePozicije())
+				cbPozicija.Items.Add(new TagTekst<int>(pozicija, Pozicije.Naziv(pozicija)));
+
 			postaviPozicije();
 			pocetakKruga();
 
-			foreach(var pozicija in Pozicije.PonudjenePozicije())
-				cbPozicija.Items.Add(new TagTekst<int>(pozicija, Pozicije.Naziv(pozicija)));
+			var jezik = Postavke.Jezik[Kontekst.Bitka];
+			lblZapovijed.Text = jezik["lblZapovijed"].tekst();
+			btnPosalji.Text = jezik["btnPosalji"].tekst();
+			btnKrajKruga.Text = jezik["btnKrajKruga"].tekst();
 		}
 
 		private void pocetakKruga()
 		{
+			prikazZapovijedi(false);
 			postaviPrikazStrana(pnlNapadac, borba.SviBorci, borba.LijevaStrana, false);
 			postaviPrikazStrana(pnlObrana, borba.SviBorci, borba.DesnaStrana, true);
 
@@ -48,7 +56,7 @@ namespace Zvjezdojedac.GUI
 				lblBrKruga.Text = (IgracevKonflikt.MaxBrPoteza - borba.PreostaloKrugova + 1) + " / " + IgracevKonflikt.MaxBrPoteza;
 
 			if (borba.Razrjeseno()) 
-				btnKrajKruga.Text = "Close";	
+				btnKrajKruga.Text = "Close";
 		}
 
 		private void postaviPrikazStrana(FlowLayoutPanel panel, IEnumerable<Borac> borci, HashSet<Igrac> filtarIgraca, bool prikazPrikrivanja)
@@ -74,6 +82,7 @@ namespace Zvjezdojedac.GUI
 				CombatantItem borciItem = new CombatantItem();
 				borciItem.SetData(borciPoDizajnu[dizajn], prikazPrikrivanja);
 				borciItem.OnSelect += borci_OnSelect;
+				borciItem.Selectable = borba.LijevaStrana.Contains(borciPoDizajnu[dizajn][0].Igrac);
 
 				if (prviUGrupi != null)
 					borciItem.GroupWith(prviUGrupi);
@@ -83,9 +92,24 @@ namespace Zvjezdojedac.GUI
 				panel.Controls.Add(borciItem);
 			}
 
-			if (prviUGrupi != null && prikazPrikrivanja)
+			if (prviUGrupi != null && !prikazPrikrivanja)
 				prviUGrupi.SelectThis();
 			panel.ResumeLayout();
+		}
+
+		private void prikazZapovijedi(bool prikazi)
+		{
+			listPositions.Visible = prikazi;
+			prikazZadavanjaZapovijedi(false);
+		}
+
+		private void prikazZadavanjaZapovijedi(bool prikazi)
+		{
+			lblZapovijed.Visible = prikazi;
+			trackKolicina.Visible = prikazi;
+			lblKolicina.Visible = prikazi;
+			cbPozicija.Visible = prikazi;
+			btnPosalji.Visible = prikazi;
 		}
 
 		private void postaviPozicije()
@@ -99,18 +123,37 @@ namespace Zvjezdojedac.GUI
 
 		private void cpNapadac_OnPositionClick(object sender, ObjectEventArgs<ICollection<Borac>> eventArgs)
 		{
+			prikazZapovijedi(false);
 			postaviPrikazStrana(pnlNapadac, eventArgs.Value, borba.LijevaStrana, false);
 			postaviPrikazStrana(pnlObrana, eventArgs.Value, borba.DesnaStrana, true);
+			cpBranitelj.Deselect();
+		}
+
+		private void cpBranitelj_OnPositionClick(object sender, ObjectEventArgs<ICollection<Borac>> eventArgs)
+		{
+			prikazZapovijedi(false);
+			postaviPrikazStrana(pnlNapadac, eventArgs.Value, borba.LijevaStrana, false);
+			postaviPrikazStrana(pnlObrana, eventArgs.Value, borba.DesnaStrana, true);
+			cpNapadac.Deselect();
 		}
 
 		private void picSelectAll_Click(object sender, EventArgs e)
 		{
 			postaviPrikazStrana(pnlNapadac, borba.SviBorci, borba.LijevaStrana, false);
 			postaviPrikazStrana(pnlObrana, borba.SviBorci, borba.DesnaStrana, true);
+			cpBranitelj.Deselect();
+			cpNapadac.Deselect();
 		}
 
 		private void borci_OnSelect(object sender, ObjectEventArgs<ICollection<Borac>> eventArgs)
 		{
+			if (!borba.LijevaStrana.Contains(eventArgs.Value.First().Igrac)) {
+				prikazZapovijedi(false);
+				return;
+			}
+
+			prikazZapovijedi(true);
+
 			Dictionary<int, List<Borac>> raspodjelaBoraca = new Dictionary<int, List<Borac>>();
 			for(int slot = 0; slot <= Pozicije.MaxPozicija; slot++)
 				raspodjelaBoraca.Add(slot, new List<Borac>());
@@ -135,15 +178,25 @@ namespace Zvjezdojedac.GUI
 
 		private void listPositions_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (listPositions.SelectedItem == null)
+			if (listPositions.SelectedItem == null) {
+				prikazZadavanjaZapovijedi(false);
 				return;
+			}
 
 			List<Borac> borci = (listPositions.SelectedItem as TagTekst<List<Borac>>).tag;
-			if (borci.Count == 0)
+			if (borci.Count == 0) {
+				prikazZadavanjaZapovijedi(false);
 				return;
+			} else
+				prikazZadavanjaZapovijedi(true);
 
 			int odrediste = borci[0].CiljnaPozicija;
-			cbPozicija.SelectedItem = new TagTekst<int>(odrediste, Pozicije.Naziv(odrediste));
+			
+			int cbIndex = 0;
+			for(int i = 0; i < cbPozicija.Items.Count; i++)
+				if ((cbPozicija.Items[i] as TagTekst<int>).tag == odrediste)
+					cbIndex = i;
+			cbPozicija.SelectedIndex = cbIndex;
 
 			if (borci.Count < 20) {
 				trackKolicina.Maximum = borci.Count;
@@ -160,6 +213,7 @@ namespace Zvjezdojedac.GUI
 			}
 
 			lblKolicina.Text = Fje.PrefiksFormater(borci.Count);
+			trackKolicina.Value = trackKolicina.Maximum;
 		}
 
 		private void trackKolicina_Scroll(object sender, EventArgs e)
@@ -206,6 +260,9 @@ namespace Zvjezdojedac.GUI
 			List<Borac> odredisniaLista = (listPositions.Items[novoOdrediste] as TagTekst<List<Borac>>).tag;
 			odredisniaLista.AddRange(borci.GetRange(indeksOd, kolicina));
 			borci.RemoveRange(indeksOd, kolicina);
+			foreach (Borac borac in odredisniaLista)
+				borac.CiljnaPozicija = novoOdrediste;
+
 			listPositions.Items[staroOdrediste] = new TagTekst<List<Borac>>(borci, Fje.PrefiksFormater(borci.Count) + " " + Pozicije.Naziv(staroOdrediste));
 			listPositions.Items[novoOdrediste] = new TagTekst<List<Borac>>(odredisniaLista, Fje.PrefiksFormater(odredisniaLista.Count) + " " + Pozicije.Naziv(novoOdrediste));
 			listPositions.SelectedIndex = novoOdrediste;

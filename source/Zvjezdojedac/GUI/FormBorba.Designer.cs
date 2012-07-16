@@ -86,12 +86,12 @@
 			// 
 			this.cpBranitelj.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cpBranitelj.BackColor = System.Drawing.Color.Red;
-			this.cpBranitelj.Interactive = false;
 			this.cpBranitelj.Location = new System.Drawing.Point(477, 11);
 			this.cpBranitelj.Name = "cpBranitelj";
 			this.cpBranitelj.ReverseDirection = true;
 			this.cpBranitelj.Size = new System.Drawing.Size(166, 40);
 			this.cpBranitelj.TabIndex = 4;
+			this.cpBranitelj.OnPositionClick += new Zvjezdojedac.GUI.Events.ObjectEventArgs<System.Collections.Generic.ICollection<Zvjezdojedac.Igra.Bitka.Borac>>.Handler(this.cpBranitelj_OnPositionClick);
 			// 
 			// cpNapadac
 			// 

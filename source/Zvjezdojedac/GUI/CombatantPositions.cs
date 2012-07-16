@@ -20,10 +20,18 @@ namespace Zvjezdojedac.GUI
 
 		HashSet<Igrac> thisSidePlayers = new HashSet<Igrac>();
 		Dictionary<int, ICollection<Borac>> fighersPerSlot = new Dictionary<int, ICollection<Borac>>();
+		PictureBox[] slotPictures;
 
 		public CombatantPositions()
 		{
 			InitializeComponent();
+
+			slotPictures = new PictureBox[] {
+				picPosition3,
+				picPosition2,
+				picPosition1,
+				picPosition0,
+			};
 
 			this.Interactive = true;
 		}
@@ -132,6 +140,12 @@ namespace Zvjezdojedac.GUI
 			}
 		}
 
+		public void Deselect()
+		{
+			foreach (PictureBox pictureBox in slotPictures)
+				pictureBox.BackColor = Color.Black;
+		}
+
 		private void drawToTheLeft(Graphics g, Image image, int x ,int y, bool flip)
 		{
 			if (flip)
@@ -154,6 +168,12 @@ namespace Zvjezdojedac.GUI
 		{
 			if (!Interactive || !Enabled)
 				return;
+
+			foreach (PictureBox pictureBox in slotPictures)
+				if (pictureBox != slotPictures[positionIndex])
+					pictureBox.BackColor = Color.Black;
+				else
+					pictureBox.BackColor = Color.CornflowerBlue;
 
 			if (ReverseDirection)
 				OnPositionClick(this, new ObjectEventArgs<ICollection<Borac>>(fighersPerSlot[maxPosition - positionIndex]));
