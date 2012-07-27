@@ -12,8 +12,8 @@ namespace Zvjezdojedac.Igra
 	{
 		#region Statično i konstante
 
-		const string MaxRazvoj = "MAX_RAZVOJ";
-		const string MaxGradnja = "MAX_GRADNJA";
+		public const string MaxRazvoj = "MAX_RAZVOJ";
+		public const string MaxGradnja = "MAX_GRADNJA";
 
 		private static string[] KljuceviEfekata = new string[]
 		{
