@@ -734,5 +734,16 @@ namespace Zvjezdojedac.GUI
 			using (FormDizajn frmDizajnovi = new FormDizajn(igrac))
 				frmDizajnovi.ShowDialog();
 		}
+
+		private void zvijezdeMenu_Click(object sender, EventArgs e)
+		{
+			using (FormZvijezde frmZvijezde = new FormZvijezde(igra))
+				frmZvijezde.ShowDialog();
+		}
+
+		private void kolonijeMenu_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

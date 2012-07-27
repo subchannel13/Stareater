@@ -42,21 +42,22 @@
 			((System.ComponentModel.ISupportInitialize)(this.industryIcon)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// planetImage
+			// starImage
 			// 
 			this.starImage.Location = new System.Drawing.Point(3, 3);
-			this.starImage.Name = "planetImage";
+			this.starImage.Name = "starImage";
 			this.starImage.Size = new System.Drawing.Size(40, 40);
+			this.starImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.starImage.TabIndex = 0;
 			this.starImage.TabStop = false;
 			// 
-			// planetName
+			// starName
 			// 
 			this.starName.AutoEllipsis = true;
 			this.starName.AutoSize = true;
 			this.starName.Location = new System.Drawing.Point(49, 17);
 			this.starName.MaximumSize = new System.Drawing.Size(160, 16);
-			this.starName.Name = "planetName";
+			this.starName.Name = "starName";
 			this.starName.Size = new System.Drawing.Size(101, 13);
 			this.starName.TabIndex = 1;
 			this.starName.Text = "Omikron Kentaura 4";
@@ -102,6 +103,7 @@
 			this.buildingButton.Size = new System.Drawing.Size(40, 40);
 			this.buildingButton.TabIndex = 6;
 			this.buildingButton.UseVisualStyleBackColor = true;
+			this.buildingButton.Click += new System.EventHandler(this.buildingButton_Click);
 			// 
 			// buildingInfo
 			// 
@@ -115,9 +117,11 @@
 			// resourceSlider
 			// 
 			this.resourceSlider.Location = new System.Drawing.Point(442, 4);
+			this.resourceSlider.Maximum = 1000;
 			this.resourceSlider.Name = "resourceSlider";
 			this.resourceSlider.Size = new System.Drawing.Size(127, 17);
 			this.resourceSlider.TabIndex = 8;
+			this.resourceSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.resourceSlider_Scroll);
 			// 
 			// StarItem
 			// 

@@ -90,6 +90,15 @@
     <Compile Include="GUI\CombatantPositions.Designer.cs">
       <DependentUpon>CombatantPositions.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\ControlListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\FormZvijezde.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormZvijezde.Designer.cs">
+      <DependentUpon>FormZvijezde.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\PlanetItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -282,6 +291,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\CombatantPositions.resx">
       <DependentUpon>CombatantPositions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormZvijezde.resx">
+      <DependentUpon>FormZvijezde.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PlanetItem.resx">
       <DependentUpon>PlanetItem.cs</DependentUpon>
