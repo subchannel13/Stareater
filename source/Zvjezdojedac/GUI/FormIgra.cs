@@ -737,13 +737,26 @@ namespace Zvjezdojedac.GUI
 
 		private void zvijezdeMenu_Click(object sender, EventArgs e)
 		{
-			using (FormZvijezde frmZvijezde = new FormZvijezde(igra))
+			using (FormZvijezde frmZvijezde = new FormZvijezde(igra)) {
 				frmZvijezde.ShowDialog();
+				if (igrac.OdabranSustav != null && igrac.OdabranSustav.Igrac == igrac) {
+					int val = (int)Math.Round(igrac.OdabranSustav.UdioGradnje * hscrZvjezdaGradnja.Maximum, MidpointRounding.AwayFromZero);
+					hscrZvjezdaGradnja.Value = val;
+					osvjeziLabele();
+				}
+			}
 		}
 
 		private void kolonijeMenu_Click(object sender, EventArgs e)
 		{
-
+			using (FormPlaneti frmPlaneti = new FormPlaneti(igra)) {
+				frmPlaneti.ShowDialog();
+				if (igrac.OdabranPlanet != null && FormGradnja.JeValjanoGradiliste(igrac.OdabranPlanet.kolonija, igrac)) {
+					int val = (int)Math.Round(igrac.OdabranPlanet.kolonija.UdioIndustrije * hscrZvjezdaGradnja.Maximum, MidpointRounding.AwayFromZero);
+					hscrCivilnaIndustrija.Value = val;
+					osvjeziLabele();
+				}
+			}
 		}
 	}
 }

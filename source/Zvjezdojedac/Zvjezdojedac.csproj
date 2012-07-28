@@ -93,6 +93,12 @@
     <Compile Include="GUI\ControlListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GUI\FormPlaneti.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormPlaneti.Designer.cs">
+      <DependentUpon>FormPlaneti.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormZvijezde.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -291,6 +297,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\CombatantPositions.resx">
       <DependentUpon>CombatantPositions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormPlaneti.resx">
+      <DependentUpon>FormPlaneti.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormZvijezde.resx">
       <DependentUpon>FormZvijezde.cs</DependentUpon>

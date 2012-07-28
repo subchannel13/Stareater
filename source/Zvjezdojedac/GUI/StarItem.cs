@@ -39,38 +39,16 @@ namespace Zvjezdojedac.GUI
 			populationText.Text = Fje.PrefiksFormater(populacija);
 			industryText.Text = Fje.PrefiksFormater(uprava.Efekti[ZvjezdanaUprava.MaxGradnja]);
 
-			setBuildingImage();
 			resourceSlider.Value = (int)(uprava.UdioGradnje * resourceSlider.Maximum);
 			buildingInfo.Text = uprava.ProcjenaVremenaGradnje();
-		}
-
-		void setBuildingImage()
-		{
-			if (uprava.RedGradnje.Count > 0) {
-				buildingButton.Image = uprava.RedGradnje.First.Value.slika;
-				buildingButton.Text = string.Empty;
-			}
-			else {
-				buildingButton.Image = null;
-				buildingButton.Text = jezik["Vojna_Gradnja"].tekst();
-			}
+			osvjeziLabele();
 		}
 
 		private void buildingButton_Click(object sender, EventArgs e)
 		{
-			uprava.IzracunajEfekte();
-			uprava.OsvjeziInfoGradnje();
-
-			buildingInfo.Text = uprava.ProcjenaVremenaGradnje();
-
-			if (uprava.RedGradnje.Count > 0) {
-				buildingButton.Image = uprava.RedGradnje.First.Value.slika;
-				buildingButton.Text = "";
-			}
-			else {
-				buildingButton.Image = null;
-				buildingButton.Text = jezik["Vojna_Gradnja"].tekst();
-			}
+			using (FormGradnja frmGradnja = new FormGradnja(uprava))
+				if (frmGradnja.ShowDialog() == DialogResult.OK)
+					osvjeziLabele();
 		}
 
 		private void resourceSlider_Scroll(object sender, ScrollEventArgs e)
@@ -78,12 +56,21 @@ namespace Zvjezdojedac.GUI
 			int systemValue = (int)Math.Round(uprava.UdioGradnje * resourceSlider.Maximum, MidpointRounding.AwayFromZero);
 			if (e.NewValue != systemValue) {
 				uprava.UdioGradnje = e.NewValue / (double)resourceSlider.Maximum;
-				int val = (int)Math.Round(uprava.UdioGradnje * resourceSlider.Maximum, MidpointRounding.AwayFromZero);
-				if (resourceSlider.Value != val)
-					e.NewValue = val;
-				else
-					osvjeziLabele();
+				osvjeziLabele();
 			}
+		}
+
+		private void osvjeziLabele()
+		{
+			uprava.IzracunajEfekte();
+			uprava.OsvjeziInfoGradnje();
+
+			buildingInfo.Text = uprava.ProcjenaVremenaGradnje();
+
+			if (uprava.RedGradnje.Count > 0)
+				buildingButton.BackgroundImage = uprava.RedGradnje.First.Value.slika;
+			else
+				buildingButton.BackgroundImage = null;
 		}
 	}
 }
