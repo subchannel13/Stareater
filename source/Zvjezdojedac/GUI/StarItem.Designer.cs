@@ -98,6 +98,7 @@
 			// 
 			// buildingButton
 			// 
+			this.buildingButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
 			this.buildingButton.Location = new System.Drawing.Point(395, 3);
 			this.buildingButton.Name = "buildingButton";
 			this.buildingButton.Size = new System.Drawing.Size(40, 40);
