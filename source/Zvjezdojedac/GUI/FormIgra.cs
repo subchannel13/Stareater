@@ -90,6 +90,7 @@ namespace Zvjezdojedac.GUI
 			izbornikMenu.Text = jezik["izbornikMenu"].tekst();
 			izlazMenu.Text = jezik["izlazMenu"].tekst();
 			kolonijeMenu.Text = jezik["kolonijeMenu"].tekst();
+			zvijezdeMenu.Text = jezik["zvijezdeMenu"].tekst();
 			novaIgraMenu.Text = jezik["novaIgraMenu"].tekst();
 			spremiMenu.Text = jezik["spremiMenu"].tekst();
 			tehnologijeMenu.Text = jezik["tehnologijeMenu"].tekst();

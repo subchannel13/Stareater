@@ -47,8 +47,8 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MinimizeBox = false;
 			this.Name = "FormPlaneti";
+			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
-			this.Text = "FormPlaneti";
 			this.ResumeLayout(false);
 
 		}
