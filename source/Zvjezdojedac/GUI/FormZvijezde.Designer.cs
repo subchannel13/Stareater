@@ -47,8 +47,8 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MinimizeBox = false;
 			this.Name = "FormZvijezde";
+			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
-			this.Text = "FormZvijezde";
 			this.ResumeLayout(false);
 
 		}

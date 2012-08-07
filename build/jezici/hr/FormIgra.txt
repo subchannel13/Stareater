@@ -10,6 +10,7 @@ floteMenu = &Flote
 izbornikMenu = &Izbornik
 izlazMenu = I&zlaz
 kolonijeMenu = &Kolonije
+zvijezdeMenu = Z&vijezde
 novaIgraMenu = &Nova igra
 novostiMenu := "&Novosti (" # P BR_PORUKA # ")"
 spremiMenu = &Spremi
