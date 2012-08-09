@@ -21,6 +21,8 @@ namespace Zvjezdojedac.GUI
 		public PlanetItem()
 		{
 			InitializeComponent();
+			populationIcon.Image = Slike.populacijaIkona;
+			industryIcon.Image = Slike.industrijaIkona;
 		}
 
 		public PlanetItem(Igra.Kolonija kolonija) : this()

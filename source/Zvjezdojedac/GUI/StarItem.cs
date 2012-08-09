@@ -21,6 +21,9 @@ namespace Zvjezdojedac.GUI
 		public StarItem()
 		{
 			InitializeComponent();
+
+			populationIcon.Image = Slike.populacijaIkona;
+			industryIcon.Image = Slike.industrijaIkona;
 		}
 
 		public StarItem(ZvjezdanaUprava uprava) : this()

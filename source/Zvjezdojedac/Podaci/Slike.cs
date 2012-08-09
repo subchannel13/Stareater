@@ -52,6 +52,9 @@ namespace Zvjezdojedac.Podaci
 		private static int razvojYVrh;
 		private static int razvojYDno;
 
+		public static Image populacijaIkona = null;
+		public static Image industrijaIkona = null;
+
 		private static Dictionary<Poruka.Tip, Image> initTipPoruke()
 		{
 			Dictionary<Poruka.Tip, Image> rez = new Dictionary<Poruka.Tip, Image>();
@@ -132,6 +135,10 @@ namespace Zvjezdojedac.Podaci
 						foreach (Color boja in Igrac.BojeIgraca)
 							BoracZastavica.Add(boja, ModulirajBoju(slika, boja));
 					if (indeks == 4) BoraciSvi = slika;
+					break;
+				case "object_list":
+					if (indeks == 0) populacijaIkona = slika;
+					if (indeks == 1) industrijaIkona = slika;
 					break;
 				default:
 					throw new ArgumentException("Invalid picture group \"" + skupina + "\" in ./slike/slike.txt");
