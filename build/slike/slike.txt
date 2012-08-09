@@ -190,3 +190,14 @@ DATOTEKA = ./slike/ostalo/bitka sve flote.png
 SKUPINA = pozicija_borca
 INDEKS = 4
 ----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/population icon.png
+SKUPINA = object_list
+INDEKS = 0
+----
+<SLIKA>
+DATOTEKA = ./slike/ostalo/industry icon.png
+SKUPINA = object_list
+INDEKS = 1
+----
