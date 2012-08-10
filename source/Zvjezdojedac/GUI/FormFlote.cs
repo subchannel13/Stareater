@@ -45,6 +45,7 @@ namespace Zvjezdojedac.GUI
 			lstvDizajnovi.SmallImageList = new ImageList();
 			lstvDizajnovi.SmallImageList.ImageSize = new Size(60, 40);
 			this.igrac = igrac;
+			tabvCtrlFlote.TabPages.Remove(tabNoviDizajn);
 
 			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
 			nazivInfoStranice.Add(InfoStranice.MZPogon, jezik["infoMZPogon"].tekst());
