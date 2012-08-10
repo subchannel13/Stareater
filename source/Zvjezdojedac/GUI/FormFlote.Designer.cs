@@ -31,6 +31,7 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormFlote));
 			this.tabvCtrlFlote = new System.Windows.Forms.TabControl();
 			this.tabDizajnovi = new System.Windows.Forms.TabPage();
+			this.btnNoviDizajn = new System.Windows.Forms.Button();
 			this.btnUkloniDizajn = new System.Windows.Forms.Button();
 			this.txtDizajnInfo = new System.Windows.Forms.TextBox();
 			this.lstvDizajnovi = new System.Windows.Forms.ListView();
@@ -75,7 +76,6 @@
 			this.txtNDnaziv = new System.Windows.Forms.TextBox();
 			this.lblNaziv = new System.Windows.Forms.Label();
 			this.picNDSlika = new System.Windows.Forms.PictureBox();
-			this.btnNoviDizajn = new System.Windows.Forms.Button();
 			this.tabvCtrlFlote.SuspendLayout();
 			this.tabDizajnovi.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.picSlikaDizajna)).BeginInit();
@@ -109,6 +109,16 @@
 			this.tabDizajnovi.Size = new System.Drawing.Size(580, 450);
 			this.tabDizajnovi.TabIndex = 0;
 			this.tabDizajnovi.Text = "Dizajnovi";
+			// 
+			// btnNoviDizajn
+			// 
+			this.btnNoviDizajn.Location = new System.Drawing.Point(8, 341);
+			this.btnNoviDizajn.Name = "btnNoviDizajn";
+			this.btnNoviDizajn.Size = new System.Drawing.Size(75, 23);
+			this.btnNoviDizajn.TabIndex = 6;
+			this.btnNoviDizajn.Text = "Novi dizajn";
+			this.btnNoviDizajn.UseVisualStyleBackColor = true;
+			this.btnNoviDizajn.Click += new System.EventHandler(this.btnNoviDizajn_Click);
 			// 
 			// btnUkloniDizajn
 			// 
@@ -555,16 +565,6 @@
 			this.picNDSlika.Size = new System.Drawing.Size(80, 80);
 			this.picNDSlika.TabIndex = 0;
 			this.picNDSlika.TabStop = false;
-			// 
-			// btnNoviDizajn
-			// 
-			this.btnNoviDizajn.Location = new System.Drawing.Point(8, 341);
-			this.btnNoviDizajn.Name = "btnNoviDizajn";
-			this.btnNoviDizajn.Size = new System.Drawing.Size(75, 23);
-			this.btnNoviDizajn.TabIndex = 6;
-			this.btnNoviDizajn.Text = "Novi dizajn";
-			this.btnNoviDizajn.UseVisualStyleBackColor = true;
-			this.btnNoviDizajn.Click += new System.EventHandler(this.btnNoviDizajn_Click);
 			// 
 			// FormFlote
 			// 
