@@ -13,3 +13,7 @@ build/Zvjezdojedac.exe
 build/postavke.txt
 release/*
 editors/*
+source/Stareater.Core/bin/*
+source/Stareater.Core/obj/*
+source/Stareater.UI.WinForms/bin/*
+source/Stareater.UI.WinForms/obj/*
