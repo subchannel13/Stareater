@@ -1,0 +1,76 @@
+﻿::KOMPONENTE
+MZ_NUKLEARNI_IME = Nuclear drive
+MZ_NUKLEARNI_OPIS = 
+MZ_POTPROSTOR_IME = Subspace drive
+MZ_POTPROSTOR_OPIS =
+
+OK_TITANIJ_IME = Titanium
+OK_TITANIJ_OPIS = 
+OK_DURAPLAST_IME = Duraplast
+OK_DURAPLAST_OPIS = 
+OK_DURALOJ_IME = Duraloy
+OK_DURALOJ_OPIS = 
+
+OR_LASER_TOP_IME = Laser cannon
+OR_LASER_TOP_OPIS =
+OR_LASER_OB_IME = Defense laser
+OR_LASER_OB_OPIS =
+OR_GRANATE_IME = Anti-armor grenade
+OR_GRANATE_OPIS =
+OR_STROJNICA_OB_IME = Defense machine gun
+OR_STROJNICA_OB_OPIS =
+OR_STROJNICA_IME = Machine gun
+OR_STROJNICA_OPIS =
+OR_KOLONIZATOR_IME = Colonizer
+OR_KOLONIZATOR_OPIS =
+
+POT_KEMIJSKI_IME = Chemical jet
+POT_KEMIJSKI_OPIS =
+
+RE_NUKLEARNI_IME = Nuclear reactor
+RE_NUKLEARNI_OPIS =
+RE_KEMIJSKI_IME = Chemical reactor
+RE_KEMIJSKI_OPIS =
+
+SE_EM_IME = EM sensor
+SE_EM_OPIS =
+
+SO_OKLOP_IME = Reinforced armor
+SO_OKLOP_OPIS =
+SO_POTISNICI_IME = Additional thrusters
+SO_POTISNICI_OPIS =
+SO_REAKTOR_IME = Extended reactor
+SO_REAKTOR_OPIS =
+SO_TERET_IME = Cargo hold
+SO_TERET_OPIS = 
+
+SOE_KOEF_IZDRZ = Armor strength
+SOE_KOEF_INV_IZDRZ = Armor strength
+SOE_KOEF_STIT_DEB = Shield thickness
+SOE_KOEF_STIT_IZD = Shield strength
+SOE_KOEF_STIT_OBN = Shield recovery
+SOE_KOEF_TERET = Capacity
+SOE_PLUS_BRZINA = Mobility
+SOE_PLUS_SENZORI = Num. of sensors
+SOE_PLUS_INERC = Inertia
+SOE_PLUS_OMET = Jamming
+SOE_PLUS_PRIK = Cloaking
+SOE_PLUS_REAKTOR = Reactor size
+
+ST_ECM_IME = ECM
+ST_ECM_OPIS =
+ST_EM_IME = EM shield
+ST_EM_OPIS =
+ST_CEST_IME = Particle shield
+ST_CEST_OPIS =
+
+TRUP_LOVAC_IME = Fighter
+TRUP_LOVAC_OPIS = Space version of air superiority fighter.
+TRUP_MALI_BROD_IME = Small ship
+TRUP_MALI_BROD_OPIS = 
+TRUP_MALA_KRSTARICA_IME = Small cruiser
+TRUP_MALA_KRSTARICA_OPIS = Medium sized ship.
+TRUP_KRSTARICA_IME = Cruiser
+TRUP_KRSTARICA_OPIS = Medium sized ship.
+TRUP_RAZARAC_IME = Destroyer
+TRUP_RAZARAC_OPIS = 

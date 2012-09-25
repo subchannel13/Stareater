@@ -1,0 +1,421 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Zvjezdojedac</RootNamespace>
+    <AssemblyName>Zvjezdojedac</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationIcon>zvjezdoj.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>BasicDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Zvjezdojedac.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Alati\Fje.cs" />
+    <Compile Include="Alati\Sazetak.cs" />
+    <Compile Include="Alati\Strukture\BinaryIndexedTree.cs" />
+    <Compile Include="Alati\Strukture\IDelayedRemoval.cs" />
+    <Compile Include="Alati\Strukture\MyDictionary.cs" />
+    <Compile Include="Alati\Strukture\MySet.cs" />
+    <Compile Include="Alati\TagTekst.cs" />
+    <Compile Include="Alati\Tocka.cs" />
+    <Compile Include="Alati\Usporediv.cs" />
+    <Compile Include="Alati\Vadjenje.cs" />
+    <Compile Include="Alati\Yielder.cs" />
+    <Compile Include="GUI\BriefPlanetItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\BriefPlanetItem.Designer.cs">
+      <DependentUpon>BriefPlanetItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\CombatantPositions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\CombatantPositions.Designer.cs">
+      <DependentUpon>CombatantPositions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ControlListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\FormPlaneti.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormPlaneti.Designer.cs">
+      <DependentUpon>FormPlaneti.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormZvijezde.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormZvijezde.Designer.cs">
+      <DependentUpon>FormZvijezde.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PlanetItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PlanetItem.Designer.cs">
+      <DependentUpon>PlanetItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Events\ObjectEventArgs.cs" />
+    <Compile Include="GUI\FormBorba.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormBorba.Designer.cs">
+      <DependentUpon>FormBorba.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormDizajn.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormDizajn.Designer.cs">
+      <DependentUpon>FormDizajn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormDizajnKomponenta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormDizajnKomponenta.Designer.cs">
+      <DependentUpon>FormDizajnKomponenta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormFlotaPokret.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormFlotaPokret.Designer.cs">
+      <DependentUpon>FormFlotaPokret.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormFlote.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormFlote.Designer.cs">
+      <DependentUpon>FormFlote.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormGradnja.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormGradnja.Designer.cs">
+      <DependentUpon>FormGradnja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormIgra.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormIgra.Designer.cs">
+      <DependentUpon>FormIgra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormKolonizacija.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormKolonizacija.Designer.cs">
+      <DependentUpon>FormKolonizacija.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormBombardiranje.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormBombardiranje.Designer.cs">
+      <DependentUpon>FormBombardiranje.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormNovaIgra.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormNovaIgra.Designer.cs">
+      <DependentUpon>FormNovaIgra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormPlanetInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormPlanetInfo.Designer.cs">
+      <DependentUpon>FormPlanetInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormPoruke.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormPoruke.Designer.cs">
+      <DependentUpon>FormPoruke.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormPostavke.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormPostavke.Designer.cs">
+      <DependentUpon>FormPostavke.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormTechIzbor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormTechIzbor.Designer.cs">
+      <DependentUpon>FormTechIzbor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\CombatantItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\CombatantItem.Designer.cs">
+      <DependentUpon>CombatantItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SmallData\CombatSlotDelta.cs" />
+    <Compile Include="GUI\SmallData\CombatGUI.cs" />
+    <Compile Include="GUI\SmallData\FuzzyCombatPosition.cs" />
+    <Compile Include="GUI\StarItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\StarItem.Designer.cs">
+      <DependentUpon>StarItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Igra\Bitka\Borac.cs" />
+    <Compile Include="Igra\Bitka\PopisMeta.cs" />
+    <Compile Include="Igra\Bitka\IgracevKonflikt.cs" />
+    <Compile Include="Igra\Bitka\ModeratorBorbe.cs" />
+    <Compile Include="Igra\Bitka\Strana.cs" />
+    <Compile Include="Igra\Brodovi\Pozicije.cs" />
+    <Compile Include="Igra\FazaIgre.cs" />
+    <Compile Include="GUI\KategorijaOpreme.cs" />
+    <Compile Include="GUI\PrikazMape.cs" />
+    <Compile Include="Igra\Brodovi\Brod.cs" />
+    <Compile Include="Igra\Brodovi\Dizajner\Dizajner.cs" />
+    <Compile Include="Igra\Brodovi\Dizajner\Komponente.cs" />
+    <Compile Include="Igra\Brodovi\DizajnZgrada.cs" />
+    <Compile Include="Igra\Brodovi\IKomponenta.cs" />
+    <Compile Include="Igra\Brodovi\Komponenta.cs" />
+    <Compile Include="Igra\Brodovi\AKomponentaInfo.cs" />
+    <Compile Include="Igra\Brodovi\Dizajn.cs" />
+    <Compile Include="Igra\Brodovi\Misija.cs" />
+    <Compile Include="Igra\Brodovi\MZPogon.cs" />
+    <Compile Include="Igra\Brodovi\Oklop.cs" />
+    <Compile Include="Igra\Brodovi\Oruzje.cs" />
+    <Compile Include="Igra\Brodovi\Potisnici.cs" />
+    <Compile Include="Igra\Brodovi\PredefiniraniDizajn.cs" />
+    <Compile Include="Igra\Brodovi\Reaktor.cs" />
+    <Compile Include="Igra\Brodovi\Senzor.cs" />
+    <Compile Include="Igra\Brodovi\SpecijalnaOprema.cs" />
+    <Compile Include="Igra\Brodovi\Stit.cs" />
+    <Compile Include="Igra\Brodovi\Trup.cs" />
+    <Compile Include="Igra\Flota.cs" />
+    <Compile Include="Igra\AGradiliste.cs" />
+    <Compile Include="Igra\Igraci\OsnovniRI\ASlojUpravljanja.cs" />
+    <Compile Include="Igra\Igraci\IUpravljacIgraca.cs" />
+    <Compile Include="Igra\Igraci\OsnovniRI\ORIGalaktickiSloj.cs" />
+    <Compile Include="Igra\Igraci\OsnovniRI\ORIKoordinator.cs" />
+    <Compile Include="Igra\Igraci\OsnovniRI\ORIPlanetarniSloj.cs" />
+    <Compile Include="Igra\Igraci\OsnovniRI\ORIZvijezdaniSloj.cs" />
+    <Compile Include="Igra\IgraZvj.cs" />
+    <Compile Include="Igra\Igrac.cs" />
+    <Compile Include="Igra\Kolonija.cs" />
+    <Compile Include="Igra\Bitka\Konflikt.cs" />
+    <Compile Include="Igra\Mapa.cs" />
+    <Compile Include="Igra\PokretnaFlota.cs" />
+    <Compile Include="Igra\Poruke\PorukaZgradaSustav.cs" />
+    <Compile Include="Igra\Poruke\Poruka.cs" />
+    <Compile Include="Igra\Poruke\PorukaBrod.cs" />
+    <Compile Include="Igra\Poruke\PorukaKolonija.cs" />
+    <Compile Include="Igra\Poruke\PorukaTehnologija.cs" />
+    <Compile Include="Igra\Poruke\PorukaZgradaKolonija.cs" />
+    <Compile Include="Igra\PotencijalnaPocetnaKolonija.cs" />
+    <Compile Include="Igra\Preduvjet.cs" />
+    <Compile Include="Igra\Bitka\StanjeKonflikta.cs" />
+    <Compile Include="Igra\Tehnologija.cs" />
+    <Compile Include="Igra\Zgrada.cs" />
+    <Compile Include="Igra\Organizacije.cs" />
+    <Compile Include="Igra\Planet.cs" />
+    <Compile Include="Igra\ZvjezdanaUprava.cs" />
+    <Compile Include="Podaci\Formule\Formula.cs" />
+    <Compile Include="Podaci\Formule\KonstantnaFormula.cs" />
+    <Compile Include="Podaci\Formule\VarijabilnaFormula.cs" />
+    <Compile Include="Podaci\IIdentifiable.cs" />
+    <Compile Include="Podaci\IPohranjivoSB.cs" />
+    <Compile Include="Podaci\Jezici\Elementi\Literal.cs" />
+    <Compile Include="Podaci\Jezici\Elementi\TekstVrijednost.cs" />
+    <Compile Include="Podaci\Jezici\Elementi\UvjetniLiteral.cs" />
+    <Compile Include="Podaci\Jezici\Elementi\Vrijednost.cs" />
+    <Compile Include="Podaci\Jezici\ITekst.cs" />
+    <Compile Include="Podaci\Jezici\Jezik.cs" />
+    <Compile Include="Podaci\Jezici\Kontekst.cs" />
+    <Compile Include="Podaci\Jezici\Tekst.cs" />
+    <Compile Include="Podaci\PocetnaPopulacija.cs" />
+    <Compile Include="Podaci\PocetnaPozicija.cs" />
+    <Compile Include="Podaci\PodaciAlat.cs" />
+    <Compile Include="Podaci\PodaciCitac.cs" />
+    <Compile Include="Podaci\PodaciPisac.cs" />
+    <Compile Include="Podaci\Postavke.cs" />
+    <Compile Include="Podaci\Slike.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GUI\BriefPlanetItem.resx">
+      <DependentUpon>BriefPlanetItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\CombatantPositions.resx">
+      <DependentUpon>CombatantPositions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormPlaneti.resx">
+      <DependentUpon>FormPlaneti.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormZvijezde.resx">
+      <DependentUpon>FormZvijezde.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PlanetItem.resx">
+      <DependentUpon>PlanetItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormBorba.resx">
+      <DependentUpon>FormBorba.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormDizajn.resx">
+      <DependentUpon>FormDizajn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormDizajnKomponenta.resx">
+      <DependentUpon>FormDizajnKomponenta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormFlotaPokret.resx">
+      <DependentUpon>FormFlotaPokret.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormFlote.resx">
+      <DependentUpon>FormFlote.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormGradnja.resx">
+      <DependentUpon>FormGradnja.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormIgra.resx">
+      <DependentUpon>FormIgra.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormKolonizacija.resx">
+      <DependentUpon>FormKolonizacija.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormBombardiranje.resx">
+      <DependentUpon>FormBombardiranje.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormNovaIgra.resx">
+      <DependentUpon>FormNovaIgra.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormPlanetInfo.resx">
+      <DependentUpon>FormPlanetInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormPoruke.resx">
+      <DependentUpon>FormPoruke.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormPostavke.resx">
+      <DependentUpon>FormPostavke.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormTechIzbor.resx">
+      <DependentUpon>FormTechIzbor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\CombatantItem.resx">
+      <DependentUpon>CombatantItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\StarItem.resx">
+      <DependentUpon>StarItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Igra\Zvijezda.cs" />
+    <Compile Include="GUI\FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="zvjezdoj.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

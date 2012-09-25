@@ -1,0 +1,203 @@
+<SLIKA>
+DATOTEKA = ./slike/ostalo/Nema planeta.gif
+SKUPINA = planet_tab
+INDEKS = 0
+ATM_GUST = 0
+ATM_KVAL = 0
+TEMPERATURA = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/Asteroidi.gif
+SKUPINA = planet_tab
+INDEKS = 1
+ATM_GUST = 0
+ATM_KVAL = 0
+TEMPERATURA = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/Zemljoliki planet.gif
+SKUPINA = planet_tab
+INDEKS = 2
+ATM_GUST = 10
+ATM_KVAL = 1
+TEMPERATURA = 10
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/Zemljoliki planet 2.png
+SKUPINA = planet_tab
+INDEKS = 2
+ATM_GUST = 3
+ATM_KVAL = 0.8
+TEMPERATURA = 7
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/Zemljoliki planet 3.png
+SKUPINA = planet_tab
+INDEKS = 2
+ATM_GUST = 5
+ATM_KVAL = 0.6
+TEMPERATURA = 4
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/Plinoviti div.gif
+SKUPINA = planet_tab
+INDEKS = 3
+ATM_GUST = 0
+ATM_KVAL = 0
+TEMPERATURA = 4
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/Plinoviti div 2.png
+SKUPINA = planet_tab
+INDEKS = 3
+ATM_GUST = 0
+ATM_KVAL = 0
+TEMPERATURA = 2.5
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/Plinoviti div 3.png
+SKUPINA = planet_tab
+INDEKS = 3
+ATM_GUST = 0
+ATM_KVAL = 0
+TEMPERATURA = 1
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/prazan razvoj.png
+SKUPINA = planet_info
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/pun razvoj.png
+SKUPINA = planet_info
+INDEKS = 1
+Y_INTERVAL = 3, 29
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/flota.bmp
+SKUPINA = flota_tab
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/flota.bmp
+SKUPINA = flota_tab
+INDEKS = 1
+----
+
+<SLIKA>
+DATOTEKA = ./slike/mapa/Odabrana zvijezda.gif
+SKUPINA = odabir_zvijezde
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/mapa/Odredisna zvijezda.gif
+SKUPINA = odabir_zvijezde
+INDEKS = 1
+----
+
+<SLIKA>
+DATOTEKA = ./slike/mapa/flota.png
+SKUPINA = flota
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/brod direktno oruzje.png
+SKUPINA = brod_misija
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/brod projektil.png
+SKUPINA = brod_misija
+INDEKS = 1
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/brod kolonizacija.png
+SKUPINA = brod_misija
+INDEKS = 2
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/brod popravak.png
+SKUPINA = brod_misija
+INDEKS = 3
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/brod nema slike.png
+SKUPINA = brod_misija
+INDEKS = 4
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/brod nema slike.png
+SKUPINA = brod_misija
+INDEKS = 5
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/brod nema slike.png
+SKUPINA = brod_misija
+INDEKS = 6
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/brod nema slike.png
+SKUPINA = brod_misija
+INDEKS = 7
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/bitka stacionarna flota.png
+SKUPINA = pozicija_borca
+INDEKS = 0
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/bitka flota jedan pomak.png
+SKUPINA = pozicija_borca
+INDEKS = 1
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/bitka flota mimoilazak.png
+SKUPINA = pozicija_borca
+INDEKS = 2
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/bitka zastavcica.png
+SKUPINA = pozicija_borca
+INDEKS = 3
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/bitka sve flote.png
+SKUPINA = pozicija_borca
+INDEKS = 4
+----
+
+<SLIKA>
+DATOTEKA = ./slike/ostalo/population icon.png
+SKUPINA = object_list
+INDEKS = 0
+----
+<SLIKA>
+DATOTEKA = ./slike/ostalo/industry icon.png
+SKUPINA = object_list
+INDEKS = 1
+----

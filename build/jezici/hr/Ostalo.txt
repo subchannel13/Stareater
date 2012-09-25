@@ -1,0 +1,71 @@
+﻿::BITKA
+POZ_0 = Bliska borba
+POZ_1 = Srednja
+POZ_2 = Srednje daleka
+POZ_3 = Dalekometna borba
+lblZapovijed = Zapovijed
+btnPosalji = Pošalji
+btnKrajKruga = Kraj kruga
+
+::FORM_KOLONIZACIJA
+btnPrihvati = Prihvati
+groupPoStan = Procjena (po stanovniku)
+lblBrBrodova = Br. brodova
+naslov = Kolonizacija
+
+::FORM_POSTAVKE
+BTN_OK = U redu
+LBL_JEZIK = Jezik:
+lblVelicina = Veličina sučelja:
+
+::MISIJA
+CILJ_OBRANA = mali objekti
+CILJ_NORMALNO = normalno
+CILJ_VELIKI = veliki brodovi
+
+MIS_DIREKT_IME = Oružje
+MIS_DIREKT_OPIS = direktno oružje
+MIS_PROJEKTIL_IME = Oružje (projektil)
+MIS_PROJEKTIL_OPIS = projektil
+MIS_KOLONIZ_IME = Kolonizacija
+MIS_KOLONIZ_OPIS = moduli za uspostavljanje kolonije
+MIS_POPRAVAK_IME = Popravak i nadogradnja
+MIS_POPRAVAK_OPIS = postrojenje za popravak i nadogradnju brodova
+MIS_SPIJUNAZ_IME = Špijunaža
+MIS_SPIJUNAZ_OPIS = špijunska oprema
+MIS_TEGLJA_IME = Tegljenje
+MIS_TEGLJA_OPIS = međuzvjezdani transport brodova
+MIS_CIV_TRANS_IME = Civilni transport
+MIS_CIV_TRANS_OPIS = civilni transport
+MIS_VOJ_TRANS_IME = Vojni transport
+MIS_VOJ_TRANS_OPIS = vojni transport
+
+ANTI_STIT = Proboj štita
+ANTI_OKLOP = Proboj oklopa
+IND = Industrija
+INFILTRACIJA = Infiltracija
+KAPACITET = Kapacitet
+POP = Br. kolonista
+PRECIZNOST = Preciznost
+RADNA_MJ = Radna mjesta
+SPIJUNAZA = Špijunaža
+VATRENA_MOC = Vatrena moć
+
+::POCETNA_POZICIJA
+popMinimalna = Skromna
+popSrednja = Osrednja
+popVelika = Brojna
+
+::VELICINA_MAPE
+Minijaturna = Minijaturna
+Jako_mala = Jako mala
+Mala = Mala
+Srednje_mala = Srednje mala
+Srednja = Srednja
+Srednje_velika = Srednje velika
+Velika = Velika
+Jako_velika = Jako velika
+Ogromna = Ogromna
+
+::WINDOWS_DIJALOZI
+TIP_SEJVA = Zvjezdojedac igra

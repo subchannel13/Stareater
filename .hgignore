@@ -1,0 +1,15 @@
+syntax: glob
+*.pidb
+*.userprefs
+*.resources
+source/Zvjezdojedac/bin/*
+source/Zvjezdojedac/obj/*
+source/Zvjezdojedac editori/bin/*
+source/Zvjezdojedac editori/obj/*
+*.suo
+*.csproj.user
+*.csproj.vs10x
+build/Zvjezdojedac.exe
+build/postavke.txt
+release/*
+editors/*

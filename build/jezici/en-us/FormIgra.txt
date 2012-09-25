@@ -1,0 +1,65 @@
+﻿::FORM_IGRA
+btnEndTurn = End t&urn
+btnFlotaPokret = Move
+btnPlanetInfo = &Details
+lblBrojKruga := # D + KRUG 1 # ? = KRUG 0 : "st" ? = KRUG 1 : "nd" ? = KRUG 2 : "rd" ? > KRUG 2 : "th" " turn"
+lblMigracija = Max migration
+lblZracenje = Radiation
+
+floteMenu = &Fleet
+izbornikMenu = &Menu
+izlazMenu = E&xit
+kolonijeMenu = &Colonies
+zvijezdeMenu = S&tars
+novaIgraMenu = &New game
+novostiMenu := "&News (" # P BR_PORUKA # ")"
+spremiMenu = &Save
+tehnologijeMenu = &Technologies
+ucitajMenu = &Load
+
+flotaObrana = Defense
+zvjNeistrazeno = Unknown
+
+::KOLONIJA
+Civilna_Gradnja = Civil construction
+Vojna_Gradnja = Military construction
+jedInd = ind
+lblRazvoj := "Develpoment: "
+
+plBrFarmera = Farmers
+plBrOdrz = Maintenance
+plBrRadnika = Free workers
+plBrRudara = Miners
+plMinDubina = Deep
+plMinOstvareno = Mined
+plMinPovrsina = Surface
+plNenaseljeno = Uninhabited
+plPopMax = Maximum
+plPopulacija = Population
+plPromjenaPop = Change
+plRadnaMjesta = Work places
+
+gradNikad = Never
+gradPoKrugu := ? < BR_ZGRADA 10 : # D1 BR_ZGRADA # ? >= BR_ZGRADA 10 : # P BR_ZGRADA # " per turn"
+gradVrijemeDec := "In " # D1 BR_KRUGOVA # " turn" ? != 1 INT DECIMALA : "s"
+gradVrijemePref := "In " # P BR_KRUGOVA # " turn" ? | < BR_KRUGOVA 20 != 1 INT MOD BR_KRUGOVA 10 : "s"
+
+groupPoStan = Per populant
+HranaPoStan = Food
+IndustrijaPoStan = Industry
+OdrzavanjePoStan = Maintenance
+RazvojPoStan = Development
+RudePoStan = Ores
+
+::FORM_FLOTA_POKRET
+btnOdustani = Cancel
+btnPosalji = Send
+lblBrPoteza := "ETA: " # D BR_POTEZA # " turn" ? | != % BR_POTEZA 10 1 != BR_POTEZA 11 : "s"
+lblBrPotezaNikad = Never
+lblKolicina = Quantity:
+lblNazivFlote := # D ID # ? | > % ID 10 3 = % / ID 10 10 1 : "th" ? & = % ID 10 1 != % / ID 10 10 1 : "st" ? & = % ID 10 2 != % / ID 10 10 1 : "nd" ? & = % ID 10 3 != % / ID 10 10 1 : "rd" " fleet"
+lblOdrediste = Destination:
+lblPridruzi = Join with fleet:
+naslov = Move orders
+
+nePridruzuj = None
