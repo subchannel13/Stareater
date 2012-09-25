@@ -2,16 +2,18 @@
 
 namespace Stareater.Localization
 {
-	class Text : Value
+	public class Text : Value
 	{
-		public Text(string line)
+		string text;
+
+		internal Text(string line)
 		{
-			//TODO
+			this.text = line;
 		}
 
 		public override void Compose(Composer composer)
 		{
-			//NOOP
+			//NoOP
 		}
 
 		public override string TypeName

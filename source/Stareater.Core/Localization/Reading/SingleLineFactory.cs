@@ -10,10 +10,10 @@ namespace Stareater.Localization.Reading
 		{
 			StringBuilder line = new StringBuilder();
 
-			for (int nextCharCode = parser.Reader.Peek();
+			for (int nextCharCode = parser.PeakReader;
 				nextCharCode != HelperMethods.EndOfStreamInt && (char)nextCharCode != '\n' && (char)nextCharCode != '\r';
-				nextCharCode = parser.Reader.Peek()) {
-				line.Append((char)parser.Reader.Read());
+				nextCharCode = parser.PeakReader) {
+				line.Append(parser.ReadChar());
 			}
 			return new Text(line.ToString().Trim());
 		}
