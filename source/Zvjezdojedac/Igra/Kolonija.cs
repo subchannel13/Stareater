@@ -229,9 +229,10 @@ namespace Zvjezdojedac.Igra
 				double a = Igrac.efekti["HRANA_MIN"];
 				double b = efekti[HranaPoFarmeru] - a;
 				double y = (efekti[PopulacijaBr] - efekti[HranaPoFarmeru] * normalniFarmeri) / normalniFarmeri;
-				double q = y - a - b;
+				//double q = y - a - b;
+				double q = a + b - y;
 
-				efekti[BrFarmera] = normalniFarmeri * (1 + (Math.Sqrt(q * q + 4 * a * y) + q) / 2 * a);
+				efekti[BrFarmera] = normalniFarmeri * (1 + (q + Math.Sqrt(q * q + 4 * a * y)) / (2 * a));
 			}
 
 			efekti[BrOdrzavatelja] = Math.Ceiling(efekti[OdrzavanjeUkupno] / efekti[IndustrijaPoRadniku]);
