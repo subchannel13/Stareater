@@ -1,5 +1,0 @@
-﻿::FORM_MAIN
-NOVA_IGRA = New game
-POSTAVKE = Settings
-UCITAJ = Load game
-UGASI = Quit

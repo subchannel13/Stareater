@@ -22,18 +22,42 @@ namespace Stareater.AppData
 		}
 		#endregion
 
+		const string SettingsFilePath = "settings.txt";
+
 		public Language Language { get; private set; }
 
 		protected Settings()
 		{
-			Parser parser = new Parser(new StreamReader("settings.txt"));
-			Object allSettings = parser.ParseNext() as Object;
+			Dictionary<string, Object> data = new Dictionary<string, Object>();
 
-			this.Language = new Language(allSettings[LanguageKey].AsText().GetText);
+			if (File.Exists(SettingsFilePath)) {
+				StreamReader stream = new StreamReader(SettingsFilePath);
+				Parser parser = new Parser(stream);
+				
+				while (parser.HasNext()) {
+					Object dataChunk = parser.ParseNext() as Object;
+					data.Add(dataChunk.TypeName.ToLower(), dataChunk);
+				}
+				stream.Close();
+			}
+
+			loadData(data);
+		}
+
+		protected virtual void loadData(Dictionary<string, Object> data)
+		{
+			if (data.ContainsKey(BaseSettingsKey)) {
+				string langCode = data[BaseSettingsKey][LanguageKey].AsText().GetText;
+				this.Language = new Language(langCode, LocalizationManifest.LanguagesFolder + langCode);
+			}
+			else
+				this.Language = LocalizationManifest.DefaultLanguage;
 		}
 
 		#region Attribute keys
+		const string BaseSettingsKey = "base";
 		const string LanguageKey = "language";
+		const string LastGameKey = "lastgame";
 		#endregion
 	}
 }

@@ -1,13 +1,9 @@
 rem Copies {svnRoot}/podaci and {svnRoot}/slike
-rem to source/Zvjezdojedac/bin/Debug/ and
-rem source/Zvjezdojedac/bin/Release/
+rem to source/Stareater.UI.WinForms/bin/Debug/ and
+rem source/Stareater.UI.WinForms/bin/Release/
 
 echo off
-robocopy ../build/podaci/ ../source/Zvjezdojedac/bin/Debug/podaci/ /xd .svn /e
-robocopy ../build/slike/ ../source/Zvjezdojedac/bin/Debug/slike/ /xd .svn /e
-robocopy ../build/jezici/ ../source/Zvjezdojedac/bin/Debug/jezici/ /xd .svn /e
+robocopy ../build/ ../source/Stareater.UI.WinForms/bin/Debug/ /xf *.exe /xf settings.txt /e
 
-robocopy ../build/podaci/ ../source/Zvjezdojedac/bin/Release/podaci/ /xd .svn /e
-robocopy ../build/slike/ ../source/Zvjezdojedac/bin/Release/slike/ /xd .svn /e
-robocopy ../build/jezici/ ../source/Zvjezdojedac/bin/Release/jezici/ /xd .svn /e
+rem robocopy ../build/languages/ ../source/Stareater.UI.WinForms/bin/Release/languages/ /e
 pause

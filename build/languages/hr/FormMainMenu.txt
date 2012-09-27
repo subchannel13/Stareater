@@ -1,0 +1,7 @@
+﻿:FormMain
+NewGame = Nova igra
+Settings = Postavke
+Save = Spremi igru
+Load = Učitaj igru
+Quit = Ugasi
+-

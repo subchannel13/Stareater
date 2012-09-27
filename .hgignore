@@ -17,3 +17,6 @@ source/Stareater.Core/bin/*
 source/Stareater.Core/obj/*
 source/Stareater.UI.WinForms/bin/*
 source/Stareater.UI.WinForms/obj/*
+version 0.4/*
+build/settings.txt
+build/Stareater.exe

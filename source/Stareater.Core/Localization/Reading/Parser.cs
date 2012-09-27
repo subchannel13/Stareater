@@ -6,6 +6,7 @@ namespace Stareater.Localization.Reading
 	{
 		public Parser(TextReader input) : base(input)
 		{
+			RegisterFactory(new ContextFactory());
 			RegisterFactory(new SingleLineFactory());
 		}
 	}
