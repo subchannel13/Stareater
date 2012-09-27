@@ -10,7 +10,7 @@ namespace Stareater.Localization
 
 		internal Context(string name)
 		{
-			this.name = name;
+			this.name = name.ToLower();
 		}
 
 		public Value this[string memberName]
@@ -18,6 +18,7 @@ namespace Stareater.Localization
 			get { return entries[memberName]; }
 			internal set
 			{
+				memberName = memberName.ToLower();
 				if (entries.ContainsKey(memberName))
 					entries[memberName] = value;
 				else
@@ -32,7 +33,7 @@ namespace Stareater.Localization
 
 		public override string TypeName
 		{
-			get { return "Context"; }
+			get { return name; }
 		}
 	}
 }

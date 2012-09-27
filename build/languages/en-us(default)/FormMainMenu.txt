@@ -1,0 +1,7 @@
+﻿:FormMain
+NewGame = New game
+Settings = Settings
+Save = Save
+Load = Load game
+Quit = Quit
+-

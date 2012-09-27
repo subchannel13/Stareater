@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Localization\Language.cs" />
     <Compile Include="Localization\Context.cs" />
+    <Compile Include="Localization\LocalizationManifest.cs" />
     <Compile Include="Localization\Reading\ContextFactory.cs" />
     <Compile Include="Localization\Reading\Parser.cs" />
     <Compile Include="Localization\Reading\SingleLineFactory.cs" />

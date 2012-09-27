@@ -1,10 +1,10 @@
 @echo off
 rem Runs copy_game_to_build.bat script and then
 rem copies game data from {svnRoot}\build\ to 
-rem {svnRoot}\release\Zvjezdojedac
+rem {svnRoot}\release\Stareater
 
 call copy_game_to_build.bat
 
-rmdir /s /q ..\release\Zvjezdojedac
+rmdir /s /q ..\release\Stareater
 del /q ..\release\
-robocopy ../build/ ../release/Zvjezdojedac/ /xd .svn /e
+robocopy ../build/ ../release/Stareater/ /xd .svn /e

@@ -7,17 +7,21 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.IO.Compression;
+using Stareater.AppData;
+using Stareater.Localization;
 
 namespace Stareater.GUI
 {
 	public partial class FormMainMenu : Form
 	{
-		Font pocetniFont;
+		Font initialFont;
 
 		public FormMainMenu()
 		{
 			InitializeComponent();
-			this.pocetniFont = Font;
+			this.initialFont = Font;
+			
+			Language lang = Settings.Get.Language;
 		}
 
 		/*private void postaviJezik()
