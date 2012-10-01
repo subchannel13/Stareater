@@ -6,24 +6,12 @@ namespace Stareater.Localization
 	public class Context : Value
 	{
 		private string name;
-		private Dictionary<string, Value> entries = new Dictionary<string, Value>();
+		private Dictionary<string, IText> entries;
 
-		internal Context(string name)
+		internal Context(string name, Dictionary<string, IText> entries)
 		{
 			this.name = name.ToLower();
-		}
-
-		public Value this[string memberName]
-		{
-			get { return entries[memberName]; }
-			internal set
-			{
-				memberName = memberName.ToLower();
-				if (entries.ContainsKey(memberName))
-					entries[memberName] = value;
-				else
-					entries.Add(memberName, value);
-			}
+			this.entries = entries;
 		}
 
 		public override void Compose(Composer composer)
@@ -34,6 +22,11 @@ namespace Stareater.Localization
 		public override string TypeName
 		{
 			get { return name; }
+		}
+
+		public string this[string entryKey, params double[] variables]
+		{
+			get { return entries[entryKey.ToLower()].Get(variables); }
 		}
 	}
 }

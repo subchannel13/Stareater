@@ -10,14 +10,17 @@ namespace Stareater.Localization.Reading
 
 		public Value Parse(IKON.Parser parser)
 		{
-			Context res = new Context(parser.ReadIdentifier());
+			string contextName = parser.ReadIdentifier();
+			Dictionary<string, IText> entries = new Dictionary<string, IText>();
 
-			while (parser.ReadNextNonWhite() != ClosingChar) {
-				res[parser.ReadIdentifier()] = parser.ParseNext();
-			}
+			while (parser.ReadNextNonWhite() != ClosingChar)
+				entries.Add(
+					parser.ReadIdentifier().ToLower(),
+					parser.ParseNext() as IText);
+			
 			parser.ReadChar();
 
-			return res;
+			return new Context(contextName, entries);
 		}
 
 		public char Sign

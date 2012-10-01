@@ -2,11 +2,11 @@
 
 namespace Stareater.Localization
 {
-	public class Text : Value
+	class SingleLineText : Value, IText
 	{
 		string text;
 
-		internal Text(string line)
+		internal SingleLineText(string line)
 		{
 			this.text = line;
 		}
@@ -19,6 +19,10 @@ namespace Stareater.Localization
 		public override string TypeName
 		{
 			get { return "Text"; }
+		}
+
+		public string Get(params double[] variables) {
+			return text;
 		}
 	}
 }
