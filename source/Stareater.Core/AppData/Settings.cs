@@ -26,6 +26,7 @@ namespace Stareater.AppData
 
 		public Language Language { get; private set; }
 
+		#region Initialization
 		protected Settings()
 		{
 			Dictionary<string, Object> data = new Dictionary<string, Object>();
@@ -53,6 +54,7 @@ namespace Stareater.AppData
 			else
 				this.Language = LocalizationManifest.DefaultLanguage;
 		}
+		#endregion
 
 		#region Attribute keys
 		const string BaseSettingsKey = "base";

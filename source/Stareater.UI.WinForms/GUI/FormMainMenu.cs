@@ -12,7 +12,7 @@ using Stareater.Localization;
 
 namespace Stareater.GUI
 {
-	public partial class FormMainMenu : Form
+	public partial class FormMainMenu : AForm
 	{
 		Font initialFont;
 
@@ -21,17 +21,20 @@ namespace Stareater.GUI
 			InitializeComponent();
 			this.initialFont = Font;
 			
-			Language lang = Settings.Get.Language;
+			OnLanguageChanged(SettingsWinforms.Get.Language);
 		}
 
-		/*private void postaviJezik()
+		public override void OnLanguageChanged(Language newLanguage)
 		{
+			/*private void postaviJezik()
+		
 			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormMain];
 
 			btnNovaIgra.Text = jezik["NOVA_IGRA"].tekst(null);
 			btnPostavke.Text = jezik["POSTAVKE"].tekst(null);
 			btnUcitaj.Text = jezik["UCITAJ"].tekst(null);
 			btnUgasi.Text = jezik["UGASI"].tekst(null);
-		}*/
+		*/
+		}
 	}
 }
