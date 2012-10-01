@@ -25,5 +25,10 @@ namespace Stareater.Localization
 				stream.Close();
 			}
 		}
+
+		public Context this[string contextName]
+		{
+			get { return contexts[contextName]; }
+		}
 	}
 }

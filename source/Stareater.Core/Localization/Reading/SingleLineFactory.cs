@@ -15,7 +15,7 @@ namespace Stareater.Localization.Reading
 				nextCharCode = parser.PeakReader) {
 				line.Append(parser.ReadChar());
 			}
-			return new Text(line.ToString().Trim());
+			return new SingleLineText(line.ToString().Trim());
 		}
 
 		public char Sign
