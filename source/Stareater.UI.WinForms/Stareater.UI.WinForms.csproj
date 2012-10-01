@@ -37,6 +37,14 @@
     <StartupObject>StareaterUI.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IKON, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Stareater.Core\Libs\IKON.dll</HintPath>
+    </Reference>
+    <Reference Include="IKON.STON, Version=0.1.0.36986, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Stareater.Core\Libs\IKON.STON.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,6 +55,10 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppData\SettingsWinforms.cs" />
+    <Compile Include="GUI\AForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
