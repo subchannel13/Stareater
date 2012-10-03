@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppData\ILanguageListener.cs" />
     <Compile Include="Collections\IDelayedRemoval.cs" />
     <Compile Include="Collections\Set.cs" />
     <Compile Include="Localization\IText.cs" />

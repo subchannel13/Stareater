@@ -19,24 +19,5 @@ namespace Stareater.AppData
 			}
 		}
 		#endregion
-
-		#region Language events
-		private Set<ILanguageListener> languageListeners = new Set<ILanguageListener>();
-
-		public ICollection<ILanguageListener> OnLanguageEvent
-		{
-			get { return languageListeners; }
-		}
-
-		private void LanguageEvent(Action<ILanguageListener> listenerAction)
-		{
-			foreach (ILanguageListener listener in languageListeners)
-				if (listener.IsAlive)
-					listenerAction(listener);
-				else
-					languageListeners.PendRemove(listener);
-			languageListeners.ApplyRemove();
-		}
-		#endregion
 	}
 }

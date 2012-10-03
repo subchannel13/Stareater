@@ -1,4 +1,6 @@
-﻿:FormMain
+﻿:FormMainMenu
+FormTitle = Glavni izbornik
+Title = Zvjezdojedac
 NewGame = Nova igra
 Settings = Postavke
 Save = Spremi igru
