@@ -36,6 +36,9 @@
   <PropertyGroup>
     <StartupObject>StareaterUI.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>App icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="IKON, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -56,9 +59,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppData\SettingsWinforms.cs" />
-    <Compile Include="GUI\AForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="GUI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,6 +105,9 @@
       <Project>{452BB6D1-D27F-4D71-A05B-A6DDC4013E33}</Project>
       <Name>Stareater.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

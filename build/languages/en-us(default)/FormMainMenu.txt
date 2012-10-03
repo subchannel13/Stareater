@@ -1,4 +1,6 @@
-﻿:FormMain
+﻿:FormMainMenu
+FormTitle = Main menu
+Title = Stareater
 NewGame = New game
 Settings = Settings
 Save = Save

@@ -28,7 +28,7 @@ namespace Stareater.Localization
 
 		public Context this[string contextName]
 		{
-			get { return contexts[contextName]; }
+			get { return contexts[contextName.ToLower()]; }
 		}
 	}
 }
