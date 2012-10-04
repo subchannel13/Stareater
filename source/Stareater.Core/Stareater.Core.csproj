@@ -64,6 +64,8 @@
   <ItemGroup>
     <Content Include="Libs\IKON.dll" />
     <Content Include="Libs\IKON.STON.dll" />
+    <Content Include="Libs\IKON.STON.xml" />
+    <Content Include="Libs\IKON.xml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
