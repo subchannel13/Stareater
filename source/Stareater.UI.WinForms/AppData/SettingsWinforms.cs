@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using System;
-using Stareater.Collections;
+using IKON.STON.Values;
 
 namespace Stareater.AppData
 {
@@ -14,10 +13,16 @@ namespace Stareater.AppData
 			get
 			{
 				if (instance == null)
-					instance = new SettingsWinforms();
+					instance = new SettingsWinforms(loadFile());
 				return instance;
 			}
 		}
 		#endregion
+
+		public SettingsWinforms(Dictionary<string, Object> data)
+			:base(data)
+		{
+			// TODO: Complete member initialization
+		}
 	}
 }

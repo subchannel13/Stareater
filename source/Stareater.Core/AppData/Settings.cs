@@ -16,7 +16,7 @@ namespace Stareater.AppData
 			get
 			{
 				if (instance == null)
-					instance = new Settings();
+					instance = new Settings(loadFile());
 				return instance;
 			}
 		}
@@ -27,32 +27,29 @@ namespace Stareater.AppData
 		public Language Language { get; private set; }
 
 		#region Initialization
-		protected Settings()
+		protected Settings(Dictionary<string, Object> data)
 		{
-			Dictionary<string, Object> data = new Dictionary<string, Object>();
-
-			if (File.Exists(SettingsFilePath)) {
-				StreamReader stream = new StreamReader(SettingsFilePath);
-				Parser parser = new Parser(stream);
-				
-				while (parser.HasNext()) {
-					Object dataChunk = parser.ParseNext() as Object;
-					data.Add(dataChunk.TypeName.ToLower(), dataChunk);
-				}
-				stream.Close();
-			}
-
-			loadData(data);
-		}
-
-		protected virtual void loadData(Dictionary<string, Object> data)
-		{
-			if (data.ContainsKey(BaseSettingsKey)) {
+			if (data.ContainsKey(BaseSettingsKey))
+			{
 				string langCode = data[BaseSettingsKey][LanguageKey].AsText().GetText;
 				this.Language = new Language(langCode, LocalizationManifest.LanguagesFolder + langCode);
 			}
 			else
 				this.Language = LocalizationManifest.DefaultLanguage;
+		}
+
+		protected static Dictionary<string, Object> loadFile()
+		{
+			Dictionary<string, Object> data = new Dictionary<string,Object>();
+
+			if (File.Exists(SettingsFilePath))
+			{
+				using (Parser parser = new Parser(new StreamReader(SettingsFilePath)))
+					foreach (var value in parser.ParseAll())
+						data.Add(value.TypeName.ToLower(), value as Object);
+			}
+
+			return data;
 		}
 		#endregion
 
