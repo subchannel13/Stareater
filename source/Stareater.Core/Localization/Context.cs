@@ -24,9 +24,22 @@ namespace Stareater.Localization
 			get { return name; }
 		}
 
+		public bool HasEntry(string entryKey)
+		{
+			return entries.ContainsKey(entryKey);
+		}
+
 		public string this[string entryKey, params double[] variables]
 		{
-			get { return entries[entryKey.ToLower()].Get(variables); }
+			get {
+				entryKey = entryKey.ToLower();
+				if (entries.ContainsKey(entryKey))
+					return entries[entryKey].Get(variables);
+				else if (this != LocalizationManifest.DefaultLanguage[name])
+					return LocalizationManifest.DefaultLanguage[name][entryKey, variables];
+				else
+					throw new KeyNotFoundException("entryKey: " + entryKey);
+			}
 		}
 	}
 }
