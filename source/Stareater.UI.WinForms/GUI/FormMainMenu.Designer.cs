@@ -45,6 +45,7 @@
 			this.newGameButton.TabIndex = 1;
 			this.newGameButton.Text = "Nova igra";
 			this.newGameButton.UseVisualStyleBackColor = true;
+			this.newGameButton.Click += new System.EventHandler(this.newGameButton_Click);
 			// 
 			// loadGameButton
 			// 
@@ -54,6 +55,7 @@
 			this.loadGameButton.TabIndex = 2;
 			this.loadGameButton.Text = "Učitaj igru";
 			this.loadGameButton.UseVisualStyleBackColor = true;
+			this.loadGameButton.Click += new System.EventHandler(this.loadGameButton_Click);
 			// 
 			// exitButton
 			// 
@@ -63,6 +65,7 @@
 			this.exitButton.TabIndex = 4;
 			this.exitButton.Text = "Ugasi";
 			this.exitButton.UseVisualStyleBackColor = true;
+			this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
 			// 
 			// titleLabel
 			// 
@@ -92,6 +95,7 @@
 			this.settingsButton.TabIndex = 3;
 			this.settingsButton.Text = "Postavke";
 			this.settingsButton.UseVisualStyleBackColor = true;
+			this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
 			// 
 			// saveGameButton
 			// 
@@ -101,6 +105,7 @@
 			this.saveGameButton.TabIndex = 6;
 			this.saveGameButton.Text = "Spremi igru";
 			this.saveGameButton.UseVisualStyleBackColor = true;
+			this.saveGameButton.Click += new System.EventHandler(this.saveGameButton_Click);
 			// 
 			// FormMainMenu
 			// 

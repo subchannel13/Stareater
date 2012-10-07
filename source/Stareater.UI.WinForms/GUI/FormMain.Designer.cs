@@ -27,8 +27,15 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+			this.eventTimer = new System.Windows.Forms.Timer(this.components);
 			this.SuspendLayout();
+			// 
+			// eventTimer
+			// 
+			this.eventTimer.Interval = 1;
+			this.eventTimer.Tick += new System.EventHandler(this.eventTimer_Tick);
 			// 
 			// FormMain
 			// 
@@ -39,11 +46,12 @@
 			this.Name = "FormMain";
 			this.Text = "FormMain";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-			this.Shown += new System.EventHandler(this.FormMain_Shown);
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
+
+		private System.Windows.Forms.Timer eventTimer;
 	}
 }

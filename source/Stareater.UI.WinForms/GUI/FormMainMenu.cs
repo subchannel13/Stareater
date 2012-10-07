@@ -12,9 +12,10 @@ using Stareater.Localization;
 
 namespace Stareater.GUI
 {
-	public partial class FormMainMenu : Form
+	internal partial class FormMainMenu : Form
 	{
-		Font initialFont;
+		private Font initialFont;
+		internal MainMenuResult Result { get; private set; }
 
 		public FormMainMenu()
 		{
@@ -36,6 +37,36 @@ namespace Stareater.GUI
 			saveGameButton.Text = context["Save"];
 			settingsButton.Text = context["Settings"];
 			exitButton.Text = context["Quit"];
+		}
+
+		private void newGameButton_Click(object sender, EventArgs e)
+		{
+			this.Result = MainMenuResult.NewGame;
+			this.DialogResult = DialogResult.OK;
+		}
+
+		private void saveGameButton_Click(object sender, EventArgs e)
+		{
+			this.Result = MainMenuResult.SaveGame;
+			this.DialogResult = DialogResult.OK;
+		}
+
+		private void loadGameButton_Click(object sender, EventArgs e)
+		{
+			this.Result = MainMenuResult.LoadGame;
+			this.DialogResult = DialogResult.OK;
+		}
+
+		private void settingsButton_Click(object sender, EventArgs e)
+		{
+			this.Result = MainMenuResult.Settings;
+			this.DialogResult = DialogResult.OK;
+		}
+
+		private void exitButton_Click(object sender, EventArgs e)
+		{
+			this.Result = MainMenuResult.Quit;
+			this.DialogResult = DialogResult.OK;
 		}
 	}
 }
