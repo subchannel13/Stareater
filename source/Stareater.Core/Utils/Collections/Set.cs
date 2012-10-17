@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Stareater.Collections
+namespace Stareater.Utils.Collections
 {
 	public class Set<T> : HashSet<T>, IDelayedRemoval<T>
 	{

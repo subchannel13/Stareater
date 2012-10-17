@@ -1,0 +1,4 @@
+﻿:General
+LanguageName = Hrvatski
+DialogOK = U redu
+-

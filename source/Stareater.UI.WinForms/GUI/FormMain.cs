@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Stareater.Localization;
+using Stareater.AppData;
 
 namespace Stareater.GUI
 {
@@ -16,8 +18,18 @@ namespace Stareater.GUI
 		public FormMain()
 		{
 			InitializeComponent();
-			
+
+			setLanguage();
+
 			postDelayedEvent(showMainMenu);
+		}
+
+		private void setLanguage()
+		{
+			this.Font = SettingsWinforms.Get.FormFont;
+
+			Context context = SettingsWinforms.Get.Language["FormSettings"];
+			this.Text = context["FormTitle"];
 		}
 
 		private void eventTimer_Tick(object sender, EventArgs e)
@@ -41,8 +53,27 @@ namespace Stareater.GUI
 
 		private void showMainMenu()
 		{
-			using (FormMainMenu mainMenu = new FormMainMenu())
-				mainMenu.ShowDialog();
+			using (FormMainMenu form = new FormMainMenu())
+				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+					switch (form.Result)
+					{
+						case MainMenuResult.NewGame:
+							postDelayedEvent(showNewGame);
+							break;
+						case MainMenuResult.Settings:
+							postDelayedEvent(showSettings);
+							break;
+					}
+		}
+
+		private void showNewGame()
+		{
+		}
+
+		private void showSettings()
+		{
+			using (FormSettings form = new FormSettings())
+				form.ShowDialog();
 		}
 		#endregion
 	}

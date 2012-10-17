@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using IKON.STON;
 using IKON.STON.Values;
+using System.Drawing;
 
 namespace Stareater.AppData
 {
@@ -19,10 +21,33 @@ namespace Stareater.AppData
 		}
 		#endregion
 
+		public float GuiScale { get; private set; }
+		
 		public SettingsWinforms(Dictionary<string, Object> data)
 			:base(data)
 		{
-			// TODO: Complete member initialization
+			if (data.ContainsKey(WinformsSettingsKey))
+			{
+				Object wfSpecificData = data[WinformsSettingsKey];
+				GuiScale = wfSpecificData[GuiScaleKey].AsNumber().GetFloat;
+			}
+			else
+			{
+				GuiScale = 1;
+			}
 		}
+
+		public Font FormFont
+		{
+			get
+			{
+				return new Font(SystemFonts.DefaultFont.FontFamily, SystemFonts.DefaultFont.Size * GuiScale);
+			}
+		}
+
+		#region Attribute keys
+		const string WinformsSettingsKey = "winforms";
+		const string GuiScaleKey = "guiscale";
+		#endregion
 	}
 }
