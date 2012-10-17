@@ -1,0 +1,4 @@
+﻿:General
+LanguageName = English
+DialogOK = OK
+-

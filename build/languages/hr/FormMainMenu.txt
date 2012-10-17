@@ -7,3 +7,9 @@ Save = Spremi igru
 Load = Učitaj igru
 Quit = Ugasi
 -
+
+:FormSettings
+FormTitle = Postavke
+LanguageLabel = Jezik:
+GuiScaleLabel = Veličina sučelja:
+-

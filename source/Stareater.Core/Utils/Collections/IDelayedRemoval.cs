@@ -1,4 +1,4 @@
-﻿namespace Stareater.Collections
+﻿namespace Stareater.Utils.Collections
 {
 	public interface IDelayedRemoval<T>
 	{

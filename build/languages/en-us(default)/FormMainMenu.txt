@@ -7,3 +7,9 @@ Save = Save
 Load = Load game
 Quit = Quit
 -
+
+:FormSettings
+FormTitle = Settings
+LanguageLabel = Language:
+GuiScaleLabel = GUI scale:
+-
