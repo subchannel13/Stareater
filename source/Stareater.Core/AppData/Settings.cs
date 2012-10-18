@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Stareater.Localization;
-using IKON.STON;
-using IKON.STON.Values;
+using Ikon.Ston;
+using Ikon.Ston.Values;
+using Ikon;
 
 namespace Stareater.AppData
 {
@@ -24,15 +25,15 @@ namespace Stareater.AppData
 
 		const string SettingsFilePath = "settings.txt";
 
-		public Language Language { get; private set; }
+		public Language Language { get; set; }
 
 		#region Initialization
 		protected Settings(Dictionary<string, Object> data)
 		{
 			if (data.ContainsKey(BaseSettingsKey))
 			{
-				string langCode = data[BaseSettingsKey][LanguageKey].AsText().GetText;
-				this.Language = new Language(langCode, LocalizationManifest.LanguagesFolder + langCode);
+				string langCode = (data[BaseSettingsKey][LanguageKey] as Text).GetText;
+				this.Language = LocalizationManifest.LoadLanguage(langCode);
 			}
 			else
 				this.Language = LocalizationManifest.DefaultLanguage;
@@ -44,7 +45,7 @@ namespace Stareater.AppData
 
 			if (File.Exists(SettingsFilePath))
 			{
-				using (Parser parser = new Parser(new StreamReader(SettingsFilePath)))
+				using (Ikon.Ston.Parser parser = new Ikon.Ston.Parser(new StreamReader(SettingsFilePath)))
 					foreach (var value in parser.ParseAll())
 						data.Add(value.TypeName.ToLower(), value as Object);
 			}
@@ -58,5 +59,20 @@ namespace Stareater.AppData
 		const string LanguageKey = "language";
 		const string LastGameKey = "lastgame";
 		#endregion
+
+		public void Save()
+		{
+			using (var output = new StreamWriter(SettingsFilePath))
+			{
+				Composer composer = new Composer(output);
+				buildSaveData(composer);
+			}
+		}
+
+		protected virtual void buildSaveData(Composer composer) {
+			Object baseSettings = new Object(BaseSettingsKey);
+			baseSettings.Add(LanguageKey, new Text(Language.Code));
+			composer.Write(baseSettings);
+		}
 	}
 }

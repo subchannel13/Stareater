@@ -81,6 +81,8 @@ namespace Stareater.GUI
 
 		private void confirmButton_Click(object sender, EventArgs e)
 		{
+			SettingsWinforms.Get.Language = selectedLanguage;
+			SettingsWinforms.Get.GuiScale = selectedGuiScale; 
 			DialogResult = System.Windows.Forms.DialogResult.OK;
 		}
 	}

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using IKON.STON;
-using IKON.STON.Values;
+using Ikon.Ston;
+using Ikon.Ston.Values;
 using System.Drawing;
+using Ikon;
 
 namespace Stareater.AppData
 {
@@ -21,7 +22,7 @@ namespace Stareater.AppData
 		}
 		#endregion
 
-		public float GuiScale { get; private set; }
+		public float GuiScale { get; set; }
 		
 		public SettingsWinforms(Dictionary<string, Object> data)
 			:base(data)
@@ -29,7 +30,7 @@ namespace Stareater.AppData
 			if (data.ContainsKey(WinformsSettingsKey))
 			{
 				Object wfSpecificData = data[WinformsSettingsKey];
-				GuiScale = wfSpecificData[GuiScaleKey].AsNumber().GetFloat;
+				GuiScale = (wfSpecificData[GuiScaleKey] as Numeric).GetFloat;
 			}
 			else
 			{
@@ -49,5 +50,14 @@ namespace Stareater.AppData
 		const string WinformsSettingsKey = "winforms";
 		const string GuiScaleKey = "guiscale";
 		#endregion
+
+		protected override void buildSaveData(Composer composer)
+		{
+			base.buildSaveData(composer);
+
+			Object settings = new Object(WinformsSettingsKey);
+			settings.Add(GuiScaleKey, new Numeric(GuiScale));
+			composer.Write(settings);
+		}
 	}
 }

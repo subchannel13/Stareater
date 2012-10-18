@@ -44,8 +44,9 @@
 			this.ClientSize = new System.Drawing.Size(284, 262);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "FormMain";
-			this.Text = "FormMain";
+			this.Text = "Stareater";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
 			this.ResumeLayout(false);
 
 		}

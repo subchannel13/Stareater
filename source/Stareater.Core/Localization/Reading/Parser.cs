@@ -2,7 +2,7 @@
 
 namespace Stareater.Localization.Reading
 {
-	class Parser : IKON.Parser
+	class Parser : Ikon.Parser
 	{
 		public Parser(TextReader input) : base(input)
 		{
