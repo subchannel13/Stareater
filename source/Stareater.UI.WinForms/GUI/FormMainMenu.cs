@@ -14,13 +14,13 @@ namespace Stareater.GUI
 {
 	internal partial class FormMainMenu : Form
 	{
-		private Font initialFont;
+		private Font titleFont;
 		internal MainMenuResult Result { get; private set; }
 
 		public FormMainMenu()
 		{
 			InitializeComponent();
-			this.initialFont = Font;
+			this.titleFont = titleLabel.Font;
 
 			setLanguage(SettingsWinforms.Get.Language);
 		}
@@ -29,6 +29,8 @@ namespace Stareater.GUI
 		{
 			Context context = newLanguage["FormMainMenu"];
 
+			this.Font = SettingsWinforms.Get.FormFont;
+			titleLabel.Font = new Font(titleFont.FontFamily, titleFont.Size * SettingsWinforms.Get.GuiScale, titleFont.Style);
 			this.Text = context["FormTitle"];
 			titleLabel.Text = context["Title"];
 

@@ -1,4 +1,4 @@
-﻿using IKON;
+﻿using Ikon;
 
 namespace Stareater.Localization
 {

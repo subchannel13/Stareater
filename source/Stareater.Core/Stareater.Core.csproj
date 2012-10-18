@@ -31,11 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IKON, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="IKON, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\IKON.dll</HintPath>
     </Reference>
-    <Reference Include="IKON.STON, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="IKON.STON, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\IKON.STON.dll</HintPath>
     </Reference>

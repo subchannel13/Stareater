@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using IKON;
+using Ikon;
 
 namespace Stareater.Localization
 {

@@ -24,12 +24,17 @@ namespace Stareater.GUI
 			postDelayedEvent(showMainMenu);
 		}
 
+		private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			SettingsWinforms.Get.Save();
+		}
+
 		private void setLanguage()
 		{
 			this.Font = SettingsWinforms.Get.FormFont;
 
-			Context context = SettingsWinforms.Get.Language["FormSettings"];
-			this.Text = context["FormTitle"];
+			Context context = SettingsWinforms.Get.Language["FormMain"];
+
 		}
 
 		private void eventTimer_Tick(object sender, EventArgs e)
@@ -73,7 +78,9 @@ namespace Stareater.GUI
 		private void showSettings()
 		{
 			using (FormSettings form = new FormSettings())
-				form.ShowDialog();
+				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+					setLanguage();
+			postDelayedEvent(showMainMenu);
 		}
 		#endregion
 	}
