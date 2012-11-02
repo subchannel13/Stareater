@@ -11,7 +11,7 @@ namespace Stareater.Localization
 			this.text = line;
 		}
 
-		public override void Compose(Composer composer)
+		protected override void DoCompose(IkonWriter writer)
 		{
 			//NoOP
 		}
@@ -23,6 +23,6 @@ namespace Stareater.Localization
 
 		public string Get(params double[] variables) {
 			return text;
-		}
+		}	
 	}
 }

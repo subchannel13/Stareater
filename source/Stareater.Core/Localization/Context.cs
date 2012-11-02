@@ -14,7 +14,7 @@ namespace Stareater.Localization
 			this.entries = entries;
 		}
 
-		public override void Compose(Composer composer)
+		protected override void DoCompose(IkonWriter writer)
 		{
 			//NoOP
 		}

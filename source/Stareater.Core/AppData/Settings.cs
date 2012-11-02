@@ -64,15 +64,16 @@ namespace Stareater.AppData
 		{
 			using (var output = new StreamWriter(SettingsFilePath))
 			{
-				Composer composer = new Composer(output);
-				buildSaveData(composer);
+				IkonWriter writer = new IkonWriter(output);
+				buildSaveData(writer);
 			}
 		}
 
-		protected virtual void buildSaveData(Composer composer) {
+		protected virtual void buildSaveData(IkonWriter writer)
+		{
 			Object baseSettings = new Object(BaseSettingsKey);
 			baseSettings.Add(LanguageKey, new Text(Language.Code));
-			composer.Write(baseSettings);
+			baseSettings.Compose(writer);
 		}
 	}
 }
