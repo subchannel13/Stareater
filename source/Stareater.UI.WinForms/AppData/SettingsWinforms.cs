@@ -51,13 +51,13 @@ namespace Stareater.AppData
 		const string GuiScaleKey = "guiscale";
 		#endregion
 
-		protected override void buildSaveData(Composer composer)
+		protected override void buildSaveData(IkonWriter writer)
 		{
-			base.buildSaveData(composer);
+			base.buildSaveData(writer);
 
 			Object settings = new Object(WinformsSettingsKey);
 			settings.Add(GuiScaleKey, new Numeric(GuiScale));
-			composer.Write(settings);
+			settings.Compose(writer);
 		}
 	}
 }

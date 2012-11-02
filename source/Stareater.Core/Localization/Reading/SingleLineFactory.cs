@@ -10,8 +10,8 @@ namespace Stareater.Localization.Reading
 		{
 			StringBuilder line = new StringBuilder();
 
-			while(parser.CanRead) {
-				char nextChar = parser.ReadChar();
+			while(parser.Reader.HasNext) {
+				char nextChar = parser.Reader.Read();
 				if (nextChar == '\n' || nextChar == '\r')
 					break;
 				line.Append(nextChar);

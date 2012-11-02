@@ -20,3 +20,5 @@ source/Stareater.UI.WinForms/obj/*
 version 0.4/*
 build/settings.txt
 build/Stareater.exe
+documentation/GUI Mockups/Winforms Mockups/Winforms Mockups/bin/*
+documentation/GUI Mockups/Winforms Mockups/Winforms Mockups/obj/*
