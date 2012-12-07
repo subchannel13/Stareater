@@ -24,13 +24,13 @@ namespace Stareater.AppData
 
 		public float GuiScale { get; set; }
 		
-		public SettingsWinforms(Dictionary<string, Object> data)
+		public SettingsWinforms(Dictionary<string, ObjectValue> data)
 			:base(data)
 		{
 			if (data.ContainsKey(WinformsSettingsKey))
 			{
-				Object wfSpecificData = data[WinformsSettingsKey];
-				GuiScale = (wfSpecificData[GuiScaleKey] as Numeric).GetFloat;
+				ObjectValue wfSpecificData = data[WinformsSettingsKey];
+				GuiScale = (wfSpecificData[GuiScaleKey] as NumericValue).GetFloat;
 			}
 			else
 			{
@@ -55,8 +55,8 @@ namespace Stareater.AppData
 		{
 			base.buildSaveData(writer);
 
-			Object settings = new Object(WinformsSettingsKey);
-			settings.Add(GuiScaleKey, new Numeric(GuiScale));
+			ObjectValue settings = new ObjectValue(WinformsSettingsKey);
+			settings.Add(GuiScaleKey, new NumericValue(GuiScale));
 			settings.Compose(writer);
 		}
 	}

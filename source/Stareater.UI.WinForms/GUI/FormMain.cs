@@ -73,6 +73,8 @@ namespace Stareater.GUI
 
 		private void showNewGame()
 		{
+			using (FormNewGame form = new FormNewGame())
+				form.ShowDialog();
 		}
 
 		private void showSettings()

@@ -179,7 +179,7 @@
             </summary>
             <param name="text">Raw text.</param>
         </member>
-        <member name="M:Ikon.IkonWriter.WriteReferences(System.String[])">
+        <member name="M:Ikon.IkonWriter.WriteReferences(System.Collections.Generic.ICollection{System.String})">
             <summary>
             Writes reference names to the output stream.
             </summary>
@@ -296,16 +296,20 @@
             </summary>
             <param name="writer">Wrapped around target output stream.</param>
         </member>
-        <member name="M:Ikon.Value.Compose(Ikon.IkonWriter,System.String[])">
+        <member name="M:Ikon.Value.Compose(Ikon.IkonWriter)">
             <summary>
             Writes an IKON value to the output stream.
             </summary>
             <param name="writer">Wrapped around target output stream.</param>
-            <param name="referenceNames">List of reference names.</param>
         </member>
         <member name="P:Ikon.Value.TypeName">
             <summary>
             Type name of the IKON value instance.
+            </summary>
+        </member>
+        <member name="P:Ikon.Value.ReferenceNames">
+            <summary>
+            Set of objects that can be used as reference to the value.
             </summary>
         </member>
     </members>

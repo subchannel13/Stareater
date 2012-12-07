@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Stareater.Controllers;
 
 namespace StareaterUI
 {
@@ -13,6 +14,8 @@ namespace StareaterUI
 		[STAThread]
 		static void Main()
 		{
+			AssetController.Get.Start();
+
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new Stareater.GUI.FormMain());

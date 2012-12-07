@@ -4,43 +4,6 @@
         <name>Ikon.Ston</name>
     </assembly>
     <members>
-        <member name="T:Ikon.Ston.Values.Text">
-            <summary>
-            IKSTON textual value.
-            </summary>
-        </member>
-        <member name="F:Ikon.Ston.Values.Text.ValueTypeName">
-            <summary>
-            Type name of IKSTON text values.
-            </summary>
-        </member>
-        <member name="M:Ikon.Ston.Values.Text.#ctor(System.String)">
-            <summary>
-            Constructs IKSTON textual value with specified contents.
-            </summary>
-            <param name="value">Contents</param>
-        </member>
-        <member name="M:Ikon.Ston.Values.Text.op_Implicit(Ikon.Ston.Values.Text)~System.String">
-            <summary>
-            Implicit conversion from IKON textual value to System.String value.
-            </summary>
-        </member>
-        <member name="M:Ikon.Ston.Values.Text.DoCompose(Ikon.IkonWriter)">
-            <summary>
-            Writes an IKSTON text value to the composer.
-            </summary>
-            <param name="writer">Target composer.</param>
-        </member>
-        <member name="P:Ikon.Ston.Values.Text.TypeName">
-            <summary>
-            Type name of the IKON value instance.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.Text.GetText">
-            <summary>
-            Gets System.String value from IKSTON textual value.
-            </summary>
-        </member>
         <member name="T:Ikon.Ston.Factories.TextFactory">
             <summary>
             IKON value factory for IKSTON  textual values.
@@ -147,195 +110,72 @@
             Sign for IKON composite value.
             </summary>
         </member>
-        <member name="T:Ikon.Ston.Values.Numeric">
-            <summary>
-            IKSTON numeric value.
-            </summary>
-        </member>
-        <member name="F:Ikon.Ston.Values.Numeric.ValueTypeName">
-            <summary>
-            Type name of IKSTON numeric values.
-            </summary>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.#ctor(System.String)">
-            <summary>
-            Constructs IKSTON numeric value.
-            </summary>
-            <param name="textualRepresentation">Textual representation of the value</param>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.#ctor(System.Decimal)">
-            <summary>
-            Constructs IKSTON numeric value.
-            </summary>
-            <param name="value">The value</param>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.#ctor(System.Double)">
-            <summary>
-            Constructs IKSTON numeric value.
-            </summary>
-            <param name="value">The value</param>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.#ctor(System.Single)">
-            <summary>
-            Constructs IKSTON numeric value.
-            </summary>
-            <param name="value">The value</param>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.#ctor(System.Int64)">
-            <summary>
-            Constructs IKSTON numeric value.
-            </summary>
-            <param name="value">The value</param>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.#ctor(System.Int32)">
-            <summary>
-            Constructs IKSTON numeric value.
-            </summary>
-            <param name="value">The value</param>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.#ctor(System.Int16)">
-            <summary>
-            Constructs IKSTON numeric value.
-            </summary>
-            <param name="value">The value</param>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.op_Implicit(Ikon.Ston.Values.Numeric)~System.Decimal">
-            <summary>
-            Implicit conversion from IKSTON numeric value to System.Decimal value.
-            </summary>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.op_Implicit(Ikon.Ston.Values.Numeric)~System.Double">
-            <summary>
-            Implicit conversion from IKSTON numeric value to System.Double value.
-            </summary>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.op_Implicit(Ikon.Ston.Values.Numeric)~System.Single">
-            <summary>
-            Implicit conversion from IKSTON numeric value to System.Single value.
-            </summary>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.op_Implicit(Ikon.Ston.Values.Numeric)~System.Int32">
-            <summary>
-            Implicit conversion from IKSTON numeric value to System.Int32 value.
-            </summary>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.op_Implicit(Ikon.Ston.Values.Numeric)~System.Int64">
-            <summary>
-            Implicit conversion from IKSTON numeric value to System.Int64 value.
-            </summary>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.op_Implicit(Ikon.Ston.Values.Numeric)~System.Int16">
-            <summary>
-            Implicit conversion from IKSTON numeric value to System.Int16 value.
-            </summary>
-        </member>
-        <member name="M:Ikon.Ston.Values.Numeric.DoCompose(Ikon.IkonWriter)">
-            <summary>
-            Writes an IKSTON numeric value to the composer.
-            </summary>
-            <param name="writer">Target composer.</param>
-        </member>
-        <member name="P:Ikon.Ston.Values.Numeric.TypeName">
-            <summary>
-            Type name of the IKSTON numeric value instance.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.Numeric.GetDecimal">
-            <summary>
-            Gets System.Decimal value from IKON numeric value.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.Numeric.GetDouble">
-            <summary>
-            Gets System.Double value from IKON numeric value.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.Numeric.GetFloat">
-            <summary>
-            Gets System.Single value from IKON numeric value.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.Numeric.GetInt">
-            <summary>
-            Gets System.Int32 value from IKON numeric value.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.Numeric.GetLong">
-            <summary>
-            Gets System.Int64 value from IKON numeric value.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.Numeric.GetShort">
-            <summary>
-            Gets System.Int16 value from IKON numeric value.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.Numeric.InvariantString">
-            <summary>
-            Gets textual representation of contained numeric value.
-            </summary>
-        </member>
-        <member name="T:Ikon.Ston.Values.Array">
+        <member name="T:Ikon.Ston.Values.ArrayValue">
             <summary>
             Array of IKON values.
             </summary>
         </member>
-        <member name="F:Ikon.Ston.Values.Array.ValueTypeName">
+        <member name="F:Ikon.Ston.Values.ArrayValue.ValueTypeName">
             <summary>
             Type name of IKSTON arrays.
             </summary>
         </member>
-        <member name="M:Ikon.Ston.Values.Array.#ctor(System.Collections.Generic.IList{Ikon.Value})">
+        <member name="M:Ikon.Ston.Values.ArrayValue.#ctor(System.Collections.Generic.IList{Ikon.Value})">
             <summary>
             Constructs IKSTON array of IKON values
             </summary>
             <param name="values">Initial array contents.</param>
         </member>
-        <member name="M:Ikon.Ston.Values.Array.Add(Ikon.Value[])">
+        <member name="M:Ikon.Ston.Values.ArrayValue.#ctor">
+            <summary>
+            Constructs IKSTON array
+            </summary>
+        </member>
+        <member name="M:Ikon.Ston.Values.ArrayValue.Add(Ikon.Value[])">
             <summary>
             Builder method fo adding one or more elements to IKSTON array.
             </summary>
             <param name="values">Elements to be added.</param>
             <returns>Instance of the same IKSTON array method is called for.</returns>
         </member>
-        <member name="M:Ikon.Ston.Values.Array.DoCompose(Ikon.IkonWriter)">
+        <member name="M:Ikon.Ston.Values.ArrayValue.DoCompose(Ikon.IkonWriter)">
             <summary>
             Writes an IKSTON array to the composer.
             </summary>
             <param name="writer">Target composer.</param>
         </member>
-        <member name="P:Ikon.Ston.Values.Array.TypeName">
+        <member name="P:Ikon.Ston.Values.ArrayValue.TypeName">
             <summary>
             Type name of the IKON value instance.
             </summary>
         </member>
-        <member name="P:Ikon.Ston.Values.Array.GetList">
+        <member name="P:Ikon.Ston.Values.ArrayValue.GetList">
             <summary>
             Gets the array of IKON values.
             </summary>
         </member>
-        <member name="T:Ikon.Ston.Values.Object">
+        <member name="T:Ikon.Ston.Values.ObjectValue">
             <summary>
             IKSTON composite value with key-value pairs of nested IKON values.
             </summary>
         </member>
-        <member name="F:Ikon.Ston.Values.Object.className">
+        <member name="F:Ikon.Ston.Values.ObjectValue.className">
             <summary>
             The name of the data class contained in this instance
             </summary>
         </member>
-        <member name="F:Ikon.Ston.Values.Object.members">
+        <member name="F:Ikon.Ston.Values.ObjectValue.members">
             <summary>
             Collection of the nested IKON values.
             </summary>
         </member>
-        <member name="M:Ikon.Ston.Values.Object.#ctor(System.String)">
+        <member name="M:Ikon.Ston.Values.ObjectValue.#ctor(System.String)">
             <summary>
             Constructs IKSTON composite value marked as specified class of data.
             </summary>
             <param name="className">Name of the data class.</param>
         </member>
-        <member name="M:Ikon.Ston.Values.Object.Add(System.String,Ikon.Value)">
+        <member name="M:Ikon.Ston.Values.ObjectValue.Add(System.String,Ikon.Value)">
             <summary>
             Builder method for adding an element to IKSTON object.
             </summary>
@@ -343,27 +183,192 @@
             <param name="value">Element's value.</param>
             <returns>Instance of the same IKSTON object method is called for.</returns>
         </member>
-        <member name="M:Ikon.Ston.Values.Object.DoCompose(Ikon.IkonWriter)">
+        <member name="M:Ikon.Ston.Values.ObjectValue.DoCompose(Ikon.IkonWriter)">
             <summary>
             Writes an IKSTON composite value to the composer.
             </summary>
             <param name="writer">Target composer.</param>
         </member>
-        <member name="P:Ikon.Ston.Values.Object.Item(System.String)">
+        <member name="P:Ikon.Ston.Values.ObjectValue.Item(System.String)">
             <summary>
             Gets or sets nested IKON value.
             </summary>
             <param name="memberName">Key of the value</param>
             <returns>Nested IKON value</returns>
         </member>
-        <member name="P:Ikon.Ston.Values.Object.Keys">
+        <member name="P:Ikon.Ston.Values.ObjectValue.Keys">
             <summary>
             Gets the collection of keys of the nested IKON values.
             </summary>
         </member>
-        <member name="P:Ikon.Ston.Values.Object.TypeName">
+        <member name="P:Ikon.Ston.Values.ObjectValue.TypeName">
             <summary>
             Gets the name of the data class contained in this instance.
+            </summary>
+        </member>
+        <member name="T:Ikon.Ston.Values.NumericValue">
+            <summary>
+            IKSTON numeric value.
+            </summary>
+        </member>
+        <member name="F:Ikon.Ston.Values.NumericValue.ValueTypeName">
+            <summary>
+            Type name of IKSTON numeric values.
+            </summary>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.#ctor(System.String)">
+            <summary>
+            Constructs IKSTON numeric value.
+            </summary>
+            <param name="textualRepresentation">Textual representation of the value</param>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.#ctor(System.Decimal)">
+            <summary>
+            Constructs IKSTON numeric value.
+            </summary>
+            <param name="value">The value</param>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.#ctor(System.Double)">
+            <summary>
+            Constructs IKSTON numeric value.
+            </summary>
+            <param name="value">The value</param>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.#ctor(System.Single)">
+            <summary>
+            Constructs IKSTON numeric value.
+            </summary>
+            <param name="value">The value</param>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.#ctor(System.Int64)">
+            <summary>
+            Constructs IKSTON numeric value.
+            </summary>
+            <param name="value">The value</param>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.#ctor(System.Int32)">
+            <summary>
+            Constructs IKSTON numeric value.
+            </summary>
+            <param name="value">The value</param>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.#ctor(System.Int16)">
+            <summary>
+            Constructs IKSTON numeric value.
+            </summary>
+            <param name="value">The value</param>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.op_Implicit(Ikon.Ston.Values.NumericValue)~System.Decimal">
+            <summary>
+            Implicit conversion from IKSTON numeric value to System.Decimal value.
+            </summary>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.op_Implicit(Ikon.Ston.Values.NumericValue)~System.Double">
+            <summary>
+            Implicit conversion from IKSTON numeric value to System.Double value.
+            </summary>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.op_Implicit(Ikon.Ston.Values.NumericValue)~System.Single">
+            <summary>
+            Implicit conversion from IKSTON numeric value to System.Single value.
+            </summary>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.op_Implicit(Ikon.Ston.Values.NumericValue)~System.Int32">
+            <summary>
+            Implicit conversion from IKSTON numeric value to System.Int32 value.
+            </summary>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.op_Implicit(Ikon.Ston.Values.NumericValue)~System.Int64">
+            <summary>
+            Implicit conversion from IKSTON numeric value to System.Int64 value.
+            </summary>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.op_Implicit(Ikon.Ston.Values.NumericValue)~System.Int16">
+            <summary>
+            Implicit conversion from IKSTON numeric value to System.Int16 value.
+            </summary>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.DoCompose(Ikon.IkonWriter)">
+            <summary>
+            Writes an IKSTON numeric value to the composer.
+            </summary>
+            <param name="writer">Target composer.</param>
+        </member>
+        <member name="P:Ikon.Ston.Values.NumericValue.TypeName">
+            <summary>
+            Type name of the IKSTON numeric value instance.
+            </summary>
+        </member>
+        <member name="P:Ikon.Ston.Values.NumericValue.GetDecimal">
+            <summary>
+            Gets System.Decimal value from IKON numeric value.
+            </summary>
+        </member>
+        <member name="P:Ikon.Ston.Values.NumericValue.GetDouble">
+            <summary>
+            Gets System.Double value from IKON numeric value.
+            </summary>
+        </member>
+        <member name="P:Ikon.Ston.Values.NumericValue.GetFloat">
+            <summary>
+            Gets System.Single value from IKON numeric value.
+            </summary>
+        </member>
+        <member name="P:Ikon.Ston.Values.NumericValue.GetInt">
+            <summary>
+            Gets System.Int32 value from IKON numeric value.
+            </summary>
+        </member>
+        <member name="P:Ikon.Ston.Values.NumericValue.GetLong">
+            <summary>
+            Gets System.Int64 value from IKON numeric value.
+            </summary>
+        </member>
+        <member name="P:Ikon.Ston.Values.NumericValue.GetShort">
+            <summary>
+            Gets System.Int16 value from IKON numeric value.
+            </summary>
+        </member>
+        <member name="P:Ikon.Ston.Values.NumericValue.InvariantString">
+            <summary>
+            Gets textual representation of contained numeric value.
+            </summary>
+        </member>
+        <member name="T:Ikon.Ston.Values.TextValue">
+            <summary>
+            IKSTON textual value.
+            </summary>
+        </member>
+        <member name="F:Ikon.Ston.Values.TextValue.ValueTypeName">
+            <summary>
+            Type name of IKSTON text values.
+            </summary>
+        </member>
+        <member name="M:Ikon.Ston.Values.TextValue.#ctor(System.String)">
+            <summary>
+            Constructs IKSTON textual value with specified contents.
+            </summary>
+            <param name="value">Contents</param>
+        </member>
+        <member name="M:Ikon.Ston.Values.TextValue.op_Implicit(Ikon.Ston.Values.TextValue)~System.String">
+            <summary>
+            Implicit conversion from IKON textual value to System.String value.
+            </summary>
+        </member>
+        <member name="M:Ikon.Ston.Values.TextValue.DoCompose(Ikon.IkonWriter)">
+            <summary>
+            Writes an IKSTON text value to the composer.
+            </summary>
+            <param name="writer">Target composer.</param>
+        </member>
+        <member name="P:Ikon.Ston.Values.TextValue.TypeName">
+            <summary>
+            Type name of the IKON value instance.
+            </summary>
+        </member>
+        <member name="P:Ikon.Ston.Values.TextValue.GetText">
+            <summary>
+            Gets System.String value from IKSTON textual value.
             </summary>
         </member>
         <member name="T:Ikon.Ston.Factories.NumericFactory">

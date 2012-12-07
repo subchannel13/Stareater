@@ -2,7 +2,7 @@
 
 namespace Stareater.Utils.Collections
 {
-	public class Set<T> : HashSet<T>, IDelayedRemoval<T>
+	public class PendableSet<T> : HashSet<T>, IDelayedRemoval<T>
 	{
 		List<T> toRemove = null;
 

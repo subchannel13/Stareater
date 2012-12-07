@@ -1,0 +1,7 @@
+﻿:FormNewGame
+FormTitle = New game
+setupPlayersButton = Players
+setupMapButton = Map
+setupStartButton = Starting population
+startButton = Start
+-

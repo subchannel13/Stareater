@@ -28,26 +28,26 @@ namespace Stareater.AppData
 		public Language Language { get; set; }
 
 		#region Initialization
-		protected Settings(Dictionary<string, Object> data)
+		protected Settings(Dictionary<string, ObjectValue> data)
 		{
 			if (data.ContainsKey(BaseSettingsKey))
 			{
-				string langCode = (data[BaseSettingsKey][LanguageKey] as Text).GetText;
+				string langCode = (data[BaseSettingsKey][LanguageKey] as TextValue).GetText;
 				this.Language = LocalizationManifest.LoadLanguage(langCode);
 			}
 			else
 				this.Language = LocalizationManifest.DefaultLanguage;
 		}
 
-		protected static Dictionary<string, Object> loadFile()
+		protected static Dictionary<string, ObjectValue> loadFile()
 		{
-			Dictionary<string, Object> data = new Dictionary<string,Object>();
+			Dictionary<string, ObjectValue> data = new Dictionary<string,ObjectValue>();
 
 			if (File.Exists(SettingsFilePath))
 			{
 				using (Ikon.Ston.Parser parser = new Ikon.Ston.Parser(new StreamReader(SettingsFilePath)))
 					foreach (var value in parser.ParseAll())
-						data.Add(value.TypeName.ToLower(), value as Object);
+						data.Add(value.TypeName.ToLower(), value as ObjectValue);
 			}
 
 			return data;
@@ -71,8 +71,8 @@ namespace Stareater.AppData
 
 		protected virtual void buildSaveData(IkonWriter writer)
 		{
-			Object baseSettings = new Object(BaseSettingsKey);
-			baseSettings.Add(LanguageKey, new Text(Language.Code));
+			ObjectValue baseSettings = new ObjectValue(BaseSettingsKey);
+			baseSettings.Add(LanguageKey, new TextValue(Language.Code));
 			baseSettings.Compose(writer);
 		}
 	}
