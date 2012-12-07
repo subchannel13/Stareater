@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Winforms_Mockups.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,6 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,8 +64,29 @@
     <Compile Include="FormNewGame.Designer.cs">
       <DependentUpon>FormNewGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSetupPlayers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSetupPlayers.Designer.cs">
+      <DependentUpon>FormSetupPlayers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewPlayerInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NewPlayerInfo.Designer.cs">
+      <DependentUpon>NewPlayerInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormNewGame.resx">
+      <DependentUpon>FormNewGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSetupPlayers.resx">
+      <DependentUpon>FormSetupPlayers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewPlayerInfo.resx">
+      <DependentUpon>NewPlayerInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

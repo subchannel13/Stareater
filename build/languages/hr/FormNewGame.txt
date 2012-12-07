@@ -1,0 +1,7 @@
+﻿:FormNewGame
+FormTitle = Nova igra
+setupPlayersButton = Igrači
+setupMapButton = Mapa
+setupStartButton = Početna populacija
+startButton = Kreni
+-

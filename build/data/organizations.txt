@@ -1,0 +1,24 @@
+{ Organization
+	name "NASA"
+	description "North American Space Agency."
+}
+
+{ Organization
+	name "ESA"
+	description "European Space Agency."
+}
+
+{ Organization
+	name "JSA"
+	description "Japanise Space Agency."
+}
+
+{ Organization
+	name "ChSA"
+	description "Chinese Space Agency."
+}
+
+{ Organization
+	name "ASA"
+	description "Australian Space Agency."
+}

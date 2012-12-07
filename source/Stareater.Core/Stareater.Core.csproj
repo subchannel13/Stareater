@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,8 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AssetController.cs" />
+    <Compile Include="Controllers\Data\NewGamePlayerInfo.cs" />
+    <Compile Include="Controllers\Data\PlayerControlType.cs" />
+    <Compile Include="Controllers\NewGameController.cs" />
+    <Compile Include="Players\Organization.cs" />
     <Compile Include="Utils\Collections\IDelayedRemoval.cs" />
-    <Compile Include="Utils\Collections\Set.cs" />
+    <Compile Include="Utils\Collections\PendableSet.cs" />
     <Compile Include="Localization\IText.cs" />
     <Compile Include="Localization\Language.cs" />
     <Compile Include="Localization\Context.cs" />

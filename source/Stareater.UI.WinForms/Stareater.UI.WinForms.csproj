@@ -56,9 +56,13 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppData\SettingsWinforms.cs" />
+    <Compile Include="GUI\ControlListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GUI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,7 +87,19 @@
     <Compile Include="GUI\FormSettings.Designer.cs">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FormSetupPlayers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormSetupPlayers.Designer.cs">
+      <DependentUpon>FormSetupPlayers.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\MainMenuResult.cs" />
+    <Compile Include="GUI\NewGamePlayerView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\NewGamePlayerView.Designer.cs">
+      <DependentUpon>NewGamePlayerView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tag.cs" />
@@ -100,6 +116,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormSettings.resx">
       <DependentUpon>FormSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormSetupPlayers.resx">
+      <DependentUpon>FormSetupPlayers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\NewGamePlayerView.resx">
+      <DependentUpon>NewGamePlayerView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
