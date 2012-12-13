@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Localization;
 using Stareater.Controllers;
+using Stareater.Controllers.Data;
 
 namespace Stareater.GUI
 {
@@ -19,21 +20,22 @@ namespace Stareater.GUI
 		{
 			InitializeComponent();
 			
-			setLanguage(SettingsWinforms.Get.Language);
+			setLanguage();
 		}
 
 		public void Initialize()
 		{
 			if (NewGameController.CanCreateGame) {
 				controller = new NewGameController();
+				updatePlayerViews();
 			}
 			else
 				DialogResult = System.Windows.Forms.DialogResult.Cancel;
 		}
 
-		private void setLanguage(Language newLanguage)
+		private void setLanguage()
 		{
-			Context context = newLanguage["FormNewGame"];
+			Context context = SettingsWinforms.Get.Language["FormNewGame"];
 
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.Text = context["FormTitle"];
@@ -44,11 +46,24 @@ namespace Stareater.GUI
 			startButton.Text = context["startButton"];
 		}
 
+		private void updatePlayerViews()
+		{
+			var players = controller.PlayerList;
+			
+			playerViewsLayout.Controls.Clear();
+			while (playerViewsLayout.Controls.Count < players.Count)
+				playerViewsLayout.Controls.Add(new NewGamePlayerView());
+
+			for (int i = 0; i < players.Count; i++)
+				(playerViewsLayout.Controls[i] as NewGamePlayerView).SetData(players[i]);
+		}
+
 		private void setupPlayersButton_Click(object sender, EventArgs e)
 		{
-			using (var playersForm = new FormSetupPlayers())
+			using (var playersForm = new FormSetupPlayers(controller)) {
 				if (playersForm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-					;
+					updatePlayerViews();
+			}
 		}
 	}
 }

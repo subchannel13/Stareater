@@ -1,0 +1,6 @@
+﻿:FormNewGame
+FormTitle = Igrači
+controllerLabel = Upravljač
+nameLabel = Ime
+organizationLabel = Organizacija
+-

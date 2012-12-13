@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Ikon.Ston.Values;
+using Stareater.Utils;
 
 namespace Stareater.Players
 {
@@ -18,6 +19,7 @@ namespace Stareater.Players
 			this.Description = description;
 		}
 
+		#region Loading related
 		private const string DataFilePath = "./data/organizations.txt";
 
 		#region Attribute keys
@@ -25,7 +27,7 @@ namespace Stareater.Players
 		const string DescriptionKey = "description";
 		#endregion
 
-		public static Organization[] List;
+		public static Organization[] List { get; private set; }
 
 		public static IEnumerable<double> Loader()
 		{
@@ -34,15 +36,21 @@ namespace Stareater.Players
 				var data = parser.ParseAll();
 				yield return 0.5;
 
-				double count = data.Count;
-				for (int i = 0; i < count; i++) {
-					list.Add(load(data.Dequeue() as ObjectValue));
-					yield return 0.5 + 0.5 * i / count;
-				}
+				foreach (double p in Methods.ProgressReportHelper(0.5, 0.5, data.Count, () =>
+					{ 
+						list.Add(load(data.Dequeue() as ObjectValue)); 
+					}))
+					yield return p;
+				list.Sort((a, b) => { return a.Name.CompareTo(b.Name); });
 			}
-
+			
 			List = list.ToArray();
 			yield return 1;
+		}
+
+		public static bool IsLoaded
+		{
+			get { return List != null; }
 		}
 
 		private static Organization load(ObjectValue data)
@@ -52,5 +60,6 @@ namespace Stareater.Players
 				(data[DescriptionKey] as TextValue).GetText
 				);
 		}
+		#endregion
 	}
 }

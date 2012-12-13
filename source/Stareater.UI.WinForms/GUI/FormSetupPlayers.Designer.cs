@@ -27,136 +27,135 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.comboBox2 = new System.Windows.Forms.ComboBox();
-			this.label3 = new System.Windows.Forms.Label();
-			this.textBox2 = new System.Windows.Forms.TextBox();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.button2 = new System.Windows.Forms.Button();
-			this.button1 = new System.Windows.Forms.Button();
-			this.flowLayoutPanel1 = new Stareater.GUI.ControlListView();
-			this.controlListView1 = new Stareater.GUI.ControlListView();
+			this.controllerPicker = new System.Windows.Forms.ComboBox();
+			this.controllerLabel = new System.Windows.Forms.Label();
+			this.organizationDescription = new System.Windows.Forms.TextBox();
+			this.organizationPicker = new System.Windows.Forms.ComboBox();
+			this.organizationLabel = new System.Windows.Forms.Label();
+			this.nameInput = new System.Windows.Forms.TextBox();
+			this.nameLabel = new System.Windows.Forms.Label();
+			this.removeButton = new System.Windows.Forms.Button();
+			this.addButton = new System.Windows.Forms.Button();
+			this.colorsLayout = new Stareater.GUI.ControlListView();
+			this.playerViewsLayout = new Stareater.GUI.ControlListView();
 			this.SuspendLayout();
 			// 
-			// comboBox2
+			// controllerPicker
 			// 
-			this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox2.FormattingEnabled = true;
-			this.comboBox2.Items.AddRange(new object[] {
-            "Local player",
-            "AI normal",
-            "AI hard"});
-			this.comboBox2.Location = new System.Drawing.Point(261, 12);
-			this.comboBox2.Name = "comboBox2";
-			this.comboBox2.Size = new System.Drawing.Size(115, 21);
-			this.comboBox2.TabIndex = 40;
+			this.controllerPicker.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.controllerPicker.FormattingEnabled = true;
+			this.controllerPicker.Location = new System.Drawing.Point(261, 12);
+			this.controllerPicker.Name = "controllerPicker";
+			this.controllerPicker.Size = new System.Drawing.Size(115, 21);
+			this.controllerPicker.TabIndex = 40;
+			this.controllerPicker.SelectedIndexChanged += new System.EventHandler(this.controllerPicker_SelectedIndexChanged);
 			// 
-			// label3
+			// controllerLabel
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(188, 15);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(54, 13);
-			this.label3.TabIndex = 39;
-			this.label3.Text = "Controller:";
+			this.controllerLabel.AutoSize = true;
+			this.controllerLabel.Location = new System.Drawing.Point(188, 15);
+			this.controllerLabel.Name = "controllerLabel";
+			this.controllerLabel.Size = new System.Drawing.Size(54, 13);
+			this.controllerLabel.TabIndex = 39;
+			this.controllerLabel.Text = "Controller:";
 			// 
-			// textBox2
+			// organizationDescription
 			// 
-			this.textBox2.Location = new System.Drawing.Point(191, 92);
-			this.textBox2.Multiline = true;
-			this.textBox2.Name = "textBox2";
-			this.textBox2.ReadOnly = true;
-			this.textBox2.Size = new System.Drawing.Size(188, 111);
-			this.textBox2.TabIndex = 38;
-			this.textBox2.Text = "North American Space Agency\r\n\r\n+2 on Space program\r\n+1 on Laser\r\n3\r\n4\r\n5";
+			this.organizationDescription.Location = new System.Drawing.Point(191, 92);
+			this.organizationDescription.Multiline = true;
+			this.organizationDescription.Name = "organizationDescription";
+			this.organizationDescription.ReadOnly = true;
+			this.organizationDescription.Size = new System.Drawing.Size(188, 111);
+			this.organizationDescription.TabIndex = 38;
+			this.organizationDescription.Text = "North American Space Agency\r\n\r\n+2 on Space program\r\n+1 on Laser\r\n3\r\n4\r\n5";
 			// 
-			// comboBox1
+			// organizationPicker
 			// 
-			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Items.AddRange(new object[] {
-            "NASA",
-            "ESA"});
-			this.comboBox1.Location = new System.Drawing.Point(261, 65);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(115, 21);
-			this.comboBox1.TabIndex = 37;
+			this.organizationPicker.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.organizationPicker.FormattingEnabled = true;
+			this.organizationPicker.Location = new System.Drawing.Point(261, 65);
+			this.organizationPicker.Name = "organizationPicker";
+			this.organizationPicker.Size = new System.Drawing.Size(115, 21);
+			this.organizationPicker.TabIndex = 37;
+			this.organizationPicker.SelectedIndexChanged += new System.EventHandler(this.organizationPicker_SelectedIndexChanged);
 			// 
-			// label2
+			// organizationLabel
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(188, 68);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(69, 13);
-			this.label2.TabIndex = 36;
-			this.label2.Text = "Organization:";
+			this.organizationLabel.AutoSize = true;
+			this.organizationLabel.Location = new System.Drawing.Point(188, 68);
+			this.organizationLabel.Name = "organizationLabel";
+			this.organizationLabel.Size = new System.Drawing.Size(69, 13);
+			this.organizationLabel.TabIndex = 36;
+			this.organizationLabel.Text = "Organization:";
 			// 
-			// textBox1
+			// nameInput
 			// 
-			this.textBox1.Location = new System.Drawing.Point(261, 39);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(115, 20);
-			this.textBox1.TabIndex = 35;
+			this.nameInput.Location = new System.Drawing.Point(261, 39);
+			this.nameInput.Name = "nameInput";
+			this.nameInput.Size = new System.Drawing.Size(115, 20);
+			this.nameInput.TabIndex = 35;
+			this.nameInput.TextChanged += new System.EventHandler(this.nameInput_TextChanged);
 			// 
-			// label1
+			// nameLabel
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(188, 42);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(68, 13);
-			this.label1.TabIndex = 34;
-			this.label1.Text = "Player name:";
+			this.nameLabel.AutoSize = true;
+			this.nameLabel.Location = new System.Drawing.Point(188, 42);
+			this.nameLabel.Name = "nameLabel";
+			this.nameLabel.Size = new System.Drawing.Size(38, 13);
+			this.nameLabel.TabIndex = 34;
+			this.nameLabel.Text = "Name:";
 			// 
-			// button2
+			// removeButton
 			// 
-			this.button2.Location = new System.Drawing.Point(107, 209);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(75, 23);
-			this.button2.TabIndex = 33;
-			this.button2.Text = "Remove";
-			this.button2.UseVisualStyleBackColor = true;
+			this.removeButton.Location = new System.Drawing.Point(107, 209);
+			this.removeButton.Name = "removeButton";
+			this.removeButton.Size = new System.Drawing.Size(75, 23);
+			this.removeButton.TabIndex = 33;
+			this.removeButton.Text = "Remove";
+			this.removeButton.UseVisualStyleBackColor = true;
 			// 
-			// button1
+			// addButton
 			// 
-			this.button1.Location = new System.Drawing.Point(12, 209);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 23);
-			this.button1.TabIndex = 32;
-			this.button1.Text = "Add";
-			this.button1.UseVisualStyleBackColor = true;
+			this.addButton.Location = new System.Drawing.Point(12, 209);
+			this.addButton.Name = "addButton";
+			this.addButton.Size = new System.Drawing.Size(75, 23);
+			this.addButton.TabIndex = 32;
+			this.addButton.Text = "Add";
+			this.addButton.UseVisualStyleBackColor = true;
 			// 
-			// flowLayoutPanel1
+			// colorsLayout
 			// 
-			this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 12);
-			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-			this.flowLayoutPanel1.Size = new System.Drawing.Size(170, 191);
-			this.flowLayoutPanel1.TabIndex = 41;
+			this.colorsLayout.Location = new System.Drawing.Point(385, 12);
+			this.colorsLayout.Name = "colorsLayout";
+			this.colorsLayout.SelectedIndex = -1;
+			this.colorsLayout.Size = new System.Drawing.Size(77, 191);
+			this.colorsLayout.TabIndex = 42;
 			// 
-			// controlListView1
+			// playerViewsLayout
 			// 
-			this.controlListView1.Location = new System.Drawing.Point(385, 12);
-			this.controlListView1.Name = "controlListView1";
-			this.controlListView1.Size = new System.Drawing.Size(77, 191);
-			this.controlListView1.TabIndex = 42;
+			this.playerViewsLayout.Location = new System.Drawing.Point(12, 12);
+			this.playerViewsLayout.Name = "playerViewsLayout";
+			this.playerViewsLayout.SelectedIndex = -1;
+			this.playerViewsLayout.Size = new System.Drawing.Size(170, 191);
+			this.playerViewsLayout.TabIndex = 41;
+			this.playerViewsLayout.SelectedIndexChanged += new System.EventHandler(this.playerViewsLayout_SelectedIndexChanged);
 			// 
 			// FormSetupPlayers
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(480, 256);
-			this.Controls.Add(this.controlListView1);
-			this.Controls.Add(this.flowLayoutPanel1);
-			this.Controls.Add(this.comboBox2);
-			this.Controls.Add(this.label3);
-			this.Controls.Add(this.textBox2);
-			this.Controls.Add(this.comboBox1);
-			this.Controls.Add(this.label2);
-			this.Controls.Add(this.textBox1);
-			this.Controls.Add(this.label1);
-			this.Controls.Add(this.button2);
-			this.Controls.Add(this.button1);
+			this.Controls.Add(this.colorsLayout);
+			this.Controls.Add(this.playerViewsLayout);
+			this.Controls.Add(this.controllerPicker);
+			this.Controls.Add(this.controllerLabel);
+			this.Controls.Add(this.organizationDescription);
+			this.Controls.Add(this.organizationPicker);
+			this.Controls.Add(this.organizationLabel);
+			this.Controls.Add(this.nameInput);
+			this.Controls.Add(this.nameLabel);
+			this.Controls.Add(this.removeButton);
+			this.Controls.Add(this.addButton);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -172,16 +171,16 @@
 
 		#endregion
 
-		private System.Windows.Forms.ComboBox comboBox2;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.TextBox textBox2;
-		private System.Windows.Forms.ComboBox comboBox1;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.TextBox textBox1;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.Button button1;
-		private ControlListView flowLayoutPanel1;
-		private ControlListView controlListView1;
+		private System.Windows.Forms.ComboBox controllerPicker;
+		private System.Windows.Forms.Label controllerLabel;
+		private System.Windows.Forms.TextBox organizationDescription;
+		private System.Windows.Forms.ComboBox organizationPicker;
+		private System.Windows.Forms.Label organizationLabel;
+		private System.Windows.Forms.TextBox nameInput;
+		private System.Windows.Forms.Label nameLabel;
+		private System.Windows.Forms.Button removeButton;
+		private System.Windows.Forms.Button addButton;
+		private ControlListView playerViewsLayout;
+		private ControlListView colorsLayout;
 	}
 }

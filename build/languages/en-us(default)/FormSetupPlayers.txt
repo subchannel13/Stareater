@@ -1,0 +1,6 @@
+﻿:FormNewGame
+FormTitle = Players
+controllerLabel = Control
+nameLabel = Name
+organizationLabel = Organization
+-

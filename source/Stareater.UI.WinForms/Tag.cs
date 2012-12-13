@@ -18,13 +18,14 @@ namespace Stareater
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null)
-				return false;
-
-			if (this.GetType() != obj.GetType())
-				return false;
-
 			Tag<T> other = obj as Tag<T>;
+
+			if (other == null)
+				return false;
+
+			if (other.Value == null || Value == null)
+				return false;
+						
 			return Value.Equals(other.Value);
 		}
 

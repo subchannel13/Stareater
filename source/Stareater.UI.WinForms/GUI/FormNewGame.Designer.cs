@@ -30,11 +30,11 @@
 		{
 			this.setupPlayersButton = new System.Windows.Forms.Button();
 			this.startButton = new System.Windows.Forms.Button();
-			this.textBox4 = new System.Windows.Forms.TextBox();
+			this.startingDescription = new System.Windows.Forms.TextBox();
 			this.setupStartButton = new System.Windows.Forms.Button();
 			this.setupMapButton = new System.Windows.Forms.Button();
-			this.textBox3 = new System.Windows.Forms.TextBox();
-			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+			this.mapDescription = new System.Windows.Forms.TextBox();
+			this.playerViewsLayout = new System.Windows.Forms.FlowLayoutPanel();
 			this.SuspendLayout();
 			// 
 			// setupPlayersButton
@@ -56,14 +56,14 @@
 			this.startButton.Text = "Start";
 			this.startButton.UseVisualStyleBackColor = true;
 			// 
-			// textBox4
+			// startingDescription
 			// 
-			this.textBox4.Location = new System.Drawing.Point(188, 157);
-			this.textBox4.Multiline = true;
-			this.textBox4.Name = "textBox4";
-			this.textBox4.ReadOnly = true;
-			this.textBox4.Size = new System.Drawing.Size(170, 81);
-			this.textBox4.TabIndex = 5;
+			this.startingDescription.Location = new System.Drawing.Point(188, 157);
+			this.startingDescription.Multiline = true;
+			this.startingDescription.Name = "startingDescription";
+			this.startingDescription.ReadOnly = true;
+			this.startingDescription.Size = new System.Drawing.Size(170, 81);
+			this.startingDescription.TabIndex = 5;
 			// 
 			// setupStartButton
 			// 
@@ -83,34 +83,34 @@
 			this.setupMapButton.Text = "Map";
 			this.setupMapButton.UseVisualStyleBackColor = true;
 			// 
-			// textBox3
+			// mapDescription
 			// 
-			this.textBox3.Location = new System.Drawing.Point(188, 41);
-			this.textBox3.Multiline = true;
-			this.textBox3.Name = "textBox3";
-			this.textBox3.ReadOnly = true;
-			this.textBox3.Size = new System.Drawing.Size(170, 81);
-			this.textBox3.TabIndex = 3;
+			this.mapDescription.Location = new System.Drawing.Point(188, 41);
+			this.mapDescription.Multiline = true;
+			this.mapDescription.Name = "mapDescription";
+			this.mapDescription.ReadOnly = true;
+			this.mapDescription.Size = new System.Drawing.Size(170, 81);
+			this.mapDescription.TabIndex = 3;
 			// 
-			// flowLayoutPanel1
+			// playerViewsLayout
 			// 
-			this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 41);
-			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-			this.flowLayoutPanel1.Size = new System.Drawing.Size(170, 197);
-			this.flowLayoutPanel1.TabIndex = 1;
+			this.playerViewsLayout.Location = new System.Drawing.Point(12, 41);
+			this.playerViewsLayout.Name = "playerViewsLayout";
+			this.playerViewsLayout.Size = new System.Drawing.Size(170, 197);
+			this.playerViewsLayout.TabIndex = 1;
 			// 
 			// FormNewGame
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(372, 282);
-			this.Controls.Add(this.flowLayoutPanel1);
+			this.Controls.Add(this.playerViewsLayout);
 			this.Controls.Add(this.setupPlayersButton);
 			this.Controls.Add(this.startButton);
-			this.Controls.Add(this.textBox4);
+			this.Controls.Add(this.startingDescription);
 			this.Controls.Add(this.setupStartButton);
 			this.Controls.Add(this.setupMapButton);
-			this.Controls.Add(this.textBox3);
+			this.Controls.Add(this.mapDescription);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -128,11 +128,11 @@
 
 		private System.Windows.Forms.Button setupPlayersButton;
 		private System.Windows.Forms.Button startButton;
-		private System.Windows.Forms.TextBox textBox4;
+		private System.Windows.Forms.TextBox startingDescription;
 		private System.Windows.Forms.Button setupStartButton;
 		private System.Windows.Forms.Button setupMapButton;
-		private System.Windows.Forms.TextBox textBox3;
-		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+		private System.Windows.Forms.TextBox mapDescription;
+		private System.Windows.Forms.FlowLayoutPanel playerViewsLayout;
 
 	}
 }
