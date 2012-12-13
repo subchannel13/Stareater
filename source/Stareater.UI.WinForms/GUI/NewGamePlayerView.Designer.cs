@@ -40,6 +40,7 @@
 			this.flagImage.Size = new System.Drawing.Size(33, 33);
 			this.flagImage.TabIndex = 0;
 			this.flagImage.TabStop = false;
+			this.flagImage.Click += new System.EventHandler(this.flagImage_Click);
 			// 
 			// nameLabel
 			// 
@@ -49,6 +50,7 @@
 			this.nameLabel.Size = new System.Drawing.Size(35, 13);
 			this.nameLabel.TabIndex = 1;
 			this.nameLabel.Text = "label1";
+			this.nameLabel.Click += new System.EventHandler(this.nameLabel_Click);
 			// 
 			// organizationLabel
 			// 
@@ -58,15 +60,16 @@
 			this.organizationLabel.Size = new System.Drawing.Size(35, 13);
 			this.organizationLabel.TabIndex = 2;
 			this.organizationLabel.Text = "label1";
+			this.organizationLabel.Click += new System.EventHandler(this.organizationLabel_Click);
 			// 
-			// NewGamePlayerInfo
+			// NewGamePlayerView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.organizationLabel);
 			this.Controls.Add(this.nameLabel);
 			this.Controls.Add(this.flagImage);
-			this.Name = "NewGamePlayerInfo";
+			this.Name = "NewGamePlayerView";
 			this.Size = new System.Drawing.Size(162, 40);
 			((System.ComponentModel.ISupportInitialize)(this.flagImage)).EndInit();
 			this.ResumeLayout(false);

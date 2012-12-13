@@ -68,13 +68,24 @@ namespace Stareater.GUI
 						case MainMenuResult.Settings:
 							postDelayedEvent(showSettings);
 							break;
+						case MainMenuResult.Quit:
+							Close();
+							break;
+						default:
+							postDelayedEvent(showMainMenu);
+							break;
 					}
 		}
 
 		private void showNewGame()
 		{
-			using (FormNewGame form = new FormNewGame())
-				form.ShowDialog();
+			using (FormNewGame form = new FormNewGame()) {
+				form.Initialize();
+				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+					;
+				else
+					postDelayedEvent(showMainMenu);
+			}
 		}
 
 		private void showSettings()

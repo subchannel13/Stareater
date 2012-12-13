@@ -28,7 +28,17 @@ namespace Stareater.Localization
 
 		public Context this[string contextName]
 		{
-			get { return contexts[contextName.ToLower()]; }
+			get
+			{
+				contextName = contextName.ToLower();
+
+				if (contexts.ContainsKey(contextName))
+					return contexts[contextName.ToLower()];
+				else if (this != LocalizationManifest.DefaultLanguage)
+					return LocalizationManifest.DefaultLanguage[contextName];
+				else
+					throw new KeyNotFoundException("Context name: " + contextName);
+			}
 		}
 	}
 }

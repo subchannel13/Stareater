@@ -63,12 +63,31 @@ namespace Stareater.GUI
 
 		public int SelectedIndex
 		{
-			get { return selectedIndex; }
+			get
+			{
+				return selectedIndex;
+			}
+			set
+			{
+				if (selectedIndex != NoneSelected)
+					deselect(selectedIndex);
+
+				if (value != NoneSelected)
+					select(value);
+				else
+					selectedIndex = NoneSelected;
+
+				if (SelectedIndexChanged != null)
+					SelectedIndexChanged(this, new EventArgs());
+			}
 		}
 
 		public Control SelectedItem
 		{
-			get { return (selectedIndex != NoneSelected) ? Controls[selectedIndex] : null; }
+			get
+			{
+				return (selectedIndex != NoneSelected) ? Controls[selectedIndex] : null;
+			}
 		}
 	}
 }

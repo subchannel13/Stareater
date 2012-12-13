@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Stareater.Players;
 using System.Threading;
+using System.Collections;
 
 namespace Stareater.Controllers
 {
@@ -25,6 +26,7 @@ namespace Stareater.Controllers
 
 		private HashSet<Func<IEnumerable<double>>> Loaders = new HashSet<Func<IEnumerable<double>>>(new Func<IEnumerable<double>>[] {
 			Organization.Loader,
+			PlayerAssets.Loader,
 		});
 		private Thread workerThread;
 
