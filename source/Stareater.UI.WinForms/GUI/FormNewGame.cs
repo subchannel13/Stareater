@@ -61,8 +61,8 @@ namespace Stareater.GUI
 		private void setupPlayersButton_Click(object sender, EventArgs e)
 		{
 			using (var playersForm = new FormSetupPlayers(controller)) {
-				if (playersForm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-					updatePlayerViews();
+				playersForm.ShowDialog();
+				updatePlayerViews();
 			}
 		}
 	}

@@ -11,9 +11,10 @@ namespace Stareater.GUI
 	{
 		public const int NoneSelected = -1;
 
-		protected int selectedIndex = NoneSelected;
-		protected Color lastBackColor;
-		protected Color lastForeColor;
+		private int selectedIndex = NoneSelected;
+		private Color lastBackColor;
+		private Color lastForeColor;
+		private Control lastSelected = null;
 
 		protected override void OnControlAdded(ControlEventArgs e)
 		{
@@ -25,6 +26,13 @@ namespace Stareater.GUI
 		{
 			base.OnControlRemoved(e);
 			e.Control.Click -= onItemClick;
+
+			if (e.Control == lastSelected && Controls.Count > 0) {
+				selectedIndex = Math.Min(selectedIndex, Controls.Count - 1);
+				select(selectedIndex);
+				if (SelectedIndexChanged != null)
+					SelectedIndexChanged(this, new EventArgs());
+			}
 		}
 
 		protected virtual void onItemClick(object sender, EventArgs e)
@@ -42,6 +50,7 @@ namespace Stareater.GUI
 		{
 			lastBackColor = Controls[controlIndex].BackColor;
 			lastForeColor = Controls[controlIndex].ForeColor;
+			lastSelected = Controls[controlIndex];
 			Controls[controlIndex].BackColor = SystemColors.Highlight;
 			Controls[controlIndex].ForeColor = SystemColors.HighlightText;
 			selectedIndex = controlIndex;
