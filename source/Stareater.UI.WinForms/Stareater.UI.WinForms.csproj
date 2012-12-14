@@ -60,6 +60,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppData\SettingsWinforms.cs" />
+    <Compile Include="GUI\ColorItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\ColorItem.Designer.cs">
+      <DependentUpon>ColorItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ControlListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -103,6 +109,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tag.cs" />
+    <EmbeddedResource Include="GUI\ColorItem.resx">
+      <DependentUpon>ColorItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>

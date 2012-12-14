@@ -113,6 +113,7 @@
 			this.removeButton.TabIndex = 33;
 			this.removeButton.Text = "Remove";
 			this.removeButton.UseVisualStyleBackColor = true;
+			this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
 			// 
 			// addButton
 			// 
@@ -122,14 +123,16 @@
 			this.addButton.TabIndex = 32;
 			this.addButton.Text = "Add";
 			this.addButton.UseVisualStyleBackColor = true;
+			this.addButton.Click += new System.EventHandler(this.addButton_Click);
 			// 
 			// colorsLayout
 			// 
 			this.colorsLayout.Location = new System.Drawing.Point(385, 12);
 			this.colorsLayout.Name = "colorsLayout";
 			this.colorsLayout.SelectedIndex = -1;
-			this.colorsLayout.Size = new System.Drawing.Size(77, 191);
+			this.colorsLayout.Size = new System.Drawing.Size(89, 191);
 			this.colorsLayout.TabIndex = 42;
+			this.colorsLayout.SelectedIndexChanged += new System.EventHandler(this.colorsLayout_SelectedIndexChanged);
 			// 
 			// playerViewsLayout
 			// 
@@ -144,7 +147,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(480, 256);
+			this.ClientSize = new System.Drawing.Size(484, 243);
 			this.Controls.Add(this.colorsLayout);
 			this.Controls.Add(this.playerViewsLayout);
 			this.Controls.Add(this.controllerPicker);

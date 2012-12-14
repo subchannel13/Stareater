@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Stareater.Controllers.Data;
 using System.Collections.ObjectModel;
 using Stareater.Players;
@@ -14,6 +12,8 @@ namespace Stareater.Controllers
 {
 	public class NewGameController
 	{
+		const int MaxPlayers = 4;
+
 		PickList<Color> colors = new PickList<Color>(PlayerAssets.Colors);
 		PickList<Organization> organizations = new PickList<Organization>(Organization.List);
 
@@ -26,10 +26,15 @@ namespace Stareater.Controllers
 				null,
 				localHuman));
 
-			players.Add(new PlayerInfo("HAL Bot",
+			players.Add(new PlayerInfo(generateAiName(),
 				colors.Take(),
 				null,
 				aiPlayers.Pick()));
+		}
+
+		private string generateAiName()
+		{
+			return "HAL Bot";
 		}
 
 		public IList<PlayerInfo> PlayerList
@@ -38,6 +43,63 @@ namespace Stareater.Controllers
 			{
 				return new ReadOnlyCollection<PlayerInfo>(players);
 			}
+		}
+
+		public void UpdatePlayer(int index, string newName)
+		{
+			players[index] = new PlayerInfo(
+				newName,
+				players[index].Color,
+				players[index].Organization,
+				players[index].ControlType);
+		}
+
+		public void UpdatePlayer(int index, Color newColor)
+		{
+			if (!colors.InnerList.Contains(newColor))
+				return;
+
+			colors.InnerList.Add(players[index].Color);
+			colors.InnerList.Remove(newColor);
+
+			players[index] = new PlayerInfo(
+				players[index].Name,
+				newColor,
+				players[index].Organization,
+				players[index].ControlType);
+		}
+
+		public void UpdatePlayer(int index, Organization newOrganization)
+		{
+			players[index] = new PlayerInfo(
+				players[index].Name,
+				players[index].Color,
+				newOrganization,
+				players[index].ControlType);
+		}
+
+		public void UpdatePlayer(int index, PlayerType newType)
+		{
+			players[index] = new PlayerInfo(
+				players[index].Name,
+				players[index].Color,
+				players[index].Organization,
+				newType);
+		}
+
+		public void AddPlayer()
+		{
+			if (players.Count < MaxPlayers)
+				players.Add(new PlayerInfo(generateAiName(),
+					colors.Take(),
+					null,
+					aiPlayers.Pick()));
+		}
+
+		public void RemovePlayer(int index)
+		{
+			if (players.Count > 2)
+				players.RemoveAt(index);
 		}
 
 		public static bool CanCreateGame
@@ -65,42 +127,6 @@ namespace Stareater.Controllers
 				foreach(var aiType in aiPlayers.InnerList)
 					yield return aiType;
 			}
-		}
-
-		public void UpdatePlayer(int index, string newName)
-		{
-			players[index] = new PlayerInfo(
-				newName,
-				players[index].Color,
-				players[index].Organization,
-				players[index].ControlType);
-		}
-
-		public void UpdatePlayer(int index, Color newColor)
-		{
-			players[index] = new PlayerInfo(
-				players[index].Name,
-				newColor,
-				players[index].Organization,
-				players[index].ControlType);
-		}
-
-		public void UpdatePlayer(int index, Organization newOrganization)
-		{
-			players[index] = new PlayerInfo(
-				players[index].Name,
-				players[index].Color,
-				newOrganization,
-				players[index].ControlType);
-		}
-
-		public void UpdatePlayer(int index, PlayerType newType)
-		{
-			players[index] = new PlayerInfo(
-				players[index].Name,
-				players[index].Color,
-				players[index].Organization,
-				newType);
 		}
 	}
 }

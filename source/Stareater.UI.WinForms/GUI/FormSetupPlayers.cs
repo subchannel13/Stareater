@@ -40,11 +40,9 @@ namespace Stareater.GUI
 				organizationPicker.Items.Add(new Tag<Organization>(org, org.Name));
 
 			foreach (var color in PlayerAssets.Colors) {
-				PictureBox colorBox = new PictureBox();
-				colorBox.BackColor = color;
-				colorBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-				colorBox.Size = new System.Drawing.Size(32, 32);
-				colorsLayout.Controls.Add(colorBox);
+				ColorItem colorItem = new ColorItem();
+				colorItem.Color = color;
+				colorsLayout.Controls.Add(colorItem);
 			}
 
 			playerViewsLayout.SelectedIndex = 0;
@@ -62,13 +60,23 @@ namespace Stareater.GUI
 			organizationLabel.Text = context["organizationLabel"] + ":";
 		}
 
+		private void selectColor(Color color)
+		{
+			for(int i=0; i < colorsLayout.Controls.Count;i++)
+				if ((colorsLayout.Controls[i] as ColorItem).Color == color) {
+					colorsLayout.SelectedIndex = i;
+					break;
+				}
+		}
+
 		private void updatePlayerViews()
 		{
 			var players = controller.PlayerList;
 
-			playerViewsLayout.Controls.Clear();
 			while (playerViewsLayout.Controls.Count < players.Count)
 				playerViewsLayout.Controls.Add(new NewGamePlayerView());
+			while (playerViewsLayout.Controls.Count > players.Count)
+				playerViewsLayout.Controls.RemoveAt(playerViewsLayout.Controls.Count - 1);
 
 			for (int i = 0; i < players.Count; i++)
 				(playerViewsLayout.Controls[i] as NewGamePlayerView).SetData(players[i]);
@@ -97,6 +105,8 @@ namespace Stareater.GUI
 				organizationPicker.SelectedItem = new Tag<Organization>(playerInfo.Organization, null);
 			else
 				organizationPicker.SelectedIndex = 0;
+
+			selectColor(playerInfo.Color);
 
 			eventClutch = false;
 		}
@@ -130,6 +140,39 @@ namespace Stareater.GUI
 			
 			var org = controller.PlayerList[playerViewsLayout.SelectedIndex].Organization;
 			organizationDescription.Text = (org != null) ? org.Description : "";
+		}
+
+		private void colorsLayout_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (eventClutch || !playerViewsLayout.HasSelection)
+				return;
+
+			int playerIndex = playerViewsLayout.SelectedIndex;
+			Color newColor = (colorsLayout.SelectedItem as ColorItem).Color;
+			controller.UpdatePlayer(playerIndex, newColor);
+
+			if (controller.PlayerList[playerIndex].Color == newColor)
+				selectedPlayerView.SetData(controller.PlayerList[playerIndex]);
+			else {
+				eventClutch = true;
+				selectColor(controller.PlayerList[playerIndex].Color);
+				eventClutch = false;
+			}
+		}
+
+		private void addButton_Click(object sender, EventArgs e)
+		{
+			controller.AddPlayer();
+			updatePlayerViews();
+		}
+
+		private void removeButton_Click(object sender, EventArgs e)
+		{
+			if (!playerViewsLayout.HasSelection)
+				return;
+
+			controller.RemovePlayer(playerViewsLayout.SelectedIndex);
+			updatePlayerViews();
 		}
 	}
 }
