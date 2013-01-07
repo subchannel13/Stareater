@@ -16,11 +16,15 @@ namespace Stareater.Controllers
 
 		PickList<Color> colors = new PickList<Color>(PlayerAssets.Colors);
 		PickList<Organization> organizations = new PickList<Organization>(Organization.List);
+		PickList<PlayerType> aiPlayers = new PickList<PlayerType>();
 
 		List<PlayerInfo> players = new List<PlayerInfo>();
 
 		public NewGameController()
 		{
+			foreach (var aiFactory in PlayerAssets.AIDefinitions)
+				aiPlayers.Add(new PlayerType(PlayerControlType.LocalAI, aiFactory));
+
 			players.Add(new PlayerInfo("Marko Kovač",
 				colors.Take(),
 				null,
@@ -35,6 +39,19 @@ namespace Stareater.Controllers
 		private string generateAiName()
 		{
 			return "HAL Bot";
+		}
+
+		public IEnumerable<PlayerType> PlayerTypes
+		{
+			get
+			{
+				Context context = Settings.Get.Language["PlayerTypes"];
+
+				yield return localHuman;
+
+				foreach (var aiType in aiPlayers.InnerList)
+					yield return aiType;
+			}
 		}
 
 		public IList<PlayerInfo> PlayerList
@@ -102,30 +119,14 @@ namespace Stareater.Controllers
 				players.RemoveAt(index);
 		}
 
+		private static PlayerType localHuman = new PlayerType(PlayerControlType.LocalHuman, Settings.Get.Language["PlayerTypes"]["localHuman"]);
+
 		public static bool CanCreateGame
 		{
 			get
 			{
 				return Organization.IsLoaded &&
 					PlayerAssets.IsLoaded;
-			}
-		}
-
-		private static PlayerType localHuman = new PlayerType(PlayerControlType.LocalHuman, Settings.Get.Language["PlayerTypes"]["localHuman"]);
-		private static PickList<PlayerType> aiPlayers = new PickList<PlayerType>(new PlayerType[]{
-			new PlayerType(PlayerControlType.LocalAI, Settings.Get.Language["PlayerTypes"]["AI"])
-		});
-
-		public static IEnumerable<PlayerType> PlayerTypes
-		{
-			get
-			{
-				Context context = Settings.Get.Language["PlayerTypes"];
-
-				yield return localHuman;
-
-				foreach(var aiType in aiPlayers.InnerList)
-					yield return aiType;
 			}
 		}
 	}

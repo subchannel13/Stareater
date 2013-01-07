@@ -31,10 +31,10 @@
 			this.setupPlayersButton = new System.Windows.Forms.Button();
 			this.startButton = new System.Windows.Forms.Button();
 			this.startingDescription = new System.Windows.Forms.TextBox();
-			this.setupStartButton = new System.Windows.Forms.Button();
 			this.setupMapButton = new System.Windows.Forms.Button();
 			this.mapDescription = new System.Windows.Forms.TextBox();
 			this.playerViewsLayout = new System.Windows.Forms.FlowLayoutPanel();
+			this.setupStartSelector = new System.Windows.Forms.ComboBox();
 			this.SuspendLayout();
 			// 
 			// setupPlayersButton
@@ -58,21 +58,12 @@
 			// 
 			// startingDescription
 			// 
-			this.startingDescription.Location = new System.Drawing.Point(188, 157);
+			this.startingDescription.Location = new System.Drawing.Point(188, 155);
 			this.startingDescription.Multiline = true;
 			this.startingDescription.Name = "startingDescription";
 			this.startingDescription.ReadOnly = true;
 			this.startingDescription.Size = new System.Drawing.Size(170, 81);
 			this.startingDescription.TabIndex = 5;
-			// 
-			// setupStartButton
-			// 
-			this.setupStartButton.Location = new System.Drawing.Point(188, 128);
-			this.setupStartButton.Name = "setupStartButton";
-			this.setupStartButton.Size = new System.Drawing.Size(170, 23);
-			this.setupStartButton.TabIndex = 4;
-			this.setupStartButton.Text = "Starting population";
-			this.setupStartButton.UseVisualStyleBackColor = true;
 			// 
 			// setupMapButton
 			// 
@@ -96,19 +87,29 @@
 			// 
 			this.playerViewsLayout.Location = new System.Drawing.Point(12, 41);
 			this.playerViewsLayout.Name = "playerViewsLayout";
-			this.playerViewsLayout.Size = new System.Drawing.Size(170, 197);
+			this.playerViewsLayout.Size = new System.Drawing.Size(170, 195);
 			this.playerViewsLayout.TabIndex = 1;
+			// 
+			// setupStartSelector
+			// 
+			this.setupStartSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.setupStartSelector.FormattingEnabled = true;
+			this.setupStartSelector.Location = new System.Drawing.Point(188, 128);
+			this.setupStartSelector.Name = "setupStartSelector";
+			this.setupStartSelector.Size = new System.Drawing.Size(170, 21);
+			this.setupStartSelector.TabIndex = 7;
+			this.setupStartSelector.SelectedIndexChanged += new System.EventHandler(this.setupStartSelector_SelectedIndexChanged);
 			// 
 			// FormNewGame
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(372, 282);
+			this.Controls.Add(this.setupStartSelector);
 			this.Controls.Add(this.playerViewsLayout);
 			this.Controls.Add(this.setupPlayersButton);
 			this.Controls.Add(this.startButton);
 			this.Controls.Add(this.startingDescription);
-			this.Controls.Add(this.setupStartButton);
 			this.Controls.Add(this.setupMapButton);
 			this.Controls.Add(this.mapDescription);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -129,10 +130,10 @@
 		private System.Windows.Forms.Button setupPlayersButton;
 		private System.Windows.Forms.Button startButton;
 		private System.Windows.Forms.TextBox startingDescription;
-		private System.Windows.Forms.Button setupStartButton;
 		private System.Windows.Forms.Button setupMapButton;
 		private System.Windows.Forms.TextBox mapDescription;
 		private System.Windows.Forms.FlowLayoutPanel playerViewsLayout;
+		private System.Windows.Forms.ComboBox setupStartSelector;
 
 	}
 }

@@ -1,11 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zvjezdojedac", "Zvjezdojedac\Zvjezdojedac.csproj", "{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stareater.Core", "Stareater.Core\Stareater.Core.csproj", "{452BB6D1-D27F-4D71-A05B-A6DDC4013E33}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stareater.UI.WinForms", "Stareater.UI.WinForms\Stareater.UI.WinForms.csproj", "{F0BCE0AD-AE04-4B9B-B63C-D55E580CC007}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C4CF0B32-8030-450B-B865-AE1F69F2CEE3} = {C4CF0B32-8030-450B-B865-AE1F69F2CEE3}
+		{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A} = {A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stareater.Players.DefaultAI", "Stareater.Players.DefaultAI\Stareater.Players.DefaultAI.csproj", "{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stareater.Maps.Square", "Stareater.Maps.Square\Stareater.Maps.Square.csproj", "{C4CF0B32-8030-450B-B865-AE1F69F2CEE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +56,26 @@ Global
 		{F0BCE0AD-AE04-4B9B-B63C-D55E580CC007}.Release|Mixed Platforms.Build.0 = Release|x86
 		{F0BCE0AD-AE04-4B9B-B63C-D55E580CC007}.Release|x86.ActiveCfg = Release|x86
 		{F0BCE0AD-AE04-4B9B-B63C-D55E580CC007}.Release|x86.Build.0 = Release|x86
+		{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}.Release|x86.ActiveCfg = Release|Any CPU
+		{C4CF0B32-8030-450B-B865-AE1F69F2CEE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4CF0B32-8030-450B-B865-AE1F69F2CEE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4CF0B32-8030-450B-B865-AE1F69F2CEE3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C4CF0B32-8030-450B-B865-AE1F69F2CEE3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C4CF0B32-8030-450B-B865-AE1F69F2CEE3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C4CF0B32-8030-450B-B865-AE1F69F2CEE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4CF0B32-8030-450B-B865-AE1F69F2CEE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4CF0B32-8030-450B-B865-AE1F69F2CEE3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C4CF0B32-8030-450B-B865-AE1F69F2CEE3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C4CF0B32-8030-450B-B865-AE1F69F2CEE3}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

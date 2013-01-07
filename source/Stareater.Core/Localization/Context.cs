@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ikon;
 
 namespace Stareater.Localization
@@ -32,6 +33,9 @@ namespace Stareater.Localization
 		public string this[string entryKey, params double[] variables]
 		{
 			get {
+				if (entryKey == null)
+					throw new NullReferenceException("Entry key is null");
+
 				entryKey = entryKey.ToLower();
 				if (entries.ContainsKey(entryKey))
 					return entries[entryKey].Get(variables);

@@ -1,4 +1,10 @@
 ﻿:General
 LanguageName = English
 DialogOK = OK
+RandomOrganization = Random
+-
+
+:PlayerTypes
+localHuman = Human
+AI = AI
 -
