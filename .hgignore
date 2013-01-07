@@ -22,3 +22,9 @@ build/settings.txt
 build/Stareater.exe
 documentation/GUI Mockups/Winforms Mockups/Winforms Mockups/bin/*
 documentation/GUI Mockups/Winforms Mockups/Winforms Mockups/obj/*
+source/Stareater.Maps.Square/bin/*
+source/Stareater.Maps.Square/obj/*
+source/Stareater.Players.DefaultAI/bin/*
+source/Stareater.Players.DefaultAI/obj/*
+source/Stareater.UI.WinForms/maps/*
+source/Stareater.UI.WinForms/players/*

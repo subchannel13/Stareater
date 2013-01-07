@@ -1,0 +1,20 @@
+{ StartingConditions
+	nameKey "small"
+	colonies 		=1
+	population 		=1e9
+	infrastructure	=0.5e9
+}
+
+{ StartingConditions
+	nameKey "normal"
+	colonies 		=2
+	population 		=7e9
+	infrastructure	=1e9
+}
+
+{ StartingConditions
+	nameKey "advanced"
+	colonies 		=4
+	population 		=15e9
+	infrastructure	=3e9
+}

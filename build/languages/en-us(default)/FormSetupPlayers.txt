@@ -1,4 +1,4 @@
-﻿:FormNewGame
+﻿:FormSetupPlayers
 FormTitle = Players
 controllerLabel = Control
 nameLabel = Name

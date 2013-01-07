@@ -1,4 +1,5 @@
 ﻿:General
 LanguageName = Hrvatski
 DialogOK = U redu
+RandomOrganization = Nasumična
 -

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Stareater.Players;
 using System.Threading;
 using System.Collections;
+using Stareater.Maps;
+using Stareater.Players;
 
-namespace Stareater.Controllers
+namespace Stareater.AppData
 {
 	public class AssetController
 	{
@@ -26,8 +26,12 @@ namespace Stareater.Controllers
 
 		private HashSet<Func<IEnumerable<double>>> Loaders = new HashSet<Func<IEnumerable<double>>>(new Func<IEnumerable<double>>[] {
 			Organization.Loader,
-			PlayerAssets.Loader,
+			PlayerAssets.ColorLoader,
+			PlayerAssets.AILoader,
+			MapAssets.StartConditionsLoader,
+			MapAssets.MapsLoader,
 		});
+
 		private Thread workerThread;
 
 		public double Progress { get; private set; }

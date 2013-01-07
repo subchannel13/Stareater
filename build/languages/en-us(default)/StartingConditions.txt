@@ -1,0 +1,6 @@
+﻿:StartingConditions
+small = Small
+normal = Normal
+advanced = Advanced
+custom = Custom
+-

@@ -9,6 +9,8 @@ using Stareater.AppData;
 using Stareater.Localization;
 using Stareater.Controllers;
 using Stareater.Controllers.Data;
+using Stareater.Maps;
+using Stareater.StringTools;
 
 namespace Stareater.GUI
 {
@@ -28,6 +30,10 @@ namespace Stareater.GUI
 			if (NewGameController.CanCreateGame) {
 				controller = new NewGameController();
 				updatePlayerViews();
+
+				foreach (var start in MapAssets.Starts)
+					setupStartSelector.Items.Add(new Tag<StartingConditions>(start, start.Name));
+				setupStartSelector.SelectedIndex = 0;
 			}
 			else
 				DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -42,7 +48,6 @@ namespace Stareater.GUI
 
 			setupPlayersButton.Text = context["setupPlayersButton"];
 			setupMapButton.Text = context["setupMapButton"];
-			setupStartButton.Text = context["setupStartButton"];
 			startButton.Text = context["startButton"];
 		}
 
@@ -64,6 +69,23 @@ namespace Stareater.GUI
 				playersForm.ShowDialog();
 				updatePlayerViews();
 			}
+		}
+
+		private void setupStartSelector_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (setupStartSelector.SelectedItem == null)
+				return;
+
+			StartingConditions start = (setupStartSelector.SelectedItem as Tag<StartingConditions>).Value;
+			Context context = SettingsWinforms.Get.Language["FormNewGame"];
+			StringBuilder sb = new StringBuilder();
+			var formatter = new ThousandsFormatter(start.Population, start.Infrastructure);
+
+			sb.AppendLine("Colonies: " + start.Colonies);
+			sb.AppendLine("Population: " + formatter.Format(start.Population));
+			sb.Append("Infrastructure: " + formatter.Format(start.Infrastructure));
+
+			startingDescription.Text = sb.ToString();
 		}
 	}
 }

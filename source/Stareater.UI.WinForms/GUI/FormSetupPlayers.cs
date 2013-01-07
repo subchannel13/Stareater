@@ -32,7 +32,7 @@ namespace Stareater.GUI
 
 			updatePlayerViews();
 
-			foreach(var playerType in NewGameController.PlayerTypes)
+			foreach(var playerType in controller.PlayerTypes)
 				controllerPicker.Items.Add(new Tag<PlayerType>(playerType, playerType.Name));
 
 			organizationPicker.Items.Add(new Tag<Organization>(null, SettingsWinforms.Get.Language["General"]["RandomOrganization"]));

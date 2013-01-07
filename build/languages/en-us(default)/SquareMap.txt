@@ -1,0 +1,3 @@
+﻿:SquareMap
+name = Square map
+-

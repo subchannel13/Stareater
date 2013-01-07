@@ -1,4 +1,4 @@
-﻿:FormNewGame
+﻿:FormSetupPlayers
 FormTitle = Igrači
 controllerLabel = Upravljač
 nameLabel = Ime

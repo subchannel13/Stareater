@@ -49,8 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\AssetController.cs" />
+    <Compile Include="AppData\AssetController.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
+    <Compile Include="Maps\IMapFactory.cs" />
+    <Compile Include="Maps\MapAssets.cs" />
+    <Compile Include="Maps\MapFactoryParameterInfo.cs" />
+    <Compile Include="Maps\Star.cs" />
+    <Compile Include="Maps\StartingConditions.cs" />
+    <Compile Include="Players\IOffscreenPlayerFactory.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Players\PlayerAssets.cs" />
     <Compile Include="Players\PlayerControlType.cs" />
