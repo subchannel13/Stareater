@@ -7,7 +7,7 @@ namespace Stareater.StringTools
 {
 	class ThousandsFormatter
 	{
-		private static string[] Prefixes = new string[] { "", " k", " M", " G", " T", " P", " E", " Z", " Y" };
+		private static string[] Prefixes = new string[] { "", "k", "M", "G", "T", "P", "E", "Z", "Y" };
 
 		private Tuple<int, double> prefixInfo = null;
 
@@ -29,7 +29,7 @@ namespace Stareater.StringTools
 		{
 			var prefixInfo = this.prefixInfo ?? greatestLowerPrefix(number);
 
-			return (number / prefixInfo.Item2).ToString("0.##") + Prefixes[prefixInfo.Item1];
+			return ((number / prefixInfo.Item2).ToString("0.##") + " " + Prefixes[prefixInfo.Item1]).TrimEnd();
 		}
 
 		private static Tuple<int, double> greatestLowerPrefix(double number)

@@ -33,7 +33,16 @@ namespace Stareater.GUI
 
 				foreach (var start in MapAssets.Starts)
 					setupStartSelector.Items.Add(new Tag<StartingConditions>(start, start.Name));
-				setupStartSelector.SelectedIndex = 0;
+				
+				if (NewGameController.LastStartingCondition != null) {
+					setupStartSelector.Items.Add(new Tag<StartingConditions>(NewGameController.LastStartingCondition, SettingsWinforms.Get.Language["StartingConditions"]["custom"]));
+					setupStartSelector.SelectedIndex = setupStartSelector.Items.Count - 1;
+				}
+				else {
+					setupStartSelector.Items.Add(new Tag<StartingConditions>(NewGameController.DefaultStartingCondition, SettingsWinforms.Get.Language["StartingConditions"]["custom"]));
+					setupStartSelector.SelectedItem = new Tag<StartingConditions>(NewGameController.DefaultStartingCondition, null);
+				}
+				setupStartSelector.Items.Add(new Tag<StartingConditions>(null, SettingsWinforms.Get.Language["StartingConditions"]["customize"]));
 			}
 			else
 				DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -77,15 +86,19 @@ namespace Stareater.GUI
 				return;
 
 			StartingConditions start = (setupStartSelector.SelectedItem as Tag<StartingConditions>).Value;
-			Context context = SettingsWinforms.Get.Language["FormNewGame"];
-			StringBuilder sb = new StringBuilder();
-			var formatter = new ThousandsFormatter(start.Population, start.Infrastructure);
+			if (start != null) {
+				StringBuilder sb = new StringBuilder();
+				var formatter = new ThousandsFormatter(start.Population, start.Infrastructure);
 
-			sb.AppendLine("Colonies: " + start.Colonies);
-			sb.AppendLine("Population: " + formatter.Format(start.Population));
-			sb.Append("Infrastructure: " + formatter.Format(start.Infrastructure));
+				sb.AppendLine("Colonies: " + start.Colonies);
+				sb.AppendLine("Population: " + formatter.Format(start.Population));
+				sb.Append("Infrastructure: " + formatter.Format(start.Infrastructure));
 
-			startingDescription.Text = sb.ToString();
+				startingDescription.Text = sb.ToString();
+			}
+			else
+				using (var form = new FormStartingConditions())
+					form.ShowDialog();
 		}
 	}
 }
