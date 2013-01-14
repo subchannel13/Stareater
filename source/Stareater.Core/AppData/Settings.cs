@@ -26,17 +26,20 @@ namespace Stareater.AppData
 		const string SettingsFilePath = "settings.txt";
 
 		public Language Language { get; set; }
+		public LastGameInfo LastGame { get; private set; }
 
 		#region Initialization
 		protected Settings(Dictionary<string, ObjectValue> data)
 		{
-			if (data.ContainsKey(BaseSettingsKey))
-			{
+			if (data.ContainsKey(BaseSettingsKey)) {
 				string langCode = (data[BaseSettingsKey][LanguageKey] as TextValue).GetText;
 				this.Language = LocalizationManifest.LoadLanguage(langCode);
+				this.LastGame = new LastGameInfo(data[BaseSettingsKey][LastGameKey] as ObjectValue);
 			}
-			else
+			else {
 				this.Language = LocalizationManifest.DefaultLanguage;
+				this.LastGame = new LastGameInfo();
+			}
 		}
 
 		protected static Dictionary<string, ObjectValue> loadFile()
@@ -73,6 +76,7 @@ namespace Stareater.AppData
 		{
 			ObjectValue baseSettings = new ObjectValue(BaseSettingsKey);
 			baseSettings.Add(LanguageKey, new TextValue(Language.Code));
+			baseSettings.Add(LastGameKey, LastGame.BuildSaveData());
 			baseSettings.Compose(writer);
 		}
 	}

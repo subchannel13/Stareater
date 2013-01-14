@@ -16,10 +16,6 @@ namespace Stareater.Maps
 
 		#region Attribute keys
 		const string StartingConditionsKey = "StartinConditions";
-		const string ColoniesKey = "colonies";
-		const string PopulationKey = "population";
-		const string InfrastructureKey = "infrastructure";
-		const string NameKey = "nameKey";
 		#endregion
 
 		public static StartingConditions[] Starts { get; private set; }
@@ -34,13 +30,7 @@ namespace Stareater.Maps
 
 				foreach (double p in Methods.ProgressReportHelper(0.5, 0.5, conditions.Count, () =>
 				{
-					var conditionData = conditions.Dequeue() as ObjectValue;
-					conditionList.Add(new StartingConditions(
-						(conditionData[PopulationKey] as NumericValue).GetLong,
-						(conditionData[ColoniesKey] as NumericValue).GetInt,
-						(conditionData[InfrastructureKey] as NumericValue).GetLong,
-						(conditionData[NameKey] as TextValue).GetText
-					));
+					conditionList.Add(new StartingConditions(conditions.Dequeue() as ObjectValue));
 				}))
 					yield return p;
 			}

@@ -7,6 +7,7 @@ using Stareater.Utils.Collections;
 using System.Drawing;
 using Stareater.Localization;
 using Stareater.AppData;
+using Stareater.Maps;
 
 namespace Stareater.Controllers
 {
@@ -41,6 +42,7 @@ namespace Stareater.Controllers
 			return "HAL Bot";
 		}
 
+		#region Players
 		public IEnumerable<PlayerType> PlayerTypes
 		{
 			get
@@ -118,6 +120,7 @@ namespace Stareater.Controllers
 			if (players.Count > 2)
 				players.RemoveAt(index);
 		}
+		#endregion
 
 		private static PlayerType localHuman = new PlayerType(PlayerControlType.LocalHuman, Settings.Get.Language["PlayerTypes"]["localHuman"]);
 
@@ -126,7 +129,22 @@ namespace Stareater.Controllers
 			get
 			{
 				return Organization.IsLoaded &&
-					PlayerAssets.IsLoaded;
+					PlayerAssets.IsLoaded &&
+					MapAssets.IsLoaded;
+			}
+		}
+
+		public static StartingConditions DefaultStartingCondition
+		{
+			get { return MapAssets.Starts[MapAssets.Starts.Length / 2]; }
+		}
+
+		public static StartingConditions LastStartingCondition
+		{
+			get { return Settings.Get.LastGame.StartConditions; }
+			set
+			{
+				Settings.Get.LastGame.StartConditions = value;
 			}
 		}
 	}

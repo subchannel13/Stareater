@@ -70,6 +70,12 @@
     <Compile Include="FormSetupPlayers.Designer.cs">
       <DependentUpon>FormSetupPlayers.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormStartingConditions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStartingConditions.Designer.cs">
+      <DependentUpon>FormStartingConditions.cs</DependentUpon>
+    </Compile>
     <Compile Include="NewPlayerInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -83,6 +89,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormSetupPlayers.resx">
       <DependentUpon>FormSetupPlayers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStartingConditions.resx">
+      <DependentUpon>FormStartingConditions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewPlayerInfo.resx">
       <DependentUpon>NewPlayerInfo.cs</DependentUpon>

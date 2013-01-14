@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppData\AssetController.cs" />
+    <Compile Include="AppData\LastGameInfo.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
     <Compile Include="Maps\IMapFactory.cs" />
     <Compile Include="Maps\MapAssets.cs" />

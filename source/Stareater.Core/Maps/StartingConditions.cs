@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Stareater.AppData;
+using Ikon.Ston.Values;
+using Ikon;
 
 namespace Stareater.Maps
 {
@@ -22,6 +24,13 @@ namespace Stareater.Maps
 			this.nameKey = nameKey;
 		}
 
+		public StartingConditions(ObjectValue ikstonData) :
+			this((ikstonData[PopulationKey] as NumericValue).GetLong,
+				(ikstonData[ColoniesKey] as NumericValue).GetInt,
+				(ikstonData[InfrastructureKey] as NumericValue).GetLong,
+				(ikstonData[NameKey] as TextValue).GetText)
+		{ }
+
 		public string Name
 		{
 			get
@@ -29,5 +38,39 @@ namespace Stareater.Maps
 				return Settings.Get.Language["StartingConditions"][nameKey];
 			}
 		}
+
+		public ObjectValue BuildSaveData()
+		{
+			ObjectValue lastGameData = new ObjectValue(ClassName);
+			lastGameData.Add(ColoniesKey, new NumericValue(Colonies));
+			lastGameData.Add(PopulationKey, new NumericValue(Population));
+			lastGameData.Add(InfrastructureKey, new NumericValue(Infrastructure));
+			
+			return lastGameData;
+		}
+
+		public override bool Equals(object obj)
+		{
+			StartingConditions other = obj as StartingConditions;
+			if (other == null)
+				return false;
+
+			return this.Colonies == other.Colonies &&
+				this.Infrastructure == other.Infrastructure &&
+				this.Population == other.Population;
+		}
+
+		public override int GetHashCode()
+		{
+			return Colonies.GetHashCode() + Population.GetHashCode() * 31 + Infrastructure.GetHashCode() * 967;
+		}
+
+		#region Attribute keys
+		const string ClassName = "StartinConditions";
+		const string ColoniesKey = "colonies";
+		const string PopulationKey = "population";
+		const string InfrastructureKey = "infrastructure";
+		const string NameKey = "nameKey";
+		#endregion
 	}
 }
