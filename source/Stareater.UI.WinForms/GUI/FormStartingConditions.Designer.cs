@@ -68,6 +68,7 @@
 			this.infrastructureInput.Name = "infrastructureInput";
 			this.infrastructureInput.Size = new System.Drawing.Size(60, 20);
 			this.infrastructureInput.TabIndex = 29;
+			this.infrastructureInput.TextChanged += new System.EventHandler(this.infrastructureInput_TextChanged);
 			// 
 			// infrastructureLabel
 			// 
@@ -84,6 +85,7 @@
 			this.populationInput.Name = "populationInput";
 			this.populationInput.Size = new System.Drawing.Size(60, 20);
 			this.populationInput.TabIndex = 27;
+			this.populationInput.TextChanged += new System.EventHandler(this.populationInput_TextChanged);
 			// 
 			// populationLabel
 			// 

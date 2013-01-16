@@ -3,4 +3,5 @@ small = Small
 normal = Normal
 advanced = Advanced
 custom = Custom
+customize = Customize...
 -

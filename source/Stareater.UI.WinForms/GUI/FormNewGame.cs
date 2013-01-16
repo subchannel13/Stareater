@@ -18,6 +18,8 @@ namespace Stareater.GUI
 	{
 		private NewGameController controller;
 
+		private int customStartIndex;
+
 		public FormNewGame()
 		{
 			InitializeComponent();
@@ -33,16 +35,14 @@ namespace Stareater.GUI
 
 				foreach (var start in MapAssets.Starts)
 					setupStartSelector.Items.Add(new Tag<StartingConditions>(start, start.Name));
-				
-				if (NewGameController.LastStartingCondition != null) {
-					setupStartSelector.Items.Add(new Tag<StartingConditions>(NewGameController.LastStartingCondition, SettingsWinforms.Get.Language["StartingConditions"]["custom"]));
-					setupStartSelector.SelectedIndex = setupStartSelector.Items.Count - 1;
-				}
-				else {
-					setupStartSelector.Items.Add(new Tag<StartingConditions>(NewGameController.DefaultStartingCondition, SettingsWinforms.Get.Language["StartingConditions"]["custom"]));
-					setupStartSelector.SelectedItem = new Tag<StartingConditions>(NewGameController.DefaultStartingCondition, null);
-				}
+				this.customStartIndex = setupStartSelector.Items.Count;
+				setupStartSelector.Items.Add(new Tag<StartingConditions>(controller.CustomStart, SettingsWinforms.Get.Language["StartingConditions"][NewGameController.CustomStartNameKey]));
 				setupStartSelector.Items.Add(new Tag<StartingConditions>(null, SettingsWinforms.Get.Language["StartingConditions"]["customize"]));
+
+				if (NewGameController.LastStartingCondition != null)					
+					setupStartSelector.SelectedIndex = setupStartSelector.Items.Count - 1;
+				else
+					setupStartSelector.SelectedItem = new Tag<StartingConditions>(NewGameController.DefaultStartingCondition, null);
 			}
 			else
 				DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -97,8 +97,15 @@ namespace Stareater.GUI
 				startingDescription.Text = sb.ToString();
 			}
 			else
-				using (var form = new FormStartingConditions())
+				using (var form = new FormStartingConditions()) {
+					form.Initialize(controller.CustomStart);
 					form.ShowDialog();
+					if (form.IsValid) {
+						controller.CustomStart = form.GetResult();
+						setupStartSelector.Items[customStartIndex] = new Tag<StartingConditions>(controller.CustomStart, controller.CustomStart.Name);
+						setupStartSelector.SelectedIndex = customStartIndex;
+					}
+				}
 		}
 	}
 }
