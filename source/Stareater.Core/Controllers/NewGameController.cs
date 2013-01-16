@@ -35,6 +35,8 @@ namespace Stareater.Controllers
 				colors.Take(),
 				null,
 				aiPlayers.Pick()));
+
+			this.CustomStart = LastStartingCondition ?? DefaultStartingCondition;
 		}
 
 		private string generateAiName()
@@ -122,6 +124,8 @@ namespace Stareater.Controllers
 		}
 		#endregion
 
+		public StartingConditions CustomStart { get; set; }
+
 		private static PlayerType localHuman = new PlayerType(PlayerControlType.LocalHuman, Settings.Get.Language["PlayerTypes"]["localHuman"]);
 
 		public static bool CanCreateGame
@@ -147,5 +151,7 @@ namespace Stareater.Controllers
 				Settings.Get.LastGame.StartConditions = value;
 			}
 		}
+
+		public static readonly string CustomStartNameKey = "custom";
 	}
 }

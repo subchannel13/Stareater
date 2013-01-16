@@ -1,0 +1,6 @@
+﻿:FormStartingConditions
+FormTitle = Custom start
+coloniesSelector = Colonies:
+populationLabel = Population:
+infrastructureLabel = Infrastructure:
+-
