@@ -1,3 +1,6 @@
 ﻿:SquareMap
 name = Square map
+size = Size
+miniatureSize = Miniature
+smallSize = Small
 -

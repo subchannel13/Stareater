@@ -8,16 +8,19 @@ namespace Stareater.Maps.Square
 {
 	public class SquareMap : IMapFactory
 	{
+		const string LanguageContext = "SquareMap";
+
 		public string Name
 		{
-			get { return Settings.Get.Language["SquareMap"]["name"]; }
+			get { return Settings.Get.Language[LanguageContext]["name"]; }
 		}
 
 		public IEnumerable<MapFactoryParameterInfo> Parameters()
 		{
-			yield return new MapFactoryParameterInfo("size", new Dictionary<int, string>()
+			yield return new MapFactoryParameterInfo(LanguageContext, "size", new Dictionary<int, string>()
 			{
-				{1, "sf"}
+				{6, "miniatureSize"},
+				{7, "smallSize"}
 			});
 		}
 	}

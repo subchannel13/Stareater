@@ -46,6 +46,9 @@ namespace Stareater.GUI
 			coloniesSelector.Text = context["coloniesSelector"];
 			populationLabel.Text = context["populationLabel"];
 			infrastructureLabel.Text = context["infrastructureLabel"];
+
+			acceptButton.Text = context["acceptButton"];
+			cancelButton.Text = context["cancelButton"];
 		}
 
 		private static long? decodeNumber(string text)
@@ -94,6 +97,16 @@ namespace Stareater.GUI
 		private void infrastructureInput_TextChanged(object sender, EventArgs e)
 		{
 			infrastructureInput.BackColor = decodeNumber(infrastructureInput.Text) != null ? validColor : invalidColor;
+		}
+
+		private void acceptButton_Click(object sender, EventArgs e)
+		{
+			this.DialogResult = DialogResult.OK;
+		}
+
+		private void cancelButton_Click(object sender, EventArgs e)
+		{
+			this.DialogResult = DialogResult.Cancel;
 		}
 	}
 }

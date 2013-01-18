@@ -41,6 +41,13 @@ namespace Stareater.GUI
 			exitButton.Text = context["Quit"];
 		}
 
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			if (keyData == Keys.Escape) 
+				this.Close();
+			return base.ProcessCmdKey(ref msg, keyData);
+		}
+
 		private void newGameButton_Click(object sender, EventArgs e)
 		{
 			this.Result = MainMenuResult.NewGame;
