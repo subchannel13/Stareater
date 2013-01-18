@@ -38,7 +38,6 @@
 			this.newPlayerInfo4 = new Winforms_Mockups.NewPlayerInfo();
 			this.button4 = new System.Windows.Forms.Button();
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
-			this.button2 = new System.Windows.Forms.Button();
 			this.flowLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -137,15 +136,6 @@
 			this.comboBox1.Size = new System.Drawing.Size(170, 21);
 			this.comboBox1.TabIndex = 16;
 			// 
-			// button2
-			// 
-			this.button2.Location = new System.Drawing.Point(12, 256);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(12, 23);
-			this.button2.TabIndex = 11;
-			this.button2.Text = "Starting population";
-			this.button2.UseVisualStyleBackColor = true;
-			// 
 			// FormNewGame
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -156,7 +146,6 @@
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.Controls.Add(this.button3);
 			this.Controls.Add(this.textBox4);
-			this.Controls.Add(this.button2);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.textBox3);
 			this.Name = "FormNewGame";
@@ -180,6 +169,5 @@
 		private NewPlayerInfo newPlayerInfo4;
 		private System.Windows.Forms.Button button4;
 		private System.Windows.Forms.ComboBox comboBox1;
-		private System.Windows.Forms.Button button2;
 	}
 }

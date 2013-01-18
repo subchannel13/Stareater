@@ -37,6 +37,7 @@ namespace Stareater.Controllers
 				aiPlayers.Pick()));
 
 			this.CustomStart = LastStartingCondition ?? DefaultStartingCondition;
+			this.MapFactory = MapAssets.MapFactories[0];
 		}
 
 		private string generateAiName()
@@ -122,21 +123,14 @@ namespace Stareater.Controllers
 			if (players.Count > 2)
 				players.RemoveAt(index);
 		}
-		#endregion
-
-		public StartingConditions CustomStart { get; set; }
 
 		private static PlayerType localHuman = new PlayerType(PlayerControlType.LocalHuman, Settings.Get.Language["PlayerTypes"]["localHuman"]);
+		#endregion
 
-		public static bool CanCreateGame
-		{
-			get
-			{
-				return Organization.IsLoaded &&
-					PlayerAssets.IsLoaded &&
-					MapAssets.IsLoaded;
-			}
-		}
+		#region Map
+		public StartingConditions CustomStart { get; set; }
+
+		public IMapFactory MapFactory { get; set; }
 
 		public static StartingConditions DefaultStartingCondition
 		{
@@ -153,5 +147,16 @@ namespace Stareater.Controllers
 		}
 
 		public static readonly string CustomStartNameKey = "custom";
+		#endregion
+
+		public static bool CanCreateGame
+		{
+			get
+			{
+				return Organization.IsLoaded &&
+					PlayerAssets.IsLoaded &&
+					MapAssets.IsLoaded;
+			}
+		}
 	}
 }

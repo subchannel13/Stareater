@@ -99,13 +99,20 @@ namespace Stareater.GUI
 			else
 				using (var form = new FormStartingConditions()) {
 					form.Initialize(controller.CustomStart);
-					form.ShowDialog();
-					if (form.IsValid) {
+					if (form.ShowDialog() == DialogResult.OK && form.IsValid) {
 						controller.CustomStart = form.GetResult();
 						setupStartSelector.Items[customStartIndex] = new Tag<StartingConditions>(controller.CustomStart, controller.CustomStart.Name);
 						setupStartSelector.SelectedIndex = customStartIndex;
 					}
 				}
+		}
+
+		private void setupMapButton_Click(object sender, EventArgs e)
+		{
+			using (var form = new FormSetupMap()) {
+				form.Initialize(controller);
+				form.ShowDialog();
+			}
 		}
 	}
 }

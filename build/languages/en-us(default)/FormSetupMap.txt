@@ -1,0 +1,4 @@
+﻿:FormSetupMap
+FormTitle = Map setup
+acceptButton = Ok
+-

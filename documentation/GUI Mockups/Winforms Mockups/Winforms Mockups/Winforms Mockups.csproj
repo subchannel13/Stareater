@@ -64,6 +64,12 @@
     <Compile Include="FormNewGame.Designer.cs">
       <DependentUpon>FormNewGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSetupMap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSetupMap.Designer.cs">
+      <DependentUpon>FormSetupMap.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSetupPlayers.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +92,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormNewGame.resx">
       <DependentUpon>FormNewGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSetupMap.resx">
+      <DependentUpon>FormSetupMap.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSetupPlayers.resx">
       <DependentUpon>FormSetupPlayers.cs</DependentUpon>

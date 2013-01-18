@@ -73,6 +73,7 @@
 			this.setupMapButton.TabIndex = 2;
 			this.setupMapButton.Text = "Map";
 			this.setupMapButton.UseVisualStyleBackColor = true;
+			this.setupMapButton.Click += new System.EventHandler(this.setupMapButton_Click);
 			// 
 			// mapDescription
 			// 
