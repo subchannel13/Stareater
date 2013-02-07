@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Stareater.Utils.PluginParameters;
 
 namespace Stareater.Maps
 {
-	public interface IMapFactory
+	public interface IStarConnector
 	{
 		string Name { get; }
-		IEnumerable<MapFactoryParameterInfo> Parameters();
+		ParameterList Parameters { get; }
 	}
 }

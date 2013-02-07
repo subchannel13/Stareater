@@ -1,0 +1,7 @@
+﻿:DefaultPopulator
+name = Default planets
+hospitality = Hospitality
+hostileClimate = Hostile
+normalClimate = Normal
+paradiseClimate = Paradise
+-
