@@ -1,0 +1,7 @@
+﻿:ProximityLanes
+name = Short wormholes
+degree = Wormhole frequency
+few = Few
+average = Normal
+many = Abundant
+-

@@ -1,33 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.Collections.ObjectModel;
 using System.Linq;
+using System.Collections.ObjectModel;
 using Stareater.AppData;
+using System.Collections;
 
-namespace Stareater.Maps
+namespace Stareater.Utils.PluginParameters
 {
-	public struct MapFactoryParameterInfo : IEnumerable<KeyValuePair<int, string>>
+	public class SelectorParameter : ParameterBase, IEnumerable<KeyValuePair<int, string>>
 	{
+		public int Value { get; set; }
 		private IList<KeyValuePair<int, string>> values;
-		private string contextKey;
-		private string nameKey;
 
-		public MapFactoryParameterInfo(string contextKey, string nameKey, IEnumerable<KeyValuePair<int, string>> values)
+		public SelectorParameter(string contextKey, string nameKey, IEnumerable<KeyValuePair<int, string>> values, int current) :
+			base(contextKey, nameKey)
 		{
-			this.contextKey = contextKey;
-			this.nameKey = nameKey;
 			this.values = new ReadOnlyCollection<KeyValuePair<int, string>>(values.ToList());
+			this.Value = current;
 		}
 
 		public int Count
 		{
 			get { return values.Count; }
-		}
-
-		public string Name
-		{
-			get { return Settings.Get.Language[contextKey][nameKey]; }
 		}
 
 		public KeyValuePair<int, string> this[int optionIndex]
