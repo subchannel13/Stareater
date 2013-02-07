@@ -52,9 +52,10 @@
     <Compile Include="AppData\AssetController.cs" />
     <Compile Include="AppData\LastGameInfo.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
-    <Compile Include="Maps\IMapFactory.cs" />
+    <Compile Include="Maps\IStarConnector.cs" />
+    <Compile Include="Maps\IStarPopulator.cs" />
+    <Compile Include="Maps\IStarPositioner.cs" />
     <Compile Include="Maps\MapAssets.cs" />
-    <Compile Include="Maps\MapFactoryParameterInfo.cs" />
     <Compile Include="Maps\Star.cs" />
     <Compile Include="Maps\StartingConditions.cs" />
     <Compile Include="Players\IOffscreenPlayerFactory.cs" />
@@ -79,6 +80,10 @@
     <Compile Include="AppData\Settings.cs" />
     <Compile Include="Utils\Collections\PickList.cs" />
     <Compile Include="Utils\Methods.cs" />
+    <Compile Include="Utils\PluginParameters\ParameterBase.cs" />
+    <Compile Include="Utils\PluginParameters\ParameterList.cs" />
+    <Compile Include="Utils\PluginParameters\RangeParameter.cs" />
+    <Compile Include="Utils\PluginParameters\SelectorParameter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Libs\IKON.dll" />

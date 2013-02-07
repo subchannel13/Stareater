@@ -29,7 +29,9 @@ namespace Stareater.AppData
 			PlayerAssets.ColorLoader,
 			PlayerAssets.AILoader,
 			MapAssets.StartConditionsLoader,
-			MapAssets.MapsLoader,
+			MapAssets.PositionersLoader,
+			MapAssets.ConnectorsLoader,
+			MapAssets.PopulatorsLoader,
 		});
 
 		private Thread workerThread;

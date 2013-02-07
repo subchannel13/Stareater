@@ -10,6 +10,7 @@ using Stareater.Controllers;
 using Stareater.Localization;
 using Stareater.AppData;
 using Stareater.Maps;
+using Stareater.Utils.PluginParameters;
 
 namespace Stareater.GUI
 {
@@ -29,13 +30,28 @@ namespace Stareater.GUI
 			this.controller = controller;
 
 			int selectedIndex = 0;
-			foreach (var mapFactory in MapAssets.MapFactories) {
-				if (controller.MapFactory == mapFactory)
+			foreach (var mapFactory in MapAssets.StarPositioners) {
+				if (controller.StarPositioner == mapFactory)
 					selectedIndex = shapeSelector.Items.Count;
-
-				shapeSelector.Items.Add(new Tag<IMapFactory>(mapFactory, mapFactory.Name));
+				shapeSelector.Items.Add(new Tag<IStarPositioner>(mapFactory, mapFactory.Name));
 			}
 			shapeSelector.SelectedIndex = selectedIndex;
+
+			selectedIndex = 0;
+			foreach (var wormholeFactory in MapAssets.StarConnectors) {
+				if (controller.StarConnector == wormholeFactory)
+					selectedIndex = wormholeSelector.Items.Count;
+				wormholeSelector.Items.Add(new Tag<IStarConnector>(wormholeFactory, wormholeFactory.Name));
+			}
+			wormholeSelector.SelectedIndex = selectedIndex;
+
+			selectedIndex = 0;
+			foreach (var populatorFactory in MapAssets.StarPopulators) {
+				if (controller.StarConnector == populatorFactory)
+					selectedIndex = populatorSelector.Items.Count;
+				populatorSelector.Items.Add(new Tag<IStarPopulator>(populatorFactory, populatorFactory.Name));
+			}
+			populatorSelector.SelectedIndex = selectedIndex;
 		}
 
 		private void setLanguage()
@@ -48,6 +64,32 @@ namespace Stareater.GUI
 			acceptButton.Text = context["acceptButton"];
 		}
 
+		private void populateParameters()
+		{
+			parametersPanel.Controls.Clear();
+			extractParameters(controller.StarPositioner.Parameters);
+			extractParameters(controller.StarConnector.Parameters);
+			extractParameters(controller.StarPopulator.Parameters);
+			
+		}
+
+		private void extractParameters(ParameterList parameters)
+		{
+			Dictionary<int, Control> parameterGuis = new Dictionary<int, Control>();
+			foreach (var parameterInfo in parameters.Selectors) {
+				var parameterControl = new MapParameterSelector();
+				parameterControl.SetData(parameterInfo);
+				parameterGuis.Add(parameterGuis.Count, parameterControl);
+			}
+			foreach (var parameterInfo in parameters.RealRanges) {
+				var parameterControl = new MapParameterRealRange();
+				parameterControl.SetData(parameterInfo);
+				parameterGuis.Add(parameterGuis.Count, parameterControl);
+			}
+			for(int i = 0; i < parameterGuis.Count; i++)
+				parametersPanel.Controls.Add(parameterGuis[i]);
+		}
+
 		private void acceptButton_Click(object sender, EventArgs e)
 		{
 			Close();
@@ -58,12 +100,7 @@ namespace Stareater.GUI
 			if (shapeSelector.SelectedItem == null)
 				return;
 
-			parametersPanel.Controls.Clear();
-			foreach (var parameterInfo in controller.MapFactory.Parameters()) {
-				var parameterSelector = new MapParameterSelector();
-				parameterSelector.SetData(parameterInfo);
-				parametersPanel.Controls.Add(parameterSelector);
-			}
+			populateParameters();
 		}
 	}
 }

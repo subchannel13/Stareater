@@ -37,7 +37,9 @@ namespace Stareater.Controllers
 				aiPlayers.Pick()));
 
 			this.CustomStart = LastStartingCondition ?? DefaultStartingCondition;
-			this.MapFactory = MapAssets.MapFactories[0];
+			this.StarPositioner = MapAssets.StarPositioners[0];
+			this.StarConnector = MapAssets.StarConnectors[0];
+			this.StarPopulator = MapAssets.StarPopulators[0];
 		}
 
 		private string generateAiName()
@@ -130,7 +132,9 @@ namespace Stareater.Controllers
 		#region Map
 		public StartingConditions CustomStart { get; set; }
 
-		public IMapFactory MapFactory { get; set; }
+		public IStarPositioner StarPositioner { get; set; }
+		public IStarConnector StarConnector { get; set; }
+		public IStarPopulator StarPopulator { get; set; }
 
 		public static StartingConditions DefaultStartingCondition
 		{

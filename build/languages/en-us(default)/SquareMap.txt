@@ -3,4 +3,5 @@ name = Square map
 size = Size
 miniatureSize = Miniature
 smallSize = Small
+displacement = Position randomness
 -
