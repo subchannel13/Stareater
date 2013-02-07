@@ -112,6 +112,18 @@
       <DependentUpon>FormStartingConditions.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\MainMenuResult.cs" />
+    <Compile Include="GUI\MapParameterIntegerRange.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\MapParameterIntegerRange.Designer.cs">
+      <DependentUpon>MapParameterIntegerRange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MapParameterRealRange.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\MapParameterRealRange.Designer.cs">
+      <DependentUpon>MapParameterRealRange.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\MapParameterSelector.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -154,6 +166,12 @@
     <EmbeddedResource Include="GUI\FormStartingConditions.resx">
       <DependentUpon>FormStartingConditions.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MapParameterIntegerRange.resx">
+      <DependentUpon>MapParameterIntegerRange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MapParameterRealRange.resx">
+      <DependentUpon>MapParameterRealRange.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\MapParameterSelector.resx">
       <DependentUpon>MapParameterSelector.cs</DependentUpon>
     </EmbeddedResource>
@@ -188,6 +206,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App icon.ico" />
+    <Content Include="maps\Stareater.Maps.DefaultPopulator.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="maps\Stareater.Maps.ProximityLanes.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="maps\Stareater.Maps.Square.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

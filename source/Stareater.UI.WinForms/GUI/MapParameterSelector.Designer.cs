@@ -33,12 +33,15 @@
 			// 
 			// valueSelector
 			// 
+			this.valueSelector.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.valueSelector.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.valueSelector.FormattingEnabled = true;
 			this.valueSelector.Location = new System.Drawing.Point(0, 16);
 			this.valueSelector.Name = "valueSelector";
 			this.valueSelector.Size = new System.Drawing.Size(140, 21);
 			this.valueSelector.TabIndex = 21;
+			this.valueSelector.SelectedIndexChanged += new System.EventHandler(this.valueSelector_SelectedIndexChanged);
 			// 
 			// nameLabel
 			// 

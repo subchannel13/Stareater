@@ -19,7 +19,9 @@ namespace Stareater.Maps
 		#endregion
 
 		public static StartingConditions[] Starts { get; private set; }
-		public static IMapFactory[] MapFactories { get; private set; }
+		public static IStarPositioner[] StarPositioners { get; private set; }
+		public static IStarConnector[] StarConnectors { get; private set; }
+		public static IStarPopulator[] StarPopulators { get; private set; }
 
 		public static IEnumerable<double> StartConditionsLoader()
 		{
@@ -39,28 +41,66 @@ namespace Stareater.Maps
 			yield return 1;
 		}
 
-		public static IEnumerable<double> MapsLoader()
+		public static IEnumerable<double> PositionersLoader()
 		{
 			List<FileInfo> dllFiles = new List<FileInfo>(new DirectoryInfo(MapsFolder).EnumerateFiles("*.dll"));
 			yield return 0.1;
 
-			List<IMapFactory> factoryList = new List<IMapFactory>();
-			Type targetType = typeof(IMapFactory);
+			List<IStarPositioner> factoryList = new List<IStarPositioner>();
+			Type targetType = typeof(IStarPositioner);
 			foreach (double p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles, (dllFile) =>
 			{
 				foreach (var type in Assembly.LoadFile(dllFile.FullName).GetTypes())
 					if (targetType.IsAssignableFrom(type))
-						factoryList.Add(Activator.CreateInstance(type) as IMapFactory);
+						factoryList.Add(Activator.CreateInstance(type) as IStarPositioner);
 			}))
 				yield return p;
 
-			MapFactories = factoryList.ToArray();
+			StarPositioners = factoryList.ToArray();
+			yield return 1;
+		}
+
+		public static IEnumerable<double> ConnectorsLoader()
+		{
+			List<FileInfo> dllFiles = new List<FileInfo>(new DirectoryInfo(MapsFolder).EnumerateFiles("*.dll"));
+			yield return 0.1;
+
+			List<IStarConnector> factoryList = new List<IStarConnector>();
+			Type targetType = typeof(IStarConnector);
+			foreach (double p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles, (dllFile) =>
+			{
+				foreach (var type in Assembly.LoadFile(dllFile.FullName).GetTypes())
+					if (targetType.IsAssignableFrom(type))
+						factoryList.Add(Activator.CreateInstance(type) as IStarConnector);
+			}))
+				yield return p;
+
+			StarConnectors = factoryList.ToArray();
+			yield return 1;
+		}
+
+		public static IEnumerable<double> PopulatorsLoader()
+		{
+			List<FileInfo> dllFiles = new List<FileInfo>(new DirectoryInfo(MapsFolder).EnumerateFiles("*.dll"));
+			yield return 0.1;
+
+			List<IStarPopulator> factoryList = new List<IStarPopulator>();
+			Type targetType = typeof(IStarPopulator);
+			foreach (double p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles, (dllFile) =>
+			{
+				foreach (var type in Assembly.LoadFile(dllFile.FullName).GetTypes())
+					if (targetType.IsAssignableFrom(type))
+						factoryList.Add(Activator.CreateInstance(type) as IStarPopulator);
+			}))
+				yield return p;
+
+			StarPopulators = factoryList.ToArray();
 			yield return 1;
 		}
 
 		public static bool IsLoaded
 		{
-			get { return Starts != null && MapFactories != null; }
+			get { return Starts != null && StarPositioners != null; }
 		}
 	}
 }

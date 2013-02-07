@@ -28,3 +28,7 @@ source/Stareater.Players.DefaultAI/bin/*
 source/Stareater.Players.DefaultAI/obj/*
 source/Stareater.UI.WinForms/maps/*
 source/Stareater.UI.WinForms/players/*
+source/Stareater.Maps.DefaultPopulator/bin/*
+source/Stareater.Maps.DefaultPopulator/obj/*
+source/Stareater.Maps.ProximityLanes/bin/*
+source/Stareater.Maps.ProximityLanes/obj/*
