@@ -9,6 +9,7 @@ namespace Stareater.Maps
 	public interface IStarPositioner
 	{
 		string Name { get; }
+		string Description { get; }
 		ParameterList Parameters { get; }
 	}
 }

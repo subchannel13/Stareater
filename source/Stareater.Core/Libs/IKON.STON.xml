@@ -32,6 +32,59 @@
             Sign for IKON textual value.
             </summary>
         </member>
+        <member name="T:Ikon.Ston.Values.ReferenceValue">
+            <summary>
+            IKSTON reference value.
+            </summary>
+        </member>
+        <member name="T:Ikon.Ston.Values.IkstonBaseValue">
+            <summary>
+            Base class for IKSTON values. Add reference names on top the IKON values.
+            </summary>
+        </member>
+        <member name="M:Ikon.Ston.Values.IkstonBaseValue.WriteReferences(Ikon.IkonWriter)">
+            <summary>
+            Writes value's reference names (if any) to the output stream.
+            </summary>
+            <param name="writer">Wrapped around target output stream.</param>
+        </member>
+        <member name="P:Ikon.Ston.Values.IkstonBaseValue.ReferenceNames">
+            <summary>
+            Set of objects that can be used as reference to the value.
+            </summary>
+        </member>
+        <member name="F:Ikon.Ston.Values.ReferenceValue.ValueTypeName">
+            <summary>
+            Type name of IKSTON text values.
+            </summary>
+        </member>
+        <member name="M:Ikon.Ston.Values.ReferenceValue.#ctor(System.String)">
+            <summary>
+            Constructs IKSTON reference value with specified name.
+            </summary>
+            <param name="name">Name of the referenced object.</param>
+        </member>
+        <member name="M:Ikon.Ston.Values.ReferenceValue.To``1">
+            <summary>
+            Converts IKSTON reference value to specified type. Supported target types:
+            
+            System.string
+            Ikon.Ston.Values.TextValue
+            </summary>
+            <typeparam name="T">Target type</typeparam>
+            <returns>Converted value</returns>
+        </member>
+        <member name="M:Ikon.Ston.Values.ReferenceValue.DoCompose(Ikon.IkonWriter)">
+            <summary>
+            Writes an IKSTON reference value to the composer.
+            </summary>
+            <param name="writer">Target composer.</param>
+        </member>
+        <member name="P:Ikon.Ston.Values.ReferenceValue.TypeName">
+            <summary>
+            Type name of the IKON value instance.
+            </summary>
+        </member>
         <member name="T:Ikon.Ston.Factories.ArrayFactory">
             <summary>
             IKON value factory for IKSTON  array.
@@ -120,7 +173,7 @@
             Type name of IKSTON arrays.
             </summary>
         </member>
-        <member name="M:Ikon.Ston.Values.ArrayValue.#ctor(System.Collections.Generic.IList{Ikon.Value})">
+        <member name="M:Ikon.Ston.Values.ArrayValue.#ctor(System.Collections.Generic.IList{Ikon.IkonBaseValue})">
             <summary>
             Constructs IKSTON array of IKON values
             </summary>
@@ -131,7 +184,17 @@
             Constructs IKSTON array
             </summary>
         </member>
-        <member name="M:Ikon.Ston.Values.ArrayValue.Add(Ikon.Value[])">
+        <member name="M:Ikon.Ston.Values.ArrayValue.To``1">
+            <summary>
+            Converts IKSTON array value to specified type. Supported target types:
+            
+            System.Collections.Generic.IList&lt;Value&gt;
+            Ikon.Ston.Values.ArrayValue
+            </summary>
+            <typeparam name="T">Target type</typeparam>
+            <returns>Converted value</returns>
+        </member>
+        <member name="M:Ikon.Ston.Values.ArrayValue.Add(Ikon.IkonBaseValue[])">
             <summary>
             Builder method fo adding one or more elements to IKSTON array.
             </summary>
@@ -144,14 +207,98 @@
             </summary>
             <param name="writer">Target composer.</param>
         </member>
+        <member name="M:Ikon.Ston.Values.ArrayValue.IndexOf(Ikon.IkonBaseValue)">
+            <summary>
+            Determines the index of a specific item in the System.Collections.Generic.IList&lt;T&gt;.
+            </summary>
+            <param name="item">The object to locate in the System.Collections.Generic.IList&lt;T&gt;.</param>
+            <returns>The index of item if found in the list; otherwise, -1.</returns>
+        </member>
+        <member name="M:Ikon.Ston.Values.ArrayValue.Insert(System.Int32,Ikon.IkonBaseValue)">
+            <summary>
+            Inserts an item to the System.Collections.Generic.IList&lt;T&gt; at the specified index.
+            </summary>
+            <param name="index">The zero-based index at which item should be inserted.</param>
+            <param name="item">The object to insert into the System.Collections.Generic.IList&lt;T&gt;.</param>
+        </member>
+        <member name="M:Ikon.Ston.Values.ArrayValue.RemoveAt(System.Int32)">
+            <summary>
+            Removes the System.Collections.Generic.IList&lt;T&gt; item at the specified index.
+            </summary>
+            <param name="index">The zero-based index of the item to remove.</param>
+        </member>
+        <member name="M:Ikon.Ston.Values.ArrayValue.Add(Ikon.IkonBaseValue)">
+            <summary>
+            Adds an item to the System.Collections.Generic.ICollection&lt;T&gt;.
+            </summary>
+            <param name="item">The object to add to the System.Collections.Generic.ICollection&lt;T&gt;.</param>
+        </member>
+        <member name="M:Ikon.Ston.Values.ArrayValue.Clear">
+            <summary>
+            Removes all items from the System.Collections.Generic.ICollection&lt;T&gt;.
+            </summary>
+        </member>
+        <member name="M:Ikon.Ston.Values.ArrayValue.Contains(Ikon.IkonBaseValue)">
+            <summary>
+            Determines whether the System.Collections.Generic.ICollection&lt;T&gt; contains a specific value.
+            </summary>
+            <param name="item">The object to locate in the System.Collections.Generic.ICollection&lt;T&gt;.</param>
+            <returns>true if item is found in the System.Collections.Generic.ICollection&lt;T&gt;; otherwise, false.</returns>
+        </member>
+        <member name="M:Ikon.Ston.Values.ArrayValue.CopyTo(Ikon.IkonBaseValue[],System.Int32)">
+            <summary>
+            Copies the elements of the System.Collections.Generic.ICollection&lt;T&gt; to an System.Array,
+            starting at a particular System.Array index.
+            </summary>
+            <param name="array">The one-dimensional System.Array that is the destination of the elements copied
+            from System.Collections.Generic.ICollection&lt;T&gt;. The System.Array must have zero-based indexing.
+            </param>
+            <param name="arrayIndex">The zero-based index in array at which copying begins.</param>
+        </member>
+        <member name="M:Ikon.Ston.Values.ArrayValue.Remove(Ikon.IkonBaseValue)">
+            <summary>
+            Removes the first occurrence of a specific object from the System.Collections.Generic.ICollection&lt;T&gt;.
+            </summary>
+            <param name="item">The object to remove from the System.Collections.Generic.ICollection&lt;T&gt;.</param>
+            <returns>true if item was successfully removed from the System.Collections.Generic.ICollection&lt;T&gt;; 
+            otherwise, false. This method also returns false if item is not found in the original 
+            System.Collections.Generic.ICollection&lt;T&gt;.
+            </returns>
+        </member>
+        <member name="M:Ikon.Ston.Values.ArrayValue.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>A System.Collections.Generic.IEnumerator&lt;T&gt; that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Ikon.Ston.Values.ArrayValue.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>An System.Collections.IEnumerator object that can be used to iterate through the collection.
+            </returns>
+        </member>
         <member name="P:Ikon.Ston.Values.ArrayValue.TypeName">
             <summary>
             Type name of the IKON value instance.
             </summary>
         </member>
-        <member name="P:Ikon.Ston.Values.ArrayValue.GetList">
+        <member name="P:Ikon.Ston.Values.ArrayValue.Item(System.Int32)">
             <summary>
-            Gets the array of IKON values.
+            Gets or sets the element at the specified index.
+            </summary>
+            <param name="index">The zero-based index of the element to get or set.</param>
+            <returns>The element at the specified index.</returns>
+        </member>
+        <member name="P:Ikon.Ston.Values.ArrayValue.Count">
+            <summary>
+            Gets the number of elements contained in the System.Collections.Generic.ICollection&lt;T&gt;.
+            </summary>
+        </member>
+        <member name="P:Ikon.Ston.Values.ArrayValue.IsReadOnly">
+            <summary>
+            Gets a value indicating whether the System.Collections.Generic.ICollection&lt;T&gt; is read-only.
             </summary>
         </member>
         <member name="T:Ikon.Ston.Values.ObjectValue">
@@ -175,7 +322,16 @@
             </summary>
             <param name="className">Name of the data class.</param>
         </member>
-        <member name="M:Ikon.Ston.Values.ObjectValue.Add(System.String,Ikon.Value)">
+        <member name="M:Ikon.Ston.Values.ObjectValue.To``1">
+            <summary>
+            Converts IKSTON object value to specified type. Supported target types:
+            
+            Ikon.Ston.Values.ObjectValue
+            </summary>
+            <typeparam name="T">Target type</typeparam>
+            <returns>Converted value</returns>
+        </member>
+        <member name="M:Ikon.Ston.Values.ObjectValue.Add(System.String,Ikon.IkonBaseValue)">
             <summary>
             Builder method for adding an element to IKSTON object.
             </summary>
@@ -214,6 +370,21 @@
         <member name="F:Ikon.Ston.Values.NumericValue.ValueTypeName">
             <summary>
             Type name of IKSTON numeric values.
+            </summary>
+        </member>
+        <member name="F:Ikon.Ston.Values.NumericValue.PositiveInfinity">
+            <summary>
+            Textual representation of IKSTON numeric for positive infinity.
+            </summary>
+        </member>
+        <member name="F:Ikon.Ston.Values.NumericValue.NegativeInfinity">
+            <summary>
+            Textual representation of IKSTON numeric for negative infinity.
+            </summary>
+        </member>
+        <member name="F:Ikon.Ston.Values.NumericValue.NotANumber">
+            <summary>
+            Textual representation of IKSTON numeric for not a number.
             </summary>
         </member>
         <member name="M:Ikon.Ston.Values.NumericValue.#ctor(System.String)">
@@ -258,34 +429,49 @@
             </summary>
             <param name="value">The value</param>
         </member>
-        <member name="M:Ikon.Ston.Values.NumericValue.op_Implicit(Ikon.Ston.Values.NumericValue)~System.Decimal">
+        <member name="M:Ikon.Ston.Values.NumericValue.To``1">
             <summary>
-            Implicit conversion from IKSTON numeric value to System.Decimal value.
+            Converts IKSTON numeric value to specified type. Supported target types:
+            
+            System.decimal
+            System.double
+            System.float
+            System.int
+            System.long
+            System.short
+            Ikon.Ston.Values.NumericValue
+            </summary>
+            <typeparam name="T">Target type</typeparam>
+            <returns>Converted value</returns>
+        </member>
+        <member name="M:Ikon.Ston.Values.NumericValue.GetDecimal(System.String)">
+            <summary>
+            Gets System.Decimal value from IKON numeric value.
             </summary>
         </member>
-        <member name="M:Ikon.Ston.Values.NumericValue.op_Implicit(Ikon.Ston.Values.NumericValue)~System.Double">
+        <member name="M:Ikon.Ston.Values.NumericValue.GetDouble(System.String)">
             <summary>
-            Implicit conversion from IKSTON numeric value to System.Double value.
+            Gets System.Double value from IKON numeric value.
             </summary>
         </member>
-        <member name="M:Ikon.Ston.Values.NumericValue.op_Implicit(Ikon.Ston.Values.NumericValue)~System.Single">
+        <member name="M:Ikon.Ston.Values.NumericValue.GetFloat(System.String)">
             <summary>
-            Implicit conversion from IKSTON numeric value to System.Single value.
+            Gets System.Single value from IKON numeric value.
             </summary>
         </member>
-        <member name="M:Ikon.Ston.Values.NumericValue.op_Implicit(Ikon.Ston.Values.NumericValue)~System.Int32">
+        <member name="M:Ikon.Ston.Values.NumericValue.GetInt(System.String)">
             <summary>
-            Implicit conversion from IKSTON numeric value to System.Int32 value.
+            Gets System.Int32 value from IKON numeric value.
             </summary>
         </member>
-        <member name="M:Ikon.Ston.Values.NumericValue.op_Implicit(Ikon.Ston.Values.NumericValue)~System.Int64">
+        <member name="M:Ikon.Ston.Values.NumericValue.GetLong(System.String)">
             <summary>
-            Implicit conversion from IKSTON numeric value to System.Int64 value.
+            Gets System.Int64 value from IKON numeric value.
             </summary>
         </member>
-        <member name="M:Ikon.Ston.Values.NumericValue.op_Implicit(Ikon.Ston.Values.NumericValue)~System.Int16">
+        <member name="M:Ikon.Ston.Values.NumericValue.GetShort(System.String)">
             <summary>
-            Implicit conversion from IKSTON numeric value to System.Int16 value.
+            Gets System.Int16 value from IKON numeric value.
             </summary>
         </member>
         <member name="M:Ikon.Ston.Values.NumericValue.DoCompose(Ikon.IkonWriter)">
@@ -297,41 +483,6 @@
         <member name="P:Ikon.Ston.Values.NumericValue.TypeName">
             <summary>
             Type name of the IKSTON numeric value instance.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.NumericValue.GetDecimal">
-            <summary>
-            Gets System.Decimal value from IKON numeric value.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.NumericValue.GetDouble">
-            <summary>
-            Gets System.Double value from IKON numeric value.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.NumericValue.GetFloat">
-            <summary>
-            Gets System.Single value from IKON numeric value.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.NumericValue.GetInt">
-            <summary>
-            Gets System.Int32 value from IKON numeric value.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.NumericValue.GetLong">
-            <summary>
-            Gets System.Int64 value from IKON numeric value.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.NumericValue.GetShort">
-            <summary>
-            Gets System.Int16 value from IKON numeric value.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.NumericValue.InvariantString">
-            <summary>
-            Gets textual representation of contained numeric value.
             </summary>
         </member>
         <member name="T:Ikon.Ston.Values.TextValue">
@@ -350,6 +501,16 @@
             </summary>
             <param name="value">Contents</param>
         </member>
+        <member name="M:Ikon.Ston.Values.TextValue.To``1">
+            <summary>
+            Converts IKSTON text value to specified type. Supported target types:
+            
+            System.string
+            Ikon.Ston.Values.TextValue
+            </summary>
+            <typeparam name="T">Target type</typeparam>
+            <returns>Converted value</returns>
+        </member>
         <member name="M:Ikon.Ston.Values.TextValue.op_Implicit(Ikon.Ston.Values.TextValue)~System.String">
             <summary>
             Implicit conversion from IKON textual value to System.String value.
@@ -364,11 +525,6 @@
         <member name="P:Ikon.Ston.Values.TextValue.TypeName">
             <summary>
             Type name of the IKON value instance.
-            </summary>
-        </member>
-        <member name="P:Ikon.Ston.Values.TextValue.GetText">
-            <summary>
-            Gets System.String value from IKSTON textual value.
             </summary>
         </member>
         <member name="T:Ikon.Ston.Factories.NumericFactory">
@@ -408,6 +564,11 @@
             Parser that can parse input with IKSTON syntax.
             </summary>
         </member>
+        <member name="F:Ikon.Ston.Parser.ReferenceSign">
+            <summary>
+            Character that marks the beginning of the reference name.
+            </summary>
+        </member>
         <member name="M:Ikon.Ston.Parser.#ctor(System.IO.TextReader)">
             <summary>
             Constructs IKSTON parser with default IKSTON value factories.
@@ -420,6 +581,37 @@
             </summary>
             <param name="reader">Input stream with IKON syntax.</param>
             <param name="factories">Collection of value factories.</param>
+        </member>
+        <member name="M:Ikon.Ston.Parser.TryParseNext">
+            <summary>
+            Trys to parse next IKON value from the input stream. 
+            
+            Throws System.FormatException if there is no value factory
+            that can parse curren state of the input.
+            </summary>
+            <returns>Return an IKON value if there is one, null otherwise.</returns>
+        </member>
+        <member name="M:Ikon.Ston.Parser.GetNamedValue(System.String)">
+            <summary>
+            Returns the IKON value with specified reference name. 
+            
+            Throws System.Collections.Generic.KeyNotFoundException 
+            if such value doesn't exist.
+            </summary>
+            <param name="name">Name of the value reference</param>
+            <returns>Desired IKON value.</returns>
+        </member>
+        <member name="M:Ikon.Ston.Parser.ReadIdentifier(Ikon.IkonReader)">
+            <summary>
+            Reads the input stream for an IKON identifier. Throws System.FormatException if there is
+            no valid identifier.
+            </summary>
+            <returns>An identifier name</returns>
+        </member>
+        <member name="P:Ikon.Ston.Parser.NamedValues">
+            <summary>
+            Collection of named objects.
+            </summary>
         </member>
     </members>
 </doc>

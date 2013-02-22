@@ -23,7 +23,7 @@ namespace Stareater.Localization
 					foreach (var code in LanguageCodes)
 					{
 						Language lang = LoadLanguage(code);
-						names.Add(new KeyValuePair<string, string>(lang.Code, lang["General"]["LanguageName"]));
+						names.Add(new KeyValuePair<string, string>(lang.Code, lang["General"]["LanguageName"].Text()));
 					}
 
 					languageNames = new ReadOnlyCollection<KeyValuePair<string, string>>(names);

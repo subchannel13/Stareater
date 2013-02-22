@@ -4,27 +4,6 @@
         <name>Ikon</name>
     </assembly>
     <members>
-        <member name="T:Ikon.Utilities.Indentation">
-            <summary>
-            Indentation helper.
-            </summary>
-        </member>
-        <member name="M:Ikon.Utilities.Indentation.ToString">
-            <summary>
-            Gets indentation string.
-            </summary>
-            <returns>Indentation string.</returns>
-        </member>
-        <member name="M:Ikon.Utilities.Indentation.Increase">
-            <summary>
-            Increases indentation by one level.
-            </summary>
-        </member>
-        <member name="M:Ikon.Utilities.Indentation.Decrease">
-            <summary>
-            Decreases indentation by one level.
-            </summary>
-        </member>
         <member name="T:Ikon.Parser">
             <summary>
             Basic parser for texts streams with IKON syntax.
@@ -71,16 +50,6 @@
             </summary>
             <returns>An IKON value</returns>
         </member>
-        <member name="M:Ikon.Parser.GetNamedValue(System.String)">
-            <summary>
-            Returns the IKON value with specified reference name. 
-            
-            Throws System.Collections.Generic.KeyNotFoundException 
-            if such value doesn't exist.
-            </summary>
-            <param name="name">Name of the value reference</param>
-            <returns>Desired IKON value.</returns>
-        </member>
         <member name="M:Ikon.Parser.TryParseNext">
             <summary>
             Trys to parse next IKON value from the input stream. 
@@ -109,29 +78,76 @@
             Collection on value factories.
             </summary>
         </member>
-        <member name="P:Ikon.Parser.NamedValues">
-            <summary>
-            Collection of named objects.
-            </summary>
-        </member>
         <member name="P:Ikon.Parser.Reader">
             <summary>
             Input stream that is being parsed.
             </summary>
         </member>
-        <member name="T:Ikon.Utilities.WhiteSpaceSkipResult">
+        <member name="T:Ikon.ValueQueue">
             <summary>
-            Describes whitespace skipping run.
+            Represents a first-in, first-out collection of IKON values.
             </summary>
         </member>
-        <member name="F:Ikon.Utilities.WhiteSpaceSkipResult.EndOfStream">
+        <member name="M:Ikon.ValueQueue.#ctor">
             <summary>
-            Skipping whitespaces encountered end of stream/input.
+            Initializes a new empty instance of Ikon.ValueQueue.
             </summary>
         </member>
-        <member name="F:Ikon.Utilities.WhiteSpaceSkipResult.NonwhiteChar">
+        <member name="M:Ikon.ValueQueue.#ctor(System.Collections.Generic.IEnumerable{Ikon.IkonBaseValue})">
             <summary>
-            Skipping whitespaces has found non-whitespace character.
+            Initializes an instance of Ikon.ValueQueue filled with given elements.
+            </summary>
+            <param name="values">IKON values for populating the Ikon.ValueQueue.</param>
+        </member>
+        <member name="M:Ikon.ValueQueue.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>A System.Collections.Generic.IEnumerator&lt;T&gt; that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Ikon.ValueQueue.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>An System.Collections.IEnumerator object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Ikon.ValueQueue.CountOf(System.String)">
+            <summary>
+            Gets the number of elements on given type contained in the Ikon.ValueQueue.
+            </summary>
+            <param name="typeName">Type name of IKON values to count.</param>
+            <returns>Number of elements in question.</returns>
+        </member>
+        <member name="M:Ikon.ValueQueue.Dequeue">
+            <summary>
+            Removes and returns the object at the beginning of the Ikon.ValueQueue.
+            </summary>
+            <returns>The object that is removed from the beginning of the Ikon.ValueQueue.</returns>
+        </member>
+        <member name="M:Ikon.ValueQueue.Dequeue(System.String)">
+            <summary>
+            Removes and returns the first element of the Ikon.ValueQueue with specified type name.
+            </summary>
+            <param name="typeName">Type name of IKON value to dequeue.</param>
+            <returns>The IKON value.</returns>
+        </member>
+        <member name="M:Ikon.ValueQueue.Enqueue(Ikon.IkonBaseValue)">
+            <summary>
+            Adds an object to the end of the Ikon.ValueQueue.
+            </summary>
+            <param name="item">The object to add to the Ikon.ValueQueue. The value can be null for reference types.
+            </param>
+        </member>
+        <member name="P:Ikon.ValueQueue.Count">
+            <summary>
+            Gets the number of elements contained in the Ikon.ValueQueue.
+            </summary>
+        </member>
+        <member name="P:Ikon.ValueQueue.IsEmpty">
+            <summary>
+            Tests whether there are any elements in Ikon.ValueQueue.
             </summary>
         </member>
         <member name="T:Ikon.IValueFactory">
@@ -179,12 +195,6 @@
             </summary>
             <param name="text">Raw text.</param>
         </member>
-        <member name="M:Ikon.IkonWriter.WriteReferences(System.Collections.Generic.ICollection{System.String})">
-            <summary>
-            Writes reference names to the output stream.
-            </summary>
-            <param name="referenceNames">List of reference names.</param>
-        </member>
         <member name="M:Ikon.IkonWriter.EndLine">
             <summary>
             Writes buffered line to the output stream.
@@ -213,12 +223,7 @@
         </member>
         <member name="F:Ikon.IkonReader.EndOfStreamResult">
             <summary>
-            Value that System.IO.TextReader read methods return when end of the stream is reached.
-            </summary>
-        </member>
-        <member name="F:Ikon.IkonReader.ReferenceSign">
-            <summary>
-            Character that marks the beginning of the reference name.
+            Value returned by System.IO.TextReader methods when the end of the stream is reached.
             </summary>
         </member>
         <member name="M:Ikon.IkonReader.#ctor(System.IO.TextReader)">
@@ -232,18 +237,6 @@
             Gets next character in the input stream without moving to the next.
             </summary>
         </member>
-        <member name="M:Ikon.IkonReader.Read">
-            <summary>
-            Reads next character from the input stream.
-            </summary>
-            <returns>Read character.</returns>
-        </member>
-        <member name="M:Ikon.IkonReader.SkipWhiteSpaces">
-            <summary>
-            Skips consequentive whitespace characters from the input stream. 
-            </summary>
-            <returns>Descrtipion of the skipping process.</returns>
-        </member>
         <member name="M:Ikon.IkonReader.PeekNextNonwhite">
             <summary>
             Skips white space characters in the input stream and peeks the next character. 
@@ -252,18 +245,61 @@
             </summary>
             <returns>A non-white character</returns>
         </member>
-        <member name="M:Ikon.IkonReader.ReadIdentifier">
+        <member name="M:Ikon.IkonReader.Read">
             <summary>
-            Reads the input stream for an IKON identifier. Throws System.FormatException if there is
-            no valid identifier.
+            Reads next character from the input stream.
             </summary>
-            <returns>An identifier name</returns>
+            <returns>Read character.</returns>
         </member>
-        <member name="M:Ikon.IkonReader.ReadReferences">
+        <member name="M:Ikon.IkonReader.ReadWhile(System.Char[])">
             <summary>
-            Returns all consequentive reference names from the current state of the input stream.
+            Reads characters from the input stream until the stopping condition is met. 
             </summary>
-            <returns>Reference names.</returns>
+            <param name="readCondition">Characters that can be read.</param>
+            <returns>Successfully read part of the stream.</returns>
+        </member>
+        <member name="M:Ikon.IkonReader.ReadWhile(System.Collections.Generic.ISet{System.Char})">
+            <summary>
+            Reads characters from the input stream until the stopping condition is met.
+            </summary>
+            <param name="readCondition">Set of characters that can be read.</param>
+            <returns>Successfully read part of the stream.</returns>
+        </member>
+        <member name="M:Ikon.IkonReader.ReadWhile(System.Func{System.Char,Ikon.Utilities.ReadingDecision})">
+            <summary>
+            Reads characters from the input stream until the stopping condition is met.
+            </summary>
+            <param name="readingController">Returns whether character should be read
+            (if predicate is true). When predicate evaluates to flase, reading stops.</param>
+            <returns>Successfully read part of the stream.</returns>
+        </member>
+        <member name="M:Ikon.IkonReader.SkipWhiteSpaces">
+            <summary>
+            Skips consequentive whitespace characters from the input stream. 
+            </summary>
+            <returns>Descrtipion of the skipping process.</returns>
+        </member>
+        <member name="M:Ikon.IkonReader.SkipWhile(System.Char[])">
+            <summary>
+            Skips consequentive characters from the input stream.
+            </summary>
+            <param name="skippableCharacters">Character(s) that should be skipped.</param>
+            <returns>Descrtipion of the skipping process.</returns>
+        </member>
+        <member name="M:Ikon.IkonReader.SkipWhile(System.Collections.Generic.ISet{System.Char})">
+            <summary>
+            Skips consequentive characters from the input stream.
+            </summary>
+            <param name="skippableCharacters">Set of characters that should be skipped.</param>
+            <returns>Descrtipion of the skipping process.</returns>
+        </member>
+        <member name="M:Ikon.IkonReader.SkipWhile(System.Predicate{System.Char})">
+            <summary>
+            Skips consequentive characters from the input stream.
+            </summary>
+            <param name="skipCondition">Returns whether character should be skipped
+            (if predicate is true). When predicate evaluates to flase, process stops.</param>
+            <returns>Descrtipion of the skipping process.</returns>
         </member>
         <member name="M:Ikon.IkonReader.Dispose(System.Boolean)">
             <summary>
@@ -279,37 +315,154 @@
             resetting unmanaged resources.
             </summary>
         </member>
+        <member name="P:Ikon.IkonReader.Index">
+            <summary>
+            Index of the last read character.
+            </summary>
+        </member>
+        <member name="P:Ikon.IkonReader.Line">
+            <summary>
+            Line of the last read character.
+            </summary>
+        </member>
+        <member name="P:Ikon.IkonReader.Column">
+            <summary>
+            Column within the line of the last read character.
+            </summary>
+        </member>
+        <member name="P:Ikon.IkonReader.PositionDescription">
+            <summary>
+            Gets text that describes position (line, column and index) of the last
+            successfuly read character from the stream.
+            </summary>
+        </member>
         <member name="P:Ikon.IkonReader.HasNext">
             <summary>
             Indicates whether is it possible to read another character from the
             input stream.
             </summary>
         </member>
-        <member name="T:Ikon.Value">
+        <member name="T:Ikon.IkonBaseValue">
             <summary>
             Base class for IKON values.
             </summary>
         </member>
-        <member name="M:Ikon.Value.DoCompose(Ikon.IkonWriter)">
+        <member name="M:Ikon.IkonBaseValue.To``1">
+            <summary>
+            Converts IKON value to specified type.
+            </summary>
+            <typeparam name="T">Target type</typeparam>
+            <returns>Converted value</returns>
+        </member>
+        <member name="M:Ikon.IkonBaseValue.DoCompose(Ikon.IkonWriter)">
             <summary>
             Writes value's content to the output stream.
             </summary>
             <param name="writer">Wrapped around target output stream.</param>
         </member>
-        <member name="M:Ikon.Value.Compose(Ikon.IkonWriter)">
+        <member name="M:Ikon.IkonBaseValue.Compose(Ikon.IkonWriter)">
             <summary>
             Writes an IKON value to the output stream.
             </summary>
             <param name="writer">Wrapped around target output stream.</param>
         </member>
-        <member name="P:Ikon.Value.TypeName">
+        <member name="P:Ikon.IkonBaseValue.TypeName">
             <summary>
             Type name of the IKON value instance.
             </summary>
         </member>
-        <member name="P:Ikon.Value.ReferenceNames">
+        <member name="T:Ikon.Utilities.ReaderDoneReason">
             <summary>
-            Set of objects that can be used as reference to the value.
+            Describes whitespace skipping run.
+            </summary>
+        </member>
+        <member name="F:Ikon.Utilities.ReaderDoneReason.EndOfStream">
+            <summary>
+            Skipping whitespaces encountered end of stream/input.
+            </summary>
+        </member>
+        <member name="F:Ikon.Utilities.ReaderDoneReason.Successful">
+            <summary>
+            Skipping or reading was successful, character that doesn't satisfy
+            skipping or reading conditions has been found.
+            </summary>
+        </member>
+        <member name="T:Ikon.Utilities.Indentation">
+            <summary>
+            Indentation helper.
+            </summary>
+        </member>
+        <member name="M:Ikon.Utilities.Indentation.ToString">
+            <summary>
+            Gets indentation string.
+            </summary>
+            <returns>Indentation string.</returns>
+        </member>
+        <member name="M:Ikon.Utilities.Indentation.Increase">
+            <summary>
+            Increases indentation by one level.
+            </summary>
+        </member>
+        <member name="M:Ikon.Utilities.Indentation.Decrease">
+            <summary>
+            Decreases indentation by one level.
+            </summary>
+        </member>
+        <member name="T:Ikon.Utilities.ReadingDecision">
+            <summary>
+            Describes action to be performed for certain character.
+            </summary>
+        </member>
+        <member name="F:Ikon.Utilities.ReadingDecision.Character">
+            <summary>
+            Character in question or new character is supstitution is in to be perforemd.
+            </summary>
+        </member>
+        <member name="F:Ikon.Utilities.ReadingDecision.Decision">
+            <summary>
+            The action to be performed.
+            </summary>
+        </member>
+        <member name="M:Ikon.Utilities.ReadingDecision.#ctor(System.Char,Ikon.Utilities.CharacterAction)">
+            <summary>
+            Initializes reading decision result.
+            </summary>
+            <param name="character">Character in question or new character is supstitution is in to be perforemd.</param>
+            <param name="decision">The action to be performed.</param>
+        </member>
+        <member name="T:Ikon.Utilities.CharacterAction">
+            <summary>
+            Action to be performed with a character.
+            </summary>
+        </member>
+        <member name="F:Ikon.Utilities.CharacterAction.NoAction">
+            <summary>
+            Perform no action. Reader won't advance to the next character.
+            </summary>
+        </member>
+        <member name="F:Ikon.Utilities.CharacterAction.Skip">
+            <summary>
+            Don't add anything to the result and continue reading.
+            </summary>
+        </member>
+        <member name="F:Ikon.Utilities.CharacterAction.AcceptAsIs">
+            <summary>
+            Add the character as it is to the ressult.
+            </summary>
+        </member>
+        <member name="F:Ikon.Utilities.CharacterAction.Supstitute">
+            <summary>
+            Add specified character to th result instead of read character.
+            </summary>
+        </member>
+        <member name="F:Ikon.Utilities.CharacterAction.AllInputActions">
+            <summary>
+            Mask for input interpreting actions (accept, supstitute, skip).
+            </summary>
+        </member>
+        <member name="F:Ikon.Utilities.CharacterAction.Stop">
+            <summary>
+            Reading is finished
             </summary>
         </member>
     </members>

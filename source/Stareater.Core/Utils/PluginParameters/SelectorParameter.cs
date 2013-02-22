@@ -34,7 +34,7 @@ namespace Stareater.Utils.PluginParameters
 			foreach (var unlocalizedValue in values)
 				yield return new KeyValuePair<int, string>(
 					unlocalizedValue.Key,
-					Settings.Get.Language[contextKey][unlocalizedValue.Value]);
+					Settings.Get.Language[contextKey][unlocalizedValue.Value].Text());
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

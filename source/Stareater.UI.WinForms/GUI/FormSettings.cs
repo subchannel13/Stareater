@@ -48,12 +48,12 @@ namespace Stareater.GUI
 		{
 			Context context = selectedLanguage["FormSettings"];
 
-			this.Text = context["FormTitle"];
+			this.Text = context["FormTitle"].Text();
 			this.Font = new Font(SystemFonts.DefaultFont.FontFamily, SystemFonts.DefaultFont.Size * selectedGuiScale);
 
-			languageTitle.Text = context["LanguageLabel"];
-			guiScaleTitle.Text = context["GuiScaleLabel"];
-			confirmButton.Text = selectedLanguage["General"]["DialogOK"];
+			languageTitle.Text = context["LanguageLabel"].Text();
+			guiScaleTitle.Text = context["GuiScaleLabel"].Text();
+			confirmButton.Text = selectedLanguage["General"]["DialogOK"].Text();
 		}
 
 		private void FormSettings_Load(object sender, EventArgs e)

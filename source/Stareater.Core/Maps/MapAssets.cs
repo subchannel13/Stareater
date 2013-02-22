@@ -12,7 +12,7 @@ namespace Stareater.Maps
 	public class MapAssets
 	{
 		private const string StartConditionsFilePath = "./data/start_conditions.txt";
-		private const string MapsFolder = "./maps/";
+		public const string MapsFolder = "./maps/";
 
 		#region Attribute keys
 		const string StartingConditionsKey = "StartinConditions";
@@ -32,7 +32,7 @@ namespace Stareater.Maps
 
 				foreach (double p in Methods.ProgressReportHelper(0.5, 0.5, conditions.Count, () =>
 				{
-					conditionList.Add(new StartingConditions(conditions.Dequeue() as ObjectValue));
+					conditionList.Add(new StartingConditions(conditions.Dequeue().To<ObjectValue>()));
 				}))
 					yield return p;
 			}

@@ -35,7 +35,7 @@ namespace Stareater.GUI
 			foreach(var playerType in controller.PlayerTypes)
 				controllerPicker.Items.Add(new Tag<PlayerType>(playerType, playerType.Name));
 
-			organizationPicker.Items.Add(new Tag<Organization>(null, SettingsWinforms.Get.Language["General"]["RandomOrganization"]));
+			organizationPicker.Items.Add(new Tag<Organization>(null, SettingsWinforms.Get.Language["General"]["RandomOrganization"].Text()));
 			foreach (var org in Organization.List)
 				organizationPicker.Items.Add(new Tag<Organization>(org, org.Name));
 
@@ -53,11 +53,11 @@ namespace Stareater.GUI
 			Context context = SettingsWinforms.Get.Language["FormSetupPlayers"];
 
 			this.Font = SettingsWinforms.Get.FormFont;
-			this.Text = context["FormTitle"];
+			this.Text = context["FormTitle"].Text();
 
-			controllerLabel.Text = context["controllerLabel"] + ":";
-			nameLabel.Text = context["nameLabel"] + ":";
-			organizationLabel.Text = context["organizationLabel"] + ":";
+			controllerLabel.Text = context["controllerLabel"].Text() + ":";
+			nameLabel.Text = context["nameLabel"].Text() + ":";
+			organizationLabel.Text = context["organizationLabel"].Text() + ":";
 		}
 
 		private void selectColor(Color color)

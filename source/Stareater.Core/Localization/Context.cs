@@ -4,7 +4,7 @@ using Ikon;
 
 namespace Stareater.Localization
 {
-	public class Context : Value
+	public class Context : IkonBaseValue
 	{
 		private string name;
 		private Dictionary<string, IText> entries;
@@ -17,7 +17,7 @@ namespace Stareater.Localization
 
 		protected override void DoCompose(IkonWriter writer)
 		{
-			//NoOP
+			throw new InvalidOperationException("Localization context is not meant to be serialized.");
 		}
 
 		public override string TypeName
@@ -25,12 +25,22 @@ namespace Stareater.Localization
 			get { return name; }
 		}
 
+		public override T To<T>()
+		{
+			Type target = typeof(T);
+
+			if (target.IsAssignableFrom(this.GetType()))
+				return (T)(object)this;
+			else
+				throw new InvalidOperationException("Cast to " + target.Name + " is not supported for " + TypeName);
+		}
+
 		public bool HasEntry(string entryKey)
 		{
 			return entries.ContainsKey(entryKey);
 		}
 
-		public string this[string entryKey, params double[] variables]
+		public IText this[string entryKey]
 		{
 			get {
 				if (entryKey == null)
@@ -38,9 +48,9 @@ namespace Stareater.Localization
 
 				entryKey = entryKey.ToLower();
 				if (entries.ContainsKey(entryKey))
-					return entries[entryKey].Get(variables);
+					return entries[entryKey];
 				else if (this != LocalizationManifest.DefaultLanguage[name])
-					return LocalizationManifest.DefaultLanguage[name][entryKey, variables];
+					return LocalizationManifest.DefaultLanguage[name][entryKey];
 				else
 					throw new KeyNotFoundException("entryKey: " + entryKey);
 			}

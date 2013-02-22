@@ -8,15 +8,15 @@ namespace Stareater.Localization.Reading
 	{
 		public const char ClosingChar = '-';
 
-		public Value Parse(Ikon.Parser parser)
+		public IkonBaseValue Parse(Ikon.Parser parser)
 		{
-			string contextName = parser.Reader.ReadIdentifier();
+			string contextName = Ikon.Ston.Parser.ReadIdentifier(parser.Reader);
 			Dictionary<string, IText> entries = new Dictionary<string, IText>();
 
 			while (parser.Reader.PeekNextNonwhite() != ClosingChar)
 				entries.Add(
-					parser.Reader.ReadIdentifier().ToLower(),
-					parser.ParseNext() as IText);
+					Ikon.Ston.Parser.ReadIdentifier(parser.Reader).ToLower(),
+					parser.ParseNext().To<IText>());
 
 			parser.Reader.Read();
 

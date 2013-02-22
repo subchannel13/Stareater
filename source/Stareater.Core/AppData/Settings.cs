@@ -29,12 +29,13 @@ namespace Stareater.AppData
 		public LastGameInfo LastGame { get; private set; }
 
 		#region Initialization
-		protected Settings(Dictionary<string, ObjectValue> data)
+		protected Settings(ValueQueue data)
 		{
-			if (data.ContainsKey(BaseSettingsKey)) {
-				string langCode = (data[BaseSettingsKey][LanguageKey] as TextValue).GetText;
+			if (data.CountOf(BaseSettingsKey)>0) {
+				var baseData = data.Dequeue(BaseSettingsKey).To<ObjectValue>();
+				string langCode = baseData[LanguageKey].To<string>();
 				this.Language = LocalizationManifest.LoadLanguage(langCode);
-				this.LastGame = new LastGameInfo(data[BaseSettingsKey][LastGameKey] as ObjectValue);
+				this.LastGame = new LastGameInfo(baseData[LastGameKey].To<ObjectValue>());
 			}
 			else {
 				this.Language = LocalizationManifest.DefaultLanguage;
@@ -42,16 +43,15 @@ namespace Stareater.AppData
 			}
 		}
 
-		protected static Dictionary<string, ObjectValue> loadFile()
+		protected static ValueQueue loadFile()
 		{
-			Dictionary<string, ObjectValue> data = new Dictionary<string,ObjectValue>();
+			ValueQueue data;
 
 			if (File.Exists(SettingsFilePath))
-			{
 				using (Ikon.Ston.Parser parser = new Ikon.Ston.Parser(new StreamReader(SettingsFilePath)))
-					foreach (var value in parser.ParseAll())
-						data.Add(value.TypeName.ToLower(), value as ObjectValue);
-			}
+					data = parser.ParseAll();
+			else
+				data = new ValueQueue();
 
 			return data;
 		}

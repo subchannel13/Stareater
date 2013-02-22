@@ -8,6 +8,8 @@ namespace Stareater.Localization.Reading
 		{
 			RegisterFactory(new ContextFactory());
 			RegisterFactory(new SingleLineFactory());
+			RegisterFactory(new TextBlockFactory());
+			RegisterFactory(new ExpressionTextFactory());
 		}
 	}
 }

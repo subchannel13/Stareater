@@ -31,11 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IKON, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="IKON, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\IKON.dll</HintPath>
     </Reference>
-    <Reference Include="IKON.STON, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="IKON.STON, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\IKON.STON.dll</HintPath>
     </Reference>
@@ -52,6 +52,10 @@
     <Compile Include="AppData\AssetController.cs" />
     <Compile Include="AppData\LastGameInfo.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
+    <Compile Include="Localization\ChainText.cs" />
+    <Compile Include="Localization\ExpressionText.cs" />
+    <Compile Include="Localization\Reading\ExpressionTextFactory.cs" />
+    <Compile Include="Localization\Reading\TextBlockFactory.cs" />
     <Compile Include="Maps\IStarConnector.cs" />
     <Compile Include="Maps\IStarPopulator.cs" />
     <Compile Include="Maps\IStarPositioner.cs" />
@@ -66,6 +70,7 @@
     <Compile Include="Players\IOffscreenPlayer.cs" />
     <Compile Include="Players\Organization.cs" />
     <Compile Include="Players\PlayerType.cs" />
+    <Compile Include="Utils\TableSubset.cs" />
     <Compile Include="Utils\Collections\IDelayedRemoval.cs" />
     <Compile Include="Utils\Collections\PendableSet.cs" />
     <Compile Include="Localization\IText.cs" />
@@ -80,10 +85,12 @@
     <Compile Include="AppData\Settings.cs" />
     <Compile Include="Utils\Collections\PickList.cs" />
     <Compile Include="Utils\Methods.cs" />
+    <Compile Include="Utils\NumberFormatters\DecimalsFormatter.cs" />
     <Compile Include="Utils\PluginParameters\ParameterBase.cs" />
     <Compile Include="Utils\PluginParameters\ParameterList.cs" />
     <Compile Include="Utils\PluginParameters\RangeParameter.cs" />
     <Compile Include="Utils\PluginParameters\SelectorParameter.cs" />
+    <Compile Include="Utils\NumberFormatters\ThousandsFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Libs\IKON.dll" />
