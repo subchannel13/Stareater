@@ -19,7 +19,7 @@ namespace Stareater.Localization
 				Parser parser = new Parser(stream);
 
 				while (parser.HasNext()) {
-					var conext = parser.ParseNext() as Context;
+					var conext = parser.ParseNext().To<Context>();
 					contexts.Add(conext.TypeName, conext);
 				}
 				stream.Close();

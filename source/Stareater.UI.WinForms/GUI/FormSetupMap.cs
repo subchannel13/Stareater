@@ -59,9 +59,9 @@ namespace Stareater.GUI
 			Context context = SettingsWinforms.Get.Language["FormSetupMap"];
 
 			this.Font = SettingsWinforms.Get.FormFont;
-			this.Text = context["FormTitle"];
+			this.Text = context["FormTitle"].Text();
 
-			acceptButton.Text = context["acceptButton"];
+			acceptButton.Text = context["acceptButton"].Text();
 		}
 
 		private void populateParameters()

@@ -6,7 +6,7 @@ namespace Stareater.Localization.Reading
 {
 	class SingleLineFactory : IValueFactory
 	{
-		public Value Parse(Ikon.Parser parser)
+		public IkonBaseValue Parse(Ikon.Parser parser)
 		{
 			StringBuilder line = new StringBuilder();
 

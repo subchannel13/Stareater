@@ -15,7 +15,7 @@ namespace Stareater.Utils.PluginParameters
 
 		public string Name
 		{
-			get { return Settings.Get.Language[contextKey][nameKey]; }
+			get { return Settings.Get.Language[contextKey][nameKey].Text(); }
 		}
 	}
 }

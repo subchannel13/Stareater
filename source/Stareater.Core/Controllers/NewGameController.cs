@@ -126,7 +126,7 @@ namespace Stareater.Controllers
 				players.RemoveAt(index);
 		}
 
-		private static PlayerType localHuman = new PlayerType(PlayerControlType.LocalHuman, Settings.Get.Language["PlayerTypes"]["localHuman"]);
+		private static PlayerType localHuman = new PlayerType(PlayerControlType.LocalHuman, Settings.Get.Language["PlayerTypes"]["localHuman"].Text());
 		#endregion
 
 		#region Map

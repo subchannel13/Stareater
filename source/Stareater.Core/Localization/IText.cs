@@ -1,7 +1,12 @@
-﻿namespace Stareater.Localization
+﻿using System.Collections.Generic;
+
+namespace Stareater.Localization
 {
-	interface IText
+	public interface IText
 	{
-		string Get(params double[] variables);
+		string Text();
+		string Text(double trivialVariable);
+		string Text(IDictionary<string, double> variables);
+		IEnumerable<string> VariableNames();
 	}
 }

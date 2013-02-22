@@ -9,8 +9,8 @@ using System.Windows.Forms;
 using Stareater.Localization;
 using Stareater.AppData;
 using Stareater.Maps;
-using Stareater.StringTools;
 using Stareater.Controllers;
+using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI
 {
@@ -41,14 +41,14 @@ namespace Stareater.GUI
 			Context context = SettingsWinforms.Get.Language["FormStartingConditions"];
 
 			this.Font = SettingsWinforms.Get.FormFont;
-			this.Text = context["FormTitle"];
+			this.Text = context["FormTitle"].Text();
 
-			coloniesSelector.Text = context["coloniesSelector"];
-			populationLabel.Text = context["populationLabel"];
-			infrastructureLabel.Text = context["infrastructureLabel"];
+			coloniesSelector.Text = context["coloniesSelector"].Text();
+			populationLabel.Text = context["populationLabel"].Text();
+			infrastructureLabel.Text = context["infrastructureLabel"].Text();
 
-			acceptButton.Text = context["acceptButton"];
-			cancelButton.Text = context["cancelButton"];
+			acceptButton.Text = context["acceptButton"].Text();
+			cancelButton.Text = context["cancelButton"].Text();
 		}
 
 		private static long? decodeNumber(string text)

@@ -22,10 +22,15 @@ namespace Stareater.Maps.DefaultPopulator
 
 		public string Name
 		{
-			get { return Settings.Get.Language[LanguageContext]["name"]; }
+			get { return Settings.Get.Language[LanguageContext]["name"].Text(); }
 		}
 
-		public Utils.PluginParameters.ParameterList Parameters
+		public string Description
+		{
+			get { return null; }
+		}
+
+		public ParameterList Parameters
 		{
 			get { return parameters; }
 		}

@@ -10,7 +10,7 @@ using Stareater.Localization;
 using Stareater.Controllers;
 using Stareater.Controllers.Data;
 using Stareater.Maps;
-using Stareater.StringTools;
+using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI
 {
@@ -36,8 +36,8 @@ namespace Stareater.GUI
 				foreach (var start in MapAssets.Starts)
 					setupStartSelector.Items.Add(new Tag<StartingConditions>(start, start.Name));
 				this.customStartIndex = setupStartSelector.Items.Count;
-				setupStartSelector.Items.Add(new Tag<StartingConditions>(controller.CustomStart, SettingsWinforms.Get.Language["StartingConditions"][NewGameController.CustomStartNameKey]));
-				setupStartSelector.Items.Add(new Tag<StartingConditions>(null, SettingsWinforms.Get.Language["StartingConditions"]["customize"]));
+				setupStartSelector.Items.Add(new Tag<StartingConditions>(controller.CustomStart, SettingsWinforms.Get.Language["StartingConditions"][NewGameController.CustomStartNameKey].Text()));
+				setupStartSelector.Items.Add(new Tag<StartingConditions>(null, SettingsWinforms.Get.Language["StartingConditions"]["customize"].Text()));
 
 				if (NewGameController.LastStartingCondition != null)					
 					setupStartSelector.SelectedIndex = setupStartSelector.Items.Count - 1;
@@ -53,11 +53,11 @@ namespace Stareater.GUI
 			Context context = SettingsWinforms.Get.Language["FormNewGame"];
 
 			this.Font = SettingsWinforms.Get.FormFont;
-			this.Text = context["FormTitle"];
+			this.Text = context["FormTitle"].Text();
 
-			setupPlayersButton.Text = context["setupPlayersButton"];
-			setupMapButton.Text = context["setupMapButton"];
-			startButton.Text = context["startButton"];
+			setupPlayersButton.Text = context["setupPlayersButton"].Text();
+			setupMapButton.Text = context["setupMapButton"].Text();
+			startButton.Text = context["startButton"].Text();
 		}
 
 		private void updatePlayerViews()

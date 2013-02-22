@@ -6,7 +6,7 @@ namespace Stareater.Players.DefaultAI
 	{
 		public string Name
 		{
-			get { return Settings.Get.Language["DefaultAI"]["name"]; }
+			get { return Settings.Get.Language["DefaultAI"]["name"].Text(); }
 		}
 
 		public IOffscreenPlayer Create()

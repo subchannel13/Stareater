@@ -31,14 +31,14 @@ namespace Stareater.GUI
 
 			this.Font = SettingsWinforms.Get.FormFont;
 			titleLabel.Font = new Font(titleFont.FontFamily, titleFont.Size * SettingsWinforms.Get.GuiScale, titleFont.Style);
-			this.Text = context["FormTitle"];
-			titleLabel.Text = context["Title"];
+			this.Text = context["FormTitle"].Text();
+			titleLabel.Text = context["Title"].Text();
 
-			newGameButton.Text = context["NewGame"];
-			loadGameButton.Text = context["Load"];
-			saveGameButton.Text = context["Save"];
-			settingsButton.Text = context["Settings"];
-			exitButton.Text = context["Quit"];
+			newGameButton.Text = context["NewGame"].Text();
+			loadGameButton.Text = context["Load"].Text();
+			saveGameButton.Text = context["Save"].Text();
+			settingsButton.Text = context["Settings"].Text();
+			exitButton.Text = context["Quit"].Text();
 		}
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

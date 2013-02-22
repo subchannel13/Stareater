@@ -23,14 +23,14 @@ namespace Stareater.AppData
 		#endregion
 
 		public float GuiScale { get; set; }
-		
-		public SettingsWinforms(Dictionary<string, ObjectValue> data)
+
+		public SettingsWinforms(ValueQueue data)
 			:base(data)
 		{
-			if (data.ContainsKey(WinformsSettingsKey))
+			if (data.CountOf(WinformsSettingsKey) > 0)
 			{
-				ObjectValue wfSpecificData = data[WinformsSettingsKey];
-				GuiScale = (wfSpecificData[GuiScaleKey] as NumericValue).GetFloat;
+				ObjectValue wfSpecificData = data.Dequeue(WinformsSettingsKey).To<ObjectValue>();
+				GuiScale = wfSpecificData[GuiScaleKey].To<float>();
 			}
 			else
 			{

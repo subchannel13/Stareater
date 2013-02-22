@@ -29,14 +29,14 @@ namespace Stareater.Players
 				var data = parser.ParseNext() as ObjectValue;
 				yield return 0.5;
 
-				var colors = (data[ColorsKey] as ArrayValue).GetList;
+				var colors = data[ColorsKey].To<ArrayValue>();
 				foreach (double p in Methods.ProgressReportHelper(0.5, 0.5, colors, (colorArray) =>
 				{
-					var colorData = (colorArray as ArrayValue).GetList;
+					var colorData = colorArray.To<ArrayValue>();
 					colorList.Add(Color.FromArgb(
-						(colorData[0] as NumericValue).GetInt,
-						(colorData[1] as NumericValue).GetInt,
-						(colorData[2] as NumericValue).GetInt
+						(colorData[0] as NumericValue).To<int>(),
+						(colorData[1] as NumericValue).To<int>(),
+						(colorData[2] as NumericValue).To<int>()
 						));
 				}))
 					yield return p;

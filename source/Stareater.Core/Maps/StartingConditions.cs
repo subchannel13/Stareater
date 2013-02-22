@@ -25,17 +25,17 @@ namespace Stareater.Maps
 		}
 
 		public StartingConditions(ObjectValue ikstonData) :
-			this((ikstonData[PopulationKey] as NumericValue).GetLong,
-				(ikstonData[ColoniesKey] as NumericValue).GetInt,
-				(ikstonData[InfrastructureKey] as NumericValue).GetLong,
-				(ikstonData[NameKey] as TextValue).GetText)
+			this((ikstonData[PopulationKey] as NumericValue).To<long>(),
+				(ikstonData[ColoniesKey] as NumericValue).To<int>(),
+				(ikstonData[InfrastructureKey] as NumericValue).To<long>(),
+				(ikstonData[NameKey] as TextValue).To<string>())
 		{ }
 
 		public string Name
 		{
 			get
 			{
-				return Settings.Get.Language["StartingConditions"][nameKey];
+				return Settings.Get.Language["StartingConditions"][nameKey].Text();
 			}
 		}
 

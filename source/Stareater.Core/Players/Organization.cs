@@ -37,8 +37,8 @@ namespace Stareater.Players
 				yield return 0.5;
 
 				foreach (double p in Methods.ProgressReportHelper(0.5, 0.5, data.Count, () =>
-					{ 
-						list.Add(load(data.Dequeue() as ObjectValue)); 
+					{
+						list.Add(load(data.Dequeue().To<ObjectValue>()));
 					}))
 					yield return p;
 				list.Sort((a, b) => { return a.Name.CompareTo(b.Name); });
@@ -56,8 +56,8 @@ namespace Stareater.Players
 		private static Organization load(ObjectValue data)
 		{
 			return new Organization(
-				(data[NameKey] as TextValue).GetText,
-				(data[DescriptionKey] as TextValue).GetText
+				data[NameKey].To<string>(),
+				data[DescriptionKey].To<string>()
 				);
 		}
 		#endregion

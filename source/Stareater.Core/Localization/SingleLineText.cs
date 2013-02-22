@@ -1,8 +1,9 @@
 ﻿using Ikon;
+using System;
 
 namespace Stareater.Localization
 {
-	class SingleLineText : Value, IText
+	class SingleLineText : IkonBaseValue, IText
 	{
 		string text;
 
@@ -13,16 +14,43 @@ namespace Stareater.Localization
 
 		protected override void DoCompose(IkonWriter writer)
 		{
-			//NoOP
+			throw new InvalidOperationException(TypeName + " is not meant to be serialized.");
 		}
 
 		public override string TypeName
 		{
-			get { return "Text"; }
+			get { return "SingleLineText"; }
 		}
 
-		public string Get(params double[] variables) {
+		public override T To<T>()
+		{
+			Type target = typeof(T);
+
+			if (target.IsAssignableFrom(this.GetType()))
+				return (T)(object)this;
+			else
+				throw new InvalidOperationException("Cast to " + target.Name + " is not supported for " + TypeName);
+		}
+
+
+		public System.Collections.Generic.IEnumerable<string> VariableNames()
+		{
+			return new string[] { };
+		}
+
+		public string Text()
+		{
 			return text;
-		}	
+		}
+
+		public string Text(double trivialVariable)
+		{
+			throw new InvalidOperationException("This IText has no variables");
+		}
+
+		public string Text(System.Collections.Generic.IDictionary<string, double> variables)
+		{
+			throw new InvalidOperationException("This IText has no variables");
+		}
 	}
 }

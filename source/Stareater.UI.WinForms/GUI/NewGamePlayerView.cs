@@ -23,7 +23,7 @@ namespace Stareater.GUI
 			nameLabel.Text = playerInfo.Name;
 			organizationLabel.Text = (playerInfo.Organization != null) ?
 				playerInfo.Organization.Name :
-				SettingsWinforms.Get.Language["General"]["RandomOrganization"];
+				SettingsWinforms.Get.Language["General"]["RandomOrganization"].Text();
 		}
 
 		private void flagImage_Click(object sender, EventArgs e)
