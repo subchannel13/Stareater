@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Stareater.Localization;
-using Ikon.Ston;
-using Ikon.Ston.Values;
-using Ikon;
+using Ikadn;
+using Ikadn.Ikon.Values;
 
 namespace Stareater.AppData
 {
@@ -34,11 +33,11 @@ namespace Stareater.AppData
 			if (data.CountOf(BaseSettingsKey)>0) {
 				var baseData = data.Dequeue(BaseSettingsKey).To<ObjectValue>();
 				string langCode = baseData[LanguageKey].To<string>();
-				this.Language = LocalizationManifest.LoadLanguage(langCode);
+				this.Language = LocalizationManifest.Get.LoadLanguage(langCode);
 				this.LastGame = new LastGameInfo(baseData[LastGameKey].To<ObjectValue>());
 			}
 			else {
-				this.Language = LocalizationManifest.DefaultLanguage;
+				this.Language = LocalizationManifest.Get.DefaultLanguage;
 				this.LastGame = new LastGameInfo();
 			}
 		}
@@ -48,7 +47,7 @@ namespace Stareater.AppData
 			ValueQueue data;
 
 			if (File.Exists(SettingsFilePath))
-				using (Ikon.Ston.Parser parser = new Ikon.Ston.Parser(new StreamReader(SettingsFilePath)))
+				using (var parser = new Ikadn.Ikon.Parser(new StreamReader(SettingsFilePath)))
 					data = parser.ParseAll();
 			else
 				data = new ValueQueue();
@@ -67,12 +66,12 @@ namespace Stareater.AppData
 		{
 			using (var output = new StreamWriter(SettingsFilePath))
 			{
-				IkonWriter writer = new IkonWriter(output);
+				IkadnWriter writer = new IkadnWriter(output);
 				buildSaveData(writer);
 			}
 		}
 
-		protected virtual void buildSaveData(IkonWriter writer)
+		protected virtual void buildSaveData(IkadnWriter writer)
 		{
 			ObjectValue baseSettings = new ObjectValue(BaseSettingsKey);
 			baseSettings.Add(LanguageKey, new TextValue(Language.Code));

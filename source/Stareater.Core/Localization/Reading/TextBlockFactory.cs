@@ -2,79 +2,70 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Ikon;
-using Ikon.Utilities;
+using System.IO;
+using Ikadn;
+using Ikadn.Utilities;
 
 namespace Stareater.Localization.Reading
 {
 	class TextBlockFactory : IValueFactory
 	{
-		public const char EndingChar = ';';
 		private const char BlockCloseChar = '}';
-		private const char SupstitutionOpenChar = '{';
-		private const char SupstitutionCloseChar = '}';
+		private const char SubstitutionOpenChar = '{';
+		private const char SubstitutionCloseChar = '}';
 
 		const char EscapeChar = '\\';
 
-		public IkonBaseValue Parse(Ikon.Parser parser)
+		public IkadnBaseValue Parse(Ikadn.Parser parser)
 		{
 			parser.Reader.SkipWhile(nextChar =>
 			{
 				if (!char.IsWhiteSpace(nextChar))
-					throw new FormatException("Unexpected non-white character at" + parser.Reader.PositionDescription);
+					throw new FormatException("Unexpected non-white character at " + parser.Reader.PositionDescription);
 				return nextChar != '\n' && nextChar != '\r';
 			});
 			parser.Reader.SkipWhile('\n', '\r');
 
 			Queue<string> textRuns = new Queue<string>();
-			bool escaping = false;
+			Dictionary<string, IText> substitutions = new Dictionary<string, IText>();
 			while (parser.Reader.Peek() != BlockCloseChar) {
-				if (parser.Reader.Peek() == SupstitutionOpenChar) {
+				if (parser.Reader.Peek() == SubstitutionOpenChar) {
 					parser.Reader.Read();
+					string substitutionName = parser.Reader.ReadUntil(SubstitutionCloseChar);
+					parser.Reader.Read();
+					if (substitutionName.Length == 0)
+						throw new FormatException("Substitution name at " + parser.Reader + " is empty (zero length)");
+
 					textRuns.Enqueue(null);
-					textRuns.Enqueue(parser.Reader.ReadWhile(c =>
-					{
-						return new ReadingDecision(c, (c == SupstitutionCloseChar) ?
-							CharacterAction.Skip | CharacterAction.Stop :
-							CharacterAction.AcceptAsIs);
-					}));
+					textRuns.Enqueue(substitutionName);
+
+					if (!substitutions.ContainsKey(substitutionName))
+						substitutions.Add(substitutionName, null);
 				}
 				else
-					textRuns.Enqueue(parser.Reader.ReadWhile(c =>
-					{
-						if (c == EscapeChar && !escaping) {
-							escaping = true;
-							return new ReadingDecision(c, CharacterAction.Skip);
-						}
-						escaping = false;
-						return new ReadingDecision(c, (c == SupstitutionOpenChar || c == BlockCloseChar) ?
-							CharacterAction.Stop :
-							CharacterAction.AcceptAsIs);
-					}));
+					textRuns.Enqueue(Parser.ParseString(parser.Reader,
+						new int[]{SubstitutionOpenChar, BlockCloseChar},
+						EscapeChar, c => c));
 			}
 			parser.Reader.Read();
 
-			Dictionary<string, IText> supstitutions = new Dictionary<string, IText>();
-			while (parser.Reader.HasNext) {
-				parser.Reader.SkipWhiteSpaces();
+			for(int i = 0; i < substitutions.Count;i++) {
+				if (parser.Reader.SkipWhiteSpaces() == ReaderDoneReason.EndOfStream)
+					throw new EndOfStreamException("Unexpectedend of stream at " + parser.Reader.PositionDescription);
 
-				if (parser.Reader.Peek() == EndingChar) {
-					parser.Reader.Read();
-					break;
-				}
+				string substitutionName = parser.Reader.ReadUntil(c => 
+				{ 
+					return c != IkadnReader.EndOfStreamResult && char.IsWhiteSpace((char)c); 
+				});
 
-				StringBuilder supstituent = new StringBuilder();
-				while (parser.Reader.HasNext && !char.IsWhiteSpace(parser.Reader.Peek()))
-					supstituent.Append(parser.Reader.Read());
-				
-				supstitutions.Add(supstituent.ToString(), parser.ParseNext().To<IText>());
+				substitutions[substitutionName] = parser.ParseNext().To<IText>();
 			}
 
 			List<IText> texts = new List<IText>();
 			while (textRuns.Count > 0) {
 				string textRun = textRuns.Dequeue();
 				texts.Add((textRun == null) ?
-					supstitutions[textRuns.Dequeue()] :
+					substitutions[textRuns.Dequeue()] :
 					new SingleLineText(textRun)
 				);
 			}

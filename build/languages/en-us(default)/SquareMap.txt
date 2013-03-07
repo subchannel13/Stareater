@@ -1,7 +1,12 @@
 ﻿:SquareMap
 name = Square map
+description {
+Square map
+{size} stars} size #D size;
+
 size = Size
 miniatureSize = Miniature
 smallSize = Small
+normalSize = Normal
 displacement = Position randomness
 -

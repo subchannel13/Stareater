@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Stareater.AppData;
 using Stareater.Utils.PluginParameters;
-using Ikon;
 using System.IO;
-using Ikon.Ston.Values;
+using Ikadn;
+using Ikadn.Ikon.Values;
 
 namespace Stareater.Maps.Square
 {
@@ -16,22 +16,26 @@ namespace Stareater.Maps.Square
 		const string LanguageContext = "SquareMap";
 		const string SizeKey = "Size";
 
+		private SelectorParameter sizeParameter;
+		private RangeParameter<double> displacementParameter;
 		private ParameterList parameters;
 		private SizeOption[] sizeOptions;
 
 		public SquareMap()
 		{
 			ValueQueue data;
-			using (Ikon.Parser parser = new Ikon.Ston.Parser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))
+			using (var parser = new Ikadn.Ikon.Parser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))
 				data = parser.ParseAll();
 
+			sizeParameter = loadSizes(data);
+			displacementParameter = new RangeParameter<double>(LanguageContext, "displacement", 0, 0.5, 0.25, displacementPercentage);
 			this.parameters = new ParameterList(new ParameterBase[]{
-				loadSizes(data),
-				new RangeParameter<double>(LanguageContext, "displacement", 0, 0.5, 0.25, displacementPercentage),
+				sizeParameter,
+				displacementParameter,
 			});
 		}
 
-		private ParameterBase loadSizes(ValueQueue data)
+		private SelectorParameter loadSizes(ValueQueue data)
 		{
 			this.sizeOptions = new SizeOption[data.CountOf(SizeKey)];
 			var parameterOptions = new Dictionary<int, string>();
@@ -55,7 +59,7 @@ namespace Stareater.Maps.Square
 
 		public string Description
 		{
-			get { return null; }
+			get { return Settings.Get.Language[LanguageContext]["description"].Text(Math.Pow(sizeOptions[sizeParameter.Value].Size, 2)); }
 		}
 
 		public ParameterList Parameters

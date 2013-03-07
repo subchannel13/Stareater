@@ -21,7 +21,7 @@ namespace Stareater.GUI
 		{
 			InitializeComponent();
 
-			foreach (var langInfo in LocalizationManifest.LanguageNames.OrderBy(x => x.Value))
+			foreach (var langInfo in LocalizationManifest.Get.LanguageNames.OrderBy(x => x.Value))
 			{
 				languageSelector.Items.Add(new Tag<string>(langInfo.Key, langInfo.Value));
 				if (langInfo.Key == SettingsWinforms.Get.Language.Code)
@@ -66,7 +66,7 @@ namespace Stareater.GUI
 			if (languageSelector.SelectedItem == null || !initialized)
 				return;
 
-			selectedLanguage = LocalizationManifest.LoadLanguage((languageSelector.SelectedItem as Tag<string>).Value);
+			selectedLanguage = LocalizationManifest.Get.LoadLanguage((languageSelector.SelectedItem as Tag<string>).Value);
 			setLanguage();
 		}
 

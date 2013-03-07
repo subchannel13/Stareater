@@ -28,7 +28,7 @@ namespace Stareater.GUI
 			foreach (var valueInfo in parameterInfo)
 				valueSelector.Items.Add(new Tag<int>(valueInfo.Key, valueInfo.Value));
 
-			valueSelector.SelectedIndex = 0;
+			valueSelector.SelectedIndex = parameterInfo.Value;
 		}
 
 		private void valueSelector_SelectedIndexChanged(object sender, EventArgs e)

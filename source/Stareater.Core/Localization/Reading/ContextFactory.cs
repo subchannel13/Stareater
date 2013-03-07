@@ -1,6 +1,5 @@
-﻿using Ikon;
-using Ikon.Utilities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Ikadn;
 
 namespace Stareater.Localization.Reading
 {
@@ -8,14 +7,14 @@ namespace Stareater.Localization.Reading
 	{
 		public const char ClosingChar = '-';
 
-		public IkonBaseValue Parse(Ikon.Parser parser)
+		public IkadnBaseValue Parse(Ikadn.Parser parser)
 		{
-			string contextName = Ikon.Ston.Parser.ReadIdentifier(parser.Reader);
+			string contextName = Ikadn.Ikon.Parser.ReadIdentifier(parser.Reader);
 			Dictionary<string, IText> entries = new Dictionary<string, IText>();
 
 			while (parser.Reader.PeekNextNonwhite() != ClosingChar)
 				entries.Add(
-					Ikon.Ston.Parser.ReadIdentifier(parser.Reader).ToLower(),
+					Ikadn.Ikon.Parser.ReadIdentifier(parser.Reader).ToLower(),
 					parser.ParseNext().To<IText>());
 
 			parser.Reader.Read();

@@ -1,19 +1,39 @@
 ﻿using System.IO;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System;
 
 namespace Stareater.Localization
 {
-	public static class LocalizationManifest
+	public class LocalizationManifest
 	{
+		#region Singleton
+		private static LocalizationManifest instance = null;
+		public static LocalizationManifest Get
+		{
+			get
+			{
+				if (instance == null)
+					throw new InvalidOperationException("Localization manifest is not initialized");
+				return instance;
+			}
+		}
+
+		private LocalizationManifest(Language defaultLanguage, ReadOnlyCollection<string> languageCodes)
+		{
+			this.DefaultLanguage = defaultLanguage;
+			this.LanguageCodes = languageCodes;
+		}
+		#endregion
+
 		public const string LanguagesFolder = "./languages/";
 		private const string DefaultLangSufix = "(default)";
 
-		public static Language DefaultLanguage { get; private set; }
-		public static ReadOnlyCollection<string> LanguageCodes { get; private set; }
+		public Language DefaultLanguage { get; private set; }
+		public ReadOnlyCollection<string> LanguageCodes { get; private set; }
 		
-		private static ReadOnlyCollection<KeyValuePair<string, string>> languageNames = null;
-		public static ReadOnlyCollection<KeyValuePair<string, string>> LanguageNames
+		private ReadOnlyCollection<KeyValuePair<string, string>> languageNames = null;
+		public ReadOnlyCollection<KeyValuePair<string, string>> LanguageNames
 		{
 			get
 			{
@@ -33,7 +53,7 @@ namespace Stareater.Localization
 			}
 		}
 
-		public static Language LoadLanguage(string langCode)
+		public Language LoadLanguage(string langCode)
 		{
 			if (langCode == DefaultLanguage.Code)
 				return DefaultLanguage;
@@ -41,7 +61,7 @@ namespace Stareater.Localization
 				return new Language(langCode, LanguagesFolder + langCode);
 		}
 
-		static LocalizationManifest()
+		public static void Initialize()
 		{
 			string defaultLangCode = null;
 			List<string> codes = new List<string>();
@@ -57,8 +77,9 @@ namespace Stareater.Localization
 				codes.Add(code);
 			}
 
-			DefaultLanguage = new Language(defaultLangCode, LanguagesFolder + defaultLangCode + DefaultLangSufix);
-			LanguageCodes = new ReadOnlyCollection<string>(codes);
+			instance = new LocalizationManifest(
+				new Language(defaultLangCode, LanguagesFolder + defaultLangCode + DefaultLangSufix),
+				new ReadOnlyCollection<string>(codes));
 		}
 	}
 }

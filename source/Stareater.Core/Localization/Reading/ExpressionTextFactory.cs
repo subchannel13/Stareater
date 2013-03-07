@@ -2,38 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Ikon;
 using Stareater.Utils.NumberFormatters;
+using Ikadn;
 
 namespace Stareater.Localization.Reading
 {
 	class ExpressionTextFactory : IValueFactory
 	{
+		const char EndingChar = ';';
 		const string AutomaticThousands = "_";
 
-		public IkonBaseValue Parse(Ikon.Parser parser)
+		public IkadnBaseValue Parse(Ikadn.Parser parser)
 		{
 			parser.Reader.SkipWhiteSpaces();
 			char formatterType = parser.Reader.Read();
-
-			StringBuilder formatterParameterSB = new StringBuilder();
-			while (!char.IsWhiteSpace(parser.Reader.Peek()))
-				formatterParameterSB.Append(parser.Reader.Read());
+			string formatterParameter = parser.Reader.ReadWhile(c => !char.IsWhiteSpace(c));
 
 			Func<double, string> formatter;
 			switch (formatterType) {
 				case 'd':
 				case 'D':
-					formatter = new DecimalsFormatter(0, 
-						formatterParameterSB.Length > 0 ? int.Parse(formatterParameterSB.ToString()) : 0
+					formatter = new DecimalsFormatter(0,
+						formatterParameter.Length > 0 ? int.Parse(formatterParameter) : 0
 						).Format;
 					break;
 				case 't':
 				case 'T':
 					formatter = (
-						(formatterParameterSB.ToString() == AutomaticThousands) ? 
+						(formatterParameter == AutomaticThousands) ? 
 						new ThousandsFormatter() :
-						new ThousandsFormatter(formatterParameterSB.ToString())
+						new ThousandsFormatter(formatterParameter)
 						).Format;
 					break;
 				default:
@@ -41,15 +39,13 @@ namespace Stareater.Localization.Reading
 			}
 
 			parser.Reader.SkipWhiteSpaces();
-			StringBuilder expressionText = new StringBuilder();
-			while (parser.Reader.HasNext) {
-				char nextChar = parser.Reader.Peek();
-				if (nextChar == '\n' || nextChar == '\r' || nextChar == TextBlockFactory.EndingChar)
-					break;
-				expressionText.Append(parser.Reader.Read());
-			}
+			string expressionText = parser.Reader.ReadUntil(EndingChar);
+			parser.Reader.Read();
+			
+			if (expressionText.Length == 0)
+				throw new FormatException("Expression at " + parser.Reader + " is empty (zero length)");
 
-			return new ExpressionText(expressionText.ToString(), formatter);
+			return new ExpressionText(expressionText, formatter);
 		}
 
 		public char Sign

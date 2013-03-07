@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
+using Stareater.Localization;
 
 namespace StareaterUI
 {
@@ -14,6 +15,7 @@ namespace StareaterUI
 		[STAThread]
 		static void Main()
 		{
+			LocalizationManifest.Initialize();
 			AssetController.Get.Start();
 
 			Application.EnableVisualStyles();

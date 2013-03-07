@@ -1,22 +1,13 @@
-﻿using Ikon;
-using Ikon.Utilities;
-using System.Text;
+﻿using System.Text;
+using Ikadn;
 
 namespace Stareater.Localization.Reading
 {
 	class SingleLineFactory : IValueFactory
 	{
-		public IkonBaseValue Parse(Ikon.Parser parser)
+		public IkadnBaseValue Parse(Ikadn.Parser parser)
 		{
-			StringBuilder line = new StringBuilder();
-
-			while(parser.Reader.HasNext) {
-				char nextChar = parser.Reader.Read();
-				if (nextChar == '\n' || nextChar == '\r')
-					break;
-				line.Append(nextChar);
-			}
-			return new SingleLineText(line.ToString().Trim());
+			return new SingleLineText(parser.Reader.ReadUntil('\n', '\r', IkadnReader.EndOfStreamResult));
 		}
 
 		public char Sign

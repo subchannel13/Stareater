@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Stareater.AppData;
-using Ikon.Ston.Values;
-using Ikon;
+using Ikadn;
+using Ikadn.Ikon.Values;
 
 namespace Stareater.Maps
 {

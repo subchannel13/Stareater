@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Ikon.Ston.Values;
+using Ikadn.Ikon.Values;
 
 namespace Stareater.Maps.Square
 {

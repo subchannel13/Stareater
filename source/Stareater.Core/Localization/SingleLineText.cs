@@ -1,9 +1,9 @@
-﻿using Ikon;
+﻿using Ikadn;
 using System;
 
 namespace Stareater.Localization
 {
-	class SingleLineText : IkonBaseValue, IText
+	class SingleLineText : IkadnBaseValue, IText
 	{
 		string text;
 
@@ -12,7 +12,7 @@ namespace Stareater.Localization
 			this.text = line;
 		}
 
-		protected override void DoCompose(IkonWriter writer)
+		protected override void DoCompose(IkadnWriter writer)
 		{
 			throw new InvalidOperationException(TypeName + " is not meant to be serialized.");
 		}
