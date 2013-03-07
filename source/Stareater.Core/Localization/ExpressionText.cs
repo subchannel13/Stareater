@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Ikon;
+using Ikadn;
 using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.Localization
 {
-	class ExpressionText : IkonBaseValue, IText
+	class ExpressionText : IkadnBaseValue, IText
 	{
 		string variableName;
 		Func<double, string> formatter;
@@ -18,7 +18,7 @@ namespace Stareater.Localization
 			this.formatter = formatter;
 		}
 
-		protected override void DoCompose(IkonWriter writer)
+		protected override void DoCompose(IkadnWriter writer)
 		{
 			throw new InvalidOperationException(TypeName + " is not meant to be serialized.");
 		}

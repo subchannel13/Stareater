@@ -34,8 +34,8 @@ namespace Stareater.Localization
 
 				if (contexts.ContainsKey(contextName))
 					return contexts[contextName.ToLower()];
-				else if (this != LocalizationManifest.DefaultLanguage)
-					return LocalizationManifest.DefaultLanguage[contextName];
+				else if (this != LocalizationManifest.Get.DefaultLanguage)
+					return LocalizationManifest.Get.DefaultLanguage[contextName];
 				else
 					throw new KeyNotFoundException("Context name: " + contextName);
 			}

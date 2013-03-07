@@ -5,9 +5,8 @@ using System.Text;
 using Stareater.Utils.PluginParameters;
 using Stareater.AppData;
 using System.IO;
-using Ikon.Ston;
-using Ikon.Ston.Values;
-using Ikon;
+using Ikadn;
+using Ikadn.Ikon.Values;
 
 namespace Stareater.Maps.ProximityLanes
 {
@@ -18,21 +17,23 @@ namespace Stareater.Maps.ProximityLanes
 		const string LanguageContext = "ProximityLanes";
 		const string DegreeKey = "Degree";
 
+		private SelectorParameter degreesParameter;
 		private ParameterList parameters;
 		private DegreeOption[] degreeOptions;
 
 		public ProximityLanesBuilder()
 		{
 			ValueQueue data;
-			using (Ikon.Parser parser = new Ikon.Ston.Parser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))
+			using (var parser = new Ikadn.Ikon.Parser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))
 				data = parser.ParseAll();
 
+			degreesParameter = loadDegrees(data);
 			this.parameters = new ParameterList(new ParameterBase[]{
-				loadDegrees(data),
+				degreesParameter,
 			});
 		}
 
-		private ParameterBase loadDegrees(ValueQueue data)
+		private SelectorParameter loadDegrees(ValueQueue data)
 		{
 			this.degreeOptions = new DegreeOption[data.CountOf(DegreeKey)];
 			var parameterOptions = new Dictionary<int, string>();
@@ -51,7 +52,13 @@ namespace Stareater.Maps.ProximityLanes
 
 		public string Description
 		{
-			get { return null; }
+			get
+			{
+				return Settings.Get.Language[LanguageContext]["description"].Text(new Dictionary<string, double>(){
+				{"minDegree", degreeOptions[degreesParameter.Value].Min},
+				{"maxDegree", degreeOptions[degreesParameter.Value].Max}
+				});
+			}
 		}
 
 		public ParameterList Parameters

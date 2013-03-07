@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stareater.Maps;
-using Ikon.Ston.Values;
-using Ikon;
+using Ikadn;
+using Ikadn.Ikon.Values;
 
 namespace Stareater.AppData
 {

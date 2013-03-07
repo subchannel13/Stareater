@@ -1,0 +1,14 @@
+{ Size
+	nameKey "miniatureSize"
+	size =6
+}
+
+{ Size
+	nameKey "smallSize"
+	size =8
+}
+
+{ Size
+	nameKey "normalSize"
+	size =10
+}

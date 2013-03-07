@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ikon;
+using Ikadn;
 
 namespace Stareater.Localization
 {
-	public class Context : IkonBaseValue
+	public class Context : IkadnBaseValue
 	{
 		private string name;
 		private Dictionary<string, IText> entries;
@@ -15,7 +15,7 @@ namespace Stareater.Localization
 			this.entries = entries;
 		}
 
-		protected override void DoCompose(IkonWriter writer)
+		protected override void DoCompose(IkadnWriter writer)
 		{
 			throw new InvalidOperationException("Localization context is not meant to be serialized.");
 		}
@@ -49,8 +49,8 @@ namespace Stareater.Localization
 				entryKey = entryKey.ToLower();
 				if (entries.ContainsKey(entryKey))
 					return entries[entryKey];
-				else if (this != LocalizationManifest.DefaultLanguage[name])
-					return LocalizationManifest.DefaultLanguage[name][entryKey];
+				else if (this != LocalizationManifest.Get.DefaultLanguage[name])
+					return LocalizationManifest.Get.DefaultLanguage[name][entryKey];
 				else
 					throw new KeyNotFoundException("entryKey: " + entryKey);
 			}

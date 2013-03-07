@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Ikon;
+using Ikadn;
 using Stareater.Utils;
 
 namespace Stareater.Localization
 {
-	class ChainText : IkonBaseValue, IText
+	class ChainText : IkadnBaseValue, IText
 	{
 		Tuple<IText, TableSubset<string>>[] textRuns;
 		HashSet<string> variables;
@@ -18,16 +18,17 @@ namespace Stareater.Localization
 
 			var textRunInfos = new List<Tuple<IText, TableSubset<string>>>();
 			foreach (var textRun in textRuns) {
+				var variables = textRun.VariableNames().ToArray();
 				textRunInfos.Add(new Tuple<IText, TableSubset<string>>(
 					textRun,
-					new TableSubset<string>(textRun.VariableNames())
+					(variables.Length > 0) ? new TableSubset<string>(variables) : null
 					));
-				this.variables.UnionWith(textRun.VariableNames());
+				this.variables.UnionWith(variables);
 			}
 			this.textRuns = textRunInfos.ToArray();			
 		}
 
-		protected override void DoCompose(IkonWriter writer)
+		protected override void DoCompose(IkadnWriter writer)
 		{
 			throw new InvalidOperationException(TypeName + " is not meant to be serialized.");
 		}

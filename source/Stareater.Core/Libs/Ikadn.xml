@@ -1,0 +1,545 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Ikadn</name>
+    </assembly>
+    <members>
+        <member name="T:Ikadn.Utilities.CharacterAction">
+            <summary>
+            Action to be performed with a character.
+            </summary>
+        </member>
+        <member name="F:Ikadn.Utilities.CharacterAction.NoAction">
+            <summary>
+            Perform no action. Reader won't advance to the next character.
+            </summary>
+        </member>
+        <member name="F:Ikadn.Utilities.CharacterAction.Skip">
+            <summary>
+            Don't add anything to the result and continue reading.
+            </summary>
+        </member>
+        <member name="F:Ikadn.Utilities.CharacterAction.AcceptAsIs">
+            <summary>
+            Add the character as it is to the ressult.
+            </summary>
+        </member>
+        <member name="F:Ikadn.Utilities.CharacterAction.Substitute">
+            <summary>
+            Add specified character to th result instead of read character.
+            </summary>
+        </member>
+        <member name="F:Ikadn.Utilities.CharacterAction.AllInputActions">
+            <summary>
+            Mask for input interpreting actions (accept, substitute, skip).
+            </summary>
+        </member>
+        <member name="F:Ikadn.Utilities.CharacterAction.Stop">
+            <summary>
+            Reading is finished
+            </summary>
+        </member>
+        <member name="F:Ikadn.Utilities.CharacterAction.SkipStop">
+            <summary>
+            Combination of skipping a character and stopping the reading.
+            </summary>
+        </member>
+        <member name="T:Ikadn.IkadnReader">
+            <summary>
+            Helper class with utility methods for parsing and composing
+            text streams with IKADN syntax.
+            </summary>
+        </member>
+        <member name="F:Ikadn.IkadnReader.EndOfStreamResult">
+            <summary>
+            Value returned by System.IO.TextReader methods when the end of the stream is reached.
+            </summary>
+        </member>
+        <member name="M:Ikadn.IkadnReader.#ctor(System.IO.TextReader)">
+            <summary>
+            Wraps TextReader with IkonReader
+            </summary>
+            <param name="reader">Input stream</param>
+        </member>
+        <member name="M:Ikadn.IkadnReader.Peek">
+            <summary>
+            Gets next character in the input stream without moving to the next.
+            </summary>
+        </member>
+        <member name="M:Ikadn.IkadnReader.PeekNextNonwhite">
+            <summary>
+            Skips white space characters in the input stream and peeks the next character. 
+            Throws System.FormatException if end of stream is reached before a non-white 
+            character i found.
+            </summary>
+            <returns>A non-white character</returns>
+        </member>
+        <member name="M:Ikadn.IkadnReader.Read">
+            <summary>
+            Reads next character from the input stream.
+            </summary>
+            <returns>Read character.</returns>
+        </member>
+        <member name="M:Ikadn.IkadnReader.ReadWhile(System.Char[])">
+            <summary>
+            Reads characters from the input stream until the stopping condition is met. 
+            </summary>
+            <param name="readCondition">Characters that can be read.</param>
+            <returns>Successfully read part of the stream.</returns>
+        </member>
+        <member name="M:Ikadn.IkadnReader.ReadWhile(System.Collections.Generic.ISet{System.Char})">
+            <summary>
+            Reads characters from the input stream until the stopping condition is met.
+            </summary>
+            <param name="readCondition">Set of characters that can be read.</param>
+            <returns>Successfully read part of the stream.</returns>
+        </member>
+        <member name="M:Ikadn.IkadnReader.ReadWhile(System.Predicate{System.Char})">
+            <summary>
+            Reads characters from the input stream until the stopping condition is met.
+            </summary>
+            <param name="readCondition">Set of characters that can be read.</param>
+            <returns>Successfully read part of the stream.</returns>
+        </member>
+        <member name="M:Ikadn.IkadnReader.ReadUntil(System.Int32[])">
+            <summary>
+            Reads characters from the input stream until one of terminating character
+            is found. 
+            </summary>
+            <param name="terminatingCharacters">Characters that ends reading.</param>
+            <returns>Successfully read part of the stream.</returns>
+        </member>
+        <member name="M:Ikadn.IkadnReader.ReadUntil(System.Predicate{System.Int32})">
+            <summary>
+            Reads characters from the input stream until one of terminating character
+            is found. 
+            </summary>
+            <param name="terminatingCondition">Characters that ends reading.</param>
+            <returns>Successfully read part of the stream.</returns>
+        </member>
+        <member name="M:Ikadn.IkadnReader.ReadConditionally(System.Func{System.Int32,Ikadn.Utilities.ReadingDecision})">
+            <summary>
+            Reads characters from the input stream until the stopping condition is met.
+            </summary>
+            <param name="readingController">Returns whether character should be read
+            (if predicate is true). When predicate evaluates to flase, reading stops.</param>
+            <returns>Successfully read part of the stream.</returns>
+        </member>
+        <member name="M:Ikadn.IkadnReader.SkipWhiteSpaces">
+            <summary>
+            Skips consequentive whitespace characters from the input stream. 
+            </summary>
+            <returns>Descrtipion of the skipping process.</returns>
+        </member>
+        <member name="M:Ikadn.IkadnReader.SkipWhile(System.Char[])">
+            <summary>
+            Skips consequentive characters from the input stream.
+            </summary>
+            <param name="skippableCharacters">Character(s) that should be skipped.</param>
+            <returns>Descrtipion of the skipping process.</returns>
+        </member>
+        <member name="M:Ikadn.IkadnReader.SkipWhile(System.Collections.Generic.ISet{System.Char})">
+            <summary>
+            Skips consequentive characters from the input stream.
+            </summary>
+            <param name="skippableCharacters">Set of characters that should be skipped.</param>
+            <returns>Descrtipion of the skipping process.</returns>
+        </member>
+        <member name="M:Ikadn.IkadnReader.SkipWhile(System.Predicate{System.Char})">
+            <summary>
+            Skips consequentive characters from the input stream.
+            </summary>
+            <param name="skipCondition">Returns whether character should be skipped
+            (if predicate is true). When predicate evaluates to flase, process stops.</param>
+            <returns>Descrtipion of the skipping process.</returns>
+        </member>
+        <member name="M:Ikadn.IkadnReader.SkipUntil(System.Int32[])">
+            <summary>
+            Skips consequentive characters from the input stream.
+            </summary>
+            <param name="terminatingCharacters">Character that stop skipping process.</param>
+        </member>
+        <member name="M:Ikadn.IkadnReader.SkipUntil(System.Collections.Generic.ISet{System.Int32})">
+            <summary>
+            Skips consequentive characters from the input stream.
+            </summary>
+            <param name="terminatingCharacters">Set of characters that stop skipping process.</param>
+        </member>
+        <member name="M:Ikadn.IkadnReader.SkipUntil(System.Predicate{System.Int32})">
+            <summary>
+            Skips consequentive characters from the input stream.
+            </summary>
+            <param name="stopCondition">Returns whether the terminating condition
+            is met (if predicate is true).</param>
+        </member>
+        <member name="M:Ikadn.IkadnReader.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the System.IO.TextReader and optionally
+            releases the managed resources.
+            </summary>
+            <param name="disposing">true to release both managed and unmanaged resources; 
+            false to release only unmanaged resources.</param>
+        </member>
+        <member name="M:Ikadn.IkadnReader.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or
+            resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="P:Ikadn.IkadnReader.Index">
+            <summary>
+            Index of the last read character.
+            </summary>
+        </member>
+        <member name="P:Ikadn.IkadnReader.Line">
+            <summary>
+            Line of the last read character.
+            </summary>
+        </member>
+        <member name="P:Ikadn.IkadnReader.Column">
+            <summary>
+            Column within the line of the last read character.
+            </summary>
+        </member>
+        <member name="P:Ikadn.IkadnReader.PositionDescription">
+            <summary>
+            Gets text that describes position (line, column and index) of the last
+            successfuly read character from the stream.
+            </summary>
+        </member>
+        <member name="P:Ikadn.IkadnReader.HasNext">
+            <summary>
+            Indicates whether is it possible to read another character from the
+            input stream.
+            </summary>
+        </member>
+        <member name="T:Ikadn.IkadnWriter">
+            <summary>
+            Base class for IKADN composers. Composers transform IKADN values to
+            a text.
+            </summary>
+        </member>
+        <member name="M:Ikadn.IkadnWriter.#ctor(System.IO.TextWriter)">
+            <summary>
+            Constructs basic IKADN composer.
+            </summary>
+            <param name="writer">Output stream.</param>
+        </member>
+        <member name="M:Ikadn.IkadnWriter.Write(System.String)">
+            <summary>
+            Appends a text to the current line. Text entered with this method
+            is buffered and is not written immediately to the output stream.
+            To finalize the buffered data (and write it to output stream) call
+            either EndLine or WrtieLine.
+            </summary>
+            <param name="text">Raw text.</param>
+        </member>
+        <member name="M:Ikadn.IkadnWriter.WriteLine(System.String)">
+            <summary>
+            Appends a text to the current line and writes buffered line to the
+            output stream.
+            </summary>
+            <param name="text">Raw text.</param>
+        </member>
+        <member name="M:Ikadn.IkadnWriter.EndLine">
+            <summary>
+            Writes buffered line to the output stream.
+            </summary>
+        </member>
+        <member name="P:Ikadn.IkadnWriter.Writer">
+            <summary>
+            Output stream where IKADN values are being written.
+            </summary>
+        </member>
+        <member name="P:Ikadn.IkadnWriter.Indentation">
+            <summary>
+            Indentation level.
+            </summary>
+        </member>
+        <member name="P:Ikadn.IkadnWriter.Line">
+            <summary>
+            Temporary line contents.
+            </summary>
+        </member>
+        <member name="T:Ikadn.IValueFactory">
+            <summary>
+            Interface for IKADN value factories usable by IKADN parser.
+            </summary>
+        </member>
+        <member name="M:Ikadn.IValueFactory.Parse(Ikadn.Parser)">
+            <summary>
+            Parses input for a IKADN value.
+            </summary>
+            <param name="parser">IKADN parser instance.</param>
+            <returns>IKADN value generated by factory.</returns>
+        </member>
+        <member name="P:Ikadn.IValueFactory.Sign">
+            <summary>
+            Character that identifies value parcable by factory.
+            </summary>
+        </member>
+        <member name="T:Ikadn.Utilities.ReadingDecision">
+            <summary>
+            Describes action to be performed for certain character.
+            </summary>
+        </member>
+        <member name="F:Ikadn.Utilities.ReadingDecision.Character">
+            <summary>
+            Character in question or new character is substitution is in to be perforemd.
+            </summary>
+        </member>
+        <member name="F:Ikadn.Utilities.ReadingDecision.Decision">
+            <summary>
+            The action to be performed.
+            </summary>
+        </member>
+        <member name="M:Ikadn.Utilities.ReadingDecision.#ctor(System.Char,Ikadn.Utilities.CharacterAction)">
+            <summary>
+            Initializes reading decision result.
+            </summary>
+            <param name="character">Character in question or new character is substitution is in to be perforemd.</param>
+            <param name="decision">The action to be performed.</param>
+        </member>
+        <member name="M:Ikadn.Utilities.ReadingDecision.Equals(System.Object)">
+            <summary>
+            Returns a value indicating whether this instance is equal to a specified object.
+            </summary>
+            <param name="obj">An object to compare with this instance, or null.</param>
+            <returns>True if this and obj represent equal value.</returns>
+        </member>
+        <member name="M:Ikadn.Utilities.ReadingDecision.GetHashCode">
+            <summary>
+            Returns the hash code for the value of this instance.
+            </summary>
+            <returns>A 32-bit signed integer hash code.</returns>
+        </member>
+        <member name="M:Ikadn.Utilities.ReadingDecision.op_Equality(Ikadn.Utilities.ReadingDecision,Ikadn.Utilities.ReadingDecision)">
+            <summary>
+            Returns a value indicating whether a left hand value is equal to a right hand value.
+            </summary>
+            <param name="left">Left hand value.</param>
+            <param name="right">Right hand value.</param>
+            <returns>True if a left hand and a right hand value are equal.</returns>
+        </member>
+        <member name="M:Ikadn.Utilities.ReadingDecision.op_Inequality(Ikadn.Utilities.ReadingDecision,Ikadn.Utilities.ReadingDecision)">
+            <summary>
+            Returns a value indicating whether a left hand value is different than a right hand value.
+            </summary>
+            <param name="left">Left hand value.</param>
+            <param name="right">Right hand value.</param>
+            <returns>True if a left hand and a right hand value are not equal.</returns>
+        </member>
+        <member name="T:Ikadn.Parser">
+            <summary>
+            Basic parser for texts streams with IKADN syntax.
+            </summary>
+        </member>
+        <member name="M:Ikadn.Parser.#ctor(System.IO.TextReader)">
+            <summary>
+            Constructs parser without registerd value factories.
+            </summary>
+            <param name="reader">Input stream with IKADN syntax</param>
+        </member>
+        <member name="M:Ikadn.Parser.#ctor(System.IO.TextReader,System.Collections.Generic.IEnumerable{Ikadn.IValueFactory})">
+            <summary>
+            Constructs parser and registers value factories to it.
+            </summary>
+            <param name="reader">Input stream with IKADN syntax.</param>
+            <param name="factories">Collection of value factories.</param>
+        </member>
+        <member name="M:Ikadn.Parser.RegisterFactory(Ikadn.IValueFactory)">
+            <summary>
+            Registers a value factory to the parser. If parser already
+            has a factory with the same sign, it will be replaced.
+            </summary>
+            <param name="factory">A value factory.</param>
+        </member>
+        <member name="M:Ikadn.Parser.ParseAll">
+            <summary>
+            Parses whole input stream.
+            </summary>
+            <returns>Queue of parsed IKADN values.</returns>
+        </member>
+        <member name="M:Ikadn.Parser.HasNext">
+            <summary>
+            Checks whether parser can read more IKADN values from the input stream.
+            </summary>
+            <returns>True if it is possible.</returns>
+        </member>
+        <member name="M:Ikadn.Parser.ParseNext">
+            <summary>
+            Parses and returns next IKADN value from the input stream. 
+            
+            Throws System.IO.EndOfStreamException if end of
+            the input stream is encountered while parsing.
+            </summary>
+            <returns>An IKADN value</returns>
+        </member>
+        <member name="M:Ikadn.Parser.TryParseNext">
+            <summary>
+            Trys to parse next IKADN value from the input stream. 
+            
+            Throws System.FormatException if there is no value factory
+            that can parse curren state of the input.
+            </summary>
+            <returns>Return an IKADN value if there is one, null otherwise.</returns>
+        </member>
+        <member name="M:Ikadn.Parser.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the System.IO.TextReader and optionally
+            releases the managed resources.
+            </summary>
+            <param name="disposing">true to release both managed and unmanaged resources; 
+            false to release only unmanaged resources.</param>
+        </member>
+        <member name="M:Ikadn.Parser.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or
+            resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="P:Ikadn.Parser.Factories">
+            <summary>
+            Collection on value factories.
+            </summary>
+        </member>
+        <member name="P:Ikadn.Parser.Reader">
+            <summary>
+            Input stream that is being parsed.
+            </summary>
+        </member>
+        <member name="T:Ikadn.ValueQueue">
+            <summary>
+            Represents a first-in, first-out collection of IKADN values.
+            </summary>
+        </member>
+        <member name="M:Ikadn.ValueQueue.#ctor">
+            <summary>
+            Initializes a new empty instance of Ikadn.ValueQueue.
+            </summary>
+        </member>
+        <member name="M:Ikadn.ValueQueue.#ctor(System.Collections.Generic.IEnumerable{Ikadn.IkadnBaseValue})">
+            <summary>
+            Initializes an instance of Ikadn.ValueQueue filled with given elements.
+            </summary>
+            <param name="values">IKADN values for populating the Ikadn.ValueQueue.</param>
+        </member>
+        <member name="M:Ikadn.ValueQueue.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>A System.Collections.Generic.IEnumerator&lt;T&gt; that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Ikadn.ValueQueue.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>An System.Collections.IEnumerator object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Ikadn.ValueQueue.CountOf(System.String)">
+            <summary>
+            Gets the number of elements on given type contained in the Ikadn.ValueQueue.
+            </summary>
+            <param name="typeName">Type name of IKADN values to count.</param>
+            <returns>Number of elements in question.</returns>
+        </member>
+        <member name="M:Ikadn.ValueQueue.Dequeue">
+            <summary>
+            Removes and returns the object at the beginning of the Ikadn.ValueQueue.
+            </summary>
+            <returns>The object that is removed from the beginning of the Ikadn.ValueQueue.</returns>
+        </member>
+        <member name="M:Ikadn.ValueQueue.Dequeue(System.String)">
+            <summary>
+            Removes and returns the first element of the Ikadn.ValueQueue with specified type name.
+            </summary>
+            <param name="typeName">Type name of IKADN value to dequeue.</param>
+            <returns>The IKADN value.</returns>
+        </member>
+        <member name="M:Ikadn.ValueQueue.Enqueue(Ikadn.IkadnBaseValue)">
+            <summary>
+            Adds an object to the end of the Ikadn.ValueQueue.
+            </summary>
+            <param name="item">The object to add to the Ikadn.ValueQueue. The value can be null for reference types.
+            </param>
+        </member>
+        <member name="P:Ikadn.ValueQueue.Count">
+            <summary>
+            Gets the number of elements contained in the Ikadn.ValueQueue.
+            </summary>
+        </member>
+        <member name="P:Ikadn.ValueQueue.IsEmpty">
+            <summary>
+            Tests whether there are any elements in Ikadn.ValueQueue.
+            </summary>
+        </member>
+        <member name="T:Ikadn.Utilities.ReaderDoneReason">
+            <summary>
+            Describes whitespace skipping run.
+            </summary>
+        </member>
+        <member name="F:Ikadn.Utilities.ReaderDoneReason.EndOfStream">
+            <summary>
+            Skipping whitespaces encountered end of stream/input.
+            </summary>
+        </member>
+        <member name="F:Ikadn.Utilities.ReaderDoneReason.Successful">
+            <summary>
+            Skipping or reading was successful, character that doesn't satisfy
+            skipping or reading conditions has been found.
+            </summary>
+        </member>
+        <member name="T:Ikadn.IkadnBaseValue">
+            <summary>
+            Base class for IKADN values.
+            </summary>
+        </member>
+        <member name="M:Ikadn.IkadnBaseValue.To``1">
+            <summary>
+            Converts IKADN value to specified type.
+            </summary>
+            <typeparam name="T">Target type</typeparam>
+            <returns>Converted value</returns>
+        </member>
+        <member name="M:Ikadn.IkadnBaseValue.DoCompose(Ikadn.IkadnWriter)">
+            <summary>
+            Writes value's content to the output stream.
+            </summary>
+            <param name="writer">Wrapped around target output stream.</param>
+        </member>
+        <member name="M:Ikadn.IkadnBaseValue.Compose(Ikadn.IkadnWriter)">
+            <summary>
+            Writes an IKADN value to the output stream.
+            </summary>
+            <param name="writer">Wrapped around target output stream.</param>
+        </member>
+        <member name="P:Ikadn.IkadnBaseValue.TypeName">
+            <summary>
+            Type name of the IKADN value instance.
+            </summary>
+        </member>
+        <member name="T:Ikadn.Utilities.Indentation">
+            <summary>
+            Indentation helper.
+            </summary>
+        </member>
+        <member name="M:Ikadn.Utilities.Indentation.ToString">
+            <summary>
+            Gets indentation string.
+            </summary>
+            <returns>Indentation string.</returns>
+        </member>
+        <member name="M:Ikadn.Utilities.Indentation.Increase">
+            <summary>
+            Increases indentation by one level.
+            </summary>
+        </member>
+        <member name="M:Ikadn.Utilities.Indentation.Decrease">
+            <summary>
+            Decreases indentation by one level.
+            </summary>
+        </member>
+    </members>
+</doc>

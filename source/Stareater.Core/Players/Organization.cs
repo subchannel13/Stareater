@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using Ikon.Ston.Values;
 using Stareater.Utils;
+using Ikadn.Ikon.Values;
 
 namespace Stareater.Players
 {
@@ -32,7 +32,7 @@ namespace Stareater.Players
 		public static IEnumerable<double> Loader()
 		{
 			List<Organization> list = new List<Organization>();
-			using (Ikon.Ston.Parser parser = new Ikon.Ston.Parser(new StreamReader(DataFilePath))) {
+			using (var parser = new Ikadn.Ikon.Parser(new StreamReader(DataFilePath))) {
 				var data = parser.ParseAll();
 				yield return 0.5;
 

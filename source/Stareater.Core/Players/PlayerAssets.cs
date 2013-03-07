@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.IO;
-using Ikon.Ston.Values;
 using Stareater.Utils;
 using System.Reflection;
+using Ikadn.Ikon.Values;
 
 namespace Stareater.Players
 {
@@ -25,7 +25,7 @@ namespace Stareater.Players
 		public static IEnumerable<double> ColorLoader()
 		{
 			List<Color> colorList = new List<Color>();
-			using (Ikon.Ston.Parser parser = new Ikon.Ston.Parser(new StreamReader(DataFilePath))) {
+			using (var parser = new Ikadn.Ikon.Parser(new StreamReader(DataFilePath))) {
 				var data = parser.ParseNext() as ObjectValue;
 				yield return 0.5;
 

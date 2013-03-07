@@ -1,6 +1,12 @@
 ﻿:DefaultPopulator
 name = Default planets
-hospitality = Hospitality
+description {
+Environment: {badClime}{avgClime}{goodClime}}
+badClime ?badClime; =hostile
+avgClime ?avgClime; =normal
+goodClime ?goodClime; =paradise
+
+climate = Environment
 hostileClimate = Hostile
 normalClimate = Normal
 paradiseClimate = Paradise

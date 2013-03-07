@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using Ikon.Ston;
-using Ikon.Ston.Values;
 using System.Drawing;
-using Ikon;
+using Ikadn;
+using Ikadn.Ikon.Values;
 
 namespace Stareater.AppData
 {
@@ -51,7 +50,7 @@ namespace Stareater.AppData
 		const string GuiScaleKey = "guiscale";
 		#endregion
 
-		protected override void buildSaveData(IkonWriter writer)
+		protected override void buildSaveData(IkadnWriter writer)
 		{
 			base.buildSaveData(writer);
 

@@ -43,6 +43,7 @@ namespace Stareater.GUI
 					setupStartSelector.SelectedIndex = setupStartSelector.Items.Count - 1;
 				else
 					setupStartSelector.SelectedItem = new Tag<StartingConditions>(NewGameController.DefaultStartingCondition, null);
+				updateMapDescription();
 			}
 			else
 				DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -70,6 +71,13 @@ namespace Stareater.GUI
 
 			for (int i = 0; i < players.Count; i++)
 				(playerViewsLayout.Controls[i] as NewGamePlayerView).SetData(players[i]);
+		}
+
+		private void updateMapDescription()
+		{
+			mapDescription.Text = controller.StarPositioner.Description + Environment.NewLine +
+				controller.StarConnector.Description + Environment.NewLine +
+				controller.StarPopulator.Description;
 		}
 
 		private void setupPlayersButton_Click(object sender, EventArgs e)
@@ -112,6 +120,7 @@ namespace Stareater.GUI
 			using (var form = new FormSetupMap()) {
 				form.Initialize(controller);
 				form.ShowDialog();
+				updateMapDescription();
 			}
 		}
 	}

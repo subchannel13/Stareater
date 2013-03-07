@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IKON">
-      <HintPath>..\Stareater.Core\Libs\IKON.dll</HintPath>
+    <Reference Include="Ikadn">
+      <HintPath>..\Stareater.Core\Libs\Ikadn.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
