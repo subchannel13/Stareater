@@ -2,6 +2,7 @@ syntax: glob
 *.pidb
 *.userprefs
 *.resources
+*.testsettings
 source/Zvjezdojedac/bin/*
 source/Zvjezdojedac/obj/*
 source/Zvjezdojedac editori/bin/*
@@ -32,3 +33,8 @@ source/Stareater.Maps.DefaultPopulator/bin/*
 source/Stareater.Maps.DefaultPopulator/obj/*
 source/Stareater.Maps.ProximityLanes/bin/*
 source/Stareater.Maps.ProximityLanes/obj/*
+scripts/*.exe
+source/ExpressionParser Tests/bin/*
+source/ExpressionParser Tests/obj/*
+source/Stareater.Core/AppData/Expressions/*.old
+source/*.vsmdi
