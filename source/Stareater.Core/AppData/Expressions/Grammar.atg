@@ -1,0 +1,114 @@
+﻿$namespace=Stareater.AppData.Expressions
+COMPILER Expression
+
+public Formula ParsedFormula { get; private set; }
+
+IGNORECASE
+
+CHARACTERS
+	digit		= "0123456789".
+	letter		= 'a' .. 'z'.
+
+TOKENS
+	number		= digit {digit} ["." digit {digit}] ["e" ["-"] digit {digit}].
+	identifier	= letter {letter}.
+	infinity	= "Inf".
+
+IGNORE   '\t' + '\r' + '\n'
+
+PRODUCTIONS
+	Expression									(.	IExpressionNode root; .)
+				=	ComparisonExpr <out root>	(.	ParsedFormula = new Formula(root); .)
+				.
+
+	ComparisonExpr <out IExpressionNode node>	(.	IExpressionNode child; .)
+				= LogicalExpr <out child>		(.	IExpressionNode leftSide = child; .)
+				{								(.	double tolerance = 0; .)
+					("=" | "<>" | "≠"
+					| "<" | "<=" | "≤" 
+					| ">" | ">=" | "≥" )		(.	string operatorSymbol = t.val; .)
+					LogicalExpr <out child>		(.	IExpressionNode rightSide = child; .)
+					[
+						"~" number				(.	tolerance = toDouble(t.val); .)
+					]							(.	leftSide = makeComparison(leftSide, operatorSymbol, rightSide, tolerance); .)
+				}								(.	node = leftSide; .)
+				.
+	
+	LogicalExpr	<out IExpressionNode node>		(.	IExpressionNode child; 
+													Queue<IExpressionNode> children = new Queue<IExpressionNode>();
+													Queue<string> operators = new Queue<string>(); .)
+				= AddExpr <out child>			(.	children.Enqueue(child); .)
+				{
+					("&" | "∧" | "⋀"
+					| "|" | "∨" | "⋁"
+					| "@" | "⊕")	(.	operators.Enqueue(t.val); .)
+					AddExpr <out child>			(.	children.Enqueue(child); .)
+				}								(.	node = makeBooleanAritmenthics(children, operators); .)
+				.
+	
+	AddExpr <out IExpressionNode node>			
+												(.	IExpressionNode child; 
+													Queue<IExpressionNode> children = new Queue<IExpressionNode>();
+													Queue<string> operators = new Queue<string>(); .)
+				= MultExpr <out child>			(.	children.Enqueue(child); .)
+				{
+					("+" | "-")					(.	operators.Enqueue(t.val); .)
+					MultExpr <out child>		(.	children.Enqueue(child); .)
+				}								(.	node = makeSummation(children, operators); .)
+				.
+
+	MultExpr <out IExpressionNode node>			(.	IExpressionNode child; 
+													Queue<IExpressionNode> children = new Queue<IExpressionNode>();
+													Queue<string> operators = new Queue<string>(); .)
+				= ExpExpr <out child>			(.	children.Enqueue(child); .)
+				{
+					("*" | "/" | "\\" | "%")	(.	operators.Enqueue(t.val); .)
+					ExpExpr <out child>			(.	children.Enqueue(child); .)
+				}								(.	node = makeMultiplications(children, operators); .)
+				.
+
+	ExpExpr <out IExpressionNode node>			(.	IExpressionNode child; 
+													List<IExpressionNode> children = new List<IExpressionNode>(); .)
+				= UnaryExpr <out child>			(.	children.Add(child); .)
+					{"^" UnaryExpr <out child>	(.	children.Add(child); .)
+					}							(.	node = new ExponentSequence(children).Simplified(); .)
+					.
+	
+	UnaryExpr <out IExpressionNode node>		(.	IExpressionNode child; 
+													UnaryOperator operatorNode = null; .)
+				= [	  "-"						(.	operatorNode = new Negation(); .)
+					| "'"						(.	operatorNode = new ToBoolean(); .)
+					| "-'"						(.	operatorNode = new NegateToBoolean(); .)
+				] List <out child>				(.	if (operatorNode != null) operatorNode.child = child; 
+													node = (operatorNode != null) ? operatorNode : child; .)
+				.
+	
+	List <out IExpressionNode node>				(.	IExpressionNode child, index; 
+													List<IExpressionNode> children = new List<IExpressionNode>();
+													int listStart = 0; .)
+				= Term <out index> [ 
+					"["							(.	listStart = t.charPos; .)
+					ComparisonExpr <out child>		(.	children.Add(child); .)
+					{ "," 
+						ComparisonExpr <out child>	(.	children.Add(child); .)
+					} "]"						
+					]							(.	node = makeList(index, children, listStart); .)
+					.
+
+	Term <out IExpressionNode node>				(.	IExpressionNode child; 
+													node = new Constant(double.NaN); .)
+				= "(" ComparisonExpr <out child> ")"	(. node = child; .)
+				| number						(.	node = new Constant(toDouble(t.val)); .)
+				| infinity						(.	node = new Constant(double.PositiveInfinity); .)
+				| identifier					(.	string identifierName = t.val;
+													List<IExpressionNode> children = new List<IExpressionNode>();
+													int functionStart = 0; .)
+					[
+					"(" ComparisonExpr <out child>		(.	children.Add(child); .)
+						{
+						"," ComparisonExpr <out child>	(.	children.Add(child); .)
+						} ")"
+					]							(.	node = makeFunction(identifierName, children, functionStart); .)
+				.
+
+END Expression.

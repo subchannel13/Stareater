@@ -50,6 +50,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppData\AssetController.cs" />
+    <Compile Include="AppData\Expressions\BooleanAlgebra.cs" />
+    <Compile Include="AppData\Expressions\Comparisons.cs" />
+    <Compile Include="AppData\Expressions\Constant.cs" />
+    <Compile Include="AppData\Expressions\ExponentSequence.cs" />
+    <Compile Include="AppData\Expressions\ExpressionParser.cs" />
+    <Compile Include="AppData\Expressions\Formula.cs" />
+    <Compile Include="AppData\Expressions\Functions.cs" />
+    <Compile Include="AppData\Expressions\IExpressionNode.cs" />
+    <Compile Include="AppData\Expressions\LinearSegmentsFunction.cs" />
+    <Compile Include="AppData\Expressions\Multiplications.cs" />
+    <Compile Include="AppData\Expressions\Parser.cs" />
+    <Compile Include="AppData\Expressions\Scanner.cs" />
+    <Compile Include="AppData\Expressions\Summation.cs" />
+    <Compile Include="AppData\Expressions\UnaryOperators.cs" />
+    <Compile Include="AppData\Expressions\Variable.cs" />
     <Compile Include="AppData\LastGameInfo.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
     <Compile Include="Localization\ChainText.cs" />
@@ -95,10 +110,16 @@
     <Compile Include="Utils\NumberFormatters\ThousandsFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AppData\Expressions\Grammar.atg" />
     <Content Include="Libs\Ikadn.dll" />
     <Content Include="Libs\Ikadn.Ikon.dll" />
     <Content Include="Libs\Ikadn.Ikon.xml" />
     <Content Include="Libs\Ikadn.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="AppData\Expressions\Parser.frame" />
+    <None Include="AppData\Expressions\Scanner.frame" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
