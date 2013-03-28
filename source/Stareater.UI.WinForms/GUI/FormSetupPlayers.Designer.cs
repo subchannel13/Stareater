@@ -38,6 +38,7 @@
 			this.addButton = new System.Windows.Forms.Button();
 			this.colorsLayout = new Stareater.GUI.ControlListView();
 			this.playerViewsLayout = new Stareater.GUI.ControlListView();
+			this.acceptButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// controllerPicker
@@ -143,11 +144,25 @@
 			this.playerViewsLayout.TabIndex = 41;
 			this.playerViewsLayout.SelectedIndexChanged += new System.EventHandler(this.playerViewsLayout_SelectedIndexChanged);
 			// 
+			// acceptButton
+			// 
+			this.acceptButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.acceptButton.Location = new System.Drawing.Point(339, 209);
+			this.acceptButton.Name = "acceptButton";
+			this.acceptButton.Size = new System.Drawing.Size(75, 23);
+			this.acceptButton.TabIndex = 43;
+			this.acceptButton.Text = "accept";
+			this.acceptButton.UseVisualStyleBackColor = true;
+			this.acceptButton.Click += new System.EventHandler(this.acceptButton_Click);
+			// 
 			// FormSetupPlayers
 			// 
+			this.AcceptButton = this.acceptButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.acceptButton;
 			this.ClientSize = new System.Drawing.Size(484, 243);
+			this.Controls.Add(this.acceptButton);
 			this.Controls.Add(this.colorsLayout);
 			this.Controls.Add(this.playerViewsLayout);
 			this.Controls.Add(this.controllerPicker);
@@ -159,7 +174,7 @@
 			this.Controls.Add(this.nameLabel);
 			this.Controls.Add(this.removeButton);
 			this.Controls.Add(this.addButton);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "FormSetupPlayers";
@@ -185,5 +200,6 @@
 		private System.Windows.Forms.Button addButton;
 		private ControlListView playerViewsLayout;
 		private ControlListView colorsLayout;
+		private System.Windows.Forms.Button acceptButton;
 	}
 }
