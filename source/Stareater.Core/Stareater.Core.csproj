@@ -78,6 +78,7 @@
     <Compile Include="Maps\IStarPositioner.cs" />
     <Compile Include="Maps\MapAssets.cs" />
     <Compile Include="Maps\Star.cs" />
+    <Compile Include="Maps\StarPositions.cs" />
     <Compile Include="Maps\StartingConditions.cs" />
     <Compile Include="Players\IOffscreenPlayerFactory.cs" />
     <Compile Include="Players\Player.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Utils\PluginParameters\RangeParameter.cs" />
     <Compile Include="Utils\PluginParameters\SelectorParameter.cs" />
     <Compile Include="Utils\NumberFormatters\ThousandsFormatter.cs" />
+    <Compile Include="Utils\Point2d.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />

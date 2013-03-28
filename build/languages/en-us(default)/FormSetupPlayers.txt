@@ -3,4 +3,8 @@ FormTitle = Players
 controllerLabel = Control
 nameLabel = Name
 organizationLabel = Organization
+
+acceptButton = Close
+addButton = Add
+removeButton = Remove
 -

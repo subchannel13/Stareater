@@ -58,6 +58,10 @@ namespace Stareater.GUI
 			controllerLabel.Text = context["controllerLabel"].Text() + ":";
 			nameLabel.Text = context["nameLabel"].Text() + ":";
 			organizationLabel.Text = context["organizationLabel"].Text() + ":";
+
+			addButton.Text = context["addButton"].Text();
+			removeButton.Text = context["removeButton"].Text();
+			acceptButton.Text = context["acceptButton"].Text();
 		}
 
 		private void selectColor(Color color)
@@ -173,6 +177,11 @@ namespace Stareater.GUI
 
 			controller.RemovePlayer(playerViewsLayout.SelectedIndex);
 			updatePlayerViews();
+		}
+
+		private void acceptButton_Click(object sender, EventArgs e)
+		{
+			this.DialogResult = System.Windows.Forms.DialogResult.OK;
 		}
 	}
 }
