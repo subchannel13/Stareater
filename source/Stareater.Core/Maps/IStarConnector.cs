@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Stareater.Utils.PluginParameters;
+using NGenerics.DataStructures.Mathematical;
 
 namespace Stareater.Maps
 {
@@ -11,5 +12,6 @@ namespace Stareater.Maps
 		string Name { get; }
 		string Description { get; }
 		ParameterList Parameters { get; }
+		IEnumerable<Tuple<Vector2D, Vector2D>> Generate(Random rng, StarPositions starPositions);
 	}
 }

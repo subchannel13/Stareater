@@ -7,6 +7,7 @@ using Stareater.AppData;
 using System.IO;
 using Ikadn;
 using Ikadn.Ikon.Values;
+using NGenerics.DataStructures.Mathematical;
 
 namespace Stareater.Maps.ProximityLanes
 {
@@ -64,6 +65,12 @@ namespace Stareater.Maps.ProximityLanes
 		public ParameterList Parameters
 		{
 			get { return parameters; }
+		}
+
+
+		public IEnumerable<Tuple<Vector2D, Vector2D>> Generate(Random rng, StarPositions starPositions)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

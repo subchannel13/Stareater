@@ -40,8 +40,10 @@ namespace Stareater.AppData.Expressions
 			sequence.Add(result);
 
 			while (operators.Count > 0 || lastOperator != null) {
-				if (operators.Count > 0 && CompatableOperators[operators.Peek()].Contains(lastOperator))
+				if (operators.Count > 0 && (lastOperator == null || CompatableOperators[operators.Peek()].Contains(lastOperator))) {
+					lastOperator = operators.Dequeue();
 					sequence.Add(operands.Dequeue());
+				}
 				else {
 					switch (lastOperator) {
 						case "&":
@@ -95,11 +97,13 @@ namespace Stareater.AppData.Expressions
 			sequence.Add(result);
 
 			while (operators.Count > 0 || lastOperator != null) {
-				if (operators.Count > 0 && CompatableOperators[operators.Peek()].Contains(lastOperator))
-					if (operators.Dequeue() == "/")
+				if (operators.Count > 0 && (lastOperator == null || CompatableOperators[operators.Peek()].Contains(lastOperator))) {
+					lastOperator = operators.Dequeue();
+					if (lastOperator == "/")
 						inverseSequence.Add(operands.Dequeue());
 					else
 						sequence.Add(operands.Dequeue());
+				}
 				else {
 					switch (lastOperator) {
 						case "*":
@@ -203,6 +207,16 @@ namespace Stareater.AppData.Expressions
 						return new Constant(double.NaN);
 					}
 					return new LimitFunction(segmentPoints[0], segmentPoints[1], segmentPoints[2]);
+
+				case "if":
+					if (segmentPoints.Count != 3) {
+						if (segmentPoints.Count < 3)
+							SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has insufficient parameters.");
+						else
+							SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has too many parameters.");
+						return new Constant(double.NaN);
+					}
+					return new IfThenElseFunction(segmentPoints[0], segmentPoints[1], segmentPoints[2]);
 
 				default:
 					if (segmentPoints.Count != 0) {

@@ -50,5 +50,11 @@ namespace Stareater.Maps.DefaultPopulator
 		{
 			get { return parameters; }
 		}
+
+
+		public IEnumerable<StarData> Generate(Random rng, StarPositions starPositions)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

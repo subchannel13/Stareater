@@ -1,0 +1,148 @@
+﻿<#@ import namespace="System.Collections.Generic" #>
+<#+
+private string namespaceName = "";
+private List<string> usings = new List<string>(new string[]{ "System", "System.Collections.Generic" });
+
+struct ViewInfo
+{
+	public string ViewName;
+	public string KeyType;
+	public string KeyProperty;
+
+	public ViewInfo(string viewName, string keyType, string keyProperty) {
+		this.ViewName = viewName;
+		this.KeyType = keyType;
+		this.KeyProperty = keyProperty;
+	}
+
+	public string IndexType(string dataTypeName) {
+		return "Dictionary<" + KeyType + ", ICollection<" + dataTypeName + ">>";
+	}
+
+	public string IndexName {
+		get { return ViewName + "Index"; }
+	}
+}
+
+private void Generate(string className, string typeName, params ViewInfo[] viewInfos)
+{
+	foreach(string usingName in usings)
+		WriteLine("using " + usingName + ";");
+
+	if (usings.Count > 0)
+		WriteLine("");
+
+	if (!string.IsNullOrWhiteSpace(namespaceName)) {
+		WriteLine("namespace " + namespaceName);
+		WriteLine("{");
+	}
+#>
+	class <#= className #> : ICollection<<#= typeName #>>, IDelayedRemoval<<#= typeName #>>
+	{
+		HashSet<<#= typeName #>> innerSet = new HashSet<<#= typeName #>>();
+		List<<#= typeName #>> toRemove = new List<<#= typeName #>>();
+
+<#+ 
+	foreach(var view in viewInfos)
+		WriteLine("		"  + view.IndexType(typeName) + " " + view.IndexName + " = new " + view.IndexType(typeName)+ "();");
+
+	foreach(var view in viewInfos) {
+#>
+
+		public IEnumerable<<#= typeName #>> <#= view.ViewName #>(<#= view.KeyType #> key) {
+			if (<#= view.IndexName #>.ContainsKey(key))
+				foreach (var item in <#= view.IndexName #>[key])
+					yield return item;
+		}
+<#+	}
+#>
+	
+		public void Add(<#= typeName #> item)
+		{
+			innerSet.Add(item); 
+<#+ 
+	foreach(var view in viewInfos) { 
+#>
+
+			if (!<#= view.IndexName #>.ContainsKey(item.<#= view.KeyProperty #>))
+				<#= view.IndexName #>.Add(item.<#= view.KeyProperty #>, new HashSet<<#= typeName #>>());
+			<#= view.IndexName #>[item.<#= view.KeyProperty #>].Add(item);
+<#+	}
+#>
+		}
+
+		public void Clear()
+		{
+			innerSet.Clear();
+
+<#+ 
+	foreach(var view in viewInfos) { 
+#>
+			<#= view.IndexName #>.Clear();
+<#+	}
+#>
+		}
+
+		public bool Contains(<#= typeName #> item)
+		{
+			return innerSet.Contains(item);
+		}
+
+		public void CopyTo(<#= typeName #>[] array, int arrayIndex)
+		{
+			innerSet.CopyTo(array, arrayIndex);
+		}
+
+		public int Count
+		{
+			get { return innerSet.Count; }
+		}
+
+		public bool IsReadOnly
+		{
+			get { return false; }
+		}
+
+		public bool Remove(<#= typeName #> item)
+		{
+			if (innerSet.Remove(item)) {
+<#+ 
+	foreach(var view in viewInfos) { 
+#>
+			<#= view.IndexName #>[item.<#= view.KeyProperty #>].Remove(item);
+<#+	}
+#>
+			
+			return true;
+			}
+
+			return false;
+		}
+
+		public IEnumerator<<#= typeName #>> GetEnumerator()
+		{
+			return innerSet.GetEnumerator();
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return innerSet.GetEnumerator();
+		}
+
+		public void PendRemove(<#= typeName #> element)
+		{
+			toRemove.Add(element);
+		}
+
+		public void ApplyRemove()
+		{
+			foreach (var element in toRemove)
+				this.Remove(element);
+			toRemove.Clear();
+		}
+	}
+<#+ 
+	if (!string.IsNullOrWhiteSpace(namespaceName))
+		WriteLine("}");
+}    
+#>

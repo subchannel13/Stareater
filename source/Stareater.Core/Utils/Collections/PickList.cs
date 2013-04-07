@@ -7,7 +7,8 @@ namespace Stareater.Utils.Collections
 {
 	public class PickList<T>
 	{
-		private static Random rng = new Random();
+		private static Random staticRng = new Random();
+		private Random rng = null;
 
 		public PickList()
 		{
@@ -15,6 +16,18 @@ namespace Stareater.Utils.Collections
 		}
 
 		public PickList(IEnumerable<T> list) : this()
+		{
+			this.InnerList.AddRange(list);
+		}
+
+		public PickList(Random rng)
+		{
+			this.InnerList = new List<T>();
+			this.rng = rng;
+		}
+
+		public PickList(Random rng, IEnumerable<T> list)
+			: this(rng)
 		{
 			this.InnerList.AddRange(list);
 		}
@@ -34,7 +47,7 @@ namespace Stareater.Utils.Collections
 			if (InnerList.Count < 1)
 				return default(T);
 
-			int which = rng.Next(InnerList.Count);
+			int which = (rng ?? staticRng).Next(InnerList.Count);
 			T ret = InnerList[which];
 			if (removeAfter) {
 				InnerList[which] = InnerList[InnerList.Count - 1];

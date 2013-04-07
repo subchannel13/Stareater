@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Stareater.Maps
 {
-	public class Star
+	public class StarData
 	{
 		public const int MaxPlanets = 8;
 	}
