@@ -28,7 +28,7 @@ namespace Stareater.GUI
 
 		public void Initialize(StartingConditions condition)
 		{
-			coloniesSelector.Maximum = Star.MaxPlanets;
+			coloniesSelector.Maximum = StarData.MaxPlanets;
 			coloniesSelector.Value = condition.Colonies;
 
 			var numberFormat = new ThousandsFormatter(condition.Population, condition.Infrastructure);

@@ -8,6 +8,8 @@ using System.IO;
 using Ikadn;
 using Ikadn.Ikon.Values;
 using Stareater.Utils;
+using NGenerics.DataStructures.Mathematical;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Maps.Square
 {
@@ -20,6 +22,7 @@ namespace Stareater.Maps.Square
 		const string StarDistanceKey = "starDistance";
 		const string DefaultDisplacementKey = "defaultDisplacement";
 		const string HomeSystemDistance = "homeSystemDistance";
+		const string EmptyPositionsRatio = "emptyPositionsRatio";
 
 		private SelectorParameter sizeParameter;
 		private RangeParameter<double> displacementParameter;
@@ -28,6 +31,7 @@ namespace Stareater.Maps.Square
 
 		private double starDistance = 1;
 		private double homeSystemDistance = 0.5;
+		private double emptyPositionsRatio = 0.25;
 
 		public SquareMap()
 		{
@@ -38,6 +42,7 @@ namespace Stareater.Maps.Square
 			var constants = data.Dequeue(ConstantsKey).To<ObjectValue>();
 			this.starDistance = constants[StarDistanceKey].To<double>();
 			this.homeSystemDistance = constants[HomeSystemDistance].To<double>();
+			this.emptyPositionsRatio = constants[EmptyPositionsRatio].To<double>();
 
 			sizeParameter = loadSizes(data);
 			displacementParameter = new RangeParameter<double>(LanguageContext, "displacement", 0, 0.5, constants[DefaultDisplacementKey].To<double>(), displacementPercentage);
@@ -85,30 +90,40 @@ namespace Stareater.Maps.Square
 
 		public StarPositions Generate(Random rng, int playerCount)
 		{
-			var positions = new List<Point2d>();
 			int size = sizeOptions[sizeParameter.Value].Size;
+			var allPositions = new PickList<Tuple<int, int>>(rng,
+				Methods.Range(0, size * size, 1).
+				Select(i => new Tuple<int, int>(i % size, i / size)).ToList()
+			);
+
+			var emptyPositions = new HashSet<Tuple<int, int>>();
+			while (emptyPositions.Count < emptyPositionsRatio * size * size)
+				emptyPositions.Add(allPositions.Take());
+
+			var positions = new List<Vector2D>();
 			double displacement = displacementParameter.Value;
 
 			for (double y = 0; y < size; y++)
 				for (double x = 0; x < size; x++)
-					positions.Add(new Point2d(
-						(x + displacementParameter.Value * (2 * rng.NextDouble() - 1)) * starDistance - size / 2.0,
-						(y + displacementParameter.Value * (2 * rng.NextDouble() - 1)) * starDistance - size / 2.0
-						));
+					if (!emptyPositions.Contains(new Tuple<int, int>((int)x, (int)y)))
+						positions.Add(new Vector2D(
+							(x + displacementParameter.Value * (2 * rng.NextDouble() - 1)) * starDistance - size / 2.0,
+							(y + displacementParameter.Value * (2 * rng.NextDouble() - 1)) * starDistance - size / 2.0
+							));
 
-			var homeSystems = new List<Point2d>();
+			var homeSystems = new List<Vector2D>();
 			double phi = 0.5 * rng.NextDouble() * Math.PI;
 			double deltaPhi = Math.PI * 2.0 / playerCount;
 			double radius = starDistance * (size - 1) / 2.0;
 
 			for (double player = 0; player < playerCount; player++) {
-				Point2d desiredPoint = new Point2d(
+				Vector2D desiredPoint = new Vector2D(
 					radius * Math.Cos(phi + player * deltaPhi),
 					radius * Math.Sin(phi + player * deltaPhi)
 				);
 
 				homeSystems.Add(positions.Aggregate((starA, starB) =>
-					desiredPoint.Distance(starA) < desiredPoint.Distance(starB) ? starA : starB));
+					(desiredPoint - starA).Magnitude() < (desiredPoint - starB).Magnitude() ? starA : starB));
 			}
 
 			return new StarPositions(positions, homeSystems);

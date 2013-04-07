@@ -289,4 +289,45 @@ namespace Stareater.AppData.Expressions
 			return (x < min) ? min : (x > max) ? max : x;
 		}
 	}
+
+	class IfThenElseFunction : IExpressionNode
+	{
+		IExpressionNode condition;
+		IExpressionNode trueNode;
+		IExpressionNode falseNode;
+
+		public IfThenElseFunction(IExpressionNode condition, IExpressionNode trueNode, IExpressionNode falseNode)
+		{
+			this.condition = condition;
+			this.trueNode = trueNode;
+			this.falseNode = falseNode;
+		}
+
+		public IExpressionNode Simplified()
+		{
+			if (this.isConstant)
+				return new Constant(this.Evaluate(null));
+
+			if (condition.isConstant)
+				return (condition.Evaluate(null) >= 0) ? trueNode : falseNode;
+			
+			return this;
+		}
+
+		public bool isConstant
+		{
+			get
+			{
+				if (condition.isConstant)
+					return ((condition.Evaluate(null) >= 0) ? trueNode : falseNode).isConstant;
+
+				return false;
+			}
+		}
+
+		public double Evaluate(IDictionary<string, double> variables)
+		{
+			return ((condition.Evaluate(variables) >= 0) ? trueNode : falseNode).Evaluate(variables);
+		}
+	}
 }

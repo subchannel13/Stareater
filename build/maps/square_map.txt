@@ -2,6 +2,7 @@
 	starDistance =3
 	defaultDisplacement =0.35
 	homeSystemDistance =0.85
+	emptyPositionsRatio =0.25
 }
 
 { Size

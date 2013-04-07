@@ -11,5 +11,6 @@ namespace Stareater.Maps
 		string Name { get; }
 		string Description { get; }
 		ParameterList Parameters { get; }
+		IEnumerable<StarData> Generate(Random rng, StarPositions starPositions);
 	}
 }

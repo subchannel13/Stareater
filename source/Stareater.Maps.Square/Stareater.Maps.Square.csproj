@@ -37,6 +37,9 @@
     <Reference Include="Ikadn.Ikon">
       <HintPath>..\Stareater.Core\Libs\Ikadn.Ikon.dll</HintPath>
     </Reference>
+    <Reference Include="NGenerics">
+      <HintPath>..\Stareater.Core\Libs\NGenerics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
