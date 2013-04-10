@@ -11,183 +11,79 @@ namespace ExpressionParser_Tests
 	[TestClass]
 	public class TermTests
 	{
-		#region Evaluation tests
 
 		[TestMethod]
-		public void EvaluateInfinityConstant()
+		public void InfinityConstant()
 		{
-			double input = double.PositiveInfinity;
-			ExpressionParser parser = new ExpressionParser("Inf");
-			parser.Parse();
-
-			Assert.AreEqual(input, parser.ParsedFormula.Evaluate(null));
+			var test = new ParserTester("Inf", null, double.PositiveInfinity);
+			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
-		#region Normal notation
 		[TestMethod]
-		public void EvaluateIntegerConstant()
+		public void IntegerConstant()
 		{
 			double input = 2;
-			ExpressionParser parser = new ExpressionParser(input.ToString());
-			parser.Parse();
 
-			Assert.AreEqual(input, parser.ParsedFormula.Evaluate(null));
+			var test = new ParserTester(input.ToString(), null, input);
+			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
 		[TestMethod]
-		public void EvaluateDecimalConstant()
+		public void DecimalConstant()
 		{
 			double input = 0.6;
-			ExpressionParser parser = new ExpressionParser(input.ToString());
-			parser.Parse();
 
-			Assert.AreEqual(input, parser.ParsedFormula.Evaluate(null), 1e-9);
+			var test = new ParserTester(input.ToString(), null, input, 1e-9);
+			Assert.IsTrue(test.IsOK, test.Message);
 		}
-		#endregion
 
-		#region Scientific notation
 		[TestMethod]
-		public void EvaluateSciBigIntegerConstant()
+		public void SciBigIntegerConstant()
 		{
 			double input = 8e9;
-			ExpressionParser parser = new ExpressionParser(input.ToString());
-			parser.Parse();
 
-			Assert.AreEqual(input, parser.ParsedFormula.Evaluate(null), 1e-6);
+			var test = new ParserTester(input.ToString(), null, input, 1e-6);
+			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
 		[TestMethod]
-		public void EvaluateSciBigDecimalConstant()
+		public void SciBigDecimalConstant()
 		{
 			double input = 8.6e9;
-			ExpressionParser parser = new ExpressionParser(input.ToString());
-			parser.Parse();
 
-			Assert.AreEqual(input, parser.ParsedFormula.Evaluate(null), 1e-6);
+			var test = new ParserTester(input.ToString(), null, input, 1e-6);
+			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
 		[TestMethod]
-		public void EvaluateSciSmallIntegerConstant()
+		public void SciSmallIntegerConstant()
 		{
 			double input = 4e-6;
-			ExpressionParser parser = new ExpressionParser(input.ToString());
-			parser.Parse();
 
-			Assert.AreEqual(input, parser.ParsedFormula.Evaluate(null), 1e-12);
+			var test = new ParserTester(input.ToString(), null, input, 1e-12);
+			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
 		[TestMethod]
-		public void EvaluateSciSmallDecimalConstant()
+		public void SciSmallDecimalConstant()
 		{
 			double input = 3.14e-6;
-			ExpressionParser parser = new ExpressionParser(input.ToString());
-			parser.Parse();
 
-			Assert.AreEqual(input, parser.ParsedFormula.Evaluate(null), 1e-12);
+			var test = new ParserTester(input.ToString(), null, input, 1e-12);
+			Assert.IsTrue(test.IsOK, test.Message);
 		}
-		#endregion
 
 		[TestMethod]
-		public void EvaluateVariable()
+		public void Variable()
 		{
 			string varName = "lvl";
 			double varValue = 3.14;
-			ExpressionParser parser = new ExpressionParser(varName);
-			parser.Parse();
 
-			Assert.AreEqual(varValue, parser.ParsedFormula.Evaluate(new Dictionary<string, double>()
+			var test = new ParserTester(varName, new Dictionary<string, double>()
 			{
 				{varName, varValue}
-			}));
+			}, varValue);
+			Assert.IsTrue(test.IsOK, test.Message);
 		}
-		#endregion
-
-		#region Parse tests
-
-		[TestMethod]
-		public void ParseInfinityConstant()
-		{
-			string input = "Inf";
-			ExpressionParser parser = new ExpressionParser(input);
-			parser.Parse();
-
-			Assert.AreEqual(0, parser.errors.count, parser.errors.ToString());
-		}
-
-		#region Normal notation
-		[TestMethod]
-		public void ParseIntegerConstant()
-		{
-			string input = "2";
-			ExpressionParser parser = new ExpressionParser(input);
-			parser.Parse();
-
-			Assert.AreEqual(0, parser.errors.count, parser.errors.ToString());
-		}
-
-		[TestMethod]
-		public void ParseDecimalConstant()
-		{
-			string input = "0.6";
-			ExpressionParser parser = new ExpressionParser(input);
-			parser.Parse();
-
-			Assert.AreEqual(0, parser.errors.count, parser.errors.ToString());
-		}
-		#endregion
-
-		#region Scientific notation
-		[TestMethod]
-		public void ParseSciBigIntegerConstant()
-		{
-			string input = "8e9";
-			ExpressionParser parser = new ExpressionParser(input);
-			parser.Parse();
-
-			Assert.AreEqual(0, parser.errors.count, parser.errors.ToString());
-		}
-
-		[TestMethod]
-		public void ParseSciBigDecimalConstant()
-		{
-			string input = "8.6e9";
-			ExpressionParser parser = new ExpressionParser(input);
-			parser.Parse();
-
-			Assert.AreEqual(0, parser.errors.count, parser.errors.ToString());
-		}
-
-		[TestMethod]
-		public void ParseSciSmallIntegerConstant()
-		{
-			string input = "4e-6";
-			ExpressionParser parser = new ExpressionParser(input);
-			parser.Parse();
-
-			Assert.AreEqual(0, parser.errors.count, parser.errors.ToString());
-		}
-
-		[TestMethod]
-		public void ParseSciSmallDecimalConstant()
-		{
-			string input = "3.14e-6";
-			ExpressionParser parser = new ExpressionParser(input);
-			parser.Parse();
-
-			Assert.AreEqual(0, parser.errors.count, parser.errors.ToString());
-		}
-		#endregion
-
-		[TestMethod]
-		public void ParseVariable()
-		{
-			string input = "lvl";
-			ExpressionParser parser = new ExpressionParser(input);
-			parser.Parse();
-
-			Assert.AreEqual(0, parser.errors.count, parser.errors.ToString());
-		}
-
-		#endregion
 	}
 }

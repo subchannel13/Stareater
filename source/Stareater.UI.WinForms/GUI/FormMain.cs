@@ -8,12 +8,14 @@ using System.Text;
 using System.Windows.Forms;
 using Stareater.Localization;
 using Stareater.AppData;
+using Stareater.Controllers;
 
 namespace Stareater.GUI
 {
 	internal partial class FormMain : Form
 	{
 		private Queue<Action> delayedGuiEvents = new Queue<Action>();
+		private GameController controller = new GameController();
 
 		public FormMain()
 		{
