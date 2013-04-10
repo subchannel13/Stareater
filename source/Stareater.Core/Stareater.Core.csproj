@@ -70,7 +70,9 @@
     <Compile Include="AppData\Expressions\UnaryOperators.cs" />
     <Compile Include="AppData\Expressions\Variable.cs" />
     <Compile Include="AppData\LastGameInfo.cs" />
+    <Compile Include="Controllers\Data\GameState.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
+    <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Localization\ChainText.cs" />
     <Compile Include="Localization\ConditionalText.cs" />
     <Compile Include="Localization\ExpressionText.cs" />
