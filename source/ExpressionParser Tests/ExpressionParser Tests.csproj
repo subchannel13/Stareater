@@ -45,8 +45,10 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MultiplicationTests.cs" />
     <Compile Include="ParserTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SummationTest.cs" />
     <Compile Include="TermTests.cs" />
   </ItemGroup>
   <ItemGroup>

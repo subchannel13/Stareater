@@ -39,3 +39,4 @@ source/ExpressionParser Tests/obj/*
 source/Stareater.Core/AppData/Expressions/*.old
 source/*.vsmdi
 source/Stareater.Core/Utils/Collections/IndexedCollectionBase.cs
+source/packages/*

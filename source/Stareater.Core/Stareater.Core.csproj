@@ -39,9 +39,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libs\Ikadn.Ikon.dll</HintPath>
     </Reference>
-    <Reference Include="NGenerics, Version=1.3.0.0, Culture=neutral, PublicKeyToken=e4b41be133ea7faf, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\NGenerics.dll</HintPath>
+    <Reference Include="NGenerics, Version=1.4.1.0, Culture=neutral, PublicKeyToken=e4b41be133ea7faf, processorArchitecture=MSIL">
+      <HintPath>..\packages\NGenerics.1.4.1.0\lib\net35\NGenerics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,6 +72,7 @@
     <Compile Include="Controllers\Data\GameState.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
     <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Localization\ChainText.cs" />
     <Compile Include="Localization\ConditionalText.cs" />
     <Compile Include="Localization\ExpressionText.cs" />
@@ -128,13 +128,12 @@
     <Compile Include="VisitedStars.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Libs\NGenerics.dll" />
-    <Content Include="Libs\NGenerics.xml" />
     <None Include="AppData\Expressions\Grammar.atg" />
     <Content Include="Libs\Ikadn.dll" />
     <Content Include="Libs\Ikadn.Ikon.dll" />
     <Content Include="Libs\Ikadn.Ikon.xml" />
     <Content Include="Libs\Ikadn.xml" />
+    <None Include="packages.config" />
     <None Include="Utils\Collections\IndexedCollectionBase.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>IndexedCollectionBase.cs</LastGenOutput>
