@@ -41,7 +41,7 @@ PRODUCTIONS
 				{
 					("&" | "∧" | "⋀"
 					| "|" | "∨" | "⋁"
-					| "@" | "⊕")	(.	operators.Enqueue(t.val); .)
+					| "@" | "⊕")				(.	operators.Enqueue(t.val); .)
 					AddExpr <out child>			(.	children.Enqueue(child); .)
 				}								(.	node = makeBooleanAritmenthics(children, operators); .)
 				.

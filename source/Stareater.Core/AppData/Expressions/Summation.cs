@@ -20,7 +20,7 @@ namespace Stareater.AppData.Expressions
 		{
 			int constCount = sequence.Count(x => x.isConstant) + inverseSequence.Count(x => x.isConstant);
 
-			if (sequence.Count == 1)
+			if (sequence.Count + inverseSequence.Count == 1)
 				return sequence.First();
 			else if (constCount == sequence.Count + inverseSequence.Count)
 				return new Constant(this.Evaluate(null));

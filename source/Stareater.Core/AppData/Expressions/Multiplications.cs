@@ -20,7 +20,7 @@ namespace Stareater.AppData.Expressions
 		{
 			int constCount = sequence.Count(x => x.isConstant) + inverseSequence.Count(x => x.isConstant);
 
-			if (sequence.Count == 1)
+			if (sequence.Count + inverseSequence.Count == 1)
 				return sequence.First();
 			else if (constCount == sequence.Count + inverseSequence.Count)
 				return new Constant(this.Evaluate(null));
@@ -81,7 +81,15 @@ namespace Stareater.AppData.Expressions
 
 		public double Evaluate(IDictionary<string, double> variables)
 		{
-			return sequence.Aggregate(1.0, (subResult, element) => Math.Floor(subResult / element.Evaluate(variables)));
+			return sequence.Skip(1).Aggregate(sequence.First().Evaluate(variables), 
+				(subResult, element) => {
+					double rightOperand = element.Evaluate(variables);
+					if (rightOperand < 0) {
+						subResult *= -1;
+						rightOperand *= -1;
+					}
+					return Math.Floor(subResult / rightOperand);
+				});
 		}
 	}
 
@@ -111,10 +119,16 @@ namespace Stareater.AppData.Expressions
 
 		public double Evaluate(IDictionary<string, double> variables)
 		{
-			return sequence.Aggregate(1.0, (subResult, element) => {
-				double rightOperand = element.Evaluate(variables);
-				return (subResult / rightOperand) - Math.Floor(subResult / rightOperand);
-			});
+			return sequence.Skip(1).Aggregate(sequence.First().Evaluate(variables),
+				(subResult, element) =>
+				{
+					double rightOperand = element.Evaluate(variables);
+					if (rightOperand < 0) {
+						subResult *= -1;
+						rightOperand *= -1;
+					}
+					return subResult - Math.Floor(subResult / rightOperand) * rightOperand;
+				});
 		}
 	}
 }
