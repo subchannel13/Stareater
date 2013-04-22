@@ -49,6 +49,11 @@ namespace Stareater.GUI
 				DialogResult = System.Windows.Forms.DialogResult.Cancel;
 		}
 
+		public void CreateGame(GameController gameController)
+		{
+			gameController.CreateGame(controller);
+		}
+
 		private void setLanguage()
 		{
 			Context context = SettingsWinforms.Get.Language["FormNewGame"];
@@ -122,6 +127,11 @@ namespace Stareater.GUI
 				form.ShowDialog();
 				updateMapDescription();
 			}
+		}
+
+		private void startButton_Click(object sender, EventArgs e)
+		{
+			DialogResult = DialogResult.OK;
 		}
 	}
 }
