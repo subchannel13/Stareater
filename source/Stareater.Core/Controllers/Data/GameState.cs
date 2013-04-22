@@ -7,6 +7,7 @@ namespace Stareater.Controllers.Data
 {
 	public enum GameState
 	{
-		NoGame
+		NoGame,
+		Running
 	}
 }

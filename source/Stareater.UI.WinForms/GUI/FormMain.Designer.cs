@@ -30,6 +30,7 @@
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
 			this.eventTimer = new System.Windows.Forms.Timer(this.components);
+			this.glCanvas = new OpenTK.GLControl();
 			this.SuspendLayout();
 			// 
 			// eventTimer
@@ -37,11 +38,23 @@
 			this.eventTimer.Interval = 1;
 			this.eventTimer.Tick += new System.EventHandler(this.eventTimer_Tick);
 			// 
+			// glCanvas
+			// 
+			this.glCanvas.BackColor = System.Drawing.Color.Black;
+			this.glCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.glCanvas.Location = new System.Drawing.Point(0, 0);
+			this.glCanvas.Name = "glCanvas";
+			this.glCanvas.Size = new System.Drawing.Size(284, 262);
+			this.glCanvas.TabIndex = 0;
+			this.glCanvas.TabStop = false;
+			this.glCanvas.VSync = false;
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(284, 262);
+			this.Controls.Add(this.glCanvas);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "FormMain";
 			this.Text = "Stareater";
@@ -54,5 +67,6 @@
 		#endregion
 
 		private System.Windows.Forms.Timer eventTimer;
+		private OpenTK.GLControl glCanvas;
 	}
 }

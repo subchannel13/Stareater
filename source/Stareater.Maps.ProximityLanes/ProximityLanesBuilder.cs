@@ -68,9 +68,9 @@ namespace Stareater.Maps.ProximityLanes
 		}
 
 
-		public IEnumerable<Tuple<Vector2D, Vector2D>> Generate(Random rng, StarPositions starPositions)
+		public IEnumerable<Tuple<StarData, StarData>> Generate(Random rng, StarPositions starPositions)
 		{
-			throw new NotImplementedException();
+			yield break;
 		}
 	}
 }

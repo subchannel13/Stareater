@@ -3,24 +3,44 @@
 private string namespaceName = "";
 private List<string> usings = new List<string>(new string[]{ "System", "System.Collections.Generic" });
 
+enum ViewType {
+	Scalar = 0,
+	Collection = 1,
+	Set = 3
+}
+
 struct ViewInfo
 {
 	public string ViewName;
 	public string KeyType;
 	public string KeyProperty;
+	public ViewType ContainerType;
 
-	public ViewInfo(string viewName, string keyType, string keyProperty) {
+	public ViewInfo(string viewName, string keyType, string keyProperty, ViewType containerType) {
 		this.ViewName = viewName;
 		this.KeyType = keyType;
 		this.KeyProperty = keyProperty;
+		this.ContainerType = containerType;
 	}
 
 	public string IndexType(string dataTypeName) {
-		return "Dictionary<" + KeyType + ", ICollection<" + dataTypeName + ">>";
+		return "Dictionary<" + KeyType + ", " + ViewContainerType(dataTypeName) + ">";
 	}
 
 	public string IndexName {
 		get { return ViewName + "Index"; }
+	}
+	
+	public string ViewContainerType(string dataTypeName) {
+		switch(ContainerType) {
+			case ViewType.Scalar:
+				return dataTypeName;
+			case ViewType.Collection:
+				return "ICollection<" + dataTypeName + ">";
+			case ViewType.Set:
+				return "ISet<" + dataTypeName + ">";
+		}
+		throw new Exception("Invalid container type: " + ContainerType);
 	}
 }
 
@@ -61,12 +81,17 @@ private void Generate(string className, string typeName, params ViewInfo[] viewI
 		{
 			innerSet.Add(item); 
 <#+ 
-	foreach(var view in viewInfos) { 
+	foreach(var view in viewInfos)
+		if (view.ContainerType.HasFlag(ViewType.Collection)) {
 #>
 
 			if (!<#= view.IndexName #>.ContainsKey(item.<#= view.KeyProperty #>))
-				<#= view.IndexName #>.Add(item.<#= view.KeyProperty #>, new HashSet<<#= typeName #>>());
+				<#= view.IndexName #>.Add(item.<#= view.KeyProperty #>, new <#= view.ViewContainerType(typeName) #>());
 			<#= view.IndexName #>[item.<#= view.KeyProperty #>].Add(item);
+<#+	} else {
+#>
+			if (!<#= view.IndexName #>.ContainsKey(item.<#= view.KeyProperty #>))
+				<#= view.IndexName #>.Add(item.<#= view.KeyProperty #>, item);
 <#+	}
 #>
 		}
@@ -107,9 +132,13 @@ private void Generate(string className, string typeName, params ViewInfo[] viewI
 		{
 			if (innerSet.Remove(item)) {
 <#+ 
-	foreach(var view in viewInfos) { 
+	foreach(var view in viewInfos) 
+		if (view.ContainerType.HasFlag(ViewType.Collection)) { 
 #>
 			<#= view.IndexName #>[item.<#= view.KeyProperty #>].Remove(item);
+<#+	} else {
+#>
+			<#= view.IndexName #>.Remove(item.<#= view.KeyProperty #>);
 <#+	}
 #>
 			

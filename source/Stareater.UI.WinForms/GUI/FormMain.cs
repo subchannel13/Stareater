@@ -83,8 +83,10 @@ namespace Stareater.GUI
 		{
 			using (FormNewGame form = new FormNewGame()) {
 				form.Initialize();
-				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-					;
+				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+					form.CreateGame(controller);
+					redraw();
+				}
 				else
 					postDelayedEvent(showMainMenu);
 			}
@@ -98,5 +100,11 @@ namespace Stareater.GUI
 			postDelayedEvent(showMainMenu);
 		}
 		#endregion
+
+		private void redraw()
+		{
+			if (controller.State != Controllers.Data.GameState.Running)
+				return;
+		}
 	}
 }

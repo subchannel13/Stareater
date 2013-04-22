@@ -82,7 +82,9 @@
     <Compile Include="Maps\IStarConnector.cs" />
     <Compile Include="Maps\IStarPopulator.cs" />
     <Compile Include="Maps\IStarPositioner.cs" />
+    <Compile Include="Maps\Map.cs" />
     <Compile Include="Maps\MapAssets.cs" />
+    <Compile Include="Maps\Planet.cs" />
     <Compile Include="Maps\StarData.cs" />
     <Compile Include="Maps\StarPositions.cs" />
     <Compile Include="Maps\StartingConditions.cs" />
@@ -99,10 +101,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IndexedCollectionBase.tt</DependentUpon>
     </Compile>
-    <Compile Include="VisitedStarsCollection.cs">
+    <Compile Include="ExampleCollection.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>VisitedStarsCollection.tt</DependentUpon>
+      <DependentUpon>ExampleCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="Utils\TableSubset.cs" />
     <Compile Include="Utils\Collections\IDelayedRemoval.cs" />
@@ -125,7 +127,6 @@
     <Compile Include="Utils\PluginParameters\RangeParameter.cs" />
     <Compile Include="Utils\PluginParameters\SelectorParameter.cs" />
     <Compile Include="Utils\NumberFormatters\ThousandsFormatter.cs" />
-    <Compile Include="VisitedStars.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />
@@ -138,9 +139,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>IndexedCollectionBase.cs</LastGenOutput>
     </None>
-    <None Include="VisitedStarsCollection.tt">
+    <None Include="ExampleCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>VisitedStarsCollection.cs</LastGenOutput>
+      <LastGenOutput>ExampleCollection.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
