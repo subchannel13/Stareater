@@ -46,8 +46,10 @@
 			this.glCanvas.Name = "glCanvas";
 			this.glCanvas.Size = new System.Drawing.Size(284, 262);
 			this.glCanvas.TabIndex = 0;
-			this.glCanvas.TabStop = false;
 			this.glCanvas.VSync = false;
+			this.glCanvas.Load += new System.EventHandler(this.glCanvas_Load);
+			this.glCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.glCanvas_Paint);
+			this.glCanvas.Resize += new System.EventHandler(this.glCanvas_Resize);
 			// 
 			// FormMain
 			// 
