@@ -46,12 +46,14 @@
     <Reference Include="Ikadn.Ikon">
       <HintPath>..\Stareater.Core\Libs\Ikadn.Ikon.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\OpenTK.dll</HintPath>
+    <Reference Include="NGenerics, Version=1.4.1.0, Culture=neutral, PublicKeyToken=e4b41be133ea7faf, processorArchitecture=MSIL">
+      <HintPath>..\packages\NGenerics.1.4.1.0\lib\net35\NGenerics.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTK.GLControl">
-      <HintPath>..\packages\opentk_compat_glcontrol.1.1.1173.43181\lib\OpenTK.GLControl.dll</HintPath>
+    <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK_GLControl.1.0.0\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.GLControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK_GLControl.1.0.0\lib\net20\OpenTK.GLControl.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -65,6 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppData\SettingsWinforms.cs" />
+    <Compile Include="GLRenderers\IRenderer.cs" />
+    <Compile Include="GLRenderers\GalaxyRenderer.cs" />
     <Compile Include="GUI\ColorItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -192,7 +196,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="Libs\OpenTK.Compatibility.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -212,10 +215,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App icon.ico" />
-    <Content Include="Libs\OpenTK.dll" />
-    <Content Include="Libs\OpenTK.GLControl.dll" />
-    <Content Include="Libs\OpenTK.GLControl.xml" />
-    <Content Include="Libs\OpenTK.xml" />
     <Content Include="maps\Stareater.Maps.DefaultPopulator.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

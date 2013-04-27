@@ -31,6 +31,7 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
 			this.eventTimer = new System.Windows.Forms.Timer(this.components);
 			this.glCanvas = new OpenTK.GLControl();
+			this.glRedrawTimer = new System.Windows.Forms.Timer(this.components);
 			this.SuspendLayout();
 			// 
 			// eventTimer
@@ -51,6 +52,12 @@
 			this.glCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.glCanvas_Paint);
 			this.glCanvas.Resize += new System.EventHandler(this.glCanvas_Resize);
 			// 
+			// glRedrawTimer
+			// 
+			this.glRedrawTimer.Enabled = true;
+			this.glRedrawTimer.Interval = 10;
+			this.glRedrawTimer.Tick += new System.EventHandler(this.glRedrawTimer_Tick);
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -70,5 +77,6 @@
 
 		private System.Windows.Forms.Timer eventTimer;
 		private OpenTK.GLControl glCanvas;
+		private System.Windows.Forms.Timer glRedrawTimer;
 	}
 }

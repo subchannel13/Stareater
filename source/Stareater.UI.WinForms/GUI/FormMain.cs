@@ -11,19 +11,24 @@ using Stareater.AppData;
 using Stareater.Controllers;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using Stareater.GLRenderers;
 
 namespace Stareater.GUI
 {
 	internal partial class FormMain : Form
 	{
-		const double DefaultViewSize = 16;
-		const double ZoomBase = 1.2f;
-		const float FarZ = -10;
+		private const double DefaultViewSize = 15;
+		private const double ZoomBase = 1.2f;
+		private const float FarZ = -1;
+		private const float MaxDeltaTime = 0.5f;
 
-		bool glReady = false;
-		bool invalidateViewport = true;
+		private bool glReady = false;
+		private bool invalidateViewport = true;
 		private Matrix4 invProjection;
 		private int zoomLevel = 0;
+
+		private DateTime lastRender = DateTime.UtcNow;
+		private IRenderer glRenderer = null;
 
 		private Queue<Action> delayedGuiEvents = new Queue<Action>();
 		private GameController controller = new GameController();
@@ -53,7 +58,7 @@ namespace Stareater.GUI
 		private void eventTimer_Tick(object sender, EventArgs e)
 		{
 			lock (delayedGuiEvents) {
-				eventTimer.Enabled = false;
+				eventTimer.Stop();
 
 				while (delayedGuiEvents.Count > 0)
 					delayedGuiEvents.Dequeue().Invoke();
@@ -65,7 +70,7 @@ namespace Stareater.GUI
 		{
 			lock (delayedGuiEvents) {
 				delayedGuiEvents.Enqueue(eventAction);
-				eventTimer.Enabled = true;
+				eventTimer.Start();
 			}
 		}
 
@@ -96,6 +101,7 @@ namespace Stareater.GUI
 				form.Initialize();
 				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 					form.CreateGame(controller);
+					glRenderer = new GalaxyRenderer(controller);
 					redraw();
 				}
 				else
@@ -152,11 +158,23 @@ namespace Stareater.GUI
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
-			
+
+			var thisMoment = DateTime.UtcNow;
+			double dt = Math.Min(Math.Max((thisMoment - lastRender).TotalSeconds, 0), MaxDeltaTime);
+
+			if (glReady && glRenderer != null)
+				glRenderer.Draw(dt);
+
+			lastRender = thisMoment;
 			glCanvas.SwapBuffers();
 		}
 
 		#endregion
+
+		private void glRedrawTimer_Tick(object sender, EventArgs e)
+		{
+			glCanvas.Refresh();
+		}
 		
 	}
 }
