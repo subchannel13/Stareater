@@ -7,13 +7,13 @@ namespace Stareater.Maps
 {
 	class Map
 	{
-		private StarData[] stars;
-		private Tuple<StarData, StarData>[] wormholes;
+		public StarData[] Stars { get; private set; }
+		public Tuple<StarData, StarData>[] Wormholes { get; private set; }
 
 		public Map(IEnumerable<StarData> stars, IEnumerable<Tuple<StarData, StarData>> wormholes)
 		{
-			this.stars = stars.ToArray();
-			this.wormholes = wormholes.ToArray();
+			this.Stars = stars.ToArray();
+			this.Wormholes = wormholes.ToArray();
 		}
 	}
 }

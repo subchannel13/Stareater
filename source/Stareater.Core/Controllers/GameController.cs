@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Stareater.Controllers.Data;
+using Stareater.Maps;
 
 namespace Stareater.Controllers
 {
@@ -29,6 +30,15 @@ namespace Stareater.Controllers
 				);
 
 			State = GameState.Running;
+		}
+
+		public IEnumerable<StarData> Stars
+		{
+			get
+			{
+				foreach (var star in game.map.Stars)
+					yield return star;
+			}
 		}
 	}
 }

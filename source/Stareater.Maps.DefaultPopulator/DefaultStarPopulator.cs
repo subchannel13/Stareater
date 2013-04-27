@@ -90,7 +90,8 @@ namespace Stareater.Maps.DefaultPopulator
 
 		public IEnumerable<StarData> Generate(Random rng, StarPositions starPositions)
 		{
-			throw new NotImplementedException("Think about it.");
+			foreach (var position in starPositions.Stars)
+				yield return new StarData(Color.Red, 1, "Test", position, 0);
 		}
 	}
 }
