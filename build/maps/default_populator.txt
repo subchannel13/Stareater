@@ -1,0 +1,17 @@
+{ StarType
+	color [=1 =0 =0]
+	minRadiation =7
+	maxRadiation =10
+}
+
+{ StarType
+	color [=1 =1 =0]
+	minRadiation =2.4
+	maxRadiation =7.2
+}
+
+{ StarType
+	color [=0 =0 =1]
+	minRadiation =7.5
+	maxRadiation =13.5
+}
