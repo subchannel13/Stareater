@@ -101,7 +101,7 @@ namespace Stareater.GUI
 				form.Initialize();
 				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 					form.CreateGame(controller);
-					glRenderer = new GalaxyRenderer(controller);
+					glRenderer = new GalaxyRenderer(controller, glCanvas);
 					redraw();
 				}
 				else
