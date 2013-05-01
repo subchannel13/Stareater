@@ -17,16 +17,9 @@ namespace Stareater.GUI
 {
 	internal partial class FormMain : Form
 	{
-		private const double DefaultViewSize = 15;
-		private const double ZoomBase = 1.2f;
-		private const float FarZ = -1;
 		private const float MaxDeltaTime = 0.5f;
 
 		private bool glReady = false;
-		private bool invalidateViewport = true;
-		private Matrix4 invProjection;
-		private int zoomLevel = 0;
-
 		private DateTime lastRender = DateTime.UtcNow;
 		private IRenderer glRenderer = null;
 
@@ -101,7 +94,8 @@ namespace Stareater.GUI
 				form.Initialize();
 				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
 					form.CreateGame(controller);
-					glRenderer = new GalaxyRenderer(controller, glCanvas);
+					glRenderer = new GalaxyRenderer(controller);
+					glRenderer.AttachToCanvas(glCanvas);
 					redraw();
 				}
 				else
@@ -132,28 +126,9 @@ namespace Stareater.GUI
 			GL.Enable(EnableCap.DepthTest);
 		}
 
-		private void glCanvas_Resize(object sender, EventArgs e)
-		{
-			invalidateViewport = true;
-			glCanvas.Refresh();
-		}
-
 		private void glCanvas_Paint(object sender, PaintEventArgs e)
 		{
 			if (!glReady) return;
-
-			if (invalidateViewport) {
-				GL.Viewport(glCanvas.Location, glCanvas.Size);
-				double aspect = glCanvas.Width / (double)glCanvas.Height;
-				double semiRadius = 0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel);
-
-				GL.MatrixMode(MatrixMode.Projection);
-				GL.LoadIdentity();
-				GL.Ortho(-aspect * semiRadius, aspect * semiRadius, -semiRadius, semiRadius, 0, -FarZ);
-
-				GL.GetFloat(GetPName.ProjectionMatrix, out invProjection);
-				invProjection.Invert();
-			}
 
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			GL.MatrixMode(MatrixMode.Modelview);

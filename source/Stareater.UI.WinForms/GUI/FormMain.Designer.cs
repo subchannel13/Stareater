@@ -50,7 +50,6 @@
 			this.glCanvas.VSync = false;
 			this.glCanvas.Load += new System.EventHandler(this.glCanvas_Load);
 			this.glCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.glCanvas_Paint);
-			this.glCanvas.Resize += new System.EventHandler(this.glCanvas_Resize);
 			// 
 			// glRedrawTimer
 			// 
