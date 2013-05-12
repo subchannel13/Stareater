@@ -30,16 +30,17 @@ namespace Stareater.Players
 				yield return 0.5;
 
 				var colors = data[ColorsKey].To<ArrayValue>();
-				foreach (double p in Methods.ProgressReportHelper(0.5, 0.5, colors, (colorArray) =>
+				foreach (var p in Methods.ProgressReportHelper(0.5, 0.5, colors))
 				{
-					var colorData = colorArray.To<ArrayValue>();
+					var colorData = p.Data.To<ArrayValue>();
 					colorList.Add(Color.FromArgb(
 						(colorData[0] as NumericValue).To<int>(),
 						(colorData[1] as NumericValue).To<int>(),
 						(colorData[2] as NumericValue).To<int>()
 						));
-				}))
-					yield return p;
+					yield return p.Percentage;
+				}
+					
 			}
 
 			Colors = colorList.ToArray();
@@ -52,14 +53,12 @@ namespace Stareater.Players
 			yield return 0.1;
 
 			List<IOffscreenPlayerFactory> aiList = new List<IOffscreenPlayerFactory>();
-			Type targetType = typeof(IOffscreenPlayerFactory);
-			foreach (double p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles, (dllFile) =>
+			foreach (var p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles))
 			{
-				foreach (var type in Assembly.LoadFile(dllFile.FullName).GetTypes())
-					if (targetType.IsAssignableFrom(type))
-						aiList.Add(Activator.CreateInstance(type) as IOffscreenPlayerFactory);
-			}))
-				yield return p;
+				aiList.AddRange(Methods.LoadFromDLL<IOffscreenPlayerFactory>(p.Data.FullName));
+				yield return p.Percentage;
+			}
+				
 
 			AIDefinitions = aiList.ToArray();
 			yield return 1;

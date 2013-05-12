@@ -30,11 +30,11 @@ namespace Stareater.Maps
 				var conditions = parser.ParseAll();
 				yield return 0.5;
 
-				foreach (double p in Methods.ProgressReportHelper(0.5, 0.5, conditions.Count, () =>
+				foreach (double p in Methods.ProgressReportHelper(0.5, 0.5, conditions.Count))
 				{
 					conditionList.Add(new StartingConditions(conditions.Dequeue().To<ObjectValue>()));
-				}))
 					yield return p;
+				}
 			}
 
 			Starts = conditionList.ToArray();
@@ -47,14 +47,11 @@ namespace Stareater.Maps
 			yield return 0.1;
 
 			List<IStarPositioner> factoryList = new List<IStarPositioner>();
-			Type targetType = typeof(IStarPositioner);
-			foreach (double p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles, (dllFile) =>
+			foreach (var p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles))
 			{
-				foreach (var type in Assembly.LoadFile(dllFile.FullName).GetTypes())
-					if (targetType.IsAssignableFrom(type))
-						factoryList.Add(Activator.CreateInstance(type) as IStarPositioner);
-			}))
-				yield return p;
+				factoryList.AddRange(Methods.LoadFromDLL<IStarPositioner>(p.Data.FullName));
+				yield return p.Percentage;
+			}
 
 			StarPositioners = factoryList.ToArray();
 			yield return 1;
@@ -66,15 +63,12 @@ namespace Stareater.Maps
 			yield return 0.1;
 
 			List<IStarConnector> factoryList = new List<IStarConnector>();
-			Type targetType = typeof(IStarConnector);
-			foreach (double p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles, (dllFile) =>
+			foreach (var p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles))
 			{
-				foreach (var type in Assembly.LoadFile(dllFile.FullName).GetTypes())
-					if (targetType.IsAssignableFrom(type))
-						factoryList.Add(Activator.CreateInstance(type) as IStarConnector);
-			}))
-				yield return p;
-
+				factoryList.AddRange(Methods.LoadFromDLL<IStarConnector>(p.Data.FullName));
+				yield return p.Percentage;
+			}
+			
 			StarConnectors = factoryList.ToArray();
 			yield return 1;
 		}
@@ -85,14 +79,11 @@ namespace Stareater.Maps
 			yield return 0.1;
 
 			List<IStarPopulator> factoryList = new List<IStarPopulator>();
-			Type targetType = typeof(IStarPopulator);
-			foreach (double p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles, (dllFile) =>
+			foreach (var p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles))
 			{
-				foreach (var type in Assembly.LoadFile(dllFile.FullName).GetTypes())
-					if (targetType.IsAssignableFrom(type))
-						factoryList.Add(Activator.CreateInstance(type) as IStarPopulator);
-			}))
-				yield return p;
+				factoryList.AddRange(Methods.LoadFromDLL<IStarPopulator>(p.Data.FullName));
+				yield return p.Percentage;
+			}
 
 			StarPopulators = factoryList.ToArray();
 			yield return 1;
