@@ -44,7 +44,7 @@ namespace Stareater.Localization
 		{
 			get {
 				if (entryKey == null)
-					throw new NullReferenceException("Entry key is null");
+					throw new KeyNotFoundException("Entry key is null");
 
 				entryKey = entryKey.ToLower();
 				if (entries.ContainsKey(entryKey))

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System;
 
 namespace Stareater.Utils.Collections
 {
+	[Serializable]
 	public class PendableSet<T> : HashSet<T>, IDelayedRemoval<T>
 	{
 		List<T> toRemove = null;

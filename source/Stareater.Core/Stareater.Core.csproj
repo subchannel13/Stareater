@@ -106,6 +106,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ExampleCollection.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utils\ProgressData.cs" />
     <Compile Include="Utils\TableSubset.cs" />
     <Compile Include="Utils\Collections\IDelayedRemoval.cs" />
     <Compile Include="Utils\Collections\PendableSet.cs" />

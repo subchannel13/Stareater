@@ -36,11 +36,11 @@ namespace Stareater.Players
 				var data = parser.ParseAll();
 				yield return 0.5;
 
-				foreach (double p in Methods.ProgressReportHelper(0.5, 0.5, data.Count, () =>
-					{
-						list.Add(load(data.Dequeue().To<ObjectValue>()));
-					}))
+				foreach (double p in Methods.ProgressReportHelper(0.5, 0.5, data.Count)) {
+					list.Add(load(data.Dequeue().To<ObjectValue>()));
 					yield return p;
+				}
+
 				list.Sort((a, b) => { return a.Name.CompareTo(b.Name); });
 			}
 			
