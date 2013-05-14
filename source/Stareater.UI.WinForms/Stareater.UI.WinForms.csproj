@@ -215,10 +215,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App icon.ico" />
-    <Content Include="maps\Stareater.Maps.DefaultPopulator.dll">
+    <Content Include="maps\Stareater.Maps.ProximityLanes.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="maps\Stareater.Maps.ProximityLanes.dll">
+    <Content Include="maps\Stareater.Maps.RybPopulator.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="maps\Stareater.Maps.Square.dll">

@@ -8,8 +8,8 @@
     <ProjectGuid>{651074F0-FD84-47B3-A294-ED3C79B6FA72}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Stareater.Maps.DefaultPopulator</RootNamespace>
-    <AssemblyName>Stareater.Maps.DefaultPopulator</AssemblyName>
+    <RootNamespace>Stareater.Maps.RybPopulator</RootNamespace>
+    <AssemblyName>Stareater.Maps.RybPopulator</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultStarPopulator.cs" />
+    <Compile Include="RybStarPopulator.cs" />
     <Compile Include="StarType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

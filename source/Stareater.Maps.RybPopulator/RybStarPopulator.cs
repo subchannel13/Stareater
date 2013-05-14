@@ -9,9 +9,9 @@ using System.IO;
 using Ikadn.Ikon.Values;
 using System.Drawing;
 
-namespace Stareater.Maps.DefaultPopulator
+namespace Stareater.Maps.RybPopulator
 {
-	public class DefaultStarPopulator : IStarPopulator
+	public class RybStarPopulator : IStarPopulator
 	{
 		private const string ParametersFile = "default_populator.txt";
 
@@ -27,7 +27,7 @@ namespace Stareater.Maps.DefaultPopulator
 
 		private StarType[] starTypes;
 
-		public DefaultStarPopulator()
+		public RybStarPopulator()
 		{
 			ValueQueue data; 
 			using (var parser = new Ikadn.Ikon.Parser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))

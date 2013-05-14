@@ -111,7 +111,7 @@ namespace Stareater.Maps.Square
 							(y + displacementParameter.Value * (2 * rng.NextDouble() - 1)) * starDistance - size / 2.0
 							));
 
-			var homeSystems = new List<Vector2D>();
+			var homeSystems = new List<int>();
 			double phi = 0.5 * rng.NextDouble() * Math.PI;
 			double deltaPhi = Math.PI * 2.0 / playerCount;
 			double radius = starDistance * (size - 1) / 2.0;
@@ -122,8 +122,11 @@ namespace Stareater.Maps.Square
 					radius * Math.Sin(phi + player * deltaPhi)
 				);
 
-				homeSystems.Add(positions.Aggregate((starA, starB) =>
-					(desiredPoint - starA).Magnitude() < (desiredPoint - starB).Magnitude() ? starA : starB));
+				int candidate = 0;
+				for (int i = 1; i < positions.Count; i++)
+					if ((desiredPoint - positions[candidate]).Magnitude() > (desiredPoint - positions[i]).Magnitude())
+						candidate = i;
+				homeSystems.Add(candidate);
 			}
 
 			return new StarPositions(positions, homeSystems);

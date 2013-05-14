@@ -9,13 +9,20 @@ namespace Stareater.Maps
 {
 	public struct StarPositions
 	{
-		public IEnumerable<Vector2D> Stars;
-		public IEnumerable<Vector2D> HomeSystems;
+		/// <summary>
+		/// Positions of stars.
+		/// </summary>
+		public Vector2D[] Stars;
+		
+		/// <summary>
+		/// Indices of positions for home systems.
+		/// </summary>
+		public int[] HomeSystems;
 
-		public StarPositions(IEnumerable<Vector2D> stars, IEnumerable<Vector2D> homeSystems)
+		public StarPositions(IEnumerable<Vector2D> stars, IEnumerable<int> homeSystems)
 		{
-			this.HomeSystems = homeSystems;
-			this.Stars = stars;
+			this.HomeSystems = homeSystems.ToArray();
+			this.Stars = stars.ToArray();
 		}
 	}
 }
