@@ -87,6 +87,14 @@ namespace Stareater.GLRenderers
 				GL.End();
 				GL.PopMatrix();
 			}
+
+			GL.Color4(Color.Blue);
+			GL.Begin(BeginMode.Lines);
+			foreach (var wormhole in controller.Wormholes) {
+				GL.Vertex2(wormhole.Item1.Position.X, wormhole.Item1.Position.Y);
+				GL.Vertex2(wormhole.Item2.Position.X, wormhole.Item2.Position.Y);
+			}
+			GL.End();
 		}
 
 		private void canvasResize(object sender, EventArgs e)

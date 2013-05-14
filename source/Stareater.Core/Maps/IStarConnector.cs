@@ -12,6 +12,6 @@ namespace Stareater.Maps
 		string Name { get; }
 		string Description { get; }
 		ParameterList Parameters { get; }
-		IEnumerable<Tuple<StarData, StarData>> Generate(Random rng, StarPositions starPositions);
+		IEnumerable<Tuple<int, int>> Generate(Random rng, StarPositions starPositions);
 	}
 }

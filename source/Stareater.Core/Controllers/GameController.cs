@@ -40,5 +40,14 @@ namespace Stareater.Controllers
 					yield return star;
 			}
 		}
+
+		public IEnumerable<Tuple<StarData, StarData>> Wormholes
+		{
+			get
+			{
+				foreach (var wormhole in game.map.Wormholes)
+					yield return wormhole;
+			}
+		}
 	}
 }
