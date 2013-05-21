@@ -13,7 +13,7 @@ namespace Stareater.Maps.RybPopulator
 {
 	public class RybStarPopulator : IStarPopulator
 	{
-		private const string ParametersFile = "default_populator.txt";
+		private const string ParametersFile = "ryb_populator.txt";
 
 		private const string LanguageContext = "DefaultPopulator";
 
@@ -90,8 +90,9 @@ namespace Stareater.Maps.RybPopulator
 
 		public IEnumerable<StarData> Generate(Random rng, StarPositions starPositions)
 		{
+			int colorI = 0;
 			foreach (var position in starPositions.Stars)
-				yield return new StarData(Color.Red, 1, "Test", position, 0);
+				yield return new StarData(starTypes[colorI++ % starTypes.Length].Hue, 1, "Test", position, 0);
 		}
 	}
 }
