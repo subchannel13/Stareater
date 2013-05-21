@@ -25,7 +25,10 @@ namespace Stareater.GLRenderers
 
 		private int zoomLevel = 0;
 		private Vector4? lastMousePosition = null;
+		private float panAbsPath = 0;
 		private Vector2 originOffset = Vector2.Zero;
+
+		private double test = 0;
 
 		public GalaxyRenderer(GameController controller)
 		{
@@ -39,12 +42,15 @@ namespace Stareater.GLRenderers
 			eventDispatcher.Resize += canvasResize;
 			eventDispatcher.MouseMove += mousePan;
 			eventDispatcher.MouseWheel += mouseZoom;
+			eventDispatcher.MouseClick += mouseClick;
 		}
 
 		public void DetachFromCanvas()
 		{
 			eventDispatcher.Resize -= canvasResize;
 			eventDispatcher.MouseMove -= mousePan;
+			eventDispatcher.MouseWheel -= mouseZoom;
+			eventDispatcher.MouseClick -= mouseClick;
 
 			this.eventDispatcher = null;
 		}
@@ -81,7 +87,7 @@ namespace Stareater.GLRenderers
 
 				GL.Vertex2(-0.5, -0.5);
 				GL.Vertex2(0.5, -0.5);
-				GL.Vertex2(0.5, 0.5);
+				GL.Vertex2(0.5 + test, 0.5 + test);
 				GL.Vertex2(-0.5, 0.5);
 				
 				GL.End();
@@ -95,6 +101,8 @@ namespace Stareater.GLRenderers
 				GL.Vertex2(wormhole.Item2.Position.X, wormhole.Item2.Position.Y);
 			}
 			GL.End();
+
+			test = Math.Max(test - deltaTime, 0);
 		}
 
 		private void canvasResize(object sender, EventArgs e)
@@ -105,22 +113,26 @@ namespace Stareater.GLRenderers
 
 		public void mousePan(object sender, MouseEventArgs e)
 		{
-			float mouseX = 2 * e.X / (float)eventDispatcher.Width - 1;
-			float mouseY = 1 - 2 * e.Y / (float)eventDispatcher.Height;
+			Vector4 currentPosition = new Vector4(
+				2 * e.X / (float)eventDispatcher.Width - 1,
+				1 - 2 * e.Y / (float)eventDispatcher.Height, 0, 1);
 
 			if (!lastMousePosition.HasValue)
-				lastMousePosition = new Vector4(mouseX, mouseY, 0, 1);
+				lastMousePosition = currentPosition;
 
 			if (!e.Button.HasFlag(MouseButtons.Left)) {
-				lastMousePosition = new Vector4(mouseX, mouseY, 0, 1);
+				lastMousePosition = currentPosition;
+				panAbsPath = 0;
 				return;
 			}
+			
+			panAbsPath += (currentPosition - lastMousePosition.Value).Length;
 
-			originOffset -= (Vector4.Transform(new Vector4(mouseX, mouseY, 0, 1), invProjection) -
+			originOffset -= (Vector4.Transform(currentPosition, invProjection) -
 				Vector4.Transform(lastMousePosition.Value, invProjection)
 				).Xy;
 
-			lastMousePosition = new Vector4(mouseX, mouseY, 0, 1);
+			lastMousePosition = currentPosition;
 			resetProjection = true;
 			eventDispatcher.Refresh();
 		}
@@ -141,6 +153,14 @@ namespace Stareater.GLRenderers
 
 			originOffset = (originOffset * oldZoom + mousePoint * (newZoom - oldZoom)) / newZoom;
 			resetProjection = true;
+		}
+
+		public void mouseClick(object sender, MouseEventArgs e)
+		{
+			if (panAbsPath > 0)
+				return;
+
+			test = 1;
 		}
 
 		public void Dispose()

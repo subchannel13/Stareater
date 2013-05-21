@@ -8,15 +8,15 @@ namespace Stareater.Maps.RybPopulator
 {
 	class StarType
 	{
-		private Color color;
-		private double minRadiation;
-		private double maxRadiation;
+		public Color Hue { get; private set; }
+		public double MinRadiation { get; private set; }
+		public double MaxRadiation { get; private set; }
 
 		public StarType(Color color, double minRadiation, double maxRadiation)
 		{
-			this.color = color;
-			this.minRadiation = minRadiation;
-			this.maxRadiation = maxRadiation;
+			this.Hue = color;
+			this.MinRadiation = minRadiation;
+			this.MaxRadiation = maxRadiation;
 		}
 	}
 }
