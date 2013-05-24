@@ -14,8 +14,11 @@ namespace Stareater.GLRenderers
 	{
 		private const double DefaultViewSize = 15;
 		private const double ZoomBase = 1.2f;
+		
 		private const float FarZ = -1;
-		private const float StarPlaneZ = -0.5f;
+		private const float WormholeZ = -0.6f;
+		private const float StarColorZ = -0.5f;
+		private const float StarSaturationZ = -0.4f;
 
 		private GameController controller;
 		private Control eventDispatcher;
@@ -43,10 +46,14 @@ namespace Stareater.GLRenderers
 			eventDispatcher.MouseMove += mousePan;
 			eventDispatcher.MouseWheel += mouseZoom;
 			eventDispatcher.MouseClick += mouseClick;
+
+			TextureManager.Get.Load();
 		}
 
 		public void DetachFromCanvas()
 		{
+			TextureManager.Get.Unload();
+
 			eventDispatcher.Resize -= canvasResize;
 			eventDispatcher.MouseMove -= mousePan;
 			eventDispatcher.MouseWheel -= mouseZoom;
@@ -79,30 +86,62 @@ namespace Stareater.GLRenderers
 				resetProjection = false;
 			}
 
-			foreach (var star in controller.Stars) {
-				GL.Color4(star.Color);
-				GL.PushMatrix();
-				GL.Translate(star.Position.X, star.Position.Y, StarPlaneZ);
-				GL.Begin(BeginMode.Quads);
-
-				GL.Vertex2(-0.5, -0.5);
-				GL.Vertex2(0.5, -0.5);
-				GL.Vertex2(0.5 + test, 0.5 + test);
-				GL.Vertex2(-0.5, 0.5);
-				
-				GL.End();
-				GL.PopMatrix();
-			}
-
+			GL.Disable(EnableCap.Texture2D);
 			GL.Color4(Color.Blue);
+			GL.PushMatrix();
+			GL.Translate(0, 0, WormholeZ);
 			GL.Begin(BeginMode.Lines);
 			foreach (var wormhole in controller.Wormholes) {
 				GL.Vertex2(wormhole.Item1.Position.X, wormhole.Item1.Position.Y);
 				GL.Vertex2(wormhole.Item2.Position.X, wormhole.Item2.Position.Y);
 			}
 			GL.End();
+			GL.PopMatrix();
 
-			test = Math.Max(test - deltaTime, 0);
+			GL.Enable(EnableCap.Texture2D);
+			GL.BindTexture(TextureTarget.Texture2D, TextureManager.Get.GalaxyTextureId);
+
+			foreach (var star in controller.Stars) {
+				GL.Color4(star.Color);
+				GL.PushMatrix();
+				GL.Translate(star.Position.X, star.Position.Y, StarColorZ);
+				GL.Begin(BeginMode.Quads);
+
+				GL.TexCoord2(0, 0.25);
+				GL.Vertex2(-0.5, -0.5);
+
+				GL.TexCoord2(0.25, 0.25);
+				GL.Vertex2(0.5, -0.5);
+
+				GL.TexCoord2(0.25, 0);
+				GL.Vertex2(0.5, 0.5);
+
+				GL.TexCoord2(0, 0);
+				GL.Vertex2(-0.5, 0.5);
+				
+				GL.End();
+				GL.PopMatrix();
+
+				GL.Color4(Color.White);
+				GL.PushMatrix();
+				GL.Translate(star.Position.X, star.Position.Y, StarSaturationZ);
+				GL.Begin(BeginMode.Quads);
+
+				GL.TexCoord2(0.265625 + 0, 0.25);
+				GL.Vertex2(-0.5, -0.5);
+
+				GL.TexCoord2(0.265625 + 0.25, 0.25);
+				GL.Vertex2(0.5, -0.5);
+
+				GL.TexCoord2(0.265625 + 0.25, 0);
+				GL.Vertex2(0.5, 0.5);
+
+				GL.TexCoord2(0.265625 + 0, 0);
+				GL.Vertex2(-0.5, 0.5);
+
+				GL.End();
+				GL.PopMatrix();
+			}
 		}
 
 		private void canvasResize(object sender, EventArgs e)
