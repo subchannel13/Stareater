@@ -124,6 +124,8 @@ namespace Stareater.GUI
 		{
 			glReady = true;
 			GL.Enable(EnableCap.DepthTest);
+			GL.Enable(EnableCap.Blend);
+			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 		}
 
 		private void glCanvas_Paint(object sender, PaintEventArgs e)
