@@ -20,7 +20,7 @@ namespace Stareater.Localization
 
 				while (parser.HasNext()) {
 					var conext = parser.ParseNext().To<Context>();
-					contexts.Add(conext.TypeName, conext);
+					contexts.Add((string)conext.Tag, conext);
 				}
 				stream.Close();
 			}

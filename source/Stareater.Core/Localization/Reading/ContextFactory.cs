@@ -1,20 +1,21 @@
 ﻿using System.Collections.Generic;
 using Ikadn;
+using Ikadn.Ikon;
 
 namespace Stareater.Localization.Reading
 {
-	class ContextFactory : IValueFactory
+	class ContextFactory : IIkadnObjectFactory
 	{
 		public const char ClosingChar = '-';
 
-		public IkadnBaseValue Parse(Ikadn.Parser parser)
+		public IkadnBaseObject Parse(IkadnParser parser)
 		{
-			string contextName = Ikadn.Ikon.Parser.ReadIdentifier(parser.Reader);
+			string contextName = IkonParser.ReadIdentifier(parser.Reader);
 			Dictionary<string, IText> entries = new Dictionary<string, IText>();
 
 			while (parser.Reader.PeekNextNonwhite() != ClosingChar)
 				entries.Add(
-					Ikadn.Ikon.Parser.ReadIdentifier(parser.Reader).ToLower(),
+					IkonParser.ReadIdentifier(parser.Reader).ToLower(),
 					parser.ParseNext().To<IText>());
 
 			parser.Reader.Read();

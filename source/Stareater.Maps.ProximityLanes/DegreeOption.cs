@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Ikadn.Ikon.Values;
+using Ikadn.Ikon.Types;
 
 namespace Stareater.Maps.ProximityLanes
 {
@@ -16,7 +16,7 @@ namespace Stareater.Maps.ProximityLanes
 		public int Min;
 		public int Max;
 
-		public DegreeOption(ObjectValue data)
+		public DegreeOption(IkonComposite data)
 		{
 			Name = data[NameKey].To<string>();
 			Min = data[MinKey].To<int>();

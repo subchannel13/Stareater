@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Stareater.AppData;
 using Ikadn;
-using Ikadn.Ikon.Values;
+using Ikadn.Ikon.Types;
 
 namespace Stareater.Maps
 {
@@ -24,11 +24,11 @@ namespace Stareater.Maps
 			this.nameKey = nameKey;
 		}
 
-		public StartingConditions(ObjectValue ikstonData) :
-			this((ikstonData[PopulationKey] as NumericValue).To<long>(),
-				(ikstonData[ColoniesKey] as NumericValue).To<int>(),
-				(ikstonData[InfrastructureKey] as NumericValue).To<long>(),
-				(ikstonData[NameKey] as TextValue).To<string>())
+		public StartingConditions(IkonComposite ikstonData) :
+			this(ikstonData[PopulationKey].To<long>(),
+				ikstonData[ColoniesKey].To<int>(),
+				ikstonData[InfrastructureKey].To<long>(),
+				ikstonData[NameKey].To<string>())
 		{ }
 
 		public string Name
@@ -39,12 +39,12 @@ namespace Stareater.Maps
 			}
 		}
 
-		public ObjectValue BuildSaveData()
+		public IkonComposite BuildSaveData()
 		{
-			ObjectValue lastGameData = new ObjectValue(ClassName);
-			lastGameData.Add(ColoniesKey, new NumericValue(Colonies));
-			lastGameData.Add(PopulationKey, new NumericValue(Population));
-			lastGameData.Add(InfrastructureKey, new NumericValue(Infrastructure));
+			IkonComposite lastGameData = new IkonComposite(ClassName);
+			lastGameData.Add(ColoniesKey, new IkonNumeric(Colonies));
+			lastGameData.Add(PopulationKey, new IkonNumeric(Population));
+			lastGameData.Add(InfrastructureKey, new IkonNumeric(Infrastructure));
 			
 			return lastGameData;
 		}

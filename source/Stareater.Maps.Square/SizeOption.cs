@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Ikadn.Ikon.Values;
+using Ikadn.Ikon.Types;
 
 namespace Stareater.Maps.Square
 {
@@ -14,7 +14,7 @@ namespace Stareater.Maps.Square
 		public string Name;
 		public int Size;
 
-		public SizeOption(ObjectValue data)
+		public SizeOption(IkonComposite data)
 		{
 			Name = data[NameKey].To<string>();
 			Size = data[SizeKey].To<int>();

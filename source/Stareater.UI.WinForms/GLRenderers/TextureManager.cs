@@ -12,7 +12,7 @@ namespace Stareater.GLRenderers
 		#region Singleton
 		static TextureManager instance = null;
 
-		public static new TextureManager Get
+		public static TextureManager Get
 		{
 			get
 			{

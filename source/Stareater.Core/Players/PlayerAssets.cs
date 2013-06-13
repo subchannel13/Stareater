@@ -6,7 +6,8 @@ using System.Drawing;
 using System.IO;
 using Stareater.Utils;
 using System.Reflection;
-using Ikadn.Ikon.Values;
+using Ikadn.Ikon.Types;
+using Ikadn.Ikon;
 
 namespace Stareater.Players
 {
@@ -25,18 +26,18 @@ namespace Stareater.Players
 		public static IEnumerable<double> ColorLoader()
 		{
 			List<Color> colorList = new List<Color>();
-			using (var parser = new Ikadn.Ikon.Parser(new StreamReader(DataFilePath))) {
-				var data = parser.ParseNext() as ObjectValue;
+			using (var parser = new IkonParser(new StreamReader(DataFilePath))) {
+				var data = parser.ParseNext().To<IkonComposite>();
 				yield return 0.5;
 
-				var colors = data[ColorsKey].To<ArrayValue>();
+				var colors = data[ColorsKey].To<IkonArray>();
 				foreach (var p in Methods.ProgressReportHelper(0.5, 0.5, colors))
 				{
-					var colorData = p.Data.To<ArrayValue>();
+					var colorData = p.Data.To<IkonArray>();
 					colorList.Add(Color.FromArgb(
-						(colorData[0] as NumericValue).To<int>(),
-						(colorData[1] as NumericValue).To<int>(),
-						(colorData[2] as NumericValue).To<int>()
+						colorData[0].To<int>(),
+						colorData[1].To<int>(),
+						colorData[2].To<int>()
 						));
 					yield return p.Percentage;
 				}

@@ -7,7 +7,7 @@ using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.Localization
 {
-	class ExpressionText : IkadnBaseValue, IText
+	class ExpressionText : IkadnBaseObject, IText
 	{
 		string variableName;
 		Func<double, string> formatter;
@@ -20,7 +20,7 @@ namespace Stareater.Localization
 
 		protected override void DoCompose(IkadnWriter writer)
 		{
-			throw new InvalidOperationException(TypeName + " is not meant to be serialized.");
+			throw new InvalidOperationException(Tag + " is not meant to be serialized.");
 		}
 
 		public override T To<T>()
@@ -30,10 +30,10 @@ namespace Stareater.Localization
 			if (target.IsAssignableFrom(this.GetType()))
 				return (T)(object)this;
 			else
-				throw new InvalidOperationException("Cast to " + target.Name + " is not supported for " + TypeName);
+				throw new InvalidOperationException("Cast to " + target.Name + " is not supported for " + Tag);
 		}
 
-		public override string TypeName
+		public override object Tag
 		{
 			get { return "ExpressionText"; }
 		}

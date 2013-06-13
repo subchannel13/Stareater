@@ -31,8 +31,6 @@ namespace Stareater.GLRenderers
 		private float panAbsPath = 0;
 		private Vector2 originOffset = Vector2.Zero;
 
-		private double test = 0;
-
 		public GalaxyRenderer(GameController controller)
 		{
 			this.controller = controller;
@@ -198,8 +196,6 @@ namespace Stareater.GLRenderers
 		{
 			if (panAbsPath > 0)
 				return;
-
-			test = 1;
 		}
 
 		public void Dispose()

@@ -7,12 +7,12 @@ using Ikadn;
 
 namespace Stareater.Localization.Reading
 {
-	class ExpressionTextFactory : IValueFactory
+	class ExpressionTextFactory : IIkadnObjectFactory
 	{
 		const char EndingChar = ';';
 		const string AutomaticThousands = "_";
 
-		public IkadnBaseValue Parse(Ikadn.Parser parser)
+		public IkadnBaseObject Parse(IkadnParser parser)
 		{
 			parser.Reader.SkipWhiteSpaces();
 			char formatterType = parser.Reader.Read();

@@ -4,7 +4,7 @@ using Ikadn;
 
 namespace Stareater.Localization
 {
-	public class Context : IkadnBaseValue
+	public class Context : IkadnBaseObject
 	{
 		private string name;
 		private Dictionary<string, IText> entries;
@@ -20,7 +20,7 @@ namespace Stareater.Localization
 			throw new InvalidOperationException("Localization context is not meant to be serialized.");
 		}
 
-		public override string TypeName
+		public override object Tag
 		{
 			get { return name; }
 		}
@@ -32,7 +32,7 @@ namespace Stareater.Localization
 			if (target.IsAssignableFrom(this.GetType()))
 				return (T)(object)this;
 			else
-				throw new InvalidOperationException("Cast to " + target.Name + " is not supported for " + TypeName);
+				throw new InvalidOperationException("Cast to " + target.Name + " is not supported for " + Tag);
 		}
 
 		public bool HasEntry(string entryKey)
