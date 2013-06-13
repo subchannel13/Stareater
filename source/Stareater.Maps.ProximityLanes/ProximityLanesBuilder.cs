@@ -6,10 +6,12 @@ using Stareater.Utils.PluginParameters;
 using Stareater.AppData;
 using System.IO;
 using Ikadn;
-using Ikadn.Ikon.Values;
+using Ikadn.Ikon.Types;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Utils;
 using NGenerics.DataStructures.Queues;
+using Ikadn.Ikon;
+using Ikadn.Utilities;
 
 namespace Stareater.Maps.ProximityLanes
 {
@@ -27,8 +29,8 @@ namespace Stareater.Maps.ProximityLanes
 
 		public ProximityLanesBuilder()
 		{
-			ValueQueue data;
-			using (var parser = new Ikadn.Ikon.Parser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))
+			TaggableQueue<object, IkadnBaseObject> data;
+			using (var parser = new IkonParser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))
 				data = parser.ParseAll();
 
 			degreesParameter = loadDegrees(data);
@@ -37,12 +39,12 @@ namespace Stareater.Maps.ProximityLanes
 			});
 		}
 
-		private SelectorParameter loadDegrees(ValueQueue data)
+		private SelectorParameter loadDegrees(TaggableQueue<object, IkadnBaseObject> data)
 		{
 			this.degreeOptions = new DegreeOption[data.CountOf(DegreeKey)];
 			var parameterOptions = new Dictionary<int, string>();
 			for (int i = 0; i < degreeOptions.Length; i++) {
-				degreeOptions[i] = new DegreeOption(data.Dequeue(DegreeKey).To<ObjectValue>());
+				degreeOptions[i] = new DegreeOption(data.Dequeue(DegreeKey).To<IkonComposite>());
 				parameterOptions.Add(i, degreeOptions[i].Name);
 			}
 

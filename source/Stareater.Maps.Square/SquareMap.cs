@@ -6,10 +6,12 @@ using Stareater.AppData;
 using Stareater.Utils.PluginParameters;
 using System.IO;
 using Ikadn;
-using Ikadn.Ikon.Values;
+using Ikadn.Ikon.Types;
 using Stareater.Utils;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Utils.Collections;
+using Ikadn.Ikon;
+using Ikadn.Utilities;
 
 namespace Stareater.Maps.Square
 {
@@ -35,11 +37,11 @@ namespace Stareater.Maps.Square
 
 		public SquareMap()
 		{
-			ValueQueue data;
-			using (var parser = new Ikadn.Ikon.Parser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))
+			TaggableQueue<object, IkadnBaseObject> data;
+			using (var parser = new IkonParser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))
 				data = parser.ParseAll();
 
-			var constants = data.Dequeue(ConstantsKey).To<ObjectValue>();
+			var constants = data.Dequeue(ConstantsKey).To<IkonComposite>();
 			this.starDistance = constants[StarDistanceKey].To<double>();
 			this.homeSystemDistance = constants[HomeSystemDistance].To<double>();
 			this.emptyPositionsRatio = constants[EmptyPositionsRatio].To<double>();
@@ -52,12 +54,12 @@ namespace Stareater.Maps.Square
 			});
 		}
 
-		private SelectorParameter loadSizes(ValueQueue data)
+		private SelectorParameter loadSizes(TaggableQueue<object, IkadnBaseObject> data)
 		{
 			this.sizeOptions = new SizeOption[data.CountOf(SizeKey)];
 			var parameterOptions = new Dictionary<int, string>();
 			for (int i = 0; i < sizeOptions.Length; i++) {
-				sizeOptions[i] = new SizeOption(data.Dequeue(SizeKey).To<ObjectValue>());
+				sizeOptions[i] = new SizeOption(data.Dequeue(SizeKey).To<IkonComposite>());
 				parameterOptions.Add(i, sizeOptions[i].Name);
 			}
 

@@ -6,11 +6,11 @@ using Ikadn;
 
 namespace Stareater.Localization.Reading
 {
-	class ConditionalTextFactory : IValueFactory
+	class ConditionalTextFactory : IIkadnObjectFactory
 	{
 		const char EndingChar = ';';
 
-		public IkadnBaseValue Parse(Ikadn.Parser parser)
+		public IkadnBaseObject Parse(IkadnParser parser)
 		{
 			parser.Reader.SkipWhiteSpaces();
 			string expressionText = parser.Reader.ReadUntil(EndingChar);

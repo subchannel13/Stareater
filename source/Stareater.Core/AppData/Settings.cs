@@ -2,7 +2,9 @@
 using System.IO;
 using Stareater.Localization;
 using Ikadn;
-using Ikadn.Ikon.Values;
+using Ikadn.Utilities;
+using Ikadn.Ikon.Types;
+using Ikadn.Ikon;
 
 namespace Stareater.AppData
 {
@@ -28,13 +30,13 @@ namespace Stareater.AppData
 		public LastGameInfo LastGame { get; private set; }
 
 		#region Initialization
-		protected Settings(ValueQueue data)
+		protected Settings(TaggableQueue<object, IkadnBaseObject> data)
 		{
 			if (data.CountOf(BaseSettingsKey)>0) {
-				var baseData = data.Dequeue(BaseSettingsKey).To<ObjectValue>();
+				var baseData = data.Dequeue(BaseSettingsKey).To<IkonComposite>();
 				string langCode = baseData[LanguageKey].To<string>();
 				this.Language = LocalizationManifest.Get.LoadLanguage(langCode);
-				this.LastGame = new LastGameInfo(baseData[LastGameKey].To<ObjectValue>());
+				this.LastGame = new LastGameInfo(baseData[LastGameKey].To<IkonComposite>());
 			}
 			else {
 				this.Language = LocalizationManifest.Get.DefaultLanguage;
@@ -42,15 +44,15 @@ namespace Stareater.AppData
 			}
 		}
 
-		protected static ValueQueue loadFile()
+		protected static TaggableQueue<object, IkadnBaseObject> loadFile()
 		{
-			ValueQueue data;
+			TaggableQueue<object, IkadnBaseObject> data;
 
 			if (File.Exists(SettingsFilePath))
-				using (var parser = new Ikadn.Ikon.Parser(new StreamReader(SettingsFilePath)))
+				using (var parser = new IkonParser(new StreamReader(SettingsFilePath)))
 					data = parser.ParseAll();
 			else
-				data = new ValueQueue();
+				data = new TaggableQueue<object, IkadnBaseObject>();
 
 			return data;
 		}
@@ -73,8 +75,8 @@ namespace Stareater.AppData
 
 		protected virtual void buildSaveData(IkadnWriter writer)
 		{
-			ObjectValue baseSettings = new ObjectValue(BaseSettingsKey);
-			baseSettings.Add(LanguageKey, new TextValue(Language.Code));
+			IkonComposite baseSettings = new IkonComposite(BaseSettingsKey);
+			baseSettings.Add(LanguageKey, new IkonText(Language.Code));
 			baseSettings.Add(LastGameKey, LastGame.BuildSaveData());
 			baseSettings.Compose(writer);
 		}

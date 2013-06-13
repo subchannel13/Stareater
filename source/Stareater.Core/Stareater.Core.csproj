@@ -31,13 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ikadn, Version=0.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Ikadn, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\Ikadn.dll</HintPath>
+      <HintPath>..\packages\IKON.1.0.0\lib\net40\Ikadn.dll</HintPath>
     </Reference>
-    <Reference Include="Ikadn.Ikon, Version=0.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Ikadn.Ikon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libs\Ikadn.Ikon.dll</HintPath>
+      <HintPath>..\packages\IKON.1.0.0\lib\net40\Ikadn.Ikon.dll</HintPath>
     </Reference>
     <Reference Include="NGenerics, Version=1.4.1.0, Culture=neutral, PublicKeyToken=e4b41be133ea7faf, processorArchitecture=MSIL">
       <HintPath>..\packages\NGenerics.1.4.1.0\lib\net35\NGenerics.dll</HintPath>
@@ -131,10 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />
-    <Content Include="Libs\Ikadn.dll" />
-    <Content Include="Libs\Ikadn.Ikon.dll" />
-    <Content Include="Libs\Ikadn.Ikon.xml" />
-    <Content Include="Libs\Ikadn.xml" />
     <None Include="packages.config" />
     <None Include="Utils\Collections\IndexedCollectionBase.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -151,6 +147,9 @@
   <ItemGroup>
     <None Include="AppData\Expressions\Parser.frame" />
     <None Include="AppData\Expressions\Scanner.frame" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Libs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

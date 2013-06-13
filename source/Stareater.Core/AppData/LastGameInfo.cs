@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Stareater.Maps;
 using Ikadn;
-using Ikadn.Ikon.Values;
+using Ikadn.Ikon.Types;
 
 namespace Stareater.AppData
 {
@@ -15,15 +15,15 @@ namespace Stareater.AppData
 			StartConditions = null;
 		}
 
-		public LastGameInfo(ObjectValue ikstonData) : this()
+		public LastGameInfo(IkonComposite ikstonData) : this()
 		{
 			if (ikstonData.Keys.Contains(StartingConditionsKey))
-				StartConditions = new StartingConditions(ikstonData[StartingConditionsKey] as ObjectValue);
+				StartConditions = new StartingConditions(ikstonData[StartingConditionsKey].To<IkonComposite>());
 		}
 
-		public ObjectValue BuildSaveData()
+		public IkonComposite BuildSaveData()
 		{
-			ObjectValue lastGameData = new ObjectValue(ClassName);
+			IkonComposite lastGameData = new IkonComposite(ClassName);
 
 			if (StartConditions != null)
 				lastGameData.Add(StartingConditionsKey, StartConditions.BuildSaveData());

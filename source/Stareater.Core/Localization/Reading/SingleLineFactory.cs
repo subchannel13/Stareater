@@ -3,9 +3,9 @@ using Ikadn;
 
 namespace Stareater.Localization.Reading
 {
-	class SingleLineFactory : IValueFactory
+	class SingleLineFactory : IIkadnObjectFactory
 	{
-		public IkadnBaseValue Parse(Ikadn.Parser parser)
+		public IkadnBaseObject Parse(IkadnParser parser)
 		{
 			return new SingleLineText(parser.Reader.ReadUntil('\n', '\r', IkadnReader.EndOfStreamResult));
 		}

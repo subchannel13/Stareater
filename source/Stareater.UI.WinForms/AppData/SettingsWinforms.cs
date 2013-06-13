@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using Ikadn;
-using Ikadn.Ikon.Values;
+using Ikadn.Ikon.Types;
+using Ikadn.Utilities;
 
 namespace Stareater.AppData
 {
@@ -23,12 +24,12 @@ namespace Stareater.AppData
 
 		public float GuiScale { get; set; }
 
-		public SettingsWinforms(ValueQueue data)
+		public SettingsWinforms(TaggableQueue<object, IkadnBaseObject> data)
 			:base(data)
 		{
 			if (data.CountOf(WinformsSettingsKey) > 0)
 			{
-				ObjectValue wfSpecificData = data.Dequeue(WinformsSettingsKey).To<ObjectValue>();
+				IkonComposite wfSpecificData = data.Dequeue(WinformsSettingsKey).To<IkonComposite>();
 				GuiScale = wfSpecificData[GuiScaleKey].To<float>();
 			}
 			else
@@ -54,8 +55,8 @@ namespace Stareater.AppData
 		{
 			base.buildSaveData(writer);
 
-			ObjectValue settings = new ObjectValue(WinformsSettingsKey);
-			settings.Add(GuiScaleKey, new NumericValue(GuiScale));
+			IkonComposite settings = new IkonComposite(WinformsSettingsKey);
+			settings.Add(GuiScaleKey, new IkonNumeric(GuiScale));
 			settings.Compose(writer);
 		}
 	}

@@ -5,7 +5,8 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 using Stareater.Utils;
-using Ikadn.Ikon.Values;
+using Ikadn.Ikon.Types;
+using Ikadn.Ikon;
 
 namespace Stareater.Maps
 {
@@ -26,13 +27,13 @@ namespace Stareater.Maps
 		public static IEnumerable<double> StartConditionsLoader()
 		{
 			List<StartingConditions> conditionList = new List<StartingConditions>();
-			using (var parser = new Ikadn.Ikon.Parser(new StreamReader(StartConditionsFilePath))) {
+			using (var parser = new IkonParser(new StreamReader(StartConditionsFilePath))) {
 				var conditions = parser.ParseAll();
 				yield return 0.5;
 
 				foreach (double p in Methods.ProgressReportHelper(0.5, 0.5, conditions.Count))
 				{
-					conditionList.Add(new StartingConditions(conditions.Dequeue().To<ObjectValue>()));
+					conditionList.Add(new StartingConditions(conditions.Dequeue().To<IkonComposite>()));
 					yield return p;
 				}
 			}

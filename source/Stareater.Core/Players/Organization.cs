@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Stareater.Utils;
-using Ikadn.Ikon.Values;
+using Ikadn.Ikon.Types;
+using Ikadn.Ikon;
 
 namespace Stareater.Players
 {
@@ -32,12 +33,12 @@ namespace Stareater.Players
 		public static IEnumerable<double> Loader()
 		{
 			List<Organization> list = new List<Organization>();
-			using (var parser = new Ikadn.Ikon.Parser(new StreamReader(DataFilePath))) {
+			using (var parser = new IkonParser(new StreamReader(DataFilePath))) {
 				var data = parser.ParseAll();
 				yield return 0.5;
 
 				foreach (double p in Methods.ProgressReportHelper(0.5, 0.5, data.Count)) {
-					list.Add(load(data.Dequeue().To<ObjectValue>()));
+					list.Add(load(data.Dequeue().To<IkonComposite>()));
 					yield return p;
 				}
 
@@ -53,7 +54,7 @@ namespace Stareater.Players
 			get { return List != null; }
 		}
 
-		private static Organization load(ObjectValue data)
+		private static Organization load(IkonComposite data)
 		{
 			return new Organization(
 				data[NameKey].To<string>(),

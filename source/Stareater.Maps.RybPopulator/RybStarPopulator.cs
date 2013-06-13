@@ -6,8 +6,10 @@ using Stareater.AppData;
 using Stareater.Utils.PluginParameters;
 using Ikadn;
 using System.IO;
-using Ikadn.Ikon.Values;
+using Ikadn.Ikon.Types;
 using System.Drawing;
+using Ikadn.Ikon;
+using Ikadn.Utilities;
 
 namespace Stareater.Maps.RybPopulator
 {
@@ -29,15 +31,15 @@ namespace Stareater.Maps.RybPopulator
 
 		public RybStarPopulator()
 		{
-			ValueQueue data; 
-			using (var parser = new Ikadn.Ikon.Parser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))
+			TaggableQueue<object, IkadnBaseObject> data; 
+			using (var parser = new IkonParser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))
 				data = parser.ParseAll();
 
 			List<StarType> starTypes = new List<StarType>();
 			while (data.CountOf(StarTypeKey) > 0) {
-				var starTypeData = data.Dequeue(StarTypeKey).To<ObjectValue>();
+				var starTypeData = data.Dequeue(StarTypeKey).To<IkonComposite>();
 				starTypes.Add(new StarType(
-					extractColor(starTypeData[StarColorKey].To<ArrayValue>()),
+					extractColor(starTypeData[StarColorKey].To<IkonArray>()),
 					starTypeData[StarMinRadiationKey].To<double>(),
 					starTypeData[StarMaxRadiationKey].To<double>()
 				));
@@ -56,7 +58,7 @@ namespace Stareater.Maps.RybPopulator
 			});
 		}
 
-		private Color extractColor(ArrayValue arrayValue)
+		private Color extractColor(IkonArray arrayValue)
 		{
 			return Color.FromArgb(
 				(int)(arrayValue[0].To<double>() * 255),

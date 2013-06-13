@@ -8,7 +8,7 @@ using Ikadn.Utilities;
 
 namespace Stareater.Localization.Reading
 {
-	class TextBlockFactory : IValueFactory
+	class TextBlockFactory : IIkadnObjectFactory
 	{
 		private const char BlockCloseChar = '}';
 		private const char SubstitutionOpenChar = '{';
@@ -16,7 +16,7 @@ namespace Stareater.Localization.Reading
 
 		const char EscapeChar = '\\';
 
-		public IkadnBaseValue Parse(Ikadn.Parser parser)
+		public IkadnBaseObject Parse(IkadnParser parser)
 		{
 			parser.Reader.SkipWhile(nextChar =>
 			{

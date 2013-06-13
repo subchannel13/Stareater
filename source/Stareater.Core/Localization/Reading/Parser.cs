@@ -6,7 +6,7 @@ using Ikadn.Utilities;
 
 namespace Stareater.Localization.Reading
 {
-	class Parser : Ikadn.Parser
+	class Parser : IkadnParser
 	{
 		public Parser(TextReader input) : base(input)
 		{
