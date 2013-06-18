@@ -6,7 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Stareater.Maps;
+using Stareater.Galaxy;
 using Stareater.Utils.PluginParameters;
 
 namespace Stareater.GUI

@@ -13,7 +13,7 @@ using Stareater.Utils.Collections;
 using Ikadn.Ikon;
 using Ikadn.Utilities;
 
-namespace Stareater.Maps.Square
+namespace Stareater.Galaxy.Square
 {
 	public class SquareMap : IStarPositioner
 	{

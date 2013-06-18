@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Stareater.Players;
-using Stareater.Maps;
+using Stareater.Galaxy;
 
 namespace Stareater
 {

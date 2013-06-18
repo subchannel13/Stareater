@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Ikadn.Ikon.Types;
 
-namespace Stareater.Maps.ProximityLanes
+namespace Stareater.Galaxy.ProximityLanes
 {
 	struct DegreeOption
 	{

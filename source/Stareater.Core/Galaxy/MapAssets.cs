@@ -8,7 +8,7 @@ using Stareater.Utils;
 using Ikadn.Ikon.Types;
 using Ikadn.Ikon;
 
-namespace Stareater.Maps
+namespace Stareater.Galaxy
 {
 	public class MapAssets
 	{

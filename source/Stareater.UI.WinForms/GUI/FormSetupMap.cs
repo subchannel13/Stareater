@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using Stareater.Controllers;
 using Stareater.Localization;
 using Stareater.AppData;
-using Stareater.Maps;
+using Stareater.Galaxy;
 using Stareater.Utils.PluginParameters;
 
 namespace Stareater.GUI

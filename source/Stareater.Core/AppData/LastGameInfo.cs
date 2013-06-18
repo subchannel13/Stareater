@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Stareater.Maps;
+using Stareater.Galaxy;
 using Ikadn;
 using Ikadn.Ikon.Types;
 

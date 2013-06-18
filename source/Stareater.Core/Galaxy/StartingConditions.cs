@@ -6,7 +6,7 @@ using Stareater.AppData;
 using Ikadn;
 using Ikadn.Ikon.Types;
 
-namespace Stareater.Maps
+namespace Stareater.Galaxy
 {
 	public class StartingConditions
 	{

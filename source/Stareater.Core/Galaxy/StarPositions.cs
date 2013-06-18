@@ -5,7 +5,7 @@ using System.Text;
 using Stareater.Utils;
 using NGenerics.DataStructures.Mathematical;
 
-namespace Stareater.Maps
+namespace Stareater.Galaxy
 {
 	public struct StarPositions
 	{

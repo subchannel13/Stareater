@@ -11,7 +11,7 @@ using System.Drawing;
 using Ikadn.Ikon;
 using Ikadn.Utilities;
 
-namespace Stareater.Maps.RybPopulator
+namespace Stareater.Galaxy.RybPopulator
 {
 	public class RybStarPopulator : IStarPopulator
 	{

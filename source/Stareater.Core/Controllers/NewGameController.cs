@@ -7,7 +7,7 @@ using Stareater.Utils.Collections;
 using System.Drawing;
 using Stareater.Localization;
 using Stareater.AppData;
-using Stareater.Maps;
+using Stareater.Galaxy;
 
 namespace Stareater.Controllers
 {

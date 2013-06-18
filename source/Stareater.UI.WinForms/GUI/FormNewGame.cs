@@ -9,7 +9,7 @@ using Stareater.AppData;
 using Stareater.Localization;
 using Stareater.Controllers;
 using Stareater.Controllers.Data;
-using Stareater.Maps;
+using Stareater.Galaxy;
 using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI
