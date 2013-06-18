@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Ikadn.Ikon.Types;
 
-namespace Stareater.Maps.Square
+namespace Stareater.Galaxy.Square
 {
 	struct SizeOption
 	{

@@ -12,6 +12,8 @@
     <AssemblyName>Stareater.Core</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -72,6 +74,9 @@
     <Compile Include="Controllers\Data\GameState.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
     <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="Galaxy\Colony.cs" />
+    <Compile Include="Galaxy\Fleet.cs" />
+    <Compile Include="Galaxy\StellarManagement.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Localization\ChainText.cs" />
     <Compile Include="Localization\ConditionalText.cs" />
@@ -79,15 +84,16 @@
     <Compile Include="Localization\Reading\ConditionalTextFactory.cs" />
     <Compile Include="Localization\Reading\ExpressionTextFactory.cs" />
     <Compile Include="Localization\Reading\TextBlockFactory.cs" />
-    <Compile Include="Maps\IStarConnector.cs" />
-    <Compile Include="Maps\IStarPopulator.cs" />
-    <Compile Include="Maps\IStarPositioner.cs" />
-    <Compile Include="Maps\Map.cs" />
-    <Compile Include="Maps\MapAssets.cs" />
-    <Compile Include="Maps\Planet.cs" />
-    <Compile Include="Maps\StarData.cs" />
-    <Compile Include="Maps\StarPositions.cs" />
-    <Compile Include="Maps\StartingConditions.cs" />
+    <Compile Include="Galaxy\AConstructionSite.cs" />
+    <Compile Include="Galaxy\IStarConnector.cs" />
+    <Compile Include="Galaxy\IStarPopulator.cs" />
+    <Compile Include="Galaxy\IStarPositioner.cs" />
+    <Compile Include="Galaxy\Map.cs" />
+    <Compile Include="Galaxy\MapAssets.cs" />
+    <Compile Include="Galaxy\Planet.cs" />
+    <Compile Include="Galaxy\StarData.cs" />
+    <Compile Include="Galaxy\StarPositions.cs" />
+    <Compile Include="Galaxy\StartingConditions.cs" />
     <Compile Include="Players\IOffscreenPlayerFactory.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Players\PlayerAssets.cs" />
@@ -152,6 +158,7 @@
     <Folder Include="Libs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

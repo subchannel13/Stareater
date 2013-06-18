@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 
-namespace Stareater.Maps.RybPopulator
+namespace Stareater.Galaxy.RybPopulator
 {
 	class StarType
 	{

@@ -1,4 +1,5 @@
-﻿<#@ import namespace="System.Collections.Generic" #>
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ import namespace="System.Collections.Generic" #>
 <#+
 private string namespaceName = "";
 private List<string> usings = new List<string>(new string[]{ "System", "System.Collections.Generic" });

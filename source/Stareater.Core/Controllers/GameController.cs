@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Stareater.Controllers.Data;
-using Stareater.Maps;
+using Stareater.Galaxy;
 
 namespace Stareater.Controllers
 {
@@ -24,7 +24,7 @@ namespace Stareater.Controllers
 			
 			var starPositions = controller.StarPositioner.Generate(rng, controller.PlayerList.Count);
 
-			game = new Game(new Maps.Map(
+			game = new Game(new Galaxy.Map(
 				controller.StarPopulator.Generate(rng, starPositions), 
 				controller.StarConnector.Generate(rng, starPositions))
 				);

@@ -15,6 +15,7 @@ namespace Stareater.Players
 		
 		private IEnumerable<object> designs;
 		private IEnumerable<object> predefinedDesigns;
+		private IEnumerable<object> technologies;
 		private object intelligence;
 
 		private IEnumerable<object> messages;

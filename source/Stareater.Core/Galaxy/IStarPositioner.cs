@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Stareater.Utils.PluginParameters;
+using System.Drawing;
 
-namespace Stareater.Maps
+namespace Stareater.Galaxy
 {
-	public interface IStarPopulator
+	public interface IStarPositioner
 	{
 		string Name { get; }
 		string Description { get; }
 		ParameterList Parameters { get; }
-		IEnumerable<StarData> Generate(Random rng, StarPositions starPositions);
+		StarPositions Generate(Random rng, int playerCount);
 	}
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Drawing;
 using NGenerics.DataStructures.Mathematical;
 
-namespace Stareater.Maps
+namespace Stareater.Galaxy
 {
 	public class StarData
 	{

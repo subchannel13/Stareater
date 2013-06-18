@@ -41,3 +41,4 @@ source/packages/*
 source/Stareater.Maps.RybPopulator/bin/*
 source/Stareater.Maps.RybPopulator/obj/*
 source/TestResults/*
+source/.nuget/NuGet.exe

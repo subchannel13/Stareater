@@ -13,7 +13,7 @@ using NGenerics.DataStructures.Queues;
 using Ikadn.Ikon;
 using Ikadn.Utilities;
 
-namespace Stareater.Maps.ProximityLanes
+namespace Stareater.Galaxy.ProximityLanes
 {
 	public class ProximityLanesBuilder : IStarConnector
 	{

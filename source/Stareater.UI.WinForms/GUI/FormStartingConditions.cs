@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Stareater.Localization;
 using Stareater.AppData;
-using Stareater.Maps;
+using Stareater.Galaxy;
 using Stareater.Controllers;
 using Stareater.Utils.NumberFormatters;
 
