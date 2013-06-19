@@ -12,6 +12,8 @@ namespace Stareater.GLRenderers
 {
 	class GalaxyRenderer : IRenderer
 	{
+		private const string GalaxyTexturePath = "./images/galaxy textures.png";
+		
 		private const double DefaultViewSize = 15;
 		private const double ZoomBase = 1.2f;
 		
@@ -45,12 +47,16 @@ namespace Stareater.GLRenderers
 			eventDispatcher.MouseWheel += mouseZoom;
 			eventDispatcher.MouseClick += mouseClick;
 
-			TextureManager.Get.Load();
+			
+			Bitmap textureBitmap = new Bitmap(GalaxyTexturePath);
+			TextureManager.Get.Load(TextureContext.GalaxyMap, textureBitmap);
+
+			TextRenderUtil.Get.Prepare(controller.Stars.Select(x => x.Name));
 		}
 
 		public void DetachFromCanvas()
 		{
-			TextureManager.Get.Unload();
+			TextureManager.Get.Unload(TextureContext.GalaxyMap);
 
 			eventDispatcher.Resize -= canvasResize;
 			eventDispatcher.MouseMove -= mousePan;

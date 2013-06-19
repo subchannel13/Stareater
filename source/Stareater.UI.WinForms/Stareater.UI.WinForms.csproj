@@ -73,6 +73,8 @@
     <Compile Include="AppData\SettingsWinforms.cs" />
     <Compile Include="GLRenderers\IRenderer.cs" />
     <Compile Include="GLRenderers\GalaxyRenderer.cs" />
+    <Compile Include="GLRenderers\TextRenderUtil.cs" />
+    <Compile Include="GLRenderers\TextureContext.cs" />
     <Compile Include="GLRenderers\TextureManager.cs" />
     <Compile Include="GUI\ColorItem.cs">
       <SubType>UserControl</SubType>
