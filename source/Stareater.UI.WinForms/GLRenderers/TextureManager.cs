@@ -34,14 +34,22 @@ namespace Stareater.GLRenderers
 			switch(context)
 			{
 				case TextureContext.Font:
-					FontTextureId = CreateTexture(image);
+					FontTextureId = createTexture(image);
 					break;
 				case TextureContext.GalaxyMap:
-					GalaxyTextureId = CreateTexture(image);
+					GalaxyTextureId = createTexture(image);
 					break;
 				default:
 					throw new ArgumentOutOfRangeException("context");
 			}
+		}
+
+		private int createTexture(Bitmap image)
+		{
+			int textureId = GL.GenTexture();
+			UpdateTexture(textureId, image);
+
+			return textureId;
 		}
 
 		public void Unload(TextureContext context)
@@ -72,8 +80,8 @@ namespace Stareater.GLRenderers
 			FontTextureId = 0;
 			GalaxyTextureId = 0;
 		}
-		
-		private static int CreateTexture(Bitmap image)
+
+		public void UpdateTexture(int textureId, Bitmap image)
 		{
 			System.Drawing.Imaging.BitmapData textureData =
 				image.LockBits(
@@ -82,19 +90,16 @@ namespace Stareater.GLRenderers
 					System.Drawing.Imaging.PixelFormat.Format32bppArgb
 				);
 
-			int textureId = GL.GenTexture();
 			GL.BindTexture(TextureTarget.Texture2D, textureId);
 
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height,
 				0, PixelFormat.Rgba, PixelType.UnsignedByte, textureData.Scan0);
 
 			GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvMode, (float)TextureEnvMode.Modulate);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.Nearest);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.Linear);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)TextureMagFilter.Linear);
 
 			image.UnlockBits(textureData);
-			
-			return textureId;
 		}
 	}
 }

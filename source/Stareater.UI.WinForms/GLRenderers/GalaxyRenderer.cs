@@ -21,6 +21,9 @@ namespace Stareater.GLRenderers
 		private const float WormholeZ = -0.6f;
 		private const float StarColorZ = -0.5f;
 		private const float StarSaturationZ = -0.4f;
+		private const float StarNameZ = -0.3f;
+
+		private const float StarNameScale = 0.4f;
 
 		private GameController controller;
 		private Control eventDispatcher;
@@ -103,12 +106,12 @@ namespace Stareater.GLRenderers
 			GL.PopMatrix();
 
 			GL.Enable(EnableCap.Texture2D);
-			GL.BindTexture(TextureTarget.Texture2D, TextureManager.Get.GalaxyTextureId);
 
 			foreach (var star in controller.Stars) {
 				GL.Color4(star.Color);
 				GL.PushMatrix();
 				GL.Translate(star.Position.X, star.Position.Y, StarColorZ);
+				GL.BindTexture(TextureTarget.Texture2D, TextureManager.Get.GalaxyTextureId);
 				GL.Begin(BeginMode.Quads);
 
 				GL.TexCoord2(0, 0.25);
@@ -144,6 +147,13 @@ namespace Stareater.GLRenderers
 				GL.Vertex2(-0.5, 0.5);
 
 				GL.End();
+				GL.PopMatrix();
+
+				GL.Color4(Color.LightGray);
+				GL.PushMatrix();
+				GL.Translate(star.Position.X, star.Position.Y - 0.5, StarNameZ);
+				GL.Scale(StarNameScale, StarNameScale, StarNameScale);
+				TextRenderUtil.Get.RenderText(star.Name, -0.5f);
 				GL.PopMatrix();
 			}
 		}
