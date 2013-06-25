@@ -81,7 +81,33 @@ namespace Stareater.TextureAtlas
 				files.Add(name, file);
 			}
 
-			margin = 8;
+			while (parameters.Count > 0) {
+				string option = parameters.Dequeue().ToLower();
+				switch (option) {
+					case "-m":
+						margin = int.Parse(parameters.Dequeue());
+						break;
+					case "-w":
+						width = int.Parse(parameters.Dequeue());
+						break;
+					case "-h":
+						heigth = int.Parse(parameters.Dequeue());
+						break;
+					case "-o":
+						outputImagePath = parameters.Dequeue();
+						outputIkonPath = parameters.Dequeue();
+						break;
+					case "-oi":
+						outputIkonPath = parameters.Dequeue();
+						break;
+					case "-ot":
+						outputImagePath = parameters.Dequeue();
+						break;
+					default:
+						Console.WriteLine("Invalid option " + option);
+						break;
+				}
+			}
 		}
 	}
 }
