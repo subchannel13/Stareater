@@ -3,42 +3,23 @@ syntax: glob
 *.userprefs
 *.resources
 *.testsettings
-source/Zvjezdojedac/bin/*
-source/Zvjezdojedac/obj/*
-source/Zvjezdojedac editori/bin/*
-source/Zvjezdojedac editori/obj/*
+*/bin/*
+*/obj/*
 *.suo
 *.csproj.user
 *.csproj.vs10x
-build/Zvjezdojedac.exe
-build/postavke.txt
 release/*
 editors/*
-source/Stareater.Core/bin/*
-source/Stareater.Core/obj/*
-source/Stareater.UI.WinForms/bin/*
-source/Stareater.UI.WinForms/obj/*
 version 0.4/*
 build/settings.txt
 build/Stareater.exe
-documentation/GUI Mockups/Winforms Mockups/Winforms Mockups/bin/*
-documentation/GUI Mockups/Winforms Mockups/Winforms Mockups/obj/*
-source/Stareater.Maps.Square/bin/*
-source/Stareater.Maps.Square/obj/*
-source/Stareater.Players.DefaultAI/bin/*
-source/Stareater.Players.DefaultAI/obj/*
 source/Stareater.UI.WinForms/maps/*
 source/Stareater.UI.WinForms/players/*
-source/Stareater.Maps.ProximityLanes/bin/*
-source/Stareater.Maps.ProximityLanes/obj/*
 scripts/*.exe
-source/ExpressionParser Tests/bin/*
-source/ExpressionParser Tests/obj/*
 source/Stareater.Core/AppData/Expressions/*.old
 source/*.vsmdi
 source/Stareater.Core/Utils/Collections/IndexedCollectionBase.cs
 source/packages/*
-source/Stareater.Maps.RybPopulator/bin/*
-source/Stareater.Maps.RybPopulator/obj/*
 source/TestResults/*
-source/.nuget/NuGet.exe
+*/.nuget/NuGet.exe
+tools/packages/*
