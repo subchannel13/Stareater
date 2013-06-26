@@ -2,83 +2,51 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 
 namespace Stareater.GLRenderers
 {
-	class TextureManager
+	class TextureUtils
 	{
 		#region Singleton
-		static TextureManager instance = null;
+		static TextureUtils instance = null;
 
-		public static TextureManager Get
+		public static TextureUtils Get
 		{
 			get
 			{
 				if (instance == null)
-					instance = new TextureManager();
+					instance = new TextureUtils();
 				return instance;
 			}
 		}
 		#endregion
 
-		public int GalaxyTextureId;
-		public int FontTextureId;
-
-		private TextureManager()
-		{ }
-
-		public void Load(TextureContext context, Bitmap image)
+		private Vector2[] spriteQuad;
+		
+		private TextureUtils()
 		{
-			switch(context)
-			{
-				case TextureContext.Font:
-					FontTextureId = createTexture(image);
-					break;
-				case TextureContext.GalaxyMap:
-					GalaxyTextureId = createTexture(image);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException("context");
-			}
+			spriteQuad = new Vector2[] {
+				new Vector2(-0.5f, -0.5f),
+				new Vector2(0.5f, -0.5f),
+				new Vector2(0.5f, 0.5f),
+				new Vector2(-0.5f, 0.5f),
+			};
 		}
-
-		private int createTexture(Bitmap image)
+		
+		public int CreateTexture(Bitmap image)
 		{
 			int textureId = GL.GenTexture();
 			UpdateTexture(textureId, image);
 
 			return textureId;
 		}
-
-		public void Unload(TextureContext context)
-		{
-			switch(context)
-			{
-				case TextureContext.Font:
-					GL.DeleteTexture(FontTextureId);
-					FontTextureId = 0;
-					break;
-				case TextureContext.GalaxyMap:
-					GL.DeleteTexture(GalaxyTextureId);
-					GalaxyTextureId = 0;
-					break;
-				default:
-					throw new ArgumentOutOfRangeException("context");
-			}
-		}
 		
-		public void UnloadAll()
+		public void DeleteTexture(int textureId)
 		{
-			int[] allIds = new int[] {
-				FontTextureId,
-				GalaxyTextureId,
-			};
-			GL.DeleteTextures(allIds.Length, allIds);
-			
-			FontTextureId = 0;
-			GalaxyTextureId = 0;
+			GL.DeleteTexture(textureId);
 		}
 
 		public void UpdateTexture(int textureId, Bitmap image)
@@ -100,6 +68,19 @@ namespace Stareater.GLRenderers
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)TextureMagFilter.Linear);
 
 			image.UnlockBits(textureData);
+		}
+		
+		public void DrawSprite(TextureInfo textureInfo)
+		{
+			GL.BindTexture(TextureTarget.Texture2D, textureInfo.TextureId);
+			GL.Begin(BeginMode.Quads);
+
+			for(int i = 0; i < spriteQuad.Length; i++) {
+				GL.TexCoord2(textureInfo.TextureCoords[i]);
+				GL.Vertex2(spriteQuad[i]);
+			}
+			
+			GL.End();
 		}
 	}
 }

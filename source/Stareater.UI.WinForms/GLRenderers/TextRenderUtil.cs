@@ -27,16 +27,17 @@ namespace Stareater.GLRenderers
 		const float FontSize = 30;	
 		const string FontFamily = "Arial";
 		
-		Bitmap textureBitmap;
-		Font font;
-		Vector2 nextCharOffset;
+		private int textureId;
+		private Bitmap textureBitmap;
+		private Font font;
+		private Vector2 nextCharOffset;
 
-		Dictionary<char, CharTextureInfo> characterInfos = new Dictionary<char, CharTextureInfo>();
-		Vector2[] unitQuad;
+		private Dictionary<char, CharTextureInfo> characterInfos = new Dictionary<char, CharTextureInfo>();
+		private Vector2[] unitQuad;
 		
 		private TextRenderUtil()
 		{
-			unitQuad = new Vector2[] {
+			this.unitQuad = new Vector2[] {
 				new Vector2(0, 0),
 				new Vector2(0, -1),
 				new Vector2(1, -1),
@@ -49,16 +50,16 @@ namespace Stareater.GLRenderers
 			HashSet<char> missinCharacters = new HashSet<char>();
 			foreach (string text in texts)
 				foreach (char c in text)
-					if (!characterInfos.ContainsKey(c))
+					if (!this.characterInfos.ContainsKey(c))
 						missinCharacters.Add(c);
 
-			if (missinCharacters.Count == 0 && TextureManager.Get.FontTextureId == 0)
+			if (missinCharacters.Count == 0 && this.textureId != 0)
 				return;
 
 			lazyInitialization();
 
-			using (Graphics g = Graphics.FromImage(textureBitmap)) {
-				if (nextCharOffset == Vector2.Zero)
+			using (Graphics g = Graphics.FromImage(this.textureBitmap)) {
+				if (this.nextCharOffset == Vector2.Zero)
 					g.Clear(Color.Transparent);
 
 				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
@@ -71,44 +72,44 @@ namespace Stareater.GLRenderers
 						(float)Math.Ceiling(size.Height) / Height
 					);
 
-					if (nextCharOffset.X + size.Width >= 1)
-						nextCharOffset += new Vector2(0, size.Height);
+					if (this.nextCharOffset.X + size.Width >= 1)
+						this.nextCharOffset += new Vector2(0, size.Height);
 
-					characterInfos.Add(c, new CharTextureInfo(nextCharOffset, size));
+					this.characterInfos.Add(c, new CharTextureInfo(nextCharOffset, size));
 					g.DrawString(c.ToString(), font, textBrush, nextCharOffset.X * Width, nextCharOffset.Y * Height, StringFormat.GenericTypographic);
 
-					nextCharOffset += new Vector2(size.Width, 0);
+					this.nextCharOffset += new Vector2(size.Width, 0);
 				}
 			}
 
-			TextureManager.Get.UpdateTexture(TextureManager.Get.FontTextureId, textureBitmap);
+			TextureUtils.Get.UpdateTexture(this.textureId, this.textureBitmap);
 		}
 		
 		private void lazyInitialization()
 		{
-			if (textureBitmap == null)
-				textureBitmap = new Bitmap(Width, Height);
+			if (this.textureBitmap == null)
+				this.textureBitmap = new Bitmap(Width, Height);
 			
-			if (font == null)
-				font = new Font(FontFamily, FontSize, FontStyle.Bold);
+			if (this.font == null)
+				this.font = new Font(FontFamily, FontSize, FontStyle.Bold);
 			
-			if (TextureManager.Get.FontTextureId == 0)
-				TextureManager.Get.Load(TextureContext.Font, textureBitmap);
+			if (this.textureId == 0)
+				this.textureId = TextureUtils.Get.CreateTexture(this.textureBitmap);
 		}
 
 		public void RenderText(string text, float adjustment)
 		{
 			float textWidth = 0;
 			foreach (char c in text)
-				textWidth += characterInfos[c].Aspect;
+				textWidth += this.characterInfos[c].Aspect;
 
-			GL.BindTexture(TextureTarget.Texture2D, TextureManager.Get.FontTextureId);
+			GL.BindTexture(TextureTarget.Texture2D, this.textureId);
 
 			float charOffset = textWidth * adjustment;
 			GL.Begin(BeginMode.Quads);
 
 			foreach (char c in text) {
-				var charInfo = characterInfos[c];
+				var charInfo = this.characterInfos[c];
 				
 				for (int v = 0; v < 4; v++) {
 					GL.TexCoord2(charInfo.TextureCoords[v]);
