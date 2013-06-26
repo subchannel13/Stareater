@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using Stareater.Controllers.Data;
 using Stareater.Galaxy;
+using NGenerics.DataStructures.Mathematical;
+using Stareater.Players;
 
 namespace Stareater.Controllers
 {
 	public class GameController
 	{
 		private Game game;
-
-		public GameState State { get; private set; }
+		private Dictionary<Player, StarData> lastSelectedStar = new Dictionary<Player, StarData>();
 
 		public GameController()
 		{
@@ -23,20 +24,31 @@ namespace Stareater.Controllers
 			Random rng = new Random();
 			
 			var starPositions = controller.StarPositioner.Generate(rng, controller.PlayerList.Count);
+			var map = new Galaxy.Map(
+				controller.StarPopulator.Generate(rng, starPositions),
+				controller.StarConnector.Generate(rng, starPositions)
+			);
 
-			game = new Game(new Galaxy.Map(
-				controller.StarPopulator.Generate(rng, starPositions), 
-				controller.StarConnector.Generate(rng, starPositions))
-				);
+			Player[] players = controller.PlayerList.Select(info =>
+				new Player(info.Name, info.Color, info.Organization, info.ControlType)
+			).ToArray();
 
-			State = GameState.Running;
+			this.game = new Game(map, players);
+
+			this.State = GameState.Running;
+
+			// TODO: find most populated player's system
+			foreach (var player in players)
+				this.lastSelectedStar.Add(player, game.GalaxyMap.Stars[0]);
 		}
+
+		public GameState State { get; private set; }
 
 		public IEnumerable<StarData> Stars
 		{
 			get
 			{
-				foreach (var star in game.map.Stars)
+				foreach (var star in game.GalaxyMap.Stars)
 					yield return star;
 			}
 		}
@@ -45,8 +57,16 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				foreach (var wormhole in game.map.Wormholes)
+				foreach (var wormhole in game.GalaxyMap.Wormholes)
 					yield return wormhole;
+			}
+		}
+
+		public StarData SelectedStar
+		{
+			get
+			{
+				return this.lastSelectedStar[game.Players[game.CurrentPlayer]];
 			}
 		}
 	}

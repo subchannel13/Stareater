@@ -9,16 +9,20 @@ namespace Stareater
 {
 	class Game
 	{
-		private Player[] Players;
-		public Map map { get; private set; }
-		private int turn;
-		private int currentPlayer;
+		public Player[] Players { get; private set; }
+		public Map GalaxyMap { get; private set; }
+		public int Turn { get; private set; }
+		public int CurrentPlayer { get; private set; }
 		private IEnumerable<object> conflicts;
 		private object phase;
 
-		public Game(Map map)
+		public Game(Map map, Player[] players)
 		{
-			this.map = map;
+			this.GalaxyMap = map;
+			this.Players = players;
+			
+			this.Turn = 0;
+			this.CurrentPlayer = 0;
 		}
 	}
 }

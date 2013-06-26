@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace Stareater.Players
 {
-	class Player
+	public class Player
 	{
 		private string name;
 		private Color color;
@@ -20,5 +20,13 @@ namespace Stareater.Players
 
 		private IEnumerable<object> messages;
 		private Dictionary<object, object> messageFilter;
+
+		public Player(string name, Color color, Organization organization, PlayerType type)
+		{
+			this.color = color;
+			this.name = name;
+			this.organization = organization;
+			this.type = type;
+		}
 	}
 }
