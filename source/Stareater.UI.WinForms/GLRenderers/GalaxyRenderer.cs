@@ -51,15 +51,13 @@ namespace Stareater.GLRenderers
 			eventDispatcher.MouseClick += mouseClick;
 
 			
-			Bitmap textureBitmap = new Bitmap(GalaxyTexturePath);
-			TextureManager.Get.Load(TextureContext.GalaxyMap, textureBitmap);
-
+			GalaxyTextures.Get.Load();
 			TextRenderUtil.Get.Prepare(controller.Stars.Select(x => x.Name));
 		}
 
 		public void DetachFromCanvas()
 		{
-			TextureManager.Get.Unload(TextureContext.GalaxyMap);
+			GalaxyTextures.Get.Unload();
 
 			eventDispatcher.Resize -= canvasResize;
 			eventDispatcher.MouseMove -= mousePan;
@@ -111,48 +109,22 @@ namespace Stareater.GLRenderers
 				GL.Color4(star.Color);
 				GL.PushMatrix();
 				GL.Translate(star.Position.X, star.Position.Y, StarColorZ);
-				GL.BindTexture(TextureTarget.Texture2D, TextureManager.Get.GalaxyTextureId);
-				GL.Begin(BeginMode.Quads);
-
-				GL.TexCoord2(0, 0.25);
-				GL.Vertex2(-0.5, -0.5);
-
-				GL.TexCoord2(0.25, 0.25);
-				GL.Vertex2(0.5, -0.5);
-
-				GL.TexCoord2(0.25, 0);
-				GL.Vertex2(0.5, 0.5);
-
-				GL.TexCoord2(0, 0);
-				GL.Vertex2(-0.5, 0.5);
 				
-				GL.End();
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarColor);
 				GL.PopMatrix();
 
 				GL.Color4(Color.White);
 				GL.PushMatrix();
 				GL.Translate(star.Position.X, star.Position.Y, StarSaturationZ);
-				GL.Begin(BeginMode.Quads);
-
-				GL.TexCoord2(0.265625 + 0, 0.25);
-				GL.Vertex2(-0.5, -0.5);
-
-				GL.TexCoord2(0.265625 + 0.25, 0.25);
-				GL.Vertex2(0.5, -0.5);
-
-				GL.TexCoord2(0.265625 + 0.25, 0);
-				GL.Vertex2(0.5, 0.5);
-
-				GL.TexCoord2(0.265625 + 0, 0);
-				GL.Vertex2(-0.5, 0.5);
-
-				GL.End();
+				
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarGlow);
 				GL.PopMatrix();
 
 				GL.Color4(Color.LightGray);
 				GL.PushMatrix();
 				GL.Translate(star.Position.X, star.Position.Y - 0.5, StarNameZ);
 				GL.Scale(StarNameScale, StarNameScale, StarNameScale);
+				
 				TextRenderUtil.Get.RenderText(star.Name, -0.5f);
 				GL.PopMatrix();
 			}

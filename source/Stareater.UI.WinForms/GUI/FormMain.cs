@@ -144,6 +144,8 @@ namespace Stareater.GUI
 
 			lastRender = thisMoment;
 			glCanvas.SwapBuffers();
+			
+			//this.Text = (1 / dt).ToString("0.#");
 		}
 
 		#endregion
