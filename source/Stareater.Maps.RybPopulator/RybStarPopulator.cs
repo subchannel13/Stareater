@@ -53,7 +53,7 @@ namespace Stareater.Galaxy.RybPopulator
 				{2, "paradiseClimate"},
 			}, 1);
 
-			parameters = new ParameterList(new ParameterBase[]{
+			parameters = new ParameterList(new ParameterBase[] {
 				climateParameter,
 			});
 		}

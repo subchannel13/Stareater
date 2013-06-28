@@ -35,6 +35,14 @@ namespace Stareater.Localization
 				throw new InvalidOperationException("Cast to " + target.Name + " is not supported for " + Tag);
 		}
 
+		public ISet<string> KeySet()
+		{
+			HashSet<string> keys = new HashSet<string>(entries.Keys);
+			keys.UnionWith(LocalizationManifest.Get.DefaultLanguage[name].entries.Keys);
+			
+			return keys;
+		}
+		
 		public bool HasEntry(string entryKey)
 		{
 			return entries.ContainsKey(entryKey);
