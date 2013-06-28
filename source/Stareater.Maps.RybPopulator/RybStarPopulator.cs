@@ -93,8 +93,10 @@ namespace Stareater.Galaxy.RybPopulator
 		public IEnumerable<StarData> Generate(Random rng, StarPositions starPositions)
 		{
 			int colorI = 0;
+			StarNamer namer = new StarNamer(starPositions.Stars.Length);
+
 			foreach (var position in starPositions.Stars)
-				yield return new StarData(starTypes[colorI++ % starTypes.Length].Hue, 1, "Test", position, 0);
+				yield return new StarData(starTypes[colorI++ % starTypes.Length].Hue, 1, namer.NextName(), position, 0);
 		}
 	}
 }

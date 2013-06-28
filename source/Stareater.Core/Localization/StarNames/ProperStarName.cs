@@ -4,8 +4,8 @@ namespace Stareater.Localization.StarNames
 {
 	class ProperStarName : IStarName
 	{
-		const string ContextName = "ProperStarNames";
-		const string KeyPrefix = "proper";
+		internal const string ContextName = "ProperStarNames";
+		private const string KeyPrefix = "proper";
 		
 		int properNameIndex;
 			
@@ -14,7 +14,7 @@ namespace Stareater.Localization.StarNames
 			this.properNameIndex = properNameIndex;
 		}
 		
-		public string Name(Language language)
+		public string ToText(Language language)
 		{
 			return language[ContextName][KeyPrefix + properNameIndex.ToString()].Text();
 		}
