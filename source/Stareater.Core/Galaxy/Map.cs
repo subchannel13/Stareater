@@ -7,13 +7,17 @@ namespace Stareater.Galaxy
 {
 	class Map
 	{
-		public StarData[] Stars { get; private set; }
-		public Tuple<StarData, StarData>[] Wormholes { get; private set; }
+		public StarsCollection Stars { get; private set; }
+		public WormholeCollection Wormholes { get; private set; }
 
 		public Map(IEnumerable<StarData> stars, IEnumerable<Tuple<int, int>> wormholes)
 		{
-			this.Stars = stars.ToArray();
-			this.Wormholes = wormholes.Select(x => new Tuple<StarData, StarData>(Stars[x.Item1], Stars[x.Item2])).ToArray();
+			this.Stars = new StarsCollection();
+			this.Stars.Add(stars);
+			
+			StarData[] starList = stars.ToArray();
+			this.Wormholes = new WormholeCollection();
+			this.Wormholes.Add(wormholes.Select(x => new Tuple<StarData, StarData>(starList[x.Item1], starList[x.Item2])));
 		}
 	}
 }

@@ -1,0 +1,12 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/Collections/IndexedCollectionBase.tt" #><#
+	
+	namespaceName = "Stareater.Galaxy";
+	usings.Add("Stareater.Utils.Collections");
+	usings.Add("NGenerics.DataStructures.Mathematical");
+	
+	Generate("StarsCollection", "StarData",
+		new ViewInfo("Positions", "Vector2D", "Position", ViewType.Collection)
+	);
+#>

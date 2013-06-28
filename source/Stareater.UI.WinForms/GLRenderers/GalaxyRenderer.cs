@@ -24,6 +24,7 @@ namespace Stareater.GLRenderers
 		private const float SelectionIndicatorZ = -0.3f;
 		private const float StarNameZ = -0.2f;
 
+		private const float PanClickTolerance = 0.01;
 		private const float StarNameScale = 0.4f;
 
 		private GameController controller;
@@ -146,11 +147,18 @@ namespace Stareater.GLRenderers
 			eventDispatcher.Refresh();
 		}
 
-		public void mousePan(object sender, MouseEventArgs e)
+		private Vector4 mouseToView(int x, int y)
 		{
-			Vector4 currentPosition = new Vector4(
-				2 * e.X / (float)eventDispatcher.Width - 1,
-				1 - 2 * e.Y / (float)eventDispatcher.Height, 0, 1);
+			return new Vector4(
+				2 * x / (float)eventDispatcher.Width - 1,
+				1 - 2 * y / (float)eventDispatcher.Height, 
+				0, 1
+			);
+		}
+		
+		private void mousePan(object sender, MouseEventArgs e)
+		{
+			Vector4 currentPosition = mouseToView(e.X, e.Y);
 
 			if (!lastMousePosition.HasValue)
 				lastMousePosition = currentPosition;
@@ -182,18 +190,19 @@ namespace Stareater.GLRenderers
 				zoomLevel--;
 
 			float newZoom = 1 / (float)(0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel));
-			float mouseX = 2 * e.X / (float)eventDispatcher.Width - 1;
-			float mouseY = 1 - 2 * e.Y / (float)eventDispatcher.Height;
-			Vector2 mousePoint = Vector4.Transform(new Vector4(mouseX, mouseY, 0, 1), invProjection).Xy;
+			Vector2 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection).Xy;
 
 			originOffset = (originOffset * oldZoom + mousePoint * (newZoom - oldZoom)) / newZoom;
 			resetProjection = true;
 		}
 
-		public void mouseClick(object sender, MouseEventArgs e)
+		private void mouseClick(object sender, MouseEventArgs e)
 		{
-			if (panAbsPath > 0)
+			if (panAbsPath > PanClickTolerance)
 				return;
+			
+			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
+			controller.SelectClosest(mousePoint.X, mousePoint.Y);
 		}
 
 		public void Dispose()

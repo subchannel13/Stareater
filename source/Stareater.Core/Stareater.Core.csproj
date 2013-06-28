@@ -76,7 +76,16 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Galaxy\Colony.cs" />
     <Compile Include="Galaxy\Fleet.cs" />
+    <Compile Include="Galaxy\StarsCollection.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StarsCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="Galaxy\StellarManagement.cs" />
+    <Compile Include="Galaxy\WormholeCollection.cs">
+      <DependentUpon>WormholeCollection.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="Localization\ChainText.cs" />
     <Compile Include="Localization\ConditionalText.cs" />
@@ -137,6 +146,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />
+    <None Include="Galaxy\StarsCollection.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StarsCollection.cs</LastGenOutput>
+    </None>
+    <None Include="Galaxy\WormholeCollection.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WormholeCollection.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
     <None Include="Utils\Collections\IndexedCollectionBase.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
