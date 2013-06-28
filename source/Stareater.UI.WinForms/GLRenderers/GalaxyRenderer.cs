@@ -7,6 +7,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK;
 using Stareater.Controllers;
 using System.Windows.Forms;
+using Stareater.AppData;
 
 namespace Stareater.GLRenderers
 {
@@ -24,7 +25,7 @@ namespace Stareater.GLRenderers
 		private const float SelectionIndicatorZ = -0.3f;
 		private const float StarNameZ = -0.2f;
 
-		private const float PanClickTolerance = 0.01;
+		private const float PanClickTolerance = 0.01f;
 		private const float StarNameScale = 0.4f;
 
 		private GameController controller;
@@ -52,9 +53,8 @@ namespace Stareater.GLRenderers
 			eventDispatcher.MouseWheel += mouseZoom;
 			eventDispatcher.MouseClick += mouseClick;
 
-			
 			GalaxyTextures.Get.Load();
-			TextRenderUtil.Get.Prepare(controller.Stars.Select(x => x.Name));
+			TextRenderUtil.Get.Prepare(controller.Stars.Select(x => x.Name.ToText(SettingsWinforms.Get.Language)));
 		}
 
 		public void DetachFromCanvas()
@@ -135,8 +135,8 @@ namespace Stareater.GLRenderers
 				GL.PushMatrix();
 				GL.Translate(star.Position.X, star.Position.Y - 0.5, StarNameZ);
 				GL.Scale(StarNameScale, StarNameScale, StarNameScale);
-				
-				TextRenderUtil.Get.RenderText(star.Name, -0.5f);
+
+				TextRenderUtil.Get.RenderText(star.Name.ToText(SettingsWinforms.Get.Language), -0.5f);
 				GL.PopMatrix();
 			}
 		}
