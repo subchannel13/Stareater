@@ -39,7 +39,7 @@ namespace Stareater.Controllers
 
 			// TODO: find most populated player's system
 			foreach (var player in players)
-				this.lastSelectedStar.Add(player, game.GalaxyMap.Stars[0]);
+				this.lastSelectedStar.Add(player, game.GalaxyMap.Stars.First());
 		}
 
 		public GameState State { get; private set; }
@@ -68,6 +68,21 @@ namespace Stareater.Controllers
 			{
 				return this.lastSelectedStar[game.Players[game.CurrentPlayer]];
 			}
+			private set
+			{
+				this.lastSelectedStar[game.Players[game.CurrentPlayer]] = value;
+			}
+		}
+		
+		public void SelectClosest(float x, float y)
+		{
+			Vector2D point = new Vector2D(x, y);
+			StarData closestStar = game.GalaxyMap.Stars.First();
+			foreach (var star in game.GalaxyMap.Stars)
+				if ((star.Position - point).Magnitude() < (closestStar.Position - point).Magnitude())
+					closestStar = star;
+			
+			SelectedStar = closestStar;
 		}
 	}
 }
