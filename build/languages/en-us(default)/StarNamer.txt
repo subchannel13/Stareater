@@ -1,0 +1,73 @@
+:ProperStarNames
+proper0 = Betelgeuse
+proper1 = Rigel
+proper2 = Vega
+-
+
+:ConstelationNames
+constelation0Nom = Andromeda
+constelation0Gen = Andromedae
+constelation1Nom = Aries
+constelation1Gen = Arietis
+constelation2Nom = Canis
+constelation2Gen = Canum
+constelation3Nom = Centaurus
+constelation3Gen = Centauri
+constelation3Nom = Cetus
+constelation3Gen = Centi
+constelation4Nom = Corona
+constelation4Gen = Coronae
+constelation5Nom = Draco
+constelation5Gen = Draconis
+constelation6Nom = Equuleus
+constelation6Gen = Equulei
+constelation7Nom = Gemini
+constelation7Gen = Gemonorum
+constelation8Nom = Hydra
+constelation8Gen = Hydrae
+constelation9Nom = Leo
+constelation9Gen = Leonis
+constelation10Nom = Libra
+constelation10Gen = Librae
+constelation11Nom = Lupus
+constelation11Gen = Lupi
+constelation12Nom = Pavo
+constelation12Gen = Pavonis
+constelation13Nom = Pegasus
+constelation13Gen = Pegasi
+constelation14Nom = Phoenix
+constelation14Gen = Phoenicis
+constelation15Nom = Pisces
+constelation15Gen = Piscium
+constelation16Nom = Retculum
+constelation16Gen = Retculi
+constelation17Nom = Sagittarius
+constelation17Gen = Sagittarii
+constelation18Nom = Scorpius
+constelation18Gen = Scorpii
+constelation19Nom = Serpens
+constelation19Gen = Serpentis
+constelation20Nom = Taurus
+constelation20Gen = Tauri
+constelation21Nom = Triangulum
+constelation21Gen = Trianguli
+constelation22Nom = Ursa
+constelation22Gen = Ursae
+constelation23Nom = Vela
+constelation23Gen = Velorum
+constelation24Nom = Virgo
+constelation24Gen = Virginis
+constelation25Nom = Vulpecula
+constelation25Gen = Vulpeculae
+-
+
+:ConstelationStarPrefixes
+prefix0 = Alpha
+prefix1 = Beta
+prefix2 = Gama
+prefix3 = Delta
+prefix4 = Eta
+prefix5 = Zeta
+prefix6 = Epsilon
+prefix7 = Theta
+-
