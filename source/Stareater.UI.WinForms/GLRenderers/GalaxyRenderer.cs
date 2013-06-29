@@ -8,6 +8,7 @@ using OpenTK;
 using Stareater.Controllers;
 using System.Windows.Forms;
 using Stareater.AppData;
+using Stareater.Utils;
 
 namespace Stareater.GLRenderers
 {
@@ -17,6 +18,8 @@ namespace Stareater.GLRenderers
 		
 		private const double DefaultViewSize = 15;
 		private const double ZoomBase = 1.2f;
+		private const int MaxZoom = 10;
+		private const int MinZoom = -10;
 		
 		private const float FarZ = -1;
 		private const float WormholeZ = -0.6f;
@@ -191,6 +194,8 @@ namespace Stareater.GLRenderers
 				zoomLevel++;
 			else 
 				zoomLevel--;
+
+			zoomLevel = Methods.Clamp(zoomLevel, MinZoom, MaxZoom);
 
 			float newZoom = 1 / (float)(0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel));
 			Vector2 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection).Xy;

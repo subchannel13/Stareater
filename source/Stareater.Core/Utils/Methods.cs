@@ -12,6 +12,17 @@ namespace Stareater.Utils
 	/// </summary>
 	public static class Methods
 	{
+		public static int Clamp(int x, int min, int max)
+		{
+			if (x < min)
+				return min;
+
+			if (x > max)
+				return max;
+
+			return x;
+		}
+
 		/// <summary>
 		/// Test whether a line segment intersects other line segments.
 		/// </summary>
