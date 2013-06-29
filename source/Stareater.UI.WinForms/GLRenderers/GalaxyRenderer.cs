@@ -24,9 +24,10 @@ namespace Stareater.GLRenderers
 		private const float StarSaturationZ = -0.4f;
 		private const float SelectionIndicatorZ = -0.3f;
 		private const float StarNameZ = -0.2f;
+		private const float StarNameZRange = 0.1f;
 
 		private const float PanClickTolerance = 0.01f;
-		private const float StarNameScale = 0.4f;
+		private const float StarNameScale = 0.35f;
 
 		private GameController controller;
 		private Control eventDispatcher;
@@ -106,6 +107,7 @@ namespace Stareater.GLRenderers
 			GL.PopMatrix();
 
 			GL.Enable(EnableCap.Texture2D);
+			float starNameZ = StarNameZ;
 
 			foreach (var star in controller.Stars) {
 				GL.Color4(star.Color);
@@ -133,11 +135,12 @@ namespace Stareater.GLRenderers
 
 				GL.Color4(Color.LightGray);
 				GL.PushMatrix();
-				GL.Translate(star.Position.X, star.Position.Y - 0.5, StarNameZ);
+				GL.Translate(star.Position.X, star.Position.Y - 0.5, starNameZ);
 				GL.Scale(StarNameScale, StarNameScale, StarNameScale);
 
 				TextRenderUtil.Get.RenderText(star.Name.ToText(SettingsWinforms.Get.Language), -0.5f);
 				GL.PopMatrix();
+				starNameZ += StarNameZRange / controller.StarCount;
 			}
 		}
 

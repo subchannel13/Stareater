@@ -26,6 +26,8 @@ namespace Stareater.GLRenderers
 		const int Height = 512;
 		const float FontSize = 30;	
 		const string FontFamily = "Arial";
+
+		const float SpaceUnitWidth = 0.25f;
 		
 		private int textureId;
 		private Bitmap textureBitmap;
@@ -50,7 +52,7 @@ namespace Stareater.GLRenderers
 			HashSet<char> missinCharacters = new HashSet<char>();
 			foreach (string text in texts)
 				foreach (char c in text)
-					if (!this.characterInfos.ContainsKey(c))
+					if (!this.characterInfos.ContainsKey(c) && !char.IsWhiteSpace(c))
 						missinCharacters.Add(c);
 
 			if (missinCharacters.Count == 0 && this.textureId != 0)
@@ -73,7 +75,7 @@ namespace Stareater.GLRenderers
 					);
 
 					if (this.nextCharOffset.X + size.Width >= 1)
-						this.nextCharOffset += new Vector2(0, size.Height);
+						this.nextCharOffset = new Vector2(0, this.nextCharOffset.Y + size.Height);
 
 					this.characterInfos.Add(c, new CharTextureInfo(nextCharOffset, size));
 					g.DrawString(c.ToString(), font, textBrush, nextCharOffset.X * Width, nextCharOffset.Y * Height, StringFormat.GenericTypographic);
@@ -101,25 +103,34 @@ namespace Stareater.GLRenderers
 		{
 			float textWidth = 0;
 			foreach (char c in text)
-				textWidth += this.characterInfos[c].Aspect;
+				if (!char.IsWhiteSpace(c))
+					textWidth += this.characterInfos[c].Aspect;
+				else if (c == ' ')
+					textWidth += SpaceUnitWidth;
+				else
+					throw new ArgumentException("Unsupported whitespace character, character code: " + (int)c);
 
 			GL.BindTexture(TextureTarget.Texture2D, this.textureId);
 
 			float charOffset = textWidth * adjustment;
 			GL.Begin(BeginMode.Quads);
 
-			foreach (char c in text) {
-				var charInfo = this.characterInfos[c];
-				
-				for (int v = 0; v < 4; v++) {
-					GL.TexCoord2(charInfo.TextureCoords[v]);
-					GL.Vertex2(
-						unitQuad[v].X * charInfo.Aspect + charOffset,
-						unitQuad[v].Y
-					);
+			foreach (char c in text)
+				if (!char.IsWhiteSpace(c)) {
+					var charInfo = this.characterInfos[c];
+
+					for (int v = 0; v < 4; v++) {
+						GL.TexCoord2(charInfo.TextureCoords[v]);
+						GL.Vertex2(
+							unitQuad[v].X * charInfo.Aspect + charOffset,
+							unitQuad[v].Y
+						);
+					}
+					charOffset += charInfo.Aspect;
 				}
-				charOffset += charInfo.Aspect;
-			}
+				else if (c == ' ')
+					charOffset += SpaceUnitWidth;
+
 			GL.End();
 		}
 	}

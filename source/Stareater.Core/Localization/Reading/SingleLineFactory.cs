@@ -7,7 +7,7 @@ namespace Stareater.Localization.Reading
 	{
 		public IkadnBaseObject Parse(IkadnParser parser)
 		{
-			return new SingleLineText(parser.Reader.ReadUntil('\n', '\r', IkadnReader.EndOfStreamResult));
+			return new SingleLineText(parser.Reader.ReadUntil('\n', '\r', IkadnReader.EndOfStreamResult).Trim());
 		}
 
 		public char Sign

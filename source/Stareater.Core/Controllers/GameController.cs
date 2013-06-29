@@ -48,8 +48,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				foreach (var star in game.GalaxyMap.Stars)
-					yield return star;
+				return game.GalaxyMap.Stars;
 			}
 		}
 
@@ -60,6 +59,11 @@ namespace Stareater.Controllers
 				foreach (var wormhole in game.GalaxyMap.Wormholes)
 					yield return wormhole;
 			}
+		}
+
+		public int StarCount
+		{
+			get { return game.GalaxyMap.Stars.Count; }
 		}
 
 		public StarData SelectedStar
