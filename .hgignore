@@ -8,18 +8,15 @@ syntax: glob
 *.suo
 *.csproj.user
 *.csproj.vs10x
+*.dll
+*.exe
 release/*
 editors/*
 version 0.4/*
 build/settings.txt
-build/Stareater.exe
-source/Stareater.UI.WinForms/maps/*
-source/Stareater.UI.WinForms/players/*
-scripts/*.exe
 source/Stareater.Core/AppData/Expressions/*.old
 source/*.vsmdi
 source/Stareater.Core/Utils/Collections/IndexedCollectionBase.cs
 source/packages/*
 source/TestResults/*
-*/.nuget/NuGet.exe
 tools/packages/*
