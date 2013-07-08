@@ -87,6 +87,7 @@
 			// 
 			// comboBox2
 			// 
+			this.comboBox2.BackColor = System.Drawing.Color.Black;
 			this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBox2.FormattingEnabled = true;
 			this.comboBox2.Location = new System.Drawing.Point(12, 12);

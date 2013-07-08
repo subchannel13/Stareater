@@ -15,7 +15,7 @@ namespace Winforms_Mockups
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new FormNewGame());
+			Application.Run(new FormStarSystem());
 		}
 	}
 }

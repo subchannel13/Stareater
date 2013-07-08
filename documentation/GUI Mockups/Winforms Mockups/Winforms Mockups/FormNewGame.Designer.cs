@@ -32,12 +32,12 @@
 			this.textBox4 = new System.Windows.Forms.TextBox();
 			this.button3 = new System.Windows.Forms.Button();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+			this.button4 = new System.Windows.Forms.Button();
+			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.newPlayerInfo1 = new Winforms_Mockups.NewPlayerInfo();
 			this.newPlayerInfo2 = new Winforms_Mockups.NewPlayerInfo();
 			this.newPlayerInfo3 = new Winforms_Mockups.NewPlayerInfo();
 			this.newPlayerInfo4 = new Winforms_Mockups.NewPlayerInfo();
-			this.button4 = new System.Windows.Forms.Button();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.flowLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -90,6 +90,25 @@
 			this.flowLayoutPanel1.Size = new System.Drawing.Size(170, 191);
 			this.flowLayoutPanel1.TabIndex = 14;
 			// 
+			// button4
+			// 
+			this.button4.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.button4.Location = new System.Drawing.Point(12, 12);
+			this.button4.Name = "button4";
+			this.button4.Size = new System.Drawing.Size(170, 23);
+			this.button4.TabIndex = 15;
+			this.button4.Text = "Setup players";
+			this.button4.UseVisualStyleBackColor = true;
+			// 
+			// comboBox1
+			// 
+			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboBox1.FormattingEnabled = true;
+			this.comboBox1.Location = new System.Drawing.Point(188, 128);
+			this.comboBox1.Name = "comboBox1";
+			this.comboBox1.Size = new System.Drawing.Size(170, 21);
+			this.comboBox1.TabIndex = 16;
+			// 
 			// newPlayerInfo1
 			// 
 			this.newPlayerInfo1.Location = new System.Drawing.Point(3, 3);
@@ -117,24 +136,6 @@
 			this.newPlayerInfo4.Name = "newPlayerInfo4";
 			this.newPlayerInfo4.Size = new System.Drawing.Size(162, 40);
 			this.newPlayerInfo4.TabIndex = 3;
-			// 
-			// button4
-			// 
-			this.button4.Location = new System.Drawing.Point(12, 12);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(170, 23);
-			this.button4.TabIndex = 15;
-			this.button4.Text = "Setup players";
-			this.button4.UseVisualStyleBackColor = true;
-			// 
-			// comboBox1
-			// 
-			this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Location = new System.Drawing.Point(188, 128);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(170, 21);
-			this.comboBox1.TabIndex = 16;
 			// 
 			// FormNewGame
 			// 
