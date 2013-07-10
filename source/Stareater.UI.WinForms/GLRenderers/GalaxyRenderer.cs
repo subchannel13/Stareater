@@ -43,6 +43,8 @@ namespace Stareater.GLRenderers
 		private float panAbsPath = 0;
 		private Vector2 originOffset = Vector2.Zero;
 
+		private int staticList = -1;
+
 		public GalaxyRenderer(GameController controller)
 		{
 			this.controller = controller;
@@ -97,53 +99,62 @@ namespace Stareater.GLRenderers
 				resetProjection = false;
 			}
 
-			GL.Disable(EnableCap.Texture2D);
-			GL.Color4(Color.Blue);
-			GL.PushMatrix();
-			GL.Translate(0, 0, WormholeZ);
-			GL.Begin(BeginMode.Lines);
-			foreach (var wormhole in controller.Wormholes) {
-				GL.Vertex2(wormhole.Item1.Position.X, wormhole.Item1.Position.Y);
-				GL.Vertex2(wormhole.Item2.Position.X, wormhole.Item2.Position.Y);
-			}
-			GL.End();
-			GL.PopMatrix();
+			if (staticList < 0) {
+				staticList = GL.GenLists(1);
+				GL.NewList(staticList, ListMode.CompileAndExecute);
 
-			GL.Enable(EnableCap.Texture2D);
-			float starNameZ = StarNameZ;
-
-			foreach (var star in controller.Stars) {
-				GL.Color4(star.Color);
+				GL.Disable(EnableCap.Texture2D);
+				GL.Color4(Color.Blue);
 				GL.PushMatrix();
-				GL.Translate(star.Position.X, star.Position.Y, StarColorZ);
-				
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarColor);
+				GL.Translate(0, 0, WormholeZ);
+				GL.Begin(BeginMode.Lines);
+				foreach (var wormhole in controller.Wormholes) {
+					GL.Vertex2(wormhole.Item1.Position.X, wormhole.Item1.Position.Y);
+					GL.Vertex2(wormhole.Item2.Position.X, wormhole.Item2.Position.Y);
+				}
+				GL.End();
 				GL.PopMatrix();
 
-				GL.Color4(Color.White);
-				GL.PushMatrix();
-				GL.Translate(star.Position.X, star.Position.Y, StarSaturationZ);
-				
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarGlow);
-				GL.PopMatrix();
+				GL.Enable(EnableCap.Texture2D);
+				float starNameZ = StarNameZ;
 
-				if (star == controller.SelectedStar) {
+				foreach (var star in controller.Stars) {
+					GL.Color4(star.Color);
+					GL.PushMatrix();
+					GL.Translate(star.Position.X, star.Position.Y, StarColorZ);
+
+					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarColor);
+					GL.PopMatrix();
+
 					GL.Color4(Color.White);
 					GL.PushMatrix();
-					GL.Translate(star.Position.X, star.Position.Y, SelectionIndicatorZ);
+					GL.Translate(star.Position.X, star.Position.Y, StarSaturationZ);
 
-					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar);
+					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarGlow);
 					GL.PopMatrix();
+
+					GL.Color4(Color.LightGray);
+					GL.PushMatrix();
+					GL.Translate(star.Position.X, star.Position.Y - 0.5, starNameZ);
+					GL.Scale(StarNameScale, StarNameScale, StarNameScale);
+
+					TextRenderUtil.Get.RenderText(star.Name.ToText(SettingsWinforms.Get.Language), -0.5f);
+					GL.PopMatrix();
+					starNameZ += StarNameZRange / controller.StarCount;
 				}
 
-				GL.Color4(Color.LightGray);
-				GL.PushMatrix();
-				GL.Translate(star.Position.X, star.Position.Y - 0.5, starNameZ);
-				GL.Scale(StarNameScale, StarNameScale, StarNameScale);
+				GL.EndList();
+			}
+			else
+				GL.CallList(staticList);
 
-				TextRenderUtil.Get.RenderText(star.Name.ToText(SettingsWinforms.Get.Language), -0.5f);
+			if (controller.SelectedStar != null) {
+				GL.Color4(Color.White);
+				GL.PushMatrix();
+				GL.Translate(controller.SelectedStar.Position.X, controller.SelectedStar.Position.Y, SelectionIndicatorZ);
+
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar);
 				GL.PopMatrix();
-				starNameZ += StarNameZRange / controller.StarCount;
 			}
 		}
 

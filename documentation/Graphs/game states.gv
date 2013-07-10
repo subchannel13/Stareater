@@ -1,0 +1,117 @@
+digraph G {
+
+	graph [dpi=200];
+
+	node [shape="box", style="rounded, filled"];
+	
+	style=filled;
+	color="#008000";
+	label = "State data";
+
+	aBuilder -> ab_player;
+	aBuilder -> ab_order;
+	aBuilder -> ab_buildings;
+	aBuilder -> ab_leftover;
+	
+	aBuilder [label="Construction\nsite", shape="octagon", style="filled", fillcolor="dodgerblue"];
+	ab_player [label="player"];
+	ab_order [label="ordered\nbuilding"];
+	ab_buildings [label="buildings"];
+	ab_leftover [label="leftovers"];
+
+	building -> b_type;
+	building -> b_quantity;
+	
+	building [label="Building", fillcolor="dodgerblue"]; 
+	b_type [label="type"];
+	b_quantity [label="quantity"];
+
+	colony [label="Colony", fillcolor="dodgerblue"]; 
+	colony -> aBuilder [style="dashed"];
+	
+	fleet -> f_ships;
+	fleet -> f_origin;
+	fleet -> f_destination;
+	fleet -> f_mission;
+	
+	fleet [label="Fleet", fillcolor="dodgerblue"];
+	f_ships [label="ships"];
+	f_origin [label="origin\nstar"];
+	f_destination [label="destination\nstar"];
+	f_mission [label="mission"];
+	
+	game -> g_players;
+	game -> g_currentPlayer;
+	game -> g_phase;
+	game -> g_conflicts;
+	game -> g_map;
+	game -> g_turn;
+	
+	game [label="Game", fillcolor="dodgerblue"];
+	g_players [label="players"];
+	g_currentPlayer [label="current\nplayer"];
+	g_phase [label="phase"];
+	g_conflicts [label="conflicts"];
+	g_map [label="map"];
+	g_turn [label="turn"];
+	
+	map -> m_stars;
+	map -> m_lanes;
+	
+	map [label="Map", fillcolor="dodgerblue"];
+	m_stars [label="stars"];
+	m_lanes [label="wormholes"];
+	
+	planet -> p_size;	
+	planet -> p_atmoQual;	
+	planet -> p_atmoDens;	
+	planet -> p_surfMineral;	
+	planet -> p_deepMineral;	
+	
+	planet [label="Planet", fillcolor="dodgerblue"];
+	p_size [label="size"];
+	p_atmoQual [label="atmosphere\nquality"];
+	p_atmoDens [label="atmosphere\ndensity"];
+	p_surfMineral [label="surface\nminerals"];
+	p_deepMineral [label="deep\nminerals"];
+
+	player -> p_name; 
+	player -> p_color; 
+	player -> p_type; 
+	player -> p_controller; 
+	player -> p_organisation; 
+	player -> p_messageFilter; 
+	player -> p_messages; 
+	player -> p_designs; 
+	player -> p_predefinedDesigns; 
+	player -> p_technologies; 
+	player -> p_intelligence; 
+
+	player [label="Player", fillcolor="dodgerblue"];
+	p_name [label="name"];
+	p_color [label="color"];
+	p_type [label="type"];
+	p_controller [label="controller"];
+	p_organisation [label="organisation"];
+	p_messageFilter [label="message\nfilter"];
+	p_messages [label="messages"];
+	p_designs [label="designs"];
+	p_predefinedDesigns [label="predefined\ndesigns"];
+	p_technologies [label="technologies"];
+	p_intelligence [label="inteligence"];
+	
+	star -> s_name;
+	star -> s_renderHints;
+	star -> s_position;
+	star -> s_radiation;
+	
+	star [label="Star", fillcolor="dodgerblue"];
+	s_name [label="name"];
+	s_position [label="position"];
+	s_renderHints [label="render\nhints"];
+	s_radiation [label="radiation"];
+	
+	systemMng -> aBuilder [style="dashed"];
+	
+	systemMng [label="System\nmanagement", fillcolor="dodgerblue"];
+}

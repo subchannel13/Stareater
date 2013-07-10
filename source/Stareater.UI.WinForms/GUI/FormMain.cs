@@ -18,6 +18,7 @@ namespace Stareater.GUI
 	internal partial class FormMain : Form
 	{
 		private const float MaxDeltaTime = 0.5f;
+		private const float MinDeltaTime = 0.005f;
 
 		private bool glReady = false;
 		private DateTime lastRender = DateTime.UtcNow;
@@ -136,12 +137,17 @@ namespace Stareater.GUI
 		{
 			if (!glReady) return;
 
+			var thisMoment = DateTime.UtcNow;
+			double dt = (thisMoment - lastRender).TotalSeconds;
+			
+			if (dt < MinDeltaTime)
+				return;
+			if (dt > MaxDeltaTime)
+				dt = MaxDeltaTime;
+
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
-
-			var thisMoment = DateTime.UtcNow;
-			double dt = Math.Min(Math.Max((thisMoment - lastRender).TotalSeconds, 0), MaxDeltaTime);
 
 			if (glReady && glRenderer != null)
 				glRenderer.Draw(dt);

@@ -15,5 +15,12 @@ namespace Stareater.Galaxy
 		private double temperatureDeviation;
 		private double mineralsSurface;
 		private double mineralsDeep;
+
+		public StarData Star { get; private set; }
+
+		public Planet(StarData star)
+		{
+			this.Star = star;
+		}
 	}
 }

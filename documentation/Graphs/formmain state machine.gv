@@ -1,0 +1,40 @@
+digraph form_main_states {
+	rankdir=LR;
+	graph [dpi=200];
+	
+	node [shape = point ]; q0m, q0r;
+	node [shape = oval ];
+	
+	exit -> exit;
+	
+	q0m -> none;
+	
+	none -> mainMenu [label="menu"];
+	
+	mainMenu -> newGame [label="new"];
+	mainMenu -> settings [label="settings"];
+	mainMenu -> exit [label="exit"];
+	mainMenu -> none [label="cancel"];
+	
+	newGame -> mainMenu [label="cancel"];
+	newGame -> none [label="create"];
+	
+	settings -> mainMenu [label="done"];
+	
+	q0r -> intro;
+	
+	intro -> idle [label="done"];
+	
+	idle -> map [label="start"];
+	
+	map -> system [label="zoom"];
+	map -> combat [label="conflict"];
+	map -> outro [label="over"];
+	
+	system -> map [label="return"];
+	
+	combat -> map [label="resloved"];
+	combat -> outro [label="over"];
+	
+	outro -> idle [label="done"];
+}
