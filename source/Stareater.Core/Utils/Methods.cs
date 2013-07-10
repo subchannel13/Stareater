@@ -12,6 +12,13 @@ namespace Stareater.Utils
 	/// </summary>
 	public static class Methods
 	{
+		/// <summary>
+		/// Limits a value to a range.
+		/// </summary>
+		/// <param name="x">A value to clamp.</param>
+		/// <param name="min">Range lower bound (inclusive)</param>
+		/// <param name="max">Range upper bound (inclusive)</param>
+		/// <returns></returns>
 		public static int Clamp(int x, int min, int max)
 		{
 			if (x < min)

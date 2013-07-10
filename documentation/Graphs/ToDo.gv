@@ -1,0 +1,48 @@
+digraph G {
+	rankdir=LR;
+	graph [dpi=200];
+	
+	todo [label="Features\nto do" style="filled" fillcolor="red"];
+	
+	EndTurn [label="End\nturn"];
+	MapObjClick [label="Map object\nclick radius"];
+	PanLimit [label="Pan\nlimit"];
+	ShipDesign [label="Ship\ndesign"];
+	Specify [style="filled" fillcolor="cyan"];
+	StarAdmin [label="Stellar\nmanagement"];
+	
+	todo -> Technologies;
+	todo -> Diplomacy -> Specify;
+	todo -> Espionage -> Specify;
+	todo -> EndTurn;
+	todo -> MapObjClick -> Specify;
+	
+	todo -> Map -> Fleets -> ShipDesign;
+
+	Map -> Stars;
+	Map -> StarAdmin;
+	Map -> PanLimit;
+	StarAdmin -> PlanetGeneration;
+	StarAdmin -> SystemRendering -> DoubleClick;
+	SystemRendering -> Specify;
+	
+	todo -> System;
+	
+	
+	graphics [label="Graphics\nto do" style="filled" fillcolor="palegreen"];
+
+	ExploredStar [label="Explored star"];
+	SelectedStarIcon [label="Selected star icon"];	
+	UnexploredStar [label="Unexplored star"];		
+	
+	graphics -> SelectedStarIcon -> ExploredStar ->	UnexploredStar;
+
+	
+	stubs [label="Stub or dummy\nimplementation" style="filled" fillcolor="lightpink"];
+	
+	InitialSelection [label="Initially selected\nstar"];
+	NameGenerator [label="Star name\ngenerator"];
+	StarTypes [label="RYB star type\ndistribution"];
+	
+	stubs -> NameGenerator -> StarTypes -> InitialSelection -> StarlaneDesign;
+}
