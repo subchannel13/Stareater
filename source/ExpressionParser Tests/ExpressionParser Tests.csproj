@@ -14,11 +14,16 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <NoWin32Manifest>False</NoWin32Manifest>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -32,8 +37,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <BaseAddress>4194304</BaseAddress>
+    <PlatformTarget>x86</PlatformTarget>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="NUnit.Framework">
+      <HintPath>$(SharpDevelopBinPath)\Tools\NUnit\NUnit.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>

@@ -24,11 +24,11 @@ namespace Stareater.GLRenderers
 		}
 		#endregion
 
-		private Vector2[] spriteQuad;
+		public Vector2[] SpriteQuad { get; private set; }
 		
 		private TextureUtils()
 		{
-			spriteQuad = new Vector2[] {
+			SpriteQuad = new Vector2[] {
 				new Vector2(-0.5f, -0.5f),
 				new Vector2(0.5f, -0.5f),
 				new Vector2(0.5f, 0.5f),
@@ -75,9 +75,22 @@ namespace Stareater.GLRenderers
 			GL.BindTexture(TextureTarget.Texture2D, textureInfo.TextureId);
 			GL.Begin(BeginMode.Quads);
 
-			for(int i = 0; i < spriteQuad.Length; i++) {
+			for(int i = 0; i < SpriteQuad.Length; i++) {
 				GL.TexCoord2(textureInfo.TextureCoords[i]);
-				GL.Vertex2(spriteQuad[i]);
+				GL.Vertex2(SpriteQuad[i]);
+			}
+			
+			GL.End();
+		}
+		
+		public void DrawSprite(TextureInfo textureInfo, float zOffset)
+		{
+			GL.BindTexture(TextureTarget.Texture2D, textureInfo.TextureId);
+			GL.Begin(BeginMode.Quads);
+
+			for(int i = 0; i < SpriteQuad.Length; i++) {
+				GL.TexCoord2(textureInfo.TextureCoords[i]);
+				GL.Vertex3(SpriteQuad[i].X, SpriteQuad[i].Y, zOffset);
 			}
 			
 			GL.End();

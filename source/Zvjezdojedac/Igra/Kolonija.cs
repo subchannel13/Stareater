@@ -358,7 +358,7 @@ namespace Zvjezdojedac.Igra
 			gradi(false);
 
 			/*
-			 * TODO: terraforming
+			 * TO DO: terraforming
 			 */
 
 			double populacijaTmp = Efekti[PopulacijaPromjena] + populacija;

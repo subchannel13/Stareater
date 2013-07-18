@@ -70,9 +70,8 @@ namespace Stareater.GUI
 
 		private void showMainMenu()
 		{
-			using (FormMainMenu form = new FormMainMenu()) {
-				form.Owner = this;
-				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			using (FormMainMenu form = new FormMainMenu())
+				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
 					switch (form.Result) {
 						case MainMenuResult.NewGame:
 							postDelayedEvent(showNewGame);
@@ -87,15 +86,13 @@ namespace Stareater.GUI
 							postDelayedEvent(showMainMenu);
 							break;
 					}
-			}
 		}
 
 		private void showNewGame()
 		{
 			using (FormNewGame form = new FormNewGame()) {
 				form.Initialize();
-				form.Owner = this;
-				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
 					form.CreateGame(controller);
 					glRenderer = new GalaxyRenderer(controller);
 					glRenderer.AttachToCanvas(glCanvas);
@@ -108,11 +105,9 @@ namespace Stareater.GUI
 
 		private void showSettings()
 		{
-			using (FormSettings form = new FormSettings()) {
-				form.Owner = this;
-				if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			using (FormSettings form = new FormSettings())
+				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
 					setLanguage();
-			}
 			postDelayedEvent(showMainMenu);
 		}
 		#endregion

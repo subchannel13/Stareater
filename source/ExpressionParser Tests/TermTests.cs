@@ -1,25 +1,26 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Stareater.AppData.Expressions;
 using System.IO;
 
 namespace ExpressionParser_Tests
 {
-	[TestClass]
+	[TestFixture]
 	public class TermTests
 	{
 
-		[TestMethod]
+		[Test]
 		public void InfinityConstant()
 		{
 			var test = new ParserTester("Inf", null, double.PositiveInfinity);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
-		[TestMethod]
+		[Test]
 		public void IntegerConstant()
 		{
 			double input = 2;
@@ -28,16 +29,16 @@ namespace ExpressionParser_Tests
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
-		[TestMethod]
+		[Test]
 		public void DecimalConstant()
 		{
 			double input = 0.6;
 
-			var test = new ParserTester(input.ToString(), null, input, 1e-9);
+			var test = new ParserTester(input.ToString(CultureInfo.InvariantCulture), null, input, 1e-9);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
-		[TestMethod]
+		[Test]
 		public void SciBigIntegerConstant()
 		{
 			double input = 8e9;
@@ -46,7 +47,7 @@ namespace ExpressionParser_Tests
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
-		[TestMethod]
+		[Test]
 		public void SciBigDecimalConstant()
 		{
 			double input = 8.6e9;
@@ -55,7 +56,7 @@ namespace ExpressionParser_Tests
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
-		[TestMethod]
+		[Test]
 		public void SciSmallIntegerConstant()
 		{
 			double input = 4e-6;
@@ -64,16 +65,16 @@ namespace ExpressionParser_Tests
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
-		[TestMethod]
+		[Test]
 		public void SciSmallDecimalConstant()
 		{
 			double input = 3.14e-6;
 
-			var test = new ParserTester(input.ToString(), null, input, 1e-12);
+			var test = new ParserTester(input.ToString(CultureInfo.InvariantCulture), null, input, 1e-12);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
-		[TestMethod]
+		[Test]
 		public void Variable()
 		{
 			string varName = "lvl";
