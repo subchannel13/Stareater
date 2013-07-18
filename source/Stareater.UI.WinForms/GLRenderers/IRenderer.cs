@@ -10,6 +10,9 @@ namespace Stareater.GLRenderers
 	{
 		void Draw(double deltaTime);
 
+		void Load();
+		void Unload();
+		
 		void AttachToCanvas(Control eventDispatcher);
 		void DetachFromCanvas();	
 	}

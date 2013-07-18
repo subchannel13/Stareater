@@ -12,6 +12,8 @@ namespace Stareater.Galaxy
 		
 		public StarNamer(int starCount)
 		{
+			//UNDONE: Currently picks any subset of available names
+			//TODO: Make namer respect constellation designations (no beta without alpha)
 			Language lang = LocalizationManifest.Get.DefaultLanguage;
 
 			int properNamesCount = lang[ProperStarName.ContextName].KeySet().Count;

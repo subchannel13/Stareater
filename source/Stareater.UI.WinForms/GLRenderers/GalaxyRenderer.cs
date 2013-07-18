@@ -107,6 +107,7 @@ namespace Stareater.GLRenderers
 				GL.Color4(Color.Blue);
 				GL.PushMatrix();
 				GL.Translate(0, 0, WormholeZ);
+				//TODO: Use textured quads instead plain lines
 				GL.Begin(BeginMode.Lines);
 				foreach (var wormhole in controller.Wormholes) {
 					GL.Vertex2(wormhole.Item1.Position.X, wormhole.Item1.Position.Y);
@@ -116,7 +117,6 @@ namespace Stareater.GLRenderers
 				GL.PopMatrix();
 
 				GL.Enable(EnableCap.Texture2D);
-				float starNameZ = StarNameZ;
 
 				foreach (var star in controller.Stars) {
 					GL.Color4(star.Color);
@@ -124,15 +124,15 @@ namespace Stareater.GLRenderers
 					GL.Translate(star.Position.X, star.Position.Y, StarColorZ);
 
 					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarColor);
-					GL.PopMatrix();
-
+				
 					GL.Color4(Color.White);
-					GL.PushMatrix();
-					GL.Translate(star.Position.X, star.Position.Y, StarSaturationZ);
-
-					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarGlow);
+					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarGlow, StarSaturationZ - StarColorZ);
+					
 					GL.PopMatrix();
-
+				}
+				
+				float starNameZ = StarNameZ;
+				foreach (var star in controller.Stars) {
 					GL.Color4(Color.LightGray);
 					GL.PushMatrix();
 					GL.Translate(star.Position.X, star.Position.Y - 0.5, starNameZ);

@@ -436,7 +436,7 @@ namespace Zvjezdojedac.Igra
 			foreach (DizajnZgrada dizajnZgrada in dizajnoviBrodova)
 				dizajnovi.Add(dizajnZgrada);
 
-			// TODO!!!
+			// TO DO!!!
 
 			return new HashSet<Dizajn>();
 		}
