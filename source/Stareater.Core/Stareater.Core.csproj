@@ -74,6 +74,11 @@
     <Compile Include="Controllers\Data\GameState.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
     <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="Galaxy\Builders\IStarConnector.cs" />
+    <Compile Include="Galaxy\Builders\IStarPopulator.cs" />
+    <Compile Include="Galaxy\Builders\IStarPositioner.cs" />
+    <Compile Include="Galaxy\Builders\StarPositions.cs" />
+    <Compile Include="Galaxy\Builders\StarSystem.cs" />
     <Compile Include="Galaxy\Colony.cs" />
     <Compile Include="Galaxy\PlanetsCollection.cs">
       <DependentUpon>PlanetsCollection.tt</DependentUpon>
@@ -100,14 +105,10 @@
     <Compile Include="Localization\Reading\ExpressionTextFactory.cs" />
     <Compile Include="Localization\Reading\TextBlockFactory.cs" />
     <Compile Include="Galaxy\AConstructionSite.cs" />
-    <Compile Include="Galaxy\IStarConnector.cs" />
-    <Compile Include="Galaxy\IStarPopulator.cs" />
-    <Compile Include="Galaxy\IStarPositioner.cs" />
     <Compile Include="Galaxy\Map.cs" />
     <Compile Include="Galaxy\MapAssets.cs" />
     <Compile Include="Galaxy\Planet.cs" />
     <Compile Include="Galaxy\StarData.cs" />
-    <Compile Include="Galaxy\StarPositions.cs" />
     <Compile Include="Galaxy\StartingConditions.cs" />
     <Compile Include="Localization\StarNames\ConstellationStarName.cs" />
     <Compile Include="Localization\StarNames\IStarName.cs" />
@@ -185,6 +186,7 @@
     <None Include="AppData\Expressions\Scanner.frame" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Galaxy\Builders" />
     <Folder Include="Libs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

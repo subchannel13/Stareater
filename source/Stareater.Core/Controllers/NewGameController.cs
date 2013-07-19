@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Stareater.Controllers.Data;
 using System.Collections.ObjectModel;
+using System.Drawing;
+
+using Stareater.AppData;
+using Stareater.Controllers.Data;
+using Stareater.Galaxy;
+using Stareater.Galaxy.Builders;
+using Stareater.Localization;
 using Stareater.Players;
 using Stareater.Utils.Collections;
-using System.Drawing;
-using Stareater.Localization;
-using Stareater.AppData;
-using Stareater.Galaxy;
 
 namespace Stareater.Controllers
 {

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Stareater.Utils.PluginParameters;
-using NGenerics.DataStructures.Mathematical;
+using System.Drawing;
 
-namespace Stareater.Galaxy
+namespace Stareater.Galaxy.Builders
 {
-	public interface IStarConnector
+	public interface IStarPositioner
 	{
 		string Name { get; }
 		string Description { get; }
 		ParameterList Parameters { get; }
-		IEnumerable<Tuple<int, int>> Generate(Random rng, StarPositions starPositions);
+		StarPositions Generate(Random rng, int playerCount);
 	}
 }

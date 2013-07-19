@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Stareater.AppData;
-using Stareater.Utils.PluginParameters;
-using Ikadn;
-using System.IO;
-using Ikadn.Ikon.Types;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+
+using Ikadn;
 using Ikadn.Ikon;
+using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
+using Stareater.AppData;
+using Stareater.Galaxy.Builders;
+using Stareater.Utils.PluginParameters;
 
 namespace Stareater.Galaxy.RybPopulator
 {
@@ -90,7 +91,7 @@ namespace Stareater.Galaxy.RybPopulator
 			get { return parameters; }
 		}
 
-		public IEnumerable<StarData> Generate(Random rng, StarPositions starPositions)
+		public IEnumerable<StarSystem> Generate(Random rng, StarPositions starPositions)
 		{
 			int colorI = 0;
 			StarNamer namer = new StarNamer(starPositions.Stars.Length);
@@ -98,10 +99,17 @@ namespace Stareater.Galaxy.RybPopulator
 			//UNDONE: Picks star types cyclicaly
 			//TODO: Randomize star type distribution
 			//TODO: Star size and radiation distribution
-			foreach (var position in starPositions.Stars)
-				yield return new StarData(starTypes[colorI++ % starTypes.Length].Hue, 1, namer.NextName(), position, 0);
-			
-			//TODO: Adding planets to stars
+			foreach (var position in starPositions.Stars) {
+				StarData star = new StarData(starTypes[colorI++ % starTypes.Length].Hue, 1, namer.NextName(), position, 0);
+				
+				yield return new StarSystem(
+					star,
+					new Planet[] {
+						new Planet(star, 0),
+						new Planet(star, 1),
+						new Planet(star, 2),
+					});
+			}
 		}
 	}
 }
