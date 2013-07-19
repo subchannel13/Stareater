@@ -47,8 +47,7 @@ namespace Stareater.GUI
 			populationLabel.Text = context["populationLabel"].Text();
 			infrastructureLabel.Text = context["infrastructureLabel"].Text();
 
-			acceptButton.Text = context["acceptButton"].Text();
-			cancelButton.Text = context["cancelButton"].Text();
+			acceptButton.Text = SettingsWinforms.Get.Language["General"]["DialogAccept"].Text();
 		}
 
 		private static long? decodeNumber(string text)
@@ -72,6 +71,13 @@ namespace Stareater.GUI
 			return (result < 0) ? null : new long?(result);
 		}
 
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			if (keyData == Keys.Escape) 
+				this.Close();
+			return base.ProcessCmdKey(ref msg, keyData);
+		}
+		
 		public bool IsValid
 		{
 			get
@@ -102,11 +108,6 @@ namespace Stareater.GUI
 		private void acceptButton_Click(object sender, EventArgs e)
 		{
 			this.DialogResult = DialogResult.OK;
-		}
-
-		private void cancelButton_Click(object sender, EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
 		}
 	}
 }

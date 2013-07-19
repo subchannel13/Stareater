@@ -94,7 +94,7 @@
 			this.Controls.Add(this.confirmButton);
 			this.Controls.Add(this.languageSelector);
 			this.Controls.Add(this.languageTitle);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "FormSettings";
@@ -104,7 +104,6 @@
 			this.Load += new System.EventHandler(this.FormSettings_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
-
 		}
 
 		#endregion

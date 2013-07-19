@@ -119,7 +119,7 @@
 			this.Controls.Add(this.exitButton);
 			this.Controls.Add(this.loadGameButton);
 			this.Controls.Add(this.newGameButton);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "FormMainMenu";
@@ -128,7 +128,6 @@
 			this.Text = "Zvjezdojedac";
 			this.ResumeLayout(false);
 			this.PerformLayout();
-
 		}
 
 		#endregion
