@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Stareater.Controllers;
-using Stareater.Localization;
+
 using Stareater.AppData;
+using Stareater.Controllers;
 using Stareater.Galaxy;
+using Stareater.Galaxy.Builders;
+using Stareater.Localization;
 using Stareater.Utils.PluginParameters;
 
 namespace Stareater.GUI

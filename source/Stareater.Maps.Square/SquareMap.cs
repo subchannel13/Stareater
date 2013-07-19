@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Stareater.AppData;
-using Stareater.Utils.PluginParameters;
 using System.IO;
+using System.Linq;
+
 using Ikadn;
-using Ikadn.Ikon.Types;
-using Stareater.Utils;
-using NGenerics.DataStructures.Mathematical;
-using Stareater.Utils.Collections;
 using Ikadn.Ikon;
+using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
+using NGenerics.DataStructures.Mathematical;
+using Stareater.AppData;
+using Stareater.Galaxy.Builders;
+using Stareater.Utils;
+using Stareater.Utils.Collections;
+using Stareater.Utils.PluginParameters;
 
 namespace Stareater.Galaxy.Square
 {

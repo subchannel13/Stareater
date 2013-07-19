@@ -58,9 +58,6 @@ namespace Stareater.GLRenderers
 			eventDispatcher.MouseMove += mousePan;
 			eventDispatcher.MouseWheel += mouseZoom;
 			eventDispatcher.MouseClick += mouseClick;
-
-			GalaxyTextures.Get.Load();
-			TextRenderUtil.Get.Prepare(controller.Stars.Select(x => x.Name.ToText(SettingsWinforms.Get.Language)));
 		}
 
 		public void DetachFromCanvas()
@@ -75,6 +72,17 @@ namespace Stareater.GLRenderers
 			this.eventDispatcher = null;
 		}
 
+		public void Load()
+		{
+			GalaxyTextures.Get.Load();
+			TextRenderUtil.Get.Prepare(controller.Stars.Select(x => x.Name.ToText(SettingsWinforms.Get.Language)));
+		}
+		
+		public void Unload()
+		{
+			GalaxyTextures.Get.Unload();
+		}
+		
 		public void Draw(double deltaTime)
 		{
 			if (resetViewport) {

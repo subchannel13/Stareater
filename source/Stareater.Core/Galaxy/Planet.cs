@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Stareater.Galaxy
 {
-	class Planet
+	public class Planet
 	{
 		private double size;
 		private double atmosphereDensity;
@@ -17,8 +17,9 @@ namespace Stareater.Galaxy
 		private double mineralsDeep;
 
 		public StarData Star { get; private set; }
+		public int Position { get; private set; }
 
-		public Planet(StarData star)
+		public Planet(StarData star, int position)
 		{
 			this.Star = star;
 		}

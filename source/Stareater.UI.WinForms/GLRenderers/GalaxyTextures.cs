@@ -64,6 +64,9 @@ namespace Stareater.GLRenderers
 		
 		public void Unload()
 		{
+			if (!loaded)
+				return;
+			
 			TextureUtils.Get.DeleteTexture(textureId);
 			this.textureId = 0;
 			
