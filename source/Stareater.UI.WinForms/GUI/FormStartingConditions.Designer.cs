@@ -33,7 +33,6 @@
 			this.infrastructureLabel = new System.Windows.Forms.Label();
 			this.populationInput = new System.Windows.Forms.TextBox();
 			this.populationLabel = new System.Windows.Forms.Label();
-			this.cancelButton = new System.Windows.Forms.Button();
 			this.acceptButton = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.coloniesSelector)).BeginInit();
 			this.SuspendLayout();
@@ -51,18 +50,18 @@
 			// 
 			this.coloniesSelector.Location = new System.Drawing.Point(90, 12);
 			this.coloniesSelector.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+									1,
+									0,
+									0,
+									0});
 			this.coloniesSelector.Name = "coloniesSelector";
 			this.coloniesSelector.Size = new System.Drawing.Size(60, 20);
 			this.coloniesSelector.TabIndex = 30;
 			this.coloniesSelector.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+									1,
+									0,
+									0,
+									0});
 			// 
 			// infrastructureInput
 			// 
@@ -98,17 +97,6 @@
 			this.populationLabel.TabIndex = 26;
 			this.populationLabel.Text = "Population:";
 			// 
-			// cancelButton
-			// 
-			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancelButton.Location = new System.Drawing.Point(15, 90);
-			this.cancelButton.Name = "cancelButton";
-			this.cancelButton.Size = new System.Drawing.Size(60, 21);
-			this.cancelButton.TabIndex = 32;
-			this.cancelButton.Text = "Cancel";
-			this.cancelButton.UseVisualStyleBackColor = true;
-			this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
-			// 
 			// acceptButton
 			// 
 			this.acceptButton.Location = new System.Drawing.Point(90, 90);
@@ -124,10 +112,8 @@
 			this.AcceptButton = this.acceptButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.CancelButton = this.cancelButton;
 			this.ClientSize = new System.Drawing.Size(167, 120);
 			this.Controls.Add(this.acceptButton);
-			this.Controls.Add(this.cancelButton);
 			this.Controls.Add(this.coloniesLabel);
 			this.Controls.Add(this.coloniesSelector);
 			this.Controls.Add(this.infrastructureInput);
@@ -143,7 +129,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.coloniesSelector)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
-
 		}
 
 		#endregion
@@ -154,7 +139,6 @@
 		private System.Windows.Forms.Label infrastructureLabel;
 		private System.Windows.Forms.TextBox populationInput;
 		private System.Windows.Forms.Label populationLabel;
-		private System.Windows.Forms.Button cancelButton;
 		private System.Windows.Forms.Button acceptButton;
 	}
 }

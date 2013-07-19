@@ -53,9 +53,16 @@ namespace Stareater.GUI
 
 			languageTitle.Text = context["LanguageLabel"].Text();
 			guiScaleTitle.Text = context["GuiScaleLabel"].Text();
-			confirmButton.Text = selectedLanguage["General"]["DialogOK"].Text();
+			confirmButton.Text = selectedLanguage["General"]["DialogAccept"].Text();
 		}
 
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			if (keyData == Keys.Escape) 
+				this.Close();
+			return base.ProcessCmdKey(ref msg, keyData);
+		}
+		
 		private void FormSettings_Load(object sender, EventArgs e)
 		{
 			initialized = true;

@@ -104,6 +104,7 @@
 			// 
 			// FormNewGame
 			// 
+			this.AcceptButton = this.startButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(372, 282);
@@ -114,7 +115,7 @@
 			this.Controls.Add(this.startingDescription);
 			this.Controls.Add(this.setupMapButton);
 			this.Controls.Add(this.mapDescription);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "FormNewGame";
@@ -124,7 +125,6 @@
 			this.Text = "Nova igra";
 			this.ResumeLayout(false);
 			this.PerformLayout();
-
 		}
 
 		#endregion
