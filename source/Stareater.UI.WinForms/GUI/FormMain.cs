@@ -22,7 +22,10 @@ namespace Stareater.GUI
 
 		private bool glReady = false;
 		private DateTime lastRender = DateTime.UtcNow;
-		private IRenderer glRenderer = null;
+		
+		private IRenderer currentRenderer;
+		private GalaxyRenderer galaxyRenderer;
+		private SystemRenderer systemRenderer;
 
 		private Queue<Action> delayedGuiEvents = new Queue<Action>();
 		private GameController controller = new GameController();
@@ -94,9 +97,12 @@ namespace Stareater.GUI
 				form.Initialize();
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
 					form.CreateGame(controller);
-					glRenderer = new GalaxyRenderer(controller);
-					glRenderer.Load();
-					glRenderer.AttachToCanvas(glCanvas);
+					galaxyRenderer = new GalaxyRenderer(controller, systemOpened);
+					galaxyRenderer.Load();
+					galaxyRenderer.AttachToCanvas(glCanvas);
+					currentRenderer = galaxyRenderer;
+					
+					systemRenderer = new SystemRenderer(controller, systemClosed);
 					redraw();
 				}
 				else
@@ -119,6 +125,22 @@ namespace Stareater.GUI
 				return;
 		}
 
+		private void systemOpened()
+		{
+			galaxyRenderer.DetachFromCanvas();
+			
+			systemRenderer.AttachToCanvas(glCanvas);
+			currentRenderer = systemRenderer;
+		}
+		
+		private void systemClosed()
+		{
+			systemRenderer.DetachFromCanvas();
+			
+			galaxyRenderer.AttachToCanvas(glCanvas);
+			currentRenderer = galaxyRenderer;
+		}
+		
 		#region Canvas events
 
 		private void glCanvas_Load(object sender, EventArgs e)
@@ -145,8 +167,8 @@ namespace Stareater.GUI
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
 
-			if (glReady && glRenderer != null)
-				glRenderer.Draw(dt);
+			if (glReady && currentRenderer != null)
+				currentRenderer.Draw(dt);
 
 			lastRender = thisMoment;
 			glCanvas.SwapBuffers();

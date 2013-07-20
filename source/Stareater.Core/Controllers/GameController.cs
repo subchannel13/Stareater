@@ -86,6 +86,7 @@ namespace Stareater.Controllers
 				if ((star.Position - point).Magnitude() < (closestStar.Position - point).Magnitude())
 					closestStar = star;
 			
+			//TODO: use distance tolerance
 			SelectedStar = closestStar;
 		}
 	}

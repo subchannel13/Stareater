@@ -34,6 +34,8 @@ namespace Stareater.GLRenderers
 
 		private GameController controller;
 		private Control eventDispatcher;
+		private Action systemOpenedHandler;
+		
 		private bool resetViewport = true;
 		private bool resetProjection = true;
 		private Matrix4 invProjection;
@@ -45,9 +47,10 @@ namespace Stareater.GLRenderers
 
 		private int staticList = -1;
 
-		public GalaxyRenderer(GameController controller)
+		public GalaxyRenderer(GameController controller, Action systemOpenedHandler)
 		{
 			this.controller = controller;
+			this.systemOpenedHandler = systemOpenedHandler;
 		}
 
 		public void AttachToCanvas(Control eventDispatcher)
@@ -62,8 +65,6 @@ namespace Stareater.GLRenderers
 
 		public void DetachFromCanvas()
 		{
-			GalaxyTextures.Get.Unload();
-
 			eventDispatcher.Resize -= canvasResize;
 			eventDispatcher.MouseMove -= mousePan;
 			eventDispatcher.MouseWheel -= mouseZoom;
@@ -165,7 +166,7 @@ namespace Stareater.GLRenderers
 				GL.PopMatrix();
 			}
 		}
-
+		
 		private void canvasResize(object sender, EventArgs e)
 		{
 			resetViewport = true;
@@ -230,12 +231,17 @@ namespace Stareater.GLRenderers
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
 			controller.SelectClosest(mousePoint.X, mousePoint.Y);
+			
+			//TODO: decide between single and double click
+			this.systemOpenedHandler();
 		}
 
 		public void Dispose()
 		{
-			if (eventDispatcher != null)
+			if (eventDispatcher != null) {
 				DetachFromCanvas();
+				Unload();
+			}
 		}
 	}
 }
