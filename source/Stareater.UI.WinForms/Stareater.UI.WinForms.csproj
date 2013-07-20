@@ -75,6 +75,7 @@
     <Compile Include="GLRenderers\GalaxyTextures.cs" />
     <Compile Include="GLRenderers\IRenderer.cs" />
     <Compile Include="GLRenderers\GalaxyRenderer.cs" />
+    <Compile Include="GLRenderers\SystemRenderer.cs" />
     <Compile Include="GLRenderers\TextRenderUtil.cs" />
     <Compile Include="GLRenderers\TextureInfo.cs" />
     <Compile Include="GLRenderers\TextureUtils.cs" />
