@@ -16,7 +16,13 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			return (sequence.Length == 1) ? sequence[0] : this;
+			if (sequence.Length == 1)
+				return sequence[0];
+			
+			if (isConstant)
+				return new Constant(Evaluate(null));
+			
+			return this;
 		}
 
 		public bool isConstant

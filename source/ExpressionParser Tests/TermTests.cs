@@ -80,10 +80,7 @@ namespace ExpressionParser_Tests
 			string varName = "lvl";
 			double varValue = 3.14;
 
-			var test = new ParserTester(varName, new Dictionary<string, double>()
-			{
-				{varName, varValue}
-			}, varValue);
+			var test = new ParserTester(varName, new Var(varName, varValue), varValue);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 	}

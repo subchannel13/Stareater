@@ -28,5 +28,11 @@ namespace Stareater.AppData.Expressions
 		{
 			return value;
 		}
+		
+		public override string ToString()
+		{
+			return "Const: " + value;
+		}
+
 	}
 }

@@ -62,11 +62,17 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComparisonTests.cs" />
+    <Compile Include="ExponentiationTest.cs" />
+    <Compile Include="FunctionTests.cs" />
+    <Compile Include="ListTests.cs" />
+    <Compile Include="LogicalTests.cs" />
     <Compile Include="MultiplicationTests.cs" />
     <Compile Include="ParserTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SummationTest.cs" />
     <Compile Include="TermTests.cs" />
+    <Compile Include="UnaryTests.cs" />
     <Compile Include="Var.cs" />
   </ItemGroup>
   <ItemGroup>
