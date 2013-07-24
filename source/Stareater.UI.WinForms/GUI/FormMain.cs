@@ -21,6 +21,7 @@ namespace Stareater.GUI
 		private const float MinDeltaTime = 0.005f;
 
 		private bool glReady = false;
+		private bool resetViewport = true;
 		private DateTime lastRender = DateTime.UtcNow;
 		
 		private IRenderer currentRenderer;
@@ -155,6 +156,14 @@ namespace Stareater.GUI
 		{
 			if (!glReady) return;
 
+			if (resetViewport) {
+				GL.Viewport(glCanvas.Location, glCanvas.Size);
+				resetViewport = false;
+				
+				if (glReady && currentRenderer != null)
+					currentRenderer.ResetProjection();
+			}
+			
 			var thisMoment = DateTime.UtcNow;
 			double dt = (thisMoment - lastRender).TotalSeconds;
 			
@@ -176,12 +185,17 @@ namespace Stareater.GUI
 			//this.Text = (1 / dt).ToString("0.#");
 		}
 
+		private void glCanvas_Resize(object sender, EventArgs e)
+		{
+			resetViewport = true;
+			glCanvas.Refresh();
+		}
+		
 		#endregion
 
 		private void glRedrawTimer_Tick(object sender, EventArgs e)
 		{
 			glCanvas.Refresh();
 		}
-		
 	}
 }

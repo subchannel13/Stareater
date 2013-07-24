@@ -36,7 +36,6 @@ namespace Stareater.GLRenderers
 		private Control eventDispatcher;
 		private Action systemOpenedHandler;
 		
-		private bool resetViewport = true;
 		private bool resetProjection = true;
 		private Matrix4 invProjection;
 
@@ -57,7 +56,6 @@ namespace Stareater.GLRenderers
 		{
 			this.eventDispatcher = eventDispatcher;
 
-			eventDispatcher.Resize += canvasResize;
 			eventDispatcher.MouseMove += mousePan;
 			eventDispatcher.MouseWheel += mouseZoom;
 			eventDispatcher.MouseClick += mouseClick;
@@ -65,7 +63,6 @@ namespace Stareater.GLRenderers
 
 		public void DetachFromCanvas()
 		{
-			eventDispatcher.Resize -= canvasResize;
 			eventDispatcher.MouseMove -= mousePan;
 			eventDispatcher.MouseWheel -= mouseZoom;
 			eventDispatcher.MouseClick -= mouseClick;
@@ -73,6 +70,11 @@ namespace Stareater.GLRenderers
 			this.eventDispatcher = null;
 		}
 
+		public void ResetProjection()
+		{
+			resetProjection = true;
+		}
+		
 		public void Load()
 		{
 			GalaxyTextures.Get.Load();
@@ -86,11 +88,7 @@ namespace Stareater.GLRenderers
 		
 		public void Draw(double deltaTime)
 		{
-			if (resetViewport) {
-				GL.Viewport(eventDispatcher.Location, eventDispatcher.Size);
-				resetProjection = true;
-				resetViewport = false;
-			}
+			
 			if (resetProjection) {
 				double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
 				double semiRadius = 0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel);
@@ -167,12 +165,6 @@ namespace Stareater.GLRenderers
 			}
 		}
 		
-		private void canvasResize(object sender, EventArgs e)
-		{
-			resetViewport = true;
-			eventDispatcher.Refresh();
-		}
-
 		private Vector4 mouseToView(int x, int y)
 		{
 			return new Vector4(
