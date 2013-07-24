@@ -45,6 +45,11 @@ namespace Stareater.GLRenderers
 			this.eventDispatcher = null;
 		}
 		
+		public void ResetProjection()
+		{
+			throw new NotImplementedException();
+		}
+		
 		private void mouseClick(object sender, MouseEventArgs e)
 		{
 			this.systemClosedHandler();
