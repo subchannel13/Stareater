@@ -33,6 +33,7 @@ namespace Stareater.GLRenderers
 		const string SelectedStarTag = "selectedStar";
 		const string StarColorTag = "starColor";
 		const string StarGlowTag = "starGlow";
+		const string SystemStarTag = "zoomedStar";
 		
 		private bool loaded = false;
 		private int textureId;
@@ -40,6 +41,7 @@ namespace Stareater.GLRenderers
 		public TextureInfo StarColor { get; private set;}
 		public TextureInfo StarGlow { get; private set;}
 		public TextureInfo SelectedStar { get; private set;}
+		public TextureInfo SystemStar { get; private set;}
 		
 		public void Load()
 		{
@@ -55,6 +57,7 @@ namespace Stareater.GLRenderers
 			SelectedStar = new TextureInfo(textureId, ikonData[SelectedStarTag].To<IkonArray>());
 			StarColor = new TextureInfo(textureId, ikonData[StarColorTag].To<IkonArray>());
 			StarGlow = new TextureInfo(textureId, ikonData[StarGlowTag].To<IkonArray>());
+			SystemStar = new TextureInfo(textureId, ikonData[SystemStarTag].To<IkonArray>());
 			
 			ikonParser.Dispose();
 			textureImage.Dispose();

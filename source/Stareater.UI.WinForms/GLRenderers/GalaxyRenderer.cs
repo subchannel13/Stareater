@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
-using OpenTK.Graphics.OpenGL;
-using OpenTK;
-using Stareater.Controllers;
+using System.Linq;
 using System.Windows.Forms;
+
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
+using Stareater.Controllers;
 using Stareater.Utils;
 
 namespace Stareater.GLRenderers
@@ -30,11 +29,12 @@ namespace Stareater.GLRenderers
 		private const float StarNameZRange = 0.1f;
 
 		private const float PanClickTolerance = 0.01f;
+		private const float ClickRadius = 0.05f;
 		private const float StarNameScale = 0.35f;
 
 		private GameController controller;
 		private Control eventDispatcher;
-		private Action systemOpenedHandler;
+		private Action<StarSystemController> systemOpenedHandler;
 		
 		private bool resetProjection = true;
 		private Matrix4 invProjection;
@@ -43,10 +43,11 @@ namespace Stareater.GLRenderers
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
 		private Vector2 originOffset = Vector2.Zero;
+		private float longestSideSize;
 
 		private int staticList = -1;
 
-		public GalaxyRenderer(GameController controller, Action systemOpenedHandler)
+		public GalaxyRenderer(GameController controller, Action<StarSystemController> systemOpenedHandler)
 		{
 			this.controller = controller;
 			this.systemOpenedHandler = systemOpenedHandler;
@@ -59,6 +60,9 @@ namespace Stareater.GLRenderers
 			eventDispatcher.MouseMove += mousePan;
 			eventDispatcher.MouseWheel += mouseZoom;
 			eventDispatcher.MouseClick += mouseClick;
+			eventDispatcher.MouseDoubleClick += mouseDoubleClick;
+			
+			resetProjection = true;
 		}
 
 		public void DetachFromCanvas()
@@ -66,6 +70,7 @@ namespace Stareater.GLRenderers
 			eventDispatcher.MouseMove -= mousePan;
 			eventDispatcher.MouseWheel -= mouseZoom;
 			eventDispatcher.MouseClick -= mouseClick;
+			eventDispatcher.MouseDoubleClick -= mouseDoubleClick;
 
 			this.eventDispatcher = null;
 		}
@@ -84,15 +89,21 @@ namespace Stareater.GLRenderers
 		public void Unload()
 		{
 			GalaxyTextures.Get.Unload();
+			
+			if (staticList >= 0){
+				GL.DeleteLists(staticList, 1);
+				staticList = -1;
+			}
 		}
 		
 		public void Draw(double deltaTime)
 		{
-			
 			if (resetProjection) {
 				double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
 				double semiRadius = 0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel);
 
+				longestSideSize = (float)(semiRadius * Math.Max(aspect, 1));
+				
 				GL.MatrixMode(MatrixMode.Projection);
 				GL.LoadIdentity();
 				GL.Ortho(
@@ -222,10 +233,19 @@ namespace Stareater.GLRenderers
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
-			controller.SelectClosest(mousePoint.X, mousePoint.Y);
+			controller.SelectClosest(mousePoint.X, mousePoint.Y, longestSideSize * ClickRadius);
+		}
+		
+		private void mouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			if (panAbsPath > PanClickTolerance)
+				return;
 			
-			//TODO: decide between single and double click
-			this.systemOpenedHandler();
+			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
+			StarSystemController system = controller.OpenStarSystem(mousePoint.X, mousePoint.Y, longestSideSize * ClickRadius);
+			
+			if (system != null)
+				this.systemOpenedHandler(system);
 		}
 
 		public void Dispose()
