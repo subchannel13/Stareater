@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Stareater.Localization;
+
+using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.Controllers;
-using OpenTK;
-using OpenTK.Graphics.OpenGL;
 using Stareater.GLRenderers;
+using Stareater.Localization;
 
 namespace Stareater.GUI
 {
@@ -103,7 +99,7 @@ namespace Stareater.GUI
 					galaxyRenderer.AttachToCanvas(glCanvas);
 					currentRenderer = galaxyRenderer;
 					
-					systemRenderer = new SystemRenderer(controller, systemClosed);
+					systemRenderer = new SystemRenderer(systemClosed);
 					redraw();
 				}
 				else
@@ -126,11 +122,12 @@ namespace Stareater.GUI
 				return;
 		}
 
-		private void systemOpened()
+		private void systemOpened(StarSystemController systemController)
 		{
 			galaxyRenderer.DetachFromCanvas();
 			
 			systemRenderer.AttachToCanvas(glCanvas);
+			systemRenderer.SetStarSystem(systemController);
 			currentRenderer = systemRenderer;
 		}
 		

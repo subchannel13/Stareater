@@ -78,7 +78,7 @@ namespace Stareater.Controllers
 			}
 		}
 		
-		public void SelectClosest(float x, float y)
+		private StarData closestStar(float x, float y, float searchRadius)
 		{
 			Vector2D point = new Vector2D(x, y);
 			StarData closestStar = game.GalaxyMap.Stars.First();
@@ -86,8 +86,33 @@ namespace Stareater.Controllers
 				if ((star.Position - point).Magnitude() < (closestStar.Position - point).Magnitude())
 					closestStar = star;
 			
-			//TODO: use distance tolerance
-			SelectedStar = closestStar;
+			if ((closestStar.Position - point).Magnitude() <= searchRadius)
+				return closestStar;
+			else
+				return null;
+		}
+		
+		public void SelectClosest(float x, float y, float searchRadius)
+		{
+			StarData closest = closestStar(x, y, searchRadius);
+			
+			if (closest != null)
+				SelectedStar = closest;
+		}
+		
+		public StarSystemController OpenStarSystem(float x, float y, float searchRadius)
+		{
+			StarData closest = closestStar(x, y, searchRadius);
+			
+			if (closest != null)
+				return new StarSystemController(game, closest);
+			else
+				return null;
+		}
+		
+		public StarSystemController OpenStarSystem(StarData star)
+		{
+			return new StarSystemController(game, star);
 		}
 	}
 }

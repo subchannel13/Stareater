@@ -74,6 +74,7 @@
     <Compile Include="Controllers\Data\GameState.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
     <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="Controllers\StarSystemController.cs" />
     <Compile Include="Galaxy\Builders\IStarConnector.cs" />
     <Compile Include="Galaxy\Builders\IStarPopulator.cs" />
     <Compile Include="Galaxy\Builders\IStarPositioner.cs" />
