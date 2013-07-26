@@ -22,6 +22,7 @@ namespace Stareater.Galaxy
 		public Planet(StarData star, int position)
 		{
 			this.Star = star;
+			this.Position = position;
 		}
 	}
 }
