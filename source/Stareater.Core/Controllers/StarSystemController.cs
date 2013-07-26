@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Stareater.Galaxy;
 
 namespace Stareater.Controllers
@@ -13,6 +14,13 @@ namespace Stareater.Controllers
 		{
 			this.game = game;
 			this.Star = star;
+		}
+		
+		public IEnumerable<Planet> Planets
+		{
+			get {
+				return game.GalaxyMap.Planets.StarSystem(Star);
+			}
 		}
 	}
 }

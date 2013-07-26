@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.Controllers;
+using Stareater.Galaxy;
 
 namespace Stareater.GLRenderers
 {
@@ -10,11 +12,17 @@ namespace Stareater.GLRenderers
 	{
 		private const double DefaultViewSize = 1;
 		private const float BodiesY = 0.2f;
+		private const float OrbitStep = 0.3f;
+		private const float OrbitOffset = 0.5f;
+		private const float OrbitWidth = 0.005f;
 		
 		private const float FarZ = -1;
-		private const float StarColorZ = -0.9f;
+		private const float StarColorZ = -0.8f;
+		private const float PlanetZ = -0.8f;
+		private const float OrbitZ = -0.9f;
 		
 		private const float StarScale = 0.5f;
+		private const float PlanetScale = 0.15f;
 		
 		private StarSystemController controller;
 		private Control eventDispatcher;
@@ -56,6 +64,38 @@ namespace Stareater.GLRenderers
 			TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SystemStar);
 		
 			GL.PopMatrix();
+			
+			foreach(Planet planet in controller.Planets)
+			{ 
+				float orbitR = planet.Position * OrbitStep + OrbitOffset;
+				float orbitMin = orbitR - OrbitWidth;
+				float orbitMax = orbitR + OrbitWidth;
+				
+				GL.Disable(EnableCap.Texture2D);
+				GL.Color4(Color.Gray);
+				GL.Begin(BeginMode.Quads);
+				for(int i = 0; i < 100; i++)
+				{
+					float angle0 = (float)Math.PI * i / 50f;
+					float angle1 = (float)Math.PI * (i +1) / 50f;
+					
+					GL.Vertex3(orbitMin * (float)Math.Cos(angle0), orbitMin * (float)Math.Sin(angle0) + BodiesY, OrbitZ);
+					GL.Vertex3(orbitMax * (float)Math.Cos(angle0), orbitMax * (float)Math.Sin(angle0) + BodiesY, OrbitZ);
+					GL.Vertex3(orbitMax * (float)Math.Cos(angle1), orbitMax * (float)Math.Sin(angle1) + BodiesY, OrbitZ);
+					GL.Vertex3(orbitMin * (float)Math.Cos(angle1), orbitMin * (float)Math.Sin(angle1) + BodiesY, OrbitZ);
+				}
+				GL.End();
+				
+				GL.Color4(Color.Blue);
+				GL.Enable(EnableCap.Texture2D);
+				GL.PushMatrix();
+				GL.Translate(orbitR, BodiesY, StarColorZ);
+				GL.Scale(PlanetScale, PlanetScale, PlanetScale);
+	
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.Planet);
+			
+				GL.PopMatrix();
+			}
 		}
 		
 		public void Load()
