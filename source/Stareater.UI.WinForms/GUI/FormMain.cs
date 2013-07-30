@@ -58,6 +58,16 @@ namespace Stareater.GUI
 					delayedGuiEvents.Dequeue().Invoke();
 			}
 		}
+		
+		private void glRedrawTimer_Tick(object sender, EventArgs e)
+		{
+			glCanvas.Refresh();
+		}
+		
+		private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			postDelayedEvent(showMainMenu);
+		}
 
 		#region Delayed Events
 		private void postDelayedEvent(Action eventAction)
@@ -121,27 +131,6 @@ namespace Stareater.GUI
 			if (controller.State != Controllers.Data.GameState.Running)
 				return;
 		}
-
-		private void systemOpened(StarSystemController systemController)
-		{
-			galaxyRenderer.DetachFromCanvas();
-			
-			systemRenderer.AttachToCanvas(glCanvas);
-			systemRenderer.SetStarSystem(systemController);
-			currentRenderer = systemRenderer;
-			
-			constructionManagement.Visible = true;
-		}
-		
-		private void systemClosed()
-		{
-			systemRenderer.DetachFromCanvas();
-			
-			galaxyRenderer.AttachToCanvas(glCanvas);
-			currentRenderer = galaxyRenderer;
-			
-			constructionManagement.Visible = false;
-		}
 		
 		#region Canvas events
 
@@ -194,9 +183,29 @@ namespace Stareater.GUI
 		
 		#endregion
 
-		private void glRedrawTimer_Tick(object sender, EventArgs e)
+		#region Renderer events
+		
+		private void systemOpened(StarSystemController systemController)
 		{
-			glCanvas.Refresh();
+			galaxyRenderer.DetachFromCanvas();
+			
+			systemRenderer.AttachToCanvas(glCanvas);
+			systemRenderer.SetStarSystem(systemController);
+			currentRenderer = systemRenderer;
+			
+			constructionManagement.Visible = true;
 		}
+		
+		private void systemClosed()
+		{
+			systemRenderer.DetachFromCanvas();
+			
+			galaxyRenderer.AttachToCanvas(glCanvas);
+			currentRenderer = galaxyRenderer;
+			
+			constructionManagement.Visible = false;
+		}
+		
+		#endregion
 	}
 }
