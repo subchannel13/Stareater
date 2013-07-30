@@ -129,6 +129,8 @@ namespace Stareater.GUI
 			systemRenderer.AttachToCanvas(glCanvas);
 			systemRenderer.SetStarSystem(systemController);
 			currentRenderer = systemRenderer;
+			
+			constructionManagement.Visible = true;
 		}
 		
 		private void systemClosed()
@@ -137,6 +139,8 @@ namespace Stareater.GUI
 			
 			galaxyRenderer.AttachToCanvas(glCanvas);
 			currentRenderer = galaxyRenderer;
+			
+			constructionManagement.Visible = false;
 		}
 		
 		#region Canvas events
