@@ -33,6 +33,9 @@
 			this.glCanvas = new OpenTK.GLControl();
 			this.glRedrawTimer = new System.Windows.Forms.Timer(this.components);
 			this.constructionManagement = new Stareater.GUI.ConstructionSiteView();
+			this.menuStrip = new System.Windows.Forms.MenuStrip();
+			this.mainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.menuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// eventTimer
@@ -44,9 +47,9 @@
 			// 
 			this.glCanvas.BackColor = System.Drawing.Color.Black;
 			this.glCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.glCanvas.Location = new System.Drawing.Point(0, 0);
+			this.glCanvas.Location = new System.Drawing.Point(0, 24);
 			this.glCanvas.Name = "glCanvas";
-			this.glCanvas.Size = new System.Drawing.Size(514, 262);
+			this.glCanvas.Size = new System.Drawing.Size(514, 238);
 			this.glCanvas.TabIndex = 0;
 			this.glCanvas.VSync = false;
 			this.glCanvas.Load += new System.EventHandler(this.glCanvas_Load);
@@ -69,6 +72,23 @@
 			this.constructionManagement.TabIndex = 1;
 			this.constructionManagement.Visible = false;
 			// 
+			// menuStrip
+			// 
+			this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+									this.mainMenuToolStripMenuItem});
+			this.menuStrip.Location = new System.Drawing.Point(0, 0);
+			this.menuStrip.Name = "menuStrip";
+			this.menuStrip.Size = new System.Drawing.Size(514, 24);
+			this.menuStrip.TabIndex = 2;
+			this.menuStrip.Text = "menuStrip1";
+			// 
+			// mainMenuToolStripMenuItem
+			// 
+			this.mainMenuToolStripMenuItem.Name = "mainMenuToolStripMenuItem";
+			this.mainMenuToolStripMenuItem.Size = new System.Drawing.Size(80, 20);
+			this.mainMenuToolStripMenuItem.Text = "Main menu";
+			this.mainMenuToolStripMenuItem.Click += new System.EventHandler(this.mainMenuToolStripMenuItem_Click);
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -76,13 +96,20 @@
 			this.ClientSize = new System.Drawing.Size(514, 262);
 			this.Controls.Add(this.constructionManagement);
 			this.Controls.Add(this.glCanvas);
+			this.Controls.Add(this.menuStrip);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MainMenuStrip = this.menuStrip;
 			this.Name = "FormMain";
 			this.Text = "Stareater";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
+			this.menuStrip.ResumeLayout(false);
+			this.menuStrip.PerformLayout();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 		}
+		private System.Windows.Forms.ToolStripMenuItem mainMenuToolStripMenuItem;
+		private System.Windows.Forms.MenuStrip menuStrip;
 		private Stareater.GUI.ConstructionSiteView constructionManagement;
 
 		#endregion
