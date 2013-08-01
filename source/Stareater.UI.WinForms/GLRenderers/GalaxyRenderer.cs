@@ -29,7 +29,8 @@ namespace Stareater.GLRenderers
 		private const float StarNameZRange = 0.1f;
 
 		private const float PanClickTolerance = 0.01f;
-		private const float ClickRadius = 0.05f;
+		private const float ClickRadius = 0.02f;
+		private const float StarMinClickRadius = 0.6f;
 		private const float StarNameScale = 0.35f;
 
 		private GameController controller;
@@ -43,7 +44,7 @@ namespace Stareater.GLRenderers
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
 		private Vector2 originOffset = Vector2.Zero;
-		private float longestSideSize;
+		private float screenLength;
 
 		private int staticList = -1;
 
@@ -102,7 +103,12 @@ namespace Stareater.GLRenderers
 				double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
 				double semiRadius = 0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel);
 
-				longestSideSize = (float)(semiRadius * Math.Max(aspect, 1));
+				var screen = Screen.FromControl(eventDispatcher);
+				if (screen.Bounds.Width > screen.Bounds.Height)
+					screenLength = (float)(2 * screen.Bounds.Width * semiRadius * aspect / eventDispatcher.Width);
+				else
+					//TODO test this, perhaps by flipping monitor.
+					screenLength = (float)(2 * screen.Bounds.Height * semiRadius * aspect / eventDispatcher.Height);
 				
 				GL.MatrixMode(MatrixMode.Projection);
 				GL.LoadIdentity();
@@ -233,7 +239,9 @@ namespace Stareater.GLRenderers
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
-			controller.SelectClosest(mousePoint.X, mousePoint.Y, longestSideSize * ClickRadius);
+			controller.SelectClosest(
+				mousePoint.X, mousePoint.Y, 
+				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
 		}
 		
 		private void mouseDoubleClick(object sender, MouseEventArgs e)
@@ -242,7 +250,9 @@ namespace Stareater.GLRenderers
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
-			StarSystemController system = controller.OpenStarSystem(mousePoint.X, mousePoint.Y, longestSideSize * ClickRadius);
+			StarSystemController system = controller.OpenStarSystem(
+				mousePoint.X, mousePoint.Y, 
+				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
 			
 			if (system != null)
 				this.systemOpenedHandler(system);

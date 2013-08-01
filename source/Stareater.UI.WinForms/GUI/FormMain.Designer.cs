@@ -49,7 +49,7 @@
 			this.glCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.glCanvas.Location = new System.Drawing.Point(0, 24);
 			this.glCanvas.Name = "glCanvas";
-			this.glCanvas.Size = new System.Drawing.Size(514, 238);
+			this.glCanvas.Size = new System.Drawing.Size(884, 538);
 			this.glCanvas.TabIndex = 0;
 			this.glCanvas.VSync = false;
 			this.glCanvas.Load += new System.EventHandler(this.glCanvas_Load);
@@ -66,7 +66,7 @@
 			// 
 			this.constructionManagement.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.constructionManagement.BackColor = System.Drawing.SystemColors.ActiveBorder;
-			this.constructionManagement.Location = new System.Drawing.Point(78, 146);
+			this.constructionManagement.Location = new System.Drawing.Point(263, 446);
 			this.constructionManagement.Name = "constructionManagement";
 			this.constructionManagement.Size = new System.Drawing.Size(358, 116);
 			this.constructionManagement.TabIndex = 1;
@@ -78,7 +78,7 @@
 									this.mainMenuToolStripMenuItem});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
-			this.menuStrip.Size = new System.Drawing.Size(514, 24);
+			this.menuStrip.Size = new System.Drawing.Size(884, 24);
 			this.menuStrip.TabIndex = 2;
 			this.menuStrip.Text = "menuStrip1";
 			// 
@@ -93,7 +93,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(514, 262);
+			this.ClientSize = new System.Drawing.Size(884, 562);
 			this.Controls.Add(this.constructionManagement);
 			this.Controls.Add(this.glCanvas);
 			this.Controls.Add(this.menuStrip);

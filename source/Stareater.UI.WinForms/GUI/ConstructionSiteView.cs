@@ -9,13 +9,10 @@ namespace Stareater.GUI
 	{
 		public ConstructionSiteView()
 		{
-			//
-			// The InitializeComponent() call is required for Windows Forms designer support.
-			//
 			InitializeComponent();
 			
 			//
-			// TODO: Add constructor code after the InitializeComponent() call.
+			// TODO: Add another constructor with appropriate controller as parameter.
 			//
 		}
 	}
