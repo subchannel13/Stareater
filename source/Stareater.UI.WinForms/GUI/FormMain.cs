@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -147,7 +148,7 @@ namespace Stareater.GUI
 			if (!glReady) return;
 
 			if (resetViewport) {
-				GL.Viewport(glCanvas.Location, glCanvas.Size);
+				GL.Viewport(glCanvas.ClientRectangle);
 				resetViewport = false;
 				
 				if (glReady && currentRenderer != null)
