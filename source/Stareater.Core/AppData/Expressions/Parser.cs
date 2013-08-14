@@ -246,24 +246,44 @@ public Formula ParsedFormula { get; private set; }
 	void ExpExpr(out IExpressionNode node) {
 		IExpressionNode child; 
 		List<IExpressionNode> children = new List<IExpressionNode>(); 
-		UnaryExpr(out child);
+		List(out child);
 		children.Add(child); 
 		while (la.kind == 28) {
 			Get();
-			UnaryExpr(out child);
+			List(out child);
 			children.Add(child); 
 		}
 		node = new ExponentSequence(children).Simplified(); 
 	}
 
+	void List(out IExpressionNode node) {
+		IExpressionNode child, index; 
+		List<IExpressionNode> children = new List<IExpressionNode>();
+		int listStart = 0; 
+		UnaryExpr(out index);
+		if (la.kind == 29) {
+			Get();
+			listStart = t.charPos; 
+			ComparisonExpr(out child);
+			children.Add(child); 
+			while (la.kind == 30) {
+				Get();
+				ComparisonExpr(out child);
+				children.Add(child); 
+			}
+			Expect(31);
+		}
+		node = makeList(index, children, listStart); 
+	}
+
 	void UnaryExpr(out IExpressionNode node) {
 		IExpressionNode child; 
 		UnaryOperator operatorNode = null; 
-		if (la.kind == 23 || la.kind == 29 || la.kind == 30) {
+		if (la.kind == 23 || la.kind == 32 || la.kind == 33) {
 			if (la.kind == 23) {
 				Get();
 				operatorNode = new Negation(); 
-			} else if (la.kind == 29) {
+			} else if (la.kind == 32) {
 				Get();
 				operatorNode = new ToBoolean(); 
 			} else {
@@ -271,29 +291,9 @@ public Formula ParsedFormula { get; private set; }
 				operatorNode = new NegateToBoolean(); 
 			}
 		}
-		List(out child);
+		Term(out child);
 		if (operatorNode != null) operatorNode.child = child; 
 		node = (operatorNode != null) ? operatorNode : child; 
-	}
-
-	void List(out IExpressionNode node) {
-		IExpressionNode child, index; 
-		List<IExpressionNode> children = new List<IExpressionNode>();
-		int listStart = 0; 
-		Term(out index);
-		if (la.kind == 31) {
-			Get();
-			listStart = t.charPos; 
-			ComparisonExpr(out child);
-			children.Add(child); 
-			while (la.kind == 32) {
-				Get();
-				ComparisonExpr(out child);
-				children.Add(child); 
-			}
-			Expect(33);
-		}
-		node = makeList(index, children, listStart); 
 	}
 
 	void Term(out IExpressionNode node) {
@@ -319,7 +319,7 @@ public Formula ParsedFormula { get; private set; }
 				Get();
 				ComparisonExpr(out child);
 				children.Add(child); 
-				while (la.kind == 32) {
+				while (la.kind == 30) {
 					Get();
 					ComparisonExpr(out child);
 					children.Add(child); 
@@ -388,11 +388,11 @@ public class Errors {
 			case 26: s = "\"\\\\\" expected"; break;
 			case 27: s = "\"%\" expected"; break;
 			case 28: s = "\"^\" expected"; break;
-			case 29: s = "\"\'\" expected"; break;
-			case 30: s = "\"-\'\" expected"; break;
-			case 31: s = "\"[\" expected"; break;
-			case 32: s = "\",\" expected"; break;
-			case 33: s = "\"]\" expected"; break;
+			case 29: s = "\"[\" expected"; break;
+			case 30: s = "\",\" expected"; break;
+			case 31: s = "\"]\" expected"; break;
+			case 32: s = "\"\'\" expected"; break;
+			case 33: s = "\"-\'\" expected"; break;
 			case 34: s = "\"(\" expected"; break;
 			case 35: s = "\")\" expected"; break;
 			case 36: s = "??? expected"; break;

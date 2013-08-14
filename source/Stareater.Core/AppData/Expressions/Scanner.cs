@@ -73,10 +73,10 @@ public class Scanner {
 		start[92] = 27; 
 		start[37] = 28; 
 		start[94] = 29; 
-		start[39] = 30; 
-		start[91] = 32; 
-		start[44] = 33; 
-		start[93] = 34; 
+		start[91] = 30; 
+		start[44] = 31; 
+		start[93] = 32; 
+		start[39] = 33; 
 		start[40] = 35; 
 		start[41] = 36; 
 		start[Buffer.EOF] = -1;
@@ -263,7 +263,7 @@ public class Scanner {
 				else {t.kind = 10; break;}
 			case 39:
 				recEnd = pos; recKind = 23;
-				if (ch == 39) {AddCh(); goto case 31;}
+				if (ch == 39) {AddCh(); goto case 34;}
 				else {t.kind = 23; break;}
 
 		}
