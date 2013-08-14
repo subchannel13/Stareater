@@ -49,7 +49,7 @@ namespace Stareater.AppData.Expressions
 		{
 			if (t < 0)
 				return 0;
-			else if (t > segmentPoints.Count - 1)
+			else if (t >= segmentPoints.Count - 1)
 				return segmentPoints.Count - 2;
 
 			return (int)Math.Floor(t);

@@ -69,24 +69,15 @@ PRODUCTIONS
 
 	ExpExpr <out IExpressionNode node>			(.	IExpressionNode child; 
 													List<IExpressionNode> children = new List<IExpressionNode>(); .)
-				= UnaryExpr <out child>			(.	children.Add(child); .)
-					{"^" UnaryExpr <out child>	(.	children.Add(child); .)
+				= List <out child>			(.	children.Add(child); .)
+					{"^" List <out child>	(.	children.Add(child); .)
 					}							(.	node = new ExponentSequence(children).Simplified(); .)
 					.
-	
-	UnaryExpr <out IExpressionNode node>		(.	IExpressionNode child; 
-													UnaryOperator operatorNode = null; .)
-				= [	  "-"						(.	operatorNode = new Negation(); .)
-					| "'"						(.	operatorNode = new ToBoolean(); .)
-					| "-'"						(.	operatorNode = new NegateToBoolean(); .)
-				] List <out child>				(.	if (operatorNode != null) operatorNode.child = child; 
-													node = (operatorNode != null) ? operatorNode : child; .)
-				.
 	
 	List <out IExpressionNode node>				(.	IExpressionNode child, index; 
 													List<IExpressionNode> children = new List<IExpressionNode>();
 													int listStart = 0; .)
-				= Term <out index> [ 
+				= UnaryExpr <out index> [ 
 					"["							(.	listStart = t.charPos; .)
 					ComparisonExpr <out child>		(.	children.Add(child); .)
 					{ "," 
@@ -94,6 +85,15 @@ PRODUCTIONS
 					} "]"						
 					]							(.	node = makeList(index, children, listStart); .)
 					.
+					
+	UnaryExpr <out IExpressionNode node>		(.	IExpressionNode child; 
+													UnaryOperator operatorNode = null; .)
+				= [	  "-"						(.	operatorNode = new Negation(); .)
+					| "'"						(.	operatorNode = new ToBoolean(); .)
+					| "-'"						(.	operatorNode = new NegateToBoolean(); .)
+				] Term <out child>				(.	if (operatorNode != null) operatorNode.child = child; 
+													node = (operatorNode != null) ? operatorNode : child; .)
+				.
 
 	Term <out IExpressionNode node>				(.	IExpressionNode child; 
 													node = new Constant(double.NaN); .)
