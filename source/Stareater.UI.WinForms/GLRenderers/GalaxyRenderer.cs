@@ -45,6 +45,8 @@ namespace Stareater.GLRenderers
 		private float panAbsPath = 0;
 		private Vector2 originOffset = Vector2.Zero;
 		private float screenLength;
+		private Vector2 mapBoundsMin;
+		private Vector2 mapBoundsMax;
 
 		private int staticList = -1;
 
@@ -52,6 +54,15 @@ namespace Stareater.GLRenderers
 		{
 			this.controller = controller;
 			this.systemOpenedHandler = systemOpenedHandler;
+			
+			this.mapBoundsMin = new Vector2(
+				(float)controller.Stars.Select(star => star.Position.X).Min() - StarMinClickRadius,
+				(float)controller.Stars.Select(star => star.Position.Y).Min() - StarMinClickRadius
+			);
+			this.mapBoundsMax = new Vector2(
+				(float)controller.Stars.Select(star => star.Position.X).Max() + StarMinClickRadius,
+				(float)controller.Stars.Select(star => star.Position.Y).Max() + StarMinClickRadius
+			);
 		}
 
 		public void AttachToCanvas(Control eventDispatcher)
@@ -191,6 +202,19 @@ namespace Stareater.GLRenderers
 			);
 		}
 		
+		private void limitPan()
+		{
+			if (originOffset.X < mapBoundsMin.X) 
+				originOffset.X = mapBoundsMin.X;
+			if (originOffset.X > mapBoundsMax.X) 
+				originOffset.X = mapBoundsMax.X;
+			
+			if (originOffset.Y < mapBoundsMin.Y) 
+				originOffset.Y = mapBoundsMin.Y;
+			if (originOffset.Y > mapBoundsMax.Y) 
+				originOffset.Y = mapBoundsMax.Y;
+		}
+		
 		private void mousePan(object sender, MouseEventArgs e)
 		{
 			Vector4 currentPosition = mouseToView(e.X, e.Y);
@@ -210,6 +234,8 @@ namespace Stareater.GLRenderers
 				Vector4.Transform(lastMousePosition.Value, invProjection)
 				).Xy;
 
+			limitPan();
+			
 			lastMousePosition = currentPosition;
 			resetProjection = true;
 			eventDispatcher.Refresh();
@@ -230,6 +256,7 @@ namespace Stareater.GLRenderers
 			Vector2 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection).Xy;
 
 			originOffset = (originOffset * oldZoom + mousePoint * (newZoom - oldZoom)) / newZoom;
+			limitPan();
 			resetProjection = true;
 		}
 
