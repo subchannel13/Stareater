@@ -2,7 +2,8 @@
 <#@ output extension=".cs" #>
 <#@ include file="$(ProjectDir)/Utils/Collections/IndexedCollectionBase.tt" #><#
 	
-	namespaceName = "Stareater.Galaxy";
+	namespaceName = "Stareater.GameData.Tables";
+	usings.Add("Stareater.Galaxy");
 	usings.Add("Stareater.Utils.Collections");
 	usings.Add("NGenerics.DataStructures.Mathematical");
 	

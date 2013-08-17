@@ -24,22 +24,18 @@ namespace Stareater.Controllers
 			Random rng = new Random();
 			
 			var starPositions = controller.StarPositioner.Generate(rng, controller.PlayerList.Count);
-			var map = new Galaxy.Map(
-				controller.StarPopulator.Generate(rng, starPositions),
-				controller.StarConnector.Generate(rng, starPositions)
-			);
-
+			
 			Player[] players = controller.PlayerList.Select(info =>
 				new Player(info.Name, info.Color, info.Organization, info.ControlType)
 			).ToArray();
 
-			this.game = new Game(map, players);
+			this.game = new Game(controller.StarPopulator.Generate(rng, starPositions), controller.StarConnector.Generate(rng, starPositions), players);
 
 			this.State = GameState.Running;
 
 			// TODO: find most populated player's system
 			foreach (var player in players)
-				this.lastSelectedStar.Add(player, game.GalaxyMap.Stars.First());
+				this.lastSelectedStar.Add(player, game.States.Stars.First());
 		}
 
 		public GameState State { get; private set; }
@@ -48,7 +44,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return game.GalaxyMap.Stars;
+				return game.States.Stars;
 			}
 		}
 
@@ -56,14 +52,14 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				foreach (var wormhole in game.GalaxyMap.Wormholes)
+				foreach (var wormhole in game.States.Wormholes)
 					yield return wormhole;
 			}
 		}
 
 		public int StarCount
 		{
-			get { return game.GalaxyMap.Stars.Count; }
+			get { return game.States.Stars.Count; }
 		}
 
 		public StarData SelectedStar
@@ -86,8 +82,8 @@ namespace Stareater.Controllers
 		private StarData closestStar(float x, float y, float searchRadius)
 		{
 			Vector2D point = new Vector2D(x, y);
-			StarData closestStar = game.GalaxyMap.Stars.First();
-			foreach (var star in game.GalaxyMap.Stars)
+			StarData closestStar = game.States.Stars.First();
+			foreach (var star in game.States.Stars)
 				if ((star.Position - point).Magnitude() < (closestStar.Position - point).Magnitude())
 					closestStar = star;
 			

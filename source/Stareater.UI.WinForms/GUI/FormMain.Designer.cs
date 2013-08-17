@@ -101,6 +101,7 @@
 			this.endTurnButton.Text = "button1";
 			this.endTurnButton.UseVisualStyleBackColor = true;
 			this.endTurnButton.Visible = false;
+			this.endTurnButton.Click += new System.EventHandler(this.endTurnButton_Click);
 			// 
 			// FormMain
 			// 
