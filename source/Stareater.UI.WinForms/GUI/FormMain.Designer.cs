@@ -35,6 +35,7 @@
 			this.constructionManagement = new Stareater.GUI.ConstructionSiteView();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.mainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.endTurnButton = new System.Windows.Forms.Button();
 			this.menuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -89,11 +90,24 @@
 			this.mainMenuToolStripMenuItem.Text = "Main menu";
 			this.mainMenuToolStripMenuItem.Click += new System.EventHandler(this.mainMenuToolStripMenuItem_Click);
 			// 
+			// endTurnButton
+			// 
+			this.endTurnButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.endTurnButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.endTurnButton.Location = new System.Drawing.Point(792, 470);
+			this.endTurnButton.Name = "endTurnButton";
+			this.endTurnButton.Size = new System.Drawing.Size(80, 80);
+			this.endTurnButton.TabIndex = 3;
+			this.endTurnButton.Text = "button1";
+			this.endTurnButton.UseVisualStyleBackColor = true;
+			this.endTurnButton.Visible = false;
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(884, 562);
+			this.Controls.Add(this.endTurnButton);
 			this.Controls.Add(this.constructionManagement);
 			this.Controls.Add(this.glCanvas);
 			this.Controls.Add(this.menuStrip);
@@ -108,6 +122,7 @@
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.Button endTurnButton;
 		private System.Windows.Forms.ToolStripMenuItem mainMenuToolStripMenuItem;
 		private System.Windows.Forms.MenuStrip menuStrip;
 		private Stareater.GUI.ConstructionSiteView constructionManagement;
