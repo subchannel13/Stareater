@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Stareater.Galaxy;
 using Stareater.Utils.Collections;
 
-namespace Stareater.Galaxy
+namespace Stareater.GameData.Tables
 {
 	class WormholeCollection : ICollection<Tuple<StarData, StarData>>, IDelayedRemoval<Tuple<StarData, StarData>>
 	{

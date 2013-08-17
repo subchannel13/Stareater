@@ -81,24 +81,25 @@
     <Compile Include="Galaxy\Builders\StarPositions.cs" />
     <Compile Include="Galaxy\Builders\StarSystem.cs" />
     <Compile Include="Galaxy\Colony.cs" />
-    <Compile Include="Galaxy\PlanetsCollection.cs">
+    <Compile Include="Galaxy\Fleet.cs" />
+    <Compile Include="Galaxy\StarNamer.cs" />
+    <Compile Include="Galaxy\StellarManagement.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="GameData\StatesDB.cs" />
+    <Compile Include="GameData\Tables\PlanetsCollection.cs">
       <DependentUpon>PlanetsCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Galaxy\Fleet.cs" />
-    <Compile Include="Galaxy\StarNamer.cs" />
-    <Compile Include="Galaxy\StarsCollection.cs">
+    <Compile Include="GameData\Tables\StarsCollection.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StarsCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="Galaxy\StellarManagement.cs" />
-    <Compile Include="Galaxy\WormholeCollection.cs">
+    <Compile Include="GameData\Tables\WormholeCollection.cs">
       <DependentUpon>WormholeCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="Game.cs" />
     <Compile Include="Localization\ChainText.cs" />
     <Compile Include="Localization\ConditionalText.cs" />
     <Compile Include="Localization\ExpressionText.cs" />
@@ -106,7 +107,6 @@
     <Compile Include="Localization\Reading\ExpressionTextFactory.cs" />
     <Compile Include="Localization\Reading\TextBlockFactory.cs" />
     <Compile Include="Galaxy\AConstructionSite.cs" />
-    <Compile Include="Galaxy\Map.cs" />
     <Compile Include="Galaxy\MapAssets.cs" />
     <Compile Include="Galaxy\Planet.cs" />
     <Compile Include="Galaxy\StarData.cs" />
@@ -157,15 +157,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />
-    <None Include="Galaxy\PlanetsCollection.tt">
+    <None Include="GameData\Tables\PlanetsCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlanetsCollection.cs</LastGenOutput>
     </None>
-    <None Include="Galaxy\StarsCollection.tt">
+    <None Include="GameData\Tables\StarsCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StarsCollection.cs</LastGenOutput>
     </None>
-    <None Include="Galaxy\WormholeCollection.tt">
+    <None Include="GameData\Tables\WormholeCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WormholeCollection.cs</LastGenOutput>
     </None>
@@ -188,7 +188,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Galaxy\Builders" />
+    <Folder Include="GameData\Tables" />
     <Folder Include="Libs\" />
+    <Folder Include="GameData" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

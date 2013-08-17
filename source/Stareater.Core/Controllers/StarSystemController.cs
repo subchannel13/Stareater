@@ -19,7 +19,7 @@ namespace Stareater.Controllers
 		public IEnumerable<Planet> Planets
 		{
 			get {
-				return game.GalaxyMap.Planets.StarSystem(Star);
+				return game.States.Planets.StarSystem(Star);
 			}
 		}
 	}

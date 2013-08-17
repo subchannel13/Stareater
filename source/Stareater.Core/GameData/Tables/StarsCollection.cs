@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Stareater.Galaxy;
 using Stareater.Utils.Collections;
 using NGenerics.DataStructures.Mathematical;
 
-namespace Stareater.Galaxy
+namespace Stareater.GameData.Tables
 {
 	class StarsCollection : ICollection<StarData>, IDelayedRemoval<StarData>
 	{

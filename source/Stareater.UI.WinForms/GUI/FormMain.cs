@@ -65,6 +65,11 @@ namespace Stareater.GUI
 		{
 			glCanvas.Refresh();
 		}
+
+		private void endTurnButton_Click(object sender, EventArgs e)
+		{
+			controller.EndTurn();
+		}
 		
 		private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
 		{
