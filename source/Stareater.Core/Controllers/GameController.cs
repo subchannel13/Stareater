@@ -78,6 +78,11 @@ namespace Stareater.Controllers
 			}
 		}
 		
+		public void EndTurn()
+		{
+			//UNDONE: stub
+		}
+		
 		private StarData closestStar(float x, float y, float searchRadius)
 		{
 			Vector2D point = new Vector2D(x, y);

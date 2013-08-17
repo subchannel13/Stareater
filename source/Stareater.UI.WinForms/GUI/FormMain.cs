@@ -47,7 +47,8 @@ namespace Stareater.GUI
 			this.Font = SettingsWinforms.Get.FormFont;
 
 			Context context = SettingsWinforms.Get.Language["FormMain"];
-
+			this.endTurnButton.Text = context["EndTurn"].Text();
+			this.mainMenuToolStripMenuItem.Text = context["MainMenu"].Text();
 		}
 
 		private void eventTimer_Tick(object sender, EventArgs e)
@@ -105,12 +106,12 @@ namespace Stareater.GUI
 				form.Initialize();
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
 					form.CreateGame(controller);
-					galaxyRenderer = new GalaxyRenderer(controller, systemOpened);
+					galaxyRenderer = new GalaxyRenderer(controller, switchToSystemView);
 					galaxyRenderer.Load();
-					galaxyRenderer.AttachToCanvas(glCanvas);
-					currentRenderer = galaxyRenderer;
 					
-					systemRenderer = new SystemRenderer(systemClosed);
+					systemRenderer = new SystemRenderer(switchToGalaxyView);
+					
+					switchToGalaxyView();
 					redraw();
 				}
 				else
@@ -186,7 +187,7 @@ namespace Stareater.GUI
 
 		#region Renderer events
 		
-		private void systemOpened(StarSystemController systemController)
+		private void switchToSystemView(StarSystemController systemController)
 		{
 			galaxyRenderer.DetachFromCanvas();
 			
@@ -195,16 +196,19 @@ namespace Stareater.GUI
 			currentRenderer = systemRenderer;
 			
 			constructionManagement.Visible = true;
+			endTurnButton.Visible = false;
 		}
 		
-		private void systemClosed()
+		private void switchToGalaxyView()
 		{
-			systemRenderer.DetachFromCanvas();
+			if (currentRenderer == systemRenderer)
+				systemRenderer.DetachFromCanvas();
 			
 			galaxyRenderer.AttachToCanvas(glCanvas);
 			currentRenderer = galaxyRenderer;
 			
 			constructionManagement.Visible = false;
+			endTurnButton.Visible = true;
 		}
 		
 		#endregion
