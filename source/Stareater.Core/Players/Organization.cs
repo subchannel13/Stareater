@@ -21,7 +21,7 @@ namespace Stareater.Players
 		}
 
 		#region Loading related
-		private const string DataFilePath = "./data/organizations.txt";
+		private const string DataFilePath = "./data/Organizations.txt";
 
 		#region Attribute keys
 		const string NameKey = "name";

@@ -1,6 +1,7 @@
 ﻿:General
 LanguageName = English
-DialogOK = OK
+DialogAccept = Accept
+DialogCancel = Cancel
 RandomOrganization = Random
 -
 

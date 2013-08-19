@@ -5,7 +5,7 @@ namespace Stareater.Localization
 {
 	class SingleLineText : IkadnBaseObject, IText
 	{
-		string text;
+		private string text;
 
 		internal SingleLineText(string line)
 		{
@@ -19,7 +19,7 @@ namespace Stareater.Localization
 
 		public override object Tag
 		{
-			get { return "SingleLineText"; }
+			get { return "Localization.SingleLineText"; }
 		}
 
 		public override T To<T>()

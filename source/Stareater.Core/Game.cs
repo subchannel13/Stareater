@@ -5,7 +5,8 @@ using System.Text;
 using Stareater.Galaxy;
 using Stareater.Galaxy.Builders;
 using Stareater.GameData;
-using Stareater.GameData.Tables;
+using Stareater.GameData.Databases;
+using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 
 namespace Stareater

@@ -1,0 +1,40 @@
+:Technologies
+BIO_NAME = Biology
+BIO_DESC = No description
+PHY_NAME = Physics
+PHY_DESC = No description
+CHEM_NAME = Chemistry
+CHEM_DESC = No description
+MAT_NAME = Mathematics
+MAT_DESC = No description
+
+HYDRO_FARM_NAME = Hydroponic farms
+HYDRO_FARM_DESC {
+Improved hidrophonic farming.
+
+Food per population: +{E1}
+Food per farmer: +{E2}
+Population growth: +{E3}%}
+E1 #D3 LVL * 0.125;
+E2 #D2 LVL * 0.25;
+E3 #D3 LVL * 0.005;
+
+IND_NAME = Industry
+IND_DESC = No description
+ROBO_NAME = Robotics
+ROBO_DESC = No description
+LASER_NAME = Lasers
+LASER_DESC = No description
+ECM_NAME = ECM
+ECM_DESC = No description
+EM_SHIELD_NAME = EM shield
+EM_SHIELD_DESC = No description
+TITANIUM_NAME = Titanium armour
+TITANIUM_DESC = No description
+DURAPLAST_NAME = Duraplast
+DURAPLAST_DESC = No description
+COLONIZER_NAME = Colonizer
+COLONIZER_DESC = Improves colonizer capacity
+SPACE_PROGRAM_NAME = Space program
+SPACE_PROGRAM_DESC = Better space program operations
+-

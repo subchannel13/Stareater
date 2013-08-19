@@ -1,2 +1,8 @@
 ﻿:FormMain
+
+EndTurn {
+End
+turn}
+
+MainMenu = Main menu
 -
