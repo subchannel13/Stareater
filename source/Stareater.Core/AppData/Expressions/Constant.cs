@@ -34,5 +34,12 @@ namespace Stareater.AppData.Expressions
 			return "Const: " + value;
 		}
 
+		public IEnumerable<string> Variables 
+		{ 
+			get
+			{
+				yield break;
+			}
+		}
 	}
 }

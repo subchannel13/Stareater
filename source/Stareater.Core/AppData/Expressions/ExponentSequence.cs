@@ -9,9 +9,9 @@ namespace Stareater.AppData.Expressions
 	{
 		IExpressionNode[] sequence;
 
-		public ExponentSequence(IEnumerable<IExpressionNode> sequence)
+		public ExponentSequence(IExpressionNode[] sequence)
 		{
-			this.sequence = sequence.ToArray();
+			this.sequence = sequence;
 		}
 
 		public IExpressionNode Simplified()
@@ -40,6 +40,16 @@ namespace Stareater.AppData.Expressions
 				result = Math.Pow(sequence[i].Evaluate(variables), result);
 
 			return result;
+		}
+		
+		public IEnumerable<string> Variables 
+		{ 
+			get
+			{
+				foreach(var node in sequence)
+					foreach(var variable in node.Variables)
+						yield return variable;
+			}
 		}
 	}
 }

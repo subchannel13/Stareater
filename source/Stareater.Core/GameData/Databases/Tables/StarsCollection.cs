@@ -4,7 +4,7 @@ using Stareater.Galaxy;
 using Stareater.Utils.Collections;
 using NGenerics.DataStructures.Mathematical;
 
-namespace Stareater.GameData.Tables
+namespace Stareater.GameData.Databases.Tables
 {
 	class StarsCollection : ICollection<StarData>, IDelayedRemoval<StarData>
 	{

@@ -85,21 +85,29 @@
     <Compile Include="Galaxy\StarNamer.cs" />
     <Compile Include="Galaxy\StellarManagement.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="GameData\StatesDB.cs" />
-    <Compile Include="GameData\Tables\PlanetsCollection.cs">
+    <Compile Include="GameData\Databases\StatesDB.cs" />
+    <Compile Include="GameData\Databases\StaticsDB.cs" />
+    <Compile Include="GameData\Databases\Tables\PlanetsCollection.cs">
       <DependentUpon>PlanetsCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="GameData\Tables\StarsCollection.cs">
+    <Compile Include="GameData\Databases\Tables\StarsCollection.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StarsCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="GameData\Tables\WormholeCollection.cs">
+    <Compile Include="GameData\Databases\Tables\TechnologiesCollection.cs">
+      <DependentUpon>TechnologiesCollection.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GameData\Databases\Tables\WormholeCollection.cs">
       <DependentUpon>WormholeCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="GameData\Prerequisite.cs" />
+    <Compile Include="GameData\Technology.cs" />
+    <Compile Include="GameData\TechnologyCategory.cs" />
     <Compile Include="Localization\ChainText.cs" />
     <Compile Include="Localization\ConditionalText.cs" />
     <Compile Include="Localization\ExpressionText.cs" />
@@ -157,15 +165,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />
-    <None Include="GameData\Tables\PlanetsCollection.tt">
+    <None Include="GameData\Databases\Tables\PlanetsCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlanetsCollection.cs</LastGenOutput>
     </None>
-    <None Include="GameData\Tables\StarsCollection.tt">
+    <None Include="GameData\Databases\Tables\StarsCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StarsCollection.cs</LastGenOutput>
     </None>
-    <None Include="GameData\Tables\WormholeCollection.tt">
+    <None Include="GameData\Databases\Tables\TechnologiesCollection.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TechnologiesCollection.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Databases\Tables\WormholeCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WormholeCollection.cs</LastGenOutput>
     </None>
@@ -188,7 +200,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Galaxy\Builders" />
-    <Folder Include="GameData\Tables" />
+    <Folder Include="GameData\Databases" />
+    <Folder Include="GameData\Databases\Tables" />
     <Folder Include="Libs\" />
     <Folder Include="GameData" />
   </ItemGroup>

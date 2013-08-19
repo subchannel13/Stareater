@@ -7,16 +7,16 @@ namespace Stareater.AppData.Expressions
 {
 	class MinFunction : IExpressionNode
 	{
-		ICollection<IExpressionNode> sequence;
+		IExpressionNode[] sequence;
 
-		public MinFunction(ICollection<IExpressionNode> sequence)
+		public MinFunction(IExpressionNode[] sequence)
 		{
 			this.sequence = sequence;
 		}
 
 		public IExpressionNode Simplified()
 		{
-			if (sequence.Count == 0)
+			if (sequence.Length == 0)
 				return sequence.First();
 
 			var constants = sequence.Where(x => x.isConstant).ToArray();
@@ -26,7 +26,7 @@ namespace Stareater.AppData.Expressions
 				return new Constant(constants.Min(x => x.Evaluate(null)));
 			if (constants.Length > 1) {
 				varing.Add(new Constant(constants.Min(x => x.Evaluate(null))));
-				return new MinFunction(varing);
+				return new MinFunction(varing.ToArray());
 			}
 				
 			return this;
@@ -41,20 +41,30 @@ namespace Stareater.AppData.Expressions
 		{
 			return sequence.Min(x => x.Evaluate(variables));
 		}
+		
+		public IEnumerable<string> Variables 
+		{ 
+			get
+			{
+				foreach(var node in sequence)
+					foreach(var variable in node.Variables)
+						yield return variable;
+			}
+		}
 	}
 
 	class MaxFunction : IExpressionNode
 	{
-		ICollection<IExpressionNode> sequence;
+		IExpressionNode[] sequence;
 
-		public MaxFunction(ICollection<IExpressionNode> sequence)
+		public MaxFunction(IExpressionNode[] sequence)
 		{
 			this.sequence = sequence;
 		}
 
 		public IExpressionNode Simplified()
 		{
-			if (sequence.Count == 0)
+			if (sequence.Length == 0)
 				return sequence.First();
 
 			var constants = sequence.Where(x => x.isConstant).ToArray();
@@ -64,7 +74,7 @@ namespace Stareater.AppData.Expressions
 				return new Constant(constants.Max(x => x.Evaluate(null)));
 			if (constants.Length > 1) {
 				varing.Add(new Constant(constants.Max(x => x.Evaluate(null))));
-				return new MinFunction(varing);
+				return new MinFunction(varing.ToArray());
 			}
 				
 			return this;
@@ -78,6 +88,16 @@ namespace Stareater.AppData.Expressions
 		public double Evaluate(IDictionary<string, double> variables)
 		{
 			return sequence.Max(x => x.Evaluate(variables));
+		}
+		
+		public IEnumerable<string> Variables 
+		{ 
+			get
+			{
+				foreach(var node in sequence)
+					foreach(var variable in node.Variables)
+						yield return variable;
+			}
 		}
 	}
 
@@ -107,6 +127,15 @@ namespace Stareater.AppData.Expressions
 		{
 			return Math.Floor(argument.Evaluate(variables));
 		}
+		
+		public IEnumerable<string> Variables
+		{ 
+			get
+			{
+				foreach(var variable in argument.Variables)
+					yield return variable;
+			}
+		}
 	}
 
 	class CeilFunction : IExpressionNode
@@ -134,6 +163,15 @@ namespace Stareater.AppData.Expressions
 		public double Evaluate(IDictionary<string, double> variables)
 		{
 			return Math.Ceiling(argument.Evaluate(variables));
+		}
+		
+		public IEnumerable<string> Variables
+		{ 
+			get
+			{
+				foreach(var variable in argument.Variables)
+					yield return variable;
+			}
 		}
 	}
 
@@ -163,6 +201,15 @@ namespace Stareater.AppData.Expressions
 		{
 			return Math.Truncate(argument.Evaluate(variables));
 		}
+		
+		public IEnumerable<string> Variables
+		{ 
+			get
+			{
+				foreach(var variable in argument.Variables)
+					yield return variable;
+			}
+		}
 	}
 
 	class AbsFunction : IExpressionNode
@@ -190,6 +237,15 @@ namespace Stareater.AppData.Expressions
 		public double Evaluate(IDictionary<string, double> variables)
 		{
 			return Math.Abs(argument.Evaluate(variables));
+		}
+		
+		public IEnumerable<string> Variables
+		{ 
+			get
+			{
+				foreach(var variable in argument.Variables)
+					yield return variable;
+			}
 		}
 	}
 
@@ -219,6 +275,15 @@ namespace Stareater.AppData.Expressions
 		{
 			return Math.Round(argument.Evaluate(variables), MidpointRounding.AwayFromZero);
 		}
+		
+		public IEnumerable<string> Variables
+		{ 
+			get
+			{
+				foreach(var variable in argument.Variables)
+					yield return variable;
+			}
+		}
 	}
 
 	class SgnFunction : IExpressionNode
@@ -246,6 +311,15 @@ namespace Stareater.AppData.Expressions
 		public double Evaluate(IDictionary<string, double> variables)
 		{
 			return Math.Sign(argument.Evaluate(variables));
+		}
+		
+		public IEnumerable<string> Variables
+		{ 
+			get
+			{
+				foreach(var variable in argument.Variables)
+					yield return variable;
+			}
 		}
 	}
 
@@ -288,6 +362,21 @@ namespace Stareater.AppData.Expressions
 
 			return (x < min) ? min : (x > max) ? max : x;
 		}
+		
+		public IEnumerable<string> Variables
+		{ 
+			get
+			{
+				foreach(var variable in argument.Variables)
+					yield return variable;
+				
+				foreach(var variable in minNode.Variables)
+					yield return variable;
+				
+				foreach(var variable in maxNode.Variables)
+					yield return variable;
+			}
+		}
 	}
 
 	class IfThenElseFunction : IExpressionNode
@@ -328,6 +417,21 @@ namespace Stareater.AppData.Expressions
 		public double Evaluate(IDictionary<string, double> variables)
 		{
 			return ((condition.Evaluate(variables) >= 0) ? trueNode : falseNode).Evaluate(variables);
+		}
+		
+		public IEnumerable<string> Variables
+		{ 
+			get
+			{
+				foreach(var variable in condition.Variables)
+					yield return variable;
+				
+				foreach(var variable in trueNode.Variables)
+					yield return variable;
+				
+				foreach(var variable in falseNode.Variables)
+					yield return variable;
+			}
 		}
 	}
 }

@@ -15,8 +15,8 @@ namespace Stareater
 		public Player[] Players { get; private set; }
 		public int Turn { get; private set; }
 		public int CurrentPlayer { get; private set; }
-		private IEnumerable<object> conflicts;
-		private object phase;
+		private IEnumerable<object> conflicts; //TODO: make type
+		private object phase; //TODO: make type
 
 		internal StatesDB States { get; private set; }
 			

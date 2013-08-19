@@ -2,12 +2,12 @@
 <#@ output extension=".cs" #>
 <#@ include file="$(ProjectDir)/Utils/Collections/IndexedCollectionBase.tt" #><#
 	
-	namespaceName = "Stareater.GameData.Tables";
+	namespaceName = "Stareater.GameData.Databases.Tables";
 	usings.Add("Stareater.Galaxy");
 	usings.Add("Stareater.Utils.Collections");
 	usings.Add("NGenerics.DataStructures.Mathematical");
 	
-	Generate("StarsCollection", "StarData",
-		new ViewInfo("Positions", "Vector2D", "Position", ViewType.Collection)
+	Generate("PlanetsCollection", "Planet",
+		new ViewInfo("StarSystem", "StarData", "Star", ViewType.Collection)
 	);
 #>

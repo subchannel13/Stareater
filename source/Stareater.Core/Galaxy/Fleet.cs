@@ -9,7 +9,7 @@ namespace Stareater.Galaxy
 	{
 		private StarData origin;
 		private StarData destination;
-		private IEnumerable<object> ships;
-		private object mission;
+		private IEnumerable<object> ships; //TODO: make type
+		private object mission; //TODO: make type
 	}
 }

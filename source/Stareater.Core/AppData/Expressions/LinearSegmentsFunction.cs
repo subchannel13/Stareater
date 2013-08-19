@@ -8,9 +8,9 @@ namespace Stareater.AppData.Expressions
 	class LinearSegmentsFunction : IExpressionNode
 	{
 		IExpressionNode indexNode;
-		IList<IExpressionNode> segmentPoints;
+		IExpressionNode[] segmentPoints;
 
-		public LinearSegmentsFunction(IExpressionNode index, IList<IExpressionNode> segmentPoints)
+		public LinearSegmentsFunction(IExpressionNode index, IExpressionNode[] segmentPoints)
 		{
 			this.indexNode = index;
 			this.segmentPoints = segmentPoints;
@@ -49,10 +49,23 @@ namespace Stareater.AppData.Expressions
 		{
 			if (t < 0)
 				return 0;
-			else if (t >= segmentPoints.Count - 1)
-				return segmentPoints.Count - 2;
+			else if (t >= segmentPoints.Length - 1)
+				return segmentPoints.Length - 2;
 
 			return (int)Math.Floor(t);
+		}
+		
+		public IEnumerable<string> Variables 
+		{ 
+			get
+			{
+				foreach(var variable in indexNode.Variables)
+					yield return variable;
+				
+				foreach(var node in segmentPoints)
+					foreach(var variable in node.Variables)
+						yield return variable;
+			}
 		}
 	}
 }

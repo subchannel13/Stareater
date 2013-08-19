@@ -13,13 +13,13 @@ namespace Stareater.Players
 		private Organization organization;		
 		private PlayerType type;
 		
-		private IEnumerable<object> designs;
-		private IEnumerable<object> predefinedDesigns;
-		private IEnumerable<object> technologies;
-		private object intelligence;
+		private IEnumerable<object> designs; //TODO: make type
+		private IEnumerable<object> predefinedDesigns; //TODO: make type
+		private IEnumerable<object> technologies; //TODO: make type
+		private object intelligence; //TODO: make type
 
-		private IEnumerable<object> messages;
-		private Dictionary<object, object> messageFilter;
+		private IEnumerable<object> messages; //TODO: make type
+		private Dictionary<object, object> messageFilter; //TODO: make type
 
 		public Player(string name, Color color, Organization organization, PlayerType type)
 		{

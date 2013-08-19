@@ -38,6 +38,18 @@ namespace Stareater.AppData.Expressions
 			return compare(leftValue, rightValue, Math.Abs(leftValue - rightValue) <= tolerance) ? 1 : -1;
 		}
 
+		public IEnumerable<string> Variables
+		{ 
+			get
+			{
+				foreach(var variable in leftSide.Variables)
+					yield return variable;
+				
+				foreach(var variable in rightSide.Variables)
+					yield return variable;
+			}
+		}
+		
 		protected abstract bool compare(double leftValue, double rightValue, bool withinTolerance);
 	}
 

@@ -253,7 +253,7 @@ public Formula ParsedFormula { get; private set; }
 			List(out child);
 			children.Add(child); 
 		}
-		node = new ExponentSequence(children).Simplified(); 
+		node = new ExponentSequence(children.ToArray()).Simplified(); 
 	}
 
 	void List(out IExpressionNode node) {
