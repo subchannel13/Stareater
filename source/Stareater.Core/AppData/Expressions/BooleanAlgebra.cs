@@ -7,9 +7,9 @@ namespace Stareater.AppData.Expressions
 {
 	class ConjunctionSequence : IExpressionNode
 	{
-		ICollection<IExpressionNode> sequence;
+		IExpressionNode[] sequence;
 
-		public ConjunctionSequence(ICollection<IExpressionNode> sequence)
+		public ConjunctionSequence(IExpressionNode[] sequence)
 		{
 			this.sequence = sequence;
 		}
@@ -18,9 +18,9 @@ namespace Stareater.AppData.Expressions
 		{
 			int constCount = sequence.Count(x => x.isConstant);
 
-			if (sequence.Count == 1)
+			if (sequence.Length == 1)
 				return sequence.First();
-			else if (constCount == sequence.Count)
+			else if (constCount == sequence.Length)
 				return new Constant(this.Evaluate(null));
 			else if (constCount > 1) {
 				var grouping = sequence.GroupBy(x => x.isConstant).ToDictionary(x => x.Key);
@@ -43,13 +43,23 @@ namespace Stareater.AppData.Expressions
 		{
 			return sequence.All(x => x.Evaluate(null) >= 0) ? 1 : -1;
 		}
+		
+		public IEnumerable<string> Variables 
+		{ 
+			get
+			{
+				foreach(var node in sequence)
+					foreach(var variable in node.Variables)
+						yield return variable;
+			}
+		}
 	}
 
 	class DisjunctionSequence : IExpressionNode
 	{
-		ICollection<IExpressionNode> sequence;
+		IExpressionNode[] sequence;
 
-		public DisjunctionSequence(ICollection<IExpressionNode> sequence)
+		public DisjunctionSequence(IExpressionNode[] sequence)
 		{
 			this.sequence = sequence;
 		}
@@ -58,9 +68,9 @@ namespace Stareater.AppData.Expressions
 		{
 			int constCount = sequence.Count(x => x.isConstant);
 
-			if (sequence.Count == 1)
+			if (sequence.Length == 1)
 				return sequence.First();
-			else if (constCount == sequence.Count)
+			else if (constCount == sequence.Length)
 				return new Constant(this.Evaluate(null));
 			else if (constCount > 1) {
 				var grouping = sequence.GroupBy(x => x.isConstant).ToDictionary(x => x.Key);
@@ -83,13 +93,23 @@ namespace Stareater.AppData.Expressions
 		{
 			return sequence.Any(x => x.Evaluate(null) >= 0) ? 1 : -1;
 		}
+		
+		public IEnumerable<string> Variables 
+		{ 
+			get
+			{
+				foreach(var node in sequence)
+					foreach(var variable in node.Variables)
+						yield return variable;
+			}
+		}
 	}
 
 	class XorSequence : IExpressionNode
 	{
-		ICollection<IExpressionNode> sequence;
+		IExpressionNode[] sequence;
 
-		public XorSequence(ICollection<IExpressionNode> sequence)
+		public XorSequence(IExpressionNode[] sequence)
 		{
 			this.sequence = sequence;
 		}
@@ -98,9 +118,9 @@ namespace Stareater.AppData.Expressions
 		{
 			int constCount = sequence.Count(x => x.isConstant);
 
-			if (sequence.Count == 1)
+			if (sequence.Length == 1)
 				return sequence.First();
-			else if (constCount == sequence.Count)
+			else if (constCount == sequence.Length)
 				return new Constant(this.Evaluate(null));
 			else if (constCount > 1) {
 				var grouping = sequence.GroupBy(x => x.isConstant).ToDictionary(x => x.Key);
@@ -123,7 +143,17 @@ namespace Stareater.AppData.Expressions
 		public double Evaluate(IDictionary<string, double> variables)
 		{
 			int truths = sequence.Count(x => x.Evaluate(null) >= 0);
-			return ((sequence.Count - truths) % 2 != 0) ? 1 : -1;
+			return ((sequence.Length - truths) % 2 != 0) ? 1 : -1;
+		}
+		
+		public IEnumerable<string> Variables 
+		{ 
+			get
+			{
+				foreach(var node in sequence)
+					foreach(var variable in node.Variables)
+						yield return variable;
+			}
 		}
 	}
 }

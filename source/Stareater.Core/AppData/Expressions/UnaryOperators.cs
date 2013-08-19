@@ -23,6 +23,15 @@ namespace Stareater.AppData.Expressions
 		}
 
 		public abstract double Evaluate(IDictionary<string, double> variables);
+		
+		public IEnumerable<string> Variables
+		{ 
+			get
+			{
+				foreach(var variable in child.Variables)
+					yield return variable;
+			}
+		}
 	}
 
 	class Negation : UnaryOperator

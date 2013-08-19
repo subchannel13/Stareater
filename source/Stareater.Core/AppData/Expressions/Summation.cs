@@ -7,10 +7,10 @@ namespace Stareater.AppData.Expressions
 {
 	class Summation: IExpressionNode
 	{
-		ICollection<IExpressionNode> sequence;
-		ICollection<IExpressionNode> inverseSequence;
+		IExpressionNode[] sequence;
+		IExpressionNode[] inverseSequence;
 
-		public Summation(ICollection<IExpressionNode> sequence, ICollection<IExpressionNode> inverseSequence)
+		public Summation(IExpressionNode[] sequence, IExpressionNode[] inverseSequence)
 		{
 			this.sequence = sequence;
 			this.inverseSequence = inverseSequence;
@@ -20,9 +20,9 @@ namespace Stareater.AppData.Expressions
 		{
 			int constCount = sequence.Count(x => x.isConstant) + inverseSequence.Count(x => x.isConstant);
 
-			if (sequence.Count == 1 && inverseSequence.Count == 0)
+			if (sequence.Length == 1 && inverseSequence.Length == 0)
 				return sequence.First();
-			else if (constCount == sequence.Count + inverseSequence.Count)
+			else if (constCount == sequence.Length + inverseSequence.Length)
 				return new Constant(this.Evaluate(null));
 			else if (constCount > 1) {
 				List<IExpressionNode> newSequence = new List<IExpressionNode>();
@@ -52,6 +52,20 @@ namespace Stareater.AppData.Expressions
 		{
 			return sequence.Aggregate(0.0, (subSum, element) => subSum + element.Evaluate(variables)) -
 				inverseSequence.Aggregate(0.0, (subSum, element) => subSum + element.Evaluate(variables));
+		}
+		
+		public IEnumerable<string> Variables 
+		{ 
+			get
+			{
+				foreach(var node in sequence)
+					foreach(var variable in node.Variables)
+						yield return variable;
+				
+				foreach(var node in inverseSequence)
+					foreach(var variable in node.Variables)
+						yield return variable;
+			}
 		}
 	}
 }

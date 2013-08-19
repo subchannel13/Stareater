@@ -71,7 +71,7 @@ PRODUCTIONS
 													List<IExpressionNode> children = new List<IExpressionNode>(); .)
 				= List <out child>			(.	children.Add(child); .)
 					{"^" List <out child>	(.	children.Add(child); .)
-					}							(.	node = new ExponentSequence(children).Simplified(); .)
+					}							(.	node = new ExponentSequence(children.ToArray()).Simplified(); .)
 					.
 	
 	List <out IExpressionNode node>				(.	IExpressionNode child, index; 

@@ -1,7 +1,7 @@
 ﻿using System;
 using Stareater.GameData.Tables;
 
-namespace Stareater.GameData
+namespace Stareater.GameData.Databases
 {
 	internal class StatesDB
 	{

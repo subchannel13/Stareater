@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Ikadn;
+using Stareater.AppData.Expressions;
 using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.Localization
 {
 	class ExpressionText : IkadnBaseObject, IText
 	{
-		string variableName;
-		Func<double, string> formatter;
+		private Formula formula;
+		private Func<double, string> formatter;
 
-		public ExpressionText(string variableName, Func<double, string> formatter)
+		public ExpressionText(Formula formula, Func<double, string> formatter)
 		{
-			this.variableName = variableName;
+			this.formula = formula;
 			this.formatter = formatter;
 		}
 
@@ -40,7 +41,8 @@ namespace Stareater.Localization
 
 		public IEnumerable<string> VariableNames()
 		{
-			yield return variableName;
+			foreach(var varName in formula.Variables)
+				yield return varName;
 		}
 
 		public string Text()
@@ -50,12 +52,21 @@ namespace Stareater.Localization
 
 		public string Text(double trivialVariable)
 		{
-			return formatter(trivialVariable);
+			if (formula.Variables.Count == 0)
+				throw new InvalidOperationException("This IText has no variables");
+			if (formula.Variables.Count > 1)
+				throw new InvalidOperationException("This IText has more than one variable, call overload that set all their values.");
+			
+			return formatter(formula.Evaluate(
+				new Dictionary<string, double>() {
+					{formula.Variables.First(), trivialVariable}
+          		}
+			));
 		}
 
 		public string Text(IDictionary<string, double> variables)
 		{
-			return formatter(variables[variableName]);
+			return formatter(formula.Evaluate(variables));
 		}
 	}
 }

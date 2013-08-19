@@ -136,7 +136,7 @@ namespace Stareater.AppData.Expressions
 				return new Constant(double.NaN);
 			}
 
-			return new LinearSegmentsFunction(indexNode, segmentPoints).Simplified();
+			return new LinearSegmentsFunction(indexNode, segmentPoints.ToArray()).Simplified();
 		}
 
 		private IExpressionNode makeFunction(string identifierName, IList<IExpressionNode> segmentPoints, int listStart)
@@ -147,14 +147,14 @@ namespace Stareater.AppData.Expressions
 						SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has insufficient parameters.");
 						return new Constant(double.NaN);
 					}
-					return new MinFunction(segmentPoints);
+					return new MinFunction(segmentPoints.ToArray());
 
 				case "max":
 					if (segmentPoints.Count < 2) {
 						SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has insufficient parameters.");
 						return new Constant(double.NaN);
 					}
-					return new MaxFunction(segmentPoints);
+					return new MaxFunction(segmentPoints.ToArray());
 
 				case "floor":
 					if (segmentPoints.Count > 1) {

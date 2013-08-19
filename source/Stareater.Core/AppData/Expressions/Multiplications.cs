@@ -7,10 +7,10 @@ namespace Stareater.AppData.Expressions
 {
 	class Product : IExpressionNode
 	{
-		ICollection<IExpressionNode> sequence;
-		ICollection<IExpressionNode> inverseSequence;
+		IExpressionNode[] sequence;
+		IExpressionNode[] inverseSequence;
 
-		public Product(ICollection<IExpressionNode> sequence, ICollection<IExpressionNode> inverseSequence)
+		public Product(IExpressionNode[] sequence, IExpressionNode[] inverseSequence)
 		{
 			this.sequence = sequence;
 			this.inverseSequence = inverseSequence;
@@ -20,9 +20,9 @@ namespace Stareater.AppData.Expressions
 		{
 			int constCount = sequence.Count(x => x.isConstant) + inverseSequence.Count(x => x.isConstant);
 
-			if (sequence.Count + inverseSequence.Count == 1)
+			if (sequence.Length + inverseSequence.Length == 1)
 				return sequence.First();
-			else if (constCount == sequence.Count + inverseSequence.Count)
+			else if (constCount == sequence.Length + inverseSequence.Length)
 				return new Constant(this.Evaluate(null));
 			else if (constCount > 1) {
 				List<IExpressionNode> newSequence = new List<IExpressionNode>();
@@ -53,22 +53,36 @@ namespace Stareater.AppData.Expressions
 			return sequence.Aggregate(1.0, (subProduct, element) => subProduct * element.Evaluate(variables)) /
 				inverseSequence.Aggregate(1.0, (subProduct, element) => subProduct * element.Evaluate(variables));
 		}
+		
+		public IEnumerable<string> Variables 
+		{ 
+			get
+			{
+				foreach(var node in sequence)
+					foreach(var variable in node.Variables)
+						yield return variable;
+				
+				foreach(var node in inverseSequence)
+					foreach(var variable in node.Variables)
+						yield return variable;
+			}
+		}
 	}
 
 	class IntegerDivision : IExpressionNode
 	{
-		ICollection<IExpressionNode> sequence;
+		IExpressionNode[] sequence;
 
-		public IntegerDivision(ICollection<IExpressionNode> sequence)
+		public IntegerDivision(IExpressionNode[] sequence)
 		{
 			this.sequence = sequence;
 		}
 
 		public IExpressionNode Simplified()
 		{
-			if (sequence.Count == 1)
+			if (sequence.Length == 1)
 				return sequence.First();
-			else if (sequence.Count(x => x.isConstant) == sequence.Count)
+			else if (sequence.Count(x => x.isConstant) == sequence.Length)
 				return new Constant(this.Evaluate(null));
 			else
 				return this;
@@ -91,22 +105,32 @@ namespace Stareater.AppData.Expressions
 					return Math.Floor(subResult / rightOperand);
 				});
 		}
+		
+		public IEnumerable<string> Variables 
+		{ 
+			get
+			{
+				foreach(var node in sequence)
+					foreach(var variable in node.Variables)
+						yield return variable;
+			}
+		}
 	}
 
 	class IntegerReminder : IExpressionNode
 	{
-		ICollection<IExpressionNode> sequence;
+		IExpressionNode[] sequence;
 
-		public IntegerReminder(ICollection<IExpressionNode> sequence)
+		public IntegerReminder(IExpressionNode[] sequence)
 		{
 			this.sequence = sequence;
 		}
 
 		public IExpressionNode Simplified()
 		{
-			if (sequence.Count == 1)
+			if (sequence.Length == 1)
 				return sequence.First();
-			else if (sequence.Count(x => x.isConstant) == sequence.Count)
+			else if (sequence.Count(x => x.isConstant) == sequence.Length)
 				return new Constant(this.Evaluate(null));
 			else
 				return this;
@@ -129,6 +153,16 @@ namespace Stareater.AppData.Expressions
 					}
 					return subResult - Math.Floor(subResult / rightOperand) * rightOperand;
 				});
+		}
+		
+		public IEnumerable<string> Variables 
+		{ 
+			get
+			{
+				foreach(var node in sequence)
+					foreach(var variable in node.Variables)
+						yield return variable;
+			}
 		}
 	}
 }

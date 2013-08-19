@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Stareater.AppData.Expressions;
 using Stareater.Utils.NumberFormatters;
 using Ikadn;
 
@@ -45,7 +46,13 @@ namespace Stareater.Localization.Reading
 			if (expressionText.Length == 0)
 				throw new FormatException("Expression at " + parser.Reader + " is empty (zero length)");
 
-			return new ExpressionText(expressionText, formatter);
+			ExpressionParser expParser = new ExpressionParser(expressionText);
+			expParser.Parse();
+			
+			if (expParser.errors.count > 0)
+				throw new FormatException("Expression at " + parser.Reader + " is invalid: " + expParser.errors.errorMessages);
+			
+			return new ExpressionText(expParser.ParsedFormula, formatter);
 		}
 
 		public char Sign

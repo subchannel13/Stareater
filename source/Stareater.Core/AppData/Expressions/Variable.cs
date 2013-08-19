@@ -28,5 +28,13 @@ namespace Stareater.AppData.Expressions
 		{
 			return variables[name];
 		}
+		
+		public IEnumerable<string> Variables 
+		{ 
+			get
+			{
+				yield return name;
+			}
+		}
 	}
 }

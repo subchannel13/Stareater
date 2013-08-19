@@ -2,11 +2,10 @@
 <#@ output extension=".cs" #>
 <#@ include file="$(ProjectDir)/Utils/Collections/IndexedCollectionBase.tt" #><#
 	
-	namespaceName = "Stareater.GameData.Tables";
-	usings.Add("Stareater.Galaxy");
+	namespaceName = "Stareater.GameData.Databases.Tables";
 	usings.Add("Stareater.Utils.Collections");
 	
-	Generate("WormholeCollection", "Tuple<StarData, StarData>",
-		new ViewInfo("Endpoints", "StarData", "Item1;Item2", ViewType.Collection)
+	Generate("TechnologiesCollection", "Technology",
+		new ViewInfo("Codes", "string", "IdCode", ViewType.Collection)
 	);
 #>
