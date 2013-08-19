@@ -3,6 +3,4 @@ FormTitle = Custom start
 coloniesSelector = Colonies:
 populationLabel = Population:
 infrastructureLabel = Infrastructure:
-acceptButton = Accept
-cancelButton = Cancel
 -

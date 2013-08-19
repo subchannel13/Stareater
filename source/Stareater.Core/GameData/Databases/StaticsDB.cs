@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
-using Stareater.GameData.Tables;
+using Stareater.GameData.Databases.Tables;
 using Stareater.Utils;
 
 namespace Stareater.GameData.Databases

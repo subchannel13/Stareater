@@ -1,5 +1,5 @@
 ﻿using System;
-using Stareater.GameData.Tables;
+using Stareater.GameData.Databases.Tables;
 
 namespace Stareater.GameData.Databases
 {
