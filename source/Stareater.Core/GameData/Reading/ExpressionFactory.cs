@@ -24,7 +24,7 @@ namespace Stareater.GameData.Reading
 			expParser.Parse();
 			
 			if (expParser.errors.count > 0)
-				throw new FormatException("Expression at " + parser.Reader + " is invalid: " + expParser.errors.errorMessages);
+				throw new FormatException("Expression at " + parser.Reader.PositionDescription + " is invalid: " + expParser.errors.errorMessages);
 			
 			return new Expression(expParser.ParsedFormula);
 		}

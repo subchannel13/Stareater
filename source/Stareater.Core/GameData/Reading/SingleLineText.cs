@@ -1,5 +1,6 @@
 ﻿
 using System;
+using Ikadn;
 
 namespace Stareater.GameData.Reading
 {
@@ -26,7 +27,7 @@ namespace Stareater.GameData.Reading
 		{
 			Type target = typeof(T);
 
-			if (typeFromHandle == typeof(string))
+			if (target == typeof(string))
 				return (T)((object)this.text);
 			else if (target.IsAssignableFrom(this.GetType()))
 				return (T)(object)this;

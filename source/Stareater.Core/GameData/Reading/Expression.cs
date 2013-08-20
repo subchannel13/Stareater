@@ -7,11 +7,11 @@ namespace Stareater.GameData.Reading
 {
 	public class Expression : IkadnBaseObject
 	{
-		private Formula formula;
+		public Formula Formula { get; private set; }
 		
 		public Expression(Formula formula)
 		{
-			this.formula = formula;
+			this.Formula = formula;
 		}
 
 		protected override void DoCompose(IkadnWriter writer)
@@ -23,7 +23,9 @@ namespace Stareater.GameData.Reading
 		{
 			Type target = typeof(T);
 
-			if (target.IsAssignableFrom(this.GetType()))
+			if (target.IsAssignableFrom(typeof(Formula)))
+				return (T)(object)this.Formula;
+			else if (target.IsAssignableFrom(this.GetType()))
 				return (T)(object)this;
 			else
 				throw new InvalidOperationException("Cast to " + target.Name + " is not supported for " + Tag);
