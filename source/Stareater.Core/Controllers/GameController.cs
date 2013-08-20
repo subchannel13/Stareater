@@ -5,6 +5,7 @@ using System.Text;
 using Stareater.Controllers.Data;
 using Stareater.Galaxy;
 using NGenerics.DataStructures.Mathematical;
+using Stareater.GameData.Databases;
 using Stareater.Players;
 
 namespace Stareater.Controllers
@@ -21,6 +22,10 @@ namespace Stareater.Controllers
 
 		public void CreateGame(NewGameController controller)
 		{
+			StaticsDB statics = new StaticsDB();
+			foreach(double p in statics.Load(StaticDataFiles))
+				;
+			
 			Random rng = new Random();
 			
 			var starPositions = controller.StarPositioner.Generate(rng, controller.PlayerList.Count);
@@ -29,7 +34,12 @@ namespace Stareater.Controllers
 				new Player(info.Name, info.Color, info.Organization, info.ControlType)
 			).ToArray();
 
-			this.game = new Game(controller.StarPopulator.Generate(rng, starPositions), controller.StarConnector.Generate(rng, starPositions), players);
+			this.game = new Game(
+				statics, 
+				controller.StarPopulator.Generate(rng, starPositions), 
+				controller.StarConnector.Generate(rng, starPositions), 
+				players
+			);
 
 			this.State = GameState.Running;
 
@@ -115,5 +125,10 @@ namespace Stareater.Controllers
 		{
 			return new StarSystemController(game, star);
 		}
+		
+		private static readonly string[] StaticDataFiles = new string[] {
+			"./data/TechDevelopment.txt",
+			"./data/TechResearch.txt",
+		};
 	}
 }

@@ -13,7 +13,7 @@ namespace Stareater.Players
 {
 	public static class PlayerAssets
 	{
-		private const string DataFilePath = "./data/player_data.txt";
+		private const string DataFilePath = "./data/PlayerData.txt";
 		private const string AIsFolder = "./players/";
 
 		#region Attribute keys

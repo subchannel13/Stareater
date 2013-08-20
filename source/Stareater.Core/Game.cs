@@ -19,12 +19,14 @@ namespace Stareater
 		private IEnumerable<object> conflicts; //TODO: make type
 		private object phase; //TODO: make type
 
+		internal StaticsDB Statics { get; private set; }
 		internal StatesDB States { get; private set; }
 			
-		public Game(IEnumerable<StarSystem> starSystems, IEnumerable<Tuple<int, int>> wormholeEndpoints, Player[] players)
+		public Game(StaticsDB statics, IEnumerable<StarSystem> starSystems, IEnumerable<Tuple<int, int>> wormholeEndpoints, Player[] players)
 		{
 			this.Turn = 0;
 			this.CurrentPlayer = 0;
+			this.Statics = statics;
 			
 			StarData[] starList = starSystems.Select(x => x.Star).ToArray();
 			
