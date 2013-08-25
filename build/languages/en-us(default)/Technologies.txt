@@ -10,7 +10,7 @@ MAT_DESC = No description
 
 HYDRO_FARM_NAME = Hydroponic farms
 HYDRO_FARM_DESC {
-Improved hidrophonic farming.
+Improved hydroponic farming.
 
 Food per population: +{E1}
 Food per farmer: +{E2}

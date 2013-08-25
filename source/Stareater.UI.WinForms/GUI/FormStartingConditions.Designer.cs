@@ -121,9 +121,8 @@
 			this.Controls.Add(this.populationInput);
 			this.Controls.Add(this.populationLabel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
 			this.Name = "FormStartingConditions";
+			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "FormStartingConditions";
 			((System.ComponentModel.ISupportInitialize)(this.coloniesSelector)).EndInit();

@@ -175,16 +175,12 @@
 			this.Controls.Add(this.removeButton);
 			this.Controls.Add(this.addButton);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
 			this.Name = "FormSetupPlayers";
-			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "FormSetupPlayers";
 			this.ResumeLayout(false);
 			this.PerformLayout();
-
 		}
 
 		#endregion
