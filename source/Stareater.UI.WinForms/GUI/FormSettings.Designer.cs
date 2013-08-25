@@ -95,8 +95,6 @@
 			this.Controls.Add(this.languageSelector);
 			this.Controls.Add(this.languageTitle);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
 			this.Name = "FormSettings";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

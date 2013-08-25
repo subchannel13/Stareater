@@ -132,9 +132,8 @@
 			this.Controls.Add(this.panel2);
 			this.Controls.Add(this.acceptButton);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
 			this.Name = "FormSetupMap";
+			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "FormSetupMap";
 			this.panel1.ResumeLayout(false);
@@ -142,7 +141,6 @@
 			this.panel2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.mapPreview)).EndInit();
 			this.ResumeLayout(false);
-
 		}
 
 		#endregion

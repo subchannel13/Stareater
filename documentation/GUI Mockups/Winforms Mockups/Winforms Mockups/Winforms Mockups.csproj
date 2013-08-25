@@ -64,6 +64,10 @@
     <Compile Include="FormNewGame.Designer.cs">
       <DependentUpon>FormNewGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSelector.cs" />
+    <Compile Include="FormSelector.Designer.cs">
+      <DependentUpon>FormSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSetupMap.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,6 +92,10 @@
     <Compile Include="FormStartingConditions.Designer.cs">
       <DependentUpon>FormStartingConditions.cs</DependentUpon>
     </Compile>
+    <Compile Include="FromDevelopment.cs" />
+    <Compile Include="FromDevelopment.Designer.cs">
+      <DependentUpon>FromDevelopment.cs</DependentUpon>
+    </Compile>
     <Compile Include="NewPlayerInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -96,6 +104,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResearchItem.cs" />
+    <Compile Include="ResearchItem.Designer.cs">
+      <DependentUpon>ResearchItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="SystemMockup.cs" />
     <Compile Include="SystemMockup.Designer.cs">
       <DependentUpon>SystemMockup.cs</DependentUpon>
@@ -105,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormNewGame.resx">
       <DependentUpon>FormNewGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSelector.resx">
+      <DependentUpon>FormSelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSetupMap.resx">
       <DependentUpon>FormSetupMap.cs</DependentUpon>
@@ -117,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormStartingConditions.resx">
       <DependentUpon>FormStartingConditions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FromDevelopment.resx">
+      <DependentUpon>FromDevelopment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewPlayerInfo.resx">
       <DependentUpon>NewPlayerInfo.cs</DependentUpon>
@@ -131,6 +149,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ResearchItem.resx">
+      <DependentUpon>ResearchItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SystemMockup.resx">
       <DependentUpon>SystemMockup.cs</DependentUpon>
     </EmbeddedResource>

@@ -120,8 +120,6 @@
 			this.Controls.Add(this.loadGameButton);
 			this.Controls.Add(this.newGameButton);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
 			this.Name = "FormMainMenu";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
