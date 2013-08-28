@@ -92,6 +92,10 @@
     <Compile Include="GUI\ControlListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GUI\FormDevelopment.cs" />
+    <Compile Include="GUI\FormDevelopment.Designer.cs">
+      <DependentUpon>FormDevelopment.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,6 +163,10 @@
     <Compile Include="GUI\NewGamePlayerView.Designer.cs">
       <DependentUpon>NewGamePlayerView.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\TechnologyItem.cs" />
+    <Compile Include="GUI\TechnologyItem.Designer.cs">
+      <DependentUpon>TechnologyItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tag.cs" />
@@ -167,6 +175,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ConstructionSiteView.resx">
       <DependentUpon>ConstructionSiteView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormDevelopment.resx">
+      <DependentUpon>FormDevelopment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
@@ -203,6 +214,9 @@
     <EmbeddedResource Include="GUI\NewGamePlayerView.resx">
       <DependentUpon>NewGamePlayerView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\TechnologyItem.resx">
+      <DependentUpon>TechnologyItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -228,6 +242,10 @@
     <ProjectReference Include="..\Stareater.Core\Stareater.Core.csproj">
       <Project>{452BB6D1-D27F-4D71-A05B-A6DDC4013E33}</Project>
       <Name>Stareater.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zvjezdojedac\Zvjezdojedac.csproj">
+      <Project>{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}</Project>
+      <Name>Zvjezdojedac</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
