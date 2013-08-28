@@ -45,6 +45,8 @@ namespace Winforms_Mockups
 			this.label3 = new System.Windows.Forms.Label();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.label4 = new System.Windows.Forms.Label();
+			this.label5 = new System.Windows.Forms.Label();
 			this.controlListView1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -54,7 +56,8 @@ namespace Winforms_Mockups
 			// 
 			this.controlListView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 									| System.Windows.Forms.AnchorStyles.Left)));
-			this.controlListView1.BackColor = System.Drawing.SystemColors.Window;
+			this.controlListView1.AutoScroll = true;
+			this.controlListView1.BackColor = System.Drawing.SystemColors.Control;
 			this.controlListView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.controlListView1.Controls.Add(this.researchItem1);
 			this.controlListView1.Controls.Add(this.researchItem2);
@@ -62,12 +65,13 @@ namespace Winforms_Mockups
 			this.controlListView1.Controls.Add(this.researchItem4);
 			this.controlListView1.Location = new System.Drawing.Point(12, 12);
 			this.controlListView1.Name = "controlListView1";
-			this.controlListView1.Size = new System.Drawing.Size(260, 402);
+			this.controlListView1.Size = new System.Drawing.Size(277, 452);
 			this.controlListView1.TabIndex = 0;
 			// 
 			// researchItem1
 			// 
 			this.researchItem1.BackColor = System.Drawing.SystemColors.Control;
+			this.researchItem1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.researchItem1.Location = new System.Drawing.Point(3, 3);
 			this.researchItem1.Name = "researchItem1";
 			this.researchItem1.Size = new System.Drawing.Size(250, 50);
@@ -76,6 +80,7 @@ namespace Winforms_Mockups
 			// researchItem2
 			// 
 			this.researchItem2.BackColor = System.Drawing.SystemColors.Control;
+			this.researchItem2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.researchItem2.Location = new System.Drawing.Point(3, 59);
 			this.researchItem2.Name = "researchItem2";
 			this.researchItem2.Size = new System.Drawing.Size(250, 50);
@@ -84,6 +89,7 @@ namespace Winforms_Mockups
 			// researchItem3
 			// 
 			this.researchItem3.BackColor = System.Drawing.SystemColors.Control;
+			this.researchItem3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.researchItem3.Location = new System.Drawing.Point(3, 115);
 			this.researchItem3.Name = "researchItem3";
 			this.researchItem3.Size = new System.Drawing.Size(250, 50);
@@ -92,6 +98,7 @@ namespace Winforms_Mockups
 			// researchItem4
 			// 
 			this.researchItem4.BackColor = System.Drawing.SystemColors.Control;
+			this.researchItem4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.researchItem4.Location = new System.Drawing.Point(3, 171);
 			this.researchItem4.Name = "researchItem4";
 			this.researchItem4.Size = new System.Drawing.Size(250, 50);
@@ -100,7 +107,7 @@ namespace Winforms_Mockups
 			// button1
 			// 
 			this.button1.Image = global::Winforms_Mockups.Properties.Resources.arrow_first;
-			this.button1.Location = new System.Drawing.Point(278, 17);
+			this.button1.Location = new System.Drawing.Point(295, 73);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(50, 50);
 			this.button1.TabIndex = 1;
@@ -109,7 +116,7 @@ namespace Winforms_Mockups
 			// button2
 			// 
 			this.button2.Image = global::Winforms_Mockups.Properties.Resources.arrow_up;
-			this.button2.Location = new System.Drawing.Point(278, 73);
+			this.button2.Location = new System.Drawing.Point(295, 129);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(50, 50);
 			this.button2.TabIndex = 2;
@@ -118,7 +125,7 @@ namespace Winforms_Mockups
 			// button3
 			// 
 			this.button3.Image = global::Winforms_Mockups.Properties.Resources.arrow_down;
-			this.button3.Location = new System.Drawing.Point(278, 129);
+			this.button3.Location = new System.Drawing.Point(295, 185);
 			this.button3.Name = "button3";
 			this.button3.Size = new System.Drawing.Size(50, 50);
 			this.button3.TabIndex = 3;
@@ -127,7 +134,7 @@ namespace Winforms_Mockups
 			// button4
 			// 
 			this.button4.Image = global::Winforms_Mockups.Properties.Resources.arrow_last;
-			this.button4.Location = new System.Drawing.Point(278, 185);
+			this.button4.Location = new System.Drawing.Point(295, 241);
 			this.button4.Name = "button4";
 			this.button4.Size = new System.Drawing.Size(50, 50);
 			this.button4.TabIndex = 4;
@@ -135,16 +142,16 @@ namespace Winforms_Mockups
 			// 
 			// trackBar1
 			// 
-			this.trackBar1.Location = new System.Drawing.Point(278, 353);
+			this.trackBar1.Location = new System.Drawing.Point(368, 60);
 			this.trackBar1.Name = "trackBar1";
-			this.trackBar1.Size = new System.Drawing.Size(210, 45);
+			this.trackBar1.Size = new System.Drawing.Size(250, 45);
 			this.trackBar1.TabIndex = 5;
 			this.trackBar1.Value = 5;
 			// 
 			// lable1
 			// 
 			this.lable1.AutoSize = true;
-			this.lable1.Location = new System.Drawing.Point(278, 401);
+			this.lable1.Location = new System.Drawing.Point(368, 108);
 			this.lable1.Name = "lable1";
 			this.lable1.Size = new System.Drawing.Size(32, 13);
 			this.lable1.TabIndex = 6;
@@ -153,7 +160,7 @@ namespace Winforms_Mockups
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(440, 401);
+			this.label1.Location = new System.Drawing.Point(570, 108);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(48, 13);
 			this.label1.TabIndex = 7;
@@ -162,7 +169,7 @@ namespace Winforms_Mockups
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(278, 337);
+			this.label2.Location = new System.Drawing.Point(368, 44);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(59, 13);
 			this.label2.TabIndex = 8;
@@ -171,7 +178,7 @@ namespace Winforms_Mockups
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(278, 302);
+			this.label3.Location = new System.Drawing.Point(368, 9);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(139, 13);
 			this.label3.TabIndex = 9;
@@ -180,7 +187,7 @@ namespace Winforms_Mockups
 			// pictureBox1
 			// 
 			this.pictureBox1.Image = global::Winforms_Mockups.Properties.Resources.hydroponic_farms;
-			this.pictureBox1.Location = new System.Drawing.Point(375, 17);
+			this.pictureBox1.Location = new System.Drawing.Point(368, 185);
 			this.pictureBox1.Name = "pictureBox1";
 			this.pictureBox1.Size = new System.Drawing.Size(80, 80);
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -189,21 +196,41 @@ namespace Winforms_Mockups
 			// 
 			// textBox1
 			// 
-			this.textBox1.Location = new System.Drawing.Point(461, 17);
+			this.textBox1.Location = new System.Drawing.Point(368, 271);
 			this.textBox1.Multiline = true;
 			this.textBox1.Name = "textBox1";
 			this.textBox1.ReadOnly = true;
-			this.textBox1.Size = new System.Drawing.Size(270, 218);
+			this.textBox1.Size = new System.Drawing.Size(250, 193);
 			this.textBox1.TabIndex = 11;
 			this.textBox1.Text = "Improved hydroponic farming. Lore ipsum\r\nDoloret reat msddo mowerr maugad sad\r\nda" +
 			"od coksal. Je sorof msoerta naue usfa.\r\n\r\nFood per population: +0.25\r\nFood per f" +
 			"armer: +0.5\r\nPopulation growth: +25%";
 			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(454, 185);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(89, 13);
+			this.label4.TabIndex = 12;
+			this.label4.Text = "Hydroponic farms";
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(454, 199);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(42, 13);
+			this.label5.TabIndex = 13;
+			this.label5.Text = "Level 2";
+			// 
 			// FromDevelopment
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(741, 426);
+			this.ClientSize = new System.Drawing.Size(634, 476);
+			this.Controls.Add(this.label5);
+			this.Controls.Add(this.label4);
 			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.label3);
@@ -226,6 +253,8 @@ namespace Winforms_Mockups
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.TextBox textBox1;
 		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.Label label3;
