@@ -16,5 +16,30 @@ namespace Stareater.GUI
 		{
 			e.Graphics.DrawRectangle(new Pen(Color.Gray, 2), e.ClipRectangle);
 		}
+		
+		void thumbnailImage_Click(object sender, EventArgs e)
+		{
+			this.InvokeOnClick(this, e);
+		}
+		
+		void nameLabel_Click(object sender, EventArgs e)
+		{
+			this.InvokeOnClick(this, e);
+		}
+		
+		void levelLabel_Click(object sender, EventArgs e)
+		{
+			this.InvokeOnClick(this, e);
+		}
+		
+		void costLabel_Click(object sender, EventArgs e)
+		{
+			this.InvokeOnClick(this, e);
+		}
+		
+		void investmentLabel_Click(object sender, EventArgs e)
+		{
+			this.InvokeOnClick(this, e);
+		}
 	}
 }
