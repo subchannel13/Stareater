@@ -13,8 +13,6 @@ namespace Stareater.GLRenderers
 {
 	class GalaxyRenderer : IRenderer
 	{
-		private const string GalaxyTexturePath = "./images/galaxy textures.png";
-		
 		private const double DefaultViewSize = 15;
 		private const double ZoomBase = 1.2f;
 		private const int MaxZoom = 10;

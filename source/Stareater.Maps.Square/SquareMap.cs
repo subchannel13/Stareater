@@ -18,7 +18,7 @@ namespace Stareater.Galaxy.Square
 {
 	public class SquareMap : IStarPositioner
 	{
-		const string ParametersFile = "square_map.txt";
+		const string ParametersFile = "squareMap.txt";
 		const string LanguageContext = "SquareMap";
 		const string ConstantsKey = "Constants";
 		const string SizeKey = "Size";

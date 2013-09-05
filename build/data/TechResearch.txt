@@ -5,7 +5,7 @@
 	cost # 1e6 * (lvl0 + 2 ^ lvl0);
 	maxLvl= 7
 	prerequisites [] 
-	image: ./images/technologies/hydroponic_farms.png
+	image: ./images/technologies/hydroponicFarms.png
 }
 
 { ResearchTopic
@@ -15,7 +15,7 @@
 	cost # 10e6 * (lvl0 + 2 ^ lvl0);
 	maxLvl= 7
 	prerequisites []
-	image: ./images/technologies/hydroponic_farms.png
+	image: ./images/technologies/hydroponicFarms.png
 }
 
 { ResearchTopic
@@ -25,7 +25,7 @@
 	cost # 10e6 * (lvl0 + 2 ^ lvl0);
 	maxLvl= 7
 	prerequisites []
-	image: ./images/technologies/hydroponic_farms.png
+	image: ./images/technologies/hydroponicFarms.png
 }
 
 { ResearchTopic
@@ -35,6 +35,6 @@
 	cost # 10e6 * (lvl0 + 2 ^ lvl0);
 	maxLvl= 7
 	prerequisites []
-	image: ./images/technologies/hydroponic_farms.png
+	image: ./images/technologies/hydroponicFarms.png
 }
 

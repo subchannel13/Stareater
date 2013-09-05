@@ -75,6 +75,11 @@ namespace Stareater.GUI
 		{
 			postDelayedEvent(showMainMenu);
 		}
+		
+		private void developmentToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			//TODO
+		}
 
 		#region Delayed Events
 		private void postDelayedEvent(Action eventAction)
@@ -217,5 +222,6 @@ namespace Stareater.GUI
 		}
 		
 		#endregion
+		
 	}
 }

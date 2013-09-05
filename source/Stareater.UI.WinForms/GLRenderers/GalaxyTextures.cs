@@ -26,8 +26,8 @@ namespace Stareater.GLRenderers
 		private GalaxyTextures()
 		{ }
 		
-		const string AtlasImagePath = "./images/GalaxyTextures.png";
-		const string AtlasIkonPath = "./images/GalaxyTextures.txt";
+		const string AtlasImagePath = "./Images/GalaxyTextures.png";
+		const string AtlasIkonPath = "./Images/GalaxyTextures.txt";
 		
 		const string AtlasTag = "TextureAtlas";
 		const string LineTag = "line";

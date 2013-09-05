@@ -7,7 +7,7 @@
 	prerequisites [
 		:BIO # (lvl + 2) / 3  - 1;
 	]
-	image: ./images/technologies/hydroponic_farms.png
+	image: ./images/technologies/hydroponicFarms.png
 }
 
 { DevelopmentTopic
@@ -49,7 +49,7 @@
 	cost # 300e9 * (lvl0 + 2 ^lvl0);
 	maxLvl= 10
 	prerequisites []
-	image: ./images/technologies/hydroponic_farms.png
+	image: ./images/technologies/hydroponicFarms.png
 }
 
 { DevelopmentTopic
@@ -61,7 +61,7 @@
 	prerequisites [
 		:ECM # 5;
 	]
-	image: ./images/technologies/hydroponic_farms.png
+	image: ./images/technologies/hydroponicFarms.png
 }
 
 { DevelopmentTopic
@@ -71,7 +71,7 @@
 	cost # 300e9 * lvl ^ 2;
 	maxLvl= 10
 	prerequisites []
-	image: ./images/technologies/hydroponic_farms.png
+	image: ./images/technologies/hydroponicFarms.png
 }
 
 { DevelopmentTopic
