@@ -35,6 +35,7 @@
 			this.constructionManagement = new Stareater.GUI.ConstructionSiteView();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.mainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.developmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.endTurnButton = new System.Windows.Forms.Button();
 			this.menuStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -76,7 +77,8 @@
 			// menuStrip
 			// 
 			this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.mainMenuToolStripMenuItem});
+									this.mainMenuToolStripMenuItem,
+									this.developmentToolStripMenuItem});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
 			this.menuStrip.Size = new System.Drawing.Size(884, 24);
@@ -89,6 +91,13 @@
 			this.mainMenuToolStripMenuItem.Size = new System.Drawing.Size(80, 20);
 			this.mainMenuToolStripMenuItem.Text = "Main menu";
 			this.mainMenuToolStripMenuItem.Click += new System.EventHandler(this.mainMenuToolStripMenuItem_Click);
+			// 
+			// developmentToolStripMenuItem
+			// 
+			this.developmentToolStripMenuItem.Name = "developmentToolStripMenuItem";
+			this.developmentToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
+			this.developmentToolStripMenuItem.Text = "Development";
+			this.developmentToolStripMenuItem.Click += new System.EventHandler(this.developmentToolStripMenuItem_Click);
 			// 
 			// endTurnButton
 			// 
@@ -123,6 +132,7 @@
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.ToolStripMenuItem developmentToolStripMenuItem;
 		private System.Windows.Forms.Button endTurnButton;
 		private System.Windows.Forms.ToolStripMenuItem mainMenuToolStripMenuItem;
 		private System.Windows.Forms.MenuStrip menuStrip;

@@ -50,6 +50,12 @@ namespace Stareater.Controllers
 
 		public GameState State { get; private set; }
 
+		public void EndTurn()
+		{
+			//UNDONE: stub
+		}
+		
+		#region Map related
 		public IEnumerable<StarData> Stars
 		{
 			get
@@ -82,11 +88,6 @@ namespace Stareater.Controllers
 			{
 				this.lastSelectedStar[game.Players[game.CurrentPlayer]] = value;
 			}
-		}
-		
-		public void EndTurn()
-		{
-			//UNDONE: stub
 		}
 		
 		private StarData closestStar(float x, float y, float searchRadius)
@@ -125,10 +126,19 @@ namespace Stareater.Controllers
 		{
 			return new StarSystemController(game, star);
 		}
+		#endregion
+		
+		#region Technology related
+		public IEnumerable<object> DevelopmentTopics()
+		{
+			//TODO
+			yield break;
+		}
+		#endregion
 		
 		private static readonly string[] StaticDataFiles = new string[] {
-			"./data/TechDevelopment.txt",
-			"./data/TechResearch.txt",
+			"./data/techDevelopment.txt",
+			"./data/techResearch.txt",
 		};
 	}
 }

@@ -12,7 +12,7 @@ namespace Stareater.Galaxy
 {
 	public class MapAssets
 	{
-		private const string StartConditionsFilePath = "./data/StartConditions.txt";
+		private const string StartConditionsFilePath = "./data/startConditions.txt";
 		public const string MapsFolder = "./maps/";
 
 		#region Attribute keys

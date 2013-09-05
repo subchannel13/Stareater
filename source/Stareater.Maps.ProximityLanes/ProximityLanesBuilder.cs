@@ -18,7 +18,7 @@ namespace Stareater.Galaxy.ProximityLanes
 {
 	public class ProximityLanesBuilder : IStarConnector
 	{
-		const string ParametersFile = "proximity_lanes.txt";
+		const string ParametersFile = "proximityLanes.txt";
 
 		const string LanguageContext = "ProximityLanes";
 		const string DegreeKey = "Degree";

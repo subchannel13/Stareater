@@ -16,7 +16,7 @@ namespace Stareater.Galaxy.RybPopulator
 {
 	public class RybStarPopulator : IStarPopulator
 	{
-		private const string ParametersFile = "ryb_populator.txt";
+		private const string ParametersFile = "rybPopulator.txt";
 
 		private const string LanguageContext = "DefaultPopulator";
 
