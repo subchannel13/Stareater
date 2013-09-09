@@ -40,7 +40,12 @@ namespace Stareater
 			foreach(var system in starSystems)
 				planets.Add(system.Planets);
 			
-			this.States = new StatesDB(stars, wormholes, planets);
+			var techProgress = new TechProgressCollection();
+			foreach(Player player in players)
+				foreach(Technology tech in statics.Technologies)
+					techProgress.Add(new TechnologyProgress(tech, player));
+			
+			this.States = new StatesDB(stars, wormholes, planets, techProgress);
 			
 			this.Players = players;
 		}

@@ -3,9 +3,10 @@
 <#@ include file="$(ProjectDir)/Utils/Collections/IndexedCollectionBase.tt" #><#
 	
 	namespaceName = "Stareater.GameData.Databases.Tables";
+	usings.Add("Stareater.Players");
 	usings.Add("Stareater.Utils.Collections");
-		
-	Generate("TechnologiesCollection", "Technology",
-		new ViewInfo("Codes", "string", "IdCode", ViewType.Collection)
+	
+	Generate("TechProgressCollection", "TechnologyProgress",
+		new ViewInfo("Players", "Player", "Owner", ViewType.Collection)
 	);
 #>

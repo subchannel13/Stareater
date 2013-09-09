@@ -9,11 +9,14 @@ namespace Stareater.GameData.Databases
 		public WormholeCollection Wormholes { get; private set; }
 		public PlanetsCollection Planets { get; private set; }
 		
-		public StatesDB(StarsCollection stars, WormholeCollection wormholes, PlanetsCollection planets)
+		public TechProgressCollection TechnologyProgresses { get; private set; }
+		
+		public StatesDB(StarsCollection stars, WormholeCollection wormholes, PlanetsCollection planets, TechProgressCollection technologyProgresses)
 		{
 			this.Planets = planets;
 			this.Stars = stars;
 			this.Wormholes = wormholes;
+			this.TechnologyProgresses = technologyProgresses;
 		}
 	}
 }
