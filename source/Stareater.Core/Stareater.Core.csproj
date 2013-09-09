@@ -151,6 +151,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ExampleCollection.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Collections\Var.cs" />
     <Compile Include="Utils\ProgressData.cs" />
     <Compile Include="Utils\TableSubset.cs" />
     <Compile Include="Utils\Collections\IDelayedRemoval.cs" />

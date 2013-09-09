@@ -8,6 +8,7 @@
  */
 using System;
 using NUnit.Framework;
+using Stareater.Utils.Collections;
 
 namespace ExpressionParser_Tests
 {
@@ -31,7 +32,7 @@ namespace ExpressionParser_Tests
 		[Test]
 		public void FunctionAbsVariable()
 		{
-			var test = new ParserTester("abs(x)", new Var("x", -1), 1);
+			var test = new ParserTester("abs(x)", new Var("x", -1).Get, 1);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
@@ -129,7 +130,7 @@ namespace ExpressionParser_Tests
 		[Test]
 		public void FunctionMax2ParamsVar()
 		{
-			var test = new ParserTester("max(x, y)", new Var("x", 3).And("y", 5), 5);
+			var test = new ParserTester("max(x, y)", new Var("x", 3).And("y", 5).Get, 5);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		

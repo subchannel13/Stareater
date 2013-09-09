@@ -10,10 +10,10 @@ namespace ExpressionParser_Tests
 	{
 		ExpressionParser parser;
 		double expectedOutput;
-		Dictionary<string, double> variables;
+		IDictionary<string, double> variables;
 		double delta = 0;
 
-		public ParserTester(string input, Dictionary<string, double> variables, double expectedOutput)
+		public ParserTester(string input, IDictionary<string, double> variables, double expectedOutput)
 		{
 			this.parser = new ExpressionParser(input);
 			parser.Parse();
@@ -22,7 +22,7 @@ namespace ExpressionParser_Tests
 			this.variables = variables;
 		}
 
-		public ParserTester(string input, Dictionary<string, double> variables, double expectedOutput, double delta)
+		public ParserTester(string input, IDictionary<string, double> variables, double expectedOutput, double delta)
 			: this(input, variables, expectedOutput)
 		{
 			this.delta = delta;

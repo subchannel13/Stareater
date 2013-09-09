@@ -6,6 +6,7 @@ using System.Linq;
 using NUnit.Framework;
 using Stareater.AppData.Expressions;
 using System.IO;
+using Stareater.Utils.Collections;
 
 namespace ExpressionParser_Tests
 {
@@ -80,7 +81,7 @@ namespace ExpressionParser_Tests
 			string varName = "lvl";
 			double varValue = 3.14;
 
-			var test = new ParserTester(varName, new Var(varName, varValue), varValue);
+			var test = new ParserTester(varName, new Var(varName, varValue).Get, varValue);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 	}

@@ -73,7 +73,6 @@
     <Compile Include="SummationTest.cs" />
     <Compile Include="TermTests.cs" />
     <Compile Include="UnaryTests.cs" />
-    <Compile Include="Var.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stareater.Core\Stareater.Core.csproj">

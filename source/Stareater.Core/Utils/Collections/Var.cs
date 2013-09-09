@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace ExpressionParser_Tests
+namespace Stareater.Utils.Collections
 {
-	class Var
+	public class Var
 	{
 		Dictionary<string, double> variables = new Dictionary<string, double>();
 
@@ -23,9 +21,11 @@ namespace ExpressionParser_Tests
 			return this;
 		}
 
-		public static implicit operator Dictionary<string, double>(Var v)
+		public IDictionary<string, double> Get
 		{
-			return v.variables;
+			get {
+				return this.variables;
+			}
 		}
 	}
 }

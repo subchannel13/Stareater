@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Ikadn;
 using Stareater.AppData.Expressions;
+using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.Localization
@@ -58,10 +59,10 @@ namespace Stareater.Localization
 				throw new InvalidOperationException("This IText has more than one variable, call overload that set all their values.");
 			
 			return formatter(formula.Evaluate(
-				new Dictionary<string, double>() {
-					{formula.Variables.First(), trivialVariable}
-          		}
-			));
+				new Var(
+					formula.Variables.First(), 
+					trivialVariable))
+			);
 		}
 
 		public string Text(IDictionary<string, double> variables)
