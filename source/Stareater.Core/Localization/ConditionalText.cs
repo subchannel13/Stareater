@@ -3,31 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Ikadn;
+using Stareater.AppData.Expressions;
 using Stareater.Utils;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Localization
 {
 	class ConditionalText : IkadnBaseObject, IText
 	{
-		string variableName;
+		Formula forumla;
 		IText text;
 		HashSet<string> variables = new HashSet<string>();
-		TableSubset<string> nestedVariables;
 
-		public ConditionalText(string variableName, IText text)
+		public ConditionalText(Formula forumla, IText text)
 		{
-			this.variableName = variableName;
+			this.forumla = forumla;
 			this.text = text;
-			this.variables.Add(variableName);
 
-			string[] textVariables = text.VariableNames().ToArray();
-			if (textVariables.Length > 0) {
-				this.nestedVariables = new TableSubset<string>(textVariables);
-				this.variables.UnionWith(textVariables);
-			}
-			else {
-				this.nestedVariables = null;
-			}
+			this.variables.UnionWith(forumla.Variables);
+			this.variables.UnionWith(text.VariableNames());
 		}
 
 		protected override void DoCompose(IkadnWriter writer)
@@ -52,34 +46,29 @@ namespace Stareater.Localization
 
 		public IEnumerable<string> VariableNames()
 		{
-			return (IEnumerable<string>)variables ?? new string[] { variableName };
+			return variables;
 		}
 
 		public string Text()
 		{
-			throw new NotImplementedException();
+			throw new InvalidOperationException("This IText has one or more variables, call an overload that sets their values.");
 		}
 
 		public string Text(double trivialVariable)
 		{
-			if (nestedVariables != null)
-				throw new InvalidOperationException("This IText has more than one variable, call overload that set all their values.");
+			if (variables.Count > 1)
+				throw new InvalidOperationException("This IText has more than one variable, call an overload that sets all their values.");
 
-			return Text(new Dictionary<string, double>()
-			{
-				{variableName, trivialVariable}
-			});
+			return Text(new Var(variables.First(), trivialVariable).Get);
 		}
 
 		public string Text(IDictionary<string, double> variables)
 		{
-			if (!this.variables.SetEquals(variables.Keys))
+			if (!this.variables.IsSubsetOf(variables.Keys))
 				throw new ArgumentException("Keys of the given table of variables do not match with expected set of keys.", "variables");
 
-			if (variables[variableName] >= 0)
-				return (nestedVariables != null) ?
-					text.Text(nestedVariables.Extract(variables)) :
-					text.Text();
+			if (forumla.Evaluate(variables) >= 0)
+				return text.Text(variables);
 			else
 				return "";
 		}

@@ -14,10 +14,10 @@ namespace Stareater.GameData
 		public string IdCode { get; private set; }
 		public Formula Cost { get; private set; }
 		public IEnumerable<Prerequisite> Prerequisites { get; private set; }
-		public long MaxLevel { get; private set; }
+		public int MaxLevel { get; private set; }
 		public TechnologyCategory Category { get; private set; }
 		
-		public Technology(string nameCode, string descriptionCode, string imagePath, string code, Formula cost, IEnumerable<Prerequisite> prerequisites, long maxLevel, TechnologyCategory category)
+		public Technology(string nameCode, string descriptionCode, string imagePath, string code, Formula cost, IEnumerable<Prerequisite> prerequisites, int maxLevel, TechnologyCategory category)
 		{
 			this.nameCode = nameCode;
 			this.descriptionCode = descriptionCode;
