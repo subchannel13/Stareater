@@ -4,28 +4,22 @@ using System.Linq;
 using System.Text;
 using Ikadn;
 using Stareater.Utils;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Localization
 {
 	class ChainText : IkadnBaseObject, IText
 	{
-		Tuple<IText, TableSubset<string>>[] textRuns;
+		IEnumerable<IText> textRuns;
 		HashSet<string> variables;
 
 		public ChainText(IEnumerable<IText> textRuns)
 		{
+			this.textRuns = textRuns;
 			this.variables = new HashSet<string>();
 
-			var textRunInfos = new List<Tuple<IText, TableSubset<string>>>();
-			foreach (var textRun in textRuns) {
-				var variables = textRun.VariableNames().ToArray();
-				textRunInfos.Add(new Tuple<IText, TableSubset<string>>(
-					textRun,
-					(variables.Length > 0) ? new TableSubset<string>(variables) : null
-					));
-				this.variables.UnionWith(variables);
-			}
-			this.textRuns = textRunInfos.ToArray();			
+			foreach (var textRun in textRuns)
+				this.variables.UnionWith(textRun.VariableNames());
 		}
 
 		protected override void DoCompose(IkadnWriter writer)
@@ -55,11 +49,11 @@ namespace Stareater.Localization
 		public string Text()
 		{
 			if (variables.Count != 0)
-				throw new InvalidOperationException("This IText has variables, call overload that sets their values.");
+				throw new InvalidOperationException("This IText has variables, call an overload that sets their values.");
 
 			StringBuilder text = new StringBuilder();
 			foreach (var textRun in textRuns)
-				text.Append(textRun.Item1.Text());
+				text.Append(textRun.Text());
 			return text.ToString();
 		}
 
@@ -68,25 +62,19 @@ namespace Stareater.Localization
 			if (variables.Count == 0)
 				throw new InvalidOperationException("This IText has no variables");
 			else if (variables.Count > 1)
-				throw new InvalidOperationException("This IText has more than one variable, call overload that set all their values.");
+				throw new InvalidOperationException("This IText has more than one variable, call anoverload that sets all their values.");
 
-			return Text(new Dictionary<string, double>()
-			{
-				{this.variables.First(), trivialVariable}
-			});
+			return Text(new Var(this.variables.First(), trivialVariable).Get);
 		}
 
 		public string Text(IDictionary<string, double> variables)
 		{
-			if (!this.variables.SetEquals(variables.Keys))
+			if (!this.variables.IsSubsetOf(variables.Keys))
 				throw new ArgumentException("Keys of the given table of variables do not match with expected set of keys.", "variables");
 
 			StringBuilder text = new StringBuilder();
 			foreach (var textRun in textRuns)
-				if (textRun.Item2 == null)
-					text.Append(textRun.Item1.Text());
-				else
-					text.Append(textRun.Item1.Text(textRun.Item2.Extract(variables)));
+				text.Append(textRun.Text(variables));
 
 			return text.ToString();
 		}

@@ -5,13 +5,13 @@ namespace Stareater.GameData
 {
 	public class Prerequisite
 	{
-		private string code;
-		private Formula level;
+		public string Code { get; private set; }
+		public Formula Level { get; private set; }
 		
 		public Prerequisite(string code, Formula level)
 		{
-			this.code = code;
-			this.level = level;
+			this.Code = code;
+			this.Level = level;
 		}
 	}
 }

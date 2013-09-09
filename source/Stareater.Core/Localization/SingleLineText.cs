@@ -45,12 +45,12 @@ namespace Stareater.Localization
 
 		public string Text(double trivialVariable)
 		{
-			throw new InvalidOperationException("This IText has no variables");
+			return text;
 		}
 
 		public string Text(System.Collections.Generic.IDictionary<string, double> variables)
 		{
-			throw new InvalidOperationException("This IText has no variables");
+			return text;
 		}
 	}
 }

@@ -58,11 +58,8 @@ namespace Stareater.Localization
 			if (formula.Variables.Count > 1)
 				throw new InvalidOperationException("This IText has more than one variable, call overload that set all their values.");
 			
-			return formatter(formula.Evaluate(
-				new Var(
-					formula.Variables.First(), 
-					trivialVariable))
-			);
+			var variable = new Var(formula.Variables.First(), trivialVariable).Get;
+			return formatter(formula.Evaluate(variable));
 		}
 
 		public string Text(IDictionary<string, double> variables)
