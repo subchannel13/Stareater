@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stareater.GameData;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Data
 {
@@ -15,7 +16,7 @@ namespace Stareater.Controllers.Data
 		
 		public TechnologyTopic(Technology tech)
 		{
-			this.Cost = tech.Cost.Evaluate(new Dictionary<string, double>() {{ "lvl0", 0}}); //TODO: determine level
+			this.Cost = tech.Cost.Evaluate(new Var("lvl0", 0).Get); //TODO: determine level
 		}
 	}
 }

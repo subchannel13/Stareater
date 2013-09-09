@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using Stareater.Utils.Collections;
 
 namespace ExpressionParser_Tests
 {
@@ -23,14 +24,14 @@ namespace ExpressionParser_Tests
 		[Test]
 		public void NegateVarNegative()
 		{
-			var test = new ParserTester("-a", new Var("a", 4), -4);
+			var test = new ParserTester("-a", new Var("a", 4).Get, -4);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
 		[Test]
 		public void NegateVarPositive()
 		{
-			var test = new ParserTester("-a", new Var("a", -4), 4);
+			var test = new ParserTester("-a", new Var("a", -4).Get, 4);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
@@ -44,7 +45,7 @@ namespace ExpressionParser_Tests
 		[Test]
 		public void NegateToBooleanVar()
 		{
-			var test = new ParserTester("-'x", new Var("x", -2), 1);
+			var test = new ParserTester("-'x", new Var("x", -2).Get, 1);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
@@ -72,14 +73,14 @@ namespace ExpressionParser_Tests
 		[Test]
 		public void ToBooleanVarNegative()
 		{
-			var test = new ParserTester("'a", new Var("a", 4), 1);
+			var test = new ParserTester("'a", new Var("a", 4).Get, 1);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
 		[Test]
 		public void ToBooleanVarPositive()
 		{
-			var test = new ParserTester("'a", new Var("a", -4), -1);
+			var test = new ParserTester("'a", new Var("a", -4).Get, -1);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 	}

@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using Stareater.Utils.Collections;
 
 namespace ExpressionParser_Tests
 {
@@ -65,14 +66,14 @@ namespace ExpressionParser_Tests
 		[Test]
 		public void ListVariableInside()
 		{
-			var test = new ParserTester("i [a, b, c]", new Var("i", 0.5).And("a", 10).And("b", 20).And("c", 30), 15);
+			var test = new ParserTester("i [a, b, c]", new Var("i", 0.5).And("a", 10).And("b", 20).And("c", 30).Get, 15);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
 		[Test]
 		public void ListVariableOutside()
 		{
-			var test = new ParserTester("i [a, b, c]", new Var("i", -5.5).And("a", 10).And("b", 20).And("c", 30), -45);
+			var test = new ParserTester("i [a, b, c]", new Var("i", -5.5).And("a", 10).And("b", 20).And("c", 30).Get, -45);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 	}

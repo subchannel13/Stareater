@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using Stareater.Utils.Collections;
 
 namespace ExpressionParser_Tests
 {
@@ -37,21 +38,21 @@ namespace ExpressionParser_Tests
 		[Test]
 		public void ExponentiationVarBoth()
 		{
-			var test = new ParserTester("x^y", new Var("x", 2).And("y", 3), 8);
+			var test = new ParserTester("x^y", new Var("x", 2).And("y", 3).Get, 8);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
 		[Test]
 		public void ExponentiationVarLeft()
 		{
-			var test = new ParserTester("x^2", new Var("x", 5), 25);
+			var test = new ParserTester("x^2", new Var("x", 5).Get, 25);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
 		[Test]
 		public void ExponentiationVarRight()
 		{
-			var test = new ParserTester("2^x", new Var("x", 5), 32);
+			var test = new ParserTester("2^x", new Var("x", 5).Get, 32);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
@@ -65,7 +66,7 @@ namespace ExpressionParser_Tests
 		[Test]
 		public void SegmentExponentiationVar()
 		{
-			var test = new ParserTester("a^b^a", new Var("a", 2).And("b", 3), 512);
+			var test = new ParserTester("a^b^a", new Var("a", 2).And("b", 3).Get, 512);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 	}
