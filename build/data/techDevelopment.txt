@@ -5,7 +5,7 @@
 	cost # 50e9 * (lvl0 + 3 ^lvl0);
 	maxLvl= 8
 	prerequisites [
-		:BIO # (lvl + 2) / 3  - 1;
+		:BIO # lvl0 [-1, -1, -1, 0, 0, 1, 1];
 	]
 	image: ./images/technologies/hydroponicFarms.png
 }
@@ -68,7 +68,7 @@
 	nameCode: TITANIUM_NAME
 	descCode: TITANIUM_DESC
 	code: TITANIUM
-	cost # 300e9 * lvl ^ 2;
+	cost # 300e9 * (lvl0 + 1) ^ 2;
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
@@ -78,7 +78,7 @@
 	nameCode: DURAPLAST_NAME
 	descCode: DURAPLAST_DESC
 	code: DURAPLAST
-	cost # 6e12 * lvl ^ 2;
+	cost # 6e12 * (lvl0 + 1) ^ 2;
 	maxLvl= 10
 	prerequisites [
 		:BIO # 4;
@@ -91,10 +91,10 @@
 	nameCode: COLONIZER_NAME
 	descCode: COLONIZER_DESC
 	code: COLONIZER
-	cost # 70e9 * lvl ^ 2;
+	cost # 70e9 * (lvl0 + 1) ^ 2;
 	maxLvl= 10
 	prerequisites [
-		:BIO # lvl - 5;
+		:BIO # lvl0 - 5;
 	]
 	image: ./images/technologies/industry.png
 }
@@ -103,7 +103,7 @@
 	nameCode: SPACE_PROGRAM_NAME
 	descCode: SPACE_PROGRAM_DESC
 	code: SPACE_PROGRAM
-	cost # 80e9 * lvl ^ 2;
+	cost # 80e9 * (lvl0 + 1) ^ 2;
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/spaceport.png

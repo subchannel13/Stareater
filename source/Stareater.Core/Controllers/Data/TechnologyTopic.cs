@@ -17,13 +17,21 @@ namespace Stareater.Controllers.Data
 		
 		public string ImagePath { get; private set; }
 		public double Cost { get; private set; }
+		public double InvestedPoints { get; private set; }
+		public double Investment { get; private set; }
+		public int Level { get; private set; }
+		public int NextLevel { get; private set; }
 		
 		public TechnologyTopic(TechnologyProgress tech)
 		{
 			this.technology = tech.Topic;
-			this.textVars = new Var("lvl", tech.NextLevel).Get;
+			this.textVars = new Var("lvl0", tech.NextLevel).Get;
 				
-			this.Cost = tech.Topic.Cost.Evaluate(new Var("lvl0", tech.NextLevel).Get);
+			this.Cost = tech.Topic.Cost.Evaluate(textVars);
+			this.InvestedPoints = tech.InvestedPoints;
+			this.Investment = 0; //TODO: Get real investment points
+			this.Level = tech.Level;
+			this.NextLevel = tech.NextLevel;
 		}
 		
 		public string Name 

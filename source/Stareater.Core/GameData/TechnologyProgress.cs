@@ -28,10 +28,10 @@ namespace Stareater.GameData
 		public int NextLevel
 		{
 			get {
-				if (Level == NotStarted)
+				if (Level < 0)
 					return 0;
-				else if (Level < 0 || Level >= Topic.MaxLevel)
-					throw new InvalidOperationException("Illegal technology level for " + Topic.IdCode + ", " + Owner.Name);
+				else if (Level >= Topic.MaxLevel)
+					return Topic.MaxLevel;
 				
 				return Level + 1;
 			}
@@ -43,9 +43,11 @@ namespace Stareater.GameData
 				return false;
 			
 			var levelVars = new Var("lvl0", NextLevel).Get;
-			foreach(Prerequisite prerequisite in Topic.Prerequisites)
-				if (techLevelGetter(prerequisite.Code) < prerequisite.Level.Evaluate(levelVars))
+			foreach(Prerequisite prerequisite in Topic.Prerequisites) {
+				double requiredLevel = prerequisite.Level.Evaluate(levelVars);
+				if (requiredLevel >= 0 && techLevelGetter(prerequisite.Code) < requiredLevel)
 					return false;
+			}
 			
 			return true;
 		}

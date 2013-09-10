@@ -36,6 +36,7 @@ namespace Stareater.GUI
 			// 
 			this.topicList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 									| System.Windows.Forms.AnchorStyles.Left)));
+			this.topicList.AutoScroll = true;
 			this.topicList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.topicList.Location = new System.Drawing.Point(12, 12);
 			this.topicList.Name = "topicList";
@@ -51,6 +52,7 @@ namespace Stareater.GUI
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormDevelopment";
 			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Development topics";
 			this.ResumeLayout(false);
 		}

@@ -78,7 +78,8 @@ namespace Stareater.GUI
 		
 		private void developmentToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			//TODO
+			using(var form = new FormDevelopment(controller))
+				form.ShowDialog();
 		}
 
 		#region Delayed Events
