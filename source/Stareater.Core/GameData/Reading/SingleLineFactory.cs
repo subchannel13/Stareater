@@ -7,7 +7,8 @@ namespace Stareater.GameData.Reading
 	{
 		public IkadnBaseObject Parse(IkadnParser parser)
 		{
-			return new SingleLineText(parser.Reader.ReadUntil('\n', '\r', IkadnReader.EndOfStreamResult).Trim());
+			parser.Reader.SkipWhiteSpaces();
+			return new SingleLineText(parser.Reader.ReadWhile(x => !char.IsWhiteSpace(x)).Trim());
 		}
 
 		public char Sign

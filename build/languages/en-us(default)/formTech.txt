@@ -1,0 +1,8 @@
+﻿:FormTech
+
+Level {
+Level {LVL}}
+LVL #D lvl;
+
+MainMenu = Main menu
+-

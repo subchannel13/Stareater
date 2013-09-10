@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Ikadn.Ikon.Types;
 using Stareater.AppData.Expressions;
 using Stareater.GameData.Databases.Tables;
@@ -55,6 +56,8 @@ namespace Stareater.GameData.Databases
 							default:
 								throw new FormatException("Invalid game data object with tag " + data.Tag);
 						}
+						
+						yield return p;
 					}
 				}
 			}
@@ -79,7 +82,7 @@ namespace Stareater.GameData.Databases
 				data[TechnologyImageKey].To<string>(),
 				data[TechnologyCodeKey].To<string>(),
 				data[TechnologyCostKey].To<Formula>(),
-				loadPrerquisites(data[TechnologyPrerequisitesKey].To<IkonArray>()),
+				loadPrerquisites(data[TechnologyPrerequisitesKey].To<IkonArray>()).ToArray(),
              	data[TechnologyMaxLevelKey].To<int>(),
              	category
              );
