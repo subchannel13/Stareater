@@ -1,6 +1,6 @@
 @echo off
-rem Copies Stareater.exe from {projDir}/bin/release/
-rem to {svnRoot}/build/
+rem Copies Stareater.exe from {projRoot}/bin/release/
+rem to {projRoot}/build/
 @echo on
 
 del ..\build\*.exe
