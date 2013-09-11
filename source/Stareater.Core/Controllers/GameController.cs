@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NGenerics.Extensions;
 using Stareater.Controllers.Data;
 using Stareater.Galaxy;
 using NGenerics.DataStructures.Mathematical;
@@ -130,12 +131,14 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Technology related
+				
 		public IEnumerable<TechnologyTopic> DevelopmentTopics()
 		{
-			var playerTechs = game.States.TechnologyProgresses.Players(game.Players[game.CurrentPlayer]).ToDictionary(x => x.Topic.IdCode);
-				
-			foreach(var techProgress in playerTechs.Values)
-				if (techProgress.Topic.Category == TechnologyCategory.Development && techProgress.CanProgress(x => playerTechs[x].Level))
+			var playerTechs = game.States.AdvancmentOrder(game.Players[game.CurrentPlayer]);
+			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			
+			foreach(var techProgress in playerTechs)
+				if (techProgress.Topic.Category == TechnologyCategory.Development && techProgress.CanProgress(x => techLevels[x]))
 		        	yield return new TechnologyTopic(techProgress);
 		}
 		#endregion

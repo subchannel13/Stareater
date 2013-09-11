@@ -7,11 +7,14 @@ namespace Stareater.GameData
 	public class TechnologyProgress
 	{
 		public const int NotStarted = -1;
+		public const int Unordered = -1;
 			
 		public int Level { get; private set; }
 		public double InvestedPoints { get; private set; }
 		public Technology Topic { get; private set; }
 		public Player Owner { get; private set; }
+		
+		public int Order { get; set; }
 		
 		public TechnologyProgress(int level, double investedPoints, Technology topic, Player owner)
 		{
@@ -19,6 +22,7 @@ namespace Stareater.GameData
 			this.InvestedPoints = investedPoints;
 			this.Topic = topic;
 			this.Owner = owner;
+			this.Order = Unordered;
 		}
 		
 		public TechnologyProgress(Technology topic, Player owner) : 
