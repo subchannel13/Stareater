@@ -19,12 +19,13 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 		
-		public TechnologyItem(TechnologyTopic topicInfo) : this()
+		public void SetData(TechnologyTopic topicInfo)
 		{
 			Context lang = Settings.Get.Language[LanguageContext];
 			
 			ThousandsFormatter thousandsFormat = new ThousandsFormatter(topicInfo.Cost);
 			
+			thumbnailImage.Image = ImageCache.Get[topicInfo.ImagePath];
 			nameLabel.Text = topicInfo.Name;
 			levelLabel.Text = lang["Level"].Text(new Var("lvl", topicInfo.NextLevel).Get);
 			costLabel.Text = thousandsFormat.Format(topicInfo.InvestedPoints) + " / " +thousandsFormat.Format(topicInfo.Cost);

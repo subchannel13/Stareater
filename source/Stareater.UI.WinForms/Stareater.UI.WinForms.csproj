@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppData\ImageCache.cs" />
     <Compile Include="AppData\SettingsWinforms.cs" />
     <Compile Include="GLRenderers\CharTextureInfo.cs" />
     <Compile Include="GLRenderers\GalaxyTextures.cs" />
