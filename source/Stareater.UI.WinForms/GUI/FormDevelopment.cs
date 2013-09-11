@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Stareater.Controllers;
 
@@ -18,8 +19,20 @@ namespace Stareater.GUI
 		{
 			this.controller = controller;
 			
-			foreach(var topic in controller.DevelopmentTopics())
-				topicList.Controls.Add(new TechnologyItem(topic));
+			updateList();
+		}
+		
+		private void updateList()
+		{
+			var topics = controller.DevelopmentTopics().ToArray();
+
+			while (topicList.Controls.Count < topics.Length)
+				topicList.Controls.Add(new TechnologyItem());
+			while (topicList.Controls.Count > topics.Length)
+				topicList.Controls.RemoveAt(topicList.Controls.Count - 1);
+
+			for (int i = 0; i < topics.Length; i++)
+				(topicList.Controls[i] as TechnologyItem).SetData(topics[i]);
 		}
 		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

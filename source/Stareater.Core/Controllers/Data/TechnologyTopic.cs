@@ -15,7 +15,6 @@ namespace Stareater.Controllers.Data
 		private Technology technology;
 		private IDictionary<string, double> textVars;
 		
-		public string ImagePath { get; private set; }
 		public double Cost { get; private set; }
 		public double InvestedPoints { get; private set; }
 		public double Investment { get; private set; }
@@ -47,6 +46,14 @@ namespace Stareater.Controllers.Data
 			get 
 			{
 				return Settings.Get.Language[LangContext][technology.IdCode + DescriptionSuffix].Text(textVars);
+			}
+		}
+		
+		public string ImagePath 
+		{
+			get
+			{
+				return technology.ImagePath;
 			}
 		}
 		
