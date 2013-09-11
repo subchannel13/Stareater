@@ -15,9 +15,9 @@ Improved hydroponic farming.
 Food per population: +{E1}
 Food per farmer: +{E2}
 Population growth: +{E3}%}
-E1 #D3 LVL * 0.125;
-E2 #D2 LVL * 0.25;
-E3 #D3 LVL * 0.005;
+E1 #D3 (lvl0 + 1) * 0.125;
+E2 #D2 (lvl0 + 1) * 0.25;
+E3 #D3 (lvl0 + 1) * 0.005;
 
 IND_NAME = Industry
 IND_DESC = No description

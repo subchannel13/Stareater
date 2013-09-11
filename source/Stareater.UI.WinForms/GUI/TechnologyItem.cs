@@ -12,7 +12,11 @@ namespace Stareater.GUI
 {
 	public partial class TechnologyItem : UserControl
 	{
-		private const string LanguageContext = "FormTech";
+		public const string LanguageContext = "FormTech";
+		
+		private const string LocalizationLevel = "Level";
+		
+		public TechnologyTopic Data { get; private set; }
 		
 		public TechnologyItem()
 		{
@@ -21,13 +25,13 @@ namespace Stareater.GUI
 		
 		public void SetData(TechnologyTopic topicInfo)
 		{
-			Context lang = Settings.Get.Language[LanguageContext];
+			this.Data = topicInfo;
 			
 			ThousandsFormatter thousandsFormat = new ThousandsFormatter(topicInfo.Cost);
 			
 			thumbnailImage.Image = ImageCache.Get[topicInfo.ImagePath];
 			nameLabel.Text = topicInfo.Name;
-			levelLabel.Text = lang["Level"].Text(new Var("lvl", topicInfo.NextLevel).Get);
+			levelLabel.Text = TopicLevelText;
 			costLabel.Text = thousandsFormat.Format(topicInfo.InvestedPoints) + " / " +thousandsFormat.Format(topicInfo.Cost);
 			investmentLabel.Text = thousandsFormat.Format(topicInfo.Investment);
 		}
@@ -60,6 +64,14 @@ namespace Stareater.GUI
 		void investmentLabel_Click(object sender, EventArgs e)
 		{
 			this.InvokeOnClick(this, e);
+		}
+		
+		public string TopicLevelText
+		{
+			get
+			{
+				return Settings.Get.Language[LanguageContext][LocalizationLevel].Text(new Var("lvl", Data.NextLevel).Get);	
+			}
 		}
 	}
 }

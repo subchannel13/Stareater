@@ -64,6 +64,16 @@ namespace Zvjezdojedac.GUI
 		public int SelectedIndex
 		{
 			get { return selectedIndex; }
+			
+			set 
+			{
+				if (selectedIndex != NoneSelected)
+					deselect(selectedIndex);
+
+				select(value);
+				if (SelectedIndexChanged != null)
+					SelectedIndexChanged(this, new EventArgs());
+			}
 		}
 
 		public Control SelectedItem
