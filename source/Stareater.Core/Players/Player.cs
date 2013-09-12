@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using Stareater.GameData.Databases;
 
 namespace Stareater.Players
 {
@@ -21,12 +22,16 @@ namespace Stareater.Players
 		private IEnumerable<object> messages; //TODO: make type
 		private Dictionary<object, object> messageFilter; //TODO: make type
 
+		public ChangesDB Orders { get; private set; }
+		
 		public Player(string name, Color color, Organization organization, PlayerType type)
 		{
 			this.color = color;
 			this.Name = name;
 			this.organization = organization;
 			this.type = type;
+			
+			this.Orders = new ChangesDB();
 		}
 	}
 }

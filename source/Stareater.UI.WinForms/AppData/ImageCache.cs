@@ -10,7 +10,7 @@ namespace Stareater.AppData
 		#region Singleton
 		static ImageCache instance = null;
 
-		public static new ImageCache Get
+		public static ImageCache Get
 		{
 			get
 			{

@@ -1,15 +1,18 @@
 ﻿using System;
-using System.Drawing;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+
 using Stareater.AppData;
 using Stareater.Controllers;
+using Stareater.Controllers.Data;
 
 namespace Stareater.GUI
 {
 	public partial class FormDevelopment : Form
 	{
 		private GameController controller;
+		private IList<TechnologyTopic> topics;
 		
 		public FormDevelopment()
 		{
@@ -19,22 +22,24 @@ namespace Stareater.GUI
 		public FormDevelopment(GameController controller) : this()
 		{
 			this.controller = controller;
-			
+			this.topics = controller.DevelopmentTopics().ToList();
 			updateList();
 			updateDescription();
 		}
 		
 		private void updateList()
 		{
-			var topics = controller.DevelopmentTopics().ToArray();
-
-			while (topicList.Controls.Count < topics.Length)
+			topicList.SuspendLayout();
+			
+			while (topicList.Controls.Count < topics.Count)
 				topicList.Controls.Add(new TechnologyItem());
-			while (topicList.Controls.Count > topics.Length)
+			while (topicList.Controls.Count > topics.Count)
 				topicList.Controls.RemoveAt(topicList.Controls.Count - 1);
 
-			for (int i = 0; i < topics.Length; i++)
+			for (int i = 0; i < topics.Count; i++)
 				(topicList.Controls[i] as TechnologyItem).SetData(topics[i]);
+			
+			topicList.ResumeLayout();
 		}
 		
 		private void updateDescription()
@@ -54,6 +59,26 @@ namespace Stareater.GUI
 			}
 		}
 		
+		private void reorderTopic(int fromIndex, int toIndex)
+		{
+			if (toIndex < 0) toIndex = 0;
+			if (toIndex >= topics.Count)	toIndex = topics.Count - 1;
+			if (fromIndex == toIndex)
+				return;
+			
+			var item = topics[fromIndex];
+			
+			topics.RemoveAt(fromIndex);
+			
+			if (toIndex < topics.Count)
+				topics.Insert(toIndex, item);
+			else
+				topics.Add(item);
+			
+			updateList();
+			topicList.SelectedIndex = toIndex;
+		}
+		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
 			if (keyData == Keys.Escape) 
@@ -67,9 +92,46 @@ namespace Stareater.GUI
 				topicList.SelectedIndex = 0;
 		}
 		
+		private void formDevelopment_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			controller.ReorderDevelopmentTopics(topics.Select(x => x.IdCode));
+		}
+		
 		private void topicList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			updateDescription();
+		}
+		
+		private void reorderTopAction_Click(object sender, EventArgs e)
+		{
+			if (topicList.SelectedItem == null)
+				return;
+			
+			reorderTopic(topicList.SelectedIndex, 0);
+		}
+		
+		private void reorderUpAction_Click(object sender, EventArgs e)
+		{
+			if (topicList.SelectedItem == null)
+				return;
+			
+			reorderTopic(topicList.SelectedIndex, topicList.SelectedIndex - 1);
+		}
+		
+		private void reorderDownAction_Click(object sender, EventArgs e)
+		{
+			if (topicList.SelectedItem == null)
+				return;
+			
+			reorderTopic(topicList.SelectedIndex, topicList.SelectedIndex + 1);
+		}
+		
+		private void reorderBottomAction_Click(object sender, EventArgs e)
+		{
+			if (topicList.SelectedItem == null)
+				return;
+			
+			reorderTopic(topicList.SelectedIndex, topics.Count);
 		}
 	}
 }

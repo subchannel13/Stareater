@@ -131,15 +131,26 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Technology related
-				
 		public IEnumerable<TechnologyTopic> DevelopmentTopics()
 		{
-			var playerTechs = game.States.AdvancmentOrder(game.Players[game.CurrentPlayer]);
+			var playerTechs = game.AdvancmentOrder(game.Players[game.CurrentPlayer]);
 			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
 			
 			foreach(var techProgress in playerTechs)
 				if (techProgress.Topic.Category == TechnologyCategory.Development && techProgress.CanProgress(x => techLevels[x]))
 		        	yield return new TechnologyTopic(techProgress);
+		}
+		
+		public void ReorderDevelopmentTopics(IEnumerable<string> idCodeOrder)
+		{
+			var modelQueue = game.Players[game.CurrentPlayer].Orders.DevelopmentQueue;
+			modelQueue.Clear();
+			
+			int i = 0;
+			foreach (var idCode in idCodeOrder) {
+				modelQueue.Add(idCode, i);
+				i++;
+			}
 		}
 		#endregion
 		

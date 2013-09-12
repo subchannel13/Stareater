@@ -21,26 +21,5 @@ namespace Stareater.GameData.Databases
 			this.Wormholes = wormholes;
 			this.TechnologyProgresses = technologyProgresses;
 		}
-		
-		private int technologySort(TechnologyProgress leftTech, TechnologyProgress rightTech)
-		{
-			if (leftTech.Order == rightTech.Order)
-				return leftTech.Topic.IdCode.CompareTo(rightTech.Topic.IdCode);
-			
-			if (leftTech.Order == TechnologyProgress.Unordered && rightTech.Order != TechnologyProgress.Unordered)
-				return 1;
-			if (leftTech.Order != TechnologyProgress.Unordered && rightTech.Order == TechnologyProgress.Unordered)
-				return -1;
-			
-			return leftTech.Order - rightTech.Order;
-		}
-		
-		public IEnumerable<TechnologyProgress> AdvancmentOrder(Player player)
-		{
-			var playerTechs = TechnologyProgresses.Players(player).ToList();
-			playerTechs.Sort(technologySort);
-			
-			return playerTechs;
-		}
 	}
 }
