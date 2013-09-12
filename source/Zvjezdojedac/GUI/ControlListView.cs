@@ -70,7 +70,9 @@ namespace Zvjezdojedac.GUI
 				if (selectedIndex != NoneSelected)
 					deselect(selectedIndex);
 
-				select(value);
+				if (value != NoneSelected)
+					select(value);
+				
 				if (SelectedIndexChanged != null)
 					SelectedIndexChanged(this, new EventArgs());
 			}

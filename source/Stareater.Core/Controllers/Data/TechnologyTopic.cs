@@ -64,5 +64,13 @@ namespace Stareater.Controllers.Data
 				return technology.MaxLevel;
 			}
 		}
+		
+		public string IdCode 
+		{
+			get 
+			{
+				return technology.IdCode;
+			}
+		}
 	}
 }

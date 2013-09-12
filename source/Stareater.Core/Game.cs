@@ -49,5 +49,36 @@ namespace Stareater
 			
 			this.Players = players;
 		}
+		
+		#region Technology related
+		private int technologyOrderKey(TechnologyProgress tech)
+		{
+			if (tech.Owner.Orders.DevelopmentQueue.ContainsKey(tech.Topic.IdCode))
+				return tech.Owner.Orders.DevelopmentQueue[tech.Topic.IdCode];
+			
+			if (tech.Order != TechnologyProgress.Unordered)
+				return tech.Order;
+			
+			return int.MaxValue;
+		}
+		
+		private int technologySort(TechnologyProgress leftTech, TechnologyProgress rightTech)
+		{
+			int primaryComparison = technologyOrderKey(leftTech).CompareTo(technologyOrderKey(rightTech));
+			
+			if (primaryComparison == 0)
+				return leftTech.Topic.IdCode.CompareTo(rightTech.Topic.IdCode);
+			
+			return primaryComparison;
+		}
+		
+		public IEnumerable<TechnologyProgress> AdvancmentOrder(Player player)
+		{
+			var playerTechs = States.TechnologyProgresses.Players(player).ToList();
+			playerTechs.Sort(technologySort);
+			
+			return playerTechs;
+		}
+		#endregion
 	}
 }

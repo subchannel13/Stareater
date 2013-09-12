@@ -35,10 +35,10 @@ namespace Stareater.GUI
 			this.label1 = new System.Windows.Forms.Label();
 			this.lable1 = new System.Windows.Forms.Label();
 			this.trackBar1 = new System.Windows.Forms.TrackBar();
-			this.button1 = new System.Windows.Forms.Button();
-			this.button2 = new System.Windows.Forms.Button();
-			this.button3 = new System.Windows.Forms.Button();
-			this.button4 = new System.Windows.Forms.Button();
+			this.reorderTopAction = new System.Windows.Forms.Button();
+			this.reorderUpAction = new System.Windows.Forms.Button();
+			this.reorderDownAction = new System.Windows.Forms.Button();
+			this.reorderBottomAction = new System.Windows.Forms.Button();
 			this.techImage = new System.Windows.Forms.PictureBox();
 			this.techLevel = new System.Windows.Forms.Label();
 			this.techName = new System.Windows.Forms.Label();
@@ -55,6 +55,7 @@ namespace Stareater.GUI
 			this.topicList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.topicList.Location = new System.Drawing.Point(12, 12);
 			this.topicList.Name = "topicList";
+			this.topicList.SelectedIndex = -1;
 			this.topicList.Size = new System.Drawing.Size(277, 452);
 			this.topicList.TabIndex = 1;
 			this.topicList.SelectedIndexChanged += new System.EventHandler(this.topicList_SelectedIndexChanged);
@@ -103,41 +104,45 @@ namespace Stareater.GUI
 			this.trackBar1.TabIndex = 10;
 			this.trackBar1.Value = 5;
 			// 
-			// button1
+			// reorderTopAction
 			// 
-			this.button1.Image = global::Stareater.Properties.Resources.arrowFirst;
-			this.button1.Location = new System.Drawing.Point(295, 74);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(50, 50);
-			this.button1.TabIndex = 15;
-			this.button1.UseVisualStyleBackColor = true;
+			this.reorderTopAction.Image = global::Stareater.Properties.Resources.arrowFirst;
+			this.reorderTopAction.Location = new System.Drawing.Point(295, 74);
+			this.reorderTopAction.Name = "reorderTopAction";
+			this.reorderTopAction.Size = new System.Drawing.Size(50, 50);
+			this.reorderTopAction.TabIndex = 15;
+			this.reorderTopAction.UseVisualStyleBackColor = true;
+			this.reorderTopAction.Click += new System.EventHandler(this.reorderTopAction_Click);
 			// 
-			// button2
+			// reorderUpAction
 			// 
-			this.button2.Image = global::Stareater.Properties.Resources.arrowUp;
-			this.button2.Location = new System.Drawing.Point(295, 130);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(50, 50);
-			this.button2.TabIndex = 16;
-			this.button2.UseVisualStyleBackColor = true;
+			this.reorderUpAction.Image = global::Stareater.Properties.Resources.arrowUp;
+			this.reorderUpAction.Location = new System.Drawing.Point(295, 130);
+			this.reorderUpAction.Name = "reorderUpAction";
+			this.reorderUpAction.Size = new System.Drawing.Size(50, 50);
+			this.reorderUpAction.TabIndex = 16;
+			this.reorderUpAction.UseVisualStyleBackColor = true;
+			this.reorderUpAction.Click += new System.EventHandler(this.reorderUpAction_Click);
 			// 
-			// button3
+			// reorderDownAction
 			// 
-			this.button3.Image = global::Stareater.Properties.Resources.arrowDown;
-			this.button3.Location = new System.Drawing.Point(295, 186);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(50, 50);
-			this.button3.TabIndex = 17;
-			this.button3.UseVisualStyleBackColor = true;
+			this.reorderDownAction.Image = global::Stareater.Properties.Resources.arrowDown;
+			this.reorderDownAction.Location = new System.Drawing.Point(295, 186);
+			this.reorderDownAction.Name = "reorderDownAction";
+			this.reorderDownAction.Size = new System.Drawing.Size(50, 50);
+			this.reorderDownAction.TabIndex = 17;
+			this.reorderDownAction.UseVisualStyleBackColor = true;
+			this.reorderDownAction.Click += new System.EventHandler(this.reorderDownAction_Click);
 			// 
-			// button4
+			// reorderBottomAction
 			// 
-			this.button4.Image = global::Stareater.Properties.Resources.arrowLast;
-			this.button4.Location = new System.Drawing.Point(295, 242);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(50, 50);
-			this.button4.TabIndex = 18;
-			this.button4.UseVisualStyleBackColor = true;
+			this.reorderBottomAction.Image = global::Stareater.Properties.Resources.arrowLast;
+			this.reorderBottomAction.Location = new System.Drawing.Point(295, 242);
+			this.reorderBottomAction.Name = "reorderBottomAction";
+			this.reorderBottomAction.Size = new System.Drawing.Size(50, 50);
+			this.reorderBottomAction.TabIndex = 18;
+			this.reorderBottomAction.UseVisualStyleBackColor = true;
+			this.reorderBottomAction.Click += new System.EventHandler(this.reorderBottomAction_Click);
 			// 
 			// techImage
 			// 
@@ -184,10 +189,10 @@ namespace Stareater.GUI
 			this.Controls.Add(this.techLevel);
 			this.Controls.Add(this.techName);
 			this.Controls.Add(this.techImage);
-			this.Controls.Add(this.button4);
-			this.Controls.Add(this.button3);
-			this.Controls.Add(this.button2);
-			this.Controls.Add(this.button1);
+			this.Controls.Add(this.reorderBottomAction);
+			this.Controls.Add(this.reorderDownAction);
+			this.Controls.Add(this.reorderUpAction);
+			this.Controls.Add(this.reorderTopAction);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
@@ -199,6 +204,7 @@ namespace Stareater.GUI
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Development topics";
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.formDevelopment_FormClosed);
 			this.Load += new System.EventHandler(this.formDevelopment_Load);
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.techImage)).EndInit();
@@ -209,10 +215,10 @@ namespace Stareater.GUI
 		private System.Windows.Forms.Label techName;
 		private System.Windows.Forms.Label techLevel;
 		private System.Windows.Forms.PictureBox techImage;
-		private System.Windows.Forms.Button button4;
-		private System.Windows.Forms.Button button3;
-		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button reorderBottomAction;
+		private System.Windows.Forms.Button reorderDownAction;
+		private System.Windows.Forms.Button reorderUpAction;
+		private System.Windows.Forms.Button reorderTopAction;
 		private System.Windows.Forms.TrackBar trackBar1;
 		private System.Windows.Forms.Label lable1;
 		private System.Windows.Forms.Label label1;
