@@ -40,14 +40,19 @@ namespace Stareater.TextureAtlas
 			using(Graphics g = Graphics.FromImage(atlasImage))
 				foreach (var x in builder.Build()) {
 					Console.WriteLine(x.Key + " " + x.Value);
+					string[] nameParams = x.Key.Split('-');
 
+					var bounds = x.Value;
+					if (nameParams.Contains("hStretch"))
+						bounds.Inflate(-1, 0);
+					
 					IkonArray textureCoords = new IkonArray();
-					textureCoords.Add(serializeRectangle(x.Value.Left, x.Value.Top));
-					textureCoords.Add(serializeRectangle(x.Value.Left, x.Value.Bottom));
-					textureCoords.Add(serializeRectangle(x.Value.Right, x.Value.Bottom));
-					textureCoords.Add(serializeRectangle(x.Value.Right, x.Value.Top));
+					textureCoords.Add(serializeRectangle(bounds.Left, bounds.Top));
+					textureCoords.Add(serializeRectangle(bounds.Right, bounds.Top));
+					textureCoords.Add(serializeRectangle(bounds.Right, bounds.Bottom));
+					textureCoords.Add(serializeRectangle(bounds.Left, bounds.Bottom));
 
-					atlasIkon.Add(x.Key, textureCoords);
+					atlasIkon.Add(nameParams[0], textureCoords);
 					g.DrawImage(items[x.Key], x.Value.Location);
 				}
 

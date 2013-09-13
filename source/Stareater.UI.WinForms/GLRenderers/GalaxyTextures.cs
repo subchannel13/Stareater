@@ -30,7 +30,7 @@ namespace Stareater.GLRenderers
 		const string AtlasIkonPath = "./Images/GalaxyTextures.txt";
 		
 		const string AtlasTag = "TextureAtlas";
-		const string LineTag = "line";
+		const string PathLineTag = "wormholePath";
 		const string PlanetTag = "planet";
 		const string SelectedStarTag = "selectedStar";
 		const string StarColorTag = "starColor";
@@ -41,7 +41,7 @@ namespace Stareater.GLRenderers
 		private int textureId;
 		
 		public TextureInfo Planet { get; private set;}
-		public TextureInfo Line { get; private set;}
+		public TextureInfo PathLine { get; private set;}
 		public TextureInfo StarColor { get; private set;}
 		public TextureInfo StarGlow { get; private set;}
 		public TextureInfo SelectedStar { get; private set;}
@@ -59,7 +59,7 @@ namespace Stareater.GLRenderers
 			IkonComposite ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
 			
 			Planet = new TextureInfo(textureId, ikonData[PlanetTag].To<IkonArray>());
-			Line = new TextureInfo(textureId, ikonData[LineTag].To<IkonArray>());
+			PathLine = new TextureInfo(textureId, ikonData[PathLineTag].To<IkonArray>());
 			SelectedStar = new TextureInfo(textureId, ikonData[SelectedStarTag].To<IkonArray>());
 			StarColor = new TextureInfo(textureId, ikonData[StarColorTag].To<IkonArray>());
 			StarGlow = new TextureInfo(textureId, ikonData[StarGlowTag].To<IkonArray>());
