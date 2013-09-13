@@ -28,6 +28,7 @@ namespace Stareater.GLRenderers
 
 		private const float PanClickTolerance = 0.01f;
 		private const float ClickRadius = 0.02f;
+		private const double PathWidth = 0.1; 
 		private const float StarMinClickRadius = 0.6f;
 		private const float StarNameScale = 0.35f;
 
@@ -116,7 +117,7 @@ namespace Stareater.GLRenderers
 				if (screen.Bounds.Width > screen.Bounds.Height)
 					screenLength = (float)(2 * screen.Bounds.Width * semiRadius * aspect / eventDispatcher.Width);
 				else
-					//TODO test this, perhaps by flipping monitor.
+					//TODO test this, perhaps by flipping the monitor.
 					screenLength = (float)(2 * screen.Bounds.Height * semiRadius * aspect / eventDispatcher.Height);
 				
 				GL.MatrixMode(MatrixMode.Projection);
@@ -136,20 +137,20 @@ namespace Stareater.GLRenderers
 				staticList = GL.GenLists(1);
 				GL.NewList(staticList, ListMode.CompileAndExecute);
 
-				GL.Disable(EnableCap.Texture2D);
-				GL.Color4(Color.Blue);
-				GL.PushMatrix();
-				GL.Translate(0, 0, WormholeZ);
-				//TODO: Use textured quads instead plain lines
-				GL.Begin(BeginMode.Lines);
-				foreach (var wormhole in controller.Wormholes) {
-					GL.Vertex2(wormhole.Item1.Position.X, wormhole.Item1.Position.Y);
-					GL.Vertex2(wormhole.Item2.Position.X, wormhole.Item2.Position.Y);
-				}
-				GL.End();
-				GL.PopMatrix();
-
 				GL.Enable(EnableCap.Texture2D);
+				GL.Color4(Color.Blue);
+				
+				foreach (var wormhole in controller.Wormholes) {
+					GL.PushMatrix();
+					GL.MultMatrix(pathMatrix(
+						new Vector2d(wormhole.Item1.Position.X, wormhole.Item1.Position.Y), 
+						new Vector2d(wormhole.Item2.Position.X, wormhole.Item2.Position.Y)
+					));
+					
+					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, WormholeZ);
+					
+					GL.PopMatrix();
+				}
 
 				foreach (var star in controller.Stars) {
 					GL.Color4(star.Color);
@@ -160,7 +161,7 @@ namespace Stareater.GLRenderers
 				
 					GL.Color4(Color.White);
 					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarGlow, StarSaturationZ - StarColorZ);
-					
+				
 					GL.PopMatrix();
 				}
 				
@@ -189,6 +190,21 @@ namespace Stareater.GLRenderers
 				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar);
 				GL.PopMatrix();
 			}
+		}
+		
+		private double[] pathMatrix(Vector2d fromPoint, Vector2d toPoint)
+		{
+			var xAxis = toPoint - fromPoint;
+			var yAxis = new Vector2d(xAxis.Y, -xAxis.X);
+			double yScale = PathWidth / yAxis.Length;
+			
+			var center = (fromPoint + toPoint) / 2;
+			return new double[] {
+				xAxis.X, yAxis.X, 0, 0,
+				xAxis.Y * yScale, yAxis.Y * yScale, 0, 0,
+				0, 0, 1, 0,
+				center.X, center.Y, 0, 1
+			};
 		}
 		
 		private Vector4 mouseToView(int x, int y)
