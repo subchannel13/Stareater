@@ -28,8 +28,9 @@ namespace Stareater.GLRenderers
 
 		private const float PanClickTolerance = 0.01f;
 		private const float ClickRadius = 0.02f;
-		private const double PathWidth = 0.1; 
 		private const float StarMinClickRadius = 0.6f;
+		
+		private const double PathWidth = 0.1;
 		private const float StarNameScale = 0.35f;
 
 		private GameController controller;
@@ -50,7 +51,7 @@ namespace Stareater.GLRenderers
 		private int staticList = -1;
 
 		public GalaxyRenderer(GameController controller, Action<StarSystemController> systemOpenedHandler)
-		{
+		{ 
 			this.controller = controller;
 			this.systemOpenedHandler = systemOpenedHandler;
 			
