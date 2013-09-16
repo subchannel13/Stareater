@@ -110,20 +110,21 @@ namespace Stareater.Galaxy.Square
 				for (double x = 0; x < size; x++)
 					if (!emptyPositions.Contains(new Tuple<int, int>((int)x, (int)y)))
 						positions.Add(new Vector2D(
-							(x + displacementParameter.Value * (2 * rng.NextDouble() - 1)) * starDistance - size / 2.0,
-							(y + displacementParameter.Value * (2 * rng.NextDouble() - 1)) * starDistance - size / 2.0
+							(x + displacementParameter.Value * (2 * rng.NextDouble() - 1) - size / 2.0) * starDistance,
+							(y + displacementParameter.Value * (2 * rng.NextDouble() - 1) - size / 2.0) * starDistance
 							));
 
 			var homeSystems = new List<int>();
 			double phi = 0.5 * rng.NextDouble() * Math.PI;
 			double deltaPhi = Math.PI * 2.0 / playerCount;
-			double radius = starDistance * (size - 1) / 2.0;
+			double radius = starDistance * homeSystemDistance * size / 2.0;
 
 			for (double player = 0; player < playerCount; player++) {
 				Vector2D desiredPoint = new Vector2D(
 					radius * Math.Cos(phi + player * deltaPhi),
 					radius * Math.Sin(phi + player * deltaPhi)
 				);
+				desiredPoint *= radius / Math.Max(Math.Abs(desiredPoint.X), Math.Abs(desiredPoint.Y));
 
 				int candidate = 0;
 				for (int i = 1; i < positions.Count; i++)

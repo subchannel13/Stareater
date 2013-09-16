@@ -68,6 +68,20 @@ private void Generate(string className, string typeName, params ViewInfo[] viewI
 		WriteLine("		"  + view.IndexType(typeName) + " " + view.IndexName + " = new " + view.IndexType(typeName)+ "();");
 
 	foreach(var view in viewInfos) {
+		if (view.ContainerType == ViewType.Scalar) {
+#>
+
+		public <#= typeName #> <#= view.ViewName #>(<#= view.KeyType #> key) {
+			if (<#= view.IndexName #>.ContainsKey(key))
+				return <#= view.IndexName #>[key];
+				
+			throw new KeyNotFoundException();
+		}
+		
+		public bool <#= view.ViewName #>Contains(<#= view.KeyType #> key) {
+			return <#= view.IndexName #>.ContainsKey(key);
+		}
+<#+		} else {
 #>
 
 		public IEnumerable<<#= typeName #>> <#= view.ViewName #>(<#= view.KeyType #> key) {
@@ -75,7 +89,8 @@ private void Generate(string className, string typeName, params ViewInfo[] viewI
 				foreach (var item in <#= view.IndexName #>[key])
 					yield return item;
 		}
-<#+	}
+<#+		}
+	}
 #>
 	
 		public void Add(<#= typeName #> item)

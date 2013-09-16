@@ -6,7 +6,7 @@ using Stareater.Players;
 
 namespace Stareater.Galaxy
 {
-	abstract class AConstructionSite
+	public abstract class AConstructionSite
 	{
 		public Player Owner { get; private set; }
 		

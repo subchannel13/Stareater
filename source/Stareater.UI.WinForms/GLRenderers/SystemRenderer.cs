@@ -84,7 +84,10 @@ namespace Stareater.GLRenderers
 				float orbitMax = orbitR + OrbitWidth;
 				
 				GL.Disable(EnableCap.Texture2D);
-				GL.Color4(Color.Gray);
+				
+				var colony = controller.PlanetsColony(planet);
+				GL.Color4(colony != null ? colony.Owner.Color : Color.FromArgb(64, 64, 64));
+				
 				GL.Begin(BeginMode.Quads);
 				for(int i = 0; i < 100; i++)
 				{
