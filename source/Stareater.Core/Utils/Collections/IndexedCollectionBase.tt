@@ -2,7 +2,7 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#+
 private string namespaceName = "";
-private List<string> usings = new List<string>(new string[]{ "System", "System.Collections.Generic" });
+private List<string> usings = new List<string>(new string[]{ "System", "System.Collections.Generic", "Stareater.Utils.Collections" });
 
 enum ViewType {
 	Scalar = 0,

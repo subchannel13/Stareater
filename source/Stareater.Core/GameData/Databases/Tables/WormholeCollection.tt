@@ -4,7 +4,6 @@
 	
 	namespaceName = "Stareater.GameData.Databases.Tables";
 	usings.Add("Stareater.Galaxy");
-	usings.Add("Stareater.Utils.Collections");
 	
 	Generate("WormholeCollection", "Tuple<StarData, StarData>",
 		new ViewInfo("Endpoints", "StarData", "Item1;Item2", ViewType.Collection)

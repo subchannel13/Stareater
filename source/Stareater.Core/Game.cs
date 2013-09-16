@@ -22,7 +22,7 @@ namespace Stareater
 		internal StaticsDB Statics { get; private set; }
 		internal StatesDB States { get; private set; }
 			
-		public Game(StaticsDB statics, IEnumerable<StarSystem> starSystems, IEnumerable<Tuple<int, int>> wormholeEndpoints, Player[] players)
+		public Game(StaticsDB statics, IEnumerable<StarSystem> starSystems, IEnumerable<Tuple<int, int>> wormholeEndpoints, Player[] players, StarData[] homeSystems, StartingConditions startingConditions)
 		{
 			this.Turn = 0;
 			this.CurrentPlayer = 0;
@@ -30,22 +30,28 @@ namespace Stareater
 			
 			StarData[] starList = starSystems.Select(x => x.Star).ToArray();
 			
-			var stars = new StarsCollection();
+			var stars = new StarCollection();
 			stars.Add(starList);
 			
 			var wormholes = new WormholeCollection();
 			wormholes.Add(wormholeEndpoints.Select(x => new Tuple<StarData, StarData>(starList[x.Item1], starList[x.Item2])));
 			
-			var planets = new PlanetsCollection();
+			var planets = new PlanetCollection();
 			foreach(var system in starSystems)
 				planets.Add(system.Planets);
+			
+			var colonies = new ColonyCollection();
+			for(int playerI = 0; playerI < players.Length; playerI++)
+				//TODO: pick top most suitable planets
+				for(int colonyI = 0; colonyI < startingConditions.Colonies; colonyI++)
+					colonies.Add(new Colony(players[playerI], planets.StarSystem(homeSystems[playerI]).ElementAt(colonyI)));
 			
 			var techProgress = new TechProgressCollection();
 			foreach(Player player in players)
 				foreach(Technology tech in statics.Technologies)
 					techProgress.Add(new TechnologyProgress(tech, player));
 			
-			this.States = new StatesDB(stars, wormholes, planets, techProgress);
+			this.States = new StatesDB(stars, wormholes, planets, colonies, techProgress);
 			
 			this.Players = players;
 		}

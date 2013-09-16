@@ -133,6 +133,7 @@ namespace Stareater.Controllers
 
 		#region Map
 		public StartingConditions CustomStart { get; set; }
+		public StartingConditions SelectedStart { get; set; }
 
 		public IStarPositioner StarPositioner { get; set; }
 		public IStarConnector StarConnector { get; set; }

@@ -19,6 +19,24 @@ namespace Stareater.Utils
 		/// <param name="min">Range lower bound (inclusive)</param>
 		/// <param name="max">Range upper bound (inclusive)</param>
 		/// <returns></returns>
+		public static double Clamp(double x, double min, double max)
+		{
+			if (x < min)
+				return min;
+
+			if (x > max)
+				return max;
+
+			return x;
+		}
+		
+		/// <summary>
+		/// Limits a value to a range.
+		/// </summary>
+		/// <param name="x">A value to clamp.</param>
+		/// <param name="min">Range lower bound (inclusive)</param>
+		/// <param name="max">Range upper bound (inclusive)</param>
+		/// <returns></returns>
 		public static int Clamp(int x, int min, int max)
 		{
 			if (x < min)
@@ -30,6 +48,18 @@ namespace Stareater.Utils
 			return x;
 		}
 
+		/// <summary>
+		/// Linear interpolation between two numbers.
+		/// </summary>
+		/// <param name="x">Interpolation weight, 0 = left, 1 = right</param>
+		/// <param name="left">Left value</param>
+		/// <param name="right">Right value</param>
+		/// <returns></returns>
+		public static double Lerp(double x, double left, double right)
+		{
+			return x * (right - left) + left;
+		}
+		
 		/// <summary>
 		/// Test whether a line segment intersects other line segments.
 		/// </summary>

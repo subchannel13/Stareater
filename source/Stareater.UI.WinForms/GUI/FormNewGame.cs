@@ -115,6 +115,7 @@ namespace Stareater.GUI
 				sb.Append("Infrastructure: " + formatter.Format(start.Infrastructure));
 
 				startingDescription.Text = sb.ToString();
+				controller.SelectedStart = start;
 			}
 			else
 				using (var form = new FormStartingConditions()) {
@@ -123,6 +124,7 @@ namespace Stareater.GUI
 						controller.CustomStart = form.GetResult();
 						setupStartSelector.Items[customStartIndex] = new Tag<StartingConditions>(controller.CustomStart, controller.CustomStart.Name);
 						setupStartSelector.SelectedIndex = customStartIndex;
+						controller.SelectedStart = controller.CustomStart;
 					}
 				}
 		}

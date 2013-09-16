@@ -3,9 +3,8 @@
 <#@ include file="$(ProjectDir)/Utils/Collections/IndexedCollectionBase.tt" #><#
 	
 	namespaceName = "Stareater.GameData.Databases.Tables";
-	usings.Add("Stareater.Utils.Collections");
 		
-	Generate("TechnologiesCollection", "Technology",
+	Generate("TechnologyCollection", "Technology",
 		new ViewInfo("Codes", "string", "IdCode", ViewType.Collection)
 	);
 #>

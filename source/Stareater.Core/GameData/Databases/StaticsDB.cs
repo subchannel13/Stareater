@@ -12,7 +12,7 @@ namespace Stareater.GameData.Databases
 {
 	internal class StaticsDB
 	{
-		public TechnologiesCollection Technologies { get; private set; }
+		public TechnologyCollection Technologies { get; private set; }
 		
 		private const string DevelopmentTag = "DevelopmentTopic";
 		private const string ResearchTag = "ResearchTopic";
@@ -28,7 +28,7 @@ namespace Stareater.GameData.Databases
 			
 		public StaticsDB()
 		{
-			this.Technologies = new TechnologiesCollection();
+			this.Technologies = new TechnologyCollection();
 		}
 		
 		public IEnumerable<double> Load(params string[] paths)

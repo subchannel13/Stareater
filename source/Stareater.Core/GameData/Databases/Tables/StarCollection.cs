@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Stareater.Galaxy;
 using Stareater.Utils.Collections;
+using Stareater.Galaxy;
 using NGenerics.DataStructures.Mathematical;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class StarsCollection : ICollection<StarData>, IDelayedRemoval<StarData>
+	class StarCollection : ICollection<StarData>, IDelayedRemoval<StarData>
 	{
 		HashSet<StarData> innerSet = new HashSet<StarData>();
 		List<StarData> toRemove = new List<StarData>();
