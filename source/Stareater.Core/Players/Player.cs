@@ -10,7 +10,7 @@ namespace Stareater.Players
 	public class Player
 	{
 		public string Name { get; private set; }
-		private Color color;
+		public Color Color { get; private set; }
 		private Organization organization;		
 		private PlayerType type;
 		
@@ -26,7 +26,7 @@ namespace Stareater.Players
 		
 		public Player(string name, Color color, Organization organization, PlayerType type)
 		{
-			this.color = color;
+			this.Color = color;
 			this.Name = name;
 			this.organization = organization;
 			this.type = type;

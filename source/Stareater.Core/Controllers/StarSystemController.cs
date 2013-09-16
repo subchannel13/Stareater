@@ -22,5 +22,14 @@ namespace Stareater.Controllers
 				return game.States.Planets.StarSystem(Star);
 			}
 		}
+		
+		//TODO: use view specific data and intelligence limitations
+		public Colony PlanetsColony(Planet planet)
+		{
+			if (game.States.Colonies.PlanetsContains(planet))
+				return game.States.Colonies.Planets(planet);
+			
+			return null;
+		}
 	}
 }

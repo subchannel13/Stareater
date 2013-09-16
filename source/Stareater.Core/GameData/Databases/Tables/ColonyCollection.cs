@@ -12,7 +12,8 @@ namespace Stareater.GameData.Databases.Tables
 		List<Colony> toRemove = new List<Colony>();
 
 		Dictionary<Player, List<Colony>> PlayersIndex = new Dictionary<Player, List<Colony>>();
-		Dictionary<Planet, List<Colony>> PlanetsIndex = new Dictionary<Planet, List<Colony>>();
+		Dictionary<Planet, Colony> PlanetsIndex = new Dictionary<Planet, Colony>();
+		Dictionary<StarData, List<Colony>> StarsIndex = new Dictionary<StarData, List<Colony>>();
 
 		public IEnumerable<Colony> Players(Player key) {
 			if (PlayersIndex.ContainsKey(key))
@@ -20,9 +21,20 @@ namespace Stareater.GameData.Databases.Tables
 					yield return item;
 		}
 
-		public IEnumerable<Colony> Planets(Planet key) {
+		public Colony Planets(Planet key) {
 			if (PlanetsIndex.ContainsKey(key))
-				foreach (var item in PlanetsIndex[key])
+				return PlanetsIndex[key];
+				
+			throw new KeyNotFoundException();
+		}
+		
+		public bool PlanetsContains(Planet key) {
+			return PlanetsIndex.ContainsKey(key);
+		}
+
+		public IEnumerable<Colony> Stars(StarData key) {
+			if (StarsIndex.ContainsKey(key))
+				foreach (var item in StarsIndex[key])
 					yield return item;
 		}
 	
@@ -33,10 +45,12 @@ namespace Stareater.GameData.Databases.Tables
 			if (!PlayersIndex.ContainsKey(item.Owner))
 				PlayersIndex.Add(item.Owner, new List<Colony>());
 			PlayersIndex[item.Owner].Add(item);
-
 			if (!PlanetsIndex.ContainsKey(item.Location))
-				PlanetsIndex.Add(item.Location, new List<Colony>());
-			PlanetsIndex[item.Location].Add(item);
+				PlanetsIndex.Add(item.Location, item);
+
+			if (!StarsIndex.ContainsKey(item.Star))
+				StarsIndex.Add(item.Star, new List<Colony>());
+			StarsIndex[item.Star].Add(item);
 		}
 
 		public void Add(IEnumerable<Colony> items)
@@ -51,6 +65,7 @@ namespace Stareater.GameData.Databases.Tables
 
 			PlayersIndex.Clear();
 			PlanetsIndex.Clear();
+			StarsIndex.Clear();
 		}
 
 		public bool Contains(Colony item)
@@ -77,7 +92,8 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			if (innerSet.Remove(item)) {
 				PlayersIndex[item.Owner].Remove(item);
-				PlanetsIndex[item.Location].Remove(item);
+				PlanetsIndex.Remove(item.Location);
+				StarsIndex[item.Star].Remove(item);
 			
 				return true;
 			}
