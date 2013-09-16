@@ -1,32 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stareater.Utils.Collections;
+using Stareater.Galaxy;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class TechnologiesCollection : ICollection<Technology>, IDelayedRemoval<Technology>
+	class PlanetCollection : ICollection<Planet>, IDelayedRemoval<Planet>
 	{
-		HashSet<Technology> innerSet = new HashSet<Technology>();
-		List<Technology> toRemove = new List<Technology>();
+		HashSet<Planet> innerSet = new HashSet<Planet>();
+		List<Planet> toRemove = new List<Planet>();
 
-		Dictionary<string, List<Technology>> CodesIndex = new Dictionary<string, List<Technology>>();
+		Dictionary<StarData, List<Planet>> StarSystemIndex = new Dictionary<StarData, List<Planet>>();
 
-		public IEnumerable<Technology> Codes(string key) {
-			if (CodesIndex.ContainsKey(key))
-				foreach (var item in CodesIndex[key])
+		public IEnumerable<Planet> StarSystem(StarData key) {
+			if (StarSystemIndex.ContainsKey(key))
+				foreach (var item in StarSystemIndex[key])
 					yield return item;
 		}
 	
-		public void Add(Technology item)
+		public void Add(Planet item)
 		{
 			innerSet.Add(item); 
 
-			if (!CodesIndex.ContainsKey(item.IdCode))
-				CodesIndex.Add(item.IdCode, new List<Technology>());
-			CodesIndex[item.IdCode].Add(item);
+			if (!StarSystemIndex.ContainsKey(item.Star))
+				StarSystemIndex.Add(item.Star, new List<Planet>());
+			StarSystemIndex[item.Star].Add(item);
 		}
 
-		public void Add(IEnumerable<Technology> items)
+		public void Add(IEnumerable<Planet> items)
 		{
 			foreach(var item in items)
 				Add(item);
@@ -36,15 +37,15 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			innerSet.Clear();
 
-			CodesIndex.Clear();
+			StarSystemIndex.Clear();
 		}
 
-		public bool Contains(Technology item)
+		public bool Contains(Planet item)
 		{
 			return innerSet.Contains(item);
 		}
 
-		public void CopyTo(Technology[] array, int arrayIndex)
+		public void CopyTo(Planet[] array, int arrayIndex)
 		{
 			innerSet.CopyTo(array, arrayIndex);
 		}
@@ -59,10 +60,10 @@ namespace Stareater.GameData.Databases.Tables
 			get { return false; }
 		}
 
-		public bool Remove(Technology item)
+		public bool Remove(Planet item)
 		{
 			if (innerSet.Remove(item)) {
-				CodesIndex[item.IdCode].Remove(item);
+				StarSystemIndex[item.Star].Remove(item);
 			
 				return true;
 			}
@@ -70,7 +71,7 @@ namespace Stareater.GameData.Databases.Tables
 			return false;
 		}
 
-		public IEnumerator<Technology> GetEnumerator()
+		public IEnumerator<Planet> GetEnumerator()
 		{
 			return innerSet.GetEnumerator();
 		}
@@ -80,7 +81,7 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
-		public void PendRemove(Technology element)
+		public void PendRemove(Planet element)
 		{
 			toRemove.Add(element);
 		}

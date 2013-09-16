@@ -31,16 +31,21 @@ namespace Stareater.Controllers
 			Random rng = new Random();
 			
 			var starPositions = controller.StarPositioner.Generate(rng, controller.PlayerList.Count);
-			
+			var stars = controller.StarPopulator.Generate(rng, starPositions).ToArray();
+
 			Player[] players = controller.PlayerList.Select(info =>
 				new Player(info.Name, info.Color, info.Organization, info.ControlType)
 			).ToArray();
-
+			
+			var homeSystems = starPositions.HomeSystems.Select(x => stars[x].Star).ToArray();
+			
 			this.game = new Game(
 				statics, 
-				controller.StarPopulator.Generate(rng, starPositions), 
+				stars, 
 				controller.StarConnector.Generate(rng, starPositions), 
-				players
+				players,
+				homeSystems,
+				controller.SelectedStart
 			);
 
 			this.State = GameState.Running;

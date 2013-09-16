@@ -8,14 +8,17 @@ namespace Stareater.GameData.Databases
 {
 	internal class StatesDB
 	{
-		public StarsCollection Stars { get; private set; }
+		public StarCollection Stars { get; private set; }
 		public WormholeCollection Wormholes { get; private set; }
-		public PlanetsCollection Planets { get; private set; }
+		
+		public PlanetCollection Planets { get; private set; }
+		public ColonyCollection Colonies { get; private set; }
 		
 		public TechProgressCollection TechnologyProgresses { get; private set; }
 		
-		public StatesDB(StarsCollection stars, WormholeCollection wormholes, PlanetsCollection planets, TechProgressCollection technologyProgresses)
+		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, ColonyCollection Colonies, TechProgressCollection technologyProgresses)
 		{
+			this.Colonies = Colonies;
 			this.Planets = planets;
 			this.Stars = stars;
 			this.Wormholes = wormholes;

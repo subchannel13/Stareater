@@ -1,33 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stareater.Utils.Collections;
+using Stareater.Galaxy;
 using Stareater.Players;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class TechProgressCollection : ICollection<TechnologyProgress>, IDelayedRemoval<TechnologyProgress>
+	class ColonyCollection : ICollection<Colony>, IDelayedRemoval<Colony>
 	{
-		HashSet<TechnologyProgress> innerSet = new HashSet<TechnologyProgress>();
-		List<TechnologyProgress> toRemove = new List<TechnologyProgress>();
+		HashSet<Colony> innerSet = new HashSet<Colony>();
+		List<Colony> toRemove = new List<Colony>();
 
-		Dictionary<Player, List<TechnologyProgress>> PlayersIndex = new Dictionary<Player, List<TechnologyProgress>>();
+		Dictionary<Player, List<Colony>> PlayersIndex = new Dictionary<Player, List<Colony>>();
+		Dictionary<Planet, List<Colony>> PlanetsIndex = new Dictionary<Planet, List<Colony>>();
 
-		public IEnumerable<TechnologyProgress> Players(Player key) {
+		public IEnumerable<Colony> Players(Player key) {
 			if (PlayersIndex.ContainsKey(key))
 				foreach (var item in PlayersIndex[key])
 					yield return item;
 		}
+
+		public IEnumerable<Colony> Planets(Planet key) {
+			if (PlanetsIndex.ContainsKey(key))
+				foreach (var item in PlanetsIndex[key])
+					yield return item;
+		}
 	
-		public void Add(TechnologyProgress item)
+		public void Add(Colony item)
 		{
 			innerSet.Add(item); 
 
 			if (!PlayersIndex.ContainsKey(item.Owner))
-				PlayersIndex.Add(item.Owner, new List<TechnologyProgress>());
+				PlayersIndex.Add(item.Owner, new List<Colony>());
 			PlayersIndex[item.Owner].Add(item);
+
+			if (!PlanetsIndex.ContainsKey(item.Location))
+				PlanetsIndex.Add(item.Location, new List<Colony>());
+			PlanetsIndex[item.Location].Add(item);
 		}
 
-		public void Add(IEnumerable<TechnologyProgress> items)
+		public void Add(IEnumerable<Colony> items)
 		{
 			foreach(var item in items)
 				Add(item);
@@ -38,14 +50,15 @@ namespace Stareater.GameData.Databases.Tables
 			innerSet.Clear();
 
 			PlayersIndex.Clear();
+			PlanetsIndex.Clear();
 		}
 
-		public bool Contains(TechnologyProgress item)
+		public bool Contains(Colony item)
 		{
 			return innerSet.Contains(item);
 		}
 
-		public void CopyTo(TechnologyProgress[] array, int arrayIndex)
+		public void CopyTo(Colony[] array, int arrayIndex)
 		{
 			innerSet.CopyTo(array, arrayIndex);
 		}
@@ -60,10 +73,11 @@ namespace Stareater.GameData.Databases.Tables
 			get { return false; }
 		}
 
-		public bool Remove(TechnologyProgress item)
+		public bool Remove(Colony item)
 		{
 			if (innerSet.Remove(item)) {
 				PlayersIndex[item.Owner].Remove(item);
+				PlanetsIndex[item.Location].Remove(item);
 			
 				return true;
 			}
@@ -71,7 +85,7 @@ namespace Stareater.GameData.Databases.Tables
 			return false;
 		}
 
-		public IEnumerator<TechnologyProgress> GetEnumerator()
+		public IEnumerator<Colony> GetEnumerator()
 		{
 			return innerSet.GetEnumerator();
 		}
@@ -81,7 +95,7 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
-		public void PendRemove(TechnologyProgress element)
+		public void PendRemove(Colony element)
 		{
 			toRemove.Add(element);
 		}

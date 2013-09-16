@@ -89,18 +89,22 @@
     <Compile Include="GameData\Databases\ChangesDB.cs" />
     <Compile Include="GameData\Databases\StatesDB.cs" />
     <Compile Include="GameData\Databases\StaticsDB.cs" />
-    <Compile Include="GameData\Databases\Tables\PlanetsCollection.cs">
-      <DependentUpon>PlanetsCollection.tt</DependentUpon>
+    <Compile Include="GameData\Databases\Tables\ColonyCollection.cs">
+      <DependentUpon>ColonyCollection.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GameData\Databases\Tables\PlanetCollection.cs">
+      <DependentUpon>PlanetCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="GameData\Databases\Tables\StarsCollection.cs">
+    <Compile Include="GameData\Databases\Tables\StarCollection.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>StarsCollection.tt</DependentUpon>
+      <DependentUpon>StarCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="GameData\Databases\Tables\TechnologiesCollection.cs">
-      <DependentUpon>TechnologiesCollection.tt</DependentUpon>
+    <Compile Include="GameData\Databases\Tables\TechnologyCollection.cs">
+      <DependentUpon>TechnologyCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\Databases\Tables\TechProgressCollection.cs">
@@ -172,17 +176,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />
-    <None Include="GameData\Databases\Tables\PlanetsCollection.tt">
+    <None Include="GameData\Databases\Tables\ColonyCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PlanetsCollection.cs</LastGenOutput>
+      <LastGenOutput>ColonyCollection.cs</LastGenOutput>
     </None>
-    <None Include="GameData\Databases\Tables\StarsCollection.tt">
+    <None Include="GameData\Databases\Tables\PlanetCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StarsCollection.cs</LastGenOutput>
+      <LastGenOutput>PlanetCollection.cs</LastGenOutput>
     </None>
-    <None Include="GameData\Databases\Tables\TechnologiesCollection.tt">
+    <None Include="GameData\Databases\Tables\StarCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TechnologiesCollection.cs</LastGenOutput>
+      <LastGenOutput>StarCollection.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Databases\Tables\TechnologyCollection.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TechnologyCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\TechProgressCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
