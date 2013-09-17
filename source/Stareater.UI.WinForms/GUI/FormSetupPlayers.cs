@@ -99,7 +99,7 @@ namespace Stareater.GUI
 			if (!playerViewsLayout.HasSelection) 
 				return;
 
-			PlayerInfo playerInfo = controller.PlayerList[playerViewsLayout.SelectedIndex];
+			NewGamePlayerInfo playerInfo = controller.PlayerList[playerViewsLayout.SelectedIndex];
 			eventClutch = true;
 
 			nameInput.Text = playerInfo.Name;

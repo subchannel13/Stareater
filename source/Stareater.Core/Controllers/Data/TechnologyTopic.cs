@@ -21,7 +21,7 @@ namespace Stareater.Controllers.Data
 		public int Level { get; private set; }
 		public int NextLevel { get; private set; }
 		
-		public TechnologyTopic(TechnologyProgress tech)
+		internal TechnologyTopic(TechnologyProgress tech)
 		{
 			this.technology = tech.Topic;
 			this.textVars = new Var("lvl0", tech.NextLevel).Get;

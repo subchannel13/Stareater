@@ -2,11 +2,11 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.Controllers;
+using Stareater.Galaxy;
 using Stareater.Utils;
 
 namespace Stareater.GLRenderers
@@ -168,7 +168,8 @@ namespace Stareater.GLRenderers
 				
 				float starNameZ = StarNameZ;
 				foreach (var star in controller.Stars) {
-					GL.Color4(Color.LightGray);
+					GL.Color4(starNameColor(star));
+					
 					GL.PushMatrix();
 					GL.Translate(star.Position.X, star.Position.Y - 0.5, starNameZ);
 					GL.Scale(StarNameScale, StarNameScale, StarNameScale);
@@ -206,6 +207,22 @@ namespace Stareater.GLRenderers
 				0, 0, 1, 0,
 				center.X, center.Y, 0, 1
 			};
+		}
+		
+		private Color starNameColor(StarData star)
+		{
+			if (controller.IsStarVisited(star)) {
+				var colonies = controller.KnownColonies(star);
+				
+				if (colonies.Count() > 0) {
+					var dominantPlayer = colonies.GroupBy(x => x.Owner).OrderByDescending(x => x.Count()).First().Key;
+					return dominantPlayer.Color;
+				}
+				
+				return Color.LightGray;
+			}
+			
+			return Color.FromArgb(64, 64, 64);
 		}
 		
 		private Vector4 mouseToView(int x, int y)

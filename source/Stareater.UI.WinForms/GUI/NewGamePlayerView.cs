@@ -18,7 +18,7 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 
-		public void SetData(PlayerInfo playerInfo) {
+		public void SetData(NewGamePlayerInfo playerInfo) {
 			flagImage.BackColor = playerInfo.Color;
 			nameLabel.Text = playerInfo.Name;
 			organizationLabel.Text = (playerInfo.Organization != null) ?

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using Stareater.GameData;
 using Stareater.GameData.Databases;
 
 namespace Stareater.Players
 {
-	public class Player
+	class Player
 	{
 		public string Name { get; private set; }
 		public Color Color { get; private set; }
@@ -17,7 +18,7 @@ namespace Stareater.Players
 		private IEnumerable<object> designs; //TODO: make type
 		private IEnumerable<object> predefinedDesigns; //TODO: make type
 		private IEnumerable<object> technologies; //TODO: make type
-		private object intelligence; //TODO: make type
+		public Intelligence Intelligence { get; private set; }
 
 		private IEnumerable<object> messages; //TODO: make type
 		private Dictionary<object, object> messageFilter; //TODO: make type
@@ -30,6 +31,8 @@ namespace Stareater.Players
 			this.Name = name;
 			this.organization = organization;
 			this.type = type;
+			
+			this.Intelligence = new Intelligence();
 			
 			this.Orders = new ChangesDB();
 		}

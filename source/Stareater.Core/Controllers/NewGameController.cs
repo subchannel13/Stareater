@@ -21,19 +21,19 @@ namespace Stareater.Controllers
 		PickList<Organization> organizations = new PickList<Organization>(Organization.List);
 		PickList<PlayerType> aiPlayers = new PickList<PlayerType>();
 
-		List<PlayerInfo> players = new List<PlayerInfo>();
+		List<NewGamePlayerInfo> players = new List<NewGamePlayerInfo>();
 
 		public NewGameController()
 		{
 			foreach (var aiFactory in PlayerAssets.AIDefinitions)
 				aiPlayers.Add(new PlayerType(PlayerControlType.LocalAI, aiFactory));
 
-			players.Add(new PlayerInfo("Marko Kovač",
+			players.Add(new NewGamePlayerInfo("Marko Kovač",
 				colors.Take(),
 				null,
 				localHuman));
 
-			players.Add(new PlayerInfo(generateAiName(),
+			players.Add(new NewGamePlayerInfo(generateAiName(),
 				colors.Take(),
 				null,
 				aiPlayers.Pick()));
@@ -63,17 +63,17 @@ namespace Stareater.Controllers
 			}
 		}
 
-		public IList<PlayerInfo> PlayerList
+		public IList<NewGamePlayerInfo> PlayerList
 		{
 			get
 			{
-				return new ReadOnlyCollection<PlayerInfo>(players);
+				return new ReadOnlyCollection<NewGamePlayerInfo>(players);
 			}
 		}
 
 		public void UpdatePlayer(int index, string newName)
 		{
-			players[index] = new PlayerInfo(
+			players[index] = new NewGamePlayerInfo(
 				newName,
 				players[index].Color,
 				players[index].Organization,
@@ -88,7 +88,7 @@ namespace Stareater.Controllers
 			colors.InnerList.Add(players[index].Color);
 			colors.InnerList.Remove(newColor);
 
-			players[index] = new PlayerInfo(
+			players[index] = new NewGamePlayerInfo(
 				players[index].Name,
 				newColor,
 				players[index].Organization,
@@ -97,7 +97,7 @@ namespace Stareater.Controllers
 
 		public void UpdatePlayer(int index, Organization newOrganization)
 		{
-			players[index] = new PlayerInfo(
+			players[index] = new NewGamePlayerInfo(
 				players[index].Name,
 				players[index].Color,
 				newOrganization,
@@ -106,7 +106,7 @@ namespace Stareater.Controllers
 
 		public void UpdatePlayer(int index, PlayerType newType)
 		{
-			players[index] = new PlayerInfo(
+			players[index] = new NewGamePlayerInfo(
 				players[index].Name,
 				players[index].Color,
 				players[index].Organization,
@@ -116,7 +116,7 @@ namespace Stareater.Controllers
 		public void AddPlayer()
 		{
 			if (players.Count < MaxPlayers)
-				players.Add(new PlayerInfo(generateAiName(),
+				players.Add(new NewGamePlayerInfo(generateAiName(),
 					colors.Take(),
 					null,
 					aiPlayers.Pick()));

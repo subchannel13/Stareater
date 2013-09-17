@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Stareater.Controllers.Data;
 using Stareater.Galaxy;
+using Stareater.GameData;
 
 namespace Stareater.Controllers
 {
@@ -19,15 +22,19 @@ namespace Stareater.Controllers
 		public IEnumerable<Planet> Planets
 		{
 			get {
-				return game.States.Planets.StarSystem(Star);
+				var planetInfos = game.Players[game.CurrentPlayer].Intelligence.About(Star).Planets;
+				var knownPlanets = planetInfos.Where(x => x.Value.Explored == PlanetIntelligence.FullyExplored).Select(x => x.Key);
+				
+				return knownPlanets.OrderBy(x => x.Position);
 			}
 		}
 		
-		//TODO: use view specific data and intelligence limitations
-		public Colony PlanetsColony(Planet planet)
+		public ColonyInfo PlanetsColony(Planet planet)
 		{
-			if (game.States.Colonies.PlanetsContains(planet))
-				return game.States.Colonies.Planets(planet);
+			if (game.Players[game.CurrentPlayer].Intelligence.About(Star).Planets[planet].LastVisited != PlanetIntelligence.NeverVisited)
+				//TODO: show last known colony information
+				if (game.States.Colonies.PlanetsContains(planet))
+					return new ColonyInfo(game.States.Colonies.Planets(planet));
 			
 			return null;
 		}
