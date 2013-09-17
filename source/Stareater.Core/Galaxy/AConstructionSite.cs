@@ -6,9 +6,9 @@ using Stareater.Players;
 
 namespace Stareater.Galaxy
 {
-	public abstract class AConstructionSite
+	abstract class AConstructionSite
 	{
-		public Player Owner { get; private set; }
+		internal Player Owner { get; private set; }
 		
 		private IEnumerable<object> buildings; //TODO: make type
 		private IEnumerable<object> orderQueue; //TODO: make type

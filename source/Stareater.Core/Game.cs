@@ -41,10 +41,15 @@ namespace Stareater
 				planets.Add(system.Planets);
 			
 			var colonies = new ColonyCollection();
-			for(int playerI = 0; playerI < players.Length; playerI++)
+			for(int playerI = 0; playerI < players.Length; playerI++) {
+				players[playerI].Intelligence.Initialize(stars, x => planets.StarSystem(x));
+					
 				//TODO: pick top most suitable planets
-				for(int colonyI = 0; colonyI < startingConditions.Colonies; colonyI++)
+				for(int colonyI = 0; colonyI < startingConditions.Colonies; colonyI++) {
 					colonies.Add(new Colony(players[playerI], planets.StarSystem(homeSystems[playerI]).ElementAt(colonyI)));
+					players[playerI].Intelligence.StarFullyVisited(homeSystems[playerI], this.Turn);
+				}
+			}
 			
 			var techProgress = new TechProgressCollection();
 			foreach(Player player in players)

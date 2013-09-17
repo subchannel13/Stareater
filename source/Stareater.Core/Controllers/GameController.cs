@@ -63,6 +63,60 @@ namespace Stareater.Controllers
 		}
 		
 		#region Map related
+		public bool IsStarVisited(StarData star)
+		{
+			return game.Players[game.CurrentPlayer].Intelligence.About(star).IsVisited;
+		}
+		
+		public IEnumerable<ColonyInfo> KnownColonies(StarData star)
+		{
+			var starKnowledge = game.Players[game.CurrentPlayer].Intelligence.About(star);
+			
+			foreach(var colony in game.States.Colonies.Stars(star))
+				if (starKnowledge.Planets[colony.Location].LastVisited != PlanetIntelligence.NeverVisited)
+					yield return new ColonyInfo(colony);
+		}
+		
+		public StarSystemController OpenStarSystem(StarData star)
+		{
+			return new StarSystemController(game, star);
+		}
+		
+		public StarSystemController OpenStarSystem(float x, float y, float searchRadius)
+		{
+			StarData closest = closestStar(x, y, searchRadius);
+			
+			if (closest != null)
+				return new StarSystemController(game, closest);
+			else
+				return null;
+		}
+		
+		public void SelectClosest(float x, float y, float searchRadius)
+		{
+			StarData closest = closestStar(x, y, searchRadius);
+			
+			if (closest != null)
+				SelectedStar = closest;
+		}
+		
+		public StarData SelectedStar
+		{
+			get
+			{
+				return this.lastSelectedStar[game.Players[game.CurrentPlayer]];
+			}
+			private set
+			{
+				this.lastSelectedStar[game.Players[game.CurrentPlayer]] = value;
+			}
+		}
+		
+		public int StarCount
+		{
+			get { return game.States.Stars.Count; }
+		}
+		
 		public IEnumerable<StarData> Stars
 		{
 			get
@@ -80,23 +134,6 @@ namespace Stareater.Controllers
 			}
 		}
 
-		public int StarCount
-		{
-			get { return game.States.Stars.Count; }
-		}
-
-		public StarData SelectedStar
-		{
-			get
-			{
-				return this.lastSelectedStar[game.Players[game.CurrentPlayer]];
-			}
-			private set
-			{
-				this.lastSelectedStar[game.Players[game.CurrentPlayer]] = value;
-			}
-		}
-		
 		private StarData closestStar(float x, float y, float searchRadius)
 		{
 			Vector2D point = new Vector2D(x, y);
@@ -109,29 +146,6 @@ namespace Stareater.Controllers
 				return closestStar;
 			else
 				return null;
-		}
-		
-		public void SelectClosest(float x, float y, float searchRadius)
-		{
-			StarData closest = closestStar(x, y, searchRadius);
-			
-			if (closest != null)
-				SelectedStar = closest;
-		}
-		
-		public StarSystemController OpenStarSystem(float x, float y, float searchRadius)
-		{
-			StarData closest = closestStar(x, y, searchRadius);
-			
-			if (closest != null)
-				return new StarSystemController(game, closest);
-			else
-				return null;
-		}
-		
-		public StarSystemController OpenStarSystem(StarData star)
-		{
-			return new StarSystemController(game, star);
 		}
 		#endregion
 		

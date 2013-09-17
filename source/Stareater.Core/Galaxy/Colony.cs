@@ -6,11 +6,11 @@ using Stareater.Players;
 
 namespace Stareater.Galaxy
 {
-	public class Colony : AConstructionSite
+	class Colony : AConstructionSite
 	{
 		public Planet Location { get; private set; }
 		
-		public Colony(Player owner, Planet planet) : base(owner)
+		internal Colony(Player owner, Planet planet) : base(owner)
 		{
 			this.Location = planet;
 		}

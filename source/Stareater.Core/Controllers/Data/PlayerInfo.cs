@@ -1,26 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
 using Stareater.Players;
 
 namespace Stareater.Controllers.Data
 {
-	public struct PlayerInfo
+	public class PlayerInfo
 	{
-		public string Name;
-		public Color Color;
-		public Organization Organization;
-		public PlayerType ControlType;
-
-		public PlayerInfo(string Name, Color Color, Organization Organization,
-			PlayerType Type)
+		private Player player;
+		
+		internal PlayerInfo(Player player)
 		{
-			this.Color = Color;
-			this.Name = Name;
-			this.Organization = Organization;
-			this.ControlType = Type;
+			this.player = player;
 		}
+		
+		public string Name 
+		{ 
+			get { return player.Name; }
+		}
+		
+		public Color Color 
+		{ 
+			get { return player.Color; }
+		}
+		
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			PlayerInfo other = obj as PlayerInfo;
+			if (other == null)
+				return false;
+			return object.Equals(this.player, other.player);
+		}
+		
+		public override int GetHashCode()
+		{
+			return player.GetHashCode();
+		}
+		
+		public static bool operator ==(PlayerInfo lhs, PlayerInfo rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+		
+		public static bool operator !=(PlayerInfo lhs, PlayerInfo rhs)
+		{
+			return !(lhs == rhs);
+		}
+		#endregion
+
 	}
 }

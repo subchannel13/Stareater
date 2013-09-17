@@ -4,7 +4,7 @@ using Stareater.Utils.Collections;
 
 namespace Stareater.GameData
 {
-	public class TechnologyProgress
+	internal class TechnologyProgress
 	{
 		public const int NotStarted = -1;
 		public const int Unordered = -1;
@@ -12,7 +12,7 @@ namespace Stareater.GameData
 		public int Level { get; private set; }
 		public double InvestedPoints { get; private set; }
 		public Technology Topic { get; private set; }
-		public Player Owner { get; private set; }
+		internal Player Owner { get; private set; }
 		
 		public int Order { get; set; }
 		
