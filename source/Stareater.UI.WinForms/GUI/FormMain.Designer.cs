@@ -37,6 +37,7 @@
 			this.mainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.developmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.endTurnButton = new System.Windows.Forms.Button();
+			this.returnButton = new System.Windows.Forms.Button();
 			this.menuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -112,11 +113,25 @@
 			this.endTurnButton.Visible = false;
 			this.endTurnButton.Click += new System.EventHandler(this.endTurnButton_Click);
 			// 
+			// returnButton
+			// 
+			this.returnButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.returnButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.returnButton.Location = new System.Drawing.Point(792, 27);
+			this.returnButton.Name = "returnButton";
+			this.returnButton.Size = new System.Drawing.Size(80, 80);
+			this.returnButton.TabIndex = 4;
+			this.returnButton.Text = "button2";
+			this.returnButton.UseVisualStyleBackColor = true;
+			this.returnButton.Visible = false;
+			this.returnButton.Click += new System.EventHandler(this.returnButton_Click);
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(884, 562);
+			this.Controls.Add(this.returnButton);
 			this.Controls.Add(this.endTurnButton);
 			this.Controls.Add(this.constructionManagement);
 			this.Controls.Add(this.glCanvas);
@@ -132,6 +147,7 @@
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.Button returnButton;
 		private System.Windows.Forms.ToolStripMenuItem developmentToolStripMenuItem;
 		private System.Windows.Forms.Button endTurnButton;
 		private System.Windows.Forms.ToolStripMenuItem mainMenuToolStripMenuItem;
