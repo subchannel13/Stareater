@@ -40,7 +40,7 @@ namespace Stareater.GLRenderers
 		private bool resetProjection = true;
 		private Matrix4 invProjection;
 
-		private int zoomLevel = 0;
+		private int zoomLevel = 2;
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
 		private Vector2 originOffset = Vector2.Zero;
@@ -63,6 +63,9 @@ namespace Stareater.GLRenderers
 				(float)controller.Stars.Select(star => star.Position.X).Max() + StarMinClickRadius,
 				(float)controller.Stars.Select(star => star.Position.Y).Max() + StarMinClickRadius
 			);
+			
+			//TODO: move to more appropriate begin turn setup
+			originOffset = new Vector2((float)controller.SelectedStar.Position.X, (float)controller.SelectedStar.Position.Y);
 		}
 
 		public void AttachToCanvas(Control eventDispatcher)
