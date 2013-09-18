@@ -12,8 +12,10 @@ namespace Stareater.GLRenderers
 	public class SystemRenderer : IRenderer
 	{
 		private const double DefaultViewSize = 1;
+		private const int SelectedStar = -1;
 		
 		private const float FarZ = -1;
+		private const float SelectionZ = -0.7f;
 		private const float StarColorZ = -0.8f;
 		private const float PlanetZ = -0.8f;
 		private const float OrbitZ = -0.9f;
@@ -27,6 +29,8 @@ namespace Stareater.GLRenderers
 		
 		private const float StarScale = 0.5f;
 		private const float PlanetScale = 0.15f;
+		private const float StarSelectorScale = 1.1f;
+		private const float PlanetSelectorScale = 1.1f;
 		
 		private StarSystemController controller;
 		private Control eventDispatcher;
@@ -41,9 +45,11 @@ namespace Stareater.GLRenderers
 		private float minOffset = -StarScale / 2;
 		private float maxOffset;
 		
+		private int selectedBody;
+		
 		public SystemRenderer(Action systemClosedHandler)
 		{
-			this.systemClosedHandler = systemClosedHandler;
+			this.systemClosedHandler = systemClosedHandler; 
 		}
 		
 		public void Draw(double deltaTime)
@@ -74,6 +80,11 @@ namespace Stareater.GLRenderers
 			GL.Scale(StarScale, StarScale, StarScale);
 
 			TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
+			if (selectedBody == SelectedStar) {
+				GL.Color4(Color.White);
+				GL.Scale(StarSelectorScale, StarSelectorScale, StarSelectorScale);
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
+			}
 		
 			GL.PopMatrix();
 			
@@ -108,6 +119,11 @@ namespace Stareater.GLRenderers
 				GL.Scale(PlanetScale, PlanetScale, PlanetScale);
 	
 				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.Planet, StarColorZ);
+				if (selectedBody == planet.Position){
+					GL.Color4(Color.White);
+					GL.Scale(PlanetSelectorScale, PlanetSelectorScale, PlanetSelectorScale);
+					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
+				}
 			
 				GL.PopMatrix();
 			}
@@ -148,6 +164,7 @@ namespace Stareater.GLRenderers
 			this.resetProjection = true;
 			this.originOffset = 0.5f; //TODO: Get most populated planet
 			this.maxOffset = controller.Planets.Count() * OrbitStep + OrbitOffset + PlanetScale / 2;
+			this.selectedBody = SelectedStar;
 		}
 		
 		public void ResetProjection()
@@ -177,7 +194,20 @@ namespace Stareater.GLRenderers
 			if (panAbsPath > PanClickTolerance)
 				return;
 			
-			this.systemClosedHandler();
+			int? newSelection = null;
+			float mouseX = Vector4.Transform(mouseToView(e.X, e.Y), invProjection).X;
+			
+			if (mouseX > -(OrbitOffset - OrbitStep / 2))
+				newSelection = SelectedStar;
+			
+			foreach(var planet in controller.Planets)
+				if (mouseX > planet.Position * OrbitStep + OrbitOffset - OrbitStep / 2)
+					newSelection = planet.Position;
+			
+			if (newSelection.HasValue)
+				selectedBody = newSelection.Value;
+			else
+				this.systemClosedHandler();
 		}
 		
 		private void mousePan(object sender, MouseEventArgs e)
