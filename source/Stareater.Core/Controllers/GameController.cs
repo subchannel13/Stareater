@@ -50,9 +50,18 @@ namespace Stareater.Controllers
 
 			this.State = GameState.Running;
 
-			// TODO: find most populated player's system
-			foreach (var player in players)
-				this.lastSelectedStar.Add(player, game.States.Stars.First());
+			//TODO: utilize stellar administration instead iterating colonies
+			foreach (var player in players) {
+				var colonies = game.States.Colonies.Players(player);
+				var perStar = colonies.GroupBy(x => x.Star);
+				var starPopulation = perStar.Select(x => new KeyValuePair<StarData, double>(
+					x.Key, 
+					x.Aggregate(0.0, (sum, colony) => sum + colony.Population)
+				));
+				var maxPopulationStar = starPopulation.Aggregate((a, b) => (a.Value > b.Value) ? a : b).Key;
+				
+				this.lastSelectedStar.Add(player, maxPopulationStar);
+			}
 		}
 
 		public GameState State { get; private set; }
