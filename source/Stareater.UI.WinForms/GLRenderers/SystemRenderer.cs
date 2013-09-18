@@ -32,6 +32,8 @@ namespace Stareater.GLRenderers
 		private const float StarSelectorScale = 1.1f;
 		private const float PlanetSelectorScale = 1.1f;
 		
+		private const char ReturnToGalaxyKey = (char)27; //TODO: Make rebindable
+		
 		private StarSystemController controller;
 		private Control eventDispatcher;
 		private Action systemClosedHandler;
@@ -147,12 +149,14 @@ namespace Stareater.GLRenderers
 			
 			eventDispatcher.MouseMove += mousePan;
 			eventDispatcher.MouseClick += mouseClick;
+			eventDispatcher.KeyPress += keyPress;
 		}
 		
 		public void DetachFromCanvas()
 		{
 			eventDispatcher.MouseMove -= mousePan;
 			eventDispatcher.MouseClick -= mouseClick;
+			eventDispatcher.KeyPress -= keyPress;
 			
 			this.eventDispatcher = null;
 		}
@@ -189,6 +193,17 @@ namespace Stareater.GLRenderers
 				originOffset = maxOffset;
 		}
 		
+		private void keyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+		{
+			switch (e.KeyChar) {
+				case ReturnToGalaxyKey:
+					this.systemClosedHandler();
+					break;
+				//TODO: add hotkeys for star and planets
+			}
+			
+		}
+		
 		private void mouseClick(object sender, MouseEventArgs e)
 		{
 			if (panAbsPath > PanClickTolerance)
@@ -206,8 +221,6 @@ namespace Stareater.GLRenderers
 			
 			if (newSelection.HasValue)
 				selectedBody = newSelection.Value;
-			else
-				this.systemClosedHandler();
 		}
 		
 		private void mousePan(object sender, MouseEventArgs e)

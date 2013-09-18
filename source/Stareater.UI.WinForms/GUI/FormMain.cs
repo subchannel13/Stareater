@@ -48,7 +48,9 @@ namespace Stareater.GUI
 
 			Context context = SettingsWinforms.Get.Language["FormMain"];
 			this.endTurnButton.Text = context["EndTurn"].Text();
+			this.returnButton.Text = context["Return"].Text();
 			this.mainMenuToolStripMenuItem.Text = context["MainMenu"].Text();
+			this.developmentToolStripMenuItem.Text = context["DevelopmentMenu"].Text();
 		}
 
 		private void eventTimer_Tick(object sender, EventArgs e)
@@ -69,6 +71,12 @@ namespace Stareater.GUI
 		private void endTurnButton_Click(object sender, EventArgs e)
 		{
 			controller.EndTurn();
+		}
+		
+		private void returnButton_Click(object sender, EventArgs e)
+		{
+			if (currentRenderer == systemRenderer)
+				switchToGalaxyView();
 		}
 		
 		private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
@@ -208,6 +216,7 @@ namespace Stareater.GUI
 			
 			constructionManagement.Visible = true;
 			endTurnButton.Visible = false;
+			returnButton.Visible = true;
 		}
 		
 		private void switchToGalaxyView()
@@ -220,9 +229,9 @@ namespace Stareater.GUI
 			
 			constructionManagement.Visible = false;
 			endTurnButton.Visible = true;
+			returnButton.Visible = false;
 		}
 		
 		#endregion
-		
 	}
 }
