@@ -10,8 +10,6 @@ namespace Stareater.Galaxy
 	{
 		public double AtmosphereDensityMin = -5;
 		public double AtmosphereDensityMax = 10;
-		public double AtmosphereQualityMin = -10;
-		public double AtmosphereQualityMax = 0;
 		public double GravityMin = -5;
 		public double GravityMax = 10;
 		public double RadiationMin = 0;
@@ -21,6 +19,7 @@ namespace Stareater.Galaxy
 		
 		public double OptimalCondition = 0;
 		
+		public PlanetType Type { get; private set; }
 		public double Size { get; private set; }
 		public double MineralsSurface { get; private set; }
 		public double MineralsDeep { get; private set; }
@@ -28,21 +27,20 @@ namespace Stareater.Galaxy
 		public StarData Star { get; private set; }
 		public int Position { get; private set; }
 
-		public Planet(StarData star, int position, int size, double atmosphereDensityFactor, double atmosphereQuality, double mineralsSurface, double mineralsDeep)
+		public Planet(StarData star, int position, PlanetType type, int size, int gravity, double atmosphereDensityFactor, double mineralsSurface, double mineralsDeep)
 		{
 			this.Star = star;
 			this.Position = position;
+			this.Type = type;
 			
 			this.Size = size;
 			this.AtmosphereDensity = Methods.Clamp(calcAtmosphereDensity(atmosphereDensityFactor), AtmosphereDensityMin, AtmosphereDensityMax);
-			this.AtmosphereQuality = Methods.Clamp(atmosphereQuality, AtmosphereQualityMin, AtmosphereQualityMax);
 			this.GravityDeviation = Methods.Clamp(calcGravity(), GravityMin, GravityMax);
 			this.RadiationDeviation = Methods.Clamp(calcRadiation(), RadiationMin, RadiationMax);
 			this.TemperatureDeviation = Methods.Clamp(calcTemperature(), TemperatureMin, TemperatureMax);
 		}
 		
 		public double AtmosphereDensity { get; private set; }
-		public double AtmosphereQuality { get; private set; }
 		public double GravityDeviation { get; private set; }
 		public double RadiationDeviation { get; private set; }
 		public double TemperatureDeviation { get; private set; }

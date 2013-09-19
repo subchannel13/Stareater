@@ -10,8 +10,8 @@ namespace Stareater.Galaxy
 	{
 		public Planet Location { get; private set; }
 		
-		public double Population { get; private set; }
-		public double Infrastructure { get; private set; }
+		public double Population { get; set; }
+		public double Infrastructure { get; set; }
 		
 		internal Colony(Player owner, Planet planet) : base(owner)
 		{

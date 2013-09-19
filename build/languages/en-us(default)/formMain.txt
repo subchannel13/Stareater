@@ -3,6 +3,8 @@
 EndTurn {
 End
 turn}
+Return = Return
 
 MainMenu = Main menu
+DevelopmentMenu = Development
 -

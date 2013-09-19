@@ -85,6 +85,7 @@
     <Compile Include="Galaxy\Builders\StarSystem.cs" />
     <Compile Include="Galaxy\Colony.cs" />
     <Compile Include="Galaxy\Fleet.cs" />
+    <Compile Include="Galaxy\PlanetType.cs" />
     <Compile Include="Galaxy\StarNamer.cs" />
     <Compile Include="Galaxy\StellarManagement.cs" />
     <Compile Include="Game.cs" />
@@ -95,11 +96,13 @@
       <DependentUpon>ColonyCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="GameData\Databases\Tables\ColonyFormulaSet.cs" />
     <Compile Include="GameData\Databases\Tables\PlanetCollection.cs">
       <DependentUpon>PlanetCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameData\Databases\Tables\PopulationActivityFormulas.cs" />
     <Compile Include="GameData\Databases\Tables\StarCollection.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

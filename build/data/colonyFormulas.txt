@@ -1,0 +1,24 @@
+{ ColonyFormulas
+	maxPopulation # size / 10 * 1e9;
+	
+	farming
+	{ Work
+		improvised	# 3;
+		organized	# 4;
+	}
+	mining
+	{ Work
+		improvised	# 10;
+		organized	# 20;
+	}
+	industry
+	{ Work
+		improvised	# 2;
+		organized	# 5;
+	}
+	development 
+	{ Work
+		improvised	# 1;
+		organized	# 3;
+	}
+}
