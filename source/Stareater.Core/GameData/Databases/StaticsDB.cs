@@ -13,10 +13,21 @@ namespace Stareater.GameData.Databases
 	internal class StaticsDB
 	{
 		public TechnologyCollection Technologies { get; private set; }
+		public ColonyFormulaSet ColonyFormulas { get; private set; }
 		
+		private const string ColonyFormulasTag = "ColonyFormulas";
 		private const string DevelopmentTag = "DevelopmentTopic";
 		private const string ResearchTag = "ResearchTopic";
 		
+		private const string ColonyMaxPopulation = "maxPopulation";
+		private const string ColonyDevelopment = "development";
+		private const string ColonyFarming = "farming";
+		private const string ColonyIndustry = "industry";
+		private const string ColonyMining = "mining";
+		
+		private const string PopulationActivityImprovised = "improvised";
+		private const string PopulationActivityOrganized = "organized";
+			
 		private const string TechnologyNameKey = "nameCode";
 		private const string TechnologyDescriptionKey = "descCode";
 		private const string TechnologyImageKey = "image";
@@ -53,6 +64,9 @@ namespace Stareater.GameData.Databases
 							case ResearchTag:
 								Technologies.Add(loadTech(data, TechnologyCategory.Research));
 								break;
+							case ColonyFormulasTag:
+								ColonyFormulas = loadColonyFormulas(data);
+								break;
 							default:
 								throw new FormatException("Invalid game data object with tag " + data.Tag);
 						}
@@ -86,6 +100,25 @@ namespace Stareater.GameData.Databases
              	data[TechnologyMaxLevelKey].To<int>(),
              	category
              );
+		}
+		
+		private PopulationActivityFormulas loadPopulationActivity(IkonComposite data, string key)
+		{
+			return new PopulationActivityFormulas(
+				data[key].To<IkonComposite>()[PopulationActivityImprovised].To<Formula>(),
+				data[key].To<IkonComposite>()[PopulationActivityOrganized].To<Formula>()
+			);
+		}
+		
+		private ColonyFormulaSet loadColonyFormulas(IkonComposite data)
+		{
+			return new ColonyFormulaSet(
+				data[ColonyMaxPopulation].To<Formula>(),
+				loadPopulationActivity(data, ColonyFarming),
+				loadPopulationActivity(data, ColonyMining),
+				loadPopulationActivity(data, ColonyDevelopment),
+				loadPopulationActivity(data, ColonyIndustry)
+			);
 		}
 	}
 }
