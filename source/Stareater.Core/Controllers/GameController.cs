@@ -37,14 +37,14 @@ namespace Stareater.Controllers
 				new Player(info.Name, info.Color, info.Organization, info.ControlType)
 			).ToArray();
 			
-			var homeSystems = starPositions.HomeSystems.Select(x => stars[x].Star).ToArray();
+			//var homeSystems = starPositions.HomeSystems.Select(x => stars[x].Star).ToArray();
 			
 			this.game = new Game(
 				statics, 
 				stars, 
 				controller.StarConnector.Generate(rng, starPositions), 
 				players,
-				homeSystems,
+				starPositions.HomeSystems,
 				controller.SelectedStart
 			);
 
@@ -52,7 +52,7 @@ namespace Stareater.Controllers
 
 			//TODO: utilize stellar administration instead iterating colonies
 			foreach (var player in players) {
-				var colonies = game.States.Colonies.Players(player);
+				var colonies = game.States.Colonies.OwnedBy(player);
 				var perStar = colonies.GroupBy(x => x.Star);
 				var starPopulation = perStar.Select(x => new KeyValuePair<StarData, double>(
 					x.Key, 
@@ -81,7 +81,7 @@ namespace Stareater.Controllers
 		{
 			var starKnowledge = game.Players[game.CurrentPlayer].Intelligence.About(star);
 			
-			foreach(var colony in game.States.Colonies.Stars(star))
+			foreach(var colony in game.States.Colonies.AtStar(star))
 				if (starKnowledge.Planets[colony.Location].LastVisited != PlanetIntelligence.NeverVisited)
 					yield return new ColonyInfo(colony);
 		}

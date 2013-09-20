@@ -6,6 +6,6 @@
 	usings.Add("Stareater.Players");
 	
 	Generate("TechProgressCollection", "TechnologyProgress",
-		new ViewInfo("Players", "Player", "Owner", ViewType.Collection)
+		new ViewInfo("Of", "Player", "Owner", ViewType.Collection)
 	);
 #>

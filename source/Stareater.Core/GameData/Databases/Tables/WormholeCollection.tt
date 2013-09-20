@@ -6,6 +6,6 @@
 	usings.Add("Stareater.Galaxy");
 	
 	Generate("WormholeCollection", "Tuple<StarData, StarData>",
-		new ViewInfo("Endpoints", "StarData", "Item1;Item2", ViewType.Collection)
+		new ViewInfo("At", "StarData", "Item1;Item2", ViewType.Collection)
 	);
 #>

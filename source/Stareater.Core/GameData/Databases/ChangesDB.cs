@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Stareater.GameData.Databases
 {
-	public class ChangesDB
+	class ChangesDB
 	{
 		public IDictionary<string, int> DevelopmentQueue { get; private set; }
 		

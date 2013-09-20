@@ -97,6 +97,10 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\Databases\Tables\ColonyFormulaSet.cs" />
+    <Compile Include="GameData\Databases\Tables\ColonyProcessorCollection.cs">
+      <DependentUpon>ColonyProcessorCollection.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameData\Databases\Tables\PlanetCollection.cs">
       <DependentUpon>PlanetCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -120,6 +124,7 @@
       <DependentUpon>WormholeCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="GameData\Databases\TemporaryDB.cs" />
     <Compile Include="GameData\Intelligence.cs" />
     <Compile Include="GameData\PlanetIntelligence.cs" />
     <Compile Include="GameData\Prerequisite.cs" />
@@ -132,6 +137,7 @@
     <Compile Include="GameData\Technology.cs" />
     <Compile Include="GameData\TechnologyCategory.cs" />
     <Compile Include="GameData\TechnologyProgress.cs" />
+    <Compile Include="GameLogic\ColonyProcessor.cs" />
     <Compile Include="Localization\ChainText.cs" />
     <Compile Include="Localization\ConditionalText.cs" />
     <Compile Include="Localization\ExpressionText.cs" />
@@ -154,6 +160,7 @@
     <Compile Include="Players\IOffscreenPlayer.cs" />
     <Compile Include="Players\Organization.cs" />
     <Compile Include="Players\PlayerType.cs" />
+    <Compile Include="Utils\ChoiceWeights.cs" />
     <Compile Include="Utils\Collections\IndexedCollectionBase.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -187,6 +194,10 @@
     <None Include="GameData\Databases\Tables\ColonyCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ColonyCollection.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Databases\Tables\ColonyProcessorCollection.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ColonyProcessorCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\PlanetCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -228,6 +239,7 @@
     <Folder Include="GameData\Reading" />
     <Folder Include="Libs\" />
     <Folder Include="GameData" />
+    <Folder Include="GameLogic" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

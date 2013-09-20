@@ -10,11 +10,11 @@ namespace Stareater.GameData.Databases.Tables
 		HashSet<Tuple<StarData, StarData>> innerSet = new HashSet<Tuple<StarData, StarData>>();
 		List<Tuple<StarData, StarData>> toRemove = new List<Tuple<StarData, StarData>>();
 
-		Dictionary<StarData, List<Tuple<StarData, StarData>>> EndpointsIndex = new Dictionary<StarData, List<Tuple<StarData, StarData>>>();
+		Dictionary<StarData, List<Tuple<StarData, StarData>>> AtIndex = new Dictionary<StarData, List<Tuple<StarData, StarData>>>();
 
-		public IEnumerable<Tuple<StarData, StarData>> Endpoints(StarData key) {
-			if (EndpointsIndex.ContainsKey(key))
-				foreach (var item in EndpointsIndex[key])
+		public IEnumerable<Tuple<StarData, StarData>> At(StarData key) {
+			if (AtIndex.ContainsKey(key))
+				foreach (var item in AtIndex[key])
 					yield return item;
 		}
 	
@@ -22,13 +22,13 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			innerSet.Add(item); 
 
-			if (!EndpointsIndex.ContainsKey(item.Item1))
-				EndpointsIndex.Add(item.Item1, new List<Tuple<StarData, StarData>>());
-			EndpointsIndex[item.Item1].Add(item);
+			if (!AtIndex.ContainsKey(item.Item1))
+				AtIndex.Add(item.Item1, new List<Tuple<StarData, StarData>>());
+			AtIndex[item.Item1].Add(item);
 
-			if (!EndpointsIndex.ContainsKey(item.Item2))
-				EndpointsIndex.Add(item.Item2, new List<Tuple<StarData, StarData>>());
-			EndpointsIndex[item.Item2].Add(item);
+			if (!AtIndex.ContainsKey(item.Item2))
+				AtIndex.Add(item.Item2, new List<Tuple<StarData, StarData>>());
+			AtIndex[item.Item2].Add(item);
 		}
 
 		public void Add(IEnumerable<Tuple<StarData, StarData>> items)
@@ -41,7 +41,7 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			innerSet.Clear();
 
-			EndpointsIndex.Clear();
+			AtIndex.Clear();
 		}
 
 		public bool Contains(Tuple<StarData, StarData> item)
@@ -67,8 +67,8 @@ namespace Stareater.GameData.Databases.Tables
 		public bool Remove(Tuple<StarData, StarData> item)
 		{
 			if (innerSet.Remove(item)) {
-				EndpointsIndex[item.Item1].Remove(item);
-				EndpointsIndex[item.Item2].Remove(item);
+				AtIndex[item.Item1].Remove(item);
+				AtIndex[item.Item2].Remove(item);
 			
 				return true;
 			}
