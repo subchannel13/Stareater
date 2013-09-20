@@ -6,7 +6,7 @@ using Stareater.Players;
 
 namespace Stareater.GameData.Databases
 {
-	internal class StatesDB
+	class StatesDB
 	{
 		public StarCollection Stars { get; private set; }
 		public WormholeCollection Wormholes { get; private set; }
@@ -14,7 +14,7 @@ namespace Stareater.GameData.Databases
 		public PlanetCollection Planets { get; private set; }
 		public ColonyCollection Colonies { get; private set; }
 		
-		public TechProgressCollection TechnologyProgresses { get; private set; }
+		public TechProgressCollection TechnologyAdvances { get; private set; }
 		
 		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, ColonyCollection Colonies, TechProgressCollection technologyProgresses)
 		{
@@ -22,7 +22,7 @@ namespace Stareater.GameData.Databases
 			this.Planets = planets;
 			this.Stars = stars;
 			this.Wormholes = wormholes;
-			this.TechnologyProgresses = technologyProgresses;
+			this.TechnologyAdvances = technologyProgresses;
 		}
 	}
 }

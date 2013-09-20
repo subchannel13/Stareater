@@ -11,21 +11,10 @@ namespace Stareater.GameData.Databases.Tables
 		HashSet<StarData> innerSet = new HashSet<StarData>();
 		List<StarData> toRemove = new List<StarData>();
 
-		Dictionary<Vector2D, List<StarData>> PositionsIndex = new Dictionary<Vector2D, List<StarData>>();
-
-		public IEnumerable<StarData> Positions(Vector2D key) {
-			if (PositionsIndex.ContainsKey(key))
-				foreach (var item in PositionsIndex[key])
-					yield return item;
-		}
 	
 		public void Add(StarData item)
 		{
 			innerSet.Add(item); 
-
-			if (!PositionsIndex.ContainsKey(item.Position))
-				PositionsIndex.Add(item.Position, new List<StarData>());
-			PositionsIndex[item.Position].Add(item);
 		}
 
 		public void Add(IEnumerable<StarData> items)
@@ -38,7 +27,6 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			innerSet.Clear();
 
-			PositionsIndex.Clear();
 		}
 
 		public bool Contains(StarData item)
@@ -64,7 +52,6 @@ namespace Stareater.GameData.Databases.Tables
 		public bool Remove(StarData item)
 		{
 			if (innerSet.Remove(item)) {
-				PositionsIndex[item.Position].Remove(item);
 			
 				return true;
 			}

@@ -3,12 +3,11 @@
 <#@ include file="$(ProjectDir)/Utils/Collections/IndexedCollectionBase.tt" #><#
 	
 	namespaceName = "Stareater.GameData.Databases.Tables";
-	usings.Add("Stareater.Galaxy");
+	partial = true;
+	usings.Add("Stareater.GameLogic");
 	usings.Add("Stareater.Players");
 	
-	Generate("ColonyCollection", "Colony",
-		new ViewInfo("OwnedBy", "Player", "Owner", ViewType.Collection),
-		new ViewInfo("AtPlanet", "Planet", "Location", ViewType.Scalar),
-		new ViewInfo("AtStar", "StarData", "Star", ViewType.Collection)
+	Generate("ColonyProcessorCollection", "ColonyProcessor",
+		new ViewInfo("OwnedBy", "Player", "Owner", ViewType.Collection)
 	);
 #>

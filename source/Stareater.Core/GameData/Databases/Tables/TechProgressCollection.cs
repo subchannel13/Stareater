@@ -10,11 +10,11 @@ namespace Stareater.GameData.Databases.Tables
 		HashSet<TechnologyProgress> innerSet = new HashSet<TechnologyProgress>();
 		List<TechnologyProgress> toRemove = new List<TechnologyProgress>();
 
-		Dictionary<Player, List<TechnologyProgress>> PlayersIndex = new Dictionary<Player, List<TechnologyProgress>>();
+		Dictionary<Player, List<TechnologyProgress>> OfIndex = new Dictionary<Player, List<TechnologyProgress>>();
 
-		public IEnumerable<TechnologyProgress> Players(Player key) {
-			if (PlayersIndex.ContainsKey(key))
-				foreach (var item in PlayersIndex[key])
+		public IEnumerable<TechnologyProgress> Of(Player key) {
+			if (OfIndex.ContainsKey(key))
+				foreach (var item in OfIndex[key])
 					yield return item;
 		}
 	
@@ -22,9 +22,9 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			innerSet.Add(item); 
 
-			if (!PlayersIndex.ContainsKey(item.Owner))
-				PlayersIndex.Add(item.Owner, new List<TechnologyProgress>());
-			PlayersIndex[item.Owner].Add(item);
+			if (!OfIndex.ContainsKey(item.Owner))
+				OfIndex.Add(item.Owner, new List<TechnologyProgress>());
+			OfIndex[item.Owner].Add(item);
 		}
 
 		public void Add(IEnumerable<TechnologyProgress> items)
@@ -37,7 +37,7 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			innerSet.Clear();
 
-			PlayersIndex.Clear();
+			OfIndex.Clear();
 		}
 
 		public bool Contains(TechnologyProgress item)
@@ -63,7 +63,7 @@ namespace Stareater.GameData.Databases.Tables
 		public bool Remove(TechnologyProgress item)
 		{
 			if (innerSet.Remove(item)) {
-				PlayersIndex[item.Owner].Remove(item);
+				OfIndex[item.Owner].Remove(item);
 			
 				return true;
 			}

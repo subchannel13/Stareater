@@ -9,21 +9,10 @@ namespace Stareater.GameData.Databases.Tables
 		HashSet<Technology> innerSet = new HashSet<Technology>();
 		List<Technology> toRemove = new List<Technology>();
 
-		Dictionary<string, List<Technology>> CodesIndex = new Dictionary<string, List<Technology>>();
-
-		public IEnumerable<Technology> Codes(string key) {
-			if (CodesIndex.ContainsKey(key))
-				foreach (var item in CodesIndex[key])
-					yield return item;
-		}
 	
 		public void Add(Technology item)
 		{
 			innerSet.Add(item); 
-
-			if (!CodesIndex.ContainsKey(item.IdCode))
-				CodesIndex.Add(item.IdCode, new List<Technology>());
-			CodesIndex[item.IdCode].Add(item);
 		}
 
 		public void Add(IEnumerable<Technology> items)
@@ -36,7 +25,6 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			innerSet.Clear();
 
-			CodesIndex.Clear();
 		}
 
 		public bool Contains(Technology item)
@@ -62,7 +50,6 @@ namespace Stareater.GameData.Databases.Tables
 		public bool Remove(Technology item)
 		{
 			if (innerSet.Remove(item)) {
-				CodesIndex[item.IdCode].Remove(item);
 			
 				return true;
 			}

@@ -33,8 +33,8 @@ namespace Stareater.Controllers
 		{
 			if (game.Players[game.CurrentPlayer].Intelligence.About(Star).Planets[planet].LastVisited != PlanetIntelligence.NeverVisited)
 				//TODO: show last known colony information
-				if (game.States.Colonies.PlanetsContains(planet))
-					return new ColonyInfo(game.States.Colonies.Planets(planet));
+				if (game.States.Colonies.AtPlanetContains(planet))
+					return new ColonyInfo(game.States.Colonies.AtPlanet(planet));
 			
 			return null;
 		}

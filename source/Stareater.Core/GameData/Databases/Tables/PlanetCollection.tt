@@ -6,6 +6,6 @@
 	usings.Add("Stareater.Galaxy");
 	
 	Generate("PlanetCollection", "Planet",
-		new ViewInfo("StarSystem", "StarData", "Star", ViewType.Collection)
+		new ViewInfo("At", "StarData", "Star", ViewType.Collection)
 	);
 #>

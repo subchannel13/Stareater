@@ -10,11 +10,11 @@ namespace Stareater.GameData.Databases.Tables
 		HashSet<Planet> innerSet = new HashSet<Planet>();
 		List<Planet> toRemove = new List<Planet>();
 
-		Dictionary<StarData, List<Planet>> StarSystemIndex = new Dictionary<StarData, List<Planet>>();
+		Dictionary<StarData, List<Planet>> AtIndex = new Dictionary<StarData, List<Planet>>();
 
-		public IEnumerable<Planet> StarSystem(StarData key) {
-			if (StarSystemIndex.ContainsKey(key))
-				foreach (var item in StarSystemIndex[key])
+		public IEnumerable<Planet> At(StarData key) {
+			if (AtIndex.ContainsKey(key))
+				foreach (var item in AtIndex[key])
 					yield return item;
 		}
 	
@@ -22,9 +22,9 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			innerSet.Add(item); 
 
-			if (!StarSystemIndex.ContainsKey(item.Star))
-				StarSystemIndex.Add(item.Star, new List<Planet>());
-			StarSystemIndex[item.Star].Add(item);
+			if (!AtIndex.ContainsKey(item.Star))
+				AtIndex.Add(item.Star, new List<Planet>());
+			AtIndex[item.Star].Add(item);
 		}
 
 		public void Add(IEnumerable<Planet> items)
@@ -37,7 +37,7 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			innerSet.Clear();
 
-			StarSystemIndex.Clear();
+			AtIndex.Clear();
 		}
 
 		public bool Contains(Planet item)
@@ -63,7 +63,7 @@ namespace Stareater.GameData.Databases.Tables
 		public bool Remove(Planet item)
 		{
 			if (innerSet.Remove(item)) {
-				StarSystemIndex[item.Star].Remove(item);
+				AtIndex[item.Star].Remove(item);
 			
 				return true;
 			}

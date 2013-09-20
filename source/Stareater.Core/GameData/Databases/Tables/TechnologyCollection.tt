@@ -4,7 +4,5 @@
 	
 	namespaceName = "Stareater.GameData.Databases.Tables";
 		
-	Generate("TechnologyCollection", "Technology",
-		new ViewInfo("Codes", "string", "IdCode", ViewType.Collection)
-	);
+	Generate("TechnologyCollection", "Technology");
 #>

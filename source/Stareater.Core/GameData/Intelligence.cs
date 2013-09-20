@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stareater.Galaxy;
+using Stareater.Galaxy.Builders;
 
 namespace Stareater.GameData
 {
@@ -8,10 +9,10 @@ namespace Stareater.GameData
 	{
 		private Dictionary<StarData, StarIntelligence> starKnowledge = new Dictionary<StarData, StarIntelligence>();
 		
-		public void Initialize(IEnumerable<StarData> stars, Func<StarData, IEnumerable<Planet>> starPlanets)
+		public void Initialize(IEnumerable<StarSystem> starSystems)
 		{
-			foreach(var star in stars)
-				starKnowledge.Add(star, new StarIntelligence(starPlanets(star)));
+			foreach(var system in starSystems)
+				starKnowledge.Add(system.Star, new StarIntelligence(system.Planets));
 		}
 		
 		public void StarFullyVisited(StarData star, int turn)

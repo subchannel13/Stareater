@@ -15,28 +15,6 @@ namespace Stareater.GameData.Databases
 		public TechnologyCollection Technologies { get; private set; }
 		public ColonyFormulaSet ColonyFormulas { get; private set; }
 		
-		private const string ColonyFormulasTag = "ColonyFormulas";
-		private const string DevelopmentTag = "DevelopmentTopic";
-		private const string ResearchTag = "ResearchTopic";
-		
-		private const string ColonyMaxPopulation = "maxPopulation";
-		private const string ColonyDevelopment = "development";
-		private const string ColonyFarming = "farming";
-		private const string ColonyIndustry = "industry";
-		private const string ColonyMining = "mining";
-		
-		private const string PopulationActivityImprovised = "improvised";
-		private const string PopulationActivityOrganized = "organized";
-			
-		private const string TechnologyNameKey = "nameCode";
-		private const string TechnologyDescriptionKey = "descCode";
-		private const string TechnologyImageKey = "image";
-		
-		private const string TechnologyCodeKey = "code";
-		private const string TechnologyCostKey = "cost";
-		private const string TechnologyPrerequisitesKey = "prerequisites";
-		private const string TechnologyMaxLevelKey = "maxLvl";
-			
 		public StaticsDB()
 		{
 			this.Technologies = new TechnologyCollection();
@@ -120,5 +98,29 @@ namespace Stareater.GameData.Databases
 				loadPopulationActivity(data, ColonyIndustry)
 			);
 		}
+		
+		#region Loading tags and keys
+		private const string ColonyFormulasTag = "ColonyFormulas";
+		private const string DevelopmentTag = "DevelopmentTopic";
+		private const string ResearchTag = "ResearchTopic";
+		
+		private const string ColonyMaxPopulation = "maxPopulation";
+		private const string ColonyDevelopment = "development";
+		private const string ColonyFarming = "farming";
+		private const string ColonyIndustry = "industry";
+		private const string ColonyMining = "mining";
+		
+		private const string PopulationActivityImprovised = "improvised";
+		private const string PopulationActivityOrganized = "organized";
+			
+		private const string TechnologyNameKey = "nameCode";
+		private const string TechnologyDescriptionKey = "descCode";
+		private const string TechnologyImageKey = "image";
+		
+		private const string TechnologyCodeKey = "code";
+		private const string TechnologyCostKey = "cost";
+		private const string TechnologyPrerequisitesKey = "prerequisites";
+		private const string TechnologyMaxLevelKey = "maxLvl";
+		#endregion
 	}
 }
