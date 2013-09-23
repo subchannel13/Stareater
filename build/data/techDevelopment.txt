@@ -1,11 +1,11 @@
 { DevelopmentTopic
 	nameCode: HYDRO_FARM_NAME
 	descCode: HYDRO_FARM_DESC
-	code: HYDRO_FARM
+	code: HydroFarm
 	cost # 50e9 * (lvl0 + 3 ^lvl0);
 	maxLvl= 8
 	prerequisites [
-		:BIO # lvl0 [-1, -1, -1, 0, 0, 1, 1];
+		:Bio # lvl0 [-1, -1, -1, 0, 0, 1, 1];
 	]
 	image: ./images/technologies/hydroponicFarms.png
 }
@@ -13,7 +13,7 @@
 { DevelopmentTopic
 	nameCode: IND_NAME
 	descCode: IND_DESC
-	code: IND
+	code: Ind
 	cost # 80e9 * (lvl0 + 2 ^ lvl0);
 	maxLvl= 10
 	prerequisites []
@@ -23,11 +23,11 @@
 { DevelopmentTopic
 	nameCode: ROBO_NAME
 	descCode: ROBO_DESC
-	code: ROBO
+	code: Robo
 	cost # 150e9 * (lvl0 + 2 ^ lvl0);
 	maxLvl= 10
 	prerequisites [
-		:IND # 5;
+		:Ind # 5;
 	]
 	image : ./images/technologies/industry.png
 }
@@ -35,7 +35,7 @@
 { DevelopmentTopic
 	nameCode: LASER_NAME
 	descCode: LASER_DESC
-	code: LASER
+	code: Laser
 	cost # 300e9 * (lvl0 + 2 ^ lvl0);
 	maxLvl= 10
 	prerequisites []
@@ -45,7 +45,7 @@
 { DevelopmentTopic
 	nameCode: ECM_NAME
 	descCode: ECM_DESC
-	code: ECM
+	code: Ecm
 	cost # 300e9 * (lvl0 + 2 ^lvl0);
 	maxLvl= 10
 	prerequisites []
@@ -55,11 +55,11 @@
 { DevelopmentTopic
 	nameCode: EM_SHIELD_NAME
 	descCode: EM_SHIELD_DESC
-	code: EM_SHIELD
+	code: EmShield
 	cost # 1.5e12 * (lvl0 + 2 ^lvl0);
 	maxLvl= 10
 	prerequisites [
-		:ECM # 5;
+		:Ecm # 5;
 	]
 	image: ./images/technologies/hydroponicFarms.png
 }
@@ -67,7 +67,7 @@
 { DevelopmentTopic
 	nameCode: TITANIUM_NAME
 	descCode: TITANIUM_DESC
-	code: TITANIUM
+	code: Titanium
 	cost # 300e9 * (lvl0 + 1) ^ 2;
 	maxLvl= 10
 	prerequisites []
@@ -77,12 +77,12 @@
 { DevelopmentTopic
 	nameCode: DURAPLAST_NAME
 	descCode: DURAPLAST_DESC
-	code: DURAPLAST
+	code: Duraplast
 	cost # 6e12 * (lvl0 + 1) ^ 2;
 	maxLvl= 10
 	prerequisites [
-		:BIO # 4;
-		:CHEM # 2;
+		:Bio # 4;
+		:Chem # 2;
 	]
 	image: ./images/technologies/industry.png
 }
@@ -90,11 +90,11 @@
 { DevelopmentTopic
 	nameCode: COLONIZER_NAME
 	descCode: COLONIZER_DESC
-	code: COLONIZER
+	code: Colonizer
 	cost # 70e9 * (lvl0 + 1) ^ 2;
 	maxLvl= 10
 	prerequisites [
-		:BIO # lvl0 - 5;
+		:Bio # lvl0 - 5;
 	]
 	image: ./images/technologies/industry.png
 }
@@ -102,7 +102,7 @@
 { DevelopmentTopic
 	nameCode: SPACE_PROGRAM_NAME
 	descCode: SPACE_PROGRAM_DESC
-	code: SPACE_PROGRAM
+	code: SpaceProgram
 	cost # 80e9 * (lvl0 + 1) ^ 2;
 	maxLvl= 10
 	prerequisites []

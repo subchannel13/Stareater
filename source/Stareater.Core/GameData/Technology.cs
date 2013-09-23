@@ -7,8 +7,8 @@ namespace Stareater.GameData
 
 	public class Technology
 	{
-		private string nameCode;
-		private string descriptionCode;
+		public string NameCode { get; private set; }
+		public string DescriptionCode{ get; private set; }
 		
 		public string ImagePath { get; private set; }
 		public string IdCode { get; private set; }
@@ -19,8 +19,8 @@ namespace Stareater.GameData
 		
 		public Technology(string nameCode, string descriptionCode, string imagePath, string code, Formula cost, IEnumerable<Prerequisite> prerequisites, int maxLevel, TechnologyCategory category)
 		{
-			this.nameCode = nameCode;
-			this.descriptionCode = descriptionCode;
+			this.NameCode = nameCode;
+			this.DescriptionCode = descriptionCode;
 			this.ImagePath = imagePath;
 			this.IdCode = code;
 			this.Cost = cost;

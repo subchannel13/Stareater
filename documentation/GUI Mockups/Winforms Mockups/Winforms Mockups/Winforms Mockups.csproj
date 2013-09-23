@@ -49,8 +49,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConstructableItem.cs" />
+    <Compile Include="ConstructableItem.Designer.cs">
+      <DependentUpon>ConstructableItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConstructionItem.cs" />
+    <Compile Include="ConstructionItem.Designer.cs">
+      <DependentUpon>ConstructionItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="ControlListView.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FormBuildingQueue.cs" />
+    <Compile Include="FormBuildingQueue.Designer.cs">
+      <DependentUpon>FormBuildingQueue.cs</DependentUpon>
     </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
@@ -112,6 +124,15 @@
     <Compile Include="SystemMockup.Designer.cs">
       <DependentUpon>SystemMockup.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ConstructableItem.resx">
+      <DependentUpon>ConstructableItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConstructionItem.resx">
+      <DependentUpon>ConstructionItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormBuildingQueue.resx">
+      <DependentUpon>FormBuildingQueue.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>

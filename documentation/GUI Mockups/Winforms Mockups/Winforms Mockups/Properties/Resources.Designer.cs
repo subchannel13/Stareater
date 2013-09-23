@@ -88,6 +88,20 @@ namespace Winforms_Mockups.Properties {
 			}
 		}
 		
+		internal static System.Drawing.Bitmap arrowLeft {
+			get {
+				object obj = ResourceManager.GetObject("arrowLeft", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		internal static System.Drawing.Bitmap arrowRight {
+			get {
+				object obj = ResourceManager.GetObject("arrowRight", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
 		internal static System.Drawing.Bitmap galaxy_map {
 			get {
 				object obj = ResourceManager.GetObject("galaxy_map", resourceCulture);

@@ -9,8 +9,6 @@ namespace Stareater.Controllers.Data
 	public class TechnologyTopic
 	{
 		private const string LangContext = "Technologies";
-		private const string NameSuffix = "_NAME";
-		private const string DescriptionSuffix = "_DESC";
 		
 		private Technology technology;
 		private IDictionary<string, double> textVars;
@@ -37,7 +35,7 @@ namespace Stareater.Controllers.Data
 		{
 			get 
 			{
-				return Settings.Get.Language[LangContext][technology.IdCode + NameSuffix].Text(textVars);
+				return Settings.Get.Language[LangContext][technology.NameCode].Text(textVars);
 			}
 		}
 		
@@ -45,7 +43,7 @@ namespace Stareater.Controllers.Data
 		{ 
 			get 
 			{
-				return Settings.Get.Language[LangContext][technology.IdCode + DescriptionSuffix].Text(textVars);
+				return Settings.Get.Language[LangContext][technology.DescriptionCode].Text(textVars);
 			}
 		}
 		
