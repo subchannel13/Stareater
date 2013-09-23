@@ -32,13 +32,13 @@ namespace Stareater
 			this.Players = players;
 			this.CurrentPlayer = 0;
 			
-			this.Derivates = new TemporaryDB();
+			this.Derivates = new TemporaryDB(players, statics.Technologies);
 			this.Statics = statics;
 			this.States = new StatesDB(
 				initStars(starSystems), 
 				initWormholes(starSystems, wormholeEndpoints), 
 				initPlanets(starSystems), 
-				initColonies(players, starSystems, homeSystemIndices, startingConditions, this.Derivates.Colonies, this.Statics.ColonyFormulas), 
+				initColonies(players, starSystems, homeSystemIndices, startingConditions, this.Derivates, this.Statics.ColonyFormulas), 
 				initTechAdvances(players, statics.Technologies)
 			);
 			
@@ -51,7 +51,8 @@ namespace Stareater
 		}
 		
 		#region Initialization
-		private static ColonyCollection initColonies(Player[] players, StarSystem[] starSystems, int[] homeSystemIndices, StartingConditions startingConditions, ColonyProcessorCollection colonyProcessors, ColonyFormulaSet colonyFormulas)
+		private static ColonyCollection initColonies(Player[] players, StarSystem[] starSystems, int[] homeSystemIndices, StartingConditions startingConditions, 
+		                                             TemporaryDB derivates, ColonyFormulaSet colonyFormulas)
 		{
 			var colonies = new ColonyCollection();
 			for(int playerI = 0; playerI < players.Length; playerI++) {
@@ -59,10 +60,11 @@ namespace Stareater
 				//TODO: pick top most suitable planets
 				for(int colonyI = 0; colonyI < startingConditions.Colonies; colonyI++) {
 					var colony = new Colony(players[playerI], starSystems[homeSystemIndices[playerI]].Planets[colonyI]);
+					players[playerI].Orders.SiteSpendingRatios.Add(colony, ChangesDB.DefaultSiteSpendingRatio);
 					
 					var colonyProc = new ColonyProcessor(colony);
-					colonyProc.Calculate(colonyFormulas);
-					colonyProcessors.Add(colonyProc);
+					colonyProc.Calculate(colonyFormulas, derivates.Players.Of(players[playerI]));
+					derivates.Colonies.Add(colonyProc);
 					//TODO: use habitability instead of population limit
 					weights.Add(colony, colonyProc.MaxPopulation);
 					
@@ -74,6 +76,7 @@ namespace Stareater
 				foreach(var colony in colonies.OwnedBy(players[playerI])) {
 					colony.Population = weights.Relative(colony) * totalPopulation;
 					colony.Infrastructure = weights.Relative(colony) * totalInfrastructure;
+					derivates.Colonies.Of(colony).Calculate(colonyFormulas, derivates.Players.Of(players[playerI]));
 				}
 			}
 			

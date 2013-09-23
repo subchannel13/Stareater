@@ -10,9 +10,6 @@ namespace Stareater.Galaxy
 	{
 		public Planet Location { get; private set; }
 		
-		public double Population { get; set; }
-		public double Infrastructure { get; set; }
-		
 		internal Colony(Player owner, Planet planet) : base(owner)
 		{
 			this.Location = planet;
@@ -27,5 +24,31 @@ namespace Stareater.Galaxy
 				return Location.Star;
 			}
 		}
+		
+		#if !DEBUG
+		public double Population { get; set; }
+		public double Infrastructure { get; set; }
+		#else
+		
+		private double population;
+		public double Population 
+		{
+			get { return population;}
+			set {
+				population = value;
+				Dirty = true;
+			}
+		}
+		
+		private double infrastructure;
+		public double Infrastructure 
+		{
+			get { return infrastructure;}
+			set {
+				infrastructure = value;
+				Dirty = true;
+			}
+		}
+		#endif
 	}
 }

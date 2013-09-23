@@ -106,6 +106,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameData\Databases\Tables\PlayerProcessor.cs" />
+    <Compile Include="GameData\Databases\Tables\PlayerProcessorCollection.cs">
+      <DependentUpon>PlayerProcessorCollection.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameData\Databases\Tables\PopulationActivityFormulas.cs" />
     <Compile Include="GameData\Databases\Tables\StarCollection.cs">
       <AutoGen>True</AutoGen>
@@ -202,6 +207,10 @@
     <None Include="GameData\Databases\Tables\PlanetCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlanetCollection.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Databases\Tables\PlayerProcessorCollection.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PlayerProcessorCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\StarCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

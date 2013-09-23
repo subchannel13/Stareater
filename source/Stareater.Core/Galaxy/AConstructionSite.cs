@@ -18,5 +18,19 @@ namespace Stareater.Galaxy
 		{
 			this.Owner = owner;
 		}
+		
+		#if DEBUG
+		private bool dirty = true;
+		
+		public bool Dirty {
+			get { return dirty; }
+			protected set { dirty = value; }
+		}
+		
+		public void Cleaned()
+		{
+			dirty = false;
+		}		
+		#endif
 	}
 }
