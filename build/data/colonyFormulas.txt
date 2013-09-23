@@ -6,6 +6,11 @@
 		improvised	# 3;
 		organized	# 4;
 	}
+	gardening
+	{ Work
+		improvised	# 1;
+		organized	# 1.25;
+	}
 	mining
 	{ Work
 		improvised	# 10;

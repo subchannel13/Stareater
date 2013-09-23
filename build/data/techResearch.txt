@@ -1,7 +1,7 @@
 { ResearchTopic
 	nameCode: BIO_NAME
 	descCode: BIO_DESC
-	code: BIO
+	code: Bio
 	cost # 1e6 * (lvl0 + 2 ^ lvl0);
 	maxLvl= 7
 	prerequisites [] 
@@ -11,7 +11,7 @@
 { ResearchTopic
 	nameCode : PHY_NAME
 	descCode : PHY_DESC
-	code: PHY
+	code: Phy
 	cost # 10e6 * (lvl0 + 2 ^ lvl0);
 	maxLvl= 7
 	prerequisites []
@@ -21,7 +21,7 @@
 { ResearchTopic
 	nameCode : CHEM_NAME
 	descCode : CHEM_DESC
-	code: CHEM
+	code: Chem
 	cost # 10e6 * (lvl0 + 2 ^ lvl0);
 	maxLvl= 7
 	prerequisites []
@@ -31,7 +31,7 @@
 { ResearchTopic
 	nameCode : MAT_NAME
 	descCode : MAT_DESC
-	code: MAT
+	code: Mat
 	cost # 10e6 * (lvl0 + 2 ^ lvl0);
 	maxLvl= 7
 	prerequisites []
