@@ -8,8 +8,7 @@
 	usings.Add("Stareater.GameLogic");
 	usings.Add("Stareater.Players");
 	
-	Generate("ColonyProcessorCollection", "ColonyProcessor",
-		new ViewInfo("OwnedBy", "Player", "Owner", ViewType.Collection),
-		new ViewInfo("Of", "Colony", "Colony", ViewType.Scalar)
+	Generate("PlayerProcessorCollection", "PlayerProcessor",
+		new ViewInfo("Of", "Player", "Player", ViewType.Scalar)
 	);
 #>
