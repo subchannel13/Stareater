@@ -25,6 +25,9 @@ namespace Stareater.GUI
 			this.topics = controller.DevelopmentTopics().ToList();
 			updateList();
 			updateDescription();
+			
+			//TODO: Get total development points
+			//TODO: Get current focus intensity
 		}
 		
 		private void updateList()

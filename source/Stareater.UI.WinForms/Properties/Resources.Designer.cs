@@ -81,6 +81,20 @@ namespace Stareater.Properties {
 			}
 		}
 		
+		internal static System.Drawing.Bitmap arrowLeft {
+			get {
+				object obj = ResourceManager.GetObject("arrowLeft", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		internal static System.Drawing.Bitmap arrowRight {
+			get {
+				object obj = ResourceManager.GetObject("arrowRight", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
 		internal static System.Drawing.Bitmap arrowUp {
 			get {
 				object obj = ResourceManager.GetObject("arrowUp", resourceCulture);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stareater.GameData.Databases.Tables;
+using Stareater.GameLogic;
 using Stareater.Players;
 
 namespace Stareater.GameData.Databases

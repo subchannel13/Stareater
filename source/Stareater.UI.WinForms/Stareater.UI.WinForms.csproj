@@ -86,12 +86,20 @@
     <Compile Include="GUI\ColorItem.Designer.cs">
       <DependentUpon>ColorItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\ConstructableItem.cs" />
+    <Compile Include="GUI\ConstructableItem.Designer.cs">
+      <DependentUpon>ConstructableItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ConstructionSiteView.cs" />
     <Compile Include="GUI\ConstructionSiteView.Designer.cs">
       <DependentUpon>ConstructionSiteView.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\ControlListView.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\FormBuildingQueue.cs" />
+    <Compile Include="GUI\FormBuildingQueue.Designer.cs">
+      <DependentUpon>FormBuildingQueue.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FormDevelopment.cs" />
     <Compile Include="GUI\FormDevelopment.Designer.cs">
@@ -174,8 +182,14 @@
     <EmbeddedResource Include="GUI\ColorItem.resx">
       <DependentUpon>ColorItem.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ConstructableItem.resx">
+      <DependentUpon>ConstructableItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\ConstructionSiteView.resx">
       <DependentUpon>ConstructionSiteView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormBuildingQueue.resx">
+      <DependentUpon>FormBuildingQueue.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormDevelopment.resx">
       <DependentUpon>FormDevelopment.cs</DependentUpon>
