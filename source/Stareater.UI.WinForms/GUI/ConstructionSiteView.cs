@@ -10,10 +10,11 @@ namespace Stareater.GUI
 		public ConstructionSiteView()
 		{
 			InitializeComponent();
+		}
+		
+		private void queueButton_Click(object sender, EventArgs e)
+		{
 			
-			//
-			// TODO: Add another constructor with appropriate controller as parameter.
-			//
 		}
 	}
 }

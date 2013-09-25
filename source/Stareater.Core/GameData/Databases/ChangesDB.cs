@@ -11,6 +11,7 @@ namespace Stareater.GameData.Databases
 		public const double DefaultSiteSpendingRatio = 1;
 		
 		public IDictionary<string, int> DevelopmentQueue { get; private set; }
+		
 		public IDictionary<AConstructionSite, double> SiteSpendingRatios { get; private set; }
 		
 		public ChangesDB()

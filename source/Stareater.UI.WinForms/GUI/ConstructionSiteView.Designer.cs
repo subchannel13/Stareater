@@ -52,6 +52,7 @@ namespace Stareater.GUI
 			this.queueButton.TabIndex = 0;
 			this.queueButton.Text = "button1";
 			this.queueButton.UseVisualStyleBackColor = true;
+			this.queueButton.Click += new System.EventHandler(this.queueButton_Click);
 			// 
 			// nameLabel
 			// 

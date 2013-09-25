@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Stareater.GameData;
 using Stareater.Players;
 
-namespace Stareater.GameData.Databases.Tables
+namespace Stareater.GameLogic
 {
 	class PlayerProcessor
 	{

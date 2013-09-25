@@ -71,6 +71,8 @@
     <Compile Include="AppData\Expressions\UnaryOperators.cs" />
     <Compile Include="AppData\Expressions\Variable.cs" />
     <Compile Include="AppData\LastGameInfo.cs" />
+    <Compile Include="Controllers\AConstructionSiteController.cs" />
+    <Compile Include="Controllers\ColonyController.cs" />
     <Compile Include="Controllers\Data\ColonyInfo.cs" />
     <Compile Include="Controllers\Data\GameState.cs" />
     <Compile Include="Controllers\Data\NewGamePlayerInfo.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Galaxy\StarNamer.cs" />
     <Compile Include="Galaxy\StellarManagement.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameData\Constructable.cs" />
     <Compile Include="GameData\Databases\ChangesDB.cs" />
     <Compile Include="GameData\Databases\StatesDB.cs" />
     <Compile Include="GameData\Databases\StaticsDB.cs" />
@@ -101,12 +104,12 @@
       <DependentUpon>ColonyProcessorCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="GameData\Databases\Tables\ConstructionOrders.cs" />
     <Compile Include="GameData\Databases\Tables\PlanetCollection.cs">
       <DependentUpon>PlanetCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="GameData\Databases\Tables\PlayerProcessor.cs" />
     <Compile Include="GameData\Databases\Tables\PlayerProcessorCollection.cs">
       <DependentUpon>PlayerProcessorCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -143,6 +146,7 @@
     <Compile Include="GameData\TechnologyCategory.cs" />
     <Compile Include="GameData\TechnologyProgress.cs" />
     <Compile Include="GameLogic\ColonyProcessor.cs" />
+    <Compile Include="GameLogic\PlayerProcessor.cs" />
     <Compile Include="Localization\ChainText.cs" />
     <Compile Include="Localization\ConditionalText.cs" />
     <Compile Include="Localization\ExpressionText.cs" />
