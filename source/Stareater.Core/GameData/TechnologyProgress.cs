@@ -46,14 +46,17 @@ namespace Stareater.GameData
 			if (Level >= Topic.MaxLevel)
 				return false;
 			
-			var levelVars = new Var("lvl0", NextLevel).Get;
+			return Prerequisite.AreSatisfied(Topic.Prerequisites, NextLevel, techLevelGetter);
+			
+			//TODO: delete if OK
+			/*var levelVars = new Var("lvl0", NextLevel).Get;
 			foreach(Prerequisite prerequisite in Topic.Prerequisites) {
 				double requiredLevel = prerequisite.Level.Evaluate(levelVars);
 				if (requiredLevel >= 0 && techLevelGetter(prerequisite.Code) < requiredLevel)
 					return false;
 			}
 			
-			return true;
+			return true;*/
 		}
 	}
 }

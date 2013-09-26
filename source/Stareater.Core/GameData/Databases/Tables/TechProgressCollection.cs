@@ -12,10 +12,11 @@ namespace Stareater.GameData.Databases.Tables
 
 		Dictionary<Player, List<TechnologyProgress>> OfIndex = new Dictionary<Player, List<TechnologyProgress>>();
 
-		public IEnumerable<TechnologyProgress> Of(Player key) {
+		public IList<TechnologyProgress> Of(Player key) {
 			if (OfIndex.ContainsKey(key))
-				foreach (var item in OfIndex[key])
-					yield return item;
+				return OfIndex[key];
+			
+			return new List<TechnologyProgress>();
 		}
 	
 		public void Add(TechnologyProgress item)

@@ -74,6 +74,7 @@
     <Compile Include="Controllers\AConstructionSiteController.cs" />
     <Compile Include="Controllers\ColonyController.cs" />
     <Compile Include="Controllers\Data\ColonyInfo.cs" />
+    <Compile Include="Controllers\Data\ConstructableItem.cs" />
     <Compile Include="Controllers\Data\GameState.cs" />
     <Compile Include="Controllers\Data\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Galaxy\StellarManagement.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameData\Constructable.cs" />
+    <Compile Include="GameData\SiteType.cs" />
     <Compile Include="GameData\Databases\ChangesDB.cs" />
     <Compile Include="GameData\Databases\StatesDB.cs" />
     <Compile Include="GameData\Databases\StaticsDB.cs" />
@@ -119,10 +121,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StarCollection.tt</DependentUpon>
-    </Compile>
-    <Compile Include="GameData\Databases\Tables\TechnologyCollection.cs">
-      <DependentUpon>TechnologyCollection.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\Databases\Tables\TechProgressCollection.cs">
       <DependentUpon>TechProgressCollection.tt</DependentUpon>
@@ -219,10 +217,6 @@
     <None Include="GameData\Databases\Tables\StarCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StarCollection.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\TechnologyCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TechnologyCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\TechProgressCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

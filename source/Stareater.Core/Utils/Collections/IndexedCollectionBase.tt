@@ -40,6 +40,18 @@ struct ViewInfo
 			case ViewType.Collection:
 				return "List<" + dataTypeName + ">";
 			case ViewType.Set:
+				return "Set<" + dataTypeName + ">";
+		}
+		throw new Exception("Invalid container type: " + ContainerType);
+	}
+	
+	public string ViewContainerReturnType(string dataTypeName) {
+		switch(ContainerType) {
+			case ViewType.Scalar:
+				return dataTypeName;
+			case ViewType.Collection:
+				return "IList<" + dataTypeName + ">";
+			case ViewType.Set:
 				return "ISet<" + dataTypeName + ">";
 		}
 		throw new Exception("Invalid container type: " + ContainerType);
@@ -85,10 +97,11 @@ private void Generate(string className, string typeName, params ViewInfo[] viewI
 <#+		} else {
 #>
 
-		public IEnumerable<<#= typeName #>> <#= view.ViewName #>(<#= view.KeyType #> key) {
+		public <#= view.ViewContainerReturnType(typeName) #> <#= view.ViewName #>(<#= view.KeyType #> key) {
 			if (<#= view.IndexName #>.ContainsKey(key))
-				foreach (var item in <#= view.IndexName #>[key])
-					yield return item;
+				return <#= view.IndexName #>[key];
+			
+			return new <#= view.ViewContainerType(typeName) #>();
 		}
 <#+		}
 	}

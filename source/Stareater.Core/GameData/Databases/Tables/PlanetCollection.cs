@@ -12,10 +12,11 @@ namespace Stareater.GameData.Databases.Tables
 
 		Dictionary<StarData, List<Planet>> AtIndex = new Dictionary<StarData, List<Planet>>();
 
-		public IEnumerable<Planet> At(StarData key) {
+		public IList<Planet> At(StarData key) {
 			if (AtIndex.ContainsKey(key))
-				foreach (var item in AtIndex[key])
-					yield return item;
+				return AtIndex[key];
+			
+			return new List<Planet>();
 		}
 	
 		public void Add(Planet item)

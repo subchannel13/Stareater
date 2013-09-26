@@ -128,7 +128,7 @@ namespace Stareater.GUI
 					galaxyRenderer = new GalaxyRenderer(controller, switchToSystemView);
 					galaxyRenderer.Load();
 					
-					systemRenderer = new SystemRenderer(switchToGalaxyView);
+					systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement);
 					
 					switchToGalaxyView();
 					redraw();

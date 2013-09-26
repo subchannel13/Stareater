@@ -5,7 +5,7 @@ using Stareater.AppData.Expressions;
 namespace Stareater.GameData
 {
 
-	public class Technology
+	class Technology
 	{
 		public string NameCode { get; private set; }
 		public string DescriptionCode{ get; private set; }

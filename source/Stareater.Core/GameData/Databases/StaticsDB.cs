@@ -12,12 +12,14 @@ namespace Stareater.GameData.Databases
 {
 	internal class StaticsDB
 	{
-		public TechnologyCollection Technologies { get; private set; }
+		public List<Constructable> Constructables { get; private set; }
+		public List<Technology> Technologies { get; private set; }
 		public ColonyFormulaSet ColonyFormulas { get; private set; }
 		
 		public StaticsDB()
 		{
-			this.Technologies = new TechnologyCollection();
+			this.Constructables = new List<Constructable>();
+			this.Technologies = new List<Technology>();
 		}
 		
 		public IEnumerable<double> Load(params string[] paths)
@@ -36,14 +38,17 @@ namespace Stareater.GameData.Databases
 						var data = dataSet.Dequeue().To<IkonComposite>();
 						
 						switch((string)data.Tag) {
+							case ColonyFormulasTag:
+								ColonyFormulas = loadColonyFormulas(data);
+								break;
+							case ConstructableTag:
+								Constructables.Add(loadConstructable(data));
+								break;
 							case DevelopmentTag:
 								Technologies.Add(loadTech(data, TechnologyCategory.Development));
 								break;
 							case ResearchTag:
 								Technologies.Add(loadTech(data, TechnologyCategory.Research));
-								break;
-							case ColonyFormulasTag:
-								ColonyFormulas = loadColonyFormulas(data);
 								break;
 							default:
 								throw new FormatException("Invalid game data object with tag " + data.Tag);
@@ -55,6 +60,42 @@ namespace Stareater.GameData.Databases
 			}
 			
 			yield return 1;
+		}
+		
+		private ColonyFormulaSet loadColonyFormulas(IkonComposite data)
+		{
+			return new ColonyFormulaSet(
+				data[ColonyMaxPopulation].To<Formula>(),
+				loadPopulationActivity(data, ColonyFarming),
+				loadPopulationActivity(data, ColonyMining),
+				loadPopulationActivity(data, ColonyDevelopment),
+				loadPopulationActivity(data, ColonyIndustry)
+			);
+		}
+		
+		private PopulationActivityFormulas loadPopulationActivity(IkonComposite data, string key)
+		{
+			return new PopulationActivityFormulas(
+				data[key].To<IkonComposite>()[PopulationActivityImprovised].To<Formula>(),
+				data[key].To<IkonComposite>()[PopulationActivityOrganized].To<Formula>()
+			);
+		}
+		
+		private Constructable loadConstructable(IkonComposite data)
+		{
+			return new Constructable(
+				data[GeneralNameKey].To<string>(),
+				data[GeneralDescriptionKey].To<string>(),
+				false,
+				data[GeneralImageKey].To<string>(),
+				data[GeneralCodeKey].To<string>(),
+				loadPrerquisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(), 
+				SiteType.Colony,	//TODO: make conditional
+				data[ConstructableConditionKey].To<Formula>(),
+				data[GeneralCostKey].To<Formula>(),
+				data[ConstructableLimitKey].To<Formula>(),
+				new object[0] //TODO: make loader
+			);
 		}
 		
 		private IEnumerable<Prerequisite> loadPrerquisites(IkonArray dataArray)
@@ -69,38 +110,20 @@ namespace Stareater.GameData.Databases
 		private Technology loadTech(IkonComposite data, TechnologyCategory category)
 		{
 			return new Technology(
-				data[TechnologyNameKey].To<string>(),
-				data[TechnologyDescriptionKey].To<string>(),
-				data[TechnologyImageKey].To<string>(),
-				data[TechnologyCodeKey].To<string>(),
-				data[TechnologyCostKey].To<Formula>(),
-				loadPrerquisites(data[TechnologyPrerequisitesKey].To<IkonArray>()).ToArray(),
+				data[GeneralNameKey].To<string>(),
+				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralImageKey].To<string>(),
+				data[GeneralCodeKey].To<string>(),
+				data[GeneralCostKey].To<Formula>(),
+				loadPrerquisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(),
              	data[TechnologyMaxLevelKey].To<int>(),
              	category
              );
 		}
 		
-		private PopulationActivityFormulas loadPopulationActivity(IkonComposite data, string key)
-		{
-			return new PopulationActivityFormulas(
-				data[key].To<IkonComposite>()[PopulationActivityImprovised].To<Formula>(),
-				data[key].To<IkonComposite>()[PopulationActivityOrganized].To<Formula>()
-			);
-		}
-		
-		private ColonyFormulaSet loadColonyFormulas(IkonComposite data)
-		{
-			return new ColonyFormulaSet(
-				data[ColonyMaxPopulation].To<Formula>(),
-				loadPopulationActivity(data, ColonyFarming),
-				loadPopulationActivity(data, ColonyMining),
-				loadPopulationActivity(data, ColonyDevelopment),
-				loadPopulationActivity(data, ColonyIndustry)
-			);
-		}
-		
 		#region Loading tags and keys
 		private const string ColonyFormulasTag = "ColonyFormulas";
+		private const string ConstructableTag = "Constructable";
 		private const string DevelopmentTag = "DevelopmentTopic";
 		private const string ResearchTag = "ResearchTopic";
 		
@@ -109,17 +132,22 @@ namespace Stareater.GameData.Databases
 		private const string ColonyFarming = "farming";
 		private const string ColonyIndustry = "industry";
 		private const string ColonyMining = "mining";
+
+		private const string ConstructableCostKey = "cost";
+		private const string ConstructableConditionKey = "condition";
+		private const string ConstructableLimitKey = "turnLimit";
+		private const string ConstructableEffectsKey = "effects";
+		
+		private const string GeneralNameKey = "nameCode";
+		private const string GeneralDescriptionKey = "descCode";
+		private const string GeneralImageKey = "image";
+		private const string GeneralCodeKey = "code";
+		private const string GeneralPrerequisitesKey = "prerequisites";
+		private const string GeneralCostKey = "cost";
 		
 		private const string PopulationActivityImprovised = "improvised";
 		private const string PopulationActivityOrganized = "organized";
 			
-		private const string TechnologyNameKey = "nameCode";
-		private const string TechnologyDescriptionKey = "descCode";
-		private const string TechnologyImageKey = "image";
-		
-		private const string TechnologyCodeKey = "code";
-		private const string TechnologyCostKey = "cost";
-		private const string TechnologyPrerequisitesKey = "prerequisites";
 		private const string TechnologyMaxLevelKey = "maxLvl";
 		#endregion
 	}

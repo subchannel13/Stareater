@@ -12,10 +12,11 @@ namespace Stareater.GameData.Databases.Tables
 
 		Dictionary<StarData, List<Tuple<StarData, StarData>>> AtIndex = new Dictionary<StarData, List<Tuple<StarData, StarData>>>();
 
-		public IEnumerable<Tuple<StarData, StarData>> At(StarData key) {
+		public IList<Tuple<StarData, StarData>> At(StarData key) {
 			if (AtIndex.ContainsKey(key))
-				foreach (var item in AtIndex[key])
-					yield return item;
+				return AtIndex[key];
+			
+			return new List<Tuple<StarData, StarData>>();
 		}
 	
 		public void Add(Tuple<StarData, StarData> item)

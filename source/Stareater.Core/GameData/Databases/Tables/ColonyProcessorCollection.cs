@@ -15,10 +15,11 @@ namespace Stareater.GameData.Databases.Tables
 		Dictionary<Player, List<ColonyProcessor>> OwnedByIndex = new Dictionary<Player, List<ColonyProcessor>>();
 		Dictionary<Colony, ColonyProcessor> OfIndex = new Dictionary<Colony, ColonyProcessor>();
 
-		public IEnumerable<ColonyProcessor> OwnedBy(Player key) {
+		public IList<ColonyProcessor> OwnedBy(Player key) {
 			if (OwnedByIndex.ContainsKey(key))
-				foreach (var item in OwnedByIndex[key])
-					yield return item;
+				return OwnedByIndex[key];
+			
+			return new List<ColonyProcessor>();
 		}
 
 		public ColonyProcessor Of(Colony key) {
