@@ -1,5 +1,7 @@
 ﻿using System;
 using Stareater.Galaxy;
+using System.Collections.Generic;
+using Stareater.Controllers.Data;
 
 namespace Stareater.Controllers
 {
@@ -11,7 +13,7 @@ namespace Stareater.Controllers
 		{
 			this.constructionSite = constructionSite;
 		}
-		
-		
+
+		public abstract IEnumerable<ConstructableItem> ConstructableItems { get; }
 	}
 }

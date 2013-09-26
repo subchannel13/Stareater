@@ -1,0 +1,8 @@
+= How to build =
+
+1. Install NuGet (VS extension or command line tool)
+2. Enable NuGet package restore
+3. Build {Stareater}/tools/Tools.sln
+4. Run {Stareater}/scripts/gen_textures.bat
+5. Run {Stareater}/scripts/copy_build_to_bin.bat
+6. Build {Stareater}/source/Zvjezdojedac.sln
