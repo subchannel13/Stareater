@@ -6,6 +6,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.Controllers;
 using Stareater.Galaxy;
+using Stareater.GUI;
 
 namespace Stareater.GLRenderers
 {
@@ -36,6 +37,7 @@ namespace Stareater.GLRenderers
 		
 		private StarSystemController controller;
 		private Control eventDispatcher;
+		private ConstructionSiteView siteView;
 		private Action systemClosedHandler;
 		
 		private bool resetProjection = true;
@@ -49,9 +51,10 @@ namespace Stareater.GLRenderers
 		
 		private int selectedBody;
 		
-		public SystemRenderer(Action systemClosedHandler)
+		public SystemRenderer(Action systemClosedHandler, ConstructionSiteView siteView)
 		{
 			this.systemClosedHandler = systemClosedHandler; 
+			this.siteView = siteView;
 		}
 		
 		public void Draw(double deltaTime)
@@ -168,7 +171,20 @@ namespace Stareater.GLRenderers
 			this.resetProjection = true;
 			this.originOffset = 0.5f; //TODO: Get most populated planet
 			this.maxOffset = controller.Planets.Count() * OrbitStep + OrbitOffset + PlanetScale / 2;
-			this.selectedBody = SelectedStar;
+			
+			this.select(SelectedStar);
+		}
+		
+		private void select(int selectedBody)
+		{
+			this.selectedBody = selectedBody;
+			
+			if (selectedBody == SelectedStar)
+				; //TODO add implementation, system management
+			else if (controller.IsColonised(selectedBody))
+				siteView.SetView(controller.ColonyController(selectedBody));
+			else
+				; //TODO add implementation, empty planet
 		}
 		
 		public void ResetProjection()
@@ -220,7 +236,7 @@ namespace Stareater.GLRenderers
 					newSelection = planet.Position;
 			
 			if (newSelection.HasValue)
-				selectedBody = newSelection.Value;
+				select(newSelection.Value);
 		}
 		
 		private void mousePan(object sender, MouseEventArgs e)

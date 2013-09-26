@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
@@ -9,7 +10,10 @@ namespace Stareater.GameLogic
 {
 	class ColonyProcessor
 	{
-		private const string PlanetSize = "size";
+		private const string InfrastructureKey = "factories";
+		private const string MaxPopulationKey = "maxPop";
+		private const string PlanetSizeKey = "size";
+		private const string PopulationKey = "pop";
 		
 		public Colony Colony { get; set; }
 		
@@ -78,7 +82,7 @@ namespace Stareater.GameLogic
 		public void Calculate(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
 		{
 			//TODO: add player's techs and colony buildings
-			var vars = new Var(PlanetSize, Colony.Location.Size).UnionWith(playerProcessor.TechLevels).Get;
+			var vars = new Var(PlanetSizeKey, Colony.Location.Size).UnionWith(playerProcessor.TechLevels).Get;
 			var organizationRatio = Methods.Clamp(Colony.Infrastructure / Colony.Population, 0, 1);
 			
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
@@ -87,6 +91,16 @@ namespace Stareater.GameLogic
 			this.Production = Colony.Owner.Orders.SiteSpendingRatios[Colony] * Colony.Population * formulas.Industry.Evaluate(organizationRatio, vars);
 			
 			Colony.Cleaned();
+		}
+		
+		public IDictionary<string, double> Effects()
+		{
+			var vars = new Var(PlanetSizeKey, Colony.Location.Size);
+			vars.And(InfrastructureKey, Colony.Infrastructure);
+			vars.And(MaxPopulationKey, MaxPopulation);
+			vars.And(PopulationKey, Colony.Population);
+			
+			return vars.Get;
 		}
 	}
 }

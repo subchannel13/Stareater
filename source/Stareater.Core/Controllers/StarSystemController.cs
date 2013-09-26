@@ -38,5 +38,20 @@ namespace Stareater.Controllers
 			
 			return null;
 		}
+		
+		public bool IsColonised(int selectedBody)
+		{
+			var planet = game.States.Planets.At(Star).Where(x => x.Position == selectedBody).FirstOrDefault();
+			
+			if (planet == null)
+				return false;
+			
+			return game.States.Colonies.AtPlanetContains(planet);
+		}
+		
+		public object ColonyController(int selectedBody)
+		{
+			throw new NotImplementedException(); //STUB
+		}
 	}
 }

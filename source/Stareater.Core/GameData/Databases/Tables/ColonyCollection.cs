@@ -15,10 +15,11 @@ namespace Stareater.GameData.Databases.Tables
 		Dictionary<Planet, Colony> AtPlanetIndex = new Dictionary<Planet, Colony>();
 		Dictionary<StarData, List<Colony>> AtStarIndex = new Dictionary<StarData, List<Colony>>();
 
-		public IEnumerable<Colony> OwnedBy(Player key) {
+		public IList<Colony> OwnedBy(Player key) {
 			if (OwnedByIndex.ContainsKey(key))
-				foreach (var item in OwnedByIndex[key])
-					yield return item;
+				return OwnedByIndex[key];
+			
+			return new List<Colony>();
 		}
 
 		public Colony AtPlanet(Planet key) {
@@ -32,10 +33,11 @@ namespace Stareater.GameData.Databases.Tables
 			return AtPlanetIndex.ContainsKey(key);
 		}
 
-		public IEnumerable<Colony> AtStar(StarData key) {
+		public IList<Colony> AtStar(StarData key) {
 			if (AtStarIndex.ContainsKey(key))
-				foreach (var item in AtStarIndex[key])
-					yield return item;
+				return AtStarIndex[key];
+			
+			return new List<Colony>();
 		}
 	
 		public void Add(Colony item)

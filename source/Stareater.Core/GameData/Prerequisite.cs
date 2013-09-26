@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Stareater.AppData.Expressions;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GameData
 {
-	public class Prerequisite
+	class Prerequisite
 	{
 		public string Code { get; private set; }
 		public Formula Level { get; private set; }
@@ -12,6 +14,18 @@ namespace Stareater.GameData
 		{
 			this.Code = code;
 			this.Level = level;
+		}
+		
+		public static bool AreSatisfied(IEnumerable<Prerequisite> prerequisites, int targetLevel, Func<string, int> techLevelGetter)
+		{
+			var levelVars = new Var("lvl", targetLevel).Get;
+			foreach(Prerequisite prerequisite in prerequisites) {
+				double requiredLevel = prerequisite.Level.Evaluate(levelVars);
+				if (requiredLevel >= 0 && techLevelGetter(prerequisite.Code) < requiredLevel)
+					return false;
+			}
+			
+			return true;
 		}
 	}
 }
