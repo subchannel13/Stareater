@@ -18,7 +18,7 @@ namespace Stareater.Controllers
 			this.game = game;
 		}
 		
-		public IEnumerable<ConstructableItem> ConstructableItems
+		public override IEnumerable<ConstructableItem> ConstructableItems
 		{
 			get {
 				var playerTechs = game.AdvancmentOrder(game.Players[game.CurrentPlayer]);

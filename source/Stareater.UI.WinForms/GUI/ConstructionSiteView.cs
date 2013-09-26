@@ -22,7 +22,8 @@ namespace Stareater.GUI
 		
 		private void queueButton_Click(object sender, EventArgs e)
 		{
-			
+			using (var form = new FormBuildingQueue())
+				form.ShowDialog();
 		}
 	}
 }

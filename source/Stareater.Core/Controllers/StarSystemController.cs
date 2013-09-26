@@ -49,9 +49,14 @@ namespace Stareater.Controllers
 			return game.States.Colonies.AtPlanetContains(planet);
 		}
 		
-		public object ColonyController(int selectedBody)
+		public ColonyController ColonyController(int bodyPosition)
 		{
-			throw new NotImplementedException(); //STUB
+			var planet = game.States.Planets.At(Star).Where(x => x.Position == bodyPosition).FirstOrDefault();
+			
+			if (planet == null)
+				throw new ArgumentOutOfRangeException("bodyPosition");
+
+			return new ColonyController(game, game.States.Colonies.AtPlanet(planet));
 		}
 	}
 }
