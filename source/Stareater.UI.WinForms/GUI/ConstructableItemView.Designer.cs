@@ -1,7 +1,7 @@
 ﻿
 namespace Stareater.GUI
 {
-	partial class ConstructableItem
+	partial class ConstructableItemView
 	{
 		/// <summary>
 		/// Designer variable used to keep track of non-visual components.
@@ -37,22 +37,25 @@ namespace Stareater.GUI
 			// 
 			// thumbnail
 			// 
-			this.thumbnail.Location = new System.Drawing.Point(3, 3);
+			this.thumbnail.Location = new System.Drawing.Point(0, 0);
 			this.thumbnail.Name = "thumbnail";
-			this.thumbnail.Size = new System.Drawing.Size(32, 32);
+			this.thumbnail.Size = new System.Drawing.Size(36, 36);
+			this.thumbnail.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.thumbnail.TabIndex = 0;
 			this.thumbnail.TabStop = false;
 			this.thumbnail.Click += new System.EventHandler(this.thumbnail_Click);
+			this.thumbnail.MouseEnter += new System.EventHandler(this.thumbnail_MouseEnter);
 			// 
 			// nameLabel
 			// 
 			this.nameLabel.AutoSize = true;
-			this.nameLabel.Location = new System.Drawing.Point(41, 3);
+			this.nameLabel.Location = new System.Drawing.Point(42, 3);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(35, 13);
 			this.nameLabel.TabIndex = 1;
 			this.nameLabel.Text = "Name";
 			this.nameLabel.Click += new System.EventHandler(this.nameLabel_Click);
+			this.nameLabel.MouseEnter += new System.EventHandler(this.nameLabel_MouseEnter);
 			// 
 			// costLabel
 			// 
@@ -63,16 +66,18 @@ namespace Stareater.GUI
 			this.costLabel.Text = "label1";
 			this.costLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			this.costLabel.Click += new System.EventHandler(this.costLabel_Click);
+			this.costLabel.MouseEnter += new System.EventHandler(this.costLabel_MouseEnter);
 			// 
-			// ConstructableItem
+			// ConstructableItemView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.Controls.Add(this.costLabel);
 			this.Controls.Add(this.nameLabel);
 			this.Controls.Add(this.thumbnail);
-			this.Name = "ConstructableItem";
-			this.Size = new System.Drawing.Size(150, 38);
+			this.Name = "ConstructableItemView";
+			this.Size = new System.Drawing.Size(148, 36);
 			((System.ComponentModel.ISupportInitialize)(this.thumbnail)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

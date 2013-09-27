@@ -86,11 +86,11 @@
     <Compile Include="GUI\ColorItem.Designer.cs">
       <DependentUpon>ColorItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ConstructableItem.cs">
+    <Compile Include="GUI\ConstructableItemView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\ConstructableItem.Designer.cs">
-      <DependentUpon>ConstructableItem.cs</DependentUpon>
+    <Compile Include="GUI\ConstructableItemView.Designer.cs">
+      <DependentUpon>ConstructableItemView.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\ConstructionSiteView.cs">
       <SubType>UserControl</SubType>
@@ -180,6 +180,10 @@
     <Compile Include="GUI\NewGamePlayerView.Designer.cs">
       <DependentUpon>NewGamePlayerView.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\QueuedConstructionView.cs" />
+    <Compile Include="GUI\QueuedConstructionView.Designer.cs">
+      <DependentUpon>QueuedConstructionView.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\TechnologyItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -192,8 +196,8 @@
     <EmbeddedResource Include="GUI\ColorItem.resx">
       <DependentUpon>ColorItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\ConstructableItem.resx">
-      <DependentUpon>ConstructableItem.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\ConstructableItemView.resx">
+      <DependentUpon>ConstructableItemView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ConstructionSiteView.resx">
       <DependentUpon>ConstructionSiteView.cs</DependentUpon>
@@ -238,6 +242,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\NewGamePlayerView.resx">
       <DependentUpon>NewGamePlayerView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\QueuedConstructionView.resx">
+      <DependentUpon>QueuedConstructionView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\TechnologyItem.resx">
       <DependentUpon>TechnologyItem.cs</DependentUpon>

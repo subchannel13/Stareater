@@ -8,7 +8,7 @@ namespace Stareater.GUI
 {
 	public partial class ConstructionSiteView : UserControl
 	{
-		private AConstructionSiteController siteController;
+		private AConstructionSiteController controller;
 		
 		public ConstructionSiteView()
 		{
@@ -17,12 +17,15 @@ namespace Stareater.GUI
 		
 		public void SetView(ColonyController colonyController)
 		{
-			siteController = colonyController;
+			controller = colonyController;
 		}
 		
 		private void queueButton_Click(object sender, EventArgs e)
 		{
-			using (var form = new FormBuildingQueue())
+			if (controller == null)
+				return;
+			
+			using (var form = new FormBuildingQueue(controller))
 				form.ShowDialog();
 		}
 	}

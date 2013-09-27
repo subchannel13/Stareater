@@ -60,7 +60,7 @@ namespace Stareater
 				//TODO: pick top most suitable planets
 				for(int colonyI = 0; colonyI < startingConditions.Colonies; colonyI++) {
 					var colony = new Colony(players[playerI], starSystems[homeSystemIndices[playerI]].Planets[colonyI]);
-					players[playerI].Orders.SiteSpendingRatios.Add(colony, ChangesDB.DefaultSiteSpendingRatio);
+					players[playerI].Orders.Constructions.Add(colony, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
 					
 					var colonyProc = new ColonyProcessor(colony);
 					colonyProc.Calculate(colonyFormulas, derivates.Players.Of(players[playerI]));
