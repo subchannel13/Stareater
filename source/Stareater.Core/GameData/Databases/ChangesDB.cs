@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Stareater.Galaxy;
+using Stareater.GameData.Databases.Tables;
 
 namespace Stareater.GameData.Databases
 {
@@ -12,24 +13,24 @@ namespace Stareater.GameData.Databases
 		
 		public IDictionary<string, int> DevelopmentQueue { get; private set; }
 		
-		public IDictionary<AConstructionSite, double> SiteSpendingRatios { get; private set; }
+		public IDictionary<AConstructionSite, ConstructionOrders> Constructions { get; private set; }
 		
 		public ChangesDB()
 		{
 			this.DevelopmentQueue = new Dictionary<string, int>();
-			this.SiteSpendingRatios = new Dictionary<AConstructionSite, double>();
+			this.Constructions = new Dictionary<AConstructionSite, ConstructionOrders>();
 		}
 		
 		public void Reset(IEnumerable<AConstructionSite> validSites)
 		{
 			DevelopmentQueue.Clear();
 			
-			var oldSpendings = SiteSpendingRatios;
-			SiteSpendingRatios = validSites.ToDictionary(x => x, x => DefaultSiteSpendingRatio);
+			var oldSpendings = Constructions;
+			Constructions = validSites.ToDictionary(x => x, x => new ConstructionOrders(DefaultSiteSpendingRatio));
 			
 			foreach (var site in validSites) {
 				if (!oldSpendings.ContainsKey(site))
-					SiteSpendingRatios[site] = oldSpendings[site];
+					Constructions[site] = oldSpendings[site];
 			}
 		}
 	}

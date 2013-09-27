@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Stareater.AppData;
 using Stareater.GameData;
+using Stareater.GameLogic;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Data
 {
@@ -9,10 +12,12 @@ namespace Stareater.Controllers.Data
 		private const string LangContext = "Constructables";
 		
 		private Constructable constructable;
+		private IDictionary<string, double> vars;
 		
-		internal ConstructableItem(Constructable constructable)
+		internal ConstructableItem(Constructable constructable, PlayerProcessor playerProcessor)
 		{
 			this.constructable = constructable;
+			this.vars = new Var().UnionWith(playerProcessor.TechLevels).Get;
 		}
 		
 		public string Name 
@@ -45,11 +50,19 @@ namespace Stareater.Controllers.Data
 			}
 		}
 		
-		public string IdCode 
+		public string IdCode
 		{
 			get 
 			{
 				return constructable.IdCode;
+			}
+		}
+		
+		public double Cost
+		{
+			get 
+			{
+				return constructable.Cost.Evaluate(vars);
 			}
 		}
 	}

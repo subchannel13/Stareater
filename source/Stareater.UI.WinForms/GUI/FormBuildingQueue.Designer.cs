@@ -32,6 +32,7 @@ namespace Stareater.GUI
 			this.optionList = new System.Windows.Forms.FlowLayoutPanel();
 			this.thumbnailImage = new System.Windows.Forms.PictureBox();
 			this.descriptionLabel = new System.Windows.Forms.Label();
+			this.queueList = new Stareater.GUI.ControlListView();
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -40,6 +41,7 @@ namespace Stareater.GUI
 			this.optionList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 									| System.Windows.Forms.AnchorStyles.Left)));
 			this.optionList.AutoScroll = true;
+			this.optionList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.optionList.Location = new System.Drawing.Point(12, 12);
 			this.optionList.Name = "optionList";
 			this.optionList.Size = new System.Drawing.Size(214, 402);
@@ -64,11 +66,22 @@ namespace Stareater.GUI
 			this.descriptionLabel.TabIndex = 2;
 			this.descriptionLabel.Text = "Description";
 			// 
+			// queueList
+			// 
+			this.queueList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+									| System.Windows.Forms.AnchorStyles.Right)));
+			this.queueList.Location = new System.Drawing.Point(278, 215);
+			this.queueList.Name = "queueList";
+			this.queueList.SelectedIndex = -1;
+			this.queueList.Size = new System.Drawing.Size(246, 186);
+			this.queueList.TabIndex = 3;
+			// 
 			// FormBuildingQueue
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(546, 426);
+			this.Controls.Add(this.queueList);
 			this.Controls.Add(this.descriptionLabel);
 			this.Controls.Add(this.thumbnailImage);
 			this.Controls.Add(this.optionList);
@@ -78,6 +91,7 @@ namespace Stareater.GUI
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
 			this.ResumeLayout(false);
 		}
+		private Stareater.GUI.ControlListView queueList;
 		private System.Windows.Forms.Label descriptionLabel;
 		private System.Windows.Forms.PictureBox thumbnailImage;
 		private System.Windows.Forms.FlowLayoutPanel optionList;

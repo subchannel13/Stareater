@@ -15,5 +15,6 @@ namespace Stareater.Controllers
 		}
 
 		public abstract IEnumerable<ConstructableItem> ConstructableItems { get; }
+		public abstract IEnumerable<ConstructableItem> ConstructionQueue { get; }
 	}
 }

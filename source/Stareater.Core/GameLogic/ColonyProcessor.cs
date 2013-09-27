@@ -87,8 +87,9 @@ namespace Stareater.GameLogic
 			
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
 			//TODO: include farming and mining
-			this.Development = (1 - Colony.Owner.Orders.SiteSpendingRatios[Colony]) * Colony.Population * formulas.Development.Evaluate(organizationRatio, vars);
-			this.Production = Colony.Owner.Orders.SiteSpendingRatios[Colony] * Colony.Population * formulas.Industry.Evaluate(organizationRatio, vars);
+			double desiredSpendingRatio = Colony.Owner.Orders.Constructions[Colony].SpendingRatio;
+			this.Development = (1 - desiredSpendingRatio) * Colony.Population * formulas.Development.Evaluate(organizationRatio, vars);
+			this.Production = desiredSpendingRatio * Colony.Population * formulas.Industry.Evaluate(organizationRatio, vars);
 			
 			Colony.Cleaned();
 		}

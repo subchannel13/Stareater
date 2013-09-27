@@ -2,10 +2,10 @@
 	nameCode: HYDRO_FARM_NAME
 	descCode: HYDRO_FARM_DESC
 	code: HydroFarm
-	cost # 50e9 * (lvl0 + 3 ^lvl0);
+	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8
 	prerequisites [
-		:Bio # lvl0 [-1, -1, -1, 0, 0, 1, 1];
+		:Bio # lvl [-1, -1, -1, 0, 0, 1, 1];
 	]
 	image: ./images/technologies/hydroponicFarms.png
 }
@@ -14,7 +14,7 @@
 	nameCode: IND_NAME
 	descCode: IND_DESC
 	code: Ind
-	cost # 80e9 * (lvl0 + 2 ^ lvl0);
+	cost # 80e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/industry.png
@@ -24,7 +24,7 @@
 	nameCode: ROBO_NAME
 	descCode: ROBO_DESC
 	code: Robo
-	cost # 150e9 * (lvl0 + 2 ^ lvl0);
+	cost # 150e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites [
 		:Ind # 5;
@@ -36,7 +36,7 @@
 	nameCode: LASER_NAME
 	descCode: LASER_DESC
 	code: Laser
-	cost # 300e9 * (lvl0 + 2 ^ lvl0);
+	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/laser.png
@@ -46,7 +46,7 @@
 	nameCode: ECM_NAME
 	descCode: ECM_DESC
 	code: Ecm
-	cost # 300e9 * (lvl0 + 2 ^lvl0);
+	cost # 300e9 * (lvl + 2 ^lvl);
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
@@ -56,7 +56,7 @@
 	nameCode: EM_SHIELD_NAME
 	descCode: EM_SHIELD_DESC
 	code: EmShield
-	cost # 1.5e12 * (lvl0 + 2 ^lvl0);
+	cost # 1.5e12 * (lvl + 2 ^lvl);
 	maxLvl= 10
 	prerequisites [
 		:Ecm # 5;
@@ -68,7 +68,7 @@
 	nameCode: TITANIUM_NAME
 	descCode: TITANIUM_DESC
 	code: Titanium
-	cost # 300e9 * (lvl0 + 1) ^ 2;
+	cost # 300e9 * (lvl + 1) ^ 2;
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
@@ -78,7 +78,7 @@
 	nameCode: DURAPLAST_NAME
 	descCode: DURAPLAST_DESC
 	code: Duraplast
-	cost # 6e12 * (lvl0 + 1) ^ 2;
+	cost # 6e12 * (lvl + 1) ^ 2;
 	maxLvl= 10
 	prerequisites [
 		:Bio # 4;
@@ -91,10 +91,10 @@
 	nameCode: COLONIZER_NAME
 	descCode: COLONIZER_DESC
 	code: Colonizer
-	cost # 70e9 * (lvl0 + 1) ^ 2;
+	cost # 70e9 * (lvl + 1) ^ 2;
 	maxLvl= 10
 	prerequisites [
-		:Bio # lvl0 - 5;
+		:Bio # lvl - 5;
 	]
 	image: ./images/technologies/industry.png
 }
@@ -103,7 +103,7 @@
 	nameCode: SPACE_PROGRAM_NAME
 	descCode: SPACE_PROGRAM_DESC
 	code: SpaceProgram
-	cost # 80e9 * (lvl0 + 1) ^ 2;
+	cost # 80e9 * (lvl + 1) ^ 2;
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/spaceport.png

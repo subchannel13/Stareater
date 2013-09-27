@@ -1,0 +1,10 @@
+:Constructables
+IND_NAME = Industrialisation
+IND_DESC = No description
+POP_NAME = Colonization
+POP_DESC = No description
+RAD_STIT_NAME = Radiation shield
+RAD_STIT_DESC = No description
+RAKETODROM_NAME = Launching site
+RAKETODROM_DESC = No description
+-

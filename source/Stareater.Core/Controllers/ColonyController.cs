@@ -27,7 +27,15 @@ namespace Stareater.Controllers
 			
 				foreach(var constructable in game.Statics.Constructables)
 					if (Prerequisite.AreSatisfied(constructable.Prerequisites, 0, x => techLevels[x]) && constructable.Condition.Evaluate(colonyEffencts) > 0)
-						yield return new ConstructableItem(constructable);
+						yield return new ConstructableItem(constructable, game.Derivates.Players.Of(game.Players[game.CurrentPlayer]));
+			}
+		}
+		
+		public override IEnumerable<ConstructableItem> ConstructionQueue
+		{
+			get {
+				foreach(var item in game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue)
+					yield return new ConstructableItem(item, game.Derivates.Players.Of(game.Players[game.CurrentPlayer]));
 			}
 		}
 	}
