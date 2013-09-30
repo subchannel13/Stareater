@@ -41,8 +41,10 @@ namespace Stareater.GUI
 			this.thumbnailImage.Location = new System.Drawing.Point(0, 0);
 			this.thumbnailImage.Name = "thumbnailImage";
 			this.thumbnailImage.Size = new System.Drawing.Size(36, 36);
+			this.thumbnailImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.thumbnailImage.TabIndex = 0;
 			this.thumbnailImage.TabStop = false;
+			this.thumbnailImage.Click += new System.EventHandler(this.thumbnailImage_Click);
 			// 
 			// costLabel
 			// 
@@ -52,6 +54,7 @@ namespace Stareater.GUI
 			this.costLabel.TabIndex = 4;
 			this.costLabel.Text = "label1";
 			this.costLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+			this.costLabel.Click += new System.EventHandler(this.costLabel_Click);
 			// 
 			// nameLabel
 			// 
@@ -61,6 +64,7 @@ namespace Stareater.GUI
 			this.nameLabel.Size = new System.Drawing.Size(35, 13);
 			this.nameLabel.TabIndex = 3;
 			this.nameLabel.Text = "Name";
+			this.nameLabel.Click += new System.EventHandler(this.nameLabel_Click);
 			// 
 			// investmentLabel
 			// 
@@ -70,6 +74,7 @@ namespace Stareater.GUI
 			this.investmentLabel.TabIndex = 5;
 			this.investmentLabel.Text = "label1";
 			this.investmentLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+			this.investmentLabel.Click += new System.EventHandler(this.investmentLabel_Click);
 			// 
 			// QueuedConstructionView
 			// 

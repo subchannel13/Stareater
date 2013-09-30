@@ -33,6 +33,8 @@ namespace Stareater.GUI
 			this.thumbnailImage = new System.Windows.Forms.PictureBox();
 			this.descriptionLabel = new System.Windows.Forms.Label();
 			this.queueList = new Stareater.GUI.ControlListView();
+			this.button1 = new System.Windows.Forms.Button();
+			this.button2 = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -49,7 +51,7 @@ namespace Stareater.GUI
 			// 
 			// thumbnailImage
 			// 
-			this.thumbnailImage.Location = new System.Drawing.Point(278, 12);
+			this.thumbnailImage.Location = new System.Drawing.Point(232, 12);
 			this.thumbnailImage.Name = "thumbnailImage";
 			this.thumbnailImage.Size = new System.Drawing.Size(40, 40);
 			this.thumbnailImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -59,8 +61,8 @@ namespace Stareater.GUI
 			// descriptionLabel
 			// 
 			this.descriptionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-									| System.Windows.Forms.AnchorStyles.Right)));
-			this.descriptionLabel.Location = new System.Drawing.Point(324, 12);
+									| System.Windows.Forms.AnchorStyles.Left)));
+			this.descriptionLabel.Location = new System.Drawing.Point(278, 12);
 			this.descriptionLabel.Name = "descriptionLabel";
 			this.descriptionLabel.Size = new System.Drawing.Size(200, 198);
 			this.descriptionLabel.TabIndex = 2;
@@ -69,18 +71,38 @@ namespace Stareater.GUI
 			// queueList
 			// 
 			this.queueList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-									| System.Windows.Forms.AnchorStyles.Right)));
-			this.queueList.Location = new System.Drawing.Point(278, 215);
+									| System.Windows.Forms.AnchorStyles.Left)));
+			this.queueList.Location = new System.Drawing.Point(232, 215);
 			this.queueList.Name = "queueList";
 			this.queueList.SelectedIndex = -1;
-			this.queueList.Size = new System.Drawing.Size(246, 186);
+			this.queueList.Size = new System.Drawing.Size(246, 199);
 			this.queueList.TabIndex = 3;
+			// 
+			// button1
+			// 
+			this.button1.Image = global::Stareater.Properties.Resources.arrowUp;
+			this.button1.Location = new System.Drawing.Point(484, 272);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(40, 40);
+			this.button1.TabIndex = 4;
+			this.button1.UseVisualStyleBackColor = true;
+			// 
+			// button2
+			// 
+			this.button2.Image = global::Stareater.Properties.Resources.arrowDown;
+			this.button2.Location = new System.Drawing.Point(484, 318);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(40, 40);
+			this.button2.TabIndex = 5;
+			this.button2.UseVisualStyleBackColor = true;
 			// 
 			// FormBuildingQueue
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(546, 426);
+			this.ClientSize = new System.Drawing.Size(535, 426);
+			this.Controls.Add(this.button2);
+			this.Controls.Add(this.button1);
 			this.Controls.Add(this.queueList);
 			this.Controls.Add(this.descriptionLabel);
 			this.Controls.Add(this.thumbnailImage);
@@ -91,6 +113,8 @@ namespace Stareater.GUI
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button button1;
 		private Stareater.GUI.ControlListView queueList;
 		private System.Windows.Forms.Label descriptionLabel;
 		private System.Windows.Forms.PictureBox thumbnailImage;
