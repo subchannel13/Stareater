@@ -43,6 +43,7 @@ namespace Stareater.GUI
 			this.thumbnail.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.thumbnail.TabIndex = 0;
 			this.thumbnail.TabStop = false;
+			this.thumbnail.EnabledChanged += new System.EventHandler(this.thumbnail_EnabledChanged);
 			this.thumbnail.Click += new System.EventHandler(this.thumbnail_Click);
 			this.thumbnail.MouseEnter += new System.EventHandler(this.thumbnail_MouseEnter);
 			// 

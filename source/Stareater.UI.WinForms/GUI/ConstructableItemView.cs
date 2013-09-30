@@ -64,5 +64,10 @@ namespace Stareater.GUI
 		{
 			this.OnMouseEnter(e);
 		}
+		
+		private void thumbnail_EnabledChanged(object sender, EventArgs e)
+		{
+			thumbnail.Image = this.Enabled ? ImageCache.Get[data.ImagePath] : ImageCache.Get.Disabled(data.ImagePath);
+		}
 	}
 }

@@ -11,23 +11,24 @@ namespace Stareater.Controllers.Data
 	{
 		private const string LangContext = "Constructables";
 		
-		private Constructable constructable;
 		private IDictionary<string, double> vars;
 		
 		internal ConstructableItem(Constructable constructable, PlayerProcessor playerProcessor)
 		{
-			this.constructable = constructable;
+			this.Constructable = constructable;
 			this.vars = new Var().UnionWith(playerProcessor.TechLevels).Get;
 		}
+		
+		internal Constructable Constructable { get; private set; }
 		
 		public string Name 
 		{
 			get 
 			{
-				if (constructable.LiteralText)
-					return constructable.NameCode;
+				if (Constructable.LiteralText)
+					return Constructable.NameCode;
 				
-				return Settings.Get.Language[LangContext][constructable.NameCode].Text();
+				return Settings.Get.Language[LangContext][Constructable.NameCode].Text();
 			}
 		}
 		
@@ -35,10 +36,10 @@ namespace Stareater.Controllers.Data
 		{ 
 			get 
 			{
-				if (constructable.LiteralText)
-					return constructable.DescriptionCode;
+				if (Constructable.LiteralText)
+					return Constructable.DescriptionCode;
 				
-				return Settings.Get.Language[LangContext][constructable.DescriptionCode].Text();
+				return Settings.Get.Language[LangContext][Constructable.DescriptionCode].Text();
 			}
 		}
 		
@@ -46,7 +47,7 @@ namespace Stareater.Controllers.Data
 		{
 			get
 			{
-				return constructable.ImagePath;
+				return Constructable.ImagePath;
 			}
 		}
 		
@@ -54,7 +55,7 @@ namespace Stareater.Controllers.Data
 		{
 			get 
 			{
-				return constructable.IdCode;
+				return Constructable.IdCode;
 			}
 		}
 		
@@ -62,7 +63,7 @@ namespace Stareater.Controllers.Data
 		{
 			get 
 			{
-				return constructable.Cost.Evaluate(vars);
+				return Constructable.Cost.Evaluate(vars);
 			}
 		}
 	}

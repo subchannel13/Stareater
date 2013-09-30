@@ -43,7 +43,18 @@ namespace Stareater.GUI
 		
 		private void onOption_Click(object sender, EventArgs e)
 		{
-			//STUB
+			var itemView = sender as ConstructableItemView;
+			
+			if (controller.CanPick(itemView.Data)) {
+				controller.Enqueue(itemView.Data);
+				
+				var queueItemView = new QueuedConstructionView();
+				queueItemView.Data = itemView.Data;
+				queueList.Controls.Add(queueItemView);
+			}
+			
+			//TODO update whole list
+			itemView.Enabled = controller.CanPick(itemView.Data);
 		}
 		
 		private void onOption_MouseEnter(object sender, EventArgs e)

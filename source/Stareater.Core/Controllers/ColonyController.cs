@@ -38,5 +38,10 @@ namespace Stareater.Controllers
 					yield return new ConstructableItem(item, game.Derivates.Players.Of(game.Players[game.CurrentPlayer]));
 			}
 		}
+		
+		public override void Enqueue(ConstructableItem data)
+		{
+			game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue.Add(data.Constructable);
+		}
 	}
 }
