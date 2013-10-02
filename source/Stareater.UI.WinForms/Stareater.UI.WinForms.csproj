@@ -180,7 +180,9 @@
     <Compile Include="GUI\NewGamePlayerView.Designer.cs">
       <DependentUpon>NewGamePlayerView.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\QueuedConstructionView.cs" />
+    <Compile Include="GUI\QueuedConstructionView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="GUI\QueuedConstructionView.Designer.cs">
       <DependentUpon>QueuedConstructionView.cs</DependentUpon>
     </Compile>
