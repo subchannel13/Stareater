@@ -107,7 +107,7 @@ namespace Stareater.GUI
 		
 		private void reorderTopAction_Click(object sender, EventArgs e)
 		{
-			if (topicList.HasSelection)
+			if (!topicList.HasSelection)
 				return;
 			
 			reorderTopic(topicList.SelectedIndex, 0);
@@ -115,7 +115,7 @@ namespace Stareater.GUI
 		
 		private void reorderUpAction_Click(object sender, EventArgs e)
 		{
-			if (topicList.HasSelection)
+			if (!topicList.HasSelection)
 				return;
 			
 			reorderTopic(topicList.SelectedIndex, topicList.SelectedIndex - 1);
@@ -123,7 +123,7 @@ namespace Stareater.GUI
 		
 		private void reorderDownAction_Click(object sender, EventArgs e)
 		{
-			if (topicList.HasSelection)
+			if (!topicList.HasSelection)
 				return;
 			
 			reorderTopic(topicList.SelectedIndex, topicList.SelectedIndex + 1);
@@ -131,7 +131,7 @@ namespace Stareater.GUI
 		
 		private void reorderBottomAction_Click(object sender, EventArgs e)
 		{
-			if (topicList.HasSelection)
+			if (!topicList.HasSelection)
 				return;
 			
 			reorderTopic(topicList.SelectedIndex, topics.Count);
