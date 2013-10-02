@@ -101,5 +101,12 @@ namespace Stareater.Properties {
 				return ((System.Drawing.Bitmap)(obj));
 			}
 		}
+		
+		internal static System.Drawing.Bitmap cancel {
+			get {
+				object obj = ResourceManager.GetObject("cancel", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
 	}
 }

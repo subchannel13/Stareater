@@ -28,6 +28,22 @@ namespace Stareater.GUI
 			}
 		}
 		
+		private void reorderItem(int fromIndex, int toIndex)
+		{
+			if (toIndex < 0) toIndex = 0;
+			if (toIndex >= queueList.Controls.Count)	toIndex = queueList.Controls.Count - 1;
+			if (fromIndex == toIndex)
+				return;
+			
+			controller.ReorderQueue(fromIndex, toIndex);
+			
+			var item = queueList.Controls[fromIndex];
+			
+			queueList.SelectedIndex = ControlListView.NoneSelected;
+			queueList.Controls.SetChildIndex(item, toIndex);
+			queueList.SelectedIndex = toIndex;
+		}
+		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
 			if (keyData == Keys.Escape) 
@@ -39,6 +55,14 @@ namespace Stareater.GUI
 		{
 			thumbnailImage.Image = ImageCache.Get[itemView.Data.ImagePath];
 			descriptionLabel.Text = itemView.Data.Description;
+		}
+		
+		private void updateOptions()
+		{
+			foreach(var optionView in optionList.Controls){
+				var itemView = optionView as ConstructableItemView;
+				itemView.Enabled = controller.CanPick(itemView.Data);
+			}				
 		}
 		
 		private void onOption_Click(object sender, EventArgs e)
@@ -53,13 +77,36 @@ namespace Stareater.GUI
 				queueList.Controls.Add(queueItemView);
 			}
 			
-			//TODO update whole list
-			itemView.Enabled = controller.CanPick(itemView.Data);
+			updateOptions();
 		}
 		
 		private void onOption_MouseEnter(object sender, EventArgs e)
 		{
 			updateDescription(sender as ConstructableItemView);
+		}
+		
+		private void removeButton_Click(object sender, EventArgs e)
+		{
+			if (!queueList.HasSelection)
+				return;
+			
+			controller.Dequeue(queueList.SelectedIndex);
+			queueList.Controls.Remove(queueList.SelectedItem);
+			
+			updateOptions();
+		}
+		
+		private void moveUpButton_Click(object sender, EventArgs e)
+		{
+			if (!queueList.HasSelection)
+				return;
+			
+			reorderItem(queueList.SelectedIndex, queueList.SelectedIndex - 1);
+		}
+		
+		private void moveDownButton_Click(object sender, EventArgs e)
+		{
+			reorderItem(queueList.SelectedIndex, queueList.SelectedIndex + 1);
 		}
 	}
 }

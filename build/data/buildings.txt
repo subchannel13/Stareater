@@ -17,3 +17,23 @@
 		}
 	]
 }
+
+{ Constructable
+	nameCode: POP_NAME
+	descCode: POP_DESC
+	image: ./images/technologies/industry.png
+	
+	code: Housing
+	prerequisites [] 
+	
+	cost # 10;
+	condition # maxPop > pop;
+	turnLimit # maxPop - pop;
+	
+	effects [
+		{ MutateSite
+			key: Poppulation
+			value # factories + quantity;
+		}
+	]
+}

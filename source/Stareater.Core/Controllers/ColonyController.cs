@@ -43,5 +43,18 @@ namespace Stareater.Controllers
 		{
 			game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue.Add(data.Constructable);
 		}
+		
+		public override void Dequeue(int index)
+		{
+			game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue.RemoveAt(index);
+		}
+		
+		public override void ReorderQueue(int fromIndex, int toIndex)
+		{
+			var item = game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue[fromIndex];
+			
+			game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue.RemoveAt(fromIndex);
+			game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue.Insert(toIndex, item);
+		}
 	}
 }
