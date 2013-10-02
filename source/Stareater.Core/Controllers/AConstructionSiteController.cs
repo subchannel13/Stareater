@@ -24,5 +24,9 @@ namespace Stareater.Controllers
 		}
 		
 		public abstract void Enqueue(ConstructableItem data);
+		
+		public abstract void Dequeue(int selectedIndex);
+		
+		public abstract void ReorderQueue(int fromIndex, int toIndex);
 	}
 }
