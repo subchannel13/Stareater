@@ -1,7 +1,7 @@
 { Constructable
 	nameCode: IND_NAME
 	descCode: IND_DESC
-	image: ./images/technologies/industry.png
+	image: ./images/buildings/factory.png
 	
 	code: Infra
 	prerequisites [] 
@@ -21,7 +21,7 @@
 { Constructable
 	nameCode: POP_NAME
 	descCode: POP_DESC
-	image: ./images/technologies/industry.png
+	image: ./images/buildings/housing.png
 	
 	code: Housing
 	prerequisites [] 

@@ -19,12 +19,19 @@ namespace Stareater.GUI
 		{
 			this.controller = controller;
 			
-			foreach (var item in controller.ConstructableItems) {
+			foreach (var data in controller.ConstructableItems) {
 				var itemView = new ConstructableItemView();
-				itemView.Data = item;
+				itemView.Data = data;
+				itemView.Enabled = controller.CanPick(data);
 				itemView.Click += onOption_Click;
 				itemView.MouseEnter += onOption_MouseEnter;
 				optionList.Controls.Add(itemView);
+			}
+			
+			foreach (var data in controller.ConstructionQueue) {
+				var queueItemView = new QueuedConstructionView();
+				queueItemView.Data = data;
+				queueList.Controls.Add(queueItemView);
 			}
 		}
 		

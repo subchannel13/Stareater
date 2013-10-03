@@ -138,7 +138,6 @@
     <Compile Include="GameData\Reading\ExpressionFactory.cs" />
     <Compile Include="GameData\Reading\Parser.cs" />
     <Compile Include="GameData\Reading\SingleLineFactory.cs" />
-    <Compile Include="GameData\Reading\SingleLineText.cs" />
     <Compile Include="GameData\StarIntelligence.cs" />
     <Compile Include="GameData\Technology.cs" />
     <Compile Include="GameData\TechnologyCategory.cs" />
