@@ -5,6 +5,9 @@ End
 turn}
 Return = Return
 
+NotBuilding = No construction project
+SiteDetails = Details
+
 MainMenu = Main menu
 DevelopmentMenu = Development
 -

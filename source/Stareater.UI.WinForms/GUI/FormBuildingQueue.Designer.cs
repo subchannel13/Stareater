@@ -65,6 +65,7 @@ namespace Stareater.GUI
 			// 
 			this.descriptionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 									| System.Windows.Forms.AnchorStyles.Left)));
+			this.descriptionLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.descriptionLabel.Location = new System.Drawing.Point(278, 12);
 			this.descriptionLabel.Name = "descriptionLabel";
 			this.descriptionLabel.Size = new System.Drawing.Size(200, 198);
@@ -147,7 +148,8 @@ namespace Stareater.GUI
 			this.Controls.Add(this.optionList);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormBuildingQueue";
-			this.Text = "FormBuildingQueue";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+			this.Text = "Building Queue";
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

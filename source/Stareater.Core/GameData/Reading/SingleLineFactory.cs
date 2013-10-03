@@ -1,5 +1,6 @@
 ﻿using System;
 using Ikadn;
+using Ikadn.Ikon.Types;
 
 namespace Stareater.GameData.Reading
 {
@@ -8,7 +9,7 @@ namespace Stareater.GameData.Reading
 		public IkadnBaseObject Parse(IkadnParser parser)
 		{
 			parser.Reader.SkipWhiteSpaces();
-			return new SingleLineText(parser.Reader.ReadWhile(x => !char.IsWhiteSpace(x)).Trim());
+			return new IkonText(parser.Reader.ReadWhile(x => !char.IsWhiteSpace(x)).Trim());
 		}
 
 		public char Sign
