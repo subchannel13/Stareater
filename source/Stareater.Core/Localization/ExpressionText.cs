@@ -48,7 +48,10 @@ namespace Stareater.Localization
 
 		public string Text()
 		{
-			throw new NotImplementedException();
+			if (formula.Variables.Count == 0)
+				return formatter(formula.Evaluate(new Dictionary<string, double>()));
+			else
+				throw new InvalidOperationException("This IText has one or more variables, call an overload that sets all their values.");
 		}
 
 		public string Text(double trivialVariable)
@@ -56,13 +59,18 @@ namespace Stareater.Localization
 			if (formula.Variables.Count == 0)
 				throw new InvalidOperationException("This IText has no variables");
 			if (formula.Variables.Count > 1)
-				throw new InvalidOperationException("This IText has more than one variable, call overload that set all their values.");
+				throw new InvalidOperationException("This IText has more than one variable, call an overload that sets all their values.");
 			
 			var variable = new Var(formula.Variables.First(), trivialVariable).Get;
 			return formatter(formula.Evaluate(variable));
 		}
 
 		public string Text(IDictionary<string, double> variables)
+		{
+			return formatter(formula.Evaluate(variables));
+		}
+
+		public string Text(IDictionary<string, double> variables, IDictionary<string, string> placeholderContents)
 		{
 			return formatter(formula.Evaluate(variables));
 		}

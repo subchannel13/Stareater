@@ -149,6 +149,7 @@
     <Compile Include="Localization\ExpressionText.cs" />
     <Compile Include="Localization\Reading\ConditionalTextFactory.cs" />
     <Compile Include="Localization\Reading\ExpressionTextFactory.cs" />
+    <Compile Include="Localization\PlaceholderText.cs" />
     <Compile Include="Localization\Reading\TextBlockFactory.cs" />
     <Compile Include="Galaxy\AConstructionSite.cs" />
     <Compile Include="Galaxy\MapAssets.cs" />
@@ -239,13 +240,7 @@
     <None Include="AppData\Expressions\Scanner.frame" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Galaxy\Builders" />
-    <Folder Include="GameData\Databases" />
-    <Folder Include="GameData\Databases\Tables" />
-    <Folder Include="GameData\Reading" />
     <Folder Include="Libs\" />
-    <Folder Include="GameData" />
-    <Folder Include="GameLogic" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

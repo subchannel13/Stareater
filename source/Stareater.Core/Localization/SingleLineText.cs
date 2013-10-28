@@ -52,5 +52,10 @@ namespace Stareater.Localization
 		{
 			return text;
 		}
+
+		public string Text(System.Collections.Generic.IDictionary<string, double> variables, System.Collections.Generic.IDictionary<string, string> placeholderContents)
+		{
+			return text;
+		}
 	}
 }
