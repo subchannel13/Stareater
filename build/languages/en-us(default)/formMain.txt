@@ -8,6 +8,15 @@ Return = Return
 NotBuilding = No construction project
 SiteDetails = Details
 
+AsteriodName {
+Asteroid belt at {=bodyName}}
+
+GasGiantName {
+Moons of {=bodyName}}
+
+RockName {
+{=bodyName}}
+
 MainMenu = Main menu
 DevelopmentMenu = Development
 -

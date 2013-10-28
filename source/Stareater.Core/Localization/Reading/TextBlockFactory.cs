@@ -11,9 +11,10 @@ namespace Stareater.Localization.Reading
 	class TextBlockFactory : IIkadnObjectFactory
 	{
 		private const char BlockCloseChar = '}';
+		private const string PlaceholderMark = "=";
 		private const char SubstitutionOpenChar = '{';
 		private const char SubstitutionCloseChar = '}';
-
+		
 		const char EscapeChar = '\\';
 
 		public IkadnBaseObject Parse(IkadnParser parser)
@@ -39,7 +40,7 @@ namespace Stareater.Localization.Reading
 					textRuns.Enqueue(null);
 					textRuns.Enqueue(substitutionName);
 
-					if (!substitutions.ContainsKey(substitutionName))
+					if (!substitutions.ContainsKey(substitutionName) && !substitutionName.StartsWith(PlaceholderMark))
 						substitutions.Add(substitutionName, null);
 				}
 				else
@@ -64,10 +65,18 @@ namespace Stareater.Localization.Reading
 			List<IText> texts = new List<IText>();
 			while (textRuns.Count > 0) {
 				string textRun = textRuns.Dequeue();
-				texts.Add((textRun == null) ?
-					substitutions[textRuns.Dequeue()] :
-					new SingleLineText(textRun)
-				);
+
+				if (textRun != null)
+					texts.Add(new SingleLineText(textRun));
+				else {
+					string textKey = textRuns.Dequeue();
+
+					if (textKey.StartsWith(PlaceholderMark))
+						texts.Add(new PlaceholderText(textKey.Substring(PlaceholderMark.Length)));
+					else
+						texts.Add(substitutions[textKey]);
+				}
+				
 			}
 			
 			return new ChainText(texts.ToArray());
