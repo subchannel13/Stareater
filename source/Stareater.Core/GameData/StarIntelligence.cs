@@ -20,7 +20,10 @@ namespace Stareater.GameData
 			foreach(var planet in planets)
 				this.Planets.Add(planet, new PlanetIntelligence());
 		}
-		
+
+		private StarIntelligence()
+		{ }
+
 		public bool IsVisited
 		{
 			get { return LastVisited != NeverVisited; }
@@ -29,6 +32,19 @@ namespace Stareater.GameData
 		public void Visit(int turn)
 		{
 			this.LastVisited = turn;
+		}
+
+		internal StarIntelligence Copy(IDictionary<Planet, Planet> planetRemap)
+		{
+			StarIntelligence copy = new StarIntelligence();
+
+			copy.LastVisited = this.LastVisited;
+			copy.Planets = new Dictionary<Planet, PlanetIntelligence>();
+
+			foreach (var planetIntell in Planets)
+				copy.Planets.Add(planetRemap[planetIntell.Key], planetIntell.Value.Copy());
+
+			return copy;
 		}
 	}
 }

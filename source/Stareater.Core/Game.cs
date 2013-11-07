@@ -49,7 +49,27 @@ namespace Stareater
 					player.Intelligence.StarFullyVisited(colony.Star, this.Turn);
 			}
 		}
-		
+
+		private Game()
+		{ }
+
+		public Game ReadonlyCopy()
+		{
+			Game copy = new Game();
+
+			GalaxyRemap galaxyRemap = this.States.CopyGalaxy();
+
+			copy.Players = this.Players.Select(p => p.Copy(galaxyRemap)).ToArray();
+			copy.Turn = this.Turn;
+			copy.CurrentPlayer = this.CurrentPlayer;
+
+			copy.Statics = this.Statics;
+			copy.States = this.States.Copy();
+			copy.Derivates = null;	//TODO: keep null or make stub copy
+
+			return copy;
+		}
+
 		#region Initialization
 		private static ColonyCollection initColonies(Player[] players, StarSystem[] starSystems, int[] homeSystemIndices, StartingConditions startingConditions, 
 		                                             TemporaryDB derivates, ColonyFormulaSet colonyFormulas)

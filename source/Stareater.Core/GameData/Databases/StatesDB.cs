@@ -24,5 +24,28 @@ namespace Stareater.GameData.Databases
 			this.Wormholes = wormholes;
 			this.TechnologyAdvances = technologyProgresses;
 		}
+
+		private StatesDB()
+		{ }
+
+		public StatesDB Copy()
+		{
+			StatesDB copy = new StatesDB();
+
+			this.Stars = new StarCollection();
+			this.Wormholes = new WormholeCollection();
+			this.Planets = new PlanetCollection();
+			this.Colonies = new ColonyCollection();
+			this.TechnologyAdvances = new TechProgressCollection();
+			//TODO: fill data
+
+			return copy;
+		}
+
+		public GalaxyRemap CopyGalaxy()
+		{
+			//TODO
+			throw new NotImplementedException();
+		}
 	}
 }
