@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 using Stareater.GameData;
 using Stareater.GameData.Databases;
+using Stareater.Galaxy;
 
 namespace Stareater.Players
 {
@@ -17,7 +18,6 @@ namespace Stareater.Players
 		
 		private IEnumerable<object> designs; //TODO: make type
 		private IEnumerable<object> predefinedDesigns; //TODO: make type
-		private IEnumerable<object> technologies; //TODO: make type
 		public Intelligence Intelligence { get; private set; }
 
 		private IEnumerable<object> messages; //TODO: make type
@@ -35,6 +35,30 @@ namespace Stareater.Players
 			this.Intelligence = new Intelligence();
 			
 			this.Orders = new ChangesDB();
+		}
+
+		public Player()
+		{ }
+
+		public Player Copy(GalaxyRemap galaxyRemap)
+		{
+			Player copy = new Player();
+
+			copy.Name = this.Name;
+			copy.Color = this.Color;
+			copy.organization = this.organization;
+			copy.type = this.type;
+
+			copy.designs = null; //TODO: make type
+			copy.predefinedDesigns = null; //TODO: make type
+			copy.Intelligence  = this.Intelligence.Copy(galaxyRemap);
+
+			copy.messages = null; //TODO: make type
+			copy.messageFilter = null; //TODO: make type
+
+			copy.Orders = null; //TODO
+
+			return copy;
 		}
 	}
 }

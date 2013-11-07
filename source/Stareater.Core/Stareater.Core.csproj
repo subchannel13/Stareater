@@ -93,6 +93,7 @@
     <Compile Include="Galaxy\StellarManagement.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameData\Constructable.cs" />
+    <Compile Include="GameData\GalaxyRemap.cs" />
     <Compile Include="GameData\SiteType.cs" />
     <Compile Include="GameData\Databases\ChangesDB.cs" />
     <Compile Include="GameData\Databases\StatesDB.cs" />

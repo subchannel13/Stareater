@@ -35,5 +35,15 @@ namespace Stareater.GameData
 		{
 			this.LastVisited = turn;
 		}
+
+		public PlanetIntelligence Copy()
+		{
+			PlanetIntelligence copy = new PlanetIntelligence();
+
+			copy.Explored = this.Explored;
+			copy.LastVisited = this.LastVisited;
+
+			return copy;
+		}
 	}
 }
