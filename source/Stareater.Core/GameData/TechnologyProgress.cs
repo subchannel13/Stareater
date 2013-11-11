@@ -28,7 +28,7 @@ namespace Stareater.GameData
 		public TechnologyProgress(Technology topic, Player owner) : 
 			this (NotStarted, 0, topic, owner)
 		{ }
-		
+
 		public int NextLevel
 		{
 			get {
@@ -57,6 +57,14 @@ namespace Stareater.GameData
 			}
 			
 			return true;*/
+		}
+
+		internal TechnologyProgress Copy(Player player)
+		{
+			TechnologyProgress copy = new TechnologyProgress(Level, InvestedPoints, Topic, player);
+			copy.Order = this.Order;
+
+			return copy;
 		}
 	}
 }

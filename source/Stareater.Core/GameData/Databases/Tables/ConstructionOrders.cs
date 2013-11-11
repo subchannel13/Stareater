@@ -13,5 +13,15 @@ namespace Stareater.GameData.Databases.Tables
 			this.SpendingRatio = spendingRatio;
 			this.Queue = new List<Constructable>();
 		}
+
+		internal ConstructionOrders Copy()
+		{
+			ConstructionOrders copy = new ConstructionOrders(this.SpendingRatio);
+
+			foreach (var enqueued in this.Queue)
+				copy.Queue.Add(enqueued);
+
+			return copy;
+		}
 	}
 }

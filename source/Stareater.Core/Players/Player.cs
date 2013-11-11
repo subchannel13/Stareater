@@ -23,7 +23,7 @@ namespace Stareater.Players
 		private IEnumerable<object> messages; //TODO: make type
 		private Dictionary<object, object> messageFilter; //TODO: make type
 
-		public ChangesDB Orders { get; private set; }
+		public ChangesDB Orders { get; internal set; }
 		
 		public Player(string name, Color color, Organization organization, PlayerType type)
 		{
@@ -56,7 +56,7 @@ namespace Stareater.Players
 			copy.messages = null; //TODO: make type
 			copy.messageFilter = null; //TODO: make type
 
-			copy.Orders = null; //TODO
+			copy.Orders = null; //Handled later
 
 			return copy;
 		}

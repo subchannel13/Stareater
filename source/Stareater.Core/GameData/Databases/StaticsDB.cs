@@ -116,9 +116,9 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralCostKey].To<Formula>(),
 				loadPrerquisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(),
-             	data[TechnologyMaxLevelKey].To<int>(),
-             	category
-             );
+				data[TechnologyMaxLevelKey].To<int>(),
+				category
+			 );
 		}
 		
 		#region Loading tags and keys

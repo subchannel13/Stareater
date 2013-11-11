@@ -62,5 +62,9 @@ namespace Stareater.Galaxy
 		}
 		#endregion
 
+		internal StarData Copy()
+		{
+			return new StarData(Color, ImageSizeScale, Name, Position, Radiation);
+		}
 	}
 }
