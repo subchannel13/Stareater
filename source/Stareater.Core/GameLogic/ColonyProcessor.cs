@@ -5,6 +5,7 @@ using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
+using Stareater.GameData;
 
 namespace Stareater.GameLogic
 {
@@ -102,6 +103,17 @@ namespace Stareater.GameLogic
 			vars.And(PopulationKey, Colony.Population);
 			
 			return vars.Get;
+		}
+
+		internal ColonyProcessor Copy(PlayersRemap playerRemap)
+		{
+			ColonyProcessor copy = new ColonyProcessor(playerRemap.Sites[this.Colony] as Colony);
+			
+			copy.development = this.development;
+			copy.maxPopulation = this.maxPopulation;
+			copy.production = this.production;
+
+			return copy;
 		}
 	}
 }

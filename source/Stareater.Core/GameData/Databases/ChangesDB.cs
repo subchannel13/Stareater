@@ -33,5 +33,18 @@ namespace Stareater.GameData.Databases
 					Constructions[site] = oldSpendings[site];
 			}
 		}
+
+		internal ChangesDB Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap)
+		{
+			ChangesDB copy = new ChangesDB();
+
+			copy.Constructions = this.Constructions.ToDictionary(
+				x => playersRemap.Sites[x.Key],
+				x => x.Value.Copy());
+
+			copy.DevelopmentQueue = new Dictionary<string, int>(this.DevelopmentQueue);
+
+			return copy;
+		}
 	}
 }

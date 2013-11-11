@@ -20,7 +20,12 @@ namespace Stareater.GameLogic
 				this.TechLevels.Add(tech.IdCode + LevelSufix, TechnologyProgress.NotStarted);
 			}
 		}
-		
+
+		public PlayerProcessor(Player player)
+		{
+			this.Player = player;
+		}
+
 		public IDictionary<string, double> TechLevels { get; private set; }
 
 		public void Calculate(IEnumerable<TechnologyProgress> techAdvances)
@@ -28,6 +33,15 @@ namespace Stareater.GameLogic
 			foreach (var tech in techAdvances) {
 				TechLevels[tech.Topic.IdCode + LevelSufix] = tech.Level;
 			}
+		}
+
+		internal PlayerProcessor Copy(PlayersRemap playersRemap)
+		{
+			PlayerProcessor copy = new PlayerProcessor(playersRemap.Players[this.Player]);
+			
+			copy.TechLevels = new Dictionary<string, double>(this.TechLevels);
+
+			return copy;
 		}
 	}
 }

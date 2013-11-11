@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
+using Stareater.Galaxy;
 
 namespace Stareater.GameData.Databases
 {
@@ -28,24 +29,50 @@ namespace Stareater.GameData.Databases
 		private StatesDB()
 		{ }
 
-		public StatesDB Copy()
+		public StatesDB Copy(IDictionary<Player, Player> playersRemap, GalaxyRemap galaxyRemap)
 		{
 			StatesDB copy = new StatesDB();
 
-			this.Stars = new StarCollection();
-			this.Wormholes = new WormholeCollection();
-			this.Planets = new PlanetCollection();
-			this.Colonies = new ColonyCollection();
-			this.TechnologyAdvances = new TechProgressCollection();
-			//TODO: fill data
+			copy.Stars = new StarCollection();
+			copy.Stars.Add(galaxyRemap.Stars.Values);
 
+			copy.Wormholes = new WormholeCollection();
+			copy.Wormholes.Add(this.Wormholes.Select(
+				x => new Tuple<StarData, StarData>(
+					galaxyRemap.Stars[x.Item1],
+					galaxyRemap.Stars[x.Item2])
+				));
+
+			copy.Planets = new PlanetCollection();
+			copy.Planets.Add(galaxyRemap.Planets.Values);
+
+			copy.Colonies = new ColonyCollection();
+			copy.Colonies.Add(this.Colonies.Select(x => x.Copy(playersRemap[x.Owner], galaxyRemap.Planets[x.Location])));
+
+			copy.TechnologyAdvances = new TechProgressCollection();
+			copy.TechnologyAdvances.Add(this.TechnologyAdvances.Select(x => x.Copy(playersRemap[x.Owner])));
+			
 			return copy;
 		}
 
 		public GalaxyRemap CopyGalaxy()
 		{
-			//TODO
-			throw new NotImplementedException();
+			GalaxyRemap remap = new GalaxyRemap();
+
+			remap.Stars = this.Stars.ToDictionary(x => x, x => x.Copy());
+			remap.Planets = this.Planets.ToDictionary(x => x, x => x.Copy(remap.Stars[x.Star]));
+
+			return remap;
+		}
+
+		internal PlayersRemap CopyPlayers(Dictionary<Player, Player> playersRemap, GalaxyRemap galaxyRemap)
+		{
+			PlayersRemap remap = new PlayersRemap(playersRemap);
+
+			foreach (var colony in this.Colonies)
+				remap.Sites.Add(colony, colony.Copy(playersRemap[colony.Owner], galaxyRemap.Planets[colony.Location]));
+
+			return remap;
 		}
 	}
 }

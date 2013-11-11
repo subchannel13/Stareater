@@ -8,7 +8,13 @@ namespace Stareater.GameData
 {
 	class GalaxyRemap
 	{
-		public IDictionary<StarData, StarData> StarsRemap;
-		public IDictionary<Planet, Planet> PlanetRemap;
+		public IDictionary<StarData, StarData> Stars;
+		public IDictionary<Planet, Planet> Planets;
+
+		public GalaxyRemap()
+		{
+			this.Planets = new Dictionary<Planet, Planet>();
+			this.Stars = new Dictionary<StarData, StarData>();
+		}
 	}
 }

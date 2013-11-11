@@ -53,21 +53,27 @@ namespace Stareater
 		private Game()
 		{ }
 
-		public Game ReadonlyCopy()
+		public Tuple<Game, PlayersRemap, GalaxyRemap> ReadonlyCopy()
 		{
 			Game copy = new Game();
 
 			GalaxyRemap galaxyRemap = this.States.CopyGalaxy();
+			PlayersRemap playersRemap = this.States.CopyPlayers(
+				this.Players.ToDictionary(x => x, x => x.Copy(galaxyRemap)),
+				galaxyRemap);
 
-			copy.Players = this.Players.Select(p => p.Copy(galaxyRemap)).ToArray();
+			foreach (var playerPair in playersRemap.Players)
+				playerPair.Value.Orders = playerPair.Key.Orders.Copy(playersRemap, galaxyRemap);
+
+			copy.Players = this.Players.Select(p => playersRemap.Players[p]).ToArray();
 			copy.Turn = this.Turn;
 			copy.CurrentPlayer = this.CurrentPlayer;
 
 			copy.Statics = this.Statics;
-			copy.States = this.States.Copy();
-			copy.Derivates = null;	//TODO: keep null or make stub copy
+			copy.States = this.States.Copy(playersRemap.Players, galaxyRemap);
+			copy.Derivates = this.Derivates.Copy(playersRemap);
 
-			return copy;
+			return new Tuple<Game, PlayersRemap, GalaxyRemap>(copy, playersRemap, galaxyRemap);
 		}
 
 		#region Initialization

@@ -10,14 +10,22 @@ namespace Stareater.Galaxy
 	{
 		public Planet Location { get; private set; }
 		
-		internal Colony(Player owner, Planet planet) : base(owner)
+		public Colony(Player owner, Planet planet) : base(owner)
 		{
 			this.Location = planet;
 			
 			this.Infrastructure = 0;
 			this.Population = 0;
 		}
-		
+
+		public Colony(Player owner, Planet planet, double population) : base(owner)
+		{
+			this.Location = planet;
+
+			this.Infrastructure = 0;
+			this.Population = population;
+		}
+
 		public StarData Star
 		{
 			get {
@@ -50,5 +58,10 @@ namespace Stareater.Galaxy
 			}
 		}
 		#endif
+
+		internal Colony Copy(Player player, Planet planet)
+		{
+			return new Colony(player, planet, this.population);
+		}
 	}
 }

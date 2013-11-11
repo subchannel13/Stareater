@@ -8,16 +8,16 @@ namespace Stareater.Galaxy
 {
 	public class Planet
 	{
-		public double AtmosphereDensityMin = -5;
-		public double AtmosphereDensityMax = 10;
-		public double GravityMin = -5;
-		public double GravityMax = 10;
-		public double RadiationMin = 0;
-		public double RadiationMax = 10;
-		public double TemperatureMin = -5;
-		public double TemperatureMax = 10;
-		
-		public double OptimalCondition = 0;
+		public const double AtmosphereDensityMin = -5;
+		public const double AtmosphereDensityMax = 10;
+		public const double GravityMin = -5;
+		public const double GravityMax = 10;
+		public const double RadiationMin = 0;
+		public const double RadiationMax = 10;
+		public const double TemperatureMin = -5;
+		public const double TemperatureMax = 10;
+
+		public const double OptimalCondition = 0;
 		
 		public PlanetType Type { get; private set; }
 		public double Size { get; private set; }
@@ -39,7 +39,25 @@ namespace Stareater.Galaxy
 			this.RadiationDeviation = Methods.Clamp(calcRadiation(), RadiationMin, RadiationMax);
 			this.TemperatureDeviation = Methods.Clamp(calcTemperature(), TemperatureMin, TemperatureMax);
 		}
-		
+
+		internal Planet(StarData star, int position, PlanetType type, double size, 
+			double atmosphereDensity, double gravityDeviation, double radiationDeviation, double temperatureDeviation,
+			double mineralsSurface, double mineralsDeep)
+		{
+			this.Star = star;
+			this.Position = position;
+			this.Type = type;
+
+			this.Size = size;
+			this.AtmosphereDensity = atmosphereDensity;
+			this.GravityDeviation = gravityDeviation;
+			this.RadiationDeviation = radiationDeviation;
+			this.TemperatureDeviation = temperatureDeviation;
+
+			this.MineralsDeep = mineralsDeep;
+			this.MineralsSurface = mineralsSurface;
+		}
+
 		public double AtmosphereDensity { get; private set; }
 		public double GravityDeviation { get; private set; }
 		public double RadiationDeviation { get; private set; }
@@ -73,5 +91,12 @@ namespace Stareater.Galaxy
 		}
 		
 		//TODO: expose stuff like radiation absorption and green house effect to view
+
+		internal Planet Copy(StarData starRemap)
+		{
+			return new Planet(starRemap, Position, Type, Size,
+				AtmosphereDensity, GravityDeviation, RadiationDeviation, TemperatureDeviation,
+				MineralsSurface, MineralsDeep);
+		}
 	}
 }
