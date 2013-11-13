@@ -39,7 +39,7 @@ namespace Stareater.GameData.Databases
 			ChangesDB copy = new ChangesDB();
 
 			copy.Constructions = this.Constructions.ToDictionary(
-				x => playersRemap.Sites[x.Key],
+				x => playersRemap.Site(x.Key),
 				x => x.Value.Copy());
 
 			copy.DevelopmentQueue = new Dictionary<string, int>(this.DevelopmentQueue);

@@ -107,7 +107,7 @@ namespace Stareater.GameLogic
 
 		internal ColonyProcessor Copy(PlayersRemap playerRemap)
 		{
-			ColonyProcessor copy = new ColonyProcessor(playerRemap.Sites[this.Colony] as Colony);
+			ColonyProcessor copy = new ColonyProcessor(playerRemap.Colonies[this.Colony]);
 			
 			copy.development = this.development;
 			copy.maxPopulation = this.maxPopulation;
