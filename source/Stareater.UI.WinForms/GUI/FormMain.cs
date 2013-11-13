@@ -71,6 +71,9 @@ namespace Stareater.GUI
 		private void endTurnButton_Click(object sender, EventArgs e)
 		{
 			controller.EndTurn();
+
+			if (galaxyRenderer != null) galaxyRenderer.ResetLists();
+			if (systemRenderer != null) systemRenderer.ResetLists();
 		}
 		
 		private void returnButton_Click(object sender, EventArgs e)
