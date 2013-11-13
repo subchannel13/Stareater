@@ -70,7 +70,7 @@ namespace Stareater
 			copy.CurrentPlayer = this.CurrentPlayer;
 
 			copy.Statics = this.Statics;
-			copy.States = this.States.Copy(playersRemap.Players, galaxyRemap);
+			copy.States = this.States.Copy(playersRemap, galaxyRemap);
 			copy.Derivates = this.Derivates.Copy(playersRemap);
 
 			return new Tuple<Game, PlayersRemap, GalaxyRemap>(copy, playersRemap, galaxyRemap);

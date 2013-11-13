@@ -13,10 +13,13 @@ namespace Stareater.Galaxy
 		private IEnumerable<object> buildings; //TODO: make type
 		private IEnumerable<object> orderQueue; //TODO: make type
 		private object leftovers; //TODO: make type
+
+		private long id;
 		
 		protected AConstructionSite(Player owner)
 		{
 			this.Owner = owner;
+			this.id = NextId();
 		}
 		
 		#if DEBUG
@@ -32,5 +35,20 @@ namespace Stareater.Galaxy
 			dirty = false;
 		}		
 		#endif
+
+		public override string ToString()
+		{
+			return "Construction site " + id;
+		}
+
+		private static long LastId = 0;
+
+		private static long NextId()
+		{
+			lock (typeof(Colony)) {
+				LastId++;
+				return LastId;
+			}
+		}
 	}
 }

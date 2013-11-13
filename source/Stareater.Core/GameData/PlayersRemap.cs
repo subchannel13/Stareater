@@ -10,12 +10,20 @@ namespace Stareater.GameData
 	class PlayersRemap
 	{
 		public IDictionary<Player, Player> Players;
-		public IDictionary<AConstructionSite, AConstructionSite> Sites;
+		public IDictionary<AConstructionSite, Colony> Colonies;
 		
 		public PlayersRemap(IDictionary<Player, Player> players)
 		{
 			this.Players = players;
-			this.Sites = new Dictionary<AConstructionSite, AConstructionSite>();
+			this.Colonies = new Dictionary<AConstructionSite, Colony>();
+		}
+
+		internal AConstructionSite Site(AConstructionSite site)
+		{
+			if (Colonies.ContainsKey(site))
+				return Colonies[site];
+
+			throw new NotImplementedException();
 		}
 	}
 }

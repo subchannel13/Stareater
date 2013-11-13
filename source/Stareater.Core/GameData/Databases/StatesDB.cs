@@ -29,7 +29,7 @@ namespace Stareater.GameData.Databases
 		private StatesDB()
 		{ }
 
-		public StatesDB Copy(IDictionary<Player, Player> playersRemap, GalaxyRemap galaxyRemap)
+		public StatesDB Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap)
 		{
 			StatesDB copy = new StatesDB();
 
@@ -47,10 +47,10 @@ namespace Stareater.GameData.Databases
 			copy.Planets.Add(galaxyRemap.Planets.Values);
 
 			copy.Colonies = new ColonyCollection();
-			copy.Colonies.Add(this.Colonies.Select(x => x.Copy(playersRemap[x.Owner], galaxyRemap.Planets[x.Location])));
+			copy.Colonies.Add(playersRemap.Colonies.Values);
 
 			copy.TechnologyAdvances = new TechProgressCollection();
-			copy.TechnologyAdvances.Add(this.TechnologyAdvances.Select(x => x.Copy(playersRemap[x.Owner])));
+			copy.TechnologyAdvances.Add(this.TechnologyAdvances.Select(x => x.Copy(playersRemap.Players[x.Owner])));
 			
 			return copy;
 		}
@@ -70,7 +70,7 @@ namespace Stareater.GameData.Databases
 			PlayersRemap remap = new PlayersRemap(playersRemap);
 
 			foreach (var colony in this.Colonies)
-				remap.Sites.Add(colony, colony.Copy(playersRemap[colony.Owner], galaxyRemap.Planets[colony.Location]));
+				remap.Colonies.Add(colony, colony.Copy(playersRemap[colony.Owner], galaxyRemap.Planets[colony.Location]));
 
 			return remap;
 		}
