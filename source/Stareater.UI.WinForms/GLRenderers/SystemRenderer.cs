@@ -34,7 +34,9 @@ namespace Stareater.GLRenderers
 		private const float PlanetSelectorScale = 1.1f;
 		
 		private const char ReturnToGalaxyKey = (char)27; //TODO: Make rebindable
-		
+
+		private const int NoCallList = -1;
+
 		private StarSystemController controller;
 		private Control eventDispatcher;
 		private ConstructionSiteView siteView;
@@ -135,7 +137,13 @@ namespace Stareater.GLRenderers
 			
 			GL.PopMatrix();
 		}
-		
+
+		public void ResetLists()
+		{
+			//no op
+			//TODO: make call list
+		}
+
 		public void Load()
 		{
 			//no op

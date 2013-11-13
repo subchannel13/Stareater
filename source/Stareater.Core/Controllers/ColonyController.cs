@@ -34,7 +34,7 @@ namespace Stareater.Controllers
 		public override IEnumerable<ConstructableItem> ConstructionQueue
 		{
 			get {
-				foreach(var item in game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue)
+				foreach(var item in game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue) //TODO: Throw key not found on end turn
 					yield return new ConstructableItem(item, game.Derivates.Players.Of(game.Players[game.CurrentPlayer]));
 			}
 		}

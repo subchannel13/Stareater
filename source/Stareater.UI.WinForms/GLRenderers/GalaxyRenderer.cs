@@ -33,6 +33,8 @@ namespace Stareater.GLRenderers
 		private const double PathWidth = 0.1;
 		private const float StarNameScale = 0.35f;
 
+		private const int NoCallList = -1;
+
 		private GameController controller;
 		private Control eventDispatcher;
 		private Action<StarSystemController> systemOpenedHandler;
@@ -48,7 +50,7 @@ namespace Stareater.GLRenderers
 		private Vector2 mapBoundsMin;
 		private Vector2 mapBoundsMax;
 
-		private int staticList = -1;
+		private int staticList = NoCallList;
 
 		public GalaxyRenderer(GameController controller, Action<StarSystemController> systemOpenedHandler)
 		{ 
@@ -137,7 +139,7 @@ namespace Stareater.GLRenderers
 				resetProjection = false;
 			}
 
-			if (staticList < 0) {
+			if (staticList == NoCallList) {
 				staticList = GL.GenLists(1);
 				GL.NewList(staticList, ListMode.CompileAndExecute);
 
@@ -196,7 +198,13 @@ namespace Stareater.GLRenderers
 				GL.PopMatrix();
 			}
 		}
-		
+
+		public void ResetLists()
+		{
+			GL.DeleteLists(staticList, 1);
+			staticList = NoCallList;
+		}
+
 		private double[] pathMatrix(Vector2d fromPoint, Vector2d toPoint)
 		{
 			var xAxis = toPoint - fromPoint;
