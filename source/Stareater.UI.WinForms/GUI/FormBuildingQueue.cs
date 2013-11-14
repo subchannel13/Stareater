@@ -19,12 +19,21 @@ namespace Stareater.GUI
 		{
 			this.controller = controller;
 			
+			if (controller.IsReadOnly) {
+				moveDownButton.Enabled = false;
+				moveUpButton.Enabled = false;
+				removeButton.Enabled = false;
+			}
+			
 			foreach (var data in controller.ConstructableItems) {
 				var itemView = new ConstructableItemView();
 				itemView.Data = data;
 				itemView.Enabled = controller.CanPick(data);
-				itemView.Click += onOption_Click;
+				
+				if (!controller.IsReadOnly)
+					itemView.Click += onOption_Click;
 				itemView.MouseEnter += onOption_MouseEnter;
+				
 				optionList.Controls.Add(itemView);
 			}
 			

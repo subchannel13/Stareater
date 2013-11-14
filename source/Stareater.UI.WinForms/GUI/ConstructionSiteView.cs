@@ -22,6 +22,8 @@ namespace Stareater.GUI
 		{
 			controller = colonyController;
 			
+			industrySlider.Enabled = !colonyController.IsReadOnly;
+			
 			resetView();
 		}
 		

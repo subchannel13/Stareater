@@ -12,10 +12,12 @@ namespace Stareater.Controllers
 		private Game game;
 		
 		public StarData Star { get; private set; }
+		public bool IsReadOnly { get; private set; }
 			
-		internal StarSystemController(Game game, StarData star)
+		internal StarSystemController(Game game, StarData star, bool readOnly)
 		{
 			this.game = game;
+			this.IsReadOnly = readOnly;
 			this.Star = star;
 		}
 		
@@ -56,7 +58,7 @@ namespace Stareater.Controllers
 			if (planet == null)
 				throw new ArgumentOutOfRangeException("bodyPosition");
 
-			return new ColonyController(game, game.States.Colonies.AtPlanet(planet));
+			return new ColonyController(game, game.States.Colonies.AtPlanet(planet), IsReadOnly);
 		}
 	}
 }

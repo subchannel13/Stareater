@@ -26,6 +26,14 @@ namespace Stareater.GUI
 			updateList();
 			updateDescription();
 			
+			if (controller.IsReadOnly) {
+				reorderBottomAction.Enabled = false;
+				reorderDownAction.Enabled = false;
+				reorderTopAction.Enabled = false;
+				reorderUpAction.Enabled = false;
+				//TODO: disable focus slider
+			}
+			
 			//TODO: Get total development points
 			//TODO: Get current focus intensity
 		}
