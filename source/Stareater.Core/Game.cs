@@ -101,7 +101,7 @@ namespace Stareater
 				double totalInfrastructure = Math.Min(startingConditions.Infrastructure, weights.Total);
 				foreach(var colony in colonies.OwnedBy(players[playerI])) {
 					colony.Population = weights.Relative(colony) * totalPopulation;
-					colony.Infrastructure = weights.Relative(colony) * totalInfrastructure;
+					//TODO: add infrastructure to colony
 					derivates.Colonies.Of(colony).Calculate(colonyFormulas, derivates.Players.Of(players[playerI]));
 				}
 			}
