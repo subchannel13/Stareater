@@ -30,75 +30,29 @@ namespace Stareater.GameLogic
 			}
 		}
 		
-		#if !DEBUG
 		public double MaxPopulation { get; private set; }
 		
 		public double Development { get; private set; }
 		public double Production { get; private set; }
-		#else
-		
-		private double maxPopulation;
-		public double MaxPopulation 
-		{
-			get { 
-				checkDirty();
-				return maxPopulation;
-			}
-			private set {
-				maxPopulation = value;
-			}
-		}
-		
-		private double development;
-		public double Development 
-		{
-			get { 
-				checkDirty();
-				return development;
-			}
-			private set {
-				development = value;
-			}
-		}
-		
-		private double production;
-		public double Production 
-		{
-			get { 
-				checkDirty();
-				return production;
-			}
-			private set {
-				production = value;
-			}
-		}
-		
-		private void checkDirty()
-		{
-			if (Colony.Dirty)
-				throw new InvalidOperationException("Colony derived stats are dirty");
-		}
-		#endif
 		
 		public void Calculate(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
 		{
 			//TODO: add player's techs and colony buildings
 			var vars = new Var(PlanetSizeKey, Colony.Location.Size).UnionWith(playerProcessor.TechLevels).Get;
-			var organizationRatio = Methods.Clamp(Colony.Infrastructure / Colony.Population, 0, 1);
+			//TODO: add organization formula
+			var organizationRatio = 0; //Methods.Clamp(Colony.Infrastructure / Colony.Population, 0, 1);
 			
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
 			//TODO: include farming and mining
 			double desiredSpendingRatio = Colony.Owner.Orders.Constructions[Colony].SpendingRatio;
 			this.Development = (1 - desiredSpendingRatio) * Colony.Population * formulas.Development.Evaluate(organizationRatio, vars);
 			this.Production = desiredSpendingRatio * Colony.Population * formulas.Industry.Evaluate(organizationRatio, vars);
-			
-			Colony.Cleaned();
 		}
 		
 		public IDictionary<string, double> Effects()
 		{
 			var vars = new Var(PlanetSizeKey, Colony.Location.Size);
-			vars.And(InfrastructureKey, Colony.Infrastructure);
+			vars.And(InfrastructureKey, 0); //TODO: add as building count
 			vars.And(MaxPopulationKey, MaxPopulation);
 			vars.And(PopulationKey, Colony.Population);
 			
@@ -109,9 +63,9 @@ namespace Stareater.GameLogic
 		{
 			ColonyProcessor copy = new ColonyProcessor(playerRemap.Colonies[this.Colony]);
 			
-			copy.development = this.development;
-			copy.maxPopulation = this.maxPopulation;
-			copy.production = this.production;
+			copy.Development = this.Development;
+			copy.MaxPopulation = this.MaxPopulation;
+			copy.Production = this.Production;
 
 			return copy;
 		}

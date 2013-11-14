@@ -14,7 +14,6 @@ namespace Stareater.Galaxy
 		{
 			this.Location = planet;
 			
-			this.Infrastructure = 0;
 			this.Population = 0;
 		}
 
@@ -22,7 +21,6 @@ namespace Stareater.Galaxy
 		{
 			this.Location = planet;
 
-			this.Infrastructure = 0;
 			this.Population = population;
 		}
 
@@ -33,35 +31,12 @@ namespace Stareater.Galaxy
 			}
 		}
 		
-		#if !DEBUG
 		public double Population { get; set; }
-		public double Infrastructure { get; set; }
-		#else
-		
-		private double population;
-		public double Population 
-		{
-			get { return population;}
-			set {
-				population = value;
-				Dirty = true;
-			}
-		}
-		
-		private double infrastructure;
-		public double Infrastructure 
-		{
-			get { return infrastructure;}
-			set {
-				infrastructure = value;
-				Dirty = true;
-			}
-		}
-		#endif
+		//TODO: add generalized buildings instead infrastructure
 
 		internal Colony Copy(Player player, Planet planet)
 		{
-			return new Colony(player, planet, this.population);
+			return new Colony(player, planet, this.Population);
 		}
 	}
 }

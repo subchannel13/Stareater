@@ -22,20 +22,6 @@ namespace Stareater.Galaxy
 			this.id = NextId();
 		}
 		
-		#if DEBUG
-		private bool dirty = true;
-		
-		public bool Dirty {
-			get { return dirty; }
-			protected set { dirty = value; }
-		}
-		
-		public void Cleaned()
-		{
-			dirty = false;
-		}		
-		#endif
-
 		public override string ToString()
 		{
 			return "Construction site " + id;
