@@ -10,11 +10,14 @@ namespace Stareater.Controllers
 	{
 		private AConstructionSite constructionSite;
 		
-		internal AConstructionSiteController(AConstructionSite constructionSite)
+		internal AConstructionSiteController(AConstructionSite constructionSite, bool readOnly)
 		{
 			this.constructionSite = constructionSite;
+			this.IsReadOnly = readOnly;
 		}
 
+		public bool IsReadOnly { get; private set; }
+		
 		public abstract IEnumerable<ConstructableItem> ConstructableItems { get; }
 		public abstract IEnumerable<ConstructableItem> ConstructionQueue { get; }
 		

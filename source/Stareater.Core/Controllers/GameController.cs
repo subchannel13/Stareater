@@ -73,7 +73,7 @@ namespace Stareater.Controllers
 
 		public void EndTurn()
 		{
-			if (this.isReadOnly)
+			if (this.IsReadOnly)
 				return;
 
 			this.endTurnCopy = new GameController();
@@ -90,7 +90,7 @@ namespace Stareater.Controllers
 			//UNDONE: start processing
 		}
 
-		private bool isReadOnly
+		public bool IsReadOnly
 		{
 			get { return endTurnCopy != null; }
 		}
@@ -98,14 +98,14 @@ namespace Stareater.Controllers
 		#region Map related
 		public bool IsStarVisited(StarData star)
 		{
-			var game = (this.isReadOnly) ? this.endTurnCopy.game : this.game;
+			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 
 			return game.Players[game.CurrentPlayer].Intelligence.About(star).IsVisited;
 		}
 		
 		public IEnumerable<ColonyInfo> KnownColonies(StarData star)
 		{
-			var game = (this.isReadOnly) ? this.endTurnCopy.game : this.game;
+			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 			var starKnowledge = game.Players[game.CurrentPlayer].Intelligence.About(star);
 			
 			foreach(var colony in game.States.Colonies.AtStar(star))
@@ -115,18 +115,18 @@ namespace Stareater.Controllers
 		
 		public StarSystemController OpenStarSystem(StarData star)
 		{
-			var game = (this.isReadOnly) ? this.endTurnCopy.game : this.game;
+			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 
-			return new StarSystemController(game, star); //TODO: make read only if this is readonly
+			return new StarSystemController(game, star, IsReadOnly);
 		}
 		
 		public StarSystemController OpenStarSystem(float x, float y, float searchRadius)
 		{
-			var game = (this.isReadOnly) ? this.endTurnCopy.game : this.game;
+			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 			StarData closest = closestStar(x, y, searchRadius);
 			
 			if (closest != null)
-				return new StarSystemController(game, closest); //TODO: make read only if this is readonly
+				return new StarSystemController(game, closest, IsReadOnly);
 			else
 				return null;
 		}
@@ -143,14 +143,14 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var game = (this.isReadOnly) ? this.endTurnCopy.game : this.game;
-				var lastSelectedStar = (this.isReadOnly) ? this.endTurnCopy.lastSelectedStar : this.lastSelectedStar;
+				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+				var lastSelectedStar = (this.IsReadOnly) ? this.endTurnCopy.lastSelectedStar : this.lastSelectedStar;
 
 				return lastSelectedStar[game.Players[game.CurrentPlayer]];
 			}
 			private set
 			{
-				var game = (this.isReadOnly) ? this.endTurnCopy.game : this.game;
+				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 				
 				this.lastSelectedStar[game.Players[game.CurrentPlayer]] = value;
 			}
@@ -160,7 +160,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var game = (this.isReadOnly) ? this.endTurnCopy.game : this.game; 
+				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game; 
 				
 				return game.States.Stars.Count;
 			}
@@ -170,7 +170,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var game = (this.isReadOnly) ? this.endTurnCopy.game : this.game;
+				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 				
 				return game.States.Stars;
 			}
@@ -180,7 +180,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var game = (this.isReadOnly) ? this.endTurnCopy.game : this.game;
+				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 
 				foreach (var wormhole in game.States.Wormholes)
 					yield return wormhole;
@@ -189,7 +189,7 @@ namespace Stareater.Controllers
 
 		private StarData closestStar(float x, float y, float searchRadius)
 		{
-			var game = (this.isReadOnly) ? this.endTurnCopy.game : this.game;
+			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 
 			Vector2D point = new Vector2D(x, y);
 			StarData closestStar = game.States.Stars.First();
@@ -207,7 +207,7 @@ namespace Stareater.Controllers
 		#region Technology related
 		public IEnumerable<TechnologyTopic> DevelopmentTopics()
 		{
-			var game = (this.isReadOnly) ? this.endTurnCopy.game : this.game;
+			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 
 			var playerTechs = game.AdvancmentOrder(game.Players[game.CurrentPlayer]);
 			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
@@ -219,7 +219,7 @@ namespace Stareater.Controllers
 		
 		public void ReorderDevelopmentTopics(IEnumerable<string> idCodeOrder)
 		{
-			if (this.isReadOnly)
+			if (this.IsReadOnly)
 				return;
 
 			var modelQueue = game.Players[game.CurrentPlayer].Orders.DevelopmentQueue;

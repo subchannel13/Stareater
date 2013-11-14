@@ -12,7 +12,7 @@ namespace Stareater.Controllers
 		private Game game;
 		private Colony colony;
 		
-		internal ColonyController(Game game, Colony colony): base(colony)
+		internal ColonyController(Game game, Colony colony, bool readOnly): base(colony, readOnly)
 		{ 
 			this.colony = colony;
 			this.game = game;
@@ -34,23 +34,32 @@ namespace Stareater.Controllers
 		public override IEnumerable<ConstructableItem> ConstructionQueue
 		{
 			get {
-				foreach(var item in game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue) //TODO: Throw key not found on end turn
+				foreach(var item in game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue)
 					yield return new ConstructableItem(item, game.Derivates.Players.Of(game.Players[game.CurrentPlayer]));
 			}
 		}
 		
 		public override void Enqueue(ConstructableItem data)
 		{
+			if (IsReadOnly)
+				return;
+			
 			game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue.Add(data.Constructable);
 		}
 		
 		public override void Dequeue(int index)
 		{
+			if (IsReadOnly)
+				return;
+			
 			game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue.RemoveAt(index);
 		}
 		
 		public override void ReorderQueue(int fromIndex, int toIndex)
 		{
+			if (IsReadOnly)
+				return;
+			
 			var item = game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue[fromIndex];
 			
 			game.Players[game.CurrentPlayer].Orders.Constructions[colony].Queue.RemoveAt(fromIndex);
