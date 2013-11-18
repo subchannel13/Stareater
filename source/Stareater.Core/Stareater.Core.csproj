@@ -73,6 +73,7 @@
     <Compile Include="AppData\LastGameInfo.cs" />
     <Compile Include="Controllers\AConstructionSiteController.cs" />
     <Compile Include="Controllers\ColonyController.cs" />
+    <Compile Include="Controllers\Data\BodyType.cs" />
     <Compile Include="Controllers\Data\ColonyInfo.cs" />
     <Compile Include="Controllers\Data\ConstructableItem.cs" />
     <Compile Include="Controllers\Data\GameState.cs" />

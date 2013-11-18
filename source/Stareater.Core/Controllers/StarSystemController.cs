@@ -40,10 +40,10 @@ namespace Stareater.Controllers
 			
 			return null;
 		}
-		
-		public bool IsColonised(int selectedBody)
+
+		public bool IsColonised(int bodyIndex)
 		{
-			var planet = game.States.Planets.At(Star).Where(x => x.Position == selectedBody).FirstOrDefault();
+			var planet = game.States.Planets.At(Star).Where(x => x.Position == bodyIndex).FirstOrDefault();
 			
 			if (planet == null)
 				return false;
@@ -51,6 +51,26 @@ namespace Stareater.Controllers
 			return game.States.Colonies.AtPlanetContains(planet);
 		}
 		
+		public BodyType BodyType(int bodyIndex)
+		{
+			if (bodyIndex == 0)
+				return Data.BodyType.NoStarManagement; //TODO: check if there is management
+
+			var planet = game.States.Planets.At(Star).Where(x => x.Position == bodyIndex).FirstOrDefault();
+
+			if (planet == null)
+				return Data.BodyType.Empty;
+			if (!game.States.Colonies.AtPlanetContains(planet))
+				return Data.BodyType.NotColonised;
+
+			var colony = game.States.Colonies.AtPlanet(planet);
+
+			if (colony.Owner == game.Players[game.CurrentPlayer])
+				return Data.BodyType.OwnColony;
+			else
+				return Data.BodyType.ForeignColony;
+		}
+
 		public ColonyController ColonyController(int bodyPosition)
 		{
 			var planet = game.States.Planets.At(Star).Where(x => x.Position == bodyPosition).FirstOrDefault();
