@@ -88,6 +88,55 @@ namespace Stareater.Controllers
 					gameCopy.Item3.Stars[originalSelection.Value]);
 
 			//UNDONE: start processing
+			
+			//TODO: Rotate players
+			
+			/*
+			 * TODO: Preprocess players
+ 			 * - Calculate research points
+ 			 */
+ 			
+ 			/*
+ 			 * TODO: Preprocess stars
+ 			 * - Calculate system effects
+ 			 */
+ 			
+ 			/*
+ 			 * TODO: Colonies, 1st pass
+ 			 * - Build (consume construction queue)
+ 			 * - Apply instant effect buildings
+ 			 * - Apply terraforming
+ 			 * - Grow population
+ 			 */
+ 			
+ 			/*
+ 			 * TODO: Process stars
+ 			 * - Calculate effects from colonies
+ 			 * - Build
+ 			 * - Perform migration
+ 			 */
+ 			
+ 			// TODO: Colonise planets
+ 			
+ 			/*
+ 			 * TODO: Process ships
+ 			 * - Move ships
+ 			 * - Space combat
+ 			 * - Ground combat
+ 			 */
+ 			
+ 			// TODO: Research
+ 			
+ 			// TODO: Update ship designs
+ 			
+ 			// TODO: Upgrade and repair ships
+ 			
+ 			/*
+ 			 * TODO: Colonies, 2nd pass
+ 			 * - Apply normal effect buildings
+ 			 * - Check construction queue
+ 			 * - Recalculate colony effects
+ 			 */
 		}
 
 		public bool IsReadOnly

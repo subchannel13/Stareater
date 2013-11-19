@@ -43,6 +43,15 @@ namespace Stareater.GameLogic
 			var organizationRatio = 0; //Methods.Clamp(Colony.Infrastructure / Colony.Population, 0, 1);
 			
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
+			
+		}
+		
+		public void SimulateSpending(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
+		{
+			var vars = new Var(PlanetSizeKey, Colony.Location.Size).UnionWith(playerProcessor.TechLevels).Get;
+			//TODO: add organization formula
+			var organizationRatio = 0;
+			
 			//TODO: include farming and mining
 			double desiredSpendingRatio = Colony.Owner.Orders.Constructions[Colony].SpendingRatio;
 			this.Development = (1 - desiredSpendingRatio) * Colony.Population * formulas.Development.Evaluate(organizationRatio, vars);
