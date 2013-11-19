@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.Controllers;
+using Stareater.Controllers.Data;
 using Stareater.Galaxy;
 using Stareater.GUI;
 
@@ -13,7 +14,6 @@ namespace Stareater.GLRenderers
 	public class SystemRenderer : IRenderer
 	{
 		private const double DefaultViewSize = 1;
-		private const int SelectedStar = -1;
 		
 		private const float FarZ = -1;
 		private const float SelectionZ = -0.7f;
@@ -87,7 +87,7 @@ namespace Stareater.GLRenderers
 			GL.Scale(StarScale, StarScale, StarScale);
 
 			TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
-			if (selectedBody == SelectedStar) {
+			if (selectedBody == StarSystemController.StarIndex) {
 				GL.Color4(Color.White);
 				GL.Scale(StarSelectorScale, StarSelectorScale, StarSelectorScale);
 				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
@@ -180,19 +180,26 @@ namespace Stareater.GLRenderers
 			this.originOffset = 0.5f; //TODO: Get most populated planet
 			this.maxOffset = controller.Planets.Count() * OrbitStep + OrbitOffset + PlanetScale / 2;
 			
-			this.select(SelectedStar);
+			this.select(StarSystemController.StarIndex);
 		}
 		
 		private void select(int selectedBody)
 		{
 			this.selectedBody = selectedBody;
 			
-			if (selectedBody == SelectedStar)
-				; //TODO add implementation, system management
-			else if (controller.IsColonised(selectedBody))
-				siteView.SetView(controller.ColonyController(selectedBody));
-			else
-				; //TODO add implementation, empty planet
+			switch(controller.BodyType(selectedBody))
+			{
+				case BodyType.OwnStarManagement:
+					siteView.SetView(controller.StarController(selectedBody));
+					//TODO add implementation, system management
+					break;
+				case BodyType.OwnColony:
+					siteView.SetView(controller.ColonyController(selectedBody));
+					break;
+				default:
+					//TODO add implementation, empty planet, foregin planet, empty system, foreign system
+					break;
+			}
 		}
 		
 		public void ResetProjection()
@@ -237,7 +244,7 @@ namespace Stareater.GLRenderers
 			float mouseX = Vector4.Transform(mouseToView(e.X, e.Y), invProjection).X;
 			
 			if (mouseX > -(OrbitOffset - OrbitStep / 2))
-				newSelection = SelectedStar;
+				newSelection = StarSystemController.StarIndex;
 			
 			foreach(var planet in controller.Planets)
 				if (mouseX > planet.Position * OrbitStep + OrbitOffset - OrbitStep / 2)

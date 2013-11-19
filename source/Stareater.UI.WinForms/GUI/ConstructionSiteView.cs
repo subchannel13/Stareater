@@ -27,6 +27,15 @@ namespace Stareater.GUI
 			resetView();
 		}
 		
+		public void SetView(StarManagementController starController)
+		{
+			controller = starController;
+			
+			industrySlider.Enabled = !starController.IsReadOnly;
+			
+			resetView();
+		}
+		
 		private void resetView()
 		{
 			this.Font = SettingsWinforms.Get.FormFont;

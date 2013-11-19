@@ -9,6 +9,8 @@ namespace Stareater.Controllers
 {
 	public class StarSystemController
 	{
+		public const int StarIndex = -1;
+		
 		private Game game;
 		
 		public StarData Star { get; private set; }
@@ -41,7 +43,7 @@ namespace Stareater.Controllers
 			return null;
 		}
 
-		public bool IsColonised(int bodyIndex)
+		/*public bool IsColonised(int bodyIndex)
 		{
 			var planet = game.States.Planets.At(Star).Where(x => x.Position == bodyIndex).FirstOrDefault();
 			
@@ -49,11 +51,11 @@ namespace Stareater.Controllers
 				return false;
 			
 			return game.States.Colonies.AtPlanetContains(planet);
-		}
+		}*/
 		
 		public BodyType BodyType(int bodyIndex)
 		{
-			if (bodyIndex == 0)
+			if (bodyIndex == StarIndex)
 				return Data.BodyType.NoStarManagement; //TODO: check if there is management
 
 			var planet = game.States.Planets.At(Star).Where(x => x.Position == bodyIndex).FirstOrDefault();
@@ -79,6 +81,11 @@ namespace Stareater.Controllers
 				throw new ArgumentOutOfRangeException("bodyPosition");
 
 			return new ColonyController(game, game.States.Colonies.AtPlanet(planet), IsReadOnly);
+		}
+		
+		public StarManagementController StarController(int bodyPosition)
+		{
+			return new StarManagementController(game, null, IsReadOnly);
 		}
 	}
 }
