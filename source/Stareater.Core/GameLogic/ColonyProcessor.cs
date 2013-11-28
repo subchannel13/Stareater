@@ -40,7 +40,7 @@ namespace Stareater.GameLogic
 			//TODO: add player's techs and colony buildings
 			var vars = new Var(PlanetSizeKey, Colony.Location.Size).UnionWith(playerProcessor.TechLevels).Get;
 			//TODO: add organization formula
-			var organizationRatio = 0; //Methods.Clamp(Colony.Infrastructure / Colony.Population, 0, 1);
+			//var organizationRatio = 0; //Methods.Clamp(Colony.Infrastructure / Colony.Population, 0, 1);
 			
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
 			

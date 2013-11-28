@@ -19,7 +19,6 @@ namespace Stareater
 		public int Turn { get; private set; }
 		public int CurrentPlayer { get; private set; }
 		private IEnumerable<object> conflicts; //TODO: make type
-		private object phase; //TODO: make type
 
 		public StaticsDB Statics { get; private set; }
 		public StatesDB States { get; private set; }
