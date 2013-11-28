@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-
 using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.Controllers;
@@ -26,7 +25,7 @@ namespace Stareater.GUI
 		private SystemRenderer systemRenderer;
 
 		private Queue<Action> delayedGuiEvents = new Queue<Action>();
-		private GameController controller = new GameController();
+		private GameController controller = new GameController(() => {}); //TODO: make method
 
 		public FormMain()
 		{

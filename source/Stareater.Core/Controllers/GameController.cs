@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using NGenerics.Extensions;
 using Stareater.Controllers.Data;
 using Stareater.Galaxy;
@@ -18,12 +19,18 @@ namespace Stareater.Controllers
 		private Dictionary<Player, StarData> lastSelectedStar = new Dictionary<Player, StarData>();
 
 		private GameController endTurnCopy = null;
+		private Task aiGalaxyPhase = null;
+		private Action onAiGalaxyPhaseDone;
 
-		public GameController()
+		public GameController(Action onAiGalaxyPhaseDone)
 		{
-			State = GameState.NoGame;
+			this.onAiGalaxyPhaseDone = onAiGalaxyPhaseDone;
+			this.State = GameState.NoGame;
 		}
 
+		private GameController()
+		{ }
+	
 		public void CreateGame(NewGameController controller)
 		{
 			if (State != GameState.NoGame)
@@ -67,15 +74,34 @@ namespace Stareater.Controllers
 				
 				this.lastSelectedStar.Add(player, maxPopulationStar);
 			}
+			
+			restartAiGalaxyPhase();
 		}
 
 		public GameState State { get; private set; }
-
+		
+		private void aiDoGalaxyPhase() 
+		{
+			foreach(var player in game.Players)
+				if (player.ControlType == PlayerControlType.LocalAI)
+					player.OffscreenControl.PlayTurn();
+			
+			onAiGalaxyPhaseDone();
+		}
+		
+		private void restartAiGalaxyPhase()
+		{
+			this.aiGalaxyPhase = new Task(aiDoGalaxyPhase);
+			this.aiGalaxyPhase.Start();
+		}
+		
 		public void EndTurn()
 		{
 			if (this.IsReadOnly)
 				return;
 
+			//FIXME: presumes single player
+			
 			this.endTurnCopy = new GameController();
 			var gameCopy = game.ReadonlyCopy();
 			
@@ -87,6 +113,9 @@ namespace Stareater.Controllers
 					gameCopy.Item2.Players[originalSelection.Key],
 					gameCopy.Item3.Stars[originalSelection.Value]);
 
+			if (!aiGalaxyPhase.IsCompleted)
+				return;
+			
 			//UNDONE: start processing
 			
 			//TODO: Rotate players
@@ -137,6 +166,8 @@ namespace Stareater.Controllers
  			 * - Check construction queue
  			 * - Recalculate colony effects
  			 */
+ 			
+ 			restartAiGalaxyPhase();
 		}
 
 		public bool IsReadOnly

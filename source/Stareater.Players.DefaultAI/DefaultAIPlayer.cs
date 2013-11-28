@@ -9,7 +9,8 @@ namespace Stareater.Players.DefaultAI
 	{
 		public void PlayTurn()
 		{
-			throw new NotImplementedException();
+			//UNDONE
+			//throw new NotImplementedException();
 		}
 
 		public void PlayBattle()

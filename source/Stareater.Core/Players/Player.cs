@@ -13,8 +13,9 @@ namespace Stareater.Players
 	{
 		public string Name { get; private set; }
 		public Color Color { get; private set; }
-		private Organization organization;		
-		private PlayerType type;
+		private Organization organization;
+		public PlayerControlType ControlType { get; private set; }
+		public IOffscreenPlayer OffscreenControl { get; private set; }
 		
 		private IEnumerable<object> designs; //TODO: make type
 		private IEnumerable<object> predefinedDesigns; //TODO: make type
@@ -30,7 +31,12 @@ namespace Stareater.Players
 			this.Color = color;
 			this.Name = name;
 			this.organization = organization;
-			this.type = type;
+			this.ControlType = type.ControlType;
+			
+			if (type.OffscreenPlayerFactory != null)
+				this.OffscreenControl = type.OffscreenPlayerFactory.Create();
+			else
+				this.OffscreenControl = null;
 			
 			this.Intelligence = new Intelligence();
 			
@@ -47,7 +53,8 @@ namespace Stareater.Players
 			copy.Name = this.Name;
 			copy.Color = this.Color;
 			copy.organization = this.organization;
-			copy.type = this.type;
+			copy.ControlType = this.ControlType;
+			copy.OffscreenControl = null;
 
 			copy.designs = null; //TODO: make type
 			copy.predefinedDesigns = null; //TODO: make type
