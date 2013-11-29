@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using Stareater.Localization;
 using Ikadn;
-using Ikadn.Utilities;
-using Ikadn.Ikon.Types;
 using Ikadn.Ikon;
+using Ikadn.Ikon.Types;
+using Ikadn.Utilities;
+using Stareater.Localization;
 
 namespace Stareater.AppData
 {
@@ -24,11 +24,17 @@ namespace Stareater.AppData
 		}
 		#endregion
 
-		const string SettingsFilePath = "settings.txt";
+		private const string SettingsFileName = "settings.txt";
 
 		public Language Language { get; set; }
 		public LastGameInfo LastGame { get; private set; }
 
+		private static string SettingsFilePath {
+			get {
+				return AssetController.Get.FileStorageRootPath + SettingsFileName;
+			}
+		}
+		
 		#region Initialization
 		protected Settings(TaggableQueue<object, IkadnBaseObject> data)
 		{
@@ -58,12 +64,7 @@ namespace Stareater.AppData
 		}
 		#endregion
 
-		#region Attribute keys
-		const string BaseSettingsKey = "base";
-		const string LanguageKey = "language";
-		const string LastGameKey = "lastgame";
-		#endregion
-
+		#region Saving
 		public void Save()
 		{
 			using (var output = new StreamWriter(SettingsFilePath))
@@ -80,5 +81,12 @@ namespace Stareater.AppData
 			baseSettings.Add(LastGameKey, LastGame.BuildSaveData());
 			baseSettings.Compose(writer);
 		}
+		#endregion
+		
+		#region Attribute keys
+		const string BaseSettingsKey = "base";
+		const string LanguageKey = "language";
+		const string LastGameKey = "lastgame";
+		#endregion
 	}
 }
