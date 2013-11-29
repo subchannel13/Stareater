@@ -38,7 +38,7 @@ namespace Stareater.AppData
 		#region Initialization
 		protected Settings(TaggableQueue<object, IkadnBaseObject> data)
 		{
-			if (data.CountOf(BaseSettingsKey)>0) {
+			if (data.CountOf(BaseSettingsKey) > 0) {
 				var baseData = data.Dequeue(BaseSettingsKey).To<IkonComposite>();
 				string langCode = baseData[LanguageKey].To<string>();
 				this.Language = LocalizationManifest.Get.LoadLanguage(langCode);
@@ -67,6 +67,9 @@ namespace Stareater.AppData
 		#region Saving
 		public void Save()
 		{
+			FileInfo saveFile = new FileInfo(SettingsFilePath);
+			saveFile.Directory.Create();
+
 			using (var output = new StreamWriter(SettingsFilePath))
 			{
 				IkadnWriter writer = new IkadnWriter(output);
