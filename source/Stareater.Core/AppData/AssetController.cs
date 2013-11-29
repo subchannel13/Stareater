@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Collections;
+
 using Stareater.Galaxy;
 using Stareater.Players;
 
@@ -40,6 +40,7 @@ namespace Stareater.AppData
 
 		private AssetController()
 		{
+			this.FileStorageRootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/Stareater/";
 			this.workerThread = new Thread(backgroundWork);
 			
 			this.Progress = 0;
@@ -69,5 +70,7 @@ namespace Stareater.AppData
 
 			Progress = 1;
 		}
+		
+		public string FileStorageRootPath { get; private set; }
 	}
 }
