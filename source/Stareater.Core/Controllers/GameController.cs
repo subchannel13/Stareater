@@ -20,11 +20,15 @@ namespace Stareater.Controllers
 
 		private GameController endTurnCopy = null;
 		private Task aiGalaxyPhase = null;
-		private Action onAiGalaxyPhaseDone;
+		private IGameStateListener stateListener;
 
-		public GameController(Action onAiGalaxyPhaseDone)
+		/// <summary>
+		/// GameController constructor intended for game view (GUI or other kind of human interface).  
+		/// </summary>
+		/// <param name="stateListener">Listener with callbacks for game state changes. <remarks>No callback is called before running <see cref="CreateGame"></see> method.</remarks></param>
+		public GameController(IGameStateListener stateListener)
 		{
-			this.onAiGalaxyPhaseDone = onAiGalaxyPhaseDone;
+			this.stateListener = stateListener;
 			this.State = GameState.NoGame;
 		}
 
@@ -86,7 +90,7 @@ namespace Stareater.Controllers
 				if (player.ControlType == PlayerControlType.LocalAI)
 					player.OffscreenControl.PlayTurn();
 			
-			onAiGalaxyPhaseDone();
+			stateListener.OnAiGalaxyPhaseDone();
 		}
 		
 		private void restartAiGalaxyPhase()
@@ -167,6 +171,7 @@ namespace Stareater.Controllers
  			 * - Recalculate colony effects
  			 */
  			
+ 			stateListener.OnNewTurn();
  			restartAiGalaxyPhase();
 		}
 

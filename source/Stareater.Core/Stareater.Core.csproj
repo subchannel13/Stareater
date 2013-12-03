@@ -77,6 +77,7 @@
     <Compile Include="Controllers\Data\ColonyInfo.cs" />
     <Compile Include="Controllers\Data\ConstructableItem.cs" />
     <Compile Include="Controllers\Data\GameState.cs" />
+    <Compile Include="Controllers\Data\IGameStateListener.cs" />
     <Compile Include="Controllers\Data\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
     <Compile Include="Controllers\Data\TechnologyTopic.cs" />
