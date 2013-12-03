@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+
 using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.Controllers;
+using Stareater.Controllers.Data;
 using Stareater.GLRenderers;
 using Stareater.Localization;
 
 namespace Stareater.GUI
 {
-	internal partial class FormMain : Form
+	internal partial class FormMain : Form, IGameStateListener
 	{
 		private const float MaxDeltaTime = 0.5f;
 		private const float MinDeltaTime = 0.005f;
@@ -25,14 +27,18 @@ namespace Stareater.GUI
 		private SystemRenderer systemRenderer;
 
 		private Queue<Action> delayedGuiEvents = new Queue<Action>();
-		private GameController controller = new GameController(() => {}); //TODO: make method
+		private GameController controller = null;
+		
+		private bool aisReady = false;
+		private bool humansReady = false;
 
 		public FormMain()
 		{
 			InitializeComponent();
 
+			this.controller = new GameController(this);
+			
 			setLanguage();
-
 			postDelayedEvent(showMainMenu);
 		}
 
@@ -69,10 +75,11 @@ namespace Stareater.GUI
 
 		private void endTurnButton_Click(object sender, EventArgs e)
 		{
-			controller.EndTurn();
-
-			if (galaxyRenderer != null) galaxyRenderer.ResetLists();
-			if (systemRenderer != null) systemRenderer.ResetLists();
+			lock(this) {
+				humansReady = true;
+			}
+			
+			tryEndTurn();
 		}
 		
 		private void returnButton_Click(object sender, EventArgs e)
@@ -97,8 +104,15 @@ namespace Stareater.GUI
 		{
 			lock (delayedGuiEvents) {
 				delayedGuiEvents.Enqueue(eventAction);
-				eventTimer.Start();
+				if (this.InvokeRequired)
+					this.BeginInvoke(new Action(eventTimer.Start));
+				else
+					eventTimer.Start();
 			}
+		}
+		private void startEventTimer()
+		{
+			eventTimer.Start();
 		}
 
 		private void showMainMenu()
@@ -153,6 +167,23 @@ namespace Stareater.GUI
 		{
 			if (controller.State != Controllers.Data.GameState.Running)
 				return;
+		}
+		
+		private void tryEndTurn()
+		{
+			lock(this)
+			{
+				if (!aisReady || !humansReady)
+					return;
+				
+				aisReady = false;
+				humansReady = false;
+			}
+			
+			controller.EndTurn();
+
+			if (galaxyRenderer != null) galaxyRenderer.ResetLists();
+			if (systemRenderer != null) systemRenderer.ResetLists();
 		}
 		
 		#region Canvas events
@@ -235,5 +266,20 @@ namespace Stareater.GUI
 		}
 		
 		#endregion
+		
+		
+		public void IGameStateListener.OnAiGalaxyPhaseDone()
+		{
+			lock(this)
+			{
+				aisReady = true;
+			}
+			
+			postDelayedEvent(tryEndTurn);
+		}
+		
+		public void IGameStateListener.OnNewTurn()
+		{
+		}
 	}
 }
