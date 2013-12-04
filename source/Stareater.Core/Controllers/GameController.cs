@@ -19,8 +19,9 @@ namespace Stareater.Controllers
 		private Dictionary<Player, StarData> lastSelectedStar = new Dictionary<Player, StarData>();
 
 		private GameController endTurnCopy = null;
-		private Task aiGalaxyPhase = null;
 		private IGameStateListener stateListener;
+		private Task aiGalaxyPhase = null;
+		private Task turnProcessing = null;
 
 		/// <summary>
 		/// GameController constructor intended for game view (GUI or other kind of human interface).  
@@ -93,37 +94,8 @@ namespace Stareater.Controllers
 			stateListener.OnAiGalaxyPhaseDone();
 		}
 		
-		private void restartAiGalaxyPhase()
+		private void precombatTurnProcessing()
 		{
-			this.aiGalaxyPhase = new Task(aiDoGalaxyPhase);
-			this.aiGalaxyPhase.Start();
-		}
-		
-		public void EndTurn()
-		{
-			if (this.IsReadOnly)
-				return;
-
-			//FIXME: presumes single player
-			
-			this.endTurnCopy = new GameController();
-			var gameCopy = game.ReadonlyCopy();
-			
-			endTurnCopy.game = gameCopy.Item1;
-			endTurnCopy.lastSelectedStar = new Dictionary<Player,StarData>();
-
-			foreach (var originalSelection in lastSelectedStar)
-				endTurnCopy.lastSelectedStar.Add(
-					gameCopy.Item2.Players[originalSelection.Key],
-					gameCopy.Item3.Stars[originalSelection.Value]);
-
-			if (!aiGalaxyPhase.IsCompleted)
-				return;
-			
-			//UNDONE: start processing
-			
-			//TODO: Rotate players
-			
 			/*
 			 * TODO: Preprocess players
  			 * - Calculate research points
@@ -149,16 +121,20 @@ namespace Stareater.Controllers
  			 * - Perform migration
  			 */
  			
- 			// TODO: Colonise planets
- 			
  			/*
  			 * TODO: Process ships
  			 * - Move ships
  			 * - Space combat
  			 * - Ground combat
+ 			 * - Bombardment
+ 			 * - Colonise planets
  			 */
- 			
- 			// TODO: Research
+ 			stateListener.OnCombatPhaseStart();
+		}
+		
+		private void postcombatTurnProcessing()
+		{
+			// TODO: Research
  			
  			// TODO: Update ship designs
  			
@@ -171,10 +147,49 @@ namespace Stareater.Controllers
  			 * - Recalculate colony effects
  			 */
  			
+ 			this.endTurnCopy = null;
+ 			
  			stateListener.OnNewTurn();
  			restartAiGalaxyPhase();
 		}
+		
+		private void restartAiGalaxyPhase()
+		{
+			this.aiGalaxyPhase = new Task(aiDoGalaxyPhase);
+			this.aiGalaxyPhase.Start();
+		}
+		
+		public void EndGalaxyPhase()
+		{
+			if (this.IsReadOnly)
+				return;
 
+			//FIXME: presumes single human player
+			
+			this.endTurnCopy = new GameController();
+			var gameCopy = game.ReadonlyCopy();
+			
+			endTurnCopy.game = gameCopy.Item1;
+			endTurnCopy.lastSelectedStar = new Dictionary<Player,StarData>();
+
+			foreach (var originalSelection in lastSelectedStar)
+				endTurnCopy.lastSelectedStar.Add(
+					gameCopy.Item2.Players[originalSelection.Key],
+					gameCopy.Item3.Stars[originalSelection.Value]);
+
+			if (!aiGalaxyPhase.IsCompleted)
+				return;
+			
+			this.turnProcessing = new Task(precombatTurnProcessing);
+			this.turnProcessing.Start();
+		}
+
+		public void EndCombatPhase()
+		{
+			this.turnProcessing = new Task(postcombatTurnProcessing);
+			this.turnProcessing.Start();
+		}
+		
 		public bool IsReadOnly
 		{
 			get { return endTurnCopy != null; }

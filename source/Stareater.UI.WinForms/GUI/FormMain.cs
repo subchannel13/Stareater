@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-
 using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.Controllers;
@@ -180,7 +180,7 @@ namespace Stareater.GUI
 				humansReady = false;
 			}
 			
-			controller.EndTurn();
+			controller.EndGalaxyPhase();
 
 			if (galaxyRenderer != null) galaxyRenderer.ResetLists();
 			if (systemRenderer != null) systemRenderer.ResetLists();
@@ -268,7 +268,8 @@ namespace Stareater.GUI
 		#endregion
 		
 		
-		public void IGameStateListener.OnAiGalaxyPhaseDone()
+		#region IGameStateListener implementation
+		public void OnAiGalaxyPhaseDone()
 		{
 			lock(this)
 			{
@@ -278,8 +279,28 @@ namespace Stareater.GUI
 			postDelayedEvent(tryEndTurn);
 		}
 		
-		public void IGameStateListener.OnNewTurn()
+		public void OnNewTurn()
 		{
+			if (this.InvokeRequired) {
+				postDelayedEvent(this.OnNewTurn);
+				return;
+			}
+			
+			if (galaxyRenderer != null) galaxyRenderer.ResetLists();
+			if (systemRenderer != null) systemRenderer.ResetLists();
 		}
+		
+		public void OnCombatPhaseStart()
+		{
+			if (this.InvokeRequired) {
+				postDelayedEvent(this.OnCombatPhaseStart);
+				return;
+			}
+			
+			//TODO: open conflict GUI
+			
+			controller.EndCombatPhase();
+		}
+		#endregion
 	}
 }
