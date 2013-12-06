@@ -26,7 +26,7 @@ namespace Stareater.Controllers
 				var colonyEffencts = game.Derivates.Colonies.Of(colony).Effects();
 			
 				foreach(var constructable in game.Statics.Constructables)
-					if (Prerequisite.AreSatisfied(constructable.Prerequisites, 0, x => techLevels[x]) && constructable.Condition.Evaluate(colonyEffencts) > 0)
+					if (Prerequisite.AreSatisfied(constructable.Prerequisites, 0, techLevels) && constructable.Condition.Evaluate(colonyEffencts) > 0)
 						yield return new ConstructableItem(constructable, game.Derivates.Players.Of(game.Players[game.CurrentPlayer]));
 			}
 		}

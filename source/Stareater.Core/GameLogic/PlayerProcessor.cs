@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Stareater.GameData;
 using Stareater.Players;
 
@@ -26,6 +27,8 @@ namespace Stareater.GameLogic
 			this.Player = player;
 		}
 
+		#region Galaxy phase
+		
 		public IDictionary<string, double> TechLevels { get; private set; }
 
 		public void Calculate(IEnumerable<TechnologyProgress> techAdvances)
@@ -34,7 +37,8 @@ namespace Stareater.GameLogic
 				TechLevels[tech.Topic.IdCode + LevelSufix] = tech.Level;
 			}
 		}
-
+		#endregion
+		
 		internal PlayerProcessor Copy(PlayersRemap playersRemap)
 		{
 			PlayerProcessor copy = new PlayerProcessor(playersRemap.Players[this.Player]);
@@ -42,6 +46,27 @@ namespace Stareater.GameLogic
 			copy.TechLevels = new Dictionary<string, double>(this.TechLevels);
 
 			return copy;
+		}
+		
+		#region Precombat processing
+		
+		private double developmentPoints = 0;
+		
+		public void ProcessPrecombat(IList<ColonyProcessor> colonyProcessors)
+		{
+			foreach(var colonyProc in colonyProcessors)
+				developmentPoints += colonyProc.DevelopmentPoints();
+		}
+		#endregion
+		
+		public void ProcessPostcombat(IEnumerable<TechnologyProgress> advanceOrder)
+		{
+			var techLevels = advanceOrder.ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			
+			foreach(var tech in advanceOrder)
+			{
+				developmentPoints = tech.Invest(developmentPoints, techLevels);
+			}
 		}
 	}
 }

@@ -16,12 +16,12 @@ namespace Stareater.GameData
 			this.Level = level;
 		}
 		
-		public static bool AreSatisfied(IEnumerable<Prerequisite> prerequisites, int targetLevel, Func<string, int> techLevelGetter)
+		public static bool AreSatisfied(IEnumerable<Prerequisite> prerequisites, int targetLevel, IDictionary<string, int> techLevels)
 		{
 			var levelVars = new Var("lvl", targetLevel).Get;
 			foreach(Prerequisite prerequisite in prerequisites) {
 				double requiredLevel = prerequisite.Level.Evaluate(levelVars);
-				if (requiredLevel >= 0 && techLevelGetter(prerequisite.Code) < requiredLevel)
+				if (requiredLevel >= 0 && techLevels[prerequisite.Code] < requiredLevel)
 					return false;
 			}
 			

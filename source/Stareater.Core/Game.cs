@@ -42,6 +42,7 @@ namespace Stareater
 			);
 			
 			foreach (var player in players) {
+				this.Derivates.Players.Of(player).Calculate(this.States.TechnologyAdvances.Of(player));
 				player.Intelligence.Initialize(starSystems);
 				
 				foreach(var colony in States.Colonies.OwnedBy(player))
@@ -179,5 +180,61 @@ namespace Stareater
 			return playerTechs;
 		}
 		#endregion
+		
+		public void ProcessPrecombat()
+		{
+			//TODO: Include star system worksforce allocation
+			foreach(var playerProc in this.Derivates.Players)
+				playerProc.ProcessPrecombat(this.Derivates.Colonies.OwnedBy(playerProc.Player));
+ 			
+ 			/*
+ 			 * TODO: Preprocess stars
+ 			 * - Calculate system effects
+ 			 */
+ 			
+ 			/*
+ 			 * TODO: Colonies, 1st pass
+ 			 * - Build (consume construction queue)
+ 			 * - Apply instant effect buildings
+ 			 * - Apply terraforming
+ 			 * - Grow population
+ 			 */
+ 			
+ 			/*
+ 			 * TODO: Process stars
+ 			 * - Calculate effects from colonies
+ 			 * - Build
+ 			 * - Perform migration
+ 			 */
+ 			
+ 			/*
+ 			 * TODO: Process ships
+ 			 * - Move ships
+ 			 * - Space combat
+ 			 * - Ground combat
+ 			 * - Bombardment
+ 			 * - Colonise planets
+ 			 */
+		}
+		
+		public void ProcessPostcombat()
+		{
+			// TODO: Process research
+			foreach(var playerProc in this.Derivates.Players)
+				playerProc.ProcessPostcombat(
+					this.AdvancmentOrder(playerProc.Player)
+				);
+ 			
+ 			// TODO: Update ship designs
+ 			
+ 			// TODO: Upgrade and repair ships
+ 			
+ 			/*
+ 			 * TODO: Colonies, 2nd pass
+ 			 * - Apply normal effect buildings
+ 			 * - Check construction queue
+ 			 * - Recalculate colony effects
+ 			 */
+		}
 	}
 }

@@ -78,5 +78,12 @@ namespace Stareater.GameLogic
 
 			return copy;
 		}
+		
+		public double DevelopmentPoints()
+		{
+			//TODO: calculate from population and system
+			//TODO: use Development getter
+			return 30e9;
+		}
 	}
 }
