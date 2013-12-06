@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Stareater.Players;
 using Stareater.Utils.Collections;
 
@@ -41,24 +42,33 @@ namespace Stareater.GameData
 			}
 		}
 		
-		public bool CanProgress(Func<string, int> techLevelGetter)
+		public bool CanProgress(IDictionary<string, int> techLevels)
 		{
 			if (Level >= Topic.MaxLevel)
 				return false;
 			
-			return Prerequisite.AreSatisfied(Topic.Prerequisites, NextLevel, techLevelGetter);
-			
-			//TODO: delete if OK
-			/*var levelVars = new Var("lvl0", NextLevel).Get;
-			foreach(Prerequisite prerequisite in Topic.Prerequisites) {
-				double requiredLevel = prerequisite.Level.Evaluate(levelVars);
-				if (requiredLevel >= 0 && techLevelGetter(prerequisite.Code) < requiredLevel)
-					return false;
-			}
-			
-			return true;*/
+			return Prerequisite.AreSatisfied(Topic.Prerequisites, NextLevel, techLevels);
 		}
 
+		public double Invest(double points, IDictionary<string, int> techLevels)
+		{
+			while(CanProgress(techLevels))
+			{
+				double pointsLeft = this.Topic.Cost.Evaluate(new Var(Technology.LevelKey, this.NextLevel).Get) - this.InvestedPoints;
+				
+				if (pointsLeft > points) {
+					InvestedPoints += points;
+					return 0;
+				}
+				
+				this.Level = NextLevel;
+				this.InvestedPoints = 0;
+				points -= pointsLeft;
+			}
+			
+			return points;
+		}
+		
 		internal TechnologyProgress Copy(Player player)
 		{
 			TechnologyProgress copy = new TechnologyProgress(Level, InvestedPoints, Topic, player);

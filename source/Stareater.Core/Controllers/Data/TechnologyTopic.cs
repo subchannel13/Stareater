@@ -22,7 +22,7 @@ namespace Stareater.Controllers.Data
 		internal TechnologyTopic(TechnologyProgress tech)
 		{
 			this.technology = tech.Topic;
-			this.textVars = new Var("lvl", tech.NextLevel).Get;
+			this.textVars = new Var(Technology.LevelKey, tech.NextLevel).Get;
 				
 			this.Cost = tech.Topic.Cost.Evaluate(textVars);
 			this.InvestedPoints = tech.InvestedPoints;

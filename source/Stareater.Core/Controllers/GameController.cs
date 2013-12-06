@@ -96,57 +96,15 @@ namespace Stareater.Controllers
 		
 		private void precombatTurnProcessing()
 		{
-			/*
-			 * TODO: Preprocess players
- 			 * - Calculate research points
- 			 */
- 			
- 			/*
- 			 * TODO: Preprocess stars
- 			 * - Calculate system effects
- 			 */
- 			
- 			/*
- 			 * TODO: Colonies, 1st pass
- 			 * - Build (consume construction queue)
- 			 * - Apply instant effect buildings
- 			 * - Apply terraforming
- 			 * - Grow population
- 			 */
- 			
- 			/*
- 			 * TODO: Process stars
- 			 * - Calculate effects from colonies
- 			 * - Build
- 			 * - Perform migration
- 			 */
- 			
- 			/*
- 			 * TODO: Process ships
- 			 * - Move ships
- 			 * - Space combat
- 			 * - Ground combat
- 			 * - Bombardment
- 			 * - Colonise planets
- 			 */
+			game.ProcessPrecombat();
+			
  			stateListener.OnCombatPhaseStart();
 		}
 		
 		private void postcombatTurnProcessing()
 		{
-			// TODO: Research
- 			
- 			// TODO: Update ship designs
- 			
- 			// TODO: Upgrade and repair ships
- 			
- 			/*
- 			 * TODO: Colonies, 2nd pass
- 			 * - Apply normal effect buildings
- 			 * - Check construction queue
- 			 * - Recalculate colony effects
- 			 */
- 			
+			game.ProcessPostcombat();
+			
  			this.endTurnCopy = null;
  			
  			stateListener.OnNewTurn();
@@ -313,7 +271,7 @@ namespace Stareater.Controllers
 			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
 			
 			foreach(var techProgress in playerTechs)
-				if (techProgress.Topic.Category == TechnologyCategory.Development && techProgress.CanProgress(x => techLevels[x]))
+				if (techProgress.Topic.Category == TechnologyCategory.Development && techProgress.CanProgress(techLevels))
 		        	yield return new TechnologyTopic(techProgress);
 		}
 		

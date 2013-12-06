@@ -7,6 +7,8 @@ namespace Stareater.GameData
 
 	class Technology
 	{
+		public const string LevelKey = "lvl";
+		
 		public string NameCode { get; private set; }
 		public string DescriptionCode{ get; private set; }
 		
