@@ -33,19 +33,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ikadn, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\IKON.1.0.0\lib\net40\Ikadn.dll</HintPath>
+    <Reference Include="Ikadn">
+      <HintPath>..\packages\IKADN.1.1.0\lib\net40\Ikadn.dll</HintPath>
     </Reference>
-    <Reference Include="Ikadn.Ikon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\IKON.1.0.0\lib\net40\Ikadn.Ikon.dll</HintPath>
+    <Reference Include="Ikadn.Ikon">
+      <HintPath>..\packages\IKADN.IKON.1.1.0\lib\Ikadn.Ikon.dll</HintPath>
     </Reference>
     <Reference Include="NGenerics, Version=1.4.1.0, Culture=neutral, PublicKeyToken=e4b41be133ea7faf, processorArchitecture=MSIL">
       <HintPath>..\packages\NGenerics.1.4.1.0\lib\net35\NGenerics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
