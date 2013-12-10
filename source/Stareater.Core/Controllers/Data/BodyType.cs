@@ -15,9 +15,9 @@ namespace Stareater.Controllers.Data
 		Foreign = 8,
 
 		Empty = 0,
-		NoStarManagement = Star | Unoccupied,
-		OwnStarManagement = Star | Own,
-		ForeignStar = Star | Foreign,
+		NoStellarises = Star | Unoccupied,
+		OwnStellaris = Star | Own,
+		ForeignStellaris = Star | Foreign,
 		NotColonised = Planet | Unoccupied,
 		OwnColony = Planet | Own,
 		ForeignColony = Planet | Foreign

@@ -189,8 +189,8 @@ namespace Stareater.GLRenderers
 			
 			switch(controller.BodyType(selectedBody))
 			{
-				case BodyType.OwnStarManagement:
-					siteView.SetView(controller.StarController(selectedBody));
+				case BodyType.OwnStellaris:
+					siteView.SetView(controller.StellarisController(selectedBody));
 					//TODO add implementation, system management
 					break;
 				case BodyType.OwnColony:

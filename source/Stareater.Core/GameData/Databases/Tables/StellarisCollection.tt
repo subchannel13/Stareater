@@ -1,0 +1,13 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/Collections/IndexedCollectionBase.tt" #><#
+	
+	namespaceName = "Stareater.GameData.Databases.Tables";
+	usings.Add("Stareater.Galaxy");
+	usings.Add("Stareater.Players");
+	
+	Generate("StellarisCollection", "StellarisAdmin",
+		new ViewInfo("OwnedBy", "Player", "Owner", ViewType.Collection),
+		new ViewInfo("At", "StarData", "Location", ViewType.Collection)
+	);
+#>
