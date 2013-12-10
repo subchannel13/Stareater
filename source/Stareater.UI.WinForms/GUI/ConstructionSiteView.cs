@@ -18,23 +18,23 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 		
-		public void SetView(ColonyController colonyController)
+		public void SetView(AConstructionSiteController siteController)
 		{
-			controller = colonyController;
+			controller = siteController;
 			
-			industrySlider.Enabled = !colonyController.IsReadOnly;
+			industrySlider.Enabled = !siteController.IsReadOnly;
 			
 			resetView();
 		}
 		
-		public void SetView(StarManagementController starController)
+		/*public void SetView(StarManagementController starController)
 		{
 			controller = starController;
 			
 			industrySlider.Enabled = !starController.IsReadOnly;
 			
 			resetView();
-		}
+		}*/
 		
 		private void resetView()
 		{

@@ -56,7 +56,7 @@ namespace Stareater.Controllers
 		public BodyType BodyType(int bodyIndex)
 		{
 			if (bodyIndex == StarIndex)
-				return Data.BodyType.NoStarManagement; //TODO: check if there is management
+				return Data.BodyType.NoStellarises; //TODO: check if there is management
 
 			var planet = game.States.Planets.At(Star).Where(x => x.Position == bodyIndex).FirstOrDefault();
 
@@ -83,9 +83,9 @@ namespace Stareater.Controllers
 			return new ColonyController(game, game.States.Colonies.AtPlanet(planet), IsReadOnly);
 		}
 		
-		public StarManagementController StarController(int bodyPosition)
+		public StellarisAdminController StellarisController(int bodyPosition)
 		{
-			return new StarManagementController(game, null, IsReadOnly);
+			return new StellarisAdminController(game, null, IsReadOnly);
 		}
 	}
 }

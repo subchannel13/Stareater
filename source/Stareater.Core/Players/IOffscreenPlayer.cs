@@ -1,6 +1,4 @@
-﻿
-
-namespace Stareater.Players
+﻿namespace Stareater.Players
 {
 	public interface IOffscreenPlayer
 	{

@@ -54,8 +54,6 @@ namespace Stareater.Controllers
 				new Player(info.Name, info.Color, info.Organization, info.ControlType)
 			).ToArray();
 			
-			//var homeSystems = starPositions.HomeSystems.Select(x => stars[x].Star).ToArray();
-			
 			this.game = new Game(
 				statics, 
 				stars, 
@@ -128,7 +126,7 @@ namespace Stareater.Controllers
 			var gameCopy = game.ReadonlyCopy();
 			
 			endTurnCopy.game = gameCopy.Item1;
-			endTurnCopy.lastSelectedStar = new Dictionary<Player,StarData>();
+			endTurnCopy.lastSelectedStar = new Dictionary<Player, StarData>();
 
 			foreach (var originalSelection in lastSelectedStar)
 				endTurnCopy.lastSelectedStar.Add(

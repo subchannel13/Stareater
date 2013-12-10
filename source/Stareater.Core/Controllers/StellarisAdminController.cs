@@ -5,15 +5,15 @@ using Stareater.Galaxy;
 
 namespace Stareater.Controllers
 {
-	public class StarManagementController : AConstructionSiteController
+	public class StellarisAdminController : AConstructionSiteController
 	{
 		private Game game;
-		private object starManagement; //TODO: make type
+		private object stellaris; //TODO: make type
 		
-		internal StarManagementController(Game game, AConstructionSite starManagement, bool readOnly): base(starManagement, readOnly)
+		internal StellarisAdminController(Game game, AConstructionSite stellaris, bool readOnly): base(stellaris, readOnly)
 		{
 			this.game = game;
-			this.starManagement = starManagement;
+			this.stellaris = stellaris;
 		}
 		
 		public override void ReorderQueue(int fromIndex, int toIndex)

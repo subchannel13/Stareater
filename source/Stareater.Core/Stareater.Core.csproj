@@ -81,7 +81,7 @@
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
     <Compile Include="Controllers\Data\TechnologyTopic.cs" />
     <Compile Include="Controllers\GameController.cs" />
-    <Compile Include="Controllers\StarManagementController.cs" />
+    <Compile Include="Controllers\StellarisAdminController.cs" />
     <Compile Include="Controllers\StarSystemController.cs" />
     <Compile Include="Galaxy\Builders\IStarConnector.cs" />
     <Compile Include="Galaxy\Builders\IStarPopulator.cs" />
@@ -91,10 +91,14 @@
     <Compile Include="Galaxy\Colony.cs" />
     <Compile Include="Galaxy\Fleet.cs" />
     <Compile Include="Galaxy\PlanetType.cs" />
+    <Compile Include="Galaxy\StellarisAdmin.cs" />
     <Compile Include="Galaxy\StarNamer.cs" />
-    <Compile Include="Galaxy\StellarManagement.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameData\Constructable.cs" />
+    <Compile Include="GameData\Databases\Tables\StellarisCollection.cs">
+      <DependentUpon>StellarisCollection.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameData\GalaxyRemap.cs" />
     <Compile Include="GameData\PlayersRemap.cs" />
     <Compile Include="GameData\SiteType.cs" />
@@ -221,6 +225,10 @@
     <None Include="GameData\Databases\Tables\StarCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StarCollection.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Databases\Tables\StellarisCollection.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StellarisCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\TechProgressCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

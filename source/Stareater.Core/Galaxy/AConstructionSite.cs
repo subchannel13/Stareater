@@ -11,7 +11,6 @@ namespace Stareater.Galaxy
 		internal Player Owner { get; private set; }
 		
 		private IEnumerable<object> buildings; //TODO: make type
-		private IEnumerable<object> orderQueue; //TODO: make type
 		private object leftovers; //TODO: make type
 
 		private long id;
