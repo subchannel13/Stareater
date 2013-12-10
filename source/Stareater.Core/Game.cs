@@ -37,7 +37,8 @@ namespace Stareater
 				initStars(starSystems), 
 				initWormholes(starSystems, wormholeEndpoints), 
 				initPlanets(starSystems), 
-				initColonies(players, starSystems, homeSystemIndices, startingConditions, this.Derivates, this.Statics.ColonyFormulas), 
+				initColonies(players, starSystems, homeSystemIndices, startingConditions, this.Derivates, this.Statics.ColonyFormulas),
+				initStellarises(players, starSystems, homeSystemIndices),
 				initTechAdvances(players, statics.Technologies)
 			);
 			
@@ -124,6 +125,19 @@ namespace Stareater
 			stars.Add(starList.Select(x => x.Star));
 			
 			return stars;
+		}
+		
+		private static StellarisCollection initStellarises(Player[] players, StarSystem[] starSystems, int[] homeSystemIndices)
+		{
+			var stellarises = new StellarisCollection();
+			for(int playerI = 0; playerI < players.Length; playerI++) {
+				stellarises.Add(new StellarisAdmin(
+					players[playerI], 
+					starSystems[homeSystemIndices[playerI]].Star
+				));
+			}
+			
+			return stellarises;
 		}
 		
 		private static TechProgressCollection initTechAdvances(Player[] players, IEnumerable<Technology> technologies)

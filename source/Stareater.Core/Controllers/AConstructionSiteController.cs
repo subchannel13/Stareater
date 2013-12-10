@@ -8,12 +8,14 @@ namespace Stareater.Controllers
 {
 	public abstract class AConstructionSiteController
 	{
-		private AConstructionSite constructionSite;
+		internal Game Game { get; private set; }
+		internal AConstructionSite Site { get; private set; }
 		
-		internal AConstructionSiteController(AConstructionSite constructionSite, bool readOnly)
+		internal AConstructionSiteController(AConstructionSite site, bool readOnly, Game game)
 		{
-			this.constructionSite = constructionSite;
+			this.Site = site;
 			this.IsReadOnly = readOnly;
+			this.Game = game;
 		}
 
 		public bool IsReadOnly { get; private set; }
@@ -26,10 +28,31 @@ namespace Stareater.Controllers
 			return ConstructionQueue.Where(x => x.IdCode == data.IdCode).Count() == 0;	//TODO: consider building count
 		}
 		
-		public abstract void Enqueue(ConstructableItem data);
+		public void Enqueue(ConstructableItem data)
+		{
+			if (IsReadOnly)
+				return;
+			
+			Game.Players[Game.CurrentPlayer].Orders.Constructions[Site].Queue.Add(data.Constructable);
+		}
 		
-		public abstract void Dequeue(int selectedIndex);
+		public void Dequeue(int index)
+		{
+			if (IsReadOnly)
+				return;
+			
+			Game.Players[Game.CurrentPlayer].Orders.Constructions[Site].Queue.RemoveAt(index);
+		}
 		
-		public abstract void ReorderQueue(int fromIndex, int toIndex);
+		public void ReorderQueue(int fromIndex, int toIndex)
+		{
+			if (IsReadOnly)
+				return;
+			
+			var item = Game.Players[Game.CurrentPlayer].Orders.Constructions[Site].Queue[fromIndex];
+			
+			Game.Players[Game.CurrentPlayer].Orders.Constructions[Site].Queue.RemoveAt(fromIndex);
+			Game.Players[Game.CurrentPlayer].Orders.Constructions[Site].Queue.Insert(toIndex, item);
+		}
 	}
 }

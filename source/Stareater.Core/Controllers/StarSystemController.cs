@@ -42,21 +42,29 @@ namespace Stareater.Controllers
 			
 			return null;
 		}
-
-		/*public bool IsColonised(int bodyIndex)
+		
+		public StellarisInfo StarsAdministration()
 		{
-			var planet = game.States.Planets.At(Star).Where(x => x.Position == bodyIndex).FirstOrDefault();
+			if (game.Players[game.CurrentPlayer].Intelligence.About(Star).LastVisited != StarIntelligence.NeverVisited)
+				//TODO: show last known star system information
+				return new StellarisInfo(game.States.Stellarises.At(Star));
 			
-			if (planet == null)
-				return false;
-			
-			return game.States.Colonies.AtPlanetContains(planet);
-		}*/
+			return null;
+		}
 		
 		public BodyType BodyType(int bodyIndex)
 		{
-			if (bodyIndex == StarIndex)
-				return Data.BodyType.NoStellarises; //TODO: check if there is management
+			if (bodyIndex == StarIndex) {
+				if (!game.States.Stellarises.AtContains(Star))
+					return Data.BodyType.NoStellarises;
+					
+				var stellaris = game.States.Stellarises.At(Star);
+				
+				if (stellaris.Owner == game.Players[game.CurrentPlayer])
+					return Data.BodyType.OwnStellaris;
+				else
+					return Data.BodyType.ForeignStellaris;
+			} 
 
 			var planet = game.States.Planets.At(Star).Where(x => x.Position == bodyIndex).FirstOrDefault();
 

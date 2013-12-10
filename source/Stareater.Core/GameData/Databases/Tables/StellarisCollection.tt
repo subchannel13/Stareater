@@ -8,6 +8,6 @@
 	
 	Generate("StellarisCollection", "StellarisAdmin",
 		new ViewInfo("OwnedBy", "Player", "Owner", ViewType.Collection),
-		new ViewInfo("At", "StarData", "Location", ViewType.Collection)
+		new ViewInfo("At", "StarData", "Location", ViewType.Scalar)
 	);
 #>
