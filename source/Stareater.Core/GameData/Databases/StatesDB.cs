@@ -14,14 +14,18 @@ namespace Stareater.GameData.Databases
 		
 		public PlanetCollection Planets { get; private set; }
 		public ColonyCollection Colonies { get; private set; }
+		public StellarisCollection Stellarises { get; private set; }
 		
 		public TechProgressCollection TechnologyAdvances { get; private set; }
 		
-		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, ColonyCollection Colonies, TechProgressCollection technologyProgresses)
+		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, 
+		                ColonyCollection Colonies, StellarisCollection stellarises, 
+		                TechProgressCollection technologyProgresses)
 		{
 			this.Colonies = Colonies;
 			this.Planets = planets;
 			this.Stars = stars;
+			this.Stellarises = stellarises;
 			this.Wormholes = wormholes;
 			this.TechnologyAdvances = technologyProgresses;
 		}
@@ -48,6 +52,9 @@ namespace Stareater.GameData.Databases
 
 			copy.Colonies = new ColonyCollection();
 			copy.Colonies.Add(playersRemap.Colonies.Values);
+			
+			copy.Stellarises = new StellarisCollection();
+			copy.Stellarises.Add(playersRemap.Stellarises.Values);
 
 			copy.TechnologyAdvances = new TechProgressCollection();
 			copy.TechnologyAdvances.Add(this.TechnologyAdvances.Select(x => x.Copy(playersRemap.Players[x.Owner])));
@@ -70,8 +77,17 @@ namespace Stareater.GameData.Databases
 			PlayersRemap remap = new PlayersRemap(playersRemap);
 
 			foreach (var colony in this.Colonies)
-				remap.Colonies.Add(colony, colony.Copy(playersRemap[colony.Owner], galaxyRemap.Planets[colony.Location]));
+				remap.Colonies.Add(
+					colony, 
+					colony.Copy(playersRemap[colony.Owner], galaxyRemap.Planets[colony.Location])
+				);
 
+			foreach(var stellaris in this.Stellarises)
+				remap.Stellarises.Add(
+					stellaris, 
+					stellaris.Copy(playersRemap[stellaris.Owner], galaxyRemap.Stars[stellaris.Location])
+				);
+			
 			return remap;
 		}
 	}

@@ -79,6 +79,7 @@
     <Compile Include="Controllers\Data\IGameStateListener.cs" />
     <Compile Include="Controllers\Data\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
+    <Compile Include="Controllers\Data\StellarisInfo.cs" />
     <Compile Include="Controllers\Data\TechnologyTopic.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\StellarisAdminController.cs" />

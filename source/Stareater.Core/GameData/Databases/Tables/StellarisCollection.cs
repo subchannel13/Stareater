@@ -12,7 +12,7 @@ namespace Stareater.GameData.Databases.Tables
 		List<StellarisAdmin> toRemove = new List<StellarisAdmin>();
 
 		Dictionary<Player, List<StellarisAdmin>> OwnedByIndex = new Dictionary<Player, List<StellarisAdmin>>();
-		Dictionary<StarData, List<StellarisAdmin>> AtIndex = new Dictionary<StarData, List<StellarisAdmin>>();
+		Dictionary<StarData, StellarisAdmin> AtIndex = new Dictionary<StarData, StellarisAdmin>();
 
 		public IList<StellarisAdmin> OwnedBy(Player key) {
 			if (OwnedByIndex.ContainsKey(key))
@@ -21,11 +21,15 @@ namespace Stareater.GameData.Databases.Tables
 			return new List<StellarisAdmin>();
 		}
 
-		public IList<StellarisAdmin> At(StarData key) {
+		public StellarisAdmin At(StarData key) {
 			if (AtIndex.ContainsKey(key))
 				return AtIndex[key];
-			
-			return new List<StellarisAdmin>();
+				
+			throw new KeyNotFoundException();
+		}
+		
+		public bool AtContains(StarData key) {
+			return AtIndex.ContainsKey(key);
 		}
 	
 		public void Add(StellarisAdmin item)
@@ -35,10 +39,8 @@ namespace Stareater.GameData.Databases.Tables
 			if (!OwnedByIndex.ContainsKey(item.Owner))
 				OwnedByIndex.Add(item.Owner, new List<StellarisAdmin>());
 			OwnedByIndex[item.Owner].Add(item);
-
 			if (!AtIndex.ContainsKey(item.Location))
-				AtIndex.Add(item.Location, new List<StellarisAdmin>());
-			AtIndex[item.Location].Add(item);
+				AtIndex.Add(item.Location, item);
 		}
 
 		public void Add(IEnumerable<StellarisAdmin> items)
@@ -79,7 +81,7 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			if (innerSet.Remove(item)) {
 				OwnedByIndex[item.Owner].Remove(item);
-				AtIndex[item.Location].Remove(item);
+				AtIndex.Remove(item.Location);
 			
 				return true;
 			}

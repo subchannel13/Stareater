@@ -11,5 +11,10 @@ namespace Stareater.Galaxy
 		{
 			this.Location = star;
 		}
+		
+		internal StellarisAdmin Copy(Player player, StarData star)
+		{
+			return new StellarisAdmin(player, star);
+		}
 	}
 }
