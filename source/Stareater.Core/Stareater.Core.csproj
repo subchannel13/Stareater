@@ -96,6 +96,11 @@
     <Compile Include="Galaxy\StarNamer.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameData\Constructable.cs" />
+    <Compile Include="GameData\Databases\Tables\StellarisProcessorCollection.cs">
+      <DependentUpon>StellarisProcessorCollection.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="GameData\Databases\Tables\StellarisCollection.cs">
       <DependentUpon>StellarisCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -153,6 +158,7 @@
     <Compile Include="GameData\TechnologyProgress.cs" />
     <Compile Include="GameLogic\ColonyProcessor.cs" />
     <Compile Include="GameLogic\PlayerProcessor.cs" />
+    <Compile Include="GameLogic\StellarisProcessor.cs" />
     <Compile Include="Localization\ChainText.cs" />
     <Compile Include="Localization\ConditionalText.cs" />
     <Compile Include="Localization\ExpressionText.cs" />
@@ -214,6 +220,10 @@
     <None Include="GameData\Databases\Tables\ColonyProcessorCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ColonyProcessorCollection.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Databases\Tables\StellarisProcessorCollection.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StellarisProcessorCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\PlanetCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
