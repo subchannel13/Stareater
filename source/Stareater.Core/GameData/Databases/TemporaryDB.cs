@@ -10,11 +10,13 @@ namespace Stareater.GameData.Databases
 	class TemporaryDB
 	{
 		public ColonyProcessorCollection Colonies { get; private set; }
+		public StellarisProcessorCollection Stellarises { get; private set; }
 		public PlayerProcessorCollection Players { get; private set; }
 		
 		public TemporaryDB(Player[] players, IEnumerable<Technology> technologies)
 		{
 			this.Colonies = new ColonyProcessorCollection();
+			this.Stellarises = new StellarisProcessorCollection();
 			this.Players = new PlayerProcessorCollection();
 			
 			foreach (var player in players)
@@ -30,6 +32,9 @@ namespace Stareater.GameData.Databases
 
 			copy.Colonies = new ColonyProcessorCollection();
 			copy.Colonies.Add(this.Colonies.Select(x => x.Copy(playersRemap)));
+
+			copy.Stellarises = new StellarisProcessorCollection();
+			copy.Stellarises.Add(this.Stellarises.Select(x => x.Copy(playersRemap)));
 
 			copy.Players = new PlayerProcessorCollection();
 			copy.Players.Add(this.Players.Select(x => x.Copy(playersRemap)));

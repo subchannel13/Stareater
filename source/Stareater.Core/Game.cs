@@ -78,8 +78,9 @@ namespace Stareater
 		}
 
 		#region Initialization
-		private static ColonyCollection initColonies(Player[] players, StarSystem[] starSystems, int[] homeSystemIndices, StartingConditions startingConditions, 
-		                                             TemporaryDB derivates, ColonyFormulaSet colonyFormulas)
+		private static ColonyCollection initColonies(Player[] players, 
+			StarSystem[] starSystems, int[] homeSystemIndices, StartingConditions startingConditions, 
+			TemporaryDB derivates, ColonyFormulaSet colonyFormulas)
 		{
 			var colonies = new ColonyCollection();
 			for(int playerI = 0; playerI < players.Length; playerI++) {
@@ -200,35 +201,35 @@ namespace Stareater
 			//TODO: Include star system worksforce allocation
 			foreach(var playerProc in this.Derivates.Players)
 				playerProc.ProcessPrecombat(this.Derivates.Colonies.OwnedBy(playerProc.Player));
- 			
- 			/*
- 			 * TODO: Preprocess stars
- 			 * - Calculate system effects
- 			 */
- 			
- 			/*
- 			 * TODO: Colonies, 1st pass
- 			 * - Build (consume construction queue)
- 			 * - Apply instant effect buildings
- 			 * - Apply terraforming
- 			 * - Grow population
- 			 */
- 			
- 			/*
- 			 * TODO: Process stars
- 			 * - Calculate effects from colonies
- 			 * - Build
- 			 * - Perform migration
- 			 */
- 			
- 			/*
- 			 * TODO: Process ships
- 			 * - Move ships
- 			 * - Space combat
- 			 * - Ground combat
- 			 * - Bombardment
- 			 * - Colonise planets
- 			 */
+			
+			/*
+			 * TODO: Preprocess stars
+			 * - Calculate system effects
+			 */
+			
+			/*
+			 * TODO: Colonies, 1st pass
+			 * - Build (consume construction queue)
+			 * - Apply instant effect buildings
+			 * - Apply terraforming
+			 * - Grow population
+			 */
+			
+			/*
+			 * TODO: Process stars
+			 * - Calculate effects from colonies
+			 * - Build
+			 * - Perform migration
+			 */
+			
+			/*
+			 * TODO: Process ships
+			 * - Move ships
+			 * - Space combat
+			 * - Ground combat
+			 * - Bombardment
+			 * - Colonise planets
+			 */
 		}
 		
 		public void ProcessPostcombat()
@@ -238,17 +239,17 @@ namespace Stareater
 				playerProc.ProcessPostcombat(
 					this.AdvancmentOrder(playerProc.Player)
 				);
- 			
- 			// TODO: Update ship designs
- 			
- 			// TODO: Upgrade and repair ships
- 			
- 			/*
- 			 * TODO: Colonies, 2nd pass
- 			 * - Apply normal effect buildings
- 			 * - Check construction queue
- 			 * - Recalculate colony effects
- 			 */
+			
+			// TODO: Update ship designs
+			
+			// TODO: Upgrade and repair ships
+			
+			/*
+			 * TODO: Colonies, 2nd pass
+			 * - Apply normal effect buildings
+			 * - Check construction queue
+			 * - Recalculate colony effects
+			 */
 		}
 	}
 }
