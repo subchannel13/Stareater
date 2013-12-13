@@ -1,0 +1,61 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#+
+private string namespaceName = "";
+private List<string> usings = new List<string>(/*new string[]{ "System", "System.Collections.Generic", "Stareater.Utils.Collections" }*/);
+
+struct DataInfo
+{
+	public string Name;
+	public string Type;
+
+	public DataInfo(string name, string type) {
+		this.Name = name;
+		this.Type = type;
+	}
+}
+
+private void Begin(string className, params DataInfo[] dataInfos)
+{
+	foreach(string usingName in usings)
+		WriteLine("using " + usingName + ";");
+
+	if (usings.Count > 0)
+		WriteLine("");
+
+	if (!string.IsNullOrWhiteSpace(namespaceName)) {
+		WriteLine("namespace " + namespaceName);
+		WriteLine("{");
+	}
+#>
+	class <#= className #>
+	{
+<#+ 
+	foreach(var field in dataInfos)
+		WriteLine("		public "  + field.Type + " " + field.Name + ";");
+		
+	WriteLine("");
+	Write("		public " + className + "(");
+	
+	for(int i = 0; i < dataInfos.Length; i++) {
+		string commaOrNot = (i == 0) ? "" : ", ";
+		Write(commaOrNot + dataInfos[i].Type + " " + dataInfos[i].Name.ToLower());
+	}
+	
+	WriteLine(") {");
+	
+	foreach(var field in dataInfos)
+		WriteLine("			this."  + field.Name + " = " + field.Name.ToLower() + ";");
+		
+	WriteLine("		}");
+}
+
+private void End()
+{
+#>
+	}
+<#+ 
+	if (!string.IsNullOrWhiteSpace(namespaceName))
+		WriteLine("}");
+}
+#>

@@ -7,9 +7,6 @@ namespace Stareater.Controllers
 {
 	public class StellarisAdminController : AConstructionSiteController
 	{
-		private Game game;
-		private StellarisAdmin stellaris; //TODO: make type
-		
 		internal StellarisAdminController(Game game, StellarisAdmin stellaris, bool readOnly): base(stellaris, readOnly, game)
 		{ }
 		

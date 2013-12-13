@@ -106,7 +106,10 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\GalaxyRemap.cs" />
-    <Compile Include="GameData\PlayersRemap.cs" />
+    <Compile Include="GameData\PlayersRemap.cs">
+      <DependentUpon>PlayersRemap.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameData\SiteType.cs" />
     <Compile Include="GameData\Databases\ChangesDB.cs" />
     <Compile Include="GameData\Databases\StatesDB.cs" />
@@ -189,6 +192,10 @@
       <DependentUpon>IndexedCollectionBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Utils\Collections\Var.cs" />
+    <Compile Include="Utils\CustomTuple.cs">
+      <DependentUpon>CustomTuple.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Utils\ProgressData.cs" />
     <Compile Include="Utils\Collections\IDelayedRemoval.cs" />
     <Compile Include="Utils\Collections\PendableSet.cs" />
@@ -249,10 +256,18 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WormholeCollection.cs</LastGenOutput>
     </None>
+    <None Include="GameData\PlayersRemap.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PlayerRemap.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
     <None Include="Utils\Collections\IndexedCollectionBase.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>IndexedCollectionBase.cs</LastGenOutput>
+    </None>
+    <None Include="Utils\CustomTuple.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CustomTuple.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

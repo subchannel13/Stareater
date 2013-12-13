@@ -1,0 +1,28 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
+	
+	namespaceName = "Stareater.GameData";
+	usings.Add("System.Collections.Generic");
+	usings.Add("Stareater.Galaxy");
+	usings.Add("Stareater.Players");
+	
+	Begin("PlayersRemap",
+		new DataInfo("Players", "IDictionary<Player, Player>"),
+		new DataInfo("Colonies", "IDictionary<AConstructionSite, Colony>"),
+		new DataInfo("Stellarises", "IDictionary<AConstructionSite, StellarisAdmin>")
+	);
+#>
+
+		internal AConstructionSite Site(AConstructionSite site)
+		{
+			if (Colonies.ContainsKey(site))
+				return Colonies[site];
+			else if (Stellarises.ContainsKey(site))
+				return Stellarises[site];
+
+			throw new KeyNotFoundException();
+		}
+<#
+	End();
+#>

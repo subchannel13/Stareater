@@ -1,6 +1,8 @@
 { ColonyFormulas
 	maxPopulation # size / 10 * 1e9;
 	
+	organization # limit(0 / pop, 0, 1);
+	
 	farming
 	{ Work
 		improvised	# 3;

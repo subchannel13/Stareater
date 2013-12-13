@@ -31,31 +31,35 @@ namespace Stareater.GameLogic
 		}
 		
 		public double MaxPopulation { get; private set; }
+		public double Organization { get; private set; }
 		
 		public double Development { get; private set; }
 		public double Production { get; private set; }
 		
+		private IDictionary<string, double> calcVars(PlayerProcessor playerProcessor)
+		{
+			return new Var(PlanetSizeKey, Colony.Location.Size)
+				.And(PopulationKey, Colony.Population)
+				.UnionWith(playerProcessor.TechLevels).Get;
+		}
+		
 		public void Calculate(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
 		{
-			//TODO: add player's techs and colony buildings
-			var vars = new Var(PlanetSizeKey, Colony.Location.Size).UnionWith(playerProcessor.TechLevels).Get;
-			//TODO: add organization formula
-			//var organizationRatio = 0; //Methods.Clamp(Colony.Infrastructure / Colony.Population, 0, 1);
+			//TODO: add colony buildings
+			var vars = calcVars(playerProcessor);
 			
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
-			
+			this.Organization = formulas.Organization.Evaluate(vars);
 		}
 		
 		public void SimulateSpending(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
 		{
 			var vars = new Var(PlanetSizeKey, Colony.Location.Size).UnionWith(playerProcessor.TechLevels).Get;
-			//TODO: add organization formula
-			var organizationRatio = 0;
 			
 			//TODO: include farming and mining
 			double desiredSpendingRatio = Colony.Owner.Orders.Constructions[Colony].SpendingRatio;
-			this.Development = (1 - desiredSpendingRatio) * Colony.Population * formulas.Development.Evaluate(organizationRatio, vars);
-			this.Production = desiredSpendingRatio * Colony.Population * formulas.Industry.Evaluate(organizationRatio, vars);
+			this.Development = (1 - desiredSpendingRatio) * Colony.Population * formulas.Development.Evaluate(Organization, vars);
+			this.Production = desiredSpendingRatio * Colony.Population * formulas.Industry.Evaluate(Organization, vars);
 		}
 		
 		public IDictionary<string, double> Effects()

@@ -74,7 +74,11 @@ namespace Stareater.GameData.Databases
 
 		internal PlayersRemap CopyPlayers(Dictionary<Player, Player> playersRemap, GalaxyRemap galaxyRemap)
 		{
-			PlayersRemap remap = new PlayersRemap(playersRemap);
+			PlayersRemap remap = new PlayersRemap(
+				playersRemap, 
+				new Dictionary<AConstructionSite, Colony>(),
+				new Dictionary<AConstructionSite, StellarisAdmin>()
+			);
 
 			foreach (var colony in this.Colonies)
 				remap.Colonies.Add(
