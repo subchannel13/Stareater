@@ -66,6 +66,7 @@ namespace Stareater.GameData.Databases
 		{
 			return new ColonyFormulaSet(
 				data[ColonyMaxPopulation].To<Formula>(),
+				data[ColonyOrganization].To<Formula>(),
 				loadPopulationActivity(data, ColonyFarming),
 				loadPopulationActivity(data, ColonyMining),
 				loadPopulationActivity(data, ColonyDevelopment),
@@ -128,6 +129,7 @@ namespace Stareater.GameData.Databases
 		private const string ResearchTag = "ResearchTopic";
 		
 		private const string ColonyMaxPopulation = "maxPopulation";
+		private const string ColonyOrganization = "organization";
 		private const string ColonyDevelopment = "development";
 		private const string ColonyFarming = "farming";
 		private const string ColonyIndustry = "industry";

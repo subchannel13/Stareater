@@ -33,12 +33,12 @@ namespace Stareater
 			
 			this.Derivates = new TemporaryDB(players, statics.Technologies);
 			this.Statics = statics;
-			this.States = new StatesDB(
+			this.States = new StatesDB(	//TODO: call initX methods before
 				initStars(starSystems), 
 				initWormholes(starSystems, wormholeEndpoints), 
 				initPlanets(starSystems), 
 				initColonies(players, starSystems, homeSystemIndices, startingConditions, this.Derivates, this.Statics.ColonyFormulas),
-				initStellarises(players, starSystems, homeSystemIndices),
+				initStellarises(players, starSystems, homeSystemIndices, this.Derivates),
 				initTechAdvances(players, statics.Technologies)
 			);
 			
@@ -78,6 +78,7 @@ namespace Stareater
 		}
 
 		#region Initialization
+		//TODO: extrude colony processors as output parameter
 		private static ColonyCollection initColonies(Player[] players, 
 			StarSystem[] starSystems, int[] homeSystemIndices, StartingConditions startingConditions, 
 			TemporaryDB derivates, ColonyFormulaSet colonyFormulas)
@@ -128,14 +129,19 @@ namespace Stareater
 			return stars;
 		}
 		
-		private static StellarisCollection initStellarises(Player[] players, StarSystem[] starSystems, int[] homeSystemIndices)
+		private static StellarisCollection initStellarises(Player[] players, StarSystem[] starSystems, int[] homeSystemIndices, TemporaryDB derivates)
 		{
 			var stellarises = new StellarisCollection();
 			for(int playerI = 0; playerI < players.Length; playerI++) {
-				stellarises.Add(new StellarisAdmin(
+				var stellaris = new StellarisAdmin(
 					players[playerI], 
 					starSystems[homeSystemIndices[playerI]].Star
-				));
+				);
+				stellarises.Add(stellaris);
+				
+				var stellarisProcessor = new StellarisProcessor(stellaris);
+				stellarisProcessor.Calculate();
+				derivates.Stellarises.Add(stellarisProcessor);
 			}
 			
 			return stellarises;

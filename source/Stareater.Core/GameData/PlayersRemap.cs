@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Stareater.Galaxy;
 using Stareater.Players;
 
@@ -12,12 +9,11 @@ namespace Stareater.GameData
 		public IDictionary<Player, Player> Players;
 		public IDictionary<AConstructionSite, Colony> Colonies;
 		public IDictionary<AConstructionSite, StellarisAdmin> Stellarises;
-		
-		public PlayersRemap(IDictionary<Player, Player> players)
-		{
+
+		public PlayersRemap(IDictionary<Player, Player> players, IDictionary<AConstructionSite, Colony> colonies, IDictionary<AConstructionSite, StellarisAdmin> stellarises) {
 			this.Players = players;
-			this.Colonies = new Dictionary<AConstructionSite, Colony>();
-			this.Stellarises = new Dictionary<AConstructionSite, StellarisAdmin>();
+			this.Colonies = colonies;
+			this.Stellarises = stellarises;
 		}
 
 		internal AConstructionSite Site(AConstructionSite site)
