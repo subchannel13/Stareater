@@ -75,12 +75,17 @@
     <Compile Include="Controllers\Data\BodyType.cs" />
     <Compile Include="Controllers\Data\ColonyInfo.cs" />
     <Compile Include="Controllers\Data\ConstructableItem.cs" />
+    <Compile Include="Controllers\Data\GameCopy.cs">
+      <DependentUpon>GameCopy.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Controllers\Data\GameState.cs" />
     <Compile Include="Controllers\Data\IGameStateListener.cs" />
     <Compile Include="Controllers\Data\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
     <Compile Include="Controllers\Data\StellarisInfo.cs" />
     <Compile Include="Controllers\Data\TechnologyTopic.cs" />
+    <Compile Include="Controllers\GameBuilder.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\StellarisAdminController.cs" />
     <Compile Include="Controllers\StarSystemController.cs" />
@@ -89,6 +94,10 @@
     <Compile Include="Galaxy\Builders\IStarPositioner.cs" />
     <Compile Include="Galaxy\Builders\StarPositions.cs" />
     <Compile Include="Galaxy\Builders\StarSystem.cs" />
+    <Compile Include="Galaxy\Builders\WormholeEndpoints.cs">
+      <DependentUpon>WormholeEndpoints.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Galaxy\Colony.cs" />
     <Compile Include="Galaxy\Fleet.cs" />
     <Compile Include="Galaxy\PlanetType.cs" />
@@ -105,7 +114,10 @@
       <DependentUpon>StellarisCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="GameData\GalaxyRemap.cs" />
+    <Compile Include="GameData\GalaxyRemap.cs">
+      <DependentUpon>GalaxyRemap.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameData\PlayersRemap.cs">
       <DependentUpon>PlayersRemap.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -159,6 +171,10 @@
     <Compile Include="GameData\Technology.cs" />
     <Compile Include="GameData\TechnologyCategory.cs" />
     <Compile Include="GameData\TechnologyProgress.cs" />
+    <Compile Include="GameData\Wormhole.cs">
+      <DependentUpon>Wormhole.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameLogic\ColonyProcessor.cs" />
     <Compile Include="GameLogic\PlayerProcessor.cs" />
     <Compile Include="GameLogic\StellarisProcessor.cs" />
@@ -220,6 +236,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />
+    <None Include="Controllers\Data\GameCopy.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>GameCopy.cs</LastGenOutput>
+    </None>
+    <None Include="Galaxy\Builders\WormholeEndpoints.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WormholeEndpoints.cs</LastGenOutput>
+    </None>
     <None Include="GameData\Databases\Tables\ColonyCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ColonyCollection.cs</LastGenOutput>
@@ -256,9 +280,17 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WormholeCollection.cs</LastGenOutput>
     </None>
+    <None Include="GameData\GalaxyRemap.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>GalaxyRemap.cs</LastGenOutput>
+    </None>
     <None Include="GameData\PlayersRemap.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlayerRemap.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Wormhole.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Wormhole.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="Utils\Collections\IndexedCollectionBase.tt">

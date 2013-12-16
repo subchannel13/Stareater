@@ -74,7 +74,7 @@ namespace Stareater.Galaxy.ProximityLanes
 		}
 
 
-		public IEnumerable<Tuple<int, int>> Generate(Random rng, StarPositions starPositions)
+		public IEnumerable<WormholeEndpoints> Generate(Random rng, StarPositions starPositions)
 		{
 			var starGroups = new Dictionary<int, int>();
 			for (int star = 0; star < starPositions.Stars.Length; star++) {
@@ -88,7 +88,7 @@ namespace Stareater.Galaxy.ProximityLanes
 				starGroups.Add(star, group);
 			}
 
-			List<Tuple<int, int>> lanes = new List<Tuple<int, int>>();
+			List<WormholeEndpoints> lanes = new List<WormholeEndpoints>();
 			for (int group = 0; group < starPositions.HomeSystems.Length; group++) {
 				lanes.AddRange(connectGroup(
 					starPositions.Stars, 
@@ -99,10 +99,10 @@ namespace Stareater.Galaxy.ProximityLanes
 			return lanes;
 		}
 
-		private IEnumerable<Tuple<int, int>> connectGroup(Vector2D[] positions, int[] indices, int root)
+		private IEnumerable<WormholeEndpoints> connectGroup(Vector2D[] positions, int[] indices, int root)
 		{
 			var closed = new HashSet<int>();
-			var possibleEdges = new PriorityQueue<Tuple<int, int>, double>(PriorityQueueType.Minimum);
+			var possibleEdges = new PriorityQueue<WormholeEndpoints, double>(PriorityQueueType.Minimum);
 
 			closeVertex(possibleEdges, root, positions, indices, closed);
 			var usedEdges = new List<Tuple<Vector2D, Vector2D>>();
@@ -111,15 +111,15 @@ namespace Stareater.Galaxy.ProximityLanes
 				var edge = possibleEdges.Dequeue();
 				int openVertex = -1;
 
-				if (closed.Contains(edge.Item1))
-					if (closed.Contains(edge.Item2))
+				if (closed.Contains(edge.FromIndex))
+					if (closed.Contains(edge.ToIndex))
 						continue;
 					else
-						openVertex = edge.Item2;
+						openVertex = edge.ToIndex;
 				else
-					openVertex = edge.Item1;
+					openVertex = edge.FromIndex;
 
-				var line = new Tuple<Vector2D, Vector2D>(positions[edge.Item1], positions[edge.Item2]);
+				var line = new Tuple<Vector2D, Vector2D>(positions[edge.FromIndex], positions[edge.ToIndex]);
 				if (!Methods.LineIntersects(line, usedEdges, Epsilon)) {
 					usedEdges.Add(line);
 					yield return edge;
@@ -129,13 +129,13 @@ namespace Stareater.Galaxy.ProximityLanes
 			}
 		}
 
-		private static void closeVertex(PriorityQueue<Tuple<int, int>, double> freeEdges, int vertexToClose, Vector2D[] positions, int[] vertexIndices, HashSet<int> closed)
+		private static void closeVertex(PriorityQueue<WormholeEndpoints, double> freeEdges, int vertexToClose, Vector2D[] positions, int[] vertexIndices, HashSet<int> closed)
 		{
 			closed.Add(vertexToClose);
 			foreach (var vertex in vertexIndices)
 				if (!closed.Contains(vertex)) {
 					double weight = (positions[vertexToClose] - positions[vertex]).Magnitude();
-					freeEdges.Add(new Tuple<int, int>(vertexToClose, vertex), weight);
+					freeEdges.Add(new WormholeEndpoints(vertexToClose, vertex), weight);
 				}
 		}
 	}

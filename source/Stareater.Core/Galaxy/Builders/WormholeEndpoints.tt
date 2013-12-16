@@ -1,0 +1,15 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
+	
+	namespaceName = "Stareater.Galaxy.Builders";
+	modifer = "public";
+	usings.Add("System.Collections.Generic");
+	usings.Add("Stareater.Galaxy");
+	usings.Add("Stareater.Players");
+	
+	Generate("WormholeEndpoints",
+		new DataInfo("FromIndex", "int"),
+		new DataInfo("ToIndex", "int")
+	);
+#>

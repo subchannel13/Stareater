@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 using Stareater.Galaxy;
+using Stareater.Players;
 
 namespace Stareater.GameData
 {
@@ -10,10 +9,9 @@ namespace Stareater.GameData
 		public IDictionary<StarData, StarData> Stars;
 		public IDictionary<Planet, Planet> Planets;
 
-		public GalaxyRemap()
-		{
-			this.Planets = new Dictionary<Planet, Planet>();
-			this.Stars = new Dictionary<StarData, StarData>();
+		public GalaxyRemap(IDictionary<StarData, StarData> stars, IDictionary<Planet, Planet> planets) {
+			this.Stars = stars;
+			this.Planets = planets;
 		}
 	}
 }

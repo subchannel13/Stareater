@@ -42,9 +42,9 @@ namespace Stareater.GameData.Databases
 
 			copy.Wormholes = new WormholeCollection();
 			copy.Wormholes.Add(this.Wormholes.Select(
-				x => new Tuple<StarData, StarData>(
-					galaxyRemap.Stars[x.Item1],
-					galaxyRemap.Stars[x.Item2])
+				x => new Wormhole(
+					galaxyRemap.Stars[x.FromStar],
+					galaxyRemap.Stars[x.ToStar])
 				));
 
 			copy.Planets = new PlanetCollection();
@@ -64,7 +64,7 @@ namespace Stareater.GameData.Databases
 
 		public GalaxyRemap CopyGalaxy()
 		{
-			GalaxyRemap remap = new GalaxyRemap();
+			GalaxyRemap remap = new GalaxyRemap(new Dictionary<StarData, StarData>(), new Dictionary<Planet, Planet>());
 
 			remap.Stars = this.Stars.ToDictionary(x => x, x => x.Copy());
 			remap.Planets = this.Planets.ToDictionary(x => x, x => x.Copy(remap.Stars[x.Star]));

@@ -9,7 +9,7 @@ namespace Stareater.Utils.NumberFormatters
 	{
 		private static string[] MagnitudePrefixes = new string[] { "", "k", "M", "G", "T", "P", "E", "Z", "Y" };
 
-		private Tuple<int, double> magnitudeInfo = null;
+		private KeyValuePair<int, double>? magnitudeInfo = null;
 
 		public ThousandsFormatter()
 		{ }
@@ -24,16 +24,16 @@ namespace Stareater.Utils.NumberFormatters
 			for (int i = 0; i < index; i++)
 				factor *= 1000;
 
-			this.magnitudeInfo = new Tuple<int, double>(index, factor);
+			this.magnitudeInfo = new KeyValuePair<int, double>(index, factor);
 		}
 
 		public ThousandsFormatter(params double[] numbersInContext)
 		{
-			this.magnitudeInfo = new Tuple<int, double>(int.MaxValue, 0);
+			this.magnitudeInfo = new KeyValuePair<int, double>(int.MaxValue, 0);
 			
 			foreach (double number in numbersInContext) {
 				var candidateInfo = greatestLowerPrefix(number);
-				if (candidateInfo.Item1 < magnitudeInfo.Item1)
+				if (candidateInfo.Key < magnitudeInfo.Value.Key)
 					this.magnitudeInfo = candidateInfo;
 			}
 		}
@@ -42,17 +42,17 @@ namespace Stareater.Utils.NumberFormatters
 		{
 			var prefixInfo = this.magnitudeInfo ?? greatestLowerPrefix(number);
 
-			return ((number / prefixInfo.Item2).ToString("0.##") + " " + MagnitudePrefixes[prefixInfo.Item1]).TrimEnd();
+			return ((number / prefixInfo.Value).ToString("0.##") + " " + MagnitudePrefixes[prefixInfo.Key]).TrimEnd();
 		}
 
-		private static Tuple<int, double> greatestLowerPrefix(double number)
+		private static KeyValuePair<int, double> greatestLowerPrefix(double number)
 		{
 			int prefixIndex = 0;
 			double weight = 1;
 			for (; prefixIndex < MagnitudePrefixes.Length && number >= weight * 1000; prefixIndex++)
 				weight *= 1000;
 
-			return new Tuple<int, double>(prefixIndex, weight);
+			return new KeyValuePair<int, double>(prefixIndex, weight);
 		}
 
 		public static double? TryParse(string numberText)

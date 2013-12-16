@@ -5,34 +5,34 @@ using Stareater.Galaxy;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class WormholeCollection : ICollection<Tuple<StarData, StarData>>, IDelayedRemoval<Tuple<StarData, StarData>>
+	class WormholeCollection : ICollection<Wormhole>, IDelayedRemoval<Wormhole>
 	{
-		HashSet<Tuple<StarData, StarData>> innerSet = new HashSet<Tuple<StarData, StarData>>();
-		List<Tuple<StarData, StarData>> toRemove = new List<Tuple<StarData, StarData>>();
+		HashSet<Wormhole> innerSet = new HashSet<Wormhole>();
+		List<Wormhole> toRemove = new List<Wormhole>();
 
-		Dictionary<StarData, List<Tuple<StarData, StarData>>> AtIndex = new Dictionary<StarData, List<Tuple<StarData, StarData>>>();
+		Dictionary<StarData, List<Wormhole>> AtIndex = new Dictionary<StarData, List<Wormhole>>();
 
-		public IList<Tuple<StarData, StarData>> At(StarData key) {
+		public IList<Wormhole> At(StarData key) {
 			if (AtIndex.ContainsKey(key))
 				return AtIndex[key];
 			
-			return new List<Tuple<StarData, StarData>>();
+			return new List<Wormhole>();
 		}
 	
-		public void Add(Tuple<StarData, StarData> item)
+		public void Add(Wormhole item)
 		{
 			innerSet.Add(item); 
 
-			if (!AtIndex.ContainsKey(item.Item1))
-				AtIndex.Add(item.Item1, new List<Tuple<StarData, StarData>>());
-			AtIndex[item.Item1].Add(item);
+			if (!AtIndex.ContainsKey(item.FromStar))
+				AtIndex.Add(item.FromStar, new List<Wormhole>());
+			AtIndex[item.FromStar].Add(item);
 
-			if (!AtIndex.ContainsKey(item.Item2))
-				AtIndex.Add(item.Item2, new List<Tuple<StarData, StarData>>());
-			AtIndex[item.Item2].Add(item);
+			if (!AtIndex.ContainsKey(item.ToStar))
+				AtIndex.Add(item.ToStar, new List<Wormhole>());
+			AtIndex[item.ToStar].Add(item);
 		}
 
-		public void Add(IEnumerable<Tuple<StarData, StarData>> items)
+		public void Add(IEnumerable<Wormhole> items)
 		{
 			foreach(var item in items)
 				Add(item);
@@ -45,12 +45,12 @@ namespace Stareater.GameData.Databases.Tables
 			AtIndex.Clear();
 		}
 
-		public bool Contains(Tuple<StarData, StarData> item)
+		public bool Contains(Wormhole item)
 		{
 			return innerSet.Contains(item);
 		}
 
-		public void CopyTo(Tuple<StarData, StarData>[] array, int arrayIndex)
+		public void CopyTo(Wormhole[] array, int arrayIndex)
 		{
 			innerSet.CopyTo(array, arrayIndex);
 		}
@@ -65,11 +65,11 @@ namespace Stareater.GameData.Databases.Tables
 			get { return false; }
 		}
 
-		public bool Remove(Tuple<StarData, StarData> item)
+		public bool Remove(Wormhole item)
 		{
 			if (innerSet.Remove(item)) {
-				AtIndex[item.Item1].Remove(item);
-				AtIndex[item.Item2].Remove(item);
+				AtIndex[item.FromStar].Remove(item);
+				AtIndex[item.ToStar].Remove(item);
 			
 				return true;
 			}
@@ -77,7 +77,7 @@ namespace Stareater.GameData.Databases.Tables
 			return false;
 		}
 
-		public IEnumerator<Tuple<StarData, StarData>> GetEnumerator()
+		public IEnumerator<Wormhole> GetEnumerator()
 		{
 			return innerSet.GetEnumerator();
 		}
@@ -87,7 +87,7 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
-		public void PendRemove(Tuple<StarData, StarData> element)
+		public void PendRemove(Wormhole element)
 		{
 			toRemove.Add(element);
 		}
