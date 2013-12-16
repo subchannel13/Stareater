@@ -149,8 +149,8 @@ namespace Stareater.GLRenderers
 				foreach (var wormhole in controller.Wormholes) {
 					GL.PushMatrix();
 					GL.MultMatrix(pathMatrix(
-						new Vector2d(wormhole.Item1.Position.X, wormhole.Item1.Position.Y), 
-						new Vector2d(wormhole.Item2.Position.X, wormhole.Item2.Position.Y)
+						new Vector2d(wormhole.FromStar.Position.X, wormhole.FromStar.Position.Y), 
+						new Vector2d(wormhole.ToStar.Position.X, wormhole.ToStar.Position.Y)
 					));
 					
 					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, WormholeZ);

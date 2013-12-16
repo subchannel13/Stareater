@@ -12,6 +12,6 @@ namespace Stareater.Galaxy.Builders
 		string Name { get; }
 		string Description { get; }
 		ParameterList Parameters { get; }
-		IEnumerable<Tuple<int, int>> Generate(Random rng, StarPositions starPositions);
+		IEnumerable<WormholeEndpoints> Generate(Random rng, StarPositions starPositions);
 	}
 }

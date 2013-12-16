@@ -1,6 +1,7 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#+
+private string modifer = "";
 private string namespaceName = "";
 private List<string> usings = new List<string>(/*new string[]{ "System", "System.Collections.Generic", "Stareater.Utils.Collections" }*/);
 
@@ -27,8 +28,10 @@ private void Begin(string className, params DataInfo[] dataInfos)
 		WriteLine("namespace " + namespaceName);
 		WriteLine("{");
 	}
+	
+	string classMod = string.IsNullOrEmpty(modifer.Trim()) ? "" : modifer + " ";
 #>
-	class <#= className #>
+	<#= classMod #>class <#= className #>
 	{
 <#+ 
 	foreach(var field in dataInfos)
@@ -57,5 +60,11 @@ private void End()
 <#+ 
 	if (!string.IsNullOrWhiteSpace(namespaceName))
 		WriteLine("}");
+}
+
+private void Generate(string className, params DataInfo[] dataInfos)
+{
+	Begin(className, dataInfos);
+	End();
 }
 #>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Stareater.Controllers.Data;
 using Stareater.Galaxy;
 using Stareater.Galaxy.Builders;
 using Stareater.GameData;
@@ -24,37 +24,21 @@ namespace Stareater
 		public StatesDB States { get; private set; }
 		public TemporaryDB Derivates { get; private set; }
 			
-		public Game(StaticsDB statics, StarSystem[] starSystems, IEnumerable<Tuple<int, int>> wormholeEndpoints, Player[] players, int[] homeSystemIndices, StartingConditions startingConditions)
+		public Game(Player[] players, StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
 			this.Turn = 0;
-			
-			this.Players = players;
 			this.CurrentPlayer = 0;
 			
-			this.Derivates = new TemporaryDB(players, statics.Technologies);
+			this.Players = players;
 			this.Statics = statics;
-			this.States = new StatesDB(	//TODO: call initX methods before
-				initStars(starSystems), 
-				initWormholes(starSystems, wormholeEndpoints), 
-				initPlanets(starSystems), 
-				initColonies(players, starSystems, homeSystemIndices, startingConditions, this.Derivates, this.Statics.ColonyFormulas),
-				initStellarises(players, starSystems, homeSystemIndices, this.Derivates),
-				initTechAdvances(players, statics.Technologies)
-			);
-			
-			foreach (var player in players) {
-				this.Derivates.Players.Of(player).Calculate(this.States.TechnologyAdvances.Of(player));
-				player.Intelligence.Initialize(starSystems);
-				
-				foreach(var colony in States.Colonies.OwnedBy(player))
-					player.Intelligence.StarFullyVisited(colony.Star, this.Turn);
-			}
+			this.States = states;
+			this.Derivates = derivates;
 		}
 
 		private Game()
 		{ }
 
-		public Tuple<Game, PlayersRemap, GalaxyRemap> ReadonlyCopy()
+		public GameCopy ReadonlyCopy()
 		{
 			Game copy = new Game();
 
@@ -74,102 +58,8 @@ namespace Stareater
 			copy.States = this.States.Copy(playersRemap, galaxyRemap);
 			copy.Derivates = this.Derivates.Copy(playersRemap);
 
-			return new Tuple<Game, PlayersRemap, GalaxyRemap>(copy, playersRemap, galaxyRemap);
+			return new GameCopy(copy, playersRemap, galaxyRemap);
 		}
-
-		#region Initialization
-		//TODO: extrude colony processors as output parameter
-		private static ColonyCollection initColonies(Player[] players, 
-			StarSystem[] starSystems, int[] homeSystemIndices, StartingConditions startingConditions, 
-			TemporaryDB derivates, ColonyFormulaSet colonyFormulas)
-		{
-			var colonies = new ColonyCollection();
-			for(int playerI = 0; playerI < players.Length; playerI++) {
-				var weights = new ChoiceWeights<Colony>();
-				//TODO: pick top most suitable planets
-				for(int colonyI = 0; colonyI < startingConditions.Colonies; colonyI++) {
-					var colony = new Colony(players[playerI], starSystems[homeSystemIndices[playerI]].Planets[colonyI]);
-					players[playerI].Orders.Constructions.Add(colony, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
-					
-					var colonyProc = new ColonyProcessor(colony);
-					colonyProc.Calculate(colonyFormulas, derivates.Players.Of(players[playerI]));
-					derivates.Colonies.Add(colonyProc);
-					//TODO: use habitability instead of population limit
-					weights.Add(colony, colonyProc.MaxPopulation);
-					
-					colonies.Add(colony);
-				}
-				
-				double totalPopulation = Math.Min(startingConditions.Population, weights.Total);
-				double totalInfrastructure = Math.Min(startingConditions.Infrastructure, weights.Total);
-				foreach(var colony in colonies.OwnedBy(players[playerI])) {
-					colony.Population = weights.Relative(colony) * totalPopulation;
-					//TODO: add infrastructure to colony
-					derivates.Colonies.Of(colony).Calculate(colonyFormulas, derivates.Players.Of(players[playerI]));
-				}
-			}
-			
-			return colonies;
-		}
-			
-		private static PlanetCollection initPlanets(StarSystem[] starSystems)
-		{
-			var planets = new PlanetCollection();
-			foreach(var system in starSystems)
-				planets.Add(system.Planets);
-			
-			return planets;
-		}
-		
-		private static StarCollection initStars(StarSystem[] starList)
-		{
-			var stars = new StarCollection();
-			stars.Add(starList.Select(x => x.Star));
-			
-			return stars;
-		}
-		
-		private static StellarisCollection initStellarises(Player[] players, StarSystem[] starSystems, int[] homeSystemIndices, TemporaryDB derivates)
-		{
-			var stellarises = new StellarisCollection();
-			for(int playerI = 0; playerI < players.Length; playerI++) {
-				var stellaris = new StellarisAdmin(
-					players[playerI], 
-					starSystems[homeSystemIndices[playerI]].Star
-				);
-				stellarises.Add(stellaris);
-				
-				var stellarisProcessor = new StellarisProcessor(stellaris);
-				stellarisProcessor.Calculate();
-				derivates.Stellarises.Add(stellarisProcessor);
-			}
-			
-			return stellarises;
-		}
-		
-		private static TechProgressCollection initTechAdvances(Player[] players, IEnumerable<Technology> technologies)
-		{
-			var techProgress = new TechProgressCollection();
-			foreach(Player player in players)
-				foreach(Technology tech in technologies)
-					techProgress.Add(new TechnologyProgress(tech, player));
-			
-			return techProgress;
-		}
-		
-		private static WormholeCollection initWormholes(StarSystem[] starList, IEnumerable<Tuple<int, int>> wormholeEndpoints)
-		{
-			var wormholes = new WormholeCollection();
-			wormholes.Add(wormholeEndpoints.Select(
-				x => new Tuple<StarData, StarData>(
-					starList[x.Item1].Star, 
-					starList[x.Item2].Star
-				)
-			));
-			
-			return wormholes;
-		}
-		#endregion
 		
 		#region Technology related
 		private int technologyOrderKey(TechnologyProgress tech)

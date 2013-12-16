@@ -93,7 +93,7 @@ namespace Stareater.Controllers
 		
 		public StellarisAdminController StellarisController(int bodyPosition)
 		{
-			return new StellarisAdminController(game, null, IsReadOnly);
+			return new StellarisAdminController(game, game.States.Stellarises.At(Star), IsReadOnly);
 		}
 	}
 }

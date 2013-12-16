@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using NGenerics.Extensions;
+
+using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Data;
 using Stareater.Galaxy;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.GameData;
-using Stareater.GameData.Databases;
 using Stareater.Players;
 
 namespace Stareater.Controllers
@@ -41,33 +39,18 @@ namespace Stareater.Controllers
 			if (State != GameState.NoGame)
 				throw new InvalidOperationException("Game is already created.");
 
-			StaticsDB statics = new StaticsDB();
-			foreach(double p in statics.Load(StaticDataFiles))
-				;
-			
-			Random rng = new Random();
-			
-			var starPositions = controller.StarPositioner.Generate(rng, controller.PlayerList.Count);
-			var stars = controller.StarPopulator.Generate(rng, starPositions).ToArray();
-
 			Player[] players = controller.PlayerList.Select(info =>
 				new Player(info.Name, info.Color, info.Organization, info.ControlType)
 			).ToArray();
 			
-			this.game = new Game(
-				statics, 
-				stars, 
-				controller.StarConnector.Generate(rng, starPositions), 
-				players,
-				starPositions.HomeSystems,
-				controller.SelectedStart
-			);
-
+			Random rng = new Random();
+			
+			this.game = GameBuilder.CreateGame(rng, players, controller);
 			this.State = GameState.Running;
 
-			//TODO: utilize stellar administration instead iterating colonies
-			foreach (var player in players) {
-				var colonies = game.States.Colonies.OwnedBy(player);
+			foreach(Player player in players) {
+				//TODO: utilize stellar administration instead iterating colonies
+				var colonies = this.game.States.Colonies.OwnedBy(player);
 				var perStar = colonies.GroupBy(x => x.Star);
 				var starPopulation = perStar.Select(x => new KeyValuePair<StarData, double>(
 					x.Key, 
@@ -80,7 +63,7 @@ namespace Stareater.Controllers
 			
 			restartAiGalaxyPhase();
 		}
-
+		
 		public GameState State { get; private set; }
 		
 		private void aiDoGalaxyPhase() 
@@ -125,13 +108,13 @@ namespace Stareater.Controllers
 			this.endTurnCopy = new GameController();
 			var gameCopy = game.ReadonlyCopy();
 			
-			endTurnCopy.game = gameCopy.Item1;
+			endTurnCopy.game = gameCopy.Game;
 			endTurnCopy.lastSelectedStar = new Dictionary<Player, StarData>();
 
 			foreach (var originalSelection in lastSelectedStar)
 				endTurnCopy.lastSelectedStar.Add(
-					gameCopy.Item2.Players[originalSelection.Key],
-					gameCopy.Item3.Stars[originalSelection.Value]);
+					gameCopy.Players.Players[originalSelection.Key],
+					gameCopy.Map.Stars[originalSelection.Value]);
 
 			if (!aiGalaxyPhase.IsCompleted)
 				return;
@@ -232,7 +215,7 @@ namespace Stareater.Controllers
 			}
 		}
 
-		public IEnumerable<Tuple<StarData, StarData>> Wormholes
+		public IEnumerable<Wormhole> Wormholes
 		{
 			get
 			{
@@ -288,12 +271,5 @@ namespace Stareater.Controllers
 			}
 		}
 		#endregion
-		
-		private static readonly string[] StaticDataFiles = new string[] {
-			"./data/buildings.txt",
-			"./data/colonyFormulas.txt",
-			"./data/techDevelopment.txt",
-			"./data/techResearch.txt",
-		};
 	}
 }
