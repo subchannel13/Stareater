@@ -3,7 +3,7 @@
 <#+
 private string modifer = "";
 private string namespaceName = "";
-private List<string> usings = new List<string>(/*new string[]{ "System", "System.Collections.Generic", "Stareater.Utils.Collections" }*/);
+private List<string> usings = new List<string>();
 
 struct DataInfo
 {
