@@ -20,8 +20,8 @@ namespace Stareater.Controllers
 		
 		public override IEnumerable<ConstructableItem> ConstructableItems {
 			get {
-				foreach(var item in Game.Players[Game.CurrentPlayer].Orders.Constructions[Site].Queue)
-					yield return new ConstructableItem(item, Game.Derivates.Players.Of(Game.Players[Game.CurrentPlayer]));
+				foreach(var item in Game.CurrentPlayer.Orders.Constructions[Site].Queue)
+					yield return new ConstructableItem(item, Game.Derivates.Players.Of(Game.CurrentPlayer));
 			}
 		}
 	}

@@ -1,0 +1,20 @@
+{ Constructable
+	nameCode: JUMPGATE_NAME
+	descCode: JUMPGATE_DESC
+	image: ./images/buildings/factory.png
+	
+	code: Infra
+	site: System
+	prerequisites [] 
+	
+	cost # 10e6;
+	condition # 1;
+	turnLimit # 1;
+	
+	effects [
+		{ MutateSite
+			key: Infra
+			value # factories + quantity;
+		}
+	]
+}

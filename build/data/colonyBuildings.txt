@@ -4,6 +4,7 @@
 	image: ./images/buildings/factory.png
 	
 	code: Infra
+	site: Colony
 	prerequisites [] 
 	
 	cost # 10 * 3 ^ (1 - max(IndLvl + 1, 0) / 11);
@@ -24,6 +25,7 @@
 	image: ./images/buildings/housing.png
 	
 	code: Housing
+	site: Colony
 	prerequisites [] 
 	
 	cost # 10;

@@ -182,8 +182,9 @@ namespace Stareater.Controllers
 		}
 		
 		private static readonly string[] StaticDataFiles = new string[] {
-			"./data/buildings.txt",
+			"./data/colonyBuildings.txt",
 			"./data/colonyFormulas.txt",
+			"./data/systemBuildings.txt",
 			"./data/techDevelopment.txt",
 			"./data/techResearch.txt",
 		};

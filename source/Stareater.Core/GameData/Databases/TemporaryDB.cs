@@ -41,5 +41,10 @@ namespace Stareater.GameData.Databases
 
 			return copy;
 		}
+		
+		internal PlayerProcessor Of(Player player)
+		{
+			return this.Players.Of(player);
+		}
 	}
 }

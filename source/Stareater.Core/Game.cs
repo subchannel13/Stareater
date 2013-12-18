@@ -17,7 +17,7 @@ namespace Stareater
 	{
 		public Player[] Players { get; private set; }
 		public int Turn { get; private set; }
-		public int CurrentPlayer { get; private set; }
+		public int CurrentPlayerIndex { get; private set; } //FIXME: assumes single player, remove
 		private IEnumerable<object> conflicts; //TODO: make type
 
 		public StaticsDB Statics { get; private set; }
@@ -27,7 +27,7 @@ namespace Stareater
 		public Game(Player[] players, StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
 			this.Turn = 0;
-			this.CurrentPlayer = 0;
+			this.CurrentPlayerIndex = 0;
 			
 			this.Players = players;
 			this.Statics = statics;
@@ -38,6 +38,11 @@ namespace Stareater
 		private Game()
 		{ }
 
+		public Player CurrentPlayer
+		{ 
+			get { return this.Players[CurrentPlayerIndex]; }
+		}
+		
 		public GameCopy ReadonlyCopy()
 		{
 			Game copy = new Game();
@@ -52,7 +57,7 @@ namespace Stareater
 
 			copy.Players = this.Players.Select(p => playersRemap.Players[p]).ToArray();
 			copy.Turn = this.Turn;
-			copy.CurrentPlayer = this.CurrentPlayer;
+			copy.CurrentPlayerIndex = this.CurrentPlayerIndex;
 
 			copy.Statics = this.Statics;
 			copy.States = this.States.Copy(playersRemap, galaxyRemap);
@@ -60,37 +65,6 @@ namespace Stareater
 
 			return new GameCopy(copy, playersRemap, galaxyRemap);
 		}
-		
-		#region Technology related
-		private int technologyOrderKey(TechnologyProgress tech)
-		{
-			if (tech.Owner.Orders.DevelopmentQueue.ContainsKey(tech.Topic.IdCode))
-				return tech.Owner.Orders.DevelopmentQueue[tech.Topic.IdCode];
-			
-			if (tech.Order != TechnologyProgress.Unordered)
-				return tech.Order;
-			
-			return int.MaxValue;
-		}
-		
-		private int technologySort(TechnologyProgress leftTech, TechnologyProgress rightTech)
-		{
-			int primaryComparison = technologyOrderKey(leftTech).CompareTo(technologyOrderKey(rightTech));
-			
-			if (primaryComparison == 0)
-				return leftTech.Topic.IdCode.CompareTo(rightTech.Topic.IdCode);
-			
-			return primaryComparison;
-		}
-		
-		public IEnumerable<TechnologyProgress> AdvancmentOrder(Player player)
-		{
-			var playerTechs = States.TechnologyAdvances.Of(player).ToList();
-			playerTechs.Sort(technologySort);
-			
-			return playerTechs;
-		}
-		#endregion
 		
 		public void ProcessPrecombat()
 		{
@@ -132,9 +106,7 @@ namespace Stareater
 		{
 			// TODO: Process research
 			foreach(var playerProc in this.Derivates.Players)
-				playerProc.ProcessPostcombat(
-					this.AdvancmentOrder(playerProc.Player)
-				);
+				playerProc.ProcessPostcombat(States);
 			
 			// TODO: Update ship designs
 			
