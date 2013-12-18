@@ -247,13 +247,10 @@ namespace Stareater.Controllers
 		public IEnumerable<TechnologyTopic> DevelopmentTopics()
 		{
 			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
-
-			var playerTechs = game.Derivates.Of(game.CurrentPlayer).AdvancmentOrder(game.States.TechnologyAdvances);
-			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
-			
+			var playerTechs = game.Derivates.Of(game.CurrentPlayer).DevelopmentOrder(game.States.TechnologyAdvances);
+		
 			foreach(var techProgress in playerTechs)
-				if (techProgress.Topic.Category == TechnologyCategory.Development && techProgress.CanProgress(techLevels))
-		        	yield return new TechnologyTopic(techProgress);
+				yield return new TechnologyTopic(techProgress);
 		}
 		
 		public void ReorderDevelopmentTopics(IEnumerable<string> idCodeOrder)

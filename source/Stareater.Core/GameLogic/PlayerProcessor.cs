@@ -41,11 +41,12 @@ namespace Stareater.GameLogic
 		#region Technology related
 		private int technologyOrderKey(TechnologyProgress tech)
 		{
-			if (tech.Owner.Orders.DevelopmentQueue.ContainsKey(tech.Topic.IdCode))
-				return tech.Owner.Orders.DevelopmentQueue[tech.Topic.IdCode];
-			
-			if (tech.Order != TechnologyProgress.Unordered)
-				return tech.Order;
+			var playersOrder = (tech.Topic.Category == TechnologyCategory.Development) ? 
+				Player.Orders.DevelopmentQueue : 
+				Player.Orders.ResearchQueue;
+				
+			if (playersOrder.ContainsKey(tech.Topic.IdCode))
+				return playersOrder[tech.Topic.IdCode];
 			
 			return int.MaxValue;
 		}
@@ -60,9 +61,29 @@ namespace Stareater.GameLogic
 			return primaryComparison;
 		}
 		
-		public IEnumerable<TechnologyProgress> AdvancmentOrder(TechProgressCollection techAdvances)
+		public IEnumerable<TechnologyProgress> DevelopmentOrder(TechProgressCollection techAdvances)
 		{
-			var playerTechs = techAdvances.Of(Player).ToList();
+			var techLevels = techAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			var playerTechs = techAdvances
+				.Of(Player)
+				.Where(x => (
+					x.Topic.Category == TechnologyCategory.Development && 
+					x.CanProgress(techLevels))
+				).ToList();
+			playerTechs.Sort(technologySort);
+			
+			return playerTechs;
+		}
+		
+		public IEnumerable<TechnologyProgress> ResearchOrder(TechProgressCollection techAdvances)
+		{
+			var techLevels = techAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			var playerTechs = techAdvances
+				.Of(Player)
+				.Where(x => (
+					x.Topic.Category == TechnologyCategory.Research &&
+					x.CanProgress(techLevels))
+				).ToList();
 			playerTechs.Sort(technologySort);
 			
 			return playerTechs;
@@ -94,13 +115,24 @@ namespace Stareater.GameLogic
 		
 		public void ProcessPostcombat(StatesDB states)
 		{
-			var advanceOrder = this.AdvancmentOrder(states.TechnologyAdvances);
-			var techLevels = advanceOrder.ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			var advanceOrder = this.DevelopmentOrder(states.TechnologyAdvances);
 			
 			foreach(var tech in advanceOrder)
 			{
 				developmentPoints = tech.Invest(developmentPoints, techLevels);
 			}
+			
+			var newTechLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			Player.Orders.Reset(
+				new HashSet<string>(
+					states.TechnologyAdvances
+					.Where(x => x.CanProgress(newTechLevels))
+					.Select(x => x.Topic.IdCode)
+				),
+				states.Colonies.OwnedBy(Player),
+				states.Stellarises.OwnedBy(Player)
+			);
 		}
 	}
 }
