@@ -91,12 +91,25 @@ namespace Stareater.GameData.Databases
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
 				loadPrerquisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(), 
-				SiteType.Colony,	//TODO: make conditional
+				siteType(data[ConstructableSiteKey].To<string>()),
 				data[ConstructableConditionKey].To<Formula>(),
 				data[GeneralCostKey].To<Formula>(),
 				data[ConstructableLimitKey].To<Formula>(),
 				new object[0] //TODO: make loader
 			);
+		}
+		
+		SiteType siteType(string rawData)
+		{
+			switch(rawData.ToLower())
+			{
+				case SiteColony:
+					return SiteType.Colony;
+				case SiteSystem:
+					return SiteType.StarSystem;
+				default:
+					throw new FormatException("Invalid building site type: " + rawData);
+			}
 		}
 		
 		private IEnumerable<Prerequisite> loadPrerquisites(IkonArray dataArray)
@@ -136,9 +149,12 @@ namespace Stareater.GameData.Databases
 		private const string ColonyMining = "mining";
 
 		private const string ConstructableCostKey = "cost";
+		private const string ConstructableSiteKey = "site";
 		private const string ConstructableConditionKey = "condition";
 		private const string ConstructableLimitKey = "turnLimit";
 		private const string ConstructableEffectsKey = "effects";
+		private const string SiteColony = "colony";
+		private const string SiteSystem = "system";
 		
 		private const string GeneralNameKey = "nameCode";
 		private const string GeneralDescriptionKey = "descCode";

@@ -139,13 +139,13 @@ namespace Stareater.Controllers
 		{
 			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 
-			return game.Players[game.CurrentPlayer].Intelligence.About(star).IsVisited;
+			return game.CurrentPlayer.Intelligence.About(star).IsVisited;
 		}
 		
 		public IEnumerable<ColonyInfo> KnownColonies(StarData star)
 		{
 			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
-			var starKnowledge = game.Players[game.CurrentPlayer].Intelligence.About(star);
+			var starKnowledge = game.CurrentPlayer.Intelligence.About(star);
 			
 			foreach(var colony in game.States.Colonies.AtStar(star))
 				if (starKnowledge.Planets[colony.Location].LastVisited != PlanetIntelligence.NeverVisited)
@@ -185,13 +185,13 @@ namespace Stareater.Controllers
 				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 				var lastSelectedStar = (this.IsReadOnly) ? this.endTurnCopy.lastSelectedStar : this.lastSelectedStar;
 
-				return lastSelectedStar[game.Players[game.CurrentPlayer]];
+				return lastSelectedStar[game.CurrentPlayer];
 			}
 			private set
 			{
 				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 				
-				this.lastSelectedStar[game.Players[game.CurrentPlayer]] = value;
+				this.lastSelectedStar[game.CurrentPlayer] = value;
 			}
 		}
 		
@@ -248,7 +248,7 @@ namespace Stareater.Controllers
 		{
 			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 
-			var playerTechs = game.AdvancmentOrder(game.Players[game.CurrentPlayer]);
+			var playerTechs = game.Derivates.Of(game.CurrentPlayer).AdvancmentOrder(game.States.TechnologyAdvances);
 			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
 			
 			foreach(var techProgress in playerTechs)
@@ -261,7 +261,7 @@ namespace Stareater.Controllers
 			if (this.IsReadOnly)
 				return;
 
-			var modelQueue = game.Players[game.CurrentPlayer].Orders.DevelopmentQueue;
+			var modelQueue = game.CurrentPlayer.Orders.DevelopmentQueue;
 			modelQueue.Clear();
 			
 			int i = 0;

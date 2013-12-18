@@ -1,6 +1,8 @@
 :Constructables
 IND_NAME = Industrialisation
 IND_DESC = Factories, laboratories, farming and mining machinery.}
+JUMPGATE_NAME = Jump gate
+JUMPGATE_DESC = No description
 POP_NAME = Colonization
 POP_DESC = No description
 RAD_SHIELD_NAME = Radiation shield

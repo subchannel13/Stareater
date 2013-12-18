@@ -33,7 +33,7 @@ namespace Stareater.Controllers
 			if (IsReadOnly)
 				return;
 			
-			Game.Players[Game.CurrentPlayer].Orders.Constructions[Site].Queue.Add(data.Constructable);
+			Game.CurrentPlayer.Orders.Constructions[Site].Queue.Add(data.Constructable);
 		}
 		
 		public void Dequeue(int index)
@@ -41,7 +41,7 @@ namespace Stareater.Controllers
 			if (IsReadOnly)
 				return;
 			
-			Game.Players[Game.CurrentPlayer].Orders.Constructions[Site].Queue.RemoveAt(index);
+			Game.CurrentPlayer.Orders.Constructions[Site].Queue.RemoveAt(index);
 		}
 		
 		public void ReorderQueue(int fromIndex, int toIndex)
@@ -49,10 +49,10 @@ namespace Stareater.Controllers
 			if (IsReadOnly)
 				return;
 			
-			var item = Game.Players[Game.CurrentPlayer].Orders.Constructions[Site].Queue[fromIndex];
+			var item = Game.CurrentPlayer.Orders.Constructions[Site].Queue[fromIndex];
 			
-			Game.Players[Game.CurrentPlayer].Orders.Constructions[Site].Queue.RemoveAt(fromIndex);
-			Game.Players[Game.CurrentPlayer].Orders.Constructions[Site].Queue.Insert(toIndex, item);
+			Game.CurrentPlayer.Orders.Constructions[Site].Queue.RemoveAt(fromIndex);
+			Game.CurrentPlayer.Orders.Constructions[Site].Queue.Insert(toIndex, item);
 		}
 	}
 }

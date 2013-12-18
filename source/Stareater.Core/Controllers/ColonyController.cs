@@ -16,21 +16,21 @@ namespace Stareater.Controllers
 		public override IEnumerable<ConstructableItem> ConstructableItems
 		{
 			get {
-				var playerTechs = Game.AdvancmentOrder(Game.Players[Game.CurrentPlayer]);
+				var playerTechs = Game.States.TechnologyAdvances.Of(Game.CurrentPlayer);
 				var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
 				var colonyEffencts = Game.Derivates.Colonies.Of((Colony)Site).Effects();
 			
 				foreach(var constructable in Game.Statics.Constructables)
 					if (Prerequisite.AreSatisfied(constructable.Prerequisites, 0, techLevels) && constructable.Condition.Evaluate(colonyEffencts) > 0)
-						yield return new ConstructableItem(constructable, Game.Derivates.Players.Of(Game.Players[Game.CurrentPlayer]));
+						yield return new ConstructableItem(constructable, Game.Derivates.Players.Of(Game.CurrentPlayer));
 			}
 		}
 		
 		public override IEnumerable<ConstructableItem> ConstructionQueue
 		{
 			get {
-				foreach(var item in Game.Players[Game.CurrentPlayer].Orders.Constructions[Site].Queue)
-					yield return new ConstructableItem(item, Game.Derivates.Players.Of(Game.Players[Game.CurrentPlayer]));
+				foreach(var item in Game.CurrentPlayer.Orders.Constructions[Site].Queue)
+					yield return new ConstructableItem(item, Game.Derivates.Players.Of(Game.CurrentPlayer));
 			}
 		}
 	}

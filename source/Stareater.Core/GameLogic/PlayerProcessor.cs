@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Stareater.GameData;
+using Stareater.GameData.Databases;
+using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 
 namespace Stareater.GameLogic
@@ -27,6 +29,46 @@ namespace Stareater.GameLogic
 			this.Player = player;
 		}
 
+		internal PlayerProcessor Copy(PlayersRemap playersRemap)
+		{
+			PlayerProcessor copy = new PlayerProcessor(playersRemap.Players[this.Player]);
+			
+			copy.TechLevels = new Dictionary<string, double>(this.TechLevels);
+
+			return copy;
+		}
+		
+		#region Technology related
+		private int technologyOrderKey(TechnologyProgress tech)
+		{
+			if (tech.Owner.Orders.DevelopmentQueue.ContainsKey(tech.Topic.IdCode))
+				return tech.Owner.Orders.DevelopmentQueue[tech.Topic.IdCode];
+			
+			if (tech.Order != TechnologyProgress.Unordered)
+				return tech.Order;
+			
+			return int.MaxValue;
+		}
+		
+		private int technologySort(TechnologyProgress leftTech, TechnologyProgress rightTech)
+		{
+			int primaryComparison = technologyOrderKey(leftTech).CompareTo(technologyOrderKey(rightTech));
+			
+			if (primaryComparison == 0)
+				return leftTech.Topic.IdCode.CompareTo(rightTech.Topic.IdCode);
+			
+			return primaryComparison;
+		}
+		
+		public IEnumerable<TechnologyProgress> AdvancmentOrder(TechProgressCollection techAdvances)
+		{
+			var playerTechs = techAdvances.Of(Player).ToList();
+			playerTechs.Sort(technologySort);
+			
+			return playerTechs;
+		}
+		#endregion
+		
 		#region Galaxy phase
 		
 		public IDictionary<string, double> TechLevels { get; private set; }
@@ -39,15 +81,6 @@ namespace Stareater.GameLogic
 		}
 		#endregion
 		
-		internal PlayerProcessor Copy(PlayersRemap playersRemap)
-		{
-			PlayerProcessor copy = new PlayerProcessor(playersRemap.Players[this.Player]);
-			
-			copy.TechLevels = new Dictionary<string, double>(this.TechLevels);
-
-			return copy;
-		}
-		
 		#region Precombat processing
 		
 		private double developmentPoints = 0;
@@ -59,8 +92,9 @@ namespace Stareater.GameLogic
 		}
 		#endregion
 		
-		public void ProcessPostcombat(IEnumerable<TechnologyProgress> advanceOrder)
+		public void ProcessPostcombat(StatesDB states)
 		{
+			var advanceOrder = this.AdvancmentOrder(states.TechnologyAdvances);
 			var techLevels = advanceOrder.ToDictionary(x => x.Topic.IdCode, x => x.Level);
 			
 			foreach(var tech in advanceOrder)

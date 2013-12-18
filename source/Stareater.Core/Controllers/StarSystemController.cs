@@ -26,7 +26,7 @@ namespace Stareater.Controllers
 		public IEnumerable<Planet> Planets
 		{
 			get {
-				var planetInfos = game.Players[game.CurrentPlayer].Intelligence.About(Star).Planets;
+				var planetInfos = game.CurrentPlayer.Intelligence.About(Star).Planets;
 				var knownPlanets = planetInfos.Where(x => x.Value.Explored == PlanetIntelligence.FullyExplored).Select(x => x.Key);
 				
 				return knownPlanets.OrderBy(x => x.Position);
@@ -35,7 +35,7 @@ namespace Stareater.Controllers
 		
 		public ColonyInfo PlanetsColony(Planet planet)
 		{
-			if (game.Players[game.CurrentPlayer].Intelligence.About(Star).Planets[planet].LastVisited != PlanetIntelligence.NeverVisited)
+			if (game.CurrentPlayer.Intelligence.About(Star).Planets[planet].LastVisited != PlanetIntelligence.NeverVisited)
 				//TODO: show last known colony information
 				if (game.States.Colonies.AtPlanetContains(planet))
 					return new ColonyInfo(game.States.Colonies.AtPlanet(planet));
@@ -45,7 +45,7 @@ namespace Stareater.Controllers
 		
 		public StellarisInfo StarsAdministration()
 		{
-			if (game.Players[game.CurrentPlayer].Intelligence.About(Star).LastVisited != StarIntelligence.NeverVisited)
+			if (game.CurrentPlayer.Intelligence.About(Star).LastVisited != StarIntelligence.NeverVisited)
 				//TODO: show last known star system information
 				return new StellarisInfo(game.States.Stellarises.At(Star));
 			
@@ -60,7 +60,7 @@ namespace Stareater.Controllers
 					
 				var stellaris = game.States.Stellarises.At(Star);
 				
-				if (stellaris.Owner == game.Players[game.CurrentPlayer])
+				if (stellaris.Owner == game.CurrentPlayer)
 					return Data.BodyType.OwnStellaris;
 				else
 					return Data.BodyType.ForeignStellaris;
@@ -75,7 +75,7 @@ namespace Stareater.Controllers
 
 			var colony = game.States.Colonies.AtPlanet(planet);
 
-			if (colony.Owner == game.Players[game.CurrentPlayer])
+			if (colony.Owner == game.CurrentPlayer)
 				return Data.BodyType.OwnColony;
 			else
 				return Data.BodyType.ForeignColony;

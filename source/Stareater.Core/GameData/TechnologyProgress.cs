@@ -64,6 +64,7 @@ namespace Stareater.GameData
 				this.Level = NextLevel;
 				this.InvestedPoints = 0;
 				points -= pointsLeft;
+				//TODO: add new tech level message
 			}
 			
 			return points;
