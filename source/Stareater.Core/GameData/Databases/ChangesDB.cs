@@ -12,26 +12,45 @@ namespace Stareater.GameData.Databases
 		public const double DefaultSiteSpendingRatio = 1;
 		
 		public IDictionary<string, int> DevelopmentQueue { get; private set; }
+		public IDictionary<string, int> ResearchQueue { get; private set; }
 		
 		public IDictionary<AConstructionSite, ConstructionOrders> Constructions { get; private set; }
 		
 		public ChangesDB()
 		{
 			this.DevelopmentQueue = new Dictionary<string, int>();
+			this.ResearchQueue = new Dictionary<string, int>();
 			this.Constructions = new Dictionary<AConstructionSite, ConstructionOrders>();
 		}
 		
-		public void Reset(IEnumerable<AConstructionSite> validSites)
+		public void Reset(ISet<string> validTechs,
+			IEnumerable<AConstructionSite> validColonies, IEnumerable<AConstructionSite> validStellarises)
 		{
-			DevelopmentQueue.Clear();
+			DevelopmentQueue = resetTechQueue(DevelopmentQueue, validTechs);
+			ResearchQueue.Clear();
 			
-			var oldSpendings = Constructions;
-			Constructions = validSites.ToDictionary(x => x, x => new ConstructionOrders(DefaultSiteSpendingRatio));
+			var validSites = validColonies.Concat(validStellarises);
+			var oldSpendings = this.Constructions;
+			this.Constructions = validSites.ToDictionary(x => x, x => new ConstructionOrders(DefaultSiteSpendingRatio));
 			
 			foreach (var site in validSites) {
 				if (!oldSpendings.ContainsKey(site))
 					Constructions[site] = oldSpendings[site];
 			}
+		}
+		
+		private static IDictionary<string, int> resetTechQueue(IDictionary<string, int> queue, ISet<string> validItems)
+		{
+			var newOrder = queue
+				.Where(x => validItems.Contains(x.Key))
+				.OrderBy(x => x.Value)
+				.Select(x => x.Key).ToArray();
+			
+			var newQueue = new Dictionary<string, int>();
+			for (int i = 0; i < newOrder.Length; i++) 
+				newQueue.Add(newOrder[i], i);
+			
+			return newQueue;
 		}
 
 		internal ChangesDB Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap)
@@ -43,6 +62,7 @@ namespace Stareater.GameData.Databases
 				x => x.Value.Copy());
 
 			copy.DevelopmentQueue = new Dictionary<string, int>(this.DevelopmentQueue);
+			copy.ResearchQueue = new Dictionary<string, int>(this.ResearchQueue);
 
 			return copy;
 		}

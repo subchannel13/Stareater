@@ -15,15 +15,12 @@ namespace Stareater.GameData
 		public Technology Topic { get; private set; }
 		internal Player Owner { get; private set; }
 		
-		public int Order { get; set; }
-		
 		public TechnologyProgress(int level, double investedPoints, Technology topic, Player owner)
 		{
 			this.Level = level;
 			this.InvestedPoints = investedPoints;
 			this.Topic = topic;
 			this.Owner = owner;
-			this.Order = Unordered;
 		}
 		
 		public TechnologyProgress(Technology topic, Player owner) : 
@@ -72,10 +69,7 @@ namespace Stareater.GameData
 		
 		internal TechnologyProgress Copy(Player player)
 		{
-			TechnologyProgress copy = new TechnologyProgress(Level, InvestedPoints, Topic, player);
-			copy.Order = this.Order;
-
-			return copy;
+			return new TechnologyProgress(Level, InvestedPoints, Topic, player);
 		}
 	}
 }
