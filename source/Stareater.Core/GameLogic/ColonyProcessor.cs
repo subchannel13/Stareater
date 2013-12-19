@@ -89,5 +89,10 @@ namespace Stareater.GameLogic
 			//TODO: use Development getter
 			return 30e9;
 		}
+		
+		public void Preprocess()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
