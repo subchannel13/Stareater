@@ -41,5 +41,13 @@ namespace Stareater.GameLogic
 		{
 			//TODO: similar to colony processor
 		}
+		
+		public void Preprocess()
+		{
+			/*
+			 * TODO: Preprocess stars
+			 * - Calculate system effects
+			 */
+		}
 	}
 }

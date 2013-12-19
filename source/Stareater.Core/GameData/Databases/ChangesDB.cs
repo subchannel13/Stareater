@@ -27,7 +27,7 @@ namespace Stareater.GameData.Databases
 			IEnumerable<AConstructionSite> validColonies, IEnumerable<AConstructionSite> validStellarises)
 		{
 			DevelopmentQueue = resetTechQueue(DevelopmentQueue, validTechs);
-			ResearchQueue.Clear();
+			ResearchQueue = resetTechQueue(ResearchQueue, validTechs);
 			
 			var validSites = validColonies.Concat(validStellarises);
 			var oldSpendings = this.Constructions;

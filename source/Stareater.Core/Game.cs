@@ -72,10 +72,11 @@ namespace Stareater
 			foreach(var playerProc in this.Derivates.Players)
 				playerProc.ProcessPrecombat(this.Derivates.Colonies.OwnedBy(playerProc.Player));
 			
-			/*
-			 * TODO: Preprocess stars
-			 * - Calculate system effects
-			 */
+			foreach (var stellaris in this.Derivates.Stellarises)
+				stellaris.Preprocess();
+			
+			foreach(var colonyProc in this.Derivates.Colonies)
+				colonyProc.Preprocess();
 			
 			/*
 			 * TODO: Colonies, 1st pass
