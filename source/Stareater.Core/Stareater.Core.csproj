@@ -176,6 +176,10 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameLogic\ColonyProcessor.cs" />
+    <Compile Include="GameLogic\ConstructionResult.cs">
+      <DependentUpon>ConstructionResult.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameLogic\PlayerProcessor.cs" />
     <Compile Include="GameLogic\StellarisProcessor.cs" />
     <Compile Include="Localization\ChainText.cs" />
@@ -292,6 +296,10 @@
     <None Include="GameData\Wormhole.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Wormhole.cs</LastGenOutput>
+    </None>
+    <None Include="GameLogic\ConstructionResult.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ConstructionResult.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="Utils\Collections\IndexedCollectionBase.tt">

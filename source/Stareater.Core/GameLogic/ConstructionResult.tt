@@ -1,0 +1,14 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
+	
+	namespaceName = "Stareater.GameLogic";
+	usings.Add("Stareater.GameData");
+	
+	Generate("ConstructionResult",
+		new DataInfo("DoneCount", "long"),
+		new DataInfo("InvestedPoints", "double"),
+		new DataInfo("Item", "Constructable"),
+		new DataInfo("PartialPoints", "double")
+	);
+#>
