@@ -33,6 +33,12 @@ namespace Stareater.GameLogic
 		public double MaxPopulation { get; private set; }
 		public double Organization { get; private set; }
 		
+		public double FarmerEfficiency { get; private set; }
+		public double GardenerEfficiency { get; private set; }
+		public double MinerEfficiency { get; private set; }
+		public double BuilderEfficiency { get; private set; }
+		public double ScientistEfficiency { get; private set; }
+		
 		public double Development { get; private set; }
 		public double Production { get; private set; }
 		
@@ -43,21 +49,36 @@ namespace Stareater.GameLogic
 				.UnionWith(playerProcessor.TechLevels).Get;
 		}
 		
-		public void Calculate(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
+		public void CalculateBaseEffects(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
 		{
 			//TODO: add colony buildings
 			var vars = calcVars(playerProcessor);
 			
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
 			this.Organization = formulas.Organization.Evaluate(vars);
+			
+			this.FarmerEfficiency = formulas.Farming.Evaluate(this.Organization, vars);
+			this.GardenerEfficiency = formulas.Gardening.Evaluate(this.Organization, vars);
+			this.MinerEfficiency = formulas.Mining.Evaluate(this.Organization, vars);
+			this.BuilderEfficiency = formulas.Industry.Evaluate(this.Organization, vars);
+			this.ScientistEfficiency = formulas.Development.Evaluate(this.Organization, vars);
 		}
 		
-		public void SimulateSpending(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
+		public void CalculateSpending(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
 		{
 			var vars = new Var(PlanetSizeKey, Colony.Location.Size).UnionWith(playerProcessor.TechLevels).Get;
 			
 			//TODO: include farming and mining
-			double desiredSpendingRatio = Colony.Owner.Orders.Constructions[Colony].SpendingRatio;
+			double availableProduction = 
+				Colony.Owner.Orders.ConstructionPlans[Colony].SpendingRatio * 
+				Colony.Population * 
+				this.BuilderEfficiency;
+			
+			var spendingPlan = new List<ConstructionResult>();
+			//UNDONE: tu si stao
+			//Colony.Owner.Orders.ConstructionPlans[Colony].Queue
+			
+			double desiredSpendingRatio = Colony.Owner.Orders.ConstructionPlans[Colony].SpendingRatio;
 			this.Development = (1 - desiredSpendingRatio) * Colony.Population * formulas.Development.Evaluate(Organization, vars);
 			this.Production = desiredSpendingRatio * Colony.Population * formulas.Industry.Evaluate(Organization, vars);
 		}
@@ -88,11 +109,6 @@ namespace Stareater.GameLogic
 			//TODO: calculate from population and system
 			//TODO: use Development getter
 			return 30e9;
-		}
-		
-		public void Preprocess()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

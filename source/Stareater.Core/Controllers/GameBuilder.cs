@@ -132,7 +132,7 @@ namespace Stareater.Controllers
 			foreach(Colony colony in colonies) {
 				var colonyProc = new ColonyProcessor(colony);
 				
-				colonyProc.Calculate(formulas, derivates.Players.Of(colony.Owner));
+				colonyProc.CalculateBaseEffects(formulas, derivates.Players.Of(colony.Owner));
 				derivates.Colonies.Add(colonyProc);
 			}
 			
@@ -148,7 +148,7 @@ namespace Stareater.Controllers
 				foreach(var colony in colonies.OwnedBy(player)) {
 					colony.Population = weights.Relative(colony) * totalPopulation;
 					//TODO: add infrastructure to colony
-					derivates.Colonies.Of(colony).Calculate(formulas, derivates.Players.Of(player));
+					derivates.Colonies.Of(colony).CalculateBaseEffects(formulas, derivates.Players.Of(player));
 				}
 			}
 
@@ -158,10 +158,10 @@ namespace Stareater.Controllers
 		{
 			foreach(Player player in players) {
 				foreach(var colony in states.Colonies.OwnedBy(player))
-					player.Orders.Constructions.Add(colony, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
+					player.Orders.ConstructionPlans.Add(colony, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
 				
 				foreach(var stellaris in states.Stellarises.OwnedBy(player))
-					player.Orders.Constructions.Add(stellaris, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
+					player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
 			}
 			
 			foreach (var player in players) {

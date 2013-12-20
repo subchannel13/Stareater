@@ -14,7 +14,7 @@ namespace Stareater.Galaxy
 		{
 			this.Location = planet;
 			
-			this.Population = 0;
+			this.Population = 1;
 		}
 
 		public Colony(Player owner, Planet planet, double population) : base(owner)
@@ -32,7 +32,6 @@ namespace Stareater.Galaxy
 		}
 		
 		public double Population { get; set; }
-		//TODO: add generalized buildings instead infrastructure
 
 		internal Colony Copy(Player player, Planet planet)
 		{

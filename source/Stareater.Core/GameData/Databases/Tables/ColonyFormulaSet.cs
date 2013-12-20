@@ -9,19 +9,21 @@ namespace Stareater.GameData.Databases.Tables
 		public Formula Organization { get; private set; }
 		
 		public PopulationActivityFormulas Farming { get; private set; }
+		public PopulationActivityFormulas Gardening { get; private set; }
 		public PopulationActivityFormulas Mining { get; private set; }
 		
 		public PopulationActivityFormulas Development { get; private set; }
 		public PopulationActivityFormulas Industry { get; private set; }
 		
 		public ColonyFormulaSet(Formula maxPopulation, Formula organization, 
-			PopulationActivityFormulas farming, PopulationActivityFormulas mining, 
+			PopulationActivityFormulas farming, PopulationActivityFormulas gardening, PopulationActivityFormulas mining, 
 			PopulationActivityFormulas development, PopulationActivityFormulas industry)
 		{
 			this.MaxPopulation = maxPopulation;
 			this.Organization = organization;
 			
 			this.Farming = farming;
+			this.Gardening = gardening;
 			this.Mining = mining;
 			this.Development = development;
 			this.Industry = industry;

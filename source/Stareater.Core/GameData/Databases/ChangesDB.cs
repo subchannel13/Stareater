@@ -14,13 +14,13 @@ namespace Stareater.GameData.Databases
 		public IDictionary<string, int> DevelopmentQueue { get; private set; }
 		public IDictionary<string, int> ResearchQueue { get; private set; }
 		
-		public IDictionary<AConstructionSite, ConstructionOrders> Constructions { get; private set; }
+		public IDictionary<AConstructionSite, ConstructionOrders> ConstructionPlans { get; private set; }
 		
 		public ChangesDB()
 		{
 			this.DevelopmentQueue = new Dictionary<string, int>();
 			this.ResearchQueue = new Dictionary<string, int>();
-			this.Constructions = new Dictionary<AConstructionSite, ConstructionOrders>();
+			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
 		}
 		
 		public void Reset(ISet<string> validTechs,
@@ -30,12 +30,12 @@ namespace Stareater.GameData.Databases
 			ResearchQueue = resetTechQueue(ResearchQueue, validTechs);
 			
 			var validSites = validColonies.Concat(validStellarises);
-			var oldSpendings = this.Constructions;
-			this.Constructions = validSites.ToDictionary(x => x, x => new ConstructionOrders(DefaultSiteSpendingRatio));
+			var oldSpendings = this.ConstructionPlans;
+			this.ConstructionPlans = validSites.ToDictionary(x => x, x => new ConstructionOrders(DefaultSiteSpendingRatio));
 			
 			foreach (var site in validSites) {
 				if (!oldSpendings.ContainsKey(site))
-					Constructions[site] = oldSpendings[site];
+					ConstructionPlans[site] = oldSpendings[site];
 			}
 		}
 		
@@ -57,7 +57,7 @@ namespace Stareater.GameData.Databases
 		{
 			ChangesDB copy = new ChangesDB();
 
-			copy.Constructions = this.Constructions.ToDictionary(
+			copy.ConstructionPlans = this.ConstructionPlans.ToDictionary(
 				x => playersRemap.Site(x.Key),
 				x => x.Value.Copy());
 

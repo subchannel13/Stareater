@@ -32,22 +32,18 @@ namespace Stareater.GameLogic
 			return copy;
 		}
 		
-		public void Calculate()
-		{
-			//TODO: calculate stuff like migration
-		}
-		
-		public void SimulateSpending()
-		{
-			//TODO: similar to colony processor
-		}
-		
-		public void Preprocess()
+		public void CalculateBaseEffects()
 		{
 			/*
 			 * TODO: Preprocess stars
 			 * - Calculate system effects
 			 */
+			//TODO: Where to calculate stuff like migration?
+		}
+		
+		public void CalculateSpending()
+		{
+			//TODO: similar to colony processor
 		}
 	}
 }

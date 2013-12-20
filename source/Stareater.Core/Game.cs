@@ -68,15 +68,19 @@ namespace Stareater
 		
 		public void ProcessPrecombat()
 		{
+			foreach (var stellaris in this.Derivates.Stellarises)
+				stellaris.CalculateBaseEffects();
+			foreach(var colonyProc in this.Derivates.Colonies)
+				colonyProc.CalculateBaseEffects(Statics.ColonyFormulas, Derivates.Of(colonyProc.Owner));
+			
+			foreach (var stellaris in this.Derivates.Stellarises)
+				stellaris.CalculateSpending();
+			foreach(var colonyProc in this.Derivates.Colonies)
+				colonyProc.CalculateSpending(Statics.ColonyFormulas, Derivates.Of(colonyProc.Owner));
+			
 			//TODO: Include star system worksforce allocation
 			foreach(var playerProc in this.Derivates.Players)
 				playerProc.ProcessPrecombat(this.Derivates.Colonies.OwnedBy(playerProc.Player));
-			
-			foreach (var stellaris in this.Derivates.Stellarises)
-				stellaris.Preprocess();
-			
-			foreach(var colonyProc in this.Derivates.Colonies)
-				colonyProc.Preprocess();
 			
 			/*
 			 * TODO: Colonies, 1st pass
