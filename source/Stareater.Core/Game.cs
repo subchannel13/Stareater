@@ -73,10 +73,13 @@ namespace Stareater
 			foreach(var colonyProc in this.Derivates.Colonies)
 				colonyProc.CalculateBaseEffects(Statics.ColonyFormulas, Derivates.Of(colonyProc.Owner));
 			
-			foreach (var stellaris in this.Derivates.Stellarises)
-				stellaris.CalculateSpending();
 			foreach(var colonyProc in this.Derivates.Colonies)
 				colonyProc.CalculateSpending(Statics.ColonyFormulas, Derivates.Of(colonyProc.Owner));
+			foreach (var stellaris in this.Derivates.Stellarises)
+				stellaris.CalculateSpending(
+					Derivates.Of(stellaris.Owner),
+					this.Derivates.Colonies.At(stellaris.Location)
+				);
 			
 			//TODO: Include star system worksforce allocation
 			foreach(var playerProc in this.Derivates.Players)

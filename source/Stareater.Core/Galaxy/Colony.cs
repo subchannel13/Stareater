@@ -35,7 +35,12 @@ namespace Stareater.Galaxy
 
 		internal Colony Copy(Player player, Planet planet)
 		{
-			return new Colony(player, planet, this.Population);
+			var copy = new Colony(player, planet, this.Population);
+
+			foreach (var leftovers in this.Leftovers)
+				copy.Leftovers.Add(leftovers.Key, leftovers.Value);
+
+			return copy;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
@@ -9,7 +10,7 @@ using Stareater.GameData;
 
 namespace Stareater.GameLogic
 {
-	class ColonyProcessor
+	class ColonyProcessor : AConstructionSiteProcessor
 	{
 		private const string InfrastructureKey = "factories";
 		private const string MaxPopulationKey = "maxPop";
@@ -38,9 +39,9 @@ namespace Stareater.GameLogic
 		public double MinerEfficiency { get; private set; }
 		public double BuilderEfficiency { get; private set; }
 		public double ScientistEfficiency { get; private set; }
-		
+
+		public double WorkingPopulation { get; private set; }
 		public double Development { get; private set; }
-		public double Production { get; private set; }
 		
 		private IDictionary<string, double> calcVars(PlayerProcessor playerProcessor)
 		{
@@ -60,37 +61,52 @@ namespace Stareater.GameLogic
 			this.FarmerEfficiency = formulas.Farming.Evaluate(this.Organization, vars);
 			this.GardenerEfficiency = formulas.Gardening.Evaluate(this.Organization, vars);
 			this.MinerEfficiency = formulas.Mining.Evaluate(this.Organization, vars);
+			//TODO: factor in miners
 			this.BuilderEfficiency = formulas.Industry.Evaluate(this.Organization, vars);
 			this.ScientistEfficiency = formulas.Development.Evaluate(this.Organization, vars);
+
+			//TODO: factor in farmers
+			this.WorkingPopulation = this.Colony.Population;
 		}
 		
 		public void CalculateSpending(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
 		{
-			var vars = new Var(PlanetSizeKey, Colony.Location.Size).UnionWith(playerProcessor.TechLevels).Get;
-			
-			//TODO: include farming and mining
-			double availableProduction = 
+			var vars = this.Effects().UnionWith(playerProcessor.TechLevels).Get;
+
+			double industryPotential = Colony.Population * this.BuilderEfficiency;
+			double industryPoints = 
 				Colony.Owner.Orders.ConstructionPlans[Colony].SpendingRatio * 
-				Colony.Population * 
-				this.BuilderEfficiency;
+				industryPotential;
 			
-			var spendingPlan = new List<ConstructionResult>();
-			//UNDONE: tu si stao
-			//Colony.Owner.Orders.ConstructionPlans[Colony].Queue
-			
-			double desiredSpendingRatio = Colony.Owner.Orders.ConstructionPlans[Colony].SpendingRatio;
-			this.Development = (1 - desiredSpendingRatio) * Colony.Population * formulas.Development.Evaluate(Organization, vars);
-			this.Production = desiredSpendingRatio * Colony.Population * formulas.Industry.Evaluate(Organization, vars);
+			this.SpendingPlan = simulateSpending(
+				Colony, 
+				industryPoints, 
+				Colony.Owner.Orders.ConstructionPlans[Colony].Queue, 
+				vars
+			);
+			this.Production = this.SpendingPlan.Sum(x => x.InvestedPoints);
+
+			this.SpendingRatioEffective = (industryPotential > 0) ?
+				this.Production / industryPotential :
+				0;
 		}
 		
-		public IDictionary<string, double> Effects()
+		public void CalculateDevelopment(double systemSpandingRatio)
+		{
+			this.Development = 
+				(1 - this.SpendingRatioEffective * systemSpandingRatio) *
+				this.WorkingPopulation *
+				this.ScientistEfficiency;
+		}
+
+		public Var Effects()
 		{
 			var vars = new Var(PlanetSizeKey, Colony.Location.Size);
 			vars.And(InfrastructureKey, 0); //TODO: add as building count
 			vars.And(MaxPopulationKey, MaxPopulation);
 			vars.And(PopulationKey, Colony.Population);
 			
-			return vars.Get;
+			return vars;
 		}
 
 		internal ColonyProcessor Copy(PlayersRemap playerRemap)
@@ -102,13 +118,6 @@ namespace Stareater.GameLogic
 			copy.Production = this.Production;
 
 			return copy;
-		}
-		
-		public double DevelopmentPoints()
-		{
-			//TODO: calculate from population and system
-			//TODO: use Development getter
-			return 30e9;
 		}
 	}
 }

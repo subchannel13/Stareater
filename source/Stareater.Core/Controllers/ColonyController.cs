@@ -18,8 +18,8 @@ namespace Stareater.Controllers
 			get {
 				var playerTechs = Game.States.TechnologyAdvances.Of(Game.CurrentPlayer);
 				var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
-				var colonyEffencts = Game.Derivates.Colonies.Of((Colony)Site).Effects();
-			
+				var colonyEffencts = Game.Derivates.Colonies.Of((Colony)Site).Effects().Get;
+			//TODO: filter colony buildings
 				foreach(var constructable in Game.Statics.Constructables)
 					if (Prerequisite.AreSatisfied(constructable.Prerequisites, 0, techLevels) && constructable.Condition.Evaluate(colonyEffencts) > 0)
 						yield return new ConstructableItem(constructable, Game.Derivates.Players.Of(Game.CurrentPlayer));

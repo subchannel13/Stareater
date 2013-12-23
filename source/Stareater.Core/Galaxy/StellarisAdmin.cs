@@ -14,7 +14,12 @@ namespace Stareater.Galaxy
 		
 		internal StellarisAdmin Copy(Player player, StarData star)
 		{
-			return new StellarisAdmin(player, star);
+			var copy = new StellarisAdmin(player, star);
+
+			foreach (var leftovers in this.Leftovers)
+				copy.Leftovers.Add(leftovers.Key, leftovers.Value);
+
+			return copy;
 		}
 	}
 }

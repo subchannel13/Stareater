@@ -78,6 +78,7 @@
     <Compile Include="Controllers\Data\GameCopy.cs">
       <DependentUpon>GameCopy.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Controllers\Data\GameState.cs" />
     <Compile Include="Controllers\Data\IGameStateListener.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Galaxy\Builders\WormholeEndpoints.cs">
       <DependentUpon>WormholeEndpoints.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Galaxy\Colony.cs" />
     <Compile Include="Galaxy\Fleet.cs" />
@@ -113,14 +115,17 @@
     <Compile Include="GameData\Databases\Tables\StellarisCollection.cs">
       <DependentUpon>StellarisCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\GalaxyRemap.cs">
       <DependentUpon>GalaxyRemap.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\PlayersRemap.cs">
-      <DependentUpon>PlayersRemap.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlayersRemap.tt</DependentUpon>
     </Compile>
     <Compile Include="GameData\SiteType.cs" />
     <Compile Include="GameData\Databases\ChangesDB.cs" />
@@ -129,11 +134,13 @@
     <Compile Include="GameData\Databases\Tables\ColonyCollection.cs">
       <DependentUpon>ColonyCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\Tables\ColonyFormulaSet.cs" />
     <Compile Include="GameData\Databases\Tables\ColonyProcessorCollection.cs">
       <DependentUpon>ColonyProcessorCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\Tables\ConstructionOrders.cs" />
     <Compile Include="GameData\Databases\Tables\PlanetCollection.cs">
@@ -144,6 +151,7 @@
     <Compile Include="GameData\Databases\Tables\PlayerProcessorCollection.cs">
       <DependentUpon>PlayerProcessorCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\Tables\PopulationActivityFormulas.cs" />
     <Compile Include="GameData\Databases\Tables\StarCollection.cs">
@@ -154,10 +162,12 @@
     <Compile Include="GameData\Databases\Tables\TechProgressCollection.cs">
       <DependentUpon>TechProgressCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\Tables\WormholeCollection.cs">
       <DependentUpon>WormholeCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\TemporaryDB.cs" />
     <Compile Include="GameData\Intelligence.cs" />
@@ -174,11 +184,14 @@
     <Compile Include="GameData\Wormhole.cs">
       <DependentUpon>Wormhole.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameLogic\AConstructionSiteProcessor.cs" />
     <Compile Include="GameLogic\ColonyProcessor.cs" />
     <Compile Include="GameLogic\ConstructionResult.cs">
       <DependentUpon>ConstructionResult.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameLogic\PlayerProcessor.cs" />
     <Compile Include="GameLogic\StellarisProcessor.cs" />
@@ -291,7 +304,7 @@
     </None>
     <None Include="GameData\PlayersRemap.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PlayerRemap.cs</LastGenOutput>
+      <LastGenOutput>PlayersRemap.cs</LastGenOutput>
     </None>
     <None Include="GameData\Wormhole.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
