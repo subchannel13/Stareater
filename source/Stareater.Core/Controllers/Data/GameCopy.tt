@@ -1,5 +1,4 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ output extension=".cs" #>
+﻿<#@ output extension=".cs" #>
 <#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
 	
 	namespaceName = "Stareater.Controllers.Data";

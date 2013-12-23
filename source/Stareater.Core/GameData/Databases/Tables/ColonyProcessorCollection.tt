@@ -1,5 +1,4 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ output extension=".cs" #>
+﻿<#@ output extension=".cs" #>
 <#@ include file="$(ProjectDir)/Utils/Collections/IndexedCollectionBase.tt" #><#
 	
 	namespaceName = "Stareater.GameData.Databases.Tables";
@@ -10,6 +9,7 @@
 	
 	Generate("ColonyProcessorCollection", "ColonyProcessor",
 		new ViewInfo("OwnedBy", "Player", "Owner", ViewType.Collection),
-		new ViewInfo("Of", "Colony", "Colony", ViewType.Scalar)
+		new ViewInfo("Of", "Colony", "Colony", ViewType.Scalar),
+		new ViewInfo("At", "StarData", "Colony.Star", ViewType.Collection)
 	);
 #>

@@ -108,8 +108,8 @@ namespace Stareater.GameLogic
 		
 		public void ProcessPrecombat(IList<ColonyProcessor> colonyProcessors)
 		{
-			foreach(var colonyProc in colonyProcessors)
-				developmentPoints += colonyProc.DevelopmentPoints();
+			foreach (var colonyProc in colonyProcessors)
+				developmentPoints += colonyProc.Development;
 		}
 		#endregion
 		

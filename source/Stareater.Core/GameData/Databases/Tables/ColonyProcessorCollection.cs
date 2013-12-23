@@ -14,6 +14,7 @@ namespace Stareater.GameData.Databases.Tables
 
 		Dictionary<Player, List<ColonyProcessor>> OwnedByIndex = new Dictionary<Player, List<ColonyProcessor>>();
 		Dictionary<Colony, ColonyProcessor> OfIndex = new Dictionary<Colony, ColonyProcessor>();
+		Dictionary<StarData, List<ColonyProcessor>> AtIndex = new Dictionary<StarData, List<ColonyProcessor>>();
 
 		public IList<ColonyProcessor> OwnedBy(Player key) {
 			if (OwnedByIndex.ContainsKey(key))
@@ -32,6 +33,13 @@ namespace Stareater.GameData.Databases.Tables
 		public bool OfContains(Colony key) {
 			return OfIndex.ContainsKey(key);
 		}
+
+		public IList<ColonyProcessor> At(StarData key) {
+			if (AtIndex.ContainsKey(key))
+				return AtIndex[key];
+			
+			return new List<ColonyProcessor>();
+		}
 	
 		public void Add(ColonyProcessor item)
 		{
@@ -42,6 +50,10 @@ namespace Stareater.GameData.Databases.Tables
 			OwnedByIndex[item.Owner].Add(item);
 			if (!OfIndex.ContainsKey(item.Colony))
 				OfIndex.Add(item.Colony, item);
+
+			if (!AtIndex.ContainsKey(item.Colony.Star))
+				AtIndex.Add(item.Colony.Star, new List<ColonyProcessor>());
+			AtIndex[item.Colony.Star].Add(item);
 		}
 
 		public void Add(IEnumerable<ColonyProcessor> items)
@@ -56,6 +68,7 @@ namespace Stareater.GameData.Databases.Tables
 
 			OwnedByIndex.Clear();
 			OfIndex.Clear();
+			AtIndex.Clear();
 		}
 
 		public bool Contains(ColonyProcessor item)
@@ -83,6 +96,7 @@ namespace Stareater.GameData.Databases.Tables
 			if (innerSet.Remove(item)) {
 				OwnedByIndex[item.Owner].Remove(item);
 				OfIndex.Remove(item.Colony);
+				AtIndex[item.Colony.Star].Remove(item);
 			
 				return true;
 			}

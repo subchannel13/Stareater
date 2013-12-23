@@ -1,6 +1,6 @@
 :Constructables
 IND_NAME = Industrialisation
-IND_DESC = Factories, laboratories, farming and mining machinery.}
+IND_DESC = Factories, laboratories, farming and mining machinery.
 JUMPGATE_NAME = Jump gate
 JUMPGATE_DESC = No description
 POP_NAME = Colonization
