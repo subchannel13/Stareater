@@ -71,14 +71,14 @@ namespace Stareater.GameLogic
 		
 		public void CalculateSpending(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
 		{
-			var vars = this.Effects().UnionWith(playerProcessor.TechLevels).Get;
+			var vars = this.LocalEffects().UnionWith(playerProcessor.TechLevels).Get;
 
 			double industryPotential = Colony.Population * this.BuilderEfficiency;
 			double industryPoints = 
 				Colony.Owner.Orders.ConstructionPlans[Colony].SpendingRatio * 
 				industryPotential;
 			
-			this.SpendingPlan = simulateSpending(
+			this.SpendingPlan = SimulateSpending(
 				Colony, 
 				industryPoints, 
 				Colony.Owner.Orders.ConstructionPlans[Colony].Queue, 
@@ -99,7 +99,7 @@ namespace Stareater.GameLogic
 				this.ScientistEfficiency;
 		}
 
-		public Var Effects()
+		public override Var LocalEffects()
 		{
 			var vars = new Var(PlanetSizeKey, Colony.Location.Size);
 			vars.And(InfrastructureKey, 0); //TODO: add as building count

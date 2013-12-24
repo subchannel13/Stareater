@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Stareater.GameData;
 using Stareater.Galaxy;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GameLogic
 {
@@ -13,7 +14,9 @@ namespace Stareater.GameLogic
 		public double SpendingRatioEffective { get; protected set; }
 		public IEnumerable<ConstructionResult> SpendingPlan { get; protected set; }
 
-		protected static IEnumerable<ConstructionResult> simulateSpending(
+		public abstract Var LocalEffects();
+
+		protected static IEnumerable<ConstructionResult> SimulateSpending(
 			AConstructionSite site, double industryPoints, 
 			IEnumerable<Constructable> queue, IDictionary<string, double> vars)
 		{

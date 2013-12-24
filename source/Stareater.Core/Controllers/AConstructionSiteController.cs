@@ -3,6 +3,8 @@ using System.Linq;
 using Stareater.Galaxy;
 using System.Collections.Generic;
 using Stareater.Controllers.Data;
+using Stareater.GameLogic;
+using Stareater.GameData;
 
 namespace Stareater.Controllers
 {
@@ -19,9 +21,33 @@ namespace Stareater.Controllers
 		}
 
 		public bool IsReadOnly { get; private set; }
+
+		internal abstract AConstructionSiteProcessor Processor { get; }
+
+		public IEnumerable<ConstructableItem> ConstructableItems
+		{
+			get
+			{
+				var playerTechs = Game.States.TechnologyAdvances.Of(Game.CurrentPlayer);
+				var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
+				var localEffencts = Processor.LocalEffects().Get;
+
+				foreach (var constructable in Game.Statics.Constructables)
+					if (Prerequisite.AreSatisfied(constructable.Prerequisites, 0, techLevels) &&
+						constructable.ConstructableAt == Site.Type &&
+						constructable.Condition.Evaluate(localEffencts) > 0)
+						yield return new ConstructableItem(constructable, Game.Derivates.Players.Of(Game.CurrentPlayer));
+			}
+		}
 		
-		public abstract IEnumerable<ConstructableItem> ConstructableItems { get; }
-		public abstract IEnumerable<ConstructableItem> ConstructionQueue { get; }
+		public IEnumerable<ConstructableItem> ConstructionQueue
+		{
+			get
+			{
+				foreach (var item in Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue)
+					yield return new ConstructableItem(item, Game.Derivates.Players.Of(Game.CurrentPlayer));
+			}
+		}
 		
 		public bool CanPick(ConstructableItem data)
 		{

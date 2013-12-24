@@ -23,7 +23,9 @@ namespace Stareater.Galaxy
 			this.Owner = owner;
 			this.id = NextId();
 		}
-		
+
+		public abstract SiteType Type { get; }
+
 		public override string ToString()
 		{
 			return "Construction site " + id;

@@ -4,6 +4,7 @@ using System.Linq;
 using Stareater.Controllers.Data;
 using Stareater.Galaxy;
 using Stareater.GameData;
+using Stareater.GameLogic;
 
 namespace Stareater.Controllers
 {
@@ -12,26 +13,10 @@ namespace Stareater.Controllers
 		internal ColonyController(Game game, Colony colony, bool readOnly) : 
 			base(colony, readOnly, game)
 		{ }
-		
-		public override IEnumerable<ConstructableItem> ConstructableItems
+
+		internal override AConstructionSiteProcessor Processor
 		{
-			get {
-				var playerTechs = Game.States.TechnologyAdvances.Of(Game.CurrentPlayer);
-				var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
-				var colonyEffencts = Game.Derivates.Colonies.Of((Colony)Site).Effects().Get;
-			//TODO: filter colony buildings
-				foreach(var constructable in Game.Statics.Constructables)
-					if (Prerequisite.AreSatisfied(constructable.Prerequisites, 0, techLevels) && constructable.Condition.Evaluate(colonyEffencts) > 0)
-						yield return new ConstructableItem(constructable, Game.Derivates.Players.Of(Game.CurrentPlayer));
-			}
-		}
-		
-		public override IEnumerable<ConstructableItem> ConstructionQueue
-		{
-			get {
-				foreach(var item in Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue)
-					yield return new ConstructableItem(item, Game.Derivates.Players.Of(Game.CurrentPlayer));
-			}
+			get { return Game.Derivates.Of((Colony)Site); }
 		}
 	}
 }
