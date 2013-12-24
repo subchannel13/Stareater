@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Stareater.Players;
+using Stareater.GameData;
 
 namespace Stareater.Galaxy
 {
@@ -31,6 +32,11 @@ namespace Stareater.Galaxy
 			}
 		}
 		
+		public override SiteType Type
+		{
+			get { return SiteType.Colony; }
+		}
+
 		public double Population { get; set; }
 
 		internal Colony Copy(Player player, Planet planet)

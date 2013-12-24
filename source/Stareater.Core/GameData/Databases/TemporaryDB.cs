@@ -4,6 +4,7 @@ using System.Linq;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameLogic;
 using Stareater.Players;
+using Stareater.Galaxy;
 
 namespace Stareater.GameData.Databases
 {
@@ -45,6 +46,16 @@ namespace Stareater.GameData.Databases
 		internal PlayerProcessor Of(Player player)
 		{
 			return this.Players.Of(player);
+		}
+
+		internal ColonyProcessor Of(Colony colony)
+		{
+			return this.Colonies.Of(colony);
+		}
+
+		internal StellarisProcessor Of(StellarisAdmin stellaris)
+		{
+			return this.Stellarises.Of(stellaris);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Stareater.Players;
+using Stareater.GameData;
 
 namespace Stareater.Galaxy
 {
@@ -11,7 +12,12 @@ namespace Stareater.Galaxy
 		{
 			this.Location = star;
 		}
-		
+
+		public override SiteType Type
+		{
+			get { return SiteType.StarSystem; }
+		}
+
 		internal StellarisAdmin Copy(Player player, StarData star)
 		{
 			var copy = new StellarisAdmin(player, star);

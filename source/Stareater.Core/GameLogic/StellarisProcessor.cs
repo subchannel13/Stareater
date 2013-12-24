@@ -64,7 +64,7 @@ namespace Stareater.GameLogic
 				Stellaris.Owner.Orders.ConstructionPlans[Stellaris].SpendingRatio *
 				industryPotential;
 
-			this.SpendingPlan = simulateSpending(
+			this.SpendingPlan = SimulateSpending(
 				Stellaris,
 				industryPoints,
 				Stellaris.Owner.Orders.ConstructionPlans[Stellaris].Queue,
@@ -78,6 +78,11 @@ namespace Stareater.GameLogic
 
 			foreach (var colonyProc in systemColonies)
 				colonyProc.CalculateDevelopment(this.SpendingRatioEffective);
+		}
+
+		public override Var LocalEffects()
+		{
+			return new Var();
 		}
 	}
 }
