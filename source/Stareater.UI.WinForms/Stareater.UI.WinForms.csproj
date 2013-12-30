@@ -276,10 +276,6 @@
       <Project>{452BB6D1-D27F-4D71-A05B-A6DDC4013E33}</Project>
       <Name>Stareater.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Zvjezdojedac\Zvjezdojedac.csproj">
-      <Project>{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}</Project>
-      <Name>Zvjezdojedac</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App icon.ico" />

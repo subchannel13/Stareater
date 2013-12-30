@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Stareater.Controllers.Data;
 using Stareater.GameLogic;
 using Stareater.GameData;
+using Stareater.Utils;
 
 namespace Stareater.Controllers
 {
@@ -23,6 +24,18 @@ namespace Stareater.Controllers
 		public bool IsReadOnly { get; private set; }
 
 		internal abstract AConstructionSiteProcessor Processor { get; }
+
+		public double DesiredSpendingRatio
+		{
+			get
+			{
+				return Site.Owner.Orders.ConstructionPlans[Site].SpendingRatio;
+			}
+			set
+			{
+				Site.Owner.Orders.ConstructionPlans[Site].SpendingRatio = Methods.Clamp(value, 0, 1);
+			}
+		}
 
 		public IEnumerable<ConstructableItem> ConstructableItems
 		{
@@ -76,7 +89,6 @@ namespace Stareater.Controllers
 				return;
 			
 			var item = Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue[fromIndex];
-			
 			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.RemoveAt(fromIndex);
 			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.Insert(toIndex, item);
 		}

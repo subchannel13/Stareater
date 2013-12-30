@@ -23,7 +23,8 @@ namespace Stareater.GUI
 			controller = siteController;
 			
 			industrySlider.Enabled = !siteController.IsReadOnly;
-			
+			industrySlider.Value = (int)(siteController.DesiredSpendingRatio * industrySlider.Maximum);
+
 			resetView();
 		}
 		
@@ -62,6 +63,11 @@ namespace Stareater.GUI
 				form.ShowDialog();
 			
 			resetView();
+		}
+
+		private void industrySlider_Scroll(object sender, ScrollEventArgs e)
+		{
+			controller.DesiredSpendingRatio = e.NewValue / (double)industrySlider.Maximum;
 		}
 	}
 }
