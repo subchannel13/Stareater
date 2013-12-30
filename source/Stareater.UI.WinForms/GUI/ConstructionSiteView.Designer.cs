@@ -66,12 +66,12 @@ namespace Stareater.GUI
 			// 
 			// industrySlider
 			// 
-			this.industrySlider.LargeChange = 20;
+			this.industrySlider.LargeChange = 1;
 			this.industrySlider.Location = new System.Drawing.Point(99, 25);
-			this.industrySlider.Maximum = 220;
 			this.industrySlider.Name = "industrySlider";
 			this.industrySlider.Size = new System.Drawing.Size(250, 17);
 			this.industrySlider.TabIndex = 2;
+			this.industrySlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.industrySlider_Scroll);
 			// 
 			// estimationLabel
 			// 
@@ -105,6 +105,7 @@ namespace Stareater.GUI
 			this.Size = new System.Drawing.Size(358, 116);
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 		private System.Windows.Forms.Button detailsButton;
 		private System.Windows.Forms.Label estimationLabel;

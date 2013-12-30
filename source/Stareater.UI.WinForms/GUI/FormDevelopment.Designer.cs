@@ -29,7 +29,7 @@ namespace Stareater.GUI
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.topicList = new Zvjezdojedac.GUI.ControlListView();
+			this.topicList = new Stareater.GUI.ControlListView();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
@@ -224,6 +224,6 @@ namespace Stareater.GUI
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label3;
-		private Zvjezdojedac.GUI.ControlListView topicList;
+		private Stareater.GUI.ControlListView topicList;
 	}
 }

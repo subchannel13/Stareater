@@ -1,7 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-# SharpDevelop 4.3
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9DB172D7-F1B2-4885-8A10-8EC893BF02B5}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
@@ -22,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stareater.UI.WinForms", "St
 	ProjectSection(ProjectDependencies) = postProject
 		{C4CF0B32-8030-450B-B865-AE1F69F2CEE3} = {C4CF0B32-8030-450B-B865-AE1F69F2CEE3}
 		{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A} = {A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}
+		{E03F94E5-D257-4B99-BE8D-18F2B2FDC41D} = {E03F94E5-D257-4B99-BE8D-18F2B2FDC41D}
+		{651074F0-FD84-47B3-A294-ED3C79B6FA72} = {651074F0-FD84-47B3-A294-ED3C79B6FA72}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stareater.Players.DefaultAI", "Stareater.Players.DefaultAI\Stareater.Players.DefaultAI.csproj", "{A5AA233E-FED9-4B2E-A9E1-6EC13BDEBF1A}"

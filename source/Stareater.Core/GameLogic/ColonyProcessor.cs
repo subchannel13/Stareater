@@ -94,7 +94,8 @@ namespace Stareater.GameLogic
 		public void CalculateDevelopment(double systemSpandingRatio)
 		{
 			this.Development = 
-				(1 - this.SpendingRatioEffective * systemSpandingRatio) *
+				(1 - this.SpendingRatioEffective) * 
+				(1 - systemSpandingRatio) *
 				this.WorkingPopulation *
 				this.ScientistEfficiency;
 		}

@@ -52,6 +52,7 @@
 			this.Name = "FormMain";
 			this.Text = "Form1";
 			this.ResumeLayout(false);
+
 		}
 		private System.Windows.Forms.Button button1;
 
