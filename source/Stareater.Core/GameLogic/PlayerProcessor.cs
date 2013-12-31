@@ -5,6 +5,7 @@ using Stareater.GameData;
 using Stareater.GameData.Databases;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
+using Stareater.Galaxy;
 
 namespace Stareater.GameLogic
 {
@@ -113,7 +114,7 @@ namespace Stareater.GameLogic
 		}
 		#endregion
 		
-		public void ProcessPostcombat(StatesDB states)
+		public void ProcessPostcombat(StatesDB states, TemporaryDB derivates)
 		{
 			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
 			var advanceOrder = this.DevelopmentOrder(states.TechnologyAdvances);
@@ -122,17 +123,72 @@ namespace Stareater.GameLogic
 			{
 				developmentPoints = tech.Invest(developmentPoints, techLevels);
 			}
-			
+			this.Calculate(states.TechnologyAdvances.Of(Player));
+
 			var newTechLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
-			Player.Orders.Reset(
-				new HashSet<string>(
+			var validTechs = new HashSet<string>(
 					states.TechnologyAdvances
 					.Where(x => x.CanProgress(newTechLevels))
 					.Select(x => x.Topic.IdCode)
-				),
-				states.Colonies.OwnedBy(Player),
-				states.Stellarises.OwnedBy(Player)
-			);
+				);
+
+			Player.Orders.DevelopmentQueue = updateTechQueue(Player.Orders.DevelopmentQueue, validTechs);
+			Player.Orders.ResearchQueue = updateTechQueue(Player.Orders.ResearchQueue, validTechs);
+
+			var oldPlans = Player.Orders.ConstructionPlans;
+			Player.Orders.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
+
+			foreach (var colony in states.Colonies.OwnedBy(Player))
+				if (oldPlans.ContainsKey(colony)) {
+					var updatedPlans = updateConstructionPlans(
+						oldPlans[colony],
+						derivates.Of(colony),
+						this.TechLevels
+					);
+
+					Player.Orders.ConstructionPlans.Add(colony, updatedPlans);
+				}
+				else
+					Player.Orders.ConstructionPlans.Add(colony, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
+
+			foreach (var stellaris in states.Stellarises.OwnedBy(Player))
+				if (oldPlans.ContainsKey(stellaris)) {
+					var updatedPlans = updateConstructionPlans(
+						oldPlans[stellaris],
+						derivates.Of(stellaris),
+						this.TechLevels
+					);
+
+					Player.Orders.ConstructionPlans.Add(stellaris, updatedPlans);
+				}
+				else
+					Player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
+		}
+
+		private static IDictionary<string, int> updateTechQueue(IDictionary<string, int> queue, ISet<string> validItems)
+		{
+			var newOrder = queue
+				.Where(x => validItems.Contains(x.Key))
+				.OrderBy(x => x.Value)
+				.Select(x => x.Key).ToArray();
+
+			var newQueue = new Dictionary<string, int>();
+			for (int i = 0; i < newOrder.Length; i++)
+				newQueue.Add(newOrder[i], i);
+
+			return newQueue;
+		}
+
+		private ConstructionOrders updateConstructionPlans(ConstructionOrders oldOrders, AConstructionSiteProcessor processor, IDictionary<string, double> playersVars)
+		{
+			var newOrders = new ConstructionOrders(oldOrders.SpendingRatio);
+			var vars = processor.LocalEffects().UnionWith(playersVars).Get;
+
+			foreach (var item in oldOrders.Queue)
+				if (item.Condition.Evaluate(vars) >= 0)
+					newOrders.Queue.Add(item);
+
+			return newOrders;
 		}
 	}
 }

@@ -114,7 +114,7 @@ namespace Stareater
 		{
 			// TODO: Process research
 			foreach(var playerProc in this.Derivates.Players)
-				playerProc.ProcessPostcombat(States);
+				playerProc.ProcessPostcombat(States, Derivates);
 			
 			// TODO: Update ship designs
 			
