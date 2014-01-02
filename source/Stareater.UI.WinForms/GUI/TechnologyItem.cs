@@ -36,11 +36,6 @@ namespace Stareater.GUI
 			investmentLabel.Text = thousandsFormat.Format(topicInfo.Investment);
 		}
 		
-		void thumbnailImage_Paint(object sender, PaintEventArgs e)
-		{
-			e.Graphics.DrawRectangle(new Pen(Color.Gray, 2), e.ClipRectangle);
-		}
-		
 		void thumbnailImage_Click(object sender, EventArgs e)
 		{
 			this.InvokeOnClick(this, e);

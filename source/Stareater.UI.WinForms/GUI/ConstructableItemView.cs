@@ -10,6 +10,9 @@ namespace Stareater.GUI
 {
 	public partial class ConstructableItemView : UserControl
 	{
+		private static readonly Color EnabledColor = Color.Silver;
+		private static readonly Color DisabledColor = Color.FromArgb(216, 216, 216);
+		
 		private ConstructableItem data;
 		
 		public ConstructableItemView()
@@ -68,6 +71,7 @@ namespace Stareater.GUI
 		private void thumbnail_EnabledChanged(object sender, EventArgs e)
 		{
 			thumbnail.Image = this.Enabled ? ImageCache.Get[data.ImagePath] : ImageCache.Get.Disabled(data.ImagePath);
+			this.BackColor = this.Enabled ? EnabledColor : DisabledColor;
 		}
 	}
 }
