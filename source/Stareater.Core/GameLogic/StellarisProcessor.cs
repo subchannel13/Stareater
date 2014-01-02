@@ -13,7 +13,7 @@ namespace Stareater.GameLogic
 	{
 		public StellarisAdmin Stellaris { get; set; }
 
-		public StellarisProcessor(StellarisAdmin stellaris)
+		public StellarisProcessor(StellarisAdmin stellaris) : base()
 		{
 			this.Stellaris = stellaris;
 		}

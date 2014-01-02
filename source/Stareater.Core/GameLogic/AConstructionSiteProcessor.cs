@@ -14,6 +14,11 @@ namespace Stareater.GameLogic
 		public double SpendingRatioEffective { get; protected set; }
 		public IEnumerable<ConstructionResult> SpendingPlan { get; protected set; }
 
+		protected AConstructionSiteProcessor()
+		{
+			this.SpendingPlan = new ConstructionResult[0];
+		}
+		
 		public abstract Var LocalEffects();
 
 		protected static IEnumerable<ConstructionResult> SimulateSpending(
@@ -34,12 +39,12 @@ namespace Stareater.GameLogic
 				if (site.Leftovers.ContainsKey(buildingItem))
 					investment += site.Leftovers[buildingItem];
 
-				double completed = (long)Math.Floor(investment / cost);
+				double completed = investment / cost; //FIXME: possible division by zero
 				double countLimit = buildingItem.TurnLimit.Evaluate(vars);
 
 				if (completed > countLimit) {
 					spendingPlan.Add(new ConstructionResult(
-						(long)countLimit,
+						countLimit,
 						countLimit * cost,
 						buildingItem,
 						0
@@ -49,7 +54,7 @@ namespace Stareater.GameLogic
 				}
 				else {
 					spendingPlan.Add(new ConstructionResult(
-						(long)completed,
+						completed,
 						investment,
 						buildingItem,
 						investment - completed * cost

@@ -8,7 +8,8 @@
 	usings.Add("Stareater.Players");
 	
 	Generate("StellarisProcessorCollection", "StellarisProcessor",
-		new ViewInfo("OwnedBy", "Player", "Owner", ViewType.Collection),
-		new ViewInfo("Of", "StellarisAdmin", "Stellaris", ViewType.Scalar)
+		new ViewInfo("At", "StarData", "Location", ViewType.Scalar),
+		new ViewInfo("Of", "StellarisAdmin", "Stellaris", ViewType.Scalar),
+		new ViewInfo("OwnedBy", "Player", "Owner", ViewType.Collection)
 	);
 #>

@@ -22,20 +22,10 @@ namespace Stareater.GUI
 		{
 			controller = siteController;
 			
-			industrySlider.Enabled = !siteController.IsReadOnly;
 			industrySlider.Value = (int)(siteController.DesiredSpendingRatio * industrySlider.Maximum);
 
 			resetView();
 		}
-		
-		/*public void SetView(StarManagementController starController)
-		{
-			controller = starController;
-			
-			industrySlider.Enabled = !starController.IsReadOnly;
-			
-			resetView();
-		}*/
 		
 		private void resetView()
 		{
@@ -47,11 +37,28 @@ namespace Stareater.GUI
 			if (controller.ConstructionQueue.Count() == 0) {
 				this.queueButton.Text = context["NotBuilding"].Text();
 				this.queueButton.Image = null;
+				
+				industrySlider.Enabled = false;
 			}
 			else {
 				this.queueButton.Text = "";
 				this.queueButton.Image = ImageCache.Get[controller.ConstructionQueue.First().ImagePath];
+				
+				industrySlider.Enabled = !controller.IsReadOnly;
 			}
+			
+			resetEstimation();
+		}
+		
+		private void resetEstimation()
+		{
+			var constructionItem = controller.ConstructionQueue.FirstOrDefault();
+			
+			//TODO: set localized text
+			if (constructionItem != null)
+				estimationLabel.Text = constructionItem.PerTurnDone.Value.ToString("#.00");
+			else
+				estimationLabel.Text = "No construction plans";
 		}
 		
 		private void queueButton_Click(object sender, EventArgs e)
@@ -68,6 +75,7 @@ namespace Stareater.GUI
 		private void industrySlider_Scroll(object sender, ScrollEventArgs e)
 		{
 			controller.DesiredSpendingRatio = e.NewValue / (double)industrySlider.Maximum;
+			resetEstimation();
 		}
 	}
 }

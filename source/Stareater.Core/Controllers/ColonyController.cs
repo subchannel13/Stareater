@@ -18,5 +18,21 @@ namespace Stareater.Controllers
 		{
 			get { return Game.Derivates.Of((Colony)Site); }
 		}
+		
+		protected override void RecalculateSpending()
+		{
+			var colony = Site as Colony;
+			var playerProc = Game.Derivates.Of(Site.Owner);
+			
+			Game.Derivates.Of(colony).CalculateSpending(
+				Game.Statics.ColonyFormulas,
+				playerProc
+			);
+			
+			Game.Derivates.Stellarises.At(colony.Star).CalculateSpending(
+				playerProc,
+				Game.Derivates.Colonies.At(colony.Star)
+			);
+		}
 	}
 }
