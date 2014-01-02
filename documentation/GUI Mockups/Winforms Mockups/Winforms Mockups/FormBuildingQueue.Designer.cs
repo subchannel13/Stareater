@@ -116,6 +116,7 @@ namespace Winforms_Mockups
 			// controlListView2
 			// 
 			this.controlListView2.AutoScroll = true;
+			this.controlListView2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.controlListView2.Controls.Add(this.constructableItem1);
 			this.controlListView2.Controls.Add(this.constructableItem2);
 			this.controlListView2.Controls.Add(this.constructableItem3);

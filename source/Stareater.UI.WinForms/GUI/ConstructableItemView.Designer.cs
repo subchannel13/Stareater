@@ -37,7 +37,7 @@ namespace Stareater.GUI
 			// 
 			// thumbnail
 			// 
-			this.thumbnail.Location = new System.Drawing.Point(0, 0);
+			this.thumbnail.Location = new System.Drawing.Point(1, 1);
 			this.thumbnail.Name = "thumbnail";
 			this.thumbnail.Size = new System.Drawing.Size(36, 36);
 			this.thumbnail.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -73,12 +73,12 @@ namespace Stareater.GUI
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.BackColor = System.Drawing.Color.Silver;
 			this.Controls.Add(this.costLabel);
 			this.Controls.Add(this.nameLabel);
 			this.Controls.Add(this.thumbnail);
 			this.Name = "ConstructableItemView";
-			this.Size = new System.Drawing.Size(148, 36);
+			this.Size = new System.Drawing.Size(150, 38);
 			((System.ComponentModel.ISupportInitialize)(this.thumbnail)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

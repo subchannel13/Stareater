@@ -38,7 +38,7 @@ namespace Stareater.GUI
 			// 
 			// thumbnailImage
 			// 
-			this.thumbnailImage.Location = new System.Drawing.Point(0, 0);
+			this.thumbnailImage.Location = new System.Drawing.Point(1, 1);
 			this.thumbnailImage.Name = "thumbnailImage";
 			this.thumbnailImage.Size = new System.Drawing.Size(36, 36);
 			this.thumbnailImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -80,12 +80,13 @@ namespace Stareater.GUI
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.Color.Silver;
 			this.Controls.Add(this.investmentLabel);
 			this.Controls.Add(this.costLabel);
 			this.Controls.Add(this.nameLabel);
 			this.Controls.Add(this.thumbnailImage);
 			this.Name = "QueuedConstructionView";
-			this.Size = new System.Drawing.Size(200, 36);
+			this.Size = new System.Drawing.Size(200, 38);
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

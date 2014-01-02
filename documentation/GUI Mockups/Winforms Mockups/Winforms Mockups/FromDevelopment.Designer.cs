@@ -70,8 +70,6 @@ namespace Winforms_Mockups
 			// 
 			// researchItem1
 			// 
-			this.researchItem1.BackColor = System.Drawing.SystemColors.Control;
-			this.researchItem1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.researchItem1.Location = new System.Drawing.Point(3, 3);
 			this.researchItem1.Name = "researchItem1";
 			this.researchItem1.Size = new System.Drawing.Size(250, 50);
@@ -79,8 +77,6 @@ namespace Winforms_Mockups
 			// 
 			// researchItem2
 			// 
-			this.researchItem2.BackColor = System.Drawing.SystemColors.Control;
-			this.researchItem2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.researchItem2.Location = new System.Drawing.Point(3, 59);
 			this.researchItem2.Name = "researchItem2";
 			this.researchItem2.Size = new System.Drawing.Size(250, 50);
@@ -88,8 +84,6 @@ namespace Winforms_Mockups
 			// 
 			// researchItem3
 			// 
-			this.researchItem3.BackColor = System.Drawing.SystemColors.Control;
-			this.researchItem3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.researchItem3.Location = new System.Drawing.Point(3, 115);
 			this.researchItem3.Name = "researchItem3";
 			this.researchItem3.Size = new System.Drawing.Size(250, 50);
@@ -97,8 +91,6 @@ namespace Winforms_Mockups
 			// 
 			// researchItem4
 			// 
-			this.researchItem4.BackColor = System.Drawing.SystemColors.Control;
-			this.researchItem4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.researchItem4.Location = new System.Drawing.Point(3, 171);
 			this.researchItem4.Name = "researchItem4";
 			this.researchItem4.Size = new System.Drawing.Size(250, 50);

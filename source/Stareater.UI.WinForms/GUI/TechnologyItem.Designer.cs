@@ -46,7 +46,6 @@ namespace Stareater.GUI
 			this.thumbnailImage.TabIndex = 0;
 			this.thumbnailImage.TabStop = false;
 			this.thumbnailImage.Click += new System.EventHandler(this.thumbnailImage_Click);
-			this.thumbnailImage.Paint += new System.Windows.Forms.PaintEventHandler(this.thumbnailImage_Paint);
 			// 
 			// levelLabel
 			// 
@@ -94,6 +93,7 @@ namespace Stareater.GUI
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(196)))), ((int)(((byte)(255)))));
 			this.Controls.Add(this.levelLabel);
 			this.Controls.Add(this.investmentLabel);
 			this.Controls.Add(this.costLabel);

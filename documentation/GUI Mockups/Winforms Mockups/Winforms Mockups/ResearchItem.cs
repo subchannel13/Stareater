@@ -25,7 +25,7 @@ namespace Winforms_Mockups
 		
 		void PictureBox1Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.DrawRectangle(new Pen(Color.Gray, 2), e.ClipRectangle);
+			//e.Graphics.DrawRectangle(new Pen(Color.White, 2), e.ClipRectangle);
 		}
 	}
 }
