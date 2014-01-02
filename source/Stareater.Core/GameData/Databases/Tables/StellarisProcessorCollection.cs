@@ -12,14 +12,19 @@ namespace Stareater.GameData.Databases.Tables
 		HashSet<StellarisProcessor> innerSet = new HashSet<StellarisProcessor>();
 		List<StellarisProcessor> toRemove = new List<StellarisProcessor>();
 
-		Dictionary<Player, List<StellarisProcessor>> OwnedByIndex = new Dictionary<Player, List<StellarisProcessor>>();
+		Dictionary<StarData, StellarisProcessor> AtIndex = new Dictionary<StarData, StellarisProcessor>();
 		Dictionary<StellarisAdmin, StellarisProcessor> OfIndex = new Dictionary<StellarisAdmin, StellarisProcessor>();
+		Dictionary<Player, List<StellarisProcessor>> OwnedByIndex = new Dictionary<Player, List<StellarisProcessor>>();
 
-		public IList<StellarisProcessor> OwnedBy(Player key) {
-			if (OwnedByIndex.ContainsKey(key))
-				return OwnedByIndex[key];
-			
-			return new List<StellarisProcessor>();
+		public StellarisProcessor At(StarData key) {
+			if (AtIndex.ContainsKey(key))
+				return AtIndex[key];
+				
+			throw new KeyNotFoundException();
+		}
+		
+		public bool AtContains(StarData key) {
+			return AtIndex.ContainsKey(key);
 		}
 
 		public StellarisProcessor Of(StellarisAdmin key) {
@@ -32,16 +37,25 @@ namespace Stareater.GameData.Databases.Tables
 		public bool OfContains(StellarisAdmin key) {
 			return OfIndex.ContainsKey(key);
 		}
+
+		public IList<StellarisProcessor> OwnedBy(Player key) {
+			if (OwnedByIndex.ContainsKey(key))
+				return OwnedByIndex[key];
+			
+			return new List<StellarisProcessor>();
+		}
 	
 		public void Add(StellarisProcessor item)
 		{
 			innerSet.Add(item); 
+			if (!AtIndex.ContainsKey(item.Location))
+				AtIndex.Add(item.Location, item);
+			if (!OfIndex.ContainsKey(item.Stellaris))
+				OfIndex.Add(item.Stellaris, item);
 
 			if (!OwnedByIndex.ContainsKey(item.Owner))
 				OwnedByIndex.Add(item.Owner, new List<StellarisProcessor>());
 			OwnedByIndex[item.Owner].Add(item);
-			if (!OfIndex.ContainsKey(item.Stellaris))
-				OfIndex.Add(item.Stellaris, item);
 		}
 
 		public void Add(IEnumerable<StellarisProcessor> items)
@@ -54,8 +68,9 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			innerSet.Clear();
 
-			OwnedByIndex.Clear();
+			AtIndex.Clear();
 			OfIndex.Clear();
+			OwnedByIndex.Clear();
 		}
 
 		public bool Contains(StellarisProcessor item)
@@ -81,8 +96,9 @@ namespace Stareater.GameData.Databases.Tables
 		public bool Remove(StellarisProcessor item)
 		{
 			if (innerSet.Remove(item)) {
-				OwnedByIndex[item.Owner].Remove(item);
+				AtIndex.Remove(item.Location);
 				OfIndex.Remove(item.Stellaris);
+				OwnedByIndex[item.Owner].Remove(item);
 			
 				return true;
 			}

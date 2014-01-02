@@ -24,16 +24,19 @@ namespace Stareater.Controllers
 		public bool IsReadOnly { get; private set; }
 
 		internal abstract AConstructionSiteProcessor Processor { get; }
+		
+		protected abstract void RecalculateSpending();
 
 		public double DesiredSpendingRatio
 		{
 			get
 			{
-				return Site.Owner.Orders.ConstructionPlans[Site].SpendingRatio;
+				return this.Site.Owner.Orders.ConstructionPlans[this.Site].SpendingRatio;
 			}
 			set
 			{
-				Site.Owner.Orders.ConstructionPlans[Site].SpendingRatio = Methods.Clamp(value, 0, 1);
+				this.Site.Owner.Orders.ConstructionPlans[this.Site].SpendingRatio = Methods.Clamp(value, 0, 1);
+				this.RecalculateSpending();
 			}
 		}
 
@@ -57,8 +60,13 @@ namespace Stareater.Controllers
 		{
 			get
 			{
+				var spendingPlan = Processor.SpendingPlan.ToDictionary(x => x.Item);
 				foreach (var item in Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue)
-					yield return new ConstructableItem(item, Game.Derivates.Players.Of(Game.CurrentPlayer));
+					yield return new ConstructableItem(
+						item, 
+						Game.Derivates.Players.Of(Game.CurrentPlayer), 
+						spendingPlan[item].DoneCount
+					);
 			}
 		}
 		
@@ -73,6 +81,7 @@ namespace Stareater.Controllers
 				return;
 			
 			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.Add(data.Constructable);
+			this.RecalculateSpending();
 		}
 		
 		public void Dequeue(int index)
@@ -81,6 +90,7 @@ namespace Stareater.Controllers
 				return;
 			
 			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.RemoveAt(index);
+			this.RecalculateSpending();
 		}
 		
 		public void ReorderQueue(int fromIndex, int toIndex)
@@ -91,6 +101,7 @@ namespace Stareater.Controllers
 			var item = Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue[fromIndex];
 			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.RemoveAt(fromIndex);
 			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.Insert(toIndex, item);
+			this.RecalculateSpending();
 		}
 	}
 }

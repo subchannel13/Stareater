@@ -19,7 +19,7 @@ namespace Stareater.GameLogic
 		
 		public Colony Colony { get; set; }
 		
-		public ColonyProcessor(Colony colony)
+		public ColonyProcessor(Colony colony) : base()
 		{
 			this.Colony = colony;
 		}
