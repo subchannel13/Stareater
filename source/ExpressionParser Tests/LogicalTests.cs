@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using Stareater.Utils.Collections;
 
 namespace ExpressionParser_Tests
 {
@@ -45,6 +46,13 @@ namespace ExpressionParser_Tests
 		public void ConjunctionSequenceTrue()
 		{
 			var test = new ParserTester("2 ∧ 3 ∧ 0 ∧ 1", null, 1);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
+		public void ConjunctionVar()
+		{
+			var test = new ParserTester("a ∧ 1", new Var("a", -1).Get, -1);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
@@ -105,6 +113,13 @@ namespace ExpressionParser_Tests
 		}
 		
 		[Test]
+		public void DisjunctionVar()
+		{
+			var test = new ParserTester("a ∨ 1", new Var("a", -1).Get, 1);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
 		public void DisjunctionUnicodeBinary()
 		{
 			var test = new ParserTester("2 ∨ -3", null, 1);
@@ -159,7 +174,14 @@ namespace ExpressionParser_Tests
 			var test = new ParserTester("2 ⊕ -3 ⊕ -0.1 ⊕ -1", null, 1);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
-			
+		
+		[Test]
+		public void XorVar()
+		{
+			var test = new ParserTester("a ⊕ 1", new Var("a", -1).Get, 1);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
 		[Test]
 		public void XorUnicode()
 		{

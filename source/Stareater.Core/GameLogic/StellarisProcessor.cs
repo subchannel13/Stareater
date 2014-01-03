@@ -57,7 +57,7 @@ namespace Stareater.GameLogic
 
 			//TODO: lift (to orbit) penalty
 			double industryPotential = systemColonies.Sum(x =>
-				x.SpendingRatioEffective *
+				(1 - x.SpendingRatioEffective) *
 				x.WorkingPopulation *
 				x.BuilderEfficiency);
 			double industryPoints = 

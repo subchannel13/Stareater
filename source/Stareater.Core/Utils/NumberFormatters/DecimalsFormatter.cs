@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.Text;
 
 namespace Stareater.Utils.NumberFormatters
@@ -22,7 +21,7 @@ namespace Stareater.Utils.NumberFormatters
 
 		public string Format(double number)
 		{
-			return number.ToString(formatString);
+			return number.ToString(formatString, NumberFormatInfo.InvariantInfo);
 		}
 	}
 }

@@ -28,11 +28,11 @@ namespace Stareater.GameLogic
 			var spendingPlan = new List<ConstructionResult>();
 
 			foreach (var buildingItem in queue) {
-				if (industryPoints <= 0)
-					break;
-				if (buildingItem.Condition.Evaluate(vars) < 0)
+				if (industryPoints <= 0 || buildingItem.Condition.Evaluate(vars) < 0) {
+					spendingPlan.Add(new ConstructionResult(0, 0, buildingItem, 0));
 					continue;
-
+				}
+				
 				double cost = buildingItem.Cost.Evaluate(vars);
 				double investment = industryPoints;
 

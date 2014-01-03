@@ -64,14 +64,14 @@ namespace ExpressionParser_Tests
 		}
 		
 		[Test]
-		public void ListVariableInside()
+		public void ListVarInside()
 		{
 			var test = new ParserTester("i [a, b, c]", new Var("i", 0.5).And("a", 10).And("b", 20).And("c", 30).Get, 15);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
 		[Test]
-		public void ListVariableOutside()
+		public void ListVarOutside()
 		{
 			var test = new ParserTester("i [a, b, c]", new Var("i", -5.5).And("a", 10).And("b", 20).And("c", 30).Get, -45);
 			Assert.IsTrue(test.IsOK, test.Message);

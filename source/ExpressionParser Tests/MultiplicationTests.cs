@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using NUnit.Framework;
+using Stareater.Utils.Collections;
 
 namespace ExpressionParser_Tests
 {
@@ -16,6 +18,13 @@ namespace ExpressionParser_Tests
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 
+		[Test]
+		public void DivisionVar()
+		{
+			var test = new ParserTester("x/3", new Var("x", 2).Get, 2.0 / 3, 1e-9);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
 		[Test]
 		public void DivisionReminder()
 		{
@@ -52,6 +61,13 @@ namespace ExpressionParser_Tests
 		}
 
 		[Test]
+		public void DivisionReminderVar()
+		{
+			var test = new ParserTester("x%-3", new Var("x", 10).Get, 2, 1e-9);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
 		public void IntegerDivision()
 		{
 			var test = new ParserTester("10\\3", null, 3, 1e-9);
@@ -64,11 +80,25 @@ namespace ExpressionParser_Tests
 			var test = new ParserTester("-10\\3", null, -4, 1e-9);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
+		
+		[Test]
+		public void IntegerDivisionVar()
+		{
+			var test = new ParserTester("x\\3", new Var("x", -10).Get, -4, 1e-9);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
 
 		[Test]
 		public void Multiplication()
 		{
 			var test = new ParserTester("2*3", null, 6);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
+		public void MultiplicationVar()
+		{
+			var test = new ParserTester("x*3", new Var("x", 2).Get, 6);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 	}
