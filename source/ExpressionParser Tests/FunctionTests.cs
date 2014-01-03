@@ -30,7 +30,7 @@ namespace ExpressionParser_Tests
 		}
 		
 		[Test]
-		public void FunctionAbsVariable()
+		public void FunctionAbsVar()
 		{
 			var test = new ParserTester("abs(x)", new Var("x", -1).Get, 1);
 			Assert.IsTrue(test.IsOK, test.Message);
@@ -58,6 +58,13 @@ namespace ExpressionParser_Tests
 		}
 		
 		[Test]
+		public void FunctionCeilVar()
+		{
+			var test = new ParserTester("Ceil(x)", new Var("x", 5.2).Get, 6);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
 		public void FunctionFloorInteger()
 		{
 			var test = new ParserTester("floor(4)", null, 4);
@@ -79,6 +86,13 @@ namespace ExpressionParser_Tests
 		}
 		
 		[Test]
+		public void FunctionFloorVar()
+		{
+			var test = new ParserTester("floor(x)", new Var("x", 5.2).Get, 5);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
 		public void FunctionIteElse()
 		{
 			var test = new ParserTester("if(-1, 10, 20)", null, 20);
@@ -86,9 +100,23 @@ namespace ExpressionParser_Tests
 		}
 		
 		[Test]
+		public void FunctionIteElseVar()
+		{
+			var test = new ParserTester("if(c, x, y)", new Var("c", -1).And("x", 10).And("y", 20).Get, 20);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
 		public void FunctionIteThen()
 		{
 			var test = new ParserTester("if(1, 10, 20)", null, 10);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
+		public void FunctionIteThenVar()
+		{
+			var test = new ParserTester("if(c, x, y)", new Var("c", 1).And("x", 10).And("y", 20).Get, 10);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
@@ -121,6 +149,13 @@ namespace ExpressionParser_Tests
 		}
 		
 		[Test]
+		public void FunctionLimitVar()
+		{
+			var test = new ParserTester("limit(x, a, b)", new Var("x", 10).And("a", 1).And("b", 3).Get, 3);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
 		public void FunctionMax2ParamsConst()
 		{
 			var test = new ParserTester("max(2, 5)", null, 5);
@@ -145,6 +180,13 @@ namespace ExpressionParser_Tests
 		public void FunctionMin2Params()
 		{
 			var test = new ParserTester("min(2, 5)", null, 2);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
+		public void FunctionMin2ParamsVar()
+		{
+			var test = new ParserTester("min(x, y)", new Var("x", 3).And("y", 5).Get, 3);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
@@ -219,6 +261,13 @@ namespace ExpressionParser_Tests
 		}
 		
 		[Test]
+		public void FunctionRoundVar()
+		{
+			var test = new ParserTester("round(x)", new Var("x", 5.7).Get, 6);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
 		public void FunctionSngNegative()
 		{
 			var test = new ParserTester("sgn(-4)", null, -1);
@@ -229,6 +278,13 @@ namespace ExpressionParser_Tests
 		public void FunctionSngPositive()
 		{
 			var test = new ParserTester("sgn(2)", null, 1);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
+		public void FunctionSngVar()
+		{
+			var test = new ParserTester("sgn(x)", new Var("x", 5.7).Get, 1);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
@@ -257,6 +313,13 @@ namespace ExpressionParser_Tests
 		public void FunctionTruncPositive()
 		{
 			var test = new ParserTester("Trunc(5.2)", null, 5);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
+		public void FunctionTruncVar()
+		{
+			var test = new ParserTester("Trunc(x)", new Var("x", 5.7).Get, 5);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 	}

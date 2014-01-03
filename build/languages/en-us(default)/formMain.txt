@@ -17,6 +17,20 @@ Moons of {=bodyName}}
 RockName {
 {=bodyName}}
 
+BuildingsPerTurn {
+{countDec}{countPrefix} per turn}
+countDec    ? count < 10; #D1 count;
+countPrefix ? count ≥ 10; #T_ count;
+
+Eta {
+{etaDec}{etaPrefix} turn{pluralDec}{pluralPrefix}}
+etaDec    ? eta < 10; #D1 count;
+etaPrefix ? eta ≥ 10; #T_ count;
+pluralDec    ? (eta < 10) ∧ (floor(eta) % 10 ≠ 1); =s
+pluralPrefix ? (eta ≥ 10) ∧ ((eta < 20) ∨ (floor(eta) % 10 ≠ 1)); =s
+
+EtaNever = Never
+
 MainMenu = Main menu
 DevelopmentMenu = Development
 -

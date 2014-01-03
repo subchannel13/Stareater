@@ -41,7 +41,7 @@ namespace Stareater.AppData.Expressions
 
 		public double Evaluate(IDictionary<string, double> variables)
 		{
-			return sequence.All(x => x.Evaluate(null) >= 0) ? 1 : -1;
+			return sequence.All(x => x.Evaluate(variables) >= 0) ? 1 : -1;
 		}
 		
 		public IEnumerable<string> Variables 
@@ -91,7 +91,7 @@ namespace Stareater.AppData.Expressions
 
 		public double Evaluate(IDictionary<string, double> variables)
 		{
-			return sequence.Any(x => x.Evaluate(null) >= 0) ? 1 : -1;
+			return sequence.Any(x => x.Evaluate(variables) >= 0) ? 1 : -1;
 		}
 		
 		public IEnumerable<string> Variables 
@@ -142,7 +142,7 @@ namespace Stareater.AppData.Expressions
 
 		public double Evaluate(IDictionary<string, double> variables)
 		{
-			int truths = sequence.Count(x => x.Evaluate(null) >= 0);
+			int truths = sequence.Count(x => x.Evaluate(variables) >= 0);
 			return ((sequence.Length - truths) % 2 != 0) ? 1 : -1;
 		}
 		

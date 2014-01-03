@@ -3,14 +3,18 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Localization;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GUI
 {
 	public partial class ConstructionSiteView : UserControl
 	{
+		private const double MinimumPerTurnDone = 1e-3;
+		
 		private AConstructionSiteController controller;
 		
 		public ConstructionSiteView()
@@ -53,10 +57,20 @@ namespace Stareater.GUI
 		private void resetEstimation()
 		{
 			var constructionItem = controller.ConstructionQueue.FirstOrDefault();
+			Context context = SettingsWinforms.Get.Language["FormMain"];
 			
-			//TODO: set localized text
-			if (constructionItem != null)
-				estimationLabel.Text = constructionItem.PerTurnDone.Value.ToString("#.00");
+			if (constructionItem != null) {
+				if (constructionItem.PerTurnDone < MinimumPerTurnDone)
+					estimationLabel.Text = context["EtaNever"].Text(null);
+				else if (constructionItem.PerTurnDone >= 1) {
+					var vars = new Var("count", constructionItem.PerTurnDone.Value).Get;
+					estimationLabel.Text = context["BuildingsPerTurn"].Text(vars);
+				}
+				else {
+					var vars = new Var("eta", 1 / constructionItem.PerTurnDone.Value).Get;
+					estimationLabel.Text = context["Eta"].Text(vars);
+				}
+			}
 			else
 				estimationLabel.Text = "No construction plans";
 		}
@@ -74,6 +88,9 @@ namespace Stareater.GUI
 
 		private void industrySlider_Scroll(object sender, ScrollEventArgs e)
 		{
+			if (e.Type == ScrollEventType.EndScroll)
+				return;
+			
 			controller.DesiredSpendingRatio = e.NewValue / (double)industrySlider.Maximum;
 			resetEstimation();
 		}
