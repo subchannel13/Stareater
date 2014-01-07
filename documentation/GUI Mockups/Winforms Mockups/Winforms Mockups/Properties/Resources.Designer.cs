@@ -102,6 +102,13 @@ namespace Winforms_Mockups.Properties {
 			}
 		}
 		
+		internal static System.Drawing.Bitmap earthlike_planet {
+			get {
+				object obj = ResourceManager.GetObject("earthlike_planet", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
 		internal static System.Drawing.Bitmap galaxy_map {
 			get {
 				object obj = ResourceManager.GetObject("galaxy_map", resourceCulture);
@@ -126,6 +133,13 @@ namespace Winforms_Mockups.Properties {
 		internal static System.Drawing.Bitmap small_cruiser {
 			get {
 				object obj = ResourceManager.GetObject("small_cruiser", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		internal static System.Drawing.Bitmap sun_rays {
+			get {
+				object obj = ResourceManager.GetObject("sun_rays", resourceCulture);
 				return ((System.Drawing.Bitmap)(obj));
 			}
 		}

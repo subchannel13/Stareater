@@ -71,6 +71,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildingItem.cs" />
+    <Compile Include="BuildingItem.Designer.cs">
+      <DependentUpon>BuildingItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConstructableItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -91,6 +95,10 @@
     </Compile>
     <Compile Include="FormBuildingQueue.Designer.cs">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormColony.cs" />
+    <Compile Include="FormColony.Designer.cs">
+      <DependentUpon>FormColony.cs</DependentUpon>
     </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
@@ -160,6 +168,9 @@
     <Compile Include="SystemMockup.Designer.cs">
       <DependentUpon>SystemMockup.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="BuildingItem.resx">
+      <DependentUpon>BuildingItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConstructableItem.resx">
       <DependentUpon>ConstructableItem.cs</DependentUpon>
     </EmbeddedResource>
@@ -168,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormBuildingQueue.resx">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormColony.resx">
+      <DependentUpon>FormColony.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
