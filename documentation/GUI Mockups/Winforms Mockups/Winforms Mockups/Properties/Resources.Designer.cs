@@ -143,5 +143,12 @@ namespace Winforms_Mockups.Properties {
 				return ((System.Drawing.Bitmap)(obj));
 			}
 		}
+		
+		internal static System.Drawing.Bitmap yellow_sun {
+			get {
+				object obj = ResourceManager.GetObject("yellow_sun", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
 	}
 }

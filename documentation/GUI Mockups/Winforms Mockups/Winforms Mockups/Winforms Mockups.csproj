@@ -142,6 +142,10 @@
     <Compile Include="FormStartingConditions.Designer.cs">
       <DependentUpon>FormStartingConditions.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormStellaris.cs" />
+    <Compile Include="FormStellaris.Designer.cs">
+      <DependentUpon>FormStellaris.cs</DependentUpon>
+    </Compile>
     <Compile Include="FromDevelopment.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -203,6 +207,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormStartingConditions.resx">
       <DependentUpon>FormStartingConditions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStellaris.resx">
+      <DependentUpon>FormStellaris.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FromDevelopment.resx">
       <DependentUpon>FromDevelopment.cs</DependentUpon>
