@@ -5,7 +5,7 @@ using Stareater.Utils;
 
 namespace Stareater.GameData
 {
-	public class StarIntelligence
+	class StarIntelligence
 	{
 		public const int NeverVisited = -1;
 		

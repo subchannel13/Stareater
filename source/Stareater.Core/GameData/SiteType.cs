@@ -2,7 +2,7 @@
 
 namespace Stareater.GameData
 {
-	enum SiteType
+	public enum SiteType
 	{
 		Colony = 1,
 		StarSystem = 2

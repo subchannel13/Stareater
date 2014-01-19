@@ -8,6 +8,7 @@ using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
+using Stareater.GameData;
 
 namespace Stareater.GUI
 {
@@ -27,7 +28,7 @@ namespace Stareater.GUI
 			controller = siteController;
 			
 			industrySlider.Value = (int)(siteController.DesiredSpendingRatio * industrySlider.Maximum);
-
+			
 			resetView();
 		}
 		
@@ -93,6 +94,23 @@ namespace Stareater.GUI
 			
 			controller.DesiredSpendingRatio = e.NewValue / (double)industrySlider.Maximum;
 			resetEstimation();
+		}
+
+		private void detailsButton_Click(object sender, EventArgs e)
+		{
+			Form form = null;
+
+			switch (controller.SiteType) {
+				case SiteType.Colony:
+					form = new FormColonyDetails(controller as ColonyController);
+					break;
+				case SiteType.StarSystem:
+					form = new FormStellarisDetails(controller as StellarisAdminController);
+					break;
+			}
+
+			form.ShowDialog();
+			form.Dispose();
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿namespace Stareater.GameData
 {
-	public enum TechnologyCategory
+	enum TechnologyCategory
 	{
 		Development,
 		Research

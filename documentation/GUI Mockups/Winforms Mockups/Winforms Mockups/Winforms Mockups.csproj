@@ -71,7 +71,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuildingItem.cs" />
+    <Compile Include="BuildingItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="BuildingItem.Designer.cs">
       <DependentUpon>BuildingItem.cs</DependentUpon>
     </Compile>
@@ -96,7 +98,9 @@
     <Compile Include="FormBuildingQueue.Designer.cs">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormColony.cs" />
+    <Compile Include="FormColony.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormColony.Designer.cs">
       <DependentUpon>FormColony.cs</DependentUpon>
     </Compile>
@@ -142,7 +146,9 @@
     <Compile Include="FormStartingConditions.Designer.cs">
       <DependentUpon>FormStartingConditions.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormStellaris.cs" />
+    <Compile Include="FormStellaris.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormStellaris.Designer.cs">
       <DependentUpon>FormStellaris.cs</DependentUpon>
     </Compile>

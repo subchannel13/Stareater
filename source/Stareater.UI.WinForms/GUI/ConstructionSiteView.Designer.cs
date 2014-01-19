@@ -90,6 +90,7 @@ namespace Stareater.GUI
 			this.detailsButton.TabIndex = 4;
 			this.detailsButton.Text = "button1";
 			this.detailsButton.UseVisualStyleBackColor = true;
+			this.detailsButton.Click += new System.EventHandler(this.detailsButton_Click);
 			// 
 			// ConstructionSiteView
 			// 
