@@ -108,6 +108,12 @@
     <Compile Include="GUI\FormBuildingQueue.Designer.cs">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FormColonyDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormColonyDetails.Designer.cs">
+      <DependentUpon>FormColonyDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormDevelopment.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +161,12 @@
     </Compile>
     <Compile Include="GUI\FormStartingConditions.Designer.cs">
       <DependentUpon>FormStartingConditions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormStellarisDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormStellarisDetails.Designer.cs">
+      <DependentUpon>FormStellarisDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\MainMenuResult.cs" />
     <Compile Include="GUI\MapParameterIntegerRange.cs">

@@ -23,8 +23,14 @@ namespace Stareater.Controllers
 
 		public bool IsReadOnly { get; private set; }
 
+		public SiteType SiteType
+		{
+			get { return Site.Type; }
+		}
+
 		internal abstract AConstructionSiteProcessor Processor { get; }
 		
+		#region Buildings
 		protected abstract void RecalculateSpending();
 
 		public double DesiredSpendingRatio
@@ -103,5 +109,6 @@ namespace Stareater.Controllers
 			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.Insert(toIndex, item);
 			this.RecalculateSpending();
 		}
+		#endregion
 	}
 }
