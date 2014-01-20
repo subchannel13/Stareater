@@ -81,6 +81,10 @@
     <Compile Include="GLRenderers\TextRenderUtil.cs" />
     <Compile Include="GLRenderers\TextureInfo.cs" />
     <Compile Include="GLRenderers\TextureUtils.cs" />
+    <Compile Include="GUI\BuildingItem.cs" />
+    <Compile Include="GUI\BuildingItem.Designer.cs">
+      <DependentUpon>BuildingItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ColorItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -208,6 +212,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tag.cs" />
+    <EmbeddedResource Include="GUI\BuildingItem.resx">
+      <DependentUpon>BuildingItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\ColorItem.resx">
       <DependentUpon>ColorItem.cs</DependentUpon>
     </EmbeddedResource>
@@ -219,6 +226,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormBuildingQueue.resx">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormColonyDetails.resx">
+      <DependentUpon>FormColonyDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormDevelopment.resx">
       <DependentUpon>FormDevelopment.cs</DependentUpon>
@@ -245,6 +255,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormStartingConditions.resx">
       <DependentUpon>FormStartingConditions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormStellarisDetails.resx">
+      <DependentUpon>FormStellarisDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\MapParameterIntegerRange.resx">
       <DependentUpon>MapParameterIntegerRange.cs</DependentUpon>

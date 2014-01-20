@@ -19,9 +19,10 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 
-		public FormStellarisDetails(StellarisAdminController controller)
+		public FormStellarisDetails(StellarisAdminController controller) : this()
 		{
 			this.controller = controller;
+			//TODO: set language
 		}
 	}
 }

@@ -19,9 +19,10 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 
-		public FormColonyDetails(ColonyController controller)
+		public FormColonyDetails(ColonyController controller) : this()
 		{
 			this.controller = controller;
+			//TODO: set language
 		}
 	}
 }
