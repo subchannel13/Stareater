@@ -60,7 +60,7 @@ namespace Stareater.GameLogic
 						investment - completed * cost
 					));
 
-					break;
+					industryPoints = 0;
 				}
 			}
 

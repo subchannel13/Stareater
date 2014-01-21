@@ -18,14 +18,10 @@ RockName {
 {=bodyName}}
 
 BuildingsPerTurn {
-{countDec}{countPrefix} per turn}
-countDec    ? count < 10; #D1 floor(count * 10) / 10;
-countPrefix ? count ≥ 10; #T_ count;
+{=count} per turn}
 
 Eta {
-In {etaDec}{etaPrefix} turn{pluralDec}{pluralPrefix}}
-etaDec    ? eta < 10; #D1 ceil(eta * 10) / 10;
-etaPrefix ? eta ≥ 10; #T_ eta;
+In {=eta} turn{pluralDec}{pluralPrefix}}
 pluralDec    ? (eta < 10) ∧ (ceil(eta * 10) % 10 ≠ 1); =s
 pluralPrefix ? (eta ≥ 10) ∧ ((eta < 20) ∨ (round(eta) % 10 ≠ 1)); =s
 

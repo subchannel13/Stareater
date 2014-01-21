@@ -69,7 +69,7 @@ namespace Stareater.Localization
 
 		public string Text(IDictionary<string, double> variables)
 		{
-			if (!this.variables.IsSubsetOf(variables.Keys))
+			if (this.variables.Count > 0 && !this.variables.IsSubsetOf(variables.Keys))
 				throw new ArgumentException("Keys of the given table of variables do not match with expected set of keys.", "variables");
 
 			StringBuilder text = new StringBuilder();
@@ -81,7 +81,7 @@ namespace Stareater.Localization
 		
 		public string Text(IDictionary<string, double> variables, IDictionary<string, string> placeholderContents)
 		{
-			if (!this.variables.IsSubsetOf(variables.Keys))
+			if (this.variables.Count > 0 && !this.variables.IsSubsetOf(variables.Keys))
 				throw new ArgumentException("Keys of the given table of variables do not match with expected set of keys.", "variables");
 
 			StringBuilder text = new StringBuilder();

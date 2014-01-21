@@ -226,12 +226,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IndexedCollectionBase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Collections\TextVar.cs" />
     <Compile Include="Utils\Collections\Var.cs" />
     <Compile Include="Utils\CustomTuple.cs">
       <DependentUpon>CustomTuple.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Utils\NumberFormatters\RoundingMethod.cs" />
     <Compile Include="Utils\ProgressData.cs" />
     <Compile Include="Utils\Collections\IDelayedRemoval.cs" />
     <Compile Include="Utils\Collections\PendableSet.cs" />
