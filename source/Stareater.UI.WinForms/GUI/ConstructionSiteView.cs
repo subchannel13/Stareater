@@ -6,9 +6,10 @@ using System.Windows.Forms;
 
 using Stareater.AppData;
 using Stareater.Controllers;
+using Stareater.GameData;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
-using Stareater.GameData;
+using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI
 {
@@ -64,12 +65,24 @@ namespace Stareater.GUI
 				if (constructionItem.PerTurnDone < MinimumPerTurnDone)
 					estimationLabel.Text = context["EtaNever"].Text(null);
 				else if (constructionItem.PerTurnDone >= 1) {
-					var vars = new Var("count", constructionItem.PerTurnDone.Value).Get;
-					estimationLabel.Text = context["BuildingsPerTurn"].Text(vars);
+					var vars = new TextVar();
+					if (constructionItem.PerTurnDone.Value < 10)
+						vars.And("count", new DecimalsFormatter(0, 1).Format(constructionItem.PerTurnDone.Value, RoundingMethod.Floor, 1));
+					else
+						vars.And("count", new ThousandsFormatter().Format(Math.Floor(constructionItem.PerTurnDone.Value)));
+					
+					estimationLabel.Text = context["BuildingsPerTurn"].Text(null, vars.Get);
 				}
 				else {
 					var vars = new Var("eta", 1 / constructionItem.PerTurnDone.Value).Get;
-					estimationLabel.Text = context["Eta"].Text(vars);
+					var textVars = new TextVar();
+					
+					if (constructionItem.PerTurnDone.Value < 10)
+						textVars.And("eta", new DecimalsFormatter(0, 1).Format(1 / constructionItem.PerTurnDone.Value, RoundingMethod.Ceil, 1));
+					else
+						textVars.And("eta", new ThousandsFormatter().Format(Math.Ceiling(1 / constructionItem.PerTurnDone.Value)));
+					
+					estimationLabel.Text = context["Eta"].Text(vars, textVars.Get);
 				}
 			}
 			else

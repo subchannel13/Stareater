@@ -7,7 +7,7 @@
 	site: System
 	prerequisites [] 
 	
-	cost # 10e6;
+	cost # 1e9;
 	condition # 1;
 	turnLimit # 1;
 	

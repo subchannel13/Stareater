@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Stareater.Utils.NumberFormatters
 {
-	class DecimalsFormatter
+	public class DecimalsFormatter
 	{
 		private string formatString;
 
@@ -22,6 +22,25 @@ namespace Stareater.Utils.NumberFormatters
 		public string Format(double number)
 		{
 			return number.ToString(formatString, NumberFormatInfo.InvariantInfo);
+		}
+		
+		public string Format(double number, RoundingMethod method, int roundingPrecision)
+		{
+			double precisionFactor = Math.Pow(10, roundingPrecision);
+			
+			switch(method)
+			{
+				case RoundingMethod.Ceil:
+					number = Math.Ceiling(number * precisionFactor) / precisionFactor;
+					break;
+				case RoundingMethod.Floor:
+					number = Math.Floor(number * precisionFactor) / precisionFactor;
+					break;
+				case RoundingMethod.Midpoint:
+					number = Math.Round(number, roundingPrecision, MidpointRounding.AwayFromZero);
+					break;
+			}
+			return Format(number);
 		}
 	}
 }

@@ -12,6 +12,7 @@ using NGenerics.DataStructures.Queues;
 using Stareater.AppData;
 using Stareater.Galaxy.Builders;
 using Stareater.Utils;
+using Stareater.Utils.Collections;
 using Stareater.Utils.PluginParameters;
 
 namespace Stareater.Galaxy.ProximityLanes
@@ -61,10 +62,11 @@ namespace Stareater.Galaxy.ProximityLanes
 		{
 			get
 			{
-				return Settings.Get.Language[LanguageContext]["description"].Text(new Dictionary<string, double>(){
-				{"minDegree", degreeOptions[degreesParameter.Value].Min},
-				{"maxDegree", degreeOptions[degreesParameter.Value].Max}
-				});
+				var vars = new TextVar(
+					"minDegree", degreeOptions[degreesParameter.Value].Min.ToString()).And(
+					"maxDegree", degreeOptions[degreesParameter.Value].Max.ToString());
+				
+				return Settings.Get.Language[LanguageContext]["description"].Text(null, vars.Get);
 			}
 		}
 

@@ -65,7 +65,7 @@ namespace Stareater.GUI
 		{
 			get
 			{
-				return Settings.Get.Language[LanguageContext][LocalizationLevel].Text(new Var("lvl", Data.NextLevel).Get);	
+				return Settings.Get.Language[LanguageContext][LocalizationLevel].Text(null, new TextVar("lvl", Data.NextLevel.ToString()).Get);
 			}
 		}
 	}

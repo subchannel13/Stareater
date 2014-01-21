@@ -2,7 +2,7 @@
 name = Square map
 description {
 Square map
-{size} stars} size #D size;
+{=size} stars}
 
 size = Size
 miniatureSize = Miniature

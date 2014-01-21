@@ -79,7 +79,12 @@ namespace Stareater.Galaxy.Square
 
 		public string Description
 		{
-			get { return Settings.Get.Language[LanguageContext]["description"].Text(Math.Pow(sizeOptions[sizeParameter.Value].Size, 2)); }
+			get 
+			{ 
+				return Settings.Get.Language[LanguageContext]["description"].Text(null, new TextVar(
+					"size", Math.Pow(sizeOptions[sizeParameter.Value].Size, 2).ToString()).Get
+				);
+			}
 		}
 
 		public ParameterList Parameters
