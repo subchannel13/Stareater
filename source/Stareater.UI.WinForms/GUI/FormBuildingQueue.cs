@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+
 using Stareater.AppData;
 using Stareater.Controllers;
+using Stareater.Localization;
 
 namespace Stareater.GUI
 {
@@ -42,6 +44,12 @@ namespace Stareater.GUI
 				queueItemView.Data = data;
 				queueList.Controls.Add(queueItemView);
 			}
+			
+			Context context = SettingsWinforms.Get.Language["FormBuilding"];
+			
+			this.Text = context["FormTitle"].Text();
+			optionsLabel.Text = context["optionsTitle"].Text();
+			queueLabel.Text = context["queueTitle"].Text();
 		}
 		
 		private void reorderItem(int fromIndex, int toIndex)

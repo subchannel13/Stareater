@@ -1,0 +1,5 @@
+﻿:FormBuilding
+FormTitle = Building queue
+optionsTitle = Options:
+queueTitle = Queue:
+-

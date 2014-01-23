@@ -1,0 +1,26 @@
+﻿:FormColony
+FormTitle = Building queue
+
+buildingsGroup = Buildings
+planetGroup = Planet
+popGroup = Population
+productivityGroup = Productivity
+
+populationInfo {
+{=pop} / {=popMax}}
+
+growthInfo {
+Growth: {=popGrowth}}
+
+infrastructureInfo =
+
+sizeInfo =
+environmentInfo =
+
+foodInfo =
+miningInfo =
+industryInfo =
+developmentInfo =
+industryTotalInfo =
+developmentTotalInfo =
+-
