@@ -34,5 +34,29 @@ namespace Stareater.Controllers
 				Game.Derivates.Colonies.At(colony.Star)
 			);
 		}
+		
+		public double Population 
+		{ 
+			get 
+			{
+				return (Site as Colony).Population;
+			}
+		}
+		
+		public double PopulationGrowth
+		{ 
+			get
+			{
+				return 0; //TODO: make processor property
+			}
+		}
+		
+		public double PopulationMax 
+		{ 
+			get
+			{
+				return Game.Derivates.Of(Site as Colony).MaxPopulation;
+			}
+		}
 	}
 }

@@ -36,8 +36,8 @@ namespace Stareater.GUI
 			this.moveUpButton = new System.Windows.Forms.Button();
 			this.moveDownButton = new System.Windows.Forms.Button();
 			this.removeButton = new System.Windows.Forms.Button();
-			this.label1 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
+			this.optionsLabel = new System.Windows.Forms.Label();
+			this.queueLabel = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -114,31 +114,31 @@ namespace Stareater.GUI
 			this.removeButton.UseVisualStyleBackColor = true;
 			this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
 			// 
-			// label1
+			// optionsLabel
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(12, 9);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(46, 13);
-			this.label1.TabIndex = 7;
-			this.label1.Text = "Options:";
+			this.optionsLabel.AutoSize = true;
+			this.optionsLabel.Location = new System.Drawing.Point(12, 9);
+			this.optionsLabel.Name = "optionsLabel";
+			this.optionsLabel.Size = new System.Drawing.Size(46, 13);
+			this.optionsLabel.TabIndex = 7;
+			this.optionsLabel.Text = "Options:";
 			// 
-			// label2
+			// queueLabel
 			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(232, 199);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(42, 13);
-			this.label2.TabIndex = 8;
-			this.label2.Text = "Queue:";
+			this.queueLabel.AutoSize = true;
+			this.queueLabel.Location = new System.Drawing.Point(232, 199);
+			this.queueLabel.Name = "queueLabel";
+			this.queueLabel.Size = new System.Drawing.Size(42, 13);
+			this.queueLabel.TabIndex = 8;
+			this.queueLabel.Text = "Queue:";
 			// 
 			// FormBuildingQueue
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(535, 426);
-			this.Controls.Add(this.label2);
-			this.Controls.Add(this.label1);
+			this.Controls.Add(this.queueLabel);
+			this.Controls.Add(this.optionsLabel);
 			this.Controls.Add(this.removeButton);
 			this.Controls.Add(this.moveDownButton);
 			this.Controls.Add(this.moveUpButton);
@@ -154,8 +154,8 @@ namespace Stareater.GUI
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label queueLabel;
+		private System.Windows.Forms.Label optionsLabel;
 		private System.Windows.Forms.Button removeButton;
 		private System.Windows.Forms.Button moveDownButton;
 		private System.Windows.Forms.Button moveUpButton;

@@ -63,7 +63,7 @@ namespace Stareater.GUI
 			
 			if (constructionItem != null) {
 				if (constructionItem.PerTurnDone < MinimumPerTurnDone)
-					estimationLabel.Text = context["EtaNever"].Text(null);
+					estimationLabel.Text = context["EtaNever"].Text();
 				else if (constructionItem.PerTurnDone >= 1) {
 					var vars = new TextVar();
 					if (constructionItem.PerTurnDone.Value < 10)

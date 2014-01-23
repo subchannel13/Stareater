@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Data;
+using Stareater.Localization;
 
 namespace Stareater.GUI
 {
@@ -36,6 +37,9 @@ namespace Stareater.GUI
 			
 			//TODO: Get total development points
 			//TODO: Get current focus intensity
+			
+			Context context = SettingsWinforms.Get.Language["FormTech"];
+			this.Text = context["FormTitle"].Text();
 		}
 		
 		private void updateList()
