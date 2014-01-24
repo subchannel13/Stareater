@@ -35,6 +35,15 @@ namespace Stareater.Controllers
 			);
 		}
 		
+		#region Population
+		public double Organization 
+		{ 
+			get
+			{
+				return Game.Derivates.Of(Site as Colony).Organization;
+			}
+		}
+		
 		public double Population 
 		{ 
 			get 
@@ -58,5 +67,74 @@ namespace Stareater.Controllers
 				return Game.Derivates.Of(Site as Colony).MaxPopulation;
 			}
 		}
+		#endregion
+		
+		#region Planet
+		public double PlanetEnvironment 
+		{
+			get 
+			{ 
+				return 1; //TODO: make processor property
+			}
+		}
+		
+		public double PlanetSize 
+		{
+			get 
+			{ 
+				return (Site as Colony).Location.Size;
+			}
+		}
+		#endregion
+		
+		#region Productivity
+		public double DevelopmentPerPop 
+		{
+			get 
+			{ 
+				return Game.Derivates.Of(Site as Colony).ScientistEfficiency; 
+			}
+		}
+		
+		public double DevelopmentTotal 
+		{
+			get 
+			{ 
+				return Game.Derivates.Of(Site as Colony).Development; 
+			}
+		}
+		
+		public double FoodPerPop
+		{
+			get 
+			{ 
+				return 0; //TODO: calculate from farming and gardening
+			}
+		}
+		
+		public double IndustryPerPop 
+		{
+			get 
+			{ 
+				return Game.Derivates.Of(Site as Colony).BuilderEfficiency; 
+			}
+		}
+		
+		public double IndustryTotal 
+		{
+			get 
+			{ 
+				return Game.Derivates.Of(Site as Colony).SpendingPlan.Sum(x => x.InvestedPoints);
+			}
+		}
+		
+		public double OrePerPop 
+		{
+			get 
+			{ 
+				return Game.Derivates.Of(Site as Colony).MinerEfficiency;
+			}
+		}
+		#endregion
 	}
 }
