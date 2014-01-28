@@ -1,0 +1,23 @@
+﻿:FormStellaris
+
+buildingsGroup = Buildings
+coloniesGroup = Colonies
+outputGroup = Output
+
+
+populationInfo {
+Population: {=pop}}
+
+infrastructureInfo {
+Infrastructure: {=popOrg} %}
+
+
+industryInfo {
+Industry: {=outInd}}
+
+developmentInfo {
+Development: {=outDev}}
+
+researchInfo {
+Research: {=outRes}}
+-
