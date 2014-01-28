@@ -1,5 +1,4 @@
 ﻿:FormColony
-FormTitle = Building queue
 
 buildingsGroup = Buildings
 planetGroup = Planet

@@ -29,19 +29,19 @@
 		{
 			this.starImage = new System.Windows.Forms.PictureBox();
 			this.coloniesInfoGroup = new System.Windows.Forms.GroupBox();
-			this.populationInfo = new System.Windows.Forms.Label();
 			this.infrastructureInfo = new System.Windows.Forms.Label();
+			this.populationInfo = new System.Windows.Forms.Label();
 			this.buildingsGroup = new System.Windows.Forms.GroupBox();
 			this.buildingsList = new System.Windows.Forms.FlowLayoutPanel();
 			this.traitList = new System.Windows.Forms.FlowLayoutPanel();
-			this.OutputInfoGroup = new System.Windows.Forms.GroupBox();
-			this.industryInfo = new System.Windows.Forms.Label();
-			this.developmentInfo = new System.Windows.Forms.Label();
+			this.outputInfoGroup = new System.Windows.Forms.GroupBox();
 			this.researchInfo = new System.Windows.Forms.Label();
+			this.developmentInfo = new System.Windows.Forms.Label();
+			this.industryInfo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.starImage)).BeginInit();
 			this.coloniesInfoGroup.SuspendLayout();
 			this.buildingsGroup.SuspendLayout();
-			this.OutputInfoGroup.SuspendLayout();
+			this.outputInfoGroup.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// starImage
@@ -65,15 +65,6 @@
 			this.coloniesInfoGroup.TabStop = false;
 			this.coloniesInfoGroup.Text = "Colonies";
 			// 
-			// populationInfo
-			// 
-			this.populationInfo.AutoSize = true;
-			this.populationInfo.Location = new System.Drawing.Point(6, 16);
-			this.populationInfo.Name = "populationInfo";
-			this.populationInfo.Size = new System.Drawing.Size(91, 13);
-			this.populationInfo.TabIndex = 0;
-			this.populationInfo.Text = "Population: x.xx X";
-			// 
 			// infrastructureInfo
 			// 
 			this.infrastructureInfo.AutoSize = true;
@@ -82,6 +73,15 @@
 			this.infrastructureInfo.Size = new System.Drawing.Size(104, 13);
 			this.infrastructureInfo.TabIndex = 1;
 			this.infrastructureInfo.Text = "Infrastructure: xx.x %";
+			// 
+			// populationInfo
+			// 
+			this.populationInfo.AutoSize = true;
+			this.populationInfo.Location = new System.Drawing.Point(6, 16);
+			this.populationInfo.Name = "populationInfo";
+			this.populationInfo.Size = new System.Drawing.Size(91, 13);
+			this.populationInfo.TabIndex = 0;
+			this.populationInfo.Text = "Population: x.xx X";
 			// 
 			// buildingsGroup
 			// 
@@ -109,35 +109,17 @@
 			this.traitList.Size = new System.Drawing.Size(170, 76);
 			this.traitList.TabIndex = 3;
 			// 
-			// OutputInfoGroup
+			// outputInfoGroup
 			// 
-			this.OutputInfoGroup.Controls.Add(this.researchInfo);
-			this.OutputInfoGroup.Controls.Add(this.developmentInfo);
-			this.OutputInfoGroup.Controls.Add(this.industryInfo);
-			this.OutputInfoGroup.Location = new System.Drawing.Point(204, 94);
-			this.OutputInfoGroup.Name = "OutputInfoGroup";
-			this.OutputInfoGroup.Size = new System.Drawing.Size(170, 70);
-			this.OutputInfoGroup.TabIndex = 4;
-			this.OutputInfoGroup.TabStop = false;
-			this.OutputInfoGroup.Text = "Output";
-			// 
-			// industryInfo
-			// 
-			this.industryInfo.AutoSize = true;
-			this.industryInfo.Location = new System.Drawing.Point(6, 16);
-			this.industryInfo.Name = "industryInfo";
-			this.industryInfo.Size = new System.Drawing.Size(78, 13);
-			this.industryInfo.TabIndex = 0;
-			this.industryInfo.Text = "Industry: x.xx X";
-			// 
-			// developmentInfo
-			// 
-			this.developmentInfo.AutoSize = true;
-			this.developmentInfo.Location = new System.Drawing.Point(6, 29);
-			this.developmentInfo.Name = "developmentInfo";
-			this.developmentInfo.Size = new System.Drawing.Size(104, 13);
-			this.developmentInfo.TabIndex = 1;
-			this.developmentInfo.Text = "Development: x.xx X";
+			this.outputInfoGroup.Controls.Add(this.researchInfo);
+			this.outputInfoGroup.Controls.Add(this.developmentInfo);
+			this.outputInfoGroup.Controls.Add(this.industryInfo);
+			this.outputInfoGroup.Location = new System.Drawing.Point(204, 94);
+			this.outputInfoGroup.Name = "outputInfoGroup";
+			this.outputInfoGroup.Size = new System.Drawing.Size(170, 70);
+			this.outputInfoGroup.TabIndex = 4;
+			this.outputInfoGroup.TabStop = false;
+			this.outputInfoGroup.Text = "Output";
 			// 
 			// researchInfo
 			// 
@@ -148,12 +130,30 @@
 			this.researchInfo.TabIndex = 2;
 			this.researchInfo.Text = "Research: xxx";
 			// 
+			// developmentInfo
+			// 
+			this.developmentInfo.AutoSize = true;
+			this.developmentInfo.Location = new System.Drawing.Point(6, 29);
+			this.developmentInfo.Name = "developmentInfo";
+			this.developmentInfo.Size = new System.Drawing.Size(104, 13);
+			this.developmentInfo.TabIndex = 1;
+			this.developmentInfo.Text = "Development: x.xx X";
+			// 
+			// industryInfo
+			// 
+			this.industryInfo.AutoSize = true;
+			this.industryInfo.Location = new System.Drawing.Point(6, 16);
+			this.industryInfo.Name = "industryInfo";
+			this.industryInfo.Size = new System.Drawing.Size(78, 13);
+			this.industryInfo.TabIndex = 0;
+			this.industryInfo.Text = "Industry: x.xx X";
+			// 
 			// FormStellarisDetails
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(383, 295);
-			this.Controls.Add(this.OutputInfoGroup);
+			this.Controls.Add(this.outputInfoGroup);
 			this.Controls.Add(this.traitList);
 			this.Controls.Add(this.buildingsGroup);
 			this.Controls.Add(this.coloniesInfoGroup);
@@ -167,14 +167,14 @@
 			this.coloniesInfoGroup.ResumeLayout(false);
 			this.coloniesInfoGroup.PerformLayout();
 			this.buildingsGroup.ResumeLayout(false);
-			this.OutputInfoGroup.ResumeLayout(false);
-			this.OutputInfoGroup.PerformLayout();
+			this.outputInfoGroup.ResumeLayout(false);
+			this.outputInfoGroup.PerformLayout();
 			this.ResumeLayout(false);
 		}
 		private System.Windows.Forms.Label industryInfo;
 		private System.Windows.Forms.Label developmentInfo;
 		private System.Windows.Forms.Label researchInfo;
-		private System.Windows.Forms.GroupBox OutputInfoGroup;
+		private System.Windows.Forms.GroupBox outputInfoGroup;
 		private System.Windows.Forms.FlowLayoutPanel traitList;
 		private System.Windows.Forms.FlowLayoutPanel buildingsList;
 		private System.Windows.Forms.GroupBox buildingsGroup;

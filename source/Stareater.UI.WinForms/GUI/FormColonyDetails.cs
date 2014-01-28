@@ -29,6 +29,7 @@ namespace Stareater.GUI
 			this.controller = controller;
 			
 			Context context = SettingsWinforms.Get.Language["FormColony"];
+			//TODO: set form title
 			
 			buildingsGroup.Text = context["buildingsGroup"].Text();
 			planetInfoGroup.Text = context["planetGroup"].Text();
@@ -54,11 +55,10 @@ namespace Stareater.GUI
 			sizeInfo.Text = context["sizeInfo"].Text(null, vars.Get);
 			environmentInfo.Text = context["environmentInfo"].Text(null, vars.Get);
 			
-			var productFormat = new DecimalsFormatter(0, 1);
-			vars.And("prodFood", productFormat.Format(controller.FoodPerPop));
-			vars.And("prodOre", productFormat.Format(controller.OrePerPop));
-			vars.And("prodInd", productFormat.Format(controller.IndustryPerPop));
-			vars.And("prodDev", productFormat.Format(controller.DevelopmentPerPop));
+			vars.And("prodFood", percentFormat.Format(controller.FoodPerPop));
+			vars.And("prodOre", percentFormat.Format(controller.OrePerPop));
+			vars.And("prodInd", percentFormat.Format(controller.IndustryPerPop));
+			vars.And("prodDev", percentFormat.Format(controller.DevelopmentPerPop));
 			vars.And("totalInd", prefixFormat.Format(controller.IndustryTotal));
 			vars.And("totalDev", prefixFormat.Format(controller.DevelopmentTotal));
 			
