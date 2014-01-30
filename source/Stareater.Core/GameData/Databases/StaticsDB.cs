@@ -6,6 +6,7 @@ using Ikadn.Ikon.Types;
 using Stareater.AppData.Expressions;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameData.Reading;
+using Stareater.GameLogic;
 using Stareater.Utils;
 
 namespace Stareater.GameData.Databases
@@ -62,6 +63,7 @@ namespace Stareater.GameData.Databases
 			yield return 1;
 		}
 		
+		#region Colony Formulas
 		private ColonyFormulaSet loadColonyFormulas(IkonComposite data)
 		{
 			return new ColonyFormulaSet(
@@ -82,7 +84,9 @@ namespace Stareater.GameData.Databases
 				data[key].To<IkonComposite>()[PopulationActivityOrganized].To<Formula>()
 			);
 		}
+		#endregion
 		
+		#region Constructables
 		private Constructable loadConstructable(IkonComposite data)
 		{
 			return new Constructable(
@@ -91,16 +95,16 @@ namespace Stareater.GameData.Databases
 				false,
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
-				loadPrerquisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(), 
+				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(), 
 				siteType(data[ConstructableSiteKey].To<string>()),
 				data[ConstructableConditionKey].To<Formula>(),
 				data[GeneralCostKey].To<Formula>(),
 				data[ConstructableLimitKey].To<Formula>(),
-				new object[0] //TODO: make loader
+				loadConstructionEffects(data[ConstructableEffectsKey].To<IEnumerable<IkonComposite>>()).ToArray()
 			);
 		}
 		
-		SiteType siteType(string rawData)
+		private SiteType siteType(string rawData)
 		{
 			switch(rawData.ToLower())
 			{
@@ -113,7 +117,33 @@ namespace Stareater.GameData.Databases
 			}
 		}
 		
-		private IEnumerable<Prerequisite> loadPrerquisites(IkonArray dataArray)
+		private IEnumerable<AConstructionEffect> loadConstructionEffects(IEnumerable<IkonComposite> data)
+		{
+			foreach (var effectData in data) 
+				switch (effectData.Tag.ToString().ToLower()) 
+				{
+					case ConstructionAddBuildingTag:
+						yield return new ConstructionAddBuilding(
+							effectData[AddBuildingBuildingId].To<string>(),
+							effectData[AddBuildingQuantity].To<long>()
+						);
+						break;
+					case ConstructionSetVarTag:
+						yield return new ConstructionSetVar(
+							effectData[SetVarVarName].To<string>(),
+							effectData[SetVarExpression].To<Formula>()
+						);
+						break;
+					default:
+						throw new FormatException("Invalid construction effect with tag " + effectData.Tag);
+				}
+			
+			yield break;
+		}
+		#endregion
+		
+		#region Technologies
+		private IEnumerable<Prerequisite> loadPrerequisites(IkonArray dataArray)
 		{
 			for(int i = 0; i < dataArray.Count; i += 2)
 				yield return new Prerequisite(
@@ -130,11 +160,12 @@ namespace Stareater.GameData.Databases
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralCostKey].To<Formula>(),
-				loadPrerquisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(),
+				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(),
 				data[TechnologyMaxLevelKey].To<int>(),
 				category
 			 );
 		}
+		#endregion
 		
 		#region Loading tags and keys
 		private const string ColonyFormulasTag = "ColonyFormulas";
@@ -157,6 +188,14 @@ namespace Stareater.GameData.Databases
 		private const string ConstructableEffectsKey = "effects";
 		private const string SiteColony = "colony";
 		private const string SiteSystem = "system";
+		
+		private const string ConstructionAddBuildingTag = "addbuilding";
+		private const string AddBuildingBuildingId = "buildingId";
+		private const string AddBuildingQuantity = "quantity";
+		
+		private const string ConstructionSetVarTag = "setvar";
+		private const string SetVarVarName = "name";
+		private const string SetVarExpression = "value";
 		
 		private const string GeneralNameKey = "nameCode";
 		private const string GeneralDescriptionKey = "descCode";
