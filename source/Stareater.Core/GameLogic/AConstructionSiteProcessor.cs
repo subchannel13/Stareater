@@ -19,6 +19,13 @@ namespace Stareater.GameLogic
 			this.SpendingPlan = new ConstructionResult[0];
 		}
 		
+		protected AConstructionSiteProcessor(AConstructionSiteProcessor original)
+		{
+			this.Production = original.Production;
+			this.SpendingPlan = new List<ConstructionResult>(original.SpendingPlan);
+			this.SpendingRatioEffective = original.SpendingRatioEffective;
+		}
+		
 		public abstract Var LocalEffects();
 
 		protected static IEnumerable<ConstructionResult> SimulateSpending(

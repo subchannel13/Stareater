@@ -109,8 +109,17 @@ namespace Stareater.GameLogic
 		
 		public void ProcessPrecombat(IList<ColonyProcessor> colonyProcessors)
 		{
-			foreach (var colonyProc in colonyProcessors)
+			foreach (var colonyProc in colonyProcessors) {
 				developmentPoints += colonyProc.Development;
+				colonyProc.ProcessPrecombat();
+			}
+			
+			/*
+			 * TODO: Process stars
+			 * - Calculate effects from colonies
+			 * - Build
+			 * - Perform migration
+			 */
 		}
 		#endregion
 		

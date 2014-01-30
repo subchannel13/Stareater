@@ -125,7 +125,7 @@ namespace Stareater.GameData.Databases
 					case ConstructionAddBuildingTag:
 						yield return new ConstructionAddBuilding(
 							effectData[AddBuildingBuildingId].To<string>(),
-							effectData[AddBuildingQuantity].To<long>()
+							effectData[AddBuildingQuantity].To<Formula>()
 						);
 						break;
 					case ConstructionSetVarTag:
