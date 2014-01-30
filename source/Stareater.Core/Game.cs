@@ -94,21 +94,6 @@ namespace Stareater
 				playerProc.ProcessPrecombat(this.Derivates.Colonies.OwnedBy(playerProc.Player));
 			
 			/*
-			 * TODO: Colonies, 1st pass
-			 * - Build (consume construction queue)
-			 * - Apply instant effect buildings
-			 * - Apply terraforming
-			 * - Grow population
-			 */
-			
-			/*
-			 * TODO: Process stars
-			 * - Calculate effects from colonies
-			 * - Build
-			 * - Perform migration
-			 */
-			
-			/*
 			 * TODO: Process ships
 			 * - Move ships
 			 * - Space combat

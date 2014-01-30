@@ -1,13 +1,14 @@
 ﻿using System;
+using Stareater.AppData.Expressions;
 
 namespace Stareater.GameLogic
 {
 	class ConstructionAddBuilding : AConstructionEffect
 	{
 		private string buildingCode;
-		private long quantity;
+		private Formula quantity;
 		
-		public ConstructionAddBuilding(string buildingCode, long quantity)
+		public ConstructionAddBuilding(string buildingCode, Formula quantity)
 		{
 			this.buildingCode = buildingCode;
 			this.quantity = quantity;

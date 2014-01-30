@@ -18,6 +18,16 @@ namespace Stareater.GameLogic
 			this.Stellaris = stellaris;
 		}
 
+		private StellarisProcessor(StellarisAdmin stellaris, StellarisProcessor original) : base(original)
+		{
+			this.Stellaris = stellaris;
+		}
+		
+		internal StellarisProcessor Copy(PlayersRemap playerRemap)
+		{
+			return new StellarisProcessor(playerRemap.Stellarises[this.Stellaris], this);
+		}
+		
 		public Player Owner
 		{
 			get
@@ -32,13 +42,6 @@ namespace Stareater.GameLogic
 			{
 				return Stellaris.Location;
 			}
-		}
-
-		internal StellarisProcessor Copy(PlayersRemap playerRemap)
-		{
-			StellarisProcessor copy = new StellarisProcessor(playerRemap.Stellarises[this.Stellaris]);
-
-			return copy;
 		}
 		
 		public void CalculateBaseEffects()

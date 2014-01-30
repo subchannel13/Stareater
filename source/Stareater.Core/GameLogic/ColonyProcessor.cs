@@ -24,6 +24,26 @@ namespace Stareater.GameLogic
 			this.Colony = colony;
 		}
 		
+		private ColonyProcessor(Colony colony, ColonyProcessor original) : base(original)
+		{
+			this.Colony = colony;
+			
+			this.BuilderEfficiency = original.BuilderEfficiency;
+			this.Development = original.Development;
+			this.FarmerEfficiency = original.FarmerEfficiency;
+			this.GardenerEfficiency = original.GardenerEfficiency;
+			this.MaxPopulation = original.MaxPopulation;
+			this.MinerEfficiency = original.MinerEfficiency;
+			this.Organization = original.Organization;
+			this.ScientistEfficiency = original.ScientistEfficiency;
+			this.WorkingPopulation = original.WorkingPopulation;
+		}
+		
+		internal ColonyProcessor Copy(PlayersRemap playerRemap)
+		{
+			return new ColonyProcessor(playerRemap.Colonies[this.Colony], this);
+		}
+				
 		public Player Owner 
 		{ 
 			get {
@@ -109,16 +129,17 @@ namespace Stareater.GameLogic
 			
 			return vars;
 		}
-
-		internal ColonyProcessor Copy(PlayersRemap playerRemap)
+		
+		public void ProcessPrecombat()
 		{
-			ColonyProcessor copy = new ColonyProcessor(playerRemap.Colonies[this.Colony]);
-			
-			copy.Development = this.Development;
-			copy.MaxPopulation = this.MaxPopulation;
-			copy.Production = this.Production;
-
-			return copy;
+			/*
+			 * TODO: Colonies, 1st pass
+			 * - Build (consume construction queue)
+			 * - Apply instant effect buildings
+			 * - Apply terraforming
+			 * - Grow population
+			 */
+			//throw new NotImplementedException();
 		}
 	}
 }
