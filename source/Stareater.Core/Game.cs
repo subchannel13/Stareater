@@ -66,13 +66,16 @@ namespace Stareater
 			return new GameCopy(copy, playersRemap, galaxyRemap);
 		}
 		
-		public void ProcessPrecombat()
+		public void CalculateBaseEffects()
 		{
 			foreach (var stellaris in this.Derivates.Stellarises)
 				stellaris.CalculateBaseEffects();
 			foreach(var colonyProc in this.Derivates.Colonies)
 				colonyProc.CalculateBaseEffects(Statics.ColonyFormulas, Derivates.Of(colonyProc.Owner));
-			
+		}
+		
+		public void CalculateSpendings()
+		{
 			foreach(var colonyProc in this.Derivates.Colonies)
 				colonyProc.CalculateSpending(Statics.ColonyFormulas, Derivates.Of(colonyProc.Owner));
 			foreach (var stellaris in this.Derivates.Stellarises)
@@ -80,8 +83,13 @@ namespace Stareater
 					Derivates.Of(stellaris.Owner),
 					this.Derivates.Colonies.At(stellaris.Location)
 				);
+		}
+		
+		public void ProcessPrecombat()
+		{
+			CalculateBaseEffects();
+			CalculateSpendings();			
 			
-			//TODO: Include star system worksforce allocation
 			foreach(var playerProc in this.Derivates.Players)
 				playerProc.ProcessPrecombat(this.Derivates.Colonies.OwnedBy(playerProc.Player));
 			
@@ -126,6 +134,8 @@ namespace Stareater
 			 * - Check construction queue
 			 * - Recalculate colony effects
 			 */
+			
+			CalculateBaseEffects();
 		}
 	}
 }

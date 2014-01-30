@@ -20,7 +20,11 @@ namespace Stareater.Controllers
 			StatesDB states = createStates(rng, controller, players, statics.Technologies);
 			TemporaryDB derivates = createDerivates(players, controller.SelectedStart, statics, states);
 			
-			return new Game(players, statics, states, derivates);
+			var game = new Game(players, statics, states, derivates);
+			game.CalculateBaseEffects();
+			game.CalculateSpendings();
+			
+			return game;
 		}
 		
 		private static StaticsDB loadStatics()
@@ -41,11 +45,6 @@ namespace Stareater.Controllers
 			initPlayers(derivates, players, states);
 			
 			//TODO make as game's method and reuse in turn processing
-			foreach (var stellaris in derivates.Stellarises)
-				stellaris.CalculateBaseEffects();
-			foreach(var colonyProc in derivates.Colonies)
-				colonyProc.CalculateBaseEffects(statics.ColonyFormulas, derivates.Of(colonyProc.Owner));
-			
 			foreach(var colonyProc in derivates.Colonies)
 				colonyProc.CalculateSpending(statics.ColonyFormulas, derivates.Of(colonyProc.Owner));
 			foreach (var stellaris in derivates.Stellarises)

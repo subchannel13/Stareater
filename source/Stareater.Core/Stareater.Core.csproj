@@ -188,8 +188,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameLogic\AConstructionEffect.cs" />
     <Compile Include="GameLogic\AConstructionSiteProcessor.cs" />
     <Compile Include="GameLogic\ColonyProcessor.cs" />
+    <Compile Include="GameLogic\ConstructionAddBuilding.cs" />
+    <Compile Include="GameLogic\ConstructionSetVar.cs" />
     <Compile Include="GameLogic\ConstructionResult.cs">
       <DependentUpon>ConstructionResult.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -334,9 +337,6 @@
   <ItemGroup>
     <None Include="AppData\Expressions\Parser.frame" />
     <None Include="AppData\Expressions\Scanner.frame" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Libs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

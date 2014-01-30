@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stareater.AppData.Expressions;
+using Stareater.GameLogic;
 
 namespace Stareater.GameData
 {
@@ -19,11 +20,11 @@ namespace Stareater.GameData
 		public Formula Cost { get; private set; }
 		public Formula TurnLimit { get; private set; }
 		
-		public IEnumerable<object> Effects { get; private set; } //TODO: make type
+		public IEnumerable<AConstructionEffect> Effects { get; private set; }
 		
 		public Constructable(string nameCode, string descriptionCode, bool literalText, string imagePath, 
 		                     string idCode, IEnumerable<Prerequisite> prerequisites, SiteType constructableAt, 
-		                     Formula condition, Formula cost, Formula turnLimit, IEnumerable<object> effects)
+		                     Formula condition, Formula cost, Formula turnLimit, IEnumerable<AConstructionEffect> effects)
 		{
 			this.NameCode = nameCode;
 			this.DescriptionCode = descriptionCode;
