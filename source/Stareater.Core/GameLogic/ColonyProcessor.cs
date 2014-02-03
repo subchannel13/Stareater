@@ -52,6 +52,7 @@ namespace Stareater.GameLogic
 		}
 		
 		public double MaxPopulation { get; private set; }
+		public double PopulationGrowth { get; private set; }
 		public double Organization { get; private set; }
 		
 		public double FarmerEfficiency { get; private set; }
@@ -65,6 +66,7 @@ namespace Stareater.GameLogic
 		
 		private IDictionary<string, double> calcVars(PlayerProcessor playerProcessor)
 		{
+			//TODO: add colony buildings
 			return new Var(PlanetSizeKey, Colony.Location.Size)
 				.And(PopulationKey, Colony.Population)
 				.UnionWith(playerProcessor.TechLevels).Get;
@@ -72,10 +74,10 @@ namespace Stareater.GameLogic
 		
 		public void CalculateBaseEffects(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
 		{
-			//TODO: add colony buildings
 			var vars = calcVars(playerProcessor);
 			
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
+			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
 			this.Organization = formulas.Organization.Evaluate(vars);
 			
 			this.FarmerEfficiency = formulas.Farming.Evaluate(this.Organization, vars);
@@ -132,14 +134,13 @@ namespace Stareater.GameLogic
 		
 		public void ProcessPrecombat()
 		{
-			/*
-			 * TODO: Colonies, 1st pass
+			Colony.Population = Methods.Clamp(Colony.Population + PopulationGrowth, 0, MaxPopulation);
+			/* TODO: Colonies, 1st pass
 			 * - Build (consume construction queue)
 			 * - Apply instant effect buildings
 			 * - Apply terraforming
 			 * - Grow population
 			 */
-			//throw new NotImplementedException();
 		}
 	}
 }

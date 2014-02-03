@@ -68,12 +68,21 @@ namespace Stareater.GameData.Databases
 		{
 			return new ColonyFormulaSet(
 				data[ColonyMaxPopulation].To<Formula>(),
+				loadDerivedStat(data[ColonyPopulationGrowth].To<IkonComposite>()),
 				data[ColonyOrganization].To<Formula>(),
 				loadPopulationActivity(data, ColonyFarming),
 				loadPopulationActivity(data, ColonyGardening),
 				loadPopulationActivity(data, ColonyMining),
 				loadPopulationActivity(data, ColonyDevelopment),
 				loadPopulationActivity(data, ColonyIndustry)
+			);
+		}
+		
+		private DerivedStatistic loadDerivedStat(IkonComposite data)
+		{
+			return new DerivedStatistic(
+				data[DerivedStatBase].To<Formula>(),
+				data[DerivedStatTotal].To<Formula>()
 			);
 		}
 		
@@ -174,6 +183,7 @@ namespace Stareater.GameData.Databases
 		private const string ResearchTag = "ResearchTopic";
 		
 		private const string ColonyMaxPopulation = "maxPopulation";
+		private const string ColonyPopulationGrowth = "populationGrowth";
 		private const string ColonyOrganization = "organization";
 		private const string ColonyDevelopment = "development";
 		private const string ColonyFarming = "farming";
@@ -203,6 +213,9 @@ namespace Stareater.GameData.Databases
 		private const string GeneralCodeKey = "code";
 		private const string GeneralPrerequisitesKey = "prerequisites";
 		private const string GeneralCostKey = "cost";
+		
+		private const string DerivedStatBase = "base";
+		private const string DerivedStatTotal = "total";
 		
 		private const string PopulationActivityImprovised = "improvised";
 		private const string PopulationActivityOrganized = "organized";
