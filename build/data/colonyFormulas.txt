@@ -1,6 +1,12 @@
 { ColonyFormulas
 	maxPopulation # size / 10 * 1e9;
 	
+	populationGrowth 
+	{ Stat
+		base # pop * 0.04;
+		total # base;
+	}
+	
 	organization # limit(0 / pop, 0, 1);
 	
 	farming

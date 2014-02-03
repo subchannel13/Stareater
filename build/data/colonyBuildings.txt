@@ -12,9 +12,9 @@
 	turnLimit # maxPop - factories;
 	
 	effects [
-		{ MutateSite
-			key: Infra
-			value # factories + quantity;
+		{ AddBuilding
+			buildingId: Infra
+			quantity # factories + quantity;
 		}
 	]
 }
@@ -33,9 +33,9 @@
 	turnLimit # maxPop - pop;
 	
 	effects [
-		{ MutateSite
-			key: Poppulation
-			value # factories + quantity;
+		{ SetVar
+			name: Population
+			value # population + quantity;
 		}
 	]
 }

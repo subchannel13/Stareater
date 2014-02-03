@@ -109,6 +109,7 @@
     <Compile Include="Galaxy\StarNamer.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameData\Constructable.cs" />
+    <Compile Include="GameData\Databases\Tables\DerivedStatistic.cs" />
     <Compile Include="GameData\Databases\Tables\StellarisProcessorCollection.cs">
       <DependentUpon>StellarisProcessorCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>

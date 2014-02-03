@@ -69,5 +69,12 @@ namespace Stareater.GUI
 			industryTotalInfo.Text = context["industryTotalInfo"].Text(null, vars.Get);
 			developmentTotalInfo.Text = context["developmentTotalInfo"].Text(null, vars.Get);
 		}
+		
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			if (keyData == Keys.Escape) 
+				this.Close();
+			return base.ProcessCmdKey(ref msg, keyData);
+		}
 	}
 }

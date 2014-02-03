@@ -12,9 +12,5 @@
 	turnLimit # 1;
 	
 	effects [
-		{ MutateSite
-			key: Infra
-			value # factories + quantity;
-		}
 	]
 }
