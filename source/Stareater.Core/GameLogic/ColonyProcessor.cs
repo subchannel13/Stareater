@@ -7,6 +7,7 @@ using Stareater.Players;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.GameData;
+using Stareater.GameData.Databases;
 
 namespace Stareater.GameLogic
 {
@@ -64,18 +65,25 @@ namespace Stareater.GameLogic
 		public double WorkingPopulation { get; private set; }
 		public double Development { get; private set; }
 		
-		private IDictionary<string, double> calcVars(PlayerProcessor playerProcessor)
+		private IDictionary<string, double> calcVars(StaticsDB statics, PlayerProcessor playerProcessor)
 		{
 			//TODO: add colony buildings
-			return new Var(PlanetSizeKey, Colony.Location.Size)
+			var vars = new Var(PlanetSizeKey, Colony.Location.Size)
 				.And(PopulationKey, Colony.Population)
-				.UnionWith(playerProcessor.TechLevels).Get;
+				.UnionWith(playerProcessor.TechLevels);
+
+			foreach(var constructable in statics.Constructables)
+				if (constructable.ConstructableAt == SiteType.Colony)
+					; //UNDONE: add keys for permanent and temporary buildings
+
+			return vars.Get;
 		}
 		
-		public void CalculateBaseEffects(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
+		public void CalculateBaseEffects(StaticsDB statics, PlayerProcessor playerProcessor)
 		{
-			var vars = calcVars(playerProcessor);
-			
+			var vars = calcVars(statics, playerProcessor);
+			var formulas = statics.ColonyFormulas;
+
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
 			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
 			this.Organization = formulas.Organization.Evaluate(vars);
