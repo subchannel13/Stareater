@@ -84,5 +84,15 @@ namespace ExpressionParser_Tests
 			var test = new ParserTester(varName, new Var(varName, varValue).Get, varValue);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
+
+		[Test]
+		public void VariableWithUnderscore()
+		{
+			string varName = "hydro_lvl";
+			double varValue = 4;
+
+			var test = new ParserTester(varName, new Var(varName, varValue).Get, varValue);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
 	}
 }

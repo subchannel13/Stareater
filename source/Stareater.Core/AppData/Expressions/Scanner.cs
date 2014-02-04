@@ -192,7 +192,7 @@ public class Scanner {
 				else {t.kind = 1; break;}
 			case 7:
 				recEnd = pos; recKind = 2;
-				if (ch >= '0' && ch <= '9' || ch >= 'a' && ch <= 'z') {AddCh(); goto case 7;}
+				if (ch >= '0' && ch <= '9' || ch == '_' || ch >= 'a' && ch <= 'z') {AddCh(); goto case 7;}
 				else {t.kind = 2; t.val = new String(tval, 0, tlen); CheckLiteral(); return t;}
 			case 8:
 				{t.kind = 4; break;}

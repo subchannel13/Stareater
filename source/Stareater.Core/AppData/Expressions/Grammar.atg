@@ -11,7 +11,7 @@ CHARACTERS
 
 TOKENS
 	number		= digit {digit} ["." digit {digit}] ["e" ["-"] digit {digit}].
-	identifier	= letter {letter | digit}.
+	identifier	= letter {letter | digit | "_"}.
 	infinity	= "Inf".
 
 IGNORE   '\t' + '\r' + '\n'
