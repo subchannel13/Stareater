@@ -71,7 +71,7 @@ namespace Stareater
 			foreach (var stellaris in this.Derivates.Stellarises)
 				stellaris.CalculateBaseEffects();
 			foreach(var colonyProc in this.Derivates.Colonies)
-				colonyProc.CalculateBaseEffects(Statics.ColonyFormulas, Derivates.Of(colonyProc.Owner));
+				colonyProc.CalculateBaseEffects(Statics, Derivates.Of(colonyProc.Owner));
 		}
 		
 		public void CalculateSpendings()

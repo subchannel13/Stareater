@@ -40,7 +40,7 @@ namespace Stareater.Controllers
 		{
 			var derivates = new TemporaryDB(players, statics.Technologies);
 			
-			initColonies(players, states.Colonies, startingConditions, derivates, statics.ColonyFormulas);
+			initColonies(players, states.Colonies, startingConditions, derivates, statics);
 			initStellarises(derivates, states.Stellarises);
 			initPlayers(derivates, players, states);
 			
@@ -140,12 +140,12 @@ namespace Stareater.Controllers
 		}
 		
 		private static void initColonies(Player[] players, ColonyCollection colonies, StartingConditions startingConditions, 
-		                                 TemporaryDB derivates, ColonyFormulaSet formulas)
+		                                 TemporaryDB derivates, StaticsDB statics)
 		{
 			foreach(Colony colony in colonies) {
 				var colonyProc = new ColonyProcessor(colony);
 				
-				colonyProc.CalculateBaseEffects(formulas, derivates.Players.Of(colony.Owner));
+				colonyProc.CalculateBaseEffects(statics, derivates.Players.Of(colony.Owner));
 				derivates.Colonies.Add(colonyProc);
 			}
 			
@@ -161,7 +161,7 @@ namespace Stareater.Controllers
 				foreach(var colony in colonies.OwnedBy(player)) {
 					colony.Population = weights.Relative(colony) * totalPopulation;
 					//TODO: add infrastructure to colony
-					derivates.Colonies.Of(colony).CalculateBaseEffects(formulas, derivates.Players.Of(player));
+					derivates.Colonies.Of(colony).CalculateBaseEffects(statics, derivates.Players.Of(player));
 				}
 			}
 
