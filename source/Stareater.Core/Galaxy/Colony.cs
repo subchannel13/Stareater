@@ -43,8 +43,8 @@ namespace Stareater.Galaxy
 		{
 			var copy = new Colony(player, planet, this.Population);
 
-			foreach (var leftovers in this.Leftovers)
-				copy.Leftovers.Add(leftovers.Key, leftovers.Value);
+			foreach (var leftovers in this.Stockpile)
+				copy.Stockpile.Add(leftovers.Key, leftovers.Value);
 
 			return copy;
 		}

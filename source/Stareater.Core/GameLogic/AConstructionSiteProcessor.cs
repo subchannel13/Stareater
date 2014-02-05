@@ -43,8 +43,8 @@ namespace Stareater.GameLogic
 				double cost = buildingItem.Cost.Evaluate(vars);
 				double investment = industryPoints;
 
-				if (site.Leftovers.ContainsKey(buildingItem))
-					investment += site.Leftovers[buildingItem];
+				if (site.Stockpile.ContainsKey(buildingItem))
+					investment += site.Stockpile[buildingItem];
 
 				double completed = investment / cost; //FIXME: possible division by zero
 				double countLimit = buildingItem.TurnLimit.Evaluate(vars);

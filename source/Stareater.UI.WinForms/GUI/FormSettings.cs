@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Stareater.AppData;
+using Stareater.GuiUtils;
 using Stareater.Localization;
 using Stareater.Utils;
 

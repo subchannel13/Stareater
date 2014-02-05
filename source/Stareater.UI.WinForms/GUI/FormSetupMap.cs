@@ -7,6 +7,7 @@ using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Galaxy;
 using Stareater.Galaxy.Builders;
+using Stareater.GuiUtils;
 using Stareater.Localization;
 using Stareater.Utils.PluginParameters;
 

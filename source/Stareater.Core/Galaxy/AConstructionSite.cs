@@ -10,7 +10,7 @@ namespace Stareater.Galaxy
 	abstract class AConstructionSite
 	{
 		internal Player Owner { get; private set; }
-		internal IDictionary<Constructable, double> Leftovers;
+		internal IDictionary<Constructable, double> Stockpile;
 
 		private IEnumerable<object> buildings; //TODO: make type
 		
@@ -18,14 +18,16 @@ namespace Stareater.Galaxy
 		
 		protected AConstructionSite(Player owner)
 		{
-			this.Leftovers = new Dictionary<Constructable, double>();
+			this.Stockpile = new Dictionary<Constructable, double>();
 
 			this.Owner = owner;
 			this.id = NextId();
 		}
 
 		public abstract SiteType Type { get; }
-
+		
+		#region object ID
+		//TODO: make debug only
 		public override string ToString()
 		{
 			return "Construction site " + id;
@@ -40,5 +42,6 @@ namespace Stareater.Galaxy
 				return LastId;
 			}
 		}
+		#endregion
 	}
 }

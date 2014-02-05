@@ -34,7 +34,7 @@ namespace Stareater.GUI
 				nameLabel.Text = data.Name;
 				
 				ThousandsFormatter formatter = new ThousandsFormatter();
-				costLabel.Text = "";
+				costLabel.Text = formatter.Format(data.Cost);
 			}
 		}
 		

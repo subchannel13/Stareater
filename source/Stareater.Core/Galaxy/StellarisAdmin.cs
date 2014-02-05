@@ -22,8 +22,8 @@ namespace Stareater.Galaxy
 		{
 			var copy = new StellarisAdmin(player, star);
 
-			foreach (var leftovers in this.Leftovers)
-				copy.Leftovers.Add(leftovers.Key, leftovers.Value);
+			foreach (var leftovers in this.Stockpile)
+				copy.Stockpile.Add(leftovers.Key, leftovers.Value);
 
 			return copy;
 		}
