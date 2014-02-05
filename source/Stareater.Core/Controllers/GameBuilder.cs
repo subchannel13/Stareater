@@ -23,6 +23,7 @@ namespace Stareater.Controllers
 			var game = new Game(players, statics, states, derivates);
 			game.CalculateBaseEffects();
 			game.CalculateSpendings();
+			game.CalculateDerivedEffects();
 			
 			return game;
 		}
@@ -43,15 +44,6 @@ namespace Stareater.Controllers
 			initColonies(players, states.Colonies, startingConditions, derivates, statics);
 			initStellarises(derivates, states.Stellarises);
 			initPlayers(derivates, players, states);
-			
-			//TODO make as game's method and reuse in turn processing
-			foreach(var colonyProc in derivates.Colonies)
-				colonyProc.CalculateSpending(statics.ColonyFormulas, derivates.Of(colonyProc.Owner));
-			foreach (var stellaris in derivates.Stellarises)
-				stellaris.CalculateSpending(
-					derivates.Of(stellaris.Owner),
-					derivates.Colonies.At(stellaris.Location)
-				);
 			
 			return derivates;
 		}

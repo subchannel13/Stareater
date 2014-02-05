@@ -85,10 +85,17 @@ namespace Stareater
 				);
 		}
 		
+		public void CalculateDerivedEffects()
+		{
+			foreach(var colonyProc in this.Derivates.Colonies)
+				colonyProc.CalculateDerivedEffects(Statics, Derivates.Of(colonyProc.Owner));
+		}
+		
 		public void ProcessPrecombat()
 		{
 			CalculateBaseEffects();
-			CalculateSpendings();			
+			CalculateSpendings();
+			CalculateDerivedEffects();
 			
 			foreach(var playerProc in this.Derivates.Players)
 				playerProc.ProcessPrecombat(this.Derivates.Colonies.OwnedBy(playerProc.Player));
@@ -121,6 +128,8 @@ namespace Stareater
 			 */
 			
 			CalculateBaseEffects();
+			CalculateSpendings();
+			CalculateDerivedEffects();
 		}
 	}
 }

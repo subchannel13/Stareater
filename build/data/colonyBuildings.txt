@@ -30,12 +30,8 @@
 	
 	cost # 10;
 	condition # maxPop > pop;
-	turnLimit # maxPop - pop;
+	turnLimit # min(maxPop - pop, pop * 0.04);
 	
 	effects [
-		{ SetVar
-			name: Population
-			value # population + quantity;
-		}
 	]
 }

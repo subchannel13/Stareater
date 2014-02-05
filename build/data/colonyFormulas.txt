@@ -4,7 +4,7 @@
 	populationGrowth 
 	{ Stat
 		base # pop * 0.04;
-		total # base;
+		total # base + housing_delta;
 	}
 	
 	organization # limit(0 / pop, 0, 1);
