@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Stareater.Galaxy;
+using Stareater.GameData;
+using Stareater.GameData.Databases;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
-using Stareater.GameData;
-using Stareater.GameData.Databases;
 
 namespace Stareater.GameLogic
 {
 	class ColonyProcessor : AConstructionSiteProcessor
 	{
+		private const string NewBuidingPrefix = "_delta";
 		private const string InfrastructureKey = "factories";
 		private const string MaxPopulationKey = "maxPop";
 		private const string PlanetSizeKey = "size";
+		private const string PopulationGrowthKey = "popGrowth";
 		private const string PopulationKey = "pop";
 		
 		public Colony Colony { get; set; }
@@ -73,19 +76,21 @@ namespace Stareater.GameLogic
 				.UnionWith(playerProcessor.TechLevels);
 
 			foreach(var constructable in statics.Constructables)
-				if (constructable.ConstructableAt == SiteType.Colony)
-					; //UNDONE: add keys for permanent and temporary buildings
+				if (constructable.ConstructableAt == SiteType.Colony) {
+					vars.And(constructable.IdCode.ToLower() + NewBuidingPrefix, 0);
+					//TODO: add keys for permanent buildings
+				}
 
 			return vars.Get;
+
 		}
 		
 		public void CalculateBaseEffects(StaticsDB statics, PlayerProcessor playerProcessor)
 		{
 			var vars = calcVars(statics, playerProcessor);
 			var formulas = statics.ColonyFormulas;
-
+			
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
-			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
 			this.Organization = formulas.Organization.Evaluate(vars);
 			
 			this.FarmerEfficiency = formulas.Farming.Evaluate(this.Organization, vars);
@@ -97,6 +102,18 @@ namespace Stareater.GameLogic
 
 			//TODO: factor in farmers
 			this.WorkingPopulation = this.Colony.Population;
+		}
+		
+		public void CalculateDerivedEffects(StaticsDB statics, PlayerProcessor playerProcessor)
+		{
+			var vars = calcVars(statics, playerProcessor);
+			var formulas = statics.ColonyFormulas;
+			
+			foreach(var construction in SpendingPlan)
+				if (construction.DoneCount > 0)
+					vars[construction.Item.IdCode.ToLower() + NewBuidingPrefix] = construction.DoneCount;
+			
+			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
 		}
 		
 		public void CalculateSpending(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)

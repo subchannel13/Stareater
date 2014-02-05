@@ -33,6 +33,11 @@ namespace Stareater.Controllers
 				playerProc,
 				Game.Derivates.Colonies.At(colony.Star)
 			);
+			
+			Game.Derivates.Of(colony).CalculateDerivedEffects(
+				Game.Statics,
+				playerProc
+			);
 		}
 		
 		#region Population
@@ -56,7 +61,7 @@ namespace Stareater.Controllers
 		{ 
 			get
 			{
-				return 0; //TODO: make processor property
+				return Game.Derivates.Of(Site as Colony).PopulationGrowth;
 			}
 		}
 		
