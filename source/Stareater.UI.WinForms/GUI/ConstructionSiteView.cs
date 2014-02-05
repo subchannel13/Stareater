@@ -3,10 +3,10 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.GameData;
+using Stareater.GuiUtils;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
@@ -15,8 +15,6 @@ namespace Stareater.GUI
 {
 	public partial class ConstructionSiteView : UserControl
 	{
-		private const double MinimumPerTurnDone = 1e-3;
-		
 		private AConstructionSiteController controller;
 		
 		public ConstructionSiteView()
@@ -61,30 +59,13 @@ namespace Stareater.GUI
 			var constructionItem = controller.ConstructionQueue.FirstOrDefault();
 			Context context = SettingsWinforms.Get.Language["FormMain"];
 			
-			if (constructionItem != null) {
-				if (constructionItem.PerTurnDone < MinimumPerTurnDone)
-					estimationLabel.Text = context["EtaNever"].Text();
-				else if (constructionItem.PerTurnDone >= 1) {
-					var vars = new TextVar();
-					if (constructionItem.PerTurnDone.Value < 10)
-						vars.And("count", new DecimalsFormatter(0, 1).Format(constructionItem.PerTurnDone.Value, RoundingMethod.Floor, 1));
-					else
-						vars.And("count", new ThousandsFormatter().Format(Math.Floor(constructionItem.PerTurnDone.Value)));
-					
-					estimationLabel.Text = context["BuildingsPerTurn"].Text(null, vars.Get);
-				}
-				else {
-					var vars = new Var("eta", 1 / constructionItem.PerTurnDone.Value).Get;
-					var textVars = new TextVar();
-					
-					if (constructionItem.PerTurnDone.Value < 10)
-						textVars.And("eta", new DecimalsFormatter(0, 1).Format(1 / constructionItem.PerTurnDone.Value, RoundingMethod.Ceil, 1));
-					else
-						textVars.And("eta", new ThousandsFormatter().Format(Math.Ceiling(1 / constructionItem.PerTurnDone.Value)));
-					
-					estimationLabel.Text = context["Eta"].Text(vars, textVars.Get);
-				}
-			}
+			if (constructionItem != null)
+				estimationLabel.Text = LocalizationMethods.ConstructionEstimation(
+					constructionItem, 
+					context["EtaNever"], 
+					context["BuildingsPerTurn"], 
+					context["Eta"]
+				);
 			else
 				estimationLabel.Text = "No construction plans";
 		}

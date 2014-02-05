@@ -10,6 +10,7 @@ using Stareater.Localization;
 using Stareater.Controllers;
 using Stareater.Controllers.Data;
 using Stareater.Galaxy;
+using Stareater.GuiUtils;
 using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI

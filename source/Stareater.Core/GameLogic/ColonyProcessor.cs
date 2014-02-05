@@ -15,6 +15,7 @@ namespace Stareater.GameLogic
 	class ColonyProcessor : AConstructionSiteProcessor
 	{
 		private const string NewBuidingPrefix = "_delta";
+		
 		private const string InfrastructureKey = "factories";
 		private const string MaxPopulationKey = "maxPop";
 		private const string PlanetSizeKey = "size";

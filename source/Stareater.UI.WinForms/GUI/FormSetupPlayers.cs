@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Stareater.Controllers;
 using Stareater.AppData;
+using Stareater.GuiUtils;
 using Stareater.Localization;
 using Stareater.Players;
 using Stareater.Controllers.Data;

@@ -13,16 +13,19 @@ namespace Stareater.Controllers.Data
 		
 		private IDictionary<string, double> vars;
 		
-		internal ConstructableItem(Constructable constructable, PlayerProcessor playerProcessor, double? perTurnDone)
+		internal ConstructableItem(Constructable constructable, PlayerProcessor playerProcessor, 
+		                           double? perTurnDone, double stockpile, double investment)
 		{
 			this.Constructable = constructable;
 			this.vars = new Var().UnionWith(playerProcessor.TechLevels).Get;
 			
+			this.Investment = investment;
 			this.PerTurnDone = perTurnDone;
+			this.Stockpile = stockpile;
 		}
 		
 		internal ConstructableItem(Constructable constructable, PlayerProcessor playerProcessor) :
-			this(constructable, playerProcessor, null)
+			this(constructable, playerProcessor, null, 0, 0)
 		{ }
 		
 		internal Constructable Constructable { get; private set; }
@@ -73,6 +76,10 @@ namespace Stareater.Controllers.Data
 			}
 		}
 		
+		public double Investment { get; private set; }
+		
 		public double? PerTurnDone { get; private set; }
+		
+		public double Stockpile { get; private set; }
 	}
 }

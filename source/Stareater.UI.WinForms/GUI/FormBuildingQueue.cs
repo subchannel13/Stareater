@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 using Stareater.AppData;
@@ -52,6 +52,13 @@ namespace Stareater.GUI
 			queueLabel.Text = context["queueTitle"].Text();
 		}
 		
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			if (keyData == Keys.Escape) 
+				this.Close();
+			return base.ProcessCmdKey(ref msg, keyData);
+		}
+		
 		private void reorderItem(int fromIndex, int toIndex)
 		{
 			if (toIndex < 0) toIndex = 0;
@@ -68,13 +75,6 @@ namespace Stareater.GUI
 			queueList.SelectedIndex = toIndex;
 		}
 		
-		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-		{
-			if (keyData == Keys.Escape) 
-				this.Close();
-			return base.ProcessCmdKey(ref msg, keyData);
-		}
-		
 		private void updateDescription(ConstructableItemView itemView)
 		{
 			thumbnailImage.Image = ImageCache.Get[itemView.Data.ImagePath];
@@ -89,6 +89,16 @@ namespace Stareater.GUI
 			}				
 		}
 		
+		private void updateQueue()
+		{
+			var queueData = controller.ConstructionQueue.ToList();
+			
+			for (int i = 0; i < queueData.Count; i++) {
+				var itemView = queueList.Controls[i] as QueuedConstructionView;
+				itemView.Data = queueData[i];
+			}
+		}
+		
 		private void onOption_Click(object sender, EventArgs e)
 		{
 			var itemView = sender as ConstructableItemView;
@@ -97,11 +107,11 @@ namespace Stareater.GUI
 				controller.Enqueue(itemView.Data);
 				
 				var queueItemView = new QueuedConstructionView();
-				queueItemView.Data = itemView.Data;
 				queueList.Controls.Add(queueItemView);
 			}
 			
 			updateOptions();
+			updateQueue();
 		}
 		
 		private void onOption_MouseEnter(object sender, EventArgs e)
@@ -118,6 +128,7 @@ namespace Stareater.GUI
 			queueList.Controls.Remove(queueList.SelectedItem);
 			
 			updateOptions();
+			updateQueue();
 		}
 		
 		private void moveUpButton_Click(object sender, EventArgs e)
@@ -126,11 +137,13 @@ namespace Stareater.GUI
 				return;
 			
 			reorderItem(queueList.SelectedIndex, queueList.SelectedIndex - 1);
+			updateQueue();
 		}
 		
 		private void moveDownButton_Click(object sender, EventArgs e)
 		{
 			reorderItem(queueList.SelectedIndex, queueList.SelectedIndex + 1);
+			updateQueue();
 		}
 	}
 }
