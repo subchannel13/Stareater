@@ -123,7 +123,7 @@ namespace Stareater.GameLogic
 		}
 		#endregion
 		
-		public void ProcessPostcombat(StatesDB states, TemporaryDB derivates)
+		public void ProcessPostcombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
 			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
 			var advanceOrder = this.DevelopmentOrder(states.TechnologyAdvances);
@@ -150,6 +150,7 @@ namespace Stareater.GameLogic
 			foreach (var colony in states.Colonies.OwnedBy(Player))
 				if (oldPlans.ContainsKey(colony)) {
 					var updatedPlans = updateConstructionPlans(
+						statics,
 						oldPlans[colony],
 						derivates.Of(colony),
 						this.TechLevels
@@ -163,6 +164,7 @@ namespace Stareater.GameLogic
 			foreach (var stellaris in states.Stellarises.OwnedBy(Player))
 				if (oldPlans.ContainsKey(stellaris)) {
 					var updatedPlans = updateConstructionPlans(
+						statics,
 						oldPlans[stellaris],
 						derivates.Of(stellaris),
 						this.TechLevels
@@ -188,10 +190,10 @@ namespace Stareater.GameLogic
 			return newQueue;
 		}
 
-		private ConstructionOrders updateConstructionPlans(ConstructionOrders oldOrders, AConstructionSiteProcessor processor, IDictionary<string, double> playersVars)
+		private ConstructionOrders updateConstructionPlans(StaticsDB statics, ConstructionOrders oldOrders, AConstructionSiteProcessor processor, IDictionary<string, double> playersVars)
 		{
 			var newOrders = new ConstructionOrders(oldOrders.SpendingRatio);
-			var vars = processor.LocalEffects().UnionWith(playersVars).Get;
+			var vars = processor.LocalEffects(statics).UnionWith(playersVars).Get;
 
 			foreach (var item in oldOrders.Queue)
 				if (item.Condition.Evaluate(vars) >= 0)

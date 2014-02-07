@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Stareater.Galaxy;
-using Stareater.Players;
 using Stareater.GameData;
+using Stareater.GameData.Databases;
+using Stareater.Players;
 using Stareater.Utils.Collections;
 
 namespace Stareater.GameLogic
@@ -91,9 +93,9 @@ namespace Stareater.GameLogic
 			}
 		}
 		
-		public override Var LocalEffects()
+		public override Var LocalEffects(StaticsDB statics)
 		{
-			return new Var();
+			return base.LocalEffects(statics);
 		}
 	}
 }

@@ -16,7 +16,6 @@ namespace Stareater.GameLogic
 	{
 		private const string NewBuidingPrefix = "_delta";
 		
-		private const string InfrastructureKey = "factories";
 		private const string MaxPopulationKey = "maxPop";
 		private const string PlanetSizeKey = "size";
 		private const string PopulationGrowthKey = "popGrowth";
@@ -71,16 +70,14 @@ namespace Stareater.GameLogic
 		
 		private IDictionary<string, double> calcVars(StaticsDB statics, PlayerProcessor playerProcessor)
 		{
-			//TODO: add colony buildings
-			var vars = new Var(PlanetSizeKey, Colony.Location.Size)
-				.And(PopulationKey, Colony.Population)
-				.UnionWith(playerProcessor.TechLevels);
+			var vars = base.LocalEffects(statics);
+			vars.And(PlanetSizeKey, Colony.Location.Size);
+			vars.And(PopulationKey, Colony.Population);
+			vars.UnionWith(playerProcessor.TechLevels);
 
 			foreach(var constructable in statics.Constructables)
-				if (constructable.ConstructableAt == SiteType.Colony) {
+				if (constructable.ConstructableAt == SiteType.Colony)
 					vars.And(constructable.IdCode.ToLower() + NewBuidingPrefix, 0);
-					//TODO: add keys for permanent buildings
-				}
 
 			return vars.Get;
 
@@ -117,9 +114,10 @@ namespace Stareater.GameLogic
 			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
 		}
 		
-		public void CalculateSpending(ColonyFormulaSet formulas, PlayerProcessor playerProcessor)
+		public void CalculateSpending(StaticsDB statics, PlayerProcessor playerProcessor)
 		{
-			var vars = this.LocalEffects().UnionWith(playerProcessor.TechLevels).Get;
+			var vars = this.LocalEffects(statics).UnionWith(playerProcessor.TechLevels).Get;
+			ColonyFormulaSet formulas = statics.ColonyFormulas;
 
 			double industryPotential = Colony.Population * this.BuilderEfficiency;
 			double industryPoints = 
@@ -156,10 +154,10 @@ namespace Stareater.GameLogic
 			}
 		}
 		
-		public override Var LocalEffects()
+		public override Var LocalEffects(StaticsDB statics)
 		{
-			var vars = new Var(PlanetSizeKey, Colony.Location.Size);
-			vars.And(InfrastructureKey, 0); //TODO: add as building count
+			var vars = base.LocalEffects(statics);
+			vars.And(PlanetSizeKey, Colony.Location.Size);
 			vars.And(MaxPopulationKey, MaxPopulation);
 			vars.And(PopulationKey, Colony.Population);
 			

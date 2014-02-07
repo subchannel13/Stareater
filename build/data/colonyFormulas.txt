@@ -7,7 +7,7 @@
 		total # base + housing_delta;
 	}
 	
-	organization # limit(0 / pop, 0, 1);
+	organization # limit(infra_count / pop, 0, 1);
 	
 	farming
 	{ Work
