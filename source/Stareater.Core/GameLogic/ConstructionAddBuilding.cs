@@ -1,9 +1,11 @@
 ﻿using System;
 using Stareater.AppData.Expressions;
+using Stareater.Galaxy;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GameLogic
 {
-	class ConstructionAddBuilding : AConstructionEffect
+	class ConstructionAddBuilding : IConstructionEffect
 	{
 		private string buildingCode;
 		private Formula quantity;
@@ -12,6 +14,17 @@ namespace Stareater.GameLogic
 		{
 			this.buildingCode = buildingCode;
 			this.quantity = quantity;
+		}
+		
+		public void Apply(AConstructionSite site, double quantity)
+		{
+			var vars = new Var("quantity", quantity);
+			quantity = this.quantity.Evaluate(vars.Get);
+			
+			if (!site.Buildings.ContainsKey(buildingCode))
+				site.Buildings.Add(buildingCode, quantity);
+			else
+				site.Buildings[buildingCode] += quantity;
 		}
 	}
 }

@@ -13,12 +13,14 @@ namespace Stareater.GameData.Databases
 {
 	internal class StaticsDB
 	{
+		public Dictionary<string, BuildingType> Buildings { get; private set; }
 		public List<Constructable> Constructables { get; private set; }
 		public List<Technology> Technologies { get; private set; }
 		public ColonyFormulaSet ColonyFormulas { get; private set; }
 		
 		public StaticsDB()
 		{
+			this.Buildings = new Dictionary<string, BuildingType>();
 			this.Constructables = new List<Constructable>();
 			this.Technologies = new List<Technology>();
 		}
@@ -39,6 +41,9 @@ namespace Stareater.GameData.Databases
 						var data = dataSet.Dequeue().To<IkonComposite>();
 						
 						switch((string)data.Tag) {
+							case BuildingTag:
+								Buildings.Add(data[GeneralCodeKey].To<string>(), loadBuilding(data));
+								break;
 							case ColonyFormulasTag:
 								ColonyFormulas = loadColonyFormulas(data);
 								break;
@@ -96,6 +101,11 @@ namespace Stareater.GameData.Databases
 		#endregion
 		
 		#region Constructables
+		private BuildingType loadBuilding(IkonComposite data)
+		{
+			return new BuildingType();
+		}
+		
 		private Constructable loadConstructable(IkonComposite data)
 		{
 			return new Constructable(
@@ -126,7 +136,7 @@ namespace Stareater.GameData.Databases
 			}
 		}
 		
-		private IEnumerable<AConstructionEffect> loadConstructionEffects(IEnumerable<IkonComposite> data)
+		private IEnumerable<IConstructionEffect> loadConstructionEffects(IEnumerable<IkonComposite> data)
 		{
 			foreach (var effectData in data) 
 				switch (effectData.Tag.ToString().ToLower()) 
@@ -135,12 +145,6 @@ namespace Stareater.GameData.Databases
 						yield return new ConstructionAddBuilding(
 							effectData[AddBuildingBuildingId].To<string>(),
 							effectData[AddBuildingQuantity].To<Formula>()
-						);
-						break;
-					case ConstructionSetVarTag:
-						yield return new ConstructionSetVar(
-							effectData[SetVarVarName].To<string>(),
-							effectData[SetVarExpression].To<Formula>()
 						);
 						break;
 					default:
@@ -177,6 +181,7 @@ namespace Stareater.GameData.Databases
 		#endregion
 		
 		#region Loading tags and keys
+		private const string BuildingTag = "Building";
 		private const string ColonyFormulasTag = "ColonyFormulas";
 		private const string ConstructableTag = "Constructable";
 		private const string DevelopmentTag = "DevelopmentTopic";
@@ -202,11 +207,7 @@ namespace Stareater.GameData.Databases
 		private const string ConstructionAddBuildingTag = "addbuilding";
 		private const string AddBuildingBuildingId = "buildingId";
 		private const string AddBuildingQuantity = "quantity";
-		
-		private const string ConstructionSetVarTag = "setvar";
-		private const string SetVarVarName = "name";
-		private const string SetVarExpression = "value";
-		
+				
 		private const string GeneralNameKey = "nameCode";
 		private const string GeneralDescriptionKey = "descCode";
 		private const string GeneralImageKey = "image";

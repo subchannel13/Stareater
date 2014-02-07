@@ -83,6 +83,14 @@ namespace Stareater.GameLogic
 				colonyProc.CalculateDevelopment(this.SpendingRatioEffective);
 		}
 
+		protected override AConstructionSite Site 
+		{
+			get 
+			{
+				return Stellaris;
+			}
+		}
+		
 		public override Var LocalEffects()
 		{
 			return new Var();

@@ -20,11 +20,11 @@ namespace Stareater.GameData
 		public Formula Cost { get; private set; }
 		public Formula TurnLimit { get; private set; }
 		
-		public IEnumerable<AConstructionEffect> Effects { get; private set; }
+		public IEnumerable<IConstructionEffect> Effects { get; private set; }
 		
 		public Constructable(string nameCode, string descriptionCode, bool literalText, string imagePath, 
 		                     string idCode, IEnumerable<Prerequisite> prerequisites, SiteType constructableAt, 
-		                     Formula condition, Formula cost, Formula turnLimit, IEnumerable<AConstructionEffect> effects)
+		                     Formula condition, Formula cost, Formula turnLimit, IEnumerable<IConstructionEffect> effects)
 		{
 			this.NameCode = nameCode;
 			this.DescriptionCode = descriptionCode;

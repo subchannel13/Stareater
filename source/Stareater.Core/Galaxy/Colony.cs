@@ -18,11 +18,10 @@ namespace Stareater.Galaxy
 			this.Population = 1;
 		}
 
-		public Colony(Player owner, Planet planet, double population) : base(owner)
+		protected Colony(Colony original, Planet planet, Player owner) : base(original, owner)
 		{
 			this.Location = planet;
-
-			this.Population = population;
+			this.Population = original.Population;
 		}
 
 		public StarData Star
@@ -41,12 +40,7 @@ namespace Stareater.Galaxy
 
 		internal Colony Copy(Player player, Planet planet)
 		{
-			var copy = new Colony(player, planet, this.Population);
-
-			foreach (var leftovers in this.Stockpile)
-				copy.Stockpile.Add(leftovers.Key, leftovers.Value);
-
-			return copy;
+			return new Colony(this, planet, player);
 		}
 	}
 }

@@ -13,6 +13,11 @@ namespace Stareater.Galaxy
 			this.Location = star;
 		}
 
+		protected StellarisAdmin(StellarisAdmin original, StarData star, Player owner) : base(original, owner)
+		{
+			this.Location = star;
+		}
+		
 		public override SiteType Type
 		{
 			get { return SiteType.StarSystem; }
@@ -20,12 +25,7 @@ namespace Stareater.Galaxy
 
 		internal StellarisAdmin Copy(Player player, StarData star)
 		{
-			var copy = new StellarisAdmin(player, star);
-
-			foreach (var leftovers in this.Stockpile)
-				copy.Stockpile.Add(leftovers.Key, leftovers.Value);
-
-			return copy;
+			return new StellarisAdmin(this, star, player);
 		}
 	}
 }

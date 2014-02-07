@@ -28,6 +28,16 @@ namespace Stareater.GameLogic
 		
 		public abstract Var LocalEffects();
 
+		public virtual void ProcessPrecombat()
+		{
+			foreach (var construction in SpendingPlan) 
+				if (construction.DoneCount >= 1)
+					foreach(var effect in construction.Item.Effects)
+						effect.Apply(Site, construction.DoneCount);
+		}
+		
+		protected abstract AConstructionSite Site { get; }
+		
 		protected static IEnumerable<ConstructionResult> SimulateSpending(
 			AConstructionSite site, double industryPoints, 
 			IEnumerable<Constructable> queue, IDictionary<string, double> vars)
@@ -46,7 +56,7 @@ namespace Stareater.GameLogic
 				if (site.Stockpile.ContainsKey(buildingItem))
 					investment += site.Stockpile[buildingItem];
 
-				double completed = investment / cost; //FIXME: possible division by zero
+				double completed = Math.Floor(investment / cost); //FIXME: possible division by zero
 				double countLimit = buildingItem.TurnLimit.Evaluate(vars);
 
 				if (completed > countLimit) {

@@ -12,22 +12,32 @@ namespace Stareater.Galaxy
 		internal Player Owner { get; private set; }
 		internal IDictionary<Constructable, double> Stockpile;
 
-		private IEnumerable<object> buildings; //TODO: make type
-		
-		private long id;
+		internal IDictionary<string, double> Buildings;
 		
 		protected AConstructionSite(Player owner)
 		{
+			this.Buildings = new Dictionary<string, double>();
 			this.Stockpile = new Dictionary<Constructable, double>();
 
 			this.Owner = owner;
 			this.id = NextId();
+		}
+		
+		protected AConstructionSite(AConstructionSite original, Player owner) : this(owner)
+		{
+			foreach (var building in original.Buildings)
+				this.Buildings.Add(building.Key, building.Value);
+			
+			foreach (var leftovers in original.Stockpile)
+				this.Stockpile.Add(leftovers.Key, leftovers.Value);
 		}
 
 		public abstract SiteType Type { get; }
 		
 		#region object ID
 		//TODO: make debug only
+		private long id;
+		
 		public override string ToString()
 		{
 			return "Construction site " + id;

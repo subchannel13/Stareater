@@ -14,9 +14,13 @@
 	effects [
 		{ AddBuilding
 			buildingId: Infra
-			quantity # factories + quantity;
+			quantity # quantity;
 		}
 	]
+}
+
+{ Building
+	code: Infra
 }
 
 { Constructable
