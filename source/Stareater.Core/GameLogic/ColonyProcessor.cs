@@ -148,6 +148,14 @@ namespace Stareater.GameLogic
 				this.ScientistEfficiency;
 		}
 
+		protected override AConstructionSite Site 
+		{
+			get 
+			{
+				return Colony;
+			}
+		}
+		
 		public override Var LocalEffects()
 		{
 			var vars = new Var(PlanetSizeKey, Colony.Location.Size);
@@ -158,9 +166,11 @@ namespace Stareater.GameLogic
 			return vars;
 		}
 		
-		public void ProcessPrecombat()
+		public override void ProcessPrecombat()
 		{
+			base.ProcessPrecombat();
 			Colony.Population = Methods.Clamp(Colony.Population + PopulationGrowth, 0, MaxPopulation);
+			
 			/* TODO: Colonies, 1st pass
 			 * - Build (consume construction queue)
 			 * - Apply instant effect buildings

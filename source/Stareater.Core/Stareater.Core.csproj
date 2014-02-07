@@ -108,6 +108,7 @@
     <Compile Include="Galaxy\StellarisAdmin.cs" />
     <Compile Include="Galaxy\StarNamer.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameData\BuildingType.cs" />
     <Compile Include="GameData\Constructable.cs" />
     <Compile Include="GameData\Databases\Tables\DerivedStatistic.cs" />
     <Compile Include="GameData\Databases\Tables\StellarisProcessorCollection.cs">
@@ -189,11 +190,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="GameLogic\AConstructionEffect.cs" />
+    <Compile Include="GameLogic\IConstructionEffect.cs" />
     <Compile Include="GameLogic\AConstructionSiteProcessor.cs" />
     <Compile Include="GameLogic\ColonyProcessor.cs" />
     <Compile Include="GameLogic\ConstructionAddBuilding.cs" />
-    <Compile Include="GameLogic\ConstructionSetVar.cs" />
     <Compile Include="GameLogic\ConstructionResult.cs">
       <DependentUpon>ConstructionResult.tt</DependentUpon>
       <AutoGen>True</AutoGen>
