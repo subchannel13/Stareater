@@ -25,7 +25,7 @@ namespace Stareater.Controllers
 			var playerProc = Game.Derivates.Of(Site.Owner);
 			
 			Game.Derivates.Of(colony).CalculateSpending(
-				Game.Statics.ColonyFormulas,
+				Game.Statics,
 				playerProc
 			);
 			

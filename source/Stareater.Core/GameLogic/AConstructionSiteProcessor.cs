@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Stareater.GameData;
+
 using Stareater.Galaxy;
+using Stareater.GameData;
+using Stareater.GameData.Databases;
 using Stareater.Utils.Collections;
 
 namespace Stareater.GameLogic
 {
 	abstract class AConstructionSiteProcessor
 	{
+		private const string BuidingCountPrefix = "_count";
+		
 		public double Production { get; protected set; }
 		public double SpendingRatioEffective { get; protected set; }
 		public IEnumerable<ConstructionResult> SpendingPlan { get; protected set; }
@@ -26,7 +30,18 @@ namespace Stareater.GameLogic
 			this.SpendingRatioEffective = original.SpendingRatioEffective;
 		}
 		
-		public abstract Var LocalEffects();
+		public virtual Var LocalEffects(StaticsDB statics)
+		{
+			var vars = new Var();
+			
+			foreach(var building in statics.Buildings)
+				if (Site.Buildings.ContainsKey(building.Key))
+					vars.And(building.Key.ToLower() + BuidingCountPrefix, Site.Buildings[building.Key]);
+				else
+					vars.And(building.Key.ToLower() + BuidingCountPrefix, 0);
+			
+			return vars;
+		}
 
 		public virtual void ProcessPrecombat()
 		{

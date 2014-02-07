@@ -77,7 +77,7 @@ namespace Stareater
 		public void CalculateSpendings()
 		{
 			foreach(var colonyProc in this.Derivates.Colonies)
-				colonyProc.CalculateSpending(Statics.ColonyFormulas, Derivates.Of(colonyProc.Owner));
+				colonyProc.CalculateSpending(Statics, Derivates.Of(colonyProc.Owner));
 			foreach (var stellaris in this.Derivates.Stellarises)
 				stellaris.CalculateSpending(
 					Derivates.Of(stellaris.Owner),
@@ -114,7 +114,7 @@ namespace Stareater
 		{
 			// TODO: Process research
 			foreach(var playerProc in this.Derivates.Players)
-				playerProc.ProcessPostcombat(States, Derivates);
+				playerProc.ProcessPostcombat(Statics, States, Derivates);
 			
 			// TODO: Update ship designs
 			
