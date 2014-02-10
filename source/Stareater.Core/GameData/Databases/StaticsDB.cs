@@ -103,7 +103,10 @@ namespace Stareater.GameData.Databases
 		#region Constructables
 		private BuildingType loadBuilding(IkonComposite data)
 		{
-			return new BuildingType();
+			return new BuildingType(
+				data[GeneralNameKey].To<string>(),
+				data[GeneralImageKey].To<string>()
+			);
 		}
 		
 		private Constructable loadConstructable(IkonComposite data)

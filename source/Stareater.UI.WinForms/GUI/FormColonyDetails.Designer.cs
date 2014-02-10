@@ -37,14 +37,14 @@
 			this.environmentInfo = new System.Windows.Forms.Label();
 			this.sizeInfo = new System.Windows.Forms.Label();
 			this.buildingsGroup = new System.Windows.Forms.GroupBox();
-			this.buildingList = new System.Windows.Forms.FlowLayoutPanel();
+			this.buildingsList = new System.Windows.Forms.FlowLayoutPanel();
 			this.productivityGroup = new System.Windows.Forms.GroupBox();
-			this.foodInfo = new System.Windows.Forms.Label();
-			this.miningInfo = new System.Windows.Forms.Label();
-			this.industryInfo = new System.Windows.Forms.Label();
-			this.developmentInfo = new System.Windows.Forms.Label();
-			this.industryTotalInfo = new System.Windows.Forms.Label();
 			this.developmentTotalInfo = new System.Windows.Forms.Label();
+			this.industryTotalInfo = new System.Windows.Forms.Label();
+			this.developmentInfo = new System.Windows.Forms.Label();
+			this.industryInfo = new System.Windows.Forms.Label();
+			this.miningInfo = new System.Windows.Forms.Label();
+			this.foodInfo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.planetImage)).BeginInit();
 			this.popInfoGroup.SuspendLayout();
 			this.planetInfoGroup.SuspendLayout();
@@ -141,7 +141,7 @@
 			// 
 			// buildingsGroup
 			// 
-			this.buildingsGroup.Controls.Add(this.buildingList);
+			this.buildingsGroup.Controls.Add(this.buildingsList);
 			this.buildingsGroup.Location = new System.Drawing.Point(12, 82);
 			this.buildingsGroup.Name = "buildingsGroup";
 			this.buildingsGroup.Size = new System.Drawing.Size(186, 201);
@@ -149,13 +149,13 @@
 			this.buildingsGroup.TabStop = false;
 			this.buildingsGroup.Text = "Buildings";
 			// 
-			// buildingList
+			// buildingsList
 			// 
-			this.buildingList.AutoScroll = true;
-			this.buildingList.Location = new System.Drawing.Point(6, 19);
-			this.buildingList.Name = "buildingList";
-			this.buildingList.Size = new System.Drawing.Size(174, 176);
-			this.buildingList.TabIndex = 0;
+			this.buildingsList.AutoScroll = true;
+			this.buildingsList.Location = new System.Drawing.Point(6, 19);
+			this.buildingsList.Name = "buildingsList";
+			this.buildingsList.Size = new System.Drawing.Size(174, 176);
+			this.buildingsList.TabIndex = 0;
 			// 
 			// productivityGroup
 			// 
@@ -172,41 +172,14 @@
 			this.productivityGroup.TabStop = false;
 			this.productivityGroup.Text = "Productivity";
 			// 
-			// foodInfo
+			// developmentTotalInfo
 			// 
-			this.foodInfo.AutoSize = true;
-			this.foodInfo.Location = new System.Drawing.Point(6, 16);
-			this.foodInfo.Name = "foodInfo";
-			this.foodInfo.Size = new System.Drawing.Size(79, 13);
-			this.foodInfo.TabIndex = 0;
-			this.foodInfo.Text = "Food: x.x / pop";
-			// 
-			// miningInfo
-			// 
-			this.miningInfo.AutoSize = true;
-			this.miningInfo.Location = new System.Drawing.Point(6, 29);
-			this.miningInfo.Name = "miningInfo";
-			this.miningInfo.Size = new System.Drawing.Size(86, 13);
-			this.miningInfo.TabIndex = 1;
-			this.miningInfo.Text = "Mining: x.x / pop";
-			// 
-			// industryInfo
-			// 
-			this.industryInfo.AutoSize = true;
-			this.industryInfo.Location = new System.Drawing.Point(6, 42);
-			this.industryInfo.Name = "industryInfo";
-			this.industryInfo.Size = new System.Drawing.Size(92, 13);
-			this.industryInfo.TabIndex = 2;
-			this.industryInfo.Text = "Industry: x.x / pop";
-			// 
-			// developmentInfo
-			// 
-			this.developmentInfo.AutoSize = true;
-			this.developmentInfo.Location = new System.Drawing.Point(6, 55);
-			this.developmentInfo.Name = "developmentInfo";
-			this.developmentInfo.Size = new System.Drawing.Size(118, 13);
-			this.developmentInfo.TabIndex = 3;
-			this.developmentInfo.Text = "Development: x.x / pop";
+			this.developmentTotalInfo.AutoSize = true;
+			this.developmentTotalInfo.Location = new System.Drawing.Point(6, 94);
+			this.developmentTotalInfo.Name = "developmentTotalInfo";
+			this.developmentTotalInfo.Size = new System.Drawing.Size(104, 13);
+			this.developmentTotalInfo.TabIndex = 5;
+			this.developmentTotalInfo.Text = "Development: xx.x X";
 			// 
 			// industryTotalInfo
 			// 
@@ -217,14 +190,41 @@
 			this.industryTotalInfo.TabIndex = 4;
 			this.industryTotalInfo.Text = "Industry: x.xx X";
 			// 
-			// developmentTotalInfo
+			// developmentInfo
 			// 
-			this.developmentTotalInfo.AutoSize = true;
-			this.developmentTotalInfo.Location = new System.Drawing.Point(6, 94);
-			this.developmentTotalInfo.Name = "developmentTotalInfo";
-			this.developmentTotalInfo.Size = new System.Drawing.Size(104, 13);
-			this.developmentTotalInfo.TabIndex = 5;
-			this.developmentTotalInfo.Text = "Development: xx.x X";
+			this.developmentInfo.AutoSize = true;
+			this.developmentInfo.Location = new System.Drawing.Point(6, 55);
+			this.developmentInfo.Name = "developmentInfo";
+			this.developmentInfo.Size = new System.Drawing.Size(118, 13);
+			this.developmentInfo.TabIndex = 3;
+			this.developmentInfo.Text = "Development: x.x / pop";
+			// 
+			// industryInfo
+			// 
+			this.industryInfo.AutoSize = true;
+			this.industryInfo.Location = new System.Drawing.Point(6, 42);
+			this.industryInfo.Name = "industryInfo";
+			this.industryInfo.Size = new System.Drawing.Size(92, 13);
+			this.industryInfo.TabIndex = 2;
+			this.industryInfo.Text = "Industry: x.x / pop";
+			// 
+			// miningInfo
+			// 
+			this.miningInfo.AutoSize = true;
+			this.miningInfo.Location = new System.Drawing.Point(6, 29);
+			this.miningInfo.Name = "miningInfo";
+			this.miningInfo.Size = new System.Drawing.Size(86, 13);
+			this.miningInfo.TabIndex = 1;
+			this.miningInfo.Text = "Mining: x.x / pop";
+			// 
+			// foodInfo
+			// 
+			this.foodInfo.AutoSize = true;
+			this.foodInfo.Location = new System.Drawing.Point(6, 16);
+			this.foodInfo.Name = "foodInfo";
+			this.foodInfo.Size = new System.Drawing.Size(79, 13);
+			this.foodInfo.TabIndex = 0;
+			this.foodInfo.Text = "Food: x.x / pop";
 			// 
 			// FormColonyDetails
 			// 
@@ -258,7 +258,7 @@
 		private System.Windows.Forms.Label developmentTotalInfo;
 		private System.Windows.Forms.Label foodInfo;
 		private System.Windows.Forms.GroupBox productivityGroup;
-		private System.Windows.Forms.FlowLayoutPanel buildingList;
+		private System.Windows.Forms.FlowLayoutPanel buildingsList;
 		private System.Windows.Forms.GroupBox buildingsGroup;
 		private System.Windows.Forms.Label sizeInfo;
 		private System.Windows.Forms.Label environmentInfo;

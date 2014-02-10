@@ -10,3 +10,7 @@ RAD_SHIELD_DESC = No description
 SPACEPORT_NAME = Launching site
 SPACEPORT_DESC = No description
 -
+
+:Buildings
+IND_NAME = Workplace
+-
