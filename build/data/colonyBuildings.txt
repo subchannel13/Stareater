@@ -20,7 +20,11 @@
 }
 
 { Building
+	nameCode: IND_NAME
+	image: ./images/buildings/factory.png
+	
 	code: Infra
+	
 }
 
 { Constructable

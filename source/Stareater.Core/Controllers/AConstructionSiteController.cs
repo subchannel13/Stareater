@@ -46,6 +46,16 @@ namespace Stareater.Controllers
 			}
 		}
 
+		public IEnumerable<BuildingInfo> Buildings
+		{
+			get
+			{
+				return Site.Buildings
+					.Select(x => new BuildingInfo(Game.Statics.Buildings[x.Key], x.Value))
+					.OrderBy(x => x.Name);
+			}
+		}
+			
 		public IEnumerable<ConstructableItem> ConstructableItems
 		{
 			get

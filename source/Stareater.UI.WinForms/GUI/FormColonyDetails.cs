@@ -68,6 +68,12 @@ namespace Stareater.GUI
 			developmentInfo.Text = context["developmentInfo"].Text(null, vars.Get);
 			industryTotalInfo.Text = context["industryTotalInfo"].Text(null, vars.Get);
 			developmentTotalInfo.Text = context["developmentTotalInfo"].Text(null, vars.Get);
+			
+			foreach (var data in controller.Buildings) {
+				var itemView = new BuildingItem();
+				itemView.Data = data;
+				buildingsList.Controls.Add(itemView);
+			}
 		}
 		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
