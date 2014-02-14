@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -297,8 +298,8 @@ namespace Zvjezdojedac.GUI
 						opis.Add(jezik["opisStitIzd"].tekst() + ": " + Fje.PrefiksFormater(dizajn.stit.izdrzljivost));
 						opis.Add(jezik["opisStitObn"].tekst() + ": " + Fje.PrefiksFormater(dizajn.stit.obnavljanje));
 						opis.Add(jezik["opisStitDeb"].tekst() + ": " + Fje.PrefiksFormater(dizajn.stit.debljina));
-						opis.Add(jezik["opisSenzorOm"].tekst() + ": " + dizajn.stit.ometanje.ToString("+0;-0"));
-						opis.Add(jezik["opisSenzorPrik"].tekst() + ": +" + Fje.PrefiksFormater(dizajn.stit.prikrivanje));
+						opis.Add(jezik["opisStitOm"].tekst() + ": " + dizajn.stit.ometanje.ToString("+0;-0"));
+						opis.Add(jezik["opisStitPrik"].tekst() + ": +" + Fje.PrefiksFormater(dizajn.stit.prikrivanje));
 						if (cijene) {
 							opis.Add("");
 							opis.Add(jezik["opisSnaga"].tekst() + ": " + Fje.PrefiksFormater(dizajn.stit.snaga));
@@ -640,6 +641,8 @@ namespace Zvjezdojedac.GUI
 
 			Dictionary<string, ITekst> jezik = Postavke.Jezik[Kontekst.FormFlote];
 			foreach (InfoStranice stranica in Enum.GetValues(typeof(InfoStranice))) {
+				Trace.WriteLine(stranica.ToString());
+				
 				if (stranica == InfoStranice.SpecijalnaOprema)
 					foreach (SpecijalnaOprema so in dizajn.specijalnaOprema.Keys) {
 						specijalnaOpremaZaOpis = so;
