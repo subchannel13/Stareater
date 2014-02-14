@@ -92,6 +92,14 @@
     <Compile Include="ControlListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DesignInfo.cs" />
+    <Compile Include="DesignInfo.Designer.cs">
+      <DependentUpon>DesignInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DesignItem.cs" />
+    <Compile Include="DesignItem.Designer.cs">
+      <DependentUpon>DesignItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormBuildingQueue.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,6 +141,14 @@
     </Compile>
     <Compile Include="FormSetupPlayers.Designer.cs">
       <DependentUpon>FormSetupPlayers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormShipDesign.cs" />
+    <Compile Include="FormShipDesign.Designer.cs">
+      <DependentUpon>FormShipDesign.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormShipDesignList.cs" />
+    <Compile Include="FormShipDesignList.Designer.cs">
+      <DependentUpon>FormShipDesignList.cs</DependentUpon>
     </Compile>
     <Compile Include="FormStarSystem.cs">
       <SubType>Form</SubType>
@@ -187,6 +203,12 @@
     <EmbeddedResource Include="ConstructionItem.resx">
       <DependentUpon>ConstructionItem.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DesignInfo.resx">
+      <DependentUpon>DesignInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesignItem.resx">
+      <DependentUpon>DesignItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormBuildingQueue.resx">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
     </EmbeddedResource>
@@ -207,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormSetupPlayers.resx">
       <DependentUpon>FormSetupPlayers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormShipDesignList.resx">
+      <DependentUpon>FormShipDesignList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormStarSystem.resx">
       <DependentUpon>FormStarSystem.cs</DependentUpon>
@@ -248,6 +273,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\new design.png" />
+    <None Include="Resources\ship design thumbnail.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\metalic.png" />

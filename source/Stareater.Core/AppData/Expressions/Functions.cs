@@ -16,7 +16,7 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (sequence.Length == 0)
+			if (sequence.Length == 1)
 				return sequence.First();
 
 			var constants = sequence.Where(x => x.isConstant).ToArray();
@@ -64,7 +64,7 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (sequence.Length == 0)
+			if (sequence.Length == 1)
 				return sequence.First();
 
 			var constants = sequence.Where(x => x.isConstant).ToArray();
