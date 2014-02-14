@@ -102,6 +102,13 @@ namespace Winforms_Mockups.Properties {
 			}
 		}
 		
+		internal static System.Drawing.Bitmap cancel {
+			get {
+				object obj = ResourceManager.GetObject("cancel", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
 		internal static System.Drawing.Bitmap earthlike_planet {
 			get {
 				object obj = ResourceManager.GetObject("earthlike_planet", resourceCulture);
@@ -126,6 +133,20 @@ namespace Winforms_Mockups.Properties {
 		internal static System.Drawing.Bitmap metalic {
 			get {
 				object obj = ResourceManager.GetObject("metalic", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		internal static System.Drawing.Bitmap new_design {
+			get {
+				object obj = ResourceManager.GetObject("new_design", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		internal static System.Drawing.Bitmap ship_design_thumbnail {
+			get {
+				object obj = ResourceManager.GetObject("ship design thumbnail", resourceCulture);
 				return ((System.Drawing.Bitmap)(obj));
 			}
 		}

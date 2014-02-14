@@ -37,8 +37,8 @@
 	prerequisites [] 
 	
 	cost # 10;
-	condition # maxPop > pop;
-	turnLimit # min(maxPop - pop, pop * 0.04);
+	condition # maxPop - pop * 0.04 > pop;
+	turnLimit # min(maxPop - pop * 1.04, pop * 0.04);
 	
 	effects [
 	]
