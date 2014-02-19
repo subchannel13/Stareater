@@ -42,13 +42,13 @@ namespace Winforms_Mockups
 			this.designInfo1 = new Winforms_Mockups.DesignInfo();
 			this.label1 = new System.Windows.Forms.Label();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+			this.designItem7 = new Winforms_Mockups.DesignItem();
 			this.designItem1 = new Winforms_Mockups.DesignItem();
 			this.designItem2 = new Winforms_Mockups.DesignItem();
 			this.designItem3 = new Winforms_Mockups.DesignItem();
 			this.designItem4 = new Winforms_Mockups.DesignItem();
 			this.designItem5 = new Winforms_Mockups.DesignItem();
 			this.designItem6 = new Winforms_Mockups.DesignItem();
-			this.designItem7 = new Winforms_Mockups.DesignItem();
 			this.panel1.SuspendLayout();
 			this.flowLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
@@ -111,6 +111,14 @@ namespace Winforms_Mockups
 			this.flowLayoutPanel1.Size = new System.Drawing.Size(365, 313);
 			this.flowLayoutPanel1.TabIndex = 15;
 			// 
+			// designItem7
+			// 
+			this.designItem7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
+			this.designItem7.Location = new System.Drawing.Point(3, 3);
+			this.designItem7.Name = "designItem7";
+			this.designItem7.Size = new System.Drawing.Size(340, 46);
+			this.designItem7.TabIndex = 6;
+			// 
 			// designItem1
 			// 
 			this.designItem1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
@@ -159,14 +167,6 @@ namespace Winforms_Mockups
 			this.designItem6.Size = new System.Drawing.Size(340, 46);
 			this.designItem6.TabIndex = 5;
 			// 
-			// designItem7
-			// 
-			this.designItem7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(216)))), ((int)(((byte)(216)))));
-			this.designItem7.Location = new System.Drawing.Point(3, 3);
-			this.designItem7.Name = "designItem7";
-			this.designItem7.Size = new System.Drawing.Size(340, 46);
-			this.designItem7.TabIndex = 6;
-			// 
 			// FormShipDesignList
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -177,6 +177,7 @@ namespace Winforms_Mockups
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.btnNoviDizajn);
 			this.Controls.Add(this.lblDizajn);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormShipDesignList";
 			this.Text = "FormShipDesignList";
 			this.panel1.ResumeLayout(false);
