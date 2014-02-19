@@ -162,6 +162,10 @@
     <Compile Include="GUI\FormSetupPlayers.Designer.cs">
       <DependentUpon>FormSetupPlayers.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FormShipDesignList.cs" />
+    <Compile Include="GUI\FormShipDesignList.Designer.cs">
+      <DependentUpon>FormShipDesignList.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormStartingConditions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -255,6 +259,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormSetupPlayers.resx">
       <DependentUpon>FormSetupPlayers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormShipDesignList.resx">
+      <DependentUpon>FormShipDesignList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormStartingConditions.resx">
       <DependentUpon>FormStartingConditions.cs</DependentUpon>
