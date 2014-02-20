@@ -1,0 +1,61 @@
+﻿{ Hull
+	nameCode: FIGHTER_HULL_NAME
+	descCode: FIGHTER_HULL_DESC
+	code: fighter
+	images [ 
+		:./images/ships/fighter1.png
+		:./images/ships/fighter2.png
+		:./images/ships/fighter3.png
+	]
+	
+	maxLvl= 0
+	prerequisites [
+	]
+	cost # 10e6;
+	
+	size # 10;
+	space # 10;
+	
+	spaceIS # 2;
+	spaceReactor # 2;
+	sizeShield # 2;
+	
+	armorBase # 10;
+	armorAbsorb # 0.1;
+	shieldBase # 10;
+	
+	inertia # 10;
+	jamming # 10;
+	cloaking # 10;
+	sensors # -10;
+}
+
+{ Hull
+	nameCode: CRUISER_HULL_NAME
+	descCode: CRUISER_HULL_DESC
+	code: cruiser
+	images [ 
+		:./images/ships/cruiser1.png
+	]
+	
+	maxLvl= 0
+	prerequisites [
+	]
+	cost # 2.5e9;
+	
+	size # 200;
+	space # 200;
+	
+	spaceIS # 40;
+	spaceReactor # 40;
+	sizeShield # 40;
+	
+	armorBase # 270;
+	armorAbsorb # 0.5;
+	shieldBase # 270;
+	
+	inertia # 16;
+	jamming # 3;
+	cloaking # 3;
+	sensors # 0;
+}
