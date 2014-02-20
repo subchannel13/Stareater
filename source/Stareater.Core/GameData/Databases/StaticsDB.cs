@@ -14,9 +14,11 @@ namespace Stareater.GameData.Databases
 	internal class StaticsDB
 	{
 		public Dictionary<string, BuildingType> Buildings { get; private set; }
+		public ColonyFormulaSet ColonyFormulas { get; private set; }
 		public List<Constructable> Constructables { get; private set; }
 		public List<Technology> Technologies { get; private set; }
-		public ColonyFormulaSet ColonyFormulas { get; private set; }
+		
+		public Dictionary<string, HullType> Hulls { get; private set; }
 		
 		public StaticsDB()
 		{
@@ -189,6 +191,8 @@ namespace Stareater.GameData.Databases
 		private const string ConstructableTag = "Constructable";
 		private const string DevelopmentTag = "DevelopmentTopic";
 		private const string ResearchTag = "ResearchTopic";
+		
+		private const string HullTag = "Hull";
 		
 		private const string ColonyMaxPopulation = "maxPopulation";
 		private const string ColonyPopulationGrowth = "populationGrowth";
