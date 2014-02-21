@@ -107,6 +107,20 @@ namespace ExpressionParser_Tests
 		}
 		
 		[Test]
+		public void FunctionIteSimplificationElse()
+		{
+			var test = new ParserTester("if(-1, x, y)", new Var("y", 20).Get, 20);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
+		public void FunctionIteSimplificationThen()
+		{
+			var test = new ParserTester("if(1, x, y)", new Var("x", 10).Get, 10);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+		
+		[Test]
 		public void FunctionIteThen()
 		{
 			var test = new ParserTester("if(1, 10, 20)", null, 10);

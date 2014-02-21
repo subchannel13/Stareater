@@ -35,6 +35,11 @@ namespace ExpressionParser_Tests
 				if (parser.errors.count > 0)
 					return false;
 
+				if (variables == null)
+					return parser.ParsedFormula.Variables.Count == 0;
+				else if (!parser.ParsedFormula.Variables.SetEquals(variables.Keys))
+					return false;
+					
 				double evaluated = parser.ParsedFormula.Evaluate(variables);
 				
 				return Math.Abs(evaluated - expectedOutput) <= delta ||
@@ -51,6 +56,10 @@ namespace ExpressionParser_Tests
 			{
 				if (parser.errors.count != 0)
 					return parser.errors.errorMessages.ToString();
+				
+				if (variables == null && parser.ParsedFormula.Variables.Count > 0 ||
+				    variables != null && !parser.ParsedFormula.Variables.SetEquals(variables.Keys))
+					return "Unexpected variables";
 				
 				return "Expected: " + expectedOutput + Environment.NewLine + "Evaluated: " + parser.ParsedFormula.Evaluate(variables);
 			}

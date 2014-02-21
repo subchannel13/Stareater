@@ -56,7 +56,7 @@ namespace Stareater.AppData
 			base.buildSaveData(writer);
 
 			IkonComposite settings = new IkonComposite(WinformsSettingsKey);
-			settings.Add(GuiScaleKey, new IkonNumeric(GuiScale));
+			settings.Add(GuiScaleKey, new IkonFloat(GuiScale));
 			settings.Compose(writer);
 		}
 	}

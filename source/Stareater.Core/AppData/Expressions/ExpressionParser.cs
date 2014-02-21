@@ -10,25 +10,33 @@ namespace Stareater.AppData.Expressions
 	{
 		private IExpressionNode makeComparison(IExpressionNode leftSide, string operatorSymbol, IExpressionNode rightSide, double tolerance)
 		{
+			IExpressionNode result = new Constant(double.NaN);
+			
 			switch (operatorSymbol) {
 				case "=":
-					return new Equality(leftSide, rightSide, tolerance);
+					result = new Equality(leftSide, rightSide, tolerance);
+					break;
 				case "<>":
 				case "≠":
-					return new Inequality(leftSide, rightSide, tolerance);
+					result = new Inequality(leftSide, rightSide, tolerance);
+					break;
 				case "<":
-					return new LessThen(leftSide, rightSide, tolerance, true);
+					result = new LessThen(leftSide, rightSide, tolerance, true);
+					break;
 				case "<=":
 				case "≤":
-					return new LessThen(leftSide, rightSide, tolerance, false);
+					result = new LessThen(leftSide, rightSide, tolerance, false);
+					break;
 				case ">":
-					return new GreaterThen(leftSide, rightSide, tolerance, true);
+					result = new GreaterThen(leftSide, rightSide, tolerance, true);
+					break;
 				case ">=":
 				case "≥":
-					return new GreaterThen(leftSide, rightSide, tolerance, false);
-				default:
-					return new Constant(double.NaN);
+					result = new GreaterThen(leftSide, rightSide, tolerance, false);
+					break;
 			}
+			
+			return result.Simplified();
 		}
 
 		private IExpressionNode makeBooleanAritmenthics(Queue<IExpressionNode> operands, Queue<string> operators)

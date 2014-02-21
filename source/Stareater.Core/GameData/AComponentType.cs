@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Stareater.GameData
 {
-	public class AComponentType
+	class AComponentType
 	{
 		public string nameCode { get; private set; }
 		public string descCode { get; private set; }
