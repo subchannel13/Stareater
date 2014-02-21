@@ -51,7 +51,7 @@ namespace Stareater.Localization.Reading
 			parser.Reader.Read();
 
 			for(int i = 0; i < substitutions.Count;i++) {
-				if (parser.Reader.SkipWhiteSpaces() == ReaderDoneReason.EndOfStream)
+				if (parser.Reader.SkipWhiteSpaces().EndOfStream)
 					throw new EndOfStreamException("Unexpectedend of stream at " + parser.Reader.PositionDescription);
 
 				string substitutionName = parser.Reader.ReadUntil(c => 

@@ -80,9 +80,7 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (sequence.Length == 1)
-				return sequence.First();
-			else if (sequence.Count(x => x.isConstant) == sequence.Length)
+			if (sequence.Count(x => x.isConstant) == sequence.Length)
 				return new Constant(this.Evaluate(null));
 			else
 				return this;
@@ -128,9 +126,7 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (sequence.Length == 1)
-				return sequence.First();
-			else if (sequence.Count(x => x.isConstant) == sequence.Length)
+			if (sequence.Count(x => x.isConstant) == sequence.Length)
 				return new Constant(this.Evaluate(null));
 			else
 				return this;

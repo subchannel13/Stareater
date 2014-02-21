@@ -42,9 +42,9 @@ namespace Stareater.Galaxy
 		public IkonComposite BuildSaveData()
 		{
 			IkonComposite lastGameData = new IkonComposite(ClassName);
-			lastGameData.Add(ColoniesKey, new IkonNumeric(Colonies));
-			lastGameData.Add(PopulationKey, new IkonNumeric(Population));
-			lastGameData.Add(InfrastructureKey, new IkonNumeric(Infrastructure));
+			lastGameData.Add(ColoniesKey, new IkonInteger(Colonies));
+			lastGameData.Add(PopulationKey, new IkonInteger(Population));
+			lastGameData.Add(InfrastructureKey, new IkonInteger(Infrastructure));
 			
 			return lastGameData;
 		}

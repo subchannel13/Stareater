@@ -2,7 +2,7 @@
 
 namespace Stareater.GameData
 {
-	public class HullType : AComponentType
+	class HullType : AComponentType
 	{
 	}
 }
