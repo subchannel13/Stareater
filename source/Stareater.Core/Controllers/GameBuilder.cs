@@ -186,9 +186,11 @@ namespace Stareater.Controllers
 				derivates.Stellarises.Add(new StellarisProcessor(stellaris));
 		}
 		
+		//TODO: try to avoid explicit list of files
 		private static readonly string[] StaticDataFiles = new string[] {
 			"./data/colonyBuildings.txt",
 			"./data/colonyFormulas.txt",
+			"./data/shipHulls.txt",
 			"./data/systemBuildings.txt",
 			"./data/techDevelopment.txt",
 			"./data/techResearch.txt",

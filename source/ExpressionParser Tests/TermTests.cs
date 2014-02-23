@@ -13,6 +13,12 @@ namespace ExpressionParser_Tests
 	[TestFixture]
 	public class TermTests
 	{
+		[Test]
+		public void Brackets()
+		{
+			var test = new ParserTester("2 * (1 + 3)", null, 8);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
 
 		[Test]
 		public void InfinityConstant()
