@@ -16,8 +16,8 @@
 	size # 10;
 	space # 10;
 	
-	spaceIS # 2;
-	spaceReactor # 2;
+	sizeIS # 2;
+	sizeReactor # 2;
 	sizeShield # 2;
 	
 	armorBase # 10;
@@ -46,8 +46,8 @@
 	size # 200;
 	space # 200;
 	
-	spaceIS # 40;
-	spaceReactor # 40;
+	sizeIS # 40;
+	sizeReactor # 40;
 	sizeShield # 40;
 	
 	armorBase # 270;

@@ -24,6 +24,7 @@ namespace Stareater.GameData.Databases
 		{
 			this.Buildings = new Dictionary<string, BuildingType>();
 			this.Constructables = new List<Constructable>();
+			this.Hulls = new Dictionary<string, HullType>();
 			this.Technologies = new List<Technology>();
 		}
 		
@@ -57,6 +58,10 @@ namespace Stareater.GameData.Databases
 								break;
 							case ResearchTag:
 								Technologies.Add(loadTech(data, TechnologyCategory.Research));
+								break;
+
+							case HullTag:
+								Hulls.Add(data[GeneralCodeKey].To<string>(), loadHull(data));
 								break;
 							default:
 								throw new FormatException("Invalid game data object with tag " + data.Tag);
@@ -159,7 +164,33 @@ namespace Stareater.GameData.Databases
 			yield break;
 		}
 		#endregion
-		
+
+		#region Ship components
+		private HullType loadHull(IkonComposite data)
+		{
+			return new HullType(
+				data[GeneralNameKey].To<string>(),
+				data[GeneralDescriptionKey].To<string>(),
+				data[HullImages].To<string[]>(),
+				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
+				data[GeneralMaxLevelKey].To<int>(),
+				data[GeneralCostKey].To<Formula>(),
+				data[HullSize].To<Formula>(),
+				data[HullSpace].To<Formula>(),
+				data[HullSizeIS].To<Formula>(),
+				data[HullSizeReactor].To<Formula>(),
+				data[HullSizeShield].To<Formula>(),
+				data[HullArmorBase].To<Formula>(),
+				data[HullArmorAbsorb].To<Formula>(),
+				data[HullShieldBase].To<Formula>(),
+				data[HullInertia].To<Formula>(),
+				data[HullJamming].To<Formula>(),
+				data[HullCloaking].To<Formula>(),
+				data[HullSensors].To<Formula>()
+			);
+		}
+		#endregion
+
 		#region Technologies
 		private IEnumerable<Prerequisite> loadPrerequisites(IkonArray dataArray)
 		{
@@ -179,7 +210,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralCostKey].To<Formula>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(),
-				data[TechnologyMaxLevelKey].To<int>(),
+				data[GeneralMaxLevelKey].To<int>(),
 				category
 			 );
 		}
@@ -193,6 +224,7 @@ namespace Stareater.GameData.Databases
 		private const string ResearchTag = "ResearchTopic";
 		
 		private const string HullTag = "Hull";
+		
 		
 		private const string ColonyMaxPopulation = "maxPopulation";
 		private const string ColonyPopulationGrowth = "populationGrowth";
@@ -220,6 +252,7 @@ namespace Stareater.GameData.Databases
 		private const string GeneralImageKey = "image";
 		private const string GeneralCodeKey = "code";
 		private const string GeneralPrerequisitesKey = "prerequisites";
+		private const string GeneralMaxLevelKey = "maxLvl";
 		private const string GeneralCostKey = "cost";
 		
 		private const string DerivedStatBase = "base";
@@ -227,8 +260,24 @@ namespace Stareater.GameData.Databases
 		
 		private const string PopulationActivityImprovised = "improvised";
 		private const string PopulationActivityOrganized = "organized";
-			
-		private const string TechnologyMaxLevelKey = "maxLvl";
+		
+		
+		private const string HullImages = "images";
+		private const string HullSize = "size";
+		private const string HullSpace = "space";
+		
+		private const string HullSizeIS = "sizeIS";
+		private const string HullSizeReactor = "sizeReactor";
+		private const string HullSizeShield = "sizeShield";
+		
+		private const string HullArmorBase = "armorBase";
+		private const string HullArmorAbsorb = "armorAbsorb";
+		private const string HullShieldBase = "shieldBase";
+		
+		private const string HullInertia = "inertia";
+		private const string HullJamming = "jamming";
+		private const string HullCloaking = "cloaking";
+		private const string HullSensors = "sensors";
 		#endregion
 	}
 }

@@ -160,7 +160,9 @@
     <Compile Include="GUI\FormSetupPlayers.Designer.cs">
       <DependentUpon>FormSetupPlayers.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FormShipDesignList.cs" />
+    <Compile Include="GUI\FormShipDesignList.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI\FormShipDesignList.Designer.cs">
       <DependentUpon>FormShipDesignList.cs</DependentUpon>
     </Compile>
@@ -327,9 +329,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GuiUtils" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
