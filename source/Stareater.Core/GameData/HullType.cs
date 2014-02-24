@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stareater.AppData.Expressions;
+using Stareater.Ships;
 
 namespace Stareater.GameData
 {
@@ -47,6 +48,11 @@ namespace Stareater.GameData
 			this.JammingBase = jammingBase;
 			this.CloakingBase = cloakingBase;
 			this.SensorsBase = sensorsBase;
+		}
+		
+		public Hull MakeHull(IDictionary<string, int> techLevels)
+		{
+			return new Hull(this, HighestLevel(techLevels));
 		}
 	}
 }

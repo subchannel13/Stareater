@@ -1,0 +1,5 @@
+{ PredefinedDesign
+	name: Interceptor
+	
+	hull: fighter
+}
