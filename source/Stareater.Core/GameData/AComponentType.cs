@@ -19,5 +19,22 @@ namespace Stareater.GameData
 			this.Prerequisites = prerequisites;
 			this.MaxLevel = maxLevel;
 		}
+		
+		public bool IsAvailable(IDictionary<string, int> techLevels)
+		{
+			return Prerequisite.AreSatisfied(Prerequisites, 0, techLevels);
+		}
+		
+		public int HighestLevel(IDictionary<string, int> techLevels)
+		{
+			if (!IsAvailable(techLevels))
+				throw new InvalidOperationException();
+			
+			for(int level = MaxLevel; level > 0; level--)
+				if (Prerequisite.AreSatisfied(Prerequisites, level, techLevels))
+					return level;
+			
+			return 0;
+		}
 	}
 }

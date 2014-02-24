@@ -16,6 +16,7 @@ namespace Stareater.GameData.Databases
 		public ColonyCollection Colonies { get; private set; }
 		public StellarisCollection Stellarises { get; private set; }
 		
+		public DesignCollection Designs { get; private set; }
 		public TechProgressCollection TechnologyAdvances { get; private set; }
 		
 		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, 
@@ -28,6 +29,8 @@ namespace Stareater.GameData.Databases
 			this.Stellarises = stellarises;
 			this.Wormholes = wormholes;
 			this.TechnologyAdvances = technologyProgresses;
+			
+			this.Designs = new DesignCollection();
 		}
 
 		private StatesDB()
@@ -56,6 +59,9 @@ namespace Stareater.GameData.Databases
 			copy.Stellarises = new StellarisCollection();
 			copy.Stellarises.Add(playersRemap.Stellarises.Values);
 
+			copy.Designs = new DesignCollection();
+			copy.Designs.Add(this.Designs);
+			
 			copy.TechnologyAdvances = new TechProgressCollection();
 			copy.TechnologyAdvances.Add(this.TechnologyAdvances.Select(x => x.Copy(playersRemap.Players[x.Owner])));
 			

@@ -6,6 +6,7 @@ using Stareater.GameData.Databases;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 using Stareater.Galaxy;
+using Stareater.Ships;
 
 namespace Stareater.GameLogic
 {
@@ -174,8 +175,26 @@ namespace Stareater.GameLogic
 				}
 				else
 					Player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
+				
+			UnlockPredefinedDesigns(statics, states);
 		}
 
+		public void UnlockPredefinedDesigns(StaticsDB statics, StatesDB states)
+		{
+			var playerTechs = states.TechnologyAdvances.Of(Player);
+			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
+				
+			foreach(var predefDesign in statics.PredeginedDesigns)
+				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
+				{
+					Player.UnlockedDesigns.Add(predefDesign);
+					states.Designs.Add(new Design(Player, predefDesign.Name, 
+					                              statics.Hulls[predefDesign.HullCode].MakeHull(techLevels)
+					                             ));
+				}
+					
+		}
+		
 		private static IDictionary<string, int> updateTechQueue(IDictionary<string, int> queue, ISet<string> validItems)
 		{
 			var newOrder = queue

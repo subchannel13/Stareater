@@ -111,6 +111,10 @@
     <Compile Include="GameData\BuildingType.cs" />
     <Compile Include="GameData\Constructable.cs" />
     <Compile Include="GameData\Databases\Tables\DerivedStatistic.cs" />
+    <Compile Include="GameData\Databases\Tables\DesignCollection.cs">
+      <DependentUpon>DesignCollection.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameData\Databases\Tables\StellarisProcessorCollection.cs">
       <DependentUpon>StellarisProcessorCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -132,6 +136,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PlayersRemap.tt</DependentUpon>
     </Compile>
+    <Compile Include="GameData\PredefinedDesign.cs" />
     <Compile Include="GameData\SiteType.cs" />
     <Compile Include="GameData\Databases\ChangesDB.cs" />
     <Compile Include="GameData\Databases\StatesDB.cs" />
@@ -226,6 +231,7 @@
     <Compile Include="Players\Organization.cs" />
     <Compile Include="Players\PlayerType.cs" />
     <Compile Include="Ships\Design.cs" />
+    <Compile Include="Ships\Hull.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />
     <Compile Include="Utils\Collections\IndexedCollectionBase.cs">
       <AutoGen>True</AutoGen>
@@ -279,6 +285,10 @@
     <None Include="GameData\Databases\Tables\ColonyProcessorCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ColonyProcessorCollection.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Databases\Tables\DesignCollection.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DesignCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\StellarisProcessorCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

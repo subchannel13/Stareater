@@ -16,6 +16,7 @@ namespace Stareater.GameData.Databases
 		public Dictionary<string, BuildingType> Buildings { get; private set; }
 		public ColonyFormulaSet ColonyFormulas { get; private set; }
 		public List<Constructable> Constructables { get; private set; }
+		public List<PredefinedDesign> PredeginedDesigns { get; private set; }
 		public List<Technology> Technologies { get; private set; }
 		
 		public Dictionary<string, HullType> Hulls { get; private set; }
@@ -25,6 +26,7 @@ namespace Stareater.GameData.Databases
 			this.Buildings = new Dictionary<string, BuildingType>();
 			this.Constructables = new List<Constructable>();
 			this.Hulls = new Dictionary<string, HullType>();
+			this.PredeginedDesigns = new List<PredefinedDesign>();
 			this.Technologies = new List<Technology>();
 		}
 		
@@ -55,6 +57,9 @@ namespace Stareater.GameData.Databases
 								break;
 							case DevelopmentTag:
 								Technologies.Add(loadTech(data, TechnologyCategory.Development));
+								break;
+							case PredefinedDesignTag:
+								PredeginedDesigns.Add(loadPredefDesign(data));
 								break;
 							case ResearchTag:
 								Technologies.Add(loadTech(data, TechnologyCategory.Research));
@@ -165,6 +170,14 @@ namespace Stareater.GameData.Databases
 		}
 		#endregion
 
+		private PredefinedDesign loadPredefDesign(IkonComposite data)
+		{
+			return new PredefinedDesign(
+				data[DesignName].To<string>(),
+				data[DesingHull].To<string>()
+			);
+		}
+		
 		#region Ship components
 		private HullType loadHull(IkonComposite data)
 		{
@@ -221,6 +234,7 @@ namespace Stareater.GameData.Databases
 		private const string ColonyFormulasTag = "ColonyFormulas";
 		private const string ConstructableTag = "Constructable";
 		private const string DevelopmentTag = "DevelopmentTopic";
+		private const string PredefinedDesignTag = "PredefinedDesign";
 		private const string ResearchTag = "ResearchTopic";
 		
 		private const string HullTag = "Hull";
@@ -246,7 +260,13 @@ namespace Stareater.GameData.Databases
 		private const string ConstructionAddBuildingTag = "addbuilding";
 		private const string AddBuildingBuildingId = "buildingId";
 		private const string AddBuildingQuantity = "quantity";
-				
+		
+		private const string DerivedStatBase = "base";
+		private const string DerivedStatTotal = "total";
+		
+		private const string DesignName = "name";
+		private const string DesingHull = "hull";
+		
 		private const string GeneralNameKey = "nameCode";
 		private const string GeneralDescriptionKey = "descCode";
 		private const string GeneralImageKey = "image";
@@ -254,9 +274,6 @@ namespace Stareater.GameData.Databases
 		private const string GeneralPrerequisitesKey = "prerequisites";
 		private const string GeneralMaxLevelKey = "maxLvl";
 		private const string GeneralCostKey = "cost";
-		
-		private const string DerivedStatBase = "base";
-		private const string DerivedStatTotal = "total";
 		
 		private const string PopulationActivityImprovised = "improvised";
 		private const string PopulationActivityOrganized = "organized";

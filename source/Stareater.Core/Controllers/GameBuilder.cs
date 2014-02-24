@@ -43,7 +43,7 @@ namespace Stareater.Controllers
 			
 			initColonies(players, states.Colonies, startingConditions, derivates, statics);
 			initStellarises(derivates, states.Stellarises);
-			initPlayers(derivates, players, states);
+			initPlayers(derivates, players, states, statics);
 			
 			return derivates;
 		}
@@ -159,7 +159,7 @@ namespace Stareater.Controllers
 
 		}
 		
-		private static void initPlayers(TemporaryDB derivates, Player[] players, StatesDB states)
+		private static void initPlayers(TemporaryDB derivates, Player[] players, StatesDB states, StaticsDB statics)
 		{
 			foreach(Player player in players) {
 				foreach(var colony in states.Colonies.OwnedBy(player))
@@ -171,6 +171,8 @@ namespace Stareater.Controllers
 			
 			foreach (var player in players) {
 				derivates.Players.Of(player).Calculate(states.TechnologyAdvances.Of(player));
+				derivates.Players.Of(player).UnlockPredefinedDesigns(statics, states);
+				
 				player.Intelligence.Initialize(states.Stars.Select(
 					star => new StarSystem(star, states.Planets.At(star).ToArray())
 				));
@@ -190,6 +192,7 @@ namespace Stareater.Controllers
 		private static readonly string[] StaticDataFiles = new string[] {
 			"./data/colonyBuildings.txt",
 			"./data/colonyFormulas.txt",
+			"./data/predefinedDesigns.txt",
 			"./data/shipHulls.txt",
 			"./data/systemBuildings.txt",
 			"./data/techDevelopment.txt",
