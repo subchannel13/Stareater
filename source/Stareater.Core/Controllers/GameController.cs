@@ -64,6 +64,7 @@ namespace Stareater.Controllers
 			restartAiGalaxyPhase();
 		}
 		
+		#region Turn processing
 		public GameState State { get; private set; }
 		
 		private void aiDoGalaxyPhase() 
@@ -133,6 +134,7 @@ namespace Stareater.Controllers
 		{
 			get { return endTurnCopy != null; }
 		}
+		#endregion
 		
 		#region Map related
 		public bool IsStarVisited(StarData star)
@@ -240,6 +242,13 @@ namespace Stareater.Controllers
 				return closestStar;
 			else
 				return null;
+		}
+		#endregion
+		
+		#region Ship designs
+		public IEnumerable<DesignInfo> ShipsDesigns()
+		{
+			return game.States.Designs.OwnedBy(game.CurrentPlayer).Select(x => new DesignInfo(x));
 		}
 		#endregion
 		

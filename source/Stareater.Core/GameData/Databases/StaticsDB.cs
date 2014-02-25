@@ -174,7 +174,8 @@ namespace Stareater.GameData.Databases
 		{
 			return new PredefinedDesign(
 				data[DesignName].To<string>(),
-				data[DesingHull].To<string>()
+				data[DesingHull].To<string>(),
+				data[DesingHullImageIndex].To<int>()
 			);
 		}
 		
@@ -266,6 +267,7 @@ namespace Stareater.GameData.Databases
 		
 		private const string DesignName = "name";
 		private const string DesingHull = "hull";
+		private const string DesingHullImageIndex = "hullImageIndex";
 		
 		private const string GeneralNameKey = "nameCode";
 		private const string GeneralDescriptionKey = "descCode";

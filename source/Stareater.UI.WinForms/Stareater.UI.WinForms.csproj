@@ -106,6 +106,10 @@
     <Compile Include="GUI\ControlListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GUI\DesignItem.cs" />
+    <Compile Include="GUI\DesignItem.Designer.cs">
+      <DependentUpon>DesignItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormBuildingQueue.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -230,6 +234,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ConstructionSiteView.resx">
       <DependentUpon>ConstructionSiteView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\DesignItem.resx">
+      <DependentUpon>DesignItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormBuildingQueue.resx">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>

@@ -2,4 +2,5 @@
 	name: Interceptor
 	
 	hull: fighter
+	hullImageIndex= 0
 }

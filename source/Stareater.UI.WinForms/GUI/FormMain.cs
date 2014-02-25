@@ -93,6 +93,12 @@ namespace Stareater.GUI
 			postDelayedEvent(showMainMenu);
 		}
 		
+		private void designsToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			using(var form = new FormShipDesignList(controller))
+				form.ShowDialog();
+		}
+		
 		private void developmentToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using(var form = new FormDevelopment(controller))

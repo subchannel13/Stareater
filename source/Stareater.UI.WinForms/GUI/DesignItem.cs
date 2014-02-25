@@ -1,0 +1,44 @@
+﻿using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
+using Stareater.AppData;
+using Stareater.Controllers.Data;
+using Stareater.Utils.NumberFormatters;
+
+namespace Stareater.GUI
+{
+	public partial class DesignItem : UserControl
+	{
+		private DesignInfo data;
+		
+		public DesignItem()
+		{
+			InitializeComponent();
+		}
+		
+		public DesignInfo Data 
+		{
+			get
+			{
+				return data;
+			}
+			set
+			{
+				this.data = value;
+				
+				thumbnail.Image = ImageCache.Get[data.ImagePath];
+				nameLabel.Text = data.Name;
+			}
+		}
+		
+		public double Count 
+		{
+			set
+			{
+				ThousandsFormatter formatter = new ThousandsFormatter();
+				countLabel.Text = formatter.Format(value);
+			}
+		}
+	}
+}

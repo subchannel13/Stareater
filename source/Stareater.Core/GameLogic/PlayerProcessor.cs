@@ -189,7 +189,7 @@ namespace Stareater.GameLogic
 				{
 					Player.UnlockedDesigns.Add(predefDesign);
 					states.Designs.Add(new Design(Player, predefDesign.Name, 
-					                              statics.Hulls[predefDesign.HullCode].MakeHull(techLevels)
+					                              statics.Hulls[predefDesign.HullCode].MakeHull(techLevels, predefDesign.HullImageIndex)
 					                             ));
 				}
 					
