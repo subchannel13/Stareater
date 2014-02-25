@@ -38,6 +38,7 @@
 			this.developmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.endTurnButton = new System.Windows.Forms.Button();
 			this.returnButton = new System.Windows.Forms.Button();
+			this.designsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -79,6 +80,7 @@
 			// 
 			this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.mainMenuToolStripMenuItem,
+									this.designsToolStripMenuItem,
 									this.developmentToolStripMenuItem});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
@@ -126,6 +128,13 @@
 			this.returnButton.Visible = false;
 			this.returnButton.Click += new System.EventHandler(this.returnButton_Click);
 			// 
+			// designsToolStripMenuItem
+			// 
+			this.designsToolStripMenuItem.Name = "designsToolStripMenuItem";
+			this.designsToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
+			this.designsToolStripMenuItem.Text = "Designs";
+			this.designsToolStripMenuItem.Click += new System.EventHandler(this.designsToolStripMenuItemClick);
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -147,6 +156,7 @@
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.ToolStripMenuItem designsToolStripMenuItem;
 		private System.Windows.Forms.Button returnButton;
 		private System.Windows.Forms.ToolStripMenuItem developmentToolStripMenuItem;
 		private System.Windows.Forms.Button endTurnButton;

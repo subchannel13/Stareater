@@ -5,13 +5,25 @@ namespace Stareater.Ships
 {
 	class Hull
 	{
-		private HullType type;
-		private int level;
+		public HullType TypeInfo { get; private set; }
+		public int Level { get; private set; }
 		
-		public Hull(HullType type, int level)
+		private int imageIndex;
+		
+		public Hull(HullType type, int level, int imageIndex)
 		{
-			this.type = type;
-			this.level = level;
+			this.TypeInfo = type;
+			this.Level = level;
+			
+			this.imageIndex = imageIndex;
+		}
+		
+		public string ImagePath 
+		{ 
+			get
+			{
+				return TypeInfo.ImagePaths[imageIndex];
+			}
 		}
 	}
 }

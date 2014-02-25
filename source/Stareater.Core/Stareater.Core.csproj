@@ -76,6 +76,7 @@
     <Compile Include="Controllers\Data\BuildingInfo.cs" />
     <Compile Include="Controllers\Data\ColonyInfo.cs" />
     <Compile Include="Controllers\Data\ConstructableItem.cs" />
+    <Compile Include="Controllers\Data\DesignInfo.cs" />
     <Compile Include="Controllers\Data\GameCopy.cs">
       <DependentUpon>GameCopy.tt</DependentUpon>
       <AutoGen>True</AutoGen>

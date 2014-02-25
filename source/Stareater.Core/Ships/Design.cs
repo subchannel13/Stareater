@@ -22,7 +22,6 @@ namespace Stareater.Ships
 
 		//public int id { get; private set; } //TODO: might need id
 		
-		//public Image ikona { get; private set; } //TODO: get from hull
 		//public double cijena { get; private set; } //TODO: cache or derive?
 		//private Dictionary<string, double> efekti = new Dictionary<string,double>(); //TODO might need
 		
@@ -33,6 +32,14 @@ namespace Stareater.Ships
 			this.Owner = owner;
 			this.Hull = hull;
 			this.Name = name;
+		}
+		
+		public string ImagePath 
+		{ 
+			get
+			{
+				return Hull.ImagePath;
+			}
 		}
 	}
 }
