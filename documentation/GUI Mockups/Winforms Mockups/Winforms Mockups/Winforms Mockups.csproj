@@ -230,6 +230,9 @@
     <EmbeddedResource Include="FormSetupPlayers.resx">
       <DependentUpon>FormSetupPlayers.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormShipDesign.resx">
+      <DependentUpon>FormShipDesign.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormShipDesignList.resx">
       <DependentUpon>FormShipDesignList.cs</DependentUpon>
     </EmbeddedResource>
@@ -273,7 +276,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\housing.png" />
+    <None Include="Resources\laser.png" />
     <None Include="Resources\new design.png" />
+    <None Include="Resources\radiationShield.png" />
     <None Include="Resources\ship design thumbnail.png" />
   </ItemGroup>
   <ItemGroup>
