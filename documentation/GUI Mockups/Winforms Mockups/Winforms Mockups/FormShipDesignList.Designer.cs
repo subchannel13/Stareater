@@ -74,7 +74,7 @@ namespace Winforms_Mockups
 			// panel1
 			// 
 			this.panel1.Controls.Add(this.designInfo1);
-			this.panel1.Location = new System.Drawing.Point(383, 25);
+			this.panel1.Location = new System.Drawing.Point(385, 28);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(200, 378);
 			this.panel1.TabIndex = 13;
@@ -99,6 +99,7 @@ namespace Winforms_Mockups
 			// flowLayoutPanel1
 			// 
 			this.flowLayoutPanel1.AutoScroll = true;
+			this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.flowLayoutPanel1.Controls.Add(this.designItem7);
 			this.flowLayoutPanel1.Controls.Add(this.designItem1);
 			this.flowLayoutPanel1.Controls.Add(this.designItem2);
@@ -108,7 +109,7 @@ namespace Winforms_Mockups
 			this.flowLayoutPanel1.Controls.Add(this.designItem6);
 			this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 28);
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-			this.flowLayoutPanel1.Size = new System.Drawing.Size(365, 313);
+			this.flowLayoutPanel1.Size = new System.Drawing.Size(367, 313);
 			this.flowLayoutPanel1.TabIndex = 15;
 			// 
 			// designItem7

@@ -188,6 +188,10 @@
     <Compile Include="ResearchItem.Designer.cs">
       <DependentUpon>ResearchItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="SpecialEquipmentItem.cs" />
+    <Compile Include="SpecialEquipmentItem.Designer.cs">
+      <DependentUpon>SpecialEquipmentItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="SystemMockup.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -263,6 +267,9 @@
     </Compile>
     <EmbeddedResource Include="ResearchItem.resx">
       <DependentUpon>ResearchItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpecialEquipmentItem.resx">
+      <DependentUpon>SpecialEquipmentItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SystemMockup.resx">
       <DependentUpon>SystemMockup.cs</DependentUpon>

@@ -69,6 +69,7 @@ namespace Stareater.GUI
 			// designList
 			// 
 			this.designList.AutoScroll = true;
+			this.designList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.designList.Location = new System.Drawing.Point(12, 25);
 			this.designList.Name = "designList";
 			this.designList.Size = new System.Drawing.Size(365, 313);
