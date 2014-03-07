@@ -1,15 +1,15 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace Winforms_Mockups
 {
-	public partial class FormShipDesign : Form
+	public partial class SpecialEquipmentItem : UserControl
 	{
-		public FormShipDesign()
+		public SpecialEquipmentItem()
 		{
 			InitializeComponent();
-			comboBox1.SelectedIndex = 0;
 		}
 	}
 }
