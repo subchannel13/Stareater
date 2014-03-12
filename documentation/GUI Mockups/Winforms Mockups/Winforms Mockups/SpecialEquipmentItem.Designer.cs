@@ -45,19 +45,21 @@ namespace Winforms_Mockups
 			// pictureBox2
 			// 
 			this.pictureBox2.Image = global::Winforms_Mockups.Properties.Resources.colonizer;
-			this.pictureBox2.Location = new System.Drawing.Point(0, 0);
+			this.pictureBox2.Location = new System.Drawing.Point(53, 0);
 			this.pictureBox2.Margin = new System.Windows.Forms.Padding(0);
 			this.pictureBox2.Name = "pictureBox2";
-			this.pictureBox2.Size = new System.Drawing.Size(20, 20);
+			this.pictureBox2.Size = new System.Drawing.Size(30, 30);
 			this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.pictureBox2.TabIndex = 17;
 			this.pictureBox2.TabStop = false;
 			// 
 			// label1
 			// 
-			this.label1.Location = new System.Drawing.Point(23, 0);
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+									| System.Windows.Forms.AnchorStyles.Left)));
+			this.label1.Location = new System.Drawing.Point(86, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(120, 20);
+			this.label1.Size = new System.Drawing.Size(135, 30);
 			this.label1.TabIndex = 18;
 			this.label1.Text = "Cargo space";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -66,13 +68,13 @@ namespace Winforms_Mockups
 			// 
 			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 									| System.Windows.Forms.AnchorStyles.Left)));
-			this.label2.Location = new System.Drawing.Point(146, 0);
+			this.label2.Location = new System.Drawing.Point(0, 0);
 			this.label2.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(30, 20);
+			this.label2.Size = new System.Drawing.Size(50, 30);
 			this.label2.TabIndex = 19;
-			this.label2.Text = "x 2";
-			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.label2.Text = "1.5 k x";
+			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// SpecialEquipmentItem
 			// 
@@ -83,7 +85,7 @@ namespace Winforms_Mockups
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.pictureBox2);
 			this.Name = "SpecialEquipmentItem";
-			this.Size = new System.Drawing.Size(180, 20);
+			this.Size = new System.Drawing.Size(375, 30);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			this.ResumeLayout(false);
 		}
