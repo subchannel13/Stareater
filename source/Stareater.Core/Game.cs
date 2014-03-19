@@ -98,7 +98,10 @@ namespace Stareater
 			CalculateDerivedEffects();
 			
 			foreach(var playerProc in this.Derivates.Players)
-				playerProc.ProcessPrecombat(this.Derivates.Colonies.OwnedBy(playerProc.Player));
+				playerProc.ProcessPrecombat(
+					this.Derivates.Colonies.OwnedBy(playerProc.Player),
+					this.Derivates.Stellarises.OwnedBy(playerProc.Player)
+				);
 			
 			/*
 			 * TODO: Process ships

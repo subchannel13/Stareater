@@ -108,12 +108,15 @@ namespace Stareater.GameLogic
 		
 		private double developmentPoints = 0;
 		
-		public void ProcessPrecombat(IList<ColonyProcessor> colonyProcessors)
+		public void ProcessPrecombat(IList<ColonyProcessor> colonyProcessors, IList<StellarisProcessor> stellarisProcessors)
 		{
 			foreach (var colonyProc in colonyProcessors) {
 				developmentPoints += colonyProc.Development;
 				colonyProc.ProcessPrecombat();
 			}
+			
+			foreach (var stellarisProc in stellarisProcessors)
+				stellarisProc.ProcessPrecombat();
 			
 			/*
 			 * TODO: Process stars

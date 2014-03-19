@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Stareater.AppData.Expressions;
 using Stareater.Controllers.Data;
 using Stareater.Galaxy;
+using Stareater.GameData;
 using Stareater.GameLogic;
 
 namespace Stareater.Controllers
@@ -17,6 +19,7 @@ namespace Stareater.Controllers
 			get { return Game.Derivates.Of((StellarisAdmin)Site); }
 		}
 		
+		#region Buildings
 		protected override void RecalculateSpending()
 		{
 			Game.Derivates.Stellarises.At(Location).CalculateSpending(
@@ -24,6 +27,26 @@ namespace Stareater.Controllers
 				Game.Derivates.Colonies.At(Location)
 			);
 		}
+		
+		public override IEnumerable<ConstructableItem> ConstructableItems 
+		{
+			get 
+			{ 
+				foreach(var item in base.ConstructableItems)
+					yield return item;
+				
+				//TODO: put ID code
+				foreach(var design in Game.States.Designs.OwnedBy(Game.CurrentPlayer))
+					yield return new ConstructableItem(
+						new Constructable(design.Name, "", true, design.ImagePath, 
+						                  "", new Prerequisite[0], SiteType.StarSystem,
+						                  new Formula(true), new Formula(design.Cost), new Formula(double.PositiveInfinity),
+						                  new IConstructionEffect[] { new ConstructionAddShip() }),
+						Game.Derivates.Players.Of(Game.CurrentPlayer)
+					);
+			}
+		}
+		#endregion
 		
 		protected StarData Location 
 		{

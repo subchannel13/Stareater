@@ -56,7 +56,7 @@ namespace Stareater.Controllers
 			}
 		}
 			
-		public IEnumerable<ConstructableItem> ConstructableItems
+		public virtual IEnumerable<ConstructableItem> ConstructableItems
 		{
 			get
 			{
