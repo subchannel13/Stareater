@@ -45,5 +45,10 @@ namespace Stareater.GUI
 				this.Close();
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
+		
+		private void newDesignButton_Click(object sender, EventArgs e)
+		{
+			
+		}
 	}
 }
