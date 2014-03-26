@@ -82,7 +82,7 @@ namespace Stareater.GUI
 			this.newDesignButton.Name = "newDesignButton";
 			this.newDesignButton.Size = new System.Drawing.Size(56, 56);
 			this.newDesignButton.TabIndex = 19;
-			this.newDesignButton.Click += new System.EventHandler(this.NewDesignButtonClick);
+			this.newDesignButton.Click += new System.EventHandler(this.newDesignButton_Click);
 			// 
 			// infoList
 			// 
