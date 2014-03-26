@@ -17,7 +17,6 @@ namespace Stareater.Players
 		public PlayerControlType ControlType { get; private set; }
 		public IOffscreenPlayer OffscreenControl { get; private set; }
 		
-		private IEnumerable<object> designs; //TODO: make type
 		public ICollection<PredefinedDesign> UnlockedDesigns { get; private set; }
 		public Intelligence Intelligence { get; private set; }
 
@@ -57,7 +56,6 @@ namespace Stareater.Players
 			copy.ControlType = this.ControlType;
 			copy.OffscreenControl = null;
 
-			copy.designs = null; //TODO: make type
 			copy.UnlockedDesigns = new HashSet<PredefinedDesign>(this.UnlockedDesigns);
 			copy.Intelligence  = this.Intelligence.Copy(galaxyRemap);
 

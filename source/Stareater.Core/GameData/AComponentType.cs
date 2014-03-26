@@ -5,6 +5,8 @@ namespace Stareater.GameData
 {
 	abstract class AComponentType
 	{
+		public const string LevelKey = "lvl";
+		
 		public string NameCode { get; private set; }
 		public string DescCode { get; private set; }
 
