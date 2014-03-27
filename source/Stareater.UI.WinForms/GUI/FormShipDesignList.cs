@@ -48,8 +48,13 @@ namespace Stareater.GUI
 		
 		private void newDesignButton_Click(object sender, EventArgs e)
 		{
-			using(var form = new FormShipDesigner(controller))
-				form.ShowDialog();
+			var designer = controller.NewDesign();
+			
+			using(var form = new FormShipDesigner(designer))
+				if (form.ShowDialog() == DialogResult.OK) {
+					designer.Commit();
+					updateList();
+				}
 		}
 	}
 }

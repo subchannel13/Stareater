@@ -246,26 +246,18 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Ship designs
+		public ShipDesignController NewDesign()
+		{
+			return new ShipDesignController(game);
+		}
+		
 		public IEnumerable<DesignInfo> ShipsDesigns()
 		{
 			return game.States.Designs.OwnedBy(game.CurrentPlayer).Select(x => new DesignInfo(x));
 		}
-		
-		public IEnumerable<HullInfo> Hulls()
-		{
-			var techLevels = playersTechLevels();
-			return game.Statics.Hulls.Values.Select(x => new HullInfo(x, x.HighestLevel(techLevels)))
-				.OrderBy(x => x.Size);
-		}
 		#endregion
 		
 		#region Technology related
-		private Dictionary<string, int> playersTechLevels()
-		{
-			return game.States.TechnologyAdvances.Of(game.CurrentPlayer)
-				.ToDictionary(x => x.Topic.IdCode, x => x.Level);
-		}
-		
 		public IEnumerable<TechnologyTopic> DevelopmentTopics()
 		{
 			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
