@@ -17,8 +17,8 @@ namespace Stareater
 	{
 		public Player[] Players { get; private set; }
 		public int Turn { get; private set; }
-		public int CurrentPlayerIndex { get; private set; } //FIXME: assumes single player, remove
-		private IEnumerable<object> conflicts; //TODO: make type
+		public int CurrentPlayerIndex { get; private set; } //FIXME(later): assumes single player, remove
+		private IEnumerable<object> conflicts; //TODO(v0.5): make type
 
 		public StaticsDB Statics { get; private set; }
 		public StatesDB States { get; private set; }
@@ -104,7 +104,7 @@ namespace Stareater
 				);
 			
 			/*
-			 * TODO: Process ships
+			 * TODO(v0.5): Process ships
 			 * - Move ships
 			 * - Space combat
 			 * - Ground combat
@@ -115,16 +115,16 @@ namespace Stareater
 		
 		public void ProcessPostcombat()
 		{
-			// TODO: Process research
+			// TODO(v0.5): Process research
 			foreach(var playerProc in this.Derivates.Players)
 				playerProc.ProcessPostcombat(Statics, States, Derivates);
 			
-			// TODO: Update ship designs
+			// TODO(v0.5): Update ship designs
 			
-			// TODO: Upgrade and repair ships
+			// TODO(v0.5): Upgrade and repair ships
 			
 			/*
-			 * TODO: Colonies, 2nd pass
+			 * TODO(v0.5): Colonies, 2nd pass
 			 * - Apply normal effect buildings
 			 * - Check construction queue
 			 * - Recalculate colony effects

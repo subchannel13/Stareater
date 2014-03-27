@@ -303,7 +303,7 @@ namespace Stareater.GUI
 				return;
 			}
 			
-			//TODO: open conflict GUI
+			//TODO(v0.5): open conflict GUI
 			
 			controller.EndCombatPhase();
 		}

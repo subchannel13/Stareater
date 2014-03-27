@@ -105,6 +105,6 @@ namespace Stareater.GUI
 			populateParameters();
 		}
 		
-		//TODO: Map preview
+		//TODO(v0.5): Map preview
 	}
 }

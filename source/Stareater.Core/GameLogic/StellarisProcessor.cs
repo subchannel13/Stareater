@@ -49,10 +49,10 @@ namespace Stareater.GameLogic
 		public void CalculateBaseEffects()
 		{
 			/*
-			 * TODO: Preprocess stars
+			 * TODO(v0.5): Preprocess stars
 			 * - Calculate system effects
 			 */
-			//TODO: Where to calculate stuff like migration?
+			//TODO(v0.5): Where to calculate stuff like migration?
 		}
 
 		public void CalculateSpending(
@@ -60,7 +60,7 @@ namespace Stareater.GameLogic
 		{
 			var vars = new Var().UnionWith(playerProcessor.TechLevels).Get;
 
-			//TODO: lift (to orbit) penalty
+			//TODO(v0.5): lift (to orbit) penalty
 			double industryPotential = systemColonies.Sum(x =>
 				(1 - x.SpendingRatioEffective) *
 				x.WorkingPopulation *

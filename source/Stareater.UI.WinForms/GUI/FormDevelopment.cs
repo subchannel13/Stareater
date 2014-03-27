@@ -32,11 +32,11 @@ namespace Stareater.GUI
 				reorderDownAction.Enabled = false;
 				reorderTopAction.Enabled = false;
 				reorderUpAction.Enabled = false;
-				//TODO: disable focus slider
+				//TODO(v0.5): disable focus slider
 			}
 			
-			//TODO: Get total development points
-			//TODO: Get current focus intensity
+			//TODO(v0.5): Get total development points
+			//TODO(v0.5): Get current focus intensity
 			
 			Context context = SettingsWinforms.Get.Language["FormTech"];
 			this.Text = context["FormTitle"].Text();

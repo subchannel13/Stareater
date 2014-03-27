@@ -10,7 +10,7 @@ namespace Stareater.GameData.Databases
 {
 	class ChangesDB
 	{
-		//TODO: move or remove
+		//TODO(later): move or remove
 		public const double DefaultSiteSpendingRatio = 1;
 		
 		public IDictionary<string, int> DevelopmentQueue { get; set; }

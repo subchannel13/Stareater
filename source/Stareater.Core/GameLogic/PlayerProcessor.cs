@@ -119,7 +119,7 @@ namespace Stareater.GameLogic
 				stellarisProc.ProcessPrecombat();
 			
 			/*
-			 * TODO: Process stars
+			 * TODO(v0.5): Process stars
 			 * - Calculate effects from colonies
 			 * - Build
 			 * - Perform migration

@@ -26,7 +26,7 @@ namespace Stareater.Controllers.Data
 				
 			this.Cost = tech.Topic.Cost.Evaluate(textVars);
 			this.InvestedPoints = tech.InvestedPoints;
-			this.Investment = 0; //TODO: Get real investment points
+			this.Investment = 0; //TODO(v0.5): Get real investment points
 			this.Level = tech.Level;
 			this.NextLevel = tech.NextLevel;
 		}

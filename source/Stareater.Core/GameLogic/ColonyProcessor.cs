@@ -94,11 +94,11 @@ namespace Stareater.GameLogic
 			this.FarmerEfficiency = formulas.Farming.Evaluate(this.Organization, vars);
 			this.GardenerEfficiency = formulas.Gardening.Evaluate(this.Organization, vars);
 			this.MinerEfficiency = formulas.Mining.Evaluate(this.Organization, vars);
-			//TODO: factor in miners
+			//TODO(v0.5): factor in miners
 			this.BuilderEfficiency = formulas.Industry.Evaluate(this.Organization, vars);
 			this.ScientistEfficiency = formulas.Development.Evaluate(this.Organization, vars);
 
-			//TODO: factor in farmers
+			//TODO(v0.5): factor in farmers
 			this.WorkingPopulation = this.Colony.Population;
 		}
 		
@@ -169,7 +169,7 @@ namespace Stareater.GameLogic
 			base.ProcessPrecombat();
 			Colony.Population = Methods.Clamp(Colony.Population + PopulationGrowth, 0, MaxPopulation);
 			
-			/* TODO: Colonies, 1st pass
+			/* TODO(v0.5): Colonies, 1st pass
 			 * - Build (consume construction queue)
 			 * - Apply instant effect buildings
 			 * - Apply terraforming

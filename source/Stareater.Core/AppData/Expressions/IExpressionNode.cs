@@ -10,6 +10,6 @@ namespace Stareater.AppData.Expressions
 		IExpressionNode Simplified();
 		bool isConstant { get; }
 		double Evaluate(IDictionary<string, double> variables);
-		IEnumerable<string> Variables { get; } //TODO: add to unit tests
+		IEnumerable<string> Variables { get; } //TODO(later): add to unit tests
 	}
 }

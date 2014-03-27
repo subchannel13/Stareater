@@ -35,7 +35,7 @@ namespace Stareater.Galaxy
 		public abstract SiteType Type { get; }
 		
 		#region object ID
-		//TODO: make debug only
+		//TODO(v0.5): make debug only
 		private long id;
 		
 		public override string ToString()

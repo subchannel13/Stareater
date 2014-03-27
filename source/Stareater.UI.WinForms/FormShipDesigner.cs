@@ -63,7 +63,7 @@ namespace Stareater
 			var hull = (hullPicker.SelectedItem as Tag<HullInfo>).Value;
 			
 			if (string.IsNullOrWhiteSpace(nameInput.Text))
-				nameInput.Text = hull.Name; //TODO: get hull and organization specific name
+				nameInput.Text = hull.Name; //TODO(later): get hull and organization specific name
 			
 			hullImage.Image = ImageCache.Get[hull.ImagePaths[imageIndices[hull]]];
 		}

@@ -41,7 +41,7 @@ namespace Stareater.AppData
 			if (data.CountOf(BaseSettingsKey) > 0) {
 				var baseData = data.Dequeue(BaseSettingsKey).To<IkonComposite>();
 				string langCode = baseData[LanguageKey].To<string>();
-				this.Language = LocalizationManifest.Get.LoadLanguage(langCode); //FIXME: Avoid implicit heavy initialization
+				this.Language = LocalizationManifest.Get.LoadLanguage(langCode); //FIXME(later): Avoid implicit heavy initialization
 				this.LastGame = new LastGameInfo(baseData[LastGameKey].To<IkonComposite>());
 			}
 			else {

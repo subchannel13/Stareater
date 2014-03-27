@@ -17,7 +17,7 @@ namespace Stareater.Localization.Reading
 			RegisterFactory(new ConditionalTextFactory());
 		}
 
-		//TODO: move to TextBlockFactory it is only caller
+		//TODO(v0.5): move to TextBlockFactory it is only caller
 		public static string ParseString(IkadnReader reader, IEnumerable<int> terminatingCharacters, char escapeCharacter, Func<char, char> escapeCode) {
 			var terminatingCharsSet = new HashSet<int>(terminatingCharacters);
 			bool escaping = false;
