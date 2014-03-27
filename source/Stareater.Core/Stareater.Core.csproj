@@ -91,6 +91,7 @@
     <Compile Include="Controllers\Data\TechnologyTopic.cs" />
     <Compile Include="Controllers\GameBuilder.cs" />
     <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="Controllers\ShipDesignController.cs" />
     <Compile Include="Controllers\StellarisAdminController.cs" />
     <Compile Include="Controllers\StarSystemController.cs" />
     <Compile Include="Galaxy\Builders\IStarConnector.cs" />

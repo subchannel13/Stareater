@@ -1,12 +1,4 @@
-﻿/*
- * Created by SharpDevelop.
- * User: ekraiva
- * Date: 25.3.2014.
- * Time: 12:50
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-namespace Stareater
+﻿namespace Stareater.GUI
 {
 	partial class FormShipDesigner
 	{
@@ -96,6 +88,8 @@ namespace Stareater
 			this.nameInput.Name = "nameInput";
 			this.nameInput.Size = new System.Drawing.Size(170, 20);
 			this.nameInput.TabIndex = 5;
+			this.nameInput.TextChanged += new System.EventHandler(this.nameInput_TextChanged);
+			this.nameInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nameInput_KeyPress);
 			// 
 			// acceptButton
 			// 
@@ -105,6 +99,7 @@ namespace Stareater
 			this.acceptButton.TabIndex = 24;
 			this.acceptButton.Text = "Build";
 			this.acceptButton.UseVisualStyleBackColor = true;
+			this.acceptButton.Click += new System.EventHandler(this.acceptButton_Click);
 			// 
 			// FormShipDesigner
 			// 

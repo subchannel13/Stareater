@@ -8,13 +8,14 @@ using Stareater.Controllers;
 using Stareater.Controllers.Data;
 using Stareater.GuiUtils;
 
-namespace Stareater
+namespace Stareater.GUI
 {
 	public partial class FormShipDesigner : Form
 	{
-		private GameController controller;
+		private ShipDesignController controller;
 		private IList<HullInfo> hulls;
 		
+		private bool automaticName = true;
 		private Dictionary<HullInfo, int> imageIndices = new Dictionary<HullInfo, int>();
 		
 		public FormShipDesigner()
@@ -22,10 +23,10 @@ namespace Stareater
 			InitializeComponent();
 		}
 		
-		public FormShipDesigner(GameController controller) : this()
+		public FormShipDesigner(ShipDesignController controller) : this()
 		{
 			this.controller = controller;
-			this.hulls = controller.Hulls().ToList();
+			this.hulls = controller.Hulls().OrderBy(x => x.Size).ToList();
 			
 			Random rand = new Random();
 			
@@ -54,6 +55,19 @@ namespace Stareater
 				(imageIndices[hull] + hull.ImagePaths.Length + direction) % 
 				hull.ImagePaths.Length;
 			hullImage.Image = ImageCache.Get[hull.ImagePaths[imageIndices[hull]]];
+			
+			controller.ImageIndex = imageIndices[hull];
+			checkValidity();
+		}
+		
+		private void checkValidity()
+		{
+			acceptButton.Enabled = controller.IsDesignValid;
+		}
+		
+		private void acceptButton_Click(object sender, EventArgs e)
+		{
+			DialogResult = DialogResult.OK;
 		}
 		
 		private void hullSelector_SelectedIndexChanged(object sender, EventArgs e)
@@ -62,10 +76,15 @@ namespace Stareater
 				return;
 			var hull = (hullPicker.SelectedItem as Tag<HullInfo>).Value;
 			
-			if (string.IsNullOrWhiteSpace(nameInput.Text))
+			if (automaticName)
 				nameInput.Text = hull.Name; //TODO(later): get hull and organization specific name
 			
 			hullImage.Image = ImageCache.Get[hull.ImagePaths[imageIndices[hull]]];
+			
+			controller.Hull = hull;
+			controller.ImageIndex = imageIndices[hull];
+			
+			checkValidity();
 		}
 		
 		private void imageLeft_ButtonClick(object sender, EventArgs e)
@@ -77,6 +96,17 @@ namespace Stareater
 		private void imageRight_ButtonClick(object sender, EventArgs e)
 		{
 			changeHullImage(1);
+		}
+		
+		private void nameInput_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			automaticName = false;
+		}
+		
+		private void nameInput_TextChanged(object sender, EventArgs e)
+		{
+			controller.Name = nameInput.Text;
+			checkValidity();
 		}
 	}
 }

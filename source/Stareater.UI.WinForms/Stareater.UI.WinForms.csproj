@@ -71,10 +71,6 @@
   <ItemGroup>
     <Compile Include="AppData\ImageCache.cs" />
     <Compile Include="AppData\SettingsWinforms.cs" />
-    <Compile Include="FormShipDesigner.cs" />
-    <Compile Include="FormShipDesigner.Designer.cs">
-      <DependentUpon>FormShipDesigner.cs</DependentUpon>
-    </Compile>
     <Compile Include="GLRenderers\CharTextureInfo.cs" />
     <Compile Include="GLRenderers\GalaxyTextures.cs" />
     <Compile Include="GLRenderers\IRenderer.cs" />
@@ -168,6 +164,10 @@
     <Compile Include="GUI\FormSetupPlayers.Designer.cs">
       <DependentUpon>FormSetupPlayers.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FormShipDesigner.cs" />
+    <Compile Include="GUI\FormShipDesigner.Designer.cs">
+      <DependentUpon>FormShipDesigner.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormShipDesignList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -227,9 +227,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GuiUtils\LocalizationMethods.cs" />
     <Compile Include="GuiUtils\Tag.cs" />
-    <EmbeddedResource Include="FormShipDesigner.resx">
-      <DependentUpon>FormShipDesigner.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GUI\BuildingItem.resx">
       <DependentUpon>BuildingItem.cs</DependentUpon>
     </EmbeddedResource>
@@ -273,6 +270,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormSetupPlayers.resx">
       <DependentUpon>FormSetupPlayers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormShipDesigner.resx">
+      <DependentUpon>FormShipDesigner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormShipDesignList.resx">
       <DependentUpon>FormShipDesignList.cs</DependentUpon>

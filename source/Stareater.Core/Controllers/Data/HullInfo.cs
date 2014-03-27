@@ -11,15 +11,15 @@ namespace Stareater.Controllers.Data
 	{
 		private const string LangContext = "Hulls";
 		
-		private HullType hullType;
-		private int level;
+		internal HullType HullType { get; private set; }
+		internal int Level { get; private set; }
 		
 		private IDictionary<string, double> levelVar;
 		
 		internal HullInfo(HullType hullType, int level)
 		{
-			this.hullType = hullType;
-			this.level = level;
+			this.HullType = hullType;
+			this.Level = level;
 			
 			this.levelVar = new Var(AComponentType.LevelKey, level).Get;
 		}
@@ -28,7 +28,7 @@ namespace Stareater.Controllers.Data
 		{ 
 			get
 			{
-				return Settings.Get.Language[LangContext][hullType.NameCode].Text();
+				return Settings.Get.Language[LangContext][HullType.NameCode].Text();
 			}
 		}
 		
@@ -36,7 +36,7 @@ namespace Stareater.Controllers.Data
 		{
 			get
 			{
-				return hullType.Size.Evaluate(levelVar);
+				return HullType.Size.Evaluate(levelVar);
 			}
 		}
 		
@@ -44,7 +44,7 @@ namespace Stareater.Controllers.Data
 		{
 			get
 			{
-				return hullType.ImagePaths;
+				return HullType.ImagePaths;
 			}
 		}
 	}
