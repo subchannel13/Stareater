@@ -71,7 +71,7 @@ namespace Stareater.GameLogic
 				if (site.Stockpile.ContainsKey(buildingItem))
 					investment += site.Stockpile[buildingItem];
 
-				double completed = Math.Floor(investment / cost); //FIXME: possible division by zero
+				double completed = Math.Floor(investment / cost); //FIXME(v0.5): possible division by zero
 				double countLimit = buildingItem.TurnLimit.Evaluate(vars);
 
 				if (completed > countLimit) {

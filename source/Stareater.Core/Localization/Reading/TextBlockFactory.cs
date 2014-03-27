@@ -25,7 +25,7 @@ namespace Stareater.Localization.Reading
 					throw new FormatException("Unexpected non-white character at " + parser.Reader.PositionDescription);
 				return nextChar != '\n' && nextChar != '\r';
 			});
-			parser.Reader.SkipWhile('\n', '\r'); //FIXME: try to include new lines below first one
+			parser.Reader.SkipWhile('\n', '\r'); //FIXME(v0.5): try to include new lines below first one
 
 			Queue<string> textRuns = new Queue<string>();
 			Dictionary<string, IText> substitutions = new Dictionary<string, IText>();
@@ -79,7 +79,7 @@ namespace Stareater.Localization.Reading
 				
 			}
 			
-			//FIXME: add deterministic ending (from the perspective of LL(1) parser) for type syntax
+			//FIXME(v0.5): add deterministic ending (from the perspective of LL(1) parser) for type syntax
 			
 			return new ChainText(texts.ToArray());
 		}

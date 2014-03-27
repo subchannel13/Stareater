@@ -79,7 +79,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{ 
-				return 1; //TODO: make processor property
+				return 1; //TODO(v0.5): make processor property
 			}
 		}
 		
@@ -113,7 +113,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{ 
-				return 0; //TODO: calculate from farming and gardening
+				return 0; //TODO(v0.5): calculate from farming and gardening
 			}
 		}
 		

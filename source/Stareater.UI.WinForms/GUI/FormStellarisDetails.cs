@@ -29,7 +29,7 @@ namespace Stareater.GUI
 			this.controller = controller;
 			
 			Context context = SettingsWinforms.Get.Language["FormStellaris"];
-			//TODO: set form title
+			//TODO(v0.5): set form title
 			
 			buildingsGroup.Text = context["buildingsGroup"].Text();
 			coloniesInfoGroup.Text = context["coloniesGroup"].Text();

@@ -29,7 +29,7 @@ namespace Stareater.GUI
 			this.controller = controller;
 			
 			Context context = SettingsWinforms.Get.Language["FormColony"];
-			//TODO: set form title
+			//TODO(v0.5): set form title
 			
 			buildingsGroup.Text = context["buildingsGroup"].Text();
 			planetInfoGroup.Text = context["planetGroup"].Text();
@@ -45,7 +45,7 @@ namespace Stareater.GUI
 			vars.And("popOrg", percentFormat.Format(controller.Organization));
 			
 			populationInfo.Text = context["populationInfo"].Text(null, vars.Get);
-			growthInfo.Text = context["growthInfo"].Text(null, vars.Get); //TODO: add sign
+			growthInfo.Text = context["growthInfo"].Text(null, vars.Get); //TODO(v0.5): add sign
 			infrastructureInfo.Text = context["infrastructureInfo"].Text(null, vars.Get);
 			
 			var prefixFormat = new ThousandsFormatter();

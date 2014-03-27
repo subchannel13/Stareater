@@ -33,7 +33,7 @@ namespace Stareater.GLRenderers
 		private const float StarSelectorScale = 1.1f;
 		private const float PlanetSelectorScale = 1.1f;
 		
-		private const char ReturnToGalaxyKey = (char)27; //TODO: Make rebindable
+		private const char ReturnToGalaxyKey = (char)27; //TODO(later): Make rebindable
 
 		private const int NoCallList = -1;
 
@@ -141,7 +141,7 @@ namespace Stareater.GLRenderers
 		public void ResetLists()
 		{
 			//no op
-			//TODO: make call list
+			//TODO(v0.5): make call list
 		}
 
 		public void Load()
@@ -177,7 +177,7 @@ namespace Stareater.GLRenderers
 			this.controller = controller;
 			
 			this.resetProjection = true;
-			this.originOffset = 0.5f; //TODO: Get most populated planet
+			this.originOffset = 0.5f; //TODO(v0.5): Get most populated planet
 			this.maxOffset = controller.Planets.Count() * OrbitStep + OrbitOffset + PlanetScale / 2;
 			
 			this.select(StarSystemController.StarIndex);
@@ -191,13 +191,13 @@ namespace Stareater.GLRenderers
 			{
 				case BodyType.OwnStellaris:
 					siteView.SetView(controller.StellarisController(selectedBody));
-					//TODO add implementation, system management
+					//TODO(v0.5): add implementation, system management
 					break;
 				case BodyType.OwnColony:
 					siteView.SetView(controller.ColonyController(selectedBody));
 					break;
 				default:
-					//TODO add implementation, empty planet, foregin planet, empty system, foreign system
+					//TODO(v0.5): add implementation, empty planet, foregin planet, empty system, foreign system
 					break;
 			}
 		}
@@ -230,7 +230,7 @@ namespace Stareater.GLRenderers
 				case ReturnToGalaxyKey:
 					this.systemClosedHandler();
 					break;
-				//TODO: add hotkeys for star and planets
+				//TODO(later): add hotkeys for star and planets
 			}
 			
 		}

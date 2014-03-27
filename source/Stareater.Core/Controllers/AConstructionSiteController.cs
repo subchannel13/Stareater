@@ -90,7 +90,7 @@ namespace Stareater.Controllers
 		
 		public bool CanPick(ConstructableItem data)
 		{
-			return ConstructionQueue.Where(x => x.IdCode == data.IdCode).Count() == 0;	//TODO: consider building count
+			return ConstructionQueue.Where(x => x.IdCode == data.IdCode).Count() == 0;	//TODO(later): consider building count
 		}
 		
 		public void Enqueue(ConstructableItem data)

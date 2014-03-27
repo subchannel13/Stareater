@@ -66,7 +66,7 @@ namespace Stareater.GLRenderers
 				(float)controller.Stars.Select(star => star.Position.Y).Max() + StarMinClickRadius
 			);
 			
-			//TODO: move to more appropriate begin turn setup
+			//TODO(v0.5): move to more appropriate begin turn setup
 			originOffset = new Vector2((float)controller.SelectedStar.Position.X, (float)controller.SelectedStar.Position.Y);
 		}
 
@@ -123,7 +123,7 @@ namespace Stareater.GLRenderers
 				if (screen.Bounds.Width > screen.Bounds.Height)
 					screenLength = (float)(2 * screen.Bounds.Width * semiRadius * aspect / eventDispatcher.Width);
 				else
-					//TODO test this, perhaps by flipping the monitor.
+					//TODO(v0.5): test this, perhaps by flipping the monitor.
 					screenLength = (float)(2 * screen.Bounds.Height * semiRadius * aspect / eventDispatcher.Height);
 				
 				GL.MatrixMode(MatrixMode.Projection);

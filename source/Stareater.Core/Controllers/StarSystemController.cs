@@ -36,7 +36,7 @@ namespace Stareater.Controllers
 		public ColonyInfo PlanetsColony(Planet planet)
 		{
 			if (game.CurrentPlayer.Intelligence.About(Star).Planets[planet].LastVisited != PlanetIntelligence.NeverVisited)
-				//TODO: show last known colony information
+				//TODO(later): show last known colony information
 				if (game.States.Colonies.AtPlanetContains(planet))
 					return new ColonyInfo(game.States.Colonies.AtPlanet(planet));
 			
@@ -46,7 +46,7 @@ namespace Stareater.Controllers
 		public StellarisInfo StarsAdministration()
 		{
 			if (game.CurrentPlayer.Intelligence.About(Star).LastVisited != StarIntelligence.NeverVisited)
-				//TODO: show last known star system information
+				//TODO(later): show last known star system information
 				return new StellarisInfo(game.States.Stellarises.At(Star));
 			
 			return null;

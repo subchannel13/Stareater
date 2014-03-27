@@ -33,7 +33,7 @@ namespace Stareater.GUI
 
 			for (int i = 0; i < designs.Length; i++) {
 				(designList.Controls[i] as DesignItem).Data = designs[i];
-				(designList.Controls[i] as DesignItem).Count = 0; //TODO: count built ships 
+				(designList.Controls[i] as DesignItem).Count = 0; //TODO(v0.5): count built ships 
 			}
 			
 			designList.ResumeLayout();

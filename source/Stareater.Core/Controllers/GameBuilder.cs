@@ -68,7 +68,7 @@ namespace Stareater.Controllers
 		{
 			var colonies = new ColonyCollection();
 			for(int playerI = 0; playerI < players.Length; playerI++) {
-				//TODO: pick top most suitable planets
+				//TODO(v0.5): pick top most suitable planets
 				for(int colonyI = 0; colonyI < startingConditions.Colonies; colonyI++)
 					colonies.Add(new Colony(
 						players[playerI], 
@@ -152,7 +152,7 @@ namespace Stareater.Controllers
 				
 				foreach(var colony in colonies.OwnedBy(player)) {
 					colony.Population = weights.Relative(colony) * totalPopulation;
-					//TODO: add infrastructure to colony
+					//TODO(v0.5): add infrastructure to colony
 					derivates.Colonies.Of(colony).CalculateBaseEffects(statics, derivates.Players.Of(player));
 				}
 			}
@@ -188,7 +188,7 @@ namespace Stareater.Controllers
 				derivates.Stellarises.Add(new StellarisProcessor(stellaris));
 		}
 		
-		//TODO: try to avoid explicit list of files
+		//TODO(later): try to avoid explicit list of files
 		private static readonly string[] StaticDataFiles = new string[] {
 			"./data/colonyBuildings.txt",
 			"./data/colonyFormulas.txt",

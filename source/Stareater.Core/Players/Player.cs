@@ -20,8 +20,8 @@ namespace Stareater.Players
 		public ICollection<PredefinedDesign> UnlockedDesigns { get; private set; }
 		public Intelligence Intelligence { get; private set; }
 
-		private IEnumerable<object> messages; //TODO: make type
-		private Dictionary<object, object> messageFilter; //TODO: make type
+		private IEnumerable<object> messages; //TODO(v0.5): make type
+		private Dictionary<object, object> messageFilter; //TODO(v0.5): make type
 
 		public ChangesDB Orders { get; internal set; }
 		
@@ -59,8 +59,8 @@ namespace Stareater.Players
 			copy.UnlockedDesigns = new HashSet<PredefinedDesign>(this.UnlockedDesigns);
 			copy.Intelligence  = this.Intelligence.Copy(galaxyRemap);
 
-			copy.messages = null; //TODO: make type
-			copy.messageFilter = null; //TODO: make type
+			copy.messages = null; //TODO(v0.5): make type
+			copy.messageFilter = null; //TODO(v0.5): make type
 
 			copy.Orders = null; //Handled later
 

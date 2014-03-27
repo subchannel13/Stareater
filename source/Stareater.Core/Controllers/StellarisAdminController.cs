@@ -35,7 +35,7 @@ namespace Stareater.Controllers
 				foreach(var item in base.ConstructableItems)
 					yield return item;
 				
-				//TODO: put ID code
+				//TODO(v0.5): put ID code
 				foreach(var design in Game.States.Designs.OwnedBy(Game.CurrentPlayer))
 					yield return new ConstructableItem(
 						new Constructable(design.Name, "", true, design.ImagePath, 
@@ -66,7 +66,7 @@ namespace Stareater.Controllers
 					Where(x => x.Owner == Site.Owner).
 					Sum(x => x.Organization * x.Colony.Population);
 				
-				return workplaces / PopulationTotal; //FIXME: possible div by 0
+				return workplaces / PopulationTotal; //FIXME(later): possible div by 0
 			}
 		}
 		public double PopulationTotal

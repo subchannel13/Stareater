@@ -65,32 +65,32 @@ namespace Stareater.Galaxy
 	
 		private double calcAtmosphereDensity(double factor)
 		{
-			//TODO: specify how is atmosphere density calculated
+			//TODO(v0.5): specify how is atmosphere density calculated
 			return Math.Round(Methods.Lerp(factor, AtmosphereDensityMin, AtmosphereDensityMax), MidpointRounding.AwayFromZero);
 		}
 		
 		private double calcGravity()
 		{
-			//TODO: specify how is gravity calculated
+			//TODO(v0.5): specify how is gravity calculated
 			return Math.Round(Size / 100, MidpointRounding.AwayFromZero) - 10;
 		}
 		
 		private double calcRadiation()
 		{
-			//TODO: specify how is radiation calculated
+			//TODO(v0.5): specify how is radiation calculated
 			return Star.Radiation - Position - (AtmosphereDensity + AtmosphereDensityMin);
 		}
 		
 		private double calcTemperature()
 		{
-			//TODO: specify how is temperature calculated
+			//TODO(v0.5): specify how is temperature calculated
 			double radiation = Math.Max(Star.Radiation - Position, 0);
 			double absorbed = Math.Min(radiation, AtmosphereDensity + AtmosphereDensityMin);
 			
 			return Math.Round(absorbed + (AtmosphereDensity > OptimalCondition ? AtmosphereDensity / 2 : 0));
 		}
 		
-		//TODO: expose stuff like radiation absorption and green house effect to view
+		//TODO(v0.5): expose stuff like radiation absorption and green house effect to view
 
 		internal Planet Copy(StarData starRemap)
 		{

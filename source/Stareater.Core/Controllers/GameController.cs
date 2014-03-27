@@ -49,7 +49,7 @@ namespace Stareater.Controllers
 			this.State = GameState.Running;
 
 			foreach(Player player in players) {
-				//TODO: utilize stellar administration instead iterating colonies
+				//TODO(v0.5): utilize stellar administration instead iterating colonies
 				var colonies = this.game.States.Colonies.OwnedBy(player);
 				var perStar = colonies.GroupBy(x => x.Star);
 				var starPopulation = perStar.Select(x => new KeyValuePair<StarData, double>(
@@ -104,7 +104,7 @@ namespace Stareater.Controllers
 			if (this.IsReadOnly)
 				return;
 
-			//FIXME: presumes single human player
+			//FIXME(later): presumes single human player
 			
 			this.endTurnCopy = new GameController();
 			var gameCopy = game.ReadonlyCopy();
