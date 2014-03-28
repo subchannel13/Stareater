@@ -142,8 +142,7 @@ namespace Stareater.AppData.Expressions
 
 		public double Evaluate(IDictionary<string, double> variables)
 		{
-			int truths = sequence.Count(x => x.Evaluate(variables) >= 0);
-			return truths == 1 ? 1 : -1;
+			return sequence.Aggregate(-1.0, (last, current) => (ToBoolean.Normalize(current.Evaluate(variables)) != last) ? 1 : -1);
 		}
 		
 		public IEnumerable<string> Variables 

@@ -36,5 +36,11 @@ namespace Stareater.AppData.Expressions
 				yield return name;
 			}
 		}
+		
+		public override string ToString()
+		{
+			return "Var: " + name;
+		}
+		
 	}
 }
