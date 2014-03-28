@@ -32,14 +32,16 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Designer actions
-		public string Name { get; set; } //TODO(v0.5): check length and uniqueness
-		public HullInfo Hull { get; set; } //TODO(v0.5): reset image index?
-		public int ImageIndex { get; set; } //TODO(v0.5): check value
+		public string Name { get; set; } 
+		public HullInfo Hull { get; set; } 
+		public int ImageIndex { get; set; } 
 		
 		public bool IsDesignValid
 		{
 			get
 			{
+				//TODO(v0.5): check name length and uniqueness
+				//TODO(v0.5): check image index
 				return Hull != null;
 			}
 		}
