@@ -1,0 +1,12 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/Collections/IndexedCollectionBase.tt" #><#
+	
+	namespaceName = "Stareater.GameData.Databases.Tables";
+	usings.Add("Stareater.Galaxy");
+	usings.Add("Stareater.Players");
+	usings.Add("Stareater.Ships");
+	
+	Generate("ShipGroupCollection", "ShipGroup",
+		new ViewInfo("Design", "Design", "Design", ViewType.Collection)
+	);
+#>
