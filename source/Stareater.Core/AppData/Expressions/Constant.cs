@@ -29,17 +29,17 @@ namespace Stareater.AppData.Expressions
 			return value;
 		}
 		
-		public override string ToString()
-		{
-			return "Const: " + value;
-		}
-
 		public IEnumerable<string> Variables 
 		{ 
 			get
 			{
 				yield break;
 			}
+		}
+		
+		public override string ToString()
+		{
+			return "Const: " + value;
 		}
 	}
 }

@@ -46,7 +46,12 @@ namespace Stareater.AppData.Expressions
 	{
 		public override double Evaluate(IDictionary<string, double> variables)
 		{
-			return child.Evaluate(variables) >= 0 ? 1 : -1;
+			return Normalize(child.Evaluate(variables));
+		}
+		
+		public static double Normalize(double x)
+		{
+			return x >= 0 ? 1 : -1;
 		}
 	}
 
