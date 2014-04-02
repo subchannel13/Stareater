@@ -1,6 +1,7 @@
 ﻿using System;
 using Stareater.AppData.Expressions;
 using Stareater.Galaxy;
+using Stareater.GameData.Databases;
 using Stareater.Utils.Collections;
 
 namespace Stareater.GameLogic
@@ -16,7 +17,7 @@ namespace Stareater.GameLogic
 			this.quantity = quantity;
 		}
 		
-		public void Apply(AConstructionSite site, double quantity)
+		public void Apply(StatesDB states, AConstructionSite site, double quantity)
 		{
 			var vars = new Var("quantity", quantity);
 			quantity = this.quantity.Evaluate(vars.Get);

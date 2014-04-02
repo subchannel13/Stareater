@@ -7,6 +7,6 @@
 	usings.Add("Stareater.Ships");
 	
 	Generate("ShipGroupCollection", "ShipGroup",
-		new ViewInfo("Design", "Design", "Design", ViewType.Collection)
+		new ViewInfo("Design", "Design", "Design", ViewType.Scalar)
 	);
 #>

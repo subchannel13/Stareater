@@ -12,22 +12,24 @@ namespace Stareater.GameData.Databases.Tables
 		HashSet<ShipGroup> innerSet = new HashSet<ShipGroup>();
 		List<ShipGroup> toRemove = new List<ShipGroup>();
 
-		Dictionary<Design, List<ShipGroup>> DesignIndex = new Dictionary<Design, List<ShipGroup>>();
+		Dictionary<Design, ShipGroup> DesignIndex = new Dictionary<Design, ShipGroup>();
 
-		public IList<ShipGroup> Design(Design key) {
+		public ShipGroup Design(Design key) {
 			if (DesignIndex.ContainsKey(key))
 				return DesignIndex[key];
-			
-			return new List<ShipGroup>();
+				
+			throw new KeyNotFoundException();
+		}
+		
+		public bool DesignContains(Design key) {
+			return DesignIndex.ContainsKey(key);
 		}
 	
 		public void Add(ShipGroup item)
 		{
 			innerSet.Add(item); 
-
 			if (!DesignIndex.ContainsKey(item.Design))
-				DesignIndex.Add(item.Design, new List<ShipGroup>());
-			DesignIndex[item.Design].Add(item);
+				DesignIndex.Add(item.Design, item);
 		}
 
 		public void Add(IEnumerable<ShipGroup> items)
@@ -66,7 +68,7 @@ namespace Stareater.GameData.Databases.Tables
 		public bool Remove(ShipGroup item)
 		{
 			if (innerSet.Remove(item)) {
-				DesignIndex[item.Design].Remove(item);
+				DesignIndex.Remove(item.Design);
 			
 				return true;
 			}

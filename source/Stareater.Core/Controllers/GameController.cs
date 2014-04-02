@@ -150,7 +150,7 @@ namespace Stareater.Controllers
 			var starKnowledge = game.CurrentPlayer.Intelligence.About(star);
 			
 			foreach(var colony in game.States.Colonies.AtStar(star))
-				if (starKnowledge.Planets[colony.Location].LastVisited != PlanetIntelligence.NeverVisited)
+				if (starKnowledge.Planets[colony.Location.Planet].LastVisited != PlanetIntelligence.NeverVisited)
 					yield return new ColonyInfo(colony);
 		}
 		

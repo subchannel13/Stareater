@@ -41,7 +41,7 @@ namespace Stareater.Controllers
 						new Constructable(design.Name, "", true, design.ImagePath, 
 						                  "", new Prerequisite[0], SiteType.StarSystem,
 						                  new Formula(true), new Formula(design.Cost), new Formula(double.PositiveInfinity),
-						                  new IConstructionEffect[] { new ConstructionAddShip() }),
+						                  new IConstructionEffect[] { new ConstructionAddShip(design) }),
 						Game.Derivates.Players.Of(Game.CurrentPlayer)
 					);
 			}
@@ -52,7 +52,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{ 
-				return (Site as StellarisAdmin).Location;
+				return (Site as StellarisAdmin).Location.Star;
 			}
 		}
 		

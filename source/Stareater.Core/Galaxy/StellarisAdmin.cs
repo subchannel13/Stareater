@@ -6,17 +6,11 @@ namespace Stareater.Galaxy
 {
 	class StellarisAdmin : AConstructionSite
 	{
-		public StarData Location { get; private set; }
-		
-		public StellarisAdmin(Player owner, StarData star) : base(owner)
-		{
-			this.Location = star;
-		}
+		public StellarisAdmin(Player owner, StarData star) : base(owner, new LocationBody(star))
+		{ }
 
-		protected StellarisAdmin(StellarisAdmin original, StarData star, Player owner) : base(original, owner)
-		{
-			this.Location = star;
-		}
+		protected StellarisAdmin(StellarisAdmin original, StarData star, Player owner) : base(original, owner, new LocationBody(star))
+		{ }
 		
 		public override SiteType Type
 		{

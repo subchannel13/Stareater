@@ -105,8 +105,9 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Galaxy\Colony.cs" />
+    <Compile Include="Galaxy\LocationBody.cs" />
     <Compile Include="Galaxy\ShipGroup.cs" />
-    <Compile Include="Galaxy\StationaryFleet.cs" />
+    <Compile Include="Galaxy\IdleFleet.cs" />
     <Compile Include="Galaxy\PlanetType.cs" />
     <Compile Include="Galaxy\StellarisAdmin.cs" />
     <Compile Include="Galaxy\StarNamer.cs" />
@@ -117,6 +118,10 @@
     <Compile Include="GameData\Databases\Tables\DerivedStatistic.cs" />
     <Compile Include="GameData\Databases\Tables\DesignCollection.cs">
       <DependentUpon>DesignCollection.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GameData\Databases\Tables\IdleFleetCollection.cs">
+      <DependentUpon>IdleFleetCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\Databases\Tables\ShipGroupCollection.cs">
@@ -298,6 +303,10 @@
     <None Include="GameData\Databases\Tables\DesignCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DesignCollection.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Databases\Tables\IdleFleetCollection.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IdleFleetCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\ShipGroupCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

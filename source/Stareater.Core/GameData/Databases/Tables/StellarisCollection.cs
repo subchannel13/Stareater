@@ -39,8 +39,8 @@ namespace Stareater.GameData.Databases.Tables
 			if (!OwnedByIndex.ContainsKey(item.Owner))
 				OwnedByIndex.Add(item.Owner, new List<StellarisAdmin>());
 			OwnedByIndex[item.Owner].Add(item);
-			if (!AtIndex.ContainsKey(item.Location))
-				AtIndex.Add(item.Location, item);
+			if (!AtIndex.ContainsKey(item.Location.Star))
+				AtIndex.Add(item.Location.Star, item);
 		}
 
 		public void Add(IEnumerable<StellarisAdmin> items)
@@ -81,7 +81,7 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			if (innerSet.Remove(item)) {
 				OwnedByIndex[item.Owner].Remove(item);
-				AtIndex.Remove(item.Location);
+				AtIndex.Remove(item.Location.Star);
 			
 				return true;
 			}

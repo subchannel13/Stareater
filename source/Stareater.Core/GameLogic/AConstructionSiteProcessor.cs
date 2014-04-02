@@ -43,12 +43,12 @@ namespace Stareater.GameLogic
 			return vars;
 		}
 
-		public virtual void ProcessPrecombat()
+		public virtual void ProcessPrecombat(StatesDB states)
 		{
 			foreach (var construction in SpendingPlan) 
 				if (construction.DoneCount >= 1)
 					foreach(var effect in construction.Item.Effects)
-						effect.Apply(Site, construction.DoneCount);
+						effect.Apply(states, Site, construction.DoneCount);
 		}
 		
 		protected abstract AConstructionSite Site { get; }

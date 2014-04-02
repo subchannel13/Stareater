@@ -71,7 +71,7 @@ namespace Stareater.GameLogic
 		private IDictionary<string, double> calcVars(StaticsDB statics, PlayerProcessor playerProcessor)
 		{
 			var vars = base.LocalEffects(statics);
-			vars.And(PlanetSizeKey, Colony.Location.Size);
+			vars.And(PlanetSizeKey, Colony.Location.Planet.Size);
 			vars.And(PopulationKey, Colony.Population);
 			vars.UnionWith(playerProcessor.TechLevels);
 
@@ -157,16 +157,16 @@ namespace Stareater.GameLogic
 		public override Var LocalEffects(StaticsDB statics)
 		{
 			var vars = base.LocalEffects(statics);
-			vars.And(PlanetSizeKey, Colony.Location.Size);
+			vars.And(PlanetSizeKey, Colony.Location.Planet.Size);
 			vars.And(MaxPopulationKey, MaxPopulation);
 			vars.And(PopulationKey, Colony.Population);
 			
 			return vars;
 		}
 		
-		public override void ProcessPrecombat()
+		public override void ProcessPrecombat(StatesDB states)
 		{
-			base.ProcessPrecombat();
+			base.ProcessPrecombat(states);
 			Colony.Population = Methods.Clamp(Colony.Population + PopulationGrowth, 0, MaxPopulation);
 			
 			/* TODO(v0.5): Colonies, 1st pass
