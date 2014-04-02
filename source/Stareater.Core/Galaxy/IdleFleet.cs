@@ -8,15 +8,14 @@ using Stareater.Players;
 
 namespace Stareater.Galaxy
 {
-	class StationaryFleet
+	class IdleFleet
 	{
 		public Player Owner { get; private set; }
 		public StarData Location { get; private set; }
 		
-		public ShipGroupCollection Ships { get; private set; } //TODO(v0.5): make type
-		private object mission; //TODO(v0.5): make type
+		public ShipGroupCollection Ships { get; private set; }
 		
-		public StationaryFleet(Player owner, StarData location)
+		public IdleFleet(Player owner, StarData location)
 		{
 			this.Owner = owner;
 			this.Location = location;

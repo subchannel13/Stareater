@@ -1,10 +1,11 @@
 ﻿using System;
 using Stareater.Galaxy;
+using Stareater.GameData.Databases;
 
 namespace Stareater.GameLogic
 {
 	interface IConstructionEffect
 	{
-		void Apply(AConstructionSite site, double quantity);
+		void Apply(StatesDB states, AConstructionSite site, double quantity);
 	}
 }

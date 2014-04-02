@@ -42,7 +42,7 @@ namespace Stareater.GameLogic
 		{
 			get
 			{
-				return Stellaris.Location;
+				return Stellaris.Location.Star;
 			}
 		}
 		

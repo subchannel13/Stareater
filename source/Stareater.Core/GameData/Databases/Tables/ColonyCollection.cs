@@ -47,8 +47,8 @@ namespace Stareater.GameData.Databases.Tables
 			if (!OwnedByIndex.ContainsKey(item.Owner))
 				OwnedByIndex.Add(item.Owner, new List<Colony>());
 			OwnedByIndex[item.Owner].Add(item);
-			if (!AtPlanetIndex.ContainsKey(item.Location))
-				AtPlanetIndex.Add(item.Location, item);
+			if (!AtPlanetIndex.ContainsKey(item.Location.Planet))
+				AtPlanetIndex.Add(item.Location.Planet, item);
 
 			if (!AtStarIndex.ContainsKey(item.Star))
 				AtStarIndex.Add(item.Star, new List<Colony>());
@@ -94,7 +94,7 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			if (innerSet.Remove(item)) {
 				OwnedByIndex[item.Owner].Remove(item);
-				AtPlanetIndex.Remove(item.Location);
+				AtPlanetIndex.Remove(item.Location.Planet);
 				AtStarIndex[item.Star].Remove(item);
 			
 				return true;

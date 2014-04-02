@@ -4,9 +4,10 @@
 	namespaceName = "Stareater.GameData.Databases.Tables";
 	usings.Add("Stareater.Galaxy");
 	usings.Add("Stareater.Players");
+	usings.Add("Stareater.Ships");
 	
-	Generate("StellarisCollection", "StellarisAdmin",
+	Generate("IdleFleetCollection", "IdleFleet",
 		new ViewInfo("OwnedBy", "Player", "Owner", ViewType.Collection),
-		new ViewInfo("At", "StarData", "Location.Star", ViewType.Scalar)
+		new ViewInfo("AtStar", "StarData", "Location", ViewType.Collection)
 	);
 #>

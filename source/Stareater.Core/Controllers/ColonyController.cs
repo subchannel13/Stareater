@@ -87,7 +87,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{ 
-				return (Site as Colony).Location.Size;
+				return (Site as Colony).Location.Planet.Size;
 			}
 		}
 		#endregion

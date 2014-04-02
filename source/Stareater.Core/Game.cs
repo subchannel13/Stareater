@@ -99,6 +99,7 @@ namespace Stareater
 			
 			foreach(var playerProc in this.Derivates.Players)
 				playerProc.ProcessPrecombat(
+					States,
 					this.Derivates.Colonies.OwnedBy(playerProc.Player),
 					this.Derivates.Stellarises.OwnedBy(playerProc.Player)
 				);

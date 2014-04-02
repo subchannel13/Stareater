@@ -7,7 +7,7 @@
 	
 	Generate("ColonyCollection", "Colony",
 		new ViewInfo("OwnedBy", "Player", "Owner", ViewType.Collection),
-		new ViewInfo("AtPlanet", "Planet", "Location", ViewType.Scalar),
+		new ViewInfo("AtPlanet", "Planet", "Location.Planet", ViewType.Scalar),
 		new ViewInfo("AtStar", "StarData", "Star", ViewType.Collection)
 	);
 #>
