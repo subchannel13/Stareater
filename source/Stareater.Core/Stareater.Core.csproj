@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="Controllers\Data\GameState.cs" />
     <Compile Include="Controllers\Data\HullInfo.cs" />
+    <Compile Include="Controllers\Data\IdleFleetInfo.cs" />
     <Compile Include="Controllers\Data\IGameStateListener.cs" />
     <Compile Include="Controllers\Data\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />

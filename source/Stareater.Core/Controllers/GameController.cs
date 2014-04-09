@@ -207,6 +207,17 @@ namespace Stareater.Controllers
 			}
 		}
 		
+		public IEnumerable<IdleFleetInfo> IdleFleets
+		{
+			get
+			{
+				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+				
+				//TODO(v0.5) add fleets of other players 
+				return game.States.IdleFleets.OwnedBy(game.CurrentPlayer).Select(x => new IdleFleetInfo(x));
+			}
+		}
+		
 		public IEnumerable<StarData> Stars
 		{
 			get

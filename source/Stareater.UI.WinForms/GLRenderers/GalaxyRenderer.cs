@@ -19,17 +19,19 @@ namespace Stareater.GLRenderers
 		private const int MinZoom = -10;
 		
 		private const float FarZ = -1;
-		private const float WormholeZ = -0.6f;
-		private const float StarColorZ = -0.5f;
-		private const float StarSaturationZ = -0.4f;
-		private const float SelectionIndicatorZ = -0.3f;
-		private const float StarNameZ = -0.2f;
+		private const float WormholeZ = -0.7f;
+		private const float StarColorZ = -0.6f;
+		private const float StarSaturationZ = -0.5f;
+		private const float SelectionIndicatorZ = -0.4f;
+		private const float StarNameZ = -0.3f;
 		private const float StarNameZRange = 0.1f;
-
+		private const float IdleFleetZRange = -0.1f;
+		
 		private const float PanClickTolerance = 0.01f;
 		private const float ClickRadius = 0.02f;
 		private const float StarMinClickRadius = 0.6f;
 		
+		private const float FleetIndicatorScale = 1.0f;
 		private const double PathWidth = 0.1;
 		private const float StarNameScale = 0.35f;
 
@@ -184,6 +186,16 @@ namespace Stareater.GLRenderers
 					starNameZ += StarNameZRange / controller.StarCount;
 				}
 
+				foreach (var fleet in controller.IdleFleets) {
+					GL.Color4(fleet.Owner.Color);
+					
+					GL.PushMatrix();
+					GL.Translate(fleet.Location.Position.X + 0.5, fleet.Location.Position.Y + 0.5, IdleFleetZRange);
+					GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
+
+					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.FleetIndicator);
+					GL.PopMatrix();
+				}
 				GL.EndList();
 			}
 			else
