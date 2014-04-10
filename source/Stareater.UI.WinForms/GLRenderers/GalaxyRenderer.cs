@@ -31,7 +31,7 @@ namespace Stareater.GLRenderers
 		private const float ClickRadius = 0.02f;
 		private const float StarMinClickRadius = 0.6f;
 		
-		private const float FleetIndicatorScale = 1.0f;
+		private const float FleetIndicatorScale = 0.2f;
 		private const double PathWidth = 0.1;
 		private const float StarNameScale = 0.35f;
 

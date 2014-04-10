@@ -53,7 +53,8 @@ namespace Stareater.TextureAtlas
 					textureCoords.Add(serializeRectangle(bounds.Left, bounds.Bottom));
 
 					atlasIkon.Add(nameParams[0], textureCoords);
-					g.DrawImage(items[x.Key], x.Value.Location);
+					Rectangle destRect = new Rectangle(x.Value.Location, x.Value.Size);
+					g.DrawImage(items[x.Key], destRect);
 				}
 
 			using (var outStream = new StreamWriter(outputIkonPath)) {
