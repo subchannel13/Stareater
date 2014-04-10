@@ -92,11 +92,15 @@
     <Compile Include="ControlListView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DesignInfo.cs" />
+    <Compile Include="DesignInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="DesignInfo.Designer.cs">
       <DependentUpon>DesignInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="DesignItem.cs" />
+    <Compile Include="DesignItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="DesignItem.Designer.cs">
       <DependentUpon>DesignItem.cs</DependentUpon>
     </Compile>
@@ -142,11 +146,15 @@
     <Compile Include="FormSetupPlayers.Designer.cs">
       <DependentUpon>FormSetupPlayers.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormShipDesign.cs" />
+    <Compile Include="FormShipDesign.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormShipDesign.Designer.cs">
       <DependentUpon>FormShipDesign.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormShipDesignList.cs" />
+    <Compile Include="FormShipDesignList.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormShipDesignList.Designer.cs">
       <DependentUpon>FormShipDesignList.cs</DependentUpon>
     </Compile>
@@ -188,11 +196,15 @@
     <Compile Include="ResearchItem.Designer.cs">
       <DependentUpon>ResearchItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="SpaceInfo.cs" />
+    <Compile Include="SpaceInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="SpaceInfo.Designer.cs">
       <DependentUpon>SpaceInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="SpecialEquipmentItem.cs" />
+    <Compile Include="SpecialEquipmentItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="SpecialEquipmentItem.Designer.cs">
       <DependentUpon>SpecialEquipmentItem.cs</DependentUpon>
     </Compile>

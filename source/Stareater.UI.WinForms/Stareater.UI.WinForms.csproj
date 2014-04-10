@@ -106,7 +106,9 @@
     <Compile Include="GUI\ControlListView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GUI\DesignItem.cs" />
+    <Compile Include="GUI\DesignItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="GUI\DesignItem.Designer.cs">
       <DependentUpon>DesignItem.cs</DependentUpon>
     </Compile>
@@ -164,7 +166,9 @@
     <Compile Include="GUI\FormSetupPlayers.Designer.cs">
       <DependentUpon>FormSetupPlayers.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FormShipDesigner.cs" />
+    <Compile Include="GUI\FormShipDesigner.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI\FormShipDesigner.Designer.cs">
       <DependentUpon>FormShipDesigner.cs</DependentUpon>
     </Compile>
