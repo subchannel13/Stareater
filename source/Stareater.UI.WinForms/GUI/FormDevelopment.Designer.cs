@@ -30,11 +30,11 @@ namespace Stareater.GUI
 		private void InitializeComponent()
 		{
 			this.topicList = new Stareater.GUI.ControlListView();
-			this.label3 = new System.Windows.Forms.Label();
+			this.pointsInfo = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.lable1 = new System.Windows.Forms.Label();
-			this.trackBar1 = new System.Windows.Forms.TrackBar();
+			this.focusSlider = new System.Windows.Forms.TrackBar();
 			this.reorderTopAction = new System.Windows.Forms.Button();
 			this.reorderUpAction = new System.Windows.Forms.Button();
 			this.reorderDownAction = new System.Windows.Forms.Button();
@@ -43,7 +43,7 @@ namespace Stareater.GUI
 			this.techLevel = new System.Windows.Forms.Label();
 			this.techName = new System.Windows.Forms.Label();
 			this.techDescription = new System.Windows.Forms.TextBox();
-			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.focusSlider)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.techImage)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -60,14 +60,14 @@ namespace Stareater.GUI
 			this.topicList.TabIndex = 1;
 			this.topicList.SelectedIndexChanged += new System.EventHandler(this.topicList_SelectedIndexChanged);
 			// 
-			// label3
+			// pointsInfo
 			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(372, 12);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(135, 13);
-			this.label3.TabIndex = 14;
-			this.label3.Text = "Development points: x.xx X";
+			this.pointsInfo.AutoSize = true;
+			this.pointsInfo.Location = new System.Drawing.Point(372, 12);
+			this.pointsInfo.Name = "pointsInfo";
+			this.pointsInfo.Size = new System.Drawing.Size(135, 13);
+			this.pointsInfo.TabIndex = 14;
+			this.pointsInfo.Text = "Development points: x.xx X";
 			// 
 			// label2
 			// 
@@ -96,13 +96,13 @@ namespace Stareater.GUI
 			this.lable1.TabIndex = 11;
 			this.lable1.Text = "Even";
 			// 
-			// trackBar1
+			// focusSlider
 			// 
-			this.trackBar1.Location = new System.Drawing.Point(372, 63);
-			this.trackBar1.Name = "trackBar1";
-			this.trackBar1.Size = new System.Drawing.Size(250, 45);
-			this.trackBar1.TabIndex = 10;
-			this.trackBar1.Value = 5;
+			this.focusSlider.Location = new System.Drawing.Point(372, 63);
+			this.focusSlider.Name = "focusSlider";
+			this.focusSlider.Size = new System.Drawing.Size(250, 45);
+			this.focusSlider.TabIndex = 10;
+			this.focusSlider.Value = 5;
 			// 
 			// reorderTopAction
 			// 
@@ -193,11 +193,11 @@ namespace Stareater.GUI
 			this.Controls.Add(this.reorderDownAction);
 			this.Controls.Add(this.reorderUpAction);
 			this.Controls.Add(this.reorderTopAction);
-			this.Controls.Add(this.label3);
+			this.Controls.Add(this.pointsInfo);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.lable1);
-			this.Controls.Add(this.trackBar1);
+			this.Controls.Add(this.focusSlider);
 			this.Controls.Add(this.topicList);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormDevelopment";
@@ -206,7 +206,7 @@ namespace Stareater.GUI
 			this.Text = "Development topics";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.formDevelopment_FormClosed);
 			this.Load += new System.EventHandler(this.formDevelopment_Load);
-			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.focusSlider)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.techImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -219,11 +219,11 @@ namespace Stareater.GUI
 		private System.Windows.Forms.Button reorderDownAction;
 		private System.Windows.Forms.Button reorderUpAction;
 		private System.Windows.Forms.Button reorderTopAction;
-		private System.Windows.Forms.TrackBar trackBar1;
+		private System.Windows.Forms.TrackBar focusSlider;
 		private System.Windows.Forms.Label lable1;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label pointsInfo;
 		private Stareater.GUI.ControlListView topicList;
 	}
 }

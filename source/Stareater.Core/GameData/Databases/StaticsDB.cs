@@ -16,6 +16,7 @@ namespace Stareater.GameData.Databases
 		public Dictionary<string, BuildingType> Buildings { get; private set; }
 		public ColonyFormulaSet ColonyFormulas { get; private set; }
 		public List<Constructable> Constructables { get; private set; }
+		public List<DevelopmentFocus> DevelopmentFocusOptions { get; private set; }
 		public List<PredefinedDesign> PredeginedDesigns { get; private set; }
 		public List<Technology> Technologies { get; private set; }
 		
@@ -25,6 +26,7 @@ namespace Stareater.GameData.Databases
 		{
 			this.Buildings = new Dictionary<string, BuildingType>();
 			this.Constructables = new List<Constructable>();
+			this.DevelopmentFocusOptions = new List<DevelopmentFocus>();
 			this.Hulls = new Dictionary<string, HullType>();
 			this.PredeginedDesigns = new List<PredefinedDesign>();
 			this.Technologies = new List<Technology>();
@@ -54,6 +56,9 @@ namespace Stareater.GameData.Databases
 								break;
 							case ConstructableTag:
 								Constructables.Add(loadConstructable(data));
+								break;
+							case DevelopmentFocusesTag:
+								DevelopmentFocusOptions.AddRange(loadFocusOptions(data));
 								break;
 							case DevelopmentTag:
 								Technologies.Add(loadTech(data, TechnologyCategory.Development));
@@ -206,6 +211,15 @@ namespace Stareater.GameData.Databases
 		#endregion
 
 		#region Technologies
+		private IEnumerable<DevelopmentFocus> loadFocusOptions(IkonComposite data)
+		{
+			foreach(var array in data[FocusList].To<IkonArray>()) {
+				double[] weights = array.To<double[]>();
+				double sum = weights.Sum();
+				yield return new DevelopmentFocus(weights.Select(x => x /sum).ToArray()); //TODO(later): possible div by 0
+			}
+		}
+			
 		private IEnumerable<Prerequisite> loadPrerequisites(IkonArray dataArray)
 		{
 			for(int i = 0; i < dataArray.Count; i += 2)
@@ -234,6 +248,7 @@ namespace Stareater.GameData.Databases
 		private const string BuildingTag = "Building";
 		private const string ColonyFormulasTag = "ColonyFormulas";
 		private const string ConstructableTag = "Constructable";
+		private const string DevelopmentFocusesTag = "DevelopmentFocusOptions";
 		private const string DevelopmentTag = "DevelopmentTopic";
 		private const string PredefinedDesignTag = "PredefinedDesign";
 		private const string ResearchTag = "ResearchTopic";
@@ -268,6 +283,8 @@ namespace Stareater.GameData.Databases
 		private const string DesignName = "name";
 		private const string DesingHull = "hull";
 		private const string DesingHullImageIndex = "hullImageIndex";
+		
+		private const string FocusList = "list";
 		
 		private const string GeneralNameKey = "nameCode";
 		private const string GeneralDescriptionKey = "descCode";

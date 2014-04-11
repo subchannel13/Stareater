@@ -4,5 +4,5 @@ FormTitle = Development topics
 Level {
 Level {=lvl}}
 
-MainMenu = Main menu
+developmentPoints = Development points
 -

@@ -292,6 +292,23 @@ namespace Stareater.Controllers
 				i++;
 			}
 		}
+		
+		public DevelopmentFocusInfo[] DevelopmentFocusOptions()
+		{
+			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+			
+			return game.Statics.DevelopmentFocusOptions.Select(x => new DevelopmentFocusInfo(x)).ToArray();
+		}
+		
+		public double DevelopmentPoints 
+		{ 
+			get
+			{
+				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+				
+				return game.Derivates.Colonies.OwnedBy(game.CurrentPlayer).Sum(x => x.Development);
+			}
+		}
 		#endregion
 	}
 }
