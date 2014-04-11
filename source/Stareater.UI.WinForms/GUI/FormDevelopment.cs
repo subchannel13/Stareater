@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Data;
 using Stareater.Localization;
+using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI
 {
@@ -32,14 +32,17 @@ namespace Stareater.GUI
 				reorderDownAction.Enabled = false;
 				reorderTopAction.Enabled = false;
 				reorderUpAction.Enabled = false;
-				//TODO(v0.5): disable focus slider
+				focusSlider.Enabled = false;
 			}
 			
-			//TODO(v0.5): Get total development points
 			//TODO(v0.5): Get current focus intensity
 			
 			Context context = SettingsWinforms.Get.Language["FormTech"];
 			this.Text = context["FormTitle"].Text();
+			
+			ThousandsFormatter formatter = new ThousandsFormatter();
+			pointsInfo.Text = context["developmentPoints"].Text() + ": " + formatter.Format(controller.DevelopmentPoints);
+			focusSlider.Maximum = controller.DevelopmentFocusOptions().Length;
 		}
 		
 		private void updateList()

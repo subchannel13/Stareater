@@ -77,6 +77,7 @@
     <Compile Include="Controllers\Data\ColonyInfo.cs" />
     <Compile Include="Controllers\Data\ConstructableItem.cs" />
     <Compile Include="Controllers\Data\DesignInfo.cs" />
+    <Compile Include="Controllers\Data\DevelopmentFocusInfo.cs" />
     <Compile Include="Controllers\Data\GameCopy.cs">
       <DependentUpon>GameCopy.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -121,6 +122,7 @@
       <DependentUpon>DesignCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="GameData\Databases\Tables\DevelopmentFocus.cs" />
     <Compile Include="GameData\Databases\Tables\IdleFleetCollection.cs">
       <DependentUpon>IdleFleetCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>

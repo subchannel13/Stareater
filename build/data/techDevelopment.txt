@@ -1,3 +1,12 @@
+{ DevelopmentFocusOptions
+	list [
+		[=1 =1 =1 =1 =1]
+		[=5 =4 =3 =2 =1]
+		[=8 =4 =2 =1]
+		[=16 =4 =1]
+	]
+}
+
 { DevelopmentTopic
 	nameCode: HYDRO_FARM_NAME
 	descCode: HYDRO_FARM_DESC
