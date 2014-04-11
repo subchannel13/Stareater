@@ -13,6 +13,7 @@ namespace Stareater.GameData.Databases
 		//TODO(later): move or remove
 		public const double DefaultSiteSpendingRatio = 1;
 		
+		public int DevelopmentFocusIndex { get; set; }
 		public IDictionary<string, int> DevelopmentQueue { get; set; }
 		public IDictionary<string, int> ResearchQueue { get; set; }
 		
@@ -20,6 +21,7 @@ namespace Stareater.GameData.Databases
 		
 		public ChangesDB()
 		{
+			this.DevelopmentFocusIndex = 0;
 			this.DevelopmentQueue = new Dictionary<string, int>();
 			this.ResearchQueue = new Dictionary<string, int>();
 			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
@@ -33,6 +35,7 @@ namespace Stareater.GameData.Databases
 				x => playersRemap.Site(x.Key),
 				x => x.Value.Copy());
 
+			copy.DevelopmentFocusIndex = this.DevelopmentFocusIndex;
 			copy.DevelopmentQueue = new Dictionary<string, int>(this.DevelopmentQueue);
 			copy.ResearchQueue = new Dictionary<string, int>(this.ResearchQueue);
 
