@@ -103,6 +103,7 @@ namespace Stareater.GUI
 			this.focusSlider.Size = new System.Drawing.Size(250, 45);
 			this.focusSlider.TabIndex = 10;
 			this.focusSlider.Value = 5;
+			this.focusSlider.Scroll += new System.EventHandler(this.focusSlider_Scroll);
 			// 
 			// reorderTopAction
 			// 

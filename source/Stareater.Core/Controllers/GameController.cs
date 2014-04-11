@@ -300,6 +300,24 @@ namespace Stareater.Controllers
 			return game.Statics.DevelopmentFocusOptions.Select(x => new DevelopmentFocusInfo(x)).ToArray();
 		}
 		
+		public int DevelopmentFocusIndex 
+		{ 
+			get
+			{
+				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+				
+				return game.CurrentPlayer.Orders.DevelopmentFocusIndex;
+			}
+			
+			set
+			{
+				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+				
+				if (value >= 0 && value < game.Statics.DevelopmentFocusOptions.Count)
+					game.CurrentPlayer.Orders.DevelopmentFocusIndex = value;
+			}
+		}
+		
 		public double DevelopmentPoints 
 		{ 
 			get

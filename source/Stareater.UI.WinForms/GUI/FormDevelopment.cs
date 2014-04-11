@@ -42,7 +42,8 @@ namespace Stareater.GUI
 			
 			ThousandsFormatter formatter = new ThousandsFormatter();
 			pointsInfo.Text = context["developmentPoints"].Text() + ": " + formatter.Format(controller.DevelopmentPoints);
-			focusSlider.Maximum = controller.DevelopmentFocusOptions().Length;
+			focusSlider.Maximum = controller.DevelopmentFocusOptions().Length - 1;
+			focusSlider.Value = controller.DevelopmentFocusIndex;
 		}
 		
 		private void updateList()
@@ -150,6 +151,11 @@ namespace Stareater.GUI
 				return;
 			
 			reorderTopic(topicList.SelectedIndex, topics.Count);
+		}
+		
+		private void focusSlider_Scroll(object sender, EventArgs e)
+		{
+			controller.DevelopmentFocusIndex = focusSlider.Value;
 		}
 	}
 }

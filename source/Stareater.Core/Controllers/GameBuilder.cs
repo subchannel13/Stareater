@@ -167,6 +167,8 @@ namespace Stareater.Controllers
 				
 				foreach(var stellaris in states.Stellarises.OwnedBy(player))
 					player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
+				
+				player.Orders.DevelopmentFocusIndex = statics.DevelopmentFocusOptions.Count / 2;
 			}
 			
 			foreach (var player in players) {
