@@ -213,6 +213,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameLogic\ConstructionAddShip.cs" />
+    <Compile Include="GameLogic\DevelopmentResult.cs" />
     <Compile Include="GameLogic\IConstructionEffect.cs" />
     <Compile Include="GameLogic\AConstructionSiteProcessor.cs" />
     <Compile Include="GameLogic\ColonyProcessor.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Stareater.GameLogic;
 using Stareater.Players;
 using Stareater.Utils.Collections;
 
@@ -47,7 +48,7 @@ namespace Stareater.GameData
 			return Prerequisite.AreSatisfied(Topic.Prerequisites, NextLevel, techLevels);
 		}
 
-		public double Invest(double points, IDictionary<string, int> techLevels)
+		/*public double Invest(double points, IDictionary<string, int> techLevels)
 		{
 			while(CanProgress(techLevels))
 			{
@@ -65,6 +66,37 @@ namespace Stareater.GameData
 			}
 			
 			return points;
+		}*/
+		
+		public void Progress(DevelopmentResult progressData)
+		{
+			this.Level += progressData.NewLevels;
+			this.InvestedPoints += progressData.LeftoverPoints;
+		}
+		
+		public DevelopmentResult SimulateInvestment(double points, IDictionary<string, int> techLevels)
+		{
+			int tmplevel = Level;
+			int newLevels = 0;
+			double tmpInvested = InvestedPoints;
+			double totalInvested = 0;
+			
+			while(tmplevel < Topic.MaxLevel && Prerequisite.AreSatisfied(Topic.Prerequisites, tmplevel + 1, techLevels))
+			{
+				double pointsLeft = this.Topic.Cost.Evaluate(new Var(Technology.LevelKey, tmplevel + 1).Get) - tmpInvested;
+				
+				if (pointsLeft > points)
+					return new DevelopmentResult(newLevels, totalInvested, this, tmpInvested + points);
+				
+				tmplevel++;
+				newLevels++;
+				
+				tmpInvested = 0;
+				totalInvested += pointsLeft;
+				points -= pointsLeft;
+			}
+			
+			return new DevelopmentResult(newLevels, totalInvested, this, tmpInvested);
 		}
 		
 		internal TechnologyProgress Copy(Player player)
