@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NGenerics.Extensions;
 using Stareater.GameData;
 using Stareater.GameData.Databases;
 using Stareater.GameData.Databases.Tables;
@@ -14,12 +15,14 @@ namespace Stareater.GameLogic
 	{
 		public const string LevelSufix = "Lvl";
 		
+		public IEnumerable<DevelopmentResult> DevelopmentPlan { get; protected set; }
 		public Player Player { get; private set; }
 		
 		public PlayerProcessor(Player player, IEnumerable<Technology> technologies)
 		{
 			this.Player = player;
 			
+			this.DevelopmentPlan = new DevelopmentResult[0];
 			this.TechLevels = new Dictionary<string, double>();
 			foreach (var tech in technologies) {
 				this.TechLevels.Add(tech.IdCode + LevelSufix, TechnologyProgress.NotStarted);
@@ -35,6 +38,7 @@ namespace Stareater.GameLogic
 		{
 			PlayerProcessor copy = new PlayerProcessor(playersRemap.Players[this.Player]);
 			
+			copy.DevelopmentPlan = new List<DevelopmentResult>(this.DevelopmentPlan);
 			copy.TechLevels = new Dictionary<string, double>(this.TechLevels);
 
 			return copy;
@@ -61,6 +65,28 @@ namespace Stareater.GameLogic
 				return leftTech.Topic.IdCode.CompareTo(rightTech.Topic.IdCode);
 			
 			return primaryComparison;
+		}
+		
+		public void CalculateDevelopment(StaticsDB statics, StatesDB states, IList<ColonyProcessor> colonyProcessors)
+		{
+			this.developmentPoints = 0;
+			
+			foreach (var colonyProc in colonyProcessors)
+				developmentPoints += colonyProc.Development;
+			
+			var focus = statics.DevelopmentFocusOptions[Player.Orders.DevelopmentFocusIndex];
+			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			var advanceOrder = this.DevelopmentOrder(states.TechnologyAdvances).ToList();
+			
+			var results = new List<DevelopmentResult>(this.DevelopmentPlan);
+			for (int i = 0; i < advanceOrder.Count && i < focus.Weights.Length; i++) {
+				results.Add(advanceOrder[i].SimulateInvestment(
+					developmentPoints * focus.Weights[i],
+					techLevels
+				));
+			}
+			
+			this.DevelopmentPlan = results;
 		}
 		
 		public IEnumerable<TechnologyProgress> DevelopmentOrder(TechProgressCollection techAdvances)
@@ -108,10 +134,12 @@ namespace Stareater.GameLogic
 		
 		private double developmentPoints = 0;
 		
-		public void ProcessPrecombat(StatesDB states, IList<ColonyProcessor> colonyProcessors, IList<StellarisProcessor> stellarisProcessors)
+		public void ProcessPrecombat(StaticsDB statics, StatesDB states, IList<ColonyProcessor> colonyProcessors, IList<StellarisProcessor> stellarisProcessors)
 		{
+			this.CalculateDevelopment(statics, states, colonyProcessors);
+			
 			foreach (var colonyProc in colonyProcessors) {
-				developmentPoints += colonyProc.Development;
+				//developmentPoints += colonyProc.Development;
 				colonyProc.ProcessPrecombat(states);
 			}
 			
@@ -129,13 +157,15 @@ namespace Stareater.GameLogic
 		
 		public void ProcessPostcombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
-			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			/*var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
 			var advanceOrder = this.DevelopmentOrder(states.TechnologyAdvances);
 			
 			foreach(var tech in advanceOrder)
 			{
 				developmentPoints = tech.Invest(developmentPoints, techLevels);
-			}
+			}*/
+			foreach(var techProgress in this.DevelopmentPlan)
+				techProgress.Item.Progress(techProgress);
 			this.Calculate(states.TechnologyAdvances.Of(Player));
 
 			var newTechLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
