@@ -94,6 +94,7 @@ namespace Stareater.GUI
 			else
 				topics.Add(item);
 			
+			topics = controller.ReorderDevelopmentTopics(topics.Select(x => x.IdCode)).ToList();
 			updateList();
 			topicList.SelectedIndex = toIndex;
 		}
@@ -109,11 +110,6 @@ namespace Stareater.GUI
 		{
 			if (topicList.Controls.Count > 0)
 				topicList.SelectedIndex = 0;
-		}
-		
-		private void formDevelopment_FormClosed(object sender, FormClosedEventArgs e)
-		{
-			controller.ReorderDevelopmentTopics(topics.Select(x => x.IdCode));
 		}
 		
 		private void topicList_SelectedIndexChanged(object sender, EventArgs e)
@@ -156,6 +152,8 @@ namespace Stareater.GUI
 		private void focusSlider_Scroll(object sender, EventArgs e)
 		{
 			controller.DevelopmentFocusIndex = focusSlider.Value;
+			topics = controller.DevelopmentTopics().ToList();
+			updateList();
 		}
 	}
 }

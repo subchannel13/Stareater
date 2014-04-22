@@ -47,26 +47,6 @@ namespace Stareater.GameData
 			
 			return Prerequisite.AreSatisfied(Topic.Prerequisites, NextLevel, techLevels);
 		}
-
-		/*public double Invest(double points, IDictionary<string, int> techLevels)
-		{
-			while(CanProgress(techLevels))
-			{
-				double pointsLeft = this.Topic.Cost.Evaluate(new Var(Technology.LevelKey, this.NextLevel).Get) - this.InvestedPoints;
-				
-				if (pointsLeft > points) {
-					InvestedPoints += points;
-					return 0;
-				}
-				
-				this.Level = NextLevel;
-				this.InvestedPoints = 0;
-				points -= pointsLeft;
-				//TODO(v0.5): add new tech level message
-			}
-			
-			return points;
-		}*/
 		
 		public void Progress(DevelopmentResult progressData)
 		{
@@ -86,7 +66,7 @@ namespace Stareater.GameData
 				double pointsLeft = this.Topic.Cost.Evaluate(new Var(Technology.LevelKey, tmplevel + 1).Get) - tmpInvested;
 				
 				if (pointsLeft > points)
-					return new DevelopmentResult(newLevels, totalInvested, this, tmpInvested + points);
+					return new DevelopmentResult(newLevels, totalInvested + points, this, tmpInvested + points);
 				
 				tmplevel++;
 				newLevels++;
@@ -103,5 +83,42 @@ namespace Stareater.GameData
 		{
 			return new TechnologyProgress(Level, InvestedPoints, Topic, player);
 		}
+		
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			TechnologyProgress other = obj as TechnologyProgress;
+			if (other == null)
+				return false;
+			return object.Equals(this.Topic, other.Topic) && object.Equals(this.Owner, other.Owner);
+		}
+		
+		public override int GetHashCode()
+		{
+			int hashCode = 0;
+			unchecked {
+				if (Topic != null)
+					hashCode += 1000000007 * Topic.GetHashCode();
+				if (Owner != null)
+					hashCode += 1000000009 * Owner.GetHashCode();
+			}
+			return hashCode;
+		}
+		
+		public static bool operator ==(TechnologyProgress lhs, TechnologyProgress rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+		
+		public static bool operator !=(TechnologyProgress lhs, TechnologyProgress rhs)
+		{
+			return !(lhs == rhs);
+		}
+		#endregion
+
 	}
 }

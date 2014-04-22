@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Stareater.AppData;
 using Stareater.GameData;
+using Stareater.GameLogic;
 using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Data
@@ -26,9 +27,21 @@ namespace Stareater.Controllers.Data
 				
 			this.Cost = tech.Topic.Cost.Evaluate(textVars);
 			this.InvestedPoints = tech.InvestedPoints;
-			this.Investment = 0; //TODO(v0.5): Get real investment points
+			this.Investment = 0;
 			this.Level = tech.Level;
 			this.NextLevel = tech.NextLevel;
+		}
+		
+		internal TechnologyTopic(TechnologyProgress tech, DevelopmentResult investmentResult)
+		{
+			this.technology = tech.Topic;
+			this.textVars = new Var(Technology.LevelKey, tech.NextLevel).Get;
+				
+			this.Cost = tech.Topic.Cost.Evaluate(textVars);
+			this.InvestedPoints = tech.InvestedPoints;
+			this.Investment = investmentResult.InvestedPoints;
+			this.Level = tech.Level;
+			this.NextLevel = investmentResult.NewLevels > 1 ? tech.Level + investmentResult.NewLevels : tech.NextLevel;
 		}
 		
 		public string Name 

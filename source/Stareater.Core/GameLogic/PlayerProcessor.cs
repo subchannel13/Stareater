@@ -22,7 +22,7 @@ namespace Stareater.GameLogic
 		{
 			this.Player = player;
 			
-			this.DevelopmentPlan = new DevelopmentResult[0];
+			this.DevelopmentPlan = null;
 			this.TechLevels = new Dictionary<string, double>();
 			foreach (var tech in technologies) {
 				this.TechLevels.Add(tech.IdCode + LevelSufix, TechnologyProgress.NotStarted);
@@ -38,7 +38,7 @@ namespace Stareater.GameLogic
 		{
 			PlayerProcessor copy = new PlayerProcessor(playersRemap.Players[this.Player]);
 			
-			copy.DevelopmentPlan = new List<DevelopmentResult>(this.DevelopmentPlan);
+			copy.DevelopmentPlan = (this.DevelopmentPlan != null) ? new List<DevelopmentResult>(this.DevelopmentPlan) : null;
 			copy.TechLevels = new Dictionary<string, double>(this.TechLevels);
 
 			return copy;
@@ -78,7 +78,7 @@ namespace Stareater.GameLogic
 			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
 			var advanceOrder = this.DevelopmentOrder(states.TechnologyAdvances).ToList();
 			
-			var results = new List<DevelopmentResult>(this.DevelopmentPlan);
+			var results = new List<DevelopmentResult>();
 			for (int i = 0; i < advanceOrder.Count && i < focus.Weights.Length; i++) {
 				results.Add(advanceOrder[i].SimulateInvestment(
 					developmentPoints * focus.Weights[i],
@@ -87,6 +87,11 @@ namespace Stareater.GameLogic
 			}
 			
 			this.DevelopmentPlan = results;
+		}
+		
+		public void InvalidateDevelopment()
+		{
+			this.DevelopmentPlan = null;
 		}
 		
 		public IEnumerable<TechnologyProgress> DevelopmentOrder(TechProgressCollection techAdvances)
@@ -157,13 +162,6 @@ namespace Stareater.GameLogic
 		
 		public void ProcessPostcombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
-			/*var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
-			var advanceOrder = this.DevelopmentOrder(states.TechnologyAdvances);
-			
-			foreach(var tech in advanceOrder)
-			{
-				developmentPoints = tech.Invest(developmentPoints, techLevels);
-			}*/
 			foreach(var techProgress in this.DevelopmentPlan)
 				techProgress.Item.Progress(techProgress);
 			this.Calculate(states.TechnologyAdvances.Of(Player));
