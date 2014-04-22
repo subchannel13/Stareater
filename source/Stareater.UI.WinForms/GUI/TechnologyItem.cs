@@ -33,7 +33,11 @@ namespace Stareater.GUI
 			nameLabel.Text = topicInfo.Name;
 			levelLabel.Text = TopicLevelText;
 			costLabel.Text = thousandsFormat.Format(topicInfo.InvestedPoints) + " / " +thousandsFormat.Format(topicInfo.Cost);
-			investmentLabel.Text = thousandsFormat.Format(topicInfo.Investment);
+			
+			if (topicInfo.Investment > 0)
+				investmentLabel.Text = "+" + thousandsFormat.Format(topicInfo.Investment);
+			else
+				investmentLabel.Text = "";
 		}
 		
 		void thumbnailImage_Click(object sender, EventArgs e)

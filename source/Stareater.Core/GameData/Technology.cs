@@ -30,5 +30,40 @@ namespace Stareater.GameData
 			this.MaxLevel = maxLevel;
 			this.Category = category;
 		}
+		
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			Technology other = obj as Technology;
+			if (other == null)
+				return false;
+			return this.IdCode == other.IdCode;
+		}
+		
+		public override int GetHashCode()
+		{
+			int hashCode = 0;
+			unchecked {
+				if (IdCode != null)
+					hashCode += 1000000007 * IdCode.GetHashCode();
+			}
+			return hashCode;
+		}
+		
+		public static bool operator ==(Technology lhs, Technology rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+		
+		public static bool operator !=(Technology lhs, Technology rhs)
+		{
+			return !(lhs == rhs);
+		}
+		#endregion
+
 	}
 }

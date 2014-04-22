@@ -60,7 +60,7 @@ namespace Stareater.GUI
 			// investmentLabel
 			// 
 			this.investmentLabel.AutoSize = true;
-			this.investmentLabel.ForeColor = System.Drawing.Color.Green;
+			this.investmentLabel.ForeColor = System.Drawing.Color.DarkGreen;
 			this.investmentLabel.Location = new System.Drawing.Point(179, 30);
 			this.investmentLabel.Name = "investmentLabel";
 			this.investmentLabel.Size = new System.Drawing.Size(45, 13);

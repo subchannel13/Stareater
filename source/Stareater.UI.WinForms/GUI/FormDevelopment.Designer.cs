@@ -98,6 +98,7 @@ namespace Stareater.GUI
 			// 
 			// focusSlider
 			// 
+			this.focusSlider.LargeChange = 1;
 			this.focusSlider.Location = new System.Drawing.Point(372, 63);
 			this.focusSlider.Name = "focusSlider";
 			this.focusSlider.Size = new System.Drawing.Size(250, 45);
@@ -205,7 +206,6 @@ namespace Stareater.GUI
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Development topics";
-			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.formDevelopment_FormClosed);
 			this.Load += new System.EventHandler(this.formDevelopment_Load);
 			((System.ComponentModel.ISupportInitialize)(this.focusSlider)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.techImage)).EndInit();

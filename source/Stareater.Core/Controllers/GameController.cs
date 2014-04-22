@@ -274,14 +274,27 @@ namespace Stareater.Controllers
 			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 			var playerTechs = game.Derivates.Of(game.CurrentPlayer).DevelopmentOrder(game.States.TechnologyAdvances);
 		
+			if (game.Derivates.Of(game.CurrentPlayer).DevelopmentPlan == null)
+				game.Derivates.Of(game.CurrentPlayer).CalculateDevelopment(
+					game.Statics,
+					game.States,
+					game.Derivates.Colonies.OwnedBy(game.CurrentPlayer)
+				);
+			
+			var developmentInvestments = game.Derivates.Of(game.CurrentPlayer).DevelopmentPlan.ToDictionary(x => x.Item);
+			
 			foreach(var techProgress in playerTechs)
-				yield return new TechnologyTopic(techProgress);
+				if (developmentInvestments.ContainsKey(techProgress))
+					yield return new TechnologyTopic(techProgress, developmentInvestments[techProgress]);
+				else
+					yield return new TechnologyTopic(techProgress);
+			
 		}
 		
-		public void ReorderDevelopmentTopics(IEnumerable<string> idCodeOrder)
+		public IEnumerable<TechnologyTopic> ReorderDevelopmentTopics(IEnumerable<string> idCodeOrder)
 		{
 			if (this.IsReadOnly)
-				return;
+				return DevelopmentTopics();
 
 			var modelQueue = game.CurrentPlayer.Orders.DevelopmentQueue;
 			modelQueue.Clear();
@@ -291,6 +304,9 @@ namespace Stareater.Controllers
 				modelQueue.Add(idCode, i);
 				i++;
 			}
+			
+			game.Derivates.Of(game.CurrentPlayer).InvalidateDevelopment();
+			return DevelopmentTopics();
 		}
 		
 		public DevelopmentFocusInfo[] DevelopmentFocusOptions()
@@ -315,6 +331,8 @@ namespace Stareater.Controllers
 				
 				if (value >= 0 && value < game.Statics.DevelopmentFocusOptions.Count)
 					game.CurrentPlayer.Orders.DevelopmentFocusIndex = value;
+				
+				game.Derivates.Of(game.CurrentPlayer).InvalidateDevelopment();
 			}
 		}
 		
