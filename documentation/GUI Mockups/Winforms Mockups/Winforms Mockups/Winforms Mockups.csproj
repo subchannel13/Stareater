@@ -128,6 +128,10 @@
     <Compile Include="FormNewGame.Designer.cs">
       <DependentUpon>FormNewGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormResearch.cs" />
+    <Compile Include="FormResearch.Designer.cs">
+      <DependentUpon>FormResearch.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSelector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -240,6 +244,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormNewGame.resx">
       <DependentUpon>FormNewGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormResearch.resx">
+      <DependentUpon>FormResearch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSelector.resx">
       <DependentUpon>FormSelector.cs</DependentUpon>
