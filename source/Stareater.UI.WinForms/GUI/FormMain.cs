@@ -104,6 +104,11 @@ namespace Stareater.GUI
 			using(var form = new FormDevelopment(controller))
 				form.ShowDialog();
 		}
+		
+		private void researchToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			//TODO(v0.5) open research GUI	
+		}
 
 		#region Delayed Events
 		private void postDelayedEvent(Action eventAction)

@@ -35,10 +35,11 @@
 			this.constructionManagement = new Stareater.GUI.ConstructionSiteView();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.mainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.designsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.developmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.researchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.endTurnButton = new System.Windows.Forms.Button();
 			this.returnButton = new System.Windows.Forms.Button();
-			this.designsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -81,7 +82,8 @@
 			this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.mainMenuToolStripMenuItem,
 									this.designsToolStripMenuItem,
-									this.developmentToolStripMenuItem});
+									this.developmentToolStripMenuItem,
+									this.researchToolStripMenuItem});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
 			this.menuStrip.Size = new System.Drawing.Size(884, 24);
@@ -95,12 +97,26 @@
 			this.mainMenuToolStripMenuItem.Text = "Main menu";
 			this.mainMenuToolStripMenuItem.Click += new System.EventHandler(this.mainMenuToolStripMenuItem_Click);
 			// 
+			// designsToolStripMenuItem
+			// 
+			this.designsToolStripMenuItem.Name = "designsToolStripMenuItem";
+			this.designsToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
+			this.designsToolStripMenuItem.Text = "Designs";
+			this.designsToolStripMenuItem.Click += new System.EventHandler(this.designsToolStripMenuItemClick);
+			// 
 			// developmentToolStripMenuItem
 			// 
 			this.developmentToolStripMenuItem.Name = "developmentToolStripMenuItem";
 			this.developmentToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
 			this.developmentToolStripMenuItem.Text = "Development";
 			this.developmentToolStripMenuItem.Click += new System.EventHandler(this.developmentToolStripMenuItem_Click);
+			// 
+			// researchToolStripMenuItem
+			// 
+			this.researchToolStripMenuItem.Name = "researchToolStripMenuItem";
+			this.researchToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
+			this.researchToolStripMenuItem.Text = "Research";
+			this.researchToolStripMenuItem.Click += new System.EventHandler(this.researchToolStripMenuItem_Click);
 			// 
 			// endTurnButton
 			// 
@@ -128,13 +144,6 @@
 			this.returnButton.Visible = false;
 			this.returnButton.Click += new System.EventHandler(this.returnButton_Click);
 			// 
-			// designsToolStripMenuItem
-			// 
-			this.designsToolStripMenuItem.Name = "designsToolStripMenuItem";
-			this.designsToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
-			this.designsToolStripMenuItem.Text = "Designs";
-			this.designsToolStripMenuItem.Click += new System.EventHandler(this.designsToolStripMenuItemClick);
-			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -156,6 +165,7 @@
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.ToolStripMenuItem researchToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem designsToolStripMenuItem;
 		private System.Windows.Forms.Button returnButton;
 		private System.Windows.Forms.ToolStripMenuItem developmentToolStripMenuItem;
