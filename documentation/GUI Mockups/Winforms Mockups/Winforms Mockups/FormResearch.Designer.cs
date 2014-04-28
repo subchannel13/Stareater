@@ -45,6 +45,9 @@ namespace Winforms_Mockups
 			this.researchItem2 = new Winforms_Mockups.ResearchItem();
 			this.researchItem3 = new Winforms_Mockups.ResearchItem();
 			this.researchItem4 = new Winforms_Mockups.ResearchItem();
+			this.researchItem5 = new Winforms_Mockups.ResearchItem();
+			this.label1 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.controlListView1.SuspendLayout();
 			this.SuspendLayout();
@@ -100,9 +103,9 @@ namespace Winforms_Mockups
 			this.controlListView1.Controls.Add(this.researchItem2);
 			this.controlListView1.Controls.Add(this.researchItem3);
 			this.controlListView1.Controls.Add(this.researchItem4);
-			this.controlListView1.Location = new System.Drawing.Point(12, 12);
+			this.controlListView1.Location = new System.Drawing.Point(12, 114);
 			this.controlListView1.Name = "controlListView1";
-			this.controlListView1.Size = new System.Drawing.Size(277, 385);
+			this.controlListView1.Size = new System.Drawing.Size(277, 283);
 			this.controlListView1.TabIndex = 14;
 			// 
 			// researchItem1
@@ -137,11 +140,40 @@ namespace Winforms_Mockups
 			this.researchItem4.Size = new System.Drawing.Size(250, 50);
 			this.researchItem4.TabIndex = 3;
 			// 
+			// researchItem5
+			// 
+			this.researchItem5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(196)))), ((int)(((byte)(255)))));
+			this.researchItem5.Location = new System.Drawing.Point(12, 26);
+			this.researchItem5.Name = "researchItem5";
+			this.researchItem5.Size = new System.Drawing.Size(250, 50);
+			this.researchItem5.TabIndex = 19;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(12, 9);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(70, 13);
+			this.label1.TabIndex = 20;
+			this.label1.Text = "Researching:";
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(12, 98);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(84, 13);
+			this.label2.TabIndex = 21;
+			this.label2.Text = "Available topics:";
+			// 
 			// FormResearch
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(558, 409);
+			this.Controls.Add(this.label2);
+			this.Controls.Add(this.label1);
+			this.Controls.Add(this.researchItem5);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.textBox1);
@@ -155,6 +187,9 @@ namespace Winforms_Mockups
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label label1;
+		private Winforms_Mockups.ResearchItem researchItem5;
 		private Winforms_Mockups.ResearchItem researchItem4;
 		private Winforms_Mockups.ResearchItem researchItem3;
 		private Winforms_Mockups.ResearchItem researchItem2;
