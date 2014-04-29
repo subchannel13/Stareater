@@ -35,8 +35,6 @@ namespace Stareater.GUI
 				focusSlider.Enabled = false;
 			}
 			
-			//TODO(v0.5): Get current focus intensity
-			
 			Context context = SettingsWinforms.Get.Language["FormTech"];
 			this.Text = context["FormTitle"].Text();
 			
