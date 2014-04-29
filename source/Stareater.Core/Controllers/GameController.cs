@@ -268,7 +268,7 @@ namespace Stareater.Controllers
 		}
 		#endregion
 		
-		#region Technology related
+		#region Development related
 		public IEnumerable<TechnologyTopic> DevelopmentTopics()
 		{
 			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
@@ -344,6 +344,30 @@ namespace Stareater.Controllers
 				
 				return game.Derivates.Colonies.OwnedBy(game.CurrentPlayer).Sum(x => x.Development);
 			}
+		}
+		#endregion
+		
+		#region Research related
+		public IEnumerable<TechnologyTopic> ResearchTopics()
+		{
+			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+			var playerTechs = game.Derivates.Of(game.CurrentPlayer).DevelopmentOrder(game.States.TechnologyAdvances);
+		
+			if (game.Derivates.Of(game.CurrentPlayer).DevelopmentPlan == null)
+				game.Derivates.Of(game.CurrentPlayer).CalculateDevelopment(
+					game.Statics,
+					game.States,
+					game.Derivates.Colonies.OwnedBy(game.CurrentPlayer)
+				);
+			
+			var developmentInvestments = game.Derivates.Of(game.CurrentPlayer).DevelopmentPlan.ToDictionary(x => x.Item);
+			
+			foreach(var techProgress in playerTechs)
+				if (developmentInvestments.ContainsKey(techProgress))
+					yield return new TechnologyTopic(techProgress, developmentInvestments[techProgress]);
+				else
+					yield return new TechnologyTopic(techProgress);
+			
 		}
 		#endregion
 	}
