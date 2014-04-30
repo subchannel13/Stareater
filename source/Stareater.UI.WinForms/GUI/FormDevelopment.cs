@@ -35,7 +35,7 @@ namespace Stareater.GUI
 				focusSlider.Enabled = false;
 			}
 			
-			Context context = SettingsWinforms.Get.Language["FormTech"];
+			Context context = SettingsWinforms.Get.Language["FormDevelopment"];
 			this.Text = context["FormTitle"].Text();
 			
 			ThousandsFormatter formatter = new ThousandsFormatter();

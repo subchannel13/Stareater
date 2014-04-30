@@ -281,11 +281,11 @@ namespace Stareater.Controllers
 					game.Derivates.Colonies.OwnedBy(game.CurrentPlayer)
 				);
 			
-			var developmentInvestments = game.Derivates.Of(game.CurrentPlayer).DevelopmentPlan.ToDictionary(x => x.Item);
+			var investments = game.Derivates.Of(game.CurrentPlayer).DevelopmentPlan.ToDictionary(x => x.Item);
 			
 			foreach(var techProgress in playerTechs)
-				if (developmentInvestments.ContainsKey(techProgress))
-					yield return new TechnologyTopic(techProgress, developmentInvestments[techProgress]);
+				if (investments.ContainsKey(techProgress))
+					yield return new TechnologyTopic(techProgress, investments[techProgress]);
 				else
 					yield return new TechnologyTopic(techProgress);
 			
@@ -351,8 +351,9 @@ namespace Stareater.Controllers
 		public IEnumerable<TechnologyTopic> ResearchTopics()
 		{
 			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
-			var playerTechs = game.Derivates.Of(game.CurrentPlayer).DevelopmentOrder(game.States.TechnologyAdvances);
+			var playerTechs = game.Derivates.Of(game.CurrentPlayer).ResearchOrder(game.States.TechnologyAdvances);
 		
+			//TODO(v0.5) use research plan
 			if (game.Derivates.Of(game.CurrentPlayer).DevelopmentPlan == null)
 				game.Derivates.Of(game.CurrentPlayer).CalculateDevelopment(
 					game.Statics,
@@ -360,11 +361,12 @@ namespace Stareater.Controllers
 					game.Derivates.Colonies.OwnedBy(game.CurrentPlayer)
 				);
 			
-			var developmentInvestments = game.Derivates.Of(game.CurrentPlayer).DevelopmentPlan.ToDictionary(x => x.Item);
+			//TODO(v0.5) use research plan
+			var investments = game.Derivates.Of(game.CurrentPlayer).DevelopmentPlan.ToDictionary(x => x.Item);
 			
 			foreach(var techProgress in playerTechs)
 				if (developmentInvestments.ContainsKey(techProgress))
-					yield return new TechnologyTopic(techProgress, developmentInvestments[techProgress]);
+					yield return new TechnologyTopic(techProgress, investments[techProgress]);
 				else
 					yield return new TechnologyTopic(techProgress);
 			
