@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using NGenerics.Extensions;
 using Stareater.Controllers;
 using Stareater.Controllers.Data;
+using Stareater.Localization;
+using Stareater.AppData;
 
 namespace Stareater.GUI
 {

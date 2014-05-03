@@ -365,7 +365,7 @@ namespace Stareater.Controllers
 			var investments = game.Derivates.Of(game.CurrentPlayer).DevelopmentPlan.ToDictionary(x => x.Item);
 			
 			foreach(var techProgress in playerTechs)
-				if (developmentInvestments.ContainsKey(techProgress))
+				if (investments.ContainsKey(techProgress))
 					yield return new TechnologyTopic(techProgress, investments[techProgress]);
 				else
 					yield return new TechnologyTopic(techProgress);
