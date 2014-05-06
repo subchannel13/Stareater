@@ -127,6 +127,7 @@
       <DependentUpon>IdleFleetCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="GameData\Databases\Tables\PlayerFormulaSet.cs" />
     <Compile Include="GameData\Databases\Tables\ShipGroupCollection.cs">
       <DependentUpon>ShipGroupCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -213,7 +214,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameLogic\ConstructionAddShip.cs" />
-    <Compile Include="GameLogic\DevelopmentResult.cs" />
+    <Compile Include="GameLogic\AdvancementResult.cs" />
     <Compile Include="GameLogic\IConstructionEffect.cs" />
     <Compile Include="GameLogic\AConstructionSiteProcessor.cs" />
     <Compile Include="GameLogic\ColonyProcessor.cs" />

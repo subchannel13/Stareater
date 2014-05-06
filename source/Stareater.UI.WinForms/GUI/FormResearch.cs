@@ -38,8 +38,8 @@ namespace Stareater.GUI
 			
 			topicList.ResumeLayout();
 			
-			Context context = SettingsWinforms.Get.Language["FormResearch"];
-			this.Text = context["FormTitle"].Text();
+			Context context = SettingsWinforms.Get.Language["FormTech"];
+			this.Text = context["ResearchTitle"].Text();
 		}
 		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

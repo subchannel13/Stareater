@@ -1,0 +1,3 @@
+{ PlayerFormulas
+	research # pop ^ 0.5;
+}

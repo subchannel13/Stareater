@@ -371,6 +371,16 @@ namespace Stareater.Controllers
 					yield return new TechnologyTopic(techProgress);
 			
 		}
+		
+		public double ResearchPoints 
+		{ 
+			get
+			{
+				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+				
+				return game.Derivates.Of(game.CurrentPlayer).ResearchPlan.Sum(x => x.InvestedPoints);
+			}
+		}
 		#endregion
 	}
 }

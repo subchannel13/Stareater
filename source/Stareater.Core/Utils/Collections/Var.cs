@@ -35,5 +35,13 @@ namespace Stareater.Utils.Collections
 			
 			return this;
 		}
+		
+		public Var UnionWith(IEnumerable<KeyValuePair<string, int>> variables)
+		{
+			foreach (var pair in variables)
+				this.variables.Add(pair.Key, pair.Value);
+			
+			return this;
+		}
 	}
 }

@@ -32,7 +32,7 @@ namespace Stareater.Controllers.Data
 			this.NextLevel = tech.NextLevel;
 		}
 		
-		internal TechnologyTopic(TechnologyProgress tech, DevelopmentResult investmentResult)
+		internal TechnologyTopic(TechnologyProgress tech, AdvancementResult investmentResult)
 		{
 			this.technology = tech.Topic;
 			this.textVars = new Var(Technology.LevelKey, tech.NextLevel).Get;

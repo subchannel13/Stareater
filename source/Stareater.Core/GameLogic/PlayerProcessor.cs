@@ -8,6 +8,7 @@ using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 using Stareater.Galaxy;
 using Stareater.Ships;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GameLogic
 {
@@ -15,7 +16,8 @@ namespace Stareater.GameLogic
 	{
 		public const string LevelSufix = "Lvl";
 		
-		public IEnumerable<DevelopmentResult> DevelopmentPlan { get; protected set; }
+		public IEnumerable<AdvancementResult> DevelopmentPlan { get; protected set; }
+		public IEnumerable<AdvancementResult> ResearchPlan { get; protected set; }
 		public Player Player { get; private set; }
 		
 		public PlayerProcessor(Player player, IEnumerable<Technology> technologies)
@@ -38,7 +40,7 @@ namespace Stareater.GameLogic
 		{
 			PlayerProcessor copy = new PlayerProcessor(playersRemap.Players[this.Player]);
 			
-			copy.DevelopmentPlan = (this.DevelopmentPlan != null) ? new List<DevelopmentResult>(this.DevelopmentPlan) : null;
+			copy.DevelopmentPlan = (this.DevelopmentPlan != null) ? new List<AdvancementResult>(this.DevelopmentPlan) : null;
 			copy.TechLevels = new Dictionary<string, double>(this.TechLevels);
 
 			return copy;
@@ -69,7 +71,7 @@ namespace Stareater.GameLogic
 		
 		public void CalculateDevelopment(StaticsDB statics, StatesDB states, IList<ColonyProcessor> colonyProcessors)
 		{
-			this.developmentPoints = 0;
+			double developmentPoints = 0;
 			
 			foreach (var colonyProc in colonyProcessors)
 				developmentPoints += colonyProc.Development;
@@ -78,10 +80,37 @@ namespace Stareater.GameLogic
 			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
 			var advanceOrder = this.DevelopmentOrder(states.TechnologyAdvances).ToList();
 			
-			var results = new List<DevelopmentResult>();
+			var results = new List<AdvancementResult>();
 			for (int i = 0; i < advanceOrder.Count && i < focus.Weights.Length; i++) {
 				results.Add(advanceOrder[i].SimulateInvestment(
 					developmentPoints * focus.Weights[i],
+					techLevels
+				));
+			}
+			
+			this.DevelopmentPlan = results;
+		}
+		
+		public void CalculateResearch(StaticsDB statics, StatesDB states, IList<ColonyProcessor> colonyProcessors)
+		{
+			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			
+			double researchPoints = 0;
+			
+			var researchCenters = colonyProcessors.GroupBy(x => x.Colony.Star);
+			foreach (var center in researchCenters)
+			{
+				var centerVars = new Var("pop", center.Sum(x => x.Colony.Population))
+					.UnionWith(techLevels);
+				researchPoints = Math.Max(researchPoints, statics.PlayerFormulas.Research.Evaluate(centerVars.Get));
+			}
+			
+			var advanceOrder = this.ResearchOrder(states.TechnologyAdvances).ToList();
+			
+			var results = new List<AdvancementResult>();
+			for (int i = 0; i < advanceOrder.Count; i++) {
+				results.Add(advanceOrder[i].SimulateInvestment(
+					researchPoints,
 					techLevels
 				));
 			}
@@ -136,8 +165,6 @@ namespace Stareater.GameLogic
 		#endregion
 		
 		#region Precombat processing
-		
-		private double developmentPoints = 0;
 		
 		public void ProcessPrecombat(StaticsDB statics, StatesDB states, IList<ColonyProcessor> colonyProcessors, IList<StellarisProcessor> stellarisProcessors)
 		{
