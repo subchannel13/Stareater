@@ -48,13 +48,13 @@ namespace Stareater.GameData
 			return Prerequisite.AreSatisfied(Topic.Prerequisites, NextLevel, techLevels);
 		}
 		
-		public void Progress(DevelopmentResult progressData)
+		public void Progress(AdvancementResult progressData)
 		{
 			this.Level += progressData.NewLevels;
 			this.InvestedPoints += progressData.LeftoverPoints;
 		}
 		
-		public DevelopmentResult SimulateInvestment(double points, IDictionary<string, int> techLevels)
+		public AdvancementResult SimulateInvestment(double points, IDictionary<string, int> techLevels)
 		{
 			int tmplevel = Level;
 			int newLevels = 0;
@@ -66,7 +66,7 @@ namespace Stareater.GameData
 				double pointsLeft = this.Topic.Cost.Evaluate(new Var(Technology.LevelKey, tmplevel + 1).Get) - tmpInvested;
 				
 				if (pointsLeft > points)
-					return new DevelopmentResult(newLevels, totalInvested + points, this, tmpInvested + points);
+					return new AdvancementResult(newLevels, totalInvested + points, this, tmpInvested + points);
 				
 				tmplevel++;
 				newLevels++;
@@ -76,7 +76,7 @@ namespace Stareater.GameData
 				points -= pointsLeft;
 			}
 			
-			return new DevelopmentResult(newLevels, totalInvested, this, tmpInvested);
+			return new AdvancementResult(newLevels, totalInvested, this, tmpInvested);
 		}
 		
 		internal TechnologyProgress Copy(Player player)

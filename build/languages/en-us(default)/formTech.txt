@@ -1,12 +1,9 @@
-﻿:FormDevelopment
-FormTitle = Development topics
+﻿:FormTech
+DevelopmentTitle = Development topics
+ResearchTitle = Research topics
 
 Level {
 Level {=lvl}}
 
 developmentPoints = Development points
--
-
-:FormResearch
-FormTitle = Research topics
 -

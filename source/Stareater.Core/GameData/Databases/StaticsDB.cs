@@ -17,6 +17,7 @@ namespace Stareater.GameData.Databases
 		public ColonyFormulaSet ColonyFormulas { get; private set; }
 		public List<Constructable> Constructables { get; private set; }
 		public List<DevelopmentFocus> DevelopmentFocusOptions { get; private set; }
+		public PlayerFormulaSet PlayerFormulas { get; private set; }
 		public List<PredefinedDesign> PredeginedDesigns { get; private set; }
 		public List<Technology> Technologies { get; private set; }
 		
@@ -62,6 +63,9 @@ namespace Stareater.GameData.Databases
 								break;
 							case DevelopmentTag:
 								Technologies.Add(loadTech(data, TechnologyCategory.Development));
+								break;
+							case PlayerFormulasTag:
+								PlayerFormulas = loadPlayerFormulas(data);
 								break;
 							case PredefinedDesignTag:
 								PredeginedDesigns.Add(loadPredefDesign(data));
@@ -116,6 +120,13 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		#endregion
+		
+		private PlayerFormulaSet loadPlayerFormulas(IkonComposite data)
+		{
+			return new PlayerFormulaSet(
+				data[PlayerResearch].To<Formula>()
+			);
+		}
 		
 		#region Constructables
 		private BuildingType loadBuilding(IkonComposite data)
@@ -250,6 +261,7 @@ namespace Stareater.GameData.Databases
 		private const string ConstructableTag = "Constructable";
 		private const string DevelopmentFocusesTag = "DevelopmentFocusOptions";
 		private const string DevelopmentTag = "DevelopmentTopic";
+		private const string PlayerFormulasTag = "PlayerFormulas";
 		private const string PredefinedDesignTag = "PredefinedDesign";
 		private const string ResearchTag = "ResearchTopic";
 		
@@ -264,6 +276,8 @@ namespace Stareater.GameData.Databases
 		private const string ColonyGardening = "gardening";
 		private const string ColonyIndustry = "industry";
 		private const string ColonyMining = "mining";
+		
+		private const string PlayerResearch = "research";
 
 		private const string ConstructableCostKey = "cost";
 		private const string ConstructableSiteKey = "site";

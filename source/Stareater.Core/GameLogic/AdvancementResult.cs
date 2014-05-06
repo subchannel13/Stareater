@@ -3,14 +3,14 @@ using Stareater.GameData;
 
 namespace Stareater.GameLogic
 {
-	class DevelopmentResult
+	class AdvancementResult
 	{
 		public int NewLevels;
 		public double InvestedPoints;
 		public TechnologyProgress Item;
 		public double LeftoverPoints;
 
-		public DevelopmentResult(int newLevels, double investedpoints, TechnologyProgress item, double leftoverPoints) {
+		public AdvancementResult(int newLevels, double investedpoints, TechnologyProgress item, double leftoverPoints) {
 			this.NewLevels = newLevels;
 			this.InvestedPoints = investedpoints;
 			this.Item = item;
