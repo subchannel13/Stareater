@@ -169,6 +169,7 @@ namespace Stareater.Controllers
 					player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
 				
 				player.Orders.DevelopmentFocusIndex = statics.DevelopmentFocusOptions.Count / 2;
+				player.Orders.ResearchFocus = derivates.Of(player).ResearchOrder(states.TechnologyAdvances).First().Topic.IdCode;
 			}
 			
 			foreach (var player in players) {
@@ -194,6 +195,7 @@ namespace Stareater.Controllers
 		private static readonly string[] StaticDataFiles = new string[] {
 			"./data/colonyBuildings.txt",
 			"./data/colonyFormulas.txt",
+			"./data/playerFormulas.txt",
 			"./data/predefinedDesigns.txt",
 			"./data/shipHulls.txt",
 			"./data/systemBuildings.txt",

@@ -65,6 +65,31 @@ namespace Stareater.GUI
 			this.InvokeOnClick(this, e);
 		}
 		
+		void thumbnailImage_MouseEnter(object sender, EventArgs e)
+		{
+			this.OnMouseEnter(e);
+		}
+		
+		void nameLabel_MouseEnter(object sender, EventArgs e)
+		{
+			this.OnMouseEnter(e);
+		}
+		
+		void levelLabel_MouseEnter(object sender, EventArgs e)
+		{
+			this.OnMouseEnter(e);
+		}
+		
+		void costLabel_MouseEnter(object sender, EventArgs e)
+		{
+			this.OnMouseEnter(e);
+		}
+		
+		void investmentLabel_MouseEnter(object sender, EventArgs e)
+		{
+			this.OnMouseEnter(e);
+		}
+		
 		public string TopicLevelText
 		{
 			get

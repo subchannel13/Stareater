@@ -25,6 +25,7 @@ namespace Stareater.GameLogic
 			this.Player = player;
 			
 			this.DevelopmentPlan = null;
+			this.ResearchPlan = null;
 			this.TechLevels = new Dictionary<string, double>();
 			foreach (var tech in technologies) {
 				this.TechLevels.Add(tech.IdCode + LevelSufix, TechnologyProgress.NotStarted);
@@ -41,6 +42,7 @@ namespace Stareater.GameLogic
 			PlayerProcessor copy = new PlayerProcessor(playersRemap.Players[this.Player]);
 			
 			copy.DevelopmentPlan = (this.DevelopmentPlan != null) ? new List<AdvancementResult>(this.DevelopmentPlan) : null;
+			copy.ResearchPlan  = (this.ResearchPlan != null) ? new List<AdvancementResult>(this.ResearchPlan) : null;
 			copy.TechLevels = new Dictionary<string, double>(this.TechLevels);
 
 			return copy;
@@ -49,9 +51,7 @@ namespace Stareater.GameLogic
 		#region Technology related
 		private int technologyOrderKey(TechnologyProgress tech)
 		{
-			var playersOrder = (tech.Topic.Category == TechnologyCategory.Development) ? 
-				Player.Orders.DevelopmentQueue : 
-				Player.Orders.ResearchQueue;
+			var playersOrder = Player.Orders.DevelopmentQueue;
 				
 			if (playersOrder.ContainsKey(tech.Topic.IdCode))
 				return playersOrder[tech.Topic.IdCode];
@@ -109,13 +109,14 @@ namespace Stareater.GameLogic
 			
 			var results = new List<AdvancementResult>();
 			for (int i = 0; i < advanceOrder.Count; i++) {
+				double weight = 1.0 / advanceOrder.Count;
 				results.Add(advanceOrder[i].SimulateInvestment(
-					researchPoints,
+					researchPoints * weight,
 					techLevels
 				));
 			}
 			
-			this.DevelopmentPlan = results;
+			this.ResearchPlan = results;
 		}
 		
 		public void InvalidateDevelopment()
@@ -201,7 +202,6 @@ namespace Stareater.GameLogic
 				);
 
 			Player.Orders.DevelopmentQueue = updateTechQueue(Player.Orders.DevelopmentQueue, validTechs);
-			Player.Orders.ResearchQueue = updateTechQueue(Player.Orders.ResearchQueue, validTechs);
 
 			var oldPlans = Player.Orders.ConstructionPlans;
 			Player.Orders.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
