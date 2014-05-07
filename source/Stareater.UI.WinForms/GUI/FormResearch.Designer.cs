@@ -88,6 +88,8 @@ namespace Stareater.GUI
 			this.topicList.SelectedIndex = -1;
 			this.topicList.Size = new System.Drawing.Size(277, 385);
 			this.topicList.TabIndex = 28;
+			this.topicList.SelectedIndexChanged += new System.EventHandler(this.topicList_SelectedIndexChanged);
+			this.topicList.MouseLeave += new System.EventHandler(this.topicList_MouseLeave);
 			// 
 			// FormResearch
 			// 
@@ -101,6 +103,8 @@ namespace Stareater.GUI
 			this.Controls.Add(this.techImage);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormResearch";
+			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
 			this.Text = "FormResearch";
 			((System.ComponentModel.ISupportInitialize)(this.techImage)).EndInit();
 			this.ResumeLayout(false);

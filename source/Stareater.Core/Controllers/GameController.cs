@@ -353,16 +353,14 @@ namespace Stareater.Controllers
 			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 			var playerTechs = game.Derivates.Of(game.CurrentPlayer).ResearchOrder(game.States.TechnologyAdvances);
 		
-			//TODO(v0.5) use research plan
-			if (game.Derivates.Of(game.CurrentPlayer).DevelopmentPlan == null)
-				game.Derivates.Of(game.CurrentPlayer).CalculateDevelopment(
+			if (game.Derivates.Of(game.CurrentPlayer).ResearchPlan == null)
+				game.Derivates.Of(game.CurrentPlayer).CalculateResearch(
 					game.Statics,
 					game.States,
 					game.Derivates.Colonies.OwnedBy(game.CurrentPlayer)
 				);
 			
-			//TODO(v0.5) use research plan
-			var investments = game.Derivates.Of(game.CurrentPlayer).DevelopmentPlan.ToDictionary(x => x.Item);
+			var investments = game.Derivates.Of(game.CurrentPlayer).ResearchPlan.ToDictionary(x => x.Item);
 			
 			foreach(var techProgress in playerTechs)
 				if (investments.ContainsKey(techProgress))
@@ -372,7 +370,33 @@ namespace Stareater.Controllers
 			
 		}
 		
-		public double ResearchPoints 
+		public int ResearchFocus
+		{
+			get 
+			{
+				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+				string focused = game.CurrentPlayer.Orders.ResearchFocus;
+				var playerTechs = game.Derivates.Of(game.CurrentPlayer).ResearchOrder(game.States.TechnologyAdvances).ToList();
+				
+				for (int i = 0; i < playerTechs.Count; i++)
+					if (playerTechs[i].Topic.IdCode == focused)
+						return i;
+				
+				return 0; //TODO(later) think of some smarter default research
+			}
+			
+			set
+			{
+				if (this.IsReadOnly)
+					return;
+				
+				var playerTechs = game.Derivates.Of(game.CurrentPlayer).ResearchOrder(game.States.TechnologyAdvances).ToList();
+				if (value >= 0 && value < playerTechs.Count)
+					this.game.CurrentPlayer.Orders.ResearchFocus = playerTechs[value].Topic.IdCode;
+			}
+		}
+		
+		/*public double ResearchPoints 
 		{ 
 			get
 			{
@@ -380,7 +404,7 @@ namespace Stareater.Controllers
 				
 				return game.Derivates.Of(game.CurrentPlayer).ResearchPlan.Sum(x => x.InvestedPoints);
 			}
-		}
+		}*/
 		#endregion
 	}
 }

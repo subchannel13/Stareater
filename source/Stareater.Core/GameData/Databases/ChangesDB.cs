@@ -15,15 +15,15 @@ namespace Stareater.GameData.Databases
 		
 		public int DevelopmentFocusIndex { get; set; }
 		public IDictionary<string, int> DevelopmentQueue { get; set; }
-		public IDictionary<string, int> ResearchQueue { get; set; }
+		public string ResearchFocus { get; set; }
 		
 		public IDictionary<AConstructionSite, ConstructionOrders> ConstructionPlans { get; set; }
 		
 		public ChangesDB()
 		{
 			this.DevelopmentFocusIndex = 0;
+			this.ResearchFocus = null;
 			this.DevelopmentQueue = new Dictionary<string, int>();
-			this.ResearchQueue = new Dictionary<string, int>();
 			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
 		}
 		
@@ -37,7 +37,6 @@ namespace Stareater.GameData.Databases
 
 			copy.DevelopmentFocusIndex = this.DevelopmentFocusIndex;
 			copy.DevelopmentQueue = new Dictionary<string, int>(this.DevelopmentQueue);
-			copy.ResearchQueue = new Dictionary<string, int>(this.ResearchQueue);
 
 			return copy;
 		}

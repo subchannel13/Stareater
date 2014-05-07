@@ -46,6 +46,7 @@ namespace Stareater.GUI
 			this.thumbnailImage.TabIndex = 0;
 			this.thumbnailImage.TabStop = false;
 			this.thumbnailImage.Click += new System.EventHandler(this.thumbnailImage_Click);
+			this.thumbnailImage.MouseEnter += new System.EventHandler(this.thumbnailImage_MouseEnter);
 			// 
 			// levelLabel
 			// 
@@ -56,6 +57,7 @@ namespace Stareater.GUI
 			this.levelLabel.TabIndex = 8;
 			this.levelLabel.Text = "level 2";
 			this.levelLabel.Click += new System.EventHandler(this.levelLabel_Click);
+			this.levelLabel.MouseEnter += new System.EventHandler(this.levelLabel_MouseEnter);
 			// 
 			// investmentLabel
 			// 
@@ -67,6 +69,7 @@ namespace Stareater.GUI
 			this.investmentLabel.TabIndex = 7;
 			this.investmentLabel.Text = "+1.54 G";
 			this.investmentLabel.Click += new System.EventHandler(this.investmentLabel_Click);
+			this.investmentLabel.MouseEnter += new System.EventHandler(this.investmentLabel_MouseEnter);
 			// 
 			// costLabel
 			// 
@@ -77,6 +80,7 @@ namespace Stareater.GUI
 			this.costLabel.Text = "20.52 G / 80 G";
 			this.costLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			this.costLabel.Click += new System.EventHandler(this.costLabel_Click);
+			this.costLabel.MouseEnter += new System.EventHandler(this.costLabel_MouseEnter);
 			// 
 			// nameLabel
 			// 
@@ -88,6 +92,7 @@ namespace Stareater.GUI
 			this.nameLabel.TabIndex = 5;
 			this.nameLabel.Text = "Hydroponic farms";
 			this.nameLabel.Click += new System.EventHandler(this.nameLabel_Click);
+			this.nameLabel.MouseEnter += new System.EventHandler(this.nameLabel_MouseEnter);
 			// 
 			// TechnologyItem
 			// 
