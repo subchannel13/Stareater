@@ -106,10 +106,17 @@ namespace Stareater.GameLogic
 			}
 			
 			var advanceOrder = this.ResearchOrder(states.TechnologyAdvances).ToList();
+			string focused = Player.Orders.ResearchFocus;
 			
+			if (advanceOrder.Count > 0 && advanceOrder.All(x => x.Topic.IdCode != focused))
+				focused = advanceOrder[0].Topic.IdCode;
+			
+			double focusWeight = statics.PlayerFormulas.FocusedResearchWeight;
 			var results = new List<AdvancementResult>();
 			for (int i = 0; i < advanceOrder.Count; i++) {
-				double weight = 1.0 / advanceOrder.Count;
+				double weight = advanceOrder[i].Topic.IdCode == focused ? focusWeight : 1;
+				weight /= advanceOrder.Count + focusWeight;
+				
 				results.Add(advanceOrder[i].SimulateInvestment(
 					researchPoints * weight,
 					techLevels
@@ -122,6 +129,11 @@ namespace Stareater.GameLogic
 		public void InvalidateDevelopment()
 		{
 			this.DevelopmentPlan = null;
+		}
+		
+		public void InvalidateResearch()
+		{
+			this.ResearchPlan = null;
 		}
 		
 		public IEnumerable<TechnologyProgress> DevelopmentOrder(TechProgressCollection techAdvances)

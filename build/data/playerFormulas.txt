@@ -1,3 +1,4 @@
 { PlayerFormulas
 	research # pop ^ 0.5;
+	focusedResearchWeight # 5;
 }

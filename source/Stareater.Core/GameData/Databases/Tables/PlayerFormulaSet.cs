@@ -6,9 +6,11 @@ namespace Stareater.GameData.Databases.Tables
 	class PlayerFormulaSet
 	{
 		public Formula Research { get; private set; }
+		public double FocusedResearchWeight { get; private set; }
 		
-		public PlayerFormulaSet(Formula research)
+		public PlayerFormulaSet(Formula research, Formula focusedResearchWeight)
 		{
+			this.FocusedResearchWeight = focusedResearchWeight.Evaluate(null);
 			this.Research = research;
 		}
 	}

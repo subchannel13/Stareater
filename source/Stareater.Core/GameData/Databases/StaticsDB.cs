@@ -124,7 +124,8 @@ namespace Stareater.GameData.Databases
 		private PlayerFormulaSet loadPlayerFormulas(IkonComposite data)
 		{
 			return new PlayerFormulaSet(
-				data[PlayerResearch].To<Formula>()
+				data[PlayerResearch].To<Formula>(),
+				data[PlayerResearchFocusWeight].To<Formula>()
 			);
 		}
 		
@@ -278,6 +279,7 @@ namespace Stareater.GameData.Databases
 		private const string ColonyMining = "mining";
 		
 		private const string PlayerResearch = "research";
+		private const string PlayerResearchFocusWeight = "focusedResearchWeight";
 
 		private const string ConstructableCostKey = "cost";
 		private const string ConstructableSiteKey = "site";
