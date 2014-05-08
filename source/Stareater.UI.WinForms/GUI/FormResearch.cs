@@ -93,7 +93,10 @@ namespace Stareater.GUI
 		
 		private void topicList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			controller.ResearchFocus = topicList.SelectedIndex;
+			this.controller.ResearchFocus = topicList.SelectedIndex;
+			this.topics = controller.ResearchTopics().ToList();
+			
+			updateList();
 		}
 	}
 }

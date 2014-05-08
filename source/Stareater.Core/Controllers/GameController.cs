@@ -391,8 +391,10 @@ namespace Stareater.Controllers
 					return;
 				
 				var playerTechs = game.Derivates.Of(game.CurrentPlayer).ResearchOrder(game.States.TechnologyAdvances).ToList();
-				if (value >= 0 && value < playerTechs.Count)
+				if (value >= 0 && value < playerTechs.Count) {
 					this.game.CurrentPlayer.Orders.ResearchFocus = playerTechs[value].Topic.IdCode;
+					game.Derivates.Of(game.CurrentPlayer).InvalidateResearch();
+				}
 			}
 		}
 		
