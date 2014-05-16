@@ -25,7 +25,11 @@ namespace Stareater.GUI
 			this.controller = controller;
 			this.topics = controller.DevelopmentTopics().ToList();
 			updateList();
-			updateDescription();
+			
+			if (topics.Count > 0)
+				topicList.SelectedIndex = controller.ResearchFocus;
+			
+			updateDescription(topicList.SelectedItem);
 			
 			if (controller.IsReadOnly) {
 				reorderBottomAction.Enabled = false;
@@ -48,8 +52,11 @@ namespace Stareater.GUI
 		{
 			topicList.SuspendLayout();
 			
-			while (topicList.Controls.Count < topics.Count)
-				topicList.Controls.Add(new TechnologyItem());
+			while (topicList.Controls.Count < topics.Count) {
+				var topicControl = new TechnologyItem();
+				topicControl.MouseEnter += topic_OnMouseEnter;
+				topicList.Controls.Add(topicControl);
+			}
 			while (topicList.Controls.Count > topics.Count)
 				topicList.Controls.RemoveAt(topicList.Controls.Count - 1);
 
@@ -59,15 +66,15 @@ namespace Stareater.GUI
 			topicList.ResumeLayout();
 		}
 		
-		private void updateDescription()
+		private void updateDescription(Control topic)
 		{
-			if (topicList.SelectedItem == null) {
+			if (topic == null) {
 				techImage.Image = null;
 				techName.Text = "";
 				techDescription.Text = "";
 				techLevel.Text = "";
 			} else {
-				var selection = topicList.SelectedItem as TechnologyItem;
+				var selection = topic as TechnologyItem;
 				
 				techImage.Image = ImageCache.Get[selection.Data.ImagePath];
 				techName.Text = selection.Data.Name;
@@ -110,9 +117,14 @@ namespace Stareater.GUI
 				topicList.SelectedIndex = 0;
 		}
 		
-		private void topicList_SelectedIndexChanged(object sender, EventArgs e)
+		private void topic_OnMouseEnter(object sender, EventArgs e)
 		{
-			updateDescription();
+			updateDescription(sender as Control);
+		}
+		
+		private void topicList_MouseLeave(object sender, EventArgs e)
+		{
+			updateDescription(topicList.SelectedItem);
 		}
 		
 		private void reorderTopAction_Click(object sender, EventArgs e)
