@@ -58,7 +58,7 @@ namespace Stareater.GUI
 			this.topicList.SelectedIndex = -1;
 			this.topicList.Size = new System.Drawing.Size(277, 452);
 			this.topicList.TabIndex = 1;
-			this.topicList.SelectedIndexChanged += new System.EventHandler(this.topicList_SelectedIndexChanged);
+			this.topicList.MouseLeave += new System.EventHandler(this.topicList_MouseLeave);
 			// 
 			// pointsInfo
 			// 
