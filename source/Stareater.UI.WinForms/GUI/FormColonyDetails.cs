@@ -42,7 +42,7 @@ namespace Stareater.GUI
 			vars.And("pop", popFormat.Format(controller.Population));
 			vars.And("popGrowth", popFormat.Format(controller.PopulationGrowth));
 			vars.And("popMax", popFormat.Format(controller.PopulationMax));
-			vars.And("popOrg", percentFormat.Format(controller.Organization));
+			vars.And("popOrg", percentFormat.Format(controller.Organization * 100));
 			
 			populationInfo.Text = context["populationInfo"].Text(null, vars.Get);
 			growthInfo.Text = context["growthInfo"].Text(null, vars.Get); //TODO(v0.5): add sign

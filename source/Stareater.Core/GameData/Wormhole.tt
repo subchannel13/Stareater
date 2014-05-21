@@ -1,13 +1,12 @@
 ﻿<#@ output extension=".cs" #>
 <#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
 	
-	namespaceName = "Stareater.GameData";
 	modifer = "public";
 	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.Galaxy");
 	usings.Add("Stareater.Players");
 	
-	Generate("Wormhole",
+	Generate("Stareater.GameData", "Wormhole",
 		new DataInfo("FromStar", "StarData"),
 		new DataInfo("ToStar", "StarData")
 	);

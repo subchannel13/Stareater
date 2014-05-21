@@ -108,8 +108,8 @@ namespace Stareater.GameLogic
 			var formulas = statics.ColonyFormulas;
 			
 			foreach(var construction in SpendingPlan)
-				if (construction.DoneCount > 0)
-					vars[construction.Item.IdCode.ToLower() + NewBuidingPrefix] = construction.DoneCount;
+				if (construction.CompletedCount > 0)
+					vars[construction.Item.IdCode.ToLower() + NewBuidingPrefix] = construction.CompletedCount;
 			
 			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
 		}
