@@ -32,7 +32,7 @@ namespace Stareater.Controllers.Data
 			this.NextLevel = tech.NextLevel;
 		}
 		
-		internal TechnologyTopic(TechnologyProgress tech, AdvancementResult investmentResult)
+		internal TechnologyTopic(TechnologyProgress tech, ActivityResult<TechnologyProgress> investmentResult)
 		{
 			this.technology = tech.Topic;
 			this.textVars = new Var(Technology.LevelKey, tech.NextLevel).Get;
@@ -41,7 +41,7 @@ namespace Stareater.Controllers.Data
 			this.InvestedPoints = tech.InvestedPoints;
 			this.Investment = investmentResult.InvestedPoints;
 			this.Level = tech.Level;
-			this.NextLevel = investmentResult.NewLevels > 1 ? tech.Level + investmentResult.NewLevels : tech.NextLevel;
+			this.NextLevel = investmentResult.CompletedCount > 1 ? tech.Level + (int)investmentResult.CompletedCount : tech.NextLevel;
 		}
 		
 		public string Name 

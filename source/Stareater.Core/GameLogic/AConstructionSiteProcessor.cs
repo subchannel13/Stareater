@@ -16,17 +16,17 @@ namespace Stareater.GameLogic
 		
 		public double Production { get; protected set; }
 		public double SpendingRatioEffective { get; protected set; }
-		public IEnumerable<ConstructionResult> SpendingPlan { get; protected set; }
+		public IEnumerable<ActivityResult<Constructable>> SpendingPlan { get; protected set; }
 
 		protected AConstructionSiteProcessor()
 		{
-			this.SpendingPlan = new ConstructionResult[0];
+			this.SpendingPlan = new ActivityResult<Constructable>[0];
 		}
 		
 		protected AConstructionSiteProcessor(AConstructionSiteProcessor original)
 		{
 			this.Production = original.Production;
-			this.SpendingPlan = new List<ConstructionResult>(original.SpendingPlan);
+			this.SpendingPlan = new List<ActivityResult<Constructable>>(original.SpendingPlan);
 			this.SpendingRatioEffective = original.SpendingRatioEffective;
 		}
 		
@@ -46,22 +46,22 @@ namespace Stareater.GameLogic
 		public virtual void ProcessPrecombat(StatesDB states)
 		{
 			foreach (var construction in SpendingPlan) 
-				if (construction.DoneCount >= 1)
+				if (construction.CompletedCount >= 1)
 					foreach(var effect in construction.Item.Effects)
-						effect.Apply(states, Site, construction.DoneCount);
+						effect.Apply(states, Site, construction.CompletedCount);
 		}
 		
 		protected abstract AConstructionSite Site { get; }
 		
-		protected static IEnumerable<ConstructionResult> SimulateSpending(
+		protected static IEnumerable<ActivityResult<Constructable>> SimulateSpending(
 			AConstructionSite site, double industryPoints, 
 			IEnumerable<Constructable> queue, IDictionary<string, double> vars)
 		{
-			var spendingPlan = new List<ConstructionResult>();
+			var spendingPlan = new List<ActivityResult<Constructable>>();
 
 			foreach (var buildingItem in queue) {
 				if (industryPoints <= 0 || buildingItem.Condition.Evaluate(vars) < 0) {
-					spendingPlan.Add(new ConstructionResult(0, 0, buildingItem, 0));
+					spendingPlan.Add(new ActivityResult<Constructable>(0, 0, buildingItem, 0));
 					continue;
 				}
 				
@@ -75,8 +75,8 @@ namespace Stareater.GameLogic
 				double countLimit = buildingItem.TurnLimit.Evaluate(vars);
 
 				if (completed > countLimit) {
-					spendingPlan.Add(new ConstructionResult(
-						countLimit,
+					spendingPlan.Add(new ActivityResult<Constructable>(
+						(long)countLimit,
 						countLimit * cost,
 						buildingItem,
 						0
@@ -85,8 +85,8 @@ namespace Stareater.GameLogic
 					industryPoints -= countLimit * cost;
 				}
 				else {
-					spendingPlan.Add(new ConstructionResult(
-						completed,
+					spendingPlan.Add(new ActivityResult<Constructable>(
+						(long)completed,
 						investment,
 						buildingItem,
 						investment - completed * cost

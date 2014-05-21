@@ -1,10 +1,9 @@
 ﻿<#@ output extension=".cs" #>
 <#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
 	
-	namespaceName = "Stareater.Controllers.Data";
 	usings.Add("Stareater.GameData");
 
-	Generate("GameCopy",
+	Generate("Stareater.Controllers.Data", "GameCopy",
 		new DataInfo("Game", "Game"),
 		new DataInfo("Players", "PlayersRemap"),
 		new DataInfo("Map", "GalaxyRemap")

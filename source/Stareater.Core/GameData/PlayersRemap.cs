@@ -2,15 +2,16 @@
 using Stareater.Galaxy;
 using Stareater.Players;
 
-namespace Stareater.GameData
+namespace Stareater.GameData 
 {
-	class PlayersRemap
+	class PlayersRemap 
 	{
 		public IDictionary<Player, Player> Players;
 		public IDictionary<AConstructionSite, Colony> Colonies;
 		public IDictionary<AConstructionSite, StellarisAdmin> Stellarises;
 
-		public PlayersRemap(IDictionary<Player, Player> players, IDictionary<AConstructionSite, Colony> colonies, IDictionary<AConstructionSite, StellarisAdmin> stellarises) {
+		public PlayersRemap(IDictionary<Player, Player> players, IDictionary<AConstructionSite, Colony> colonies, IDictionary<AConstructionSite, StellarisAdmin> stellarises) 
+		{
 			this.Players = players;
 			this.Colonies = colonies;
 			this.Stellarises = stellarises;

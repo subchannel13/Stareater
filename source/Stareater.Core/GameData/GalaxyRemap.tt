@@ -1,12 +1,11 @@
 ﻿<#@ output extension=".cs" #>
 <#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
 	
-	namespaceName = "Stareater.GameData";
 	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.Galaxy");
 	usings.Add("Stareater.Players");
 	
-	Generate("GalaxyRemap",
+	Generate("Stareater.GameData", "GalaxyRemap",
 		new DataInfo("Stars", "IDictionary<StarData, StarData>"),
 		new DataInfo("Planets", "IDictionary<Planet, Planet>")
 	);

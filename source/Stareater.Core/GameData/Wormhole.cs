@@ -2,16 +2,17 @@
 using Stareater.Galaxy;
 using Stareater.Players;
 
-namespace Stareater.GameData
+namespace Stareater.GameData 
 {
-	public class Wormhole
+	public class Wormhole 
 	{
 		public StarData FromStar;
 		public StarData ToStar;
 
-		public Wormhole(StarData fromstar, StarData tostar) {
-			this.FromStar = fromstar;
-			this.ToStar = tostar;
+		public Wormhole(StarData fromStar, StarData toStar) 
+		{
+			this.FromStar = fromStar;
+			this.ToStar = toStar;
 		}
 	}
 }

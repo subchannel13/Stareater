@@ -1,12 +1,11 @@
 ﻿<#@ output extension=".cs" #>
 <#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
 	
-	namespaceName = "Stareater.GameData";
 	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.Galaxy");
 	usings.Add("Stareater.Players");
 	
-	Begin("PlayersRemap",
+	Begin("Stareater.GameData", "PlayersRemap",
 		new DataInfo("Players", "IDictionary<Player, Player>"),
 		new DataInfo("Colonies", "IDictionary<AConstructionSite, Colony>"),
 		new DataInfo("Stellarises", "IDictionary<AConstructionSite, StellarisAdmin>")

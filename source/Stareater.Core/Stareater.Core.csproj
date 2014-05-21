@@ -213,17 +213,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameLogic\ActivityResult.cs">
+      <DependentUpon>ActivityResult.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameLogic\ConstructionAddShip.cs" />
-    <Compile Include="GameLogic\AdvancementResult.cs" />
     <Compile Include="GameLogic\IConstructionEffect.cs" />
     <Compile Include="GameLogic\AConstructionSiteProcessor.cs" />
     <Compile Include="GameLogic\ColonyProcessor.cs" />
     <Compile Include="GameLogic\ConstructionAddBuilding.cs" />
-    <Compile Include="GameLogic\ConstructionResult.cs">
-      <DependentUpon>ConstructionResult.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="GameLogic\PlayerProcessor.cs" />
     <Compile Include="GameLogic\StellarisProcessor.cs" />
     <Compile Include="Localization\ChainText.cs" />
@@ -357,9 +355,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Wormhole.cs</LastGenOutput>
     </None>
-    <None Include="GameLogic\ConstructionResult.tt">
+    <None Include="GameLogic\ActivityResult.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ConstructionResult.cs</LastGenOutput>
+      <LastGenOutput>ActivityResult.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="Utils\Collections\IndexedCollectionBase.tt">

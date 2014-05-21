@@ -2,8 +2,8 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#+
 private string modifer = "";
-private string namespaceName = "";
 private List<string> usings = new List<string>();
+private List<string> genericTypes = new List<string>();
 
 struct DataInfo
 {
@@ -16,55 +16,100 @@ struct DataInfo
 	}
 }
 
-private void Begin(string className, params DataInfo[] dataInfos)
+private string paramName(string fieldName)
+{
+	if (fieldName.Length > 1) 
+		return fieldName.Substring(0, 1).ToLower() + fieldName.Substring(1);
+		
+	return fieldName.ToLower();
+}
+
+private void WriteUsings()
 {
 	foreach(string usingName in usings)
 		WriteLine("using " + usingName + ";");
-
-	if (usings.Count > 0)
-		WriteLine("");
-
-	if (!string.IsNullOrWhiteSpace(namespaceName)) {
-		WriteLine("namespace " + namespaceName);
-		WriteLine("{");
+}
+private void WriteClassDefinition(string className)
+{
+	if (!string.IsNullOrEmpty(modifer.Trim()))
+		Write(modifer.Trim() + " ");
+		
+	Write("class " + className);
+	
+	if (genericTypes.Count == 0)
+		return;
+		
+	Write("<");
+	
+	for(int i = 0; i < genericTypes.Count; i++) {
+		string commaOrNot = (i == 0) ? "" : ", ";
+		Write(commaOrNot + genericTypes[i]);
 	}
 	
-	string classMod = string.IsNullOrEmpty(modifer.Trim()) ? "" : modifer + " ";
-#>
-	<#= classMod #>class <#= className #>
-	{
-<#+ 
+	Write(">");
+}
+
+private void WriteFields(params DataInfo[] dataInfos)
+{
+	bool first = true;
 	foreach(var field in dataInfos)
-		WriteLine("		public "  + field.Type + " " + field.Name + ";");
-		
-	WriteLine("");
-	Write("		public " + className + "(");
+	{
+		string indent = (first) ? "" : "		";
+		first = false;
+		WriteLine(indent + "public "  + field.Type + " " + field.Name + ";");
+	}
+}
+
+private void WriteContructorDefinition(string className, params DataInfo[] dataInfos)
+{
+	Write(className + "(");
 	
 	for(int i = 0; i < dataInfos.Length; i++) {
 		string commaOrNot = (i == 0) ? "" : ", ";
-		Write(commaOrNot + dataInfos[i].Type + " " + dataInfos[i].Name.ToLower());
+		Write(commaOrNot + dataInfos[i].Type + " " + paramName(dataInfos[i].Name));
 	}
 	
-	WriteLine(") {");
-	
-	foreach(var field in dataInfos)
-		WriteLine("			this."  + field.Name + " = " + field.Name.ToLower() + ";");
-		
-	WriteLine("		}");
+	Write(")");
+}
+
+private void WriteFieldInits(params DataInfo[] dataInfos)
+{
+	bool first = true;
+	foreach(var field in dataInfos) 
+	{
+		string indent = (first) ? "" : "			";
+		first = false;
+		WriteLine(indent + "this."  + field.Name + " = " + paramName(field.Name) + ";");
+	}
+}
+
+private void Begin(string namespaceName, string className, params DataInfo[] dataInfos)
+{
+	#>
+<#+ WriteUsings(); #>
+
+namespace <#+ Write(namespaceName); #> 
+{
+	<#+ WriteClassDefinition(className); #> 
+	{
+		<#+ WriteFields(dataInfos); #>
+
+		public <#+ WriteContructorDefinition(className, dataInfos); #> 
+		{
+			<#+ WriteFieldInits(dataInfos); #>
+		}
+<#+
 }
 
 private void End()
 {
-#>
-	}
-<#+ 
-	if (!string.IsNullOrWhiteSpace(namespaceName))
-		WriteLine("}");
+	WriteLine("	}");
+	WriteLine("}");
 }
 
-private void Generate(string className, params DataInfo[] dataInfos)
+private void Generate(string namespaceName, string className, params DataInfo[] dataInfos)
 {
-	Begin(className, dataInfos);
+	Begin(namespaceName, className, dataInfos);
 	End();
 }
 #>
