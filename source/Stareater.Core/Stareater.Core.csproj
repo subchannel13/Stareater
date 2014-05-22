@@ -111,6 +111,10 @@
     <Compile Include="Galaxy\ShipGroup.cs" />
     <Compile Include="Galaxy\IdleFleet.cs" />
     <Compile Include="Galaxy\PlanetType.cs" />
+    <Compile Include="Galaxy\StarData.cs">
+      <DependentUpon>StarData.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Galaxy\StellarisAdmin.cs" />
     <Compile Include="Galaxy\StarNamer.cs" />
     <Compile Include="Game.cs" />
@@ -234,7 +238,7 @@
     <Compile Include="Galaxy\AConstructionSite.cs" />
     <Compile Include="Galaxy\MapAssets.cs" />
     <Compile Include="Galaxy\Planet.cs" />
-    <Compile Include="Galaxy\StarData.cs" />
+    <Compile Include="Galaxy\StarData.partial.cs" />
     <Compile Include="Galaxy\StartingConditions.cs" />
     <Compile Include="Localization\StarNames\ConstellationStarName.cs" />
     <Compile Include="Localization\StarNames\IStarName.cs" />
@@ -284,6 +288,10 @@
     <Compile Include="Utils\PluginParameters\RangeParameter.cs" />
     <Compile Include="Utils\PluginParameters\SelectorParameter.cs" />
     <Compile Include="Utils\NumberFormatters\ThousandsFormatter.cs" />
+    <Compile Include="Utils\StateTable.cs">
+      <DependentUpon>StateTable.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />
@@ -294,6 +302,10 @@
     <None Include="Galaxy\Builders\WormholeEndpoints.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WormholeEndpoints.cs</LastGenOutput>
+    </None>
+    <None Include="Galaxy\StarData.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StarData.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\ColonyCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -367,6 +379,10 @@
     <None Include="Utils\CustomTuple.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CustomTuple.cs</LastGenOutput>
+    </None>
+    <None Include="Utils\StateTable.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StateTable.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

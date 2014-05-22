@@ -1,0 +1,24 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
+	
+	usings.Add("System");
+	usings.Add("System.Collections.Generic");
+	usings.Add("System.Linq");
+	usings.Add("System.Text");
+	usings.Add("System.Drawing");
+	usings.Add("NGenerics.DataStructures.Mathematical");
+	usings.Add("Stareater.Localization.StarNames");
+	
+	modifer = "public partial";
+	/*
+		
+		using Stareater.Localization.StarNames;
+	*/
+	Generate("Stareater.Galaxy", "StarData",
+		new DataInfo("Color", "Color"),
+		new DataInfo("ImageSizeScale", "float"),
+		new DataInfo("Name", "IStarName"),
+		new DataInfo("Position", "Vector2D"),
+		new DataInfo("Radiation", "double")
+	);
+#>
