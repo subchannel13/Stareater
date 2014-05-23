@@ -47,11 +47,7 @@ namespace Stareater.GameData.Databases
 			copy.Stars.Add(galaxyRemap.Stars.Values);
 
 			copy.Wormholes = new WormholeCollection();
-			copy.Wormholes.Add(this.Wormholes.Select(
-				x => new Wormhole(
-					galaxyRemap.Stars[x.FromStar],
-					galaxyRemap.Stars[x.ToStar])
-				));
+			copy.Wormholes.Add(this.Wormholes.Select(x => x.Copy(galaxyRemap)));
 
 			copy.Planets = new PlanetCollection();
 			copy.Planets.Add(galaxyRemap.Planets.Values);
