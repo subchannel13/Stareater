@@ -1,0 +1,18 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
+	
+	usings.Add("System");
+	usings.Add("System.Linq");
+	
+	modifer = "public partial";
+	/*
+		
+		using Stareater.Localization.StarNames;
+	*/
+	Generate("Stareater.Galaxy", "Planet",
+		new DataInfo("Star", "StarData"),
+		new DataInfo("Position", "int"),
+		new DataInfo("Type", "PlanetType"),
+		new DataInfo("Size", "double")
+	);
+#>

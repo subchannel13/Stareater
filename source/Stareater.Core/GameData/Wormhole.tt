@@ -1,5 +1,5 @@
 ﻿<#@ output extension=".cs" #>
-<#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
 	
 	modifer = "public";
 	usings.Add("System.Collections.Generic");

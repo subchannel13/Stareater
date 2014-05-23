@@ -108,6 +108,10 @@
     </Compile>
     <Compile Include="Galaxy\Colony.cs" />
     <Compile Include="Galaxy\LocationBody.cs" />
+    <Compile Include="Galaxy\Planet.cs">
+      <DependentUpon>Planet.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Galaxy\ShipGroup.cs" />
     <Compile Include="Galaxy\IdleFleet.cs" />
     <Compile Include="Galaxy\PlanetType.cs" />
@@ -237,7 +241,7 @@
     <Compile Include="Localization\Reading\TextBlockFactory.cs" />
     <Compile Include="Galaxy\AConstructionSite.cs" />
     <Compile Include="Galaxy\MapAssets.cs" />
-    <Compile Include="Galaxy\Planet.cs" />
+    <Compile Include="Galaxy\Planet.partial.cs" />
     <Compile Include="Galaxy\StarData.partial.cs" />
     <Compile Include="Galaxy\StartingConditions.cs" />
     <Compile Include="Localization\StarNames\ConstellationStarName.cs" />
@@ -302,6 +306,10 @@
     <None Include="Galaxy\Builders\WormholeEndpoints.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WormholeEndpoints.cs</LastGenOutput>
+    </None>
+    <None Include="Galaxy\Planet.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Planet.cs</LastGenOutput>
     </None>
     <None Include="Galaxy\StarData.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

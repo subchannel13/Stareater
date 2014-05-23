@@ -1,18 +1,25 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #> 
 <#@ import namespace="System.Collections.Generic" #>
 <#+
 private string modifer = "";
 private List<string> usings = new List<string>();
 private List<string> genericTypes = new List<string>();
 
-struct DataInfo
+class DataInfo
 {
 	public string Name;
 	public string Type;
+	
+	public bool CopyFromGalaxyRemap;
 
 	public DataInfo(string name, string type) {
 		this.Name = name;
 		this.Type = type;
+		
+		this.CopyFromGalaxyRemap = (type == "StarData");
 	}
 }
 
@@ -85,23 +92,43 @@ private void WriteFieldInits(params DataInfo[] dataInfos)
 
 private void WriteCopyMethod(string className, params DataInfo[] dataInfos)
 {
-	WriteLine("internal " + className + " Copy()");
+	bool needsGalaxyRemap = dataInfos.Any(x => x.Type == "StarData");
+
+	WriteLine("internal " + className + " Copy(" + copyParams(dataInfos) + ")");
 	WriteLine("		{");
 	Write("			return new " + className + "(");
 	
 	for(int i = 0; i < dataInfos.Length; i++) {
-		string commaOrNot = (i == 0) ? "" : ", ";
-		Write(commaOrNot + "this." + dataInfos[i].Name);
+		Write((i == 0) ? "" : ", ");
+		string val = "this." + dataInfos[i].Name;
+		
+		if (dataInfos[i].CopyFromGalaxyRemap)
+			Write("galaxyRemap.Stars[" + val + "]");
+		else
+			Write(val);
 	}
 	
 	WriteLine(");");
 	WriteLine("		}");
 }
 
+private string copyParams(params DataInfo[] dataInfos)
+{
+	StringBuilder sb = new StringBuilder();
+	string separator = "";
+	
+	if (dataInfos.Any(x => x.CopyFromGalaxyRemap))
+	{
+		sb.Append("GalaxyRemap galaxyRemap");
+		separator = ", ";
+	}
+	
+	return sb.ToString();
+}
+
 private void Begin(string namespaceName, string className, params DataInfo[] dataInfos)
 {
-	#>
-<#+ WriteUsings(); #>
+	WriteUsings(); #>
 
 namespace <#+ Write(namespaceName); #> 
 {
