@@ -9,12 +9,12 @@ namespace Stareater.Galaxy
 {
 	class Colony : AConstructionSite
 	{
-		public Colony(Player owner, Planet planet) : base(owner, new LocationBody(planet.Star, planet))
+		public Colony(Player owner, Planet planet) : base(new LocationBody(planet.Star, planet), owner)
 		{
 			this.Population = 1;
 		}
 
-		protected Colony(Colony original, Planet planet, Player owner) : base(original, owner, new LocationBody(planet.Star, planet))
+		protected Colony(Colony original, Planet planet, Player owner) : base(original, new LocationBody(planet.Star, planet), owner)
 		{
 			this.Population = original.Population;
 		}

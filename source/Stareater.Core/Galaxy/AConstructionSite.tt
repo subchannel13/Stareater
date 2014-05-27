@@ -1,0 +1,20 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
+	
+	usings.Add("System");
+	usings.Add("System.Collections.Generic");
+	usings.Add("System.Linq");
+	usings.Add("Stareater.GameData");
+	usings.Add("Stareater.Players");
+	
+	modifer = "abstract partial";
+	superConstructor = "this()";
+	/*
+	*/
+	Generate("Stareater.Galaxy", "AConstructionSite",
+		new DataInfo("Location", "LocationBody"),
+		new DataInfo("Owner", "Player"),
+		new DataInfo("Buildings", "IDictionary<string, double>").CopyOnly().CopyCode("copyBuildings(original);").Constructor("new Dictionary<string, double>()"),
+		new DataInfo("Stockpile", "IDictionary<Constructable, double>").CopyOnly().CopyCode("copyStockpile(original);").Constructor("new Dictionary<Constructable, double>()")
+	);
+#>

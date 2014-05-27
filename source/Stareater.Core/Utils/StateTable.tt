@@ -8,18 +8,50 @@ private string modifer = "";
 private List<string> usings = new List<string>();
 private List<string> genericTypes = new List<string>();
 
+private string superConstructor = null;
+
+enum Flags
+{
+	None = 0,
+	UseDefaultConstructor = 1,
+}
+
 class DataInfo
 {
 	public string Name;
 	public string Type;
 	
+	public string CopyLogic;
 	public bool CopyFromGalaxyRemap;
+	public string DefaultConstructorCall;
+	
+	public bool CopyConstructorOnly = false;
 
 	public DataInfo(string name, string type) {
 		this.Name = name;
 		this.Type = type;
 		
+		this.CopyLogic = "original." + name + ";";
 		this.CopyFromGalaxyRemap = (type == "StarData");
+		this.DefaultConstructorCall = "new " + type + "()";
+	}
+	
+	public DataInfo Constructor(string code)
+	{	
+		this.DefaultConstructorCall = code;
+		return this;
+	}
+	
+	public DataInfo CopyOnly()
+	{
+		this.CopyConstructorOnly = true;
+		return this;
+	}
+	
+	public DataInfo CopyCode(string code)
+	{
+		this.CopyLogic = code;
+		return this;
 	}
 }
 
@@ -63,7 +95,7 @@ private void WriteFields(params DataInfo[] dataInfos)
 	{
 		string indent = (first) ? "" : "		";
 		first = false;
-		WriteLine(indent + "public "  + field.Type + " " + field.Name + ";");
+		WriteLine(indent + "public "  + field.Type + " " + field.Name + " { get; private set; }");
 	}
 }
 
@@ -71,12 +103,20 @@ private void WriteContructorDefinition(string className, params DataInfo[] dataI
 {
 	Write(className + "(");
 	
+	bool first = true;
 	for(int i = 0; i < dataInfos.Length; i++) {
-		string commaOrNot = (i == 0) ? "" : ", ";
+		if (dataInfos[i].CopyConstructorOnly)
+			continue;
+			
+		string commaOrNot = first ? "" : ", ";
+		first = false;
 		Write(commaOrNot + dataInfos[i].Type + " " + paramName(dataInfos[i].Name));
 	}
 	
 	Write(")");
+	
+	if (superConstructor != null)
+		Write(" : " + superConstructor);
 }
 
 private void WriteFieldInits(params DataInfo[] dataInfos)
@@ -84,14 +124,79 @@ private void WriteFieldInits(params DataInfo[] dataInfos)
 	bool first = true;
 	foreach(var field in dataInfos) 
 	{
+		if (field.CopyConstructorOnly)
+			continue;
+			
 		string indent = (first) ? "" : "			";
 		first = false;
 		WriteLine(indent + "this."  + field.Name + " = " + paramName(field.Name) + ";");
+	}
+	
+	foreach(var field in dataInfos) 
+	{
+		if (!field.CopyConstructorOnly)
+			continue;
+			
+		WriteLine("			this."  + field.Name + " = " + field.DefaultConstructorCall + ";");
+	}
+}
+
+private void WriteCopyConstructorDefinition(string className, params DataInfo[] dataInfos)
+{
+	Write(className + "(");
+	
+	Write(className + " original");
+	
+	for(int i = 0; i < dataInfos.Length; i++) {
+		if (dataInfos[i].CopyConstructorOnly)
+			continue;
+		Write(", " + dataInfos[i].Type + " " + paramName(dataInfos[i].Name));
+	}
+	
+	Write(")");
+	
+	CallNormalConstructor(dataInfos);
+}
+
+private void CallNormalConstructor(params DataInfo[] dataInfos)
+{
+	Write(" : this(");
+	
+	bool first = true;
+	for(int i = 0; i < dataInfos.Length; i++) {
+		if (dataInfos[i].CopyConstructorOnly)
+			continue;
+			
+		string commaOrNot = first ? "" : ", ";
+		first = false;
+		Write(commaOrNot + paramName(dataInfos[i].Name));
+	}
+	
+	Write(")");
+}
+
+private void WriteFieldCopys(params DataInfo[] dataInfos)
+{
+	bool first = true;
+	foreach(var field in dataInfos) 
+	{
+		if (!field.CopyConstructorOnly)
+			continue;
+			
+		string indent = (first) ? "" : "			";
+		first = false;
+		if (field.CopyLogic == null)
+			WriteLine(indent + "this."  + field.Name + " = original." + field.Name);
+		else
+			WriteLine(indent + field.CopyLogic);
 	}
 }
 
 private void WriteCopyMethod(string className, params DataInfo[] dataInfos)
 {
+	if (modifer.Contains("abstract"))
+		return;
+		
 	bool needsGalaxyRemap = dataInfos.Any(x => x.Type == "StarData");
 
 	WriteLine("internal " + className + " Copy(" + copyParams(dataInfos) + ")");
@@ -140,8 +245,15 @@ namespace <#+ Write(namespaceName); #>
 		{
 			<#+ WriteFieldInits(dataInfos); #>
 		}
-		
-		<#+ WriteCopyMethod(className, dataInfos); #>
+
+<#+ if (dataInfos.Any(x => x.CopyConstructorOnly)) { #>
+		internal <#+ WriteCopyConstructorDefinition(className, dataInfos); #> 
+		{
+			<#+ WriteFieldCopys(dataInfos); #>
+		}
+<#+ } #>
+
+		<#+ WriteCopyMethod(className, dataInfos); #> 
 <#+
 }
 

@@ -75,7 +75,7 @@ namespace Stareater.GameData.Databases
 			GalaxyRemap remap = new GalaxyRemap(new Dictionary<StarData, StarData>(), new Dictionary<Planet, Planet>());
 
 			remap.Stars = this.Stars.ToDictionary(x => x, x => x.Copy());
-			remap.Planets = this.Planets.ToDictionary(x => x, x => x.Copy(remap.Stars[x.Star]));
+			remap.Planets = this.Planets.ToDictionary(x => x, x => x.Copy(remap));
 
 			return remap;
 		}
