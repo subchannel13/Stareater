@@ -105,9 +105,9 @@ namespace Stareater.Galaxy.RybPopulator
 				yield return new StarSystem(
 					star,
 					new Planet[] {
-						new Planet(star, 1, PlanetType.Rock, 100, 0, 0.5, 0.5, 1),
-						new Planet(star, 2, PlanetType.Asteriod,100, 0, 0.5, 0.5, 1),
-						new Planet(star, 3, PlanetType.GasGiant,100, 0, 0.5, 0.5, 1),
+						new Planet(star, 1, PlanetType.Rock, 100, /*0, 0.5,*/ 0.5, 1),
+						new Planet(star, 2, PlanetType.Asteriod, 100, /*0, 0.5,*/ 0.5, 1),
+						new Planet(star, 3, PlanetType.GasGiant, 100, /*0, 0.5,*/ 0.5, 1),
 					});
 			}
 		}

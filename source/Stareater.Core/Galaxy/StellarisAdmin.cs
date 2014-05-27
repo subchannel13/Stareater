@@ -6,10 +6,10 @@ namespace Stareater.Galaxy
 {
 	class StellarisAdmin : AConstructionSite
 	{
-		public StellarisAdmin(Player owner, StarData star) : base(owner, new LocationBody(star))
+		public StellarisAdmin(Player owner, StarData star) : base(new LocationBody(star), owner)
 		{ }
 
-		protected StellarisAdmin(StellarisAdmin original, StarData star, Player owner) : base(original, owner, new LocationBody(star))
+		protected StellarisAdmin(StellarisAdmin original, StarData star, Player owner) : base(original, new LocationBody(star), owner)
 		{ }
 		
 		public override SiteType Type

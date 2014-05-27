@@ -56,7 +56,7 @@ private void WriteFields(params DataInfo[] dataInfos)
 	{
 		string indent = (first) ? "" : "		";
 		first = false;
-		WriteLine(indent + "public "  + field.Type + " " + field.Name + " { get; private set; }");
+		WriteLine(indent + "public "  + field.Type + " " + field.Name + ";");
 	}
 }
 

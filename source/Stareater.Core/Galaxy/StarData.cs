@@ -11,11 +11,11 @@ namespace Stareater.Galaxy
 {
 	public partial class StarData 
 	{
-		public Color Color;
-		public float ImageSizeScale;
-		public IStarName Name;
-		public Vector2D Position;
-		public double Radiation;
+		public Color Color { get; private set; }
+		public float ImageSizeScale { get; private set; }
+		public IStarName Name { get; private set; }
+		public Vector2D Position { get; private set; }
+		public double Radiation { get; private set; }
 
 		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position, double radiation) 
 		{
@@ -25,10 +25,12 @@ namespace Stareater.Galaxy
 			this.Position = position;
 			this.Radiation = radiation;
 		}
-		
+
+
 		internal StarData Copy()
 		{
 			return new StarData(this.Color, this.ImageSizeScale, this.Name, this.Position, this.Radiation);
 		}
+ 
 	}
 }

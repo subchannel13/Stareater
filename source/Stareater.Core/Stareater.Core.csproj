@@ -96,6 +96,10 @@
     <Compile Include="Controllers\ShipDesignController.cs" />
     <Compile Include="Controllers\StellarisAdminController.cs" />
     <Compile Include="Controllers\StarSystemController.cs" />
+    <Compile Include="Galaxy\AConstructionSite.cs">
+      <DependentUpon>AConstructionSite.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Galaxy\Builders\IStarConnector.cs" />
     <Compile Include="Galaxy\Builders\IStarPopulator.cs" />
     <Compile Include="Galaxy\Builders\IStarPositioner.cs" />
@@ -239,7 +243,7 @@
     <Compile Include="Localization\Reading\ExpressionTextFactory.cs" />
     <Compile Include="Localization\PlaceholderText.cs" />
     <Compile Include="Localization\Reading\TextBlockFactory.cs" />
-    <Compile Include="Galaxy\AConstructionSite.cs" />
+    <Compile Include="Galaxy\AConstructionSite.partial.cs" />
     <Compile Include="Galaxy\MapAssets.cs" />
     <Compile Include="Galaxy\Planet.partial.cs" />
     <Compile Include="Galaxy\StarData.partial.cs" />
@@ -302,6 +306,10 @@
     <None Include="Controllers\Data\GameCopy.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>GameCopy.cs</LastGenOutput>
+    </None>
+    <None Include="Galaxy\AConstructionSite.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AConstructionSite.cs</LastGenOutput>
     </None>
     <None Include="Galaxy\Builders\WormholeEndpoints.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

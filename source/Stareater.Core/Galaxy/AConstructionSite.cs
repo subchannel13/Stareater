@@ -1,63 +1,33 @@
-﻿using System;
+﻿ 
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Stareater.Players;
 using Stareater.GameData;
+using Stareater.Players;
 
-namespace Stareater.Galaxy
+namespace Stareater.Galaxy 
 {
-	abstract class AConstructionSite
+	abstract partial class AConstructionSite 
 	{
-		internal LocationBody Location { get; private set; }
-		internal Player Owner { get; private set; }
-		
-		internal IDictionary<string, double> Buildings;
-		internal IDictionary<Constructable, double> Stockpile;
-		
-		protected AConstructionSite(Player owner, LocationBody location)
-		{
-			this.Buildings = new Dictionary<string, double>();
-			this.Stockpile = new Dictionary<Constructable, double>();
+		public LocationBody Location { get; private set; }
+		public Player Owner { get; private set; }
+		public IDictionary<string, double> Buildings { get; private set; }
+		public IDictionary<Constructable, double> Stockpile { get; private set; }
 
+		public AConstructionSite(LocationBody location, Player owner) : this() 
+		{
 			this.Location = location;
 			this.Owner = owner;
-			
-			#if DEBUG
-			this.id = NextId();
-			#endif
-		}
-		
-		protected AConstructionSite(AConstructionSite original, Player owner, LocationBody location) : this(owner, location)
-		{
-			foreach (var building in original.Buildings)
-				this.Buildings.Add(building.Key, building.Value);
-			
-			foreach (var leftovers in original.Stockpile)
-				this.Stockpile.Add(leftovers.Key, leftovers.Value);
+			this.Buildings = new Dictionary<string, double>();
+			this.Stockpile = new Dictionary<Constructable, double>();
 		}
 
-		public abstract SiteType Type { get; }
-		
-		#region object ID
-		#if DEBUG
-		private long id;
-		
-		public override string ToString()
+		internal AConstructionSite(AConstructionSite original, LocationBody location, Player owner) : this(location, owner) 
 		{
-			return "Construction site " + id;
+			copyBuildings(original);
+			copyStockpile(original);
 		}
 
-		private static long LastId = 0;
-
-		private static long NextId()
-		{
-			lock (typeof(Colony)) {
-				LastId++;
-				return LastId;
-			}
-		}
-		#endif
-		#endregion
+		 
 	}
 }
