@@ -1,41 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿ 
+using System;
 using System.Linq;
-using System.Text;
-using Stareater.Players;
 using Stareater.GameData;
+using Stareater.Players;
 
-namespace Stareater.Galaxy
+namespace Stareater.Galaxy 
 {
-	class Colony : AConstructionSite
+	partial class Colony : AConstructionSite 
 	{
-		public Colony(Player owner, Planet planet) : base(new LocationBody(planet.Star, planet), owner)
+		public double Population { get;  set; }
+
+		public Colony(double population, Planet planet, Player owner) : base(new LocationBody(planet.Star, planet), owner) 
 		{
-			this.Population = 1;
+			this.Population = population;
 		}
 
-		protected Colony(Colony original, Planet planet, Player owner) : base(original, new LocationBody(planet.Star, planet), owner)
+		internal Colony(Colony original, double population, Planet planet, Player owner) : base(original, new LocationBody(planet.Star, planet), owner) 
 		{
-			this.Population = original.Population;
+			 
 		}
 
-		public StarData Star
+		internal Colony Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap)
 		{
-			get {
-				return Location.Star;
-			}
+			return new Colony(this, this.Population, galaxyRemap.Planets[this.Location.Planet], playersRemap.Players[this.Owner]);
 		}
-		
-		public override SiteType Type
-		{
-			get { return SiteType.Colony; }
-		}
-
-		public double Population { get; set; }
-
-		internal Colony Copy(Player player, Planet planet)
-		{
-			return new Colony(this, planet, player);
-		}
+ 
 	}
 }
