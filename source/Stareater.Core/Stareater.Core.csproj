@@ -110,7 +110,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Galaxy\Colony.cs" />
+    <Compile Include="Galaxy\Colony.cs">
+      <DependentUpon>Colony.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Galaxy\Colony.partial.cs" />
     <Compile Include="Galaxy\LocationBody.cs" />
     <Compile Include="Galaxy\Planet.cs">
       <DependentUpon>Planet.tt</DependentUpon>
@@ -314,6 +318,10 @@
     <None Include="Galaxy\Builders\WormholeEndpoints.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WormholeEndpoints.cs</LastGenOutput>
+    </None>
+    <None Include="Galaxy\Colony.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Colony.cs</LastGenOutput>
     </None>
     <None Include="Galaxy\Planet.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

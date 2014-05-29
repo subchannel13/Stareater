@@ -8,7 +8,10 @@ private string modifer = "";
 private List<string> usings = new List<string>();
 private List<string> genericTypes = new List<string>();
 
+private string superClass = null;
 private string superConstructor = null;
+
+private bool superClassHasCopyConstructor = false;
 
 enum Flags
 {
@@ -20,25 +23,70 @@ class DataInfo
 {
 	public string Name;
 	public string Type;
+
+	public string CopyFromGalaxyRemap;
+	public string CopyFromPlayersRemap;
 	
+	public string BaseFieldInitCode = null;
+	public string BaseFieldReadCode = null;
 	public string CopyLogic;
-	public bool CopyFromGalaxyRemap;
 	public string DefaultConstructorCall;
+	public string SetModifer = "private";
 	
+	public bool BaseField = false;
 	public bool CopyConstructorOnly = false;
+	
 
 	public DataInfo(string name, string type) {
 		this.Name = name;
 		this.Type = type;
 		
 		this.CopyLogic = "original." + name + ";";
-		this.CopyFromGalaxyRemap = (type == "StarData");
+		this.CopyFromGalaxyRemap = initGalaxyRemapCode("this." + name, type);
+		this.CopyFromPlayersRemap = initPlayerRemapCode("this." + name, type);
 		this.DefaultConstructorCall = "new " + type + "()";
+	}
+	
+	private static string initGalaxyRemapCode(string readCode, string type)
+	{
+		if (type == "StarData")
+			return "galaxyRemap.Stars[" + readCode + "]";
+		else if (type == "Planet")
+			return "galaxyRemap.Planets[" + readCode + "]";
+		return null;
+	}
+	
+	private static string initPlayerRemapCode(string readCode, string type)
+	{
+		if (type == "Player")
+			return "playersRemap.Players[" + readCode + "]";
+		else if (type == "Colony")
+			return "playersRemap.Colonies[" + readCode + "]";
+		else if (type == "StellarisAdmin")
+			return "playersRemap.Stellarises[" + readCode + "]";
+		return null;
 	}
 	
 	public DataInfo Constructor(string code)
 	{	
 		this.DefaultConstructorCall = code;
+		return this;
+	}
+	
+	public DataInfo Base()
+	{
+		this.BaseField = true;
+		return this;
+	}
+	
+	public DataInfo Base(string initCode, string readCode)
+	{
+		this.BaseField = true;
+		this.BaseFieldInitCode = initCode;
+		this.BaseFieldReadCode = readCode;
+		
+		this.CopyFromGalaxyRemap = initGalaxyRemapCode(readCode, this.Type);
+		this.CopyFromPlayersRemap = initPlayerRemapCode(readCode, this.Type);
 		return this;
 	}
 	
@@ -51,6 +99,12 @@ class DataInfo
 	public DataInfo CopyCode(string code)
 	{
 		this.CopyLogic = code;
+		return this;
+	}
+	
+	public DataInfo PublicSet()
+	{
+		this.SetModifer = "";
 		return this;
 	}
 }
@@ -70,22 +124,25 @@ private void WriteUsings()
 }
 private void WriteClassDefinition(string className)
 {
-	if (!string.IsNullOrEmpty(modifer.Trim()))
+	if (!string.IsNullOrWhiteSpace(modifer))
 		Write(modifer.Trim() + " ");
 		
 	Write("class " + className);
 	
-	if (genericTypes.Count == 0)
-		return;
-		
-	Write("<");
+	if (genericTypes.Count > 0)
+	{
+		Write("<");
 	
-	for(int i = 0; i < genericTypes.Count; i++) {
-		string commaOrNot = (i == 0) ? "" : ", ";
-		Write(commaOrNot + genericTypes[i]);
+		for(int i = 0; i < genericTypes.Count; i++) {
+			string commaOrNot = (i == 0) ? "" : ", ";
+			Write(commaOrNot + genericTypes[i]);
+		}
+		
+		Write(">");
 	}
 	
-	Write(">");
+	if (!string.IsNullOrWhiteSpace(superClass))
+		Write(" : " + superClass);
 }
 
 private void WriteFields(params DataInfo[] dataInfos)
@@ -93,9 +150,11 @@ private void WriteFields(params DataInfo[] dataInfos)
 	bool first = true;
 	foreach(var field in dataInfos)
 	{
+		if (field.BaseField)
+			continue;
 		string indent = (first) ? "" : "		";
 		first = false;
-		WriteLine(indent + "public "  + field.Type + " " + field.Name + " { get; private set; }");
+		WriteLine(indent + "public "  + field.Type + " " + field.Name + " { get; " + field.SetModifer +" set; }");
 	}
 }
 
@@ -117,6 +176,23 @@ private void WriteContructorDefinition(string className, params DataInfo[] dataI
 	
 	if (superConstructor != null)
 		Write(" : " + superConstructor);
+	else if (dataInfos.Any(x => x.BaseField))
+	{
+		Write(" : base(");
+		first = true;
+		for(int i = 0; i < dataInfos.Length; i++) {
+			if (!dataInfos[i].BaseField)
+				continue;
+			
+			string commaOrNot = first ? "" : ", ";
+			first = false;
+			if (dataInfos[i].BaseFieldInitCode == null)
+				Write(commaOrNot + paramName(dataInfos[i].Name));
+			else
+				Write(commaOrNot + dataInfos[i].BaseFieldInitCode);
+		}
+		Write(")");
+	}
 }
 
 private void WriteFieldInits(params DataInfo[] dataInfos)
@@ -124,7 +200,7 @@ private void WriteFieldInits(params DataInfo[] dataInfos)
 	bool first = true;
 	foreach(var field in dataInfos) 
 	{
-		if (field.CopyConstructorOnly)
+		if (field.CopyConstructorOnly || field.BaseField)
 			continue;
 			
 		string indent = (first) ? "" : "			";
@@ -155,7 +231,10 @@ private void WriteCopyConstructorDefinition(string className, params DataInfo[] 
 	
 	Write(")");
 	
-	CallNormalConstructor(dataInfos);
+	if (!superClassHasCopyConstructor)
+		CallNormalConstructor(dataInfos);
+	else
+		CallBaseCopyConstructor(dataInfos);
 }
 
 private void CallNormalConstructor(params DataInfo[] dataInfos)
@@ -170,6 +249,23 @@ private void CallNormalConstructor(params DataInfo[] dataInfos)
 		string commaOrNot = first ? "" : ", ";
 		first = false;
 		Write(commaOrNot + paramName(dataInfos[i].Name));
+	}
+	
+	Write(")");
+}
+
+private void CallBaseCopyConstructor(params DataInfo[] dataInfos)
+{
+	Write(" : base(original");
+	
+	for(int i = 0; i < dataInfos.Length; i++) {
+		if (!dataInfos[i].BaseField)
+			continue;
+			
+		if (dataInfos[i].BaseFieldInitCode == null)
+			Write(", " + paramName(dataInfos[i].Name));
+		else
+			Write(", " + dataInfos[i].BaseFieldInitCode);
 	}
 	
 	Write(")");
@@ -197,20 +293,27 @@ private void WriteCopyMethod(string className, params DataInfo[] dataInfos)
 	if (modifer.Contains("abstract"))
 		return;
 		
-	bool needsGalaxyRemap = dataInfos.Any(x => x.Type == "StarData");
-
 	WriteLine("internal " + className + " Copy(" + copyParams(dataInfos) + ")");
 	WriteLine("		{");
 	Write("			return new " + className + "(");
 	
-	for(int i = 0; i < dataInfos.Length; i++) {
-		Write((i == 0) ? "" : ", ");
-		string val = "this." + dataInfos[i].Name;
+	bool first = true;
+	if (dataInfos.Any(x => x.CopyConstructorOnly) || superClassHasCopyConstructor)
+	{
+		Write("this");
+		first = false;
+	}
 		
-		if (dataInfos[i].CopyFromGalaxyRemap)
-			Write("galaxyRemap.Stars[" + val + "]");
+	for(int i = 0; i < dataInfos.Length; i++) {
+		Write(first ? "" : ", ");
+		first = false;
+		
+		if (dataInfos[i].CopyFromGalaxyRemap != null)
+			Write(dataInfos[i].CopyFromGalaxyRemap);
+		else if (dataInfos[i].CopyFromPlayersRemap != null)
+			Write(dataInfos[i].CopyFromPlayersRemap);
 		else
-			Write(val);
+			Write("this." + dataInfos[i].Name);
 	}
 	
 	WriteLine(");");
@@ -222,8 +325,15 @@ private string copyParams(params DataInfo[] dataInfos)
 	StringBuilder sb = new StringBuilder();
 	string separator = "";
 	
-	if (dataInfos.Any(x => x.CopyFromGalaxyRemap))
+	if (dataInfos.Any(x => x.CopyFromPlayersRemap != null))
 	{
+		sb.Append("PlayersRemap playersRemap");
+		separator = ", ";
+	}
+	
+	if (dataInfos.Any(x => x.CopyFromGalaxyRemap != null))
+	{
+		sb.Append(separator);
 		sb.Append("GalaxyRemap galaxyRemap");
 		separator = ", ";
 	}
@@ -246,10 +356,10 @@ namespace <#+ Write(namespaceName); #>
 			<#+ WriteFieldInits(dataInfos); #>
 		}
 
-<#+ if (dataInfos.Any(x => x.CopyConstructorOnly)) { #>
+<#+ if (dataInfos.Any(x => x.CopyConstructorOnly) || superClassHasCopyConstructor) { #>
 		internal <#+ WriteCopyConstructorDefinition(className, dataInfos); #> 
 		{
-			<#+ WriteFieldCopys(dataInfos); #>
+			<#+ WriteFieldCopys(dataInfos); #> 
 		}
 <#+ } #>
 

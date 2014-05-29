@@ -91,7 +91,7 @@ namespace Stareater.GameData.Databases
 			foreach (var colony in this.Colonies)
 				remap.Colonies.Add(
 					colony, 
-					colony.Copy(playersRemap[colony.Owner], galaxyRemap.Planets[colony.Location.Planet])
+					colony.Copy(remap, galaxyRemap)
 				);
 
 			foreach(var stellaris in this.Stellarises)

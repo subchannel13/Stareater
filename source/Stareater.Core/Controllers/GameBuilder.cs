@@ -71,8 +71,9 @@ namespace Stareater.Controllers
 				//TODO(v0.5): pick top most suitable planets
 				for(int colonyI = 0; colonyI < startingConditions.Colonies; colonyI++)
 					colonies.Add(new Colony(
-						players[playerI], 
-						starSystems[homeSystemIndices[playerI]].Planets[colonyI]
+						1,	//TODO(v0.5): make a constant
+						starSystems[homeSystemIndices[playerI]].Planets[colonyI],
+						players[playerI]
 					));
 			}
 			

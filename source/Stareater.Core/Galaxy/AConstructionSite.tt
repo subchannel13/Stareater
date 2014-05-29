@@ -9,8 +9,7 @@
 	
 	modifer = "abstract partial";
 	superConstructor = "this()";
-	/*
-	*/
+	
 	Generate("Stareater.Galaxy", "AConstructionSite",
 		new DataInfo("Location", "LocationBody"),
 		new DataInfo("Owner", "Player"),
