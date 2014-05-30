@@ -1,25 +1,28 @@
-﻿using System;
-using Stareater.Players;
+﻿ 
+using System;
+using System.Linq;
 using Stareater.GameData;
+using Stareater.Players;
 
-namespace Stareater.Galaxy
+namespace Stareater.Galaxy 
 {
-	class StellarisAdmin : AConstructionSite
+	partial class StellarisAdmin : AConstructionSite 
 	{
-		public StellarisAdmin(Player owner, StarData star) : base(new LocationBody(star), owner)
-		{ }
-
-		protected StellarisAdmin(StellarisAdmin original, StarData star, Player owner) : base(original, new LocationBody(star), owner)
-		{ }
 		
-		public override SiteType Type
+		public StellarisAdmin(StarData star, Player owner) : base(new LocationBody(star), owner) 
 		{
-			get { return SiteType.StarSystem; }
+			 
+		} 
+
+		internal StellarisAdmin(StellarisAdmin original, StarData star, Player owner) : base(original, new LocationBody(star), owner) 
+		{
+			 
 		}
 
-		internal StellarisAdmin Copy(Player player, StarData star)
+		internal StellarisAdmin Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap)
 		{
-			return new StellarisAdmin(this, star, player);
+			return new StellarisAdmin(this, galaxyRemap.Stars[this.Location.Star], playersRemap.Players[this.Owner]);
 		}
+ 
 	}
 }

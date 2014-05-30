@@ -1,0 +1,19 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
+	
+	usings.Add("System");
+	usings.Add("Stareater.GameData");
+	usings.Add("Stareater.GameData.Databases.Tables");
+	usings.Add("Stareater.Players");
+	
+	modifer = "partial";
+	CopyNeedsPlayerRemap = true;
+	/*
+	*/
+
+	Generate("Stareater.Galaxy", "IdleFleet",
+		new DataInfo("Owner", "Player"),
+		new DataInfo("Location", "StarData"),
+		new DataInfo("Ships", "ShipGroupCollection").CopyOnly().CopyCode("copyShips(original, playersRemap);")
+	);
+#>

@@ -1,48 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿ 
+using System;
+using Stareater.GameData;
 using Stareater.Players;
-using Stareater.Utils.Collections;
 
-namespace Stareater.Ships
+namespace Stareater.Ships 
 {
-	internal class Design
+	partial class Design 
 	{
 		public Player Owner { get; private set; }
 		public string Name { get; private set; }
-		
-		public Hull Hull { get; private set; } //TODO(v0.5): make type
-		public object PrimaryEquip { get; private set; } //TODO(v0.5): make type
-		public object SecondaryEquip { get; private set; } //TODO(v0.5): make type
-		public object Armor { get; private set; } //TODO(v0.5): make type
-		public object Shield { get; private set; } //TODO(v0.5): make type
-		public Dictionary<object, int> SpecialEquip { get; private set; } //TODO(v0.5): make type
-		public object Sensors { get; private set; } //TODO(v0.5): make type
-		public object Thrusters { get; private set; } //TODO(v0.5): make type
-		public object ISDrive { get; private set; } //TODO(v0.5): make type
-		public object Reactor { get; private set; } //TODO(v0.5): make type
-
-		
+		public Hull Hull { get; private set; }
 		public double Cost { get; private set; }
-		
-		//public int id { get; private set; } //TODO(v0.5): might need id
-		//private Dictionary<string, double> efekti = new Dictionary<string,double>(); //TODO(v0.5): might need
-		//public object Hash { get; private set; } //TODO(v0.5): make type, might need
-		
-		public Design(Player owner, string name, Hull hull)
+
+		public Design(Player owner, string name, Hull hull) 
 		{
 			this.Owner = owner;
-			this.Hull = hull;
 			this.Name = name;
-			
-			this.Cost = hull.TypeInfo.Cost.Evaluate(new Var("lvl", hull.Level).Get);
+			this.Hull = hull;
+			initCost(hull);
+ 
+		} 
+
+
+		internal Design Copy(PlayersRemap playersRemap)
+		{
+			return new Design(playersRemap.Players[this.Owner], this.Name, this.Hull);
 		}
-		
-		public string ImagePath 
-		{ 
-			get
-			{
-				return Hull.ImagePath;
-			}
-		}
+ 
 	}
 }

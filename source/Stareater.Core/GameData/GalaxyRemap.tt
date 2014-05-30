@@ -7,6 +7,6 @@
 	
 	Generate("Stareater.GameData", "GalaxyRemap",
 		new DataInfo("Stars", "IDictionary<StarData, StarData>"),
-		new DataInfo("Planets", "IDictionary<Planet, Planet>")
+		new DataInfo("Planets", "IDictionary<Planet, Planet>")		
 	);
 #>

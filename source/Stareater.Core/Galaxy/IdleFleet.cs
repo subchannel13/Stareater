@@ -1,26 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿ 
+using System;
+using Stareater.GameData;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 
-namespace Stareater.Galaxy
+namespace Stareater.Galaxy 
 {
-	class IdleFleet
+	partial class IdleFleet 
 	{
 		public Player Owner { get; private set; }
 		public StarData Location { get; private set; }
-		
 		public ShipGroupCollection Ships { get; private set; }
-		
-		public IdleFleet(Player owner, StarData location)
+
+		public IdleFleet(Player owner, StarData location) 
 		{
 			this.Owner = owner;
 			this.Location = location;
-			
 			this.Ships = new ShipGroupCollection();
+ 
+		} 
+
+		internal IdleFleet(IdleFleet original, PlayersRemap playersRemap, Player owner, StarData location) : this(owner, location) 
+		{
+			copyShips(original, playersRemap);
+ 
 		}
+
+		internal IdleFleet Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap)
+		{
+			return new IdleFleet(this, playersRemap, playersRemap.Players[this.Owner], galaxyRemap.Stars[this.Location]);
+		}
+ 
 	}
 }

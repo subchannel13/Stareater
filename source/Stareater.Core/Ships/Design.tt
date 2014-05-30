@@ -1,0 +1,18 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
+	
+	usings.Add("System");
+	usings.Add("Stareater.GameData");
+	usings.Add("Stareater.Players");
+	
+	modifer = "partial";
+	/*
+	*/
+
+	Generate("Stareater.Ships", "Design",
+		new DataInfo("Owner", "Player"),
+		new DataInfo("Name", "string"),
+		new DataInfo("Hull", "Hull"),
+		new DataInfo("Cost", "double").Derived("initCost(hull);")
+	);
+#>
