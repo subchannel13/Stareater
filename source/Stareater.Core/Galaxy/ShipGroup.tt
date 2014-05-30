@@ -1,0 +1,23 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
+	
+	usings.Add("System");
+	usings.Add("Stareater.GameData");
+	usings.Add("Stareater.Ships");
+	
+	/*
+	public Design Design { get; private set; }
+		public long Quantity { get; set; }
+		
+		public ShipGroup(Design design, long quantity)
+		{
+			this.Design = design;
+			this.Quantity = quantity;
+		}
+	*/
+	
+	Generate("Stareater.Galaxy", "ShipGroup",
+		new DataInfo("Design", "Design"),
+		new DataInfo("Quantity", "long").PublicSet()
+	);
+#>

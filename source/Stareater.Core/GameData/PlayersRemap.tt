@@ -4,11 +4,14 @@
 	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.Galaxy");
 	usings.Add("Stareater.Players");
+	usings.Add("Stareater.Ships");
 	
 	Begin("Stareater.GameData", "PlayersRemap",
 		new DataInfo("Players", "IDictionary<Player, Player>"),
 		new DataInfo("Colonies", "IDictionary<AConstructionSite, Colony>"),
-		new DataInfo("Stellarises", "IDictionary<AConstructionSite, StellarisAdmin>")
+		new DataInfo("Stellarises", "IDictionary<AConstructionSite, StellarisAdmin>"),
+		new DataInfo("Designs", "IDictionary<Design, Design>"),
+		new DataInfo("IdleFleets", "IDictionary<IdleFleet, IdleFleet>")
 	);
 #>
 

@@ -11,6 +11,7 @@ private List<string> genericTypes = new List<string>();
 private string superClass = null;
 private string superConstructor = null;
 
+private bool CopyNeedsPlayerRemap = false;
 private bool superClassHasCopyConstructor = false;
 
 enum Flags
@@ -31,17 +32,17 @@ class DataInfo
 	public string BaseFieldReadCode = null;
 	public string CopyLogic;
 	public string DefaultConstructorCall;
+	public string DerivedLogic = null;
 	public string SetModifer = "private";
 	
 	public bool BaseField = false;
 	public bool CopyConstructorOnly = false;
-	
 
 	public DataInfo(string name, string type) {
 		this.Name = name;
 		this.Type = type;
 		
-		this.CopyLogic = "original." + name + ";";
+		this.CopyLogic = "this." + name + " = original." + name + ";";
 		this.CopyFromGalaxyRemap = initGalaxyRemapCode("this." + name, type);
 		this.CopyFromPlayersRemap = initPlayerRemapCode("this." + name, type);
 		this.DefaultConstructorCall = "new " + type + "()";
@@ -64,6 +65,10 @@ class DataInfo
 			return "playersRemap.Colonies[" + readCode + "]";
 		else if (type == "StellarisAdmin")
 			return "playersRemap.Stellarises[" + readCode + "]";
+		else if (type == "Design")
+			return "playersRemap.Designs[" + readCode + "]";
+		else if (type == "IdleFleet")
+			return "playersRemap.IdleFleets[" + readCode + "]";
 		return null;
 	}
 	
@@ -99,6 +104,12 @@ class DataInfo
 	public DataInfo CopyCode(string code)
 	{
 		this.CopyLogic = code;
+		return this;
+	}
+	
+	public DataInfo Derived(string code)
+	{
+		this.DerivedLogic = code;
 		return this;
 	}
 	
@@ -164,7 +175,7 @@ private void WriteContructorDefinition(string className, params DataInfo[] dataI
 	
 	bool first = true;
 	for(int i = 0; i < dataInfos.Length; i++) {
-		if (dataInfos[i].CopyConstructorOnly)
+		if (dataInfos[i].CopyConstructorOnly || dataInfos[i].DerivedLogic != null)
 			continue;
 			
 		string commaOrNot = first ? "" : ", ";
@@ -205,7 +216,10 @@ private void WriteFieldInits(params DataInfo[] dataInfos)
 			
 		string indent = (first) ? "" : "			";
 		first = false;
-		WriteLine(indent + "this."  + field.Name + " = " + paramName(field.Name) + ";");
+		if (field.DerivedLogic != null)
+			WriteLine(indent + field.DerivedLogic);
+		else
+			WriteLine(indent + "this."  + field.Name + " = " + paramName(field.Name) + ";");
 	}
 	
 	foreach(var field in dataInfos) 
@@ -219,9 +233,10 @@ private void WriteFieldInits(params DataInfo[] dataInfos)
 
 private void WriteCopyConstructorDefinition(string className, params DataInfo[] dataInfos)
 {
-	Write(className + "(");
+	Write(className + "(" + className + " original");
 	
-	Write(className + " original");
+	if (CopyNeedsPlayerRemap)
+		Write(", PlayersRemap playersRemap");
 	
 	for(int i = 0; i < dataInfos.Length; i++) {
 		if (dataInfos[i].CopyConstructorOnly)
@@ -303,8 +318,17 @@ private void WriteCopyMethod(string className, params DataInfo[] dataInfos)
 		Write("this");
 		first = false;
 	}
+	
+	if (CopyNeedsPlayerRemap) {
+		Write(first ? "" : ", ");
+		Write("playersRemap");
+		first = false;
+	}
 		
 	for(int i = 0; i < dataInfos.Length; i++) {
+		if (dataInfos[i].CopyConstructorOnly || dataInfos[i].DerivedLogic != null)
+			continue;
+			
 		Write(first ? "" : ", ");
 		first = false;
 		
@@ -353,8 +377,8 @@ namespace <#+ Write(namespaceName); #>
 
 		public <#+ WriteContructorDefinition(className, dataInfos); #> 
 		{
-			<#+ WriteFieldInits(dataInfos); #>
-		}
+			<#+ WriteFieldInits(dataInfos); #> 
+		} 
 
 <#+ if (dataInfos.Any(x => x.CopyConstructorOnly) || superClassHasCopyConstructor) { #>
 		internal <#+ WriteCopyConstructorDefinition(className, dataInfos); #> 

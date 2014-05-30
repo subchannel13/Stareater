@@ -102,8 +102,8 @@ namespace Stareater.Controllers
 			var stellarises = new StellarisCollection();
 			for(int playerI = 0; playerI < players.Length; playerI++)
 				stellarises.Add(new StellarisAdmin(
-					players[playerI], 
-					starSystems[homeSystemIndices[playerI]].Star
+					starSystems[homeSystemIndices[playerI]].Star,
+					players[playerI]
 				));
 			
 			return stellarises;

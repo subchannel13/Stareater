@@ -4,6 +4,7 @@ using System.Linq;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 using Stareater.Galaxy;
+using Stareater.Ships;
 
 namespace Stareater.GameData.Databases
 {
@@ -59,7 +60,7 @@ namespace Stareater.GameData.Databases
 			copy.Stellarises.Add(playersRemap.Stellarises.Values);
 
 			copy.IdleFleets = new IdleFleetCollection();
-			copy.IdleFleets.Add(this.IdleFleets);
+			copy.IdleFleets.Add(playersRemap.IdleFleets.Values);
 			
 			copy.Designs = new DesignCollection();
 			copy.Designs.Add(this.Designs);
@@ -85,20 +86,15 @@ namespace Stareater.GameData.Databases
 			PlayersRemap remap = new PlayersRemap(
 				playersRemap, 
 				new Dictionary<AConstructionSite, Colony>(),
-				new Dictionary<AConstructionSite, StellarisAdmin>()
+				new Dictionary<AConstructionSite, StellarisAdmin>(),
+				new Dictionary<Design, Design>(),
+				new Dictionary<IdleFleet, IdleFleet>()
 			);
 
-			foreach (var colony in this.Colonies)
-				remap.Colonies.Add(
-					colony, 
-					colony.Copy(remap, galaxyRemap)
-				);
-
-			foreach(var stellaris in this.Stellarises)
-				remap.Stellarises.Add(
-					stellaris, 
-					stellaris.Copy(playersRemap[stellaris.Owner], galaxyRemap.Stars[stellaris.Location.Star])
-				);
+			remap.Colonies = this.Colonies.ToDictionary(x => (AConstructionSite)x, x => x.Copy(remap, galaxyRemap));
+			remap.Stellarises = this.Stellarises.ToDictionary(x => (AConstructionSite)x, x => x.Copy(remap, galaxyRemap));
+			remap.Designs = this.Designs.ToDictionary(x => x, x => x.Copy(remap));
+			remap.IdleFleets = this.IdleFleets.ToDictionary(x => x, x => x.Copy(remap, galaxyRemap));
 			
 			return remap;
 		}
