@@ -1,0 +1,12 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
+	
+	usings.Add("System");
+	
+	modifer = "partial";
+
+	Generate("Stareater.GameData", "PlanetIntelligence",
+		new DataInfo("Explored", "double").CopyOnly().Constructor("Unexplored"),
+		new DataInfo("LastVisited", "int").CopyOnly().Constructor("NeverVisited")
+	);
+#>

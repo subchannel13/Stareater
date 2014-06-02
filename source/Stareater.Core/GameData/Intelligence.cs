@@ -38,7 +38,7 @@ namespace Stareater.GameData
 			copy.starKnowledge = new Dictionary<StarData, StarIntelligence>();
 
 			foreach (var starIntell in this.starKnowledge)
-				copy.starKnowledge.Add(galaxyRemap.Stars[starIntell.Key], starIntell.Value.Copy(galaxyRemap.Planets));
+				copy.starKnowledge.Add(galaxyRemap.Stars[starIntell.Key], starIntell.Value.Copy(galaxyRemap));
 
 			return copy;
 		}

@@ -175,6 +175,10 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\HullType.cs" />
+    <Compile Include="GameData\PlanetIntelligence.cs">
+      <DependentUpon>PlanetIntelligence.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameData\PlayersRemap.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -225,16 +229,24 @@
     </Compile>
     <Compile Include="GameData\Databases\TemporaryDB.cs" />
     <Compile Include="GameData\Intelligence.cs" />
-    <Compile Include="GameData\PlanetIntelligence.cs" />
+    <Compile Include="GameData\PlanetIntelligence.partial.cs" />
     <Compile Include="GameData\Prerequisite.cs" />
     <Compile Include="GameData\Reading\Expression.cs" />
     <Compile Include="GameData\Reading\ExpressionFactory.cs" />
     <Compile Include="GameData\Reading\Parser.cs" />
     <Compile Include="GameData\Reading\SingleLineFactory.cs" />
-    <Compile Include="GameData\StarIntelligence.cs" />
+    <Compile Include="GameData\StarIntelligence.cs">
+      <DependentUpon>StarIntelligence.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GameData\StarIntelligence.partial.cs" />
     <Compile Include="GameData\Technology.cs" />
     <Compile Include="GameData\TechnologyCategory.cs" />
-    <Compile Include="GameData\TechnologyProgress.cs" />
+    <Compile Include="GameData\TechnologyProgress.cs">
+      <DependentUpon>TechnologyProgress.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GameData\TechnologyProgress.partial.cs" />
     <Compile Include="GameData\Wormhole.cs">
       <DependentUpon>Wormhole.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -267,7 +279,11 @@
     <Compile Include="Localization\StarNames\IStarName.cs" />
     <Compile Include="Localization\StarNames\ProperStarName.cs" />
     <Compile Include="Players\IOffscreenPlayerFactory.cs" />
-    <Compile Include="Players\Player.cs" />
+    <Compile Include="Players\Player.cs">
+      <DependentUpon>Player.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Players\Player.partial.cs" />
     <Compile Include="Players\PlayerAssets.cs" />
     <Compile Include="Players\PlayerControlType.cs" />
     <Compile Include="Controllers\NewGameController.cs" />
@@ -410,9 +426,21 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>GalaxyRemap.cs</LastGenOutput>
     </None>
+    <None Include="GameData\PlanetIntelligence.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PlanetIntelligence.cs</LastGenOutput>
+    </None>
     <None Include="GameData\PlayersRemap.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlayersRemap.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\StarIntelligence.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StarIntelligence.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\TechnologyProgress.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TechnologyProgress.cs</LastGenOutput>
     </None>
     <None Include="GameData\Wormhole.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -423,6 +451,10 @@
       <LastGenOutput>ActivityResult.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="Players\Player.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Player.cs</LastGenOutput>
+    </None>
     <None Include="Ships\Design.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Design.cs</LastGenOutput>
