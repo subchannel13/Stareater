@@ -1,49 +1,31 @@
-﻿using System;
+﻿ 
+using System;
 
-namespace Stareater.GameData
+namespace Stareater.GameData 
 {
-	class PlanetIntelligence
+	partial class PlanetIntelligence 
 	{
-		public const int NeverVisited = -1;
-		public const double Unexplored = 0;
-		public const double FullyExplored = 1;
-		
 		public double Explored { get; private set; }
 		public int LastVisited { get; private set; }
-		
-		public PlanetIntelligence()
+
+		public PlanetIntelligence() 
 		{
 			this.Explored = Unexplored;
 			this.LastVisited = NeverVisited;
-		}
-		
-		public double Explore(double fraction)
+ 
+		} 
+
+		internal PlanetIntelligence(PlanetIntelligence original) : this() 
 		{
-			this.Explored += fraction;
-			
-			if (this.Explored > FullyExplored) {
-				double extra = this.Explored - FullyExplored;
-				this.Explored = FullyExplored;
-				
-				return extra;
-			}
-			
-			return 0;
-		}
-		
-		public void Visit(int turn)
-		{
-			this.LastVisited = turn;
+			this.Explored = original.Explored;
+			this.LastVisited = original.LastVisited;
+ 
 		}
 
-		public PlanetIntelligence Copy()
+		internal PlanetIntelligence Copy()
 		{
-			PlanetIntelligence copy = new PlanetIntelligence();
-
-			copy.Explored = this.Explored;
-			copy.LastVisited = this.LastVisited;
-
-			return copy;
+			return new PlanetIntelligence(this);
 		}
+ 
 	}
 }

@@ -63,10 +63,10 @@ namespace Stareater.GameData.Databases
 			copy.IdleFleets.Add(playersRemap.IdleFleets.Values);
 			
 			copy.Designs = new DesignCollection();
-			copy.Designs.Add(this.Designs);
+			copy.Designs.Add(playersRemap.Designs.Values);
 			
 			copy.TechnologyAdvances = new TechProgressCollection();
-			copy.TechnologyAdvances.Add(this.TechnologyAdvances.Select(x => x.Copy(playersRemap.Players[x.Owner])));
+			copy.TechnologyAdvances.Add(this.TechnologyAdvances.Select(x => x.Copy(playersRemap)));
 			
 			return copy;
 		}

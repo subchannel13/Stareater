@@ -1,0 +1,29 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
+	
+	usings.Add("System");
+	usings.Add("System.Collections.Generic");
+	usings.Add("System.Drawing");
+	usings.Add("Stareater.GameData");
+	
+	modifer = "partial";
+	/*
+		public string Name { get; private set; }
+		public Color Color { get; private set; }
+		public PlayerControlType ControlType { get; private set; }
+		public IOffscreenPlayer OffscreenControl { get; private set; }
+		
+		public ICollection<PredefinedDesign> UnlockedDesigns { get; private set; }
+		public Intelligence Intelligence { get; private set; }
+
+	*/
+
+	Generate("Stareater.Players", "Player",
+		new DataInfo("Name", "string"),
+		new DataInfo("Color", "Color"),
+		new DataInfo("ControlType", "PlayerControlType"),
+		new DataInfo("OffscreenControl", "IOffscreenPlayer"),
+		new DataInfo("UnlockedDesigns", "ICollection<PredefinedDesign>"),
+		new DataInfo("Intelligence", "Intelligence")
+	);
+#>
