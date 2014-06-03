@@ -175,6 +175,10 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\HullType.cs" />
+    <Compile Include="GameData\Intelligence.cs">
+      <DependentUpon>Intelligence.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameData\PlanetIntelligence.cs">
       <DependentUpon>PlanetIntelligence.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -228,7 +232,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\TemporaryDB.cs" />
-    <Compile Include="GameData\Intelligence.cs" />
+    <Compile Include="GameData\Intelligence.partial.cs" />
     <Compile Include="GameData\PlanetIntelligence.partial.cs" />
     <Compile Include="GameData\Prerequisite.cs" />
     <Compile Include="GameData\Reading\Expression.cs" />
@@ -425,6 +429,10 @@
     <None Include="GameData\GalaxyRemap.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>GalaxyRemap.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Intelligence.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Intelligence.cs</LastGenOutput>
     </None>
     <None Include="GameData\PlanetIntelligence.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

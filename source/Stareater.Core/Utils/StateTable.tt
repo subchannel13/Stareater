@@ -40,6 +40,10 @@ class DataInfo
 	
 	public bool BaseField = false;
 	public bool CopyConstructorOnly = false;
+	public bool CopyMethodNeedGalaxyRemap = false;
+	public bool CopyMethodNeedPlayersRemap = false;
+	public bool IsPrivate = false;
+	public bool HasCopyMethod = false;
 
 	public DataInfo(string name, string type) {
 		this.Name = name;
@@ -110,6 +114,14 @@ class DataInfo
 		return this;
 	}
 	
+	public DataInfo CopyRecursive(bool needGalaxyRemap, bool needPlayerRemap)
+	{
+		this.HasCopyMethod = true;
+		this.CopyMethodNeedGalaxyRemap = needGalaxyRemap;
+		this.CopyMethodNeedPlayersRemap = needPlayerRemap;
+		return this;
+	}
+	
 	public DataInfo Derived(string code)
 	{
 		this.DerivedLogic = code;
@@ -120,6 +132,12 @@ class DataInfo
 	{
 		this.DerivedLogic = code;
 		this.DerivedParams = extraConstructorParams;
+		return this;
+	}
+	
+	public DataInfo Private()
+	{
+		IsPrivate = true;
 		return this;
 	}
 	
@@ -197,7 +215,11 @@ private void WriteFields(params DataInfo[] dataInfos)
 	{
 		if (field.BaseField)
 			continue;
-		WriteLine(indent.Get + "public "  + field.Type + " " + field.Name + " { get; " + field.SetModifer +" set; }");
+		
+		if (field.IsPrivate)
+			WriteLine(indent.Get + "private "  + field.Type + " " + paramName(field.Name) + ";");
+		else
+			WriteLine(indent.Get + "public "  + field.Type + " " + field.Name + " { get; " + field.SetModifer +" set; }");
 	}
 }
 
@@ -246,9 +268,11 @@ private void WriteFieldInits(params DataInfo[] dataInfos)
 	{
 		if (field.CopyConstructorOnly || field.BaseField)
 			continue;
-			
+
 		if (field.DerivedLogic != null)
 			WriteLine(indent.Get + field.DerivedLogic);
+		else if (field.IsPrivate)
+			WriteLine(indent.Get + "this."  + paramName(field.Name) + " = " + paramName(field.Name) + ";");
 		else
 			WriteLine(indent.Get + "this."  + field.Name + " = " + paramName(field.Name) + ";");
 	}
@@ -258,7 +282,10 @@ private void WriteFieldInits(params DataInfo[] dataInfos)
 		if (!field.CopyConstructorOnly)
 			continue;
 			
-		WriteLine(indent.Get + "this."  + field.Name + " = " + field.DefaultConstructorCall + ";");
+		if (field.IsPrivate)
+			WriteLine(indent.Get + "this."  + paramName(field.Name) + " = " + field.DefaultConstructorCall + ";");
+		else
+			WriteLine(indent.Get + "this."  + field.Name + " = " + field.DefaultConstructorCall + ";");
 	}
 }
 
@@ -324,7 +351,19 @@ private void WriteFieldCopys(params DataInfo[] dataInfos)
 	var indent = new FirstCase("", "			");
 	foreach(var field in dataInfos) 
 	{
-		if (field.CopyLogic == null && field.CopyConstructorOnly)
+		if (field.HasCopyMethod)
+		{
+			var commaOrNot = new FirstCase("", ", ");
+			Write(indent.Get + "this."  + field.Name + " = original." + field.Name + ".Copy(");
+			
+			if (field.CopyMethodNeedGalaxyRemap)
+				Write(commaOrNot.Get + "galaxyRemap");
+			if (field.CopyMethodNeedPlayersRemap)
+				Write(commaOrNot.Get + "playersRemap");
+				
+			WriteLine(");");
+		}
+		else if (field.CopyLogic == null && field.CopyConstructorOnly)
 			WriteLine(indent.Get + "this."  + field.Name + " = original." + field.Name);
 		else if (field.CopyLogic != null)
 			WriteLine(indent.Get + field.CopyLogic);
@@ -341,7 +380,7 @@ private void WriteCopyMethod(string className, params DataInfo[] dataInfos)
 	Write("			return new " + className + "(");
 	
 	var commaOrNot = new FirstCase("", ", ");
-	if (dataInfos.Any(x => x.CopyConstructorOnly) || SuperClassHasCopyConstructor)
+	if (dataInfos.Any(x => x.CopyConstructorOnly || x.CopyLogic != null) || SuperClassHasCopyConstructor)
 		Write(commaOrNot.Get + "this");
 	
 	if (CopyNeedsPlayerRemap)
@@ -397,7 +436,7 @@ namespace <#+ Write(namespaceName); #>
 			<#+ WriteFieldInits(dataInfos); #> 
 		} 
 
-<#+ if (dataInfos.Any(x => x.CopyConstructorOnly) || SuperClassHasCopyConstructor) { #>
+<#+ if (dataInfos.Any(x => x.CopyConstructorOnly || x.CopyLogic != null) || SuperClassHasCopyConstructor) { #>
 		private <#+ WriteCopyConstructorDefinition(className, dataInfos); #> 
 		{
 			<#+ WriteFieldCopys(dataInfos); #> 

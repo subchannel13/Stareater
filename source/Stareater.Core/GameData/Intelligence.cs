@@ -1,46 +1,31 @@
-﻿using System;
+﻿ 
+using System;
 using System.Collections.Generic;
 using Stareater.Galaxy;
 using Stareater.Galaxy.Builders;
 
-namespace Stareater.GameData
+namespace Stareater.GameData 
 {
-	class Intelligence
+	partial class Intelligence 
 	{
-		private Dictionary<StarData, StarIntelligence> starKnowledge = new Dictionary<StarData, StarIntelligence>();
-		
-		public void Initialize(IEnumerable<StarSystem> starSystems)
+		private Dictionary<StarData, StarIntelligence> starKnowledge;
+
+		public Intelligence() 
 		{
-			foreach(var system in starSystems)
-				starKnowledge.Add(system.Star, new StarIntelligence(system.Planets));
-		}
-		
-		public void StarFullyVisited(StarData star, int turn)
+			this.starKnowledge = new Dictionary<StarData, StarIntelligence>();
+ 
+		} 
+
+		private Intelligence(Intelligence original, GalaxyRemap galaxyRemap) 
 		{
-			var starInfo = starKnowledge[star];
-			
-			starInfo.Visit(turn);
-			foreach(var planetInfo in starInfo.Planets.Values) {
-				planetInfo.Visit(turn);
-				planetInfo.Explore(PlanetIntelligence.FullyExplored);
-			}
-		}
-		
-		public StarIntelligence About(StarData star)
-		{
-			return starKnowledge[star];
+			copyStars(original, galaxyRemap);
+ 
 		}
 
 		internal Intelligence Copy(GalaxyRemap galaxyRemap)
 		{
-			Intelligence copy = new Intelligence();
-
-			copy.starKnowledge = new Dictionary<StarData, StarIntelligence>();
-
-			foreach (var starIntell in this.starKnowledge)
-				copy.starKnowledge.Add(galaxyRemap.Stars[starIntell.Key], starIntell.Value.Copy(galaxyRemap));
-
-			return copy;
+			return new Intelligence(this, galaxyRemap);
 		}
+ 
 	}
 }

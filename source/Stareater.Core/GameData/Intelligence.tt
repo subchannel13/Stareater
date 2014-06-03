@@ -1,0 +1,16 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
+	
+	usings.Add("System");
+	usings.Add("System.Collections.Generic");
+	usings.Add("Stareater.Galaxy");
+	usings.Add("Stareater.Galaxy.Builders");
+	
+	modifer = "partial";
+	CopyNeedsGalaxyRemap = true;
+	CopyConstructorCallNormalConstructor = false;
+	
+	Generate("Stareater.GameData", "Intelligence",
+		new DataInfo("StarKnowledge", "Dictionary<StarData, StarIntelligence>").Private().CopyOnly().CopyCode("copyStars(original, galaxyRemap);")
+	);
+#>
