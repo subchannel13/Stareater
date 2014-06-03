@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Stareater.GameData.Databases;
 using Stareater.GameData;
 
 namespace Stareater.Players 
@@ -14,22 +15,35 @@ namespace Stareater.Players
 		public IOffscreenPlayer OffscreenControl { get; private set; }
 		public ICollection<PredefinedDesign> UnlockedDesigns { get; private set; }
 		public Intelligence Intelligence { get; private set; }
+		public ChangesDB Orders { get;  set; }
 
-		public Player(string name, Color color, PlayerControlType controlType, IOffscreenPlayer offscreenControl, ICollection<PredefinedDesign> unlockedDesigns, Intelligence intelligence) 
+		public Player(string name, Color color, PlayerType type) 
 		{
 			this.Name = name;
 			this.Color = color;
-			this.ControlType = controlType;
-			this.OffscreenControl = offscreenControl;
-			this.UnlockedDesigns = unlockedDesigns;
-			this.Intelligence = intelligence;
+			initPlayerControl(type);
+			
+			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
+			this.Intelligence = new Intelligence();
+			this.Orders = new ChangesDB();
  
 		} 
 
-
-		internal Player Copy()
+		private Player(Player original, GalaxyRemap galaxyRemap, string name, Color color) 
 		{
-			return new Player(this.Name, this.Color, this.ControlType, this.OffscreenControl, this.UnlockedDesigns, this.Intelligence);
+			this.Name = original.Name;
+			this.Color = original.Color;
+			copyPlayerControl(original);
+			
+			copyDesigns(original);
+			this.Intelligence = original.Intelligence.Copy(galaxyRemap);
+			
+ 
+		}
+
+		internal Player Copy(GalaxyRemap galaxyRemap)
+		{
+			return new Player(this, galaxyRemap, this.Name, this.Color);
 		}
  
 	}

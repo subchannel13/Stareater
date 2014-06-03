@@ -16,7 +16,7 @@ namespace Stareater.Players
 		private IEnumerable<object> messages; //TODO(v0.5): make type
 		private Dictionary<object, object> messageFilter; //TODO(v0.5): make type
 
-		public ChangesDB Orders { get; internal set; }
+		//public ChangesDB Orders { get; internal set; }
 		
 		public Player(string name, Color color, Organization organization, PlayerType type)
 		{
@@ -38,8 +38,29 @@ namespace Stareater.Players
 
 		public Player()
 		{ }
+		
+		private void initPlayerControl(PlayerType type)
+		{
+			this.ControlType = type.ControlType;
+			
+			if (type.OffscreenPlayerFactory != null)
+				this.OffscreenControl = type.OffscreenPlayerFactory.Create();
+			else
+				this.OffscreenControl = null;
+		}
+		
+		private void copyDesigns(Player original)
+		{
+			this.UnlockedDesigns = new HashSet<PredefinedDesign>(original.UnlockedDesigns);
+		}
+		
+		private void copyPlayerControl(Player original)
+		{
+			this.ControlType = original.ControlType;
+			this.OffscreenControl = null;
+		}
 
-		public Player Copy(GalaxyRemap galaxyRemap)
+		/*public Player Copy(GalaxyRemap galaxyRemap)
 		{
 			Player copy = new Player();
 
@@ -58,6 +79,6 @@ namespace Stareater.Players
 			copy.Orders = null; //Handled later
 
 			return copy;
-		}
+		}*/
 	}
 }
