@@ -1,7 +1,6 @@
 ﻿ 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Stareater.GameData;
 using Stareater.Players;
 
@@ -20,14 +19,16 @@ namespace Stareater.Galaxy
 			this.Owner = owner;
 			this.Buildings = new Dictionary<string, double>();
 			this.Stockpile = new Dictionary<Constructable, double>();
-		}
+ 
+		} 
 
-		internal AConstructionSite(AConstructionSite original, LocationBody location, Player owner) : this(location, owner) 
+		protected AConstructionSite(AConstructionSite original, LocationBody location, Player owner) : this(location, owner) 
 		{
 			copyBuildings(original);
 			copyStockpile(original);
+ 
 		}
 
-		 
+ 
 	}
 }

@@ -3,17 +3,16 @@
 	
 	usings.Add("System");
 	usings.Add("System.Collections.Generic");
-	usings.Add("System.Linq");
 	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.Players");
 	
 	modifer = "abstract partial";
-	superConstructor = "this()";
+	initWithDefaultConstructor = true;
 	
 	Generate("Stareater.Galaxy", "AConstructionSite",
-		new DataInfo("Location", "LocationBody"),
-		new DataInfo("Owner", "Player"),
-		new DataInfo("Buildings", "IDictionary<string, double>").CopyOnly().CopyCode("copyBuildings(original);").Constructor("new Dictionary<string, double>()"),
-		new DataInfo("Stockpile", "IDictionary<Constructable, double>").CopyOnly().CopyCode("copyStockpile(original);").Constructor("new Dictionary<Constructable, double>()")
+		new DataInfo("Location", "LocationBody").CopyParamPass(),
+		new DataInfo("Owner", "Player").CopyParamPass(),
+		new DataInfo("Buildings", "IDictionary", "string", "double").CopyOnly("copyBuildings(original);").SubTypeGeneric("Dictionary"),
+		new DataInfo("Stockpile", "IDictionary", "Constructable", "double").CopyOnly("copyStockpile(original);").SubTypeGeneric("Dictionary")
 	);
 #>

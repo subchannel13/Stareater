@@ -2,16 +2,15 @@
 <#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
 	
 	usings.Add("System");
-	usings.Add("System.Linq");
 	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.Players");
 	
 	modifer = "partial";
-	superClass = "AConstructionSite";
-	superClassHasCopyConstructor = true;
+	SuperClass = "AConstructionSite";
+	SuperClassHasCopyConstructor = true;
 	
 	Generate("Stareater.Galaxy", "Colony",
-		new DataInfo("Population", "double").PublicSet(),
+		new DataInfo("Population", "double").Public(),
 		new DataInfo("Planet", "Planet").Base("new LocationBody(planet.Star, planet)", "this.Location.Planet"),
 		new DataInfo("Owner", "Player").Base()
 	);

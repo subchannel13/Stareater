@@ -12,8 +12,8 @@ namespace Stareater.GameData
 
 		public StarIntelligence(IEnumerable<Planet> planets) 
 		{
-			initPlanets(planets);
 			this.LastVisited = NeverVisited;
+			initPlanets(planets);
  
 		} 
 
@@ -24,10 +24,11 @@ namespace Stareater.GameData
  
 		}
 
-		internal StarIntelligence Copy(GalaxyRemap galaxyRemap)
+		internal StarIntelligence Copy(GalaxyRemap galaxyRemap) 
 		{
 			return new StarIntelligence(this, galaxyRemap);
-		}
+ 
+		} 
  
 	}
 }

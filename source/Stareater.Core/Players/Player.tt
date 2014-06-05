@@ -8,26 +8,14 @@
 	usings.Add("Stareater.GameData");
 	
 	modifer = "partial";
-	CopyConstructorCallNormalConstructor = false;
-	CopyNeedsGalaxyRemap = true;
-	/*
-		public string Name { get; private set; }
-		public Color Color { get; private set; }
-		public PlayerControlType ControlType { get; private set; }
-		public IOffscreenPlayer OffscreenControl { get; private set; }
-		
-		public ICollection<PredefinedDesign> UnlockedDesigns { get; private set; }
-		public Intelligence Intelligence { get; private set; }
-
-	*/
 
 	Generate("Stareater.Players", "Player",
 		new DataInfo("Name", "string"),
 		new DataInfo("Color", "Color"),
 		new DataInfo("ControlType", "PlayerControlType").Derived("initPlayerControl(type);", "PlayerType type").CopyCode("copyPlayerControl(original);"),
 		new DataInfo("OffscreenControl", "IOffscreenPlayer").Derived("").CopyCode(""),
-		new DataInfo("UnlockedDesigns", "ICollection<PredefinedDesign>").CopyOnly().CopyCode("copyDesigns(original);").Constructor("new HashSet<PredefinedDesign>()"),
+		new DataInfo("UnlockedDesigns", "ICollection", "PredefinedDesign").CopyOnly().CopyCode("copyDesigns(original);").SubTypeGeneric("HashSet"),
 		new DataInfo("Intelligence", "Intelligence").CopyOnly().CopyRecursive(true, false),
-		new DataInfo("Orders", "ChangesDB").CopyOnly().CopyCode("").PublicSet()
+		new DataInfo("Orders", "ChangesDB").CopyOnly().CopyCode("").Public()
 	);
 #>

@@ -14,13 +14,15 @@ namespace Stareater.GameData
 		{
 			this.FromStar = fromStar;
 			this.ToStar = toStar;
-		}
+ 
+		} 
 
 
-		internal Wormhole Copy(GalaxyRemap galaxyRemap)
+		internal Wormhole Copy(GalaxyRemap galaxyRemap) 
 		{
 			return new Wormhole(galaxyRemap.Stars[this.FromStar], galaxyRemap.Stars[this.ToStar]);
-		}
+ 
+		} 
  
 	}
 }

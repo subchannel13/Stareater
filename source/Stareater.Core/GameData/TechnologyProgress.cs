@@ -21,10 +21,11 @@ namespace Stareater.GameData
 		} 
 
 
-		internal TechnologyProgress Copy(PlayersRemap playersRemap)
+		internal TechnologyProgress Copy(PlayersRemap playersRemap) 
 		{
 			return new TechnologyProgress(playersRemap.Players[this.Owner], this.Topic, this.Level, this.InvestedPoints);
-		}
+ 
+		} 
  
 	}
 }
