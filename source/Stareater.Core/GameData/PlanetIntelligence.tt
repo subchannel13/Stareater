@@ -6,7 +6,7 @@
 	modifer = "partial";
 
 	Generate("Stareater.GameData", "PlanetIntelligence",
-		new DataInfo("Explored", "double").CopyOnly().Constructor("Unexplored"),
-		new DataInfo("LastVisited", "int").CopyOnly().Constructor("NeverVisited")
+		new DataInfo("Explored", "double").CopyOnly().InitValue("Unexplored"),
+		new DataInfo("LastVisited", "int").CopyOnly().InitValue("NeverVisited")
 	);
 #>

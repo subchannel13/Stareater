@@ -20,16 +20,17 @@ namespace Stareater.Galaxy
  
 		} 
 
-		internal IdleFleet(IdleFleet original, PlayersRemap playersRemap, Player owner, StarData location) : this(owner, location) 
+		private IdleFleet(IdleFleet original, PlayersRemap playersRemap, Player owner, StarData location) : this(owner, location) 
 		{
 			copyShips(original, playersRemap);
  
 		}
 
-		internal IdleFleet Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap)
+		internal IdleFleet Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap) 
 		{
 			return new IdleFleet(this, playersRemap, playersRemap.Players[this.Owner], galaxyRemap.Stars[this.Location]);
-		}
+ 
+		} 
  
 	}
 }

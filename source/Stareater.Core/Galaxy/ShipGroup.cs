@@ -8,7 +8,7 @@ namespace Stareater.Galaxy
 	class ShipGroup 
 	{
 		public Design Design { get; private set; }
-		public long Quantity { get;  set; }
+		public long Quantity { get; set; }
 
 		public ShipGroup(Design design, long quantity) 
 		{
@@ -18,10 +18,11 @@ namespace Stareater.Galaxy
 		} 
 
 
-		internal ShipGroup Copy(PlayersRemap playersRemap)
+		internal ShipGroup Copy(PlayersRemap playersRemap) 
 		{
 			return new ShipGroup(playersRemap.Designs[this.Design], this.Quantity);
-		}
+ 
+		} 
  
 	}
 }

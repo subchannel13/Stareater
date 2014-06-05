@@ -22,13 +22,15 @@ namespace Stareater.Galaxy
 			this.Size = size;
 			this.MineralsSurface = mineralsSurface;
 			this.MineralsDeep = mineralsDeep;
-		}
+ 
+		} 
 
 
-		internal Planet Copy(GalaxyRemap galaxyRemap)
+		internal Planet Copy(GalaxyRemap galaxyRemap) 
 		{
 			return new Planet(galaxyRemap.Stars[this.Star], this.Position, this.Type, this.Size, this.MineralsSurface, this.MineralsDeep);
-		}
+ 
+		} 
  
 	}
 }

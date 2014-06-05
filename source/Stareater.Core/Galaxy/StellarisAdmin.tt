@@ -7,8 +7,8 @@
 	usings.Add("Stareater.Players");
 	
 	modifer = "partial";
-	superClass = "AConstructionSite";
-	superClassHasCopyConstructor = true;
+	SuperClass = "AConstructionSite";
+	SuperClassHasCopyConstructor = true;
 	
 	Generate("Stareater.Galaxy", "StellarisAdmin",
 		new DataInfo("Star", "StarData").Base("new LocationBody(star)", "this.Location.Star"),

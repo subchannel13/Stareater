@@ -15,7 +15,7 @@ namespace Stareater.Players
 		public IOffscreenPlayer OffscreenControl { get; private set; }
 		public ICollection<PredefinedDesign> UnlockedDesigns { get; private set; }
 		public Intelligence Intelligence { get; private set; }
-		public ChangesDB Orders { get;  set; }
+		public ChangesDB Orders { get; set; }
 
 		public Player(string name, Color color, PlayerType type) 
 		{
@@ -29,7 +29,7 @@ namespace Stareater.Players
  
 		} 
 
-		private Player(Player original, GalaxyRemap galaxyRemap, string name, Color color) 
+		private Player(Player original, GalaxyRemap galaxyRemap) 
 		{
 			this.Name = original.Name;
 			this.Color = original.Color;
@@ -41,10 +41,11 @@ namespace Stareater.Players
  
 		}
 
-		internal Player Copy(GalaxyRemap galaxyRemap)
+		internal Player Copy(GalaxyRemap galaxyRemap) 
 		{
-			return new Player(this, galaxyRemap, this.Name, this.Color);
-		}
+			return new Player(this, galaxyRemap);
+ 
+		} 
  
 	}
 }

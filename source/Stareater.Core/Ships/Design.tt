@@ -6,8 +6,6 @@
 	usings.Add("Stareater.Players");
 	
 	modifer = "partial";
-	/*
-	*/
 
 	Generate("Stareater.Ships", "Design",
 		new DataInfo("Owner", "Player"),

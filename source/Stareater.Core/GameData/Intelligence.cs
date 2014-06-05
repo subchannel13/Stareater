@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using Stareater.Galaxy;
-using Stareater.Galaxy.Builders;
 
 namespace Stareater.GameData 
 {
@@ -22,10 +21,11 @@ namespace Stareater.GameData
  
 		}
 
-		internal Intelligence Copy(GalaxyRemap galaxyRemap)
+		internal Intelligence Copy(GalaxyRemap galaxyRemap) 
 		{
 			return new Intelligence(this, galaxyRemap);
-		}
+ 
+		} 
  
 	}
 }

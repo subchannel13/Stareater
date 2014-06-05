@@ -6,11 +6,11 @@
 	usings.Add("Stareater.Galaxy");
 	
 	modifer = "partial";
-	CopyNeedsGalaxyRemap = true;
-	CopyConstructorCallNormalConstructor = false;
+	//CopyNeedsGalaxyRemap = true;
+	//CopyConstructorCallNormalConstructor = false;
 	
 	Generate("Stareater.GameData", "StarIntelligence",
-		new DataInfo("LastVisited", "int").CopyOnly().Constructor("NeverVisited"),
-		new DataInfo("Planets", "IDictionary<Planet, PlanetIntelligence>").Derived("initPlanets(planets);", "IEnumerable<Planet> planets").CopyCode("copyPlanets(original, galaxyRemap);")
+		new DataInfo("LastVisited", "int").CopyOnly().InitValue("NeverVisited"),
+		new DataInfo("Planets", "IDictionary", "Planet", "PlanetIntelligence").Derived("initPlanets(planets);", "IEnumerable<Planet> planets").CopyCode("copyPlanets(original, galaxyRemap);")
 	);
 #>

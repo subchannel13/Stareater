@@ -15,17 +15,18 @@ namespace Stareater.GameData
  
 		} 
 
-		internal PlanetIntelligence(PlanetIntelligence original) : this() 
+		private PlanetIntelligence(PlanetIntelligence original) 
 		{
 			this.Explored = original.Explored;
 			this.LastVisited = original.LastVisited;
  
 		}
 
-		internal PlanetIntelligence Copy()
+		internal PlanetIntelligence Copy() 
 		{
 			return new PlanetIntelligence(this);
-		}
+ 
+		} 
  
 	}
 }

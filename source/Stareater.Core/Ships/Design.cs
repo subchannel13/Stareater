@@ -21,11 +21,20 @@ namespace Stareater.Ships
  
 		} 
 
-
-		internal Design Copy(PlayersRemap playersRemap)
+		private Design(Design original, Player owner) 
 		{
-			return new Design(playersRemap.Players[this.Owner], this.Name, this.Hull);
+			this.Owner = owner;
+			this.Name = original.Name;
+			this.Hull = original.Hull;
+			this.Cost = original.Cost;
+ 
 		}
+
+		internal Design Copy(PlayersRemap playersRemap) 
+		{
+			return new Design(this, playersRemap.Players[this.Owner]);
+ 
+		} 
  
 	}
 }

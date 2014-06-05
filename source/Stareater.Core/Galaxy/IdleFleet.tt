@@ -7,13 +7,10 @@
 	usings.Add("Stareater.Players");
 	
 	modifer = "partial";
-	CopyNeedsPlayerRemap = true;
-	/*
-	*/
-
+	
 	Generate("Stareater.Galaxy", "IdleFleet",
-		new DataInfo("Owner", "Player"),
-		new DataInfo("Location", "StarData"),
+		new DataInfo("Owner", "Player").CopyParamPass(),
+		new DataInfo("Location", "StarData").CopyParamPass(),
 		new DataInfo("Ships", "ShipGroupCollection").CopyOnly().CopyCode("copyShips(original, playersRemap);")
 	);
 #>

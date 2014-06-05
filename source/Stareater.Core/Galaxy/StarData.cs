@@ -1,8 +1,6 @@
 ﻿ 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Drawing;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Localization.StarNames;
@@ -24,13 +22,15 @@ namespace Stareater.Galaxy
 			this.Name = name;
 			this.Position = position;
 			this.Radiation = radiation;
-		}
+ 
+		} 
 
 
-		internal StarData Copy()
+		internal StarData Copy() 
 		{
 			return new StarData(this.Color, this.ImageSizeScale, this.Name, this.Position, this.Radiation);
-		}
+ 
+		} 
  
 	}
 }
