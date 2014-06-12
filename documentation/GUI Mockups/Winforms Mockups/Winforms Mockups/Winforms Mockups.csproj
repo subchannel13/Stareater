@@ -132,6 +132,10 @@
     <Compile Include="FormResearch.Designer.cs">
       <DependentUpon>FormResearch.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSaveLoad.cs" />
+    <Compile Include="FormSaveLoad.Designer.cs">
+      <DependentUpon>FormSaveLoad.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSelector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -200,6 +204,10 @@
     <Compile Include="ResearchItem.Designer.cs">
       <DependentUpon>ResearchItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="SavedGame.cs" />
+    <Compile Include="SavedGame.Designer.cs">
+      <DependentUpon>SavedGame.cs</DependentUpon>
+    </Compile>
     <Compile Include="SpaceInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -248,6 +256,9 @@
     <EmbeddedResource Include="FormResearch.resx">
       <DependentUpon>FormResearch.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormSaveLoad.resx">
+      <DependentUpon>FormSaveLoad.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormSelector.resx">
       <DependentUpon>FormSelector.cs</DependentUpon>
     </EmbeddedResource>
@@ -290,6 +301,9 @@
     </Compile>
     <EmbeddedResource Include="ResearchItem.resx">
       <DependentUpon>ResearchItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SavedGame.resx">
+      <DependentUpon>SavedGame.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SpaceInfo.resx">
       <DependentUpon>SpaceInfo.cs</DependentUpon>
