@@ -154,6 +154,10 @@
     <Compile Include="GUI\FormResearch.Designer.cs">
       <DependentUpon>FormResearch.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FormSaveLoad.cs" />
+    <Compile Include="GUI\FormSaveLoad.Designer.cs">
+      <DependentUpon>FormSaveLoad.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -227,6 +231,10 @@
     <Compile Include="GUI\QueuedConstructionView.Designer.cs">
       <DependentUpon>QueuedConstructionView.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\SavedGame.cs" />
+    <Compile Include="GUI\SavedGame.Designer.cs">
+      <DependentUpon>SavedGame.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\TechnologyItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -275,6 +283,9 @@
     <EmbeddedResource Include="GUI\FormResearch.resx">
       <DependentUpon>FormResearch.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormSaveLoad.resx">
+      <DependentUpon>FormSaveLoad.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormSettings.resx">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
@@ -310,6 +321,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\QueuedConstructionView.resx">
       <DependentUpon>QueuedConstructionView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SavedGame.resx">
+      <DependentUpon>SavedGame.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\TechnologyItem.resx">
       <DependentUpon>TechnologyItem.cs</DependentUpon>
