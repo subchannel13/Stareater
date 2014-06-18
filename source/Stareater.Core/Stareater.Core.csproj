@@ -70,6 +70,7 @@
     <Compile Include="AppData\Expressions\UnaryOperators.cs" />
     <Compile Include="AppData\Expressions\Variable.cs" />
     <Compile Include="AppData\LastGameInfo.cs" />
+    <Compile Include="AppData\SavedGames.cs" />
     <Compile Include="Controllers\AConstructionSiteController.cs" />
     <Compile Include="Controllers\ColonyController.cs" />
     <Compile Include="Controllers\Data\BodyType.cs" />
@@ -89,10 +90,12 @@
     <Compile Include="Controllers\Data\IGameStateListener.cs" />
     <Compile Include="Controllers\Data\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
+    <Compile Include="Controllers\Data\SavedGameData.cs" />
     <Compile Include="Controllers\Data\StellarisInfo.cs" />
     <Compile Include="Controllers\Data\TechnologyTopic.cs" />
     <Compile Include="Controllers\GameBuilder.cs" />
     <Compile Include="Controllers\GameController.cs" />
+    <Compile Include="Controllers\SavesController.cs" />
     <Compile Include="Controllers\ShipDesignController.cs" />
     <Compile Include="Controllers\StellarisAdminController.cs" />
     <Compile Include="Controllers\StarSystemController.cs" />
