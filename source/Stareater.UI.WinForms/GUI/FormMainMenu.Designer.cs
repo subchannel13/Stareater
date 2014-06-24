@@ -29,7 +29,6 @@
 		private void InitializeComponent()
 		{
 			this.newGameButton = new System.Windows.Forms.Button();
-			this.loadGameButton = new System.Windows.Forms.Button();
 			this.exitButton = new System.Windows.Forms.Button();
 			this.titleLabel = new System.Windows.Forms.Label();
 			this.aboutLabel = new System.Windows.Forms.Label();
@@ -39,29 +38,19 @@
 			// 
 			// newGameButton
 			// 
-			this.newGameButton.Location = new System.Drawing.Point(109, 64);
+			this.newGameButton.Location = new System.Drawing.Point(90, 64);
 			this.newGameButton.Name = "newGameButton";
-			this.newGameButton.Size = new System.Drawing.Size(75, 30);
+			this.newGameButton.Size = new System.Drawing.Size(115, 30);
 			this.newGameButton.TabIndex = 1;
 			this.newGameButton.Text = "Nova igra";
 			this.newGameButton.UseVisualStyleBackColor = true;
 			this.newGameButton.Click += new System.EventHandler(this.newGameButton_Click);
 			// 
-			// loadGameButton
-			// 
-			this.loadGameButton.Location = new System.Drawing.Point(109, 136);
-			this.loadGameButton.Name = "loadGameButton";
-			this.loadGameButton.Size = new System.Drawing.Size(75, 30);
-			this.loadGameButton.TabIndex = 2;
-			this.loadGameButton.Text = "Učitaj igru";
-			this.loadGameButton.UseVisualStyleBackColor = true;
-			this.loadGameButton.Click += new System.EventHandler(this.loadGameButton_Click);
-			// 
 			// exitButton
 			// 
-			this.exitButton.Location = new System.Drawing.Point(109, 208);
+			this.exitButton.Location = new System.Drawing.Point(90, 180);
 			this.exitButton.Name = "exitButton";
-			this.exitButton.Size = new System.Drawing.Size(75, 30);
+			this.exitButton.Size = new System.Drawing.Size(115, 30);
 			this.exitButton.TabIndex = 4;
 			this.exitButton.Text = "Ugasi";
 			this.exitButton.UseVisualStyleBackColor = true;
@@ -85,13 +74,13 @@
 			this.aboutLabel.Name = "aboutLabel";
 			this.aboutLabel.Size = new System.Drawing.Size(115, 13);
 			this.aboutLabel.TabIndex = 5;
-			this.aboutLabel.Text = "Ivan Kravarščan 2013.";
+			this.aboutLabel.Text = "Ivan Kravarščan 2014.";
 			// 
 			// settingsButton
 			// 
-			this.settingsButton.Location = new System.Drawing.Point(109, 172);
+			this.settingsButton.Location = new System.Drawing.Point(90, 140);
 			this.settingsButton.Name = "settingsButton";
-			this.settingsButton.Size = new System.Drawing.Size(75, 30);
+			this.settingsButton.Size = new System.Drawing.Size(115, 30);
 			this.settingsButton.TabIndex = 3;
 			this.settingsButton.Text = "Postavke";
 			this.settingsButton.UseVisualStyleBackColor = true;
@@ -99,11 +88,11 @@
 			// 
 			// saveGameButton
 			// 
-			this.saveGameButton.Location = new System.Drawing.Point(110, 100);
+			this.saveGameButton.Location = new System.Drawing.Point(90, 100);
 			this.saveGameButton.Name = "saveGameButton";
-			this.saveGameButton.Size = new System.Drawing.Size(75, 30);
+			this.saveGameButton.Size = new System.Drawing.Size(115, 30);
 			this.saveGameButton.TabIndex = 6;
-			this.saveGameButton.Text = "Spremi igru";
+			this.saveGameButton.Text = "Spremi / učitaj igru";
 			this.saveGameButton.UseVisualStyleBackColor = true;
 			this.saveGameButton.Click += new System.EventHandler(this.saveGameButton_Click);
 			// 
@@ -117,7 +106,6 @@
 			this.Controls.Add(this.aboutLabel);
 			this.Controls.Add(this.titleLabel);
 			this.Controls.Add(this.exitButton);
-			this.Controls.Add(this.loadGameButton);
 			this.Controls.Add(this.newGameButton);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormMainMenu";
@@ -131,7 +119,6 @@
 		#endregion
 
 		private System.Windows.Forms.Button newGameButton;
-		private System.Windows.Forms.Button loadGameButton;
 		private System.Windows.Forms.Button exitButton;
 		private System.Windows.Forms.Label titleLabel;
 		private System.Windows.Forms.Label aboutLabel;

@@ -36,19 +36,21 @@ namespace Stareater.GUI
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.preview = new System.Windows.Forms.PictureBox();
 			this.gameName = new System.Windows.Forms.Label();
 			this.turnText = new System.Windows.Forms.Label();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.preview)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// pictureBox1
+			// preview
 			// 
-			this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(69, 69);
-			this.pictureBox1.TabIndex = 0;
-			this.pictureBox1.TabStop = false;
+			this.preview.Location = new System.Drawing.Point(3, 3);
+			this.preview.Name = "preview";
+			this.preview.Size = new System.Drawing.Size(69, 69);
+			this.preview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.preview.TabIndex = 0;
+			this.preview.TabStop = false;
+			this.preview.Click += new System.EventHandler(this.PreviewClick);
 			// 
 			// gameName
 			// 
@@ -58,6 +60,7 @@ namespace Stareater.GUI
 			this.gameName.Size = new System.Drawing.Size(88, 13);
 			this.gameName.TabIndex = 8;
 			this.gameName.Text = "Game name here";
+			this.gameName.Click += new System.EventHandler(this.GameNameClick);
 			// 
 			// turnText
 			// 
@@ -67,22 +70,24 @@ namespace Stareater.GUI
 			this.turnText.Size = new System.Drawing.Size(50, 13);
 			this.turnText.TabIndex = 7;
 			this.turnText.Text = "Turn 251";
+			this.turnText.Click += new System.EventHandler(this.TurnTextClick);
 			// 
 			// SavedGame
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.Controls.Add(this.gameName);
 			this.Controls.Add(this.turnText);
-			this.Controls.Add(this.pictureBox1);
+			this.Controls.Add(this.preview);
 			this.Name = "SavedGame";
-			this.Size = new System.Drawing.Size(300, 75);
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+			this.Size = new System.Drawing.Size(298, 73);
+			((System.ComponentModel.ISupportInitialize)(this.preview)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
 		private System.Windows.Forms.Label turnText;
 		private System.Windows.Forms.Label gameName;
-		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.PictureBox preview;
 	}
 }

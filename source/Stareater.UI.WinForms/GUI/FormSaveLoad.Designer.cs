@@ -62,6 +62,7 @@ namespace Stareater.GUI
 			this.saveButton.Size = new System.Drawing.Size(80, 80);
 			this.saveButton.TabIndex = 1;
 			this.saveButton.UseVisualStyleBackColor = true;
+			this.saveButton.Click += new System.EventHandler(this.SaveButtonClick);
 			// 
 			// loadButton
 			// 
@@ -73,6 +74,7 @@ namespace Stareater.GUI
 			this.loadButton.Size = new System.Drawing.Size(80, 80);
 			this.loadButton.TabIndex = 2;
 			this.loadButton.UseVisualStyleBackColor = true;
+			this.loadButton.Click += new System.EventHandler(this.LoadButtonClick);
 			// 
 			// FormSaveLoad
 			// 

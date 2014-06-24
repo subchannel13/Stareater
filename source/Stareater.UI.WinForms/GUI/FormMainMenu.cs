@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.IO.Compression;
 using Stareater.AppData;
+using Stareater.Controllers;
 using Stareater.Localization;
 
 namespace Stareater.GUI
@@ -15,6 +16,7 @@ namespace Stareater.GUI
 	internal partial class FormMainMenu : Form
 	{
 		private Font titleFont;
+		private GameController controller = null;
 		internal MainMenuResult Result { get; private set; }
 
 		public FormMainMenu()
@@ -23,6 +25,11 @@ namespace Stareater.GUI
 			this.titleFont = titleLabel.Font;
 
 			setLanguage(SettingsWinforms.Get.Language);
+		}
+		
+		public FormMainMenu(GameController controller) : this()
+		{
+			this.controller = controller;
 		}
 
 		private void setLanguage(Language newLanguage)
@@ -35,7 +42,6 @@ namespace Stareater.GUI
 			titleLabel.Text = context["Title"].Text();
 
 			newGameButton.Text = context["NewGame"].Text();
-			loadGameButton.Text = context["Load"].Text();
 			saveGameButton.Text = context["Save"].Text();
 			settingsButton.Text = context["Settings"].Text();
 			exitButton.Text = context["Quit"].Text();
@@ -56,13 +62,10 @@ namespace Stareater.GUI
 
 		private void saveGameButton_Click(object sender, EventArgs e)
 		{
-			this.Result = MainMenuResult.SaveGame;
-			this.DialogResult = DialogResult.OK;
-		}
-
-		private void loadGameButton_Click(object sender, EventArgs e)
-		{
-			this.Result = MainMenuResult.LoadGame;
+			using(var form = new FormSaveLoad(new SavesController(controller)))
+				if (form.ShowDialog() == DialogResult.OK)
+					this.Result = form.Result;
+			
 			this.DialogResult = DialogResult.OK;
 		}
 

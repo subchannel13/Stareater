@@ -93,7 +93,7 @@ namespace Stareater.GUI
 			postDelayedEvent(showMainMenu);
 		}
 		
-		private void designsToolStripMenuItemClick(object sender, EventArgs e)
+		private void designsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using(var form = new FormShipDesignList(controller))
 				form.ShowDialog();
@@ -108,6 +108,12 @@ namespace Stareater.GUI
 		private void researchToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using(var form = new FormResearch(controller))
+				form.ShowDialog();
+		}
+		
+		private void saveLoadToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using(var form = new FormSaveLoad(new SavesController(controller)))
 				form.ShowDialog();
 		}
 
@@ -129,7 +135,7 @@ namespace Stareater.GUI
 
 		private void showMainMenu()
 		{
-			using (FormMainMenu form = new FormMainMenu())
+			using (FormMainMenu form = new FormMainMenu(this.controller))
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
 					switch (form.Result) {
 						case MainMenuResult.NewGame:
