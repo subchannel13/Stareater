@@ -102,7 +102,7 @@
 			this.designsToolStripMenuItem.Name = "designsToolStripMenuItem";
 			this.designsToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
 			this.designsToolStripMenuItem.Text = "Designs";
-			this.designsToolStripMenuItem.Click += new System.EventHandler(this.designsToolStripMenuItemClick);
+			this.designsToolStripMenuItem.Click += new System.EventHandler(this.designsToolStripMenuItem_Click);
 			// 
 			// developmentToolStripMenuItem
 			// 

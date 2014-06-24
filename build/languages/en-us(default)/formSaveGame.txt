@@ -1,0 +1,7 @@
+﻿:FormSaveLoad
+
+Turn {
+Turn {=turn}}
+
+NewSave = New slot
+-

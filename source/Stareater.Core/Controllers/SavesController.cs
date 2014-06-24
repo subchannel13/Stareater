@@ -13,6 +13,11 @@ namespace Stareater.Controllers
 			this.gameController = gameController;
 		}
 		
+		public bool CanSave
+		{
+			get { return true; }
+		}
+		
 		public IEnumerable<SavedGameData> Games
 		{
 			get
