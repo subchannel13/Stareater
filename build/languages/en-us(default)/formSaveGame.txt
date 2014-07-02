@@ -4,4 +4,5 @@ Turn {
 Turn {=turn}}
 
 NewSave = New slot
+NoSaves = No saved games
 -

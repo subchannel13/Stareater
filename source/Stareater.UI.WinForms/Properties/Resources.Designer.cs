@@ -115,5 +115,12 @@ namespace Stareater.Properties {
 				return ((System.Drawing.Bitmap)(obj));
 			}
 		}
+		
+		internal static System.Drawing.Bitmap newSave {
+			get {
+				object obj = ResourceManager.GetObject("newSave", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
 	}
 }

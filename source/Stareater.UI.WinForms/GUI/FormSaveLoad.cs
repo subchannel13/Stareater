@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+
+using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Data;
+using Stareater.Localization;
 
 namespace Stareater.GUI
 {
@@ -11,6 +15,7 @@ namespace Stareater.GUI
 		public const string LanguageContext = "FormSaveLoad";
 		
 		private SavesController controller;
+		private Label noSavedMessage = null;
 		
 		internal MainMenuResult Result { get; private set; }
 		
@@ -29,6 +34,7 @@ namespace Stareater.GUI
 			foreach (var data in controller.Games)
 				addSavedGame(data);
 			
+			updateNoSaveMessage();
 		}
 		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -44,6 +50,21 @@ namespace Stareater.GUI
 			itemView.Data = gameData;
 			
 			gameList.Controls.Add(itemView);
+		}
+		
+		private void updateNoSaveMessage()
+		{
+			if (noSavedMessage == null && controller.Games.Count() == 0)
+			{
+				Context context = SettingsWinforms.Get.Language[FormSaveLoad.LanguageContext];
+				
+				noSavedMessage = new Label();
+				noSavedMessage.Size = new Size(298, 23);
+				noSavedMessage.TextAlign = ContentAlignment.TopCenter;
+				noSavedMessage.Text = context["NoSaves"].Text();
+				
+				gameList.Controls.Add(noSavedMessage);
+			}
 		}
 		
 		void SaveButtonClick(object sender, EventArgs e)
