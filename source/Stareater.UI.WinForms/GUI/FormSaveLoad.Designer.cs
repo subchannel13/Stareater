@@ -57,6 +57,7 @@ namespace Stareater.GUI
 			this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.saveButton.BackgroundImage = global::Stareater.Properties.Resources.arrowLast;
 			this.saveButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.saveButton.Enabled = false;
 			this.saveButton.Location = new System.Drawing.Point(341, 93);
 			this.saveButton.Name = "saveButton";
 			this.saveButton.Size = new System.Drawing.Size(80, 80);
@@ -69,6 +70,7 @@ namespace Stareater.GUI
 			this.loadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.loadButton.BackgroundImage = global::Stareater.Properties.Resources.arrowUp;
 			this.loadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.loadButton.Enabled = false;
 			this.loadButton.Location = new System.Drawing.Point(341, 179);
 			this.loadButton.Name = "loadButton";
 			this.loadButton.Size = new System.Drawing.Size(80, 80);

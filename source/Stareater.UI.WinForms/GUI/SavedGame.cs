@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+
 using Stareater.AppData;
 using Stareater.Controllers.Data;
 using Stareater.Localization;
+using Stareater.Properties;
 using Stareater.Utils.Collections;
 
 namespace Stareater.GUI
@@ -38,6 +40,7 @@ namespace Stareater.GUI
 				}
 				else
 				{
+					this.preview.Image = Resources.newSave;
 					this.gameName.Text = "";
 					this.turnText.Text = context["NewSave"].Text();
 				}

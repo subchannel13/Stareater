@@ -15,7 +15,7 @@ namespace Stareater.Controllers
 		
 		public bool CanSave
 		{
-			get { return true; }
+			get { return gameController.State == GameState.Running; }
 		}
 		
 		public IEnumerable<SavedGameData> Games

@@ -81,7 +81,7 @@ namespace Stareater.GUI
 			this.Controls.Add(this.turnText);
 			this.Controls.Add(this.preview);
 			this.Name = "SavedGame";
-			this.Size = new System.Drawing.Size(298, 73);
+			this.Size = new System.Drawing.Size(298, 76);
 			((System.ComponentModel.ISupportInitialize)(this.preview)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
