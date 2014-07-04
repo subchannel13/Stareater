@@ -16,6 +16,7 @@ namespace Stareater.GUI
 		
 		private SavesController controller;
 		private Label noSavedMessage = null;
+		private SavedGameItemView lastSelected = null;
 		
 		internal MainMenuResult Result { get; private set; }
 		
@@ -28,8 +29,10 @@ namespace Stareater.GUI
 		{
 			this.controller = controller;
 			
-			if (controller.CanSave)
+			if (controller.CanSave) {
 				addSavedGame(null);
+				this.saveButton.Enabled = true;
+			}
 			
 			foreach (var data in controller.Games)
 				addSavedGame(data);
@@ -46,7 +49,7 @@ namespace Stareater.GUI
 		
 		private void addSavedGame(SavedGameData gameData)
 		{
-			var itemView = new SavedGame();
+			var itemView = new SavedGameItemView();
 			itemView.Data = gameData;
 			
 			gameList.Controls.Add(itemView);
@@ -67,16 +70,33 @@ namespace Stareater.GUI
 			}
 		}
 		
-		void SaveButtonClick(object sender, EventArgs e)
+		private void saveButton_Click(object sender, EventArgs e)
 		{
 			this.Result = MainMenuResult.SaveGame;
 			this.DialogResult = DialogResult.OK;
 		}
 		
-		void LoadButtonClick(object sender, EventArgs e)
+		private void loadButton_Click(object sender, EventArgs e)
 		{
 			this.Result = MainMenuResult.LoadGame;
 			this.DialogResult = DialogResult.OK;
+		}
+		
+		private void gameList_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (this.gameList.SelectedItem is Label)
+				this.loadButton.Enabled = false;
+			
+			if (this.gameList.SelectedItem == null || !(this.gameList.SelectedItem is SavedGameItemView) || this.gameList.SelectedItem == this.lastSelected)
+				return;
+			
+			if (this.lastSelected != null)
+				this.lastSelected.Deselect();
+			
+			this.lastSelected = this.gameList.SelectedItem as SavedGameItemView;
+			this.lastSelected.OnSelect();
+			
+			this.loadButton.Enabled = (this.lastSelected.Data != null);
 		}
 	}
 }

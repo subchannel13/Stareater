@@ -51,32 +51,33 @@ namespace Stareater.GUI
 			this.gameList.SelectedIndex = -1;
 			this.gameList.Size = new System.Drawing.Size(323, 325);
 			this.gameList.TabIndex = 0;
+			this.gameList.SelectedIndexChanged += new System.EventHandler(this.gameList_SelectedIndexChanged);
 			// 
 			// saveButton
 			// 
 			this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.saveButton.BackgroundImage = global::Stareater.Properties.Resources.arrowLast;
-			this.saveButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.saveButton.BackgroundImage = global::Stareater.Properties.Resources.save;
+			this.saveButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
 			this.saveButton.Enabled = false;
 			this.saveButton.Location = new System.Drawing.Point(341, 93);
 			this.saveButton.Name = "saveButton";
 			this.saveButton.Size = new System.Drawing.Size(80, 80);
 			this.saveButton.TabIndex = 1;
 			this.saveButton.UseVisualStyleBackColor = true;
-			this.saveButton.Click += new System.EventHandler(this.SaveButtonClick);
+			this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
 			// 
 			// loadButton
 			// 
 			this.loadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.loadButton.BackgroundImage = global::Stareater.Properties.Resources.arrowUp;
-			this.loadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.loadButton.BackgroundImage = global::Stareater.Properties.Resources.load;
+			this.loadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
 			this.loadButton.Enabled = false;
 			this.loadButton.Location = new System.Drawing.Point(341, 179);
 			this.loadButton.Name = "loadButton";
 			this.loadButton.Size = new System.Drawing.Size(80, 80);
 			this.loadButton.TabIndex = 2;
 			this.loadButton.UseVisualStyleBackColor = true;
-			this.loadButton.Click += new System.EventHandler(this.LoadButtonClick);
+			this.loadButton.Click += new System.EventHandler(this.loadButton_Click);
 			// 
 			// FormSaveLoad
 			// 

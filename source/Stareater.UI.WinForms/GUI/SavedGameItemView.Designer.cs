@@ -1,14 +1,6 @@
-﻿/*
- * Created by SharpDevelop.
- * User: ekraiva
- * Date: 13.6.2014.
- * Time: 13:29
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-namespace Stareater.GUI
+﻿namespace Stareater.GUI
 {
-	partial class SavedGame
+	partial class SavedGameItemView
 	{
 		/// <summary>
 		/// Designer variable used to keep track of non-visual components.
@@ -37,8 +29,8 @@ namespace Stareater.GUI
 		private void InitializeComponent()
 		{
 			this.preview = new System.Windows.Forms.PictureBox();
-			this.gameName = new System.Windows.Forms.Label();
 			this.turnText = new System.Windows.Forms.Label();
+			this.gameName = new System.Windows.Forms.TextBox();
 			((System.ComponentModel.ISupportInitialize)(this.preview)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -52,27 +44,25 @@ namespace Stareater.GUI
 			this.preview.TabStop = false;
 			this.preview.Click += new System.EventHandler(this.PreviewClick);
 			// 
-			// gameName
-			// 
-			this.gameName.AutoSize = true;
-			this.gameName.Location = new System.Drawing.Point(78, 3);
-			this.gameName.Name = "gameName";
-			this.gameName.Size = new System.Drawing.Size(88, 13);
-			this.gameName.TabIndex = 8;
-			this.gameName.Text = "Game name here";
-			this.gameName.Click += new System.EventHandler(this.GameNameClick);
-			// 
 			// turnText
 			// 
 			this.turnText.AutoSize = true;
-			this.turnText.Location = new System.Drawing.Point(78, 16);
+			this.turnText.Location = new System.Drawing.Point(78, 26);
 			this.turnText.Name = "turnText";
 			this.turnText.Size = new System.Drawing.Size(50, 13);
 			this.turnText.TabIndex = 7;
 			this.turnText.Text = "Turn 251";
 			this.turnText.Click += new System.EventHandler(this.TurnTextClick);
 			// 
-			// SavedGame
+			// gameName
+			// 
+			this.gameName.Location = new System.Drawing.Point(78, 3);
+			this.gameName.Name = "gameName";
+			this.gameName.Size = new System.Drawing.Size(217, 20);
+			this.gameName.TabIndex = 9;
+			this.gameName.Text = "Game name here";
+			// 
+			// SavedGameItemView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -80,14 +70,14 @@ namespace Stareater.GUI
 			this.Controls.Add(this.gameName);
 			this.Controls.Add(this.turnText);
 			this.Controls.Add(this.preview);
-			this.Name = "SavedGame";
+			this.Name = "SavedGameItemView";
 			this.Size = new System.Drawing.Size(298, 76);
 			((System.ComponentModel.ISupportInitialize)(this.preview)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.TextBox gameName;
 		private System.Windows.Forms.Label turnText;
-		private System.Windows.Forms.Label gameName;
 		private System.Windows.Forms.PictureBox preview;
 	}
 }
