@@ -109,6 +109,13 @@ namespace Stareater.Properties {
 			}
 		}
 		
+		internal static System.Drawing.Bitmap load {
+			get {
+				object obj = ResourceManager.GetObject("load", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
 		internal static System.Drawing.Bitmap newDesign {
 			get {
 				object obj = ResourceManager.GetObject("newDesign", resourceCulture);
@@ -119,6 +126,13 @@ namespace Stareater.Properties {
 		internal static System.Drawing.Bitmap newSave {
 			get {
 				object obj = ResourceManager.GetObject("newSave", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		internal static System.Drawing.Bitmap save {
+			get {
+				object obj = ResourceManager.GetObject("save", resourceCulture);
 				return ((System.Drawing.Bitmap)(obj));
 			}
 		}

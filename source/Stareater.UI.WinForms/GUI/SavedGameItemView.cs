@@ -12,11 +12,11 @@ using Stareater.Utils.Collections;
 
 namespace Stareater.GUI
 {
-	public partial class SavedGame : UserControl
+	public partial class SavedGameItemView : UserControl
 	{
 		private SavedGameData gameData;
 		
-		public SavedGame()
+		public SavedGameItemView()
 		{
 			InitializeComponent();
 		}
@@ -45,6 +45,17 @@ namespace Stareater.GUI
 					this.turnText.Text = context["NewSave"].Text();
 				}
 			}
+		}
+		
+		public void OnSelect()
+		{
+			this.gameName.Enabled = true;
+			this.gameName.Focus();
+		}
+		
+		public void Deselect()
+		{
+			this.gameName.Enabled = false;
 		}
 		
 		void PreviewClick(object sender, EventArgs e)
