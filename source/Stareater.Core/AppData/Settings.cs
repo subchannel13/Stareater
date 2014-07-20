@@ -38,8 +38,8 @@ namespace Stareater.AppData
 		#region Initialization
 		protected Settings(TaggableQueue<object, IkadnBaseObject> data)
 		{
-			if (data.CountOf(BaseSettingsKey) > 0) {
-				var baseData = data.Dequeue(BaseSettingsKey).To<IkonComposite>();
+			if (data.CountOf(BaseSettingsTag) > 0) {
+				var baseData = data.Dequeue(BaseSettingsTag).To<IkonComposite>();
 				string langCode = baseData[LanguageKey].To<string>();
 				this.Language = LocalizationManifest.Get.LoadLanguage(langCode); //FIXME(later): Avoid implicit heavy initialization
 				this.LastGame = new LastGameInfo(baseData[LastGameKey].To<IkonComposite>());
@@ -79,7 +79,7 @@ namespace Stareater.AppData
 
 		protected virtual void buildSaveData(IkadnWriter writer)
 		{
-			IkonComposite baseSettings = new IkonComposite(BaseSettingsKey);
+			IkonComposite baseSettings = new IkonComposite(BaseSettingsTag);
 			baseSettings.Add(LanguageKey, new IkonText(Language.Code));
 			baseSettings.Add(LastGameKey, LastGame.BuildSaveData());
 			baseSettings.Compose(writer);
@@ -87,7 +87,7 @@ namespace Stareater.AppData
 		#endregion
 		
 		#region Attribute keys
-		const string BaseSettingsKey = "base";
+		const string BaseSettingsTag = "base";
 		const string LanguageKey = "language";
 		const string LastGameKey = "lastgame";
 		#endregion

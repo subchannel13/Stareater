@@ -63,7 +63,12 @@ namespace Stareater.Controllers
 			
 			restartAiGalaxyPhase();
 		}
-		
+
+		internal Game GameInstance
+		{
+			get { return (this.IsReadOnly) ? this.endTurnCopy.game : this.game; }
+		}
+
 		#region Turn processing
 		public GameState State { get; private set; }
 		
@@ -139,14 +144,12 @@ namespace Stareater.Controllers
 		#region Map related
 		public bool IsStarVisited(StarData star)
 		{
-			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
-
-			return game.CurrentPlayer.Intelligence.About(star).IsVisited;
+			return this.GameInstance.CurrentPlayer.Intelligence.About(star).IsVisited;
 		}
 		
 		public IEnumerable<ColonyInfo> KnownColonies(StarData star)
 		{
-			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+			var game = this.GameInstance;
 			var starKnowledge = game.CurrentPlayer.Intelligence.About(star);
 			
 			foreach(var colony in game.States.Colonies.AtStar(star))
@@ -156,18 +159,15 @@ namespace Stareater.Controllers
 		
 		public StarSystemController OpenStarSystem(StarData star)
 		{
-			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
-
-			return new StarSystemController(game, star, IsReadOnly);
+			return new StarSystemController(this.GameInstance, star, IsReadOnly);
 		}
 		
 		public StarSystemController OpenStarSystem(float x, float y, float searchRadius)
 		{
-			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 			StarData closest = closestStar(x, y, searchRadius);
 			
 			if (closest != null)
-				return new StarSystemController(game, closest, IsReadOnly);
+				return new StarSystemController(this.GameInstance, closest, IsReadOnly);
 			else
 				return null;
 		}
@@ -184,16 +184,16 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
 				var lastSelectedStar = (this.IsReadOnly) ? this.endTurnCopy.lastSelectedStar : this.lastSelectedStar;
 
-				return lastSelectedStar[game.CurrentPlayer];
+				return lastSelectedStar[this.GameInstance.CurrentPlayer];
 			}
 			private set
 			{
-				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+				if (this.IsReadOnly)
+					return;
 				
-				this.lastSelectedStar[game.CurrentPlayer] = value;
+				this.lastSelectedStar[this.game.CurrentPlayer] = value;
 			}
 		}
 		
@@ -201,9 +201,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game; 
-				
-				return game.States.Stars.Count;
+				return this.GameInstance.States.Stars.Count;
 			}
 		}
 		
@@ -211,7 +209,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+				var game = this.GameInstance;
 				
 				//TODO(v0.5) add fleets of other players 
 				return game.States.IdleFleets.OwnedBy(game.CurrentPlayer).Select(x => new IdleFleetInfo(x));
@@ -222,9 +220,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
-				
-				return game.States.Stars;
+				return this.GameInstance.States.Stars;
 			}
 		}
 
@@ -232,16 +228,14 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
-
-				foreach (var wormhole in game.States.Wormholes)
+				foreach (var wormhole in this.GameInstance.States.Wormholes)
 					yield return wormhole;
 			}
 		}
 
 		private StarData closestStar(float x, float y, float searchRadius)
 		{
-			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+			var game = this.GameInstance;
 
 			Vector2D point = new Vector2D(x, y);
 			StarData closestStar = game.States.Stars.First();
@@ -259,11 +253,12 @@ namespace Stareater.Controllers
 		#region Ship designs
 		public ShipDesignController NewDesign()
 		{
-			return new ShipDesignController(game);
+			return new ShipDesignController(game); //FIXME(v0.5) check if the game is read only 
 		}
 		
 		public IEnumerable<DesignInfo> ShipsDesigns()
 		{
+			var game = this.GameInstance;
 			return game.States.Designs.OwnedBy(game.CurrentPlayer).Select(x => new DesignInfo(x));
 		}
 		#endregion
@@ -271,7 +266,7 @@ namespace Stareater.Controllers
 		#region Development related
 		public IEnumerable<TechnologyTopic> DevelopmentTopics()
 		{
-			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+			var game = this.GameInstance;
 			var playerTechs = game.Derivates.Of(game.CurrentPlayer).DevelopmentOrder(game.States.TechnologyAdvances);
 		
 			if (game.Derivates.Of(game.CurrentPlayer).DevelopmentPlan == null)
@@ -311,23 +306,20 @@ namespace Stareater.Controllers
 		
 		public DevelopmentFocusInfo[] DevelopmentFocusOptions()
 		{
-			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
-			
-			return game.Statics.DevelopmentFocusOptions.Select(x => new DevelopmentFocusInfo(x)).ToArray();
+			return this.GameInstance.Statics.DevelopmentFocusOptions.Select(x => new DevelopmentFocusInfo(x)).ToArray();
 		}
 		
 		public int DevelopmentFocusIndex 
 		{ 
 			get
 			{
-				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
-				
-				return game.CurrentPlayer.Orders.DevelopmentFocusIndex;
+				return this.GameInstance.CurrentPlayer.Orders.DevelopmentFocusIndex;
 			}
 			
 			set
 			{
-				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+				if (this.IsReadOnly)
+					return;
 				
 				if (value >= 0 && value < game.Statics.DevelopmentFocusOptions.Count)
 					game.CurrentPlayer.Orders.DevelopmentFocusIndex = value;
@@ -340,7 +332,7 @@ namespace Stareater.Controllers
 		{ 
 			get
 			{
-				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+				var game = this.GameInstance;
 				
 				return game.Derivates.Colonies.OwnedBy(game.CurrentPlayer).Sum(x => x.Development);
 			}
@@ -350,7 +342,7 @@ namespace Stareater.Controllers
 		#region Research related
 		public IEnumerable<TechnologyTopic> ResearchTopics()
 		{
-			var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+			var game = this.GameInstance;
 			var playerTechs = game.Derivates.Of(game.CurrentPlayer).ResearchOrder(game.States.TechnologyAdvances);
 		
 			if (game.Derivates.Of(game.CurrentPlayer).ResearchPlan == null)
@@ -374,7 +366,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
+				var game = this.GameInstance;
 				string focused = game.CurrentPlayer.Orders.ResearchFocus;
 				var playerTechs = game.Derivates.Of(game.CurrentPlayer).ResearchOrder(game.States.TechnologyAdvances).ToList();
 				
@@ -397,16 +389,6 @@ namespace Stareater.Controllers
 				}
 			}
 		}
-		
-		/*public double ResearchPoints 
-		{ 
-			get
-			{
-				var game = (this.IsReadOnly) ? this.endTurnCopy.game : this.game;
-				
-				return game.Derivates.Of(game.CurrentPlayer).ResearchPlan.Sum(x => x.InvestedPoints);
-			}
-		}*/
 		#endregion
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Ikadn.Ikon.Types;
 
 namespace Stareater.Localization.StarNames
 {
@@ -18,5 +19,18 @@ namespace Stareater.Localization.StarNames
 		{
 			return language[ContextName][KeyPrefix + properNameIndex.ToString()].Text();
 		}
+
+		#region Saving
+		public Ikadn.IkadnBaseObject Save()
+		{
+			IkonComposite data = new IkonComposite(SaveTag);
+			data.Add(IndexKey, new IkonInteger(this.properNameIndex));
+			
+			return data;
+		}
+
+		public const string SaveTag = "Proper";
+		private const string IndexKey = "index";
+		#endregion
 	}
 }

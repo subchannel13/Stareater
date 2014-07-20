@@ -1,4 +1,6 @@
 ﻿ 
+
+using Ikadn.Ikon.Types;
 using System;
 using System.Linq;
 using System.Drawing;
@@ -13,24 +15,53 @@ namespace Stareater.Galaxy
 		public float ImageSizeScale { get; private set; }
 		public IStarName Name { get; private set; }
 		public Vector2D Position { get; private set; }
-		public double Radiation { get; private set; }
 
-		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position, double radiation) 
+		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position) 
 		{
 			this.Color = color;
 			this.ImageSizeScale = imageSizeScale;
 			this.Name = name;
 			this.Position = position;
-			this.Radiation = radiation;
  
 		} 
-
 
 		internal StarData Copy() 
 		{
-			return new StarData(this.Color, this.ImageSizeScale, this.Name, this.Position, this.Radiation);
+			return new StarData(this.Color, this.ImageSizeScale, this.Name, this.Position);
  
 		} 
  
+
+		#region Saving
+		public IkonComposite Save() 
+		{
+			IkonComposite data = new IkonComposite(TableTag);
+			
+			var colorData = new IkonArray();
+			colorData.Add(new IkonInteger(Color.R));
+			colorData.Add(new IkonInteger(Color.G));
+			colorData.Add(new IkonInteger(Color.B));
+			data.Add(ColorKey, colorData);
+
+			data.Add(Size, new IkonFloat(this.ImageSizeScale));
+
+			data.Add(NameKey, Name.Save());
+
+			var positionData = new IkonArray();
+			positionData.Add(new IkonFloat(Position.X));
+			positionData.Add(new IkonFloat(Position.Y));
+			data.Add(PositionKey, positionData);
+ 
+
+			return data;
+		}
+
+		private const string TableTag = "StarData"; 
+		private const string ColorKey = "color";
+		private const string Size = "size";
+		private const string NameKey = "name";
+		private const string PositionKey = "pos";
+ 
+		#endregion
 	}
 }

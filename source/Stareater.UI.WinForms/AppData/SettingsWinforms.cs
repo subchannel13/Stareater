@@ -27,9 +27,9 @@ namespace Stareater.AppData
 		public SettingsWinforms(TaggableQueue<object, IkadnBaseObject> data)
 			:base(data)
 		{
-			if (data.CountOf(WinformsSettingsKey) > 0)
+			if (data.CountOf(WinformsSettingsTag) > 0)
 			{
-				IkonComposite wfSpecificData = data.Dequeue(WinformsSettingsKey).To<IkonComposite>();
+				IkonComposite wfSpecificData = data.Dequeue(WinformsSettingsTag).To<IkonComposite>();
 				GuiScale = wfSpecificData[GuiScaleKey].To<float>();
 			}
 			else
@@ -47,7 +47,7 @@ namespace Stareater.AppData
 		}
 
 		#region Attribute keys
-		const string WinformsSettingsKey = "winforms";
+		const string WinformsSettingsTag = "winforms";
 		const string GuiScaleKey = "guiscale";
 		#endregion
 
@@ -55,7 +55,7 @@ namespace Stareater.AppData
 		{
 			base.buildSaveData(writer);
 
-			IkonComposite settings = new IkonComposite(WinformsSettingsKey);
+			IkonComposite settings = new IkonComposite(WinformsSettingsTag);
 			settings.Add(GuiScaleKey, new IkonFloat(GuiScale));
 			settings.Compose(writer);
 		}

@@ -154,7 +154,9 @@
     <Compile Include="GUI\FormResearch.Designer.cs">
       <DependentUpon>FormResearch.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FormSaveLoad.cs" />
+    <Compile Include="GUI\FormSaveLoad.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI\FormSaveLoad.Designer.cs">
       <DependentUpon>FormSaveLoad.cs</DependentUpon>
     </Compile>
@@ -231,7 +233,9 @@
     <Compile Include="GUI\QueuedConstructionView.Designer.cs">
       <DependentUpon>QueuedConstructionView.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\SavedGameItemView.cs" />
+    <Compile Include="GUI\SavedGameItemView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="GUI\SavedGameItemView.Designer.cs">
       <DependentUpon>SavedGameItemView.cs</DependentUpon>
     </Compile>

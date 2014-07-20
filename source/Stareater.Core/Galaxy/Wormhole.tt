@@ -3,10 +3,10 @@
 	
 	modifer = "public";
 	usings.Add("System.Collections.Generic");
-	usings.Add("Stareater.Galaxy");
+	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.Players");
 	
-	Generate("Stareater.GameData", "Wormhole",
+	Generate("Stareater.Galaxy", "Wormhole",
 		new DataInfo("FromStar", "StarData"),
 		new DataInfo("ToStar", "StarData")
 	);

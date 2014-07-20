@@ -1,302 +1,18 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+﻿<#@ include file="$(ProjectDir)/Utils/StateTableField.tt" #>
 <#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Text" #> 
 <#@ import namespace="System.Collections.Generic" #>
 <#+
 private string modifer = "";
-private List<string> usings = new List<string>();
+private List<string> usings = new List<string>(new string[] { "Ikadn.Ikon.Types" });
 private List<string> genericTypes = new List<string>();
 
 private string SuperClass = null;
+private string TableTag = null;
+
 private bool initWithDefaultConstructor = false;
 
 private bool SuperClassHasCopyConstructor = false;
-
-const string Default = "#Default#";
-
-class DataInfo
-{
-	private string name;
-	
-	// Type data
-	public string type;
-	public string[] GenericParams = null;
-	public string ConcreteType = null;
-	public string[] GenericConcreteParams = null;
-	
-	// Field data
-	public string BaseReadCode = null;
-	public bool PublicGet = true;
-	public bool PublicSet = false;
-
-	// Initialization data
-	public bool BaseInit = false;
-	public string[] ExtraInitParams = null;	//null -> same as type, [0] -> none
-	public string InitPassLogic = null; //null -> no pass, Default -> pass value
-	public string InitLogic = null;	//null -> copy value, Default -> default constructor
-	
-	// Copy requirements
-	public bool CopyMethodNeedGalaxyRemap = false;
-	public bool CopyMethodNeedPlayersRemap = false;
-	
-	//Copy logic
-	public bool BaseCopy = false;
-	public string[] ExtraCopyParams = null;	//null -> none
-	public bool HasCopyMethod = false;
-	public string CopyFromRemap = null;	//null -> pass logic
-	public string CopyPassLogic = null; //null -> no pass, Default -> pass value
-	public string CopyLogic = null;	//null -> copy value, "" -> none
-
-	public DataInfo(string name, string type, params string[] genericParams) {
-		this.name = name;
-		this.type = type;
-		this.GenericParams = genericParams;
-		
-		initRemapCode();
-	}
-	
-	private void initRemapCode()
-	{
-		string readCode = BaseReadCode ?? "this." + Name;
-		
-		if (this.type == "StarData")
-			this.CopyFromRemap = "galaxyRemap.Stars[" + readCode + "]";
-		else if (this.type == "Planet")
-			this.CopyFromRemap = "galaxyRemap.Planets[" + readCode + "]";
-		
-		else if (this.type == "Player")
-			this.CopyFromRemap =  "playersRemap.Players[" + readCode + "]";
-		else if (this.type == "Colony")
-			this.CopyFromRemap =  "playersRemap.Colonies[" + readCode + "]";
-		else if (this.type == "StellarisAdmin")
-			this.CopyFromRemap =  "playersRemap.Stellarises[" + readCode + "]";
-		else if (this.type == "Design")
-			this.CopyFromRemap =  "playersRemap.Designs[" + readCode + "]";
-		else if (this.type == "IdleFleet")
-			this.CopyFromRemap =  "playersRemap.IdleFleets[" + readCode + "]";
-			
-		this.CopyMethodNeedGalaxyRemap = (this.CopyFromRemap != null) && (this.CopyFromRemap.StartsWith("galaxyRemap"));
-		this.CopyMethodNeedPlayersRemap = (this.CopyFromRemap != null) && (this.CopyFromRemap.StartsWith("playersRemap"));		
-	}
-	
-	private string paramName()
-	{
-		if (name.Length > 1) 
-			return name.Substring(0, 1).ToLower() + name.Substring(1);
-			
-		return name.ToLower();
-	}
-	
-	private static void buildGenericParams(StringBuilder sb, string[] genericParams)
-	{
-		var commaOrNot = new FirstCase("", ", ");
-		
-		sb.Append("<");
-		foreach(var gParam in genericParams)
-			sb.Append(commaOrNot.Get + gParam);
-		sb.Append(">");
-	}
-	
-	private void analyzeRemapNeeds(string code)
-	{
-		this.CopyMethodNeedGalaxyRemap = code.Contains("galaxyRemap");
-		this.CopyMethodNeedPlayersRemap = code.Contains("playersRemap");
-	}
-	
-	public string Name
-	{
-		get
-		{
-			if (!PublicGet && !PublicSet)
-				return paramName();
-				
-			return name;
-		}
-	}
-	
-	public string LowerName
-	{
-		get
-		{
-			return paramName();
-		}
-	}
-	
-	public string Type
-	{
-		get
-		{
-			StringBuilder sb = new StringBuilder(this.type);
-
-			if (this.GenericParams != null && this.GenericParams.Length > 0)
-				buildGenericParams(sb, this.GenericParams);
-			
-			return sb.ToString();
-		}
-	}
-	
-	public string Constructor
-	{
-		get
-		{
-			StringBuilder sb = new StringBuilder("new ");
-			string[] genericParams = this.GenericParams;
-			
-			if (this.ConcreteType != null)
-			{
-				sb.Append(this.ConcreteType);
-				if (this.GenericConcreteParams != null)
-					genericParams = this.GenericConcreteParams;
-			}
-			else
-				sb.Append(this.type);
-				
-			if (genericParams != null && genericParams.Length > 0)
-				buildGenericParams(sb, genericParams);
-				
-			sb.Append("();");
-			return sb.ToString();
-		}
-	}
-	
-	/*
-		Type specifications
-	*/
-	public DataInfo SubType(string typeName)
-	{	
-		this.ConcreteType = typeName;
-		return this;
-	}
-	
-	public DataInfo SubTypeGeneric(string typeName, params string[] genericParams)
-	{	
-		if (genericParams != null || genericParams.Length == 0)
-			genericParams = null;
-			
-		this.SubType(typeName);
-		this.GenericConcreteParams = genericParams ?? this.GenericParams;
-		return this;
-	}
-	
-	/*
-		Access specifications
-	*/
-	
-	public DataInfo Private()
-	{
-		this.PublicGet = false;
-		return this;
-	}
-	
-	public DataInfo Public()
-	{
-		this.PublicSet = true;
-		return this;
-	}
-	
-	public DataInfo Base()
-	{
-		this.BaseInit = true;
-		this.InitPassLogic = Default;
-		
-		this.BaseCopy = true;
-		this.CopyPassLogic = Default;
-		return this;
-	}
-	
-	public DataInfo Base(string setCode, string getCode)
-	{
-		this.Base();
-		this.InitPassLogic = setCode;
-		this.BaseReadCode = getCode;
-		this.CopyPassLogic = setCode;
-		
-		initRemapCode();
-		return this;
-	}
-	
-	/*
-		Initialization logic
-	*/
-	
-	public DataInfo Derived(string initCode, params string[] extraConstructorParams)
-	{
-		this.InitLogic = initCode;
-		this.ExtraInitParams = extraConstructorParams;
-		return this;
-	}
-	
-	public DataInfo InitValue(string valueCode)
-	{
-		this.InitLogic = "this." + this.Name + " = " + valueCode + ";";
-		return this;
-	}
-	
-	/*
-		Copy logic specification
-	*/
-	
-	public DataInfo CopyOnly()
-	{
-		this.ExtraInitParams = new string[0];
-		this.InitLogic = this.InitLogic ?? Default;
-		return this;
-	}
-	
-	public DataInfo CopyOnly(string code)
-	{
-		this.CopyOnly();
-		this.CopyCode(code);
-		return this;
-	}
-	
-	public DataInfo CopyCode(string code)
-	{
-		this.CopyLogic = code;
-		this.analyzeRemapNeeds(code);
-		return this;
-	}
-	
-	public DataInfo CopyParamPass()
-	{
-		this.CopyPassLogic = Default;
-		this.ExtraCopyParams = new string[] { this.Type + " " + this.LowerName };
-		return this;
-	}
-	
-	public DataInfo CopyRecursive(bool needGalaxyRemap, bool needPlayerRemap)
-	{
-		this.HasCopyMethod = true;
-		this.CopyMethodNeedGalaxyRemap = needGalaxyRemap;
-		this.CopyMethodNeedPlayersRemap = needPlayerRemap;
-		return this;
-	}
-}
-
-class FirstCase
-{
-	private string firstCase;
-	private string otherCases;
-	private bool first = true;
-	
-	public FirstCase(string firstCase, string otherCases)
-	{
-		this.firstCase = firstCase;
-		this.otherCases = otherCases;
-	}
-	
-	public string Get
-	{
-		get
-		{
-			string result = first ? firstCase : otherCases;
-			first = false;
-			
-			return result;
-		}
-	}
-}
 
 private void WriteUsings()
 {
@@ -536,6 +252,51 @@ private void WriteCopyCall(string className, params DataInfo[] dataInfos)
 	WriteLine(");");
 }
 
+private void WriteSaveMethodDefinition(params DataInfo[] dataInfos)
+{
+	Write("Save(");
+	/*var commaOrNot = new FirstCase("", ", ");
+	
+	if (dataInfos.Any(x => x.CopyMethodNeedPlayersRemap))
+		Write(commaOrNot.Get + "PlayersRemap playersRemap");
+	
+	if (dataInfos.Any(x => x.CopyMethodNeedGalaxyRemap))
+		Write(commaOrNot.Get + "GalaxyRemap galaxyRemap");
+	*/
+	Write(")");
+}
+
+private void WriteSaveMethod(params DataInfo[] dataInfos)
+{
+	var indent = new FirstCase("", "			");
+	var emptyLine = new FirstCase(null, "");
+
+	foreach(var field in dataInfos)
+	{
+		if (emptyLine.Get != null)
+				WriteLine("");
+		
+		if (field.SaveAssignInit != null) {
+			foreach(var line in field.SaveAssignInit)
+				WriteLine(indent.Get + line);
+		}
+
+		Write(indent.Get + "data.Add(" + field.SavingKeyName + ", " + field.SaveAssignLogic.Replace(SaveName, "this." + field.Name) + ");");
+		WriteLine("");
+	}
+}
+
+private void WriteSaveKeys(params DataInfo[] dataInfos)
+{
+	var indent = new FirstCase("", "		");
+
+	foreach(var field in dataInfos)
+	{
+		Write(indent.Get + "private const string " + field.SavingKeyName);
+		WriteLine(" = \"" + (field.SavingKeyValue ?? field.LowerName) + "\";");
+	}
+}
+
 private void Begin(string namespaceName, string className, params DataInfo[] dataInfos)
 {
 	WriteUsings(); #>
@@ -564,6 +325,20 @@ namespace <#+ Write(namespaceName); #>
 			return new <#+ WriteCopyCall(className, dataInfos); #> 
 		} 
 <#+ } #> 
+
+		#region Saving
+		public IkonComposite <#+ WriteSaveMethodDefinition(dataInfos); #> 
+		{
+			IkonComposite data = new IkonComposite(TableTag);
+			
+			<#+ WriteSaveMethod(dataInfos); #> 
+
+			return data;
+		}
+
+		private const string TableTag = "<#+ Write(TableTag ?? className); #>"; 
+		<#+ WriteSaveKeys(dataInfos); #> 
+		#endregion
 <#+
 }
 

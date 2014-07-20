@@ -10,6 +10,7 @@ using Stareater.GameData.Databases.Tables;
 using Stareater.GameLogic;
 using Stareater.Players;
 using Stareater.Utils;
+using Ikadn.Ikon.Types;
 
 namespace Stareater
 {
@@ -137,5 +138,31 @@ namespace Stareater
 			CalculateSpendings();
 			CalculateDerivedEffects();
 		}
+
+		#region Saving
+		internal IkonComposite Save()
+		{
+			IkonComposite gameData = new IkonComposite(SaveGameTag);
+			var playersData = new IkonArray();
+			var ordersData = new IkonArray();
+
+			gameData.Add(StatesKey, this.States.Save());
+
+			foreach(var player in this.Players)
+				playersData.Add(player.Save());
+			gameData.Add(PlayersKey, playersData);
+			
+			foreach(var player in this.Players)
+				ordersData.Add(player.Orders.Save());
+			gameData.Add(OrdersKey, playersData);
+
+			return gameData;
+		}
+
+		private const string SaveGameTag = "Game";
+		private const string OrdersKey = "orders";
+		private const string PlayersKey = "players";
+		private const string StatesKey = "states";
+		#endregion
 	}
 }
