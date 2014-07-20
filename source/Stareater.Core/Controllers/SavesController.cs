@@ -56,7 +56,7 @@ namespace Stareater.Controllers
 			FileInfo saveFile = new FileInfo(SaveFolderPath + fileName);
 			saveFile.Directory.Create();
 
-			using (var output = new StreamWriter(saveFile.OpenWrite())) {
+			using (var output = new StreamWriter(saveFile.Create())) {
 				var gameData = gameController.GameInstance.Save();
 				gameData.Add(SaveGameTitleKey, new IkonText(savedGameData.Title));
 				
