@@ -5,6 +5,7 @@ using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 using Stareater.Galaxy;
 using Stareater.Ships;
+using Ikadn.Ikon.Types;
 
 namespace Stareater.GameData.Databases
 {
@@ -98,5 +99,16 @@ namespace Stareater.GameData.Databases
 			
 			return remap;
 		}
+
+		#region Saving
+		internal IkonComposite Save()
+		{
+			//TODO(v0.5)
+			throw new NotImplementedException();
+		}
+
+		private const string StatesTag = "States";
+		private const string OrdersKey = "orders";
+		#endregion
 	}
 }

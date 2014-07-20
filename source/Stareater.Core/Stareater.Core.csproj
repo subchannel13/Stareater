@@ -136,6 +136,7 @@
     <Compile Include="Galaxy\StarData.cs">
       <DependentUpon>StarData.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Galaxy\StellarisAdmin.cs">
       <DependentUpon>StellarisAdmin.tt</DependentUpon>
@@ -143,6 +144,11 @@
     </Compile>
     <Compile Include="Galaxy\StellarisAdmin.partial.cs" />
     <Compile Include="Galaxy\StarNamer.cs" />
+    <Compile Include="Galaxy\Wormhole.cs">
+      <DependentUpon>Wormhole.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameData\AComponentType.cs" />
     <Compile Include="GameData\BuildingType.cs" />
@@ -254,11 +260,6 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\TechnologyProgress.partial.cs" />
-    <Compile Include="GameData\Wormhole.cs">
-      <DependentUpon>Wormhole.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="GameLogic\ActivityResult.cs">
       <DependentUpon>ActivityResult.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -339,8 +340,14 @@
     <Compile Include="Utils\PluginParameters\SelectorParameter.cs" />
     <Compile Include="Utils\NumberFormatters\ThousandsFormatter.cs" />
     <Compile Include="Utils\StateTable.cs">
-      <DependentUpon>StateTable.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StateTable.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\StateTableField.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StateTableField.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -380,6 +387,10 @@
     <None Include="Galaxy\StellarisAdmin.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StellarisAdmin.cs</LastGenOutput>
+    </None>
+    <None Include="Galaxy\Wormhole.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Wormhole.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\ColonyCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -453,10 +464,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TechnologyProgress.cs</LastGenOutput>
     </None>
-    <None Include="GameData\Wormhole.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Wormhole.cs</LastGenOutput>
-    </None>
     <None Include="GameLogic\ActivityResult.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ActivityResult.cs</LastGenOutput>
@@ -482,6 +489,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StateTable.cs</LastGenOutput>
     </None>
+    <None Include="Utils\StateTableField.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StateTableField.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -489,9 +500,6 @@
   <ItemGroup>
     <None Include="AppData\Expressions\Parser.frame" />
     <None Include="AppData\Expressions\Scanner.frame" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Ships" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

@@ -12,7 +12,7 @@ namespace Stareater.AppData
 		{
 			get
 			{
-				yield break;
+				yield return new SavedGameData("Test", 15);
 			}
 		}
 	}

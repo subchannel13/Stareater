@@ -1,4 +1,5 @@
 ﻿using System;
+using Ikadn.Ikon.Types;
 
 namespace Stareater.Localization.StarNames
 {
@@ -37,5 +38,20 @@ namespace Stareater.Localization.StarNames
 					" " +
 					language[ConstellationsContext][ConstellationKeyPrefix + constellation.ToString() + GenitiveSufix].Text();
 		}
+
+		#region Saving
+		public Ikadn.IkadnBaseObject Save()
+		{
+			IkonComposite data = new IkonComposite(SaveTag);
+			data.Add(ConstellationKey, new IkonInteger(this.constellation));
+			data.Add(DesignationKey, new IkonInteger(this.designation));
+
+			return data;
+		}
+
+		public const string SaveTag = "Constell";
+		private const string ConstellationKey = "const";
+		private const string DesignationKey = "desig";
+		#endregion
 	}
 }

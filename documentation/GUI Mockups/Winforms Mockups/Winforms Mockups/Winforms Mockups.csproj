@@ -128,11 +128,15 @@
     <Compile Include="FormNewGame.Designer.cs">
       <DependentUpon>FormNewGame.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormResearch.cs" />
+    <Compile Include="FormResearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormResearch.Designer.cs">
       <DependentUpon>FormResearch.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormSaveLoad.cs" />
+    <Compile Include="FormSaveLoad.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormSaveLoad.Designer.cs">
       <DependentUpon>FormSaveLoad.cs</DependentUpon>
     </Compile>
@@ -204,7 +208,9 @@
     <Compile Include="ResearchItem.Designer.cs">
       <DependentUpon>ResearchItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="SavedGame.cs" />
+    <Compile Include="SavedGame.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="SavedGame.Designer.cs">
       <DependentUpon>SavedGame.cs</DependentUpon>
     </Compile>

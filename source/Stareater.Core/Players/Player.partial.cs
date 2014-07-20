@@ -15,8 +15,6 @@ namespace Stareater.Players
 		
 		private IEnumerable<object> messages; //TODO(v0.5): make type
 		private Dictionary<object, object> messageFilter; //TODO(v0.5): make type
-
-		//public ChangesDB Orders { get; internal set; }
 		
 		public Player(string name, Color color, Organization organization, PlayerType type)
 		{
@@ -60,25 +58,10 @@ namespace Stareater.Players
 			this.OffscreenControl = null;
 		}
 
-		/*public Player Copy(GalaxyRemap galaxyRemap)
+		internal Ikadn.IkadnBaseObject Save()
 		{
-			Player copy = new Player();
-
-			copy.Name = this.Name;
-			copy.Color = this.Color;
-			copy.organization = this.organization;
-			copy.ControlType = this.ControlType;
-			copy.OffscreenControl = null;
-
-			copy.UnlockedDesigns = new HashSet<PredefinedDesign>(this.UnlockedDesigns);
-			copy.Intelligence  = this.Intelligence.Copy(galaxyRemap);
-
-			copy.messages = null; //TODO(v0.5): make type
-			copy.messageFilter = null; //TODO(v0.5): make type
-
-			copy.Orders = null; //Handled later
-
-			return copy;
-		}*/
+			//TODO(v0.5)
+			throw new NotImplementedException();
+		}
 	}
 }

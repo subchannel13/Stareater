@@ -56,6 +56,7 @@
 			// 
 			// gameName
 			// 
+			this.gameName.Enabled = false;
 			this.gameName.Location = new System.Drawing.Point(78, 3);
 			this.gameName.Name = "gameName";
 			this.gameName.Size = new System.Drawing.Size(217, 20);
@@ -75,6 +76,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.preview)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 		private System.Windows.Forms.TextBox gameName;
 		private System.Windows.Forms.Label turnText;

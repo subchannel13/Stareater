@@ -40,5 +40,11 @@ namespace Stareater.GameData.Databases
 
 			return copy;
 		}
+
+		internal Ikadn.IkadnBaseObject Save()
+		{
+			//TODO(v0.5)
+			throw new NotImplementedException();
+		}
 	}
 }
