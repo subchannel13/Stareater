@@ -103,12 +103,19 @@ namespace Stareater.GameData.Databases
 		#region Saving
 		internal IkonComposite Save()
 		{
-			//TODO(v0.5)
-			throw new NotImplementedException();
+			IkonComposite data = new IkonComposite(StatesTag);
+			
+			var starData = new IkonArray();
+			data.Add(StarsKey, starData);
+			foreach (var star in this.Stars)
+				starData.Add(star.Save());
+			
+			//TODO(v0.5) implement saving of other "tables"
+			return data;
 		}
 
 		private const string StatesTag = "States";
-		private const string OrdersKey = "orders";
+		private const string StarsKey = "stars";
 		#endregion
 	}
 }

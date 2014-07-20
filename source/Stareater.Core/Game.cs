@@ -148,14 +148,15 @@ namespace Stareater
 
 			gameData.Add(StatesKey, this.States.Save());
 
-			foreach(var player in this.Players)
+			//TODO(v0.5) implement
+			/*foreach(var player in this.Players)
 				playersData.Add(player.Save());
 			gameData.Add(PlayersKey, playersData);
 			
 			foreach(var player in this.Players)
 				ordersData.Add(player.Orders.Save());
 			gameData.Add(OrdersKey, playersData);
-
+			*/
 			return gameData;
 		}
 

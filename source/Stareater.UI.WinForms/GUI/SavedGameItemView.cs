@@ -25,7 +25,7 @@ namespace Stareater.GUI
 		{
 			get
 			{
-				return this.gameData;
+				return this.gameData ?? new SavedGameData(this.gameName.Text, 0);
 			}
 			set
 			{
@@ -41,8 +41,8 @@ namespace Stareater.GUI
 				else
 				{
 					this.preview.Image = Resources.newSave;
-					this.gameName.Text = "";
-					this.turnText.Text = context["NewSave"].Text();
+					this.gameName.Text = context["NewSave"].Text();
+					this.turnText.Text = "";
 				}
 			}
 		}
