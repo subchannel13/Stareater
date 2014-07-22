@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ikadn;
+using Ikadn.Ikon.Types;
 using Stareater.Galaxy;
 using Stareater.Utils;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GameData
 {
@@ -33,17 +36,24 @@ namespace Stareater.GameData
 			this.LastVisited = turn;
 		}
 
-		/*internal StarIntelligence Copy(IDictionary<Planet, Planet> planetRemap)
+		private IkadnBaseObject savePlanets(ObjectIndexer indexer)
 		{
-			StarIntelligence copy = new StarIntelligence();
-
-			copy.LastVisited = this.LastVisited;
-			copy.Planets = new Dictionary<Planet, PlanetIntelligence>();
-
-			foreach (var planetIntell in Planets)
-				copy.Planets.Add(planetRemap[planetIntell.Key], planetIntell.Value.Copy());
-
-			return copy;
-		}*/
+			var planets = new IkonArray();
+			
+			foreach(var planetIntell in this.Planets) {
+				var planetIntellData = new IkonComposite(PlanetIntellTag);
+				planetIntellData.Add(PlanetKey, new IkonInteger(indexer.IndexOf(planetIntell.Key)));
+				planetIntellData.Add(PlanetIntellKey, planetIntell.Value.Save());
+				planets.Add(planetIntellData);
+			}
+			
+			return planets;
+		}
+		
+		#region Saving keys
+		private const string PlanetIntellTag = "PlanetIntell"; 
+		private const string PlanetKey = "planet";
+		private const string PlanetIntellKey = "intell";
+ 		#endregion
 	}
 }

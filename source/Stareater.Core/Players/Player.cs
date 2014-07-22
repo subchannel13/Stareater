@@ -1,9 +1,11 @@
 ﻿ 
+using Ikadn.Ikon.Types;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Stareater.GameData.Databases;
 using Stareater.GameData;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Players 
 {
@@ -47,5 +49,42 @@ namespace Stareater.Players
  
 		} 
  
+
+		#region Saving
+		public IkonComposite Save(ObjectIndexer indexer) 
+		{
+			IkonComposite data = new IkonComposite(TableTag);
+			
+			var colorData = new IkonArray();
+			colorData.Add(new IkonInteger(this.Color.R));
+			colorData.Add(new IkonInteger(this.Color.G));
+			colorData.Add(new IkonInteger(this.Color.B));
+			data.Add(ColorKey, colorData);
+
+			data.Add(ControlTypeKey, new IkonComposite(this.ControlType.ToString()));
+
+			data.Add(OffscreenControlKey, this.OffscreenControl != null ? this.OffscreenControl.Save() : new IkonComposite("None"));
+
+			var unlockedDesignsData = new IkonArray();
+			foreach(var item in this.UnlockedDesigns)
+				unlockedDesignsData.Add(new IkonInteger(indexer.IndexOf(item)));
+			data.Add(UnlockedDesignsKey, unlockedDesignsData);
+
+			data.Add(IntelligenceKey, this.Intelligence.Save(indexer));
+ 
+
+			return data;
+		}
+
+		private const string TableTag = "Player"; 
+		private const string NameKey = "name";
+		private const string ColorKey = "color";
+		private const string ControlTypeKey = "controlType";
+		private const string OffscreenControlKey = "offscreenControl";
+		private const string UnlockedDesignsKey = "unlockedDesigns";
+		private const string IntelligenceKey = "intelligence";
+		private const string OrdersKey = "orders";
+ 
+		#endregion
 	}
 }

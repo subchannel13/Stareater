@@ -8,12 +8,12 @@
 	usings.Add("Stareater.Localization.StarNames");
 	
 	modifer = "public partial";
+	SaveNeedsObjectIndexer = false;
 
 	Generate("Stareater.Galaxy", "StarData",
 		new DataInfo("Color", "Color"),
 		new DataInfo("ImageSizeScale", "float").SaveKey("Size"),
-		new DataInfo("Name", "IStarName").SaveAssign("Name.Save()"),
+		new DataInfo("Name", "IStarName").SaveMethod("Save()"),
 		new DataInfo("Position", "Vector2D").SaveKeyValue("pos")
-		//new DataInfo("Radiation", "double")
 	);
 #>

@@ -6,16 +6,17 @@
 	usings.Add("System.Drawing");
 	usings.Add("Stareater.GameData.Databases");
 	usings.Add("Stareater.GameData");
+	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "partial";
 
 	Generate("Stareater.Players", "Player",
 		new DataInfo("Name", "string"),
 		new DataInfo("Color", "Color"),
-		new DataInfo("ControlType", "PlayerControlType").Derived("initPlayerControl(type);", "PlayerType type").CopyCode("copyPlayerControl(original);"),
-		new DataInfo("OffscreenControl", "IOffscreenPlayer").Derived("").CopyCode(""),
+		new DataInfo("ControlType", "PlayerControlType").Derived("initPlayerControl(type);", "PlayerType type").CopyCode("copyPlayerControl(original);").SaveMethodWrap("ToString()", "new IkonComposite(" + Placeholder + ")"),
+		new DataInfo("OffscreenControl", "IOffscreenPlayer").Derived("").CopyCode("").SaveMethod("Save()", "new IkonComposite(\"None\")"),
 		new DataInfo("UnlockedDesigns", "ICollection", "PredefinedDesign").CopyOnly().CopyCode("copyDesigns(original);").SubTypeGeneric("HashSet"),
-		new DataInfo("Intelligence", "Intelligence").CopyOnly().CopyRecursive(true, false),
-		new DataInfo("Orders", "ChangesDB").CopyOnly().CopyCode("").Public()
+		new DataInfo("Intelligence", "Intelligence").CopyOnly().IsState(Flag.GalaxyRemap),
+		new DataInfo("Orders", "ChangesDB").CopyOnly().CopyCode("").Public().NoSaveLoad()
 	);
 #>

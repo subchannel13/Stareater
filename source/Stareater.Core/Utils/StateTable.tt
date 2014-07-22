@@ -1,7 +1,6 @@
 ﻿<#@ include file="$(ProjectDir)/Utils/StateTableField.tt" #>
 <#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Collections.Generic" #>
 <#+
 private string modifer = "";
 private List<string> usings = new List<string>(new string[] { "Ikadn.Ikon.Types" });
@@ -13,6 +12,8 @@ private string TableTag = null;
 private bool initWithDefaultConstructor = false;
 
 private bool SuperClassHasCopyConstructor = false;
+
+private bool SaveNeedsObjectIndexer = true;
 
 private void WriteUsings()
 {
@@ -255,14 +256,10 @@ private void WriteCopyCall(string className, params DataInfo[] dataInfos)
 private void WriteSaveMethodDefinition(params DataInfo[] dataInfos)
 {
 	Write("Save(");
-	/*var commaOrNot = new FirstCase("", ", ");
 	
-	if (dataInfos.Any(x => x.CopyMethodNeedPlayersRemap))
-		Write(commaOrNot.Get + "PlayersRemap playersRemap");
-	
-	if (dataInfos.Any(x => x.CopyMethodNeedGalaxyRemap))
-		Write(commaOrNot.Get + "GalaxyRemap galaxyRemap");
-	*/
+	if (SaveNeedsObjectIndexer)
+		Write("ObjectIndexer indexer");
+		
 	Write(")");
 }
 
@@ -273,6 +270,8 @@ private void WriteSaveMethod(params DataInfo[] dataInfos)
 
 	foreach(var field in dataInfos)
 	{
+		if (field.SaveAssignLogic == null)
+			continue;
 		if (emptyLine.Get != null)
 				WriteLine("");
 		

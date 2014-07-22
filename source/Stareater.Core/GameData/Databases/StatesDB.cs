@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Ikadn.Ikon.Types;
+using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
-using Stareater.Galaxy;
 using Stareater.Ships;
-using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GameData.Databases
 {
@@ -101,7 +103,7 @@ namespace Stareater.GameData.Databases
 		}
 
 		#region Saving
-		internal IkonComposite Save()
+		internal IkonComposite Save(ObjectIndexer indexer)
 		{
 			IkonComposite data = new IkonComposite(StatesTag);
 			
@@ -117,5 +119,6 @@ namespace Stareater.GameData.Databases
 		private const string StatesTag = "States";
 		private const string StarsKey = "stars";
 		#endregion
+		
 	}
 }
