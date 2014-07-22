@@ -4,13 +4,13 @@
 	usings.Add("System");
 	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.Galaxy");
+	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "partial";
-	//CopyNeedsGalaxyRemap = true;
-	//CopyConstructorCallNormalConstructor = false;
-	
+
 	Generate("Stareater.GameData", "StarIntelligence",
 		new DataInfo("LastVisited", "int").CopyOnly().InitValue("NeverVisited"),
-		new DataInfo("Planets", "IDictionary", "Planet", "PlanetIntelligence").Derived("initPlanets(planets);", "IEnumerable<Planet> planets").CopyCode("copyPlanets(original, galaxyRemap);")
+		new DataInfo("Planets", "IDictionary", "Planet", "PlanetIntelligence").Derived("initPlanets(planets);", "IEnumerable<Planet> planets")
+			.CopyCode("copyPlanets(original, galaxyRemap);").SaveAssign("savePlanets(indexer)")
 	);
 #>

@@ -11,6 +11,7 @@ using Stareater.GameLogic;
 using Stareater.Players;
 using Stareater.Utils;
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 
 namespace Stareater
 {
@@ -140,26 +141,40 @@ namespace Stareater
 		}
 
 		#region Saving
+		public ObjectIndexer GenerateIndices()
+		{
+			ObjectIndexer indexer = new ObjectIndexer();
+			
+			indexer.AddAll(Statics.PredeginedDesigns);
+			
+			indexer.AddAll(States.Planets);
+			indexer.AddAll(States.Stars);
+			
+			return indexer;
+		}
+		
 		internal IkonComposite Save()
 		{
+			ObjectIndexer indexer = this.GenerateIndices();
+			
 			IkonComposite gameData = new IkonComposite(SaveGameTag);
 			var playersData = new IkonArray();
 			var ordersData = new IkonArray();
 
-			gameData.Add(StatesKey, this.States.Save());
+			gameData.Add(StatesKey, this.States.Save(indexer));
 
-			//TODO(v0.5) implement
-			/*foreach(var player in this.Players)
-				playersData.Add(player.Save());
+			foreach(var player in this.Players)
+				playersData.Add(player.Save(indexer));
 			gameData.Add(PlayersKey, playersData);
 			
-			foreach(var player in this.Players)
+			//TODO(v0.5) implement
+			/*foreach(var player in this.Players)
 				ordersData.Add(player.Orders.Save());
 			gameData.Add(OrdersKey, playersData);
 			*/
 			return gameData;
 		}
-
+		
 		private const string SaveGameTag = "Game";
 		private const string OrdersKey = "orders";
 		private const string PlayersKey = "players";

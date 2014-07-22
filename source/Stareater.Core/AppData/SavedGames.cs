@@ -12,6 +12,7 @@ namespace Stareater.AppData
 		{
 			get
 			{
+				//TODO(v0.5) read list of files from folder
 				yield return new SavedGameData("Test", 15);
 			}
 		}

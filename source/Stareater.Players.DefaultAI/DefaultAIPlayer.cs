@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Ikadn.Ikon.Types;
 
 namespace Stareater.Players.DefaultAI
 {
@@ -16,6 +17,11 @@ namespace Stareater.Players.DefaultAI
 		public void PlayBattle()
 		{
 			throw new NotImplementedException();
+		}
+		
+		public Ikadn.IkadnBaseObject Save()
+		{
+			return new IkonComposite("None");
 		}
 	}
 }

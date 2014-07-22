@@ -57,11 +57,5 @@ namespace Stareater.Players
 			this.ControlType = original.ControlType;
 			this.OffscreenControl = null;
 		}
-
-		internal Ikadn.IkadnBaseObject Save()
-		{
-			//TODO(v0.5)
-			throw new NotImplementedException();
-		}
 	}
 }

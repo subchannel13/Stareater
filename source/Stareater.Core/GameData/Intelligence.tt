@@ -4,10 +4,11 @@
 	usings.Add("System");
 	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.Galaxy");
+	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "partial";
 	
 	Generate("Stareater.GameData", "Intelligence",
-		new DataInfo("StarKnowledge", "Dictionary<StarData, StarIntelligence>").Private().CopyOnly().CopyCode("copyStars(original, galaxyRemap);")
+		new DataInfo("StarKnowledge", "Dictionary", "StarData", "StarIntelligence").Private().CopyOnly().CopyCode("copyStars(original, galaxyRemap);").SaveAssign("saveStars(indexer)")
 	);
 #>

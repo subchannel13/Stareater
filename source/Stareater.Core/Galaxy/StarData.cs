@@ -1,5 +1,4 @@
 ﻿ 
-
 using Ikadn.Ikon.Types;
 using System;
 using System.Linq;
@@ -25,6 +24,7 @@ namespace Stareater.Galaxy
  
 		} 
 
+
 		internal StarData Copy() 
 		{
 			return new StarData(this.Color, this.ImageSizeScale, this.Name, this.Position);
@@ -38,18 +38,18 @@ namespace Stareater.Galaxy
 			IkonComposite data = new IkonComposite(TableTag);
 			
 			var colorData = new IkonArray();
-			colorData.Add(new IkonInteger(Color.R));
-			colorData.Add(new IkonInteger(Color.G));
-			colorData.Add(new IkonInteger(Color.B));
+			colorData.Add(new IkonInteger(this.Color.R));
+			colorData.Add(new IkonInteger(this.Color.G));
+			colorData.Add(new IkonInteger(this.Color.B));
 			data.Add(ColorKey, colorData);
 
 			data.Add(Size, new IkonFloat(this.ImageSizeScale));
 
-			data.Add(NameKey, Name.Save());
+			data.Add(NameKey, this.Name.Save());
 
 			var positionData = new IkonArray();
-			positionData.Add(new IkonFloat(Position.X));
-			positionData.Add(new IkonFloat(Position.Y));
+			positionData.Add(new IkonFloat(this.Position.X));
+			positionData.Add(new IkonFloat(this.Position.Y));
 			data.Add(PositionKey, positionData);
  
 

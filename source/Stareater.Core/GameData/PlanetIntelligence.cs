@@ -1,4 +1,5 @@
 ﻿ 
+using Ikadn.Ikon.Types;
 using System;
 
 namespace Stareater.GameData 
@@ -28,5 +29,24 @@ namespace Stareater.GameData
  
 		} 
  
+
+		#region Saving
+		public IkonComposite Save() 
+		{
+			IkonComposite data = new IkonComposite(TableTag);
+			
+			data.Add(ExploredKey, new IkonFloat(this.Explored));
+
+			data.Add(LastVisitedKey, new IkonInteger(this.LastVisited));
+ 
+
+			return data;
+		}
+
+		private const string TableTag = "PlanetIntelligence"; 
+		private const string ExploredKey = "explored";
+		private const string LastVisitedKey = "lastVisited";
+ 
+		#endregion
 	}
 }

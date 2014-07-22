@@ -1,7 +1,9 @@
 ﻿ 
+using Ikadn.Ikon.Types;
 using System;
 using System.Collections.Generic;
 using Stareater.Galaxy;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GameData 
 {
@@ -30,5 +32,24 @@ namespace Stareater.GameData
  
 		} 
  
+
+		#region Saving
+		public IkonComposite Save(ObjectIndexer indexer) 
+		{
+			IkonComposite data = new IkonComposite(TableTag);
+			
+			data.Add(LastVisitedKey, new IkonInteger(this.LastVisited));
+
+			data.Add(PlanetsKey, savePlanets(indexer));
+ 
+
+			return data;
+		}
+
+		private const string TableTag = "StarIntelligence"; 
+		private const string LastVisitedKey = "lastVisited";
+		private const string PlanetsKey = "planets";
+ 
+		#endregion
 	}
 }

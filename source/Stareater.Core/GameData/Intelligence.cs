@@ -1,7 +1,9 @@
 ﻿ 
+using Ikadn.Ikon.Types;
 using System;
 using System.Collections.Generic;
 using Stareater.Galaxy;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GameData 
 {
@@ -27,5 +29,21 @@ namespace Stareater.GameData
  
 		} 
  
+
+		#region Saving
+		public IkonComposite Save(ObjectIndexer indexer) 
+		{
+			IkonComposite data = new IkonComposite(TableTag);
+			
+			data.Add(StarKnowledgeKey, saveStars(indexer));
+ 
+
+			return data;
+		}
+
+		private const string TableTag = "Intelligence"; 
+		private const string StarKnowledgeKey = "starKnowledge";
+ 
+		#endregion
 	}
 }
