@@ -152,6 +152,11 @@
     <Compile Include="Game.cs" />
     <Compile Include="GameData\AComponentType.cs" />
     <Compile Include="GameData\BuildingType.cs" />
+    <Compile Include="GameData\PlayerOrders.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlayerOrders.tt</DependentUpon>
+    </Compile>
     <Compile Include="GameData\Constructable.cs" />
     <Compile Include="GameData\Databases\Tables\DerivedStatistic.cs" />
     <Compile Include="GameData\Databases\Tables\DesignCollection.cs">
@@ -199,7 +204,6 @@
     </Compile>
     <Compile Include="GameData\PredefinedDesign.cs" />
     <Compile Include="GameData\SiteType.cs" />
-    <Compile Include="GameData\Databases\ChangesDB.cs" />
     <Compile Include="GameData\Databases\StatesDB.cs" />
     <Compile Include="GameData\Databases\StaticsDB.cs" />
     <Compile Include="GameData\Databases\Tables\ColonyCollection.cs">
@@ -290,6 +294,7 @@
     <Compile Include="Players\Player.cs">
       <DependentUpon>Player.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Players\Player.partial.cs" />
     <Compile Include="Players\PlayerAssets.cs" />
@@ -392,6 +397,11 @@
     <None Include="Galaxy\Wormhole.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Wormhole.cs</LastGenOutput>
+    </None>
+    <Compile Include="GameData\PlayerOrders.partial.cs" />
+    <None Include="GameData\PlayerOrders.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PlayerOrders.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\ColonyCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

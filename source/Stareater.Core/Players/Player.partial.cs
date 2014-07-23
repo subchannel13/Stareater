@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using Stareater.GameData;
-using Stareater.GameData.Databases;
 using Stareater.Galaxy;
 
 namespace Stareater.Players
@@ -31,7 +30,7 @@ namespace Stareater.Players
 			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
 			this.Intelligence = new Intelligence();
 			
-			this.Orders = new ChangesDB();
+			this.Orders = new PlayerOrders();
 		}
 
 		public Player()
