@@ -1,8 +1,10 @@
 ﻿ 
+using Ikadn.Ikon.Types;
 using System;
 using System.Linq;
 using Stareater.GameData;
 using Stareater.Players;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Galaxy 
 {
@@ -25,5 +27,19 @@ namespace Stareater.Galaxy
  
 		} 
  
+
+		#region Saving
+		public override IkonComposite Save(ObjectIndexer indexer) 
+		{
+			var data = base.Save(indexer);
+			return data;
+ 
+		}
+
+		private const string TableTag = "StellarisAdmin"; 
+		private const string StarKey = "star";
+		private const string OwnerKey = "owner";
+ 
+		#endregion
 	}
 }

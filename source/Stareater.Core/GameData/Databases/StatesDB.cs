@@ -103,21 +103,34 @@ namespace Stareater.GameData.Databases
 		}
 
 		#region Saving
+		
 		internal IkonComposite Save(ObjectIndexer indexer)
 		{
 			IkonComposite data = new IkonComposite(StatesTag);
 			
-			var starData = new IkonArray();
-			data.Add(StarsKey, starData);
-			foreach (var star in this.Stars)
-				starData.Add(star.Save());
+			data.Add(StarsKey, new IkonArray().Add(this.Stars.Select(x => x.Save()).ToArray()));
+			data.Add(WormholesKey, new IkonArray().Add(this.Wormholes.Select(x => x.Save(indexer)).ToArray()));
+			data.Add(PlanetsKey, new IkonArray().Add(this.Planets.Select(x => x.Save(indexer)).ToArray()));
 			
-			//TODO(v0.5) implement saving of other "tables"
+			data.Add(ColoniesKey, new IkonArray().Add(this.Colonies.Select(x => x.Save(indexer)).ToArray()));
+			data.Add(StellarisesKey, new IkonArray().Add(this.Stellarises.Select(x => x.Save(indexer)).ToArray()));
+			
+			data.Add(IdleFleetsKey, new IkonArray().Add(this.IdleFleets.Select(x => x.Save(indexer)).ToArray()));
+			data.Add(DesignsKey, new IkonArray().Add(this.Designs.Select(x => x.Save(indexer)).ToArray()));
+			data.Add(TechnologyAdvancesKey, new IkonArray().Add(this.TechnologyAdvances.Select(x => x.Save(indexer)).ToArray()));
+						
 			return data;
 		}
 
 		private const string StatesTag = "States";
+		private const string ColoniesKey = "colonies";
+		private const string DesignsKey = "designs";
+		private const string IdleFleetsKey = "idleFleets";
+		private const string PlanetsKey = "planets";
 		private const string StarsKey = "stars";
+		private const string StellarisesKey = "stellarises";
+		private const string TechnologyAdvancesKey = "techAdvances";
+		private const string WormholesKey = "wormholes";
 		#endregion
 		
 	}

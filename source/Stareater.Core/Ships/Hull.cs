@@ -1,4 +1,6 @@
 ﻿using System;
+using Ikadn;
+using Ikadn.Ikon.Types;
 using Stareater.GameData;
 
 namespace Stareater.Ships
@@ -25,5 +27,21 @@ namespace Stareater.Ships
 				return TypeInfo.ImagePaths[imageIndex];
 			}
 		}
+		
+		public IkadnBaseObject Save()
+		{
+			var data = new IkonComposite(HullTag);
+			
+			data.Add(TypeKey, new IkonText(this.TypeInfo.IdCode));
+			data.Add(LevelKey, new IkonInteger(this.Level));
+			
+			return data;
+		}
+		
+		#region Saving keys
+		private const string HullTag = "Hull"; 
+		private const string TypeKey = "type";
+		private const string LevelKey = "level";
+ 		#endregion
 	}
 }

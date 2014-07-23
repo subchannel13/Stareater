@@ -5,13 +5,14 @@
 	usings.Add("System.Linq");
 	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.Players");
+	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "partial";
 	SuperClass = "AConstructionSite";
 	SuperClassHasCopyConstructor = true;
 	
 	Generate("Stareater.Galaxy", "StellarisAdmin",
-		new DataInfo("Star", "StarData").Base("new LocationBody(star)", "this.Location.Star"),
-		new DataInfo("Owner", "Player").Base()
+		new DataInfo("Star", "StarData").Base("new LocationBody(star)", "this.Location.Star").NoSaveLoad(),
+		new DataInfo("Owner", "Player").Base().NoSaveLoad()
 	);
 #>

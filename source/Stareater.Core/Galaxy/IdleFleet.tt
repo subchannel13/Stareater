@@ -5,12 +5,13 @@
 	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.GameData.Databases.Tables");
 	usings.Add("Stareater.Players");
+	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "partial";
 	
 	Generate("Stareater.Galaxy", "IdleFleet",
-		new DataInfo("Owner", "Player").CopyParamPass(),
-		new DataInfo("Location", "StarData").CopyParamPass(),
-		new DataInfo("Ships", "ShipGroupCollection").CopyOnly().CopyCode("copyShips(original, playersRemap);")
+		new DataInfo("Owner", "Player").CopyParamPass().FromIndexer(),
+		new DataInfo("Location", "StarData").CopyParamPass().FromIndexer(),
+		new DataInfo("Ships", "ShipGroupCollection").CopyOnly().CopyCode("copyShips(original, playersRemap);").SaveMethod("Save(indexer)")
 	);
 #>

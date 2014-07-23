@@ -15,7 +15,7 @@
 		new DataInfo("Color", "Color"),
 		new DataInfo("ControlType", "PlayerControlType").Derived("initPlayerControl(type);", "PlayerType type").CopyCode("copyPlayerControl(original);").SaveMethodWrap("ToString()", "new IkonComposite(" + Placeholder + ")"),
 		new DataInfo("OffscreenControl", "IOffscreenPlayer").Derived("").CopyCode("").SaveMethod("Save()", "new IkonComposite(\"None\")"),
-		new DataInfo("UnlockedDesigns", "ICollection", "PredefinedDesign").CopyOnly().CopyCode("copyDesigns(original);").SubTypeGeneric("HashSet"),
+		new DataInfo("UnlockedDesigns", "ICollection", "PredefinedDesign").CopyOnly().CopyCode("copyDesigns(original);").SubTypeGeneric("HashSet").FromIndexer(),
 		new DataInfo("Intelligence", "Intelligence").CopyOnly().IsState(Flag.GalaxyRemap),
 		new DataInfo("Orders", "ChangesDB").CopyOnly().CopyCode("").Public().NoSaveLoad()
 	);

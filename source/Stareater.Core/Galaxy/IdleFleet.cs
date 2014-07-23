@@ -1,8 +1,10 @@
 ﻿ 
+using Ikadn.Ikon.Types;
 using System;
 using Stareater.GameData;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Galaxy 
 {
@@ -32,5 +34,30 @@ namespace Stareater.Galaxy
  
 		} 
  
+
+		#region Saving
+		public IkonComposite Save(ObjectIndexer indexer) 
+		{
+			IkonComposite data = new IkonComposite(TableTag);
+			
+			data.Add(OwnerKey, new IkonInteger(indexer.IndexOf(this.Owner)));
+
+			data.Add(LocationKey, new IkonInteger(indexer.IndexOf(this.Location)));
+
+			var shipsData = new IkonArray();
+			foreach(var item in this.Ships)
+				shipsData.Add(item.Save(indexer));
+			data.Add(Collection, shipsData);
+ 
+
+			return data;
+		}
+
+		private const string TableTag = "IdleFleet"; 
+		private const string OwnerKey = "owner";
+		private const string LocationKey = "location";
+		private const string Collection = "ships";
+ 
+		#endregion
 	}
 }

@@ -1,13 +1,15 @@
 ﻿<#@ output extension=".cs" #>
 <#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
 	
-	modifer = "public";
 	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.Players");
+	usings.Add("Stareater.Utils.Collections");
+	
+	modifer = "public";
 	
 	Generate("Stareater.Galaxy", "Wormhole",
-		new DataInfo("FromStar", "StarData"),
-		new DataInfo("ToStar", "StarData")
+		new DataInfo("FromStar", "StarData").FromIndexer().SaveKeyValue("from"),
+		new DataInfo("ToStar", "StarData").FromIndexer().SaveKeyValue("to")
 	);
 #>

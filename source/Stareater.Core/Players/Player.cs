@@ -55,6 +55,8 @@ namespace Stareater.Players
 		{
 			IkonComposite data = new IkonComposite(TableTag);
 			
+			data.Add(NameKey, new IkonText(this.Name));
+
 			var colorData = new IkonArray();
 			colorData.Add(new IkonInteger(this.Color.R));
 			colorData.Add(new IkonInteger(this.Color.G));
@@ -68,7 +70,7 @@ namespace Stareater.Players
 			var unlockedDesignsData = new IkonArray();
 			foreach(var item in this.UnlockedDesigns)
 				unlockedDesignsData.Add(new IkonInteger(indexer.IndexOf(item)));
-			data.Add(UnlockedDesignsKey, unlockedDesignsData);
+			data.Add(Collection, unlockedDesignsData);
 
 			data.Add(IntelligenceKey, this.Intelligence.Save(indexer));
  
@@ -81,7 +83,7 @@ namespace Stareater.Players
 		private const string ColorKey = "color";
 		private const string ControlTypeKey = "controlType";
 		private const string OffscreenControlKey = "offscreenControl";
-		private const string UnlockedDesignsKey = "unlockedDesigns";
+		private const string Collection = "unlockedDesigns";
 		private const string IntelligenceKey = "intelligence";
 		private const string OrdersKey = "orders";
  

@@ -1,7 +1,9 @@
 ﻿ 
+using Ikadn.Ikon.Types;
 using System;
 using Stareater.GameData;
 using Stareater.Players;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Galaxy 
 {
@@ -27,5 +29,21 @@ namespace Stareater.Galaxy
  
 		} 
  
+
+		#region Saving
+		public override IkonComposite Save(ObjectIndexer indexer) 
+		{
+			var data = base.Save(indexer);
+			data.Add(PopulationKey, new IkonFloat(this.Population));
+			return data;
+ 
+		}
+
+		private const string TableTag = "Colony"; 
+		private const string PopulationKey = "population";
+		private const string PlanetKey = "planet";
+		private const string OwnerKey = "owner";
+ 
+		#endregion
 	}
 }
