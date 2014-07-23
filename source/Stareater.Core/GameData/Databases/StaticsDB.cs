@@ -200,6 +200,7 @@ namespace Stareater.GameData.Databases
 		private HullType loadHull(IkonComposite data)
 		{
 			return new HullType(
+				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
 				data[HullImages].To<string[]>(),

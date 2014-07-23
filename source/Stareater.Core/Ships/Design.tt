@@ -4,13 +4,14 @@
 	usings.Add("System");
 	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.Players");
+	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "partial";
 
 	Generate("Stareater.Ships", "Design",
-		new DataInfo("Owner", "Player"),
+		new DataInfo("Owner", "Player").FromIndexer(),
 		new DataInfo("Name", "string"),
-		new DataInfo("Hull", "Hull"),
-		new DataInfo("Cost", "double").Derived("initCost(hull);")
+		new DataInfo("Hull", "Hull").SaveMethod("Save()"),
+		new DataInfo("Cost", "double").Derived("initCost(hull);").NoSaveLoad()
 	);
 #>

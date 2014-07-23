@@ -145,8 +145,10 @@ namespace Stareater
 		{
 			ObjectIndexer indexer = new ObjectIndexer();
 			
+			indexer.AddAll(this.Players);
 			indexer.AddAll(Statics.PredeginedDesigns);
 			
+			indexer.AddAll(States.Designs);
 			indexer.AddAll(States.Planets);
 			indexer.AddAll(States.Stars);
 			

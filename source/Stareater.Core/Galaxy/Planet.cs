@@ -1,7 +1,9 @@
 ﻿ 
+using Ikadn.Ikon.Types;
 using System;
 using System.Linq;
 using Stareater.GameData;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Galaxy 
 {
@@ -32,5 +34,36 @@ namespace Stareater.Galaxy
  
 		} 
  
+
+		#region Saving
+		public IkonComposite Save(ObjectIndexer indexer) 
+		{
+			IkonComposite data = new IkonComposite(TableTag);
+			
+			data.Add(StarKey, new IkonInteger(indexer.IndexOf(this.Star)));
+
+			data.Add(PositionKey, new IkonInteger(this.Position));
+
+			data.Add(TypeKey, new IkonComposite(this.Type.ToString()));
+
+			data.Add(SizeKey, new IkonFloat(this.Size));
+
+			data.Add(MineralsSurfaceKey, new IkonFloat(this.MineralsSurface));
+
+			data.Add(MineralsDeepKey, new IkonFloat(this.MineralsDeep));
+ 
+
+			return data;
+		}
+
+		private const string TableTag = "Planet"; 
+		private const string StarKey = "star";
+		private const string PositionKey = "position";
+		private const string TypeKey = "type";
+		private const string SizeKey = "size";
+		private const string MineralsSurfaceKey = "mineralsSurface";
+		private const string MineralsDeepKey = "mineralsDeep";
+ 
+		#endregion
 	}
 }

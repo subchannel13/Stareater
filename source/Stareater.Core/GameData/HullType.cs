@@ -7,6 +7,8 @@ namespace Stareater.GameData
 {
 	class HullType : AComponentType
 	{
+		public string IdCode { get; private set; }
+		
 		public string[] ImagePaths { get; private set; }
 		public Formula Cost { get; private set; }
 	
@@ -26,7 +28,7 @@ namespace Stareater.GameData
 		public Formula CloakingBase { get; private set; }
 		public Formula SensorsBase { get; private set; }
 		
-		public HullType(string nameCode, string descCode, string[] imagePaths,
+		public HullType(string code, string nameCode, string descCode, string[] imagePaths,
 		                IEnumerable<Prerequisite> prerequisites, int maxLevel, Formula cost, 
 		                Formula size, Formula spaceFree, 
 		                Formula sizeIS, Formula sizeReactor, Formula sizeShield,
@@ -34,6 +36,7 @@ namespace Stareater.GameData
 		                Formula inertiaBase, Formula jammingBase, Formula cloakingBase, Formula sensorsBase)
 			: base(nameCode, descCode, prerequisites, maxLevel)
 		{
+			this.IdCode = code;
 			this.ImagePaths = imagePaths;
 			this.Cost = cost;
 			this.Size = size;

@@ -4,9 +4,10 @@
 	usings.Add("System");
 	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.Ships");
+	usings.Add("Stareater.Utils.Collections");
 	
 	Generate("Stareater.Galaxy", "ShipGroup",
-		new DataInfo("Design", "Design"),
+		new DataInfo("Design", "Design").FromIndexer(),
 		new DataInfo("Quantity", "long").Public()
 	);
 #>

@@ -3,13 +3,14 @@
 	
 	usings.Add("System");
 	usings.Add("Stareater.Players");
+	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "partial";
 	
 	Generate("Stareater.GameData", "TechnologyProgress",
-		new DataInfo("Owner", "Player"),
-		new DataInfo("Topic", "Technology"),
+		new DataInfo("Owner", "Player").FromIndexer(),
+		new DataInfo("Topic", "Technology").SaveIdCode(),
 		new DataInfo("Level", "int"),
-		new DataInfo("InvestedPoints", "double")
+		new DataInfo("InvestedPoints", "double").SaveKey("Invested")
 	);
 #>

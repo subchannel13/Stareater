@@ -255,7 +255,9 @@ private void WriteCopyCall(string className, params DataInfo[] dataInfos)
 
 private void WriteSaveMethodDefinition(params DataInfo[] dataInfos)
 {
-	Write("Save(");
+	var polymorfismModifer = modifer.Contains("abstract") ? "virtual" : SuperClass != null ? "override" : "";
+	
+	Write("public " + polymorfismModifer + " IkonComposite Save(");
 	
 	if (SaveNeedsObjectIndexer)
 		Write("ObjectIndexer indexer");
@@ -267,6 +269,11 @@ private void WriteSaveMethod(params DataInfo[] dataInfos)
 {
 	var indent = new FirstCase("", "			");
 	var emptyLine = new FirstCase(null, "");
+
+	if (SuperClass != null)
+		WriteLine(indent.Get + "var data = base.Save(" + (SaveNeedsObjectIndexer ? "indexer" : "") + ");");
+	else
+		WriteLine(indent.Get + "var data = new IkonComposite(TableTag);");
 
 	foreach(var field in dataInfos)
 	{
@@ -283,6 +290,8 @@ private void WriteSaveMethod(params DataInfo[] dataInfos)
 		Write(indent.Get + "data.Add(" + field.SavingKeyName + ", " + field.SaveAssignLogic.Replace(SaveName, "this." + field.Name) + ");");
 		WriteLine("");
 	}
+	
+	WriteLine(indent.Get + "return data;");
 }
 
 private void WriteSaveKeys(params DataInfo[] dataInfos)
@@ -326,13 +335,9 @@ namespace <#+ Write(namespaceName); #>
 <#+ } #> 
 
 		#region Saving
-		public IkonComposite <#+ WriteSaveMethodDefinition(dataInfos); #> 
+		<#+ WriteSaveMethodDefinition(dataInfos); #> 
 		{
-			IkonComposite data = new IkonComposite(TableTag);
-			
 			<#+ WriteSaveMethod(dataInfos); #> 
-
-			return data;
 		}
 
 		private const string TableTag = "<#+ Write(TableTag ?? className); #>"; 

@@ -89,6 +89,7 @@ class DataInfo
 	private void initSaveCode()
 	{
 		string dataVar = this.LowerName + "Data";
+		string typeName = this.type;
 
 		switch(this.type)
 		{
@@ -97,15 +98,11 @@ class DataInfo
 				this.SaveAssignLogic = "new IkonFloat(#SaveName#)";
 				break;
 			case "int":
+			case "long":
 				this.SaveAssignLogic = "new IkonInteger(#SaveName#)";
 				break;
-			case "ICollection":
-				this.SaveAssignInit = new string[] { 
-					"var " + dataVar + " = new IkonArray();",
-					"foreach(var item in this." + this.Name + ")",
-					"	" + dataVar + ".Add(new IkonInteger(indexer.IndexOf(item)));"
-				};
-				this.SaveAssignLogic = dataVar;
+			case "string":
+				this.SaveAssignLogic = "new IkonText(#SaveName#)";
 				break;
 			case "Color":
 				this.SaveAssignInit = new string[] { 
@@ -223,8 +220,8 @@ class DataInfo
 		var flagList = new List<Flag>(flags);
 		
 		this.HasCopyMethod = true;
-		this.CopyMethodNeedGalaxyRemap = flagList.Contains(Flag.GalaxyRemap);
-		this.CopyMethodNeedPlayersRemap = flagList.Contains(Flag.PlayerRemap);
+		this.CopyMethodNeedGalaxyRemap |= flagList.Contains(Flag.GalaxyRemap);
+		this.CopyMethodNeedPlayersRemap |= flagList.Contains(Flag.PlayerRemap);
 		
 		this.SaveAssignLogic = "this." + Name + ".Save(" + (flagList.Contains(Flag.NoIndexer) ? ")" : "indexer)");
 		
@@ -340,6 +337,26 @@ class DataInfo
 		Saving logic specification
 	*/
 	
+	public DataInfo FromIndexer()
+	{
+		if (this.type.EndsWith("Collection"))
+		{
+			string dataVar = this.LowerName + "Data";
+			
+			this.SavingKeyName = "Collection";
+			this.SaveAssignInit = new string[] { 
+				"var " + dataVar + " = new IkonArray();",
+				"foreach(var item in this." + this.Name + ")",
+				"	" + dataVar + ".Add(new IkonInteger(indexer.IndexOf(item)));"
+			};
+			this.SaveAssignLogic = dataVar;
+		}
+		else
+			this.SaveAssignLogic = "new IkonInteger(indexer.IndexOf(this." + Name + "))";
+			
+		return this;
+	}
+	
 	public DataInfo NoSaveLoad()
 	{
 		this.SaveAssignLogic = null;
@@ -352,9 +369,15 @@ class DataInfo
 		return this;
 	}
 
+	public DataInfo SaveIdCode()
+	{
+		this.SaveAssignLogic = "new IkonText(this." + this.Name + ".IdCode)";
+		return this;
+	}
+
 	public DataInfo SaveKey(string keyName)
 	{
-		this.SavingKeyName = keyName;
+		this.SavingKeyName = keyName + "Key";
 		this.SavingKeyValue = keyName.ToLower();
 		return this;
 	}
@@ -367,6 +390,19 @@ class DataInfo
 	
 	public DataInfo SaveMethod(string methodCall)
 	{
+		if (this.type.EndsWith("Collection"))
+		{
+			string dataVar = this.LowerName + "Data";
+			
+			this.SavingKeyName = "Collection";
+			this.SaveAssignInit = new string[] { 
+				"var " + dataVar + " = new IkonArray();",
+				"foreach(var item in this." + this.Name + ")",
+				"	" + dataVar + ".Add(item." + methodCall + ");"
+			};
+			this.SaveAssignLogic = dataVar;
+		}
+		else
 		this.SaveAssignLogic = "this." + this.Name + "." + methodCall;
 		return this;
 	}

@@ -4,13 +4,14 @@
 	usings.Add("System");
 	usings.Add("System.Linq");
 	usings.Add("Stareater.GameData");
+	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "public partial";
 	
 	Generate("Stareater.Galaxy", "Planet",
-		new DataInfo("Star", "StarData"),
+		new DataInfo("Star", "StarData").FromIndexer(),
 		new DataInfo("Position", "int"),
-		new DataInfo("Type", "PlanetType"),
+		new DataInfo("Type", "PlanetType").SaveMethodWrap("ToString()", "new IkonComposite(" + Placeholder + ")"),
 		new DataInfo("Size", "double"),
 		new DataInfo("MineralsSurface", "double"),
 		new DataInfo("MineralsDeep", "double")
