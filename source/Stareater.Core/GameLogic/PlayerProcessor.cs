@@ -230,7 +230,7 @@ namespace Stareater.GameLogic
 					Player.Orders.ConstructionPlans.Add(colony, updatedPlans);
 				}
 				else
-					Player.Orders.ConstructionPlans.Add(colony, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
+					Player.Orders.ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 
 			foreach (var stellaris in states.Stellarises.OwnedBy(Player))
 				if (oldPlans.ContainsKey(stellaris)) {
@@ -244,7 +244,7 @@ namespace Stareater.GameLogic
 					Player.Orders.ConstructionPlans.Add(stellaris, updatedPlans);
 				}
 				else
-					Player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
+					Player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 				
 			UnlockPredefinedDesigns(statics, states);
 		}

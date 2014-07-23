@@ -164,10 +164,10 @@ namespace Stareater.Controllers
 		{
 			foreach(Player player in players) {
 				foreach(var colony in states.Colonies.OwnedBy(player))
-					player.Orders.ConstructionPlans.Add(colony, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
+					player.Orders.ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 				
 				foreach(var stellaris in states.Stellarises.OwnedBy(player))
-					player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(ChangesDB.DefaultSiteSpendingRatio));
+					player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 				
 				player.Orders.DevelopmentFocusIndex = statics.DevelopmentFocusOptions.Count / 2;
 				player.Orders.ResearchFocus = derivates.Of(player).ResearchOrder(states.TechnologyAdvances).First().Topic.IdCode;

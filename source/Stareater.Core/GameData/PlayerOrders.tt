@@ -1,0 +1,18 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
+	
+	usings.Add("System");
+	usings.Add("System.Collections.Generic");
+	usings.Add("Stareater.Galaxy");
+	usings.Add("Stareater.GameData.Databases.Tables");
+	usings.Add("Stareater.Utils.Collections");
+	
+	modifer = "partial";
+
+	Generate("Stareater.GameData", "PlayerOrders",
+		new DataInfo("DevelopmentFocusIndex", "int").Public().InitValue("0").CopyOnly(),
+		new DataInfo("DevelopmentQueue", "IDictionary", "string", "int").SubType("Dictionary").Public().CopyOnly().CopyCode("copyDevelopment(original);"),
+		new DataInfo("ResearchFocus", "string").Public().InitValue("null").CopyOnly(),
+		new DataInfo("ConstructionPlans", "IDictionary", "AConstructionSite", "ConstructionOrders").SubType("Dictionary").Public().CopyOnly().CopyCode("copyConstruction(original, playersRemap);")
+	);
+#>

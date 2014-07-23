@@ -72,15 +72,17 @@ class DataInfo
 			this.CopyFromRemap = "galaxyRemap.Planets[" + readCode + "]";
 		
 		else if (this.type == "Player")
-			this.CopyFromRemap =  "playersRemap.Players[" + readCode + "]";
+			this.CopyFromRemap = "playersRemap.Players[" + readCode + "]";
+		else if (this.type == "AConstructionSite")
+			this.CopyFromRemap = "playersRemap.Site(" + readCode + ")";
 		else if (this.type == "Colony")
-			this.CopyFromRemap =  "playersRemap.Colonies[" + readCode + "]";
+			this.CopyFromRemap = "playersRemap.Colonies[" + readCode + "]";
 		else if (this.type == "StellarisAdmin")
-			this.CopyFromRemap =  "playersRemap.Stellarises[" + readCode + "]";
+			this.CopyFromRemap = "playersRemap.Stellarises[" + readCode + "]";
 		else if (this.type == "Design")
-			this.CopyFromRemap =  "playersRemap.Designs[" + readCode + "]";
+			this.CopyFromRemap = "playersRemap.Designs[" + readCode + "]";
 		else if (this.type == "IdleFleet")
-			this.CopyFromRemap =  "playersRemap.IdleFleets[" + readCode + "]";
+			this.CopyFromRemap = "playersRemap.IdleFleets[" + readCode + "]";
 			
 		this.CopyMethodNeedGalaxyRemap = (this.CopyFromRemap != null) && (this.CopyFromRemap.StartsWith("galaxyRemap"));
 		this.CopyMethodNeedPlayersRemap = (this.CopyFromRemap != null) && (this.CopyFromRemap.StartsWith("playersRemap"));		
