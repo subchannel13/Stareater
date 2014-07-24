@@ -35,11 +35,10 @@ namespace Stareater.Controllers
 				foreach(var item in base.ConstructableItems)
 					yield return item;
 				
-				//TODO(v0.5): put ID code
 				foreach(var design in Game.States.Designs.OwnedBy(Game.CurrentPlayer))
 					yield return new ConstructableItem(
 						new Constructable(design.Name, "", true, design.ImagePath, 
-						                  "", new Prerequisite[0], SiteType.StarSystem,
+						                  design.IdCode, new Prerequisite[0], SiteType.StarSystem,
 						                  new Formula(true), new Formula(design.Cost), new Formula(double.PositiveInfinity),
 						                  new IConstructionEffect[] { new ConstructionAddShip(design) }),
 						Game.Derivates.Players.Of(Game.CurrentPlayer)

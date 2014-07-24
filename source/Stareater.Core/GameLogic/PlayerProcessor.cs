@@ -258,7 +258,7 @@ namespace Stareater.GameLogic
 				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
 				{
 					Player.UnlockedDesigns.Add(predefDesign);
-					states.Designs.Add(new Design(Player, predefDesign.Name, 
+					states.Designs.Add(new Design(states.MakeDesignId(), Player, predefDesign.Name,
 					                              statics.Hulls[predefDesign.HullCode].MakeHull(techLevels, predefDesign.HullImageIndex)
 					                             ));
 				}

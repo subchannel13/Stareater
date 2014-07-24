@@ -1,10 +1,9 @@
 ﻿ 
-
 using Ikadn.Ikon.Types;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Stareater.GameData.Databases;
+using Stareater.GameData.Databases.Tables;
 using Stareater.GameData;
 using Stareater.Utils.Collections;
 
@@ -43,6 +42,7 @@ namespace Stareater.Players
 			//TODO(v0.5) copy orders
  
 		}
+
 		internal Player Copy(GalaxyRemap galaxyRemap) 
 		{
 			return new Player(this, galaxyRemap);
@@ -69,7 +69,7 @@ namespace Stareater.Players
 			var unlockedDesignsData = new IkonArray();
 			foreach(var item in this.UnlockedDesigns)
 				unlockedDesignsData.Add(new IkonInteger(indexer.IndexOf(item)));
-			data.Add(Collection, unlockedDesignsData);
+			data.Add(UnlockedDesignsKey, unlockedDesignsData);
 
 			data.Add(IntelligenceKey, this.Intelligence.Save(indexer));
 			return data;
@@ -81,7 +81,7 @@ namespace Stareater.Players
 		private const string ColorKey = "color";
 		private const string ControlTypeKey = "controlType";
 		private const string OffscreenControlKey = "offscreenControl";
-		private const string Collection = "unlockedDesigns";
+		private const string UnlockedDesignsKey = "unlockedDesigns";
 		private const string IntelligenceKey = "intelligence";
 		private const string OrdersKey = "orders";
  

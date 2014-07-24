@@ -33,8 +33,6 @@ namespace Stareater.Galaxy
 				this.Stockpile.Add(leftovers.Key, leftovers.Value);
 		}
 		
-		protected abstract IkadnBaseObject saveLocation(ObjectIndexer indexer);
-		
 		private IkadnBaseObject saveBuildings()
 		{
 			var buildings = new IkonArray();

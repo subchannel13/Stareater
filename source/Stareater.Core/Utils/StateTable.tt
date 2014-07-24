@@ -200,7 +200,7 @@ private void WriteFieldCopys(params DataInfo[] dataInfos)
 		else if (field.CopyLogic == null && field.CopyFromRemap == null && field.CopyPassLogic == null)
 			WriteLine(indent.Get + "this."  + field.Name + " = original." + field.Name + ";");
 		else if (field.CopyLogic != null)
-			WriteLine(indent.Get + field.CopyLogic);
+			WriteLine(indent.Get + field.CopyLogic.Replace(AssignCode, "this."  + field.Name + " = "));
 		else if (field.CopyFromRemap != null && field.CopyPassLogic == null)
 			WriteLine(indent.Get + "this."  + field.Name + " = " + field.LowerName + ";");
 	}
@@ -251,6 +251,16 @@ private void WriteCopyCall(string className, params DataInfo[] dataInfos)
 	}
 	
 	WriteLine(");");
+}
+
+private void WriteSaveTag(string className)
+{
+	if (modifer.Contains("abstract"))
+		WriteLine("protected abstract string TableTag { get; }");
+	else if (SuperClass != null)
+		WriteLine("protected override string TableTag { get { return \"" + (TableTag ?? className) + "\"; } }");
+	else
+		WriteLine("private const string TableTag = \"" + (TableTag ?? className) + "\";"); 
 }
 
 private void WriteSaveMethodDefinition(params DataInfo[] dataInfos)
@@ -340,7 +350,7 @@ namespace <#+ Write(namespaceName); #>
 			<#+ WriteSaveMethod(dataInfos); #> 
 		}
 
-		private const string TableTag = "<#+ Write(TableTag ?? className); #>"; 
+		<#+ WriteSaveTag(className); #>
 		<#+ WriteSaveKeys(dataInfos); #> 
 		#endregion
 <#+

@@ -13,6 +13,8 @@ namespace Stareater.GameData.Databases
 {
 	class StatesDB
 	{
+		private const string DesignIdPrefix = "ShipDesign";
+		
 		public StarCollection Stars { get; private set; }
 		public WormholeCollection Wormholes { get; private set; }
 		
@@ -24,6 +26,8 @@ namespace Stareater.GameData.Databases
 		
 		public DesignCollection Designs { get; private set; }
 		public TechProgressCollection TechnologyAdvances { get; private set; }
+		
+		private int nextDesignId = 0;
 		
 		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, 
 		                ColonyCollection Colonies, StellarisCollection stellarises, 
@@ -43,6 +47,13 @@ namespace Stareater.GameData.Databases
 		private StatesDB()
 		{ }
 
+		public string MakeDesignId()
+		{
+			this.nextDesignId++;
+			
+			return DesignIdPrefix + nextDesignId;
+		}
+		
 		public StatesDB Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap)
 		{
 			StatesDB copy = new StatesDB();

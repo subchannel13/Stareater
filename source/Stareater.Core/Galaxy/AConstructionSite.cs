@@ -37,7 +37,7 @@ namespace Stareater.Galaxy
 		public virtual IkonComposite Save(ObjectIndexer indexer) 
 		{
 			var data = new IkonComposite(TableTag);
-			data.Add(LocationKey, saveLocation(indexer));
+			data.Add(LocationKey, this.Location.Save(indexer));
 
 			data.Add(OwnerKey, new IkonInteger(indexer.IndexOf(this.Owner)));
 
@@ -48,7 +48,7 @@ namespace Stareater.Galaxy
  
 		}
 
-		private const string TableTag = "AConstructionSite"; 
+		protected abstract string TableTag { get; }
 		private const string LocationKey = "location";
 		private const string OwnerKey = "owner";
 		private const string BuildingsKey = "buildings";

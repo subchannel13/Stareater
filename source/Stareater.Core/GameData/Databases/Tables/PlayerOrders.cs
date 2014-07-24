@@ -1,5 +1,4 @@
 ﻿ 
-
 using Ikadn.Ikon.Types;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Utils.Collections;
 
-namespace Stareater.GameData 
+namespace Stareater.GameData.Databases.Tables 
 {
 	partial class PlayerOrders 
 	{
@@ -33,6 +32,7 @@ namespace Stareater.GameData
 			copyConstruction(original, playersRemap);
  
 		}
+
 		internal PlayerOrders Copy(PlayersRemap playersRemap) 
 		{
 			return new PlayerOrders(this, playersRemap);
@@ -46,7 +46,11 @@ namespace Stareater.GameData
 			var data = new IkonComposite(TableTag);
 			data.Add(DevelopmentFocusIndexKey, new IkonInteger(this.DevelopmentFocusIndex));
 
+			data.Add(DevelopmentQueueKey, saveDevelopment());
+
 			data.Add(ResearchFocusKey, new IkonText(this.ResearchFocus));
+
+			data.Add(ConstructionPlansKey, saveConstruction(indexer));
 			return data;
  
 		}

@@ -9,6 +9,7 @@
 	modifer = "partial";
 
 	Generate("Stareater.Ships", "Design",
+		new DataInfo("IdCode", "string"),
 		new DataInfo("Owner", "Player").FromIndexer(),
 		new DataInfo("Name", "string"),
 		new DataInfo("Hull", "Hull").SaveMethod("Save()"),
