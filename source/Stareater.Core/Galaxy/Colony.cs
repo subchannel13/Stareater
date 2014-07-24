@@ -39,7 +39,7 @@ namespace Stareater.Galaxy
  
 		}
 
-		private const string TableTag = "Colony"; 
+		protected override string TableTag { get { return "Colony"; } }
 		private const string PopulationKey = "population";
 		private const string PlanetKey = "planet";
 		private const string OwnerKey = "owner";

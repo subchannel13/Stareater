@@ -4,7 +4,7 @@
 	usings.Add("System");
 	usings.Add("System.Collections.Generic");
 	usings.Add("System.Drawing");
-	usings.Add("Stareater.GameData.Databases");
+	usings.Add("Stareater.GameData.Databases.Tables");
 	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.Utils.Collections");
 	

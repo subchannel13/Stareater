@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
+using System.Linq;
+
 using Stareater.GameData;
-using Stareater.Galaxy;
+using Stareater.GameData.Databases.Tables;
 
 namespace Stareater.Players
 {

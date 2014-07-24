@@ -152,7 +152,11 @@
     <Compile Include="Game.cs" />
     <Compile Include="GameData\AComponentType.cs" />
     <Compile Include="GameData\BuildingType.cs" />
-    <Compile Include="GameData\PlayerOrders.cs">
+    <Compile Include="GameData\Databases\Tables\ConstructionOrders.cs">
+      <DependentUpon>ConstructionOrders.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GameData\Databases\Tables\PlayerOrders.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PlayerOrders.tt</DependentUpon>
@@ -169,6 +173,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\Databases\Tables\PlayerFormulaSet.cs" />
+    <Compile Include="GameData\Databases\Tables\PlayerOrders.partial.cs" />
     <Compile Include="GameData\Databases\Tables\ShipGroupCollection.cs">
       <DependentUpon>ShipGroupCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -217,7 +222,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="GameData\Databases\Tables\ConstructionOrders.cs" />
     <Compile Include="GameData\Databases\Tables\PlanetCollection.cs">
       <DependentUpon>PlanetCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -398,8 +402,11 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Wormhole.cs</LastGenOutput>
     </None>
-    <Compile Include="GameData\PlayerOrders.partial.cs" />
-    <None Include="GameData\PlayerOrders.tt">
+    <None Include="GameData\Databases\Tables\ConstructionOrders.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ConstructionOrders.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Databases\Tables\PlayerOrders.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlayerOrders.cs</LastGenOutput>
     </None>

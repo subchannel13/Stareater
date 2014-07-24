@@ -152,6 +152,9 @@ namespace Stareater
 			indexer.AddAll(States.Planets);
 			indexer.AddAll(States.Stars);
 			
+			indexer.AddAll(States.Colonies);
+			indexer.AddAll(States.Stellarises);
+			
 			return indexer;
 		}
 		
@@ -169,11 +172,10 @@ namespace Stareater
 				playersData.Add(player.Save(indexer));
 			gameData.Add(PlayersKey, playersData);
 			
-			//TODO(v0.5) implement
-			/*foreach(var player in this.Players)
-				ordersData.Add(player.Orders.Save());
-			gameData.Add(OrdersKey, playersData);
-			*/
+			foreach(var player in this.Players)
+				ordersData.Add(player.Orders.Save(indexer));
+			gameData.Add(OrdersKey, ordersData);
+			
 			return gameData;
 		}
 		

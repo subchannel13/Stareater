@@ -1,0 +1,15 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
+	
+	usings.Add("System");
+	usings.Add("System.Collections.Generic");
+	usings.Add("System.Linq");
+	usings.Add("Stareater.Utils.Collections");
+	
+	modifer = "partial";
+
+	Generate("Stareater.GameData.Databases.Tables", "ConstructionOrders",
+		new DataInfo("SpendingRatio", "double").Public(),
+		new DataInfo("Queue", "IList", "Constructable").SubType("List").CopyOnly().CopyAssign("original.Queue.ToList();").SaveElementAssign("new IkonText(item.IdCode)")
+	);
+#>

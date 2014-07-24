@@ -36,7 +36,7 @@ namespace Stareater.Galaxy
  
 		}
 
-		private const string TableTag = "StellarisAdmin"; 
+		protected override string TableTag { get { return "StellarisAdmin"; } }
 		private const string StarKey = "star";
 		private const string OwnerKey = "owner";
  

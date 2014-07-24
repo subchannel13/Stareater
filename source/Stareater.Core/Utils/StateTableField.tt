@@ -2,6 +2,7 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Text" #> 
 <#+
+const string AssignCode = "#Assign#";
 const string Default = "#Default#";
 const string Placeholder = "###";
 const string SaveName = "#SaveName#";
@@ -321,6 +322,13 @@ class DataInfo
 		return this;
 	}
 	
+	public DataInfo CopyAssign(string code)
+	{
+		this.CopyLogic = AssignCode + code;
+		this.analyzeRemapNeeds(code);
+		return this;
+	}
+	
 	public DataInfo CopyCode(string code)
 	{
 		this.CopyLogic = code;
@@ -341,11 +349,10 @@ class DataInfo
 	
 	public DataInfo FromIndexer()
 	{
-		if (this.type.EndsWith("Collection"))
+		if (this.type.EndsWith("Collection") || this.type.EndsWith("List"))
 		{
 			string dataVar = this.LowerName + "Data";
 			
-			this.SavingKeyName = "Collection";
 			this.SaveAssignInit = new string[] { 
 				"var " + dataVar + " = new IkonArray();",
 				"foreach(var item in this." + this.Name + ")",
@@ -368,6 +375,19 @@ class DataInfo
 	public DataInfo SaveAssign(string code)
 	{
 		this.SaveAssignLogic = code;
+		return this;
+	}
+	
+	public DataInfo SaveElementAssign(string code)
+	{
+		string dataVar = this.LowerName + "Data";
+			
+			this.SaveAssignInit = new string[] { 
+				"var " + dataVar + " = new IkonArray();",
+				"foreach(var item in this." + this.Name + ")",
+				"	" + dataVar + ".Add(" + code + ");"
+			};
+			this.SaveAssignLogic = dataVar;
 		return this;
 	}
 

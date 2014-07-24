@@ -52,6 +52,7 @@ namespace Stareater.Controllers
 				return;
 			
 			game.States.Designs.Add(new Design(
+				game.States.MakeDesignId(),
 				game.CurrentPlayer,
 				Name,
 				new Hull(Hull.HullType, Hull.Level, ImageIndex)
