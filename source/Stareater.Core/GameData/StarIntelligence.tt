@@ -10,7 +10,9 @@
 
 	Generate("Stareater.GameData", "StarIntelligence",
 		new DataInfo("LastVisited", "int").CopyOnly().InitValue("NeverVisited"),
-		new DataInfo("Planets", "IDictionary", "Planet", "PlanetIntelligence").Derived("initPlanets(planets);", "IEnumerable<Planet> planets")
-			.CopyCode("copyPlanets(original, galaxyRemap);").SaveAssign("savePlanets(indexer)")
+		new DataInfo("Planets", "Dictionary", 
+			new GenericParamInfo("Planet").FromIndexer(), 
+			new GenericParamInfo("PlanetIntelligence").CopyMethod("Copy()").SaveKeyValue("intell").SaveMethod("Save()")
+		).Derived(null, "IEnumerable<Planet>", "planets").SaveTag("PlanetIntell")
 	);
 #>
