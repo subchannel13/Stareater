@@ -1,9 +1,12 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #> 
 <#+
 const string AssignCode = "#Assign#";
 const string Default = "#Default#";
+const string None = "#None#";
 const string Placeholder = "###";
 const string SaveName = "#SaveName#";
 
@@ -14,15 +17,48 @@ enum Flag
 	NoIndexer
 }
 
+private static string initGalaxyRemapCode(string type, string readCode, out bool copyNeedsRemap)
+{
+	string copyFromRemap = null;
+	
+	if (type == "StarData")
+		copyFromRemap = "galaxyRemap.Stars[" + readCode + "]";
+	else if (type == "Planet")
+		copyFromRemap = "galaxyRemap.Planets[" + readCode + "]";
+
+	copyNeedsRemap = (copyFromRemap != null) && (copyFromRemap.StartsWith("galaxyRemap"));
+	return copyFromRemap;
+}
+
+private static string initPlayerRemapCode(string type, string readCode, out bool copyNeedsRemap)
+{
+	string copyFromRemap = null;
+	
+	if (type == "Player")
+		copyFromRemap = "playersRemap.Players[" + readCode + "]";
+	else if (type == "AConstructionSite")
+		copyFromRemap = "playersRemap.Site(" + readCode + ")";
+	else if (type == "Colony")
+		copyFromRemap = "playersRemap.Colonies[" + readCode + "]";
+	else if (type == "StellarisAdmin")
+		copyFromRemap = "playersRemap.Stellarises[" + readCode + "]";
+	else if (type == "Design")
+		copyFromRemap = "playersRemap.Designs[" + readCode + "]";
+	else if (type == "IdleFleet")
+		copyFromRemap = "playersRemap.IdleFleets[" + readCode + "]";
+		
+	copyNeedsRemap = (copyFromRemap != null) && (copyFromRemap.StartsWith("playersRemap"));	
+	return copyFromRemap;	
+}
+
 class DataInfo
 {
 	private string name;
 	
 	// Type data
 	public string type;
-	public string[] GenericParams = null;
+	public GenericParamInfo[] GenericParams = null;
 	public string ConcreteType = null;
-	public string[] GenericConcreteParams = null;
 	
 	// Field data
 	public string BaseReadCode = null;
@@ -31,13 +67,13 @@ class DataInfo
 
 	// Initialization data
 	public bool BaseInit = false;
-	public string[] ExtraInitParams = null;	//null -> same as type, [0] -> none
+	public string[] InitParams = null;	//null -> same as type, [0] -> none
 	public string InitPassLogic = null; //null -> no pass, Default -> pass value
 	public string InitLogic = null;	//null -> copy value, Default -> default constructor
 	
 	// Copy requirements
-	public bool CopyMethodNeedGalaxyRemap = false;
-	public bool CopyMethodNeedPlayersRemap = false;
+	private bool copyMethodNeedGalaxyRemap = false;
+	private bool copyMethodNeedPlayersRemap = false;
 	
 	//Copy logic
 	public bool BaseCopy = false;
@@ -45,50 +81,35 @@ class DataInfo
 	public bool HasCopyMethod = false;
 	public string CopyFromRemap = null;	//null -> pass logic
 	public string CopyPassLogic = null; //null -> no pass, Default -> pass value
-	public string CopyLogic = null;	//null -> copy value, "" -> none
+	public string CopyLogic = null;	//null -> copy value, Default -> default constructor, None -> none
 
 	//Saving logic
 	public string SaveAssignLogic = null;
 	public string[] SaveAssignInit = null;
 	public string SavingKeyName = null;
 	public string SavingKeyValue = null;
+	public string SavingTagName = null;
+	public string SavingTagValue = null;
 
-	public DataInfo(string name, string type, params string[] genericParams) {
+	public DataInfo(string name, string type, params GenericParamInfo[] genericParams) {
 		this.name = name;
 		this.type = type;
 		this.GenericParams = genericParams;
 		
 		this.SavingKeyName = name + "Key";
+		this.SavingTagName = name + "Tag";
+		
 		initRemapCode();
 		initSaveCode();
 	}
-	
+
 	private void initRemapCode()
 	{
-		string readCode = BaseReadCode ?? "this." + Name;
-		
-		if (this.type == "StarData")
-			this.CopyFromRemap = "galaxyRemap.Stars[" + readCode + "]";
-		else if (this.type == "Planet")
-			this.CopyFromRemap = "galaxyRemap.Planets[" + readCode + "]";
-		
-		else if (this.type == "Player")
-			this.CopyFromRemap = "playersRemap.Players[" + readCode + "]";
-		else if (this.type == "AConstructionSite")
-			this.CopyFromRemap = "playersRemap.Site(" + readCode + ")";
-		else if (this.type == "Colony")
-			this.CopyFromRemap = "playersRemap.Colonies[" + readCode + "]";
-		else if (this.type == "StellarisAdmin")
-			this.CopyFromRemap = "playersRemap.Stellarises[" + readCode + "]";
-		else if (this.type == "Design")
-			this.CopyFromRemap = "playersRemap.Designs[" + readCode + "]";
-		else if (this.type == "IdleFleet")
-			this.CopyFromRemap = "playersRemap.IdleFleets[" + readCode + "]";
-			
-		this.CopyMethodNeedGalaxyRemap = (this.CopyFromRemap != null) && (this.CopyFromRemap.StartsWith("galaxyRemap"));
-		this.CopyMethodNeedPlayersRemap = (this.CopyFromRemap != null) && (this.CopyFromRemap.StartsWith("playersRemap"));		
+		this.CopyFromRemap = 
+			initGalaxyRemapCode(this.type, BaseReadCode ?? "this." + Name, out copyMethodNeedGalaxyRemap) ??
+			initPlayerRemapCode(this.type, BaseReadCode ?? "this." + Name, out copyMethodNeedPlayersRemap);
 	}
-
+	
 	private void initSaveCode()
 	{
 		string dataVar = this.LowerName + "Data";
@@ -124,6 +145,9 @@ class DataInfo
 				};
 				this.SaveAssignLogic = dataVar;
 				break;
+			case "Dictionary":
+				this.SaveAssignLogic = dataVar;
+				break;
 			default:
 				this.SaveAssignLogic = null;
 				break;
@@ -138,20 +162,20 @@ class DataInfo
 		return name.ToLower();
 	}
 	
-	private static void buildGenericParams(StringBuilder sb, string[] genericParams)
+	private static void buildGenericParams(StringBuilder sb, GenericParamInfo[] genericParams)
 	{
 		var commaOrNot = new FirstCase("", ", ");
 		
 		sb.Append("<");
 		foreach(var gParam in genericParams)
-			sb.Append(commaOrNot.Get + gParam);
+			sb.Append(commaOrNot.Get + gParam.Type);
 		sb.Append(">");
 	}
 	
 	private void analyzeRemapNeeds(string code)
 	{
-		this.CopyMethodNeedGalaxyRemap = code.Contains("galaxyRemap");
-		this.CopyMethodNeedPlayersRemap = code.Contains("playersRemap");
+		this.copyMethodNeedGalaxyRemap = code.Contains("galaxyRemap");
+		this.copyMethodNeedPlayersRemap = code.Contains("playersRemap");
 	}
 	
 	public string Name
@@ -194,24 +218,24 @@ class DataInfo
 		}
 	}
 	
+	public bool IsMap
+	{
+		get { return this.type.Contains("Dictionary"); }
+	}
+	
 	public string Constructor
 	{
 		get
 		{
 			StringBuilder sb = new StringBuilder("new ");
-			string[] genericParams = this.GenericParams;
 			
 			if (this.ConcreteType != null)
-			{
 				sb.Append(this.ConcreteType);
-				if (this.GenericConcreteParams != null)
-					genericParams = this.GenericConcreteParams;
-			}
 			else
 				sb.Append(this.type);
 				
-			if (genericParams != null && genericParams.Length > 0)
-				buildGenericParams(sb, genericParams);
+			if (this.GenericParams != null && this.GenericParams.Length > 0)
+				buildGenericParams(sb, this.GenericParams);
 				
 			sb.Append("();");
 			return sb.ToString();
@@ -223,8 +247,8 @@ class DataInfo
 		var flagList = new List<Flag>(flags);
 		
 		this.HasCopyMethod = true;
-		this.CopyMethodNeedGalaxyRemap |= flagList.Contains(Flag.GalaxyRemap);
-		this.CopyMethodNeedPlayersRemap |= flagList.Contains(Flag.PlayerRemap);
+		this.copyMethodNeedGalaxyRemap |= flagList.Contains(Flag.GalaxyRemap);
+		this.copyMethodNeedPlayersRemap |= flagList.Contains(Flag.PlayerRemap);
 		
 		this.SaveAssignLogic = "this." + Name + ".Save(" + (flagList.Contains(Flag.NoIndexer) ? ")" : "indexer)");
 		
@@ -237,16 +261,6 @@ class DataInfo
 	public DataInfo SubType(string typeName)
 	{	
 		this.ConcreteType = typeName;
-		return this;
-	}
-	
-	public DataInfo SubTypeGeneric(string typeName, params string[] genericParams)
-	{	
-		if (genericParams != null || genericParams.Length == 0)
-			genericParams = null;
-			
-		this.SubType(typeName);
-		this.GenericConcreteParams = genericParams ?? this.GenericParams;
 		return this;
 	}
 	
@@ -291,10 +305,17 @@ class DataInfo
 		Initialization logic
 	*/
 	
-	public DataInfo Derived(string initCode, params string[] extraConstructorParams)
+	public DataInfo Derived(string initCode)
 	{
 		this.InitLogic = initCode;
-		this.ExtraInitParams = extraConstructorParams;
+		this.InitParams = new string[0];
+		return this;
+	}
+	
+	public DataInfo Derived(string initCode, string constructorParamType, string constructorParamName)
+	{
+		this.InitLogic = initCode;
+		this.InitParams = new string[] { constructorParamType, constructorParamName };
 		return this;
 	}
 	
@@ -308,9 +329,33 @@ class DataInfo
 		Copy logic specification
 	*/
 	
+	public bool CopyMethodNeedGalaxyRemap
+	{
+		get {
+			if (this.copyMethodNeedGalaxyRemap)
+				return true;
+			else if (this.GenericParams != null)
+				return this.GenericParams.Any(x => x.CopyMethodNeedGalaxyRemap);
+			else
+				return false;
+		}
+	}
+	
+	public bool CopyMethodNeedPlayersRemap
+	{
+		get {
+			if (this.copyMethodNeedPlayersRemap)
+				return true;
+			else if (this.GenericParams != null)
+				return this.GenericParams.Any(x => x.CopyMethodNeedPlayersRemap);
+			else
+				return false;
+		}
+	}
+	
 	public DataInfo CopyOnly()
 	{
-		this.ExtraInitParams = new string[0];
+		this.InitParams = new string[0];
 		this.InitLogic = this.InitLogic ?? Default;
 		return this;
 	}
@@ -425,7 +470,7 @@ class DataInfo
 			this.SaveAssignLogic = dataVar;
 		}
 		else
-		this.SaveAssignLogic = "this." + this.Name + "." + methodCall;
+			this.SaveAssignLogic = "this." + this.Name + "." + methodCall;
 		return this;
 	}
 	
@@ -438,6 +483,13 @@ class DataInfo
 	public DataInfo SaveMethodWrap(string methodCall, string wrapperCode)
 	{
 		this.SaveAssignLogic = wrapperCode.Replace(Placeholder, "this." + this.Name + "." + methodCall);
+		return this;
+	}
+	
+	public DataInfo SaveTag(string keyName)
+	{
+		this.SavingTagName = keyName + "Tag";
+		this.SavingTagValue = keyName;
 		return this;
 	}
 }
@@ -463,6 +515,73 @@ class FirstCase
 			
 			return result;
 		}
+	}
+}
+
+class GenericParamInfo
+{
+	public string Type;
+	public string InitLogic = null;	//null -> ???, Default -> default constructor
+	
+	public bool CopyMethodNeedGalaxyRemap = false;
+	public bool CopyMethodNeedPlayersRemap = false;
+	
+	public string CopyFromRemap = null;	//null -> pass logic
+	public string CopyLogic = null;	//null -> ??, Default -> default constructor, None -> none
+	
+	public string SaveAssignLogic = null;
+	public string SavingKeyName = null;
+	public string SavingKeyValue = null;
+	
+	public GenericParamInfo(string type) {
+		this.Type = type;
+		this.SavingKeyName = type + "Key";
+		
+		initRemapCode();
+	}
+	
+	private void analyzeRemapNeeds(string code)
+	{
+		this.CopyMethodNeedGalaxyRemap = code.Contains("galaxyRemap");
+		this.CopyMethodNeedPlayersRemap = code.Contains("playersRemap");
+	}
+	
+	private void initRemapCode()
+	{
+		this.CopyFromRemap = 
+			initGalaxyRemapCode(this.Type, Default, out CopyMethodNeedGalaxyRemap) ??
+			initPlayerRemapCode(this.Type, Default, out CopyMethodNeedPlayersRemap);
+	}
+	
+	public GenericParamInfo Init(string code)
+	{
+		this.InitLogic = code;
+		return this;
+	}
+	
+	public GenericParamInfo CopyMethod(string code)
+	{
+		this.CopyLogic = Default + "." + code;
+		this.analyzeRemapNeeds(code);
+		return this;
+	}
+	
+	public GenericParamInfo FromIndexer()
+	{
+		this.SaveAssignLogic = "new IkonInteger(indexer.IndexOf(" + AssignCode + "))";
+		return this;
+	}
+	
+	public GenericParamInfo SaveKeyValue(string keyValue)
+	{
+		this.SavingKeyValue = keyValue;
+		return this;
+	}
+	
+	public GenericParamInfo SaveMethod(string methodCall)
+	{
+		this.SaveAssignLogic = AssignCode + "." + methodCall;
+		return this;
 	}
 }
 #>

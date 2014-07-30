@@ -1,6 +1,5 @@
 ﻿<#@ include file="$(ProjectDir)/Utils/StateTableField.tt" #>
-<#@ assembly name="System.Core" #>
-<#@ import namespace="System.Linq" #>
+
 <#+
 private string modifer = "";
 private List<string> usings = new List<string>(new string[] { "Ikadn.Ikon.Types" });
@@ -20,6 +19,7 @@ private void WriteUsings()
 	foreach(string usingName in usings)
 		WriteLine("using " + usingName + ";");
 }
+
 private void WriteClassDefinition(string className)
 {
 	if (!string.IsNullOrWhiteSpace(modifer))
@@ -69,11 +69,11 @@ private void WriteContructorDefinition(string className, params DataInfo[] dataI
 	var commaOrNot = new FirstCase("", ", ");
 	foreach(var field in dataInfos) 
 	{
-		if (field.ExtraInitParams == null)
+		if (field.InitParams == null)
 			Write(commaOrNot.Get + field.Type + " " + field.LowerName);
 		else
-			foreach(var param in field.ExtraInitParams)
-				Write(commaOrNot.Get + param);
+			for(int i = 0; i < field.InitParams.Length; i += 2)
+				Write(commaOrNot.Get + field.InitParams[i] + " " + field.InitParams[i + 1]);
 	}
 	
 	Write(")");
@@ -106,13 +106,36 @@ private void WriteFieldInits(params DataInfo[] dataInfos)
 		if (field.InitPassLogic != null)
 			continue;
 
-		if (field.InitLogic == null)
-			WriteLine(indent.Get + "this."  + field.Name + " = " + field.LowerName + ";");
-		else if (field.InitLogic == Default)
+		if (field.InitLogic == Default)
 			WriteLine(indent.Get + "this."  + field.Name + " = " + field.Constructor);
-		else 
+		else if (field.InitLogic != null)
 			WriteLine(indent.Get + field.InitLogic);
+		else if (field.IsMap)
+			WriteMapInit(field, indent);
+		else
+			WriteLine(indent.Get + "this."  + field.Name + " = " + field.LowerName + ";");		
 	}
+}
+
+private void WriteMapInit(DataInfo field, FirstCase indent)
+{
+	WriteLine(indent.Get + "this."  + field.Name + " = " + field.Constructor);
+	WriteLine(indent.Get + "foreach(var item in " + (field.InitParams != null ? field.InitParams[1] : field.LowerName) + ")");
+	Write(indent.Get + "	this."  + field.Name + ".Add(");
+	
+	if (field.GenericParams[0].InitLogic == null)
+		Write("item");
+	else
+		Write(field.GenericParams[0].InitLogic);
+	
+	Write(", ");
+	
+	if (field.GenericParams[1].InitLogic == null)
+		Write("new " + field.GenericParams[1].Type + "()");
+	else
+		Write(field.GenericParams[1].InitLogic);
+		
+	WriteLine(");");
 }
 
 private bool NeedCopyConstructor(DataInfo[] dataInfos)
@@ -125,7 +148,7 @@ private bool NeedCopyConstructor(DataInfo[] dataInfos)
 			x.ExtraCopyParams != null ||
 			x.HasCopyMethod ||
 			x.CopyLogic != null ||
-			(x.ExtraInitParams != null && x.CopyFromRemap == null && x.CopyLogic == null && x.CopyPassLogic == null)
+			(x.InitParams != null && x.CopyFromRemap == null && x.CopyLogic == null && x.CopyPassLogic == null)
 	   ))
 		return true;
 	
@@ -197,14 +220,42 @@ private void WriteFieldCopys(params DataInfo[] dataInfos)
 				
 			WriteLine(");");
 		}
-		else if (field.CopyLogic == null && field.CopyFromRemap == null && field.CopyPassLogic == null)
-			WriteLine(indent.Get + "this."  + field.Name + " = original." + field.Name + ";");
 		else if (field.CopyLogic != null)
 			WriteLine(indent.Get + field.CopyLogic.Replace(AssignCode, "this."  + field.Name + " = "));
 		else if (field.CopyFromRemap != null && field.CopyPassLogic == null)
 			WriteLine(indent.Get + "this."  + field.Name + " = " + field.LowerName + ";");
+		else if (field.IsMap)
+			WriteMapCopy(field, indent);
+		else if (field.CopyLogic == null && field.CopyFromRemap == null && field.CopyPassLogic == null)
+			WriteLine(indent.Get + "this."  + field.Name + " = original." + field.Name + ";");
 	}
 }
+
+private void WriteMapCopy(DataInfo field, FirstCase indent)
+{
+	WriteLine(indent.Get + "this."  + field.Name + " = " + field.Constructor);
+	WriteLine(indent.Get + "foreach(var item in original." + field.Name + ")");
+	Write(indent.Get + "	this."  + field.Name + ".Add(");
+	
+	if (field.GenericParams[0].CopyLogic != null)
+		Write(field.GenericParams[0].CopyLogic);
+	else if (field.GenericParams[0].CopyFromRemap != null)
+		Write(field.GenericParams[0].CopyFromRemap.Replace(Default, "item.Key"));
+	else
+		Write("item.Key");
+	
+	Write(", ");
+	
+	if (field.GenericParams[1].CopyLogic != null)
+		Write(field.GenericParams[1].CopyLogic.Replace(Default, "item.Value"));
+	else if (field.GenericParams[1].CopyFromRemap != null)
+		Write(field.GenericParams[1].CopyFromRemap.Replace(Default, "item.Value"));
+	else
+		Write("item.Value");
+		
+	WriteLine(");");
+}
+
 private void WriteCopyMethodDefinition(string className, params DataInfo[] dataInfos)
 {
 	Write(className + " Copy(");
@@ -253,21 +304,11 @@ private void WriteCopyCall(string className, params DataInfo[] dataInfos)
 	WriteLine(");");
 }
 
-private void WriteSaveTag(string className)
-{
-	if (modifer.Contains("abstract"))
-		WriteLine("protected abstract string TableTag { get; }");
-	else if (SuperClass != null)
-		WriteLine("protected override string TableTag { get { return \"" + (TableTag ?? className) + "\"; } }");
-	else
-		WriteLine("private const string TableTag = \"" + (TableTag ?? className) + "\";"); 
-}
-
 private void WriteSaveMethodDefinition(params DataInfo[] dataInfos)
 {
-	var polymorfismModifer = modifer.Contains("abstract") ? "virtual" : SuperClass != null ? "override" : "";
+	var polymorfismModifer = modifer.Contains("abstract") ? "virtual " : SuperClass != null ? "override " : "";
 	
-	Write("public " + polymorfismModifer + " IkonComposite Save(");
+	Write("public " + polymorfismModifer + "IkonComposite Save(");
 	
 	if (SaveNeedsObjectIndexer)
 		Write("ObjectIndexer indexer");
@@ -292,7 +333,9 @@ private void WriteSaveMethod(params DataInfo[] dataInfos)
 		if (emptyLine.Get != null)
 				WriteLine("");
 		
-		if (field.SaveAssignInit != null) {
+		if (field.IsMap)
+			WriteMapSave(field, indent);
+		else if (field.SaveAssignInit != null) {
 			foreach(var line in field.SaveAssignInit)
 				WriteLine(indent.Get + line);
 		}
@@ -304,6 +347,29 @@ private void WriteSaveMethod(params DataInfo[] dataInfos)
 	WriteLine(indent.Get + "return data;");
 }
 
+private void WriteMapSave(DataInfo field, FirstCase indent)
+{
+	string dataVar = field.LowerName + "Data";
+	
+	WriteLine(indent.Get + "var "  + dataVar + " = new IkonArray();");
+	WriteLine(indent.Get + "foreach(var item in this." + field.Name + ") {");
+	WriteLine(indent.Get + "	var itemData = new IkonComposite("  + field.SavingTagName + ");");
+	WriteLine(indent.Get + "	itemData.Add("  + field.GenericParams[0].SavingKeyName + ", " + field.GenericParams[0].SaveAssignLogic.Replace(AssignCode, "item.Key") + ");");
+	WriteLine(indent.Get + "	itemData.Add("  + field.GenericParams[1].SavingKeyName + ", " + field.GenericParams[1].SaveAssignLogic.Replace(AssignCode, "item.Value") + ");");
+	WriteLine(indent.Get + "	" + dataVar + ".Add(itemData);");
+	WriteLine(indent.Get + "}");
+}
+
+private void WriteSaveTag(string className)
+{
+	if (modifer.Contains("abstract"))
+		WriteLine("protected abstract string TableTag { get; }");
+	else if (SuperClass != null)
+		WriteLine("protected override string TableTag { get { return \"" + (TableTag ?? className) + "\"; } }");
+	else
+		WriteLine("private const string TableTag = \"" + (TableTag ?? className) + "\";"); 
+}
+
 private void WriteSaveKeys(params DataInfo[] dataInfos)
 {
 	var indent = new FirstCase("", "		");
@@ -311,7 +377,17 @@ private void WriteSaveKeys(params DataInfo[] dataInfos)
 	foreach(var field in dataInfos)
 	{
 		Write(indent.Get + "private const string " + field.SavingKeyName);
-		WriteLine(" = \"" + (field.SavingKeyValue ?? field.LowerName) + "\";");
+		WriteLine(" = \"" + (field.SavingTagValue ?? field.LowerName) + "\";");
+		
+		if (field.IsMap) {
+			Write(indent.Get + "private const string " + field.SavingTagName);
+			WriteLine(" = \"" + (field.SavingTagValue ?? field.LowerName) + "\";");
+			
+			foreach(var gParam in field.GenericParams) {
+				Write(indent.Get + "private const string " + gParam.SavingKeyName);
+				WriteLine(" = \"" + (gParam.SavingKeyValue ?? gParam.Type.ToLower()) + "\";");
+			}
+		}
 	}
 }
 
