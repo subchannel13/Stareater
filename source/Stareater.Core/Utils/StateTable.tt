@@ -377,7 +377,7 @@ private void WriteSaveKeys(params DataInfo[] dataInfos)
 	foreach(var field in dataInfos)
 	{
 		Write(indent.Get + "private const string " + field.SavingKeyName);
-		WriteLine(" = \"" + (field.SavingTagValue ?? field.LowerName) + "\";");
+		WriteLine(" = \"" + (field.SavingKeyValue ?? field.LowerName) + "\";");
 		
 		if (field.IsMap) {
 			Write(indent.Get + "private const string " + field.SavingTagName);

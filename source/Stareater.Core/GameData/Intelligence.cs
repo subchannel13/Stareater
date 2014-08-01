@@ -1,4 +1,5 @@
 ﻿ 
+
 using Ikadn.Ikon.Types;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,9 @@ namespace Stareater.GameData
 
 		private Intelligence(Intelligence original, GalaxyRemap galaxyRemap) 
 		{
-			copyStars(original, galaxyRemap);
+			this.starKnowledge = new Dictionary<StarData, StarIntelligence>();
+			foreach(var item in original.starKnowledge)
+				this.starKnowledge.Add(galaxyRemap.Stars[item.Key], item.Value.Copy(galaxyRemap));
  
 		}
 
@@ -33,16 +36,24 @@ namespace Stareater.GameData
 		#region Saving
 		public IkonComposite Save(ObjectIndexer indexer) 
 		{
-			IkonComposite data = new IkonComposite(TableTag);
-			
-			data.Add(StarKnowledgeKey, saveStars(indexer));
- 
-
+			var data = new IkonComposite(TableTag);
+			var starKnowledgeData = new IkonArray();
+			foreach(var item in this.starKnowledge) {
+				var itemData = new IkonComposite(StarIntellTag);
+				itemData.Add(StarDataKey, new IkonInteger(indexer.IndexOf(item.Key)));
+				itemData.Add(StarIntelligenceKey, item.Value.Save(indexer));
+				starKnowledgeData.Add(itemData);
+			}
+			data.Add(StarKnowledgeKey, starKnowledgeData);
 			return data;
+ 
 		}
 
-		private const string TableTag = "Intelligence"; 
-		private const string StarKnowledgeKey = "starKnowledge";
+		private const string TableTag = "Intelligence";
+		private const string StarKnowledgeKey = "StarIntell";
+		private const string StarIntellTag = "StarIntell";
+		private const string StarDataKey = "star";
+		private const string StarIntelligenceKey = "intell";
  
 		#endregion
 	}

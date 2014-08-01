@@ -9,6 +9,9 @@
 	modifer = "partial";
 	
 	Generate("Stareater.GameData", "Intelligence",
-		new DataInfo("StarKnowledge", "Dictionary", "StarData", "StarIntelligence").Private().CopyOnly().CopyCode("copyStars(original, galaxyRemap);").SaveAssign("saveStars(indexer)")
+		new DataInfo("StarKnowledge", "Dictionary", 
+			new GenericParamInfo("StarData").FromIndexer().SaveKeyValue("star"), 
+			new GenericParamInfo("StarIntelligence").CopyMethod("Copy(galaxyRemap)").SaveKeyValue("intell").SaveMethod("Save(indexer)")
+		).Private().CopyOnly().SaveTag("StarIntell")
 	);
 #>
