@@ -1,4 +1,5 @@
 ﻿ 
+
 using Ikadn.Ikon.Types;
 using System;
 using System.Linq;
@@ -35,15 +36,14 @@ namespace Stareater.Galaxy
 		#region Saving
 		public IkonComposite Save() 
 		{
-			IkonComposite data = new IkonComposite(TableTag);
-			
+			var data = new IkonComposite(TableTag);
 			var colorData = new IkonArray();
 			colorData.Add(new IkonInteger(this.Color.R));
 			colorData.Add(new IkonInteger(this.Color.G));
 			colorData.Add(new IkonInteger(this.Color.B));
 			data.Add(ColorKey, colorData);
 
-			data.Add(Size, new IkonFloat(this.ImageSizeScale));
+			data.Add(SizeKey, new IkonFloat(this.ImageSizeScale));
 
 			data.Add(NameKey, this.Name.Save());
 
@@ -51,14 +51,13 @@ namespace Stareater.Galaxy
 			positionData.Add(new IkonFloat(this.Position.X));
 			positionData.Add(new IkonFloat(this.Position.Y));
 			data.Add(PositionKey, positionData);
- 
-
 			return data;
+ 
 		}
 
-		private const string TableTag = "StarData"; 
+		private const string TableTag = "StarData";
 		private const string ColorKey = "color";
-		private const string Size = "size";
+		private const string SizeKey = "size";
 		private const string NameKey = "name";
 		private const string PositionKey = "pos";
  
