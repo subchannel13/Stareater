@@ -1,4 +1,5 @@
 ﻿ 
+
 using Ikadn.Ikon.Types;
 using System;
 using Stareater.GameData;
@@ -22,9 +23,13 @@ namespace Stareater.Galaxy
  
 		} 
 
-		private IdleFleet(IdleFleet original, PlayersRemap playersRemap, Player owner, StarData location) : this(owner, location) 
+		private IdleFleet(IdleFleet original, PlayersRemap playersRemap, Player owner, StarData location) 
 		{
-			copyShips(original, playersRemap);
+			this.Owner = owner;
+			this.Location = location;
+			this.Ships = new ShipGroupCollection();
+			foreach(var item in original.Ships)
+				this.Ships.Add(item.Copy(playersRemap));
  
 		}
 
@@ -38,8 +43,7 @@ namespace Stareater.Galaxy
 		#region Saving
 		public IkonComposite Save(ObjectIndexer indexer) 
 		{
-			IkonComposite data = new IkonComposite(TableTag);
-			
+			var data = new IkonComposite(TableTag);
 			data.Add(OwnerKey, new IkonInteger(indexer.IndexOf(this.Owner)));
 
 			data.Add(LocationKey, new IkonInteger(indexer.IndexOf(this.Location)));
@@ -48,12 +52,11 @@ namespace Stareater.Galaxy
 			foreach(var item in this.Ships)
 				shipsData.Add(item.Save(indexer));
 			data.Add(Collection, shipsData);
- 
-
 			return data;
+ 
 		}
 
-		private const string TableTag = "IdleFleet"; 
+		private const string TableTag = "IdleFleet";
 		private const string OwnerKey = "owner";
 		private const string LocationKey = "location";
 		private const string Collection = "ships";

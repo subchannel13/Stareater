@@ -211,11 +211,16 @@ class DataInfo
 		{
 			StringBuilder sb = new StringBuilder(this.type);
 
-			if (this.GenericParams != null && this.GenericParams.Length > 0)
+			if (this.GenericParams != null && this.GenericParams.Length > 0 && !this.IsCollection)
 				buildGenericParams(sb, this.GenericParams);
 			
 			return sb.ToString();
 		}
+	}
+	
+	public bool IsCollection
+	{
+		get { return this.type.Contains("Collection"); }
 	}
 	
 	public bool IsMap
@@ -234,7 +239,7 @@ class DataInfo
 			else
 				sb.Append(this.type);
 				
-			if (this.GenericParams != null && this.GenericParams.Length > 0)
+			if (this.GenericParams != null && this.GenericParams.Length > 0 && !this.IsCollection)
 				buildGenericParams(sb, this.GenericParams);
 				
 			sb.Append("();");

@@ -10,8 +10,8 @@
 	modifer = "partial";
 	
 	Generate("Stareater.Galaxy", "IdleFleet",
-		new DataInfo("Owner", "Player").CopyParamPass().FromIndexer(),
-		new DataInfo("Location", "StarData").CopyParamPass().FromIndexer(),
-		new DataInfo("Ships", "ShipGroupCollection").CopyOnly().CopyCode("copyShips(original, playersRemap);").SaveMethod("Save(indexer)")
+		new DataInfo("Owner", "Player").FromIndexer(),
+		new DataInfo("Location", "StarData").FromIndexer(),
+		new DataInfo("Ships", "ShipGroupCollection", new GenericParamInfo("ShipGroup").CopyMethod("Copy(playersRemap)")).CopyOnly().SaveMethod("Save(indexer)")
 	);
 #>
