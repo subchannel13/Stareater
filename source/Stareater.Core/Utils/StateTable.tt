@@ -224,11 +224,29 @@ private void WriteFieldCopys(params DataInfo[] dataInfos)
 			WriteLine(indent.Get + field.CopyLogic.Replace(AssignCode, "this."  + field.Name + " = "));
 		else if (field.CopyFromRemap != null && field.CopyPassLogic == null)
 			WriteLine(indent.Get + "this."  + field.Name + " = " + field.LowerName + ";");
+		else if (field.IsCollection)
+			WriteListCopy(field, indent);
 		else if (field.IsMap)
 			WriteMapCopy(field, indent);
 		else if (field.CopyLogic == null && field.CopyFromRemap == null && field.CopyPassLogic == null)
 			WriteLine(indent.Get + "this."  + field.Name + " = original." + field.Name + ";");
 	}
+}
+
+private void WriteListCopy(DataInfo field, FirstCase indent)
+{
+	WriteLine(indent.Get + "this."  + field.Name + " = " + field.Constructor);
+	WriteLine(indent.Get + "foreach(var item in original." + field.Name + ")");
+	Write(indent.Get + "	this."  + field.Name + ".Add(");
+	
+	if (field.GenericParams[0].CopyLogic != null)
+		Write(field.GenericParams[0].CopyLogic.Replace(Default, "item"));
+	else if (field.GenericParams[0].CopyFromRemap != null)
+		Write(field.GenericParams[0].CopyFromRemap.Replace(Default, "item"));
+	else
+		Write("item");
+	
+	WriteLine(");");
 }
 
 private void WriteMapCopy(DataInfo field, FirstCase indent)

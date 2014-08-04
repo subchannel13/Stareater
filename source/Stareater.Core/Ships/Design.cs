@@ -1,4 +1,5 @@
 ﻿ 
+
 using Ikadn.Ikon.Types;
 using System;
 using Stareater.GameData;
@@ -43,7 +44,7 @@ namespace Stareater.Ships
  
 
 		#region Saving
-		public  IkonComposite Save(ObjectIndexer indexer) 
+		public IkonComposite Save(ObjectIndexer indexer) 
 		{
 			var data = new IkonComposite(TableTag);
 			data.Add(IdCodeKey, new IkonText(this.IdCode));

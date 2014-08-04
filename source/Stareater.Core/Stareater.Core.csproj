@@ -131,7 +131,6 @@
       <DependentUpon>ShipGroup.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="Galaxy\IdleFleet.partial.cs" />
     <Compile Include="Galaxy\PlanetType.cs" />
     <Compile Include="Galaxy\StarData.cs">
       <DependentUpon>StarData.tt</DependentUpon>
