@@ -13,10 +13,10 @@
 	Generate("Stareater.Players", "Player",
 		new DataInfo("Name", "string"),
 		new DataInfo("Color", "Color"),
-		new DataInfo("ControlType", "PlayerControlType").Derived("initPlayerControl(type);", "PlayerType type").CopyCode("copyPlayerControl(original);").SaveMethodWrap("ToString()", "new IkonComposite(" + Placeholder + ")"),
+		new DataInfo("ControlType", "PlayerControlType").Derived("initPlayerControl(type);", "PlayerType", "type").CopyCode("copyPlayerControl(original);").SaveMethodWrap("ToString()", "new IkonComposite(" + Placeholder + ")"),
 		new DataInfo("OffscreenControl", "IOffscreenPlayer").Derived("").CopyCode("").SaveMethod("Save()", "new IkonComposite(\"None\")"),
-		new DataInfo("UnlockedDesigns", "ICollection", "PredefinedDesign").CopyOnly().CopyCode("copyDesigns(original);").SubTypeGeneric("HashSet").FromIndexer(),
+		new DataInfo("UnlockedDesigns", "HashSet", new GenericParamInfo("PredefinedDesign").FromIndexer()).CopyOnly(),
 		new DataInfo("Intelligence", "Intelligence").CopyOnly().IsState(Flag.GalaxyRemap),
-		new DataInfo("Orders", "PlayerOrders").CopyOnly().CopyCode("//TODO(v0.5) copy orders").Public().NoSaveLoad()
+		new DataInfo("Orders", "PlayerOrders").CopyOnly().CopyCode("").Public().NoSaveLoad()
 	);
 #>

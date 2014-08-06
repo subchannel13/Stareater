@@ -1,4 +1,5 @@
 ﻿ 
+
 using Ikadn.Ikon.Types;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Stareater.Players
 		public Color Color { get; private set; }
 		public PlayerControlType ControlType { get; private set; }
 		public IOffscreenPlayer OffscreenControl { get; private set; }
-		public ICollection<PredefinedDesign> UnlockedDesigns { get; private set; }
+		public HashSet<PredefinedDesign> UnlockedDesigns { get; private set; }
 		public Intelligence Intelligence { get; private set; }
 		public PlayerOrders Orders { get; set; }
 
@@ -37,9 +38,11 @@ namespace Stareater.Players
 			this.Color = original.Color;
 			copyPlayerControl(original);
 			
-			copyDesigns(original);
+			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
+			foreach(var item in original.UnlockedDesigns)
+				this.UnlockedDesigns.Add(item);
 			this.Intelligence = original.Intelligence.Copy(galaxyRemap);
-			//TODO(v0.5) copy orders
+			
  
 		}
 
@@ -51,7 +54,7 @@ namespace Stareater.Players
  
 
 		#region Saving
-		public  IkonComposite Save(ObjectIndexer indexer) 
+		public IkonComposite Save(ObjectIndexer indexer) 
 		{
 			var data = new IkonComposite(TableTag);
 			data.Add(NameKey, new IkonText(this.Name));
@@ -76,7 +79,7 @@ namespace Stareater.Players
  
 		}
 
-		private const string TableTag = "Player"; 
+		private const string TableTag = "Player";
 		private const string NameKey = "name";
 		private const string ColorKey = "color";
 		private const string ControlTypeKey = "controlType";
