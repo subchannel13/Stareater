@@ -51,6 +51,55 @@ private static string initPlayerRemapCode(string type, string readCode, out bool
 	return copyFromRemap;	
 }
 
+private static string[] initSaveAssignInit(string lowerName, string name, string typeName)
+{
+	string dataVar = lowerName + "Data";
+	
+	switch(typeName)
+	{
+		case "Color":
+			return new string[] { 
+				"var " + dataVar + " = new IkonArray();",
+				dataVar + ".Add(new IkonInteger(this." + name + ".R));",
+				dataVar + ".Add(new IkonInteger(this." + name + ".G));",
+				dataVar + ".Add(new IkonInteger(this." + name + ".B));"
+			};
+		case "Vector2D":
+			return new string[] { 
+				"var " + dataVar + " = new IkonArray();",
+				dataVar + ".Add(new IkonFloat(this." + name + ".X));",
+				dataVar + ".Add(new IkonFloat(this." + name + ".Y));"
+			};
+		default:
+			return null;
+			break;
+	}
+}
+
+private static string initSaveAssignLogic(string lowerName, string typeName)
+{
+	string dataVar = lowerName + "Data";
+
+	switch(typeName)
+	{
+		case "double":
+		case "float":
+			return "new IkonFloat(#SaveName#)";
+		case "int":
+		case "long":
+			return "new IkonInteger(#SaveName#)";
+		case "string":
+			return "new IkonText(#SaveName#)";
+		case "Color":
+		case "Dictionary":
+		case "HashSet":
+		case "Vector2D":
+			return dataVar;
+		default:
+			return null;
+	}
+}
+
 class DataInfo
 {
 	private string name;
@@ -112,46 +161,8 @@ class DataInfo
 	
 	private void initSaveCode()
 	{
-		string dataVar = this.LowerName + "Data";
-		string typeName = this.type;
-
-		switch(this.type)
-		{
-			case "double":
-			case "float":
-				this.SaveAssignLogic = "new IkonFloat(#SaveName#)";
-				break;
-			case "int":
-			case "long":
-				this.SaveAssignLogic = "new IkonInteger(#SaveName#)";
-				break;
-			case "string":
-				this.SaveAssignLogic = "new IkonText(#SaveName#)";
-				break;
-			case "Color":
-				this.SaveAssignInit = new string[] { 
-					"var " + dataVar + " = new IkonArray();",
-					dataVar + ".Add(new IkonInteger(this." + this.Name + ".R));",
-					dataVar + ".Add(new IkonInteger(this." + this.Name + ".G));",
-					dataVar + ".Add(new IkonInteger(this." + this.Name + ".B));"
-				};
-				this.SaveAssignLogic = dataVar;
-				break;
-			case "Vector2D":
-				this.SaveAssignInit = new string[] { 
-					"var " + dataVar + " = new IkonArray();",
-					dataVar + ".Add(new IkonFloat(this." + this.Name + ".X));",
-					dataVar + ".Add(new IkonFloat(this." + this.Name + ".Y));"
-				};
-				this.SaveAssignLogic = dataVar;
-				break;
-			case "Dictionary":
-				this.SaveAssignLogic = dataVar;
-				break;
-			default:
-				this.SaveAssignLogic = null;
-				break;
-		}
+		this.SaveAssignInit = initSaveAssignInit(this.LowerName, this.Name, this.type);
+		this.SaveAssignLogic = initSaveAssignLogic(this.LowerName, this.type);
 	}
 	
 	private string paramName()
@@ -211,7 +222,7 @@ class DataInfo
 		{
 			StringBuilder sb = new StringBuilder(this.type);
 
-			if (this.GenericParams != null && this.GenericParams.Length > 0 && !this.IsCollection)
+			if (this.GenericParams != null && this.GenericParams.Length > 0 && !this.type.Contains("Collection"))
 				buildGenericParams(sb, this.GenericParams);
 			
 			return sb.ToString();
@@ -220,7 +231,7 @@ class DataInfo
 	
 	public bool IsCollection
 	{
-		get { return this.type.Contains("Collection"); }
+		get { return this.type.Contains("Collection") || this.type.Contains("Set"); }
 	}
 	
 	public bool IsMap
@@ -239,7 +250,7 @@ class DataInfo
 			else
 				sb.Append(this.type);
 				
-			if (this.GenericParams != null && this.GenericParams.Length > 0 && !this.IsCollection)
+			if (this.GenericParams != null && this.GenericParams.Length > 0 && !this.type.Contains("Collection"))
 				buildGenericParams(sb, this.GenericParams);
 				
 			sb.Append("();");
@@ -534,7 +545,7 @@ class GenericParamInfo
 	public string CopyFromRemap = null;	//null -> pass logic
 	public string CopyLogic = null;	//null -> ??, Default -> default constructor, None -> none
 	
-	public string SaveAssignLogic = null;
+	public string SaveAssignLogic = SaveName;
 	public string SavingKeyName = null;
 	public string SavingKeyValue = null;
 	
@@ -543,6 +554,7 @@ class GenericParamInfo
 		this.SavingKeyName = type + "Key";
 		
 		initRemapCode();
+		initSaveCode();
 	}
 	
 	private void analyzeRemapNeeds(string code)
@@ -556,6 +568,11 @@ class GenericParamInfo
 		this.CopyFromRemap = 
 			initGalaxyRemapCode(this.Type, Default, out CopyMethodNeedGalaxyRemap) ??
 			initPlayerRemapCode(this.Type, Default, out CopyMethodNeedPlayersRemap);
+	}
+	
+	private void initSaveCode()
+	{
+		this.SaveAssignLogic = initSaveAssignLogic("", this.Type);
 	}
 	
 	public GenericParamInfo Init(string code)
@@ -573,7 +590,14 @@ class GenericParamInfo
 	
 	public GenericParamInfo FromIndexer()
 	{
-		this.SaveAssignLogic = "new IkonInteger(indexer.IndexOf(" + AssignCode + "))";
+		this.SaveAssignLogic = "new IkonInteger(indexer.IndexOf(" + SaveName + "))";
+		return this;
+	}
+	
+	public GenericParamInfo SaveKey(string keyName, string keyValue)
+	{
+		this.SavingKeyName = keyName;
+		this.SavingKeyValue = keyValue;
 		return this;
 	}
 	
@@ -585,7 +609,13 @@ class GenericParamInfo
 	
 	public GenericParamInfo SaveMethod(string methodCall)
 	{
-		this.SaveAssignLogic = AssignCode + "." + methodCall;
+		this.SaveAssignLogic = SaveName + "." + methodCall;
+		return this;
+	}
+	
+	public GenericParamInfo SaveValue(string methodCall, string type)
+	{
+		this.SaveAssignLogic = initSaveAssignLogic("", type).Replace(SaveName, SaveName + "." + methodCall);
 		return this;
 	}
 }

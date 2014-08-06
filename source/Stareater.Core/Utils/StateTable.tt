@@ -351,7 +351,9 @@ private void WriteSaveMethod(params DataInfo[] dataInfos)
 		if (emptyLine.Get != null)
 				WriteLine("");
 		
-		if (field.IsMap)
+		if (field.IsCollection)
+			WriteListSave(field, indent);
+		else if (field.IsMap)
 			WriteMapSave(field, indent);
 		else if (field.SaveAssignInit != null) {
 			foreach(var line in field.SaveAssignInit)
@@ -365,6 +367,15 @@ private void WriteSaveMethod(params DataInfo[] dataInfos)
 	WriteLine(indent.Get + "return data;");
 }
 
+private void WriteListSave(DataInfo field, FirstCase indent)
+{
+	string dataVar = field.LowerName + "Data";
+	
+	WriteLine(indent.Get + "var "  + dataVar + " = new IkonArray();");
+	WriteLine(indent.Get + "foreach(var item in this." + field.Name + ")");
+	WriteLine(indent.Get + "	" + dataVar + ".Add(" + field.GenericParams[0].SaveAssignLogic.Replace(SaveName, "item") + ");");
+}
+
 private void WriteMapSave(DataInfo field, FirstCase indent)
 {
 	string dataVar = field.LowerName + "Data";
@@ -372,8 +383,8 @@ private void WriteMapSave(DataInfo field, FirstCase indent)
 	WriteLine(indent.Get + "var "  + dataVar + " = new IkonArray();");
 	WriteLine(indent.Get + "foreach(var item in this." + field.Name + ") {");
 	WriteLine(indent.Get + "	var itemData = new IkonComposite("  + field.SavingTagName + ");");
-	WriteLine(indent.Get + "	itemData.Add("  + field.GenericParams[0].SavingKeyName + ", " + field.GenericParams[0].SaveAssignLogic.Replace(AssignCode, "item.Key") + ");");
-	WriteLine(indent.Get + "	itemData.Add("  + field.GenericParams[1].SavingKeyName + ", " + field.GenericParams[1].SaveAssignLogic.Replace(AssignCode, "item.Value") + ");");
+	WriteLine(indent.Get + "	itemData.Add("  + field.GenericParams[0].SavingKeyName + ", " + field.GenericParams[0].SaveAssignLogic.Replace(SaveName, "item.Key") + ");");
+	WriteLine(indent.Get + "	itemData.Add("  + field.GenericParams[1].SavingKeyName + ", " + field.GenericParams[1].SaveAssignLogic.Replace(SaveName, "item.Value") + ");");
 	WriteLine(indent.Get + "	" + dataVar + ".Add(itemData);");
 	WriteLine(indent.Get + "}");
 }

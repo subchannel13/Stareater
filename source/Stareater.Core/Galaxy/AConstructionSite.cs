@@ -1,4 +1,5 @@
 ﻿ 
+
 using Ikadn.Ikon.Types;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace Stareater.Galaxy
 	{
 		public LocationBody Location { get; private set; }
 		public Player Owner { get; private set; }
-		public IDictionary<string, double> Buildings { get; private set; }
-		public IDictionary<Constructable, double> Stockpile { get; private set; }
+		public Dictionary<string, double> Buildings { get; private set; }
+		public Dictionary<Constructable, double> Stockpile { get; private set; }
 
 		public AConstructionSite(LocationBody location, Player owner) : this() 
 		{
@@ -26,8 +27,12 @@ namespace Stareater.Galaxy
 
 		protected AConstructionSite(AConstructionSite original, LocationBody location, Player owner) : this(location, owner) 
 		{
-			copyBuildings(original);
-			copyStockpile(original);
+			this.Buildings = new Dictionary<string, double>();
+			foreach(var item in original.Buildings)
+				this.Buildings.Add(item.Key, item.Value);
+			this.Stockpile = new Dictionary<Constructable, double>();
+			foreach(var item in original.Stockpile)
+				this.Stockpile.Add(item.Key, item.Value);
  
 		}
 
@@ -41,9 +46,23 @@ namespace Stareater.Galaxy
 
 			data.Add(OwnerKey, new IkonInteger(indexer.IndexOf(this.Owner)));
 
-			data.Add(BuildingsKey, saveBuildings());
+			var buildingsData = new IkonArray();
+			foreach(var item in this.Buildings) {
+				var itemData = new IkonComposite(BuildingsTag);
+				itemData.Add(BuildingTypeKey, new IkonText(item.Key));
+				itemData.Add(BuildingAmountKey, new IkonFloat(item.Value));
+				buildingsData.Add(itemData);
+			}
+			data.Add(BuildingsKey, buildingsData);
 
-			data.Add(StockpileKey, saveStockpile());
+			var stockpileData = new IkonArray();
+			foreach(var item in this.Stockpile) {
+				var itemData = new IkonComposite(StockpileTag);
+				itemData.Add(StockpileGroupKey, new IkonText(item.Key.IdCode));
+				itemData.Add(StockpileAmountKey, new IkonFloat(item.Value));
+				stockpileData.Add(itemData);
+			}
+			data.Add(StockpileKey, stockpileData);
 			return data;
  
 		}
@@ -52,7 +71,13 @@ namespace Stareater.Galaxy
 		private const string LocationKey = "location";
 		private const string OwnerKey = "owner";
 		private const string BuildingsKey = "buildings";
+		private const string BuildingsTag = "buildings";
+		private const string BuildingTypeKey = "type";
+		private const string BuildingAmountKey = "amount";
 		private const string StockpileKey = "stockpile";
+		private const string StockpileTag = "stockpile";
+		private const string StockpileGroupKey = "group";
+		private const string StockpileAmountKey = "amount";
  
 		#endregion
 	}

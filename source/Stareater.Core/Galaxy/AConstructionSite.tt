@@ -13,7 +13,13 @@
 	Generate("Stareater.Galaxy", "AConstructionSite",
 		new DataInfo("Location", "LocationBody").CopyParamPass().SaveMethod("Save(indexer)"),
 		new DataInfo("Owner", "Player").CopyParamPass().FromIndexer(),
-		new DataInfo("Buildings", "IDictionary", "string", "double").CopyOnly("copyBuildings(original);").SubTypeGeneric("Dictionary").SaveAssign("saveBuildings()"),
-		new DataInfo("Stockpile", "IDictionary", "Constructable", "double").CopyOnly("copyStockpile(original);").SubTypeGeneric("Dictionary").SaveAssign("saveStockpile()")
+		new DataInfo("Buildings", "Dictionary", 
+			new GenericParamInfo("string").SaveKey("BuildingTypeKey", "type"), 
+			new GenericParamInfo("double").SaveKey("BuildingAmountKey", "amount")
+		).CopyOnly(),
+		new DataInfo("Stockpile", "Dictionary", 
+			new GenericParamInfo("Constructable").SaveKey("StockpileGroupKey", "group").SaveValue("IdCode", "string"), 
+			new GenericParamInfo("double").SaveKey("StockpileAmountKey", "amount")
+		).CopyOnly()
 	);
 #>
