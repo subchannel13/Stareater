@@ -1,4 +1,5 @@
 ﻿ 
+
 using Ikadn.Ikon.Types;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace Stareater.GameData.Databases.Tables
 	partial class PlayerOrders 
 	{
 		public int DevelopmentFocusIndex { get; set; }
-		public IDictionary<string, int> DevelopmentQueue { get; set; }
+		public Dictionary<string, int> DevelopmentQueue { get; set; }
 		public string ResearchFocus { get; set; }
-		public IDictionary<AConstructionSite, ConstructionOrders> ConstructionPlans { get; set; }
+		public Dictionary<AConstructionSite, ConstructionOrders> ConstructionPlans { get; set; }
 
 		public PlayerOrders() 
 		{
@@ -27,9 +28,13 @@ namespace Stareater.GameData.Databases.Tables
 		private PlayerOrders(PlayerOrders original, PlayersRemap playersRemap) 
 		{
 			this.DevelopmentFocusIndex = original.DevelopmentFocusIndex;
-			copyDevelopment(original);
+			this.DevelopmentQueue = new Dictionary<string, int>();
+			foreach(var item in original.DevelopmentQueue)
+				this.DevelopmentQueue.Add(item.Key, item.Value);
 			this.ResearchFocus = original.ResearchFocus;
-			copyConstruction(original, playersRemap);
+			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
+			foreach(var item in original.ConstructionPlans)
+				this.ConstructionPlans.Add(playersRemap.Site(item.Key), item.Value.Copy());
  
 		}
 
@@ -41,7 +46,7 @@ namespace Stareater.GameData.Databases.Tables
  
 
 		#region Saving
-		public  IkonComposite Save(ObjectIndexer indexer) 
+		public IkonComposite Save(ObjectIndexer indexer) 
 		{
 			var data = new IkonComposite(TableTag);
 			data.Add(DevelopmentFocusIndexKey, new IkonInteger(this.DevelopmentFocusIndex));
@@ -55,11 +60,17 @@ namespace Stareater.GameData.Databases.Tables
  
 		}
 
-		private const string TableTag = "PlayerOrders"; 
+		private const string TableTag = "PlayerOrders";
 		private const string DevelopmentFocusIndexKey = "developmentFocusIndex";
 		private const string DevelopmentQueueKey = "developmentQueue";
+		private const string DevelopmentQueueTag = "developmentQueue";
+		private const string stringKey = "string";
+		private const string intKey = "int";
 		private const string ResearchFocusKey = "researchFocus";
 		private const string ConstructionPlansKey = "constructionPlans";
+		private const string ConstructionPlansTag = "constructionPlans";
+		private const string AConstructionSiteKey = "aconstructionsite";
+		private const string ConstructionOrdersKey = "constructionorders";
  
 		#endregion
 	}

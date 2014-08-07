@@ -11,8 +11,14 @@
 
 	Generate("Stareater.GameData.Databases.Tables", "PlayerOrders",
 		new DataInfo("DevelopmentFocusIndex", "int").Public().InitValue("0").CopyOnly(),
-		new DataInfo("DevelopmentQueue", "IDictionary", "string", "int").SubType("Dictionary").Public().CopyOnly().CopyCode("copyDevelopment(original);").SaveAssign("saveDevelopment()"),
+		new DataInfo("DevelopmentQueue", "Dictionary", 
+			new GenericParamInfo("string"), 
+			new GenericParamInfo("int")
+		).Public().CopyOnly().SaveAssign("saveDevelopment()"),
 		new DataInfo("ResearchFocus", "string").Public().InitValue("null").CopyOnly(),
-		new DataInfo("ConstructionPlans", "IDictionary", "AConstructionSite", "ConstructionOrders").SubType("Dictionary").Public().CopyOnly().CopyCode("copyConstruction(original, playersRemap);").SaveAssign("saveConstruction(indexer)")
+		new DataInfo("ConstructionPlans", "Dictionary", 
+			new GenericParamInfo("AConstructionSite"), 
+			new GenericParamInfo("ConstructionOrders").CopyMethod("Copy()")
+		).Public().CopyOnly().SaveAssign("saveConstruction(indexer)")
 	);
 #>
