@@ -15,18 +15,6 @@ namespace Stareater.GameData.Databases.Tables
 		//TODO(later): move or remove
 		public const double DefaultSiteSpendingRatio = 1;
 		
-		private void copyConstruction(PlayerOrders original, PlayersRemap playersRemap)
-		{
-			this.ConstructionPlans = original.ConstructionPlans.ToDictionary(
-				x => playersRemap.Site(x.Key),
-				x => x.Value.Copy());
-		}
-
-		private void copyDevelopment(PlayerOrders original)
-		{
-			this.DevelopmentQueue = new Dictionary<string, int>(original.DevelopmentQueue);
-		}
-		
 		private IkadnBaseObject saveConstruction(ObjectIndexer indexer)
 		{
 			var queue = new IkonArray();

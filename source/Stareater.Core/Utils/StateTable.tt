@@ -346,14 +346,14 @@ private void WriteSaveMethod(params DataInfo[] dataInfos)
 
 	foreach(var field in dataInfos)
 	{
-		if (field.SaveAssignLogic == null)
+		if (!field.DoSaveLoad)
 			continue;
 		if (emptyLine.Get != null)
 				WriteLine("");
 		
-		if (field.IsCollection)
+		if (field.IsCollection && !field.SaveOverride)
 			WriteListSave(field, indent);
-		else if (field.IsMap)
+		else if (field.IsMap && !field.SaveOverride)
 			WriteMapSave(field, indent);
 		else if (field.SaveAssignInit != null) {
 			foreach(var line in field.SaveAssignInit)

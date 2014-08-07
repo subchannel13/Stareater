@@ -265,7 +265,7 @@ namespace Stareater.GameLogic
 					
 		}
 		
-		private static IDictionary<string, int> updateTechQueue(IDictionary<string, int> queue, ISet<string> validItems)
+		private static Dictionary<string, int> updateTechQueue(IDictionary<string, int> queue, ISet<string> validItems)
 		{
 			var newOrder = queue
 				.Where(x => validItems.Contains(x.Key))

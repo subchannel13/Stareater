@@ -1,4 +1,5 @@
 ﻿ 
+
 using Ikadn.Ikon.Types;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Stareater.GameData.Databases.Tables
 	partial class ConstructionOrders 
 	{
 		public double SpendingRatio { get; set; }
-		public IList<Constructable> Queue { get; private set; }
+		public List<Constructable> Queue { get; private set; }
 
 		public ConstructionOrders(double spendingRatio) 
 		{
@@ -22,7 +23,9 @@ namespace Stareater.GameData.Databases.Tables
 		private ConstructionOrders(ConstructionOrders original) 
 		{
 			this.SpendingRatio = original.SpendingRatio;
-			this.Queue = original.Queue.ToList();
+			this.Queue = new List<Constructable>();
+			foreach(var item in original.Queue)
+				this.Queue.Add(item);
  
 		}
 
@@ -34,7 +37,7 @@ namespace Stareater.GameData.Databases.Tables
  
 
 		#region Saving
-		public  IkonComposite Save(ObjectIndexer indexer) 
+		public IkonComposite Save(ObjectIndexer indexer) 
 		{
 			var data = new IkonComposite(TableTag);
 			data.Add(SpendingRatioKey, new IkonFloat(this.SpendingRatio));
@@ -47,7 +50,7 @@ namespace Stareater.GameData.Databases.Tables
  
 		}
 
-		private const string TableTag = "ConstructionOrders"; 
+		private const string TableTag = "ConstructionOrders";
 		private const string SpendingRatioKey = "spendingRatio";
 		private const string QueueKey = "queue";
  

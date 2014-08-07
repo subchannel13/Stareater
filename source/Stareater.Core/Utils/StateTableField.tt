@@ -93,6 +93,7 @@ private static string initSaveAssignLogic(string lowerName, string typeName)
 		case "Color":
 		case "Dictionary":
 		case "HashSet":
+		case "List":
 		case "Vector2D":
 			return dataVar;
 		default:
@@ -133,6 +134,8 @@ class DataInfo
 	public string CopyLogic = null;	//null -> copy value, Default -> default constructor, None -> none
 
 	//Saving logic
+	public bool DoSaveLoad = true;
+	public bool SaveOverride = false;
 	public string SaveAssignLogic = null;
 	public string[] SaveAssignInit = null;
 	public string SavingKeyName = null;
@@ -231,7 +234,7 @@ class DataInfo
 	
 	public bool IsCollection
 	{
-		get { return this.type.Contains("Collection") || this.type.Contains("Set"); }
+		get { return this.type.Contains("Collection") || this.type.Contains("List") || this.type.Contains("Set"); }
 	}
 	
 	public bool IsMap
@@ -397,6 +400,13 @@ class DataInfo
 		return this;
 	}
 	
+	public DataInfo CopyMethod(string code)
+	{
+		this.CopyLogic = AssignCode + "original." + code;
+		this.analyzeRemapNeeds(code);
+		return this;
+	}
+	
 	public DataInfo CopyParamPass()
 	{
 		this.CopyPassLogic = Default;
@@ -429,12 +439,13 @@ class DataInfo
 	
 	public DataInfo NoSaveLoad()
 	{
-		this.SaveAssignLogic = null;
+		this.DoSaveLoad = false;
 		return this;
 	}
 	
 	public DataInfo SaveAssign(string code)
 	{
+		this.SaveOverride = true;
 		this.SaveAssignLogic = code;
 		return this;
 	}
@@ -454,6 +465,7 @@ class DataInfo
 
 	public DataInfo SaveIdCode()
 	{
+		this.SaveOverride = true;
 		this.SaveAssignLogic = "new IkonText(this." + this.Name + ".IdCode)";
 		return this;
 	}
@@ -473,7 +485,7 @@ class DataInfo
 	
 	public DataInfo SaveMethod(string methodCall)
 	{
-		if (this.type.EndsWith("Collection"))
+		/*if (this.type.EndsWith("Collection"))
 		{
 			string dataVar = this.LowerName + "Data";
 			
@@ -485,8 +497,9 @@ class DataInfo
 			};
 			this.SaveAssignLogic = dataVar;
 		}
-		else
-			this.SaveAssignLogic = "this." + this.Name + "." + methodCall;
+		else*/
+		this.SaveOverride = true;
+		this.SaveAssignLogic = "this." + this.Name + "." + methodCall;
 		return this;
 	}
 	
