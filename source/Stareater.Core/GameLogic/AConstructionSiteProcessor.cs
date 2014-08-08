@@ -45,10 +45,17 @@ namespace Stareater.GameLogic
 
 		public virtual void ProcessPrecombat(StatesDB states)
 		{
-			foreach (var construction in SpendingPlan) 
+			foreach (var construction in this.SpendingPlan) {
 				if (construction.CompletedCount >= 1)
 					foreach(var effect in construction.Item.Effects)
-						effect.Apply(states, Site, construction.CompletedCount);
+						effect.Apply(states, this.Site, construction.CompletedCount);
+				
+				if (construction.LeftoverPoints > 0)
+					if (!this.Site.Stockpile.ContainsKey(construction.Item))
+						this.Site.Stockpile.Add(construction.Item, construction.LeftoverPoints);
+					else
+						this.Site.Stockpile[construction.Item] += construction.LeftoverPoints;
+			}
 		}
 		
 		protected abstract AConstructionSite Site { get; }
