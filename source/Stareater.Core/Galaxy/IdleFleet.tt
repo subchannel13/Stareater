@@ -12,6 +12,8 @@
 	Generate("Stareater.Galaxy", "IdleFleet",
 		new DataInfo("Owner", "Player").FromIndexer(),
 		new DataInfo("Location", "StarData").FromIndexer(),
-		new DataInfo("Ships", "ShipGroupCollection", new GenericParamInfo("ShipGroup").CopyMethod("Copy(playersRemap)")).CopyOnly().SaveMethod("Save(indexer)")
+		new DataInfo("Ships", "ShipGroupCollection", 
+			new GenericParamInfo("ShipGroup").CopyMethod("Copy(playersRemap)").SaveMethod("Save(indexer)")
+		).CopyOnly()
 	);
 #>
