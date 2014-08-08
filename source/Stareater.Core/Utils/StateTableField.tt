@@ -79,6 +79,9 @@ private static string[] initSaveAssignInit(string lowerName, string name, string
 private static string initSaveAssignLogic(string lowerName, string typeName)
 {
 	string dataVar = lowerName + "Data";
+	
+	if (typeName.Contains("Collection"))
+		typeName = "Collection";
 
 	switch(typeName)
 	{
@@ -91,6 +94,7 @@ private static string initSaveAssignLogic(string lowerName, string typeName)
 		case "string":
 			return "new IkonText(#SaveName#)";
 		case "Color":
+		case "Collection":
 		case "Dictionary":
 		case "HashSet":
 		case "List":
@@ -485,19 +489,6 @@ class DataInfo
 	
 	public DataInfo SaveMethod(string methodCall)
 	{
-		/*if (this.type.EndsWith("Collection"))
-		{
-			string dataVar = this.LowerName + "Data";
-			
-			this.SavingKeyName = "Collection";
-			this.SaveAssignInit = new string[] { 
-				"var " + dataVar + " = new IkonArray();",
-				"foreach(var item in this." + this.Name + ")",
-				"	" + dataVar + ".Add(item." + methodCall + ");"
-			};
-			this.SaveAssignLogic = dataVar;
-		}
-		else*/
 		this.SaveOverride = true;
 		this.SaveAssignLogic = "this." + this.Name + "." + methodCall;
 		return this;

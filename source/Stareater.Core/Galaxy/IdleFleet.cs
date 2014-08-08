@@ -51,7 +51,7 @@ namespace Stareater.Galaxy
 			var shipsData = new IkonArray();
 			foreach(var item in this.Ships)
 				shipsData.Add(item.Save(indexer));
-			data.Add(Collection, shipsData);
+			data.Add(ShipsKey, shipsData);
 			return data;
  
 		}
@@ -59,7 +59,7 @@ namespace Stareater.Galaxy
 		private const string TableTag = "IdleFleet";
 		private const string OwnerKey = "owner";
 		private const string LocationKey = "location";
-		private const string Collection = "ships";
+		private const string ShipsKey = "ships";
  
 		#endregion
 	}

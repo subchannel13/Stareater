@@ -50,7 +50,7 @@ namespace Stareater.GameData
 		}
 
 		private const string TableTag = "Intelligence";
-		private const string StarKnowledgeKey = "StarIntell";
+		private const string StarKnowledgeKey = "starKnowledge";
 		private const string StarIntellTag = "StarIntell";
 		private const string StarDataKey = "star";
 		private const string StarIntelligenceKey = "intell";

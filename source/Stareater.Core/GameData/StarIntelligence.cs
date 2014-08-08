@@ -58,7 +58,7 @@ namespace Stareater.GameData
 
 		private const string TableTag = "StarIntelligence";
 		private const string LastVisitedKey = "lastVisited";
-		private const string PlanetsKey = "PlanetIntell";
+		private const string PlanetsKey = "planets";
 		private const string PlanetIntellTag = "PlanetIntell";
 		private const string PlanetKey = "planet";
 		private const string PlanetIntelligenceKey = "intell";
