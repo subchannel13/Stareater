@@ -70,7 +70,6 @@
     <Compile Include="AppData\Expressions\UnaryOperators.cs" />
     <Compile Include="AppData\Expressions\Variable.cs" />
     <Compile Include="AppData\LastGameInfo.cs" />
-    <Compile Include="AppData\SavedGames.cs" />
     <Compile Include="Controllers\AConstructionSiteController.cs" />
     <Compile Include="Controllers\ColonyController.cs" />
     <Compile Include="Controllers\Data\BodyType.cs" />
