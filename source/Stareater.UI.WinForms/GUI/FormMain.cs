@@ -111,12 +111,6 @@ namespace Stareater.GUI
 				form.ShowDialog();
 		}
 		
-		private void saveLoadToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			using(var form = new FormSaveLoad(new SavesController(controller)))
-				form.ShowDialog();
-		}
-
 		#region Delayed Events
 		private void postDelayedEvent(Action eventAction)
 		{

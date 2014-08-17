@@ -20,39 +20,43 @@ namespace Stareater.Controllers
 
 		private GameController gameController;
 		private int nextSaveNumber;
+		private LinkedList<SavedGameData> games;
 		
 		public SavesController(GameController gameController)
 		{
 			this.gameController = gameController;
-			nextSaveNumber = 1; //TODO(v0.5) calculate from files (max found +1)
+			checkFiles();
 		}
 
-		#region File cache
-		private static Dictionary<string, SavedGameData> games;
-
-		private static void checkCache()
+		#region Files
+		private void checkFiles()
 		{
-			if (SavesController.games == null)
-				SavesController.games = new Dictionary<string, SavedGameData>();
-
-			foreach (var cached in SavesController.games)
-				if (cached.Value.LastModified < (new FileInfo(cached.Key)).LastWriteTimeUtc)
-					SavesController.games.Remove(cached.Key);
-
 			var saveFolder = new DirectoryInfo(SaveFolderPath);
-			foreach (var file in saveFolder.EnumerateFiles("*." + SaveNameExtension))
+			var saveFiles = new Dictionary<SavedGameData, DateTime>();
+			var saveNames = new HashSet<string>();
+
+			foreach (var file in saveFolder.EnumerateFiles("*." + SaveNameExtension)) {
+				saveNames.Add(file.Name);
+
 				using (var parser = new IkonParser(file.OpenText())) {
 					var rawData = parser.ParseNext() as IkonComposite;
-					SavesController.games.Add(
-						file.FullName,
+					saveFiles.Add(
 						new SavedGameData(
-							rawData[SaveGameTitleKey].To<string>(), 
+							rawData[SaveGameTitleKey].To<string>(),
 							rawData[Game.TurnKey].To<int>(),
-							rawData, 
+							rawData,
 							file.LastWriteTimeUtc
-						)
+						),
+						file.LastWriteTimeUtc
 					);
 				}
+			}
+
+			for (this.nextSaveNumber = 1;
+				saveNames.Contains(SaveNamePrefix + this.nextSaveNumber + "." + SaveNameExtension);
+				this.nextSaveNumber++)
+				;
+			this.games = new LinkedList<SavedGameData>(saveFiles.OrderByDescending(x => x.Value).Select(x => x.Key));
 		}
 		#endregion
 
@@ -74,8 +78,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				SavesController.checkCache();
-				return SavesController.games.Values.OrderBy(x => x.LastModified);
+				return this.games;
 			}
 		}
 		#endregion
