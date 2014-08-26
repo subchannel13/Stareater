@@ -29,6 +29,13 @@ namespace Stareater.Localization.StarNames
 			return data;
 		}
 
+		public static IStarName Load(IkonComposite rawData)
+		{
+			return new ProperStarName(
+				rawData[IndexKey].To<int>()
+			);
+		}
+		
 		public const string SaveTag = "Proper";
 		private const string IndexKey = "index";
 		#endregion

@@ -183,9 +183,9 @@ namespace Stareater
 		
 		public const string SaveGameTag = "Game";
 		public const string TurnKey = "turn";
-		private const string OrdersKey = "orders";
-		private const string PlayersKey = "players";
-		private const string StatesKey = "states";
+		public const string OrdersKey = "orders";
+		public const string PlayersKey = "players";
+		public const string StatesKey = "states";
 		#endregion
 	}
 }

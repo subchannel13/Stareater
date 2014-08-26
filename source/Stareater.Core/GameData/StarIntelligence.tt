@@ -4,7 +4,6 @@
 	usings.Add("System");
 	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.Galaxy");
-	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "partial";
 
@@ -12,7 +11,7 @@
 		new DataInfo("LastVisited", "int").CopyOnly().InitValue("NeverVisited"),
 		new DataInfo("Planets", "Dictionary", 
 			new GenericParamInfo("Planet").FromIndexer(), 
-			new GenericParamInfo("PlanetIntelligence").CopyMethod("Copy()").SaveKeyValue("intell").SaveMethod("Save()")
+			new GenericParamInfo("PlanetIntelligence").CopyMethod("Copy()").SaveKeyValue("intell").IsState(Flag.NoIndexer)
 		).Derived(null, "IEnumerable<Planet>", "planets").SaveTag("PlanetIntell")
 	);
 #>

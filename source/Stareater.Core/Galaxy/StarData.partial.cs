@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using Ikadn;
+using Ikadn.Ikon.Types;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Localization.StarNames;
 
@@ -45,5 +47,13 @@ namespace Stareater.Galaxy
 			return !(lhs == rhs);
 		}
 		#endregion
+		
+		public static IStarName loadName(IkadnBaseObject rawData)
+		{
+			if (rawData.Tag.Equals(ConstellationStarName.SaveTag))
+				return ConstellationStarName.Load(rawData.To<IkonComposite>());
+			else
+				return ProperStarName.Load(rawData.To<IkonComposite>());
+		}
 	}
 }

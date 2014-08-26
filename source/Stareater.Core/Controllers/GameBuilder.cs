@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ikadn.Ikon.Types;
 using Stareater.Galaxy;
 using Stareater.Galaxy.Builders;
 using Stareater.GameData;
@@ -8,7 +9,9 @@ using Stareater.GameData.Databases;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameLogic;
 using Stareater.Players;
+using Stareater.Ships;
 using Stareater.Utils;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers
 {
@@ -28,6 +31,31 @@ namespace Stareater.Controllers
 			return game;
 		}
 		
+		public static Game LoadGame(IkonComposite saveData)
+		{
+			StaticsDB statics = loadStatics();
+			
+			ObjectDeindexer deindexer = new ObjectDeindexer();
+			int turn = saveData[Game.TurnKey].To<int>();
+			
+			deindexer.AddAll(statics.PredeginedDesigns);
+			deindexer.AddAll(statics.Technologies, x => x.IdCode);
+			deindexer.AddAll(statics.Hulls.Values, x => x.IdCode);
+			
+			var loadedStates = loadSaveData(saveData, deindexer);
+			var states = loadedStates.Item1;
+			var players = loadedStates.Item2;
+			var derivates = initDerivates(statics, players, states);
+			
+			var game = new Game(players.ToArray(), statics, states, derivates);
+			game.CalculateBaseEffects();
+			game.CalculateSpendings();
+			game.CalculateDerivedEffects();
+			
+			return game;
+		}
+		
+		#region Creation helper methods
 		private static StaticsDB loadStatics()
 		{
 			StaticsDB statics = new StaticsDB();
@@ -60,7 +88,8 @@ namespace Stareater.Controllers
 			var stellarises = createStellarises(players, starSystems, starPositions.HomeSystems);
 			var techAdvances = createTechAdvances(players, technologies);
 
-			return new StatesDB(stars, wormholes, planets, colonies, stellarises, techAdvances);
+			return new StatesDB(stars, wormholes, planets, colonies, stellarises, techAdvances,
+			                    new DesignCollection(), new IdleFleetCollection());
 		}
 		
 		private static ColonyCollection createColonies(Player[] players, 
@@ -191,6 +220,86 @@ namespace Stareater.Controllers
 			foreach(var stellaris in stellarises)
 				derivates.Stellarises.Add(new StellarisProcessor(stellaris));
 		}
+		#endregion
+		
+		#region Loading helper methods
+		private static Tuple<StatesDB, Player[]> loadSaveData(IkonComposite saveData, ObjectDeindexer deindexer)
+		{
+			var stars = new StarCollection();
+			foreach(var rawData in saveData[StatesDB.StarsKey].To<IEnumerable<IkonComposite>>())
+				stars.Add(StarData.Load(rawData, deindexer));
+			
+			var planets = new PlanetCollection();
+			foreach(var rawData in saveData[StatesDB.PlanetsKey].To<IEnumerable<IkonComposite>>())
+				planets.Add(Planet.Load(rawData, deindexer));
+			
+			var wormholes = new WormholeCollection();
+			foreach(var rawData in saveData[StatesDB.WormholesKey].To<IEnumerable<IkonComposite>>())
+				wormholes.Add(Wormhole.Load(rawData, deindexer));
+			
+			var players = new List<Player>();
+			foreach(var rawData in saveData[Game.PlayersKey].To<IEnumerable<IkonComposite>>())
+				players.Add(Player.Load(rawData, deindexer));
+			
+			var techs = new TechProgressCollection();
+			foreach(var rawData in saveData[StatesDB.TechnologyAdvancesKey].To<IEnumerable<IkonComposite>>())
+				techs.Add(TechnologyProgress.Load(rawData, deindexer));
+			
+			var designs = new DesignCollection();
+			foreach(var rawData in saveData[StatesDB.DesignsKey].To<IEnumerable<IkonComposite>>()) {
+				var design = Design.Load(rawData, deindexer); 
+				designs.Add(design);
+				deindexer.Add(design.ConstructionProject, design.ConstructionProject.IdCode);
+			}
+			
+			var idleFleets = new IdleFleetCollection();
+			foreach(var rawData in saveData[StatesDB.IdleFleetsKey].To<IEnumerable<IkonComposite>>())
+				idleFleets.Add(IdleFleet.Load(rawData, deindexer));
+			
+			var colonies = new ColonyCollection();
+			foreach(var rawData in saveData[StatesDB.ColoniesKey].To<IEnumerable<IkonComposite>>())
+				colonies.Add(Colony.Load(rawData, deindexer));
+			
+			var stellarises = new StellarisCollection();
+			foreach(var rawData in saveData[StatesDB.StellarisesKey].To<IEnumerable<IkonComposite>>())
+				stellarises.Add(StellarisAdmin.Load(rawData, deindexer));
+			
+			foreach(var player in players)
+				player.Orders = PlayerOrders.Load(saveData[Game.OrdersKey].To<IkonComposite>(), deindexer);
+				                                  
+			return new Tuple<StatesDB, Player[]>(
+				new StatesDB(stars, wormholes, planets, colonies, stellarises, techs, designs, idleFleets),
+				players.ToArray()
+			);
+		}
+		
+		private static TemporaryDB initDerivates(StaticsDB statics, Player[] players, StatesDB states)
+		{
+			var derivates = new TemporaryDB(players, statics.Technologies);
+			
+			foreach(var colony in states.Colonies) {
+				var colonyProc = new ColonyProcessor(colony);
+				colonyProc.CalculateBaseEffects(statics, derivates.Players.Of(colony.Owner));
+				derivates.Colonies.Add(colonyProc);
+			}
+			
+			foreach(var stellaris in states.Stellarises) {
+				var stellarisProc = new StellarisProcessor(stellaris);
+				stellarisProc.CalculateBaseEffects();
+				derivates.Stellarises.Add(stellarisProc);
+			}
+			
+			foreach (var player in players) {
+				derivates.Players.Of(player).Calculate(states.TechnologyAdvances.Of(player));
+				derivates.Players.Of(player).UnlockPredefinedDesigns(statics, states);
+			}
+
+			return derivates;
+		}
+		#endregion
+		
+		#region Loading
+		#endregion
 		
 		//TODO(later): try to avoid explicit list of files
 		private static readonly string[] StaticDataFiles = new string[] {

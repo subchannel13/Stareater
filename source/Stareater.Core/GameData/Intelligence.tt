@@ -4,14 +4,13 @@
 	usings.Add("System");
 	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.Galaxy");
-	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "partial";
 	
 	Generate("Stareater.GameData", "Intelligence",
-		new DataInfo("StarKnowledge", "Dictionary", 
+		new DataInfo("StarKnowledge", "Dictionary",
 			new GenericParamInfo("StarData").FromIndexer().SaveKeyValue("star"), 
-			new GenericParamInfo("StarIntelligence").CopyMethod("Copy(galaxyRemap)").SaveKeyValue("intell").SaveMethod("Save(indexer)")
+			new GenericParamInfo("StarIntelligence").CopyMethod("Copy(galaxyRemap)").SaveKeyValue("intell").IsState()
 		).Private().CopyOnly().SaveTag("StarIntell")
 	);
 #>

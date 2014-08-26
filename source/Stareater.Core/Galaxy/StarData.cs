@@ -1,6 +1,7 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 using System.Linq;
 using System.Drawing;
@@ -25,6 +26,29 @@ namespace Stareater.Galaxy
  
 		} 
 
+
+		private  StarData(IkonComposite rawData) 
+		{
+			var colorSave = rawData[ColorKey];
+			var colorArray = colorSave.To<IkonArray>();
+			int colorR = colorArray[0].To<int>();
+			int colorG = colorArray[1].To<int>();
+			int colorB = colorArray[2].To<int>();
+			this.Color = Color.FromArgb(colorR, colorG, colorB);
+
+			var imageSizeScaleSave = rawData[SizeKey];
+			this.ImageSizeScale = imageSizeScaleSave.To<float>();
+
+			var nameSave = rawData[NameKey];
+			this.Name = loadName(nameSave);
+
+			var positionSave = rawData[PositionKey];
+			var positionArray = positionSave.To<IkonArray>();
+			int positionX = positionArray[0].To<int>();
+			int positionY = positionArray[1].To<int>();
+			this.Position = new Vector2D(positionX, positionY);
+ 
+		}
 
 		internal StarData Copy() 
 		{
@@ -53,6 +77,13 @@ namespace Stareater.Galaxy
 			data.Add(PositionKey, positionData);
 			return data;
  
+		}
+		
+		public static StarData Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			var loadedData = new StarData(rawData);
+			deindexer.Add(loadedData);
+			return loadedData;
 		}
 
 		private const string TableTag = "StarData";

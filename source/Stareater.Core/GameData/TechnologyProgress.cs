@@ -1,9 +1,9 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 using Stareater.Players;
-using Stareater.Utils.Collections;
 
 namespace Stareater.GameData 
 {
@@ -23,6 +23,22 @@ namespace Stareater.GameData
  
 		} 
 
+
+		private  TechnologyProgress(IkonComposite rawData, ObjectDeindexer deindexer) 
+		{
+			var ownerSave = rawData[OwnerKey];
+			this.Owner = deindexer.Get<Player>(ownerSave.To<int>());
+
+			var topicSave = rawData[TopicKey];
+			this.Topic = deindexer.Get<Technology>(topicSave.To<string>());
+
+			var levelSave = rawData[LevelKey];
+			this.Level = levelSave.To<int>();
+
+			var investedPointsSave = rawData[InvestedKey];
+			this.InvestedPoints = investedPointsSave.To<double>();
+ 
+		}
 
 		internal TechnologyProgress Copy(PlayersRemap playersRemap) 
 		{
@@ -44,6 +60,13 @@ namespace Stareater.GameData
 			data.Add(InvestedKey, new IkonFloat(this.InvestedPoints));
 			return data;
  
+		}
+		
+		public static TechnologyProgress Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			var loadedData = new TechnologyProgress(rawData, deindexer);
+			deindexer.Add(loadedData);
+			return loadedData;
 		}
 
 		private const string TableTag = "TechnologyProgress";

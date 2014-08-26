@@ -1,10 +1,10 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Stareater.Utils.Collections;
 
 namespace Stareater.GameData.Databases.Tables 
 {
@@ -29,6 +29,18 @@ namespace Stareater.GameData.Databases.Tables
  
 		}
 
+		private  ConstructionOrders(IkonComposite rawData, ObjectDeindexer deindexer) 
+		{
+			var spendingRatioSave = rawData[SpendingRatioKey];
+			this.SpendingRatio = spendingRatioSave.To<double>();
+
+			var queueSave = rawData[QueueKey];
+			this.Queue = new List<Constructable>();
+			foreach(var item in queueSave.To<IkonArray>())
+				this.Queue.Add(deindexer.Get<Constructable>(item.To<string>()));
+ 
+		}
+
 		internal ConstructionOrders Copy() 
 		{
 			return new ConstructionOrders(this);
@@ -49,6 +61,14 @@ namespace Stareater.GameData.Databases.Tables
 			return data;
  
 		}
+
+		public static ConstructionOrders Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			var loadedData = new ConstructionOrders(rawData, deindexer);
+			deindexer.Add(loadedData);
+			return loadedData;
+		}
+ 
 
 		private const string TableTag = "ConstructionOrders";
 		private const string SpendingRatioKey = "spendingRatio";

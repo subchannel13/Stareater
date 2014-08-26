@@ -2,7 +2,7 @@
 
 <#+
 private string modifer = "";
-private List<string> usings = new List<string>(new string[] { "Ikadn.Ikon.Types" });
+private List<string> usings = new List<string>(new string[] { "Ikadn.Ikon.Types", "Stareater.Utils.Collections" });
 private List<string> genericTypes = new List<string>();
 
 private string SuperClass = null;
@@ -12,6 +12,7 @@ private bool initWithDefaultConstructor = false;
 
 private bool SuperClassHasCopyConstructor = false;
 
+private bool LoadNeedsObjectDeindexer = true;
 private bool SaveNeedsObjectIndexer = true;
 
 private void WriteUsings()
@@ -203,6 +204,19 @@ private void WriteCopyConstructorDefinition(string className, params DataInfo[] 
 	}	
 }
 
+private void WriteLoadContructorDefinition(string className)
+{
+	string constructorModifer = modifer.Contains("abstract") ? "protected" : "private";
+	string deindexer = (LoadNeedsObjectDeindexer) ? ", ObjectDeindexer deindexer" : "";
+	
+	Write(constructorModifer + " " + className + "(IkonComposite rawData" + deindexer + ")");
+	
+	if (SuperClass != null) {
+		deindexer = (LoadNeedsObjectDeindexer) ? ", deindexer" : "";
+		Write(" : base(rawData" + deindexer + ")");
+	}
+}
+
 private void WriteFieldCopys(params DataInfo[] dataInfos)
 {
 	var indent = new FirstCase("", "			");
@@ -272,6 +286,57 @@ private void WriteMapCopy(DataInfo field, FirstCase indent)
 		Write("item.Value");
 		
 	WriteLine(");");
+}
+
+private void WriteFieldLoad(params DataInfo[] dataInfos)
+{
+	var indent = new FirstCase("", "			");
+	var emptyLine = new FirstCase(null, "");
+
+	foreach(var field in dataInfos)
+	{
+		if (!field.DoSaveLoad)
+			continue;
+		if (emptyLine.Get != null)
+			WriteLine("");
+		
+		string saveData = field.LowerName + "Save";
+		WriteLine(indent.Get + "var " + saveData + " = rawData[" + field.SavingKeyName + "];");
+		
+		if (field.IsCollection && !field.LoadOverride)
+			WriteListLoad(field, indent, saveData);
+		else if (field.IsMap && !field.LoadOverride)
+			WriteMapLoad(field, indent, saveData);
+		else if (field.LoadAssignLogic != null)
+		{
+			if (field.LoadAssignInit != null)
+				foreach(var line in field.LoadAssignInit)
+					WriteLine(indent.Get + line);
+					
+			WriteLine(indent.Get + "this."  + field.Name + " = " + field.LoadAssignLogic.Replace(SaveName, saveData) + ";");
+		} else
+			WriteLine(indent.Get + "//FIXME: undefined load logic for " + field.Name);
+	}
+}
+
+private void WriteListLoad(DataInfo field, FirstCase indent, string saveData)
+{
+	WriteLine(indent.Get + "this."  + field.Name + " = " + field.Constructor);
+	WriteLine(indent.Get + "foreach(var item in " + saveData + ".To<IkonArray>())");
+	WriteLine(indent.Get + "	" + "this."  + field.Name + ".Add(" + field.GenericParams[0].LoadAssignLogic.Replace(SaveName, "item") + ");");
+}
+
+private void WriteMapLoad(DataInfo field, FirstCase indent, string saveData)
+{
+	WriteLine(indent.Get + "this."  + field.Name + " = " + field.Constructor);
+	WriteLine(indent.Get + "foreach(var item in " + saveData + ".To<IEnumerable<IkonComposite>>()) {");
+	WriteLine(indent.Get + "	" + "var itemKey = item["  + field.GenericParams[0].SavingKeyName + "];");
+	WriteLine(indent.Get + "	" + "var itemValue = item["  + field.GenericParams[1].SavingKeyName + "];");
+	WriteLine(indent.Get + "	this."  + field.Name + ".Add(");
+	WriteLine(indent.Get + "		"  + field.GenericParams[0].LoadAssignLogic.Replace(SaveName, "itemKey") + ",");
+	WriteLine(indent.Get + "		"  + field.GenericParams[1].LoadAssignLogic.Replace(SaveName, "itemValue"));
+	WriteLine(indent.Get + "	);");
+	WriteLine(indent.Get + "}");
 }
 
 private void WriteCopyMethodDefinition(string className, params DataInfo[] dataInfos)
@@ -389,6 +454,17 @@ private void WriteMapSave(DataInfo field, FirstCase indent)
 	WriteLine(indent.Get + "}");
 }
 
+private void WriteLoadMethod(string className)
+{
+	var indent = new FirstCase("", "			");
+	string deindexer = (LoadNeedsObjectDeindexer) ? ", deindexer" : "";
+
+	WriteLine(indent.Get + "var loadedData = new " + className + "(rawData" + deindexer + ");");
+	WriteLine(indent.Get + "deindexer.Add(loadedData);");
+	
+	WriteLine(indent.Get + "return loadedData;");
+}
+
 private void WriteSaveTag(string className)
 {
 	if (modifer.Contains("abstract"))
@@ -442,6 +518,11 @@ namespace <#+ Write(namespaceName); #>
 		}
 <#+ } #>
 
+		<#+ WriteLoadContructorDefinition(className); #> 
+		{
+			<#+ WriteFieldLoad(dataInfos); #> 
+		}
+
 <#+ if (!modifer.Contains("abstract")) { #>
 		internal <#+ WriteCopyMethodDefinition(className, dataInfos); #> 
 		{
@@ -454,6 +535,13 @@ namespace <#+ Write(namespaceName); #>
 		{
 			<#+ WriteSaveMethod(dataInfos); #> 
 		}
+
+<#+ if (!modifer.Contains("abstract")) { #>
+		public static <#= className #> Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			<#+ WriteLoadMethod(className); #>
+		}
+<#+ } #> 
 
 		<#+ WriteSaveTag(className); #>
 		<#+ WriteSaveKeys(dataInfos); #> 

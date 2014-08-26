@@ -1,11 +1,11 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
-using Stareater.Utils.Collections;
 
 namespace Stareater.GameData.Databases.Tables 
 {
@@ -38,6 +38,22 @@ namespace Stareater.GameData.Databases.Tables
  
 		}
 
+		private PlayerOrders(IkonComposite rawData, ObjectDeindexer deindexer) 
+		{
+			var developmentFocusIndexSave = rawData[DevelopmentFocusIndexKey];
+			this.DevelopmentFocusIndex = developmentFocusIndexSave.To<int>();
+
+			var developmentQueueSave = rawData[DevelopmentQueueKey];
+			this.DevelopmentQueue = loadDevelopmet(developmentQueueSave, deindexer);
+
+			var researchFocusSave = rawData[ResearchFocusKey];
+			this.ResearchFocus = researchFocusSave.To<string>();
+
+			var constructionPlansSave = rawData[ConstructionPlansKey];
+			this.ConstructionPlans = loadConstruction(constructionPlansSave, deindexer);
+ 
+		}
+
 		internal PlayerOrders Copy(PlayersRemap playersRemap) 
 		{
 			return new PlayerOrders(this, playersRemap);
@@ -59,6 +75,14 @@ namespace Stareater.GameData.Databases.Tables
 			return data;
  
 		}
+
+		public static PlayerOrders Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			var loadedData = new PlayerOrders(rawData, deindexer);
+			deindexer.Add(loadedData);
+			return loadedData;
+		}
+ 
 
 		private const string TableTag = "PlayerOrders";
 		private const string DevelopmentFocusIndexKey = "developmentFocusIndex";

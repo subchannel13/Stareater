@@ -31,7 +31,8 @@ namespace Stareater.GameData.Databases
 		
 		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, 
 		                ColonyCollection Colonies, StellarisCollection stellarises, 
-		                TechProgressCollection technologyProgresses)
+		                TechProgressCollection technologyProgresses, DesignCollection designs, 
+		                IdleFleetCollection idleFleets)
 		{
 			this.Colonies = Colonies;
 			this.Planets = planets;
@@ -39,9 +40,8 @@ namespace Stareater.GameData.Databases
 			this.Stellarises = stellarises;
 			this.Wormholes = wormholes;
 			this.TechnologyAdvances = technologyProgresses;
-			
-			this.Designs = new DesignCollection();
-			this.IdleFleets = new IdleFleetCollection(); 
+			this.Designs = designs;
+			this.IdleFleets = idleFleets; 
 		}
 
 		private StatesDB()
@@ -134,14 +134,14 @@ namespace Stareater.GameData.Databases
 		}
 
 		private const string StatesTag = "States";
-		private const string ColoniesKey = "colonies";
-		private const string DesignsKey = "designs";
-		private const string IdleFleetsKey = "idleFleets";
-		private const string PlanetsKey = "planets";
-		private const string StarsKey = "stars";
-		private const string StellarisesKey = "stellarises";
-		private const string TechnologyAdvancesKey = "techAdvances";
-		private const string WormholesKey = "wormholes";
+		public const string ColoniesKey = "colonies";
+		public const string DesignsKey = "designs";
+		public const string IdleFleetsKey = "idleFleets";
+		public const string PlanetsKey = "planets";
+		public const string StarsKey = "stars";
+		public const string StellarisesKey = "stellarises";
+		public const string TechnologyAdvancesKey = "techAdvances";
+		public const string WormholesKey = "wormholes";
 		#endregion
 		
 	}

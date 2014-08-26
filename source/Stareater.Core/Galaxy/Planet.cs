@@ -1,10 +1,10 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 using System.Linq;
 using Stareater.GameData;
-using Stareater.Utils.Collections;
 
 namespace Stareater.Galaxy 
 {
@@ -28,6 +28,22 @@ namespace Stareater.Galaxy
  
 		} 
 
+
+		private  Planet(IkonComposite rawData, ObjectDeindexer deindexer) 
+		{
+			var starSave = rawData[StarKey];
+
+			var positionSave = rawData[PositionKey];
+
+			var typeSave = rawData[TypeKey];
+
+			var sizeSave = rawData[SizeKey];
+
+			var mineralsSurfaceSave = rawData[MineralsSurfaceKey];
+
+			var mineralsDeepSave = rawData[MineralsDeepKey];
+ 
+		}
 
 		internal Planet Copy(GalaxyRemap galaxyRemap) 
 		{
@@ -53,6 +69,13 @@ namespace Stareater.Galaxy
 			data.Add(MineralsDeepKey, new IkonFloat(this.MineralsDeep));
 			return data;
  
+		}
+		
+		public static Planet Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			var loadedData = new Planet(rawData, deindexer);
+			deindexer.Add(loadedData);
+			return loadedData;
 		}
 
 		private const string TableTag = "Planet";

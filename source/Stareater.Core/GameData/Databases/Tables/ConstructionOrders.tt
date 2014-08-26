@@ -4,12 +4,11 @@
 	usings.Add("System");
 	usings.Add("System.Collections.Generic");
 	usings.Add("System.Linq");
-	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "partial";
 
 	Generate("Stareater.GameData.Databases.Tables", "ConstructionOrders",
 		new DataInfo("SpendingRatio", "double").Public(),
-		new DataInfo("Queue", "List", new GenericParamInfo("Constructable").SaveValue("IdCode", "string")).CopyOnly()
+		new DataInfo("Queue", "List", new GenericParamInfo("Constructable").SaveIdCode()).CopyOnly()
 	);
 #>

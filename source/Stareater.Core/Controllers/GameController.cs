@@ -39,8 +39,9 @@ namespace Stareater.Controllers
 			if (State != GameState.NoGame)
 				throw new InvalidOperationException("Game is already created.");
 
+			//TODO: Pass organization to player
 			Player[] players = controller.PlayerList.Select(info =>
-				new Player(info.Name, info.Color, info.Organization, info.ControlType)
+				new Player(info.Name, info.Color, /*info.Organization, */info.ControlType)
 			).ToArray();
 			
 			Random rng = new Random();

@@ -49,6 +49,14 @@ namespace Stareater.Localization.StarNames
 			return data;
 		}
 
+		public static IStarName Load(IkonComposite rawData)
+		{
+			return new ConstellationStarName(
+				rawData[ConstellationKey].To<int>(),
+				rawData[DesignationKey].To<int>()
+			);
+		}
+		
 		public const string SaveTag = "Constell";
 		private const string ConstellationKey = "const";
 		private const string DesignationKey = "desig";

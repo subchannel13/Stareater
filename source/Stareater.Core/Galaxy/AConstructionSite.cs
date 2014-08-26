@@ -1,11 +1,11 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;
 using Stareater.GameData;
 using Stareater.Players;
-using Stareater.Utils.Collections;
 
 namespace Stareater.Galaxy 
 {
@@ -33,6 +33,38 @@ namespace Stareater.Galaxy
 			this.Stockpile = new Dictionary<Constructable, double>();
 			foreach(var item in original.Stockpile)
 				this.Stockpile.Add(item.Key, item.Value);
+ 
+		}
+
+		protected AConstructionSite(IkonComposite rawData, ObjectDeindexer deindexer) 
+		{
+			var locationSave = rawData[LocationKey];
+			this.Location = LocationBody.Load(locationSave.To<IkonComposite>(), deindexer);
+
+			var ownerSave = rawData[OwnerKey];
+			this.Owner = deindexer.Get<Player>(ownerSave.To<int>());
+
+			var buildingsSave = rawData[BuildingsKey];
+			this.Buildings = new Dictionary<string, double>();
+			foreach(var item in buildingsSave.To<IEnumerable<IkonComposite>>()) {
+				var itemKey = item[BuildingTypeKey];
+				var itemValue = item[BuildingAmountKey];
+				this.Buildings.Add(
+					itemKey.To<string>(),
+					itemValue.To<double>()
+				);
+			}
+
+			var stockpileSave = rawData[StockpileKey];
+			this.Stockpile = new Dictionary<Constructable, double>();
+			foreach(var item in stockpileSave.To<IEnumerable<IkonComposite>>()) {
+				var itemKey = item[StockpileGroupKey];
+				var itemValue = item[StockpileAmountKey];
+				this.Stockpile.Add(
+					deindexer.Get<Constructable>(itemKey.To<string>()),
+					itemValue.To<double>()
+				);
+			}
  
 		}
 
@@ -66,6 +98,8 @@ namespace Stareater.Galaxy
 			return data;
  
 		}
+
+ 
 
 		protected abstract string TableTag { get; }
 		private const string LocationKey = "location";

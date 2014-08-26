@@ -1,10 +1,10 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 using Stareater.GameData;
 using Stareater.Ships;
-using Stareater.Utils.Collections;
 
 namespace Stareater.Galaxy 
 {
@@ -20,6 +20,16 @@ namespace Stareater.Galaxy
  
 		} 
 
+
+		private  ShipGroup(IkonComposite rawData, ObjectDeindexer deindexer) 
+		{
+			var designSave = rawData[DesignKey];
+			this.Design = deindexer.Get<Design>(designSave.To<int>());
+
+			var quantitySave = rawData[QuantityKey];
+			this.Quantity = quantitySave.To<long>();
+ 
+		}
 
 		internal ShipGroup Copy(PlayersRemap playersRemap) 
 		{
@@ -37,6 +47,13 @@ namespace Stareater.Galaxy
 			data.Add(QuantityKey, new IkonInteger(this.Quantity));
 			return data;
  
+		}
+		
+		public static ShipGroup Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			var loadedData = new ShipGroup(rawData, deindexer);
+			deindexer.Add(loadedData);
+			return loadedData;
 		}
 
 		private const string TableTag = "ShipGroup";

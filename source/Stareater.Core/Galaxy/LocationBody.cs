@@ -27,6 +27,16 @@ namespace Stareater.Galaxy
 				return new IkonComposite(PlanetTag).Add(IdKey, new IkonInteger(indexer.IndexOf(this.Planet)));
 		}
 		
+		public static LocationBody Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			if (rawData.Tag.Equals(StarTag))
+				return new LocationBody(deindexer.Get<StarData>(rawData[IdKey].To<int>()));
+			else {
+				Planet planet = deindexer.Get<Planet>(rawData[IdKey].To<int>());
+				return new LocationBody(planet.Star, planet);
+			}
+		}
+		
 		#region Saving keys
 		private const string PlanetTag = "Planet";
 		private const string StarTag = "Star";

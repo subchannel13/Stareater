@@ -51,6 +51,59 @@ private static string initPlayerRemapCode(string type, string readCode, out bool
 	return copyFromRemap;	
 }
 
+private static string[] initLoadAssignInit(string lowerName, string name, string typeName)
+{
+	string dataVar = lowerName + "Data";
+	
+	switch(typeName)
+	{
+		case "Color":
+			return new string[] {
+				"var " + lowerName + "Array = " + lowerName + "Save.To<IkonArray>();",
+				"int " + lowerName + "R = " + lowerName + "Array[0].To<int>();",
+				"int " + lowerName + "G = " + lowerName + "Array[1].To<int>();",
+				"int " + lowerName + "B = " + lowerName + "Array[2].To<int>();",
+			};
+		case "Vector2D":
+			return new string[] { 
+				"var " + lowerName + "Array = " + lowerName + "Save.To<IkonArray>();",
+				"int " + lowerName + "X = " + lowerName + "Array[0].To<int>();",
+				"int " + lowerName + "Y = " + lowerName + "Array[1].To<int>();",
+			};
+		default:
+			return null;
+			break;
+	}
+}
+
+private static string initLoadAssignLogic(string lowerName, string typeName)
+{
+	string dataVar = lowerName + "Data";
+	
+	if (typeName.Contains("Collection"))
+		typeName = "Collection";
+
+	switch(typeName)
+	{
+		case "double":
+			return "#SaveName#.To<double>()";
+		case "float":
+			return "#SaveName#.To<float>()";
+		case "int":
+			return "#SaveName#.To<int>()";
+		case "long":
+			return "#SaveName#.To<long>()";
+		case "string":
+			return "#SaveName#.To<string>()";
+		case "Color":
+			return "Color.FromArgb(" + lowerName + "R, " + lowerName + "G, " + lowerName + "B)";
+		case "Vector2D":
+			return "new Vector2D(" + lowerName + "X, " + lowerName + "Y)";
+		default:
+			return null;
+	}
+}
+
 private static string[] initSaveAssignInit(string lowerName, string name, string typeName)
 {
 	string dataVar = lowerName + "Data";
@@ -139,7 +192,10 @@ class DataInfo
 
 	//Saving logic
 	public bool DoSaveLoad = true;
+	public bool LoadOverride = false;
 	public bool SaveOverride = false;
+	public string LoadAssignLogic = null;
+	public string[] LoadAssignInit = null;
 	public string SaveAssignLogic = null;
 	public string[] SaveAssignInit = null;
 	public string SavingKeyName = null;
@@ -156,7 +212,7 @@ class DataInfo
 		this.SavingTagName = name + "Tag";
 		
 		initRemapCode();
-		initSaveCode();
+		initSaveLoadCode();
 	}
 
 	private void initRemapCode()
@@ -166,8 +222,11 @@ class DataInfo
 			initPlayerRemapCode(this.type, BaseReadCode ?? "this." + Name, out copyMethodNeedPlayersRemap);
 	}
 	
-	private void initSaveCode()
+	private void initSaveLoadCode()
 	{
+		this.LoadAssignInit = initLoadAssignInit(this.LowerName, this.Name, this.type);
+		this.LoadAssignLogic = initLoadAssignLogic(this.LowerName, this.type);
+		
 		this.SaveAssignInit = initSaveAssignInit(this.LowerName, this.Name, this.type);
 		this.SaveAssignLogic = initSaveAssignLogic(this.LowerName, this.type);
 	}
@@ -274,6 +333,17 @@ class DataInfo
 		this.copyMethodNeedPlayersRemap |= flagList.Contains(Flag.PlayerRemap);
 		
 		this.SaveAssignLogic = "this." + Name + ".Save(" + (flagList.Contains(Flag.NoIndexer) ? ")" : "indexer)");
+		this.LoadAssignLogic = this.Type + ".Load(" + SaveName + ".To<IkonComposite>(), deindexer)";
+		
+		return this;
+	}
+	
+	public DataInfo IsStatic(params Flag[] flags)
+	{
+		var flagList = new List<Flag>(flags);
+		
+		this.SaveAssignLogic = "this." + Name + ".Save(" + (flagList.Contains(Flag.NoIndexer) ? ")" : "indexer)");
+		this.LoadAssignLogic = this.Type + ".Load(" + SaveName + ".To<IkonComposite>(), deindexer)";
 		
 		return this;
 	}
@@ -419,6 +489,17 @@ class DataInfo
 	}
 	
 	/*
+		Loading logic specification
+	*/
+	
+	public DataInfo LoadCode(string code)
+	{
+		this.LoadOverride = true;
+		this.LoadAssignLogic = code;
+		return this;
+	}
+	
+	/*
 		Saving logic specification
 	*/
 	
@@ -438,6 +519,14 @@ class DataInfo
 		else
 			this.SaveAssignLogic = "new IkonInteger(indexer.IndexOf(this." + Name + "))";
 			
+		this.LoadAssignLogic = "deindexer.Get<" + this.Type + ">(" + SaveName + ".To<int>())";
+		return this;
+	}
+	
+	public DataInfo IsEnum()
+	{
+		this.SaveAssignLogic = "new IkonComposite(this." + this.Name + ".ToString())";
+		this.LoadAssignLogic = "(" + this.Type + ")Enum.Parse(typeof(" + this.Type + "), (string)" + SaveName + ".Tag)";
 		return this;
 	}
 	
@@ -471,6 +560,7 @@ class DataInfo
 	{
 		this.SaveOverride = true;
 		this.SaveAssignLogic = "new IkonText(this." + this.Name + ".IdCode)";
+		this.LoadAssignLogic = "deindexer.Get<" + this.Type + ">(" + SaveName + ".To<string>())";
 		return this;
 	}
 
@@ -497,12 +587,6 @@ class DataInfo
 	public DataInfo SaveMethod(string methodCall, string nullAssigment)
 	{
 		this.SaveAssignLogic = "this." + this.Name +" != null ? " + "this." + this.Name + "." + methodCall + " : " + nullAssigment;
-		return this;
-	}
-	
-	public DataInfo SaveMethodWrap(string methodCall, string wrapperCode)
-	{
-		this.SaveAssignLogic = wrapperCode.Replace(Placeholder, "this." + this.Name + "." + methodCall);
 		return this;
 	}
 	
@@ -549,6 +633,7 @@ class GenericParamInfo
 	public string CopyFromRemap = null;	//null -> pass logic
 	public string CopyLogic = null;	//null -> ??, Default -> default constructor, None -> none
 	
+	public string LoadAssignLogic = SaveName;
 	public string SaveAssignLogic = SaveName;
 	public string SavingKeyName = null;
 	public string SavingKeyValue = null;
@@ -558,7 +643,7 @@ class GenericParamInfo
 		this.SavingKeyName = type + "Key";
 		
 		initRemapCode();
-		initSaveCode();
+		initSaveLoadCode();
 	}
 	
 	private void analyzeRemapNeeds(string code)
@@ -574,8 +659,10 @@ class GenericParamInfo
 			initPlayerRemapCode(this.Type, Default, out CopyMethodNeedPlayersRemap);
 	}
 	
-	private void initSaveCode()
+	private void initSaveLoadCode()
 	{
+		this.LoadAssignLogic = initLoadAssignLogic("", this.Type);
+		
 		this.SaveAssignLogic = initSaveAssignLogic("", this.Type);
 	}
 	
@@ -595,6 +682,24 @@ class GenericParamInfo
 	public GenericParamInfo FromIndexer()
 	{
 		this.SaveAssignLogic = "new IkonInteger(indexer.IndexOf(" + SaveName + "))";
+		this.LoadAssignLogic = "deindexer.Get<" + this.Type + ">(" + SaveName + ".To<int>())";
+		return this;
+	}
+	
+	public GenericParamInfo IsState(params Flag[] flags)
+	{
+		var flagList = new List<Flag>(flags);
+		
+		this.SaveAssignLogic = SaveName + ".Save(" + (flagList.Contains(Flag.NoIndexer) ? ")" : "indexer)");
+		this.LoadAssignLogic = Type + ".Load(" + SaveName + ".To<IkonComposite>(), deindexer)";
+		
+		return this;
+	}
+	
+	public GenericParamInfo SaveIdCode()
+	{
+		this.SaveAssignLogic = "new IkonText(" + SaveName + ".IdCode)";
+		this.LoadAssignLogic = "deindexer.Get<" + this.Type + ">(" + SaveName + ".To<string>())";
 		return this;
 	}
 	
@@ -614,12 +719,6 @@ class GenericParamInfo
 	public GenericParamInfo SaveMethod(string methodCall)
 	{
 		this.SaveAssignLogic = SaveName + "." + methodCall;
-		return this;
-	}
-	
-	public GenericParamInfo SaveValue(string methodCall, string type)
-	{
-		this.SaveAssignLogic = initSaveAssignLogic("", type).Replace(SaveName, SaveName + "." + methodCall);
 		return this;
 	}
 }
