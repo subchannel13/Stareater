@@ -4,7 +4,6 @@
 	usings.Add("System");
 	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.Players");
-	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "partial";
 
@@ -12,7 +11,7 @@
 		new DataInfo("IdCode", "string"),
 		new DataInfo("Owner", "Player").FromIndexer(),
 		new DataInfo("Name", "string"),
-		new DataInfo("Hull", "Hull").SaveMethod("Save()"),
+		new DataInfo("Hull", "Hull").IsStatic(Flag.NoIndexer),
 		new DataInfo("Cost", "double").Derived("initCost(hull);").NoSaveLoad()
 	);
 #>

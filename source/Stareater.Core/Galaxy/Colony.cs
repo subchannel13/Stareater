@@ -1,10 +1,10 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 using Stareater.GameData;
 using Stareater.Players;
-using Stareater.Utils.Collections;
 
 namespace Stareater.Galaxy 
 {
@@ -24,6 +24,13 @@ namespace Stareater.Galaxy
  
 		}
 
+		private  Colony(IkonComposite rawData, ObjectDeindexer deindexer) : base(rawData, deindexer) 
+		{
+			var populationSave = rawData[PopulationKey];
+			this.Population = populationSave.To<double>();
+ 
+		}
+
 		internal Colony Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap) 
 		{
 			return new Colony(this, galaxyRemap.Planets[this.Location.Planet], playersRemap.Players[this.Owner]);
@@ -39,6 +46,14 @@ namespace Stareater.Galaxy
 			return data;
  
 		}
+
+		public static Colony Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			var loadedData = new Colony(rawData, deindexer);
+			deindexer.Add(loadedData);
+			return loadedData;
+		}
+ 
 
 		protected override string TableTag { get { return "Colony"; } }
 		private const string PopulationKey = "population";

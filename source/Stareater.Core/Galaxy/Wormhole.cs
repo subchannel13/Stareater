@@ -1,10 +1,10 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System.Collections.Generic;
 using Stareater.GameData;
 using Stareater.Players;
-using Stareater.Utils.Collections;
 
 namespace Stareater.Galaxy 
 {
@@ -20,6 +20,16 @@ namespace Stareater.Galaxy
  
 		} 
 
+
+		private  Wormhole(IkonComposite rawData, ObjectDeindexer deindexer) 
+		{
+			var fromStarSave = rawData[FromStarKey];
+			this.FromStar = deindexer.Get<StarData>(fromStarSave.To<int>());
+
+			var toStarSave = rawData[ToStarKey];
+			this.ToStar = deindexer.Get<StarData>(toStarSave.To<int>());
+ 
+		}
 
 		internal Wormhole Copy(GalaxyRemap galaxyRemap) 
 		{
@@ -37,6 +47,13 @@ namespace Stareater.Galaxy
 			data.Add(ToStarKey, new IkonInteger(indexer.IndexOf(this.ToStar)));
 			return data;
  
+		}
+		
+		public static Wormhole Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			var loadedData = new Wormhole(rawData, deindexer);
+			deindexer.Add(loadedData);
+			return loadedData;
 		}
 
 		private const string TableTag = "Wormhole";

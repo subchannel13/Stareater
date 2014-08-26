@@ -5,6 +5,7 @@
 	
 	modifer = "partial";
 	SaveNeedsObjectIndexer = false;
+	LoadNeedsObjectDeindexer = false;
 
 	Generate("Stareater.GameData", "PlanetIntelligence",
 		new DataInfo("Explored", "double").CopyOnly().InitValue("Unexplored"),

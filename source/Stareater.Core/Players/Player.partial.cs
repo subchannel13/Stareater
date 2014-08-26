@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
+using Ikadn;
+using Ikadn.Ikon.Types;
 using Stareater.GameData;
 using Stareater.GameData.Databases.Tables;
 
@@ -15,7 +17,7 @@ namespace Stareater.Players
 		private IEnumerable<object> messages; //TODO(v0.5): make type
 		private Dictionary<object, object> messageFilter; //TODO(v0.5): make type
 		
-		public Player(string name, Color color, Organization organization, PlayerType type)
+		/*public Player(string name, Color color, Organization organization, PlayerType type)
 		{
 			this.Color = color;
 			this.Name = name;
@@ -31,7 +33,7 @@ namespace Stareater.Players
 			this.Intelligence = new Intelligence();
 			
 			this.Orders = new PlayerOrders();
-		}
+		}*/
 
 		public Player()
 		{ }
@@ -55,6 +57,23 @@ namespace Stareater.Players
 		{
 			this.ControlType = original.ControlType;
 			this.OffscreenControl = null;
+		}
+		
+		private static IOffscreenPlayer loadControl(IkadnBaseObject rawData)
+		{
+			var dataMap = rawData.To<IkonComposite>();
+			
+			if (dataMap.Tag.Equals(PlayerType.NoControllerTag))
+				return null;
+			else if (dataMap.Tag.Equals(PlayerType.AiControllerTag))
+			{
+				string factoryId = dataMap[PlayerType.FactoryIdKey].To<string>();
+				//TODO: what if no factory was found?
+				return PlayerAssets.AIDefinitions.Where(x => x.Id == factoryId).First().Load(dataMap);
+			}
+			
+			//TODO: Invalid controller data
+			return null;
 		}
 	}
 }

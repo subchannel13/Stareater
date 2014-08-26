@@ -37,10 +37,7 @@ namespace Stareater.Controllers
 				
 				foreach(var design in Game.States.Designs.OwnedBy(Game.CurrentPlayer))
 					yield return new ConstructableItem(
-						new Constructable(design.Name, "", true, design.ImagePath, 
-						                  design.IdCode, new Prerequisite[0], SiteType.StarSystem,
-						                  new Formula(true), new Formula(design.Cost), new Formula(double.PositiveInfinity),
-						                  new IConstructionEffect[] { new ConstructionAddShip(design) }),
+						design.ConstructionProject,
 						Game.Derivates.Players.Of(Game.CurrentPlayer)
 					);
 			}

@@ -38,5 +38,9 @@ namespace Stareater.Players
 		{
 			return ControlType.GetHashCode();
 		}
+		
+		public const string AiControllerTag = "Ai";
+		public const string NoControllerTag = "None";
+		public const string FactoryIdKey = "factory";
 	}
 }

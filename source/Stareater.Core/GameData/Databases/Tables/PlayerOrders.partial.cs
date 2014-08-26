@@ -15,6 +15,32 @@ namespace Stareater.GameData.Databases.Tables
 		//TODO(later): move or remove
 		public const double DefaultSiteSpendingRatio = 1;
 		
+		//TODO(later) make separate collections for colony and stellaris construction orders
+		private Dictionary<AConstructionSite, ConstructionOrders> loadConstruction(IkadnBaseObject rawData, ObjectDeindexer deindexer)
+		{
+			var queue = new Dictionary<AConstructionSite, ConstructionOrders>();
+			
+			foreach(var plan in rawData.To<IEnumerable<IkonComposite>>()) {
+				AConstructionSite site = plan.Tag.Equals(StellarisConstructionTag) ?
+					(AConstructionSite)deindexer.Get<StellarisAdmin>(plan[LocationKey].To<int>()) :
+				    (AConstructionSite)deindexer.Get<Colony>(plan[LocationKey].To<int>());
+				                          
+				queue.Add(site, ConstructionOrders.Load(plan[OrdersKey].To<IkonComposite>(), deindexer));
+			}
+				
+			return queue;
+		}
+		
+		private Dictionary<string, int> loadDevelopmet(IkadnBaseObject rawData, ObjectDeindexer deindexer)
+		{
+			var queue = new Dictionary<string, int>();
+			
+			foreach(var topic in rawData.To<IEnumerable<string>>())
+				queue.Add(topic, queue.Count);
+			
+			return queue;
+		}
+		
 		private IkadnBaseObject saveConstruction(ObjectIndexer indexer)
 		{
 			var queue = new IkonArray();

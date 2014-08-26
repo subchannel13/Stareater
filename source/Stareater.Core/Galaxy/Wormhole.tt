@@ -4,7 +4,6 @@
 	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.Players");
-	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "public";
 	

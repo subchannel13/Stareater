@@ -4,7 +4,6 @@
 	usings.Add("System");
 	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.Players");
-	usings.Add("Stareater.Utils.Collections");
 	
 	modifer = "partial";
 	SuperClass = "AConstructionSite";

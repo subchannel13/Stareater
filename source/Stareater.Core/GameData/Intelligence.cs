@@ -1,10 +1,10 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;
 using Stareater.Galaxy;
-using Stareater.Utils.Collections;
 
 namespace Stareater.GameData 
 {
@@ -23,6 +23,21 @@ namespace Stareater.GameData
 			this.starKnowledge = new Dictionary<StarData, StarIntelligence>();
 			foreach(var item in original.starKnowledge)
 				this.starKnowledge.Add(galaxyRemap.Stars[item.Key], item.Value.Copy(galaxyRemap));
+ 
+		}
+
+		private  Intelligence(IkonComposite rawData, ObjectDeindexer deindexer) 
+		{
+			var starKnowledgeSave = rawData[StarKnowledgeKey];
+			this.starKnowledge = new Dictionary<StarData, StarIntelligence>();
+			foreach(var item in starKnowledgeSave.To<IEnumerable<IkonComposite>>()) {
+				var itemKey = item[StarDataKey];
+				var itemValue = item[StarIntelligenceKey];
+				this.starKnowledge.Add(
+					deindexer.Get<StarData>(itemKey.To<int>()),
+					StarIntelligence.Load(itemValue.To<IkonComposite>(), deindexer)
+				);
+			}
  
 		}
 
@@ -47,6 +62,13 @@ namespace Stareater.GameData
 			data.Add(StarKnowledgeKey, starKnowledgeData);
 			return data;
  
+		}
+		
+		public static Intelligence Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			var loadedData = new Intelligence(rawData, deindexer);
+			deindexer.Add(loadedData);
+			return loadedData;
 		}
 
 		private const string TableTag = "Intelligence";

@@ -8,5 +8,6 @@ namespace Stareater.Players
 		void PlayBattle(/*ModeratorBorbe bitka*/);
 		
 		IkadnBaseObject Save();
+
 	}
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Ikadn.Ikon.Types;
 
 namespace Stareater.Players.DefaultAI
@@ -21,7 +18,10 @@ namespace Stareater.Players.DefaultAI
 		
 		public Ikadn.IkadnBaseObject Save()
 		{
-			return new IkonComposite("None");
+			var data = new IkonComposite(PlayerType.AiControllerTag);
+			data.Add(PlayerType.FactoryIdKey, DefaultAIFactory.FactoryId);
+			
+			return data;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 
 namespace Stareater.GameData 
@@ -24,6 +25,16 @@ namespace Stareater.GameData
  
 		}
 
+		private  PlanetIntelligence(IkonComposite rawData) 
+		{
+			var exploredSave = rawData[ExploredKey];
+			this.Explored = exploredSave.To<double>();
+
+			var lastVisitedSave = rawData[LastVisitedKey];
+			this.LastVisited = lastVisitedSave.To<int>();
+ 
+		}
+
 		internal PlanetIntelligence Copy() 
 		{
 			return new PlanetIntelligence(this);
@@ -40,6 +51,13 @@ namespace Stareater.GameData
 			data.Add(LastVisitedKey, new IkonInteger(this.LastVisited));
 			return data;
  
+		}
+		
+		public static PlanetIntelligence Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			var loadedData = new PlanetIntelligence(rawData);
+			deindexer.Add(loadedData);
+			return loadedData;
 		}
 
 		private const string TableTag = "PlanetIntelligence";

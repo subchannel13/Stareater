@@ -1,12 +1,12 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameData;
-using Stareater.Utils.Collections;
 
 namespace Stareater.Players 
 {
@@ -46,6 +46,34 @@ namespace Stareater.Players
  
 		}
 
+		private  Player(IkonComposite rawData, ObjectDeindexer deindexer) 
+		{
+			var nameSave = rawData[NameKey];
+			this.Name = nameSave.To<string>();
+
+			var colorSave = rawData[ColorKey];
+			var colorArray = colorSave.To<IkonArray>();
+			int colorR = colorArray[0].To<int>();
+			int colorG = colorArray[1].To<int>();
+			int colorB = colorArray[2].To<int>();
+			this.Color = Color.FromArgb(colorR, colorG, colorB);
+
+			var controlTypeSave = rawData[ControlTypeKey];
+			this.ControlType = (PlayerControlType)Enum.Parse(typeof(PlayerControlType), (string)controlTypeSave.Tag);
+
+			var offscreenControlSave = rawData[OffscreenControlKey];
+			this.OffscreenControl = loadControl(offscreenControlSave);
+
+			var unlockedDesignsSave = rawData[UnlockedDesignsKey];
+			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
+			foreach(var item in unlockedDesignsSave.To<IkonArray>())
+				this.UnlockedDesigns.Add(deindexer.Get<PredefinedDesign>(item.To<int>()));
+
+			var intelligenceSave = rawData[IntelligenceKey];
+			this.Intelligence = Intelligence.Load(intelligenceSave.To<IkonComposite>(), deindexer);
+ 
+		}
+
 		internal Player Copy(GalaxyRemap galaxyRemap) 
 		{
 			return new Player(this, galaxyRemap);
@@ -77,6 +105,13 @@ namespace Stareater.Players
 			data.Add(IntelligenceKey, this.Intelligence.Save(indexer));
 			return data;
  
+		}
+		
+		public static Player Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			var loadedData = new Player(rawData, deindexer);
+			deindexer.Add(loadedData);
+			return loadedData;
 		}
 
 		private const string TableTag = "Player";

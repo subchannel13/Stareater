@@ -1,10 +1,10 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 using Stareater.GameData;
 using Stareater.Players;
-using Stareater.Utils.Collections;
 
 namespace Stareater.Ships 
 {
@@ -36,6 +36,22 @@ namespace Stareater.Ships
  
 		}
 
+		private  Design(IkonComposite rawData, ObjectDeindexer deindexer) 
+		{
+			var idCodeSave = rawData[IdCodeKey];
+			this.IdCode = idCodeSave.To<string>();
+
+			var ownerSave = rawData[OwnerKey];
+			this.Owner = deindexer.Get<Player>(ownerSave.To<int>());
+
+			var nameSave = rawData[NameKey];
+			this.Name = nameSave.To<string>();
+
+			var hullSave = rawData[HullKey];
+			this.Hull = Hull.Load(hullSave.To<IkonComposite>(), deindexer);
+ 
+		}
+
 		internal Design Copy(PlayersRemap playersRemap) 
 		{
 			return new Design(this, playersRemap.Players[this.Owner]);
@@ -56,6 +72,13 @@ namespace Stareater.Ships
 			data.Add(HullKey, this.Hull.Save());
 			return data;
  
+		}
+		
+		public static Design Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			var loadedData = new Design(rawData, deindexer);
+			deindexer.Add(loadedData);
+			return loadedData;
 		}
 
 		private const string TableTag = "Design";

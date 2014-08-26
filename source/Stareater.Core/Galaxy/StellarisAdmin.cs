@@ -1,11 +1,11 @@
 ﻿ 
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 using System.Linq;
 using Stareater.GameData;
 using Stareater.Players;
-using Stareater.Utils.Collections;
 
 namespace Stareater.Galaxy 
 {
@@ -18,6 +18,11 @@ namespace Stareater.Galaxy
 		} 
 
 		private StellarisAdmin(StellarisAdmin original, StarData star, Player owner) : base(original, new LocationBody(star), owner) 
+		{
+			 
+		}
+
+		private  StellarisAdmin(IkonComposite rawData, ObjectDeindexer deindexer) : base(rawData, deindexer) 
 		{
 			 
 		}
@@ -36,6 +41,14 @@ namespace Stareater.Galaxy
 			return data;
  
 		}
+
+		public static StellarisAdmin Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		{
+			var loadedData = new StellarisAdmin(rawData, deindexer);
+			deindexer.Add(loadedData);
+			return loadedData;
+		}
+ 
 
 		protected override string TableTag { get { return "StellarisAdmin"; } }
 		private const string StarKey = "star";
