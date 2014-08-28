@@ -33,7 +33,7 @@ namespace Stareater.Galaxy
  
 		}
 
-		private  IdleFleet(IkonComposite rawData, ObjectDeindexer deindexer) 
+		private IdleFleet(IkonComposite rawData, ObjectDeindexer deindexer) 
 		{
 			var ownerSave = rawData[OwnerKey];
 			this.Owner = deindexer.Get<Player>(ownerSave.To<int>());
@@ -70,13 +70,14 @@ namespace Stareater.Galaxy
 			return data;
  
 		}
-		
+
 		public static IdleFleet Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
 			var loadedData = new IdleFleet(rawData, deindexer);
 			deindexer.Add(loadedData);
 			return loadedData;
 		}
+ 
 
 		private const string TableTag = "IdleFleet";
 		private const string OwnerKey = "owner";

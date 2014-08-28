@@ -9,6 +9,7 @@
 	
 	modifer = "public partial";
 	SaveNeedsObjectIndexer = false;
+	LoadNeedsObjectDeindexer = false;
 
 	Generate("Stareater.Galaxy", "StarData",
 		new DataInfo("Color", "Color"),

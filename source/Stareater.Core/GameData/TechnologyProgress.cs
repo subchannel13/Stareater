@@ -24,7 +24,7 @@ namespace Stareater.GameData
 		} 
 
 
-		private  TechnologyProgress(IkonComposite rawData, ObjectDeindexer deindexer) 
+		private TechnologyProgress(IkonComposite rawData, ObjectDeindexer deindexer) 
 		{
 			var ownerSave = rawData[OwnerKey];
 			this.Owner = deindexer.Get<Player>(ownerSave.To<int>());
@@ -61,13 +61,14 @@ namespace Stareater.GameData
 			return data;
  
 		}
-		
+
 		public static TechnologyProgress Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
 			var loadedData = new TechnologyProgress(rawData, deindexer);
 			deindexer.Add(loadedData);
 			return loadedData;
 		}
+ 
 
 		private const string TableTag = "TechnologyProgress";
 		private const string OwnerKey = "owner";

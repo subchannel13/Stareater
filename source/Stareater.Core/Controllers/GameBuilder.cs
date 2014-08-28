@@ -38,9 +38,10 @@ namespace Stareater.Controllers
 			ObjectDeindexer deindexer = new ObjectDeindexer();
 			int turn = saveData[Game.TurnKey].To<int>();
 			
+			deindexer.AddAll(statics.Constructables, x => x.IdCode);
 			deindexer.AddAll(statics.PredeginedDesigns);
-			deindexer.AddAll(statics.Technologies, x => x.IdCode);
 			deindexer.AddAll(statics.Hulls.Values, x => x.IdCode);
+			deindexer.AddAll(statics.Technologies, x => x.IdCode);
 			
 			var loadedStates = loadSaveData(saveData, deindexer);
 			var states = loadedStates.Item1;
@@ -225,16 +226,19 @@ namespace Stareater.Controllers
 		#region Loading helper methods
 		private static Tuple<StatesDB, Player[]> loadSaveData(IkonComposite saveData, ObjectDeindexer deindexer)
 		{
+			var stateData = saveData[Game.StatesKey].To<IkonComposite>();
+			var ordersData = saveData[Game.OrdersKey].To<IkonArray>();
+			
 			var stars = new StarCollection();
-			foreach(var rawData in saveData[StatesDB.StarsKey].To<IEnumerable<IkonComposite>>())
+			foreach(var rawData in stateData[StatesDB.StarsKey].To<IEnumerable<IkonComposite>>())
 				stars.Add(StarData.Load(rawData, deindexer));
 			
 			var planets = new PlanetCollection();
-			foreach(var rawData in saveData[StatesDB.PlanetsKey].To<IEnumerable<IkonComposite>>())
+			foreach(var rawData in stateData[StatesDB.PlanetsKey].To<IEnumerable<IkonComposite>>())
 				planets.Add(Planet.Load(rawData, deindexer));
 			
 			var wormholes = new WormholeCollection();
-			foreach(var rawData in saveData[StatesDB.WormholesKey].To<IEnumerable<IkonComposite>>())
+			foreach(var rawData in stateData[StatesDB.WormholesKey].To<IEnumerable<IkonComposite>>())
 				wormholes.Add(Wormhole.Load(rawData, deindexer));
 			
 			var players = new List<Player>();
@@ -242,30 +246,30 @@ namespace Stareater.Controllers
 				players.Add(Player.Load(rawData, deindexer));
 			
 			var techs = new TechProgressCollection();
-			foreach(var rawData in saveData[StatesDB.TechnologyAdvancesKey].To<IEnumerable<IkonComposite>>())
+			foreach(var rawData in stateData[StatesDB.TechnologyAdvancesKey].To<IEnumerable<IkonComposite>>())
 				techs.Add(TechnologyProgress.Load(rawData, deindexer));
 			
 			var designs = new DesignCollection();
-			foreach(var rawData in saveData[StatesDB.DesignsKey].To<IEnumerable<IkonComposite>>()) {
+			foreach(var rawData in stateData[StatesDB.DesignsKey].To<IEnumerable<IkonComposite>>()) {
 				var design = Design.Load(rawData, deindexer); 
 				designs.Add(design);
 				deindexer.Add(design.ConstructionProject, design.ConstructionProject.IdCode);
 			}
 			
 			var idleFleets = new IdleFleetCollection();
-			foreach(var rawData in saveData[StatesDB.IdleFleetsKey].To<IEnumerable<IkonComposite>>())
+			foreach(var rawData in stateData[StatesDB.IdleFleetsKey].To<IEnumerable<IkonComposite>>())
 				idleFleets.Add(IdleFleet.Load(rawData, deindexer));
 			
 			var colonies = new ColonyCollection();
-			foreach(var rawData in saveData[StatesDB.ColoniesKey].To<IEnumerable<IkonComposite>>())
+			foreach(var rawData in stateData[StatesDB.ColoniesKey].To<IEnumerable<IkonComposite>>())
 				colonies.Add(Colony.Load(rawData, deindexer));
 			
 			var stellarises = new StellarisCollection();
-			foreach(var rawData in saveData[StatesDB.StellarisesKey].To<IEnumerable<IkonComposite>>())
+			foreach(var rawData in stateData[StatesDB.StellarisesKey].To<IEnumerable<IkonComposite>>())
 				stellarises.Add(StellarisAdmin.Load(rawData, deindexer));
 			
-			foreach(var player in players)
-				player.Orders = PlayerOrders.Load(saveData[Game.OrdersKey].To<IkonComposite>(), deindexer);
+			for(int i = 0; i < players.Count; i++)
+				players[i].Orders = PlayerOrders.Load(ordersData[i].To<IkonComposite>(), deindexer);
 				                                  
 			return new Tuple<StatesDB, Player[]>(
 				new StatesDB(stars, wormholes, planets, colonies, stellarises, techs, designs, idleFleets),

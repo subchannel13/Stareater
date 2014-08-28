@@ -21,7 +21,7 @@ namespace Stareater.Galaxy
 		} 
 
 
-		private  ShipGroup(IkonComposite rawData, ObjectDeindexer deindexer) 
+		private ShipGroup(IkonComposite rawData, ObjectDeindexer deindexer) 
 		{
 			var designSave = rawData[DesignKey];
 			this.Design = deindexer.Get<Design>(designSave.To<int>());
@@ -48,13 +48,14 @@ namespace Stareater.Galaxy
 			return data;
  
 		}
-		
+
 		public static ShipGroup Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
 			var loadedData = new ShipGroup(rawData, deindexer);
 			deindexer.Add(loadedData);
 			return loadedData;
 		}
+ 
 
 		private const string TableTag = "ShipGroup";
 		private const string DesignKey = "design";

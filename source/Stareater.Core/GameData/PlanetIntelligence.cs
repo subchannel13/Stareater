@@ -25,7 +25,7 @@ namespace Stareater.GameData
  
 		}
 
-		private  PlanetIntelligence(IkonComposite rawData) 
+		private PlanetIntelligence(IkonComposite rawData) 
 		{
 			var exploredSave = rawData[ExploredKey];
 			this.Explored = exploredSave.To<double>();
@@ -52,13 +52,14 @@ namespace Stareater.GameData
 			return data;
  
 		}
-		
+
 		public static PlanetIntelligence Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
 			var loadedData = new PlanetIntelligence(rawData);
 			deindexer.Add(loadedData);
 			return loadedData;
 		}
+ 
 
 		private const string TableTag = "PlanetIntelligence";
 		private const string ExploredKey = "explored";

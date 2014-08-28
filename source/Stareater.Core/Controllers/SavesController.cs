@@ -101,11 +101,10 @@ namespace Stareater.Controllers
 
 			this.nextSaveNumber++;
 		}
-
+		
 		public void Load(SavedGameData savedGameData)
 		{
-			//TODO(v0.5)
-			throw new NotImplementedException();
+			this.gameController.LoadGame(GameBuilder.LoadGame(savedGameData.RawData));
 		}
 		#endregion
 	}

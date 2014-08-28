@@ -46,7 +46,7 @@ namespace Stareater.Players
  
 		}
 
-		private  Player(IkonComposite rawData, ObjectDeindexer deindexer) 
+		private Player(IkonComposite rawData, ObjectDeindexer deindexer) 
 		{
 			var nameSave = rawData[NameKey];
 			this.Name = nameSave.To<string>();
@@ -106,13 +106,14 @@ namespace Stareater.Players
 			return data;
  
 		}
-		
+
 		public static Player Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
 			var loadedData = new Player(rawData, deindexer);
 			deindexer.Add(loadedData);
 			return loadedData;
 		}
+ 
 
 		private const string TableTag = "Player";
 		private const string NameKey = "name";

@@ -1,6 +1,6 @@
 ﻿<#@ output extension=".cs" #>
 <#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
-	
+
 	usings.Add("System");
 	usings.Add("Stareater.Players");
 	
