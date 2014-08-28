@@ -12,6 +12,6 @@
 		new DataInfo("Planets", "Dictionary", 
 			new GenericParamInfo("Planet").FromIndexer(), 
 			new GenericParamInfo("PlanetIntelligence").CopyMethod("Copy()").SaveKeyValue("intell").IsState(Flag.NoIndexer)
-		).Derived(null, "IEnumerable<Planet>", "planets").SaveTag("PlanetIntell")
+		).InitParam("IEnumerable<Planet>", "planets").SaveTag("PlanetIntell")
 	);
 #>

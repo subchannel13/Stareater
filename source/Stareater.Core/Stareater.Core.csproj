@@ -257,6 +257,7 @@
     <Compile Include="GameData\StarIntelligence.cs">
       <DependentUpon>StarIntelligence.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\StarIntelligence.partial.cs" />
     <Compile Include="GameData\Technology.cs" />
@@ -308,6 +309,7 @@
     <Compile Include="Ships\Design.cs">
       <DependentUpon>Design.tt</DependentUpon>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Ships\Design.partial.cs" />
     <Compile Include="Ships\Hull.cs" />

@@ -72,7 +72,6 @@ private static string[] initLoadAssignInit(string lowerName, string name, string
 			};
 		default:
 			return null;
-			break;
 	}
 }
 
@@ -125,7 +124,6 @@ private static string[] initSaveAssignInit(string lowerName, string name, string
 			};
 		default:
 			return null;
-			break;
 	}
 }
 
@@ -191,7 +189,8 @@ class DataInfo
 	public string CopyLogic = null;	//null -> copy value, Default -> default constructor, None -> none
 
 	//Saving logic
-	public bool DoSaveLoad = true;
+	public bool DoLoad = true;
+	public bool DoSave = true;
 	public bool LoadOverride = false;
 	public bool SaveOverride = false;
 	public string LoadAssignLogic = null;
@@ -400,24 +399,42 @@ class DataInfo
 	
 	public DataInfo Derived(string initCode)
 	{
-		this.InitLogic = initCode;
+		this.InitLogic = AssignCode + initCode;
 		this.InitParams = new string[0];
+
+		this.DoSave = false;
+		
+		this.LoadOverride = true;
+		this.LoadAssignLogic = initCode;
+
 		return this;
 	}
 	
-	public DataInfo Derived(string initCode, string constructorParamType, string constructorParamName)
+	public DataInfo Init(string initCode, string constructorParamType, string constructorParamName)
 	{
 		this.InitLogic = initCode;
 		this.InitParams = new string[] { constructorParamType, constructorParamName };
 		return this;
 	}
-	
+
+	public DataInfo InitParam(string constructorParamType, string constructorParamName)
+	{
+		this.InitParams = new string[] { constructorParamType, constructorParamName };
+		return this;
+	}
+
 	public DataInfo InitValue(string valueCode)
 	{
 		this.InitLogic = "this." + this.Name + " = " + valueCode + ";";
 		return this;
 	}
 	
+	public DataInfo NoInit()
+	{
+		this.InitLogic = "";
+		this.InitParams = new string[0];
+		return this;
+	}
 	/*
 		Copy logic specification
 	*/
@@ -532,7 +549,8 @@ class DataInfo
 	
 	public DataInfo NoSaveLoad()
 	{
-		this.DoSaveLoad = false;
+		this.DoSave = false;
+		this.DoLoad = false;
 		return this;
 	}
 	

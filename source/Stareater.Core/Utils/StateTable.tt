@@ -110,7 +110,7 @@ private void WriteFieldInits(params DataInfo[] dataInfos)
 		if (field.InitLogic == Default)
 			WriteLine(indent.Get + "this."  + field.Name + " = " + field.Constructor);
 		else if (field.InitLogic != null)
-			WriteLine(indent.Get + field.InitLogic);
+			WriteLine(indent.Get + field.InitLogic.Replace(AssignCode, "this."  + field.Name + " = "));
 		else if (field.IsMap)
 			WriteMapInit(field, indent);
 		else
@@ -295,7 +295,7 @@ private void WriteFieldLoad(params DataInfo[] dataInfos)
 
 	foreach(var field in dataInfos)
 	{
-		if (!field.DoSaveLoad)
+		if (!field.DoLoad)
 			continue;
 		if (emptyLine.Get != null)
 			WriteLine("");
@@ -313,7 +313,8 @@ private void WriteFieldLoad(params DataInfo[] dataInfos)
 				foreach(var line in field.LoadAssignInit)
 					WriteLine(indent.Get + line);
 					
-			WriteLine(indent.Get + "this."  + field.Name + " = " + field.LoadAssignLogic.Replace(SaveName, saveData) + ";");
+			string lineEnd = field.LoadAssignLogic.EndsWith(";") ? "" : ";";
+			WriteLine(indent.Get + "this."  + field.Name + " = " + field.LoadAssignLogic.Replace(SaveName, saveData) + lineEnd);
 		} else
 			WriteLine(indent.Get + "//FIXME: undefined load logic for " + field.Name);
 	}
@@ -411,7 +412,7 @@ private void WriteSaveMethod(params DataInfo[] dataInfos)
 
 	foreach(var field in dataInfos)
 	{
-		if (!field.DoSaveLoad)
+		if (!field.DoSave)
 			continue;
 		if (emptyLine.Get != null)
 				WriteLine("");

@@ -12,6 +12,6 @@
 		new DataInfo("Owner", "Player").FromIndexer(),
 		new DataInfo("Name", "string"),
 		new DataInfo("Hull", "Hull").IsStatic(Flag.NoIndexer),
-		new DataInfo("Cost", "double").Derived("initCost(hull);").NoSaveLoad()
+		new DataInfo("Cost", "double").Derived("initCost();")
 	);
 #>

@@ -27,9 +27,9 @@ namespace Stareater.Ships
 		//private Dictionary<string, double> efekti = new Dictionary<string,double>(); //TODO(v0.5): might need
 		//public object Hash { get; private set; } //TODO(v0.5): make type, might need
 		
-		private void initCost(Hull hull)
+		private double initCost()
 		{
-			this.Cost = hull.TypeInfo.Cost.Evaluate(new Var("lvl", hull.Level).Get);
+			return this.Hull.TypeInfo.Cost.Evaluate(new Var("lvl", this.Hull.Level).Get);
 		}
 		
 		public string ImagePath 
