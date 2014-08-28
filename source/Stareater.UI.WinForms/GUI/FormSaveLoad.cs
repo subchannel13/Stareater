@@ -40,6 +40,11 @@ namespace Stareater.GUI
 			updateNoSaveMessage();
 		}
 		
+		public SavedGameData SelectedGameData
+		{
+			get { return this.selectedGame.Data; }
+		}
+		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
 			if (keyData == Keys.Escape) 
@@ -80,8 +85,6 @@ namespace Stareater.GUI
 		
 		private void loadButton_Click(object sender, EventArgs e)
 		{
-			this.controller.Load(this.selectedGame.Data);
-
 			this.Result = MainMenuResult.LoadGame;
 			this.DialogResult = DialogResult.OK;
 		}

@@ -27,7 +27,7 @@ namespace Stareater.Galaxy
 		} 
 
 
-		private  StarData(IkonComposite rawData) 
+		private StarData(IkonComposite rawData) 
 		{
 			var colorSave = rawData[ColorKey];
 			var colorArray = colorSave.To<IkonArray>();
@@ -78,13 +78,14 @@ namespace Stareater.Galaxy
 			return data;
  
 		}
-		
+
 		public static StarData Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
 			var loadedData = new StarData(rawData);
 			deindexer.Add(loadedData);
 			return loadedData;
 		}
+ 
 
 		private const string TableTag = "StarData";
 		private const string ColorKey = "color";

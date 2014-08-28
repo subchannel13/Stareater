@@ -29,19 +29,25 @@ namespace Stareater.Galaxy
 		} 
 
 
-		private  Planet(IkonComposite rawData, ObjectDeindexer deindexer) 
+		private Planet(IkonComposite rawData, ObjectDeindexer deindexer) 
 		{
 			var starSave = rawData[StarKey];
+			this.Star = deindexer.Get<StarData>(starSave.To<int>());
 
 			var positionSave = rawData[PositionKey];
+			this.Position = positionSave.To<int>();
 
 			var typeSave = rawData[TypeKey];
+			this.Type = (PlanetType)Enum.Parse(typeof(PlanetType), (string)typeSave.Tag);
 
 			var sizeSave = rawData[SizeKey];
+			this.Size = sizeSave.To<double>();
 
 			var mineralsSurfaceSave = rawData[MineralsSurfaceKey];
+			this.MineralsSurface = mineralsSurfaceSave.To<double>();
 
 			var mineralsDeepSave = rawData[MineralsDeepKey];
+			this.MineralsDeep = mineralsDeepSave.To<double>();
  
 		}
 
@@ -70,13 +76,14 @@ namespace Stareater.Galaxy
 			return data;
  
 		}
-		
+
 		public static Planet Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
 			var loadedData = new Planet(rawData, deindexer);
 			deindexer.Add(loadedData);
 			return loadedData;
 		}
+ 
 
 		private const string TableTag = "Planet";
 		private const string StarKey = "star";

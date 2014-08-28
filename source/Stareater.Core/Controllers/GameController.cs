@@ -21,18 +21,10 @@ namespace Stareater.Controllers
 		private Task aiGalaxyPhase = null;
 		private Task turnProcessing = null;
 
-		/// <summary>
-		/// GameController constructor intended for game view (GUI or other kind of human interface).  
-		/// </summary>
-		/// <param name="stateListener">Listener with callbacks for game state changes. <remarks>No callback is called before running <see cref="CreateGame"></see> method.</remarks></param>
-		public GameController(IGameStateListener stateListener)
-		{
-			this.stateListener = stateListener;
+		public GameController()
+		{ 
 			this.State = GameState.NoGame;
 		}
-
-		private GameController()
-		{ }
 	
 		public void CreateGame(NewGameController controller)
 		{
@@ -47,9 +39,41 @@ namespace Stareater.Controllers
 			Random rng = new Random();
 			
 			this.game = GameBuilder.CreateGame(rng, players, controller);
-			this.State = GameState.Running;
+			this.initStarSelection();
+		}
+		
+		internal void LoadGame(Game game)
+		{
+			this.game = game;
+			//TODO(later) consider loading from save data
+			this.initStarSelection();
+		}
 
-			foreach(Player player in players) {
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="stateListener">>Listener with callbacks for game state changes. <remarks>No callback is called before running <see cref="CreateGame"></see> method.</remarks></param>
+		public void Start(IGameStateListener stateListener)
+		{
+			this.stateListener = stateListener;
+			this.State = GameState.Running;
+			
+			restartAiGalaxyPhase();
+		}
+		
+		public void Stop()
+		{
+			//UNDONE: what to do here?
+		}
+		
+		internal Game GameInstance
+		{
+			get { return (this.IsReadOnly) ? this.endTurnCopy.game : this.game; }
+		}
+		
+		private void initStarSelection()
+		{
+			foreach(Player player in this.game.Players) {
 				//TODO(v0.5): utilize stellar administration instead iterating colonies
 				var colonies = this.game.States.Colonies.OwnedBy(player);
 				var perStar = colonies.GroupBy(x => x.Star);
@@ -61,13 +85,6 @@ namespace Stareater.Controllers
 				
 				this.lastSelectedStar.Add(player, maxPopulationStar);
 			}
-			
-			restartAiGalaxyPhase();
-		}
-
-		internal Game GameInstance
-		{
-			get { return (this.IsReadOnly) ? this.endTurnCopy.game : this.game; }
 		}
 
 		#region Turn processing
@@ -115,8 +132,9 @@ namespace Stareater.Controllers
 			this.endTurnCopy = new GameController();
 			var gameCopy = game.ReadonlyCopy();
 			
-			endTurnCopy.game = gameCopy.Game;
-			endTurnCopy.lastSelectedStar = new Dictionary<Player, StarData>();
+			this.endTurnCopy.game = gameCopy.Game;
+			this.endTurnCopy.State = this.State;
+			this.endTurnCopy.lastSelectedStar = new Dictionary<Player, StarData>();
 
 			foreach (var originalSelection in lastSelectedStar)
 				endTurnCopy.lastSelectedStar.Add(

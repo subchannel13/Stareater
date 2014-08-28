@@ -24,7 +24,7 @@ namespace Stareater.Galaxy
  
 		}
 
-		private  Colony(IkonComposite rawData, ObjectDeindexer deindexer) : base(rawData, deindexer) 
+		private Colony(IkonComposite rawData, ObjectDeindexer deindexer) : base(rawData, deindexer) 
 		{
 			var populationSave = rawData[PopulationKey];
 			this.Population = populationSave.To<double>();

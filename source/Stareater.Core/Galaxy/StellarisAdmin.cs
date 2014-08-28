@@ -22,7 +22,7 @@ namespace Stareater.Galaxy
 			 
 		}
 
-		private  StellarisAdmin(IkonComposite rawData, ObjectDeindexer deindexer) : base(rawData, deindexer) 
+		private StellarisAdmin(IkonComposite rawData, ObjectDeindexer deindexer) : base(rawData, deindexer) 
 		{
 			 
 		}

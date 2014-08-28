@@ -36,7 +36,7 @@ namespace Stareater.GUI
 		{
 			InitializeComponent();
 
-			this.controller = new GameController(this);
+			this.controller = new GameController();
 			
 			setLanguage();
 			postDelayedEvent(showMainMenu);
@@ -135,6 +135,9 @@ namespace Stareater.GUI
 						case MainMenuResult.NewGame:
 							postDelayedEvent(showNewGame);
 							break;
+						case MainMenuResult.SaveGame:
+							postDelayedEvent(showSaveGame);
+							break;
 						case MainMenuResult.Settings:
 							postDelayedEvent(showSettings);
 							break;
@@ -153,6 +156,8 @@ namespace Stareater.GUI
 				form.Initialize();
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
 					form.CreateGame(controller);
+					this.controller.Start(this);
+					//TODO(later) extract as method and reuse in game loading
 					galaxyRenderer = new GalaxyRenderer(controller, switchToSystemView);
 					galaxyRenderer.Load();
 					
@@ -166,6 +171,28 @@ namespace Stareater.GUI
 			}
 		}
 
+		private void showSaveGame()
+		{
+			var saveController = new SavesController(controller);
+			
+			using(var form = new FormSaveLoad(saveController))
+				if (form.ShowDialog() != DialogResult.OK)
+					postDelayedEvent(showMainMenu);
+				else if (form.Result == MainMenuResult.LoadGame) {
+					this.controller.Stop();	
+					saveController.Load(form.SelectedGameData);
+					this.controller.Start(this);
+					
+					//TODO(v0.5) clean up old renderer instances
+					galaxyRenderer = new GalaxyRenderer(controller, switchToSystemView);
+					galaxyRenderer.Load();
+					
+					systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement);
+					switchToGalaxyView();
+					redraw();
+				}
+		}
+		
 		private void showSettings()
 		{
 			using (FormSettings form = new FormSettings())

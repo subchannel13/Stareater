@@ -26,7 +26,7 @@ namespace Stareater.GameData
  
 		}
 
-		private  Intelligence(IkonComposite rawData, ObjectDeindexer deindexer) 
+		private Intelligence(IkonComposite rawData, ObjectDeindexer deindexer) 
 		{
 			var starKnowledgeSave = rawData[StarKnowledgeKey];
 			this.starKnowledge = new Dictionary<StarData, StarIntelligence>();
@@ -63,13 +63,14 @@ namespace Stareater.GameData
 			return data;
  
 		}
-		
+
 		public static Intelligence Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
 			var loadedData = new Intelligence(rawData, deindexer);
 			deindexer.Add(loadedData);
 			return loadedData;
 		}
+ 
 
 		private const string TableTag = "Intelligence";
 		private const string StarKnowledgeKey = "starKnowledge";

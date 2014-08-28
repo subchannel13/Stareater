@@ -29,7 +29,7 @@ namespace Stareater.GameData.Databases.Tables
  
 		}
 
-		private  ConstructionOrders(IkonComposite rawData, ObjectDeindexer deindexer) 
+		private ConstructionOrders(IkonComposite rawData, ObjectDeindexer deindexer) 
 		{
 			var spendingRatioSave = rawData[SpendingRatioKey];
 			this.SpendingRatio = spendingRatioSave.To<double>();

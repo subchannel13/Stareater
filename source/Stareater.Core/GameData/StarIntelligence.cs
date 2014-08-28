@@ -31,7 +31,7 @@ namespace Stareater.GameData
  
 		}
 
-		private  StarIntelligence(IkonComposite rawData, ObjectDeindexer deindexer) 
+		private StarIntelligence(IkonComposite rawData, ObjectDeindexer deindexer) 
 		{
 			var lastVisitedSave = rawData[LastVisitedKey];
 			this.LastVisited = lastVisitedSave.To<int>();
@@ -73,13 +73,14 @@ namespace Stareater.GameData
 			return data;
  
 		}
-		
+
 		public static StarIntelligence Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
 			var loadedData = new StarIntelligence(rawData, deindexer);
 			deindexer.Add(loadedData);
 			return loadedData;
 		}
+ 
 
 		private const string TableTag = "StarIntelligence";
 		private const string LastVisitedKey = "lastVisited";

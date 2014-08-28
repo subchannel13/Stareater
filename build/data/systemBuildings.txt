@@ -3,7 +3,7 @@
 	descCode: JUMPGATE_DESC
 	image: ./images/buildings/factory.png
 	
-	code: Infra
+	code: Jump
 	site: System
 	prerequisites [] 
 	

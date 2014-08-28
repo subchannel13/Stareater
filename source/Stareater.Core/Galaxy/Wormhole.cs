@@ -21,7 +21,7 @@ namespace Stareater.Galaxy
 		} 
 
 
-		private  Wormhole(IkonComposite rawData, ObjectDeindexer deindexer) 
+		private Wormhole(IkonComposite rawData, ObjectDeindexer deindexer) 
 		{
 			var fromStarSave = rawData[FromStarKey];
 			this.FromStar = deindexer.Get<StarData>(fromStarSave.To<int>());
@@ -48,13 +48,14 @@ namespace Stareater.Galaxy
 			return data;
  
 		}
-		
+
 		public static Wormhole Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
 			var loadedData = new Wormhole(rawData, deindexer);
 			deindexer.Add(loadedData);
 			return loadedData;
 		}
+ 
 
 		private const string TableTag = "Wormhole";
 		private const string FromStarKey = "from";

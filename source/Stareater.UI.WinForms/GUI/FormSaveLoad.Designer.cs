@@ -90,6 +90,7 @@ namespace Stareater.GUI
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormSaveLoad";
 			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "FormSaveLoad";
 			this.ResumeLayout(false);
 		}

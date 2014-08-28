@@ -64,10 +64,7 @@ namespace Stareater.GUI
 
 		private void saveGameButton_Click(object sender, EventArgs e)
 		{
-			using(var form = new FormSaveLoad(new SavesController(controller)))
-				if (form.ShowDialog() == DialogResult.OK)
-					this.Result = form.Result;
-			
+			this.Result = MainMenuResult.SaveGame;
 			this.DialogResult = DialogResult.OK;
 		}
 

@@ -36,7 +36,7 @@ namespace Stareater.Ships
  
 		}
 
-		private  Design(IkonComposite rawData, ObjectDeindexer deindexer) 
+		private Design(IkonComposite rawData, ObjectDeindexer deindexer) 
 		{
 			var idCodeSave = rawData[IdCodeKey];
 			this.IdCode = idCodeSave.To<string>();
@@ -73,13 +73,14 @@ namespace Stareater.Ships
 			return data;
  
 		}
-		
+
 		public static Design Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
 			var loadedData = new Design(rawData, deindexer);
 			deindexer.Add(loadedData);
 			return loadedData;
 		}
+ 
 
 		private const string TableTag = "Design";
 		private const string IdCodeKey = "idCode";
