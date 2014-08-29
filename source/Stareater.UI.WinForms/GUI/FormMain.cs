@@ -155,16 +155,10 @@ namespace Stareater.GUI
 			using (FormNewGame form = new FormNewGame()) {
 				form.Initialize();
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
+					this.controller.Stop();	
 					form.CreateGame(controller);
 					this.controller.Start(this);
-					//TODO(later) extract as method and reuse in game loading
-					galaxyRenderer = new GalaxyRenderer(controller, switchToSystemView);
-					galaxyRenderer.Load();
-					
-					systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement);
-					
-					switchToGalaxyView();
-					redraw();
+					this.restartRenderers();
 				}
 				else
 					postDelayedEvent(showMainMenu);
@@ -179,17 +173,10 @@ namespace Stareater.GUI
 				if (form.ShowDialog() != DialogResult.OK)
 					postDelayedEvent(showMainMenu);
 				else if (form.Result == MainMenuResult.LoadGame) {
-					this.controller.Stop();	
+					this.controller.Stop();
 					saveController.Load(form.SelectedGameData);
 					this.controller.Start(this);
-					
-					//TODO(v0.5) clean up old renderer instances
-					galaxyRenderer = new GalaxyRenderer(controller, switchToSystemView);
-					galaxyRenderer.Load();
-					
-					systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement);
-					switchToGalaxyView();
-					redraw();
+					this.restartRenderers();
 				}
 		}
 		
@@ -206,6 +193,27 @@ namespace Stareater.GUI
 		{
 			if (controller.State != Controllers.Data.GameState.Running)
 				return;
+		}
+		
+		private void restartRenderers()
+		{
+			if (galaxyRenderer != null) {
+				galaxyRenderer.DetachFromCanvas();
+				galaxyRenderer.Unload();
+			}
+			
+			if (systemRenderer != null) {
+				systemRenderer.DetachFromCanvas();
+				systemRenderer.Unload();
+			}
+			
+			galaxyRenderer = new GalaxyRenderer(controller, switchToSystemView);
+			galaxyRenderer.Load();
+			
+			systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement);
+			
+			switchToGalaxyView();
+			redraw();
 		}
 		
 		private void tryEndTurn()

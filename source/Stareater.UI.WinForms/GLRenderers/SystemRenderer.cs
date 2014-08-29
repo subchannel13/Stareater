@@ -165,6 +165,9 @@ namespace Stareater.GLRenderers
 		
 		public void DetachFromCanvas()
 		{
+			if (eventDispatcher == null)
+				return;
+			
 			eventDispatcher.MouseMove -= mousePan;
 			eventDispatcher.MouseClick -= mouseClick;
 			eventDispatcher.KeyPress -= keyPress;
