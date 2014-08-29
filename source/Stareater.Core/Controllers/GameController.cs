@@ -63,7 +63,8 @@ namespace Stareater.Controllers
 		
 		public void Stop()
 		{
-			//UNDONE: what to do here?
+			this.State = GameState.NoGame;
+			//UNDONE: what else to do here?
 		}
 		
 		internal Game GameInstance

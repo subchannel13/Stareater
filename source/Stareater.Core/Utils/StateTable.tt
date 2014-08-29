@@ -301,7 +301,8 @@ private void WriteFieldLoad(params DataInfo[] dataInfos)
 			WriteLine("");
 		
 		string saveData = field.LowerName + "Save";
-		WriteLine(indent.Get + "var " + saveData + " = rawData[" + field.SavingKeyName + "];");
+		if (field.DoSave)
+			WriteLine(indent.Get + "var " + saveData + " = rawData[" + field.SavingKeyName + "];");
 		
 		if (field.IsCollection && !field.LoadOverride)
 			WriteListLoad(field, indent, saveData);

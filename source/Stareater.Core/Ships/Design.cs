@@ -1,6 +1,5 @@
 ﻿ 
 
-
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
@@ -51,7 +50,6 @@ namespace Stareater.Ships
 			var hullSave = rawData[HullKey];
 			this.Hull = Hull.Load(hullSave.To<IkonComposite>(), deindexer);
 
-			var costSave = rawData[CostKey];
 			this.Cost = initCost();
  
 		}
