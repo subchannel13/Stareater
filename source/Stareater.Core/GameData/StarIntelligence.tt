@@ -8,7 +8,7 @@
 	modifer = "partial";
 
 	Generate("Stareater.GameData", "StarIntelligence",
-		new DataInfo("LastVisited", "int").CopyOnly().InitValue("NeverVisited"),
+		new DataInfo("LastVisited", "int").EmptyInit().InitValue("NeverVisited"),
 		new DataInfo("Planets", "Dictionary", 
 			new GenericParamInfo("Planet").FromIndexer(), 
 			new GenericParamInfo("PlanetIntelligence").CopyMethod("Copy()").SaveKeyValue("intell").IsState(Flag.NoIndexer)

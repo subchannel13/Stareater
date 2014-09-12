@@ -17,6 +17,7 @@ namespace Stareater.GameLogic
 		
 		public void Apply(StatesDB states, AConstructionSite site, double quantity)
 		{
+			//TODO(v0.5) report new ship construction
 			var fleet = states.IdleFleets.AtStar(site.Location.Star).Where(x => x.Owner == site.Owner).FirstOrDefault();
 			
 			if (fleet == null) {

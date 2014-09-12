@@ -9,7 +9,7 @@ namespace Stareater.Controllers.Data
 {
 	public class TechnologyTopic
 	{
-		private const string LangContext = "Technologies";
+		internal const string LangContext = "Technologies";
 		
 		private Technology technology;
 		private IDictionary<string, double> textVars;

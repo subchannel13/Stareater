@@ -148,6 +148,10 @@
     <Compile Include="GUI\FormNewGame.Designer.cs">
       <DependentUpon>FormNewGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FormReports.cs" />
+    <Compile Include="GUI\FormReports.Designer.cs">
+      <DependentUpon>FormReports.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormResearch.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -283,6 +287,9 @@
     <EmbeddedResource Include="GUI\FormNewGame.resx">
       <DependentUpon>FormNewGame.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormReports.resx">
+      <DependentUpon>FormReports.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormResearch.resx">
       <DependentUpon>FormResearch.cs</DependentUpon>

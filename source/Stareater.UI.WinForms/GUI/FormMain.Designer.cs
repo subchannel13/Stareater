@@ -38,6 +38,7 @@
 			this.designsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.developmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.researchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.endTurnButton = new System.Windows.Forms.Button();
 			this.returnButton = new System.Windows.Forms.Button();
 			this.menuStrip.SuspendLayout();
@@ -83,7 +84,8 @@
 									this.mainMenuToolStripMenuItem,
 									this.designsToolStripMenuItem,
 									this.developmentToolStripMenuItem,
-									this.researchToolStripMenuItem});
+									this.researchToolStripMenuItem,
+									this.reportsToolStripMenuItem});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
 			this.menuStrip.Size = new System.Drawing.Size(884, 24);
@@ -117,6 +119,13 @@
 			this.researchToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
 			this.researchToolStripMenuItem.Text = "Research";
 			this.researchToolStripMenuItem.Click += new System.EventHandler(this.researchToolStripMenuItem_Click);
+			// 
+			// reportsToolStripMenuItem
+			// 
+			this.reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
+			this.reportsToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+			this.reportsToolStripMenuItem.Text = "Reports";
+			this.reportsToolStripMenuItem.Click += new System.EventHandler(this.reportsToolStripMenuItem_Click);
 			// 
 			// endTurnButton
 			// 
@@ -165,6 +174,7 @@
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem researchToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem designsToolStripMenuItem;
 		private System.Windows.Forms.Button returnButton;

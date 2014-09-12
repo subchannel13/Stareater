@@ -15,10 +15,10 @@
 		new DataInfo("Buildings", "Dictionary", 
 			new GenericParamInfo("string").SaveKey("BuildingTypeKey", "type"), 
 			new GenericParamInfo("double").SaveKey("BuildingAmountKey", "amount")
-		).CopyOnly(),
+		).EmptyInit(),
 		new DataInfo("Stockpile", "Dictionary", 
 			new GenericParamInfo("Constructable").SaveKey("StockpileGroupKey", "group").SaveIdCode(), 
 			new GenericParamInfo("double").SaveKey("StockpileAmountKey", "amount")
-		).CopyOnly()
+		).EmptyInit()
 	);
 #>

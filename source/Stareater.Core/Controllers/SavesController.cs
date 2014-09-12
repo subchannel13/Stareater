@@ -20,7 +20,7 @@ namespace Stareater.Controllers
 
 		private GameController gameController;
 		private int nextSaveNumber;
-		private LinkedList<SavedGameData> games;
+		private LinkedList<SavedGameInfo> games;
 		
 		public SavesController(GameController gameController)
 		{
@@ -32,7 +32,7 @@ namespace Stareater.Controllers
 		private void checkFiles()
 		{
 			var saveFolder = new DirectoryInfo(SaveFolderPath);
-			var saveFiles = new Dictionary<SavedGameData, DateTime>();
+			var saveFiles = new Dictionary<SavedGameInfo, DateTime>();
 			var saveNames = new HashSet<string>();
 
 			foreach (var file in saveFolder.EnumerateFiles("*." + SaveNameExtension)) {
@@ -41,7 +41,7 @@ namespace Stareater.Controllers
 				using (var parser = new IkonParser(file.OpenText())) {
 					var rawData = parser.ParseNext() as IkonComposite;
 					saveFiles.Add(
-						new SavedGameData(
+						new SavedGameInfo(
 							rawData[SaveGameTitleKey].To<string>(),
 							rawData[Game.TurnKey].To<int>(),
 							rawData,
@@ -56,7 +56,7 @@ namespace Stareater.Controllers
 				saveNames.Contains(SaveNamePrefix + this.nextSaveNumber + "." + SaveNameExtension);
 				this.nextSaveNumber++)
 				;
-			this.games = new LinkedList<SavedGameData>(saveFiles.OrderByDescending(x => x.Value).Select(x => x.Key));
+			this.games = new LinkedList<SavedGameInfo>(saveFiles.OrderByDescending(x => x.Value).Select(x => x.Key));
 		}
 		#endregion
 
@@ -74,7 +74,7 @@ namespace Stareater.Controllers
 			get { return gameController.State == GameState.Running; }
 		}
 		
-		public IEnumerable<SavedGameData> Games
+		public IEnumerable<SavedGameInfo> Games
 		{
 			get
 			{
@@ -84,7 +84,7 @@ namespace Stareater.Controllers
 		#endregion
 
 		#region Saving / Loading
-		public void Save(SavedGameData savedGameData)
+		public void Save(SavedGameInfo savedGameData)
 		{
 			string fileName = SaveNamePrefix + this.nextSaveNumber + "." + SaveNameExtension;
 
@@ -102,7 +102,7 @@ namespace Stareater.Controllers
 			this.nextSaveNumber++;
 		}
 		
-		public void Load(SavedGameData savedGameData)
+		public void Load(SavedGameInfo savedGameData)
 		{
 			this.gameController.LoadGame(GameBuilder.LoadGame(savedGameData.RawData));
 		}

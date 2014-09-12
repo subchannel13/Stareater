@@ -1,6 +1,5 @@
 ﻿ 
 
-
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameData;
+using Stareater.Players.Reports;
 
 namespace Stareater.Players 
 {
@@ -20,6 +20,7 @@ namespace Stareater.Players
 		public HashSet<PredefinedDesign> UnlockedDesigns { get; private set; }
 		public Intelligence Intelligence { get; private set; }
 		public PlayerOrders Orders { get; set; }
+		public List<IReport> Reports { get; private set; }
 
 		public Player(string name, Color color, PlayerType type) 
 		{
@@ -30,6 +31,7 @@ namespace Stareater.Players
 			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
 			this.Intelligence = new Intelligence();
 			this.Orders = new PlayerOrders();
+			this.Reports = new List<IReport>();
  
 		} 
 
@@ -44,6 +46,9 @@ namespace Stareater.Players
 				this.UnlockedDesigns.Add(item);
 			this.Intelligence = original.Intelligence.Copy(galaxyRemap);
 			
+			this.Reports = new List<IReport>();
+			foreach(var item in original.Reports)
+				this.Reports.Add(item);
  
 		}
 
@@ -72,6 +77,9 @@ namespace Stareater.Players
 
 			var intelligenceSave = rawData[IntelligenceKey];
 			this.Intelligence = Intelligence.Load(intelligenceSave.To<IkonComposite>(), deindexer);
+
+			var reportsSave = rawData[ReportsKey];
+			this.Reports = loadReports(reportsSave);
  
 		}
 
@@ -104,6 +112,11 @@ namespace Stareater.Players
 			data.Add(UnlockedDesignsKey, unlockedDesignsData);
 
 			data.Add(IntelligenceKey, this.Intelligence.Save(indexer));
+
+			var reportsData = new IkonArray();
+			foreach(var item in this.Reports)
+				reportsData.Add(item.Save(indexer));
+			data.Add(ReportsKey, reportsData);
 			return data;
  
 		}
@@ -124,6 +137,7 @@ namespace Stareater.Players
 		private const string UnlockedDesignsKey = "unlockedDesigns";
 		private const string IntelligenceKey = "intelligence";
 		private const string OrdersKey = "orders";
+		private const string ReportsKey = "reports";
  
 		#endregion
 	}

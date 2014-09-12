@@ -10,6 +10,7 @@ using Stareater.Controllers;
 using Stareater.Controllers.Data;
 using Stareater.GLRenderers;
 using Stareater.Localization;
+using Stareater.Players.Reports;
 
 namespace Stareater.GUI
 {
@@ -108,6 +109,12 @@ namespace Stareater.GUI
 		private void researchToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using(var form = new FormResearch(controller))
+				form.ShowDialog();
+		}
+		
+		private void reportsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using(var form = new FormReports(controller.Reports))
 				form.ShowDialog();
 		}
 		
@@ -349,5 +356,13 @@ namespace Stareater.GUI
 			controller.EndCombatPhase();
 		}
 		#endregion
+		
+		/*#region Turn report visitor implementation
+		public void Visit(TechnologyReport report)
+		{
+			//TODO(v0.5): show tech GUI
+			throw new NotImplementedException();
+		}
+		#endregion*/
 	}
 }

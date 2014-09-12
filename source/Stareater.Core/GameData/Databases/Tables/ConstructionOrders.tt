@@ -9,6 +9,6 @@
 
 	Generate("Stareater.GameData.Databases.Tables", "ConstructionOrders",
 		new DataInfo("SpendingRatio", "double").Public(),
-		new DataInfo("Queue", "List", new GenericParamInfo("Constructable").SaveIdCode()).CopyOnly()
+		new DataInfo("Queue", "List", new GenericParamInfo("Constructable").SaveIdCode()).EmptyInit()
 	);
 #>

@@ -3,7 +3,7 @@ using Ikadn.Ikon.Types;
 
 namespace Stareater.Controllers.Data
 {
-	public class SavedGameData
+	public class SavedGameInfo
 	{
 		public string Title { get; private set; }
 		public int Turn { get; private set; }
@@ -11,7 +11,7 @@ namespace Stareater.Controllers.Data
 		public DateTime? LastModified { get; private set; }
 		public IkonComposite RawData { get; private set; }
 
-		public SavedGameData(string title, int turn)
+		public SavedGameInfo(string title, int turn)
 		{
 			this.Title = title;
 			this.Turn = turn;
@@ -20,7 +20,7 @@ namespace Stareater.Controllers.Data
 			this.RawData = null;
 		}
 
-		public SavedGameData(string title, int turn, IkonComposite rawData, DateTime lastModified)
+		public SavedGameInfo(string title, int turn, IkonComposite rawData, DateTime lastModified)
 		{
 			this.Title = title;
 			this.Turn = turn;

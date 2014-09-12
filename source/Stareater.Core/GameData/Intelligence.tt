@@ -11,6 +11,6 @@
 		new DataInfo("StarKnowledge", "Dictionary",
 			new GenericParamInfo("StarData").FromIndexer().SaveKeyValue("star"), 
 			new GenericParamInfo("StarIntelligence").CopyMethod("Copy(galaxyRemap)").SaveKeyValue("intell").IsState()
-		).Private().CopyOnly().SaveTag("StarIntell")
+		).Private().EmptyInit().SaveTag("StarIntell")
 	);
 #>
