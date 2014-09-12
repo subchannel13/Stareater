@@ -9,15 +9,15 @@
 	modifer = "partial";
 
 	Generate("Stareater.GameData.Databases.Tables", "PlayerOrders",
-		new DataInfo("DevelopmentFocusIndex", "int").Public().InitValue("0").CopyOnly(),
+		new DataInfo("DevelopmentFocusIndex", "int").Public().InitValue("0").EmptyInit(),
 		new DataInfo("DevelopmentQueue", "Dictionary", 
 			new GenericParamInfo("string"), 
 			new GenericParamInfo("int")
-		).Public().CopyOnly().SaveAssign("saveDevelopment()").LoadCode("loadDevelopmet(" + SaveName + ", deindexer)"),
-		new DataInfo("ResearchFocus", "string").Public().InitValue("null").CopyOnly(),
+		).Public().EmptyInit().SaveAssign("saveDevelopment()").LoadCode("loadDevelopmet(" + SaveName + ", deindexer)"),
+		new DataInfo("ResearchFocus", "string").Public().InitValue("null").EmptyInit(),
 		new DataInfo("ConstructionPlans", "Dictionary", 
 			new GenericParamInfo("AConstructionSite"), 
 			new GenericParamInfo("ConstructionOrders").CopyMethod("Copy()")
-		).Public().CopyOnly().SaveAssign("saveConstruction(indexer)").LoadCode("loadConstruction(" + SaveName + ", deindexer)")
+		).Public().EmptyInit().SaveAssign("saveConstruction(indexer)").LoadCode("loadConstruction(" + SaveName + ", deindexer)")
 	);
 #>

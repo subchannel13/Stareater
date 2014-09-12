@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Data;
 using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.Players;
+using Stareater.Players.Reports;
 
 namespace Stareater.Controllers
 {
 	public class GameController
 	{
+		internal const string ReportContext = "Reports";
+		
 		private Game game;
 		private Dictionary<Player, StarData> lastSelectedStar = new Dictionary<Player, StarData>();
 
@@ -407,6 +409,19 @@ namespace Stareater.Controllers
 					this.game.CurrentPlayer.Orders.ResearchFocus = playerTechs[value].Topic.IdCode;
 					game.Derivates.Of(game.CurrentPlayer).InvalidateResearch();
 				}
+			}
+		}
+		#endregion
+		
+		#region Report related
+		public IEnumerable<IReportInfo> Reports
+		{
+			get {
+				var game = this.GameInstance;
+				var wrapper = new ReportWrapper();
+				
+				foreach(var report in game.CurrentPlayer.Reports)
+					yield return wrapper.Wrap(report);
 			}
 		}
 		#endregion

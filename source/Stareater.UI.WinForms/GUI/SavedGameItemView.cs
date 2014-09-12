@@ -14,18 +14,18 @@ namespace Stareater.GUI
 {
 	public partial class SavedGameItemView : UserControl
 	{
-		private SavedGameData gameData;
+		private SavedGameInfo gameData;
 		
 		public SavedGameItemView()
 		{
 			InitializeComponent();
 		}
 		
-		public SavedGameData Data 
+		public SavedGameInfo Data 
 		{
 			get
 			{
-				return this.gameData ?? new SavedGameData(this.gameName.Text, 0);
+				return this.gameData ?? new SavedGameInfo(this.gameName.Text, 0);
 			}
 			set
 			{

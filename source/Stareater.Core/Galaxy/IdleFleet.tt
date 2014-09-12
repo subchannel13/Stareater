@@ -13,6 +13,6 @@
 		new DataInfo("Location", "StarData").FromIndexer(),
 		new DataInfo("Ships", "ShipGroupCollection", 
 			new GenericParamInfo("ShipGroup").IsState(Flag.PlayerRemap)
-		).CopyOnly()
+		).EmptyInit()
 	);
 #>

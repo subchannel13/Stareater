@@ -40,7 +40,7 @@ namespace Stareater.GUI
 			updateNoSaveMessage();
 		}
 		
-		public SavedGameData SelectedGameData
+		public SavedGameInfo SelectedGameData
 		{
 			get { return this.selectedGame.Data; }
 		}
@@ -52,7 +52,7 @@ namespace Stareater.GUI
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
 		
-		private void addSavedGame(SavedGameData gameData)
+		private void addSavedGame(SavedGameInfo gameData)
 		{
 			var itemView = new SavedGameItemView();
 			itemView.Data = gameData;

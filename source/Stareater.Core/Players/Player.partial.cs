@@ -7,34 +7,15 @@ using Ikadn;
 using Ikadn.Ikon.Types;
 using Stareater.GameData;
 using Stareater.GameData.Databases.Tables;
+using Stareater.Players.Reports;
 
 namespace Stareater.Players
 {
 	partial class Player
 	{
-		private Organization organization;
-		
-		private IEnumerable<object> messages; //TODO(v0.5): make type
+		private Organization organization; //TODO(later): add to type
 		private Dictionary<object, object> messageFilter; //TODO(v0.5): make type
 		
-		/*public Player(string name, Color color, Organization organization, PlayerType type)
-		{
-			this.Color = color;
-			this.Name = name;
-			this.organization = organization;
-			this.ControlType = type.ControlType;
-			
-			if (type.OffscreenPlayerFactory != null)
-				this.OffscreenControl = type.OffscreenPlayerFactory.Create();
-			else
-				this.OffscreenControl = null;
-			
-			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
-			this.Intelligence = new Intelligence();
-			
-			this.Orders = new PlayerOrders();
-		}*/
-
 		public Player()
 		{ }
 		
@@ -74,6 +55,16 @@ namespace Stareater.Players
 			
 			//TODO: Invalid controller data
 			return null;
+		}
+		
+		private List<IReport> loadReports(IkadnBaseObject rawData)
+		{
+			var reports = new List<IReport>();
+			
+			foreach(var reportData in rawData.To<IEnumerable<IkonComposite>>())
+				; //TODO(v0.5): load report
+			
+			return reports;
 		}
 	}
 }

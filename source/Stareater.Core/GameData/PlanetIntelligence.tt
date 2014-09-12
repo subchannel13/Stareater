@@ -8,7 +8,7 @@
 	LoadNeedsObjectDeindexer = false;
 
 	Generate("Stareater.GameData", "PlanetIntelligence",
-		new DataInfo("Explored", "double").CopyOnly().InitValue("Unexplored"),
-		new DataInfo("LastVisited", "int").CopyOnly().InitValue("NeverVisited")
+		new DataInfo("Explored", "double").EmptyInit().InitValue("Unexplored"),
+		new DataInfo("LastVisited", "int").EmptyInit().InitValue("NeverVisited")
 	);
 #>

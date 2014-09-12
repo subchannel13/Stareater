@@ -1,0 +1,4 @@
+﻿:Reports
+tech {
+{=tech} level {=level} researched}
+-

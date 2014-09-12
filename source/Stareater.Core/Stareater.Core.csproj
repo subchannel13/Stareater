@@ -87,10 +87,14 @@
     <Compile Include="Controllers\Data\HullInfo.cs" />
     <Compile Include="Controllers\Data\IdleFleetInfo.cs" />
     <Compile Include="Controllers\Data\IGameStateListener.cs" />
+    <Compile Include="Controllers\Data\IReportInfo.cs" />
+    <Compile Include="Controllers\Data\IReportInfoVisitor.cs" />
     <Compile Include="Controllers\Data\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
-    <Compile Include="Controllers\Data\SavedGameData.cs" />
+    <Compile Include="Controllers\Data\ReportWrapper.cs" />
+    <Compile Include="Controllers\Data\SavedGameInfo.cs" />
     <Compile Include="Controllers\Data\StellarisInfo.cs" />
+    <Compile Include="Controllers\Data\TechnologyReportInfo.cs" />
     <Compile Include="Controllers\Data\TechnologyTopic.cs" />
     <Compile Include="Controllers\GameBuilder.cs" />
     <Compile Include="Controllers\GameController.cs" />
@@ -306,6 +310,9 @@
     <Compile Include="Players\IOffscreenPlayer.cs" />
     <Compile Include="Players\Organization.cs" />
     <Compile Include="Players\PlayerType.cs" />
+    <Compile Include="Players\Reports\IReport.cs" />
+    <Compile Include="Players\Reports\IReportVisitor.cs" />
+    <Compile Include="Players\Reports\TechnologyReport.cs" />
     <Compile Include="Ships\Design.cs">
       <DependentUpon>Design.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -519,6 +526,9 @@
   <ItemGroup>
     <None Include="AppData\Expressions\Parser.frame" />
     <None Include="AppData\Expressions\Scanner.frame" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Players\Reports" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

@@ -435,6 +435,14 @@ class DataInfo
 		this.InitParams = new string[0];
 		return this;
 	}
+	
+	public DataInfo EmptyInit()
+	{
+		this.InitParams = new string[0];
+		this.InitLogic = this.InitLogic ?? Default;
+		return this;
+	}
+	
 	/*
 		Copy logic specification
 	*/
@@ -463,16 +471,9 @@ class DataInfo
 		}
 	}
 	
-	public DataInfo CopyOnly()
-	{
-		this.InitParams = new string[0];
-		this.InitLogic = this.InitLogic ?? Default;
-		return this;
-	}
-	
 	public DataInfo CopyOnly(string code)
 	{
-		this.CopyOnly();
+		this.EmptyInit();
 		this.CopyCode(code);
 		return this;
 	}

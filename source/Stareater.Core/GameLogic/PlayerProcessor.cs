@@ -7,6 +7,7 @@ using Stareater.GameData.Databases;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 using Stareater.Galaxy;
+using Stareater.Players.Reports;
 using Stareater.Ships;
 using Stareater.Utils.Collections;
 
@@ -202,8 +203,11 @@ namespace Stareater.GameLogic
 		
 		public void ProcessPostcombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
-			foreach(var techProgress in this.DevelopmentPlan)
+			foreach(var techProgress in this.DevelopmentPlan) {
 				techProgress.Item.Progress(techProgress);
+				if (techProgress.CompletedCount > 0)
+					this.Player.Reports.Add(new TechnologyReport(techProgress));
+			}
 			this.Calculate(states.TechnologyAdvances.Of(Player));
 
 			var newTechLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
