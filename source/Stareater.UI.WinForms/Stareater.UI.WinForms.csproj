@@ -148,7 +148,9 @@
     <Compile Include="GUI\FormNewGame.Designer.cs">
       <DependentUpon>FormNewGame.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FormReports.cs" />
+    <Compile Include="GUI\FormReports.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI\FormReports.Designer.cs">
       <DependentUpon>FormReports.cs</DependentUpon>
     </Compile>

@@ -38,7 +38,7 @@ namespace Stareater.GameData
 		public void Progress(ActivityResult<TechnologyProgress> progressData)
 		{
 			this.Level += (int)progressData.CompletedCount;
-			this.InvestedPoints += progressData.LeftoverPoints;
+			this.InvestedPoints = progressData.LeftoverPoints;
 		}
 		
 		public ActivityResult<TechnologyProgress> SimulateInvestment(double points, IDictionary<string, int> techLevels)

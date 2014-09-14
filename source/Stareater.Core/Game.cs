@@ -79,12 +79,29 @@ namespace Stareater
 		public void CalculateSpendings()
 		{
 			foreach(var colonyProc in this.Derivates.Colonies)
-				colonyProc.CalculateSpending(Statics, Derivates.Of(colonyProc.Owner));
+				colonyProc.CalculateSpending(
+					this.Statics, 
+					this.Derivates.Of(colonyProc.Owner)
+				);
+			
 			foreach (var stellaris in this.Derivates.Stellarises)
 				stellaris.CalculateSpending(
-					Derivates.Of(stellaris.Owner),
+					this.Derivates.Of(stellaris.Owner),
 					this.Derivates.Colonies.At(stellaris.Location)
 				);
+
+			foreach (var player in this.Derivates.Players) {
+				player.CalculateDevelopment(
+					this.Statics, 
+					this.States, 
+					this.Derivates.Colonies.OwnedBy(player.Player)
+				);
+				player.CalculateResearch(
+					this.Statics, 
+					this.States, 
+					this.Derivates.Colonies.OwnedBy(player.Player)
+				);
+			}
 		}
 		
 		public void CalculateDerivedEffects()
