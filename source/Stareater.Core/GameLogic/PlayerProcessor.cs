@@ -18,6 +18,7 @@ namespace Stareater.GameLogic
 		public const string LevelSufix = "Lvl";
 		
 		public IEnumerable<ActivityResult<TechnologyProgress>> DevelopmentPlan { get; protected set; }
+		//TODO(v0.5) advance research
 		public IEnumerable<ActivityResult<TechnologyProgress>> ResearchPlan { get; protected set; }
 		public Player Player { get; private set; }
 		
