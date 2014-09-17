@@ -176,6 +176,10 @@
     </Compile>
     <Compile Include="GameData\Databases\Tables\PlayerFormulaSet.cs" />
     <Compile Include="GameData\Databases\Tables\PlayerOrders.partial.cs" />
+    <Compile Include="GameData\Databases\Tables\ReportCollection.cs">
+      <DependentUpon>ReportCollection.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameData\Databases\Tables\ShipGroupCollection.cs">
       <DependentUpon>ShipGroupCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -433,6 +437,10 @@
     <None Include="GameData\Databases\Tables\IdleFleetCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>IdleFleetCollection.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Databases\Tables\ReportCollection.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ReportCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\ShipGroupCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

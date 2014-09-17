@@ -25,14 +25,15 @@ namespace Stareater.GameData.Databases
 		public IdleFleetCollection IdleFleets { get; private set; }
 		
 		public DesignCollection Designs { get; private set; }
+		public ReportCollection Reports { get; private set; }
 		public TechProgressCollection TechnologyAdvances { get; private set; }
 		
 		private int nextDesignId = 0;
 		
 		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, 
 		                ColonyCollection Colonies, StellarisCollection stellarises, 
-		                TechProgressCollection technologyProgresses, DesignCollection designs, 
-		                IdleFleetCollection idleFleets)
+		                TechProgressCollection technologyProgresses, ReportCollection reports,
+		                DesignCollection designs, IdleFleetCollection idleFleets)
 		{
 			this.Colonies = Colonies;
 			this.Planets = planets;
@@ -40,6 +41,7 @@ namespace Stareater.GameData.Databases
 			this.Stellarises = stellarises;
 			this.Wormholes = wormholes;
 			this.TechnologyAdvances = technologyProgresses;
+			this.Reports = reports;
 			this.Designs = designs;
 			this.IdleFleets = idleFleets; 
 		}
@@ -128,6 +130,7 @@ namespace Stareater.GameData.Databases
 			
 			data.Add(IdleFleetsKey, new IkonArray().Add(this.IdleFleets.Select(x => x.Save(indexer)).ToArray()));
 			data.Add(DesignsKey, new IkonArray().Add(this.Designs.Select(x => x.Save(indexer)).ToArray()));
+			data.Add(ReportsKey, new IkonArray().Add(this.Reports.Select(x => x.Save(indexer)).ToArray()));
 			data.Add(TechnologyAdvancesKey, new IkonArray().Add(this.TechnologyAdvances.Select(x => x.Save(indexer)).ToArray()));
 						
 			return data;
@@ -138,6 +141,7 @@ namespace Stareater.GameData.Databases
 		public const string DesignsKey = "designs";
 		public const string IdleFleetsKey = "idleFleets";
 		public const string PlanetsKey = "planets";
+		public const string ReportsKey = "reports";
 		public const string StarsKey = "stars";
 		public const string StellarisesKey = "stellarises";
 		public const string TechnologyAdvancesKey = "techAdvances";

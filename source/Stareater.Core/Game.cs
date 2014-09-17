@@ -166,12 +166,14 @@ namespace Stareater
 			indexer.AddAll(Statics.PredeginedDesigns);
 			
 			indexer.AddAll(States.Designs);
+			indexer.AddAll(States.TechnologyAdvances);
+			
 			indexer.AddAll(States.Planets);
 			indexer.AddAll(States.Stars);
 			
 			indexer.AddAll(States.Colonies);
 			indexer.AddAll(States.Stellarises);
-			
+		
 			return indexer;
 		}
 		

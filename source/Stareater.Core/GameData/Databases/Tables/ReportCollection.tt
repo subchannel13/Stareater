@@ -1,0 +1,11 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/Collections/IndexedCollectionBase.tt" #><#
+	
+	namespaceName = "Stareater.GameData.Databases.Tables";
+	usings.Add("Stareater.Players");
+	usings.Add("Stareater.Players.Reports");
+	
+	Generate("ReportCollection", "IReport",
+		new ViewInfo("Of", "Player", "Owner", ViewType.Collection)
+	);
+#>

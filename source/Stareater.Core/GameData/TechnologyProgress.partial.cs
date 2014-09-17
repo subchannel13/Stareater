@@ -66,11 +66,6 @@ namespace Stareater.GameData
 			return new ActivityResult<TechnologyProgress>(newLevels, totalInvested, this, tmpInvested);
 		}
 		
-		/*internal TechnologyProgress Copy(Player player)
-		{
-			return new TechnologyProgress(Level, InvestedPoints, Topic, player);
-		}*/
-		
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{
