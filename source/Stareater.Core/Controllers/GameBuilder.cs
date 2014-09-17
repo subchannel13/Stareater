@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Ikadn.Ikon.Types;
 using Stareater.Galaxy;
 using Stareater.Galaxy.Builders;
@@ -9,6 +10,7 @@ using Stareater.GameData.Databases;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameLogic;
 using Stareater.Players;
+using Stareater.Players.Reports;
 using Stareater.Ships;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
@@ -90,7 +92,7 @@ namespace Stareater.Controllers
 			var techAdvances = createTechAdvances(players, technologies);
 
 			return new StatesDB(stars, wormholes, planets, colonies, stellarises, techAdvances,
-			                    new DesignCollection(), new IdleFleetCollection());
+			                    new ReportCollection(), new DesignCollection(), new IdleFleetCollection());
 		}
 		
 		private static ColonyCollection createColonies(Player[] players, 
@@ -249,6 +251,10 @@ namespace Stareater.Controllers
 			foreach(var rawData in stateData[StatesDB.TechnologyAdvancesKey].To<IEnumerable<IkonComposite>>())
 				techs.Add(TechnologyProgress.Load(rawData, deindexer));
 			
+			var reports = new ReportCollection();
+			foreach(var rawData in stateData[StatesDB.ReportsKey].To<IEnumerable<IkonComposite>>())
+				reports.Add(loadReport(rawData, deindexer));
+			        
 			var designs = new DesignCollection();
 			foreach(var rawData in stateData[StatesDB.DesignsKey].To<IEnumerable<IkonComposite>>()) {
 				var design = Design.Load(rawData, deindexer); 
@@ -272,9 +278,18 @@ namespace Stareater.Controllers
 				players[i].Orders = PlayerOrders.Load(ordersData[i].To<IkonComposite>(), deindexer);
 				                                  
 			return new Tuple<StatesDB, Player[]>(
-				new StatesDB(stars, wormholes, planets, colonies, stellarises, techs, designs, idleFleets),
+				new StatesDB(stars, wormholes, planets, colonies, stellarises, techs, reports, designs, idleFleets),
 				players.ToArray()
 			);
+		}
+		
+		private static IReport loadReport(IkonComposite reportData, ObjectDeindexer deindexer)
+		{
+			if (reportData.Tag.Equals(TechnologyReport.SaveTag))
+				return TechnologyReport.Load(reportData, deindexer);
+			
+			//TODO(later): add error handling
+			throw new NotImplementedException();
 		}
 		
 		private static TemporaryDB initDerivates(StaticsDB statics, Player[] players, StatesDB states)
@@ -300,9 +315,6 @@ namespace Stareater.Controllers
 
 			return derivates;
 		}
-		#endregion
-		
-		#region Loading
 		#endregion
 		
 		//TODO(later): try to avoid explicit list of files

@@ -17,7 +17,6 @@
 		new DataInfo("OffscreenControl", "IOffscreenPlayer").NoInit().CopyCode("").SaveMethod("Save()", "new IkonComposite(\"None\")").LoadCode("loadControl(" + SaveName + ")"),
 		new DataInfo("UnlockedDesigns", "HashSet", new GenericParamInfo("PredefinedDesign").FromIndexer()).EmptyInit(),
 		new DataInfo("Intelligence", "Intelligence").EmptyInit().IsState(Flag.GalaxyRemap),
-		new DataInfo("Orders", "PlayerOrders").EmptyInit().CopyCode("").Public().NoSaveLoad(),
-		new DataInfo("Reports", "List", new GenericParamInfo("IReport").SaveMethod("Save(indexer)")).EmptyInit().LoadCode("loadReports(" + SaveName + ")")
+		new DataInfo("Orders", "PlayerOrders").EmptyInit().CopyCode("").Public().NoSaveLoad()
 	);
 #>

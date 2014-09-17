@@ -207,7 +207,7 @@ namespace Stareater.GameLogic
 			foreach(var techProgress in this.DevelopmentPlan) {
 				techProgress.Item.Progress(techProgress);
 				if (techProgress.CompletedCount > 0)
-					this.Player.Reports.Add(new TechnologyReport(techProgress));
+					states.Reports.Add(new TechnologyReport(techProgress));
 			}
 			this.Calculate(states.TechnologyAdvances.Of(Player));
 

@@ -420,7 +420,7 @@ namespace Stareater.Controllers
 				var game = this.GameInstance;
 				var wrapper = new ReportWrapper();
 				
-				foreach(var report in game.CurrentPlayer.Reports)
+				foreach(var report in game.States.Reports.Of(game.CurrentPlayer))
 					yield return wrapper.Wrap(report);
 			}
 		}

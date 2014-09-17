@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-
 using Ikadn;
 using Ikadn.Ikon.Types;
 using Stareater.GameData;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players.Reports;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Players
 {
@@ -55,16 +55,6 @@ namespace Stareater.Players
 			
 			//TODO: Invalid controller data
 			return null;
-		}
-		
-		private List<IReport> loadReports(IkadnBaseObject rawData)
-		{
-			var reports = new List<IReport>();
-			
-			foreach(var reportData in rawData.To<IEnumerable<IkonComposite>>())
-				; //TODO(v0.5): load report
-			
-			return reports;
 		}
 	}
 }
