@@ -8,7 +8,7 @@ private List<string> genericTypes = new List<string>();
 private string SuperClass = null;
 private string TableTag = null;
 
-private bool initWithDefaultConstructor = false;
+private bool debugId = false;
 
 private bool SuperClassHasCopyConstructor = false;
 
@@ -79,7 +79,7 @@ private void WriteContructorDefinition(string className, params DataInfo[] dataI
 	
 	Write(")");
 	
-	if (dataInfos.Any(x => x.InitPassLogic != null) || initWithDefaultConstructor)
+	if (dataInfos.Any(x => x.InitPassLogic != null))
 	{
 		commaOrNot = new FirstCase("", ", ");
 		if (dataInfos.Any(x => x.BaseInit))
@@ -137,6 +137,16 @@ private void WriteMapInit(DataInfo field, FirstCase indent)
 		Write(field.GenericParams[1].InitLogic);
 		
 	WriteLine(");");
+}
+
+private void SetDebugId()
+{
+	if (debugId) { #>
+#if DEBUG
+			this.id = NextId();
+			#endif
+<#+
+	}
 }
 
 private bool NeedCopyConstructor(DataInfo[] dataInfos)
@@ -511,18 +521,21 @@ namespace <#+ Write(namespaceName); #>
 		public <#+ WriteContructorDefinition(className, dataInfos); #> 
 		{
 			<#+ WriteFieldInits(dataInfos); #> 
+			<#+ SetDebugId(); #> 
 		} 
 
 <#+ if (NeedCopyConstructor(dataInfos)) { #>
 		<#+ WriteCopyConstructorDefinition(className, dataInfos); #> 
 		{
 			<#+ WriteFieldCopys(dataInfos); #> 
+			<#+ SetDebugId(); #> 
 		}
 <#+ } #>
 
 		<#+ WriteLoadContructorDefinition(className); #> 
 		{
 			<#+ WriteFieldLoad(dataInfos); #> 
+			<#+ SetDebugId(); #> 
 		}
 
 <#+ if (!modifer.Contains("abstract")) { #>
@@ -548,6 +561,29 @@ namespace <#+ Write(namespaceName); #>
 		<#+ WriteSaveTag(className); #>
 		<#+ WriteSaveKeys(dataInfos); #> 
 		#endregion
+
+<#+ if (debugId) { #>
+		#region object ID
+		#if DEBUG
+		private long id;
+
+		public override string ToString()
+		{
+			return "<#= className #> " + id;
+		}
+
+		private static long LastId = 0;
+
+		private static long NextId()
+		{
+			lock (typeof(<#= className #>)) {
+				LastId++;
+				return LastId;
+			}
+		}
+		#endif
+		#endregion
+<#+ } #> 
 <#+
 }
 

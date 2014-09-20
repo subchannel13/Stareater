@@ -16,9 +16,6 @@ namespace Stareater.Players
 		private Organization organization; //TODO(later): add to type
 		private Dictionary<object, object> messageFilter; //TODO(v0.5): make type
 		
-		public Player()
-		{ }
-		
 		private void initPlayerControl(PlayerType type)
 		{
 			this.ControlType = type.ControlType;

@@ -9,6 +9,7 @@
 	usings.Add("Stareater.Players.Reports");
 	
 	modifer = "partial";
+	debugId = true;
 
 	Generate("Stareater.Players", "Player",
 		new DataInfo("Name", "string"),

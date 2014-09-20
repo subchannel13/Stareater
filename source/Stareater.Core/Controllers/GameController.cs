@@ -16,7 +16,7 @@ namespace Stareater.Controllers
 		internal const string ReportContext = "Reports";
 		
 		private Game game;
-		private Dictionary<Player, StarData> lastSelectedStar = new Dictionary<Player, StarData>();
+		private Dictionary<Player, StarData> lastSelectedStar;
 
 		private GameController endTurnCopy = null;
 		private IGameStateListener stateListener;
@@ -76,6 +76,8 @@ namespace Stareater.Controllers
 		
 		private void initStarSelection()
 		{
+			this.lastSelectedStar = new Dictionary<Player, StarData>();
+
 			foreach(Player player in this.game.Players) {
 				//TODO(v0.5): utilize stellar administration instead iterating colonies
 				var colonies = this.game.States.Colonies.OwnedBy(player);

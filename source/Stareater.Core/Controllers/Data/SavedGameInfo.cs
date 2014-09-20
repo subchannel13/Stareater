@@ -12,16 +12,7 @@ namespace Stareater.Controllers.Data
 		internal FileInfo FileInfo { get; private set; }
 		internal IkonComposite RawData { get; private set; }
 
-		public SavedGameInfo(string title, int turn)
-		{
-			this.Title = title;
-			this.Turn = turn;
-
-			this.FileInfo = null;
-			this.RawData = null;
-		}
-
-		public SavedGameInfo(string title, int turn, IkonComposite rawData, FileInfo fileInfo)
+		internal SavedGameInfo(string title, int turn, IkonComposite rawData, FileInfo fileInfo)
 		{
 			this.Title = title;
 			this.Turn = turn;
