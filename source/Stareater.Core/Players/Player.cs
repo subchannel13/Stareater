@@ -1,5 +1,6 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
@@ -31,6 +32,10 @@ namespace Stareater.Players
 			this.Intelligence = new Intelligence();
 			this.Orders = new PlayerOrders();
  
+			#if DEBUG
+			this.id = NextId();
+			#endif
+ 
 		} 
 
 		private Player(Player original, GalaxyRemap galaxyRemap) 
@@ -44,6 +49,10 @@ namespace Stareater.Players
 				this.UnlockedDesigns.Add(item);
 			this.Intelligence = original.Intelligence.Copy(galaxyRemap);
 			
+ 
+			#if DEBUG
+			this.id = NextId();
+			#endif
  
 		}
 
@@ -72,6 +81,10 @@ namespace Stareater.Players
 
 			var intelligenceSave = rawData[IntelligenceKey];
 			this.Intelligence = Intelligence.Load(intelligenceSave.To<IkonComposite>(), deindexer);
+ 
+			#if DEBUG
+			this.id = NextId();
+			#endif
  
 		}
 
@@ -126,5 +139,27 @@ namespace Stareater.Players
 		private const string OrdersKey = "orders";
  
 		#endregion
+
+		#region object ID
+		#if DEBUG
+		private long id;
+
+		public override string ToString()
+		{
+			return "Player " + id;
+		}
+
+		private static long LastId = 0;
+
+		private static long NextId()
+		{
+			lock (typeof(Player)) {
+				LastId++;
+				return LastId;
+			}
+		}
+		#endif
+		#endregion
+ 
 	}
 }

@@ -155,6 +155,8 @@ namespace Stareater
 			CalculateBaseEffects();
 			CalculateSpendings();
 			CalculateDerivedEffects();
+
+			this.Turn++;
 		}
 
 		#region Saving

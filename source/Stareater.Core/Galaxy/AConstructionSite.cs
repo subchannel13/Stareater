@@ -1,5 +1,6 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
@@ -16,12 +17,16 @@ namespace Stareater.Galaxy
 		public Dictionary<string, double> Buildings { get; private set; }
 		public Dictionary<Constructable, double> Stockpile { get; private set; }
 
-		public AConstructionSite(LocationBody location, Player owner) : this() 
+		public AConstructionSite(LocationBody location, Player owner) 
 		{
 			this.Location = location;
 			this.Owner = owner;
 			this.Buildings = new Dictionary<string, double>();
 			this.Stockpile = new Dictionary<Constructable, double>();
+ 
+			#if DEBUG
+			this.id = NextId();
+			#endif
  
 		} 
 
@@ -33,6 +38,10 @@ namespace Stareater.Galaxy
 			this.Stockpile = new Dictionary<Constructable, double>();
 			foreach(var item in original.Stockpile)
 				this.Stockpile.Add(item.Key, item.Value);
+ 
+			#if DEBUG
+			this.id = NextId();
+			#endif
  
 		}
 
@@ -65,6 +74,10 @@ namespace Stareater.Galaxy
 					itemValue.To<double>()
 				);
 			}
+ 
+			#if DEBUG
+			this.id = NextId();
+			#endif
  
 		}
 
@@ -114,5 +127,27 @@ namespace Stareater.Galaxy
 		private const string StockpileAmountKey = "amount";
  
 		#endregion
+
+		#region object ID
+		#if DEBUG
+		private long id;
+
+		public override string ToString()
+		{
+			return "AConstructionSite " + id;
+		}
+
+		private static long LastId = 0;
+
+		private static long NextId()
+		{
+			lock (typeof(AConstructionSite)) {
+				LastId++;
+				return LastId;
+			}
+		}
+		#endif
+		#endregion
+ 
 	}
 }

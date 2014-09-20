@@ -7,7 +7,7 @@
 	usings.Add("Stareater.Players");
 	
 	modifer = "abstract partial";
-	initWithDefaultConstructor = true;
+	debugId = true;
 	
 	Generate("Stareater.Galaxy", "AConstructionSite",
 		new DataInfo("Location", "LocationBody").CopyParamPass().IsStatic(),
