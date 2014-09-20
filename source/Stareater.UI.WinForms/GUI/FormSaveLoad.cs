@@ -77,7 +77,10 @@ namespace Stareater.GUI
 		
 		private void saveButton_Click(object sender, EventArgs e)
 		{
-			this.controller.Save(this.selectedGame.Data);
+			if (this.selectedGame.Data == null)
+				this.controller.NewSave(this.selectedGame.GameName);
+			else
+				this.controller.OverwriteSave(this.selectedGame.Data, this.selectedGame.GameName);
 
 			this.Result = MainMenuResult.SaveGame;
 			this.DialogResult = DialogResult.OK;

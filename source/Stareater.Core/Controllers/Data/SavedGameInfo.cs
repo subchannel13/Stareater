@@ -1,5 +1,6 @@
 ﻿using System;
 using Ikadn.Ikon.Types;
+using System.IO;
 
 namespace Stareater.Controllers.Data
 {
@@ -8,24 +9,24 @@ namespace Stareater.Controllers.Data
 		public string Title { get; private set; }
 		public int Turn { get; private set; }
 
-		public DateTime? LastModified { get; private set; }
-		public IkonComposite RawData { get; private set; }
+		internal FileInfo FileInfo { get; private set; }
+		internal IkonComposite RawData { get; private set; }
 
 		public SavedGameInfo(string title, int turn)
 		{
 			this.Title = title;
 			this.Turn = turn;
 
-			this.LastModified = null;
+			this.FileInfo = null;
 			this.RawData = null;
 		}
 
-		public SavedGameInfo(string title, int turn, IkonComposite rawData, DateTime lastModified)
+		public SavedGameInfo(string title, int turn, IkonComposite rawData, FileInfo fileInfo)
 		{
 			this.Title = title;
 			this.Turn = turn;
 
-			this.LastModified = lastModified;
+			this.FileInfo = fileInfo;
 			this.RawData = rawData;
 		}
 	}
