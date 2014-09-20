@@ -45,7 +45,7 @@ namespace Stareater.Controllers
 							rawData[SaveGameTitleKey].To<string>(),
 							rawData[Game.TurnKey].To<int>(),
 							rawData,
-							file.LastWriteTimeUtc
+							file
 						),
 						file.LastWriteTimeUtc
 					);
@@ -84,22 +84,32 @@ namespace Stareater.Controllers
 		#endregion
 
 		#region Saving / Loading
-		public void Save(SavedGameInfo savedGameData)
+		public void NewSave(string title)
 		{
 			string fileName = SaveNamePrefix + this.nextSaveNumber + "." + SaveNameExtension;
 
 			FileInfo saveFile = new FileInfo(SaveFolderPath + fileName);
 			saveFile.Directory.Create();
 
+			save(saveFile, title);
+			
+			this.nextSaveNumber++;
+		}
+
+		public void OverwriteSave(SavedGameInfo savedGameData, string title)
+		{
+			save(savedGameData.FileInfo, title);
+		}
+
+		private void save(FileInfo saveFile, string title)
+		{
 			using (var output = new StreamWriter(saveFile.Create())) {
 				var gameData = gameController.GameInstance.Save();
-				gameData.Add(SaveGameTitleKey, new IkonText(savedGameData.Title));
-				
+				gameData.Add(SaveGameTitleKey, new IkonText(title));
+
 				IkadnWriter writer = new IkadnWriter(output);
 				gameData.Compose(writer);
 			}
-
-			this.nextSaveNumber++;
 		}
 		
 		public void Load(SavedGameInfo savedGameData)

@@ -25,7 +25,7 @@ namespace Stareater.GUI
 		{
 			get
 			{
-				return this.gameData ?? new SavedGameInfo(this.gameName.Text, 0);
+				return this.gameData;// ?? new SavedGameInfo(this.gameName.Text, 0);
 			}
 			set
 			{
@@ -46,7 +46,12 @@ namespace Stareater.GUI
 				}
 			}
 		}
-		
+
+		public string GameName
+		{
+			get { return this.gameName.Text; }
+		}
+
 		public void OnSelect()
 		{
 			this.gameName.Enabled = true;
