@@ -67,8 +67,8 @@ private static string[] initLoadAssignInit(string lowerName, string name, string
 		case "Vector2D":
 			return new string[] { 
 				"var " + lowerName + "Array = " + lowerName + "Save.To<IkonArray>();",
-				"int " + lowerName + "X = " + lowerName + "Array[0].To<int>();",
-				"int " + lowerName + "Y = " + lowerName + "Array[1].To<int>();",
+				"double " + lowerName + "X = " + lowerName + "Array[0].To<double>();",
+				"double " + lowerName + "Y = " + lowerName + "Array[1].To<double>();",
 			};
 		default:
 			return null;

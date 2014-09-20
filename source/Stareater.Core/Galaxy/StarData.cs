@@ -1,5 +1,6 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
@@ -24,6 +25,7 @@ namespace Stareater.Galaxy
 			this.Name = name;
 			this.Position = position;
  
+			 
 		} 
 
 
@@ -44,10 +46,11 @@ namespace Stareater.Galaxy
 
 			var positionSave = rawData[PositionKey];
 			var positionArray = positionSave.To<IkonArray>();
-			int positionX = positionArray[0].To<int>();
-			int positionY = positionArray[1].To<int>();
+			double positionX = positionArray[0].To<double>();
+			double positionY = positionArray[1].To<double>();
 			this.Position = new Vector2D(positionX, positionY);
  
+			 
 		}
 
 		internal StarData Copy() 
@@ -94,5 +97,7 @@ namespace Stareater.Galaxy
 		private const string PositionKey = "pos";
  
 		#endregion
+
+ 
 	}
 }
