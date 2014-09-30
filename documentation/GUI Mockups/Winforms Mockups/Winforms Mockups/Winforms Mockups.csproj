@@ -128,6 +128,10 @@
     <Compile Include="FormNewGame.Designer.cs">
       <DependentUpon>FormNewGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormReports.cs" />
+    <Compile Include="FormReports.Designer.cs">
+      <DependentUpon>FormReports.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormResearch.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,6 +206,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportItem.cs" />
+    <Compile Include="ReportItem.Designer.cs">
+      <DependentUpon>ReportItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="ResearchItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -259,6 +267,9 @@
     <EmbeddedResource Include="FormNewGame.resx">
       <DependentUpon>FormNewGame.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormReports.resx">
+      <DependentUpon>FormReports.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormResearch.resx">
       <DependentUpon>FormResearch.cs</DependentUpon>
     </EmbeddedResource>
@@ -305,6 +316,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ReportItem.resx">
+      <DependentUpon>ReportItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ResearchItem.resx">
       <DependentUpon>ResearchItem.cs</DependentUpon>
     </EmbeddedResource>
