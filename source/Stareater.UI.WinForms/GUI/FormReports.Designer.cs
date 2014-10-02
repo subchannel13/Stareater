@@ -36,27 +36,55 @@ namespace Stareater.GUI
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.listBox1 = new System.Windows.Forms.ListBox();
+			this.reportList = new Stareater.GUI.ControlListView();
+			this.filterButton = new System.Windows.Forms.Button();
+			this.openButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
-			// listBox1
+			// reportList
 			// 
-			this.listBox1.FormattingEnabled = true;
-			this.listBox1.Location = new System.Drawing.Point(12, 12);
-			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(260, 238);
-			this.listBox1.TabIndex = 0;
+			this.reportList.Location = new System.Drawing.Point(12, 12);
+			this.reportList.Name = "reportList";
+			this.reportList.SelectedIndex = -1;
+			this.reportList.Size = new System.Drawing.Size(276, 393);
+			this.reportList.TabIndex = 0;
+			// 
+			// filterButton
+			// 
+			this.filterButton.Image = global::Stareater.Properties.Resources.filter;
+			this.filterButton.Location = new System.Drawing.Point(294, 355);
+			this.filterButton.Name = "filterButton";
+			this.filterButton.Size = new System.Drawing.Size(50, 50);
+			this.filterButton.TabIndex = 1;
+			this.filterButton.UseVisualStyleBackColor = true;
+			this.filterButton.Click += new System.EventHandler(this.filterButton_Click);
+			// 
+			// openButton
+			// 
+			this.openButton.Image = global::Stareater.Properties.Resources._goto;
+			this.openButton.Location = new System.Drawing.Point(294, 127);
+			this.openButton.Name = "openButton";
+			this.openButton.Size = new System.Drawing.Size(50, 50);
+			this.openButton.TabIndex = 2;
+			this.openButton.UseVisualStyleBackColor = true;
+			this.openButton.Click += new System.EventHandler(this.openButton_Click);
 			// 
 			// FormReports
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(284, 262);
-			this.Controls.Add(this.listBox1);
+			this.ClientSize = new System.Drawing.Size(356, 417);
+			this.Controls.Add(this.openButton);
+			this.Controls.Add(this.filterButton);
+			this.Controls.Add(this.reportList);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormReports";
+			this.ShowInTaskbar = false;
 			this.Text = "FormReports";
 			this.ResumeLayout(false);
 		}
-		private System.Windows.Forms.ListBox listBox1;
+		private System.Windows.Forms.Button openButton;
+		private System.Windows.Forms.Button filterButton;
+		private Stareater.GUI.ControlListView reportList;
 	}
 }

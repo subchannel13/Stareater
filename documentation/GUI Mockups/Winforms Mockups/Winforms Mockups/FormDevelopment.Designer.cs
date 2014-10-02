@@ -1,7 +1,7 @@
 ﻿
 namespace Winforms_Mockups
 {
-	partial class FromDevelopment
+	partial class FormDevelopment
 	{
 		/// <summary>
 		/// Designer variable used to keep track of non-visual components.

@@ -192,11 +192,11 @@
     <Compile Include="FormStellaris.Designer.cs">
       <DependentUpon>FormStellaris.cs</DependentUpon>
     </Compile>
-    <Compile Include="FromDevelopment.cs">
+    <Compile Include="FormDevelopment.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FromDevelopment.Designer.cs">
-      <DependentUpon>FromDevelopment.cs</DependentUpon>
+    <Compile Include="FormDevelopment.Designer.cs">
+      <DependentUpon>FormDevelopment.cs</DependentUpon>
     </Compile>
     <Compile Include="NewPlayerInfo.cs">
       <SubType>UserControl</SubType>
@@ -300,8 +300,8 @@
     <EmbeddedResource Include="FormStellaris.resx">
       <DependentUpon>FormStellaris.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FromDevelopment.resx">
-      <DependentUpon>FromDevelopment.cs</DependentUpon>
+    <EmbeddedResource Include="FormDevelopment.resx">
+      <DependentUpon>FormDevelopment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewPlayerInfo.resx">
       <DependentUpon>NewPlayerInfo.cs</DependentUpon>

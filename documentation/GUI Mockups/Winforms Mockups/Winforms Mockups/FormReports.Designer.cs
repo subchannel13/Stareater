@@ -45,6 +45,8 @@ namespace Winforms_Mockups
 			this.reportItem4 = new Winforms_Mockups.ReportItem();
 			this.reportItem5 = new Winforms_Mockups.ReportItem();
 			this.reportItem6 = new Winforms_Mockups.ReportItem();
+			this.button1 = new System.Windows.Forms.Button();
+			this.button2 = new System.Windows.Forms.Button();
 			this.flowLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -130,11 +132,31 @@ namespace Winforms_Mockups
 			this.reportItem6.Size = new System.Drawing.Size(250, 50);
 			this.reportItem6.TabIndex = 5;
 			// 
+			// button1
+			// 
+			this.button1.Image = global::Winforms_Mockups.Properties.Resources.filter;
+			this.button1.Location = new System.Drawing.Point(294, 355);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(50, 50);
+			this.button1.TabIndex = 2;
+			this.button1.UseVisualStyleBackColor = true;
+			// 
+			// button2
+			// 
+			this.button2.Image = global::Winforms_Mockups.Properties.Resources._goto;
+			this.button2.Location = new System.Drawing.Point(294, 127);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(50, 50);
+			this.button2.TabIndex = 3;
+			this.button2.UseVisualStyleBackColor = true;
+			// 
 			// FormReports
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(303, 417);
+			this.ClientSize = new System.Drawing.Size(356, 417);
+			this.Controls.Add(this.button2);
+			this.Controls.Add(this.button1);
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormReports";
@@ -142,6 +164,8 @@ namespace Winforms_Mockups
 			this.flowLayoutPanel1.ResumeLayout(false);
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button button1;
 		private Winforms_Mockups.ReportItem reportItem6;
 		private Winforms_Mockups.ReportItem reportItem5;
 		private Winforms_Mockups.ReportItem reportItem4;

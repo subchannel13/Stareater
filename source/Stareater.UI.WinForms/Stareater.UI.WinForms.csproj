@@ -239,6 +239,10 @@
     <Compile Include="GUI\QueuedConstructionView.Designer.cs">
       <DependentUpon>QueuedConstructionView.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\ReportItem.cs" />
+    <Compile Include="GUI\ReportItem.Designer.cs">
+      <DependentUpon>ReportItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\SavedGameItemView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -334,6 +338,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\QueuedConstructionView.resx">
       <DependentUpon>QueuedConstructionView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ReportItem.resx">
+      <DependentUpon>ReportItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\SavedGameItemView.resx">
       <DependentUpon>SavedGameItemView.cs</DependentUpon>
