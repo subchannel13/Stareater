@@ -4,9 +4,9 @@ using System.Windows.Forms;
 
 namespace Winforms_Mockups
 {
-	public partial class FromDevelopment : Form
+	public partial class FormDevelopment : Form
 	{
-		public FromDevelopment()
+		public FormDevelopment()
 		{
 			InitializeComponent();
 		}
