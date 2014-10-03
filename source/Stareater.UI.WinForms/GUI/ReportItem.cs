@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using Stareater.Controllers.Data;
+using Stareater.GUI.Reports;
 
 namespace Stareater.GUI
 {
@@ -25,8 +26,8 @@ namespace Stareater.GUI
 			{
 				this.data = value;
 				
-				//TODO(v0.5): get image, possibly through visitor
-				//thumbnail.Image = ImageCache.Get[data.ImagePath];
+				var thumbnailFinder = new ReportThumbnailVisitor(data);
+				thumbnail.Image = thumbnailFinder.Result;
 				messageLabel.Text = data.Message;
 			}
 		}

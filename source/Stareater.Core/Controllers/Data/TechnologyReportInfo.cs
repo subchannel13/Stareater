@@ -30,6 +30,11 @@ namespace Stareater.Controllers.Data
 			}
 		}
 		
+		public string ImagePath
+		{
+			get { return report.TechProgress.Item.Topic.ImagePath; }
+		}
+		
 		public void Accept(IReportInfoVisitor visitor)
 		{
 			visitor.Visit(this);
