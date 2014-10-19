@@ -121,17 +121,17 @@ namespace Stareater.GameData.Databases
 		{
 			IkonComposite data = new IkonComposite(StatesTag);
 			
-			data.Add(StarsKey, new IkonArray().Add(this.Stars.Select(x => x.Save()).ToArray()));
-			data.Add(WormholesKey, new IkonArray().Add(this.Wormholes.Select(x => x.Save(indexer)).ToArray()));
-			data.Add(PlanetsKey, new IkonArray().Add(this.Planets.Select(x => x.Save(indexer)).ToArray()));
-			
-			data.Add(ColoniesKey, new IkonArray().Add(this.Colonies.Select(x => x.Save(indexer)).ToArray()));
-			data.Add(StellarisesKey, new IkonArray().Add(this.Stellarises.Select(x => x.Save(indexer)).ToArray()));
-			
-			data.Add(IdleFleetsKey, new IkonArray().Add(this.IdleFleets.Select(x => x.Save(indexer)).ToArray()));
-			data.Add(DesignsKey, new IkonArray().Add(this.Designs.Select(x => x.Save(indexer)).ToArray()));
-			data.Add(ReportsKey, new IkonArray().Add(this.Reports.Select(x => x.Save(indexer)).ToArray()));
-			data.Add(TechnologyAdvancesKey, new IkonArray().Add(this.TechnologyAdvances.Select(x => x.Save(indexer)).ToArray()));
+			data.Add(StarsKey, new IkonArray().AddAll(this.Stars.Select(x => x.Save())));
+			data.Add(WormholesKey, new IkonArray().AddAll(this.Wormholes.Select(x => x.Save(indexer))));
+			data.Add(PlanetsKey, new IkonArray().AddAll(this.Planets.Select(x => x.Save(indexer))));
+
+			data.Add(ColoniesKey, new IkonArray().AddAll(this.Colonies.Select(x => x.Save(indexer))));
+			data.Add(StellarisesKey, new IkonArray().AddAll(this.Stellarises.Select(x => x.Save(indexer))));
+
+			data.Add(IdleFleetsKey, new IkonArray().AddAll(this.IdleFleets.Select(x => x.Save(indexer))));
+			data.Add(DesignsKey, new IkonArray().AddAll(this.Designs.Select(x => x.Save(indexer))));
+			data.Add(ReportsKey, new IkonArray().AddAll(this.Reports.Select(x => x.Save(indexer))));
+			data.Add(TechnologyAdvancesKey, new IkonArray().AddAll(this.TechnologyAdvances.Select(x => x.Save(indexer))));
 						
 			return data;
 		}

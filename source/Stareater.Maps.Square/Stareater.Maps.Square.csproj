@@ -38,8 +38,9 @@
     <Reference Include="Ikadn">
       <HintPath>..\packages\IKADN.1.3.0\lib\net40-client\Ikadn.dll</HintPath>
     </Reference>
-    <Reference Include="Ikadn.Ikon">
-      <HintPath>..\packages\IKADN.IKON.1.3.0\lib\net40-client\Ikadn.Ikon.dll</HintPath>
+    <Reference Include="Ikadn.Ikon, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\IKADN.IKON.1.4.0\lib\net40-client\Ikadn.Ikon.dll</HintPath>
     </Reference>
     <Reference Include="NGenerics, Version=1.4.1.0, Culture=neutral, PublicKeyToken=e4b41be133ea7faf, processorArchitecture=MSIL">
       <HintPath>..\packages\NGenerics.1.4.1.0\lib\net35\NGenerics.dll</HintPath>
