@@ -1,0 +1,17 @@
+digraph G {
+
+	graph [dpi=200];
+
+	View -> NewGameController [label="creates"];
+	View -> SavesController [label="creates"];
+
+	NewGameController -> GameController [label="new game"];
+	SavesController -> GameController [label="load game"];
+	
+	GameController -> StarSystemController [label="view"];
+	GameController -> ShipDesignController [label="new design"];
+	{rank=same; GameController ShipDesignController}
+	
+	StarSystemController -> ColonyController [label="view"];
+	StarSystemController -> StellarisAdminController [label="view"];
+}
