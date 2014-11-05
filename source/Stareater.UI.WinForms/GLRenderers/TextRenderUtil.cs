@@ -113,7 +113,7 @@ namespace Stareater.GLRenderers
 			GL.BindTexture(TextureTarget.Texture2D, this.textureId);
 
 			float charOffset = textWidth * adjustment;
-			GL.Begin(BeginMode.Quads);
+			GL.Begin(PrimitiveType.Quads);
 
 			foreach (char c in text)
 				if (!char.IsWhiteSpace(c)) {

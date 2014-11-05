@@ -248,6 +248,7 @@
     <Compile Include="GUI\ReportItem.Designer.cs">
       <DependentUpon>ReportItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Reports\OpenReportVisitor.cs" />
     <Compile Include="GUI\Reports\ReportThumbnailVisitor.cs" />
     <Compile Include="GUI\SavedGameItemView.cs">
       <SubType>UserControl</SubType>

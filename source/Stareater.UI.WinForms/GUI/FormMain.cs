@@ -9,6 +9,7 @@ using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Data;
 using Stareater.GLRenderers;
+using Stareater.GUI.Reports;
 using Stareater.Localization;
 using Stareater.Players.Reports;
 
@@ -29,6 +30,7 @@ namespace Stareater.GUI
 
 		private Queue<Action> delayedGuiEvents = new Queue<Action>();
 		private GameController controller = null;
+		private OpenReportVisitor reportOpener;		
 		
 		private bool aisReady = false;
 		private bool humansReady = false;
@@ -38,6 +40,7 @@ namespace Stareater.GUI
 			InitializeComponent();
 
 			this.controller = new GameController();
+			this.reportOpener = new OpenReportVisitor(showDevelopment);
 			
 			setLanguage();
 			postDelayedEvent(showMainMenu);
@@ -102,8 +105,7 @@ namespace Stareater.GUI
 		
 		private void developmentToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using(var form = new FormDevelopment(controller))
-				form.ShowDialog();
+			postDelayedEvent(showDevelopment);
 		}
 		
 		private void researchToolStripMenuItem_Click(object sender, EventArgs e)
@@ -115,7 +117,8 @@ namespace Stareater.GUI
 		private void reportsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using(var form = new FormReports(controller.Reports))
-				form.ShowDialog();
+				if (form.ShowDialog() == DialogResult.OK)
+					form.Result.Accept(this.reportOpener);
 		}
 		
 		#region Delayed Events
@@ -134,6 +137,12 @@ namespace Stareater.GUI
 			eventTimer.Start();
 		}
 
+		private void showDevelopment()
+		{
+			using(var form = new FormDevelopment(controller))
+				form.ShowDialog();
+		}
+		
 		private void showMainMenu()
 		{
 			using (FormMainMenu form = new FormMainMenu(this.controller))

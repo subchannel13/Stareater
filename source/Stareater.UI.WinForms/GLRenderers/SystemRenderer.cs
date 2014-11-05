@@ -106,7 +106,7 @@ namespace Stareater.GLRenderers
 				var colony = controller.PlanetsColony(planet);
 				GL.Color4(colony != null ? colony.Owner.Color : Color.FromArgb(64, 64, 64));
 				
-				GL.Begin(BeginMode.Quads);
+				GL.Begin(PrimitiveType.Quads);
 				for(int i = 0; i < 100; i++)
 				{
 					float angle0 = (float)Math.PI * i / 50f;
