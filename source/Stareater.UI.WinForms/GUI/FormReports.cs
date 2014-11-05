@@ -8,6 +8,8 @@ namespace Stareater.GUI
 {
 	public partial class FormReports : Form
 	{
+		public IReportInfo Result { get; private set; }
+		
 		public FormReports()
 		{
 			InitializeComponent();
@@ -32,8 +34,15 @@ namespace Stareater.GUI
 		
 		private void openButton_Click(object sender, EventArgs e)
 		{
-			//TODO(v0.5)
-			throw new NotImplementedException();
+			
+			var reportItem = reportList.SelectedItem as ReportItem;
+			
+			if (reportItem == null)
+				return;
+			
+			this.Result = reportItem.Data;
+			this.DialogResult = DialogResult.OK;
+			this.Close();
 		}
 		
 		private void filterButton_Click(object sender, EventArgs e)

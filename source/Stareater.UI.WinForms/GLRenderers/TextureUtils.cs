@@ -73,7 +73,7 @@ namespace Stareater.GLRenderers
 		public void DrawSprite(TextureInfo textureInfo)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, textureInfo.TextureId);
-			GL.Begin(BeginMode.Quads);
+			GL.Begin(PrimitiveType.Quads);
 
 			for(int i = 0; i < SpriteQuad.Length; i++) {
 				GL.TexCoord2(textureInfo.TextureCoords[i]);
@@ -86,7 +86,7 @@ namespace Stareater.GLRenderers
 		public void DrawSprite(TextureInfo textureInfo, float zOffset)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, textureInfo.TextureId);
-			GL.Begin(BeginMode.Quads);
+			GL.Begin(PrimitiveType.Quads);
 
 			for(int i = 0; i < SpriteQuad.Length; i++) {
 				GL.TexCoord2(textureInfo.TextureCoords[i]);

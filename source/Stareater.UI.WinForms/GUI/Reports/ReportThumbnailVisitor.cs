@@ -5,7 +5,7 @@ using Stareater.Controllers.Data;
 
 namespace Stareater.GUI.Reports
 {
-	public class ReportThumbnailVisitor : IReportInfoVisitor
+	class ReportThumbnailVisitor : IReportInfoVisitor
 	{
 		public Image Result { get; private set; }
 		
