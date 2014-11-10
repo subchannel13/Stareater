@@ -95,6 +95,7 @@
     <Compile Include="Controllers\Data\ReportWrapper.cs" />
     <Compile Include="Controllers\Data\SavedGameInfo.cs" />
     <Compile Include="Controllers\Data\StellarisInfo.cs" />
+    <Compile Include="Controllers\Data\TechnologyCategory.cs" />
     <Compile Include="Controllers\Data\TechnologyReportInfo.cs" />
     <Compile Include="Controllers\Data\TechnologyTopic.cs" />
     <Compile Include="Controllers\GameBuilder.cs" />
@@ -271,7 +272,6 @@
     </Compile>
     <Compile Include="GameData\StarIntelligence.partial.cs" />
     <Compile Include="GameData\Technology.cs" />
-    <Compile Include="GameData\TechnologyCategory.cs" />
     <Compile Include="GameData\TechnologyProgress.cs">
       <DependentUpon>TechnologyProgress.tt</DependentUpon>
       <AutoGen>True</AutoGen>

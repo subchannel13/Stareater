@@ -35,6 +35,11 @@ namespace Stareater.Controllers.Data
 			get { return report.TechProgress.Item.Topic.ImagePath; }
 		}
 		
+		public TechnologyCategory Category
+		{
+			get { return this.report.TechProgress.Item.Topic.Category; }
+		}
+		
 		public void Accept(IReportInfoVisitor visitor)
 		{
 			visitor.Visit(this);

@@ -38,3 +38,13 @@
 	image: ./images/technologies/hydroponicFarms.png
 }
 
+{ ResearchTopic
+	nameCode : TEST_NAME
+	descCode : TEST_DESC
+	code: Test
+	cost # 10e4 * (lvl + 2 ^ lvl);
+	maxLvl= 7
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+

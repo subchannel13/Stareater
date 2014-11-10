@@ -116,6 +116,7 @@ namespace Stareater
 			CalculateSpendings();
 			CalculateDerivedEffects();
 			
+			States.Reports.Clear();
 			foreach(var playerProc in this.Derivates.Players)
 				playerProc.ProcessPrecombat(
 					Statics,
@@ -124,7 +125,6 @@ namespace Stareater
 					this.Derivates.Stellarises.OwnedBy(playerProc.Player)
 				);
 			
-			//TODO(v0.5): add new tech level message
 			/*
 			 * TODO(v0.5): Process ships
 			 * - Move ships
