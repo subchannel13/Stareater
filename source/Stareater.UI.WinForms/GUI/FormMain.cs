@@ -40,7 +40,7 @@ namespace Stareater.GUI
 			InitializeComponent();
 
 			this.controller = new GameController();
-			this.reportOpener = new OpenReportVisitor(showDevelopment);
+			this.reportOpener = new OpenReportVisitor(showDevelopment, showResearch);
 			
 			setLanguage();
 			postDelayedEvent(showMainMenu);
@@ -181,6 +181,12 @@ namespace Stareater.GUI
 			}
 		}
 
+		private void showResearch()
+		{
+			using(var form = new FormResearch(controller))
+				form.ShowDialog();
+		}
+		
 		private void showSaveGame()
 		{
 			var saveController = new SavesController(controller);

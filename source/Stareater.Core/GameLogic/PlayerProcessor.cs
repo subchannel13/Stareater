@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NGenerics.Extensions;
+using Stareater.Controllers.Data;
+using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.GameData.Databases;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
-using Stareater.Galaxy;
 using Stareater.Players.Reports;
 using Stareater.Ships;
 using Stareater.Utils.Collections;
@@ -204,7 +206,7 @@ namespace Stareater.GameLogic
 		
 		public void ProcessPostcombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
-			foreach(var techProgress in this.DevelopmentPlan) {
+			foreach(var techProgress in this.DevelopmentPlan.Concat(this.ResearchPlan)) {
 				techProgress.Item.Progress(techProgress);
 				if (techProgress.CompletedCount > 0)
 					states.Reports.Add(new TechnologyReport(techProgress));

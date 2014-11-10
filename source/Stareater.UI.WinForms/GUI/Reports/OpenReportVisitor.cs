@@ -6,15 +6,20 @@ namespace Stareater.GUI.Reports
 	class OpenReportVisitor : IReportInfoVisitor
 	{
 		private Action openDevelopment;
+		private Action openResearch;
 		
-		public OpenReportVisitor(Action openDevelopment)
+		public OpenReportVisitor(Action openDevelopment, Action openResearch)
 		{
 			this.openDevelopment = openDevelopment;
+			this.openResearch = openResearch;
 		}
 		
 		public void Visit(TechnologyReportInfo reportInfo)
 		{
-			this.openDevelopment(); //TODO(v0.5) check if development or research
+			if (reportInfo.Category == TechnologyCategory.Development)
+				this.openDevelopment(); 
+			else
+				this.openResearch();
 		}
 	}
 }

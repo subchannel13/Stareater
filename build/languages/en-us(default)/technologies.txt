@@ -37,4 +37,7 @@ COLONIZER_NAME = Colonizer
 COLONIZER_DESC = Improves colonizer capacity
 SPACE_PROGRAM_NAME = Space program
 SPACE_PROGRAM_DESC = Better space program operations
+
+TEST_NAME = Test
+TEST_DESC = No description
 -
