@@ -122,6 +122,10 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormMainFleet.cs" />
+    <Compile Include="FormMainFleet.Designer.cs">
+      <DependentUpon>FormMainFleet.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormNewGame.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -222,6 +226,10 @@
     <Compile Include="SavedGame.Designer.cs">
       <DependentUpon>SavedGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="ShipGroupItem.cs" />
+    <Compile Include="ShipGroupItem.Designer.cs">
+      <DependentUpon>ShipGroupItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="SpaceInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -263,6 +271,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMainFleet.resx">
+      <DependentUpon>FormMainFleet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormNewGame.resx">
       <DependentUpon>FormNewGame.cs</DependentUpon>
@@ -324,6 +335,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SavedGame.resx">
       <DependentUpon>SavedGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ShipGroupItem.resx">
+      <DependentUpon>ShipGroupItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SpaceInfo.resx">
       <DependentUpon>SpaceInfo.cs</DependentUpon>
