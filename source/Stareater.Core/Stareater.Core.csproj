@@ -90,6 +90,7 @@
     <Compile Include="Controllers\Data\IGameStateListener.cs" />
     <Compile Include="Controllers\Data\IReportInfo.cs" />
     <Compile Include="Controllers\Data\IReportInfoVisitor.cs" />
+    <Compile Include="Controllers\Data\MapSelection.cs" />
     <Compile Include="Controllers\Data\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
     <Compile Include="Controllers\Data\ReportWrapper.cs" />

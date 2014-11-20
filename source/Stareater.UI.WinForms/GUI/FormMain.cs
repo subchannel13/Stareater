@@ -288,10 +288,17 @@ namespace Stareater.GUI
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.LoadIdentity();
-
+#if DEBUG
+			try {
+#endif
 			if (glReady && currentRenderer != null)
 				currentRenderer.Draw(dt);
-
+#if DEBUG
+			} catch(Exception ex)
+			{
+				Trace.WriteLine(ex);
+			}
+#endif
 			lastRender = thisMoment;
 			glCanvas.SwapBuffers();
 			

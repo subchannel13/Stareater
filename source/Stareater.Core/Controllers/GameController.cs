@@ -8,6 +8,7 @@ using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.Players;
 using Stareater.Players.Reports;
+using Stareater.Utils;
 
 namespace Stareater.Controllers
 {
@@ -16,6 +17,7 @@ namespace Stareater.Controllers
 		internal const string ReportContext = "Reports";
 		
 		private Game game;
+		private Dictionary<Player, IdleFleet> lastSelectedFleet;
 		private Dictionary<Player, StarData> lastSelectedStar;
 
 		private GameController endTurnCopy = null;
@@ -41,14 +43,14 @@ namespace Stareater.Controllers
 			Random rng = new Random();
 			
 			this.game = GameBuilder.CreateGame(rng, players, controller);
-			this.initStarSelection();
+			this.initSelection();
 		}
 		
 		internal void LoadGame(Game game)
 		{
 			this.game = game;
 			//TODO(later) consider loading from save data
-			this.initStarSelection();
+			this.initSelection();
 		}
 
 		/// <summary>
@@ -74,8 +76,9 @@ namespace Stareater.Controllers
 			get { return (this.IsReadOnly) ? this.endTurnCopy.game : this.game; }
 		}
 		
-		private void initStarSelection()
+		private void initSelection()
 		{
+			this.lastSelectedFleet = new Dictionary<Player, IdleFleet>();
 			this.lastSelectedStar = new Dictionary<Player, StarData>();
 
 			foreach(Player player in this.game.Players) {
@@ -88,6 +91,7 @@ namespace Stareater.Controllers
 				));
 				var maxPopulationStar = starPopulation.Aggregate((a, b) => (a.Value > b.Value) ? a : b).Key;
 				
+				this.lastSelectedFleet.Add(player, null);
 				this.lastSelectedStar.Add(player, maxPopulationStar);
 			}
 		}
@@ -139,12 +143,24 @@ namespace Stareater.Controllers
 			
 			this.endTurnCopy.game = gameCopy.Game;
 			this.endTurnCopy.State = this.State;
+			this.endTurnCopy.lastSelectedFleet = new Dictionary<Player, IdleFleet>();
 			this.endTurnCopy.lastSelectedStar = new Dictionary<Player, StarData>();
 
-			foreach (var originalSelection in lastSelectedStar)
+			foreach (var originalSelection in lastSelectedFleet) {
+				IdleFleet fleetCopy = (originalSelection.Value != null) ? gameCopy.Players.IdleFleets[originalSelection.Value] : null;
+				
+				endTurnCopy.lastSelectedFleet.Add(
+					gameCopy.Players.Players[originalSelection.Key],
+					fleetCopy);
+			}
+			
+			foreach (var originalSelection in lastSelectedStar) {
+				StarData starCopy = (originalSelection.Value != null) ? gameCopy.Map.Stars[originalSelection.Value] : null;
+				
 				endTurnCopy.lastSelectedStar.Add(
 					gameCopy.Players.Players[originalSelection.Key],
-					gameCopy.Map.Stars[originalSelection.Value]);
+					starCopy);
+			}
 
 			if (!aiGalaxyPhase.IsCompleted)
 				return;
@@ -166,6 +182,8 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Map related
+		public Methods.VisualPositionFunc IdleFleetVisualPositioner { get; set; }
+		
 		public bool IsStarVisited(StarData star)
 		{
 			return this.GameInstance.CurrentPlayer.Intelligence.About(star).IsVisited;
@@ -188,20 +206,34 @@ namespace Stareater.Controllers
 		
 		public StarSystemController OpenStarSystem(float x, float y, float searchRadius)
 		{
-			StarData closest = closestStar(x, y, searchRadius);
+			MapSelection selection = new MapSelection(x, y, searchRadius);
+			selection.Compare(this.game.States.Stars);
 			
-			if (closest != null)
-				return new StarSystemController(this.GameInstance, closest, IsReadOnly);
+			if (selection.StarCandidate != null)
+				return new StarSystemController(this.GameInstance, selection.StarCandidate, IsReadOnly);
 			else
 				return null;
 		}
 		
 		public void SelectClosest(float x, float y, float searchRadius)
 		{
-			StarData closest = closestStar(x, y, searchRadius);
+			MapSelection selection = new MapSelection(x, y, searchRadius);
+			selection.Compare(this.game.States.Stars);
+			selection.Compare(this.game.States.IdleFleets, this.IdleFleetVisualPositioner);
 			
-			if (closest != null)
-				SelectedStar = closest;
+			var lastSelectedFleet = (this.IsReadOnly) ? this.endTurnCopy.lastSelectedFleet : this.lastSelectedFleet;
+			lastSelectedFleet[this.GameInstance.CurrentPlayer] = selection.IdleFleetCandidate;
+			this.SelectedStar = selection.StarCandidate;
+		}
+		
+		public IdleFleetInfo SelectedFleet
+		{
+			get
+			{
+				var lastSelectedFleet = (this.IsReadOnly) ? this.endTurnCopy.lastSelectedFleet : this.lastSelectedFleet;
+
+				return new IdleFleetInfo(lastSelectedFleet[this.GameInstance.CurrentPlayer], this.IdleFleetVisualPositioner);
+			}
 		}
 		
 		public StarData SelectedStar
@@ -236,7 +268,7 @@ namespace Stareater.Controllers
 				var game = this.GameInstance;
 				
 				//TODO(v0.5) add fleets of other players 
-				return game.States.IdleFleets.OwnedBy(game.CurrentPlayer).Select(x => new IdleFleetInfo(x));
+				return game.States.IdleFleets.OwnedBy(game.CurrentPlayer).Select(x => new IdleFleetInfo(x, this.IdleFleetVisualPositioner));
 			}
 		}
 		
@@ -255,22 +287,6 @@ namespace Stareater.Controllers
 				foreach (var wormhole in this.GameInstance.States.Wormholes)
 					yield return wormhole;
 			}
-		}
-
-		private StarData closestStar(float x, float y, float searchRadius)
-		{
-			var game = this.GameInstance;
-
-			Vector2D point = new Vector2D(x, y);
-			StarData closestStar = game.States.Stars.First();
-			foreach (var star in game.States.Stars)
-				if ((star.Position - point).Magnitude() < (closestStar.Position - point).Magnitude())
-					closestStar = star;
-			
-			if ((closestStar.Position - point).Magnitude() <= searchRadius)
-				return closestStar;
-			else
-				return null;
 		}
 		#endregion
 		

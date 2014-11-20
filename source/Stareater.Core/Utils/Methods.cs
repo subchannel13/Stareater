@@ -12,6 +12,8 @@ namespace Stareater.Utils
 	/// </summary>
 	public static class Methods
 	{
+		public delegate	Vector2D VisualPositionFunc(Vector2D realPosition);
+		
 		/// <summary>
 		/// Limits a value to a range.
 		/// </summary>

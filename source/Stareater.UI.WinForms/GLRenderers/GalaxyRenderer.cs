@@ -68,6 +68,8 @@ namespace Stareater.GLRenderers
 				(float)controller.Stars.Select(star => star.Position.Y).Max() + StarMinClickRadius
 			);
 			
+			this.controller.IdleFleetVisualPositioner = idleFleetVisualPosition;
+			
 			//TODO(v0.5): move to more appropriate begin turn setup
 			originOffset = new Vector2((float)controller.SelectedStar.Position.X, (float)controller.SelectedStar.Position.Y);
 		}
@@ -193,7 +195,7 @@ namespace Stareater.GLRenderers
 					GL.Color4(fleet.Owner.Color);
 					
 					GL.PushMatrix();
-					GL.Translate(fleet.Location.Position.X + 0.5, fleet.Location.Position.Y + 0.5, IdleFleetZRange);
+					GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, IdleFleetZRange);
 					GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
 
 					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.FleetIndicator);
@@ -208,6 +210,15 @@ namespace Stareater.GLRenderers
 				GL.Color4(Color.White);
 				GL.PushMatrix();
 				GL.Translate(controller.SelectedStar.Position.X, controller.SelectedStar.Position.Y, SelectionIndicatorZ);
+
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar);
+				GL.PopMatrix();
+			}
+			
+			if (controller.SelectedFleet != null) {
+				GL.Color4(Color.White);
+				GL.PushMatrix();
+				GL.Translate(controller.SelectedFleet.VisualPosition.X, controller.SelectedFleet.VisualPosition.Y, SelectionIndicatorZ);
 
 				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar);
 				GL.PopMatrix();
@@ -233,6 +244,11 @@ namespace Stareater.GLRenderers
 				0, 0, 1, 0,
 				center.X, center.Y, 0, 1
 			};
+		}
+		
+		private static NGenerics.DataStructures.Mathematical.Vector2D idleFleetVisualPosition(NGenerics.DataStructures.Mathematical.Vector2D starPosition)
+		{
+			return starPosition + new NGenerics.DataStructures.Mathematical.Vector2D(0.5, 0.5);
 		}
 		
 		private Color starNameColor(StarData star)
