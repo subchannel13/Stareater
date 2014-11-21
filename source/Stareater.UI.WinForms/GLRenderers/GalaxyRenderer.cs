@@ -22,16 +22,17 @@ namespace Stareater.GLRenderers
 		private const float WormholeZ = -0.7f;
 		private const float StarColorZ = -0.6f;
 		private const float StarSaturationZ = -0.5f;
-		private const float SelectionIndicatorZ = -0.4f;
-		private const float StarNameZ = -0.3f;
+		private const float StarNameZ = -0.4f;
 		private const float StarNameZRange = 0.1f;
-		private const float IdleFleetZRange = -0.1f;
+		private const float IdleFleetZ = -0.2f;
+		private const float SelectionIndicatorZ = -0.1f;
 		
 		private const float PanClickTolerance = 0.01f;
 		private const float ClickRadius = 0.02f;
 		private const float StarMinClickRadius = 0.6f;
 		
 		private const float FleetIndicatorScale = 0.2f;
+		private const float FleetSelectorScale = 0.3f;
 		private const double PathWidth = 0.1;
 		private const float StarNameScale = 0.35f;
 
@@ -195,7 +196,7 @@ namespace Stareater.GLRenderers
 					GL.Color4(fleet.Owner.Color);
 					
 					GL.PushMatrix();
-					GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, IdleFleetZRange);
+					GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, IdleFleetZ);
 					GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
 
 					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.FleetIndicator);
@@ -219,6 +220,7 @@ namespace Stareater.GLRenderers
 				GL.Color4(Color.White);
 				GL.PushMatrix();
 				GL.Translate(controller.SelectedFleet.VisualPosition.X, controller.SelectedFleet.VisualPosition.Y, SelectionIndicatorZ);
+				GL.Scale(FleetSelectorScale, FleetSelectorScale, FleetSelectorScale);
 
 				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar);
 				GL.PopMatrix();
