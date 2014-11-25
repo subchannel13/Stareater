@@ -75,6 +75,7 @@
     <Compile Include="AppData\ImageCache.cs" />
     <Compile Include="AppData\SettingsWinforms.cs" />
     <Compile Include="GLRenderers\CharTextureInfo.cs" />
+    <Compile Include="GLRenderers\GalaxySelectionType.cs" />
     <Compile Include="GLRenderers\GalaxyTextures.cs" />
     <Compile Include="GLRenderers\IRenderer.cs" />
     <Compile Include="GLRenderers\GalaxyRenderer.cs" />

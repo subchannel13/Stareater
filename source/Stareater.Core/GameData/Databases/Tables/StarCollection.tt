@@ -5,5 +5,7 @@
 	usings.Add("Stareater.Galaxy");
 	usings.Add("NGenerics.DataStructures.Mathematical");
 	
-	Generate("StarCollection", "StarData");
+	Generate("StarCollection", "StarData",
+		new ViewInfo("WithId", "int", "Id", ViewType.Scalar)
+	);
 #>

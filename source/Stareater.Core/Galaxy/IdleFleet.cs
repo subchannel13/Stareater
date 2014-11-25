@@ -21,6 +21,7 @@ namespace Stareater.Galaxy
 			this.Location = location;
 			this.Ships = new ShipGroupCollection();
  
+			 
 		} 
 
 		private IdleFleet(IdleFleet original, Player owner, StarData location) 
@@ -31,6 +32,7 @@ namespace Stareater.Galaxy
 			foreach(var item in original.Ships)
 				this.Ships.Add(item);
  
+			 
 		}
 
 		private IdleFleet(IkonComposite rawData, ObjectDeindexer deindexer) 
@@ -46,6 +48,7 @@ namespace Stareater.Galaxy
 			foreach(var item in shipsSave.To<IkonArray>())
 				this.Ships.Add(ShipGroup.Load(item.To<IkonComposite>(), deindexer));
  
+			 
 		}
 
 		internal IdleFleet Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap) 
@@ -85,5 +88,7 @@ namespace Stareater.Galaxy
 		private const string ShipsKey = "ships";
  
 		#endregion
+
+ 
 	}
 }

@@ -17,9 +17,7 @@ namespace Stareater.Controllers
 		internal const string ReportContext = "Reports";
 		
 		private Game game;
-		private Dictionary<Player, IdleFleet> lastSelectedFleet;
-		private Dictionary<Player, StarData> lastSelectedStar;
-
+		
 		private GameController endTurnCopy = null;
 		private IGameStateListener stateListener;
 		private Task aiGalaxyPhase = null;
@@ -43,14 +41,11 @@ namespace Stareater.Controllers
 			Random rng = new Random();
 			
 			this.game = GameBuilder.CreateGame(rng, players, controller);
-			this.initSelection();
 		}
 		
 		internal void LoadGame(Game game)
 		{
 			this.game = game;
-			//TODO(later) consider loading from save data
-			this.initSelection();
 		}
 
 		/// <summary>
@@ -76,7 +71,7 @@ namespace Stareater.Controllers
 			get { return (this.IsReadOnly) ? this.endTurnCopy.game : this.game; }
 		}
 		
-		private void initSelection()
+		/*private void initSelection()
 		{
 			this.lastSelectedFleet = new Dictionary<Player, IdleFleet>();
 			this.lastSelectedStar = new Dictionary<Player, StarData>();
@@ -94,10 +89,15 @@ namespace Stareater.Controllers
 				this.lastSelectedFleet.Add(player, null);
 				this.lastSelectedStar.Add(player, maxPopulationStar);
 			}
-		}
+		}*/
 
 		#region Turn processing
 		public GameState State { get; private set; }
+		
+		public int CurrentPlayer 
+		{ 
+			get { return this.game.CurrentPlayerIndex; }
+		}
 		
 		private void aiDoGalaxyPhase() 
 		{
@@ -143,25 +143,7 @@ namespace Stareater.Controllers
 			
 			this.endTurnCopy.game = gameCopy.Game;
 			this.endTurnCopy.State = this.State;
-			this.endTurnCopy.lastSelectedFleet = new Dictionary<Player, IdleFleet>();
-			this.endTurnCopy.lastSelectedStar = new Dictionary<Player, StarData>();
-
-			foreach (var originalSelection in lastSelectedFleet) {
-				IdleFleet fleetCopy = (originalSelection.Value != null) ? gameCopy.Players.IdleFleets[originalSelection.Value] : null;
-				
-				endTurnCopy.lastSelectedFleet.Add(
-					gameCopy.Players.Players[originalSelection.Key],
-					fleetCopy);
-			}
 			
-			foreach (var originalSelection in lastSelectedStar) {
-				StarData starCopy = (originalSelection.Value != null) ? gameCopy.Map.Stars[originalSelection.Value] : null;
-				
-				endTurnCopy.lastSelectedStar.Add(
-					gameCopy.Players.Players[originalSelection.Key],
-					starCopy);
-			}
-
 			if (!aiGalaxyPhase.IsCompleted)
 				return;
 			
@@ -204,61 +186,18 @@ namespace Stareater.Controllers
 			return new StarSystemController(this.GameInstance, star, IsReadOnly);
 		}
 		
-		public StarSystemController OpenStarSystem(float x, float y, float searchRadius)
+		public StarSystemController OpenStarSystem(int starId)
 		{
-			MapSelection selection = new MapSelection(x, y, searchRadius);
-			selection.Compare(this.game.States.Stars);
+			return this.OpenStarSystem(this.game.States.Stars.WithId(starId));
+		}
+		
+		public GalaxySearchResult FindClosest(float x, float y, float searchRadius)
+		{
+			var search = new GalaxySearch(x, y, searchRadius);
+			search.Compare(this.game.States.Stars);
+			search.Compare(this.game.States.IdleFleets, this.IdleFleetVisualPositioner);
 			
-			if (selection.StarCandidate != null)
-				return new StarSystemController(this.GameInstance, selection.StarCandidate, IsReadOnly);
-			else
-				return null;
-		}
-		
-		public void SelectClosest(float x, float y, float searchRadius)
-		{
-			MapSelection selection = new MapSelection(x, y, searchRadius);
-			selection.Compare(this.game.States.Stars);
-			selection.Compare(this.game.States.IdleFleets, this.IdleFleetVisualPositioner);
-			
-			var lastSelectedFleet = (this.IsReadOnly) ? this.endTurnCopy.lastSelectedFleet : this.lastSelectedFleet;
-			lastSelectedFleet[this.GameInstance.CurrentPlayer] = selection.IdleFleetCandidate;
-			this.SelectedStar = selection.StarCandidate;
-		}
-		
-		public IdleFleetInfo SelectedFleet
-		{
-			get
-			{
-				var lastSelectedFleet = (this.IsReadOnly) ? this.endTurnCopy.lastSelectedFleet : this.lastSelectedFleet;
-
-				return new IdleFleetInfo(lastSelectedFleet[this.GameInstance.CurrentPlayer], this.IdleFleetVisualPositioner);
-			}
-		}
-		
-		public StarData SelectedStar
-		{
-			get
-			{
-				var lastSelectedStar = (this.IsReadOnly) ? this.endTurnCopy.lastSelectedStar : this.lastSelectedStar;
-
-				return lastSelectedStar[this.GameInstance.CurrentPlayer];
-			}
-			private set
-			{
-				if (this.IsReadOnly)
-					return;
-				
-				this.lastSelectedStar[this.game.CurrentPlayer] = value;
-			}
-		}
-		
-		public int StarCount
-		{
-			get 
-			{
-				return this.GameInstance.States.Stars.Count;
-			}
+			return search.Finish(this.IdleFleetVisualPositioner);
 		}
 		
 		public IEnumerable<IdleFleetInfo> IdleFleets
@@ -269,6 +208,19 @@ namespace Stareater.Controllers
 				
 				//TODO(v0.5) add fleets of other players 
 				return game.States.IdleFleets.OwnedBy(game.CurrentPlayer).Select(x => new IdleFleetInfo(x, this.IdleFleetVisualPositioner));
+			}
+		}
+		
+		public StarData Star(int id)
+		{
+			return this.GameInstance.States.Stars.WithId(id);
+		}
+		
+		public int StarCount
+		{
+			get 
+			{
+				return this.GameInstance.States.Stars.Count;
 			}
 		}
 		
@@ -428,6 +380,11 @@ namespace Stareater.Controllers
 					game.Derivates.Of(game.CurrentPlayer).InvalidateResearch();
 				}
 			}
+		}
+		
+		public StarData ResearchCenter
+		{
+			get { return game.Derivates.Of(game.CurrentPlayer).ResearchCenter; }
 		}
 		#endregion
 		

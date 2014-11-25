@@ -11,10 +11,24 @@ namespace Stareater.GameData.Databases.Tables
 		HashSet<StarData> innerSet = new HashSet<StarData>();
 		List<StarData> toRemove = new List<StarData>();
 
+		Dictionary<int, StarData> WithIdIndex = new Dictionary<int, StarData>();
+
+		public StarData WithId(int key) {
+			if (WithIdIndex.ContainsKey(key))
+				return WithIdIndex[key];
+				
+			throw new KeyNotFoundException();
+		}
+		
+		public bool WithIdContains(int key) {
+			return WithIdIndex.ContainsKey(key);
+		}
 	
 		public void Add(StarData item)
 		{
 			innerSet.Add(item); 
+			if (!WithIdIndex.ContainsKey(item.Id))
+				WithIdIndex.Add(item.Id, item);
 		}
 
 		public void Add(IEnumerable<StarData> items)
@@ -27,6 +41,7 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			innerSet.Clear();
 
+			WithIdIndex.Clear();
 		}
 
 		public bool Contains(StarData item)
@@ -52,6 +67,7 @@ namespace Stareater.GameData.Databases.Tables
 		public bool Remove(StarData item)
 		{
 			if (innerSet.Remove(item)) {
+				WithIdIndex.Remove(item.Id);
 			
 				return true;
 			}

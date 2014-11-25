@@ -79,6 +79,10 @@
     <Compile Include="Controllers\Data\ConstructableItem.cs" />
     <Compile Include="Controllers\Data\DesignInfo.cs" />
     <Compile Include="Controllers\Data\DevelopmentFocusInfo.cs" />
+    <Compile Include="Controllers\Data\FoundGalaxyObject.cs" />
+    <Compile Include="Controllers\Data\GalaxyObjectType.cs" />
+    <Compile Include="Controllers\Data\GalaxySearch.cs" />
+    <Compile Include="Controllers\Data\GalaxySearchResult.cs" />
     <Compile Include="Controllers\Data\GameCopy.cs">
       <DependentUpon>GameCopy.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -90,7 +94,6 @@
     <Compile Include="Controllers\Data\IGameStateListener.cs" />
     <Compile Include="Controllers\Data\IReportInfo.cs" />
     <Compile Include="Controllers\Data\IReportInfoVisitor.cs" />
-    <Compile Include="Controllers\Data\MapSelection.cs" />
     <Compile Include="Controllers\Data\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
     <Compile Include="Controllers\Data\ReportWrapper.cs" />
