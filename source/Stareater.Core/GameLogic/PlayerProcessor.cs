@@ -20,8 +20,8 @@ namespace Stareater.GameLogic
 		public const string LevelSufix = "Lvl";
 		
 		public IEnumerable<ActivityResult<TechnologyProgress>> DevelopmentPlan { get; protected set; }
-		//TODO(v0.5) advance research
 		public IEnumerable<ActivityResult<TechnologyProgress>> ResearchPlan { get; protected set; }
+		public StarData ResearchCenter { get; private set; }
 		public Player Player { get; private set; }
 		
 		public PlayerProcessor(Player player, IEnumerable<Technology> technologies)
@@ -100,13 +100,19 @@ namespace Stareater.GameLogic
 			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
 			
 			double researchPoints = 0;
+			this.ResearchCenter = null;
 			
 			var researchCenters = colonyProcessors.GroupBy(x => x.Colony.Star);
 			foreach (var center in researchCenters)
 			{
 				var centerVars = new Var("pop", center.Sum(x => x.Colony.Population))
 					.UnionWith(techLevels);
-				researchPoints = Math.Max(researchPoints, statics.PlayerFormulas.Research.Evaluate(centerVars.Get));
+				
+				double localResearch = statics.PlayerFormulas.Research.Evaluate(centerVars.Get);
+				if (localResearch > researchPoints) {
+					researchPoints = localResearch;
+					this.ResearchCenter = center.Key;
+				}
 			}
 			
 			var advanceOrder = this.ResearchOrder(states.TechnologyAdvances).ToList();

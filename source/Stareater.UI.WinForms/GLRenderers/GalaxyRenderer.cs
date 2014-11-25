@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -6,6 +7,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.Controllers;
+using Stareater.Controllers.Data;
 using Stareater.Galaxy;
 using Stareater.Utils;
 
@@ -44,6 +46,7 @@ namespace Stareater.GLRenderers
 		
 		private bool resetProjection = true;
 		private Matrix4 invProjection;
+		private int staticList = NoCallList;
 
 		private int zoomLevel = 2;
 		private Vector4? lastMousePosition = null;
@@ -53,7 +56,9 @@ namespace Stareater.GLRenderers
 		private Vector2 mapBoundsMin;
 		private Vector2 mapBoundsMax;
 
-		private int staticList = NoCallList;
+		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
+		private Dictionary<int, int> lastSelectedStars;
+		private Dictionary<int, IdleFleetInfo> lastSelectedIdleFleets;
 
 		public GalaxyRenderer(GameController controller, Action<StarSystemController> systemOpenedHandler)
 		{ 
@@ -72,9 +77,16 @@ namespace Stareater.GLRenderers
 			this.controller.IdleFleetVisualPositioner = idleFleetVisualPosition;
 			
 			//TODO(v0.5): move to more appropriate begin turn setup
-			originOffset = new Vector2((float)controller.SelectedStar.Position.X, (float)controller.SelectedStar.Position.Y);
+			this.lastSelectedIdleFleets = new Dictionary<int, IdleFleetInfo>();
+			this.lastSelectedStars = new Dictionary<int, int>();
+			
+			//TODO(v0.5): move to more appropriate begin turn setup
+			this.lastSelectedStars.Add(this.controller.CurrentPlayer, this.controller.ResearchCenter.Id);
+			this.originOffset = new Vector2((float)this.lastSelectedStar.Position.X, (float)this.lastSelectedStar.Position.Y);
+			this.currentSelection = GalaxySelectionType.Star;
 		}
-
+		
+		#region IRenderer implementation
 		public void AttachToCanvas(Control eventDispatcher)
 		{
 			this.eventDispatcher = eventDispatcher;
@@ -207,19 +219,19 @@ namespace Stareater.GLRenderers
 			else
 				GL.CallList(staticList);
 
-			if (controller.SelectedStar != null) {
+			if (this.currentSelection == GalaxySelectionType.Star) {
 				GL.Color4(Color.White);
 				GL.PushMatrix();
-				GL.Translate(controller.SelectedStar.Position.X, controller.SelectedStar.Position.Y, SelectionIndicatorZ);
+				GL.Translate(this.lastSelectedStar.Position.X, this.lastSelectedStar.Position.Y, SelectionIndicatorZ);
 
 				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar);
 				GL.PopMatrix();
 			}
 			
-			if (controller.SelectedFleet != null) {
+			if (this.currentSelection == GalaxySelectionType.IdleFleet) {
 				GL.Color4(Color.White);
 				GL.PushMatrix();
-				GL.Translate(controller.SelectedFleet.VisualPosition.X, controller.SelectedFleet.VisualPosition.Y, SelectionIndicatorZ);
+				GL.Translate(this.lastSelectedIdleFleet.VisualPosition.X, this.lastSelectedIdleFleet.VisualPosition.Y, SelectionIndicatorZ);
 				GL.Scale(FleetSelectorScale, FleetSelectorScale, FleetSelectorScale);
 
 				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar);
@@ -232,65 +244,9 @@ namespace Stareater.GLRenderers
 			GL.DeleteLists(staticList, 1);
 			staticList = NoCallList;
 		}
+		#endregion
 
-		private double[] pathMatrix(Vector2d fromPoint, Vector2d toPoint)
-		{
-			var xAxis = toPoint - fromPoint;
-			var yAxis = new Vector2d(xAxis.Y, -xAxis.X);
-			double yScale = PathWidth / yAxis.Length;
-			
-			var center = (fromPoint + toPoint) / 2;
-			return new double[] {
-				xAxis.X, yAxis.X, 0, 0,
-				xAxis.Y * yScale, yAxis.Y * yScale, 0, 0,
-				0, 0, 1, 0,
-				center.X, center.Y, 0, 1
-			};
-		}
-		
-		private static NGenerics.DataStructures.Mathematical.Vector2D idleFleetVisualPosition(NGenerics.DataStructures.Mathematical.Vector2D starPosition)
-		{
-			return starPosition + new NGenerics.DataStructures.Mathematical.Vector2D(0.5, 0.5);
-		}
-		
-		private Color starNameColor(StarData star)
-		{
-			if (controller.IsStarVisited(star)) {
-				var colonies = controller.KnownColonies(star);
-				
-				if (colonies.Count() > 0) {
-					var dominantPlayer = colonies.GroupBy(x => x.Owner).OrderByDescending(x => x.Count()).First().Key;
-					return dominantPlayer.Color;
-				}
-				
-				return Color.LightGray;
-			}
-			
-			return Color.FromArgb(64, 64, 64);
-		}
-		
-		private Vector4 mouseToView(int x, int y)
-		{
-			return new Vector4(
-				2 * x / (float)eventDispatcher.Width - 1,
-				1 - 2 * y / (float)eventDispatcher.Height, 
-				0, 1
-			);
-		}
-		
-		private void limitPan()
-		{
-			if (originOffset.X < mapBoundsMin.X) 
-				originOffset.X = mapBoundsMin.X;
-			if (originOffset.X > mapBoundsMax.X) 
-				originOffset.X = mapBoundsMax.X;
-			
-			if (originOffset.Y < mapBoundsMin.Y) 
-				originOffset.Y = mapBoundsMin.Y;
-			if (originOffset.Y > mapBoundsMax.Y) 
-				originOffset.Y = mapBoundsMax.Y;
-		}
-		
+		#region Mouse events
 		private void mousePan(object sender, MouseEventArgs e)
 		{
 			Vector4 currentPosition = mouseToView(e.X, e.Y);
@@ -342,9 +298,25 @@ namespace Stareater.GLRenderers
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
-			controller.SelectClosest(
+			var closestObjects = controller.FindClosest(
 				mousePoint.X, mousePoint.Y, 
 				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
+			
+			if (closestObjects.FoundObjects.Count == 0)
+				return;
+			
+			switch (closestObjects.FoundObjects[0].Type)
+			{
+				case GalaxyObjectType.Star:
+					this.currentSelection = GalaxySelectionType.Star;
+					this.lastSelectedStars[this.controller.CurrentPlayer] = closestObjects.Stars[closestObjects.FoundObjects[0].ResultIndex].Id;
+					break;
+				case GalaxyObjectType.IdleFleet:
+					this.currentSelection = GalaxySelectionType.IdleFleet;
+					this.lastSelectedIdleFleets[this.controller.CurrentPlayer] = closestObjects.IdleFleets[closestObjects.FoundObjects[0].ResultIndex];
+					break;
+			}
+			
 		}
 		
 		private void mouseDoubleClick(object sender, MouseEventArgs e)
@@ -353,20 +325,97 @@ namespace Stareater.GLRenderers
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
-			StarSystemController system = controller.OpenStarSystem(
+			var closestObjects = controller.FindClosest(
 				mousePoint.X, mousePoint.Y, 
 				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
 			
-			if (system != null)
-				this.systemOpenedHandler(system);
+			if (closestObjects.Stars.Count > 0)
+				this.systemOpenedHandler(controller.OpenStarSystem(closestObjects.Stars[0]));
 		}
-
+		#endregion
+		
+		#region Helper methods
+		private void limitPan()
+		{
+			if (this.originOffset.X < mapBoundsMin.X) 
+				this.originOffset.X = mapBoundsMin.X;
+			if (this.originOffset.X > mapBoundsMax.X) 
+				this.originOffset.X = mapBoundsMax.X;
+			
+			if (this.originOffset.Y < mapBoundsMin.Y) 
+				this.originOffset.Y = mapBoundsMin.Y;
+			if (this.originOffset.Y > mapBoundsMax.Y) 
+				this.originOffset.Y = mapBoundsMax.Y;
+		}
+		
+		private Vector4 mouseToView(int x, int y)
+		{
+			return new Vector4(
+				2 * x / (float)this.eventDispatcher.Width - 1,
+				1 - 2 * y / (float)this.eventDispatcher.Height, 
+				0, 1
+			);
+		}
+		
+		private double[] pathMatrix(Vector2d fromPoint, Vector2d toPoint)
+		{
+			var xAxis = toPoint - fromPoint;
+			var yAxis = new Vector2d(xAxis.Y, -xAxis.X);
+			double yScale = PathWidth / yAxis.Length;
+			
+			var center = (fromPoint + toPoint) / 2;
+			return new double[] {
+				xAxis.X, yAxis.X, 0, 0,
+				xAxis.Y * yScale, yAxis.Y * yScale, 0, 0,
+				0, 0, 1, 0,
+				center.X, center.Y, 0, 1
+			};
+		}
+		
+		private IdleFleetInfo lastSelectedIdleFleet
+		{
+			get 
+			{
+				return this.lastSelectedIdleFleets[this.controller.CurrentPlayer];
+			}
+		}
+		
+		private StarData lastSelectedStar
+		{
+			get 
+			{
+				return this.controller.Star(this.lastSelectedStars[this.controller.CurrentPlayer]);
+			}
+		}
+		
+		private Color starNameColor(StarData star)
+		{
+			if (controller.IsStarVisited(star)) {
+				var colonies = controller.KnownColonies(star);
+				
+				if (colonies.Count() > 0) {
+					var dominantPlayer = colonies.GroupBy(x => x.Owner).OrderByDescending(x => x.Count()).First().Key;
+					return dominantPlayer.Color;
+				}
+				
+				return Color.LightGray;
+			}
+			
+			return Color.FromArgb(64, 64, 64);
+		}
+		#endregion
+		
 		public void Dispose()
 		{
 			if (eventDispatcher != null) {
 				DetachFromCanvas();
 				Unload();
 			}
+		}
+		
+		private static NGenerics.DataStructures.Mathematical.Vector2D idleFleetVisualPosition(NGenerics.DataStructures.Mathematical.Vector2D starPosition)
+		{
+			return starPosition + new NGenerics.DataStructures.Mathematical.Vector2D(0.5, 0.5);
 		}
 	}
 }

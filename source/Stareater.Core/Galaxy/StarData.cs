@@ -1,6 +1,5 @@
 ﻿ 
 
-
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
@@ -13,13 +12,15 @@ namespace Stareater.Galaxy
 {
 	public partial class StarData 
 	{
+		public int Id { get; private set; }
 		public Color Color { get; private set; }
 		public float ImageSizeScale { get; private set; }
 		public IStarName Name { get; private set; }
 		public Vector2D Position { get; private set; }
 
-		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position) 
+		public StarData(int id, Color color, float imageSizeScale, IStarName name, Vector2D position) 
 		{
+			this.Id = id;
 			this.Color = color;
 			this.ImageSizeScale = imageSizeScale;
 			this.Name = name;
@@ -31,6 +32,9 @@ namespace Stareater.Galaxy
 
 		private StarData(IkonComposite rawData) 
 		{
+			var idSave = rawData[IdKey];
+			this.Id = idSave.To<int>();
+
 			var colorSave = rawData[ColorKey];
 			var colorArray = colorSave.To<IkonArray>();
 			int colorR = colorArray[0].To<int>();
@@ -55,7 +59,7 @@ namespace Stareater.Galaxy
 
 		internal StarData Copy() 
 		{
-			return new StarData(this.Color, this.ImageSizeScale, this.Name, this.Position);
+			return new StarData(this.Id, this.Color, this.ImageSizeScale, this.Name, this.Position);
  
 		} 
  
@@ -64,6 +68,8 @@ namespace Stareater.Galaxy
 		public IkonComposite Save() 
 		{
 			var data = new IkonComposite(TableTag);
+			data.Add(IdKey, new IkonInteger(this.Id));
+
 			var colorData = new IkonArray();
 			colorData.Add(new IkonInteger(this.Color.R));
 			colorData.Add(new IkonInteger(this.Color.G));
@@ -91,6 +97,7 @@ namespace Stareater.Galaxy
  
 
 		private const string TableTag = "StarData";
+		private const string IdKey = "id";
 		private const string ColorKey = "color";
 		private const string SizeKey = "size";
 		private const string NameKey = "name";
