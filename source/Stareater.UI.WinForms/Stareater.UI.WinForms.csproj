@@ -77,6 +77,7 @@
     <Compile Include="GLRenderers\CharTextureInfo.cs" />
     <Compile Include="GLRenderers\GalaxySelectionType.cs" />
     <Compile Include="GLRenderers\GalaxyTextures.cs" />
+    <Compile Include="GLRenderers\IGalaxyViewListener.cs" />
     <Compile Include="GLRenderers\IRenderer.cs" />
     <Compile Include="GLRenderers\GalaxyRenderer.cs" />
     <Compile Include="GLRenderers\SystemRenderer.cs" />
@@ -257,6 +258,10 @@
     <Compile Include="GUI\SavedGameItemView.Designer.cs">
       <DependentUpon>SavedGameItemView.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\ShipGroupItem.cs" />
+    <Compile Include="GUI\ShipGroupItem.Designer.cs">
+      <DependentUpon>ShipGroupItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\TechnologyItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -352,6 +357,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\SavedGameItemView.resx">
       <DependentUpon>SavedGameItemView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ShipGroupItem.resx">
+      <DependentUpon>ShipGroupItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\TechnologyItem.resx">
       <DependentUpon>TechnologyItem.cs</DependentUpon>

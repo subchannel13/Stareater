@@ -41,7 +41,11 @@
 			this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.endTurnButton = new System.Windows.Forms.Button();
 			this.returnButton = new System.Windows.Forms.Button();
+			this.fleetPanel = new System.Windows.Forms.Panel();
+			this.fleetMissionButton = new System.Windows.Forms.Button();
+			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.menuStrip.SuspendLayout();
+			this.fleetPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// eventTimer
@@ -153,11 +157,41 @@
 			this.returnButton.Visible = false;
 			this.returnButton.Click += new System.EventHandler(this.returnButton_Click);
 			// 
+			// fleetPanel
+			// 
+			this.fleetPanel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+			this.fleetPanel.Controls.Add(this.flowLayoutPanel1);
+			this.fleetPanel.Controls.Add(this.fleetMissionButton);
+			this.fleetPanel.Location = new System.Drawing.Point(234, 446);
+			this.fleetPanel.Name = "fleetPanel";
+			this.fleetPanel.Size = new System.Drawing.Size(417, 116);
+			this.fleetPanel.TabIndex = 5;
+			this.fleetPanel.Visible = false;
+			// 
+			// fleetMissionButton
+			// 
+			this.fleetMissionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.fleetMissionButton.Location = new System.Drawing.Point(339, 3);
+			this.fleetMissionButton.Name = "fleetMissionButton";
+			this.fleetMissionButton.Size = new System.Drawing.Size(75, 23);
+			this.fleetMissionButton.TabIndex = 0;
+			this.fleetMissionButton.Text = "Missions";
+			this.fleetMissionButton.UseVisualStyleBackColor = true;
+			// 
+			// flowLayoutPanel1
+			// 
+			this.flowLayoutPanel1.AutoScroll = true;
+			this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+			this.flowLayoutPanel1.Size = new System.Drawing.Size(332, 109);
+			this.flowLayoutPanel1.TabIndex = 1;
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(884, 562);
+			this.Controls.Add(this.fleetPanel);
 			this.Controls.Add(this.returnButton);
 			this.Controls.Add(this.endTurnButton);
 			this.Controls.Add(this.constructionManagement);
@@ -171,9 +205,13 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
 			this.menuStrip.ResumeLayout(false);
 			this.menuStrip.PerformLayout();
+			this.fleetPanel.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.Button fleetMissionButton;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+		private System.Windows.Forms.Panel fleetPanel;
 		private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem researchToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem designsToolStripMenuItem;

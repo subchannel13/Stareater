@@ -15,7 +15,7 @@ using Stareater.Players.Reports;
 
 namespace Stareater.GUI
 {
-	internal partial class FormMain : Form, IGameStateListener
+	internal partial class FormMain : Form, IGameStateListener, IGalaxyViewListener
 	{
 		private const float MaxDeltaTime = 0.5f;
 		private const float MinDeltaTime = 0.005f;
@@ -229,7 +229,7 @@ namespace Stareater.GUI
 				systemRenderer.Unload();
 			}
 			
-			galaxyRenderer = new GalaxyRenderer(controller, switchToSystemView);
+			galaxyRenderer = new GalaxyRenderer(controller, this);
 			galaxyRenderer.Load();
 			
 			systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement);
@@ -315,19 +315,6 @@ namespace Stareater.GUI
 
 		#region Renderer events
 		
-		private void switchToSystemView(StarSystemController systemController)
-		{
-			galaxyRenderer.DetachFromCanvas();
-			
-			systemRenderer.AttachToCanvas(glCanvas);
-			systemRenderer.SetStarSystem(systemController);
-			currentRenderer = systemRenderer;
-			
-			constructionManagement.Visible = true;
-			endTurnButton.Visible = false;
-			returnButton.Visible = true;
-		}
-		
 		private void switchToGalaxyView()
 		{
 			if (currentRenderer == systemRenderer)
@@ -379,12 +366,34 @@ namespace Stareater.GUI
 		}
 		#endregion
 		
-		/*#region Turn report visitor implementation
-		public void Visit(TechnologyReport report)
+		#region IGalaxyViewListener
+		void IGalaxyViewListener.FleetSelected(IdleFleetInfo fleetInfo)
 		{
-			//TODO(v0.5): show tech GUI
-			throw new NotImplementedException();
+			this.constructionManagement.Visible = false;
+			this.fleetPanel.Visible = true;
 		}
-		#endregion*/
+		
+		void IGalaxyViewListener.SystemOpened(StarSystemController systemController)
+		{
+			galaxyRenderer.DetachFromCanvas();
+			
+			systemRenderer.AttachToCanvas(glCanvas);
+			systemRenderer.SetStarSystem(systemController);
+			currentRenderer = systemRenderer;
+			
+			constructionManagement.Visible = true;
+			endTurnButton.Visible = false;
+			returnButton.Visible = true;
+		}
+		
+		void IGalaxyViewListener.SystemSelected(StarSystemController systemController)
+		{
+			//TODO(v0.5)
+			this.constructionManagement.Visible = false;
+			this.fleetPanel.Visible = false;
+		}
+		#endregion
+		
+		
 	}
 }

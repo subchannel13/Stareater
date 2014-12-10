@@ -186,9 +186,9 @@ namespace Stareater.Controllers
 			return new StarSystemController(this.GameInstance, star, IsReadOnly);
 		}
 		
-		public StarSystemController OpenStarSystem(int starId)
+		public StarSystemController OpenStarSystem(Vector2D position)
 		{
-			return this.OpenStarSystem(this.game.States.Stars.WithId(starId));
+			return this.OpenStarSystem(this.game.States.Stars.At(position));
 		}
 		
 		public GalaxySearchResult FindClosest(float x, float y, float searchRadius)
@@ -211,9 +211,9 @@ namespace Stareater.Controllers
 			}
 		}
 		
-		public StarData Star(int id)
+		public StarData Star(Vector2D position)
 		{
-			return this.GameInstance.States.Stars.WithId(id);
+			return this.GameInstance.States.Stars.At(position);
 		}
 		
 		public int StarCount
