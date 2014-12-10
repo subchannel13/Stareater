@@ -6,6 +6,6 @@
 	usings.Add("NGenerics.DataStructures.Mathematical");
 	
 	Generate("StarCollection", "StarData",
-		new ViewInfo("WithId", "int", "Id", ViewType.Scalar)
+		new ViewInfo("At", "Vector2D", "Position", ViewType.Scalar)
 	);
 #>

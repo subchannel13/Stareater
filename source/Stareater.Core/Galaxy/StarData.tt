@@ -12,7 +12,6 @@
 	LoadNeedsObjectDeindexer = false;
 
 	Generate("Stareater.Galaxy", "StarData",
-		new DataInfo("Id", "int"),
 		new DataInfo("Color", "Color"),
 		new DataInfo("ImageSizeScale", "float").SaveKey("Size"),
 		new DataInfo("Name", "IStarName").SaveMethod("Save()").LoadCode("loadName(" + SaveName + ")"),

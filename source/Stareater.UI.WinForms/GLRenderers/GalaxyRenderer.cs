@@ -42,7 +42,7 @@ namespace Stareater.GLRenderers
 
 		private GameController controller;
 		private Control eventDispatcher;
-		private Action<StarSystemController> systemOpenedHandler;
+		private IGalaxyViewListener galaxyViewListener;
 		
 		private bool resetProjection = true;
 		private Matrix4 invProjection;
@@ -57,13 +57,13 @@ namespace Stareater.GLRenderers
 		private Vector2 mapBoundsMax;
 
 		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
-		private Dictionary<int, int> lastSelectedStars;
+		private Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D> lastSelectedStars;
 		private Dictionary<int, IdleFleetInfo> lastSelectedIdleFleets;
 
-		public GalaxyRenderer(GameController controller, Action<StarSystemController> systemOpenedHandler)
+		public GalaxyRenderer(GameController controller, IGalaxyViewListener galaxyViewListener)
 		{ 
 			this.controller = controller;
-			this.systemOpenedHandler = systemOpenedHandler;
+			this.galaxyViewListener = galaxyViewListener;
 			
 			this.mapBoundsMin = new Vector2(
 				(float)controller.Stars.Select(star => star.Position.X).Min() - StarMinClickRadius,
@@ -78,10 +78,10 @@ namespace Stareater.GLRenderers
 			
 			//TODO(v0.5): move to more appropriate begin turn setup
 			this.lastSelectedIdleFleets = new Dictionary<int, IdleFleetInfo>();
-			this.lastSelectedStars = new Dictionary<int, int>();
+			this.lastSelectedStars = new Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D>();
 			
 			//TODO(v0.5): move to more appropriate begin turn setup
-			this.lastSelectedStars.Add(this.controller.CurrentPlayer, this.controller.ResearchCenter.Id);
+			this.lastSelectedStars.Add(this.controller.CurrentPlayer, this.controller.ResearchCenter.Position);
 			this.originOffset = new Vector2((float)this.lastSelectedStar.Position.X, (float)this.lastSelectedStar.Position.Y);
 			this.currentSelection = GalaxySelectionType.Star;
 		}
@@ -303,17 +303,21 @@ namespace Stareater.GLRenderers
 				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
 			
 			if (closestObjects.FoundObjects.Count == 0)
+			{
 				return;
+			}
 			
 			switch (closestObjects.FoundObjects[0].Type)
 			{
 				case GalaxyObjectType.Star:
 					this.currentSelection = GalaxySelectionType.Star;
-					this.lastSelectedStars[this.controller.CurrentPlayer] = closestObjects.Stars[closestObjects.FoundObjects[0].ResultIndex].Id;
+					this.lastSelectedStars[this.controller.CurrentPlayer] = closestObjects.Stars[0].Position;
+					this.galaxyViewListener.SystemSelected(controller.OpenStarSystem(closestObjects.Stars[0]));
 					break;
 				case GalaxyObjectType.IdleFleet:
 					this.currentSelection = GalaxySelectionType.IdleFleet;
-					this.lastSelectedIdleFleets[this.controller.CurrentPlayer] = closestObjects.IdleFleets[closestObjects.FoundObjects[0].ResultIndex];
+					this.lastSelectedIdleFleets[this.controller.CurrentPlayer] = closestObjects.IdleFleets[0];
+					this.galaxyViewListener.FleetSelected(closestObjects.IdleFleets[0]);
 					break;
 			}
 			
@@ -330,7 +334,7 @@ namespace Stareater.GLRenderers
 				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
 			
 			if (closestObjects.Stars.Count > 0)
-				this.systemOpenedHandler(controller.OpenStarSystem(closestObjects.Stars[0]));
+				this.galaxyViewListener.SystemOpened(controller.OpenStarSystem(closestObjects.Stars[0]));
 		}
 		#endregion
 		
