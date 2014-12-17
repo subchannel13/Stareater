@@ -70,26 +70,6 @@ namespace Stareater.Controllers
 		{
 			get { return (this.IsReadOnly) ? this.endTurnCopy.game : this.game; }
 		}
-		
-		/*private void initSelection()
-		{
-			this.lastSelectedFleet = new Dictionary<Player, IdleFleet>();
-			this.lastSelectedStar = new Dictionary<Player, StarData>();
-
-			foreach(Player player in this.game.Players) {
-				//TODO(v0.5): utilize stellar administration instead iterating colonies
-				var colonies = this.game.States.Colonies.OwnedBy(player);
-				var perStar = colonies.GroupBy(x => x.Star);
-				var starPopulation = perStar.Select(x => new KeyValuePair<StarData, double>(
-					x.Key, 
-					x.Aggregate(0.0, (sum, colony) => sum + colony.Population)
-				));
-				var maxPopulationStar = starPopulation.Aggregate((a, b) => (a.Value > b.Value) ? a : b).Key;
-				
-				this.lastSelectedFleet.Add(player, null);
-				this.lastSelectedStar.Add(player, maxPopulationStar);
-			}
-		}*/
 
 		#region Turn processing
 		public GameState State { get; private set; }

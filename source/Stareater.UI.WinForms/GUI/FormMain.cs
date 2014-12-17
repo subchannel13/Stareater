@@ -369,6 +369,17 @@ namespace Stareater.GUI
 		#region IGalaxyViewListener
 		void IGalaxyViewListener.FleetSelected(IdleFleetInfo fleetInfo)
 		{
+			this.fleetPanel.SuspendLayout();
+			this.fleetPanel.Controls.Clear();
+			
+			foreach (var fleet in fleetInfo.ShipGroups) {
+				var fleetView = new ShipGroupItem();
+				fleetView.SetData(fleet);
+				this.fleetPanel.Controls.Add(fleetView);
+			}
+			
+			this.fleetPanel.ResumeLayout();
+			
 			this.constructionManagement.Visible = false;
 			this.fleetPanel.Visible = true;
 		}
