@@ -98,6 +98,7 @@
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
     <Compile Include="Controllers\Data\ReportWrapper.cs" />
     <Compile Include="Controllers\Data\SavedGameInfo.cs" />
+    <Compile Include="Controllers\Data\ShipGroupInfo.cs" />
     <Compile Include="Controllers\Data\StellarisInfo.cs" />
     <Compile Include="Controllers\Data\TechnologyCategory.cs" />
     <Compile Include="Controllers\Data\TechnologyReportInfo.cs" />

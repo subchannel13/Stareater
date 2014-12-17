@@ -46,6 +46,7 @@ namespace Stareater.GUI
 			this.thumbnailImage.Location = new System.Drawing.Point(0, 0);
 			this.thumbnailImage.Name = "thumbnailImage";
 			this.thumbnailImage.Size = new System.Drawing.Size(60, 30);
+			this.thumbnailImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.thumbnailImage.TabIndex = 0;
 			this.thumbnailImage.TabStop = false;
 			// 
@@ -56,7 +57,7 @@ namespace Stareater.GUI
 									| System.Windows.Forms.AnchorStyles.Right)));
 			this.quantityLabel.Location = new System.Drawing.Point(66, 0);
 			this.quantityLabel.Name = "quantityLabel";
-			this.quantityLabel.Size = new System.Drawing.Size(84, 30);
+			this.quantityLabel.Size = new System.Drawing.Size(82, 28);
 			this.quantityLabel.TabIndex = 1;
 			this.quantityLabel.Text = "label1";
 			this.quantityLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -65,10 +66,11 @@ namespace Stareater.GUI
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.Controls.Add(this.quantityLabel);
 			this.Controls.Add(this.thumbnailImage);
 			this.Name = "ShipGroupItem";
-			this.Size = new System.Drawing.Size(150, 30);
+			this.Size = new System.Drawing.Size(148, 28);
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
 			this.ResumeLayout(false);
 		}
