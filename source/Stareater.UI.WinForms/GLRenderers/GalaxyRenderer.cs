@@ -41,6 +41,7 @@ namespace Stareater.GLRenderers
 		private const int NoCallList = -1;
 
 		private GameController controller;
+		private FleetController fleetController = null;
 		private Control eventDispatcher;
 		private IGalaxyViewListener galaxyViewListener;
 		
@@ -91,7 +92,7 @@ namespace Stareater.GLRenderers
 		{
 			this.eventDispatcher = eventDispatcher;
 
-			eventDispatcher.MouseMove += mousePan;
+			eventDispatcher.MouseMove += mouseMove;
 			eventDispatcher.MouseWheel += mouseZoom;
 			eventDispatcher.MouseClick += mouseClick;
 			eventDispatcher.MouseDoubleClick += mouseDoubleClick;
@@ -104,7 +105,7 @@ namespace Stareater.GLRenderers
 			if (eventDispatcher == null)
 				return;
 			
-			eventDispatcher.MouseMove -= mousePan;
+			eventDispatcher.MouseMove -= mouseMove;
 			eventDispatcher.MouseWheel -= mouseZoom;
 			eventDispatcher.MouseClick -= mouseClick;
 			eventDispatcher.MouseDoubleClick -= mouseDoubleClick;
@@ -239,6 +240,14 @@ namespace Stareater.GLRenderers
 			}
 		}
 
+		public void OnNewTurn()
+		{
+			if (this.fleetController != null && !this.fleetController.Valid)
+				this.fleetController = null;
+				
+			this.ResetLists();
+		}
+		
 		public void ResetLists()
 		{
 			GL.DeleteLists(staticList, 1);
@@ -247,7 +256,7 @@ namespace Stareater.GLRenderers
 		#endregion
 
 		#region Mouse events
-		private void mousePan(object sender, MouseEventArgs e)
+		private void mouseMove(object sender, MouseEventArgs e)
 		{
 			Vector4 currentPosition = mouseToView(e.X, e.Y);
 
@@ -317,7 +326,8 @@ namespace Stareater.GLRenderers
 				case GalaxyObjectType.IdleFleet:
 					this.currentSelection = GalaxySelectionType.IdleFleet;
 					this.lastSelectedIdleFleets[this.controller.CurrentPlayer] = closestObjects.IdleFleets[0];
-					this.galaxyViewListener.FleetSelected(closestObjects.IdleFleets[0]);
+					this.fleetController = this.controller.SelectFleet(closestObjects.IdleFleets[0]);
+					this.galaxyViewListener.FleetSelected(this.fleetController);
 					break;
 			}
 			

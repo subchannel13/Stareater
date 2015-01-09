@@ -138,6 +138,11 @@ namespace Stareater.GLRenderers
 			GL.PopMatrix();
 		}
 
+		public void OnNewTurn()
+		{
+			this.ResetLists();
+		}
+		
 		public void ResetLists()
 		{
 			//no op

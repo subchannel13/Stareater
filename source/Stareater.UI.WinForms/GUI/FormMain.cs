@@ -255,6 +255,11 @@ namespace Stareater.GUI
 			if (systemRenderer != null) systemRenderer.ResetLists();
 		}
 		
+		private void shipGroupItem_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			//TODO(v0.5)
+		}
+		
 		#region Canvas events
 
 		private void glCanvas_Load(object sender, EventArgs e)
@@ -349,8 +354,8 @@ namespace Stareater.GUI
 				return;
 			}
 			
-			if (galaxyRenderer != null) galaxyRenderer.ResetLists();
-			if (systemRenderer != null) systemRenderer.ResetLists();
+			if (galaxyRenderer != null) galaxyRenderer.OnNewTurn();
+			if (systemRenderer != null) systemRenderer.OnNewTurn();
 		}
 		
 		public void OnCombatPhaseStart()
@@ -367,18 +372,21 @@ namespace Stareater.GUI
 		#endregion
 		
 		#region IGalaxyViewListener
-		void IGalaxyViewListener.FleetSelected(IdleFleetInfo fleetInfo)
+		void IGalaxyViewListener.FleetSelected(FleetController fleetController)
 		{
-			this.fleetPanel.SuspendLayout();
-			this.fleetPanel.Controls.Clear();
+			this.shipList.SuspendLayout();
+			foreach (var control in this.shipList.Controls)
+				(control as ShipGroupItem).SelectionChanged -= shipGroupItem_SelectedIndexChanged;
+			this.shipList.Controls.Clear();
 			
-			foreach (var fleet in fleetInfo.ShipGroups) {
+			foreach (var fleet in fleetController.ShipGroups) {
 				var fleetView = new ShipGroupItem();
 				fleetView.SetData(fleet);
-				this.fleetPanel.Controls.Add(fleetView);
+				fleetView.SelectionChanged += shipGroupItem_SelectedIndexChanged;
+				this.shipList.Controls.Add(fleetView);
 			}
 			
-			this.fleetPanel.ResumeLayout();
+			this.shipList.ResumeLayout();
 			
 			this.constructionManagement.Visible = false;
 			this.fleetPanel.Visible = true;
@@ -404,7 +412,6 @@ namespace Stareater.GUI
 			this.fleetPanel.Visible = false;
 		}
 		#endregion
-		
 		
 	}
 }
