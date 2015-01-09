@@ -42,8 +42,8 @@
 			this.endTurnButton = new System.Windows.Forms.Button();
 			this.returnButton = new System.Windows.Forms.Button();
 			this.fleetPanel = new System.Windows.Forms.Panel();
+			this.shipList = new System.Windows.Forms.FlowLayoutPanel();
 			this.fleetMissionButton = new System.Windows.Forms.Button();
-			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.menuStrip.SuspendLayout();
 			this.fleetPanel.SuspendLayout();
 			this.SuspendLayout();
@@ -160,13 +160,21 @@
 			// fleetPanel
 			// 
 			this.fleetPanel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.fleetPanel.Controls.Add(this.flowLayoutPanel1);
+			this.fleetPanel.Controls.Add(this.shipList);
 			this.fleetPanel.Controls.Add(this.fleetMissionButton);
 			this.fleetPanel.Location = new System.Drawing.Point(234, 446);
 			this.fleetPanel.Name = "fleetPanel";
 			this.fleetPanel.Size = new System.Drawing.Size(417, 116);
 			this.fleetPanel.TabIndex = 5;
 			this.fleetPanel.Visible = false;
+			// 
+			// shipList
+			// 
+			this.shipList.AutoScroll = true;
+			this.shipList.Location = new System.Drawing.Point(3, 3);
+			this.shipList.Name = "shipList";
+			this.shipList.Size = new System.Drawing.Size(332, 109);
+			this.shipList.TabIndex = 1;
 			// 
 			// fleetMissionButton
 			// 
@@ -177,14 +185,6 @@
 			this.fleetMissionButton.TabIndex = 0;
 			this.fleetMissionButton.Text = "Missions";
 			this.fleetMissionButton.UseVisualStyleBackColor = true;
-			// 
-			// flowLayoutPanel1
-			// 
-			this.flowLayoutPanel1.AutoScroll = true;
-			this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
-			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-			this.flowLayoutPanel1.Size = new System.Drawing.Size(332, 109);
-			this.flowLayoutPanel1.TabIndex = 1;
 			// 
 			// FormMain
 			// 
@@ -210,7 +210,7 @@
 			this.PerformLayout();
 		}
 		private System.Windows.Forms.Button fleetMissionButton;
-		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+		private System.Windows.Forms.FlowLayoutPanel shipList;
 		private System.Windows.Forms.Panel fleetPanel;
 		private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem researchToolStripMenuItem;

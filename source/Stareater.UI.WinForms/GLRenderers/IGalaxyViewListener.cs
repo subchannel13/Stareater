@@ -6,7 +6,7 @@ namespace Stareater.GLRenderers
 {
 	public interface IGalaxyViewListener
 	{
-		void FleetSelected(IdleFleetInfo fleetInfo);
+		void FleetSelected(FleetController fleetController);
 		
 		void SystemOpened(StarSystemController systemController);
 		void SystemSelected(StarSystemController systemController);

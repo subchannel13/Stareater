@@ -17,6 +17,7 @@ namespace Stareater.GLRenderers
 		void DetachFromCanvas();
 		void ResetProjection();
 
+		void OnNewTurn();
 		void ResetLists();
 	}
 }

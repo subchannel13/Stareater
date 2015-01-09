@@ -103,6 +103,7 @@
     <Compile Include="Controllers\Data\TechnologyCategory.cs" />
     <Compile Include="Controllers\Data\TechnologyReportInfo.cs" />
     <Compile Include="Controllers\Data\TechnologyTopic.cs" />
+    <Compile Include="Controllers\FleetController.cs" />
     <Compile Include="Controllers\GameBuilder.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\SavesController.cs" />

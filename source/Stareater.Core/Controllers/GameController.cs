@@ -180,6 +180,11 @@ namespace Stareater.Controllers
 			return search.Finish(this.IdleFleetVisualPositioner);
 		}
 		
+		public FleetController SelectFleet(IdleFleetInfo idleFleet)
+		{
+			return new FleetController(idleFleet.Fleet, this.game);
+		}
+		
 		public IEnumerable<IdleFleetInfo> IdleFleets
 		{
 			get
