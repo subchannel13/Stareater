@@ -21,7 +21,8 @@ namespace Stareater.GLRenderers
 		private const int MinZoom = -10;
 		
 		private const float FarZ = -1;
-		private const float WormholeZ = -0.7f;
+		private const float WormholeZ = -0.8f;
+		private const float PathZ = -0.7f;
 		private const float StarColorZ = -0.6f;
 		private const float StarSaturationZ = -0.5f;
 		private const float StarNameZ = -0.4f;
@@ -47,7 +48,8 @@ namespace Stareater.GLRenderers
 		
 		private bool resetProjection = true;
 		private Matrix4 invProjection;
-		private int staticList = NoCallList;
+		private int starDrawList = NoCallList;
+		private int wormholeDrawList = NoCallList;
 
 		private int zoomLevel = 2;
 		private Vector4? lastMousePosition = null;
@@ -128,9 +130,9 @@ namespace Stareater.GLRenderers
 		{
 			GalaxyTextures.Get.Unload();
 			
-			if (staticList >= 0){
-				GL.DeleteLists(staticList, 1);
-				staticList = -1;
+			if (starDrawList >= 0){
+				GL.DeleteLists(starDrawList, 1);
+				starDrawList = -1;
 			}
 		}
 		
@@ -160,10 +162,10 @@ namespace Stareater.GLRenderers
 				resetProjection = false;
 			}
 
-			if (staticList == NoCallList) {
-				staticList = GL.GenLists(1);
-				GL.NewList(staticList, ListMode.CompileAndExecute);
-
+			if (wormholeDrawList == NoCallList) {
+				wormholeDrawList = GL.GenLists(1);
+				GL.NewList(wormholeDrawList, ListMode.CompileAndExecute);
+				
 				GL.Enable(EnableCap.Texture2D);
 				GL.Color4(Color.Blue);
 				
@@ -178,7 +180,40 @@ namespace Stareater.GLRenderers
 					
 					GL.PopMatrix();
 				}
+				
+				GL.EndList();
+			}
+			else
+				GL.CallList(wormholeDrawList);
+			
+			if (this.fleetController != null && this.fleetController.SimulationWaypoints != null)
+			{
+				GL.Enable(EnableCap.Texture2D);
+				GL.Color4(Color.LimeGreen);
+				
+				var last = this.fleetController.SimulationWaypoints[0];
+				for(int i = 1; i < this.fleetController.SimulationWaypoints.Count; i++) {
+					var next = this.fleetController.SimulationWaypoints[i];
+					GL.PushMatrix();
+					
+					GL.MultMatrix(pathMatrix(
+						new Vector2d(last.X, last.Y), 
+						new Vector2d(next.X, next.Y)
+					));
+					
+					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
+					
+					GL.PopMatrix();
+					last = next;
+				}
+			}
+			
+			if (starDrawList == NoCallList) {
+				starDrawList = GL.GenLists(1);
+				GL.NewList(starDrawList, ListMode.CompileAndExecute);
 
+				GL.Enable(EnableCap.Texture2D);
+				
 				foreach (var star in controller.Stars) {
 					GL.Color4(star.Color);
 					GL.PushMatrix();
@@ -205,20 +240,21 @@ namespace Stareater.GLRenderers
 					starNameZ += StarNameZRange / controller.StarCount;
 				}
 
-				foreach (var fleet in controller.IdleFleets) {
-					GL.Color4(fleet.Owner.Color);
-					
-					GL.PushMatrix();
-					GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, IdleFleetZ);
-					GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
-
-					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.FleetIndicator);
-					GL.PopMatrix();
-				}
 				GL.EndList();
 			}
 			else
-				GL.CallList(staticList);
+				GL.CallList(starDrawList);
+			
+			foreach (var fleet in controller.IdleFleets) {
+				GL.Color4(fleet.Owner.Color);
+				
+				GL.PushMatrix();
+				GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, IdleFleetZ);
+				GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
+
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.FleetIndicator);
+				GL.PopMatrix();
+			}
 
 			if (this.currentSelection == GalaxySelectionType.Star) {
 				GL.Color4(Color.White);
@@ -250,8 +286,10 @@ namespace Stareater.GLRenderers
 		
 		public void ResetLists()
 		{
-			GL.DeleteLists(staticList, 1);
-			staticList = NoCallList;
+			GL.DeleteLists(starDrawList, 1);
+			GL.DeleteLists(wormholeDrawList, 1);
+			this.starDrawList = NoCallList;
+			this.wormholeDrawList = NoCallList;
 		}
 		#endregion
 
@@ -263,12 +301,19 @@ namespace Stareater.GLRenderers
 			if (!lastMousePosition.HasValue)
 				lastMousePosition = currentPosition;
 
-			if (!e.Button.HasFlag(MouseButtons.Left)) {
+			if (e.Button.HasFlag(MouseButtons.Left)) 
+				mousePan(currentPosition);
+			else {
 				lastMousePosition = currentPosition;
 				panAbsPath = 0;
-				return;
+				
+				if (this.fleetController != null)
+					simulateFleetMovement(currentPosition);
 			}
-			
+		}
+		
+		private void mousePan(Vector4 currentPosition)
+		{
 			panAbsPath += (currentPosition - lastMousePosition.Value).Length;
 
 			originOffset -= (Vector4.Transform(currentPosition, invProjection) -
@@ -280,6 +325,22 @@ namespace Stareater.GLRenderers
 			lastMousePosition = currentPosition;
 			resetProjection = true;
 			eventDispatcher.Refresh();
+		}
+		
+		private void simulateFleetMovement(Vector4 currentPosition)
+		{
+			if (!this.fleetController.CanMove)
+				return;
+			
+			Vector4 mousePoint = Vector4.Transform(currentPosition, invProjection);
+			var closestObjects = controller.FindClosest(
+				mousePoint.X, mousePoint.Y, 
+				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
+			
+			if (closestObjects.Stars.Count == 0)
+				return;
+			
+			this.fleetController.SimulateTravel(closestObjects.Stars[0]);
 		}
 
 		private void mouseZoom(object sender, MouseEventArgs e)
@@ -310,6 +371,11 @@ namespace Stareater.GLRenderers
 			var closestObjects = controller.FindClosest(
 				mousePoint.X, mousePoint.Y, 
 				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
+			
+			if (closestObjects.FoundObjects.Count == 0 || closestObjects.FoundObjects[0].Type != GalaxyObjectType.IdleFleet) {
+				this.galaxyViewListener.FleetDeselected();
+				this.fleetController = null;
+			}
 			
 			if (closestObjects.FoundObjects.Count == 0)
 			{

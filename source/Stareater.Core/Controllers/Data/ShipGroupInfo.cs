@@ -5,18 +5,18 @@ namespace Stareater.Controllers.Data
 {
 	public class ShipGroupInfo
 	{
-		private ShipGroup shipGroup;
+		internal ShipGroup Data { get; private set; }
 		
 		internal ShipGroupInfo(ShipGroup shipGroup)
 		{
-			this.shipGroup = shipGroup;
+			this.Data = shipGroup;
 		}
 		
 		public DesignInfo Design 
 		{
 			get 
 			{
-				return new DesignInfo(this.shipGroup.Design);
+				return new DesignInfo(this.Data.Design);
 			}
 		}
 		
@@ -24,7 +24,7 @@ namespace Stareater.Controllers.Data
 		{
 			get
 			{
-				return this.shipGroup.Quantity;
+				return this.Data.Quantity;
 			}
 		}
 	}
