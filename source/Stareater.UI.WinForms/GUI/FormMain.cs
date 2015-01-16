@@ -30,6 +30,7 @@ namespace Stareater.GUI
 
 		private Queue<Action> delayedGuiEvents = new Queue<Action>();
 		private GameController controller = null;
+		private FleetController fleetController = null;
 		private OpenReportVisitor reportOpener;		
 		
 		private bool aisReady = false;
@@ -257,7 +258,11 @@ namespace Stareater.GUI
 		
 		private void shipGroupItem_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			//TODO(v0.5)
+			var groupItem = sender as ShipGroupItem;
+			if (groupItem.IsSelected)
+				this.fleetController.SelectGroup(groupItem.Data);
+			else
+				this.fleetController.DeselectGroup(groupItem.Data);
 		}
 		
 		#region Canvas events
@@ -372,8 +377,15 @@ namespace Stareater.GUI
 		#endregion
 		
 		#region IGalaxyViewListener
+		void IGalaxyViewListener.FleetDeselected() 
+		{
+			this.fleetController = null;
+		}
+		
 		void IGalaxyViewListener.FleetSelected(FleetController fleetController)
 		{
+			this.fleetController = fleetController;
+			
 			this.shipList.SuspendLayout();
 			foreach (var control in this.shipList.Controls)
 				(control as ShipGroupItem).SelectionChanged -= shipGroupItem_SelectedIndexChanged;
@@ -394,6 +406,7 @@ namespace Stareater.GUI
 		
 		void IGalaxyViewListener.SystemOpened(StarSystemController systemController)
 		{
+			this.fleetController = null;
 			galaxyRenderer.DetachFromCanvas();
 			
 			systemRenderer.AttachToCanvas(glCanvas);
@@ -403,12 +416,17 @@ namespace Stareater.GUI
 			constructionManagement.Visible = true;
 			endTurnButton.Visible = false;
 			returnButton.Visible = true;
+			
+			this.fleetController = null;
+			this.fleetPanel.Visible = false;
 		}
 		
 		void IGalaxyViewListener.SystemSelected(StarSystemController systemController)
 		{
 			//TODO(v0.5)
 			this.constructionManagement.Visible = false;
+			
+			this.fleetController = null;
 			this.fleetPanel.Visible = false;
 		}
 		#endregion

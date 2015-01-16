@@ -13,6 +13,7 @@ namespace Stareater.GUI
 	{
 		Color lastBackColor;
 		Color lastForeColor;
+		
 		bool isSelected = false;
 			
 		public ShipGroupInfo Data { get; private set; }
@@ -72,5 +73,10 @@ namespace Stareater.GUI
 		}
 		
 		public event EventHandler SelectionChanged;
+		
+		public bool IsSelected
+		{
+			get { return this.isSelected; }
+		}
 	}
 }
