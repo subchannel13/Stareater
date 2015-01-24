@@ -253,7 +253,7 @@ namespace Stareater.Controllers
 			
 			var reports = new ReportCollection();
 			foreach(var rawData in stateData[StatesDB.ReportsKey].To<IEnumerable<IkonComposite>>())
-				reports.Add(loadReport(rawData, deindexer));
+				reports.Add(ReportFactory.Load(rawData, deindexer));
 			        
 			var designs = new DesignCollection();
 			foreach(var rawData in stateData[StatesDB.DesignsKey].To<IEnumerable<IkonComposite>>()) {
@@ -281,15 +281,6 @@ namespace Stareater.Controllers
 				new StatesDB(stars, wormholes, planets, colonies, stellarises, techs, reports, designs, idleFleets),
 				players.ToArray()
 			);
-		}
-		
-		private static IReport loadReport(IkonComposite reportData, ObjectDeindexer deindexer)
-		{
-			if (reportData.Tag.Equals(TechnologyReport.SaveTag))
-				return TechnologyReport.Load(reportData, deindexer);
-			
-			//TODO(later): add error handling
-			throw new NotImplementedException();
 		}
 		
 		private static TemporaryDB initDerivates(StaticsDB statics, Player[] players, StatesDB states)

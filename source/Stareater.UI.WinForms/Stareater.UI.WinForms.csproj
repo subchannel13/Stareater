@@ -258,7 +258,9 @@
     <Compile Include="GUI\SavedGameItemView.Designer.cs">
       <DependentUpon>SavedGameItemView.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ShipGroupItem.cs" />
+    <Compile Include="GUI\ShipGroupItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="GUI\ShipGroupItem.Designer.cs">
       <DependentUpon>ShipGroupItem.cs</DependentUpon>
     </Compile>

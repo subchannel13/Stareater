@@ -324,6 +324,7 @@
     <Compile Include="Players\PlayerType.cs" />
     <Compile Include="Players\Reports\IReport.cs" />
     <Compile Include="Players\Reports\IReportVisitor.cs" />
+    <Compile Include="Players\Reports\ReportFactory.cs" />
     <Compile Include="Players\Reports\TechnologyReport.cs" />
     <Compile Include="Ships\Design.cs">
       <DependentUpon>Design.tt</DependentUpon>
@@ -332,6 +333,7 @@
     </Compile>
     <Compile Include="Ships\Design.partial.cs" />
     <Compile Include="Ships\Hull.cs" />
+    <Compile Include="Ships\Missions\MissionFactory.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />
     <Compile Include="Utils\Collections\IndexedCollectionBase.cs">
       <AutoGen>True</AutoGen>
