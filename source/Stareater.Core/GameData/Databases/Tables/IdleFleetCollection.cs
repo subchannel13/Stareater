@@ -1,48 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stareater.Utils.Collections;
+using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 using Stareater.Players;
 using Stareater.Ships;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class IdleFleetCollection : ICollection<IdleFleet>, IDelayedRemoval<IdleFleet>
+	class FleetCollection : ICollection<Fleet>, IDelayedRemoval<Fleet>
 	{
-		HashSet<IdleFleet> innerSet = new HashSet<IdleFleet>();
-		List<IdleFleet> toRemove = new List<IdleFleet>();
+		HashSet<Fleet> innerSet = new HashSet<Fleet>();
+		List<Fleet> toRemove = new List<Fleet>();
 
-		Dictionary<Player, List<IdleFleet>> OwnedByIndex = new Dictionary<Player, List<IdleFleet>>();
-		Dictionary<StarData, List<IdleFleet>> AtStarIndex = new Dictionary<StarData, List<IdleFleet>>();
+		Dictionary<Player, List<Fleet>> OwnedByIndex = new Dictionary<Player, List<Fleet>>();
+		Dictionary<Vector2D, List<Fleet>> AtIndex = new Dictionary<Vector2D, List<Fleet>>();
 
-		public IList<IdleFleet> OwnedBy(Player key) {
+		public IList<Fleet> OwnedBy(Player key) {
 			if (OwnedByIndex.ContainsKey(key))
 				return OwnedByIndex[key];
 			
-			return new List<IdleFleet>();
+			return new List<Fleet>();
 		}
 
-		public IList<IdleFleet> AtStar(StarData key) {
-			if (AtStarIndex.ContainsKey(key))
-				return AtStarIndex[key];
+		public IList<Fleet> At(Vector2D key) {
+			if (AtIndex.ContainsKey(key))
+				return AtIndex[key];
 			
-			return new List<IdleFleet>();
+			return new List<Fleet>();
 		}
 	
-		public void Add(IdleFleet item)
+		public void Add(Fleet item)
 		{
 			innerSet.Add(item); 
 
 			if (!OwnedByIndex.ContainsKey(item.Owner))
-				OwnedByIndex.Add(item.Owner, new List<IdleFleet>());
+				OwnedByIndex.Add(item.Owner, new List<Fleet>());
 			OwnedByIndex[item.Owner].Add(item);
 
-			if (!AtStarIndex.ContainsKey(item.Location))
-				AtStarIndex.Add(item.Location, new List<IdleFleet>());
-			AtStarIndex[item.Location].Add(item);
+			if (!AtIndex.ContainsKey(item.Position))
+				AtIndex.Add(item.Position, new List<Fleet>());
+			AtIndex[item.Position].Add(item);
 		}
 
-		public void Add(IEnumerable<IdleFleet> items)
+		public void Add(IEnumerable<Fleet> items)
 		{
 			foreach(var item in items)
 				Add(item);
@@ -53,15 +54,15 @@ namespace Stareater.GameData.Databases.Tables
 			innerSet.Clear();
 
 			OwnedByIndex.Clear();
-			AtStarIndex.Clear();
+			AtIndex.Clear();
 		}
 
-		public bool Contains(IdleFleet item)
+		public bool Contains(Fleet item)
 		{
 			return innerSet.Contains(item);
 		}
 
-		public void CopyTo(IdleFleet[] array, int arrayIndex)
+		public void CopyTo(Fleet[] array, int arrayIndex)
 		{
 			innerSet.CopyTo(array, arrayIndex);
 		}
@@ -76,11 +77,11 @@ namespace Stareater.GameData.Databases.Tables
 			get { return false; }
 		}
 
-		public bool Remove(IdleFleet item)
+		public bool Remove(Fleet item)
 		{
 			if (innerSet.Remove(item)) {
 				OwnedByIndex[item.Owner].Remove(item);
-				AtStarIndex[item.Location].Remove(item);
+				AtIndex[item.Position].Remove(item);
 			
 				return true;
 			}
@@ -88,7 +89,7 @@ namespace Stareater.GameData.Databases.Tables
 			return false;
 		}
 
-		public IEnumerator<IdleFleet> GetEnumerator()
+		public IEnumerator<Fleet> GetEnumerator()
 		{
 			return innerSet.GetEnumerator();
 		}
@@ -98,7 +99,7 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
-		public void PendRemove(IdleFleet element)
+		public void PendRemove(Fleet element)
 		{
 			toRemove.Add(element);
 		}

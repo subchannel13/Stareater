@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Ikadn;
 using Ikadn.Ikon.Types;
 using Stareater.Galaxy;
+using Stareater.Ships.Missions;
 using Stareater.Utils.Collections;
 
 namespace Stareater.GameData.Databases.Tables
@@ -38,6 +38,16 @@ namespace Stareater.GameData.Databases.Tables
 			foreach(var topic in rawData.To<IEnumerable<string>>())
 				queue.Add(topic, queue.Count);
 			
+			return queue;
+		}
+		
+		private Dictionary<Fleet, AMission> loadShipOrders(IkadnBaseObject rawData, ObjectDeindexer deindexer)
+		{
+			var queue = new Dictionary<Fleet, AMission>();
+			
+			foreach(var orderData in rawData.To<IEnumerable<IkonComposite>>())
+				queue.Add(deindexer.Get<Fleet>(orderData[IdKey].To<int>()), MissionFactory.Load(orderData[OrdersKey], deindexer));
+				
 			return queue;
 		}
 		
@@ -76,9 +86,28 @@ namespace Stareater.GameData.Databases.Tables
 			return queue;
 		}
 		
+		private IkadnBaseObject saveShipOrders(ObjectIndexer indexer)
+		{
+			var queue = new IkonArray();
+			
+			foreach(var order in this.ShipOrders) {
+				IkonComposite orderData;
+				
+				orderData = new IkonComposite(ShipOrderTag);
+				orderData.Add(IdKey, new IkonInteger(indexer.IndexOf(order.Key)));
+				
+				orderData.Add(OrdersKey, order.Value.Save(indexer));
+				queue.Add(orderData);
+			}
+			
+			return queue;
+		}
+		
 		#region Saving keys
 		private const string ColonyConstructionTag = "Colony";
+		private const string ShipOrderTag = "Order";
 		private const string StellarisConstructionTag = "Stellaris";
+		private const string IdKey = "id";
 		private const string LocationKey = "id";
 		private const string OrdersKey = "orders";
  		#endregion

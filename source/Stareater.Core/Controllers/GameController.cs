@@ -175,9 +175,9 @@ namespace Stareater.Controllers
 		{
 			var search = new GalaxySearch(x, y, searchRadius);
 			search.Compare(this.game.States.Stars);
-			search.Compare(this.game.States.IdleFleets, this.IdleFleetVisualPositioner);
+			search.Compare(this.game.States.Fleets, this.IdleFleetVisualPositioner);
 			
-			return search.Finish(this.IdleFleetVisualPositioner);
+			return search.Finish(game, this.IdleFleetVisualPositioner);
 		}
 		
 		public FleetController SelectFleet(IdleFleetInfo idleFleet)
@@ -192,7 +192,7 @@ namespace Stareater.Controllers
 				var game = this.GameInstance;
 				
 				//TODO(v0.5) add fleets of other players 
-				return game.States.IdleFleets.OwnedBy(game.CurrentPlayer).Select(x => new IdleFleetInfo(x, this.IdleFleetVisualPositioner));
+				return game.States.Fleets.OwnedBy(game.CurrentPlayer).Select(x => new IdleFleetInfo(x, game, this.IdleFleetVisualPositioner));
 			}
 		}
 		
