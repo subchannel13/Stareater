@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
+using Stareater.Ships.Missions;
 
 namespace Stareater.GameData.Databases.Tables 
 {
@@ -15,6 +16,7 @@ namespace Stareater.GameData.Databases.Tables
 		public Dictionary<string, int> DevelopmentQueue { get; set; }
 		public string ResearchFocus { get; set; }
 		public Dictionary<AConstructionSite, ConstructionOrders> ConstructionPlans { get; set; }
+		public Dictionary<Fleet, AMission> ShipOrders { get; set; }
 
 		public PlayerOrders() 
 		{
@@ -22,7 +24,9 @@ namespace Stareater.GameData.Databases.Tables
 			this.DevelopmentQueue = new Dictionary<string, int>();
 			this.ResearchFocus = null;
 			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
+			this.ShipOrders = new Dictionary<Fleet, AMission>();
  
+			 
 		} 
 
 		private PlayerOrders(PlayerOrders original, PlayersRemap playersRemap) 
@@ -35,7 +39,11 @@ namespace Stareater.GameData.Databases.Tables
 			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
 			foreach(var item in original.ConstructionPlans)
 				this.ConstructionPlans.Add(playersRemap.Site(item.Key), item.Value.Copy());
+			this.ShipOrders = new Dictionary<Fleet, AMission>();
+			foreach(var item in original.ShipOrders)
+				this.ShipOrders.Add(playersRemap.Fleets[item.Key], playersRemap.Missions[item.Value]);
  
+			 
 		}
 
 		private PlayerOrders(IkonComposite rawData, ObjectDeindexer deindexer) 
@@ -51,7 +59,11 @@ namespace Stareater.GameData.Databases.Tables
 
 			var constructionPlansSave = rawData[ConstructionPlansKey];
 			this.ConstructionPlans = loadConstruction(constructionPlansSave, deindexer);
+
+			var shipOrdersSave = rawData[ShipOrdersKey];
+			this.ShipOrders = loadShipOrders(shipOrdersSave, deindexer);
  
+			 
 		}
 
 		internal PlayerOrders Copy(PlayersRemap playersRemap) 
@@ -72,6 +84,8 @@ namespace Stareater.GameData.Databases.Tables
 			data.Add(ResearchFocusKey, new IkonText(this.ResearchFocus));
 
 			data.Add(ConstructionPlansKey, saveConstruction(indexer));
+
+			data.Add(ShipOrdersKey, saveShipOrders(indexer));
 			return data;
  
 		}
@@ -95,7 +109,13 @@ namespace Stareater.GameData.Databases.Tables
 		private const string ConstructionPlansTag = "constructionPlans";
 		private const string AConstructionSiteKey = "aconstructionsite";
 		private const string ConstructionOrdersKey = "constructionorders";
+		private const string ShipOrdersKey = "shipOrders";
+		private const string ShipOrdersTag = "shipOrders";
+		private const string FleetKey = "fleet";
+		private const string AMissionKey = "amission";
  
 		#endregion
+
+ 
 	}
 }

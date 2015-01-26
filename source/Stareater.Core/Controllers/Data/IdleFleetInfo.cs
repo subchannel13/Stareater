@@ -13,16 +13,16 @@ namespace Stareater.Controllers.Data
 		public StarData Location { get; private set; }
 		public Vector2D VisualPosition { get; private set; }
 		
-		internal IdleFleet Fleet { get; private set; }
+		internal Fleet Fleet { get; private set; }
 		
-		internal IdleFleetInfo(IdleFleet fleet, Methods.VisualPositionFunc visualPositionFunc)
+		internal IdleFleetInfo(Fleet fleet, Game game, Methods.VisualPositionFunc visualPositionFunc)
 		{
 			this.Fleet = fleet;
 			
-			this.Location = fleet.Location;
+			this.Location = game.States.Stars.At(fleet.Position);
 			this.Owner = new PlayerInfo(fleet.Owner);
 			
-			this.VisualPosition = visualPositionFunc(fleet.Location.Position);
+			this.VisualPosition = visualPositionFunc(fleet.Position);
 		}
 	}
 }

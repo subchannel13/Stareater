@@ -130,8 +130,8 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Galaxy\Colony.partial.cs" />
-    <Compile Include="Galaxy\IdleFleet.cs">
-      <DependentUpon>IdleFleet.tt</DependentUpon>
+    <Compile Include="Galaxy\Fleet.cs">
+      <DependentUpon>Fleet.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Galaxy\LocationBody.cs" />
@@ -333,7 +333,10 @@
     </Compile>
     <Compile Include="Ships\Design.partial.cs" />
     <Compile Include="Ships\Hull.cs" />
+    <Compile Include="Ships\Missions\AMission.cs" />
     <Compile Include="Ships\Missions\MissionFactory.cs" />
+    <Compile Include="Ships\Missions\MissionType.cs" />
+    <Compile Include="Ships\Missions\StationaryMission.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />
     <Compile Include="Utils\Collections\IndexedCollectionBase.cs">
       <AutoGen>True</AutoGen>
@@ -400,9 +403,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Colony.cs</LastGenOutput>
     </None>
-    <None Include="Galaxy\IdleFleet.tt">
+    <None Include="Galaxy\Fleet.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IdleFleet.cs</LastGenOutput>
+      <LastGenOutput>Fleet.cs</LastGenOutput>
     </None>
     <None Include="Galaxy\Planet.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -545,7 +548,9 @@
     <None Include="AppData\Expressions\Parser.frame" />
     <None Include="AppData\Expressions\Scanner.frame" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Ships\Missions" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

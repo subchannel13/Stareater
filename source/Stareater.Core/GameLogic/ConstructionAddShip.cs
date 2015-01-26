@@ -3,6 +3,7 @@ using System.Linq;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases;
 using Stareater.Ships;
+using Stareater.Ships.Missions;
 
 namespace Stareater.GameLogic
 {
@@ -18,11 +19,11 @@ namespace Stareater.GameLogic
 		public void Apply(StatesDB states, AConstructionSite site, double quantity)
 		{
 			//TODO(v0.5) report new ship construction
-			var fleet = states.IdleFleets.AtStar(site.Location.Star).Where(x => x.Owner == site.Owner).FirstOrDefault();
+			var fleet = states.Fleets.At(site.Location.Star.Position).Where(x => x.Owner == site.Owner).FirstOrDefault();
 			
 			if (fleet == null) {
-				fleet = new IdleFleet(site.Owner, site.Location.Star);
-				states.IdleFleets.Add(fleet);
+				fleet = new Fleet(site.Owner, site.Location.Star.Position, new StationaryMission(site.Location.Star));
+				states.Fleets.Add(fleet);
 			}
 			
 			long intQuantity = (long)Math.Floor(quantity);

@@ -232,7 +232,7 @@ private void WriteFieldCopys(params DataInfo[] dataInfos)
 	var indent = new FirstCase("", "			");
 	foreach(var field in dataInfos) 
 	{
-		if (field.HasCopyMethod)
+		if (field.HasCopyMethod && field.CopyFromRemap == null)
 		{
 			var commaOrNot = new FirstCase("", ", ");
 			Write(indent.Get + "this."  + field.Name + " = original." + field.Name + ".Copy(");

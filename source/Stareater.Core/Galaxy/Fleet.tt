@@ -2,15 +2,18 @@
 <#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
 	
 	usings.Add("System");
+	usings.Add("NGenerics.DataStructures.Mathematical");
 	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.GameData.Databases.Tables");
 	usings.Add("Stareater.Players");
+	usings.Add("Stareater.Ships.Missions");
 	
 	modifer = "partial";
 	
-	Generate("Stareater.Galaxy", "IdleFleet",
+	Generate("Stareater.Galaxy", "Fleet",
 		new DataInfo("Owner", "Player").FromIndexer(),
-		new DataInfo("Location", "StarData").FromIndexer(),
+		new DataInfo("Position", "Vector2D"),
+		new DataInfo("Mission", "AMission").IsState(Flag.GalaxyRemap).LoadCode("MissionFactory.Load(#SaveName#, deindexer)"),
 		new DataInfo("Ships", "ShipGroupCollection", 
 			new GenericParamInfo("ShipGroup").IsState(Flag.PlayerRemap)
 		).EmptyInit()

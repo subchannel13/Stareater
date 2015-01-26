@@ -2,12 +2,13 @@
 <#@ include file="$(ProjectDir)/Utils/Collections/IndexedCollectionBase.tt" #><#
 	
 	namespaceName = "Stareater.GameData.Databases.Tables";
+	usings.Add("NGenerics.DataStructures.Mathematical");
 	usings.Add("Stareater.Galaxy");
 	usings.Add("Stareater.Players");
 	usings.Add("Stareater.Ships");
 	
-	Generate("IdleFleetCollection", "IdleFleet",
+	Generate("FleetCollection", "Fleet",
 		new ViewInfo("OwnedBy", "Player", "Owner", ViewType.Collection),
-		new ViewInfo("AtStar", "StarData", "Location", ViewType.Collection)
+		new ViewInfo("At", "Vector2D", "Position", ViewType.Collection)
 	);
 #>

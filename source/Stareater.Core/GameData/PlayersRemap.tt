@@ -5,13 +5,15 @@
 	usings.Add("Stareater.Galaxy");
 	usings.Add("Stareater.Players");
 	usings.Add("Stareater.Ships");
+	usings.Add("Stareater.Ships.Missions");
 	
 	Begin("Stareater.GameData", "PlayersRemap",
 		new DataInfo("Players", "IDictionary<Player, Player>"),
 		new DataInfo("Colonies", "IDictionary<AConstructionSite, Colony>"),
 		new DataInfo("Stellarises", "IDictionary<AConstructionSite, StellarisAdmin>"),
 		new DataInfo("Designs", "IDictionary<Design, Design>"),
-		new DataInfo("IdleFleets", "IDictionary<IdleFleet, IdleFleet>")
+		new DataInfo("Fleets", "IDictionary<Fleet, Fleet>"),
+		new DataInfo("Missions", "IDictionary<AMission, AMission>")
 	);
 #>
 

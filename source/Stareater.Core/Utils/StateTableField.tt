@@ -44,8 +44,10 @@ private static string initPlayerRemapCode(string type, string readCode, out bool
 		copyFromRemap = "playersRemap.Stellarises[" + readCode + "]";
 	else if (type == "Design")
 		copyFromRemap = "playersRemap.Designs[" + readCode + "]";
-	else if (type == "IdleFleet")
-		copyFromRemap = "playersRemap.IdleFleets[" + readCode + "]";
+	else if (type == "Fleet")
+		copyFromRemap = "playersRemap.Fleets[" + readCode + "]";
+	else if (type == "AMission")
+		copyFromRemap = "playersRemap.Missions[" + readCode + "]";
 		
 	copyNeedsRemap = (copyFromRemap != null) && (copyFromRemap.StartsWith("playersRemap"));	
 	return copyFromRemap;	

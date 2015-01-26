@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Ikadn.Ikon.Types;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 using Stareater.Ships;
+using Stareater.Ships.Missions;
 using Stareater.Utils.Collections;
 
 namespace Stareater.GameData.Databases
@@ -22,7 +22,7 @@ namespace Stareater.GameData.Databases
 		public ColonyCollection Colonies { get; private set; }
 		public StellarisCollection Stellarises { get; private set; }
 		
-		public IdleFleetCollection IdleFleets { get; private set; }
+		public FleetCollection Fleets { get; private set; }
 		
 		public DesignCollection Designs { get; private set; }
 		public ReportCollection Reports { get; private set; }
@@ -33,7 +33,7 @@ namespace Stareater.GameData.Databases
 		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, 
 		                ColonyCollection Colonies, StellarisCollection stellarises, 
 		                TechProgressCollection technologyProgresses, ReportCollection reports,
-		                DesignCollection designs, IdleFleetCollection idleFleets)
+		                DesignCollection designs, FleetCollection idleFleets)
 		{
 			this.Colonies = Colonies;
 			this.Planets = planets;
@@ -43,7 +43,7 @@ namespace Stareater.GameData.Databases
 			this.TechnologyAdvances = technologyProgresses;
 			this.Reports = reports;
 			this.Designs = designs;
-			this.IdleFleets = idleFleets; 
+			this.Fleets = idleFleets; 
 		}
 
 		private StatesDB()
@@ -75,8 +75,8 @@ namespace Stareater.GameData.Databases
 			copy.Stellarises = new StellarisCollection();
 			copy.Stellarises.Add(playersRemap.Stellarises.Values);
 
-			copy.IdleFleets = new IdleFleetCollection();
-			copy.IdleFleets.Add(playersRemap.IdleFleets.Values);
+			copy.Fleets = new FleetCollection();
+			copy.Fleets.Add(playersRemap.Fleets.Values);
 			
 			copy.Designs = new DesignCollection();
 			copy.Designs.Add(playersRemap.Designs.Values);
@@ -104,13 +104,19 @@ namespace Stareater.GameData.Databases
 				new Dictionary<AConstructionSite, Colony>(),
 				new Dictionary<AConstructionSite, StellarisAdmin>(),
 				new Dictionary<Design, Design>(),
-				new Dictionary<IdleFleet, IdleFleet>()
+				new Dictionary<Fleet, Fleet>(),
+				new Dictionary<AMission, AMission>()
 			);
 
 			remap.Colonies = this.Colonies.ToDictionary(x => (AConstructionSite)x, x => x.Copy(remap, galaxyRemap));
 			remap.Stellarises = this.Stellarises.ToDictionary(x => (AConstructionSite)x, x => x.Copy(remap, galaxyRemap));
 			remap.Designs = this.Designs.ToDictionary(x => x, x => x.Copy(remap));
-			remap.IdleFleets = this.IdleFleets.ToDictionary(x => x, x => x.Copy(remap, galaxyRemap));
+			remap.Missions = this.Fleets.ToDictionary(x => x.Mission, x => x.Mission.Copy(remap, galaxyRemap));
+			remap.Fleets = this.Fleets.ToDictionary(x => x, x => x.Copy(remap, galaxyRemap));
+			
+			foreach(var orderList in playersRemap.Keys.Select(x => x.Orders))
+				foreach(var mission in orderList.ShipOrders.Values)
+					remap.Missions.Add(mission, mission.Copy(remap, galaxyRemap));
 			
 			return remap;
 		}
@@ -128,7 +134,7 @@ namespace Stareater.GameData.Databases
 			data.Add(ColoniesKey, new IkonArray().AddAll(this.Colonies.Select(x => x.Save(indexer))));
 			data.Add(StellarisesKey, new IkonArray().AddAll(this.Stellarises.Select(x => x.Save(indexer))));
 
-			data.Add(IdleFleetsKey, new IkonArray().AddAll(this.IdleFleets.Select(x => x.Save(indexer))));
+			data.Add(IdleFleetsKey, new IkonArray().AddAll(this.Fleets.Select(x => x.Save(indexer))));
 			data.Add(DesignsKey, new IkonArray().AddAll(this.Designs.Select(x => x.Save(indexer))));
 			data.Add(ReportsKey, new IkonArray().AddAll(this.Reports.Select(x => x.Save(indexer))));
 			data.Add(TechnologyAdvancesKey, new IkonArray().AddAll(this.TechnologyAdvances.Select(x => x.Save(indexer))));

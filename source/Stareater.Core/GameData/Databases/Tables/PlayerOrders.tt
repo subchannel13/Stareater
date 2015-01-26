@@ -5,6 +5,7 @@
 	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.Galaxy");
 	usings.Add("Stareater.GameData.Databases.Tables");
+	usings.Add("Stareater.Ships.Missions");
 	
 	modifer = "partial";
 
@@ -18,6 +19,10 @@
 		new DataInfo("ConstructionPlans", "Dictionary", 
 			new GenericParamInfo("AConstructionSite"), 
 			new GenericParamInfo("ConstructionOrders").CopyMethod("Copy()")
-		).Public().EmptyInit().SaveAssign("saveConstruction(indexer)").LoadCode("loadConstruction(" + SaveName + ", deindexer)")
+		).Public().EmptyInit().SaveAssign("saveConstruction(indexer)").LoadCode("loadConstruction(" + SaveName + ", deindexer)"),
+		new DataInfo("ShipOrders", "Dictionary", 
+			new GenericParamInfo("Fleet"), 
+			new GenericParamInfo("AMission")
+		).Public().EmptyInit().SaveAssign("saveShipOrders(indexer)").LoadCode("loadShipOrders(" + SaveName + ", deindexer)")
 	);
 #>
