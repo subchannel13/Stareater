@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Data;
+using Stareater.Controllers.Data.Ships;
 using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.Players;
 using Stareater.Players.Reports;
+using Stareater.Ships.Missions;
 using Stareater.Utils;
 
 namespace Stareater.Controllers
@@ -144,7 +146,7 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Map related
-		public Methods.VisualPositionFunc IdleFleetVisualPositioner { get; set; }
+		public IVisualPositioner VisualPositioner { get; set; }
 		
 		public bool IsStarVisited(StarData star)
 		{
@@ -173,26 +175,42 @@ namespace Stareater.Controllers
 		
 		public GalaxySearchResult FindClosest(float x, float y, float searchRadius)
 		{
-			var search = new GalaxySearch(x, y, searchRadius);
-			search.Compare(this.game.States.Stars);
-			search.Compare(this.game.States.Fleets, this.IdleFleetVisualPositioner);
+			var game = this.GameInstance;
 			
-			return search.Finish(game, this.IdleFleetVisualPositioner);
+			var search = new GalaxySearch(x, y, searchRadius);
+			search.Compare(game.States.Stars);
+			search.Compare(this.Fleets, game, this.VisualPositioner);
+			
+			return search.Finish(game, this.VisualPositioner);
 		}
 		
-		public FleetController SelectFleet(IdleFleetInfo idleFleet)
+		public FleetController SelectFleet(FleetInfo idleFleet)
 		{
 			return new FleetController(idleFleet.Fleet, this.game);
 		}
 		
-		public IEnumerable<IdleFleetInfo> IdleFleets
+		public IEnumerable<FleetInfo> Fleets
 		{
 			get
 			{
 				var game = this.GameInstance;
 				
 				//TODO(v0.5) add fleets of other players 
-				return game.States.Fleets.OwnedBy(game.CurrentPlayer).Select(x => new IdleFleetInfo(x, game, this.IdleFleetVisualPositioner));
+				foreach(var fleet in game.States.Fleets.OwnedBy(game.CurrentPlayer)) {
+					AMission newMission = null;
+					AMission oldMission = fleet.Mission;
+					
+					if (game.CurrentPlayer.Orders.ShipOrders.ContainsKey(fleet))
+						newMission = game.CurrentPlayer.Orders.ShipOrders[fleet];
+					else
+						newMission = oldMission;
+					
+					if (newMission == null || newMission.Type != MissionType.Regroup)
+						yield return new FleetInfo(fleet, newMission, oldMission, game, this.VisualPositioner);
+					//TODO(v0.5) implement fleet regrouping
+					/*else
+						foreach(var subfleet in (order as RegroupMission).*/
+				}
 			}
 		}
 		

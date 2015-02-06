@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Data;
+using Stareater.Controllers.Data.Ships;
 using Stareater.Galaxy;
+using Stareater.Ships.Missions;
 
 namespace Stareater.Controllers
 {
@@ -54,10 +57,12 @@ namespace Stareater.Controllers
 			selection.Add(group.Data);
 		}
 		
-		public void Send(IEnumerable<Vector2D> waypoints)
+		public FleetController Send(IEnumerable<Vector2D> waypoints)
 		{
-			//TODO(0.5)
-			//this.game.CurrentPlayer.Orders;
+			//TODO(0.5) fleet splitting and merging
+			this.game.CurrentPlayer.Orders.ShipOrders[this.fleet] = new MoveMission(waypoints);
+			
+			return new FleetController(this.fleet, this.game);
 		}
 		
 		public void SimulateTravel(StarData destination)

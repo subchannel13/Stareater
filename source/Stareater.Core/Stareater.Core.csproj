@@ -77,7 +77,6 @@
     <Compile Include="Controllers\Data\BuildingInfo.cs" />
     <Compile Include="Controllers\Data\ColonyInfo.cs" />
     <Compile Include="Controllers\Data\ConstructableItem.cs" />
-    <Compile Include="Controllers\Data\DesignInfo.cs" />
     <Compile Include="Controllers\Data\DevelopmentFocusInfo.cs" />
     <Compile Include="Controllers\Data\FoundGalaxyObject.cs" />
     <Compile Include="Controllers\Data\GalaxyObjectType.cs" />
@@ -89,8 +88,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Controllers\Data\GameState.cs" />
-    <Compile Include="Controllers\Data\HullInfo.cs" />
-    <Compile Include="Controllers\Data\IdleFleetInfo.cs" />
     <Compile Include="Controllers\Data\IGameStateListener.cs" />
     <Compile Include="Controllers\Data\IReportInfo.cs" />
     <Compile Include="Controllers\Data\IReportInfoVisitor.cs" />
@@ -98,7 +95,14 @@
     <Compile Include="Controllers\Data\PlayerInfo.cs" />
     <Compile Include="Controllers\Data\ReportWrapper.cs" />
     <Compile Include="Controllers\Data\SavedGameInfo.cs" />
-    <Compile Include="Controllers\Data\ShipGroupInfo.cs" />
+    <Compile Include="Controllers\Data\Ships\AFleetMission.cs" />
+    <Compile Include="Controllers\Data\Ships\DesignInfo.cs" />
+    <Compile Include="Controllers\Data\Ships\FleetInfo.cs" />
+    <Compile Include="Controllers\Data\Ships\FleetMissionType.cs" />
+    <Compile Include="Controllers\Data\Ships\HullInfo.cs" />
+    <Compile Include="Controllers\Data\Ships\MoveMissionInfo.cs" />
+    <Compile Include="Controllers\Data\Ships\ShipGroupInfo.cs" />
+    <Compile Include="Controllers\Data\Ships\StationaryMissionInfo.cs" />
     <Compile Include="Controllers\Data\StellarisInfo.cs" />
     <Compile Include="Controllers\Data\TechnologyCategory.cs" />
     <Compile Include="Controllers\Data\TechnologyReportInfo.cs" />
@@ -336,6 +340,8 @@
     <Compile Include="Ships\Missions\AMission.cs" />
     <Compile Include="Ships\Missions\MissionFactory.cs" />
     <Compile Include="Ships\Missions\MissionType.cs" />
+    <Compile Include="Ships\Missions\MoveMission.cs" />
+    <Compile Include="Ships\Missions\RegroupMission.cs" />
     <Compile Include="Ships\Missions\StationaryMission.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />
     <Compile Include="Utils\Collections\IndexedCollectionBase.cs">
@@ -352,6 +358,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Utils\IVisualPositioner.cs" />
     <Compile Include="Utils\NumberFormatters\RoundingMethod.cs" />
     <Compile Include="Utils\ProgressData.cs" />
     <Compile Include="Utils\Collections\IDelayedRemoval.cs" />
@@ -549,7 +556,11 @@
     <None Include="AppData\Expressions\Scanner.frame" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Controllers\Data\Ships" />
     <Folder Include="Ships\Missions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ProfilingSessions\Session20150206_114435.sdps" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

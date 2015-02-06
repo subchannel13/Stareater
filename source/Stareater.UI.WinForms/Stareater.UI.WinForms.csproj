@@ -84,6 +84,7 @@
     <Compile Include="GLRenderers\TextRenderUtil.cs" />
     <Compile Include="GLRenderers\TextureInfo.cs" />
     <Compile Include="GLRenderers\TextureUtils.cs" />
+    <Compile Include="GLRenderers\VisualPositioner.cs" />
     <Compile Include="GUI\BuildingItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
