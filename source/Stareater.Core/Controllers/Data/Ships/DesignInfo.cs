@@ -1,7 +1,7 @@
 ﻿using System;
 using Stareater.Ships;
 
-namespace Stareater.Controllers.Data
+namespace Stareater.Controllers.Data.Ships
 {
 	public class DesignInfo
 	{

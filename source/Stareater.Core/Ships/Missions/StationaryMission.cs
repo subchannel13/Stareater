@@ -43,7 +43,7 @@ namespace Stareater.Ships.Missions
 		
 		#region Saving keys
 		public const string MissionTag = "Stay";
-		private const string LocationKey = "id";
+		private const string LocationKey = "where";
  		#endregion
 	}
 }

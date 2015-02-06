@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NGenerics.DataStructures.Mathematical;
 using NGenerics.Extensions;
+using Stareater.Controllers.Data.Ships;
 using Stareater.Galaxy;
 using Stareater.Utils;
 
@@ -13,7 +15,7 @@ namespace Stareater.Controllers.Data
 		private Vector2D searchCenter;
 		private double searchRadius;
 		
-		private List<Fleet> idleFleets;
+		private List<FleetInfo> fleets;
 		private List<StarData> stars;
 		private List<FoundGalaxyObject> foundObjects;
 		
@@ -22,7 +24,7 @@ namespace Stareater.Controllers.Data
 			this.searchCenter = new Vector2D(x, y);
 			this.searchRadius = searchRadius;
 			
-			this.idleFleets = null;
+			this.fleets = null;
 			this.stars = null;
 			this.foundObjects = new List<FoundGalaxyObject>();
 		}
@@ -30,6 +32,9 @@ namespace Stareater.Controllers.Data
 		private List<T> sort<T>(IEnumerable<T> objects, Func<T, Vector2D> positionFunc) where T : class
 		{
 			var distances = objects.ToDictionary(x => x, x => (positionFunc(x) - this.searchCenter).Magnitude());
+			
+			foreach(var x in distances)
+				System.Diagnostics.Trace.WriteLine(x.Key.GetHashCode());
 			
 			var sorted = new List<T>(objects.Where(x => distances[x] <= this.searchRadius));
 			sorted.Sort((a, b) => distances[a].CompareTo(distances[b]));
@@ -46,9 +51,9 @@ namespace Stareater.Controllers.Data
 				));
 		}
 		
-		public void Compare(IEnumerable<Fleet> idleFleets, Methods.VisualPositionFunc visualPositionFunc)
+		public void Compare(IEnumerable<FleetInfo> fleets, Game game, IVisualPositioner visualPositioner)
 		{
-			this.idleFleets = this.sort(idleFleets, x => visualPositionFunc(x.Position));
+			this.fleets = this.sort(fleets, x => x.VisualPosition);
 		}
 		
 		public void Compare(IEnumerable<StarData> stars)
@@ -58,15 +63,15 @@ namespace Stareater.Controllers.Data
 		
 		//TODO(later) try to remove "game" parameter
 		//TODO(v0.5) change Methods.VisualPositionFunc to class with other visual positioners
-		public GalaxySearchResult Finish(Game game, Methods.VisualPositionFunc idleFleetVisualPositionFunc)
+		public GalaxySearchResult Finish(Game game, IVisualPositioner visualPositioner)
 		{
-			markFound(this.idleFleets, GalaxyObjectType.IdleFleet, x => idleFleetVisualPositionFunc(x.Position));
+			markFound(this.fleets, GalaxyObjectType.IdleFleet, x => x.VisualPosition);
 			markFound(this.stars, GalaxyObjectType.Star, x => x.Position);
 			this.foundObjects.Sort((a, b) => a.Distance.CompareTo(b.Distance));
 			
 			return new GalaxySearchResult(
 				this.stars,
-				this.idleFleets.Select(x => new IdleFleetInfo(x, game, idleFleetVisualPositionFunc)).ToList(),
+				this.fleets,
 				this.foundObjects
 			);
 		}

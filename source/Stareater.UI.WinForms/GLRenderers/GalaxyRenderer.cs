@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Data;
+using Stareater.Controllers.Data.Ships;
 using Stareater.Galaxy;
 using Stareater.Utils;
 
@@ -61,7 +63,7 @@ namespace Stareater.GLRenderers
 
 		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
 		private Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D> lastSelectedStars;
-		private Dictionary<int, IdleFleetInfo> lastSelectedIdleFleets;
+		private Dictionary<int, FleetInfo> lastSelectedIdleFleets;
 
 		public GalaxyRenderer(GameController controller, IGalaxyViewListener galaxyViewListener)
 		{ 
@@ -77,10 +79,10 @@ namespace Stareater.GLRenderers
 				(float)controller.Stars.Select(star => star.Position.Y).Max() + StarMinClickRadius
 			);
 			
-			this.controller.IdleFleetVisualPositioner = idleFleetVisualPosition;
+			this.controller.VisualPositioner = new VisualPositioner();
 			
 			//TODO(v0.5): move to more appropriate begin turn setup
-			this.lastSelectedIdleFleets = new Dictionary<int, IdleFleetInfo>();
+			this.lastSelectedIdleFleets = new Dictionary<int, FleetInfo>();
 			this.lastSelectedStars = new Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D>();
 			
 			//TODO(v0.5): move to more appropriate begin turn setup
@@ -245,7 +247,7 @@ namespace Stareater.GLRenderers
 			else
 				GL.CallList(starDrawList);
 			
-			foreach (var fleet in controller.IdleFleets) {
+			foreach (var fleet in controller.Fleets) {
 				GL.Color4(fleet.Owner.Color);
 				
 				GL.PushMatrix();
@@ -452,7 +454,7 @@ namespace Stareater.GLRenderers
 			};
 		}
 		
-		private IdleFleetInfo lastSelectedIdleFleet
+		private FleetInfo lastSelectedIdleFleet
 		{
 			get 
 			{
@@ -491,11 +493,6 @@ namespace Stareater.GLRenderers
 				DetachFromCanvas();
 				Unload();
 			}
-		}
-		
-		private static NGenerics.DataStructures.Mathematical.Vector2D idleFleetVisualPosition(NGenerics.DataStructures.Mathematical.Vector2D starPosition)
-		{
-			return starPosition + new NGenerics.DataStructures.Mathematical.Vector2D(0.5, 0.5);
 		}
 	}
 }

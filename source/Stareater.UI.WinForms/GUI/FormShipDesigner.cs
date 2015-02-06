@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+
 using Stareater.AppData;
 using Stareater.Controllers;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Data.Ships;
 using Stareater.GuiUtils;
 
 namespace Stareater.GUI
