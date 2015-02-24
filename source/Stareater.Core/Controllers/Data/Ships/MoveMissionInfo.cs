@@ -6,9 +6,9 @@ namespace Stareater.Controllers.Data.Ships
 {
 	public class MoveMissionInfo : AFleetMission
 	{
-		public IEnumerable<Vector2D> Waypoints { get; private set; }
+		public Vector2D[] Waypoints { get; private set; }
 		
-		internal MoveMissionInfo(IEnumerable<Vector2D> waypoints)
+		internal MoveMissionInfo(Vector2D[] waypoints)
 		{
 			this.Waypoints = waypoints;
 		}

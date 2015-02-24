@@ -15,11 +15,11 @@ namespace Stareater.Controllers.Data.Ships
 		public AFleetMission Mission { get; private set; }
 		public Vector2D VisualPosition { get; private set; }
 		
-		internal Fleet Fleet { get; private set; }
+		internal Fleet FleetData { get; private set; }
 		
 		internal FleetInfo(Fleet fleet, AMission newMission, AMission oldMission, Game game, IVisualPositioner visualPositioner)
 		{
-			this.Fleet = fleet;
+			this.FleetData = fleet;
 
 			this.Mission = makeMissionInfo(newMission);
 			this.Owner = new PlayerInfo(fleet.Owner);
@@ -32,7 +32,7 @@ namespace Stareater.Controllers.Data.Ships
 		{
 			switch(mission.Type) {
 				case MissionType.Move:
-					return new MoveMissionInfo((mission as MoveMission).Waypoints);
+					return new MoveMissionInfo((mission as MoveMission).Waypoints.ToArray());
 				case MissionType.Stationary:
 					return new StationaryMissionInfo((mission as StationaryMission).Location);
 				default:
@@ -46,15 +46,15 @@ namespace Stareater.Controllers.Data.Ships
 			FleetInfo other = obj as FleetInfo;
 			if (other == null)
 				return false;
-			return object.Equals(this.Fleet, other.Fleet);
+			return object.Equals(this.FleetData, other.FleetData);
 		}
 		
 		public override int GetHashCode()
 		{
 			int hashCode = 0;
 			unchecked {
-				if (Fleet != null)
-					hashCode += 1000000007 * Fleet.GetHashCode();
+				if (this.FleetData != null)
+					hashCode += 1000000007 * this.FleetData.GetHashCode();
 			}
 			return hashCode;
 		}
