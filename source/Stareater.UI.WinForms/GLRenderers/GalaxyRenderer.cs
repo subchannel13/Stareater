@@ -188,12 +188,43 @@ namespace Stareater.GLRenderers
 			else
 				GL.CallList(wormholeDrawList);
 			
+			GL.Color4(Color.DarkGreen);
+			foreach (var fleet in controller.Fleets) {
+				if (fleet.Mission.Type != FleetMissionType.Move)
+					continue;
+				
+				var mission = fleet.Mission as MoveMissionInfo;
+				var last = fleet.VisualPosition;
+				
+				for(int i = 1; i < mission.Waypoints.Length; i++) {
+					GL.PushMatrix();
+					GL.MultMatrix(pathMatrix(
+						new Vector2d(last.X, last.Y),
+						new Vector2d(mission.Waypoints[i].X, mission.Waypoints[i].Y)
+					));
+					
+					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
+					
+					last = mission.Waypoints[i];
+					GL.PopMatrix();
+				}
+				
+				GL.Color4(fleet.Owner.Color);
+				
+				GL.PushMatrix();
+				GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, IdleFleetZ);
+				GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
+
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.FleetIndicator);
+				GL.PopMatrix();
+			}
+			
 			if (this.fleetController != null && this.fleetController.SimulationWaypoints != null)
 			{
 				GL.Enable(EnableCap.Texture2D);
 				GL.Color4(Color.LimeGreen);
 				
-				var last = this.fleetController.SimulationWaypoints[0];
+				var last = this.fleetController.Fleet.VisualPosition;
 				for(int i = 1; i < this.fleetController.SimulationWaypoints.Count; i++) {
 					var next = this.fleetController.SimulationWaypoints[i];
 					GL.PushMatrix();
@@ -267,7 +298,7 @@ namespace Stareater.GLRenderers
 				GL.PopMatrix();
 			}
 			
-			if (this.currentSelection == GalaxySelectionType.IdleFleet) {
+			if (this.currentSelection == GalaxySelectionType.Fleet) {
 				GL.Color4(Color.White);
 				GL.PushMatrix();
 				GL.Translate(this.lastSelectedIdleFleet.VisualPosition.X, this.lastSelectedIdleFleet.VisualPosition.Y, SelectionIndicatorZ);
@@ -374,9 +405,19 @@ namespace Stareater.GLRenderers
 				mousePoint.X, mousePoint.Y, 
 				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
 			
-			if (closestObjects.FoundObjects.Count == 0 || closestObjects.FoundObjects[0].Type != GalaxyObjectType.IdleFleet) {
-				this.galaxyViewListener.FleetDeselected();
-				this.fleetController = null;
+			if (this.fleetController != null) {
+				if (closestObjects.FoundObjects.Count > 0 && closestObjects.FoundObjects[0].Type == GalaxyObjectType.Star && this.fleetController.SimulationWaypoints != null) {
+					this.fleetController = this.fleetController.Send(this.fleetController.SimulationWaypoints);
+					this.lastSelectedIdleFleets[this.controller.CurrentPlayer] = this.fleetController.Fleet;
+					this.galaxyViewListener.FleetSelected(this.fleetController);
+					return;
+				} else {
+					this.galaxyViewListener.FleetDeselected();
+					this.fleetController = null;
+				}
+				
+				if (closestObjects.FoundObjects.Count == 0)
+					this.galaxyViewListener.SystemSelected(controller.OpenStarSystem(this.lastSelectedStars[this.controller.CurrentPlayer]));
 			}
 			
 			if (closestObjects.FoundObjects.Count == 0)
@@ -391,10 +432,10 @@ namespace Stareater.GLRenderers
 					this.lastSelectedStars[this.controller.CurrentPlayer] = closestObjects.Stars[0].Position;
 					this.galaxyViewListener.SystemSelected(controller.OpenStarSystem(closestObjects.Stars[0]));
 					break;
-				case GalaxyObjectType.IdleFleet:
-					this.currentSelection = GalaxySelectionType.IdleFleet;
-					this.lastSelectedIdleFleets[this.controller.CurrentPlayer] = closestObjects.IdleFleets[0];
-					this.fleetController = this.controller.SelectFleet(closestObjects.IdleFleets[0]);
+				case GalaxyObjectType.Fleet:
+					this.currentSelection = GalaxySelectionType.Fleet;
+					this.lastSelectedIdleFleets[this.controller.CurrentPlayer] = closestObjects.Fleets[0];
+					this.fleetController = this.controller.SelectFleet(closestObjects.Fleets[0]);
 					this.galaxyViewListener.FleetSelected(this.fleetController);
 					break;
 			}

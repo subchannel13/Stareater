@@ -65,7 +65,7 @@ namespace Stareater.Controllers.Data
 		//TODO(v0.5) change Methods.VisualPositionFunc to class with other visual positioners
 		public GalaxySearchResult Finish(Game game, IVisualPositioner visualPositioner)
 		{
-			markFound(this.fleets, GalaxyObjectType.IdleFleet, x => x.VisualPosition);
+			markFound(this.fleets, GalaxyObjectType.Fleet, x => x.VisualPosition);
 			markFound(this.stars, GalaxyObjectType.Star, x => x.Position);
 			this.foundObjects.Sort((a, b) => a.Distance.CompareTo(b.Distance));
 			

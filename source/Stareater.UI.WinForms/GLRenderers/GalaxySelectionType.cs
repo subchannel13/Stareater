@@ -6,6 +6,6 @@ namespace Stareater.GLRenderers
 	{
 		None,
 		Star,
-		IdleFleet
+		Fleet
 	}
 }
