@@ -349,8 +349,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>IndexedCollectionBase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Collections\QuadTreeElement.cs" />
     <Compile Include="Utils\Collections\ObjectDeindexer.cs" />
     <Compile Include="Utils\Collections\ObjectIndexer.cs" />
+    <Compile Include="Utils\Collections\QuadTree.cs" />
+    <Compile Include="Utils\Collections\QuadTreeNode.cs" />
     <Compile Include="Utils\Collections\TextVar.cs" />
     <Compile Include="Utils\Collections\Var.cs" />
     <Compile Include="Utils\CustomTuple.cs">
