@@ -47,6 +47,34 @@ namespace Stareater.Utils
 
 			return x;
 		}
+		
+		/// <summary>
+		/// Tests whether one rectangle ("outer") is completely contains other rectrangle ("inner").
+		/// </summary>
+		/// <param name="outerTopRight">Top right corner of "outer" rectangle</param>
+		/// <param name="outerBottomLeft">Bottm left corner of "outer" rectangle</param>
+		/// <param name="innerTopRight">Top right corner of "inner" rectangle</param>
+		/// <param name="innerBottomLeft">Bottm left corner of "inner" rectangle</param>
+		/// <returns></returns>
+		public static bool IsRectEnveloped(Vector2D outerTopRight, Vector2D outerBottomLeft, Vector2D innerTopRight, Vector2D innerBottomLeft)
+		{
+			return outerTopRight.X >= innerTopRight.X && outerTopRight.Y >= innerTopRight.Y &&
+				outerBottomLeft.X <= innerBottomLeft.X && outerBottomLeft.Y <= innerBottomLeft.Y;
+		}
+		
+		/// <summary>
+		/// Tests whether one rectangle ("B") is completely outside other rectangle ("A")
+		/// </summary>
+		/// <param name="aTopRight">Top right corner of rectangle "A"</param>
+		/// <param name="aBottomLeft">Bottm left corner of rectangle "A"</param>
+		/// <param name="bTopRight">Top right corner of rectangle "B"</param>
+		/// <param name="bBottomLeft">Bottm left corner of rectangle "B"</param>
+		/// <returns></returns>
+		public static bool IsRectOutside(Vector2D aTopRight, Vector2D aBottomLeft, Vector2D bTopRight, Vector2D bBottomLeft)
+		{
+			return aTopRight.X < bBottomLeft.X || aTopRight.Y < bBottomLeft.Y ||
+				aBottomLeft.X > bTopRight.X || aBottomLeft.Y > bTopRight.Y;
+		}
 
 		/// <summary>
 		/// Linear interpolation between two numbers.
