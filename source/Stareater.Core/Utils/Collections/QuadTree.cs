@@ -19,24 +19,25 @@ namespace Stareater.Utils.Collections
 		public QuadTree() : this(
 			new Vector2D(0, 0),
 			new Vector2D(InitialSize, InitialSize),
-			1e-3f)
+			1)
 		{ }
 
 		public QuadTree(Vector2D center, Vector2D size, float minSize)
 		{
-			this.topRight = center - size / 2;
-			this.bottomLeft = center + size / 2;
+			this.topRight = center + size / 2;
+			this.bottomLeft = center - size / 2;
+			this.minNodeSize = minSize;
 			this.root = new QuadTreeNode<T>(topRight, bottomLeft);
 		}
 
 		public IEnumerable<T> Query(Vector2D center, Vector2D size)
 		{
-			return root.Query(center - size / 2, center + size / 2);
+			return root.Query(center + size / 2, center - size / 2);
 		}
 
 		public void Add(T newItem, Vector2D center, Vector2D size)
 		{
-			var boundedItem = new QuadTreeElement<T>(newItem, center - size / 2, center + size / 2);
+			var boundedItem = new QuadTreeElement<T>(newItem, center + size / 2, center - size / 2);
 			boundedElements.Add(newItem, boundedItem);
 			
 			if (!root.Insert(boundedItem, this.minNodeSize)) {

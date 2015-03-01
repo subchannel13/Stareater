@@ -20,7 +20,7 @@ namespace Stareater.Utils.Collections
 
 		public bool IsEmpty
 		{
-			get { return contents.Count == 0 || nodes.Count == 0; }
+			get { return contents.Count == 0 && nodes.Count == 0; }
 		}
 
 		public IEnumerable<QuadTreeElement<T>> SubTreeContents
@@ -46,13 +46,18 @@ namespace Stareater.Utils.Collections
 				if (node.IsEmpty)
 					continue;
 
+				if (Methods.IsRectEnveloped(node.topRight, node.bottomLeft, queryTopRight, queryBottomLeft)) {
+					foreach (var item in node.Query(queryTopRight, queryBottomLeft))
+						yield return item;
+					break;
+				}
+
 				if (Methods.IsRectEnveloped(queryTopRight, queryBottomLeft, node.topRight, node.bottomLeft))
 				    foreach (var item in node.SubTreeContents)
 						yield return item.Data;
 				else if (!Methods.IsRectOutside(node.topRight, node.bottomLeft, queryTopRight, queryBottomLeft))
 					foreach (var item in node.Query(queryTopRight, queryBottomLeft))
 						yield return item;
-					break;
 			}
 		}
 
@@ -67,14 +72,12 @@ namespace Stareater.Utils.Collections
 			foreach (QuadTreeNode<T> node in nodes)
 				if (Methods.IsRectEnveloped(node.topRight, node.bottomLeft, item.TopRight, item.BottomLeft))
 					if (node.Insert(item, minSize)) {
-						//Count++;
 						return true;
 					}
 					else
 						return false;
 
 			this.contents.Add(item);
-			//this.Count++;
 			return true;
 		}
 		
@@ -99,36 +102,16 @@ namespace Stareater.Utils.Collections
 			if (!Methods.IsRectEnveloped(this.topRight, this.bottomLeft, item.TopRight, item.BottomLeft))
 				return false;
 
-			if (this.contents.Remove(item)) {
-				//Count--;
+			if (this.contents.Remove(item))
 				return true;
-			}
 
 			foreach (QuadTreeNode<T> node in nodes)
 				if (Methods.IsRectEnveloped(node.topRight, node.bottomLeft, item.TopRight, item.BottomLeft))
-					if (node.Remove(item)) {
-						//Count--;
+					if (node.Remove(item))
 						return true;
-					}
 
 			return false;
 		}
-
-		/*public bool Contains(T item)
-		{
-			if (!Bounds.Contains(item.Rectangle))
-				return false;
-
-			if (this.contents.Contains(item))
-				return true;
-
-			foreach (QuadTreeNode<T> node in nodes)
-				if (node.Bounds.Contains(item.Rectangle))
-					if (node.Contains(item))
-						return true;
-
-			return false;
-		}*/
 
 		public void Clear()
 		{
