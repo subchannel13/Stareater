@@ -6,7 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 using Stareater.AppData;
 
 namespace Stareater.GUI

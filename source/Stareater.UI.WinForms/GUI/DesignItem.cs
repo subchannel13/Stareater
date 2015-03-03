@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Stareater.AppData;
-using Stareater.Controllers.Data.Ships;
+using Stareater.Controllers.Views.Ships;
 using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI

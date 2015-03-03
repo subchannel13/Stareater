@@ -7,7 +7,7 @@ using Stareater.Galaxy;
 using Stareater.Ships.Missions;
 using Stareater.Utils;
 
-namespace Stareater.Controllers.Data.Ships
+namespace Stareater.Controllers.Views.Ships
 {
 	public class FleetInfo
 	{

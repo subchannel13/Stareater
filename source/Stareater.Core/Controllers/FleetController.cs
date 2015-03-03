@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
-using Stareater.Controllers.Data;
-using Stareater.Controllers.Data.Ships;
+using Stareater.Controllers.Views;
+using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.Ships.Missions;
 using Stareater.Utils;

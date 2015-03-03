@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 using Stareater.AppData;
 using Stareater.Controllers;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 using Stareater.Localization;
 
 namespace Stareater.GUI

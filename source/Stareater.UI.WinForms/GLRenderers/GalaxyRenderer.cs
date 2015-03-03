@@ -8,8 +8,8 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.Controllers;
-using Stareater.Controllers.Data;
-using Stareater.Controllers.Data.Ships;
+using Stareater.Controllers.Views;
+using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.Utils;
 

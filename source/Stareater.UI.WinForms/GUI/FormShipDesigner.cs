@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 using Stareater.AppData;
 using Stareater.Controllers;
-using Stareater.Controllers.Data.Ships;
+using Stareater.Controllers.Views.Ships;
 using Stareater.GuiUtils;
 
 namespace Stareater.GUI

@@ -1,7 +1,7 @@
 ﻿using System;
 using Stareater.Ships.Missions;
 
-namespace Stareater.Controllers.Data.Ships
+namespace Stareater.Controllers.Views.Ships
 {
 	public abstract class AFleetMission
 	{

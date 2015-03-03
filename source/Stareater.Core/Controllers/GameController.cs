@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NGenerics.DataStructures.Mathematical;
-using Stareater.Controllers.Data;
-using Stareater.Controllers.Data.Ships;
+using Stareater.Controllers.Views;
+using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.Players;
 using Stareater.Players.Reports;
 using Stareater.Ships.Missions;
 using Stareater.Utils;
+using Stareater.Controllers.Data;
 
 namespace Stareater.Controllers
 {
@@ -19,6 +20,7 @@ namespace Stareater.Controllers
 		internal const string ReportContext = "Reports";
 		
 		private Game game;
+		private GalaxyObjects mapCache = new GalaxyObjects();
 		
 		private GameController endTurnCopy = null;
 		private IGameStateListener stateListener;
@@ -43,11 +45,13 @@ namespace Stareater.Controllers
 			Random rng = new Random();
 			
 			this.game = GameBuilder.CreateGame(rng, players, controller);
+			this.rebuildCache();
 		}
 		
 		internal void LoadGame(Game game)
 		{
 			this.game = game;
+			this.rebuildCache();
 		}
 
 		/// <summary>
@@ -100,6 +104,7 @@ namespace Stareater.Controllers
 		private void postcombatTurnProcessing()
 		{
 			game.ProcessPostcombat();
+			this.rebuildCache();
 			
  			this.endTurnCopy = null;
  			
@@ -175,13 +180,8 @@ namespace Stareater.Controllers
 		
 		public GalaxySearchResult FindClosest(float x, float y, float searchRadius)
 		{
-			var game = this.GameInstance;
-			
-			var search = new GalaxySearch(x, y, searchRadius);
-			search.Compare(game.States.Stars);
-			search.Compare(this.Fleets, game, this.VisualPositioner);
-			
-			return search.Finish(game, this.VisualPositioner);
+
+			return this.mapCache.Search(x, y, searchRadius);
 		}
 		
 		public FleetController SelectFleet(FleetInfo fleet)
@@ -193,24 +193,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var game = this.GameInstance;
-				
-				//TODO(v0.5) add fleets of other players 
-				foreach(var fleet in game.States.Fleets.OwnedBy(game.CurrentPlayer)) {
-					AMission newMission = null;
-					AMission oldMission = fleet.Mission;
-					
-					if (game.CurrentPlayer.Orders.ShipOrders.ContainsKey(fleet))
-						newMission = game.CurrentPlayer.Orders.ShipOrders[fleet];
-					else
-						newMission = oldMission;
-					
-					if (newMission == null || newMission.Type != MissionType.Regroup)
-						yield return new FleetInfo(fleet, newMission, oldMission, game, this.VisualPositioner);
-					//TODO(v0.5) implement fleet regrouping
-					/*else
-						foreach(var subfleet in (order as RegroupMission).*/
-				}
+				return this.mapCache.Fleets;
 			}
 		}
 		
@@ -242,6 +225,30 @@ namespace Stareater.Controllers
 				foreach (var wormhole in this.GameInstance.States.Wormholes)
 					yield return wormhole;
 			}
+		}
+
+		private void rebuildCache()
+		{
+			var fleets = new List<FleetInfo>();
+
+			//TODO(later) filter invisible fleets
+			foreach (var fleet in game.States.Fleets) {
+				AMission newMission = null;
+				AMission oldMission = fleet.Mission;
+
+				if (game.CurrentPlayer.Orders.ShipOrders.ContainsKey(fleet))
+					newMission = game.CurrentPlayer.Orders.ShipOrders[fleet];
+				else
+					newMission = oldMission;
+
+				if (newMission == null || newMission.Type != MissionType.Regroup)
+					fleets.Add(new FleetInfo(fleet, newMission, oldMission, game, this.VisualPositioner));
+				//TODO(v0.5) implement fleet regrouping
+				/*else
+					foreach(var subfleet in (order as RegroupMission).*/
+			}
+
+			this.mapCache.Rebuild(this.GameInstance.States.Stars, fleets);
 		}
 		#endregion
 		

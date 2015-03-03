@@ -2,7 +2,7 @@
 using Stareater.AppData;
 using Stareater.GameData;
 
-namespace Stareater.Controllers.Data
+namespace Stareater.Controllers.Views
 {
 	public class BuildingInfo
 	{

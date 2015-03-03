@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using Stareater.AppData;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 
 namespace Stareater.GUI.Reports
 {

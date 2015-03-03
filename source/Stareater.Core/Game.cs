@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Stareater.Controllers.Data;
 using Stareater.Galaxy;
 using Stareater.Galaxy.Builders;
 using Stareater.GameData;
@@ -12,6 +11,7 @@ using Stareater.Players;
 using Stareater.Utils;
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Controllers.Data;
 
 namespace Stareater
 {

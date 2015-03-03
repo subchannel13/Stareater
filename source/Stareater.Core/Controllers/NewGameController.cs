@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 
 using Stareater.AppData;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.Galaxy.Builders;
 using Stareater.Localization;

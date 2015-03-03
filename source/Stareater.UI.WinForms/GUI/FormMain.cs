@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.Controllers;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 using Stareater.GLRenderers;
 using Stareater.GUI.Reports;
 using Stareater.Localization;
@@ -214,7 +214,7 @@ namespace Stareater.GUI
 
 		private void redraw()
 		{
-			if (controller.State != Controllers.Data.GameState.Running)
+			if (controller.State != Controllers.Views.GameState.Running)
 				return;
 		}
 		

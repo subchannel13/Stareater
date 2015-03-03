@@ -1,4 +1,4 @@
-﻿namespace Stareater.Controllers.Data
+﻿namespace Stareater.Controllers.Views
 {
 	public interface IReportInfoVisitor
 	{

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Stareater.Controllers.Data.Ships;
+using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
+using Stareater.Controllers.Views;
 
 namespace Stareater.Controllers.Data
 {

@@ -5,7 +5,7 @@ using Stareater.GameData;
 using Stareater.Ships;
 using Stareater.Utils.Collections;
 
-namespace Stareater.Controllers.Data.Ships
+namespace Stareater.Controllers.Views.Ships
 {
 	public class HullInfo
 	{

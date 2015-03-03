@@ -4,7 +4,7 @@ using Stareater.GameData;
 using Stareater.Players.Reports;
 using Stareater.Utils.Collections;
 
-namespace Stareater.Controllers.Data
+namespace Stareater.Controllers.Views
 {
 	public class TechnologyReportInfo : IReportInfo
 	{
