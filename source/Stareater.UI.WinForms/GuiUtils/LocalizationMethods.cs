@@ -1,5 +1,5 @@
 ﻿using System;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;

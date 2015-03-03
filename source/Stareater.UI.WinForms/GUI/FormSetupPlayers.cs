@@ -11,7 +11,7 @@ using Stareater.AppData;
 using Stareater.GuiUtils;
 using Stareater.Localization;
 using Stareater.Players;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 
 namespace Stareater.GUI
 {

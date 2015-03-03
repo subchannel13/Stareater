@@ -2,7 +2,7 @@
 using System.Linq;
 using Stareater.Galaxy;
 using System.Collections.Generic;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 using Stareater.GameLogic;
 using Stareater.GameData;
 using Stareater.Utils;

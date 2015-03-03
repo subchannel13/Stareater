@@ -2,7 +2,7 @@
 using System.Drawing;
 using Stareater.Players;
 
-namespace Stareater.Controllers.Data
+namespace Stareater.Controllers.Views
 {
 	public class PlayerInfo
 	{

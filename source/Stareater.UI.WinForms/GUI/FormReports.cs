@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 
 namespace Stareater.GUI
 {

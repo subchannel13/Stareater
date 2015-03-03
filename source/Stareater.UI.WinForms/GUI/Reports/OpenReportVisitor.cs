@@ -1,5 +1,5 @@
 ﻿using System;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 
 namespace Stareater.GUI.Reports
 {

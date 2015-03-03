@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NGenerics.Extensions;
 using Stareater.Controllers;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 using Stareater.Localization;
 using Stareater.AppData;
 

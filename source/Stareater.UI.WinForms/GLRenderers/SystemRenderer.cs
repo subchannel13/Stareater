@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.Controllers;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.GUI;
 

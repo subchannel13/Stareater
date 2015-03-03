@@ -5,7 +5,7 @@ using Stareater.GameData;
 using Stareater.GameLogic;
 using Stareater.Utils.Collections;
 
-namespace Stareater.Controllers.Data
+namespace Stareater.Controllers.Views
 {
 	public class TechnologyTopic
 	{

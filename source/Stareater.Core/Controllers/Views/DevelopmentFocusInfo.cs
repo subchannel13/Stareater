@@ -1,7 +1,7 @@
 ﻿using System;
 using Stareater.GameData.Databases.Tables;
 
-namespace Stareater.Controllers.Data
+namespace Stareater.Controllers.Views
 {
 	public class DevelopmentFocusInfo
 	{

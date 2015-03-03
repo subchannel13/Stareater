@@ -1,7 +1,7 @@
 ﻿using System;
 using Stareater.Galaxy;
 
-namespace Stareater.Controllers.Data.Ships
+namespace Stareater.Controllers.Views.Ships
 {
 	public class ShipGroupInfo
 	{

@@ -1,6 +1,6 @@
 ﻿using System;
 using NGenerics.DataStructures.Mathematical;
-using Stareater.Controllers.Data.Ships;
+using Stareater.Controllers.Views.Ships;
 
 namespace Stareater.Utils
 {

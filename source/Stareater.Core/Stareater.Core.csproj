@@ -73,40 +73,40 @@
     <Compile Include="AppData\LastGameInfo.cs" />
     <Compile Include="Controllers\AConstructionSiteController.cs" />
     <Compile Include="Controllers\ColonyController.cs" />
-    <Compile Include="Controllers\Data\BodyType.cs" />
-    <Compile Include="Controllers\Data\BuildingInfo.cs" />
-    <Compile Include="Controllers\Data\ColonyInfo.cs" />
-    <Compile Include="Controllers\Data\ConstructableItem.cs" />
-    <Compile Include="Controllers\Data\DevelopmentFocusInfo.cs" />
-    <Compile Include="Controllers\Data\FoundGalaxyObject.cs" />
-    <Compile Include="Controllers\Data\GalaxyObjectType.cs" />
-    <Compile Include="Controllers\Data\GalaxySearch.cs" />
+    <Compile Include="Controllers\Views\BodyType.cs" />
+    <Compile Include="Controllers\Views\BuildingInfo.cs" />
+    <Compile Include="Controllers\Views\ColonyInfo.cs" />
+    <Compile Include="Controllers\Views\ConstructableItem.cs" />
+    <Compile Include="Controllers\Views\DevelopmentFocusInfo.cs" />
+    <Compile Include="Controllers\Views\FoundGalaxyObject.cs" />
+    <Compile Include="Controllers\Data\GalaxyObjects.cs" />
+    <Compile Include="Controllers\Views\GalaxyObjectType.cs" />
     <Compile Include="Controllers\Data\GalaxySearchResult.cs" />
     <Compile Include="Controllers\Data\GameCopy.cs">
       <DependentUpon>GameCopy.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Controllers\Data\GameState.cs" />
-    <Compile Include="Controllers\Data\IGameStateListener.cs" />
-    <Compile Include="Controllers\Data\IReportInfo.cs" />
-    <Compile Include="Controllers\Data\IReportInfoVisitor.cs" />
-    <Compile Include="Controllers\Data\NewGamePlayerInfo.cs" />
-    <Compile Include="Controllers\Data\PlayerInfo.cs" />
-    <Compile Include="Controllers\Data\ReportWrapper.cs" />
-    <Compile Include="Controllers\Data\SavedGameInfo.cs" />
-    <Compile Include="Controllers\Data\Ships\AFleetMission.cs" />
-    <Compile Include="Controllers\Data\Ships\DesignInfo.cs" />
-    <Compile Include="Controllers\Data\Ships\FleetInfo.cs" />
-    <Compile Include="Controllers\Data\Ships\FleetMissionType.cs" />
-    <Compile Include="Controllers\Data\Ships\HullInfo.cs" />
-    <Compile Include="Controllers\Data\Ships\MoveMissionInfo.cs" />
-    <Compile Include="Controllers\Data\Ships\ShipGroupInfo.cs" />
-    <Compile Include="Controllers\Data\Ships\StationaryMissionInfo.cs" />
-    <Compile Include="Controllers\Data\StellarisInfo.cs" />
-    <Compile Include="Controllers\Data\TechnologyCategory.cs" />
-    <Compile Include="Controllers\Data\TechnologyReportInfo.cs" />
-    <Compile Include="Controllers\Data\TechnologyTopic.cs" />
+    <Compile Include="Controllers\Views\GameState.cs" />
+    <Compile Include="Controllers\Views\IGameStateListener.cs" />
+    <Compile Include="Controllers\Views\IReportInfo.cs" />
+    <Compile Include="Controllers\Views\IReportInfoVisitor.cs" />
+    <Compile Include="Controllers\Views\NewGamePlayerInfo.cs" />
+    <Compile Include="Controllers\Views\PlayerInfo.cs" />
+    <Compile Include="Controllers\Views\ReportWrapper.cs" />
+    <Compile Include="Controllers\Views\SavedGameInfo.cs" />
+    <Compile Include="Controllers\Views\Ships\AFleetMission.cs" />
+    <Compile Include="Controllers\Views\Ships\DesignInfo.cs" />
+    <Compile Include="Controllers\Views\Ships\FleetInfo.cs" />
+    <Compile Include="Controllers\Views\Ships\FleetMissionType.cs" />
+    <Compile Include="Controllers\Views\Ships\HullInfo.cs" />
+    <Compile Include="Controllers\Views\Ships\MoveMissionInfo.cs" />
+    <Compile Include="Controllers\Views\Ships\ShipGroupInfo.cs" />
+    <Compile Include="Controllers\Views\Ships\StationaryMissionInfo.cs" />
+    <Compile Include="Controllers\Views\StellarisInfo.cs" />
+    <Compile Include="Controllers\Views\TechnologyCategory.cs" />
+    <Compile Include="Controllers\Views\TechnologyReportInfo.cs" />
+    <Compile Include="Controllers\Views\TechnologyTopic.cs" />
     <Compile Include="Controllers\FleetController.cs" />
     <Compile Include="Controllers\GameBuilder.cs" />
     <Compile Include="Controllers\GameController.cs" />
@@ -558,10 +558,7 @@
     <None Include="AppData\Expressions\Parser.frame" />
     <None Include="AppData\Expressions\Scanner.frame" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\Data\Ships" />
-    <Folder Include="Ships\Missions" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="ProfilingSessions\Session20150206_114435.sdps" />
   </ItemGroup>

@@ -2,7 +2,7 @@
 using Ikadn.Ikon.Types;
 using System.IO;
 
-namespace Stareater.Controllers.Data
+namespace Stareater.Controllers.Views
 {
 	public class SavedGameInfo
 	{

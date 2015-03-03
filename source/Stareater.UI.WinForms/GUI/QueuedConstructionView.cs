@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using Stareater.AppData;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI

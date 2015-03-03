@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using Stareater.AppData;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 using Stareater.Localization;
 using Stareater.Properties;
 using Stareater.Utils.Collections;

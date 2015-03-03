@@ -1,6 +1,6 @@
 ﻿using System;
 using Stareater.Controllers;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 
 namespace Stareater.GLRenderers
 {

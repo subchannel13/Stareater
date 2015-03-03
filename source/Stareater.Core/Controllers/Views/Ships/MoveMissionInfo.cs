@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NGenerics.DataStructures.Mathematical;
 
-namespace Stareater.Controllers.Data.Ships
+namespace Stareater.Controllers.Views.Ships
 {
 	public class MoveMissionInfo : AFleetMission
 	{

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 using Stareater.GUI.Reports;
 
 namespace Stareater.GUI

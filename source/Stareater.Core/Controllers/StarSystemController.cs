@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Stareater.Controllers.Data;
+using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.GameData;
 
@@ -56,29 +56,29 @@ namespace Stareater.Controllers
 		{
 			if (bodyIndex == StarIndex) {
 				if (!game.States.Stellarises.AtContains(Star))
-					return Data.BodyType.NoStellarises;
+					return Views.BodyType.NoStellarises;
 					
 				var stellaris = game.States.Stellarises.At(Star);
 				
 				if (stellaris.Owner == game.CurrentPlayer)
-					return Data.BodyType.OwnStellaris;
+					return Views.BodyType.OwnStellaris;
 				else
-					return Data.BodyType.ForeignStellaris;
+					return Views.BodyType.ForeignStellaris;
 			} 
 
 			var planet = game.States.Planets.At(Star).Where(x => x.Position == bodyIndex).FirstOrDefault();
 
 			if (planet == null)
-				return Data.BodyType.Empty;
+				return Views.BodyType.Empty;
 			if (!game.States.Colonies.AtPlanetContains(planet))
-				return Data.BodyType.NotColonised;
+				return Views.BodyType.NotColonised;
 
 			var colony = game.States.Colonies.AtPlanet(planet);
 
 			if (colony.Owner == game.CurrentPlayer)
-				return Data.BodyType.OwnColony;
+				return Views.BodyType.OwnColony;
 			else
-				return Data.BodyType.ForeignColony;
+				return Views.BodyType.ForeignColony;
 		}
 
 		public ColonyController ColonyController(int bodyPosition)

@@ -6,7 +6,8 @@ namespace Stareater.Utils.Collections
 {
 	public class QuadTree<T>
 	{
-		private const float InitialSize = 1;
+		private const float InitialSize = 4;
+		private const float MinSize = 1.0f / 8;
 
 		private QuadTreeNode<T> root;
 		private Dictionary<T, QuadTreeElement<T>> boundedElements = new Dictionary<T, QuadTreeElement<T>>();
@@ -19,7 +20,7 @@ namespace Stareater.Utils.Collections
 		public QuadTree() : this(
 			new Vector2D(0, 0),
 			new Vector2D(InitialSize, InitialSize),
-			1)
+			MinSize)
 		{ }
 
 		public QuadTree(Vector2D center, Vector2D size, float minSize)
@@ -71,6 +72,10 @@ namespace Stareater.Utils.Collections
 			
 			return root.Remove(boundedElements[item]);
 		}
-	}
 
+		public IEnumerable<T> GetAll()
+		{
+			return boundedElements.Keys;
+		}
+	}
 }

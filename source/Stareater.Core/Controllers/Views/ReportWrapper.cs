@@ -1,7 +1,7 @@
 ﻿using System;
 using Stareater.Players.Reports;
 
-namespace Stareater.Controllers.Data
+namespace Stareater.Controllers.Views
 {
 	class ReportWrapper : IReportVisitor
 	{
