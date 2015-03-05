@@ -7,12 +7,14 @@ using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.Ships.Missions;
 using Stareater.Utils;
+using Stareater.Controllers.Data;
 
 namespace Stareater.Controllers
 {
 	public class FleetController
 	{
 		private Game game;
+		private GalaxyObjects mapObjects;
 		private IVisualPositioner visualPositoner;
 		
 		public FleetInfo Fleet { get; private set; }
@@ -20,10 +22,11 @@ namespace Stareater.Controllers
 		private HashSet<ShipGroup> selection = new HashSet<ShipGroup>();
 		private List<Vector2D> simulationWaypoints = null;
 		
-		internal FleetController(FleetInfo fleet, Game game, IVisualPositioner visualPositoner)
+		internal FleetController(FleetInfo fleet, Game game, GalaxyObjects mapObjects, IVisualPositioner visualPositoner)
 		{
 			this.Fleet = fleet;
 			this.game = game;
+			this.mapObjects = mapObjects;
 			this.visualPositoner = visualPositoner;
 		}
 		
@@ -65,10 +68,14 @@ namespace Stareater.Controllers
 			//TODO(0.5) fleet splitting and merging
 			var newMission = new MoveMission(waypoints);
 			this.game.CurrentPlayer.Orders.ShipOrders[this.Fleet.FleetData] = newMission;
-			
+
+			var newFleet = new FleetInfo(this.Fleet.FleetData, newMission, this.Fleet.FleetData.Mission, this.game, this.visualPositoner);
+			this.mapObjects.Replace(this.Fleet, newFleet);
+
 			return new FleetController(
-				new FleetInfo(this.Fleet.FleetData, newMission, this.Fleet.FleetData.Mission, this.game, this.visualPositoner), 
-				this.game, 
+				newFleet, 
+				this.game,
+				this.mapObjects,
 				this.visualPositoner
 			);
 		}

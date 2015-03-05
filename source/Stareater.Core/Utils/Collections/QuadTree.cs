@@ -69,8 +69,10 @@ namespace Stareater.Utils.Collections
 		{
 			if (!boundedElements.ContainsKey(item))
 				return false;
-			
-			return root.Remove(boundedElements[item]);
+
+			var boundedItem = boundedElements[item];
+			boundedElements.Remove(item);
+			return root.Remove(boundedItem);
 		}
 
 		public IEnumerable<T> GetAll()

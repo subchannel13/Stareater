@@ -29,6 +29,12 @@ namespace Stareater.Controllers.Data
 			rebuildTree(this.stars, stars, x => x.Position);
 		}
 
+		public void Replace(FleetInfo oldFleet, FleetInfo newFleet)
+		{
+			this.fleets.Remove(oldFleet);
+			this.fleets.Add(newFleet, newFleet.VisualPosition, newFleet.VisualPosition);
+		}
+
 		public GalaxySearchResult Search(float x, float y, double searchRadius)
 		{
 			var searchCenter = new Vector2D(x, y);
@@ -51,7 +57,7 @@ namespace Stareater.Controllers.Data
 
 			foreach (var item in items) {
 				var position = positionFunc(item);
-				tree.Add(item, position, position);
+				tree.Add(item, position, new Vector2D(0, 0));
 			}
 		}
 
