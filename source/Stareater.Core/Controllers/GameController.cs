@@ -186,7 +186,7 @@ namespace Stareater.Controllers
 		
 		public FleetController SelectFleet(FleetInfo fleet)
 		{
-			return new FleetController(fleet, this.game, this.VisualPositioner);
+			return new FleetController(fleet, this.game, this.mapCache, this.VisualPositioner);
 		}
 		
 		public IEnumerable<FleetInfo> Fleets
