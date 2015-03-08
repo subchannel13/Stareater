@@ -12,6 +12,7 @@ using Stareater.Utils;
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using Stareater.Controllers.Data;
+using Stareater.Ships.Missions;
 
 namespace Stareater
 {
@@ -109,13 +110,33 @@ namespace Stareater
 			foreach(var colonyProc in this.Derivates.Colonies)
 				colonyProc.CalculateDerivedEffects(Statics, Derivates.Of(colonyProc.Owner));
 		}
+
+		private void CommitFleetOrders()
+		{
+			var newFleets = new List<Fleet>();
+
+			foreach (var fleet in this.States.Fleets)
+				if (fleet.Owner.Orders.ShipOrders.ContainsKey(fleet)) {
+					this.States.Fleets.PendRemove(fleet);
+					newFleets.Add(new Fleet(
+						fleet.Owner, 
+						fleet.Position, 
+						fleet.Owner.Orders.ShipOrders[fleet]
+					));
+				}
+
+			this.States.Fleets.ApplyRemove();
+			foreach (var fleet in newFleets) //TODO(v0.5) add pendAdd to collection
+				this.States.Fleets.Add(fleet);
+		}
 		
 		public void ProcessPrecombat()
 		{
 			CalculateBaseEffects();
 			CalculateSpendings();
 			CalculateDerivedEffects();
-			
+			CommitFleetOrders();
+
 			States.Reports.Clear();
 			foreach(var playerProc in this.Derivates.Players)
 				playerProc.ProcessPrecombat(
