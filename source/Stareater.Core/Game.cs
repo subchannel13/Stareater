@@ -115,7 +115,18 @@ namespace Stareater
 		{
 			var newFleets = new List<Fleet>();
 
-			foreach (var fleet in this.States.Fleets)
+			foreach (var player in this.Players) 
+				foreach (var order in player.Orders.ShipOrders) {
+					foreach(var fleet in this.States.Fleets.At(order.Key).Where(x => x.Owner == player))
+						this.States.Fleets.PendRemove(fleet);
+					
+					foreach(var fleet in order.Value)
+						this.States.Fleets.Add(fleet);
+				}
+			this.States.Fleets.ApplyRemove();
+			
+			//TODO(v0.5) remove this
+			/*foreach (var fleet in this.States.Fleets)
 				if (fleet.Owner.Orders.ShipOrders.ContainsKey(fleet)) {
 					this.States.Fleets.PendRemove(fleet);
 					newFleets.Add(new Fleet(
@@ -123,7 +134,7 @@ namespace Stareater
 						fleet.Position, 
 						fleet.Owner.Orders.ShipOrders[fleet]
 					));
-				}
+				}*/
 
 			this.States.Fleets.ApplyRemove();
 			foreach (var fleet in newFleets) //TODO(v0.5) add pendAdd to collection

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Ikadn;
 using Ikadn.Ikon.Types;
+using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 using Stareater.Ships.Missions;
 using Stareater.Utils.Collections;
@@ -14,6 +15,11 @@ namespace Stareater.GameData.Databases.Tables
 	{
 		//TODO(later): move or remove
 		public const double DefaultSiteSpendingRatio = 1;
+		
+		private HashSet<Fleet> copyFleetRegroup(IEnumerable<Fleet> original, PlayersRemap playersRemap)
+		{
+			return new HashSet<Fleet>(original.Select(x => playersRemap.Fleets[x]));
+		}
 		
 		//TODO(later) make separate collections for colony and stellaris construction orders
 		private Dictionary<AConstructionSite, ConstructionOrders> loadConstruction(IkadnBaseObject rawData, ObjectDeindexer deindexer)
@@ -41,14 +47,21 @@ namespace Stareater.GameData.Databases.Tables
 			return queue;
 		}
 		
-		private Dictionary<Fleet, AMission> loadShipOrders(IkadnBaseObject rawData, ObjectDeindexer deindexer)
+		private Dictionary<Vector2D, HashSet<Fleet>> loadShipOrders(IkadnBaseObject rawData, ObjectDeindexer deindexer)
 		{
-			var queue = new Dictionary<Fleet, AMission>();
+			var orders = new Dictionary<Vector2D, HashSet<Fleet>>();
 			
-			foreach(var orderData in rawData.To<IEnumerable<IkonComposite>>())
-				queue.Add(deindexer.Get<Fleet>(orderData[IdKey].To<int>()), MissionFactory.Load(orderData[OrdersKey], deindexer));
+			foreach(var orderData in rawData.To<IEnumerable<IkonComposite>>()) {
+				var rawPosition = orderData[Position].To<double[]>();
+				var fleets = new HashSet<Fleet>();
 				
-			return queue;
+				foreach(var fleetData in orderData[Fleets].To<IEnumerable<IkonComposite>>())
+					fleets.Add(Fleet.Load(fleetData, deindexer));
+				
+				orders.Add(new Vector2D(rawPosition[0], rawPosition[1]), fleets);
+			}
+				
+			return orders;
 		}
 		
 		private IkadnBaseObject saveConstruction(ObjectIndexer indexer)
@@ -94,9 +107,12 @@ namespace Stareater.GameData.Databases.Tables
 				IkonComposite orderData;
 				
 				orderData = new IkonComposite(ShipOrderTag);
-				orderData.Add(IdKey, new IkonInteger(indexer.IndexOf(order.Key)));
+				orderData.Add(Position, new IkonArray().
+				              Add(new IkonFloat(order.Key.X)).
+				              Add(new IkonFloat(order.Key.Y))
+				);
 				
-				orderData.Add(OrdersKey, order.Value.Save(indexer));
+				orderData.Add(Fleets, new IkonArray(order.Value.Select(x => x.Save(indexer))));
 				queue.Add(orderData);
 			}
 			

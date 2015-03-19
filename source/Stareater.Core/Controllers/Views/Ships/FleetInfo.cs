@@ -15,20 +15,21 @@ namespace Stareater.Controllers.Views.Ships
 		public AFleetMission Mission { get; private set; }
 		public Vector2D VisualPosition { get; private set; }
 		
+		internal bool AtStar { get; private set; }
 		internal Fleet FleetData { get; private set; }
 		
-		internal FleetInfo(Fleet fleet, AMission newMission, AMission oldMission, Game game, IVisualPositioner visualPositioner)
+		internal FleetInfo(Fleet fleet, bool atStar, IVisualPositioner visualPositioner)
 		{
+			this.AtStar = atStar;
 			this.FleetData = fleet;
 
-			this.Mission = makeMissionInfo(newMission);
+			this.Mission = MakeMissionInfo(fleet.Mission);
 			this.Owner = new PlayerInfo(fleet.Owner);
 			
-			var oldMissionInfo = oldMission != null ? makeMissionInfo(oldMission) : null;
-			this.VisualPosition = visualPositioner.FleetPosition(fleet.Position, this.Mission, oldMissionInfo);
+			this.VisualPosition = visualPositioner.FleetPosition(fleet.Position, this.Mission, atStar);
 		}
 		
-		private static AFleetMission makeMissionInfo(AMission mission)
+		internal static AFleetMission MakeMissionInfo(AMission mission)
 		{
 			switch(mission.Type) {
 				case MissionType.Move:

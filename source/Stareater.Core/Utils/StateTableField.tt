@@ -693,6 +693,16 @@ class GenericParamInfo
 		return this;
 	}
 	
+	public GenericParamInfo CopyWith(string code, params Flag[] flags)
+	{
+		var remaps = (flags.Contains(Flag.GalaxyRemap) ? ", galaxyRemap" : "") + 
+					 (flags.Contains(Flag.PlayerRemap) ? ", playersRemap" : "");
+		
+		this.CopyLogic = code + "(" + Default + remaps + ")";
+		this.analyzeRemapNeeds(this.CopyLogic);
+		return this;
+	}
+	
 	public GenericParamInfo CopyMethod(string code)
 	{
 		this.CopyLogic = Default + "." + code;

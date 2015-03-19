@@ -24,6 +24,18 @@ namespace Stareater.Ships.Missions
 			}
 		}
 		
+		public override bool Equals(object obj)
+		{
+			var other = obj as MoveMission;
+			return other != null && this.Waypoints.SequenceEqual(other.Waypoints);
+		}
+		
+		public override int GetHashCode()
+		{
+			var firstPoint = Waypoints.FirstOrDefault();
+			return firstPoint == null ? 0 : firstPoint.GetHashCode();
+		}
+		
 		public override AMission Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap)
 		{
 			return new MoveMission(this.Waypoints);

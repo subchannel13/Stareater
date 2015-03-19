@@ -341,7 +341,6 @@
     <Compile Include="Ships\Missions\MissionFactory.cs" />
     <Compile Include="Ships\Missions\MissionType.cs" />
     <Compile Include="Ships\Missions\MoveMission.cs" />
-    <Compile Include="Ships\Missions\RegroupMission.cs" />
     <Compile Include="Ships\Missions\StationaryMission.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />
     <Compile Include="Utils\Collections\IndexedCollectionBase.cs">

@@ -233,19 +233,11 @@ namespace Stareater.Controllers
 
 			//TODO(later) filter invisible fleets
 			foreach (var fleet in game.States.Fleets) {
-				AMission newMission = null;
-				AMission oldMission = fleet.Mission;
-
-				if (game.CurrentPlayer.Orders.ShipOrders.ContainsKey(fleet))
-					newMission = game.CurrentPlayer.Orders.ShipOrders[fleet];
+				if (fleet.Owner == game.CurrentPlayer && game.CurrentPlayer.Orders.ShipOrders.ContainsKey(fleet.Position))
+					foreach(var newFleet in game.CurrentPlayer.Orders.ShipOrders[fleet.Position])
+						fleets.Add(new FleetInfo(newFleet, this.game.States.Stars.AtContains(fleet.Position), this.VisualPositioner));
 				else
-					newMission = oldMission;
-
-				if (newMission == null || newMission.Type != MissionType.Regroup)
-					fleets.Add(new FleetInfo(fleet, newMission, oldMission, game, this.VisualPositioner));
-				//TODO(v0.5) implement fleet regrouping
-				/*else
-					foreach(var subfleet in (order as RegroupMission).*/
+					fleets.Add(new FleetInfo(fleet, this.game.States.Stars.AtContains(fleet.Position), this.VisualPositioner));
 			}
 
 			this.mapCache.Rebuild(this.GameInstance.States.Stars, fleets);
