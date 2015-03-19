@@ -4,9 +4,9 @@ using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;
+using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
-using Stareater.Ships.Missions;
 
 namespace Stareater.GameData.Databases.Tables 
 {
@@ -16,7 +16,7 @@ namespace Stareater.GameData.Databases.Tables
 		public Dictionary<string, int> DevelopmentQueue { get; set; }
 		public string ResearchFocus { get; set; }
 		public Dictionary<AConstructionSite, ConstructionOrders> ConstructionPlans { get; set; }
-		public Dictionary<Fleet, AMission> ShipOrders { get; set; }
+		public Dictionary<Vector2D, HashSet<Fleet>> ShipOrders { get; set; }
 
 		public PlayerOrders() 
 		{
@@ -24,7 +24,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.DevelopmentQueue = new Dictionary<string, int>();
 			this.ResearchFocus = null;
 			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
-			this.ShipOrders = new Dictionary<Fleet, AMission>();
+			this.ShipOrders = new Dictionary<Vector2D, HashSet<Fleet>>();
  
 			 
 		} 
@@ -39,9 +39,9 @@ namespace Stareater.GameData.Databases.Tables
 			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
 			foreach(var item in original.ConstructionPlans)
 				this.ConstructionPlans.Add(playersRemap.Site(item.Key), item.Value.Copy());
-			this.ShipOrders = new Dictionary<Fleet, AMission>();
+			this.ShipOrders = new Dictionary<Vector2D, HashSet<Fleet>>();
 			foreach(var item in original.ShipOrders)
-				this.ShipOrders.Add(playersRemap.Fleets[item.Key], playersRemap.Missions[item.Value]);
+				this.ShipOrders.Add(item.Key, copyFleetRegroup(item.Value, playersRemap));
  
 			 
 		}
@@ -111,8 +111,8 @@ namespace Stareater.GameData.Databases.Tables
 		private const string ConstructionOrdersKey = "constructionorders";
 		private const string ShipOrdersKey = "shipOrders";
 		private const string ShipOrdersTag = "shipOrders";
-		private const string FleetKey = "fleet";
-		private const string AMissionKey = "amission";
+		private const string Position = "position";
+		private const string Fleets = "fleets";
  
 		#endregion
 

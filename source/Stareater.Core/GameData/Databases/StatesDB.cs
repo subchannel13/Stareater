@@ -99,7 +99,7 @@ namespace Stareater.GameData.Databases
 
 		internal PlayersRemap CopyPlayers(Dictionary<Player, Player> playersRemap, GalaxyRemap galaxyRemap)
 		{
-			PlayersRemap remap = new PlayersRemap(
+			var remap = new PlayersRemap(
 				playersRemap, 
 				new Dictionary<AConstructionSite, Colony>(),
 				new Dictionary<AConstructionSite, StellarisAdmin>(),
@@ -114,9 +114,12 @@ namespace Stareater.GameData.Databases
 			remap.Missions = this.Fleets.ToDictionary(x => x.Mission, x => x.Mission.Copy(remap, galaxyRemap));
 			remap.Fleets = this.Fleets.ToDictionary(x => x, x => x.Copy(remap, galaxyRemap));
 			
-			foreach(var orderList in playersRemap.Keys.Select(x => x.Orders))
-				foreach(var mission in orderList.ShipOrders.Values)
-					remap.Missions.Add(mission, mission.Copy(remap, galaxyRemap));
+			foreach(var player in playersRemap.Keys)
+				foreach(var fleetOrders in player.Orders.ShipOrders.Values)
+					foreach(var fleet in fleetOrders) {
+						remap.Missions.Add(fleet.Mission, fleet.Mission.Copy(remap, galaxyRemap));
+						remap.Fleets.Add(fleet, fleet.Copy(remap, galaxyRemap));
+					}
 			
 			return remap;
 		}

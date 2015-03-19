@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Stareater.Utils.Collections;
-using Stareater.Galaxy;
-using Stareater.Controllers.Views.Ships;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Views;
+using Stareater.Controllers.Views.Ships;
+using Stareater.Galaxy;
+using Stareater.Utils;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Data
 {
@@ -23,12 +23,21 @@ namespace Stareater.Controllers.Data
 			}
 		}
 
+		public void Add(FleetInfo fleet)
+		{
+			this.fleets.Add(fleet, fleet.VisualPosition, new Vector2D());
+		}
+		
 		public void Rebuild(IEnumerable<StarData> stars, IEnumerable<FleetInfo> fleets)
 		{
 			rebuildTree(this.fleets, fleets, x => x.VisualPosition);
 			rebuildTree(this.stars, stars, x => x.Position);
 		}
 
+		public void Remove(FleetInfo fleet)
+		{
+			this.fleets.Remove(fleet);
+		}
 		public void Replace(FleetInfo oldFleet, FleetInfo newFleet)
 		{
 			this.fleets.Remove(oldFleet);
@@ -40,16 +49,26 @@ namespace Stareater.Controllers.Data
 			var searchCenter = new Vector2D(x, y);
 			var foundObjects = new List<FoundGalaxyObject>();
 
-			var stars = searchTree(this.stars, searchCenter, searchRadius, foundObjects, GalaxyObjectType.Star, i => i.Position);
-			var fleets = searchTree(this.fleets, searchCenter, searchRadius, foundObjects, GalaxyObjectType.Fleet, i => i.VisualPosition);
+			var foundStars = searchTree(this.stars, searchCenter, searchRadius, foundObjects, GalaxyObjectType.Star, i => i.Position);
+			var foundFleets = searchTree(this.fleets, searchCenter, searchRadius, foundObjects, GalaxyObjectType.Fleet, i => i.VisualPosition);
 
 			return new GalaxySearchResult(
-				stars,
-				fleets,
+				foundStars,
+				foundFleets,
 				foundObjects
 			);
 		}
 
+		internal FleetInfo InfoOf(Fleet fleet, bool atStar, IVisualPositioner visualPositoner)
+		{
+			var position = visualPositoner.FleetPosition(fleet.Position, FleetInfo.MakeMissionInfo(fleet.Mission), atStar);
+			
+			foreach(var fleetInfo in this.fleets.Query(position, new Vector2D()))
+				if (fleetInfo.FleetData == fleet)
+					return fleetInfo;
+			
+			return null;
+		}
 
 		private static void rebuildTree<T>(QuadTree<T> tree, IEnumerable<T> items, Func<T, Vector2D> positionFunc)
 		{

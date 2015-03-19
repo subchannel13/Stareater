@@ -21,6 +21,17 @@ namespace Stareater.Ships.Missions
 			}
 		}
 		
+		public override bool Equals(object obj)
+		{
+			var other = obj as StationaryMission;
+			return other != null && this.Location == other.Location;
+		}
+
+		public override int GetHashCode()
+		{
+			return Location.GetHashCode();
+		}
+		
 		public override AMission Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap)
 		{
 			return new StationaryMission(galaxyRemap.Stars[this.Location]);
