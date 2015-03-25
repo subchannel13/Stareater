@@ -1,29 +1,35 @@
 ﻿:FormMain
 
-EndTurn {
-End
-turn}
+EndTurn §
+		End
+		turn
+	\
 Return = Return
 
 NotBuilding = No construction project
 SiteDetails = Details
 
-AsteriodName {
-Asteroid belt at {=bodyName}}
+AsteriodName §
+		Asteroid belt at {=bodyName}
+	\
 
-GasGiantName {
-Moons of {=bodyName}}
+GasGiantName §
+		Moons of {=bodyName}
+	\
 
-RockName {
-{=bodyName}}
+RockName §
+		{=bodyName}
+	\
 
-BuildingsPerTurn {
-{=count} per turn}
+BuildingsPerTurn §
+		{=count} per turn
+	\
 
-Eta {
-In {=eta} turn{pluralDec}{pluralPrefix}}
-pluralDec    ? (eta < 10) ∧ (ceil(eta * 10) % 10 ≠ 1); =s
-pluralPrefix ? (eta ≥ 10) ∧ ((eta < 20) ∨ (round(eta) % 10 ≠ 1)); =s
+Eta §
+		In {=eta} turn{pluralDec}{pluralPrefix}
+	\
+	pluralDec    ? (eta < 10) ∧ (ceil(eta * 10) % 10 ≠ 1); =s
+	pluralPrefix ? (eta ≥ 10) ∧ ((eta < 20) ∨ (round(eta) % 10 ≠ 1)); =s
 
 EtaNever = Never
 

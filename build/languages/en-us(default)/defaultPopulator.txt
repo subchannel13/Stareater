@@ -1,10 +1,11 @@
 ﻿:DefaultPopulator
 name = Default planets
-description {
-Environment: {badClime}{avgClime}{goodClime}}
-badClime ?badClime; =hostile
-avgClime ?avgClime; =normal
-goodClime ?goodClime; =paradise
+description §
+		Environment: {badClime}{avgClime}{goodClime}
+	\
+	badClime ?badClime; =hostile
+	avgClime ?avgClime; =normal
+	goodClime ?goodClime; =paradise
 
 climate = Environment
 hostileClimate = Hostile

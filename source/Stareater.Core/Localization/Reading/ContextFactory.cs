@@ -11,7 +11,7 @@ namespace Stareater.Localization.Reading
 		public IkadnBaseObject Parse(IkadnParser parser)
 		{
 			string contextName = IkonParser.ReadIdentifier(parser.Reader);
-			Dictionary<string, IText> entries = new Dictionary<string, IText>();
+			var entries = new Dictionary<string, IText>();
 
 			while (parser.Reader.PeekNextNonwhite() != ClosingChar)
 				entries.Add(

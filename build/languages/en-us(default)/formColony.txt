@@ -6,38 +6,47 @@ popGroup = Population
 productivityGroup = Productivity
 
 
-populationInfo {
-{=pop} / {=popMax}}
+populationInfo §
+		{=pop} / {=popMax}
+	\
 
-growthInfo {
-Growth: {=popGrowth}}
+growthInfo §
+		Growth: {=popGrowth}
+	\
 
-infrastructureInfo {
-Infrastructure: {=popOrg} %}
+infrastructureInfo §
+		Infrastructure: {=popOrg} %
+	\
 
+sizeInfo §
+		Size: {=planetSize}
+	\
 
-sizeInfo {
-Size: {=planetSize}}
+environmentInfo §
+		Environment: {=planetEnv} %
+	\
 
-environmentInfo {
-Environment: {=planetEnv} %}
+foodInfo §
+		Food: {=prodFood} / pop
+	\
 
+miningInfo §
+		Mining: {=prodOre} / pop
+	\
 
-foodInfo {
-Food: {=prodFood} / pop}
+industryInfo §
+		Industry: {=prodInd} / pop
+	\
 
-miningInfo {
-Mining: {=prodOre} / pop}
+developmentInfo §
+		Development: {=prodDev} / pop
+	\
 
-industryInfo {
-Industry: {=prodInd} / pop}
+industryTotalInfo §
+		Industry: {=totalInd}
+	\
 
-developmentInfo {
-Development: {=prodDev} / pop}
-
-industryTotalInfo {
-Industry: {=totalInd} / pop}
-
-developmentTotalInfo {
-Development: {=totalDev} / pop}
+developmentTotalInfo §
+		Development: {=totalDev}
+	\
 -

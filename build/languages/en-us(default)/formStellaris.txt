@@ -5,19 +5,24 @@ coloniesGroup = Colonies
 outputGroup = Output
 
 
-populationInfo {
-Population: {=pop}}
+populationInfo §
+		Population: {=pop}
+	\
 
-infrastructureInfo {
-Infrastructure: {=popOrg} %}
+infrastructureInfo §
+		Infrastructure: {=popOrg} %
+	\
+	
 
+industryInfo §
+		Industry: {=outInd}
+	\
 
-industryInfo {
-Industry: {=outInd}}
+developmentInfo §
+		Development: {=outDev}
+	\
 
-developmentInfo {
-Development: {=outDev}}
-
-researchInfo {
-Research: {=outRes}}
+researchInfo §
+		Research: {=outRes}
+	\
 -

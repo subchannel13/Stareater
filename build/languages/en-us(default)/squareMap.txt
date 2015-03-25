@@ -1,8 +1,9 @@
 ﻿:SquareMap
 name = Square map
-description {
-Square map
-{=size} stars}
+description §
+		Square map
+		{=size} stars
+	\
 
 size = Size
 miniatureSize = Miniature

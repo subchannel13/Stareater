@@ -2,8 +2,9 @@
 DevelopmentTitle = Development topics
 ResearchTitle = Research topics
 
-Level {
-Level {=lvl}}
+Level §
+		Level {=lvl}
+	\
 
 developmentPoints = Development points
 -
