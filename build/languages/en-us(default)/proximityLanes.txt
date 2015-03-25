@@ -1,7 +1,8 @@
 ﻿:ProximityLanes
 name = Short wormholes
-description {
-{=minDegree} - {=maxDegree} short wormholes}
+description §
+		{=minDegree} - {=maxDegree} short wormholes
+	\
 degree = Wormhole frequency
 few = Few
 average = Normal
