@@ -20,16 +20,19 @@ namespace Stareater.GUI
 		public ShipGroupItem()
 		{
 			InitializeComponent();
+			
+			this.lastBackColor = this.BackColor;
+			this.lastForeColor = this.ForeColor;
 		}
 		
 		public void SetData(ShipGroupInfo groupInfo)
 		{
 			this.Data = groupInfo;
 			
-			ThousandsFormatter thousandsFormat = new ThousandsFormatter();
+			var thousandsFormat = new ThousandsFormatter();
 			
-			hullThumbnail.Image = ImageCache.Get[groupInfo.Design.ImagePath];
-			quantityLabel.Text = thousandsFormat.Format(groupInfo.Quantity);
+			this.hullThumbnail.Image = ImageCache.Get[groupInfo.Design.ImagePath];
+			this.quantityLabel.Text = thousandsFormat.Format(groupInfo.Quantity);
 		}
 		
 		private void quantityLabel_Click(object sender, EventArgs e)
@@ -54,21 +57,7 @@ namespace Stareater.GUI
 		
 		private void shipGroupItem_Click(object sender, EventArgs e)
 		{
-			if (this.isSelected) {
-				this.BackColor = this.lastBackColor;
-				this.ForeColor = this.lastForeColor;
-				this.isSelected = false;
-			}
-			else {
-				this.lastBackColor = this.BackColor;
-				this.lastForeColor = this.ForeColor;
-				this.BackColor = SystemColors.Highlight;
-				this.ForeColor = SystemColors.HighlightText;
-				this.isSelected = true;
-			}
-			
-			if (this.SelectionChanged != null)
-				this.SelectionChanged(this, new EventArgs());
+			this.IsSelected = !this.isSelected;
 		}
 		
 		public event EventHandler SelectionChanged;
@@ -76,6 +65,25 @@ namespace Stareater.GUI
 		public bool IsSelected
 		{
 			get { return this.isSelected; }
+			set {
+				this.isSelected = value;
+				
+				if (!this.isSelected) {
+					this.BackColor = this.lastBackColor;
+					this.ForeColor = this.lastForeColor;
+					this.isSelected = false;
+				}
+				else {
+					this.lastBackColor = this.BackColor;
+					this.lastForeColor = this.ForeColor;
+					this.BackColor = SystemColors.Highlight;
+					this.ForeColor = SystemColors.HighlightText;
+					this.isSelected = true;
+				}
+				
+				if (this.SelectionChanged != null)
+					this.SelectionChanged(this, new EventArgs());
+				}
 		}
 	}
 }

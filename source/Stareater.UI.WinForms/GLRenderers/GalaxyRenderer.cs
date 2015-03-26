@@ -406,12 +406,13 @@ namespace Stareater.GLRenderers
 				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
 			
 			if (this.fleetController != null) {
-				if (closestObjects.FoundObjects.Count > 0 && closestObjects.FoundObjects[0].Type == GalaxyObjectType.Star && this.fleetController.SimulationWaypoints != null) {
+				if (closestObjects.FoundObjects.Count > 0 && closestObjects.FoundObjects[0].Type == GalaxyObjectType.Star) {
 					this.fleetController = this.fleetController.Send(this.fleetController.SimulationWaypoints);
 					this.lastSelectedIdleFleets[this.controller.CurrentPlayer] = this.fleetController.Fleet;
 					this.galaxyViewListener.FleetSelected(this.fleetController);
 					return;
-				} else {
+				}
+				else {
 					this.galaxyViewListener.FleetDeselected();
 					this.fleetController = null;
 				}
