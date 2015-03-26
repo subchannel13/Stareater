@@ -396,6 +396,7 @@ namespace Stareater.GUI
 				fleetView.SetData(fleet);
 				fleetView.SelectionChanged += shipGroupItem_SelectedIndexChanged;
 				this.shipList.Controls.Add(fleetView);
+				fleetView.IsSelected = true;
 			}
 			
 			this.shipList.ResumeLayout();
