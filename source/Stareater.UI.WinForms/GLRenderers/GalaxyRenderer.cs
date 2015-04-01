@@ -140,56 +140,64 @@ namespace Stareater.GLRenderers
 		
 		public void Draw(double deltaTime)
 		{
-			if (resetProjection) {
-				double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
-				double semiRadius = 0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel);
+			if (resetProjection) 
+				setupPerspective();
 
-				var screen = Screen.FromControl(eventDispatcher);
-				if (screen.Bounds.Width > screen.Bounds.Height)
-					screenLength = (float)(2 * screen.Bounds.Width * semiRadius * aspect / eventDispatcher.Width);
-				else
-					//TODO(v0.5): test this, perhaps by flipping the monitor.
-					screenLength = (float)(2 * screen.Bounds.Height * semiRadius * aspect / eventDispatcher.Height);
-				
-				GL.MatrixMode(MatrixMode.Projection);
-				GL.LoadIdentity();
-				GL.Ortho(
-					-aspect * semiRadius + originOffset.X, aspect * semiRadius + originOffset.X,
-					-semiRadius + originOffset.Y, semiRadius + originOffset.Y, 
-					0, -FarZ);
-
-				GL.GetFloat(GetPName.ProjectionMatrix, out invProjection);
-				invProjection.Invert();
-				GL.MatrixMode(MatrixMode.Modelview);
-				resetProjection = false;
-			}
-
-			if (wormholeDrawList == NoCallList) {
-				wormholeDrawList = GL.GenLists(1);
-				GL.NewList(wormholeDrawList, ListMode.CompileAndExecute);
-				
-				GL.Enable(EnableCap.Texture2D);
-				GL.Color4(Color.Blue);
-				
-				foreach (var wormhole in controller.Wormholes) {
-					GL.PushMatrix();
-					GL.MultMatrix(pathMatrix(
-						new Vector2d(wormhole.FromStar.Position.X, wormhole.FromStar.Position.Y), 
-						new Vector2d(wormhole.ToStar.Position.X, wormhole.ToStar.Position.Y)
-					));
-					
-					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, WormholeZ);
-					
-					GL.PopMatrix();
-				}
-				
-				GL.EndList();
-			}
+			if (wormholeDrawList == NoCallList)
+				setupWormholeList();
 			else
 				GL.CallList(wormholeDrawList);
 			
+			drawFleetMovement();
+			
+			drawMovementSimulation();
+			
+			if (starDrawList == NoCallList) 
+				setupStarsList();
+			else
+				GL.CallList(starDrawList);
+			
+			drawFleetMarkers();
+
+			drawSelectionMarkers();
+		}
+
+		public void OnNewTurn()
+		{
+			if (this.fleetController != null && !this.fleetController.Valid)
+				this.fleetController = null;
+				
+			this.ResetLists();
+		}
+		
+		public void ResetLists()
+		{
+			GL.DeleteLists(starDrawList, 1);
+			GL.DeleteLists(wormholeDrawList, 1);
+			this.starDrawList = NoCallList;
+			this.wormholeDrawList = NoCallList;
+		}
+		#endregion
+
+		#region Drawing setup and helpers
+		private void drawFleetMarkers()
+		{
+			foreach (var fleet in this.controller.Fleets) {
+				GL.Color4(fleet.Owner.Color);
+				
+				GL.PushMatrix();
+				GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, IdleFleetZ);
+				GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
+
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.FleetIndicator);
+				GL.PopMatrix();
+			}
+		}
+		
+		private void drawFleetMovement()
+		{
 			GL.Color4(Color.DarkGreen);
-			foreach (var fleet in controller.Fleets) {
+			foreach (var fleet in this.controller.Fleets) {
 				if (fleet.Mission.Type != FleetMissionType.Move)
 					continue;
 				
@@ -218,7 +226,10 @@ namespace Stareater.GLRenderers
 				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.FleetIndicator);
 				GL.PopMatrix();
 			}
-			
+		}
+		
+		private void drawMovementSimulation()
+		{
 			if (this.fleetController != null && this.fleetController.SimulationWaypoints != null)
 			{
 				GL.Enable(EnableCap.Texture2D);
@@ -240,55 +251,10 @@ namespace Stareater.GLRenderers
 					last = next;
 				}
 			}
-			
-			if (starDrawList == NoCallList) {
-				starDrawList = GL.GenLists(1);
-				GL.NewList(starDrawList, ListMode.CompileAndExecute);
-
-				GL.Enable(EnableCap.Texture2D);
-				
-				foreach (var star in controller.Stars) {
-					GL.Color4(star.Color);
-					GL.PushMatrix();
-					GL.Translate(star.Position.X, star.Position.Y, StarColorZ);
-
-					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarColor);
-				
-					GL.Color4(Color.White);
-					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarGlow, StarSaturationZ - StarColorZ);
-				
-					GL.PopMatrix();
-				}
-				
-				float starNameZ = StarNameZ;
-				foreach (var star in controller.Stars) {
-					GL.Color4(starNameColor(star));
-					
-					GL.PushMatrix();
-					GL.Translate(star.Position.X, star.Position.Y - 0.5, starNameZ);
-					GL.Scale(StarNameScale, StarNameScale, StarNameScale);
-
-					TextRenderUtil.Get.RenderText(star.Name.ToText(SettingsWinforms.Get.Language), -0.5f);
-					GL.PopMatrix();
-					starNameZ += StarNameZRange / controller.StarCount;
-				}
-
-				GL.EndList();
-			}
-			else
-				GL.CallList(starDrawList);
-			
-			foreach (var fleet in controller.Fleets) {
-				GL.Color4(fleet.Owner.Color);
-				
-				GL.PushMatrix();
-				GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, IdleFleetZ);
-				GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
-
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.FleetIndicator);
-				GL.PopMatrix();
-			}
-
+		}
+		
+		private void drawSelectionMarkers()
+		{
 			if (this.currentSelection == GalaxySelectionType.Star) {
 				GL.Color4(Color.White);
 				GL.PushMatrix();
@@ -308,24 +274,91 @@ namespace Stareater.GLRenderers
 				GL.PopMatrix();
 			}
 		}
-
-		public void OnNewTurn()
+		
+		private void setupPerspective()
 		{
-			if (this.fleetController != null && !this.fleetController.Valid)
-				this.fleetController = null;
-				
-			this.ResetLists();
+			double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
+			double semiRadius = 0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel);
+
+			var screen = Screen.FromControl(eventDispatcher);
+			//TODO(v0.5): test this, perhaps by flipping the monitor.
+			screenLength = screen.Bounds.Width > screen.Bounds.Height ? 
+				(float)(2 * screen.Bounds.Width * semiRadius * aspect / eventDispatcher.Width) : 
+				(float)(2 * screen.Bounds.Height * semiRadius * aspect / eventDispatcher.Height);
+			
+			GL.MatrixMode(MatrixMode.Projection);
+			GL.LoadIdentity();
+			GL.Ortho(
+				-aspect * semiRadius + originOffset.X, aspect * semiRadius + originOffset.X,
+				-semiRadius + originOffset.Y, semiRadius + originOffset.Y, 
+				0, -FarZ);
+
+			GL.GetFloat(GetPName.ProjectionMatrix, out invProjection);
+			invProjection.Invert();
+			GL.MatrixMode(MatrixMode.Modelview);
+			resetProjection = false;
 		}
 		
-		public void ResetLists()
+		private void setupStarsList()
 		{
-			GL.DeleteLists(starDrawList, 1);
-			GL.DeleteLists(wormholeDrawList, 1);
-			this.starDrawList = NoCallList;
-			this.wormholeDrawList = NoCallList;
+			this.starDrawList = GL.GenLists(1);
+			GL.NewList(starDrawList, ListMode.CompileAndExecute);
+
+			GL.Enable(EnableCap.Texture2D);
+			
+			foreach (var star in controller.Stars) {
+				GL.Color4(star.Color);
+				GL.PushMatrix();
+				GL.Translate(star.Position.X, star.Position.Y, StarColorZ);
+
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarColor);
+			
+				GL.Color4(Color.White);
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarGlow, StarSaturationZ - StarColorZ);
+			
+				GL.PopMatrix();
+			}
+			
+			float starNameZ = StarNameZ;
+			foreach (var star in controller.Stars) {
+				GL.Color4(starNameColor(star));
+				
+				GL.PushMatrix();
+				GL.Translate(star.Position.X, star.Position.Y - 0.5, starNameZ);
+				GL.Scale(StarNameScale, StarNameScale, StarNameScale);
+
+				TextRenderUtil.Get.RenderText(star.Name.ToText(SettingsWinforms.Get.Language), -0.5f);
+				GL.PopMatrix();
+				starNameZ += StarNameZRange / controller.StarCount;
+			}
+
+			GL.EndList();
+		}
+		
+		private void setupWormholeList()
+		{
+			this.wormholeDrawList = GL.GenLists(1);
+			GL.NewList(wormholeDrawList, ListMode.CompileAndExecute);
+			
+			GL.Enable(EnableCap.Texture2D);
+			GL.Color4(Color.Blue);
+			
+			foreach (var wormhole in controller.Wormholes) {
+				GL.PushMatrix();
+				GL.MultMatrix(pathMatrix(
+					new Vector2d(wormhole.FromStar.Position.X, wormhole.FromStar.Position.Y), 
+					new Vector2d(wormhole.ToStar.Position.X, wormhole.ToStar.Position.Y)
+				));
+				
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, WormholeZ);
+				
+				GL.PopMatrix();
+			}
+			
+			GL.EndList();
 		}
 		#endregion
-
+		
 		#region Mouse events
 		private void mouseMove(object sender, MouseEventArgs e)
 		{
