@@ -37,12 +37,13 @@ namespace Stareater.Controllers
 		{
 			StaticsDB statics = loadStatics();
 			
-			ObjectDeindexer deindexer = new ObjectDeindexer();
+			var deindexer = new ObjectDeindexer();
 			int turn = saveData[Game.TurnKey].To<int>();
 			
 			deindexer.AddAll(statics.Constructables, x => x.IdCode);
 			deindexer.AddAll(statics.PredeginedDesigns);
 			deindexer.AddAll(statics.Hulls.Values, x => x.IdCode);
+			deindexer.AddAll(statics.IsDrives.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Technologies, x => x.IdCode);
 			
 			var loadedStates = loadSaveData(saveData, deindexer);
@@ -61,7 +62,7 @@ namespace Stareater.Controllers
 		#region Creation helper methods
 		private static StaticsDB loadStatics()
 		{
-			StaticsDB statics = new StaticsDB();
+			var statics = new StaticsDB();
 			foreach(double p in statics.Load(StaticDataFiles))
 				;
 			
@@ -315,6 +316,7 @@ namespace Stareater.Controllers
 			"./data/playerFormulas.txt",
 			"./data/predefinedDesigns.txt",
 			"./data/shipHulls.txt",
+			"./data/shipIsDrives.txt",
 			"./data/systemBuildings.txt",
 			"./data/techDevelopment.txt",
 			"./data/techResearch.txt",

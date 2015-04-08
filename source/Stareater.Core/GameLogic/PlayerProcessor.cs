@@ -43,7 +43,7 @@ namespace Stareater.GameLogic
 
 		internal PlayerProcessor Copy(PlayersRemap playersRemap)
 		{
-			PlayerProcessor copy = new PlayerProcessor(playersRemap.Players[this.Player]);
+			var copy = new PlayerProcessor(playersRemap.Players[this.Player]);
 			
 			copy.DevelopmentPlan = (this.DevelopmentPlan != null) ? new List<ActivityResult<TechnologyProgress>>(this.DevelopmentPlan) : null;
 			copy.ResearchPlan  = (this.ResearchPlan != null) ? new List<ActivityResult<TechnologyProgress>>(this.ResearchPlan) : null;
@@ -67,10 +67,10 @@ namespace Stareater.GameLogic
 		{
 			int primaryComparison = technologyOrderKey(leftTech).CompareTo(technologyOrderKey(rightTech));
 			
-			if (primaryComparison == 0)
-				return leftTech.Topic.IdCode.CompareTo(rightTech.Topic.IdCode);
+			return primaryComparison == 0 ? 
+				string.Compare(leftTech.Topic.IdCode, rightTech.Topic.IdCode, StringComparison.Ordinal) : 
+				primaryComparison;
 			
-			return primaryComparison;
 		}
 		
 		public void CalculateDevelopment(StaticsDB statics, StatesDB states, IList<ColonyProcessor> colonyProcessors)
@@ -194,7 +194,6 @@ namespace Stareater.GameLogic
 			this.CalculateDevelopment(statics, states, colonyProcessors);
 			
 			foreach (var colonyProc in colonyProcessors) {
-				//developmentPoints += colonyProc.Development;
 				colonyProc.ProcessPrecombat(states);
 			}
 			
@@ -271,14 +270,19 @@ namespace Stareater.GameLogic
 				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
 				{
 					Player.UnlockedDesigns.Add(predefDesign);
-					states.Designs.Add(new Design(states.MakeDesignId(), Player, predefDesign.Name,
-					                              statics.Hulls[predefDesign.HullCode].MakeHull(techLevels, predefDesign.HullImageIndex)
-					                             ));
+					var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels, predefDesign.HullImageIndex);
+					//TODO(0.5) calculate ship's power
+					var isDrive = predefDesign.HasIsDrive ? IsDrive.Best(statics.IsDrives.Values, techLevels, hull, 0) : null;
+					
+					states.Designs.Add(new Design(
+						states.MakeDesignId(), Player, predefDesign.Name,
+					    hull, isDrive
+					));
 				}
 					
 		}
 		
-		private static Dictionary<string, int> updateTechQueue(IDictionary<string, int> queue, ISet<string> validItems)
+		private static Dictionary<string, int> updateTechQueue(IEnumerable<KeyValuePair<string, int>> queue, ICollection<string> validItems)
 		{
 			var newOrder = queue
 				.Where(x => validItems.Contains(x.Key))

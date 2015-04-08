@@ -100,6 +100,7 @@
     <Compile Include="Controllers\Views\Ships\FleetInfo.cs" />
     <Compile Include="Controllers\Views\Ships\FleetMissionType.cs" />
     <Compile Include="Controllers\Views\Ships\HullInfo.cs" />
+    <Compile Include="Controllers\Views\Ships\IsDriveInfo.cs" />
     <Compile Include="Controllers\Views\Ships\MoveMissionInfo.cs" />
     <Compile Include="Controllers\Views\Ships\ShipGroupInfo.cs" />
     <Compile Include="Controllers\Views\Ships\StationaryMissionInfo.cs" />
@@ -217,6 +218,7 @@
       <DependentUpon>Intelligence.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="GameData\IsDriveType.cs" />
     <Compile Include="GameData\PlanetIntelligence.cs">
       <DependentUpon>PlanetIntelligence.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -337,6 +339,7 @@
     </Compile>
     <Compile Include="Ships\Design.partial.cs" />
     <Compile Include="Ships\Hull.cs" />
+    <Compile Include="Ships\IsDrive.cs" />
     <Compile Include="Ships\Missions\AMission.cs" />
     <Compile Include="Ships\Missions\MissionFactory.cs" />
     <Compile Include="Ships\Missions\MissionType.cs" />

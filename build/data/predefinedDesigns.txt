@@ -4,3 +4,12 @@
 	hull: fighter
 	hullImageIndex= 0
 }
+
+{ PredefinedDesign
+	name: Scout
+	
+	hull: cruiser
+	hullImageIndex= 0
+	
+	hasIsDrive []
+}

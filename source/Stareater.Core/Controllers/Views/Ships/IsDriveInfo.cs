@@ -2,23 +2,22 @@
 using System.Collections.Generic;
 using Stareater.AppData;
 using Stareater.GameData;
-using Stareater.Ships;
 using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views.Ships
 {
-	public class HullInfo
+	public class IsDriveInfo
 	{
-		private const string LangContext = "Hulls";
+		private const string LangContext = "IsDrives";
 		
-		internal HullType HullType { get; private set; }
+		internal IsDriveType IsDriveType { get; private set; }
 		internal int Level { get; private set; }
 		
 		private readonly IDictionary<string, double> levelVar;
 		
-		internal HullInfo(HullType hullType, int level)
+		internal IsDriveInfo(IsDriveType isDriveType, int level)
 		{
-			this.HullType = hullType;
+			this.IsDriveType = isDriveType;
 			this.Level = level;
 			
 			this.levelVar = new Var(AComponentType.LevelKey, level).Get;
@@ -28,23 +27,23 @@ namespace Stareater.Controllers.Views.Ships
 		{ 
 			get
 			{
-				return Settings.Get.Language[LangContext][this.HullType.NameCode].Text();
+				return Settings.Get.Language[LangContext][this.IsDriveType.NameCode].Text();
 			}
 		}
 		
-		public double Size
+		public string ImagePath
 		{
 			get
 			{
-				return this.HullType.Size.Evaluate(levelVar);
+				return this.IsDriveType.ImagePath;
 			}
 		}
 		
-		public string[] ImagePaths
+		public double Speed
 		{
 			get
 			{
-				return this.HullType.ImagePaths;
+				return this.IsDriveType.Speed.Evaluate(levelVar);
 			}
 		}
 	}

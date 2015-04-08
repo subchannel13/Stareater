@@ -24,6 +24,7 @@ namespace Stareater.GameData.Databases
 		public List<Technology> Technologies { get; private set; }
 		
 		public Dictionary<string, HullType> Hulls { get; private set; }
+		public Dictionary<string, IsDriveType> IsDrives { get; private set; }
 		
 		public StaticsDB()
 		{
@@ -31,6 +32,7 @@ namespace Stareater.GameData.Databases
 			this.Constructables = new List<Constructable>();
 			this.DevelopmentFocusOptions = new List<DevelopmentFocus>();
 			this.Hulls = new Dictionary<string, HullType>();
+			this.IsDrives = new Dictionary<string, IsDriveType>();
 			this.PredeginedDesigns = new List<PredefinedDesign>();
 			this.Technologies = new List<Technology>();
 		}
@@ -78,6 +80,9 @@ namespace Stareater.GameData.Databases
 
 							case HullTag:
 								Hulls.Add(data[GeneralCodeKey].To<string>(), loadHull(data));
+								break;
+							case IsDriveTag:
+								IsDrives.Add(data[GeneralCodeKey].To<string>(), loadIsDrive(data));
 								break;
 							default:
 								throw new FormatException("Invalid game data object with tag " + data.Tag);
@@ -193,8 +198,9 @@ namespace Stareater.GameData.Databases
 		{
 			return new PredefinedDesign(
 				data[DesignName].To<string>(),
-				data[DesingHull].To<string>(),
-				data[DesingHullImageIndex].To<int>()
+				data[DesignHull].To<string>(),
+				data[DesignHullImageIndex].To<int>(),
+				data.Keys.Contains(DesignIsDrive)
 			);
 		}
 		
@@ -223,6 +229,21 @@ namespace Stareater.GameData.Databases
 				data[HullSensors].To<Formula>()
 			);
 		}
+		
+		private IsDriveType loadIsDrive(IkonComposite data)
+		{
+			return new IsDriveType(
+				data[GeneralCodeKey].To<string>(),
+				data[GeneralNameKey].To<string>(),
+				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralImageKey].To<string>(),
+				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
+				data[GeneralMaxLevelKey].To<int>(),
+				data[GeneralCostKey].To<Formula>(),
+				data[IsDriveSpeed].To<Formula>(),
+				data[IsDriveMinSize].To<Formula>()
+			);
+		}
 		#endregion
 
 		#region Technologies
@@ -235,7 +256,7 @@ namespace Stareater.GameData.Databases
 			}
 		}
 			
-		private IEnumerable<Prerequisite> loadPrerequisites(IkonArray dataArray)
+		private IEnumerable<Prerequisite> loadPrerequisites(IList<Ikadn.IkadnBaseObject> dataArray)
 		{
 			for(int i = 0; i < dataArray.Count; i += 2)
 				yield return new Prerequisite(
@@ -270,6 +291,7 @@ namespace Stareater.GameData.Databases
 		private const string ResearchTag = "ResearchTopic";
 		
 		private const string HullTag = "Hull";
+		private const string IsDriveTag = "IsDrive"; 
 		
 		
 		private const string ColonyMaxPopulation = "maxPopulation";
@@ -300,8 +322,9 @@ namespace Stareater.GameData.Databases
 		private const string DerivedStatTotal = "total";
 		
 		private const string DesignName = "name";
-		private const string DesingHull = "hull";
-		private const string DesingHullImageIndex = "hullImageIndex";
+		private const string DesignIsDrive = "hasIsDrive";
+		private const string DesignHull = "hull";
+		private const string DesignHullImageIndex = "hullImageIndex";
 		
 		private const string FocusList = "list";
 		
@@ -333,6 +356,10 @@ namespace Stareater.GameData.Databases
 		private const string HullJamming = "jamming";
 		private const string HullCloaking = "cloaking";
 		private const string HullSensors = "sensors";
+		
+		
+		private const string IsDriveMinSize = "minSize";
+		private const string IsDriveSpeed = "speed";
 		#endregion
 	}
 }
