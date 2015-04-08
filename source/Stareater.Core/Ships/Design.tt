@@ -12,6 +12,7 @@
 		new DataInfo("Owner", "Player").FromIndexer(),
 		new DataInfo("Name", "string"),
 		new DataInfo("Hull", "Hull").IsStatic(Flag.NoIndexer),
+		new DataInfo("IsDrive", "IsDrive").IsStatic(Flag.NoIndexer),
 		new DataInfo("Cost", "double").Derived("initCost();")
 	);
 #>

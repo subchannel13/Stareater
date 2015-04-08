@@ -34,7 +34,10 @@
 			this.hullPicker = new System.Windows.Forms.ComboBox();
 			this.nameInput = new System.Windows.Forms.TextBox();
 			this.acceptButton = new System.Windows.Forms.Button();
+			this.isDriveImage = new System.Windows.Forms.PictureBox();
+			this.hasIsDrive = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.hullImage)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.isDriveImage)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// hullImage
@@ -93,7 +96,7 @@
 			// 
 			// acceptButton
 			// 
-			this.acceptButton.Location = new System.Drawing.Point(311, 294);
+			this.acceptButton.Location = new System.Drawing.Point(337, 377);
 			this.acceptButton.Name = "acceptButton";
 			this.acceptButton.Size = new System.Drawing.Size(75, 23);
 			this.acceptButton.TabIndex = 24;
@@ -101,11 +104,34 @@
 			this.acceptButton.UseVisualStyleBackColor = true;
 			this.acceptButton.Click += new System.EventHandler(this.acceptButton_Click);
 			// 
+			// isDriveImage
+			// 
+			this.isDriveImage.BackColor = System.Drawing.Color.Black;
+			this.isDriveImage.Location = new System.Drawing.Point(129, 65);
+			this.isDriveImage.Name = "isDriveImage";
+			this.isDriveImage.Size = new System.Drawing.Size(24, 24);
+			this.isDriveImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.isDriveImage.TabIndex = 28;
+			this.isDriveImage.TabStop = false;
+			// 
+			// hasIsDrive
+			// 
+			this.hasIsDrive.AutoSize = true;
+			this.hasIsDrive.Location = new System.Drawing.Point(159, 70);
+			this.hasIsDrive.Name = "hasIsDrive";
+			this.hasIsDrive.Size = new System.Drawing.Size(110, 17);
+			this.hasIsDrive.TabIndex = 27;
+			this.hasIsDrive.Text = "IS drive (2 ly/turn)";
+			this.hasIsDrive.UseVisualStyleBackColor = true;
+			this.hasIsDrive.CheckedChanged += new System.EventHandler(this.hasIsDrive_CheckedChanged);
+			// 
 			// FormShipDesigner
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(398, 329);
+			this.ClientSize = new System.Drawing.Size(425, 410);
+			this.Controls.Add(this.isDriveImage);
+			this.Controls.Add(this.hasIsDrive);
 			this.Controls.Add(this.acceptButton);
 			this.Controls.Add(this.hullPicker);
 			this.Controls.Add(this.nameInput);
@@ -118,8 +144,10 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "FormShipDesigner";
 			((System.ComponentModel.ISupportInitialize)(this.hullImage)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.isDriveImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 		private System.Windows.Forms.Button acceptButton;
 		private System.Windows.Forms.TextBox nameInput;
@@ -127,5 +155,7 @@
 		private System.Windows.Forms.Button imageRightButton;
 		private System.Windows.Forms.Button imageLeftButton;
 		private System.Windows.Forms.PictureBox hullImage;
+		private System.Windows.Forms.PictureBox isDriveImage;
+		private System.Windows.Forms.CheckBox hasIsDrive;
 	}
 }

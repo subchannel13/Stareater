@@ -1,0 +1,29 @@
+﻿{ IsDrive
+	nameCode: NUCLEAR_ISDRIVE_NAME
+	descCode: NUCLEAR_ISDRIVE_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: nuclear
+	
+	maxLvl= 10
+	prerequisites [
+	]
+	cost # 100e3 * size;
+	
+	minSize # 5;
+	speed # 0.8 * limit(power / (200 * size), 0, 1);
+}
+
+{ IsDrive
+	nameCode: SUBSPACE_ISDRIVE_NAME
+	descCode: SUBSPACE_ISDRIVE_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: subspace
+	
+	maxLvl= 1
+	prerequisites [
+	]
+	cost # 100e3 * size;
+	
+	minSize # 5;
+	speed # 3 * limit(power / (2 * size), 0, 1);
+}

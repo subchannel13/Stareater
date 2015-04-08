@@ -14,16 +14,19 @@ namespace Stareater.Ships
 		public Player Owner { get; private set; }
 		public string Name { get; private set; }
 		public Hull Hull { get; private set; }
+		public IsDrive IsDrive { get; private set; }
 		public double Cost { get; private set; }
 
-		public Design(string idCode, Player owner, string name, Hull hull) 
+		public Design(string idCode, Player owner, string name, Hull hull, IsDrive isDrive) 
 		{
 			this.IdCode = idCode;
 			this.Owner = owner;
 			this.Name = name;
 			this.Hull = hull;
+			this.IsDrive = isDrive;
 			this.Cost = initCost();
  
+			 
 		} 
 
 		private Design(Design original, Player owner) 
@@ -32,8 +35,10 @@ namespace Stareater.Ships
 			this.Owner = owner;
 			this.Name = original.Name;
 			this.Hull = original.Hull;
+			this.IsDrive = original.IsDrive;
 			this.Cost = original.Cost;
  
+			 
 		}
 
 		private Design(IkonComposite rawData, ObjectDeindexer deindexer) 
@@ -50,8 +55,12 @@ namespace Stareater.Ships
 			var hullSave = rawData[HullKey];
 			this.Hull = Hull.Load(hullSave.To<IkonComposite>(), deindexer);
 
+			var isDriveSave = rawData[IsDriveKey];
+			this.IsDrive = IsDrive.Load(isDriveSave.To<IkonComposite>(), deindexer);
+
 			this.Cost = initCost();
  
+			 
 		}
 
 		internal Design Copy(PlayersRemap playersRemap) 
@@ -72,6 +81,8 @@ namespace Stareater.Ships
 			data.Add(NameKey, new IkonText(this.Name));
 
 			data.Add(HullKey, this.Hull.Save());
+
+			data.Add(IsDriveKey, this.IsDrive.Save());
 			return data;
  
 		}
@@ -89,8 +100,11 @@ namespace Stareater.Ships
 		private const string OwnerKey = "owner";
 		private const string NameKey = "name";
 		private const string HullKey = "hull";
+		private const string IsDriveKey = "isDrive";
 		private const string CostKey = "cost";
  
 		#endregion
+
+ 
 	}
 }

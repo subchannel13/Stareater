@@ -11,9 +11,13 @@ namespace Stareater.GameData
 		public string HullCode { get; private set; }
 		public int HullImageIndex { get; private set; }
 		
-		public PredefinedDesign(string name, string hullCode, int hullImageIndex)
+		public bool HasIsDrive { get; private set; }
+		
+		public PredefinedDesign(string name, string hullCode, int hullImageIndex, bool hasIsDrive)
 		{
 			this.Name = name;
+			
+			this.HasIsDrive = hasIsDrive;
 			this.HullCode = hullCode;
 			this.HullImageIndex = hullImageIndex;
 		}

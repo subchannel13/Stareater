@@ -12,7 +12,7 @@ namespace Stareater.GUI
 {
 	public partial class FormShipDesigner : Form
 	{
-		private ShipDesignController controller;
+		private readonly ShipDesignController controller;
 		private IList<HullInfo> hulls;
 		
 		private bool automaticName = true;
@@ -26,16 +26,16 @@ namespace Stareater.GUI
 		public FormShipDesigner(ShipDesignController controller) : this()
 		{
 			this.controller = controller;
-			this.hulls = controller.Hulls().OrderBy(x => x.Size).ToList();
+			this.hulls = this.controller.Hulls().OrderBy(x => x.Size).ToList();
 			
-			Random rand = new Random();
+			var rand = new Random();
 			
 			foreach(var hull in hulls) {
-				hullPicker.Items.Add(new Tag<HullInfo>(hull, hull.Name));
-				imageIndices.Add(hull, rand.Next(hull.ImagePaths.Length));
+				this.hullPicker.Items.Add(new Tag<HullInfo>(hull, hull.Name));
+				this.imageIndices.Add(hull, rand.Next(hull.ImagePaths.Length));
 			}
 			
-			hullPicker.SelectedIndex = 0;
+			this.hullPicker.SelectedIndex = 0;
 		}
 		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -47,66 +47,74 @@ namespace Stareater.GUI
 		
 		private void changeHullImage(int direction)
 		{
-			if (hullPicker.SelectedItem == null)
+			if (this.hullPicker.SelectedItem == null)
 				return;
-			var hull = (hullPicker.SelectedItem as Tag<HullInfo>).Value;
+			var hull = (this.hullPicker.SelectedItem as Tag<HullInfo>).Value;
 			
-			imageIndices[hull] = 
-				(imageIndices[hull] + hull.ImagePaths.Length + direction) % 
+			this.imageIndices[hull] = 
+				(this.imageIndices[hull] + hull.ImagePaths.Length + direction) % 
 				hull.ImagePaths.Length;
-			hullImage.Image = ImageCache.Get[hull.ImagePaths[imageIndices[hull]]];
+			this.hullImage.Image = ImageCache.Get[hull.ImagePaths[imageIndices[hull]]];
 			
-			controller.ImageIndex = imageIndices[hull];
+			this.controller.ImageIndex = imageIndices[hull];
 			checkValidity();
 		}
 		
 		private void checkValidity()
 		{
-			acceptButton.Enabled = controller.IsDesignValid;
+			this.acceptButton.Enabled = controller.IsDesignValid;
 		}
 		
 		private void acceptButton_Click(object sender, EventArgs e)
 		{
-			DialogResult = DialogResult.OK;
+			this.DialogResult = DialogResult.OK;
 		}
 		
 		private void hullSelector_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (hullPicker.SelectedItem == null)
+			if (this.hullPicker.SelectedItem == null)
 				return;
-			var hull = (hullPicker.SelectedItem as Tag<HullInfo>).Value;
+			var hull = (this.hullPicker.SelectedItem as Tag<HullInfo>).Value;
 			
-			if (automaticName)
+			if (this.automaticName)
 				nameInput.Text = hull.Name; //TODO(later): get hull and organization specific name
 			
-			hullImage.Image = ImageCache.Get[hull.ImagePaths[imageIndices[hull]]];
+			this.hullImage.Image = ImageCache.Get[hull.ImagePaths[this.imageIndices[hull]]];
 			
-			controller.Hull = hull;
-			controller.ImageIndex = imageIndices[hull];
+			this.controller.Hull = hull;
+			this.controller.ImageIndex = this.imageIndices[hull];
 			
-			checkValidity();
+			this.hasIsDrive.Enabled = this.controller.IsDrive != null;
+			this.hasIsDrive.Checked &= this.hasIsDrive.Enabled;
+			
+			this.checkValidity();
 		}
 		
 		private void imageLeft_ButtonClick(object sender, EventArgs e)
 		{
-			changeHullImage(-1);
+			this.changeHullImage(-1);
 		}
-		
 		
 		private void imageRight_ButtonClick(object sender, EventArgs e)
 		{
-			changeHullImage(1);
+			this.changeHullImage(1);
 		}
 		
 		private void nameInput_KeyPress(object sender, KeyPressEventArgs e)
 		{
-			automaticName = false;
+			this.automaticName = false;
 		}
 		
 		private void nameInput_TextChanged(object sender, EventArgs e)
 		{
 			controller.Name = nameInput.Text;
-			checkValidity();
+			this.checkValidity();
+		}
+		
+		private void hasIsDrive_CheckedChanged(object sender, EventArgs e)
+		{
+			this.controller.hasIsDrive = this.hasIsDrive.Checked;
+			this.checkValidity();
 		}
 	}
 }
