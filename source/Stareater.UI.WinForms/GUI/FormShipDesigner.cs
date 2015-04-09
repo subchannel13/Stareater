@@ -84,8 +84,14 @@ namespace Stareater.GUI
 			this.controller.Hull = hull;
 			this.controller.ImageIndex = this.imageIndices[hull];
 			
-			this.hasIsDrive.Enabled = this.controller.IsDrive != null;
+			this.hasIsDrive.Enabled = this.controller.AvailableIsDrive != null;
 			this.hasIsDrive.Checked &= this.hasIsDrive.Enabled;
+			this.isDriveImage.Visible = this.hasIsDrive.Checked;
+			
+			this.controller.HasIsDrive = this.hasIsDrive.Checked;
+			
+			if (this.controller.AvailableIsDrive != null)
+				this.isDriveImage.Image = ImageCache.Get[this.controller.AvailableIsDrive.ImagePath];
 			
 			this.checkValidity();
 		}
@@ -113,7 +119,8 @@ namespace Stareater.GUI
 		
 		private void hasIsDrive_CheckedChanged(object sender, EventArgs e)
 		{
-			this.controller.hasIsDrive = this.hasIsDrive.Checked;
+			this.controller.HasIsDrive = this.hasIsDrive.Checked;
+			this.isDriveImage.Visible = this.hasIsDrive.Checked;
 			this.checkValidity();
 		}
 	}

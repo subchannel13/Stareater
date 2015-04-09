@@ -40,7 +40,7 @@ namespace Stareater.Controllers
 			return game.Statics.Hulls.Values.Select(x => new HullInfo(x, x.HighestLevel(playersTechLevels)));
 		}
 		
-		public IsDriveInfo IsDrive
+		public IsDriveInfo AvailableIsDrive
 		{
 			get { return this.availableIsDrive; }
 		}
@@ -56,7 +56,7 @@ namespace Stareater.Controllers
 				this.ImageIndex = 0;
 			
 			this.availableIsDrive = bestIsDrive();
-			this.hasIsDrive &= availableIsDrive != null;
+			this.HasIsDrive &= availableIsDrive != null;
 		}
 
 		#endregion
@@ -74,7 +74,7 @@ namespace Stareater.Controllers
 				this.onHullChange();
 			}
 		}
-		public bool hasIsDrive { get; set; }
+		public bool HasIsDrive { get; set; }
 		
 		public bool IsDesignValid
 		{
@@ -83,7 +83,7 @@ namespace Stareater.Controllers
 				//TODO(v0.5): check name length and uniqueness
 				//TODO(v0.5): check image index
 				return this.selectedHull != null && this.ImageIndex >= 0 && this.ImageIndex < this.selectedHull.ImagePaths.Length &&
-					(this.availableIsDrive != null || !this.hasIsDrive);
+					(this.availableIsDrive != null || !this.HasIsDrive);
 			}
 		}
 		
@@ -97,7 +97,7 @@ namespace Stareater.Controllers
 				game.CurrentPlayer,
 				Name,
 				new Hull(this.selectedHull.HullType, this.selectedHull.Level, this.ImageIndex),
-				this.hasIsDrive ? new IsDrive(this.availableIsDrive.IsDriveType, this.availableIsDrive.Level) : null
+				this.HasIsDrive ? new IsDrive(this.availableIsDrive.IsDriveType, this.availableIsDrive.Level) : null
 			)); //TODO(v0.5) add to changes DB and propagate to states during turn processing
 		}
 		#endregion
