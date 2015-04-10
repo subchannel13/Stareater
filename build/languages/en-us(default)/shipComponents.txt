@@ -4,3 +4,10 @@ FIGHTER_HULL_DESC = Space version of air superiority fighter.
 CRUISER_HULL_NAME = Cruiser
 CRUISER_HULL_DESC = No description.
 -
+
+:IsDrives
+NUCLEAR_ISDRIVE_NAME = Nuclear drive
+NUCLEAR_ISDRIVE_DESC = No description.
+SUBSPACE_ISDRIVE_NAME = = Test drive
+SUBSPACE_ISDRIVE_DESC = No description.
+-

@@ -84,14 +84,18 @@ namespace Stareater.GUI
 			this.controller.Hull = hull;
 			this.controller.ImageIndex = this.imageIndices[hull];
 			
-			this.hasIsDrive.Enabled = this.controller.AvailableIsDrive != null;
-			this.hasIsDrive.Checked &= this.hasIsDrive.Enabled;
+			this.hasIsDrive.Visible = this.controller.AvailableIsDrive != null;
+			this.hasIsDrive.Checked &= this.hasIsDrive.Visible;
 			this.isDriveImage.Visible = this.hasIsDrive.Checked;
 			
 			this.controller.HasIsDrive = this.hasIsDrive.Checked;
 			
-			if (this.controller.AvailableIsDrive != null)
+			if (this.controller.AvailableIsDrive != null) {
+				this.hasIsDrive.Text = string.Format("{0} ({1} ly/turn)", 
+				                                     this.controller.AvailableIsDrive.Name, 
+				                                     this.controller.AvailableIsDrive.Speed);
 				this.isDriveImage.Image = ImageCache.Get[this.controller.AvailableIsDrive.ImagePath];
+			}
 			
 			this.checkValidity();
 		}

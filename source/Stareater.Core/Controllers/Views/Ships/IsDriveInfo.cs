@@ -13,21 +13,23 @@ namespace Stareater.Controllers.Views.Ships
 		internal IsDriveType IsDriveType { get; private set; }
 		internal int Level { get; private set; }
 		
-		private readonly IDictionary<string, double> levelVar;
+		private readonly IDictionary<string, double> driveVars;
 		
-		internal IsDriveInfo(IsDriveType isDriveType, int level)
+		internal IsDriveInfo(IsDriveType isDriveType, int level, HullInfo shipHull, double shipPower)
 		{
 			this.IsDriveType = isDriveType;
 			this.Level = level;
 			
-			this.levelVar = new Var(AComponentType.LevelKey, level).Get;
+			this.driveVars = new Var(AComponentType.LevelKey, level).
+				And("size", shipHull.IsDriveSize).
+				And("power", shipPower).Get; 
 		}
 		
-		public string Name 
+		public string Name
 		{ 
 			get
 			{
-				return Settings.Get.Language[LangContext][this.IsDriveType.NameCode].Text();
+				return Settings.Get.Language[LangContext][this.IsDriveType.NameCode].Text(this.Level);
 			}
 		}
 		
@@ -43,7 +45,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.IsDriveType.Speed.Evaluate(levelVar);
+				return this.IsDriveType.Speed.Evaluate(driveVars);
 			}
 		}
 	}

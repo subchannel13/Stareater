@@ -21,16 +21,17 @@ namespace Stareater.Ships
 		
 		public static IsDrive Best(IEnumerable<IsDriveType> drives, Dictionary<string, int> playersTechLevels, Hull shipHull, double shipPower)
 		{
-			var hullVars = new Var("level", shipHull.Level).Get;
 			IsDrive bestDrive = null;
+			var hullVars = new Var("level", shipHull.Level).Get;	//TODO(v0.5) make constants for variable names
+			
+			double driveSize = shipHull.TypeInfo.SizeIS.Evaluate(hullVars);
+			var driveVars = new Var("level", 0).
+					And("size", driveSize).
+					And("power", shipPower).Get;
 			
 			foreach(var drive in drives.Where(x => x.IsAvailable(playersTechLevels))) {
 				int driveLevel = drive.HighestLevel(playersTechLevels);
-				double driveSize = shipHull.TypeInfo.SizeIS.Evaluate(hullVars);
-
-				var driveVars = new Var("level", driveLevel).
-					And("size", driveSize).
-					And("power", shipPower).Get; 
+				driveVars["level"] = driveLevel;
 				
 				if (drive.MinSize.Evaluate(driveVars) <= driveSize &&
 				    (bestDrive == null || drive.Speed.Evaluate(driveVars) > bestDrive.TypeInfo.Speed.Evaluate(driveVars)))
