@@ -47,5 +47,15 @@ namespace Stareater.Controllers.Views.Ships
 				return this.HullType.ImagePaths;
 			}
 		}
+		
+		public double IsDriveSize
+		{
+			get
+			{
+				return this.HullType.SizeIS.Evaluate(levelVar);
+			}
+		}
+		
+		//TODO(v0.5) add other hull properties
 	}
 }

@@ -31,7 +31,7 @@ namespace Stareater.Controllers
 				new Hull(this.selectedHull.HullType, this.selectedHull.Level, this.ImageIndex), 
 				0);
 			
-			return drive != null ? new IsDriveInfo(drive.TypeInfo, drive.Level) : null;
+			return drive != null ? new IsDriveInfo(drive.TypeInfo, drive.Level, this.selectedHull, 0) : null;
 		}
 		
 		#region Component lists
