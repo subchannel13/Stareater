@@ -2,6 +2,7 @@
 
 
 using Ikadn.Ikon.Types;
+using Stareater.GameData.Ships;
 using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;

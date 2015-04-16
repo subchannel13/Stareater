@@ -8,6 +8,7 @@ using Stareater.AppData.Expressions;
 using Stareater.Controllers.Views;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameData.Reading;
+using Stareater.GameData.Ships;
 using Stareater.GameLogic;
 using Stareater.Utils;
 

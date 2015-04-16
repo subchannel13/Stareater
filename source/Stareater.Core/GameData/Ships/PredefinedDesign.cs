@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Stareater.GameData.Databases;
 
-namespace Stareater.GameData
+namespace Stareater.GameData.Ships
 {
 	class PredefinedDesign
 	{

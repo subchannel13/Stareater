@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stareater.AppData;
-using Stareater.GameData;
-using Stareater.Ships;
+using Stareater.GameData.Ships;
 using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views.Ships
@@ -11,14 +10,14 @@ namespace Stareater.Controllers.Views.Ships
 	{
 		private const string LangContext = "Hulls";
 		
-		internal HullType HullType { get; private set; }
+		internal HullType Type { get; private set; }
 		internal int Level { get; private set; }
 		
 		private readonly IDictionary<string, double> levelVar;
 		
 		internal HullInfo(HullType hullType, int level)
 		{
-			this.HullType = hullType;
+			this.Type = hullType;
 			this.Level = level;
 			
 			this.levelVar = new Var(AComponentType.LevelKey, level).Get;
@@ -28,7 +27,7 @@ namespace Stareater.Controllers.Views.Ships
 		{ 
 			get
 			{
-				return Settings.Get.Language[LangContext][this.HullType.NameCode].Text();
+				return Settings.Get.Language[LangContext][this.Type.NameCode].Text();
 			}
 		}
 		
@@ -36,7 +35,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.HullType.Size.Evaluate(levelVar);
+				return this.Type.Size.Evaluate(levelVar);
 			}
 		}
 		
@@ -44,7 +43,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.HullType.ImagePaths;
+				return this.Type.ImagePaths;
 			}
 		}
 		
@@ -52,7 +51,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.HullType.SizeIS.Evaluate(levelVar);
+				return this.Type.SizeIS.Evaluate(levelVar);
 			}
 		}
 		

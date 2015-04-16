@@ -14,7 +14,8 @@ enum Flag
 {
 	GalaxyRemap, 
 	PlayerRemap,
-	NoIndexer
+	NoIndexer,
+	ArrayData
 }
 
 private static string initGalaxyRemapCode(string type, string readCode, out bool copyNeedsRemap)
@@ -342,9 +343,10 @@ class DataInfo
 	public DataInfo IsStatic(params Flag[] flags)
 	{
 		var flagList = new List<Flag>(flags);
+		var loadType = flagList.Contains(Flag.ArrayData) ? "IkonArray" : "IkonComposite";
 		
 		this.SaveAssignLogic = "this." + Name + ".Save(" + (flagList.Contains(Flag.NoIndexer) ? ")" : "indexer)");
-		this.LoadAssignLogic = this.Type + ".Load(" + SaveName + ".To<IkonComposite>(), deindexer)";
+		this.LoadAssignLogic = this.Type + ".Load(" + SaveName + ".To<" + loadType + ">(), deindexer)";
 		
 		return this;
 	}
