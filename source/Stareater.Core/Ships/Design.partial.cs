@@ -36,7 +36,7 @@ namespace Stareater.Ships
 		{ 
 			get
 			{
-				return Hull.ImagePath;
+				return Hull.TypeInfo.ImagePaths[this.imageIndex];
 			}
 		}
 		

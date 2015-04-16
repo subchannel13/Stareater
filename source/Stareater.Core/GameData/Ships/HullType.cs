@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using Stareater.AppData.Expressions;
 using Stareater.Ships;
 
-namespace Stareater.GameData
+namespace Stareater.GameData.Ships
 {
 	class HullType : AComponentType
 	{
-		public string IdCode { get; private set; }
-		
 		public string[] ImagePaths { get; private set; }
 		public Formula Cost { get; private set; }
 	
@@ -34,9 +32,8 @@ namespace Stareater.GameData
 		                Formula sizeIS, Formula sizeReactor, Formula sizeShield,
 		                Formula armorBase, Formula armorAbsorption, Formula shieldBase, 
 		                Formula inertiaBase, Formula jammingBase, Formula cloakingBase, Formula sensorsBase)
-			: base(nameCode, descCode, prerequisites, maxLevel)
+			: base(code, nameCode, descCode, prerequisites, maxLevel)
 		{
-			this.IdCode = code;
 			this.ImagePaths = imagePaths;
 			this.Cost = cost;
 			this.Size = size;
@@ -53,9 +50,9 @@ namespace Stareater.GameData
 			this.SensorsBase = sensorsBase;
 		}
 		
-		public Hull MakeHull(IDictionary<string, int> techLevels, int imageIndex)
+		public Component<HullType> MakeHull(IDictionary<string, int> techLevels)
 		{
-			return new Hull(this, HighestLevel(techLevels), imageIndex);
+			return new Component<HullType>(this, HighestLevel(techLevels));
 		}
 	}
 }

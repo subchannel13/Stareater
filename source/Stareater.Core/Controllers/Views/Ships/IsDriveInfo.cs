@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stareater.AppData;
-using Stareater.GameData;
+using Stareater.GameData.Ships;
 using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views.Ships
@@ -10,14 +10,14 @@ namespace Stareater.Controllers.Views.Ships
 	{
 		private const string LangContext = "IsDrives";
 		
-		internal IsDriveType IsDriveType { get; private set; }
+		internal IsDriveType Type { get; private set; }
 		internal int Level { get; private set; }
 		
 		private readonly IDictionary<string, double> driveVars;
 		
 		internal IsDriveInfo(IsDriveType isDriveType, int level, HullInfo shipHull, double shipPower)
 		{
-			this.IsDriveType = isDriveType;
+			this.Type = isDriveType;
 			this.Level = level;
 			
 			this.driveVars = new Var(AComponentType.LevelKey, level).
@@ -29,7 +29,7 @@ namespace Stareater.Controllers.Views.Ships
 		{ 
 			get
 			{
-				return Settings.Get.Language[LangContext][this.IsDriveType.NameCode].Text(this.Level);
+				return Settings.Get.Language[LangContext][this.Type.NameCode].Text(this.Level);
 			}
 		}
 		
@@ -37,7 +37,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.IsDriveType.ImagePath;
+				return this.Type.ImagePath;
 			}
 		}
 		
@@ -45,7 +45,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.IsDriveType.Speed.Evaluate(driveVars);
+				return this.Type.Speed.Evaluate(driveVars);
 			}
 		}
 	}

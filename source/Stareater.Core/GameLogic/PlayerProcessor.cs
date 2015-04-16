@@ -8,6 +8,7 @@ using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.GameData.Databases;
 using Stareater.GameData.Databases.Tables;
+using Stareater.GameData.Ships;
 using Stareater.Players;
 using Stareater.Players.Reports;
 using Stareater.Ships;
@@ -270,12 +271,12 @@ namespace Stareater.GameLogic
 				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
 				{
 					Player.UnlockedDesigns.Add(predefDesign);
-					var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels, predefDesign.HullImageIndex);
+					var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
 					//TODO(0.5) calculate ship's power
-					var isDrive = predefDesign.HasIsDrive ? IsDrive.Best(statics.IsDrives.Values, techLevels, hull, 0) : null;
+					var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBestDrive(statics.IsDrives.Values, techLevels, hull, 0) : null;
 					
 					states.Designs.Add(new Design(
-						states.MakeDesignId(), Player, predefDesign.Name,
+						states.MakeDesignId(), Player, predefDesign.Name, predefDesign.HullImageIndex,
 					    hull, isDrive
 					));
 				}

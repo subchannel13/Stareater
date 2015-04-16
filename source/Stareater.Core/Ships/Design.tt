@@ -3,6 +3,7 @@
 	
 	usings.Add("System");
 	usings.Add("Stareater.GameData");
+	usings.Add("Stareater.GameData.Ships");
 	usings.Add("Stareater.Players");
 	
 	modifer = "partial";
@@ -11,8 +12,9 @@
 		new DataInfo("IdCode", "string"),
 		new DataInfo("Owner", "Player").FromIndexer(),
 		new DataInfo("Name", "string"),
-		new DataInfo("Hull", "Hull").IsStatic(Flag.NoIndexer),
-		new DataInfo("IsDrive", "IsDrive").IsStatic(Flag.NoIndexer),
+		new DataInfo("ImageIndex", "int").Private(),
+		new DataInfo("Hull", "Component<HullType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
+		new DataInfo("IsDrive", "Component<IsDriveType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Cost", "double").Derived("initCost();")
 	);
 #>

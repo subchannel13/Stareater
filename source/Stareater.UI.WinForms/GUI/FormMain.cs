@@ -20,6 +20,7 @@ namespace Stareater.GUI
 		private const float MaxDeltaTime = 0.5f;
 		private const float MinDeltaTime = 0.005f;
 
+		private object threadLocker = new object();
 		private bool glReady = false;
 		private bool resetViewport = true;
 		private DateTime lastRender = DateTime.UtcNow;
@@ -80,7 +81,7 @@ namespace Stareater.GUI
 
 		private void endTurnButton_Click(object sender, EventArgs e)
 		{
-			lock(this) {
+			lock(threadLocker) {
 				humansReady = true;
 			}
 			
@@ -146,7 +147,7 @@ namespace Stareater.GUI
 		
 		private void showMainMenu()
 		{
-			using (FormMainMenu form = new FormMainMenu(this.controller))
+			using (var form = new FormMainMenu(this.controller))
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
 					switch (form.Result) {
 						case MainMenuResult.NewGame:
@@ -169,7 +170,7 @@ namespace Stareater.GUI
 
 		private void showNewGame()
 		{
-			using (FormNewGame form = new FormNewGame()) {
+			using (var form = new FormNewGame()) {
 				form.Initialize();
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
 					this.controller.Stop();	
@@ -205,7 +206,7 @@ namespace Stareater.GUI
 		
 		private void showSettings()
 		{
-			using (FormSettings form = new FormSettings())
+			using (var form = new FormSettings())
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
 					setLanguage();
 			postDelayedEvent(showMainMenu);
@@ -241,7 +242,7 @@ namespace Stareater.GUI
 		
 		private void tryEndTurn()
 		{
-			lock(this)
+			lock(threadLocker)
 			{
 				if (!aisReady || !humansReady)
 					return;
@@ -344,8 +345,7 @@ namespace Stareater.GUI
 		#region IGameStateListener implementation
 		public void OnAiGalaxyPhaseDone()
 		{
-			lock(this)
-			{
+			lock (threadLocker) {
 				aisReady = true;
 			}
 			

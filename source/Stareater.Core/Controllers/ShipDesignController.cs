@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Stareater.Controllers.Views.Ships;
-using Stareater.GameData;
+using Stareater.GameData.Ships;
 using Stareater.Ships;
-using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers
 {
@@ -25,10 +24,10 @@ namespace Stareater.Controllers
 		private IsDriveInfo bestIsDrive()
 		{
 			//TODO(0.5) calculate ship's power
-			var drive = Stareater.Ships.IsDrive.Best(
+			var drive = IsDriveType.MakeBestDrive(
 				game.Statics.IsDrives.Values, 
 				playersTechLevels, 
-				new Hull(this.selectedHull.HullType, this.selectedHull.Level, this.ImageIndex), 
+				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level), 
 				0);
 			
 			return drive != null ? new IsDriveInfo(drive.TypeInfo, drive.Level, this.selectedHull, 0) : null;
@@ -93,11 +92,12 @@ namespace Stareater.Controllers
 				return;
 			
 			game.States.Designs.Add(new Design(
-				game.States.MakeDesignId(),
-				game.CurrentPlayer,
-				Name,
-				new Hull(this.selectedHull.HullType, this.selectedHull.Level, this.ImageIndex),
-				this.HasIsDrive ? new IsDrive(this.availableIsDrive.IsDriveType, this.availableIsDrive.Level) : null
+				this.game.States.MakeDesignId(),
+				this.game.CurrentPlayer,
+				this.Name,
+				this.ImageIndex,
+				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
+				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null
 			)); //TODO(v0.5) add to changes DB and propagate to states during turn processing
 		}
 		#endregion
