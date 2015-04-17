@@ -272,12 +272,13 @@ namespace Stareater.GameLogic
 				{
 					Player.UnlockedDesigns.Add(predefDesign);
 					var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
+					var reactor = ReactorType.MakeBest();
 					//TODO(0.5) calculate ship's power
-					var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBestDrive(statics.IsDrives.Values, techLevels, hull, 0) : null;
+					var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(statics.IsDrives.Values, techLevels, hull, 0) : null;
 					
 					states.Designs.Add(new Design(
 						states.MakeDesignId(), Player, predefDesign.Name, predefDesign.HullImageIndex,
-					    hull, isDrive
+					    hull, isDrive, reactor
 					));
 				}
 					

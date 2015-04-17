@@ -26,6 +26,7 @@ namespace Stareater.GameData.Databases
 		
 		public Dictionary<string, HullType> Hulls { get; private set; }
 		public Dictionary<string, IsDriveType> IsDrives { get; private set; }
+		public Dictionary<string, ReactorType> Reactors { get; private set; }
 		
 		public StaticsDB()
 		{
@@ -84,6 +85,9 @@ namespace Stareater.GameData.Databases
 								break;
 							case IsDriveTag:
 								IsDrives.Add(data[GeneralCodeKey].To<string>(), loadIsDrive(data));
+								break;
+							case ReactorTag:
+								Reactors.Add(data[GeneralCodeKey].To<string>(), loadReactor(data));
 								break;
 							default:
 								throw new FormatException("Invalid game data object with tag " + data.Tag);
@@ -245,6 +249,20 @@ namespace Stareater.GameData.Databases
 				data[IsDriveMinSize].To<Formula>()
 			);
 		}
+		
+		private ReactorType loadReactor(IkonComposite data)
+		{
+			return new ReactorType(
+				data[GeneralCodeKey].To<string>(),
+				data[GeneralNameKey].To<string>(),
+				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralImageKey].To<string>(),
+				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
+				data[GeneralMaxLevelKey].To<int>(),
+				data[ReactorPower].To<Formula>(),
+				data[ReactorMinSize].To<Formula>()
+			);
+		}
 		#endregion
 
 		#region Technologies
@@ -293,7 +311,7 @@ namespace Stareater.GameData.Databases
 		
 		private const string HullTag = "Hull";
 		private const string IsDriveTag = "IsDrive"; 
-		
+		private const string ReactorTag = "Reactor";
 		
 		private const string ColonyMaxPopulation = "maxPopulation";
 		private const string ColonyPopulationGrowth = "populationGrowth";
@@ -358,9 +376,11 @@ namespace Stareater.GameData.Databases
 		private const string HullCloaking = "cloaking";
 		private const string HullSensors = "sensors";
 		
-		
 		private const string IsDriveMinSize = "minSize";
 		private const string IsDriveSpeed = "speed";
+		
+		private const string ReactorMinSize = "minSize";
+		private const string ReactorPower = "speed";
 		#endregion
 	}
 }

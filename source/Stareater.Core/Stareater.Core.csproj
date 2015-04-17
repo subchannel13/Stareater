@@ -102,6 +102,7 @@
     <Compile Include="Controllers\Views\Ships\HullInfo.cs" />
     <Compile Include="Controllers\Views\Ships\IsDriveInfo.cs" />
     <Compile Include="Controllers\Views\Ships\MoveMissionInfo.cs" />
+    <Compile Include="Controllers\Views\Ships\ReactorInfo.cs" />
     <Compile Include="Controllers\Views\Ships\ShipGroupInfo.cs" />
     <Compile Include="Controllers\Views\Ships\StationaryMissionInfo.cs" />
     <Compile Include="Controllers\Views\StellarisInfo.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="GameData\Ships\HullType.cs" />
     <Compile Include="GameData\Ships\IsDriveType.cs" />
     <Compile Include="GameData\Ships\PredefinedDesign.cs" />
+    <Compile Include="GameData\Ships\ReactorType.cs" />
     <Compile Include="GameData\SiteType.cs" />
     <Compile Include="GameData\Databases\StatesDB.cs" />
     <Compile Include="GameData\Databases\StaticsDB.cs" />
