@@ -1,0 +1,27 @@
+﻿{ Reactor
+	nameCode: NUCLEAR_REACTOR_NAME
+	descCode: NUCLEAR_REACTOR_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: nuclear
+	
+	maxLvl= 10
+	prerequisites [
+	]
+	
+	minSize # 5;
+	power # (size - 4) * 5
+}
+
+{ Reactor
+	nameCode: CHEMICAL_REACTOR_NAME
+	descCode: CHEMICAL_REACTOR_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: chemical
+	
+	maxLvl= 10
+	prerequisites [
+	]
+	
+	minSize # 5;
+	power # size * 2
+}

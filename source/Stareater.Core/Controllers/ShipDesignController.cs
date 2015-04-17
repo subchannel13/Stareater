@@ -24,7 +24,7 @@ namespace Stareater.Controllers
 		private IsDriveInfo bestIsDrive()
 		{
 			//TODO(0.5) calculate ship's power
-			var drive = IsDriveType.MakeBestDrive(
+			var drive = IsDriveType.MakeBest(
 				game.Statics.IsDrives.Values, 
 				playersTechLevels, 
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level), 
@@ -48,6 +48,7 @@ namespace Stareater.Controllers
 		#region Selected components
 		private HullInfo selectedHull = null;
 		private IsDriveInfo availableIsDrive = null;
+		private ReactorInfo reactor = null;
 
 		void onHullChange()
 		{
@@ -55,6 +56,7 @@ namespace Stareater.Controllers
 				this.ImageIndex = 0;
 			
 			this.availableIsDrive = bestIsDrive();
+			//TODO(v0.5) set reactor
 			this.HasIsDrive &= availableIsDrive != null;
 		}
 
@@ -97,7 +99,8 @@ namespace Stareater.Controllers
 				this.Name,
 				this.ImageIndex,
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
-				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null
+				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
+				new Component<ReactorType>(this.reactor.Type, this.reactor.Level)
 			)); //TODO(v0.5) add to changes DB and propagate to states during turn processing
 		}
 		#endregion

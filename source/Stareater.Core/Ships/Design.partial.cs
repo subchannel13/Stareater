@@ -19,9 +19,6 @@ namespace Stareater.Ships
 		public Dictionary<object, int> SpecialEquip { get; private set; } //TODO(v0.5): make type
 		public object Sensors { get; private set; } //TODO(v0.5): make type
 		public object Thrusters { get; private set; } //TODO(v0.5): make type
-		public object ISDrive { get; private set; } //TODO(v0.5): make type
-		public object Reactor { get; private set; } //TODO(v0.5): make type
-
 		
 		//public int id { get; private set; } //TODO(v0.5): might need id
 		//private Dictionary<string, double> efekti = new Dictionary<string,double>(); //TODO(v0.5): might need

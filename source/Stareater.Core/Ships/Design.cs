@@ -17,9 +17,10 @@ namespace Stareater.Ships
 		private int imageIndex;
 		public Component<HullType> Hull { get; private set; }
 		public Component<IsDriveType> IsDrive { get; private set; }
+		public Component<ReactorType> Reactor { get; private set; }
 		public double Cost { get; private set; }
 
-		public Design(string idCode, Player owner, string name, int imageIndex, Component<HullType> hull, Component<IsDriveType> isDrive) 
+		public Design(string idCode, Player owner, string name, int imageIndex, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor) 
 		{
 			this.IdCode = idCode;
 			this.Owner = owner;
@@ -27,6 +28,7 @@ namespace Stareater.Ships
 			this.imageIndex = imageIndex;
 			this.Hull = hull;
 			this.IsDrive = isDrive;
+			this.Reactor = reactor;
 			this.Cost = initCost();
  
 			 
@@ -40,6 +42,7 @@ namespace Stareater.Ships
 			this.imageIndex = original.imageIndex;
 			this.Hull = original.Hull;
 			this.IsDrive = original.IsDrive;
+			this.Reactor = original.Reactor;
 			this.Cost = original.Cost;
  
 			 
@@ -64,6 +67,9 @@ namespace Stareater.Ships
 
 			var isDriveSave = rawData[IsDriveKey];
 			this.IsDrive = Component<IsDriveType>.Load(isDriveSave.To<IkonArray>(), deindexer);
+
+			var reactorSave = rawData[ReactorKey];
+			this.Reactor = Component<ReactorType>.Load(reactorSave.To<IkonArray>(), deindexer);
 
 			this.Cost = initCost();
  
@@ -92,6 +98,8 @@ namespace Stareater.Ships
 			data.Add(HullKey, this.Hull.Save());
 
 			data.Add(IsDriveKey, this.IsDrive.Save());
+
+			data.Add(ReactorKey, this.Reactor.Save());
 			return data;
  
 		}
@@ -111,6 +119,7 @@ namespace Stareater.Ships
 		private const string ImageIndexKey = "imageIndex";
 		private const string HullKey = "hull";
 		private const string IsDriveKey = "isDrive";
+		private const string ReactorKey = "reactor";
 		private const string CostKey = "cost";
  
 		#endregion
