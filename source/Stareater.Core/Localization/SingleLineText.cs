@@ -1,5 +1,6 @@
 ﻿using Ikadn;
 using System;
+using System.Collections.Generic;
 
 namespace Stareater.Localization
 {
@@ -48,12 +49,17 @@ namespace Stareater.Localization
 			return text;
 		}
 
-		public string Text(System.Collections.Generic.IDictionary<string, double> variables)
+		public string Text(IDictionary<string, double> variables)
 		{
 			return text;
 		}
 
-		public string Text(System.Collections.Generic.IDictionary<string, double> variables, System.Collections.Generic.IDictionary<string, string> placeholderContents)
+		public string Text(IDictionary<string, string> placeholderContents)
+		{
+			return text;
+		}
+
+		public string Text(IDictionary<string, double> variables, IDictionary<string, string> placeholderContents)
 		{
 			return text;
 		}

@@ -35,6 +35,7 @@ namespace Stareater.GameData.Databases
 			this.DevelopmentFocusOptions = new List<DevelopmentFocus>();
 			this.Hulls = new Dictionary<string, HullType>();
 			this.IsDrives = new Dictionary<string, IsDriveType>();
+			this.Reactors = new Dictionary<string, ReactorType>();
 			this.PredeginedDesigns = new List<PredefinedDesign>();
 			this.Technologies = new List<Technology>();
 		}
@@ -380,7 +381,7 @@ namespace Stareater.GameData.Databases
 		private const string IsDriveSpeed = "speed";
 		
 		private const string ReactorMinSize = "minSize";
-		private const string ReactorPower = "speed";
+		private const string ReactorPower = "power";
 		#endregion
 	}
 }

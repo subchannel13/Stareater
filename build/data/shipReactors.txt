@@ -9,7 +9,7 @@
 	]
 	
 	minSize # 5;
-	power # (size - 4) * 5
+	power # (size - 4) * 5;
 }
 
 { Reactor
@@ -22,6 +22,6 @@
 	prerequisites [
 	]
 	
-	minSize # 5;
-	power # size * 2
+	minSize # 0;
+	power # size * 2;
 }
