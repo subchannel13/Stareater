@@ -36,6 +36,7 @@
 			this.acceptButton = new System.Windows.Forms.Button();
 			this.isDriveImage = new System.Windows.Forms.PictureBox();
 			this.hasIsDrive = new System.Windows.Forms.CheckBox();
+			this.powerInfo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.hullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.isDriveImage)).BeginInit();
 			this.SuspendLayout();
@@ -119,17 +120,28 @@
 			this.hasIsDrive.AutoSize = true;
 			this.hasIsDrive.Location = new System.Drawing.Point(159, 70);
 			this.hasIsDrive.Name = "hasIsDrive";
-			this.hasIsDrive.Size = new System.Drawing.Size(110, 17);
+			this.hasIsDrive.Size = new System.Drawing.Size(128, 17);
 			this.hasIsDrive.TabIndex = 27;
-			this.hasIsDrive.Text = "IS drive (2 ly/turn)";
+			this.hasIsDrive.Text = "IS drive (X.XX ly/turn)";
 			this.hasIsDrive.UseVisualStyleBackColor = true;
 			this.hasIsDrive.CheckedChanged += new System.EventHandler(this.hasIsDrive_CheckedChanged);
+			// 
+			// powerInfo
+			// 
+			this.powerInfo.AutoSize = true;
+			this.powerInfo.Location = new System.Drawing.Point(322, 41);
+			this.powerInfo.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
+			this.powerInfo.Name = "powerInfo";
+			this.powerInfo.Size = new System.Drawing.Size(58, 13);
+			this.powerInfo.TabIndex = 35;
+			this.powerInfo.Text = "Power: X%";
 			// 
 			// FormShipDesigner
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(425, 410);
+			this.Controls.Add(this.powerInfo);
 			this.Controls.Add(this.isDriveImage);
 			this.Controls.Add(this.hasIsDrive);
 			this.Controls.Add(this.acceptButton);
@@ -157,5 +169,6 @@
 		private System.Windows.Forms.PictureBox hullImage;
 		private System.Windows.Forms.PictureBox isDriveImage;
 		private System.Windows.Forms.CheckBox hasIsDrive;
+		private System.Windows.Forms.Label powerInfo;
 	}
 }

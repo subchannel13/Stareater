@@ -29,6 +29,11 @@ namespace Stareater.Localization
 			throw new InvalidOperationException("This IText has a text placeholder, call an overload that supplies content for it.");
 		}
 
+		public string Text(IDictionary<string, string> placeholderContents)
+		{
+			return placeholderContents[placeholderKey];
+		}
+
 		public string Text(IDictionary<string, double> variables, IDictionary<string, string> placeholderContents)
 		{
 			return placeholderContents[placeholderKey];

@@ -54,6 +54,14 @@ namespace Stareater.Controllers.Views.Ships
 				return this.Type.SizeIS.Evaluate(levelVar);
 			}
 		}
+
+		public double ReactorSize
+		{
+			get
+			{
+				return this.Type.SizeReactor.Evaluate(levelVar);
+			}
+		}
 		
 		//TODO(v0.5) add other hull properties
 	}

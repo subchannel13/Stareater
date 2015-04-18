@@ -1,0 +1,10 @@
+﻿:FormDesign
+
+isDrive §
+		{=name} {=speed} ly/turn
+	\
+	
+power §
+		Power: {=powerPercent} %
+	\
+-

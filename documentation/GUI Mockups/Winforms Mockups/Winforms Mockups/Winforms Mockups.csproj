@@ -122,7 +122,9 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormMainFleet.cs" />
+    <Compile Include="FormMainFleet.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormMainFleet.Designer.cs">
       <DependentUpon>FormMainFleet.cs</DependentUpon>
     </Compile>
@@ -132,7 +134,9 @@
     <Compile Include="FormNewGame.Designer.cs">
       <DependentUpon>FormNewGame.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormReports.cs" />
+    <Compile Include="FormReports.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormReports.Designer.cs">
       <DependentUpon>FormReports.cs</DependentUpon>
     </Compile>
@@ -210,7 +214,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReportItem.cs" />
+    <Compile Include="ReportItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ReportItem.Designer.cs">
       <DependentUpon>ReportItem.cs</DependentUpon>
     </Compile>
@@ -226,7 +232,9 @@
     <Compile Include="SavedGame.Designer.cs">
       <DependentUpon>SavedGame.cs</DependentUpon>
     </Compile>
-    <Compile Include="ShipGroupItem.cs" />
+    <Compile Include="ShipGroupItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ShipGroupItem.Designer.cs">
       <DependentUpon>ShipGroupItem.cs</DependentUpon>
     </Compile>

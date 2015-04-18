@@ -7,15 +7,20 @@ using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views.Ships;
 using Stareater.GuiUtils;
+using Stareater.Localization;
+using Stareater.Utils.Collections;
+using Stareater.Utils.NumberFormatters;
+using Stareater.Utils;
 
 namespace Stareater.GUI
 {
 	public partial class FormShipDesigner : Form
 	{
+		private readonly Context context;
 		private readonly ShipDesignController controller;
-		private IList<HullInfo> hulls;
-		
+
 		private bool automaticName = true;
+		private IList<HullInfo> hulls;
 		private Dictionary<HullInfo, int> imageIndices = new Dictionary<HullInfo, int>();
 		
 		public FormShipDesigner()
@@ -25,6 +30,7 @@ namespace Stareater.GUI
 		
 		public FormShipDesigner(ShipDesignController controller) : this()
 		{
+			this.context = SettingsWinforms.Get.Language["FormDesign"];
 			this.controller = controller;
 			this.hulls = this.controller.Hulls().OrderBy(x => x.Size).ToList();
 			
@@ -65,6 +71,19 @@ namespace Stareater.GUI
 			this.acceptButton.Enabled = controller.IsDesignValid;
 		}
 		
+		private void updateInfos()
+		{
+			Context context = SettingsWinforms.Get.Language["FormDesign"];
+			var percentFormat = new DecimalsFormatter(0, 1);
+
+			double powerGenerated = this.controller.Reactor.Power;
+			double powerUsed = this.controller.PowerUsed;
+			
+			this.powerInfo.Text = this.context["power"].Text(
+					new TextVar("powerPercent", percentFormat.Format(Methods.Clamp(1 - powerUsed / powerGenerated, 0, 1) * 100)).Get
+				);
+		}
+		
 		private void acceptButton_Click(object sender, EventArgs e)
 		{
 			this.DialogResult = DialogResult.OK;
@@ -91,13 +110,17 @@ namespace Stareater.GUI
 			this.controller.HasIsDrive = this.hasIsDrive.Checked;
 			
 			if (this.controller.AvailableIsDrive != null) {
-				this.hasIsDrive.Text = string.Format("{0} ({1} ly/turn)", 
-				                                     this.controller.AvailableIsDrive.Name, 
-				                                     this.controller.AvailableIsDrive.Speed);
+				var speedFormat = new DecimalsFormatter(0, 2);
+
+				this.hasIsDrive.Text = this.context["isDrive"].Text(
+					new TextVar("name", this.controller.AvailableIsDrive.Name).
+					And("speed", speedFormat.Format(this.controller.AvailableIsDrive.Speed)).Get
+				);
 				this.isDriveImage.Image = ImageCache.Get[this.controller.AvailableIsDrive.ImagePath];
 			}
 			
 			this.checkValidity();
+			this.updateInfos();
 		}
 		
 		private void imageLeft_ButtonClick(object sender, EventArgs e)

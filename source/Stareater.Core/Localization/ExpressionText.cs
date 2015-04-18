@@ -70,6 +70,11 @@ namespace Stareater.Localization
 			return formatter(formula.Evaluate(variables));
 		}
 
+		public string Text(IDictionary<string, string> placeholderContents)
+		{
+			throw new InvalidOperationException("This IText has a numeric variables, call an overload that supplies values for it.");
+		}
+
 		public string Text(IDictionary<string, double> variables, IDictionary<string, string> placeholderContents)
 		{
 			return formatter(formula.Evaluate(variables));

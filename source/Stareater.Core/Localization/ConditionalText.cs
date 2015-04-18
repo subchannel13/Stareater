@@ -73,6 +73,11 @@ namespace Stareater.Localization
 				return "";
 		}
 
+		public string Text(IDictionary<string, string> placeholderContents)
+		{
+			throw new InvalidOperationException("This IText has a numeric variables, call an overload that supplies values for it.");
+		}
+
 		public string Text(IDictionary<string, double> variables, IDictionary<string, string> placeholderContents)
 		{
 			if (this.variables.Count > 0 && !this.variables.IsSubsetOf(variables.Keys))

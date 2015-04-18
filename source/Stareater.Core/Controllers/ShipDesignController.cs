@@ -23,14 +23,25 @@ namespace Stareater.Controllers
 
 		private IsDriveInfo bestIsDrive()
 		{
-			//TODO(0.5) calculate ship's power
 			var drive = IsDriveType.MakeBest(
 				game.Statics.IsDrives.Values, 
 				playersTechLevels, 
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level), 
-				0);
-			
-			return drive != null ? new IsDriveInfo(drive.TypeInfo, drive.Level, this.selectedHull, 0) : null;
+				this.reactor.Power
+			);
+
+			return drive != null ? new IsDriveInfo(drive.TypeInfo, drive.Level, this.selectedHull, this.reactor.Power) : null;
+		}
+
+		private ReactorInfo bestReactor()
+		{
+			var reactor = ReactorType.MakeBest(
+				game.Statics.Reactors.Values,
+				playersTechLevels,
+				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level)
+			);
+
+			return reactor != null ? new ReactorInfo(reactor.TypeInfo, reactor.Level, this.selectedHull) : null;
 		}
 		
 		#region Component lists
@@ -43,6 +54,11 @@ namespace Stareater.Controllers
 		{
 			get { return this.availableIsDrive; }
 		}
+
+		public ReactorInfo Reactor
+		{
+			get { return this.reactor; }
+		}
 		#endregion
 		
 		#region Selected components
@@ -54,14 +70,21 @@ namespace Stareater.Controllers
 		{
 			if (this.ImageIndex < 0 || this.ImageIndex >= this.selectedHull.ImagePaths.Length)
 				this.ImageIndex = 0;
-			
+
+			this.reactor = bestReactor();
 			this.availableIsDrive = bestIsDrive();
-			//TODO(v0.5) set reactor
 			this.HasIsDrive &= availableIsDrive != null;
 		}
 
 		#endregion
-		
+
+		#region Extra info
+		public double PowerUsed
+		{
+			get { return 0; }
+		}
+		#endregion
+
 		#region Designer actions
 		public string Name { get; set; } 
 		public int ImageIndex { get; set; }

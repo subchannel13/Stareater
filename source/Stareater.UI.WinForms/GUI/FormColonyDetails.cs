@@ -44,16 +44,16 @@ namespace Stareater.GUI
 			vars.And("popMax", popFormat.Format(controller.PopulationMax));
 			vars.And("popOrg", percentFormat.Format(controller.Organization * 100));
 			
-			populationInfo.Text = context["populationInfo"].Text(null, vars.Get);
-			growthInfo.Text = context["growthInfo"].Text(null, vars.Get); //TODO(v0.5): add sign
-			infrastructureInfo.Text = context["infrastructureInfo"].Text(null, vars.Get);
+			populationInfo.Text = context["populationInfo"].Text(vars.Get);
+			growthInfo.Text = context["growthInfo"].Text(vars.Get); //TODO(v0.5): add sign
+			infrastructureInfo.Text = context["infrastructureInfo"].Text(vars.Get);
 			
 			var prefixFormat = new ThousandsFormatter();
 			vars.And("planetSize", prefixFormat.Format(controller.PlanetSize));
 			vars.And("planetEnv", percentFormat.Format(controller.PlanetEnvironment * 100));
 			
-			sizeInfo.Text = context["sizeInfo"].Text(null, vars.Get);
-			environmentInfo.Text = context["environmentInfo"].Text(null, vars.Get);
+			sizeInfo.Text = context["sizeInfo"].Text(vars.Get);
+			environmentInfo.Text = context["environmentInfo"].Text(vars.Get);
 			
 			vars.And("prodFood", percentFormat.Format(controller.FoodPerPop));
 			vars.And("prodOre", percentFormat.Format(controller.OrePerPop));
@@ -62,12 +62,12 @@ namespace Stareater.GUI
 			vars.And("totalInd", prefixFormat.Format(controller.IndustryTotal));
 			vars.And("totalDev", prefixFormat.Format(controller.DevelopmentTotal));
 			
-			foodInfo.Text = context["foodInfo"].Text(null, vars.Get);
-			miningInfo.Text = context["miningInfo"].Text(null, vars.Get);
-			industryInfo.Text = context["industryInfo"].Text(null, vars.Get);
-			developmentInfo.Text = context["developmentInfo"].Text(null, vars.Get);
-			industryTotalInfo.Text = context["industryTotalInfo"].Text(null, vars.Get);
-			developmentTotalInfo.Text = context["developmentTotalInfo"].Text(null, vars.Get);
+			foodInfo.Text = context["foodInfo"].Text(vars.Get);
+			miningInfo.Text = context["miningInfo"].Text(vars.Get);
+			industryInfo.Text = context["industryInfo"].Text(vars.Get);
+			developmentInfo.Text = context["developmentInfo"].Text(vars.Get);
+			industryTotalInfo.Text = context["industryTotalInfo"].Text(vars.Get);
+			developmentTotalInfo.Text = context["developmentTotalInfo"].Text(vars.Get);
 			
 			foreach (var data in controller.Buildings) {
 				var itemView = new BuildingItem();

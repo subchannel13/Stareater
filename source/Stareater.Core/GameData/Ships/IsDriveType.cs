@@ -28,7 +28,7 @@ namespace Stareater.GameData.Ships
 		
 		public static Component<IsDriveType> MakeBest(IEnumerable<IsDriveType> drives, Dictionary<string, int> playersTechLevels, Component<HullType> shipHull, double shipPower)
 		{
-			Component<IsDriveType> bestDrive = null;
+			Component<IsDriveType> bestComponent = null;
 			var hullVars = new Var("level", shipHull.Level).Get;	//TODO(v0.5) make constants for variable names
 			
 			double driveSize = shipHull.TypeInfo.SizeIS.Evaluate(hullVars);
@@ -41,11 +41,11 @@ namespace Stareater.GameData.Ships
 				driveVars["level"] = driveLevel;
 				
 				if (drive.MinSize.Evaluate(driveVars) <= driveSize &&
-				    (bestDrive == null || drive.Speed.Evaluate(driveVars) > bestDrive.TypeInfo.Speed.Evaluate(driveVars)))
-						bestDrive = new Component<IsDriveType>(drive, driveLevel);
+				    (bestComponent == null || drive.Speed.Evaluate(driveVars) > bestComponent.TypeInfo.Speed.Evaluate(driveVars)))
+						bestComponent = new Component<IsDriveType>(drive, driveLevel);
 			}
 			
-			return bestDrive;
+			return bestComponent;
 		}
 	}
 }

@@ -317,6 +317,7 @@ namespace Stareater.Controllers
 			"./data/predefinedDesigns.txt",
 			"./data/shipHulls.txt",
 			"./data/shipIsDrives.txt",
+			"./data/shipReactors.txt",
 			"./data/systemBuildings.txt",
 			"./data/techDevelopment.txt",
 			"./data/techResearch.txt",
