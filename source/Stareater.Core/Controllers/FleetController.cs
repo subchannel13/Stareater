@@ -45,7 +45,14 @@ namespace Stareater.Controllers
 		
 		public bool CanMove
 		{
-			get { return true; }
+			get 
+			{ 
+				foreach(var design in this.selection.Keys)
+					if (design.IsDrive == null)
+						return false;
+				
+				return true;
+			}
 		}
 		
 		public IList<Vector2D> SimulationWaypoints
@@ -56,6 +63,9 @@ namespace Stareater.Controllers
 		public void DeselectGroup(ShipGroupInfo group)
 		{
 			selection.Remove(group.Data.Design);
+			
+			if (!this.CanMove)
+				this.simulationWaypoints = null;
 		}
 		
 		public void SelectGroup(ShipGroupInfo group)
@@ -69,6 +79,9 @@ namespace Stareater.Controllers
 				selection[group.Data.Design] = this.Fleet.FleetData.Ships.Design(group.Data.Design).Quantity;
 			if (selection[group.Data.Design] < 0)
 				selection.Remove(group.Data.Design);
+			
+			if (!this.CanMove)
+				this.simulationWaypoints = null;
 		}
 		
 		public FleetController Send(IEnumerable<Vector2D> waypoints)
