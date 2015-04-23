@@ -7,10 +7,11 @@ using Stareater.Players;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	partial class StellarisProcessorCollection : ICollection<StellarisProcessor>, IDelayedRemoval<StellarisProcessor>
+	partial class StellarisProcessorCollection : ICollection<StellarisProcessor>, IDelayedCollection<StellarisProcessor>
 	{
-		HashSet<StellarisProcessor> innerSet = new HashSet<StellarisProcessor>();
-		List<StellarisProcessor> toRemove = new List<StellarisProcessor>();
+		private HashSet<StellarisProcessor> innerSet = new HashSet<StellarisProcessor>();
+		private readonly List<StellarisProcessor> toAdd = new List<StellarisProcessor>();
+		private readonly List<StellarisProcessor> toRemove = new List<StellarisProcessor>();
 
 		Dictionary<StarData, StellarisProcessor> AtIndex = new Dictionary<StarData, StellarisProcessor>();
 		Dictionary<StellarisAdmin, StellarisProcessor> OfIndex = new Dictionary<StellarisAdmin, StellarisProcessor>();
@@ -23,7 +24,8 @@ namespace Stareater.GameData.Databases.Tables
 			throw new KeyNotFoundException();
 		}
 		
-		public bool AtContains(StarData key) {
+		public bool AtContains(StarData key) 
+		{
 			return AtIndex.ContainsKey(key);
 		}
 
@@ -34,15 +36,16 @@ namespace Stareater.GameData.Databases.Tables
 			throw new KeyNotFoundException();
 		}
 		
-		public bool OfContains(StellarisAdmin key) {
+		public bool OfContains(StellarisAdmin key) 
+		{
 			return OfIndex.ContainsKey(key);
 		}
 
-		public IList<StellarisProcessor> OwnedBy(Player key) {
-			if (OwnedByIndex.ContainsKey(key))
-				return OwnedByIndex[key];
-			
-			return new List<StellarisProcessor>();
+		public IList<StellarisProcessor> OwnedBy(Player key) 
+		{
+			return (OwnedByIndex.ContainsKey(key)) ? 
+				OwnedByIndex[key] : 
+				new List<StellarisProcessor>();
 		}
 	
 		public void Add(StellarisProcessor item)
@@ -116,16 +119,25 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(StellarisProcessor element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(StellarisProcessor element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 }

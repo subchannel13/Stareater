@@ -4,9 +4,16 @@ using System;
 namespace Stareater.Utils.Collections
 {
 	[Serializable]
-	public class PendableSet<T> : HashSet<T>, IDelayedRemoval<T>
+	public class PendableSet<T> : HashSet<T>, IDelayedCollection<T>
 	{
+		List<T> toAdd = null;
 		List<T> toRemove = null;
+		
+		public void PendAdd(T element)
+		{
+			if (toAdd == null) toAdd = new List<T>();
+			toAdd.Add(element);
+		}
 
 		public void PendRemove(T element)
 		{
@@ -14,12 +21,18 @@ namespace Stareater.Utils.Collections
 			toRemove.Add(element);
 		}
 
-		public void ApplyRemove()
+		public void ApplyPending()
 		{
 			if (toRemove != null && toRemove.Count > 0) {
 				foreach (var element in toRemove)
 					this.Remove(element);
 				toRemove.Clear();
+			}
+			
+			if (toAdd != null && toAdd.Count > 0) {
+				foreach (var element in toAdd)
+					this.Remove(element);
+				toAdd.Clear();
 			}
 		}
 	}

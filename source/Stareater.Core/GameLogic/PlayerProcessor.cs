@@ -58,10 +58,8 @@ namespace Stareater.GameLogic
 		{
 			var playersOrder = Player.Orders.DevelopmentQueue;
 				
-			if (playersOrder.ContainsKey(tech.Topic.IdCode))
-				return playersOrder[tech.Topic.IdCode];
+			return playersOrder.ContainsKey(tech.Topic.IdCode) ? playersOrder[tech.Topic.IdCode] : int.MaxValue;
 			
-			return int.MaxValue;
 		}
 		
 		private int technologySort(TechnologyProgress leftTech, TechnologyProgress rightTech)

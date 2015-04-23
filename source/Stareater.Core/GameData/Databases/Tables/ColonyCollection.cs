@@ -6,20 +6,21 @@ using Stareater.Players;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class ColonyCollection : ICollection<Colony>, IDelayedRemoval<Colony>
+	class ColonyCollection : ICollection<Colony>, IDelayedCollection<Colony>
 	{
-		HashSet<Colony> innerSet = new HashSet<Colony>();
-		List<Colony> toRemove = new List<Colony>();
+		private HashSet<Colony> innerSet = new HashSet<Colony>();
+		private readonly List<Colony> toAdd = new List<Colony>();
+		private readonly List<Colony> toRemove = new List<Colony>();
 
 		Dictionary<Player, List<Colony>> OwnedByIndex = new Dictionary<Player, List<Colony>>();
 		Dictionary<Planet, Colony> AtPlanetIndex = new Dictionary<Planet, Colony>();
 		Dictionary<StarData, List<Colony>> AtStarIndex = new Dictionary<StarData, List<Colony>>();
 
-		public IList<Colony> OwnedBy(Player key) {
-			if (OwnedByIndex.ContainsKey(key))
-				return OwnedByIndex[key];
-			
-			return new List<Colony>();
+		public IList<Colony> OwnedBy(Player key) 
+		{
+			return (OwnedByIndex.ContainsKey(key)) ? 
+				OwnedByIndex[key] : 
+				new List<Colony>();
 		}
 
 		public Colony AtPlanet(Planet key) {
@@ -29,15 +30,16 @@ namespace Stareater.GameData.Databases.Tables
 			throw new KeyNotFoundException();
 		}
 		
-		public bool AtPlanetContains(Planet key) {
+		public bool AtPlanetContains(Planet key) 
+		{
 			return AtPlanetIndex.ContainsKey(key);
 		}
 
-		public IList<Colony> AtStar(StarData key) {
-			if (AtStarIndex.ContainsKey(key))
-				return AtStarIndex[key];
-			
-			return new List<Colony>();
+		public IList<Colony> AtStar(StarData key) 
+		{
+			return (AtStarIndex.ContainsKey(key)) ? 
+				AtStarIndex[key] : 
+				new List<Colony>();
 		}
 	
 		public void Add(Colony item)
@@ -113,16 +115,25 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(Colony element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(Colony element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 }

@@ -71,10 +71,11 @@ private void Generate(string className, string typeName, params ViewInfo[] viewI
 		WriteLine("{");
 	}
 #>
-	<#= (partial) ? "partial " : "" #>class <#= className #> : ICollection<<#= typeName #>>, IDelayedRemoval<<#= typeName #>>
+	<#= (partial) ? "partial " : "" #>class <#= className #> : ICollection<<#= typeName #>>, IDelayedCollection<<#= typeName #>>
 	{
-		HashSet<<#= typeName #>> innerSet = new HashSet<<#= typeName #>>();
-		List<<#= typeName #>> toRemove = new List<<#= typeName #>>();
+		private HashSet<<#= typeName #>> innerSet = new HashSet<<#= typeName #>>();
+		private readonly List<<#= typeName #>> toAdd = new List<<#= typeName #>>();
+		private readonly List<<#= typeName #>> toRemove = new List<<#= typeName #>>();
 
 <#+ 
 	foreach(var view in viewInfos)
@@ -91,17 +92,18 @@ private void Generate(string className, string typeName, params ViewInfo[] viewI
 			throw new KeyNotFoundException();
 		}
 		
-		public bool <#= view.ViewName #>Contains(<#= view.KeyType #> key) {
+		public bool <#= view.ViewName #>Contains(<#= view.KeyType #> key) 
+		{
 			return <#= view.IndexName #>.ContainsKey(key);
 		}
 <#+		} else {
 #>
 
-		public <#= view.ViewContainerReturnType(typeName) #> <#= view.ViewName #>(<#= view.KeyType #> key) {
-			if (<#= view.IndexName #>.ContainsKey(key))
-				return <#= view.IndexName #>[key];
-			
-			return new <#= view.ViewContainerType(typeName) #>();
+		public <#= view.ViewContainerReturnType(typeName) #> <#= view.ViewName #>(<#= view.KeyType #> key) 
+		{
+			return (<#= view.IndexName #>.ContainsKey(key)) ? 
+				<#= view.IndexName #>[key] : 
+				new <#= view.ViewContainerType(typeName) #>();
 		}
 <#+		}
 	}
@@ -196,16 +198,25 @@ private void Generate(string className, string typeName, params ViewInfo[] viewI
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(<#= typeName #> element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(<#= typeName #> element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 <#+ 

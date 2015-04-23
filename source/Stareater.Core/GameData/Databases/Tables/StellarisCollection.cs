@@ -6,19 +6,20 @@ using Stareater.Players;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class StellarisCollection : ICollection<StellarisAdmin>, IDelayedRemoval<StellarisAdmin>
+	class StellarisCollection : ICollection<StellarisAdmin>, IDelayedCollection<StellarisAdmin>
 	{
-		HashSet<StellarisAdmin> innerSet = new HashSet<StellarisAdmin>();
-		List<StellarisAdmin> toRemove = new List<StellarisAdmin>();
+		private HashSet<StellarisAdmin> innerSet = new HashSet<StellarisAdmin>();
+		private readonly List<StellarisAdmin> toAdd = new List<StellarisAdmin>();
+		private readonly List<StellarisAdmin> toRemove = new List<StellarisAdmin>();
 
 		Dictionary<Player, List<StellarisAdmin>> OwnedByIndex = new Dictionary<Player, List<StellarisAdmin>>();
 		Dictionary<StarData, StellarisAdmin> AtIndex = new Dictionary<StarData, StellarisAdmin>();
 
-		public IList<StellarisAdmin> OwnedBy(Player key) {
-			if (OwnedByIndex.ContainsKey(key))
-				return OwnedByIndex[key];
-			
-			return new List<StellarisAdmin>();
+		public IList<StellarisAdmin> OwnedBy(Player key) 
+		{
+			return (OwnedByIndex.ContainsKey(key)) ? 
+				OwnedByIndex[key] : 
+				new List<StellarisAdmin>();
 		}
 
 		public StellarisAdmin At(StarData key) {
@@ -28,7 +29,8 @@ namespace Stareater.GameData.Databases.Tables
 			throw new KeyNotFoundException();
 		}
 		
-		public bool AtContains(StarData key) {
+		public bool AtContains(StarData key) 
+		{
 			return AtIndex.ContainsKey(key);
 		}
 	
@@ -99,16 +101,25 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(StellarisAdmin element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(StellarisAdmin element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 }

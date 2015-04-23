@@ -7,10 +7,11 @@ using Stareater.Players;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	partial class PlayerProcessorCollection : ICollection<PlayerProcessor>, IDelayedRemoval<PlayerProcessor>
+	partial class PlayerProcessorCollection : ICollection<PlayerProcessor>, IDelayedCollection<PlayerProcessor>
 	{
-		HashSet<PlayerProcessor> innerSet = new HashSet<PlayerProcessor>();
-		List<PlayerProcessor> toRemove = new List<PlayerProcessor>();
+		private HashSet<PlayerProcessor> innerSet = new HashSet<PlayerProcessor>();
+		private readonly List<PlayerProcessor> toAdd = new List<PlayerProcessor>();
+		private readonly List<PlayerProcessor> toRemove = new List<PlayerProcessor>();
 
 		Dictionary<Player, PlayerProcessor> OfIndex = new Dictionary<Player, PlayerProcessor>();
 
@@ -21,7 +22,8 @@ namespace Stareater.GameData.Databases.Tables
 			throw new KeyNotFoundException();
 		}
 		
-		public bool OfContains(Player key) {
+		public bool OfContains(Player key) 
+		{
 			return OfIndex.ContainsKey(key);
 		}
 	
@@ -86,16 +88,25 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(PlayerProcessor element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(PlayerProcessor element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 }

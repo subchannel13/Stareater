@@ -5,18 +5,19 @@ using Stareater.Players;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class TechProgressCollection : ICollection<TechnologyProgress>, IDelayedRemoval<TechnologyProgress>
+	class TechProgressCollection : ICollection<TechnologyProgress>, IDelayedCollection<TechnologyProgress>
 	{
-		HashSet<TechnologyProgress> innerSet = new HashSet<TechnologyProgress>();
-		List<TechnologyProgress> toRemove = new List<TechnologyProgress>();
+		private HashSet<TechnologyProgress> innerSet = new HashSet<TechnologyProgress>();
+		private readonly List<TechnologyProgress> toAdd = new List<TechnologyProgress>();
+		private readonly List<TechnologyProgress> toRemove = new List<TechnologyProgress>();
 
 		Dictionary<Player, List<TechnologyProgress>> OfIndex = new Dictionary<Player, List<TechnologyProgress>>();
 
-		public IList<TechnologyProgress> Of(Player key) {
-			if (OfIndex.ContainsKey(key))
-				return OfIndex[key];
-			
-			return new List<TechnologyProgress>();
+		public IList<TechnologyProgress> Of(Player key) 
+		{
+			return (OfIndex.ContainsKey(key)) ? 
+				OfIndex[key] : 
+				new List<TechnologyProgress>();
 		}
 	
 		public void Add(TechnologyProgress item)
@@ -82,16 +83,25 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(TechnologyProgress element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(TechnologyProgress element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 }

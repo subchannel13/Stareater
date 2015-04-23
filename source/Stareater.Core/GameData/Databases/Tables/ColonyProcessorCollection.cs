@@ -7,20 +7,21 @@ using Stareater.Players;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	partial class ColonyProcessorCollection : ICollection<ColonyProcessor>, IDelayedRemoval<ColonyProcessor>
+	partial class ColonyProcessorCollection : ICollection<ColonyProcessor>, IDelayedCollection<ColonyProcessor>
 	{
-		HashSet<ColonyProcessor> innerSet = new HashSet<ColonyProcessor>();
-		List<ColonyProcessor> toRemove = new List<ColonyProcessor>();
+		private HashSet<ColonyProcessor> innerSet = new HashSet<ColonyProcessor>();
+		private readonly List<ColonyProcessor> toAdd = new List<ColonyProcessor>();
+		private readonly List<ColonyProcessor> toRemove = new List<ColonyProcessor>();
 
 		Dictionary<Player, List<ColonyProcessor>> OwnedByIndex = new Dictionary<Player, List<ColonyProcessor>>();
 		Dictionary<Colony, ColonyProcessor> OfIndex = new Dictionary<Colony, ColonyProcessor>();
 		Dictionary<StarData, List<ColonyProcessor>> AtIndex = new Dictionary<StarData, List<ColonyProcessor>>();
 
-		public IList<ColonyProcessor> OwnedBy(Player key) {
-			if (OwnedByIndex.ContainsKey(key))
-				return OwnedByIndex[key];
-			
-			return new List<ColonyProcessor>();
+		public IList<ColonyProcessor> OwnedBy(Player key) 
+		{
+			return (OwnedByIndex.ContainsKey(key)) ? 
+				OwnedByIndex[key] : 
+				new List<ColonyProcessor>();
 		}
 
 		public ColonyProcessor Of(Colony key) {
@@ -30,15 +31,16 @@ namespace Stareater.GameData.Databases.Tables
 			throw new KeyNotFoundException();
 		}
 		
-		public bool OfContains(Colony key) {
+		public bool OfContains(Colony key) 
+		{
 			return OfIndex.ContainsKey(key);
 		}
 
-		public IList<ColonyProcessor> At(StarData key) {
-			if (AtIndex.ContainsKey(key))
-				return AtIndex[key];
-			
-			return new List<ColonyProcessor>();
+		public IList<ColonyProcessor> At(StarData key) 
+		{
+			return (AtIndex.ContainsKey(key)) ? 
+				AtIndex[key] : 
+				new List<ColonyProcessor>();
 		}
 	
 		public void Add(ColonyProcessor item)
@@ -114,16 +116,25 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(ColonyProcessor element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(ColonyProcessor element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 }

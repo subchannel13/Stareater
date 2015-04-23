@@ -5,18 +5,19 @@ using Stareater.Galaxy;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class PlanetCollection : ICollection<Planet>, IDelayedRemoval<Planet>
+	class PlanetCollection : ICollection<Planet>, IDelayedCollection<Planet>
 	{
-		HashSet<Planet> innerSet = new HashSet<Planet>();
-		List<Planet> toRemove = new List<Planet>();
+		private HashSet<Planet> innerSet = new HashSet<Planet>();
+		private readonly List<Planet> toAdd = new List<Planet>();
+		private readonly List<Planet> toRemove = new List<Planet>();
 
 		Dictionary<StarData, List<Planet>> AtIndex = new Dictionary<StarData, List<Planet>>();
 
-		public IList<Planet> At(StarData key) {
-			if (AtIndex.ContainsKey(key))
-				return AtIndex[key];
-			
-			return new List<Planet>();
+		public IList<Planet> At(StarData key) 
+		{
+			return (AtIndex.ContainsKey(key)) ? 
+				AtIndex[key] : 
+				new List<Planet>();
 		}
 	
 		public void Add(Planet item)
@@ -82,16 +83,25 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(Planet element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(Planet element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 }
