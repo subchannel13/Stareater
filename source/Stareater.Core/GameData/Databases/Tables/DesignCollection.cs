@@ -6,18 +6,19 @@ using Stareater.Players;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class DesignCollection : ICollection<Design>, IDelayedRemoval<Design>
+	class DesignCollection : ICollection<Design>, IDelayedCollection<Design>
 	{
-		HashSet<Design> innerSet = new HashSet<Design>();
-		List<Design> toRemove = new List<Design>();
+		private HashSet<Design> innerSet = new HashSet<Design>();
+		private readonly List<Design> toAdd = new List<Design>();
+		private readonly List<Design> toRemove = new List<Design>();
 
 		Dictionary<Player, List<Design>> OwnedByIndex = new Dictionary<Player, List<Design>>();
 
-		public IList<Design> OwnedBy(Player key) {
-			if (OwnedByIndex.ContainsKey(key))
-				return OwnedByIndex[key];
-			
-			return new List<Design>();
+		public IList<Design> OwnedBy(Player key) 
+		{
+			return (OwnedByIndex.ContainsKey(key)) ? 
+				OwnedByIndex[key] : 
+				new List<Design>();
 		}
 	
 		public void Add(Design item)
@@ -83,16 +84,25 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(Design element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(Design element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 }

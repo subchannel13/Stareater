@@ -6,18 +6,19 @@ using Stareater.Players.Reports;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class ReportCollection : ICollection<IReport>, IDelayedRemoval<IReport>
+	class ReportCollection : ICollection<IReport>, IDelayedCollection<IReport>
 	{
-		HashSet<IReport> innerSet = new HashSet<IReport>();
-		List<IReport> toRemove = new List<IReport>();
+		private HashSet<IReport> innerSet = new HashSet<IReport>();
+		private readonly List<IReport> toAdd = new List<IReport>();
+		private readonly List<IReport> toRemove = new List<IReport>();
 
 		Dictionary<Player, List<IReport>> OfIndex = new Dictionary<Player, List<IReport>>();
 
-		public IList<IReport> Of(Player key) {
-			if (OfIndex.ContainsKey(key))
-				return OfIndex[key];
-			
-			return new List<IReport>();
+		public IList<IReport> Of(Player key) 
+		{
+			return (OfIndex.ContainsKey(key)) ? 
+				OfIndex[key] : 
+				new List<IReport>();
 		}
 	
 		public void Add(IReport item)
@@ -83,16 +84,25 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(IReport element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(IReport element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 }

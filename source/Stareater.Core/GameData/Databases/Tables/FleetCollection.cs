@@ -8,26 +8,27 @@ using Stareater.Ships;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class FleetCollection : ICollection<Fleet>, IDelayedRemoval<Fleet>
+	class FleetCollection : ICollection<Fleet>, IDelayedCollection<Fleet>
 	{
-		HashSet<Fleet> innerSet = new HashSet<Fleet>();
-		List<Fleet> toRemove = new List<Fleet>();
+		private HashSet<Fleet> innerSet = new HashSet<Fleet>();
+		private readonly List<Fleet> toAdd = new List<Fleet>();
+		private readonly List<Fleet> toRemove = new List<Fleet>();
 
 		Dictionary<Player, List<Fleet>> OwnedByIndex = new Dictionary<Player, List<Fleet>>();
 		Dictionary<Vector2D, List<Fleet>> AtIndex = new Dictionary<Vector2D, List<Fleet>>();
 
-		public IList<Fleet> OwnedBy(Player key) {
-			if (OwnedByIndex.ContainsKey(key))
-				return OwnedByIndex[key];
-			
-			return new List<Fleet>();
+		public IList<Fleet> OwnedBy(Player key) 
+		{
+			return (OwnedByIndex.ContainsKey(key)) ? 
+				OwnedByIndex[key] : 
+				new List<Fleet>();
 		}
 
-		public IList<Fleet> At(Vector2D key) {
-			if (AtIndex.ContainsKey(key))
-				return AtIndex[key];
-			
-			return new List<Fleet>();
+		public IList<Fleet> At(Vector2D key) 
+		{
+			return (AtIndex.ContainsKey(key)) ? 
+				AtIndex[key] : 
+				new List<Fleet>();
 		}
 	
 		public void Add(Fleet item)
@@ -99,16 +100,25 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(Fleet element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(Fleet element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 }

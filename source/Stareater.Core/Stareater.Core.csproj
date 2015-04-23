@@ -184,8 +184,8 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\Databases\Tables\DevelopmentFocus.cs" />
-    <Compile Include="GameData\Databases\Tables\IdleFleetCollection.cs">
-      <DependentUpon>IdleFleetCollection.tt</DependentUpon>
+    <Compile Include="GameData\Databases\Tables\FleetCollection.cs">
+      <DependentUpon>FleetCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\Databases\Tables\PlayerFormulaSet.cs" />
@@ -347,6 +347,7 @@
     <Compile Include="Ships\Missions\MoveMission.cs" />
     <Compile Include="Ships\Missions\StationaryMission.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />
+    <Compile Include="Utils\Collections\IDelayedCollection.cs" />
     <Compile Include="Utils\Collections\IndexedCollectionBase.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -367,7 +368,6 @@
     <Compile Include="Utils\IVisualPositioner.cs" />
     <Compile Include="Utils\NumberFormatters\RoundingMethod.cs" />
     <Compile Include="Utils\ProgressData.cs" />
-    <Compile Include="Utils\Collections\IDelayedRemoval.cs" />
     <Compile Include="Utils\Collections\PendableSet.cs" />
     <Compile Include="Localization\IText.cs" />
     <Compile Include="Localization\Language.cs" />
@@ -460,9 +460,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DesignCollection.cs</LastGenOutput>
     </None>
-    <None Include="GameData\Databases\Tables\IdleFleetCollection.tt">
+    <None Include="GameData\Databases\Tables\FleetCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IdleFleetCollection.cs</LastGenOutput>
+      <LastGenOutput>FleetCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\ReportCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

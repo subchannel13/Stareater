@@ -7,10 +7,11 @@ using Stareater.Ships;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class ShipGroupCollection : ICollection<ShipGroup>, IDelayedRemoval<ShipGroup>
+	class ShipGroupCollection : ICollection<ShipGroup>, IDelayedCollection<ShipGroup>
 	{
-		HashSet<ShipGroup> innerSet = new HashSet<ShipGroup>();
-		List<ShipGroup> toRemove = new List<ShipGroup>();
+		private HashSet<ShipGroup> innerSet = new HashSet<ShipGroup>();
+		private readonly List<ShipGroup> toAdd = new List<ShipGroup>();
+		private readonly List<ShipGroup> toRemove = new List<ShipGroup>();
 
 		Dictionary<Design, ShipGroup> DesignIndex = new Dictionary<Design, ShipGroup>();
 
@@ -21,7 +22,8 @@ namespace Stareater.GameData.Databases.Tables
 			throw new KeyNotFoundException();
 		}
 		
-		public bool DesignContains(Design key) {
+		public bool DesignContains(Design key) 
+		{
 			return DesignIndex.ContainsKey(key);
 		}
 	
@@ -86,16 +88,25 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(ShipGroup element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(ShipGroup element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 }

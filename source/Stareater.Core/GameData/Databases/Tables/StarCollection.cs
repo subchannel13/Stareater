@@ -6,10 +6,11 @@ using NGenerics.DataStructures.Mathematical;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class StarCollection : ICollection<StarData>, IDelayedRemoval<StarData>
+	class StarCollection : ICollection<StarData>, IDelayedCollection<StarData>
 	{
-		HashSet<StarData> innerSet = new HashSet<StarData>();
-		List<StarData> toRemove = new List<StarData>();
+		private HashSet<StarData> innerSet = new HashSet<StarData>();
+		private readonly List<StarData> toAdd = new List<StarData>();
+		private readonly List<StarData> toRemove = new List<StarData>();
 
 		Dictionary<Vector2D, StarData> AtIndex = new Dictionary<Vector2D, StarData>();
 
@@ -20,7 +21,8 @@ namespace Stareater.GameData.Databases.Tables
 			throw new KeyNotFoundException();
 		}
 		
-		public bool AtContains(Vector2D key) {
+		public bool AtContains(Vector2D key) 
+		{
 			return AtIndex.ContainsKey(key);
 		}
 	
@@ -85,16 +87,25 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(StarData element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(StarData element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 }

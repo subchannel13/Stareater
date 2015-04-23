@@ -5,18 +5,19 @@ using Stareater.Galaxy;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class WormholeCollection : ICollection<Wormhole>, IDelayedRemoval<Wormhole>
+	class WormholeCollection : ICollection<Wormhole>, IDelayedCollection<Wormhole>
 	{
-		HashSet<Wormhole> innerSet = new HashSet<Wormhole>();
-		List<Wormhole> toRemove = new List<Wormhole>();
+		private HashSet<Wormhole> innerSet = new HashSet<Wormhole>();
+		private readonly List<Wormhole> toAdd = new List<Wormhole>();
+		private readonly List<Wormhole> toRemove = new List<Wormhole>();
 
 		Dictionary<StarData, List<Wormhole>> AtIndex = new Dictionary<StarData, List<Wormhole>>();
 
-		public IList<Wormhole> At(StarData key) {
-			if (AtIndex.ContainsKey(key))
-				return AtIndex[key];
-			
-			return new List<Wormhole>();
+		public IList<Wormhole> At(StarData key) 
+		{
+			return (AtIndex.ContainsKey(key)) ? 
+				AtIndex[key] : 
+				new List<Wormhole>();
 		}
 	
 		public void Add(Wormhole item)
@@ -87,16 +88,25 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
+		public void PendAdd(Wormhole element)
+		{
+			toAdd.Add(element);
+		}
+		
 		public void PendRemove(Wormhole element)
 		{
 			toRemove.Add(element);
 		}
-
-		public void ApplyRemove()
+		
+		public void ApplyPending()
 		{
 			foreach (var element in toRemove)
 				this.Remove(element);
 			toRemove.Clear();
+			
+			foreach (var element in toAdd)
+				this.Add(element);
+			toAdd.Clear();
 		}
 	}
 }
