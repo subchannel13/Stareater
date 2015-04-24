@@ -29,19 +29,18 @@ namespace Stareater.GameData
 		
 		public bool CanProgress(IDictionary<string, int> techLevels)
 		{
-			if (Level >= Topic.MaxLevel)
-				return false;
+			return Level < Topic.MaxLevel && 
+				Prerequisite.AreSatisfied(Topic.Prerequisites, NextLevel, techLevels);
 			
-			return Prerequisite.AreSatisfied(Topic.Prerequisites, NextLevel, techLevels);
 		}
 		
-		public void Progress(ActivityResult<TechnologyProgress> progressData)
+		public void Progress(ScienceResult progressData)
 		{
 			this.Level += (int)progressData.CompletedCount;
 			this.InvestedPoints = progressData.LeftoverPoints;
 		}
 		
-		public ActivityResult<TechnologyProgress> SimulateInvestment(double points, IDictionary<string, int> techLevels)
+		public ScienceResult SimulateInvestment(double points, IDictionary<string, int> techLevels)
 		{
 			int tmplevel = Level;
 			int newLevels = 0;
@@ -53,7 +52,7 @@ namespace Stareater.GameData
 				double pointsLeft = this.Topic.Cost.Evaluate(new Var(Technology.LevelKey, tmplevel + 1).Get) - tmpInvested;
 				
 				if (pointsLeft > points)
-					return new ActivityResult<TechnologyProgress>(newLevels, totalInvested + points, this, tmpInvested + points);
+					return new ScienceResult(newLevels, totalInvested + points, this, tmpInvested + points);
 				
 				tmplevel++;
 				newLevels++;
@@ -63,13 +62,13 @@ namespace Stareater.GameData
 				points -= pointsLeft;
 			}
 			
-			return new ActivityResult<TechnologyProgress>(newLevels, totalInvested, this, tmpInvested);
+			return new ScienceResult(newLevels, totalInvested, this, tmpInvested);
 		}
 		
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{
-			TechnologyProgress other = obj as TechnologyProgress;
+			var other = obj as TechnologyProgress;
 			if (other == null)
 				return false;
 			return object.Equals(this.Topic, other.Topic) && object.Equals(this.Owner, other.Owner);

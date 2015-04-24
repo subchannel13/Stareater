@@ -109,7 +109,7 @@ namespace Stareater.GameLogic
 			
 			foreach(var construction in SpendingPlan)
 				if (construction.CompletedCount > 0)
-					vars[construction.Item.IdCode.ToLower() + NewBuidingPrefix] = construction.CompletedCount;
+					vars[construction.Type.IdCode.ToLower() + NewBuidingPrefix] = construction.CompletedCount;
 			
 			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
 		}

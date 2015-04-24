@@ -92,10 +92,5 @@ namespace Stareater.GameLogic
 				return Stellaris;
 			}
 		}
-		
-		public override Var LocalEffects(StaticsDB statics)
-		{
-			return base.LocalEffects(statics);
-		}
 	}
 }

@@ -11,9 +11,9 @@ namespace Stareater.Players.Reports
 {
 	class TechnologyReport : IReport
 	{
-		public ActivityResult<TechnologyProgress> TechProgress { get; private set; }
+		public ScienceResult TechProgress { get; private set; }
 		
-		internal TechnologyReport(ActivityResult<TechnologyProgress> techProgress)
+		internal TechnologyReport(ScienceResult techProgress)
 		{
 			this.TechProgress = techProgress;
 		}
@@ -42,7 +42,7 @@ namespace Stareater.Players.Reports
 		
 		public static IReport Load(IkonComposite reportData, ObjectDeindexer deindexer)
 		{
-			return new TechnologyReport(new ActivityResult<TechnologyProgress>(
+			return new TechnologyReport(new ScienceResult(
 				reportData[CountKey].To<long>(),
 				reportData[InvestedKey].To<double>(),
 				deindexer.Get<TechnologyProgress>(reportData[TopicKey].To<int>()),
