@@ -17,7 +17,7 @@ namespace Stareater.Galaxy
 		public Dictionary<string, double> Buildings { get; private set; }
 		public Dictionary<Constructable, double> Stockpile { get; private set; }
 
-		public AConstructionSite(LocationBody location, Player owner) 
+		protected AConstructionSite(LocationBody location, Player owner) 
 		{
 			this.Location = location;
 			this.Owner = owner;

@@ -2,14 +2,14 @@
 
 namespace Stareater.GameLogic 
 {
-	class ActivityResult<ItemType> 
+	class ScienceResult 
 	{
 		public long CompletedCount;
 		public double InvestedPoints;
-		public ItemType Item;
+		public TechnologyProgress Item;
 		public double LeftoverPoints;
 
-		public ActivityResult(long completedCount, double investedPoints, ItemType item, double leftoverPoints) 
+		public ScienceResult(long completedCount, double investedPoints, TechnologyProgress item, double leftoverPoints) 
 		{
 			this.CompletedCount = completedCount;
 			this.InvestedPoints = investedPoints;

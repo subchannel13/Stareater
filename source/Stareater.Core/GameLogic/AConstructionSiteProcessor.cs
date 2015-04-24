@@ -16,17 +16,17 @@ namespace Stareater.GameLogic
 		
 		public double Production { get; protected set; }
 		public double SpendingRatioEffective { get; protected set; }
-		public IEnumerable<ActivityResult<Constructable>> SpendingPlan { get; protected set; }
+		public IEnumerable<ConstructionResult> SpendingPlan { get; protected set; }
 
 		protected AConstructionSiteProcessor()
 		{
-			this.SpendingPlan = new ActivityResult<Constructable>[0];
+			this.SpendingPlan = new ConstructionResult[0];
 		}
 		
 		protected AConstructionSiteProcessor(AConstructionSiteProcessor original)
 		{
 			this.Production = original.Production;
-			this.SpendingPlan = new List<ActivityResult<Constructable>>(original.SpendingPlan);
+			this.SpendingPlan = new List<ConstructionResult>(original.SpendingPlan);
 			this.SpendingRatioEffective = original.SpendingRatioEffective;
 		}
 		
@@ -47,56 +47,71 @@ namespace Stareater.GameLogic
 		{
 			foreach (var construction in this.SpendingPlan) {
 				if (construction.CompletedCount >= 1)
-					foreach(var effect in construction.Item.Effects)
+					foreach(var effect in construction.Type.Effects)
 						effect.Apply(states, this.Site, construction.CompletedCount);
 				
 				if (construction.LeftoverPoints > 0)
-					if (!this.Site.Stockpile.ContainsKey(construction.Item))
-						this.Site.Stockpile.Add(construction.Item, construction.LeftoverPoints);
+					if (!this.Site.Stockpile.ContainsKey(construction.Type))
+						this.Site.Stockpile.Add(construction.Type, construction.LeftoverPoints);
 					else
-						this.Site.Stockpile[construction.Item] += construction.LeftoverPoints;
+						this.Site.Stockpile[construction.Type] += construction.LeftoverPoints;
 			}
 		}
 		
 		protected abstract AConstructionSite Site { get; }
 		
-		protected static IEnumerable<ActivityResult<Constructable>> SimulateSpending(
+		protected static IEnumerable<ConstructionResult> SimulateSpending(
 			AConstructionSite site, double industryPoints, 
 			IEnumerable<Constructable> queue, IDictionary<string, double> vars)
 		{
-			var spendingPlan = new List<ActivityResult<Constructable>>();
+			var spendingPlan = new List<ConstructionResult>();
+			var planStockpile = new Dictionary<Constructable, double>(site.Stockpile);
 
 			foreach (var buildingItem in queue) {
-				if (industryPoints <= 0 || buildingItem.Condition.Evaluate(vars) < 0) {
-					spendingPlan.Add(new ActivityResult<Constructable>(0, 0, buildingItem, 0));
+				if (buildingItem.Condition.Evaluate(vars) < 0) {
+					spendingPlan.Add(new ConstructionResult(0, 0, site.Stockpile[buildingItem], buildingItem, site.Stockpile[buildingItem]));
 					continue;
 				}
 				
 				double cost = buildingItem.Cost.Evaluate(vars);
-				double investment = industryPoints;
+				double stockpile = planStockpile.ContainsKey(buildingItem) ? planStockpile[buildingItem] : 0;
+				double totalInvestment = industryPoints + stockpile;
 
-				if (site.Stockpile.ContainsKey(buildingItem))
-					investment += site.Stockpile[buildingItem];
-
-				double completed = Math.Floor(investment / cost); //FIXME(v0.5): possible division by zero
+				double completed = Math.Floor(totalInvestment / cost); //FIXME(v0.5): possible division by zero
 				double countLimit = buildingItem.TurnLimit.Evaluate(vars);
 
 				if (completed > countLimit) {
-					spendingPlan.Add(new ActivityResult<Constructable>(
-						(long)countLimit,
-						countLimit * cost,
-						buildingItem,
-						0
-					));
-
-					industryPoints -= countLimit * cost;
+					double totalCost = countLimit * cost;
+					
+					if (stockpile >= totalCost) {
+						spendingPlan.Add(new ConstructionResult(
+							(long)countLimit,
+							0, 
+							totalCost,
+							buildingItem,
+							0
+						));
+						planStockpile[buildingItem] = stockpile - totalCost;
+					}
+					else {
+						spendingPlan.Add(new ConstructionResult(
+							(long)countLimit,
+							totalCost - stockpile,
+							stockpile,
+							buildingItem,
+							0
+						));
+						planStockpile[buildingItem] = 0;
+						industryPoints -= totalCost - stockpile;
+					}
 				}
 				else {
-					spendingPlan.Add(new ActivityResult<Constructable>(
+					spendingPlan.Add(new ConstructionResult(
 						(long)completed,
-						investment,
+						industryPoints,
+						stockpile,
 						buildingItem,
-						investment - completed * cost
+						totalInvestment - completed * cost
 					));
 
 					industryPoints = 0;

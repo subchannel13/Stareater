@@ -76,21 +76,21 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var spendingPlan = Processor.SpendingPlan.ToDictionary(x => x.Item);
+				var spendingPlan = Processor.SpendingPlan.ToDictionary(x => x.Type);
 				foreach (var item in Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue)
 					yield return new ConstructableItem(
 						item, 
 						Game.Derivates.Players.Of(Game.CurrentPlayer), 
 						spendingPlan[item].CompletedCount,
 						Site.Stockpile.ContainsKey(item) ? Site.Stockpile[item] : 0,
-						spendingPlan[item].InvestedPoints
+						spendingPlan[item].InvestedPoints + spendingPlan[item].FromStockpile
 					);
 			}
 		}
 		
 		public bool CanPick(ConstructableItem data)
 		{
-			return ConstructionQueue.Where(x => x.IdCode == data.IdCode).Count() == 0;	//TODO(later): consider building count
+			return ConstructionQueue.All(x => x.IdCode != data.IdCode);	//TODO(later): consider building count
 		}
 		
 		public void Enqueue(ConstructableItem data)

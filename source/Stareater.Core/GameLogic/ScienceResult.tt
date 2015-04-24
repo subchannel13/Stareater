@@ -2,12 +2,11 @@
 <#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
 	
 	usings.Add("Stareater.GameData");
-	genericTypes.Add("ItemType");
 	
-	Generate("Stareater.GameLogic", "ActivityResult",
+	Generate("Stareater.GameLogic", "ScienceResult",
 		new DataInfo("CompletedCount", "long"),
 		new DataInfo("InvestedPoints", "double"),
-		new DataInfo("Item", "ItemType"),
+		new DataInfo("Item", "TechnologyProgress"),
 		new DataInfo("LeftoverPoints", "double")
 	);
 #>
