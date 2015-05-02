@@ -26,6 +26,8 @@ namespace Stareater
 		public StaticsDB Statics { get; private set; }
 		public StatesDB States { get; private set; }
 		public TemporaryDB Derivates { get; private set; }
+
+		private GameProcessor processor = null;
 			
 		public Game(Player[] players, StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
@@ -36,6 +38,8 @@ namespace Stareater
 			this.Statics = statics;
 			this.States = states;
 			this.Derivates = derivates;
+
+			this.processor = new GameProcessor(this);
 		}
 
 		private Game()
@@ -68,108 +72,22 @@ namespace Stareater
 
 			return new GameCopy(copy, playersRemap, galaxyRemap);
 		}
-		
-		public void CalculateBaseEffects()
-		{
-			foreach (var stellaris in this.Derivates.Stellarises)
-				stellaris.CalculateBaseEffects();
-			foreach(var colonyProc in this.Derivates.Colonies)
-				colonyProc.CalculateBaseEffects(Statics, Derivates.Of(colonyProc.Owner));
-		}
-		
-		public void CalculateSpendings()
-		{
-			foreach(var colonyProc in this.Derivates.Colonies)
-				colonyProc.CalculateSpending(
-					this.Statics, 
-					this.Derivates.Of(colonyProc.Owner)
-				);
-			
-			foreach (var stellaris in this.Derivates.Stellarises)
-				stellaris.CalculateSpending(
-					this.Derivates.Of(stellaris.Owner),
-					this.Derivates.Colonies.At(stellaris.Location)
-				);
 
-			foreach (var player in this.Derivates.Players) {
-				player.CalculateDevelopment(
-					this.Statics, 
-					this.States, 
-					this.Derivates.Colonies.OwnedBy(player.Player)
-				);
-				player.CalculateResearch(
-					this.Statics, 
-					this.States, 
-					this.Derivates.Colonies.OwnedBy(player.Player)
-				);
-			}
-		}
-		
 		public void CalculateDerivedEffects()
 		{
-			foreach(var colonyProc in this.Derivates.Colonies)
-				colonyProc.CalculateDerivedEffects(Statics, Derivates.Of(colonyProc.Owner));
+			processor.CalculateBaseEffects();
+			processor.CalculateSpendings();
+			processor.CalculateDerivedEffects();
 		}
 
-		private void CommitFleetOrders()
-		{
-			foreach (var player in this.Players) 
-				foreach (var order in player.Orders.ShipOrders) {
-					foreach(var fleet in this.States.Fleets.At(order.Key).Where(x => x.Owner == player))
-						this.States.Fleets.PendRemove(fleet);
-					
-					foreach(var fleet in order.Value)
-						this.States.Fleets.Add(fleet);
-				}
-			this.States.Fleets.ApplyPending();
-		}
-		
 		public void ProcessPrecombat()
 		{
-			CalculateBaseEffects();
-			CalculateSpendings();
-			CalculateDerivedEffects();
-			CommitFleetOrders();
-
-			States.Reports.Clear();
-			foreach(var playerProc in this.Derivates.Players)
-				playerProc.ProcessPrecombat(
-					Statics,
-					States,
-					this.Derivates.Colonies.OwnedBy(playerProc.Player),
-					this.Derivates.Stellarises.OwnedBy(playerProc.Player)
-				);
-			
-			/*
-			 * TODO(v0.5): Process ships
-			 * - Move ships
-			 * - Space combat
-			 * - Ground combat
-			 * - Bombardment
-			 * - Colonise planets
-			 */
+			this.processor.ProcessPrecombat();
 		}
 		
 		public void ProcessPostcombat()
 		{
-			// TODO(v0.5): Process research
-			foreach(var playerProc in this.Derivates.Players)
-				playerProc.ProcessPostcombat(Statics, States, Derivates);
-			
-			// TODO(v0.5): Update ship designs
-			
-			// TODO(v0.5): Upgrade and repair ships
-			
-			/*
-			 * TODO(v0.5): Colonies, 2nd pass
-			 * - Apply normal effect buildings
-			 * - Check construction queue
-			 * - Recalculate colony effects
-			 */
-			
-			CalculateBaseEffects();
-			CalculateSpendings();
-			CalculateDerivedEffects();
+			this.processor.ProcessPostcombat();
 
 			this.Turn++;
 		}

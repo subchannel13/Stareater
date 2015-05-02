@@ -117,7 +117,8 @@ namespace Stareater.GameData.Databases
 			foreach(var player in playersRemap.Keys)
 				foreach(var fleetOrders in player.Orders.ShipOrders.Values)
 					foreach(var fleet in fleetOrders) {
-						remap.Missions.Add(fleet.Mission, fleet.Mission.Copy(remap, galaxyRemap));
+						if (!remap.Missions.ContainsKey(fleet.Mission))
+							remap.Missions.Add(fleet.Mission, fleet.Mission.Copy(remap, galaxyRemap));
 						remap.Fleets.Add(fleet, fleet.Copy(remap, galaxyRemap));
 					}
 			
