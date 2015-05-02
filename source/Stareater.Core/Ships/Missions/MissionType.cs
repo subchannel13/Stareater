@@ -6,6 +6,5 @@ namespace Stareater.Ships.Missions
 	{
 		Stationary,
 		Move,
-		Regroup
 	}
 }

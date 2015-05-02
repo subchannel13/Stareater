@@ -26,8 +26,6 @@ namespace Stareater.Controllers
 			TemporaryDB derivates = createDerivates(players, controller.SelectedStart, statics, states);
 			
 			var game = new Game(players, statics, states, derivates);
-			game.CalculateBaseEffects();
-			game.CalculateSpendings();
 			game.CalculateDerivedEffects();
 			
 			return game;
@@ -52,8 +50,6 @@ namespace Stareater.Controllers
 			var derivates = initDerivates(statics, players, states);
 			
 			var game = new Game(players.ToArray(), statics, states, derivates);
-			game.CalculateBaseEffects();
-			game.CalculateSpendings();
 			game.CalculateDerivedEffects();
 			
 			return game;

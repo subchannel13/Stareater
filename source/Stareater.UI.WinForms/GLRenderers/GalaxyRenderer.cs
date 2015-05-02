@@ -166,7 +166,10 @@ namespace Stareater.GLRenderers
 		{
 			if (this.fleetController != null && !this.fleetController.Valid)
 				this.fleetController = null;
-				
+
+			if (this.currentSelection == GalaxySelectionType.Fleet)
+				this.currentSelection = GalaxySelectionType.None;
+
 			this.ResetLists();
 		}
 		
