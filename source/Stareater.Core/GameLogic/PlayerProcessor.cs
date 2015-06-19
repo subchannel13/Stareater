@@ -24,6 +24,7 @@ namespace Stareater.GameLogic
 		public IEnumerable<ScienceResult> ResearchPlan { get; protected set; }
 		public StarData ResearchCenter { get; private set; }
 		public Player Player { get; private set; }
+		public Dictionary<Design, DesignStats> DesignStats { get; private set; }
 		
 		public PlayerProcessor(Player player, IEnumerable<Technology> technologies)
 		{
@@ -31,6 +32,7 @@ namespace Stareater.GameLogic
 			
 			this.DevelopmentPlan = null;
 			this.ResearchPlan = null;
+			this.DesignStats = new Dictionary<Design, DesignStats>();
 			this.TechLevels = new Dictionary<string, double>();
 			foreach (var tech in technologies) {
 				this.TechLevels.Add(tech.IdCode + LevelSufix, TechnologyProgress.NotStarted);
@@ -46,6 +48,7 @@ namespace Stareater.GameLogic
 		{
 			var copy = new PlayerProcessor(playersRemap.Players[this.Player]);
 			
+			copy.DesignStats = new Dictionary<Design, DesignStats>(this.DesignStats.ToDictionary(x => playersRemap.Designs[x.Key], x => x.Value));
 			copy.DevelopmentPlan = (this.DevelopmentPlan != null) ? new List<ScienceResult>(this.DevelopmentPlan) : null;
 			copy.ResearchPlan  = (this.ResearchPlan != null) ? new List<ScienceResult>(this.ResearchPlan) : null;
 			copy.TechLevels = new Dictionary<string, double>(this.TechLevels);
@@ -260,6 +263,30 @@ namespace Stareater.GameLogic
 			UnlockPredefinedDesigns(statics, states);
 		}
 
+		public void Analyze(Design design)
+		{
+			var hullVars = new Var(AComponentType.LevelKey, design.Hull.Level).Get;
+			
+			var reactorVars = new Var(AComponentType.LevelKey, design.Reactor.Level).
+				And("size", design.Hull.TypeInfo.SizeReactor.Evaluate(hullVars)).Get;
+			double shipPower = design.Reactor.TypeInfo.Power.Evaluate(reactorVars);
+			
+			double galaxySpeed = 0;
+			if (design.IsDrive != null)
+			{
+				var driveVars = new Var(AComponentType.LevelKey, design.IsDrive.Level).
+					And("size", design.Hull.TypeInfo.SizeIS.Evaluate(hullVars)).
+					And("power", shipPower).Get; 
+				
+				galaxySpeed = design.IsDrive.TypeInfo.Speed.Evaluate(driveVars);
+			}
+			
+			this.DesignStats.Add(
+				design,
+				new DesignStats(galaxySpeed)
+			);
+		}
+		
 		public void UnlockPredefinedDesigns(StaticsDB statics, StatesDB states)
 		{
 			var playerTechs = states.TechnologyAdvances.Of(Player);
@@ -273,12 +300,13 @@ namespace Stareater.GameLogic
 					var reactor = ReactorType.MakeBest(statics.Reactors.Values, techLevels, hull);
 					var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(statics.IsDrives.Values, techLevels, hull, ReactorType.PowerOf(reactor, hull)) : null;
 					
-					states.Designs.Add(new Design(
+					var design = new Design(
 						states.MakeDesignId(), Player, predefDesign.Name, predefDesign.HullImageIndex,
 					    hull, isDrive, reactor
-					));
+					);
+					states.Designs.Add(design);
+					this.Analyze(design);
 				}
-					
 		}
 		
 		private static Dictionary<string, int> updateTechQueue(IEnumerable<KeyValuePair<string, int>> queue, ICollection<string> validItems)

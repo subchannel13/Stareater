@@ -128,8 +128,12 @@ namespace Stareater.GameLogic
 				if (fleet.Mission.Type == MissionType.Move) {
 					this.game.States.Fleets.PendRemove(fleet);
 					var mission = fleet.Mission as MoveMission;
+					
 					//TODO(v0.5) calculate speed from ships
-					double speed = 1;
+					var playerProc = game.Derivates.Players.Of(fleet.Owner);
+					double speed = fleet.Ships.Select(x => x.Design).
+						Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
+					
 					var waypoints = mission.Waypoints.Skip(1).ToArray();
 					var distance = (waypoints[0] - fleet.Position).Magnitude();
 

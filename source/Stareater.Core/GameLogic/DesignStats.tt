@@ -1,0 +1,9 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
+	
+	usings.Add("Stareater.GameData");
+	
+	Generate("Stareater.GameLogic", "DesignStats",
+		new DataInfo("GalaxySpeed", "double")
+	);
+#>

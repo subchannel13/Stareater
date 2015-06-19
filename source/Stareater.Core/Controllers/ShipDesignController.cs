@@ -27,10 +27,10 @@ namespace Stareater.Controllers
 				game.Statics.IsDrives.Values, 
 				playersTechLevels, 
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level), 
-				this.reactor.Power
+				this.reactorInfo.Power
 			);
 
-			return drive != null ? new IsDriveInfo(drive.TypeInfo, drive.Level, this.selectedHull, this.reactor.Power) : null;
+			return drive != null ? new IsDriveInfo(drive.TypeInfo, drive.Level, this.selectedHull, this.reactorInfo.Power) : null;
 		}
 
 		private ReactorInfo bestReactor()
@@ -57,21 +57,21 @@ namespace Stareater.Controllers
 
 		public ReactorInfo Reactor
 		{
-			get { return this.reactor; }
+			get { return this.reactorInfo; }
 		}
 		#endregion
 		
 		#region Selected components
 		private HullInfo selectedHull = null;
 		private IsDriveInfo availableIsDrive = null;
-		private ReactorInfo reactor = null;
+		private ReactorInfo reactorInfo = null;
 
 		void onHullChange()
 		{
 			if (this.ImageIndex < 0 || this.ImageIndex >= this.selectedHull.ImagePaths.Length)
 				this.ImageIndex = 0;
 
-			this.reactor = bestReactor();
+			this.reactorInfo = bestReactor();
 			this.availableIsDrive = bestIsDrive();
 			this.HasIsDrive &= availableIsDrive != null;
 		}
@@ -116,15 +116,17 @@ namespace Stareater.Controllers
 			if (!IsDesignValid)
 				return;
 			
-			game.States.Designs.Add(new Design(
+			var desing = new Design(
 				this.game.States.MakeDesignId(),
 				this.game.CurrentPlayer,
 				this.Name,
 				this.ImageIndex,
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
 				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
-				new Component<ReactorType>(this.reactor.Type, this.reactor.Level)
-			)); //TODO(v0.5) add to changes DB and propagate to states during turn processing
+				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level)
+			);
+			game.States.Designs.Add(desing); //TODO(v0.5) add to changes DB and propagate to states during turn processing
+			game.Derivates.Players.Of(this.game.CurrentPlayer).Analyze(desing);
 		}
 		#endregion
 	}

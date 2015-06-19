@@ -12,6 +12,7 @@ namespace Stareater.AppData
 	{
 		#region Singleton
 		static AssetController instance = null;
+		static object locker = new object();
 
 		public static AssetController Get
 		{
@@ -24,7 +25,7 @@ namespace Stareater.AppData
 		}
 		#endregion
 
-		private HashSet<Func<IEnumerable<double>>> Loaders = new HashSet<Func<IEnumerable<double>>>(new Func<IEnumerable<double>>[] {
+		private readonly HashSet<Func<IEnumerable<double>>> Loaders = new HashSet<Func<IEnumerable<double>>>(new Func<IEnumerable<double>>[] {
 			Organization.Loader,
 			PlayerAssets.ColorLoader,
 			PlayerAssets.AILoader,
@@ -48,7 +49,7 @@ namespace Stareater.AppData
 
 		public void RegisterLoader(Func<IEnumerable<double>> loaderMethod)
 		{
-			lock (this) {
+			lock (locker) {
 				Loaders.Add(loaderMethod);
 			}
 		}
@@ -61,7 +62,7 @@ namespace Stareater.AppData
 		private void backgroundWork()
 		{
 			Func<IEnumerable<double>>[] loaders;
-			lock (this)
+			lock (locker)
 				loaders = Loaders.ToArray();
 
 			for (int i = 0; i < loaders.Length; i++)

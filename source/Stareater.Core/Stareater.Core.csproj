@@ -297,6 +297,14 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameLogic\ConstructionAddShip.cs" />
+    <Compile Include="GameLogic\DesignStats.cs">
+      <DependentUpon>DesignStats.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GameLogic\DesignStats.txt">
+      <DependentUpon>DesignStats.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameLogic\GameProcessor.cs" />
     <Compile Include="GameLogic\IConstructionEffect.cs" />
     <Compile Include="GameLogic\AConstructionSiteProcessor.cs" />
@@ -537,6 +545,10 @@
     <None Include="GameLogic\ConstructionResult.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ActivityResult.cs</LastGenOutput>
+    </None>
+    <None Include="GameLogic\DesignStats.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DesignStats.cs</LastGenOutput>
     </None>
     <None Include="GameLogic\ScienceResult.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

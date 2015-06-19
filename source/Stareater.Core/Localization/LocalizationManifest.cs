@@ -39,7 +39,7 @@ namespace Stareater.Localization
 			{
 				if (languageNames == null)
 				{
-					List<KeyValuePair<string, string>> names = new List<KeyValuePair<string, string>>();
+					var names = new List<KeyValuePair<string, string>>();
 					foreach (var code in LanguageCodes)
 					{
 						Language lang = LoadLanguage(code);
@@ -64,12 +64,12 @@ namespace Stareater.Localization
 		public static void Initialize()
 		{
 			string defaultLangCode = null;
-			List<string> codes = new List<string>();
+			var codes = new List<string>();
 
 			foreach (var folder in new DirectoryInfo(LanguagesFolder).EnumerateDirectories()) {
 				string code = folder.Name;
 
-				if (folder.Name.EndsWith(DefaultLangSufix)) {
+				if (folder.Name.EndsWith(DefaultLangSufix, StringComparison.InvariantCultureIgnoreCase)) {
 					code = code.Remove(code.Length - DefaultLangSufix.Length);
 					defaultLangCode = code;
 				}
