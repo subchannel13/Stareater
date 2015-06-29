@@ -131,13 +131,19 @@ namespace Stareater.GameLogic
 					
 					//TODO(v0.5) calculate speed from ships
 					var playerProc = game.Derivates.Players.Of(fleet.Owner);
-					double speed = fleet.Ships.Select(x => x.Design).
+					double baseSpeed = fleet.Ships.Select(x => x.Design).
 						Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
+						
+					//TODO(v0.5) loop through all waypoints
+					var startStar = game.States.Stars.At(mission.Waypoints[0]);
+					var endStar = game.States.Stars.At(mission.Waypoints[1]);
+					var speed = baseSpeed;
+					if (game.States.Wormholes.At(startStar).Intersect(game.States.Wormholes.At(endStar)).Any())
+						speed += 0.5; //TODO(later) consider making moddable
 					
 					var waypoints = mission.Waypoints.Skip(1).ToArray();
 					var distance = (waypoints[0] - fleet.Position).Magnitude();
 
-					//TODO(v0.5) loop through all waypoints
 					//TODO(v0.5) detect conflicts
 					if (distance <= speed) {
 						var newFleet = new Fleet(

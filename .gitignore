@@ -1,5 +1,7 @@
+*.csproj.user
 *.dll
 *.exe
+*.suo
 .nuget/
 bin/
 packages/

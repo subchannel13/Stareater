@@ -12,9 +12,9 @@ namespace Stareater.Ships.Missions
 	class MoveMission : AMission
 	{
 		//TODO(v0.5) Replace vectors with StarData
-		public IEnumerable<Vector2D> Waypoints { get; private set; }
+		public Vector2D[] Waypoints { get; private set; }
 		
-		public MoveMission(IEnumerable<Vector2D> waypoints)
+		public MoveMission(Vector2D[] waypoints)
 		{
 			this.Waypoints = waypoints;
 		}

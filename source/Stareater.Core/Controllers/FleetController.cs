@@ -87,7 +87,7 @@ namespace Stareater.Controllers
 		public FleetController Send(IEnumerable<Vector2D> waypoints)
 		{
 			if (this.CanMove && waypoints != null && waypoints.LastOrDefault() != this.Fleet.FleetData.Position)
-				return this.giveOrder(new MoveMission(waypoints));
+				return this.giveOrder(new MoveMission(waypoints.ToArray()));
 			else if (this.game.States.Stars.AtContains(this.Fleet.FleetData.Position))
 				return this.giveOrder(new StationaryMission(this.game.States.Stars.At(this.Fleet.FleetData.Position)));
 			
