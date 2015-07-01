@@ -33,6 +33,12 @@ Eta §
 
 EtaNever = Never
 
+FleetEta §
+		{=eta} turn{pluralDec}{pluralPrefix}
+	\
+	pluralDec    ? (eta < 10) ∧ (ceil(eta * 10) % 10 ≠ 1); =s
+	pluralPrefix ? (eta ≥ 10) ∧ ((eta < 20) ∨ (round(eta) % 10 ≠ 1)); =s
+	
 MainMenu = Main menu
 DevelopmentMenu = Development
 -

@@ -12,6 +12,8 @@ using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.Utils;
+using Stareater.Utils.Collections;
+using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GLRenderers
 {
@@ -31,11 +33,13 @@ namespace Stareater.GLRenderers
 		private const float StarNameZRange = 0.1f;
 		private const float IdleFleetZ = -0.2f;
 		private const float SelectionIndicatorZ = -0.1f;
+		private const float EtaZ = -0.05f;
 		
 		private const float PanClickTolerance = 0.01f;
 		private const float ClickRadius = 0.02f;
 		private const float StarMinClickRadius = 0.6f;
 		
+		private const float EtaTextScale = 0.25f;
 		private const float FleetIndicatorScale = 0.2f;
 		private const float FleetSelectorScale = 0.3f;
 		private const double PathWidth = 0.1;
@@ -71,12 +75,12 @@ namespace Stareater.GLRenderers
 			this.galaxyViewListener = galaxyViewListener;
 			
 			this.mapBoundsMin = new Vector2(
-				(float)controller.Stars.Select(star => star.Position.X).Min() - StarMinClickRadius,
-				(float)controller.Stars.Select(star => star.Position.Y).Min() - StarMinClickRadius
+				(float)controller.Stars.Min(star => star.Position.X) - StarMinClickRadius,
+				(float)controller.Stars.Min(star => star.Position.Y) - StarMinClickRadius
 			);
 			this.mapBoundsMax = new Vector2(
-				(float)controller.Stars.Select(star => star.Position.X).Max() + StarMinClickRadius,
-				(float)controller.Stars.Select(star => star.Position.Y).Max() + StarMinClickRadius
+				(float)controller.Stars.Max(star => star.Position.X) + StarMinClickRadius,
+				(float)controller.Stars.Max(star => star.Position.Y) + StarMinClickRadius
 			);
 			
 			this.controller.VisualPositioner = new VisualPositioner();
@@ -252,6 +256,20 @@ namespace Stareater.GLRenderers
 					
 					GL.PopMatrix();
 					last = next;
+				}
+				
+				if (this.fleetController.Eta > 0)
+				{
+					var destination = this.fleetController.SimulationWaypoints[this.fleetController.SimulationWaypoints.Count - 1];
+					var numVars = new Var("eta", Math.Ceiling(this.fleetController.Eta)).Get;
+					var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.fleetController.Eta, RoundingMethod.Ceil, 0)).Get;
+					
+					GL.PushMatrix();
+					GL.Translate(destination.X, destination.Y + 0.5, EtaZ);
+					GL.Scale(EtaTextScale, EtaTextScale, EtaTextScale);
+		
+					TextRenderUtil.Get.RenderText(SettingsWinforms.Get.Language["FormMain"]["FleetEta"].Text(numVars, textVars), -0.5f);
+					GL.PopMatrix();
 				}
 			}
 		}

@@ -49,7 +49,7 @@ namespace Stareater.GLRenderers
 
 		public void Prepare(IEnumerable<string> texts)
 		{
-			HashSet<char> missinCharacters = new HashSet<char>();
+			var missinCharacters = new HashSet<char>();
 			foreach (string text in texts)
 				foreach (char c in text)
 					if (!this.characterInfos.ContainsKey(c) && !char.IsWhiteSpace(c))
@@ -102,13 +102,17 @@ namespace Stareater.GLRenderers
 		public void RenderText(string text, float adjustment)
 		{
 			float textWidth = 0;
-			foreach (char c in text)
+			foreach (char c in text) {
+				if (!this.characterInfos.ContainsKey(c))
+					Prepare(new string[] { text });
+				        
 				if (!char.IsWhiteSpace(c))
 					textWidth += this.characterInfos[c].Aspect;
 				else if (c == ' ')
 					textWidth += SpaceUnitWidth;
 				else
 					throw new ArgumentException("Unsupported whitespace character, character code: " + (int)c);
+			}
 
 			GL.BindTexture(TextureTarget.Texture2D, this.textureId);
 

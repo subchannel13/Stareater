@@ -10,7 +10,7 @@ namespace Stareater.Utils.NumberFormatters
 
 		public DecimalsFormatter(int obligatoryDecimals, int optionalDecimals)
 		{
-			StringBuilder formatBuilder = new StringBuilder("0.");
+			var formatBuilder = new StringBuilder("0.");
 			for (int i = 0; i < obligatoryDecimals; i++)
 				formatBuilder.Append('0');
 			for (int i = 0; i < optionalDecimals; i++)

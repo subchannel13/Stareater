@@ -129,7 +129,6 @@ namespace Stareater.GameLogic
 					this.game.States.Fleets.PendRemove(fleet);
 					var mission = fleet.Mission as MoveMission;
 					
-					//TODO(v0.5) calculate speed from ships
 					var playerProc = game.Derivates.Players.Of(fleet.Owner);
 					double baseSpeed = fleet.Ships.Select(x => x.Design).
 						Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
@@ -145,6 +144,7 @@ namespace Stareater.GameLogic
 					var distance = (waypoints[0] - fleet.Position).Magnitude();
 
 					//TODO(v0.5) detect conflicts
+					//TODO(v0.5) merge with existing fleet
 					if (distance <= speed) {
 						var newFleet = new Fleet(
 							fleet.Owner,

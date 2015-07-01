@@ -20,6 +20,7 @@ namespace Stareater.Controllers
 		public FleetInfo Fleet { get; private set; }
 
 		private Dictionary<Design, long> selection = new Dictionary<Design, long>();
+		private double eta = 0;
 		private List<Vector2D> simulationWaypoints = null;
 		
 		internal FleetController(FleetInfo fleet, Game game, GalaxyObjects mapObjects, IVisualPositioner visualPositoner)
@@ -28,6 +29,12 @@ namespace Stareater.Controllers
 			this.game = game;
 			this.mapObjects = mapObjects;
 			this.visualPositoner = visualPositoner;
+			
+			if (!this.Fleet.AtStar) {
+				var mission = this.Fleet.Mission as MoveMissionInfo;
+				this.simulationWaypoints = new List<Vector2D>(mission.Waypoints);
+				this.calcEta();
+			}
 		}
 		
 		public bool Valid
@@ -53,6 +60,11 @@ namespace Stareater.Controllers
 				
 				return true;
 			}
+		}
+		
+		public double Eta
+		{
+			get { return this.eta; }
 		}
 		
 		public IList<Vector2D> SimulationWaypoints
@@ -86,6 +98,9 @@ namespace Stareater.Controllers
 		
 		public FleetController Send(IEnumerable<Vector2D> waypoints)
 		{
+			if (!this.Fleet.AtStar)
+				return this;
+			
 			if (this.CanMove && waypoints != null && waypoints.LastOrDefault() != this.Fleet.FleetData.Position)
 				return this.giveOrder(new MoveMission(waypoints.ToArray()));
 			else if (this.game.States.Stars.AtContains(this.Fleet.FleetData.Position))
@@ -96,10 +111,16 @@ namespace Stareater.Controllers
 		
 		public void SimulateTravel(StarData destination)
 		{
+			if (!this.Fleet.AtStar)
+				return;
+			
 			this.simulationWaypoints = new List<Vector2D>();
 			//TODO(later): find shortest path
+			//TODO(v0.5) prevent changing destination midfilght
 			this.simulationWaypoints.Add(this.Fleet.FleetData.Position);
 			this.simulationWaypoints.Add(destination.Position);
+			
+			this.calcEta();
 		}
 
 		
@@ -130,6 +151,34 @@ namespace Stareater.Controllers
 				
 				return fleetInfo;
 			}
+		}
+		
+		private void calcEta()
+		{
+			var playerProc = game.Derivates.Players.Of(this.Fleet.Owner.Data);
+			double baseSpeed = this.selection.Keys.
+				Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
+							
+			//TODO(v0.5) loop through all waypoints
+			var endStar = game.States.Stars.At(this.simulationWaypoints[1]);
+			var speed = baseSpeed;
+			
+			if (this.Fleet.AtStar)
+			{
+				var startStar = game.States.Stars.At(this.simulationWaypoints[0]);
+				if (game.States.Wormholes.At(startStar).Intersect(game.States.Wormholes.At(endStar)).Any())
+					speed += 0.5; //TODO(later) consider making moddable
+			}
+			else
+			{
+				var mission = this.Fleet.Mission as MoveMissionInfo;
+				var startStar = game.States.Stars.At(mission.Waypoints[0]);
+				if (game.States.Wormholes.At(startStar).Intersect(game.States.Wormholes.At(endStar)).Any())
+					speed += 0.5; //TODO(later) consider making moddable
+			}
+			
+			var distance = (this.Fleet.FleetData.Position - this.simulationWaypoints[this.simulationWaypoints.Count - 1]).Magnitude();
+			eta = distance > 0 ? distance / speed : 0;
 		}
 		
 		private FleetController giveOrder(AMission newMission)

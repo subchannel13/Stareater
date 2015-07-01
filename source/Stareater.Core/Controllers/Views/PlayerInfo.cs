@@ -6,35 +6,33 @@ namespace Stareater.Controllers.Views
 {
 	public class PlayerInfo
 	{
-		private Player player;
+		internal Player Data { get; private set; }
 		
 		internal PlayerInfo(Player player)
 		{
-			this.player = player;
+			this.Data = player;
 		}
 		
 		public string Name 
 		{ 
-			get { return player.Name; }
+			get { return Data.Name; }
 		}
 		
 		public Color Color 
 		{ 
-			get { return player.Color; }
+			get { return Data.Color; }
 		}
 		
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{
-			PlayerInfo other = obj as PlayerInfo;
-			if (other == null)
-				return false;
-			return object.Equals(this.player, other.player);
+			var other = obj as PlayerInfo;
+			return other != null && object.Equals(this.Data, other.Data);
 		}
 		
 		public override int GetHashCode()
 		{
-			return player.GetHashCode();
+			return Data.GetHashCode();
 		}
 		
 		public static bool operator ==(PlayerInfo lhs, PlayerInfo rhs)

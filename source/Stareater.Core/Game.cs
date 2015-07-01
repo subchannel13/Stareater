@@ -52,7 +52,7 @@ namespace Stareater
 		
 		public GameCopy ReadonlyCopy()
 		{
-			Game copy = new Game();
+			var copy = new Game();
 
 			GalaxyRemap galaxyRemap = this.States.CopyGalaxy();
 			PlayersRemap playersRemap = this.States.CopyPlayers(
@@ -95,7 +95,7 @@ namespace Stareater
 		#region Saving
 		public ObjectIndexer GenerateIndices()
 		{
-			ObjectIndexer indexer = new ObjectIndexer();
+			var indexer = new ObjectIndexer();
 			
 			indexer.AddAll(this.Players);
 			indexer.AddAll(Statics.PredeginedDesigns);
@@ -116,7 +116,7 @@ namespace Stareater
 		{
 			ObjectIndexer indexer = this.GenerateIndices();
 			
-			IkonComposite gameData = new IkonComposite(SaveGameTag);
+			var gameData = new IkonComposite(SaveGameTag);
 			var playersData = new IkonArray();
 			var ordersData = new IkonArray();
 
