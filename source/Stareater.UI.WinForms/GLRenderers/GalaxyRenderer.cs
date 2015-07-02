@@ -203,13 +203,13 @@ namespace Stareater.GLRenderers
 		
 		private void drawFleetMovement()
 		{
-			GL.Color4(Color.DarkGreen);
 			foreach (var fleet in this.controller.Fleets) {
 				if (fleet.Mission.Type != FleetMissionType.Move)
 					continue;
 				
 				var mission = fleet.Mission as MoveMissionInfo;
 				var last = fleet.VisualPosition;
+				GL.Color4(Color.DarkGreen);
 				
 				for(int i = 1; i < mission.Waypoints.Length; i++) {
 					GL.PushMatrix();

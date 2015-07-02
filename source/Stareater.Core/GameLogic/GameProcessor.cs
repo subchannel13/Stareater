@@ -153,6 +153,8 @@ namespace Stareater.GameLogic
 						);
 						newFleet.Ships.Add(fleet.Ships);
 						this.game.States.Fleets.PendAdd(newFleet);
+						
+						fleet.Owner.Intelligence.StarFullyVisited(endStar, game.Turn);
 					}
 					else {
 						var direction = (waypoints[0] - fleet.Position);
@@ -168,6 +170,30 @@ namespace Stareater.GameLogic
 					}
 				}
 
+			this.game.States.Fleets.ApplyPending();
+			
+			foreach(var star in game.States.Stars) 
+			{
+				var playerFleets = this.game.States.Fleets.At(star.Position).GroupBy(x => x.Owner);
+				foreach(var playerFleet in playerFleets) 
+				{
+					var stationary = playerFleet.Where(x => x.Mission.Type == MissionType.Stationary).ToArray();
+					if (stationary.Length <= 1)
+						continue;
+					
+					var newFleet = new Fleet(stationary[0].Owner, stationary[0].Position, stationary[0].Mission);
+					foreach(var fleet in stationary) 
+					{
+						this.game.States.Fleets.PendRemove(fleet);
+						foreach(var ship in fleet.Ships)
+							if (newFleet.Ships.DesignContains(ship.Design))
+								newFleet.Ships.Design(ship.Design).Quantity += ship.Quantity;
+							else
+								newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity));
+					}
+					this.game.States.Fleets.PendAdd(newFleet);
+				}
+			}
 			this.game.States.Fleets.ApplyPending();
 		}
 	}
