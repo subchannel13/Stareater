@@ -40,6 +40,10 @@ namespace Stareater.Localization.Reading
 					if (substitutionName.Length == 0)
 						throw new FormatException("Substitution name at " + parser.Reader + " is empty (zero length)");
 					
+					if (textRunBuilder.Length > 0) {
+						textRuns.Enqueue(textRunBuilder.ToString());
+						textRunBuilder.Clear();
+					}
 					textRuns.Enqueue(null);
 					textRuns.Enqueue(substitutionName);
 

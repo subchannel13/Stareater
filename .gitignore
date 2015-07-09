@@ -1,6 +1,7 @@
 *.csproj.user
 *.dll
 *.exe
+*.pdb
 *.suo
 .nuget/
 bin/

@@ -59,8 +59,8 @@ namespace Stareater.GUI
 			// quantityLabel
 			// 
 			this.quantityLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-									| System.Windows.Forms.AnchorStyles.Left) 
-									| System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.quantityLabel.BackColor = System.Drawing.Color.Transparent;
 			this.quantityLabel.Location = new System.Drawing.Point(66, 0);
 			this.quantityLabel.Name = "quantityLabel";
@@ -106,6 +106,7 @@ namespace Stareater.GUI
 			((System.ComponentModel.ISupportInitialize)(this.primaryMissionThumbnail)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.secondaryMissionThumbnail)).EndInit();
 			this.ResumeLayout(false);
+
 		}
 		private System.Windows.Forms.PictureBox secondaryMissionThumbnail;
 		private System.Windows.Forms.PictureBox primaryMissionThumbnail;

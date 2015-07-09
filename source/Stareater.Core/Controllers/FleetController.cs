@@ -80,16 +80,12 @@ namespace Stareater.Controllers
 				this.simulationWaypoints = null;
 		}
 		
-		public void SelectGroup(ShipGroupInfo group)
+		public void SelectGroup(ShipGroupInfo group, long quantity)
 		{
-			if (!selection.ContainsKey(group.Data.Design))
-				selection.Add(group.Data.Design, group.Data.Quantity);
-			else
-				selection[group.Data.Design] += group.Data.Quantity;
+			quantity = Methods.Clamp(quantity, 0, this.Fleet.FleetData.Ships.Design(group.Data.Design).Quantity);
+			selection[group.Data.Design] = quantity;
 			
-			if (selection[group.Data.Design] > this.Fleet.FleetData.Ships.Design(group.Data.Design).Quantity)
-				selection[group.Data.Design] = this.Fleet.FleetData.Ships.Design(group.Data.Design).Quantity;
-			if (selection[group.Data.Design] < 0)
+			if (selection[group.Data.Design] <= 0)
 				selection.Remove(group.Data.Design);
 			
 			if (!this.CanMove)

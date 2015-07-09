@@ -19,33 +19,13 @@ namespace Stareater.Utils
 		/// <param name="min">Range lower bound (inclusive)</param>
 		/// <param name="max">Range upper bound (inclusive)</param>
 		/// <returns></returns>
-		public static double Clamp(double x, double min, double max)
+		public static T Clamp<T>(T x, T min, T max)
 		{
-			if (x < min)
+			if (Comparer<T>.Default.Compare(x, min) < 0)
 				return min;
 
-			if (x > max)
-				return max;
+			return (Comparer<T>.Default.Compare(x, max) > 0) ? max : x;
 
-			return x;
-		}
-		
-		/// <summary>
-		/// Limits a value to a range.
-		/// </summary>
-		/// <param name="x">A value to clamp.</param>
-		/// <param name="min">Range lower bound (inclusive)</param>
-		/// <param name="max">Range upper bound (inclusive)</param>
-		/// <returns></returns>
-		public static int Clamp(int x, int min, int max)
-		{
-			if (x < min)
-				return min;
-
-			if (x > max)
-				return max;
-
-			return x;
 		}
 		
 		/// <summary>
@@ -131,7 +111,7 @@ namespace Stareater.Utils
 		public static IEnumerable<T> LoadFromDLL<T>(string fileName)
 		{
 			Type targetType = typeof(T);
-			foreach (var type in Assembly.LoadFile(fileName).GetTypes())
+			foreach (var type in Assembly.LoadFrom(fileName).GetTypes())
 				if (targetType.IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
 					yield return (T)Activator.CreateInstance(type);
 		}

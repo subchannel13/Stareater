@@ -14,6 +14,7 @@ namespace Stareater.GUI
 		Color lastForeColor;
 		
 		bool isSelected = false;
+		long? selectedQuantity = null;
 			
 		public ShipGroupInfo Data { get; private set; }
 		
@@ -57,9 +58,15 @@ namespace Stareater.GUI
 		
 		private void shipGroupItem_Click(object sender, EventArgs e)
 		{
-			this.IsSelected = !this.isSelected;
+			if (Control.ModifierKeys == Keys.Shift && this.SplitRequested != null) 
+			{
+				this.SplitRequested(this, new EventArgs());
+			}
+			else if (Control.ModifierKeys != Keys.Shift)
+				this.IsSelected = !this.isSelected;
 		}
 		
+		public event EventHandler SplitRequested;
 		public event EventHandler SelectionChanged;
 		
 		public bool IsSelected
@@ -84,6 +91,25 @@ namespace Stareater.GUI
 				if (this.SelectionChanged != null)
 					this.SelectionChanged(this, new EventArgs());
 				}
+		}
+		
+		public long SelectedQuantity 
+		{
+			get
+			{
+				if (this.selectedQuantity.HasValue)
+					return this.selectedQuantity.Value;
+				
+				return this.isSelected ? this.Data.Quantity : 0;
+			}
+		}
+		
+		public void PartialSelect(long quantity)
+		{
+			this.selectedQuantity = quantity;
+			
+			var thousandsFormat = new ThousandsFormatter(this.Data.Quantity);
+			this.quantityLabel.Text = thousandsFormat.Format(quantity) + " / " + thousandsFormat.Format(this.Data.Quantity);
 		}
 	}
 }

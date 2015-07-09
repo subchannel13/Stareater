@@ -11,6 +11,7 @@ using Stareater.AppData;
 using Stareater.Galaxy;
 using Stareater.Controllers;
 using Stareater.Utils.NumberFormatters;
+using Stareater.GuiUtils;
 
 namespace Stareater.GUI
 {
@@ -50,27 +51,6 @@ namespace Stareater.GUI
 			acceptButton.Text = SettingsWinforms.Get.Language["General"]["DialogAccept"].Text();
 		}
 
-		private static long? decodeNumber(string text)
-		{
-			long result = -1;
-
-			text = text.Trim();
-			double? prefixedValue = ThousandsFormatter.TryParse(text);
-			if (prefixedValue.HasValue)
-				result = (long)prefixedValue.Value;
-			else if (text.ToLower().Contains("e")) {
-				double resultScientific;
-				if (double.TryParse(text, out resultScientific))
-					result = (long)resultScientific;
-				else
-					return null;
-			}
-			else if (!long.TryParse(text, out result))
-					return null;
-
-			return (result < 0) ? null : new long?(result);
-		}
-
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
 			if (keyData == Keys.Escape) 
@@ -82,27 +62,27 @@ namespace Stareater.GUI
 		{
 			get
 			{
-				return decodeNumber(populationInput.Text) != null && decodeNumber(infrastructureInput.Text) != null;
+				return NumberInput.DecodeQuantity(populationInput.Text) != null && NumberInput.DecodeQuantity(infrastructureInput.Text) != null;
 			}
 		}
 
 		public StartingConditions GetResult()
 		{
 			return new StartingConditions(
-				decodeNumber(populationInput.Text).Value,
+				NumberInput.DecodeQuantity(populationInput.Text).Value,
 				(int)coloniesSelector.Value,
-				decodeNumber(infrastructureInput.Text).Value,
+				NumberInput.DecodeQuantity(infrastructureInput.Text).Value,
 				NewGameController.CustomStartNameKey);
 		}
 
 		private void populationInput_TextChanged(object sender, EventArgs e)
 		{
-			populationInput.BackColor = decodeNumber(populationInput.Text) != null ? validColor : invalidColor;
+			populationInput.BackColor = NumberInput.DecodeQuantity(populationInput.Text) != null ? validColor : invalidColor;
 		}
 
 		private void infrastructureInput_TextChanged(object sender, EventArgs e)
 		{
-			infrastructureInput.BackColor = decodeNumber(infrastructureInput.Text) != null ? validColor : invalidColor;
+			infrastructureInput.BackColor = NumberInput.DecodeQuantity(infrastructureInput.Text) != null ? validColor : invalidColor;
 		}
 
 		private void acceptButton_Click(object sender, EventArgs e)

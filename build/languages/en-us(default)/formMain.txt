@@ -41,4 +41,6 @@ FleetEta §
 	
 MainMenu = Main menu
 DevelopmentMenu = Development
+
+SelectQuantityTitle = Select quantity
 -

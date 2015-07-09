@@ -261,9 +261,19 @@ namespace Stareater.GUI
 		{
 			var groupItem = sender as ShipGroupItem;
 			if (groupItem.IsSelected)
-				this.fleetController.SelectGroup(groupItem.Data);
+				this.fleetController.SelectGroup(groupItem.Data, groupItem.SelectedQuantity);
 			else
 				this.fleetController.DeselectGroup(groupItem.Data);
+		}
+		
+		private void shipGroupItem_SplitRequested(object sender, EventArgs e)
+		{
+			var groupItem = sender as ShipGroupItem;
+			using(var form = new FormSelectQuantity(groupItem.Data.Quantity, 1)) {
+				form.ShowDialog();
+				groupItem.PartialSelect(form.SelectedValue);
+				groupItem.IsSelected = form.SelectedValue > 0;
+			}
 		}
 		
 		#region Canvas events
@@ -387,14 +397,17 @@ namespace Stareater.GUI
 			this.fleetController = fleetController;
 			
 			this.shipList.SuspendLayout();
-			foreach (var control in this.shipList.Controls)
+			foreach (var control in this.shipList.Controls) {
 				(control as ShipGroupItem).SelectionChanged -= shipGroupItem_SelectedIndexChanged;
+				(control as ShipGroupItem).SplitRequested -= shipGroupItem_SplitRequested;
+			}
 			this.shipList.Controls.Clear();
 			
 			foreach (var fleet in fleetController.ShipGroups) {
 				var fleetView = new ShipGroupItem();
 				fleetView.SetData(fleet);
 				fleetView.SelectionChanged += shipGroupItem_SelectedIndexChanged;
+				fleetView.SplitRequested += shipGroupItem_SplitRequested;
 				this.shipList.Controls.Add(fleetView);
 				fleetView.IsSelected = true;
 			}

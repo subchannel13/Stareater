@@ -85,6 +85,7 @@
     <Compile Include="GLRenderers\TextureInfo.cs" />
     <Compile Include="GLRenderers\TextureUtils.cs" />
     <Compile Include="GLRenderers\VisualPositioner.cs" />
+    <Compile Include="GuiUtils\NumberInput.cs" />
     <Compile Include="GUI\BuildingItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -171,6 +172,10 @@
     </Compile>
     <Compile Include="GUI\FormSaveLoad.Designer.cs">
       <DependentUpon>FormSaveLoad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormSelectQuantity.cs" />
+    <Compile Include="GUI\FormSelectQuantity.Designer.cs">
+      <DependentUpon>FormSelectQuantity.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FormSettings.cs">
       <SubType>Form</SubType>
@@ -319,6 +324,9 @@
     <EmbeddedResource Include="GUI\FormSaveLoad.resx">
       <DependentUpon>FormSaveLoad.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormSelectQuantity.resx">
+      <DependentUpon>FormSelectQuantity.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormSettings.resx">
       <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
@@ -377,7 +385,19 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="maps\Stareater.Maps.ProximityLanes.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="maps\Stareater.Maps.RybPopulator.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="maps\Stareater.Maps.Square.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
+    <None Include="players\Stareater.Players.DefaultAI.pdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

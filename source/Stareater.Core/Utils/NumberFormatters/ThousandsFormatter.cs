@@ -7,7 +7,7 @@ namespace Stareater.Utils.NumberFormatters
 {
 	public class ThousandsFormatter
 	{
-		private static string[] MagnitudePrefixes = new string[] { "", "k", "M", "G", "T", "P", "E", "Z", "Y" };
+		private static readonly string[] MagnitudePrefixes = new string[] { "", "k", "M", "G", "T", "P", "E", "Z", "Y" };
 
 		private KeyValuePair<int, double>? magnitudeInfo = null;
 
@@ -16,7 +16,7 @@ namespace Stareater.Utils.NumberFormatters
 
 		public ThousandsFormatter(string magnitudePrefix)
 		{
-			int index = Array.FindIndex(MagnitudePrefixes, x => { return x == magnitudePrefix; });
+			int index = Array.FindIndex(MagnitudePrefixes, x => x == magnitudePrefix);
 			if (index < 0)
 				throw new ArgumentException("Invalid magnitude prefix", "magnitudePrefix");
 
@@ -61,7 +61,7 @@ namespace Stareater.Utils.NumberFormatters
 				return null;
 
 			char inputPrefix = numberText[numberText.Length - 1];
-			int index = Array.FindIndex(MagnitudePrefixes, x => { return x.Length > 0 && x[0] == inputPrefix; });
+			int index = Array.FindIndex(MagnitudePrefixes, x => x.Length > 0 && x[0] == inputPrefix);
 			if (index < 0)
 				return null;
 

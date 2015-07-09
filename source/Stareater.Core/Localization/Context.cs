@@ -6,8 +6,8 @@ namespace Stareater.Localization
 {
 	public class Context : IkadnBaseObject
 	{
-		private string name;
-		private Dictionary<string, IText> entries;
+		private readonly string name;
+		private readonly Dictionary<string, IText> entries;
 
 		internal Context(string name, Dictionary<string, IText> entries)
 		{
@@ -29,7 +29,7 @@ namespace Stareater.Localization
 		{
 			Type target = typeof(T);
 
-			if (target.IsAssignableFrom(this.GetType()))
+			if (target.IsInstanceOfType(this))
 				return (T)(object)this;
 			else
 				throw new InvalidOperationException("Cast to " + target.Name + " is not supported for " + Tag);
@@ -37,7 +37,7 @@ namespace Stareater.Localization
 
 		public ISet<string> KeySet()
 		{
-			HashSet<string> keys = new HashSet<string>(entries.Keys);
+			var keys = new HashSet<string>(entries.Keys);
 			keys.UnionWith(LocalizationManifest.Get.DefaultLanguage[name].entries.Keys);
 			
 			return keys;

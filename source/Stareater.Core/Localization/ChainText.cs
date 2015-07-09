@@ -10,8 +10,8 @@ namespace Stareater.Localization
 {
 	class ChainText : IkadnBaseObject, IText
 	{
-		IEnumerable<IText> textRuns;
-		HashSet<string> variables;
+		private readonly IEnumerable<IText> textRuns;
+		private readonly HashSet<string> variables;
 
 		public ChainText(IEnumerable<IText> textRuns)
 		{
@@ -31,7 +31,7 @@ namespace Stareater.Localization
 		{
 			Type target = typeof(T);
 
-			if (target.IsAssignableFrom(this.GetType()))
+			if (target.IsInstanceOfType(this))
 				return (T)(object)this;
 			else
 				throw new InvalidOperationException("Cast to " + target.Name + " is not supported for " + Tag);
