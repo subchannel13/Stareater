@@ -1,0 +1,46 @@
+﻿{ Armor
+	nameCode: TITANIUM_ARMOR_NAME
+	descCode: TITANIUM_ARMOR_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: titanium
+	
+	maxLvl= 10
+	prerequisites [
+	]
+	
+	armorFactor # 1 + 0.1 * lvl;
+	absorption # 1;
+	absorbMax # 5;
+}
+
+{ Armor
+	nameCode: DURAPLAST_ARMOR_NAME
+	descCode: DURAPLAST_ARMOR_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: duraplast
+	
+	maxLvl= 10
+	prerequisites [
+		:Phy 1
+	]
+	
+	armorFactor # 2 + 0.2 * lvl;
+	absorption # 2;
+	absorbMax # 10;
+}
+
+{ Armor
+	nameCode: DURALOY_ARMOR_NAME
+	descCode: DURALOY_ARMOR_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: duraloy
+	
+	maxLvl= 10
+	prerequisites [
+		:Phy 2
+	]
+	
+	armorFactor # 3 + 0.3 * lvl;
+	absorption # 3;
+	absorbMax # 10;
+}

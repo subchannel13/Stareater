@@ -228,6 +228,7 @@
       <DependentUpon>PlayersRemap.tt</DependentUpon>
     </Compile>
     <Compile Include="GameData\Ships\AComponentType.cs" />
+    <Compile Include="GameData\Ships\ArmorType.cs" />
     <Compile Include="GameData\Ships\HullType.cs" />
     <Compile Include="GameData\Ships\IsDriveType.cs" />
     <Compile Include="GameData\Ships\PredefinedDesign.cs" />
