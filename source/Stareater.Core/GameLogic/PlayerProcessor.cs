@@ -296,13 +296,14 @@ namespace Stareater.GameLogic
 				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
 				{
 					Player.UnlockedDesigns.Add(predefDesign);
+					var armor = ArmorType.MakeBest(statics.Armors.Values, techLevels);
 					var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
 					var reactor = ReactorType.MakeBest(statics.Reactors.Values, techLevels, hull);
 					var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(statics.IsDrives.Values, techLevels, hull, ReactorType.PowerOf(reactor, hull)) : null;
 					
 					var design = new Design(
 						states.MakeDesignId(), Player, predefDesign.Name, predefDesign.HullImageIndex,
-					    hull, isDrive, reactor
+					    armor, hull, isDrive, reactor
 					);
 					states.Designs.Add(design);
 					this.Analyze(design);

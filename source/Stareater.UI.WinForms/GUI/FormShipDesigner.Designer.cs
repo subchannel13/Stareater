@@ -37,6 +37,7 @@
 			this.isDriveImage = new System.Windows.Forms.PictureBox();
 			this.hasIsDrive = new System.Windows.Forms.CheckBox();
 			this.powerInfo = new System.Windows.Forms.Label();
+			this.armorInfo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.hullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.isDriveImage)).BeginInit();
 			this.SuspendLayout();
@@ -136,11 +137,22 @@
 			this.powerInfo.TabIndex = 35;
 			this.powerInfo.Text = "Power: X%";
 			// 
+			// armorInfo
+			// 
+			this.armorInfo.AutoSize = true;
+			this.armorInfo.Location = new System.Drawing.Point(322, 28);
+			this.armorInfo.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
+			this.armorInfo.Name = "armorInfo";
+			this.armorInfo.Size = new System.Drawing.Size(65, 13);
+			this.armorInfo.TabIndex = 36;
+			this.armorInfo.Text = "Armor: xxx X";
+			// 
 			// FormShipDesigner
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(425, 410);
+			this.Controls.Add(this.armorInfo);
 			this.Controls.Add(this.powerInfo);
 			this.Controls.Add(this.isDriveImage);
 			this.Controls.Add(this.hasIsDrive);
@@ -170,5 +182,6 @@
 		private System.Windows.Forms.PictureBox isDriveImage;
 		private System.Windows.Forms.CheckBox hasIsDrive;
 		private System.Windows.Forms.Label powerInfo;
+		private System.Windows.Forms.Label armorInfo;
 	}
 }

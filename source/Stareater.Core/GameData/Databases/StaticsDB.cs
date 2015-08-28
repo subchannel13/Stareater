@@ -22,14 +22,17 @@ namespace Stareater.GameData.Databases
 		public List<DevelopmentFocus> DevelopmentFocusOptions { get; private set; }
 		public PlayerFormulaSet PlayerFormulas { get; private set; }
 		public List<PredefinedDesign> PredeginedDesigns { get; private set; }
+		public ShipFormulaSet ShipFormulas { get; private set; }
 		public List<Technology> Technologies { get; private set; }
 		
+		public Dictionary<string, ArmorType> Armors { get; private set; }
 		public Dictionary<string, HullType> Hulls { get; private set; }
 		public Dictionary<string, IsDriveType> IsDrives { get; private set; }
 		public Dictionary<string, ReactorType> Reactors { get; private set; }
 		
 		public StaticsDB()
 		{
+			this.Armors = new Dictionary<string, ArmorType>();
 			this.Buildings = new Dictionary<string, BuildingType>();
 			this.Constructables = new List<Constructable>();
 			this.DevelopmentFocusOptions = new List<DevelopmentFocus>();
@@ -80,7 +83,13 @@ namespace Stareater.GameData.Databases
 							case ResearchTag:
 								Technologies.Add(loadTech(data, TechnologyCategory.Research));
 								break;
+							case ShipFormulasTag:
+								ShipFormulas = loadShipFormulas(data);
+								break;
 
+							case ArmorTag:
+								Armors.Add(data[GeneralCodeKey].To<string>(), loadArmor(data));
+								break;
 							case HullTag:
 								Hulls.Add(data[GeneralCodeKey].To<string>(), loadHull(data));
 								break;
@@ -139,6 +148,13 @@ namespace Stareater.GameData.Databases
 			return new PlayerFormulaSet(
 				data[PlayerResearch].To<Formula>(),
 				data[PlayerResearchFocusWeight].To<Formula>()
+			);
+		}
+
+		private ShipFormulaSet loadShipFormulas(IkonComposite data)
+		{
+			return new ShipFormulaSet(
+				data[ShipHitPoints].To<Formula>()
 			);
 		}
 		
@@ -211,6 +227,21 @@ namespace Stareater.GameData.Databases
 		}
 		
 		#region Ship components
+		private ArmorType loadArmor(IkonComposite data)
+		{
+			return new ArmorType(
+				data[GeneralCodeKey].To<string>(),
+				data[GeneralNameKey].To<string>(),
+				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralImageKey].To<string>(),
+				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
+				data[GeneralMaxLevelKey].To<int>(),
+				data[ArmorFactor].To<Formula>(),
+				data[ArmorAbsorb].To<Formula>(),
+				data[ArmorAbsorbMax].To<Formula>()
+			);
+		}
+		
 		private HullType loadHull(IkonComposite data)
 		{
 			return new HullType(
@@ -309,7 +340,9 @@ namespace Stareater.GameData.Databases
 		private const string PlayerFormulasTag = "PlayerFormulas";
 		private const string PredefinedDesignTag = "PredefinedDesign";
 		private const string ResearchTag = "ResearchTopic";
+		private const string ShipFormulasTag = "ShipFormulas";
 		
+		private const string ArmorTag = "Armor";
 		private const string HullTag = "Hull";
 		private const string IsDriveTag = "IsDrive"; 
 		private const string ReactorTag = "Reactor";
@@ -325,6 +358,8 @@ namespace Stareater.GameData.Databases
 		
 		private const string PlayerResearch = "research";
 		private const string PlayerResearchFocusWeight = "focusedResearchWeight";
+		
+		private const string ShipHitPoints = "hitPoints";
 
 		private const string ConstructableCostKey = "cost";
 		private const string ConstructableSiteKey = "site";
@@ -359,6 +394,10 @@ namespace Stareater.GameData.Databases
 		private const string PopulationActivityImprovised = "improvised";
 		private const string PopulationActivityOrganized = "organized";
 		
+		
+		private const string ArmorAbsorb = "absorption";
+		private const string ArmorAbsorbMax = "absorbMax";
+		private const string ArmorFactor = "armorFactor";
 		
 		private const string HullImages = "images";
 		private const string HullSize = "size";

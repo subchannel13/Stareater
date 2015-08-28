@@ -1,5 +1,8 @@
 ﻿:FormDesign
 
+armor §
+		Armor: {=totalHp}
+	\
 isDrive §
 		{=name} {=speed} ly/turn
 	\

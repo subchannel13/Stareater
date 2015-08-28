@@ -15,17 +15,19 @@ namespace Stareater.Ships
 		public Player Owner { get; private set; }
 		public string Name { get; private set; }
 		private int imageIndex;
+		public Component<ArmorType> Armor { get; private set; }
 		public Component<HullType> Hull { get; private set; }
 		public Component<IsDriveType> IsDrive { get; private set; }
 		public Component<ReactorType> Reactor { get; private set; }
 		public double Cost { get; private set; }
 
-		public Design(string idCode, Player owner, string name, int imageIndex, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor) 
+		public Design(string idCode, Player owner, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor) 
 		{
 			this.IdCode = idCode;
 			this.Owner = owner;
 			this.Name = name;
 			this.imageIndex = imageIndex;
+			this.Armor = armor;
 			this.Hull = hull;
 			this.IsDrive = isDrive;
 			this.Reactor = reactor;
@@ -40,6 +42,7 @@ namespace Stareater.Ships
 			this.Owner = owner;
 			this.Name = original.Name;
 			this.imageIndex = original.imageIndex;
+			this.Armor = original.Armor;
 			this.Hull = original.Hull;
 			this.IsDrive = original.IsDrive;
 			this.Reactor = original.Reactor;
@@ -61,6 +64,9 @@ namespace Stareater.Ships
 
 			var imageIndexSave = rawData[ImageIndexKey];
 			this.imageIndex = imageIndexSave.To<int>();
+
+			var armorSave = rawData[ArmorKey];
+			this.Armor = Component<ArmorType>.Load(armorSave.To<IkonArray>(), deindexer);
 
 			var hullSave = rawData[HullKey];
 			this.Hull = Component<HullType>.Load(hullSave.To<IkonArray>(), deindexer);
@@ -95,6 +101,8 @@ namespace Stareater.Ships
 
 			data.Add(ImageIndexKey, new IkonInteger(this.imageIndex));
 
+			data.Add(ArmorKey, this.Armor.Save());
+
 			data.Add(HullKey, this.Hull.Save());
 
 			data.Add(IsDriveKey, this.IsDrive.Save());
@@ -117,6 +125,7 @@ namespace Stareater.Ships
 		private const string OwnerKey = "owner";
 		private const string NameKey = "name";
 		private const string ImageIndexKey = "imageIndex";
+		private const string ArmorKey = "armor";
 		private const string HullKey = "hull";
 		private const string IsDriveKey = "isDrive";
 		private const string ReactorKey = "reactor";

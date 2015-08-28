@@ -96,6 +96,7 @@
     <Compile Include="Controllers\Views\ReportWrapper.cs" />
     <Compile Include="Controllers\Views\SavedGameInfo.cs" />
     <Compile Include="Controllers\Views\Ships\AFleetMission.cs" />
+    <Compile Include="Controllers\Views\Ships\ArmorInfo.cs" />
     <Compile Include="Controllers\Views\Ships\DesignInfo.cs" />
     <Compile Include="Controllers\Views\Ships\FleetInfo.cs" />
     <Compile Include="Controllers\Views\Ships\FleetMissionType.cs" />
@@ -195,6 +196,7 @@
       <DependentUpon>ReportCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="GameData\Databases\Tables\ShipFormulaSet.cs" />
     <Compile Include="GameData\Databases\Tables\ShipGroupCollection.cs">
       <DependentUpon>ShipGroupCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>

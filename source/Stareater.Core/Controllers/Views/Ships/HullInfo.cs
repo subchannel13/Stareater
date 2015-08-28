@@ -47,6 +47,14 @@ namespace Stareater.Controllers.Views.Ships
 			}
 		}
 		
+		public double HitPointsBase
+		{
+			get
+			{
+				return this.Type.ArmorBase.Evaluate(levelVar);
+			}
+		}
+		
 		public double IsDriveSize
 		{
 			get

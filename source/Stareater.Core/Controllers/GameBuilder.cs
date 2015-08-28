@@ -311,6 +311,8 @@ namespace Stareater.Controllers
 			"./data/colonyFormulas.txt",
 			"./data/playerFormulas.txt",
 			"./data/predefinedDesigns.txt",
+			"./data/shipArmors.txt",
+			"./data/shipFormulas.txt",
 			"./data/shipHulls.txt",
 			"./data/shipIsDrives.txt",
 			"./data/shipReactors.txt",

@@ -75,10 +75,14 @@ namespace Stareater.GUI
 		{
 			Context context = SettingsWinforms.Get.Language["FormDesign"];
 			var percentFormat = new DecimalsFormatter(0, 1);
+			var thousandsFormat = new ThousandsFormatter();
 
 			double powerGenerated = this.controller.Reactor.Power;
 			double powerUsed = this.controller.PowerUsed;
 			
+			this.armorInfo.Text = this.context["armor"].Text(
+					new TextVar("totalHp", thousandsFormat.Format(this.controller.HitPoints)).Get
+				); 
 			this.powerInfo.Text = this.context["power"].Text(
 					new TextVar("powerPercent", percentFormat.Format(Methods.Clamp(1 - powerUsed / powerGenerated, 0, 1) * 100)).Get
 				);

@@ -5,6 +5,7 @@ using System.Linq;
 using Stareater.Controllers.Views.Ships;
 using Stareater.GameData.Ships;
 using Stareater.Ships;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers
 {
@@ -19,8 +20,20 @@ namespace Stareater.Controllers
 			
 			this.playersTechLevels = game.States.TechnologyAdvances.Of(game.CurrentPlayer)
 				.ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			
+			this.armorInfo = bestArmor();
 		}
 
+		private ArmorInfo bestArmor()
+		{
+			var armor = ArmorType.MakeBest(
+				game.Statics.Armors.Values,
+				playersTechLevels
+			);
+			
+			return armor != null ? new ArmorInfo(armor.TypeInfo, armor.Level) : null;
+		}
+		
 		private IsDriveInfo bestIsDrive()
 		{
 			var drive = IsDriveType.MakeBest(
@@ -50,6 +63,11 @@ namespace Stareater.Controllers
 			return game.Statics.Hulls.Values.Select(x => new HullInfo(x, x.HighestLevel(playersTechLevels)));
 		}
 		
+		public ArmorInfo Armor
+		{
+			get { return this.armorInfo; }
+		}
+		
 		public IsDriveInfo AvailableIsDrive
 		{
 			get { return this.availableIsDrive; }
@@ -62,6 +80,7 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Selected components
+		private ArmorInfo armorInfo = null;
 		private HullInfo selectedHull = null;
 		private IsDriveInfo availableIsDrive = null;
 		private ReactorInfo reactorInfo = null;
@@ -81,7 +100,18 @@ namespace Stareater.Controllers
 		#region Extra info
 		public double PowerUsed
 		{
-			get { return 0; }
+			get { return 0; } //TODO(v0.5)
+		}
+		
+		public double HitPoints
+		{
+			get 
+			{
+				var vars = new Var("hullHp", selectedHull.HitPointsBase).
+					And("armorFactor", armorInfo.ArmorFactor).Get;
+				
+				return game.Statics.ShipFormulas.HitPoints.Evaluate(vars);
+			}
 		}
 		#endregion
 
@@ -121,6 +151,7 @@ namespace Stareater.Controllers
 				this.game.CurrentPlayer,
 				this.Name,
 				this.ImageIndex,
+				new Component<ArmorType>(this.armorInfo.Type, this.armorInfo.Level),
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
 				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
 				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level)

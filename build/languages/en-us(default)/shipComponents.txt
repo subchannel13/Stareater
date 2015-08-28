@@ -1,4 +1,13 @@
-﻿:Hulls
+﻿:Armors
+TITANIUM_ARMOR_NAME = Titanium
+TITANIUM_ARMOR_DESC = No description.
+DURAPLAST_ARMOR_NAME = Duraplast
+DURAPLAST_ARMOR_DESC = No description.
+DURALOY_ARMOR_NAME = Duraloy
+DURALOY_ARMOR_DESC = No description.
+-
+
+:Hulls
 FIGHTER_HULL_NAME = Fighter
 FIGHTER_HULL_DESC = Space version of air superiority fighter.
 CRUISER_HULL_NAME = Cruiser

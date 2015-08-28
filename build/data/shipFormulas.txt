@@ -1,0 +1,3 @@
+{ ShipFormulas
+	hitPoints # hullHp * armorFactor;
+}

@@ -14,7 +14,6 @@ namespace Stareater.Ships
 			
 		public object PrimaryEquip { get; private set; } //TODO(v0.5): make type
 		public object SecondaryEquip { get; private set; } //TODO(v0.5): make type
-		public object Armor { get; private set; } //TODO(v0.5): make type
 		public object Shield { get; private set; } //TODO(v0.5): make type
 		public Dictionary<object, int> SpecialEquip { get; private set; } //TODO(v0.5): make type
 		public object Sensors { get; private set; } //TODO(v0.5): make type
