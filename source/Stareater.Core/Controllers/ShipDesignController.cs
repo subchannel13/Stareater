@@ -22,6 +22,7 @@ namespace Stareater.Controllers
 				.ToDictionary(x => x.Topic.IdCode, x => x.Level);
 			
 			this.armorInfo = bestArmor();
+			this.thrusterInfo = bestThruster();
 		}
 
 		private ArmorInfo bestArmor()
@@ -56,6 +57,16 @@ namespace Stareater.Controllers
 
 			return reactor != null ? new ReactorInfo(reactor.TypeInfo, reactor.Level, this.selectedHull) : null;
 		}
+
+		private ThrusterInfo bestThruster()
+		{
+			var thruster = ThrusterType.MakeBest(
+				game.Statics.Thrusters.Values,
+				playersTechLevels
+			);
+
+			return thruster != null ? new ThrusterInfo(thruster.TypeInfo, thruster.Level) : null;
+		}
 		
 		#region Component lists
 		public IEnumerable<HullInfo> Hulls()
@@ -77,6 +88,11 @@ namespace Stareater.Controllers
 		{
 			get { return this.reactorInfo; }
 		}
+
+		public ThrusterInfo Thrusters
+		{
+			get { return this.thrusterInfo; }
+		}
 		#endregion
 		
 		#region Selected components
@@ -84,6 +100,7 @@ namespace Stareater.Controllers
 		private HullInfo selectedHull = null;
 		private IsDriveInfo availableIsDrive = null;
 		private ReactorInfo reactorInfo = null;
+		private ThrusterInfo thrusterInfo = null;
 
 		void onHullChange()
 		{
@@ -145,7 +162,7 @@ namespace Stareater.Controllers
 		{
 			if (!IsDesignValid)
 				return;
-			
+
 			var desing = new Design(
 				this.game.States.MakeDesignId(),
 				this.game.CurrentPlayer,
@@ -154,7 +171,8 @@ namespace Stareater.Controllers
 				new Component<ArmorType>(this.armorInfo.Type, this.armorInfo.Level),
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
 				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
-				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level)
+				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level),
+				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level)
 			);
 			game.States.Designs.Add(desing); //TODO(v0.5) add to changes DB and propagate to states during turn processing
 			game.Derivates.Players.Of(this.game.CurrentPlayer).Analyze(desing);

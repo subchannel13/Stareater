@@ -29,6 +29,7 @@ namespace Stareater.GameData.Databases
 		public Dictionary<string, HullType> Hulls { get; private set; }
 		public Dictionary<string, IsDriveType> IsDrives { get; private set; }
 		public Dictionary<string, ReactorType> Reactors { get; private set; }
+		public Dictionary<string, ThrusterType> Thrusters { get; private set; }
 		
 		public StaticsDB()
 		{
@@ -39,6 +40,7 @@ namespace Stareater.GameData.Databases
 			this.Hulls = new Dictionary<string, HullType>();
 			this.IsDrives = new Dictionary<string, IsDriveType>();
 			this.Reactors = new Dictionary<string, ReactorType>();
+			this.Thrusters = new Dictionary<string, ThrusterType>();
 			this.PredeginedDesigns = new List<PredefinedDesign>();
 			this.Technologies = new List<Technology>();
 		}
@@ -98,6 +100,9 @@ namespace Stareater.GameData.Databases
 								break;
 							case ReactorTag:
 								Reactors.Add(data[GeneralCodeKey].To<string>(), loadReactor(data));
+								break;
+							case ThrusterTag:
+								Thrusters.Add(data[GeneralCodeKey].To<string>(), loadThruster(data));
 								break;
 							default:
 								throw new FormatException("Invalid game data object with tag " + data.Tag);
@@ -295,6 +300,20 @@ namespace Stareater.GameData.Databases
 				data[ReactorMinSize].To<Formula>()
 			);
 		}
+
+		private ThrusterType loadThruster(IkonComposite data)
+		{
+			return new ThrusterType(
+				data[GeneralCodeKey].To<string>(),
+				data[GeneralNameKey].To<string>(),
+				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralImageKey].To<string>(),
+				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
+				data[GeneralMaxLevelKey].To<int>(),
+				data[ThrusterEvasion].To<Formula>(),
+				data[ThrusterSpeed].To<Formula>()
+			);
+		}
 		#endregion
 
 		#region Technologies
@@ -346,6 +365,7 @@ namespace Stareater.GameData.Databases
 		private const string HullTag = "Hull";
 		private const string IsDriveTag = "IsDrive"; 
 		private const string ReactorTag = "Reactor";
+		private const string ThrusterTag = "Thruster";
 		
 		private const string ColonyMaxPopulation = "maxPopulation";
 		private const string ColonyPopulationGrowth = "populationGrowth";
@@ -421,6 +441,9 @@ namespace Stareater.GameData.Databases
 		
 		private const string ReactorMinSize = "minSize";
 		private const string ReactorPower = "power";
+
+		private const string ThrusterEvasion = "evasion";
+		private const string ThrusterSpeed = "speed";
 		#endregion
 	}
 }

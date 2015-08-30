@@ -38,6 +38,7 @@
 			this.hasIsDrive = new System.Windows.Forms.CheckBox();
 			this.powerInfo = new System.Windows.Forms.Label();
 			this.armorInfo = new System.Windows.Forms.Label();
+			this.mobilityInfo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.hullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.isDriveImage)).BeginInit();
 			this.SuspendLayout();
@@ -140,18 +141,29 @@
 			// armorInfo
 			// 
 			this.armorInfo.AutoSize = true;
-			this.armorInfo.Location = new System.Drawing.Point(322, 28);
+			this.armorInfo.Location = new System.Drawing.Point(322, 15);
 			this.armorInfo.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
 			this.armorInfo.Name = "armorInfo";
 			this.armorInfo.Size = new System.Drawing.Size(65, 13);
 			this.armorInfo.TabIndex = 36;
 			this.armorInfo.Text = "Armor: xxx X";
 			// 
+			// mobilityInfo
+			// 
+			this.mobilityInfo.AutoSize = true;
+			this.mobilityInfo.Location = new System.Drawing.Point(322, 28);
+			this.mobilityInfo.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
+			this.mobilityInfo.Name = "mobilityInfo";
+			this.mobilityInfo.Size = new System.Drawing.Size(64, 13);
+			this.mobilityInfo.TabIndex = 37;
+			this.mobilityInfo.Text = "Mobility: +xx";
+			// 
 			// FormShipDesigner
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(425, 410);
+			this.Controls.Add(this.mobilityInfo);
 			this.Controls.Add(this.armorInfo);
 			this.Controls.Add(this.powerInfo);
 			this.Controls.Add(this.isDriveImage);
@@ -183,5 +195,6 @@
 		private System.Windows.Forms.CheckBox hasIsDrive;
 		private System.Windows.Forms.Label powerInfo;
 		private System.Windows.Forms.Label armorInfo;
+		private System.Windows.Forms.Label mobilityInfo;
 	}
 }

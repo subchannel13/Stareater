@@ -173,7 +173,9 @@
     <Compile Include="GUI\FormSaveLoad.Designer.cs">
       <DependentUpon>FormSaveLoad.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FormSelectQuantity.cs" />
+    <Compile Include="GUI\FormSelectQuantity.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI\FormSelectQuantity.Designer.cs">
       <DependentUpon>FormSelectQuantity.cs</DependentUpon>
     </Compile>
@@ -416,15 +418,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App icon.ico" />
-    <Content Include="maps\Stareater.Maps.ProximityLanes.dll">
+    <None Include="maps\Stareater.Maps.ProximityLanes.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="maps\Stareater.Maps.RybPopulator.dll">
+    </None>
+    <None Include="maps\Stareater.Maps.RybPopulator.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="maps\Stareater.Maps.Square.dll">
+    </None>
+    <None Include="maps\Stareater.Maps.Square.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="players\Stareater.Players.DefaultAI.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

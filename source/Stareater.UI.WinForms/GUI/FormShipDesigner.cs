@@ -86,6 +86,9 @@ namespace Stareater.GUI
 			this.powerInfo.Text = this.context["power"].Text(
 					new TextVar("powerPercent", percentFormat.Format(Methods.Clamp(1 - powerUsed / powerGenerated, 0, 1) * 100)).Get
 				);
+			this.mobilityInfo.Text = this.context["mobility"].Text(
+					new TextVar("mobility", thousandsFormat.Format(this.controller.Thrusters.Evasion)).Get //TODO(0.5) factor in special equipment
+				); 
 		}
 		
 		private void acceptButton_Click(object sender, EventArgs e)

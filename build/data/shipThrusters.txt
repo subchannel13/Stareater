@@ -1,0 +1,13 @@
+﻿{ Thruster
+	nameCode: HYDROGEN_THRUSTER_NAME
+	descCode: HYDROGEN_THRUSTER_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: hydrogen
+	
+	maxLvl= 10
+	prerequisites [
+	]
+	
+	speed # 1 / 3;
+	evasion # 20;
+}

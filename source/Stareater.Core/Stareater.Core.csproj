@@ -97,6 +97,7 @@
     <Compile Include="Controllers\Views\SavedGameInfo.cs" />
     <Compile Include="Controllers\Views\Ships\AFleetMission.cs" />
     <Compile Include="Controllers\Views\Ships\ArmorInfo.cs" />
+    <Compile Include="Controllers\Views\Ships\ThrusterInfo.cs" />
     <Compile Include="Controllers\Views\Ships\DesignInfo.cs" />
     <Compile Include="Controllers\Views\Ships\FleetInfo.cs" />
     <Compile Include="Controllers\Views\Ships\FleetMissionType.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="GameData\Ships\IsDriveType.cs" />
     <Compile Include="GameData\Ships\PredefinedDesign.cs" />
     <Compile Include="GameData\Ships\ReactorType.cs" />
+    <Compile Include="GameData\Ships\ThrusterType.cs" />
     <Compile Include="GameData\SiteType.cs" />
     <Compile Include="GameData\Databases\StatesDB.cs" />
     <Compile Include="GameData\Databases\StaticsDB.cs" />

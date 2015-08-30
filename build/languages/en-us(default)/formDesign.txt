@@ -7,6 +7,10 @@ isDrive §
 		{=name} {=speed} ly/turn
 	\
 	
+mobility §
+		Mobility: {=mobility}
+	\
+	
 power §
 		Power: {=powerPercent} %
 	\

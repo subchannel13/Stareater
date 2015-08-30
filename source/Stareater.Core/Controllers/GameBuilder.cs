@@ -305,7 +305,7 @@ namespace Stareater.Controllers
 		}
 		#endregion
 		
-		//TODO(later): try to avoid explicit list of files
+		//TODO(0.5): try to avoid explicit list of files
 		private static readonly string[] StaticDataFiles = new string[] {
 			"./data/colonyBuildings.txt",
 			"./data/colonyFormulas.txt",
@@ -316,6 +316,7 @@ namespace Stareater.Controllers
 			"./data/shipHulls.txt",
 			"./data/shipIsDrives.txt",
 			"./data/shipReactors.txt",
+			"./data/shipThrusters.txt",
 			"./data/systemBuildings.txt",
 			"./data/techDevelopment.txt",
 			"./data/techResearch.txt",

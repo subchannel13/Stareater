@@ -300,10 +300,11 @@ namespace Stareater.GameLogic
 					var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
 					var reactor = ReactorType.MakeBest(statics.Reactors.Values, techLevels, hull);
 					var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(statics.IsDrives.Values, techLevels, hull, ReactorType.PowerOf(reactor, hull)) : null;
-					
+					var thruster = ThrusterType.MakeBest(statics.Thrusters.Values, techLevels);
+
 					var design = new Design(
 						states.MakeDesignId(), Player, predefDesign.Name, predefDesign.HullImageIndex,
-					    armor, hull, isDrive, reactor
+					    armor, hull, isDrive, reactor, thruster
 					);
 					states.Designs.Add(design);
 					this.Analyze(design);
