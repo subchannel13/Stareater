@@ -20,7 +20,7 @@ namespace Stareater.GameData.Ships
 		protected AComponentType(string code, string nameCode, string descCode, 
 		                      IEnumerable<Prerequisite> prerequisites, int maxLevel)
 		{
-			this.IdCode = IdCode;
+			this.IdCode = code;
 			this.NameCode = nameCode;
 			this.DescCode = descCode;
 			this.Prerequisites = prerequisites;
