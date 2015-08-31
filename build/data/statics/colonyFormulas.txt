@@ -1,0 +1,37 @@
+{ ColonyFormulas
+	maxPopulation # size / 10 * 1e9;
+	
+	populationGrowth 
+	{ Stat
+		base # pop * 0.04;
+		total # base + housing_delta;
+	}
+	
+	organization # limit(infra_count / pop, 0, 1);
+	
+	farming
+	{ Work
+		improvised	# 3;
+		organized	# 4;
+	}
+	gardening
+	{ Work
+		improvised	# 1;
+		organized	# 1.25;
+	}
+	mining
+	{ Work
+		improvised	# 10;
+		organized	# 20;
+	}
+	industry
+	{ Work
+		improvised	# 2;
+		organized	# 5;
+	}
+	development 
+	{ Work
+		improvised	# 1;
+		organized	# 3;
+	}
+}

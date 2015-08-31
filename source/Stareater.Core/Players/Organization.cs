@@ -32,7 +32,7 @@ namespace Stareater.Players
 
 		public static IEnumerable<double> Loader()
 		{
-			List<Organization> list = new List<Organization>();
+			var list = new List<Organization>();
 			using (var parser = new IkonParser(new StreamReader(DataFilePath))) {
 				var data = parser.ParseAll();
 				yield return 0.5;
@@ -42,7 +42,7 @@ namespace Stareater.Players
 					yield return p;
 				}
 
-				list.Sort((a, b) => { return a.Name.CompareTo(b.Name); });
+				list.Sort((a, b) => a.Name.CompareTo(b.Name));
 			}
 			
 			List = list.ToArray();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using Ikadn.Ikon.Types;
@@ -59,8 +60,9 @@ namespace Stareater.Controllers
 		private static StaticsDB loadStatics()
 		{
 			var statics = new StaticsDB();
-			foreach(double p in statics.Load(StaticDataFiles))
-				;
+			foreach (FileInfo file in new DirectoryInfo(StaticDataFolder).EnumerateFiles())
+				foreach(double p in statics.Load(file.FullName))
+					;
 			
 			return statics;
 		}
@@ -306,20 +308,6 @@ namespace Stareater.Controllers
 		#endregion
 		
 		//TODO(0.5): try to avoid explicit list of files
-		private static readonly string[] StaticDataFiles = new string[] {
-			"./data/colonyBuildings.txt",
-			"./data/colonyFormulas.txt",
-			"./data/playerFormulas.txt",
-			"./data/predefinedDesigns.txt",
-			"./data/shipArmors.txt",
-			"./data/shipFormulas.txt",
-			"./data/shipHulls.txt",
-			"./data/shipIsDrives.txt",
-			"./data/shipReactors.txt",
-			"./data/shipThrusters.txt",
-			"./data/systemBuildings.txt",
-			"./data/techDevelopment.txt",
-			"./data/techResearch.txt",
-		};
+		private static readonly string StaticDataFolder = "./data/statics/";
 	}
 }

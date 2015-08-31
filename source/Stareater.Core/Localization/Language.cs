@@ -15,8 +15,8 @@ namespace Stareater.Localization
 			this.Code = code;
 
 			foreach (FileInfo file in new DirectoryInfo(folderPath).EnumerateFiles()) {
-				StreamReader stream = new StreamReader(file.FullName);
-				Parser parser = new Parser(stream);
+				var stream = new StreamReader(file.FullName);
+				var parser = new Parser(stream);
 
 				while (parser.HasNext()) {
 					var conext = parser.ParseNext().To<Context>();

@@ -1,0 +1,50 @@
+{ ResearchTopic
+	nameCode: BIO_NAME
+	descCode: BIO_DESC
+	code: Bio
+	cost # 1e6 * (lvl + 2 ^ lvl);
+	maxLvl= 7
+	prerequisites [] 
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ ResearchTopic
+	nameCode : PHY_NAME
+	descCode : PHY_DESC
+	code: Phy
+	cost # 10e6 * (lvl + 2 ^ lvl);
+	maxLvl= 7
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ ResearchTopic
+	nameCode : CHEM_NAME
+	descCode : CHEM_DESC
+	code: Chem
+	cost # 10e6 * (lvl + 2 ^ lvl);
+	maxLvl= 7
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ ResearchTopic
+	nameCode : MAT_NAME
+	descCode : MAT_DESC
+	code: Mat
+	cost # 10e6 * (lvl + 2 ^ lvl);
+	maxLvl= 7
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ ResearchTopic
+	nameCode : TEST_NAME
+	descCode : TEST_DESC
+	code: Test
+	cost # 10e4 * (lvl + 2 ^ lvl);
+	maxLvl= 7
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+

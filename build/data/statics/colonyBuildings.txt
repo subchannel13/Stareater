@@ -1,0 +1,45 @@
+{ Constructable
+	nameCode: IND_NAME
+	descCode: IND_DESC
+	image: ./images/buildings/factory.png
+	
+	code: Infra
+	site: Colony
+	prerequisites [] 
+	
+	cost # 10 * 3 ^ (1 - max(IndLvl + 1, 0) / 11);
+	condition # maxPop > infra_count;
+	turnLimit # maxPop - infra_count;
+	
+	effects [
+		{ AddBuilding
+			buildingId: Infra
+			quantity # quantity;
+		}
+	]
+}
+
+{ Building
+	nameCode: IND_NAME
+	image: ./images/buildings/factory.png
+	
+	code: Infra
+	
+}
+
+{ Constructable
+	nameCode: POP_NAME
+	descCode: POP_DESC
+	image: ./images/buildings/housing.png
+	
+	code: Housing
+	site: Colony
+	prerequisites [] 
+	
+	cost # 10;
+	condition # maxPop - pop * 0.04 > pop;
+	turnLimit # min(maxPop - pop * 1.04, pop * 0.04);
+	
+	effects [
+	]
+}
