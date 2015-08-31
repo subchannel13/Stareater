@@ -307,7 +307,6 @@ namespace Stareater.Controllers
 		}
 		#endregion
 		
-		//TODO(0.5): try to avoid explicit list of files
 		private static readonly string StaticDataFolder = "./data/statics/";
 	}
 }

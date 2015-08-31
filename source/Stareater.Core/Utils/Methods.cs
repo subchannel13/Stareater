@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using System.Xml;
 using NGenerics.DataStructures.Mathematical;
 
 namespace Stareater.Utils
@@ -29,6 +30,30 @@ namespace Stareater.Utils
 		}
 		
 		/// <summary>
+		/// Finds an element with highest fitness function value.
+		/// </summary>
+		/// <param name="source">Input collection of elements</param>
+		/// <param name="fitnessFunc">Fitness function</param>
+		/// <returns>Element with highest fitenss</returns>
+		public static T FindBest<T>(IEnumerable<T> source, Func<T, IComparable> fitnessFunc) where T : class
+		{
+			T best = null;
+			IComparable bestValue = null;
+				
+			foreach (var item in source)
+			{
+				var itemValue = fitnessFunc(item);
+				if (best == null || itemValue.CompareTo(bestValue) > 0)
+				{
+					best = item;
+					bestValue = itemValue;
+				}
+			}
+
+			return best;
+		}
+		
+		/// <summary>
 		/// Tests whether one rectangle ("outer") is completely contains other rectrangle ("inner").
 		/// </summary>
 		/// <param name="outerTopRight">Top right corner of "outer" rectangle</param>
@@ -43,7 +68,7 @@ namespace Stareater.Utils
 		}
 		
 		/// <summary>
-		/// Tests whether one rectangle ("B") is completely outside other rectangle ("A")
+		/// Tests whether one rectangle ("B") is completely outside other rectangle ("A").
 		/// </summary>
 		/// <param name="aTopRight">Top right corner of rectangle "A"</param>
 		/// <param name="aBottomLeft">Bottm left corner of rectangle "A"</param>
@@ -79,7 +104,7 @@ namespace Stareater.Utils
 		{
 			Vector2D x0 = line.Item1;
 			Vector2D v0 = line.Item2 - x0;
-			Vector2D n0 = new Vector2D(-v0.Y, v0.X);
+			var n0 = new Vector2D(-v0.Y, v0.X);
 			double v0magSquare = v0.X * v0.X + v0.Y * v0.Y;
 
 			foreach (var usedEdge in otherLines) {

@@ -42,7 +42,7 @@ namespace Stareater.Players
 					yield return p;
 				}
 
-				list.Sort((a, b) => a.Name.CompareTo(b.Name));
+				list.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
 			}
 			
 			List = list.ToArray();

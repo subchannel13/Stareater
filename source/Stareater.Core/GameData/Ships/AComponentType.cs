@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Stareater.Ships;
+using Stareater.Utils;
 
 namespace Stareater.GameData.Ships
 {
@@ -39,6 +42,14 @@ namespace Stareater.GameData.Ships
 					return level;
 			
 			return 0;
+		}
+		
+		public static Component<T> MakeBest<T>(IEnumerable<T> assortment, IDictionary<string, int> techLevels) where T: AComponentType, IIncrementalComponent
+		{
+			return Methods.FindBest(
+				assortment.Where(x => x.IsAvailable(techLevels)).Select(x => new Component<T>(x, x.HighestLevel(techLevels))),
+				x => x.TypeInfo.ComparisonValue(x.Level)
+			);
 		}
 	}
 }

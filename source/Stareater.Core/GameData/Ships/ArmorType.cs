@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Stareater.AppData.Expressions;
 using Stareater.Ships;
+using Stareater.Utils;
 using Stareater.Utils.Collections;
 
 namespace Stareater.GameData.Ships
 {
-	class ArmorType : AComponentType
+	class ArmorType : AComponentType, IIncrementalComponent
 	{
 		public string ImagePath { get; private set; }
 		
@@ -25,21 +26,12 @@ namespace Stareater.GameData.Ships
 			this.AbsorptionMax = absorptionMax;
 			this.ImagePath = imagePath;
 		}
-		
-		public static Component<ArmorType> MakeBest(IEnumerable<ArmorType> armors, Dictionary<string, int> playersTechLevels)
+
+		#region IIncrementalComponent implementation
+		public double ComparisonValue(int level)
 		{
-			Component<ArmorType> bestComponent = null;
-			var armorVars = new Var("level", 0).Get; //TODO(v0.5) make constants for variable names
-				
-			foreach (var armor in armors.Where(x => x.IsAvailable(playersTechLevels))) {
-				int level = armor.HighestLevel(playersTechLevels);
-				armorVars["level"] = level;
-
-				if (bestComponent == null || (armor.ArmorFactor.Evaluate(armorVars) > bestComponent.TypeInfo.ArmorFactor.Evaluate(armorVars)))
-					bestComponent = new Component<ArmorType>(armor, level);
-			}
-
-			return bestComponent;
+			return this.ArmorFactor.Evaluate(new Var(AComponentType.LevelKey, level).Get);
 		}
+		#endregion
 	}
 }

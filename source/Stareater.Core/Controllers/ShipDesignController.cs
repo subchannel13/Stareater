@@ -27,7 +27,7 @@ namespace Stareater.Controllers
 
 		private ArmorInfo bestArmor()
 		{
-			var armor = ArmorType.MakeBest(
+			var armor = AComponentType.MakeBest(
 				game.Statics.Armors.Values,
 				playersTechLevels
 			);
@@ -60,7 +60,7 @@ namespace Stareater.Controllers
 
 		private ThrusterInfo bestThruster()
 		{
-			var thruster = ThrusterType.MakeBest(
+			var thruster = AComponentType.MakeBest(
 				game.Statics.Thrusters.Values,
 				playersTechLevels
 			);
