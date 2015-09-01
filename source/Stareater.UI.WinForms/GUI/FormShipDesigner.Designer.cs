@@ -39,6 +39,7 @@
 			this.powerInfo = new System.Windows.Forms.Label();
 			this.armorInfo = new System.Windows.Forms.Label();
 			this.mobilityInfo = new System.Windows.Forms.Label();
+			this.sensorInfo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.hullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.isDriveImage)).BeginInit();
 			this.SuspendLayout();
@@ -158,11 +159,22 @@
 			this.mobilityInfo.TabIndex = 37;
 			this.mobilityInfo.Text = "Mobility: +xx";
 			// 
+			// sensorInfo
+			// 
+			this.sensorInfo.AutoSize = true;
+			this.sensorInfo.Location = new System.Drawing.Point(322, 65);
+			this.sensorInfo.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
+			this.sensorInfo.Name = "sensorInfo";
+			this.sensorInfo.Size = new System.Drawing.Size(58, 13);
+			this.sensorInfo.TabIndex = 38;
+			this.sensorInfo.Text = "Sensors: X";
+			// 
 			// FormShipDesigner
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(425, 410);
+			this.Controls.Add(this.sensorInfo);
 			this.Controls.Add(this.mobilityInfo);
 			this.Controls.Add(this.armorInfo);
 			this.Controls.Add(this.powerInfo);
@@ -196,5 +208,6 @@
 		private System.Windows.Forms.Label powerInfo;
 		private System.Windows.Forms.Label armorInfo;
 		private System.Windows.Forms.Label mobilityInfo;
+		private System.Windows.Forms.Label sensorInfo;
 	}
 }

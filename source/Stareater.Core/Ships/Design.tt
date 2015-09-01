@@ -17,6 +17,7 @@
 		new DataInfo("Hull", "Component<HullType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("IsDrive", "Component<IsDriveType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Reactor", "Component<ReactorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
+		new DataInfo("Sensors", "Component<SensorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Thrusters", "Component<ThrusterType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Cost", "double").Derived("initCost();")
 	);

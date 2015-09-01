@@ -10,6 +10,10 @@ isDrive §
 mobility §
 		Mobility: {=mobility}
 	\
+
+sensors §
+		Sensors: {=detection}
+	\
 	
 power §
 		Power: {=powerPercent} %

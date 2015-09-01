@@ -1,3 +1,8 @@
 { ShipFormulas
+	evasion # thrust;
 	hitPoints # hullHp * armorFactor;
+	
+	combatSpeed # thrust;
+	
+	detection # sensor;
 }

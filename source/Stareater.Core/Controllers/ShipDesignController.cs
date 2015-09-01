@@ -22,6 +22,7 @@ namespace Stareater.Controllers
 				.ToDictionary(x => x.Topic.IdCode, x => x.Level);
 			
 			this.armorInfo = bestArmor();
+			this.sensorInfo = bestSensor();
 			this.thrusterInfo = bestThruster();
 		}
 
@@ -58,6 +59,16 @@ namespace Stareater.Controllers
 			return reactor != null ? new ReactorInfo(reactor.TypeInfo, reactor.Level, this.selectedHull) : null;
 		}
 
+		private SensorInfo bestSensor()
+		{
+			var sensor = AComponentType.MakeBest(
+				game.Statics.Sensors.Values,
+				playersTechLevels
+			);
+
+			return sensor != null ? new SensorInfo(sensor.TypeInfo, sensor.Level) : null;
+		}
+		
 		private ThrusterInfo bestThruster()
 		{
 			var thruster = AComponentType.MakeBest(
@@ -89,6 +100,11 @@ namespace Stareater.Controllers
 			get { return this.reactorInfo; }
 		}
 
+		public SensorInfo Sensor
+		{
+			get { return this.sensorInfo; }
+		}
+		
 		public ThrusterInfo Thrusters
 		{
 			get { return this.thrusterInfo; }
@@ -100,6 +116,7 @@ namespace Stareater.Controllers
 		private HullInfo selectedHull = null;
 		private IsDriveInfo availableIsDrive = null;
 		private ReactorInfo reactorInfo = null;
+		private SensorInfo sensorInfo = null;
 		private ThrusterInfo thrusterInfo = null;
 
 		void onHullChange()
@@ -118,6 +135,33 @@ namespace Stareater.Controllers
 		public double PowerUsed
 		{
 			get { return 0; } //TODO(v0.5)
+		}
+		
+		public double CombatSpeed
+		{
+			get 
+			{
+				var vars = new Var("thrust", thrusterInfo.Speed).Get;
+				return game.Statics.ShipFormulas.CombatSpeed.Evaluate(vars);
+			}
+		}
+		
+		public double Detection
+		{
+			get 
+			{
+				var vars = new Var("sensor", sensorInfo.Detection).Get;
+				return game.Statics.ShipFormulas.Detection.Evaluate(vars);
+			}
+		}
+		
+		public double Evasion
+		{
+			get 
+			{
+				var vars = new Var("thrust", thrusterInfo.Evasion).Get;
+				return game.Statics.ShipFormulas.Evasion.Evaluate(vars);
+			}
 		}
 		
 		public double HitPoints
@@ -172,6 +216,7 @@ namespace Stareater.Controllers
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
 				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
 				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level),
+				new Component<SensorType>(this.sensorInfo.Type, this.sensorInfo.Level),
 				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level)
 			);
 			game.States.Designs.Add(desing); //TODO(v0.5) add to changes DB and propagate to states during turn processing

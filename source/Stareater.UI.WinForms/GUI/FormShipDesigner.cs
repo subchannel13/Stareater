@@ -73,7 +73,6 @@ namespace Stareater.GUI
 		
 		private void updateInfos()
 		{
-			Context context = SettingsWinforms.Get.Language["FormDesign"];
 			var percentFormat = new DecimalsFormatter(0, 1);
 			var thousandsFormat = new ThousandsFormatter();
 
@@ -81,14 +80,17 @@ namespace Stareater.GUI
 			double powerUsed = this.controller.PowerUsed;
 			
 			this.armorInfo.Text = this.context["armor"].Text(
-					new TextVar("totalHp", thousandsFormat.Format(this.controller.HitPoints)).Get
-				); 
-			this.powerInfo.Text = this.context["power"].Text(
-					new TextVar("powerPercent", percentFormat.Format(Methods.Clamp(1 - powerUsed / powerGenerated, 0, 1) * 100)).Get
-				);
+				new TextVar("totalHp", thousandsFormat.Format(this.controller.HitPoints)).Get
+			);
 			this.mobilityInfo.Text = this.context["mobility"].Text(
-					new TextVar("mobility", thousandsFormat.Format(this.controller.Thrusters.Evasion)).Get //TODO(0.5) factor in special equipment
-				); 
+				new TextVar("mobility", thousandsFormat.Format(this.controller.Evasion)).Get
+			);
+			this.powerInfo.Text = this.context["power"].Text(
+				new TextVar("powerPercent", percentFormat.Format(Methods.Clamp(1 - powerUsed / powerGenerated, 0, 1) * 100)).Get
+			);
+			this.sensorInfo.Text = this.context["sensors"].Text(
+				new TextVar("detection", this.controller.Detection.ToString("0.#")).Get
+			);
 		}
 		
 		private void acceptButton_Click(object sender, EventArgs e)

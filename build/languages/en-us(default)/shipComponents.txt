@@ -28,6 +28,11 @@ CHEMICAL_REACTOR_NAME = Chemical drive
 CHEMICAL_REACTOR_DESC = No description.
 -
 
+:Sensors
+EM_SENSOR_NAME = Electromagnetic sensor
+EM_SENSOR_DESC = No description.
+-
+
 :Thrusters
 HYDROGEN_THRUSTER_NAME = Hydrogen thrusters
 HYDROGEN_THRUSTER_DESC = No description.

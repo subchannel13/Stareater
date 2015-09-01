@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Stareater.AppData.Expressions;
 using Stareater.GameData;
+using Stareater.GameData.Ships;
 using Stareater.GameLogic;
 using Stareater.Players;
 using Stareater.Utils.Collections;
@@ -16,7 +17,6 @@ namespace Stareater.Ships
 		public object SecondaryEquip { get; private set; } //TODO(v0.5): make type
 		public object Shield { get; private set; } //TODO(v0.5): make type
 		public Dictionary<object, int> SpecialEquip { get; private set; } //TODO(v0.5): make type
-		public object Sensors { get; private set; } //TODO(v0.5): make type
 		
 		//public int id { get; private set; } //TODO(v0.5): might need id
 		//private Dictionary<string, double> efekti = new Dictionary<string,double>(); //TODO(v0.5): might need
@@ -24,7 +24,7 @@ namespace Stareater.Ships
 		
 		private double initCost()
 		{
-			return this.Hull.TypeInfo.Cost.Evaluate(new Var("lvl", this.Hull.Level).Get);
+			return this.Hull.TypeInfo.Cost.Evaluate(new Var(AComponentType.LevelKey, this.Hull.Level).Get);
 		}
 		
 		public string ImagePath 

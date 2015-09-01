@@ -1,6 +1,5 @@
 ﻿ 
 
-
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
@@ -20,10 +19,11 @@ namespace Stareater.Ships
 		public Component<HullType> Hull { get; private set; }
 		public Component<IsDriveType> IsDrive { get; private set; }
 		public Component<ReactorType> Reactor { get; private set; }
+		public Component<SensorType> Sensors { get; private set; }
 		public Component<ThrusterType> Thrusters { get; private set; }
 		public double Cost { get; private set; }
 
-		public Design(string idCode, Player owner, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<ThrusterType> thrusters) 
+		public Design(string idCode, Player owner, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ThrusterType> thrusters) 
 		{
 			this.IdCode = idCode;
 			this.Owner = owner;
@@ -33,6 +33,7 @@ namespace Stareater.Ships
 			this.Hull = hull;
 			this.IsDrive = isDrive;
 			this.Reactor = reactor;
+			this.Sensors = sensors;
 			this.Thrusters = thrusters;
 			this.Cost = initCost();
  
@@ -49,6 +50,7 @@ namespace Stareater.Ships
 			this.Hull = original.Hull;
 			this.IsDrive = original.IsDrive;
 			this.Reactor = original.Reactor;
+			this.Sensors = original.Sensors;
 			this.Thrusters = original.Thrusters;
 			this.Cost = original.Cost;
  
@@ -80,6 +82,9 @@ namespace Stareater.Ships
 
 			var reactorSave = rawData[ReactorKey];
 			this.Reactor = Component<ReactorType>.Load(reactorSave.To<IkonArray>(), deindexer);
+
+			var sensorsSave = rawData[SensorsKey];
+			this.Sensors = Component<SensorType>.Load(sensorsSave.To<IkonArray>(), deindexer);
 
 			var thrustersSave = rawData[ThrustersKey];
 			this.Thrusters = Component<ThrusterType>.Load(thrustersSave.To<IkonArray>(), deindexer);
@@ -116,6 +121,8 @@ namespace Stareater.Ships
 
 			data.Add(ReactorKey, this.Reactor.Save());
 
+			data.Add(SensorsKey, this.Sensors.Save());
+
 			data.Add(ThrustersKey, this.Thrusters.Save());
 			return data;
  
@@ -138,6 +145,7 @@ namespace Stareater.Ships
 		private const string HullKey = "hull";
 		private const string IsDriveKey = "isDrive";
 		private const string ReactorKey = "reactor";
+		private const string SensorsKey = "sensors";
 		private const string ThrustersKey = "thrusters";
 		private const string CostKey = "cost";
  

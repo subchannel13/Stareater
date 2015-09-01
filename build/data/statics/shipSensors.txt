@@ -1,0 +1,12 @@
+﻿{ Sensor
+	nameCode: EM_SENSOR_NAME
+	descCode: EM_SENSOR_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: em
+	
+	maxLvl= 10
+	prerequisites [
+	]
+	
+	detection # 10;
+}
