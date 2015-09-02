@@ -16,7 +16,9 @@ namespace Stareater.GLRenderers
 		private const double DefaultViewSize = 1;
 		
 		private const float FarZ = -1;
-		private const float SelectionZ = -0.7f;
+		private const float SelectionZ = -0.6f;
+		private const float MarkColorZ = -0.7f;
+		private const float MarkZ = -0.75f;
 		private const float StarColorZ = -0.8f;
 		private const float PlanetZ = -0.8f;
 		private const float OrbitZ = -0.9f;
@@ -48,7 +50,7 @@ namespace Stareater.GLRenderers
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
 		private float originOffset;
-		private float minOffset = -StarScale / 2;
+		private const float minOffset = -StarScale / 2;
 		private float maxOffset;
 		
 		private int selectedBody;
@@ -126,6 +128,16 @@ namespace Stareater.GLRenderers
 				GL.Scale(PlanetScale, PlanetScale, PlanetScale);
 	
 				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.Planet, StarColorZ);
+				
+				GL.PushMatrix();
+				GL.Translate(0.6, 0.5, 0);
+				GL.Scale(0.4, 0.4, 1);
+				
+				GL.Color4(Color.White);
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.ColonizationMark, MarkZ);
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.ColonizationMarkColor, MarkColorZ);
+				GL.PopMatrix();
+				
 				if (selectedBody == planet.Position){
 					GL.Color4(Color.White);
 					GL.Scale(PlanetSelectorScale, PlanetSelectorScale, PlanetSelectorScale);
@@ -191,18 +203,18 @@ namespace Stareater.GLRenderers
 			this.select(StarSystemController.StarIndex);
 		}
 		
-		private void select(int selectedBody)
+		private void select(int bodyIndex)
 		{
-			this.selectedBody = selectedBody;
+			this.selectedBody = bodyIndex;
 			
-			switch(controller.BodyType(selectedBody))
+			switch(controller.BodyType(bodyIndex))
 			{
 				case BodyType.OwnStellaris:
-					siteView.SetView(controller.StellarisController(selectedBody));
+					siteView.SetView(controller.StellarisController());
 					//TODO(v0.5): add implementation, system management
 					break;
 				case BodyType.OwnColony:
-					siteView.SetView(controller.ColonyController(selectedBody));
+					siteView.SetView(controller.ColonyController(bodyIndex));
 					break;
 				default:
 					//TODO(v0.5): add implementation, empty planet, foregin planet, empty system, foreign system

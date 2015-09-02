@@ -30,6 +30,8 @@ namespace Stareater.GLRenderers
 		const string AtlasIkonPath = "./Images/GalaxyTextures.txt";
 		
 		const string AtlasTag = "TextureAtlas";
+		const string ColonizationMarkTag = "colonizationMark";
+		const string ColonizationMarkColorTag = "colonizationMarkColor";
 		const string FleetIndicatorTag = "fleetIndicator";
 		const string PathLineTag = "wormholePath";
 		const string PlanetTag = "planet";
@@ -41,6 +43,8 @@ namespace Stareater.GLRenderers
 		private bool loaded = false;
 		private int textureId;
 		
+		public TextureInfo ColonizationMark { get; private set;}
+		public TextureInfo ColonizationMarkColor { get; private set;}
 		public TextureInfo FleetIndicator { get; private set;}
 		public TextureInfo Planet { get; private set;}
 		public TextureInfo PathLine { get; private set;}
@@ -54,12 +58,14 @@ namespace Stareater.GLRenderers
 			if (this.loaded)
 				return;
 			
-			Bitmap textureImage = new Bitmap(AtlasImagePath);
+			var textureImage = new Bitmap(AtlasImagePath);
 			this.textureId = TextureUtils.Get.CreateTexture(textureImage);
 			
-			IkonParser ikonParser = new IkonParser(new StreamReader(AtlasIkonPath));
-			IkonComposite ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
+			var ikonParser = new IkonParser(new StreamReader(AtlasIkonPath));
+			var ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
 			
+			ColonizationMark = new TextureInfo(textureId, ikonData[ColonizationMarkTag].To<IkonArray>());
+			ColonizationMarkColor = new TextureInfo(textureId, ikonData[ColonizationMarkColorTag].To<IkonArray>());
 			FleetIndicator = new TextureInfo(textureId, ikonData[FleetIndicatorTag].To<IkonArray>());
 			Planet = new TextureInfo(textureId, ikonData[PlanetTag].To<IkonArray>());
 			PathLine = new TextureInfo(textureId, ikonData[PathLineTag].To<IkonArray>());

@@ -60,13 +60,12 @@ namespace Stareater.Controllers
 					
 				var stellaris = game.States.Stellarises.At(Star);
 				
-				if (stellaris.Owner == game.CurrentPlayer)
-					return Views.BodyType.OwnStellaris;
-				else
-					return Views.BodyType.ForeignStellaris;
+				return stellaris.Owner == game.CurrentPlayer ? 
+					Views.BodyType.OwnStellaris : 
+					Views.BodyType.ForeignStellaris;
 			} 
 
-			var planet = game.States.Planets.At(Star).Where(x => x.Position == bodyIndex).FirstOrDefault();
+			var planet = game.States.Planets.At(Star).FirstOrDefault(x => x.Position == bodyIndex);
 
 			if (planet == null)
 				return Views.BodyType.Empty;
@@ -75,15 +74,14 @@ namespace Stareater.Controllers
 
 			var colony = game.States.Colonies.AtPlanet(planet);
 
-			if (colony.Owner == game.CurrentPlayer)
-				return Views.BodyType.OwnColony;
-			else
-				return Views.BodyType.ForeignColony;
+			return colony.Owner == game.CurrentPlayer ? 
+				Views.BodyType.OwnColony : 
+				Views.BodyType.ForeignColony;
 		}
 
 		public ColonyController ColonyController(int bodyPosition)
 		{
-			var planet = game.States.Planets.At(Star).Where(x => x.Position == bodyPosition).FirstOrDefault();
+			var planet = game.States.Planets.At(Star).FirstOrDefault(x => x.Position == bodyPosition);
 			
 			if (planet == null)
 				throw new ArgumentOutOfRangeException("bodyPosition");
@@ -91,7 +89,7 @@ namespace Stareater.Controllers
 			return new ColonyController(game, game.States.Colonies.AtPlanet(planet), IsReadOnly);
 		}
 		
-		public StellarisAdminController StellarisController(int bodyPosition)
+		public StellarisAdminController StellarisController()
 		{
 			return new StellarisAdminController(game, game.States.Stellarises.At(Star), IsReadOnly);
 		}
