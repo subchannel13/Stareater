@@ -19,10 +19,10 @@ namespace Winforms_Mockups
 		{
 			e.Graphics.Clear(Color.Black);
 			
-			RectangleF centerRect = new RectangleF(-100, 50, 200, 200);
+			var centerRect = new RectangleF(-100, 50, 200, 200);
 			e.Graphics.FillEllipse(new SolidBrush(Color.Yellow), centerRect);
 			
-			RectangleF bodyRect = new RectangleF(75, 125, 50, 50);
+			var bodyRect = new RectangleF(75, 125, 50, 50);
 			bodyRect.Inflate(10, 10);
 			for(int i = 0; i < 3; i++)
 			{

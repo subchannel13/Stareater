@@ -322,8 +322,6 @@ namespace Stareater.GUI
 #endif
 			lastRender = thisMoment;
 			glCanvas.SwapBuffers();
-			
-			//this.Text = (1 / dt).ToString("0.#");
 		}
 
 		private void glCanvas_Resize(object sender, EventArgs e)
@@ -345,6 +343,7 @@ namespace Stareater.GUI
 			currentRenderer = galaxyRenderer;
 			
 			constructionManagement.Visible = false;
+			empyPlanetView.Visible = false;
 			endTurnButton.Visible = true;
 			returnButton.Visible = false;
 		}
@@ -415,6 +414,7 @@ namespace Stareater.GUI
 			this.shipList.ResumeLayout();
 			
 			this.constructionManagement.Visible = false;
+			empyPlanetView.Visible = false;
 			this.fleetPanel.Visible = true;
 		}
 		
@@ -439,6 +439,7 @@ namespace Stareater.GUI
 		{
 			//TODO(v0.5)
 			this.constructionManagement.Visible = false;
+			empyPlanetView.Visible = false;
 			
 			this.fleetController = null;
 			this.fleetPanel.Visible = false;

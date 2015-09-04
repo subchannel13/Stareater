@@ -44,6 +44,7 @@
 			this.fleetPanel = new System.Windows.Forms.Panel();
 			this.shipList = new System.Windows.Forms.FlowLayoutPanel();
 			this.fleetMissionButton = new System.Windows.Forms.Button();
+			this.empyPlanetView = new Stareater.GUI.EmpyPlanetView();
 			this.menuStrip.SuspendLayout();
 			this.fleetPanel.SuspendLayout();
 			this.SuspendLayout();
@@ -85,11 +86,11 @@
 			// menuStrip
 			// 
 			this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.mainMenuToolStripMenuItem,
-									this.designsToolStripMenuItem,
-									this.developmentToolStripMenuItem,
-									this.researchToolStripMenuItem,
-									this.reportsToolStripMenuItem});
+			this.mainMenuToolStripMenuItem,
+			this.designsToolStripMenuItem,
+			this.developmentToolStripMenuItem,
+			this.researchToolStripMenuItem,
+			this.reportsToolStripMenuItem});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
 			this.menuStrip.Size = new System.Drawing.Size(884, 24);
@@ -186,6 +187,14 @@
 			this.fleetMissionButton.Text = "Missions";
 			this.fleetMissionButton.UseVisualStyleBackColor = true;
 			// 
+			// empyPlanetView
+			// 
+			this.empyPlanetView.BackColor = System.Drawing.SystemColors.ActiveBorder;
+			this.empyPlanetView.Location = new System.Drawing.Point(263, 446);
+			this.empyPlanetView.Name = "empyPlanetView";
+			this.empyPlanetView.Size = new System.Drawing.Size(358, 116);
+			this.empyPlanetView.TabIndex = 6;
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -197,6 +206,7 @@
 			this.Controls.Add(this.constructionManagement);
 			this.Controls.Add(this.glCanvas);
 			this.Controls.Add(this.menuStrip);
+			this.Controls.Add(this.empyPlanetView);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip;
 			this.Name = "FormMain";
@@ -208,6 +218,7 @@
 			this.fleetPanel.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 		private System.Windows.Forms.Button fleetMissionButton;
 		private System.Windows.Forms.FlowLayoutPanel shipList;
@@ -227,5 +238,6 @@
 		private System.Windows.Forms.Timer eventTimer;
 		private OpenTK.GLControl glCanvas;
 		private System.Windows.Forms.Timer glRedrawTimer;
+		private Stareater.GUI.EmpyPlanetView empyPlanetView;
 	}
 }

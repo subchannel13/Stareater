@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
@@ -8,8 +6,6 @@ using Stareater.Controllers;
 using Stareater.GameData;
 using Stareater.GuiUtils;
 using Stareater.Localization;
-using Stareater.Utils.Collections;
-using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI
 {
@@ -38,13 +34,12 @@ namespace Stareater.GUI
 			Context context = SettingsWinforms.Get.Language["FormMain"];
 			this.detailsButton.Text = context["SiteDetails"].Text();
 			
-			if (controller.ConstructionQueue.Count() == 0) {
+			if (!controller.ConstructionQueue.Any()) {
 				this.queueButton.Text = context["NotBuilding"].Text();
 				this.queueButton.Image = null;
 				
 				industrySlider.Enabled = false;
-			}
-			else {
+			} else {
 				this.queueButton.Text = "";
 				this.queueButton.Image = ImageCache.Get[controller.ConstructionQueue.First().ImagePath];
 				

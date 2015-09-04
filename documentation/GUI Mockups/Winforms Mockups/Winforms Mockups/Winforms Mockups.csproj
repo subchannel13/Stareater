@@ -188,6 +188,10 @@
     <Compile Include="FormStarSystem.Designer.cs">
       <DependentUpon>FormStarSystem.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormStarSystemUncolonized.cs" />
+    <Compile Include="FormStarSystemUncolonized.Designer.cs">
+      <DependentUpon>FormStarSystemUncolonized.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormStartingConditions.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -312,6 +316,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormStarSystem.resx">
       <DependentUpon>FormStarSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStarSystemUncolonized.resx">
+      <DependentUpon>FormStarSystemUncolonized.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormStartingConditions.resx">
       <DependentUpon>FormStartingConditions.cs</DependentUpon>

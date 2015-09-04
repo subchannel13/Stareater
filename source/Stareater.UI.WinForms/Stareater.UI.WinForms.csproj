@@ -119,6 +119,10 @@
     <Compile Include="GUI\DesignItem.Designer.cs">
       <DependentUpon>DesignItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\EmpyPlanetView.cs" />
+    <Compile Include="GUI\EmpyPlanetView.Designer.cs">
+      <DependentUpon>EmpyPlanetView.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormBuildingQueue.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -296,6 +300,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\DesignItem.resx">
       <DependentUpon>DesignItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\EmpyPlanetView.resx">
+      <DependentUpon>EmpyPlanetView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormBuildingQueue.resx">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>

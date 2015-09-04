@@ -32,6 +32,7 @@
 			this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
 			this.button1 = new System.Windows.Forms.Button();
 			this.systemMockup1 = new Winforms_Mockups.SystemMockup();
+			this.detailsButton = new System.Windows.Forms.Button();
 			this.managementPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -41,6 +42,7 @@
 			this.managementPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.managementPanel.BackgroundImage = global::Winforms_Mockups.Properties.Resources.metalic;
 			this.managementPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.managementPanel.Controls.Add(this.detailsButton);
 			this.managementPanel.Controls.Add(this.label1);
 			this.managementPanel.Controls.Add(this.hScrollBar1);
 			this.managementPanel.Controls.Add(this.button1);
@@ -86,6 +88,15 @@
 			this.systemMockup1.Size = new System.Drawing.Size(568, 401);
 			this.systemMockup1.TabIndex = 2;
 			// 
+			// detailsButton
+			// 
+			this.detailsButton.Location = new System.Drawing.Point(221, 68);
+			this.detailsButton.Name = "detailsButton";
+			this.detailsButton.Size = new System.Drawing.Size(75, 23);
+			this.detailsButton.TabIndex = 5;
+			this.detailsButton.Text = "Details";
+			this.detailsButton.UseVisualStyleBackColor = true;
+			// 
 			// FormStarSystem
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -99,6 +110,7 @@
 			this.managementPanel.ResumeLayout(false);
 			this.managementPanel.PerformLayout();
 			this.ResumeLayout(false);
+
 		}
 		private Winforms_Mockups.SystemMockup systemMockup1;
 
@@ -108,6 +120,7 @@
 		private System.Windows.Forms.HScrollBar hScrollBar1;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Button detailsButton;
 
 	}
 }
