@@ -11,7 +11,7 @@ namespace Stareater.Controllers
 	{
 		public const int StarIndex = -1;
 		
-		private Game game;
+		private readonly Game game;
 		
 		public StarData Star { get; private set; }
 		public bool IsReadOnly { get; private set; }
@@ -27,7 +27,7 @@ namespace Stareater.Controllers
 		{
 			get {
 				var planetInfos = game.CurrentPlayer.Intelligence.About(Star).Planets;
-				var knownPlanets = planetInfos.Where(x => x.Value.Explored == PlanetIntelligence.FullyExplored).Select(x => x.Key);
+				var knownPlanets = planetInfos.Where(x => x.Value.Explored >= PlanetIntelligence.FullyExplored).Select(x => x.Key);
 				
 				return knownPlanets.OrderBy(x => x.Position);
 			}
@@ -88,9 +88,20 @@ namespace Stareater.Controllers
 
 			return new ColonyController(game, game.States.Colonies.AtPlanet(planet), IsReadOnly);
 		}
+
+		public EmptyPlanetController EmptyPlanetController(int bodyPosition)
+		{
+			var planet = game.States.Planets.At(Star).FirstOrDefault(x => x.Position == bodyPosition);
+			
+			if (planet == null)
+				throw new ArgumentOutOfRangeException("bodyPosition");
+			
+			return new EmptyPlanetController(game, planet, IsReadOnly);
+		}
 		
 		public StellarisAdminController StellarisController()
 		{
+			//TODO(0.5) make Stellarises.At a collection
 			return new StellarisAdminController(game, game.States.Stellarises.At(Star), IsReadOnly);
 		}
 	}

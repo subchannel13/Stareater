@@ -31,7 +31,7 @@ namespace Stareater.GUI
 		{
 			this.Font = SettingsWinforms.Get.FormFont;
 
-			Context context = SettingsWinforms.Get.Language["FormMain"];
+			var context = SettingsWinforms.Get.Language["FormMain"];
 			this.detailsButton.Text = context["SiteDetails"].Text();
 			
 			if (!controller.ConstructionQueue.Any()) {
@@ -52,7 +52,7 @@ namespace Stareater.GUI
 		private void resetEstimation()
 		{
 			var constructionItem = controller.ConstructionQueue.FirstOrDefault();
-			Context context = SettingsWinforms.Get.Language["FormMain"];
+			var context = SettingsWinforms.Get.Language["FormMain"];
 			
 			if (constructionItem != null)
 				estimationLabel.Text = LocalizationMethods.ConstructionEstimation(

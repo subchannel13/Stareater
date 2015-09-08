@@ -189,11 +189,13 @@
 			// 
 			// empyPlanetView
 			// 
+			this.empyPlanetView.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.empyPlanetView.BackColor = System.Drawing.SystemColors.ActiveBorder;
 			this.empyPlanetView.Location = new System.Drawing.Point(263, 446);
 			this.empyPlanetView.Name = "empyPlanetView";
 			this.empyPlanetView.Size = new System.Drawing.Size(358, 116);
 			this.empyPlanetView.TabIndex = 6;
+			this.empyPlanetView.Visible = false;
 			// 
 			// FormMain
 			// 
@@ -204,9 +206,9 @@
 			this.Controls.Add(this.returnButton);
 			this.Controls.Add(this.endTurnButton);
 			this.Controls.Add(this.constructionManagement);
+			this.Controls.Add(this.empyPlanetView);
 			this.Controls.Add(this.glCanvas);
 			this.Controls.Add(this.menuStrip);
-			this.Controls.Add(this.empyPlanetView);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip;
 			this.Name = "FormMain";

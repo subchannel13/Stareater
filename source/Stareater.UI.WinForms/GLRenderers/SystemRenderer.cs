@@ -42,6 +42,7 @@ namespace Stareater.GLRenderers
 		private StarSystemController controller;
 		private Control eventDispatcher;
 		private ConstructionSiteView siteView;
+		private EmpyPlanetView emptyPlanetView;
 		private Action systemClosedHandler;
 		
 		private bool resetProjection = true;
@@ -55,9 +56,10 @@ namespace Stareater.GLRenderers
 		
 		private int selectedBody;
 		
-		public SystemRenderer(Action systemClosedHandler, ConstructionSiteView siteView)
+		public SystemRenderer(Action systemClosedHandler, ConstructionSiteView siteView, EmpyPlanetView emptyPlanetView)
 		{
 			this.systemClosedHandler = systemClosedHandler; 
+			this.emptyPlanetView = emptyPlanetView;
 			this.siteView = siteView;
 		}
 		
@@ -211,10 +213,16 @@ namespace Stareater.GLRenderers
 			{
 				case BodyType.OwnStellaris:
 					siteView.SetView(controller.StellarisController());
+					setView(siteView);
 					//TODO(v0.5): add implementation, system management
 					break;
 				case BodyType.OwnColony:
 					siteView.SetView(controller.ColonyController(bodyIndex));
+					setView(siteView);
+					break;
+				case BodyType.NotColonised:
+					emptyPlanetView.SetView(controller.EmptyPlanetController(bodyIndex));
+					setView(emptyPlanetView);
 					break;
 				default:
 					//TODO(v0.5): add implementation, empty planet, foregin planet, empty system, foreign system
@@ -298,6 +306,12 @@ namespace Stareater.GLRenderers
 			lastMousePosition = currentPosition;
 			resetProjection = true;
 			eventDispatcher.Refresh();
+		}
+		
+		private void setView(object view)
+		{
+			emptyPlanetView.Visible = view.Equals(emptyPlanetView);
+			siteView.Visible = view.Equals(siteView);
 		}
 		
 		public void Dispose()
