@@ -16,5 +16,20 @@ namespace Stareater.Controllers
 		}
 		
 		public bool IsReadOnly { get; private set; }
+
+		public int BodyPosition 
+		{
+			get { return PlanetBody.Position; }
+		}
+
+		public PlanetType BodyType 
+		{
+			get { return PlanetBody.Type; }
+		}
+		
+		public StarData HostStar 
+		{
+			get { return PlanetBody.Star; }
+		}
 	}
 }

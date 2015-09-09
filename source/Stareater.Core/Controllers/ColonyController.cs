@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using Stareater.Controllers.Views;
 using Stareater.Galaxy;
-using Stareater.GameData;
 using Stareater.GameLogic;
 
 namespace Stareater.Controllers
@@ -75,6 +72,22 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Planet
+		public int BodyPosition
+		{
+			get 
+			{
+				return (Site as Colony).Location.Planet.Position;
+			}
+		}
+		
+		public PlanetType BodyType
+		{
+			get 
+			{
+				return (Site as Colony).Location.Planet.Type;
+			}
+		}
+		
 		public double PlanetEnvironment 
 		{
 			get 

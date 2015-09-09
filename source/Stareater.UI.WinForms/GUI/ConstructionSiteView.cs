@@ -3,7 +3,11 @@ using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
+using Stareater.Controllers.Views;
+using Stareater.Galaxy;
 using Stareater.GameData;
+using Stareater.Utils.Collections;
+using Stareater.Utils.NumberFormatters;
 using Stareater.GuiUtils;
 using Stareater.Localization;
 
@@ -24,7 +28,38 @@ namespace Stareater.GUI
 			
 			industrySlider.Value = (int)(siteController.DesiredSpendingRatio * industrySlider.Maximum);
 			
+			setName();
 			resetView();
+		}
+
+		private void setName()
+		{
+			string starName = controller.HostStar.Name.ToText(SettingsWinforms.Get.Language);
+			
+			if (controller.SiteType == SiteType.Colony)
+			{
+				var context = SettingsWinforms.Get.Language["FormMain"];
+				var colonyController = controller as ColonyController;
+				var textVars = new TextVar(
+					"bodyName",
+					starName + " " + RomanFromatter.Fromat(colonyController.BodyPosition)
+				).Get;
+				
+				switch(colonyController.BodyType)
+				{
+					case PlanetType.Asteriod:
+						this.nameLabel.Text = context["AsteriodName"].Text(textVars);
+						break;
+					case PlanetType.GasGiant:
+						this.nameLabel.Text = context["GasGiantName"].Text(textVars);
+						break;
+					case PlanetType.Rock:
+						this.nameLabel.Text = context["RockName"].Text(textVars);
+						break;
+				}
+			}
+			else
+				this.nameLabel.Text = starName;
 		}
 		
 		private void resetView()

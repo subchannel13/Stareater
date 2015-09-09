@@ -122,5 +122,10 @@ namespace Stareater.Controllers
 			this.RecalculateSpending();
 		}
 		#endregion
+		
+		public StarData HostStar
+		{
+			get { return Site.Location.Star; }
+		}
 	}
 }
