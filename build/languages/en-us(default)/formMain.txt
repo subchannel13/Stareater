@@ -8,6 +8,8 @@ Return = Return
 
 NotBuilding = No construction project
 SiteDetails = Details
+ColonizeStart = Colonize
+ColonizeStop = Stop colonization
 
 AsteriodName §
 		Asteroid belt at {=bodyName}

@@ -172,6 +172,18 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameData\BuildingType.cs" />
+    <Compile Include="GameData\ColonizationProject.cs">
+      <DependentUpon>ColonizationProject.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GameData\Databases\Tables\ColonizationCollection.cs">
+      <DependentUpon>ColonizationCollection.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GameData\Databases\Tables\ColonizationPlan.cs">
+      <DependentUpon>ColonizationPlan.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameData\Databases\Tables\ConstructionOrders.cs">
       <DependentUpon>ConstructionOrders.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -467,6 +479,18 @@
     <None Include="Galaxy\Wormhole.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Wormhole.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\ColonizationProject.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ColonizationProject.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Databases\Tables\ColonizationCollection.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ColonizationCollection.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Databases\Tables\ColonizationPlan.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ColonizationPlan.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\ConstructionOrders.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

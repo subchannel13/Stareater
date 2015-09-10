@@ -17,6 +17,7 @@ namespace Stareater.Controllers
 		
 		public bool IsReadOnly { get; private set; }
 
+		#region Planet
 		public int BodyPosition 
 		{
 			get { return PlanetBody.Position; }
@@ -31,5 +32,12 @@ namespace Stareater.Controllers
 		{
 			get { return PlanetBody.Star; }
 		}
+		#endregion
+
+		#region Colonization
+		public bool IsColonizing {
+			get { return false; }
+		}
+		#endregion
 	}
 }

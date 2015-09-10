@@ -1,0 +1,13 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
+	
+	usings.Add("System");
+	usings.Add("System.Collections.Generic");
+	usings.Add("Stareater.Galaxy");
+	
+	modifer = "partial";
+	
+	Generate("Stareater.GameData", "ColonizationProject",
+		new DataInfo("Destination", "Planet").FromIndexer()
+	);
+#>

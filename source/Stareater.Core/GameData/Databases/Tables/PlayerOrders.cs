@@ -17,6 +17,7 @@ namespace Stareater.GameData.Databases.Tables
 		public string ResearchFocus { get; set; }
 		public Dictionary<AConstructionSite, ConstructionOrders> ConstructionPlans { get; set; }
 		public Dictionary<Vector2D, HashSet<Fleet>> ShipOrders { get; set; }
+		public Dictionary<Planet, ColonizationPlan> ColonizationOrders { get; set; }
 
 		public PlayerOrders() 
 		{
@@ -25,11 +26,12 @@ namespace Stareater.GameData.Databases.Tables
 			this.ResearchFocus = null;
 			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
 			this.ShipOrders = new Dictionary<Vector2D, HashSet<Fleet>>();
+			this.ColonizationOrders = new Dictionary<Planet, ColonizationPlan>();
  
 			 
 		} 
 
-		private PlayerOrders(PlayerOrders original, PlayersRemap playersRemap) 
+		private PlayerOrders(PlayerOrders original, PlayersRemap playersRemap, GalaxyRemap galaxyRemap) 
 		{
 			this.DevelopmentFocusIndex = original.DevelopmentFocusIndex;
 			this.DevelopmentQueue = new Dictionary<string, int>();
@@ -42,6 +44,9 @@ namespace Stareater.GameData.Databases.Tables
 			this.ShipOrders = new Dictionary<Vector2D, HashSet<Fleet>>();
 			foreach(var item in original.ShipOrders)
 				this.ShipOrders.Add(item.Key, copyFleetRegroup(item.Value, playersRemap));
+			this.ColonizationOrders = new Dictionary<Planet, ColonizationPlan>();
+			foreach(var item in original.ColonizationOrders)
+				this.ColonizationOrders.Add(galaxyRemap.Planets[item.Key], item.Value);
  
 			 
 		}
@@ -62,13 +67,16 @@ namespace Stareater.GameData.Databases.Tables
 
 			var shipOrdersSave = rawData[ShipOrdersKey];
 			this.ShipOrders = loadShipOrders(shipOrdersSave, deindexer);
+
+			var colonizationOrdersSave = rawData[ColonizationOrdersKey];
+			this.ColonizationOrders = loadColonizationOrders(colonizationOrdersSave, deindexer);
  
 			 
 		}
 
-		internal PlayerOrders Copy(PlayersRemap playersRemap) 
+		internal PlayerOrders Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap) 
 		{
-			return new PlayerOrders(this, playersRemap);
+			return new PlayerOrders(this, playersRemap, galaxyRemap);
  
 		} 
  
@@ -86,6 +94,8 @@ namespace Stareater.GameData.Databases.Tables
 			data.Add(ConstructionPlansKey, saveConstruction(indexer));
 
 			data.Add(ShipOrdersKey, saveShipOrders(indexer));
+
+			data.Add(ColonizationOrdersKey, saveColonizationOrders(indexer));
 			return data;
  
 		}
@@ -113,6 +123,10 @@ namespace Stareater.GameData.Databases.Tables
 		private const string ShipOrdersTag = "shipOrders";
 		private const string Position = "position";
 		private const string Fleets = "fleets";
+		private const string ColonizationOrdersKey = "colonizationOrders";
+		private const string ColonizationOrdersTag = "colonizationOrders";
+		private const string PlanetKey = "planet";
+		private const string ColonizationPlanKey = "colonizationplan";
  
 		#endregion
 

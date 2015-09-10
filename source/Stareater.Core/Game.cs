@@ -60,7 +60,7 @@ namespace Stareater
 				galaxyRemap);
 
 			foreach (var playerPair in playersRemap.Players)
-				playerPair.Value.Orders = playerPair.Key.Orders.Copy(playersRemap);
+				playerPair.Value.Orders = playerPair.Key.Orders.Copy(playersRemap, galaxyRemap);
 
 			copy.Players = this.Players.Select(p => playersRemap.Players[p]).ToArray();
 			copy.Turn = this.Turn;

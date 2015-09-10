@@ -21,6 +21,23 @@ namespace Stareater.GameData.Databases.Tables
 			return new HashSet<Fleet>(original.Select(x => playersRemap.Fleets[x]));
 		}
 		
+		private Dictionary<Planet, ColonizationPlan> loadColonizationOrders(IkadnBaseObject rawData, ObjectDeindexer deindexer)
+		{
+			var orders = new Dictionary<Planet, ColonizationPlan>();
+			
+			foreach(var orderData in rawData.To<IEnumerable<IkonComposite>>()) {
+				var destination = deindexer.Get<Planet>(orderData[ColonizationDestinationTag].To<int>());
+				var plan = new ColonizationPlan(destination);
+				
+				foreach(var sourceIndex in orderData[ColonizationSourcesTag].To<IEnumerable<int>>())
+					plan.Sources.Add(deindexer.Get<StarData>(sourceIndex));
+				
+				orders.Add(destination, plan);
+			}
+				
+			return orders;
+		}
+		
 		//TODO(later) make separate collections for colony and stellaris construction orders
 		private Dictionary<AConstructionSite, ConstructionOrders> loadConstruction(IkadnBaseObject rawData, ObjectDeindexer deindexer)
 		{
@@ -62,6 +79,22 @@ namespace Stareater.GameData.Databases.Tables
 			}
 				
 			return orders;
+		}
+		
+		private IkadnBaseObject saveColonizationOrders(ObjectIndexer indexer)
+		{
+			var queue = new IkonArray();
+			
+			foreach(var order in this.ColonizationOrders) {
+				IkonComposite orderData;
+				
+				orderData = new IkonComposite(ColonizationOrdersTag);
+				orderData.Add(ColonizationDestinationTag, new IkonInteger(indexer.IndexOf(order.Value.Destination)));
+				orderData.Add(ColonizationSourcesTag, new IkonArray(order.Value.Sources.Select(x => new IkonInteger(indexer.IndexOf(x)))));
+				queue.Add(orderData);
+			}
+			
+			return queue;
 		}
 		
 		private IkadnBaseObject saveConstruction(ObjectIndexer indexer)
@@ -123,6 +156,8 @@ namespace Stareater.GameData.Databases.Tables
 		private const string ColonyConstructionTag = "Colony";
 		private const string ShipOrderTag = "Order";
 		private const string StellarisConstructionTag = "Stellaris";
+		private const string ColonizationDestinationTag = "destination";
+		private const string ColonizationSourcesTag = "sources";
 		private const string IdKey = "id";
 		private const string LocationKey = "id";
 		private const string OrdersKey = "orders";

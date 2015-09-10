@@ -23,6 +23,10 @@
 		new DataInfo("ShipOrders", "Dictionary", 
 			new GenericParamInfo("Vector2D").SaveKey("Position", "position"), 
 			new GenericParamInfo("HashSet<Fleet>").SaveKey("Fleets", "fleets").CopyWith("copyFleetRegroup", Flag.PlayerRemap)
-		).Public().EmptyInit().SaveAssign("saveShipOrders(indexer)").LoadCode("loadShipOrders(" + SaveName + ", deindexer)")
+		).Public().EmptyInit().SaveAssign("saveShipOrders(indexer)").LoadCode("loadShipOrders(" + SaveName + ", deindexer)"),
+		new DataInfo("ColonizationOrders", "Dictionary", 
+			new GenericParamInfo("Planet"),
+			new GenericParamInfo("ColonizationPlan")
+		).Public().EmptyInit().SaveAssign("saveColonizationOrders(indexer)").LoadCode("loadColonizationOrders(" + SaveName + ", deindexer)")
 	);
 #>

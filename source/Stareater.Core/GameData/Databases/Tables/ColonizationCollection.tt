@@ -1,0 +1,11 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/Collections/IndexedCollectionBase.tt" #><#
+	
+	namespaceName = "Stareater.GameData.Databases.Tables";
+	usings.Add("Stareater.Galaxy");
+	usings.Add("Stareater.Players");
+	
+	Generate("ColonizationCollection", "ColonizationProject",
+		new ViewInfo("Of", "Planet", "Destination", ViewType.Scalar)
+	);
+#>

@@ -83,6 +83,7 @@ namespace Stareater.GUI
 			this.colonizeButton.TabIndex = 5;
 			this.colonizeButton.Text = "button1";
 			this.colonizeButton.UseVisualStyleBackColor = true;
+			this.colonizeButton.Click += new System.EventHandler(this.ColonizeButtonClick);
 			// 
 			// EmpyPlanetView
 			// 
