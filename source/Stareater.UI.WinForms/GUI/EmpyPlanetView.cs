@@ -55,12 +55,15 @@ namespace Stareater.GUI
 			var context = SettingsWinforms.Get.Language["FormMain"];
 			this.detailsButton.Text = context["SiteDetails"].Text();
 			
-			this.colonizeButton.Text = this.controller.IsColonizing ? context["ColonizeStart"].Text() : context["ColonizeStop"].Text();
+			this.colonizeButton.Text = this.controller.IsColonizing ? context["ColonizeStop"].Text() : context["ColonizeStart"].Text();
 		}
 		
 		private void ColonizeButtonClick(object sender, EventArgs e)
 		{
-			
+			if (this.controller.IsColonizing)
+				this.controller.StopColonization();
+			else
+				this.controller.StartColonization();
 				
 		}
 	}

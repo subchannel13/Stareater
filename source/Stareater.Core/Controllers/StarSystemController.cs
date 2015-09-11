@@ -79,6 +79,12 @@ namespace Stareater.Controllers
 				Views.BodyType.ForeignColony;
 		}
 
+		public bool IsColonizing(int position)
+		{
+			var planet = this.game.States.Planets.At(this.Star).First(x => x.Position == position);
+			return planet != null && this.game.CurrentPlayer.Orders.ColonizationOrders.ContainsKey(planet);
+		}
+		
 		public ColonyController ColonyController(int bodyPosition)
 		{
 			var planet = game.States.Planets.At(Star).FirstOrDefault(x => x.Position == bodyPosition);

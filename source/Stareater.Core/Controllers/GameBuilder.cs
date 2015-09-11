@@ -91,7 +91,8 @@ namespace Stareater.Controllers
 			var techAdvances = createTechAdvances(players, technologies);
 
 			return new StatesDB(stars, wormholes, planets, colonies, stellarises, techAdvances,
-			                    new ReportCollection(), new DesignCollection(), new FleetCollection());
+			                    new ReportCollection(), new DesignCollection(), new FleetCollection(),
+			                    new ColonizationCollection());
 		}
 		
 		private static ColonyCollection createColonies(Player[] players, 
@@ -261,6 +262,10 @@ namespace Stareater.Controllers
 				deindexer.Add(design.ConstructionProject, design.ConstructionProject.IdCode);
 			}
 			
+			var colonizations = new ColonizationCollection();
+			foreach(var rawData in stateData[StatesDB.ColonizationKey].To<IEnumerable<IkonComposite>>())
+				colonizations.Add(ColonizationProject.Load(rawData, deindexer));
+				
 			var idleFleets = new FleetCollection();
 			foreach(var rawData in stateData[StatesDB.IdleFleetsKey].To<IEnumerable<IkonComposite>>())
 				idleFleets.Add(Fleet.Load(rawData, deindexer));
@@ -277,7 +282,7 @@ namespace Stareater.Controllers
 				players[i].Orders = PlayerOrders.Load(ordersData[i].To<IkonComposite>(), deindexer);
 				                                  
 			return new Tuple<StatesDB, Player[]>(
-				new StatesDB(stars, wormholes, planets, colonies, stellarises, techs, reports, designs, idleFleets),
+				new StatesDB(stars, wormholes, planets, colonies, stellarises, techs, reports, designs, idleFleets, colonizations),
 				players.ToArray()
 			);
 		}

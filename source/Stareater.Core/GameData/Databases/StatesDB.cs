@@ -22,6 +22,7 @@ namespace Stareater.GameData.Databases
 		public ColonyCollection Colonies { get; private set; }
 		public StellarisCollection Stellarises { get; private set; }
 		
+		public ColonizationCollection ColonizationProjects { get; private set; }
 		public FleetCollection Fleets { get; private set; }
 		
 		public DesignCollection Designs { get; private set; }
@@ -33,7 +34,7 @@ namespace Stareater.GameData.Databases
 		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, 
 		                ColonyCollection Colonies, StellarisCollection stellarises, 
 		                TechProgressCollection technologyProgresses, ReportCollection reports,
-		                DesignCollection designs, FleetCollection idleFleets)
+		                DesignCollection designs, FleetCollection idleFleets, ColonizationCollection colonizations)
 		{
 			this.Colonies = Colonies;
 			this.Planets = planets;
@@ -43,7 +44,8 @@ namespace Stareater.GameData.Databases
 			this.TechnologyAdvances = technologyProgresses;
 			this.Reports = reports;
 			this.Designs = designs;
-			this.Fleets = idleFleets; 
+			this.Fleets = idleFleets;
+			this.ColonizationProjects = colonizations;			
 		}
 
 		private StatesDB()
@@ -58,7 +60,7 @@ namespace Stareater.GameData.Databases
 		
 		public StatesDB Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap)
 		{
-			StatesDB copy = new StatesDB();
+			var copy = new StatesDB();
 
 			copy.Stars = new StarCollection();
 			copy.Stars.Add(galaxyRemap.Stars.Values);
@@ -75,6 +77,9 @@ namespace Stareater.GameData.Databases
 			copy.Stellarises = new StellarisCollection();
 			copy.Stellarises.Add(playersRemap.Stellarises.Values);
 
+			copy.ColonizationProjects = new ColonizationCollection();
+			copy.ColonizationProjects.Add(this.ColonizationProjects.Select(x => x.Copy(galaxyRemap)));
+				
 			copy.Fleets = new FleetCollection();
 			copy.Fleets.Add(playersRemap.Fleets.Values);
 			
@@ -89,7 +94,7 @@ namespace Stareater.GameData.Databases
 
 		public GalaxyRemap CopyGalaxy()
 		{
-			GalaxyRemap remap = new GalaxyRemap(new Dictionary<StarData, StarData>(), new Dictionary<Planet, Planet>());
+			var remap = new GalaxyRemap(new Dictionary<StarData, StarData>(), new Dictionary<Planet, Planet>());
 
 			remap.Stars = this.Stars.ToDictionary(x => x, x => x.Copy());
 			remap.Planets = this.Planets.ToDictionary(x => x, x => x.Copy(remap));
@@ -129,7 +134,7 @@ namespace Stareater.GameData.Databases
 		
 		internal IkonComposite Save(ObjectIndexer indexer)
 		{
-			IkonComposite data = new IkonComposite(StatesTag);
+			var data = new IkonComposite(StatesTag);
 			
 			data.Add(StarsKey, new IkonArray().AddAll(this.Stars.Select(x => x.Save())));
 			data.Add(WormholesKey, new IkonArray().AddAll(this.Wormholes.Select(x => x.Save(indexer))));
@@ -138,6 +143,7 @@ namespace Stareater.GameData.Databases
 			data.Add(ColoniesKey, new IkonArray().AddAll(this.Colonies.Select(x => x.Save(indexer))));
 			data.Add(StellarisesKey, new IkonArray().AddAll(this.Stellarises.Select(x => x.Save(indexer))));
 
+			data.Add(ColonizationKey, new IkonArray().AddAll(this.ColonizationProjects.Select(x => x.Save(indexer))));
 			data.Add(IdleFleetsKey, new IkonArray().AddAll(this.Fleets.Select(x => x.Save(indexer))));
 			data.Add(DesignsKey, new IkonArray().AddAll(this.Designs.Select(x => x.Save(indexer))));
 			data.Add(ReportsKey, new IkonArray().AddAll(this.Reports.Select(x => x.Save(indexer))));
@@ -148,6 +154,7 @@ namespace Stareater.GameData.Databases
 
 		private const string StatesTag = "States";
 		public const string ColoniesKey = "colonies";
+		public const string ColonizationKey = "colonizations";
 		public const string DesignsKey = "designs";
 		public const string IdleFleetsKey = "idleFleets";
 		public const string PlanetsKey = "planets";

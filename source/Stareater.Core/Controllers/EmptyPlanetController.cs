@@ -35,8 +35,24 @@ namespace Stareater.Controllers
 		#endregion
 
 		#region Colonization
-		public bool IsColonizing {
-			get { return false; }
+		public bool IsColonizing 
+		{
+			get 
+			{ 
+				return this.Game.CurrentPlayer.Orders.ColonizationOrders.ContainsKey(this.PlanetBody);
+			}
+		}
+
+		public void StartColonization()
+		{
+			//TODO(v0.5)
+			throw new NotImplementedException();
+		}
+		
+		public void StopColonization()
+		{
+			//TODO(v0.5)
+			throw new NotImplementedException();
 		}
 		#endregion
 	}

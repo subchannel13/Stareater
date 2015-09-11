@@ -131,14 +131,17 @@ namespace Stareater.GLRenderers
 	
 				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.Planet, StarColorZ);
 				
-				GL.PushMatrix();
-				GL.Translate(0.6, 0.5, 0);
-				GL.Scale(0.4, 0.4, 1);
-				
-				GL.Color4(Color.White);
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.ColonizationMark, MarkZ);
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.ColonizationMarkColor, MarkColorZ);
-				GL.PopMatrix();
+				if (this.controller.IsColonizing(planet.Position))
+				{
+					GL.PushMatrix();
+					GL.Translate(0.6, 0.5, 0);
+					GL.Scale(0.4, 0.4, 1);
+					
+					GL.Color4(Color.White);
+					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.ColonizationMark, MarkZ);
+					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.ColonizationMarkColor, MarkColorZ);
+					GL.PopMatrix();
+				}
 				
 				if (selectedBody == planet.Position){
 					GL.Color4(Color.White);
