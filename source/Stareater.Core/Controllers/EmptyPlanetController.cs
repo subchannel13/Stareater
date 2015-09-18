@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using Stareater.Controllers.Views;
 using Stareater.Galaxy;
+using Stareater.GameData.Databases.Tables;
 
 namespace Stareater.Controllers
 {
@@ -43,16 +46,28 @@ namespace Stareater.Controllers
 			}
 		}
 
-		public void StartColonization()
+		public void StartColonization(params StellarisInfo[] colonizationSources)
 		{
-			//TODO(v0.5)
-			throw new NotImplementedException();
+			if (this.IsColonizing || this.IsReadOnly)
+				return;
+			
+			this.Game.CurrentPlayer.Orders.ColonizationOrders.Add(this.PlanetBody, new ColonizationPlan(this.PlanetBody));
 		}
 		
 		public void StopColonization()
 		{
-			//TODO(v0.5)
-			throw new NotImplementedException();
+			if (!this.IsColonizing || this.IsReadOnly)
+				return;
+			
+			this.Game.CurrentPlayer.Orders.ColonizationOrders.Remove(this.PlanetBody);
+		}
+		#endregion
+		
+		#region Empire
+		public IEnumerable<StellarisInfo> Stellarises()
+		{
+			foreach(var stellaris in this.Game.States.Stellarises.OwnedBy(this.Game.CurrentPlayer))
+				yield return new StellarisInfo(stellaris);
 		}
 		#endregion
 	}

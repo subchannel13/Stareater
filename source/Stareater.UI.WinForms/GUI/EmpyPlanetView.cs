@@ -64,7 +64,9 @@ namespace Stareater.GUI
 				this.controller.StopColonization();
 			else
 				this.controller.StartColonization();
+			//TODO(v0.5) colonize from some stellaris
 				
+			resetView();
 		}
 	}
 }

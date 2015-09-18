@@ -19,7 +19,7 @@ namespace Stareater.Controllers
 	{
 		internal const string ReportContext = "Reports";
 		
-		private Game game;
+		private Game gameObj;
 		private GalaxyObjects mapCache = new GalaxyObjects();
 		
 		private GameController endTurnCopy = null;
@@ -42,15 +42,15 @@ namespace Stareater.Controllers
 				new Player(info.Name, info.Color, /*info.Organization, */info.ControlType)
 			).ToArray();
 			
-			Random rng = new Random();
+			var rng = new Random();
 			
-			this.game = GameBuilder.CreateGame(rng, players, controller);
+			this.gameObj = GameBuilder.CreateGame(rng, players, controller);
 			this.rebuildCache();
 		}
 		
 		internal void LoadGame(Game game)
 		{
-			this.game = game;
+			this.gameObj = game;
 			this.rebuildCache();
 		}
 
@@ -74,7 +74,7 @@ namespace Stareater.Controllers
 		
 		internal Game GameInstance
 		{
-			get { return (this.IsReadOnly) ? this.endTurnCopy.game : this.game; }
+			get { return (this.IsReadOnly) ? this.endTurnCopy.gameObj : this.gameObj; }
 		}
 
 		#region Turn processing
@@ -82,12 +82,12 @@ namespace Stareater.Controllers
 		
 		public int CurrentPlayer 
 		{ 
-			get { return this.game.CurrentPlayerIndex; }
+			get { return this.gameObj.CurrentPlayerIndex; }
 		}
 		
 		private void aiDoGalaxyPhase() 
 		{
-			foreach(var player in game.Players)
+			foreach(var player in gameObj.Players)
 				if (player.ControlType == PlayerControlType.LocalAI)
 					player.OffscreenControl.PlayTurn();
 			
@@ -96,14 +96,14 @@ namespace Stareater.Controllers
 		
 		private void precombatTurnProcessing()
 		{
-			game.ProcessPrecombat();
+			gameObj.ProcessPrecombat();
 			
  			stateListener.OnCombatPhaseStart();
 		}
 		
 		private void postcombatTurnProcessing()
 		{
-			game.ProcessPostcombat();
+			gameObj.ProcessPostcombat();
 			this.rebuildCache();
 			
  			this.endTurnCopy = null;
@@ -126,9 +126,9 @@ namespace Stareater.Controllers
 			//FIXME(later): presumes single human player
 			
 			this.endTurnCopy = new GameController();
-			var gameCopy = game.ReadonlyCopy();
+			var gameCopy = gameObj.ReadonlyCopy();
 			
-			this.endTurnCopy.game = gameCopy.Game;
+			this.endTurnCopy.gameObj = gameCopy.Game;
 			this.endTurnCopy.State = this.State;
 			
 			if (!aiGalaxyPhase.IsCompleted)
@@ -175,7 +175,7 @@ namespace Stareater.Controllers
 		
 		public StarSystemController OpenStarSystem(Vector2D position)
 		{
-			return this.OpenStarSystem(this.game.States.Stars.At(position));
+			return this.OpenStarSystem(this.gameObj.States.Stars.At(position));
 		}
 		
 		public GalaxySearchResult FindClosest(float x, float y, float searchRadius)
@@ -186,7 +186,7 @@ namespace Stareater.Controllers
 		
 		public FleetController SelectFleet(FleetInfo fleet)
 		{
-			return new FleetController(fleet, this.game, this.mapCache, this.VisualPositioner);
+			return new FleetController(fleet, this.gameObj, this.mapCache, this.VisualPositioner);
 		}
 		
 		public IEnumerable<FleetInfo> Fleets
@@ -232,12 +232,12 @@ namespace Stareater.Controllers
 			var fleets = new List<FleetInfo>();
 
 			//TODO(later) filter invisible fleets
-			foreach (var fleet in game.States.Fleets) {
-				if (fleet.Owner == game.CurrentPlayer && game.CurrentPlayer.Orders.ShipOrders.ContainsKey(fleet.Position))
-					foreach(var newFleet in game.CurrentPlayer.Orders.ShipOrders[fleet.Position])
-						fleets.Add(new FleetInfo(newFleet, this.game.States.Stars.AtContains(fleet.Position), this.VisualPositioner));
+			foreach (var fleet in gameObj.States.Fleets) {
+				if (fleet.Owner == gameObj.CurrentPlayer && gameObj.CurrentPlayer.Orders.ShipOrders.ContainsKey(fleet.Position))
+					foreach(var newFleet in gameObj.CurrentPlayer.Orders.ShipOrders[fleet.Position])
+						fleets.Add(new FleetInfo(newFleet, this.gameObj.States.Stars.AtContains(fleet.Position), this.VisualPositioner));
 				else
-					fleets.Add(new FleetInfo(fleet, this.game.States.Stars.AtContains(fleet.Position), this.VisualPositioner));
+					fleets.Add(new FleetInfo(fleet, this.gameObj.States.Stars.AtContains(fleet.Position), this.VisualPositioner));
 			}
 
 			this.mapCache.Rebuild(this.GameInstance.States.Stars, fleets);
@@ -247,7 +247,7 @@ namespace Stareater.Controllers
 		#region Ship designs
 		public ShipDesignController NewDesign()
 		{
-			return new ShipDesignController(game); //FIXME(v0.5) check if the game is read only 
+			return new ShipDesignController(gameObj); //FIXME(v0.5) check if the game is read only 
 		}
 		
 		public IEnumerable<DesignInfo> ShipsDesigns()
@@ -285,7 +285,7 @@ namespace Stareater.Controllers
 			if (this.IsReadOnly)
 				return DevelopmentTopics();
 
-			var modelQueue = game.CurrentPlayer.Orders.DevelopmentQueue;
+			var modelQueue = gameObj.CurrentPlayer.Orders.DevelopmentQueue;
 			modelQueue.Clear();
 			
 			int i = 0;
@@ -294,7 +294,7 @@ namespace Stareater.Controllers
 				i++;
 			}
 			
-			game.Derivates.Of(game.CurrentPlayer).InvalidateDevelopment();
+			gameObj.Derivates.Of(gameObj.CurrentPlayer).InvalidateDevelopment();
 			return DevelopmentTopics();
 		}
 		
@@ -315,10 +315,10 @@ namespace Stareater.Controllers
 				if (this.IsReadOnly)
 					return;
 				
-				if (value >= 0 && value < game.Statics.DevelopmentFocusOptions.Count)
-					game.CurrentPlayer.Orders.DevelopmentFocusIndex = value;
+				if (value >= 0 && value < gameObj.Statics.DevelopmentFocusOptions.Count)
+					gameObj.CurrentPlayer.Orders.DevelopmentFocusIndex = value;
 				
-				game.Derivates.Of(game.CurrentPlayer).InvalidateDevelopment();
+				gameObj.Derivates.Of(gameObj.CurrentPlayer).InvalidateDevelopment();
 			}
 		}
 		
@@ -376,17 +376,17 @@ namespace Stareater.Controllers
 				if (this.IsReadOnly)
 					return;
 				
-				var playerTechs = game.Derivates.Of(game.CurrentPlayer).ResearchOrder(game.States.TechnologyAdvances).ToList();
+				var playerTechs = gameObj.Derivates.Of(gameObj.CurrentPlayer).ResearchOrder(gameObj.States.TechnologyAdvances).ToList();
 				if (value >= 0 && value < playerTechs.Count) {
-					this.game.CurrentPlayer.Orders.ResearchFocus = playerTechs[value].Topic.IdCode;
-					game.Derivates.Of(game.CurrentPlayer).InvalidateResearch();
+					this.gameObj.CurrentPlayer.Orders.ResearchFocus = playerTechs[value].Topic.IdCode;
+					gameObj.Derivates.Of(gameObj.CurrentPlayer).InvalidateResearch();
 				}
 			}
 		}
 		
 		public StarData ResearchCenter
 		{
-			get { return game.Derivates.Of(game.CurrentPlayer).ResearchCenter; }
+			get { return gameObj.Derivates.Of(gameObj.CurrentPlayer).ResearchCenter; }
 		}
 		#endregion
 		
