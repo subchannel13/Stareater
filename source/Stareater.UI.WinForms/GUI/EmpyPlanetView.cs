@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
@@ -63,8 +64,10 @@ namespace Stareater.GUI
 			if (this.controller.IsColonizing)
 				this.controller.StopColonization();
 			else
-				this.controller.StartColonization();
-			//TODO(v0.5) colonize from some stellaris
+			{
+				//TODO(later) smarter default colonization source selection
+				this.controller.StartColonization(this.controller.Stellarises().ToArray());
+			}
 				
 			resetView();
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
@@ -51,7 +52,11 @@ namespace Stareater.Controllers
 			if (this.IsColonizing || this.IsReadOnly)
 				return;
 			
-			this.Game.CurrentPlayer.Orders.ColonizationOrders.Add(this.PlanetBody, new ColonizationPlan(this.PlanetBody));
+			var plan = new ColonizationPlan(this.PlanetBody);
+			if (colonizationSources != null && colonizationSources.Length > 0)
+				plan.Sources.AddRange(colonizationSources.Select(x => x.Stellaris.Location.Star));
+			
+			this.Game.CurrentPlayer.Orders.ColonizationOrders.Add(this.PlanetBody, plan);
 		}
 		
 		public void StopColonization()
