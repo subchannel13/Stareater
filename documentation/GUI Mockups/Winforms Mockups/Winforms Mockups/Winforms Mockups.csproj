@@ -77,6 +77,14 @@
     <Compile Include="BuildingItem.Designer.cs">
       <DependentUpon>BuildingItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="ColonizationSource.cs" />
+    <Compile Include="ColonizationSource.Designer.cs">
+      <DependentUpon>ColonizationSource.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ColonizationTarget.cs" />
+    <Compile Include="ColonizationTarget.Designer.cs">
+      <DependentUpon>ColonizationTarget.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConstructableItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -109,6 +117,10 @@
     </Compile>
     <Compile Include="FormBuildingQueue.Designer.cs">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormColonization.cs" />
+    <Compile Include="FormColonization.Designer.cs">
+      <DependentUpon>FormColonization.cs</DependentUpon>
     </Compile>
     <Compile Include="FormColony.cs">
       <SubType>Form</SubType>
@@ -263,6 +275,12 @@
     <EmbeddedResource Include="BuildingItem.resx">
       <DependentUpon>BuildingItem.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ColonizationSource.resx">
+      <DependentUpon>ColonizationSource.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColonizationTarget.resx">
+      <DependentUpon>ColonizationTarget.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConstructableItem.resx">
       <DependentUpon>ConstructableItem.cs</DependentUpon>
     </EmbeddedResource>
@@ -277,6 +295,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormBuildingQueue.resx">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormColonization.resx">
+      <DependentUpon>FormColonization.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormColony.resx">
       <DependentUpon>FormColony.cs</DependentUpon>

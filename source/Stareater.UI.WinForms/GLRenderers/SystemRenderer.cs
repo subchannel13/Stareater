@@ -67,7 +67,7 @@ namespace Stareater.GLRenderers
 		{
 			if (resetProjection) {
 				double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
-				double semiRadius = 0.5 * DefaultViewSize;
+				const double semiRadius = 0.5 * DefaultViewSize;
 
 				GL.MatrixMode(MatrixMode.Projection);
 				GL.LoadIdentity();
@@ -81,7 +81,6 @@ namespace Stareater.GLRenderers
 				GL.MatrixMode(MatrixMode.Modelview);
 				resetProjection = false;
 			}
-			
 			
 			GL.PushMatrix();
 			GL.Translate(0, BodiesY, 0);
