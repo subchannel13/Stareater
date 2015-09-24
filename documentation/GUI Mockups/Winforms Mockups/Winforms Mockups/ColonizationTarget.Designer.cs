@@ -20,6 +20,7 @@ namespace Winforms_Mockups
 		private Winforms_Mockups.ColonizationSource colonizationSource2;
 		private Winforms_Mockups.ColonizationSource colonizationSource1;
 		private System.Windows.Forms.PictureBox pictureBox1;
+		private System.Windows.Forms.Button button1;
 		
 		/// <summary>
 		/// Disposes resources used by the control.
@@ -48,6 +49,7 @@ namespace Winforms_Mockups
 			this.colonizationSource2 = new Winforms_Mockups.ColonizationSource();
 			this.colonizationSource1 = new Winforms_Mockups.ColonizationSource();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
+			this.button1 = new System.Windows.Forms.Button();
 			this.flowLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
@@ -81,13 +83,14 @@ namespace Winforms_Mockups
 			this.flowLayoutPanel1.Controls.Add(this.colonizationSource1);
 			this.flowLayoutPanel1.Location = new System.Drawing.Point(49, 46);
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-			this.flowLayoutPanel1.Size = new System.Drawing.Size(206, 74);
+			this.flowLayoutPanel1.Size = new System.Drawing.Size(206, 80);
 			this.flowLayoutPanel1.TabIndex = 3;
 			// 
 			// colonizationSource2
 			// 
 			this.colonizationSource2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.colonizationSource2.Location = new System.Drawing.Point(3, 3);
+			this.colonizationSource2.Location = new System.Drawing.Point(3, 6);
+			this.colonizationSource2.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
 			this.colonizationSource2.Name = "colonizationSource2";
 			this.colonizationSource2.Size = new System.Drawing.Size(200, 31);
 			this.colonizationSource2.TabIndex = 4;
@@ -95,7 +98,8 @@ namespace Winforms_Mockups
 			// colonizationSource1
 			// 
 			this.colonizationSource1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.colonizationSource1.Location = new System.Drawing.Point(3, 40);
+			this.colonizationSource1.Location = new System.Drawing.Point(3, 46);
+			this.colonizationSource1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
 			this.colonizationSource1.Name = "colonizationSource1";
 			this.colonizationSource1.Size = new System.Drawing.Size(200, 31);
 			this.colonizationSource1.TabIndex = 3;
@@ -111,18 +115,29 @@ namespace Winforms_Mockups
 			this.pictureBox1.TabIndex = 4;
 			this.pictureBox1.TabStop = false;
 			// 
+			// button1
+			// 
+			this.button1.BackgroundImage = global::Winforms_Mockups.Properties.Resources._goto;
+			this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.button1.Location = new System.Drawing.Point(20, 75);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(23, 23);
+			this.button1.TabIndex = 5;
+			this.button1.UseVisualStyleBackColor = true;
+			// 
 			// ColonizationTarget
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.Controls.Add(this.button1);
 			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.flowLayoutPanel1);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Name = "ColonizationTarget";
-			this.Size = new System.Drawing.Size(258, 123);
+			this.Size = new System.Drawing.Size(258, 129);
 			this.flowLayoutPanel1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);

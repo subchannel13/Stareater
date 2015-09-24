@@ -92,6 +92,14 @@
     <Compile Include="GUI\BuildingItem.Designer.cs">
       <DependentUpon>BuildingItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\ColonizationSourceView.cs" />
+    <Compile Include="GUI\ColonizationSourceView.Designer.cs">
+      <DependentUpon>ColonizationSourceView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ColonizationTargetView.cs" />
+    <Compile Include="GUI\ColonizationTargetView.Designer.cs">
+      <DependentUpon>ColonizationTargetView.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ColorItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -128,6 +136,10 @@
     </Compile>
     <Compile Include="GUI\FormBuildingQueue.Designer.cs">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FormColonization.cs" />
+    <Compile Include="GUI\FormColonization.Designer.cs">
+      <DependentUpon>FormColonization.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FormColonyDetails.cs">
       <SubType>Form</SubType>
@@ -289,6 +301,12 @@
     <EmbeddedResource Include="GUI\BuildingItem.resx">
       <DependentUpon>BuildingItem.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ColonizationSourceView.resx">
+      <DependentUpon>ColonizationSourceView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ColonizationTargetView.resx">
+      <DependentUpon>ColonizationTargetView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\ColorItem.resx">
       <DependentUpon>ColorItem.cs</DependentUpon>
     </EmbeddedResource>
@@ -306,6 +324,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormBuildingQueue.resx">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormColonization.resx">
+      <DependentUpon>FormColonization.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormColonyDetails.resx">
       <DependentUpon>FormColonyDetails.cs</DependentUpon>
