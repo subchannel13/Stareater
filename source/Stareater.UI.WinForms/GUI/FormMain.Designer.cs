@@ -45,6 +45,7 @@
 			this.shipList = new System.Windows.Forms.FlowLayoutPanel();
 			this.fleetMissionButton = new System.Windows.Forms.Button();
 			this.empyPlanetView = new Stareater.GUI.EmpyPlanetView();
+			this.colonizationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip.SuspendLayout();
 			this.fleetPanel.SuspendLayout();
 			this.SuspendLayout();
@@ -90,6 +91,7 @@
 			this.designsToolStripMenuItem,
 			this.developmentToolStripMenuItem,
 			this.researchToolStripMenuItem,
+			this.colonizationToolStripMenuItem,
 			this.reportsToolStripMenuItem});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
@@ -197,6 +199,13 @@
 			this.empyPlanetView.TabIndex = 6;
 			this.empyPlanetView.Visible = false;
 			// 
+			// colonizationToolStripMenuItem
+			// 
+			this.colonizationToolStripMenuItem.Name = "colonizationToolStripMenuItem";
+			this.colonizationToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
+			this.colonizationToolStripMenuItem.Text = "Colonization";
+			this.colonizationToolStripMenuItem.Click += new System.EventHandler(this.colonizationToolStripMenuItem_Click);
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -241,5 +250,6 @@
 		private OpenTK.GLControl glCanvas;
 		private System.Windows.Forms.Timer glRedrawTimer;
 		private Stareater.GUI.EmpyPlanetView empyPlanetView;
+		private System.Windows.Forms.ToolStripMenuItem colonizationToolStripMenuItem;
 	}
 }

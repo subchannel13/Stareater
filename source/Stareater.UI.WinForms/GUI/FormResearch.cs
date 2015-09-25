@@ -13,7 +13,7 @@ namespace Stareater.GUI
 {
 	public partial class FormResearch : Form
 	{
-		private GameController controller;
+		private readonly GameController controller;
 		private IList<TechnologyTopic> topics;
 		
 		private Control lastTopic = null;

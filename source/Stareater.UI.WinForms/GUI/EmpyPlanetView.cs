@@ -13,15 +13,17 @@ namespace Stareater.GUI
 	public partial class EmpyPlanetView : UserControl
 	{
 		private EmptyPlanetController controller;
+		private GameController gameController;
 		
 		public EmpyPlanetView()
 		{
 			InitializeComponent();
 		}
 		
-		public void SetView(EmptyPlanetController planetController)
+		public void SetView(EmptyPlanetController planetController, GameController gameController)
 		{
-			controller = planetController;
+			this.controller = planetController;
+			this.gameController = gameController;
 			
 			setName();
 			resetView();
@@ -66,7 +68,7 @@ namespace Stareater.GUI
 			else
 			{
 				//TODO(later) smarter default colonization source selection
-				this.controller.StartColonization(this.controller.Stellarises().ToArray());
+				this.controller.StartColonization(this.gameController.Stellarises().ToArray());
 			}
 				
 			resetView();

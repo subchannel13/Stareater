@@ -244,6 +244,14 @@ namespace Stareater.Controllers
 		}
 		#endregion
 		
+		#region Stellarises and colonies
+		public IEnumerable<StellarisInfo> Stellarises()
+		{
+			foreach(var stellaris in this.GameInstance.States.Stellarises.OwnedBy(this.GameInstance.CurrentPlayer))
+				yield return new StellarisInfo(stellaris);
+		}
+		#endregion
+		
 		#region Ship designs
 		public ShipDesignController NewDesign()
 		{
@@ -254,6 +262,18 @@ namespace Stareater.Controllers
 		{
 			var game = this.GameInstance;
 			return game.States.Designs.OwnedBy(game.CurrentPlayer).Select(x => new DesignInfo(x));
+		}
+		#endregion
+		
+		#region Colonization related
+		public IEnumerable<EmptyPlanetController> ColonizationProjects()
+		{
+			var planets = new HashSet<Planet>();
+			planets.UnionWith(this.GameInstance.States.ColonizationProjects.Select(x => x.Destination));
+			planets.UnionWith(this.GameInstance.CurrentPlayer.Orders.ColonizationOrders.Keys);
+			
+			foreach(var planet in planets)
+				yield return new EmptyPlanetController(this.GameInstance, planet, this.IsReadOnly);
 		}
 		#endregion
 		

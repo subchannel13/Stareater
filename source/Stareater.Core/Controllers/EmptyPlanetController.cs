@@ -67,13 +67,5 @@ namespace Stareater.Controllers
 			this.Game.CurrentPlayer.Orders.ColonizationOrders.Remove(this.PlanetBody);
 		}
 		#endregion
-		
-		#region Empire
-		public IEnumerable<StellarisInfo> Stellarises()
-		{
-			foreach(var stellaris in this.Game.States.Stellarises.OwnedBy(this.Game.CurrentPlayer))
-				yield return new StellarisInfo(stellaris);
-		}
-		#endregion
 	}
 }

@@ -116,6 +116,12 @@ namespace Stareater.GUI
 				form.ShowDialog();
 		}
 		
+		private void colonizationToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using(var form = new FormColonization(controller))
+				form.ShowDialog();
+		}
+		
 		private void reportsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using(var form = new FormReports(controller.Reports))
@@ -424,7 +430,7 @@ namespace Stareater.GUI
 			galaxyRenderer.DetachFromCanvas();
 			
 			systemRenderer.AttachToCanvas(glCanvas);
-			systemRenderer.SetStarSystem(systemController);
+			systemRenderer.SetStarSystem(systemController, controller);
 			currentRenderer = systemRenderer;
 			
 			constructionManagement.Visible = true;
