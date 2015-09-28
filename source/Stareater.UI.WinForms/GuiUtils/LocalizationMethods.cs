@@ -1,5 +1,7 @@
 ﻿using System;
+using Stareater.AppData;
 using Stareater.Controllers.Views;
+using Stareater.Galaxy;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
@@ -34,6 +36,29 @@ namespace Stareater.GuiUtils
 				textVars.And("eta", new ThousandsFormatter().Format(Math.Ceiling(1 / construction.PerTurnDone.Value)));
 			
 			return etaText.Text(numVars, textVars.Get);
+		}
+		
+		public static string PlanetName(Planet planet)
+		{
+			string starName = planet.Star.Name.ToText(SettingsWinforms.Get.Language);
+			
+			var context = SettingsWinforms.Get.Language["FormMain"];
+			var textVars = new TextVar(
+				"bodyName",
+				starName + " " + RomanFromatter.Fromat(planet.Position)
+			).Get;
+			
+			switch(planet.Type)
+			{
+				case PlanetType.Asteriod:
+					return context["AsteriodName"].Text(textVars);
+				case PlanetType.GasGiant:
+					return context["GasGiantName"].Text(textVars);
+				case PlanetType.Rock:
+					return context["RockName"].Text(textVars);
+				default:
+					throw new NotImplementedException("Unimplemented planet type: " + planet.Type);
+			} 
 		}
 	}
 }

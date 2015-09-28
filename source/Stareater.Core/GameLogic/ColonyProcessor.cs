@@ -17,7 +17,7 @@ namespace Stareater.GameLogic
 		private const string NewBuidingPrefix = "_delta";
 		
 		private const string MaxPopulationKey = "maxPop";
-		private const string PlanetSizeKey = "size";
+		public const string PlanetSizeKey = "size";
 		private const string PopulationGrowthKey = "popGrowth";
 		private const string PopulationKey = "pop";
 		

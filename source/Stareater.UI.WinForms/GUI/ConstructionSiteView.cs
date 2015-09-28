@@ -34,32 +34,13 @@ namespace Stareater.GUI
 
 		private void setName()
 		{
-			string starName = controller.HostStar.Name.ToText(SettingsWinforms.Get.Language);
-			
 			if (controller.SiteType == SiteType.Colony)
 			{
-				var context = SettingsWinforms.Get.Language["FormMain"];
 				var colonyController = controller as ColonyController;
-				var textVars = new TextVar(
-					"bodyName",
-					starName + " " + RomanFromatter.Fromat(colonyController.BodyPosition)
-				).Get;
-				
-				switch(colonyController.BodyType)
-				{
-					case PlanetType.Asteriod:
-						this.nameLabel.Text = context["AsteriodName"].Text(textVars);
-						break;
-					case PlanetType.GasGiant:
-						this.nameLabel.Text = context["GasGiantName"].Text(textVars);
-						break;
-					case PlanetType.Rock:
-						this.nameLabel.Text = context["RockName"].Text(textVars);
-						break;
-				}
+				this.nameLabel.Text = LocalizationMethods.PlanetName(colonyController.PlanetBody);
 			}
 			else
-				this.nameLabel.Text = starName;
+				this.nameLabel.Text = controller.HostStar.Name.ToText(SettingsWinforms.Get.Language);
 		}
 		
 		private void resetView()

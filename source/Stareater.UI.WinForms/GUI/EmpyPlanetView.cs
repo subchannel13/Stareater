@@ -7,12 +7,13 @@ using Stareater.Galaxy;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
+using Stareater.GuiUtils;
 
 namespace Stareater.GUI
 {
 	public partial class EmpyPlanetView : UserControl
 	{
-		private EmptyPlanetController controller;
+		private ColonizationController controller;
 		private GameController gameController;
 		
 		public EmpyPlanetView()
@@ -20,7 +21,7 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 		
-		public void SetView(EmptyPlanetController planetController, GameController gameController)
+		public void SetView(ColonizationController planetController, GameController gameController)
 		{
 			this.controller = planetController;
 			this.gameController = gameController;
@@ -31,24 +32,7 @@ namespace Stareater.GUI
 		
 		private void setName()
 		{
-			var context = SettingsWinforms.Get.Language["FormMain"];
-			var textVars = new TextVar(
-				"bodyName",
-				controller.HostStar.Name.ToText(SettingsWinforms.Get.Language) + " " + RomanFromatter.Fromat(controller.BodyPosition)
-			).Get;
-			
-			switch(controller.BodyType)
-			{
-				case PlanetType.Asteriod:
-					this.nameLabel.Text = context["AsteriodName"].Text(textVars);
-					break;
-				case PlanetType.GasGiant:
-					this.nameLabel.Text = context["GasGiantName"].Text(textVars);
-					break;
-				case PlanetType.Rock:
-					this.nameLabel.Text = context["RockName"].Text(textVars);
-					break;
-			}		
+			this.nameLabel.Text = LocalizationMethods.PlanetName(controller.PlanetBody);
 		}
 		
 		private void resetView()

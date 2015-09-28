@@ -125,6 +125,7 @@ namespace Stareater.GameData.Databases
 		private ColonyFormulaSet loadColonyFormulas(IkonComposite data)
 		{
 			return new ColonyFormulaSet(
+				data[UncolonizedMaxPopulation].To<Formula>(),
 				data[ColonyMaxPopulation].To<Formula>(),
 				loadDerivedStat(data[ColonyPopulationGrowth].To<IkonComposite>()),
 				data[ColonyOrganization].To<Formula>(),
@@ -398,6 +399,7 @@ namespace Stareater.GameData.Databases
 		private const string ColonyGardening = "gardening";
 		private const string ColonyIndustry = "industry";
 		private const string ColonyMining = "mining";
+		private const string UncolonizedMaxPopulation = "uncolonizedMaxPopulation";
 		
 		private const string PlayerResearch = "research";
 		private const string PlayerResearchFocusWeight = "focusedResearchWeight";

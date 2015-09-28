@@ -266,14 +266,14 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Colonization related
-		public IEnumerable<EmptyPlanetController> ColonizationProjects()
+		public IEnumerable<ColonizationController> ColonizationProjects()
 		{
 			var planets = new HashSet<Planet>();
 			planets.UnionWith(this.GameInstance.States.ColonizationProjects.Select(x => x.Destination));
 			planets.UnionWith(this.GameInstance.CurrentPlayer.Orders.ColonizationOrders.Keys);
 			
 			foreach(var planet in planets)
-				yield return new EmptyPlanetController(this.GameInstance, planet, this.IsReadOnly);
+				yield return new ColonizationController(this.GameInstance, planet, this.IsReadOnly);
 		}
 		#endregion
 		

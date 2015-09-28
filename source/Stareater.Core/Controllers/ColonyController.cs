@@ -72,20 +72,9 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Planet
-		public int BodyPosition
+		public Planet PlanetBody
 		{
-			get 
-			{
-				return (Site as Colony).Location.Planet.Position;
-			}
-		}
-		
-		public PlanetType BodyType
-		{
-			get 
-			{
-				return (Site as Colony).Location.Planet.Type;
-			}
+			get { return Site.Location.Planet; }
 		}
 		
 		public double PlanetEnvironment 

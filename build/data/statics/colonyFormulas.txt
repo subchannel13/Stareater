@@ -1,4 +1,5 @@
 { ColonyFormulas
+	uncolonizedMaxPopulation # size / 10 * 1e9;
 	maxPopulation # size / 10 * 1e9;
 	
 	populationGrowth 

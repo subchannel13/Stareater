@@ -4,15 +4,17 @@ using System.Linq;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
+using Stareater.GameLogic;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers
 {
-	public class EmptyPlanetController
+	public class ColonizationController
 	{
 		internal Game Game { get; private set; }
-		internal Planet PlanetBody { get; private set; }
+		public Planet PlanetBody { get; private set; }
 		
-		internal EmptyPlanetController(Game game, Planet planet, bool readOnly)
+		internal ColonizationController(Game game, Planet planet, bool readOnly)
 		{
 			this.Game = game;
 			this.IsReadOnly = readOnly;
@@ -22,22 +24,36 @@ namespace Stareater.Controllers
 		public bool IsReadOnly { get; private set; }
 
 		#region Planet
-		public int BodyPosition 
-		{
-			get { return PlanetBody.Position; }
-		}
-
-		public PlanetType BodyType 
-		{
-			get { return PlanetBody.Type; }
-		}
-		
 		public StarData HostStar 
 		{
 			get { return PlanetBody.Star; }
 		}
 		#endregion
 
+		#region Colony
+		public double Population 
+		{
+			get 
+			{ 
+				return !Game.States.Colonies.AtPlanetContains(PlanetBody) ? 
+					0 : 
+					Game.States.Colonies.AtPlanet(PlanetBody).Population;
+			}
+		}
+		
+		public double PopulationMax 
+		{
+			get
+			{ 
+				if (Game.States.Colonies.AtPlanetContains(PlanetBody))
+					return Game.Derivates.Of(Game.States.Colonies.AtPlanet(PlanetBody)).MaxPopulation;
+				
+				var vars = new Var(ColonyProcessor.PlanetSizeKey, PlanetBody.Size);
+				return Game.Statics.ColonyFormulas.UncolonizedMaxPopulation.Evaluate(vars.Get);
+			}
+		}
+		#endregion
+		
 		#region Colonization
 		public bool IsColonizing 
 		{
@@ -65,6 +81,16 @@ namespace Stareater.Controllers
 				return;
 			
 			this.Game.CurrentPlayer.Orders.ColonizationOrders.Remove(this.PlanetBody);
+		}
+		
+		public IEnumerable<StellarisInfo> Sources()
+		{
+			var stars = new HashSet<StarData>();
+			//TODO(0.5) add states
+			//stars.UnionWith(this.Game.States.ColonizationProjects.Of(this.PlanetBody).Select(x => x));
+			stars.UnionWith(this.Game.CurrentPlayer.Orders.ColonizationOrders[this.PlanetBody].Sources);
+			
+			return stars.Select(x => new StellarisInfo(this.Game.States.Stellarises.At(x)));
 		}
 		#endregion
 	}

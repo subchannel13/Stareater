@@ -73,7 +73,7 @@
     <Compile Include="AppData\LastGameInfo.cs" />
     <Compile Include="Controllers\AConstructionSiteController.cs" />
     <Compile Include="Controllers\ColonyController.cs" />
-    <Compile Include="Controllers\EmptyPlanetController.cs" />
+    <Compile Include="Controllers\ColonizationController.cs" />
     <Compile Include="Controllers\Views\BodyType.cs" />
     <Compile Include="Controllers\Views\BuildingInfo.cs" />
     <Compile Include="Controllers\Views\ColonyInfo.cs" />

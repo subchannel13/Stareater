@@ -95,14 +95,14 @@ namespace Stareater.Controllers
 			return new ColonyController(game, game.States.Colonies.AtPlanet(planet), IsReadOnly);
 		}
 
-		public EmptyPlanetController EmptyPlanetController(int bodyPosition)
+		public ColonizationController EmptyPlanetController(int bodyPosition)
 		{
 			var planet = game.States.Planets.At(Star).FirstOrDefault(x => x.Position == bodyPosition);
 			
 			if (planet == null)
 				throw new ArgumentOutOfRangeException("bodyPosition");
 			
-			return new EmptyPlanetController(game, planet, IsReadOnly);
+			return new ColonizationController(game, planet, IsReadOnly);
 		}
 		
 		public StellarisAdminController StellarisController()

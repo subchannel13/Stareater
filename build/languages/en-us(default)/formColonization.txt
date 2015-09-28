@@ -1,3 +1,6 @@
 ﻿:FormColonization
 title = Colonization projects
+population §
+		{=pop} / {=max} population
+	\
 -

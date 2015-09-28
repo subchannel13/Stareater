@@ -17,8 +17,9 @@ namespace Stareater.GUI
 		private System.Windows.Forms.Button addButton;
 		private System.Windows.Forms.PictureBox thumbnailImage;
 		private System.Windows.Forms.Label fromLabel;
-		private System.Windows.Forms.Label targetInfo;
+		private System.Windows.Forms.Label targetName;
 		private System.Windows.Forms.FlowLayoutPanel sourceList;
+		private System.Windows.Forms.Label targetInfo;
 		
 		/// <summary>
 		/// Disposes resources used by the control.
@@ -44,8 +45,9 @@ namespace Stareater.GUI
 			this.addButton = new System.Windows.Forms.Button();
 			this.thumbnailImage = new System.Windows.Forms.PictureBox();
 			this.fromLabel = new System.Windows.Forms.Label();
-			this.targetInfo = new System.Windows.Forms.Label();
+			this.targetName = new System.Windows.Forms.Label();
 			this.sourceList = new System.Windows.Forms.FlowLayoutPanel();
+			this.targetInfo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -75,14 +77,14 @@ namespace Stareater.GUI
 			this.fromLabel.TabIndex = 6;
 			this.fromLabel.Text = "From:";
 			// 
-			// targetInfo
+			// targetName
 			// 
-			this.targetInfo.AutoSize = true;
-			this.targetInfo.Location = new System.Drawing.Point(49, 3);
-			this.targetInfo.Name = "targetInfo";
-			this.targetInfo.Size = new System.Drawing.Size(120, 26);
-			this.targetInfo.TabIndex = 5;
-			this.targetInfo.Text = "Alpha Centauri III\r\n0.01 / 100 G population";
+			this.targetName.AutoSize = true;
+			this.targetName.Location = new System.Drawing.Point(49, 3);
+			this.targetName.Name = "targetName";
+			this.targetName.Size = new System.Drawing.Size(88, 13);
+			this.targetName.TabIndex = 5;
+			this.targetName.Text = "Alpha Centauri III";
 			// 
 			// sourceList
 			// 
@@ -93,17 +95,27 @@ namespace Stareater.GUI
 			this.sourceList.Size = new System.Drawing.Size(0, 0);
 			this.sourceList.TabIndex = 7;
 			// 
+			// targetInfo
+			// 
+			this.targetInfo.AutoSize = true;
+			this.targetInfo.Location = new System.Drawing.Point(49, 16);
+			this.targetInfo.Name = "targetInfo";
+			this.targetInfo.Size = new System.Drawing.Size(120, 13);
+			this.targetInfo.TabIndex = 8;
+			this.targetInfo.Text = "0.01 / 100 G population";
+			// 
 			// ColonizationTargetView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.Controls.Add(this.targetInfo);
 			this.Controls.Add(this.sourceList);
 			this.Controls.Add(this.addButton);
 			this.Controls.Add(this.thumbnailImage);
 			this.Controls.Add(this.fromLabel);
-			this.Controls.Add(this.targetInfo);
+			this.Controls.Add(this.targetName);
 			this.Name = "ColonizationTargetView";
 			this.Size = new System.Drawing.Size(172, 101);
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
