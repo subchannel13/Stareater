@@ -53,10 +53,12 @@ namespace Stareater.GUI
 			// 
 			// addButton
 			// 
+			this.addButton.Image = global::Stareater.Properties.Resources.add;
 			this.addButton.Location = new System.Drawing.Point(20, 75);
 			this.addButton.Name = "addButton";
 			this.addButton.Size = new System.Drawing.Size(23, 23);
 			this.addButton.TabIndex = 3;
+			this.addButton.Click += new System.EventHandler(this.addButton_Click);
 			// 
 			// thumbnailImage
 			// 

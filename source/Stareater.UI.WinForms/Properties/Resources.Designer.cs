@@ -73,6 +73,16 @@ namespace Stareater.Properties {
 		/// <summary>
 		///   Looks up a localized resource of type System.Drawing.Bitmap.
 		/// </summary>
+		internal static System.Drawing.Bitmap add {
+			get {
+				object obj = ResourceManager.GetObject("add", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
 		internal static System.Drawing.Bitmap arrowDown {
 			get {
 				object obj = ResourceManager.GetObject("arrowDown", resourceCulture);
@@ -186,6 +196,26 @@ namespace Stareater.Properties {
 		internal static System.Drawing.Bitmap save {
 			get {
 				object obj = ResourceManager.GetObject("save", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
+		internal static System.Drawing.Bitmap start {
+			get {
+				object obj = ResourceManager.GetObject("start", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
+		internal static System.Drawing.Bitmap stop {
+			get {
+				object obj = ResourceManager.GetObject("stop", resourceCulture);
 				return ((System.Drawing.Bitmap)(obj));
 			}
 		}

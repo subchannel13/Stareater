@@ -60,6 +60,7 @@ namespace Stareater.GUI
 			this.controlButton.Name = "controlButton";
 			this.controlButton.Size = new System.Drawing.Size(23, 23);
 			this.controlButton.TabIndex = 6;
+			this.controlButton.Click += new System.EventHandler(this.controlButton_Click);
 			// 
 			// starName
 			// 

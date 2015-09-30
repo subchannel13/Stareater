@@ -33,10 +33,15 @@ namespace Stareater.GUI
 			
 			foreach(var source in controller.Sources())
 	        {
-	        	var itemView = new ColonizationSourceView();
+	        	var itemView = new ColonizationSourceView(controller);
 	        	itemView.Data = source;
 				sourceList.Controls.Add(itemView);
 	        }
+		}
+		
+		private void addButton_Click(object sender, EventArgs e)
+		{
+	
 		}
 	}
 }

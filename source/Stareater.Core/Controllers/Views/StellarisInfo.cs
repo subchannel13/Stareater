@@ -14,5 +14,40 @@ namespace Stareater.Controllers.Views
 			this.Stellaris = stellaris;
 			this.Owner = new PlayerInfo(stellaris.Owner);
 		}
+		
+		public StarData HostStar
+		{
+			get { return Stellaris.Location.Star; }
+		}
+		
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			var other = obj as StellarisInfo;
+			return other != null && object.Equals(this.Stellaris, other.Stellaris);
+		}
+
+		public override int GetHashCode()
+		{
+			int hashCode = 0;
+			unchecked {
+				if (Stellaris != null)
+					hashCode += 1000000007 * Stellaris.GetHashCode();
+			}
+			return hashCode;
+		}
+
+		public static bool operator ==(StellarisInfo lhs, StellarisInfo rhs) {
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(StellarisInfo lhs, StellarisInfo rhs) {
+			return !(lhs == rhs);
+		}
+		#endregion
 	}
 }

@@ -75,16 +75,28 @@ namespace Stareater.Controllers
 			this.Game.CurrentPlayer.Orders.ColonizationOrders.Add(this.PlanetBody, plan);
 		}
 		
-		public void StopColonization()
+		public void StopColonization(params StellarisInfo[] colonizationSources)
 		{
 			if (!this.IsColonizing || this.IsReadOnly)
 				return;
 			
-			this.Game.CurrentPlayer.Orders.ColonizationOrders.Remove(this.PlanetBody);
+			var plan = this.Game.CurrentPlayer.Orders.ColonizationOrders[this.PlanetBody];
+			
+			if (colonizationSources != null && colonizationSources.Length > 0)
+				foreach(var source in colonizationSources)
+					plan.Sources.Remove(source.Stellaris.Location.Star);
+			else
+					plan.Sources.Clear();
+			
+			if (plan.Sources.Count == 0)
+				this.Game.CurrentPlayer.Orders.ColonizationOrders.Remove(this.PlanetBody);
 		}
 		
 		public IEnumerable<StellarisInfo> Sources()
 		{
+			if (!this.Game.CurrentPlayer.Orders.ColonizationOrders.ContainsKey(this.PlanetBody))
+				return new StellarisInfo[0];
+			
 			var stars = new HashSet<StarData>();
 			//TODO(0.5) add states
 			//stars.UnionWith(this.Game.States.ColonizationProjects.Of(this.PlanetBody).Select(x => x));

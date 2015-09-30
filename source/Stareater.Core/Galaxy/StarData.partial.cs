@@ -17,10 +17,8 @@ namespace Stareater.Galaxy
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{
-			StarData other = obj as StarData;
-			if (other == null)
-				return false;
-			return object.Equals(this.Position, other.Position);
+			var other = obj as StarData;
+			return other != null && object.Equals(this.Position, other.Position);
 		}
 		
 		public override int GetHashCode()
@@ -50,10 +48,9 @@ namespace Stareater.Galaxy
 		
 		public static IStarName loadName(IkadnBaseObject rawData)
 		{
-			if (rawData.Tag.Equals(ConstellationStarName.SaveTag))
-				return ConstellationStarName.Load(rawData.To<IkonComposite>());
-			else
-				return ProperStarName.Load(rawData.To<IkonComposite>());
+			return rawData.Tag.Equals(ConstellationStarName.SaveTag) ? 
+				ConstellationStarName.Load(rawData.To<IkonComposite>()) : 
+				ProperStarName.Load(rawData.To<IkonComposite>());
 		}
 	}
 }

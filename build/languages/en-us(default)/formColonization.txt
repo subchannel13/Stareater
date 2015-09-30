@@ -3,4 +3,8 @@ title = Colonization projects
 population §
 		{=pop} / {=max} population
 	\
+	
+stoppedColonization §
+		{=star} - stopped
+	\
 -

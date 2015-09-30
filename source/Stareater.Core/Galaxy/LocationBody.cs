@@ -21,10 +21,9 @@ namespace Stareater.Galaxy
 		
 		public IkadnBaseObject Save(ObjectIndexer indexer)
 		{
-			if (this.Planet == null)
-				return new IkonComposite(StarTag).Add(IdKey, new IkonInteger(indexer.IndexOf(this.Star)));
-			else
-				return new IkonComposite(PlanetTag).Add(IdKey, new IkonInteger(indexer.IndexOf(this.Planet)));
+			return this.Planet == null ? 
+				new IkonComposite(StarTag).Add(IdKey, new IkonInteger(indexer.IndexOf(this.Star))) : 
+				new IkonComposite(PlanetTag).Add(IdKey, new IkonInteger(indexer.IndexOf(this.Planet)));
 		}
 		
 		public static LocationBody Load(IkonComposite rawData, ObjectDeindexer deindexer)
@@ -36,6 +35,38 @@ namespace Stareater.Galaxy
 				return new LocationBody(planet.Star, planet);
 			}
 		}
+		
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			return (obj is LocationBody) && Equals((LocationBody)obj);
+		}
+
+		public bool Equals(LocationBody other)
+		{
+			return object.Equals(this.Star, other.Star) && object.Equals(this.Planet, other.Planet);
+		}
+
+		public override int GetHashCode()
+		{
+			int hashCode = 0;
+			unchecked {
+				if (Star != null)
+					hashCode += 1000000007 * Star.GetHashCode();
+				if (Planet != null)
+					hashCode += 1000000009 * Planet.GetHashCode();
+			}
+			return hashCode;
+		}
+
+		public static bool operator ==(LocationBody lhs, LocationBody rhs) {
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(LocationBody lhs, LocationBody rhs) {
+			return !(lhs == rhs);
+		}
+		#endregion
 		
 		#region Saving keys
 		private const string PlanetTag = "Planet";
