@@ -13,6 +13,8 @@ namespace Stareater.GUI
 		private StellarisInfo sourceData = null;
 		private ColonizationController controller;
 		
+		public event Action OnStateChange;
+		
 		public ColonizationSourceView()
 		{
 			InitializeComponent();
@@ -65,6 +67,9 @@ namespace Stareater.GUI
 				controller.StartColonization(sourceData);
 			
 			updateView();
+			
+			if (OnStateChange != null)
+				OnStateChange();
 		}
 	}
 }

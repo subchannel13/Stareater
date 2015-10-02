@@ -1,24 +1,23 @@
 ﻿/*
  * Created by SharpDevelop.
  * User: ekraiva
- * Date: 22.9.2015.
- * Time: 15:58
+ * Date: 1.10.2015.
+ * Time: 15:13
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace Winforms_Mockups
 {
 	/// <summary>
-	/// Description of ColonizationTarget.
+	/// Description of FormPickColonizationSource.
 	/// </summary>
-	public partial class ColonizationTarget : UserControl
+	public partial class FormPickColonizationSource : Form
 	{
-		public ColonizationTarget()
+		public FormPickColonizationSource()
 		{
 			//
 			// The InitializeComponent() call is required for Windows Forms designer support.
@@ -28,11 +27,6 @@ namespace Winforms_Mockups
 			//
 			// TODO: Add constructor code after the InitializeComponent() call.
 			//
-		}
-		void Button1Click(object sender, EventArgs e)
-		{
-			using(var form = new FormPickColonizationSource())
-				form.ShowDialog();
 		}
 	}
 }

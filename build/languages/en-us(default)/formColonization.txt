@@ -1,5 +1,8 @@
 ﻿:FormColonization
 title = Colonization projects
+
+addSource = Add
+
 population §
 		{=pop} / {=max} population
 	\

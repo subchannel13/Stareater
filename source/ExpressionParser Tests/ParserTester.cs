@@ -8,10 +8,10 @@ namespace ExpressionParser_Tests
 {
 	class ParserTester
 	{
-		ExpressionParser parser;
-		double expectedOutput;
-		IDictionary<string, double> variables;
-		double delta = 0;
+		private readonly ExpressionParser parser;
+		private readonly double expectedOutput;
+		private readonly IDictionary<string, double> variables;
+		private double delta = 0;
 
 		public ParserTester(string input, IDictionary<string, double> variables, double expectedOutput)
 		{

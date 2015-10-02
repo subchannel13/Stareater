@@ -92,6 +92,18 @@ namespace Stareater.Controllers
 				this.Game.CurrentPlayer.Orders.ColonizationOrders.Remove(this.PlanetBody);
 		}
 		
+		public IEnumerable<StellarisInfo> AvailableSources()
+		{
+			var used = new HashSet<StarData>();
+			
+			if (this.Game.CurrentPlayer.Orders.ColonizationOrders.ContainsKey(this.PlanetBody))
+				used.UnionWith(this.Game.CurrentPlayer.Orders.ColonizationOrders[this.PlanetBody].Sources);
+			
+			foreach(var stellaris in this.Game.States.Stellarises.OwnedBy(this.Game.CurrentPlayer))
+				if (!used.Contains(stellaris.Location.Star))
+					yield return new StellarisInfo(stellaris);
+		}
+		
 		public IEnumerable<StellarisInfo> Sources()
 		{
 			if (!this.Game.CurrentPlayer.Orders.ColonizationOrders.ContainsKey(this.PlanetBody))
