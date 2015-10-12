@@ -197,6 +197,7 @@ namespace Stareater.Controllers
 			{
 				//TODO(v0.5): check name length and uniqueness
 				//TODO(v0.5): check image index
+				//TODO(v0.5): check available space
 				return this.selectedHull != null && this.ImageIndex >= 0 && this.ImageIndex < this.selectedHull.ImagePaths.Length &&
 					(this.availableIsDrive != null || !this.HasIsDrive);
 			}
@@ -217,6 +218,7 @@ namespace Stareater.Controllers
 				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
 				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level),
 				new Component<SensorType>(this.sensorInfo.Type, this.sensorInfo.Level),
+				new Dictionary<Component<SpecialEquipmentType>, int>(), //TODO(0.5) implement special equipment in the controller 
 				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level)
 			);
 			game.States.Designs.Add(desing); //TODO(v0.5) add to changes DB and propagate to states during turn processing

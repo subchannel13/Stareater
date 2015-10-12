@@ -9,6 +9,7 @@ namespace Stareater.GameData.Ships
 	abstract class AComponentType
 	{
 		public const string LevelKey = "lvl";
+		public const string SizeKey = "size";
 		
 		public string IdCode { get; private set; }
 		public string NameCode { get; private set; }

@@ -30,6 +30,7 @@ namespace Stareater.GameData.Databases
 		public Dictionary<string, IsDriveType> IsDrives { get; private set; }
 		public Dictionary<string, ReactorType> Reactors { get; private set; }
 		public Dictionary<string, SensorType> Sensors { get; private set; }
+		public Dictionary<string, SpecialEquipmentType> SpecialEquipment { get; private set; }
 		public Dictionary<string, ThrusterType> Thrusters { get; private set; }
 		
 		public StaticsDB()
@@ -42,6 +43,7 @@ namespace Stareater.GameData.Databases
 			this.IsDrives = new Dictionary<string, IsDriveType>();
 			this.Reactors = new Dictionary<string, ReactorType>();
 			this.Sensors = new Dictionary<string, SensorType>();
+			this.SpecialEquipment = new Dictionary<string, SpecialEquipmentType>();
 			this.Thrusters = new Dictionary<string, ThrusterType>();
 			this.PredeginedDesigns = new List<PredefinedDesign>();
 			this.Technologies = new List<Technology>();
@@ -105,6 +107,9 @@ namespace Stareater.GameData.Databases
 								break;
 							case SensorTag:
 								Sensors.Add(data[GeneralCodeKey].To<string>(), loadSensor(data));
+								break;
+							case SpecialEquipmentTag:
+								SpecialEquipment.Add(data[GeneralCodeKey].To<string>(), loadSpecialEquiptment(data));
 								break;
 							case ThrusterTag:
 								Thrusters.Add(data[GeneralCodeKey].To<string>(), loadThruster(data));
@@ -236,8 +241,19 @@ namespace Stareater.GameData.Databases
 				data[DesignName].To<string>(),
 				data[DesignHull].To<string>(),
 				data[DesignHullImageIndex].To<int>(),
-				data.Keys.Contains(DesignIsDrive)
+				data.Keys.Contains(DesignIsDrive),
+				loadDesignSpecialEquipment(data[DesignSpecialEquipment].To<IkonArray>())
 			);
+		}
+		
+		private Dictionary<string, int> loadDesignSpecialEquipment(IList<Ikadn.IkadnBaseObject> data)
+		{
+			var result = new Dictionary<string, int>();
+			
+			for(int i = 0; i < data.Count / 2; i++)
+				result.Add(data[i * 2].To<string>(), data[i * 2 + 1].To<int>());
+			
+			return result;
 		}
 		
 		#region Ship components
@@ -322,6 +338,22 @@ namespace Stareater.GameData.Databases
 				data[SensorDetection].To<Formula>()
 			);
 		}
+		
+		private SpecialEquipmentType loadSpecialEquiptment(IkonComposite data)
+		{
+			return new SpecialEquipmentType(
+				data[GeneralCodeKey].To<string>(),
+				data[GeneralNameKey].To<string>(),
+				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralImageKey].To<string>(),
+				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
+				data[GeneralMaxLevelKey].To<int>(),
+				!data.Keys.Contains(SpecialEquipmentCannotPick),
+				data[GeneralCostKey].To<Formula>(),
+				data[SpecialEquipmentSizeKey].To<Formula>(),
+				data[SpecialEquipmentMaxCountKey].To<Formula>()
+			);
+		}
 
 		private ThrusterType loadThruster(IkonComposite data)
 		{
@@ -389,6 +421,7 @@ namespace Stareater.GameData.Databases
 		private const string ReactorTag = "Reactor";
 		private const string SensorTag = "Sensor";
 		private const string ShieldTag = "Shield";
+		private const string SpecialEquipmentTag = "SpecialEquipment";
 		private const string ThrusterTag = "Thruster";
 		
 		private const string ColonyMaxPopulation = "maxPopulation";
@@ -428,6 +461,7 @@ namespace Stareater.GameData.Databases
 		private const string DesignIsDrive = "hasIsDrive";
 		private const string DesignHull = "hull";
 		private const string DesignHullImageIndex = "hullImageIndex";
+		private const string DesignSpecialEquipment = "specials";
 		
 		private const string FocusList = "list";
 		
@@ -471,6 +505,10 @@ namespace Stareater.GameData.Databases
 		private const string ReactorPower = "power";
 
 		private const string SensorDetection = "detection";
+		
+		private const string SpecialEquipmentCannotPick = "cannotPick";
+		private const string SpecialEquipmentMaxCountKey = "maxCount";
+		private const string SpecialEquipmentSizeKey = "size";
 		
 		private const string ThrusterEvasion = "evasion";
 		private const string ThrusterSpeed = "speed";

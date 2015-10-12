@@ -32,7 +32,7 @@ namespace Stareater.GameData.Ships
 
 			double reactorSize = shipHull.TypeInfo.SizeReactor.Evaluate(hullVars);
 			var reactorVars = new Var(AComponentType.LevelKey, 0).
-					And("size", reactorSize).Get;
+					And(AComponentType.SizeKey, reactorSize).Get;
 
 			return Methods.FindBest(
 				reactors.Where(x => x.IsAvailable(playersTechLevels)).
@@ -56,7 +56,7 @@ namespace Stareater.GameData.Ships
 
 			double reactorSize = shipHull.TypeInfo.SizeReactor.Evaluate(hullVars);
 			var reactorVars = new Var("level", reactor.Level).
-					And("size", reactorSize).Get;
+					And(AComponentType.SizeKey, reactorSize).Get;
 
 			return reactor.TypeInfo.Power.Evaluate(reactorVars);
 		}

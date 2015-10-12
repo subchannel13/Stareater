@@ -21,7 +21,7 @@ namespace Stareater.Controllers.Views.Ships
 			this.Level = level;
 			
 			this.driveVars = new Var(AComponentType.LevelKey, level).
-				And("size", shipHull.IsDriveSize).
+				And(AComponentType.SizeKey, shipHull.IsDriveSize).
 				And("power", shipPower).Get; 
 		}
 		

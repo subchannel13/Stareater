@@ -268,14 +268,14 @@ namespace Stareater.GameLogic
 			var hullVars = new Var(AComponentType.LevelKey, design.Hull.Level).Get;
 			
 			var reactorVars = new Var(AComponentType.LevelKey, design.Reactor.Level).
-				And("size", design.Hull.TypeInfo.SizeReactor.Evaluate(hullVars)).Get;
+				And(AComponentType.SizeKey, design.Hull.TypeInfo.SizeReactor.Evaluate(hullVars)).Get;
 			double shipPower = design.Reactor.TypeInfo.Power.Evaluate(reactorVars);
 			
 			double galaxySpeed = 0;
 			if (design.IsDrive != null)
 			{
 				var driveVars = new Var(AComponentType.LevelKey, design.IsDrive.Level).
-					And("size", design.Hull.TypeInfo.SizeIS.Evaluate(hullVars)).
+					And(AComponentType.SizeKey, design.Hull.TypeInfo.SizeIS.Evaluate(hullVars)).
 					And("power", shipPower).Get; 
 				
 				galaxySpeed = design.IsDrive.TypeInfo.Speed.Evaluate(driveVars);
@@ -301,11 +301,15 @@ namespace Stareater.GameLogic
 					var reactor = ReactorType.MakeBest(statics.Reactors.Values, techLevels, hull);
 					var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(statics.IsDrives.Values, techLevels, hull, ReactorType.PowerOf(reactor, hull)) : null;
 					var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels);
+					var specials = predefDesign.SpecialEquipment.ToDictionary(
+						x => statics.SpecialEquipment[x.Key].MakeItem(techLevels),
+						x => x.Value
+					);
 					var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
 
 					var design = new Design(
 						states.MakeDesignId(), Player, predefDesign.Name, predefDesign.HullImageIndex,
-					    armor, hull, isDrive, reactor, sensor, thruster
+					    armor, hull, isDrive, reactor, sensor, specials, thruster
 					);
 					states.Designs.Add(design);
 					this.Analyze(design);

@@ -65,7 +65,8 @@ private void WriteFields(params DataInfo[] dataInfos)
 
 private void WriteContructorDefinition(string className, params DataInfo[] dataInfos)
 {
-	Write(className + "(");
+	var accessModifer = modifer.Contains("abstract") ? "protected" : "public";
+	Write(accessModifer + " " + className + "(");
 	
 	var commaOrNot = new FirstCase("", ", ");
 	foreach(var field in dataInfos) 
@@ -518,7 +519,7 @@ namespace <#+ Write(namespaceName); #>
 	{
 		<#+ WriteFields(dataInfos); #>
 
-		public <#+ WriteContructorDefinition(className, dataInfos); #> 
+		<#+ WriteContructorDefinition(className, dataInfos); #> 
 		{
 			<#+ WriteFieldInits(dataInfos); #> 
 			<#+ SetDebugId(); #> 

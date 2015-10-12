@@ -33,7 +33,7 @@ namespace Stareater.GameData.Ships
 			
 			double driveSize = shipHull.TypeInfo.SizeIS.Evaluate(hullVars);
 			var driveVars = new Var(AComponentType.LevelKey, 0).
-					And("size", driveSize).
+					And(AComponentType.SizeKey, driveSize).
 					And("power", shipPower).Get;
 			
 			return Methods.FindBest(

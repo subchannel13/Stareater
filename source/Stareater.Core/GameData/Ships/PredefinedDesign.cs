@@ -12,14 +12,16 @@ namespace Stareater.GameData.Ships
 		public int HullImageIndex { get; private set; }
 		
 		public bool HasIsDrive { get; private set; }
+		public Dictionary<string, int> SpecialEquipment { get; private set; }
 		
-		public PredefinedDesign(string name, string hullCode, int hullImageIndex, bool hasIsDrive)
+		public PredefinedDesign(string name, string hullCode, int hullImageIndex, bool hasIsDrive, Dictionary<string, int> specialEquipment)
 		{
 			this.Name = name;
 			
 			this.HasIsDrive = hasIsDrive;
 			this.HullCode = hullCode;
 			this.HullImageIndex = hullImageIndex;
+			this.SpecialEquipment = specialEquipment;
 		}
 		
 		public IEnumerable<Prerequisite> Prerequisites(StaticsDB statics)

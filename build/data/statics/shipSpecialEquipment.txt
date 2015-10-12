@@ -1,0 +1,30 @@
+﻿{ SpecialEquipment
+	nameCode: HEAVY_ARMOR_NAME
+	descCode: HEAVY_ARMOR_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: heavyArmor
+	
+	maxLvl= 1
+	prerequisites [
+	]
+	
+	cost # 20e3 * size;
+	size # 0.05 * shipSize;
+	maxCount # 2;
+}
+
+{ SpecialEquipment
+	nameCode: COLONIZER_NAME
+	descCode: COLONIZER_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: colony
+	
+	maxLvl= 1
+	prerequisites [
+	]
+	cannotPick []
+	
+	cost # 100e6;
+	size # 200;
+	maxCount # inf;
+}

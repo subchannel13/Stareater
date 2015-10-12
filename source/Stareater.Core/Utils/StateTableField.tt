@@ -736,6 +736,13 @@ class GenericParamInfo
 		return this;
 	}
 	
+	public GenericParamInfo SaveIdCodeMethod(string idMethod)
+	{
+		this.SaveAssignLogic = "new IkonText(" + SaveName + "." + idMethod + ")";
+		this.LoadAssignLogic = "deindexer.Get<" + this.Type + ">(" + SaveName + ".To<string>())";
+		return this;
+	}
+	
 	public GenericParamInfo SaveKey(string keyName, string keyValue)
 	{
 		this.SavingKeyName = keyName;

@@ -2,6 +2,7 @@
 <#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
 	
 	usings.Add("System");
+	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.GameData");
 	usings.Add("Stareater.GameData.Ships");
 	usings.Add("Stareater.Players");
@@ -18,6 +19,11 @@
 		new DataInfo("IsDrive", "Component<IsDriveType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Reactor", "Component<ReactorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Sensors", "Component<SensorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
+		new DataInfo("SpecialEquipment", "Dictionary", 
+			new GenericParamInfo("Component<SpecialEquipmentType>").SaveIdCodeMethod("TypeInfo.IdCode").SaveKey("SpecialKey", "Type"),
+			new GenericParamInfo("int").SaveKey("SpecialAmountKey", "amount")
+		).Init("initSpecials(specialEquipment);", "Dictionary<Component<SpecialEquipmentType>, int>", "specialEquipment").
+			SaveKey("Specials").SaveTag("Equipment"),
 		new DataInfo("Thrusters", "Component<ThrusterType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Cost", "double").Derived("initCost();")
 	);
