@@ -5,7 +5,7 @@ namespace Stareater.Utils.Collections
 {
 	public class Var
 	{
-		Dictionary<string, double> variables = new Dictionary<string, double>();
+		private readonly Dictionary<string, double> variables = new Dictionary<string, double>();
 
 		public Var()
 		{ }
@@ -26,6 +26,14 @@ namespace Stareater.Utils.Collections
 			get {
 				return this.variables;
 			}
+		}
+		
+		public Var Init(IEnumerable<string> variableNames, double initValue)
+		{
+			foreach(var name in variableNames)
+				this.variables.Add(name, initValue);
+			
+			return this;
 		}
 		
 		public Var UnionWith(IEnumerable<KeyValuePair<string, double>> variables)

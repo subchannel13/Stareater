@@ -141,7 +141,9 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var vars = new Var("thrust", thrusterInfo.Speed).Get;
+				var vars = new Var("thrust", thrusterInfo.Speed).
+					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
+				
 				return game.Statics.ShipFormulas.CombatSpeed.Evaluate(vars);
 			}
 		}
@@ -150,7 +152,9 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var vars = new Var("sensor", sensorInfo.Detection).Get;
+				var vars = new Var("sensor", sensorInfo.Detection).
+					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
+				
 				return game.Statics.ShipFormulas.Detection.Evaluate(vars);
 			}
 		}
@@ -159,7 +163,9 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var vars = new Var("thrust", thrusterInfo.Evasion).Get;
+				var vars = new Var("thrust", thrusterInfo.Evasion).
+					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
+				
 				return game.Statics.ShipFormulas.Evasion.Evaluate(vars);
 			}
 		}
@@ -169,7 +175,8 @@ namespace Stareater.Controllers
 			get 
 			{
 				var vars = new Var("hullHp", selectedHull.HitPointsBase).
-					And("armorFactor", armorInfo.ArmorFactor).Get;
+					And("armorFactor", armorInfo.ArmorFactor).
+					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
 				
 				return game.Statics.ShipFormulas.HitPoints.Evaluate(vars);
 			}
