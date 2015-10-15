@@ -1,0 +1,25 @@
+{ PredefinedDesign
+	name "System colonizer"
+	type: colonizer
+	
+	hull: cruiser
+	hullImageIndex= 0
+	
+	specials [
+		:colony =1
+	]
+}
+
+{ PredefinedDesign
+	name "Colony ship"
+	type: colonizer
+	
+	hull: cruiser
+	hullImageIndex= 0
+	
+	hasIsDrive []
+	
+	specials [
+		:colony =1
+	]
+}

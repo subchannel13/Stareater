@@ -237,8 +237,17 @@ namespace Stareater.GameData.Databases
 
 		private PredefinedDesign loadPredefDesign(IkonComposite data)
 		{
+			PredefinedDesignType type;
+			if (data[DesignType].To<string>() == DesignTypeColonizer)
+				type = PredefinedDesignType.Colonizer;
+			else if (data[DesignType].To<string>() == DesignTypeRegular)
+				type = PredefinedDesignType.Regular;
+			else
+				throw new IndexOutOfRangeException();
+			
 			return new PredefinedDesign(
 				data[DesignName].To<string>(),
+				type,
 				data[DesignHull].To<string>(),
 				data[DesignHullImageIndex].To<int>(),
 				data.Keys.Contains(DesignIsDrive),
@@ -462,6 +471,9 @@ namespace Stareater.GameData.Databases
 		private const string DesignHull = "hull";
 		private const string DesignHullImageIndex = "hullImageIndex";
 		private const string DesignSpecialEquipment = "specials";
+		private const string DesignType = "type";
+		private const string DesignTypeColonizer = "colonizer";
+		private const string DesignTypeRegular = "regular";
 		
 		private const string FocusList = "list";
 		
