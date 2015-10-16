@@ -7,7 +7,6 @@ namespace Stareater.GameData.Ships
 	class PredefinedDesign
 	{
 		public string Name { get; private set; }
-		public PredefinedDesignType Type { get; private set; }
 		
 		public string HullCode { get; private set; }
 		public int HullImageIndex { get; private set; }
@@ -15,10 +14,9 @@ namespace Stareater.GameData.Ships
 		public bool HasIsDrive { get; private set; }
 		public Dictionary<string, int> SpecialEquipment { get; private set; }
 		
-		public PredefinedDesign(string name, PredefinedDesignType type, string hullCode, int hullImageIndex, bool hasIsDrive, Dictionary<string, int> specialEquipment)
+		public PredefinedDesign(string name, string hullCode, int hullImageIndex, bool hasIsDrive, Dictionary<string, int> specialEquipment)
 		{
 			this.Name = name;
-			this.Type = type;
 			
 			this.HasIsDrive = hasIsDrive;
 			this.HullCode = hullCode;

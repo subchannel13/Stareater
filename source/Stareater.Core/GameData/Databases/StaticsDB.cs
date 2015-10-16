@@ -18,11 +18,13 @@ namespace Stareater.GameData.Databases
 	{
 		public Dictionary<string, BuildingType> Buildings { get; private set; }
 		public ColonyFormulaSet ColonyFormulas { get; private set; }
+		public List<PredefinedDesign> ColonyShipDesigns { get; private set; }
 		public List<Constructable> Constructables { get; private set; }
 		public List<DevelopmentFocus> DevelopmentFocusOptions { get; private set; }
 		public PlayerFormulaSet PlayerFormulas { get; private set; }
 		public List<PredefinedDesign> PredeginedDesigns { get; private set; }
 		public ShipFormulaSet ShipFormulas { get; private set; }
+		public List<PredefinedDesign> SystemColonizerDesigns { get; private set; }
 		public List<Technology> Technologies { get; private set; }
 		
 		public Dictionary<string, ArmorType> Armors { get; private set; }
@@ -38,12 +40,14 @@ namespace Stareater.GameData.Databases
 			this.Armors = new Dictionary<string, ArmorType>();
 			this.Buildings = new Dictionary<string, BuildingType>();
 			this.Constructables = new List<Constructable>();
+			this.ColonyShipDesigns = new List<PredefinedDesign>();
 			this.DevelopmentFocusOptions = new List<DevelopmentFocus>();
 			this.Hulls = new Dictionary<string, HullType>();
 			this.IsDrives = new Dictionary<string, IsDriveType>();
 			this.Reactors = new Dictionary<string, ReactorType>();
 			this.Sensors = new Dictionary<string, SensorType>();
 			this.SpecialEquipment = new Dictionary<string, SpecialEquipmentType>();
+			this.SystemColonizerDesigns = new List<PredefinedDesign>();
 			this.Thrusters = new Dictionary<string, ThrusterType>();
 			this.PredeginedDesigns = new List<PredefinedDesign>();
 			this.Technologies = new List<Technology>();
@@ -67,6 +71,9 @@ namespace Stareater.GameData.Databases
 						switch((string)data.Tag) {
 							case BuildingTag:
 								Buildings.Add(data[GeneralCodeKey].To<string>(), loadBuilding(data));
+								break;
+							case ColonizersTag:
+								loadColonizers(data.To<IkonComposite>());
 								break;
 							case ColonyFormulasTag:
 								ColonyFormulas = loadColonyFormulas(data);
@@ -235,19 +242,19 @@ namespace Stareater.GameData.Databases
 		}
 		#endregion
 
+		private void loadColonizers(IkonComposite data)
+		{
+			foreach(var designData in data[ColonizerInterstellar].To<IEnumerable<IkonComposite>>())
+				this.ColonyShipDesigns.Add(loadPredefDesign(designData));
+			
+			foreach(var designData in data[ColonizerSystem].To<IEnumerable<IkonComposite>>())
+				this.SystemColonizerDesigns.Add(loadPredefDesign(designData));
+		}
+		
 		private PredefinedDesign loadPredefDesign(IkonComposite data)
 		{
-			PredefinedDesignType type;
-			if (data[DesignType].To<string>() == DesignTypeColonizer)
-				type = PredefinedDesignType.Colonizer;
-			else if (data[DesignType].To<string>() == DesignTypeRegular)
-				type = PredefinedDesignType.Regular;
-			else
-				throw new IndexOutOfRangeException();
-			
 			return new PredefinedDesign(
 				data[DesignName].To<string>(),
-				type,
 				data[DesignHull].To<string>(),
 				data[DesignHullImageIndex].To<int>(),
 				data.Keys.Contains(DesignIsDrive),
@@ -416,6 +423,7 @@ namespace Stareater.GameData.Databases
 		#region Loading tags and keys
 		private const string BuildingTag = "Building";
 		private const string ColonyFormulasTag = "ColonyFormulas";
+		private const string ColonizersTag = "Colonizers";
 		private const string ConstructableTag = "Constructable";
 		private const string DevelopmentFocusesTag = "DevelopmentFocusOptions";
 		private const string DevelopmentTag = "DevelopmentTopic";
@@ -463,6 +471,9 @@ namespace Stareater.GameData.Databases
 		private const string AddBuildingBuildingId = "buildingId";
 		private const string AddBuildingQuantity = "quantity";
 		
+		private const string ColonizerInterstellar = "interstellar";
+		private const string ColonizerSystem = "system";
+		
 		private const string DerivedStatBase = "base";
 		private const string DerivedStatTotal = "total";
 		
@@ -472,8 +483,6 @@ namespace Stareater.GameData.Databases
 		private const string DesignHullImageIndex = "hullImageIndex";
 		private const string DesignSpecialEquipment = "specials";
 		private const string DesignType = "type";
-		private const string DesignTypeColonizer = "colonizer";
-		private const string DesignTypeRegular = "regular";
 		
 		private const string FocusList = "list";
 		

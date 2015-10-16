@@ -250,7 +250,6 @@
     <Compile Include="GameData\Ships\IIncrementalComponent.cs" />
     <Compile Include="GameData\Ships\IsDriveType.cs" />
     <Compile Include="GameData\Ships\PredefinedDesign.cs" />
-    <Compile Include="GameData\Ships\PredefinedDesignType.cs" />
     <Compile Include="GameData\Ships\ReactorType.cs" />
     <Compile Include="GameData\Ships\SensorType.cs" />
     <Compile Include="GameData\Ships\SpecialEquipmentType.cs" />

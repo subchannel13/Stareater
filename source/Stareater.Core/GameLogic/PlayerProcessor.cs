@@ -292,7 +292,7 @@ namespace Stareater.GameLogic
 			var playerTechs = states.TechnologyAdvances.Of(Player);
 			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
 				
-			foreach(var predefDesign in statics.PredeginedDesigns.Where(x => x.Type == PredefinedDesignType.Regular))
+			foreach(var predefDesign in statics.PredeginedDesigns)
 				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
 				{
 					Player.UnlockedDesigns.Add(predefDesign);

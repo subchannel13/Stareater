@@ -1,6 +1,5 @@
 { PredefinedDesign
 	name: Interceptor
-	type: regular
 	
 	hull: fighter
 	hullImageIndex= 0
@@ -10,7 +9,6 @@
 
 { PredefinedDesign
 	name: Scout
-	type: regular
 	
 	hull: cruiser
 	hullImageIndex= 0
