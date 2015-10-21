@@ -9,7 +9,7 @@ namespace Stareater.GameLogic
 {
 	class ConstructionAddShip : IConstructionEffect
 	{
-		private Design design;
+		private readonly Design design;
 		
 		public ConstructionAddShip(Design design)
 		{
@@ -19,9 +19,7 @@ namespace Stareater.GameLogic
 		public void Apply(StatesDB states, AConstructionSite site, double quantity)
 		{
 			//TODO(v0.5) report new ship construction
-			var fleet = states.Fleets.At(site.Location.Star.Position).
-				Where(x => x.Owner == site.Owner && x.Mission.Type == MissionType.Stationary).
-				FirstOrDefault();
+			var fleet = states.Fleets.At(site.Location.Star.Position).FirstOrDefault(x => x.Owner == site.Owner && x.Mission.Type == MissionType.Stationary);
 
 			if (fleet == null) {
 				fleet = new Fleet(site.Owner, site.Location.Star.Position, new StationaryMission(site.Location.Star));

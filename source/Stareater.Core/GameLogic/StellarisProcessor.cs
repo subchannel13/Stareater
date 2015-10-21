@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Stareater.AppData.Expressions;
 using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.GameData.Databases;
@@ -69,10 +70,11 @@ namespace Stareater.GameLogic
 				Stellaris.Owner.Orders.ConstructionPlans[Stellaris].SpendingRatio *
 				industryPotential;
 
+			var normalQueue = Stellaris.Owner.Orders.ConstructionPlans[Stellaris].Queue;
 			this.SpendingPlan = SimulateSpending(
 				Stellaris,
 				industryPoints,
-				Stellaris.Owner.Orders.ConstructionPlans[Stellaris].Queue,
+				colonizationQueue(playerProcessor).Concat(normalQueue),
 				vars
 			);
 			this.Production = this.SpendingPlan.Sum(x => x.InvestedPoints);
@@ -91,6 +93,24 @@ namespace Stareater.GameLogic
 			{
 				return Stellaris;
 			}
+		}
+		
+		private IEnumerable<Constructable> colonizationQueue(PlayerProcessor playerProcessor)
+		{
+			foreach(var plan in this.Site.Owner.Orders.ColonizationOrders.Values)
+				if (plan.Sources.Contains(this.Site.Location.Star))
+				{
+					var colonizer = (plan.Destination.Star == this.Site.Location.Star) ?
+						playerProcessor.SystemColonizerDesign :
+						playerProcessor.ColonyShipDesign;
+					
+					yield return new Constructable(
+						colonizer.Name, "", true, colonizer.ImagePath, colonizer.IdCode, 
+						new Prerequisite[0], SiteType.StarSystem,
+						new Formula(true), new Formula(colonizer.Cost), new Formula(double.PositiveInfinity), 
+						new IConstructionEffect[] { new ConstructionAddShip(colonizer) }
+					);
+				}
 		}
 	}
 }

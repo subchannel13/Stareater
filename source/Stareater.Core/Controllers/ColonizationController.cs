@@ -73,6 +73,7 @@ namespace Stareater.Controllers
 				plan.Sources.AddRange(colonizationSources.Select(x => x.Stellaris.Location.Star));
 			
 			this.Game.CurrentPlayer.Orders.ColonizationOrders.Add(this.PlanetBody, plan);
+			updateStellarises(plan.Sources);
 		}
 		
 		public void StopColonization(params StellarisInfo[] colonizationSources)
@@ -81,15 +82,26 @@ namespace Stareater.Controllers
 				return;
 			
 			var plan = this.Game.CurrentPlayer.Orders.ColonizationOrders[this.PlanetBody];
+			IEnumerable<StarData> toUpdate = new StarData[0];
 			
 			if (colonizationSources != null && colonizationSources.Length > 0)
 				foreach(var source in colonizationSources)
+				{
 					plan.Sources.Remove(source.Stellaris.Location.Star);
+					toUpdate = colonizationSources.Select(x => x.HostStar);
+				}
 			else
-					plan.Sources.Clear();
+			{
+				toUpdate = plan.Sources.ToArray();
+				plan.Sources.Clear();
+			}
 			
 			if (plan.Sources.Count == 0)
 				this.Game.CurrentPlayer.Orders.ColonizationOrders.Remove(this.PlanetBody);
+			else
+				updateStellarises(plan.Sources);
+			
+			updateStellarises(toUpdate);
 		}
 		
 		public IEnumerable<StellarisInfo> AvailableSources()
@@ -117,5 +129,19 @@ namespace Stareater.Controllers
 			return stars.Select(x => new StellarisInfo(this.Game.States.Stellarises.At(x)));
 		}
 		#endregion
+		
+		private void updateStellarises(IEnumerable<StarData> sources)
+		{
+			var playerProcessor = this.Game.Derivates.Of(this.Game.CurrentPlayer);
+			
+			foreach(var source in sources)
+			{
+				var stellaris = this.Game.States.Stellarises.At(source);
+				this.Game.Derivates.Stellarises.Of(stellaris).CalculateSpending(
+					playerProcessor, 
+					this.Game.Derivates.Colonies.At(stellaris.Location.Star).Where(x => x.Owner == this.Game.CurrentPlayer)
+				);
+			}
+		}
 	}
 }

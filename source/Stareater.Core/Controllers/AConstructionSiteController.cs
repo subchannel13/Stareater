@@ -77,6 +77,7 @@ namespace Stareater.Controllers
 			get
 			{
 				var spendingPlan = Processor.SpendingPlan.ToDictionary(x => x.Type);
+				//TODO(v0.5) show virtual items like colony ships
 				foreach (var item in Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue)
 					yield return new ConstructableItem(
 						item, 

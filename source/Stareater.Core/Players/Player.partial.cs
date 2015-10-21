@@ -43,7 +43,7 @@ namespace Stareater.Players
 			{
 				string factoryId = dataMap[PlayerType.FactoryIdKey].To<string>();
 				//TODO: what if no factory was found?
-				return PlayerAssets.AIDefinitions.Where(x => x.Id == factoryId).First().Load(dataMap);
+				return PlayerAssets.AIDefinitions.First(x => x.Id == factoryId).Load(dataMap);
 			}
 			
 			//TODO: Invalid controller data

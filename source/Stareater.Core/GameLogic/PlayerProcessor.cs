@@ -25,6 +25,8 @@ namespace Stareater.GameLogic
 		public StarData ResearchCenter { get; private set; }
 		public Player Player { get; private set; }
 		public Dictionary<Design, DesignStats> DesignStats { get; private set; }
+		public Design ColonyShipDesign { get; private set; }
+		public Design SystemColonizerDesign { get; private set; }
 		
 		public PlayerProcessor(Player player, IEnumerable<Technology> technologies)
 		{
@@ -48,11 +50,11 @@ namespace Stareater.GameLogic
 		{
 			var copy = new PlayerProcessor(playersRemap.Players[this.Player]);
 			
-			copy.DesignStats = new Dictionary<Design, DesignStats>(this.DesignStats.ToDictionary(x => playersRemap.Designs[x.Key], x => x.Value));
+			copy.DesignStats = new Dictionary<Design, DesignStats>(playersRemap.Designs.Keys.Where(x => x.Owner == this.Player).ToDictionary(x => x, x => this.DesignStats[x]));
 			copy.DevelopmentPlan = (this.DevelopmentPlan != null) ? new List<ScienceResult>(this.DevelopmentPlan) : null;
 			copy.ResearchPlan  = (this.ResearchPlan != null) ? new List<ScienceResult>(this.ResearchPlan) : null;
 			copy.TechLevels = new Dictionary<string, double>(this.TechLevels);
-
+			
 			return copy;
 		}
 		
@@ -211,6 +213,7 @@ namespace Stareater.GameLogic
 		}
 		#endregion
 		
+		#region Postcombat processing
 		public void ProcessPostcombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
 			foreach(var techProgress in this.DevelopmentPlan.Concat(this.ResearchPlan)) {
@@ -296,25 +299,43 @@ namespace Stareater.GameLogic
 				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
 				{
 					Player.UnlockedDesigns.Add(predefDesign);
-					var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels);
-					var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
-					var reactor = ReactorType.MakeBest(statics.Reactors.Values, techLevels, hull);
-					var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(statics.IsDrives.Values, techLevels, hull, ReactorType.PowerOf(reactor, hull)) : null;
-					var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels);
-					var specials = predefDesign.SpecialEquipment.ToDictionary(
-						x => statics.SpecialEquipment[x.Key].MakeItem(techLevels),
-						x => x.Value
-					);
-					var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
-
-					var design = new Design(
-						states.MakeDesignId(), Player, predefDesign.Name, predefDesign.HullImageIndex,
-					    armor, hull, isDrive, reactor, sensor, specials, thruster
-					);
+					var design = makeDesign(statics, states, predefDesign, techLevels);
 					states.Designs.Add(design);
-					this.Analyze(design);
 				}
+			
+			//TODO(v0.5) skip step if theere is no update
+			this.ColonyShipDesign = makeDesign(
+				statics, states,
+				statics.ColonyShipDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(statics), 0, techLevels)),
+				techLevels);
+			this.SystemColonizerDesign = makeDesign(
+				statics, states,
+				statics.SystemColonizerDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(statics), 0, techLevels)),
+				techLevels);
 		}
+		
+		private Design makeDesign(StaticsDB statics, StatesDB states, PredefinedDesign predefDesign, Dictionary<string, int> techLevels)
+		{
+			var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels);
+			var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
+			var reactor = ReactorType.MakeBest(statics.Reactors.Values, techLevels, hull);
+			var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(statics.IsDrives.Values, techLevels, hull, ReactorType.PowerOf(reactor, hull)) : null;
+			var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels);
+			var specials = predefDesign.SpecialEquipment.ToDictionary(
+				x => statics.SpecialEquipment[x.Key].MakeItem(techLevels),
+				x => x.Value
+			);
+			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
+
+			var design = new Design(
+				states.MakeDesignId(), Player, predefDesign.Name, predefDesign.HullImageIndex,
+			    armor, hull, isDrive, reactor, sensor, specials, thruster
+			);
+			this.Analyze(design);
+			
+			return design;
+		}
+		#endregion
 		
 		private static Dictionary<string, int> updateTechQueue(IEnumerable<KeyValuePair<string, int>> queue, ICollection<string> validItems)
 		{
