@@ -11,8 +11,12 @@ namespace Stareater.Controllers
 {
 	public abstract class AConstructionSiteController
 	{
+		private const int NotOrder = -1;
+		
 		internal Game Game { get; private set; }
 		internal AConstructionSite Site { get; private set; }
+		
+		private List<int> orderIndex = new List<int>();
 		
 		internal AConstructionSiteController(AConstructionSite site, bool readOnly, Game game)
 		{
@@ -76,22 +80,33 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var spendingPlan = Processor.SpendingPlan.ToDictionary(x => x.Type);
-				//TODO(v0.5) show virtual items like colony ships
-				foreach (var item in Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue)
+				orderIndex.Clear();
+				int orderI = 0;
+				
+				foreach(var item in Processor.SpendingPlan)
+				{
+					if (!item.Type.IsVirtual && item.Type == Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue[orderI])
+					{
+						orderIndex.Add(orderI);
+						orderI++;
+					}
+					else
+						orderIndex.Add(NotOrder);
+					    
 					yield return new ConstructableItem(
-						item, 
+						item.Type, 
 						Game.Derivates.Players.Of(Game.CurrentPlayer), 
-						spendingPlan[item].CompletedCount,
-						Site.Stockpile.ContainsKey(item) ? Site.Stockpile[item] : 0,
-						spendingPlan[item].InvestedPoints + spendingPlan[item].FromStockpile
+						item.CompletedCount,
+						Site.Stockpile.ContainsKey(item.Type) ? Site.Stockpile[item.Type] : 0,
+						item.InvestedPoints + item.FromStockpile
 					);
+				}
 			}
 		}
 		
 		public bool CanPick(ConstructableItem data)
 		{
-			return ConstructionQueue.All(x => x.IdCode != data.IdCode);	//TODO(later): consider building count
+			return Processor.SpendingPlan.All(x => x.Type.IdCode != data.IdCode);	//TODO(later): consider building count
 		}
 		
 		public void Enqueue(ConstructableItem data)
@@ -105,21 +120,21 @@ namespace Stareater.Controllers
 		
 		public void Dequeue(int index)
 		{
-			if (IsReadOnly)
+			if (IsReadOnly || orderIndex[index] == NotOrder)
 				return;
 			
-			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.RemoveAt(index);
+			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.RemoveAt(orderIndex[index]);
 			this.RecalculateSpending();
 		}
 		
 		public void ReorderQueue(int fromIndex, int toIndex)
 		{
-			if (IsReadOnly)
+			if (IsReadOnly || orderIndex[fromIndex] == NotOrder || orderIndex[toIndex] == NotOrder)
 				return;
 			
-			var item = Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue[fromIndex];
-			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.RemoveAt(fromIndex);
-			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.Insert(toIndex, item);
+			var item = Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue[orderIndex[fromIndex]];
+			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.RemoveAt(orderIndex[fromIndex]);
+			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.Insert(orderIndex[toIndex], item);
 			this.RecalculateSpending();
 		}
 		#endregion

@@ -11,7 +11,7 @@ namespace Stareater.Controllers.Views
 	{
 		private const string LangContext = "Constructables";
 		
-		private IDictionary<string, double> vars;
+		private readonly IDictionary<string, double> vars;
 		
 		internal ConstructableItem(Constructable constructable, PlayerProcessor playerProcessor, 
 		                           double? perTurnDone, double stockpile, double investment)
@@ -34,10 +34,9 @@ namespace Stareater.Controllers.Views
 		{
 			get 
 			{
-				if (Constructable.LiteralText)
-					return Constructable.NameCode;
-				
-				return Settings.Get.Language[LangContext][Constructable.NameCode].Text();
+				return Constructable.LiteralText ? 
+					Constructable.NameCode : 
+					Settings.Get.Language[LangContext][Constructable.NameCode].Text();
 			}
 		}
 		
@@ -45,10 +44,9 @@ namespace Stareater.Controllers.Views
 		{ 
 			get 
 			{
-				if (Constructable.LiteralText)
-					return Constructable.DescriptionCode;
-				
-				return Settings.Get.Language[LangContext][Constructable.DescriptionCode].Text();
+				return Constructable.LiteralText ? 
+					Constructable.DescriptionCode : 
+					Settings.Get.Language[LangContext][Constructable.DescriptionCode].Text();
 			}
 		}
 		
@@ -65,6 +63,14 @@ namespace Stareater.Controllers.Views
 			get 
 			{
 				return Constructable.IdCode;
+			}
+		}
+		
+		public bool IsVirtual
+		{
+			get 
+			{
+				return Constructable.IsVirtual;
 			}
 		}
 		

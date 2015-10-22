@@ -62,8 +62,10 @@ namespace Stareater.GUI
 		private void reorderItem(int fromIndex, int toIndex)
 		{
 			if (toIndex < 0) toIndex = 0;
-			if (toIndex >= queueList.Controls.Count)	toIndex = queueList.Controls.Count - 1;
-			if (fromIndex == toIndex)
+			if (toIndex >= queueList.Controls.Count) toIndex = queueList.Controls.Count - 1;
+			if (fromIndex == toIndex ||
+			    (queueList.Controls[fromIndex] as QueuedConstructionView).Data.IsVirtual ||
+			    (queueList.Controls[toIndex] as QueuedConstructionView).Data.IsVirtual)
 				return;
 			
 			controller.ReorderQueue(fromIndex, toIndex);
@@ -121,7 +123,8 @@ namespace Stareater.GUI
 		
 		private void removeButton_Click(object sender, EventArgs e)
 		{
-			if (!queueList.HasSelection)
+			if (controller.IsReadOnly || !queueList.HasSelection ||
+			    (queueList.SelectedItem as QueuedConstructionView).Data.IsVirtual)
 				return;
 			
 			controller.Dequeue(queueList.SelectedIndex);
@@ -133,7 +136,7 @@ namespace Stareater.GUI
 		
 		private void moveUpButton_Click(object sender, EventArgs e)
 		{
-			if (!queueList.HasSelection)
+			if (controller.IsReadOnly || !queueList.HasSelection)
 				return;
 			
 			reorderItem(queueList.SelectedIndex, queueList.SelectedIndex - 1);
@@ -142,6 +145,9 @@ namespace Stareater.GUI
 		
 		private void moveDownButton_Click(object sender, EventArgs e)
 		{
+			if (controller.IsReadOnly || !queueList.HasSelection)
+				return;
+			
 			reorderItem(queueList.SelectedIndex, queueList.SelectedIndex + 1);
 			updateQueue();
 		}

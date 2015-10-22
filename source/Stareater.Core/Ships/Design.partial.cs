@@ -67,7 +67,7 @@ namespace Stareater.Ships
 				if (this.constructionProject == null)
 					this.constructionProject = new Constructable(
 						this.Name, "", true, this.ImagePath,
-						this.IdCode, new Prerequisite[0], SiteType.StarSystem,
+						this.IdCode, new Prerequisite[0], SiteType.StarSystem, false,
 						new Formula(true), new Formula(this.Cost), new Formula(double.PositiveInfinity),
 						new IConstructionEffect[] { new ConstructionAddShip(this) }
 					);

@@ -15,6 +15,7 @@ namespace Stareater.GameData
 		public string IdCode { get; private set; }
 		public IEnumerable<Prerequisite> Prerequisites { get; private set; }
 		public SiteType ConstructableAt { get; private set; }
+		public bool IsVirtual { get; private set; }
 		
 		public Formula Condition { get; private set; }
 		public Formula Cost { get; private set; }
@@ -23,7 +24,7 @@ namespace Stareater.GameData
 		public IEnumerable<IConstructionEffect> Effects { get; private set; }
 		
 		public Constructable(string nameCode, string descriptionCode, bool literalText, string imagePath, 
-		                     string idCode, IEnumerable<Prerequisite> prerequisites, SiteType constructableAt, 
+		                     string idCode, IEnumerable<Prerequisite> prerequisites, SiteType constructableAt, bool isVirtual,
 		                     Formula condition, Formula cost, Formula turnLimit, IEnumerable<IConstructionEffect> effects)
 		{
 			this.NameCode = nameCode;
@@ -33,6 +34,7 @@ namespace Stareater.GameData
 			this.IdCode = idCode;
 			this.Prerequisites = prerequisites;
 			this.ConstructableAt = constructableAt;
+			this.IsVirtual = isVirtual;
 			this.Condition = condition;
 			this.Cost = cost;
 			this.TurnLimit = turnLimit;

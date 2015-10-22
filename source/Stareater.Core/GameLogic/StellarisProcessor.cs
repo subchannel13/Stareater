@@ -106,7 +106,7 @@ namespace Stareater.GameLogic
 					
 					yield return new Constructable(
 						colonizer.Name, "", true, colonizer.ImagePath, colonizer.IdCode, 
-						new Prerequisite[0], SiteType.StarSystem,
+						new Prerequisite[0], SiteType.StarSystem, true,
 						new Formula(true), new Formula(colonizer.Cost), new Formula(double.PositiveInfinity), 
 						new IConstructionEffect[] { new ConstructionAddShip(colonizer) }
 					);

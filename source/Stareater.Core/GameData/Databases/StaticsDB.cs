@@ -203,6 +203,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(), 
 				siteType(data[ConstructableSiteKey].To<string>()),
+				false,
 				data[ConstructableConditionKey].To<Formula>(),
 				data[GeneralCostKey].To<Formula>(),
 				data[ConstructableLimitKey].To<Formula>(),
