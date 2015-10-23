@@ -8,8 +8,8 @@ namespace Stareater.GameLogic
 {
 	class ConstructionAddBuilding : IConstructionEffect
 	{
-		private string buildingCode;
-		private Formula quantity;
+		private readonly string buildingCode;
+		private readonly Formula quantity;
 		
 		public ConstructionAddBuilding(string buildingCode, Formula quantity)
 		{
