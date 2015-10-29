@@ -266,7 +266,7 @@ namespace Stareater.GameLogic
 			UnlockPredefinedDesigns(statics, states);
 		}
 
-		public void Analyze(Design design)
+		public void Analyze(Design design, StaticsDB statics)
 		{
 			var hullVars = new Var(AComponentType.LevelKey, design.Hull.Level).Get;
 			
@@ -284,9 +284,31 @@ namespace Stareater.GameLogic
 				galaxySpeed = design.IsDrive.TypeInfo.Speed.Evaluate(driveVars);
 			}
 			
+			var shipVars = new Var();
+			foreach(var special in statics.SpecialEquipment.Keys)
+			{
+				shipVars.And(special, 0);
+				shipVars.And(special + "_lvl", 0); //TODO Make "_lvl" string constant
+			}
+			foreach(var special in design.SpecialEquipment)
+			{
+				shipVars[special.Key.TypeInfo.IdCode] = special.Value;
+				shipVars[special.Key.TypeInfo.IdCode + "_lvl"] = special.Key.Level; //TODO Make string constant
+			}
+			var buildings = new Dictionary<string, double>();
+			foreach(var colonyBuilding in statics.ShipFormulas.ColonizerBuildings)
+			{
+				double amount = colonyBuilding.Value.Evaluate(shipVars.Get);
+				if (amount > 0)
+					buildings.Add(colonyBuilding.Key, amount);
+			}
+			
 			this.DesignStats.Add(
 				design,
-				new DesignStats(galaxySpeed)
+				new DesignStats(galaxySpeed,
+				                statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
+				                buildings
+				               )
 			);
 		}
 		
@@ -331,7 +353,7 @@ namespace Stareater.GameLogic
 				states.MakeDesignId(), Player, predefDesign.Name, predefDesign.HullImageIndex,
 			    armor, hull, isDrive, reactor, sensor, specials, thruster
 			);
-			this.Analyze(design);
+			this.Analyze(design, statics);
 			
 			return design;
 		}

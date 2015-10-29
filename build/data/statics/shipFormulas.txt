@@ -6,8 +6,8 @@
 	
 	detection # sensor;
 	
-	colonyPop # 500 * colony * (Colonizer + 1) ^ 2;
-	colonyBuildings [
-		Infra # 500 * colony * (Colonizer + 1) ^ 2;
-	]
+	colonyPop # 500 * colony * (1 + 0.1 * colony_lvl ^ 2);
+	colonyBuildings { Buildings
+		Infra # 500 * colony * (1 + 0.1 * colony_lvl ^ 2);
+	}
 }

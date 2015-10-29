@@ -176,11 +176,18 @@ namespace Stareater.GameData.Databases
 
 		private ShipFormulaSet loadShipFormulas(IkonComposite data)
 		{
+			var colonizerBuildings = new Dictionary<string, Formula>();
+			var buildingData = data[ShipColonyBuildings].To<IkonComposite>();
+			foreach(var buildingId in buildingData.Keys)
+				colonizerBuildings.Add(buildingId, buildingData[buildingId].To<Formula>());
+					
 			return new ShipFormulaSet(
 				data[ShipCombatSpeed].To<Formula>(),
 				data[ShipDetection].To<Formula>(),
 				data[ShipEvasion].To<Formula>(),
-				data[ShipHitPoints].To<Formula>()
+				data[ShipHitPoints].To<Formula>(),
+				data[ShipColonyPopulation].To<Formula>(),
+				colonizerBuildings
 			);
 		}
 		
@@ -459,6 +466,8 @@ namespace Stareater.GameData.Databases
 		private const string ShipDetection = "detection";
 		private const string ShipEvasion = "evasion";
 		private const string ShipHitPoints = "hitPoints";
+		private const string ShipColonyPopulation = "colonyPop";
+		private const string ShipColonyBuildings = "colonyBuildings";
 
 		private const string ConstructableCostKey = "cost";
 		private const string ConstructableSiteKey = "site";

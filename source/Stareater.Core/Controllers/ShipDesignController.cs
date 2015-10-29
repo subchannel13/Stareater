@@ -229,7 +229,7 @@ namespace Stareater.Controllers
 				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level)
 			);
 			game.States.Designs.Add(desing); //TODO(v0.5) add to changes DB and propagate to states during turn processing
-			game.Derivates.Players.Of(this.game.CurrentPlayer).Analyze(desing);
+			game.Derivates.Players.Of(this.game.CurrentPlayer).Analyze(desing, this.game.Statics);
 		}
 		#endregion
 	}

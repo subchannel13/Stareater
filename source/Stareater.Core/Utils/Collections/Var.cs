@@ -51,5 +51,11 @@ namespace Stareater.Utils.Collections
 			
 			return this;
 		}
+		
+		public double this[string key]
+		{
+			get { return this.variables[key]; }
+			set { this.variables[key] = value; }
+		}
 	}
 }
