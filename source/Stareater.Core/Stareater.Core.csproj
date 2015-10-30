@@ -314,6 +314,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\TechnologyProgress.partial.cs" />
+    <Compile Include="GameLogic\ConstructionAddColonizer.cs" />
     <Compile Include="GameLogic\ConstructionResult.cs">
       <DependentUpon>ConstructionResult.tt</DependentUpon>
       <AutoGen>True</AutoGen>
