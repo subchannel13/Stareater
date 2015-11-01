@@ -8,6 +8,9 @@
 	modifer = "partial";
 	
 	Generate("Stareater.GameData", "ColonizationProject",
-		new DataInfo("Destination", "Planet").FromIndexer()
+		new DataInfo("Destination", "Planet").FromIndexer(),
+		new DataInfo("NewColonizers", "List",
+			new GenericParamInfo("Fleet").IsState(Flag.PlayerRemap).CopyMethod("Copy(playersRemap, galaxyRemap)")
+		).EmptyInit()
 	);
 #>

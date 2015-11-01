@@ -15,8 +15,8 @@ namespace Stareater.GameLogic
 		{
 			this.design = design;
 		}
-		
-		public void Apply(StatesDB states, AConstructionSite site, double quantity)
+
+		public void Apply(StatesDB states, TemporaryDB derivates, AConstructionSite site, long quantity)
 		{
 			//TODO(v0.5) report new ship construction
 			var fleet = states.Fleets.At(site.Location.Star.Position).FirstOrDefault(x => x.Owner == site.Owner && x.Mission.Type == MissionType.Stationary);
@@ -26,12 +26,10 @@ namespace Stareater.GameLogic
 				states.Fleets.Add(fleet);
 			}
 			
-			long intQuantity = (long)Math.Floor(quantity);
-			
 			if (fleet.Ships.DesignContains(design))
-				fleet.Ships.Design(design).Quantity += intQuantity;
+				fleet.Ships.Design(design).Quantity += quantity;
 			else
-				fleet.Ships.Add(new ShipGroup(design, intQuantity));
+				fleet.Ships.Add(new ShipGroup(design, quantity));
 		}
 	}
 }

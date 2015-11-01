@@ -63,7 +63,10 @@ namespace Stareater.GLRenderers
 			
 			var ikonParser = new IkonParser(new StreamReader(AtlasIkonPath));
 			var ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
-			
+
+			/*
+			 * If any sprite is missing, try running {repo root}/scripts/gen_textures.bat script.
+			 */
 			ColonizationMark = new TextureInfo(textureId, ikonData[ColonizationMarkTag].To<IkonArray>());
 			ColonizationMarkColor = new TextureInfo(textureId, ikonData[ColonizationMarkColorTag].To<IkonArray>());
 			FleetIndicator = new TextureInfo(textureId, ikonData[FleetIndicatorTag].To<IkonArray>());

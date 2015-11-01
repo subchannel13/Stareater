@@ -6,6 +6,6 @@ namespace Stareater.GameLogic
 {
 	interface IConstructionEffect
 	{
-		void Apply(StatesDB states, AConstructionSite site, double quantity);
+		void Apply(StatesDB states, TemporaryDB derivates, AConstructionSite site, long quantity);
 	}
 }

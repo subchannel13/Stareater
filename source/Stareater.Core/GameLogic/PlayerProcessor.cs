@@ -192,17 +192,16 @@ namespace Stareater.GameLogic
 		#endregion
 		
 		#region Precombat processing
-		
-		public void ProcessPrecombat(StaticsDB statics, StatesDB states, IList<ColonyProcessor> colonyProcessors, IList<StellarisProcessor> stellarisProcessors)
+
+		public void ProcessPrecombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
-			this.CalculateDevelopment(statics, states, colonyProcessors);
-			
-			foreach (var colonyProc in colonyProcessors) {
-				colonyProc.ProcessPrecombat(states);
-			}
-			
-			foreach (var stellarisProc in stellarisProcessors)
-				stellarisProc.ProcessPrecombat(states);
+			this.CalculateDevelopment(statics, states, derivates.Colonies.OwnedBy(this.Player));
+
+			foreach (var colonyProc in derivates.Colonies.OwnedBy(this.Player))
+				colonyProc.ProcessPrecombat(states, derivates);
+
+			foreach (var stellarisProc in derivates.Stellarises.OwnedBy(this.Player))
+				stellarisProc.ProcessPrecombat(states, derivates);
 			
 			/*
 			 * TODO(v0.5): Process stars
@@ -211,6 +210,7 @@ namespace Stareater.GameLogic
 			 * - Perform migration
 			 */
 		}
+
 		#endregion
 		
 		#region Postcombat processing

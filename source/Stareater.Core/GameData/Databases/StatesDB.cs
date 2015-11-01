@@ -78,8 +78,8 @@ namespace Stareater.GameData.Databases
 			copy.Stellarises.Add(playersRemap.Stellarises.Values);
 
 			copy.ColonizationProjects = new ColonizationCollection();
-			copy.ColonizationProjects.Add(this.ColonizationProjects.Select(x => x.Copy(galaxyRemap)));
-				
+			copy.ColonizationProjects.Add(this.ColonizationProjects.Select(x => x.Copy(playersRemap, galaxyRemap)));
+
 			copy.Fleets = new FleetCollection();
 			copy.Fleets.Add(playersRemap.Fleets.Values);
 			

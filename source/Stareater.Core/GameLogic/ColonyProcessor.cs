@@ -163,10 +163,10 @@ namespace Stareater.GameLogic
 			
 			return vars;
 		}
-		
-		public override void ProcessPrecombat(StatesDB states)
+
+		public override void ProcessPrecombat(StatesDB states, TemporaryDB derivates)
 		{
-			base.ProcessPrecombat(states);
+			base.ProcessPrecombat(states, derivates);
 			Colony.Population = Methods.Clamp(Colony.Population + PopulationGrowth, 0, MaxPopulation);
 			
 			/* TODO(v0.5): Colonies, 1st pass

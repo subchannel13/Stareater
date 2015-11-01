@@ -1,5 +1,6 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
@@ -28,14 +29,14 @@ namespace Stareater.Galaxy
 			 
 		} 
 
-		private Fleet(Fleet original, Player owner, AMission mission) 
+		private Fleet(Fleet original, PlayersRemap playersRemap, Player owner, AMission mission) 
 		{
 			this.Owner = owner;
 			this.Position = original.Position;
 			this.Mission = mission;
 			this.Ships = new ShipGroupCollection();
 			foreach(var item in original.Ships)
-				this.Ships.Add(item);
+				this.Ships.Add(item.Copy(playersRemap));
  
 			 
 		}
@@ -64,7 +65,7 @@ namespace Stareater.Galaxy
 
 		internal Fleet Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap) 
 		{
-			return new Fleet(this, playersRemap.Players[this.Owner], playersRemap.Missions[this.Mission]);
+			return new Fleet(this, playersRemap, playersRemap.Players[this.Owner], playersRemap.Missions[this.Mission]);
  
 		} 
  

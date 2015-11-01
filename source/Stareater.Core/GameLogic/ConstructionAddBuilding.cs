@@ -16,12 +16,12 @@ namespace Stareater.GameLogic
 			this.buildingCode = buildingCode;
 			this.quantity = quantity;
 		}
-		
-		public void Apply(StatesDB states, AConstructionSite site, double quantity)
+
+		public void Apply(StatesDB states, TemporaryDB derivates, AConstructionSite site, long quantity)
 		{
 			//TODO(v0.5) report new building construction
 			var vars = new Var("quantity", quantity);
-			quantity = this.quantity.Evaluate(vars.Get);
+			quantity = (long)this.quantity.Evaluate(vars.Get);
 			
 			if (!site.Buildings.ContainsKey(buildingCode))
 				site.Buildings.Add(buildingCode, quantity);

@@ -28,8 +28,7 @@ namespace Stareater.GameLogic
 				playerProc.ProcessPrecombat(
 					this.game.Statics,
 					this.game.States,
-					this.game.Derivates.Colonies.OwnedBy(playerProc.Player),
-					this.game.Derivates.Stellarises.OwnedBy(playerProc.Player)
+					this.game.Derivates
 				);
 
 			this.moveShips();
