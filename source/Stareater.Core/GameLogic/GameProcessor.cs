@@ -32,6 +32,8 @@ namespace Stareater.GameLogic
 				);
 
 			this.moveShips();
+			this.precombatColonization();
+			
 			/*
 			 * TODO(v0.5): Process ships
 			 * - Space combat
@@ -43,10 +45,10 @@ namespace Stareater.GameLogic
 
 		public void ProcessPostcombat()
 		{
-			// TODO(v0.5): Process research
 			foreach (var playerProc in this.game.Derivates.Players)
 				playerProc.ProcessPostcombat(this.game.Statics, this.game.States, this.game.Derivates);
 
+			this.postcombatColonization();
 			// TODO(v0.5): Update ship designs
 
 			// TODO(v0.5): Upgrade and repair ships
@@ -194,6 +196,25 @@ namespace Stareater.GameLogic
 				}
 			}
 			this.game.States.Fleets.ApplyPending();
+		}
+
+		private void precombatColonization()
+		{
+			foreach(var project in this.game.States.ColonizationProjects)
+				foreach(var fleet in project.Enroute)
+					if (fleet.Position != project.Destination.Star.Position)
+						; //TODO(v0.5) move colonizers
+					else
+						; //TODO(v0.5) colonizer arrival logic
+		}
+
+		private void postcombatColonization()
+		{
+			foreach(var project in this.game.States.ColonizationProjects)
+			{
+				project.Enroute.AddRange(project.NewColonizers);
+				project.NewColonizers.Clear();
+			}
 		}
 	}
 }

@@ -11,6 +11,9 @@
 		new DataInfo("Destination", "Planet").FromIndexer(),
 		new DataInfo("NewColonizers", "List",
 			new GenericParamInfo("Fleet").IsState(Flag.PlayerRemap).CopyMethod("Copy(playersRemap, galaxyRemap)")
+		).EmptyInit(),
+		new DataInfo("Enroute", "List",
+			new GenericParamInfo("Fleet").IsState(Flag.PlayerRemap).CopyMethod("Copy(playersRemap, galaxyRemap)")
 		).EmptyInit()
 	);
 #>

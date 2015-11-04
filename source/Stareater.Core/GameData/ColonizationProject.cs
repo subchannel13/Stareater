@@ -1,6 +1,5 @@
 ﻿ 
 
-
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
@@ -13,11 +12,13 @@ namespace Stareater.GameData
 	{
 		public Planet Destination { get; private set; }
 		public List<Fleet> NewColonizers { get; private set; }
+		public List<Fleet> Enroute { get; private set; }
 
 		public ColonizationProject(Planet destination) 
 		{
 			this.Destination = destination;
 			this.NewColonizers = new List<Fleet>();
+			this.Enroute = new List<Fleet>();
  
 			 
 		} 
@@ -28,6 +29,9 @@ namespace Stareater.GameData
 			this.NewColonizers = new List<Fleet>();
 			foreach(var item in original.NewColonizers)
 				this.NewColonizers.Add(item.Copy(playersRemap, galaxyRemap));
+			this.Enroute = new List<Fleet>();
+			foreach(var item in original.Enroute)
+				this.Enroute.Add(item.Copy(playersRemap, galaxyRemap));
  
 			 
 		}
@@ -41,6 +45,11 @@ namespace Stareater.GameData
 			this.NewColonizers = new List<Fleet>();
 			foreach(var item in newColonizersSave.To<IkonArray>())
 				this.NewColonizers.Add(Fleet.Load(item.To<IkonComposite>(), deindexer));
+
+			var enrouteSave = rawData[EnrouteKey];
+			this.Enroute = new List<Fleet>();
+			foreach(var item in enrouteSave.To<IkonArray>())
+				this.Enroute.Add(Fleet.Load(item.To<IkonComposite>(), deindexer));
  
 			 
 		}
@@ -62,6 +71,11 @@ namespace Stareater.GameData
 			foreach(var item in this.NewColonizers)
 				newColonizersData.Add(item.Save(indexer));
 			data.Add(NewColonizersKey, newColonizersData);
+
+			var enrouteData = new IkonArray();
+			foreach(var item in this.Enroute)
+				enrouteData.Add(item.Save(indexer));
+			data.Add(EnrouteKey, enrouteData);
 			return data;
  
 		}
@@ -77,6 +91,7 @@ namespace Stareater.GameData
 		private const string TableTag = "ColonizationProject";
 		private const string DestinationKey = "destination";
 		private const string NewColonizersKey = "newColonizers";
+		private const string EnrouteKey = "enroute";
  
 		#endregion
 

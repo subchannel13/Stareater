@@ -205,8 +205,6 @@ namespace Stareater.GameLogic
 			
 			/*
 			 * TODO(v0.5): Process stars
-			 * - Calculate effects from colonies
-			 * - Build
 			 * - Perform migration
 			 */
 		}
