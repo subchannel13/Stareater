@@ -9,8 +9,8 @@ namespace Stareater.GameLogic
 {
 	class ConstructionAddColonizer : IConstructionEffect
 	{
-		private Design colonizerDesign;
-		private Planet destination;
+		private readonly Design colonizerDesign;
+		private readonly Planet destination;
 
 		public ConstructionAddColonizer(Design colonizerDesign, Planet destination)
 		{
@@ -23,7 +23,7 @@ namespace Stareater.GameLogic
 		{
 			//TODO(v0.5) check if colonizer can be added (planet already occupied)
 			if (!states.ColonizationProjects.OfContains(destination))
-				states.ColonizationProjects.Add(new ColonizationProject(destination));
+				states.ColonizationProjects.Add(new ColonizationProject(site.Owner, destination));
 
 			var project = states.ColonizationProjects.Of(destination);
 			Fleet fleet = project.NewColonizers.FirstOrDefault(x => x.Position == site.Location.Star.Position);

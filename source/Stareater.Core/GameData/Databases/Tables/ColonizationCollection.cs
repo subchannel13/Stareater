@@ -12,7 +12,15 @@ namespace Stareater.GameData.Databases.Tables
 		private readonly List<ColonizationProject> toAdd = new List<ColonizationProject>();
 		private readonly List<ColonizationProject> toRemove = new List<ColonizationProject>();
 
+		Dictionary<Player, List<ColonizationProject>> OwnedByIndex = new Dictionary<Player, List<ColonizationProject>>();
 		Dictionary<Planet, ColonizationProject> OfIndex = new Dictionary<Planet, ColonizationProject>();
+
+		public IList<ColonizationProject> OwnedBy(Player key) 
+		{
+			return (OwnedByIndex.ContainsKey(key)) ? 
+				OwnedByIndex[key] : 
+				new List<ColonizationProject>();
+		}
 
 		public ColonizationProject Of(Planet key) {
 			if (OfIndex.ContainsKey(key))
@@ -29,6 +37,10 @@ namespace Stareater.GameData.Databases.Tables
 		public void Add(ColonizationProject item)
 		{
 			innerSet.Add(item); 
+
+			if (!OwnedByIndex.ContainsKey(item.Owner))
+				OwnedByIndex.Add(item.Owner, new List<ColonizationProject>());
+			OwnedByIndex[item.Owner].Add(item);
 			if (!OfIndex.ContainsKey(item.Destination))
 				OfIndex.Add(item.Destination, item);
 		}
@@ -43,6 +55,7 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			innerSet.Clear();
 
+			OwnedByIndex.Clear();
 			OfIndex.Clear();
 		}
 
@@ -69,6 +82,7 @@ namespace Stareater.GameData.Databases.Tables
 		public bool Remove(ColonizationProject item)
 		{
 			if (innerSet.Remove(item)) {
+				OwnedByIndex[item.Owner].Remove(item);
 				OfIndex.Remove(item.Destination);
 			
 				return true;

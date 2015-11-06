@@ -5,6 +5,7 @@ namespace Stareater.GameData.Databases.Tables
 {
 	class ColonyFormulaSet
 	{
+		public Formula ColonizationPopulationThreshold { get; private set; }
 		public Formula UncolonizedMaxPopulation { get; private set; }
 		
 		public Formula MaxPopulation { get; private set; }
@@ -18,11 +19,13 @@ namespace Stareater.GameData.Databases.Tables
 		public PopulationActivityFormulas Development { get; private set; }
 		public PopulationActivityFormulas Industry { get; private set; }
 		
-		public ColonyFormulaSet(Formula uncolonizedMaxPopulation, Formula maxPopulation, DerivedStatistic populationGrowth, 
+		public ColonyFormulaSet(Formula colonizationPopThreshold, Formula uncolonizedMaxPopulation, 
+		                        Formula maxPopulation, DerivedStatistic populationGrowth,
 		                        Formula organization, PopulationActivityFormulas farming, PopulationActivityFormulas gardening, 
 		                        PopulationActivityFormulas mining, PopulationActivityFormulas development, 
 		                        PopulationActivityFormulas industry)
 		{
+			this.ColonizationPopulationThreshold = colonizationPopThreshold;
 			this.UncolonizedMaxPopulation = uncolonizedMaxPopulation;
 			this.MaxPopulation = maxPopulation;
 			this.PopulationGrowth = populationGrowth;

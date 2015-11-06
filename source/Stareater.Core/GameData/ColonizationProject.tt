@@ -4,16 +4,21 @@
 	usings.Add("System");
 	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.Galaxy");
+	usings.Add("Stareater.Players");
 	
 	modifer = "partial";
 	
 	Generate("Stareater.GameData", "ColonizationProject",
+		new DataInfo("Owner", "Player").FromIndexer(),
 		new DataInfo("Destination", "Planet").FromIndexer(),
-		new DataInfo("NewColonizers", "List",
-			new GenericParamInfo("Fleet").IsState(Flag.PlayerRemap).CopyMethod("Copy(playersRemap, galaxyRemap)")
+		new DataInfo("Arrived", "List",
+			new GenericParamInfo("ShipGroup").IsState(Flag.PlayerRemap).CopyMethod("Copy(playersRemap)")
 		).EmptyInit(),
 		new DataInfo("Enroute", "List",
-			new GenericParamInfo("Fleet").IsState(Flag.PlayerRemap).CopyMethod("Copy(playersRemap, galaxyRemap)")
+			new GenericParamInfo("Fleet").IsState(Flag.PlayerRemap).CopyMethod("Copy(playersRemap)")
+		).EmptyInit(),
+		new DataInfo("NewColonizers", "List",
+			new GenericParamInfo("Fleet").IsState(Flag.PlayerRemap).CopyMethod("Copy(playersRemap)")
 		).EmptyInit()
 	);
 #>

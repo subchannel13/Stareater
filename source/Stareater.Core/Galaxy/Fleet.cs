@@ -1,6 +1,5 @@
 ﻿ 
 
-
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
@@ -63,7 +62,7 @@ namespace Stareater.Galaxy
 			 
 		}
 
-		internal Fleet Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap) 
+		internal Fleet Copy(PlayersRemap playersRemap) 
 		{
 			return new Fleet(this, playersRemap, playersRemap.Players[this.Owner], playersRemap.Missions[this.Mission]);
  

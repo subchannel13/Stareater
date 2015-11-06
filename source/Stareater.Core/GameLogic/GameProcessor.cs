@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NGenerics.DataStructures.Mathematical;
 using Stareater.Ships.Missions;
 using Stareater.Galaxy;
 
@@ -201,18 +202,57 @@ namespace Stareater.GameLogic
 		private void precombatColonization()
 		{
 			foreach(var project in this.game.States.ColonizationProjects)
+			{
+				var arrived = new HashSet<Fleet>();
 				foreach(var fleet in project.Enroute)
 					if (fleet.Position != project.Destination.Star.Position)
-						; //TODO(v0.5) move colonizers
+					{
+						//TODO(v0.5) move colonizers
+					}
 					else
-						; //TODO(v0.5) colonizer arrival logic
+					{
+						foreach(var group in fleet.Ships)
+							project.Arrived.Add(group);
+						
+						arrived.Add(fleet);
+						//TODO(v0.5) remove arrived fleet
+					}
+				project.Enroute.RemoveAll(arrived.Contains);
+				
+				var playerProc = this.game.Derivates.Of(project.Owner);
+				var arrivedPopulation = project.Arrived.Sum(x => playerProc.DesignStats[x.Design].ColonizerPopulation * x.Quantity);
+				if (arrivedPopulation >= this.game.Statics.ColonyFormulas.ColonizationPopulationThreshold.Evaluate(null))
+				{
+					var colony = new Colony(arrivedPopulation, project.Destination, project.Owner);
+					foreach(var group in project.Arrived)
+						foreach(var building in playerProc.DesignStats[group.Design].ColonizerBuildings)
+							colony.Buildings.Add(building.Key, building.Value * group.Quantity);
+					this.game.States.Colonies.Add(colony);
+					
+					var colonyProc = new ColonyProcessor(colony);
+					colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Players.Of(colony.Owner));
+					this.game.Derivates.Colonies.Add(colonyProc);
+				
+					project.Owner.Orders.ColonizationOrders.Remove(project.Destination);
+				}
+				//TODO(v0.5) what happens to colonizers that arrive after the colony is established?
+			}
 		}
 
 		private void postcombatColonization()
 		{
 			foreach(var project in this.game.States.ColonizationProjects)
 			{
-				project.Enroute.AddRange(project.NewColonizers);
+				foreach(var fleet in project.NewColonizers)
+				{
+					var newFleet = new Fleet(
+						fleet.Owner, 
+						fleet.Position, 
+						new MoveMission(new Vector2D[] { fleet.Position, project.Destination.Star.Position })
+					);
+					newFleet.Ships.Add(fleet.Ships);
+					project.Enroute.Add(newFleet);
+				}
 				project.NewColonizers.Clear();
 			}
 		}

@@ -137,6 +137,7 @@ namespace Stareater.GameData.Databases
 		private ColonyFormulaSet loadColonyFormulas(IkonComposite data)
 		{
 			return new ColonyFormulaSet(
+				data[ColonizationPopulationThreshold].To<Formula>(),
 				data[UncolonizedMaxPopulation].To<Formula>(),
 				data[ColonyMaxPopulation].To<Formula>(),
 				loadDerivedStat(data[ColonyPopulationGrowth].To<IkonComposite>()),
@@ -449,6 +450,7 @@ namespace Stareater.GameData.Databases
 		private const string SpecialEquipmentTag = "SpecialEquipment";
 		private const string ThrusterTag = "Thruster";
 		
+		private const string ColonizationPopulationThreshold = "colonizationPopThreshold";
 		private const string ColonyMaxPopulation = "maxPopulation";
 		private const string ColonyPopulationGrowth = "populationGrowth";
 		private const string ColonyOrganization = "organization";

@@ -13,7 +13,7 @@
 	Generate("Stareater.Galaxy", "Fleet",
 		new DataInfo("Owner", "Player").FromIndexer(),
 		new DataInfo("Position", "Vector2D"),
-		new DataInfo("Mission", "AMission").IsState(Flag.GalaxyRemap).LoadCode("MissionFactory.Load(#SaveName#, deindexer)"),
+		new DataInfo("Mission", "AMission").IsState().LoadCode("MissionFactory.Load(#SaveName#, deindexer)"),
 		new DataInfo("Ships", "ShipGroupCollection", 
 			new GenericParamInfo("ShipGroup").IsState(Flag.PlayerRemap).CopyMethod("Copy(playersRemap)")
 		).EmptyInit()
