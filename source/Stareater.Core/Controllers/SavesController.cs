@@ -35,6 +35,13 @@ namespace Stareater.Controllers
 			var saveFiles = new Dictionary<SavedGameInfo, DateTime>();
 			var saveNames = new HashSet<string>();
 
+			if (!saveFolder.Exists)
+			{
+				this.nextSaveNumber = 1;
+				this.games = new LinkedList<SavedGameInfo>();
+				return;
+			}
+			
 			foreach (var file in saveFolder.EnumerateFiles("*." + SaveNameExtension)) {
 				saveNames.Add(file.Name);
 
