@@ -319,22 +319,22 @@ namespace Stareater.GameLogic
 				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
 				{
 					Player.UnlockedDesigns.Add(predefDesign);
-					var design = makeDesign(statics, states, predefDesign, techLevels);
-					states.Designs.Add(design);
+					makeDesign(statics, states, predefDesign, techLevels, false);
 				}
 			
-			//TODO(v0.5) skip step if theere is no update
+		
+			//TODO(v0.5) skip step if there is no update
 			this.ColonyShipDesign = makeDesign(
 				statics, states,
 				statics.ColonyShipDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(statics), 0, techLevels)),
-				techLevels);
+				techLevels, true);
 			this.SystemColonizerDesign = makeDesign(
 				statics, states,
 				statics.SystemColonizerDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(statics), 0, techLevels)),
-				techLevels);
+				techLevels, true);
 		}
 		
-		private Design makeDesign(StaticsDB statics, StatesDB states, PredefinedDesign predefDesign, Dictionary<string, int> techLevels)
+		private Design makeDesign(StaticsDB statics, StatesDB states, PredefinedDesign predefDesign, Dictionary<string, int> techLevels, bool isVirtual)
 		{
 			var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels);
 			var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
@@ -348,10 +348,16 @@ namespace Stareater.GameLogic
 			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
 
 			var design = new Design(
-				states.MakeDesignId(), Player, predefDesign.Name, predefDesign.HullImageIndex,
+				states.MakeDesignId(), Player, isVirtual, predefDesign.Name, predefDesign.HullImageIndex,
 			    armor, hull, isDrive, reactor, sensor, specials, thruster
 			);
-			this.Analyze(design, statics);
+			design.CalcHash(statics);
+			
+			if (!states.Designs.Contains(design))
+			{
+				states.Designs.Add(design);
+				this.Analyze(design, statics);
+			}
 			
 			return design;
 		}

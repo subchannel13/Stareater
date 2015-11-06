@@ -5,8 +5,10 @@ using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;
 using Stareater.GameData;
+using Stareater.GameData.Databases;
 using Stareater.GameData.Ships;
 using Stareater.Players;
+using Stareater.Utils;
 
 namespace Stareater.Ships 
 {
@@ -14,6 +16,7 @@ namespace Stareater.Ships
 	{
 		public string IdCode { get; private set; }
 		public Player Owner { get; private set; }
+		public bool IsVirtual { get; private set; }
 		public string Name { get; private set; }
 		private int imageIndex;
 		public Component<ArmorType> Armor { get; private set; }
@@ -23,12 +26,14 @@ namespace Stareater.Ships
 		public Component<SensorType> Sensors { get; private set; }
 		public Dictionary<Component<SpecialEquipmentType>, int> SpecialEquipment { get; private set; }
 		public Component<ThrusterType> Thrusters { get; private set; }
+		private BitHash hash;
 		public double Cost { get; private set; }
 
-		public Design(string idCode, Player owner, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Dictionary<Component<SpecialEquipmentType>, int> specialEquipment, Component<ThrusterType> thrusters) 
+		public Design(string idCode, Player owner, bool isVirtual, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Dictionary<Component<SpecialEquipmentType>, int> specialEquipment, Component<ThrusterType> thrusters) 
 		{
 			this.IdCode = idCode;
 			this.Owner = owner;
+			this.IsVirtual = isVirtual;
 			this.Name = name;
 			this.imageIndex = imageIndex;
 			this.Armor = armor;
@@ -38,6 +43,7 @@ namespace Stareater.Ships
 			this.Sensors = sensors;
 			initSpecials(specialEquipment);
 			this.Thrusters = thrusters;
+			
 			this.Cost = initCost();
  
 			 
@@ -47,6 +53,7 @@ namespace Stareater.Ships
 		{
 			this.IdCode = original.IdCode;
 			this.Owner = owner;
+			this.IsVirtual = original.IsVirtual;
 			this.Name = original.Name;
 			this.imageIndex = original.imageIndex;
 			this.Armor = original.Armor;
@@ -58,6 +65,7 @@ namespace Stareater.Ships
 			foreach(var item in original.SpecialEquipment)
 				this.SpecialEquipment.Add(item.Key, item.Value);
 			this.Thrusters = original.Thrusters;
+			this.hash = original.hash;
 			this.Cost = original.Cost;
  
 			 
@@ -70,6 +78,9 @@ namespace Stareater.Ships
 
 			var ownerSave = rawData[OwnerKey];
 			this.Owner = deindexer.Get<Player>(ownerSave.To<int>());
+
+			var isVirtualSave = rawData[IsVirtualKey];
+			this.IsVirtual = isVirtualSave.To<int>() >= 0;
 
 			var nameSave = rawData[NameKey];
 			this.Name = nameSave.To<string>();
@@ -126,6 +137,8 @@ namespace Stareater.Ships
 
 			data.Add(OwnerKey, new IkonInteger(indexer.IndexOf(this.Owner)));
 
+			data.Add(IsVirtualKey, new IkonInteger(this.IsVirtual ? 1 : -1));
+
 			data.Add(NameKey, new IkonText(this.Name));
 
 			data.Add(ImageIndexKey, new IkonInteger(this.imageIndex));
@@ -165,6 +178,7 @@ namespace Stareater.Ships
 		private const string TableTag = "Design";
 		private const string IdCodeKey = "idCode";
 		private const string OwnerKey = "owner";
+		private const string IsVirtualKey = "isVirtual";
 		private const string NameKey = "name";
 		private const string ImageIndexKey = "imageIndex";
 		private const string ArmorKey = "armor";
@@ -177,6 +191,7 @@ namespace Stareater.Ships
 		private const string SpecialKey = "Type";
 		private const string SpecialAmountKey = "amount";
 		private const string ThrustersKey = "thrusters";
+		private const string HashKey = "hash";
 		private const string CostKey = "cost";
  
 		#endregion

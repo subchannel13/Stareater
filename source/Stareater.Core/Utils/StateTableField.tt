@@ -87,6 +87,8 @@ private static string initLoadAssignLogic(string lowerName, string typeName)
 
 	switch(typeName)
 	{
+		case "bool":
+			return 	"#SaveName#.To<int>() >= 0";
 		case "double":
 			return "#SaveName#.To<double>()";
 		case "float":
@@ -139,6 +141,8 @@ private static string initSaveAssignLogic(string lowerName, string typeName)
 
 	switch(typeName)
 	{
+		case "bool":
+			return "new IkonInteger(#SaveName# ? 1 : -1)";
 		case "double":
 		case "float":
 			return "new IkonFloat(#SaveName#)";
@@ -405,6 +409,19 @@ class DataInfo
 	{
 		this.InitLogic = AssignCode + initCode;
 		this.InitParams = new string[0];
+
+		this.DoSave = false;
+		
+		this.LoadOverride = true;
+		this.LoadAssignLogic = initCode;
+
+		return this;
+	}
+	
+	public DataInfo DerivedParam(string initCode, string constructorParamType, string constructorParamName)
+	{
+		this.InitLogic = AssignCode + initCode;
+		this.InitParams = new string[] { constructorParamType, constructorParamName };
 
 		this.DoSave = false;
 		

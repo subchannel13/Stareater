@@ -45,7 +45,7 @@ namespace Stareater.Controllers
 			deindexer.AddAll(statics.IsDrives.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Technologies, x => x.IdCode);
 			
-			var loadedStates = loadSaveData(saveData, deindexer);
+			var loadedStates = loadSaveData(saveData, deindexer, statics);
 			var states = loadedStates.Item1;
 			var players = loadedStates.Item2;
 			var derivates = initDerivates(statics, players, states);
@@ -226,7 +226,7 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Loading helper methods
-		private static Tuple<StatesDB, Player[]> loadSaveData(IkonComposite saveData, ObjectDeindexer deindexer)
+		private static Tuple<StatesDB, Player[]> loadSaveData(IkonComposite saveData, ObjectDeindexer deindexer, StaticsDB statics)
 		{
 			var stateData = saveData[Game.StatesKey].To<IkonComposite>();
 			var ordersData = saveData[Game.OrdersKey].To<IkonArray>();
@@ -257,7 +257,8 @@ namespace Stareater.Controllers
 			        
 			var designs = new DesignCollection();
 			foreach(var rawData in stateData[StatesDB.DesignsKey].To<IEnumerable<IkonComposite>>()) {
-				var design = Design.Load(rawData, deindexer); 
+				var design = Design.Load(rawData, deindexer);
+				design.CalcHash(statics);
 				designs.Add(design);
 				deindexer.Add(design.ConstructionProject, design.ConstructionProject.IdCode);
 			}

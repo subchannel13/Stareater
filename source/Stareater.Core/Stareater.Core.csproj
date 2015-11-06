@@ -390,6 +390,8 @@
     <Compile Include="Ships\Missions\MissionType.cs" />
     <Compile Include="Ships\Missions\MoveMission.cs" />
     <Compile Include="Ships\Missions\StationaryMission.cs" />
+    <Compile Include="Utils\BitHash.cs" />
+    <Compile Include="Utils\BitHashBuilder.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />
     <Compile Include="Utils\Collections\IDelayedCollection.cs" />
     <Compile Include="Utils\Collections\IndexedCollectionBase.cs">

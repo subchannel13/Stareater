@@ -130,9 +130,6 @@ namespace Stareater.GameData.Databases
 			foreach(var colonization in this.ColonizationProjects)
 				foreach(var fleet in colonization.Enroute)
 				{
-					foreach(var group in fleet.Ships)
-						if (!remap.Designs.ContainsKey(group.Design))
-							remap.Designs.Add(group.Design, group.Design.Copy(remap));
 					remap.Missions.Add(fleet.Mission, fleet.Mission.Copy(remap, galaxyRemap));
 					remap.Fleets.Add(fleet, fleet.Copy(remap));
 				}

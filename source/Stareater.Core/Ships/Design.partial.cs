@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Stareater.AppData.Expressions;
 using Stareater.GameData;
+using Stareater.GameData.Databases;
 using Stareater.GameData.Ships;
 using Stareater.GameLogic;
+using Stareater.Utils;
 using Stareater.Utils.Collections;
 
 namespace Stareater.Ships
@@ -20,6 +22,36 @@ namespace Stareater.Ships
 		//public int id { get; private set; } //TODO(v0.5): might need id
 		//private Dictionary<string, double> efekti = new Dictionary<string,double>(); //TODO(v0.5): might need
 		//public object Hash { get; private set; } //TODO(v0.5): make type, might need
+		
+		public void CalcHash(StaticsDB statics)
+		{
+			var hashBuilder = new BitHashBuilder();
+			
+			HashComponent(hashBuilder, this.Armor, statics.Armors);
+			HashComponent(hashBuilder, this.Reactor, statics.Reactors);
+			HashComponent(hashBuilder, this.Sensors, statics.Sensors);
+			HashComponent(hashBuilder, this.Thrusters, statics.Thrusters);
+			
+			HashComponent(hashBuilder, this.Hull, statics.Hulls);
+			hashBuilder.Add(this.imageIndex, this.Hull.TypeInfo.ImagePaths.Length);
+			
+			if (this.IsDrive != null)
+			{
+				hashBuilder.Add(1, 2);
+				HashComponent(hashBuilder, this.IsDrive, statics.IsDrives);
+			}
+			else
+				hashBuilder.Add(0, 2);
+			
+			int maxEquips = this.SpecialEquipment.Count> 0 ? (this.SpecialEquipment.Values.Max() + 1) : 0;
+			foreach(var equip in this.SpecialEquipment.OrderBy(x => x.Key.TypeInfo.IdCode))
+			{
+				HashComponent(hashBuilder, equip.Key, statics.SpecialEquipment);
+				hashBuilder.Add(equip.Value, maxEquips);
+			}
+			
+			this.hash = hashBuilder.Create();
+		}
 		
 		private double initCost()
 		{
@@ -74,6 +106,42 @@ namespace Stareater.Ships
 				
 				return this.constructionProject;
 			}
+		}
+		
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			Design other = obj as Design;
+				if (other == null)
+					return false;
+			return this.hash == other.hash;
+		}
+
+		public override int GetHashCode()
+		{
+			return hash.GetHashCode();
+		}
+
+		public static bool operator ==(Design lhs, Design rhs) {
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(Design lhs, Design rhs) {
+			return !(lhs == rhs);
+		}
+
+		#endregion
+		
+		private static void HashComponent<T>(BitHashBuilder hashBuilder, Component<T> component, IDictionary<string, T> componentAssortiment) where T :AComponentType
+		{
+			var indices = componentAssortiment.Keys.OrderBy(x => x).ToList();
+
+			hashBuilder.Add(indices.IndexOf(component.TypeInfo.IdCode), componentAssortiment.Count);
+			hashBuilder.Add(component.Level, component.TypeInfo.MaxLevel + 1);
 		}
 	}
 }
