@@ -311,9 +311,17 @@ private void WriteFieldLoad(params DataInfo[] dataInfos)
 		if (emptyLine.Get != null)
 			WriteLine("");
 		
+		string extraIndent = "";
+		if (field.Nullable)
+		{
+			WriteLine(indent.Get + "if (rawData.Keys.Contains("  + field.SavingKeyName + "))");
+			WriteLine(indent.Get + "{");
+			extraIndent = "\t";
+		}
+		
 		string saveData = field.LowerName + "Save";
 		if (field.DoSave)
-			WriteLine(indent.Get + "var " + saveData + " = rawData[" + field.SavingKeyName + "];");
+			WriteLine(indent.Get + extraIndent + "var " + saveData + " = rawData[" + field.SavingKeyName + "];");
 		
 		if (field.IsCollection && !field.LoadOverride)
 			WriteListLoad(field, indent, saveData);
@@ -326,9 +334,12 @@ private void WriteFieldLoad(params DataInfo[] dataInfos)
 					WriteLine(indent.Get + line);
 					
 			string lineEnd = field.LoadAssignLogic.EndsWith(";") ? "" : ";";
-			WriteLine(indent.Get + "this."  + field.Name + " = " + field.LoadAssignLogic.Replace(SaveName, saveData) + lineEnd);
+			WriteLine(indent.Get + extraIndent + "this."  + field.Name + " = " + field.LoadAssignLogic.Replace(SaveName, saveData) + lineEnd);
 		} else
 			WriteLine(indent.Get + "//FIXME: undefined load logic for " + field.Name);
+			
+		if (field.Nullable)
+			WriteLine(indent.Get + "}");
 	}
 }
 
@@ -438,8 +449,13 @@ private void WriteSaveMethod(params DataInfo[] dataInfos)
 				WriteLine(indent.Get + line);
 		}
 
-		Write(indent.Get + "data.Add(" + field.SavingKeyName + ", " + field.SaveAssignLogic.Replace(SaveName, "this." + field.Name) + ");");
-		WriteLine("");
+		if (field.Nullable)
+		{
+			WriteLine(indent.Get + "if (this." + field.Name + " != null)");
+			WriteLine(indent.Get + "	data.Add(" + field.SavingKeyName + ", " + field.SaveAssignLogic.Replace(SaveName, "this." + field.Name) + ");");
+		}
+		else
+			WriteLine(indent.Get + "data.Add(" + field.SavingKeyName + ", " + field.SaveAssignLogic.Replace(SaveName, "this." + field.Name) + ");");
 	}
 	
 	WriteLine(indent.Get + "return data;");

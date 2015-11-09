@@ -19,7 +19,7 @@
 		new DataInfo("ImageIndex", "int").Private(),
 		new DataInfo("Armor", "Component<ArmorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Hull", "Component<HullType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
-		new DataInfo("IsDrive", "Component<IsDriveType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
+		new DataInfo("IsDrive", "Component<IsDriveType>").IsStatic(Flag.NoIndexer, Flag.ArrayData).CanBeNull(),
 		new DataInfo("Reactor", "Component<ReactorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Sensors", "Component<SensorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("SpecialEquipment", "Dictionary", 

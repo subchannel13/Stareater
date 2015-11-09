@@ -94,8 +94,11 @@ namespace Stareater.Ships
 			var hullSave = rawData[HullKey];
 			this.Hull = Component<HullType>.Load(hullSave.To<IkonArray>(), deindexer);
 
-			var isDriveSave = rawData[IsDriveKey];
-			this.IsDrive = Component<IsDriveType>.Load(isDriveSave.To<IkonArray>(), deindexer);
+			if (rawData.Keys.Contains(IsDriveKey))
+			{
+				var isDriveSave = rawData[IsDriveKey];
+				this.IsDrive = Component<IsDriveType>.Load(isDriveSave.To<IkonArray>(), deindexer);
+			}
 
 			var reactorSave = rawData[ReactorKey];
 			this.Reactor = Component<ReactorType>.Load(reactorSave.To<IkonArray>(), deindexer);
@@ -147,7 +150,8 @@ namespace Stareater.Ships
 
 			data.Add(HullKey, this.Hull.Save());
 
-			data.Add(IsDriveKey, this.IsDrive.Save());
+			if (this.IsDrive != null)
+				data.Add(IsDriveKey, this.IsDrive.Save());
 
 			data.Add(ReactorKey, this.Reactor.Save());
 
