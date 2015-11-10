@@ -357,9 +357,10 @@ namespace Stareater.GameLogic
 			{
 				states.Designs.Add(design);
 				this.Analyze(design, statics);
+				return design;
 			}
 			
-			return design;
+			return states.Designs.First(x => x == design);
 		}
 		#endregion
 		

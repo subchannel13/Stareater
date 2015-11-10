@@ -753,6 +753,17 @@ class GenericParamInfo
 		return this;
 	}
 	
+	public GenericParamInfo IsStatic(params Flag[] flags)
+	{
+		var flagList = new List<Flag>(flags);
+		var loadType = flagList.Contains(Flag.ArrayData) ? "IkonArray" : "IkonComposite";
+		
+		this.SaveAssignLogic = SaveName + ".Save(" + (flagList.Contains(Flag.NoIndexer) ? ")" : "indexer)");
+		this.LoadAssignLogic = Type + ".Load(" + SaveName + ".To<" + loadType + ">(), deindexer)";
+		
+		return this;
+	}
+
 	public GenericParamInfo SaveIdCode()
 	{
 		this.SaveAssignLogic = "new IkonText(" + SaveName + ".IdCode)";

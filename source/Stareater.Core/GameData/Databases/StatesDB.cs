@@ -34,7 +34,7 @@ namespace Stareater.GameData.Databases
 		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, 
 		                ColonyCollection Colonies, StellarisCollection stellarises, 
 		                TechProgressCollection technologyProgresses, ReportCollection reports,
-		                DesignCollection designs, FleetCollection idleFleets, ColonizationCollection colonizations)
+		                DesignCollection designs, FleetCollection fleets, ColonizationCollection colonizations)
 		{
 			this.Colonies = Colonies;
 			this.Planets = planets;
@@ -44,7 +44,7 @@ namespace Stareater.GameData.Databases
 			this.TechnologyAdvances = technologyProgresses;
 			this.Reports = reports;
 			this.Designs = designs;
-			this.Fleets = idleFleets;
+			this.Fleets = fleets;
 			this.ColonizationProjects = colonizations;			
 		}
 

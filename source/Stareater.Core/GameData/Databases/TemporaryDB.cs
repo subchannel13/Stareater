@@ -29,7 +29,7 @@ namespace Stareater.GameData.Databases
 
 		internal TemporaryDB Copy(PlayersRemap playersRemap)
 		{
-			TemporaryDB copy = new TemporaryDB();
+			var copy = new TemporaryDB();
 
 			copy.Colonies = new ColonyProcessorCollection();
 			copy.Colonies.Add(this.Colonies.Select(x => x.Copy(playersRemap)));

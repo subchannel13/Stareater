@@ -37,7 +37,7 @@ namespace Stareater.Ships
 		
 		#region Saving keys
 		private const int TypeIndex = 0;
-		private const int LevelIndex = 0;
+		private const int LevelIndex = 1;
  		#endregion
 	}
 }

@@ -112,7 +112,7 @@ namespace Stareater.Ships
 				var itemKey = item[SpecialKey];
 				var itemValue = item[SpecialAmountKey];
 				this.SpecialEquipment.Add(
-					deindexer.Get<Component<SpecialEquipmentType>>(itemKey.To<string>()),
+					Component<SpecialEquipmentType>.Load(itemKey.To<IkonArray>(), deindexer),
 					itemValue.To<int>()
 				);
 			}
@@ -160,7 +160,7 @@ namespace Stareater.Ships
 			var specialEquipmentData = new IkonArray();
 			foreach(var item in this.SpecialEquipment) {
 				var itemData = new IkonComposite(EquipmentTag);
-				itemData.Add(SpecialKey, new IkonText(item.Key.TypeInfo.IdCode));
+				itemData.Add(SpecialKey, item.Key.Save());
 				itemData.Add(SpecialAmountKey, new IkonInteger(item.Value));
 				specialEquipmentData.Add(itemData);
 			}

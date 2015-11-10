@@ -22,9 +22,9 @@ namespace Stareater.Controllers
 	{
 		public static Game CreateGame(Random rng, Player[] players, NewGameController controller)
 		{
-			StaticsDB statics = loadStatics();
-			StatesDB states = createStates(rng, controller, players, statics.Technologies);
-			TemporaryDB derivates = createDerivates(players, controller.SelectedStart, statics, states);
+			var statics = loadStatics();
+			var states = createStates(rng, controller, players, statics.Technologies);
+			var derivates = createDerivates(players, controller.SelectedStart, statics, states);
 			
 			var game = new Game(players, statics, states, derivates);
 			game.CalculateDerivedEffects();
@@ -34,16 +34,21 @@ namespace Stareater.Controllers
 		
 		public static Game LoadGame(IkonComposite saveData)
 		{
-			StaticsDB statics = loadStatics();
+			var statics = loadStatics();
 			
 			var deindexer = new ObjectDeindexer();
 			int turn = saveData[Game.TurnKey].To<int>();
 			
 			deindexer.AddAll(statics.Constructables, x => x.IdCode);
 			deindexer.AddAll(statics.PredeginedDesigns);
+			deindexer.AddAll(statics.Armors.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Hulls.Values, x => x.IdCode);
 			deindexer.AddAll(statics.IsDrives.Values, x => x.IdCode);
+			deindexer.AddAll(statics.Reactors.Values, x => x.IdCode);
+			deindexer.AddAll(statics.Sensors.Values, x => x.IdCode);
+			deindexer.AddAll(statics.SpecialEquipment.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Technologies, x => x.IdCode);
+			deindexer.AddAll(statics.Thrusters.Values, x => x.IdCode);
 			
 			var loadedStates = loadSaveData(saveData, deindexer, statics);
 			var states = loadedStates.Item1;
@@ -96,7 +101,7 @@ namespace Stareater.Controllers
 		}
 		
 		private static ColonyCollection createColonies(Player[] players, 
-			StarSystem[] starSystems, int[] homeSystemIndices, StartingConditions startingConditions)
+			IList<StarSystem> starSystems, IList<int> homeSystemIndices, StartingConditions startingConditions)
 		{
 			var colonies = new ColonyCollection();
 			for(int playerI = 0; playerI < players.Length; playerI++) {
@@ -112,7 +117,7 @@ namespace Stareater.Controllers
 			return colonies;
 		}
 		
-		private static PlanetCollection createPlanets(StarSystem[] starSystems)
+		private static PlanetCollection createPlanets(IEnumerable<StarSystem> starSystems)
 		{
 			var planets = new PlanetCollection();
 			foreach(var system in starSystems)
@@ -121,7 +126,7 @@ namespace Stareater.Controllers
 			return planets;
 		}
 		
-		private static StarCollection createStars(StarSystem[] starList)
+		private static StarCollection createStars(IEnumerable<StarSystem> starList)
 		{
 			var stars = new StarCollection();
 			stars.Add(starList.Select(x => x.Star));
@@ -129,7 +134,7 @@ namespace Stareater.Controllers
 			return stars;
 		}
 		
-		private static StellarisCollection createStellarises(Player[] players, StarSystem[] starSystems, int[] homeSystemIndices)
+		private static StellarisCollection createStellarises(Player[] players, IList<StarSystem> starSystems, IList<int> homeSystemIndices)
 		{
 			var stellarises = new StellarisCollection();
 			for(int playerI = 0; playerI < players.Length; playerI++)
@@ -141,7 +146,7 @@ namespace Stareater.Controllers
 			return stellarises;
 		}
 		
-		private static WormholeCollection createWormholes(StarSystem[] starList, IEnumerable<WormholeEndpoints> wormholeEndpoints)
+		private static WormholeCollection createWormholes(IList<StarSystem> starList, IEnumerable<WormholeEndpoints> wormholeEndpoints)
 		{
 			var wormholes = new WormholeCollection();
 			wormholes.Add(wormholeEndpoints.Select(
@@ -267,9 +272,9 @@ namespace Stareater.Controllers
 			foreach(var rawData in stateData[StatesDB.ColonizationKey].To<IEnumerable<IkonComposite>>())
 				colonizations.Add(ColonizationProject.Load(rawData, deindexer));
 				
-			var idleFleets = new FleetCollection();
+			var fleets = new FleetCollection();
 			foreach(var rawData in stateData[StatesDB.IdleFleetsKey].To<IEnumerable<IkonComposite>>())
-				idleFleets.Add(Fleet.Load(rawData, deindexer));
+				fleets.Add(Fleet.Load(rawData, deindexer));
 			
 			var colonies = new ColonyCollection();
 			foreach(var rawData in stateData[StatesDB.ColoniesKey].To<IEnumerable<IkonComposite>>())
@@ -283,7 +288,7 @@ namespace Stareater.Controllers
 				players[i].Orders = PlayerOrders.Load(ordersData[i].To<IkonComposite>(), deindexer);
 				                                  
 			return new Tuple<StatesDB, Player[]>(
-				new StatesDB(stars, wormholes, planets, colonies, stellarises, techs, reports, designs, idleFleets, colonizations),
+				new StatesDB(stars, wormholes, planets, colonies, stellarises, techs, reports, designs, fleets, colonizations),
 				players.ToArray()
 			);
 		}
@@ -305,8 +310,13 @@ namespace Stareater.Controllers
 			}
 			
 			foreach (var player in players) {
-				derivates.Players.Of(player).Calculate(states.TechnologyAdvances.Of(player));
+				var playerProc = derivates.Players.Of(player);
+				
+				playerProc.Calculate(states.TechnologyAdvances.Of(player));
 				derivates.Players.Of(player).UnlockPredefinedDesigns(statics, states);
+				
+				foreach(var design in states.Designs.OwnedBy(player))
+					playerProc.Analyze(design, statics);
 			}
 
 			return derivates;

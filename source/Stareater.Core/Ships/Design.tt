@@ -23,7 +23,7 @@
 		new DataInfo("Reactor", "Component<ReactorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Sensors", "Component<SensorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("SpecialEquipment", "Dictionary", 
-			new GenericParamInfo("Component<SpecialEquipmentType>").SaveIdCodeMethod("TypeInfo.IdCode").SaveKey("SpecialKey", "Type"),
+			new GenericParamInfo("Component<SpecialEquipmentType>").SaveIdCodeMethod("TypeInfo.IdCode").SaveKey("SpecialKey", "Type").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 			new GenericParamInfo("int").SaveKey("SpecialAmountKey", "amount")
 		).Init("initSpecials(specialEquipment);", "Dictionary<Component<SpecialEquipmentType>, int>", "specialEquipment").
 			SaveKey("Specials").SaveTag("Equipment"),
