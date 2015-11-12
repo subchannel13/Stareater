@@ -51,8 +51,11 @@ namespace Stareater.Galaxy
 			double positionY = positionArray[1].To<double>();
 			this.Position = new Vector2D(positionX, positionY);
 
-			var missionSave = rawData[MissionKey];
-			this.Mission = MissionFactory.Load(missionSave, deindexer);
+			if (rawData.Keys.Contains(MissionKey))
+			{
+				var missionSave = rawData[MissionKey];
+				this.Mission = MissionFactory.Load(missionSave, deindexer);
+			}
 
 			var shipsSave = rawData[ShipsKey];
 			this.Ships = new ShipGroupCollection();
@@ -64,7 +67,7 @@ namespace Stareater.Galaxy
 
 		internal Fleet Copy(PlayersRemap playersRemap) 
 		{
-			return new Fleet(this, playersRemap, playersRemap.Players[this.Owner], playersRemap.Missions[this.Mission]);
+			return new Fleet(this, playersRemap, playersRemap.Players[this.Owner], (this.Mission != null) ? playersRemap.Missions[this.Mission] : null);
  
 		} 
  
@@ -80,7 +83,8 @@ namespace Stareater.Galaxy
 			positionData.Add(new IkonFloat(this.Position.Y));
 			data.Add(PositionKey, positionData);
 
-			data.Add(MissionKey, this.Mission.Save(indexer));
+			if (this.Mission != null)
+				data.Add(MissionKey, this.Mission.Save(indexer));
 
 			var shipsData = new IkonArray();
 			foreach(var item in this.Ships)

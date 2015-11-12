@@ -74,6 +74,7 @@
     <Compile Include="Controllers\AConstructionSiteController.cs" />
     <Compile Include="Controllers\ColonyController.cs" />
     <Compile Include="Controllers\ColonizationController.cs" />
+    <Compile Include="Controllers\Data\MissionInfoFactory.cs" />
     <Compile Include="Controllers\Views\BodyType.cs" />
     <Compile Include="Controllers\Views\BuildingInfo.cs" />
     <Compile Include="Controllers\Views\ColonyInfo.cs" />
@@ -96,7 +97,7 @@
     <Compile Include="Controllers\Views\PlayerInfo.cs" />
     <Compile Include="Controllers\Views\ReportWrapper.cs" />
     <Compile Include="Controllers\Views\SavedGameInfo.cs" />
-    <Compile Include="Controllers\Views\Ships\AFleetMission.cs" />
+    <Compile Include="Controllers\Views\Ships\AMissionInfo.cs" />
     <Compile Include="Controllers\Views\Ships\ArmorInfo.cs" />
     <Compile Include="Controllers\Views\Ships\SensorInfo.cs" />
     <Compile Include="Controllers\Views\Ships\ThrusterInfo.cs" />
@@ -331,6 +332,7 @@
       <DependentUpon>DesignStats.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="GameLogic\FleetProcessingVisitor.cs" />
     <Compile Include="GameLogic\GameProcessor.cs" />
     <Compile Include="GameLogic\IConstructionEffect.cs" />
     <Compile Include="GameLogic\AConstructionSiteProcessor.cs" />
@@ -386,10 +388,10 @@
     </Compile>
     <Compile Include="Ships\Design.partial.cs" />
     <Compile Include="Ships\Missions\AMission.cs" />
+    <Compile Include="Ships\Missions\IMissionVisitor.cs" />
     <Compile Include="Ships\Missions\MissionFactory.cs" />
     <Compile Include="Ships\Missions\MissionType.cs" />
     <Compile Include="Ships\Missions\MoveMission.cs" />
-    <Compile Include="Ships\Missions\StationaryMission.cs" />
     <Compile Include="Utils\BitHash.cs" />
     <Compile Include="Utils\BitHashBuilder.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />

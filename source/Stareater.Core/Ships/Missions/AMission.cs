@@ -9,7 +9,7 @@ namespace Stareater.Ships.Missions
 {
 	abstract class AMission
 	{
-		public abstract MissionType Type { get; }
+		public abstract void Accept(IMissionVisitor visitor);
 		
 		public abstract AMission Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap);
 		public abstract IkadnBaseObject Save(ObjectIndexer indexer);

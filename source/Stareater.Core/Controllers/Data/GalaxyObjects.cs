@@ -61,7 +61,7 @@ namespace Stareater.Controllers.Data
 
 		internal FleetInfo InfoOf(Fleet fleet, bool atStar, IVisualPositioner visualPositoner)
 		{
-			var position = visualPositoner.FleetPosition(fleet.Position, FleetInfo.MakeMissionInfo(fleet.Mission), atStar);
+			var position = visualPositoner.FleetPosition(fleet.Position, MissionInfoFactory.Create(fleet.Mission, fleet), atStar);
 			
 			foreach(var fleetInfo in this.fleets.Query(position, new Vector2D()))
 				if (fleetInfo.FleetData == fleet)
@@ -80,7 +80,7 @@ namespace Stareater.Controllers.Data
 			}
 		}
 
-		private static IList<T> searchTree<T>(QuadTree<T> tree, Vector2D searchCenter, double searchRadius, List<FoundGalaxyObject> allObjects, GalaxyObjectType type, Func<T, Vector2D> positionFunc)
+		private static IList<T> searchTree<T>(QuadTree<T> tree, Vector2D searchCenter, double searchRadius, ICollection<FoundGalaxyObject> allObjects, GalaxyObjectType type, Func<T, Vector2D> positionFunc)
 		{
 			var searchSquare = new Vector2D(searchRadius, searchRadius);
 			

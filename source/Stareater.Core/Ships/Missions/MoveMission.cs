@@ -19,10 +19,9 @@ namespace Stareater.Ships.Missions
 			this.Waypoints = waypoints;
 		}
 		
-		public override MissionType Type {
-			get {
-				return MissionType.Move;
-			}
+		public override void Accept(IMissionVisitor visitor)
+		{
+			visitor.Visit(this);
 		}
 		
 		public override bool Equals(object obj)

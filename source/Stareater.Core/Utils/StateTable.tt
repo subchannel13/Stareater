@@ -381,7 +381,7 @@ private void WriteCopyCall(string className, params DataInfo[] dataInfos)
 {
 	Write(className + "(");
 	var commaOrNot = new FirstCase("", ", ");
-	
+
 	if (NeedCopyConstructor(dataInfos))
 	{
 		Write(commaOrNot.Get + "this");
@@ -393,7 +393,17 @@ private void WriteCopyCall(string className, params DataInfo[] dataInfos)
 			Write(commaOrNot.Get + "galaxyRemap");
 			
 		foreach(var field in dataInfos.Where(x => x.CopyFromRemap != null)) 
-			Write(commaOrNot.Get + field.CopyFromRemap);
+		{
+			Write(commaOrNot.Get);
+		
+			if (field.Nullable)
+				Write("(this." + field.Name + " != null) ? ");
+				
+			Write(field.CopyFromRemap);
+			
+			if (field.Nullable)
+				Write(" : null");
+		}
 	}
 	else 
 	{
@@ -401,10 +411,16 @@ private void WriteCopyCall(string className, params DataInfo[] dataInfos)
 		{
 			Write(commaOrNot.Get);
 			
+			if (field.Nullable)
+				Write("(this." + field.Name + " != null) ? ");
+				
 			if (field.CopyFromRemap != null)
 				Write(field.CopyFromRemap);
 			else
 				Write("this." + field.Name);
+				
+			if (field.Nullable)
+				Write(" : null");
 		}
 	}
 	

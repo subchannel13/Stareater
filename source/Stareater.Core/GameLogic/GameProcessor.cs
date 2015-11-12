@@ -127,63 +127,28 @@ namespace Stareater.GameLogic
 		private void moveShips()
 		{
 			foreach (var fleet in this.game.States.Fleets)
-				if (fleet.Mission.Type == MissionType.Move) {
-					this.game.States.Fleets.PendRemove(fleet);
-					var mission = fleet.Mission as MoveMission;
-					
-					var playerProc = game.Derivates.Players.Of(fleet.Owner);
-					double baseSpeed = fleet.Ships.Select(x => x.Design).
-						Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
-						
-					//TODO(v0.5) loop through all waypoints
-					var startStar = game.States.Stars.At(mission.Waypoints[0]);
-					var endStar = game.States.Stars.At(mission.Waypoints[1]);
-					var speed = baseSpeed;
-					if (game.States.Wormholes.At(startStar).Intersect(game.States.Wormholes.At(endStar)).Any())
-						speed += 0.5; //TODO(later) consider making moddable
-					
-					var waypoints = mission.Waypoints.Skip(1).ToArray();
-					var distance = (waypoints[0] - fleet.Position).Magnitude();
-
-					//TODO(v0.5) detect conflicts
-					//TODO(v0.5) merge with existing fleet
-					if (distance <= speed) {
-						var newFleet = new Fleet(
-							fleet.Owner,
-							waypoints[0],
-							new StationaryMission(this.game.States.Stars.At(waypoints[0]))
-						);
-						newFleet.Ships.Add(fleet.Ships);
-						this.game.States.Fleets.PendAdd(newFleet);
-						
-						fleet.Owner.Intelligence.StarFullyVisited(endStar, game.Turn);
-					}
-					else {
-						var direction = (waypoints[0] - fleet.Position);
-						direction.Normalize();
-
-						var newFleet = new Fleet(
-							fleet.Owner,
-							fleet.Position + direction * speed,
-							fleet.Mission
-						);
-						newFleet.Ships.Add(fleet.Ships);
-						this.game.States.Fleets.PendAdd(newFleet);
-					}
+				if (fleet.Mission != null)
+				{
+					var fleetProcessor = new FleetProcessingVisitor(fleet, game);
+					fleet.Mission.Accept(fleetProcessor);
 				}
 
 			this.game.States.Fleets.ApplyPending();
 			
+			/*
+ 			 * Aggregate stationary fleets, if there are multiple stationary fleets of 
+			 * the same owner at the same star, merge them to one fleet.
+ 			 */
 			foreach(var star in game.States.Stars) 
 			{
 				var playerFleets = this.game.States.Fleets.At(star.Position).GroupBy(x => x.Owner);
 				foreach(var playerFleet in playerFleets) 
 				{
-					var stationary = playerFleet.Where(x => x.Mission.Type == MissionType.Stationary).ToArray();
+					var stationary = playerFleet.Where(x => x.Mission == null).ToArray();
 					if (stationary.Length <= 1)
 						continue;
 					
-					var newFleet = new Fleet(stationary[0].Owner, stationary[0].Position, stationary[0].Mission);
+					var newFleet = new Fleet(stationary[0].Owner, stationary[0].Position, null);
 					foreach(var fleet in stationary) 
 					{
 						this.game.States.Fleets.PendRemove(fleet);

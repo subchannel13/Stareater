@@ -6,6 +6,6 @@ namespace Stareater.Utils
 {
 	public interface IVisualPositioner
 	{
-		Vector2D FleetPosition(Vector2D realPosition, AFleetMission mission, bool atStar);
+		Vector2D FleetPosition(Vector2D realPosition, AMissionInfo mission, bool atStar);
 	}
 }

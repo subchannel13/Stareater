@@ -19,10 +19,10 @@ namespace Stareater.GameLogic
 		public void Apply(StatesDB states, TemporaryDB derivates, AConstructionSite site, long quantity)
 		{
 			//TODO(v0.5) report new ship construction
-			var fleet = states.Fleets.At(site.Location.Star.Position).FirstOrDefault(x => x.Owner == site.Owner && x.Mission.Type == MissionType.Stationary);
+			var fleet = states.Fleets.At(site.Location.Star.Position).FirstOrDefault(x => x.Owner == site.Owner && x.Mission == null);
 
 			if (fleet == null) {
-				fleet = new Fleet(site.Owner, site.Location.Star.Position, new StationaryMission(site.Location.Star));
+				fleet = new Fleet(site.Owner, site.Location.Star.Position, null);
 				states.Fleets.Add(fleet);
 			}
 			

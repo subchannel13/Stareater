@@ -116,14 +116,14 @@ namespace Stareater.GameData.Databases
 			remap.Colonies = this.Colonies.ToDictionary(x => (AConstructionSite)x, x => x.Copy(remap, galaxyRemap));
 			remap.Stellarises = this.Stellarises.ToDictionary(x => (AConstructionSite)x, x => x.Copy(remap, galaxyRemap));
 			remap.Designs = this.Designs.ToDictionary(x => x, x => x.Copy(remap));
-			remap.Missions = this.Fleets.ToDictionary(x => x.Mission, x => x.Mission.Copy(remap, galaxyRemap));
+			remap.Missions = this.Fleets.Where(x => x.Mission != null).ToDictionary(x => x.Mission, x => x.Mission.Copy(remap, galaxyRemap));
 			remap.Fleets = this.Fleets.ToDictionary(x => x, x => x.Copy(remap));
 			
 			foreach(var player in playersRemap.Keys)
 				foreach(var fleetOrders in player.Orders.ShipOrders.Values)
 					foreach(var fleet in fleetOrders) 
 					{
-						if (!remap.Missions.ContainsKey(fleet.Mission))
+						if (fleet.Mission != null && !remap.Missions.ContainsKey(fleet.Mission))
 							remap.Missions.Add(fleet.Mission, fleet.Mission.Copy(remap, galaxyRemap));
 						remap.Fleets.Add(fleet, fleet.Copy(remap));
 					}

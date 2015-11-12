@@ -4,7 +4,7 @@ using NGenerics.DataStructures.Mathematical;
 
 namespace Stareater.Controllers.Views.Ships
 {
-	public class MoveMissionInfo : AFleetMission
+	public class MoveMissionInfo : AMissionInfo
 	{
 		public Vector2D[] Waypoints { get; private set; }
 		

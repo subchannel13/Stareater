@@ -100,7 +100,7 @@ namespace Stareater.Controllers
 			if (this.CanMove && waypoints != null && waypoints.LastOrDefault() != this.Fleet.FleetData.Position)
 				return this.giveOrder(new MoveMission(waypoints.ToArray()));
 			else if (this.game.States.Stars.AtContains(this.Fleet.FleetData.Position))
-				return this.giveOrder(new StationaryMission(this.game.States.Stars.At(this.Fleet.FleetData.Position)));
+				return this.giveOrder(null);
 			
 			return this;
 		}

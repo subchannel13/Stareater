@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using NGenerics.DataStructures.Mathematical;
+using Stareater.Controllers.Data;
 using Stareater.Galaxy;
 using Stareater.Ships.Missions;
 using Stareater.Utils;
@@ -12,7 +13,7 @@ namespace Stareater.Controllers.Views.Ships
 	public class FleetInfo
 	{
 		public PlayerInfo Owner { get; private set; }
-		public AFleetMission Mission { get; private set; }
+		public AMissionInfo Mission { get; private set; }
 		public Vector2D VisualPosition { get; private set; }
 		
 		internal bool AtStar { get; private set; }
@@ -23,22 +24,10 @@ namespace Stareater.Controllers.Views.Ships
 			this.AtStar = atStar;
 			this.FleetData = fleet;
 
-			this.Mission = MakeMissionInfo(fleet.Mission);
+			this.Mission = MissionInfoFactory.Create(fleet.Mission, fleet);
 			this.Owner = new PlayerInfo(fleet.Owner);
 			
 			this.VisualPosition = visualPositioner.FleetPosition(fleet.Position, this.Mission, atStar);
-		}
-		
-		internal static AFleetMission MakeMissionInfo(AMission mission)
-		{
-			switch(mission.Type) {
-				case MissionType.Move:
-					return new MoveMissionInfo((mission as MoveMission).Waypoints.ToArray());
-				case MissionType.Stationary:
-					return new StationaryMissionInfo((mission as StationaryMission).Location);
-				default:
-					throw new ArgumentOutOfRangeException("mission");
-			}
 		}
 		
 		#region Equals and GetHashCode implementation
