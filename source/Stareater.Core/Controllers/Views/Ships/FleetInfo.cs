@@ -24,7 +24,7 @@ namespace Stareater.Controllers.Views.Ships
 			this.AtStar = atStar;
 			this.FleetData = fleet;
 
-			this.Mission = MissionInfoFactory.Create(fleet.Mission, fleet);
+			this.Mission = MissionInfoFactory.Create(fleet.Missions, fleet);
 			this.Owner = new PlayerInfo(fleet.Owner);
 			
 			this.VisualPosition = visualPositioner.FleetPosition(fleet.Position, this.Mission, atStar);
@@ -33,10 +33,8 @@ namespace Stareater.Controllers.Views.Ships
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{
-			FleetInfo other = obj as FleetInfo;
-			if (other == null)
-				return false;
-			return object.Equals(this.FleetData, other.FleetData);
+			var other = obj as FleetInfo;
+			return other != null && object.Equals(this.FleetData, other.FleetData);
 		}
 		
 		public override int GetHashCode()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.Ships.Missions;
@@ -15,13 +16,13 @@ namespace Stareater.Controllers.Data
 			this.fleet = fleet;
 		}
 		
-		public static AMissionInfo Create(AMission mission, Fleet fleet)
+		public static AMissionInfo Create(LinkedList<AMission> mission, Fleet fleet)
 		{
-			if (mission == null)
+			if (mission.Count == 0)
 				return new StationaryMissionInfo();
 			
 			var factory = new MissionInfoFactory(fleet);
-			mission.Accept(factory);
+			mission.First.Value.Accept(factory);
 			return factory.result;
 		}
 

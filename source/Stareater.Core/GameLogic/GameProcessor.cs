@@ -127,11 +127,11 @@ namespace Stareater.GameLogic
 		private void moveShips()
 		{
 			foreach (var fleet in this.game.States.Fleets)
-				if (fleet.Mission != null)
-				{
-					var fleetProcessor = new FleetProcessingVisitor(fleet, game);
-					fleet.Mission.Accept(fleetProcessor);
-				}
+			{
+				var fleetProcessor = new FleetProcessingVisitor(fleet, game);
+				foreach(var mission in fleet.Missions)
+					mission.Accept(fleetProcessor);
+			}
 
 			this.game.States.Fleets.ApplyPending();
 			
@@ -144,11 +144,11 @@ namespace Stareater.GameLogic
 				var playerFleets = this.game.States.Fleets.At(star.Position).GroupBy(x => x.Owner);
 				foreach(var playerFleet in playerFleets) 
 				{
-					var stationary = playerFleet.Where(x => x.Mission == null).ToArray();
+					var stationary = playerFleet.Where(x => x.Missions.Count == 0).ToArray();
 					if (stationary.Length <= 1)
 						continue;
 					
-					var newFleet = new Fleet(stationary[0].Owner, stationary[0].Position, null);
+					var newFleet = new Fleet(stationary[0].Owner, stationary[0].Position, new LinkedList<AMission>());
 					foreach(var fleet in stationary) 
 					{
 						this.game.States.Fleets.PendRemove(fleet);
@@ -210,10 +210,13 @@ namespace Stareater.GameLogic
 			{
 				foreach(var fleet in project.NewColonizers)
 				{
+					var missions = new LinkedList<AMission>();
+					missions.AddLast(new MoveMission(new Vector2D[] { fleet.Position, project.Destination.Star.Position }));
+					
 					var newFleet = new Fleet(
 						fleet.Owner, 
 						fleet.Position, 
-						new MoveMission(new Vector2D[] { fleet.Position, project.Destination.Star.Position })
+						missions
 					);
 					newFleet.Ships.Add(fleet.Ships);
 					project.Enroute.Add(newFleet);

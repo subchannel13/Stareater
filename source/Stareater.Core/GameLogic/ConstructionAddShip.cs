@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases;
@@ -19,10 +20,10 @@ namespace Stareater.GameLogic
 		public void Apply(StatesDB states, TemporaryDB derivates, AConstructionSite site, long quantity)
 		{
 			//TODO(v0.5) report new ship construction
-			var fleet = states.Fleets.At(site.Location.Star.Position).FirstOrDefault(x => x.Owner == site.Owner && x.Mission == null);
+			var fleet = states.Fleets.At(site.Location.Star.Position).FirstOrDefault(x => x.Owner == site.Owner && x.Missions.Count == 0);
 
 			if (fleet == null) {
-				fleet = new Fleet(site.Owner, site.Location.Star.Position, null);
+				fleet = new Fleet(site.Owner, site.Location.Star.Position, new LinkedList<AMission>());
 				states.Fleets.Add(fleet);
 			}
 			

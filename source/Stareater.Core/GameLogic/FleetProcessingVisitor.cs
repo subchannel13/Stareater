@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Stareater.Galaxy;
 using Stareater.Ships.Missions;
@@ -42,7 +43,7 @@ namespace Stareater.GameLogic
 				var newFleet = new Fleet(
 					fleet.Owner,
 					waypoints[0],
-					null
+					new LinkedList<AMission>()
 				);
 				newFleet.Ships.Add(fleet.Ships);
 				this.game.States.Fleets.PendAdd(newFleet);
@@ -56,7 +57,7 @@ namespace Stareater.GameLogic
 				var newFleet = new Fleet(
 					fleet.Owner,
 					fleet.Position + direction * speed,
-					fleet.Mission
+					new LinkedList<AMission>(fleet.Missions)
 				);
 				newFleet.Ships.Add(fleet.Ships);
 				this.game.States.Fleets.PendAdd(newFleet);

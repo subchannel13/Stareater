@@ -262,7 +262,10 @@ private void WriteListCopy(DataInfo field, FirstCase indent)
 {
 	WriteLine(indent.Get + "this."  + field.Name + " = " + field.Constructor);
 	WriteLine(indent.Get + "foreach(var item in original." + field.Name + ")");
-	Write(indent.Get + "	this."  + field.Name + ".Add(");
+	if (field.Type.Contains("LinkedList"))
+		Write(indent.Get + "	this."  + field.Name + ".AddLast(");
+	else
+		Write(indent.Get + "	this."  + field.Name + ".Add(");
 	
 	if (field.GenericParams[0].CopyLogic != null)
 		Write(field.GenericParams[0].CopyLogic.Replace(Default, "item"));
@@ -347,7 +350,8 @@ private void WriteListLoad(DataInfo field, FirstCase indent, string saveData)
 {
 	WriteLine(indent.Get + "this."  + field.Name + " = " + field.Constructor);
 	WriteLine(indent.Get + "foreach(var item in " + saveData + ".To<IkonArray>())");
-	WriteLine(indent.Get + "	" + "this."  + field.Name + ".Add(" + field.GenericParams[0].LoadAssignLogic.Replace(SaveName, "item") + ");");
+	string addMetod = (field.Type.Contains("LinkedList")) ? ".AddLast(" : ".Add(";
+	WriteLine(indent.Get + "	" + "this."  + field.Name + addMetod + field.GenericParams[0].LoadAssignLogic.Replace(SaveName, "item") + ");");
 }
 
 private void WriteMapLoad(DataInfo field, FirstCase indent, string saveData)

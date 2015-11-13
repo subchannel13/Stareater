@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
@@ -98,9 +99,9 @@ namespace Stareater.Controllers
 				return this;
 			
 			if (this.CanMove && waypoints != null && waypoints.LastOrDefault() != this.Fleet.FleetData.Position)
-				return this.giveOrder(new MoveMission(waypoints.ToArray()));
+				return this.giveOrder(new AMission[] {new MoveMission(waypoints.ToArray())});
 			else if (this.game.States.Stars.AtContains(this.Fleet.FleetData.Position))
-				return this.giveOrder(null);
+				return this.giveOrder(new AMission[0]);
 			
 			return this;
 		}
@@ -120,9 +121,9 @@ namespace Stareater.Controllers
 		}
 
 		
-		private FleetInfo addFleet(ICollection<Stareater.Galaxy.Fleet> shipOrders, Fleet newFleet)
+		private FleetInfo addFleet(ICollection<Fleet> shipOrders, Fleet newFleet)
 		{
-			var similarFleet = shipOrders.FirstOrDefault(x => x.Mission == newFleet.Mission);
+			var similarFleet = shipOrders.FirstOrDefault(x => x.Missions.SequenceEqual(newFleet.Missions));
 			
 			if (similarFleet != null) {
 				foreach(var shipGroup in newFleet.Ships)
@@ -177,9 +178,9 @@ namespace Stareater.Controllers
 			eta = distance > 0 ? distance / speed : 0;
 		}
 		
-		private FleetController giveOrder(AMission newMission)
+		private FleetController giveOrder(IEnumerable<AMission> newMissions)
 		{
-			if (this.selection.Count == 0 || newMission == this.Fleet.FleetData.Mission)
+			if (this.selection.Count == 0 || this.Fleet.FleetData.Missions.SequenceEqual(newMissions))
 				return this;
 			
 			//create regroup order if there is none
@@ -196,14 +197,14 @@ namespace Stareater.Controllers
 			this.mapObjects.Remove(this.Fleet);
 			
 			//add new fleet
-			var newFleet = new Fleet(this.Fleet.FleetData.Owner, this.Fleet.FleetData.Position, newMission);
+			var newFleet = new Fleet(this.Fleet.FleetData.Owner, this.Fleet.FleetData.Position, new LinkedList<AMission>(newMissions));
 			foreach(var selectedGroup in this.selection)
 				newFleet.Ships.Add(new ShipGroup(selectedGroup.Key, selectedGroup.Value));
 			
 			var newFleetInfo = this.addFleet(shipOrders, newFleet);
 			
 			//add old fleet remains
-			var oldFleet = new Fleet(this.Fleet.FleetData.Owner, this.Fleet.FleetData.Position, this.Fleet.FleetData.Mission);
+			var oldFleet = new Fleet(this.Fleet.FleetData.Owner, this.Fleet.FleetData.Position, this.Fleet.FleetData.Missions);
 			foreach(var group in this.Fleet.FleetData.Ships) 
 				if (this.selection.ContainsKey(group.Design) && group.Quantity - this.selection[group.Design] > 0)
 					oldFleet.Ships.Add(new ShipGroup(group.Design, group.Quantity - this.selection[group.Design]));

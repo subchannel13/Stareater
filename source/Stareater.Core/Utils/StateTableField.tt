@@ -155,6 +155,7 @@ private static string initSaveAssignLogic(string lowerName, string typeName)
 		case "Collection":
 		case "Dictionary":
 		case "HashSet":
+		case "LinkedList":
 		case "List":
 		case "Vector2D":
 			return dataVar;
@@ -794,6 +795,12 @@ class GenericParamInfo
 	public GenericParamInfo SaveMethod(string methodCall)
 	{
 		this.SaveAssignLogic = SaveName + "." + methodCall;
+		return this;
+	}
+	
+	public GenericParamInfo LoadCode(string code)
+	{
+		this.LoadAssignLogic = code;
 		return this;
 	}
 }

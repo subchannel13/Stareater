@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.GameData.Databases;
 using Stareater.Ships;
+using Stareater.Ships.Missions;
 
 namespace Stareater.GameLogic
 {
@@ -30,7 +32,7 @@ namespace Stareater.GameLogic
 
 			if (fleet == null)
 			{
-				fleet = new Fleet(site.Owner, site.Location.Star.Position, null);
+				fleet = new Fleet(site.Owner, site.Location.Star.Position, new LinkedList<AMission>());
 				project.NewColonizers.Add(fleet);
 			}
 
