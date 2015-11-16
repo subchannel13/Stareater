@@ -211,7 +211,10 @@ namespace Stareater.GameLogic
 				foreach(var fleet in project.NewColonizers)
 				{
 					var missions = new LinkedList<AMission>();
-					missions.AddLast(new MoveMission(new Vector2D[] { fleet.Position, project.Destination.Star.Position }));
+					var startStar = this.game.States.Stars.At(fleet.Position);
+					var nextStar = project.Destination.Star;
+					var wormhole = this.game.States.Wormholes.At(startStar).FirstOrDefault(x => x.FromStar == nextStar || x.ToStar == nextStar);
+					missions.AddLast(new MoveMission(project.Destination.Star, wormhole));
 					
 					var newFleet = new Fleet(
 						fleet.Owner, 

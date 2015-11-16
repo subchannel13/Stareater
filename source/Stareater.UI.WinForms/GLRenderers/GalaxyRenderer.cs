@@ -208,21 +208,16 @@ namespace Stareater.GLRenderers
 					continue;
 				
 				var mission = fleet.Mission as MoveMissionInfo;
-				var last = fleet.VisualPosition;
 				GL.Color4(Color.DarkGreen);
 				
-				for(int i = 1; i < mission.Waypoints.Length; i++) {
-					GL.PushMatrix();
-					GL.MultMatrix(pathMatrix(
-						new Vector2d(last.X, last.Y),
-						new Vector2d(mission.Waypoints[i].X, mission.Waypoints[i].Y)
-					));
+				GL.PushMatrix();
+				GL.MultMatrix(pathMatrix(
+					new Vector2d(fleet.VisualPosition.X, fleet.VisualPosition.Y),
+					new Vector2d(mission.Destionation.X, mission.Destionation.Y)
+				));
 					
-					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
-					
-					last = mission.Waypoints[i];
-					GL.PopMatrix();
-				}
+				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
+				GL.PopMatrix();
 				
 				GL.Color4(fleet.Owner.Color);
 				

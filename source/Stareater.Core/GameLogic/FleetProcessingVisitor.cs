@@ -8,8 +8,8 @@ namespace Stareater.GameLogic
 {
 	class FleetProcessingVisitor : IMissionVisitor
 	{
-		private Fleet fleet;
-		private Game game;
+		private readonly Fleet fleet;
+		private readonly Game game;
 		
 		public FleetProcessingVisitor(Fleet fleet, Game game)
 		{
@@ -28,30 +28,27 @@ namespace Stareater.GameLogic
 				Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
 				
 			//TODO(v0.5) loop through all waypoints
-			var startStar = game.States.Stars.At(mission.Waypoints[0]);
-			var endStar = game.States.Stars.At(mission.Waypoints[1]);
 			var speed = baseSpeed;
-			if (game.States.Wormholes.At(startStar).Intersect(game.States.Wormholes.At(endStar)).Any())
+			if (mission.UsedWormhole != null)
 				speed += 0.5; //TODO(later) consider making moddable
 			
-			var waypoints = mission.Waypoints.Skip(1).ToArray();
-			var distance = (waypoints[0] - fleet.Position).Magnitude();
+			var distance = (mission.Destination.Position - fleet.Position).Magnitude();
 
 			//TODO(v0.5) detect conflicts
 			//TODO(v0.5) merge with existing fleet
 			if (distance <= speed) {
 				var newFleet = new Fleet(
 					fleet.Owner,
-					waypoints[0],
+					mission.Destination.Position,
 					new LinkedList<AMission>()
 				);
 				newFleet.Ships.Add(fleet.Ships);
 				this.game.States.Fleets.PendAdd(newFleet);
 				
-				fleet.Owner.Intelligence.StarFullyVisited(endStar, game.Turn);
+				fleet.Owner.Intelligence.StarFullyVisited(game.States.Stars.At(mission.Destination.Position), game.Turn);
 			}
 			else {
-				var direction = (waypoints[0] - fleet.Position);
+				var direction = (mission.Destination.Position - fleet.Position);
 				direction.Normalize();
 
 				var newFleet = new Fleet(

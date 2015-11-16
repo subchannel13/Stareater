@@ -6,11 +6,11 @@ namespace Stareater.Controllers.Views.Ships
 {
 	public class MoveMissionInfo : AMissionInfo
 	{
-		public Vector2D[] Waypoints { get; private set; }
+		public Vector2D Destionation { get; private set; }
 		
-		internal MoveMissionInfo(Vector2D[] waypoints)
+		internal MoveMissionInfo(Vector2D destionation)
 		{
-			this.Waypoints = waypoints;
+			this.Destionation = destionation;
 		}
 		
 		public override FleetMissionType Type {

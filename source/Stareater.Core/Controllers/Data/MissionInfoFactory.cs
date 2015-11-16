@@ -30,7 +30,7 @@ namespace Stareater.Controllers.Data
 
 		public void Visit(MoveMission mission)
 		{
-			result = new MoveMissionInfo(mission.Waypoints);
+			result = new MoveMissionInfo(mission.Destination.Position);
 		}
 
 		#endregion

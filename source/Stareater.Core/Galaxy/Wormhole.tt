@@ -1,9 +1,7 @@
 ﻿<#@ output extension=".cs" #>
 <#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
 	
-	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.GameData");
-	usings.Add("Stareater.Players");
 	
 	modifer = "public";
 	

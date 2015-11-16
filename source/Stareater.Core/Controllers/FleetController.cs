@@ -33,7 +33,9 @@ namespace Stareater.Controllers
 			
 			if (!this.Fleet.AtStar) {
 				var mission = this.Fleet.Mission as MoveMissionInfo;
-				this.simulationWaypoints = new List<Vector2D>(mission.Waypoints);
+				//TODO(v0.5) walk through collection and inspect all move missions
+				this.simulationWaypoints = new List<Vector2D>();
+				this.simulationWaypoints.Add(mission.Destionation);
 				this.calcEta();
 			}
 		}
@@ -99,7 +101,19 @@ namespace Stareater.Controllers
 				return this;
 			
 			if (this.CanMove && waypoints != null && waypoints.LastOrDefault() != this.Fleet.FleetData.Position)
-				return this.giveOrder(new AMission[] {new MoveMission(waypoints.ToArray())});
+			{
+				var missions = new List<AMission>();
+				var lastPoint = this.Fleet.FleetData.Position;
+				foreach(var point in waypoints)
+				{
+					var lastStar = this.game.States.Stars.At(lastPoint);
+					var nextStar = this.game.States.Stars.At(point);
+					var wormhole = this.game.States.Wormholes.At(lastStar).FirstOrDefault(x => x.FromStar == nextStar || x.ToStar == nextStar);
+					missions.Add(new MoveMission(nextStar, wormhole));
+				}
+				
+				return this.giveOrder(missions);
+			}
 			else if (this.game.States.Stars.AtContains(this.Fleet.FleetData.Position))
 				return this.giveOrder(new AMission[0]);
 			
@@ -152,25 +166,26 @@ namespace Stareater.Controllers
 		
 		private void calcEta()
 		{
+			//TODO(v0.5) loop through all waypoints
+			
 			var playerProc = game.Derivates.Players.Of(this.Fleet.Owner.Data);
 			double baseSpeed = this.selection.Keys.
 				Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
 							
-			//TODO(v0.5) loop through all waypoints
-			var endStar = game.States.Stars.At(this.simulationWaypoints[1]);
 			var speed = baseSpeed;
 			
 			if (this.Fleet.AtStar)
 			{
-				var startStar = game.States.Stars.At(this.simulationWaypoints[0]);
+				var startStar = game.States.Stars.At(this.Fleet.FleetData.Position);
+				var endStar = game.States.Stars.At(this.simulationWaypoints[0]);
 				if (game.States.Wormholes.At(startStar).Intersect(game.States.Wormholes.At(endStar)).Any())
 					speed += 0.5; //TODO(later) consider making moddable
 			}
 			else
 			{
 				var mission = this.Fleet.Mission as MoveMissionInfo;
-				var startStar = game.States.Stars.At(mission.Waypoints[0]);
-				if (game.States.Wormholes.At(startStar).Intersect(game.States.Wormholes.At(endStar)).Any())
+				//TODO(v0.5) walk through collection and inspect all move missions
+				if ((this.Fleet.FleetData.Missions.First.Value as MoveMission).UsedWormhole != null)
 					speed += 0.5; //TODO(later) consider making moddable
 			}
 			

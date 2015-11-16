@@ -2,9 +2,7 @@
 
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
-using System.Collections.Generic;
 using Stareater.GameData;
-using Stareater.Players;
 
 namespace Stareater.Galaxy 
 {
@@ -18,6 +16,7 @@ namespace Stareater.Galaxy
 			this.FromStar = fromStar;
 			this.ToStar = toStar;
  
+			 
 		} 
 
 
@@ -29,6 +28,7 @@ namespace Stareater.Galaxy
 			var toStarSave = rawData[ToStarKey];
 			this.ToStar = deindexer.Get<StarData>(toStarSave.To<int>());
  
+			 
 		}
 
 		internal Wormhole Copy(GalaxyRemap galaxyRemap) 
@@ -62,5 +62,7 @@ namespace Stareater.Galaxy
 		private const string ToStarKey = "to";
  
 		#endregion
+
+ 
 	}
 }
