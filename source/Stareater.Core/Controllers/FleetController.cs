@@ -128,7 +128,6 @@ namespace Stareater.Controllers
 			this.simulationWaypoints = new List<Vector2D>();
 			//TODO(later): find shortest path
 			//TODO(v0.5) prevent changing destination midfilght
-			this.simulationWaypoints.Add(this.Fleet.FleetData.Position);
 			this.simulationWaypoints.Add(destination.Position);
 			
 			this.calcEta();

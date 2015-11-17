@@ -238,7 +238,7 @@ namespace Stareater.GLRenderers
 				GL.Color4(Color.LimeGreen);
 				
 				var last = this.fleetController.Fleet.VisualPosition;
-				for(int i = 1; i < this.fleetController.SimulationWaypoints.Count; i++) {
+				for(int i = 0; i < this.fleetController.SimulationWaypoints.Count; i++) {
 					var next = this.fleetController.SimulationWaypoints[i];
 					GL.PushMatrix();
 					
