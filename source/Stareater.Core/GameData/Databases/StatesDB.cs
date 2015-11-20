@@ -78,7 +78,7 @@ namespace Stareater.GameData.Databases
 			copy.Stellarises.Add(playersRemap.Stellarises.Values);
 
 			copy.ColonizationProjects = new ColonizationCollection();
-			copy.ColonizationProjects.Add(this.ColonizationProjects.Select(x => x.Copy(playersRemap, galaxyRemap)));
+			copy.ColonizationProjects.Add(playersRemap.Colonizations.Values);
 
 			copy.Fleets = new FleetCollection();
 			copy.Fleets.Add(playersRemap.Fleets.Values);
@@ -110,12 +110,14 @@ namespace Stareater.GameData.Databases
 				new Dictionary<AConstructionSite, StellarisAdmin>(),
 				new Dictionary<Design, Design>(),
 				new Dictionary<Fleet, Fleet>(),
+				new Dictionary<ColonizationProject, ColonizationProject>(),
 				new Dictionary<AMission, AMission>()
 			);
 
 			remap.Colonies = this.Colonies.ToDictionary(x => (AConstructionSite)x, x => x.Copy(remap, galaxyRemap));
 			remap.Stellarises = this.Stellarises.ToDictionary(x => (AConstructionSite)x, x => x.Copy(remap, galaxyRemap));
 			remap.Designs = this.Designs.ToDictionary(x => x, x => x.Copy(remap));
+			remap.Colonizations = this.ColonizationProjects.ToDictionary(x => x, x => x.Copy(remap, galaxyRemap));
 			remap.Missions = this.Fleets.SelectMany(x => x.Missions).ToDictionary(x => x, x => x.Copy(remap, galaxyRemap));
 			remap.Fleets = this.Fleets.ToDictionary(x => x, x => x.Copy(remap));
 			
@@ -127,13 +129,6 @@ namespace Stareater.GameData.Databases
 							remap.Missions.Add(mission, mission.Copy(remap, galaxyRemap));
 						remap.Fleets.Add(fleet, fleet.Copy(remap));
 					}
-			foreach(var colonization in this.ColonizationProjects)
-				foreach(var fleet in colonization.Enroute)
-				{
-					foreach(var mission in fleet.Missions.Where(x => !remap.Missions.ContainsKey(x)))
-							remap.Missions.Add(mission, mission.Copy(remap, galaxyRemap));
-					remap.Fleets.Add(fleet, fleet.Copy(remap));
-				}
 			
 			return remap;
 		}

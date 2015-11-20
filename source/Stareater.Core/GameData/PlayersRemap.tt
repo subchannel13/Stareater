@@ -13,6 +13,7 @@
 		new DataInfo("Stellarises", "IDictionary<AConstructionSite, StellarisAdmin>"),
 		new DataInfo("Designs", "IDictionary<Design, Design>"),
 		new DataInfo("Fleets", "IDictionary<Fleet, Fleet>"),
+		new DataInfo("Colonizations", "IDictionary<ColonizationProject, ColonizationProject>"),
 		new DataInfo("Missions", "IDictionary<AMission, AMission>")
 	);
 #>

@@ -238,17 +238,10 @@ namespace Stareater.GLRenderers
 				GL.Color4(Color.LimeGreen);
 				
 				var last = this.fleetController.Fleet.VisualPosition;
-				for(int i = 0; i < this.fleetController.SimulationWaypoints.Count; i++) {
-					var next = this.fleetController.SimulationWaypoints[i];
+				foreach (var next in this.fleetController.SimulationWaypoints) {
 					GL.PushMatrix();
-					
-					GL.MultMatrix(pathMatrix(
-						new Vector2d(last.X, last.Y), 
-						new Vector2d(next.X, next.Y)
-					));
-					
+					GL.MultMatrix(pathMatrix(new Vector2d(last.X, last.Y), new Vector2d(next.X, next.Y)));
 					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
-					
 					GL.PopMatrix();
 					last = next;
 				}

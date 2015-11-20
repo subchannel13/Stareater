@@ -61,6 +61,20 @@ namespace Stareater.GameLogic
 			}
 		}
 
+		public void Visit(ColonizationMission mission)
+		{
+			this.game.States.Fleets.PendRemove(fleet);
+			var project = game.States.ColonizationProjects.Of(mission.Target);
+			
+			foreach(var group in fleet.Ships)
+				project.Arrived.Add(group);
+		}
+
+		public void Visit(SkipTurnMission mission)
+		{
+			//No operation
+		}
+		
 		#endregion
 	}
 }

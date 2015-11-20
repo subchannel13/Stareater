@@ -108,7 +108,7 @@ namespace Stareater.Controllers
 				{
 					var lastStar = this.game.States.Stars.At(lastPoint);
 					var nextStar = this.game.States.Stars.At(point);
-					var wormhole = this.game.States.Wormholes.At(lastStar).FirstOrDefault(x => x.FromStar == nextStar || x.ToStar == nextStar);
+					var wormhole = this.game.States.Wormholes.At(lastStar).FirstOrDefault(x => x.FromStar == nextStar || x.ToStar == nextStar); //TODO(later) simplify query
 					missions.Add(new MoveMission(nextStar, wormhole));
 				}
 				

@@ -33,7 +33,7 @@ namespace Stareater.GameLogic
 				);
 
 			this.moveShips();
-			this.precombatColonization();
+			this.doColonization();
 			
 			/*
 			 * TODO(v0.5): Process ships
@@ -49,7 +49,6 @@ namespace Stareater.GameLogic
 			foreach (var playerProc in this.game.Derivates.Players)
 				playerProc.ProcessPostcombat(this.game.Statics, this.game.States, this.game.Derivates);
 
-			this.postcombatColonization();
 			// TODO(v0.5): Update ship designs
 
 			// TODO(v0.5): Upgrade and repair ships
@@ -128,6 +127,7 @@ namespace Stareater.GameLogic
 		{
 			foreach (var fleet in this.game.States.Fleets)
 			{
+				//TODO(v0.5) fleet processor should loop throug collection internally and track how much "action points" fleet has after each mission
 				var fleetProcessor = new FleetProcessingVisitor(fleet, game);
 				foreach(var mission in fleet.Missions)
 					mission.Accept(fleetProcessor);
@@ -164,67 +164,37 @@ namespace Stareater.GameLogic
 			this.game.States.Fleets.ApplyPending();
 		}
 
-		private void precombatColonization()
+		private void doColonization()
 		{
 			foreach(var project in this.game.States.ColonizationProjects)
 			{
-				var arrived = new HashSet<Fleet>();
-				foreach(var fleet in project.Enroute)
-					if (fleet.Position != project.Destination.Star.Position)
-					{
-						//TODO(v0.5) move colonizers
-					}
-					else
-					{
-						foreach(var group in fleet.Ships)
-							project.Arrived.Add(group);
-						
-						arrived.Add(fleet);
-						//TODO(v0.5) remove arrived fleet
-					}
-				project.Enroute.RemoveAll(arrived.Contains);
-				
 				var playerProc = this.game.Derivates.Of(project.Owner);
 				var arrivedPopulation = project.Arrived.Sum(x => playerProc.DesignStats[x.Design].ColonizerPopulation * x.Quantity);
 				if (arrivedPopulation >= this.game.Statics.ColonyFormulas.ColonizationPopulationThreshold.Evaluate(null))
 				{
-					var colony = new Colony(arrivedPopulation, project.Destination, project.Owner);
+					bool colonyExists = this.game.States.Colonies.AtPlanetContains(project.Destination);
+					
+					var colony = colonyExists ? 
+						this.game.States.Colonies.AtPlanet(project.Destination) :
+						new Colony(arrivedPopulation, project.Destination, project.Owner);
+					
 					foreach(var group in project.Arrived)
 						foreach(var building in playerProc.DesignStats[group.Design].ColonizerBuildings)
-							colony.Buildings.Add(building.Key, building.Value * group.Quantity);
-					this.game.States.Colonies.Add(colony);
+							if (colony.Buildings.ContainsKey(building.Key))
+								colony.Buildings[building.Key] += building.Value * group.Quantity;
+							else
+								colony.Buildings.Add(building.Key, building.Value * group.Quantity);
 					
-					var colonyProc = new ColonyProcessor(colony);
-					colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Players.Of(colony.Owner));
-					this.game.Derivates.Colonies.Add(colonyProc);
-				
+					if (!colonyExists)
+					{
+						this.game.States.Colonies.Add(colony);
+						
+						var colonyProc = new ColonyProcessor(colony);
+						colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Players.Of(colony.Owner));
+						this.game.Derivates.Colonies.Add(colonyProc);
+					}
 					project.Owner.Orders.ColonizationOrders.Remove(project.Destination);
 				}
-				//TODO(v0.5) what happens to colonizers that arrive after the colony is established?
-			}
-		}
-
-		private void postcombatColonization()
-		{
-			foreach(var project in this.game.States.ColonizationProjects)
-			{
-				foreach(var fleet in project.NewColonizers)
-				{
-					var missions = new LinkedList<AMission>();
-					var startStar = this.game.States.Stars.At(fleet.Position);
-					var nextStar = project.Destination.Star;
-					var wormhole = this.game.States.Wormholes.At(startStar).FirstOrDefault(x => x.FromStar == nextStar || x.ToStar == nextStar);
-					missions.AddLast(new MoveMission(project.Destination.Star, wormhole));
-					
-					var newFleet = new Fleet(
-						fleet.Owner, 
-						fleet.Position, 
-						missions
-					);
-					newFleet.Ships.Add(fleet.Ships);
-					project.Enroute.Add(newFleet);
-				}
-				project.NewColonizers.Clear();
 			}
 		}
 	}

@@ -33,6 +33,16 @@ namespace Stareater.Controllers.Data
 			result = new MoveMissionInfo(mission.Destination.Position);
 		}
 
+		public void Visit(ColonizationMission mission)
+		{
+			result = new StationaryMissionInfo();
+		}
+
+		public void Visit(SkipTurnMission mission)
+		{
+			result = new StationaryMissionInfo();
+		}
+		
 		#endregion
 	}
 }

@@ -388,10 +388,12 @@
     </Compile>
     <Compile Include="Ships\Design.partial.cs" />
     <Compile Include="Ships\Missions\AMission.cs" />
+    <Compile Include="Ships\Missions\ColonizationMission.cs" />
     <Compile Include="Ships\Missions\IMissionVisitor.cs" />
     <Compile Include="Ships\Missions\MissionFactory.cs" />
     <Compile Include="Ships\Missions\MissionType.cs" />
     <Compile Include="Ships\Missions\MoveMission.cs" />
+    <Compile Include="Ships\Missions\SkipTurnMission.cs" />
     <Compile Include="Utils\BitHash.cs" />
     <Compile Include="Utils\BitHashBuilder.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />
