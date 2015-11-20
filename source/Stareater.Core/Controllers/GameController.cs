@@ -25,7 +25,6 @@ namespace Stareater.Controllers
 		private GameController endTurnCopy = null;
 		private IGameStateListener stateListener;
 		private Task aiGalaxyPhase = null;
-		private Task turnProcessing = null;
 
 		public GameController()
 		{ 
@@ -84,7 +83,8 @@ namespace Stareater.Controllers
 		{ 
 			get { return this.gameObj.CurrentPlayerIndex; }
 		}
-		
+
+		#region Background processing
 		private void aiDoGalaxyPhase() 
 		{
 			foreach(var player in gameObj.Players)
@@ -93,7 +93,16 @@ namespace Stareater.Controllers
 			
 			stateListener.OnAiGalaxyPhaseDone();
 		}
-		
+
+		private void checkTaskException(Task lastTask)
+		{
+			System.Diagnostics.Trace.WriteLine("checking for exception");
+			if (!lastTask.IsFaulted)
+				return;
+
+			System.Diagnostics.Trace.TraceError(lastTask.Exception.ToString());
+		}
+
 		private void precombatTurnProcessing()
 		{
 			gameObj.ProcessPrecombat();
@@ -114,10 +123,10 @@ namespace Stareater.Controllers
 		
 		private void restartAiGalaxyPhase()
 		{
-			this.aiGalaxyPhase = new Task(aiDoGalaxyPhase);
-			this.aiGalaxyPhase.Start();
+			this.aiGalaxyPhase = Task.Factory.StartNew(aiDoGalaxyPhase).ContinueWith(checkTaskException);
 		}
-		
+		#endregion
+
 		public void EndGalaxyPhase()
 		{
 			if (this.IsReadOnly)
@@ -133,15 +142,13 @@ namespace Stareater.Controllers
 			
 			if (!aiGalaxyPhase.IsCompleted)
 				return;
-			
-			this.turnProcessing = new Task(precombatTurnProcessing);
-			this.turnProcessing.Start();
+
+			Task.Factory.StartNew(precombatTurnProcessing).ContinueWith(checkTaskException);
 		}
 
 		public void EndCombatPhase()
 		{
-			this.turnProcessing = new Task(postcombatTurnProcessing);
-			this.turnProcessing.Start();
+			Task.Factory.StartNew(postcombatTurnProcessing).ContinueWith(checkTaskException);
 		}
 		
 		public bool IsReadOnly
