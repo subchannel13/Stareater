@@ -22,7 +22,10 @@ namespace Stareater.GameLogic
 			this.fleet = fleet;
 			this.game = game;
 			this.newPosition = fleet.Position;
-			
+		}
+
+		public void Run()
+		{
 			foreach(var mission in fleet.Missions)
 				if (actionPoints > 0)
 					mission.Accept(this);

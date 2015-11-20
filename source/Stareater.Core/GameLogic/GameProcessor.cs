@@ -127,8 +127,8 @@ namespace Stareater.GameLogic
 		{
 			foreach (var fleet in this.game.States.Fleets)
 			{
-				//TODO(v0.5) fleet processor should loop throug collection internally and track how much "action points" fleet has after each mission
 				var fleetProcessor = new FleetProcessingVisitor(fleet, game);
+				fleetProcessor.Run();
 				
 			}
 
@@ -192,6 +192,13 @@ namespace Stareater.GameLogic
 						var colonyProc = new ColonyProcessor(colony);
 						colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Players.Of(colony.Owner));
 						this.game.Derivates.Colonies.Add(colonyProc);
+
+						if (!this.game.States.Stellarises.AtContains(project.Destination.Star))
+						{
+							var stellaris = new StellarisAdmin(project.Destination.Star, project.Owner);
+							this.game.States.Stellarises.Add(stellaris);
+							this.game.Derivates.Stellarises.Add(new StellarisProcessor(stellaris));
+						}
 					}
 					else
 						this.game.Derivates.Of(colony).AddPopulation(arrivedPopulation);
