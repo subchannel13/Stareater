@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 using Stareater.Ships.Missions;
 
@@ -11,23 +12,41 @@ namespace Stareater.GameLogic
 		private readonly Fleet fleet;
 		private readonly Game game;
 		
+		private double actionPoints = 1;
+		private LinkedList<AMission> remainingMissions = new LinkedList<AMission>();
+		private Vector2D newPosition;
+		private bool removeFleet = false;
+		
 		public FleetProcessingVisitor(Fleet fleet, Game game)
 		{
 			this.fleet = fleet;
 			this.game = game;
-		}
-
-		#region IMissionVisitor implementation
-
-		public void Visit(MoveMission mission)
-		{
+			this.newPosition = fleet.Position;
+			
+			foreach(var mission in fleet.Missions)
+				if (actionPoints > 0)
+					mission.Accept(this);
+				else
+					remainingMissions.AddLast(mission);
+			
 			this.game.States.Fleets.PendRemove(fleet);
 			
+			if (!removeFleet)
+			{
+				var newFleet = new Fleet(fleet.Owner, this.newPosition, this.remainingMissions);
+				newFleet.Ships.Add(fleet.Ships);
+				this.game.States.Fleets.PendAdd(newFleet);
+			}
+		}
+		
+		#region IMissionVisitor implementation
+
+		void IMissionVisitor.Visit(MoveMission mission)
+		{
 			var playerProc = game.Derivates.Players.Of(fleet.Owner);
 			double baseSpeed = fleet.Ships.Select(x => x.Design).
 				Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
 				
-			//TODO(v0.5) loop through all waypoints
 			var speed = baseSpeed;
 			if (mission.UsedWormhole != null)
 				speed += 0.5; //TODO(later) consider making moddable
@@ -36,43 +55,37 @@ namespace Stareater.GameLogic
 
 			//TODO(v0.5) detect conflicts
 			//TODO(v0.5) merge with existing fleet
-			if (distance <= speed) {
-				var newFleet = new Fleet(
-					fleet.Owner,
-					mission.Destination.Position,
-					new LinkedList<AMission>()
-				);
-				newFleet.Ships.Add(fleet.Ships);
-				this.game.States.Fleets.PendAdd(newFleet);
+			if (distance <= speed * actionPoints) {
+				this.newPosition = mission.Destination.Position;
 				
 				fleet.Owner.Intelligence.StarFullyVisited(game.States.Stars.At(mission.Destination.Position), game.Turn);
+				this.actionPoints -= distance / speed;
 			}
 			else {
 				var direction = (mission.Destination.Position - fleet.Position);
 				direction.Normalize();
 
-				var newFleet = new Fleet(
-					fleet.Owner,
-					fleet.Position + direction * speed,
-					new LinkedList<AMission>(fleet.Missions)
-				);
-				newFleet.Ships.Add(fleet.Ships);
-				this.game.States.Fleets.PendAdd(newFleet);
+				this.newPosition = fleet.Position + direction * speed;
+				remainingMissions.AddLast(mission);
+				
+				this.actionPoints = 0;
 			}
 		}
 
-		public void Visit(ColonizationMission mission)
+		void IMissionVisitor.Visit(ColonizationMission mission)
 		{
-			this.game.States.Fleets.PendRemove(fleet);
 			var project = game.States.ColonizationProjects.Of(mission.Target);
 			
 			foreach(var group in fleet.Ships)
 				project.Arrived.Add(group);
+			
+			//TODO(v0.5) remove fleet at GameProcessor.doColonization
+			this.removeFleet = true;
 		}
 
-		public void Visit(SkipTurnMission mission)
+		void IMissionVisitor.Visit(SkipTurnMission mission)
 		{
-			//No operation
+			this.actionPoints = 0;
 		}
 		
 		#endregion

@@ -129,8 +129,7 @@ namespace Stareater.GameLogic
 			{
 				//TODO(v0.5) fleet processor should loop throug collection internally and track how much "action points" fleet has after each mission
 				var fleetProcessor = new FleetProcessingVisitor(fleet, game);
-				foreach(var mission in fleet.Missions)
-					mission.Accept(fleetProcessor);
+				
 			}
 
 			this.game.States.Fleets.ApplyPending();
@@ -170,6 +169,7 @@ namespace Stareater.GameLogic
 			{
 				var playerProc = this.game.Derivates.Of(project.Owner);
 				bool colonyExists = this.game.States.Colonies.AtPlanetContains(project.Destination);
+				//TODO(v0.5) deduce arrived ships from fleets state
 				var arrivedPopulation = project.Arrived.Sum(x => playerProc.DesignStats[x.Design].ColonizerPopulation * x.Quantity);
 				
 				if (colonyExists || arrivedPopulation >= this.game.Statics.ColonyFormulas.ColonizationPopulationThreshold.Evaluate(null))

@@ -118,7 +118,7 @@ namespace Stareater.GameData.Databases
 			remap.Stellarises = this.Stellarises.ToDictionary(x => (AConstructionSite)x, x => x.Copy(remap, galaxyRemap));
 			remap.Designs = this.Designs.ToDictionary(x => x, x => x.Copy(remap));
 			remap.Colonizations = this.ColonizationProjects.ToDictionary(x => x, x => x.Copy(remap, galaxyRemap));
-			remap.Missions = this.Fleets.SelectMany(x => x.Missions).ToDictionary(x => x, x => x.Copy(remap, galaxyRemap));
+			remap.Missions = this.Fleets.SelectMany(x => x.Missions).Distinct().ToDictionary(x => x, x => x.Copy(remap, galaxyRemap));
 			remap.Fleets = this.Fleets.ToDictionary(x => x, x => x.Copy(remap));
 			
 			foreach(var player in playersRemap.Keys)
