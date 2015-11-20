@@ -169,11 +169,11 @@ namespace Stareater.GameLogic
 			foreach(var project in this.game.States.ColonizationProjects)
 			{
 				var playerProc = this.game.Derivates.Of(project.Owner);
+				bool colonyExists = this.game.States.Colonies.AtPlanetContains(project.Destination);
 				var arrivedPopulation = project.Arrived.Sum(x => playerProc.DesignStats[x.Design].ColonizerPopulation * x.Quantity);
-				if (arrivedPopulation >= this.game.Statics.ColonyFormulas.ColonizationPopulationThreshold.Evaluate(null))
+				
+				if (colonyExists || arrivedPopulation >= this.game.Statics.ColonyFormulas.ColonizationPopulationThreshold.Evaluate(null))
 				{
-					bool colonyExists = this.game.States.Colonies.AtPlanetContains(project.Destination);
-					
 					var colony = colonyExists ? 
 						this.game.States.Colonies.AtPlanet(project.Destination) :
 						new Colony(arrivedPopulation, project.Destination, project.Owner);
@@ -193,8 +193,13 @@ namespace Stareater.GameLogic
 						colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Players.Of(colony.Owner));
 						this.game.Derivates.Colonies.Add(colonyProc);
 					}
+					else
+						this.game.Derivates.Of(colony).AddPopulation(arrivedPopulation);
+					
 					project.Owner.Orders.ColonizationOrders.Remove(project.Destination);
+					project.Arrived.Clear();
 				}
+				//TODO(v0.5) remove colonization project from states at some point
 			}
 		}
 	}

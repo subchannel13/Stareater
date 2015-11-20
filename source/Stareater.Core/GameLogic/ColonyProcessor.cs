@@ -164,6 +164,11 @@ namespace Stareater.GameLogic
 			return vars;
 		}
 
+		public void AddPopulation(double arrivedPopulation)
+		{
+			Colony.Population = Methods.Clamp(Colony.Population + arrivedPopulation, 0, MaxPopulation);
+		}
+		
 		public override void ProcessPrecombat(StatesDB states, TemporaryDB derivates)
 		{
 			base.ProcessPrecombat(states, derivates);
