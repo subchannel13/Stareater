@@ -96,7 +96,6 @@ namespace Stareater.Controllers
 
 		private void checkTaskException(Task lastTask)
 		{
-			System.Diagnostics.Trace.WriteLine("checking for exception");
 			if (!lastTask.IsFaulted)
 				return;
 
