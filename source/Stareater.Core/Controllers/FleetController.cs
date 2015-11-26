@@ -22,7 +22,7 @@ namespace Stareater.Controllers
 
 		private Dictionary<Design, long> selection = new Dictionary<Design, long>();
 		private double eta = 0;
-		private List<Vector2D> simulationWaypoints = null;
+		private List<WaypointInfo> simulationWaypoints = new List<WaypointInfo>();
 		
 		internal FleetController(FleetInfo fleet, Game game, GalaxyObjects mapObjects, IVisualPositioner visualPositoner)
 		{
@@ -31,11 +31,8 @@ namespace Stareater.Controllers
 			this.mapObjects = mapObjects;
 			this.visualPositoner = visualPositoner;
 			
-			if (!this.Fleet.AtStar) {
-				var mission = this.Fleet.Mission as MoveMissionInfo;
-				//TODO(v0.5) walk through collection and inspect all move missions
-				this.simulationWaypoints = new List<Vector2D>();
-				this.simulationWaypoints.Add(mission.Destionation);
+			if (this.Fleet.IsMoving) {
+				this.simulationWaypoints = new List<WaypointInfo>(this.Fleet.Missions.Waypoints);
 				this.calcEta();
 			}
 		}
@@ -72,7 +69,7 @@ namespace Stareater.Controllers
 		
 		public IList<Vector2D> SimulationWaypoints
 		{
-			get { return this.simulationWaypoints; }
+			get { return this.simulationWaypoints.Select(x => x.Destionation).ToList(); }
 		}
 		
 		public void DeselectGroup(ShipGroupInfo group)
@@ -80,7 +77,7 @@ namespace Stareater.Controllers
 			selection.Remove(group.Data.Design);
 			
 			if (!this.CanMove)
-				this.simulationWaypoints = null;
+				this.simulationWaypoints.Clear();
 		}
 		
 		public void SelectGroup(ShipGroupInfo group, long quantity)
@@ -92,7 +89,7 @@ namespace Stareater.Controllers
 				selection.Remove(group.Data.Design);
 			
 			if (!this.CanMove)
-				this.simulationWaypoints = null;
+				this.simulationWaypoints.Clear();
 		}
 		
 		public FleetController Send(IEnumerable<Vector2D> waypoints)
@@ -125,10 +122,13 @@ namespace Stareater.Controllers
 			if (!this.Fleet.AtStar)
 				return;
 			
-			this.simulationWaypoints = new List<Vector2D>();
+			this.simulationWaypoints.Clear();
 			//TODO(later): find shortest path
 			//TODO(v0.5) prevent changing destination midfilght
-			this.simulationWaypoints.Add(destination.Position);
+			this.simulationWaypoints.Add(new WaypointInfo(
+				destination.Position, 
+				this.game.States.Wormholes.At(destination).Any(x => x.FromStar.Position == Fleet.FleetData.Position || x.ToStar.Position == Fleet.FleetData.Position)
+			));
 			
 			this.calcEta();
 		}
@@ -165,31 +165,22 @@ namespace Stareater.Controllers
 		
 		private void calcEta()
 		{
-			//TODO(v0.5) loop through all waypoints
-			
 			var playerProc = game.Derivates.Players.Of(this.Fleet.Owner.Data);
 			double baseSpeed = this.selection.Keys.
 				Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
-							
-			var speed = baseSpeed;
 			
-			if (this.Fleet.AtStar)
-			{
-				var startStar = game.States.Stars.At(this.Fleet.FleetData.Position);
-				var endStar = game.States.Stars.At(this.simulationWaypoints[0]);
-				if (game.States.Wormholes.At(startStar).Intersect(game.States.Wormholes.At(endStar)).Any())
-					speed += 0.5; //TODO(later) consider making moddable
-			}
-			else
-			{
-				var mission = this.Fleet.Mission as MoveMissionInfo;
-				//TODO(v0.5) walk through collection and inspect all move missions
-				if ((this.Fleet.FleetData.Missions.First.Value as MoveMission).UsedWormhole != null)
-					speed += 0.5; //TODO(later) consider making moddable
-			}
+			var lastPosition = this.Fleet.FleetData.Position;
+			this.eta = 0;
 			
-			var distance = (this.Fleet.FleetData.Position - this.simulationWaypoints[this.simulationWaypoints.Count - 1]).Magnitude();
-			eta = distance > 0 ? distance / speed : 0;
+			foreach(var waypoint in simulationWaypoints)
+			{
+				//TODO(later) consider making moddable
+				var speed = baseSpeed + (waypoint.UsingWormhole ? 0.5 : 0);
+				
+				var distance = (waypoint.Destionation - lastPosition).Magnitude();
+				eta += distance / speed;
+				lastPosition = waypoint.Destionation;
+			}
 		}
 		
 		private FleetController giveOrder(IEnumerable<AMission> newMissions)

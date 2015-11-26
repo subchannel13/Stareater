@@ -9,38 +9,40 @@ namespace Stareater.Controllers.Data
 	class MissionInfoFactory : IMissionVisitor
 	{
 		private Fleet fleet; 
-		private AMissionInfo result = null;
+		private List<WaypointInfo> waypoints = new List<WaypointInfo>();
 		
 		private MissionInfoFactory(Fleet fleet)
 		{
 			this.fleet = fleet;
 		}
 		
-		public static AMissionInfo Create(LinkedList<AMission> mission, Fleet fleet)
+		public static MissionsInfo Create(Fleet fleet)
 		{
-			if (mission.Count == 0)
-				return new StationaryMissionInfo();
+			if (fleet.Missions.Count == 0)
+				return new MissionsInfo(new WaypointInfo[0]);
 			
 			var factory = new MissionInfoFactory(fleet);
-			mission.First.Value.Accept(factory);
-			return factory.result;
+			foreach(var mission in fleet.Missions)
+				mission.Accept(factory);
+			
+			return new MissionsInfo(factory.waypoints.ToArray());
 		}
 
 		#region IMissionVisitor implementation
 
 		public void Visit(MoveMission mission)
 		{
-			result = new MoveMissionInfo(mission.Destination.Position);
+			waypoints.Add(new WaypointInfo(mission.Destination.Position, mission.UsedWormhole != null));
 		}
 
 		public void Visit(ColonizationMission mission)
 		{
-			result = new StationaryMissionInfo();
+			//No operation
 		}
 
 		public void Visit(SkipTurnMission mission)
 		{
-			result = new StationaryMissionInfo();
+			//TODO(v0.5) not crucial but some implementation should be provided
 		}
 		
 		#endregion

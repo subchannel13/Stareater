@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Data;
 using Stareater.Galaxy;
-using Stareater.Ships.Missions;
 using Stareater.Utils;
 
 namespace Stareater.Controllers.Views.Ships
@@ -13,7 +11,7 @@ namespace Stareater.Controllers.Views.Ships
 	public class FleetInfo
 	{
 		public PlayerInfo Owner { get; private set; }
-		public AMissionInfo Mission { get; private set; }
+		public MissionsInfo Missions { get; private set; }
 		public Vector2D VisualPosition { get; private set; }
 		
 		internal bool AtStar { get; private set; }
@@ -24,10 +22,15 @@ namespace Stareater.Controllers.Views.Ships
 			this.AtStar = atStar;
 			this.FleetData = fleet;
 
-			this.Mission = MissionInfoFactory.Create(fleet.Missions, fleet);
+			this.Missions = MissionInfoFactory.Create(fleet);
 			this.Owner = new PlayerInfo(fleet.Owner);
 			
-			this.VisualPosition = visualPositioner.FleetPosition(fleet.Position, this.Mission, atStar);
+			this.VisualPosition = visualPositioner.FleetPosition(fleet.Position, this.Missions, atStar);
+		}
+		
+		public bool IsMoving 
+		{ 
+			get { return this.Missions.Waypoints.Length > 0; }
 		}
 		
 		#region Equals and GetHashCode implementation

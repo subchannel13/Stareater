@@ -7,11 +7,11 @@ namespace Stareater.GLRenderers
 {
 	public class VisualPositioner : IVisualPositioner
 	{
-		public Vector2D FleetPosition(Vector2D realPosition, AMissionInfo currentMission, bool atStar)
+		public Vector2D FleetPosition(Vector2D realPosition, MissionsInfo missions, bool atStar)
 		{
-			if (currentMission.Type == FleetMissionType.Stationary)
+			if (missions.Waypoints.Length == 0)
 				return realPosition + new Vector2D(0.5, 0.5);
-			else if (currentMission.Type == FleetMissionType.Move && atStar)
+			if (missions.Waypoints.Length > 0 && atStar)
 				return realPosition + new Vector2D(-0.5, 0.5);
 			
 			return realPosition;

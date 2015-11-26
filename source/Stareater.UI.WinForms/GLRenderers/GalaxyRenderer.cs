@@ -204,23 +204,27 @@ namespace Stareater.GLRenderers
 		private void drawFleetMovement()
 		{
 			foreach (var fleet in this.controller.Fleets) {
-				if (fleet.Mission.Type != FleetMissionType.Move)
+				if (!fleet.IsMoving)
 					continue;
 				
-				var mission = fleet.Mission as MoveMissionInfo;
+				var lastPosition = fleet.VisualPosition;
 				GL.Color4(Color.DarkGreen);
 				
-				GL.PushMatrix();
-				GL.MultMatrix(pathMatrix(
-					new Vector2d(fleet.VisualPosition.X, fleet.VisualPosition.Y),
-					new Vector2d(mission.Destionation.X, mission.Destionation.Y)
-				));
+				foreach(var waypoint in fleet.Missions.Waypoints)
+				{
+					GL.PushMatrix();
+					GL.MultMatrix(pathMatrix(
+						new Vector2d(lastPosition.X, lastPosition.Y),
+						new Vector2d(waypoint.Destionation.X, waypoint.Destionation.Y)
+					));
+						
+					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
+					GL.PopMatrix();
 					
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
-				GL.PopMatrix();
+					lastPosition = waypoint.Destionation;
+				}
 				
 				GL.Color4(fleet.Owner.Color);
-				
 				GL.PushMatrix();
 				GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, IdleFleetZ);
 				GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
@@ -232,7 +236,7 @@ namespace Stareater.GLRenderers
 		
 		private void drawMovementSimulation()
 		{
-			if (this.fleetController != null && this.fleetController.SimulationWaypoints != null)
+			if (this.fleetController != null && this.fleetController.SimulationWaypoints.Count > 0)
 			{
 				GL.Enable(EnableCap.Texture2D);
 				GL.Color4(Color.LimeGreen);

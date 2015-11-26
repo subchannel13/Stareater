@@ -61,7 +61,7 @@ namespace Stareater.Controllers.Data
 
 		internal FleetInfo InfoOf(Fleet fleet, bool atStar, IVisualPositioner visualPositoner)
 		{
-			var position = visualPositoner.FleetPosition(fleet.Position, MissionInfoFactory.Create(fleet.Missions, fleet), atStar);
+			var position = visualPositoner.FleetPosition(fleet.Position, MissionInfoFactory.Create(fleet), atStar);
 			
 			foreach(var fleetInfo in this.fleets.Query(position, new Vector2D()))
 				if (fleetInfo.FleetData == fleet)
