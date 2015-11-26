@@ -25,15 +25,17 @@ namespace Stareater.GLRenderers
 		private const int MinZoom = -10;
 		
 		private const float FarZ = -1;
-		private const float WormholeZ = -0.8f;
-		private const float PathZ = -0.7f;
-		private const float StarColorZ = -0.6f;
-		private const float StarSaturationZ = -0.5f;
-		private const float StarNameZ = -0.4f;
-		private const float StarNameZRange = 0.1f;
-		private const float IdleFleetZ = -0.2f;
-		private const float SelectionIndicatorZ = -0.1f;
-		private const float EtaZ = -0.05f;
+		private const float Layers = 16.0f;
+		private const float StarNameZRange = 1 / Layers;
+		
+		private const float WormholeZ = -8 / Layers;
+		private const float PathZ = -7 / Layers;
+		private const float StarColorZ = -6 / Layers;
+		private const float StarSaturationZ = -5 / Layers;
+		private const float StarNameZ = -4 / Layers;
+		private const float FleetZ = -3 / Layers;
+		private const float SelectionIndicatorZ = -2 / Layers;
+		private const float EtaZ = -1 / Layers;
 		
 		private const float PanClickTolerance = 0.01f;
 		private const float ClickRadius = 0.02f;
@@ -147,23 +149,13 @@ namespace Stareater.GLRenderers
 			if (resetProjection) 
 				setupPerspective();
 
-			if (wormholeDrawList == NoCallList)
-				setupWormholeList();
-			else
-				GL.CallList(wormholeDrawList);
-			
+			drawList(wormholeDrawList, setupWormholeList);
 			drawFleetMovement();
-			
 			drawMovementSimulation();
-			
-			if (starDrawList == NoCallList) 
-				setupStarsList();
-			else
-				GL.CallList(starDrawList);
-			
+			drawList(starDrawList, setupStarsList);
 			drawFleetMarkers();
-
 			drawSelectionMarkers();
+			drawMovementEta();
 		}
 
 		public void OnNewTurn()
@@ -187,20 +179,28 @@ namespace Stareater.GLRenderers
 		#endregion
 
 		#region Drawing setup and helpers
+		private void drawList(int listId, Action listGenerator)
+		{
+			if (listId == NoCallList)
+				listGenerator();
+			else
+				GL.CallList(listId);
+		}
+		
 		private void drawFleetMarkers()
 		{
 			foreach (var fleet in this.controller.Fleets) {
 				GL.Color4(fleet.Owner.Color);
 				
 				GL.PushMatrix();
-				GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, IdleFleetZ);
+				GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, FleetZ);
 				GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
 
 				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.FleetIndicator);
 				GL.PopMatrix();
 			}
 		}
-		
+
 		private void drawFleetMovement()
 		{
 			foreach (var fleet in this.controller.Fleets) {
@@ -223,14 +223,26 @@ namespace Stareater.GLRenderers
 					
 					lastPosition = waypoint.Destionation;
 				}
-				
-				GL.Color4(fleet.Owner.Color);
-				GL.PushMatrix();
-				GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, IdleFleetZ);
-				GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
-
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.FleetIndicator);
-				GL.PopMatrix();
+			}
+		}
+		
+		private void drawMovementEta()
+		{
+			if (this.fleetController != null && this.fleetController.SimulationWaypoints.Count > 0)
+			{
+				if (this.fleetController.Eta > 0)
+				{
+					var destination = this.fleetController.SimulationWaypoints[this.fleetController.SimulationWaypoints.Count - 1];
+					var numVars = new Var("eta", Math.Ceiling(this.fleetController.Eta)).Get;
+					var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.fleetController.Eta, RoundingMethod.Ceil, 0)).Get;
+					
+					GL.PushMatrix();
+					GL.Translate(destination.X, destination.Y + 0.5, EtaZ);
+					GL.Scale(EtaTextScale, EtaTextScale, EtaTextScale);
+		
+					TextRenderUtil.Get.RenderText(SettingsWinforms.Get.Language["FormMain"]["FleetEta"].Text(numVars, textVars), -0.5f);
+					GL.PopMatrix();
+				}
 			}
 		}
 		
@@ -248,20 +260,6 @@ namespace Stareater.GLRenderers
 					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
 					GL.PopMatrix();
 					last = next;
-				}
-				
-				if (this.fleetController.Eta > 0)
-				{
-					var destination = this.fleetController.SimulationWaypoints[this.fleetController.SimulationWaypoints.Count - 1];
-					var numVars = new Var("eta", Math.Ceiling(this.fleetController.Eta)).Get;
-					var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.fleetController.Eta, RoundingMethod.Ceil, 0)).Get;
-					
-					GL.PushMatrix();
-					GL.Translate(destination.X, destination.Y + 0.5, EtaZ);
-					GL.Scale(EtaTextScale, EtaTextScale, EtaTextScale);
-		
-					TextRenderUtil.Get.RenderText(SettingsWinforms.Get.Language["FormMain"]["FleetEta"].Text(numVars, textVars), -0.5f);
-					GL.PopMatrix();
 				}
 			}
 		}
