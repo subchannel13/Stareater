@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Stareater.Controllers;
@@ -8,7 +7,7 @@ namespace Stareater.GUI
 {
 	public partial class FormShipDesignList : Form
 	{
-		private GameController controller;
+		private readonly GameController controller;
 		
 		public FormShipDesignList()
 		{

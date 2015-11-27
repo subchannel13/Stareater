@@ -150,6 +150,10 @@
     <Compile Include="FormPickColonizationSource.Designer.cs">
       <DependentUpon>FormPickColonizationSource.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormPickShipComponent.cs" />
+    <Compile Include="FormPickShipComponent.Designer.cs">
+      <DependentUpon>FormPickShipComponent.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormReports.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -317,6 +321,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormPickColonizationSource.resx">
       <DependentUpon>FormPickColonizationSource.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPickShipComponent.resx">
+      <DependentUpon>FormPickShipComponent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormReports.resx">
       <DependentUpon>FormReports.cs</DependentUpon>
