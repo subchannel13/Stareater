@@ -253,6 +253,7 @@
     <Compile Include="GameData\Ships\PredefinedDesign.cs" />
     <Compile Include="GameData\Ships\ReactorType.cs" />
     <Compile Include="GameData\Ships\SensorType.cs" />
+    <Compile Include="GameData\Ships\ShieldType.cs" />
     <Compile Include="GameData\Ships\SpecialEquipmentType.cs" />
     <Compile Include="GameData\Ships\ThrusterType.cs" />
     <Compile Include="GameData\SiteType.cs" />

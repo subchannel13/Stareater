@@ -1,0 +1,65 @@
+﻿{ Shield
+	nameCode: ECM_SHIELD_NAME
+	descCode: ECM_SHIELD_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: ecm
+	
+	maxLvl= 8
+	prerequisites [
+	]
+	
+	reduction # 0;
+	restoration # 0;
+	shieldFactor # 0;
+	thickness # 0;
+	
+	cloaking # 1 + 0.5 * lvl;
+	jamming # 1 + lvl;
+	
+	cost # 100e3 * shipSize;
+	power # 0.5 * shipSize;
+}
+
+{ Shield
+	nameCode: EM_SHIELD_NAME
+	descCode: EM_SHIELD_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: em
+	
+	maxLvl= 8
+	prerequisites [
+	]
+	
+	reduction # inf;
+	restoration # 1000;
+	shieldFactor # 1000;
+	thickness # 1 + 0.2 * lvl;
+	
+	cloaking # 5 + 0.5 * lvl;
+	jamming # 5 + 0.15 * lvl;
+	
+	cost # 200e3 * shipSize;
+	power # shipSize * (1 + 0.05 * lvl);
+}
+
+{ Shield
+	nameCode: PARTICLE_SHIELD_NAME
+	descCode: PARTICLE_SHIELD_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: particle
+	
+	maxLvl= 1
+	prerequisites [
+	]
+	
+	reduction # 1;
+	restoration # 0.1;
+	shieldFactor # 1000;
+	thickness # 1 + 0.2 * lvl;
+	
+	cloaking # 5 + 0.5 * lvl;
+	jamming # 5 + 0.15 * lvl;
+	
+	cost # 200e3 * shipSize;
+	power # shipSize * (1 + 0.05 * lvl);
+}

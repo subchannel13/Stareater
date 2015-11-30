@@ -9,8 +9,8 @@
 	]
 	
 	armorFactor # 1 + 0.1 * lvl;
-	absorption # 1;
-	absorbMax # 5;
+	reduction # 1;
+	reductionMax # 5;
 }
 
 { Armor
@@ -25,8 +25,8 @@
 	]
 	
 	armorFactor # 2 + 0.2 * lvl;
-	absorption # 2;
-	absorbMax # 10;
+	reduction # 2;
+	reductionMax # 10;
 }
 
 { Armor
@@ -41,6 +41,6 @@
 	]
 	
 	armorFactor # 3 + 0.3 * lvl;
-	absorption # 3;
-	absorbMax # 10;
+	reduction # 3;
+	reductionMax # 10;
 }

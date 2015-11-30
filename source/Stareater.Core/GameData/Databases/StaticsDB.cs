@@ -32,6 +32,7 @@ namespace Stareater.GameData.Databases
 		public Dictionary<string, IsDriveType> IsDrives { get; private set; }
 		public Dictionary<string, ReactorType> Reactors { get; private set; }
 		public Dictionary<string, SensorType> Sensors { get; private set; }
+		public Dictionary<string, ShieldType> Shields { get; private set; }
 		public Dictionary<string, SpecialEquipmentType> SpecialEquipment { get; private set; }
 		public Dictionary<string, ThrusterType> Thrusters { get; private set; }
 		
@@ -46,6 +47,7 @@ namespace Stareater.GameData.Databases
 			this.IsDrives = new Dictionary<string, IsDriveType>();
 			this.Reactors = new Dictionary<string, ReactorType>();
 			this.Sensors = new Dictionary<string, SensorType>();
+			this.Shields = new Dictionary<string, ShieldType>();
 			this.SpecialEquipment = new Dictionary<string, SpecialEquipmentType>();
 			this.SystemColonizerDesigns = new List<PredefinedDesign>();
 			this.Thrusters = new Dictionary<string, ThrusterType>();
@@ -114,6 +116,9 @@ namespace Stareater.GameData.Databases
 								break;
 							case SensorTag:
 								Sensors.Add(data[GeneralCodeKey].To<string>(), loadSensor(data));
+								break;
+							case ShieldTag:
+								Shields.Add(data[GeneralCodeKey].To<string>(), loadShield(data));
 								break;
 							case SpecialEquipmentTag:
 								SpecialEquipment.Add(data[GeneralCodeKey].To<string>(), loadSpecialEquiptment(data));
@@ -364,6 +369,25 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		
+		private ShieldType loadShield(IkonComposite data)
+		{
+			return new ShieldType(
+				data[GeneralCodeKey].To<string>(),
+				data[GeneralNameKey].To<string>(),
+				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralImageKey].To<string>(),
+				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
+				data[GeneralMaxLevelKey].To<int>(),
+				data[ShieldHpFactor].To<Formula>(),
+				data[ShieldRegeneration].To<Formula>(),
+				data[ShieldThickness].To<Formula>(),
+				data[ShieldReduction].To<Formula>(),
+				data[ShieldCloaking].To<Formula>(),
+				data[ShieldJamming].To<Formula>(),
+				data[ShieldPower].To<Formula>()
+			);
+		}
+		
 		private SpecialEquipmentType loadSpecialEquiptment(IkonComposite data)
 		{
 			return new SpecialEquipmentType(
@@ -510,8 +534,8 @@ namespace Stareater.GameData.Databases
 		private const string PopulationActivityOrganized = "organized";
 		
 		
-		private const string ArmorAbsorb = "absorption";
-		private const string ArmorAbsorbMax = "absorbMax";
+		private const string ArmorAbsorb = "reduction";
+		private const string ArmorAbsorbMax = "reductionMax";
 		private const string ArmorFactor = "armorFactor";
 		
 		private const string HullImages = "images";
@@ -538,6 +562,14 @@ namespace Stareater.GameData.Databases
 		private const string ReactorPower = "power";
 
 		private const string SensorDetection = "detection";
+		
+		private const string ShieldCloaking = "cloaking";
+		private const string ShieldJamming = "jamming";
+		private const string ShieldHpFactor = "shieldFactor";
+		private const string ShieldPower = "power"; //TODO(v0.5) replace with equipment power
+		private const string ShieldReduction = "reduction";
+		private const string ShieldRegeneration = "restoration";
+		private const string ShieldThickness = "thickness";
 		
 		private const string SpecialEquipmentCannotPick = "cannotPick";
 		private const string SpecialEquipmentMaxCountKey = "maxCount";
