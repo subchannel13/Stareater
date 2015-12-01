@@ -24,12 +24,13 @@ namespace Stareater.Ships
 		public Component<IsDriveType> IsDrive { get; private set; }
 		public Component<ReactorType> Reactor { get; private set; }
 		public Component<SensorType> Sensors { get; private set; }
+		public Component<ShieldType> Shield { get; private set; }
 		public Dictionary<Component<SpecialEquipmentType>, int> SpecialEquipment { get; private set; }
 		public Component<ThrusterType> Thrusters { get; private set; }
 		private BitHash hash;
 		public double Cost { get; private set; }
 
-		public Design(string idCode, Player owner, bool isVirtual, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Dictionary<Component<SpecialEquipmentType>, int> specialEquipment, Component<ThrusterType> thrusters) 
+		public Design(string idCode, Player owner, bool isVirtual, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ShieldType> shield, Dictionary<Component<SpecialEquipmentType>, int> specialEquipment, Component<ThrusterType> thrusters) 
 		{
 			this.IdCode = idCode;
 			this.Owner = owner;
@@ -41,6 +42,7 @@ namespace Stareater.Ships
 			this.IsDrive = isDrive;
 			this.Reactor = reactor;
 			this.Sensors = sensors;
+			this.Shield = shield;
 			initSpecials(specialEquipment);
 			this.Thrusters = thrusters;
 			
@@ -61,6 +63,7 @@ namespace Stareater.Ships
 			this.IsDrive = original.IsDrive;
 			this.Reactor = original.Reactor;
 			this.Sensors = original.Sensors;
+			this.Shield = original.Shield;
 			this.SpecialEquipment = new Dictionary<Component<SpecialEquipmentType>, int>();
 			foreach(var item in original.SpecialEquipment)
 				this.SpecialEquipment.Add(item.Key, item.Value);
@@ -105,6 +108,9 @@ namespace Stareater.Ships
 
 			var sensorsSave = rawData[SensorsKey];
 			this.Sensors = Component<SensorType>.Load(sensorsSave.To<IkonArray>(), deindexer);
+
+			var shieldSave = rawData[ShieldKey];
+			this.Shield = Component<ShieldType>.Load(shieldSave.To<IkonArray>(), deindexer);
 
 			var specialEquipmentSave = rawData[SpecialsKey];
 			this.SpecialEquipment = new Dictionary<Component<SpecialEquipmentType>, int>();
@@ -157,6 +163,8 @@ namespace Stareater.Ships
 
 			data.Add(SensorsKey, this.Sensors.Save());
 
+			data.Add(ShieldKey, this.Shield.Save());
+
 			var specialEquipmentData = new IkonArray();
 			foreach(var item in this.SpecialEquipment) {
 				var itemData = new IkonComposite(EquipmentTag);
@@ -190,6 +198,7 @@ namespace Stareater.Ships
 		private const string IsDriveKey = "isDrive";
 		private const string ReactorKey = "reactor";
 		private const string SensorsKey = "sensors";
+		private const string ShieldKey = "shield";
 		private const string SpecialsKey = "specials";
 		private const string EquipmentTag = "Equipment";
 		private const string SpecialKey = "Type";

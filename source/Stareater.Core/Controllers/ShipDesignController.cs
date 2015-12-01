@@ -112,8 +112,9 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Selected components
-		private ArmorInfo armorInfo = null;
 		private HullInfo selectedHull = null;
+
+		private ArmorInfo armorInfo = null;
 		private IsDriveInfo availableIsDrive = null;
 		private ReactorInfo reactorInfo = null;
 		private SensorInfo sensorInfo = null;
@@ -134,7 +135,7 @@ namespace Stareater.Controllers
 		#region Extra info
 		public double PowerUsed
 		{
-			get { return 0; } //TODO(v0.5)
+			get { return (this.Shield != null) ? this.Shield.PowerUsage : 0; } //TODO(v0.5)
 		}
 		
 		public double CombatSpeed
@@ -196,7 +197,10 @@ namespace Stareater.Controllers
 				this.onHullChange();
 			}
 		}
+		
 		public bool HasIsDrive { get; set; }
+		
+		public ShieldInfo Shield { get; set; }
 		
 		public bool IsDesignValid
 		{
@@ -226,6 +230,7 @@ namespace Stareater.Controllers
 				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
 				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level),
 				new Component<SensorType>(this.sensorInfo.Type, this.sensorInfo.Level),
+				this.Shield ? new Component<ShieldType>(this.Shield.Type, this.Shield.Level) : null,
 				new Dictionary<Component<SpecialEquipmentType>, int>(), //TODO(0.5) implement special equipment in the controller 
 				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level)
 			);

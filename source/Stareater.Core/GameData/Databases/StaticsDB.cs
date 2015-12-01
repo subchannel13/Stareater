@@ -272,6 +272,7 @@ namespace Stareater.GameData.Databases
 				data[DesignHull].To<string>(),
 				data[DesignHullImageIndex].To<int>(),
 				data.Keys.Contains(DesignIsDrive),
+				data.Keys.Contains(DesignShield) ? data[DesignShield].To<string>() : null,
 				loadDesignSpecialEquipment(data[DesignSpecialEquipment].To<IkonArray>())
 			);
 		}
@@ -517,6 +518,7 @@ namespace Stareater.GameData.Databases
 		private const string DesignIsDrive = "hasIsDrive";
 		private const string DesignHull = "hull";
 		private const string DesignHullImageIndex = "hullImageIndex";
+		private const string DesignShield = "shield";
 		private const string DesignSpecialEquipment = "specials";
 		private const string DesignType = "type";
 		

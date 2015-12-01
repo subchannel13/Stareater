@@ -17,11 +17,6 @@ namespace Stareater.Ships
 			
 		public object PrimaryEquip { get; private set; } //TODO(v0.5): make type
 		public object SecondaryEquip { get; private set; } //TODO(v0.5): make type
-		public object Shield { get; private set; } //TODO(v0.5): make type
-		
-		//public int id { get; private set; } //TODO(v0.5): might need id
-		//private Dictionary<string, double> efekti = new Dictionary<string,double>(); //TODO(v0.5): might need
-		//public object Hash { get; private set; } //TODO(v0.5): make type, might need
 		
 		public void CalcHash(StaticsDB statics)
 		{

@@ -27,7 +27,7 @@ namespace Stareater.GameData.Ships
 			this.MaxCount = maxCount;
 		}
 		
-		public Component<SpecialEquipmentType> MakeItem(IDictionary<string, int> techLevels)
+		public Component<SpecialEquipmentType> MakeBest(IDictionary<string, int> techLevels)
 		{
 			return new Component<SpecialEquipmentType>(this, HighestLevel(techLevels));
 		}

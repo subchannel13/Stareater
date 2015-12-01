@@ -341,15 +341,16 @@ namespace Stareater.GameLogic
 			var reactor = ReactorType.MakeBest(statics.Reactors.Values, techLevels, hull);
 			var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(statics.IsDrives.Values, techLevels, hull, ReactorType.PowerOf(reactor, hull)) : null;
 			var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels);
+			var shield = predefDesign.ShieldCode != null ? statics.Shields[predefDesign.ShieldCode].MakeBest(techLevels) : null;
 			var specials = predefDesign.SpecialEquipment.ToDictionary(
-				x => statics.SpecialEquipment[x.Key].MakeItem(techLevels),
+				x => statics.SpecialEquipment[x.Key].MakeBest(techLevels),
 				x => x.Value
 			);
 			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
 
 			var design = new Design(
 				states.MakeDesignId(), Player, isVirtual, predefDesign.Name, predefDesign.HullImageIndex,
-			    armor, hull, isDrive, reactor, sensor, specials, thruster
+			    armor, hull, isDrive, reactor, sensor, shield, specials, thruster
 			);
 			design.CalcHash(statics);
 			

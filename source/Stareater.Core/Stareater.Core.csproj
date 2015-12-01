@@ -100,6 +100,7 @@
     <Compile Include="Controllers\Views\Ships\MissionsInfo.cs" />
     <Compile Include="Controllers\Views\Ships\ArmorInfo.cs" />
     <Compile Include="Controllers\Views\Ships\SensorInfo.cs" />
+    <Compile Include="Controllers\Views\Ships\ShieldInfo.cs" />
     <Compile Include="Controllers\Views\Ships\ThrusterInfo.cs" />
     <Compile Include="Controllers\Views\Ships\DesignInfo.cs" />
     <Compile Include="Controllers\Views\Ships\FleetInfo.cs" />
