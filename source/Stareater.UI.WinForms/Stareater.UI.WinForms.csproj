@@ -185,6 +185,10 @@
     <Compile Include="GUI\FormPickColonizationSource.Designer.cs">
       <DependentUpon>FormPickColonizationSource.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FormPickComponent.cs" />
+    <Compile Include="GUI\FormPickComponent.Designer.cs">
+      <DependentUpon>FormPickComponent.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormReports.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -296,6 +300,8 @@
     <Compile Include="GUI\SavedGameItemView.Designer.cs">
       <DependentUpon>SavedGameItemView.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\IShipComponent.cs" />
+    <Compile Include="GUI\ShipComponent.cs" />
     <Compile Include="GUI\ShipGroupItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -361,6 +367,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormPickColonizationSource.resx">
       <DependentUpon>FormPickColonizationSource.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormPickComponent.resx">
+      <DependentUpon>FormPickComponent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormReports.resx">
       <DependentUpon>FormReports.cs</DependentUpon>

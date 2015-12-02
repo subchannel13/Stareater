@@ -105,6 +105,13 @@ namespace Stareater.Controllers
 			get { return this.sensorInfo; }
 		}
 		
+		public IEnumerable<ShieldInfo> Shields()
+		{
+			return this.game.Statics.Shields.Values.
+				Where(x => x.IsAvailable(playersTechLevels)).
+				Select(x => new ShieldInfo(x, x.HighestLevel(playersTechLevels), this.selectedHull));
+		}
+		
 		public ThrusterInfo Thrusters
 		{
 			get { return this.thrusterInfo; }
@@ -230,7 +237,7 @@ namespace Stareater.Controllers
 				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
 				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level),
 				new Component<SensorType>(this.sensorInfo.Type, this.sensorInfo.Level),
-				this.Shield ? new Component<ShieldType>(this.Shield.Type, this.Shield.Level) : null,
+				this.Shield != null ? new Component<ShieldType>(this.Shield.Type, this.Shield.Level) : null,
 				new Dictionary<Component<SpecialEquipmentType>, int>(), //TODO(0.5) implement special equipment in the controller 
 				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level)
 			);

@@ -40,8 +40,13 @@
 			this.armorInfo = new System.Windows.Forms.Label();
 			this.mobilityInfo = new System.Windows.Forms.Label();
 			this.sensorInfo = new System.Windows.Forms.Label();
+			this.shieldImage = new System.Windows.Forms.PictureBox();
+			this.pickShieldAction = new System.Windows.Forms.Button();
+			this.stealthInfo = new System.Windows.Forms.Label();
+			this.costInfo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.hullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.isDriveImage)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.shieldImage)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// hullImage
@@ -169,11 +174,55 @@
 			this.sensorInfo.TabIndex = 38;
 			this.sensorInfo.Text = "Sensors: X";
 			// 
+			// shieldImage
+			// 
+			this.shieldImage.BackColor = System.Drawing.Color.Black;
+			this.shieldImage.Location = new System.Drawing.Point(129, 95);
+			this.shieldImage.Name = "shieldImage";
+			this.shieldImage.Size = new System.Drawing.Size(24, 24);
+			this.shieldImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.shieldImage.TabIndex = 39;
+			this.shieldImage.TabStop = false;
+			// 
+			// pickShieldAction
+			// 
+			this.pickShieldAction.Location = new System.Drawing.Point(159, 95);
+			this.pickShieldAction.Name = "pickShieldAction";
+			this.pickShieldAction.Size = new System.Drawing.Size(140, 24);
+			this.pickShieldAction.TabIndex = 40;
+			this.pickShieldAction.Text = "Shield name";
+			this.pickShieldAction.UseVisualStyleBackColor = true;
+			this.pickShieldAction.Click += new System.EventHandler(this.pickShieldAction_Click);
+			// 
+			// stealthInfo
+			// 
+			this.stealthInfo.AutoSize = true;
+			this.stealthInfo.Location = new System.Drawing.Point(322, 78);
+			this.stealthInfo.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
+			this.stealthInfo.Name = "stealthInfo";
+			this.stealthInfo.Size = new System.Drawing.Size(66, 13);
+			this.stealthInfo.TabIndex = 41;
+			this.stealthInfo.Text = "Stealth: X, X";
+			// 
+			// costInfo
+			// 
+			this.costInfo.AutoSize = true;
+			this.costInfo.Location = new System.Drawing.Point(322, 99);
+			this.costInfo.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
+			this.costInfo.Name = "costInfo";
+			this.costInfo.Size = new System.Drawing.Size(62, 13);
+			this.costInfo.TabIndex = 42;
+			this.costInfo.Text = "Cost: x.xx X";
+			// 
 			// FormShipDesigner
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(425, 410);
+			this.Controls.Add(this.costInfo);
+			this.Controls.Add(this.stealthInfo);
+			this.Controls.Add(this.pickShieldAction);
+			this.Controls.Add(this.shieldImage);
 			this.Controls.Add(this.sensorInfo);
 			this.Controls.Add(this.mobilityInfo);
 			this.Controls.Add(this.armorInfo);
@@ -193,6 +242,7 @@
 			this.Text = "FormShipDesigner";
 			((System.ComponentModel.ISupportInitialize)(this.hullImage)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.isDriveImage)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.shieldImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -209,5 +259,9 @@
 		private System.Windows.Forms.Label armorInfo;
 		private System.Windows.Forms.Label mobilityInfo;
 		private System.Windows.Forms.Label sensorInfo;
+		private System.Windows.Forms.PictureBox shieldImage;
+		private System.Windows.Forms.Button pickShieldAction;
+		private System.Windows.Forms.Label stealthInfo;
+		private System.Windows.Forms.Label costInfo;
 	}
 }

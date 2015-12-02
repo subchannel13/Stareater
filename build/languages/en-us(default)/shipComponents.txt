@@ -33,6 +33,14 @@ EM_SENSOR_NAME = Electromagnetic sensor
 EM_SENSOR_DESC = No description.
 -
 
+:Shields
+ECM_SHIELD_NAME = ECM
+ECM_SHIELD_DESC = No description.
+EM_SHIELD_NAME = EM shield
+EM_SHIELD_DESC = No description.
+PARTICLE_SHIELD_NAME = Particle shield
+PARTICLE_SHIELD_DESC = No description.
+-
 :Thrusters
 HYDROGEN_THRUSTER_NAME = Hydrogen thrusters
 HYDROGEN_THRUSTER_DESC = No description.

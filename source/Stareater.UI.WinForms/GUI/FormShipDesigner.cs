@@ -159,5 +159,19 @@ namespace Stareater.GUI
 			this.isDriveImage.Visible = this.hasIsDrive.Checked;
 			this.checkValidity();
 		}
+		
+		private void pickShieldAction_Click(object sender, EventArgs e)
+		{
+			var shields = new IShipComponent[] { new ShipComponent<ShieldInfo>("None", null, null) }.Concat(				
+				this.controller.Shields().Select(x => new ShipComponent<ShieldInfo>(
+				x.Name,
+				x.ImagePath,
+				x
+			)));
+			
+			using(var form = new FormPickComponent(shields))
+				if (form.ShowDialog() == DialogResult.OK)
+					this.controller.Shield = (form.Choice as ShipComponent<ShieldInfo>).Item;
+		}
 	}
 }

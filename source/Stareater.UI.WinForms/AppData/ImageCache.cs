@@ -22,8 +22,8 @@ namespace Stareater.AppData
 		}
 		#endregion
 		
-		Dictionary<string, Image> cache = new Dictionary<string, Image>();
-		Dictionary<string, Image> disabledCache = new Dictionary<string, Image>();
+		private readonly Dictionary<string, Image> cache = new Dictionary<string, Image>();
+		private readonly Dictionary<string, Image> disabledCache = new Dictionary<string, Image>();
 		
 		public Image this[string path] 
 		{
@@ -32,7 +32,7 @@ namespace Stareater.AppData
 				if (cache.ContainsKey(path))
 					return cache[path];
 				
-				FileInfo file = new FileInfo(path);
+				var file = new FileInfo(path);
 				Image image;
 				
 				if (cache.ContainsKey(file.FullName)) {
@@ -58,12 +58,12 @@ namespace Stareater.AppData
 				return disabledCache[path];
 			
 			var enabledImage = this[path];
-			Bitmap disabledImage = new Bitmap(enabledImage.Width, enabledImage.Height);
+			var disabledImage = new Bitmap(enabledImage.Width, enabledImage.Height);
 
-        	ColorMatrix matrix = new ColorMatrix();
+        	var matrix = new ColorMatrix();
         	matrix.Matrix33 = 0.4f;
 
-        	ImageAttributes attributes = new ImageAttributes();
+        	var attributes = new ImageAttributes();
         	attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
         	using(var g = Graphics.FromImage(disabledImage))
@@ -74,7 +74,7 @@ namespace Stareater.AppData
         			GraphicsUnit.Pixel, attributes
         		);
         	
-        	FileInfo file = new FileInfo(path);
+        	var file = new FileInfo(path);
         	if (file.FullName != path)
 					disabledCache.Add(file.FullName, disabledImage);
         	disabledCache.Add(path, disabledImage);
