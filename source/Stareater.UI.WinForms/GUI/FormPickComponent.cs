@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Stareater.AppData;
+using Stareater.GUI.ShipDesigns;
 
 namespace Stareater.GUI
 {
 	public partial class FormPickComponent : Form
 	{
-		public IShipComponent Choice { get; private set; }
+		public IShipComponentChoice Choice { get; private set; }
 		
-		private readonly Dictionary<object, IShipComponent> buttonResult = new Dictionary<object, IShipComponent>();
+		private readonly Dictionary<object, IShipComponentChoice> buttonResult = new Dictionary<object, IShipComponentChoice>();
 		
 		public FormPickComponent()
 		{
 			InitializeComponent();
 		}
 		
-		public FormPickComponent(IEnumerable<IShipComponent> components) : this()
+		public FormPickComponent(IEnumerable<IShipComponentChoice> components) : this()
 		{
 			this.Choice = null;
 			
@@ -46,7 +47,7 @@ namespace Stareater.GUI
 
 		private void onSelect(object sender, EventArgs e)
 		{
-			this.Choice = buttonResult[sender];
+			buttonResult[sender].Select();
 			this.DialogResult = DialogResult.OK;
 			this.Close();
 		}

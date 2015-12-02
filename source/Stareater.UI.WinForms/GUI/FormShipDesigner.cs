@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views.Ships;
+using Stareater.GUI.ShipDesigns;
 using Stareater.GuiUtils;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
@@ -92,7 +93,7 @@ namespace Stareater.GUI
 				new TextVar("detection", this.controller.Detection.ToString("0.#")).Get
 			);
 		}
-		
+
 		private void acceptButton_Click(object sender, EventArgs e)
 		{
 			this.DialogResult = DialogResult.OK;
@@ -162,16 +163,18 @@ namespace Stareater.GUI
 		
 		private void pickShieldAction_Click(object sender, EventArgs e)
 		{
-			var shields = new IShipComponent[] { new ShipComponent<ShieldInfo>("None", null, null) }.Concat(				
-				this.controller.Shields().Select(x => new ShipComponent<ShieldInfo>(
+			Action<ShieldInfo> selectShield = 
+				x => this.controller.Shield = x;
+			
+			var shields = new IShipComponentChoice[] { new ShipComponentChoice<ShieldInfo>("None", null, null, selectShield) }.Concat(				
+				this.controller.Shields().Select(x => new ShipComponentChoice<ShieldInfo>(
 				x.Name,
 				x.ImagePath,
-				x
+				x, selectShield
 			)));
 			
 			using(var form = new FormPickComponent(shields))
-				if (form.ShowDialog() == DialogResult.OK)
-					this.controller.Shield = (form.Choice as ShipComponent<ShieldInfo>).Item;
+				form.ShowDialog();
 		}
 	}
 }

@@ -300,8 +300,8 @@
     <Compile Include="GUI\SavedGameItemView.Designer.cs">
       <DependentUpon>SavedGameItemView.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\IShipComponent.cs" />
-    <Compile Include="GUI\ShipComponent.cs" />
+    <Compile Include="GUI\ShipDesigns\IShipComponentChoice.cs" />
+    <Compile Include="GUI\ShipDesigns\ShipComponentChoice.cs" />
     <Compile Include="GUI\ShipGroupItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -485,7 +485,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="GUI\ShipDesigns" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
