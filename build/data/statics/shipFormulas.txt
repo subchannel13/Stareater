@@ -5,6 +5,8 @@
 	combatSpeed # thrust;
 	
 	detection # sensor;
+	cloaking # shieldCloak;
+	jamming # shieldJamming;
 	
 	colonyPop # 500 * colony * (1 + 0.1 * colony_lvl ^ 2);
 	colonyBuildings { Buildings

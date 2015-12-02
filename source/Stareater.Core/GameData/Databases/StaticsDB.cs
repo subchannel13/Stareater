@@ -188,10 +188,12 @@ namespace Stareater.GameData.Databases
 				colonizerBuildings.Add(buildingId, buildingData[buildingId].To<Formula>());
 					
 			return new ShipFormulaSet(
+				data[ShipCloaking].To<Formula>(),
 				data[ShipCombatSpeed].To<Formula>(),
 				data[ShipDetection].To<Formula>(),
 				data[ShipEvasion].To<Formula>(),
 				data[ShipHitPoints].To<Formula>(),
+				data[ShipJamming].To<Formula>(),
 				data[ShipColonyPopulation].To<Formula>(),
 				colonizerBuildings
 			);
@@ -489,10 +491,12 @@ namespace Stareater.GameData.Databases
 		private const string PlayerResearch = "research";
 		private const string PlayerResearchFocusWeight = "focusedResearchWeight";
 		
+		private const string ShipCloaking = "cloaking";
 		private const string ShipCombatSpeed = "combatSpeed";
 		private const string ShipDetection = "detection";
 		private const string ShipEvasion = "evasion";
 		private const string ShipHitPoints = "hitPoints";
+		private const string ShipJamming = "jamming";
 		private const string ShipColonyPopulation = "colonyPop";
 		private const string ShipColonyBuildings = "colonyBuildings";
 

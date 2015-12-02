@@ -7,8 +7,8 @@ namespace Stareater.GUI.ShipDesigns
 		public string Name { get; private set; }
 		public string ImagePath { get; private set; }
 		
-		private T item;
-		private Action<T> selectAction;
+		private readonly T item;
+		private readonly Action<T> selectAction;
 		
 		public ShipComponentChoice(string name, string imagePath, T item, Action<T> selectAction)
 		{

@@ -92,6 +92,10 @@ namespace Stareater.GUI
 			this.sensorInfo.Text = this.context["sensors"].Text(
 				new TextVar("detection", this.controller.Detection.ToString("0.#")).Get
 			);
+			this.stealthInfo.Text = this.context["stealth"].Text(
+				new TextVar("jamming", this.controller.Jamming.ToString("0.#")).
+					And("cloaking", this.controller.Cloaking.ToString("0.#")).Get
+			);
 		}
 
 		private void acceptButton_Click(object sender, EventArgs e)
@@ -166,7 +170,7 @@ namespace Stareater.GUI
 			Action<ShieldInfo> selectShield = 
 				x => this.controller.Shield = x;
 			
-			var shields = new IShipComponentChoice[] { new ShipComponentChoice<ShieldInfo>("None", null, null, selectShield) }.Concat(				
+			var shields = new IShipComponentChoice[] { new ShipComponentChoice<ShieldInfo>(this.context["unselectComponent"].Text(), null, null, selectShield) }.Concat(
 				this.controller.Shields().Select(x => new ShipComponentChoice<ShieldInfo>(
 				x.Name,
 				x.ImagePath,
@@ -175,6 +179,20 @@ namespace Stareater.GUI
 			
 			using(var form = new FormPickComponent(shields))
 				form.ShowDialog();
+			
+			if (this.controller.Shield != null)
+			{
+				this.pickShieldAction.Text = this.controller.Shield.Name;
+				this.shieldImage.Visible = true;
+				this.shieldImage.Image = ImageCache.Get[this.controller.Shield.ImagePath];
+			}
+			else
+			{
+				this.pickShieldAction.Text = this.context["noShield"].Text();
+				this.shieldImage.Visible = false;
+				this.shieldImage.Image = null;
+			}
+			updateInfos();
 		}
 	}
 }

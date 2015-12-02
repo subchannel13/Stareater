@@ -183,6 +183,7 @@
 			this.shieldImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.shieldImage.TabIndex = 39;
 			this.shieldImage.TabStop = false;
+			this.shieldImage.Visible = false;
 			// 
 			// pickShieldAction
 			// 

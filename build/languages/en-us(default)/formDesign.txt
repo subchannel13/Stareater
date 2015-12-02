@@ -15,7 +15,14 @@ sensors §
 		Sensors: {=detection}
 	\
 	
+stealth §
+		Stealth: {=jamming}, {=cloaking}
+	\
+
 power §
 		Power: {=powerPercent} %
 	\
+	
+noShield = No shield
+unselectComponent = None
 -

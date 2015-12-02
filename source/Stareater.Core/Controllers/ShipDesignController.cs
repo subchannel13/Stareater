@@ -145,6 +145,17 @@ namespace Stareater.Controllers
 			get { return (this.Shield != null) ? this.Shield.PowerUsage : 0; } //TODO(v0.5)
 		}
 		
+		public double Cloaking
+		{
+			get 
+			{
+				var vars = new Var("shieldCloak", Shield != null ? Shield.Cloaking : 0).
+					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
+				
+				return game.Statics.ShipFormulas.Cloaking.Evaluate(vars);
+			}
+		}
+		
 		public double CombatSpeed
 		{
 			get 
@@ -187,6 +198,17 @@ namespace Stareater.Controllers
 					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
 				
 				return game.Statics.ShipFormulas.HitPoints.Evaluate(vars);
+			}
+		}
+		
+		public double Jamming
+		{
+			get 
+			{
+				var vars = new Var("shieldJamming", Shield != null ? Shield.Jamming : 0).
+					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
+				
+				return game.Statics.ShipFormulas.Jamming.Evaluate(vars);
 			}
 		}
 		#endregion
