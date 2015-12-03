@@ -241,9 +241,9 @@ namespace Stareater.Controllers
 			foreach (var fleet in gameObj.States.Fleets) {
 				if (fleet.Owner == gameObj.CurrentPlayer && gameObj.CurrentPlayer.Orders.ShipOrders.ContainsKey(fleet.Position))
 					foreach(var newFleet in gameObj.CurrentPlayer.Orders.ShipOrders[fleet.Position])
-						fleets.Add(new FleetInfo(newFleet, this.gameObj.States.Stars.AtContains(fleet.Position), this.VisualPositioner));
+						fleets.Add(new FleetInfo(newFleet, this.gameObj.States.Stars.AtContains(fleet.Position), this.VisualPositioner, gameObj.Derivates.Of(fleet.Owner)));
 				else
-					fleets.Add(new FleetInfo(fleet, this.gameObj.States.Stars.AtContains(fleet.Position), this.VisualPositioner));
+					fleets.Add(new FleetInfo(fleet, this.gameObj.States.Stars.AtContains(fleet.Position), this.VisualPositioner, gameObj.Derivates.Of(fleet.Owner)));
 			}
 
 			this.mapCache.Rebuild(this.GameInstance.States.Stars, fleets);
@@ -267,7 +267,7 @@ namespace Stareater.Controllers
 		public IEnumerable<DesignInfo> ShipsDesigns()
 		{
 			var game = this.GameInstance;
-			return game.States.Designs.OwnedBy(game.CurrentPlayer).Select(x => new DesignInfo(x));
+			return game.States.Designs.OwnedBy(game.CurrentPlayer).Select(x => new DesignInfo(x, game.Derivates.Of(game.CurrentPlayer).DesignStats[x]));
 		}
 		#endregion
 		
@@ -280,6 +280,15 @@ namespace Stareater.Controllers
 			
 			foreach(var planet in planets)
 				yield return new ColonizationController(this.GameInstance, planet, this.IsReadOnly);
+		}
+		
+		public IEnumerable<FleetInfo> EnrouteColonizers(Planet destination)
+		{
+			var finder = new ColonizerFinder(destination);
+			
+			foreach(var fleet in mapCache.Fleets.Where(x => x.Owner.Data == this.GameInstance.CurrentPlayer))
+				if (finder.Check(fleet.FleetData))
+					yield return fleet;
 		}
 		#endregion
 		

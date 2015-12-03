@@ -11,7 +11,7 @@ namespace Stareater.GUI
 	public partial class ColonizationSourceView : UserControl
 	{
 		private StellarisInfo sourceData = null;
-		private ColonizationController controller;
+		private readonly ColonizationController controller;
 		
 		public event Action OnStateChange;
 		
@@ -47,14 +47,14 @@ namespace Stareater.GUI
 			
 			if (controller.Sources().Contains(sourceData))
 			{
-				controlButton.Image = Stareater.Properties.Resources.start;
-				starName.Text = sourceData.HostStar.Name.ToText(SettingsWinforms.Get.Language);
+				this.controlButton.Image = Stareater.Properties.Resources.start;
+				this.starName.Text = this.sourceData.HostStar.Name.ToText(SettingsWinforms.Get.Language);
 			}
 			else
 			{
-				controlButton.Image = Stareater.Properties.Resources.stop;
-				starName.Text = context["stoppedColonization"].Text(
-					new TextVar("star", sourceData.HostStar.Name.ToText(SettingsWinforms.Get.Language)).Get
+				this.controlButton.Image = Stareater.Properties.Resources.stop;
+				this.starName.Text = context["stoppedColonization"].Text(
+					new TextVar("star", this.sourceData.HostStar.Name.ToText(SettingsWinforms.Get.Language)).Get
 				);
 			}
 		}

@@ -20,6 +20,7 @@ namespace Stareater.GUI
 		private System.Windows.Forms.Label targetName;
 		private System.Windows.Forms.FlowLayoutPanel sourceList;
 		private System.Windows.Forms.Label targetInfo;
+		private System.Windows.Forms.Label enrouteInfo;
 		
 		/// <summary>
 		/// Disposes resources used by the control.
@@ -48,6 +49,7 @@ namespace Stareater.GUI
 			this.targetName = new System.Windows.Forms.Label();
 			this.sourceList = new System.Windows.Forms.FlowLayoutPanel();
 			this.targetInfo = new System.Windows.Forms.Label();
+			this.enrouteInfo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -106,12 +108,22 @@ namespace Stareater.GUI
 			this.targetInfo.TabIndex = 8;
 			this.targetInfo.Text = "0.01 / 100 G population";
 			// 
+			// enrouteInfo
+			// 
+			this.enrouteInfo.AutoSize = true;
+			this.enrouteInfo.Location = new System.Drawing.Point(49, 29);
+			this.enrouteInfo.Name = "enrouteInfo";
+			this.enrouteInfo.Size = new System.Drawing.Size(80, 13);
+			this.enrouteInfo.TabIndex = 9;
+			this.enrouteInfo.Text = "+x.xx X enroute";
+			// 
 			// ColonizationTargetView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.Controls.Add(this.enrouteInfo);
 			this.Controls.Add(this.targetInfo);
 			this.Controls.Add(this.sourceList);
 			this.Controls.Add(this.addButton);

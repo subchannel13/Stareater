@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Stareater.Controllers.Data;
 using Stareater.Controllers.Views;
+using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameLogic;

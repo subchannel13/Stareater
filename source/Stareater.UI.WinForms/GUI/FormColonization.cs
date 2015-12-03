@@ -20,7 +20,7 @@ namespace Stareater.GUI
 			this.controller = controller;
 			
 			foreach (var data in controller.ColonizationProjects()) {
-				var itemView = new ColonizationTargetView(data);
+				var itemView = new ColonizationTargetView(data, controller);
 				projectList.Controls.Add(itemView);
 			}
 			

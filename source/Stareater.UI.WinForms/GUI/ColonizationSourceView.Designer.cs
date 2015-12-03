@@ -14,7 +14,6 @@ namespace Stareater.GUI
 		/// Designer variable used to keep track of non-visual components.
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
-		private System.Windows.Forms.Label progressText;
 		private System.Windows.Forms.Button controlButton;
 		private System.Windows.Forms.Label starName;
 		
@@ -39,20 +38,9 @@ namespace Stareater.GUI
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.progressText = new System.Windows.Forms.Label();
 			this.controlButton = new System.Windows.Forms.Button();
 			this.starName = new System.Windows.Forms.Label();
 			this.SuspendLayout();
-			// 
-			// progressText
-			// 
-			this.progressText.AutoSize = true;
-			this.progressText.Location = new System.Drawing.Point(6, 21);
-			this.progressText.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
-			this.progressText.Name = "progressText";
-			this.progressText.Size = new System.Drawing.Size(128, 13);
-			this.progressText.TabIndex = 5;
-			this.progressText.Text = "xx.x X Ships, ETA: x turns";
 			// 
 			// controlButton
 			// 
@@ -67,7 +55,7 @@ namespace Stareater.GUI
 			this.starName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
 			this.starName.AutoSize = true;
-			this.starName.Location = new System.Drawing.Point(6, 3);
+			this.starName.Location = new System.Drawing.Point(3, 8);
 			this.starName.Name = "starName";
 			this.starName.Size = new System.Drawing.Size(55, 13);
 			this.starName.TabIndex = 4;
@@ -78,12 +66,11 @@ namespace Stareater.GUI
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-			this.Controls.Add(this.progressText);
 			this.Controls.Add(this.controlButton);
 			this.Controls.Add(this.starName);
 			this.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
 			this.Name = "ColonizationSourceView";
-			this.Size = new System.Drawing.Size(200, 37);
+			this.Size = new System.Drawing.Size(200, 30);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

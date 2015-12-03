@@ -14,26 +14,36 @@ namespace Stareater.GUI
 	public partial class ColonizationTargetView : UserControl
 	{
 		private readonly ColonizationController controller;
+		private readonly GameController gameController;
 		
 		public ColonizationTargetView()
 		{
 			InitializeComponent();
 		}
 		
-		public ColonizationTargetView(ColonizationController controller) : this()
+		public ColonizationTargetView(ColonizationController controller, GameController gameController) : this()
 		{
 			this.controller = controller;
+			this.gameController = gameController;
 			var context = SettingsWinforms.Get.Language["FormColonization"];
 			
-			var infoFormatter = new ThousandsFormatter(controller.Population, controller.PopulationMax);
+			var infoFormatter = new ThousandsFormatter(controller.PopulationMax);
 			var infoVars = new TextVar("pop", infoFormatter.Format(controller.Population)).
 				And("max", infoFormatter.Format(controller.PopulationMax));
 			
 			this.targetName.Text = LocalizationMethods.PlanetName(controller.PlanetBody);
 			this.targetInfo.Text = context["population"].Text(infoVars.Get);
+
+			var enrouteShips = gameController.EnrouteColonizers(controller.PlanetBody).SelectMany(x => x.Ships).ToArray();
+			var enroutePopulation = enrouteShips.Length > 0 ? 
+				enrouteShips.Sum(x => x.Quantity * x.Design.ColonizerPopulation) : 
+				0;
+
+			this.enrouteInfo.Text =	context["enroute"].Text(
+				new TextVar("count", new ThousandsFormatter().Format(enroutePopulation)).Get
+			);
 			
 			updateView();
-			
 		}
 
 		void updateView()

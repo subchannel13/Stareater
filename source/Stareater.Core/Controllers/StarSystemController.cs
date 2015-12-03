@@ -15,7 +15,7 @@ namespace Stareater.Controllers
 		
 		public StarData Star { get; private set; }
 		public bool IsReadOnly { get; private set; }
-			
+		
 		internal StarSystemController(Game game, StarData star, bool readOnly)
 		{
 			this.game = game;
@@ -102,7 +102,7 @@ namespace Stareater.Controllers
 			if (planet == null)
 				throw new ArgumentOutOfRangeException("bodyPosition");
 			
-			return new ColonizationController(game, planet, IsReadOnly);
+			return new ColonizationController(this.game, planet, IsReadOnly);
 		}
 		
 		public StellarisAdminController StellarisController()
