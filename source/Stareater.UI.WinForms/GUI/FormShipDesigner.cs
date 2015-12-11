@@ -96,6 +96,8 @@ namespace Stareater.GUI
 				new TextVar("jamming", this.controller.Jamming.ToString("0.#")).
 					And("cloaking", this.controller.Cloaking.ToString("0.#")).Get
 			);
+			
+			this.spaceInfo.SetSpace(this.controller.SpaceUsed, this.controller.SpaceTotal);
 		}
 
 		private void acceptButton_Click(object sender, EventArgs e)
@@ -163,6 +165,7 @@ namespace Stareater.GUI
 			this.controller.HasIsDrive = this.hasIsDrive.Checked;
 			this.isDriveImage.Visible = this.hasIsDrive.Checked;
 			this.checkValidity();
+			updateInfos();
 		}
 		
 		private void pickShieldAction_Click(object sender, EventArgs e)

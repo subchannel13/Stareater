@@ -71,6 +71,22 @@ namespace Stareater.Controllers.Views.Ships
 			}
 		}
 		
+		public double ShieldSize
+		{
+			get
+			{
+				return this.Type.SizeShield.Evaluate(levelVar);
+			}
+		}
+		
+		public double Space
+		{
+			get
+			{
+				return this.Type.SpaceFree.Evaluate(levelVar);
+			}
+		}
+		
 		//TODO(v0.5) add other hull properties
 	}
 }

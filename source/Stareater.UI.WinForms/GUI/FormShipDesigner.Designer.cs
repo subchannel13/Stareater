@@ -44,6 +44,7 @@
 			this.pickShieldAction = new System.Windows.Forms.Button();
 			this.stealthInfo = new System.Windows.Forms.Label();
 			this.costInfo = new System.Windows.Forms.Label();
+			this.spaceInfo = new Stareater.GUI.DesignSpaceInfo();
 			((System.ComponentModel.ISupportInitialize)(this.hullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.isDriveImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.shieldImage)).BeginInit();
@@ -215,11 +216,20 @@
 			this.costInfo.TabIndex = 42;
 			this.costInfo.Text = "Cost: x.xx X";
 			// 
+			// spaceInfo
+			// 
+			this.spaceInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.spaceInfo.Location = new System.Drawing.Point(12, 377);
+			this.spaceInfo.Name = "spaceInfo";
+			this.spaceInfo.Size = new System.Drawing.Size(319, 23);
+			this.spaceInfo.TabIndex = 43;
+			// 
 			// FormShipDesigner
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(425, 410);
+			this.Controls.Add(this.spaceInfo);
 			this.Controls.Add(this.costInfo);
 			this.Controls.Add(this.stealthInfo);
 			this.Controls.Add(this.pickShieldAction);
@@ -264,5 +274,6 @@
 		private System.Windows.Forms.Button pickShieldAction;
 		private System.Windows.Forms.Label stealthInfo;
 		private System.Windows.Forms.Label costInfo;
+		private Stareater.GUI.DesignSpaceInfo spaceInfo;
 	}
 }

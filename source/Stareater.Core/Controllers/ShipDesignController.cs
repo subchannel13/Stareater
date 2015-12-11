@@ -139,12 +139,7 @@ namespace Stareater.Controllers
 
 		#endregion
 
-		#region Extra info
-		public double PowerUsed
-		{
-			get { return (this.Shield != null) ? this.Shield.PowerUsage : 0; } //TODO(v0.5)
-		}
-		
+		#region Combat info
 		public double Cloaking
 		{
 			get 
@@ -213,6 +208,28 @@ namespace Stareater.Controllers
 		}
 		#endregion
 
+		#region Design info
+		public double PowerUsed
+		{
+			get { return (this.Shield != null) ? this.Shield.PowerUsage : 0; } //TODO(v0.5)
+		}
+		
+		public double SpaceTotal
+		{
+			get { return this.selectedHull.Space; }
+		}
+		
+		public double SpaceUsed
+		{
+			get 
+			{ 
+				//TODO(v0.5)
+				return (this.HasIsDrive ? this.selectedHull.IsDriveSize : 0) + 
+					(this.Shield != null ? this.selectedHull.ShieldSize : 0);
+			} 
+		}
+		#endregion
+		
 		#region Designer actions
 		public string Name { get; set; } 
 		public int ImageIndex { get; set; }

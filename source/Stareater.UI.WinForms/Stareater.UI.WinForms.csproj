@@ -131,6 +131,10 @@
     <Compile Include="GUI\DesignItem.Designer.cs">
       <DependentUpon>DesignItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\DesignSpaceInfo.cs" />
+    <Compile Include="GUI\DesignSpaceInfo.Designer.cs">
+      <DependentUpon>DesignSpaceInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\EmpyPlanetView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -338,6 +342,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\DesignItem.resx">
       <DependentUpon>DesignItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\DesignSpaceInfo.resx">
+      <DependentUpon>DesignSpaceInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\EmpyPlanetView.resx">
       <DependentUpon>EmpyPlanetView.cs</DependentUpon>
