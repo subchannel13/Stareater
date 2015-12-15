@@ -81,7 +81,7 @@ namespace Stareater.GUI
 				using(var form = new FormPickColonizationSource(controller))
 					if (form.ShowDialog() == DialogResult.OK)
 					{
-						controller.StartColonization(form.SelectedSource);
+						controller.StartColonization(form.SelectedSource); //FIXME(v0.5) doesn't add more then one source
 						updateView();
 					}
 		}

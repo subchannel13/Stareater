@@ -105,6 +105,7 @@ namespace Stareater
 			
 			indexer.AddAll(States.Planets);
 			indexer.AddAll(States.Stars);
+			indexer.AddAll(States.Wormholes);
 			
 			indexer.AddAll(States.Colonies);
 			indexer.AddAll(States.Stellarises);

@@ -22,7 +22,7 @@
 		new DataInfo("IsDrive", "Component<IsDriveType>").IsStatic(Flag.NoIndexer, Flag.ArrayData).CanBeNull(),
 		new DataInfo("Reactor", "Component<ReactorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Sensors", "Component<SensorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
-		new DataInfo("Shield", "Component<ShieldType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
+		new DataInfo("Shield", "Component<ShieldType>").IsStatic(Flag.NoIndexer, Flag.ArrayData).CanBeNull(),
 		new DataInfo("SpecialEquipment", "Dictionary", 
 			new GenericParamInfo("Component<SpecialEquipmentType>").SaveIdCodeMethod("TypeInfo.IdCode").SaveKey("SpecialKey", "Type").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 			new GenericParamInfo("int").SaveKey("SpecialAmountKey", "amount")

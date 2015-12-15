@@ -46,16 +46,27 @@ namespace Stareater.Controllers
 				saveNames.Add(file.Name);
 
 				using (var parser = new IkonParser(file.OpenText())) {
-					var rawData = parser.ParseNext() as IkonComposite;
-					saveFiles.Add(
-						new SavedGameInfo(
-							rawData[SaveGameTitleKey].To<string>(),
-							rawData[Game.TurnKey].To<int>(),
-							rawData,
-							file
-						),
-						file.LastWriteTimeUtc
-					);
+#if !DEBUG
+					try
+					{
+#endif						
+						var rawData = parser.ParseNext() as IkonComposite;
+						saveFiles.Add(
+							new SavedGameInfo(
+								rawData[SaveGameTitleKey].To<string>(),
+								rawData[Game.TurnKey].To<int>(),
+								rawData,
+								file
+							),
+							file.LastWriteTimeUtc
+						);
+#if !DEBUG
+					}
+					catch(IOException)
+					{
+						//TODO(later) Notify about corrupted save file						
+					}
+#endif
 				}
 			}
 
@@ -95,7 +106,7 @@ namespace Stareater.Controllers
 		{
 			string fileName = SaveNamePrefix + this.nextSaveNumber + "." + SaveNameExtension;
 
-			FileInfo saveFile = new FileInfo(SaveFolderPath + fileName);
+			var saveFile = new FileInfo(SaveFolderPath + fileName);
 			saveFile.Directory.Create();
 
 			save(saveFile, title);
@@ -114,7 +125,7 @@ namespace Stareater.Controllers
 				var gameData = gameController.GameInstance.Save();
 				gameData.Add(SaveGameTitleKey, new IkonText(title));
 
-				IkadnWriter writer = new IkadnWriter(output);
+				var writer = new IkadnWriter(output);
 				gameData.Compose(writer);
 			}
 		}

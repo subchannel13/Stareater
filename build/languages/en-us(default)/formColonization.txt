@@ -2,6 +2,7 @@
 title = Colonization projects
 
 addSource = Add
+addSourceTitle = Pick source
 
 enroute §
 		+{=count} enroute

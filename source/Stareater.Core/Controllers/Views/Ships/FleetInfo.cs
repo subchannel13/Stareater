@@ -31,7 +31,7 @@ namespace Stareater.Controllers.Views.Ships
 			this.Missions = MissionInfoFactory.Create(fleet);
 			this.Owner = new PlayerInfo(fleet.Owner);
 			
-			this.VisualPosition = visualPositioner.FleetPosition(fleet.Position, this.Missions, atStar);
+			this.VisualPosition = visualPositioner != null ? visualPositioner.FleetPosition(fleet.Position, this.Missions, atStar) : fleet.Position;
 		}
 		
 		public bool IsMoving 

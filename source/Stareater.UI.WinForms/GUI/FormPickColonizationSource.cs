@@ -30,6 +30,7 @@ namespace Stareater.GUI
 				));
 			sourceList.SelectedIndex = 0;
 			
+			this.Text = SettingsWinforms.Get.Language["FormColonization"]["addSourceTitle"].Text();
 			this.addButton.Text = SettingsWinforms.Get.Language["FormColonization"]["addSource"].Text();
 		}
 		
@@ -46,6 +47,7 @@ namespace Stareater.GUI
 		private void sourceList_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			//TODO(v0.5) change ETA info
+			this.sourceInfo.Text = "";
 		}
 		
 		private void addButton_Click(object sender, EventArgs e)

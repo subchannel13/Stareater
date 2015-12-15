@@ -109,8 +109,11 @@ namespace Stareater.Ships
 			var sensorsSave = rawData[SensorsKey];
 			this.Sensors = Component<SensorType>.Load(sensorsSave.To<IkonArray>(), deindexer);
 
-			var shieldSave = rawData[ShieldKey];
-			this.Shield = Component<ShieldType>.Load(shieldSave.To<IkonArray>(), deindexer);
+			if (rawData.Keys.Contains(ShieldKey))
+			{
+				var shieldSave = rawData[ShieldKey];
+				this.Shield = Component<ShieldType>.Load(shieldSave.To<IkonArray>(), deindexer);
+			}
 
 			var specialEquipmentSave = rawData[SpecialsKey];
 			this.SpecialEquipment = new Dictionary<Component<SpecialEquipmentType>, int>();
@@ -163,7 +166,8 @@ namespace Stareater.Ships
 
 			data.Add(SensorsKey, this.Sensors.Save());
 
-			data.Add(ShieldKey, this.Shield.Save());
+			if (this.Shield != null)
+				data.Add(ShieldKey, this.Shield.Save());
 
 			var specialEquipmentData = new IkonArray();
 			foreach(var item in this.SpecialEquipment) {

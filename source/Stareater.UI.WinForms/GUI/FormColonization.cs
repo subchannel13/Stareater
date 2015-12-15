@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
@@ -19,8 +19,14 @@ namespace Stareater.GUI
 		{
 			this.controller = controller;
 			
-			foreach (var data in controller.ColonizationProjects()) {
-				var itemView = new ColonizationTargetView(data, controller);
+			var projects = controller.ColonizationProjects().ToList();
+			projectList.RowStyles.Clear();
+			for (int i = 0; i < projects.Count; i++)
+				projectList.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+			
+			for (int i = 0; i < projects.Count; i++) 
+			{
+				var itemView = new ColonizationTargetView(projects[i], controller);
 				projectList.Controls.Add(itemView);
 			}
 			

@@ -14,7 +14,7 @@ namespace Stareater.GUI
 		/// Designer variable used to keep track of non-visual components.
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
-		private System.Windows.Forms.FlowLayoutPanel projectList;
+		private System.Windows.Forms.TableLayoutPanel projectList;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -37,14 +37,34 @@ namespace Stareater.GUI
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.projectList = new System.Windows.Forms.FlowLayoutPanel();
+			this.projectList = new System.Windows.Forms.TableLayoutPanel();
 			this.SuspendLayout();
 			// 
 			// projectList
 			// 
+			this.projectList.AutoScroll = true;
+			this.projectList.ColumnCount = 1;
+			this.projectList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.projectList.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.projectList.Location = new System.Drawing.Point(0, 0);
 			this.projectList.Name = "projectList";
+			this.projectList.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
+			this.projectList.RowCount = 1;
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 262F));
 			this.projectList.Size = new System.Drawing.Size(284, 262);
 			this.projectList.TabIndex = 0;
 			// 

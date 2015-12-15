@@ -157,7 +157,16 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Map related
-		public IVisualPositioner VisualPositioner { get; set; }
+		private IVisualPositioner visualPositioner = null;
+		public IVisualPositioner VisualPositioner
+		{ 
+			get { return this.visualPositioner; }
+			set
+			{
+				this.visualPositioner = value;
+				this.rebuildCache();
+			}
+		}
 		
 		public bool IsStarVisited(StarData star)
 		{
