@@ -74,7 +74,7 @@
 			this.aboutLabel.Name = "aboutLabel";
 			this.aboutLabel.Size = new System.Drawing.Size(115, 13);
 			this.aboutLabel.TabIndex = 5;
-			this.aboutLabel.Text = "Ivan Kravarščan 2014.";
+			this.aboutLabel.Text = "Ivan Kravarščan 2015.";
 			// 
 			// settingsButton
 			// 
@@ -114,6 +114,7 @@
 			this.Text = "Zvjezdojedac";
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 
 		#endregion

@@ -4,7 +4,7 @@ Stareater (croatian Zvjezdojedac) is a turn based 4X strategy game. Game was pri
 
 This project is a prototype meaning it's main objective is to implement and test the idea. GUI, graphics and sounds are secondary. If prototype proves to be good, development of real game will be considered. 
 
-Version 0.3 and later are have multilingual support with Croatian and English included. Prior versions are Croatian only. Although this is a C# project, builds can be run under Mono in both Linux and Mac OS. 
+Version 0.3 and later have multilingual support and have Croatian and English translation. Prior versions are Croatian only. Although this is a C# project, builds can be run under Mono in both Linux and Mac OS. 
 
 # How to build
 
