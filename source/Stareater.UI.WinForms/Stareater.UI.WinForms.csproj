@@ -165,6 +165,10 @@
     <Compile Include="GUI\FormDevelopment.Designer.cs">
       <DependentUpon>FormDevelopment.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FormError.cs" />
+    <Compile Include="GUI\FormError.Designer.cs">
+      <DependentUpon>FormError.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -360,6 +364,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormDevelopment.resx">
       <DependentUpon>FormDevelopment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormError.resx">
+      <DependentUpon>FormError.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

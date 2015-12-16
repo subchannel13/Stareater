@@ -98,14 +98,17 @@ namespace Stareater.Controllers
 		{
 			if (!lastTask.IsFaulted)
 				return;
-
+#if DEBUG
 			System.Diagnostics.Trace.TraceError(lastTask.Exception.ToString());
+#else
+			throw lastTask.Exception;
+#endif
 		}
 
 		private void precombatTurnProcessing()
 		{
 			gameObj.ProcessPrecombat();
-			
+
  			stateListener.OnCombatPhaseStart();
 		}
 		

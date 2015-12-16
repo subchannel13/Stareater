@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.GuiUtils;
@@ -29,7 +27,7 @@ namespace Stareater.GUI
 					languageSelector.SelectedIndex = languageSelector.Items.Count - 1;
 			}
 
-			List<int> scales = new List<int>();
+			var scales = new List<int>();
 			scales.AddRange(Methods.Range(5, 100, 5));
 			scales.AddRange(Methods.Range(100, 200, 10));
 			scales.AddRange(Methods.Range(200, 400, 20, true));

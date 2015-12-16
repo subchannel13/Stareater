@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Localization;
+using Stareater.GUI;
 
 namespace StareaterUI
 {
@@ -20,7 +20,19 @@ namespace StareaterUI
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Stareater.GUI.FormMain());
+#if !DEBUG
+			try
+			{
+#endif
+				Application.Run(new Stareater.GUI.FormMain());
+#if !DEBUG
+			}
+			catch (Exception e)
+			{
+				using(var form = new FormError(e.ToString()))
+					form.ShowDialog();
+			}
+#endif
 		}
 	}
 }
