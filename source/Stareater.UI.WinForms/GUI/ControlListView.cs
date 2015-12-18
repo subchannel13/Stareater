@@ -36,9 +36,9 @@ namespace Stareater.GUI
 		protected virtual void onItemClick(object sender, EventArgs e)
 		{
 			if (selectedIndex != NoneSelected)
-				deselect(selectedIndex);
+				deselect();
 
-			Control clickedControl = sender as Control;
+			var clickedControl = sender as Control;
 			select(Controls.IndexOf(clickedControl));
 			if (SelectedIndexChanged != null)
 				SelectedIndexChanged(this, new EventArgs());
@@ -54,7 +54,7 @@ namespace Stareater.GUI
 			selectedIndex = controlIndex;
 		}
 
-		private void deselect(int selectedIndex)
+		private void deselect()
 		{
 			Controls[selectedIndex].BackColor = lastBackColor;
 			Controls[selectedIndex].ForeColor = lastForeColor;
@@ -77,7 +77,7 @@ namespace Stareater.GUI
 			set
 			{
 				if (selectedIndex != NoneSelected)
-					deselect(selectedIndex);
+					deselect();
 
 				if (value != NoneSelected)
 					select(value);

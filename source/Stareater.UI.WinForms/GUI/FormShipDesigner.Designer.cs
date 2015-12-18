@@ -45,6 +45,12 @@
 			this.stealthInfo = new System.Windows.Forms.Label();
 			this.costInfo = new System.Windows.Forms.Label();
 			this.spaceInfo = new Stareater.GUI.DesignSpaceInfo();
+			this.equipmentList = new Stareater.GUI.ControlListView();
+			this.addEquipAction = new System.Windows.Forms.Button();
+			this.removeEquipAction = new System.Windows.Forms.Button();
+			this.customAmountAction = new System.Windows.Forms.Button();
+			this.lessEquipAction = new System.Windows.Forms.Button();
+			this.moreEquipAction = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.hullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.isDriveImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.shieldImage)).BeginInit();
@@ -224,11 +230,72 @@
 			this.spaceInfo.Size = new System.Drawing.Size(319, 23);
 			this.spaceInfo.TabIndex = 43;
 			// 
+			// equipmentList
+			// 
+			this.equipmentList.AutoScroll = true;
+			this.equipmentList.Location = new System.Drawing.Point(12, 125);
+			this.equipmentList.Name = "equipmentList";
+			this.equipmentList.SelectedIndex = -1;
+			this.equipmentList.Size = new System.Drawing.Size(400, 203);
+			this.equipmentList.TabIndex = 44;
+			// 
+			// addEquipAction
+			// 
+			this.addEquipAction.Image = global::Stareater.Properties.Resources.add;
+			this.addEquipAction.Location = new System.Drawing.Point(12, 334);
+			this.addEquipAction.Name = "addEquipAction";
+			this.addEquipAction.Size = new System.Drawing.Size(30, 30);
+			this.addEquipAction.TabIndex = 45;
+			this.addEquipAction.UseVisualStyleBackColor = true;
+			// 
+			// removeEquipAction
+			// 
+			this.removeEquipAction.Image = global::Stareater.Properties.Resources.cancel;
+			this.removeEquipAction.Location = new System.Drawing.Point(382, 334);
+			this.removeEquipAction.Name = "removeEquipAction";
+			this.removeEquipAction.Size = new System.Drawing.Size(30, 30);
+			this.removeEquipAction.TabIndex = 46;
+			this.removeEquipAction.UseVisualStyleBackColor = true;
+			// 
+			// customAmountAction
+			// 
+			this.customAmountAction.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.customAmountAction.Image = global::Stareater.Properties.Resources.arrowUp_small;
+			this.customAmountAction.Location = new System.Drawing.Point(231, 334);
+			this.customAmountAction.Name = "customAmountAction";
+			this.customAmountAction.Size = new System.Drawing.Size(30, 30);
+			this.customAmountAction.TabIndex = 47;
+			this.customAmountAction.UseVisualStyleBackColor = true;
+			// 
+			// lessEquipAction
+			// 
+			this.lessEquipAction.Location = new System.Drawing.Point(195, 334);
+			this.lessEquipAction.Name = "lessEquipAction";
+			this.lessEquipAction.Size = new System.Drawing.Size(30, 30);
+			this.lessEquipAction.TabIndex = 48;
+			this.lessEquipAction.Text = "-";
+			this.lessEquipAction.UseVisualStyleBackColor = true;
+			// 
+			// moreEquipAction
+			// 
+			this.moreEquipAction.Location = new System.Drawing.Point(159, 334);
+			this.moreEquipAction.Name = "moreEquipAction";
+			this.moreEquipAction.Size = new System.Drawing.Size(30, 30);
+			this.moreEquipAction.TabIndex = 49;
+			this.moreEquipAction.Text = "+";
+			this.moreEquipAction.UseVisualStyleBackColor = true;
+			// 
 			// FormShipDesigner
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(425, 410);
+			this.Controls.Add(this.moreEquipAction);
+			this.Controls.Add(this.lessEquipAction);
+			this.Controls.Add(this.customAmountAction);
+			this.Controls.Add(this.removeEquipAction);
+			this.Controls.Add(this.addEquipAction);
+			this.Controls.Add(this.equipmentList);
 			this.Controls.Add(this.spaceInfo);
 			this.Controls.Add(this.costInfo);
 			this.Controls.Add(this.stealthInfo);
@@ -275,5 +342,11 @@
 		private System.Windows.Forms.Label stealthInfo;
 		private System.Windows.Forms.Label costInfo;
 		private Stareater.GUI.DesignSpaceInfo spaceInfo;
+		private Stareater.GUI.ControlListView equipmentList;
+		private System.Windows.Forms.Button addEquipAction;
+		private System.Windows.Forms.Button removeEquipAction;
+		private System.Windows.Forms.Button customAmountAction;
+		private System.Windows.Forms.Button lessEquipAction;
+		private System.Windows.Forms.Button moreEquipAction;
 	}
 }
