@@ -167,7 +167,9 @@
     <Compile Include="GUI\DesignItem.Designer.cs">
       <DependentUpon>DesignItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\DesignSpaceInfo.cs" />
+    <Compile Include="GUI\DesignSpaceInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="GUI\DesignSpaceInfo.Designer.cs">
       <DependentUpon>DesignSpaceInfo.cs</DependentUpon>
     </Compile>
@@ -201,7 +203,9 @@
     <Compile Include="GUI\FormDevelopment.Designer.cs">
       <DependentUpon>FormDevelopment.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FormError.cs" />
+    <Compile Include="GUI\FormError.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI\FormError.Designer.cs">
       <DependentUpon>FormError.cs</DependentUpon>
     </Compile>
@@ -229,7 +233,9 @@
     <Compile Include="GUI\FormPickColonizationSource.Designer.cs">
       <DependentUpon>FormPickColonizationSource.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FormPickComponent.cs" />
+    <Compile Include="GUI\FormPickComponent.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI\FormPickComponent.Designer.cs">
       <DependentUpon>FormPickComponent.cs</DependentUpon>
     </Compile>
@@ -536,9 +542,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GUI\ShipDesigns" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

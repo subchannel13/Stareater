@@ -247,6 +247,7 @@
 			this.addEquipAction.Size = new System.Drawing.Size(30, 30);
 			this.addEquipAction.TabIndex = 45;
 			this.addEquipAction.UseVisualStyleBackColor = true;
+			this.addEquipAction.Click += new System.EventHandler(this.addEquipAction_Click);
 			// 
 			// removeEquipAction
 			// 
@@ -256,6 +257,7 @@
 			this.removeEquipAction.Size = new System.Drawing.Size(30, 30);
 			this.removeEquipAction.TabIndex = 46;
 			this.removeEquipAction.UseVisualStyleBackColor = true;
+			this.removeEquipAction.Click += new System.EventHandler(this.removeEquipAction_Click);
 			// 
 			// customAmountAction
 			// 
@@ -266,6 +268,7 @@
 			this.customAmountAction.Size = new System.Drawing.Size(30, 30);
 			this.customAmountAction.TabIndex = 47;
 			this.customAmountAction.UseVisualStyleBackColor = true;
+			this.customAmountAction.Click += new System.EventHandler(this.customAmountAction_Click);
 			// 
 			// lessEquipAction
 			// 
@@ -275,6 +278,7 @@
 			this.lessEquipAction.TabIndex = 48;
 			this.lessEquipAction.Text = "-";
 			this.lessEquipAction.UseVisualStyleBackColor = true;
+			this.lessEquipAction.Click += new System.EventHandler(this.lessEquipAction_Click);
 			// 
 			// moreEquipAction
 			// 
@@ -284,6 +288,7 @@
 			this.moreEquipAction.TabIndex = 49;
 			this.moreEquipAction.Text = "+";
 			this.moreEquipAction.UseVisualStyleBackColor = true;
+			this.moreEquipAction.Click += new System.EventHandler(this.moreEquipAction_Click);
 			// 
 			// FormShipDesigner
 			// 

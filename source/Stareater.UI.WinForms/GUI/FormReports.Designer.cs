@@ -61,7 +61,7 @@ namespace Stareater.GUI
 			// 
 			// openButton
 			// 
-			this.openButton.Image = global::Stareater.Properties.Resources._goto;
+			this.openButton.Image = global::Stareater.Properties.Resources.gotoArrow;
 			this.openButton.Location = new System.Drawing.Point(294, 127);
 			this.openButton.Name = "openButton";
 			this.openButton.Size = new System.Drawing.Size(50, 50);

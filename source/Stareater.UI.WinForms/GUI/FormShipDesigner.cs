@@ -197,5 +197,30 @@ namespace Stareater.GUI
 			}
 			updateInfos();
 		}
+
+		private void addEquipAction_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void removeEquipAction_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void moreEquipAction_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void lessEquipAction_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void customAmountAction_Click(object sender, EventArgs e)
+		{
+
+		}
 	}
 }
