@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Localization;
@@ -20,6 +22,10 @@ namespace StareaterUI
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+			
+			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+			Application.ThreadException += guiExceptionLogger;
+			
 #if !DEBUG
 			try
 			{
@@ -33,6 +39,11 @@ namespace StareaterUI
 					form.ShowDialog();
 			}
 #endif
+		}
+
+		static void guiExceptionLogger(object sender, ThreadExceptionEventArgs e)
+		{
+			Trace.TraceError(e.Exception.ToString());
 		}
 	}
 }
