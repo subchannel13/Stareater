@@ -8,7 +8,7 @@
 	prerequisites [
 	]
 	
-	cost # 20e3 * size;
+	cost # 20e3 * shipSize;
 	size # 0.05 * shipSize;
 	maxCount # 2;
 }

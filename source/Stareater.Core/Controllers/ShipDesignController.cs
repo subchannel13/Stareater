@@ -111,6 +111,13 @@ namespace Stareater.Controllers
 				Where(x => x.IsAvailable(playersTechLevels)).
 				Select(x => new ShieldInfo(x, x.HighestLevel(playersTechLevels), this.selectedHull));
 		}
+
+		public IEnumerable<SpecialEquipInfo> SpecialEquipment()
+		{
+			return this.game.Statics.SpecialEquipment.Values.
+				Where(x => x.IsAvailable(playersTechLevels) && x.CanPick).
+				Select(x => new SpecialEquipInfo(x, x.HighestLevel(playersTechLevels), this.selectedHull));
+		}
 		
 		public ThrusterInfo Thrusters
 		{
@@ -126,6 +133,8 @@ namespace Stareater.Controllers
 		private ReactorInfo reactorInfo = null;
 		private SensorInfo sensorInfo = null;
 		private ThrusterInfo thrusterInfo = null;
+
+		private Dictionary<Component<SpecialEquipmentType>, int> selectedSpecialEquipment = new Dictionary<Component<SpecialEquipmentType>, int>();
 
 		void onHullChange()
 		{
@@ -233,7 +242,15 @@ namespace Stareater.Controllers
 		#region Designer actions
 		public string Name { get; set; } 
 		public int ImageIndex { get; set; }
-		
+
+		public void AddSpecialEquip(SpecialEquipInfo equipInfo)
+		{
+			if (this.selectedSpecialEquipment.Any(x => x.Key.TypeInfo == equipInfo.Type))
+				return;
+
+			this.selectedSpecialEquipment.Add(new Component<SpecialEquipmentType>(equipInfo.Type, equipInfo.Level), 1);
+		}
+
 		public HullInfo Hull 
 		{ 
 			get { return this.selectedHull; }
@@ -245,6 +262,11 @@ namespace Stareater.Controllers
 		}
 		
 		public bool HasIsDrive { get; set; }
+
+		public bool HasSpecialEquip(SpecialEquipInfo equipInfo)
+		{
+			return this.selectedSpecialEquipment.Any(x => x.Value > 0 && x.Key.TypeInfo == equipInfo.Type);
+		}
 		
 		public ShieldInfo Shield { get; set; }
 		
@@ -277,9 +299,10 @@ namespace Stareater.Controllers
 				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level),
 				new Component<SensorType>(this.sensorInfo.Type, this.sensorInfo.Level),
 				this.Shield != null ? new Component<ShieldType>(this.Shield.Type, this.Shield.Level) : null,
-				new Dictionary<Component<SpecialEquipmentType>, int>(), //TODO(0.5) implement special equipment in the controller 
+				selectedSpecialEquipment, 
 				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level)
 			);
+			desing.CalcHash(this.game.Statics);
 			game.States.Designs.Add(desing); //TODO(v0.5) add to changes DB and propagate to states during turn processing
 			game.Derivates.Players.Of(this.game.CurrentPlayer).Analyze(desing, this.game.Statics);
 		}

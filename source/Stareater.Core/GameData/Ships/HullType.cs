@@ -7,6 +7,8 @@ namespace Stareater.GameData.Ships
 {
 	class HullType : AComponentType
 	{
+		public const string SizeKey = "shipSize";
+
 		public string[] ImagePaths { get; private set; }
 		public Formula Cost { get; private set; }
 	

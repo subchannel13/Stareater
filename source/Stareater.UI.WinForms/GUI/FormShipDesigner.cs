@@ -200,7 +200,19 @@ namespace Stareater.GUI
 
 		private void addEquipAction_Click(object sender, EventArgs e)
 		{
+			Action<SpecialEquipInfo> selectSpecial =
+				x => this.controller.AddSpecialEquip(x);
 
+			var equipmnet = this.controller.SpecialEquipment().Where(x => !this.controller.HasSpecialEquip(x)).Select(x => new ShipComponentChoice<SpecialEquipInfo>(
+				x.Name,
+				x.ImagePath,
+				x, selectSpecial
+			));
+
+			using (var form = new FormPickComponent(equipmnet))
+				form.ShowDialog();
+
+			updateInfos();
 		}
 
 		private void removeEquipAction_Click(object sender, EventArgs e)
