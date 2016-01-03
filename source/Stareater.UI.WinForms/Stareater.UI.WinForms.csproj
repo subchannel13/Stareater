@@ -352,6 +352,12 @@
     </Compile>
     <Compile Include="GUI\ShipDesigns\IShipComponentChoice.cs" />
     <Compile Include="GUI\ShipDesigns\ShipComponentChoice.cs" />
+    <Compile Include="GUI\ShipEquipmentItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\ShipEquipmentItem.Designer.cs">
+      <DependentUpon>ShipEquipmentItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ShipGroupItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -480,6 +486,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\SavedGameItemView.resx">
       <DependentUpon>SavedGameItemView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ShipEquipmentItem.resx">
+      <DependentUpon>ShipEquipmentItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ShipGroupItem.resx">
       <DependentUpon>ShipGroupItem.cs</DependentUpon>

@@ -269,7 +269,14 @@ namespace Stareater.Controllers
 		}
 		
 		public ShieldInfo Shield { get; set; }
-		
+
+		public int SpecialEquipCount(SpecialEquipInfo equipInfo)
+		{
+			return this.selectedSpecialEquipment.
+				Where(x => x.Key.TypeInfo == equipInfo.Type).
+				Aggregate(0, (sum, x) => x.Value);
+		}
+
 		public bool IsDesignValid
 		{
 			get

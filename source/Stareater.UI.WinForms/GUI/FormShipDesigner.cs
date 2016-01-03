@@ -51,7 +51,22 @@ namespace Stareater.GUI
 				this.Close();
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
-		
+
+		private void addSpecialEquip(SpecialEquipInfo equipInfo)
+		{
+			this.controller.AddSpecialEquip(equipInfo);
+
+			var itemView = new ShipEquipmentItem();
+			itemView.Data = new ShipComponentChoice<SpecialEquipInfo>(
+				equipInfo.Name, equipInfo.ImagePath, equipInfo,
+				x => { } //TODO(v0.5)
+			);
+			itemView.Amount = this.controller.SpecialEquipCount(equipInfo);
+
+			//TODO(v0.5) ensure "special equipment" label is above
+			equipmentList.Controls.Add(itemView);
+		}
+
 		private void changeHullImage(int direction)
 		{
 			if (this.hullPicker.SelectedItem == null)
@@ -200,13 +215,10 @@ namespace Stareater.GUI
 
 		private void addEquipAction_Click(object sender, EventArgs e)
 		{
-			Action<SpecialEquipInfo> selectSpecial =
-				x => this.controller.AddSpecialEquip(x);
-
 			var equipmnet = this.controller.SpecialEquipment().Where(x => !this.controller.HasSpecialEquip(x)).Select(x => new ShipComponentChoice<SpecialEquipInfo>(
 				x.Name,
 				x.ImagePath,
-				x, selectSpecial
+				x, addSpecialEquip
 			));
 
 			using (var form = new FormPickComponent(equipmnet))
