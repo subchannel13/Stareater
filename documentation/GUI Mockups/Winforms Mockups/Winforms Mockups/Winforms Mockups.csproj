@@ -77,11 +77,15 @@
     <Compile Include="BuildingItem.Designer.cs">
       <DependentUpon>BuildingItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="ColonizationSource.cs" />
+    <Compile Include="ColonizationSource.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ColonizationSource.Designer.cs">
       <DependentUpon>ColonizationSource.cs</DependentUpon>
     </Compile>
-    <Compile Include="ColonizationTarget.cs" />
+    <Compile Include="ColonizationTarget.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ColonizationTarget.Designer.cs">
       <DependentUpon>ColonizationTarget.cs</DependentUpon>
     </Compile>
@@ -118,7 +122,9 @@
     <Compile Include="FormBuildingQueue.Designer.cs">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormColonization.cs" />
+    <Compile Include="FormColonization.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormColonization.Designer.cs">
       <DependentUpon>FormColonization.cs</DependentUpon>
     </Compile>
@@ -146,11 +152,15 @@
     <Compile Include="FormNewGame.Designer.cs">
       <DependentUpon>FormNewGame.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormPickColonizationSource.cs" />
+    <Compile Include="FormPickColonizationSource.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormPickColonizationSource.Designer.cs">
       <DependentUpon>FormPickColonizationSource.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormPickShipComponent.cs" />
+    <Compile Include="FormPickShipComponent.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormPickShipComponent.Designer.cs">
       <DependentUpon>FormPickShipComponent.cs</DependentUpon>
     </Compile>
@@ -208,7 +218,9 @@
     <Compile Include="FormStarSystem.Designer.cs">
       <DependentUpon>FormStarSystem.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormStarSystemUncolonized.cs" />
+    <Compile Include="FormStarSystemUncolonized.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormStarSystemUncolonized.Designer.cs">
       <DependentUpon>FormStarSystemUncolonized.cs</DependentUpon>
     </Compile>
