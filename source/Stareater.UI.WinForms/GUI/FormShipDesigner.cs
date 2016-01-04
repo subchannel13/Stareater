@@ -23,6 +23,7 @@ namespace Stareater.GUI
 		private bool automaticName = true;
 		private IList<HullInfo> hulls;
 		private Dictionary<HullInfo, int> imageIndices = new Dictionary<HullInfo, int>();
+		private EquipmentActionDispatcher equipmentAction = new EquipmentActionDispatcher();
 		
 		public FormShipDesigner()
 		{
@@ -57,14 +58,20 @@ namespace Stareater.GUI
 			this.controller.AddSpecialEquip(equipInfo);
 
 			var itemView = new ShipEquipmentItem();
-			itemView.Data = new ShipComponentChoice<SpecialEquipInfo>(
+			itemView.Data = new ShipComponentType<SpecialEquipInfo>(
 				equipInfo.Name, equipInfo.ImagePath, equipInfo,
-				x => { } //TODO(v0.5)
+				equipmentAction.Dispatch
 			);
 			itemView.Amount = this.controller.SpecialEquipCount(equipInfo);
 
 			//TODO(v0.5) ensure "special equipment" label is above
 			equipmentList.Controls.Add(itemView);
+			equipmentList.SelectedIndex = equipmentList.Controls.Count - 1;
+		}
+		
+		private void removeSpecialEquip(SpecialEquipInfo equipInfo)
+		{
+			this.controller.RemoveSpecialEquip(equipInfo);
 		}
 
 		private void changeHullImage(int direction)
@@ -188,8 +195,8 @@ namespace Stareater.GUI
 			Action<ShieldInfo> selectShield = 
 				x => this.controller.Shield = x;
 			
-			var shields = new IShipComponentChoice[] { new ShipComponentChoice<ShieldInfo>(this.context["unselectComponent"].Text(), null, null, selectShield) }.Concat(
-				this.controller.Shields().Select(x => new ShipComponentChoice<ShieldInfo>(
+			var shields = new IShipComponentType[] { new ShipComponentType<ShieldInfo>(this.context["unselectComponent"].Text(), null, null, selectShield) }.Concat(
+				this.controller.Shields().Select(x => new ShipComponentType<ShieldInfo>(
 				x.Name,
 				x.ImagePath,
 				x, selectShield
@@ -215,7 +222,7 @@ namespace Stareater.GUI
 
 		private void addEquipAction_Click(object sender, EventArgs e)
 		{
-			var equipmnet = this.controller.SpecialEquipment().Where(x => !this.controller.HasSpecialEquip(x)).Select(x => new ShipComponentChoice<SpecialEquipInfo>(
+			var equipmnet = this.controller.SpecialEquipment().Where(x => !this.controller.HasSpecialEquip(x)).Select(x => new ShipComponentType<SpecialEquipInfo>(
 				x.Name,
 				x.ImagePath,
 				x, addSpecialEquip
@@ -229,7 +236,15 @@ namespace Stareater.GUI
 
 		private void removeEquipAction_Click(object sender, EventArgs e)
 		{
-
+			if (this.equipmentList.SelectedItem == null || !(this.equipmentList.SelectedItem is ShipEquipmentItem))
+				return;
+			
+			var selectedItem = this.equipmentList.SelectedItem as ShipEquipmentItem;
+			
+			this.equipmentAction.SpecialEquipmentAction = this.removeSpecialEquip;
+			selectedItem.Data.Select();
+			
+			this.equipmentList.Controls.Remove(selectedItem);
 		}
 
 		private void moreEquipAction_Click(object sender, EventArgs e)

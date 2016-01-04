@@ -350,8 +350,9 @@
     <Compile Include="GUI\SavedGameItemView.Designer.cs">
       <DependentUpon>SavedGameItemView.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ShipDesigns\IShipComponentChoice.cs" />
-    <Compile Include="GUI\ShipDesigns\ShipComponentChoice.cs" />
+    <Compile Include="GUI\ShipDesigns\EquipmentActionDispatcher.cs" />
+    <Compile Include="GUI\ShipDesigns\IShipComponentType.cs" />
+    <Compile Include="GUI\ShipDesigns\ShipComponentType.cs" />
     <Compile Include="GUI\ShipEquipmentItem.cs">
       <SubType>UserControl</SubType>
     </Compile>

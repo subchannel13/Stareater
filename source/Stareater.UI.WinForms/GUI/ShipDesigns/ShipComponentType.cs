@@ -2,7 +2,7 @@
 
 namespace Stareater.GUI.ShipDesigns
 {
-	public class ShipComponentChoice<T> : IShipComponentChoice
+	public class ShipComponentType<T> : IShipComponentType
 	{
 		public string Name { get; private set; }
 		public string ImagePath { get; private set; }
@@ -10,7 +10,7 @@ namespace Stareater.GUI.ShipDesigns
 		private readonly T item;
 		private readonly Action<T> selectAction;
 		
-		public ShipComponentChoice(string name, string imagePath, T item, Action<T> selectAction)
+		public ShipComponentType(string name, string imagePath, T item, Action<T> selectAction)
 		{
 			this.item = item;
 			this.selectAction = selectAction;

@@ -268,6 +268,14 @@ namespace Stareater.Controllers
 			return this.selectedSpecialEquipment.Any(x => x.Value > 0 && x.Key.TypeInfo == equipInfo.Type);
 		}
 		
+		public void RemoveSpecialEquip(SpecialEquipInfo equipInfo)
+		{
+			var component = this.selectedSpecialEquipment.Keys.FirstOrDefault(x => x.TypeInfo == equipInfo.Type);
+			
+			if (component != null)
+				this.selectedSpecialEquipment.Remove(component);
+		}
+			
 		public ShieldInfo Shield { get; set; }
 
 		public int SpecialEquipCount(SpecialEquipInfo equipInfo)

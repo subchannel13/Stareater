@@ -34,7 +34,7 @@ namespace Stareater.GUI
 		{
 			set
 			{
-				ThousandsFormatter formatter = new ThousandsFormatter();
+				var formatter = new ThousandsFormatter();
 				countLabel.Text = formatter.Format(value);
 			}
 		}

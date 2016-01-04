@@ -2,7 +2,7 @@
 
 namespace Stareater.GUI.ShipDesigns
 {
-	public interface IShipComponentChoice
+	public interface IShipComponentType
 	{
 		string Name { get; }
 		string ImagePath { get; }

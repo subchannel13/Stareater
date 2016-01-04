@@ -25,12 +25,15 @@ namespace Stareater.GUI
 			base.OnControlRemoved(e);
 			e.Control.Click -= onItemClick;
 
-			if (e.Control == lastSelected && Controls.Count > 0) {
-				selectedIndex = Math.Min(selectedIndex, Controls.Count - 1);
-				select(selectedIndex);
-				if (SelectedIndexChanged != null)
-					SelectedIndexChanged(this, new EventArgs());
-			}
+			if (e.Control.Equals(lastSelected))
+			    if (Controls.Count > 0) {
+					selectedIndex = Math.Min(selectedIndex, Controls.Count - 1);
+					select(selectedIndex);
+					if (SelectedIndexChanged != null)
+						SelectedIndexChanged(this, new EventArgs());
+				}
+			    else
+			    	selectedIndex = NoneSelected;
 		}
 
 		protected virtual void onItemClick(object sender, EventArgs e)

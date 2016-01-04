@@ -1,27 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Stareater.GUI.ShipDesigns;
 using Stareater.AppData;
+using Stareater.GUI.ShipDesigns;
 
 namespace Stareater.GUI
 {
 	public partial class ShipEquipmentItem : UserControl
 	{
 		private double amount;
-		private IShipComponentChoice data;
+		private IShipComponentType data;
 		
 		public ShipEquipmentItem()
 		{
 			InitializeComponent();
 		}
 
-		public IShipComponentChoice Data
+		public IShipComponentType Data
 		{
 			get
 			{
@@ -48,6 +43,21 @@ namespace Stareater.GUI
 
 				amountLabel.Text = amount.ToString() + " x"; //TODO(v0.5) format
 			}
+		}
+		
+		private void amountLabel_Click(object sender, EventArgs e)
+		{
+			this.InvokeOnClick(this, e);
+		}
+		
+		private void thumbnail_Click(object sender, EventArgs e)
+		{
+			this.InvokeOnClick(this, e);
+		}
+		
+		private void nameLabel_Click(object sender, EventArgs e)
+		{
+			this.InvokeOnClick(this, e);
 		}
 	}
 }

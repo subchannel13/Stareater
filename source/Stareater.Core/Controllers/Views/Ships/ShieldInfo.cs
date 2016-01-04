@@ -21,7 +21,7 @@ namespace Stareater.Controllers.Views.Ships
 			this.Level = level;
 			
 			this.vars = new Var(AComponentType.LevelKey, level).
-				And(HullType.SizeKey, shipHull.Size).Get;
+				And(HullType.HullSizeKey, shipHull.Size).Get;
 		}
 		
 		public string Name

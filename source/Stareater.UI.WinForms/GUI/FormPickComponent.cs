@@ -8,16 +8,16 @@ namespace Stareater.GUI
 {
 	public partial class FormPickComponent : Form
 	{
-		public IShipComponentChoice Choice { get; private set; }
+		public IShipComponentType Choice { get; private set; }
 		
-		private readonly Dictionary<object, IShipComponentChoice> buttonResult = new Dictionary<object, IShipComponentChoice>();
+		private readonly Dictionary<object, IShipComponentType> buttonResult = new Dictionary<object, IShipComponentType>();
 		
 		public FormPickComponent()
 		{
 			InitializeComponent();
 		}
 		
-		public FormPickComponent(IEnumerable<IShipComponentChoice> components) : this()
+		public FormPickComponent(IEnumerable<IShipComponentType> components) : this()
 		{
 			this.Choice = null;
 			
