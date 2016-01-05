@@ -43,6 +43,8 @@ PARTICLE_SHIELD_DESC = No description.
 -
 
 :SpecialEquipment
+EXTRA_THRUSTERS_NAME = Extra thrusters
+EXTRA_THRUSTERS_DESC = No description.
 HEAVY_ARMOR_NAME = Heavy armor
 HEAVY_ARMOR_DESC = No description.
 COLONIZER_NAME = Colonizer

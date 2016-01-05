@@ -39,7 +39,7 @@ namespace Stareater.Utils.Collections
 		public Var UnionWith(IEnumerable<KeyValuePair<string, double>> variables)
 		{
 			foreach (var pair in variables)
-				this.variables.Add(pair.Key, pair.Value);
+				this.variables[pair.Key] = pair.Value;
 			
 			return this;
 		}
@@ -47,7 +47,7 @@ namespace Stareater.Utils.Collections
 		public Var UnionWith(IEnumerable<KeyValuePair<string, int>> variables)
 		{
 			foreach (var pair in variables)
-				this.variables.Add(pair.Key, pair.Value);
+				this.variables[pair.Key] = pair.Value;
 			
 			return this;
 		}

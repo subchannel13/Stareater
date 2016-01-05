@@ -240,6 +240,7 @@ namespace Stareater.GUI
 			selectedItem.Data.Dispatch();
 			
 			this.equipmentList.Controls.Remove(selectedItem); //TODO(v0.5) remove "special equipment" label if there is no special equipment
+			updateInfos();
 		}
 
 		private void moreEquipAction_Click(object sender, EventArgs e)
@@ -255,6 +256,8 @@ namespace Stareater.GUI
 				selectedItem.Amount = this.controller.SpecialEquipCount(x);
 			};
 			selectedItem.Data.Dispatch();
+			
+			updateInfos();
 		}
 
 		private void lessEquipAction_Click(object sender, EventArgs e)
@@ -274,6 +277,8 @@ namespace Stareater.GUI
 					selectedItem.Amount = this.controller.SpecialEquipCount(x);
 			};
 			selectedItem.Data.Dispatch();
+			
+			updateInfos();
 		}
 
 		private void customAmountAction_Click(object sender, EventArgs e)
@@ -282,6 +287,27 @@ namespace Stareater.GUI
 				return;
 			
 			var selectedItem = this.equipmentList.SelectedItem as ShipEquipmentItem;
+			long maxCount = 0;
+			
+			this.equipmentAction.SpecialEquipmentAction = x => maxCount = (long)x.MaxCount;
+			selectedItem.Data.Dispatch();
+			
+			using(var form = new FormSelectQuantity(maxCount, (long)selectedItem.Amount))
+				if (form.ShowDialog() == DialogResult.OK)
+				{
+					this.equipmentAction.SpecialEquipmentAction = x => 
+					{
+						this.controller.SpecialEquipSetAmount(x, (int)form.SelectedValue);
+						
+						if (this.controller.SpecialEquipCount(x) == 0)
+							this.equipmentList.Controls.Remove(selectedItem); //TODO(v0.5) remove "special equipment" label if there is no special equipment
+						else
+							selectedItem.Amount = this.controller.SpecialEquipCount(x);
+					};
+					selectedItem.Data.Dispatch();
+					
+					updateInfos();
+				}
 		}
 	}
 }

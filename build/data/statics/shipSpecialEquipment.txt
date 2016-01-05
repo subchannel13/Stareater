@@ -1,4 +1,19 @@
 ﻿{ SpecialEquipment
+	nameCode: EXTRA_THRUSTERS_NAME
+	descCode: EXTRA_THRUSTERS_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: extraThrusters
+	
+	maxLvl= 1
+	prerequisites [
+	]
+	
+	cost # 40e3 * shipSize;
+	size # 0.05 * shipSize;
+	maxCount # 2;
+}
+
+{ SpecialEquipment
 	nameCode: HEAVY_ARMOR_NAME
 	descCode: HEAVY_ARMOR_DESC
 	image :./images/technologies/hydroponicFarms.png

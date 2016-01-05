@@ -199,7 +199,9 @@ namespace Stareater.Controllers
 			{
 				var vars = new Var("hullHp", selectedHull.HitPointsBase).
 					And("armorFactor", armorInfo.ArmorFactor).
-					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
+					Init(this.game.Statics.SpecialEquipment.Keys, 0).
+					UnionWith(this.selectedSpecialEquipment.ToDictionary(x => x.Key.TypeInfo.IdCode, x => x.Value)).Get; 
+				//TODO(v0.5) add special equipment levels, make special equipment variables more reusabe put spec equip vars to other properties
 				
 				return game.Statics.ShipFormulas.HitPoints.Evaluate(vars);
 			}
@@ -276,7 +278,7 @@ namespace Stareater.Controllers
 				Where(x => x.Key.TypeInfo == equipInfo.Type).
 				Aggregate(0, (sum, x) => x.Value);
 		}
-		
+				
 		public void SpecialEquipSetAmount(SpecialEquipInfo equipInfo, int amount)
 		{
 			var component = this.selectedSpecialEquipment.Keys.FirstOrDefault(x => x.TypeInfo == equipInfo.Type);
@@ -284,7 +286,7 @@ namespace Stareater.Controllers
 			if (component != null)
 				if (amount == 0)
 					this.selectedSpecialEquipment.Remove(component);
-				else if (amount > 0 && amount <= component.TypeInfo.MaxCount.Evaluate(new Var(AComponentType.LevelKey, component.Level).Get))
+				else if (amount > 0 && amount <= equipInfo.MaxCount)
 					this.selectedSpecialEquipment[component] = amount;
 		}
 

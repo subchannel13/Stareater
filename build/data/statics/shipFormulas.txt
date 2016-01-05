@@ -1,8 +1,8 @@
 { ShipFormulas
-	evasion # thrust;
+	evasion # thrust + 2 * extraThrusters;
 	hitPoints # hullHp * armorFactor * (1 + 0.5 * heavyArmor);
 	
-	combatSpeed # thrust;
+	combatSpeed # thrust + 0.5 * extraThrusters;
 	
 	detection # sensor;
 	cloaking # shieldCloak;
