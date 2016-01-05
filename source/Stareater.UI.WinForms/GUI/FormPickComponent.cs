@@ -47,7 +47,7 @@ namespace Stareater.GUI
 
 		private void onSelect(object sender, EventArgs e)
 		{
-			buttonResult[sender].Select();
+			buttonResult[sender].Dispatch();
 			this.DialogResult = DialogResult.OK;
 			this.Close();
 		}

@@ -7,6 +7,6 @@ namespace Stareater.GUI.ShipDesigns
 		string Name { get; }
 		string ImagePath { get; }
 		
-		void Select();
+		void Dispatch();
 	}
 }

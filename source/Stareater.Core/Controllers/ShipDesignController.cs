@@ -268,14 +268,6 @@ namespace Stareater.Controllers
 			return this.selectedSpecialEquipment.Any(x => x.Value > 0 && x.Key.TypeInfo == equipInfo.Type);
 		}
 		
-		public void RemoveSpecialEquip(SpecialEquipInfo equipInfo)
-		{
-			var component = this.selectedSpecialEquipment.Keys.FirstOrDefault(x => x.TypeInfo == equipInfo.Type);
-			
-			if (component != null)
-				this.selectedSpecialEquipment.Remove(component);
-		}
-			
 		public ShieldInfo Shield { get; set; }
 
 		public int SpecialEquipCount(SpecialEquipInfo equipInfo)
@@ -283,6 +275,17 @@ namespace Stareater.Controllers
 			return this.selectedSpecialEquipment.
 				Where(x => x.Key.TypeInfo == equipInfo.Type).
 				Aggregate(0, (sum, x) => x.Value);
+		}
+		
+		public void SpecialEquipSetAmount(SpecialEquipInfo equipInfo, int amount)
+		{
+			var component = this.selectedSpecialEquipment.Keys.FirstOrDefault(x => x.TypeInfo == equipInfo.Type);
+			
+			if (component != null)
+				if (amount == 0)
+					this.selectedSpecialEquipment.Remove(component);
+				else if (amount > 0 && amount <= component.TypeInfo.MaxCount.Evaluate(new Var(AComponentType.LevelKey, component.Level).Get))
+					this.selectedSpecialEquipment[component] = amount;
 		}
 
 		public bool IsDesignValid

@@ -69,11 +69,6 @@ namespace Stareater.GUI
 			equipmentList.SelectedIndex = equipmentList.Controls.Count - 1;
 		}
 		
-		private void removeSpecialEquip(SpecialEquipInfo equipInfo)
-		{
-			this.controller.RemoveSpecialEquip(equipInfo);
-		}
-
 		private void changeHullImage(int direction)
 		{
 			if (this.hullPicker.SelectedItem == null)
@@ -241,25 +236,52 @@ namespace Stareater.GUI
 			
 			var selectedItem = this.equipmentList.SelectedItem as ShipEquipmentItem;
 			
-			this.equipmentAction.SpecialEquipmentAction = this.removeSpecialEquip;
-			selectedItem.Data.Select();
+			this.equipmentAction.SpecialEquipmentAction = x => this.controller.SpecialEquipSetAmount(x, 0);
+			selectedItem.Data.Dispatch();
 			
-			this.equipmentList.Controls.Remove(selectedItem);
+			this.equipmentList.Controls.Remove(selectedItem); //TODO(v0.5) remove "special equipment" label if there is no special equipment
 		}
 
 		private void moreEquipAction_Click(object sender, EventArgs e)
 		{
-
+			if (this.equipmentList.SelectedItem == null || !(this.equipmentList.SelectedItem is ShipEquipmentItem))
+				return;
+			
+			var selectedItem = this.equipmentList.SelectedItem as ShipEquipmentItem;
+			
+			this.equipmentAction.SpecialEquipmentAction = x => 
+			{
+				this.controller.SpecialEquipSetAmount(x, this.controller.SpecialEquipCount(x) + 1);
+				selectedItem.Amount = this.controller.SpecialEquipCount(x);
+			};
+			selectedItem.Data.Dispatch();
 		}
 
 		private void lessEquipAction_Click(object sender, EventArgs e)
 		{
-
+			if (this.equipmentList.SelectedItem == null || !(this.equipmentList.SelectedItem is ShipEquipmentItem))
+				return;
+			
+			var selectedItem = this.equipmentList.SelectedItem as ShipEquipmentItem;
+			
+			this.equipmentAction.SpecialEquipmentAction = x => 
+			{
+				this.controller.SpecialEquipSetAmount(x, this.controller.SpecialEquipCount(x) - 1);
+				
+				if (this.controller.SpecialEquipCount(x) == 0)
+					this.equipmentList.Controls.Remove(selectedItem); //TODO(v0.5) remove "special equipment" label if there is no special equipment
+				else
+					selectedItem.Amount = this.controller.SpecialEquipCount(x);
+			};
+			selectedItem.Data.Dispatch();
 		}
 
 		private void customAmountAction_Click(object sender, EventArgs e)
 		{
-
+			if (this.equipmentList.SelectedItem == null || !(this.equipmentList.SelectedItem is ShipEquipmentItem))
+				return;
+			
+			var selectedItem = this.equipmentList.SelectedItem as ShipEquipmentItem;
 		}
 	}
 }
