@@ -18,6 +18,8 @@ namespace Stareater.GUI
 		{
 			base.OnControlAdded(e);
 			e.Control.Click += onItemClick;
+			
+			checkSelectionIndex();
 		}
 
 		protected override void OnControlRemoved(ControlEventArgs e)
@@ -34,6 +36,8 @@ namespace Stareater.GUI
 				}
 			    else
 			    	selectedIndex = NoneSelected;
+			   
+			checkSelectionIndex();
 		}
 
 		protected virtual void onItemClick(object sender, EventArgs e)
@@ -64,6 +68,24 @@ namespace Stareater.GUI
 			selectedIndex = NoneSelected;
 		}
 
+		private void checkSelectionIndex()
+		{
+			if (selectedIndex == NoneSelected || lastSelected == null || Controls[selectedIndex].Equals(lastSelected))
+				return;
+			
+			if (Controls.Count > 0)
+			{
+				selectedIndex = 0;
+				while(!Controls[selectedIndex].Equals(lastSelected))
+					selectedIndex++;
+			}
+			else
+			{
+				selectedIndex = NoneSelected;
+				return;
+			}
+		}
+		
 		public event EventHandler SelectedIndexChanged;
 
 		public bool HasSelection

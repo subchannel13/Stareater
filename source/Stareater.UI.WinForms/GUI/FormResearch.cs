@@ -71,7 +71,6 @@ namespace Stareater.GUI
 				techLevel.Text = "";
 			} else if (lastTopic != topic) {
 				var selection = topic as TechnologyItem;
-				System.Diagnostics.Trace.WriteLine(selection.Data.Name);
 				
 				techImage.Image = ImageCache.Get[selection.Data.ImagePath];
 				techName.Text = selection.Data.Name;
