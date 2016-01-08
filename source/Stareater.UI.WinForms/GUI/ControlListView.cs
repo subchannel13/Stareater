@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,6 +14,7 @@ namespace Stareater.GUI
 		private Color lastBackColor;
 		private Color lastForeColor;
 		private Control lastSelected = null;
+		private readonly HashSet<Control> unselectables = new HashSet<Control>();
 
 		protected override void OnControlAdded(ControlEventArgs e)
 		{
@@ -26,6 +28,7 @@ namespace Stareater.GUI
 		{
 			base.OnControlRemoved(e);
 			e.Control.Click -= onItemClick;
+			unselectables.Remove(e.Control);
 
 			if (e.Control.Equals(lastSelected))
 			    if (Controls.Count > 0) {
@@ -42,6 +45,9 @@ namespace Stareater.GUI
 
 		protected virtual void onItemClick(object sender, EventArgs e)
 		{
+			if (unselectables.Contains(sender as Control))
+				return;
+			
 			if (selectedIndex != NoneSelected)
 				deselect();
 
@@ -120,6 +126,11 @@ namespace Stareater.GUI
 			{
 				return (selectedIndex != NoneSelected) ? Controls[selectedIndex] : null;
 			}
+		}
+		
+		public void Unselectable(Control control)
+		{
+			unselectables.Add(control);
 		}
 	}
 }

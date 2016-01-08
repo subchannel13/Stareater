@@ -25,4 +25,5 @@ power §
 	
 noShield = No shield
 unselectComponent = None
+specEquipSeparator = Special equipment
 -

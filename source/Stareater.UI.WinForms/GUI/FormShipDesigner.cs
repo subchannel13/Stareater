@@ -24,6 +24,7 @@ namespace Stareater.GUI
 		private IList<HullInfo> hulls;
 		private Dictionary<HullInfo, int> imageIndices = new Dictionary<HullInfo, int>();
 		private EquipmentActionDispatcher equipmentAction = new EquipmentActionDispatcher();
+		private Label equipmentSeparator = null;
 		
 		public FormShipDesigner()
 		{
@@ -64,9 +65,28 @@ namespace Stareater.GUI
 			);
 			itemView.Amount = this.controller.SpecialEquipCount(equipInfo);
 
-			//TODO(v0.5) ensure "special equipment" label is above
-			equipmentList.Controls.Add(itemView);
-			equipmentList.SelectedIndex = equipmentList.Controls.Count - 1;
+			if (equipmentSeparator == null)
+			{
+				this.equipmentSeparator = new Label();
+				this.equipmentSeparator.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+				this.equipmentSeparator.Size = new System.Drawing.Size(375, 25);
+				this.equipmentSeparator.Text = SettingsWinforms.Get.Language["FormDesign"]["specEquipSeparator"].Text();
+				this.equipmentSeparator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+				this.equipmentList.Controls.Add(this.equipmentSeparator);
+				this.equipmentList.Unselectable(this.equipmentSeparator);
+			}
+
+			this.equipmentList.Controls.Add(itemView);
+			this.equipmentList.SelectedIndex = equipmentList.Controls.Count - 1;
+		}
+		
+		private void removeEquipmentSeparator()
+		{
+			if (this.equipmentSeparator == null || this.controller.SpecialEquipment().Any(x => this.controller.SpecialEquipCount(x) > 0))
+				return;
+			
+			this.equipmentList.Controls.Remove(this.equipmentSeparator);
+			this.equipmentSeparator = null;
 		}
 		
 		private void changeHullImage(int direction)
@@ -239,7 +259,8 @@ namespace Stareater.GUI
 			this.equipmentAction.SpecialEquipmentAction = x => this.controller.SpecialEquipSetAmount(x, 0);
 			selectedItem.Data.Dispatch();
 			
-			this.equipmentList.Controls.Remove(selectedItem); //TODO(v0.5) remove "special equipment" label if there is no special equipment
+			this.equipmentList.Controls.Remove(selectedItem); 
+			this.removeEquipmentSeparator();
 			updateInfos();
 		}
 
@@ -272,7 +293,10 @@ namespace Stareater.GUI
 				this.controller.SpecialEquipSetAmount(x, this.controller.SpecialEquipCount(x) - 1);
 				
 				if (this.controller.SpecialEquipCount(x) == 0)
-					this.equipmentList.Controls.Remove(selectedItem); //TODO(v0.5) remove "special equipment" label if there is no special equipment
+				{
+					this.equipmentList.Controls.Remove(selectedItem);
+					this.removeEquipmentSeparator();
+				}
 				else
 					selectedItem.Amount = this.controller.SpecialEquipCount(x);
 			};
@@ -300,7 +324,10 @@ namespace Stareater.GUI
 						this.controller.SpecialEquipSetAmount(x, (int)form.SelectedValue);
 						
 						if (this.controller.SpecialEquipCount(x) == 0)
-							this.equipmentList.Controls.Remove(selectedItem); //TODO(v0.5) remove "special equipment" label if there is no special equipment
+						{
+							this.equipmentList.Controls.Remove(selectedItem);
+							this.removeEquipmentSeparator();
+						}
 						else
 							selectedItem.Amount = this.controller.SpecialEquipCount(x);
 					};
