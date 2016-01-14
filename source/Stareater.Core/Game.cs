@@ -27,7 +27,7 @@ namespace Stareater
 		public StatesDB States { get; private set; }
 		public TemporaryDB Derivates { get; private set; }
 
-		private GameProcessor processor = null;
+		public GameProcessor Processor = null;
 			
 		public Game(Player[] players, StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
@@ -39,7 +39,7 @@ namespace Stareater
 			this.States = states;
 			this.Derivates = derivates;
 
-			this.processor = new GameProcessor(this);
+			this.Processor = new GameProcessor(this);
 		}
 
 		private Game()
@@ -75,19 +75,19 @@ namespace Stareater
 
 		public void CalculateDerivedEffects()
 		{
-			processor.CalculateBaseEffects();
-			processor.CalculateSpendings();
-			processor.CalculateDerivedEffects();
+			Processor.CalculateBaseEffects();
+			Processor.CalculateSpendings();
+			Processor.CalculateDerivedEffects();
 		}
 
 		public void ProcessPrecombat()
 		{
-			this.processor.ProcessPrecombat();
+			this.Processor.ProcessPrecombat();
 		}
 		
 		public void ProcessPostcombat()
 		{
-			this.processor.ProcessPostcombat();
+			this.Processor.ProcessPostcombat();
 
 			this.Turn++;
 		}

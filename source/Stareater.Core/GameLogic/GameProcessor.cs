@@ -11,6 +11,7 @@ namespace Stareater.GameLogic
 	class GameProcessor
 	{
 		private Game game;
+		private Dictionary<Fleet, double> fleetActionPoints = new Dictionary<Fleet, double>();
 
 		public GameProcessor(Game game)
 		{
@@ -32,6 +33,7 @@ namespace Stareater.GameLogic
 					this.game.Derivates
 				);
 
+			this.prepareShips();
 			this.moveShips();
 			this.doColonization();
 			
@@ -46,6 +48,8 @@ namespace Stareater.GameLogic
 
 		public void ProcessPostcombat()
 		{
+			this.mergeStationaryFleets();
+			
 			foreach (var playerProc in this.game.Derivates.Players)
 				playerProc.ProcessPostcombat(this.game.Statics, this.game.States, this.game.Derivates);
 
@@ -123,17 +127,16 @@ namespace Stareater.GameLogic
 			}
 		}
 
-		private void moveShips()
-		{
-			foreach (var fleet in this.game.States.Fleets)
+		public bool HasConflicts {
+			get
 			{
-				var fleetProcessor = new FleetProcessingVisitor(fleet, game);
-				fleetProcessor.Run();
-				
+				//TODO(v0.5)
+				return false;
 			}
-
-			this.game.States.Fleets.ApplyPending();
-			
+		}
+		
+		private void mergeStationaryFleets()
+		{
 			/*
  			 * Aggregate stationary fleets, if there are multiple stationary fleets of 
 			 * the same owner at the same star, merge them to one fleet.
@@ -161,6 +164,23 @@ namespace Stareater.GameLogic
 				}
 			}
 			this.game.States.Fleets.ApplyPending();
+		}
+		
+		private void moveShips()
+		{
+			foreach (var fleet in this.game.States.Fleets)
+			{
+				var fleetProcessor = new FleetProcessingVisitor(fleet, game);
+				fleetProcessor.Run();
+				
+			}
+
+			this.game.States.Fleets.ApplyPending();
+		}
+		
+		private void prepareShips()
+		{
+			;
 		}
 
 		private void doColonization()

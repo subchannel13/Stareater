@@ -7,9 +7,9 @@ using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.GameData;
+using Stareater.GameLogic;
 using Stareater.Players;
 using Stareater.Players.Reports;
-using Stareater.Ships.Missions;
 using Stareater.Utils;
 using Stareater.Controllers.Data;
 
@@ -109,7 +109,10 @@ namespace Stareater.Controllers
 		{
 			gameObj.ProcessPrecombat();
 
- 			stateListener.OnCombatPhaseStart();
+			if (gameObj.Processor.HasConflicts)
+ 				stateListener.OnCombatPhaseStart();
+			else
+				this.EndCombatPhase();
 		}
 		
 		private void postcombatTurnProcessing()
