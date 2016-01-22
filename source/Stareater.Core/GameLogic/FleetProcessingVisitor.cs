@@ -12,34 +12,49 @@ namespace Stareater.GameLogic
 		private readonly Fleet fleet;
 		private readonly Game game;
 		
-		private double actionPoints = 1;
-		private LinkedList<AMission> remainingMissions = new LinkedList<AMission>();
+		private double time = 0;
+		private LinkedList<AMission> remainingMissions;
 		private Vector2D newPosition;
 		private bool removeFleet = false;
+		private List<FleetMovement> movementSteps = new List<FleetMovement>();
 		
 		public FleetProcessingVisitor(Fleet fleet, Game game)
 		{
 			this.fleet = fleet;
 			this.game = game;
 			this.newPosition = fleet.Position;
+			this.remainingMissions = new LinkedList<AMission>(fleet.Missions);
 		}
 
-		public void Run()
+		public IEnumerable<FleetMovement> Run()
 		{
-			foreach(var mission in fleet.Missions)
-				if (actionPoints > 0)
-					mission.Accept(this);
-				else
-					remainingMissions.AddLast(mission);
-			
-			this.game.States.Fleets.PendRemove(fleet);
-			
-			if (!removeFleet)
+			while(this.remainingMissions.Count > 0 && this.time < 1)
 			{
-				var newFleet = new Fleet(fleet.Owner, this.newPosition, this.remainingMissions);
-				newFleet.Ships.Add(fleet.Ships);
-				this.game.States.Fleets.PendAdd(newFleet);
+				var mission = this.remainingMissions.First.Value;
+				this.remainingMissions.RemoveFirst();
+				mission.Accept(this);
 			}
+			
+			if (time < 1)
+				this.movementSteps.Add(new FleetMovement(
+					this.fleet,
+					localFleet(),
+					this.time,
+					1,
+					this.removeFleet
+				));
+			
+			return this.movementSteps;
+		}
+		
+		private Fleet localFleet()
+		{
+			var resultFleet = new Fleet(fleet.Owner, this.newPosition, new LinkedList<AMission>(this.remainingMissions));
+
+			foreach(var group in this.fleet.Ships)
+				resultFleet.Ships.Add(new ShipGroup(group.Design, group.Quantity));
+			
+			return resultFleet;
 		}
 		
 		#region IMissionVisitor implementation
@@ -56,13 +71,20 @@ namespace Stareater.GameLogic
 			
 			var distance = (mission.Destination.Position - fleet.Position).Magnitude();
 
-			//TODO(v0.5) detect conflicts
 			//TODO(v0.5) merge with existing fleet
-			if (distance <= speed * actionPoints) {
+			if (distance <= speed * (1 - time)) {
 				this.newPosition = mission.Destination.Position;
 				
 				fleet.Owner.Intelligence.StarFullyVisited(game.States.Stars.At(mission.Destination.Position), game.Turn);
-				this.actionPoints -= distance / speed;
+				this.time += distance / speed;
+				
+				this.movementSteps.Add(new FleetMovement(
+					this.fleet,
+					localFleet(),
+					this.time,
+					this.time,
+					this.removeFleet
+				));
 			}
 			else {
 				var direction = (mission.Destination.Position - fleet.Position);
@@ -71,7 +93,7 @@ namespace Stareater.GameLogic
 				this.newPosition = fleet.Position + direction * speed;
 				remainingMissions.AddLast(mission);
 				
-				this.actionPoints = 0;
+				this.time = 1;
 			}
 		}
 
@@ -84,11 +106,25 @@ namespace Stareater.GameLogic
 			
 			//TODO(v0.5) remove fleet at GameProcessor.doColonization
 			this.removeFleet = true;
+			this.movementSteps.Add(new FleetMovement(
+					this.fleet,
+					localFleet(),
+					this.time,
+					1,
+					this.removeFleet
+			));
 		}
 
 		void IMissionVisitor.Visit(SkipTurnMission mission)
 		{
-			this.actionPoints = 0;
+			this.movementSteps.Add(new FleetMovement(
+					this.fleet,
+					localFleet(),
+					this.time,
+					1,
+					this.removeFleet
+			));
+			this.time = 1;
 		}
 		
 		#endregion

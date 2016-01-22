@@ -21,7 +21,6 @@ namespace Stareater
 		public Player[] Players { get; private set; }
 		public int Turn { get; private set; }
 		public int CurrentPlayerIndex { get; private set; } //FIXME(later): assumes single player, remove
-		private IEnumerable<object> conflicts; //TODO(v0.5): make type
 
 		public StaticsDB Statics { get; private set; }
 		public StatesDB States { get; private set; }

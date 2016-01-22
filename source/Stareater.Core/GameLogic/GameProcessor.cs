@@ -10,8 +10,9 @@ namespace Stareater.GameLogic
 {
 	class GameProcessor
 	{
-		private Game game;
-		private Dictionary<Fleet, double> fleetActionPoints = new Dictionary<Fleet, double>();
+		private readonly Game game;
+		private readonly List<FleetMovement> fleetMovement = new List<FleetMovement>();
+		private readonly List<Conflict> conflicts = new List<Conflict>();
 
 		public GameProcessor(Game game)
 		{
@@ -33,8 +34,8 @@ namespace Stareater.GameLogic
 					this.game.Derivates
 				);
 
-			this.prepareShips();
 			this.moveShips();
+			this.detectConflicts();
 			this.doColonization();
 			
 			/*
@@ -130,57 +131,8 @@ namespace Stareater.GameLogic
 		public bool HasConflicts {
 			get
 			{
-				//TODO(v0.5)
-				return false;
+				return this.conflicts.Count != 0;
 			}
-		}
-		
-		private void mergeStationaryFleets()
-		{
-			/*
- 			 * Aggregate stationary fleets, if there are multiple stationary fleets of 
-			 * the same owner at the same star, merge them to one fleet.
- 			 */
-			foreach(var star in game.States.Stars) 
-			{
-				var playerFleets = this.game.States.Fleets.At(star.Position).GroupBy(x => x.Owner);
-				foreach(var playerFleet in playerFleets) 
-				{
-					var stationary = playerFleet.Where(x => x.Missions.Count == 0).ToArray();
-					if (stationary.Length <= 1)
-						continue;
-					
-					var newFleet = new Fleet(stationary[0].Owner, stationary[0].Position, new LinkedList<AMission>());
-					foreach(var fleet in stationary) 
-					{
-						this.game.States.Fleets.PendRemove(fleet);
-						foreach(var ship in fleet.Ships)
-							if (newFleet.Ships.DesignContains(ship.Design))
-								newFleet.Ships.Design(ship.Design).Quantity += ship.Quantity;
-							else
-								newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity));
-					}
-					this.game.States.Fleets.PendAdd(newFleet);
-				}
-			}
-			this.game.States.Fleets.ApplyPending();
-		}
-		
-		private void moveShips()
-		{
-			foreach (var fleet in this.game.States.Fleets)
-			{
-				var fleetProcessor = new FleetProcessingVisitor(fleet, game);
-				fleetProcessor.Run();
-				
-			}
-
-			this.game.States.Fleets.ApplyPending();
-		}
-		
-		private void prepareShips()
-		{
-			;
 		}
 
 		private void doColonization()
@@ -227,6 +179,87 @@ namespace Stareater.GameLogic
 					project.Arrived.Clear();
 				}
 				//TODO(v0.5) remove colonization project from states at some point
+			}
+		}
+				
+		//TODO(v0.5) move above doColonization
+		private void detectConflicts()
+		{
+			var visits = new Dictionary<Vector2D, ICollection<FleetMovement>>();
+			var conflictPositions = new HashSet<Vector2D>();
+			var decidedFleet = new HashSet<Fleet>();
+			
+			foreach(var step in this.fleetMovement.OrderBy(x => x.ArrivalTime))
+	        {
+				if (!visits.ContainsKey(step.LocalFleet.Position))
+					visits.Add(step.LocalFleet.Position, new List<FleetMovement>());
+				
+				if (decidedFleet.Contains(step.OriginalFleet) || visits[step.LocalFleet.Position].Any(x => x.OriginalFleet == step.OriginalFleet))
+					continue;
+				
+				var fleets = visits[step.LocalFleet.Position];
+				fleets.Add(step);
+				
+				bool inConflict = fleets.Aggregate(
+					false,
+					(isInConflict, fleet) => isInConflict | fleets.Any(
+						x => x.OriginalFleet.Owner != fleet.OriginalFleet.Owner && 
+							x.ArrivalTime <= fleet.DepartureTime && x.DepartureTime >= fleet.ArrivalTime
+					)
+				);
+				
+				if (inConflict)
+					decidedFleet.UnionWith(fleets.Where(x => x.ArrivalTime < step.ArrivalTime).Select(x => x.OriginalFleet));
+	        }
+			
+			this.conflicts.Clear();
+			foreach(var position in conflictPositions)
+				conflicts.Add(new Conflict(position, visits[position]));
+			
+			this.game.States.Fleets.Clear();
+			foreach(var fleet in visits.Values.SelectMany(x => x).Where(x => !x.Remove))
+				this.game.States.Fleets.Add(fleet.LocalFleet);
+		}
+		
+		private void mergeStationaryFleets()
+		{
+			/*
+ 			 * Aggregate stationary fleets, if there are multiple stationary fleets of 
+			 * the same owner at the same star, merge them to one fleet.
+ 			 */
+			foreach(var star in game.States.Stars) 
+			{
+				var playerFleets = this.game.States.Fleets.At(star.Position).GroupBy(x => x.Owner);
+				foreach(var playerFleet in playerFleets) 
+				{
+					var stationary = playerFleet.Where(x => x.Missions.Count == 0).ToArray();
+					if (stationary.Length <= 1)
+						continue;
+					
+					var newFleet = new Fleet(stationary[0].Owner, stationary[0].Position, new LinkedList<AMission>());
+					foreach(var fleet in stationary) 
+					{
+						this.game.States.Fleets.PendRemove(fleet);
+						foreach(var ship in fleet.Ships)
+							if (newFleet.Ships.DesignContains(ship.Design))
+								newFleet.Ships.Design(ship.Design).Quantity += ship.Quantity;
+							else
+								newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity));
+					}
+					this.game.States.Fleets.PendAdd(newFleet);
+				}
+			}
+			this.game.States.Fleets.ApplyPending();
+		}
+		
+		private void moveShips()
+		{
+			this.fleetMovement.Clear();
+			
+			foreach (var fleet in this.game.States.Fleets)
+			{
+				var fleetProcessor = new FleetProcessingVisitor(fleet, game);
+				this.fleetMovement.AddRange(fleetProcessor.Run());
 			}
 		}
 	}

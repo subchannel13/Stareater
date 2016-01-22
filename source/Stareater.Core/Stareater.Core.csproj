@@ -321,6 +321,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\TechnologyProgress.partial.cs" />
+    <Compile Include="GameLogic\Conflict.cs" />
     <Compile Include="GameLogic\ConstructionResult.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -336,6 +337,7 @@
       <DependentUpon>DesignStats.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="GameLogic\FleetMovement.cs" />
     <Compile Include="GameLogic\FleetProcessingVisitor.cs" />
     <Compile Include="GameLogic\GameProcessor.cs" />
     <Compile Include="GameLogic\IConstructionEffect.cs" />

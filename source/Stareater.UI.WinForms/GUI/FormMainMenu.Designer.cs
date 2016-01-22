@@ -74,7 +74,7 @@
 			this.aboutLabel.Name = "aboutLabel";
 			this.aboutLabel.Size = new System.Drawing.Size(115, 13);
 			this.aboutLabel.TabIndex = 5;
-			this.aboutLabel.Text = "Ivan Kravarščan 2015.";
+			this.aboutLabel.Text = "Ivan Kravarščan 2016.";
 			// 
 			// settingsButton
 			// 
