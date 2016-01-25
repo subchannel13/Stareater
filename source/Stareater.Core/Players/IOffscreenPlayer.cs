@@ -1,10 +1,11 @@
 ﻿using Ikadn;
+using Stareater.Controllers;
 
 namespace Stareater.Players
 {
 	public interface IOffscreenPlayer
 	{
-		void PlayTurn(/*IgraZvj igra*/);
+		void PlayTurn(GameController controller);
 		void PlayBattle(/*ModeratorBorbe bitka*/);
 		
 		IkadnBaseObject Save();

@@ -89,7 +89,7 @@ namespace Stareater.Controllers
 		{
 			foreach(var player in gameObj.Players)
 				if (player.ControlType == PlayerControlType.LocalAI)
-					player.OffscreenControl.PlayTurn();
+					player.OffscreenControl.PlayTurn(this);
 			
 			stateListener.OnAiGalaxyPhaseDone();
 		}

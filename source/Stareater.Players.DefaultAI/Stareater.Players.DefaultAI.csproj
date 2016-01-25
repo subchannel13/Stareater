@@ -42,6 +42,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IKADN.IKON.1.4.0\lib\net40-client\Ikadn.Ikon.dll</HintPath>
     </Reference>
+    <Reference Include="NGenerics">
+      <HintPath>..\packages\NGenerics.1.4.1.0\lib\net35\NGenerics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
