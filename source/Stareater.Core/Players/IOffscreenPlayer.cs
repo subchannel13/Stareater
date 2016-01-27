@@ -5,7 +5,7 @@ namespace Stareater.Players
 {
 	public interface IOffscreenPlayer
 	{
-		void PlayTurn(GameController controller);
+		void PlayTurn(PlayerController controller);
 		void PlayBattle(/*ModeratorBorbe bitka*/);
 		
 		IkadnBaseObject Save();

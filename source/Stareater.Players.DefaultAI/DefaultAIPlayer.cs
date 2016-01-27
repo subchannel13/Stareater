@@ -8,7 +8,7 @@ namespace Stareater.Players.DefaultAI
 {
 	class DefaultAIPlayer : IOffscreenPlayer
 	{
-		public void PlayTurn(GameController controller)
+		public void PlayTurn(PlayerController controller)
 		{
 			foreach(var stellaris in controller.Stellarises())
 			{

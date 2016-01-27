@@ -14,14 +14,14 @@ namespace Stareater.GUI
 	public partial class EmpyPlanetView : UserControl
 	{
 		private ColonizationController controller;
-		private GameController gameController;
+		private PlayerController gameController;
 		
 		public EmpyPlanetView()
 		{
 			InitializeComponent();
 		}
 		
-		public void SetView(ColonizationController planetController, GameController gameController)
+		public void SetView(ColonizationController planetController, PlayerController gameController)
 		{
 			this.controller = planetController;
 			this.gameController = gameController;

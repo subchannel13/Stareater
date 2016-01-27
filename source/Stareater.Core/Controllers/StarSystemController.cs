@@ -4,6 +4,7 @@ using System.Linq;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.GameData;
+using Stareater.Players;
 
 namespace Stareater.Controllers
 {
@@ -12,13 +13,15 @@ namespace Stareater.Controllers
 		public const int StarIndex = -1;
 		
 		private readonly Game game;
+		private readonly Player player;
 		
 		public StarData Star { get; private set; }
 		public bool IsReadOnly { get; private set; }
 		
-		internal StarSystemController(Game game, StarData star, bool readOnly)
+		internal StarSystemController(Game game, StarData star, bool readOnly, Player player)
 		{
 			this.game = game;
+			this.player = player;
 			this.IsReadOnly = readOnly;
 			this.Star = star;
 		}
@@ -26,7 +29,7 @@ namespace Stareater.Controllers
 		public IEnumerable<Planet> Planets
 		{
 			get {
-				var planetInfos = game.CurrentPlayer.Intelligence.About(Star).Planets;
+				var planetInfos = this.player.Intelligence.About(Star).Planets;
 				var knownPlanets = planetInfos.Where(x => x.Value.Explored >= PlanetIntelligence.FullyExplored).Select(x => x.Key);
 				
 				return knownPlanets.OrderBy(x => x.Position);
@@ -35,7 +38,7 @@ namespace Stareater.Controllers
 		
 		public ColonyInfo PlanetsColony(Planet planet)
 		{
-			if (game.CurrentPlayer.Intelligence.About(Star).Planets[planet].LastVisited != PlanetIntelligence.NeverVisited)
+			if (this.player.Intelligence.About(Star).Planets[planet].LastVisited != PlanetIntelligence.NeverVisited)
 				//TODO(later): show last known colony information
 				if (game.States.Colonies.AtPlanetContains(planet))
 					return new ColonyInfo(game.States.Colonies.AtPlanet(planet));
@@ -45,7 +48,7 @@ namespace Stareater.Controllers
 		
 		public StellarisInfo StarsAdministration()
 		{
-			if (game.CurrentPlayer.Intelligence.About(Star).LastVisited != StarIntelligence.NeverVisited)
+			if (this.player.Intelligence.About(Star).LastVisited != StarIntelligence.NeverVisited)
 				//TODO(later): show last known star system information
 				return new StellarisInfo(game.States.Stellarises.At(Star));
 			
@@ -60,7 +63,7 @@ namespace Stareater.Controllers
 					
 				var stellaris = game.States.Stellarises.At(Star);
 				
-				return stellaris.Owner == game.CurrentPlayer ? 
+				return stellaris.Owner == this.player ? 
 					Views.BodyType.OwnStellaris : 
 					Views.BodyType.ForeignStellaris;
 			} 
@@ -74,7 +77,7 @@ namespace Stareater.Controllers
 
 			var colony = game.States.Colonies.AtPlanet(planet);
 
-			return colony.Owner == game.CurrentPlayer ? 
+			return colony.Owner == this.player ? 
 				Views.BodyType.OwnColony : 
 				Views.BodyType.ForeignColony;
 		}
@@ -82,7 +85,7 @@ namespace Stareater.Controllers
 		public bool IsColonizing(int position)
 		{
 			var planet = this.game.States.Planets.At(this.Star).First(x => x.Position == position);
-			return planet != null && this.game.CurrentPlayer.Orders.ColonizationOrders.ContainsKey(planet);
+			return planet != null && this.player.Orders.ColonizationOrders.ContainsKey(planet);
 		}
 		
 		public ColonyController ColonyController(int bodyPosition)
@@ -92,7 +95,7 @@ namespace Stareater.Controllers
 			if (planet == null)
 				throw new ArgumentOutOfRangeException("bodyPosition");
 
-			return new ColonyController(game, game.States.Colonies.AtPlanet(planet), IsReadOnly);
+			return new ColonyController(game, game.States.Colonies.AtPlanet(planet), IsReadOnly, this.player);
 		}
 
 		public ColonizationController EmptyPlanetController(int bodyPosition)
@@ -102,13 +105,13 @@ namespace Stareater.Controllers
 			if (planet == null)
 				throw new ArgumentOutOfRangeException("bodyPosition");
 			
-			return new ColonizationController(this.game, planet, IsReadOnly);
+			return new ColonizationController(this.game, planet, IsReadOnly, this.player);
 		}
 		
 		public StellarisAdminController StellarisController()
 		{
 			//TODO(0.5) make Stellarises.At a collection
-			return new StellarisAdminController(game, game.States.Stellarises.At(Star), IsReadOnly);
+			return new StellarisAdminController(game, game.States.Stellarises.At(Star), IsReadOnly, this.player);
 		}
 	}
 }

@@ -7,14 +7,14 @@ namespace Stareater.GUI
 {
 	public partial class FormShipDesignList : Form
 	{
-		private readonly GameController controller;
+		private readonly PlayerController controller;
 		
 		public FormShipDesignList()
 		{
 			InitializeComponent();
 		}
 		
-		public FormShipDesignList(GameController controller) : this()
+		public FormShipDesignList(PlayerController controller) : this()
 		{
 			this.controller = controller;
 			updateList();

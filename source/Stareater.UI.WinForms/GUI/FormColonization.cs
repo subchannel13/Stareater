@@ -8,14 +8,14 @@ namespace Stareater.GUI
 {
 	public partial class FormColonization : Form
 	{
-		private readonly GameController controller;
+		private readonly PlayerController controller;
 		
 		public FormColonization()
 		{
 			InitializeComponent();
 		}
 		
-		public FormColonization(GameController controller) : this()
+		public FormColonization(PlayerController controller) : this()
 		{
 			this.controller = controller;
 			

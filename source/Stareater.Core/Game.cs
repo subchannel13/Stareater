@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Stareater.Galaxy;
-using Stareater.Galaxy.Builders;
 using Stareater.GameData;
 using Stareater.GameData.Databases;
-using Stareater.GameData.Databases.Tables;
 using Stareater.GameLogic;
 using Stareater.Players;
-using Stareater.Utils;
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using Stareater.Controllers.Data;
-using Stareater.Ships.Missions;
 
 namespace Stareater
 {
@@ -20,7 +15,6 @@ namespace Stareater
 	{
 		public Player[] Players { get; private set; }
 		public int Turn { get; private set; }
-		public int CurrentPlayerIndex { get; private set; } //FIXME(later): assumes single player, remove
 
 		public StaticsDB Statics { get; private set; }
 		public StatesDB States { get; private set; }
@@ -31,7 +25,6 @@ namespace Stareater
 		public Game(Player[] players, StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
 			this.Turn = 0;
-			this.CurrentPlayerIndex = 0;
 			
 			this.Players = players;
 			this.Statics = statics;
@@ -43,11 +36,6 @@ namespace Stareater
 
 		private Game()
 		{ }
-
-		public Player CurrentPlayer
-		{ 
-			get { return this.Players[CurrentPlayerIndex]; }
-		}
 		
 		public GameCopy ReadonlyCopy()
 		{
@@ -63,7 +51,6 @@ namespace Stareater
 
 			copy.Players = this.Players.Select(p => playersRemap.Players[p]).ToArray();
 			copy.Turn = this.Turn;
-			copy.CurrentPlayerIndex = this.CurrentPlayerIndex;
 
 			copy.Statics = this.Statics;
 			copy.States = this.States.Copy(playersRemap, galaxyRemap);

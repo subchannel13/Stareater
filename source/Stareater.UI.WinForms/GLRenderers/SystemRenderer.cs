@@ -40,7 +40,7 @@ namespace Stareater.GLRenderers
 		private const int NoCallList = -1;
 
 		private StarSystemController controller;
-		private GameController gameController;
+		private PlayerController currentPlayer;
 		private Control eventDispatcher;
 		private ConstructionSiteView siteView;
 		private EmpyPlanetView emptyPlanetView;
@@ -197,10 +197,10 @@ namespace Stareater.GLRenderers
 			this.eventDispatcher = null;
 		}
 		
-		public void SetStarSystem(StarSystemController controller, GameController gameController)
+		public void SetStarSystem(StarSystemController controller, PlayerController gameController)
 		{
 			this.controller = controller;
-			this.gameController = gameController;
+			this.currentPlayer = gameController;
 			
 			this.resetProjection = true;
 			this.originOffset = 0.5f; //TODO(v0.5): Get most populated planet
@@ -225,7 +225,7 @@ namespace Stareater.GLRenderers
 					setView(siteView);
 					break;
 				case BodyType.NotColonised:
-					emptyPlanetView.SetView(controller.EmptyPlanetController(bodyIndex), gameController);
+					emptyPlanetView.SetView(controller.EmptyPlanetController(bodyIndex), currentPlayer);
 					setView(emptyPlanetView);
 					break;
 				default:

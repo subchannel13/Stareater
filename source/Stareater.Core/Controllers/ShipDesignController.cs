@@ -4,6 +4,7 @@ using System.Linq;
 
 using Stareater.Controllers.Views.Ships;
 using Stareater.GameData.Ships;
+using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Utils.Collections;
 
@@ -12,13 +13,15 @@ namespace Stareater.Controllers
 	public class ShipDesignController
 	{
 		private readonly Game game;
+		private Player player;
 		private readonly Dictionary<string, int> playersTechLevels;
 		
-		internal ShipDesignController(Game game)
+		internal ShipDesignController(Game game, Player player)
 		{
 			this.game = game;
+			this.player = player;
 			
-			this.playersTechLevels = game.States.TechnologyAdvances.Of(game.CurrentPlayer)
+			this.playersTechLevels = game.States.TechnologyAdvances.Of(this.player)
 				.ToDictionary(x => x.Topic.IdCode, x => x.Level);
 			
 			this.armorInfo = bestArmor();
@@ -134,7 +137,7 @@ namespace Stareater.Controllers
 		private SensorInfo sensorInfo = null;
 		private ThrusterInfo thrusterInfo = null;
 
-		private Dictionary<Component<SpecialEquipmentType>, int> selectedSpecialEquipment = new Dictionary<Component<SpecialEquipmentType>, int>();
+		private readonly Dictionary<Component<SpecialEquipmentType>, int> selectedSpecialEquipment = new Dictionary<Component<SpecialEquipmentType>, int>();
 
 		void onHullChange()
 		{
@@ -309,7 +312,7 @@ namespace Stareater.Controllers
 
 			var desing = new Design(
 				this.game.States.MakeDesignId(),
-				this.game.CurrentPlayer,
+				this.player,
 				false,
 				this.Name,
 				this.ImageIndex,
@@ -324,7 +327,7 @@ namespace Stareater.Controllers
 			);
 			desing.CalcHash(this.game.Statics);
 			game.States.Designs.Add(desing); //TODO(v0.5) add to changes DB and propagate to states during turn processing
-			game.Derivates.Players.Of(this.game.CurrentPlayer).Analyze(desing, this.game.Statics);
+			game.Derivates.Players.Of(this.player).Analyze(desing, this.game.Statics);
 		}
 		#endregion
 	}

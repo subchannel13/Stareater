@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
+using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
 using Stareater.Utils;
@@ -14,8 +14,9 @@ namespace Stareater.Controllers
 {
 	public class FleetController
 	{
-		private Game game;
-		private GalaxyObjects mapObjects;
+		private readonly Game game;
+		private readonly Player player;
+		private readonly GalaxyObjects mapObjects;
 		private IVisualPositioner visualPositoner;
 		
 		public FleetInfo Fleet { get; private set; }
@@ -24,11 +25,12 @@ namespace Stareater.Controllers
 		private double eta = 0;
 		private List<WaypointInfo> simulationWaypoints = new List<WaypointInfo>();
 		
-		internal FleetController(FleetInfo fleet, Game game, GalaxyObjects mapObjects, IVisualPositioner visualPositoner)
+		internal FleetController(FleetInfo fleet, Game game, Player player, GalaxyObjects mapObjects, IVisualPositioner visualPositoner)
 		{
 			this.Fleet = fleet;
 			this.game = game;
 			this.mapObjects = mapObjects;
+			this.player = player;
 			this.visualPositoner = visualPositoner;
 			
 			if (this.Fleet.IsMoving) {
@@ -137,7 +139,7 @@ namespace Stareater.Controllers
 		private FleetInfo addFleet(ICollection<Fleet> shipOrders, Fleet newFleet)
 		{
 			var similarFleet = shipOrders.FirstOrDefault(x => x.Missions.SequenceEqual(newFleet.Missions));
-			var playerProc = this.game.Derivates.Of(this.game.CurrentPlayer);
+			var playerProc = this.game.Derivates.Of(this.player);
 			
 			if (similarFleet != null) {
 				foreach(var shipGroup in newFleet.Ships)
@@ -220,6 +222,7 @@ namespace Stareater.Controllers
 			return new FleetController(
 				newFleetInfo, 
 				this.game,
+				this.player,
 				this.mapObjects,
 				this.visualPositoner
 			);

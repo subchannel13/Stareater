@@ -30,9 +30,11 @@ namespace Stareater.GUI
 		private SystemRenderer systemRenderer;
 
 		private Queue<Action> delayedGuiEvents = new Queue<Action>();
-		private GameController controller = null;
+		private GameController gameController = null;
+		private PlayerController[] playerControllers = null;
 		private FleetController fleetController = null;
-		private OpenReportVisitor reportOpener;		
+		private OpenReportVisitor reportOpener;
+		private int currentPlayerIndex = 0;
 		
 		private bool aisReady = false;
 		private bool humansReady = false;
@@ -41,7 +43,7 @@ namespace Stareater.GUI
 		{
 			InitializeComponent();
 
-			this.controller = new GameController();
+			this.gameController = new GameController();
 			this.reportOpener = new OpenReportVisitor(showDevelopment, showResearch);
 			
 			setLanguage();
@@ -62,6 +64,11 @@ namespace Stareater.GUI
 			this.returnButton.Text = context["Return"].Text();
 			this.mainMenuToolStripMenuItem.Text = context["MainMenu"].Text();
 			this.developmentToolStripMenuItem.Text = context["DevelopmentMenu"].Text();
+		}
+		
+		private PlayerController currentPlayer
+		{
+			get { return this.playerControllers[currentPlayerIndex]; }
 		}
 
 		private void eventTimer_Tick(object sender, EventArgs e)
@@ -101,7 +108,7 @@ namespace Stareater.GUI
 		
 		private void designsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using(var form = new FormShipDesignList(controller))
+			using(var form = new FormShipDesignList(this.currentPlayer))
 				form.ShowDialog();
 		}
 		
@@ -112,19 +119,19 @@ namespace Stareater.GUI
 		
 		private void researchToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using(var form = new FormResearch(controller))
+			using(var form = new FormResearch(this.currentPlayer))
 				form.ShowDialog();
 		}
 		
 		private void colonizationToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using(var form = new FormColonization(controller))
+			using(var form = new FormColonization(this.currentPlayer))
 				form.ShowDialog();
 		}
 		
 		private void reportsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using(var form = new FormReports(controller.Reports))
+			using(var form = new FormReports(this.currentPlayer.Reports))
 				if (form.ShowDialog() == DialogResult.OK)
 					form.Result.Accept(this.reportOpener);
 		}
@@ -147,13 +154,13 @@ namespace Stareater.GUI
 
 		private void showDevelopment()
 		{
-			using(var form = new FormDevelopment(controller))
+			using(var form = new FormDevelopment(this.currentPlayer))
 				form.ShowDialog();
 		}
 		
 		private void showMainMenu()
 		{
-			using (var form = new FormMainMenu(this.controller))
+			using (var form = new FormMainMenu(this.gameController))
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
 					switch (form.Result) {
 						case MainMenuResult.NewGame:
@@ -179,9 +186,10 @@ namespace Stareater.GUI
 			using (var form = new FormNewGame()) {
 				form.Initialize();
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
-					this.controller.Stop();	
-					form.CreateGame(controller);
-					this.controller.Start(this);
+					this.gameController.Stop();	
+					form.CreateGame(gameController);
+					this.gameController.Start(this);
+					this.initPlayers();
 					this.restartRenderers();
 				}
 				else
@@ -191,21 +199,22 @@ namespace Stareater.GUI
 
 		private void showResearch()
 		{
-			using(var form = new FormResearch(controller))
+			using(var form = new FormResearch(this.currentPlayer))
 				form.ShowDialog();
 		}
 		
 		private void showSaveGame()
 		{
-			var saveController = new SavesController(controller);
+			var saveController = new SavesController(gameController);
 			
 			using(var form = new FormSaveLoad(saveController))
 				if (form.ShowDialog() != DialogResult.OK)
 					postDelayedEvent(showMainMenu);
 				else if (form.Result == MainMenuResult.LoadGame) {
-					this.controller.Stop();
+					this.gameController.Stop();
 					saveController.Load(form.SelectedGameData);
-					this.controller.Start(this);
+					this.gameController.Start(this);
+					this.initPlayers();
 					this.restartRenderers();
 				}
 		}
@@ -219,9 +228,14 @@ namespace Stareater.GUI
 		}
 		#endregion
 
+		private void initPlayers()
+		{
+			this.playerControllers = this.gameController.LocalHumanPlayers().ToArray();
+			this.currentPlayerIndex = 0;
+		}
 		private void redraw()
 		{
-			if (controller.State != Controllers.Views.GameState.Running)
+			if (gameController.State != Controllers.Views.GameState.Running)
 				return;
 		}
 		
@@ -237,7 +251,8 @@ namespace Stareater.GUI
 				systemRenderer.Unload();
 			}
 			
-			galaxyRenderer = new GalaxyRenderer(controller, this);
+			galaxyRenderer = new GalaxyRenderer(this);
+			galaxyRenderer.CurrentPlayer = this.currentPlayer;
 			galaxyRenderer.Load();
 			
 			systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement, empyPlanetView);
@@ -257,7 +272,9 @@ namespace Stareater.GUI
 				humansReady = false;
 			}
 			
-			controller.EndGalaxyPhase();
+			this.currentPlayer.EndGalaxyPhase();
+			this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.playerControllers.Length;
+			this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
 
 			if (galaxyRenderer != null) galaxyRenderer.ResetLists();
 			if (systemRenderer != null) systemRenderer.ResetLists();
@@ -387,7 +404,7 @@ namespace Stareater.GUI
 			
 			//TODO(v0.5): open conflict GUI
 			
-			controller.EndCombatPhase();
+			this.currentPlayer.EndCombatPhase();
 		}
 		#endregion
 		
@@ -430,7 +447,7 @@ namespace Stareater.GUI
 			galaxyRenderer.DetachFromCanvas();
 			
 			systemRenderer.AttachToCanvas(glCanvas);
-			systemRenderer.SetStarSystem(systemController, controller);
+			systemRenderer.SetStarSystem(systemController, this.currentPlayer);
 			currentRenderer = systemRenderer;
 			
 			constructionManagement.Visible = true;

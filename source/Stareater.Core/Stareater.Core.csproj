@@ -78,6 +78,7 @@
     <Compile Include="Controllers\ColonizationController.cs" />
     <Compile Include="Controllers\Data\ColonizerFinder.cs" />
     <Compile Include="Controllers\Data\MissionInfoFactory.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\Views\BodyType.cs" />
     <Compile Include="Controllers\Views\BuildingInfo.cs" />
     <Compile Include="Controllers\Views\ColonyInfo.cs" />

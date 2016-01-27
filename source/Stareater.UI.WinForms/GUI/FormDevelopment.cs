@@ -12,7 +12,7 @@ namespace Stareater.GUI
 {
 	public partial class FormDevelopment : Form
 	{
-		private GameController controller;
+		private PlayerController controller;
 		private IList<TechnologyTopic> topics;
 		
 		public FormDevelopment()
@@ -20,7 +20,7 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 		
-		public FormDevelopment(GameController controller) : this()
+		public FormDevelopment(PlayerController controller) : this()
 		{
 			this.controller = controller;
 			this.topics = controller.DevelopmentTopics().ToList();

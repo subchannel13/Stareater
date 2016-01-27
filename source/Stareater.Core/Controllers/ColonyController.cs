@@ -2,13 +2,14 @@
 using System.Linq;
 using Stareater.Galaxy;
 using Stareater.GameLogic;
+using Stareater.Players;
 
 namespace Stareater.Controllers
 {
 	public class ColonyController : AConstructionSiteController
 	{
-		internal ColonyController(Game game, Colony colony, bool readOnly) : 
-			base(colony, readOnly, game)
+		internal ColonyController(Game game, Colony colony, bool readOnly, Player player) : 
+			base(colony, readOnly, game, player)
 		{ }
 
 		internal override AConstructionSiteProcessor Processor

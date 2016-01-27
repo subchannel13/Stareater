@@ -14,14 +14,14 @@ namespace Stareater.GUI
 	public partial class ColonizationTargetView : UserControl
 	{
 		private readonly ColonizationController controller;
-		private readonly GameController gameController;
+		private readonly PlayerController gameController;
 		
 		public ColonizationTargetView()
 		{
 			InitializeComponent();
 		}
 		
-		public ColonizationTargetView(ColonizationController controller, GameController gameController) : this()
+		public ColonizationTargetView(ColonizationController controller, PlayerController gameController) : this()
 		{
 			this.controller = controller;
 			this.gameController = gameController;

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Stareater.Controllers.Views;
 using Stareater.GameLogic;
 using Stareater.GameData;
+using Stareater.Players;
 using Stareater.Utils;
 
 namespace Stareater.Controllers
@@ -13,16 +14,19 @@ namespace Stareater.Controllers
 	{
 		private const int NotOrder = -1;
 		
-		internal Game Game { get; private set; }
 		internal AConstructionSite Site { get; private set; }
+		
+		internal Game Game { get; private set; }
+		internal Player Player { get; private set; }
 		
 		private List<int> orderIndex = new List<int>();
 		
-		internal AConstructionSiteController(AConstructionSite site, bool readOnly, Game game)
+		internal AConstructionSiteController(AConstructionSite site, bool readOnly, Game game, Player player)
 		{
 			this.Site = site;
 			this.IsReadOnly = readOnly;
 			this.Game = game;
+			this.Player = player;
 		}
 
 		public bool IsReadOnly { get; private set; }
@@ -64,7 +68,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var playerTechs = Game.States.TechnologyAdvances.Of(Game.CurrentPlayer);
+				var playerTechs = Game.States.TechnologyAdvances.Of(this.Player);
 				var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
 				var localEffencts = Processor.LocalEffects(Game.Statics).Get;
 
@@ -72,7 +76,7 @@ namespace Stareater.Controllers
 					if (Prerequisite.AreSatisfied(constructable.Prerequisites, 0, techLevels) &&
 						constructable.ConstructableAt == Site.Type &&
 						constructable.Condition.Evaluate(localEffencts) > 0)
-						yield return new ConstructableItem(constructable, Game.Derivates.Players.Of(Game.CurrentPlayer));
+						yield return new ConstructableItem(constructable, Game.Derivates.Players.Of(this.Player));
 			}
 		}
 		
@@ -85,7 +89,7 @@ namespace Stareater.Controllers
 				
 				foreach(var item in Processor.SpendingPlan)
 				{
-					if (!item.Type.IsVirtual && item.Type == Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue[orderI])
+					if (!item.Type.IsVirtual && item.Type == this.Player.Orders.ConstructionPlans[Site].Queue[orderI])
 					{
 						orderIndex.Add(orderI);
 						orderI++;
@@ -95,7 +99,7 @@ namespace Stareater.Controllers
 					    
 					yield return new ConstructableItem(
 						item.Type, 
-						Game.Derivates.Players.Of(Game.CurrentPlayer), 
+						Game.Derivates.Players.Of(this.Player), 
 						item.CompletedCount,
 						Site.Stockpile.ContainsKey(item.Type) ? Site.Stockpile[item.Type] : 0,
 						item.InvestedPoints + item.FromStockpile
@@ -114,7 +118,7 @@ namespace Stareater.Controllers
 			if (IsReadOnly)
 				return;
 			
-			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.Add(data.Constructable);
+			this.Player.Orders.ConstructionPlans[Site].Queue.Add(data.Constructable);
 			this.RecalculateSpending();
 		}
 		
@@ -123,7 +127,7 @@ namespace Stareater.Controllers
 			if (IsReadOnly || orderIndex[index] == NotOrder)
 				return;
 			
-			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.RemoveAt(orderIndex[index]);
+			this.Player.Orders.ConstructionPlans[Site].Queue.RemoveAt(orderIndex[index]);
 			this.RecalculateSpending();
 		}
 		
@@ -132,9 +136,9 @@ namespace Stareater.Controllers
 			if (IsReadOnly || orderIndex[fromIndex] == NotOrder || orderIndex[toIndex] == NotOrder)
 				return;
 			
-			var item = Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue[orderIndex[fromIndex]];
-			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.RemoveAt(orderIndex[fromIndex]);
-			Game.CurrentPlayer.Orders.ConstructionPlans[Site].Queue.Insert(orderIndex[toIndex], item);
+			var item = this.Player.Orders.ConstructionPlans[Site].Queue[orderIndex[fromIndex]];
+			this.Player.Orders.ConstructionPlans[Site].Queue.RemoveAt(orderIndex[fromIndex]);
+			this.Player.Orders.ConstructionPlans[Site].Queue.Insert(orderIndex[toIndex], item);
 			this.RecalculateSpending();
 		}
 		#endregion

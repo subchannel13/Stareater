@@ -6,12 +6,14 @@ using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.GameLogic;
+using Stareater.Players;
 
 namespace Stareater.Controllers
 {
 	public class StellarisAdminController : AConstructionSiteController
 	{
-		internal StellarisAdminController(Game game, StellarisAdmin stellaris, bool readOnly): base(stellaris, readOnly, game)
+		internal StellarisAdminController(Game game, StellarisAdmin stellaris, bool readOnly, Player player) : 
+			base(stellaris, readOnly, game, player)
 		{ }
 
 		internal override AConstructionSiteProcessor Processor
@@ -35,10 +37,10 @@ namespace Stareater.Controllers
 				foreach(var item in base.ConstructableItems)
 					yield return item;
 				
-				foreach(var design in Game.States.Designs.OwnedBy(Game.CurrentPlayer).Where(x => !x.IsVirtual))
+				foreach(var design in Game.States.Designs.OwnedBy(this.Player).Where(x => !x.IsVirtual))
 					yield return new ConstructableItem(
 						design.ConstructionProject,
-						Game.Derivates.Players.Of(Game.CurrentPlayer)
+						Game.Derivates.Players.Of(this.Player)
 					);
 			}
 		}

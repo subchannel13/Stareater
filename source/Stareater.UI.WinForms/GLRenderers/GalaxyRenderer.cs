@@ -49,7 +49,6 @@ namespace Stareater.GLRenderers
 
 		private const int NoCallList = -1;
 
-		private GameController controller;
 		private FleetController fleetController = null;
 		private Control eventDispatcher;
 		private IGalaxyViewListener galaxyViewListener;
@@ -68,33 +67,44 @@ namespace Stareater.GLRenderers
 		private Vector2 mapBoundsMax;
 
 		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
-		private Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D> lastSelectedStars;
-		private Dictionary<int, FleetInfo> lastSelectedIdleFleets;
+		private Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D> lastSelectedStars = new Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D>();
+		private Dictionary<int, FleetInfo> lastSelectedIdleFleets = new Dictionary<int, FleetInfo>();
+		private PlayerController currentPlayer = null;
 
-		public GalaxyRenderer(GameController controller, IGalaxyViewListener galaxyViewListener)
+		public GalaxyRenderer(IGalaxyViewListener galaxyViewListener)
 		{ 
-			this.controller = controller;
 			this.galaxyViewListener = galaxyViewListener;
-			
-			this.mapBoundsMin = new Vector2(
-				(float)controller.Stars.Min(star => star.Position.X) - StarMinClickRadius,
-				(float)controller.Stars.Min(star => star.Position.Y) - StarMinClickRadius
-			);
-			this.mapBoundsMax = new Vector2(
-				(float)controller.Stars.Max(star => star.Position.X) + StarMinClickRadius,
-				(float)controller.Stars.Max(star => star.Position.Y) + StarMinClickRadius
-			);
-			
-			this.controller.VisualPositioner = new VisualPositioner();
-			
-			//TODO(v0.5): move to more appropriate begin turn setup
-			this.lastSelectedIdleFleets = new Dictionary<int, FleetInfo>();
-			this.lastSelectedStars = new Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D>();
-			
-			//TODO(v0.5): move to more appropriate begin turn setup
-			this.lastSelectedStars.Add(this.controller.CurrentPlayer, this.controller.ResearchCenter.Position);
-			this.originOffset = new Vector2((float)this.lastSelectedStar.Position.X, (float)this.lastSelectedStar.Position.Y);
-			this.currentSelection = GalaxySelectionType.Star;
+		}
+		
+		public PlayerController CurrentPlayer
+		{
+			set
+			{
+				this.currentPlayer = value;
+				
+				//Assumes all players can see the same map size
+				if (this.lastSelectedStars.Count == 0)
+				{
+					this.mapBoundsMin = new Vector2(
+						(float)this.currentPlayer.Stars.Min(star => star.Position.X) - StarMinClickRadius,
+						(float)this.currentPlayer.Stars.Min(star => star.Position.Y) - StarMinClickRadius
+					);
+					this.mapBoundsMax = new Vector2(
+						(float)this.currentPlayer.Stars.Max(star => star.Position.X) + StarMinClickRadius,
+						(float)this.currentPlayer.Stars.Max(star => star.Position.Y) + StarMinClickRadius
+					);
+				}
+				
+				if (this.currentPlayer.VisualPositioner == null)
+				{
+					this.currentPlayer.VisualPositioner = new VisualPositioner();
+				
+					//TODO(v0.5): move to more appropriate begin turn setup
+					this.lastSelectedStars.Add(this.currentPlayer.PlayerIndex, this.currentPlayer.ResearchCenter.Position);
+					this.originOffset = new Vector2((float)this.lastSelectedStar.Position.X, (float)this.lastSelectedStar.Position.Y);
+					this.currentSelection = GalaxySelectionType.Star;
+				}
+			}
 		}
 		
 		#region IRenderer implementation
@@ -131,7 +141,7 @@ namespace Stareater.GLRenderers
 		public void Load()
 		{
 			GalaxyTextures.Get.Load();
-			TextRenderUtil.Get.Prepare(controller.Stars.Select(x => x.Name.ToText(SettingsWinforms.Get.Language)));
+			TextRenderUtil.Get.Prepare(this.currentPlayer.Stars.Select(x => x.Name.ToText(SettingsWinforms.Get.Language)));
 		}
 		
 		public void Unload()
@@ -189,7 +199,7 @@ namespace Stareater.GLRenderers
 		
 		private void drawFleetMarkers()
 		{
-			foreach (var fleet in this.controller.Fleets) {
+			foreach (var fleet in this.currentPlayer.Fleets) {
 				GL.Color4(fleet.Owner.Color);
 				
 				GL.PushMatrix();
@@ -203,7 +213,7 @@ namespace Stareater.GLRenderers
 
 		private void drawFleetMovement()
 		{
-			foreach (var fleet in this.controller.Fleets) {
+			foreach (var fleet in this.currentPlayer.Fleets) {
 				if (!fleet.IsMoving)
 					continue;
 				
@@ -317,7 +327,7 @@ namespace Stareater.GLRenderers
 
 			GL.Enable(EnableCap.Texture2D);
 			
-			foreach (var star in controller.Stars) {
+			foreach (var star in this.currentPlayer.Stars) {
 				GL.Color4(star.Color);
 				GL.PushMatrix();
 				GL.Translate(star.Position.X, star.Position.Y, StarColorZ);
@@ -331,7 +341,7 @@ namespace Stareater.GLRenderers
 			}
 			
 			float starNameZ = StarNameZ;
-			foreach (var star in controller.Stars) {
+			foreach (var star in this.currentPlayer.Stars) {
 				GL.Color4(starNameColor(star));
 				
 				GL.PushMatrix();
@@ -340,7 +350,7 @@ namespace Stareater.GLRenderers
 
 				TextRenderUtil.Get.RenderText(star.Name.ToText(SettingsWinforms.Get.Language), -0.5f);
 				GL.PopMatrix();
-				starNameZ += StarNameZRange / controller.StarCount;
+				starNameZ += StarNameZRange / this.currentPlayer.StarCount;
 			}
 
 			GL.EndList();
@@ -354,7 +364,7 @@ namespace Stareater.GLRenderers
 			GL.Enable(EnableCap.Texture2D);
 			GL.Color4(Color.Blue);
 			
-			foreach (var wormhole in controller.Wormholes) {
+			foreach (var wormhole in this.currentPlayer.Wormholes) {
 				GL.PushMatrix();
 				GL.MultMatrix(pathMatrix(
 					new Vector2d(wormhole.FromStar.Position.X, wormhole.FromStar.Position.Y), 
@@ -410,7 +420,7 @@ namespace Stareater.GLRenderers
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(currentPosition, invProjection);
-			var closestObjects = controller.FindClosest(
+			var closestObjects = this.currentPlayer.FindClosest(
 				mousePoint.X, mousePoint.Y, 
 				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
 			
@@ -445,14 +455,14 @@ namespace Stareater.GLRenderers
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
-			var closestObjects = controller.FindClosest(
+			var closestObjects = this.currentPlayer.FindClosest(
 				mousePoint.X, mousePoint.Y, 
 				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
 			
 			if (this.fleetController != null) {
 				if (closestObjects.FoundObjects.Count > 0 && closestObjects.FoundObjects[0].Type == GalaxyObjectType.Star) {
 					this.fleetController = this.fleetController.Send(this.fleetController.SimulationWaypoints);
-					this.lastSelectedIdleFleets[this.controller.CurrentPlayer] = this.fleetController.Fleet;
+					this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = this.fleetController.Fleet;
 					this.galaxyViewListener.FleetSelected(this.fleetController);
 					return;
 				}
@@ -462,7 +472,7 @@ namespace Stareater.GLRenderers
 				}
 				
 				if (closestObjects.FoundObjects.Count == 0)
-					this.galaxyViewListener.SystemSelected(controller.OpenStarSystem(this.lastSelectedStars[this.controller.CurrentPlayer]));
+					this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStars[this.currentPlayer.PlayerIndex]));
 			}
 			
 			if (closestObjects.FoundObjects.Count == 0)
@@ -474,13 +484,13 @@ namespace Stareater.GLRenderers
 			{
 				case GalaxyObjectType.Star:
 					this.currentSelection = GalaxySelectionType.Star;
-					this.lastSelectedStars[this.controller.CurrentPlayer] = closestObjects.Stars[0].Position;
-					this.galaxyViewListener.SystemSelected(controller.OpenStarSystem(closestObjects.Stars[0]));
+					this.lastSelectedStars[this.currentPlayer.PlayerIndex] = closestObjects.Stars[0].Position;
+					this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(closestObjects.Stars[0]));
 					break;
 				case GalaxyObjectType.Fleet:
 					this.currentSelection = GalaxySelectionType.Fleet;
-					this.lastSelectedIdleFleets[this.controller.CurrentPlayer] = closestObjects.Fleets[0];
-					this.fleetController = this.controller.SelectFleet(closestObjects.Fleets[0]);
+					this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = closestObjects.Fleets[0];
+					this.fleetController = this.currentPlayer.SelectFleet(closestObjects.Fleets[0]);
 					this.galaxyViewListener.FleetSelected(this.fleetController);
 					break;
 			}
@@ -493,12 +503,12 @@ namespace Stareater.GLRenderers
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
-			var closestObjects = controller.FindClosest(
+			var closestObjects = this.currentPlayer.FindClosest(
 				mousePoint.X, mousePoint.Y, 
 				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
 			
 			if (closestObjects.Stars.Count > 0)
-				this.galaxyViewListener.SystemOpened(controller.OpenStarSystem(closestObjects.Stars[0]));
+				this.galaxyViewListener.SystemOpened(this.currentPlayer.OpenStarSystem(closestObjects.Stars[0]));
 		}
 		#endregion
 		
@@ -544,7 +554,7 @@ namespace Stareater.GLRenderers
 		{
 			get 
 			{
-				return this.lastSelectedIdleFleets[this.controller.CurrentPlayer];
+				return this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex];
 			}
 		}
 		
@@ -552,16 +562,16 @@ namespace Stareater.GLRenderers
 		{
 			get 
 			{
-				return this.controller.Star(this.lastSelectedStars[this.controller.CurrentPlayer]);
+				return this.currentPlayer.Star(this.lastSelectedStars[this.currentPlayer.PlayerIndex]);
 			}
 		}
 		
 		private Color starNameColor(StarData star)
 		{
-			if (controller.IsStarVisited(star)) {
-				var colonies = controller.KnownColonies(star);
+			if (this.currentPlayer.IsStarVisited(star)) {
+				var colonies = this.currentPlayer.KnownColonies(star);
 				
-				if (colonies.Count() > 0) {
+				if (colonies.Any()) {
 					var dominantPlayer = colonies.GroupBy(x => x.Owner).OrderByDescending(x => x.Count()).First().Key;
 					return dominantPlayer.Color;
 				}
