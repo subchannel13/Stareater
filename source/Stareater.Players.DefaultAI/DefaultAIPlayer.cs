@@ -8,6 +8,8 @@ namespace Stareater.Players.DefaultAI
 {
 	class DefaultAIPlayer : IOffscreenPlayer
 	{
+		private Random random = new Random();
+		
 		public void PlayTurn(PlayerController controller)
 		{
 			foreach(var stellaris in controller.Stellarises())
@@ -36,8 +38,13 @@ namespace Stareater.Players.DefaultAI
 
 		private void manage(AConstructionSiteController controller)
 		{
-			if (!controller.ConstructionQueue.Any() && controller.ConstructableItems.Any())
-				controller.Enqueue(controller.ConstructableItems.First());
+			var options = controller.ConstructableItems.ToArray();
+			if (options.Length == 0)
+				return;
+			
+			while(controller.ConstructionQueue.Any())
+				controller.Dequeue(0);
+			controller.Enqueue(options[random.Next(options.Length)]);
 		}
 	}
 }

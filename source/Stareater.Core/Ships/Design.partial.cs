@@ -109,7 +109,7 @@ namespace Stareater.Ships
 			Design other = obj as Design;
 				if (other == null)
 					return false;
-			return this.hash == other.hash;
+			return this.hash == other.hash && this.Owner == other.Owner;
 		}
 
 		public override int GetHashCode()
