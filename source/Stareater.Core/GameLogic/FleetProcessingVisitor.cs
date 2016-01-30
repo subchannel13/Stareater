@@ -93,6 +93,13 @@ namespace Stareater.GameLogic
 				this.newPosition = fleet.Position + direction * speed;
 				remainingMissions.AddLast(mission);
 				
+				this.movementSteps.Add(new FleetMovement(
+					this.fleet,
+					localFleet(),
+					this.time,
+					1,
+					this.removeFleet
+				));
 				this.time = 1;
 			}
 		}
