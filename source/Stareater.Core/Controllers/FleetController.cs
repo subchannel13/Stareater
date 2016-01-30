@@ -92,6 +92,8 @@ namespace Stareater.Controllers
 			
 			if (!this.CanMove)
 				this.simulationWaypoints.Clear();
+			
+			this.calcEta();
 		}
 		
 		public FleetController Send(IEnumerable<Vector2D> waypoints)
