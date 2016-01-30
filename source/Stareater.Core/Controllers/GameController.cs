@@ -148,10 +148,10 @@ namespace Stareater.Controllers
 		private void postcombatTurnProcessing()
 		{
 			gameObj.ProcessPostcombat();
+			this.endTurnCopy = null;
+			
 			foreach(var player in this.playerControllers)
 				player.RebuildCache();
-			
- 			this.endTurnCopy = null;
  			
  			stateListener.OnNewTurn();
  			restartAiGalaxyPhase();

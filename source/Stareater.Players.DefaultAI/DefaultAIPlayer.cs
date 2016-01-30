@@ -8,7 +8,7 @@ namespace Stareater.Players.DefaultAI
 {
 	class DefaultAIPlayer : IOffscreenPlayer
 	{
-		private Random random = new Random();
+		private readonly Random random = new Random();
 		
 		public void PlayTurn(PlayerController controller)
 		{
