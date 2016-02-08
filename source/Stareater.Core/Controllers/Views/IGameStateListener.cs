@@ -18,6 +18,8 @@ namespace Stareater.Controllers.Views
 		
 		void OnCombatPhaseStart();
 		
+		void OnDoCombat(SpaceBattleController battleController);
+		
 		void OnNewTurn();
 	}
 }

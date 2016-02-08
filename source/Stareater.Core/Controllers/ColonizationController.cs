@@ -14,10 +14,10 @@ namespace Stareater.Controllers
 	{
 		public Planet PlanetBody { get; private set; }
 		
-		private readonly Game game;
+		private readonly MainGame game;
 		private readonly Player player;
 		
-		internal ColonizationController(Game game, Planet planet, bool readOnly, Player player)
+		internal ColonizationController(MainGame game, Planet planet, bool readOnly, Player player)
 		{
 			this.game = game;
 			this.player = player;

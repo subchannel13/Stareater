@@ -16,12 +16,12 @@ namespace Stareater.Controllers
 		
 		internal AConstructionSite Site { get; private set; }
 		
-		internal Game Game { get; private set; }
+		internal MainGame Game { get; private set; }
 		internal Player Player { get; private set; }
 		
 		private List<int> orderIndex = new List<int>();
 		
-		internal AConstructionSiteController(AConstructionSite site, bool readOnly, Game game, Player player)
+		internal AConstructionSiteController(AConstructionSite site, bool readOnly, MainGame game, Player player)
 		{
 			this.Site = site;
 			this.IsReadOnly = readOnly;

@@ -4,11 +4,11 @@ namespace Stareater.Controllers.Data
 {
 	class GameCopy 
 	{
-		public Game Game;
+		public MainGame Game;
 		public PlayersRemap Players;
 		public GalaxyRemap Map;
 
-		public GameCopy(Game game, PlayersRemap players, GalaxyRemap map) 
+		public GameCopy(MainGame game, PlayersRemap players, GalaxyRemap map) 
 		{
 			this.Game = game;
 			this.Players = players;

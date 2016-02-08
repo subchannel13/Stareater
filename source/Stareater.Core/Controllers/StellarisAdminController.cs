@@ -12,7 +12,7 @@ namespace Stareater.Controllers
 {
 	public class StellarisAdminController : AConstructionSiteController
 	{
-		internal StellarisAdminController(Game game, StellarisAdmin stellaris, bool readOnly, Player player) : 
+		internal StellarisAdminController(MainGame game, StellarisAdmin stellaris, bool readOnly, Player player) : 
 			base(stellaris, readOnly, game, player)
 		{ }
 

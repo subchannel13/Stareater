@@ -10,11 +10,11 @@ namespace Stareater.GameLogic
 {
 	class GameProcessor
 	{
-		private readonly Game game;
+		private readonly MainGame game;
 		private readonly List<FleetMovement> fleetMovement = new List<FleetMovement>();
-		private readonly List<Conflict> conflicts = new List<Conflict>();
+		private readonly List<SpaceBattleGame> conflicts = new List<SpaceBattleGame>();
 
-		public GameProcessor(Game game)
+		public GameProcessor(MainGame game)
 		{
 			this.game = game;
 		}
@@ -128,7 +128,8 @@ namespace Stareater.GameLogic
 			}
 		}
 
-		public bool HasConflicts {
+		public bool HasConflicts 
+		{
 			get
 			{
 				return this.conflicts.Count != 0;
@@ -214,7 +215,7 @@ namespace Stareater.GameLogic
 			
 			this.conflicts.Clear();
 			foreach(var position in conflictPositions)
-				conflicts.Add(new Conflict(position, visits[position]));
+				conflicts.Add(new SpaceBattleGame(position, visits[position]));
 			
 			this.game.States.Fleets.Clear();
 			foreach(var fleet in visits.Values.SelectMany(x => x).Where(x => !x.Remove))

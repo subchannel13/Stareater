@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
@@ -26,6 +27,17 @@ namespace Stareater.Controllers
 			this.gameController = gameController;
 		}
 		
+		internal Player PlayerInstance
+		{
+			get { return this.gameController.GameInstance.Players[this.PlayerIndex]; }
+		}
+		
+		private MainGame gameInstance
+		{
+			get { return this.gameController.GameInstance; }
+		}
+		
+		#region Turn progression
 		public void EndGalaxyPhase()
 		{
 			this.gameController.EndGalaxyPhase();
@@ -40,16 +52,7 @@ namespace Stareater.Controllers
 		{
 			get { return this.gameController.IsReadOnly; }
 		}
-		
-		internal Player PlayerInstance
-		{
-			get { return this.gameController.GameInstance.Players[this.PlayerIndex]; }
-		}
-		
-		private Game gameInstance
-		{
-			get { return this.gameController.GameInstance; }
-		}
+		#endregion
 			
 		#region Map related
 		public IVisualPositioner VisualPositioner

@@ -8,7 +8,7 @@ namespace Stareater.Controllers
 {
 	public class ColonyController : AConstructionSiteController
 	{
-		internal ColonyController(Game game, Colony colony, bool readOnly, Player player) : 
+		internal ColonyController(MainGame game, Colony colony, bool readOnly, Player player) : 
 			base(colony, readOnly, game, player)
 		{ }
 

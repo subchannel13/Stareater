@@ -12,7 +12,7 @@ namespace Stareater.Controllers
 	{
 		internal const string ReportContext = "Reports";
 		
-		private Game gameObj;
+		private MainGame gameObj;
 		
 		private GameController endTurnCopy = null;
 		private IGameStateListener stateListener;
@@ -40,7 +40,7 @@ namespace Stareater.Controllers
 			makePlayers();
 		}
 		
-		internal void LoadGame(Game game)
+		internal void LoadGame(MainGame game)
 		{
 			this.gameObj = game;
 			makePlayers(); //TODO(v0.5) invalidate player controllers at view
@@ -69,7 +69,7 @@ namespace Stareater.Controllers
 			return this.playerControllers.Where(x => x.PlayerInstance.ControlType == PlayerControlType.LocalHuman);
 		}
 		
-		internal Game GameInstance
+		internal MainGame GameInstance
 		{
 			get { return (this.IsReadOnly) ? this.endTurnCopy.gameObj : this.gameObj; }
 		}

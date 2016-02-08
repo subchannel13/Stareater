@@ -10,7 +10,7 @@ namespace Stareater.GameLogic
 	class FleetProcessingVisitor : IMissionVisitor
 	{
 		private readonly Fleet fleet;
-		private readonly Game game;
+		private readonly MainGame game;
 		
 		private double time = 0;
 		private LinkedList<AMission> remainingMissions;
@@ -18,7 +18,7 @@ namespace Stareater.GameLogic
 		private bool removeFleet = false;
 		private List<FleetMovement> movementSteps = new List<FleetMovement>();
 		
-		public FleetProcessingVisitor(Fleet fleet, Game game)
+		public FleetProcessingVisitor(Fleet fleet, MainGame game)
 		{
 			this.fleet = fleet;
 			this.game = game;

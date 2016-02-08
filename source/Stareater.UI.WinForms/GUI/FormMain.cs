@@ -403,8 +403,14 @@ namespace Stareater.GUI
 			}
 			
 			//TODO(v0.5): open conflict GUI
-			
+
 			this.currentPlayer.EndCombatPhase();
+		}
+		
+		public void OnDoCombat(SpaceBattleController battleController)
+		{
+			//TODO(v0.5): open conflict GUI
+			throw new NotImplementedException();
 		}
 		#endregion
 		

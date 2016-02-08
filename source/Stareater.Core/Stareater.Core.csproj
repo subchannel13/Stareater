@@ -114,6 +114,7 @@
     <Compile Include="Controllers\Views\Ships\ReactorInfo.cs" />
     <Compile Include="Controllers\Views\Ships\ShipGroupInfo.cs" />
     <Compile Include="Controllers\Views\Ships\WaypointInfo.cs" />
+    <Compile Include="Controllers\Views\SpaceBattleController.cs" />
     <Compile Include="Controllers\Views\StellarisInfo.cs" />
     <Compile Include="Controllers\Views\TechnologyCategory.cs" />
     <Compile Include="Controllers\Views\TechnologyReportInfo.cs" />
@@ -176,7 +177,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Game.cs" />
+    <Compile Include="MainGame.cs" />
     <Compile Include="GameData\BuildingType.cs" />
     <Compile Include="GameData\ColonizationProject.cs">
       <DependentUpon>ColonizationProject.tt</DependentUpon>
@@ -322,7 +323,6 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\TechnologyProgress.partial.cs" />
-    <Compile Include="GameLogic\Conflict.cs" />
     <Compile Include="GameLogic\ConstructionResult.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -401,6 +401,7 @@
     <Compile Include="Ships\Missions\MissionType.cs" />
     <Compile Include="Ships\Missions\MoveMission.cs" />
     <Compile Include="Ships\Missions\SkipTurnMission.cs" />
+    <Compile Include="SpaceBattleGame.cs" />
     <Compile Include="Utils\BitHash.cs" />
     <Compile Include="Utils\BitHashBuilder.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />

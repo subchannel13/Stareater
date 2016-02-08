@@ -54,7 +54,7 @@ namespace Stareater.Controllers
 						saveFiles.Add(
 							new SavedGameInfo(
 								rawData[SaveGameTitleKey].To<string>(),
-								rawData[Game.TurnKey].To<int>(),
+								rawData[MainGame.TurnKey].To<int>(),
 								rawData,
 								file
 							),

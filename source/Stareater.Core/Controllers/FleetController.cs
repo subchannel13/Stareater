@@ -14,7 +14,7 @@ namespace Stareater.Controllers
 {
 	public class FleetController
 	{
-		private readonly Game game;
+		private readonly MainGame game;
 		private readonly Player player;
 		private readonly GalaxyObjects mapObjects;
 		private IVisualPositioner visualPositoner;
@@ -25,7 +25,7 @@ namespace Stareater.Controllers
 		private double eta = 0;
 		private List<WaypointInfo> simulationWaypoints = new List<WaypointInfo>();
 		
-		internal FleetController(FleetInfo fleet, Game game, Player player, GalaxyObjects mapObjects, IVisualPositioner visualPositoner)
+		internal FleetController(FleetInfo fleet, MainGame game, Player player, GalaxyObjects mapObjects, IVisualPositioner visualPositoner)
 		{
 			this.Fleet = fleet;
 			this.game = game;

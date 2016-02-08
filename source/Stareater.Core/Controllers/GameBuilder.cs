@@ -20,24 +20,24 @@ namespace Stareater.Controllers
 {
 	static class GameBuilder
 	{
-		public static Game CreateGame(Random rng, Player[] players, NewGameController controller)
+		public static MainGame CreateGame(Random rng, Player[] players, NewGameController controller)
 		{
 			var statics = loadStatics();
 			var states = createStates(rng, controller, players, statics.Technologies);
 			var derivates = createDerivates(players, controller.SelectedStart, statics, states);
 			
-			var game = new Game(players, statics, states, derivates);
+			var game = new MainGame(players, statics, states, derivates);
 			game.CalculateDerivedEffects();
 			
 			return game;
 		}
 		
-		public static Game LoadGame(IkonComposite saveData)
+		public static MainGame LoadGame(IkonComposite saveData)
 		{
 			var statics = loadStatics();
 			
 			var deindexer = new ObjectDeindexer();
-			int turn = saveData[Game.TurnKey].To<int>();
+			int turn = saveData[MainGame.TurnKey].To<int>();
 			
 			deindexer.AddAll(statics.Constructables, x => x.IdCode);
 			deindexer.AddAll(statics.PredeginedDesigns);
@@ -56,7 +56,7 @@ namespace Stareater.Controllers
 			var players = loadedStates.Item2;
 			var derivates = initDerivates(statics, players, states);
 			
-			var game = new Game(players.ToArray(), statics, states, derivates);
+			var game = new MainGame(players.ToArray(), statics, states, derivates);
 			game.CalculateDerivedEffects();
 			
 			return game;
@@ -234,8 +234,8 @@ namespace Stareater.Controllers
 		#region Loading helper methods
 		private static Tuple<StatesDB, Player[]> loadSaveData(IkonComposite saveData, ObjectDeindexer deindexer, StaticsDB statics)
 		{
-			var stateData = saveData[Game.StatesKey].To<IkonComposite>();
-			var ordersData = saveData[Game.OrdersKey].To<IkonArray>();
+			var stateData = saveData[MainGame.StatesKey].To<IkonComposite>();
+			var ordersData = saveData[MainGame.OrdersKey].To<IkonArray>();
 			
 			var stars = new StarCollection();
 			foreach(var rawData in stateData[StatesDB.StarsKey].To<IEnumerable<IkonComposite>>())
@@ -250,7 +250,7 @@ namespace Stareater.Controllers
 				wormholes.Add(Wormhole.Load(rawData, deindexer));
 			
 			var players = new List<Player>();
-			foreach(var rawData in saveData[Game.PlayersKey].To<IEnumerable<IkonComposite>>())
+			foreach(var rawData in saveData[MainGame.PlayersKey].To<IEnumerable<IkonComposite>>())
 				players.Add(Player.Load(rawData, deindexer));
 			
 			var techs = new TechProgressCollection();

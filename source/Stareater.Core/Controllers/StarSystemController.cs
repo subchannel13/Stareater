@@ -12,13 +12,13 @@ namespace Stareater.Controllers
 	{
 		public const int StarIndex = -1;
 		
-		private readonly Game game;
+		private readonly MainGame game;
 		private readonly Player player;
 		
 		public StarData Star { get; private set; }
 		public bool IsReadOnly { get; private set; }
 		
-		internal StarSystemController(Game game, StarData star, bool readOnly, Player player)
+		internal StarSystemController(MainGame game, StarData star, bool readOnly, Player player)
 		{
 			this.game = game;
 			this.player = player;

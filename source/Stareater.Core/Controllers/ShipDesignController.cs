@@ -12,11 +12,11 @@ namespace Stareater.Controllers
 {
 	public class ShipDesignController
 	{
-		private readonly Game game;
+		private readonly MainGame game;
 		private Player player;
 		private readonly Dictionary<string, int> playersTechLevels;
 		
-		internal ShipDesignController(Game game, Player player)
+		internal ShipDesignController(MainGame game, Player player)
 		{
 			this.game = game;
 			this.player = player;
