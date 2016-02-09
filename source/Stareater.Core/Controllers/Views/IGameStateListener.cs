@@ -10,12 +10,6 @@ namespace Stareater.Controllers.Views
 	/// </remarks>
 	public interface IGameStateListener
 	{
-		/// <summary>
-		/// Callback for informing that AIs are done with galaxy phase.
-		/// </summary>
-		/// <remarks>Called from AI thread.</remarks>
-		void OnAiGalaxyPhaseDone();
-		
 		void OnCombatPhaseStart();
 		
 		void OnDoCombat(SpaceBattleController battleController);

@@ -20,7 +20,6 @@ namespace Stareater.GUI
 		private const float MaxDeltaTime = 0.5f;
 		private const float MinDeltaTime = 0.005f;
 
-		private object threadLocker = new object();
 		private bool glReady = false;
 		private bool resetViewport = true;
 		private DateTime lastRender = DateTime.UtcNow;
@@ -36,9 +35,6 @@ namespace Stareater.GUI
 		private OpenReportVisitor reportOpener;
 		private int currentPlayerIndex = 0;
 		
-		private bool aisReady = false;
-		private bool humansReady = false;
-
 		public FormMain()
 		{
 			InitializeComponent();
@@ -88,11 +84,16 @@ namespace Stareater.GUI
 
 		private void endTurnButton_Click(object sender, EventArgs e)
 		{
-			lock(threadLocker) {
-				humansReady = true;
-			}
+			this.currentPlayer.EndGalaxyPhase();
 			
-			tryEndTurn();
+			if (this.currentPlayerIndex < this.playerControllers.Length - 1)
+			{
+				this.currentPlayerIndex++;
+				this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
+			}
+
+			if (galaxyRenderer != null) galaxyRenderer.ResetLists();
+			if (systemRenderer != null) systemRenderer.ResetLists();
 		}
 		
 		private void returnButton_Click(object sender, EventArgs e)
@@ -261,25 +262,6 @@ namespace Stareater.GUI
 			redraw();
 		}
 		
-		private void tryEndTurn()
-		{
-			lock(threadLocker)
-			{
-				if (!aisReady || !humansReady)
-					return;
-				
-				aisReady = false;
-				humansReady = false;
-			}
-			
-			this.currentPlayer.EndGalaxyPhase();
-			this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.playerControllers.Length;
-			this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
-
-			if (galaxyRenderer != null) galaxyRenderer.ResetLists();
-			if (systemRenderer != null) systemRenderer.ResetLists();
-		}
-		
 		private void shipGroupItem_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			var groupItem = sender as ShipGroupItem;
@@ -375,21 +357,15 @@ namespace Stareater.GUI
 		
 		
 		#region IGameStateListener implementation
-		public void OnAiGalaxyPhaseDone()
-		{
-			lock (threadLocker) {
-				aisReady = true;
-			}
-			
-			postDelayedEvent(tryEndTurn);
-		}
-		
 		public void OnNewTurn()
 		{
 			if (this.InvokeRequired) {
 				postDelayedEvent(this.OnNewTurn);
 				return;
 			}
+			
+			this.currentPlayerIndex = 0;
+			this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
 			
 			if (galaxyRenderer != null) galaxyRenderer.OnNewTurn();
 			if (systemRenderer != null) systemRenderer.OnNewTurn();

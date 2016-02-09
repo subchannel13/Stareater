@@ -40,7 +40,7 @@ namespace Stareater.Controllers
 		#region Turn progression
 		public void EndGalaxyPhase()
 		{
-			this.gameController.EndGalaxyPhase();
+			this.gameController.EndGalaxyPhase(this);
 		}
 
 		public void EndCombatPhase()

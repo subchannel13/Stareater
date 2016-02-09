@@ -12,12 +12,14 @@ namespace Stareater.Controllers
 	{
 		internal const string ReportContext = "Reports";
 		
+		private object threadLocker = new object();
 		private MainGame gameObj;
 		
 		private GameController endTurnCopy = null;
 		private IGameStateListener stateListener;
 		private Task aiGalaxyPhase = null;
 		private PlayerController[] playerControllers = null;
+		private HashSet<int> endedTurnPlayers = new HashSet<int>();
 
 		public GameController()
 		{ 
@@ -90,23 +92,26 @@ namespace Stareater.Controllers
 			get { return endTurnCopy != null; }
 		}
 		
-		internal void EndGalaxyPhase()
+		internal void EndGalaxyPhase(PlayerController player)
 		{
 			if (this.IsReadOnly)
 				return;
 
-			//FIXME(later): presumes single human player
-			
-			this.endTurnCopy = new GameController();
-			var gameCopy = gameObj.ReadonlyCopy();
-			
-			this.endTurnCopy.gameObj = gameCopy.Game;
-			this.endTurnCopy.State = this.State;
-			
-			if (!aiGalaxyPhase.IsCompleted)
-				return;
-
-			Task.Factory.StartNew(precombatTurnProcessing).ContinueWith(checkTaskException);
+			lock(threadLocker)
+			{
+				this.endedTurnPlayers.Add(player.PlayerIndex);
+				
+				if (this.endedTurnPlayers.Count < this.playerControllers.Length)
+					return;
+				
+				this.endTurnCopy = new GameController();
+				var gameCopy = gameObj.ReadonlyCopy();
+				
+				this.endTurnCopy.gameObj = gameCopy.Game;
+				this.endTurnCopy.State = this.State;
+				
+				Task.Factory.StartNew(precombatTurnProcessing).ContinueWith(checkTaskException);
+			}
 		}
 
 		internal void EndCombatPhase()
@@ -120,8 +125,6 @@ namespace Stareater.Controllers
 		{
 			foreach(var aiController in this.playerControllers.Where(x => x.PlayerInstance.ControlType == PlayerControlType.LocalAI))
 				aiController.PlayerInstance.OffscreenControl.PlayTurn(aiController);
-				
-			stateListener.OnAiGalaxyPhaseDone();
 		}
 
 		private void checkTaskException(Task lastTask)
@@ -148,11 +151,15 @@ namespace Stareater.Controllers
 		private void postcombatTurnProcessing()
 		{
 			gameObj.ProcessPostcombat();
-			this.endTurnCopy = null;
+			lock(threadLocker)
+			{
+				this.endTurnCopy = null;
+				this.endedTurnPlayers.Clear();
 			
-			foreach(var player in this.playerControllers)
-				player.RebuildCache();
- 			
+				foreach(var player in this.playerControllers)
+					player.RebuildCache();
+			}
+			
  			stateListener.OnNewTurn();
  			restartAiGalaxyPhase();
 		}

@@ -21,6 +21,8 @@ namespace Stareater.Players.DefaultAI
 					if (starSystem.BodyType(planet.Position) == BodyType.OwnColony)
 						manage(starSystem.ColonyController(planet.Position));
 			}
+			
+			controller.EndGalaxyPhase();
 		}
 
 		public void PlayBattle()
