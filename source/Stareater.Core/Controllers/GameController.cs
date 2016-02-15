@@ -143,7 +143,7 @@ namespace Stareater.Controllers
 			gameObj.ProcessPrecombat();
 
 			if (gameObj.Processor.HasConflicts)
- 				stateListener.OnCombatPhaseStart();
+				initaiteCombat();
 			else
 				this.EndCombatPhase();
 		}
@@ -168,6 +168,17 @@ namespace Stareater.Controllers
 		{
 			this.aiGalaxyPhase = Task.Factory.StartNew(aiDoGalaxyPhase).ContinueWith(checkTaskException);
 		}
+
+		private void initaiteCombat()
+		{
+			var conflict = gameObj.Processor.NextConflict();
+			
+			if (conflict.Fleets.Any(x => x.OriginalFleet.Owner.ControlType == PlayerControlType.LocalHuman))
+				this.stateListener.OnDoCombat(new SpaceBattleController(conflict));
+			
+			//TODO(v0.5) inform AI about the combat
+		}
+		
 		#endregion
 	}
 }

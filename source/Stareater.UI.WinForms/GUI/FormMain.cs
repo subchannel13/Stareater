@@ -27,11 +27,13 @@ namespace Stareater.GUI
 		private IRenderer currentRenderer;
 		private GalaxyRenderer galaxyRenderer;
 		private SystemRenderer systemRenderer;
+		private SpaceCombatRenderer combatRenderer;
 
 		private Queue<Action> delayedGuiEvents = new Queue<Action>();
 		private GameController gameController = null;
 		private PlayerController[] playerControllers = null;
 		private FleetController fleetController = null;
+		private SpaceBattleController conflictController = null;
 		private OpenReportVisitor reportOpener;
 		private int currentPlayerIndex = 0;
 		
@@ -242,21 +244,22 @@ namespace Stareater.GUI
 		
 		private void restartRenderers()
 		{
-			if (galaxyRenderer != null) {
-				galaxyRenderer.DetachFromCanvas();
-				galaxyRenderer.Unload();
+			if (this.galaxyRenderer != null) {
+				this.galaxyRenderer.DetachFromCanvas();
+				this.galaxyRenderer.Unload();
 			}
 			
-			if (systemRenderer != null) {
-				systemRenderer.DetachFromCanvas();
-				systemRenderer.Unload();
+			if (this.systemRenderer != null) {
+				this.systemRenderer.DetachFromCanvas();
+				this.systemRenderer.Unload();
 			}
 			
-			galaxyRenderer = new GalaxyRenderer(this);
-			galaxyRenderer.CurrentPlayer = this.currentPlayer;
-			galaxyRenderer.Load();
+			this.galaxyRenderer = new GalaxyRenderer(this);
+			this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
+			this.galaxyRenderer.Load();
 			
-			systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement, empyPlanetView);
+			this.systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement, empyPlanetView);
+			this.combatRenderer = new SpaceCombatRenderer();
 			
 			switchToGalaxyView();
 			redraw();
@@ -371,22 +374,26 @@ namespace Stareater.GUI
 			if (systemRenderer != null) systemRenderer.OnNewTurn();
 		}
 		
-		public void OnCombatPhaseStart()
+		public void OnDoCombat(SpaceBattleController battleController)
 		{
 			if (this.InvokeRequired) {
-				postDelayedEvent(this.OnCombatPhaseStart);
+				this.Invoke(new Action<SpaceBattleController>(OnDoCombat), battleController);
 				return;
 			}
 			
-			//TODO(v0.5): open conflict GUI
-
-			this.currentPlayer.EndCombatPhase();
-		}
-		
-		public void OnDoCombat(SpaceBattleController battleController)
-		{
-			//TODO(v0.5): open conflict GUI
-			throw new NotImplementedException();
+			this.conflictController = battleController;
+			
+			this.fleetController = null;
+			this.currentRenderer.DetachFromCanvas();
+			this.currentRenderer.Unload();
+			
+			this.currentRenderer = this.combatRenderer;
+			this.currentRenderer.AttachToCanvas(this.glCanvas);
+			
+			constructionManagement.Visible = false;
+			empyPlanetView.Visible = false;
+			endTurnButton.Visible = false;
+			returnButton.Visible = false;
 		}
 		#endregion
 		

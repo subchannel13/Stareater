@@ -12,7 +12,7 @@ namespace Stareater.GameLogic
 	{
 		private readonly MainGame game;
 		private readonly List<FleetMovement> fleetMovement = new List<FleetMovement>();
-		private readonly List<SpaceBattleGame> conflicts = new List<SpaceBattleGame>();
+		private readonly Queue<SpaceBattleGame> conflicts = new Queue<SpaceBattleGame>();
 
 		public GameProcessor(MainGame game)
 		{
@@ -112,6 +112,19 @@ namespace Stareater.GameLogic
 				colonyProc.CalculateDerivedEffects(this.game.Statics, this.game.Derivates.Of(colonyProc.Owner));
 		}
 
+		public bool HasConflicts 
+		{
+			get
+			{
+				return this.conflicts.Count != 0;
+			}
+		}
+		
+		public SpaceBattleGame NextConflict()
+		{
+			return this.conflicts.Dequeue();
+		}
+		
 		private void commitFleetOrders()
 		{
 			foreach (var player in this.game.Players) {
@@ -125,14 +138,6 @@ namespace Stareater.GameLogic
 				}
 
 				player.Orders.ShipOrders.Clear();
-			}
-		}
-
-		public bool HasConflicts 
-		{
-			get
-			{
-				return this.conflicts.Count != 0;
 			}
 		}
 
@@ -187,7 +192,7 @@ namespace Stareater.GameLogic
 		private void detectConflicts()
 		{
 			var visits = new Dictionary<Vector2D, ICollection<FleetMovement>>();
-			var conflictPositions = new HashSet<Vector2D>();
+			var conflictPositions = new Dictionary<Vector2D, double>();
 			var decidedFleet = new HashSet<Fleet>();
 			
 			foreach(var step in this.fleetMovement.OrderBy(x => x.ArrivalTime))
@@ -210,12 +215,16 @@ namespace Stareater.GameLogic
 				);
 				
 				if (inConflict)
+				{
+					if (!conflictPositions.ContainsKey(step.LocalFleet.Position))
+						conflictPositions.Add(step.LocalFleet.Position, step.ArrivalTime);
 					decidedFleet.UnionWith(fleets.Where(x => x.ArrivalTime < step.ArrivalTime).Select(x => x.OriginalFleet));
+				}
 	        }
 			
 			this.conflicts.Clear();
-			foreach(var position in conflictPositions)
-				conflicts.Add(new SpaceBattleGame(position, visits[position]));
+			foreach(var position in conflictPositions.OrderBy(x => x.Value))
+				conflicts.Enqueue(new SpaceBattleGame(position.Key, visits[position.Key])); //TODO(v0.5) sort by start time, calculate start time
 			
 			this.game.States.Fleets.Clear();
 			foreach(var fleet in visits.Values.SelectMany(x => x).Where(x => !x.Remove))
