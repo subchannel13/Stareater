@@ -189,6 +189,7 @@ namespace Stareater.GLRenderers
 		#endregion
 
 		#region Drawing setup and helpers
+		//TODO(v0.5) make IRenderer abstract and move drawList there
 		private void drawList(int listId, Action listGenerator)
 		{
 			if (listId == NoCallList)

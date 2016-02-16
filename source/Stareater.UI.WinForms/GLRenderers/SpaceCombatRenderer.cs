@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -8,7 +9,7 @@ namespace Stareater.GLRenderers
 {
 	public class SpaceCombatRenderer : IRenderer
 	{
-		private const double DefaultViewSize = 1;
+		private const double DefaultViewSize = 20;
 		
 		private const float FarZ = -1;
 		private const float Layers = 16.0f;
@@ -24,7 +25,7 @@ namespace Stareater.GLRenderers
 		private int gridList = NoCallList;
 		
 		public SpaceBattleController controller { get; private set; }
-		
+
 		#region IRenderer implementation
 		public void Draw(double deltaTime)
 		{
@@ -45,7 +46,7 @@ namespace Stareater.GLRenderers
 				resetProjection = false;
 			}
 			
-			//TODO(v0.5)
+			drawGrid();
 		}
 		
 		public void Load()
@@ -87,6 +88,39 @@ namespace Stareater.GLRenderers
 			this.gridList = NoCallList;
 		}
 		#endregion
+		
+		private void drawGrid()
+		{
+			if (gridList == NoCallList)
+			{
+				this.gridList = GL.GenLists(1);
+				GL.NewList(gridList, ListMode.CompileAndExecute);
+				
+				GL.Disable(EnableCap.Texture2D);
+				GL.Color4(Color.Green);
+				
+				for(int x = -SpaceBattleController.BattlefieldRadius; x <= SpaceBattleController.BattlefieldRadius; x++)
+				{
+					int yHeight = (SpaceBattleController.BattlefieldRadius * 2 + 1 - Math.Abs(x));
+					double yOffset = - yHeight * Math.Sqrt(3) / 2.0;
+						
+					for(int y = 0; y < yHeight; y++)
+					{
+						GL.Begin(PrimitiveType.TriangleStrip);
+						for(int i = 0; i <= 6; i++)
+						{
+							GL.Vertex3(0.95 * Math.Cos(i * Math.PI / 3) + x * 1.5, 0.95 * Math.Sin(i * Math.PI / 3) + y * Math.Sqrt(3) + yOffset, GridZ);
+							GL.Vertex3(1.05 * Math.Cos(i * Math.PI / 3) + x * 1.5, 1.05 * Math.Sin(i * Math.PI / 3) + y * Math.Sqrt(3) + yOffset, GridZ);
+						}
+						GL.End();
+					}
+				}
+				
+				GL.EndList();
+			}
+			else
+				GL.CallList(gridList);
+		}
 		
 		#region IDisposable implementation
 		public void Dispose()
