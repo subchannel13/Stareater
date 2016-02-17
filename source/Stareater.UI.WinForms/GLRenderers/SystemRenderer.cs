@@ -11,7 +11,7 @@ using Stareater.GUI;
 
 namespace Stareater.GLRenderers
 {
-	public class SystemRenderer : IRenderer
+	class SystemRenderer : ARenderer
 	{
 		private const double DefaultViewSize = 1;
 		
@@ -37,16 +37,12 @@ namespace Stareater.GLRenderers
 		
 		private const char ReturnToGalaxyKey = (char)27; //TODO(later): Make rebindable
 
-		private const int NoCallList = -1;
-
 		private StarSystemController controller;
 		private PlayerController currentPlayer;
-		private Control eventDispatcher;
 		private ConstructionSiteView siteView;
 		private EmpyPlanetView emptyPlanetView;
 		private Action systemClosedHandler;
 		
-		private bool resetProjection = true;
 		private Matrix4 invProjection;
 		
 		private Vector4? lastMousePosition = null;
@@ -64,24 +60,9 @@ namespace Stareater.GLRenderers
 			this.siteView = siteView;
 		}
 		
-		public void Draw(double deltaTime)
+		public override void Draw(double deltaTime)
 		{
-			if (resetProjection) {
-				double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
-				const double semiRadius = 0.5 * DefaultViewSize;
-
-				GL.MatrixMode(MatrixMode.Projection);
-				GL.LoadIdentity();
-				GL.Ortho(
-					-aspect * semiRadius + originOffset, aspect * semiRadius + originOffset,
-					-semiRadius, semiRadius, 
-					0, -FarZ);
-
-				GL.GetFloat(GetPName.ProjectionMatrix, out invProjection);
-				invProjection.Invert();
-				GL.MatrixMode(MatrixMode.Modelview);
-				resetProjection = false;
-			}
+			base.checkPerspective();
 			
 			GL.PushMatrix();
 			GL.Translate(0, BodiesY, 0);
@@ -155,46 +136,29 @@ namespace Stareater.GLRenderers
 			GL.PopMatrix();
 		}
 
-		public void OnNewTurn()
+		public override void OnNewTurn()
 		{
 			this.ResetLists();
 		}
 		
-		public void ResetLists()
+		public override void ResetLists()
 		{
 			//no op
 			//TODO(v0.5): make call list
 		}
-
-		public void Load()
-		{
-			//no op
-		}
 		
-		public void Unload()
+		protected override void attachEventHandlers()
 		{
-			//no op
-		}
-		
-		public void AttachToCanvas(Control eventDispatcher)
-		{
-			this.eventDispatcher = eventDispatcher;
-			
 			eventDispatcher.MouseMove += mousePan;
 			eventDispatcher.MouseClick += mouseClick;
 			eventDispatcher.KeyPress += keyPress;
 		}
 		
-		public void DetachFromCanvas()
+		protected override void detachEventHandlers()
 		{
-			if (eventDispatcher == null)
-				return;
-			
 			eventDispatcher.MouseMove -= mousePan;
 			eventDispatcher.MouseClick -= mouseClick;
 			eventDispatcher.KeyPress -= keyPress;
-			
-			this.eventDispatcher = null;
 		}
 		
 		public void SetStarSystem(StarSystemController controller, PlayerController gameController)
@@ -202,7 +166,7 @@ namespace Stareater.GLRenderers
 			this.controller = controller;
 			this.currentPlayer = gameController;
 			
-			this.resetProjection = true;
+			this.requestPerspectiveReset();
 			this.originOffset = 0.5f; //TODO(v0.5): Get most populated planet
 			this.maxOffset = controller.Planets.Count() * OrbitStep + OrbitOffset + PlanetScale / 2;
 			
@@ -234,9 +198,21 @@ namespace Stareater.GLRenderers
 			}
 		}
 		
-		public void ResetProjection()
+		protected override void setupPerspective()
 		{
-			resetProjection = true;
+			double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
+			const double semiRadius = 0.5 * DefaultViewSize;
+
+			GL.MatrixMode(MatrixMode.Projection);
+			GL.LoadIdentity();
+			GL.Ortho(
+				-aspect * semiRadius + originOffset, aspect * semiRadius + originOffset,
+				-semiRadius, semiRadius, 
+				0, -FarZ);
+
+			GL.GetFloat(GetPName.ProjectionMatrix, out invProjection);
+			invProjection.Invert();
+			GL.MatrixMode(MatrixMode.Modelview);
 		}
 		
 		private Vector4 mouseToView(int x, int y)
@@ -308,7 +284,7 @@ namespace Stareater.GLRenderers
 			limitPan();
 			
 			lastMousePosition = currentPosition;
-			resetProjection = true;
+			this.requestPerspectiveReset();
 			eventDispatcher.Refresh();
 		}
 		
@@ -318,12 +294,5 @@ namespace Stareater.GLRenderers
 			siteView.Visible = view.Equals(siteView);
 		}
 		
-		public void Dispose()
-		{
-			if (eventDispatcher != null) {
-				DetachFromCanvas();
-				Unload();
-			}
-		}
 	}
 }

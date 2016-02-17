@@ -24,7 +24,7 @@ namespace Stareater.GUI
 		private bool resetViewport = true;
 		private DateTime lastRender = DateTime.UtcNow;
 		
-		private IRenderer currentRenderer;
+		private ARenderer currentRenderer;
 		private GalaxyRenderer galaxyRenderer;
 		private SystemRenderer systemRenderer;
 		private SpaceCombatRenderer combatRenderer;

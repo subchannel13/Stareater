@@ -7,7 +7,7 @@ using Stareater.Controllers.Views;
 
 namespace Stareater.GLRenderers
 {
-	public class SpaceCombatRenderer : IRenderer
+	class SpaceCombatRenderer : ARenderer
 	{
 		private const double DefaultViewSize = 20;
 		private const double HexHeightScale = 0.9;
@@ -17,76 +17,50 @@ namespace Stareater.GLRenderers
 		
 		private const float GridZ = -8 / Layers;
 		
-		private const int NoCallList = -1;
-		
-		private Control eventDispatcher;
-		
-		private bool resetProjection = true;
 		private Matrix4 invProjection;
 		private int gridList = NoCallList;
 		
 		public SpaceBattleController controller { get; private set; }
 
-		#region IRenderer implementation
-		public void Draw(double deltaTime)
+		#region ARenderer implementation
+		public override void Draw(double deltaTime)
 		{
-			if (resetProjection) {
-				double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
-				const double semiRadius = 0.5 * DefaultViewSize;
-
-				GL.MatrixMode(MatrixMode.Projection);
-				GL.LoadIdentity();
-				GL.Ortho(
-					-aspect * semiRadius, aspect * semiRadius,
-					-semiRadius, semiRadius, 
-					0, -FarZ);
-
-				GL.GetFloat(GetPName.ProjectionMatrix, out invProjection);
-				invProjection.Invert();
-				GL.MatrixMode(MatrixMode.Modelview);
-				resetProjection = false;
-			}
+			base.checkPerspective();
 			
 			drawGrid();
 		}
 		
-		public void Load()
+		protected override void attachEventHandlers()
 		{
 			//no op
 		}
 		
-		public void Unload()
+		protected override void detachEventHandlers()
 		{
 			//no op
 		}
 		
-		public void AttachToCanvas(System.Windows.Forms.Control eventDispatcher)
-		{
-			this.eventDispatcher = eventDispatcher;
-		}
-		
-		public void DetachFromCanvas()
-		{
-			if (eventDispatcher == null)
-				return;
-			
-			this.eventDispatcher = null;
-		}
-		
-		public void ResetProjection()
-		{
-			resetProjection = true;
-		}
-		
-		public void OnNewTurn()
-		{
-			this.ResetLists();
-		}
-		
-		public void ResetLists()
+		public override void ResetLists()
 		{
 			GL.DeleteLists(gridList, 1);
 			this.gridList = NoCallList;
+		}
+		
+		protected override void setupPerspective()
+		{
+			double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
+			const double semiRadius = 0.5 * DefaultViewSize;
+
+			GL.MatrixMode(MatrixMode.Projection);
+			GL.LoadIdentity();
+			GL.Ortho(
+				-aspect * semiRadius, aspect * semiRadius,
+				-semiRadius, semiRadius, 
+				0, -FarZ);
+
+			GL.GetFloat(GetPName.ProjectionMatrix, out invProjection);
+			invProjection.Invert();
+			GL.MatrixMode(MatrixMode.Modelview);
 		}
 		#endregion
 		
@@ -123,15 +97,5 @@ namespace Stareater.GLRenderers
 			else
 				GL.CallList(gridList);
 		}
-		
-		#region IDisposable implementation
-		public void Dispose()
-		{
-			if (eventDispatcher != null) {
-				DetachFromCanvas();
-				Unload();
-			}
-		}
-		#endregion
 	}
 }

@@ -114,7 +114,7 @@
     <Compile Include="GLRenderers\GalaxySelectionType.cs" />
     <Compile Include="GLRenderers\GalaxyTextures.cs" />
     <Compile Include="GLRenderers\IGalaxyViewListener.cs" />
-    <Compile Include="GLRenderers\IRenderer.cs" />
+    <Compile Include="GLRenderers\ARenderer.cs" />
     <Compile Include="GLRenderers\GalaxyRenderer.cs" />
     <Compile Include="GLRenderers\SpaceCombatRenderer.cs" />
     <Compile Include="GLRenderers\SystemRenderer.cs" />

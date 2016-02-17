@@ -17,7 +17,7 @@ using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GLRenderers
 {
-	class GalaxyRenderer : IRenderer
+	class GalaxyRenderer : ARenderer
 	{
 		private const double DefaultViewSize = 15;
 		private const double ZoomBase = 1.2f;
@@ -47,13 +47,9 @@ namespace Stareater.GLRenderers
 		private const double PathWidth = 0.1;
 		private const float StarNameScale = 0.35f;
 
-		private const int NoCallList = -1;
-
 		private FleetController fleetController = null;
-		private Control eventDispatcher;
 		private IGalaxyViewListener galaxyViewListener;
 		
-		private bool resetProjection = true;
 		private Matrix4 invProjection;
 		private int starDrawList = NoCallList;
 		private int wormholeDrawList = NoCallList;
@@ -107,44 +103,30 @@ namespace Stareater.GLRenderers
 			}
 		}
 		
-		#region IRenderer implementation
-		public void AttachToCanvas(Control eventDispatcher)
+		#region ARenderer implementation
+		protected override void attachEventHandlers()
 		{
-			this.eventDispatcher = eventDispatcher;
-
-			eventDispatcher.MouseMove += mouseMove;
-			eventDispatcher.MouseWheel += mouseZoom;
-			eventDispatcher.MouseClick += mouseClick;
-			eventDispatcher.MouseDoubleClick += mouseDoubleClick;
-			
-			resetProjection = true;
+			this.eventDispatcher.MouseMove += this.mouseMove;
+			this.eventDispatcher.MouseWheel += this.mouseZoom;
+			this.eventDispatcher.MouseClick += this.mouseClick;
+			this.eventDispatcher.MouseDoubleClick += this.mouseDoubleClick;
 		}
 
-		public void DetachFromCanvas()
+		protected override void detachEventHandlers()
 		{
-			if (eventDispatcher == null)
-				return;
-			
-			eventDispatcher.MouseMove -= mouseMove;
-			eventDispatcher.MouseWheel -= mouseZoom;
-			eventDispatcher.MouseClick -= mouseClick;
-			eventDispatcher.MouseDoubleClick -= mouseDoubleClick;
-
-			this.eventDispatcher = null;
+			this.eventDispatcher.MouseMove -= this.mouseMove;
+			this.eventDispatcher.MouseWheel -= this.mouseZoom;
+			this.eventDispatcher.MouseClick -= this.mouseClick;
+			this.eventDispatcher.MouseDoubleClick -= this.mouseDoubleClick;
 		}
 
-		public void ResetProjection()
-		{
-			resetProjection = true;
-		}
-		
-		public void Load()
+		public override void Load()
 		{
 			GalaxyTextures.Get.Load();
 			TextRenderUtil.Get.Prepare(this.currentPlayer.Stars.Select(x => x.Name.ToText(SettingsWinforms.Get.Language)));
 		}
 		
-		public void Unload()
+		public override void Unload()
 		{
 			GalaxyTextures.Get.Unload();
 			
@@ -154,10 +136,9 @@ namespace Stareater.GLRenderers
 			}
 		}
 		
-		public void Draw(double deltaTime)
+		public override void Draw(double deltaTime)
 		{
-			if (resetProjection) 
-				setupPerspective();
+			base.checkPerspective();
 
 			drawList(wormholeDrawList, setupWormholeList);
 			drawFleetMovement();
@@ -168,7 +149,7 @@ namespace Stareater.GLRenderers
 			drawMovementEta();
 		}
 
-		public void OnNewTurn()
+		public override void OnNewTurn()
 		{
 			if (this.fleetController != null && !this.fleetController.Valid)
 				this.fleetController = null;
@@ -179,7 +160,7 @@ namespace Stareater.GLRenderers
 			this.ResetLists();
 		}
 		
-		public void ResetLists()
+		public override void ResetLists()
 		{
 			GL.DeleteLists(starDrawList, 1);
 			GL.DeleteLists(wormholeDrawList, 1);
@@ -189,15 +170,6 @@ namespace Stareater.GLRenderers
 		#endregion
 
 		#region Drawing setup and helpers
-		//TODO(v0.5) make IRenderer abstract and move drawList there
-		private void drawList(int listId, Action listGenerator)
-		{
-			if (listId == NoCallList)
-				listGenerator();
-			else
-				GL.CallList(listId);
-		}
-		
 		private void drawFleetMarkers()
 		{
 			foreach (var fleet in this.currentPlayer.Fleets) {
@@ -297,7 +269,7 @@ namespace Stareater.GLRenderers
 			}
 		}
 		
-		private void setupPerspective()
+		protected override void setupPerspective()
 		{
 			double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
 			double semiRadius = 0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel);
@@ -318,7 +290,6 @@ namespace Stareater.GLRenderers
 			GL.GetFloat(GetPName.ProjectionMatrix, out invProjection);
 			invProjection.Invert();
 			GL.MatrixMode(MatrixMode.Modelview);
-			resetProjection = false;
 		}
 		
 		private void setupStarsList()
@@ -411,7 +382,7 @@ namespace Stareater.GLRenderers
 			limitPan();
 			
 			lastMousePosition = currentPosition;
-			resetProjection = true;
+			this.requestPerspectiveReset();
 			eventDispatcher.Refresh();
 		}
 		
@@ -447,7 +418,7 @@ namespace Stareater.GLRenderers
 
 			originOffset = (originOffset * oldZoom + mousePoint * (newZoom - oldZoom)) / newZoom;
 			limitPan();
-			resetProjection = true;
+			this.requestPerspectiveReset();
 		}
 
 		private void mouseClick(object sender, MouseEventArgs e)
@@ -583,13 +554,5 @@ namespace Stareater.GLRenderers
 			return Color.FromArgb(64, 64, 64);
 		}
 		#endregion
-		
-		public void Dispose()
-		{
-			if (eventDispatcher != null) {
-				DetachFromCanvas();
-				Unload();
-			}
-		}
 	}
 }
