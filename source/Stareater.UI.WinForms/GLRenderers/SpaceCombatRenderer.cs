@@ -10,6 +10,7 @@ namespace Stareater.GLRenderers
 	public class SpaceCombatRenderer : IRenderer
 	{
 		private const double DefaultViewSize = 20;
+		private const double HexHeightScale = 0.9;
 		
 		private const float FarZ = -1;
 		private const float Layers = 16.0f;
@@ -99,18 +100,19 @@ namespace Stareater.GLRenderers
 				GL.Disable(EnableCap.Texture2D);
 				GL.Color4(Color.Green);
 				
+				double yDist = Math.Sqrt(3) * HexHeightScale;
 				for(int x = -SpaceBattleController.BattlefieldRadius; x <= SpaceBattleController.BattlefieldRadius; x++)
 				{
 					int yHeight = (SpaceBattleController.BattlefieldRadius * 2 + 1 - Math.Abs(x));
-					double yOffset = - yHeight * Math.Sqrt(3) / 2.0;
+					double yOffset = - yHeight * yDist / 2.0;
 						
 					for(int y = 0; y < yHeight; y++)
 					{
 						GL.Begin(PrimitiveType.TriangleStrip);
 						for(int i = 0; i <= 6; i++)
 						{
-							GL.Vertex3(0.95 * Math.Cos(i * Math.PI / 3) + x * 1.5, 0.95 * Math.Sin(i * Math.PI / 3) + y * Math.Sqrt(3) + yOffset, GridZ);
-							GL.Vertex3(1.05 * Math.Cos(i * Math.PI / 3) + x * 1.5, 1.05 * Math.Sin(i * Math.PI / 3) + y * Math.Sqrt(3) + yOffset, GridZ);
+							GL.Vertex3(0.95 * Math.Cos(i * Math.PI / 3) + x * 1.5, 0.95 * Math.Sin(i * Math.PI / 3) * HexHeightScale + y * yDist + yOffset, GridZ);
+							GL.Vertex3(1.05 * Math.Cos(i * Math.PI / 3) + x * 1.5, 1.05 * Math.Sin(i * Math.PI / 3) * HexHeightScale + y * yDist + yOffset, GridZ);
 						}
 						GL.End();
 					}
