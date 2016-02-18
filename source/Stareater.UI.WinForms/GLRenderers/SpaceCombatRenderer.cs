@@ -77,10 +77,10 @@ namespace Stareater.GLRenderers
 				double yDist = Math.Sqrt(3) * HexHeightScale;
 				for(int x = -SpaceBattleController.BattlefieldRadius; x <= SpaceBattleController.BattlefieldRadius; x++)
 				{
-					int yHeight = (SpaceBattleController.BattlefieldRadius * 2 + 1 - Math.Abs(x));
-					double yOffset = - yHeight * yDist / 2.0;
+					int yHeight = (SpaceBattleController.BattlefieldRadius * 2 - Math.Abs(x));
+					double yOffset = Math.Abs(x) % 2 != 0 ? yDist / 2 : 0;
 						
-					for(int y = 0; y < yHeight; y++)
+					for(int y = -(int)Math.Ceiling(yHeight / 2.0); y <= (int)Math.Floor(yHeight / 2.0); y++)
 					{
 						GL.Begin(PrimitiveType.TriangleStrip);
 						for(int i = 0; i <= 6; i++)
