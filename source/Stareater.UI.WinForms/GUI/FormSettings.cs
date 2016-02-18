@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.GuiUtils;
 using Stareater.Localization;
@@ -53,6 +54,8 @@ namespace Stareater.GUI
 			languageTitle.Text = context["LanguageLabel"].Text();
 			guiScaleTitle.Text = context["GuiScaleLabel"].Text();
 			confirmButton.Text = selectedLanguage["General"]["DialogAccept"].Text();
+			
+			rendererInfo.Text = context["RendererLabel"].Text() + Environment.NewLine + GL.GetString(StringName.Renderer);
 		}
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

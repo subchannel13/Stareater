@@ -11,4 +11,5 @@ Quit = Quit
 FormTitle = Settings
 LanguageLabel = Language:
 GuiScaleLabel = GUI scale:
+RendererLabel = Rendering hardware:
 -

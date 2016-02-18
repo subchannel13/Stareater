@@ -32,6 +32,7 @@
 			this.confirmButton = new System.Windows.Forms.Button();
 			this.guiScaleTitle = new System.Windows.Forms.Label();
 			this.guiScaleSelector = new System.Windows.Forms.ComboBox();
+			this.rendererInfo = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// languageTitle
@@ -56,7 +57,7 @@
 			// confirmButton
 			// 
 			this.confirmButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.confirmButton.Location = new System.Drawing.Point(113, 111);
+			this.confirmButton.Location = new System.Drawing.Point(113, 154);
 			this.confirmButton.Name = "confirmButton";
 			this.confirmButton.Size = new System.Drawing.Size(75, 23);
 			this.confirmButton.TabIndex = 3;
@@ -83,12 +84,23 @@
 			this.guiScaleSelector.TabIndex = 5;
 			this.guiScaleSelector.SelectedIndexChanged += new System.EventHandler(this.guiScaleSelector_SelectedIndexChanged);
 			// 
+			// rendererInfo
+			// 
+			this.rendererInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.rendererInfo.AutoSize = true;
+			this.rendererInfo.Location = new System.Drawing.Point(12, 125);
+			this.rendererInfo.Name = "rendererInfo";
+			this.rendererInfo.Size = new System.Drawing.Size(137, 26);
+			this.rendererInfo.TabIndex = 6;
+			this.rendererInfo.Text = "Rendering hardware:\r\nA line long equipment name";
+			// 
 			// FormSettings
 			// 
 			this.AcceptButton = this.confirmButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(200, 146);
+			this.ClientSize = new System.Drawing.Size(200, 189);
+			this.Controls.Add(this.rendererInfo);
 			this.Controls.Add(this.guiScaleSelector);
 			this.Controls.Add(this.guiScaleTitle);
 			this.Controls.Add(this.confirmButton);
@@ -102,6 +114,7 @@
 			this.Load += new System.EventHandler(this.FormSettings_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 
 		#endregion
@@ -111,5 +124,6 @@
 		private System.Windows.Forms.Button confirmButton;
 		private System.Windows.Forms.Label guiScaleTitle;
 		private System.Windows.Forms.ComboBox guiScaleSelector;
+		private System.Windows.Forms.Label rendererInfo;
 	}
 }
