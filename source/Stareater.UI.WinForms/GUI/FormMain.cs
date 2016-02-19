@@ -386,6 +386,7 @@ namespace Stareater.GUI
 			
 			constructionManagement.Visible = false;
 			empyPlanetView.Visible = false;
+			fleetPanel.Visible = false;
 			endTurnButton.Visible = false;
 			returnButton.Visible = false;
 		}
