@@ -84,7 +84,7 @@ namespace Stareater.GLRenderers
 				}
 			}
 
-			TextureUtils.Get.UpdateTexture(this.textureId, this.textureBitmap);
+			TextureUtils.UpdateTexture(this.textureId, this.textureBitmap);
 		}
 		
 		private void lazyInitialization()
@@ -96,7 +96,7 @@ namespace Stareater.GLRenderers
 				this.font = new Font(FontFamily, FontSize, FontStyle.Bold);
 			
 			if (this.textureId == 0)
-				this.textureId = TextureUtils.Get.CreateTexture(this.textureBitmap);
+				this.textureId = TextureUtils.CreateTexture(this.textureBitmap);
 		}
 
 		public void RenderText(string text, float adjustment)

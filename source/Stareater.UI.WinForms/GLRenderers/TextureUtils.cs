@@ -8,35 +8,22 @@ using System.Drawing;
 
 namespace Stareater.GLRenderers
 {
-	class TextureUtils
+	static class TextureUtils
 	{
-		#region Singleton
-		static TextureUtils instance = null;
-
-		public static TextureUtils Get
-		{
+		public static Vector2[] SpriteQuad 
+		{ 
 			get
 			{
-				if (instance == null)
-					instance = new TextureUtils();
-				return instance;
+				return new Vector2[] {
+					new Vector2(-0.5f, -0.5f),
+					new Vector2(0.5f, -0.5f),
+					new Vector2(0.5f, 0.5f),
+					new Vector2(-0.5f, 0.5f),
+				};
 			}
 		}
-		#endregion
-
-		public Vector2[] SpriteQuad { get; private set; }
 		
-		private TextureUtils()
-		{
-			SpriteQuad = new Vector2[] {
-				new Vector2(-0.5f, -0.5f),
-				new Vector2(0.5f, -0.5f),
-				new Vector2(0.5f, 0.5f),
-				new Vector2(-0.5f, 0.5f),
-			};
-		}
-		
-		public int CreateTexture(Bitmap image)
+		public static int CreateTexture(Bitmap image)
 		{
 			int textureId = GL.GenTexture();
 			UpdateTexture(textureId, image);
@@ -44,12 +31,12 @@ namespace Stareater.GLRenderers
 			return textureId;
 		}
 		
-		public void DeleteTexture(int textureId)
+		public static void DeleteTexture(int textureId)
 		{
 			GL.DeleteTexture(textureId);
 		}
 
-		public void UpdateTexture(int textureId, Bitmap image)
+		public static void UpdateTexture(int textureId, Bitmap image)
 		{
 			System.Drawing.Imaging.BitmapData textureData =
 				image.LockBits(
@@ -70,7 +57,7 @@ namespace Stareater.GLRenderers
 			image.UnlockBits(textureData);
 		}
 		
-		public void DrawSprite(TextureInfo textureInfo)
+		public static void DrawSprite(TextureInfo textureInfo)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, textureInfo.TextureId);
 			GL.Begin(PrimitiveType.Quads);
@@ -83,7 +70,7 @@ namespace Stareater.GLRenderers
 			GL.End();
 		}
 		
-		public void DrawSprite(TextureInfo textureInfo, float zOffset)
+		public static void DrawSprite(TextureInfo textureInfo, float zOffset)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, textureInfo.TextureId);
 			GL.Begin(PrimitiveType.Quads);

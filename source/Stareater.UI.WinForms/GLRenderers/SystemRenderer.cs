@@ -71,11 +71,11 @@ namespace Stareater.GLRenderers
 			GL.PushMatrix();
 			GL.Scale(StarScale, StarScale, StarScale);
 
-			TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
+			TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
 			if (selectedBody == StarSystemController.StarIndex) {
 				GL.Color4(Color.White);
 				GL.Scale(StarSelectorScale, StarSelectorScale, StarSelectorScale);
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
+				TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
 			}
 		
 			GL.PopMatrix();
@@ -110,7 +110,7 @@ namespace Stareater.GLRenderers
 				GL.Translate(orbitR, 0, 0);
 				GL.Scale(PlanetScale, PlanetScale, PlanetScale);
 	
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.Planet, StarColorZ);
+				TextureUtils.DrawSprite(GalaxyTextures.Get.Planet, StarColorZ);
 				
 				if (this.controller.IsColonizing(planet.Position))
 				{
@@ -119,15 +119,15 @@ namespace Stareater.GLRenderers
 					GL.Scale(0.4, 0.4, 1);
 					
 					GL.Color4(Color.White);
-					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.ColonizationMark, MarkZ);
-					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.ColonizationMarkColor, MarkColorZ);
+					TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMark, MarkZ);
+					TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMarkColor, MarkColorZ);
 					GL.PopMatrix();
 				}
 				
 				if (selectedBody == planet.Position){
 					GL.Color4(Color.White);
 					GL.Scale(PlanetSelectorScale, PlanetSelectorScale, PlanetSelectorScale);
-					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
+					TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
 				}
 			
 				GL.PopMatrix();

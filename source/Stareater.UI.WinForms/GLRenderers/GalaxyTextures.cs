@@ -59,7 +59,7 @@ namespace Stareater.GLRenderers
 				return;
 			
 			var textureImage = new Bitmap(AtlasImagePath);
-			this.textureId = TextureUtils.Get.CreateTexture(textureImage);
+			this.textureId = TextureUtils.CreateTexture(textureImage);
 			
 			var ikonParser = new IkonParser(new StreamReader(AtlasIkonPath));
 			var ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
@@ -88,7 +88,7 @@ namespace Stareater.GLRenderers
 			if (!loaded)
 				return;
 			
-			TextureUtils.Get.DeleteTexture(textureId);
+			TextureUtils.DeleteTexture(textureId);
 			this.textureId = 0;
 			
 			this.loaded = false;

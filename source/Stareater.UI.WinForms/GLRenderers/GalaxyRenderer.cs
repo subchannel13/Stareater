@@ -179,7 +179,7 @@ namespace Stareater.GLRenderers
 				GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, FleetZ);
 				GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
 
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.FleetIndicator);
+				TextureUtils.DrawSprite(GalaxyTextures.Get.FleetIndicator);
 				GL.PopMatrix();
 			}
 		}
@@ -201,7 +201,7 @@ namespace Stareater.GLRenderers
 						new Vector2d(waypoint.Destionation.X, waypoint.Destionation.Y)
 					));
 						
-					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
+					TextureUtils.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
 					GL.PopMatrix();
 					
 					lastPosition = waypoint.Destionation;
@@ -240,7 +240,7 @@ namespace Stareater.GLRenderers
 				foreach (var next in this.fleetController.SimulationWaypoints) {
 					GL.PushMatrix();
 					GL.MultMatrix(pathMatrix(new Vector2d(last.X, last.Y), new Vector2d(next.X, next.Y)));
-					TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
+					TextureUtils.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
 					GL.PopMatrix();
 					last = next;
 				}
@@ -254,7 +254,7 @@ namespace Stareater.GLRenderers
 				GL.PushMatrix();
 				GL.Translate(this.lastSelectedStar.Position.X, this.lastSelectedStar.Position.Y, SelectionIndicatorZ);
 
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar);
+				TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar);
 				GL.PopMatrix();
 			}
 			
@@ -264,7 +264,7 @@ namespace Stareater.GLRenderers
 				GL.Translate(this.lastSelectedIdleFleet.VisualPosition.X, this.lastSelectedIdleFleet.VisualPosition.Y, SelectionIndicatorZ);
 				GL.Scale(FleetSelectorScale, FleetSelectorScale, FleetSelectorScale);
 
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.SelectedStar);
+				TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar);
 				GL.PopMatrix();
 			}
 		}
@@ -304,10 +304,10 @@ namespace Stareater.GLRenderers
 				GL.PushMatrix();
 				GL.Translate(star.Position.X, star.Position.Y, StarColorZ);
 
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarColor);
+				TextureUtils.DrawSprite(GalaxyTextures.Get.StarColor);
 			
 				GL.Color4(Color.White);
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.StarGlow, StarSaturationZ - StarColorZ);
+				TextureUtils.DrawSprite(GalaxyTextures.Get.StarGlow, StarSaturationZ - StarColorZ);
 			
 				GL.PopMatrix();
 			}
@@ -343,7 +343,7 @@ namespace Stareater.GLRenderers
 					new Vector2d(wormhole.ToStar.Position.X, wormhole.ToStar.Position.Y)
 				));
 				
-				TextureUtils.Get.DrawSprite(GalaxyTextures.Get.PathLine, WormholeZ);
+				TextureUtils.DrawSprite(GalaxyTextures.Get.PathLine, WormholeZ);
 				
 				GL.PopMatrix();
 			}

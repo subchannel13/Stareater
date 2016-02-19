@@ -236,11 +236,6 @@ namespace Stareater.GUI
 			this.playerControllers = this.gameController.LocalHumanPlayers().ToArray();
 			this.currentPlayerIndex = 0;
 		}
-		private void redraw()
-		{
-			if (gameController.State != Controllers.Views.GameState.Running)
-				return;
-		}
 		
 		private void restartRenderers()
 		{
@@ -262,7 +257,6 @@ namespace Stareater.GUI
 			this.combatRenderer = new SpaceCombatRenderer();
 			
 			switchToGalaxyView();
-			redraw();
 		}
 		
 		private void shipGroupItem_SelectedIndexChanged(object sender, EventArgs e)
@@ -385,8 +379,8 @@ namespace Stareater.GUI
 			
 			this.fleetController = null;
 			this.currentRenderer.DetachFromCanvas();
-			this.currentRenderer.Unload();
 			
+			this.combatRenderer.StartCombat(battleController);
 			this.currentRenderer = this.combatRenderer;
 			this.currentRenderer.AttachToCanvas(this.glCanvas);
 			

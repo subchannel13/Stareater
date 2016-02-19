@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.Controllers.Views;
@@ -15,19 +14,28 @@ namespace Stareater.GLRenderers
 		private const float FarZ = -1;
 		private const float Layers = 16.0f;
 		
-		private const float GridZ = -8 / Layers;
+		private const float GridZ = -2 / Layers;
+		private const float StarColorZ = -1 / Layers;
 		
 		private Matrix4 invProjection;
 		private int gridList = NoCallList;
 		
 		public SpaceBattleController controller { get; private set; }
 
+		public void StartCombat(SpaceBattleController controller)
+		{
+			this.controller = controller;
+			this.ResetLists();
+			this.ResetProjection();
+		}
+		
 		#region ARenderer implementation
 		public override void Draw(double deltaTime)
 		{
 			base.checkPerspective();
 			
-			drawGrid();
+			drawList(gridList, setupGrid);
+			drawBodies();
 		}
 		
 		protected override void attachEventHandlers()
@@ -38,6 +46,11 @@ namespace Stareater.GLRenderers
 		protected override void detachEventHandlers()
 		{
 			//no op
+		}
+		
+		public override void Load()
+		{
+			GalaxyTextures.Get.Load();
 		}
 		
 		public override void ResetLists()
@@ -64,38 +77,40 @@ namespace Stareater.GLRenderers
 		}
 		#endregion
 		
-		private void drawGrid()
+		private void drawBodies()
 		{
-			if (gridList == NoCallList)
+			GL.Enable(EnableCap.Texture2D);
+			GL.Color4(controller.Star.Color);
+			TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
+		}
+		
+		private void setupGrid()
+		{
+			this.gridList = GL.GenLists(1);
+			GL.NewList(gridList, ListMode.CompileAndExecute);
+			
+			GL.Disable(EnableCap.Texture2D);
+			GL.Color4(Color.Green);
+			
+			double yDist = Math.Sqrt(3) * HexHeightScale;
+			for(int x = -SpaceBattleController.BattlefieldRadius; x <= SpaceBattleController.BattlefieldRadius; x++)
 			{
-				this.gridList = GL.GenLists(1);
-				GL.NewList(gridList, ListMode.CompileAndExecute);
-				
-				GL.Disable(EnableCap.Texture2D);
-				GL.Color4(Color.Green);
-				
-				double yDist = Math.Sqrt(3) * HexHeightScale;
-				for(int x = -SpaceBattleController.BattlefieldRadius; x <= SpaceBattleController.BattlefieldRadius; x++)
+				int yHeight = (SpaceBattleController.BattlefieldRadius * 2 - Math.Abs(x));
+				double yOffset = Math.Abs(x) % 2 != 0 ? yDist / 2 : 0;
+					
+				for(int y = -(int)Math.Ceiling(yHeight / 2.0); y <= (int)Math.Floor(yHeight / 2.0); y++)
 				{
-					int yHeight = (SpaceBattleController.BattlefieldRadius * 2 - Math.Abs(x));
-					double yOffset = Math.Abs(x) % 2 != 0 ? yDist / 2 : 0;
-						
-					for(int y = -(int)Math.Ceiling(yHeight / 2.0); y <= (int)Math.Floor(yHeight / 2.0); y++)
+					GL.Begin(PrimitiveType.TriangleStrip);
+					for(int i = 0; i <= 6; i++)
 					{
-						GL.Begin(PrimitiveType.TriangleStrip);
-						for(int i = 0; i <= 6; i++)
-						{
-							GL.Vertex3(0.95 * Math.Cos(i * Math.PI / 3) + x * 1.5, 0.95 * Math.Sin(i * Math.PI / 3) * HexHeightScale + y * yDist + yOffset, GridZ);
-							GL.Vertex3(1.05 * Math.Cos(i * Math.PI / 3) + x * 1.5, 1.05 * Math.Sin(i * Math.PI / 3) * HexHeightScale + y * yDist + yOffset, GridZ);
-						}
-						GL.End();
+						GL.Vertex3(0.95 * Math.Cos(i * Math.PI / 3) + x * 1.5, 0.95 * Math.Sin(i * Math.PI / 3) * HexHeightScale + y * yDist + yOffset, GridZ);
+						GL.Vertex3(1.05 * Math.Cos(i * Math.PI / 3) + x * 1.5, 1.05 * Math.Sin(i * Math.PI / 3) * HexHeightScale + y * yDist + yOffset, GridZ);
 					}
+					GL.End();
 				}
-				
-				GL.EndList();
 			}
-			else
-				GL.CallList(gridList);
+			
+			GL.EndList();
 		}
 	}
 }
