@@ -14,8 +14,9 @@ namespace Stareater.GLRenderers
 		private const float FarZ = -1;
 		private const float Layers = 16.0f;
 		
-		private const float GridZ = -2 / Layers;
-		private const float StarColorZ = -1 / Layers;
+		private const float GridZ = -3 / Layers;
+		private const float StarColorZ = -2 / Layers;
+		private const float CombatantZ = -1 / Layers;
 		
 		private Matrix4 invProjection;
 		private int gridList = NoCallList;
@@ -36,6 +37,7 @@ namespace Stareater.GLRenderers
 			
 			drawList(gridList, setupGrid);
 			drawBodies();
+			drawUnits();
 		}
 		
 		protected override void attachEventHandlers()
@@ -82,6 +84,22 @@ namespace Stareater.GLRenderers
 			GL.Enable(EnableCap.Texture2D);
 			GL.Color4(controller.Star.Color);
 			TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
+			
+			//TODO(v0.5) draw planets
+		}
+		
+		void drawUnits()
+		{
+			double yDist = Math.Sqrt(3) * HexHeightScale;
+			foreach(var unit in this.controller.Units)
+			{
+				GL.PushMatrix();
+				GL.Translate(unit.X * 1.5, yDist * (unit.Y + (Math.Abs(unit.X) % 2 != 0 ? 0.5 : 0)), CombatantZ);
+				GL.Color4(unit.Owner.Color);
+				
+				TextureUtils.DrawSprite(GalaxyTextures.Get.FleetIndicator, StarColorZ);
+				GL.PopMatrix();
+			}
 		}
 		
 		private void setupGrid()

@@ -173,7 +173,7 @@ namespace Stareater.Controllers
 		{
 			var conflict = gameObj.Processor.NextConflict();
 			
-			if (conflict.Fleets.Any(x => x.OriginalFleet.Owner.ControlType == PlayerControlType.LocalHuman))
+			if (conflict.Combatants.Any(x => x.Owner.ControlType == PlayerControlType.LocalHuman))
 				this.stateListener.OnDoCombat(new SpaceBattleController(conflict, gameObj));
 			
 			//TODO(v0.5) inform AI about the combat

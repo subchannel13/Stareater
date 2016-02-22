@@ -15,6 +15,7 @@ namespace Stareater.GameLogic
 		private double time = 0;
 		private LinkedList<AMission> remainingMissions;
 		private Vector2D newPosition;
+		private Vector2D movementDirection = new Vector2D();
 		private bool removeFleet = false;
 		private List<FleetMovement> movementSteps = new List<FleetMovement>();
 		
@@ -41,6 +42,7 @@ namespace Stareater.GameLogic
 					localFleet(),
 					this.time,
 					1,
+					movementDirection,
 					this.removeFleet
 				));
 			
@@ -69,7 +71,8 @@ namespace Stareater.GameLogic
 			if (mission.UsedWormhole != null)
 				speed += 0.5; //TODO(later) consider making moddable
 			
-			var distance = (mission.Destination.Position - fleet.Position).Magnitude();
+			this.movementDirection = mission.Destination.Position - fleet.Position;
+			var distance = this.movementDirection.Magnitude();
 
 			//TODO(v0.5) merge with existing fleet
 			if (distance <= speed * (1 - time)) {
@@ -83,6 +86,7 @@ namespace Stareater.GameLogic
 					localFleet(),
 					this.time,
 					this.time,
+					this.movementDirection,
 					this.removeFleet
 				));
 			}
@@ -98,6 +102,7 @@ namespace Stareater.GameLogic
 					localFleet(),
 					this.time,
 					1,
+					this.movementDirection,
 					this.removeFleet
 				));
 				this.time = 1;
@@ -118,6 +123,7 @@ namespace Stareater.GameLogic
 					localFleet(),
 					this.time,
 					1,
+					new Vector2D(),
 					this.removeFleet
 			));
 		}
@@ -129,6 +135,7 @@ namespace Stareater.GameLogic
 					localFleet(),
 					this.time,
 					1,
+					new Vector2D(),
 					this.removeFleet
 			));
 			this.time = 1;

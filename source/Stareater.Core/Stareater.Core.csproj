@@ -82,6 +82,7 @@
     <Compile Include="Controllers\Views\BodyType.cs" />
     <Compile Include="Controllers\Views\BuildingInfo.cs" />
     <Compile Include="Controllers\Views\ColonyInfo.cs" />
+    <Compile Include="Controllers\Views\Combat\CombatantInfo.cs" />
     <Compile Include="Controllers\Views\ConstructableItem.cs" />
     <Compile Include="Controllers\Views\DevelopmentFocusInfo.cs" />
     <Compile Include="Controllers\Views\FoundGalaxyObject.cs" />
@@ -402,6 +403,7 @@
     <Compile Include="Ships\Missions\MoveMission.cs" />
     <Compile Include="Ships\Missions\SkipTurnMission.cs" />
     <Compile Include="SpaceBattleGame.cs" />
+    <Compile Include="SpaceCombat\Combatant.cs" />
     <Compile Include="Utils\BitHash.cs" />
     <Compile Include="Utils\BitHashBuilder.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />
@@ -640,7 +642,10 @@
     <None Include="AppData\Expressions\Parser.frame" />
     <None Include="AppData\Expressions\Scanner.frame" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Controllers\Views\Combat" />
+    <Folder Include="SpaceCombat" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
