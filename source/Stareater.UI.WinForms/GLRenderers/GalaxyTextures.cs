@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using Ikadn.Ikon;
@@ -53,6 +54,8 @@ namespace Stareater.GLRenderers
 		public TextureInfo SelectedStar { get; private set;}
 		public TextureInfo SystemStar { get; private set;}
 		
+		public Dictionary<string, TextureInfo> Sprites { get; private set;}
+		
 		public void Load()
 		{
 			if (this.loaded)
@@ -76,6 +79,10 @@ namespace Stareater.GLRenderers
 			StarColor = new TextureInfo(textureId, ikonData[StarColorTag].To<IkonArray>());
 			StarGlow = new TextureInfo(textureId, ikonData[StarGlowTag].To<IkonArray>());
 			SystemStar = new TextureInfo(textureId, ikonData[SystemStarTag].To<IkonArray>());
+			
+			this.Sprites = new Dictionary<string, TextureInfo>();
+			foreach(var name in ikonData.Keys)
+				this.Sprites.Add(name, new TextureInfo(textureId, ikonData[name].To<IkonArray>()));
 			
 			ikonParser.Dispose();
 			textureImage.Dispose();

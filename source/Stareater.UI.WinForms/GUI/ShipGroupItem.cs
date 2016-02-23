@@ -32,7 +32,7 @@ namespace Stareater.GUI
 			
 			var thousandsFormat = new ThousandsFormatter();
 			
-			this.hullThumbnail.Image = ImageCache.Get[groupInfo.Design.ImagePath];
+			this.hullThumbnail.Image = ImageCache.Get[DesignInfo.ImageFolder + groupInfo.Design.ImagePath];
 			this.quantityLabel.Text = thousandsFormat.Format(groupInfo.Quantity);
 		}
 		

@@ -6,6 +6,9 @@ namespace Stareater.Controllers.Views.Ships
 {
 	public class DesignInfo
 	{
+		//TODO(v0.5) consider doing the same for other images (buildings and techs)
+		public const string ImageFolder = "./images/ships/";
+			
 		private readonly Design design;
 		private readonly DesignStats stats;
 		

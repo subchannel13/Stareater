@@ -98,7 +98,7 @@ namespace Stareater.GUI
 			this.imageIndices[hull] = 
 				(this.imageIndices[hull] + hull.ImagePaths.Length + direction) % 
 				hull.ImagePaths.Length;
-			this.hullImage.Image = ImageCache.Get[hull.ImagePaths[imageIndices[hull]]];
+			this.hullImage.Image = ImageCache.Get[DesignInfo.ImageFolder + hull.ImagePaths[imageIndices[hull]]];
 			
 			this.controller.ImageIndex = imageIndices[hull];
 			checkValidity();
@@ -151,7 +151,7 @@ namespace Stareater.GUI
 			if (this.automaticName)
 				nameInput.Text = hull.Name; //TODO(later): get hull and organization specific name
 			
-			this.hullImage.Image = ImageCache.Get[hull.ImagePaths[this.imageIndices[hull]]];
+			this.hullImage.Image = ImageCache.Get[DesignInfo.ImageFolder + hull.ImagePaths[this.imageIndices[hull]]];
 			
 			this.controller.Hull = hull;
 			this.controller.ImageIndex = this.imageIndices[hull];

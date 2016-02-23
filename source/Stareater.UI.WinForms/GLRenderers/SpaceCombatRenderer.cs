@@ -95,9 +95,9 @@ namespace Stareater.GLRenderers
 			{
 				GL.PushMatrix();
 				GL.Translate(unit.X * 1.5, yDist * (unit.Y + (Math.Abs(unit.X) % 2 != 0 ? 0.5 : 0)), CombatantZ);
-				GL.Color4(unit.Owner.Color);
+				GL.Color4(unit.Owner.Color); //TODO(v0.5) color units
 				
-				TextureUtils.DrawSprite(GalaxyTextures.Get.FleetIndicator, StarColorZ);
+				TextureUtils.DrawSprite(GalaxyTextures.Get.Sprites[unit.Design.ImagePath]);
 				GL.PopMatrix();
 			}
 		}

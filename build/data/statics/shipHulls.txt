@@ -3,9 +3,9 @@
 	descCode: FIGHTER_HULL_DESC
 	code: fighter
 	images [ 
-		:./images/ships/fighter1.png
-		:./images/ships/fighter2.png
-		:./images/ships/fighter3.png
+		:fighter1
+		:fighter2
+		:fighter3
 	]
 	
 	maxLvl= 0
@@ -35,7 +35,7 @@
 	descCode: CRUISER_HULL_DESC
 	code: cruiser
 	images [ 
-		:./images/ships/cruiser1.png
+		:cruiser1
 	]
 	
 	maxLvl= 0

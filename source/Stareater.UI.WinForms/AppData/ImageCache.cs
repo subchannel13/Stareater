@@ -34,6 +34,8 @@ namespace Stareater.AppData
 				
 				var file = new FileInfo(path);
 				Image image;
+				if (file.Extension == "")
+					file = new FileInfo(path + ".png");
 				
 				if (cache.ContainsKey(file.FullName)) {
 					image = cache[file.FullName];
@@ -42,7 +44,7 @@ namespace Stareater.AppData
 					return image;
 				}
 				
-				image = Image.FromFile(path);
+				image = Image.FromFile(file.FullName);
 				
 				if (file.FullName != path)
 					cache.Add(file.FullName, image);

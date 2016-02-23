@@ -37,7 +37,8 @@ namespace Stareater
 				}
 				position = snapPosition(correctPosition(position));
 				
-				yield return new Combatant((int)position.X, (int)position.Y, fleet.OriginalFleet.Owner);
+				foreach(var shipGroup in fleet.LocalFleet.Ships)
+					yield return new Combatant((int)position.X, (int)position.Y, fleet.OriginalFleet.Owner, shipGroup);
 			}
 		}
 
