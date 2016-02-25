@@ -172,11 +172,16 @@ namespace Stareater.Controllers
 		private void initaiteCombat()
 		{
 			var conflict = gameObj.Processor.NextConflict();
+			var controller = new SpaceBattleController(conflict, gameObj, playerControllers);
+			var participants = conflict.Combatants.Select(x => x.Owner).Distinct().ToList();
+				
+			if (participants.Any(x => x.ControlType == PlayerControlType.LocalHuman))
+				this.stateListener.OnDoCombat(controller);
 			
-			if (conflict.Combatants.Any(x => x.Owner.ControlType == PlayerControlType.LocalHuman))
-				this.stateListener.OnDoCombat(new SpaceBattleController(conflict, gameObj));
+			foreach(var aiPlayer in participants.Where(x => x.ControlType == PlayerControlType.LocalAI))
+				aiPlayer.OffscreenControl.PlayBattle(controller);
 			
-			//TODO(v0.5) inform AI about the combat
+			controller.Start();
 		}
 		
 		#endregion

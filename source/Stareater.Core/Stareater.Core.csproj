@@ -95,6 +95,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Controllers\Views\GameState.cs" />
+    <Compile Include="Controllers\Views\IBattleEventListener.cs" />
     <Compile Include="Controllers\Views\IGameStateListener.cs" />
     <Compile Include="Controllers\Views\IReportInfo.cs" />
     <Compile Include="Controllers\Views\IReportInfoVisitor.cs" />
@@ -178,6 +179,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameLogic\SpaceBattleProcessor.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="GameData\BuildingType.cs" />
     <Compile Include="GameData\ColonizationProject.cs">

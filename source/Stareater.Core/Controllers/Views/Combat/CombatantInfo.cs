@@ -10,10 +10,10 @@ namespace Stareater.Controllers.Views.Combat
 		internal readonly Combatant Data;
 		private readonly DesignStats stats;
 		
-		internal CombatantInfo(Combatant data, DesignStats stats)
+		internal CombatantInfo(Combatant data, MainGame game)
 		{
 			this.Data = data;
-			this.stats = stats;
+			this.stats = game.Derivates.Of(data.Owner).DesignStats[data.Ships.Design];
 		}
 		
 		public int X 

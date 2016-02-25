@@ -8,6 +8,7 @@ using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
+using Stareater.Controllers.Views.Combat;
 using Stareater.GLRenderers;
 using Stareater.GUI.Reports;
 using Stareater.Localization;
@@ -15,7 +16,7 @@ using Stareater.Players.Reports;
 
 namespace Stareater.GUI
 {
-	internal partial class FormMain : Form, IGameStateListener, IGalaxyViewListener
+	internal partial class FormMain : Form, IGameStateListener, IBattleEventListener, IGalaxyViewListener
 	{
 		private const float MaxDeltaTime = 0.5f;
 		private const float MinDeltaTime = 0.005f;
@@ -389,6 +390,14 @@ namespace Stareater.GUI
 			fleetPanel.Visible = false;
 			endTurnButton.Visible = false;
 			returnButton.Visible = false;
+			menuStrip.Visible = false;
+		}
+		#endregion
+		
+		#region IBattleEventListener implementation
+		public void PlayUnit(CombatantInfo unitInfo)
+		{
+			//TODO(v0.5) render selection
 		}
 		#endregion
 		

@@ -3,15 +3,21 @@ using System.Linq;
 using Ikadn.Ikon.Types;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
+using Stareater.Controllers.Views.Combat;
 
 namespace Stareater.Players.DefaultAI
 {
-	class DefaultAIPlayer : IOffscreenPlayer
+	class DefaultAIPlayer : IOffscreenPlayer, IBattleEventListener
 	{
 		private readonly Random random = new Random();
+		private PlayerController playerController;
+		private SpaceBattleController battleController;
 		
 		public void PlayTurn(PlayerController controller)
 		{
+			//TODO(v0.5) change interface to register controller first and play turn later
+			this.playerController = controller;
+			
 			foreach(var stellaris in controller.Stellarises())
 			{
 				StarSystemController starSystem = controller.OpenStarSystem(stellaris.HostStar);
@@ -25,10 +31,18 @@ namespace Stareater.Players.DefaultAI
 			controller.EndGalaxyPhase();
 		}
 
-		public void PlayBattle()
+		public void PlayBattle(SpaceBattleController controller)
 		{
-			throw new NotImplementedException();
+			this.battleController = controller;
+			this.battleController.Register(this.playerController, this);
 		}
+
+		#region IBattleEventListener implementation
+		public void PlayUnit(CombatantInfo unitInfo)
+		{
+			//TODO(v0.5) skip turn
+		}
+		#endregion
 		
 		public Ikadn.IkadnBaseObject Save()
 		{
