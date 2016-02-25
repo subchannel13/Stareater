@@ -1,5 +1,5 @@
 @echo off
-rem Creates links (junctions) to folders in {projRoot}\build\
+rem Creates links (junctions) to {projRoot}\build\ subfolders
 rem in {projRoot}/source/Stareater.UI.WinForms/bin/Debug/
 rem and {projRoot}/source/Stareater.UI.WinForms/bin/Release/
 
