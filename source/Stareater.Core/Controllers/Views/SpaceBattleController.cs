@@ -11,19 +11,22 @@ namespace Stareater.Controllers.Views
 	{
 		private readonly SpaceBattleGame battleGame;
 		private readonly MainGame mainGame;
+		private readonly GameController gameController;
 		private readonly PlayerController[] players;
 		private readonly Dictionary<Player, IBattleEventListener> playerListeners;
 		
-		internal SpaceBattleController(SpaceBattleGame battleGame, MainGame mainGame, PlayerController[] players)
+		internal SpaceBattleController(SpaceBattleGame battleGame, GameController gameController, MainGame mainGame, PlayerController[] players)
 		{
 			this.playerListeners = new Dictionary<Player, IBattleEventListener>();
 			
 			this.battleGame = battleGame;
 			this.mainGame = mainGame;
+			this.gameController = gameController;
 			this.Star = mainGame.States.Stars.At(battleGame.Location);
 			this.players = players;
 		}
 	
+		#region Battle information
 		public static readonly int BattlefieldRadius = SpaceBattleGame.BattlefieldRadius;
 		
 		public StarData Star { get; private set; }
@@ -32,8 +35,22 @@ namespace Stareater.Controllers.Views
 		{
 			get { return this.battleGame.Combatants.Select(x => new CombatantInfo(x, mainGame)); }
 		}
+		#endregion
 
-		public void Register(PlayerController player, IBattleEventListener eventListener)
+		#region Unit actions
+		public void UnitDone()
+		{
+			this.battleGame.Processor.UnitDone();
+			
+			if (this.battleGame.Processor.IsOver)
+				this.gameController.ConflictResolved(this.battleGame);
+			else
+				this.playNexUnit();
+		}
+		#endregion
+		
+		#region Unit order and battle event management
+		internal void Register(PlayerController player, IBattleEventListener eventListener)
 		{
 			playerListeners.Add(mainGame.Players[player.PlayerIndex], eventListener);
 		}
@@ -44,10 +61,11 @@ namespace Stareater.Controllers.Views
 			this.playNexUnit();
 		}
 
-		void playNexUnit()
+		private void playNexUnit()
 		{
-			var currentUnit = battleGame.PlayOrder.Peek();
+			var currentUnit = this.battleGame.PlayOrder.Peek();
 			playerListeners[currentUnit.Owner].PlayUnit(new CombatantInfo(currentUnit, mainGame));
 		}
+		#endregion
 	}
 }

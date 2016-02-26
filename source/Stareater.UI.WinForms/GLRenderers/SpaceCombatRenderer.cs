@@ -21,11 +21,11 @@ namespace Stareater.GLRenderers
 		private Matrix4 invProjection;
 		private int gridList = NoCallList;
 		
-		public SpaceBattleController controller { get; private set; }
+		public SpaceBattleController Controller { get; private set; }
 
 		public void StartCombat(SpaceBattleController controller)
 		{
-			this.controller = controller;
+			this.Controller = controller;
 			this.ResetLists();
 			this.ResetProjection();
 		}
@@ -82,7 +82,7 @@ namespace Stareater.GLRenderers
 		private void drawBodies()
 		{
 			GL.Enable(EnableCap.Texture2D);
-			GL.Color4(controller.Star.Color);
+			GL.Color4(Controller.Star.Color);
 			TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
 			
 			//TODO(v0.5) draw planets
@@ -91,7 +91,7 @@ namespace Stareater.GLRenderers
 		void drawUnits()
 		{
 			double yDist = Math.Sqrt(3) * HexHeightScale;
-			foreach(var unit in this.controller.Units)
+			foreach(var unit in this.Controller.Units)
 			{
 				GL.PushMatrix();
 				GL.Translate(unit.X * 1.5, yDist * (unit.Y + (Math.Abs(unit.X) % 2 != 0 ? 0.5 : 0)), CombatantZ);

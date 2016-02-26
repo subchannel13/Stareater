@@ -124,6 +124,17 @@ namespace Stareater.GameLogic
 		{
 			return this.conflicts.Dequeue();
 		}
+
+		public void ConflictResolved(SpaceBattleGame battleGame)
+		{
+			foreach(var unit in battleGame.Combatants)
+			{
+				var fleet = new Fleet(unit.Owner, battleGame.Location, new LinkedList<AMission>());
+				fleet.Ships.Add(unit.Ships);
+				
+				this.game.States.Fleets.Add(fleet);
+			}
+		}
 		
 		private void commitFleetOrders()
 		{
@@ -224,7 +235,7 @@ namespace Stareater.GameLogic
 			
 			this.conflicts.Clear();
 			foreach(var position in conflictPositions.OrderBy(x => x.Value))
-				conflicts.Enqueue(new SpaceBattleGame(position.Key, visits[position.Key])); //TODO(v0.5) sort by start time, calculate start time
+				conflicts.Enqueue(new SpaceBattleGame(position.Key, visits[position.Key], position.Value));
 			
 			this.game.States.Fleets.Clear();
 			foreach(var fleet in visits.Values.SelectMany(x => x).Where(x => !x.Remove))

@@ -118,6 +118,13 @@ namespace Stareater.Controllers
 		{
 			Task.Factory.StartNew(postcombatTurnProcessing).ContinueWith(checkTaskException);
 		}
+
+		internal void ConflictResolved(SpaceBattleGame battleGame)
+		{
+			this.gameObj.Processor.ConflictResolved(battleGame);
+			this.processCombat();
+		}
+
 		#endregion
 		
 		#region Background processing
@@ -142,6 +149,11 @@ namespace Stareater.Controllers
 		{
 			gameObj.ProcessPrecombat();
 
+			this.processCombat();
+		}
+		
+		private void processCombat()
+		{
 			if (gameObj.Processor.HasConflicts)
 				initaiteCombat();
 			else
@@ -172,14 +184,18 @@ namespace Stareater.Controllers
 		private void initaiteCombat()
 		{
 			var conflict = gameObj.Processor.NextConflict();
-			var controller = new SpaceBattleController(conflict, gameObj, playerControllers);
+			var controller = new SpaceBattleController(conflict, this, gameObj, playerControllers);
 			var participants = conflict.Combatants.Select(x => x.Owner).Distinct().ToList();
 				
-			if (participants.Any(x => x.ControlType == PlayerControlType.LocalHuman))
-				this.stateListener.OnDoCombat(controller);
-			
-			foreach(var aiPlayer in participants.Where(x => x.ControlType == PlayerControlType.LocalAI))
-				aiPlayer.OffscreenControl.PlayBattle(controller);
+			foreach(var player in participants)
+			{
+				var playerController = this.playerControllers.First(x => this.gameObj.Players[x.PlayerIndex] == player);
+				
+				if (player.ControlType == PlayerControlType.LocalAI)
+					controller.Register(playerController, player.OffscreenControl.StartBattle(controller));
+				else
+					controller.Register(playerController, this.stateListener.OnDoCombat(controller));
+			}
 			
 			controller.Start();
 		}

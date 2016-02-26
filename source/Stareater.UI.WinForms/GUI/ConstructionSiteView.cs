@@ -57,7 +57,7 @@ namespace Stareater.GUI
 				industrySlider.Enabled = false;
 			} else {
 				this.queueButton.Text = "";
-				this.queueButton.Image = ImageCache.Get[controller.ConstructionQueue.First().ImagePath];
+				this.queueButton.Image = ImageCache.Get[controller.ConstructionQueue.First().ImagePath]; //FIX crushes for ships
 				
 				industrySlider.Enabled = !controller.IsReadOnly;
 			}

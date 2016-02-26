@@ -7,7 +7,7 @@ namespace Stareater.Players
 	public interface IOffscreenPlayer
 	{
 		void PlayTurn(PlayerController controller);
-		void PlayBattle(SpaceBattleController controller);
+		IBattleEventListener StartBattle(SpaceBattleController controller);
 		
 		IkadnBaseObject Save();
 

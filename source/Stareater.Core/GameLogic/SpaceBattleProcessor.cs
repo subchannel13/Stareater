@@ -15,7 +15,14 @@ namespace Stareater.GameLogic
 		}
 		
 		#region Initialization
-		public void InitUnits(IEnumerable<FleetMovement> fleets)
+		public void Initialize(IEnumerable<FleetMovement> fleets, double startTime)
+		{
+			this.initUnits(fleets);
+			
+			this.game.TurnLimit = (int)Math.Ceiling(50 * (1 - startTime));
+		}
+
+		private void initUnits(IEnumerable<FleetMovement> fleets)
 		{
 			foreach(var fleet in fleets)
 			{
@@ -33,7 +40,7 @@ namespace Stareater.GameLogic
 					this.game.Combatants.Add(new Combatant((int)position.X, (int)position.Y, fleet.OriginalFleet.Owner, shipGroup));
 			}
 		}
-
+		
 		private Vector2D correctPosition(Vector2D position)
 		{
 			var snapped = snapPosition(position);
@@ -59,6 +66,11 @@ namespace Stareater.GameLogic
 		}
 		#endregion
 
+		public bool IsOver 
+		{
+			get { return this.game.Turn >= this.game.TurnLimit; }
+		}
+		
 		public void MakeUnitOrder()
 		{
 			var units = new List<Combatant>(this.game.Combatants);
@@ -68,6 +80,18 @@ namespace Stareater.GameLogic
 				int i = this.game.Rng.Next(units.Count);
 				this.game.PlayOrder.Enqueue(units[i]);
 				units.RemoveAt(i);
+			}
+		}
+
+		public void UnitDone()
+		{
+			this.game.PlayOrder.Dequeue();
+			
+			if (this.game.PlayOrder.Count == 0)
+			{
+				this.game.Turn++;
+				//TODO(v0.5) other new turn logic like removing destroyed units
+				this.MakeUnitOrder();
 			}
 		}
 	}

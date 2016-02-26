@@ -365,17 +365,31 @@ namespace Stareater.GUI
 			this.currentPlayerIndex = 0;
 			this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
 			
+			if (this.currentRenderer == this.combatRenderer)
+			{
+				this.currentRenderer.DetachFromCanvas();
+				
+				this.currentRenderer = this.galaxyRenderer;
+				this.currentRenderer.AttachToCanvas(this.glCanvas);
+				
+				endTurnButton.Visible = true;
+				menuStrip.Visible = true;
+			}
+			
 			if (galaxyRenderer != null) galaxyRenderer.OnNewTurn();
 			if (systemRenderer != null) systemRenderer.OnNewTurn();
 		}
 		
-		public void OnDoCombat(SpaceBattleController battleController)
+		public IBattleEventListener OnDoCombat(SpaceBattleController battleController)
 		{
-			if (this.InvokeRequired) {
-				this.Invoke(new Action<SpaceBattleController>(OnDoCombat), battleController);
-				return;
-			}
+			if (this.InvokeRequired)
+				this.Invoke(new Action<SpaceBattleController>(initCombatGui), battleController);
 			
+			return this;
+		}
+		
+		private void initCombatGui(SpaceBattleController battleController)
+		{
 			this.conflictController = battleController;
 			
 			this.fleetController = null;
@@ -398,6 +412,7 @@ namespace Stareater.GUI
 		public void PlayUnit(CombatantInfo unitInfo)
 		{
 			//TODO(v0.5) render selection
+			this.combatRenderer.Controller.UnitDone();
 		}
 		#endregion
 		

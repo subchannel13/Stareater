@@ -6,8 +6,8 @@
 	usings.Add("System.Drawing");
 	usings.Add("Stareater.GameData.Databases.Tables");
 	usings.Add("Stareater.GameData");
-	usings.Add("Stareater.Players.Reports");
-	
+	usings.Add("Stareater.GameData.Ships");
+
 	modifer = "partial";
 	debugId = true;
 

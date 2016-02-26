@@ -1,15 +1,13 @@
 ﻿ 
 
-
 using Ikadn.Ikon.Types;
-using Stareater.GameData.Ships;
 using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameData;
-using Stareater.Players.Reports;
+using Stareater.GameData.Ships;
 
 namespace Stareater.Players 
 {

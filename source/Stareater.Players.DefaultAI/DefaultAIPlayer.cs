@@ -31,16 +31,16 @@ namespace Stareater.Players.DefaultAI
 			controller.EndGalaxyPhase();
 		}
 
-		public void PlayBattle(SpaceBattleController controller)
+		public IBattleEventListener StartBattle(SpaceBattleController controller)
 		{
 			this.battleController = controller;
-			this.battleController.Register(this.playerController, this);
+			return this;
 		}
 
 		#region IBattleEventListener implementation
 		public void PlayUnit(CombatantInfo unitInfo)
 		{
-			//TODO(v0.5) skip turn
+			this.battleController.UnitDone();
 		}
 		#endregion
 		
