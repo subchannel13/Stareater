@@ -25,7 +25,7 @@ namespace Stareater.GUI
 			{
 				this.data = value;
 				
-				thumbnail.Image = ImageCache.Get[DesignInfo.ImageFolder + data.ImagePath];
+				thumbnail.Image = ImageCache.Get[data.ImagePath];
 				nameLabel.Text = data.Name;
 			}
 		}

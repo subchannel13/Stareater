@@ -43,6 +43,7 @@ namespace Stareater.GLRenderers
 		
 		private bool loaded = false;
 		private int textureId;
+		private Dictionary<string, TextureInfo> sprites;
 		
 		public TextureInfo ColonizationMark { get; private set;}
 		public TextureInfo ColonizationMarkColor { get; private set;}
@@ -53,8 +54,6 @@ namespace Stareater.GLRenderers
 		public TextureInfo StarGlow { get; private set;}
 		public TextureInfo SelectedStar { get; private set;}
 		public TextureInfo SystemStar { get; private set;}
-		
-		public Dictionary<string, TextureInfo> Sprites { get; private set;}
 		
 		public void Load()
 		{
@@ -80,9 +79,9 @@ namespace Stareater.GLRenderers
 			StarGlow = new TextureInfo(textureId, ikonData[StarGlowTag].To<IkonArray>());
 			SystemStar = new TextureInfo(textureId, ikonData[SystemStarTag].To<IkonArray>());
 			
-			this.Sprites = new Dictionary<string, TextureInfo>();
+			this.sprites = new Dictionary<string, TextureInfo>();
 			foreach(var name in ikonData.Keys)
-				this.Sprites.Add(name, new TextureInfo(textureId, ikonData[name].To<IkonArray>()));
+				this.sprites.Add(name, new TextureInfo(textureId, ikonData[name].To<IkonArray>()));
 			
 			ikonParser.Dispose();
 			textureImage.Dispose();
@@ -99,6 +98,17 @@ namespace Stareater.GLRenderers
 			this.textureId = 0;
 			
 			this.loaded = false;
+		}
+		
+		public TextureInfo Sprite(string spriteName)
+		{
+			if (!this.sprites.ContainsKey(spriteName))
+			{
+				var file = new FileInfo(spriteName);
+				this.sprites.Add(spriteName, this.sprites[file.Name]);
+			}
+			
+			return this.sprites[spriteName];
 		}
 	}
 }
