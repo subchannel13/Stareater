@@ -153,6 +153,16 @@ namespace Winforms_Mockups.Properties {
 		/// <summary>
 		///   Looks up a localized resource of type System.Drawing.Bitmap.
 		/// </summary>
+		internal static System.Drawing.Bitmap combat_example {
+			get {
+				object obj = ResourceManager.GetObject("combat_example", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
 		internal static System.Drawing.Bitmap earthlike_planet {
 			get {
 				object obj = ResourceManager.GetObject("earthlike_planet", resourceCulture);
