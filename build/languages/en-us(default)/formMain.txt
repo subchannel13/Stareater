@@ -45,4 +45,6 @@ MainMenu = Main menu
 DevelopmentMenu = Development
 
 SelectQuantityTitle = Select quantity
+
+ShipCount = Ships
 -

@@ -271,7 +271,7 @@
 			this.unitDoneAction.TabIndex = 14;
 			this.unitDoneAction.Text = "Done";
 			this.unitDoneAction.UseVisualStyleBackColor = true;
-			this.unitDoneAction.Click += new System.EventHandler(this.UnitDoneActionClick);
+			this.unitDoneAction.Click += new System.EventHandler(this.unitDoneAction_Click);
 			// 
 			// FormMain
 			// 

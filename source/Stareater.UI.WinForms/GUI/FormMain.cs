@@ -9,6 +9,7 @@ using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
+using Stareater.Utils.NumberFormatters;
 using Stareater.GLRenderers;
 using Stareater.GUI.Reports;
 using Stareater.Localization;
@@ -279,7 +280,7 @@ namespace Stareater.GUI
 			}
 		}
 		
-		private void UnitDoneActionClick(object sender, EventArgs e)
+		private void unitDoneAction_Click(object sender, EventArgs e)
 		{
 			//TODO(v0.5) check if you can do that and consider moving to renderer
 			this.combatRenderer.Controller.UnitDone();
@@ -419,7 +420,14 @@ namespace Stareater.GUI
 		#region IBattleEventListener implementation
 		public void PlayUnit(CombatantInfo unitInfo)
 		{
-			//TODO(v0.5) render selection
+			if (this.InvokeRequired)
+				this.Invoke(new Action<CombatantInfo>(PlayUnit), unitInfo);
+			
+			this.combatRenderer.OnUnitTurn(unitInfo);
+			
+			var context = SettingsWinforms.Get.Language["FormMain"];
+			var formatter = new ThousandsFormatter();
+			shipCount.Text = context["ShipCount"].Text() + ": " + formatter.Format(unitInfo.Count);
 		}
 		#endregion
 		

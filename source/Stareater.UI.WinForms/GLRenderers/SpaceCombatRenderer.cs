@@ -3,6 +3,7 @@ using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.Controllers.Views;
+using Stareater.Controllers.Views.Combat;
 
 namespace Stareater.GLRenderers
 {
@@ -14,12 +15,14 @@ namespace Stareater.GLRenderers
 		private const float FarZ = -1;
 		private const float Layers = 16.0f;
 		
+		private const float CellBackgroundZ = -4 / Layers;
 		private const float GridZ = -3 / Layers;
 		private const float StarColorZ = -2 / Layers;
 		private const float CombatantZ = -1 / Layers;
 		
 		private Matrix4 invProjection;
 		private int gridList = NoCallList;
+		private CombatantInfo currentUnit = null;
 		
 		public SpaceBattleController Controller { get; private set; }
 
@@ -35,6 +38,7 @@ namespace Stareater.GLRenderers
 		{
 			base.checkPerspective();
 			
+			drawBackgrounds();
 			drawList(gridList, setupGrid);
 			drawBodies();
 			drawUnits();
@@ -78,6 +82,34 @@ namespace Stareater.GLRenderers
 			GL.MatrixMode(MatrixMode.Modelview);
 		}
 		#endregion
+		
+		public void OnUnitTurn(CombatantInfo unitInfo)
+		{
+			this.currentUnit = unitInfo;
+		}
+
+		private void drawBackgrounds()
+		{
+			if (this.currentUnit == null)
+				return;
+			
+			int x = this.currentUnit.X;
+			int y = this.currentUnit.Y;
+			double yDist = Math.Sqrt(3) * HexHeightScale;
+			double yOffset = Math.Abs(x) % 2 != 0 ? yDist / 2 : 0;
+			
+			GL.Disable(EnableCap.Texture2D);
+			GL.Color4(Color.Yellow);
+			
+			GL.Begin(PrimitiveType.TriangleFan);
+			GL.Vertex3(x * 1.5, y * yDist + yOffset, CellBackgroundZ);
+			for(int i = 0; i <= 6; i++)
+			{
+				GL.Vertex3(Math.Cos(i * Math.PI / 3) + x * 1.5, Math.Sin(i * Math.PI / 3) * HexHeightScale + y * yDist + yOffset, CellBackgroundZ);
+				//GL.Vertex3(Math.Cos((i+1) * Math.PI / 3) + x * 1.5, Math.Sin((i+1) * Math.PI / 3) * HexHeightScale + y * yDist + yOffset, CellBackgroundZ);
+			}
+			GL.End();
+		}
 		
 		private void drawBodies()
 		{

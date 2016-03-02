@@ -35,5 +35,10 @@ namespace Stareater.Controllers.Views.Combat
 		{ 
 			get { return new DesignInfo(this.Data.Ships.Design, stats); }
 		}
+		
+		public long Count
+		{
+			get { return this.Data.Ships.Quantity; }
+		}
 	}
 }
