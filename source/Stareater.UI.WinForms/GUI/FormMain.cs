@@ -279,6 +279,12 @@ namespace Stareater.GUI
 			}
 		}
 		
+		private void UnitDoneActionClick(object sender, EventArgs e)
+		{
+			//TODO(v0.5) check if you can do that and consider moving to renderer
+			this.combatRenderer.Controller.UnitDone();
+		}
+		
 		#region Canvas events
 
 		private void glCanvas_Load(object sender, EventArgs e)
@@ -373,6 +379,7 @@ namespace Stareater.GUI
 				this.currentRenderer.AttachToCanvas(this.glCanvas);
 				
 				endTurnButton.Visible = true;
+				unitInfoPanel.Visible = false;
 				menuStrip.Visible = true;
 			}
 			
@@ -404,6 +411,7 @@ namespace Stareater.GUI
 			fleetPanel.Visible = false;
 			endTurnButton.Visible = false;
 			returnButton.Visible = false;
+			unitInfoPanel.Visible = true;
 			menuStrip.Visible = false;
 		}
 		#endregion
@@ -412,7 +420,6 @@ namespace Stareater.GUI
 		public void PlayUnit(CombatantInfo unitInfo)
 		{
 			//TODO(v0.5) render selection
-			this.combatRenderer.Controller.UnitDone();
 		}
 		#endregion
 		
@@ -476,6 +483,5 @@ namespace Stareater.GUI
 			this.fleetPanel.Visible = false;
 		}
 		#endregion
-		
 	}
 }
