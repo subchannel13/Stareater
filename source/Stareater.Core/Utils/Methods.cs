@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using System.Xml;
 using NGenerics.DataStructures.Mathematical;
 
 namespace Stareater.Utils
@@ -51,6 +50,11 @@ namespace Stareater.Utils
 			}
 
 			return best;
+		}
+		
+		public static double GetPhase(double x, double period)
+		{
+			return x / period - Math.Floor(x / period);
 		}
 		
 		/// <summary>

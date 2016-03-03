@@ -4,6 +4,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
+using Stareater.Utils;
 
 namespace Stareater.GLRenderers
 {
@@ -20,8 +21,12 @@ namespace Stareater.GLRenderers
 		private const float StarColorZ = -2 / Layers;
 		private const float CombatantZ = -1 / Layers;
 		
+		private const double AnimationPeriod = 3;
+		private static readonly Color SelectionColor = Color.Yellow;
+		
 		private Matrix4 invProjection;
 		private int gridList = NoCallList;
+		private double animationTime = 0;
 		private CombatantInfo currentUnit = null;
 		
 		public SpaceBattleController Controller { get; private set; }
@@ -37,6 +42,7 @@ namespace Stareater.GLRenderers
 		public override void Draw(double deltaTime)
 		{
 			base.checkPerspective();
+			this.animationTime += deltaTime;
 			
 			drawBackgrounds();
 			drawList(gridList, setupGrid);
@@ -98,8 +104,14 @@ namespace Stareater.GLRenderers
 			double yDist = Math.Sqrt(3) * HexHeightScale;
 			double yOffset = Math.Abs(x) % 2 != 0 ? yDist / 2 : 0;
 			
+			double animationPhase = Methods.GetPhase(this.animationTime, AnimationPeriod);
+				
+			var color = new double[] {
+				SelectionColor.R, SelectionColor.G, SelectionColor.B,
+				Math.Abs(animationPhase - 0.5) * 0.8 + 0.2};
+			
 			GL.Disable(EnableCap.Texture2D);
-			GL.Color4(Color.Yellow);
+			GL.Color4(color);
 			GL.Begin(PrimitiveType.TriangleFan);
 			
 			GL.Vertex3(x * 1.5, y * yDist + yOffset, CellBackgroundZ);
