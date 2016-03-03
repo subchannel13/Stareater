@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NGenerics.DataStructures.Mathematical;
+using NGenerics.DataStructures.Queues;
 using Stareater.SpaceCombat;
 
 namespace Stareater.GameLogic
@@ -8,10 +9,12 @@ namespace Stareater.GameLogic
 	class SpaceBattleProcessor
 	{
 		private readonly SpaceBattleGame game;
+		private readonly MainGame mainGame;
 		
-		public SpaceBattleProcessor(SpaceBattleGame battleGame)
+		public SpaceBattleProcessor(SpaceBattleGame battleGame, MainGame mainGame)
 		{
 			this.game = battleGame;
+			this.mainGame = mainGame;
 		}
 		
 		#region Initialization
@@ -73,14 +76,17 @@ namespace Stareater.GameLogic
 		
 		public void MakeUnitOrder()
 		{
-			var units = new List<Combatant>(this.game.Combatants);
-			
-			while(units.Count > 0)
+			foreach(var unit in this.game.Combatants)
 			{
-				int i = this.game.Rng.Next(units.Count);
-				this.game.PlayOrder.Enqueue(units[i]);
-				units.RemoveAt(i);
+				var stats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
+				unit.Initiative = this.game.Rng.NextDouble() + stats.CombatSpeed;
 			}
+			
+			var units = new List<Combatant>(this.game.Combatants);
+			units.Sort((a, b) => -a.Initiative.CompareTo(b.Initiative));
+			
+			foreach(var unit in units)
+				this.game.PlayOrder.Enqueue(unit);
 		}
 
 		public void UnitDone()

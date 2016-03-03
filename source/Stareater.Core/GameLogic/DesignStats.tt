@@ -1,9 +1,13 @@
 ﻿<#@ output extension=".cs" #>
 <#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
 	
-	usings.Add("Stareater.GameData");
+	usings.Add("System.Collections.Generic");
 	
 	Generate("Stareater.GameLogic", "DesignStats",
-		new DataInfo("GalaxySpeed", "double")
+		new DataInfo("CombatSpeed", "double"),
+		new DataInfo("GalaxySpeed", "double"),
+		
+		new DataInfo("ColonizerPopulation", "double"),
+		new DataInfo("ColonizerBuildings", "Dictionary<string, double>")
 	);
 #>

@@ -6,9 +6,11 @@ namespace Stareater.SpaceCombat
 {
 	class Combatant
 	{
-		public int X, Y;
 		public Player Owner { get; private set; }
 		public ShipGroup Ships { get; private set; }
+		
+		public int X, Y;
+		public double Initiative;
 		
 		public Combatant(int x, int y, Player owner, ShipGroup ships)
 		{

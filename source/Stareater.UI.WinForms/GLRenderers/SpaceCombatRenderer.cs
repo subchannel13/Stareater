@@ -100,14 +100,11 @@ namespace Stareater.GLRenderers
 			
 			GL.Disable(EnableCap.Texture2D);
 			GL.Color4(Color.Yellow);
-			
 			GL.Begin(PrimitiveType.TriangleFan);
+			
 			GL.Vertex3(x * 1.5, y * yDist + yOffset, CellBackgroundZ);
 			for(int i = 0; i <= 6; i++)
-			{
 				GL.Vertex3(Math.Cos(i * Math.PI / 3) + x * 1.5, Math.Sin(i * Math.PI / 3) * HexHeightScale + y * yDist + yOffset, CellBackgroundZ);
-				//GL.Vertex3(Math.Cos((i+1) * Math.PI / 3) + x * 1.5, Math.Sin((i+1) * Math.PI / 3) * HexHeightScale + y * yDist + yOffset, CellBackgroundZ);
-			}
 			GL.End();
 		}
 		

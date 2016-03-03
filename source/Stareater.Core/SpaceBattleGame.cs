@@ -21,12 +21,12 @@ namespace Stareater
 		public int Turn;
 		public Queue<Combatant> PlayOrder { get; private set; }
 		
-		public SpaceBattleGame(Vector2D location, IEnumerable<FleetMovement> fleets, double startTime)
+		public SpaceBattleGame(Vector2D location, IEnumerable<FleetMovement> fleets, double startTime, MainGame mainGame)
 		{
 			this.Combatants = new List<Combatant>();
 			this.PlayOrder = new Queue<Combatant>();
 			this.Rng = new Random();
-			this.Processor = new SpaceBattleProcessor(this);
+			this.Processor = new SpaceBattleProcessor(this, mainGame);
 			this.Turn = 0;
 			
 			this.Location = location;

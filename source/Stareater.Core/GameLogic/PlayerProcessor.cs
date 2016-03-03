@@ -272,6 +272,8 @@ namespace Stareater.GameLogic
 				And(AComponentType.SizeKey, design.Hull.TypeInfo.SizeReactor.Evaluate(hullVars)).Get;
 			double shipPower = design.Reactor.TypeInfo.Power.Evaluate(reactorVars);
 			
+			var thrusterVars = new Var(AComponentType.LevelKey, design.Thrusters.Level).Get;
+			
 			double galaxySpeed = 0;
 			if (design.IsDrive != null)
 			{
@@ -282,16 +284,16 @@ namespace Stareater.GameLogic
 				galaxySpeed = design.IsDrive.TypeInfo.Speed.Evaluate(driveVars);
 			}
 			
-			var shipVars = new Var();
+			var shipVars = new Var("thrust", design.Thrusters.TypeInfo.Speed.Evaluate(thrusterVars));
 			foreach(var special in statics.SpecialEquipment.Keys)
 			{
 				shipVars.And(special, 0);
-				shipVars.And(special + "_lvl", 0); //TODO Make "_lvl" string constant
+				shipVars.And(special + "_lvl", 0); //TODO(v0.5) Make "_lvl" string constant
 			}
 			foreach(var special in design.SpecialEquipment)
 			{
 				shipVars[special.Key.TypeInfo.IdCode] = special.Value;
-				shipVars[special.Key.TypeInfo.IdCode + "_lvl"] = special.Key.Level; //TODO Make string constant
+				shipVars[special.Key.TypeInfo.IdCode + "_lvl"] = special.Key.Level; //TODO(v0.5) Make string constant
 			}
 			var buildings = new Dictionary<string, double>();
 			foreach(var colonyBuilding in statics.ShipFormulas.ColonizerBuildings)
@@ -303,10 +305,11 @@ namespace Stareater.GameLogic
 			
 			this.DesignStats.Add(
 				design,
-				new DesignStats(galaxySpeed,
-				                statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
-				                buildings
-				               )
+				new DesignStats(
+					statics.ShipFormulas.CombatSpeed.Evaluate(shipVars.Get),
+					galaxySpeed,
+	                statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
+	                buildings)
 			);
 		}
 		
