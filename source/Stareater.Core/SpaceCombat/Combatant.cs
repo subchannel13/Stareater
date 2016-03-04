@@ -1,4 +1,5 @@
 ﻿using System;
+using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 using Stareater.Players;
 
@@ -9,13 +10,13 @@ namespace Stareater.SpaceCombat
 		public Player Owner { get; private set; }
 		public ShipGroup Ships { get; private set; }
 		
-		public int X, Y;
+		public Vector2D Position;
 		public double Initiative;
+		public double MovementPoints = 1;
 		
-		public Combatant(int x, int y, Player owner, ShipGroup ships)
+		public Combatant(Vector2D position, Player owner, ShipGroup ships)
 		{
-			this.X = x;
-			this.Y = y;
+			this.Position = position;
 			this.Owner = owner;
 			this.Ships = ships;
 		}

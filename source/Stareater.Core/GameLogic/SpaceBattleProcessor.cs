@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NGenerics.DataStructures.Mathematical;
-using NGenerics.DataStructures.Queues;
 using Stareater.SpaceCombat;
 
 namespace Stareater.GameLogic
@@ -40,7 +39,7 @@ namespace Stareater.GameLogic
 				position = snapPosition(correctPosition(position));
 				
 				foreach(var shipGroup in fleet.LocalFleet.Ships)
-					this.game.Combatants.Add(new Combatant((int)position.X, (int)position.Y, fleet.OriginalFleet.Owner, shipGroup));
+					this.game.Combatants.Add(new Combatant(position, fleet.OriginalFleet.Owner, shipGroup));
 			}
 		}
 		
@@ -98,6 +97,24 @@ namespace Stareater.GameLogic
 				this.game.Turn++;
 				//TODO(v0.5) other new turn logic like removing destroyed units
 				this.MakeUnitOrder();
+			}
+		}
+
+		public IEnumerable<Vector2D> ValidMoves 
+		{
+			get
+			{
+				var unit = this.game.PlayOrder.Peek();
+				
+				if (unit.MovementPoints <= 0)
+					yield break;
+					
+				yield return unit.Position + new Vector2D(0, 1);
+				yield return unit.Position + new Vector2D(1, 0);
+				yield return unit.Position + new Vector2D(1, -1);
+				yield return unit.Position + new Vector2D(0, -1);
+				yield return unit.Position + new Vector2D(-1, -1);
+				yield return unit.Position + new Vector2D(-1, 0);
 			}
 		}
 	}

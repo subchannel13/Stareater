@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Galaxy;
 using Stareater.Players;
@@ -46,6 +47,11 @@ namespace Stareater.Controllers.Views
 				this.gameController.ConflictResolved(this.battleGame);
 			else
 				this.playNexUnit();
+		}
+		
+		public IEnumerable<Vector2D> ValidMoves
+		{
+			get { return this.battleGame.Processor.ValidMoves; }
 		}
 		#endregion
 		

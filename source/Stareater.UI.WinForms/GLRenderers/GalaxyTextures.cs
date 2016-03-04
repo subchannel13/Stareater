@@ -34,6 +34,7 @@ namespace Stareater.GLRenderers
 		const string ColonizationMarkTag = "colonizationMark";
 		const string ColonizationMarkColorTag = "colonizationMarkColor";
 		const string FleetIndicatorTag = "fleetIndicator";
+		const string MoveArrowTag = "moveArrow";
 		const string PathLineTag = "wormholePath";
 		const string PlanetTag = "planet";
 		const string SelectedStarTag = "selectedStar";
@@ -48,6 +49,7 @@ namespace Stareater.GLRenderers
 		public TextureInfo ColonizationMark { get; private set;}
 		public TextureInfo ColonizationMarkColor { get; private set;}
 		public TextureInfo FleetIndicator { get; private set;}
+		public TextureInfo MoveToArrow { get; private set;}
 		public TextureInfo Planet { get; private set;}
 		public TextureInfo PathLine { get; private set;}
 		public TextureInfo StarColor { get; private set;}
@@ -72,6 +74,7 @@ namespace Stareater.GLRenderers
 			ColonizationMark = new TextureInfo(textureId, ikonData[ColonizationMarkTag].To<IkonArray>());
 			ColonizationMarkColor = new TextureInfo(textureId, ikonData[ColonizationMarkColorTag].To<IkonArray>());
 			FleetIndicator = new TextureInfo(textureId, ikonData[FleetIndicatorTag].To<IkonArray>());
+			MoveToArrow = new TextureInfo(textureId, ikonData[MoveArrowTag].To<IkonArray>());
 			Planet = new TextureInfo(textureId, ikonData[PlanetTag].To<IkonArray>());
 			PathLine = new TextureInfo(textureId, ikonData[PathLineTag].To<IkonArray>());
 			SelectedStar = new TextureInfo(textureId, ikonData[SelectedStarTag].To<IkonArray>());

@@ -1,4 +1,5 @@
 ﻿using System;
+using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Views.Ships;
 using Stareater.GameLogic;
 using Stareater.SpaceCombat;
@@ -16,15 +17,10 @@ namespace Stareater.Controllers.Views.Combat
 			this.stats = game.Derivates.Of(data.Owner).DesignStats[data.Ships.Design];
 		}
 		
-		public int X 
+		public Vector2D Position
 		{ 
-			get { return this.Data.X; }
-		}
-		
-		public int Y 
-		{ 
-			get { return this.Data.Y; }
-		}
+			get { return this.Data.Position; }
+		}		
 		
 		public PlayerInfo Owner
 		{ 
