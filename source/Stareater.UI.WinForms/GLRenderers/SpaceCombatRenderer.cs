@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.Controllers.Views;
@@ -17,10 +18,11 @@ namespace Stareater.GLRenderers
 		private const float FarZ = -1;
 		private const float Layers = 16.0f;
 		
-		private const float CellBackgroundZ = -4 / Layers;
-		private const float GridZ = -3 / Layers;
-		private const float StarColorZ = -2 / Layers;
-		private const float CombatantZ = -1 / Layers;
+		private const float CellBackgroundZ = -5 / Layers;
+		private const float GridZ = -4 / Layers;
+		private const float StarColorZ = -3 / Layers;
+		private const float CombatantZ = -2 / Layers;
+		private const float MovemenentZ = -1 / Layers;
 		
 		private const double AnimationPeriod = 3;
 		private static readonly Color SelectionColor = Color.Yellow;
@@ -54,12 +56,12 @@ namespace Stareater.GLRenderers
 		
 		protected override void attachEventHandlers()
 		{
-			//no op
+			this.eventDispatcher.MouseClick += this.mouseClick;
 		}
 		
 		protected override void detachEventHandlers()
 		{
-			//no op
+			this.eventDispatcher.MouseClick -= this.mouseClick;
 		}
 		
 		public override void Load()
@@ -91,6 +93,21 @@ namespace Stareater.GLRenderers
 		}
 		#endregion
 		
+		#region Mouse events
+		private void mouseClick(object sender, MouseEventArgs e)
+		{
+			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
+			
+			var x = Math.Round(mousePoint.X / 1.5, MidpointRounding.AwayFromZero);
+			var hex = new NGenerics.DataStructures.Mathematical.Vector2D(
+				x,
+				Math.Round(mousePoint.Y / HexHeight - ((int)Math.Abs(x) % 2 != 0 ? 0.5 : 0), MidpointRounding.AwayFromZero)
+			);
+			
+			this.Controller.MoveTo(hex);
+		}
+		#endregion
+		
 		public void OnUnitTurn(CombatantInfo unitInfo)
 		{
 			this.currentUnit = unitInfo;
@@ -103,7 +120,6 @@ namespace Stareater.GLRenderers
 			
 			double x = hexX(this.currentUnit.Position);
 			double y = hexY(this.currentUnit.Position);
-			
 			double animationPhase = Methods.GetPhase(this.animationTime, AnimationPeriod);
 				
 			var color = new double[] {
@@ -144,11 +160,14 @@ namespace Stareater.GLRenderers
 
 		private void drawValidMoves()
 		{
+			if (this.currentUnit == null)
+				return;
+			
 			var center = new Vector2d(hexX(this.currentUnit.Position), hexY(this.currentUnit.Position));
-			foreach(var move in this.Controller.ValidMoves)
+			foreach(var move in this.currentUnit.ValidMoves)
 			{
 				GL.PushMatrix();
-				GL.Translate(hexX(move), hexY(move), CombatantZ);
+				GL.Translate(hexX(move), hexY(move), MovemenentZ);
 				
 				var direction = new Vector2d(hexX(move), hexY(move)) - center;
 				if (direction.LengthSquared > 0)
@@ -199,6 +218,16 @@ namespace Stareater.GLRenderers
 			GL.EndList();
 		}
 		
+		#region Helper methods
+		private Vector4 mouseToView(int x, int y)
+		{
+			return new Vector4(
+				2 * x / (float)this.eventDispatcher.Width - 1,
+				1 - 2 * y / (float)this.eventDispatcher.Height, 
+				0, 1
+			);
+		}
+		
 		private static double hexX(NGenerics.DataStructures.Mathematical.Vector2D coordinate)
 		{
 			return coordinate.X * 1.5;
@@ -218,5 +247,6 @@ namespace Stareater.GLRenderers
 				coordinate.Y >= -Math.Ceiling(yHeight / 2.0) &&
 				coordinate.Y <= Math.Floor(yHeight / 2.0);
 		}
+		#endregion
 	}
 }

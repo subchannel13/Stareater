@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.SpaceCombat;
 
@@ -88,6 +89,16 @@ namespace Stareater.GameLogic
 				this.game.PlayOrder.Enqueue(unit);
 		}
 
+		public void MoveTo(Vector2D destination)
+		{
+			if (!this.ValidMoves(this.game.PlayOrder.Peek()).Contains(destination))
+				return;
+			
+			var unit = this.game.PlayOrder.Peek();
+			unit.Position = destination;
+			unit.MovementPoints -= 1 / mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].CombatSpeed;
+		}
+		
 		public void UnitDone()
 		{
 			this.game.PlayOrder.Dequeue();
@@ -95,27 +106,29 @@ namespace Stareater.GameLogic
 			if (this.game.PlayOrder.Count == 0)
 			{
 				this.game.Turn++;
+				foreach(var unit in this.game.Combatants)
+				{
+					unit.MovementPoints += 1;
+					unit.MovementPoints = Math.Min(unit.MovementPoints, 1);
+				}
 				//TODO(v0.5) other new turn logic like removing destroyed units
 				this.MakeUnitOrder();
 			}
 		}
 
-		public IEnumerable<Vector2D> ValidMoves 
+		public IEnumerable<Vector2D> ValidMoves(Combatant unit)
 		{
-			get
-			{
-				var unit = this.game.PlayOrder.Peek();
+			if (unit.MovementPoints <= 0)
+				yield break;
+			
+			var yOffset = (int)Math.Abs(unit.Position.X) % 2 == 0 ? 0 : 1;
 				
-				if (unit.MovementPoints <= 0)
-					yield break;
-					
-				yield return unit.Position + new Vector2D(0, 1);
-				yield return unit.Position + new Vector2D(1, 0);
-				yield return unit.Position + new Vector2D(1, -1);
-				yield return unit.Position + new Vector2D(0, -1);
-				yield return unit.Position + new Vector2D(-1, -1);
-				yield return unit.Position + new Vector2D(-1, 0);
-			}
+			yield return unit.Position + new Vector2D(0, 1);
+			yield return unit.Position + new Vector2D(1, 0 + yOffset);
+			yield return unit.Position + new Vector2D(1, -1 + yOffset);
+			yield return unit.Position + new Vector2D(0, -1);
+			yield return unit.Position + new Vector2D(-1, -1 + yOffset);
+			yield return unit.Position + new Vector2D(-1, 0 + yOffset);
 		}
 	}
 }

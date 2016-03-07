@@ -34,11 +34,20 @@ namespace Stareater.Controllers.Views
 		
 		public IEnumerable<CombatantInfo> Units
 		{
-			get { return this.battleGame.Combatants.Select(x => new CombatantInfo(x, mainGame)); }
+			get 
+			{ 
+				return this.battleGame.Combatants.Select(x => new CombatantInfo(x, mainGame, this.battleGame.Processor.ValidMoves(x)));
+			}
 		}
 		#endregion
 
 		#region Unit actions
+		public void MoveTo(Vector2D destination)
+		{
+			this.battleGame.Processor.MoveTo(destination);
+			this.playNexUnit();
+		}
+		
 		public void UnitDone()
 		{
 			this.battleGame.Processor.UnitDone();
@@ -49,10 +58,6 @@ namespace Stareater.Controllers.Views
 				this.playNexUnit();
 		}
 		
-		public IEnumerable<Vector2D> ValidMoves
-		{
-			get { return this.battleGame.Processor.ValidMoves; }
-		}
 		#endregion
 		
 		#region Unit order and battle event management
@@ -70,7 +75,11 @@ namespace Stareater.Controllers.Views
 		private void playNexUnit()
 		{
 			var currentUnit = this.battleGame.PlayOrder.Peek();
-			playerListeners[currentUnit.Owner].PlayUnit(new CombatantInfo(currentUnit, mainGame));
+			playerListeners[currentUnit.Owner].PlayUnit(new CombatantInfo(
+				currentUnit, 
+				mainGame, 
+				this.battleGame.Processor.ValidMoves(currentUnit)
+			));
 		}
 		#endregion
 	}

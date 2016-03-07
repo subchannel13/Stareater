@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Views.Ships;
 using Stareater.GameLogic;
@@ -10,11 +12,13 @@ namespace Stareater.Controllers.Views.Combat
 	{
 		internal readonly Combatant Data;
 		private readonly DesignStats stats;
+		private IEnumerable<Vector2D> validMoves;
 		
-		internal CombatantInfo(Combatant data, MainGame game)
+		internal CombatantInfo(Combatant data, MainGame game, IEnumerable<Vector2D> validMoves)
 		{
 			this.Data = data;
 			this.stats = game.Derivates.Of(data.Owner).DesignStats[data.Ships.Design];
+			this.validMoves = validMoves.ToList();
 		}
 		
 		public Vector2D Position
@@ -35,6 +39,11 @@ namespace Stareater.Controllers.Views.Combat
 		public long Count
 		{
 			get { return this.Data.Ships.Quantity; }
+		}
+		
+		public IEnumerable<Vector2D> ValidMoves
+		{
+			get { return this.validMoves; }
 		}
 	}
 }
