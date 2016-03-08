@@ -45,17 +45,13 @@ namespace Stareater.Controllers.Views
 		public void MoveTo(Vector2D destination)
 		{
 			this.battleGame.Processor.MoveTo(destination);
-			this.playNexUnit();
+			this.checkNextUnit();
 		}
 		
 		public void UnitDone()
 		{
 			this.battleGame.Processor.UnitDone();
-			
-			if (this.battleGame.Processor.IsOver)
-				this.gameController.ConflictResolved(this.battleGame);
-			else
-				this.playNexUnit();
+			this.checkNextUnit();
 		}
 		
 		#endregion
@@ -72,6 +68,14 @@ namespace Stareater.Controllers.Views
 			this.playNexUnit();
 		}
 
+		private void checkNextUnit()
+		{
+			if (this.battleGame.Processor.IsOver)
+				this.gameController.ConflictResolved(this.battleGame);
+			else
+				this.playNexUnit();
+		}
+		
 		private void playNexUnit()
 		{
 			var currentUnit = this.battleGame.PlayOrder.Peek();

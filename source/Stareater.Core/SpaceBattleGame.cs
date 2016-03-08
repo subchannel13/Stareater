@@ -18,6 +18,7 @@ namespace Stareater
 		public int TurnLimit;
 		
 		public List<Combatant> Combatants { get; private set; }
+		public List<Combatant> Retreated { get; private set; }
 		public int Turn;
 		public Queue<Combatant> PlayOrder { get; private set; }
 		
@@ -25,6 +26,7 @@ namespace Stareater
 		{
 			this.Combatants = new List<Combatant>();
 			this.PlayOrder = new Queue<Combatant>();
+			this.Retreated = new List<Combatant>();
 			this.Rng = new Random();
 			this.Processor = new SpaceBattleProcessor(this, mainGame);
 			this.Turn = 0;

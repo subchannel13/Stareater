@@ -52,9 +52,30 @@ namespace Stareater.Utils
 			return best;
 		}
 		
+		/// <summary>
+		/// Returns the phase (fraction of completion) of a period.
+		/// </summary>
+		/// <param name="x">Input value such ase total elapsed time</param>
+		/// <param name="period">Period length</param>
+		/// <returns>Phase value between 0 (period just started, inclusive) and 1 (period finished, exclusive)</returns>
 		public static double GetPhase(double x, double period)
 		{
 			return x / period - Math.Floor(x / period);
+		}
+		
+		/// <summary>
+		/// Checks if a coordinate on hexagon grid is inside a certain radius.
+		/// </summary>
+		/// <param name="coordinate">Coordinate to test</param>
+		/// <param name="gridRadius">Radius</param>
+		/// <returns>True if a coordinate is inside a radius</returns>
+		public static bool InsideHexGrid(Vector2D coordinate, int gridRadius)
+		{
+			double yHeight = (gridRadius * 2 - Math.Abs(coordinate.X));
+			
+			return Math.Abs(coordinate.X) <= gridRadius &&
+				coordinate.Y >= -Math.Ceiling(yHeight / 2.0) &&
+				coordinate.Y <= Math.Floor(yHeight / 2.0);
 		}
 		
 		/// <summary>

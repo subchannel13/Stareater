@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.SpaceCombat;
+using Stareater.Utils;
 
 namespace Stareater.GameLogic
 {
@@ -51,10 +52,7 @@ namespace Stareater.GameLogic
 			
 			if (Math.Abs(snapped.Magnitude()) < 1e-3 && position.Magnitude() > 0)
 				return correctPosition(position + position * 0.5 / position.Magnitude());
-			else if (
-				Math.Abs(snapped.X) > SpaceBattleGame.BattlefieldRadius ||
-				snapped.Y < -Math.Ceiling(yHeight / 2.0) || 
-			    snapped.Y > Math.Floor(yHeight / 2.0))
+			else if (!Methods.InsideHexGrid(snapped, SpaceBattleGame.BattlefieldRadius))
 				return correctPosition(position - position * 0.5 / position.Magnitude());
 				
 			return position;
@@ -95,8 +93,18 @@ namespace Stareater.GameLogic
 				return;
 			
 			var unit = this.game.PlayOrder.Peek();
-			unit.Position = destination;
-			unit.MovementPoints -= 1 / mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].CombatSpeed;
+			
+			if (Methods.InsideHexGrid(destination, SpaceBattleGame.BattlefieldRadius))
+			{
+				unit.Position = destination;
+				unit.MovementPoints -= 1 / mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].CombatSpeed;
+			}
+			else
+			{
+				this.game.Retreated.Add(unit);
+				this.game.Combatants.Remove(unit);
+				this.UnitDone();
+			}
 		}
 		
 		public void UnitDone()

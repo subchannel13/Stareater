@@ -183,7 +183,7 @@ namespace Stareater.GLRenderers
 				GL.Translate(-0.25, 0, 0);
 				GL.Scale(0.4, 0.4, 1);
 				
-				GL.Color4(insideMap(move) ? Color.Green : Color.White);
+				GL.Color4(Methods.InsideHexGrid(move, SpaceBattleController.BattlefieldRadius) ? Color.Green : Color.White);
 				
 				TextureUtils.DrawSprite(GalaxyTextures.Get.MoveToArrow);
 				GL.PopMatrix();
@@ -236,16 +236,6 @@ namespace Stareater.GLRenderers
 		private static double hexY(NGenerics.DataStructures.Mathematical.Vector2D coordinate)
 		{
 			return HexHeight * (coordinate.Y + ((int)Math.Abs(coordinate.X) % 2 != 0 ? 0.5 : 0));
-		}
-
-		//TODO(v0.5) unify with similar check in SpaceBattleProcessor.correctPosition
-		private static bool insideMap(NGenerics.DataStructures.Mathematical.Vector2D coordinate)
-		{
-			double yHeight = (SpaceBattleController.BattlefieldRadius * 2 - Math.Abs(coordinate.X));
-			
-			return Math.Abs(coordinate.X) <= SpaceBattleController.BattlefieldRadius &&
-				coordinate.Y >= -Math.Ceiling(yHeight / 2.0) &&
-				coordinate.Y <= Math.Floor(yHeight / 2.0);
 		}
 		#endregion
 	}
