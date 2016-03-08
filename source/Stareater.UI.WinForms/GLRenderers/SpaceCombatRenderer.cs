@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -18,10 +19,11 @@ namespace Stareater.GLRenderers
 		private const float FarZ = -1;
 		private const float Layers = 16.0f;
 		
-		private const float CellBackgroundZ = -5 / Layers;
-		private const float GridZ = -4 / Layers;
-		private const float StarColorZ = -3 / Layers;
-		private const float CombatantZ = -2 / Layers;
+		private const float CellBackgroundZ = -6 / Layers;
+		private const float GridZ = -5 / Layers;
+		private const float StarColorZ = -4 / Layers;
+		private const float CombatantZ = -3 / Layers;
+		private const float MoreCombatantsZ = -2 / Layers;
 		private const float MovemenentZ = -1 / Layers;
 		
 		private const double AnimationPeriod = 3;
@@ -147,13 +149,29 @@ namespace Stareater.GLRenderers
 		
 		private void drawUnits()
 		{
-			foreach(var unit in this.Controller.Units)
+			var units = this.Controller.Units.GroupBy(x => x.Position);
+			
+			foreach(var hex in units)
 			{
+				var unit = hex.First(); //TODO(v0.5) select most prominent unit
+				
 				GL.PushMatrix();
-				GL.Translate(hexX(unit.Position), hexY(unit.Position), CombatantZ);
+				GL.Translate(hexX(hex.Key), hexY(hex.Key), CombatantZ);
 				GL.Color4(unit.Owner.Color); //TODO(v0.5) color units
 				
 				TextureUtils.DrawSprite(GalaxyTextures.Get.Sprite(unit.Design.ImagePath));
+				
+				var otherUnits = hex.Where(x => x != unit).Select(x => x.Owner).Distinct().ToList();
+				for(int i = 0; i < otherUnits.Count; i++)
+				{
+					GL.PushMatrix();
+					GL.Translate(0.5, 0.2 * i + 0.5, MoreCombatantsZ - CombatantZ);
+					GL.Scale(0.2, 0.2, 1);
+					GL.Color4(otherUnits[i].Color);
+					
+					TextureUtils.DrawSprite(GalaxyTextures.Get.FleetIndicator);
+					GL.PopMatrix();
+				}
 				GL.PopMatrix();
 			}
 		}
