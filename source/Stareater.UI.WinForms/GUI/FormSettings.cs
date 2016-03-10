@@ -41,6 +41,10 @@ namespace Stareater.GUI
 					guiScaleSelector.SelectedIndex = guiScaleSelector.Items.Count - 1;
 			}
 
+			fpsInput.Value = SettingsWinforms.Get.Framerate;
+			batteryFpsInput.Value = SettingsWinforms.Get.BatteryFramerate;
+			unlimitedFpsCheck.Checked = SettingsWinforms.Get.UnlimitedFramerate;
+			
 			setLanguage();
 		}
 
@@ -53,6 +57,9 @@ namespace Stareater.GUI
 
 			languageTitle.Text = context["LanguageLabel"].Text();
 			guiScaleTitle.Text = context["GuiScaleLabel"].Text();
+			fpsTitle.Text = context["FpsLabel"].Text();
+			batteryFpsTitle.Text = context["BatteryFpsLabel"].Text();
+			unlimitedFpsCheck.Text = context["UnlimitedFpsLabel"].Text();
 			confirmButton.Text = selectedLanguage["General"]["DialogAccept"].Text();
 			
 			rendererInfo.Text = context["RendererLabel"].Text() + Environment.NewLine + GL.GetString(StringName.Renderer);
@@ -87,11 +94,21 @@ namespace Stareater.GUI
 			selectedGuiScale = (guiScaleSelector.SelectedItem as Tag<int>).Value / 100f;
 			setLanguage();
 		}
+		
+		private void UnlimitedFpsCheckCheckedChanged(object sender, EventArgs e)
+		{
+			fpsInput.Enabled = !unlimitedFpsCheck.Checked;
+		}
 
 		private void confirmButton_Click(object sender, EventArgs e)
 		{
 			SettingsWinforms.Get.Language = selectedLanguage;
-			SettingsWinforms.Get.GuiScale = selectedGuiScale; 
+			SettingsWinforms.Get.GuiScale = selectedGuiScale;
+
+			SettingsWinforms.Get.BatteryFramerate = (int)batteryFpsInput.Value;
+			SettingsWinforms.Get.Framerate = (int)fpsInput.Value;
+			SettingsWinforms.Get.UnlimitedFramerate = unlimitedFpsCheck.Checked;
+			
 			DialogResult = System.Windows.Forms.DialogResult.OK;
 		}
 	}

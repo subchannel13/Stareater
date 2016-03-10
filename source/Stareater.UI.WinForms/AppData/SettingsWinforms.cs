@@ -23,18 +23,29 @@ namespace Stareater.AppData
 		#endregion
 
 		public float GuiScale { get; set; }
+		
+		public int Framerate { get; set; }
+		public int BatteryFramerate { get; set; }
+		public bool UnlimitedFramerate { get; set; }
 
-		public SettingsWinforms(TaggableQueue<object, IkadnBaseObject> data)
-			:base(data)
+		public SettingsWinforms(TaggableQueue<object, IkadnBaseObject> data) : base(data)
 		{
 			if (data.CountOf(WinformsSettingsTag) > 0)
 			{
-				IkonComposite wfSpecificData = data.Dequeue(WinformsSettingsTag).To<IkonComposite>();
-				GuiScale = wfSpecificData[GuiScaleKey].To<float>();
+				var wfSpecificData = data.Dequeue(WinformsSettingsTag).To<IkonComposite>();
+				this.GuiScale = wfSpecificData[GuiScaleKey].To<float>();
+				
+				this.BatteryFramerate = wfSpecificData[FpsBatteryKey].To<int>();
+				this.Framerate = wfSpecificData[FpsKey].To<int>();
+				this.UnlimitedFramerate = wfSpecificData[FpsUnlimitedKey].To<int>() >= 0;
 			}
 			else
 			{
-				GuiScale = 1;
+				this.GuiScale = 1;
+				
+				this.BatteryFramerate = 60;
+				this.Framerate = 120;
+				this.UnlimitedFramerate = false;
 			}
 		}
 
@@ -48,6 +59,9 @@ namespace Stareater.AppData
 
 		#region Attribute keys
 		const string WinformsSettingsTag = "winforms";
+		const string FpsBatteryKey = "fpsBattery";
+		const string FpsKey = "fps";
+		const string FpsUnlimitedKey = "noFps";
 		const string GuiScaleKey = "guiscale";
 		#endregion
 
@@ -55,8 +69,12 @@ namespace Stareater.AppData
 		{
 			base.buildSaveData(writer);
 
-			IkonComposite settings = new IkonComposite(WinformsSettingsTag);
+			var settings = new IkonComposite(WinformsSettingsTag);
 			settings.Add(GuiScaleKey, new IkonFloat(GuiScale));
+			
+			settings.Add(FpsBatteryKey, new IkonInteger(BatteryFramerate));
+			settings.Add(FpsKey, new IkonInteger(Framerate));
+			settings.Add(FpsUnlimitedKey, new IkonInteger(UnlimitedFramerate ? 1 : -1));
 			settings.Compose(writer);
 		}
 	}

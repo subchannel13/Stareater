@@ -67,19 +67,19 @@ namespace Stareater.AppData
 		#region Saving
 		public void Save()
 		{
-			FileInfo saveFile = new FileInfo(SettingsFilePath);
+			var saveFile = new FileInfo(SettingsFilePath);
 			saveFile.Directory.Create();
 
 			using (var output = new StreamWriter(SettingsFilePath))
 			{
-				IkadnWriter writer = new IkadnWriter(output);
+				var writer = new IkadnWriter(output);
 				buildSaveData(writer);
 			}
 		}
 
 		protected virtual void buildSaveData(IkadnWriter writer)
 		{
-			IkonComposite baseSettings = new IkonComposite(BaseSettingsTag);
+			var baseSettings = new IkonComposite(BaseSettingsTag);
 			baseSettings.Add(LanguageKey, new IkonText(Language.Code));
 			baseSettings.Add(LastGameKey, LastGame.BuildSaveData());
 			baseSettings.Compose(writer);

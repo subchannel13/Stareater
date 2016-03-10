@@ -46,16 +46,16 @@ namespace Stareater.GUI
 			this.gameController = new GameController();
 			this.reportOpener = new OpenReportVisitor(showDevelopment, showResearch);
 			
-			setLanguage();
+			applySettings();
 			postDelayedEvent(showMainMenu);
 		}
-
+		
 		private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			SettingsWinforms.Get.Save();
 		}
 
-		private void setLanguage()
+		private void applySettings()
 		{
 			this.Font = SettingsWinforms.Get.FormFont;
 
@@ -64,6 +64,12 @@ namespace Stareater.GUI
 			this.returnButton.Text = context["Return"].Text();
 			this.mainMenuToolStripMenuItem.Text = context["MainMenu"].Text();
 			this.developmentToolStripMenuItem.Text = context["DevelopmentMenu"].Text();
+			
+			//TODO(v0.5) implement power state (battery or plug in) check
+			//TODO(v0.5) try to find a way for renderer loop without timer
+			this.glRedrawTimer.Interval = SettingsWinforms.Get.UnlimitedFramerate ? 
+				1 : 
+				(int)Math.Max(1, Math.Floor(0.3 * 1000.0 / SettingsWinforms.Get.Framerate));
 		}
 		
 		private PlayerController currentPlayer
@@ -83,7 +89,10 @@ namespace Stareater.GUI
 		
 		private void glRedrawTimer_Tick(object sender, EventArgs e)
 		{
-			glCanvas.Refresh();
+			double dt = (DateTime.UtcNow - this.lastRender).TotalSeconds;
+			
+			if (SettingsWinforms.Get.UnlimitedFramerate || dt > 1.0 / SettingsWinforms.Get.Framerate)
+				glCanvas.Refresh();
 		}
 
 		private void endTurnButton_Click(object sender, EventArgs e)
@@ -228,7 +237,7 @@ namespace Stareater.GUI
 		{
 			using (var form = new FormSettings())
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
-					setLanguage();
+					applySettings();
 			postDelayedEvent(showMainMenu);
 		}
 		#endregion
