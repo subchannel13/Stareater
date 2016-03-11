@@ -10,11 +10,13 @@ namespace Stareater.Ships
 	{
 		public T TypeInfo { get; private set; }
 		public int Level { get; private set; }
+		public int Quantity { get; private set; }
 		
-		public Component(T typeInfo, int level)
+		public Component(T typeInfo, int level, int quantity = 1)
 		{
 			this.TypeInfo = typeInfo;
 			this.Level = level;
+			this.Quantity = quantity;
 		}
 		
 		public IkadnBaseObject Save()
@@ -24,6 +26,9 @@ namespace Stareater.Ships
 			data.Add(new IkonText(this.TypeInfo.IdCode));
 			data.Add(new IkonInteger(this.Level));
 			
+			if (this.TypeInfo.CanHaveMultiple)
+				data.Add(new IkonInteger(this.Quantity));
+			
 			return data;
 		}
 		
@@ -31,13 +36,15 @@ namespace Stareater.Ships
 		{
 			return new Component<T>(
 				deindexer.Get<T>(rawData[TypeIndex].To<string>()),
-				rawData[LevelIndex].To<int>()
+				rawData[LevelIndex].To<int>(),
+				QuantityIndex < rawData.Count ? rawData[QuantityIndex].To<int>() : 1
 			);
 		}
 		
 		#region Saving keys
 		private const int TypeIndex = 0;
 		private const int LevelIndex = 1;
+		private const int QuantityIndex = 2;
  		#endregion
 	}
 }

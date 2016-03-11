@@ -292,8 +292,8 @@ namespace Stareater.GameLogic
 			}
 			foreach(var special in design.SpecialEquipment)
 			{
-				shipVars[special.Key.TypeInfo.IdCode] = special.Value;
-				shipVars[special.Key.TypeInfo.IdCode + "_lvl"] = special.Key.Level; //TODO(v0.5) Make string constant
+				shipVars[special.TypeInfo.IdCode] = special.Quantity;
+				shipVars[special.TypeInfo.IdCode + "_lvl"] = special.Level; //TODO(v0.5) Make string constant
 			}
 			var buildings = new Dictionary<string, double>();
 			foreach(var colonyBuilding in statics.ShipFormulas.ColonizerBuildings)
@@ -345,15 +345,17 @@ namespace Stareater.GameLogic
 			var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(statics.IsDrives.Values, techLevels, hull, ReactorType.PowerOf(reactor, hull)) : null;
 			var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels);
 			var shield = predefDesign.ShieldCode != null ? statics.Shields[predefDesign.ShieldCode].MakeBest(techLevels) : null;
-			var specials = predefDesign.SpecialEquipment.ToDictionary(
-				x => statics.SpecialEquipment[x.Key].MakeBest(techLevels),
-				x => x.Value
-			);
+			var equipment = predefDesign.MissionEquipment.Select(
+				x => statics.MissionEquipment[x.Key].MakeBest(techLevels, x.Value)
+			).ToList();
+			var specials = predefDesign.SpecialEquipment.OrderBy(x => x.Key).Select(
+				x => statics.SpecialEquipment[x.Key].MakeBest(techLevels, x.Value)
+			).ToList();
 			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
 
 			var design = new Design(
 				states.MakeDesignId(), Player, isVirtual, predefDesign.Name, predefDesign.HullImageIndex,
-			    armor, hull, isDrive, reactor, sensor, shield, specials, thruster
+			    armor, hull, isDrive, reactor, sensor, shield, equipment, specials, thruster
 			);
 			design.CalcHash(statics);
 			

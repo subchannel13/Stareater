@@ -179,6 +179,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameData\Ships\AAbilityType.cs" />
+    <Compile Include="GameData\Ships\DirectShootAbility.cs" />
+    <Compile Include="GameData\Ships\MissionEquipmentType.cs" />
     <Compile Include="GameLogic\SpaceBattleProcessor.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="GameData\BuildingType.cs" />

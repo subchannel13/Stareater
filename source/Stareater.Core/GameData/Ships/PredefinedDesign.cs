@@ -13,9 +13,11 @@ namespace Stareater.GameData.Ships
 		
 		public bool HasIsDrive { get; private set; }
 		public string ShieldCode { get; private set; }
+		public List<KeyValuePair<string, int>> MissionEquipment { get; private set; }
 		public Dictionary<string, int> SpecialEquipment { get; private set; }
 		
-		public PredefinedDesign(string name, string hullCode, int hullImageIndex, bool hasIsDrive, string shieldCode, Dictionary<string, int> specialEquipment)
+		public PredefinedDesign(string name, string hullCode, int hullImageIndex, bool hasIsDrive, string shieldCode, 
+		                        List<KeyValuePair<string, int>> missionEquipment, Dictionary<string, int> specialEquipment)
 		{
 			this.Name = name;
 			
@@ -23,6 +25,7 @@ namespace Stareater.GameData.Ships
 			this.HullCode = hullCode;
 			this.HullImageIndex = hullImageIndex;
 			this.ShieldCode = shieldCode;
+			this.MissionEquipment = missionEquipment;
 			this.SpecialEquipment = specialEquipment;
 		}
 		

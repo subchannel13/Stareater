@@ -4,6 +4,9 @@
 	hull: fighter
 	hullImageIndex= 0
 	
+	equipment [
+		:laser =1
+	]
 	specials []
 }
 
@@ -15,5 +18,6 @@
 	
 	hasIsDrive []
 	
+	equipment []
 	specials []
 }

@@ -38,11 +38,11 @@ namespace Stareater.Ships
 			else
 				hashBuilder.Add(0, 2);
 			
-			int maxEquips = this.SpecialEquipment.Count> 0 ? (this.SpecialEquipment.Values.Max() + 1) : 0;
-			foreach(var equip in this.SpecialEquipment.OrderBy(x => x.Key.TypeInfo.IdCode))
+			int maxEquips = this.SpecialEquipment.Count > 0 ? (this.SpecialEquipment.Max(x => x.Quantity) + 1) : 0;
+			foreach(var equip in this.SpecialEquipment.OrderBy(x => x.TypeInfo.IdCode))
 			{
-				HashComponent(hashBuilder, equip.Key, statics.SpecialEquipment);
-				hashBuilder.Add(equip.Value, maxEquips);
+				HashComponent(hashBuilder, equip, statics.SpecialEquipment);
+				hashBuilder.Add(equip.Quantity, maxEquips);
 			}
 			
 			this.hash = hashBuilder.Create();
@@ -63,21 +63,13 @@ namespace Stareater.Ships
 			
 			double hullSize = this.Hull.TypeInfo.Size.Evaluate(hullVars);
 			double specialsCost = SpecialEquipment.Sum(
-				x => x.Value * x.Key.TypeInfo.Cost.Evaluate(
-					new Var(AComponentType.LevelKey, x.Key.Level).
+				x => x.Quantity * x.TypeInfo.Cost.Evaluate(
+					new Var(AComponentType.LevelKey, x.Level).
 					And(HullType.HullSizeKey, hullSize).Get
 				)
 			);
 			
 			return hullCost + isDriveCost + specialsCost;
-		}
-		
-		private void initSpecials(Dictionary<Component<SpecialEquipmentType>, int> specialEquipment)
-		{
-			this.SpecialEquipment = new Dictionary<Component<SpecialEquipmentType>, int>();
-
-			foreach(var equipment in specialEquipment)
-				this.SpecialEquipment.Add(equipment.Key, equipment.Value);
 		}
 		
 		public string ImagePath 

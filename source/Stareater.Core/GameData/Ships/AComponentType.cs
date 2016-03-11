@@ -45,6 +45,11 @@ namespace Stareater.GameData.Ships
 			return 0;
 		}
 		
+		public virtual bool CanHaveMultiple
+		{
+			get { return false; }
+		}
+		
 		public static Component<T> MakeBest<T>(IEnumerable<T> assortment, IDictionary<string, int> techLevels) where T: AComponentType, IIncrementalComponent
 		{
 			return Methods.FindBest(

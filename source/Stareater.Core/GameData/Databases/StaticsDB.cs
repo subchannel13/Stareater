@@ -30,6 +30,7 @@ namespace Stareater.GameData.Databases
 		public Dictionary<string, ArmorType> Armors { get; private set; }
 		public Dictionary<string, HullType> Hulls { get; private set; }
 		public Dictionary<string, IsDriveType> IsDrives { get; private set; }
+		public Dictionary<string, MissionEquipmentType> MissionEquipment { get; private set; }
 		public Dictionary<string, ReactorType> Reactors { get; private set; }
 		public Dictionary<string, SensorType> Sensors { get; private set; }
 		public Dictionary<string, ShieldType> Shields { get; private set; }
@@ -46,6 +47,7 @@ namespace Stareater.GameData.Databases
 			this.Hulls = new Dictionary<string, HullType>();
 			this.IsDrives = new Dictionary<string, IsDriveType>();
 			this.Reactors = new Dictionary<string, ReactorType>();
+			this.MissionEquipment = new Dictionary<string, MissionEquipmentType>();
 			this.Sensors = new Dictionary<string, SensorType>();
 			this.Shields = new Dictionary<string, ShieldType>();
 			this.SpecialEquipment = new Dictionary<string, SpecialEquipmentType>();
@@ -110,6 +112,9 @@ namespace Stareater.GameData.Databases
 								break;
 							case IsDriveTag:
 								IsDrives.Add(data[GeneralCodeKey].To<string>(), loadIsDrive(data));
+								break;
+							case MissionEquipmentTag:
+								MissionEquipment.Add(data[GeneralCodeKey].To<string>(), loadMissionEquiptment(data));
 								break;
 							case ReactorTag:
 								Reactors.Add(data[GeneralCodeKey].To<string>(), loadReactor(data));
@@ -275,8 +280,19 @@ namespace Stareater.GameData.Databases
 				data[DesignHullImageIndex].To<int>(),
 				data.Keys.Contains(DesignIsDrive),
 				data.Keys.Contains(DesignShield) ? data[DesignShield].To<string>() : null,
+				loadDesignMissionEquipment(data[DesignMissionEquipment].To<IkonArray>()),
 				loadDesignSpecialEquipment(data[DesignSpecialEquipment].To<IkonArray>())
 			);
+		}
+		
+		private List<KeyValuePair<string, int>> loadDesignMissionEquipment(IList<Ikadn.IkadnBaseObject> data)
+		{
+			var result = new List<KeyValuePair<string, int>>();
+			
+			for(int i = 0; i < data.Count / 2; i++)
+				result.Add(new KeyValuePair<string, int>(data[i * 2].To<string>(), data[i * 2 + 1].To<int>()));
+			
+			return result;
 		}
 		
 		private Dictionary<string, int> loadDesignSpecialEquipment(IList<Ikadn.IkadnBaseObject> data)
@@ -303,6 +319,27 @@ namespace Stareater.GameData.Databases
 				data[ArmorAbsorb].To<Formula>(),
 				data[ArmorAbsorbMax].To<Formula>()
 			);
+		}
+
+		private IEnumerable<AAbilityType> loadEquipmentAbilities(IEnumerable<IkonComposite> data)
+		{
+			foreach(var abilityData in data)
+			{
+				switch(abilityData.Tag.ToString())
+				{
+					case DirectShotTag:
+						yield return new DirectShootAbility(
+							abilityData[GeneralImageKey].To<string>(),
+							abilityData[DirectShootFirepower].To<Formula>(),
+							abilityData[DirectShootAccuracy].To<Formula>(),
+							abilityData[DirectShootShieldEfficiency].To<Formula>(),
+							abilityData[DirectShootArmorEfficiency].To<Formula>()
+						);
+						break;
+					default:
+						throw new FormatException("Invalid construction effect with tag " + abilityData.Tag);
+				}
+			}
 		}
 		
 		private HullType loadHull(IkonComposite data)
@@ -342,6 +379,21 @@ namespace Stareater.GameData.Databases
 				data[GeneralCostKey].To<Formula>(),
 				data[IsDriveSpeed].To<Formula>(),
 				data[IsDriveMinSize].To<Formula>()
+			);
+		}
+		
+		private MissionEquipmentType loadMissionEquiptment(IkonComposite data)
+		{
+			return new MissionEquipmentType(
+				data[GeneralCodeKey].To<string>(),
+				data[GeneralNameKey].To<string>(),
+				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralImageKey].To<string>(),
+				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
+				data[GeneralMaxLevelKey].To<int>(),
+				data[GeneralCostKey].To<Formula>(),
+				data[SpecialEquipmentSizeKey].To<Formula>(),
+				loadEquipmentAbilities(data[MissionEquipmentAbilitiesKey].To<IEnumerable<IkonComposite>>()).ToArray()
 			);
 		}
 		
@@ -471,11 +523,14 @@ namespace Stareater.GameData.Databases
 		private const string ArmorTag = "Armor";
 		private const string HullTag = "Hull";
 		private const string IsDriveTag = "IsDrive"; 
+		private const string MissionEquipmentTag = "MissionEquipment";
 		private const string ReactorTag = "Reactor";
 		private const string SensorTag = "Sensor";
 		private const string ShieldTag = "Shield";
 		private const string SpecialEquipmentTag = "SpecialEquipment";
 		private const string ThrusterTag = "Thruster";
+		
+		private const string DirectShotTag = "DirectShot";
 		
 		private const string ColonizationPopulationThreshold = "colonizationPopThreshold";
 		private const string ColonyMaxPopulation = "maxPopulation";
@@ -523,6 +578,7 @@ namespace Stareater.GameData.Databases
 		private const string DesignHull = "hull";
 		private const string DesignHullImageIndex = "hullImageIndex";
 		private const string DesignShield = "shield";
+		private const string DesignMissionEquipment = "equipment";
 		private const string DesignSpecialEquipment = "specials";
 		private const string DesignType = "type";
 		
@@ -564,6 +620,9 @@ namespace Stareater.GameData.Databases
 		private const string IsDriveMinSize = "minSize";
 		private const string IsDriveSpeed = "speed";
 		
+		private const string MissionEquipmentAbilitiesKey = "abilities";
+		private const string MissionEquipmentSizeKey = "size";
+		
 		private const string ReactorMinSize = "minSize";
 		private const string ReactorPower = "power";
 
@@ -583,6 +642,11 @@ namespace Stareater.GameData.Databases
 		
 		private const string ThrusterEvasion = "evasion";
 		private const string ThrusterSpeed = "speed";
+		
+		private const string DirectShootFirepower = "firePower";
+		private const string DirectShootAccuracy = "accuracy";
+		private const string DirectShootShieldEfficiency = "armorEfficiency";
+		private const string DirectShootArmorEfficiency = "shieldEfficiency";
 		#endregion
 	}
 }

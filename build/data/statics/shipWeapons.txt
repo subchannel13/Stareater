@@ -1,0 +1,23 @@
+﻿{ MissionEquipment
+	nameCode: LASER_NAME
+	descCode: LASER_DESC
+	image: ./images/technologies/hydroponicFarms.png
+	code: laser
+	
+	maxLvl= 5
+	prerequisites [
+	]
+	
+	cost # 200000;
+	size # 5;
+	
+	abilities [
+		{ DirectShot
+			image: ./images/technologies/hydroponicFarms.png
+			firePower # 5;
+			accuracy # 30;
+			armorEfficiency # 0.5;
+			shieldEfficiency # 1;
+		}
+	]
+}

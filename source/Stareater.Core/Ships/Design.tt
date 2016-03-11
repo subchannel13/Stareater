@@ -4,7 +4,6 @@
 	usings.Add("System");
 	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.GameData");
-	usings.Add("Stareater.GameData.Databases");
 	usings.Add("Stareater.GameData.Ships");
 	usings.Add("Stareater.Players");
 	usings.Add("Stareater.Utils");
@@ -23,11 +22,12 @@
 		new DataInfo("Reactor", "Component<ReactorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Sensors", "Component<SensorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Shield", "Component<ShieldType>").IsStatic(Flag.NoIndexer, Flag.ArrayData).CanBeNull(),
-		new DataInfo("SpecialEquipment", "Dictionary", 
-			new GenericParamInfo("Component<SpecialEquipmentType>").SaveIdCodeMethod("TypeInfo.IdCode").SaveKey("SpecialKey", "Type").IsStatic(Flag.NoIndexer, Flag.ArrayData),
-			new GenericParamInfo("int").SaveKey("SpecialAmountKey", "amount")
-		).Init("initSpecials(specialEquipment);", "Dictionary<Component<SpecialEquipmentType>, int>", "specialEquipment").
-			SaveKey("Specials").SaveTag("Equipment"),
+		new DataInfo("MissionEquipment", "List",
+			new GenericParamInfo("Component<MissionEquipmentType>").SaveIdCodeMethod("TypeInfo.IdCode").IsStatic(Flag.NoIndexer, Flag.ArrayData)
+		).SaveKey("Equipment"),
+		new DataInfo("SpecialEquipment", "List", 
+			new GenericParamInfo("Component<SpecialEquipmentType>").SaveIdCodeMethod("TypeInfo.IdCode").SaveKey("SpecialKey", "Type").IsStatic(Flag.NoIndexer, Flag.ArrayData)
+		).SaveKey("Specials"),
 		new DataInfo("Thrusters", "Component<ThrusterType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Hash", "BitHash").Private().NoInit().NoSaveLoad(),
 		new DataInfo("Cost", "double").Derived("initCost();")
