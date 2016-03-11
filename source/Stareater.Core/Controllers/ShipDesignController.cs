@@ -137,7 +137,8 @@ namespace Stareater.Controllers
 		private SensorInfo sensorInfo = null;
 		private ThrusterInfo thrusterInfo = null;
 
-		private readonly Dictionary<Component<SpecialEquipmentType>, int> selectedSpecialEquipment = new Dictionary<Component<SpecialEquipmentType>, int>();
+		private readonly List<Component<MissionEquipmentType>> selectedMissionEquipment = new List<Component<MissionEquipmentType>>();
+		private readonly List<Component<SpecialEquipmentType>> selectedSpecialEquipment = new List<Component<SpecialEquipmentType>>();
 
 		void onHullChange()
 		{
@@ -203,7 +204,7 @@ namespace Stareater.Controllers
 				var vars = new Var("hullHp", selectedHull.HitPointsBase).
 					And("armorFactor", armorInfo.ArmorFactor).
 					Init(this.game.Statics.SpecialEquipment.Keys, 0).
-					UnionWith(this.selectedSpecialEquipment.ToDictionary(x => x.Key.TypeInfo.IdCode, x => x.Value)).Get; 
+					UnionWith(this.selectedSpecialEquipment.ToDictionary(x => x.TypeInfo.IdCode, x => x.Quantity)).Get; 
 				//TODO(v0.5) add special equipment levels, make special equipment variables more reusabe put spec equip vars to other properties
 				
 				return game.Statics.ShipFormulas.HitPoints.Evaluate(vars);
@@ -250,10 +251,10 @@ namespace Stareater.Controllers
 
 		public void AddSpecialEquip(SpecialEquipInfo equipInfo)
 		{
-			if (this.selectedSpecialEquipment.Any(x => x.Key.TypeInfo == equipInfo.Type))
+			if (this.selectedSpecialEquipment.Any(x => x.TypeInfo == equipInfo.Type))
 				return;
 
-			this.selectedSpecialEquipment.Add(new Component<SpecialEquipmentType>(equipInfo.Type, equipInfo.Level), 1);
+			this.selectedSpecialEquipment.Add(new Component<SpecialEquipmentType>(equipInfo.Type, equipInfo.Level, 1));
 		}
 
 		public HullInfo Hull 
@@ -270,7 +271,7 @@ namespace Stareater.Controllers
 
 		public bool HasSpecialEquip(SpecialEquipInfo equipInfo)
 		{
-			return this.selectedSpecialEquipment.Any(x => x.Value > 0 && x.Key.TypeInfo == equipInfo.Type);
+			return this.selectedSpecialEquipment.Any(x => x.Quantity > 0 && x.TypeInfo == equipInfo.Type);
 		}
 		
 		public ShieldInfo Shield { get; set; }
@@ -278,19 +279,19 @@ namespace Stareater.Controllers
 		public int SpecialEquipCount(SpecialEquipInfo equipInfo)
 		{
 			return this.selectedSpecialEquipment.
-				Where(x => x.Key.TypeInfo == equipInfo.Type).
-				Aggregate(0, (sum, x) => x.Value);
+				Where(x => x.TypeInfo == equipInfo.Type).
+				Aggregate(0, (sum, x) => x.Quantity);
 		}
 				
 		public void SpecialEquipSetAmount(SpecialEquipInfo equipInfo, int amount)
 		{
-			var component = this.selectedSpecialEquipment.Keys.FirstOrDefault(x => x.TypeInfo == equipInfo.Type);
+			int i = this.selectedSpecialEquipment.FindIndex(x => x.TypeInfo == equipInfo.Type);
 			
-			if (component != null)
+			if (i >= 0)
 				if (amount == 0)
-					this.selectedSpecialEquipment.Remove(component);
+					this.selectedSpecialEquipment.RemoveAt(i);
 				else if (amount > 0 && amount <= equipInfo.MaxCount)
-					this.selectedSpecialEquipment[component] = amount;
+					this.selectedSpecialEquipment[i] = new Component<SpecialEquipmentType>(equipInfo.Type, equipInfo.Level, amount);
 		}
 
 		public bool IsDesignValid
@@ -322,6 +323,7 @@ namespace Stareater.Controllers
 				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level),
 				new Component<SensorType>(this.sensorInfo.Type, this.sensorInfo.Level),
 				this.Shield != null ? new Component<ShieldType>(this.Shield.Type, this.Shield.Level) : null,
+				selectedMissionEquipment,
 				selectedSpecialEquipment, 
 				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level)
 			);

@@ -6,6 +6,7 @@
 			hull: cruiser
 			hullImageIndex= 0
 			
+			equipment []
 			specials [
 				:colony =1
 			]
@@ -21,6 +22,7 @@
 			
 			hasIsDrive []
 			
+			equipment []
 			specials [
 				:colony =1
 			]
