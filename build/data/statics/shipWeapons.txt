@@ -18,6 +18,7 @@
 			accuracy # 30;
 			armorEfficiency # 0.5;
 			shieldEfficiency # 1;
+			energyCost # 10;
 		}
 	]
 }

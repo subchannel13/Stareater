@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.GUI.ShipDesigns;
@@ -17,10 +18,46 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 		
-		public FormPickComponent(IEnumerable<IShipComponentType> components) : this()
+		public FormPickComponent(IEnumerable<IShipComponentType> components1, string group2Title = null, IEnumerable<IShipComponentType> components2 = null) : this()
 		{
 			this.Choice = null;
 			
+			populateWhith(components1);
+			
+			if (components1.Any() && components2 != null && components2.Any())
+			{
+				this.componentPanel.SetFlowBreak(this.componentPanel.Controls[this.componentPanel.Controls.Count - 1], true);
+				
+				var groupTitle = new Label();
+				var dummy = new Label();
+				this.componentPanel.Controls.Add(groupTitle);
+				this.componentPanel.Controls.Add(dummy);
+				
+				groupTitle.AutoSize = true;
+				this.componentPanel.SetFlowBreak(groupTitle, true);
+				groupTitle.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
+				groupTitle.Name = "groupTitle";
+				groupTitle.Size = new System.Drawing.Size(149, 13);
+				groupTitle.Text = group2Title;
+				
+				dummy.Margin = new System.Windows.Forms.Padding(0);
+				dummy.Name = "dummy";
+				dummy.Size = new System.Drawing.Size(0, 0);
+			}
+			
+			if (components2 != null)
+				populateWhith(components2);
+		}
+		
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			if (keyData == Keys.Escape) 
+				this.Close();
+			return base.ProcessCmdKey(ref msg, keyData);
+		}
+
+		private void populateWhith(IEnumerable<IShipComponentType> components)
+		{
 			foreach(var component in components)
 			{
 				var button = new Button();
@@ -38,13 +75,6 @@ namespace Stareater.GUI
 			}
 		}
 		
-		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-		{
-			if (keyData == Keys.Escape) 
-				this.Close();
-			return base.ProcessCmdKey(ref msg, keyData);
-		}
-
 		private void onSelect(object sender, EventArgs e)
 		{
 			buttonResult[sender].Dispatch();

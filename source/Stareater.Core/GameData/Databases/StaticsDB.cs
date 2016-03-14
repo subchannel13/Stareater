@@ -333,7 +333,8 @@ namespace Stareater.GameData.Databases
 							abilityData[DirectShootFirepower].To<Formula>(),
 							abilityData[DirectShootAccuracy].To<Formula>(),
 							abilityData[DirectShootShieldEfficiency].To<Formula>(),
-							abilityData[DirectShootArmorEfficiency].To<Formula>()
+							abilityData[DirectShootArmorEfficiency].To<Formula>(),
+							abilityData[DirectShootEnergyCost].To<Formula>()
 						);
 						break;
 					default:
@@ -643,10 +644,11 @@ namespace Stareater.GameData.Databases
 		private const string ThrusterEvasion = "evasion";
 		private const string ThrusterSpeed = "speed";
 		
-		private const string DirectShootFirepower = "firePower";
 		private const string DirectShootAccuracy = "accuracy";
-		private const string DirectShootShieldEfficiency = "armorEfficiency";
 		private const string DirectShootArmorEfficiency = "shieldEfficiency";
+		private const string DirectShootEnergyCost = "energyCost";
+		private const string DirectShootFirepower = "firePower";
+		private const string DirectShootShieldEfficiency = "armorEfficiency";
 		#endregion
 	}
 }

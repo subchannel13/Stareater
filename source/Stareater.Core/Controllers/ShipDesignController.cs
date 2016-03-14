@@ -115,6 +115,13 @@ namespace Stareater.Controllers
 				Select(x => new ShieldInfo(x, x.HighestLevel(playersTechLevels), this.selectedHull));
 		}
 
+		public IEnumerable<MissionEquipInfo> MissionEquipment()
+		{
+			return this.game.Statics.MissionEquipment.Values.
+				Where(x => x.IsAvailable(playersTechLevels)).
+				Select(x => new MissionEquipInfo(x, x.HighestLevel(playersTechLevels)));
+		}
+		
 		public IEnumerable<SpecialEquipInfo> SpecialEquipment()
 		{
 			return this.game.Statics.SpecialEquipment.Values.
@@ -238,9 +245,14 @@ namespace Stareater.Controllers
 		{
 			get 
 			{ 
-				//TODO(v0.5)
+				Func<Component<SpecialEquipmentType>, IDictionary<string, double>> specEquipVars = x => 
+					new Var(AComponentType.LevelKey, x.Level).
+						And(HullType.HullSizeKey, this.selectedHull.Size).Get;
+				
 				return (this.HasIsDrive ? this.selectedHull.IsDriveSize : 0) + 
-					(this.Shield != null ? this.selectedHull.ShieldSize : 0);
+					(this.Shield != null ? this.selectedHull.ShieldSize : 0) +
+					this.selectedMissionEquipment.Sum(x => x.TypeInfo.Size.Evaluate(new Var(AComponentType.LevelKey, x.Level).Get) * x.Quantity) + 
+					this.selectedSpecialEquipment.Sum(x => x.TypeInfo.Size.Evaluate(specEquipVars(x)) * x.Quantity);
 			} 
 		}
 		#endregion
@@ -249,6 +261,11 @@ namespace Stareater.Controllers
 		public string Name { get; set; } 
 		public int ImageIndex { get; set; }
 
+		public void AddMissionEquip(MissionEquipInfo equipInfo)
+		{
+			this.selectedMissionEquipment.Add(new Component<MissionEquipmentType>(equipInfo.Type, equipInfo.Level, 1));
+		}
+		
 		public void AddSpecialEquip(SpecialEquipInfo equipInfo)
 		{
 			if (this.selectedSpecialEquipment.Any(x => x.TypeInfo == equipInfo.Type))
@@ -272,6 +289,25 @@ namespace Stareater.Controllers
 		public bool HasSpecialEquip(SpecialEquipInfo equipInfo)
 		{
 			return this.selectedSpecialEquipment.Any(x => x.Quantity > 0 && x.TypeInfo == equipInfo.Type);
+		}
+		
+		public int MissionEquipCount(int index)
+		{
+			return this.selectedMissionEquipment[index].Quantity;
+		}
+
+		public void MissionEquipSetAmount(int index, int amount)
+		{
+			if (index < 0 || index >= this.selectedMissionEquipment.Count || amount < 0)
+				return;
+			
+			if (amount == 0)
+				this.selectedMissionEquipment.RemoveAt(index);
+			else
+			{
+				var oldEquip = this.selectedMissionEquipment[index];
+				this.selectedMissionEquipment[index] = new Component<MissionEquipmentType>(oldEquip.TypeInfo, oldEquip.Level, amount);
+			}
 		}
 		
 		public ShieldInfo Shield { get; set; }

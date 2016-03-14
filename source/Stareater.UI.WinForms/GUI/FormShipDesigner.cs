@@ -54,6 +54,26 @@ namespace Stareater.GUI
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
 
+		private void addMissionEquip(MissionEquipInfo equipInfo)
+		{
+			int index = (equipmentSeparator == null) ?
+				this.equipmentList.Controls.Count : 
+				this.equipmentList.Controls.IndexOf(equipmentSeparator);
+			
+			this.controller.AddMissionEquip(equipInfo);
+			
+			var itemView = new ShipEquipmentItem();
+			itemView.Data = new ShipComponentType<MissionEquipInfo>(
+				equipInfo.Name, equipInfo.ImagePath, equipInfo,
+				equipmentAction.Dispatch
+			);
+			itemView.Amount = this.controller.MissionEquipCount(index);
+			
+			this.equipmentList.Controls.Add(itemView);
+			this.equipmentList.Controls.SetChildIndex(itemView, index);
+			this.equipmentList.SelectedIndex = index;
+		}
+		
 		private void addSpecialEquip(SpecialEquipInfo equipInfo)
 		{
 			this.controller.AddSpecialEquip(equipInfo);
@@ -237,13 +257,19 @@ namespace Stareater.GUI
 
 		private void addEquipAction_Click(object sender, EventArgs e)
 		{
-			var equipmnet = this.controller.SpecialEquipment().Where(x => !this.controller.HasSpecialEquip(x)).Select(x => new ShipComponentType<SpecialEquipInfo>(
+			var missionEquipmnet = this.controller.MissionEquipment().Select(x => new ShipComponentType<MissionEquipInfo>(
+				x.Name,
+				x.ImagePath,
+				x, addMissionEquip
+			));
+			
+			var specialEquipmnet = this.controller.SpecialEquipment().Where(x => !this.controller.HasSpecialEquip(x)).Select(x => new ShipComponentType<SpecialEquipInfo>(
 				x.Name,
 				x.ImagePath,
 				x, addSpecialEquip
 			));
 
-			using (var form = new FormPickComponent(equipmnet))
+			using (var form = new FormPickComponent(missionEquipmnet, this.context["specEquipSeparator"].Text(), specialEquipmnet))
 				form.ShowDialog();
 
 			updateInfos();
@@ -256,6 +282,7 @@ namespace Stareater.GUI
 			
 			var selectedItem = this.equipmentList.SelectedItem as ShipEquipmentItem;
 			
+			this.equipmentAction.MissionEquipmentAction = x => this.controller.MissionEquipSetAmount(this.equipmentList.SelectedIndex, 0);
 			this.equipmentAction.SpecialEquipmentAction = x => this.controller.SpecialEquipSetAmount(x, 0);
 			selectedItem.Data.Dispatch();
 			
@@ -271,6 +298,12 @@ namespace Stareater.GUI
 			
 			var selectedItem = this.equipmentList.SelectedItem as ShipEquipmentItem;
 			
+			this.equipmentAction.MissionEquipmentAction = x =>
+			{
+				int i = this.equipmentList.SelectedIndex;
+				this.controller.MissionEquipSetAmount(i, this.controller.MissionEquipCount(i) + 1);
+				selectedItem.Amount = this.controller.MissionEquipCount(i);
+			};
 			this.equipmentAction.SpecialEquipmentAction = x => 
 			{
 				this.controller.SpecialEquipSetAmount(x, this.controller.SpecialEquipCount(x) + 1);
@@ -288,6 +321,17 @@ namespace Stareater.GUI
 			
 			var selectedItem = this.equipmentList.SelectedItem as ShipEquipmentItem;
 			
+			this.equipmentAction.MissionEquipmentAction = x =>
+			{
+				int i = this.equipmentList.SelectedIndex;
+				bool removed = this.controller.MissionEquipCount(i) - 1 <= 0; //HACK(v0.5) refactor to full list update or somethig that would simplify this
+				
+				this.controller.MissionEquipSetAmount(i, this.controller.MissionEquipCount(i) - 1);
+				if (removed)
+					this.equipmentList.Controls.Remove(selectedItem);
+				else
+					selectedItem.Amount = this.controller.MissionEquipCount(i);
+			};
 			this.equipmentAction.SpecialEquipmentAction = x => 
 			{
 				this.controller.SpecialEquipSetAmount(x, this.controller.SpecialEquipCount(x) - 1);

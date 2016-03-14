@@ -21,6 +21,11 @@ SUBSPACE_ISDRIVE_NAME = Test drive
 SUBSPACE_ISDRIVE_DESC = No description.
 -
 
+:MissionEquipment
+LASER_NAME = Laser
+LASER_DESC = No description.
+-
+
 :Reactors
 NUCLEAR_REACTOR_NAME = Nuclear drive
 NUCLEAR_REACTOR_DESC = No description.
