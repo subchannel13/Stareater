@@ -70,6 +70,7 @@ namespace Stareater.GUI
 			itemView.Amount = this.controller.MissionEquipCount(index);
 			
 			this.equipmentList.Controls.Add(itemView);
+			this.equipmentList.SelectedIndex = ControlListView.NoneSelected;
 			this.equipmentList.Controls.SetChildIndex(itemView, index);
 			this.equipmentList.SelectedIndex = index;
 		}

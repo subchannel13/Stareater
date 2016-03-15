@@ -15,9 +15,6 @@ namespace Stareater.Ships
 	{
 		private Constructable constructionProject = null;
 			
-		public object PrimaryEquip { get; private set; } //TODO(v0.5): make type
-		public object SecondaryEquip { get; private set; } //TODO(v0.5): make type
-		
 		public void CalcHash(StaticsDB statics)
 		{
 			var hashBuilder = new BitHashBuilder();

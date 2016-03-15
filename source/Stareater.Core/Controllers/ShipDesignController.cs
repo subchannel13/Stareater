@@ -335,10 +335,9 @@ namespace Stareater.Controllers
 			get
 			{
 				//TODO(v0.5): check name length and uniqueness
-				//TODO(v0.5): check image index
-				//TODO(v0.5): check available space
 				return this.selectedHull != null && this.ImageIndex >= 0 && this.ImageIndex < this.selectedHull.ImagePaths.Length &&
-					(this.availableIsDrive != null || !this.HasIsDrive);
+					(this.availableIsDrive != null || !this.HasIsDrive) &&
+					this.SpaceUsed <= this.SpaceTotal;
 			}
 		}
 		
