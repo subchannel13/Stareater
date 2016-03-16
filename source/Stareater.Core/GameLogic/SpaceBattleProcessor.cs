@@ -41,7 +41,10 @@ namespace Stareater.GameLogic
 				position = snapPosition(correctPosition(position));
 				
 				foreach(var shipGroup in fleet.LocalFleet.Ships)
-					this.game.Combatants.Add(new Combatant(position, fleet.OriginalFleet.Owner, shipGroup));
+				{
+					var abilities = mainGame.Derivates.Of(shipGroup.Design.Owner).DesignStats[shipGroup.Design].Abilities.Select(x => x.Quantity * (double)shipGroup.Quantity);
+					this.game.Combatants.Add(new Combatant(position, fleet.OriginalFleet.Owner, shipGroup, abilities.ToArray()));
+				}
 			}
 		}
 		

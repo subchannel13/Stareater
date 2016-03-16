@@ -42,10 +42,10 @@ namespace Stareater.GUI
 		public FormMain()
 		{
 			InitializeComponent();
-
+			
 			this.gameController = new GameController();
 			this.reportOpener = new OpenReportVisitor(showDevelopment, showResearch);
-			
+
 			applySettings();
 			postDelayedEvent(showMainMenu);
 		}
@@ -295,6 +295,11 @@ namespace Stareater.GUI
 			this.combatRenderer.Controller.UnitDone();
 		}
 		
+		private void useAbility_Click(object sender, EventArgs e)
+		{
+			//TODO(v0.5)
+		}
+		
 		#region Canvas events
 
 		private void glCanvas_Load(object sender, EventArgs e)
@@ -388,6 +393,7 @@ namespace Stareater.GUI
 				this.currentRenderer = this.galaxyRenderer;
 				this.currentRenderer.AttachToCanvas(this.glCanvas);
 				
+				abilityList.Visible = false;
 				endTurnButton.Visible = true;
 				unitInfoPanel.Visible = false;
 				menuStrip.Visible = true;
@@ -416,6 +422,7 @@ namespace Stareater.GUI
 			this.currentRenderer = this.combatRenderer;
 			this.currentRenderer.AttachToCanvas(this.glCanvas);
 			
+			abilityList.Visible = true;
 			constructionManagement.Visible = false;
 			empyPlanetView.Visible = false;
 			fleetPanel.Visible = false;
@@ -430,13 +437,34 @@ namespace Stareater.GUI
 		public void PlayUnit(CombatantInfo unitInfo)
 		{
 			if (this.InvokeRequired)
+			{
 				this.Invoke(new Action<CombatantInfo>(PlayUnit), unitInfo);
+				return;
+			}
 			
 			this.combatRenderer.OnUnitTurn(unitInfo);
 			
 			var context = SettingsWinforms.Get.Language["FormMain"];
 			var formatter = new ThousandsFormatter();
 			shipCount.Text = context["ShipCount"].Text() + ": " + formatter.Format(unitInfo.Count);
+			
+			this.abilityList.Controls.Clear();
+			
+			foreach(var ability in unitInfo.Abilities)
+			{
+				var button = new Button();
+				
+				button.Image = ImageCache.Get[ability.ImagePath]; //TODO(v0.5) resize image
+				button.ImageAlign = ContentAlignment.MiddleLeft;
+				button.Margin = new Padding(3, 3, 3, 0);
+				button.Size = new Size(80, 32);
+				button.Text = "x " + formatter.Format(ability.Quantity);
+				button.TextImageRelation = TextImageRelation.ImageBeforeText;
+				button.Tag = ability;
+				button.Click += useAbility_Click;
+				
+				this.abilityList.Controls.Add(button);
+			}
 		}
 		#endregion
 		

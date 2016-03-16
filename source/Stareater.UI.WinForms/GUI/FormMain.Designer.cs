@@ -52,6 +52,7 @@
 			this.armorInfo = new System.Windows.Forms.Label();
 			this.shipCount = new System.Windows.Forms.Label();
 			this.unitDoneAction = new System.Windows.Forms.Button();
+			this.abilityList = new System.Windows.Forms.FlowLayoutPanel();
 			this.menuStrip.SuspendLayout();
 			this.fleetPanel.SuspendLayout();
 			this.unitInfoPanel.SuspendLayout();
@@ -273,11 +274,24 @@
 			this.unitDoneAction.UseVisualStyleBackColor = true;
 			this.unitDoneAction.Click += new System.EventHandler(this.unitDoneAction_Click);
 			// 
+			// abilityList
+			// 
+			this.abilityList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			| System.Windows.Forms.AnchorStyles.Left)));
+			this.abilityList.AutoScroll = true;
+			this.abilityList.BackColor = System.Drawing.Color.Black;
+			this.abilityList.Location = new System.Drawing.Point(12, 80);
+			this.abilityList.Name = "abilityList";
+			this.abilityList.Size = new System.Drawing.Size(110, 451);
+			this.abilityList.TabIndex = 8;
+			this.abilityList.Visible = false;
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(884, 562);
+			this.Controls.Add(this.abilityList);
 			this.Controls.Add(this.unitInfoPanel);
 			this.Controls.Add(this.fleetPanel);
 			this.Controls.Add(this.returnButton);
@@ -327,5 +341,6 @@
 		private System.Windows.Forms.Label armorInfo;
 		private System.Windows.Forms.Label shipCount;
 		private System.Windows.Forms.Button unitDoneAction;
+		private System.Windows.Forms.FlowLayoutPanel abilityList;
 	}
 }

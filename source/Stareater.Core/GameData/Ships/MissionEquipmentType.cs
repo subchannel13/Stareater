@@ -25,6 +25,11 @@ namespace Stareater.GameData.Ships
 			this.Abilities = abilities;
 		}
 		
+		public override bool CanHaveMultiple 
+		{
+			get { return true; }
+		}
+		
 		public Component<MissionEquipmentType> MakeBest(IDictionary<string, int> techLevels, int quantity)
 		{
 			return new Component<MissionEquipmentType>(this, HighestLevel(techLevels), quantity);

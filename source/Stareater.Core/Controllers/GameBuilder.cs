@@ -44,6 +44,7 @@ namespace Stareater.Controllers
 			deindexer.AddAll(statics.Armors.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Hulls.Values, x => x.IdCode);
 			deindexer.AddAll(statics.IsDrives.Values, x => x.IdCode);
+			deindexer.AddAll(statics.MissionEquipment.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Reactors.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Sensors.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Shields.Values, x => x.IdCode);

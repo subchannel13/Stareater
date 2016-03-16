@@ -54,11 +54,11 @@ namespace Winforms_Mockups
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
+			this.detailsButton = new System.Windows.Forms.Button();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.button1 = new System.Windows.Forms.Button();
 			this.button3 = new System.Windows.Forms.Button();
 			this.button4 = new System.Windows.Forms.Button();
-			this.detailsButton = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
 			this.button5 = new System.Windows.Forms.Button();
 			this.button6 = new System.Windows.Forms.Button();
@@ -118,6 +118,15 @@ namespace Winforms_Mockups
 			this.label1.TabIndex = 10;
 			this.label1.Text = "Ships: 10.56 k - 10.11 k";
 			// 
+			// detailsButton
+			// 
+			this.detailsButton.Location = new System.Drawing.Point(142, 3);
+			this.detailsButton.Name = "detailsButton";
+			this.detailsButton.Size = new System.Drawing.Size(80, 40);
+			this.detailsButton.TabIndex = 5;
+			this.detailsButton.Text = "Done";
+			this.detailsButton.UseVisualStyleBackColor = true;
+			// 
 			// flowLayoutPanel1
 			// 
 			this.flowLayoutPanel1.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -131,7 +140,7 @@ namespace Winforms_Mockups
 			this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.flowLayoutPanel1.Location = new System.Drawing.Point(12, 43);
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-			this.flowLayoutPanel1.Size = new System.Drawing.Size(93, 210);
+			this.flowLayoutPanel1.Size = new System.Drawing.Size(110, 210);
 			this.flowLayoutPanel1.TabIndex = 9;
 			// 
 			// button1
@@ -178,15 +187,6 @@ namespace Winforms_Mockups
 			this.button4.Text = "x 20 k";
 			this.button4.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.button4.UseVisualStyleBackColor = true;
-			// 
-			// detailsButton
-			// 
-			this.detailsButton.Location = new System.Drawing.Point(142, 3);
-			this.detailsButton.Name = "detailsButton";
-			this.detailsButton.Size = new System.Drawing.Size(80, 40);
-			this.detailsButton.TabIndex = 5;
-			this.detailsButton.Text = "Done";
-			this.detailsButton.UseVisualStyleBackColor = true;
 			// 
 			// button2
 			// 

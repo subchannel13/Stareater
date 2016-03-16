@@ -45,5 +45,14 @@ namespace Stareater.Controllers.Views.Combat
 		{
 			get { return this.validMoves; }
 		}
+		
+		public IEnumerable<AbilityInfo> Abilities
+		{
+			get 
+			{
+				for(int i = 0; i < this.stats.Abilities.Count; i++)
+					yield return new AbilityInfo(this.stats.Abilities[i], this.Data.AbilityCharges[i]);
+			}
+		}
 	}
 }

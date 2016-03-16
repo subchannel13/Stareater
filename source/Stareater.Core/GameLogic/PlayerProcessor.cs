@@ -12,6 +12,7 @@ using Stareater.GameData.Ships;
 using Stareater.Players;
 using Stareater.Players.Reports;
 using Stareater.Ships;
+using Stareater.Utils;
 using Stareater.Utils.Collections;
 
 namespace Stareater.GameLogic
@@ -308,6 +309,7 @@ namespace Stareater.GameLogic
 				new DesignStats(
 					statics.ShipFormulas.CombatSpeed.Evaluate(shipVars.Get),
 					galaxySpeed,
+					design.MissionEquipment.SelectMany(equip => equip.TypeInfo.Abilities.Select(x => new Ability(x, equip.Level, equip.Quantity))).ToList(),
 	                statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
 	                buildings)
 			);

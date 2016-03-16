@@ -2,10 +2,13 @@
 <#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
 	
 	usings.Add("System.Collections.Generic");
+	usings.Add("Stareater.GameData.Ships");
+	usings.Add("Stareater.Utils");
 	
 	Generate("Stareater.GameLogic", "DesignStats",
 		new DataInfo("CombatSpeed", "double"),
 		new DataInfo("GalaxySpeed", "double"),
+		new DataInfo("Abilities", "List<Ability>"),
 		
 		new DataInfo("ColonizerPopulation", "double"),
 		new DataInfo("ColonizerBuildings", "Dictionary<string, double>")
