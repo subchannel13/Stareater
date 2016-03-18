@@ -332,9 +332,10 @@ namespace Stareater.GameData.Databases
 							abilityData[GeneralImageKey].To<string>(),
 							abilityData[DirectShootFirepower].To<Formula>(),
 							abilityData[DirectShootAccuracy].To<Formula>(),
-							abilityData[DirectShootShieldEfficiency].To<Formula>(),
-							abilityData[DirectShootArmorEfficiency].To<Formula>(),
-							abilityData[DirectShootEnergyCost].To<Formula>()
+							abilityData[DirectShootRange].To<Formula>(),
+							abilityData[DirectShootEnergyCost].To<Formula>(),
+							abilityData.ToOrDefault(DirectShootArmorEfficiency, new Formula(1)),
+							abilityData.ToOrDefault(DirectShootShieldEfficiency, new Formula(1))
 						);
 						break;
 					default:
@@ -648,6 +649,7 @@ namespace Stareater.GameData.Databases
 		private const string DirectShootArmorEfficiency = "shieldEfficiency";
 		private const string DirectShootEnergyCost = "energyCost";
 		private const string DirectShootFirepower = "firePower";
+		private const string DirectShootRange = "range";
 		private const string DirectShootShieldEfficiency = "armorEfficiency";
 		#endregion
 	}

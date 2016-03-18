@@ -6,11 +6,13 @@ namespace Stareater.Controllers.Views.Ships
 	public class AbilityInfo
 	{
 		internal Ability Data { get; private set; }
+		internal int Index { get; private set; }
 		public double Quantity { get; private set; }
 		
-		internal AbilityInfo(Ability data, double quantity)
+		internal AbilityInfo(Ability data, int index, double quantity)
 		{
 			this.Data = data;
+			this.Index = index;
 			this.Quantity = quantity;
 		}
 		

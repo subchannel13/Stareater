@@ -9,6 +9,7 @@ using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
+using Stareater.Controllers.Views.Ships;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GLRenderers;
 using Stareater.GUI.Reports;
@@ -295,9 +296,9 @@ namespace Stareater.GUI
 			this.combatRenderer.Controller.UnitDone();
 		}
 		
-		private void useAbility_Click(object sender, EventArgs e)
+		private void selectAbility_Click(object sender, EventArgs e)
 		{
-			//TODO(v0.5)
+			this.combatRenderer.SelectedAbility = (sender as Control).Tag as AbilityInfo;
 		}
 		
 		#region Canvas events
@@ -462,7 +463,7 @@ namespace Stareater.GUI
 				button.TextImageRelation = TextImageRelation.ImageBeforeText;
 				button.UseVisualStyleBackColor = true;
 				button.Tag = ability;
-				button.Click += useAbility_Click;
+				button.Click += selectAbility_Click;
 				
 				this.abilityList.Controls.Add(button);
 			}

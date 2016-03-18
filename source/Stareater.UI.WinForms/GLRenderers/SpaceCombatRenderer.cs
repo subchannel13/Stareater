@@ -6,6 +6,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
+using Stareater.Controllers.Views.Ships;
 using Stareater.Utils;
 
 namespace Stareater.GLRenderers
@@ -36,6 +37,8 @@ namespace Stareater.GLRenderers
 		
 		public SpaceBattleController Controller { get; private set; }
 
+		public AbilityInfo SelectedAbility { private get; set; }
+		
 		public void StartCombat(SpaceBattleController controller)
 		{
 			this.Controller = controller;

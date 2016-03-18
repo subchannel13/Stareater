@@ -16,9 +16,11 @@
 			image: ./images/technologies/hydroponicFarms.png
 			firePower # 5;
 			accuracy # 30;
+			range # 3;
+			energyCost # 10;
+			
 			armorEfficiency # 0.5;
 			shieldEfficiency # 1;
-			energyCost # 10;
 		}
 	]
 }

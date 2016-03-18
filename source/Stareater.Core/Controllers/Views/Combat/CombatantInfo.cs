@@ -51,7 +51,7 @@ namespace Stareater.Controllers.Views.Combat
 			get 
 			{
 				for(int i = 0; i < this.stats.Abilities.Count; i++)
-					yield return new AbilityInfo(this.stats.Abilities[i], this.Data.AbilityCharges[i]);
+					yield return new AbilityInfo(this.stats.Abilities[i], i, this.Data.AbilityCharges[i]);
 			}
 		}
 	}

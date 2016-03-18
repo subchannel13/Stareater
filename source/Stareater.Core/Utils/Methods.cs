@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using Ikadn.Ikon.Types;
 using NGenerics.DataStructures.Mathematical;
 
 namespace Stareater.Utils
@@ -232,6 +233,14 @@ namespace Stareater.Utils
 					yield return i;
 				i++;
 			}
+		}
+		
+		public static T ToOrDefault<T>(this IkonComposite composite, string key, T defaultValue)
+		{
+			return composite.Keys.Contains(key) ? 
+				defaultValue : 
+				composite[key].To<T>();
+			
 		}
 	}
 }
