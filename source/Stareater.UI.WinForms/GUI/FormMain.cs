@@ -454,12 +454,13 @@ namespace Stareater.GUI
 			{
 				var button = new Button();
 				
-				button.Image = ImageCache.Get[ability.ImagePath]; //TODO(v0.5) resize image
+				button.Image = ImageCache.Get.Resized(ability.ImagePath, new Size(24, 24));
 				button.ImageAlign = ContentAlignment.MiddleLeft;
 				button.Margin = new Padding(3, 3, 3, 0);
 				button.Size = new Size(80, 32);
 				button.Text = "x " + formatter.Format(ability.Quantity);
 				button.TextImageRelation = TextImageRelation.ImageBeforeText;
+				button.UseVisualStyleBackColor = true;
 				button.Tag = ability;
 				button.Click += useAbility_Click;
 				

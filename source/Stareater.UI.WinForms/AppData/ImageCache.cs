@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 
@@ -24,6 +25,7 @@ namespace Stareater.AppData
 		
 		private readonly Dictionary<string, Image> cache = new Dictionary<string, Image>();
 		private readonly Dictionary<string, Image> disabledCache = new Dictionary<string, Image>();
+		private readonly Dictionary<Tuple<string, Size>, Image> resized = new Dictionary<Tuple<string, Size>, Image>();
 		
 		public Image this[string path] 
 		{
@@ -49,7 +51,7 @@ namespace Stareater.AppData
 				if (file.FullName != path)
 					cache.Add(file.FullName, image);
 				cache.Add(path, image);
-				
+
 				return image;
 			}
 		}
@@ -82,6 +84,42 @@ namespace Stareater.AppData
         	disabledCache.Add(path, disabledImage);
         	
         	return disabledImage;
+		}
+		
+		public Image Resized(string path, Size boundigSize)
+		{
+			var key = new Tuple<string, Size>(path, boundigSize);
+			
+			if (this.resized.ContainsKey(key))
+				return this.resized[key];
+			
+			var baseImage = this[path];
+			var xRatio = baseImage.Width / (double) boundigSize.Width;
+			var yRatio = baseImage.Height / (double) boundigSize.Height;
+			
+			var width = (int)Math.Round((xRatio > yRatio) ? boundigSize.Width : (baseImage.Width / yRatio));
+			var height = (int)Math.Round((xRatio > yRatio) ? (baseImage.Height / xRatio) : boundigSize.Height);
+				
+			var destRect = new Rectangle(0, 0, width, height);
+		    var destImage = new Bitmap(width, height);
+		
+		    using (var graphics = Graphics.FromImage(destImage))
+		    {
+		        graphics.CompositingMode = CompositingMode.SourceCopy;
+		        graphics.CompositingQuality = CompositingQuality.HighQuality;
+		        graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+		        graphics.SmoothingMode = SmoothingMode.HighQuality;
+		        graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+		
+		        using (var wrapMode = new ImageAttributes())
+		        {
+		            wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+		            graphics.DrawImage(baseImage, destRect, 0, 0, baseImage.Width,baseImage.Height, GraphicsUnit.Pixel, wrapMode);
+		        }
+		    }
+		    
+		    this.resized[key] = destImage;
+		    return destImage;
 		}
 	}
 }
