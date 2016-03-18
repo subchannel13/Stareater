@@ -29,6 +29,7 @@ namespace Stareater.Controllers
 			var game = new MainGame(players, statics, states, derivates);
 			game.CalculateDerivedEffects();
 			
+			Stareater.AppData.Settings.Get.LastGame.StartConditions = controller.SelectedStart;
 			return game;
 		}
 		

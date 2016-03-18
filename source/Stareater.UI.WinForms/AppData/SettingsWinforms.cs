@@ -1,23 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using Ikadn;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
+using Stareater.Utils;
 
 namespace Stareater.AppData
 {
 	class SettingsWinforms : Settings
 	{
 		#region Singleton
-		static SettingsWinforms instance = null;
+		static SettingsWinforms winformsInstance = null;
 
 		public static new SettingsWinforms Get
 		{
 			get
 			{
-				if (instance == null)
-					instance = new SettingsWinforms(loadFile());
-				return instance;
+				if (winformsInstance == null)
+					winformsInstance = new SettingsWinforms(loadFile());
+				return winformsInstance;
 			}
 		}
 		#endregion
@@ -30,23 +30,18 @@ namespace Stareater.AppData
 
 		public SettingsWinforms(TaggableQueue<object, IkadnBaseObject> data) : base(data)
 		{
-			if (data.CountOf(WinformsSettingsTag) > 0)
-			{
-				var wfSpecificData = data.Dequeue(WinformsSettingsTag).To<IkonComposite>();
-				this.GuiScale = wfSpecificData[GuiScaleKey].To<float>();
+			Settings.instance = this;
+			
+			var wfSettignsData = data.CountOf(WinformsSettingsTag) > 0 ?
+				data.Dequeue(WinformsSettingsTag).To<IkonComposite>():
+				new IkonComposite(WinformsSettingsTag);
+			
 				
-				this.BatteryFramerate = wfSpecificData[FpsBatteryKey].To<int>();
-				this.Framerate = wfSpecificData[FpsKey].To<int>();
-				this.UnlimitedFramerate = wfSpecificData[FpsUnlimitedKey].To<int>() >= 0;
-			}
-			else
-			{
-				this.GuiScale = 1;
-				
-				this.BatteryFramerate = 60;
-				this.Framerate = 120;
-				this.UnlimitedFramerate = false;
-			}
+			this.GuiScale = wfSettignsData.ToOrDefault(GuiScaleKey, 1f);
+			
+			this.BatteryFramerate = wfSettignsData.ToOrDefault(FpsBatteryKey, 60);
+			this.Framerate = wfSettignsData.ToOrDefault(FpsKey, 120);
+			this.UnlimitedFramerate = wfSettignsData.ToOrDefault(FpsUnlimitedKey, x => x.To<int>() >= 0, false);
 		}
 
 		public Font FormFont

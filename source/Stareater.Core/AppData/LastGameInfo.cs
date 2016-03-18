@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Stareater.Galaxy;
-using Ikadn;
 using Ikadn.Ikon.Types;
+using Stareater.Utils;
 
 namespace Stareater.AppData
 {
@@ -17,16 +16,19 @@ namespace Stareater.AppData
 
 		public LastGameInfo(IkonComposite ikstonData) : this()
 		{
-			if (ikstonData.Keys.Contains(StartingConditionsKey))
-				StartConditions = new StartingConditions(ikstonData[StartingConditionsKey].To<IkonComposite>());
+			this.StartConditions = ikstonData.ToOrDefault(
+				StartingConditionsKey,
+				x => new StartingConditions(x.To<IkonComposite>()),
+				this.StartConditions
+			);
 		}
 
 		public IkonComposite BuildSaveData()
 		{
-			IkonComposite lastGameData = new IkonComposite(ClassName);
+			var lastGameData = new IkonComposite(ClassName);
 
 			if (StartConditions != null)
-				lastGameData.Add(StartingConditionsKey, StartConditions.BuildSaveData());
+				lastGameData.Add(StartingConditionsKey, StartConditions.BuildSaveData()); //TODO(v0.5) check if data is valid before loading
 
 			return lastGameData;
 		}

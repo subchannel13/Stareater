@@ -10,7 +10,7 @@ using Stareater.Utils;
 
 namespace Stareater.Galaxy
 {
-	public class MapAssets
+	public static class MapAssets
 	{
 		private const string StartConditionsFilePath = "./data/startConditions.txt";
 		public const string MapsFolder = "./maps/";
@@ -26,7 +26,7 @@ namespace Stareater.Galaxy
 
 		public static IEnumerable<double> StartConditionsLoader()
 		{
-			List<StartingConditions> conditionList = new List<StartingConditions>();
+			var conditionList = new List<StartingConditions>();
 			using (var parser = new IkonParser(new StreamReader(StartConditionsFilePath))) {
 				var conditions = parser.ParseAll();
 				yield return 0.5;
@@ -44,10 +44,10 @@ namespace Stareater.Galaxy
 
 		public static IEnumerable<double> PositionersLoader()
 		{
-			List<FileInfo> dllFiles = new List<FileInfo>(new DirectoryInfo(MapsFolder).EnumerateFiles("*.dll"));
+			var dllFiles = new List<FileInfo>(new DirectoryInfo(MapsFolder).EnumerateFiles("*.dll"));
 			yield return 0.1;
 
-			List<IStarPositioner> factoryList = new List<IStarPositioner>();
+			var factoryList = new List<IStarPositioner>();
 			foreach (var p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles))
 			{
 				factoryList.AddRange(Methods.LoadFromDLL<IStarPositioner>(p.Data.FullName));
@@ -60,10 +60,10 @@ namespace Stareater.Galaxy
 
 		public static IEnumerable<double> ConnectorsLoader()
 		{
-			List<FileInfo> dllFiles = new List<FileInfo>(new DirectoryInfo(MapsFolder).EnumerateFiles("*.dll"));
+			var dllFiles = new List<FileInfo>(new DirectoryInfo(MapsFolder).EnumerateFiles("*.dll"));
 			yield return 0.1;
 
-			List<IStarConnector> factoryList = new List<IStarConnector>();
+			var factoryList = new List<IStarConnector>();
 			foreach (var p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles))
 			{
 				factoryList.AddRange(Methods.LoadFromDLL<IStarConnector>(p.Data.FullName));
@@ -76,10 +76,10 @@ namespace Stareater.Galaxy
 
 		public static IEnumerable<double> PopulatorsLoader()
 		{
-			List<FileInfo> dllFiles = new List<FileInfo>(new DirectoryInfo(MapsFolder).EnumerateFiles("*.dll"));
+			var dllFiles = new List<FileInfo>(new DirectoryInfo(MapsFolder).EnumerateFiles("*.dll"));
 			yield return 0.1;
 
-			List<IStarPopulator> factoryList = new List<IStarPopulator>();
+			var factoryList = new List<IStarPopulator>();
 			foreach (var p in Methods.ProgressReportHelper(0.1, 0.8, dllFiles))
 			{
 				factoryList.AddRange(Methods.LoadFromDLL<IStarPopulator>(p.Data.FullName));

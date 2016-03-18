@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Stareater.AppData;
-using Ikadn;
 using Ikadn.Ikon.Types;
 
 namespace Stareater.Galaxy
@@ -21,7 +18,7 @@ namespace Stareater.Galaxy
 			this.Colonies = colonies;
 			this.Population = population;
 			this.Infrastructure = infrastructure;
-			this.nameKey = nameKey;
+			this.nameKey = nameKey; //TODO(v0.5) deduce the name from stats
 		}
 
 		public StartingConditions(IkonComposite ikstonData) :
@@ -41,17 +38,18 @@ namespace Stareater.Galaxy
 
 		public IkonComposite BuildSaveData()
 		{
-			IkonComposite lastGameData = new IkonComposite(ClassName);
+			var lastGameData = new IkonComposite(ClassName);
 			lastGameData.Add(ColoniesKey, new IkonInteger(Colonies));
 			lastGameData.Add(PopulationKey, new IkonInteger(Population));
 			lastGameData.Add(InfrastructureKey, new IkonInteger(Infrastructure));
+			lastGameData.Add(NameKey, new IkonText(nameKey));
 			
 			return lastGameData;
 		}
 
 		public override bool Equals(object obj)
 		{
-			StartingConditions other = obj as StartingConditions;
+			var other = obj as StartingConditions;
 			if (other == null)
 				return false;
 

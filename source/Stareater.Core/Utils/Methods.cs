@@ -235,12 +235,34 @@ namespace Stareater.Utils
 			}
 		}
 		
+		/// <summary>
+		/// Retrives and converts the value from the IkonComposite or returns default value if the key is not present.
+		/// </summary>
+		/// <param name="composite">IKON associative table</param>
+		/// <param name="key">Key for the value to retrieve</param>
+		/// <param name="defaultValue">Default value in case the key is not present it the table</param>
+		/// <returns>The requested value or default value.</returns>
 		public static T ToOrDefault<T>(this IkonComposite composite, string key, T defaultValue)
 		{
 			return composite.Keys.Contains(key) ? 
 				defaultValue : 
 				composite[key].To<T>();
 			
+		}
+		
+		/// <summary>
+		/// Retrives and converts the value from the IkonComposite or returns default value if the key is not present.
+		/// </summary>
+		/// <param name="composite">IKON associative table</param>
+		/// <param name="key">Key for the value to retrieve</param>
+		/// <param name="valueTransform">Value transformation function</param>
+		/// <param name="defaultValue">Default value in case the key is not present it the table</param>
+		/// <returns>The requested value or default value.</returns>
+		public static T ToOrDefault<T>(this IkonComposite composite, string key, Func<Ikadn.IkadnBaseObject, T> valueTransform, T defaultValue)
+		{
+			return composite.Keys.Contains(key) ? 
+				valueTransform(composite[key]) :
+				defaultValue;
 		}
 	}
 }
