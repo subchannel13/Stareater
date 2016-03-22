@@ -5,11 +5,10 @@ using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
 using Stareater.Localization;
-using Stareater.Utils;
 
 namespace Stareater.AppData
 {
-	public class Settings
+	public abstract class Settings
 	{
 		#region Singleton
 		protected static Settings instance = null;
@@ -18,8 +17,6 @@ namespace Stareater.AppData
 		{
 			get
 			{
-				if (instance == null)
-					instance = new Settings(loadFile()); //TODO(v0.5) separate loading from constructor and make loading fall back to default if data format is invalid
 				return instance;
 			}
 		}
@@ -29,6 +26,7 @@ namespace Stareater.AppData
 
 		public Language Language { get; set; }
 		public LastGameInfo LastGame { get; private set; }
+		//TODO(later) remember other game options like map shape and size
 
 		private static string SettingsFilePath {
 			get {
@@ -37,25 +35,22 @@ namespace Stareater.AppData
 		}
 		
 		#region Initialization
-		protected Settings(TaggableQueue<object, IkadnBaseObject> data)
+		protected static void initialize()
 		{
-			IkonComposite baseData = (data.CountOf(BaseSettingsTag) > 0) ?
-				data.Dequeue(BaseSettingsTag).To<IkonComposite>() :
-				new IkonComposite(BaseSettingsTag);
-			
-			this.Language = baseData.ToOrDefault(
-				LanguageKey,
-				x => LocalizationManifest.Get.LoadLanguage(x.To<string>()), //FIXME(later): Avoid implicit heavy initialization
-				LocalizationManifest.Get.DefaultLanguage
-			);
-			
-			this.LastGame = baseData.ToOrDefault(
-				LastGameKey,
-				x => new LastGameInfo(x.To<IkonComposite>()),
-				new LastGameInfo()
-			);
+			try
+			{
+				instance.load(loadFile());
+			}
+			catch(Exception e)
+			{
+				instance.initDefault();
+				
+				#if DEBUG
+				System.Diagnostics.Trace.TraceError(e.ToString());
+				#endif
+			}
 		}
-
+		
 		protected static TaggableQueue<object, IkadnBaseObject> loadFile()
 		{
 			TaggableQueue<object, IkadnBaseObject> data;
@@ -67,6 +62,20 @@ namespace Stareater.AppData
 				data = new TaggableQueue<object, IkadnBaseObject>();
 
 			return data;
+		}
+		
+		protected virtual void initDefault()
+		{
+			this.Language = LocalizationManifest.Get.DefaultLanguage;
+			this.LastGame = new LastGameInfo();
+		}
+	
+		protected virtual void load(TaggableQueue<object, IkadnBaseObject> data)
+		{
+			IkonComposite baseData = data.Dequeue(BaseSettingsTag).To<IkonComposite>();
+			
+			this.Language = LocalizationManifest.Get.LoadLanguage(baseData[LanguageKey].To<string>()); //FIXME(later): Avoid implicit heavy initialization
+			this.LastGame = new LastGameInfo(baseData[LastGameKey].To<IkonComposite>());
 		}
 		#endregion
 

@@ -47,6 +47,7 @@ namespace Stareater.Galaxy
 			return lastGameData;
 		}
 
+		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{
 			var other = obj as StartingConditions;
@@ -62,6 +63,19 @@ namespace Stareater.Galaxy
 		{
 			return Colonies.GetHashCode() + Population.GetHashCode() * 31 + Infrastructure.GetHashCode() * 967;
 		}
+		
+		public static bool operator ==(StartingConditions lhs, StartingConditions rhs) {
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(StartingConditions lhs, StartingConditions rhs) {
+			return !(lhs == rhs);
+		}
+		#endregion
 
 		#region Attribute keys
 		const string ClassName = "StartinConditions";

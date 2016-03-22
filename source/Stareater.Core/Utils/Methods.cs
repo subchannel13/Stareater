@@ -247,7 +247,6 @@ namespace Stareater.Utils
 			return composite.Keys.Contains(key) ? 
 				defaultValue : 
 				composite[key].To<T>();
-			
 		}
 		
 		/// <summary>

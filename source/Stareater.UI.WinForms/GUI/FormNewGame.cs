@@ -40,8 +40,13 @@ namespace Stareater.GUI
 				setupStartSelector.Items.Add(new Tag<StartingConditions>(controller.CustomStart, SettingsWinforms.Get.Language["StartingConditions"][NewGameController.CustomStartNameKey].Text()));
 				setupStartSelector.Items.Add(new Tag<StartingConditions>(null, SettingsWinforms.Get.Language["StartingConditions"]["customize"].Text()));
 
-				if (NewGameController.LastStartingCondition != null)					
-					setupStartSelector.SelectedIndex = setupStartSelector.Items.Count - 1;
+				if (NewGameController.LastStartingCondition != null)
+				{
+					int i = new List<StartingConditions>(MapAssets.Starts).FindIndex(x => x.Equals(NewGameController.LastStartingCondition));
+					setupStartSelector.SelectedIndex = (i != -1) ? 
+						i : 
+						setupStartSelector.Items.Count - 2;
+				}
 				else
 					setupStartSelector.SelectedItem = new Tag<StartingConditions>(NewGameController.DefaultStartingCondition, null);
 				updateMapDescription();
@@ -106,9 +111,9 @@ namespace Stareater.GUI
 			if (setupStartSelector.SelectedItem == null)
 				return;
 
-			StartingConditions start = (setupStartSelector.SelectedItem as Tag<StartingConditions>).Value;
+			var start = (setupStartSelector.SelectedItem as Tag<StartingConditions>).Value;
 			if (start != null) {
-				StringBuilder sb = new StringBuilder();
+				var sb = new StringBuilder();
 				var formatter = new ThousandsFormatter(start.Population, start.Infrastructure);
 
 				sb.AppendLine("Colonies: " + start.Colonies);

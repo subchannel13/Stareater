@@ -16,7 +16,12 @@ namespace Stareater.AppData
 			get
 			{
 				if (winformsInstance == null)
-					winformsInstance = new SettingsWinforms(loadFile());
+				{
+					winformsInstance = new SettingsWinforms();
+					Settings.instance = winformsInstance;
+					Settings.initialize();
+				}
+				
 				return winformsInstance;
 			}
 		}
@@ -28,22 +33,6 @@ namespace Stareater.AppData
 		public int BatteryFramerate { get; set; }
 		public bool UnlimitedFramerate { get; set; }
 
-		public SettingsWinforms(TaggableQueue<object, IkadnBaseObject> data) : base(data)
-		{
-			Settings.instance = this;
-			
-			var wfSettignsData = data.CountOf(WinformsSettingsTag) > 0 ?
-				data.Dequeue(WinformsSettingsTag).To<IkonComposite>():
-				new IkonComposite(WinformsSettingsTag);
-			
-				
-			this.GuiScale = wfSettignsData.ToOrDefault(GuiScaleKey, 1f);
-			
-			this.BatteryFramerate = wfSettignsData.ToOrDefault(FpsBatteryKey, 60);
-			this.Framerate = wfSettignsData.ToOrDefault(FpsKey, 120);
-			this.UnlimitedFramerate = wfSettignsData.ToOrDefault(FpsUnlimitedKey, x => x.To<int>() >= 0, false);
-		}
-
 		public Font FormFont
 		{
 			get
@@ -52,6 +41,32 @@ namespace Stareater.AppData
 			}
 		}
 
+		#region Initialization
+		protected override void initDefault()
+		{
+			base.initDefault();
+			
+			this.GuiScale = 1;
+			
+			this.BatteryFramerate = 60;
+			this.Framerate = 120;
+			this.UnlimitedFramerate = false;
+		}
+	
+		protected override void load(TaggableQueue<object, IkadnBaseObject> data)
+		{
+			base.load(data);
+			          
+			var wfSettignsData = data.Dequeue(WinformsSettingsTag).To<IkonComposite>();
+			
+			this.GuiScale = wfSettignsData[GuiScaleKey].To<float>();
+			
+			this.BatteryFramerate = wfSettignsData[FpsBatteryKey].To<int>();
+			this.Framerate = wfSettignsData[FpsKey].To<int>();
+			this.UnlimitedFramerate = wfSettignsData[FpsUnlimitedKey].To<int>() >= 0;
+		}
+		#endregion
+		
 		#region Attribute keys
 		const string WinformsSettingsTag = "winforms";
 		const string FpsBatteryKey = "fpsBattery";
