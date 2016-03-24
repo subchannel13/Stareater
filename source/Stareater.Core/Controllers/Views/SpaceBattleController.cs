@@ -54,6 +54,10 @@ namespace Stareater.Controllers.Views
 			this.checkNextUnit();
 		}
 		
+		public void UseAction()
+		{
+			//TODO(v0.5)
+		}
 		#endregion
 		
 		#region Unit order and battle event management

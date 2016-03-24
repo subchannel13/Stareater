@@ -304,12 +304,18 @@ namespace Stareater.GameLogic
 					buildings.Add(colonyBuilding.Key, amount);
 			}
 			
+			var abilities = new List<AbilityStats>(design.MissionEquipment.SelectMany(
+				equip => equip.TypeInfo.Abilities.Select(
+					x => AbilityStatsFactory.Create(x, equip.Level, equip.Quantity)
+				)
+			));
+			
 			this.DesignStats.Add(
 				design,
 				new DesignStats(
 					statics.ShipFormulas.CombatSpeed.Evaluate(shipVars.Get),
 					galaxySpeed,
-					design.MissionEquipment.SelectMany(equip => equip.TypeInfo.Abilities.Select(x => new Ability(x, equip.Level, equip.Quantity))).ToList(),
+					abilities,
 	                statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
 	                buildings)
 			);

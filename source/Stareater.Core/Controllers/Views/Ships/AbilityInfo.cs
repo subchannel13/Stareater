@@ -5,11 +5,11 @@ namespace Stareater.Controllers.Views.Ships
 {
 	public class AbilityInfo
 	{
-		internal Ability Data { get; private set; }
+		internal AbilityStats Data { get; private set; }
 		internal int Index { get; private set; }
 		public double Quantity { get; private set; }
 		
-		internal AbilityInfo(Ability data, int index, double quantity)
+		internal AbilityInfo(AbilityStats data, int index, double quantity)
 		{
 			this.Data = data;
 			this.Index = index;
@@ -22,6 +22,11 @@ namespace Stareater.Controllers.Views.Ships
 			{
 				return this.Data.Type.ImagePath;
 			}
+		}
+		
+		public int Range 
+		{ 
+			get { return this.Data.Range; }
 		}
 	}
 }

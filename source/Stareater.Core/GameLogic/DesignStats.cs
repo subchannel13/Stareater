@@ -8,11 +8,11 @@ namespace Stareater.GameLogic
 	{
 		public double CombatSpeed;
 		public double GalaxySpeed;
-		public List<Ability> Abilities;
+		public List<AbilityStats> Abilities;
 		public double ColonizerPopulation;
 		public Dictionary<string, double> ColonizerBuildings;
 
-		public DesignStats(double combatSpeed, double galaxySpeed, List<Ability> abilities, double colonizerPopulation, Dictionary<string, double> colonizerBuildings) 
+		public DesignStats(double combatSpeed, double galaxySpeed, List<AbilityStats> abilities, double colonizerPopulation, Dictionary<string, double> colonizerBuildings) 
 		{
 			this.CombatSpeed = combatSpeed;
 			this.GalaxySpeed = galaxySpeed;

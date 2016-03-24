@@ -13,12 +13,15 @@ namespace Stareater.Controllers.Views.Combat
 		internal readonly Combatant Data;
 		private readonly DesignStats stats;
 		private IEnumerable<Vector2D> validMoves;
+		private readonly List<AbilityInfo> abilities;
 		
 		internal CombatantInfo(Combatant data, MainGame game, IEnumerable<Vector2D> validMoves)
 		{
 			this.Data = data;
 			this.stats = game.Derivates.Of(data.Owner).DesignStats[data.Ships.Design];
 			this.validMoves = validMoves.ToList();
+			
+			this.abilities = new List<AbilityInfo>(this.stats.Abilities.Select((x, i) => new AbilityInfo(x, i, x.Quantity)));
 		}
 		
 		public Vector2D Position
@@ -50,8 +53,7 @@ namespace Stareater.Controllers.Views.Combat
 		{
 			get 
 			{
-				for(int i = 0; i < this.stats.Abilities.Count; i++)
-					yield return new AbilityInfo(this.stats.Abilities[i], i, this.Data.AbilityCharges[i]);
+				return abilities;
 			}
 		}
 	}

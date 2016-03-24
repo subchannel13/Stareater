@@ -10,5 +10,7 @@ namespace Stareater.GameData.Ships
 		{
 			this.ImagePath = imagePath;
 		}
+		
+		public abstract void Accept(IAbilityVisitor visitor);
 	}
 }

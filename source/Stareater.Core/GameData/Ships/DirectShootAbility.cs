@@ -25,5 +25,10 @@ namespace Stareater.GameData.Ships
 			this.ArmorEfficiency = armorEfficiency;
 			this.ShieldEfficiency = shieldEfficiency;
 		}
+		
+		public override void Accept(IAbilityVisitor visitor)
+		{
+			visitor.Visit(this);
+		}
 	}
 }
