@@ -42,8 +42,9 @@ namespace Stareater.GameLogic
 				
 				foreach(var shipGroup in fleet.LocalFleet.Ships)
 				{
-					var abilities = mainGame.Derivates.Of(shipGroup.Design.Owner).DesignStats[shipGroup.Design].Abilities.Select(x => x.Quantity * (double)shipGroup.Quantity);
-					this.game.Combatants.Add(new Combatant(position, fleet.OriginalFleet.Owner, shipGroup, abilities.ToArray()));
+					var designStats = mainGame.Derivates.Of(shipGroup.Design.Owner).DesignStats[shipGroup.Design];
+					var abilities = designStats.Abilities.Select(x => x.Quantity * (double)shipGroup.Quantity);
+					this.game.Combatants.Add(new Combatant(position, fleet.OriginalFleet.Owner, shipGroup, designStats, abilities.ToArray()));
 				}
 			}
 		}
@@ -90,6 +91,7 @@ namespace Stareater.GameLogic
 				this.game.PlayOrder.Enqueue(unit);
 		}
 
+		#region Unit actions
 		public void MoveTo(Vector2D destination)
 		{
 			if (!this.ValidMoves(this.game.PlayOrder.Peek()).Contains(destination))
@@ -127,6 +129,23 @@ namespace Stareater.GameLogic
 			}
 		}
 
+		public void UseAbility(int index, double quantity, Combatant target)
+		{
+			var unit = this.game.PlayOrder.Peek();
+			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
+			var chargesLeft = quantity;
+			
+			if (!Methods.InsideHexGrid(target.Position - unit.Position, abilityStats.Range))
+				return;
+			
+			if (abilityStats.IsInstantDamage)
+				chargesLeft = this.applyDamage(abilityStats, quantity, target);
+			
+			//TODO(v0.5) reduce spent charges
+			throw new NotImplementedException();
+		}
+		#endregion
+		
 		public IEnumerable<Vector2D> ValidMoves(Combatant unit)
 		{
 			if (unit.MovementPoints <= 0)
@@ -140,6 +159,14 @@ namespace Stareater.GameLogic
 			yield return unit.Position + new Vector2D(0, -1);
 			yield return unit.Position + new Vector2D(-1, -1 + yOffset);
 			yield return unit.Position + new Vector2D(-1, 0 + yOffset);
+		}
+		
+		private double applyDamage(AbilityStats abilityStats, double quantity, Combatant target)
+		{
+			var targetStats = this.mainGame.Derivates.Of(target.Owner).DesignStats[target.Ships.Design];
+			
+			//TODO(v0.5) do all calculations
+			return quantity;
 		}
 	}
 }

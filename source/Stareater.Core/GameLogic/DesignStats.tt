@@ -8,9 +8,12 @@
 	Generate("Stareater.GameLogic", "DesignStats",
 		new DataInfo("CombatSpeed", "double"),
 		new DataInfo("GalaxySpeed", "double"),
-		new DataInfo("Abilities", "List<Ability>"),
+		new DataInfo("Abilities", "List<AbilityStats>"),
 		
 		new DataInfo("ColonizerPopulation", "double"),
-		new DataInfo("ColonizerBuildings", "Dictionary<string, double>")
+		new DataInfo("ColonizerBuildings", "Dictionary<string, double>"),
+		
+		new DataInfo("HitPoints", "double"),
+		new DataInfo("ShieldPoints", "double")
 	);
 #>

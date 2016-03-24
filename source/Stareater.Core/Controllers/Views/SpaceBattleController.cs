@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Views.Combat;
+using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.Players;
 
@@ -54,9 +55,10 @@ namespace Stareater.Controllers.Views
 			this.checkNextUnit();
 		}
 		
-		public void UseAction()
+		public void UseAbility(AbilityInfo ability, CombatantInfo target)
 		{
-			//TODO(v0.5)
+			this.battleGame.Processor.UseAbility(ability.Index, ability.Quantity, target.Data);
+			this.checkNextUnit();
 		}
 		#endregion
 		
@@ -68,7 +70,7 @@ namespace Stareater.Controllers.Views
 		
 		internal void Start()
 		{
-			this.battleGame.Processor.MakeUnitOrder();
+			this.battleGame.Processor.MakeUnitOrder(); //TODO(v0.5) move it battle initialization and make method private
 			this.playNexUnit();
 		}
 

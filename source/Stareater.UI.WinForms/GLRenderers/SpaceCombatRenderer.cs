@@ -103,13 +103,17 @@ namespace Stareater.GLRenderers
 		{
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
 			
-			var x = Math.Round(mousePoint.X / 1.5, MidpointRounding.AwayFromZero);
+			var hexX = Math.Round(mousePoint.X / 1.5, MidpointRounding.AwayFromZero);
 			var hex = new NGenerics.DataStructures.Mathematical.Vector2D(
-				x,
-				Math.Round(mousePoint.Y / HexHeight - ((int)Math.Abs(x) % 2 != 0 ? 0.5 : 0), MidpointRounding.AwayFromZero)
+				hexX,
+				Math.Round(mousePoint.Y / HexHeight - ((int)Math.Abs(hexX) % 2 != 0 ? 0.5 : 0), MidpointRounding.AwayFromZero)
 			);
 			
-			this.Controller.MoveTo(hex);
+			var enemies = this.Controller.Units.Where(x => x.Position == hex && x.Owner != this.currentUnit.Owner).ToList();
+			if (enemies.Any())
+				this.Controller.UseAbility(SelectedAbility, enemies.Aggregate((a, b) => a.Count > b.Count ? a : b));
+			else
+				this.Controller.MoveTo(hex);
 		}
 		#endregion
 		

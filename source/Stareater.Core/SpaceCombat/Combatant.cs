@@ -1,6 +1,7 @@
 ﻿using System;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
+using Stareater.GameLogic;
 using Stareater.Players;
 
 namespace Stareater.SpaceCombat
@@ -15,12 +16,18 @@ namespace Stareater.SpaceCombat
 		public double MovementPoints = 1;
 		public double[] AbilityCharges;
 		
-		public Combatant(Vector2D position, Player owner, ShipGroup ships, double[] abilityCharges)
+		public double HitPoints;
+		public double ShieldPoints;
+		
+		public Combatant(Vector2D position, Player owner, ShipGroup ships, DesignStats stats, double[] abilityCharges)
 		{
 			this.Position = position;
 			this.Owner = owner;
 			this.Ships = ships;
 			this.AbilityCharges = abilityCharges;
+
+			this.HitPoints = stats.HitPoints;
+			this.ShieldPoints = stats.ShieldPoints;
 		}
 	}
 }

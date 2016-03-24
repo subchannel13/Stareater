@@ -317,7 +317,9 @@ namespace Stareater.GameLogic
 					galaxySpeed,
 					abilities,
 	                statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
-	                buildings)
+	                buildings,
+	                statics.ShipFormulas.HitPoints.Evaluate(shipVars.Get),
+	                0) //TODO(v0.5) calculate real shield points
 			);
 		}
 		

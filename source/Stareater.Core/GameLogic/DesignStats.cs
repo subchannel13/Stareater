@@ -11,14 +11,18 @@ namespace Stareater.GameLogic
 		public List<AbilityStats> Abilities;
 		public double ColonizerPopulation;
 		public Dictionary<string, double> ColonizerBuildings;
+		public double HitPoints;
+		public double ShieldPoints;
 
-		public DesignStats(double combatSpeed, double galaxySpeed, List<AbilityStats> abilities, double colonizerPopulation, Dictionary<string, double> colonizerBuildings) 
+		public DesignStats(double combatSpeed, double galaxySpeed, List<AbilityStats> abilities, double colonizerPopulation, Dictionary<string, double> colonizerBuildings, double hitPoints, double shieldPoints) 
 		{
 			this.CombatSpeed = combatSpeed;
 			this.GalaxySpeed = galaxySpeed;
 			this.Abilities = abilities;
 			this.ColonizerPopulation = colonizerPopulation;
 			this.ColonizerBuildings = colonizerBuildings;
+			this.HitPoints = hitPoints;
+			this.ShieldPoints = shieldPoints;
 		}
 	}
 }

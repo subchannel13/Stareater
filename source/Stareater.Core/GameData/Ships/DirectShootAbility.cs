@@ -10,8 +10,8 @@ namespace Stareater.GameData.Ships
 		public Formula Range { get; private set; }
 		public Formula EnergyCost { get; private set; }
 		
-		public Formula ArmorEfficiency { get; private set; } //TODO(v0.5) make it optional in data file
-		public Formula ShieldEfficiency { get; private set; } //TODO(v0.5) make it optional in data file
+		public Formula ArmorEfficiency { get; private set; }
+		public Formula ShieldEfficiency { get; private set; }
 		
 		public DirectShootAbility(string imagePath, 
 		                          Formula firePower, Formula accuracy, Formula range, Formula energyCost,
