@@ -268,6 +268,7 @@ namespace Stareater.GameLogic
 		public void Analyze(Design design, StaticsDB statics)
 		{
 			var hullVars = new Var(AComponentType.LevelKey, design.Hull.Level).Get;
+			var armorVars = new Var(AComponentType.LevelKey, design.Armor.Level).Get;
 			
 			var reactorVars = new Var(AComponentType.LevelKey, design.Reactor.Level).
 				And(AComponentType.SizeKey, design.Hull.TypeInfo.SizeReactor.Evaluate(hullVars)).Get;
@@ -285,23 +286,39 @@ namespace Stareater.GameLogic
 				galaxySpeed = design.IsDrive.TypeInfo.Speed.Evaluate(driveVars);
 			}
 			
-			var shipVars = new Var("thrust", design.Thrusters.TypeInfo.Speed.Evaluate(thrusterVars));
-			foreach(var special in statics.SpecialEquipment.Keys)
-			{
-				shipVars.And(special, 0);
-				shipVars.And(special + "_lvl", 0); //TODO(v0.5) Make "_lvl" string constant
-			}
-			foreach(var special in design.SpecialEquipment)
-			{
-				shipVars[special.TypeInfo.IdCode] = special.Quantity;
-				shipVars[special.TypeInfo.IdCode + "_lvl"] = special.Level; //TODO(v0.5) Make string constant
-			}
+			var shipVars = new Var("thrust", design.Thrusters.TypeInfo.Speed.Evaluate(thrusterVars)).
+				And("hullHp", design.Hull.TypeInfo.ArmorBase.Evaluate(hullVars)).
+				And("armorFactor", design.Armor.TypeInfo.ArmorFactor.Evaluate(armorVars)).
+				Init(statics.SpecialEquipment.Keys, 0).
+				Init(statics.SpecialEquipment.Keys.Select(x => x + "_lvl"), 0). //TODO(v0.5) Make "_lvl" string constant
+				UnionWith(design.SpecialEquipment.ToDictionary(x => x.TypeInfo.IdCode, x => x.Quantity)).
+				UnionWith(design.SpecialEquipment.ToDictionary(x => x.TypeInfo.IdCode + "_lvl", x => x.Level)); //TODO(v0.5) Make "_lvl" string constant
+			
 			var buildings = new Dictionary<string, double>();
 			foreach(var colonyBuilding in statics.ShipFormulas.ColonizerBuildings)
 			{
 				double amount = colonyBuilding.Value.Evaluate(shipVars.Get);
 				if (amount > 0)
 					buildings.Add(colonyBuilding.Key, amount);
+			}
+			
+			double baseArmorReduction = design.Armor.TypeInfo.Absorption.Evaluate(armorVars);
+			double hullArFactor = design.Hull.TypeInfo.ArmorAbsorption.Evaluate(hullVars);
+			double maxArmorReduction = design.Armor.TypeInfo.AbsorptionMax.Evaluate(armorVars);
+				
+			double shieldHp = 0;
+			double shieldReduction = 0;
+			double shieldRegeneration = 0;
+			double shieldThickness = 0;
+			if (design.Shield != null)
+			{
+				var shieldVars = new Var(AComponentType.LevelKey, design.Shield.Level).Get;
+				var hullShieldHp = design.Hull.TypeInfo.ShieldBase.Evaluate(hullVars);
+				
+				shieldHp = design.Shield.TypeInfo.HpFactor.Evaluate(shieldVars) * hullShieldHp;
+				shieldReduction = design.Shield.TypeInfo.Reduction.Evaluate(shieldVars);
+				shieldRegeneration = design.Shield.TypeInfo.RegenerationFactor.Evaluate(shieldVars) * hullShieldHp;
+				shieldThickness = design.Shield.TypeInfo.Thickness.Evaluate(shieldVars);
 			}
 			
 			var abilities = new List<AbilityStats>(design.MissionEquipment.SelectMany(
@@ -319,7 +336,13 @@ namespace Stareater.GameLogic
 	                statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
 	                buildings,
 	                statics.ShipFormulas.HitPoints.Evaluate(shipVars.Get),
-	                0) //TODO(v0.5) calculate real shield points
+	                shieldHp,
+	                statics.ShipFormulas.Evasion.Evaluate(shipVars.Get),
+	                Methods.Clamp(baseArmorReduction * hullArFactor, 0, maxArmorReduction),
+	                shieldReduction,
+	                shieldRegeneration,
+	                shieldThickness
+	            )
 			);
 		}
 		

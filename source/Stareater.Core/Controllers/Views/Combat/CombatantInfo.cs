@@ -21,7 +21,7 @@ namespace Stareater.Controllers.Views.Combat
 			this.stats = game.Derivates.Of(data.Owner).DesignStats[data.Ships.Design];
 			this.validMoves = validMoves.ToList();
 			
-			this.abilities = new List<AbilityInfo>(this.stats.Abilities.Select((x, i) => new AbilityInfo(x, i, x.Quantity)));
+			this.abilities = new List<AbilityInfo>(this.stats.Abilities.Select((x, i) => new AbilityInfo(x, i, data.AbilityCharges[i])));
 		}
 		
 		public Vector2D Position

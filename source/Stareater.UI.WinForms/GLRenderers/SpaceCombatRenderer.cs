@@ -110,8 +110,8 @@ namespace Stareater.GLRenderers
 			);
 			
 			var enemies = this.Controller.Units.Where(x => x.Position == hex && x.Owner != this.currentUnit.Owner).ToList();
-			if (enemies.Any())
-				this.Controller.UseAbility(SelectedAbility, enemies.Aggregate((a, b) => a.Count > b.Count ? a : b));
+			if (enemies.Any() && this.SelectedAbility != null)
+				this.Controller.UseAbility(this.SelectedAbility, enemies.Aggregate((a, b) => a.Count > b.Count ? a : b));
 			else
 				this.Controller.MoveTo(hex);
 		}
@@ -120,6 +120,7 @@ namespace Stareater.GLRenderers
 		public void OnUnitTurn(CombatantInfo unitInfo)
 		{
 			this.currentUnit = unitInfo;
+			this.SelectedAbility = unitInfo.Abilities.FirstOrDefault(x => x.Quantity > 0);
 		}
 
 		private void drawBackgrounds()

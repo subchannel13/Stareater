@@ -14,6 +14,11 @@
 		new DataInfo("ColonizerBuildings", "Dictionary<string, double>"),
 		
 		new DataInfo("HitPoints", "double"),
-		new DataInfo("ShieldPoints", "double")
+		new DataInfo("ShieldPoints", "double"),
+		new DataInfo("Evasion", "double"),
+		new DataInfo("ArmorReduction", "double"),
+		new DataInfo("ShieldReduction", "double"),
+		new DataInfo("ShieldRegeneration", "double"),
+		new DataInfo("ShieldThickness", "double")
 	);
 #>

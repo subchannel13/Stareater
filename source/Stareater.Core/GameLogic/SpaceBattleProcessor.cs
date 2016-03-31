@@ -9,6 +9,8 @@ namespace Stareater.GameLogic
 {
 	class SpaceBattleProcessor
 	{
+		private const double sigmoidBase = 0.90483741803595957316424905944644; //e^-0.1
+		
 		private readonly SpaceBattleGame game;
 		private readonly MainGame mainGame;
 		
@@ -119,12 +121,18 @@ namespace Stareater.GameLogic
 			if (this.game.PlayOrder.Count == 0)
 			{
 				this.game.Turn++;
+				this.game.Combatants.RemoveAll(x => x.Ships.Quantity <= 0);
+				
 				foreach(var unit in this.game.Combatants)
 				{
 					unit.MovementPoints += 1;
 					unit.MovementPoints = Math.Min(unit.MovementPoints, 1);
+					
+					var stats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
+					for(int i = 0; i < unit.AbilityCharges.Length; i++)
+						unit.AbilityCharges[i] = stats.Abilities[i].Quantity * (double)unit.Ships.Quantity;
 				}
-				//TODO(v0.5) other new turn logic like removing destroyed units
+				
 				this.MakeUnitOrder();
 			}
 		}
@@ -139,10 +147,9 @@ namespace Stareater.GameLogic
 				return;
 			
 			if (abilityStats.IsInstantDamage)
-				chargesLeft = this.applyDamage(abilityStats, quantity, target);
+				chargesLeft = this.doDirectAttack(abilityStats, quantity, target);
 			
-			//TODO(v0.5) reduce spent charges
-			throw new NotImplementedException();
+			unit.AbilityCharges[index] = chargesLeft;
 		}
 		#endregion
 		
@@ -160,13 +167,73 @@ namespace Stareater.GameLogic
 			yield return unit.Position + new Vector2D(-1, -1 + yOffset);
 			yield return unit.Position + new Vector2D(-1, 0 + yOffset);
 		}
+
+		#region Damage dealing
+		double attackTop(AbilityStats abilityStats, double quantity, Combatant target, DesignStats targetStats)
+		{
+			while (target.HitPoints > 0 && quantity > 0)
+			{
+				quantity--;
+				
+				//TODO(v0.5) factor in stealth, sensors and distance
+				if (Probability(abilityStats.Accuracy - targetStats.Evasion) < this.game.Rng.NextDouble())
+					continue;
+				
+				double firePower = abilityStats.FirePower;
+				
+				if (target.ShieldPoints > 0)
+				{
+					double shieldFire = firePower - Reduce(firePower, targetStats.ShieldThickness, abilityStats.ShieldEfficiency);
+					double shieldDamage = Reduce(shieldFire, targetStats.ShieldReduction, 1);
+					firePower -= shieldFire - shieldDamage; //damage reduction difference
+					
+					shieldDamage = Math.Min(shieldDamage, target.ShieldPoints);
+					target.ShieldPoints -= shieldDamage;
+					firePower -= shieldDamage;
+				}
+				
+				double armorDamage = Reduce(firePower, targetStats.ArmorReduction, abilityStats.ArmorEfficiency);
+				target.HitPoints -= armorDamage;
+			}
+			
+			if (target.HitPoints <= 0)
+			{
+				target.Ships.Quantity--;
+				target.HitPoints = targetStats.HitPoints;
+				target.ShieldPoints = targetStats.ShieldPoints;
+			}
+			
+			return Math.Max(quantity, 0);
+		}
 		
-		private double applyDamage(AbilityStats abilityStats, double quantity, Combatant target)
+		private double doDirectAttack(AbilityStats abilityStats, double quantity, Combatant target)
 		{
 			var targetStats = this.mainGame.Derivates.Of(target.Owner).DesignStats[target.Ships.Design];
 			
-			//TODO(v0.5) do all calculations
+			while(quantity > 0)
+				quantity = attackTop(abilityStats, quantity, target, targetStats);
+			
+			//TODO(later) do different calculation for multiple ships below top of the stack
 			return quantity;
 		}
+		#endregion
+		
+		#region Math helpers
+		private static double Probability(double modifer)
+		{
+			if (modifer < 0)
+				return 0.5 * Math.Pow(sigmoidBase, -modifer);
+			else
+				return 1 - 0.5 * Math.Pow(sigmoidBase, modifer);
+		}
+		
+		private static double Reduce(double attack, double defense, double defenseEffect)
+		{
+			if (attack <= 0 || double.IsPositiveInfinity(defense))
+				return 0;
+
+			return attack * Math.Pow(2, -defenseEffect * defense / attack);
+		}
+		#endregion
 	}
 }
