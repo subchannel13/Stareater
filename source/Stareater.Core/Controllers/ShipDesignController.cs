@@ -197,7 +197,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var vars = new Var("thrust", thrusterInfo.Evasion).
+				var vars = new Var("baseEvasion", thrusterInfo.Evasion).
 					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
 				
 				return game.Statics.ShipFormulas.Evasion.Evaluate(vars);

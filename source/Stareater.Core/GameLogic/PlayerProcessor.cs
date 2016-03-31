@@ -286,7 +286,8 @@ namespace Stareater.GameLogic
 				galaxySpeed = design.IsDrive.TypeInfo.Speed.Evaluate(driveVars);
 			}
 			
-			var shipVars = new Var("thrust", design.Thrusters.TypeInfo.Speed.Evaluate(thrusterVars)).
+			var shipVars = new Var("baseEvasion", design.Thrusters.TypeInfo.Evasion.Evaluate(thrusterVars)).
+				And("thrust", design.Thrusters.TypeInfo.Speed.Evaluate(thrusterVars)).
 				And("hullHp", design.Hull.TypeInfo.ArmorBase.Evaluate(hullVars)).
 				And("armorFactor", design.Armor.TypeInfo.ArmorFactor.Evaluate(armorVars)).
 				Init(statics.SpecialEquipment.Keys, 0).
