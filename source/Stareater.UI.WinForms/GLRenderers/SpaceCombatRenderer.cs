@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -8,6 +9,7 @@ using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Utils;
+using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GLRenderers
 {
@@ -111,7 +113,7 @@ namespace Stareater.GLRenderers
 			
 			var enemies = this.Controller.Units.Where(x => x.Position == hex && x.Owner != this.currentUnit.Owner).ToList();
 			if (enemies.Any() && this.SelectedAbility != null)
-				this.Controller.UseAbility(this.SelectedAbility, enemies.Aggregate((a, b) => a.Count > b.Count ? a : b));
+				this.Controller.UseAbility(this.SelectedAbility, biggestStack(enemies));
 			else
 				this.Controller.MoveTo(hex);
 		}
@@ -152,16 +154,28 @@ namespace Stareater.GLRenderers
 			GL.Color4(Controller.Star.Color);
 			TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
 			
-			//TODO(v0.5) draw planets
+			foreach(var planet in this.Controller.Planets)
+			{
+				GL.Color4(planet.Owner != null ? planet.Owner.Color : Color.FromArgb(64, 64, 64));
+				
+				GL.Color4(Color.Blue);
+				GL.Enable(EnableCap.Texture2D);
+				GL.PushMatrix();
+				GL.Translate(hexX(planet.Position), hexY(planet.Position), 0);
+	
+				TextureUtils.DrawSprite(GalaxyTextures.Get.Planet, StarColorZ);
+				GL.PopMatrix();
+			}
 		}
 		
 		private void drawUnits()
 		{
 			var units = this.Controller.Units.GroupBy(x => x.Position);
+			var formatter = new ThousandsFormatter();
 			
 			foreach(var hex in units)
 			{
-				var unit = hex.First(); //TODO(v0.5) select most prominent unit
+				var unit = biggestStack(hex);
 				
 				GL.PushMatrix();
 				GL.Translate(hexX(hex.Key), hexY(hex.Key), CombatantZ);
@@ -180,6 +194,15 @@ namespace Stareater.GLRenderers
 					TextureUtils.DrawSprite(GalaxyTextures.Get.FleetIndicator);
 					GL.PopMatrix();
 				}
+				
+				GL.PushMatrix();
+				GL.Translate(0.5, -0.5, MoreCombatantsZ - CombatantZ);
+				GL.Scale(0.2, 0.2, 1);
+				GL.Color4(Color.Gray);
+				
+				TextRenderUtil.Get.RenderText(formatter.Format(unit.Count), -1);
+				GL.PopMatrix();
+					
 				GL.PopMatrix();
 			}
 		}
@@ -245,6 +268,11 @@ namespace Stareater.GLRenderers
 		}
 		
 		#region Helper methods
+		private CombatantInfo biggestStack(IEnumerable<CombatantInfo> combatants)
+		{
+			return combatants.Aggregate((a, b) => a.Count * a.Design.Size > b.Count * b.Design.Size ? a : b);
+		}
+		
 		private Vector4 mouseToView(int x, int y)
 		{
 			return new Vector4(

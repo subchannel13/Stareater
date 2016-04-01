@@ -33,6 +33,22 @@ namespace Stareater.Controllers.Views
 		
 		public StarData Star { get; private set; }
 		
+		public IEnumerable<CombatPlanetInfo> Planets
+		{
+			get 
+			{
+				//TODO(0.5) make a class for planet in combat
+				var colonies = this.mainGame.States.Colonies.AtStar(this.Star);
+				var planets = this.mainGame.States.Planets.At(this.Star);
+				
+				for(int i = 0; i < this.battleGame.PlanetPositions.Length; i++)
+					yield return new CombatPlanetInfo(
+						this.battleGame.PlanetPositions[i], 
+						colonies.FirstOrDefault(x => x.Location.Planet == planets[i])
+					);
+			}
+		}
+		
 		public IEnumerable<CombatantInfo> Units
 		{
 			get 

@@ -24,10 +24,25 @@ namespace Stareater.GameLogic
 		public void Initialize(IEnumerable<FleetMovement> fleets, double startTime)
 		{
 			this.initUnits(fleets);
+			this.initBodies();
 			
 			this.game.TurnLimit = (int)Math.Ceiling(50 * (1 - startTime));
 		}
 
+		private void initBodies()
+		{
+			double maxPlanets = mainGame.States.Planets.Max(x => x.Position);
+			var planets = mainGame.States.Planets.At(mainGame.States.Stars.At(game.Location));
+			
+			for(int i = 0; i < planets.Count; i++)
+			{
+				var distance = Methods.Lerp(planets[i].Position / maxPlanets, 1, SpaceBattleGame.BattlefieldRadius);
+				var angle = game.Rng.NextDouble() * 2 * Math.PI;
+				this.game.PlanetPositions[i] = snapPosition(correctPosition(new Vector2D(Math.Cos(angle), Math.Sin(angle)) * distance));
+				//TODO(v0.5) try to make unique positions
+			}
+		}
+		
 		private void initUnits(IEnumerable<FleetMovement> fleets)
 		{
 			foreach(var fleet in fleets)

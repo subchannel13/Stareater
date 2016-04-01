@@ -1,6 +1,8 @@
 ﻿using System;
+using Stareater.GameData.Ships;
 using Stareater.GameLogic;
 using Stareater.Ships;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views.Ships
 {
@@ -36,6 +38,14 @@ namespace Stareater.Controllers.Views.Ships
 			get 
 			{
 				return stats.ColonizerPopulation;
+			}
+		}
+		
+		public double Size
+		{
+			get 
+			{
+				return design.Hull.TypeInfo.Size.Evaluate(new Var(AComponentType.LevelKey, design.Hull.Level).Get);
 			}
 		}
 	}
