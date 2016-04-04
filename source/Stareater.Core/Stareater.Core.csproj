@@ -415,6 +415,7 @@
     <Compile Include="Ships\Missions\SkipTurnMission.cs" />
     <Compile Include="SpaceBattleGame.cs" />
     <Compile Include="SpaceCombat\Combatant.cs" />
+    <Compile Include="SpaceCombat\CombatPlanet.cs" />
     <Compile Include="Utils\BitHash.cs" />
     <Compile Include="Utils\BitHashBuilder.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />

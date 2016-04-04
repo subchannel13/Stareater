@@ -1,28 +1,27 @@
 ﻿using System;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
+using Stareater.SpaceCombat;
 
 namespace Stareater.Controllers.Views.Combat
 {
 	public class CombatPlanetInfo
 	{
-		private readonly Vector2D position;
-		private readonly PlayerInfo owner;
+		private readonly CombatPlanet data;
 		
-		internal CombatPlanetInfo(Vector2D position, Colony colony)
+		internal CombatPlanetInfo(CombatPlanet data)
 		{
-			this.position = position;
-			this.owner = colony != null ? new PlayerInfo(colony.Owner) : null;
+			this.data = data;
 		}
 		
 		public Vector2D Position 
 		{
-			get { return position; }
+			get { return data.Position; }
 		}
 		
 		public PlayerInfo Owner 
 		{
-			get { return owner; }
+			get { return data.Colony != null ? new PlayerInfo(data.Colony.Owner) : null; }
 		}
 	}
 }

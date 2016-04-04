@@ -31,14 +31,20 @@ namespace Stareater.GameLogic
 
 		private void initBodies()
 		{
-			double maxPlanets = mainGame.States.Planets.Max(x => x.Position);
-			var planets = mainGame.States.Planets.At(mainGame.States.Stars.At(game.Location));
+			double maxPlanets = this.mainGame.States.Planets.Max(x => x.Position);
+			var star = mainGame.States.Stars.At(game.Location);
+			var planets = this.mainGame.States.Planets.At(star);
+			var colonies = this.mainGame.States.Colonies.AtStar(star);
 			
 			for(int i = 0; i < planets.Count; i++)
 			{
 				var distance = Methods.Lerp(planets[i].Position / maxPlanets, 1, SpaceBattleGame.BattlefieldRadius);
 				var angle = game.Rng.NextDouble() * 2 * Math.PI;
-				this.game.PlanetPositions[i] = snapPosition(correctPosition(new Vector2D(Math.Cos(angle), Math.Sin(angle)) * distance));
+				
+				this.game.Planets[i] = new CombatPlanet(
+					colonies.FirstOrDefault(x => x.Location.Planet == planets[i]),
+					snapPosition(correctPosition(new Vector2D(Math.Cos(angle), Math.Sin(angle)) * distance))
+				);
 				//TODO(v0.5) try to make unique positions
 			}
 		}
@@ -140,10 +146,14 @@ namespace Stareater.GameLogic
 				
 				foreach(var unit in this.game.Combatants)
 				{
+					var stats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
+					
 					unit.MovementPoints += 1;
 					unit.MovementPoints = Math.Min(unit.MovementPoints, 1);
 					
-					var stats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
+					unit.ShieldPoints += stats.ShieldRegeneration;
+					unit.ShieldPoints = Math.Min(unit.ShieldPoints, stats.ShieldPoints);
+					
 					for(int i = 0; i < unit.AbilityCharges.Length; i++)
 						unit.AbilityCharges[i] = stats.Abilities[i].Quantity * (double)unit.Ships.Quantity;
 				}
