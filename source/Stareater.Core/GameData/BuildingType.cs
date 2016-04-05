@@ -1,4 +1,5 @@
 ﻿using System;
+using Stareater.AppData.Expressions;
 
 namespace Stareater.GameData
 {
@@ -7,10 +8,14 @@ namespace Stareater.GameData
 		public string NameCode { get; private set; }
 		public string ImagePath { get; private set; }
 		
-		public BuildingType(string nameCode, string imagePath)
+		public Formula HitPoints { get; private set; }
+		
+		public BuildingType(string nameCode, string imagePath, Formula hitPoints)
 		{
 			this.NameCode = nameCode;
 			this.ImagePath = imagePath;
+			
+			this.HitPoints = hitPoints;
 		}
 	}
 }

@@ -25,6 +25,7 @@
 	
 	code: Infra
 	
+	hitPoints # 10;
 }
 
 { Constructable

@@ -209,7 +209,8 @@ namespace Stareater.GameData.Databases
 		{
 			return new BuildingType(
 				data[GeneralNameKey].To<string>(),
-				data[GeneralImageKey].To<string>()
+				data[GeneralImageKey].To<string>(),
+				data[BuildingHitPointsKey].To<Formula>()
 			);
 		}
 		
@@ -557,6 +558,8 @@ namespace Stareater.GameData.Databases
 		private const string ShipColonyPopulation = "colonyPop";
 		private const string ShipColonyBuildings = "colonyBuildings";
 
+		private const string BuildingHitPointsKey = "hitPoints";
+		
 		private const string ConstructableCostKey = "cost";
 		private const string ConstructableSiteKey = "site";
 		private const string ConstructableConditionKey = "condition";
