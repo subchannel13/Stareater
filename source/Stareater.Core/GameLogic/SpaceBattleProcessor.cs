@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
+using Stareater.GameData.Databases.Tables;
 using Stareater.SpaceCombat;
 using Stareater.Utils;
 
@@ -43,7 +44,8 @@ namespace Stareater.GameLogic
 				
 				this.game.Planets[i] = new CombatPlanet(
 					colonies.FirstOrDefault(x => x.Location.Planet == planets[i]),
-					snapPosition(correctPosition(new Vector2D(Math.Cos(angle), Math.Sin(angle)) * distance))
+					snapPosition(correctPosition(new Vector2D(Math.Cos(angle), Math.Sin(angle)) * distance)),
+					this.mainGame.Statics.ColonyFormulas.PopulationHitPoints.Evaluate(null) //TODO(later) pass relevant variables
 				);
 				//TODO(v0.5) try to make unique positions
 			}
@@ -158,6 +160,12 @@ namespace Stareater.GameLogic
 						unit.AbilityCharges[i] = stats.Abilities[i].Quantity * (double)unit.Ships.Quantity;
 				}
 				
+				foreach(var planet in this.game.Planets.Where(x => x.Colony != null && x.Colony.Population < 1))
+				{
+					this.mainGame.States.Colonies.Remove(planet.Colony); //TODO(v0.5) test and see if more stuff has to be updated
+					planet.Colony = null;
+				}
+				
 				this.MakeUnitOrder();
 			}
 		}
@@ -179,7 +187,25 @@ namespace Stareater.GameLogic
 		
 		public void UseAbility(int index, double quantity, CombatPlanet planet)
 		{
-			//TODO(v0.5)
+			var unit = this.game.PlayOrder.Peek();
+			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
+			var chargesLeft = quantity;
+			
+			if (!Methods.InsideHexGrid(planet.Position - unit.Position, abilityStats.Range))
+				return;
+			
+			if (abilityStats.IsInstantDamage)
+			{
+				var killsPerShot = abilityStats.FirePower / planet.PopulationHitPoints;
+				var casualties = Math.Min(quantity * killsPerShot, planet.Colony.Population);
+				//TODO(later) factor in shields and armor
+				//TODO(later) roll for target, building or population
+				
+				planet.Colony.Population -= casualties;
+				chargesLeft -= Math.Ceiling(casualties / killsPerShot);
+			}
+			
+			unit.AbilityCharges[index] = chargesLeft;
 		}
 		#endregion
 		

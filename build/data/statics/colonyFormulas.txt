@@ -36,4 +36,6 @@
 		improvised	# 1;
 		organized	# 3;
 	}
+	
+	popHp # 10;
 }
