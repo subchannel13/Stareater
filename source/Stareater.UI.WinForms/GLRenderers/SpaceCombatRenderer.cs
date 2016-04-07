@@ -114,6 +114,8 @@ namespace Stareater.GLRenderers
 			var enemies = this.Controller.Units.Where(x => x.Position == hex && x.Owner != this.currentUnit.Owner).ToList();
 			if (enemies.Any() && this.SelectedAbility != null)
 				this.Controller.UseAbility(this.SelectedAbility, biggestStack(enemies));
+			else if (this.Controller.Planets.Any(x => x.Position == hex && x.Owner != this.currentUnit.Owner))
+				this.Controller.UseAbility(this.SelectedAbility, this.Controller.Planets.First(x => x.Position == hex));
 			else
 				this.Controller.MoveTo(hex);
 		}
@@ -150,6 +152,8 @@ namespace Stareater.GLRenderers
 		
 		private void drawBodies()
 		{
+			var formatter = new ThousandsFormatter();
+			
 			GL.Enable(EnableCap.Texture2D);
 			GL.Color4(Controller.Star.Color);
 			TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
@@ -164,6 +168,17 @@ namespace Stareater.GLRenderers
 				GL.Translate(hexX(planet.Position), hexY(planet.Position), 0);
 	
 				TextureUtils.DrawSprite(GalaxyTextures.Get.Planet, StarColorZ);
+				
+				if (planet.Population > 0)
+				{
+					GL.PushMatrix();
+					GL.Translate(0.5, -0.5, MoreCombatantsZ);
+					GL.Scale(0.2, 0.2, 1);
+					GL.Color4(Color.Gray);
+					
+					TextRenderUtil.Get.RenderText(formatter.Format(planet.Population), -1);
+					GL.PopMatrix();
+				}
 				GL.PopMatrix();
 			}
 		}

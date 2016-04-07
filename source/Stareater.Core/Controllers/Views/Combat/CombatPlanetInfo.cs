@@ -7,21 +7,26 @@ namespace Stareater.Controllers.Views.Combat
 {
 	public class CombatPlanetInfo
 	{
-		private readonly CombatPlanet data;
+		internal readonly CombatPlanet Data;
 		
 		internal CombatPlanetInfo(CombatPlanet data)
 		{
-			this.data = data;
+			this.Data = data;
 		}
 		
 		public Vector2D Position 
 		{
-			get { return data.Position; }
+			get { return Data.Position; }
 		}
 		
 		public PlayerInfo Owner 
 		{
-			get { return data.Colony != null ? new PlayerInfo(data.Colony.Owner) : null; }
+			get { return Data.Colony != null ? new PlayerInfo(Data.Colony.Owner) : null; }
+		}
+		
+		public double Population 
+		{
+			get { return Data.Colony != null ? Data.Colony.Population : 0; }
 		}
 	}
 }

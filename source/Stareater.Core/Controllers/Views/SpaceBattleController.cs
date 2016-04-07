@@ -6,6 +6,7 @@ using Stareater.Controllers.Views.Combat;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.Players;
+using Stareater.SpaceCombat;
 
 namespace Stareater.Controllers.Views
 {
@@ -70,6 +71,12 @@ namespace Stareater.Controllers.Views
 		public void UseAbility(AbilityInfo ability, CombatantInfo target)
 		{
 			this.battleGame.Processor.UseAbility(ability.Index, ability.Quantity, target.Data);
+			this.checkNextUnit();
+		}
+		
+		public void UseAbility(AbilityInfo ability, CombatPlanetInfo planet)
+		{
+			this.battleGame.Processor.UseAbility(ability.Index, ability.Quantity, planet.Data);
 			this.checkNextUnit();
 		}
 		#endregion

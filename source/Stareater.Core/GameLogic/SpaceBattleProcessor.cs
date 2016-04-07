@@ -176,6 +176,11 @@ namespace Stareater.GameLogic
 			
 			unit.AbilityCharges[index] = chargesLeft;
 		}
+		
+		public void UseAbility(int index, double quantity, CombatPlanet planet)
+		{
+			//TODO(v0.5)
+		}
 		#endregion
 		
 		public IEnumerable<Vector2D> ValidMoves(Combatant unit)
