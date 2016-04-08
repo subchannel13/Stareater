@@ -245,8 +245,8 @@ namespace Stareater.Utils
 		public static T ToOrDefault<T>(this IkonComposite composite, string key, T defaultValue)
 		{
 			return composite.Keys.Contains(key) ? 
-				defaultValue : 
-				composite[key].To<T>();
+				composite[key].To<T>() :
+				defaultValue;
 		}
 		
 		/// <summary>

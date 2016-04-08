@@ -24,6 +24,8 @@ SUBSPACE_ISDRIVE_DESC = No description.
 :MissionEquipment
 LASER_NAME = Laser
 LASER_DESC = No description.
+NUKE_NAME = Nuclear bomb
+NUKE_DESC = No description.
 -
 
 :Reactors

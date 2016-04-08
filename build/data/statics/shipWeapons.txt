@@ -20,7 +20,32 @@
 			energyCost # 10;
 			
 			armorEfficiency # 0.5;
-			shieldEfficiency # 1;
+		}
+	]
+}
+
+{ MissionEquipment
+	nameCode: NUKE_NAME
+	descCode: NUKE_DESC
+	image: ./images/technologies/hydroponicFarms.png
+	code: nukeBomb
+	
+	maxLvl= 5
+	prerequisites [
+	]
+	
+	cost # 200000;
+	size # 5;
+	
+	abilities [
+		{ DirectShot
+			image: ./images/technologies/hydroponicFarms.png
+			firePower # 20;
+			accuracy # 0;
+			range # 0;
+			energyCost # 0;
+			
+			planetEfficiency # 5;
 		}
 	]
 }

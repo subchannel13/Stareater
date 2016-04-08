@@ -17,6 +17,7 @@ namespace Stareater.GameLogic
 		private double energyCost = 0;
 		private double armorEfficiency = 0;
 		private double shieldEfficiency = 0;
+		private double planetEfficiency = 0;
 		
 		private AbilityStatsFactory(int level)
 		{
@@ -29,7 +30,8 @@ namespace Stareater.GameLogic
 			type.Accept(factory);
 			
 			return new AbilityStats(type, level, quantity, factory.range, factory.isInstantDamage,
-			                       factory.firePower, factory.accuracy, factory.energyCost, factory.armorEfficiency, factory.shieldEfficiency);
+			                       factory.firePower, factory.accuracy, factory.energyCost, 
+			                       factory.armorEfficiency, factory.shieldEfficiency, factory.planetEfficiency);
 		}
 
 		#region IAbilityVisitor implementation
@@ -46,6 +48,7 @@ namespace Stareater.GameLogic
 			this.energyCost = ability.EnergyCost.Evaluate(vars);
 			this.armorEfficiency = ability.ArmorEfficiency.Evaluate(vars);
 			this.shieldEfficiency = ability.ShieldEfficiency.Evaluate(vars);
+			this.planetEfficiency = ability.PlanetEfficiency.Evaluate(vars);
 		}
 
 		#endregion

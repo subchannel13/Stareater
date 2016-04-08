@@ -17,10 +17,12 @@ namespace Stareater.GameLogic
 		public double EnergyCost { get; private set; }
 		public double ArmorEfficiency { get; private set; }
 		public double ShieldEfficiency { get; private set; }
+		public double PlanetEfficiency { get; private set; }
 		
 		public AbilityStats(AAbilityType type, int level, int quantity, 
 		                    int range, bool isInstantDamage, 
-		                    double firePower, double accuracy, double energyCost, double armorEfficiency, double shieldEfficiency)
+		                    double firePower, double accuracy, double energyCost, 
+		                    double armorEfficiency, double shieldEfficiency, double planetEfficiency)
 		{
 			this.Type = type;
 			this.Level = level;
@@ -34,6 +36,7 @@ namespace Stareater.GameLogic
 			this.EnergyCost = energyCost;
 			this.ArmorEfficiency = armorEfficiency;
 			this.ShieldEfficiency = shieldEfficiency;
+			this.PlanetEfficiency = planetEfficiency;
 		}
 	}
 }

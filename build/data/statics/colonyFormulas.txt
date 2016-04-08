@@ -37,5 +37,5 @@
 		organized	# 3;
 	}
 	
-	popHp # 10;
+	popHp # 1;
 }

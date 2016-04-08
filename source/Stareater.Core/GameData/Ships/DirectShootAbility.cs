@@ -12,10 +12,11 @@ namespace Stareater.GameData.Ships
 		
 		public Formula ArmorEfficiency { get; private set; }
 		public Formula ShieldEfficiency { get; private set; }
+		public Formula PlanetEfficiency { get; private set; }
 		
 		public DirectShootAbility(string imagePath, 
 		                          Formula firePower, Formula accuracy, Formula range, Formula energyCost,
-		                          Formula armorEfficiency, Formula shieldEfficiency)
+		                          Formula armorEfficiency, Formula shieldEfficiency, Formula planetEfficiency)
 			: base(imagePath)
 		{
 			this.FirePower = firePower;
@@ -24,6 +25,7 @@ namespace Stareater.GameData.Ships
 			this.EnergyCost = energyCost;
 			this.ArmorEfficiency = armorEfficiency;
 			this.ShieldEfficiency = shieldEfficiency;
+			this.PlanetEfficiency = planetEfficiency;
 		}
 		
 		public override void Accept(IAbilityVisitor visitor)
