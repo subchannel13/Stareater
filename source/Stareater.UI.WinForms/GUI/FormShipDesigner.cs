@@ -357,7 +357,8 @@ namespace Stareater.GUI
 			
 			var selectedItem = this.equipmentList.SelectedItem as ShipEquipmentItem;
 			long maxCount = 0;
-			
+
+			this.equipmentAction.MissionEquipmentAction = x => maxCount = (long)Math.Floor(this.controller.SpaceTotal / x.Size);
 			this.equipmentAction.SpecialEquipmentAction = x => maxCount = (long)x.MaxCount;
 			selectedItem.Data.Dispatch();
 			

@@ -38,5 +38,13 @@ namespace Stareater.Controllers.Views.Ships
 				return this.Type.ImagePath;
 			}
 		}
+
+		public double Size
+		{
+			get
+			{
+				return this.Type.Size.Evaluate(this.vars);
+			}
+		}
 	}
 }
