@@ -450,23 +450,35 @@ namespace Stareater.GUI
 			shipCount.Text = context["ShipCount"].Text() + ": " + formatter.Format(unitInfo.Count);
 			
 			this.abilityList.Controls.Clear();
-			
-			foreach(var ability in unitInfo.Abilities)
+			Func<Image, string, object, Button> buttonMaker = (image, text, tag) =>
 			{
 				var button = new Button();
 				
-				button.Image = ImageCache.Get.Resized(ability.ImagePath, new Size(24, 24));
+				button.Image = image;
 				button.ImageAlign = ContentAlignment.MiddleLeft;
 				button.Margin = new Padding(3, 3, 3, 0);
 				button.Size = new Size(80, 32);
-				button.Text = "x " + formatter.Format(ability.Quantity);
+				button.Text = text;
 				button.TextImageRelation = TextImageRelation.ImageBeforeText;
 				button.UseVisualStyleBackColor = true;
-				button.Tag = ability;
+				button.Tag = tag;
 				button.Click += selectAbility_Click;
 				
-				this.abilityList.Controls.Add(button);
-			}
+				return button;
+			};
+			
+			this.abilityList.Controls.Add(buttonMaker(
+					null,
+					context["MoveAction"].Text(),
+					null
+				));
+			
+			foreach(var ability in unitInfo.Abilities)
+				this.abilityList.Controls.Add(buttonMaker(
+					ImageCache.Get.Resized(ability.ImagePath, new Size(24, 24)),
+					"x " + formatter.Format(ability.Quantity),
+					ability
+				));
 		}
 		#endregion
 		

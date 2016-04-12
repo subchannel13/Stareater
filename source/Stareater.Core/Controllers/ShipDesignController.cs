@@ -330,6 +330,7 @@ namespace Stareater.Controllers
 					this.selectedSpecialEquipment[i] = new Component<SpecialEquipmentType>(equipInfo.Type, equipInfo.Level, amount);
 		}
 
+		//TODO(later) consider returning a reason for invalidity 
 		public bool IsDesignValid
 		{
 			get
@@ -363,6 +364,10 @@ namespace Stareater.Controllers
 				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level)
 			);
 			desing.CalcHash(this.game.Statics);
+			
+			if (this.game.States.Designs.Contains(desing))
+				return; //TODO(v0.5) move the check to IsDesignValid
+			
 			game.States.Designs.Add(desing); //TODO(v0.5) add to changes DB and propagate to states during turn processing
 			game.Derivates.Players.Of(this.player).Analyze(desing, this.game.Statics);
 		}

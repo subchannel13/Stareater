@@ -114,7 +114,7 @@ namespace Stareater.GLRenderers
 			var enemies = this.Controller.Units.Where(x => x.Position == hex && x.Owner != this.currentUnit.Owner).ToList();
 			if (enemies.Any() && this.SelectedAbility != null)
 				this.Controller.UseAbility(this.SelectedAbility, biggestStack(enemies));
-			else if (this.Controller.Planets.Any(x => x.Position == hex && x.Owner != this.currentUnit.Owner))
+			else if (this.Controller.Planets.Any(x => x.Position == hex && x.Owner != this.currentUnit.Owner) && this.SelectedAbility != null)
 				this.Controller.UseAbility(this.SelectedAbility, this.Controller.Planets.First(x => x.Position == hex));
 			else
 				this.Controller.MoveTo(hex);

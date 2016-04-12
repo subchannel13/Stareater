@@ -26,6 +26,7 @@ namespace Stareater.Ships
 			
 			HashComponent(hashBuilder, this.Hull, statics.Hulls);
 			hashBuilder.Add(this.imageIndex, this.Hull.TypeInfo.ImagePaths.Length);
+			hashBuilder.Add(this.SpecialEquipment.Count, statics.SpecialEquipment.Count);
 			
 			if (this.IsDrive != null)
 			{
@@ -39,6 +40,13 @@ namespace Stareater.Ships
 			foreach(var equip in this.SpecialEquipment.OrderBy(x => x.TypeInfo.IdCode))
 			{
 				HashComponent(hashBuilder, equip, statics.SpecialEquipment);
+				hashBuilder.Add(equip.Quantity, maxEquips);
+			}
+			
+			maxEquips = this.MissionEquipment.Count > 0 ? (this.MissionEquipment.Max(x => x.Quantity) + 1) : 0;
+			foreach(var equip in this.MissionEquipment.OrderBy(x => x.TypeInfo.IdCode))
+			{
+				HashComponent(hashBuilder, equip, statics.MissionEquipment);
 				hashBuilder.Add(equip.Quantity, maxEquips);
 			}
 			
