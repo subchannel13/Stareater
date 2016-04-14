@@ -14,18 +14,15 @@ namespace Stareater.Galaxy
 		public int Position { get; private set; }
 		public PlanetType Type { get; private set; }
 		public double Size { get; private set; }
-		public double MineralsSurface { get; private set; }
-		public double MineralsDeep { get; private set; }
 
-		public Planet(StarData star, int position, PlanetType type, double size, double mineralsSurface, double mineralsDeep) 
+		public Planet(StarData star, int position, PlanetType type, double size) 
 		{
 			this.Star = star;
 			this.Position = position;
 			this.Type = type;
 			this.Size = size;
-			this.MineralsSurface = mineralsSurface;
-			this.MineralsDeep = mineralsDeep;
  
+			 
 		} 
 
 
@@ -42,18 +39,13 @@ namespace Stareater.Galaxy
 
 			var sizeSave = rawData[SizeKey];
 			this.Size = sizeSave.To<double>();
-
-			var mineralsSurfaceSave = rawData[MineralsSurfaceKey];
-			this.MineralsSurface = mineralsSurfaceSave.To<double>();
-
-			var mineralsDeepSave = rawData[MineralsDeepKey];
-			this.MineralsDeep = mineralsDeepSave.To<double>();
  
+			 
 		}
 
 		internal Planet Copy(GalaxyRemap galaxyRemap) 
 		{
-			return new Planet(galaxyRemap.Stars[this.Star], this.Position, this.Type, this.Size, this.MineralsSurface, this.MineralsDeep);
+			return new Planet(galaxyRemap.Stars[this.Star], this.Position, this.Type, this.Size);
  
 		} 
  
@@ -69,10 +61,6 @@ namespace Stareater.Galaxy
 			data.Add(TypeKey, new IkonComposite(this.Type.ToString()));
 
 			data.Add(SizeKey, new IkonFloat(this.Size));
-
-			data.Add(MineralsSurfaceKey, new IkonFloat(this.MineralsSurface));
-
-			data.Add(MineralsDeepKey, new IkonFloat(this.MineralsDeep));
 			return data;
  
 		}
@@ -90,9 +78,9 @@ namespace Stareater.Galaxy
 		private const string PositionKey = "position";
 		private const string TypeKey = "type";
 		private const string SizeKey = "size";
-		private const string MineralsSurfaceKey = "mineralsSurface";
-		private const string MineralsDeepKey = "mineralsDeep";
  
 		#endregion
+
+ 
 	}
 }

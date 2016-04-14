@@ -94,20 +94,20 @@ namespace Stareater.Galaxy.RybPopulator
 		public IEnumerable<StarSystem> Generate(Random rng, StarPositions starPositions)
 		{
 			int colorI = 0;
-			StarNamer namer = new StarNamer(starPositions.Stars.Length);
+			var namer = new StarNamer(starPositions.Stars.Length);
 
 			//UNDONE(v0.5): Picks star types cyclicaly
 			//TODO(v0.5): Randomize star type distribution
 			//TODO(v0.5): Star size and radiation distribution
 			foreach (var position in starPositions.Stars) {
-				StarData star = new StarData(starTypes[colorI++ % starTypes.Length].Hue, 1, namer.NextName(), position);
+				var star = new StarData(starTypes[colorI++ % starTypes.Length].Hue, 1, namer.NextName(), position);
 				
 				yield return new StarSystem(
 					star,
 					new Planet[] {
-						new Planet(star, 1, PlanetType.Rock, 100, /*0, 0.5,*/ 0.5, 1),
-						new Planet(star, 2, PlanetType.Asteriod, 100, /*0, 0.5,*/ 0.5, 1),
-						new Planet(star, 3, PlanetType.GasGiant, 100, /*0, 0.5,*/ 0.5, 1),
+						new Planet(star, 1, PlanetType.Rock, 100 /*0, 0.5, 0.5, 1*/),
+						new Planet(star, 2, PlanetType.Asteriod, 100 /*0, 0.5, 0.5, 1*/),
+						new Planet(star, 3, PlanetType.GasGiant, 100 /*0, 0.5, 0.5, 1*/),
 					});
 			}
 		}

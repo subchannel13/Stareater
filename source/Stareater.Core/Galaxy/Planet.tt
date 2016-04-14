@@ -11,8 +11,6 @@
 		new DataInfo("Star", "StarData").FromIndexer(),
 		new DataInfo("Position", "int"),
 		new DataInfo("Type", "PlanetType").IsEnum(),
-		new DataInfo("Size", "double"),
-		new DataInfo("MineralsSurface", "double"),
-		new DataInfo("MineralsDeep", "double")
+		new DataInfo("Size", "double")
 	);
 #>

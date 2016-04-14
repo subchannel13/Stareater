@@ -6,6 +6,7 @@ using System.Linq;
 using Ikadn.Ikon.Types;
 using Stareater.AppData.Expressions;
 using Stareater.Controllers.Views;
+using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameData.Reading;
 using Stareater.GameData.Ships;
@@ -26,6 +27,7 @@ namespace Stareater.GameData.Databases
 		public ShipFormulaSet ShipFormulas { get; private set; }
 		public List<PredefinedDesign> SystemColonizerDesigns { get; private set; }
 		public List<Technology> Technologies { get; private set; }
+		public Dictionary<string, BodyTraitType> Traits { get; private set; }
 		
 		public Dictionary<string, ArmorType> Armors { get; private set; }
 		public Dictionary<string, HullType> Hulls { get; private set; }
@@ -53,6 +55,7 @@ namespace Stareater.GameData.Databases
 			this.SpecialEquipment = new Dictionary<string, SpecialEquipmentType>();
 			this.SystemColonizerDesigns = new List<PredefinedDesign>();
 			this.Thrusters = new Dictionary<string, ThrusterType>();
+			this.Traits = new Dictionary<string, BodyTraitType>();
 			this.PredeginedDesigns = new List<PredefinedDesign>();
 			this.Technologies = new List<Technology>();
 		}
@@ -102,6 +105,9 @@ namespace Stareater.GameData.Databases
 								break;
 							case ShipFormulasTag:
 								ShipFormulas = loadShipFormulas(data);
+								break;
+							case TraitTag:
+								Traits.Add(data[GeneralCodeKey].To<string>(), loadTrait(data));
 								break;
 
 							case ArmorTag:
@@ -202,6 +208,16 @@ namespace Stareater.GameData.Databases
 				data[ShipJamming].To<Formula>(),
 				data[ShipColonyPopulation].To<Formula>(),
 				colonizerBuildings
+			);
+		}
+
+		private BodyTraitType loadTrait(IkonComposite data)
+		{
+			return new BodyTraitType(
+				data[GeneralNameKey].To<string>(),
+				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralImageKey].To<string>(),
+				data[GeneralCodeKey].To<string>()
 			);
 		}
 		
@@ -524,6 +540,7 @@ namespace Stareater.GameData.Databases
 		private const string PredefinedDesignTag = "PredefinedDesign";
 		private const string ResearchTag = "ResearchTopic";
 		private const string ShipFormulasTag = "ShipFormulas";
+		private const string TraitTag = "Trait";
 		
 		private const string ArmorTag = "Armor";
 		private const string HullTag = "Hull";
