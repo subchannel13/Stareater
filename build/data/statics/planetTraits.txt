@@ -1,6 +1,6 @@
 { Trait
-	nameCode: EARTHLIKE_TRAIT_NAME
-	descCode: EARTHLIKE_TRAIT_DESC
+	nameCode: FERTILE_TRAIT_NAME
+	descCode: FERTILE_TRAIT_DESC
 	image :./images/technologies/hydroponicFarms.png
-	code: earthlike
+	code: fertile
 }

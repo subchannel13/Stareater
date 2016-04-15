@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Stareater.Utils.PluginParameters;
 
 namespace Stareater.Galaxy.Builders
@@ -11,6 +10,6 @@ namespace Stareater.Galaxy.Builders
 		string Name { get; }
 		string Description { get; }
 		ParameterList Parameters { get; }
-		IEnumerable<StarSystem> Generate(Random rng, StarPositions starPositions);
+		IEnumerable<StarSystem> Generate(Random rng, StarPositions starPositions, IEnumerable<BodyTraitType> planetTraits);
 	}
 }

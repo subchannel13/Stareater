@@ -23,10 +23,10 @@
 		new DataInfo("Sensors", "Component<SensorType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Shield", "Component<ShieldType>").IsStatic(Flag.NoIndexer, Flag.ArrayData).CanBeNull(),
 		new DataInfo("MissionEquipment", "List",
-			new GenericParamInfo("Component<MissionEquipmentType>").SaveIdCodeMethod("TypeInfo.IdCode").IsStatic(Flag.NoIndexer, Flag.ArrayData)
+			new GenericParamInfo("Component<MissionEquipmentType>").IsStatic(Flag.NoIndexer, Flag.ArrayData)
 		).SaveKey("Equipment"),
 		new DataInfo("SpecialEquipment", "List", 
-			new GenericParamInfo("Component<SpecialEquipmentType>").SaveIdCodeMethod("TypeInfo.IdCode").SaveKey("SpecialKey", "Type").IsStatic(Flag.NoIndexer, Flag.ArrayData)
+			new GenericParamInfo("Component<SpecialEquipmentType>").SaveKey("SpecialKey", "Type").IsStatic(Flag.NoIndexer, Flag.ArrayData)
 		).SaveKey("Specials"),
 		new DataInfo("Thrusters", "Component<ThrusterType>").IsStatic(Flag.NoIndexer, Flag.ArrayData),
 		new DataInfo("Hash", "BitHash").Private().NoInit().NoSaveLoad(),

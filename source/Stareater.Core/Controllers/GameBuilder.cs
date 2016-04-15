@@ -23,7 +23,7 @@ namespace Stareater.Controllers
 		public static MainGame CreateGame(Random rng, Player[] players, NewGameController controller)
 		{
 			var statics = loadStatics();
-			var states = createStates(rng, controller, players, statics.Technologies);
+			var states = createStates(rng, controller, players, statics);
 			var derivates = createDerivates(players, controller.SelectedStart, statics, states);
 			
 			var game = new MainGame(players, statics, states, derivates);
@@ -52,6 +52,7 @@ namespace Stareater.Controllers
 			deindexer.AddAll(statics.SpecialEquipment.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Technologies, x => x.IdCode);
 			deindexer.AddAll(statics.Thrusters.Values, x => x.IdCode);
+			deindexer.AddAll(statics.Traits.Values, x => x.IdCode);
 			
 			var loadedStates = loadSaveData(saveData, deindexer, statics);
 			var states = loadedStates.Item1;
@@ -86,17 +87,17 @@ namespace Stareater.Controllers
 			return derivates;
 		}
 		
-		private static  StatesDB createStates(Random rng, NewGameController newGameData, Player[] players, IEnumerable<Technology> technologies)
+		private static StatesDB createStates(Random rng, NewGameController newGameData, Player[] players, StaticsDB statics)
 		{
 			var starPositions = newGameData.StarPositioner.Generate(rng, newGameData.PlayerList.Count);
-			var starSystems = newGameData.StarPopulator.Generate(rng, starPositions).ToArray();
+			var starSystems = newGameData.StarPopulator.Generate(rng, starPositions, statics.Traits.Values).ToArray();
 			
 			var stars = createStars(starSystems);
 			var wormholes = createWormholes(starSystems, newGameData.StarConnector.Generate(rng, starPositions));
 			var planets = createPlanets(starSystems);
 			var colonies = createColonies(players, starSystems, starPositions.HomeSystems, newGameData.SelectedStart);
 			var stellarises = createStellarises(players, starSystems, starPositions.HomeSystems);
-			var techAdvances = createTechAdvances(players, technologies);
+			var techAdvances = createTechAdvances(players, statics.Technologies);
 
 			return new StatesDB(stars, wormholes, planets, colonies, stellarises, techAdvances,
 			                    new ReportCollection(), new DesignCollection(), new FleetCollection(),

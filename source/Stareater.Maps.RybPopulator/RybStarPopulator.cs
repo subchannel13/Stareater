@@ -28,7 +28,7 @@ namespace Stareater.Galaxy.RybPopulator
 		private ParameterList parameters;
 		private SelectorParameter climateParameter;
 
-		private StarType[] starTypes;
+		private readonly StarType[] starTypes;
 
 		public RybStarPopulator()
 		{
@@ -36,7 +36,7 @@ namespace Stareater.Galaxy.RybPopulator
 			using (var parser = new IkonParser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))
 				data = parser.ParseAll();
 
-			List<StarType> starTypes = new List<StarType>();
+			var starTypes = new List<StarType>();
 			while (data.CountOf(StarTypeKey) > 0) {
 				var starTypeData = data.Dequeue(StarTypeKey).To<IkonComposite>();
 				starTypes.Add(new StarType(
@@ -59,7 +59,7 @@ namespace Stareater.Galaxy.RybPopulator
 			});
 		}
 
-		private Color extractColor(IkonArray arrayValue)
+		private Color extractColor(IList<IkadnBaseObject> arrayValue)
 		{
 			return Color.FromArgb(
 				(int)(arrayValue[0].To<double>() * 255),
@@ -91,7 +91,7 @@ namespace Stareater.Galaxy.RybPopulator
 			get { return parameters; }
 		}
 
-		public IEnumerable<StarSystem> Generate(Random rng, StarPositions starPositions)
+		public IEnumerable<StarSystem> Generate(Random rng, StarPositions starPositions, IEnumerable<BodyTraitType> planetTraits)
 		{
 			int colorI = 0;
 			var namer = new StarNamer(starPositions.Stars.Length);
@@ -105,9 +105,9 @@ namespace Stareater.Galaxy.RybPopulator
 				yield return new StarSystem(
 					star,
 					new Planet[] {
-						new Planet(star, 1, PlanetType.Rock, 100 /*0, 0.5, 0.5, 1*/),
-						new Planet(star, 2, PlanetType.Asteriod, 100 /*0, 0.5, 0.5, 1*/),
-						new Planet(star, 3, PlanetType.GasGiant, 100 /*0, 0.5, 0.5, 1*/),
+						new Planet(star, 1, PlanetType.Rock, 100, planetTraits.Take(1).ToList()),
+						new Planet(star, 2, PlanetType.Asteriod, 100, new List<BodyTraitType>()),
+						new Planet(star, 3, PlanetType.GasGiant, 100, new List<BodyTraitType>()),
 					});
 			}
 		}

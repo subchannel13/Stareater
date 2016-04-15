@@ -2,6 +2,7 @@
 <#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
 	
 	usings.Add("System");
+	usings.Add("System.Collections.Generic");
 	usings.Add("System.Linq");
 	usings.Add("Stareater.GameData");
 	
@@ -11,6 +12,9 @@
 		new DataInfo("Star", "StarData").FromIndexer(),
 		new DataInfo("Position", "int"),
 		new DataInfo("Type", "PlanetType").IsEnum(),
-		new DataInfo("Size", "double")
+		new DataInfo("Size", "double"),
+		new DataInfo("Traits", "List",
+			new GenericParamInfo("BodyTraitType").SaveIdCodeMethod("IdCode")
+		)
 	);
 #>

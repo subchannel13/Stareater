@@ -3,6 +3,7 @@
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Stareater.GameData;
 
@@ -14,13 +15,15 @@ namespace Stareater.Galaxy
 		public int Position { get; private set; }
 		public PlanetType Type { get; private set; }
 		public double Size { get; private set; }
+		public List<BodyTraitType> Traits { get; private set; }
 
-		public Planet(StarData star, int position, PlanetType type, double size) 
+		public Planet(StarData star, int position, PlanetType type, double size, List<BodyTraitType> traits) 
 		{
 			this.Star = star;
 			this.Position = position;
 			this.Type = type;
 			this.Size = size;
+			this.Traits = traits;
  
 			 
 		} 
@@ -39,13 +42,18 @@ namespace Stareater.Galaxy
 
 			var sizeSave = rawData[SizeKey];
 			this.Size = sizeSave.To<double>();
+
+			var traitsSave = rawData[TraitsKey];
+			this.Traits = new List<BodyTraitType>();
+			foreach(var item in traitsSave.To<IkonArray>())
+				this.Traits.Add(deindexer.Get<BodyTraitType>(item.To<string>()));
  
 			 
 		}
 
 		internal Planet Copy(GalaxyRemap galaxyRemap) 
 		{
-			return new Planet(galaxyRemap.Stars[this.Star], this.Position, this.Type, this.Size);
+			return new Planet(galaxyRemap.Stars[this.Star], this.Position, this.Type, this.Size, this.Traits);
  
 		} 
  
@@ -61,6 +69,11 @@ namespace Stareater.Galaxy
 			data.Add(TypeKey, new IkonComposite(this.Type.ToString()));
 
 			data.Add(SizeKey, new IkonFloat(this.Size));
+
+			var traitsData = new IkonArray();
+			foreach(var item in this.Traits)
+				traitsData.Add(new IkonText(item.IdCode));
+			data.Add(TraitsKey, traitsData);
 			return data;
  
 		}
@@ -78,6 +91,7 @@ namespace Stareater.Galaxy
 		private const string PositionKey = "position";
 		private const string TypeKey = "type";
 		private const string SizeKey = "size";
+		private const string TraitsKey = "traits";
  
 		#endregion
 
