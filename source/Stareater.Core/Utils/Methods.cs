@@ -162,7 +162,7 @@ namespace Stareater.Utils
 		public static IEnumerable<T> LoadFromDLL<T>(string fileName)
 		{
 			Type targetType = typeof(T);
-			foreach (var type in Assembly.LoadFrom(fileName).GetTypes())
+			foreach (var type in Assembly.UnsafeLoadFrom(fileName).GetTypes()) //TODO(later) consider more secure approach
 				if (targetType.IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
 					yield return (T)Activator.CreateInstance(type);
 		}
