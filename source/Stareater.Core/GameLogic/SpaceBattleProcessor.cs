@@ -163,6 +163,7 @@ namespace Stareater.GameLogic
 				foreach(var planet in this.game.Planets.Where(x => x.Colony != null && x.Colony.Population < 1))
 				{
 					this.mainGame.States.Colonies.Remove(planet.Colony); //TODO(v0.5) test and see if more stuff has to be updated
+					this.mainGame.Derivates.Colonies.Remove(this.mainGame.Derivates.Of(planet.Colony));
 					planet.Colony = null;
 				}
 				
@@ -194,7 +195,7 @@ namespace Stareater.GameLogic
 			if (!Methods.InsideHexGrid(planet.Position - unit.Position, abilityStats.Range))
 				return;
 			
-			if (abilityStats.IsInstantDamage)
+			if (abilityStats.IsInstantDamage && planet.Colony != null)
 			{
 				var killsPerShot = abilityStats.FirePower / planet.PopulationHitPoints;
 				var casualties = Math.Min(quantity * killsPerShot, planet.Colony.Population);
