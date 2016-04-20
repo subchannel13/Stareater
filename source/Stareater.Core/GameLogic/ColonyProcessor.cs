@@ -99,8 +99,14 @@ namespace Stareater.GameLogic
 			this.BuilderEfficiency = formulas.Industry.Evaluate(this.Organization, vars) / (1 + minersPerIndustry);
 			this.ScientistEfficiency = formulas.Development.Evaluate(this.Organization, vars);
 
-			//TODO(v0.5): factor in farmers
-			this.WorkingPopulation = this.Colony.Population;
+			var farmers = this.Colony.Population / this.FarmerEfficiency;
+			var farmFields = formulas.FarmFields.Evaluate(vars);
+			if (farmers > farmFields)
+			{
+				var gardeners = (this.Colony.Population - this.FarmerEfficiency * farmFields) / this.GardenerEfficiency;
+				farmers = farmFields + gardeners;
+			}
+			this.WorkingPopulation = this.Colony.Population - farmers;
 		}
 		
 		public void CalculateDerivedEffects(StaticsDB statics, PlayerProcessor playerProcessor)
@@ -120,7 +126,7 @@ namespace Stareater.GameLogic
 			var vars = this.LocalEffects(statics).UnionWith(playerProcessor.TechLevels).Get;
 			ColonyFormulaSet formulas = statics.ColonyFormulas;
 
-			double industryPotential = Colony.Population * this.BuilderEfficiency;
+			double industryPotential = this.WorkingPopulation * this.BuilderEfficiency;
 			double industryPoints = 
 				Colony.Owner.Orders.ConstructionPlans[Colony].SpendingRatio * 
 				industryPotential;
