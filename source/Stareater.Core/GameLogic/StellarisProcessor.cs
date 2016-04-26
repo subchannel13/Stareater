@@ -61,7 +61,6 @@ namespace Stareater.GameLogic
 		{
 			var vars = new Var().UnionWith(playerProcessor.TechLevels).Get;
 
-			//TODO(v0.5): lift (to orbit) penalty
 			double industryPotential = systemColonies.Sum(x =>
 				(1 - x.SpendingRatioEffective) *
 				x.WorkingPopulation *

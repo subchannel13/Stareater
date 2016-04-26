@@ -30,10 +30,10 @@ namespace Stareater.GUI
 				thumbnailImage.Image = ImageCache.Get[data.ImagePath];
 				nameLabel.Text = data.Name;
 				
-				ThousandsFormatter costFormatter = new ThousandsFormatter(data.Cost);
+				var costFormatter = new ThousandsFormatter(data.Cost);
 				costLabel.Text = costFormatter.Format(data.Stockpile) + " / " + costFormatter.Format(data.Cost);
 				
-				ThousandsFormatter formatter = new ThousandsFormatter();
+				var formatter = new ThousandsFormatter();
 				investmentLabel.Text = "+" + formatter.Format(data.Investment);
 			}
 		}

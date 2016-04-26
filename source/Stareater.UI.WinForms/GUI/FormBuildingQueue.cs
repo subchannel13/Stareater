@@ -10,7 +10,7 @@ namespace Stareater.GUI
 {
 	public partial class FormBuildingQueue : Form
 	{
-		private AConstructionSiteController controller;
+		private readonly AConstructionSiteController controller;
 		
 		public FormBuildingQueue()
 		{

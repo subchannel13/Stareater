@@ -87,6 +87,9 @@ namespace Stareater.Controllers
 				orderIndex.Clear();
 				int orderI = 0;
 				
+				var playerProcessor = this.Game.Derivates.Of(this.Player);
+				var vars = this.Processor.LocalEffects(this.Game.Statics).UnionWith(playerProcessor.TechLevels).Get;
+					
 				foreach(var item in Processor.SpendingPlan)
 				{
 					if (!item.Type.IsVirtual && item.Type == this.Player.Orders.ConstructionPlans[Site].Queue[orderI])
@@ -96,11 +99,12 @@ namespace Stareater.Controllers
 					}
 					else
 						orderIndex.Add(NotOrder);
-					    
+					
+					var cost = item.Type.Cost.Evaluate(vars);
 					yield return new ConstructableItem(
 						item.Type, 
 						Game.Derivates.Players.Of(this.Player), 
-						item.CompletedCount,
+						item.InvestedPoints / cost,
 						Site.Stockpile.ContainsKey(item.Type) ? Site.Stockpile[item.Type] : 0,
 						item.InvestedPoints + item.FromStockpile
 					);

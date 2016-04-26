@@ -33,7 +33,7 @@ namespace Stareater.GUI
 				thumbnail.Image = ImageCache.Get[data.ImagePath];
 				nameLabel.Text = data.Name;
 				
-				ThousandsFormatter formatter = new ThousandsFormatter();
+				var formatter = new ThousandsFormatter();
 				costLabel.Text = formatter.Format(data.Cost);
 			}
 		}

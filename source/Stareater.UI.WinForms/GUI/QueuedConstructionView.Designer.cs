@@ -68,9 +68,9 @@ namespace Stareater.GUI
 			// 
 			// investmentLabel
 			// 
-			this.investmentLabel.Location = new System.Drawing.Point(153, 20);
+			this.investmentLabel.Location = new System.Drawing.Point(143, 20);
 			this.investmentLabel.Name = "investmentLabel";
-			this.investmentLabel.Size = new System.Drawing.Size(44, 13);
+			this.investmentLabel.Size = new System.Drawing.Size(54, 13);
 			this.investmentLabel.TabIndex = 5;
 			this.investmentLabel.Text = "label1";
 			this.investmentLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -90,6 +90,7 @@ namespace Stareater.GUI
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 		private System.Windows.Forms.Label investmentLabel;
 		private System.Windows.Forms.Label nameLabel;
