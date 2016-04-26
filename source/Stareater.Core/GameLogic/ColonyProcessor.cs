@@ -67,6 +67,7 @@ namespace Stareater.GameLogic
 
 		public double WorkingPopulation { get; private set; }
 		public double Development { get; private set; }
+		public double SpaceliftFactor { get; private set; }
 		
 		private IDictionary<string, double> calcVars(StaticsDB statics, PlayerProcessor playerProcessor)
 		{
@@ -90,6 +91,7 @@ namespace Stareater.GameLogic
 			
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
 			this.Organization = formulas.Organization.Evaluate(vars);
+			this.SpaceliftFactor = formulas.SpaceliftFactor.Evaluate(vars);
 			
 			this.FarmerEfficiency = formulas.Farming.Evaluate(this.Organization, vars);
 			this.GardenerEfficiency = formulas.Gardening.Evaluate(this.Organization, vars);

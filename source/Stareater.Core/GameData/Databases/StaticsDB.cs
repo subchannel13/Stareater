@@ -159,6 +159,7 @@ namespace Stareater.GameData.Databases
 				data[ColonyMaxPopulation].To<Formula>(),
 				loadDerivedStat(data[ColonyPopulationGrowth].To<IkonComposite>()),
 				data[ColonyOrganization].To<Formula>(),
+				data[ColonySpaceliftFactor].To<Formula>(),
 				loadPopulationActivity(data, ColonyFarming),
 				loadPopulationActivity(data, ColonyGardening),
 				loadPopulationActivity(data, ColonyMining),
@@ -566,6 +567,7 @@ namespace Stareater.GameData.Databases
 		private const string ColonyOrganization = "organization";
 		private const string ColonyPopulationGrowth = "populationGrowth";
 		private const string ColonyPopulationHitPoints = "popHp";
+		private const string ColonySpaceliftFactor = "spaceliftFactor";
 		private const string UncolonizedMaxPopulation = "uncolonizedMaxPopulation";
 		
 		private const string PlayerResearch = "research";

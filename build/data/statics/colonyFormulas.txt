@@ -11,6 +11,7 @@
 	}
 	
 	organization # limit(infra_count / pop, 0, 1);
+	spaceliftFactor # 0.2;
 	
 	farming
 	{ Work

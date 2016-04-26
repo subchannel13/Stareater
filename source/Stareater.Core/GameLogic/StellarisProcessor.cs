@@ -65,7 +65,9 @@ namespace Stareater.GameLogic
 			double industryPotential = systemColonies.Sum(x =>
 				(1 - x.SpendingRatioEffective) *
 				x.WorkingPopulation *
-				x.BuilderEfficiency);
+				x.BuilderEfficiency *
+				x.SpaceliftFactor
+			);
 			double industryPoints = 
 				Stellaris.Owner.Orders.ConstructionPlans[Stellaris].SpendingRatio *
 				industryPotential;
