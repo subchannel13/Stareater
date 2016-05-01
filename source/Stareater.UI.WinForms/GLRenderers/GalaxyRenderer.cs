@@ -342,6 +342,7 @@ namespace Stareater.GLRenderers
 					new Vector2d(wormhole.FromStar.Position.X, wormhole.FromStar.Position.Y), 
 					new Vector2d(wormhole.ToStar.Position.X, wormhole.ToStar.Position.Y)
 				));
+				GL.Scale(1, 0.8, 1);
 				
 				TextureUtils.DrawSprite(GalaxyTextures.Get.PathLine, WormholeZ);
 				
