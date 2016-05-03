@@ -79,6 +79,7 @@
     <Compile Include="Controllers\Data\ColonizerFinder.cs" />
     <Compile Include="Controllers\Data\MissionInfoFactory.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Controllers\SpaceBattleController.cs" />
     <Compile Include="Controllers\Views\BodyType.cs" />
     <Compile Include="Controllers\Views\BuildingInfo.cs" />
     <Compile Include="Controllers\Views\ColonyInfo.cs" />
@@ -119,7 +120,6 @@
     <Compile Include="Controllers\Views\Ships\ReactorInfo.cs" />
     <Compile Include="Controllers\Views\Ships\ShipGroupInfo.cs" />
     <Compile Include="Controllers\Views\Ships\WaypointInfo.cs" />
-    <Compile Include="Controllers\Views\SpaceBattleController.cs" />
     <Compile Include="Controllers\Views\StellarisInfo.cs" />
     <Compile Include="Controllers\Views\TechnologyCategory.cs" />
     <Compile Include="Controllers\Views\TechnologyReportInfo.cs" />

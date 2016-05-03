@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using Stareater.Controllers.Views;
+using Stareater.Controllers;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Utils;
