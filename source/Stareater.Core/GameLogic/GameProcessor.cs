@@ -247,7 +247,9 @@ namespace Stareater.GameLogic
 			
 			this.conflicts.Clear();
 			foreach(var position in conflictPositions.OrderBy(x => x.Value))
-				conflicts.Enqueue(new SpaceBattleGame(position.Key, visits[position.Key], position.Value, this.game));
+				if (this.game.States.Stars.AtContains(position.Key))
+					conflicts.Enqueue(new SpaceBattleGame(position.Key, visits[position.Key], position.Value, this.game));
+			//TODO(later) deep space interception
 			
 			this.game.States.Fleets.Clear();
 			foreach(var fleet in visits.Values.SelectMany(x => x).Where(x => !x.Remove))

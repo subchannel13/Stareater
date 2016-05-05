@@ -408,6 +408,11 @@ namespace Stareater.GUI
 		
 		public void OnGameOver()
 		{
+			if (this.InvokeRequired) {
+				postDelayedEvent(this.OnGameOver);
+				return;
+			}
+			
 			this.currentRenderer.DetachFromCanvas();
 			
 			this.currentRenderer = this.gameOverRenderer;
