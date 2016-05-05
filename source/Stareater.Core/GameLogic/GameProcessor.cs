@@ -68,6 +68,8 @@ namespace Stareater.GameLogic
 			CalculateBaseEffects();
 			CalculateSpendings();
 			CalculateDerivedEffects();
+			
+			this.game.Turn++;
 		}
 
 		public void CalculateBaseEffects()
@@ -117,6 +119,15 @@ namespace Stareater.GameLogic
 			get
 			{
 				return this.conflicts.Count != 0;
+			}
+		}
+		
+		public bool IsOver
+		{
+			get
+			{
+				 //TODO(later) end game by leaving stareater
+				return game.States.Colonies.Select(x => x.Owner).Distinct().Count() <= 1;
 			}
 		}
 		

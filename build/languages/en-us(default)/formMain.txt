@@ -5,6 +5,7 @@ EndTurn §
 		turn
 	\
 Return = Return
+GameOver = Game over
 
 NotBuilding = No construction project
 SiteDetails = Details

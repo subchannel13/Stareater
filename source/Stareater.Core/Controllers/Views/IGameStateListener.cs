@@ -13,5 +13,6 @@ namespace Stareater.Controllers.Views
 		IBattleEventListener OnDoCombat(SpaceBattleController battleController);
 		
 		void OnNewTurn();
+		void OnGameOver();
 	}
 }

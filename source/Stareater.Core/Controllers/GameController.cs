@@ -147,7 +147,7 @@ namespace Stareater.Controllers
 
 		private void precombatTurnProcessing()
 		{
-			gameObj.ProcessPrecombat();
+			gameObj.Processor.ProcessPrecombat();
 
 			this.processCombat();
 		}
@@ -162,7 +162,7 @@ namespace Stareater.Controllers
 		
 		private void postcombatTurnProcessing()
 		{
-			gameObj.ProcessPostcombat();
+			gameObj.Processor.ProcessPostcombat();
 			lock(threadLocker)
 			{
 				this.endTurnCopy = null;
@@ -172,8 +172,13 @@ namespace Stareater.Controllers
 					player.RebuildCache();
 			}
 			
- 			stateListener.OnNewTurn();
- 			restartAiGalaxyPhase();
+			if (gameObj.Processor.IsOver)
+				stateListener.OnGameOver();
+			else
+			{
+ 				stateListener.OnNewTurn();
+ 				restartAiGalaxyPhase();
+			}
 		}
 		
 		private void restartAiGalaxyPhase()

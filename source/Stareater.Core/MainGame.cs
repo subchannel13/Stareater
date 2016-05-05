@@ -14,13 +14,13 @@ namespace Stareater
 	class MainGame
 	{
 		public Player[] Players { get; private set; }
-		public int Turn { get; private set; }
+		public int Turn { get; set; }
 
 		public StaticsDB Statics { get; private set; }
 		public StatesDB States { get; private set; }
 		public TemporaryDB Derivates { get; private set; }
 
-		public GameProcessor Processor = null;
+		public GameProcessor Processor { get; private set; }
 			
 		public MainGame(Player[] players, StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
@@ -59,25 +59,14 @@ namespace Stareater
 			return new GameCopy(copy, playersRemap, galaxyRemap);
 		}
 
+		//TODO leave or move to processor
 		public void CalculateDerivedEffects()
 		{
 			Processor.CalculateBaseEffects();
 			Processor.CalculateSpendings();
 			Processor.CalculateDerivedEffects();
 		}
-
-		public void ProcessPrecombat()
-		{
-			this.Processor.ProcessPrecombat();
-		}
 		
-		public void ProcessPostcombat()
-		{
-			this.Processor.ProcessPostcombat();
-
-			this.Turn++;
-		}
-
 		#region Saving
 		public ObjectIndexer GenerateIndices()
 		{

@@ -31,6 +31,7 @@ namespace Stareater.GUI
 		private GalaxyRenderer galaxyRenderer;
 		private SystemRenderer systemRenderer;
 		private SpaceCombatRenderer combatRenderer;
+		private GameOverRenderer gameOverRenderer;
 
 		private Queue<Action> delayedGuiEvents = new Queue<Action>();
 		private GameController gameController = null;
@@ -267,6 +268,7 @@ namespace Stareater.GUI
 			
 			this.systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement, empyPlanetView);
 			this.combatRenderer = new SpaceCombatRenderer();
+			this.gameOverRenderer = new GameOverRenderer();
 			
 			switchToGalaxyView();
 		}
@@ -402,6 +404,19 @@ namespace Stareater.GUI
 			
 			if (galaxyRenderer != null) galaxyRenderer.OnNewTurn();
 			if (systemRenderer != null) systemRenderer.OnNewTurn();
+		}
+		
+		public void OnGameOver()
+		{
+			this.currentRenderer.DetachFromCanvas();
+			
+			this.currentRenderer = this.gameOverRenderer;
+			this.currentRenderer.AttachToCanvas(this.glCanvas);
+			
+			abilityList.Visible = false;
+			endTurnButton.Visible = false;
+			unitInfoPanel.Visible = false;
+			menuStrip.Visible = true;
 		}
 		
 		public IBattleEventListener OnDoCombat(SpaceBattleController battleController)
