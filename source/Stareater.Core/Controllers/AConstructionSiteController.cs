@@ -104,9 +104,8 @@ namespace Stareater.Controllers
 					yield return new ConstructableItem(
 						item.Type, 
 						Game.Derivates.Players.Of(this.Player), 
-						item.InvestedPoints / cost,
-						Site.Stockpile.ContainsKey(item.Type) ? Site.Stockpile[item.Type] : 0,
-						item.InvestedPoints + item.FromStockpile
+						item,
+						Site.Stockpile.ContainsKey(item.Type) ? Site.Stockpile[item.Type] : 0
 					);
 				}
 			}

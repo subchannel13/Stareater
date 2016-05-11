@@ -14,18 +14,22 @@ namespace Stareater.Controllers.Views
 		private readonly IDictionary<string, double> vars;
 		
 		internal ConstructableItem(Constructable constructable, PlayerProcessor playerProcessor, 
-		                           double? perTurnDone, double stockpile, double investment)
+		                           ConstructionResult progress, double stockpile)
 		{
 			this.Constructable = constructable;
+			this.Stockpile = stockpile;
 			this.vars = new Var().UnionWith(playerProcessor.TechLevels).Get;
 			
-			this.Investment = investment;
-			this.PerTurnDone = perTurnDone;
-			this.Stockpile = stockpile;
+			if (progress != null)
+			{
+				this.Investment = progress.InvestedPoints;
+				this.CompletedCount = progress.CompletedCount;
+				this.Overflow = progress.LeftoverPoints;
+			}
 		}
 		
 		internal ConstructableItem(Constructable constructable, PlayerProcessor playerProcessor) :
-			this(constructable, playerProcessor, null, 0, 0)
+			this(constructable, playerProcessor, null, 0)
 		{ }
 		
 		internal Constructable Constructable { get; private set; }
@@ -83,8 +87,8 @@ namespace Stareater.Controllers.Views
 		}
 		
 		public double Investment { get; private set; }
-		
-		public double? PerTurnDone { get; private set; }
+		public long CompletedCount { get; private set; }
+		public double Overflow { get; private set; }
 		
 		public double Stockpile { get; private set; }
 	}

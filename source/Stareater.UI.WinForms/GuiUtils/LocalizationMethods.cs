@@ -14,26 +14,30 @@ namespace Stareater.GuiUtils
 		
 		public static string ConstructionEstimation(ConstructableItem construction, IText neverText, IText perTurnText, IText etaText)
 		{
-			if (construction.PerTurnDone < MinimumPerTurnDone)
-				return neverText.Text();
-			
 			var textVars = new TextVar();
 			
-			if (construction.PerTurnDone >= 1) {
-				if (construction.PerTurnDone.Value < 10)
-					textVars.And("count", new DecimalsFormatter(0, 1).Format(construction.PerTurnDone.Value, RoundingMethod.Floor, 1));
-				else
-					textVars.And("count", new ThousandsFormatter().Format(Math.Floor(construction.PerTurnDone.Value)));
+			if (construction.CompletedCount >= 1) 
+			{
+				var overflow = construction.Overflow / construction.Cost;
 				
+				if (construction.CompletedCount < 10)
+					textVars.And("count", new DecimalsFormatter(0, 1).Format(construction.CompletedCount + overflow, RoundingMethod.Floor, 1));
+				else
+					textVars.And("count", new ThousandsFormatter().Format(construction.CompletedCount));
+
 				return perTurnText.Text(null, textVars.Get);
 			}
 			
-			var numVars = new Var("eta", 1 / construction.PerTurnDone.Value).Get;
+			if (construction.Investment <= 0 || (construction.Investment / construction.Cost) < MinimumPerTurnDone)
+				return neverText.Text();
 			
-			if (construction.PerTurnDone.Value < 10)
-				textVars.And("eta", new DecimalsFormatter(0, 1).Format(1 / construction.PerTurnDone.Value, RoundingMethod.Ceil, 1));
+			var eta = (construction.Cost - construction.Stockpile) / construction.Investment;
+			var numVars = new Var("eta", eta).Get;
+			
+			if (eta < 10)
+				textVars.And("eta", new DecimalsFormatter(0, 1).Format(eta, RoundingMethod.Ceil, 1));
 			else
-				textVars.And("eta", new ThousandsFormatter().Format(Math.Ceiling(1 / construction.PerTurnDone.Value)));
+				textVars.And("eta", new ThousandsFormatter().Format(Math.Ceiling(eta)));
 			
 			return etaText.Text(numVars, textVars.Get);
 		}

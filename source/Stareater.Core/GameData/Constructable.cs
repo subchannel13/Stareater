@@ -40,5 +40,32 @@ namespace Stareater.GameData
 			this.TurnLimit = turnLimit;
 			this.Effects = effects;
 		}
+		
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			var other = obj as Constructable;
+			
+			return (other != null) && this.IdCode == other.IdCode;
+		}
+
+		public override int GetHashCode()
+		{
+			return IdCode.GetHashCode();
+		}
+
+		public static bool operator ==(Constructable lhs, Constructable rhs) {
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(Constructable lhs, Constructable rhs) {
+			return !(lhs == rhs);
+		}
+
+		#endregion
 	}
 }
