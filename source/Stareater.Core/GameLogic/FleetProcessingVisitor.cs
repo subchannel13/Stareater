@@ -107,14 +107,12 @@ namespace Stareater.GameLogic
 
 		void IMissionVisitor.Visit(ColonizationMission mission)
 		{
-			var currentFleet = localFleet();
-			
-			if (currentFleet.Position == mission.Target.Star.Position)
+			if (this.newPosition == mission.Target.Star.Position)
 				remainingMissions.AddLast(mission);
 			
 			this.movementSteps.Add(new FleetMovement(
 					this.fleet,
-					currentFleet,
+					localFleet(),
 					this.time,
 					1,
 					new Vector2D()
