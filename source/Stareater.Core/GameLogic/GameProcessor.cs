@@ -36,19 +36,11 @@ namespace Stareater.GameLogic
 
 			this.moveShips();
 			this.detectConflicts();
-			this.doColonization();
-			
-			/*
-			 * TODO(v0.5): Process ships
-			 * - Space combat
-			 * - Ground combat
-			 * - Bombardment
-			 * - Colonise planets
-			 */
 		}
 
 		public void ProcessPostcombat()
 		{
+			this.doColonization();
 			this.mergeStationaryFleets();
 			
 			foreach (var playerProc in this.game.Derivates.Players)
@@ -170,45 +162,72 @@ namespace Stareater.GameLogic
 			{
 				var playerProc = this.game.Derivates.Of(project.Owner);
 				bool colonyExists = this.game.States.Colonies.AtPlanetContains(project.Destination);
-				//TODO(v0.5) deduce arrived ships from fleets state
-				var arrivedPopulation = project.Arrived.Sum(x => playerProc.DesignStats[x.Design].ColonizerPopulation * x.Quantity);
 				
-				if (colonyExists || arrivedPopulation >= this.game.Statics.ColonyFormulas.ColonizationPopulationThreshold.Evaluate(null))
-				{
-					var colony = colonyExists ? 
-						this.game.States.Colonies.AtPlanet(project.Destination) :
-						new Colony(arrivedPopulation, project.Destination, project.Owner);
-					
-					foreach(var group in project.Arrived)
-						foreach(var building in playerProc.DesignStats[group.Design].ColonizerBuildings)
-							if (colony.Buildings.ContainsKey(building.Key))
-								colony.Buildings[building.Key] += building.Value * group.Quantity;
-							else
-								colony.Buildings.Add(building.Key, building.Value * group.Quantity);
-					
-					if (!colonyExists)
+				var colonizers = this.game.States.Fleets.At(project.Destination.Star.Position).Where(
+					x => 
 					{
-						this.game.States.Colonies.Add(colony);
+						if (x.Owner != project.Owner || x.Missions.Count == 0)
+							return false;
 						
-						var colonyProc = new ColonyProcessor(colony);
-						colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Players.Of(colony.Owner));
-						this.game.Derivates.Colonies.Add(colonyProc);
-
-						if (!this.game.States.Stellarises.AtContains(project.Destination.Star))
+						var mission = x.Missions.First.Value as ColonizationMission;
+						return mission != null && mission.Target == project.Destination;
+					});
+					
+				var arrivedPopulation = colonizers.SelectMany(x => x.Ships).Sum(x => playerProc.DesignStats[x.Design].ColonizerPopulation * x.Quantity);
+				var colonizationTreshold = this.game.Statics.ColonyFormulas.ColonizationPopulationThreshold.Evaluate(null);
+				
+				if (!colonyExists && arrivedPopulation >= colonizationTreshold)
+				{
+					var colony = new Colony(0, project.Destination, project.Owner);
+					var colonyProc = new ColonyProcessor(colony);
+					colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Players.Of(colony.Owner));
+					
+					foreach(var fleet in colonizers)
+					{
+						foreach(var shipGroup in fleet.Ships)
 						{
-							var stellaris = new StellarisAdmin(project.Destination.Star, project.Owner);
-							this.game.States.Stellarises.Add(stellaris);
-							this.game.Derivates.Stellarises.Add(new StellarisProcessor(stellaris));
+							var shipStats = playerProc.DesignStats[shipGroup.Design];
+							var groupPopulation = shipStats.ColonizerPopulation * shipGroup.Quantity;
+							var landingLimit = (long)Math.Ceiling((colonizationTreshold - colony.Population) / shipStats.ColonizerPopulation);
+							var shipsLanded = Math.Min(shipGroup.Quantity, landingLimit);
+							
+							colonyProc.AddPopulation(shipsLanded * shipStats.ColonizerPopulation);
+							
+							foreach(var building in shipStats.ColonizerBuildings)
+								if (colony.Buildings.ContainsKey(building.Key))
+									colony.Buildings[building.Key] += building.Value * shipGroup.Quantity;
+								else
+									colony.Buildings.Add(building.Key, building.Value * shipGroup.Quantity);	
+							
+							shipGroup.Quantity -= shipsLanded;
+							if (shipGroup.Quantity < 1)
+								fleet.Ships.PendRemove(shipGroup);
 						}
+						
+						fleet.Ships.ApplyPending();
+						if (fleet.Ships.Count == 0)
+							game.States.Fleets.PendRemove(fleet);
 					}
-					else
-						this.game.Derivates.Of(colony).AddPopulation(arrivedPopulation);
+					game.States.Fleets.ApplyPending();
+					
+					this.game.States.Colonies.Add(colony);
+					this.game.Derivates.Colonies.Add(colonyProc);
+					
+
+					if (!this.game.States.Stellarises.AtContains(project.Destination.Star))
+					{
+						var stellaris = new StellarisAdmin(project.Destination.Star, project.Owner);
+						this.game.States.Stellarises.Add(stellaris);
+						this.game.Derivates.Stellarises.Add(new StellarisProcessor(stellaris));
+					}
 					
 					project.Owner.Orders.ColonizationOrders.Remove(project.Destination);
-					project.Arrived.Clear();
+					this.game.States.ColonizationProjects.PendRemove(project);
 				}
-				//TODO(v0.5) remove colonization project from states at some point
 			}
+			
+			//TODO(v0.5) remove colonization project from states at some point
+			this.game.States.ColonizationProjects.ApplyPending();
 		}
 				
 		//TODO(v0.5) move above doColonization
@@ -252,7 +271,7 @@ namespace Stareater.GameLogic
 			//TODO(later) deep space interception
 			
 			this.game.States.Fleets.Clear();
-			foreach(var fleet in visits.Values.SelectMany(x => x).Where(x => !x.Remove))
+			foreach(var fleet in visits.Values.SelectMany(x => x))
 				this.game.States.Fleets.Add(fleet.LocalFleet);
 		}
 		

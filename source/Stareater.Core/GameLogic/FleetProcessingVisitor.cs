@@ -16,7 +16,6 @@ namespace Stareater.GameLogic
 		private LinkedList<AMission> remainingMissions;
 		private Vector2D newPosition;
 		private Vector2D movementDirection = new Vector2D();
-		private bool removeFleet = false;
 		private List<FleetMovement> movementSteps = new List<FleetMovement>();
 		
 		public FleetProcessingVisitor(Fleet fleet, MainGame game)
@@ -42,8 +41,7 @@ namespace Stareater.GameLogic
 					localFleet(),
 					this.time,
 					1,
-					movementDirection,
-					this.removeFleet
+					movementDirection
 				));
 			
 			return this.movementSteps;
@@ -86,8 +84,7 @@ namespace Stareater.GameLogic
 					localFleet(),
 					this.time,
 					this.time,
-					this.movementDirection,
-					this.removeFleet
+					this.movementDirection
 				));
 			}
 			else {
@@ -102,8 +99,7 @@ namespace Stareater.GameLogic
 					localFleet(),
 					this.time,
 					1,
-					this.movementDirection,
-					this.removeFleet
+					this.movementDirection
 				));
 				this.time = 1;
 			}
@@ -111,21 +107,19 @@ namespace Stareater.GameLogic
 
 		void IMissionVisitor.Visit(ColonizationMission mission)
 		{
-			var project = game.States.ColonizationProjects.Of(mission.Target);
+			var currentFleet = localFleet();
 			
-			foreach(var group in fleet.Ships)
-				project.Arrived.Add(group);
+			if (currentFleet.Position == mission.Target.Star.Position)
+				remainingMissions.AddLast(mission);
 			
-			//TODO(v0.5) remove fleet at GameProcessor.doColonization
-			this.removeFleet = true;
 			this.movementSteps.Add(new FleetMovement(
 					this.fleet,
-					localFleet(),
+					currentFleet,
 					this.time,
 					1,
-					new Vector2D(),
-					this.removeFleet
+					new Vector2D()
 			));
+			this.time = 1;
 		}
 
 		void IMissionVisitor.Visit(SkipTurnMission mission)
@@ -135,8 +129,7 @@ namespace Stareater.GameLogic
 					localFleet(),
 					this.time,
 					1,
-					new Vector2D(),
-					this.removeFleet
+					new Vector2D()
 			));
 			this.time = 1;
 		}

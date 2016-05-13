@@ -2,7 +2,6 @@
 <#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
 	
 	usings.Add("System");
-	usings.Add("System.Collections.Generic");
 	usings.Add("Stareater.Galaxy");
 	usings.Add("Stareater.Players");
 	
@@ -10,9 +9,6 @@
 	
 	Generate("Stareater.GameData", "ColonizationProject",
 		new DataInfo("Owner", "Player").FromIndexer(),
-		new DataInfo("Destination", "Planet").FromIndexer(),
-		new DataInfo("Arrived", "List",
-			new GenericParamInfo("ShipGroup").IsState(Flag.PlayerRemap).CopyMethod("Copy(playersRemap)")
-		).EmptyInit()
+		new DataInfo("Destination", "Planet").FromIndexer()
 	);
 #>
