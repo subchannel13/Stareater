@@ -33,7 +33,7 @@ namespace Stareater.GameLogic
 					this.game.States,
 					this.game.Derivates
 				);
-
+			
 			this.moveShips();
 			this.detectConflicts();
 		}
@@ -41,7 +41,7 @@ namespace Stareater.GameLogic
 		public void ProcessPostcombat()
 		{
 			this.doColonization();
-			this.mergeStationaryFleets();
+			this.mergeFleets();
 			
 			foreach (var playerProc in this.game.Derivates.Players)
 				playerProc.ProcessPostcombat(this.game.Statics, this.game.States, this.game.Derivates);
@@ -226,8 +226,8 @@ namespace Stareater.GameLogic
 				}
 			}
 			
-			//TODO(v0.5) remove colonization project from states at some point
 			this.game.States.ColonizationProjects.ApplyPending();
+			//TODO(v0.5) remove completed colonization mission from fleets
 		}
 				
 		//TODO(v0.5) move above doColonization
@@ -275,7 +275,7 @@ namespace Stareater.GameLogic
 				this.game.States.Fleets.Add(fleet.LocalFleet);
 		}
 		
-		private void mergeStationaryFleets()
+		private void mergeFleets()
 		{
 			/*
  			 * Aggregate stationary fleets, if there are multiple stationary fleets of 
@@ -283,24 +283,37 @@ namespace Stareater.GameLogic
  			 */
 			foreach(var star in game.States.Stars) 
 			{
-				var playerFleets = this.game.States.Fleets.At(star.Position).GroupBy(x => x.Owner);
-				foreach(var playerFleet in playerFleets) 
+				var perPlayerFleets = this.game.States.Fleets.At(star.Position).GroupBy(x => x.Owner);
+				foreach(var fleets in perPlayerFleets) 
 				{
-					var stationary = playerFleet.Where(x => x.Missions.Count == 0).ToArray();
-					if (stationary.Length <= 1)
-						continue;
-					
-					var newFleet = new Fleet(stationary[0].Owner, stationary[0].Position, new LinkedList<AMission>());
-					foreach(var fleet in stationary) 
+					var missionGroups = new Dictionary<LinkedList<AMission>, List<Fleet>>();
+
+					foreach (var fleet in fleets)
 					{
-						this.game.States.Fleets.PendRemove(fleet);
-						foreach(var ship in fleet.Ships)
-							if (newFleet.Ships.DesignContains(ship.Design))
-								newFleet.Ships.Design(ship.Design).Quantity += ship.Quantity;
-							else
-								newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity));
+						var missionKey = missionGroups.Keys.FirstOrDefault(x => x.SequenceEqual(fleet.Missions));
+						
+						if (missionKey == null)
+						{
+							missionKey = fleet.Missions;
+							missionGroups.Add(missionKey, new List<Fleet>());
+						}
+						missionGroups[missionKey].Add(fleet);
 					}
-					this.game.States.Fleets.PendAdd(newFleet);
+
+					foreach (var grouping in missionGroups.Where(x => x.Value.Count > 1))
+					{
+						var newFleet = new Fleet(grouping.Value[0].Owner, grouping.Value[0].Position, grouping.Key);
+						foreach (var fleet in grouping.Value)
+						{
+							this.game.States.Fleets.PendRemove(fleet);
+							foreach (var ship in fleet.Ships)
+								if (newFleet.Ships.DesignContains(ship.Design))
+									newFleet.Ships.Design(ship.Design).Quantity += ship.Quantity;
+								else
+									newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity));
+						}
+						this.game.States.Fleets.PendAdd(newFleet);
+					}
 				}
 			}
 			this.game.States.Fleets.ApplyPending();

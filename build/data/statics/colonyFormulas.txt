@@ -1,5 +1,5 @@
 { ColonyFormulas
-	colonizationPopThreshold # 1e3;
+	colonizationPopThreshold # 10e3;
 	uncolonizedMaxPopulation # size / 10 * 1e9;
 	maxPopulation # size / 10 * 1e9;
 	farmFields # 0.1 * size / 10 * 1e9;
