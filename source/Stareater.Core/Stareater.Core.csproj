@@ -189,6 +189,7 @@
     <Compile Include="GameData\Ships\MissionEquipmentType.cs" />
     <Compile Include="GameLogic\AbilityStatsFactory.cs" />
     <Compile Include="GameLogic\AbilityStats.cs" />
+    <Compile Include="GameLogic\InvalidMissionVisitor.cs" />
     <Compile Include="GameLogic\SpaceBattleProcessor.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="GameData\BuildingType.cs" />

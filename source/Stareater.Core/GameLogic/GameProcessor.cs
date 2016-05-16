@@ -227,7 +227,6 @@ namespace Stareater.GameLogic
 			}
 			
 			this.game.States.ColonizationProjects.ApplyPending();
-			//TODO(v0.5) remove completed colonization mission from fleets
 		}
 				
 		//TODO(v0.5) move above doColonization
@@ -277,9 +276,22 @@ namespace Stareater.GameLogic
 		
 		private void mergeFleets()
 		{
+			var filter = new InvalidMissionVisitor(this.game);
+			foreach(var fleet in this.game.States.Fleets)
+			{
+				var newfleet = filter.Check(fleet);
+				
+				if (newfleet != null)
+				{
+					this.game.States.Fleets.PendAdd(newfleet);
+					this.game.States.Fleets.PendRemove(fleet);
+				}
+			}
+			this.game.States.Fleets.ApplyPending();
+			
 			/*
- 			 * Aggregate stationary fleets, if there are multiple stationary fleets of 
-			 * the same owner at the same star, merge them to one fleet.
+ 			 * Aggregate fleets, if there are multiple fleets of the same owner 
+			 * at the same star with same missions, merge them to one fleet.
  			 */
 			foreach(var star in game.States.Stars) 
 			{
