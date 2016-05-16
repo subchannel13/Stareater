@@ -72,7 +72,6 @@ namespace Stareater.GameLogic
 			this.movementDirection = mission.Destination.Position - fleet.Position;
 			var distance = this.movementDirection.Magnitude();
 
-			//TODO(v0.5) merge with existing fleet
 			if (distance <= speed * (1 - time)) {
 				this.newPosition = mission.Destination.Position;
 				

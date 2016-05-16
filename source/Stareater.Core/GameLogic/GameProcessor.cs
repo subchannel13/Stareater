@@ -50,13 +50,6 @@ namespace Stareater.GameLogic
 
 			// TODO(v0.5): Upgrade and repair ships
 
-			/*
-			 * TODO(v0.5): Colonies, 2nd pass
-			 * - Apply normal effect buildings
-			 * - Check construction queue
-			 * - Recalculate colony effects
-			 */
-
 			CalculateBaseEffects();
 			CalculateSpendings();
 			CalculateDerivedEffects();
@@ -156,6 +149,50 @@ namespace Stareater.GameLogic
 			}
 		}
 
+		private void detectConflicts()
+		{
+			var visits = new Dictionary<Vector2D, ICollection<FleetMovement>>();
+			var conflictPositions = new Dictionary<Vector2D, double>();
+			var decidedFleet = new HashSet<Fleet>();
+			
+			foreach(var step in this.fleetMovement.OrderBy(x => x.ArrivalTime))
+	        {
+				if (!visits.ContainsKey(step.LocalFleet.Position))
+					visits.Add(step.LocalFleet.Position, new List<FleetMovement>());
+				
+				if (decidedFleet.Contains(step.OriginalFleet) || visits[step.LocalFleet.Position].Any(x => x.OriginalFleet == step.OriginalFleet))
+					continue;
+				
+				var fleets = visits[step.LocalFleet.Position];
+				fleets.Add(step);
+				
+				bool inConflict = fleets.Aggregate(
+					false,
+					(isInConflict, fleet) => isInConflict | fleets.Any(
+						x => x.OriginalFleet.Owner != fleet.OriginalFleet.Owner && 
+							x.ArrivalTime <= fleet.DepartureTime && x.DepartureTime >= fleet.ArrivalTime
+					)
+				);
+				
+				if (inConflict)
+				{
+					if (!conflictPositions.ContainsKey(step.LocalFleet.Position))
+						conflictPositions.Add(step.LocalFleet.Position, step.ArrivalTime);
+					decidedFleet.UnionWith(fleets.Where(x => x.ArrivalTime < step.ArrivalTime).Select(x => x.OriginalFleet));
+				}
+	        }
+			
+			this.conflicts.Clear();
+			foreach(var position in conflictPositions.OrderBy(x => x.Value))
+				if (this.game.States.Stars.AtContains(position.Key))
+					conflicts.Enqueue(new SpaceBattleGame(position.Key, visits[position.Key], position.Value, this.game));
+			//TODO(later) deep space interception
+			
+			this.game.States.Fleets.Clear();
+			foreach(var fleet in visits.Values.SelectMany(x => x))
+				this.game.States.Fleets.Add(fleet.LocalFleet);
+		}
+
 		private void doColonization()
 		{
 			foreach(var project in this.game.States.ColonizationProjects)
@@ -227,51 +264,6 @@ namespace Stareater.GameLogic
 			}
 			
 			this.game.States.ColonizationProjects.ApplyPending();
-		}
-				
-		//TODO(v0.5) move above doColonization
-		private void detectConflicts()
-		{
-			var visits = new Dictionary<Vector2D, ICollection<FleetMovement>>();
-			var conflictPositions = new Dictionary<Vector2D, double>();
-			var decidedFleet = new HashSet<Fleet>();
-			
-			foreach(var step in this.fleetMovement.OrderBy(x => x.ArrivalTime))
-	        {
-				if (!visits.ContainsKey(step.LocalFleet.Position))
-					visits.Add(step.LocalFleet.Position, new List<FleetMovement>());
-				
-				if (decidedFleet.Contains(step.OriginalFleet) || visits[step.LocalFleet.Position].Any(x => x.OriginalFleet == step.OriginalFleet))
-					continue;
-				
-				var fleets = visits[step.LocalFleet.Position];
-				fleets.Add(step);
-				
-				bool inConflict = fleets.Aggregate(
-					false,
-					(isInConflict, fleet) => isInConflict | fleets.Any(
-						x => x.OriginalFleet.Owner != fleet.OriginalFleet.Owner && 
-							x.ArrivalTime <= fleet.DepartureTime && x.DepartureTime >= fleet.ArrivalTime
-					)
-				);
-				
-				if (inConflict)
-				{
-					if (!conflictPositions.ContainsKey(step.LocalFleet.Position))
-						conflictPositions.Add(step.LocalFleet.Position, step.ArrivalTime);
-					decidedFleet.UnionWith(fleets.Where(x => x.ArrivalTime < step.ArrivalTime).Select(x => x.OriginalFleet));
-				}
-	        }
-			
-			this.conflicts.Clear();
-			foreach(var position in conflictPositions.OrderBy(x => x.Value))
-				if (this.game.States.Stars.AtContains(position.Key))
-					conflicts.Enqueue(new SpaceBattleGame(position.Key, visits[position.Key], position.Value, this.game));
-			//TODO(later) deep space interception
-			
-			this.game.States.Fleets.Clear();
-			foreach(var fleet in visits.Values.SelectMany(x => x))
-				this.game.States.Fleets.Add(fleet.LocalFleet);
 		}
 		
 		private void mergeFleets()
