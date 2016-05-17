@@ -14,14 +14,14 @@ namespace Stareater.Galaxy
 		public LocationBody Location { get; private set; }
 		public Player Owner { get; private set; }
 		public Dictionary<string, double> Buildings { get; private set; }
-		public Dictionary<Constructable, double> Stockpile { get; private set; }
+		public Dictionary<string, double> Stockpile { get; private set; }
 
 		protected AConstructionSite(LocationBody location, Player owner) 
 		{
 			this.Location = location;
 			this.Owner = owner;
 			this.Buildings = new Dictionary<string, double>();
-			this.Stockpile = new Dictionary<Constructable, double>();
+			this.Stockpile = new Dictionary<string, double>();
  
 			#if DEBUG
 			this.id = NextId();
@@ -34,7 +34,7 @@ namespace Stareater.Galaxy
 			this.Buildings = new Dictionary<string, double>();
 			foreach(var item in original.Buildings)
 				this.Buildings.Add(item.Key, item.Value);
-			this.Stockpile = new Dictionary<Constructable, double>();
+			this.Stockpile = new Dictionary<string, double>();
 			foreach(var item in original.Stockpile)
 				this.Stockpile.Add(item.Key, item.Value);
  
@@ -64,12 +64,12 @@ namespace Stareater.Galaxy
 			}
 
 			var stockpileSave = rawData[StockpileKey];
-			this.Stockpile = new Dictionary<Constructable, double>();
+			this.Stockpile = new Dictionary<string, double>();
 			foreach(var item in stockpileSave.To<IEnumerable<IkonComposite>>()) {
 				var itemKey = item[StockpileGroupKey];
 				var itemValue = item[StockpileAmountKey];
 				this.Stockpile.Add(
-					deindexer.Get<Constructable>(itemKey.To<string>()),
+					itemKey.To<string>(),
 					itemValue.To<double>()
 				);
 			}
@@ -102,7 +102,7 @@ namespace Stareater.Galaxy
 			var stockpileData = new IkonArray();
 			foreach(var item in this.Stockpile) {
 				var itemData = new IkonComposite(StockpileTag);
-				itemData.Add(StockpileGroupKey, new IkonText(item.Key.IdCode));
+				itemData.Add(StockpileGroupKey, new IkonText(item.Key));
 				itemData.Add(StockpileAmountKey, new IkonFloat(item.Value));
 				stockpileData.Add(itemData);
 			}

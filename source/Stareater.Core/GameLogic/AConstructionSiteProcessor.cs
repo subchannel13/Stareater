@@ -50,11 +50,18 @@ namespace Stareater.GameLogic
 					foreach(var effect in construction.Type.Effects)
 						effect.Apply(states, derivates, this.Site, construction.CompletedCount);
 				
+				var stockpileKey = construction.Type.StockpileGroup;
+				if (construction.FromStockpile > 0 && this.Site.Stockpile.ContainsKey(stockpileKey))
+					this.Site.Stockpile[stockpileKey] -= construction.FromStockpile;
+				
 				if (construction.LeftoverPoints > 0)
-					if (!this.Site.Stockpile.ContainsKey(construction.Type))
-						this.Site.Stockpile.Add(construction.Type, construction.LeftoverPoints);
+					if (!this.Site.Stockpile.ContainsKey(stockpileKey))
+						this.Site.Stockpile.Add(stockpileKey, construction.LeftoverPoints);
 					else
-						this.Site.Stockpile[construction.Type] += construction.LeftoverPoints;
+						this.Site.Stockpile[stockpileKey] += construction.LeftoverPoints;
+				
+				if (this.Site.Stockpile.ContainsKey(stockpileKey) && this.Site.Stockpile[stockpileKey] <= 0)
+					this.Site.Stockpile.Remove(stockpileKey);
 			}
 		}
 		
@@ -65,35 +72,42 @@ namespace Stareater.GameLogic
 			IEnumerable<Constructable> queue, IDictionary<string, double> vars)
 		{
 			var spendingPlan = new List<ConstructionResult>();
-			var planStockpile = new Dictionary<Constructable, double>(site.Stockpile);
+			var planStockpile = new Dictionary<string, double>(site.Stockpile);
 
-			foreach (var buildingItem in queue) {
-				if (buildingItem.Condition.Evaluate(vars) < 0) {
-					spendingPlan.Add(new ConstructionResult(0, 0, site.Stockpile[buildingItem], buildingItem, site.Stockpile[buildingItem]));
+			foreach (var buildingItem in queue) 
+			{
+				var stockpileKey = buildingItem.StockpileGroup;
+				if (buildingItem.Condition.Evaluate(vars) < 0) 
+				{
+					spendingPlan.Add(new ConstructionResult(0, 0, site.Stockpile[stockpileKey], buildingItem, site.Stockpile[stockpileKey]));
 					continue;
 				}
 				
 				double cost = buildingItem.Cost.Evaluate(vars);
-				double stockpile = planStockpile.ContainsKey(buildingItem) ? planStockpile[buildingItem] : 0;
+				double stockpile = planStockpile.ContainsKey(stockpileKey) ? planStockpile[stockpileKey] : 0;
 				double totalInvestment = industryPoints + stockpile;
 
 				double completed = Math.Floor(totalInvestment / cost); //FIXME(v0.5): possible division by zero
 				double countLimit = buildingItem.TurnLimit.Evaluate(vars);
+				planStockpile[stockpileKey] = 0;
 
-				if (completed > countLimit) {
+				if (completed > countLimit) 
+				{
 					double totalCost = countLimit * cost;
 					
-					if (stockpile >= totalCost) {
+					if (stockpile >= totalCost) 
+					{
 						spendingPlan.Add(new ConstructionResult(
 							(long)countLimit,
 							0, 
 							totalCost,
 							buildingItem,
-							0
+							stockpile - totalCost
 						));
-						planStockpile[buildingItem] = stockpile - totalCost;
+						planStockpile[stockpileKey] = stockpile - totalCost;
 					}
-					else {
+					else 
+					{
 						spendingPlan.Add(new ConstructionResult(
 							(long)countLimit,
 							totalCost - stockpile,
@@ -101,7 +115,7 @@ namespace Stareater.GameLogic
 							buildingItem,
 							0
 						));
-						planStockpile[buildingItem] = 0;
+						
 						industryPoints -= totalCost - stockpile;
 					}
 				}

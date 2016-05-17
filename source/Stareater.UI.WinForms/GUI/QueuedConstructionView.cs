@@ -33,6 +33,7 @@ namespace Stareater.GUI
 				var costFormatter = new ThousandsFormatter(data.Cost);
 				costLabel.Text = costFormatter.Format(data.Stockpile) + " / " + costFormatter.Format(data.Cost);
 				
+				//TODO(v0.5) what if multiple items are built per turn stockpile can build
 				var formatter = new ThousandsFormatter();
 				investmentLabel.Text = "+" + formatter.Format(data.Investment);
 			}

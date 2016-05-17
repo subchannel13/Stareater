@@ -17,7 +17,7 @@
 			new GenericParamInfo("double").SaveKey("BuildingAmountKey", "amount")
 		).EmptyInit(),
 		new DataInfo("Stockpile", "Dictionary", 
-			new GenericParamInfo("Constructable").SaveKey("StockpileGroupKey", "group").SaveIdCode(), 
+			new GenericParamInfo("string").SaveKey("StockpileGroupKey", "group"), 
 			new GenericParamInfo("double").SaveKey("StockpileAmountKey", "amount")
 		).EmptyInit()
 	);

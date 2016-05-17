@@ -5,6 +5,7 @@
 	
 	code: Jump
 	site: System
+	stockpile: ship
 	prerequisites [] 
 	
 	cost # 1e9;

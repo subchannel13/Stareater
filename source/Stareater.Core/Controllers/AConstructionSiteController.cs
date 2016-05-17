@@ -105,7 +105,7 @@ namespace Stareater.Controllers
 						item.Type, 
 						Game.Derivates.Players.Of(this.Player), 
 						item,
-						Site.Stockpile.ContainsKey(item.Type) ? Site.Stockpile[item.Type] : 0
+						item.LeftoverPoints
 					);
 				}
 			}

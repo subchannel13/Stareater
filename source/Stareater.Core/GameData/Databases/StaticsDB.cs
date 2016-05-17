@@ -244,6 +244,7 @@ namespace Stareater.GameData.Databases
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(), 
 				siteType(data[ConstructableSiteKey].To<string>()),
 				false,
+				data[ConstructableStockpileKey].To<string>(),
 				data[ConstructableConditionKey].To<Formula>(),
 				data[GeneralCostKey].To<Formula>(),
 				data[ConstructableLimitKey].To<Formula>(),
@@ -589,6 +590,7 @@ namespace Stareater.GameData.Databases
 		private const string ConstructableConditionKey = "condition";
 		private const string ConstructableLimitKey = "turnLimit";
 		private const string ConstructableEffectsKey = "effects";
+		private const string ConstructableStockpileKey = "stockpile";
 		private const string SiteColony = "colony";
 		private const string SiteSystem = "system";
 		
