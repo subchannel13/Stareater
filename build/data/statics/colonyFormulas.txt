@@ -20,8 +20,8 @@
 	}
 	gardening
 	{ Work
-		improvised	# 1;
-		organized	# 1.25;
+		improvised	# 1.5;
+		organized	# 1.5;
 	}
 	mining
 	{ Work
