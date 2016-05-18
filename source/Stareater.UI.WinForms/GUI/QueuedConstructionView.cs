@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers.Views;
 using Stareater.Utils.NumberFormatters;
+using Stareater.GuiUtils;
 
 namespace Stareater.GUI
 {
@@ -30,10 +31,23 @@ namespace Stareater.GUI
 				thumbnailImage.Image = ImageCache.Get[data.ImagePath];
 				nameLabel.Text = data.Name;
 				
-				var costFormatter = new ThousandsFormatter(data.Cost);
-				costLabel.Text = costFormatter.Format(data.Stockpile) + " / " + costFormatter.Format(data.Cost);
+				if (this.data.CompletedCount > 0)
+				{
+					var context = SettingsWinforms.Get.Language["FormMain"];
 				
-				//TODO(v0.5) what if multiple items are built per turn stockpile can build
+					costLabel.Text = LocalizationMethods.ConstructionEstimation(
+						this.data, 
+						null, 
+						context["BuildingsPerTurn"], 
+						null
+					);
+				}
+				else
+				{
+					var costFormatter = new ThousandsFormatter(data.Cost);
+					costLabel.Text = costFormatter.Format(data.Stockpile) + " / " + costFormatter.Format(data.Cost);
+				}
+				
 				var formatter = new ThousandsFormatter();
 				investmentLabel.Text = "+" + formatter.Format(data.Investment);
 			}
