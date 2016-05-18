@@ -41,8 +41,15 @@ namespace Stareater.Utils.NumberFormatters
 		public string Format(double number)
 		{
 			var prefixInfo = this.magnitudeInfo ?? greatestLowerPrefix(number);
-
-			return ((number / prefixInfo.Value).ToString("0.##") + " " + MagnitudePrefixes[prefixInfo.Key]).TrimEnd();
+			var mantissa = number / prefixInfo.Value;
+			
+			var format = "0";
+			if (mantissa < 10)
+				format = "0.##";
+			else if (mantissa < 100)
+				format = "0.#";
+			
+			return (mantissa.ToString(format) + " " + MagnitudePrefixes[prefixInfo.Key]).TrimEnd();
 		}
 
 		private static KeyValuePair<int, double> greatestLowerPrefix(double number)
