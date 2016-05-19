@@ -116,7 +116,11 @@ namespace Stareater.Controllers
 		{
 			get 
 			{ 
-				return 0; //TODO(v0.5): calculate from farming and gardening
+				var colonyStats = this.Game.Derivates.Of(Site as Colony);
+				
+				return
+					(colonyStats.FarmerEfficiency * colonyStats.Farmers + colonyStats.GardenerEfficiency * colonyStats.Gardeners) /
+					(colonyStats.Farmers + colonyStats.Gardeners);
 			}
 		}
 		

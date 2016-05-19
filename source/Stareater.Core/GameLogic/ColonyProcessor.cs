@@ -64,8 +64,11 @@ namespace Stareater.GameLogic
 		public double MinerEfficiency { get; private set; }
 		public double BuilderEfficiency { get; private set; }
 		public double ScientistEfficiency { get; private set; }
-
+		
+		public double Farmers { get; private set; }
+		public double Gardeners { get; private set; }
 		public double WorkingPopulation { get; private set; }
+		
 		public double Development { get; private set; }
 		public double SpaceliftFactor { get; private set; }
 		
@@ -101,14 +104,17 @@ namespace Stareater.GameLogic
 			this.BuilderEfficiency = formulas.Industry.Evaluate(this.Organization, vars) / (1 + minersPerIndustry);
 			this.ScientistEfficiency = formulas.Development.Evaluate(this.Organization, vars);
 
-			var farmers = this.Colony.Population / this.FarmerEfficiency;
+			this.Farmers = this.Colony.Population / this.FarmerEfficiency;
+			this.Gardeners = 0;
+			
 			var farmFields = formulas.FarmFields.Evaluate(vars);
-			if (farmers > farmFields)
+			if (this.Farmers > farmFields)
 			{
-				var gardeners = (this.Colony.Population - this.FarmerEfficiency * farmFields) / this.GardenerEfficiency;
-				farmers = farmFields + gardeners;
+				this.Gardeners = (this.Colony.Population - this.FarmerEfficiency * farmFields) / this.GardenerEfficiency;
+				this.Farmers = farmFields + this.Gardeners;
 			}
-			this.WorkingPopulation = this.Colony.Population - farmers;
+			
+			this.WorkingPopulation = this.Colony.Population - this.Farmers;
 		}
 		
 		public void CalculateDerivedEffects(StaticsDB statics, PlayerProcessor playerProcessor)
