@@ -31,7 +31,7 @@ namespace Stareater.GuiUtils
 			if (construction.Investment <= 0 || (construction.Investment / construction.Cost) < MinimumPerTurnDone)
 				return neverText.Text();
 			
-			var eta = (construction.Cost - construction.Stockpile) / construction.Investment;
+			var eta = (construction.Cost - construction.FromStockpile) / construction.Investment;
 			var numVars = new Var("eta", eta).Get;
 			
 			if (eta < 10)

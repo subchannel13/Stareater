@@ -46,6 +46,10 @@ MainMenu = Main menu
 DevelopmentMenu = Development
 
 SelectQuantityTitle = Select quantity
+StationaryFleet = Stationary
+MovingFleet §
+		Moving to {=destination}
+	\
 
 MoveAction = Move
 ShipCount = Ships

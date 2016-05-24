@@ -24,6 +24,7 @@ namespace Stareater.Controllers.Views
 			{
 				this.Investment = progress.InvestedPoints;
 				this.CompletedCount = progress.CompletedCount;
+				this.FromStockpile = progress.FromStockpile;
 				this.Overflow = progress.LeftoverPoints;
 			}
 		}
@@ -87,6 +88,7 @@ namespace Stareater.Controllers.Views
 		}
 		
 		public double Investment { get; private set; }
+		public double FromStockpile { get; private set; }
 		public long CompletedCount { get; private set; }
 		public double Overflow { get; private set; }
 		

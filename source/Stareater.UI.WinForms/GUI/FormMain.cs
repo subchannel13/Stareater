@@ -14,7 +14,6 @@ using Stareater.Utils.NumberFormatters;
 using Stareater.GLRenderers;
 using Stareater.GUI.Reports;
 using Stareater.Localization;
-using Stareater.Players.Reports;
 
 namespace Stareater.GUI
 {
@@ -273,6 +272,58 @@ namespace Stareater.GUI
 			switchToGalaxyView();
 		}
 		
+		private void selectFleet(FleetController fleetControl)
+		{
+			this.fleetController = fleetControl;
+			this.galaxyRenderer.SelectedFleet = fleetControl;
+			
+			this.shipList.SuspendLayout();
+			this.clearShipList();
+			
+			foreach (var fleet in this.fleetController.ShipGroups) {
+				var fleetView = new ShipGroupItem();
+				fleetView.SetData(fleet);
+				fleetView.SelectionChanged += shipGroupItem_SelectedIndexChanged;
+				fleetView.SplitRequested += shipGroupItem_SplitRequested;
+				this.shipList.Controls.Add(fleetView);
+				fleetView.IsSelected = true;
+			}
+			
+			this.shipList.ResumeLayout();
+			
+			this.constructionManagement.Visible = false;
+			empyPlanetView.Visible = false;
+			this.fleetPanel.Visible = true;
+		}
+
+		private void addFleetSelection(FleetInfo fleet)
+		{
+			var fleetView = new FleetInfoView();
+			fleetView.SetData(fleet, this.currentPlayer);
+			fleetView.OnSelect += fleetInfoView_OnSelect;
+
+			this.shipList.Controls.Add(fleetView);
+		}
+		
+		private void clearShipList()
+		{
+			foreach (var control in this.shipList.Controls) 
+			{
+				var shipGroupItem = control as ShipGroupItem;
+				if (shipGroupItem != null) {
+					shipGroupItem.SelectionChanged -= shipGroupItem_SelectedIndexChanged;
+					shipGroupItem.SplitRequested -= shipGroupItem_SplitRequested;
+				} else
+					(control as FleetInfoView).OnSelect -= fleetInfoView_OnSelect;
+			}
+			this.shipList.Controls.Clear();
+		}
+		
+		private void fleetInfoView_OnSelect(object sender, EventArgs e)
+		{
+			this.selectFleet(this.currentPlayer.SelectFleet((sender as FleetInfoView).Data));
+		}
+		
 		private void shipGroupItem_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			var groupItem = sender as ShipGroupItem;
@@ -508,25 +559,26 @@ namespace Stareater.GUI
 			this.fleetController = null;
 		}
 		
-		void IGalaxyViewListener.FleetSelected(FleetController fleetController)
+		void IGalaxyViewListener.FleetClicked(IEnumerable<FleetInfo> fleets)
 		{
-			this.fleetController = fleetController;
+			if (fleets.Count() == 1 && fleets.First().Owner == this.currentPlayer.Info)
+			{
+				this.selectFleet(this.currentPlayer.SelectFleet(fleets.First()));
+				return;
+			}
+			
+			var stationaryFleet = fleets.FirstOrDefault(x => x.Owner == this.currentPlayer.Info && x.Missions.Waypoints.Length == 0);
+			var otherOwnedFleets = fleets.Where(x => x.Owner == this.currentPlayer.Info && x != stationaryFleet);
+			var othersFleets = fleets.Where(x => x.Owner != this.currentPlayer.Info);
 			
 			this.shipList.SuspendLayout();
-			foreach (var control in this.shipList.Controls) {
-				(control as ShipGroupItem).SelectionChanged -= shipGroupItem_SelectedIndexChanged;
-				(control as ShipGroupItem).SplitRequested -= shipGroupItem_SplitRequested;
-			}
-			this.shipList.Controls.Clear();
+			this.clearShipList();
 			
-			foreach (var fleet in fleetController.ShipGroups) {
-				var fleetView = new ShipGroupItem();
-				fleetView.SetData(fleet);
-				fleetView.SelectionChanged += shipGroupItem_SelectedIndexChanged;
-				fleetView.SplitRequested += shipGroupItem_SplitRequested;
-				this.shipList.Controls.Add(fleetView);
-				fleetView.IsSelected = true;
-			}
+			if (stationaryFleet != null)
+				addFleetSelection(stationaryFleet);
+			
+			foreach(var fleet in otherOwnedFleets.Concat(othersFleets))
+				addFleetSelection(fleet);
 			
 			this.shipList.ResumeLayout();
 			

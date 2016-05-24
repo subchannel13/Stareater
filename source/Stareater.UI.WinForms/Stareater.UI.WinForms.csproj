@@ -181,6 +181,10 @@
     <Compile Include="GUI\EmpyPlanetView.Designer.cs">
       <DependentUpon>EmpyPlanetView.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FleetInfoView.cs" />
+    <Compile Include="GUI\FleetInfoView.Designer.cs">
+      <DependentUpon>FleetInfoView.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormBuildingQueue.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -403,6 +407,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\EmpyPlanetView.resx">
       <DependentUpon>EmpyPlanetView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FleetInfoView.resx">
+      <DependentUpon>FleetInfoView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormBuildingQueue.resx">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
