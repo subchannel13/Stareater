@@ -282,7 +282,7 @@ namespace Stareater.GUI
 			
 			foreach (var fleet in this.fleetController.ShipGroups) {
 				var fleetView = new ShipGroupItem();
-				fleetView.SetData(fleet);
+				fleetView.SetData(fleet, this.fleetController.Fleet.Owner);
 				fleetView.SelectionChanged += shipGroupItem_SelectedIndexChanged;
 				fleetView.SplitRequested += shipGroupItem_SplitRequested;
 				this.shipList.Controls.Add(fleetView);
