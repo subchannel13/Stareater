@@ -8,7 +8,7 @@ namespace Stareater.Controllers.Views
 	{
 		private const string LangContext = "Buildings";
 		
-		private BuildingType building;
+		private readonly BuildingType building;
 		
 		public BuildingInfo(BuildingType building, double quantity)
 		{

@@ -38,6 +38,8 @@ namespace Stareater.Controllers
 
 		internal abstract AConstructionSiteProcessor Processor { get; }
 		
+		public abstract IEnumerable<TraitInfo> Traits { get; }
+		
 		#region Buildings
 		protected abstract void RecalculateSpending();
 

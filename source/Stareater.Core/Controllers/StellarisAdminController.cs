@@ -21,6 +21,15 @@ namespace Stareater.Controllers
 			get { return Game.Derivates.Of((StellarisAdmin)Site); }
 		}
 		
+		public override IEnumerable<TraitInfo> Traits 
+		{ 
+			get
+			{
+				//TODO(later) add star traits
+				yield break;
+			}
+		}
+		
 		#region Buildings
 		protected override void RecalculateSpending()
 		{

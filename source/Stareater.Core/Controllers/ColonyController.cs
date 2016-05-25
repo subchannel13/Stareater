@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.GameLogic;
 using Stareater.Players;
@@ -15,6 +17,14 @@ namespace Stareater.Controllers
 		internal override AConstructionSiteProcessor Processor
 		{
 			get { return Game.Derivates.Of((Colony)Site); }
+		}
+		
+		public override IEnumerable<TraitInfo> Traits 
+		{ 
+			get
+			{
+				return (this.Site as Colony).Location.Planet.Traits.Select(x => new TraitInfo(x));
+			}
 		}
 		
 		protected override void RecalculateSpending()

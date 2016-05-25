@@ -69,7 +69,17 @@ namespace Stareater.GUI
 			industryTotalInfo.Text = context["industryTotalInfo"].Text(vars.Get);
 			developmentTotalInfo.Text = context["developmentTotalInfo"].Text(vars.Get);
 			
-			foreach (var data in controller.Buildings) {
+			foreach(var trait in controller.Traits)
+			{
+				var thumbnail = new PictureBox();
+				thumbnail.Size = new Size(32, 32);
+				thumbnail.SizeMode = PictureBoxSizeMode.Zoom;
+				thumbnail.Image = ImageCache.Get[trait.ImagePath];
+				this.traitsList.Controls.Add(thumbnail);
+			}
+			
+			foreach (var data in controller.Buildings) 
+			{
 				var itemView = new BuildingItem();
 				itemView.Data = data;
 				buildingsList.Controls.Add(itemView);
