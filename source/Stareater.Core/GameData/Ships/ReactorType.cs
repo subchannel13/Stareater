@@ -26,7 +26,7 @@ namespace Stareater.GameData.Ships
 			
 		}
 
-		public static Component<ReactorType> MakeBest(IEnumerable<ReactorType> reactors, Dictionary<string, int> playersTechLevels, Component<HullType> shipHull)
+		public static Component<ReactorType> MakeBest(IEnumerable<ReactorType> reactors, Dictionary<string, double> playersTechLevels, Component<HullType> shipHull)
 		{
 			var hullVars = new Var(AComponentType.LevelKey, shipHull.Level).Get;
 

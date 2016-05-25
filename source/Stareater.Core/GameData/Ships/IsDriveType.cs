@@ -27,7 +27,7 @@ namespace Stareater.GameData.Ships
 			this.MinSize = minSize;
 		}
 		
-		public static Component<IsDriveType> MakeBest(IEnumerable<IsDriveType> drives, Dictionary<string, int> playersTechLevels, Component<HullType> shipHull, double shipPower)
+		public static Component<IsDriveType> MakeBest(IEnumerable<IsDriveType> drives, Dictionary<string, double> playersTechLevels, Component<HullType> shipHull, double shipPower)
 		{
 			var hullVars = new Var(AComponentType.LevelKey, shipHull.Level).Get;
 			

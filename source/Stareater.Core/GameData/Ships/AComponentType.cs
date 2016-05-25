@@ -28,12 +28,12 @@ namespace Stareater.GameData.Ships
 			this.MaxLevel = maxLevel;
 		}
 		
-		public bool IsAvailable(IDictionary<string, int> techLevels)
+		public bool IsAvailable(IDictionary<string, double> techLevels)
 		{
 			return Prerequisite.AreSatisfied(Prerequisites, 0, techLevels);
 		}
 		
-		public int HighestLevel(IDictionary<string, int> techLevels)
+		public int HighestLevel(IDictionary<string, double> techLevels)
 		{
 			if (!IsAvailable(techLevels))
 				throw new InvalidOperationException();
@@ -50,7 +50,7 @@ namespace Stareater.GameData.Ships
 			get { return false; }
 		}
 		
-		public static Component<T> MakeBest<T>(IEnumerable<T> assortment, IDictionary<string, int> techLevels) where T: AComponentType, IIncrementalComponent
+		public static Component<T> MakeBest<T>(IEnumerable<T> assortment, IDictionary<string, double> techLevels) where T: AComponentType, IIncrementalComponent
 		{
 			return Methods.FindBest(
 				assortment.Where(x => x.IsAvailable(techLevels)).Select(x => new Component<T>(x, x.HighestLevel(techLevels))),

@@ -74,17 +74,16 @@ namespace Stareater.GameLogic
 		
 		private IDictionary<string, double> calcVars(StaticsDB statics, PlayerProcessor playerProcessor)
 		{
-			var vars = base.LocalEffects(statics);
-			vars.And(PlanetSizeKey, Colony.Location.Planet.Size);
-			vars.And(PopulationKey, Colony.Population);
-			vars.UnionWith(playerProcessor.TechLevels);
-
-			foreach(var constructable in statics.Constructables)
-				if (constructable.ConstructableAt == SiteType.Colony)
-					vars.And(constructable.IdCode.ToLower() + NewBuidingPrefix, 0);
+			var vars = base.LocalEffects(statics).
+				And(PlanetSizeKey, Colony.Location.Planet.Size).
+				And(PopulationKey, Colony.Population).
+				UnionWith(playerProcessor.TechLevels).
+				Init(statics.Traits.Keys, false).
+				UnionWith(Colony.Location.Planet.Traits, x => x.IdCode, x => 1);
+				
+			vars.Init(statics.Constructables.Where(x => x.ConstructableAt == SiteType.Colony).Select(x => x.IdCode.ToLower() + NewBuidingPrefix), false);
 
 			return vars.Get;
-
 		}
 		
 		public void CalculateBaseEffects(StaticsDB statics, PlayerProcessor playerProcessor)

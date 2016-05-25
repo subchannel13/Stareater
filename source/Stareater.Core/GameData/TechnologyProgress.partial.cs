@@ -27,7 +27,7 @@ namespace Stareater.GameData
 			}
 		}
 		
-		public bool CanProgress(IDictionary<string, int> techLevels)
+		public bool CanProgress(IDictionary<string, double> techLevels)
 		{
 			return Level < Topic.MaxLevel && 
 				Prerequisite.AreSatisfied(Topic.Prerequisites, NextLevel, techLevels);
@@ -40,7 +40,7 @@ namespace Stareater.GameData
 			this.InvestedPoints = progressData.LeftoverPoints;
 		}
 		
-		public ScienceResult SimulateInvestment(double points, IDictionary<string, int> techLevels)
+		public ScienceResult SimulateInvestment(double points, IDictionary<string, double> techLevels)
 		{
 			int tmplevel = Level;
 			int newLevels = 0;

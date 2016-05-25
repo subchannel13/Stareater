@@ -32,9 +32,9 @@ namespace Stareater.GameData.Ships
 			get { return true; }
 		}
 		
-		public Component<SpecialEquipmentType> MakeBest(IDictionary<string, int> techLevels, int quantity)
+		public Component<SpecialEquipmentType> MakeBest(IDictionary<string, double> techLevels, int quantity)
 		{
-			return new Component<SpecialEquipmentType>(this, HighestLevel(techLevels));
+			return new Component<SpecialEquipmentType>(this, HighestLevel(techLevels), quantity);
 		}
 	}
 }

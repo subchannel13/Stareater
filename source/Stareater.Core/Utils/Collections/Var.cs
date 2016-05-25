@@ -28,6 +28,14 @@ namespace Stareater.Utils.Collections
 			}
 		}
 		
+		public Var Init(IEnumerable<string> variableNames, bool initValue)
+		{
+			foreach(var name in variableNames)
+				this.variables.Add(name, initValue ? 1 : -1);
+			
+			return this;
+		}
+		
 		public Var Init(IEnumerable<string> variableNames, double initValue)
 		{
 			foreach(var name in variableNames)
@@ -44,10 +52,10 @@ namespace Stareater.Utils.Collections
 			return this;
 		}
 		
-		public Var UnionWith(IEnumerable<KeyValuePair<string, int>> variables)
+		public Var UnionWith<T>(IEnumerable<T> collection, Func<T, string> keySelector, Func<T, double> valueSelector)
 		{
-			foreach (var pair in variables)
-				this.variables[pair.Key] = pair.Value;
+			foreach (var element in collection)
+				this.variables[keySelector(element)] = valueSelector(element);
 			
 			return this;
 		}

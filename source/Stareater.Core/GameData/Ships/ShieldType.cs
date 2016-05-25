@@ -35,7 +35,7 @@ namespace Stareater.GameData.Ships
 			this.PowerUsage = powerUsage;
 		}
 		
-		public Component<ShieldType> MakeBest(IDictionary<string, int> techLevels)
+		public Component<ShieldType> MakeBest(IDictionary<string, double> techLevels)
 		{
 			return new Component<ShieldType>(this, HighestLevel(techLevels));
 		}

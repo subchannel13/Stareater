@@ -86,7 +86,7 @@ namespace Stareater.GameLogic
 				developmentPoints += colonyProc.Development;
 			
 			var focus = statics.DevelopmentFocusOptions[Player.Orders.DevelopmentFocusIndex];
-			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var advanceOrder = this.DevelopmentOrder(states.TechnologyAdvances).ToList();
 			
 			var results = new List<ScienceResult>();
@@ -102,7 +102,7 @@ namespace Stareater.GameLogic
 		
 		public void CalculateResearch(StaticsDB statics, StatesDB states, IList<ColonyProcessor> colonyProcessors)
 		{
-			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			
 			double researchPoints = 0;
 			this.ResearchCenter = null;
@@ -153,7 +153,7 @@ namespace Stareater.GameLogic
 		
 		public IEnumerable<TechnologyProgress> DevelopmentOrder(TechProgressCollection techAdvances)
 		{
-			var techLevels = techAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			var techLevels = techAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var playerTechs = techAdvances
 				.Of(Player)
 				.Where(x => (
@@ -167,7 +167,7 @@ namespace Stareater.GameLogic
 		
 		public IEnumerable<TechnologyProgress> ResearchOrder(TechProgressCollection techAdvances)
 		{
-			var techLevels = techAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			var techLevels = techAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var playerTechs = techAdvances
 				.Of(Player)
 				.Where(x => (
@@ -222,7 +222,7 @@ namespace Stareater.GameLogic
 			}
 			this.Calculate(states.TechnologyAdvances.Of(Player));
 
-			var newTechLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			var newTechLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var validTechs = new HashSet<string>(
 					states.TechnologyAdvances
 					.Where(x => x.CanProgress(newTechLevels))
@@ -292,8 +292,8 @@ namespace Stareater.GameLogic
 				And("armorFactor", design.Armor.TypeInfo.ArmorFactor.Evaluate(armorVars)).
 				Init(statics.SpecialEquipment.Keys, 0).
 				Init(statics.SpecialEquipment.Keys.Select(x => x + "_lvl"), 0). //TODO(v0.5) Make "_lvl" string constant
-				UnionWith(design.SpecialEquipment.ToDictionary(x => x.TypeInfo.IdCode, x => x.Quantity)).
-				UnionWith(design.SpecialEquipment.ToDictionary(x => x.TypeInfo.IdCode + "_lvl", x => x.Level)); //TODO(v0.5) Make "_lvl" string constant
+				UnionWith(design.SpecialEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).
+				UnionWith(design.SpecialEquipment, x => x.TypeInfo.IdCode + "_lvl", x => x.Level); //TODO(v0.5) Make "_lvl" string constant
 			
 			var buildings = new Dictionary<string, double>();
 			foreach(var colonyBuilding in statics.ShipFormulas.ColonizerBuildings)
@@ -350,7 +350,7 @@ namespace Stareater.GameLogic
 		public void UnlockPredefinedDesigns(StaticsDB statics, StatesDB states)
 		{
 			var playerTechs = states.TechnologyAdvances.Of(Player);
-			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => x.Level);
+			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 				
 			foreach(var predefDesign in statics.PredeginedDesigns)
 				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
@@ -371,7 +371,7 @@ namespace Stareater.GameLogic
 				techLevels, true);
 		}
 		
-		private Design makeDesign(StaticsDB statics, StatesDB states, PredefinedDesign predefDesign, Dictionary<string, int> techLevels, bool isVirtual)
+		private Design makeDesign(StaticsDB statics, StatesDB states, PredefinedDesign predefDesign, Dictionary<string, double> techLevels, bool isVirtual)
 		{
 			var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels);
 			var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);

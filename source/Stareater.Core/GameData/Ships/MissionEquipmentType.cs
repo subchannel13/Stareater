@@ -30,7 +30,7 @@ namespace Stareater.GameData.Ships
 			get { return true; }
 		}
 		
-		public Component<MissionEquipmentType> MakeBest(IDictionary<string, int> techLevels, int quantity)
+		public Component<MissionEquipmentType> MakeBest(IDictionary<string, double> techLevels, int quantity)
 		{
 			return new Component<MissionEquipmentType>(this, HighestLevel(techLevels), quantity);
 		}

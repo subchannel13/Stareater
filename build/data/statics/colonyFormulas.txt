@@ -15,8 +15,8 @@
 	
 	farming
 	{ Work
-		improvised	# 3;
-		organized	# 4;
+		improvised	# 3 + if(fertile, 4, 0);
+		organized	# 4 + if(fertile, 4, 0);
 	}
 	gardening
 	{ Work

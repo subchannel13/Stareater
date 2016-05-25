@@ -14,7 +14,7 @@ namespace Stareater.Controllers
 	{
 		private readonly MainGame game;
 		private Player player;
-		private readonly Dictionary<string, int> playersTechLevels;
+		private readonly Dictionary<string, double> playersTechLevels;
 		
 		internal ShipDesignController(MainGame game, Player player)
 		{
@@ -22,7 +22,7 @@ namespace Stareater.Controllers
 			this.player = player;
 			
 			this.playersTechLevels = game.States.TechnologyAdvances.Of(this.player)
-				.ToDictionary(x => x.Topic.IdCode, x => x.Level);
+				.ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			
 			this.armorInfo = bestArmor();
 			this.sensorInfo = bestSensor();
@@ -211,7 +211,7 @@ namespace Stareater.Controllers
 				var vars = new Var("hullHp", selectedHull.HitPointsBase).
 					And("armorFactor", armorInfo.ArmorFactor).
 					Init(this.game.Statics.SpecialEquipment.Keys, 0).
-					UnionWith(this.selectedSpecialEquipment.ToDictionary(x => x.TypeInfo.IdCode, x => x.Quantity)).Get; 
+					UnionWith(this.selectedSpecialEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).Get; 
 				//TODO(v0.5) add special equipment levels, make special equipment variables more reusabe put spec equip vars to other properties
 				
 				return game.Statics.ShipFormulas.HitPoints.Evaluate(vars);

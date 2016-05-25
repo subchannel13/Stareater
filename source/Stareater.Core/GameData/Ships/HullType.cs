@@ -52,7 +52,7 @@ namespace Stareater.GameData.Ships
 			this.SensorsBase = sensorsBase;
 		}
 		
-		public Component<HullType> MakeHull(IDictionary<string, int> techLevels)
+		public Component<HullType> MakeHull(IDictionary<string, double> techLevels)
 		{
 			return new Component<HullType>(this, HighestLevel(techLevels));
 		}
