@@ -181,7 +181,9 @@
     <Compile Include="GUI\EmpyPlanetView.Designer.cs">
       <DependentUpon>EmpyPlanetView.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FleetInfoView.cs" />
+    <Compile Include="GUI\FleetInfoView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="GUI\FleetInfoView.Designer.cs">
       <DependentUpon>FleetInfoView.cs</DependentUpon>
     </Compile>

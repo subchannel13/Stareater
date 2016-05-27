@@ -365,7 +365,16 @@ namespace Stareater.GUI
 			using(var form = new FormSelectQuantity(maxCount, (long)selectedItem.Amount))
 				if (form.ShowDialog() == DialogResult.OK)
 				{
-					//TODO(v0.5) add MissionEquipmentAction
+					this.equipmentAction.MissionEquipmentAction = x =>
+					{
+						this.controller.MissionEquipSetAmount(this.equipmentList.SelectedIndex, (int)form.SelectedValue);
+
+						if (form.SelectedValue == 0)
+							this.equipmentList.Controls.Remove(selectedItem);
+						else
+							selectedItem.Amount = this.controller.MissionEquipCount(this.equipmentList.SelectedIndex);
+					};
+
 					this.equipmentAction.SpecialEquipmentAction = x => 
 					{
 						this.controller.SpecialEquipSetAmount(x, (int)form.SelectedValue);

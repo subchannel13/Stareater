@@ -31,14 +31,18 @@ namespace Stareater.GUI
 			unselectables.Remove(e.Control);
 
 			if (e.Control.Equals(lastSelected))
-			    if (Controls.Count > 0) {
-					selectedIndex = Math.Min(selectedIndex, Controls.Count - 1);
+			{
+				selectedIndex = Math.Min(selectedIndex, Controls.Count - 1);
+
+				if (Controls.Count > 0 && !unselectables.Contains(Controls[selectedIndex]))
+				{	
 					select(selectedIndex);
 					if (SelectedIndexChanged != null)
 						SelectedIndexChanged(this, new EventArgs());
 				}
-			    else
-			    	selectedIndex = NoneSelected;
+				else
+					selectedIndex = NoneSelected;
+			}
 			   
 			checkSelectionIndex();
 		}
