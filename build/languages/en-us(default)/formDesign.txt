@@ -1,4 +1,6 @@
 ﻿:FormDesign
+FormTitle = New design
+ListFormTitle = Ship designs
 
 armor §
 		Armor: {=totalHp}

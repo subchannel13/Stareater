@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using Stareater.Controllers;
+using Stareater.AppData;
 
 namespace Stareater.GUI
 {
@@ -16,6 +17,8 @@ namespace Stareater.GUI
 		
 		public FormShipDesignList(PlayerController controller) : this()
 		{
+			this.Text = SettingsWinforms.Get.Language["FormDesign"]["ListFormTitle"].Text();
+
 			this.controller = controller;
 			updateList();
 		}

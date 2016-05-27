@@ -27,6 +27,7 @@ namespace Stareater.GUI
 		
 		public FormSaveLoad(SavesController controller) : this()
 		{
+			this.Text = SettingsWinforms.Get.Language[FormSaveLoad.LanguageContext]["FormTitle"].Text();
 			this.controller = controller;
 			
 			if (controller.CanSave) {

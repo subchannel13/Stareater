@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Stareater.Controllers.Views;
+using Stareater.AppData;
 
 namespace Stareater.GUI
 {
@@ -17,6 +18,8 @@ namespace Stareater.GUI
 		
 		public FormReports(IEnumerable<IReportInfo> reports) : this()
 		{
+			this.Text = SettingsWinforms.Get.Language["FormReports"]["FormTitle"].Text();
+
 			foreach (var report in reports) {
 				var reportItem = new ReportItem();
 				reportItem.Data = report;

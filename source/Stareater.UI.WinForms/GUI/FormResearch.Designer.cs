@@ -105,10 +105,12 @@ namespace Stareater.GUI
 			this.Name = "FormResearch";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "FormResearch";
 			((System.ComponentModel.ISupportInitialize)(this.techImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 		private Stareater.GUI.ControlListView topicList;
 		private System.Windows.Forms.PictureBox techImage;

@@ -34,6 +34,8 @@ namespace Stareater.GUI
 		public FormShipDesigner(ShipDesignController controller) : this()
 		{
 			this.context = SettingsWinforms.Get.Language["FormDesign"];
+			this.Text = context["FormTitle"].Text();
+
 			this.controller = controller;
 			this.hulls = this.controller.Hulls().OrderBy(x => x.Size).ToList();
 			
