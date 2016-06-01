@@ -87,6 +87,30 @@ namespace Stareater.Controllers.Views.Ships
 			}
 		}
 		
+		public double CloakingBase
+		{
+			get
+			{
+				return this.Type.CloakingBase.Evaluate(levelVar);
+			}
+		}
+		
+		public double JammingBase
+		{
+			get
+			{
+				return this.Type.JammingBase.Evaluate(levelVar);
+			}
+		}
+		
+		public double SensorsBase
+		{
+			get
+			{
+				return this.Type.SensorsBase.Evaluate(levelVar);
+			}
+		}
+		
 		//TODO(v0.5) add other hull properties
 	}
 }

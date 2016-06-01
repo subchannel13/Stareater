@@ -165,6 +165,7 @@ namespace Stareater.Controllers
 			get 
 			{
 				var vars = new Var("shieldCloak", Shield != null ? Shield.Cloaking : 0).
+					And("hullCloak", selectedHull.CloakingBase).
 					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
 				
 				return game.Statics.ShipFormulas.Cloaking.Evaluate(vars);
@@ -187,6 +188,7 @@ namespace Stareater.Controllers
 			get 
 			{
 				var vars = new Var("sensor", sensorInfo.Detection).
+					And("hullSensor", selectedHull.SensorsBase).
 					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
 				
 				return game.Statics.ShipFormulas.Detection.Evaluate(vars);
@@ -223,6 +225,7 @@ namespace Stareater.Controllers
 			get 
 			{
 				var vars = new Var("shieldJamming", Shield != null ? Shield.Jamming : 0).
+					And("hullJamming", selectedHull.JammingBase).
 					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
 				
 				return game.Statics.ShipFormulas.Jamming.Evaluate(vars);
