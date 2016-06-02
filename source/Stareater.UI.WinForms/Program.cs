@@ -43,7 +43,12 @@ namespace StareaterUI
 
 		static void guiExceptionLogger(object sender, ThreadExceptionEventArgs e)
 		{
+#if !DEBUG			
+			using(var form = new FormError(e.Exception.ToString()))
+					form.ShowDialog();
+#else			
 			Trace.TraceError(e.Exception.ToString());
+#endif
 		}
 	}
 }
