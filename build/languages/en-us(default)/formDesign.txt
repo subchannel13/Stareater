@@ -5,6 +5,11 @@ ListFormTitle = Ship designs
 armor §
 		Armor: {=totalHp}
 	\
+	
+cost §
+		Cost: {=cost}
+	\
+	
 isDrive §
 		{=name} {=speed} ly/turn
 	\

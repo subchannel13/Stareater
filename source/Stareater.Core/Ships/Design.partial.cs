@@ -55,26 +55,7 @@ namespace Stareater.Ships
 		
 		private double initCost()
 		{
-			var hullVars = new Var(AComponentType.LevelKey, this.Hull.Level).Get;
-			double hullCost = this.Hull.TypeInfo.Cost.Evaluate(hullVars);
-			
-			double isDriveCost = 0;
-			if (this.IsDrive != null)
-			{
-				var driveVars = new Var(AComponentType.LevelKey, this.IsDrive.Level).
-					And(AComponentType.SizeKey, this.Hull.TypeInfo.SizeIS.Evaluate(hullVars)).Get;
-				isDriveCost	= this.IsDrive.TypeInfo.Cost.Evaluate(driveVars);
-			}
-			
-			double hullSize = this.Hull.TypeInfo.Size.Evaluate(hullVars);
-			double specialsCost = SpecialEquipment.Sum(
-				x => x.Quantity * x.TypeInfo.Cost.Evaluate(
-					new Var(AComponentType.LevelKey, x.Level).
-					And(HullType.HullSizeKey, hullSize).Get
-				)
-			);
-			
-			return hullCost + isDriveCost + specialsCost;
+			return CalculateCost(this.Hull, this.IsDrive, this.Shield, this.MissionEquipment, this.SpecialEquipment);
 		}
 		
 		public string ImagePath 
@@ -134,6 +115,45 @@ namespace Stareater.Ships
 
 			hashBuilder.Add(indices.IndexOf(component.TypeInfo.IdCode), componentAssortiment.Count);
 			hashBuilder.Add(component.Level, component.TypeInfo.MaxLevel + 1);
+		}
+		
+		public static double CalculateCost(Component<HullType> hull, Component<IsDriveType> isDrive, Component<ShieldType> shield,
+		                                   List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment)
+		{
+			var hullVars = new Var(AComponentType.LevelKey, hull.Level).Get;
+			double hullCost = hull.TypeInfo.Cost.Evaluate(hullVars);
+			
+			double isDriveCost = 0;
+			if (isDrive != null)
+			{
+				var driveVars = new Var(AComponentType.LevelKey, isDrive.Level).
+					And(AComponentType.SizeKey, hull.TypeInfo.SizeIS.Evaluate(hullVars)).Get;
+				isDriveCost	= isDrive.TypeInfo.Cost.Evaluate(driveVars);
+			}
+			
+			double shieldCost = 0;
+			if (shield != null)
+			{
+				var shieldVars = new Var(AComponentType.LevelKey, shield.Level).
+					And(AComponentType.SizeKey, hull.TypeInfo.SizeShield.Evaluate(hullVars)).Get;
+				shieldCost	= shield.TypeInfo.Cost.Evaluate(shieldVars);
+			}
+			
+			double weaponsCost = missionEquipment.Sum(
+				x => x.Quantity * x.TypeInfo.Cost.Evaluate(
+					new Var(AComponentType.LevelKey, x.Level).Get
+				)
+			);
+			
+			double hullSize = hull.TypeInfo.Size.Evaluate(hullVars);
+			double specialsCost = specialEquipment.Sum(
+				x => x.Quantity * x.TypeInfo.Cost.Evaluate(
+					new Var(AComponentType.LevelKey, x.Level).
+					And(HullType.HullSizeKey, hullSize).Get
+				)
+			);
+			
+			return hullCost + isDriveCost + shieldCost + weaponsCost + specialsCost;
 		}
 	}
 }

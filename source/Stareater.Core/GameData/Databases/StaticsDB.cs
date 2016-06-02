@@ -457,6 +457,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
+				data[GeneralCostKey].To<Formula>(),
 				data[ShieldHpFactor].To<Formula>(),
 				data[ShieldRegeneration].To<Formula>(),
 				data[ShieldThickness].To<Formula>(),

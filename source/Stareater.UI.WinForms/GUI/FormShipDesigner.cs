@@ -156,6 +156,9 @@ namespace Stareater.GUI
 				new TextVar("jamming", this.controller.Jamming.ToString("0.#")).
 					And("cloaking", this.controller.Cloaking.ToString("0.#")).Get
 			);
+			this.costInfo.Text = this.context["cost"].Text(
+				new TextVar("cost", thousandsFormat.Format(this.controller.Cost)).Get
+			);
 			
 			this.spaceInfo.SetSpace(this.controller.SpaceUsed, this.controller.SpaceTotal);
 		}

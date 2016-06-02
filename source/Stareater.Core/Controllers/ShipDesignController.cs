@@ -234,6 +234,20 @@ namespace Stareater.Controllers
 		#endregion
 
 		#region Design info
+		public double Cost
+		{
+			get
+			{
+				return Design.CalculateCost(
+					new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
+					this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
+					this.Shield != null ? new Component<ShieldType>(this.Shield.Type, this.Shield.Level) : null,
+					selectedMissionEquipment,
+					selectedSpecialEquipment
+				);
+			}
+		}
+		
 		public double PowerUsed
 		{
 			get { return (this.Shield != null) ? this.Shield.PowerUsage : 0; } //TODO(v0.5)
