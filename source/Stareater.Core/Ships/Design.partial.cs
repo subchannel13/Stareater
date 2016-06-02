@@ -152,7 +152,7 @@ namespace Stareater.Ships
 					And(HullType.HullSizeKey, hullSize).Get
 				)
 			);
-			
+
 			return hullCost + isDriveCost + shieldCost + weaponsCost + specialsCost;
 		}
 	}

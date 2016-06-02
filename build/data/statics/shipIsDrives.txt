@@ -7,7 +7,7 @@
 	maxLvl= 10
 	prerequisites [
 	]
-	cost # 100e3 * size;
+	cost # 1e6 * size;
 	
 	minSize # 5;
 	speed # 0.8 * limit(power / (200 * size), 0, 1);
@@ -22,7 +22,7 @@
 	maxLvl= 1
 	prerequisites [
 	]
-	cost # 100e3 * size;
+	cost # 1e6 * size;
 	
 	minSize # 5;
 	speed # 3 * limit(power / (2 * size), 0, 1);

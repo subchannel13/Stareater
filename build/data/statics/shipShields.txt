@@ -16,8 +16,8 @@
 	cloaking # 1 + 0.5 * lvl;
 	jamming # 1 + lvl;
 	
-	cost # 100e3 * shipSize;
-	power # 0.5 * shipSize;
+	cost # 1e6 * size;
+	power # 0.5 * size;
 }
 
 { Shield
@@ -38,7 +38,7 @@
 	cloaking # 5 + 0.5 * lvl;
 	jamming # 5 + 0.15 * lvl;
 	
-	cost # 200e3 * size;
+	cost # 2e6 * size;
 	power # size * (1 + 0.05 * lvl);
 }
 
@@ -60,6 +60,6 @@
 	cloaking # 5 + 0.5 * lvl;
 	jamming # 5 + 0.15 * lvl;
 	
-	cost # 200e3 * shipSize;
-	power # shipSize * (1 + 0.05 * lvl);
+	cost # 2e6 * size;
+	power # size * (1 + 0.05 * lvl);
 }

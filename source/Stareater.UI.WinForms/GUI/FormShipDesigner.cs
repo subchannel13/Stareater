@@ -47,6 +47,7 @@ namespace Stareater.GUI
 			}
 			
 			this.hullPicker.SelectedIndex = 0;
+			this.pickShieldAction.Text = this.context["noShield"].Text();
 		}
 		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

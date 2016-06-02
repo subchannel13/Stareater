@@ -8,7 +8,7 @@
 	prerequisites [
 	]
 	
-	cost # 200000;
+	cost # 2e6;
 	size # 5;
 	
 	abilities [
@@ -34,7 +34,7 @@
 	prerequisites [
 	]
 	
-	cost # 200000;
+	cost # 2e6;
 	size # 5;
 	
 	abilities [

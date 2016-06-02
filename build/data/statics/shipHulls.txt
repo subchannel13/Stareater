@@ -41,7 +41,7 @@
 	maxLvl= 0
 	prerequisites [
 	]
-	cost # 2.5e9;
+	cost # 250e6;
 	
 	size # 200;
 	space # 200;
