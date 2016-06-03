@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using Stareater.Controllers;
 using Stareater.AppData;
+using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI
 {
@@ -21,6 +23,9 @@ namespace Stareater.GUI
 
 			this.controller = controller;
 			updateList();
+			
+			designName.Text = "";
+			hullName.Text = "";
 		}
 		
 		private void updateList()
@@ -29,7 +34,11 @@ namespace Stareater.GUI
 			designList.SuspendLayout();
 			
 			while (designList.Controls.Count < designs.Length)
-				designList.Controls.Add(new DesignItem());
+			{
+				var item = new DesignItem();
+				item.MouseEnter += design_OnMouseEnter;
+				designList.Controls.Add(item);
+			}
 			while (designList.Controls.Count > designs.Length)
 				designList.Controls.RemoveAt(designList.Controls.Count - 1);
 
@@ -57,6 +66,29 @@ namespace Stareater.GUI
 					designer.Commit();
 					updateList();
 				}
+		}
+
+		private void design_OnMouseEnter(object sender, EventArgs e)
+		{
+			var design = (sender as DesignItem).Data;
+			
+			designThumbnail.Image = ImageCache.Get[design.ImagePath];
+			designName.Text = design.Name;
+			hullName.Text = design.Hull.Name;
+			
+			var formatter = new ThousandsFormatter();
+			var sb = new StringBuilder();
+			//TODO(0.5) add shield and IS info
+			foreach(var equip in design.Equipment)
+				sb.AppendLine(formatter.Format(equip.Value) + " x " + equip.Key.Name);
+			
+			if (sb.Length > 0)
+				sb.AppendLine();
+			
+			foreach(var equip in design.SpecialEquipment)
+				sb.AppendLine(formatter.Format(equip.Value) + " x " + equip.Key.Name);
+			
+			equipmentInfo.Text = sb.ToString();
 		}
 	}
 }

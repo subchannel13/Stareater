@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Stareater.GameData.Ships;
 using Stareater.GameLogic;
 using Stareater.Ships;
@@ -30,6 +31,37 @@ namespace Stareater.Controllers.Views.Ships
 			get
 			{
 				return design.ImagePath;
+			}
+		}
+		
+		public HullInfo Hull
+		{
+			get { return new HullInfo(design.Hull.TypeInfo, design.Hull.Level); }
+		}
+		
+		public IEnumerable<KeyValuePair<MissionEquipInfo, int>> Equipment
+		{
+			get
+			{
+				for(int i = 0; i < design.MissionEquipment.Count; i++)
+					yield return new KeyValuePair<MissionEquipInfo, int>(
+						new MissionEquipInfo(design.MissionEquipment[i].TypeInfo, design.MissionEquipment[i].Level),
+						design.MissionEquipment[i].Quantity
+					);
+			}
+		}
+		
+		public IEnumerable<KeyValuePair<SpecialEquipInfo, int>> SpecialEquipment
+		{
+			get
+			{
+				var hull = new HullInfo(design.Hull.TypeInfo, design.Hull.Level);
+				
+				for(int i = 0; i < design.SpecialEquipment.Count; i++)
+					yield return new KeyValuePair<SpecialEquipInfo, int>(
+						new SpecialEquipInfo(design.SpecialEquipment[i].TypeInfo, design.SpecialEquipment[i].Level, hull),
+						design.SpecialEquipment[i].Quantity
+					);
 			}
 		}
 		

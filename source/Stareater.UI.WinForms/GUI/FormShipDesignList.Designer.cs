@@ -44,6 +44,7 @@ namespace Stareater.GUI
 			this.designThumbnail = new System.Windows.Forms.PictureBox();
 			this.designName = new System.Windows.Forms.Label();
 			this.hullName = new System.Windows.Forms.Label();
+			this.equipmentInfo = new System.Windows.Forms.Label();
 			this.infoList.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.designThumbnail)).BeginInit();
 			this.SuspendLayout();
@@ -87,11 +88,12 @@ namespace Stareater.GUI
 			// infoList
 			// 
 			this.infoList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-									| System.Windows.Forms.AnchorStyles.Left)));
+			| System.Windows.Forms.AnchorStyles.Left)));
 			this.infoList.AutoScroll = true;
 			this.infoList.Controls.Add(this.designThumbnail);
 			this.infoList.Controls.Add(this.designName);
 			this.infoList.Controls.Add(this.hullName);
+			this.infoList.Controls.Add(this.equipmentInfo);
 			this.infoList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.infoList.Location = new System.Drawing.Point(383, 25);
 			this.infoList.Name = "infoList";
@@ -125,6 +127,15 @@ namespace Stareater.GUI
 			this.hullName.TabIndex = 2;
 			this.hullName.Text = "Hull name";
 			// 
+			// equipmentInfo
+			// 
+			this.equipmentInfo.Location = new System.Drawing.Point(3, 122);
+			this.equipmentInfo.Margin = new System.Windows.Forms.Padding(3, 10, 3, 0);
+			this.equipmentInfo.Name = "equipmentInfo";
+			this.equipmentInfo.Size = new System.Drawing.Size(184, 253);
+			this.equipmentInfo.TabIndex = 3;
+			this.equipmentInfo.Text = "x x XXX";
+			// 
 			// FormShipDesignList
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -144,6 +155,7 @@ namespace Stareater.GUI
 			((System.ComponentModel.ISupportInitialize)(this.designThumbnail)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 		private System.Windows.Forms.Label hullName;
 		private System.Windows.Forms.Label designName;
@@ -153,5 +165,6 @@ namespace Stareater.GUI
 		private System.Windows.Forms.FlowLayoutPanel designList;
 		private System.Windows.Forms.Label designHeader;
 		private System.Windows.Forms.Label countHeader;
+		private System.Windows.Forms.Label equipmentInfo;
 	}
 }
