@@ -44,6 +44,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
+				//TODO(later) factor in special equipment
 				return this.Type.Power.Evaluate(vars);
 			}
 		}

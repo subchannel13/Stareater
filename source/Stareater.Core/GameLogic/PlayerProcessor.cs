@@ -270,6 +270,7 @@ namespace Stareater.GameLogic
 			var hullVars = new Var(AComponentType.LevelKey, design.Hull.Level).Get;
 			var armorVars = new Var(AComponentType.LevelKey, design.Armor.Level).Get;
 			
+			//TODO(later) factor in special equipment
 			var reactorVars = new Var(AComponentType.LevelKey, design.Reactor.Level).
 				And(AComponentType.SizeKey, design.Hull.TypeInfo.SizeReactor.Evaluate(hullVars)).Get;
 			double shipPower = design.Reactor.TypeInfo.Power.Evaluate(reactorVars);
@@ -311,6 +312,7 @@ namespace Stareater.GameLogic
 			double shieldReduction = 0;
 			double shieldRegeneration = 0;
 			double shieldThickness = 0;
+			double shieldPower = 0;
 			if (design.Shield != null)
 			{
 				var shieldVars = new Var(AComponentType.LevelKey, design.Shield.Level).Get;
@@ -320,6 +322,7 @@ namespace Stareater.GameLogic
 				shieldReduction = design.Shield.TypeInfo.Reduction.Evaluate(shieldVars);
 				shieldRegeneration = design.Shield.TypeInfo.RegenerationFactor.Evaluate(shieldVars) * hullShieldHp;
 				shieldThickness = design.Shield.TypeInfo.Thickness.Evaluate(shieldVars);
+				shieldPower = design.Shield.TypeInfo.PowerUsage.Evaluate(shieldVars);
 			}
 			
 			var abilities = new List<AbilityStats>(design.MissionEquipment.SelectMany(
@@ -331,8 +334,10 @@ namespace Stareater.GameLogic
 			this.DesignStats.Add(
 				design,
 				new DesignStats(
-					statics.ShipFormulas.CombatSpeed.Evaluate(shipVars.Get),
 					galaxySpeed,
+					shipPower,
+					statics.ShipFormulas.CombatSpeed.Evaluate(shipVars.Get),
+					shipPower - shieldPower,
 					abilities,
 	                statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
 	                buildings,

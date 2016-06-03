@@ -26,6 +26,7 @@ namespace Stareater.GUI
 			
 			designName.Text = "";
 			hullName.Text = "";
+			equipmentInfo.Text = "";
 		}
 		
 		private void updateList()
@@ -71,23 +72,26 @@ namespace Stareater.GUI
 		private void design_OnMouseEnter(object sender, EventArgs e)
 		{
 			var design = (sender as DesignItem).Data;
-			
-			designThumbnail.Image = ImageCache.Get[design.ImagePath];
-			designName.Text = design.Name;
-			hullName.Text = design.Hull.Name;
-			
 			var formatter = new ThousandsFormatter();
 			var sb = new StringBuilder();
-			//TODO(0.5) add shield and IS info
+			var context = SettingsWinforms.Get.Language["FormDesign"];
+
+			sb.AppendLine(design.IsDrive != null ? design.IsDrive.Name : context["noIsDrive"].Text());
+			sb.AppendLine(design.Shield != null ? design.Shield.Name : context["noShield"].Text());
+			sb.AppendLine();
+
 			foreach(var equip in design.Equipment)
 				sb.AppendLine(formatter.Format(equip.Value) + " x " + equip.Key.Name);
-			
-			if (sb.Length > 0)
+
+			if (design.Equipment.Any())
 				sb.AppendLine();
 			
 			foreach(var equip in design.SpecialEquipment)
 				sb.AppendLine(formatter.Format(equip.Value) + " x " + equip.Key.Name);
-			
+
+			designThumbnail.Image = ImageCache.Get[design.ImagePath];
+			designName.Text = design.Name;
+			hullName.Text = design.Hull.Name;
 			equipmentInfo.Text = sb.ToString();
 		}
 	}

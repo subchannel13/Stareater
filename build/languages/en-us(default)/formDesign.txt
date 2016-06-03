@@ -30,6 +30,7 @@ power §
 		Power: {=powerPercent} %
 	\
 	
+noIsDrive = No IS drive
 noShield = No shield
 unselectComponent = None
 specEquipSeparator = Special equipment

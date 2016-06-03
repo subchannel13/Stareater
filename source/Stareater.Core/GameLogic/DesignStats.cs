@@ -6,8 +6,10 @@ namespace Stareater.GameLogic
 {
 	class DesignStats 
 	{
-		public double CombatSpeed;
 		public double GalaxySpeed;
+		public double GalaxyPower;
+		public double CombatSpeed;
+		public double CombatPower;
 		public List<AbilityStats> Abilities;
 		public double ColonizerPopulation;
 		public Dictionary<string, double> ColonizerBuildings;
@@ -19,10 +21,12 @@ namespace Stareater.GameLogic
 		public double ShieldRegeneration;
 		public double ShieldThickness;
 
-		public DesignStats(double combatSpeed, double galaxySpeed, List<AbilityStats> abilities, double colonizerPopulation, Dictionary<string, double> colonizerBuildings, double hitPoints, double shieldPoints, double evasion, double armorReduction, double shieldReduction, double shieldRegeneration, double shieldThickness) 
+		public DesignStats(double galaxySpeed, double galaxyPower, double combatSpeed, double combatPower, List<AbilityStats> abilities, double colonizerPopulation, Dictionary<string, double> colonizerBuildings, double hitPoints, double shieldPoints, double evasion, double armorReduction, double shieldReduction, double shieldRegeneration, double shieldThickness) 
 		{
-			this.CombatSpeed = combatSpeed;
 			this.GalaxySpeed = galaxySpeed;
+			this.GalaxyPower = galaxyPower;
+			this.CombatSpeed = combatSpeed;
+			this.CombatPower = combatPower;
 			this.Abilities = abilities;
 			this.ColonizerPopulation = colonizerPopulation;
 			this.ColonizerBuildings = colonizerBuildings;

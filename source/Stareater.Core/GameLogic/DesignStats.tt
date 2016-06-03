@@ -6,8 +6,10 @@
 	usings.Add("Stareater.Utils");
 	
 	Generate("Stareater.GameLogic", "DesignStats",
-		new DataInfo("CombatSpeed", "double"),
 		new DataInfo("GalaxySpeed", "double"),
+		new DataInfo("GalaxyPower", "double"),
+		new DataInfo("CombatSpeed", "double"),
+		new DataInfo("CombatPower", "double"),
 		new DataInfo("Abilities", "List<AbilityStats>"),
 		
 		new DataInfo("ColonizerPopulation", "double"),

@@ -38,7 +38,29 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get { return new HullInfo(design.Hull.TypeInfo, design.Hull.Level); }
 		}
-		
+
+		public IsDriveInfo IsDrive
+		{
+			get 
+			{
+				if (this.design.IsDrive != null)
+					return new IsDriveInfo(design.IsDrive.TypeInfo, design.IsDrive.Level, this.Hull, stats.GalaxyPower);
+
+				return null;
+			}
+		}
+
+		public ShieldInfo Shield
+		{
+			get 
+			{
+				if (this.design.Shield != null)
+					return new ShieldInfo(design.Shield.TypeInfo, design.Shield.Level, this.Hull);
+
+				return null;
+			}
+		}
+
 		public IEnumerable<KeyValuePair<MissionEquipInfo, int>> Equipment
 		{
 			get

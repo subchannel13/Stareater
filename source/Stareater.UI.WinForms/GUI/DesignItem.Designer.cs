@@ -51,6 +51,7 @@ namespace Stareater.GUI
 			this.nameLabel.TabIndex = 3;
 			this.nameLabel.Text = "name";
 			this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.nameLabel.MouseEnter += new System.EventHandler(this.nameLabel_MouseEnter);
 			// 
 			// thumbnail
 			// 
@@ -60,6 +61,7 @@ namespace Stareater.GUI
 			this.thumbnail.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.thumbnail.TabIndex = 4;
 			this.thumbnail.TabStop = false;
+			this.thumbnail.MouseEnter += new System.EventHandler(this.thumbnail_MouseEnter);
 			// 
 			// countLabel
 			// 
@@ -69,6 +71,7 @@ namespace Stareater.GUI
 			this.countLabel.TabIndex = 5;
 			this.countLabel.Text = "x.xx X";
 			this.countLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.countLabel.MouseEnter += new System.EventHandler(this.countLabel_MouseEnter);
 			// 
 			// actionButton
 			// 
@@ -92,6 +95,7 @@ namespace Stareater.GUI
 			this.Size = new System.Drawing.Size(340, 46);
 			((System.ComponentModel.ISupportInitialize)(this.thumbnail)).EndInit();
 			this.ResumeLayout(false);
+
 		}
 		private System.Windows.Forms.Button actionButton;
 		private System.Windows.Forms.Label countLabel;
