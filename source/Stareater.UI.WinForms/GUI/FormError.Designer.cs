@@ -8,7 +8,7 @@
 		private System.ComponentModel.IContainer components = null;
 		private System.Windows.Forms.Label headerText;
 		private System.Windows.Forms.LinkLabel issuesLink;
-		private System.Windows.Forms.TextBox errorText;
+		private System.Windows.Forms.RichTextBox errorText;
 		private System.Windows.Forms.Button closeButton;
 		
 		/// <summary>
@@ -34,7 +34,7 @@
 		{
 			this.headerText = new System.Windows.Forms.Label();
 			this.issuesLink = new System.Windows.Forms.LinkLabel();
-			this.errorText = new System.Windows.Forms.TextBox();
+			this.errorText = new System.Windows.Forms.RichTextBox();
 			this.closeButton = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
@@ -65,12 +65,11 @@
 			| System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
 			this.errorText.Location = new System.Drawing.Point(12, 38);
-			this.errorText.Multiline = true;
 			this.errorText.Name = "errorText";
 			this.errorText.ReadOnly = true;
-			this.errorText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.errorText.Size = new System.Drawing.Size(518, 303);
 			this.errorText.TabIndex = 2;
+			this.errorText.Text = "";
 			// 
 			// closeButton
 			// 

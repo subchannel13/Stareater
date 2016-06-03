@@ -17,6 +17,7 @@ namespace StareaterUI
 		[STAThread]
 		static void Main()
 		{
+			//TODO(later) move to FormMain
 			LocalizationManifest.Initialize();
 			AssetController.Get.Start();
 
