@@ -64,29 +64,19 @@ namespace Stareater.Utils
 			return x / period - Math.Floor(x / period);
 		}
 		
+		/// <summary>
+		/// Calculates "Manhattan" distance of a position on a hexagonal grid from the origin (0, 0).
+		/// </summary>
+		/// <param name="positionDelta">Coordinate on a hex grid</param>
+		/// <returns>Distance in tiles</returns>
 		public static double HexDistance(Vector2D positionDelta)
 		{
 			var x = Math.Abs(positionDelta.X);
 			var y = positionDelta.Y > 0 ? 
-				positionDelta.Y + Math.Floor(x / 2) : 
-				positionDelta.Y + Math.Ceiling(x / 2);
+				positionDelta.Y + Math.Ceiling(x / 2) : 
+				Math.Abs(positionDelta.Y) + Math.Floor(x / 2);
 			
 			return Math.Max(x, y);
-		}
-		
-		/// <summary>
-		/// Checks if a coordinate on hexagon grid is inside a certain radius.
-		/// </summary>
-		/// <param name="coordinate">Coordinate to test</param>
-		/// <param name="gridRadius">Radius</param>
-		/// <returns>True if a coordinate is inside a radius</returns>
-		public static bool InsideHexGrid(Vector2D coordinate, int gridRadius)
-		{
-			double yHeight = (gridRadius * 2 - Math.Abs(coordinate.X));
-			
-			return Math.Abs(coordinate.X) <= gridRadius &&
-				coordinate.Y >= -Math.Ceiling(yHeight / 2.0) &&
-				coordinate.Y <= Math.Floor(yHeight / 2.0);
 		}
 		
 		/// <summary>

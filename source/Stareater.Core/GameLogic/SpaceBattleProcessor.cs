@@ -82,7 +82,7 @@ namespace Stareater.GameLogic
 			
 			if (Math.Abs(snapped.Magnitude()) < 1e-3 && position.Magnitude() > 0)
 				return correctPosition(position + position * 0.5 / position.Magnitude());
-			else if (!Methods.InsideHexGrid(snapped, SpaceBattleGame.BattlefieldRadius))
+			else if (Methods.HexDistance(snapped) > SpaceBattleGame.BattlefieldRadius)
 				return correctPosition(position - position * 0.5 / position.Magnitude());
 				
 			return position;
@@ -125,7 +125,7 @@ namespace Stareater.GameLogic
 			
 			var unit = this.game.PlayOrder.Peek();
 			
-			if (Methods.InsideHexGrid(destination, SpaceBattleGame.BattlefieldRadius))
+			if (Methods.HexDistance(destination) <= SpaceBattleGame.BattlefieldRadius)
 			{
 				unit.Position = destination;
 				unit.MovementPoints -= 1 / mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].CombatSpeed;
@@ -178,7 +178,7 @@ namespace Stareater.GameLogic
 			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
 			var chargesLeft = quantity;
 			
-			if (!Methods.InsideHexGrid(target.Position - unit.Position, abilityStats.Range))
+			if (Methods.HexDistance(target.Position - unit.Position) > abilityStats.Range)
 				return;
 			
 			if (abilityStats.IsInstantDamage)
@@ -193,7 +193,7 @@ namespace Stareater.GameLogic
 			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
 			var chargesLeft = quantity;
 			
-			if (!Methods.InsideHexGrid(planet.Position - unit.Position, abilityStats.Range))
+			if (Methods.HexDistance(planet.Position - unit.Position) > abilityStats.Range)
 				return;
 			
 			if (abilityStats.IsInstantDamage && planet.Colony != null)

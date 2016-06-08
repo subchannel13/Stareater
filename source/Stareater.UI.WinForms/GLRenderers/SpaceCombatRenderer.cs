@@ -247,7 +247,7 @@ namespace Stareater.GLRenderers
 				GL.Translate(-0.25, 0, 0);
 				GL.Scale(0.4, 0.4, 1);
 				
-				GL.Color4(Methods.InsideHexGrid(move, SpaceBattleController.BattlefieldRadius) ? Color.Green : Color.White);
+				GL.Color4(Methods.HexDistance(move) <= SpaceBattleController.BattlefieldRadius ? Color.Green : Color.White);
 				
 				TextureUtils.DrawSprite(GalaxyTextures.Get.MoveToArrow);
 				GL.PopMatrix();
