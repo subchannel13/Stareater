@@ -20,8 +20,11 @@ namespace Stareater.GameLogic
 		public double ShieldReduction;
 		public double ShieldRegeneration;
 		public double ShieldThickness;
+		public double Detection;
+		public double Cloaking;
+		public double Jamming;
 
-		public DesignStats(double galaxySpeed, double galaxyPower, double combatSpeed, double combatPower, List<AbilityStats> abilities, double colonizerPopulation, Dictionary<string, double> colonizerBuildings, double hitPoints, double shieldPoints, double evasion, double armorReduction, double shieldReduction, double shieldRegeneration, double shieldThickness) 
+		public DesignStats(double galaxySpeed, double galaxyPower, double combatSpeed, double combatPower, List<AbilityStats> abilities, double colonizerPopulation, Dictionary<string, double> colonizerBuildings, double hitPoints, double shieldPoints, double evasion, double armorReduction, double shieldReduction, double shieldRegeneration, double shieldThickness, double detection, double cloaking, double jamming) 
 		{
 			this.GalaxySpeed = galaxySpeed;
 			this.GalaxyPower = galaxyPower;
@@ -37,6 +40,9 @@ namespace Stareater.GameLogic
 			this.ShieldReduction = shieldReduction;
 			this.ShieldRegeneration = shieldRegeneration;
 			this.ShieldThickness = shieldThickness;
+			this.Detection = detection;
+			this.Cloaking = cloaking;
+			this.Jamming = jamming;
 		}
 	}
 }

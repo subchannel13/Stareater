@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.GameData.Databases.Tables;
+using Stareater.Players;
 using Stareater.SpaceCombat;
 using Stareater.Utils;
 
@@ -181,7 +182,7 @@ namespace Stareater.GameLogic
 				return;
 			
 			if (abilityStats.IsInstantDamage)
-				chargesLeft = this.doDirectAttack(abilityStats, quantity, target);
+				chargesLeft = this.doDirectAttack(unit, abilityStats, quantity, target);
 			
 			unit.AbilityCharges[index] = chargesLeft;
 		}
@@ -225,14 +226,29 @@ namespace Stareater.GameLogic
 			yield return unit.Position + new Vector2D(-1, 0 + yOffset);
 		}
 
-		#region Damage dealing
-		double attackTop(AbilityStats abilityStats, double quantity, Combatant target, DesignStats targetStats)
+		double sensorStrength(Vector2D position, Player owner)
 		{
+			var designStats = this.mainGame.Derivates.Of(owner).DesignStats;
+			
+			return this.game.Combatants.Where(x => x.Owner == owner).Max(
+				x => designStats[x.Ships.Design].Detection //TODO(v0.5) distance penalty
+			);
+		}
+		
+		#region Damage dealing
+		double attackTop(Combatant attacker, AbilityStats abilityStats, double quantity, Combatant target, DesignStats targetStats)
+		{
+			var distance = Methods.HexDistance(attacker.Position - target.Position);
+			var detection = sensorStrength(target.Position, attacker.Owner);
+			
 			while (target.HitPoints > 0 && quantity > 0)
 			{
 				quantity--;
 				
-				//TODO(v0.5) factor in stealth, sensors and distance
+				if (targetStats.Jamming > detection && Math.Pow(sigmoidBase, targetStats.Jamming - detection) > this.game.Rng.NextDouble())
+					continue;
+				
+				//TODO(v0.5) factor in distance
 				if (Probability(abilityStats.Accuracy - targetStats.Evasion) < this.game.Rng.NextDouble())
 					continue;
 				
@@ -263,12 +279,12 @@ namespace Stareater.GameLogic
 			return Math.Max(quantity, 0);
 		}
 		
-		private double doDirectAttack(AbilityStats abilityStats, double quantity, Combatant target)
+		private double doDirectAttack(Combatant attacker, AbilityStats abilityStats, double quantity, Combatant target)
 		{
 			var targetStats = this.mainGame.Derivates.Of(target.Owner).DesignStats[target.Ships.Design];
 			
 			while(quantity > 0)
-				quantity = attackTop(abilityStats, quantity, target, targetStats);
+				quantity = attackTop(attacker, abilityStats, quantity, target, targetStats);
 			
 			//TODO(later) do different calculation for multiple ships below top of the stack
 			return quantity;

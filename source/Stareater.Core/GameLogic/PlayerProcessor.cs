@@ -276,6 +276,7 @@ namespace Stareater.GameLogic
 			double shipPower = design.Reactor.TypeInfo.Power.Evaluate(reactorVars);
 			
 			var thrusterVars = new Var(AComponentType.LevelKey, design.Thrusters.Level).Get;
+			var sensorVars = new Var(AComponentType.LevelKey, design.Sensors.Level).Get;
 			
 			double galaxySpeed = 0;
 			if (design.IsDrive != null)
@@ -290,7 +291,11 @@ namespace Stareater.GameLogic
 			var shipVars = new Var("baseEvasion", design.Thrusters.TypeInfo.Evasion.Evaluate(thrusterVars)).
 				And("thrust", design.Thrusters.TypeInfo.Speed.Evaluate(thrusterVars)).
 				And("hullHp", design.Hull.TypeInfo.ArmorBase.Evaluate(hullVars)).
+				And("hullSensor", design.Hull.TypeInfo.SensorsBase.Evaluate(hullVars)).
+				And("hullCloak", design.Hull.TypeInfo.CloakingBase.Evaluate(hullVars)).
+				And("hullJamming", design.Hull.TypeInfo.JammingBase.Evaluate(hullVars)).
 				And("armorFactor", design.Armor.TypeInfo.ArmorFactor.Evaluate(armorVars)).
+				And("sensor", design.Sensors.TypeInfo.Detection.Evaluate(armorVars)).
 				Init(statics.SpecialEquipment.Keys, 0).
 				Init(statics.SpecialEquipment.Keys.Select(x => x + "_lvl"), 0). //TODO(v0.5) Make "_lvl" string constant
 				UnionWith(design.SpecialEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).
@@ -308,6 +313,8 @@ namespace Stareater.GameLogic
 			double hullArFactor = design.Hull.TypeInfo.ArmorAbsorption.Evaluate(hullVars);
 			double maxArmorReduction = design.Armor.TypeInfo.AbsorptionMax.Evaluate(armorVars);
 				
+			double shieldCloaking = 0;
+			double shieldJamming = 0;
 			double shieldHp = 0;
 			double shieldReduction = 0;
 			double shieldRegeneration = 0;
@@ -318,12 +325,18 @@ namespace Stareater.GameLogic
 				var shieldVars = new Var(AComponentType.LevelKey, design.Shield.Level).Get;
 				var hullShieldHp = design.Hull.TypeInfo.ShieldBase.Evaluate(hullVars);
 				
+				shieldCloaking = design.Shield.TypeInfo.Cloaking.Evaluate(shieldVars) * hullShieldHp;
+				shieldJamming = design.Shield.TypeInfo.Jamming.Evaluate(shieldVars) * hullShieldHp;
 				shieldHp = design.Shield.TypeInfo.HpFactor.Evaluate(shieldVars) * hullShieldHp;
 				shieldReduction = design.Shield.TypeInfo.Reduction.Evaluate(shieldVars);
 				shieldRegeneration = design.Shield.TypeInfo.RegenerationFactor.Evaluate(shieldVars) * hullShieldHp;
 				shieldThickness = design.Shield.TypeInfo.Thickness.Evaluate(shieldVars);
 				shieldPower = design.Shield.TypeInfo.PowerUsage.Evaluate(shieldVars);
 			}
+			
+			//TODO(v0.5) merge with vars above
+			shipVars.And("shieldCloak", shieldCloaking);
+			shipVars.And("shieldJamming", shieldJamming);
 			
 			var abilities = new List<AbilityStats>(design.MissionEquipment.SelectMany(
 				equip => equip.TypeInfo.Abilities.Select(
@@ -347,7 +360,10 @@ namespace Stareater.GameLogic
 	                Methods.Clamp(baseArmorReduction * hullArFactor, 0, maxArmorReduction),
 	                shieldReduction,
 	                shieldRegeneration,
-	                shieldThickness
+	                shieldThickness,
+	                statics.ShipFormulas.Detection.Evaluate(shipVars.Get),
+	                statics.ShipFormulas.Cloaking.Evaluate(shipVars.Get),
+	                statics.ShipFormulas.Jamming.Evaluate(shipVars.Get)
 	            )
 			);
 		}

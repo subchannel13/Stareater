@@ -64,6 +64,16 @@ namespace Stareater.Utils
 			return x / period - Math.Floor(x / period);
 		}
 		
+		public static double HexDistance(Vector2D positionDelta)
+		{
+			var x = Math.Abs(positionDelta.X);
+			var y = positionDelta.Y > 0 ? 
+				positionDelta.Y + Math.Floor(x / 2) : 
+				positionDelta.Y + Math.Ceiling(x / 2);
+			
+			return Math.Max(x, y);
+		}
+		
 		/// <summary>
 		/// Checks if a coordinate on hexagon grid is inside a certain radius.
 		/// </summary>

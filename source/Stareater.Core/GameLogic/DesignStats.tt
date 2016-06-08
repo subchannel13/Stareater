@@ -21,6 +21,10 @@
 		new DataInfo("ArmorReduction", "double"),
 		new DataInfo("ShieldReduction", "double"),
 		new DataInfo("ShieldRegeneration", "double"),
-		new DataInfo("ShieldThickness", "double")
+		new DataInfo("ShieldThickness", "double"),
+		
+		new DataInfo("Detection", "double"),
+		new DataInfo("Cloaking", "double"),
+		new DataInfo("Jamming", "double")
 	);
 #>
