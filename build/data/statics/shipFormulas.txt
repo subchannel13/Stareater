@@ -12,4 +12,6 @@
 	colonyBuildings { Buildings
 		Infra # 500 * colony * (1 + 0.1 * colony_lvl ^ 2);
 	}
+	
+	sensorRangePenalty # -2;
 }

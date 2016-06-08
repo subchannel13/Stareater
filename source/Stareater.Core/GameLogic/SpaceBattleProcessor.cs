@@ -229,9 +229,14 @@ namespace Stareater.GameLogic
 		double sensorStrength(Vector2D position, Player owner)
 		{
 			var designStats = this.mainGame.Derivates.Of(owner).DesignStats;
+			var rangePenalty = this.mainGame.Statics.ShipFormulas.SensorRangePenalty;
 			
 			return this.game.Combatants.Where(x => x.Owner == owner).Max(
-				x => designStats[x.Ships.Design].Detection //TODO(v0.5) distance penalty
+				x => 
+				{
+					var distance = Methods.HexDistance(x.Position - position);
+					return designStats[x.Ships.Design].Detection + distance * rangePenalty;
+				}
 			);
 		}
 		

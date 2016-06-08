@@ -209,7 +209,8 @@ namespace Stareater.GameData.Databases
 				data[ShipHitPoints].To<Formula>(),
 				data[ShipJamming].To<Formula>(),
 				data[ShipColonyPopulation].To<Formula>(),
-				colonizerBuildings
+				colonizerBuildings,
+				data[ShipSensorRangePenalty].To<Formula>().Evaluate(null)
 			);
 		}
 
@@ -583,6 +584,7 @@ namespace Stareater.GameData.Databases
 		private const string ShipJamming = "jamming";
 		private const string ShipColonyPopulation = "colonyPop";
 		private const string ShipColonyBuildings = "colonyBuildings";
+		private const string ShipSensorRangePenalty = "sensorRangePenalty";
 
 		private const string BuildingHitPointsKey = "hitPoints";
 		
