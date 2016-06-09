@@ -56,5 +56,30 @@ namespace Stareater.Controllers.Views.Combat
 				return abilities;
 			}
 		}
+		
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			var other = obj as CombatantInfo;
+			return other != null && object.Equals(this.Data, other.Data);
+		}
+
+		public override int GetHashCode()
+		{
+			return Data.GetHashCode();
+		}
+
+		public static bool operator ==(CombatantInfo lhs, CombatantInfo rhs) {
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(CombatantInfo lhs, CombatantInfo rhs) {
+			return !(lhs == rhs);
+		}
+		#endregion
 	}
 }

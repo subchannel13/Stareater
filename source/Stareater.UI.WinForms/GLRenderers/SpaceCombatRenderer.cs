@@ -29,7 +29,7 @@ namespace Stareater.GLRenderers
 		private const float MoreCombatantsZ = -2 / Layers;
 		private const float MovemenentZ = -1 / Layers;
 		
-		private const double AnimationPeriod = 3;
+		private const double AnimationPeriod = 1.5;
 		private static readonly Color SelectionColor = Color.Yellow;
 		
 		private Matrix4 invProjection;
@@ -54,7 +54,6 @@ namespace Stareater.GLRenderers
 			base.checkPerspective();
 			this.animationTime += deltaTime;
 			
-			drawBackgrounds();
 			drawList(gridList, setupGrid);
 			drawBodies();
 			drawUnits();
@@ -126,29 +125,6 @@ namespace Stareater.GLRenderers
 			this.currentUnit = unitInfo;
 			this.SelectedAbility = unitInfo.Abilities.FirstOrDefault(x => x.Quantity > 0);
 		}
-
-		private void drawBackgrounds()
-		{
-			if (this.currentUnit == null)
-				return;
-			
-			double x = hexX(this.currentUnit.Position);
-			double y = hexY(this.currentUnit.Position);
-			double animationPhase = Methods.GetPhase(this.animationTime, AnimationPeriod);
-				
-			var color = new double[] {
-				SelectionColor.R, SelectionColor.G, SelectionColor.B,
-				Math.Abs(animationPhase - 0.5) * 0.8 + 0.2};
-			
-			GL.Disable(EnableCap.Texture2D);
-			GL.Color4(color);
-			GL.Begin(PrimitiveType.TriangleFan);
-			
-			GL.Vertex3(x, y, CellBackgroundZ);
-			for(int i = 0; i <= 6; i++)
-				GL.Vertex3(Math.Cos(i * Math.PI / 3) + x, Math.Sin(i * Math.PI / 3) * HexHeightScale + y, CellBackgroundZ);
-			GL.End();
-		}
 		
 		private void drawBodies()
 		{
@@ -187,14 +163,17 @@ namespace Stareater.GLRenderers
 		{
 			var units = this.Controller.Units.GroupBy(x => x.Position);
 			var formatter = new ThousandsFormatter();
+			double animationPhase = Methods.GetPhase(this.animationTime, AnimationPeriod);
 			
 			foreach(var hex in units)
 			{
-				var unit = biggestStack(hex);
-				
+				var unitSelected = (this.currentUnit != null && this.currentUnit.Position == hex.Key);
+				var unit = unitSelected ? this.currentUnit : biggestStack(hex);
+				var alpha = unitSelected ? Math.Abs(animationPhase - 0.5) * 0.6 + 0.4 : 1;
+					
 				GL.PushMatrix();
 				GL.Translate(hexX(hex.Key), hexY(hex.Key), CombatantZ);
-				GL.Color4(unit.Owner.Color); //TODO(v0.5) color units
+				GL.Color4(unit.Owner.Color.R, unit.Owner.Color.G, unit.Owner.Color.B, (byte)(alpha * 255)); //TODO(v0.5) color units
 				
 				TextureUtils.DrawSprite(GalaxyTextures.Get.Sprite(unit.Design.ImagePath));
 				
