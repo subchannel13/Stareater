@@ -15,6 +15,7 @@ namespace Stareater.GameLogic
 		private double firePower = 0;
 		private double accuracy = 0;
 		private double energyCost = 0;
+		private double accuracyRangePenalty = 0;
 		private double armorEfficiency = 0;
 		private double shieldEfficiency = 0;
 		private double planetEfficiency = 0;
@@ -31,7 +32,7 @@ namespace Stareater.GameLogic
 			
 			return new AbilityStats(type, level, quantity, factory.range, factory.isInstantDamage,
 			                       factory.firePower, factory.accuracy, factory.energyCost, 
-			                       factory.armorEfficiency, factory.shieldEfficiency, factory.planetEfficiency);
+			                       factory.accuracyRangePenalty, factory.armorEfficiency, factory.shieldEfficiency, factory.planetEfficiency);
 		}
 
 		#region IAbilityVisitor implementation
@@ -46,6 +47,7 @@ namespace Stareater.GameLogic
 			this.firePower = ability.FirePower.Evaluate(vars);
 			this.accuracy = ability.Accuracy.Evaluate(vars);
 			this.energyCost = ability.EnergyCost.Evaluate(vars);
+			this.accuracyRangePenalty = ability.AccuracyRangePenalty.Evaluate(vars);
 			this.armorEfficiency = ability.ArmorEfficiency.Evaluate(vars);
 			this.shieldEfficiency = ability.ShieldEfficiency.Evaluate(vars);
 			this.planetEfficiency = ability.PlanetEfficiency.Evaluate(vars);

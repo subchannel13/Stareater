@@ -65,18 +65,29 @@ namespace Stareater.Utils
 		}
 		
 		/// <summary>
-		/// Calculates "Manhattan" distance of a position on a hexagonal grid from the origin (0, 0).
+		/// Calculate number of steps needed to move from origin (0, 0) to a certain position on a hexagonal grid.
 		/// </summary>
-		/// <param name="positionDelta">Coordinate on a hex grid</param>
-		/// <returns>Distance in tiles</returns>
-		public static double HexDistance(Vector2D positionDelta)
+		/// <param name="position">Target position</param>
+		/// <returns>Number of steps</returns>
+		public static double HexDistance(Vector2D position)
 		{
-			var x = Math.Abs(positionDelta.X);
-			var y = positionDelta.Y > 0 ? 
-				positionDelta.Y + Math.Ceiling(x / 2) : 
-				Math.Abs(positionDelta.Y) + Math.Floor(x / 2);
+			return HexDistance(position, new Vector2D());
+		}
+		
+		/// <summary>
+		/// Calculate number of steps needed to move from one tile to another on a hexagonal grid.
+		/// </summary>
+		/// <param name="positionA">Start tile position</param>
+		/// <param name="positionB">Destination tile position</param>
+		/// <returns>Distance in tiles</returns>
+		public static double HexDistance(Vector2D positionA, Vector2D positionB)
+		{
+			var ay = positionA.Y - Math.Floor(positionA.X / 2);
+			var by = positionB.Y - Math.Floor(positionB.X / 2);
+			var az = -positionA.X - ay;
+			var bz = -positionB.X - by;
 			
-			return Math.Max(x, y);
+			return Math.Max(Math.Abs(positionA.X - positionB.X), Math.Max(Math.Abs(ay - by), Math.Abs(az - bz)));
 		}
 		
 		/// <summary>

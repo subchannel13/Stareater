@@ -19,6 +19,7 @@
 			range # 3;
 			energyCost # 10;
 			
+			accuracyRangePenalty # -2;
 			armorEfficiency # 0.5;
 		}
 	]

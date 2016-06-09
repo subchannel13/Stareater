@@ -178,7 +178,7 @@ namespace Stareater.GameLogic
 			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
 			var chargesLeft = quantity;
 			
-			if (Methods.HexDistance(target.Position - unit.Position) > abilityStats.Range)
+			if (Methods.HexDistance(target.Position, unit.Position) > abilityStats.Range)
 				return;
 			
 			if (abilityStats.IsInstantDamage)
@@ -193,7 +193,7 @@ namespace Stareater.GameLogic
 			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
 			var chargesLeft = quantity;
 			
-			if (Methods.HexDistance(planet.Position - unit.Position) > abilityStats.Range)
+			if (Methods.HexDistance(planet.Position, unit.Position) > abilityStats.Range)
 				return;
 			
 			if (abilityStats.IsInstantDamage && planet.Colony != null)
@@ -234,7 +234,7 @@ namespace Stareater.GameLogic
 			return this.game.Combatants.Where(x => x.Owner == owner).Max(
 				x => 
 				{
-					var distance = Methods.HexDistance(x.Position - position);
+					var distance = Methods.HexDistance(x.Position, position);
 					return designStats[x.Ships.Design].Detection + distance * rangePenalty;
 				}
 			);
@@ -243,7 +243,7 @@ namespace Stareater.GameLogic
 		#region Damage dealing
 		double attackTop(Combatant attacker, AbilityStats abilityStats, double quantity, Combatant target, DesignStats targetStats)
 		{
-			var distance = Methods.HexDistance(attacker.Position - target.Position);
+			var distance = Methods.HexDistance(attacker.Position, target.Position);
 			var detection = sensorStrength(target.Position, attacker.Owner);
 			
 			while (target.HitPoints > 0 && quantity > 0)
@@ -254,7 +254,7 @@ namespace Stareater.GameLogic
 					continue;
 				
 				//TODO(v0.5) factor in distance
-				if (Probability(abilityStats.Accuracy - targetStats.Evasion) < this.game.Rng.NextDouble())
+				if (Probability(abilityStats.Accuracy - targetStats.Evasion + distance * abilityStats.AccuracyRangePenalty) < this.game.Rng.NextDouble())
 					continue;
 				
 				double firePower = abilityStats.FirePower;

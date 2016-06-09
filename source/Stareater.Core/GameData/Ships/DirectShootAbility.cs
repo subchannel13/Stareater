@@ -10,19 +10,21 @@ namespace Stareater.GameData.Ships
 		public Formula Range { get; private set; }
 		public Formula EnergyCost { get; private set; }
 		
+		public Formula AccuracyRangePenalty { get; private set; }
 		public Formula ArmorEfficiency { get; private set; }
 		public Formula ShieldEfficiency { get; private set; }
 		public Formula PlanetEfficiency { get; private set; }
 		
 		public DirectShootAbility(string imagePath, 
 		                          Formula firePower, Formula accuracy, Formula range, Formula energyCost,
-		                          Formula armorEfficiency, Formula shieldEfficiency, Formula planetEfficiency)
+		                          Formula accuracyRangePenalty, Formula armorEfficiency, Formula shieldEfficiency, Formula planetEfficiency)
 			: base(imagePath)
 		{
 			this.FirePower = firePower;
 			this.Accuracy = accuracy;
 			this.Range = range;
 			this.EnergyCost = energyCost;
+			this.AccuracyRangePenalty = accuracyRangePenalty;
 			this.ArmorEfficiency = armorEfficiency;
 			this.ShieldEfficiency = shieldEfficiency;
 			this.PlanetEfficiency = planetEfficiency;
