@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 using Stareater.GameLogic;
@@ -18,6 +19,7 @@ namespace Stareater.SpaceCombat
 		
 		public double HitPoints;
 		public double ShieldPoints;
+		public HashSet<Player> CloakedFor = new HashSet<Player>();
 		
 		public Combatant(Vector2D position, Player owner, ShipGroup ships, DesignStats stats, double[] abilityCharges)
 		{

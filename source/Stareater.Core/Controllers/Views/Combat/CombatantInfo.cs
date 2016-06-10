@@ -59,7 +59,7 @@ namespace Stareater.Controllers.Views.Combat
 		
 		public bool CloakedFor(PlayerInfo player)
 		{
-			return player.Data != Data.Owner;
+			return this.Data.CloakedFor.Contains(player.Data);
 		}
 		
 		#region Equals and GetHashCode implementation

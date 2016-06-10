@@ -73,6 +73,10 @@ namespace Stareater.GameLogic
 					this.game.Combatants.Add(new Combatant(position, fleet.OriginalFleet.Owner, shipGroup, designStats, abilities.ToArray()));
 				}
 			}
+			
+			var players = this.game.Combatants.Select(x => x.Owner).Distinct();
+			foreach(var unit in this.game.Combatants)
+				this.rollCloaking(unit, this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design], players);
 		}
 		
 		private Vector2D correctPosition(Vector2D position)
@@ -116,7 +120,15 @@ namespace Stareater.GameLogic
 			foreach(var unit in units)
 				this.game.PlayOrder.Enqueue(unit);
 		}
-
+		
+		private void rollCloaking(Combatant unit, DesignStats stats, IEnumerable<Player> players)
+		{
+			unit.CloakedFor.Clear();
+			foreach(var player in players.Where(x => x != unit.Owner))
+		        if (Probability(stats.Cloaking - sensorStrength(unit.Position, player)) > this.game.Rng.NextDouble())
+					unit.CloakedFor.Add(player);
+		}
+		
 		#region Unit actions
 		public void MoveTo(Vector2D destination)
 		{
@@ -141,10 +153,12 @@ namespace Stareater.GameLogic
 		public void UnitDone()
 		{
 			this.game.PlayOrder.Dequeue();
+			var players = this.game.Combatants.Select(x => x.Owner).Distinct();
 			
 			if (this.game.PlayOrder.Count == 0)
 			{
 				this.game.Turn++;
+				//TODO(v0.5) move turn processing to a separate method
 				this.game.Combatants.RemoveAll(x => x.Ships.Quantity <= 0);
 				
 				foreach(var unit in this.game.Combatants)
@@ -159,6 +173,8 @@ namespace Stareater.GameLogic
 					
 					for(int i = 0; i < unit.AbilityCharges.Length; i++)
 						unit.AbilityCharges[i] = stats.Abilities[i].Quantity * (double)unit.Ships.Quantity;
+					
+					this.rollCloaking(unit, stats, players);
 				}
 				
 				foreach(var planet in this.game.Planets.Where(x => x.Colony != null && x.Colony.Population < 1))
