@@ -57,6 +57,11 @@ namespace Stareater.Controllers.Views.Combat
 			}
 		}
 		
+		public bool CloakedFor(PlayerInfo player)
+		{
+			return player.Data != Data.Owner;
+		}
+		
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{

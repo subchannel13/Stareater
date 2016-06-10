@@ -162,6 +162,7 @@ namespace Stareater.GLRenderers
 		private void drawUnits()
 		{
 			var units = this.Controller.Units.GroupBy(x => x.Position);
+			var players = this.Controller.Units.Select(x => x.Owner).Distinct();
 			var formatter = new ThousandsFormatter();
 			double animationPhase = Methods.GetPhase(this.animationTime, AnimationPeriod);
 			
@@ -170,7 +171,9 @@ namespace Stareater.GLRenderers
 				var unitSelected = (this.currentUnit != null && this.currentUnit.Position == hex.Key);
 				var unit = unitSelected ? this.currentUnit : biggestStack(hex);
 				var alpha = unitSelected ? Math.Abs(animationPhase - 0.5) * 0.6 + 0.4 : 1;
-					
+				if (players.All(x => unit.CloakedFor(x) || x == unit.Owner))
+					alpha *= 0.65;
+				
 				GL.PushMatrix();
 				GL.Translate(hexX(hex.Key), hexY(hex.Key), CombatantZ);
 				GL.Color4(unit.Owner.Color.R, unit.Owner.Color.G, unit.Owner.Color.B, (byte)(alpha * 255)); //TODO(v0.5) color units
