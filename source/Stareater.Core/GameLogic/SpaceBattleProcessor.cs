@@ -257,19 +257,20 @@ namespace Stareater.GameLogic
 		}
 		
 		#region Damage dealing
-		double attackTop(Combatant attacker, AbilityStats abilityStats, double quantity, Combatant target, DesignStats targetStats)
+		private double attackTop(Combatant attacker, AbilityStats abilityStats, double quantity, Combatant target, DesignStats targetStats)
 		{
 			var distance = Methods.HexDistance(attacker.Position, target.Position);
 			var detection = sensorStrength(target.Position, attacker.Owner);
-			
+			var targetStealth = targetStats.Jamming + (target.CloakedFor.Contains(attacker.Owner) ? this.mainGame.Statics.ShipFormulas.NaturalCloakBonus : 0);
+				
 			while (target.HitPoints > 0 && quantity > 0)
 			{
 				quantity--;
 				
-				if (targetStats.Jamming > detection && Math.Pow(sigmoidBase, targetStats.Jamming - detection) > this.game.Rng.NextDouble())
+				
+				if (targetStealth > detection && Math.Pow(sigmoidBase, targetStealth - detection) > this.game.Rng.NextDouble())
 					continue;
 				
-				//TODO(v0.5) factor in distance
 				if (Probability(abilityStats.Accuracy - targetStats.Evasion + distance * abilityStats.AccuracyRangePenalty) < this.game.Rng.NextDouble())
 					continue;
 				

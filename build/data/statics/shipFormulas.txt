@@ -13,5 +13,6 @@
 		Infra # 500 * colony * (1 + 0.1 * colony_lvl ^ 2);
 	}
 	
+	naturalCloakBonus # 5;
 	sensorRangePenalty # -2;
 }

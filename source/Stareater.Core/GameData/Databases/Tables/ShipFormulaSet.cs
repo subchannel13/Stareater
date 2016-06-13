@@ -16,12 +16,13 @@ namespace Stareater.GameData.Databases.Tables
 		public Formula ColonizerPopulation { get; private set; }
 		public Dictionary<string, Formula> ColonizerBuildings { get; private set; }
 		
+		public double NaturalCloakBonus { get; private set; }
 		public double SensorRangePenalty { get; private set; }
 		
 		public ShipFormulaSet(Formula cloaking, Formula combatSpeed, Formula detection, Formula evasion, 
 		                      Formula hitPoints, Formula jamming,
 		                      Formula colonizerPopulation, Dictionary<string, Formula> colonizerBuildings,
-		                      double sensorRangePenalty)
+		                      double naturalCloakBonus, double sensorRangePenalty)
 		{
 			this.Cloaking = cloaking;
 			this.CombatSpeed = combatSpeed;
@@ -31,6 +32,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.Jamming = jamming;
 			this.ColonizerPopulation = colonizerPopulation;
 			this.ColonizerBuildings = colonizerBuildings;
+			this.NaturalCloakBonus = naturalCloakBonus;
 			this.SensorRangePenalty = sensorRangePenalty;
 		}
 	}
