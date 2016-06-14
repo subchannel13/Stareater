@@ -84,9 +84,9 @@ namespace Stareater.Ships
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{
-			Design other = obj as Design;
-				if (other == null)
-					return false;
+			var other = obj as Design;
+			if (other == null)
+				return false;
 			return this.hash == other.hash && this.Owner == other.Owner;
 		}
 

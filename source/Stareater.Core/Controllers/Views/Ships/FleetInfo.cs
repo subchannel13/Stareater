@@ -5,8 +5,8 @@ using System.Linq;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Data;
 using Stareater.Galaxy;
+using Stareater.GameData.Databases;
 using Stareater.GameLogic;
-using Stareater.Ships;
 using Stareater.Utils;
 
 namespace Stareater.Controllers.Views.Ships
@@ -21,12 +21,14 @@ namespace Stareater.Controllers.Views.Ships
 		internal Fleet FleetData { get; private set; }
 		
 		private readonly PlayerProcessor playerProc;
+		private readonly StaticsDB statics;
 		
-		internal FleetInfo(Fleet fleet, bool atStar, IVisualPositioner visualPositioner, PlayerProcessor playerProc)
+		internal FleetInfo(Fleet fleet, bool atStar, IVisualPositioner visualPositioner, PlayerProcessor playerProc, StaticsDB statics)
 		{
 			this.AtStar = atStar;
 			this.FleetData = fleet;
 			this.playerProc = playerProc;
+			this.statics = statics;
 
 			this.Missions = MissionInfoFactory.Create(fleet);
 			this.Owner = new PlayerInfo(fleet.Owner);
@@ -43,7 +45,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.FleetData.Ships.Select(x => new ShipGroupInfo(x, playerProc.DesignStats[x.Design]));
+				return this.FleetData.Ships.Select(x => new ShipGroupInfo(x, this.playerProc.DesignStats[x.Design], this.statics));
 			}
 		}
 		

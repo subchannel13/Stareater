@@ -4,6 +4,7 @@ using System.Linq;
 
 using Stareater.Controllers.Views.Ships;
 using Stareater.GameData.Ships;
+using Stareater.GameLogic;
 using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Utils.Collections;
@@ -41,25 +42,35 @@ namespace Stareater.Controllers
 		
 		private IsDriveInfo bestIsDrive()
 		{
+			var hull = new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level);
+			var reactor = new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level);
+			
 			var drive = IsDriveType.MakeBest(
-				game.Statics.IsDrives.Values, 
 				playersTechLevels, 
-				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level), 
-				this.reactorInfo.Power
+				hull,
+				reactor,
+				this.selectedSpecialEquipment,
+				game.Statics
 			);
 
-			return drive != null ? new IsDriveInfo(drive.TypeInfo, drive.Level, this.selectedHull, this.reactorInfo.Power) : null;
+			return drive != null ? 
+				new IsDriveInfo(drive.TypeInfo, drive.Level, PlayerProcessor.DesignPoweredVars(hull,reactor, this.selectedSpecialEquipment, game.Statics).Get) : 
+				null;
 		}
 
 		private ReactorInfo bestReactor()
 		{
+			var hull = new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level);
 			var reactor = ReactorType.MakeBest(
-				game.Statics.Reactors.Values,
 				playersTechLevels,
-				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level)
+				hull,
+				this.selectedSpecialEquipment,
+				game.Statics
 			);
 
-			return reactor != null ? new ReactorInfo(reactor.TypeInfo, reactor.Level, this.selectedHull) : null;
+			return reactor != null ? 
+				new ReactorInfo(reactor.TypeInfo, reactor.Level, PlayerProcessor.DesignBaseVars(hull, this.selectedSpecialEquipment, game.Statics).Get) : 
+				null;
 		}
 
 		private SensorInfo bestSensor()

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Stareater.AppData;
 using Stareater.GameData.Ships;
-using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views.Ships
 {
@@ -15,13 +14,13 @@ namespace Stareater.Controllers.Views.Ships
 		
 		private readonly IDictionary<string, double> vars;
 		
-		internal ReactorInfo(ReactorType type, int level, HullInfo shipHull)
+		internal ReactorInfo(ReactorType type, int level, IDictionary<string, double> shipVars)
 		{
 			this.Type = type;
 			this.Level = level;
 			
-			this.vars = new Var(AComponentType.LevelKey, level).
-				And(AComponentType.SizeKey, shipHull.ReactorSize).Get;
+			this.vars = new Dictionary<string, double>(shipVars);
+			this.vars[AComponentType.LevelKey] = level;
 		}
 		
 		public string Name
@@ -44,7 +43,6 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				//TODO(later) factor in special equipment
 				return this.Type.Power.Evaluate(vars);
 			}
 		}

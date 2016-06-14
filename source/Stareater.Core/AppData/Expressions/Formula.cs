@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Stareater.AppData.Expressions
 {
@@ -23,7 +22,18 @@ namespace Stareater.AppData.Expressions
 		
 		public double Evaluate(IDictionary<string, double> variables)
 		{
+#if DEBUG
+			try {
+#endif
 			return root.Evaluate(variables);
+#if DEBUG
+			}
+			catch(KeyNotFoundException)
+			{
+				System.Diagnostics.Trace.WriteLine("Missing vars: " + string.Join(" ", this.Variables.Where(x => !variables.ContainsKey(x)).ToArray()));
+				throw;
+			}
+#endif
 		}
 		
 		public ISet<string> Variables 

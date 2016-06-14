@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
@@ -158,14 +157,16 @@ namespace Stareater.Controllers
 							newFleet, 
 							this.gameInstance.States.Stars.AtContains(fleet.Position), 
 							this.VisualPositioner, 
-							this.gameInstance.Derivates.Of(fleet.Owner)
+							this.gameInstance.Derivates.Of(fleet.Owner),
+							this.gameInstance.Statics
 						));
 				else
 					fleets.Add(new FleetInfo(
 						fleet, 
 						this.gameInstance.States.Stars.AtContains(fleet.Position), 
 						this.VisualPositioner, 
-						this.gameInstance.Derivates.Of(fleet.Owner)
+						this.gameInstance.Derivates.Of(fleet.Owner),
+						this.gameInstance.Statics
 					));
 			}
 
@@ -192,7 +193,7 @@ namespace Stareater.Controllers
 			var game = this.gameInstance;
 			return game.States.Designs.
 				OwnedBy(this.PlayerInstance).
-				Select(x => new DesignInfo(x, game.Derivates.Of(this.PlayerInstance).DesignStats[x]));
+				Select(x => new DesignInfo(x, game.Derivates.Of(this.PlayerInstance).DesignStats[x], game.Statics));
 		}
 		#endregion
 		

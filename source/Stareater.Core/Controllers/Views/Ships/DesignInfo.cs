@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Stareater.GameData.Databases;
 using Stareater.GameData.Ships;
 using Stareater.GameLogic;
 using Stareater.Ships;
@@ -11,11 +12,13 @@ namespace Stareater.Controllers.Views.Ships
 	{
 		private readonly Design design;
 		private readonly DesignStats stats;
+		private readonly StaticsDB statics;
 		
-		internal DesignInfo(Design design, DesignStats stats)
+		internal DesignInfo(Design design, DesignStats stats, StaticsDB statics)
 		{
 			this.design = design;
 			this.stats = stats;
+			this.statics = statics;
 		}
 		
 		public string Name 
@@ -43,10 +46,10 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get 
 			{
-				if (this.design.IsDrive != null)
-					return new IsDriveInfo(design.IsDrive.TypeInfo, design.IsDrive.Level, this.Hull, stats.GalaxyPower);
+				return this.design.IsDrive != null ? 
+					new IsDriveInfo(design.IsDrive.TypeInfo, design.IsDrive.Level, PlayerProcessor.DesignPoweredVars(design.Hull, design.Reactor, design.SpecialEquipment, statics).Get) : 
+					null;
 
-				return null;
 			}
 		}
 
@@ -54,10 +57,10 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get 
 			{
-				if (this.design.Shield != null)
-					return new ShieldInfo(design.Shield.TypeInfo, design.Shield.Level, this.Hull);
+				return this.design.Shield != null ? 
+					new ShieldInfo(design.Shield.TypeInfo, design.Shield.Level, this.Hull) : 
+					null;
 
-				return null;
 			}
 		}
 

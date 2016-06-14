@@ -264,109 +264,6 @@ namespace Stareater.GameLogic
 				
 			UnlockPredefinedDesigns(statics, states);
 		}
-
-		public void Analyze(Design design, StaticsDB statics)
-		{
-			var hullVars = new Var(AComponentType.LevelKey, design.Hull.Level).Get;
-			var armorVars = new Var(AComponentType.LevelKey, design.Armor.Level).Get;
-			
-			//TODO(later) factor in special equipment
-			var reactorVars = new Var(AComponentType.LevelKey, design.Reactor.Level).
-				And(AComponentType.SizeKey, design.Hull.TypeInfo.SizeReactor.Evaluate(hullVars)).Get;
-			double shipPower = design.Reactor.TypeInfo.Power.Evaluate(reactorVars);
-			
-			var thrusterVars = new Var(AComponentType.LevelKey, design.Thrusters.Level).Get;
-			var sensorVars = new Var(AComponentType.LevelKey, design.Sensors.Level).Get;
-			
-			double galaxySpeed = 0;
-			if (design.IsDrive != null)
-			{
-				var driveVars = new Var(AComponentType.LevelKey, design.IsDrive.Level).
-					And(AComponentType.SizeKey, design.Hull.TypeInfo.SizeIS.Evaluate(hullVars)).
-					And("power", shipPower).Get; 
-				
-				galaxySpeed = design.IsDrive.TypeInfo.Speed.Evaluate(driveVars);
-			}
-			
-			var shipVars = new Var("baseEvasion", design.Thrusters.TypeInfo.Evasion.Evaluate(thrusterVars)).
-				And("thrust", design.Thrusters.TypeInfo.Speed.Evaluate(thrusterVars)).
-				And("hullHp", design.Hull.TypeInfo.ArmorBase.Evaluate(hullVars)).
-				And("hullSensor", design.Hull.TypeInfo.SensorsBase.Evaluate(hullVars)).
-				And("hullCloak", design.Hull.TypeInfo.CloakingBase.Evaluate(hullVars)).
-				And("hullJamming", design.Hull.TypeInfo.JammingBase.Evaluate(hullVars)).
-				And("armorFactor", design.Armor.TypeInfo.ArmorFactor.Evaluate(armorVars)).
-				And("sensor", design.Sensors.TypeInfo.Detection.Evaluate(armorVars)).
-				Init(statics.SpecialEquipment.Keys, 0).
-				Init(statics.SpecialEquipment.Keys.Select(x => x + "_lvl"), 0). //TODO(v0.5) Make "_lvl" string constant
-				UnionWith(design.SpecialEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).
-				UnionWith(design.SpecialEquipment, x => x.TypeInfo.IdCode + "_lvl", x => x.Level); //TODO(v0.5) Make "_lvl" string constant
-			
-			var buildings = new Dictionary<string, double>();
-			foreach(var colonyBuilding in statics.ShipFormulas.ColonizerBuildings)
-			{
-				double amount = colonyBuilding.Value.Evaluate(shipVars.Get);
-				if (amount > 0)
-					buildings.Add(colonyBuilding.Key, amount);
-			}
-			
-			double baseArmorReduction = design.Armor.TypeInfo.Absorption.Evaluate(armorVars);
-			double hullArFactor = design.Hull.TypeInfo.ArmorAbsorption.Evaluate(hullVars);
-			double maxArmorReduction = design.Armor.TypeInfo.AbsorptionMax.Evaluate(armorVars);
-				
-			double shieldCloaking = 0;
-			double shieldJamming = 0;
-			double shieldHp = 0;
-			double shieldReduction = 0;
-			double shieldRegeneration = 0;
-			double shieldThickness = 0;
-			double shieldPower = 0;
-			if (design.Shield != null)
-			{
-				var shieldVars = new Var(AComponentType.LevelKey, design.Shield.Level).Get;
-				var hullShieldHp = design.Hull.TypeInfo.ShieldBase.Evaluate(hullVars);
-				
-				shieldCloaking = design.Shield.TypeInfo.Cloaking.Evaluate(shieldVars) * hullShieldHp;
-				shieldJamming = design.Shield.TypeInfo.Jamming.Evaluate(shieldVars) * hullShieldHp;
-				shieldHp = design.Shield.TypeInfo.HpFactor.Evaluate(shieldVars) * hullShieldHp;
-				shieldReduction = design.Shield.TypeInfo.Reduction.Evaluate(shieldVars);
-				shieldRegeneration = design.Shield.TypeInfo.RegenerationFactor.Evaluate(shieldVars) * hullShieldHp;
-				shieldThickness = design.Shield.TypeInfo.Thickness.Evaluate(shieldVars);
-				shieldPower = design.Shield.TypeInfo.PowerUsage.Evaluate(shieldVars);
-			}
-			
-			//TODO(v0.5) merge with vars above
-			shipVars.And("shieldCloak", shieldCloaking);
-			shipVars.And("shieldJamming", shieldJamming);
-			
-			var abilities = new List<AbilityStats>(design.MissionEquipment.SelectMany(
-				equip => equip.TypeInfo.Abilities.Select(
-					x => AbilityStatsFactory.Create(x, equip.Level, equip.Quantity)
-				)
-			));
-			
-			this.DesignStats.Add(
-				design,
-				new DesignStats(
-					galaxySpeed,
-					shipPower,
-					statics.ShipFormulas.CombatSpeed.Evaluate(shipVars.Get),
-					shipPower - shieldPower,
-					abilities,
-	                statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
-	                buildings,
-	                statics.ShipFormulas.HitPoints.Evaluate(shipVars.Get),
-	                shieldHp,
-	                statics.ShipFormulas.Evasion.Evaluate(shipVars.Get),
-	                Methods.Clamp(baseArmorReduction * hullArFactor, 0, maxArmorReduction),
-	                shieldReduction,
-	                shieldRegeneration,
-	                shieldThickness,
-	                statics.ShipFormulas.Detection.Evaluate(shipVars.Get),
-	                statics.ShipFormulas.Cloaking.Evaluate(shipVars.Get),
-	                statics.ShipFormulas.Jamming.Evaluate(shipVars.Get)
-	            )
-			);
-		}
 		
 		public void UnlockPredefinedDesigns(StaticsDB statics, StatesDB states)
 		{
@@ -394,18 +291,20 @@ namespace Stareater.GameLogic
 		
 		private Design makeDesign(StaticsDB statics, StatesDB states, PredefinedDesign predefDesign, Dictionary<string, double> techLevels, bool isVirtual)
 		{
-			var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels);
 			var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
-			var reactor = ReactorType.MakeBest(statics.Reactors.Values, techLevels, hull);
-			var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(statics.IsDrives.Values, techLevels, hull, ReactorType.PowerOf(reactor, hull)) : null;
+			var specials = predefDesign.SpecialEquipment.OrderBy(x => x.Key).Select(
+				x => statics.SpecialEquipment[x.Key].MakeBest(techLevels, x.Value)
+			).ToList();
+			
+			var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels);
+			var reactor = ReactorType.MakeBest(techLevels, hull, specials, statics);
+			var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(techLevels, hull, reactor, specials, statics) : null;
 			var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels);
 			var shield = predefDesign.ShieldCode != null ? statics.Shields[predefDesign.ShieldCode].MakeBest(techLevels) : null;
 			var equipment = predefDesign.MissionEquipment.Select(
 				x => statics.MissionEquipment[x.Key].MakeBest(techLevels, x.Value)
 			).ToList();
-			var specials = predefDesign.SpecialEquipment.OrderBy(x => x.Key).Select(
-				x => statics.SpecialEquipment[x.Key].MakeBest(techLevels, x.Value)
-			).ToList();
+			
 			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
 
 			var design = new Design(
@@ -422,6 +321,122 @@ namespace Stareater.GameLogic
 			}
 			
 			return states.Designs.First(x => x == design);
+		}
+		#endregion
+		
+		#region Design stats
+		public static Var DesignBaseVars(Component<HullType> hull, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics)
+		{
+			var hullVars = new Var(AComponentType.LevelKey, hull.Level).Get;
+			
+			var shipVars = new Var("hullHp", hull.TypeInfo.ArmorBase.Evaluate(hullVars)).
+				And("hullSensor", hull.TypeInfo.SensorsBase.Evaluate(hullVars)).
+				And("hullCloak", hull.TypeInfo.CloakingBase.Evaluate(hullVars)).
+				And("hullJamming", hull.TypeInfo.JammingBase.Evaluate(hullVars)).
+				And(HullType.IsDriveSizeKey, hull.TypeInfo.SizeIS.Evaluate(hullVars)).
+				And(HullType.ReactorSizeKey, hull.TypeInfo.SizeReactor.Evaluate(hullVars)).
+				Init(statics.SpecialEquipment.Keys, 0).
+				Init(statics.SpecialEquipment.Keys.Select(x => x + AComponentType.LevelSuffix), 0).
+				UnionWith(specialEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).
+				UnionWith(specialEquipment, x => x.TypeInfo.IdCode + AComponentType.LevelSuffix, x => x.Level);
+			
+			return shipVars;
+		}
+		
+		public static Var DesignPoweredVars(Component<HullType> hull, Component<ReactorType> reactor, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics)
+		{
+			var shipVars = DesignBaseVars(hull, specialEquipment, statics);
+			
+			shipVars[AComponentType.LevelKey] = reactor.Level;
+			shipVars[ReactorType.TotalPowerKey] = reactor.TypeInfo.Power.Evaluate(shipVars.Get);
+			
+			return shipVars;
+		}
+		
+		public void Analyze(Design design, StaticsDB statics)
+		{
+			var shipVars = DesignPoweredVars(design.Hull, design.Reactor, design.SpecialEquipment, statics);
+			var hullVars = new Var(AComponentType.LevelKey, design.Hull.Level).Get;
+			var armorVars = new Var(AComponentType.LevelKey, design.Armor.Level).Get;
+			var thrusterVars = new Var(AComponentType.LevelKey, design.Thrusters.Level).Get;
+			var sensorVars = new Var(AComponentType.LevelKey, design.Sensors.Level).Get;
+			
+			shipVars.And("armorFactor", design.Armor.TypeInfo.ArmorFactor.Evaluate(armorVars)).
+				And("baseEvasion", design.Thrusters.TypeInfo.Evasion.Evaluate(thrusterVars)).
+				And("thrust", design.Thrusters.TypeInfo.Speed.Evaluate(thrusterVars)).
+				And("sensor", design.Sensors.TypeInfo.Detection.Evaluate(sensorVars));
+			
+			double galaxySpeed = 0;
+			if (design.IsDrive != null)
+			{
+				shipVars[AComponentType.LevelKey] = design.IsDrive.Level;
+				galaxySpeed = design.IsDrive.TypeInfo.Speed.Evaluate(shipVars.Get);
+			}
+			
+			var buildings = new Dictionary<string, double>();
+			foreach(var colonyBuilding in statics.ShipFormulas.ColonizerBuildings)
+			{
+				double amount = colonyBuilding.Value.Evaluate(shipVars.Get);
+				if (amount > 0)
+					buildings.Add(colonyBuilding.Key, amount);
+			}
+			
+			shipVars[AComponentType.LevelKey] = design.Armor.Level;
+			double baseArmorReduction = design.Armor.TypeInfo.Absorption.Evaluate(shipVars.Get);
+			double hullArFactor = design.Hull.TypeInfo.ArmorAbsorption.Evaluate(shipVars.Get);
+			double maxArmorReduction = design.Armor.TypeInfo.AbsorptionMax.Evaluate(shipVars.Get);
+				
+			double shieldCloaking = 0;
+			double shieldJamming = 0;
+			double shieldHp = 0;
+			double shieldReduction = 0;
+			double shieldRegeneration = 0;
+			double shieldThickness = 0;
+			double shieldPower = 0;
+			if (design.Shield != null)
+			{
+				shipVars[AComponentType.LevelKey] = design.Shield.Level;
+				var hullShieldHp = design.Hull.TypeInfo.ShieldBase.Evaluate(hullVars);
+				
+				shieldCloaking = design.Shield.TypeInfo.Cloaking.Evaluate(shipVars.Get) * hullShieldHp;
+				shieldJamming = design.Shield.TypeInfo.Jamming.Evaluate(shipVars.Get) * hullShieldHp;
+				shieldHp = design.Shield.TypeInfo.HpFactor.Evaluate(shipVars.Get) * hullShieldHp;
+				shieldReduction = design.Shield.TypeInfo.Reduction.Evaluate(shipVars.Get);
+				shieldRegeneration = design.Shield.TypeInfo.RegenerationFactor.Evaluate(shipVars.Get) * hullShieldHp;
+				shieldThickness = design.Shield.TypeInfo.Thickness.Evaluate(shipVars.Get);
+				shieldPower = design.Shield.TypeInfo.PowerUsage.Evaluate(shipVars.Get);
+			}
+			shipVars.And("shieldCloak", shieldCloaking);
+			shipVars.And("shieldJamming", shieldJamming);
+			
+			var abilities = new List<AbilityStats>(design.MissionEquipment.SelectMany(
+				equip => equip.TypeInfo.Abilities.Select(
+					x => AbilityStatsFactory.Create(x, equip.Level, equip.Quantity)
+				)
+			));
+			
+			this.DesignStats.Add(
+				design,
+				new DesignStats(
+					galaxySpeed,
+					shipVars[ReactorType.TotalPowerKey],
+					statics.ShipFormulas.CombatSpeed.Evaluate(shipVars.Get),
+					shipVars[ReactorType.TotalPowerKey] - shieldPower,
+					abilities,
+	                statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
+	                buildings,
+	                statics.ShipFormulas.HitPoints.Evaluate(shipVars.Get),
+	                shieldHp,
+	                statics.ShipFormulas.Evasion.Evaluate(shipVars.Get),
+	                Methods.Clamp(baseArmorReduction * hullArFactor, 0, maxArmorReduction),
+	                shieldReduction,
+	                shieldRegeneration,
+	                shieldThickness,
+	                statics.ShipFormulas.Detection.Evaluate(shipVars.Get),
+	                statics.ShipFormulas.Cloaking.Evaluate(shipVars.Get),
+	                statics.ShipFormulas.Jamming.Evaluate(shipVars.Get)
+	            )
+			);
 		}
 		#endregion
 		

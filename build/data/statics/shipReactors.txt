@@ -9,7 +9,7 @@
 	]
 	
 	minSize # 5;
-	power # (size - 4) * 5;
+	power # (hullReactorSize - 4) * 5;
 }
 
 { Reactor
@@ -23,5 +23,5 @@
 	]
 	
 	minSize # 0;
-	power # size * 2;
+	power # hullReactorSize * 2;
 }

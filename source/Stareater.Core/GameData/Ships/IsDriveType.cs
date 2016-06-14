@@ -2,9 +2,10 @@
 using System.Linq;
 using System.Collections.Generic;
 using Stareater.AppData.Expressions;
+using Stareater.GameData.Databases;
+using Stareater.GameLogic;
 using Stareater.Ships;
 using Stareater.Utils;
-using Stareater.Utils.Collections;
 
 namespace Stareater.GameData.Ships
 {
@@ -27,27 +28,22 @@ namespace Stareater.GameData.Ships
 			this.MinSize = minSize;
 		}
 		
-		public static Component<IsDriveType> MakeBest(IEnumerable<IsDriveType> drives, Dictionary<string, double> playersTechLevels, Component<HullType> shipHull, double shipPower)
+		public static Component<IsDriveType> MakeBest(Dictionary<string, double> playersTechLevels, Component<HullType> hull, Component<ReactorType> reactor, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics)
 		{
-			var hullVars = new Var(AComponentType.LevelKey, shipHull.Level).Get;
-			
-			double driveSize = shipHull.TypeInfo.SizeIS.Evaluate(hullVars);
-			var driveVars = new Var(AComponentType.LevelKey, 0).
-					And(AComponentType.SizeKey, driveSize).
-					And("power", shipPower).Get;
+			var shipVars = PlayerProcessor.DesignPoweredVars(hull, reactor, specialEquipment, statics).Get;
 			
 			return Methods.FindBest(
-				drives.Where(x => x.IsAvailable(playersTechLevels)).
+				statics.IsDrives.Values.Where(x => x.IsAvailable(playersTechLevels)).
 				Select(x => new Component<IsDriveType>(x, x.HighestLevel(playersTechLevels))).
 				Where(x =>
 				      {
-				      	driveVars[AComponentType.LevelKey] = x.Level;
-				      	return x.TypeInfo.MinSize.Evaluate(driveVars) <= driveSize;
+				      	shipVars[AComponentType.LevelKey] = x.Level;
+				      	return x.TypeInfo.MinSize.Evaluate(shipVars) <= shipVars[HullType.IsDriveSizeKey];
 				      }),
 				x =>
 				{
-					driveVars[AComponentType.LevelKey] = x.Level;
-					return x.TypeInfo.Speed.Evaluate(driveVars);
+					shipVars[AComponentType.LevelKey] = x.Level;
+					return x.TypeInfo.Speed.Evaluate(shipVars);
 				}
 			);
 		}

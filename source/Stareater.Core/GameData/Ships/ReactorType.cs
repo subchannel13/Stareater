@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using Stareater.AppData.Expressions;
+using Stareater.GameData.Databases;
+using Stareater.GameLogic;
 using Stareater.Ships;
 using Stareater.Utils;
-using Stareater.Utils.Collections;
 
 namespace Stareater.GameData.Ships
 {
 	class ReactorType : AComponentType
 	{
+		public const string TotalPowerKey = "totalPower";
+		
 		public string ImagePath { get; private set; }
 		
 		public Formula Power { get; private set; }
@@ -26,39 +29,32 @@ namespace Stareater.GameData.Ships
 			
 		}
 
-		public static Component<ReactorType> MakeBest(IEnumerable<ReactorType> reactors, Dictionary<string, double> playersTechLevels, Component<HullType> shipHull)
+		public static Component<ReactorType> MakeBest(Dictionary<string, double> playersTechLevels, Component<HullType> hull, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics)
 		{
-			var hullVars = new Var(AComponentType.LevelKey, shipHull.Level).Get;
-
-			double reactorSize = shipHull.TypeInfo.SizeReactor.Evaluate(hullVars);
-			var reactorVars = new Var(AComponentType.LevelKey, 0).
-					And(AComponentType.SizeKey, reactorSize).Get;
+			var shipVars = PlayerProcessor.DesignBaseVars(hull, specialEquipment, statics).Get;
 
 			return Methods.FindBest(
-				reactors.Where(x => x.IsAvailable(playersTechLevels)).
+				statics.Reactors.Values.Where(x => x.IsAvailable(playersTechLevels)).
 				Select(x => new Component<ReactorType>(x, x.HighestLevel(playersTechLevels))).
 				Where(x =>
 				      {
-				      	reactorVars[AComponentType.LevelKey] = x.Level;
-				      	return x.TypeInfo.MinSize.Evaluate(reactorVars) <= reactorSize;
+				      	shipVars[AComponentType.LevelKey] = x.Level;
+				      	return x.TypeInfo.MinSize.Evaluate(shipVars) <= shipVars[HullType.ReactorSizeKey]; //TODO use final reactor size
 				      }),
 				x =>
 				{
-					reactorVars[AComponentType.LevelKey] = x.Level;
-					return x.TypeInfo.Power.Evaluate(reactorVars);
+					shipVars[AComponentType.LevelKey] = x.Level;
+					return x.TypeInfo.Power.Evaluate(shipVars);
 				}
 			);
 		}
 
-		public static double PowerOf(Component<ReactorType> reactor, Component<HullType> shipHull)
+		public static double PowerOf(Component<ReactorType> reactor, Component<HullType> hull, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics)
 		{
-			var hullVars = new Var("level", shipHull.Level).Get;	//TODO(v0.5) make constants for variable names
+			var shipVars = PlayerProcessor.DesignBaseVars(hull, specialEquipment, statics).Get;
+			shipVars[AComponentType.LevelKey] = reactor.Level;
 
-			double reactorSize = shipHull.TypeInfo.SizeReactor.Evaluate(hullVars);
-			var reactorVars = new Var("level", reactor.Level).
-					And(AComponentType.SizeKey, reactorSize).Get;
-
-			return reactor.TypeInfo.Power.Evaluate(reactorVars);
+			return reactor.TypeInfo.Power.Evaluate(shipVars);
 		}
 	}
 }

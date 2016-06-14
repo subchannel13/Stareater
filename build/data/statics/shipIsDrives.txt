@@ -10,7 +10,7 @@
 	cost # 1e6 * size;
 	
 	minSize # 5;
-	speed # 0.8 * limit(power / (200 * size), 0, 1);
+	speed # 0.8 * limit(totalPower / (200 * hullIsSize), 0, 1);
 }
 
 { IsDrive
@@ -25,5 +25,5 @@
 	cost # 1e6 * size;
 	
 	minSize # 5;
-	speed # 3 * limit(power / (2 * size), 0, 1);
+	speed # 3 * limit(totalPower / (2 * hullIsSize), 0, 1);
 }

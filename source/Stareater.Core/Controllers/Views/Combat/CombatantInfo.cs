@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Views.Ships;
+using Stareater.GameData.Databases;
 using Stareater.GameLogic;
 using Stareater.SpaceCombat;
 
@@ -14,11 +15,13 @@ namespace Stareater.Controllers.Views.Combat
 		private readonly DesignStats stats;
 		private IEnumerable<Vector2D> validMoves;
 		private readonly List<AbilityInfo> abilities;
+		private readonly StaticsDB statics;
 		
 		internal CombatantInfo(Combatant data, MainGame game, IEnumerable<Vector2D> validMoves)
 		{
 			this.Data = data;
 			this.stats = game.Derivates.Of(data.Owner).DesignStats[data.Ships.Design];
+			this.statics = game.Statics;
 			this.validMoves = validMoves.ToList();
 			
 			this.abilities = new List<AbilityInfo>(this.stats.Abilities.Select((x, i) => new AbilityInfo(x, i, data.AbilityCharges[i])));
@@ -36,7 +39,7 @@ namespace Stareater.Controllers.Views.Combat
 		
 		public DesignInfo Design
 		{ 
-			get { return new DesignInfo(this.Data.Ships.Design, stats); }
+			get { return new DesignInfo(this.Data.Ships.Design, this.stats, this.statics); }
 		}
 		
 		public long Count
