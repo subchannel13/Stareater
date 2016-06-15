@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
-using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 using Stareater.SpaceCombat;
 using Stareater.Utils;

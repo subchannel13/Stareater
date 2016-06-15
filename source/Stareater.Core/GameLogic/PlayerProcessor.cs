@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using NGenerics.Extensions;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.GameData;
