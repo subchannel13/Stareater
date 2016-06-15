@@ -93,6 +93,23 @@ namespace Stareater.Controllers
 			return thruster != null ? new ThrusterInfo(thruster.TypeInfo, thruster.Level) : null;
 		}
 		
+		private Var shipBaseVars()
+		{
+			return PlayerProcessor.DesignBaseVars(
+				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level), 
+				this.selectedSpecialEquipment, 
+				this.game.Statics);
+		}
+		
+		private Var shipPoweredVars()
+		{
+			return PlayerProcessor.DesignPoweredVars(
+				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level), 
+				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level),
+				this.selectedSpecialEquipment,
+				this.game.Statics);
+		}
+		
 		#region Component lists
 		public IEnumerable<HullInfo> Hulls()
 		{
@@ -175,11 +192,10 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var vars = new Var("shieldCloak", Shield != null ? Shield.Cloaking : 0).
-					And("hullCloak", selectedHull.CloakingBase).
-					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
-				
-				return game.Statics.ShipFormulas.Cloaking.Evaluate(vars);
+				return game.Statics.ShipFormulas.Cloaking.Evaluate(
+					this.shipPoweredVars().
+					And("shieldCloak", Shield != null ? Shield.Cloaking : 0).Get
+				);
 			}
 		}
 		
@@ -187,10 +203,10 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var vars = new Var("thrust", thrusterInfo.Speed).
-					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
-				
-				return game.Statics.ShipFormulas.CombatSpeed.Evaluate(vars);
+				return game.Statics.ShipFormulas.CombatSpeed.Evaluate(
+					this.shipBaseVars().
+					And("thrust", this.thrusterInfo.Evasion).Get
+				);
 			}
 		}
 		
@@ -198,11 +214,10 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var vars = new Var("sensor", sensorInfo.Detection).
-					And("hullSensor", selectedHull.SensorsBase).
-					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
-				
-				return game.Statics.ShipFormulas.Detection.Evaluate(vars);
+				return game.Statics.ShipFormulas.Detection.Evaluate(
+					this.shipBaseVars().
+					And("sensor", this.thrusterInfo.Evasion).Get
+				);
 			}
 		}
 		
@@ -210,10 +225,10 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var vars = new Var("baseEvasion", thrusterInfo.Evasion).
-					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
-				
-				return game.Statics.ShipFormulas.Evasion.Evaluate(vars);
+				return game.Statics.ShipFormulas.Evasion.Evaluate(
+					this.shipBaseVars().
+					And("baseEvasion", this.thrusterInfo.Evasion).Get
+				);
 			}
 		}
 		
@@ -221,13 +236,11 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var vars = new Var("hullHp", selectedHull.HitPointsBase).
-					And("armorFactor", armorInfo.ArmorFactor).
-					Init(this.game.Statics.SpecialEquipment.Keys, 0).
-					UnionWith(this.selectedSpecialEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).Get; 
-				//TODO(v0.5) add special equipment levels, make special equipment variables more reusabe put spec equip vars to other properties
 				
-				return game.Statics.ShipFormulas.HitPoints.Evaluate(vars);
+				return game.Statics.ShipFormulas.HitPoints.Evaluate(
+					this.shipBaseVars().
+					And("armorFactor", this.armorInfo.ArmorFactor).Get
+				);
 			}
 		}
 		
@@ -235,11 +248,10 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var vars = new Var("shieldJamming", Shield != null ? Shield.Jamming : 0).
-					And("hullJamming", selectedHull.JammingBase).
-					Init(this.game.Statics.SpecialEquipment.Keys, 0).Get;
-				
-				return game.Statics.ShipFormulas.Jamming.Evaluate(vars);
+				return game.Statics.ShipFormulas.Jamming.Evaluate(
+					this.shipPoweredVars().
+					And("shieldJamming", Shield != null ? Shield.Jamming : 0).Get
+				);
 			}
 		}
 		#endregion
@@ -261,7 +273,7 @@ namespace Stareater.Controllers
 		
 		public double PowerUsed
 		{
-			get { return (this.Shield != null) ? this.Shield.PowerUsage : 0; } //TODO(v0.5)
+			get { return (this.Shield != null) ? this.Shield.PowerUsage : 0; }
 		}
 		
 		public double SpaceTotal
