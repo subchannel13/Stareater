@@ -51,6 +51,7 @@ namespace Stareater.GUI
 			this.checkTechs.TabIndex = 0;
 			this.checkTechs.Text = "techs";
 			this.checkTechs.UseVisualStyleBackColor = true;
+			this.checkTechs.CheckedChanged += new System.EventHandler(this.checkTechs_CheckedChanged);
 			// 
 			// applyAction
 			// 
@@ -61,6 +62,7 @@ namespace Stareater.GUI
 			this.applyAction.TabIndex = 1;
 			this.applyAction.Text = "apply";
 			this.applyAction.UseVisualStyleBackColor = true;
+			this.applyAction.Click += new System.EventHandler(this.ApplyActionClick);
 			// 
 			// FormReportFilter
 			// 

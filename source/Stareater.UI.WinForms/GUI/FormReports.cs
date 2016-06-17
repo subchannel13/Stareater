@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using Stareater.Controllers.Views;
 using Stareater.AppData;
+using Stareater.GUI.Reports;
 
 namespace Stareater.GUI
 {
 	public partial class FormReports : Form
 	{
+		private IEnumerable<IReportInfo> reports;
+		
 		public IReportInfo Result { get; private set; }
 		
 		public FormReports()
@@ -18,14 +21,10 @@ namespace Stareater.GUI
 		
 		public FormReports(IEnumerable<IReportInfo> reports) : this()
 		{
+			this.reports = reports.ToList();
+			
 			this.Text = SettingsWinforms.Get.Language["FormReports"]["FormTitle"].Text();
-
-			foreach (var report in reports) {
-				var reportItem = new ReportItem();
-				reportItem.Data = report;
-				
-				reportList.Controls.Add(reportItem);
-			}
+			this.fillList();
 		}
 		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -33,6 +32,23 @@ namespace Stareater.GUI
 			if (keyData == Keys.Escape) 
 				this.Close();
 			return base.ProcessCmdKey(ref msg, keyData);
+		}
+		
+		private void fillList()
+		{
+			reportList.Controls.Clear();
+			
+			var filter = new FilterRepotVisitor();
+			foreach (var report in reports) {
+				report.Accept(filter);
+				if (!filter.ShowItem)
+					continue;
+				
+				var reportItem = new ReportItem();
+				reportItem.Data = report;
+				
+				reportList.Controls.Add(reportItem);
+			}
 		}
 		
 		private void openButton_Click(object sender, EventArgs e)
@@ -52,7 +68,8 @@ namespace Stareater.GUI
 		{
 			using(var form = new FormReportFilter())
 				form.ShowDialog();
-			//TODO(v0.5)
+			
+			this.fillList();
 		}
 	}
 }

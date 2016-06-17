@@ -40,6 +40,8 @@ namespace Stareater.AppData
 				return new Font(SystemFonts.DefaultFont.FontFamily, SystemFonts.DefaultFont.Size * GuiScale);
 			}
 		}
+		
+		public bool ReportTechnology { get; set; }
 
 		#region Initialization
 		protected override void initDefault()
@@ -51,6 +53,8 @@ namespace Stareater.AppData
 			this.BatteryFramerate = 60;
 			this.Framerate = 120;
 			this.UnlimitedFramerate = false;
+			
+			this.ReportTechnology = true;
 		}
 	
 		protected override void load(TaggableQueue<object, IkadnBaseObject> data)
@@ -64,6 +68,8 @@ namespace Stareater.AppData
 			this.BatteryFramerate = wfSettignsData[FpsBatteryKey].To<int>();
 			this.Framerate = wfSettignsData[FpsKey].To<int>();
 			this.UnlimitedFramerate = wfSettignsData[FpsUnlimitedKey].To<int>() >= 0;
+			
+			this.ReportTechnology = wfSettignsData[ReportTechnologyKey].To<int>() >= 0;
 		}
 		#endregion
 		
@@ -73,6 +79,7 @@ namespace Stareater.AppData
 		const string FpsKey = "fps";
 		const string FpsUnlimitedKey = "noFps";
 		const string GuiScaleKey = "guiscale";
+		const string ReportTechnologyKey = "reportTech";
 		#endregion
 
 		protected override void buildSaveData(IkadnWriter writer)
@@ -85,6 +92,8 @@ namespace Stareater.AppData
 			settings.Add(FpsBatteryKey, new IkonInteger(BatteryFramerate));
 			settings.Add(FpsKey, new IkonInteger(Framerate));
 			settings.Add(FpsUnlimitedKey, new IkonInteger(UnlimitedFramerate ? 1 : -1));
+			
+			settings.Add(ReportTechnologyKey, new IkonInteger(ReportTechnology ? 1 : -1));
 			settings.Compose(writer);
 		}
 	}

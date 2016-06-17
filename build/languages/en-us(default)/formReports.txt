@@ -1,3 +1,7 @@
 ﻿:FormReports
 FormTitle = Situation report
+FilterTitle = Show report types
+
+showTechs = Technologies
+applyFilter = Apply
 -
