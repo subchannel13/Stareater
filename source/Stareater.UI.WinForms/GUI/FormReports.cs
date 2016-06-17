@@ -50,8 +50,9 @@ namespace Stareater.GUI
 		
 		private void filterButton_Click(object sender, EventArgs e)
 		{
+			using(var form = new FormReportFilter())
+				form.ShowDialog();
 			//TODO(v0.5)
-			throw new NotImplementedException();
 		}
 	}
 }
