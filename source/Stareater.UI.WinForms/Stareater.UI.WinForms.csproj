@@ -252,7 +252,9 @@
     <Compile Include="GUI\FormPickComponent.Designer.cs">
       <DependentUpon>FormPickComponent.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FormReportFilter.cs" />
+    <Compile Include="GUI\FormReportFilter.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI\FormReportFilter.Designer.cs">
       <DependentUpon>FormReportFilter.cs</DependentUpon>
     </Compile>

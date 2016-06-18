@@ -395,6 +395,7 @@ namespace Stareater.GameLogic
 			if (design.Shield != null)
 			{
 				shipVars[AComponentType.LevelKey] = design.Shield.Level;
+				shipVars[AComponentType.SizeKey] = design.Hull.TypeInfo.Size.Evaluate(hullVars);
 				var hullShieldHp = design.Hull.TypeInfo.ShieldBase.Evaluate(hullVars);
 				
 				shieldCloaking = design.Shield.TypeInfo.Cloaking.Evaluate(shipVars.Get) * hullShieldHp;
