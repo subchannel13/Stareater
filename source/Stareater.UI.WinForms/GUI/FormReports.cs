@@ -53,7 +53,6 @@ namespace Stareater.GUI
 		
 		private void openButton_Click(object sender, EventArgs e)
 		{
-			
 			var reportItem = reportList.SelectedItem as ReportItem;
 			
 			if (reportItem == null)
