@@ -35,6 +35,8 @@ namespace Stareater.Ships
 			}
 			else
 				hashBuilder.Add(0, 2);
+
+			HashComponent(hashBuilder, this.Shield, statics.Shields);
 			
 			int maxEquips = this.SpecialEquipment.Count > 0 ? (this.SpecialEquipment.Max(x => x.Quantity) + 1) : 0;
 			foreach(var equip in this.SpecialEquipment.OrderBy(x => x.TypeInfo.IdCode))
@@ -112,8 +114,9 @@ namespace Stareater.Ships
 		private static void HashComponent<T>(BitHashBuilder hashBuilder, Component<T> component, IDictionary<string, T> componentAssortiment) where T :AComponentType
 		{
 			var indices = componentAssortiment.Keys.OrderBy(x => x).ToList();
+			var index = component != null ? indices.IndexOf(component.TypeInfo.IdCode) : componentAssortiment.Count;
 
-			hashBuilder.Add(indices.IndexOf(component.TypeInfo.IdCode), componentAssortiment.Count);
+			hashBuilder.Add(index, componentAssortiment.Count + 1);
 			hashBuilder.Add(component.Level, component.TypeInfo.MaxLevel + 1);
 		}
 		
