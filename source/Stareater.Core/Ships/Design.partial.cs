@@ -25,7 +25,6 @@ namespace Stareater.Ships
 			HashComponent(hashBuilder, this.Thrusters, statics.Thrusters);
 			
 			HashComponent(hashBuilder, this.Hull, statics.Hulls);
-			hashBuilder.Add(this.imageIndex, this.Hull.TypeInfo.ImagePaths.Length);
 			hashBuilder.Add(this.SpecialEquipment.Count, statics.SpecialEquipment.Count);
 			
 			if (this.IsDrive != null)
@@ -117,7 +116,8 @@ namespace Stareater.Ships
 			var index = component != null ? indices.IndexOf(component.TypeInfo.IdCode) : componentAssortiment.Count;
 
 			hashBuilder.Add(index, componentAssortiment.Count + 1);
-			hashBuilder.Add(component.Level, component.TypeInfo.MaxLevel + 1);
+			if (component != null)
+				hashBuilder.Add(component.Level, component.TypeInfo.MaxLevel + 1);
 		}
 		
 		public static double CalculateCost(Component<HullType> hull, Component<IsDriveType> isDrive, Component<ShieldType> shield,

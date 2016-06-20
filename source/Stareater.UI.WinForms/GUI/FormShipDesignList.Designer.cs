@@ -73,7 +73,7 @@ namespace Stareater.GUI
 			this.designList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.designList.Location = new System.Drawing.Point(12, 25);
 			this.designList.Name = "designList";
-			this.designList.Size = new System.Drawing.Size(365, 313);
+			this.designList.Size = new System.Drawing.Size(367, 316);
 			this.designList.TabIndex = 17;
 			// 
 			// newDesignButton
