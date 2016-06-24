@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using System.Text;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using System.Drawing;
 
 namespace Stareater.GLRenderers
 {
@@ -42,13 +40,13 @@ namespace Stareater.GLRenderers
 				image.LockBits(
 					new System.Drawing.Rectangle(0, 0, image.Width, image.Height),
 					System.Drawing.Imaging.ImageLockMode.ReadOnly,
-					System.Drawing.Imaging.PixelFormat.Format32bppArgb
+					image.PixelFormat
 				);
 
 			GL.BindTexture(TextureTarget.Texture2D, textureId);
 
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height,
-				0, PixelFormat.Rgba, PixelType.UnsignedByte, textureData.Scan0);
+				0, PixelFormat.Bgra, PixelType.UnsignedByte, textureData.Scan0);
 
 			GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvMode, (float)TextureEnvMode.Modulate);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.Linear);

@@ -1,5 +1,6 @@
 ﻿using System;
 using NGenerics.DataStructures.Mathematical;
+using Stareater.Galaxy;
 using Stareater.SpaceCombat;
 
 namespace Stareater.Controllers.Views.Combat
@@ -16,6 +17,10 @@ namespace Stareater.Controllers.Views.Combat
 		public Vector2D Position 
 		{
 			get { return Data.Position; }
+		}
+
+		public PlanetType Type {
+			get { return this.Data.PlanetData.Type; }
 		}
 		
 		public PlayerInfo Owner 

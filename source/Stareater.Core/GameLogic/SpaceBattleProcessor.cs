@@ -44,6 +44,7 @@ namespace Stareater.GameLogic
 				
 				this.game.Planets[i] = new CombatPlanet(
 					colonies.FirstOrDefault(x => x.Location.Planet == planets[i]),
+					planets[i],
 					snapPosition(correctPosition(new Vector2D(Math.Cos(angle), Math.Sin(angle)) * distance)),
 					this.mainGame.Statics.ColonyFormulas.PopulationHitPoints.Evaluate(null) //TODO(later) pass relevant variables
 				);

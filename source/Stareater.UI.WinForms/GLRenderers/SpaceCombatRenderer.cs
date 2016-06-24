@@ -8,6 +8,7 @@ using OpenTK.Graphics.OpenGL;
 using Stareater.Controllers;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Controllers.Views.Ships;
+using Stareater.Galaxy;
 using Stareater.Utils;
 using Stareater.Utils.NumberFormatters;
 
@@ -15,7 +16,7 @@ namespace Stareater.GLRenderers
 {
 	class SpaceCombatRenderer : ARenderer
 	{
-		private const double DefaultViewSize = 20;
+		private const double DefaultViewSize = 17;
 		private const double HexHeightScale = 0.9;
 		private static readonly double HexHeight = Math.Sqrt(3) * HexHeightScale;
 		
@@ -136,21 +137,30 @@ namespace Stareater.GLRenderers
 			
 			foreach(var planet in this.Controller.Planets)
 			{
-				GL.Color4(planet.Owner != null ? planet.Owner.Color : Color.FromArgb(64, 64, 64));
-				
-				GL.Color4(Color.Blue);
+				GL.Color4(Color.White);
 				GL.Enable(EnableCap.Texture2D);
 				GL.PushMatrix();
 				GL.Translate(hexX(planet.Position), hexY(planet.Position), 0);
 	
-				TextureUtils.DrawSprite(GalaxyTextures.Get.Planet, StarColorZ);
+				switch(planet.Type)
+				{
+					case PlanetType.Asteriod:
+						TextureUtils.DrawSprite(GalaxyTextures.Get.Asteroids, StarColorZ);
+						break;
+					case PlanetType.GasGiant:
+						TextureUtils.DrawSprite(GalaxyTextures.Get.GasGiant, StarColorZ);
+						break;
+					case PlanetType.Rock:
+						TextureUtils.DrawSprite(GalaxyTextures.Get.RockPlanet, StarColorZ);
+						break;
+				}
 				
 				if (planet.Population > 0)
 				{
 					GL.PushMatrix();
 					GL.Translate(0.5, -0.5, MoreCombatantsZ);
 					GL.Scale(0.2, 0.2, 1);
-					GL.Color4(Color.Gray);
+					GL.Color4(planet.Owner != null ? planet.Owner.Color : Color.Gray);
 					
 					TextRenderUtil.Get.RenderText(formatter.Format(planet.Population), -1);
 					GL.PopMatrix();

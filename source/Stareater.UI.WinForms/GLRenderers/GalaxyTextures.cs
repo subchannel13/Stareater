@@ -29,13 +29,15 @@ namespace Stareater.GLRenderers
 		const string AtlasImagePath = "./images/galaxyTextures.png";
 		const string AtlasIkonPath = "./images/galaxyTextures.txt";
 		
+		const string AsteroidsTag = "asteroids";
 		const string AtlasTag = "TextureAtlas";
 		const string ColonizationMarkTag = "colonizationMark";
 		const string ColonizationMarkColorTag = "colonizationMarkColor";
 		const string FleetIndicatorTag = "fleetIndicator";
+		const string GasGiantTag = "gasGiant";
 		const string MoveArrowTag = "moveArrow";
 		const string PathLineTag = "wormholePath";
-		const string PlanetTag = "planet";
+		const string RockPlanetTag = "rockPlanet";
 		const string SelectedStarTag = "selectedStar";
 		const string StarColorTag = "starColor";
 		const string StarGlowTag = "starGlow";
@@ -45,12 +47,14 @@ namespace Stareater.GLRenderers
 		private int textureId;
 		private Dictionary<string, TextureInfo> sprites;
 		
+		public TextureInfo Asteroids { get; private set;}
 		public TextureInfo ColonizationMark { get; private set;}
 		public TextureInfo ColonizationMarkColor { get; private set;}
 		public TextureInfo FleetIndicator { get; private set;}
+		public TextureInfo GasGiant { get; private set;}
 		public TextureInfo MoveToArrow { get; private set;}
-		public TextureInfo Planet { get; private set;}
 		public TextureInfo PathLine { get; private set;}
+		public TextureInfo RockPlanet { get; private set;}
 		public TextureInfo StarColor { get; private set;}
 		public TextureInfo StarGlow { get; private set;}
 		public TextureInfo SelectedStar { get; private set;}
@@ -70,12 +74,14 @@ namespace Stareater.GLRenderers
 			/*
 			 * If any sprite is missing, try running {repo root}/scripts/gen_textures.bat script.
 			 */
+			Asteroids = new TextureInfo(textureId, ikonData[AsteroidsTag].To<IkonArray>());
 			ColonizationMark = new TextureInfo(textureId, ikonData[ColonizationMarkTag].To<IkonArray>());
 			ColonizationMarkColor = new TextureInfo(textureId, ikonData[ColonizationMarkColorTag].To<IkonArray>());
 			FleetIndicator = new TextureInfo(textureId, ikonData[FleetIndicatorTag].To<IkonArray>());
+			GasGiant = new TextureInfo(textureId, ikonData[GasGiantTag].To<IkonArray>());
 			MoveToArrow = new TextureInfo(textureId, ikonData[MoveArrowTag].To<IkonArray>());
-			Planet = new TextureInfo(textureId, ikonData[PlanetTag].To<IkonArray>());
 			PathLine = new TextureInfo(textureId, ikonData[PathLineTag].To<IkonArray>());
+			RockPlanet = new TextureInfo(textureId, ikonData[RockPlanetTag].To<IkonArray>());
 			SelectedStar = new TextureInfo(textureId, ikonData[SelectedStarTag].To<IkonArray>());
 			StarColor = new TextureInfo(textureId, ikonData[StarColorTag].To<IkonArray>());
 			StarGlow = new TextureInfo(textureId, ikonData[StarGlowTag].To<IkonArray>());

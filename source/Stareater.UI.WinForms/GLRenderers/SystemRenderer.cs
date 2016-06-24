@@ -39,9 +39,9 @@ namespace Stareater.GLRenderers
 
 		private StarSystemController controller;
 		private PlayerController currentPlayer;
-		private ConstructionSiteView siteView;
-		private EmpyPlanetView emptyPlanetView;
-		private Action systemClosedHandler;
+		private readonly ConstructionSiteView siteView;
+		private readonly EmpyPlanetView emptyPlanetView;
+		private readonly Action systemClosedHandler;
 		
 		private Matrix4 invProjection;
 		
@@ -104,13 +104,25 @@ namespace Stareater.GLRenderers
 				}
 				GL.End();
 				
-				GL.Color4(Color.Blue);
+				GL.Color4(Color.White);
 				GL.Enable(EnableCap.Texture2D);
+				
 				GL.PushMatrix();
 				GL.Translate(orbitR, 0, 0);
 				GL.Scale(PlanetScale, PlanetScale, PlanetScale);
 	
-				TextureUtils.DrawSprite(GalaxyTextures.Get.Planet, StarColorZ);
+				switch(planet.Type)
+				{
+					case PlanetType.Asteriod:
+						TextureUtils.DrawSprite(GalaxyTextures.Get.Asteroids, StarColorZ);
+						break;
+					case PlanetType.GasGiant:
+						TextureUtils.DrawSprite(GalaxyTextures.Get.GasGiant, StarColorZ);
+						break;
+					case PlanetType.Rock:
+						TextureUtils.DrawSprite(GalaxyTextures.Get.RockPlanet, StarColorZ);
+						break;
+				}
 				
 				if (this.controller.IsColonizing(planet.Position))
 				{
@@ -118,14 +130,12 @@ namespace Stareater.GLRenderers
 					GL.Translate(0.6, 0.5, 0);
 					GL.Scale(0.4, 0.4, 1);
 					
-					GL.Color4(Color.White);
 					TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMark, MarkZ);
 					TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMarkColor, MarkColorZ);
 					GL.PopMatrix();
 				}
 				
 				if (selectedBody == planet.Position){
-					GL.Color4(Color.White);
 					GL.Scale(PlanetSelectorScale, PlanetSelectorScale, PlanetSelectorScale);
 					TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
 				}
