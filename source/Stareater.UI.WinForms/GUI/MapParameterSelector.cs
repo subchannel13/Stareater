@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Stareater.Galaxy;
 using Stareater.GuiUtils;
 using Stareater.Utils.PluginParameters;
 
@@ -14,17 +9,19 @@ namespace Stareater.GUI
 {
 	public partial class MapParameterSelector : UserControl
 	{
-		SelectorParameter parameter;
+		private SelectorParameter parameter;
+		private Action changeListener;
 
 		public MapParameterSelector()
 		{
 			InitializeComponent();
 		}
 
-		public void SetData(SelectorParameter parameterInfo)
+		public void SetData(SelectorParameter parameterInfo, Action changeListener)
 		{
 			this.parameter = parameterInfo;
-			nameLabel.Text = parameterInfo.Name;
+			this.changeListener = changeListener;
+			this.nameLabel.Text = parameterInfo.Name;
 
 			foreach (var valueInfo in parameterInfo)
 				valueSelector.Items.Add(new Tag<int>(valueInfo.Key, valueInfo.Value));
@@ -35,6 +32,7 @@ namespace Stareater.GUI
 		private void valueSelector_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			parameter.Value = valueSelector.SelectedIndex;
+			changeListener();
 		}
 	}
 }

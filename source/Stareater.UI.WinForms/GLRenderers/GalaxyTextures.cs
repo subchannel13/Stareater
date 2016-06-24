@@ -4,7 +4,6 @@ using System.Drawing;
 using System.IO;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
-using OpenTK;
 
 namespace Stareater.GLRenderers
 {

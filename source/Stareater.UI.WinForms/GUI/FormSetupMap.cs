@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
+using NGenerics.DataStructures.Mathematical;
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Galaxy;
@@ -15,6 +17,8 @@ namespace Stareater.GUI
 {
 	public partial class FormSetupMap : Form
 	{
+		private const int PreviewPadding = 10;
+		
 		private NewGameController controller;
 
 		public FormSetupMap()
@@ -72,20 +76,74 @@ namespace Stareater.GUI
 			extractParameters(controller.StarPositioner.Parameters);
 			extractParameters(controller.StarConnector.Parameters);
 			extractParameters(controller.StarPopulator.Parameters);
+		}
+		
+		private void makePreview()
+		{
+			var random = new Random();
+			var stars = this.controller.StarPositioner.Generate(random, this.controller.PlayerList.Count);
+			var starlanes = this.controller.StarConnector.Generate(random, stars);
 			
+			var minCorner = stars.Stars.Aggregate((a, b) => new Vector2D(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)));
+			var size = stars.Stars.
+				Select(x => x - minCorner).
+				Aggregate(
+					(a, b) => new Vector2D(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y))
+				);
+			var scale = Math.Min(
+				(this.mapPreview.Width - 2 * PreviewPadding) / size.X, 
+				(this.mapPreview.Height - 2 * PreviewPadding) / size.Y
+			);
+			
+			var preview = new Bitmap(this.mapPreview.Width, this.mapPreview.Height);
+			var starColor = new SolidBrush(Color.White);
+			var homeSystemColor = new SolidBrush(Color.Gold);
+			var starlaneColor = new Pen(Color.Blue);
+			
+			using(var g = Graphics.FromImage(preview))
+			{
+				g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+				
+				foreach(var lane in starlanes)
+					g.DrawLine(
+						starlaneColor,
+						(float)((stars.Stars[lane.FromIndex].X - minCorner.X) * scale) + PreviewPadding,
+						(float)((stars.Stars[lane.FromIndex].Y - minCorner.Y) * scale) + PreviewPadding,
+						(float)((stars.Stars[lane.ToIndex].X - minCorner.X) * scale) + PreviewPadding,
+						(float)((stars.Stars[lane.ToIndex].Y - minCorner.Y) * scale) + PreviewPadding
+					);
+					
+				for(int i = 0; i < stars.Stars.Length; i++)
+				{
+					var position = (stars.Stars[i] - minCorner) * scale + new Vector2D(PreviewPadding, PreviewPadding);
+					var isHomeSystem = stars.HomeSystems.Contains(i);
+					
+					g.FillEllipse(
+						isHomeSystem ? homeSystemColor : starColor, 
+						(float)position.X - (isHomeSystem ? 2 : 1),
+						(float)position.Y - (isHomeSystem ? 2 : 1), 
+						(isHomeSystem ? 5 : 3), 
+						(isHomeSystem ? 5 : 3)
+					);
+				}
+			}
+			
+			if (this.mapPreview.Image != null)
+				this.mapPreview.Image.Dispose();
+			this.mapPreview.Image = preview;
 		}
 
 		private void extractParameters(ParameterList parameters)
 		{
-			Dictionary<int, Control> parameterGuis = new Dictionary<int, Control>();
+			var parameterGuis = new Dictionary<int, Control>();
 			foreach (var parameterInfo in parameters.Selectors) {
 				var parameterControl = new MapParameterSelector();
-				parameterControl.SetData(parameterInfo);
+				parameterControl.SetData(parameterInfo, this.makePreview);
 				parameterGuis.Add(parameterGuis.Count, parameterControl);
 			}
 			foreach (var parameterInfo in parameters.RealRanges) {
 				var parameterControl = new MapParameterRealRange();
-				parameterControl.SetData(parameterInfo);
+				parameterControl.SetData(parameterInfo, this.makePreview);
 				parameterGuis.Add(parameterGuis.Count, parameterControl);
 			}
 			for(int i = 0; i < parameterGuis.Count; i++)
@@ -104,7 +162,5 @@ namespace Stareater.GUI
 
 			populateParameters();
 		}
-		
-		//TODO(v0.5): Map preview
 	}
 }

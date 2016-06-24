@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Stareater.Utils.PluginParameters;
 
@@ -12,16 +7,18 @@ namespace Stareater.GUI
 {
 	public partial class MapParameterRealRange : UserControl
 	{
-		RangeParameter<double> parameter;
+		private RangeParameter<double> parameter;
+		private Action changeListener;
 
 		public MapParameterRealRange()
 		{
 			InitializeComponent();
 		}
 
-		public void SetData(RangeParameter<double> parameterInfo)
+		public void SetData(RangeParameter<double> parameterInfo, Action changeListener)
 		{
 			this.parameter = parameterInfo;
+			this.changeListener = changeListener;
 
 			nameLabel.Text = parameterInfo.Name;
 			valueLabel.Text = parameterInfo.ValueDescription;
@@ -41,6 +38,7 @@ namespace Stareater.GUI
 			parameter.Value = parameter.Minimum + ratio * (parameter.Maximum - parameter.Minimum);
 
 			valueLabel.Text = parameter.ValueDescription;
+			changeListener();
 		}
 	}
 }
