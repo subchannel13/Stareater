@@ -10,6 +10,7 @@ using Stareater.Galaxy;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
+using Stareater.GuiUtils;
 using Stareater.Properties;
 
 namespace Stareater.GUI
@@ -41,7 +42,7 @@ namespace Stareater.GUI
 			}
 			
 			Context context = SettingsWinforms.Get.Language["FormColony"];
-			//TODO(v0.5): set form title
+			this.Text = LocalizationMethods.PlanetName(controller.PlanetBody);
 			
 			buildingsGroup.Text = context["buildingsGroup"].Text();
 			planetInfoGroup.Text = context["planetGroup"].Text();

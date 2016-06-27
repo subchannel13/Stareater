@@ -28,7 +28,7 @@ namespace Stareater.GUI
 			this.setStarImage();
 			
 			Context context = SettingsWinforms.Get.Language["FormStellaris"];
-			//TODO(v0.5): set form title
+			this.Text = this.controller.HostStar.Name.ToText(SettingsWinforms.Get.Language);
 			
 			buildingsGroup.Text = context["buildingsGroup"].Text();
 			coloniesInfoGroup.Text = context["coloniesGroup"].Text();
