@@ -13,7 +13,8 @@ namespace Stareater.GameLogic
 		private readonly MainGame game;
 		
 		private double time = 0;
-		private LinkedList<AMission> remainingMissions;
+		private LinkedList<AMission> unfinishedMissions = new LinkedList<AMission>();
+		private LinkedList<AMission> missions;
 		private Vector2D newPosition;
 		private Vector2D movementDirection = new Vector2D();
 		private List<FleetMovement> movementSteps = new List<FleetMovement>();
@@ -23,15 +24,15 @@ namespace Stareater.GameLogic
 			this.fleet = fleet;
 			this.game = game;
 			this.newPosition = fleet.Position;
-			this.remainingMissions = new LinkedList<AMission>(fleet.Missions);
+			this.missions = new LinkedList<AMission>(fleet.Missions);
 		}
 
 		public IEnumerable<FleetMovement> Run()
 		{
-			while(this.remainingMissions.Count > 0 && this.time < 1)
+			while(this.missions.Count > 0 && this.time < 1)
 			{
-				var mission = this.remainingMissions.First.Value;
-				this.remainingMissions.RemoveFirst();
+				var mission = this.missions.First.Value;
+				this.missions.RemoveFirst();
 				mission.Accept(this);
 			}
 			
@@ -49,7 +50,11 @@ namespace Stareater.GameLogic
 		
 		private Fleet localFleet()
 		{
-			var resultFleet = new Fleet(fleet.Owner, this.newPosition, new LinkedList<AMission>(this.remainingMissions));
+			var resultFleet = new Fleet(
+				fleet.Owner, 
+				this.newPosition, 
+				new LinkedList<AMission>(this.unfinishedMissions.Concat(this.missions))
+			);
 
 			foreach(var group in this.fleet.Ships)
 				resultFleet.Ships.Add(new ShipGroup(group.Design, group.Quantity));
@@ -91,7 +96,7 @@ namespace Stareater.GameLogic
 				direction.Normalize();
 
 				this.newPosition = fleet.Position + direction * speed;
-				remainingMissions.AddLast(mission);
+				unfinishedMissions.AddLast(mission);
 				
 				this.movementSteps.Add(new FleetMovement(
 					this.fleet,
@@ -107,7 +112,7 @@ namespace Stareater.GameLogic
 		void IMissionVisitor.Visit(ColonizationMission mission)
 		{
 			if (this.newPosition == mission.Target.Star.Position)
-				remainingMissions.AddLast(mission);
+				unfinishedMissions.AddLast(mission);
 			
 			this.movementSteps.Add(new FleetMovement(
 					this.fleet,
