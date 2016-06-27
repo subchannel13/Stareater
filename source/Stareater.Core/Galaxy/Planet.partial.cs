@@ -5,6 +5,8 @@ namespace Stareater.Galaxy
 {
 	public partial class Planet
 	{
+		//TODO(v0.5): Make trait list readonly to view, consider making whole class private
+		
 		/*public const double AtmosphereDensityMin = -5;
 		public const double AtmosphereDensityMax = 10;
 		public const double GravityMin = -5;

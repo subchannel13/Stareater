@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 using Stareater.AppData;
 using Stareater.Controllers;
+using Stareater.Controllers.Views;
+using Stareater.Galaxy;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
+using Stareater.Properties;
 
 namespace Stareater.GUI
 {
@@ -27,6 +26,19 @@ namespace Stareater.GUI
 		public FormColonyDetails(ColonyController controller) : this()
 		{
 			this.controller = controller;
+			
+			switch(controller.PlanetBody.Type)
+			{
+				case PlanetType.Asteriod:
+					this.planetImage.Image = Resources.asteroids;
+					break;
+				case PlanetType.GasGiant:
+					this.planetImage.Image = Resources.gasGiant;
+					break;
+				case PlanetType.Rock:
+					this.planetImage.Image = Resources.rockPlanet;
+					break;
+			}
 			
 			Context context = SettingsWinforms.Get.Language["FormColony"];
 			//TODO(v0.5): set form title

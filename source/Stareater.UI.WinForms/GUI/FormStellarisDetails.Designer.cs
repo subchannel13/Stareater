@@ -163,6 +163,7 @@
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "FormStellarisDetails";
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.formStellarisDetails_FormClosed);
 			((System.ComponentModel.ISupportInitialize)(this.starImage)).EndInit();
 			this.coloniesInfoGroup.ResumeLayout(false);
 			this.coloniesInfoGroup.PerformLayout();
@@ -170,6 +171,7 @@
 			this.outputInfoGroup.ResumeLayout(false);
 			this.outputInfoGroup.PerformLayout();
 			this.ResumeLayout(false);
+
 		}
 		private System.Windows.Forms.Label industryInfo;
 		private System.Windows.Forms.Label developmentInfo;
