@@ -222,6 +222,10 @@
     <Compile Include="GUI\FormError.Designer.cs">
       <DependentUpon>FormError.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\FormLibrary.cs" />
+    <Compile Include="GUI\FormLibrary.Designer.cs">
+      <DependentUpon>FormLibrary.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -439,6 +443,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormError.resx">
       <DependentUpon>FormError.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormLibrary.resx">
+      <DependentUpon>FormLibrary.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

@@ -151,6 +151,11 @@ namespace Stareater.GUI
 					form.Result.Accept(this.reportOpener);
 		}
 		
+		private void libraryToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using(var form = new FormLibrary(this.currentPlayer))
+				form.ShowDialog();
+		}
 		#region Delayed Events
 		private void postDelayedEvent(Action eventAction)
 		{

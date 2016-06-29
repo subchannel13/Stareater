@@ -53,6 +53,7 @@
 			this.shipCount = new System.Windows.Forms.Label();
 			this.unitDoneAction = new System.Windows.Forms.Button();
 			this.abilityList = new System.Windows.Forms.FlowLayoutPanel();
+			this.libraryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip.SuspendLayout();
 			this.fleetPanel.SuspendLayout();
 			this.unitInfoPanel.SuspendLayout();
@@ -100,7 +101,8 @@
 			this.developmentToolStripMenuItem,
 			this.researchToolStripMenuItem,
 			this.colonizationToolStripMenuItem,
-			this.reportsToolStripMenuItem});
+			this.reportsToolStripMenuItem,
+			this.libraryToolStripMenuItem});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
 			this.menuStrip.Size = new System.Drawing.Size(884, 24);
@@ -286,6 +288,13 @@
 			this.abilityList.TabIndex = 8;
 			this.abilityList.Visible = false;
 			// 
+			// libraryToolStripMenuItem
+			// 
+			this.libraryToolStripMenuItem.Name = "libraryToolStripMenuItem";
+			this.libraryToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+			this.libraryToolStripMenuItem.Text = "Library";
+			this.libraryToolStripMenuItem.Click += new System.EventHandler(this.libraryToolStripMenuItem_Click);
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -342,5 +351,6 @@
 		private System.Windows.Forms.Label shipCount;
 		private System.Windows.Forms.Button unitDoneAction;
 		private System.Windows.Forms.FlowLayoutPanel abilityList;
+		private System.Windows.Forms.ToolStripMenuItem libraryToolStripMenuItem;
 	}
 }
