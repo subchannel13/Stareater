@@ -40,6 +40,11 @@ namespace Stareater.Controllers
 		{
 			get { return new PlayerInfo(this.PlayerInstance); }
 		}
+
+		public LibraryController Library 
+		{
+			get { return new LibraryController(this.gameController); }
+		}
 		
 		#region Turn progression
 		public void EndGalaxyPhase()

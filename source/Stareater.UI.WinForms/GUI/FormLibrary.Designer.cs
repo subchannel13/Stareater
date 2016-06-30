@@ -22,6 +22,7 @@ namespace Stareater.GUI
 		private System.Windows.Forms.Label levelLabel;
 		private System.Windows.Forms.NumericUpDown levelInput;
 		private System.Windows.Forms.Label maxLevelInfo;
+		private System.Windows.Forms.Label topicSeparator;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -48,6 +49,7 @@ namespace Stareater.GUI
 			this.topicList = new System.Windows.Forms.FlowLayoutPanel();
 			this.researchLink = new System.Windows.Forms.LinkLabel();
 			this.developmentLink = new System.Windows.Forms.LinkLabel();
+			this.topicSeparator = new System.Windows.Forms.Label();
 			this.topicName = new System.Windows.Forms.Label();
 			this.levelLabel = new System.Windows.Forms.Label();
 			this.levelInput = new System.Windows.Forms.NumericUpDown();
@@ -65,6 +67,7 @@ namespace Stareater.GUI
 			this.topicText.Size = new System.Drawing.Size(373, 427);
 			this.topicText.TabIndex = 0;
 			this.topicText.Text = "label1";
+			this.topicText.Visible = false;
 			// 
 			// topicList
 			// 
@@ -73,6 +76,7 @@ namespace Stareater.GUI
 			this.topicList.AutoScroll = true;
 			this.topicList.Controls.Add(this.researchLink);
 			this.topicList.Controls.Add(this.developmentLink);
+			this.topicList.Controls.Add(this.topicSeparator);
 			this.topicList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.topicList.Location = new System.Drawing.Point(12, 12);
 			this.topicList.Name = "topicList";
@@ -88,6 +92,7 @@ namespace Stareater.GUI
 			this.researchLink.TabIndex = 0;
 			this.researchLink.TabStop = true;
 			this.researchLink.Text = "linkResearch";
+			this.researchLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.researchLink_LinkClicked);
 			// 
 			// developmentLink
 			// 
@@ -100,6 +105,15 @@ namespace Stareater.GUI
 			this.developmentLink.TabStop = true;
 			this.developmentLink.Text = "linkDevelopment";
 			// 
+			// topicSeparator
+			// 
+			this.topicSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.topicSeparator.Location = new System.Drawing.Point(3, 34);
+			this.topicSeparator.Margin = new System.Windows.Forms.Padding(3, 5, 3, 2);
+			this.topicSeparator.Name = "topicSeparator";
+			this.topicSeparator.Size = new System.Drawing.Size(150, 3);
+			this.topicSeparator.TabIndex = 2;
+			// 
 			// topicName
 			// 
 			this.topicName.AutoSize = true;
@@ -108,6 +122,7 @@ namespace Stareater.GUI
 			this.topicName.Size = new System.Drawing.Size(58, 13);
 			this.topicName.TabIndex = 2;
 			this.topicName.Text = "Item Name";
+			this.topicName.Visible = false;
 			// 
 			// levelLabel
 			// 
@@ -117,6 +132,7 @@ namespace Stareater.GUI
 			this.levelLabel.Size = new System.Drawing.Size(32, 13);
 			this.levelLabel.TabIndex = 3;
 			this.levelLabel.Text = "level:";
+			this.levelLabel.Visible = false;
 			// 
 			// levelInput
 			// 
@@ -124,6 +140,7 @@ namespace Stareater.GUI
 			this.levelInput.Name = "levelInput";
 			this.levelInput.Size = new System.Drawing.Size(49, 20);
 			this.levelInput.TabIndex = 4;
+			this.levelInput.Visible = false;
 			// 
 			// maxLevelInfo
 			// 
@@ -133,6 +150,7 @@ namespace Stareater.GUI
 			this.maxLevelInfo.Size = new System.Drawing.Size(20, 13);
 			this.maxLevelInfo.TabIndex = 5;
 			this.maxLevelInfo.Text = "/ x";
+			this.maxLevelInfo.Visible = false;
 			// 
 			// FormLibrary
 			// 

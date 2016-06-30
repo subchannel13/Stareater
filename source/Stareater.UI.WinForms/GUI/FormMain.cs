@@ -153,7 +153,7 @@ namespace Stareater.GUI
 		
 		private void libraryToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using(var form = new FormLibrary(this.currentPlayer))
+			using(var form = new FormLibrary(this.currentPlayer.Library))
 				form.ShowDialog();
 		}
 		#region Delayed Events
