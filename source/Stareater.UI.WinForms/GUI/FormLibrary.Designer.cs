@@ -104,6 +104,7 @@ namespace Stareater.GUI
 			this.developmentLink.TabIndex = 1;
 			this.developmentLink.TabStop = true;
 			this.developmentLink.Text = "linkDevelopment";
+			this.developmentLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.developmentLink_LinkClicked);
 			// 
 			// topicSeparator
 			// 
@@ -141,6 +142,7 @@ namespace Stareater.GUI
 			this.levelInput.Size = new System.Drawing.Size(49, 20);
 			this.levelInput.TabIndex = 4;
 			this.levelInput.Visible = false;
+			this.levelInput.ValueChanged += new System.EventHandler(this.levelInput_ValueChanged);
 			// 
 			// maxLevelInfo
 			// 

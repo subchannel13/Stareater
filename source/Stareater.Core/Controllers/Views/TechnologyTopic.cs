@@ -68,7 +68,7 @@ namespace Stareater.Controllers.Views
 			}
 		}
 		
-		public long MaxLevel 
+		public int MaxLevel 
 		{ 
 			get 
 			{
