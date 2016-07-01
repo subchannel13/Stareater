@@ -8,7 +8,7 @@ namespace Stareater.Controllers.Views.Ships
 {
 	public class MissionEquipInfo
 	{
-		private const string LangContext = "MissionEquipment";
+		internal const string LangContext = "MissionEquipment";
 		
 		internal MissionEquipmentType Type { get; private set; }
 		internal int Level { get; private set; }

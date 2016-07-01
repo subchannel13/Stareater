@@ -8,7 +8,7 @@ namespace Stareater.Controllers.Views.Ships
 {
 	public class ThrusterInfo
 	{
-		private const string LangContext = "Thrusters";
+		internal const string LangContext = "Thrusters";
 
 		internal ThrusterType Type { get; private set; }
 		internal int Level { get; private set; }

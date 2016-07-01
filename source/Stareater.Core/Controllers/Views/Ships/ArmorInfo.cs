@@ -8,7 +8,7 @@ namespace Stareater.Controllers.Views.Ships
 {
 	public class ArmorInfo
 	{
-		private const string LangContext = "Armors";
+		internal const string LangContext = "Armors";
 		
 		internal ArmorType Type { get; private set; }
 		internal int Level { get; private set; }

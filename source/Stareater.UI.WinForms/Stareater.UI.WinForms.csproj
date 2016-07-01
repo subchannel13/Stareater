@@ -328,6 +328,7 @@
     <Compile Include="GUI\FormStellarisDetails.Designer.cs">
       <DependentUpon>FormStellarisDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\LibraryPage.cs" />
     <Compile Include="GUI\MainMenuResult.cs" />
     <Compile Include="GUI\MapParameterIntegerRange.cs">
       <SubType>UserControl</SubType>

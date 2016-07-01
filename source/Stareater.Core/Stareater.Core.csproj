@@ -102,6 +102,7 @@
     <Compile Include="Controllers\Views\IGameStateListener.cs" />
     <Compile Include="Controllers\Views\IReportInfo.cs" />
     <Compile Include="Controllers\Views\IReportInfoVisitor.cs" />
+    <Compile Include="Controllers\Views\Library\ShipComponentGeneralInfo.cs" />
     <Compile Include="Controllers\Views\Library\TechnologyGeneralInfo.cs" />
     <Compile Include="Controllers\Views\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Views\PlayerInfo.cs" />

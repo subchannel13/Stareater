@@ -8,7 +8,7 @@ namespace Stareater.Controllers.Views.Ships
 {
 	public class SensorInfo
 	{
-		private const string LangContext = "Sensors";
+		internal const string LangContext = "Sensors";
 
 		internal SensorType Type { get; private set; }
 		internal int Level { get; private set; }

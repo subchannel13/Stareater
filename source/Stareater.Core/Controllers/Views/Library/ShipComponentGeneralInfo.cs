@@ -1,21 +1,21 @@
 ﻿using System;
-using NGenerics.Util;
 using Stareater.AppData;
-using Stareater.GameData;
-using Stareater.Utils;
+using Stareater.GameData.Ships;
 using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views.Library
 {
-	public class TechnologyGeneralInfo
+	public class ShipComponentGeneralInfo
 	{
-		private const string LangContext = TechnologyTopic.LangContext;
+		private AComponentType Data;
+		private string langContext;
+		private string imagePath;
 		
-		private readonly Technology Data;
-		
-		internal TechnologyGeneralInfo(Technology data)
+		internal ShipComponentGeneralInfo(AComponentType data, string langContext, string imagePath)
 		{
 			this.Data = data;
+			this.langContext = langContext;
+			this.imagePath = imagePath;
 		}
 		
 		public string Name(int level)
@@ -23,7 +23,7 @@ namespace Stareater.Controllers.Views.Library
 			if (level < 0 || level > this.Data.MaxLevel)
 				throw new ArgumentOutOfRangeException("level");
 					
-			return Settings.Get.Language[LangContext][this.Data.NameCode].Text(new Var(Technology.LevelKey, level).Get);
+			return Settings.Get.Language[langContext][this.Data.NameCode].Text(new Var(AComponentType.LevelKey, level).Get);
 		}
 		
 		public string Description(int level)
@@ -31,14 +31,14 @@ namespace Stareater.Controllers.Views.Library
 			if (level < 0 || level > this.Data.MaxLevel)
 				throw new ArgumentOutOfRangeException("level");
 			
-			return Settings.Get.Language[LangContext][this.Data.DescriptionCode].Text(new Var(Technology.LevelKey, level).Get);
+			return Settings.Get.Language[langContext][this.Data.DescCode].Text(new Var(AComponentType.LevelKey, level).Get);
 		}
 		
 		public string ImagePath 
 		{
 			get
 			{
-				return this.Data.ImagePath;
+				return imagePath;
 			}
 		}
 		

@@ -8,7 +8,7 @@ namespace Stareater.Controllers.Views.Ships
 {
 	public class HullInfo
 	{
-		private const string LangContext = "Hulls";
+		internal const string LangContext = "Hulls";
 		
 		internal HullType Type { get; private set; }
 		internal int Level { get; private set; }

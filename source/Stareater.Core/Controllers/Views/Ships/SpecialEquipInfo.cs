@@ -8,7 +8,7 @@ namespace Stareater.Controllers.Views.Ships
 {
 	public class SpecialEquipInfo
 	{
-		private const string LangContext = "SpecialEquipment";
+		internal const string LangContext = "SpecialEquipment";
 		
 		internal SpecialEquipmentType Type { get; private set; }
 		internal int Level { get; private set; }

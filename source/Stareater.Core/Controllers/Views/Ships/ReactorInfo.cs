@@ -7,7 +7,7 @@ namespace Stareater.Controllers.Views.Ships
 {
 	public class ReactorInfo
 	{
-		private const string LangContext = "Reactors";
+		internal const string LangContext = "Reactors";
 		
 		internal ReactorType Type { get; private set; }
 		internal int Level { get; private set; }

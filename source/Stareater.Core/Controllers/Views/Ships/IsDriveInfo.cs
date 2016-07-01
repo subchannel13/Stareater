@@ -7,7 +7,7 @@ namespace Stareater.Controllers.Views.Ships
 {
 	public class IsDriveInfo
 	{
-		private const string LangContext = "IsDrives";
+		internal const string LangContext = "IsDrives";
 		
 		internal IsDriveType Type { get; private set; }
 		internal int Level { get; private set; }

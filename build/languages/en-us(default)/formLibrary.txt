@@ -1,7 +1,15 @@
 :FormLibrary
 FormTitle = Library
-
-research = Research
-development = Development
 level = Level
+
+armor = Armors
+development = Development
+hull = Hulls
+isDrive = IS drives
+missionEquip = Weapons
+reactor = Reactors
+research = Research
+sensor = Sensors
+specialEquip = Special equipment
+thruster = Thrusters
 -
