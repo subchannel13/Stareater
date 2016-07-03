@@ -8,9 +8,13 @@ digraph G {
 	NewGameController -> GameController [label="new game"];
 	SavesController -> GameController [label="load game"];
 	
-	GameController -> StarSystemController [label="view"];
-	GameController -> ShipDesignController [label="new design"];
-	{rank=same; GameController ShipDesignController}
+	GameController -> LibraryController [label="open"];
+	GameController -> PlayerController [label="create"];
+	GameController -> SpaceBattleController [label="on combat"];
+	
+	PlayerController -> StarSystemController [label="view"];
+	PlayerController -> ShipDesignController [label="new design"];
+	PlayerController -> ColonizationController [label="colonize/open"];
 	
 	StarSystemController -> ColonyController [label="view"];
 	StarSystemController -> StellarisAdminController [label="view"];
