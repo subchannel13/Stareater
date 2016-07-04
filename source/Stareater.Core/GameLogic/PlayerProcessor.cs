@@ -204,7 +204,7 @@ namespace Stareater.GameLogic
 				stellarisProc.ProcessPrecombat(states, derivates);
 			
 			/*
-			 * TODO(v0.5): Process stars
+			 * TODO(later): Process stars
 			 * - Perform migration
 			 */
 		}

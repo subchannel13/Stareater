@@ -45,7 +45,7 @@ namespace Stareater.Controllers
 		internal void LoadGame(MainGame game)
 		{
 			this.gameObj = game;
-			makePlayers(); //TODO(v0.5) invalidate player controllers at view
+			makePlayers();
 		}
 
 		/// <summary>
@@ -63,6 +63,7 @@ namespace Stareater.Controllers
 		public void Stop()
 		{
 			this.State = GameState.NoGame;
+			//TODO(later): stop AI tasks
 			//UNDONE(later): what else to do here?
 		}
 		

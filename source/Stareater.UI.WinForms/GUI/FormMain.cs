@@ -395,7 +395,7 @@ namespace Stareater.GUI
 #if DEBUG
 			try {
 #endif
-			if (glReady && currentRenderer != null)
+			if (glReady && currentRenderer != null && gameController.State == GameState.Running)
 				currentRenderer.Draw(dt);
 #if DEBUG
 			} catch(Exception ex)

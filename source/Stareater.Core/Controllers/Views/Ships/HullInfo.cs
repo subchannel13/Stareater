@@ -39,6 +39,14 @@ namespace Stareater.Controllers.Views.Ships
 			}
 		}
 		
+		public double Cost
+		{
+			get
+			{
+				return this.Type.Cost.Evaluate(levelVar);
+			}
+		}
+		
 		public string[] ImagePaths
 		{
 			get
@@ -52,6 +60,22 @@ namespace Stareater.Controllers.Views.Ships
 			get
 			{
 				return this.Type.ArmorBase.Evaluate(levelVar);
+			}
+		}
+		
+		public double ArmorAbsorbBase
+		{
+			get
+			{
+				return this.Type.ArmorAbsorption.Evaluate(levelVar);
+			}
+		}
+		
+		public double ShieldHpBase
+		{
+			get
+			{
+				return this.Type.ShieldBase.Evaluate(levelVar);
 			}
 		}
 		
@@ -111,6 +135,12 @@ namespace Stareater.Controllers.Views.Ships
 			}
 		}
 		
-		//TODO(v0.5) add other hull properties
+		public double InertiaBase
+		{
+			get
+			{
+				return this.Type.InertiaBase.Evaluate(levelVar);
+			}
+		}
 	}
 }
