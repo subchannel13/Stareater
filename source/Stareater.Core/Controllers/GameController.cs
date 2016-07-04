@@ -31,7 +31,7 @@ namespace Stareater.Controllers
 			if (State != GameState.NoGame)
 				throw new InvalidOperationException("Game is already created.");
 
-			//TODO: Pass organization to player
+			//TODO(later): Pass organization to player
 			Player[] players = controller.PlayerList.Select(info =>
 				new Player(info.Name, info.Color, /*info.Organization, */info.ControlType)
 			).ToArray();
@@ -81,7 +81,12 @@ namespace Stareater.Controllers
 			this.playerControllers = new PlayerController[this.gameObj.Players.Length];
 			
 			for (int i = 0; i < this.gameObj.Players.Length; i++)
+			{
 				this.playerControllers[i] = new PlayerController(i, this);
+				
+				if (this.gameObj.Players[i].OffscreenControl != null)
+					this.gameObj.Players[i].OffscreenControl.Controller = this.playerControllers[i];
+			}
 		}
 		
 		#region Turn processing
@@ -131,7 +136,7 @@ namespace Stareater.Controllers
 		private void aiDoGalaxyPhase() 
 		{
 			foreach(var aiController in this.playerControllers.Where(x => x.PlayerInstance.ControlType == PlayerControlType.LocalAI))
-				aiController.PlayerInstance.OffscreenControl.PlayTurn(aiController);
+				aiController.PlayerInstance.OffscreenControl.PlayTurn();
 		}
 
 		private void checkTaskException(Task lastTask)

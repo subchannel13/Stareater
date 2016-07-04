@@ -13,14 +13,16 @@ namespace Stareater.Players.DefaultAI
 		private PlayerController playerController;
 		private SpaceBattleController battleController;
 		
-		public void PlayTurn(PlayerController controller)
+		public PlayerController Controller 
+		{ 
+			set { this.playerController = value; }
+		}
+		
+		public void PlayTurn()
 		{
-			//TODO(v0.5) change interface to register controller first and play turn later
-			this.playerController = controller;
-			
-			foreach(var stellaris in controller.Stellarises())
+			foreach(var stellaris in this.playerController.Stellarises())
 			{
-				StarSystemController starSystem = controller.OpenStarSystem(stellaris.HostStar);
+				StarSystemController starSystem = this.playerController.OpenStarSystem(stellaris.HostStar);
 				manage(starSystem.StellarisController());
 				
 				foreach(var planet in starSystem.Planets)
@@ -28,7 +30,7 @@ namespace Stareater.Players.DefaultAI
 						manage(starSystem.ColonyController(planet.Position));
 			}
 			
-			controller.EndGalaxyPhase();
+			this.playerController.EndGalaxyPhase();
 		}
 
 		public IBattleEventListener StartBattle(SpaceBattleController controller)

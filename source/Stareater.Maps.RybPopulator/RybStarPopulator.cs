@@ -96,9 +96,9 @@ namespace Stareater.Galaxy.RybPopulator
 			int colorI = 0;
 			var namer = new StarNamer(starPositions.Stars.Length);
 
-			//UNDONE(v0.5): Picks star types cyclicaly
-			//TODO(v0.5): Randomize star type distribution
-			//TODO(v0.5): Star size and radiation distribution
+			//UNDONE(later): Picks star types cyclicaly
+			//TODO(later): Randomize star type distribution
+			//TODO(later): Star size and radiation distribution
 			foreach (var position in starPositions.Stars) {
 				var star = new StarData(starTypes[colorI++ % starTypes.Length].Hue, 1, namer.NextName(), position);
 				
