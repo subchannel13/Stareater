@@ -332,6 +332,7 @@ namespace Stareater.GameLogic
 				And("hullSensor", hull.TypeInfo.SensorsBase.Evaluate(hullVars)).
 				And("hullCloak", hull.TypeInfo.CloakingBase.Evaluate(hullVars)).
 				And("hullJamming", hull.TypeInfo.JammingBase.Evaluate(hullVars)).
+				And("hullInertia", hull.TypeInfo.InertiaBase.Evaluate(hullVars)).
 				And(HullType.IsDriveSizeKey, hull.TypeInfo.SizeIS.Evaluate(hullVars)).
 				And(HullType.ReactorSizeKey, hull.TypeInfo.SizeReactor.Evaluate(hullVars)).
 				Init(statics.SpecialEquipment.Keys, 0).
