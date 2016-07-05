@@ -5,24 +5,9 @@ coloniesGroup = Colonies
 outputGroup = Output
 
 
-populationInfo §
-		Population: {=pop}
-	\
-
-infrastructureInfo §
-		Infrastructure: {=popOrg} %
-	\
-	
-
-industryInfo §
-		Industry: {=outInd}
-	\
-
-developmentInfo §
-		Development: {=outDev}
-	\
-
-researchInfo §
-		Research: {=outRes}
-	\
+populationInfo = Population
+infrastructureInfo = Infrastructure
+industryInfo = Industry
+developmentInfo = Development
+researchInfo = Research
 -

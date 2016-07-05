@@ -13,7 +13,7 @@ using Stareater.Properties;
 
 namespace Stareater.GUI
 {
-	public partial class FormStellarisDetails : Form
+	public sealed partial class FormStellarisDetails : Form
 	{
 		private StellarisAdminController controller;
 
@@ -34,22 +34,16 @@ namespace Stareater.GUI
 			coloniesInfoGroup.Text = context["coloniesGroup"].Text();
 			outputInfoGroup.Text = context["outputGroup"].Text();
 			
-			var vars = new TextVar();
 			var prefixFormat = new ThousandsFormatter();
 			var percentFormat = new DecimalsFormatter(0, 1);
-			vars.And("pop", prefixFormat.Format(controller.PopulationTotal));
-			vars.And("popOrg", percentFormat.Format(controller.OrganisationAverage));
+			Func<string, double, string> totalText = (label, x) => context[label].Text() + ": " + prefixFormat.Format(x);
 			
-			populationInfo.Text = context["populationInfo"].Text(null, vars.Get);
-			infrastructureInfo.Text = context["infrastructureInfo"].Text(null, vars.Get);
+			populationInfo.Text = totalText("populationInfo", controller.PopulationTotal);
+			infrastructureInfo.Text = context["infrastructureInfo"].Text() + ": " + percentFormat.Format(controller.OrganisationAverage * 100) + " %";
 			
-			vars.And("outInd", prefixFormat.Format(controller.IndustryTotal));
-			vars.And("outDev", prefixFormat.Format(controller.DevelopmentTotal));
-			vars.And("outRes", prefixFormat.Format(controller.Research));
-			
-			industryInfo.Text = context["industryInfo"].Text(null, vars.Get);
-			developmentInfo.Text = context["developmentInfo"].Text(null, vars.Get);
-			researchInfo.Text = context["researchInfo"].Text(null, vars.Get);
+			industryInfo.Text = totalText("industryInfo", controller.IndustryTotal);
+			developmentInfo.Text = totalText("developmentInfo", controller.DevelopmentTotal);
+			researchInfo.Text = totalText("researchInfo", controller.Research);
 			
 			foreach (var data in controller.Buildings) {
 				var itemView = new BuildingItem();

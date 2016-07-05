@@ -42,5 +42,10 @@ namespace Stareater.Utils.NumberFormatters
 			}
 			return Format(number);
 		}
+		
+		public static string Sign(double number)
+		{
+			return number > 0 ? "+" : number < 0 ? "-" : "";
+		}
 	}
 }

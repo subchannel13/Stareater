@@ -15,7 +15,7 @@ using Stareater.Properties;
 
 namespace Stareater.GUI
 {
-	public partial class FormColonyDetails : Form
+	public sealed partial class FormColonyDetails : Form
 	{
 		private ColonyController controller;
 
@@ -44,43 +44,32 @@ namespace Stareater.GUI
 			Context context = SettingsWinforms.Get.Language["FormColony"];
 			this.Text = LocalizationMethods.PlanetName(controller.PlanetBody);
 			
+			var popFormat = new ThousandsFormatter(controller.PopulationMax, controller.Population);
+			var decimalFormat = new DecimalsFormatter(0, 1);
+			var prefixFormat = new ThousandsFormatter();
+			
+			Func<string, double, string> statText = (label, x) => context[label].Text() + ": " + decimalFormat.Format(x);
+			Func<string, double, string> perPop = (label, x) => context[label].Text() + ": " + decimalFormat.Format(x) + " / " + context["perPop"].Text();
+			Func<string, double, string> totalText = (label, x) => context[label].Text() + ": " + prefixFormat.Format(x);
+			
 			buildingsGroup.Text = context["buildingsGroup"].Text();
 			planetInfoGroup.Text = context["planetGroup"].Text();
 			popInfoGroup.Text = context["popGroup"].Text();
 			productivityGroup.Text = context["productivityGroup"].Text();
 
-			var vars = new TextVar();
-			var popFormat = new ThousandsFormatter(controller.PopulationMax, controller.Population);
-			var percentFormat = new DecimalsFormatter(0, 1);
-			vars.And("pop", popFormat.Format(controller.Population));
-			vars.And("popGrowth", popFormat.Format(controller.PopulationGrowth));
-			vars.And("popMax", popFormat.Format(controller.PopulationMax));
-			vars.And("popOrg", percentFormat.Format(controller.Organization * 100));
+			populationInfo.Text = popFormat.Format(controller.Population) + " / " + popFormat.Format(controller.PopulationMax);
+			growthInfo.Text = context["growthInfo"].Text() + ": " + DecimalsFormatter.Sign(controller.PopulationGrowth) + popFormat.Format(controller.PopulationGrowth);
+			infrastructureInfo.Text = statText("infrastructureInfo", controller.Organization * 100) + "%";
 			
-			populationInfo.Text = context["populationInfo"].Text(vars.Get);
-			growthInfo.Text = context["growthInfo"].Text(vars.Get); //TODO(v0.5): add sign
-			infrastructureInfo.Text = context["infrastructureInfo"].Text(vars.Get);
+			sizeInfo.Text = statText("sizeInfo", controller.PlanetSize);
+			environmentInfo.Text = statText("environmentInfo", controller.PlanetEnvironment * 100) + "%";
 			
-			var prefixFormat = new ThousandsFormatter();
-			vars.And("planetSize", prefixFormat.Format(controller.PlanetSize));
-			vars.And("planetEnv", percentFormat.Format(controller.PlanetEnvironment * 100));
-			
-			sizeInfo.Text = context["sizeInfo"].Text(vars.Get);
-			environmentInfo.Text = context["environmentInfo"].Text(vars.Get);
-			
-			vars.And("prodFood", percentFormat.Format(controller.FoodPerPop));
-			vars.And("prodOre", percentFormat.Format(controller.OrePerPop));
-			vars.And("prodInd", percentFormat.Format(controller.IndustryPerPop));
-			vars.And("prodDev", percentFormat.Format(controller.DevelopmentPerPop));
-			vars.And("totalInd", prefixFormat.Format(controller.IndustryTotal));
-			vars.And("totalDev", prefixFormat.Format(controller.DevelopmentTotal));
-			
-			foodInfo.Text = context["foodInfo"].Text(vars.Get);
-			miningInfo.Text = context["miningInfo"].Text(vars.Get);
-			industryInfo.Text = context["industryInfo"].Text(vars.Get);
-			developmentInfo.Text = context["developmentInfo"].Text(vars.Get);
-			industryTotalInfo.Text = context["industryTotalInfo"].Text(vars.Get);
-			developmentTotalInfo.Text = context["developmentTotalInfo"].Text(vars.Get);
+			foodInfo.Text = perPop("foodInfo", controller.FoodPerPop);
+			miningInfo.Text = perPop("miningInfo", controller.OrePerPop);
+			industryInfo.Text = perPop("industryInfo", controller.IndustryPerPop);
+			developmentInfo.Text = perPop("developmentInfo", controller.FoodPerPop);
+			industryTotalInfo.Text = totalText("industryTotalInfo", controller.IndustryTotal);
+			developmentTotalInfo.Text = totalText("developmentTotalInfo", controller.DevelopmentTotal);
 			
 			foreach(var trait in controller.Traits)
 			{
