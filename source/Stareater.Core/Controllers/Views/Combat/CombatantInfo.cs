@@ -65,6 +65,58 @@ namespace Stareater.Controllers.Views.Combat
 			return this.Data.CloakedFor.Contains(player.Data);
 		}
 		
+		public int MovementEta
+		{
+			get 
+			{ 
+				if (this.Data.MovementPoints > 0)
+					return 0;
+				
+				var rounded = Math.Ceiling(Math.Abs(this.Data.MovementPoints));
+				return Math.Abs(this.Data.MovementPoints) != rounded ? (int)rounded : (int)(rounded + 1);
+			}
+		}
+		
+		public double MovementPoints
+		{
+			get 
+			{ 
+				return this.Data.MovementPoints;
+			}
+		}
+		
+		public double ArmorHp
+		{
+			get 
+			{ 
+				return this.Data.HitPoints;
+			}
+		}
+		
+		public double ArmorHpMax
+		{
+			get 
+			{ 
+				return this.stats.HitPoints;
+			}
+		}
+
+		public double ShieldHp
+		{
+			get 
+			{ 
+				return this.Data.ShieldPoints;
+			}
+		}
+		
+		public double ShieldHpMax
+		{
+			get 
+			{ 
+				return this.stats.ShieldPoints;
+			}
+		}
+		
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{

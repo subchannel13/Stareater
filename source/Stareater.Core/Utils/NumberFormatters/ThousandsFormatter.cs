@@ -80,5 +80,20 @@ namespace Stareater.Utils.NumberFormatters
 
 			return result;
 		}
+		
+		public static ThousandsFormatter MaxMagnitudeFormat(params double[] numbersInContext)
+		{
+			var magnitudeInfo = new KeyValuePair<int, double>(0, 1);
+			var format = new ThousandsFormatter();
+			
+			foreach (double number in numbersInContext) {
+				var candidateInfo = greatestLowerPrefix(number);
+				if (candidateInfo.Key > magnitudeInfo.Key)
+					magnitudeInfo = candidateInfo;
+			}
+			
+			format.magnitudeInfo = magnitudeInfo;
+			return format;
+		}
 	}
 }

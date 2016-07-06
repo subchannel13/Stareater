@@ -10,10 +10,11 @@ using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Controllers.Views.Ships;
+using Stareater.Localization;
+using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GLRenderers;
 using Stareater.GUI.Reports;
-using Stareater.Localization;
 
 namespace Stareater.GUI
 {
@@ -523,7 +524,25 @@ namespace Stareater.GUI
 			
 			var context = SettingsWinforms.Get.Language["FormMain"];
 			var formatter = new ThousandsFormatter();
+			var decimalFormat = new DecimalsFormatter(0, 0);
+			
+			Func<string, double, double, string> hpText = (label, x, max) => 
+			{
+				var hpFormat = ThousandsFormatter.MaxMagnitudeFormat(x, max);
+				return context[label].Text() + ": " + hpFormat.Format(x) + " / " + hpFormat.Format(max);
+			};
+				
 			shipCount.Text = context["ShipCount"].Text() + ": " + formatter.Format(unitInfo.Count);
+			armorInfo.Text = hpText("ArmorLabel", unitInfo.ArmorHp, unitInfo.ArmorHpMax);
+			shieldInfo.Text = hpText("ShieldLabel", unitInfo.ShieldHp, unitInfo.ShieldHpMax);
+			
+			if (unitInfo.MovementEta > 0)
+				movementInfo.Text = context["MovementEta"].Text(
+					new Var("eta", unitInfo.MovementEta).Get, 
+					new TextVar("eta", unitInfo.MovementEta.ToString()).Get
+				);
+			else
+				movementInfo.Text = context["MovementPoints"].Text() + " (" + decimalFormat.Format(unitInfo.MovementPoints * 100) + " %)"; 
 			
 			this.abilityList.Controls.Clear();
 			Func<Image, string, object, Button> buttonMaker = (image, text, tag) =>
