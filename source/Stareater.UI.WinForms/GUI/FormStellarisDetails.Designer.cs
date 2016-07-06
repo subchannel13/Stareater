@@ -35,7 +35,6 @@
 			this.buildingsList = new System.Windows.Forms.FlowLayoutPanel();
 			this.traitList = new System.Windows.Forms.FlowLayoutPanel();
 			this.outputInfoGroup = new System.Windows.Forms.GroupBox();
-			this.researchInfo = new System.Windows.Forms.Label();
 			this.developmentInfo = new System.Windows.Forms.Label();
 			this.industryInfo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.starImage)).BeginInit();
@@ -111,7 +110,6 @@
 			// 
 			// outputInfoGroup
 			// 
-			this.outputInfoGroup.Controls.Add(this.researchInfo);
 			this.outputInfoGroup.Controls.Add(this.developmentInfo);
 			this.outputInfoGroup.Controls.Add(this.industryInfo);
 			this.outputInfoGroup.Location = new System.Drawing.Point(204, 94);
@@ -120,15 +118,6 @@
 			this.outputInfoGroup.TabIndex = 4;
 			this.outputInfoGroup.TabStop = false;
 			this.outputInfoGroup.Text = "Output";
-			// 
-			// researchInfo
-			// 
-			this.researchInfo.AutoSize = true;
-			this.researchInfo.Location = new System.Drawing.Point(6, 42);
-			this.researchInfo.Name = "researchInfo";
-			this.researchInfo.Size = new System.Drawing.Size(74, 13);
-			this.researchInfo.TabIndex = 2;
-			this.researchInfo.Text = "Research: xxx";
 			// 
 			// developmentInfo
 			// 
@@ -175,7 +164,6 @@
 		}
 		private System.Windows.Forms.Label industryInfo;
 		private System.Windows.Forms.Label developmentInfo;
-		private System.Windows.Forms.Label researchInfo;
 		private System.Windows.Forms.GroupBox outputInfoGroup;
 		private System.Windows.Forms.FlowLayoutPanel traitList;
 		private System.Windows.Forms.FlowLayoutPanel buildingsList;

@@ -183,7 +183,7 @@ namespace Stareater.Controllers
 		public IEnumerable<StellarisInfo> Stellarises()
 		{
 			foreach(var stellaris in this.gameInstance.States.Stellarises.OwnedBy(this.PlayerInstance))
-				yield return new StellarisInfo(stellaris);
+				yield return new StellarisInfo(stellaris, this.gameInstance);
 		}
 		#endregion
 		
@@ -347,11 +347,6 @@ namespace Stareater.Controllers
 					this.gameInstance.Derivates.Of(this.PlayerInstance).InvalidateResearch();
 				}
 			}
-		}
-		
-		public StarData ResearchCenter
-		{
-			get { return this.gameInstance.Derivates.Of(this.PlayerInstance).ResearchCenter; }
 		}
 		#endregion
 		

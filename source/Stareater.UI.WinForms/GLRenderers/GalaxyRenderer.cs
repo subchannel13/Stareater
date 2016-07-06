@@ -92,11 +92,13 @@ namespace Stareater.GLRenderers
 				}
 				
 				if (this.currentPlayer.VisualPositioner == null)
-				{
 					this.currentPlayer.VisualPositioner = new VisualPositioner();
 				
-					//TODO(v0.5): move to more appropriate begin turn setup
-					this.lastSelectedStars.Add(this.currentPlayer.PlayerIndex, this.currentPlayer.ResearchCenter.Position);
+				if (!this.lastSelectedStars.ContainsKey(this.currentPlayer.PlayerIndex))
+				{
+					var bestStar = this.currentPlayer.Stellarises().Aggregate((a, b) => a.Population > b.Population ? a : b);
+
+					this.lastSelectedStars.Add(this.currentPlayer.PlayerIndex, bestStar.HostStar.Position);
 					this.originOffset = new Vector2((float)this.lastSelectedStar.Position.X, (float)this.lastSelectedStar.Position.Y);
 					this.currentSelection = GalaxySelectionType.Star;
 				}

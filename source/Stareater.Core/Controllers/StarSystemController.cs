@@ -50,7 +50,7 @@ namespace Stareater.Controllers
 		{
 			if (this.player.Intelligence.About(Star).LastVisited != StarIntelligence.NeverVisited)
 				//TODO(later): show last known star system information
-				return new StellarisInfo(game.States.Stellarises.At(Star));
+				return new StellarisInfo(game.States.Stellarises.At(Star), this.game);
 			
 			return null;
 		}

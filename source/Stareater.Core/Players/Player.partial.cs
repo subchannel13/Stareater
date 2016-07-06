@@ -10,7 +10,6 @@ namespace Stareater.Players
 	partial class Player
 	{
 		private Organization organization; //TODO(later): add to type
-		private Dictionary<object, object> messageFilter; //TODO(v0.5): make type
 		
 		private void initPlayerControl(PlayerType type)
 		{
@@ -42,11 +41,11 @@ namespace Stareater.Players
 			else if (dataMap.Tag.Equals(PlayerType.AiControllerTag))
 			{
 				string factoryId = dataMap[PlayerType.FactoryIdKey].To<string>();
-				//TODO: what if no factory was found?
+				//TODO(later): what if no factory was found?
 				return PlayerAssets.AIDefinitions.First(x => x.Id == factoryId).Load(dataMap);
 			}
 			
-			//TODO: Invalid controller data
+			//TODO(later): Invalid controller data
 			return null;
 		}
 	}

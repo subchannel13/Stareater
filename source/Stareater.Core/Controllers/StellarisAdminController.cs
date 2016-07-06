@@ -109,14 +109,6 @@ namespace Stareater.Controllers
 					Sum(x => x.Development);
 			}
 		}
-		
-		public double Research 
-		{
-			get 
-			{ 
-				return 0; //TODO
-			}
-		}
 		#endregion
 	}
 }

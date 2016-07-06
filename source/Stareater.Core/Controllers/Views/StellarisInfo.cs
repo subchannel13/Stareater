@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Stareater.Galaxy;
 
 namespace Stareater.Controllers.Views
@@ -8,11 +9,17 @@ namespace Stareater.Controllers.Views
 		internal StellarisAdmin Stellaris { get; private set; }
 		
 		public PlayerInfo Owner { get; private set; }
+		public double Population { get; private set; }
 		
-		internal StellarisInfo(StellarisAdmin stellaris)
+		internal StellarisInfo(StellarisAdmin stellaris, MainGame game)
 		{
 			this.Stellaris = stellaris;
 			this.Owner = new PlayerInfo(stellaris.Owner);
+			
+			this.Population = game.States.Colonies.
+				AtStar(stellaris.Location.Star).
+				Where(x => x.Owner == stellaris.Owner).
+				Sum(x => x.Population);
 		}
 		
 		public StarData HostStar

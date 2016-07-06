@@ -7,6 +7,8 @@ CHEM_NAME = Chemistry
 CHEM_DESC = No description
 MAT_NAME = Mathematics
 MAT_DESC = No description
+SOC_NAME = Sociology
+SOC_DESC = No description
 
 HYDRO_FARM_NAME = Hydroponic farms
 HYDRO_FARM_DESC §
@@ -38,7 +40,4 @@ COLONIZER_NAME = Colonizer
 COLONIZER_DESC = Improves colonizer capacity
 SPACE_PROGRAM_NAME = Space program
 SPACE_PROGRAM_DESC = Better space program operations
-
-TEST_NAME = Test
-TEST_DESC = No description
 -

@@ -117,7 +117,7 @@ namespace Stareater.Controllers
 			
 			foreach(var stellaris in this.game.States.Stellarises.OwnedBy(this.player))
 				if (!used.Contains(stellaris.Location.Star))
-					yield return new StellarisInfo(stellaris);
+					yield return new StellarisInfo(stellaris, this.game);
 		}
 		
 		public IEnumerable<StellarisInfo> Sources()
@@ -130,7 +130,7 @@ namespace Stareater.Controllers
 			//stars.UnionWith(this.Game.States.ColonizationProjects.Of(this.PlanetBody).Select(x => x));
 			stars.UnionWith(this.player.Orders.ColonizationOrders[this.PlanetBody].Sources);
 			
-			return stars.Select(x => new StellarisInfo(this.game.States.Stellarises.At(x)));
+			return stars.Select(x => new StellarisInfo(this.game.States.Stellarises.At(x), this.game));
 		}
 		#endregion
 		

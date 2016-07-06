@@ -43,7 +43,6 @@ namespace Stareater.GUI
 			
 			industryInfo.Text = totalText("industryInfo", controller.IndustryTotal);
 			developmentInfo.Text = totalText("developmentInfo", controller.DevelopmentTotal);
-			researchInfo.Text = totalText("researchInfo", controller.Research);
 			
 			foreach (var data in controller.Buildings) {
 				var itemView = new BuildingItem();

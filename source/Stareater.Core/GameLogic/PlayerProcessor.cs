@@ -22,7 +22,6 @@ namespace Stareater.GameLogic
 		
 		public IEnumerable<ScienceResult> DevelopmentPlan { get; protected set; }
 		public IEnumerable<ScienceResult> ResearchPlan { get; protected set; }
-		public StarData ResearchCenter { get; private set; }
 		public Player Player { get; private set; }
 		public Dictionary<Design, DesignStats> DesignStats { get; private set; }
 		public Design ColonyShipDesign { get; private set; }
@@ -103,22 +102,6 @@ namespace Stareater.GameLogic
 		{
 			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			
-			double researchPoints = 0;
-			this.ResearchCenter = null;
-			
-			var researchCenters = colonyProcessors.GroupBy(x => x.Colony.Star);
-			foreach (var center in researchCenters)
-			{
-				var centerVars = new Var("pop", center.Sum(x => x.Colony.Population))
-					.UnionWith(techLevels);
-				
-				double localResearch = statics.PlayerFormulas.Research.Evaluate(centerVars.Get);
-				if (localResearch > researchPoints) {
-					researchPoints = localResearch;
-					this.ResearchCenter = center.Key;
-				}
-			}
-			
 			var advanceOrder = this.ResearchOrder(states.TechnologyAdvances).ToList();
 			string focused = Player.Orders.ResearchFocus;
 			
@@ -132,7 +115,7 @@ namespace Stareater.GameLogic
 				weight /= advanceOrder.Count + focusWeight;
 				
 				results.Add(advanceOrder[i].SimulateInvestment(
-					researchPoints * weight,
+					weight,
 					techLevels
 				));
 			}
@@ -276,8 +259,6 @@ namespace Stareater.GameLogic
 					makeDesign(statics, states, predefDesign, techLevels, false);
 				}
 			
-		
-			//TODO(v0.5) skip step if there is no update
 			this.ColonyShipDesign = makeDesign(
 				statics, states,
 				statics.ColonyShipDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(statics), 0, techLevels)),
