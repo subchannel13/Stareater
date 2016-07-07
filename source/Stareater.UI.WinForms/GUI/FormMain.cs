@@ -68,7 +68,7 @@ namespace Stareater.GUI
 			this.developmentToolStripMenuItem.Text = context["DevelopmentMenu"].Text();
 			
 			//TODO(v0.5) implement power state (battery or plug in) check
-			//TODO(v0.5) try to find a way for renderer loop without timer
+			//TODO(later) try to find a way for renderer loop without timer
 			this.glRedrawTimer.Interval = SettingsWinforms.Get.UnlimitedFramerate ? 
 				1 : 
 				(int)Math.Max(1, Math.Floor(0.3 * 1000.0 / SettingsWinforms.Get.Framerate));
@@ -351,8 +351,7 @@ namespace Stareater.GUI
 		
 		private void unitDoneAction_Click(object sender, EventArgs e)
 		{
-			//TODO(v0.5) check if you can do that and consider moving to renderer
-			this.combatRenderer.Controller.UnitDone();
+			this.combatRenderer.OnUnitDone();
 		}
 		
 		private void selectAbility_Click(object sender, EventArgs e)

@@ -127,6 +127,11 @@ namespace Stareater.GLRenderers
 			this.SelectedAbility = unitInfo.Abilities.FirstOrDefault(x => x.Quantity > 0);
 		}
 		
+		public void OnUnitDone()
+		{
+			this.Controller.UnitDone();
+		}
+		
 		private void drawBodies()
 		{
 			var formatter = new ThousandsFormatter();
