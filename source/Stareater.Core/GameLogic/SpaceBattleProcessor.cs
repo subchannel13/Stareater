@@ -26,6 +26,7 @@ namespace Stareater.GameLogic
 		{
 			this.initUnits(fleets);
 			this.initBodies();
+			this.makeUnitOrder();
 			
 			this.game.TurnLimit = (int)Math.Ceiling(50 * (1 - startTime));
 		}
@@ -106,7 +107,7 @@ namespace Stareater.GameLogic
 			get { return this.game.Turn >= this.game.TurnLimit; }
 		}
 		
-		public void MakeUnitOrder()
+		private void makeUnitOrder()
 		{
 			foreach(var unit in this.game.Combatants)
 			{
@@ -119,6 +120,52 @@ namespace Stareater.GameLogic
 			
 			foreach(var unit in units)
 				this.game.PlayOrder.Enqueue(unit);
+		}
+		
+		private void nextRound()
+		{
+			this.game.Turn++;
+			this.game.Combatants.RemoveAll(x => x.Ships.Quantity <= 0);
+			
+			foreach(var unit in this.game.Combatants)
+			{
+				var stats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
+				
+				unit.MovementPoints += 1;
+				unit.MovementPoints = Math.Min(unit.MovementPoints, 1);
+				
+				unit.ShieldPoints += stats.ShieldRegeneration;
+				unit.ShieldPoints = Math.Min(unit.ShieldPoints, stats.ShieldPoints);
+				
+				for(int i = 0; i < unit.AbilityCharges.Length; i++)
+					unit.AbilityCharges[i] = stats.Abilities[i].Quantity * (double)unit.Ships.Quantity;
+				
+				this.rollCloaking(unit, stats, players);
+			}
+			
+			foreach(var planet in this.game.Planets.Where(x => x.Colony != null && x.Colony.Population < 1))
+			{
+				this.mainGame.States.Colonies.Remove(planet.Colony);
+				this.mainGame.Derivates.Colonies.Remove(this.mainGame.Derivates.Of(planet.Colony));
+				planet.Colony = null;
+				 //TODO(later) if stellaris should be removed too
+			}
+			
+			this.makeUnitOrder();
+		}
+		
+		private double sensorStrength(Vector2D position, Player owner)
+		{
+			var designStats = this.mainGame.Derivates.Of(owner).DesignStats;
+			var rangePenalty = this.mainGame.Statics.ShipFormulas.SensorRangePenalty;
+			
+			return this.game.Combatants.Where(x => x.Owner == owner).Max(
+				x => 
+				{
+					var distance = Methods.HexDistance(x.Position, position);
+					return designStats[x.Ships.Design].Detection + distance * rangePenalty;
+				}
+			);
 		}
 		
 		private void rollCloaking(Combatant unit, DesignStats stats, IEnumerable<Player> players)
@@ -156,36 +203,7 @@ namespace Stareater.GameLogic
 			var players = this.game.Combatants.Select(x => x.Owner).Distinct();
 			
 			if (this.game.PlayOrder.Count == 0)
-			{
-				this.game.Turn++;
-				//TODO(v0.5) move turn processing to a separate method
-				this.game.Combatants.RemoveAll(x => x.Ships.Quantity <= 0);
-				
-				foreach(var unit in this.game.Combatants)
-				{
-					var stats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
-					
-					unit.MovementPoints += 1;
-					unit.MovementPoints = Math.Min(unit.MovementPoints, 1);
-					
-					unit.ShieldPoints += stats.ShieldRegeneration;
-					unit.ShieldPoints = Math.Min(unit.ShieldPoints, stats.ShieldPoints);
-					
-					for(int i = 0; i < unit.AbilityCharges.Length; i++)
-						unit.AbilityCharges[i] = stats.Abilities[i].Quantity * (double)unit.Ships.Quantity;
-					
-					this.rollCloaking(unit, stats, players);
-				}
-				
-				foreach(var planet in this.game.Planets.Where(x => x.Colony != null && x.Colony.Population < 1))
-				{
-					this.mainGame.States.Colonies.Remove(planet.Colony); //TODO(v0.5) test and see if more stuff has to be updated
-					this.mainGame.Derivates.Colonies.Remove(this.mainGame.Derivates.Of(planet.Colony));
-					planet.Colony = null;
-				}
-				
-				this.MakeUnitOrder();
-			}
+				this.nextRound();
 		}
 
 		public void UseAbility(int index, double quantity, Combatant target)
@@ -240,20 +258,6 @@ namespace Stareater.GameLogic
 			yield return unit.Position + new Vector2D(0, -1);
 			yield return unit.Position + new Vector2D(-1, -1 + yOffset);
 			yield return unit.Position + new Vector2D(-1, 0 + yOffset);
-		}
-
-		double sensorStrength(Vector2D position, Player owner)
-		{
-			var designStats = this.mainGame.Derivates.Of(owner).DesignStats;
-			var rangePenalty = this.mainGame.Statics.ShipFormulas.SensorRangePenalty;
-			
-			return this.game.Combatants.Where(x => x.Owner == owner).Max(
-				x => 
-				{
-					var distance = Methods.HexDistance(x.Position, position);
-					return designStats[x.Ships.Design].Detection + distance * rangePenalty;
-				}
-			);
 		}
 		
 		#region Damage dealing

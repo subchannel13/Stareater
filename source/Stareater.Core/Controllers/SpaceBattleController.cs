@@ -90,7 +90,6 @@ namespace Stareater.Controllers
 		
 		internal void Start()
 		{
-			this.battleGame.Processor.MakeUnitOrder(); //TODO(v0.5) move to battle initialization and make method private
 			this.playNexUnit();
 		}
 
