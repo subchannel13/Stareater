@@ -8,7 +8,7 @@ using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI
 {
-	public partial class FormShipDesignList : Form
+	public sealed partial class FormShipDesignList : Form
 	{
 		private readonly PlayerController controller;
 		
@@ -60,6 +60,9 @@ namespace Stareater.GUI
 		
 		private void newDesignButton_Click(object sender, EventArgs e)
 		{
+			if (this.controller.IsReadOnly)
+				return;
+			
 			var designer = controller.NewDesign();
 			
 			using(var form = new FormShipDesigner(designer))

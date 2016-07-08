@@ -188,7 +188,7 @@ namespace Stareater.Controllers
 		#region Ship designs
 		public ShipDesignController NewDesign()
 		{
-			return new ShipDesignController(this.gameInstance, this.PlayerInstance); //FIXME(v0.5) check if the game is read only 
+			return (!this.gameController.IsReadOnly) ? new ShipDesignController(this.gameInstance, this.PlayerInstance) : null;
 		}
 		
 		public IEnumerable<DesignInfo> ShipsDesigns()

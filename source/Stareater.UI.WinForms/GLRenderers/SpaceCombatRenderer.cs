@@ -191,7 +191,7 @@ namespace Stareater.GLRenderers
 				
 				GL.PushMatrix();
 				GL.Translate(hexX(hex.Key), hexY(hex.Key), CombatantZ);
-				GL.Color4(unit.Owner.Color.R, unit.Owner.Color.G, unit.Owner.Color.B, (byte)(alpha * 255)); //TODO(v0.5) color units
+				GL.Color4(unit.Owner.Color.R, unit.Owner.Color.G, unit.Owner.Color.B, (byte)(alpha * 255)); //TODO(later) color units
 				
 				TextureUtils.DrawSprite(GalaxyTextures.Get.Sprite(unit.Design.ImagePath));
 				
