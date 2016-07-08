@@ -91,13 +91,11 @@ namespace Stareater.Controllers
 		
 		public StarSystemController OpenStarSystem(StarData star)
 		{
-			//TODO(v0.5) pass player
 			return new StarSystemController(this.gameInstance, star, this.IsReadOnly, this.PlayerInstance);
 		}
 		
 		public StarSystemController OpenStarSystem(Vector2D position)
 		{
-			//TODO(v0.5) pass player
 			return this.OpenStarSystem(this.gameInstance.States.Stars.At(position));
 		}
 		

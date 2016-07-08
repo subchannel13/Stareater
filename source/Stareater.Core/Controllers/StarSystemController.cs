@@ -48,7 +48,7 @@ namespace Stareater.Controllers
 		
 		public StellarisInfo StarsAdministration()
 		{
-			if (this.player.Intelligence.About(Star).LastVisited != StarIntelligence.NeverVisited)
+			if (this.player.Intelligence.About(Star).LastVisited != StarIntelligence.NeverVisited && game.States.Stellarises.AtContains(Star))
 				//TODO(later): show last known star system information
 				return new StellarisInfo(game.States.Stellarises.At(Star), this.game);
 			

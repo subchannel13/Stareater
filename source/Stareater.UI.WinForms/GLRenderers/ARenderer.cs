@@ -18,7 +18,7 @@ namespace Stareater.GLRenderers
 		public abstract void Draw(double deltaTime);
 		
 		#region Initialization/deinitialization
-		public void AttachToCanvas(Control eventDispatcher)
+		public virtual void AttachToCanvas(Control eventDispatcher)
 		{
 			this.eventDispatcher = eventDispatcher;
 			this.attachEventHandlers();

@@ -298,7 +298,7 @@ namespace Stareater.GUI
 			this.shipList.ResumeLayout();
 			
 			this.constructionManagement.Visible = false;
-			empyPlanetView.Visible = false;
+			this.empyPlanetView.Visible = false;
 			this.fleetPanel.Visible = true;
 		}
 
@@ -419,16 +419,16 @@ namespace Stareater.GUI
 		
 		private void switchToGalaxyView()
 		{
+			constructionManagement.Visible = false;
+			empyPlanetView.Visible = false;
+			endTurnButton.Visible = true;
+			returnButton.Visible = false;
+			
 			if (currentRenderer == systemRenderer)
 				systemRenderer.DetachFromCanvas();
 			
 			galaxyRenderer.AttachToCanvas(glCanvas);
 			currentRenderer = galaxyRenderer;
-			
-			constructionManagement.Visible = false;
-			empyPlanetView.Visible = false;
-			endTurnButton.Visible = true;
-			returnButton.Visible = false;
 		}
 		
 		#endregion
@@ -580,6 +580,7 @@ namespace Stareater.GUI
 		void IGalaxyViewListener.FleetDeselected() 
 		{
 			this.fleetController = null;
+			this.fleetPanel.Visible = false;
 		}
 		
 		void IGalaxyViewListener.FleetClicked(IEnumerable<FleetInfo> fleets)
@@ -606,32 +607,36 @@ namespace Stareater.GUI
 			this.shipList.ResumeLayout();
 			
 			this.constructionManagement.Visible = false;
-			empyPlanetView.Visible = false;
+			this.empyPlanetView.Visible = false;
 			this.fleetPanel.Visible = true;
 		}
 		
 		void IGalaxyViewListener.SystemOpened(StarSystemController systemController)
 		{
 			this.fleetController = null;
-			galaxyRenderer.DetachFromCanvas();
+			this.galaxyRenderer.DetachFromCanvas();
 			
-			systemRenderer.AttachToCanvas(glCanvas);
-			systemRenderer.SetStarSystem(systemController, this.currentPlayer);
-			currentRenderer = systemRenderer;
-			
-			constructionManagement.Visible = true;
-			endTurnButton.Visible = false;
-			returnButton.Visible = true;
-			
-			this.fleetController = null;
+			this.constructionManagement.Visible = false;
+			this.empyPlanetView.Visible = false;
 			this.fleetPanel.Visible = false;
+			this.endTurnButton.Visible = false;
+			this.returnButton.Visible = true;
+			
+			this.systemRenderer.AttachToCanvas(glCanvas);
+			this.systemRenderer.SetStarSystem(systemController, this.currentPlayer);
+			this.currentRenderer = systemRenderer;
 		}
 		
 		void IGalaxyViewListener.SystemSelected(StarSystemController systemController)
 		{
-			//TODO(v0.5)
-			this.constructionManagement.Visible = false;
-			this.empyPlanetView.Visible = false;
+			if (systemController.StarsAdministration() == null)
+			{
+				this.constructionManagement.Visible = false;
+				return;
+			}
+			
+			this.constructionManagement.SetView(systemController.StellarisController());
+			this.constructionManagement.Visible = true;
 			
 			this.fleetController = null;
 			this.fleetPanel.Visible = false;

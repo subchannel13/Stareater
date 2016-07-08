@@ -4,6 +4,7 @@ using Stareater.Galaxy;
 
 namespace Stareater.Controllers.Views
 {
+	//TODO(later) convert to general star info even if not colonized
 	public class StellarisInfo
 	{
 		internal StellarisAdmin Stellaris { get; private set; }

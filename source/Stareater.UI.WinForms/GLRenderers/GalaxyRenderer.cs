@@ -101,11 +101,20 @@ namespace Stareater.GLRenderers
 					this.lastSelectedStars.Add(this.currentPlayer.PlayerIndex, bestStar.HostStar.Position);
 					this.originOffset = new Vector2((float)this.lastSelectedStar.Position.X, (float)this.lastSelectedStar.Position.Y);
 					this.currentSelection = GalaxySelectionType.Star;
+					this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
 				}
 			}
 		}
 		
 		#region ARenderer implementation
+		public override void AttachToCanvas(Control eventDispatcher)
+		{
+			base.AttachToCanvas(eventDispatcher);
+			
+			if (this.currentSelection == GalaxySelectionType.Star)
+				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
+		}
+		
 		protected override void attachEventHandlers()
 		{
 			this.eventDispatcher.MouseMove += this.mouseMove;
@@ -434,7 +443,7 @@ namespace Stareater.GLRenderers
 				mousePoint.X, mousePoint.Y, 
 				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
 			
-			if (this.SelectedFleet != null) {
+			if (this.SelectedFleet != null)
 				if (closestObjects.FoundObjects.Count > 0 && closestObjects.FoundObjects[0].Type == GalaxyObjectType.Star) {
 					this.SelectedFleet = this.SelectedFleet.Send(this.SelectedFleet.SimulationWaypoints);
 					this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = this.SelectedFleet.Fleet;
@@ -445,15 +454,10 @@ namespace Stareater.GLRenderers
 					this.galaxyViewListener.FleetDeselected();
 					this.SelectedFleet = null;
 				}
-				
-				if (closestObjects.FoundObjects.Count == 0)
-					this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStars[this.currentPlayer.PlayerIndex]));
-			}
+
 			
 			if (closestObjects.FoundObjects.Count == 0)
-			{
 				return;
-			}
 			
 			switch (closestObjects.FoundObjects[0].Type)
 			{
