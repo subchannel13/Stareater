@@ -126,6 +126,7 @@ namespace Stareater.GameLogic
 		{
 			this.game.Turn++;
 			this.game.Combatants.RemoveAll(x => x.Ships.Quantity <= 0);
+			var players = this.game.Combatants.Select(x => x.Owner).Distinct();
 			
 			foreach(var unit in this.game.Combatants)
 			{
@@ -200,7 +201,6 @@ namespace Stareater.GameLogic
 		public void UnitDone()
 		{
 			this.game.PlayOrder.Dequeue();
-			var players = this.game.Combatants.Select(x => x.Owner).Distinct();
 			
 			if (this.game.PlayOrder.Count == 0)
 				this.nextRound();

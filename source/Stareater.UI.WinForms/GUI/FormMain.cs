@@ -631,7 +631,7 @@ namespace Stareater.GUI
 		{
 			//TODO(v0.5)
 			this.constructionManagement.Visible = false;
-			empyPlanetView.Visible = false;
+			this.empyPlanetView.Visible = false;
 			
 			this.fleetController = null;
 			this.fleetPanel.Visible = false;
