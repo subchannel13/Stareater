@@ -70,8 +70,17 @@ namespace Stareater.GameLogic
 				foreach(var shipGroup in fleet.LocalFleet.Ships)
 				{
 					var designStats = mainGame.Derivates.Of(shipGroup.Design.Owner).DesignStats[shipGroup.Design];
-					var abilities = designStats.Abilities.Select(x => x.Quantity * (double)shipGroup.Quantity);
-					this.game.Combatants.Add(new Combatant(position, fleet.OriginalFleet.Owner, shipGroup, designStats, abilities.ToArray()));
+					var abilities = designStats.Abilities.Select(x => x.Quantity * (double)shipGroup.Quantity).ToArray();
+					var simiralCombatant = this.game.Combatants.FirstOrDefault(x => x.Position == position && x.Ships.Design == shipGroup.Design);
+					
+					if (simiralCombatant == null)
+						this.game.Combatants.Add(new Combatant(position, fleet.OriginalFleet.Owner, shipGroup, designStats, abilities));
+					else
+					{
+						simiralCombatant.Ships.Quantity += shipGroup.Quantity;
+						for(int i = 0; i < abilities.Length; i++)
+							simiralCombatant.AbilityCharges[i] += abilities[i];
+					}
 				}
 			}
 			
@@ -95,6 +104,7 @@ namespace Stareater.GameLogic
 		
 		private Vector2D snapPosition(Vector2D position)
 		{
+			//FIXME(0.5) incorrect if input is almost vertical (0.3, -3.99)
 			return new Vector2D(
 				Math.Round(position.X, MidpointRounding.AwayFromZero),
 				Math.Round(position.Y - 0.5, MidpointRounding.AwayFromZero)

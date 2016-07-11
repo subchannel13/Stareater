@@ -129,6 +129,7 @@ namespace Stareater.GameLogic
 				var fleet = new Fleet(unit.Owner, battleGame.Location, new LinkedList<AMission>());
 				fleet.Ships.Add(unit.Ships);
 				
+				//FIXME(v0.5) adds too many ships, should remove participants
 				this.game.States.Fleets.Add(fleet);
 			}
 		}
