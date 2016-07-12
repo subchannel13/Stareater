@@ -123,7 +123,7 @@ namespace Stareater.GameLogic
 
 		public void ConflictResolved(SpaceBattleGame battleGame)
 		{
-			//TODO(v0.5) decide what to do with retreated ships, send them to nearest fiendly system?
+			//TODO(later) decide what to do with retreated ships, send them to nearest fiendly system?
 			foreach(var unit in battleGame.Combatants.Concat(battleGame.Retreated))
 			{
 				var fleet = new Fleet(unit.Owner, battleGame.Location, new LinkedList<AMission>());
@@ -189,8 +189,9 @@ namespace Stareater.GameLogic
 					conflicts.Enqueue(new SpaceBattleGame(position.Key, visits[position.Key], position.Value, this.game));
 			//TODO(later) deep space interception
 			
+			//FIXME(later) could make "fleet trail" if fleet visits multiple stars in the same turn
 			this.game.States.Fleets.Clear();
-			foreach(var fleet in visits.Values.SelectMany(x => x))
+			foreach(var fleet in visits.Where(x => !conflictPositions.ContainsKey(x.Key)).SelectMany(x => x.Value))
 				this.game.States.Fleets.Add(fleet.LocalFleet);
 		}
 
