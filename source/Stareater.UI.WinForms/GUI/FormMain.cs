@@ -629,7 +629,8 @@ namespace Stareater.GUI
 		
 		void IGalaxyViewListener.SystemSelected(StarSystemController systemController)
 		{
-			if (systemController.StarsAdministration() == null)
+			//FIXME(later) update owner check when multiple stellarises can exist at the same star
+			if (systemController.StarsAdministration() == null || systemController.StarsAdministration().Owner != this.currentPlayer.Info)
 			{
 				this.constructionManagement.Visible = false;
 				return;

@@ -42,7 +42,7 @@ namespace Stareater.Controllers.Data
 
 		public void Visit(SkipTurnMission mission)
 		{
-			//TODO(v0.5) not crucial but some implementation should be provided
+			//TODO(later) not crucial but some implementation should be provided
 		}
 		
 		#endregion
