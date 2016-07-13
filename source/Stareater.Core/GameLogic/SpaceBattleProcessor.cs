@@ -33,23 +33,51 @@ namespace Stareater.GameLogic
 
 		private void initBodies()
 		{
-			double maxPlanets = this.mainGame.States.Planets.Max(x => x.Position);
+			double maxPlanets = this.mainGame.States.Planets.Max(x => x.Position) - 1;
 			var star = mainGame.States.Stars.At(game.Location);
 			var planets = this.mainGame.States.Planets.At(star);
 			var colonies = this.mainGame.States.Colonies.AtStar(star);
 			
+			var rings = new Dictionary<int, List<Vector2D>>();
+			for(int i = 0; i <= SpaceBattleGame.BattlefieldRadius; i++)
+				rings[i] = new List<Vector2D>();
+			for(int y = -SpaceBattleGame.BattlefieldRadius; y <= SpaceBattleGame.BattlefieldRadius; y++)
+				for(int x = -SpaceBattleGame.BattlefieldRadius; x <= SpaceBattleGame.BattlefieldRadius; x++)
+				{
+					int distance = (int)Methods.HexDistance(new Vector2D(x, y));
+					if (distance <= SpaceBattleGame.BattlefieldRadius)
+						rings[distance].Add(new Vector2D(x, y));
+				}
+			    
+			var unoccupied = new Dictionary<int, List<Vector2D>>();
+			for(int i = 0; i <= SpaceBattleGame.BattlefieldRadius; i++)
+				unoccupied[i] = new List<Vector2D>(rings[i]);
+			
 			for(int i = 0; i < planets.Count; i++)
 			{
-				var distance = Methods.Lerp(planets[i].Position / maxPlanets, 1, SpaceBattleGame.BattlefieldRadius);
-				var angle = game.Rng.NextDouble() * 2 * Math.PI;
+				var ring = (int)Math.Floor(Methods.Lerp(
+					(planets[i].Position - 1) / maxPlanets, 
+					1, 
+					SpaceBattleGame.BattlefieldRadius + 0.9999
+				));
+				Vector2D position;
+				
+				if (unoccupied[ring].Count > 0)
+				{
+					int slot = this.game.Rng.Next(unoccupied[ring].Count);
+					position = unoccupied[ring][slot];
+					
+					unoccupied[ring].RemoveAt(slot);
+				}
+				else
+					position = rings[ring][this.game.Rng.Next(rings[ring].Count)];
 				
 				this.game.Planets[i] = new CombatPlanet(
 					colonies.FirstOrDefault(x => x.Location.Planet == planets[i]),
 					planets[i],
-					snapPosition(correctPosition(new Vector2D(Math.Cos(angle), Math.Sin(angle)) * distance)),
+					position,
 					this.mainGame.Statics.ColonyFormulas.PopulationHitPoints.Evaluate(null) //TODO(later) pass relevant variables
 				);
-				//TODO(v0.5) try to make unique positions
 			}
 		}
 		
