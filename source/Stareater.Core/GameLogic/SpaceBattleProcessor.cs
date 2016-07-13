@@ -87,13 +87,13 @@ namespace Stareater.GameLogic
 			{
 				Vector2D position;
 				if (fleet.MovementDirection.Magnitude() > 0)
-					position = -fleet.MovementDirection * SpaceBattleGame.BattlefieldRadius;
+					position = -fleet.MovementDirection * (SpaceBattleGame.BattlefieldRadius + 0.25);
 				else
 				{
 					var angle = game.Rng.NextDouble() * 2 * Math.PI;
 					position = new Vector2D(Math.Cos(angle), Math.Sin(angle));
 				}
-				position = snapPosition(correctPosition(position));
+				position = correctPosition(position);
 				
 				foreach(var shipGroup in fleet.LocalFleet.Ships)
 				{
@@ -120,22 +120,31 @@ namespace Stareater.GameLogic
 		private Vector2D correctPosition(Vector2D position)
 		{
 			var snapped = snapPosition(position);
-			double yHeight = (SpaceBattleGame.BattlefieldRadius * 2 - Math.Abs(snapped.X));
 			
 			if (Math.Abs(snapped.Magnitude()) < 1e-3 && position.Magnitude() > 0)
-				return correctPosition(position + position * 0.5 / position.Magnitude());
-			else if (Methods.HexDistance(snapped) > SpaceBattleGame.BattlefieldRadius)
-				return correctPosition(position - position * 0.5 / position.Magnitude());
-				
-			return position;
+				return neighborPositions(new Vector2D(0, 0)).
+					Aggregate((a, b) => (a - position).Magnitude() > (b - position).Magnitude() ? a : b);
+			
+			var corrected = snapped;
+			while(Methods.HexDistance(corrected) > SpaceBattleGame.BattlefieldRadius)
+			{
+				var distance = Methods.HexDistance(corrected);
+				corrected = neighborPositions(corrected).
+					Where(x => Methods.HexDistance(x) < distance).
+					Aggregate((a, b) => (a - snapped).Magnitude() > (b - snapped).Magnitude() ? a : b);
+			}
+							
+			return corrected;
 		}
 		
 		private Vector2D snapPosition(Vector2D position)
 		{
-			//FIXME(0.5) incorrect if input is almost vertical (0.3, -3.99)
+			var x = Math.Round(position.X, MidpointRounding.AwayFromZero);
+			var yOffset = Math.Abs((int)x) % 2 == 0 ? 0 : -0.5;
+			
 			return new Vector2D(
-				Math.Round(position.X, MidpointRounding.AwayFromZero),
-				Math.Round(position.Y - 0.5, MidpointRounding.AwayFromZero)
+				x,
+				Math.Round(position.Y + yOffset, MidpointRounding.AwayFromZero)
 			);
 		}
 		#endregion
@@ -285,17 +294,9 @@ namespace Stareater.GameLogic
 		
 		public IEnumerable<Vector2D> ValidMoves(Combatant unit)
 		{
-			if (unit.MovementPoints <= 0)
-				yield break;
-			
-			var yOffset = (int)Math.Abs(unit.Position.X) % 2 == 0 ? 0 : 1;
-				
-			yield return unit.Position + new Vector2D(0, 1);
-			yield return unit.Position + new Vector2D(1, 0 + yOffset);
-			yield return unit.Position + new Vector2D(1, -1 + yOffset);
-			yield return unit.Position + new Vector2D(0, -1);
-			yield return unit.Position + new Vector2D(-1, -1 + yOffset);
-			yield return unit.Position + new Vector2D(-1, 0 + yOffset);
+			return unit.MovementPoints <= 0 ? 
+				new Vector2D[0] : 
+				neighborPositions(unit.Position);
 		}
 		
 		#region Damage dealing
@@ -356,6 +357,18 @@ namespace Stareater.GameLogic
 		#endregion
 		
 		#region Math helpers
+		private static IEnumerable<Vector2D> neighborPositions(Vector2D position)
+		{
+			var yOffset = (int)Math.Abs(position.X) % 2 == 0 ? 0 : 1;
+				
+			yield return position + new Vector2D(0, 1);
+			yield return position + new Vector2D(1, 0 + yOffset);
+			yield return position + new Vector2D(1, -1 + yOffset);
+			yield return position + new Vector2D(0, -1);
+			yield return position + new Vector2D(-1, -1 + yOffset);
+			yield return position + new Vector2D(-1, 0 + yOffset);
+		}
+		
 		private static double Probability(double modifer)
 		{
 			if (modifer < 0)
