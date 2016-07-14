@@ -13,7 +13,7 @@ namespace Stareater.GameData.Databases.Tables
 		private readonly List<ColonizationProject> toRemove = new List<ColonizationProject>();
 
 		Dictionary<Player, List<ColonizationProject>> OwnedByIndex = new Dictionary<Player, List<ColonizationProject>>();
-		Dictionary<Planet, ColonizationProject> OfIndex = new Dictionary<Planet, ColonizationProject>();
+		Dictionary<Planet, List<ColonizationProject>> OfIndex = new Dictionary<Planet, List<ColonizationProject>>();
 
 		public IList<ColonizationProject> OwnedBy(Player key) 
 		{
@@ -22,16 +22,11 @@ namespace Stareater.GameData.Databases.Tables
 				new List<ColonizationProject>();
 		}
 
-		public ColonizationProject Of(Planet key) {
-			if (OfIndex.ContainsKey(key))
-				return OfIndex[key];
-				
-			throw new KeyNotFoundException();
-		}
-		
-		public bool OfContains(Planet key) 
+		public IList<ColonizationProject> Of(Planet key) 
 		{
-			return OfIndex.ContainsKey(key);
+			return (OfIndex.ContainsKey(key)) ? 
+				OfIndex[key] : 
+				new List<ColonizationProject>();
 		}
 	
 		public void Add(ColonizationProject item)
@@ -41,8 +36,10 @@ namespace Stareater.GameData.Databases.Tables
 			if (!OwnedByIndex.ContainsKey(item.Owner))
 				OwnedByIndex.Add(item.Owner, new List<ColonizationProject>());
 			OwnedByIndex[item.Owner].Add(item);
+
 			if (!OfIndex.ContainsKey(item.Destination))
-				OfIndex.Add(item.Destination, item);
+				OfIndex.Add(item.Destination, new List<ColonizationProject>());
+			OfIndex[item.Destination].Add(item);
 		}
 
 		public void Add(IEnumerable<ColonizationProject> items)
@@ -83,7 +80,7 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			if (innerSet.Remove(item)) {
 				OwnedByIndex[item.Owner].Remove(item);
-				OfIndex.Remove(item.Destination);
+				OfIndex[item.Destination].Remove(item);
 			
 				return true;
 			}

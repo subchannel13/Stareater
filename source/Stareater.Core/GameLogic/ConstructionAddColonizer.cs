@@ -24,14 +24,11 @@ namespace Stareater.GameLogic
 		public void Apply(StatesDB states, TemporaryDB derivates, AConstructionSite site, long quantity)
 		{
 			//TODO(v0.5) check if colonizer can be added (planet already occupied)
-			if (!states.ColonizationProjects.OfContains(destination))
-				states.ColonizationProjects.Add(new ColonizationProject(site.Owner, destination));
-
-			var project = states.ColonizationProjects.Of(destination);
+			var project = states.ColonizationProjects.Of(destination).FirstOrDefault(x => x.Owner == this.colonizerDesign.Owner);
 			var missions = new LinkedList<AMission>();
 			missions.AddLast(new SkipTurnMission());
 			
-			//TODO(v0.5) check shortest path
+			//TODO(later) check shortest path
 			if (site.Location.Star != destination.Star)
 			{
 				var lastStar = site.Location.Star;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Stareater.Galaxy;
+using Stareater.Players;
 using Stareater.Ships.Missions;
 
 namespace Stareater.GameLogic
@@ -10,6 +11,7 @@ namespace Stareater.GameLogic
 	{
 		private readonly MainGame game;
 		private LinkedList<AMission> remainingMissions;
+		private Player owner;
 		
 		public InvalidMissionVisitor(MainGame game)
 		{
@@ -19,6 +21,7 @@ namespace Stareater.GameLogic
 		public Fleet Check(Fleet fleet)
 		{
 			this.remainingMissions = new LinkedList<AMission>();
+			this.owner = fleet.Owner;
 			
 			foreach (var mission in fleet.Missions)
 				mission.Accept(this);
@@ -32,8 +35,7 @@ namespace Stareater.GameLogic
 
 		public void Visit(ColonizationMission mission)
 		{
-			//TODO(v0.5) allow multiple players have colonization plan for the same planet
-			if (game.States.ColonizationProjects.OfContains(mission.Target))
+			if (game.States.ColonizationProjects.Of(mission.Target).Any(x => x.Owner == owner))
 				this.remainingMissions.AddLast(mission);
 		}
 

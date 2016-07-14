@@ -179,6 +179,7 @@ namespace Stareater.GameLogic
 		public void ProcessPrecombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
 			this.CalculateDevelopment(statics, states, derivates.Colonies.OwnedBy(this.Player));
+			this.updateColonizationOrders(states);
 
 			foreach (var colonyProc in derivates.Colonies.OwnedBy(this.Player))
 				colonyProc.ProcessPrecombat(states, derivates);
@@ -192,6 +193,18 @@ namespace Stareater.GameLogic
 			 */
 		}
 
+		private void updateColonizationOrders(StatesDB states)
+		{
+			foreach(var project in states.ColonizationProjects.OwnedBy(this.Player))
+				if (!this.Player.Orders.ColonizationOrders.ContainsKey(project.Destination))
+					states.ColonizationProjects.PendRemove(project);
+			
+			foreach(var order in this.Player.Orders.ColonizationOrders)
+				if (states.ColonizationProjects.Of(order.Key).All(x => x.Owner != this.Player))
+					states.ColonizationProjects.PendAdd(new ColonizationProject(this.Player, order.Value.Destination));
+			
+			states.ColonizationProjects.ApplyPending();
+		}
 		#endregion
 		
 		#region Postcombat processing

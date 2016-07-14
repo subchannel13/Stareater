@@ -127,7 +127,7 @@ namespace Stareater.Controllers
 			
 			var stars = new HashSet<StarData>();
 			//TODO(0.5) add states
-			//stars.UnionWith(this.Game.States.ColonizationProjects.Of(this.PlanetBody).Select(x => x));
+			this.game.States.ColonizationProjects.Of(this.PlanetBody).Select(x => x);
 			stars.UnionWith(this.player.Orders.ColonizationOrders[this.PlanetBody].Sources);
 			
 			return stars.Select(x => new StellarisInfo(this.game.States.Stellarises.At(x), this.game));

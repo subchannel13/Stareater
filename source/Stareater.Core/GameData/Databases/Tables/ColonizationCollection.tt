@@ -7,6 +7,6 @@
 	
 	Generate("ColonizationCollection", "ColonizationProject",
 		new ViewInfo("OwnedBy", "Player", "Owner", ViewType.Collection),
-		new ViewInfo("Of", "Planet", "Destination", ViewType.Scalar)
+		new ViewInfo("Of", "Planet", "Destination", ViewType.Collection)
 	);
 #>
