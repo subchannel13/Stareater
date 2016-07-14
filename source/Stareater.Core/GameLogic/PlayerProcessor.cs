@@ -225,6 +225,13 @@ namespace Stareater.GameLogic
 				);
 
 			Player.Orders.DevelopmentQueue = updateTechQueue(Player.Orders.DevelopmentQueue, validTechs);
+			
+			var occupiedTargets = new HashSet<Planet>();
+			foreach(var order in this.Player.Orders.ColonizationOrders)
+				if (states.Colonies.AtPlanetContains(order.Key)) //TODO(later) use intelligence instead
+					occupiedTargets.Add(order.Key);
+			foreach(var planet in occupiedTargets)
+				this.Player.Orders.ColonizationOrders.Remove(planet);
 
 			var oldPlans = Player.Orders.ConstructionPlans;
 			Player.Orders.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();

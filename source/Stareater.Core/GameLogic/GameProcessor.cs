@@ -46,9 +46,9 @@ namespace Stareater.GameLogic
 			foreach (var playerProc in this.game.Derivates.Players)
 				playerProc.ProcessPostcombat(this.game.Statics, this.game.States, this.game.Derivates);
 
-			// TODO(v0.5): Update ship designs
+			// TODO(later): Update ship designs
 
-			// TODO(v0.5): Upgrade and repair ships
+			// TODO(later): Upgrade and repair ships
 
 			CalculateBaseEffects();
 			CalculateSpendings();
@@ -129,7 +129,6 @@ namespace Stareater.GameLogic
 				var fleet = new Fleet(unit.Owner, battleGame.Location, new LinkedList<AMission>());
 				fleet.Ships.Add(unit.Ships);
 				
-				//FIXME(v0.5) adds too many ships, should remove participants
 				this.game.States.Fleets.Add(fleet);
 			}
 		}
@@ -259,7 +258,10 @@ namespace Stareater.GameLogic
 						this.game.States.Stellarises.Add(stellaris);
 						this.game.Derivates.Stellarises.Add(new StellarisProcessor(stellaris));
 					}
-					
+				}
+				
+				if (colonyExists || !colonyExists && arrivedPopulation >= colonizationTreshold)
+				{
 					project.Owner.Orders.ColonizationOrders.Remove(project.Destination);
 					this.game.States.ColonizationProjects.PendRemove(project);
 				}

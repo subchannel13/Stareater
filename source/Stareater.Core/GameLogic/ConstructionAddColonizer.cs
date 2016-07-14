@@ -23,7 +23,6 @@ namespace Stareater.GameLogic
 		#region IConstructionEffect implementation
 		public void Apply(StatesDB states, TemporaryDB derivates, AConstructionSite site, long quantity)
 		{
-			//TODO(v0.5) check if colonizer can be added (planet already occupied)
 			var project = states.ColonizationProjects.Of(destination).FirstOrDefault(x => x.Owner == this.colonizerDesign.Owner);
 			var missions = new LinkedList<AMission>();
 			missions.AddLast(new SkipTurnMission());
