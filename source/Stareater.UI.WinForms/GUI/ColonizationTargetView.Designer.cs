@@ -94,6 +94,7 @@ namespace Stareater.GUI
 			// 
 			this.sourceList.AutoSize = true;
 			this.sourceList.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.sourceList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.sourceList.Location = new System.Drawing.Point(49, 46);
 			this.sourceList.Name = "sourceList";
 			this.sourceList.Size = new System.Drawing.Size(0, 0);
@@ -131,7 +132,7 @@ namespace Stareater.GUI
 			this.Controls.Add(this.thumbnailImage);
 			this.Controls.Add(this.fromLabel);
 			this.Controls.Add(this.targetName);
-			this.MinimumSize = new System.Drawing.Size(260, 0);
+			this.MinimumSize = new System.Drawing.Size(260, 2);
 			this.Name = "ColonizationTargetView";
 			this.Size = new System.Drawing.Size(258, 101);
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();

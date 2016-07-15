@@ -69,14 +69,23 @@ namespace Stareater.Controllers
 
 		public void StartColonization(params StellarisInfo[] colonizationSources)
 		{
-			if (this.IsColonizing || this.IsReadOnly)
+			if (this.IsReadOnly)
 				return;
 			
-			var plan = new ColonizationPlan(this.PlanetBody);
-			if (colonizationSources != null && colonizationSources.Length > 0)
-				plan.Sources.AddRange(colonizationSources.Select(x => x.Stellaris.Location.Star));
+			ColonizationPlan plan = null;
+			if (this.IsColonizing)
+				plan = this.player.Orders.ColonizationOrders[this.PlanetBody];
+			else
+			{
+				plan = new ColonizationPlan(this.PlanetBody);
+				this.player.Orders.ColonizationOrders.Add(this.PlanetBody, plan);
+			}
 			
-			this.player.Orders.ColonizationOrders.Add(this.PlanetBody, plan);
+			if (colonizationSources != null && colonizationSources.Length > 0)
+				foreach(var source in colonizationSources)
+					if (!plan.Sources.Contains(source.HostStar))
+						plan.Sources.Add(source.HostStar); //TODO(later) convert source list to set?
+			
 			updateStellarises(plan.Sources);
 		}
 		
