@@ -23,6 +23,24 @@ namespace Stareater.GameLogic
 		
 		public Colony Colony { get; set; }
 		
+		public double Environment { get; private set; }
+		public double MaxPopulation { get; private set; }
+		public double PopulationGrowth { get; private set; }
+		public double Organization { get; private set; }
+		public double SpaceliftFactor { get; private set; }
+		
+		public double FarmerEfficiency { get; private set; }
+		public double GardenerEfficiency { get; private set; }
+		public double MinerEfficiency { get; private set; }
+		public double BuilderEfficiency { get; private set; }
+		public double ScientistEfficiency { get; private set; }
+		
+		public double Farmers { get; private set; }
+		public double Gardeners { get; private set; }
+		public double WorkingPopulation { get; private set; }
+		
+		public double Development { get; private set; }
+		
 		public ColonyProcessor(Colony colony) : base()
 		{
 			this.Colony = colony;
@@ -55,23 +73,6 @@ namespace Stareater.GameLogic
 			}
 		}
 		
-		public double MaxPopulation { get; private set; }
-		public double PopulationGrowth { get; private set; }
-		public double Organization { get; private set; }
-		
-		public double FarmerEfficiency { get; private set; }
-		public double GardenerEfficiency { get; private set; }
-		public double MinerEfficiency { get; private set; }
-		public double BuilderEfficiency { get; private set; }
-		public double ScientistEfficiency { get; private set; }
-		
-		public double Farmers { get; private set; }
-		public double Gardeners { get; private set; }
-		public double WorkingPopulation { get; private set; }
-		
-		public double Development { get; private set; }
-		public double SpaceliftFactor { get; private set; }
-		
 		private IDictionary<string, double> calcVars(StaticsDB statics, PlayerProcessor playerProcessor)
 		{
 			var vars = base.LocalEffects(statics).
@@ -91,6 +92,7 @@ namespace Stareater.GameLogic
 			var vars = calcVars(statics, playerProcessor);
 			var formulas = statics.ColonyFormulas;
 			
+			this.Environment = formulas.EnvironmentFactor.Evaluate(vars);
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
 			this.Organization = formulas.Organization.Evaluate(vars);
 			this.SpaceliftFactor = formulas.SpaceliftFactor.Evaluate(vars);

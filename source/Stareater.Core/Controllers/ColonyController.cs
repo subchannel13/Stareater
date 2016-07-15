@@ -92,7 +92,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{ 
-				return 1; //TODO(v0.5): make processor property
+				return Game.Derivates.Of(Site as Colony).Environment;
 			}
 		}
 		

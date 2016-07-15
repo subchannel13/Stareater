@@ -10,6 +10,7 @@
 		total # base + housing_delta;
 	}
 	
+	environment # 1;
 	organization # limit(infra_count / pop, 0, 1);
 	spaceliftFactor # 0.2;
 	
