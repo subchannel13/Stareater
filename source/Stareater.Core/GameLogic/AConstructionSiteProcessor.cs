@@ -87,7 +87,7 @@ namespace Stareater.GameLogic
 				double stockpile = planStockpile.ContainsKey(stockpileKey) ? planStockpile[stockpileKey] : 0;
 				double totalInvestment = industryPoints + stockpile;
 
-				double completed = Math.Floor(totalInvestment / cost); //FIXME(v0.5): possible division by zero
+				double completed = cost > 0 ? Math.Floor(totalInvestment / cost) : double.PositiveInfinity;
 				double countLimit = buildingItem.TurnLimit.Evaluate(vars);
 				planStockpile[stockpileKey] = 0;
 
