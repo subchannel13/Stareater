@@ -250,9 +250,8 @@ namespace Stareater.GameLogic
 					
 					this.game.States.Colonies.Add(colony);
 					this.game.Derivates.Colonies.Add(colonyProc);
-					
 
-					if (!this.game.States.Stellarises.AtContains(project.Destination.Star))
+					if (this.game.States.Stellarises.At(project.Destination.Star).All(x => x.Owner != project.Owner))
 					{
 						var stellaris = new StellarisAdmin(project.Destination.Star, project.Owner);
 						this.game.States.Stellarises.Add(stellaris);
