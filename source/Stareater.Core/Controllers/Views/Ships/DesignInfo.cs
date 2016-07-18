@@ -10,13 +10,14 @@ namespace Stareater.Controllers.Views.Ships
 {
 	public class DesignInfo
 	{
-		private readonly Design design;
 		private readonly DesignStats stats;
 		private readonly StaticsDB statics;
 		
+		internal Design Data { get; private set; }
+		
 		internal DesignInfo(Design design, DesignStats stats, StaticsDB statics)
 		{
-			this.design = design;
+			this.Data = design;
 			this.stats = stats;
 			this.statics = statics;
 		}
@@ -25,7 +26,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get 
 			{
-				return design.Name;
+				return Data.Name;
 			}
 		}
 		
@@ -33,21 +34,21 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return design.ImagePath;
+				return Data.ImagePath;
 			}
 		}
 		
 		public HullInfo Hull
 		{
-			get { return new HullInfo(design.Hull.TypeInfo, design.Hull.Level); }
+			get { return new HullInfo(Data.Hull.TypeInfo, Data.Hull.Level); }
 		}
 
 		public IsDriveInfo IsDrive
 		{
 			get 
 			{
-				return this.design.IsDrive != null ? 
-					new IsDriveInfo(design.IsDrive.TypeInfo, design.IsDrive.Level, PlayerProcessor.DesignPoweredVars(design.Hull, design.Reactor, design.SpecialEquipment, statics).Get) : 
+				return this.Data.IsDrive != null ? 
+					new IsDriveInfo(Data.IsDrive.TypeInfo, Data.IsDrive.Level, PlayerProcessor.DesignPoweredVars(Data.Hull, Data.Reactor, Data.SpecialEquipment, statics).Get) : 
 					null;
 
 			}
@@ -57,8 +58,8 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get 
 			{
-				return this.design.Shield != null ? 
-					new ShieldInfo(design.Shield.TypeInfo, design.Shield.Level, this.Hull) : 
+				return this.Data.Shield != null ? 
+					new ShieldInfo(Data.Shield.TypeInfo, Data.Shield.Level, this.Hull) : 
 					null;
 
 			}
@@ -68,10 +69,10 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				for(int i = 0; i < design.MissionEquipment.Count; i++)
+				for(int i = 0; i < Data.MissionEquipment.Count; i++)
 					yield return new KeyValuePair<MissionEquipInfo, int>(
-						new MissionEquipInfo(design.MissionEquipment[i].TypeInfo, design.MissionEquipment[i].Level),
-						design.MissionEquipment[i].Quantity
+						new MissionEquipInfo(Data.MissionEquipment[i].TypeInfo, Data.MissionEquipment[i].Level),
+						Data.MissionEquipment[i].Quantity
 					);
 			}
 		}
@@ -80,12 +81,12 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				var hull = new HullInfo(design.Hull.TypeInfo, design.Hull.Level);
+				var hull = new HullInfo(Data.Hull.TypeInfo, Data.Hull.Level);
 				
-				for(int i = 0; i < design.SpecialEquipment.Count; i++)
+				for(int i = 0; i < Data.SpecialEquipment.Count; i++)
 					yield return new KeyValuePair<SpecialEquipInfo, int>(
-						new SpecialEquipInfo(design.SpecialEquipment[i].TypeInfo, design.SpecialEquipment[i].Level, hull),
-						design.SpecialEquipment[i].Quantity
+						new SpecialEquipInfo(Data.SpecialEquipment[i].TypeInfo, Data.SpecialEquipment[i].Level, hull),
+						Data.SpecialEquipment[i].Quantity
 					);
 			}
 		}
@@ -102,7 +103,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get 
 			{
-				return design.Hull.TypeInfo.Size.Evaluate(new Var(AComponentType.LevelKey, design.Hull.Level).Get);
+				return Data.Hull.TypeInfo.Size.Evaluate(new Var(AComponentType.LevelKey, Data.Hull.Level).Get);
 			}
 		}
 	}

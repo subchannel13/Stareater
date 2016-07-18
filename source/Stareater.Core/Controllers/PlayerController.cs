@@ -198,6 +198,15 @@ namespace Stareater.Controllers
 				OwnedBy(this.PlayerInstance).
 				Select(x => new DesignInfo(x, game.Derivates.Of(this.PlayerInstance).DesignStats[x], game.Statics));
 		}
+		
+		public long ShipCount(DesignInfo design)
+		{
+			return this.gameInstance.States.Fleets.
+				OwnedBy(this.PlayerInstance).
+				SelectMany(x => x.Ships).
+				Where(x => x.Design == design.Data).
+				Aggregate(0L, (sum, x) => sum + x.Quantity);
+		}
 		#endregion
 		
 		#region Colonization related
