@@ -112,7 +112,7 @@ namespace Stareater.GameLogic
 			var results = new List<ScienceResult>();
 			for (int i = 0; i < advanceOrder.Count; i++) {
 				double weight = advanceOrder[i].Topic.IdCode == focused ? focusWeight : 1;
-				weight /= advanceOrder.Count + focusWeight;
+				weight /= advanceOrder.Count + focusWeight - 1;
 				
 				results.Add(advanceOrder[i].SimulateInvestment(
 					weight,

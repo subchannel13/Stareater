@@ -41,7 +41,7 @@ namespace Stareater.GUI
 
 			var context = SettingsWinforms.Get.Language["FormMain"];
 			this.detailsButton.Text = context["SiteDetails"].Text();
-			this.estimationLabel.Text = ""; //TODO(v0.5)
+			this.estimationLabel.Text = "";
 			
 			this.colonizeButton.Text = this.controller.IsColonizing ? context["ColonizeStop"].Text() : context["ColonizeStart"].Text();
 		}
