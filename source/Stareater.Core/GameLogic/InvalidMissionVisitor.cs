@@ -26,9 +26,14 @@ namespace Stareater.GameLogic
 			foreach (var mission in fleet.Missions)
 				mission.Accept(this);
 			
-			return fleet.Missions.SequenceEqual(remainingMissions) ? 
-				null : 
-				new Fleet(fleet.Owner, fleet.Position, this.remainingMissions);
+			if (fleet.Missions.SequenceEqual(remainingMissions))
+				return null;
+					
+			var newFleet = new Fleet(fleet.Owner, fleet.Position, this.remainingMissions);
+			foreach(var ship in fleet.Ships)
+				newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity));
+			
+			return newFleet;
 		}
 
 		#region IMissionVisitor implementation
