@@ -67,7 +67,7 @@ namespace Stareater.GUI
 			this.mainMenuToolStripMenuItem.Text = context["MainMenu"].Text();
 			this.developmentToolStripMenuItem.Text = context["DevelopmentMenu"].Text();
 			
-			//TODO(v0.5) implement power state (battery or plug in) check
+			//TODO(later) implement power state (battery or plug in) check
 			//TODO(later) try to find a way for renderer loop without timer
 			this.glRedrawTimer.Interval = SettingsWinforms.Get.UnlimitedFramerate ? 
 				1 : 

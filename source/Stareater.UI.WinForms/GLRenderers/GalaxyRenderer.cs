@@ -286,7 +286,7 @@ namespace Stareater.GLRenderers
 			double semiRadius = 0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel);
 
 			var screen = Screen.FromControl(eventDispatcher);
-			//TODO(v0.5): test this, perhaps by flipping the monitor.
+			//TODO(later): test this, perhaps by flipping the monitor.
 			screenLength = screen.Bounds.Width > screen.Bounds.Height ? 
 				(float)(2 * screen.Bounds.Width * semiRadius * aspect / eventDispatcher.Width) : 
 				(float)(2 * screen.Bounds.Height * semiRadius * aspect / eventDispatcher.Height);

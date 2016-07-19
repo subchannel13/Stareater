@@ -154,7 +154,7 @@ namespace Stareater.GLRenderers
 		public override void ResetLists()
 		{
 			//no op
-			//TODO(v0.5): make call list
+			//TODO(later): make call list
 		}
 		
 		protected override void attachEventHandlers()
