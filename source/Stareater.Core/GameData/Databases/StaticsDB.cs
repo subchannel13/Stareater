@@ -434,7 +434,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
-				data[ReactorPower].To<Formula>(),
+				data[EquipmentPowerKey].To<Formula>(),
 				data[ReactorMinSize].To<Formula>()
 			);
 		}
@@ -468,7 +468,7 @@ namespace Stareater.GameData.Databases
 				data[ShieldReduction].To<Formula>(),
 				data[ShieldCloaking].To<Formula>(),
 				data[ShieldJamming].To<Formula>(),
-				data[ShieldPower].To<Formula>()
+				data[EquipmentPowerKey].To<Formula>()
 			);
 		}
 		
@@ -639,6 +639,8 @@ namespace Stareater.GameData.Databases
 		private const string ArmorAbsorbMax = "reductionMax";
 		private const string ArmorFactor = "armorFactor";
 		
+		private const string EquipmentPowerKey = "power";
+		
 		private const string HullImages = "images";
 		private const string HullSize = "size";
 		private const string HullSpace = "space";
@@ -663,14 +665,12 @@ namespace Stareater.GameData.Databases
 		private const string MissionEquipmentSizeKey = "size";
 		
 		private const string ReactorMinSize = "minSize";
-		private const string ReactorPower = "power";
 
 		private const string SensorDetection = "detection";
 		
 		private const string ShieldCloaking = "cloaking";
 		private const string ShieldJamming = "jamming";
 		private const string ShieldHpFactor = "shieldFactor";
-		private const string ShieldPower = "power"; //TODO(v0.5) replace with equipment power
 		private const string ShieldReduction = "reduction";
 		private const string ShieldRegeneration = "restoration";
 		private const string ShieldThickness = "thickness";

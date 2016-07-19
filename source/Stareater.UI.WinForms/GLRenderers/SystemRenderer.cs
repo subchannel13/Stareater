@@ -177,8 +177,15 @@ namespace Stareater.GLRenderers
 			this.currentPlayer = gameController;
 			
 			this.requestPerspectiveReset();
-			this.originOffset = 0.5f; //TODO(v0.5): Get most populated planet
 			this.maxOffset = controller.Planets.Count() * OrbitStep + OrbitOffset + PlanetScale / 2;
+			
+			var bestColony = controller.Planets.
+				Select(x => controller.PlanetsColony(x)).
+				Aggregate(
+					(ColonyInfo)null, 
+					(prev, next) => next == null || (prev != null && prev.Population >= next.Population) ? prev : next
+				);
+			this.originOffset = bestColony != null ? bestColony.Location.Position * OrbitStep + OrbitOffset : 0.5f;
 			
 			this.select(StarSystemController.StarIndex);
 		}
@@ -192,7 +199,6 @@ namespace Stareater.GLRenderers
 				case BodyType.OwnStellaris:
 					siteView.SetView(controller.StellarisController());
 					setView(siteView);
-					//TODO(v0.5): add implementation, system management
 					break;
 				case BodyType.OwnColony:
 					siteView.SetView(controller.ColonyController(bodyIndex));
@@ -203,7 +209,7 @@ namespace Stareater.GLRenderers
 					setView(emptyPlanetView);
 					break;
 				default:
-					//TODO(v0.5): add implementation, foregin planet, empty system, foreign system
+					//TODO(later): add implementation, foregin planet, empty system, foreign system
 					break;
 			}
 		}
