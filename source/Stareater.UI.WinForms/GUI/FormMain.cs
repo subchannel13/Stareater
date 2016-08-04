@@ -15,6 +15,7 @@ using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GLRenderers;
 using Stareater.GUI.Reports;
+using Stareater.GraphicsEngine;
 
 namespace Stareater.GUI
 {
@@ -23,6 +24,7 @@ namespace Stareater.GUI
 		private const float MaxDeltaTime = 0.5f;
 		private const float MinDeltaTime = 0.005f;
 
+		private RenderThread renderThread = new RenderThread();
 		private bool glReady = false;
 		private bool resetViewport = true;
 		private DateTime lastRender = DateTime.UtcNow;
@@ -55,6 +57,7 @@ namespace Stareater.GUI
 		private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			SettingsWinforms.Get.Save();
+			this.renderThread.Stop();
 		}
 
 		private void applySettings()
@@ -363,6 +366,7 @@ namespace Stareater.GUI
 
 		private void glCanvas_Load(object sender, EventArgs e)
 		{
+			renderThread.Start();
 			glReady = true;
 			GL.Enable(EnableCap.DepthTest);
 			GL.Enable(EnableCap.Blend);
