@@ -42,8 +42,20 @@ namespace Stareater.GUI
 			}
 
 			fpsInput.Value = SettingsWinforms.Get.Framerate;
-			batteryFpsInput.Value = SettingsWinforms.Get.BatteryFramerate;
 			unlimitedFpsCheck.Checked = SettingsWinforms.Get.UnlimitedFramerate;
+			
+			switch(SettingsWinforms.Get.FramerateBusySpinUsage)
+			{
+				case BusySpinMode.Always:
+					busyFrameLimitAlways.Checked = true;
+					break;
+				case BusySpinMode.Never:
+					busyFrameLimitNever.Checked = true;
+					break;
+				case BusySpinMode.NotOnBattery:
+					busyFrameLimitPlugged.Checked = true;
+					break;
+			}
 			
 			setLanguage();
 		}
@@ -58,8 +70,11 @@ namespace Stareater.GUI
 			languageTitle.Text = context["LanguageLabel"].Text();
 			guiScaleTitle.Text = context["GuiScaleLabel"].Text();
 			fpsTitle.Text = context["FpsLabel"].Text();
-			batteryFpsTitle.Text = context["BatteryFpsLabel"].Text();
 			unlimitedFpsCheck.Text = context["UnlimitedFpsLabel"].Text();
+			fpsTimingTitle.Text = context["FpsTimingLabel"].Text();
+			busyFrameLimitAlways.Text = context["FpsBusyAlways"].Text();
+			busyFrameLimitNever.Text = context["FpsBusyNever"].Text();
+			busyFrameLimitPlugged.Text = context["FpsBusyPlugged"].Text();
 			confirmButton.Text = selectedLanguage["General"]["DialogAccept"].Text();
 			
 			rendererInfo.Text = context["RendererLabel"].Text() + Environment.NewLine + GL.GetString(StringName.Renderer);
@@ -105,9 +120,15 @@ namespace Stareater.GUI
 			SettingsWinforms.Get.Language = selectedLanguage;
 			SettingsWinforms.Get.GuiScale = selectedGuiScale;
 
-			SettingsWinforms.Get.BatteryFramerate = (int)batteryFpsInput.Value;
 			SettingsWinforms.Get.Framerate = (int)fpsInput.Value;
 			SettingsWinforms.Get.UnlimitedFramerate = unlimitedFpsCheck.Checked;
+			
+			if (busyFrameLimitAlways.Checked) 
+				SettingsWinforms.Get.FramerateBusySpinUsage = BusySpinMode.Always;
+			if (busyFrameLimitNever.Checked) 
+				SettingsWinforms.Get.FramerateBusySpinUsage = BusySpinMode.Never;
+			if (busyFrameLimitPlugged.Checked) 
+				SettingsWinforms.Get.FramerateBusySpinUsage = BusySpinMode.NotOnBattery;
 			
 			DialogResult = System.Windows.Forms.DialogResult.OK;
 		}

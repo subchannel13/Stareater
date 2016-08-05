@@ -30,8 +30,8 @@ namespace Stareater.AppData
 		public float GuiScale { get; set; }
 		
 		public int Framerate { get; set; }
-		public int BatteryFramerate { get; set; }
 		public bool UnlimitedFramerate { get; set; }
+		public BusySpinMode FramerateBusySpinUsage { get; set; }
 
 		public Font FormFont
 		{
@@ -50,8 +50,8 @@ namespace Stareater.AppData
 			
 			this.GuiScale = 1;
 			
-			this.BatteryFramerate = 60;
 			this.Framerate = 120;
+			this.FramerateBusySpinUsage = BusySpinMode.NotOnBattery;
 			this.UnlimitedFramerate = false;
 			
 			this.ReportTechnology = true;
@@ -65,8 +65,8 @@ namespace Stareater.AppData
 			
 			this.GuiScale = wfSettignsData[GuiScaleKey].To<float>();
 			
-			this.BatteryFramerate = wfSettignsData[FpsBatteryKey].To<int>();
 			this.Framerate = wfSettignsData[FpsKey].To<int>();
+			this.FramerateBusySpinUsage = (BusySpinMode)wfSettignsData[FpsBusyWaitKey].To<int>();
 			this.UnlimitedFramerate = wfSettignsData[FpsUnlimitedKey].To<int>() >= 0;
 			
 			this.ReportTechnology = wfSettignsData[ReportTechnologyKey].To<int>() >= 0;
@@ -75,7 +75,7 @@ namespace Stareater.AppData
 		
 		#region Attribute keys
 		const string WinformsSettingsTag = "winforms";
-		const string FpsBatteryKey = "fpsBattery";
+		const string FpsBusyWaitKey = "fpsBusyWait";
 		const string FpsKey = "fps";
 		const string FpsUnlimitedKey = "noFps";
 		const string GuiScaleKey = "guiscale";
@@ -89,7 +89,7 @@ namespace Stareater.AppData
 			var settings = new IkonComposite(WinformsSettingsTag);
 			settings.Add(GuiScaleKey, new IkonFloat(GuiScale));
 			
-			settings.Add(FpsBatteryKey, new IkonInteger(BatteryFramerate));
+			settings.Add(FpsBusyWaitKey, new IkonInteger((int)FramerateBusySpinUsage));
 			settings.Add(FpsKey, new IkonInteger(Framerate));
 			settings.Add(FpsUnlimitedKey, new IkonInteger(UnlimitedFramerate ? 1 : -1));
 			

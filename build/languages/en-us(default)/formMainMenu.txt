@@ -13,6 +13,12 @@ LanguageLabel = Language:
 GuiScaleLabel = GUI scale:
 RendererLabel = Rendering hardware:
 FpsLabel = FPS:
-BatteryFpsLabel = FPS (battery):
 UnlimitedFpsLabel = Unlimited FPS
+FpsTimingLabel §
+		Precise framerate
+		timing:
+	\
+FpsBusyAlways = Always
+FpsBusyNever = Never
+FpsBusyPlugged = When plugged
 -

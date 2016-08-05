@@ -34,12 +34,13 @@
 			this.guiScaleSelector = new System.Windows.Forms.ComboBox();
 			this.rendererInfo = new System.Windows.Forms.Label();
 			this.fpsTitle = new System.Windows.Forms.Label();
-			this.batteryFpsTitle = new System.Windows.Forms.Label();
+			this.fpsTimingTitle = new System.Windows.Forms.Label();
 			this.fpsInput = new System.Windows.Forms.NumericUpDown();
-			this.batteryFpsInput = new System.Windows.Forms.NumericUpDown();
 			this.unlimitedFpsCheck = new System.Windows.Forms.CheckBox();
+			this.busyFrameLimitAlways = new System.Windows.Forms.RadioButton();
+			this.busyFrameLimitPlugged = new System.Windows.Forms.RadioButton();
+			this.busyFrameLimitNever = new System.Windows.Forms.RadioButton();
 			((System.ComponentModel.ISupportInitialize)(this.fpsInput)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.batteryFpsInput)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// languageTitle
@@ -64,7 +65,7 @@
 			// confirmButton
 			// 
 			this.confirmButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.confirmButton.Location = new System.Drawing.Point(317, 154);
+			this.confirmButton.Location = new System.Drawing.Point(327, 181);
 			this.confirmButton.Name = "confirmButton";
 			this.confirmButton.Size = new System.Drawing.Size(75, 23);
 			this.confirmButton.TabIndex = 3;
@@ -95,7 +96,7 @@
 			// 
 			this.rendererInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.rendererInfo.AutoSize = true;
-			this.rendererInfo.Location = new System.Drawing.Point(214, 125);
+			this.rendererInfo.Location = new System.Drawing.Point(214, 152);
 			this.rendererInfo.Name = "rendererInfo";
 			this.rendererInfo.Size = new System.Drawing.Size(137, 26);
 			this.rendererInfo.TabIndex = 6;
@@ -110,14 +111,14 @@
 			this.fpsTitle.TabIndex = 7;
 			this.fpsTitle.Text = "FPS:";
 			// 
-			// batteryFpsTitle
+			// fpsTimingTitle
 			// 
-			this.batteryFpsTitle.AutoSize = true;
-			this.batteryFpsTitle.Location = new System.Drawing.Point(214, 58);
-			this.batteryFpsTitle.Name = "batteryFpsTitle";
-			this.batteryFpsTitle.Size = new System.Drawing.Size(66, 13);
-			this.batteryFpsTitle.TabIndex = 9;
-			this.batteryFpsTitle.Text = "Battery FPS:";
+			this.fpsTimingTitle.AutoSize = true;
+			this.fpsTimingTitle.Location = new System.Drawing.Point(214, 58);
+			this.fpsTimingTitle.Name = "fpsTimingTitle";
+			this.fpsTimingTitle.Size = new System.Drawing.Size(92, 26);
+			this.fpsTimingTitle.TabIndex = 9;
+			this.fpsTimingTitle.Text = "Precise framerate \r\ntiming:";
 			// 
 			// fpsInput
 			// 
@@ -146,33 +147,6 @@
 			0,
 			0});
 			// 
-			// batteryFpsInput
-			// 
-			this.batteryFpsInput.Increment = new decimal(new int[] {
-			15,
-			0,
-			0,
-			0});
-			this.batteryFpsInput.Location = new System.Drawing.Point(306, 56);
-			this.batteryFpsInput.Maximum = new decimal(new int[] {
-			300,
-			0,
-			0,
-			0});
-			this.batteryFpsInput.Minimum = new decimal(new int[] {
-			30,
-			0,
-			0,
-			0});
-			this.batteryFpsInput.Name = "batteryFpsInput";
-			this.batteryFpsInput.Size = new System.Drawing.Size(45, 20);
-			this.batteryFpsInput.TabIndex = 12;
-			this.batteryFpsInput.Value = new decimal(new int[] {
-			30,
-			0,
-			0,
-			0});
-			// 
 			// unlimitedFpsCheck
 			// 
 			this.unlimitedFpsCheck.AutoSize = true;
@@ -184,16 +158,51 @@
 			this.unlimitedFpsCheck.UseVisualStyleBackColor = true;
 			this.unlimitedFpsCheck.CheckedChanged += new System.EventHandler(this.UnlimitedFpsCheckCheckedChanged);
 			// 
+			// busyFrameLimitAlways
+			// 
+			this.busyFrameLimitAlways.AutoSize = true;
+			this.busyFrameLimitAlways.Location = new System.Drawing.Point(306, 56);
+			this.busyFrameLimitAlways.Name = "busyFrameLimitAlways";
+			this.busyFrameLimitAlways.Size = new System.Drawing.Size(58, 17);
+			this.busyFrameLimitAlways.TabIndex = 14;
+			this.busyFrameLimitAlways.TabStop = true;
+			this.busyFrameLimitAlways.Text = "Always";
+			this.busyFrameLimitAlways.UseVisualStyleBackColor = true;
+			// 
+			// busyFrameLimitPlugged
+			// 
+			this.busyFrameLimitPlugged.AutoSize = true;
+			this.busyFrameLimitPlugged.Location = new System.Drawing.Point(306, 79);
+			this.busyFrameLimitPlugged.Name = "busyFrameLimitPlugged";
+			this.busyFrameLimitPlugged.Size = new System.Drawing.Size(95, 17);
+			this.busyFrameLimitPlugged.TabIndex = 15;
+			this.busyFrameLimitPlugged.TabStop = true;
+			this.busyFrameLimitPlugged.Text = "When plugged";
+			this.busyFrameLimitPlugged.UseVisualStyleBackColor = true;
+			// 
+			// busyFrameLimitNever
+			// 
+			this.busyFrameLimitNever.AutoSize = true;
+			this.busyFrameLimitNever.Location = new System.Drawing.Point(306, 102);
+			this.busyFrameLimitNever.Name = "busyFrameLimitNever";
+			this.busyFrameLimitNever.Size = new System.Drawing.Size(54, 17);
+			this.busyFrameLimitNever.TabIndex = 16;
+			this.busyFrameLimitNever.TabStop = true;
+			this.busyFrameLimitNever.Text = "Never";
+			this.busyFrameLimitNever.UseVisualStyleBackColor = true;
+			// 
 			// FormSettings
 			// 
 			this.AcceptButton = this.confirmButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(404, 189);
+			this.ClientSize = new System.Drawing.Size(414, 216);
+			this.Controls.Add(this.busyFrameLimitNever);
+			this.Controls.Add(this.busyFrameLimitPlugged);
+			this.Controls.Add(this.busyFrameLimitAlways);
 			this.Controls.Add(this.unlimitedFpsCheck);
-			this.Controls.Add(this.batteryFpsInput);
 			this.Controls.Add(this.fpsInput);
-			this.Controls.Add(this.batteryFpsTitle);
+			this.Controls.Add(this.fpsTimingTitle);
 			this.Controls.Add(this.fpsTitle);
 			this.Controls.Add(this.rendererInfo);
 			this.Controls.Add(this.guiScaleSelector);
@@ -208,7 +217,6 @@
 			this.Text = "Postavke";
 			this.Load += new System.EventHandler(this.FormSettings_Load);
 			((System.ComponentModel.ISupportInitialize)(this.fpsInput)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.batteryFpsInput)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -223,9 +231,11 @@
 		private System.Windows.Forms.ComboBox guiScaleSelector;
 		private System.Windows.Forms.Label rendererInfo;
 		private System.Windows.Forms.Label fpsTitle;
-		private System.Windows.Forms.Label batteryFpsTitle;
+		private System.Windows.Forms.Label fpsTimingTitle;
 		private System.Windows.Forms.NumericUpDown fpsInput;
-		private System.Windows.Forms.NumericUpDown batteryFpsInput;
 		private System.Windows.Forms.CheckBox unlimitedFpsCheck;
+		private System.Windows.Forms.RadioButton busyFrameLimitAlways;
+		private System.Windows.Forms.RadioButton busyFrameLimitPlugged;
+		private System.Windows.Forms.RadioButton busyFrameLimitNever;
 	}
 }
