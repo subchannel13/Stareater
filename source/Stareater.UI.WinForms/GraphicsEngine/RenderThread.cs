@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using Microsoft.Win32;
 using Stareater.AppData;
 
 namespace Stareater.GraphicsEngine
@@ -26,11 +27,14 @@ namespace Stareater.GraphicsEngine
 		{
 			this.pullSettings();
 			this.shouldStop = false;
+			SystemEvents.PowerModeChanged += onPowerModeChange;
+			
 			this.thread.Start();
 		}
 		
 		public void Stop()
 		{
+			SystemEvents.PowerModeChanged -= onPowerModeChange;
 			this.shouldStop = true;
 		}
 		#endregion
@@ -55,6 +59,13 @@ namespace Stareater.GraphicsEngine
 			}
 		}
 		
+		private void busyWait()
+		{
+			var sw = new SpinWait();
+			while(this.watch.ElapsedMilliseconds < this.frameDuration)
+				sw.SpinOnce();
+		}
+		
 		private void sleepWait()
 		{
 			int sleepFor = (int)(this.frameDuration - this.watch.ElapsedMilliseconds);
@@ -64,12 +75,29 @@ namespace Stareater.GraphicsEngine
 			Thread.Sleep(sleepFor);
 		}
 		
+		void onPowerModeChange(object sender, PowerModeChangedEventArgs e)
+		{
+			if (e.Mode == PowerModes.StatusChange)
+				this.OnSettingsChange();
+		}
+		
 		private void pullSettings()
 		{
-			this.frameDuration = 1000 / SettingsWinforms.Get.Framerate;
-			//TODO(v0.6) select wait method
-			this.waitMethod = sleepWait;
+			bool onBattery = System.Windows.Forms.SystemInformation.PowerStatus.PowerLineStatus != System.Windows.Forms.PowerLineStatus.Online; //assumes battery if status is unknown
+			switch(SettingsWinforms.Get.FramerateBusySpinUsage)
+			{
+				case BusySpinMode.Always:
+					this.waitMethod = busyWait;
+					break;
+				case BusySpinMode.Never:
+					this.waitMethod = sleepWait;
+					break;
+				case BusySpinMode.NotOnBattery:
+					this.waitMethod = onBattery ? (Action)sleepWait : busyWait;
+					break;
+			}
 			
+			this.frameDuration = SettingsWinforms.Get.UnlimitedFramerate ? 0 : (1000 / SettingsWinforms.Get.Framerate);
 			this.settingsChanged = false;
 		}
 	}
