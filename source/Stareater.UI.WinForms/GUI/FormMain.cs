@@ -72,6 +72,7 @@ namespace Stareater.GUI
 			
 			//TODO(later) implement power state (battery or plug in) check
 			//TODO(later) try to find a way for renderer loop without timer
+			this.renderThread.OnSettingsChange();
 			this.glRedrawTimer.Interval = SettingsWinforms.Get.UnlimitedFramerate ? 
 				1 : 
 				(int)Math.Max(1, Math.Floor(0.3 * 1000.0 / SettingsWinforms.Get.Framerate));

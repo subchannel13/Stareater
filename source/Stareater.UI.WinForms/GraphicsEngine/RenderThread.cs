@@ -10,10 +10,12 @@ namespace Stareater.GraphicsEngine
 		private Thread thread;
 		private Stopwatch watch;
 		private bool shouldStop;
+		private bool settingsChanged;
 		
 		private int frameDuration; //in milliseconds
 		private Action waitMethod;
 		
+		#region Lifecycle control
 		public RenderThread()
 		{
 			this.thread = new Thread(renderLoop);
@@ -31,12 +33,21 @@ namespace Stareater.GraphicsEngine
 		{
 			this.shouldStop = true;
 		}
+		#endregion
+		
+		public void OnSettingsChange()
+		{
+			this.settingsChanged = true;
+		}
 		
 		private void renderLoop()
 		{
 			while(!this.shouldStop)
 			{
 				this.watch.Restart();
+				
+				if (this.settingsChanged)
+					this.pullSettings();
 				
 				//TODO(v0.6) contact renderer
 				
@@ -58,6 +69,8 @@ namespace Stareater.GraphicsEngine
 			this.frameDuration = 1000 / SettingsWinforms.Get.Framerate;
 			//TODO(v0.6) select wait method
 			this.waitMethod = sleepWait;
+			
+			this.settingsChanged = false;
 		}
 	}
 }
