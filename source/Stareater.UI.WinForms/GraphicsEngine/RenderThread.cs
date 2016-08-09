@@ -1,34 +1,51 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Windows.Forms;
 using Microsoft.Win32;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
+using Stareater.GLRenderers;
 
 namespace Stareater.GraphicsEngine
 {
-	public class RenderThread
+	internal class RenderThread
 	{
+		private const float MaxDeltaTime = 0.5f;
+		private const float MinDeltaTime = 0.005f;
+		
+		private GLControl glCanvas;
+		private Object lockObj = new Object();
+		private Vector2d screenSize;
 		private Thread thread;
 		private Stopwatch watch;
+		
+		private bool resetViewport;
 		private bool shouldStop;
 		private bool settingsChanged;
-		
+
 		private int frameDuration; //in milliseconds
+		private ARenderer nextRenderer;
 		private Action waitMethod;
 		
 		#region Lifecycle control
-		public RenderThread()
+		public RenderThread(GLControl glCanvas)
 		{
+			this.glCanvas = glCanvas;
 			this.thread = new Thread(renderLoop);
 			this.watch = new Stopwatch();
 		}
 		
 		public void Start()
 		{
-			this.pullSettings();
+			this.nextRenderer = null;
+			this.resetViewport = true;
 			this.shouldStop = false;
 			SystemEvents.PowerModeChanged += onPowerModeChange;
+			this.pullSettings();
 			
+			this.glCanvas.Context.MakeCurrent(null);
 			this.thread.Start();
 		}
 		
@@ -39,22 +56,80 @@ namespace Stareater.GraphicsEngine
 		}
 		#endregion
 		
+		#region Event messages
+		public void ChangeScene(ARenderer renderer)
+		{
+			this.nextRenderer = renderer;
+		}
+		
+		public void OnResize()
+		{
+			var screen = Screen.FromControl(this.glCanvas);
+			this.screenSize = new Vector2d(screen.Bounds.Width, screen.Bounds.Height);
+			
+			lock(this.lockObj)
+				this.resetViewport = true;
+		}
+		
 		public void OnSettingsChange()
 		{
-			this.settingsChanged = true;
+			lock(this.lockObj)
+				this.settingsChanged = true;
+		}
+		#endregion
+		
+		public ARenderer CurrentRenderer
+		{
+			get { return this.nextRenderer; }
 		}
 		
 		private void renderLoop()
 		{
+			ARenderer currentRenderer;
+			this.glCanvas.MakeCurrent();
+			
+			GL.Enable(EnableCap.DepthTest);
+			GL.Enable(EnableCap.Blend);
+			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+			
 			while(!this.shouldStop)
 			{
+				double dt = this.watch.Elapsed.TotalSeconds;
 				this.watch.Restart();
 				
-				if (this.settingsChanged)
-					this.pullSettings();
+				lock(this.lockObj)
+					if (this.settingsChanged)
+						this.pullSettings();
 				
-				//TODO(v0.6) contact renderer
 				
+				currentRenderer = this.nextRenderer;
+				lock(this.lockObj)
+					if (resetViewport) {
+						resetViewport = false;
+						GL.Viewport(glCanvas.ClientRectangle); //TODO(v0.6) move to scene object
+						
+						if (currentRenderer != null)
+							currentRenderer.ResetProjection(this.screenSize); //TODO(v0.6) move to scene object
+					}
+				
+				GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+				GL.MatrixMode(MatrixMode.Modelview);
+				GL.LoadIdentity();
+				
+				if (dt > MaxDeltaTime)
+					dt = MaxDeltaTime;
+	#if DEBUG
+				try {
+	#endif
+				if (currentRenderer != null/* && gameController.State == GameState.Running*/)
+					currentRenderer.Draw(dt); //TODO(v0.6) move to scene object
+	#if DEBUG
+				} catch(Exception ex)
+				{
+					Trace.WriteLine(ex);
+				}
+	#endif
+				glCanvas.SwapBuffers();
 				this.waitMethod();
 			}
 		}

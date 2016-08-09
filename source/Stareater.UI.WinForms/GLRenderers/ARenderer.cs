@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace Stareater.GLRenderers
@@ -43,9 +44,10 @@ namespace Stareater.GLRenderers
 		#endregion
 		
 		#region Events
-		public void ResetProjection()
+		public void ResetProjection(Vector2d screenSize)
 		{
 			this.resetProjection = true;
+			this.screenSize = screenSize;
 		}
 		
 		public virtual void OnNewTurn()
@@ -55,6 +57,7 @@ namespace Stareater.GLRenderers
 		#endregion
 		
 		protected Control eventDispatcher { get; private set; }
+		protected Vector2d screenSize  { get; private set; }
 		
 		protected abstract void setupPerspective();
 

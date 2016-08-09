@@ -285,11 +285,10 @@ namespace Stareater.GLRenderers
 			double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
 			double semiRadius = 0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel);
 
-			var screen = Screen.FromControl(eventDispatcher);
 			//TODO(later): test this, perhaps by flipping the monitor.
-			screenLength = screen.Bounds.Width > screen.Bounds.Height ? 
-				(float)(2 * screen.Bounds.Width * semiRadius * aspect / eventDispatcher.Width) : 
-				(float)(2 * screen.Bounds.Height * semiRadius * aspect / eventDispatcher.Height);
+			screenLength = this.screenSize.X > this.screenSize.Y ? 
+				(float)(2 * this.screenSize.X * semiRadius * aspect / eventDispatcher.Width) : 
+				(float)(2 * this.screenSize.Y * semiRadius * aspect / eventDispatcher.Height);
 			
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();

@@ -46,7 +46,6 @@ namespace Stareater.GLRenderers
 		{
 			this.Controller = controller;
 			this.ResetLists();
-			this.ResetProjection();
 		}
 		
 		#region ARenderer implementation
@@ -266,7 +265,7 @@ namespace Stareater.GLRenderers
 					
 				for(int y = -(int)Math.Ceiling(yHeight / 2.0); y <= (int)Math.Floor(yHeight / 2.0); y++)
 				{
-					GL.Begin(PrimitiveType.TriangleStrip);
+					GL.Begin(BeginMode.TriangleStrip);
 					for(int i = 0; i <= 6; i++)
 					{
 						GL.Vertex3(0.95 * Math.Cos(i * Math.PI / 3) + x * 1.5, 0.95 * Math.Sin(i * Math.PI / 3) * HexHeightScale + y * HexHeight + yOffset, GridZ);

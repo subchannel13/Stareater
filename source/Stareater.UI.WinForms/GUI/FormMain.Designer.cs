@@ -31,7 +31,6 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
 			this.eventTimer = new System.Windows.Forms.Timer(this.components);
 			this.glCanvas = new OpenTK.GLControl();
-			this.glRedrawTimer = new System.Windows.Forms.Timer(this.components);
 			this.constructionManagement = new Stareater.GUI.ConstructionSiteView();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.mainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,6 +39,7 @@
 			this.researchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.colonizationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.libraryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.endTurnButton = new System.Windows.Forms.Button();
 			this.returnButton = new System.Windows.Forms.Button();
 			this.fleetPanel = new System.Windows.Forms.Panel();
@@ -53,7 +53,6 @@
 			this.shipCount = new System.Windows.Forms.Label();
 			this.unitDoneAction = new System.Windows.Forms.Button();
 			this.abilityList = new System.Windows.Forms.FlowLayoutPanel();
-			this.libraryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip.SuspendLayout();
 			this.fleetPanel.SuspendLayout();
 			this.unitInfoPanel.SuspendLayout();
@@ -74,14 +73,7 @@
 			this.glCanvas.TabIndex = 0;
 			this.glCanvas.VSync = false;
 			this.glCanvas.Load += new System.EventHandler(this.glCanvas_Load);
-			this.glCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.glCanvas_Paint);
 			this.glCanvas.Resize += new System.EventHandler(this.glCanvas_Resize);
-			// 
-			// glRedrawTimer
-			// 
-			this.glRedrawTimer.Enabled = true;
-			this.glRedrawTimer.Interval = 10;
-			this.glRedrawTimer.Tick += new System.EventHandler(this.glRedrawTimer_Tick);
 			// 
 			// constructionManagement
 			// 
@@ -150,6 +142,13 @@
 			this.reportsToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
 			this.reportsToolStripMenuItem.Text = "Reports";
 			this.reportsToolStripMenuItem.Click += new System.EventHandler(this.reportsToolStripMenuItem_Click);
+			// 
+			// libraryToolStripMenuItem
+			// 
+			this.libraryToolStripMenuItem.Name = "libraryToolStripMenuItem";
+			this.libraryToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+			this.libraryToolStripMenuItem.Text = "Library";
+			this.libraryToolStripMenuItem.Click += new System.EventHandler(this.libraryToolStripMenuItem_Click);
 			// 
 			// endTurnButton
 			// 
@@ -288,13 +287,6 @@
 			this.abilityList.TabIndex = 8;
 			this.abilityList.Visible = false;
 			// 
-			// libraryToolStripMenuItem
-			// 
-			this.libraryToolStripMenuItem.Name = "libraryToolStripMenuItem";
-			this.libraryToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
-			this.libraryToolStripMenuItem.Text = "Library";
-			this.libraryToolStripMenuItem.Click += new System.EventHandler(this.libraryToolStripMenuItem_Click);
-			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -341,7 +333,6 @@
 
 		private System.Windows.Forms.Timer eventTimer;
 		private OpenTK.GLControl glCanvas;
-		private System.Windows.Forms.Timer glRedrawTimer;
 		private Stareater.GUI.EmpyPlanetView empyPlanetView;
 		private System.Windows.Forms.ToolStripMenuItem colonizationToolStripMenuItem;
 		private System.Windows.Forms.Panel unitInfoPanel;

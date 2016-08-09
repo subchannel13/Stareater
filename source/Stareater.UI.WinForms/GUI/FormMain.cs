@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
@@ -21,15 +19,7 @@ namespace Stareater.GUI
 {
 	internal partial class FormMain : Form, IGameStateListener, IBattleEventListener, IGalaxyViewListener
 	{
-		private const float MaxDeltaTime = 0.5f;
-		private const float MinDeltaTime = 0.005f;
-
-		private RenderThread renderThread = new RenderThread();
-		private bool glReady = false;
-		private bool resetViewport = true;
-		private DateTime lastRender = DateTime.UtcNow;
-		
-		private ARenderer currentRenderer;
+		private RenderThread renderThread;
 		private GalaxyRenderer galaxyRenderer;
 		private SystemRenderer systemRenderer;
 		private SpaceCombatRenderer combatRenderer;
@@ -48,6 +38,7 @@ namespace Stareater.GUI
 			InitializeComponent();
 			
 			this.gameController = new GameController();
+			this.renderThread = new RenderThread(this.glCanvas);
 			this.reportOpener = new OpenReportVisitor(showDevelopment, showResearch);
 
 			applySettings();
@@ -70,12 +61,7 @@ namespace Stareater.GUI
 			this.mainMenuToolStripMenuItem.Text = context["MainMenu"].Text();
 			this.developmentToolStripMenuItem.Text = context["DevelopmentMenu"].Text();
 			
-			//TODO(later) implement power state (battery or plug in) check
-			//TODO(later) try to find a way for renderer loop without timer
 			this.renderThread.OnSettingsChange();
-			this.glRedrawTimer.Interval = SettingsWinforms.Get.UnlimitedFramerate ? 
-				1 : 
-				(int)Math.Max(1, Math.Floor(0.3 * 1000.0 / SettingsWinforms.Get.Framerate));
 		}
 		
 		private PlayerController currentPlayer
@@ -93,14 +79,6 @@ namespace Stareater.GUI
 			}
 		}
 		
-		private void glRedrawTimer_Tick(object sender, EventArgs e)
-		{
-			double dt = (DateTime.UtcNow - this.lastRender).TotalSeconds;
-			
-			if (SettingsWinforms.Get.UnlimitedFramerate || dt > 1.0 / SettingsWinforms.Get.Framerate)
-				glCanvas.Refresh();
-		}
-
 		private void endTurnButton_Click(object sender, EventArgs e)
 		{
 			this.currentPlayer.EndGalaxyPhase();
@@ -117,7 +95,7 @@ namespace Stareater.GUI
 		
 		private void returnButton_Click(object sender, EventArgs e)
 		{
-			if (currentRenderer == systemRenderer)
+			if (this.renderThread.CurrentRenderer == systemRenderer)
 				switchToGalaxyView();
 		}
 		
@@ -367,55 +345,12 @@ namespace Stareater.GUI
 
 		private void glCanvas_Load(object sender, EventArgs e)
 		{
-			renderThread.Start();
-			glReady = true;
-			GL.Enable(EnableCap.DepthTest);
-			GL.Enable(EnableCap.Blend);
-			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-		}
-
-		private void glCanvas_Paint(object sender, PaintEventArgs e)
-		{
-			if (!glReady) return;
-
-			if (resetViewport) {
-				GL.Viewport(glCanvas.ClientRectangle);
-				resetViewport = false;
-				
-				if (glReady && currentRenderer != null)
-					currentRenderer.ResetProjection();
-			}
-			
-			var thisMoment = DateTime.UtcNow;
-			double dt = (thisMoment - lastRender).TotalSeconds;
-			
-			if (dt < MinDeltaTime)
-				return;
-			if (dt > MaxDeltaTime)
-				dt = MaxDeltaTime;
-
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-			GL.MatrixMode(MatrixMode.Modelview);
-			GL.LoadIdentity();
-#if DEBUG
-			try {
-#endif
-			if (glReady && currentRenderer != null && gameController.State == GameState.Running)
-				currentRenderer.Draw(dt);
-#if DEBUG
-			} catch(Exception ex)
-			{
-				Trace.WriteLine(ex);
-			}
-#endif
-			lastRender = thisMoment;
-			glCanvas.SwapBuffers();
+			this.renderThread.Start();
 		}
 
 		private void glCanvas_Resize(object sender, EventArgs e)
 		{
-			resetViewport = true;
-			glCanvas.Refresh();
+			this.renderThread.OnResize();
 		}
 		
 		#endregion
@@ -429,11 +364,11 @@ namespace Stareater.GUI
 			endTurnButton.Visible = true;
 			returnButton.Visible = false;
 			
-			if (currentRenderer == systemRenderer)
+			if (this.renderThread.CurrentRenderer == systemRenderer)
 				systemRenderer.DetachFromCanvas();
 			
 			galaxyRenderer.AttachToCanvas(glCanvas);
-			currentRenderer = galaxyRenderer;
+			this.renderThread.ChangeScene(galaxyRenderer);
 		}
 		
 		#endregion
@@ -450,12 +385,12 @@ namespace Stareater.GUI
 			this.currentPlayerIndex = 0;
 			this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
 			
-			if (this.currentRenderer == this.combatRenderer)
+			if (this.renderThread.CurrentRenderer == this.combatRenderer)
 			{
-				this.currentRenderer.DetachFromCanvas();
+				this.combatRenderer.DetachFromCanvas();
 				
-				this.currentRenderer = this.galaxyRenderer;
-				this.currentRenderer.AttachToCanvas(this.glCanvas);
+				this.renderThread.ChangeScene(this.galaxyRenderer);
+				this.galaxyRenderer.AttachToCanvas(this.glCanvas);
 				
 				abilityList.Visible = false;
 				endTurnButton.Visible = true;
@@ -474,10 +409,10 @@ namespace Stareater.GUI
 				return;
 			}
 			
-			this.currentRenderer.DetachFromCanvas();
+			this.renderThread.CurrentRenderer.DetachFromCanvas();
 			
-			this.currentRenderer = this.gameOverRenderer;
-			this.currentRenderer.AttachToCanvas(this.glCanvas);
+			this.renderThread.ChangeScene(this.gameOverRenderer);
+			this.gameOverRenderer.AttachToCanvas(this.glCanvas);
 			
 			abilityList.Visible = false;
 			endTurnButton.Visible = false;
@@ -498,11 +433,11 @@ namespace Stareater.GUI
 			this.conflictController = battleController;
 			
 			this.fleetController = null;
-			this.currentRenderer.DetachFromCanvas();
+			this.renderThread.CurrentRenderer.DetachFromCanvas();
 			
 			this.combatRenderer.StartCombat(battleController);
-			this.currentRenderer = this.combatRenderer;
-			this.currentRenderer.AttachToCanvas(this.glCanvas);
+			this.renderThread.ChangeScene(this.combatRenderer);
+			this.combatRenderer.AttachToCanvas(this.glCanvas);
 			
 			abilityList.Visible = true;
 			constructionManagement.Visible = false;
@@ -629,7 +564,7 @@ namespace Stareater.GUI
 			
 			this.systemRenderer.AttachToCanvas(glCanvas);
 			this.systemRenderer.SetStarSystem(systemController, this.currentPlayer);
-			this.currentRenderer = systemRenderer;
+			this.renderThread.ChangeScene(systemRenderer);
 		}
 		
 		void IGalaxyViewListener.SystemSelected(StarSystemController systemController)
