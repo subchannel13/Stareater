@@ -133,7 +133,6 @@ namespace Stareater.GLRenderers
 
 		public override void Load()
 		{
-			GalaxyTextures.Get.Load();
 			TextRenderUtil.Get.Prepare(this.currentPlayer.Stars.Select(x => x.Name.ToText(SettingsWinforms.Get.Language)));
 		}
 		

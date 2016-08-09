@@ -86,7 +86,9 @@ namespace Stareater.GraphicsEngine
 		private void renderLoop()
 		{
 			ARenderer currentRenderer;
+			
 			this.glCanvas.MakeCurrent();
+			GalaxyTextures.Get.Load();
 			
 			GL.Enable(EnableCap.DepthTest);
 			GL.Enable(EnableCap.Blend);

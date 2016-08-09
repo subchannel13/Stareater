@@ -70,11 +70,6 @@ namespace Stareater.GLRenderers
 			this.eventDispatcher.MouseClick -= this.mouseClick;
 		}
 		
-		public override void Load()
-		{
-			GalaxyTextures.Get.Load();
-		}
-		
 		public override void ResetLists()
 		{
 			GL.DeleteLists(gridList, 1);
