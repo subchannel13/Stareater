@@ -19,7 +19,7 @@ namespace Stareater.GUI
 {
 	internal partial class FormMain : Form, IGameStateListener, IBattleEventListener, IGalaxyViewListener
 	{
-		private RenderThread renderThread;
+		private MainLoop mainLoop;
 		private GalaxyRenderer galaxyRenderer;
 		private SystemRenderer systemRenderer;
 		private SpaceCombatRenderer combatRenderer;
@@ -38,7 +38,7 @@ namespace Stareater.GUI
 			InitializeComponent();
 			
 			this.gameController = new GameController();
-			this.renderThread = new RenderThread(this.glCanvas);
+			this.mainLoop = new MainLoop(this.glCanvas);
 			this.reportOpener = new OpenReportVisitor(showDevelopment, showResearch);
 
 			applySettings();
@@ -48,7 +48,7 @@ namespace Stareater.GUI
 		private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			SettingsWinforms.Get.Save();
-			this.renderThread.Stop();
+			this.mainLoop.Stop();
 		}
 
 		private void applySettings()
@@ -61,7 +61,7 @@ namespace Stareater.GUI
 			this.mainMenuToolStripMenuItem.Text = context["MainMenu"].Text();
 			this.developmentToolStripMenuItem.Text = context["DevelopmentMenu"].Text();
 			
-			this.renderThread.OnSettingsChange();
+			this.mainLoop.OnSettingsChange();
 		}
 		
 		private PlayerController currentPlayer
@@ -95,7 +95,7 @@ namespace Stareater.GUI
 		
 		private void returnButton_Click(object sender, EventArgs e)
 		{
-			if (this.renderThread.CurrentRenderer == systemRenderer)
+			if (this.mainLoop.CurrentRenderer == systemRenderer)
 				switchToGalaxyView();
 		}
 		
@@ -345,12 +345,12 @@ namespace Stareater.GUI
 
 		private void glCanvas_Load(object sender, EventArgs e)
 		{
-			this.renderThread.Start();
+			this.mainLoop.Start();
 		}
 
 		private void glCanvas_Resize(object sender, EventArgs e)
 		{
-			this.renderThread.OnResize();
+			this.mainLoop.OnResize();
 		}
 		
 		#endregion
@@ -364,11 +364,11 @@ namespace Stareater.GUI
 			endTurnButton.Visible = true;
 			returnButton.Visible = false;
 			
-			if (this.renderThread.CurrentRenderer == systemRenderer)
+			if (this.mainLoop.CurrentRenderer == systemRenderer)
 				systemRenderer.DetachFromCanvas();
 			
 			galaxyRenderer.AttachToCanvas(glCanvas);
-			this.renderThread.ChangeScene(galaxyRenderer);
+			this.mainLoop.ChangeScene(galaxyRenderer);
 		}
 		
 		#endregion
@@ -385,11 +385,11 @@ namespace Stareater.GUI
 			this.currentPlayerIndex = 0;
 			this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
 			
-			if (this.renderThread.CurrentRenderer == this.combatRenderer)
+			if (this.mainLoop.CurrentRenderer == this.combatRenderer)
 			{
 				this.combatRenderer.DetachFromCanvas();
 				
-				this.renderThread.ChangeScene(this.galaxyRenderer);
+				this.mainLoop.ChangeScene(this.galaxyRenderer);
 				this.galaxyRenderer.AttachToCanvas(this.glCanvas);
 				
 				abilityList.Visible = false;
@@ -409,9 +409,9 @@ namespace Stareater.GUI
 				return;
 			}
 			
-			this.renderThread.CurrentRenderer.DetachFromCanvas();
+			this.mainLoop.CurrentRenderer.DetachFromCanvas();
 			
-			this.renderThread.ChangeScene(this.gameOverRenderer);
+			this.mainLoop.ChangeScene(this.gameOverRenderer);
 			this.gameOverRenderer.AttachToCanvas(this.glCanvas);
 			
 			abilityList.Visible = false;
@@ -433,10 +433,10 @@ namespace Stareater.GUI
 			this.conflictController = battleController;
 			
 			this.fleetController = null;
-			this.renderThread.CurrentRenderer.DetachFromCanvas();
+			this.mainLoop.CurrentRenderer.DetachFromCanvas();
 			
 			this.combatRenderer.StartCombat(battleController);
-			this.renderThread.ChangeScene(this.combatRenderer);
+			this.mainLoop.ChangeScene(this.combatRenderer);
 			this.combatRenderer.AttachToCanvas(this.glCanvas);
 			
 			abilityList.Visible = true;
@@ -564,7 +564,7 @@ namespace Stareater.GUI
 			
 			this.systemRenderer.AttachToCanvas(glCanvas);
 			this.systemRenderer.SetStarSystem(systemController, this.currentPlayer);
-			this.renderThread.ChangeScene(systemRenderer);
+			this.mainLoop.ChangeScene(systemRenderer);
 		}
 		
 		void IGalaxyViewListener.SystemSelected(StarSystemController systemController)

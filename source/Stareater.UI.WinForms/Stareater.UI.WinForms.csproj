@@ -127,7 +127,7 @@
     <Compile Include="GLRenderers\TextureInfo.cs" />
     <Compile Include="GLRenderers\TextureUtils.cs" />
     <Compile Include="GLRenderers\VisualPositioner.cs" />
-    <Compile Include="GraphicsEngine\RenderThread.cs" />
+    <Compile Include="GraphicsEngine\MainLoop.cs" />
     <Compile Include="GuiUtils\NumberInput.cs" />
     <Compile Include="GUI\BuildingItem.cs">
       <SubType>UserControl</SubType>

@@ -10,7 +10,7 @@ using Stareater.GLRenderers;
 
 namespace Stareater.GraphicsEngine
 {
-	internal class RenderThread
+	internal class MainLoop
 	{
 		private const float MaxDeltaTime = 0.5f;
 		private const float MinDeltaTime = 0.005f;
@@ -30,7 +30,7 @@ namespace Stareater.GraphicsEngine
 		private Action waitMethod;
 		
 		#region Lifecycle control
-		public RenderThread(GLControl glCanvas)
+		public MainLoop(GLControl glCanvas)
 		{
 			this.glCanvas = glCanvas;
 			this.thread = new Thread(renderLoop);
