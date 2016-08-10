@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
@@ -17,7 +18,6 @@ namespace Stareater.GraphicsEngine
 		
 		private GLControl glCanvas;
 		private Object lockObj = new Object();
-		private Vector2d screenSize;
 		private Thread thread;
 		private Stopwatch watch;
 		
@@ -26,8 +26,11 @@ namespace Stareater.GraphicsEngine
 		private bool settingsChanged;
 
 		private int frameDuration; //in milliseconds
-		private ARenderer nextRenderer;
 		private Action waitMethod;
+		
+		private ConcurrentQueue<Action> inputEvents = new ConcurrentQueue<Action>();
+		private ARenderer nextRenderer;
+		private Vector2d screenSize;
 		
 		#region Lifecycle control
 		public MainLoop(GLControl glCanvas)
@@ -36,7 +39,7 @@ namespace Stareater.GraphicsEngine
 			this.thread = new Thread(renderLoop);
 			this.watch = new Stopwatch();
 		}
-		
+
 		public void Start()
 		{
 			this.nextRenderer = null;
@@ -46,13 +49,25 @@ namespace Stareater.GraphicsEngine
 			this.pullSettings();
 			
 			this.glCanvas.Context.MakeCurrent(null);
+			this.glCanvas.KeyPress += keyPress;
+			this.glCanvas.MouseMove += this.mouseMove;
+			this.glCanvas.MouseWheel += this.mouseScroll;
+			this.glCanvas.MouseClick += this.mouseClick;
+			this.glCanvas.MouseDoubleClick += this.mouseDoubleClick;
+			
 			this.thread.Start();
 		}
 		
 		public void Stop()
 		{
-			SystemEvents.PowerModeChanged -= onPowerModeChange;
 			this.shouldStop = true;
+			
+			SystemEvents.PowerModeChanged -= onPowerModeChange;
+			this.glCanvas.KeyPress -= keyPress;
+			this.glCanvas.MouseMove -= this.mouseMove;
+			this.glCanvas.MouseWheel -= this.mouseScroll;
+			this.glCanvas.MouseClick -= this.mouseClick;
+			this.glCanvas.MouseDoubleClick -= this.mouseDoubleClick;
 		}
 		#endregion
 		
@@ -78,48 +93,25 @@ namespace Stareater.GraphicsEngine
 		}
 		#endregion
 		
+		//TODO(later) remove the need for getting current renderer outside the loop
 		public ARenderer CurrentRenderer
 		{
 			get { return this.nextRenderer; }
 		}
 		
+		#region The loop
 		private void renderLoop()
 		{
-			ARenderer currentRenderer;
-			
-			this.glCanvas.MakeCurrent();
-			GalaxyTextures.Get.Load();
-			
-			GL.Enable(EnableCap.DepthTest);
-			GL.Enable(EnableCap.Blend);
-			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+			this.initLoop();
 			
 			while(!this.shouldStop)
 			{
-				double dt = this.watch.Elapsed.TotalSeconds;
+				double dt = Math.Min(this.watch.Elapsed.TotalSeconds, MaxDeltaTime);
+				ARenderer currentRenderer = this.nextRenderer;
+				
 				this.watch.Restart();
+				this.prepareFrameRendering(currentRenderer);
 				
-				lock(this.lockObj)
-					if (this.settingsChanged)
-						this.pullSettings();
-				
-				
-				currentRenderer = this.nextRenderer;
-				lock(this.lockObj)
-					if (resetViewport) {
-						resetViewport = false;
-						GL.Viewport(glCanvas.ClientRectangle); //TODO(v0.6) move to scene object
-						
-						if (currentRenderer != null)
-							currentRenderer.ResetProjection(this.screenSize); //TODO(v0.6) move to scene object
-					}
-				
-				GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-				GL.MatrixMode(MatrixMode.Modelview);
-				GL.LoadIdentity();
-				
-				if (dt > MaxDeltaTime)
-					dt = MaxDeltaTime;
 	#if DEBUG
 				try {
 	#endif
@@ -136,6 +128,42 @@ namespace Stareater.GraphicsEngine
 			}
 		}
 		
+		private void initLoop()
+		{
+			this.glCanvas.MakeCurrent();
+			GalaxyTextures.Get.Load();
+			
+			GL.Enable(EnableCap.DepthTest);
+			GL.Enable(EnableCap.Blend);
+			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+		}
+		
+		private void prepareFrameRendering(ARenderer renderer)
+		{
+			lock(this.lockObj)
+				if (this.settingsChanged)
+					this.pullSettings();
+			
+			Action eventHandler;
+			while(this.inputEvents.TryDequeue(out eventHandler))
+				eventHandler();
+			
+			lock(this.lockObj)
+				if (resetViewport) {
+					resetViewport = false;
+					GL.Viewport(glCanvas.ClientRectangle); //TODO(v0.6) move to scene object
+					
+					if (renderer != null)
+						renderer.ResetProjection(this.screenSize); //TODO(v0.6) move to scene object
+				}
+			
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+			GL.MatrixMode(MatrixMode.Modelview);
+			GL.LoadIdentity();
+		}
+		#endregion
+		
+		#region Frame timing methods
 		private void busyWait()
 		{
 			var sw = new SpinWait();
@@ -151,7 +179,9 @@ namespace Stareater.GraphicsEngine
 			
 			Thread.Sleep(sleepFor);
 		}
+		#endregion
 		
+		#region Settings
 		void onPowerModeChange(object sender, PowerModeChangedEventArgs e)
 		{
 			if (e.Mode == PowerModes.StatusChange)
@@ -177,5 +207,63 @@ namespace Stareater.GraphicsEngine
 			this.frameDuration = SettingsWinforms.Get.UnlimitedFramerate ? 0 : (1000 / SettingsWinforms.Get.Framerate);
 			this.settingsChanged = false;
 		}
+		#endregion
+		
+		#region Input
+		private void keyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+		{
+			if (Thread.CurrentThread != this.thread)
+			{
+				inputEvents.Enqueue(() => this.keyPress(sender, e));
+				return;
+			}
+			
+			//TODO(v0.6) implement propagation
+		}
+		
+		private void mouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			if (Thread.CurrentThread != this.thread)
+			{
+				inputEvents.Enqueue(() => this.mouseDoubleClick(sender, e));
+				return;
+			}
+			
+			//TODO(v0.6) implement propagation
+		}
+		
+		private void mouseClick(object sender, MouseEventArgs e)
+		{
+			if (Thread.CurrentThread != this.thread)
+			{
+				inputEvents.Enqueue(() => this.mouseClick(sender, e));
+				return;
+			}
+			
+			//TODO(v0.6) implement propagation
+		}
+		
+		private void mouseMove(object sender, MouseEventArgs e)
+		{
+			if (Thread.CurrentThread != this.thread)
+			{
+				inputEvents.Enqueue(() => this.mouseMove(sender, e));
+				return;
+			}
+			
+			//TODO(v0.6) implement propagation
+		}
+
+		private void mouseScroll(object sender, MouseEventArgs e)
+		{
+			if (Thread.CurrentThread != this.thread)
+			{
+				inputEvents.Enqueue(() => this.mouseScroll(sender, e));
+				return;
+			}
+			
+			//TODO(v0.6) implement propagation
+		}
+		#endregion
 	}
 }
