@@ -244,14 +244,11 @@ namespace Stareater.GUI
 				this.galaxyRenderer.Unload();
 			}
 			
-			if (this.systemRenderer != null) {
+			if (this.systemRenderer != null)
 				this.systemRenderer.DetachFromCanvas();
-				this.systemRenderer.Unload();
-			}
 			
 			this.galaxyRenderer = new GalaxyRenderer(this);
 			this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
-			this.galaxyRenderer.Load();
 			
 			this.systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement, empyPlanetView);
 			this.combatRenderer = new SpaceCombatRenderer();
@@ -519,12 +516,24 @@ namespace Stareater.GUI
 		#region IGalaxyViewListener
 		void IGalaxyViewListener.FleetDeselected() 
 		{
+			if (this.InvokeRequired)
+			{
+				this.Invoke(new Action(((IGalaxyViewListener)this).FleetDeselected));
+				return;
+			}
+			
 			this.fleetController = null;
 			this.fleetPanel.Visible = false;
 		}
 		
 		void IGalaxyViewListener.FleetClicked(IEnumerable<FleetInfo> fleets)
 		{
+			if (this.InvokeRequired)
+			{
+				this.Invoke(new Action<IEnumerable<FleetInfo>>(((IGalaxyViewListener)this).FleetClicked), fleets);
+				return;
+			}
+			
 			if (fleets.Count() == 1 && fleets.First().Owner == this.currentPlayer.Info)
 			{
 				this.selectFleet(this.currentPlayer.SelectFleet(fleets.First()));
@@ -553,6 +562,12 @@ namespace Stareater.GUI
 		
 		void IGalaxyViewListener.SystemOpened(StarSystemController systemController)
 		{
+			if (this.InvokeRequired)
+			{
+				this.Invoke(new Action<StarSystemController>(((IGalaxyViewListener)this).SystemOpened), systemController);
+				return;
+			}
+			
 			this.fleetController = null;
 			this.galaxyRenderer.DetachFromCanvas();
 			
@@ -569,6 +584,12 @@ namespace Stareater.GUI
 		
 		void IGalaxyViewListener.SystemSelected(StarSystemController systemController)
 		{
+			if (this.InvokeRequired)
+			{
+				this.Invoke(new Action<StarSystemController>(((IGalaxyViewListener)this).SystemSelected), systemController);
+				return;
+			}
+			
 			//FIXME(later) update owner check when multiple stellarises can exist at the same star
 			if (systemController.StarsAdministration() == null || systemController.StarsAdministration().Owner != this.currentPlayer.Info)
 			{

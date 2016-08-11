@@ -24,6 +24,12 @@ namespace Stareater.GUI
 		
 		public void SetView(AConstructionSiteController siteController)
 		{
+			if (this.InvokeRequired)
+			{
+				this.Invoke(new Action<AConstructionSiteController>(SetView), siteController);
+				return;
+			}
+			
 			controller = siteController;
 			
 			industrySlider.Value = (int)(siteController.DesiredSpendingRatio * industrySlider.Maximum);

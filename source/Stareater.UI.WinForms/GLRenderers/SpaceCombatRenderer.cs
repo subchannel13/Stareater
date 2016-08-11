@@ -60,16 +60,6 @@ namespace Stareater.GLRenderers
 			drawValidMoves();
 		}
 		
-		protected override void attachEventHandlers()
-		{
-			this.eventDispatcher.MouseClick += this.mouseClick;
-		}
-		
-		protected override void detachEventHandlers()
-		{
-			this.eventDispatcher.MouseClick -= this.mouseClick;
-		}
-		
 		public override void ResetLists()
 		{
 			GL.DeleteLists(gridList, 1);
@@ -95,7 +85,7 @@ namespace Stareater.GLRenderers
 		#endregion
 		
 		#region Mouse events
-		private void mouseClick(object sender, MouseEventArgs e)
+		public override void OnMouseClick(MouseEventArgs e)
 		{
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
 			

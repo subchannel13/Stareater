@@ -38,16 +38,7 @@ namespace Stareater.GLRenderers
 				0, -FarZ);
 
 			GL.MatrixMode(MatrixMode.Modelview);
-		}
-		
-		protected override void attachEventHandlers()
-		{
-			//no op
-		}
-		protected override void detachEventHandlers()
-		{
-			//no op
-		}
+		}		
 		#endregion
 	}
 }

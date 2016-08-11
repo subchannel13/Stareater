@@ -115,31 +115,8 @@ namespace Stareater.GLRenderers
 				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
 		}
 		
-		protected override void attachEventHandlers()
-		{
-			this.eventDispatcher.MouseMove += this.mouseMove;
-			this.eventDispatcher.MouseWheel += this.mouseZoom;
-			this.eventDispatcher.MouseClick += this.mouseClick;
-			this.eventDispatcher.MouseDoubleClick += this.mouseDoubleClick;
-		}
-
-		protected override void detachEventHandlers()
-		{
-			this.eventDispatcher.MouseMove -= this.mouseMove;
-			this.eventDispatcher.MouseWheel -= this.mouseZoom;
-			this.eventDispatcher.MouseClick -= this.mouseClick;
-			this.eventDispatcher.MouseDoubleClick -= this.mouseDoubleClick;
-		}
-
-		public override void Load()
-		{
-			TextRenderUtil.Get.Prepare(this.currentPlayer.Stars.Select(x => x.Name.ToText(SettingsWinforms.Get.Language)));
-		}
-		
 		public override void Unload()
 		{
-			GalaxyTextures.Get.Unload();
-			
 			if (starDrawList >= 0){
 				GL.DeleteLists(starDrawList, 1);
 				starDrawList = -1;
@@ -363,7 +340,7 @@ namespace Stareater.GLRenderers
 		#endregion
 		
 		#region Mouse events
-		private void mouseMove(object sender, MouseEventArgs e)
+		public override void OnMouseMove(MouseEventArgs e)
 		{
 			Vector4 currentPosition = mouseToView(e.X, e.Y);
 
@@ -393,7 +370,6 @@ namespace Stareater.GLRenderers
 			
 			lastMousePosition = currentPosition;
 			this.requestPerspectiveReset();
-			eventDispatcher.Refresh();
 		}
 		
 		private void simulateFleetMovement(Vector4 currentPosition)
@@ -412,7 +388,7 @@ namespace Stareater.GLRenderers
 			this.SelectedFleet.SimulateTravel(closestObjects.Stars[0]);
 		}
 
-		private void mouseZoom(object sender, MouseEventArgs e)
+		public override void OnMouseScroll(MouseEventArgs e)
 		{
 			float oldZoom = 1 / (float)(0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel));
 
@@ -431,9 +407,9 @@ namespace Stareater.GLRenderers
 			this.requestPerspectiveReset();
 		}
 
-		private void mouseClick(object sender, MouseEventArgs e)
+		public override void OnMouseClick(MouseEventArgs e)
 		{
-			if (panAbsPath > PanClickTolerance)
+			if (panAbsPath > PanClickTolerance) //TODO(v0.6) 
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
@@ -473,7 +449,7 @@ namespace Stareater.GLRenderers
 			
 		}
 		
-		private void mouseDoubleClick(object sender, MouseEventArgs e)
+		public override void OnMouseDoubleClick(MouseEventArgs e)
 		{
 			if (panAbsPath > PanClickTolerance)
 				return;

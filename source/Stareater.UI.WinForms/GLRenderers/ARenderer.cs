@@ -22,7 +22,6 @@ namespace Stareater.GLRenderers
 		public virtual void AttachToCanvas(Control eventDispatcher)
 		{
 			this.eventDispatcher = eventDispatcher;
-			this.attachEventHandlers();
 			
 			resetProjection = true;
 		}
@@ -32,10 +31,10 @@ namespace Stareater.GLRenderers
 			if (eventDispatcher == null)
 				return;
 			
-			this.detachEventHandlers();
 			this.eventDispatcher = null;
 		}
 		
+		//TODO(v0.6) repurpose to scene activation
 		public virtual void Load()
 		{ }
 		
@@ -61,10 +60,6 @@ namespace Stareater.GLRenderers
 		
 		protected abstract void setupPerspective();
 
-		protected abstract void attachEventHandlers();
-		
-		protected abstract void detachEventHandlers();
-		
 		protected void checkPerspective()
 		{
 			if (resetProjection) 
@@ -85,8 +80,25 @@ namespace Stareater.GLRenderers
 				listGenerator();
 			else
 				GL.CallList(listId);
-		}		
+		}	
 
+		#region Input handling
+		public virtual void OnKeyPress(System.Windows.Forms.KeyPressEventArgs e)
+		{ }
+		
+		public virtual void OnMouseDoubleClick(MouseEventArgs e)
+		{ }
+		
+		public virtual void OnMouseClick(MouseEventArgs e)
+		{ }
+		
+		public virtual void OnMouseMove(MouseEventArgs e)
+		{ }
+
+		public virtual void OnMouseScroll(MouseEventArgs e)
+		{ }
+		#endregion
+		
 		#region IDisposable
 		public void Dispose()
 		{

@@ -157,20 +157,6 @@ namespace Stareater.GLRenderers
 			//TODO(later): make call list
 		}
 		
-		protected override void attachEventHandlers()
-		{
-			eventDispatcher.MouseMove += mousePan;
-			eventDispatcher.MouseClick += mouseClick;
-			eventDispatcher.KeyPress += keyPress;
-		}
-		
-		protected override void detachEventHandlers()
-		{
-			eventDispatcher.MouseMove -= mousePan;
-			eventDispatcher.MouseClick -= mouseClick;
-			eventDispatcher.KeyPress -= keyPress;
-		}
-		
 		public void SetStarSystem(StarSystemController controller, PlayerController gameController)
 		{
 			this.controller = controller;
@@ -248,7 +234,7 @@ namespace Stareater.GLRenderers
 				originOffset = maxOffset;
 		}
 		
-		private void keyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+		public override void OnKeyPress(System.Windows.Forms.KeyPressEventArgs e)
 		{
 			switch (e.KeyChar) {
 				case ReturnToGalaxyKey:
@@ -256,10 +242,9 @@ namespace Stareater.GLRenderers
 					break;
 				//TODO(later): add hotkeys for star and planets
 			}
-			
 		}
 		
-		private void mouseClick(object sender, MouseEventArgs e)
+		public override void OnMouseClick(MouseEventArgs e)
 		{
 			if (panAbsPath > PanClickTolerance)
 				return;
@@ -278,7 +263,7 @@ namespace Stareater.GLRenderers
 				select(newSelection.Value);
 		}
 		
-		private void mousePan(object sender, MouseEventArgs e)
+		public override void OnMouseMove(MouseEventArgs e)
 		{
 			Vector4 currentPosition = mouseToView(e.X, e.Y);
 
@@ -301,11 +286,16 @@ namespace Stareater.GLRenderers
 			
 			lastMousePosition = currentPosition;
 			this.requestPerspectiveReset();
-			eventDispatcher.Refresh();
 		}
 		
 		private void setView(object view)
 		{
+			if (emptyPlanetView.InvokeRequired)
+			{
+				emptyPlanetView.Invoke(new Action<object>(setView), view);
+				return;
+			}
+			
 			emptyPlanetView.Visible = view.Equals(emptyPlanetView);
 			siteView.Visible = view.Equals(siteView);
 		}

@@ -126,6 +126,8 @@ namespace Stareater.GraphicsEngine
 				glCanvas.SwapBuffers();
 				this.waitMethod();
 			}
+			
+			GalaxyTextures.Get.Unload();
 		}
 		
 		private void initLoop()
@@ -146,7 +148,8 @@ namespace Stareater.GraphicsEngine
 			
 			Action eventHandler;
 			while(this.inputEvents.TryDequeue(out eventHandler))
-				eventHandler();
+				if (renderer != null)
+					eventHandler();
 			
 			lock(this.lockObj)
 				if (resetViewport) {
@@ -218,7 +221,7 @@ namespace Stareater.GraphicsEngine
 				return;
 			}
 			
-			//TODO(v0.6) implement propagation
+			this.CurrentRenderer.OnKeyPress(e);
 		}
 		
 		private void mouseDoubleClick(object sender, MouseEventArgs e)
@@ -229,7 +232,7 @@ namespace Stareater.GraphicsEngine
 				return;
 			}
 			
-			//TODO(v0.6) implement propagation
+			this.CurrentRenderer.OnMouseDoubleClick(e);
 		}
 		
 		private void mouseClick(object sender, MouseEventArgs e)
@@ -240,7 +243,7 @@ namespace Stareater.GraphicsEngine
 				return;
 			}
 			
-			//TODO(v0.6) implement propagation
+			this.CurrentRenderer.OnMouseClick(e);
 		}
 		
 		private void mouseMove(object sender, MouseEventArgs e)
@@ -251,7 +254,7 @@ namespace Stareater.GraphicsEngine
 				return;
 			}
 			
-			//TODO(v0.6) implement propagation
+			this.CurrentRenderer.OnMouseMove(e);
 		}
 
 		private void mouseScroll(object sender, MouseEventArgs e)
@@ -262,7 +265,7 @@ namespace Stareater.GraphicsEngine
 				return;
 			}
 			
-			//TODO(v0.6) implement propagation
+			this.CurrentRenderer.OnMouseScroll(e);
 		}
 		#endregion
 	}

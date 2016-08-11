@@ -35,7 +35,7 @@ namespace Stareater.GLRenderers
 		private Vector2 nextCharOffset;
 
 		private Dictionary<char, CharTextureInfo> characterInfos = new Dictionary<char, CharTextureInfo>();
-		private Vector2[] unitQuad;
+		private readonly Vector2[] unitQuad;
 		
 		private TextRenderUtil()
 		{
@@ -47,6 +47,7 @@ namespace Stareater.GLRenderers
 			};
 		}
 
+		//TODO(v0.6) use for caching star names
 		public void Prepare(IEnumerable<string> texts)
 		{
 			var missinCharacters = new HashSet<char>();
