@@ -70,6 +70,7 @@ namespace Stareater.GraphicsEngine
 			this.glCanvas.MouseWheel -= this.mouseScroll;
 			this.glCanvas.MouseClick -= this.mouseClick;
 			this.glCanvas.MouseDoubleClick -= this.mouseDoubleClick;
+			this.thread.Join();
 		}
 		#endregion
 		
@@ -128,10 +129,8 @@ namespace Stareater.GraphicsEngine
 				glCanvas.SwapBuffers();
 				this.waitMethod();
 			}
-			
-			GalaxyTextures.Get.Unload();
-			if (this.currentRenderer != null)
-				this.currentRenderer.Deactivate();
+
+			this.cleanUp();
 		}
 		
 		private void initLoop()
@@ -142,6 +141,13 @@ namespace Stareater.GraphicsEngine
 			GL.Enable(EnableCap.DepthTest);
 			GL.Enable(EnableCap.Blend);
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+		}
+
+		private void cleanUp()
+		{
+			GalaxyTextures.Get.Unload();
+			if (this.currentRenderer != null)
+				this.currentRenderer.Deactivate();
 		}
 		
 		private void prepareFrameRendering()
