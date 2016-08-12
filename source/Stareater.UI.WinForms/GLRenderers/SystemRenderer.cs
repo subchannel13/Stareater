@@ -62,8 +62,6 @@ namespace Stareater.GLRenderers
 		
 		public override void Draw(double deltaTime)
 		{
-			base.checkPerspective();
-			
 			GL.PushMatrix();
 			GL.Translate(0, BodiesY, 0);
 			
@@ -162,7 +160,6 @@ namespace Stareater.GLRenderers
 			this.controller = controller;
 			this.currentPlayer = gameController;
 			
-			this.requestPerspectiveReset();
 			this.maxOffset = controller.Planets.Count() * OrbitStep + OrbitOffset + PlanetScale / 2;
 			
 			var bestColony = controller.Planets.
@@ -285,7 +282,7 @@ namespace Stareater.GLRenderers
 			limitPan();
 			
 			lastMousePosition = currentPosition;
-			this.requestPerspectiveReset();
+			this.setupPerspective();
 		}
 		
 		private void setView(object view)

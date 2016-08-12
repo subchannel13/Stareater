@@ -51,7 +51,6 @@ namespace Stareater.GLRenderers
 		#region ARenderer implementation
 		public override void Draw(double deltaTime)
 		{
-			base.checkPerspective();
 			this.animationTime += deltaTime;
 			
 			drawList(gridList, setupGrid);

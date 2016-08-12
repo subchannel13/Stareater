@@ -13,8 +13,6 @@ namespace Stareater.GLRenderers
 		#region implemented abstract members of ARenderer
 		public override void Draw(double deltaTime)
 		{
-			base.checkPerspective();
-			
 			GL.Color4(Color.Red);
 			GL.Translate(0, 0.5, 0);
 			TextRenderUtil.Get.RenderText(SettingsWinforms.Get.Language["FormMain"]["GameOver"].Text(), -0.5f);

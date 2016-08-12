@@ -130,6 +130,8 @@ namespace Stareater.GraphicsEngine
 			}
 			
 			GalaxyTextures.Get.Unload();
+			if (this.currentRenderer != null)
+				this.currentRenderer.Deactivate();
 		}
 		
 		private void initLoop()
@@ -151,8 +153,12 @@ namespace Stareater.GraphicsEngine
 				
 				if (this.currentRenderer != this.nextRenderer)
 				{
+					if (this.currentRenderer != null)
+						this.currentRenderer.Deactivate();
+					
 					this.resetViewport = true;
 					this.currentRenderer = this.nextRenderer;
+					this.currentRenderer.Activate();
 				}
 			}
 			

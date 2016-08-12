@@ -107,13 +107,13 @@ namespace Stareater.GLRenderers
 		}
 		
 		#region ARenderer implementation
-		public override void AttachToCanvas()
+		public override void Activate()
 		{
 			if (this.currentSelection == GalaxySelectionType.Star)
 				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
 		}
 		
-		public override void Unload()
+		public override void Deactivate()
 		{
 			if (starDrawList >= 0){
 				GL.DeleteLists(starDrawList, 1);
@@ -123,8 +123,6 @@ namespace Stareater.GLRenderers
 		
 		public override void Draw(double deltaTime)
 		{
-			base.checkPerspective();
-
 			drawList(wormholeDrawList, setupWormholeList);
 			drawFleetMovement();
 			drawMovementSimulation();
@@ -260,9 +258,9 @@ namespace Stareater.GLRenderers
 			double semiRadius = 0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel);
 
 			//TODO(later): test this, perhaps by flipping the monitor.
-			screenLength = this.screenSize.X > this.screenSize.Y ? 
-				(float)(2 * this.screenSize.X * semiRadius * aspect / screenSize.X) : 
-				(float)(2 * this.screenSize.Y * semiRadius * aspect / screenSize.Y);
+			screenLength = screenSize.X > screenSize.Y ? 
+				(float)(2 * screenSize.X * semiRadius * aspect / screenSize.X) : 
+				(float)(2 * screenSize.Y * semiRadius * aspect / screenSize.Y);
 			
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();
@@ -367,7 +365,7 @@ namespace Stareater.GLRenderers
 			limitPan();
 			
 			lastMousePosition = currentPosition;
-			this.requestPerspectiveReset();
+			this.setupPerspective();
 		}
 		
 		private void simulateFleetMovement(Vector4 currentPosition)
@@ -402,7 +400,7 @@ namespace Stareater.GLRenderers
 
 			originOffset = (originOffset * oldZoom + mousePoint * (newZoom - oldZoom)) / newZoom;
 			limitPan();
-			this.requestPerspectiveReset();
+			this.setupPerspective();
 		}
 
 		public override void OnMouseClick(MouseEventArgs e)

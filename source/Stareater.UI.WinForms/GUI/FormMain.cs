@@ -240,7 +240,7 @@ namespace Stareater.GUI
 		private void restartRenderers()
 		{
 			if (this.galaxyRenderer != null)
-				this.galaxyRenderer.Unload();
+				this.galaxyRenderer.Deactivate();
 			
 			this.galaxyRenderer = new GalaxyRenderer(this);
 			this.galaxyRenderer.CurrentPlayer = this.currentPlayer;

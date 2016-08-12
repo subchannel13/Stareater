@@ -9,30 +9,22 @@ namespace Stareater.GLRenderers
 	{
 		protected const int NoCallList = -1;
 		
-		private bool resetProjection = true;
-		
 		public abstract void Draw(double deltaTime);
 		
 		#region Initialization/deinitialization
-		public virtual void AttachToCanvas()
-		{
-			resetProjection = true;
-		}
-		
-		//TODO(v0.6) repurpose to scene activation
-		public virtual void Load()
+		public virtual void Activate()
 		{ }
 		
-		public virtual void Unload()
+		public virtual void Deactivate()
 		{ }
 		#endregion
 		
 		#region Events
 		public void ResetProjection(Vector2d screenSize, Vector2d canvasSize)
 		{
-			this.resetProjection = true;
 			this.canvasSize = canvasSize;
 			this.screenSize = screenSize;
+			this.setupPerspective();
 		}
 		
 		public virtual void OnNewTurn()
@@ -41,24 +33,10 @@ namespace Stareater.GLRenderers
 		public abstract void ResetLists();
 		#endregion
 		
-		protected Vector2d canvasSize  { get; private set; }
-		protected Vector2d screenSize  { get; private set; }
+		protected Vector2d canvasSize { get; private set; }
+		protected Vector2d screenSize { get; private set; }
 		
 		protected abstract void setupPerspective();
-
-		protected void checkPerspective()
-		{
-			if (resetProjection) 
-			{
-				this.setupPerspective();
-				this.resetProjection = false;
-			}
-		}
-		
-		protected void requestPerspectiveReset()
-		{
-			this.resetProjection = true;
-		}
 		
 		protected static void drawList(int listId, Action listGenerator)
 		{
