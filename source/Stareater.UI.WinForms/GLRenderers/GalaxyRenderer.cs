@@ -107,10 +107,8 @@ namespace Stareater.GLRenderers
 		}
 		
 		#region ARenderer implementation
-		public override void AttachToCanvas(Control eventDispatcher)
+		public override void AttachToCanvas()
 		{
-			base.AttachToCanvas(eventDispatcher);
-			
 			if (this.currentSelection == GalaxySelectionType.Star)
 				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
 		}
@@ -258,13 +256,13 @@ namespace Stareater.GLRenderers
 		
 		protected override void setupPerspective()
 		{
-			double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
+			double aspect = canvasSize.X / (double)canvasSize.Y;
 			double semiRadius = 0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel);
 
 			//TODO(later): test this, perhaps by flipping the monitor.
 			screenLength = this.screenSize.X > this.screenSize.Y ? 
-				(float)(2 * this.screenSize.X * semiRadius * aspect / eventDispatcher.Width) : 
-				(float)(2 * this.screenSize.Y * semiRadius * aspect / eventDispatcher.Height);
+				(float)(2 * this.screenSize.X * semiRadius * aspect / screenSize.X) : 
+				(float)(2 * this.screenSize.Y * semiRadius * aspect / screenSize.Y);
 			
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.LoadIdentity();
@@ -481,8 +479,8 @@ namespace Stareater.GLRenderers
 		private Vector4 mouseToView(int x, int y)
 		{
 			return new Vector4(
-				2 * x / (float)this.eventDispatcher.Width - 1,
-				1 - 2 * y / (float)this.eventDispatcher.Height, 
+				2 * x / (float)this.canvasSize.X - 1,
+				1 - 2 * y / (float)this.canvasSize.Y, 
 				0, 1
 			);
 		}

@@ -239,13 +239,8 @@ namespace Stareater.GUI
 		
 		private void restartRenderers()
 		{
-			if (this.galaxyRenderer != null) {
-				this.galaxyRenderer.DetachFromCanvas();
+			if (this.galaxyRenderer != null)
 				this.galaxyRenderer.Unload();
-			}
-			
-			if (this.systemRenderer != null)
-				this.systemRenderer.DetachFromCanvas();
 			
 			this.galaxyRenderer = new GalaxyRenderer(this);
 			this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
@@ -361,10 +356,6 @@ namespace Stareater.GUI
 			endTurnButton.Visible = true;
 			returnButton.Visible = false;
 			
-			if (this.mainLoop.CurrentRenderer == systemRenderer)
-				systemRenderer.DetachFromCanvas();
-			
-			galaxyRenderer.AttachToCanvas(glCanvas);
 			this.mainLoop.ChangeScene(galaxyRenderer);
 		}
 		
@@ -384,10 +375,7 @@ namespace Stareater.GUI
 			
 			if (this.mainLoop.CurrentRenderer == this.combatRenderer)
 			{
-				this.combatRenderer.DetachFromCanvas();
-				
 				this.mainLoop.ChangeScene(this.galaxyRenderer);
-				this.galaxyRenderer.AttachToCanvas(this.glCanvas);
 				
 				abilityList.Visible = false;
 				endTurnButton.Visible = true;
@@ -406,10 +394,7 @@ namespace Stareater.GUI
 				return;
 			}
 			
-			this.mainLoop.CurrentRenderer.DetachFromCanvas();
-			
 			this.mainLoop.ChangeScene(this.gameOverRenderer);
-			this.gameOverRenderer.AttachToCanvas(this.glCanvas);
 			
 			abilityList.Visible = false;
 			endTurnButton.Visible = false;
@@ -430,12 +415,10 @@ namespace Stareater.GUI
 			this.conflictController = battleController;
 			
 			this.fleetController = null;
-			this.mainLoop.CurrentRenderer.DetachFromCanvas();
 			
 			this.combatRenderer.StartCombat(battleController);
 			this.mainLoop.ChangeScene(this.combatRenderer);
-			this.combatRenderer.AttachToCanvas(this.glCanvas);
-			
+
 			abilityList.Visible = true;
 			constructionManagement.Visible = false;
 			empyPlanetView.Visible = false;
@@ -569,7 +552,6 @@ namespace Stareater.GUI
 			}
 			
 			this.fleetController = null;
-			this.galaxyRenderer.DetachFromCanvas();
 			
 			this.constructionManagement.Visible = false;
 			this.empyPlanetView.Visible = false;
@@ -577,7 +559,6 @@ namespace Stareater.GUI
 			this.endTurnButton.Visible = false;
 			this.returnButton.Visible = true;
 			
-			this.systemRenderer.AttachToCanvas(glCanvas);
 			this.systemRenderer.SetStarSystem(systemController, this.currentPlayer);
 			this.mainLoop.ChangeScene(systemRenderer);
 		}

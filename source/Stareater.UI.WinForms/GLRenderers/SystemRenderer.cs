@@ -202,7 +202,7 @@ namespace Stareater.GLRenderers
 		
 		protected override void setupPerspective()
 		{
-			double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
+			double aspect = canvasSize.X / (double)canvasSize.Y;
 			const double semiRadius = 0.5 * DefaultViewSize;
 
 			GL.MatrixMode(MatrixMode.Projection);
@@ -220,8 +220,8 @@ namespace Stareater.GLRenderers
 		private Vector4 mouseToView(int x, int y)
 		{
 			return new Vector4(
-				2 * x / (float)eventDispatcher.Width - 1,
-				1 - 2 * y / (float)eventDispatcher.Height, 
+				2 * x / (float)canvasSize.X - 1,
+				1 - 2 * y / (float)canvasSize.Y, 
 				0, 1
 			);
 		}

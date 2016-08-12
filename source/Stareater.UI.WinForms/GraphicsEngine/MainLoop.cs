@@ -28,7 +28,8 @@ namespace Stareater.GraphicsEngine
 		private int frameDuration; //in milliseconds
 		private Action waitMethod;
 		
-		private ConcurrentQueue<Action> inputEvents = new ConcurrentQueue<Action>();
+		private readonly ConcurrentQueue<Action> inputEvents = new ConcurrentQueue<Action>();
+		private ARenderer currentRenderer;
 		private ARenderer nextRenderer;
 		private Vector2d screenSize;
 		
@@ -42,6 +43,7 @@ namespace Stareater.GraphicsEngine
 
 		public void Start()
 		{
+			this.currentRenderer = null;
 			this.nextRenderer = null;
 			this.resetViewport = true;
 			this.shouldStop = false;
@@ -74,7 +76,8 @@ namespace Stareater.GraphicsEngine
 		#region Event messages
 		public void ChangeScene(ARenderer renderer)
 		{
-			this.nextRenderer = renderer;
+			lock(this.lockObj)
+				this.nextRenderer = renderer;
 		}
 		
 		public void OnResize()
@@ -107,10 +110,9 @@ namespace Stareater.GraphicsEngine
 			while(!this.shouldStop)
 			{
 				double dt = Math.Min(this.watch.Elapsed.TotalSeconds, MaxDeltaTime);
-				ARenderer currentRenderer = this.nextRenderer;
 				
 				this.watch.Restart();
-				this.prepareFrameRendering(currentRenderer);
+				this.prepareFrameRendering();
 				
 	#if DEBUG
 				try {
@@ -140,24 +142,32 @@ namespace Stareater.GraphicsEngine
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 		}
 		
-		private void prepareFrameRendering(ARenderer renderer)
+		private void prepareFrameRendering()
 		{
 			lock(this.lockObj)
+			{
 				if (this.settingsChanged)
 					this.pullSettings();
+				
+				if (this.currentRenderer != this.nextRenderer)
+				{
+					this.resetViewport = true;
+					this.currentRenderer = this.nextRenderer;
+				}
+			}
 			
 			Action eventHandler;
 			while(this.inputEvents.TryDequeue(out eventHandler))
-				if (renderer != null)
+				if (this.currentRenderer != null)
 					eventHandler();
 			
 			lock(this.lockObj)
-				if (resetViewport) {
-					resetViewport = false;
-					GL.Viewport(glCanvas.ClientRectangle); //TODO(v0.6) move to scene object
+				if (this.resetViewport) {
+					this.resetViewport = false;
+					GL.Viewport(this.glCanvas.ClientRectangle); //TODO(v0.6) move to scene object
 					
-					if (renderer != null)
-						renderer.ResetProjection(this.screenSize); //TODO(v0.6) move to scene object
+					if (this.currentRenderer != null)
+						this.currentRenderer.ResetProjection(this.screenSize, new Vector2d(this.glCanvas.Width, this.glCanvas.Height)); //TODO(v0.6) move to scene object
 				}
 			
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);

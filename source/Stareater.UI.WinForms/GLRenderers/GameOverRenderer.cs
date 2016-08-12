@@ -27,7 +27,7 @@ namespace Stareater.GLRenderers
 		
 		protected override void setupPerspective()
 		{
-			double aspect = eventDispatcher.Width / (double)eventDispatcher.Height;
+			double aspect = canvasSize.X / (double)canvasSize.Y;
 			const double semiRadius = 0.5 * DefaultViewSize;
 
 			GL.MatrixMode(MatrixMode.Projection);
