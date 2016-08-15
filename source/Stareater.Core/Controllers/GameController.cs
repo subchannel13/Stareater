@@ -74,7 +74,11 @@ namespace Stareater.Controllers
 		
 		internal MainGame GameInstance
 		{
-			get { return (this.IsReadOnly) ? this.endTurnCopy.gameObj : this.gameObj; }
+			get 
+			{ 
+				lock(threadLocker)
+					return (endTurnCopy != null) ? this.endTurnCopy.gameObj : this.gameObj; 
+			}
 		}
 
 		private void makePlayers()
@@ -95,7 +99,11 @@ namespace Stareater.Controllers
 		
 		public bool IsReadOnly
 		{
-			get { return endTurnCopy != null; }
+			get 
+			{ 
+				lock(threadLocker)
+					return endTurnCopy != null; 
+			}
 		}
 		
 		internal void EndGalaxyPhase(PlayerController player)
