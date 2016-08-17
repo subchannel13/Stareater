@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Stareater.GLRenderers
 {
-	abstract class ARenderer
+	abstract class AScene
 	{
 		protected const int NoCallList = -1;
 		

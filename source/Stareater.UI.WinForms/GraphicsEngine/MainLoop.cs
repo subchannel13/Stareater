@@ -29,8 +29,8 @@ namespace Stareater.GraphicsEngine
 		private Action waitMethod;
 		
 		private readonly ConcurrentQueue<Action> inputEvents = new ConcurrentQueue<Action>();
-		private ARenderer currentRenderer;
-		private ARenderer nextRenderer;
+		private AScene currentRenderer;
+		private AScene nextRenderer;
 		private Vector2d screenSize;
 		
 		#region Lifecycle control
@@ -75,7 +75,7 @@ namespace Stareater.GraphicsEngine
 		#endregion
 		
 		#region Event messages
-		public void ChangeScene(ARenderer renderer)
+		public void ChangeScene(AScene renderer)
 		{
 			lock(this.lockObj)
 				this.nextRenderer = renderer;
@@ -98,7 +98,7 @@ namespace Stareater.GraphicsEngine
 		#endregion
 		
 		//TODO(later) remove the need for getting current renderer outside the loop
-		public ARenderer CurrentRenderer
+		public AScene CurrentRenderer
 		{
 			get { return this.nextRenderer; }
 		}

@@ -5,7 +5,7 @@ using Stareater.AppData;
 
 namespace Stareater.GLRenderers
 {
-	class GameOverRenderer : ARenderer
+	class GameOverRenderer : AScene
 	{
 		private const double DefaultViewSize = 5;
 		private const float FarZ = -1;

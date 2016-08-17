@@ -11,7 +11,7 @@ using Stareater.GUI;
 
 namespace Stareater.GLRenderers
 {
-	class SystemRenderer : ARenderer
+	class SystemRenderer : AScene
 	{
 		private const double DefaultViewSize = 1;
 		

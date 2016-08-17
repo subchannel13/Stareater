@@ -14,7 +14,7 @@ using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GLRenderers
 {
-	class SpaceCombatRenderer : ARenderer
+	class SpaceCombatRenderer : AScene
 	{
 		private const double DefaultViewSize = 17;
 		private const double HexHeightScale = 0.9;

@@ -119,7 +119,6 @@
     <Compile Include="GLRenderers\GalaxyTextures.cs" />
     <Compile Include="GLRenderers\GameOverRenderer.cs" />
     <Compile Include="GLRenderers\IGalaxyViewListener.cs" />
-    <Compile Include="GLRenderers\ARenderer.cs" />
     <Compile Include="GLRenderers\GalaxyRenderer.cs" />
     <Compile Include="GLRenderers\SpaceCombatRenderer.cs" />
     <Compile Include="GLRenderers\SystemRenderer.cs" />
@@ -127,6 +126,7 @@
     <Compile Include="GLRenderers\TextureInfo.cs" />
     <Compile Include="GLRenderers\TextureUtils.cs" />
     <Compile Include="GLRenderers\VisualPositioner.cs" />
+    <Compile Include="GraphicsEngine\AScene.cs" />
     <Compile Include="GraphicsEngine\MainLoop.cs" />
     <Compile Include="GuiUtils\NumberInput.cs" />
     <Compile Include="GUI\BuildingItem.cs">

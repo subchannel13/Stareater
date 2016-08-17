@@ -17,7 +17,7 @@ using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GLRenderers
 {
-	class GalaxyRenderer : ARenderer
+	class GalaxyRenderer : AScene
 	{
 		private const double DefaultViewSize = 15;
 		private const double ZoomBase = 1.2f;
