@@ -15,13 +15,15 @@ namespace Stareater.GraphicsEngine
 	{
 		private const float MaxDeltaTime = 0.5f;
 		private const float MinDeltaTime = 0.005f;
-		
+		private const int IntTrue = 1;
+		private const int IntFalse = -1;
+
 		private GLControl glCanvas;
 		private Object lockObj = new Object();
 		private Thread thread;
 		private Stopwatch watch;
 		
-		private bool resetViewport;
+		private int resetViewport;
 		private bool shouldStop;
 		private bool settingsChanged;
 
@@ -45,7 +47,7 @@ namespace Stareater.GraphicsEngine
 		{
 			this.currentRenderer = null;
 			this.nextRenderer = null;
-			this.resetViewport = true;
+			this.resetViewport = IntTrue;
 			this.shouldStop = false;
 			SystemEvents.PowerModeChanged += onPowerModeChange;
 			this.pullSettings();
@@ -85,9 +87,8 @@ namespace Stareater.GraphicsEngine
 		{
 			var screen = Screen.FromControl(this.glCanvas);
 			this.screenSize = new Vector2d(screen.Bounds.Width, screen.Bounds.Height);
-			
-			lock(this.lockObj)
-				this.resetViewport = true;
+
+			this.resetViewport = IntTrue;
 		}
 		
 		public void OnSettingsChange()
@@ -161,8 +162,8 @@ namespace Stareater.GraphicsEngine
 				{
 					if (this.currentRenderer != null)
 						this.currentRenderer.Deactivate();
-					
-					this.resetViewport = true;
+
+					this.resetViewport = IntTrue;
 					this.currentRenderer = this.nextRenderer;
 					this.currentRenderer.Activate();
 				}
@@ -172,15 +173,14 @@ namespace Stareater.GraphicsEngine
 			while(this.inputEvents.TryDequeue(out eventHandler))
 				if (this.currentRenderer != null)
 					eventHandler();
-			
-			lock(this.lockObj)
-				if (this.resetViewport) {
-					this.resetViewport = false;
-					GL.Viewport(this.glCanvas.ClientRectangle); //TODO(v0.6) move to scene object
+
+			if (checkFlag(ref this.resetViewport))
+			{
+				GL.Viewport(this.glCanvas.ClientRectangle); //TODO(v0.6) move to scene object
 					
-					if (this.currentRenderer != null)
-						this.currentRenderer.ResetProjection(this.screenSize, new Vector2d(this.glCanvas.Width, this.glCanvas.Height)); //TODO(v0.6) move to scene object
-				}
+				if (this.currentRenderer != null)
+					this.currentRenderer.ResetProjection(this.screenSize, new Vector2d(this.glCanvas.Width, this.glCanvas.Height)); //TODO(v0.6) move to scene object
+			}
 			
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			GL.MatrixMode(MatrixMode.Modelview);
@@ -290,5 +290,10 @@ namespace Stareater.GraphicsEngine
 			this.CurrentRenderer.OnMouseScroll(e);
 		}
 		#endregion
+
+		private static bool checkFlag(ref int flag)
+		{
+			return Interlocked.CompareExchange(ref flag, IntFalse, IntTrue) != IntTrue;
+		}
 	}
 }
