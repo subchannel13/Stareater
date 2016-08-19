@@ -218,7 +218,7 @@ namespace Stareater.GUI
 					saveController.Load(form.SelectedGameData);
 					this.gameController.Start(this);
 					this.initPlayers();
-					this.restartRenderers();
+					this.restartRenderers(); //TODO(v0.6) render thread my try to draw old map before new one is available
 				}
 		}
 		

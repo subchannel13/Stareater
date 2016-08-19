@@ -108,7 +108,7 @@ namespace Stareater.GraphicsEngine
 		{
 			this.initLoop();
 			
-			while(checkFlag(ref this.shouldStop))
+			while(!checkFlag(ref this.shouldStop))
 			{
 				double dt = Math.Min(this.watch.Elapsed.TotalSeconds, MaxDeltaTime);
 				
@@ -289,7 +289,7 @@ namespace Stareater.GraphicsEngine
 
 		private static bool checkFlag(ref int flag)
 		{
-			return Interlocked.CompareExchange(ref flag, IntFalse, IntTrue) != IntTrue;
+			return Interlocked.CompareExchange(ref flag, IntFalse, IntTrue) == IntTrue;
 		}
 	}
 }
