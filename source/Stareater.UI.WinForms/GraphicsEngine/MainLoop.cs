@@ -24,8 +24,8 @@ namespace Stareater.GraphicsEngine
 		private Stopwatch watch;
 		
 		private int resetViewport;
-		private bool shouldStop;
-		private bool settingsChanged;
+		private int shouldStop;
+		private int settingsChanged;
 
 		private int frameDuration; //in milliseconds
 		private Action waitMethod;
@@ -48,7 +48,7 @@ namespace Stareater.GraphicsEngine
 			this.currentRenderer = null;
 			this.nextRenderer = null;
 			this.resetViewport = IntTrue;
-			this.shouldStop = false;
+			this.shouldStop = IntFalse;
 			SystemEvents.PowerModeChanged += onPowerModeChange;
 			this.pullSettings();
 			
@@ -64,7 +64,7 @@ namespace Stareater.GraphicsEngine
 		
 		public void Stop()
 		{
-			this.shouldStop = true;
+			this.shouldStop = IntTrue;
 			
 			SystemEvents.PowerModeChanged -= onPowerModeChange;
 			this.glCanvas.KeyPress -= keyPress;
@@ -93,8 +93,7 @@ namespace Stareater.GraphicsEngine
 		
 		public void OnSettingsChange()
 		{
-			lock(this.lockObj)
-				this.settingsChanged = true;
+			this.settingsChanged = IntTrue;
 		}
 		#endregion
 		
@@ -109,7 +108,7 @@ namespace Stareater.GraphicsEngine
 		{
 			this.initLoop();
 			
-			while(!this.shouldStop)
+			while(checkFlag(ref this.shouldStop))
 			{
 				double dt = Math.Min(this.watch.Elapsed.TotalSeconds, MaxDeltaTime);
 				
@@ -153,11 +152,10 @@ namespace Stareater.GraphicsEngine
 		
 		private void prepareFrameRendering()
 		{
-			lock(this.lockObj)
-			{
-				if (this.settingsChanged)
+			if (checkFlag(ref settingsChanged))
 					this.pullSettings();
-				
+			
+			lock(this.lockObj)
 				if (this.currentRenderer != this.nextRenderer)
 				{
 					if (this.currentRenderer != null)
@@ -167,7 +165,6 @@ namespace Stareater.GraphicsEngine
 					this.currentRenderer = this.nextRenderer;
 					this.currentRenderer.Activate();
 				}
-			}
 			
 			Action eventHandler;
 			while(this.inputEvents.TryDequeue(out eventHandler))
@@ -230,7 +227,6 @@ namespace Stareater.GraphicsEngine
 			}
 			
 			this.frameDuration = SettingsWinforms.Get.UnlimitedFramerate ? 0 : (1000 / SettingsWinforms.Get.Framerate);
-			this.settingsChanged = false;
 		}
 		#endregion
 		

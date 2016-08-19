@@ -123,9 +123,9 @@ namespace Stareater.Controllers
 				
 				this.endTurnCopy.gameObj = gameCopy.Game;
 				this.endTurnCopy.State = this.State;
-				
-				Task.Factory.StartNew(precombatTurnProcessing).ContinueWith(checkTaskException);
 			}
+			
+			Task.Factory.StartNew(precombatTurnProcessing).ContinueWith(checkTaskException);
 		}
 
 		internal void EndCombatPhase()
