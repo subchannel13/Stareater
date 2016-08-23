@@ -19,10 +19,8 @@ namespace Stareater.Utils.Collections
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{
-			QuadTreeElement<T> other = obj as QuadTreeElement<T>;
-			if (other == null)
-				return false;
-			return object.Equals(this.Data, other.Data);
+			var other = obj as QuadTreeElement<T>;
+			return other != null && object.Equals(this.Data, other.Data);
 		}
 		
 		public override int GetHashCode()

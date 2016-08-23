@@ -60,6 +60,30 @@ namespace Stareater.GLRenderers
 			this.siteView = siteView;
 		}
 		
+		public void OnNewTurn()
+		{
+			this.ResetLists();
+		}
+		
+		public void SetStarSystem(StarSystemController controller, PlayerController gameController)
+		{
+			this.controller = controller;
+			this.currentPlayer = gameController;
+			
+			this.maxOffset = controller.Planets.Count() * OrbitStep + OrbitOffset + PlanetScale / 2;
+			
+			var bestColony = controller.Planets.
+				Select(x => controller.PlanetsColony(x)).
+				Aggregate(
+					(ColonyInfo)null, 
+					(prev, next) => next == null || (prev != null && prev.Population >= next.Population) ? prev : next
+				);
+			this.originOffset = bestColony != null ? bestColony.Location.Position * OrbitStep + OrbitOffset : 0.5f;
+			
+			this.select(StarSystemController.StarIndex);
+		}
+		
+		#region ARenderer implementation
 		public override void Draw(double deltaTime)
 		{
 			GL.PushMatrix();
@@ -144,59 +168,12 @@ namespace Stareater.GLRenderers
 			GL.PopMatrix();
 		}
 
-		public override void OnNewTurn()
-		{
-			this.ResetLists();
-		}
-		
 		public override void ResetLists()
 		{
 			//no op
 			//TODO(later): make call list
 		}
-		
-		public void SetStarSystem(StarSystemController controller, PlayerController gameController)
-		{
-			this.controller = controller;
-			this.currentPlayer = gameController;
-			
-			this.maxOffset = controller.Planets.Count() * OrbitStep + OrbitOffset + PlanetScale / 2;
-			
-			var bestColony = controller.Planets.
-				Select(x => controller.PlanetsColony(x)).
-				Aggregate(
-					(ColonyInfo)null, 
-					(prev, next) => next == null || (prev != null && prev.Population >= next.Population) ? prev : next
-				);
-			this.originOffset = bestColony != null ? bestColony.Location.Position * OrbitStep + OrbitOffset : 0.5f;
-			
-			this.select(StarSystemController.StarIndex);
-		}
-		
-		private void select(int bodyIndex)
-		{
-			this.selectedBody = bodyIndex;
-			
-			switch(controller.BodyType(bodyIndex))
-			{
-				case BodyType.OwnStellaris:
-					siteView.SetView(controller.StellarisController());
-					setView(siteView);
-					break;
-				case BodyType.OwnColony:
-					siteView.SetView(controller.ColonyController(bodyIndex));
-					setView(siteView);
-					break;
-				case BodyType.NotColonised:
-					emptyPlanetView.SetView(controller.EmptyPlanetController(bodyIndex), currentPlayer);
-					setView(emptyPlanetView);
-					break;
-				default:
-					//TODO(later): add implementation, foregin planet, empty system, foreign system
-					break;
-			}
-		}
-		
+
 		protected override void setupPerspective()
 		{
 			double aspect = canvasSize.X / (double)canvasSize.Y;
@@ -213,24 +190,9 @@ namespace Stareater.GLRenderers
 			invProjection.Invert();
 			GL.MatrixMode(MatrixMode.Modelview);
 		}
+		#endregion
 		
-		private Vector4 mouseToView(int x, int y)
-		{
-			return new Vector4(
-				2 * x / (float)canvasSize.X - 1,
-				1 - 2 * y / (float)canvasSize.Y, 
-				0, 1
-			);
-		}
-		
-		private void limitPan()
-		{
-			if (originOffset < minOffset) 
-				originOffset = minOffset;
-			if (originOffset > maxOffset) 
-				originOffset = maxOffset;
-		}
-		
+		#region Input events
 		public override void OnKeyPress(System.Windows.Forms.KeyPressEventArgs e)
 		{
 			switch (e.KeyChar) {
@@ -283,6 +245,48 @@ namespace Stareater.GLRenderers
 			
 			lastMousePosition = currentPosition;
 			this.setupPerspective();
+		}
+		#endregion
+		
+		private void select(int bodyIndex)
+		{
+			this.selectedBody = bodyIndex;
+			
+			switch(controller.BodyType(bodyIndex))
+			{
+				case BodyType.OwnStellaris:
+					siteView.SetView(controller.StellarisController());
+					setView(siteView);
+					break;
+				case BodyType.OwnColony:
+					siteView.SetView(controller.ColonyController(bodyIndex));
+					setView(siteView);
+					break;
+				case BodyType.NotColonised:
+					emptyPlanetView.SetView(controller.EmptyPlanetController(bodyIndex), currentPlayer);
+					setView(emptyPlanetView);
+					break;
+				default:
+					//TODO(later): add implementation, foregin planet, empty system, foreign system
+					break;
+			}
+		}
+
+		private Vector4 mouseToView(int x, int y)
+		{
+			return new Vector4(
+				2 * x / (float)canvasSize.X - 1,
+				1 - 2 * y / (float)canvasSize.Y, 
+				0, 1
+			);
+		}
+		
+		private void limitPan()
+		{
+			if (originOffset < minOffset) 
+				originOffset = minOffset;
+			if (originOffset > maxOffset) 
+				originOffset = maxOffset;
 		}
 		
 		private void setView(object view)

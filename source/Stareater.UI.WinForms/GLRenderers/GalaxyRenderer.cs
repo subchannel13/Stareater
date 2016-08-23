@@ -106,6 +106,17 @@ namespace Stareater.GLRenderers
 			}
 		}
 		
+		public void OnNewTurn()
+		{
+			if (this.SelectedFleet != null && !this.SelectedFleet.Valid)
+				this.SelectedFleet = null;
+
+			if (this.currentSelection == GalaxySelectionType.Fleet)
+				this.currentSelection = GalaxySelectionType.None;
+
+			this.ResetLists();
+		}
+		
 		#region ARenderer implementation
 		public override void Activate()
 		{
@@ -132,17 +143,6 @@ namespace Stareater.GLRenderers
 			drawMovementEta();
 		}
 
-		public override void OnNewTurn()
-		{
-			if (this.SelectedFleet != null && !this.SelectedFleet.Valid)
-				this.SelectedFleet = null;
-
-			if (this.currentSelection == GalaxySelectionType.Fleet)
-				this.currentSelection = GalaxySelectionType.None;
-
-			this.ResetLists();
-		}
-		
 		public override void ResetLists()
 		{
 			GL.DeleteLists(starDrawList, 1);

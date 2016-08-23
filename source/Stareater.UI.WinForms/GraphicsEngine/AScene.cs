@@ -27,9 +27,6 @@ namespace Stareater.GLRenderers
 			this.setupPerspective();
 		}
 		
-		public virtual void OnNewTurn()
-		{ }
-		
 		public abstract void ResetLists();
 		#endregion
 		
