@@ -235,7 +235,7 @@ namespace Stareater.GLRenderers
 			if (this.currentSelection == GalaxySelectionType.Star) {
 				GL.Color4(Color.White);
 				GL.PushMatrix();
-				GL.Translate(this.lastSelectedStar.Position.X, this.lastSelectedStar.Position.Y, SelectionIndicatorZ);
+				GL.Translate(this.lastSelectedStarPosition.X, this.lastSelectedStarPosition.Y, SelectionIndicatorZ);
 
 				TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar);
 				GL.PopMatrix();
@@ -511,6 +511,15 @@ namespace Stareater.GLRenderers
 			get 
 			{
 				return this.currentPlayer.Star(this.lastSelectedStars[this.currentPlayer.PlayerIndex]);
+			}
+		}
+		
+		//TODO(v0.6) remove one of lastSelectedStar methods
+		private NGenerics.DataStructures.Mathematical.Vector2D lastSelectedStarPosition
+		{
+			get 
+			{
+				return this.lastSelectedStars[this.currentPlayer.PlayerIndex];
 			}
 		}
 		
