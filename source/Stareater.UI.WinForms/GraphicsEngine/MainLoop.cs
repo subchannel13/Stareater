@@ -15,17 +15,15 @@ namespace Stareater.GraphicsEngine
 	{
 		private const float MaxDeltaTime = 0.5f;
 		private const float MinDeltaTime = 0.005f;
-		private const int IntTrue = 1;
-		private const int IntFalse = -1;
 
 		private GLControl glCanvas;
 		private Object lockObj = new Object();
 		private Thread thread;
 		private Stopwatch watch;
 		
-		private int resetViewport;
-		private int shouldStop;
-		private int settingsChanged;
+		private SignalFlag resetViewport = new SignalFlag();
+		private SignalFlag shouldStop = new SignalFlag();
+		private SignalFlag settingsChanged = new SignalFlag();
 
 		private int frameDuration; //in milliseconds
 		private Action waitMethod;
@@ -47,8 +45,8 @@ namespace Stareater.GraphicsEngine
 		{
 			this.currentRenderer = null;
 			this.nextRenderer = null;
-			this.resetViewport = IntTrue;
-			this.shouldStop = IntFalse;
+			this.resetViewport.Set();
+			this.shouldStop.Clear();
 			SystemEvents.PowerModeChanged += onPowerModeChange;
 			this.pullSettings();
 			
@@ -64,7 +62,7 @@ namespace Stareater.GraphicsEngine
 		
 		public void Stop()
 		{
-			this.shouldStop = IntTrue;
+			this.shouldStop.Set();
 			
 			SystemEvents.PowerModeChanged -= onPowerModeChange;
 			this.glCanvas.KeyPress -= keyPress;
@@ -88,12 +86,12 @@ namespace Stareater.GraphicsEngine
 			var screen = Screen.FromControl(this.glCanvas);
 			this.screenSize = new Vector2d(screen.Bounds.Width, screen.Bounds.Height);
 
-			this.resetViewport = IntTrue;
+			this.resetViewport.Set();
 		}
 		
 		public void OnSettingsChange()
 		{
-			this.settingsChanged = IntTrue;
+			this.settingsChanged.Set();
 		}
 		#endregion
 		
@@ -108,7 +106,7 @@ namespace Stareater.GraphicsEngine
 		{
 			this.initLoop();
 			
-			while(!checkFlag(ref this.shouldStop))
+			while(!this.shouldStop.Check())
 			{
 				double dt = Math.Min(this.watch.Elapsed.TotalSeconds, MaxDeltaTime);
 				
@@ -152,8 +150,8 @@ namespace Stareater.GraphicsEngine
 		
 		private void prepareFrameRendering()
 		{
-			if (checkFlag(ref settingsChanged))
-					this.pullSettings();
+			if (settingsChanged.Check())
+				this.pullSettings();
 			
 			lock(this.lockObj)
 				if (this.currentRenderer != this.nextRenderer)
@@ -161,7 +159,7 @@ namespace Stareater.GraphicsEngine
 					if (this.currentRenderer != null)
 						this.currentRenderer.Deactivate();
 
-					this.resetViewport = IntTrue;
+					this.resetViewport.Set();
 					this.currentRenderer = this.nextRenderer;
 					this.currentRenderer.Activate();
 				}
@@ -171,7 +169,7 @@ namespace Stareater.GraphicsEngine
 				if (this.currentRenderer != null)
 					eventHandler();
 
-			if (checkFlag(ref this.resetViewport))
+			if (this.resetViewport.Check())
 			{
 				GL.Viewport(this.glCanvas.ClientRectangle); //TODO(v0.6) move to scene object
 					
@@ -286,10 +284,5 @@ namespace Stareater.GraphicsEngine
 			this.CurrentRenderer.OnMouseScroll(e);
 		}
 		#endregion
-
-		private static bool checkFlag(ref int flag)
-		{
-			return Interlocked.CompareExchange(ref flag, IntFalse, IntTrue) == IntTrue;
-		}
 	}
 }

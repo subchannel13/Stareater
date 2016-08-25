@@ -14,6 +14,7 @@ using Stareater.Galaxy;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
+using Stareater.GraphicsEngine;
 
 namespace Stareater.GLRenderers
 {
@@ -49,6 +50,7 @@ namespace Stareater.GLRenderers
 
 		public FleetController SelectedFleet { private get; set; }
 		private IGalaxyViewListener galaxyViewListener;
+		private SignalFlag refreshData = new SignalFlag();
 		
 		private Matrix4 invProjection;
 		private int starDrawList = NoCallList;
@@ -62,6 +64,8 @@ namespace Stareater.GLRenderers
 		private Vector2 mapBoundsMin;
 		private Vector2 mapBoundsMax;
 
+		private QuadTree<StarData> stars = new QuadTree<StarData>();
+		private QuadTree<FleetInfo> fleets = new QuadTree<FleetInfo>();
 		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
 		private Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D> lastSelectedStars = new Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D>();
 		private Dictionary<int, FleetInfo> lastSelectedIdleFleets = new Dictionary<int, FleetInfo>();
@@ -108,18 +112,23 @@ namespace Stareater.GLRenderers
 		
 		public void OnNewTurn()
 		{
-			if (this.SelectedFleet != null && !this.SelectedFleet.Valid)
-				this.SelectedFleet = null;
-
-			if (this.currentSelection == GalaxySelectionType.Fleet)
-				this.currentSelection = GalaxySelectionType.None;
-
-			this.ResetLists();
+			this.refreshData.Set();
+		}
+		
+		private void rebuildCache()
+		{
+			this.stars.Clear();
+			foreach(var star in this.currentPlayer.Stars)
+				this.stars.Add(star, star.Position, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
+			
+			this.fleets.Clear();
 		}
 		
 		#region ARenderer implementation
 		public override void Activate()
 		{
+			this.rebuildCache();
+			
 			if (this.currentSelection == GalaxySelectionType.Star)
 				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
 		}
@@ -134,6 +143,18 @@ namespace Stareater.GLRenderers
 		
 		public override void Draw(double deltaTime)
 		{
+			if (this.refreshData.Check())
+			{
+				if (this.SelectedFleet != null && !this.SelectedFleet.Valid)
+				this.SelectedFleet = null;
+
+				if (this.currentSelection == GalaxySelectionType.Fleet)
+					this.currentSelection = GalaxySelectionType.None;
+		
+				this.rebuildCache();
+				this.ResetLists();
+			}
+			
 			drawList(wormholeDrawList, setupWormholeList);
 			drawFleetMovement();
 			drawMovementSimulation();
@@ -281,7 +302,7 @@ namespace Stareater.GLRenderers
 
 			GL.Enable(EnableCap.Texture2D);
 			
-			foreach (var star in this.currentPlayer.Stars) {
+			foreach (var star in this.stars.GetAll()) {
 				GL.Color4(star.Color);
 				GL.PushMatrix();
 				GL.Translate(star.Position.X, star.Position.Y, StarColorZ);
