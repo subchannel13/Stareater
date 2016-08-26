@@ -180,10 +180,7 @@ namespace Stareater.Controllers
 			lock(threadLocker)
 			{
 				this.endTurnCopy = null;
-				this.endedTurnPlayers.Clear();
-			
-				foreach(var player in this.playerControllers)
-					player.RebuildCache();
+				this.endedTurnPlayers.Clear();			
 			}
 			
 			if (gameObj.Processor.IsOver)

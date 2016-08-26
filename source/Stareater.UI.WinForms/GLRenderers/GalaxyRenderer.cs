@@ -66,6 +66,8 @@ namespace Stareater.GLRenderers
 
 		private QuadTree<StarData> stars = new QuadTree<StarData>();
 		private QuadTree<FleetInfo> fleets = new QuadTree<FleetInfo>();
+		private Dictionary<FleetInfo, NGenerics.DataStructures.Mathematical.Vector2D> fleetPositions = new Dictionary<FleetInfo, NGenerics.DataStructures.Mathematical.Vector2D>();
+		
 		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
 		private Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D> lastSelectedStars = new Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D>();
 		private Dictionary<int, FleetInfo> lastSelectedIdleFleets = new Dictionary<int, FleetInfo>();
@@ -95,9 +97,6 @@ namespace Stareater.GLRenderers
 					);
 				}
 				
-				if (this.currentPlayer.VisualPositioner == null)
-					this.currentPlayer.VisualPositioner = new VisualPositioner();
-				
 				if (!this.lastSelectedStars.ContainsKey(this.currentPlayer.PlayerIndex))
 				{
 					var bestStar = this.currentPlayer.Stellarises().Aggregate((a, b) => a.Population > b.Population ? a : b);
@@ -122,6 +121,18 @@ namespace Stareater.GLRenderers
 				this.stars.Add(star, star.Position, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
 			
 			this.fleets.Clear();
+			foreach(var fleet in this.currentPlayer.Fleets)
+				this.fleets.Add(fleet, fleet.Position, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
+			
+			this.fleetPositions.Clear();
+			foreach(var fleet in this.currentPlayer.Fleets)
+			{
+				bool atStar = this.stars.Query(fleet.Position, new NGenerics.DataStructures.Mathematical.Vector2D(1, 1)).Any();
+				if (!fleet.IsMoving)
+					this.fleetPositions.Add(fleet, fleet.Position + new NGenerics.DataStructures.Mathematical.Vector2D(0.5, 0.5));
+				else if (fleet.IsMoving && atStar)
+					this.fleetPositions.Add(fleet, fleet.Position + new NGenerics.DataStructures.Mathematical.Vector2D(-0.5, 0.5));
+			}
 		}
 		
 		#region ARenderer implementation
@@ -176,11 +187,11 @@ namespace Stareater.GLRenderers
 		#region Drawing setup and helpers
 		private void drawFleetMarkers()
 		{
-			foreach (var fleet in this.currentPlayer.Fleets) {
-				GL.Color4(fleet.Owner.Color);
+			foreach (var fleet in this.fleetPositions) {
+				GL.Color4(fleet.Key.Owner.Color);
 				
 				GL.PushMatrix();
-				GL.Translate(fleet.VisualPosition.X, fleet.VisualPosition.Y, FleetZ);
+				GL.Translate(fleet.Value.X, fleet.Value.Y, FleetZ);
 				GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
 
 				TextureUtils.DrawSprite(GalaxyTextures.Get.FleetIndicator);
@@ -194,7 +205,7 @@ namespace Stareater.GLRenderers
 				if (!fleet.IsMoving)
 					continue;
 				
-				var lastPosition = fleet.VisualPosition;
+				var lastPosition = fleet.Position;
 				GL.Color4(Color.DarkGreen);
 				
 				foreach(var waypoint in fleet.Missions.Waypoints)
@@ -240,7 +251,7 @@ namespace Stareater.GLRenderers
 				GL.Enable(EnableCap.Texture2D);
 				GL.Color4(Color.LimeGreen);
 				
-				var last = this.SelectedFleet.Fleet.VisualPosition;
+				var last = this.SelectedFleet.Fleet.Position;
 				foreach (var next in this.SelectedFleet.SimulationWaypoints) {
 					GL.PushMatrix();
 					GL.MultMatrix(pathMatrix(new Vector2d(last.X, last.Y), new Vector2d(next.X, next.Y)));
@@ -265,7 +276,7 @@ namespace Stareater.GLRenderers
 			if (this.currentSelection == GalaxySelectionType.Fleet) {
 				GL.Color4(Color.White);
 				GL.PushMatrix();
-				GL.Translate(this.lastSelectedIdleFleet.VisualPosition.X, this.lastSelectedIdleFleet.VisualPosition.Y, SelectionIndicatorZ);
+				GL.Translate(this.lastSelectedIdleFleet.Position.X, this.lastSelectedIdleFleet.Position.Y, SelectionIndicatorZ);
 				GL.Scale(FleetSelectorScale, FleetSelectorScale, FleetSelectorScale);
 
 				TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar);
@@ -426,10 +437,17 @@ namespace Stareater.GLRenderers
 
 		public override void OnMouseClick(MouseEventArgs e)
 		{
-			if (panAbsPath > PanClickTolerance) //TODO(v0.6) 
+			if (panAbsPath > PanClickTolerance) //TODO(v0.6) maybe make AScene differentiate between click and drag
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
+			var searchRadius = Math.Max(screenLength * ClickRadius, StarMinClickRadius); //TODO(v0.6) doesn't scale with zoom
+			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
+			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
+			
+			var starsFound = this.stars.Query(searchPoint, searchSize).ToList();
+			var fleetFound = this.fleets.Query(searchPoint, searchSize).ToList();
+			
 			var closestObjects = this.currentPlayer.FindClosest(
 				mousePoint.X, mousePoint.Y, 
 				Math.Max(screenLength * ClickRadius, StarMinClickRadius));

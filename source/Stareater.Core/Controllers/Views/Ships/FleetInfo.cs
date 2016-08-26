@@ -7,7 +7,6 @@ using Stareater.Controllers.Data;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases;
 using Stareater.GameLogic;
-using Stareater.Utils;
 
 namespace Stareater.Controllers.Views.Ships
 {
@@ -15,7 +14,7 @@ namespace Stareater.Controllers.Views.Ships
 	{
 		public PlayerInfo Owner { get; private set; }
 		public MissionsInfo Missions { get; private set; }
-		public Vector2D VisualPosition { get; private set; }
+		public Vector2D Position { get; private set; }
 		
 		internal bool AtStar { get; private set; }
 		internal Fleet FleetData { get; private set; }
@@ -23,17 +22,15 @@ namespace Stareater.Controllers.Views.Ships
 		private readonly PlayerProcessor playerProc;
 		private readonly StaticsDB statics;
 		
-		internal FleetInfo(Fleet fleet, bool atStar, IVisualPositioner visualPositioner, PlayerProcessor playerProc, StaticsDB statics)
+		internal FleetInfo(Fleet fleet, PlayerProcessor playerProc, StaticsDB statics)
 		{
-			this.AtStar = atStar;
 			this.FleetData = fleet;
 			this.playerProc = playerProc;
 			this.statics = statics;
 
 			this.Missions = MissionInfoFactory.Create(fleet);
 			this.Owner = new PlayerInfo(fleet.Owner);
-			
-			this.VisualPosition = visualPositioner != null ? visualPositioner.FleetPosition(fleet.Position, this.Missions, atStar) : fleet.Position;
+			this.Position = fleet.Position;
 		}
 		
 		public bool IsMoving 

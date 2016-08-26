@@ -12,13 +12,11 @@ using Stareater.Utils;
 
 namespace Stareater.Controllers
 {
+	//TODO(later) filter invisible fleets
 	public class PlayerController
 	{
 		public int PlayerIndex { get; private set; }
 		private GameController gameController;
-		
-		private GalaxyObjects mapCache = new GalaxyObjects();
-		private IVisualPositioner visualPositioner = null;
 		
 		internal PlayerController(int playerIndex, GameController gameController)
 		{
@@ -64,16 +62,6 @@ namespace Stareater.Controllers
 		#endregion
 			
 		#region Map related
-		public IVisualPositioner VisualPositioner
-		{ 
-			get { return this.visualPositioner; }
-			set
-			{
-				this.visualPositioner = value;
-				this.RebuildCache();
-			}
-		}
-		
 		public bool IsStarVisited(StarData star)
 		{
 			return this.PlayerInstance.Intelligence.About(star).IsVisited;
@@ -98,23 +86,19 @@ namespace Stareater.Controllers
 		{
 			return this.OpenStarSystem(this.gameInstance.States.Stars.At(position));
 		}
-		
-		public GalaxySearchResult FindClosest(float x, float y, float searchRadius)
-		{
-
-			return this.mapCache.Search(x, y, searchRadius);
-		}
-		
+				
 		public FleetController SelectFleet(FleetInfo fleet)
 		{
-			return new FleetController(fleet, this.gameInstance, this.PlayerInstance, this.mapCache, this.VisualPositioner);
+			return new FleetController(fleet, this.gameInstance, this.PlayerInstance);
 		}
 		
 		public IEnumerable<FleetInfo> Fleets
 		{
 			get
 			{
-				return this.mapCache.Fleets;
+				return this.gameInstance.States.Fleets.Select(
+					x => new FleetInfo(x, this.gameInstance.Derivates.Of(x.Owner), this.gameInstance.Statics)
+				);
 			}
 		}
 		
@@ -146,34 +130,6 @@ namespace Stareater.Controllers
 				foreach (var wormhole in this.gameInstance.States.Wormholes)
 					yield return wormhole;
 			}
-		}
-
-		internal void RebuildCache()
-		{
-			var fleets = new List<FleetInfo>();
-
-			//TODO(later) filter invisible fleets
-			foreach (var fleet in this.gameInstance.States.Fleets) {
-				if (fleet.Owner == this.PlayerInstance && this.PlayerInstance.Orders.ShipOrders.ContainsKey(fleet.Position))
-					foreach(var newFleet in this.PlayerInstance.Orders.ShipOrders[fleet.Position])
-						fleets.Add(new FleetInfo(
-							newFleet, 
-							this.gameInstance.States.Stars.AtContains(fleet.Position), 
-							this.VisualPositioner, 
-							this.gameInstance.Derivates.Of(fleet.Owner),
-							this.gameInstance.Statics
-						));
-				else
-					fleets.Add(new FleetInfo(
-						fleet, 
-						this.gameInstance.States.Stars.AtContains(fleet.Position), 
-						this.VisualPositioner, 
-						this.gameInstance.Derivates.Of(fleet.Owner),
-						this.gameInstance.Statics
-					));
-			}
-
-			this.mapCache.Rebuild(this.gameInstance.States.Stars, fleets);
 		}
 		#endregion
 		
@@ -224,9 +180,9 @@ namespace Stareater.Controllers
 		{
 			var finder = new ColonizerFinder(destination);
 			
-			foreach(var fleet in mapCache.Fleets.Where(x => x.Owner.Data == this.PlayerInstance))
-				if (finder.Check(fleet.FleetData))
-					yield return fleet;
+			foreach(var fleet in this.gameInstance.States.Fleets.Where(x => x.Owner == this.PlayerInstance))
+				if (finder.Check(fleet))
+					yield return new FleetInfo(fleet, this.gameInstance.Derivates.Of(fleet.Owner), this.gameInstance.Statics);
 		}
 		#endregion
 		

@@ -16,8 +16,6 @@ namespace Stareater.Controllers
 	{
 		private readonly MainGame game;
 		private readonly Player player;
-		private readonly GalaxyObjects mapObjects;
-		private IVisualPositioner visualPositoner;
 		
 		public FleetInfo Fleet { get; private set; }
 
@@ -25,13 +23,11 @@ namespace Stareater.Controllers
 		private double eta = 0;
 		private List<WaypointInfo> simulationWaypoints = new List<WaypointInfo>();
 		
-		internal FleetController(FleetInfo fleet, MainGame game, Player player, GalaxyObjects mapObjects, IVisualPositioner visualPositoner)
+		internal FleetController(FleetInfo fleet, MainGame game, Player player)
 		{
 			this.Fleet = fleet;
 			this.game = game;
-			this.mapObjects = mapObjects;
 			this.player = player;
-			this.visualPositoner = visualPositoner;
 			
 			if (this.Fleet.IsMoving) {
 				this.simulationWaypoints = new List<WaypointInfo>(this.Fleet.Missions.Waypoints);
@@ -150,20 +146,12 @@ namespace Stareater.Controllers
 					else
 						similarFleet.Ships.Add(shipGroup);
 				
-				var fleetInfo = this.mapObjects.InfoOf(similarFleet, this.Fleet.AtStar, this.visualPositoner);
-				if (fleetInfo == null) {
-					fleetInfo = new FleetInfo(similarFleet, this.Fleet.AtStar, this.visualPositoner, playerProc, this.game.Statics);
-					this.mapObjects.Add(fleetInfo);
-				}
-				
-				return fleetInfo;
+				return new FleetInfo(similarFleet, playerProc, this.game.Statics);
 			}
 			else {
 				shipOrders.Add(newFleet);
-				
-				var fleetInfo = new FleetInfo(newFleet, this.Fleet.AtStar, this.visualPositoner, playerProc, this.game.Statics);
-				this.mapObjects.Add(fleetInfo);
-				
+				var fleetInfo = new FleetInfo(newFleet, playerProc, this.game.Statics);
+
 				return fleetInfo;
 			}
 		}
@@ -204,7 +192,6 @@ namespace Stareater.Controllers
 			
 			//remove current fleet from regroup
 			shipOrders.Remove(this.Fleet.FleetData);
-			this.mapObjects.Remove(this.Fleet);
 			
 			//add new fleet
 			var newFleet = new Fleet(this.Fleet.FleetData.Owner, this.Fleet.FleetData.Position, new LinkedList<AMission>(newMissions));
@@ -224,9 +211,7 @@ namespace Stareater.Controllers
 			return new FleetController(
 				newFleetInfo, 
 				this.game,
-				this.player,
-				this.mapObjects,
-				this.visualPositoner
+				this.player
 			);
 		}
 	}

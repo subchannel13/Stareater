@@ -444,7 +444,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Utils\IVisualPositioner.cs" />
     <Compile Include="Utils\NumberFormatters\RomanFromatter.cs" />
     <Compile Include="Utils\NumberFormatters\RoundingMethod.cs" />
     <Compile Include="Utils\ProgressData.cs" />

@@ -25,12 +25,12 @@ namespace Stareater.Controllers.Data
 
 		public void Add(FleetInfo fleet)
 		{
-			this.fleets.Add(fleet, fleet.VisualPosition, new Vector2D());
+			this.fleets.Add(fleet, fleet.Position, new Vector2D());
 		}
 		
 		public void Rebuild(IEnumerable<StarData> stars, IEnumerable<FleetInfo> fleets)
 		{
-			rebuildTree(this.fleets, fleets, x => x.VisualPosition);
+			rebuildTree(this.fleets, fleets, x => x.Position);
 			rebuildTree(this.stars, stars, x => x.Position);
 		}
 
@@ -41,7 +41,7 @@ namespace Stareater.Controllers.Data
 		public void Replace(FleetInfo oldFleet, FleetInfo newFleet)
 		{
 			this.fleets.Remove(oldFleet);
-			this.fleets.Add(newFleet, newFleet.VisualPosition, newFleet.VisualPosition);
+			this.fleets.Add(newFleet, newFleet.Position, newFleet.Position);
 		}
 
 		public GalaxySearchResult Search(float x, float y, double searchRadius)
@@ -50,24 +50,13 @@ namespace Stareater.Controllers.Data
 			var foundObjects = new List<FoundGalaxyObject>();
 
 			var foundStars = searchTree(this.stars, searchCenter, searchRadius, foundObjects, GalaxyObjectType.Star, i => i.Position);
-			var foundFleets = searchTree(this.fleets, searchCenter, searchRadius, foundObjects, GalaxyObjectType.Fleet, i => i.VisualPosition);
+			var foundFleets = searchTree(this.fleets, searchCenter, searchRadius, foundObjects, GalaxyObjectType.Fleet, i => i.Position);
 
 			return new GalaxySearchResult(
 				foundStars,
 				foundFleets,
 				foundObjects
 			);
-		}
-
-		internal FleetInfo InfoOf(Fleet fleet, bool atStar, IVisualPositioner visualPositoner)
-		{
-			var position = visualPositoner.FleetPosition(fleet.Position, MissionInfoFactory.Create(fleet), atStar);
-			
-			foreach(var fleetInfo in this.fleets.Query(position, new Vector2D()))
-				if (fleetInfo.FleetData == fleet)
-					return fleetInfo;
-			
-			return null;
 		}
 
 		private static void rebuildTree<T>(QuadTree<T> tree, IEnumerable<T> items, Func<T, Vector2D> positionFunc)
