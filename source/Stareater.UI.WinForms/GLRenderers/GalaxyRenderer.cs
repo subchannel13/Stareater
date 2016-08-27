@@ -65,7 +65,8 @@ namespace Stareater.GLRenderers
 		private Vector2 mapBoundsMax;
 
 		private QuadTree<StarData> stars = new QuadTree<StarData>();
-		private QuadTree<FleetInfo> fleets = new QuadTree<FleetInfo>();
+		private QuadTree<FleetInfo> fleetsReal = new QuadTree<FleetInfo>();
+		private QuadTree<FleetInfo> fleetsDisplayed = new QuadTree<FleetInfo>(); //TODO(v0.6) try to remove either this member or fleetPositions
 		private Dictionary<FleetInfo, NGenerics.DataStructures.Mathematical.Vector2D> fleetPositions = new Dictionary<FleetInfo, NGenerics.DataStructures.Mathematical.Vector2D>();
 		
 		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
@@ -120,18 +121,24 @@ namespace Stareater.GLRenderers
 			foreach(var star in this.currentPlayer.Stars)
 				this.stars.Add(star, star.Position, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
 			
-			this.fleets.Clear();
+			this.fleetsReal.Clear();
 			foreach(var fleet in this.currentPlayer.Fleets)
-				this.fleets.Add(fleet, fleet.Position, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
-			
+				this.fleetsReal.Add(fleet, fleet.Position, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
+
+			this.fleetsDisplayed.Clear();
 			this.fleetPositions.Clear();
 			foreach(var fleet in this.currentPlayer.Fleets)
 			{
 				bool atStar = this.stars.Query(fleet.Position, new NGenerics.DataStructures.Mathematical.Vector2D(1, 1)).Any();
+				NGenerics.DataStructures.Mathematical.Vector2D displayPosition = fleet.Position;
+
 				if (!fleet.IsMoving)
-					this.fleetPositions.Add(fleet, fleet.Position + new NGenerics.DataStructures.Mathematical.Vector2D(0.5, 0.5));
+					displayPosition += new NGenerics.DataStructures.Mathematical.Vector2D(0.5, 0.5);
 				else if (fleet.IsMoving && atStar)
-					this.fleetPositions.Add(fleet, fleet.Position + new NGenerics.DataStructures.Mathematical.Vector2D(-0.5, 0.5));
+					displayPosition += new NGenerics.DataStructures.Mathematical.Vector2D(-0.5, 0.5);
+
+				this.fleetPositions.Add(fleet, displayPosition);
+				this.fleetsDisplayed.Add(fleet, displayPosition, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
 			}
 		}
 		
@@ -205,7 +212,7 @@ namespace Stareater.GLRenderers
 				if (!fleet.IsMoving)
 					continue;
 				
-				var lastPosition = fleet.Position;
+				var lastPosition = this.fleetPositions[fleet];
 				GL.Color4(Color.DarkGreen);
 				
 				foreach(var waypoint in fleet.Missions.Waypoints)
@@ -251,7 +258,7 @@ namespace Stareater.GLRenderers
 				GL.Enable(EnableCap.Texture2D);
 				GL.Color4(Color.LimeGreen);
 				
-				var last = this.SelectedFleet.Fleet.Position;
+				var last = this.SelectedFleet.Fleet.Position; //TODO(v0.6) use display position instead
 				foreach (var next in this.SelectedFleet.SimulationWaypoints) {
 					GL.PushMatrix();
 					GL.MultMatrix(pathMatrix(new Vector2d(last.X, last.Y), new Vector2d(next.X, next.Y)));
@@ -274,9 +281,11 @@ namespace Stareater.GLRenderers
 			}
 			
 			if (this.currentSelection == GalaxySelectionType.Fleet) {
+				var markerPosition = this.fleetPositions[this.lastSelectedIdleFleet];
+
 				GL.Color4(Color.White);
 				GL.PushMatrix();
-				GL.Translate(this.lastSelectedIdleFleet.Position.X, this.lastSelectedIdleFleet.Position.Y, SelectionIndicatorZ);
+				GL.Translate(markerPosition.X, markerPosition.Y, SelectionIndicatorZ);
 				GL.Scale(FleetSelectorScale, FleetSelectorScale, FleetSelectorScale);
 
 				TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar);
@@ -406,14 +415,16 @@ namespace Stareater.GLRenderers
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(currentPosition, invProjection);
-			var closestObjects = this.currentPlayer.FindClosest(
-				mousePoint.X, mousePoint.Y, 
-				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
-			
-			if (closestObjects.Stars.Count == 0)
+			var searchRadius = Math.Max(screenLength * ClickRadius, StarMinClickRadius); //TODO(v0.6) doesn't scale with zoom
+			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
+			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
+
+			var starsFound = this.stars.Query(searchPoint, searchSize).OrderBy(x => (x.Position - searchPoint).Magnitude()).ToList();
+
+			if (!starsFound.Any())
 				return;
-			
-			this.SelectedFleet.SimulateTravel(closestObjects.Stars[0]);
+
+			this.SelectedFleet.SimulateTravel(starsFound[0]);
 		}
 
 		public override void OnMouseScroll(MouseEventArgs e)
@@ -445,41 +456,46 @@ namespace Stareater.GLRenderers
 			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
 			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 			
-			var starsFound = this.stars.Query(searchPoint, searchSize).ToList();
-			var fleetFound = this.fleets.Query(searchPoint, searchSize).ToList();
+			var starsFound = this.stars.Query(searchPoint, searchSize).OrderBy(x => (x.Position - searchPoint).Magnitude()).ToList();
+			var fleetFound = this.fleetsDisplayed.Query(searchPoint, searchSize).OrderBy(x => (x.Position - searchPoint).Magnitude()).ToList();
 			
-			var closestObjects = this.currentPlayer.FindClosest(
-				mousePoint.X, mousePoint.Y, 
-				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
-			
+			var foundAny = starsFound.Any() || fleetFound.Any();
+			var isStarClosest = 
+				starsFound.Any() && 
+				(
+					!fleetFound.Any() ||
+					(starsFound[0].Position - searchPoint).Magnitude() <= (fleetFound[0].Position - searchPoint).Magnitude()
+				);
+
 			if (this.SelectedFleet != null)
-				if (closestObjects.FoundObjects.Count > 0 && closestObjects.FoundObjects[0].Type == GalaxyObjectType.Star) {
+				if (foundAny && isStarClosest)
+				{
 					this.SelectedFleet = this.SelectedFleet.Send(this.SelectedFleet.SimulationWaypoints);
 					this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = this.SelectedFleet.Fleet;
 					this.galaxyViewListener.FleetClicked(new FleetInfo[] { this.SelectedFleet.Fleet });
 					return;
 				}
-				else {
+				else
+				{
 					this.galaxyViewListener.FleetDeselected();
 					this.SelectedFleet = null;
 				}
 
-			
-			if (closestObjects.FoundObjects.Count == 0)
+
+			if (!foundAny)
 				return;
 			
-			switch (closestObjects.FoundObjects[0].Type)
+			if (isStarClosest)
 			{
-				case GalaxyObjectType.Star:
-					this.currentSelection = GalaxySelectionType.Star;
-					this.lastSelectedStars[this.currentPlayer.PlayerIndex] = closestObjects.Stars[0].Position;
-					this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(closestObjects.Stars[0]));
-					break;
-				case GalaxyObjectType.Fleet:
-					this.currentSelection = GalaxySelectionType.Fleet;
-					this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = closestObjects.Fleets[0];
-					this.galaxyViewListener.FleetClicked(closestObjects.Fleets);
-					break;
+				this.currentSelection = GalaxySelectionType.Star;
+				this.lastSelectedStars[this.currentPlayer.PlayerIndex] = starsFound[0].Position;
+				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(starsFound[0]));
+			}
+			else
+			{
+				this.currentSelection = GalaxySelectionType.Fleet;
+				this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = fleetFound[0];
+				this.galaxyViewListener.FleetClicked(fleetFound);
 			}
 			
 		}
@@ -490,12 +506,14 @@ namespace Stareater.GLRenderers
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
-			var closestObjects = this.currentPlayer.FindClosest(
-				mousePoint.X, mousePoint.Y, 
-				Math.Max(screenLength * ClickRadius, StarMinClickRadius));
-			
-			if (closestObjects.Stars.Count > 0)
-				this.galaxyViewListener.SystemOpened(this.currentPlayer.OpenStarSystem(closestObjects.Stars[0]));
+			var searchRadius = Math.Max(screenLength * ClickRadius, StarMinClickRadius); //TODO(v0.6) doesn't scale with zoom
+			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
+			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
+
+			var starsFound = this.stars.Query(searchPoint, searchSize).OrderBy(x => (x.Position - searchPoint).Magnitude()).ToList();
+
+			if (starsFound.Any())
+				this.galaxyViewListener.SystemOpened(this.currentPlayer.OpenStarSystem(starsFound[0]));
 		}
 		#endregion
 		

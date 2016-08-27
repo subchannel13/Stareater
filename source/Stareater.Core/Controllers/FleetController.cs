@@ -94,7 +94,7 @@ namespace Stareater.Controllers
 		
 		public FleetController Send(IEnumerable<Vector2D> waypoints)
 		{
-			if (!this.Fleet.AtStar)
+			if (!this.game.States.Stars.AtContains(this.Fleet.Position))
 				return this;
 			
 			if (this.CanMove && waypoints != null && waypoints.LastOrDefault() != this.Fleet.FleetData.Position)
@@ -119,12 +119,12 @@ namespace Stareater.Controllers
 		
 		public void SimulateTravel(StarData destination)
 		{
-			if (!this.Fleet.AtStar)
+			if (!this.game.States.Stars.AtContains(this.Fleet.Position))
 				return;
 			
 			this.simulationWaypoints.Clear();
 			//TODO(later): find shortest path
-			//TODO(v0.5) prevent changing destination midfilght
+			//TODO(v0.6) prevent changing destination midfilght
 			this.simulationWaypoints.Add(new WaypointInfo(
 				destination.Position, 
 				this.game.States.Wormholes.At(destination).Any(x => x.FromStar.Position == Fleet.FleetData.Position || x.ToStar.Position == Fleet.FleetData.Position)

@@ -16,7 +16,6 @@ namespace Stareater.Controllers.Views.Ships
 		public MissionsInfo Missions { get; private set; }
 		public Vector2D Position { get; private set; }
 		
-		internal bool AtStar { get; private set; }
 		internal Fleet FleetData { get; private set; }
 		
 		private readonly PlayerProcessor playerProc;
