@@ -114,7 +114,20 @@ namespace Stareater.GLRenderers
 		{
 			this.refreshData.Set();
 		}
-		
+
+		private void cacheFleet(FleetInfo fleet, bool atStar)
+		{
+			NGenerics.DataStructures.Mathematical.Vector2D displayPosition = fleet.Position;
+
+			if (!fleet.IsMoving)
+				displayPosition += new NGenerics.DataStructures.Mathematical.Vector2D(0.5, 0.5);
+			else if (fleet.IsMoving && atStar)
+				displayPosition += new NGenerics.DataStructures.Mathematical.Vector2D(-0.5, 0.5);
+
+			this.fleetPositions.Add(fleet, displayPosition);
+			this.fleetsDisplayed.Add(fleet, displayPosition, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
+		}
+
 		private void rebuildCache()
 		{
 			this.stars.Clear();
@@ -130,20 +143,11 @@ namespace Stareater.GLRenderers
 			foreach(var fleet in this.currentPlayer.Fleets)
 			{
 				bool atStar = this.stars.Query(fleet.Position, new NGenerics.DataStructures.Mathematical.Vector2D(1, 1)).Any();
-				NGenerics.DataStructures.Mathematical.Vector2D displayPosition = fleet.Position;
-
-				if (!fleet.IsMoving)
-					displayPosition += new NGenerics.DataStructures.Mathematical.Vector2D(0.5, 0.5);
-				else if (fleet.IsMoving && atStar)
-					displayPosition += new NGenerics.DataStructures.Mathematical.Vector2D(-0.5, 0.5);
-
-				this.fleetPositions.Add(fleet, displayPosition);
-				this.fleetsDisplayed.Add(fleet, displayPosition, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
+				this.cacheFleet(fleet, atStar);
 			}
 		}
 		
-		//TODO(v0.6) duplicate code as in rebuildCache()
-		private void rebuildFleetCache(NGenerics.DataStructures.Mathematical.Vector2D position)
+		private void updateFleetCache(NGenerics.DataStructures.Mathematical.Vector2D position)
 		{
 			var toRemove = this.fleetsReal.Query(position, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0)).ToList();
 			foreach(var fleet in toRemove)
@@ -159,17 +163,7 @@ namespace Stareater.GLRenderers
 			
 			bool atStar = this.stars.Query(position, new NGenerics.DataStructures.Mathematical.Vector2D(1, 1)).Any();
 			foreach(var fleet in this.currentPlayer.FleetsAt(position))
-			{
-				NGenerics.DataStructures.Mathematical.Vector2D displayPosition = fleet.Position;
-
-				if (!fleet.IsMoving)
-					displayPosition += new NGenerics.DataStructures.Mathematical.Vector2D(0.5, 0.5);
-				else if (fleet.IsMoving && atStar)
-					displayPosition += new NGenerics.DataStructures.Mathematical.Vector2D(-0.5, 0.5);
-
-				this.fleetPositions.Add(fleet, displayPosition);
-				this.fleetsDisplayed.Add(fleet, displayPosition, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
-			}
+				this.cacheFleet(fleet, atStar);
 		}
 		
 		#region ARenderer implementation
@@ -288,7 +282,7 @@ namespace Stareater.GLRenderers
 				GL.Enable(EnableCap.Texture2D);
 				GL.Color4(Color.LimeGreen);
 				
-				var last = this.SelectedFleet.Fleet.Position; //TODO(v0.6) use display position instead
+				var last = this.fleetPositions[this.SelectedFleet.Fleet];
 				foreach (var next in this.SelectedFleet.SimulationWaypoints) {
 					GL.PushMatrix();
 					GL.MultMatrix(pathMatrix(new Vector2d(last.X, last.Y), new Vector2d(next.X, next.Y)));
@@ -503,7 +497,7 @@ namespace Stareater.GLRenderers
 					this.SelectedFleet = this.SelectedFleet.Send(this.SelectedFleet.SimulationWaypoints);
 					this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = this.SelectedFleet.Fleet;
 					this.galaxyViewListener.FleetClicked(new FleetInfo[] { this.SelectedFleet.Fleet });
-					this.rebuildFleetCache(this.SelectedFleet.Fleet.Position);
+					this.updateFleetCache(this.SelectedFleet.Fleet.Position);
 					return;
 				}
 				else
