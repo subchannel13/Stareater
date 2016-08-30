@@ -96,10 +96,23 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return this.gameInstance.States.Fleets.Select(
-					x => new FleetInfo(x, this.gameInstance.Derivates.Of(x.Owner), this.gameInstance.Statics)
-				);
+				return this.gameInstance.States.Fleets.
+					Where(x => x.Owner != this.PlayerInstance || !x.Owner.Orders.ShipOrders.ContainsKey(x.Position)).
+					Concat(this.PlayerInstance.Orders.ShipOrders.SelectMany(x => x.Value)).
+					Select(
+						x => new FleetInfo(x, this.gameInstance.Derivates.Of(x.Owner), this.gameInstance.Statics)
+					);
 			}
+		}
+		
+		public IEnumerable<FleetInfo> FleetsAt(Vector2D position)
+		{
+			var fleets = this.gameInstance.States.Fleets.At(position).Where(x => x.Owner != this.PlayerInstance || !x.Owner.Orders.ShipOrders.ContainsKey(x.Position));
+			
+			if (this.PlayerInstance.Orders.ShipOrders.ContainsKey(position))
+				fleets = fleets.Concat(this.PlayerInstance.Orders.ShipOrders[position]);
+			
+			return fleets.Select(x => new FleetInfo(x, this.gameInstance.Derivates.Of(x.Owner), this.gameInstance.Statics));
 		}
 		
 		public StarData Star(Vector2D position)
