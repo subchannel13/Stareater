@@ -120,7 +120,16 @@ namespace Stareater.GLRenderers
 			NGenerics.DataStructures.Mathematical.Vector2D displayPosition = fleet.Position;
 
 			if (!fleet.IsMoving)
-				displayPosition += new NGenerics.DataStructures.Mathematical.Vector2D(0.5, 0.5);
+			{
+				var players = this.fleetsReal.
+					Query(fleet.Position, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0)).
+					Select(x => x.Owner).
+					Where(x => x != this.currentPlayer.Info).
+					Distinct().ToList(); //TODO(v0.6) sort players by some key
+				
+				int index = (fleet.Owner == this.currentPlayer.Info) ? 0 : (1 + players.IndexOf(fleet.Owner));
+				displayPosition += new NGenerics.DataStructures.Mathematical.Vector2D(0.5, 0.5 - 0.2 * index);
+			}
 			else if (fleet.IsMoving && atStar)
 				displayPosition += new NGenerics.DataStructures.Mathematical.Vector2D(-0.5, 0.5);
 
@@ -519,7 +528,7 @@ namespace Stareater.GLRenderers
 			else
 			{
 				this.currentSelection = GalaxySelectionType.Fleet;
-				this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = fleetFound[0];
+				this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = fleetFound[0]; //TODO(v0.6) marks wrong fleet when there are multiple players 
 				this.galaxyViewListener.FleetClicked(fleetFound);
 			}
 			
