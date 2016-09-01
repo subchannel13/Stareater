@@ -241,14 +241,14 @@ namespace Stareater.GLRenderers
 
 		private void drawFleetMovement()
 		{
-			foreach (var fleet in this.currentPlayer.Fleets) {
-				if (!fleet.IsMoving)
+			foreach (var fleetPos in this.fleetPositions) {
+				if (!fleetPos.Key.IsMoving)
 					continue;
-				
-				var lastPosition = this.fleetPositions[fleet];
+
+				var lastPosition = fleetPos.Value;
 				GL.Color4(Color.DarkGreen);
 				
-				foreach(var waypoint in fleet.Missions.Waypoints)
+				foreach(var waypoint in fleetPos.Key.Missions.Waypoints)
 				{
 					GL.PushMatrix();
 					GL.MultMatrix(pathMatrix(
