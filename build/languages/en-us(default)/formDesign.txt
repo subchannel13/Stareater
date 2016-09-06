@@ -1,6 +1,8 @@
 ﻿:FormDesign
 FormTitle = New design
 ListFormTitle = Ship designs
+disbandDesign = Remove
+keepDesign = Keep
 
 armor §
 		Armor: {=totalHp}

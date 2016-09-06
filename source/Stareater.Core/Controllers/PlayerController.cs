@@ -168,6 +168,21 @@ namespace Stareater.Controllers
 				Select(x => new DesignInfo(x, game.Derivates.Of(this.PlayerInstance).DesignStats[x], game.Statics));
 		}
 		
+		public void DisbandDesign(DesignInfo design)
+		{
+			//TODO(v0.6)
+		}
+		
+		public void KeepDesign(DesignInfo design)
+		{
+			//TODO(v0.6)
+		}
+		
+		public void RefitDesign(DesignInfo design, DesignInfo refitWith)
+		{
+			//TODO(v0.6)
+		}
+		
 		public long ShipCount(DesignInfo design)
 		{
 			return this.gameInstance.States.Fleets.

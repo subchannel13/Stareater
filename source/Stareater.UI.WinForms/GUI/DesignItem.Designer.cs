@@ -81,6 +81,7 @@ namespace Stareater.GUI
 			this.actionButton.Size = new System.Drawing.Size(32, 32);
 			this.actionButton.TabIndex = 6;
 			this.actionButton.UseVisualStyleBackColor = true;
+			this.actionButton.Click += new System.EventHandler(this.actionButton_Click);
 			// 
 			// DesignItem
 			// 

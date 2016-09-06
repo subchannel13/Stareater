@@ -15,7 +15,7 @@ using Stareater.Utils;
 
 namespace Stareater.GUI
 {
-	public partial class FormShipDesigner : Form
+	public sealed partial class FormShipDesigner : Form
 	{
 		private readonly Context context;
 		private readonly ShipDesignController controller;

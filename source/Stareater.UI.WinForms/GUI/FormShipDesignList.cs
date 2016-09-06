@@ -36,7 +36,7 @@ namespace Stareater.GUI
 			
 			while (designList.Controls.Count < designs.Length)
 			{
-				var item = new DesignItem();
+				var item = new DesignItem(this.controller);
 				item.MouseEnter += design_OnMouseEnter;
 				designList.Controls.Add(item);
 			}
