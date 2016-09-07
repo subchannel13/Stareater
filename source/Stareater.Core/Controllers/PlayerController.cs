@@ -172,6 +172,11 @@ namespace Stareater.Controllers
 		{
 			this.PlayerInstance.Orders.RefitOrders[design.Data] = null;
 		}
+
+		public bool IsMarkedForRemoval(DesignInfo data)
+		{
+			return this.PlayerInstance.Orders.RefitOrders.ContainsKey(data.Data) && this.PlayerInstance.Orders.RefitOrders[data.Data] == null;
+		}
 		
 		public void KeepDesign(DesignInfo design)
 		{

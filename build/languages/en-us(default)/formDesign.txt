@@ -3,6 +3,7 @@ FormTitle = New design
 ListFormTitle = Ship designs
 disbandDesign = Remove
 keepDesign = Keep
+markedForRemoval = (to be removed)
 
 armor §
 		Armor: {=totalHp}

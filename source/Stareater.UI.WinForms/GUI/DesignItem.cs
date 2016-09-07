@@ -23,6 +23,16 @@ namespace Stareater.GUI
 		{
 			this.controller = controller;
 		}
+		
+		private void makeNameText()
+		{
+			string refitText = "";
+			if (controller.IsMarkedForRemoval(this.data))
+				refitText = Environment.NewLine + SettingsWinforms.Get.Language["FormDesign"]["markedForRemoval"].Text();
+			//TODO(v0.6) refit to design text
+			
+			nameLabel.Text = data.Name + refitText;
+		}
 
 		public DesignInfo Data
 		{
@@ -35,7 +45,7 @@ namespace Stareater.GUI
 				this.data = value;
 
 				thumbnail.Image = ImageCache.Get[data.ImagePath];
-				nameLabel.Text = data.Name;
+				this.makeNameText();
 			}
 		}
 
@@ -84,6 +94,8 @@ namespace Stareater.GUI
 			
 			using(var form = new FormPickComponent(shields))
 				form.ShowDialog();
+			
+			this.makeNameText();
 		}
 	}
 }
