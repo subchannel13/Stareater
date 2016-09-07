@@ -170,17 +170,18 @@ namespace Stareater.Controllers
 		
 		public void DisbandDesign(DesignInfo design)
 		{
-			//TODO(v0.6)
+			this.PlayerInstance.Orders.RefitOrders[design.Data] = null;
 		}
 		
 		public void KeepDesign(DesignInfo design)
 		{
-			//TODO(v0.6)
+			this.PlayerInstance.Orders.RefitOrders.Remove(design.Data);
 		}
 		
 		public void RefitDesign(DesignInfo design, DesignInfo refitWith)
 		{
-			//TODO(v0.6)
+			//TODO(v0.6) check refit compatibility, if designs are for same hull
+			this.PlayerInstance.Orders.RefitOrders[design.Data] = refitWith.Data;
 		}
 		
 		public long ShipCount(DesignInfo design)

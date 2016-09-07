@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
+using Stareater.Ships;
 using Stareater.GameData.Databases.Tables;
 
 namespace Stareater.GameData.Databases.Tables 
@@ -18,6 +19,7 @@ namespace Stareater.GameData.Databases.Tables
 		public Dictionary<AConstructionSite, ConstructionOrders> ConstructionPlans { get; set; }
 		public Dictionary<Vector2D, HashSet<Fleet>> ShipOrders { get; set; }
 		public Dictionary<Planet, ColonizationPlan> ColonizationOrders { get; set; }
+		public Dictionary<Design, Design> RefitOrders { get; set; }
 
 		public PlayerOrders() 
 		{
@@ -27,6 +29,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
 			this.ShipOrders = new Dictionary<Vector2D, HashSet<Fleet>>();
 			this.ColonizationOrders = new Dictionary<Planet, ColonizationPlan>();
+			this.RefitOrders = new Dictionary<Design, Design>();
  
 			 
 		} 
@@ -47,6 +50,9 @@ namespace Stareater.GameData.Databases.Tables
 			this.ColonizationOrders = new Dictionary<Planet, ColonizationPlan>();
 			foreach(var item in original.ColonizationOrders)
 				this.ColonizationOrders.Add(galaxyRemap.Planets[item.Key], item.Value);
+			this.RefitOrders = new Dictionary<Design, Design>();
+			foreach(var item in original.RefitOrders)
+				this.RefitOrders.Add(playersRemap.Designs[item.Key], copyRefitTo(item.Value, playersRemap));
  
 			 
 		}
@@ -70,6 +76,9 @@ namespace Stareater.GameData.Databases.Tables
 
 			var colonizationOrdersSave = rawData[ColonizationOrdersKey];
 			this.ColonizationOrders = loadColonizationOrders(colonizationOrdersSave, deindexer);
+
+			var refitOrdersSave = rawData[RefitOrdersKey];
+			this.RefitOrders = loadRefitOrders(refitOrdersSave, deindexer);
  
 			 
 		}
@@ -96,6 +105,8 @@ namespace Stareater.GameData.Databases.Tables
 			data.Add(ShipOrdersKey, saveShipOrders(indexer));
 
 			data.Add(ColonizationOrdersKey, saveColonizationOrders(indexer));
+
+			data.Add(RefitOrdersKey, saveRefitOrders(indexer));
 			return data;
  
 		}
@@ -127,6 +138,10 @@ namespace Stareater.GameData.Databases.Tables
 		private const string ColonizationOrdersTag = "colonizationOrders";
 		private const string PlanetKey = "planet";
 		private const string ColonizationPlanKey = "colonizationplan";
+		private const string RefitOrdersKey = "refitOrders";
+		private const string RefitOrdersTag = "refitOrders";
+		private const string FromDesignKey = "from";
+		private const string ToDesignKey = "to";
  
 		#endregion
 

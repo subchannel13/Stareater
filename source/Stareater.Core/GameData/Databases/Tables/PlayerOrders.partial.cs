@@ -6,6 +6,7 @@ using Ikadn;
 using Ikadn.Ikon.Types;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
+using Stareater.Ships;
 using Stareater.Ships.Missions;
 using Stareater.Utils.Collections;
 
@@ -21,6 +22,11 @@ namespace Stareater.GameData.Databases.Tables
 			return new HashSet<Fleet>(original.Select(x => playersRemap.Fleets[x]));
 		}
 		
+		private Design copyRefitTo(Design original, PlayersRemap playersRemap)
+		{
+			return (original == null) ? null : playersRemap.Designs[original];
+		}
+			
 		private Dictionary<Planet, ColonizationPlan> loadColonizationOrders(IkadnBaseObject rawData, ObjectDeindexer deindexer)
 		{
 			var orders = new Dictionary<Planet, ColonizationPlan>();
@@ -81,6 +87,19 @@ namespace Stareater.GameData.Databases.Tables
 			return orders;
 		}
 		
+		private Dictionary<Design, Design> loadRefitOrders(IkadnBaseObject rawData, ObjectDeindexer deindexer)
+		{
+			var orders = new Dictionary<Design, Design>();
+			
+			foreach(var orderData in rawData.To<IEnumerable<IkonComposite>>())
+				orders.Add(
+					deindexer.Get<Design>(orderData[FromDesignKey].To<int>()),
+					deindexer.Get<Design>(orderData[ToDesignKey].To<int>())
+				);
+				
+			return orders;
+		}
+		
 		private IkadnBaseObject saveColonizationOrders(ObjectIndexer indexer)
 		{
 			var queue = new IkonArray();
@@ -137,9 +156,8 @@ namespace Stareater.GameData.Databases.Tables
 			var queue = new IkonArray();
 			
 			foreach(var order in this.ShipOrders) {
-				IkonComposite orderData;
+				var orderData = new IkonComposite(ShipOrderTag);
 				
-				orderData = new IkonComposite(ShipOrderTag);
 				orderData.Add(Position, new IkonArray().
 				              Add(new IkonFloat(order.Key.X)).
 				              Add(new IkonFloat(order.Key.Y))
@@ -152,8 +170,29 @@ namespace Stareater.GameData.Databases.Tables
 			return queue;
 		}
 		
+		private IkadnBaseObject saveRefitOrders(ObjectIndexer indexer)
+		{
+			var list = new IkonArray();
+			
+			foreach(var order in this.RefitOrders)
+				if (order.Value == null)
+					list.Add(new IkonComposite(DisbandOrderTag));
+				else
+				{
+					var orderData = new IkonComposite(RefitOrderTag);
+					orderData.Add(FromDesignKey, new IkonInteger(indexer.IndexOf(order.Key)));
+					orderData.Add(ToDesignKey, new IkonInteger(indexer.IndexOf(order.Value)));
+					
+					list.Add(orderData);
+				}
+			
+			return list;
+		}
+		
 		#region Saving keys
 		private const string ColonyConstructionTag = "Colony";
+		private const string DisbandOrderTag = "Disband";
+		private const string RefitOrderTag = "Refit";
 		private const string ShipOrderTag = "Order";
 		private const string StellarisConstructionTag = "Stellaris";
 		private const string ColonizationDestinationTag = "destination";

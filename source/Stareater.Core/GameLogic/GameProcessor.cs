@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NGenerics.DataStructures.Mathematical;
+using Stareater.Ships;
 using Stareater.Ships.Missions;
 using Stareater.Galaxy;
 
@@ -46,9 +47,9 @@ namespace Stareater.GameLogic
 			foreach (var playerProc in this.game.Derivates.Players)
 				playerProc.ProcessPostcombat(this.game.Statics, this.game.States, this.game.Derivates);
 
-			// TODO(later): Update ship designs
-
-			// TODO(later): Upgrade and repair ships
+			this.updateDesigns();
+			
+			// TODO(v0.6): Upgrade and repair ships
 
 			CalculateBaseEffects();
 			CalculateSpendings();
@@ -334,6 +335,24 @@ namespace Stareater.GameLogic
 			{
 				var fleetProcessor = new FleetProcessingVisitor(fleet, game);
 				this.fleetMovement.AddRange(fleetProcessor.Run());
+			}
+		}
+
+		private void updateDesigns()
+		{
+			// TODO(v0.6): Update ship designs
+			
+			//Removing inactive discarded designs
+			var activeDesigns = new HashSet<Design>(this.game.States.Fleets.SelectMany(x => x.Ships).Select(x => x.Design));
+			var discardedDesigns = this.game.Players.
+				SelectMany(x => x.Orders.RefitOrders).
+				Where(x => x.Value == null && !activeDesigns.Contains(x.Key)).
+				Select(x => x.Key).ToList();
+			
+			foreach(var design in discardedDesigns)
+			{
+				design.Owner.Orders.RefitOrders.Remove(design);
+				this.game.States.Designs.Remove(design);
 			}
 		}
 	}

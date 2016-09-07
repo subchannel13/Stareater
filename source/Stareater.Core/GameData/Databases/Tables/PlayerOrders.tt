@@ -5,6 +5,7 @@
 	usings.Add("System.Collections.Generic");
 	usings.Add("NGenerics.DataStructures.Mathematical");
 	usings.Add("Stareater.Galaxy");
+	usings.Add("Stareater.Ships");
 	usings.Add("Stareater.GameData.Databases.Tables");
 	
 	modifer = "partial";
@@ -27,6 +28,10 @@
 		new DataInfo("ColonizationOrders", "Dictionary", 
 			new GenericParamInfo("Planet"),
 			new GenericParamInfo("ColonizationPlan")
-		).Public().EmptyInit().SaveAssign("saveColonizationOrders(indexer)").LoadCode("loadColonizationOrders(" + SaveName + ", deindexer)")
+		).Public().EmptyInit().SaveAssign("saveColonizationOrders(indexer)").LoadCode("loadColonizationOrders(" + SaveName + ", deindexer)"),
+		new DataInfo("RefitOrders", "Dictionary", 
+			new GenericParamInfo("Design").SaveKey("FromDesignKey", "from"),
+			new GenericParamInfo("Design").SaveKey("ToDesignKey", "to").CopyWith("copyRefitTo", Flag.PlayerRemap)
+		).Public().EmptyInit().SaveAssign("saveRefitOrders(indexer)").LoadCode("loadRefitOrders(" + SaveName + ", deindexer)")
 	);
 #>
