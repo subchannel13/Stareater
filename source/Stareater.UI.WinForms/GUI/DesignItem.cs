@@ -29,7 +29,8 @@ namespace Stareater.GUI
 			string refitText = "";
 			if (controller.IsMarkedForRemoval(this.data))
 				refitText = Environment.NewLine + SettingsWinforms.Get.Language["FormDesign"]["markedForRemoval"].Text();
-			//TODO(v0.6) refit to design text
+			else if (controller.RefittingWith(this.data) != null)
+				refitText = Environment.NewLine + SettingsWinforms.Get.Language["FormDesign"]["refittingWith"].Text() + " " + controller.RefittingWith(this.data).Name;
 			
 			nameLabel.Text = data.Name + refitText;
 		}

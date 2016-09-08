@@ -173,9 +173,9 @@ namespace Stareater.Controllers
 			this.PlayerInstance.Orders.RefitOrders[design.Data] = null;
 		}
 
-		public bool IsMarkedForRemoval(DesignInfo data)
+		public bool IsMarkedForRemoval(DesignInfo design)
 		{
-			return this.PlayerInstance.Orders.RefitOrders.ContainsKey(data.Data) && this.PlayerInstance.Orders.RefitOrders[data.Data] == null;
+			return this.PlayerInstance.Orders.RefitOrders.ContainsKey(design.Data) && this.PlayerInstance.Orders.RefitOrders[design.Data] == null;
 		}
 		
 		public void KeepDesign(DesignInfo design)
@@ -187,6 +187,18 @@ namespace Stareater.Controllers
 		{
 			//TODO(v0.6) check refit compatibility, if designs are for same hull
 			this.PlayerInstance.Orders.RefitOrders[design.Data] = refitWith.Data;
+		}
+		
+		public DesignInfo RefittingWith(DesignInfo design)
+		{
+			if (!this.PlayerInstance.Orders.RefitOrders.ContainsKey(design.Data))
+				return null;
+			
+			var targetDesign = this.PlayerInstance.Orders.RefitOrders[design.Data];
+			
+			return  targetDesign != null ?
+				new DesignInfo(targetDesign, this.gameInstance.Derivates.Of(targetDesign.Owner).DesignStats[targetDesign], this.gameInstance.Statics) :
+				null;
 		}
 		
 		public long ShipCount(DesignInfo design)

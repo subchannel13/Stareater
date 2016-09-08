@@ -1,9 +1,11 @@
 ﻿:FormDesign
 FormTitle = New design
 ListFormTitle = Ship designs
+
 disbandDesign = Remove
 keepDesign = Keep
 markedForRemoval = (to be removed)
+refittingWith = Refitting to
 
 armor §
 		Armor: {=totalHp}
