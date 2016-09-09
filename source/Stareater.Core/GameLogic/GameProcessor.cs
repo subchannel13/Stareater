@@ -137,13 +137,40 @@ namespace Stareater.GameLogic
 		private void commitFleetOrders()
 		{
 			foreach (var player in this.game.Players) {
-				foreach (var order in player.Orders.ShipOrders) {
+				foreach (var order in player.Orders.ShipOrders) 
+				{
+					var totalDamage = new Dictionary<Design, double>();
+					var totalUpgrades = new Dictionary<Design, double>();
+					var shipCount = new Dictionary<Design, double>();
 					foreach (var fleet in this.game.States.Fleets.At(order.Key).Where(x => x.Owner == player))
+					{
+						foreach(var ship in fleet.Ships)
+						{
+							if (!shipCount.ContainsKey(ship.Design))
+							{
+								shipCount.Add(ship.Design, 0);
+								totalDamage.Add(ship.Design, 0);
+								totalUpgrades.Add(ship.Design, 0);
+							}
+							
+							totalDamage[ship.Design] += ship.Damage;
+							totalUpgrades[ship.Design] += ship.UpgradePoints;
+							shipCount[ship.Design] += ship.Quantity;
+						}
+						
 						this.game.States.Fleets.PendRemove(fleet);
-
+					}
 					this.game.States.Fleets.ApplyPending();
+					
 					foreach (var fleet in order.Value)
+					{
+						foreach(var ship in fleet.Ships)
+						{
+							ship.Damage = totalDamage[ship.Design] * ship.Quantity / shipCount[ship.Design];
+							ship.UpgradePoints = totalUpgrades[ship.Design] * ship.Quantity / shipCount[ship.Design]; //TODO(v0.6) test
+						}
 						this.game.States.Fleets.Add(fleet);
+					}
 				}
 
 				player.Orders.ShipOrders.Clear();
@@ -318,7 +345,7 @@ namespace Stareater.GameLogic
 								if (newFleet.Ships.DesignContains(ship.Design))
 									newFleet.Ships.Design(ship.Design).Quantity += ship.Quantity;
 								else
-									newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity));
+									newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity, ship.Damage, ship.UpgradePoints));
 						}
 						this.game.States.Fleets.PendAdd(newFleet);
 					}

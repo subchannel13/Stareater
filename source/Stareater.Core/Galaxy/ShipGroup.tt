@@ -7,6 +7,8 @@
 	
 	Generate("Stareater.Galaxy", "ShipGroup",
 		new DataInfo("Design", "Design").FromIndexer(),
-		new DataInfo("Quantity", "long").Public()
+		new DataInfo("Quantity", "long").Public(),
+		new DataInfo("Damage", "double").Public(),
+		new DataInfo("UpgradePoints", "double").Public()
 	);
 #>

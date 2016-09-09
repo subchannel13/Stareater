@@ -12,12 +12,17 @@ namespace Stareater.Galaxy
 	{
 		public Design Design { get; private set; }
 		public long Quantity { get; set; }
+		public double Damage { get; set; }
+		public double UpgradePoints { get; set; }
 
-		public ShipGroup(Design design, long quantity) 
+		public ShipGroup(Design design, long quantity, double damage, double upgradePoints) 
 		{
 			this.Design = design;
 			this.Quantity = quantity;
+			this.Damage = damage;
+			this.UpgradePoints = upgradePoints;
  
+			 
 		} 
 
 
@@ -28,12 +33,19 @@ namespace Stareater.Galaxy
 
 			var quantitySave = rawData[QuantityKey];
 			this.Quantity = quantitySave.To<long>();
+
+			var damageSave = rawData[DamageKey];
+			this.Damage = damageSave.To<double>();
+
+			var upgradePointsSave = rawData[UpgradePointsKey];
+			this.UpgradePoints = upgradePointsSave.To<double>();
  
+			 
 		}
 
 		internal ShipGroup Copy(PlayersRemap playersRemap) 
 		{
-			return new ShipGroup(playersRemap.Designs[this.Design], this.Quantity);
+			return new ShipGroup(playersRemap.Designs[this.Design], this.Quantity, this.Damage, this.UpgradePoints);
  
 		} 
  
@@ -45,6 +57,10 @@ namespace Stareater.Galaxy
 			data.Add(DesignKey, new IkonInteger(indexer.IndexOf(this.Design)));
 
 			data.Add(QuantityKey, new IkonInteger(this.Quantity));
+
+			data.Add(DamageKey, new IkonFloat(this.Damage));
+
+			data.Add(UpgradePointsKey, new IkonFloat(this.UpgradePoints));
 			return data;
  
 		}
@@ -60,7 +76,11 @@ namespace Stareater.Galaxy
 		private const string TableTag = "ShipGroup";
 		private const string DesignKey = "design";
 		private const string QuantityKey = "quantity";
+		private const string DamageKey = "damage";
+		private const string UpgradePointsKey = "upgradePoints";
  
 		#endregion
+
+ 
 	}
 }

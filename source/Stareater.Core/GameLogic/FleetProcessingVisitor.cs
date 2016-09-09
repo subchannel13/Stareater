@@ -57,7 +57,7 @@ namespace Stareater.GameLogic
 			);
 
 			foreach(var group in this.fleet.Ships)
-				resultFleet.Ships.Add(new ShipGroup(group.Design, group.Quantity));
+				resultFleet.Ships.Add(new ShipGroup(group.Design, group.Quantity, group.Damage, group.UpgradePoints));
 			
 			return resultFleet;
 		}

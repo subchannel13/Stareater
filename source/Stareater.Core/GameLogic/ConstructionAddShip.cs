@@ -30,7 +30,7 @@ namespace Stareater.GameLogic
 			if (fleet.Ships.DesignContains(design))
 				fleet.Ships.Design(design).Quantity += quantity;
 			else
-				fleet.Ships.Add(new ShipGroup(design, quantity));
+				fleet.Ships.Add(new ShipGroup(design, quantity, 0, 0));
 		}
 	}
 }

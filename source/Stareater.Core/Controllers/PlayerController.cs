@@ -196,7 +196,7 @@ namespace Stareater.Controllers
 			
 			var targetDesign = this.PlayerInstance.Orders.RefitOrders[design.Data];
 			
-			return  targetDesign != null ?
+			return targetDesign != null ?
 				new DesignInfo(targetDesign, this.gameInstance.Derivates.Of(targetDesign.Owner).DesignStats[targetDesign], this.gameInstance.Statics) :
 				null;
 		}

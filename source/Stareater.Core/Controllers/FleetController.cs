@@ -196,7 +196,7 @@ namespace Stareater.Controllers
 			//add new fleet
 			var newFleet = new Fleet(this.Fleet.FleetData.Owner, this.Fleet.FleetData.Position, new LinkedList<AMission>(newMissions));
 			foreach(var selectedGroup in this.selection)
-				newFleet.Ships.Add(new ShipGroup(selectedGroup.Key, selectedGroup.Value));
+				newFleet.Ships.Add(new ShipGroup(selectedGroup.Key, selectedGroup.Value, 0, 0));
 			
 			var newFleetInfo = this.addFleet(shipOrders, newFleet);
 			
@@ -204,7 +204,7 @@ namespace Stareater.Controllers
 			var oldFleet = new Fleet(this.Fleet.FleetData.Owner, this.Fleet.FleetData.Position, this.Fleet.FleetData.Missions);
 			foreach(var group in this.Fleet.FleetData.Ships) 
 				if (this.selection.ContainsKey(group.Design) && group.Quantity - this.selection[group.Design] > 0)
-					oldFleet.Ships.Add(new ShipGroup(group.Design, group.Quantity - this.selection[group.Design]));
+					oldFleet.Ships.Add(new ShipGroup(group.Design, group.Quantity - this.selection[group.Design], 0, 0));
 			if (oldFleet.Ships.Count > 0)
 				this.addFleet(shipOrders, oldFleet);
 

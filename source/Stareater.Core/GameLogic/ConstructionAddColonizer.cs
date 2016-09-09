@@ -48,7 +48,7 @@ namespace Stareater.GameLogic
 			if (fleet.Ships.DesignContains(colonizerDesign))
 				fleet.Ships.Design(colonizerDesign).Quantity += quantity;
 			else
-				fleet.Ships.Add(new ShipGroup(colonizerDesign, quantity));
+				fleet.Ships.Add(new ShipGroup(colonizerDesign, quantity, 0, 0));
 		}
 		#endregion
 		
