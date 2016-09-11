@@ -24,6 +24,7 @@ namespace Stareater.GUI
 		private SystemRenderer systemRenderer;
 		private SpaceCombatRenderer combatRenderer;
 		private GameOverRenderer gameOverRenderer;
+		private string rendererInfoText = "";
 
 		private Queue<Action> delayedGuiEvents = new Queue<Action>();
 		private GameController gameController = null;
@@ -224,7 +225,7 @@ namespace Stareater.GUI
 		
 		private void showSettings()
 		{
-			using (var form = new FormSettings())
+			using (var form = new FormSettings(this.rendererInfoText))
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
 					applySettings();
 			postDelayedEvent(showMainMenu);
@@ -337,6 +338,7 @@ namespace Stareater.GUI
 
 		private void glCanvas_Load(object sender, EventArgs e)
 		{
+			this.rendererInfoText = OpenTK.Graphics.OpenGL.GL.GetString(OpenTK.Graphics.OpenGL.StringName.Renderer);
 			this.mainLoop.Start();
 		}
 

@@ -16,10 +16,16 @@ namespace Stareater.GUI
 		private bool initialized = false;
 		private Language selectedLanguage = SettingsWinforms.Get.Language;
 		private float selectedGuiScale = SettingsWinforms.Get.GuiScale;
+		private string rendererInfoText = "";
 
 		public FormSettings()
 		{
 			InitializeComponent();
+		}
+
+		public FormSettings(string rendererInfoText) : this()
+		{
+			this.rendererInfoText = rendererInfoText;
 
 			foreach (var langInfo in LocalizationManifest.Get.LanguageNames.OrderBy(x => x.Value))
 			{
@@ -76,8 +82,8 @@ namespace Stareater.GUI
 			busyFrameLimitNever.Text = context["FpsBusyNever"].Text();
 			busyFrameLimitPlugged.Text = context["FpsBusyPlugged"].Text();
 			confirmButton.Text = selectedLanguage["General"]["DialogAccept"].Text();
-			
-			rendererInfo.Text = context["RendererLabel"].Text() + Environment.NewLine + GL.GetString(StringName.Renderer);
+
+			rendererInfo.Text = context["RendererLabel"].Text() + Environment.NewLine + this.rendererInfoText;
 		}
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
