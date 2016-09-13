@@ -22,6 +22,7 @@ namespace Stareater.GUI
 		public FormLibrary(LibraryController controller) : this()
 		{
 			this.controller = controller;
+			this.Font = SettingsWinforms.Get.FormFont;
 			
 			var context = SettingsWinforms.Get.Language["FormLibrary"];
 			this.Text = context["FormTitle"].Text();

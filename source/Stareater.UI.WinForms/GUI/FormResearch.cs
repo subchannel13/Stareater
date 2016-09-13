@@ -11,7 +11,7 @@ using Stareater.AppData;
 
 namespace Stareater.GUI
 {
-	public partial class FormResearch : Form
+	public sealed partial class FormResearch : Form
 	{
 		private readonly PlayerController controller;
 		private IList<TechnologyTopic> topics;
@@ -25,6 +25,7 @@ namespace Stareater.GUI
 		
 		public FormResearch(PlayerController controller) : this()
 		{
+			this.Font = SettingsWinforms.Get.FormFont;
 			this.controller = controller;
 			this.topics = controller.ResearchTopics().ToList();
 			

@@ -35,6 +35,7 @@ namespace Stareater.GUI
 		{
 			this.context = SettingsWinforms.Get.Language["FormDesign"];
 			this.Text = context["FormTitle"].Text();
+			this.Font = SettingsWinforms.Get.FormFont;
 
 			this.controller = controller;
 			this.hulls = this.controller.Hulls().OrderBy(x => x.Size).ToList();

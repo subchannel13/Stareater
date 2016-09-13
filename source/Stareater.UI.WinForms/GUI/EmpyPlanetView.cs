@@ -23,6 +23,12 @@ namespace Stareater.GUI
 		
 		public void SetView(ColonizationController planetController, PlayerController gameController)
 		{
+			if (this.InvokeRequired)
+			{
+				this.Invoke(new Action<ColonizationController, PlayerController>(SetView), planetController, gameController);
+				return;
+			}
+			
 			this.controller = planetController;
 			this.gameController = gameController;
 			

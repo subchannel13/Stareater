@@ -8,7 +8,7 @@ using Stareater.GUI.Reports;
 
 namespace Stareater.GUI
 {
-	public partial class FormReports : Form
+	public sealed partial class FormReports : Form
 	{
 		private IEnumerable<IReportInfo> reports;
 		
@@ -24,6 +24,7 @@ namespace Stareater.GUI
 			this.reports = reports.ToList();
 			
 			this.Text = SettingsWinforms.Get.Language["FormReports"]["FormTitle"].Text();
+			this.Font = SettingsWinforms.Get.FormFont;
 			this.fillList();
 		}
 		

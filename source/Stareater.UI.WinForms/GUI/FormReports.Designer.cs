@@ -81,6 +81,7 @@ namespace Stareater.GUI
 			this.Name = "FormReports";
 			this.ShowInTaskbar = false;
 			this.Text = "FormReports";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.ResumeLayout(false);
 		}
 		private System.Windows.Forms.Button openButton;

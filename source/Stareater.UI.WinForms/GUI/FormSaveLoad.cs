@@ -10,7 +10,7 @@ using Stareater.Localization;
 
 namespace Stareater.GUI
 {
-	public partial class FormSaveLoad : Form
+	public sealed partial class FormSaveLoad : Form
 	{
 		public const string LanguageContext = "FormSaveLoad";
 		
@@ -28,6 +28,7 @@ namespace Stareater.GUI
 		public FormSaveLoad(SavesController controller) : this()
 		{
 			this.Text = SettingsWinforms.Get.Language[FormSaveLoad.LanguageContext]["FormTitle"].Text();
+			this.Font = SettingsWinforms.Get.FormFont;
 			this.controller = controller;
 			
 			if (controller.CanSave) {

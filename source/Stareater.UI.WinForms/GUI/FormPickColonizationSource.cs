@@ -8,7 +8,7 @@ using Stareater.GuiUtils;
 
 namespace Stareater.GUI
 {
-	public partial class FormPickColonizationSource : Form
+	public sealed partial class FormPickColonizationSource : Form
 	{
 		private readonly ColonizationController controller;
 		
@@ -31,6 +31,7 @@ namespace Stareater.GUI
 			sourceList.SelectedIndex = 0;
 			
 			this.Text = SettingsWinforms.Get.Language["FormColonization"]["addSourceTitle"].Text();
+			this.Font = SettingsWinforms.Get.FormFont;
 			this.addButton.Text = SettingsWinforms.Get.Language["FormColonization"]["addSource"].Text();
 		}
 		

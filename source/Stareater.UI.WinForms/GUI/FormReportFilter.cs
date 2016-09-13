@@ -4,12 +4,13 @@ using Stareater.AppData;
 
 namespace Stareater.GUI
 {
-	public partial class FormReportFilter : Form
+	public sealed partial class FormReportFilter : Form
 	{
 		public FormReportFilter()
 		{
 			InitializeComponent();
 			
+			this.Font = SettingsWinforms.Get.FormFont;
 			this.checkTechs.Checked = SettingsWinforms.Get.ReportTechnology;
 			
 			var context = SettingsWinforms.Get.Language["FormReports"];

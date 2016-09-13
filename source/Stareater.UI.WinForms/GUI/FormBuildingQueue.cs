@@ -8,7 +8,7 @@ using Stareater.Localization;
 
 namespace Stareater.GUI
 {
-	public partial class FormBuildingQueue : Form
+	public sealed partial class FormBuildingQueue : Form
 	{
 		private readonly AConstructionSiteController controller;
 		
@@ -48,6 +48,7 @@ namespace Stareater.GUI
 			Context context = SettingsWinforms.Get.Language["FormBuilding"];
 			
 			this.Text = context["FormTitle"].Text();
+			this.Font = SettingsWinforms.Get.FormFont;
 			optionsLabel.Text = context["optionsTitle"].Text();
 			queueLabel.Text = context["queueTitle"].Text();
 		}

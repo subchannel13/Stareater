@@ -48,6 +48,8 @@ namespace Stareater.GUI
 			
 			if (components2 != null)
 				populateWhith(components2);
+			
+			this.Font = SettingsWinforms.Get.FormFont;
 		}
 		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -57,9 +59,9 @@ namespace Stareater.GUI
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
 
-		private void populateWhith(IEnumerable<IShipComponentType> components)
+		private void populateWhith(IEnumerable<IShipComponentType> options)
 		{
-			foreach(var component in components)
+			foreach(var component in options)
 			{
 				var button = new Button();
 				if (component.ImagePath != null)

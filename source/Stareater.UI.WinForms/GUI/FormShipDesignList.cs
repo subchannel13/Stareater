@@ -20,6 +20,7 @@ namespace Stareater.GUI
 		public FormShipDesignList(PlayerController controller) : this()
 		{
 			this.Text = SettingsWinforms.Get.Language["FormDesign"]["ListFormTitle"].Text();
+			this.Font = SettingsWinforms.Get.FormFont;
 
 			this.controller = controller;
 			updateList();

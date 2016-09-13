@@ -10,9 +10,9 @@ using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI
 {
-	public partial class FormDevelopment : Form
+	public sealed partial class FormDevelopment : Form
 	{
-		private PlayerController controller;
+		private readonly PlayerController controller;
 		private IList<TechnologyTopic> topics;
 		
 		public FormDevelopment()
@@ -22,6 +22,7 @@ namespace Stareater.GUI
 		
 		public FormDevelopment(PlayerController controller) : this()
 		{
+			this.Font = SettingsWinforms.Get.FormFont;
 			this.controller = controller;
 			this.topics = controller.DevelopmentTopics().ToList();
 			updateList();
@@ -42,7 +43,7 @@ namespace Stareater.GUI
 			Context context = SettingsWinforms.Get.Language["FormTech"];
 			this.Text = context["DevelopmentTitle"].Text();
 			
-			ThousandsFormatter formatter = new ThousandsFormatter();
+			var formatter = new ThousandsFormatter();
 			pointsInfo.Text = context["developmentPoints"].Text() + ": " + formatter.Format(controller.DevelopmentPoints);
 			focusSlider.Maximum = controller.DevelopmentFocusOptions().Length - 1;
 			focusSlider.Value = controller.DevelopmentFocusIndex;

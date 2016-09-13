@@ -6,7 +6,7 @@ using Stareater.Controllers;
 
 namespace Stareater.GUI
 {
-	public partial class FormColonization : Form
+	public sealed partial class FormColonization : Form
 	{
 		private readonly PlayerController controller;
 		
@@ -32,6 +32,7 @@ namespace Stareater.GUI
 			
 			var context = SettingsWinforms.Get.Language["FormColonization"];
 			this.Text = context["title"].Text();
+			this.Font = SettingsWinforms.Get.FormFont;
 		}
 		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

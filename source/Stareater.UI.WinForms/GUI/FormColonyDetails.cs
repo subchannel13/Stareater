@@ -43,6 +43,7 @@ namespace Stareater.GUI
 			
 			Context context = SettingsWinforms.Get.Language["FormColony"];
 			this.Text = LocalizationMethods.PlanetName(controller.PlanetBody);
+			this.Font = SettingsWinforms.Get.FormFont;
 			
 			var popFormat = new ThousandsFormatter(controller.PopulationMax, controller.Population);
 			var decimalFormat = new DecimalsFormatter(0, 1);
