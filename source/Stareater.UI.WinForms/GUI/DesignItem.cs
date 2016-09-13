@@ -82,7 +82,7 @@ namespace Stareater.GUI
 			Action<DesignInfo> keepDesign = x => this.controller.KeepDesign(this.data);
 			Action<DesignInfo> refitDesign = x => this.controller.RefitDesign(this.data, x);
 			
-			var shields = new IShipComponentType[] 
+			var refitOptions = new IShipComponentType[] 
 			{ 
 				new ShipComponentType<DesignInfo>(context["disbandDesign"].Text(), null, null, disbandDesign), //TODO(v0.6) put image
 				new ShipComponentType<DesignInfo>(context["keepDesign"].Text(), null, null, keepDesign) //TODO(v0.6) put image
@@ -93,7 +93,7 @@ namespace Stareater.GUI
 				x, refitDesign
 			)));
 			
-			using(var form = new FormPickComponent(shields))
+			using(var form = new FormPickComponent(context["refitTitle"].Text(), refitOptions))
 				form.ShowDialog();
 			
 			this.makeNameText();

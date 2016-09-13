@@ -7,7 +7,7 @@ using Stareater.GUI.ShipDesigns;
 
 namespace Stareater.GUI
 {
-	public partial class FormPickComponent : Form
+	public sealed partial class FormPickComponent : Form
 	{
 		public IShipComponentType Choice { get; private set; }
 		
@@ -18,8 +18,9 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 		
-		public FormPickComponent(IEnumerable<IShipComponentType> components1, string group2Title = null, IEnumerable<IShipComponentType> components2 = null) : this()
+		public FormPickComponent(string title, IEnumerable<IShipComponentType> components1, string group2Title = null, IEnumerable<IShipComponentType> components2 = null) : this()
 		{
+			this.Text = title;
 			this.Choice = null;
 			
 			populateWhith(components1);

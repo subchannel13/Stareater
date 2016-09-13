@@ -35,7 +35,6 @@
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.mapPreview = new System.Windows.Forms.PictureBox();
-			this.previewInfo = new System.Windows.Forms.Label();
 			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.mapPreview)).BeginInit();
@@ -122,15 +121,6 @@
 			this.mapPreview.TabIndex = 42;
 			this.mapPreview.TabStop = false;
 			// 
-			// previewInfo
-			// 
-			this.previewInfo.AutoSize = true;
-			this.previewInfo.Location = new System.Drawing.Point(194, 348);
-			this.previewInfo.Name = "previewInfo";
-			this.previewInfo.Size = new System.Drawing.Size(35, 13);
-			this.previewInfo.TabIndex = 43;
-			this.previewInfo.Text = "label1";
-			// 
 			// FormSetupMap
 			// 
 			this.AcceptButton = this.acceptButton;
@@ -138,7 +128,6 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.acceptButton;
 			this.ClientSize = new System.Drawing.Size(542, 382);
-			this.Controls.Add(this.previewInfo);
 			this.Controls.Add(this.mapPreview);
 			this.Controls.Add(this.panel2);
 			this.Controls.Add(this.acceptButton);
@@ -152,7 +141,6 @@
 			this.panel2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.mapPreview)).EndInit();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -166,6 +154,5 @@
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.PictureBox mapPreview;
-		private System.Windows.Forms.Label previewInfo;
 	}
 }

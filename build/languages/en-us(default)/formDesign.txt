@@ -6,6 +6,7 @@ disbandDesign = Remove
 keepDesign = Keep
 markedForRemoval = (to be removed)
 refittingWith = Refitting to
+refitTitle = Refit to
 
 armor §
 		Armor: {=totalHp}
@@ -38,5 +39,7 @@ power §
 noIsDrive = No IS drive
 noShield = No shield
 unselectComponent = None
+equipPickTitle = Select equipment
+shieldPickTitle = Select shield
 specEquipSeparator = Special equipment
 -

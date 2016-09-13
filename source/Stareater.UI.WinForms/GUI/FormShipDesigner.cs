@@ -244,7 +244,7 @@ namespace Stareater.GUI
 				x, selectShield
 			)));
 			
-			using(var form = new FormPickComponent(shields))
+			using(var form = new FormPickComponent(this.context["shieldPickTitle"].Text(), shields))
 				form.ShowDialog();
 			
 			if (this.controller.Shield != null)
@@ -276,7 +276,7 @@ namespace Stareater.GUI
 				x, addSpecialEquip
 			));
 
-			using (var form = new FormPickComponent(missionEquipmnet, this.context["specEquipSeparator"].Text(), specialEquipmnet))
+			using (var form = new FormPickComponent(this.context["equipPickTitle"].Text(), missionEquipmnet, this.context["specEquipSeparator"].Text(), specialEquipmnet))
 				form.ShowDialog();
 
 			updateInfos();
