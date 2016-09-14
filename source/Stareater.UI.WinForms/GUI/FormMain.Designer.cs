@@ -53,9 +53,11 @@
 			this.shipCount = new System.Windows.Forms.Label();
 			this.unitDoneAction = new System.Windows.Forms.Button();
 			this.abilityList = new System.Windows.Forms.FlowLayoutPanel();
+			this.workaroundForWinformsAnchorBug = new System.Windows.Forms.Panel();
 			this.menuStrip.SuspendLayout();
 			this.fleetPanel.SuspendLayout();
 			this.unitInfoPanel.SuspendLayout();
+			this.workaroundForWinformsAnchorBug.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// eventTimer
@@ -67,7 +69,7 @@
 			// 
 			this.glCanvas.BackColor = System.Drawing.Color.Black;
 			this.glCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.glCanvas.Location = new System.Drawing.Point(0, 24);
+			this.glCanvas.Location = new System.Drawing.Point(0, 0);
 			this.glCanvas.Name = "glCanvas";
 			this.glCanvas.Size = new System.Drawing.Size(884, 538);
 			this.glCanvas.TabIndex = 0;
@@ -79,7 +81,7 @@
 			// 
 			this.constructionManagement.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.constructionManagement.BackColor = System.Drawing.SystemColors.ActiveBorder;
-			this.constructionManagement.Location = new System.Drawing.Point(263, 446);
+			this.constructionManagement.Location = new System.Drawing.Point(263, 420);
 			this.constructionManagement.Name = "constructionManagement";
 			this.constructionManagement.Size = new System.Drawing.Size(358, 116);
 			this.constructionManagement.TabIndex = 1;
@@ -154,7 +156,7 @@
 			// 
 			this.endTurnButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.endTurnButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.endTurnButton.Location = new System.Drawing.Point(792, 470);
+			this.endTurnButton.Location = new System.Drawing.Point(792, 446);
 			this.endTurnButton.Name = "endTurnButton";
 			this.endTurnButton.Size = new System.Drawing.Size(80, 80);
 			this.endTurnButton.TabIndex = 3;
@@ -167,7 +169,7 @@
 			// 
 			this.returnButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.returnButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.returnButton.Location = new System.Drawing.Point(792, 27);
+			this.returnButton.Location = new System.Drawing.Point(792, 10);
 			this.returnButton.Name = "returnButton";
 			this.returnButton.Size = new System.Drawing.Size(80, 80);
 			this.returnButton.TabIndex = 4;
@@ -181,7 +183,7 @@
 			this.fleetPanel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.fleetPanel.Controls.Add(this.shipList);
 			this.fleetPanel.Controls.Add(this.fleetMissionButton);
-			this.fleetPanel.Location = new System.Drawing.Point(234, 446);
+			this.fleetPanel.Location = new System.Drawing.Point(234, 422);
 			this.fleetPanel.Name = "fleetPanel";
 			this.fleetPanel.Size = new System.Drawing.Size(417, 116);
 			this.fleetPanel.TabIndex = 5;
@@ -209,7 +211,7 @@
 			// 
 			this.empyPlanetView.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.empyPlanetView.BackColor = System.Drawing.SystemColors.ActiveBorder;
-			this.empyPlanetView.Location = new System.Drawing.Point(263, 446);
+			this.empyPlanetView.Location = new System.Drawing.Point(263, 420);
 			this.empyPlanetView.Name = "empyPlanetView";
 			this.empyPlanetView.Size = new System.Drawing.Size(358, 116);
 			this.empyPlanetView.TabIndex = 6;
@@ -223,7 +225,7 @@
 			this.unitInfoPanel.Controls.Add(this.armorInfo);
 			this.unitInfoPanel.Controls.Add(this.shipCount);
 			this.unitInfoPanel.Controls.Add(this.unitDoneAction);
-			this.unitInfoPanel.Location = new System.Drawing.Point(261, 511);
+			this.unitInfoPanel.Location = new System.Drawing.Point(261, 489);
 			this.unitInfoPanel.Name = "unitInfoPanel";
 			this.unitInfoPanel.Size = new System.Drawing.Size(362, 49);
 			this.unitInfoPanel.TabIndex = 7;
@@ -281,25 +283,34 @@
 			| System.Windows.Forms.AnchorStyles.Left)));
 			this.abilityList.AutoScroll = true;
 			this.abilityList.BackColor = System.Drawing.Color.Black;
-			this.abilityList.Location = new System.Drawing.Point(12, 80);
+			this.abilityList.Location = new System.Drawing.Point(12, 50);
 			this.abilityList.Name = "abilityList";
 			this.abilityList.Size = new System.Drawing.Size(110, 451);
 			this.abilityList.TabIndex = 8;
 			this.abilityList.Visible = false;
+			// 
+			// workaroundForWinformsAnchorBug
+			// 
+			this.workaroundForWinformsAnchorBug.Controls.Add(this.abilityList);
+			this.workaroundForWinformsAnchorBug.Controls.Add(this.unitInfoPanel);
+			this.workaroundForWinformsAnchorBug.Controls.Add(this.fleetPanel);
+			this.workaroundForWinformsAnchorBug.Controls.Add(this.returnButton);
+			this.workaroundForWinformsAnchorBug.Controls.Add(this.endTurnButton);
+			this.workaroundForWinformsAnchorBug.Controls.Add(this.constructionManagement);
+			this.workaroundForWinformsAnchorBug.Controls.Add(this.empyPlanetView);
+			this.workaroundForWinformsAnchorBug.Controls.Add(this.glCanvas);
+			this.workaroundForWinformsAnchorBug.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.workaroundForWinformsAnchorBug.Location = new System.Drawing.Point(0, 24);
+			this.workaroundForWinformsAnchorBug.Name = "workaroundForWinformsAnchorBug";
+			this.workaroundForWinformsAnchorBug.Size = new System.Drawing.Size(884, 538);
+			this.workaroundForWinformsAnchorBug.TabIndex = 9;
 			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(884, 562);
-			this.Controls.Add(this.abilityList);
-			this.Controls.Add(this.unitInfoPanel);
-			this.Controls.Add(this.fleetPanel);
-			this.Controls.Add(this.returnButton);
-			this.Controls.Add(this.endTurnButton);
-			this.Controls.Add(this.constructionManagement);
-			this.Controls.Add(this.empyPlanetView);
-			this.Controls.Add(this.glCanvas);
+			this.Controls.Add(this.workaroundForWinformsAnchorBug);
 			this.Controls.Add(this.menuStrip);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip;
@@ -312,6 +323,7 @@
 			this.fleetPanel.ResumeLayout(false);
 			this.unitInfoPanel.ResumeLayout(false);
 			this.unitInfoPanel.PerformLayout();
+			this.workaroundForWinformsAnchorBug.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -343,5 +355,6 @@
 		private System.Windows.Forms.Button unitDoneAction;
 		private System.Windows.Forms.FlowLayoutPanel abilityList;
 		private System.Windows.Forms.ToolStripMenuItem libraryToolStripMenuItem;
+		private System.Windows.Forms.Panel workaroundForWinformsAnchorBug;
 	}
 }
