@@ -48,12 +48,12 @@ namespace Stareater.GameLogic
 				playerProc.ProcessPostcombat(this.game.Statics, this.game.States, this.game.Derivates);
 
 			this.updateDesigns();
-			
+			this.doRepairs();
 			// TODO(v0.6): Upgrade and repair ships
 
-			CalculateBaseEffects();
-			CalculateSpendings();
-			CalculateDerivedEffects();
+			this.CalculateBaseEffects();
+			this.CalculateSpendings();
+			this.CalculateDerivedEffects();
 			
 			this.game.Turn++;
 		}
@@ -296,7 +296,71 @@ namespace Stareater.GameLogic
 			
 			this.game.States.ColonizationProjects.ApplyPending();
 		}
-		
+
+		private void doRepairs()
+		{
+			foreach(var stellaris in this.game.States.Stellarises)
+			{
+				var player = stellaris.Owner;
+				var localFleet = this.game.States.Fleets.
+					At(stellaris.Location.Star.Position).
+					Where(x => x.Owner == player).ToList();
+				var repairPoints = this.game.Derivates.Colonies.
+					At(stellaris.Location.Star).
+					Where(x => x.Owner == player).
+					Aggregate(0.0, (sum, x) => sum + x.RepairPoints);
+				
+				//TODO(v0.6) do repairs
+				
+				var groupsFrom = new Dictionary<ShipGroup, Fleet>();
+				foreach(var fleet in localFleet)
+					foreach(var shipGroup in fleet.Ships)
+						groupsFrom.Add(shipGroup, fleet);
+				var upgradableShips = localFleet.
+					SelectMany(x => x.Ships).
+					Where(x => player.Orders.RefitOrders.ContainsKey(x.Design) && player.Orders.RefitOrders[x.Design] != null).ToList();
+				var totalNeededUpgradePoints = upgradableShips.
+					Select(x => player.Orders.RefitOrders[x.Design].Cost * x.Quantity - x.UpgradePoints).
+					Aggregate(0.0, (sum, x) => x > 0 ? sum + x : sum);
+				
+				foreach(var shipGroup in upgradableShips)
+				{
+					var refitTo = player.Orders.RefitOrders[shipGroup.Design];
+					var fullUpgradeCost = refitTo.Cost * shipGroup.Quantity - shipGroup.UpgradePoints;
+					var investment = repairPoints * fullUpgradeCost / totalNeededUpgradePoints;
+					
+					if (fullUpgradeCost < investment)
+					{
+						shipGroup.UpgradePoints = refitTo.Cost * shipGroup.Quantity;
+						investment -= investment - fullUpgradeCost;
+					}
+					else
+						shipGroup.UpgradePoints += investment;
+					
+					repairPoints -= investment;
+					totalNeededUpgradePoints -= fullUpgradeCost;
+					var upgradedShips = (long)Math.Floor(shipGroup.UpgradePoints / refitTo.Cost);
+					
+					if (upgradedShips > 0)
+					{
+						shipGroup.Quantity -= upgradedShips;
+						shipGroup.UpgradePoints -= upgradedShips * refitTo.Cost;
+						
+						var fleet = groupsFrom[shipGroup];
+						var existingGroup = fleet.Ships.FirstOrDefault(x => x.Design == refitTo);
+						
+						if (shipGroup.Quantity <= 0)
+							fleet.Ships.Remove(shipGroup);
+						
+						if (existingGroup != null)
+							existingGroup.Quantity += upgradedShips;
+						else
+							fleet.Ships.Add(new ShipGroup(refitTo, upgradedShips, 0, 0));
+					}
+				}
+			}
+		}
+
 		private void mergeFleets()
 		{
 			var filter = new InvalidMissionVisitor(this.game);

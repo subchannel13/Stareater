@@ -22,6 +22,7 @@ namespace Stareater.GameData.Databases.Tables
 		public PopulationActivityFormulas Development { get; private set; }
 		public PopulationActivityFormulas Industry { get; private set; }
 		
+		public Formula RepairPoints { get; private set; }
 		public Formula PopulationHitPoints { get; private set; }
 		
 		public ColonyFormulaSet(Formula colonizationPopThreshold, Formula uncolonizedMaxPopulation, Formula farmFields,
@@ -30,7 +31,7 @@ namespace Stareater.GameData.Databases.Tables
 		                        PopulationActivityFormulas farming, PopulationActivityFormulas gardening,
 		                        PopulationActivityFormulas mining, PopulationActivityFormulas development, 
 		                        PopulationActivityFormulas industry,
-		                        Formula populationHitPoints)
+		                        Formula repairPoints, Formula populationHitPoints)
 		{
 			this.ColonizationPopulationThreshold = colonizationPopThreshold;
 			this.UncolonizedMaxPopulation = uncolonizedMaxPopulation;
@@ -47,6 +48,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.Development = development;
 			this.Industry = industry;
 			
+			this.RepairPoints = repairPoints;
 			this.PopulationHitPoints = populationHitPoints;
 		}
 	}

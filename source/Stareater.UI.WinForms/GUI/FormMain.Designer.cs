@@ -81,7 +81,7 @@
 			// 
 			this.constructionManagement.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.constructionManagement.BackColor = System.Drawing.SystemColors.ActiveBorder;
-			this.constructionManagement.Location = new System.Drawing.Point(263, 420);
+			this.constructionManagement.Location = new System.Drawing.Point(263, 422);
 			this.constructionManagement.Name = "constructionManagement";
 			this.constructionManagement.Size = new System.Drawing.Size(358, 116);
 			this.constructionManagement.TabIndex = 1;
@@ -211,7 +211,7 @@
 			// 
 			this.empyPlanetView.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.empyPlanetView.BackColor = System.Drawing.SystemColors.ActiveBorder;
-			this.empyPlanetView.Location = new System.Drawing.Point(263, 420);
+			this.empyPlanetView.Location = new System.Drawing.Point(263, 422);
 			this.empyPlanetView.Name = "empyPlanetView";
 			this.empyPlanetView.Size = new System.Drawing.Size(358, 116);
 			this.empyPlanetView.TabIndex = 6;

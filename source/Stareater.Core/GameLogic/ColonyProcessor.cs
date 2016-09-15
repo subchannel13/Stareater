@@ -40,6 +40,7 @@ namespace Stareater.GameLogic
 		public double WorkingPopulation { get; private set; }
 		
 		public double Development { get; private set; }
+		public double RepairPoints { get; protected set; }
 		
 		public ColonyProcessor(Colony colony) : base()
 		{
@@ -116,6 +117,7 @@ namespace Stareater.GameLogic
 			}
 			
 			this.WorkingPopulation = this.Colony.Population - this.Farmers;
+			this.RepairPoints = formulas.RepairPoints.Evaluate(vars);
 		}
 		
 		public void CalculateDerivedEffects(StaticsDB statics, PlayerProcessor playerProcessor)
