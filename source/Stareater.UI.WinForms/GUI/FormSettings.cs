@@ -35,7 +35,7 @@ namespace Stareater.GUI
 			}
 
 			var scales = new List<int>();
-			scales.AddRange(Methods.Range(5, 100, 5));
+			scales.AddRange(Methods.Range(5, 95, 5));
 			scales.AddRange(Methods.Range(100, 200, 10));
 			scales.AddRange(Methods.Range(200, 400, 20, true));
 			scales.Reverse();
@@ -49,6 +49,7 @@ namespace Stareater.GUI
 
 			fpsInput.Value = SettingsWinforms.Get.Framerate;
 			unlimitedFpsCheck.Checked = SettingsWinforms.Get.UnlimitedFramerate;
+			vsyncCheck.Checked = SettingsWinforms.Get.VSync;
 			
 			switch(SettingsWinforms.Get.FramerateBusySpinUsage)
 			{
@@ -77,6 +78,7 @@ namespace Stareater.GUI
 			guiScaleTitle.Text = context["GuiScaleLabel"].Text();
 			fpsTitle.Text = context["FpsLabel"].Text();
 			unlimitedFpsCheck.Text = context["UnlimitedFpsLabel"].Text();
+			vsyncCheck.Text = context["VSyncLabel"].Text();
 			fpsTimingTitle.Text = context["FpsTimingLabel"].Text();
 			busyFrameLimitAlways.Text = context["FpsBusyAlways"].Text();
 			busyFrameLimitNever.Text = context["FpsBusyNever"].Text();
@@ -121,6 +123,15 @@ namespace Stareater.GUI
 			fpsInput.Enabled = !unlimitedFpsCheck.Checked;
 		}
 
+		private void vsyncCheck_CheckedChanged(object sender, EventArgs e)
+		{
+			fpsInput.Enabled = !vsyncCheck.Checked;
+			busyFrameLimitAlways.Enabled = !vsyncCheck.Checked;
+			busyFrameLimitNever.Enabled = !vsyncCheck.Checked;
+			busyFrameLimitPlugged.Enabled = !vsyncCheck.Checked;
+			unlimitedFpsCheck.Enabled = !vsyncCheck.Checked;
+		}
+		
 		private void confirmButton_Click(object sender, EventArgs e)
 		{
 			SettingsWinforms.Get.Language = selectedLanguage;
@@ -128,6 +139,7 @@ namespace Stareater.GUI
 
 			SettingsWinforms.Get.Framerate = (int)fpsInput.Value;
 			SettingsWinforms.Get.UnlimitedFramerate = unlimitedFpsCheck.Checked;
+			SettingsWinforms.Get.VSync = vsyncCheck.Checked;
 			
 			if (busyFrameLimitAlways.Checked) 
 				SettingsWinforms.Get.FramerateBusySpinUsage = BusySpinMode.Always;

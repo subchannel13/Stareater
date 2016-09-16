@@ -40,6 +40,7 @@
 			this.busyFrameLimitAlways = new System.Windows.Forms.RadioButton();
 			this.busyFrameLimitPlugged = new System.Windows.Forms.RadioButton();
 			this.busyFrameLimitNever = new System.Windows.Forms.RadioButton();
+			this.vsyncCheck = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.fpsInput)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -105,7 +106,7 @@
 			// fpsTitle
 			// 
 			this.fpsTitle.AutoSize = true;
-			this.fpsTitle.Location = new System.Drawing.Point(214, 9);
+			this.fpsTitle.Location = new System.Drawing.Point(214, 33);
 			this.fpsTitle.Name = "fpsTitle";
 			this.fpsTitle.Size = new System.Drawing.Size(30, 13);
 			this.fpsTitle.TabIndex = 7;
@@ -114,7 +115,7 @@
 			// fpsTimingTitle
 			// 
 			this.fpsTimingTitle.AutoSize = true;
-			this.fpsTimingTitle.Location = new System.Drawing.Point(214, 58);
+			this.fpsTimingTitle.Location = new System.Drawing.Point(214, 82);
 			this.fpsTimingTitle.Name = "fpsTimingTitle";
 			this.fpsTimingTitle.Size = new System.Drawing.Size(92, 26);
 			this.fpsTimingTitle.TabIndex = 9;
@@ -127,7 +128,7 @@
 			0,
 			0,
 			0});
-			this.fpsInput.Location = new System.Drawing.Point(306, 7);
+			this.fpsInput.Location = new System.Drawing.Point(306, 31);
 			this.fpsInput.Maximum = new decimal(new int[] {
 			300,
 			0,
@@ -150,7 +151,7 @@
 			// unlimitedFpsCheck
 			// 
 			this.unlimitedFpsCheck.AutoSize = true;
-			this.unlimitedFpsCheck.Location = new System.Drawing.Point(214, 33);
+			this.unlimitedFpsCheck.Location = new System.Drawing.Point(214, 57);
 			this.unlimitedFpsCheck.Name = "unlimitedFpsCheck";
 			this.unlimitedFpsCheck.Size = new System.Drawing.Size(116, 17);
 			this.unlimitedFpsCheck.TabIndex = 13;
@@ -161,7 +162,7 @@
 			// busyFrameLimitAlways
 			// 
 			this.busyFrameLimitAlways.AutoSize = true;
-			this.busyFrameLimitAlways.Location = new System.Drawing.Point(306, 56);
+			this.busyFrameLimitAlways.Location = new System.Drawing.Point(306, 80);
 			this.busyFrameLimitAlways.Name = "busyFrameLimitAlways";
 			this.busyFrameLimitAlways.Size = new System.Drawing.Size(58, 17);
 			this.busyFrameLimitAlways.TabIndex = 14;
@@ -172,7 +173,7 @@
 			// busyFrameLimitPlugged
 			// 
 			this.busyFrameLimitPlugged.AutoSize = true;
-			this.busyFrameLimitPlugged.Location = new System.Drawing.Point(306, 79);
+			this.busyFrameLimitPlugged.Location = new System.Drawing.Point(306, 103);
 			this.busyFrameLimitPlugged.Name = "busyFrameLimitPlugged";
 			this.busyFrameLimitPlugged.Size = new System.Drawing.Size(95, 17);
 			this.busyFrameLimitPlugged.TabIndex = 15;
@@ -183,7 +184,7 @@
 			// busyFrameLimitNever
 			// 
 			this.busyFrameLimitNever.AutoSize = true;
-			this.busyFrameLimitNever.Location = new System.Drawing.Point(306, 102);
+			this.busyFrameLimitNever.Location = new System.Drawing.Point(306, 126);
 			this.busyFrameLimitNever.Name = "busyFrameLimitNever";
 			this.busyFrameLimitNever.Size = new System.Drawing.Size(54, 17);
 			this.busyFrameLimitNever.TabIndex = 16;
@@ -191,12 +192,24 @@
 			this.busyFrameLimitNever.Text = "Never";
 			this.busyFrameLimitNever.UseVisualStyleBackColor = true;
 			// 
+			// vsyncCheck
+			// 
+			this.vsyncCheck.AutoSize = true;
+			this.vsyncCheck.Location = new System.Drawing.Point(214, 8);
+			this.vsyncCheck.Name = "vsyncCheck";
+			this.vsyncCheck.Size = new System.Drawing.Size(54, 17);
+			this.vsyncCheck.TabIndex = 17;
+			this.vsyncCheck.Text = "vsync";
+			this.vsyncCheck.UseVisualStyleBackColor = true;
+			this.vsyncCheck.CheckedChanged += new System.EventHandler(this.vsyncCheck_CheckedChanged);
+			// 
 			// FormSettings
 			// 
 			this.AcceptButton = this.confirmButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(414, 216);
+			this.Controls.Add(this.vsyncCheck);
 			this.Controls.Add(this.busyFrameLimitNever);
 			this.Controls.Add(this.busyFrameLimitPlugged);
 			this.Controls.Add(this.busyFrameLimitAlways);
@@ -237,5 +250,6 @@
 		private System.Windows.Forms.RadioButton busyFrameLimitAlways;
 		private System.Windows.Forms.RadioButton busyFrameLimitPlugged;
 		private System.Windows.Forms.RadioButton busyFrameLimitNever;
+		private System.Windows.Forms.CheckBox vsyncCheck;
 	}
 }

@@ -125,7 +125,8 @@ namespace Stareater.GraphicsEngine
 				}
 	#endif
 				glCanvas.SwapBuffers();
-				this.waitMethod();
+				if (this.waitMethod != null)
+					this.waitMethod();
 			}
 
 			this.cleanUp();
@@ -224,7 +225,11 @@ namespace Stareater.GraphicsEngine
 					break;
 			}
 			
-			this.frameDuration = SettingsWinforms.Get.UnlimitedFramerate ? 0 : (1000 / SettingsWinforms.Get.Framerate);
+			if(SettingsWinforms.Get.VSync || SettingsWinforms.Get.UnlimitedFramerate)
+				this.waitMethod = null;
+			
+			this.glCanvas.VSync = SettingsWinforms.Get.VSync;
+			this.frameDuration = 1000 / SettingsWinforms.Get.Framerate;
 		}
 		#endregion
 		

@@ -31,6 +31,7 @@ namespace Stareater.AppData
 		
 		public int Framerate { get; set; }
 		public bool UnlimitedFramerate { get; set; }
+		public bool VSync { get; set; }
 		public BusySpinMode FramerateBusySpinUsage { get; set; }
 
 		public Font FormFont
@@ -53,6 +54,7 @@ namespace Stareater.AppData
 			this.Framerate = 120;
 			this.FramerateBusySpinUsage = BusySpinMode.NotOnBattery;
 			this.UnlimitedFramerate = false;
+			this.VSync = true;
 			
 			this.ReportTechnology = true;
 		}
@@ -68,6 +70,7 @@ namespace Stareater.AppData
 			this.Framerate = wfSettignsData[FpsKey].To<int>();
 			this.FramerateBusySpinUsage = (BusySpinMode)wfSettignsData[FpsBusyWaitKey].To<int>();
 			this.UnlimitedFramerate = wfSettignsData[FpsUnlimitedKey].To<int>() >= 0;
+			this.VSync = wfSettignsData[VSyncKey].To<int>() >= 0;
 			
 			this.ReportTechnology = wfSettignsData[ReportTechnologyKey].To<int>() >= 0;
 		}
@@ -80,6 +83,7 @@ namespace Stareater.AppData
 		const string FpsUnlimitedKey = "noFps";
 		const string GuiScaleKey = "guiscale";
 		const string ReportTechnologyKey = "reportTech";
+		const string VSyncKey = "vsync";
 		#endregion
 
 		protected override void buildSaveData(IkadnWriter writer)
@@ -87,13 +91,14 @@ namespace Stareater.AppData
 			base.buildSaveData(writer);
 
 			var settings = new IkonComposite(WinformsSettingsTag);
-			settings.Add(GuiScaleKey, new IkonFloat(GuiScale));
+			settings.Add(GuiScaleKey, new IkonFloat(this.GuiScale));
 			
-			settings.Add(FpsBusyWaitKey, new IkonInteger((int)FramerateBusySpinUsage));
-			settings.Add(FpsKey, new IkonInteger(Framerate));
-			settings.Add(FpsUnlimitedKey, new IkonInteger(UnlimitedFramerate ? 1 : -1));
+			settings.Add(FpsBusyWaitKey, new IkonInteger((int)this.FramerateBusySpinUsage));
+			settings.Add(FpsKey, new IkonInteger(this.Framerate));
+			settings.Add(FpsUnlimitedKey, new IkonInteger(this.UnlimitedFramerate ? 1 : -1));
+			settings.Add(VSyncKey, new IkonInteger(this.VSync ? 1 : -1));
 			
-			settings.Add(ReportTechnologyKey, new IkonInteger(ReportTechnology ? 1 : -1));
+			settings.Add(ReportTechnologyKey, new IkonInteger(this.ReportTechnology ? 1 : -1));
 			settings.Compose(writer);
 		}
 	}
