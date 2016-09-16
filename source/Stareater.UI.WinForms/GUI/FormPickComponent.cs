@@ -64,8 +64,8 @@ namespace Stareater.GUI
 			foreach(var component in options)
 			{
 				var button = new Button();
-				if (component.ImagePath != null)
-					button.Image = ImageCache.Get[component.ImagePath]; //TODO(v0.5) shirnk image
+				if (component.Image != null)
+					button.Image = component.Image; //TODO(v0.6) shirnk image
 				button.Size = new System.Drawing.Size(80, 80);
 				button.Text = component.Name;
 				button.TextAlign = System.Drawing.ContentAlignment.BottomCenter;

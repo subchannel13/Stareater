@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Stareater.GUI.ShipDesigns
 {
 	public interface IShipComponentType
 	{
 		string Name { get; }
-		string ImagePath { get; }
+		Image Image { get; }
 		
 		void Dispatch();
 	}

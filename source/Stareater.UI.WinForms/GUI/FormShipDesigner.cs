@@ -68,7 +68,7 @@ namespace Stareater.GUI
 			
 			var itemView = new ShipEquipmentItem();
 			itemView.Data = new ShipComponentType<MissionEquipInfo>(
-				equipInfo.Name, equipInfo.ImagePath, equipInfo,
+				equipInfo.Name, ImageCache.Get[equipInfo.ImagePath], equipInfo,
 				equipmentAction.Dispatch
 			);
 			itemView.Amount = this.controller.MissionEquipCount(index);
@@ -85,7 +85,7 @@ namespace Stareater.GUI
 
 			var itemView = new ShipEquipmentItem();
 			itemView.Data = new ShipComponentType<SpecialEquipInfo>(
-				equipInfo.Name, equipInfo.ImagePath, equipInfo,
+				equipInfo.Name, ImageCache.Get[equipInfo.ImagePath], equipInfo,
 				equipmentAction.Dispatch
 			);
 			itemView.Amount = this.controller.SpecialEquipCount(equipInfo);
@@ -241,7 +241,7 @@ namespace Stareater.GUI
 			var shields = new IShipComponentType[] { new ShipComponentType<ShieldInfo>(this.context["unselectComponent"].Text(), null, null, selectShield) }.Concat(
 				this.controller.Shields().Select(x => new ShipComponentType<ShieldInfo>(
 				x.Name,
-				x.ImagePath,
+				ImageCache.Get[x.ImagePath],
 				x, selectShield
 			)));
 			
@@ -267,13 +267,13 @@ namespace Stareater.GUI
 		{
 			var missionEquipmnet = this.controller.MissionEquipment().Select(x => new ShipComponentType<MissionEquipInfo>(
 				x.Name,
-				x.ImagePath,
+				ImageCache.Get[x.ImagePath],
 				x, addMissionEquip
 			));
 			
 			var specialEquipmnet = this.controller.SpecialEquipment().Where(x => !this.controller.HasSpecialEquip(x)).Select(x => new ShipComponentType<SpecialEquipInfo>(
 				x.Name,
-				x.ImagePath,
+				ImageCache.Get[x.ImagePath],
 				x, addSpecialEquip
 			));
 

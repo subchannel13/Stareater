@@ -84,12 +84,12 @@ namespace Stareater.GUI
 			
 			var refitOptions = new IShipComponentType[] 
 			{ 
-				new ShipComponentType<DesignInfo>(context["disbandDesign"].Text(), null, null, disbandDesign), //TODO(v0.6) put image
-				new ShipComponentType<DesignInfo>(context["keepDesign"].Text(), null, null, keepDesign) //TODO(v0.6) put image
+				new ShipComponentType<DesignInfo>(context["disbandDesign"].Text(), global::Stareater.Properties.Resources.cancel, null, disbandDesign),  
+				new ShipComponentType<DesignInfo>(context["keepDesign"].Text(), global::Stareater.Properties.Resources.start, null, keepDesign)
 			}.Concat(
 				this.controller.ShipsDesigns().Select(x => new ShipComponentType<DesignInfo>(
 				x.Name,
-				x.ImagePath,
+				ImageCache.Get[x.ImagePath],
 				x, refitDesign
 			)));
 			
