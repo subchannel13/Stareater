@@ -210,6 +210,36 @@ namespace Stareater.GameLogic
 		#region Postcombat processing
 		public void ProcessPostcombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
+			this.advanceTechnologies(states);
+			this.checkColonizationValidity(states);
+			this.doConstruction(statics, states, derivates);
+			this.UnlockPredefinedDesigns(statics, states);
+		}
+		
+		public void UnlockPredefinedDesigns(StaticsDB statics, StatesDB states)
+		{
+			var playerTechs = states.TechnologyAdvances.Of(Player);
+			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
+				
+			foreach(var predefDesign in statics.PredeginedDesigns)
+				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
+				{
+					Player.UnlockedDesigns.Add(predefDesign);
+					makeDesign(statics, states, predefDesign, techLevels, false);
+				}
+			
+			this.ColonyShipDesign = makeDesign(
+				statics, states,
+				statics.ColonyShipDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(statics), 0, techLevels)),
+				techLevels, true);
+			this.SystemColonizerDesign = makeDesign(
+				statics, states,
+				statics.SystemColonizerDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(statics), 0, techLevels)),
+				techLevels, true);
+		}
+
+		private void advanceTechnologies(StatesDB states)
+		{
 			foreach(var techProgress in this.DevelopmentPlan.Concat(this.ResearchPlan)) {
 				techProgress.Item.Progress(techProgress);
 				if (techProgress.CompletedCount > 0)
@@ -225,14 +255,20 @@ namespace Stareater.GameLogic
 				);
 
 			Player.Orders.DevelopmentQueue = updateTechQueue(Player.Orders.DevelopmentQueue, validTechs);
-			
+		}
+
+		private void checkColonizationValidity(StatesDB states)
+		{
 			var occupiedTargets = new HashSet<Planet>();
 			foreach(var order in this.Player.Orders.ColonizationOrders)
 				if (states.Colonies.AtPlanetContains(order.Key)) //TODO(later) use intelligence instead
 					occupiedTargets.Add(order.Key);
 			foreach(var planet in occupiedTargets)
 				this.Player.Orders.ColonizationOrders.Remove(planet);
+		}
 
+		private void doConstruction(StaticsDB statics, StatesDB states, TemporaryDB derivates)
+		{
 			var oldPlans = Player.Orders.ConstructionPlans;
 			Player.Orders.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
 
@@ -263,30 +299,6 @@ namespace Stareater.GameLogic
 				}
 				else
 					Player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
-				
-			UnlockPredefinedDesigns(statics, states);
-		}
-		
-		public void UnlockPredefinedDesigns(StaticsDB statics, StatesDB states)
-		{
-			var playerTechs = states.TechnologyAdvances.Of(Player);
-			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
-				
-			foreach(var predefDesign in statics.PredeginedDesigns)
-				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
-				{
-					Player.UnlockedDesigns.Add(predefDesign);
-					makeDesign(statics, states, predefDesign, techLevels, false);
-				}
-			
-			this.ColonyShipDesign = makeDesign(
-				statics, states,
-				statics.ColonyShipDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(statics), 0, techLevels)),
-				techLevels, true);
-			this.SystemColonizerDesign = makeDesign(
-				statics, states,
-				statics.SystemColonizerDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(statics), 0, techLevels)),
-				techLevels, true);
 		}
 		
 		private Design makeDesign(StaticsDB statics, StatesDB states, PredefinedDesign predefDesign, Dictionary<string, double> techLevels, bool isVirtual)
