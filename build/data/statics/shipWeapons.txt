@@ -6,6 +6,7 @@
 	
 	maxLvl= 5
 	prerequisites [
+		:Laser #lvl - 1;
 	]
 	
 	cost # 2e6;

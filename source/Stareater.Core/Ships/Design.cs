@@ -15,9 +15,10 @@ namespace Stareater.Ships
 	{
 		public string IdCode { get; private set; }
 		public Player Owner { get; private set; }
+		public bool IsObsolete { get; set; }
 		public bool IsVirtual { get; private set; }
 		public string Name { get; private set; }
-		private int imageIndex;
+		public int ImageIndex { get; private set; }
 		public Component<ArmorType> Armor { get; private set; }
 		public Component<HullType> Hull { get; private set; }
 		public Component<IsDriveType> IsDrive { get; private set; }
@@ -30,13 +31,14 @@ namespace Stareater.Ships
 		private BitHash hash;
 		public double Cost { get; private set; }
 
-		public Design(string idCode, Player owner, bool isVirtual, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment, Component<ThrusterType> thrusters) 
+		public Design(string idCode, Player owner, bool isObsolete, bool isVirtual, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment, Component<ThrusterType> thrusters) 
 		{
 			this.IdCode = idCode;
 			this.Owner = owner;
+			this.IsObsolete = isObsolete;
 			this.IsVirtual = isVirtual;
 			this.Name = name;
-			this.imageIndex = imageIndex;
+			this.ImageIndex = imageIndex;
 			this.Armor = armor;
 			this.Hull = hull;
 			this.IsDrive = isDrive;
@@ -56,9 +58,10 @@ namespace Stareater.Ships
 		{
 			this.IdCode = original.IdCode;
 			this.Owner = owner;
+			this.IsObsolete = original.IsObsolete;
 			this.IsVirtual = original.IsVirtual;
 			this.Name = original.Name;
-			this.imageIndex = original.imageIndex;
+			this.ImageIndex = original.ImageIndex;
 			this.Armor = original.Armor;
 			this.Hull = original.Hull;
 			this.IsDrive = original.IsDrive;
@@ -86,6 +89,9 @@ namespace Stareater.Ships
 			var ownerSave = rawData[OwnerKey];
 			this.Owner = deindexer.Get<Player>(ownerSave.To<int>());
 
+			var isObsoleteSave = rawData[IsObsoleteKey];
+			this.IsObsolete = isObsoleteSave.To<int>() >= 0;
+
 			var isVirtualSave = rawData[IsVirtualKey];
 			this.IsVirtual = isVirtualSave.To<int>() >= 0;
 
@@ -93,7 +99,7 @@ namespace Stareater.Ships
 			this.Name = nameSave.To<string>();
 
 			var imageIndexSave = rawData[ImageIndexKey];
-			this.imageIndex = imageIndexSave.To<int>();
+			this.ImageIndex = imageIndexSave.To<int>();
 
 			var armorSave = rawData[ArmorKey];
 			this.Armor = Component<ArmorType>.Load(armorSave.To<IkonArray>(), deindexer);
@@ -152,11 +158,13 @@ namespace Stareater.Ships
 
 			data.Add(OwnerKey, new IkonInteger(indexer.IndexOf(this.Owner)));
 
+			data.Add(IsObsoleteKey, new IkonInteger(this.IsObsolete ? 1 : -1));
+
 			data.Add(IsVirtualKey, new IkonInteger(this.IsVirtual ? 1 : -1));
 
 			data.Add(NameKey, new IkonText(this.Name));
 
-			data.Add(ImageIndexKey, new IkonInteger(this.imageIndex));
+			data.Add(ImageIndexKey, new IkonInteger(this.ImageIndex));
 
 			data.Add(ArmorKey, this.Armor.Save());
 
@@ -198,6 +206,7 @@ namespace Stareater.Ships
 		private const string TableTag = "Design";
 		private const string IdCodeKey = "idCode";
 		private const string OwnerKey = "owner";
+		private const string IsObsoleteKey = "isObsolete";
 		private const string IsVirtualKey = "isVirtual";
 		private const string NameKey = "name";
 		private const string ImageIndexKey = "imageIndex";

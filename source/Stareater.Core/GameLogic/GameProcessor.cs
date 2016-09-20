@@ -431,8 +431,38 @@ namespace Stareater.GameLogic
 
 		private void updateDesigns()
 		{
-			// TODO(v0.6): Update ship designs
+			//Generate upgraded designs
+			var upgradesTo = new Dictionary<Design, Design>();
+			var newDesigns = new HashSet<Design>();
+			foreach(var design in this.game.States.Designs)
+			{
+				var player = design.Owner;
+				var upgrade = this.game.Derivates.Of(player).DesignUpgrade(design, this.game.Statics, this.game.States);
+				if (this.game.States.Designs.Contains(upgrade))
+					continue;
+				
+				if (newDesigns.Contains(upgrade))
+					upgrade = newDesigns.First(x => x == upgrade);
+				else
+					this.game.Derivates.Of(player).Analyze(upgrade, this.game.Statics);
+				
+				design.IsObsolete = true;
+				upgradesTo[design] = upgrade;
+				newDesigns.Add(upgrade);
+			}
+			this.game.States.Designs.Add(newDesigns);
 			
+			//Update refit orders to upgrade obsolete designs
+			foreach(var upgrade in upgradesTo)
+			{
+				var orders = upgrade.Key.Owner.Orders.RefitOrders;
+				
+				if (!orders.ContainsKey(upgrade.Key))
+					orders[upgrade.Key] = upgrade.Value;
+				else if (orders[upgrade.Key] != null && orders[upgrade.Key].IsObsolete)
+					orders[upgrade.Key] = upgradesTo[orders[upgrade.Key]];
+			}
+
 			//Removing inactive discarded designs
 			var activeDesigns = new HashSet<Design>(this.game.States.Fleets.SelectMany(x => x.Ships).Select(x => x.Design));
 			var discardedDesigns = this.game.Players.

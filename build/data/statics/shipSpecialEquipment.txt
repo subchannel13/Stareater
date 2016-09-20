@@ -34,8 +34,9 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: colony
 	
-	maxLvl= 1
+	maxLvl= 5
 	prerequisites [
+		:Colonizer #lvl - 1;
 	]
 	cannotPick []
 	

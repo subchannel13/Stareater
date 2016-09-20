@@ -391,6 +391,7 @@ namespace Stareater.Controllers
 				this.game.States.MakeDesignId(),
 				this.player,
 				false,
+				false,
 				this.Name,
 				this.ImageIndex,
 				new Component<ArmorType>(this.armorInfo.Type, this.armorInfo.Level),

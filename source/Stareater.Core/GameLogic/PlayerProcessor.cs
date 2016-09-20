@@ -308,7 +308,7 @@ namespace Stareater.GameLogic
 			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
 
 			var design = new Design(
-				states.MakeDesignId(), Player, isVirtual, predefDesign.Name, predefDesign.HullImageIndex,
+				states.MakeDesignId(), Player, false, isVirtual, predefDesign.Name, predefDesign.HullImageIndex,
 			    armor, hull, isDrive, reactor, sensor, shield, equipment, specials, thruster
 			);
 			design.CalcHash(statics);
@@ -352,6 +352,35 @@ namespace Stareater.GameLogic
 			shipVars[ReactorType.TotalPowerKey] = reactor.TypeInfo.Power.Evaluate(shipVars.Get);
 			
 			return shipVars;
+		}
+
+		public Design DesignUpgrade(Design oldDesign, StaticsDB statics, StatesDB states)
+		{
+			var techLevels = states.TechnologyAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
+			
+			var hull = statics.Hulls[oldDesign.Hull.TypeInfo.IdCode].MakeHull(techLevels);
+			var specials = oldDesign.SpecialEquipment.Select(
+				x => statics.SpecialEquipment[x.TypeInfo.IdCode].MakeBest(techLevels, x.Quantity)
+			).ToList();
+			
+			var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels);
+			var reactor = ReactorType.MakeBest(techLevels, hull, specials, statics);
+			var isDrive = oldDesign.IsDrive != null ? IsDriveType.MakeBest(techLevels, hull, reactor, specials, statics) : null;
+			var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels);
+			var shield = oldDesign.Shield != null ? statics.Shields[oldDesign.Shield.TypeInfo.IdCode].MakeBest(techLevels) : null;
+			var equipment = oldDesign.MissionEquipment.Select(
+				x => statics.MissionEquipment[x.TypeInfo.IdCode].MakeBest(techLevels, x.Quantity)
+			).ToList();
+			
+			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
+
+			var design = new Design(
+				states.MakeDesignId(), Player, false, oldDesign.IsVirtual, oldDesign.Name, oldDesign.ImageIndex,
+			    armor, hull, isDrive, reactor, sensor, shield, equipment, specials, thruster
+			);
+			design.CalcHash(statics);
+			
+			return design;
 		}
 		
 		public void Analyze(Design design, StaticsDB statics)
