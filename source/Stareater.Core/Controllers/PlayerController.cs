@@ -186,7 +186,9 @@ namespace Stareater.Controllers
 		public void RefitDesign(DesignInfo design, DesignInfo refitWith)
 		{
 			//TODO(v0.6) check refit compatibility, if designs are for same hull
-			//TODO(v0.6) deny non-terminal refits (refitting into design under refit or removal)
+			if (!refitWith.Constructable || this.PlayerInstance.Orders.RefitOrders.ContainsKey(refitWith.Data))
+				return;
+			
 			this.PlayerInstance.Orders.RefitOrders[design.Data] = refitWith.Data;
 		}
 		

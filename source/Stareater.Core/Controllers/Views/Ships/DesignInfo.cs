@@ -38,6 +38,14 @@ namespace Stareater.Controllers.Views.Ships
 			}
 		}
 		
+		public bool Constructable 
+		{
+			get
+			{
+				return !Data.IsVirtual && !Data.IsObsolete;
+			}
+		}
+		
 		public HullInfo Hull
 		{
 			get { return new HullInfo(Data.Hull.TypeInfo, Data.Hull.Level); }

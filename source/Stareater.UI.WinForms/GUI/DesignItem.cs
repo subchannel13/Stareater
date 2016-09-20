@@ -87,10 +87,10 @@ namespace Stareater.GUI
 				new ShipComponentType<DesignInfo>(context["disbandDesign"].Text(), global::Stareater.Properties.Resources.cancel, null, disbandDesign),  
 				new ShipComponentType<DesignInfo>(context["keepDesign"].Text(), global::Stareater.Properties.Resources.start, null, keepDesign)
 			}.Concat(
-				this.controller.ShipsDesigns().Select(x => new ShipComponentType<DesignInfo>(
-				x.Name,
-				ImageCache.Get[x.ImagePath],
-				x, refitDesign
+					this.controller.ShipsDesigns().Where(x => x.Constructable).Select(x => new ShipComponentType<DesignInfo>(
+					x.Name,
+					ImageCache.Get[x.ImagePath],
+					x, refitDesign
 			)));
 			
 			using(var form = new FormPickComponent(context["refitTitle"].Text(), refitOptions))
