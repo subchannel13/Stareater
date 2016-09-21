@@ -43,11 +43,11 @@ namespace Stareater.GameLogic
 		{
 			this.doColonization();
 			this.mergeFleets();
-			this.updateDesigns();
 			
 			foreach (var playerProc in this.game.Derivates.Players)
 				playerProc.ProcessPostcombat(this.game.Statics, this.game.States, this.game.Derivates);
 
+			this.updateDesigns();
 			this.doRepairs();
 			// TODO(v0.6): Upgrade and repair ships
 

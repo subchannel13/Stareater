@@ -57,6 +57,12 @@ namespace Stareater.GameLogic
 			return copy;
 		}
 		
+		public void Initialize(StaticsDB statics, StatesDB states)
+		{
+			this.Calculate(states.TechnologyAdvances.Of(this.Player));
+			this.unlockPredefinedDesigns(statics, states);
+		}
+		
 		#region Technology related
 		private int technologyOrderKey(TechnologyProgress tech)
 		{
@@ -213,29 +219,7 @@ namespace Stareater.GameLogic
 			this.advanceTechnologies(states);
 			this.checkColonizationValidity(states);
 			this.doConstruction(statics, states, derivates);
-			this.UnlockPredefinedDesigns(statics, states);
-		}
-		
-		public void UnlockPredefinedDesigns(StaticsDB statics, StatesDB states)
-		{
-			var playerTechs = states.TechnologyAdvances.Of(Player);
-			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
-				
-			foreach(var predefDesign in statics.PredeginedDesigns)
-				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
-				{
-					Player.UnlockedDesigns.Add(predefDesign);
-					makeDesign(statics, states, predefDesign, techLevels, false);
-				}
-			
-			this.ColonyShipDesign = makeDesign(
-				statics, states,
-				statics.ColonyShipDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(statics), 0, techLevels)),
-				techLevels, true);
-			this.SystemColonizerDesign = makeDesign(
-				statics, states,
-				statics.SystemColonizerDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(statics), 0, techLevels)),
-				techLevels, true);
+			this.unlockPredefinedDesigns(statics, states);
 		}
 
 		private void advanceTechnologies(StatesDB states)
@@ -483,6 +467,22 @@ namespace Stareater.GameLogic
 		}
 		#endregion
 		
+		private void unlockPredefinedDesigns(StaticsDB statics, StatesDB states)
+		{
+			var playerTechs = states.TechnologyAdvances.Of(Player);
+			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
+				
+			foreach(var predefDesign in statics.PredeginedDesigns)
+				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
+				{
+					Player.UnlockedDesigns.Add(predefDesign);
+					makeDesign(statics, states, predefDesign, techLevels, false);
+				}
+			
+			this.ColonyShipDesign = updateVirtualDesign(this.ColonyShipDesign, statics, states, statics.ColonyShipDesigns, techLevels);
+			this.SystemColonizerDesign = updateVirtualDesign(this.SystemColonizerDesign, statics, states, statics.SystemColonizerDesigns, techLevels);
+		}
+		
 		private static Dictionary<string, int> updateTechQueue(IEnumerable<KeyValuePair<string, int>> queue, ICollection<string> validItems)
 		{
 			var newOrder = queue
@@ -507,6 +507,22 @@ namespace Stareater.GameLogic
 					newOrders.Queue.Add(item);
 
 			return newOrders;
+		}
+
+		private Design updateVirtualDesign(Design oldDesign, StaticsDB statics, StatesDB states, IEnumerable<PredefinedDesign> predefDesigns, Dictionary<string, double> techLevels)
+		{
+			var newDesign = makeDesign(
+				statics, states,
+				predefDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(statics), 0, techLevels)),
+				techLevels, true);
+			
+			if (newDesign != oldDesign && oldDesign != null)
+			{
+				oldDesign.IsObsolete = true;
+				oldDesign.Owner.Orders.RefitOrders[oldDesign] = null;
+			}
+			
+			return newDesign;
 		}
 	}
 }

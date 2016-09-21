@@ -215,8 +215,7 @@ namespace Stareater.Controllers
 			}
 			
 			foreach (var player in players) {
-				derivates.Players.Of(player).Calculate(states.TechnologyAdvances.Of(player));
-				derivates.Players.Of(player).UnlockPredefinedDesigns(statics, states);
+				derivates.Players.Of(player).Initialize(statics, states);
 				
 				player.Intelligence.Initialize(states.Stars.Select(
 					star => new StarSystem(star, states.Planets.At(star).ToArray())
@@ -315,9 +314,7 @@ namespace Stareater.Controllers
 			
 			foreach (var player in players) {
 				var playerProc = derivates.Players.Of(player);
-				
-				playerProc.Calculate(states.TechnologyAdvances.Of(player));
-				derivates.Players.Of(player).UnlockPredefinedDesigns(statics, states);
+				playerProc.Initialize(statics, states);
 				
 				foreach(var design in states.Designs.OwnedBy(player))
 					playerProc.Analyze(design, statics);
