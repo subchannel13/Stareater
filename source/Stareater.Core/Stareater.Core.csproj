@@ -193,6 +193,7 @@
     <Compile Include="GameLogic\AbilityStats.cs" />
     <Compile Include="GameLogic\IConstructionVisitor.cs" />
     <Compile Include="GameLogic\InvalidMissionVisitor.cs" />
+    <Compile Include="GameLogic\ShipConstructionCounter.cs" />
     <Compile Include="GameLogic\SpaceBattleProcessor.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="GameData\BuildingType.cs" />

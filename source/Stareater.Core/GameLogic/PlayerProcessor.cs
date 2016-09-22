@@ -220,7 +220,7 @@ namespace Stareater.GameLogic
 			this.checkColonizationValidity(states);
 			this.doConstruction(statics, states, derivates);
 			this.unlockPredefinedDesigns(statics, states);
-			this.updateDesigns(statics, states);
+			this.updateDesigns(statics, states, derivates);
 		}
 
 		private void advanceTechnologies(StatesDB states)
@@ -286,7 +286,7 @@ namespace Stareater.GameLogic
 					Player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 		}
 		
-		private void updateDesigns(StaticsDB statics, StatesDB states)
+		private void updateDesigns(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
 			//Generate upgraded designs
 			var upgradesTo = new Dictionary<Design, Design>();
@@ -320,7 +320,13 @@ namespace Stareater.GameLogic
 			}
 
 			//Removing inactive discarded designs
-			var activeDesigns = new HashSet<Design>(states.Fleets.SelectMany(x => x.Ships).Select(x => x.Design));
+			var shipConstruction = new ShipConstructionCounter();
+			shipConstruction.Check(derivates.Stellarises.OwnedBy(this.Player));
+			
+			var activeDesigns = new HashSet<Design>(states.Fleets.
+			                                        SelectMany(x => x.Ships).
+			                                        Select(x => x.Design).
+			                                        Concat(shipConstruction.Designs));
 			var discardedDesigns = this.Player.Orders.RefitOrders.
 				Where(x => x.Value == null && !activeDesigns.Contains(x.Key)).
 				Select(x => x.Key).ToList();
