@@ -220,6 +220,7 @@ namespace Stareater.GameLogic
 			this.checkColonizationValidity(states);
 			this.doConstruction(statics, states, derivates);
 			this.unlockPredefinedDesigns(statics, states);
+			this.updateDesigns(statics, states);
 		}
 
 		private void advanceTechnologies(StatesDB states)
@@ -285,39 +286,53 @@ namespace Stareater.GameLogic
 					Player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 		}
 		
-		private Design makeDesign(StaticsDB statics, StatesDB states, PredefinedDesign predefDesign, Dictionary<string, double> techLevels, bool isVirtual)
+		private void updateDesigns(StaticsDB statics, StatesDB states)
 		{
-			var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
-			var specials = predefDesign.SpecialEquipment.OrderBy(x => x.Key).Select(
-				x => statics.SpecialEquipment[x.Key].MakeBest(techLevels, x.Value)
-			).ToList();
-			
-			var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels);
-			var reactor = ReactorType.MakeBest(techLevels, hull, specials, statics);
-			var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(techLevels, hull, reactor, specials, statics) : null;
-			var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels);
-			var shield = predefDesign.ShieldCode != null ? statics.Shields[predefDesign.ShieldCode].MakeBest(techLevels) : null;
-			var equipment = predefDesign.MissionEquipment.Select(
-				x => statics.MissionEquipment[x.Key].MakeBest(techLevels, x.Value)
-			).ToList();
-			
-			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
-
-			var design = new Design(
-				states.MakeDesignId(), Player, false, isVirtual, predefDesign.Name, predefDesign.HullImageIndex,
-			    armor, hull, isDrive, reactor, sensor, shield, equipment, specials, thruster
-			);
-			design.CalcHash(statics);
-			
-			if (!states.Designs.Contains(design))
+			//Generate upgraded designs
+			var upgradesTo = new Dictionary<Design, Design>();
+			var newDesigns = new HashSet<Design>();
+			foreach(var design in states.Designs.OwnedBy(this.Player))
 			{
-				states.Designs.Add(design);
-				this.Analyze(design, statics);
-				return design;
+				var upgrade = this.DesignUpgrade(design, statics, states);
+				if (states.Designs.Contains(upgrade))
+					continue;
+				
+				if (newDesigns.Contains(upgrade))
+					upgrade = newDesigns.First(x => x == upgrade);
+				else
+					this.Analyze(upgrade, statics);
+				
+				design.IsObsolete = true;
+				upgradesTo[design] = upgrade;
+				newDesigns.Add(upgrade);
 			}
+			states.Designs.Add(newDesigns);
 			
-			return states.Designs.First(x => x == design);
+			//Update refit orders to upgrade obsolete designs
+			foreach(var upgrade in upgradesTo)
+			{
+				var orders = this.Player.Orders.RefitOrders;
+				
+				if (!orders.ContainsKey(upgrade.Key))
+					orders[upgrade.Key] = upgrade.Value;
+				else if (orders[upgrade.Key] != null && orders[upgrade.Key].IsObsolete)
+					orders[upgrade.Key] = upgradesTo[orders[upgrade.Key]];
+			}
+
+			//Removing inactive discarded designs
+			var activeDesigns = new HashSet<Design>(states.Fleets.SelectMany(x => x.Ships).Select(x => x.Design));
+			var discardedDesigns = this.Player.Orders.RefitOrders.
+				Where(x => x.Value == null && !activeDesigns.Contains(x.Key)).
+				Select(x => x.Key).ToList();
+			
+			foreach(var design in discardedDesigns)
+			{
+				design.Owner.Orders.RefitOrders.Remove(design);
+				states.Designs.Remove(design);
+				this.DesignStats.Remove(design);
+			}
 		}
+
 		#endregion
 		
 		#region Design stats
@@ -466,6 +481,40 @@ namespace Stareater.GameLogic
 			);
 		}
 		#endregion
+		
+		private Design makeDesign(StaticsDB statics, StatesDB states, PredefinedDesign predefDesign, Dictionary<string, double> techLevels, bool isVirtual)
+		{
+			var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
+			var specials = predefDesign.SpecialEquipment.OrderBy(x => x.Key).Select(
+				x => statics.SpecialEquipment[x.Key].MakeBest(techLevels, x.Value)
+			).ToList();
+			
+			var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels);
+			var reactor = ReactorType.MakeBest(techLevels, hull, specials, statics);
+			var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(techLevels, hull, reactor, specials, statics) : null;
+			var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels);
+			var shield = predefDesign.ShieldCode != null ? statics.Shields[predefDesign.ShieldCode].MakeBest(techLevels) : null;
+			var equipment = predefDesign.MissionEquipment.Select(
+				x => statics.MissionEquipment[x.Key].MakeBest(techLevels, x.Value)
+			).ToList();
+			
+			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
+
+			var design = new Design(
+				states.MakeDesignId(), Player, false, isVirtual, predefDesign.Name, predefDesign.HullImageIndex,
+			    armor, hull, isDrive, reactor, sensor, shield, equipment, specials, thruster
+			);
+			design.CalcHash(statics);
+			
+			if (!states.Designs.Contains(design))
+			{
+				states.Designs.Add(design);
+				this.Analyze(design, statics);
+				return design;
+			}
+			
+			return states.Designs.First(x => x == design);
+		}
 		
 		private void unlockPredefinedDesigns(StaticsDB statics, StatesDB states)
 		{

@@ -47,9 +47,7 @@ namespace Stareater.GameLogic
 			foreach (var playerProc in this.game.Derivates.Players)
 				playerProc.ProcessPostcombat(this.game.Statics, this.game.States, this.game.Derivates);
 
-			this.updateDesigns();
 			this.doRepairs();
-			// TODO(v0.6): Upgrade and repair ships
 
 			this.CalculateBaseEffects();
 			this.CalculateSpendings();
@@ -426,54 +424,6 @@ namespace Stareater.GameLogic
 			{
 				var fleetProcessor = new FleetProcessingVisitor(fleet, game);
 				this.fleetMovement.AddRange(fleetProcessor.Run());
-			}
-		}
-
-		private void updateDesigns()
-		{
-			//Generate upgraded designs
-			var upgradesTo = new Dictionary<Design, Design>();
-			var newDesigns = new HashSet<Design>();
-			foreach(var design in this.game.States.Designs)
-			{
-				var player = design.Owner;
-				var upgrade = this.game.Derivates.Of(player).DesignUpgrade(design, this.game.Statics, this.game.States);
-				if (this.game.States.Designs.Contains(upgrade))
-					continue;
-				
-				if (newDesigns.Contains(upgrade))
-					upgrade = newDesigns.First(x => x == upgrade);
-				else
-					this.game.Derivates.Of(player).Analyze(upgrade, this.game.Statics);
-				
-				design.IsObsolete = true;
-				upgradesTo[design] = upgrade;
-				newDesigns.Add(upgrade);
-			}
-			this.game.States.Designs.Add(newDesigns);
-			
-			//Update refit orders to upgrade obsolete designs
-			foreach(var upgrade in upgradesTo)
-			{
-				var orders = upgrade.Key.Owner.Orders.RefitOrders;
-				
-				if (!orders.ContainsKey(upgrade.Key))
-					orders[upgrade.Key] = upgrade.Value;
-				else if (orders[upgrade.Key] != null && orders[upgrade.Key].IsObsolete)
-					orders[upgrade.Key] = upgradesTo[orders[upgrade.Key]];
-			}
-
-			//Removing inactive discarded designs
-			var activeDesigns = new HashSet<Design>(this.game.States.Fleets.SelectMany(x => x.Ships).Select(x => x.Design));
-			var discardedDesigns = this.game.Players.
-				SelectMany(x => x.Orders.RefitOrders).
-				Where(x => x.Value == null && !activeDesigns.Contains(x.Key)).
-				Select(x => x.Key).ToList();
-			
-			foreach(var design in discardedDesigns)
-			{
-				design.Owner.Orders.RefitOrders.Remove(design);
-				this.game.States.Designs.Remove(design);
 			}
 		}
 	}

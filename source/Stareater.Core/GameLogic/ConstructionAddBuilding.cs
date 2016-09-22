@@ -28,5 +28,10 @@ namespace Stareater.GameLogic
 			else
 				site.Buildings[buildingCode] += quantity;
 		}
+		
+		public void Accept(IConstructionVisitor visitor)
+		{
+			visitor.Visit(this);
+		}
 	}
 }

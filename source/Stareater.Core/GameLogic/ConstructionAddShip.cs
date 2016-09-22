@@ -10,11 +10,11 @@ namespace Stareater.GameLogic
 {
 	class ConstructionAddShip : IConstructionEffect
 	{
-		private readonly Design design;
+		public Design Design { get; private set; }
 		
 		public ConstructionAddShip(Design design)
 		{
-			this.design = design;
+			this.Design = design;
 		}
 
 		public void Apply(StatesDB states, TemporaryDB derivates, AConstructionSite site, long quantity)
@@ -27,10 +27,15 @@ namespace Stareater.GameLogic
 				states.Fleets.Add(fleet);
 			}
 			
-			if (fleet.Ships.DesignContains(design))
-				fleet.Ships.Design(design).Quantity += quantity;
+			if (fleet.Ships.DesignContains(Design))
+				fleet.Ships.Design(Design).Quantity += quantity;
 			else
-				fleet.Ships.Add(new ShipGroup(design, quantity, 0, 0));
+				fleet.Ships.Add(new ShipGroup(Design, quantity, 0, 0));
+		}
+		
+		public void Accept(IConstructionVisitor visitor)
+		{
+			visitor.Visit(this);
 		}
 	}
 }

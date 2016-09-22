@@ -11,19 +11,19 @@ namespace Stareater.GameLogic
 {
 	class ConstructionAddColonizer : IConstructionEffect
 	{
-		private readonly Design colonizerDesign;
+		public Design ColonizerDesign { get; private set; }
 		private readonly Planet destination;
 
 		public ConstructionAddColonizer(Design colonizerDesign, Planet destination)
 		{
-			this.colonizerDesign = colonizerDesign;
+			this.ColonizerDesign = colonizerDesign;
 			this.destination = destination;
 		}
 			
 		#region IConstructionEffect implementation
 		public void Apply(StatesDB states, TemporaryDB derivates, AConstructionSite site, long quantity)
 		{
-			var project = states.ColonizationProjects.Of(destination).FirstOrDefault(x => x.Owner == this.colonizerDesign.Owner);
+			var project = states.ColonizationProjects.Of(destination).FirstOrDefault(x => x.Owner == this.ColonizerDesign.Owner);
 			var missions = new LinkedList<AMission>();
 			missions.AddLast(new SkipTurnMission());
 			
@@ -45,12 +45,16 @@ namespace Stareater.GameLogic
 				states.Fleets.Add(fleet);
 			}
 
-			if (fleet.Ships.DesignContains(colonizerDesign))
-				fleet.Ships.Design(colonizerDesign).Quantity += quantity;
+			if (fleet.Ships.DesignContains(ColonizerDesign))
+				fleet.Ships.Design(ColonizerDesign).Quantity += quantity;
 			else
-				fleet.Ships.Add(new ShipGroup(colonizerDesign, quantity, 0, 0));
+				fleet.Ships.Add(new ShipGroup(ColonizerDesign, quantity, 0, 0));
+		}
+		
+		public void Accept(IConstructionVisitor visitor)
+		{
+			visitor.Visit(this);
 		}
 		#endregion
-		
 	}
 }
