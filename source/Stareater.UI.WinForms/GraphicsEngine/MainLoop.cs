@@ -116,7 +116,7 @@ namespace Stareater.GraphicsEngine
 	#if DEBUG
 				try {
 	#endif
-				if (currentRenderer != null/* && gameController.State == GameState.Running*/)
+				if (currentRenderer != null)
 					currentRenderer.Draw(dt); //TODO(v0.6) move to scene object
 	#if DEBUG
 				} catch(Exception ex)
@@ -211,7 +211,7 @@ namespace Stareater.GraphicsEngine
 		
 		private void pullSettings()
 		{
-			bool onBattery = System.Windows.Forms.SystemInformation.PowerStatus.PowerLineStatus != System.Windows.Forms.PowerLineStatus.Online; //assumes battery if status is unknown
+			bool onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online; //assumes battery if status is unknown
 			switch(SettingsWinforms.Get.FramerateBusySpinUsage)
 			{
 				case BusySpinMode.Always:

@@ -348,11 +348,9 @@ namespace Stareater.GLRenderers
 			GL.MatrixMode(MatrixMode.Modelview);
 		}
 		
-		private void setupStarsList()
+		private void setupStarsList(int listId)
 		{
-			this.starDrawList = GL.GenLists(1);
-			GL.NewList(starDrawList, ListMode.CompileAndExecute);
-
+			this.starDrawList = listId;
 			GL.Enable(EnableCap.Texture2D);
 			
 			foreach (var star in this.stars.GetAll()) {
@@ -380,14 +378,11 @@ namespace Stareater.GLRenderers
 				GL.PopMatrix();
 				starNameZ += StarNameZRange / this.currentPlayer.StarCount;
 			}
-
-			GL.EndList();
 		}
 		
-		private void setupWormholeList()
+		private void setupWormholeList(int listId)
 		{
-			this.wormholeDrawList = GL.GenLists(1);
-			GL.NewList(wormholeDrawList, ListMode.CompileAndExecute);
+			this.wormholeDrawList = listId;
 			
 			GL.Enable(EnableCap.Texture2D);
 			GL.Color4(Color.Blue);
@@ -404,8 +399,6 @@ namespace Stareater.GLRenderers
 				
 				GL.PopMatrix();
 			}
-			
-			GL.EndList();
 		}
 		#endregion
 		

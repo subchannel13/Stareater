@@ -35,12 +35,18 @@ namespace Stareater.GLRenderers
 		
 		protected abstract void setupPerspective();
 		
-		protected static void drawList(int listId, Action listGenerator)
+		protected static void drawList(int listId, Action<int> listGenerator)
 		{
 			if (listId == NoCallList)
-				listGenerator();
-			else
-				GL.CallList(listId);
+			{
+				listId = GL.GenLists(1);
+				
+				GL.NewList(listId, ListMode.Compile);
+				listGenerator(listId);
+				GL.EndList();
+			}
+			
+			GL.CallList(listId);
 		}	
 
 		#region Input handling

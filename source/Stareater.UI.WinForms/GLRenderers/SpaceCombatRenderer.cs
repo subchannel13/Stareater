@@ -234,10 +234,9 @@ namespace Stareater.GLRenderers
 			}
 		}
 		
-		private void setupGrid()
+		private void setupGrid(int listId)
 		{
-			this.gridList = GL.GenLists(1);
-			GL.NewList(gridList, ListMode.CompileAndExecute);
+			this.gridList = listId;
 			
 			GL.Disable(EnableCap.Texture2D);
 			GL.Color4(Color.Green);
@@ -258,8 +257,6 @@ namespace Stareater.GLRenderers
 					GL.End();
 				}
 			}
-			
-			GL.EndList();
 		}
 		
 		#region Helper methods
