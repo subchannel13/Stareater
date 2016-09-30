@@ -127,7 +127,7 @@
     <Compile Include="GLRenderers\TextureUtils.cs" />
     <Compile Include="GraphicsEngine\AScene.cs" />
     <Compile Include="GraphicsEngine\SignalFlag.cs" />
-    <Compile Include="GraphicsEngine\MainLoop.cs" />
+    <Compile Include="GraphicsEngine\TimingLoop.cs" />
     <Compile Include="GuiUtils\NumberInput.cs" />
     <Compile Include="GUI\BuildingItem.cs">
       <SubType>UserControl</SubType>

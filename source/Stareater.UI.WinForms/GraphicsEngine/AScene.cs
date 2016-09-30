@@ -20,10 +20,10 @@ namespace Stareater.GLRenderers
 		#endregion
 		
 		#region Events
-		public void ResetProjection(Vector2d screenSize, Vector2d canvasSize)
+		public void ResetProjection(double screenWidth, double screenHeigth, double canvasWidth, double canvasHeigth)
 		{
-			this.canvasSize = canvasSize;
-			this.screenSize = screenSize;
+			this.canvasSize = new Vector2d(canvasWidth, canvasHeigth);
+			this.screenSize = new Vector2d(screenWidth, screenHeigth);
 			this.setupPerspective();
 		}
 		

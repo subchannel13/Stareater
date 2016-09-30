@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
@@ -19,12 +20,16 @@ namespace Stareater.GUI
 {
 	internal partial class FormMain : Form, IGameStateListener, IBattleEventListener, IGalaxyViewListener
 	{
-		private MainLoop mainLoop;
+		private const float MaxDeltaTime = 0.5f;
+		
+		private TimingLoop timingLoop;
+		private AScene currentRenderer = null;
+		private AScene nextRenderer = null;
 		private GalaxyRenderer galaxyRenderer;
 		private SystemRenderer systemRenderer;
 		private SpaceCombatRenderer combatRenderer;
 		private GameOverRenderer gameOverRenderer;
-		private string rendererInfoText = "";
+		private double animationDeltaTime = 0;
 
 		private Queue<Action> delayedGuiEvents = new Queue<Action>();
 		private GameController gameController = null;
@@ -38,8 +43,9 @@ namespace Stareater.GUI
 		{
 			InitializeComponent();
 			
+			this.glCanvas.MouseWheel += glCanvas_MouseScroll;
 			this.gameController = new GameController();
-			this.mainLoop = new MainLoop(this.glCanvas);
+			this.timingLoop = new TimingLoop(this, onNextFrame);
 			this.reportOpener = new OpenReportVisitor(showDevelopment, showResearch);
 
 			applySettings();
@@ -49,7 +55,7 @@ namespace Stareater.GUI
 		private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			SettingsWinforms.Get.Save();
-			this.mainLoop.Stop();
+			this.timingLoop.Stop();
 		}
 
 		private void applySettings()
@@ -62,7 +68,14 @@ namespace Stareater.GUI
 			this.mainMenuToolStripMenuItem.Text = context["MainMenu"].Text();
 			this.developmentToolStripMenuItem.Text = context["DevelopmentMenu"].Text();
 			
-			this.mainLoop.OnSettingsChange();
+			this.glCanvas.VSync = SettingsWinforms.Get.VSync;
+			this.timingLoop.OnSettingsChange();
+		}
+		
+		private void onNextFrame(double dt)
+		{
+			this.animationDeltaTime = Math.Min(dt, MaxDeltaTime);
+			glCanvas.Invalidate();
 		}
 		
 		private PlayerController currentPlayer
@@ -96,7 +109,7 @@ namespace Stareater.GUI
 		
 		private void returnButton_Click(object sender, EventArgs e)
 		{
-			if (this.mainLoop.CurrentRenderer == systemRenderer)
+			if (this.currentRenderer == systemRenderer)
 				switchToGalaxyView();
 		}
 		
@@ -225,7 +238,7 @@ namespace Stareater.GUI
 		
 		private void showSettings()
 		{
-			using (var form = new FormSettings(this.rendererInfoText))
+			using (var form = new FormSettings(GL.GetString(StringName.Renderer)))
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
 					applySettings();
 			postDelayedEvent(showMainMenu);
@@ -338,13 +351,85 @@ namespace Stareater.GUI
 
 		private void glCanvas_Load(object sender, EventArgs e)
 		{
-			this.rendererInfoText = OpenTK.Graphics.OpenGL.GL.GetString(OpenTK.Graphics.OpenGL.StringName.Renderer);
-			this.mainLoop.Start();
+			GalaxyTextures.Get.Load(); //TODO(v0.6) make general initialization logic for rendering
+			
+			GL.Enable(EnableCap.DepthTest);
+			GL.Enable(EnableCap.Blend);
+			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+			
+			this.timingLoop.Start();
 		}
 
+		private void glCanvas_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (this.currentRenderer != null)
+				this.currentRenderer.OnKeyPress(e);
+		}
+		
+		private void glCanvas_MouseClick(object sender, MouseEventArgs e)
+		{
+			if (this.currentRenderer != null)
+				this.currentRenderer.OnMouseClick(e);
+		}
+		
+		private void glCanvas_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			if (this.currentRenderer != null)
+				this.currentRenderer.OnMouseDoubleClick(e);
+		}
+		
+		private void glCanvas_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (this.currentRenderer != null)
+				this.currentRenderer.OnMouseMove(e);
+		}
+		
+		private void glCanvas_MouseScroll(object sender, MouseEventArgs e)
+		{
+			if (this.currentRenderer != null)
+				this.currentRenderer.OnMouseScroll(e);
+		}
+		
+		private void glCanvas_Paint(object sender, PaintEventArgs e)
+		{
+			if (this.currentRenderer != this.nextRenderer)
+			{
+				if (this.currentRenderer != null)
+					this.currentRenderer.Deactivate();
+
+				this.currentRenderer = this.nextRenderer;
+				this.glCanvas_Resize(null, null);
+				this.currentRenderer.Activate();
+			}
+			
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+			GL.MatrixMode(MatrixMode.Modelview);
+			GL.LoadIdentity();
+			
+#if DEBUG
+			try {
+#endif
+				if (currentRenderer != null)
+					currentRenderer.Draw(this.animationDeltaTime); //TODO(v0.6) move to scene object
+#if DEBUG
+			} catch(Exception ex)
+			{
+				System.Diagnostics.Trace.WriteLine(ex);
+			}
+#endif
+			glCanvas.SwapBuffers();
+			this.timingLoop.Continue();
+		}
+		
 		private void glCanvas_Resize(object sender, EventArgs e)
 		{
-			this.mainLoop.OnResize();
+			var screen = Screen.FromControl(this.glCanvas);
+			GL.Viewport(this.glCanvas.ClientRectangle); //TODO(v0.6) move to scene object
+			
+			if (this.currentRenderer != null)
+				this.currentRenderer.ResetProjection(
+					screen.Bounds.Width, screen.Bounds.Height,
+					this.glCanvas.Width, this.glCanvas.Height); //TODO(v0.6) move to scene object
 		}
 		
 		#endregion
@@ -358,7 +443,7 @@ namespace Stareater.GUI
 			endTurnButton.Visible = true;
 			returnButton.Visible = false;
 			
-			this.mainLoop.ChangeScene(galaxyRenderer);
+			this.nextRenderer = galaxyRenderer;
 		}
 		
 		#endregion
@@ -375,9 +460,9 @@ namespace Stareater.GUI
 			this.currentPlayerIndex = 0;
 			this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
 			
-			if (this.mainLoop.CurrentRenderer == this.combatRenderer)
+			if (this.currentRenderer == this.combatRenderer)
 			{
-				this.mainLoop.ChangeScene(this.galaxyRenderer);
+				this.nextRenderer = this.galaxyRenderer;
 				
 				abilityList.Visible = false;
 				endTurnButton.Visible = true;
@@ -396,7 +481,7 @@ namespace Stareater.GUI
 				return;
 			}
 			
-			this.mainLoop.ChangeScene(this.gameOverRenderer);
+			this.nextRenderer = this.gameOverRenderer;
 			
 			abilityList.Visible = false;
 			endTurnButton.Visible = false;
@@ -419,7 +504,7 @@ namespace Stareater.GUI
 			this.fleetController = null;
 			
 			this.combatRenderer.StartCombat(battleController);
-			this.mainLoop.ChangeScene(this.combatRenderer);
+			this.nextRenderer = this.combatRenderer;
 
 			abilityList.Visible = true;
 			constructionManagement.Visible = false;
@@ -562,7 +647,7 @@ namespace Stareater.GUI
 			this.returnButton.Visible = true;
 			
 			this.systemRenderer.SetStarSystem(systemController, this.currentPlayer);
-			this.mainLoop.ChangeScene(systemRenderer);
+			this.nextRenderer = systemRenderer;
 		}
 		
 		void IGalaxyViewListener.SystemSelected(StarSystemController systemController)

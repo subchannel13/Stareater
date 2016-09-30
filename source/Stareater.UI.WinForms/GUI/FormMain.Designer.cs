@@ -75,6 +75,11 @@
 			this.glCanvas.TabIndex = 0;
 			this.glCanvas.VSync = false;
 			this.glCanvas.Load += new System.EventHandler(this.glCanvas_Load);
+			this.glCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.glCanvas_Paint);
+			this.glCanvas.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.glCanvas_KeyPress);
+			this.glCanvas.MouseClick += new System.Windows.Forms.MouseEventHandler(this.glCanvas_MouseClick);
+			this.glCanvas.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.glCanvas_MouseDoubleClick);
+			this.glCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.glCanvas_MouseMove);
 			this.glCanvas.Resize += new System.EventHandler(this.glCanvas_Resize);
 			// 
 			// constructionManagement
