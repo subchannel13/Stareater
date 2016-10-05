@@ -318,6 +318,13 @@ namespace Stareater.GameLogic
 				else if (orders[upgrade.Key] != null && orders[upgrade.Key].IsObsolete)
 					orders[upgrade.Key] = upgradesTo[orders[upgrade.Key]];
 			}
+			
+			foreach(var site in this.Player.Orders.ConstructionPlans.Keys.ToList())
+			{
+				var updater = new ShipConstructionUpdater(this.Player.Orders.ConstructionPlans[site].Queue, this.Player.Orders.RefitOrders);
+				this.Player.Orders.ConstructionPlans[site].Queue.Clear();
+				this.Player.Orders.ConstructionPlans[site].Queue.AddRange(updater.Run());
+			}
 
 			//Removing inactive discarded designs
 			var shipConstruction = new ShipConstructionCounter();
