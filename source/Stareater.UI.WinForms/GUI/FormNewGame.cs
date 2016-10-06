@@ -37,8 +37,8 @@ namespace Stareater.GUI
 				foreach (var start in MapAssets.Starts)
 					setupStartSelector.Items.Add(new Tag<StartingConditions>(start, start.Name));
 				this.customStartIndex = setupStartSelector.Items.Count;
-				setupStartSelector.Items.Add(new Tag<StartingConditions>(controller.CustomStart, SettingsWinforms.Get.Language["StartingConditions"][NewGameController.CustomStartNameKey].Text()));
-				setupStartSelector.Items.Add(new Tag<StartingConditions>(null, SettingsWinforms.Get.Language["StartingConditions"]["customize"].Text()));
+				setupStartSelector.Items.Add(new Tag<StartingConditions>(controller.CustomStart, LocalizationManifest.Get.CurrentLanguage["StartingConditions"][NewGameController.CustomStartNameKey].Text()));
+				setupStartSelector.Items.Add(new Tag<StartingConditions>(null, LocalizationManifest.Get.CurrentLanguage["StartingConditions"]["customize"].Text()));
 
 				if (NewGameController.LastStartingCondition != null)
 				{
@@ -62,7 +62,7 @@ namespace Stareater.GUI
 
 		private void setLanguage()
 		{
-			Context context = SettingsWinforms.Get.Language["FormNewGame"];
+			Context context = LocalizationManifest.Get.CurrentLanguage["FormNewGame"];
 
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.Text = context["FormTitle"].Text();

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 
-using Stareater.AppData;
 using Stareater.Controllers.Views;
 using Stareater.Localization;
 using Stareater.Properties;
@@ -25,13 +21,13 @@ namespace Stareater.GUI
 		{
 			get
 			{
-				return this.gameData;// ?? new SavedGameInfo(this.gameName.Text, 0);
+				return this.gameData;//TODO(v0.6) ?? new SavedGameInfo(this.gameName.Text, 0);
 			}
 			set
 			{
 				this.gameData = value;
 				
-				Context context = SettingsWinforms.Get.Language[FormSaveLoad.LanguageContext];
+				Context context = LocalizationManifest.Get.CurrentLanguage[FormSaveLoad.LanguageContext];
 				
 				if (value != null)
 				{

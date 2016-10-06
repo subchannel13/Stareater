@@ -8,8 +8,8 @@ using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
 using NGenerics.DataStructures.Mathematical;
-using Stareater.AppData;
 using Stareater.Galaxy.Builders;
+using Stareater.Localization;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.PluginParameters;
@@ -27,8 +27,8 @@ namespace Stareater.Galaxy.Square
 		const string HomeSystemDistance = "homeSystemDistance";
 		const string EmptyPositionsRatio = "emptyPositionsRatio";
 
-		private SelectorParameter sizeParameter;
-		private RangeParameter<double> displacementParameter;
+		private readonly SelectorParameter sizeParameter;
+		private readonly RangeParameter<double> displacementParameter;
 		private ParameterList parameters;
 		private SizeOption[] sizeOptions;
 
@@ -74,14 +74,14 @@ namespace Stareater.Galaxy.Square
 
 		public string Name
 		{
-			get { return Settings.Get.Language[LanguageContext]["name"].Text(); }
+			get { return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["name"].Text(); }
 		}
 
 		public string Description
 		{
 			get 
 			{ 
-				return Settings.Get.Language[LanguageContext]["description"].Text(null, new TextVar(
+				return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["description"].Text(null, new TextVar(
 					"size", Math.Pow(sizeOptions[sizeParameter.Value].Size, 2).ToString()).Get
 				);
 			}
@@ -125,7 +125,7 @@ namespace Stareater.Galaxy.Square
 			double radius = starDistance * homeSystemDistance * size / 2.0;
 
 			for (double player = 0; player < playerCount; player++) {
-				Vector2D desiredPoint = new Vector2D(
+				var desiredPoint = new Vector2D(
 					radius * Math.Cos(phi + player * deltaPhi),
 					radius * Math.Sin(phi + player * deltaPhi)
 				);

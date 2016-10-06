@@ -6,11 +6,11 @@ using System.Windows.Forms;
 
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
+using Stareater.Localization;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
@@ -278,7 +278,7 @@ namespace Stareater.GLRenderers
 					GL.Translate(destination.X, destination.Y + 0.5, EtaZ);
 					GL.Scale(EtaTextScale, EtaTextScale, EtaTextScale);
 		
-					TextRenderUtil.Get.RenderText(SettingsWinforms.Get.Language["FormMain"]["FleetEta"].Text(numVars, textVars), -0.5f);
+					TextRenderUtil.Get.RenderText(LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars), -0.5f);
 					GL.PopMatrix();
 				}
 			}
@@ -374,7 +374,7 @@ namespace Stareater.GLRenderers
 				GL.Translate(star.Position.X, star.Position.Y - 0.5, starNameZ);
 				GL.Scale(StarNameScale, StarNameScale, StarNameScale);
 
-				TextRenderUtil.Get.RenderText(star.Name.ToText(SettingsWinforms.Get.Language), -0.5f);
+				TextRenderUtil.Get.RenderText(star.Name.ToText(LocalizationManifest.Get.CurrentLanguage), -0.5f);
 				GL.PopMatrix();
 				starNameZ += StarNameZRange / this.currentPlayer.StarCount;
 			}

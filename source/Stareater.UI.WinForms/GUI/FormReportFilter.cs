@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Stareater.AppData;
+using Stareater.Localization;
 
 namespace Stareater.GUI
 {
@@ -13,7 +14,7 @@ namespace Stareater.GUI
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.checkTechs.Checked = SettingsWinforms.Get.ReportTechnology;
 			
-			var context = SettingsWinforms.Get.Language["FormReports"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormReports"];
 			this.Text = context["FilterTitle"].Text();
 			this.checkTechs.Text = context["showTechs"].Text();
 			this.applyAction.Text = context["applyFilter"].Text();

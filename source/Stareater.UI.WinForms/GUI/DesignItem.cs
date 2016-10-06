@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views.Ships;
+using Stareater.Localization;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GUI.ShipDesigns;
 
@@ -28,9 +29,9 @@ namespace Stareater.GUI
 		{
 			string refitText = "";
 			if (controller.IsMarkedForRemoval(this.data))
-				refitText = Environment.NewLine + SettingsWinforms.Get.Language["FormDesign"]["markedForRemoval"].Text();
+				refitText = Environment.NewLine + LocalizationManifest.Get.CurrentLanguage["FormDesign"]["markedForRemoval"].Text();
 			else if (controller.RefittingWith(this.data) != null)
-				refitText = Environment.NewLine + SettingsWinforms.Get.Language["FormDesign"]["refittingWith"].Text() + " " + controller.RefittingWith(this.data).Name;
+				refitText = Environment.NewLine + LocalizationManifest.Get.CurrentLanguage["FormDesign"]["refittingWith"].Text() + " " + controller.RefittingWith(this.data).Name;
 			
 			nameLabel.Text = data.Name + refitText;
 		}
@@ -76,7 +77,7 @@ namespace Stareater.GUI
 		
 		private void actionButton_Click(object sender, EventArgs e)
 		{
-			var context = SettingsWinforms.Get.Language["FormDesign"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormDesign"];
 			
 			Action<DesignInfo> disbandDesign = x => this.controller.DisbandDesign(this.data);
 			Action<DesignInfo> keepDesign = x => this.controller.KeepDesign(this.data);

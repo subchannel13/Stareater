@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
+using Stareater.Localization;
 
 namespace Stareater.GUI
 {
@@ -30,7 +31,7 @@ namespace Stareater.GUI
 				projectList.Controls.Add(itemView);
 			}
 			
-			var context = SettingsWinforms.Get.Language["FormColonization"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormColonization"];
 			this.Text = context["title"].Text();
 			this.Font = SettingsWinforms.Get.FormFont;
 		}

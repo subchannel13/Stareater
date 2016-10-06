@@ -21,7 +21,6 @@ namespace Stareater.AppData
 		#endregion
 
 		public string LanguageId { get; private set; }
-		public Language Language { get { return LocalizationManifest.Get.CurrentLanguage; } } //TODO(v0.6) move to LocalizationManifest
 		public LastGameInfo LastGame { get; private set; }
 		//TODO(v0.6) remember other game options like map shape and size
 

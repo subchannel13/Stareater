@@ -19,7 +19,7 @@ namespace Stareater.GUI
 			InitializeComponent();
 			this.titleFont = titleLabel.Font;
 
-			setLanguage(SettingsWinforms.Get.Language);
+			setLanguage(LocalizationManifest.Get.CurrentLanguage);
 		}
 		
 		public FormMainMenu(GameController controller) : this()

@@ -1,5 +1,4 @@
 ﻿using System;
-using Stareater.AppData;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.Localization;
@@ -44,9 +43,9 @@ namespace Stareater.GuiUtils
 		
 		public static string PlanetName(Planet planet)
 		{
-			string starName = planet.Star.Name.ToText(SettingsWinforms.Get.Language);
+			string starName = planet.Star.Name.ToText(LocalizationManifest.Get.CurrentLanguage);
 			
-			var context = SettingsWinforms.Get.Language["FormMain"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 			var textVars = new TextVar(
 				"bodyName",
 				starName + " " + RomanFromatter.Fromat(planet.Position)

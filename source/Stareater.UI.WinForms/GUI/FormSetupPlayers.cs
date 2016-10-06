@@ -36,12 +36,12 @@ namespace Stareater.GUI
 			foreach(var playerType in controller.PlayerTypes)
 				controllerPicker.Items.Add(new Tag<PlayerType>(playerType, playerType.Name));
 
-			organizationPicker.Items.Add(new Tag<Organization>(null, SettingsWinforms.Get.Language["General"]["RandomOrganization"].Text()));
+			organizationPicker.Items.Add(new Tag<Organization>(null, LocalizationManifest.Get.CurrentLanguage["General"]["RandomOrganization"].Text()));
 			foreach (var org in Organization.List)
 				organizationPicker.Items.Add(new Tag<Organization>(org, org.Name));
 
 			foreach (var color in PlayerAssets.Colors) {
-				ColorItem colorItem = new ColorItem();
+				var colorItem = new ColorItem();
 				colorItem.Color = color;
 				colorsLayout.Controls.Add(colorItem);
 			}
@@ -51,7 +51,7 @@ namespace Stareater.GUI
 
 		private void setLanguage()
 		{
-			Context context = SettingsWinforms.Get.Language["FormSetupPlayers"];
+			Context context = LocalizationManifest.Get.CurrentLanguage["FormSetupPlayers"];
 
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.Text = context["FormTitle"].Text();

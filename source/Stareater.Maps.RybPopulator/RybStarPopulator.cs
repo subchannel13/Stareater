@@ -8,8 +8,8 @@ using Ikadn;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
-using Stareater.AppData;
 using Stareater.Galaxy.Builders;
+using Stareater.Localization;
 using Stareater.Utils.PluginParameters;
 
 namespace Stareater.Galaxy.RybPopulator
@@ -70,14 +70,14 @@ namespace Stareater.Galaxy.RybPopulator
 
 		public string Name
 		{
-			get { return Settings.Get.Language[LanguageContext]["name"].Text(); }
+			get { return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["name"].Text(); }
 		}
 
 		public string Description
 		{
 			get
 			{
-				return Settings.Get.Language[LanguageContext]["description"].Text(new Dictionary<string, double>()
+				return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["description"].Text(new Dictionary<string, double>()
 				{
 					{"badClime", climateParameter.Value == 0 ? 1 : -1},
 					{"avgClime", climateParameter.Value == 1 ? 1 : -1},

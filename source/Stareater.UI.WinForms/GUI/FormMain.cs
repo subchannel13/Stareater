@@ -89,7 +89,7 @@ namespace Stareater.GUI
 		{
 			this.Font = SettingsWinforms.Get.FormFont;
 
-			Context context = SettingsWinforms.Get.Language["FormMain"];
+			Context context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 			this.endTurnButton.Text = context["EndTurn"].Text();
 			this.returnButton.Text = context["Return"].Text();
 			this.mainMenuToolStripMenuItem.Text = context["MainMenu"].Text();
@@ -555,7 +555,7 @@ namespace Stareater.GUI
 			
 			this.combatRenderer.OnUnitTurn(unitInfo);
 			
-			var context = SettingsWinforms.Get.Language["FormMain"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 			var formatter = new ThousandsFormatter();
 			var decimalFormat = new DecimalsFormatter(0, 0);
 			

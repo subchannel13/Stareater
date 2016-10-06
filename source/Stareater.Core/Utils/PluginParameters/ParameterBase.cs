@@ -1,4 +1,4 @@
-﻿using Stareater.AppData;
+﻿using Stareater.Localization;
 
 namespace Stareater.Utils.PluginParameters
 {
@@ -15,7 +15,7 @@ namespace Stareater.Utils.PluginParameters
 
 		public string Name
 		{
-			get { return Settings.Get.Language[contextKey][nameKey].Text(); }
+			get { return LocalizationManifest.Get.CurrentLanguage[contextKey][nameKey].Text(); }
 		}
 	}
 }

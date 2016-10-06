@@ -8,7 +8,6 @@ using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.Localization;
-using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GuiUtils;
 using Stareater.Properties;
@@ -41,7 +40,7 @@ namespace Stareater.GUI
 					break;
 			}
 			
-			Context context = SettingsWinforms.Get.Language["FormColony"];
+			Context context = LocalizationManifest.Get.CurrentLanguage["FormColony"];
 			this.Text = LocalizationMethods.PlanetName(controller.PlanetBody);
 			this.Font = SettingsWinforms.Get.FormFont;
 			

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
-using Stareater.Controllers.Views.Library;
+using Stareater.Localization;
 using Stareater.Utils;
 
 namespace Stareater.GUI
@@ -24,7 +24,7 @@ namespace Stareater.GUI
 			this.controller = controller;
 			this.Font = SettingsWinforms.Get.FormFont;
 			
-			var context = SettingsWinforms.Get.Language["FormLibrary"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormLibrary"];
 			this.Text = context["FormTitle"].Text();
 			this.levelLabel.Text = context["level"].Text() + ":";
 			

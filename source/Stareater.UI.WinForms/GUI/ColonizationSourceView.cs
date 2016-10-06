@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
+using Stareater.Localization;
 using Stareater.Utils.Collections;
 
 namespace Stareater.GUI
@@ -43,18 +43,18 @@ namespace Stareater.GUI
 		
 		private void updateView()
 		{
-			var context = SettingsWinforms.Get.Language["FormColonization"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormColonization"];
 			
 			if (controller.Sources().Contains(sourceData))
 			{
 				this.controlButton.Image = Stareater.Properties.Resources.start;
-				this.starName.Text = this.sourceData.HostStar.Name.ToText(SettingsWinforms.Get.Language);
+				this.starName.Text = this.sourceData.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage);
 			}
 			else
 			{
 				this.controlButton.Image = Stareater.Properties.Resources.stop;
 				this.starName.Text = context["stoppedColonization"].Text(
-					new TextVar("star", this.sourceData.HostStar.Name.ToText(SettingsWinforms.Get.Language)).Get
+					new TextVar("star", this.sourceData.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage)).Get
 				);
 			}
 		}

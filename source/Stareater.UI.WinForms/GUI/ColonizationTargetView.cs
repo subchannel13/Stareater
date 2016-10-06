@@ -1,10 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Stareater.AppData;
 using Stareater.Controllers;
+using Stareater.Localization;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GuiUtils;
@@ -25,7 +23,7 @@ namespace Stareater.GUI
 		{
 			this.controller = controller;
 			this.gameController = gameController;
-			var context = SettingsWinforms.Get.Language["FormColonization"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormColonization"];
 			
 			var infoFormatter = new ThousandsFormatter(controller.PopulationMax);
 			var infoVars = new TextVar("pop", infoFormatter.Format(controller.Population)).

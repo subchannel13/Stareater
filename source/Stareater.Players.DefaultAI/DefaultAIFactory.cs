@@ -1,5 +1,5 @@
 ﻿using Ikadn.Ikon.Types;
-using Stareater.AppData;
+using Stareater.Localization;
 
 namespace Stareater.Players.DefaultAI
 {
@@ -14,7 +14,7 @@ namespace Stareater.Players.DefaultAI
 		
 		public string Name
 		{
-			get { return Settings.Get.Language["DefaultAI"]["name"].Text(); }
+			get { return LocalizationManifest.Get.CurrentLanguage["DefaultAI"]["name"].Text(); }
 		}
 
 		public IOffscreenPlayer Create()

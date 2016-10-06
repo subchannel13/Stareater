@@ -2,6 +2,7 @@
 using System.Drawing;
 using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
+using Stareater.Localization;
 
 namespace Stareater.GLRenderers
 {
@@ -15,7 +16,7 @@ namespace Stareater.GLRenderers
 		{
 			GL.Color4(Color.Red);
 			GL.Translate(0, 0.5, 0);
-			TextRenderUtil.Get.RenderText(SettingsWinforms.Get.Language["FormMain"]["GameOver"].Text(), -0.5f);
+			TextRenderUtil.Get.RenderText(LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text(), -0.5f);
 		}
 		
 		public override void ResetLists()

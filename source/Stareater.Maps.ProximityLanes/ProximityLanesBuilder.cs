@@ -9,8 +9,8 @@ using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
 using NGenerics.DataStructures.Mathematical;
 using NGenerics.DataStructures.Queues;
-using Stareater.AppData;
 using Stareater.Galaxy.Builders;
+using Stareater.Localization;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.PluginParameters;
@@ -55,7 +55,7 @@ namespace Stareater.Galaxy.ProximityLanes
 
 		public string Name
 		{
-			get { return Settings.Get.Language[LanguageContext]["name"].Text(); }
+			get { return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["name"].Text(); }
 		}
 
 		public string Description
@@ -66,7 +66,7 @@ namespace Stareater.Galaxy.ProximityLanes
 					"minDegree", degreeOptions[degreesParameter.Value].Min.ToString()).And(
 					"maxDegree", degreeOptions[degreesParameter.Value].Max.ToString());
 				
-				return Settings.Get.Language[LanguageContext]["description"].Text(null, vars.Get);
+				return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["description"].Text(null, vars.Get);
 			}
 		}
 
@@ -90,7 +90,7 @@ namespace Stareater.Galaxy.ProximityLanes
 				starGroups.Add(star, group);
 			}
 
-			List<WormholeEndpoints> lanes = new List<WormholeEndpoints>();
+			var lanes = new List<WormholeEndpoints>();
 			for (int group = 0; group < starPositions.HomeSystems.Length; group++) {
 				lanes.AddRange(connectGroup(
 					starPositions.Stars, 
@@ -131,7 +131,7 @@ namespace Stareater.Galaxy.ProximityLanes
 			}
 		}
 
-		private static void closeVertex(PriorityQueue<WormholeEndpoints, double> freeEdges, int vertexToClose, Vector2D[] positions, int[] vertexIndices, HashSet<int> closed)
+		private static void closeVertex(PriorityQueue<WormholeEndpoints, double> freeEdges, int vertexToClose, IList<Vector2D> positions, int[] vertexIndices, ISet<int> closed)
 		{
 			closed.Add(vertexToClose);
 			foreach (var vertex in vertexIndices)

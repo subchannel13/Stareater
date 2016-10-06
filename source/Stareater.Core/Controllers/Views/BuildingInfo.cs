@@ -1,6 +1,6 @@
 ﻿using System;
-using Stareater.AppData;
 using Stareater.GameData;
+using Stareater.Localization;
 
 namespace Stareater.Controllers.Views
 {
@@ -20,7 +20,7 @@ namespace Stareater.Controllers.Views
 		{
 			get 
 			{
-				return Settings.Get.Language[LangContext][building.NameCode].Text();
+				return LocalizationManifest.Get.CurrentLanguage[LangContext][building.NameCode].Text();
 			}
 		}
 		

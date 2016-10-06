@@ -39,7 +39,7 @@ namespace Stareater.GUI
 
 		private void setLanguage()
 		{
-			Context context = SettingsWinforms.Get.Language["FormStartingConditions"];
+			Context context = LocalizationManifest.Get.CurrentLanguage["FormStartingConditions"];
 
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.Text = context["FormTitle"].Text();
@@ -48,7 +48,7 @@ namespace Stareater.GUI
 			populationLabel.Text = context["populationLabel"].Text();
 			infrastructureLabel.Text = context["infrastructureLabel"].Text();
 
-			acceptButton.Text = SettingsWinforms.Get.Language["General"]["DialogAccept"].Text();
+			acceptButton.Text = LocalizationManifest.Get.CurrentLanguage["General"]["DialogAccept"].Text();
 		}
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

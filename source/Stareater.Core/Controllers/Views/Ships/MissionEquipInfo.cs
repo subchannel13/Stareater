@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Stareater.AppData;
 using Stareater.GameData.Ships;
+using Stareater.Localization;
 using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views.Ships
@@ -27,7 +27,7 @@ namespace Stareater.Controllers.Views.Ships
 		{ 
 			get
 			{
-				return Settings.Get.Language[LangContext][this.Type.NameCode].Text(this.Level);
+				return LocalizationManifest.Get.CurrentLanguage[LangContext][this.Type.NameCode].Text(this.Level);
 			}
 		}
 		

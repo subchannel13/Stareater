@@ -3,10 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
-using Stareater.Galaxy;
 using Stareater.Localization;
-using Stareater.Utils.Collections;
-using Stareater.Utils.NumberFormatters;
 using Stareater.GuiUtils;
 
 namespace Stareater.GUI
@@ -45,7 +42,7 @@ namespace Stareater.GUI
 		{
 			this.Font = SettingsWinforms.Get.FormFont;
 
-			var context = SettingsWinforms.Get.Language["FormMain"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 			this.detailsButton.Text = context["SiteDetails"].Text();
 			this.estimationLabel.Text = "";
 			

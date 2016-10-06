@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using Stareater.Controllers;
 using Stareater.AppData;
+using Stareater.Localization;
 using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI
@@ -19,7 +20,7 @@ namespace Stareater.GUI
 		
 		public FormShipDesignList(PlayerController controller) : this()
 		{
-			this.Text = SettingsWinforms.Get.Language["FormDesign"]["ListFormTitle"].Text();
+			this.Text = LocalizationManifest.Get.CurrentLanguage["FormDesign"]["ListFormTitle"].Text();
 			this.Font = SettingsWinforms.Get.FormFont;
 
 			this.controller = controller;
@@ -78,7 +79,7 @@ namespace Stareater.GUI
 			var design = (sender as DesignItem).Data;
 			var formatter = new ThousandsFormatter();
 			var sb = new StringBuilder();
-			var context = SettingsWinforms.Get.Language["FormDesign"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormDesign"];
 
 			sb.AppendLine(design.IsDrive != null ? design.IsDrive.Name : context["noIsDrive"].Text());
 			sb.AppendLine(design.Shield != null ? design.Shield.Name : context["noShield"].Text());

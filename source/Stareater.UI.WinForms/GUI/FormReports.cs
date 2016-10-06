@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Stareater.Controllers.Views;
 using Stareater.AppData;
+using Stareater.Localization;
 using Stareater.GUI.Reports;
 
 namespace Stareater.GUI
@@ -23,7 +24,7 @@ namespace Stareater.GUI
 		{
 			this.reports = reports.ToList();
 			
-			this.Text = SettingsWinforms.Get.Language["FormReports"]["FormTitle"].Text();
+			this.Text = LocalizationManifest.Get.CurrentLanguage["FormReports"]["FormTitle"].Text();
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.fillList();
 		}

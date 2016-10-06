@@ -43,12 +43,12 @@ namespace Stareater.GUI
 		
 		private void setLanguage()
 		{
-			Context context = SettingsWinforms.Get.Language["FormMain"];
+			Context context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.Text = context["SelectQuantityTitle"].Text();
 
-			this.acceptButton.Text = SettingsWinforms.Get.Language["General"]["DialogAccept"].Text();
+			this.acceptButton.Text = LocalizationManifest.Get.CurrentLanguage["General"]["DialogAccept"].Text();
 		}
 		
 		private void quantitySlider_Scroll(object sender, EventArgs e)

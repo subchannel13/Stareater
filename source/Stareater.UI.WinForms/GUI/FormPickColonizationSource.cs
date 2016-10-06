@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
+using Stareater.Localization;
 using Stareater.GuiUtils;
 
 namespace Stareater.GUI
@@ -26,13 +26,13 @@ namespace Stareater.GUI
 			foreach(var candidate in controller.AvailableSources())
 				sourceList.Items.Add(new Tag<StellarisInfo>(
 					candidate,
-					candidate.HostStar.Name.ToText(SettingsWinforms.Get.Language)
+					candidate.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage)
 				));
 			sourceList.SelectedIndex = 0;
 			
-			this.Text = SettingsWinforms.Get.Language["FormColonization"]["addSourceTitle"].Text();
+			this.Text = LocalizationManifest.Get.CurrentLanguage["FormColonization"]["addSourceTitle"].Text();
 			this.Font = SettingsWinforms.Get.FormFont;
-			this.addButton.Text = SettingsWinforms.Get.Language["FormColonization"]["addSource"].Text();
+			this.addButton.Text = LocalizationManifest.Get.CurrentLanguage["FormColonization"]["addSource"].Text();
 		}
 		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

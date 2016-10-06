@@ -29,7 +29,7 @@ namespace Stareater.GUI
 			foreach (var langInfo in LocalizationManifest.Get.LanguageNames.OrderBy(x => x.Value))
 			{
 				languageSelector.Items.Add(new Tag<string>(langInfo.Key, langInfo.Value));
-				if (langInfo.Key == SettingsWinforms.Get.Language.Code)
+				if (langInfo.Key == LocalizationManifest.Get.CurrentLanguage.Code)
 					languageSelector.SelectedIndex = languageSelector.Items.Count - 1;
 			}
 
@@ -68,7 +68,7 @@ namespace Stareater.GUI
 
 		private void setLanguage()
 		{
-			Context context = SettingsWinforms.Get.Language["FormSettings"];
+			Context context = LocalizationManifest.Get.CurrentLanguage["FormSettings"];
 
 			this.Text = context["FormTitle"].Text();
 			this.Font = new Font(SystemFonts.DefaultFont.FontFamily, SystemFonts.DefaultFont.Size * selectedGuiScale);
@@ -82,7 +82,7 @@ namespace Stareater.GUI
 			busyFrameLimitAlways.Text = context["FpsBusyAlways"].Text();
 			busyFrameLimitNever.Text = context["FpsBusyNever"].Text();
 			busyFrameLimitPlugged.Text = context["FpsBusyPlugged"].Text();
-			confirmButton.Text = SettingsWinforms.Get.Language["General"]["DialogAccept"].Text();
+			confirmButton.Text = LocalizationManifest.Get.CurrentLanguage["General"]["DialogAccept"].Text();
 
 			rendererInfo.Text = context["RendererLabel"].Text() + Environment.NewLine + this.rendererInfoText;
 		}

@@ -45,7 +45,7 @@ namespace Stareater.GUI
 				queueList.Controls.Add(queueItemView);
 			}
 			
-			Context context = SettingsWinforms.Get.Language["FormBuilding"];
+			Context context = LocalizationManifest.Get.CurrentLanguage["FormBuilding"];
 			
 			this.Text = context["FormTitle"].Text();
 			this.Font = SettingsWinforms.Get.FormFont;

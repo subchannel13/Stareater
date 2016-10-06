@@ -1,9 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers.Views;
+using Stareater.Localization;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GuiUtils;
 
@@ -33,7 +32,7 @@ namespace Stareater.GUI
 				
 				if (this.data.CompletedCount > 0)
 				{
-					var context = SettingsWinforms.Get.Language["FormMain"];
+					var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 				
 					costLabel.Text = LocalizationMethods.ConstructionEstimation(
 						this.data, 

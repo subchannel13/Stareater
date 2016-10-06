@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Localization;
-using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
 using Stareater.Properties;
 
@@ -27,8 +26,8 @@ namespace Stareater.GUI
 			this.controller = controller;
 			this.setStarImage();
 			
-			Context context = SettingsWinforms.Get.Language["FormStellaris"];
-			this.Text = this.controller.HostStar.Name.ToText(SettingsWinforms.Get.Language);
+			Context context = LocalizationManifest.Get.CurrentLanguage["FormStellaris"];
+			this.Text = this.controller.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage);
 			this.Font = SettingsWinforms.Get.FormFont;
 			
 			buildingsGroup.Text = context["buildingsGroup"].Text();

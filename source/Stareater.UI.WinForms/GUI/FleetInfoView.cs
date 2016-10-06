@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views.Ships;
+using Stareater.Localization;
 
 namespace Stareater.GUI
 {
@@ -43,13 +44,13 @@ namespace Stareater.GUI
 			this.hullThumbnail.Image = ImageCache.Get[biggestGroup.Design.ImagePath];
 			this.hullThumbnail.BackColor = fleetInfo.Owner.Color;
 			
-			var context = SettingsWinforms.Get.Language["FormMain"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 			if (fleetInfo.Missions.Waypoints.Length == 0)
 				this.quantityLabel.Text = context["StationaryFleet"].Text();
 			else
 			{
 				var placeholders = new Dictionary<string, string>();
-				placeholders.Add("destination", controller.Star(fleetInfo.Missions.Waypoints[0].Destionation).Name.ToText(SettingsWinforms.Get.Language));
+				placeholders.Add("destination", controller.Star(fleetInfo.Missions.Waypoints[0].Destionation).Name.ToText(LocalizationManifest.Get.CurrentLanguage));
 				
 				this.quantityLabel.Text = context["MovingFleet"].Text(placeholders);
 			}

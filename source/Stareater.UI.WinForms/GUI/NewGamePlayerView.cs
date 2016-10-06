@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Stareater.Controllers.Views;
-using Stareater.AppData;
+using Stareater.Localization;
 
 namespace Stareater.GUI
 {
@@ -23,7 +18,7 @@ namespace Stareater.GUI
 			nameLabel.Text = playerInfo.Name;
 			organizationLabel.Text = (playerInfo.Organization != null) ?
 				playerInfo.Organization.Name :
-				SettingsWinforms.Get.Language["General"]["RandomOrganization"].Text();
+				LocalizationManifest.Get.CurrentLanguage["General"]["RandomOrganization"].Text();
 		}
 
 		private void flagImage_Click(object sender, EventArgs e)

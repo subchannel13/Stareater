@@ -27,7 +27,7 @@ namespace Stareater.GUI
 		
 		public FormSaveLoad(SavesController controller) : this()
 		{
-			this.Text = SettingsWinforms.Get.Language[FormSaveLoad.LanguageContext]["FormTitle"].Text();
+			this.Text = LocalizationManifest.Get.CurrentLanguage[FormSaveLoad.LanguageContext]["FormTitle"].Text();
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.controller = controller;
 			
@@ -64,9 +64,9 @@ namespace Stareater.GUI
 		
 		private void updateNoSaveMessage()
 		{
-			if (noSavedMessage == null && controller.Games.Count() == 0)
+			if (noSavedMessage == null && !controller.Games.Any())
 			{
-				Context context = SettingsWinforms.Get.Language[FormSaveLoad.LanguageContext];
+				Context context = LocalizationManifest.Get.CurrentLanguage[FormSaveLoad.LanguageContext];
 				
 				noSavedMessage = new Label();
 				noSavedMessage.Size = new Size(298, 23);
@@ -96,8 +96,7 @@ namespace Stareater.GUI
 		
 		private void gameList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (this.gameList.SelectedItem is Label)
-				this.loadButton.Enabled = false;
+			this.loadButton.Enabled &= !(this.gameList.SelectedItem is Label);
 			
 			if (this.gameList.SelectedItem == null || !(this.gameList.SelectedItem is SavedGameItemView) || this.gameList.SelectedItem == this.selectedGame)
 				return;

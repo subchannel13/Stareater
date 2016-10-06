@@ -33,7 +33,7 @@ namespace Stareater.GUI
 		
 		public FormShipDesigner(ShipDesignController controller) : this()
 		{
-			this.context = SettingsWinforms.Get.Language["FormDesign"];
+			this.context = LocalizationManifest.Get.CurrentLanguage["FormDesign"];
 			this.Text = context["FormTitle"].Text();
 			this.Font = SettingsWinforms.Get.FormFont;
 
@@ -95,7 +95,7 @@ namespace Stareater.GUI
 				this.equipmentSeparator = new Label();
 				this.equipmentSeparator.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 				this.equipmentSeparator.Size = new System.Drawing.Size(375, 25);
-				this.equipmentSeparator.Text = SettingsWinforms.Get.Language["FormDesign"]["specEquipSeparator"].Text();
+				this.equipmentSeparator.Text = LocalizationManifest.Get.CurrentLanguage["FormDesign"]["specEquipSeparator"].Text();
 				this.equipmentSeparator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 				this.equipmentList.Controls.Add(this.equipmentSeparator);
 				this.equipmentList.Unselectable(this.equipmentSeparator);

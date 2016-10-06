@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using NGenerics.Extensions;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Localization;
@@ -36,7 +34,7 @@ namespace Stareater.GUI
 			
 			updateDescription(topicList.SelectedItem);
 				
-			Context context = SettingsWinforms.Get.Language["FormTech"];
+			Context context = LocalizationManifest.Get.CurrentLanguage["FormTech"];
 			this.Text = context["ResearchTitle"].Text();
 		}
 		

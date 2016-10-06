@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Stareater.AppData;
 using Ikadn.Ikon.Types;
+using Stareater.Localization;
 
 namespace Stareater.Galaxy
 {
@@ -32,7 +32,7 @@ namespace Stareater.Galaxy
 		{
 			get
 			{
-				return Settings.Get.Language["StartingConditions"][nameKey].Text();
+				return LocalizationManifest.Get.CurrentLanguage["StartingConditions"][nameKey].Text();
 			}
 		}
 

@@ -4,10 +4,7 @@ using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
-using Stareater.Galaxy;
 using Stareater.GameData;
-using Stareater.Utils.Collections;
-using Stareater.Utils.NumberFormatters;
 using Stareater.GuiUtils;
 using Stareater.Localization;
 
@@ -46,14 +43,14 @@ namespace Stareater.GUI
 				this.nameLabel.Text = LocalizationMethods.PlanetName(colonyController.PlanetBody);
 			}
 			else
-				this.nameLabel.Text = controller.HostStar.Name.ToText(SettingsWinforms.Get.Language);
+				this.nameLabel.Text = controller.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage);
 		}
 		
 		private void resetView()
 		{
 			this.Font = SettingsWinforms.Get.FormFont;
 
-			var context = SettingsWinforms.Get.Language["FormMain"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 			this.detailsButton.Text = context["SiteDetails"].Text();
 			
 			if (!controller.ConstructionQueue.Any()) {
@@ -74,7 +71,7 @@ namespace Stareater.GUI
 		private void resetEstimation()
 		{
 			var constructionItem = controller.ConstructionQueue.FirstOrDefault();
-			var context = SettingsWinforms.Get.Language["FormMain"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 			
 			if (constructionItem != null)
 				estimationLabel.Text = LocalizationMethods.ConstructionEstimation(

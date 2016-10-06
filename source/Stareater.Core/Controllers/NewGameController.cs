@@ -54,7 +54,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				Context context = Settings.Get.Language["PlayerTypes"];
+				Context context = LocalizationManifest.Get.CurrentLanguage["PlayerTypes"];
 
 				yield return localHuman;
 
@@ -128,7 +128,7 @@ namespace Stareater.Controllers
 				players.RemoveAt(index);
 		}
 
-		private static PlayerType localHuman = new PlayerType(PlayerControlType.LocalHuman, Settings.Get.Language["PlayerTypes"]["localHuman"].Text());
+		private static PlayerType localHuman = new PlayerType(PlayerControlType.LocalHuman, LocalizationManifest.Get.CurrentLanguage["PlayerTypes"]["localHuman"].Text());
 		#endregion
 
 		#region Map

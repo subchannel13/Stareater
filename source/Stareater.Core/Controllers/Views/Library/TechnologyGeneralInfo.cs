@@ -1,8 +1,6 @@
 ﻿using System;
-using NGenerics.Util;
-using Stareater.AppData;
 using Stareater.GameData;
-using Stareater.Utils;
+using Stareater.Localization;
 using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views.Library
@@ -23,7 +21,7 @@ namespace Stareater.Controllers.Views.Library
 			if (level < 0 || level > this.Data.MaxLevel)
 				throw new ArgumentOutOfRangeException("level");
 					
-			return Settings.Get.Language[LangContext][this.Data.NameCode].Text(new Var(Technology.LevelKey, level).Get);
+			return LocalizationManifest.Get.CurrentLanguage[LangContext][this.Data.NameCode].Text(new Var(Technology.LevelKey, level).Get);
 		}
 		
 		public string Description(int level)
@@ -31,7 +29,7 @@ namespace Stareater.Controllers.Views.Library
 			if (level < 0 || level > this.Data.MaxLevel)
 				throw new ArgumentOutOfRangeException("level");
 			
-			return Settings.Get.Language[LangContext][this.Data.DescriptionCode].Text(new Var(Technology.LevelKey, level).Get);
+			return LocalizationManifest.Get.CurrentLanguage[LangContext][this.Data.DescriptionCode].Text(new Var(Technology.LevelKey, level).Get);
 		}
 		
 		public string ImagePath 

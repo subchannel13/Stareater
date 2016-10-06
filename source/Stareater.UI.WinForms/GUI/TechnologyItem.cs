@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers.Views;
@@ -94,7 +92,7 @@ namespace Stareater.GUI
 		{
 			get
 			{
-				return Settings.Get.Language[LanguageContext][LocalizationLevel].Text(null, new TextVar("lvl", Data.NextLevel.ToString()).Get);
+				return LocalizationManifest.Get.CurrentLanguage[LanguageContext][LocalizationLevel].Text(null, new TextVar("lvl", Data.NextLevel.ToString()).Get);
 			}
 		}
 	}

@@ -62,7 +62,7 @@ namespace Stareater.GUI
 
 		private void setLanguage()
 		{
-			Context context = SettingsWinforms.Get.Language["FormSetupMap"];
+			Context context = LocalizationManifest.Get.CurrentLanguage["FormSetupMap"];
 
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.Text = context["FormTitle"].Text();

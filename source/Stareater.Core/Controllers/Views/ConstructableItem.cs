@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Stareater.AppData;
 using Stareater.GameData;
 using Stareater.GameLogic;
+using Stareater.Localization;
 using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views
@@ -41,7 +41,7 @@ namespace Stareater.Controllers.Views
 			{
 				return Constructable.LiteralText ? 
 					Constructable.NameCode : 
-					Settings.Get.Language[LangContext][Constructable.NameCode].Text();
+					LocalizationManifest.Get.CurrentLanguage[LangContext][Constructable.NameCode].Text();
 			}
 		}
 		
@@ -51,7 +51,7 @@ namespace Stareater.Controllers.Views
 			{
 				return Constructable.LiteralText ? 
 					Constructable.DescriptionCode : 
-					Settings.Get.Language[LangContext][Constructable.DescriptionCode].Text();
+					LocalizationManifest.Get.CurrentLanguage[LangContext][Constructable.DescriptionCode].Text();
 			}
 		}
 		
