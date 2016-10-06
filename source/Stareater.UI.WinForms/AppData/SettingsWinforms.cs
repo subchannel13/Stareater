@@ -1,8 +1,10 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.IO;
 using Ikadn;
+using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
-using Stareater.Utils;
 
 namespace Stareater.AppData
 {
@@ -25,8 +27,15 @@ namespace Stareater.AppData
 				return winformsInstance;
 			}
 		}
+		
+		public SettingsWinforms()
+		{
+			this.FileStorageRootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/Stareater/";
+		}
 		#endregion
 
+		public string FileStorageRootPath { get; private set; }
+		
 		public float GuiScale { get; set; }
 		
 		public int Framerate { get; set; }
@@ -59,6 +68,19 @@ namespace Stareater.AppData
 			this.ReportTechnology = true;
 		}
 	
+		protected override TaggableQueue<object, IkadnBaseObject> loadData()
+		{
+			TaggableQueue<object, IkadnBaseObject> data;
+
+			if (File.Exists(SettingsFilePath))
+				using (var parser = new IkonParser(new StreamReader(SettingsFilePath)))
+					data = parser.ParseAll();
+			else
+				data = new TaggableQueue<object, IkadnBaseObject>();
+
+			return data;
+		}
+		
 		protected override void load(TaggableQueue<object, IkadnBaseObject> data)
 		{
 			base.load(data);
@@ -86,6 +108,19 @@ namespace Stareater.AppData
 		const string VSyncKey = "vsync";
 		#endregion
 
+		#region Saving
+		public void Save()
+		{
+			var saveFile = new FileInfo(SettingsFilePath);
+			saveFile.Directory.Create();
+
+			using (var output = new StreamWriter(SettingsFilePath))
+			{
+				var writer = new IkadnWriter(output);
+				buildSaveData(writer);
+			}
+		}
+		
 		protected override void buildSaveData(IkadnWriter writer)
 		{
 			base.buildSaveData(writer);
@@ -101,5 +136,12 @@ namespace Stareater.AppData
 			settings.Add(ReportTechnologyKey, new IkonInteger(this.ReportTechnology ? 1 : -1));
 			settings.Compose(writer);
 		}
+		
+		private string SettingsFilePath {
+			get {
+				return this.FileStorageRootPath + "settings.txt";
+			}
+		}
+		#endregion
 	}
 }

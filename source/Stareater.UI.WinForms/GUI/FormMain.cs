@@ -249,7 +249,7 @@ namespace Stareater.GUI
 		
 		private void showSaveGame()
 		{
-			var saveController = new SavesController(gameController);
+			var saveController = new SavesController(gameController, SettingsWinforms.Get.FileStorageRootPath);
 			
 			using(var form = new FormSaveLoad(saveController))
 				if (form.ShowDialog() != DialogResult.OK)

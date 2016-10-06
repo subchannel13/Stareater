@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using Stareater.AppData;
-using Stareater.Localization;
 using Stareater.GUI;
 
 namespace StareaterUI

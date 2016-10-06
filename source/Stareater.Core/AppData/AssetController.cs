@@ -23,11 +23,6 @@ namespace Stareater.AppData
 
 		private Task lastTask = null;
 		
-		private AssetController()
-		{
-			this.FileStorageRootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/Stareater/";
-		}
-
 		public void AddLoader(Action loaderMethod)
 		{
 			this.appendTask(loaderMethod);
@@ -39,8 +34,6 @@ namespace Stareater.AppData
 			this.appendTask(completionCallback);
 		}
 
-		public string FileStorageRootPath { get; private set; }
-		
 		private void appendTask(Action task)
 		{
 			this.lastTask = lastTask == null ? 

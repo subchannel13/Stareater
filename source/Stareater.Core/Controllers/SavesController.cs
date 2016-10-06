@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using Stareater.Controllers.Views;
 using System.IO;
-using Stareater.AppData;
 using Ikadn;
 using Ikadn.Ikon.Types;
 using Ikadn.Ikon;
@@ -21,17 +20,19 @@ namespace Stareater.Controllers
 		private GameController gameController;
 		private int nextSaveNumber;
 		private LinkedList<SavedGameInfo> games;
+		private string saveFolderPath; //TODO(v0.6) remove file dependency
 		
-		public SavesController(GameController gameController)
+		public SavesController(GameController gameController, string saveFolderRoot)
 		{
 			this.gameController = gameController;
+			this.saveFolderPath = saveFolderRoot  + SaveFolderName;
 			checkFiles();
 		}
 
 		#region Files
 		private void checkFiles()
 		{
-			var saveFolder = new DirectoryInfo(SaveFolderPath);
+			var saveFolder = new DirectoryInfo(this.saveFolderPath);
 			var saveFiles = new Dictionary<SavedGameInfo, DateTime>();
 			var saveNames = new HashSet<string>();
 
@@ -79,14 +80,6 @@ namespace Stareater.Controllers
 		#endregion
 
 		#region Indicators
-		private static string SaveFolderPath
-		{
-			get
-			{
-				return AssetController.Get.FileStorageRootPath + SaveFolderName;
-			}
-		}
-
 		public bool CanSave
 		{
 			get { return gameController.State == GameState.Running; }
@@ -106,7 +99,7 @@ namespace Stareater.Controllers
 		{
 			string fileName = SaveNamePrefix + this.nextSaveNumber + "." + SaveNameExtension;
 
-			var saveFile = new FileInfo(SaveFolderPath + fileName);
+			var saveFile = new FileInfo(this.saveFolderPath + fileName);
 			saveFile.Directory.Create();
 
 			save(saveFile, title);
