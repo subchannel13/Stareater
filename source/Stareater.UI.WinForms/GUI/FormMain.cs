@@ -47,9 +47,25 @@ namespace Stareater.GUI
 			this.gameController = new GameController();
 			this.timingLoop = new TimingLoop(this, onNextFrame);
 			this.reportOpener = new OpenReportVisitor(showDevelopment, showResearch);
-
-			applySettings();
-			postDelayedEvent(showMainMenu);
+		}
+		
+		private void FormMain_Load(object sender, EventArgs e)
+		{
+			AssetController.Get.AddLoader(LocalizationManifest.Initialize, this.languageReady);
+			//TODO(v0.6)
+			Action<IEnumerable<double>> processor = (x) =>
+			{
+				foreach(var p in x)
+					;
+			};
+			AssetController.Get.AddLoader(() => processor(Stareater.Players.Organization.Loader()));
+			AssetController.Get.AddLoader(() => processor(Stareater.Players.PlayerAssets.ColorLoader()));
+			AssetController.Get.AddLoader(() => processor(Stareater.Players.PlayerAssets.AILoader()));
+			AssetController.Get.AddLoader(() => processor(Stareater.Galaxy.MapAssets.StartConditionsLoader()));
+			AssetController.Get.AddLoader(() => processor(Stareater.Galaxy.MapAssets.PositionersLoader()));
+			AssetController.Get.AddLoader(() => processor(Stareater.Galaxy.MapAssets.ConnectorsLoader()));
+			AssetController.Get.AddLoader(() => processor(Stareater.Galaxy.MapAssets.PopulatorsLoader()));
+			//TODO(v0.6) Enable starting the game when everything has been loaded
 		}
 		
 		private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -58,6 +74,17 @@ namespace Stareater.GUI
 			this.timingLoop.Stop();
 		}
 
+		private void languageReady()
+		{
+			if (this.InvokeRequired)
+			{
+				this.BeginInvoke(new Action(this.languageReady));
+				return;
+			}
+			
+			applySettings();
+			postDelayedEvent(showMainMenu);
+		}
 		private void applySettings()
 		{
 			this.Font = SettingsWinforms.Get.FormFont;

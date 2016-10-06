@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System;
+using Stareater.AppData;
 
 namespace Stareater.Localization
 {
@@ -19,8 +20,9 @@ namespace Stareater.Localization
 			}
 		}
 
-		private LocalizationManifest(Language defaultLanguage, ReadOnlyCollection<string> languageCodes)
+		private LocalizationManifest(Language defaultLanguage, Language currentLanguage, ReadOnlyCollection<string> languageCodes)
 		{
+			this.CurrentLanguage = currentLanguage;
 			this.DefaultLanguage = defaultLanguage;
 			this.LanguageCodes = languageCodes;
 		}
@@ -29,6 +31,7 @@ namespace Stareater.Localization
 		public const string LanguagesFolder = "./languages/";
 		private const string DefaultLangSufix = "(default)";
 
+		public Language CurrentLanguage { get; internal set; }
 		public Language DefaultLanguage { get; private set; }
 		public ReadOnlyCollection<string> LanguageCodes { get; private set; }
 		
@@ -76,9 +79,12 @@ namespace Stareater.Localization
 
 				codes.Add(code);
 			}
-
+			
+			var currentLanguageSufix = Settings.Get.LanguageId == defaultLangCode ? DefaultLangSufix : "";
+			
 			instance = new LocalizationManifest(
 				new Language(defaultLangCode, LanguagesFolder + defaultLangCode + DefaultLangSufix),
+				new Language(Settings.Get.LanguageId, LanguagesFolder + Settings.Get.LanguageId + currentLanguageSufix),
 				new ReadOnlyCollection<string>(codes));
 		}
 	}

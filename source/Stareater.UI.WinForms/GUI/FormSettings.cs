@@ -14,7 +14,6 @@ namespace Stareater.GUI
 	public partial class FormSettings : Form
 	{
 		private bool initialized = false;
-		private Language selectedLanguage = SettingsWinforms.Get.Language;
 		private float selectedGuiScale = SettingsWinforms.Get.GuiScale;
 		private string rendererInfoText = "";
 
@@ -69,7 +68,7 @@ namespace Stareater.GUI
 
 		private void setLanguage()
 		{
-			Context context = selectedLanguage["FormSettings"];
+			Context context = SettingsWinforms.Get.Language["FormSettings"];
 
 			this.Text = context["FormTitle"].Text();
 			this.Font = new Font(SystemFonts.DefaultFont.FontFamily, SystemFonts.DefaultFont.Size * selectedGuiScale);
@@ -83,7 +82,7 @@ namespace Stareater.GUI
 			busyFrameLimitAlways.Text = context["FpsBusyAlways"].Text();
 			busyFrameLimitNever.Text = context["FpsBusyNever"].Text();
 			busyFrameLimitPlugged.Text = context["FpsBusyPlugged"].Text();
-			confirmButton.Text = selectedLanguage["General"]["DialogAccept"].Text();
+			confirmButton.Text = SettingsWinforms.Get.Language["General"]["DialogAccept"].Text();
 
 			rendererInfo.Text = context["RendererLabel"].Text() + Environment.NewLine + this.rendererInfoText;
 		}
@@ -105,7 +104,7 @@ namespace Stareater.GUI
 			if (languageSelector.SelectedItem == null || !initialized)
 				return;
 
-			selectedLanguage = LocalizationManifest.Get.LoadLanguage((languageSelector.SelectedItem as Tag<string>).Value);
+			SettingsWinforms.Get.ChangeLanguage((languageSelector.SelectedItem as Tag<string>).Value);
 			setLanguage();
 		}
 
@@ -134,7 +133,6 @@ namespace Stareater.GUI
 		
 		private void confirmButton_Click(object sender, EventArgs e)
 		{
-			SettingsWinforms.Get.Language = selectedLanguage;
 			SettingsWinforms.Get.GuiScale = selectedGuiScale;
 
 			SettingsWinforms.Get.Framerate = (int)fpsInput.Value;

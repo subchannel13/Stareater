@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
-using Stareater.Galaxy;
-using Stareater.Players;
+using System.Threading.Tasks;
 
 namespace Stareater.AppData
 {
@@ -12,7 +9,6 @@ namespace Stareater.AppData
 	{
 		#region Singleton
 		static AssetController instance = null;
-		static object locker = new object();
 
 		public static AssetController Get
 		{
@@ -25,53 +21,39 @@ namespace Stareater.AppData
 		}
 		#endregion
 
-		private readonly HashSet<Func<IEnumerable<double>>> Loaders = new HashSet<Func<IEnumerable<double>>>(new Func<IEnumerable<double>>[] {
-			Organization.Loader,
-			PlayerAssets.ColorLoader,
-			PlayerAssets.AILoader,
-			MapAssets.StartConditionsLoader,
-			MapAssets.PositionersLoader,
-			MapAssets.ConnectorsLoader,
-			MapAssets.PopulatorsLoader,
-		});
-
-		private Thread workerThread;
-
-		public double Progress { get; private set; }
-
+		private Task lastTask = null;
+		
 		private AssetController()
 		{
 			this.FileStorageRootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "/Stareater/";
-			this.workerThread = new Thread(backgroundWork);
-			
-			this.Progress = 0;
 		}
 
-		public void RegisterLoader(Func<IEnumerable<double>> loaderMethod)
+		public void AddLoader(Action loaderMethod)
 		{
-			lock (locker) {
-				Loaders.Add(loaderMethod);
-			}
-		}
-
-		public void Start()
-		{
-			workerThread.Start();
-		}
-
-		private void backgroundWork()
-		{
-			Func<IEnumerable<double>>[] loaders;
-			lock (locker)
-				loaders = Loaders.ToArray();
-
-			for (int i = 0; i < loaders.Length; i++)
-				foreach (var unitProgress in loaders[i]())
-					Progress = (i + unitProgress) / loaders.Length;
-
-			Progress = 1;
+			this.appendTask(loaderMethod);
 		}
 		
+		public void AddLoader(Action loaderMethod, Action completionCallback)
+		{
+			this.appendTask(loaderMethod);
+			this.appendTask(completionCallback);
+		}
+
 		public string FileStorageRootPath { get; private set; }
+		
+		private void appendTask(Action task)
+		{
+			this.lastTask = lastTask == null ? 
+				Task.Factory.StartNew(task) : 
+				this.lastTask.ContinueWith(t => checkCompletion(t, task));
+		}
+		
+		private void checkCompletion(Task previousTask, Action nextTask)
+		{
+			if (previousTask.IsFaulted)
+				System.Diagnostics.Trace.TraceError(previousTask.Exception.ToString()); //TODO(v0.6) make user friendly variant for release
+			
+			nextTask();
+		}
 	}
 }

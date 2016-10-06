@@ -324,7 +324,7 @@ namespace Stareater.GameLogic
 				foreach(var shipGroup in upgradableShips)
 				{
 					var refitTo = player.Orders.RefitOrders[shipGroup.Design];
-					var fullUpgradeCost = refitTo.Cost * shipGroup.Quantity - shipGroup.UpgradePoints;
+					var fullUpgradeCost = refitTo.Cost * shipGroup.Quantity - shipGroup.UpgradePoints; //TODO(v0.6) make smarter cost function which takes component difference into account
 					var investment = repairPoints * fullUpgradeCost / totalNeededUpgradePoints;
 					
 					if (fullUpgradeCost < investment)

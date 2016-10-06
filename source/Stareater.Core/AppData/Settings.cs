@@ -24,10 +24,17 @@ namespace Stareater.AppData
 
 		private const string SettingsFileName = "settings.txt";
 
-		public Language Language { get; set; }
+		public string LanguageId { get; private set; }
+		public Language Language { get { return LocalizationManifest.Get.CurrentLanguage; } } //TODO(v0.6) move to LocalizationManifest
 		public LastGameInfo LastGame { get; private set; }
-		//TODO(later) remember other game options like map shape and size
+		//TODO(v0.6) remember other game options like map shape and size
 
+		public void ChangeLanguage(string id)
+		{
+			this.LanguageId = id;
+			LocalizationManifest.Get.CurrentLanguage = LocalizationManifest.Get.LoadLanguage(id);
+		}
+		
 		private static string SettingsFilePath {
 			get {
 				return AssetController.Get.FileStorageRootPath + SettingsFileName;
@@ -66,7 +73,6 @@ namespace Stareater.AppData
 		
 		protected virtual void initDefault()
 		{
-			this.Language = LocalizationManifest.Get.DefaultLanguage;
 			this.LastGame = new LastGameInfo();
 		}
 	
@@ -74,7 +80,8 @@ namespace Stareater.AppData
 		{
 			IkonComposite baseData = data.Dequeue(BaseSettingsTag).To<IkonComposite>();
 			
-			this.Language = LocalizationManifest.Get.LoadLanguage(baseData[LanguageKey].To<string>()); //FIXME(later): Avoid implicit heavy initialization
+			//LocalizationManifest.Get.LoadLanguage(baseData[LanguageKey].To<string>());
+			this.LanguageId = baseData[LanguageKey].To<string>();
 			this.LastGame = new LastGameInfo(baseData[LastGameKey].To<IkonComposite>());
 		}
 		#endregion
@@ -95,8 +102,8 @@ namespace Stareater.AppData
 		protected virtual void buildSaveData(IkadnWriter writer)
 		{
 			var baseSettings = new IkonComposite(BaseSettingsTag);
-			baseSettings.Add(LanguageKey, new IkonText(Language.Code));
-			baseSettings.Add(LastGameKey, LastGame.BuildSaveData());
+			baseSettings.Add(LanguageKey, new IkonText(this.LanguageId));
+			baseSettings.Add(LastGameKey, this.LastGame.BuildSaveData());
 			baseSettings.Compose(writer);
 		}
 		#endregion
