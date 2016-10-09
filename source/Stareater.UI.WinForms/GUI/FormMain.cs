@@ -51,7 +51,7 @@ namespace Stareater.GUI
 		
 		private void FormMain_Load(object sender, EventArgs e)
 		{
-			AssetController.Get.AddLoader(LocalizationManifest.Initialize, this.languageReady);
+			AssetController.Get.AddLoader(LoadingMethods.InitializeLocalization, this.languageReady);
 			//TODO(v0.6)
 			Action<IEnumerable<double>> processor = (x) =>
 			{

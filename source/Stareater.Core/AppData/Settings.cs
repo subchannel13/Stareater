@@ -3,6 +3,7 @@ using Ikadn;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
 using Stareater.Localization;
+using System.Collections.Generic;
 
 namespace Stareater.AppData
 {
@@ -24,10 +25,10 @@ namespace Stareater.AppData
 		public LastGameInfo LastGame { get; private set; }
 		//TODO(v0.6) remember other game options like map shape and size
 
-		public void ChangeLanguage(string id)
+		public void ChangeLanguage(string id, Language language)
 		{
 			this.LanguageId = id;
-			LocalizationManifest.Get.CurrentLanguage = LocalizationManifest.Get.LoadLanguage(id);
+			LocalizationManifest.Get.CurrentLanguage = language;
 		}
 		
 		#region Initialization

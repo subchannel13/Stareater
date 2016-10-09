@@ -10,19 +10,19 @@ namespace Stareater.Localization
 
 		public string Code { get; private set; }
 
-		public Language(string code, string folderPath)
+		public Language(string code, IEnumerable<TextReader> dataSources)
 		{
 			this.Code = code;
 
-			foreach (FileInfo file in new DirectoryInfo(folderPath).EnumerateFiles()) {
-				var stream = new StreamReader(file.FullName);
-				var parser = new Parser(stream);
+			foreach (var source in dataSources)
+			{
+				var parser = new Parser(source);
 
-				while (parser.HasNext()) {
+				while (parser.HasNext())
+				{
 					var conext = parser.ParseNext().To<Context>();
 					contexts.Add((string)conext.Tag, conext);
 				}
-				stream.Close();
 			}
 		}
 

@@ -196,6 +196,7 @@
     <Compile Include="GameLogic\ShipConstructionCounter.cs" />
     <Compile Include="GameLogic\ShipConstructionUpdater.cs" />
     <Compile Include="GameLogic\SpaceBattleProcessor.cs" />
+    <Compile Include="Localization\LanguageInfo.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="GameData\BuildingType.cs" />
     <Compile Include="GameData\ColonizationProject.cs">

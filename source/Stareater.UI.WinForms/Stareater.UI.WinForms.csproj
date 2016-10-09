@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="AppData\BusySpinMode.cs" />
     <Compile Include="AppData\ImageCache.cs" />
+    <Compile Include="AppData\LoadingMethods.cs" />
     <Compile Include="AppData\SettingsWinforms.cs" />
     <Compile Include="GLRenderers\CharTextureInfo.cs" />
     <Compile Include="GLRenderers\GalaxySelectionType.cs" />
@@ -588,9 +589,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GraphicsEngine" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
