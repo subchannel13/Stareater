@@ -9,16 +9,26 @@
 }
 
 { Organization
-	name "JSA"
-	description "Japanise Space Agency."
+	name "JAXA"
+	description "Japan Aerospace Exploration Agency."
 }
 
 { Organization
-	name "ChSA"
-	description "Chinese Space Agency."
+	name "CNSA"
+	description "China National Space Administration."
 }
 
 { Organization
-	name "ASA"
-	description "Australian Space Agency."
+	name "CCCP"
+	description "Soviet space program."
+}
+
+{ Organization
+	name "ISRO"
+	description "Indian Space Research Organisation."
+}
+
+{ Organization
+	name "UKSA"
+	description "UK Space Agency."
 }
