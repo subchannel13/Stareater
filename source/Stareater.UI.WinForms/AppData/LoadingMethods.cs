@@ -54,12 +54,18 @@ namespace Stareater.AppData
 		}
 		#endregion
 
-		#region Organizations
+		#region Player assets
 		private static readonly string[] OrganizationFiles = { "./data/organizations.txt" };
+		private static readonly string[] PlayersColorFiles = { "./data/playerData.txt" };
 		
 		public static void LoadOrganizations()
 		{
 			Stareater.Players.Organization.Loader(dataStreams(OrganizationFiles.Select(x => new FileInfo(x))));
+		}
+		
+		public static void LoadPlayerColors()
+		{
+			Stareater.Players.PlayerAssets.ColorLoader(dataStreams(PlayersColorFiles.Select(x => new FileInfo(x))));
 		}
 		#endregion
 		

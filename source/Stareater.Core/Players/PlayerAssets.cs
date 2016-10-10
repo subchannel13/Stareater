@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Drawing;
 using System.IO;
 using Stareater.Utils;
-using System.Reflection;
 using Ikadn.Ikon.Types;
 using Ikadn.Ikon;
 
@@ -13,7 +11,6 @@ namespace Stareater.Players
 {
 	public static class PlayerAssets
 	{
-		private const string DataFilePath = "./data/playerData.txt";
 		private const string AIsFolder = "./players/";
 
 		#region Attribute keys
@@ -22,30 +19,27 @@ namespace Stareater.Players
 
 		public static Color[] Colors { get; private set; }
 		public static IOffscreenPlayerFactory[] AIDefinitions { get; private set; }
+		//TODO(v0.6) move organization list here
 
-		public static IEnumerable<double> ColorLoader()
+		public static void ColorLoader(IEnumerable<TextReader> dataSources)
 		{
-			List<Color> colorList = new List<Color>();
-			using (var parser = new IkonParser(new StreamReader(DataFilePath))) {
-				var data = parser.ParseNext().To<IkonComposite>();
-				yield return 0.5;
-
-				var colors = data[ColorsKey].To<IkonArray>();
-				foreach (var p in Methods.ProgressReportHelper(0.5, 0.5, colors))
+			var colorList = new List<Color>();
+			foreach(var source in dataSources)
+			{
+				var parser = new IkonParser(source);
+				var colorsData = parser.ParseNext().To<IkonComposite>()[ColorsKey].To<IkonArray>();
+				foreach(var item in colorsData)
 				{
-					var colorData = p.Data.To<IkonArray>();
+					var colorData = item.To<IkonArray>();
 					colorList.Add(Color.FromArgb(
 						colorData[0].To<int>(),
 						colorData[1].To<int>(),
 						colorData[2].To<int>()
 						));
-					yield return p.Percentage;
 				}
-					
 			}
 
 			Colors = colorList.ToArray();
-			yield return 1;
 		}
 
 		public static IEnumerable<double> AILoader()

@@ -192,6 +192,7 @@ namespace Stareater.Utils
 				yield return progressOffset + (progressScale * i) / inputSize;
 		}
 
+		//TODO(v0.6) remove method
 		/// <summary>
 		/// Generates sequence of precentages (real number from [0, 1]) for reporting progress and data that has to be processed.
 		/// </summary>
