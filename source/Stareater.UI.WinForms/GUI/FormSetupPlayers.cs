@@ -37,7 +37,7 @@ namespace Stareater.GUI
 				controllerPicker.Items.Add(new Tag<PlayerType>(playerType, playerType.Name));
 
 			organizationPicker.Items.Add(new Tag<Organization>(null, LocalizationManifest.Get.CurrentLanguage["General"]["RandomOrganization"].Text()));
-			foreach (var org in Organization.List)
+			foreach (var org in PlayerAssets.Organizations)
 				organizationPicker.Items.Add(new Tag<Organization>(org, org.Name));
 
 			foreach (var color in PlayerAssets.Colors) {

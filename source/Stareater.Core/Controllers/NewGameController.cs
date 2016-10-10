@@ -18,7 +18,7 @@ namespace Stareater.Controllers
 		const int MaxPlayers = 4;
 
 		PickList<Color> colors = new PickList<Color>(PlayerAssets.Colors);
-		PickList<Organization> organizations = new PickList<Organization>(Organization.List);
+		PickList<Organization> organizations = new PickList<Organization>(PlayerAssets.Organizations);
 		PickList<PlayerType> aiPlayers = new PickList<PlayerType>();
 
 		List<NewGamePlayerInfo> players = new List<NewGamePlayerInfo>();
@@ -160,9 +160,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return Organization.IsLoaded &&
-					PlayerAssets.IsLoaded &&
-					MapAssets.IsLoaded;
+				return PlayerAssets.IsLoaded && MapAssets.IsLoaded;
 			}
 		}
 	}

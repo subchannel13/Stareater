@@ -13,13 +13,9 @@ namespace Stareater.Players
 	{
 		private const string AIsFolder = "./players/";
 
-		#region Attribute keys
-		const string ColorsKey = "Colors";
-		#endregion
-
 		public static Color[] Colors { get; private set; }
 		public static IOffscreenPlayerFactory[] AIDefinitions { get; private set; }
-		//TODO(v0.6) move organization list here
+		public static Organization[] Organizations { get; private set; }
 
 		public static void ColorLoader(IEnumerable<TextReader> dataSources)
 		{
@@ -59,9 +55,35 @@ namespace Stareater.Players
 			yield return 1;
 		}
 
+		public static void OrganizationsLoader(IEnumerable<TextReader> dataSources)
+		{
+			var list = new List<Organization>();
+			foreach (var source in dataSources)
+			{
+				var parser = new IkonParser(source);
+				foreach (var item in parser.ParseAll())
+				{
+					var data = item.Value.To<IkonComposite>();
+					list.Add(new Organization(
+						data[OrganizationNameKey].To<string>(),
+						data[OrganizationDescriptionKey].To<string>()
+					));
+				}
+			}
+
+			list.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+			Organizations = list.ToArray();
+		}
+
 		public static bool IsLoaded
 		{
-			get { return Colors != null && AIDefinitions != null; }
+			get { return Colors != null && AIDefinitions != null && Organizations != null; }
 		}
+
+		#region Attribute keys
+		private const string ColorsKey = "Colors";
+		private const string OrganizationNameKey = "name";
+		private const string OrganizationDescriptionKey = "description";
+		#endregion
 	}
 }

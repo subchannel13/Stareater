@@ -60,7 +60,7 @@ namespace Stareater.AppData
 		
 		public static void LoadOrganizations()
 		{
-			Stareater.Players.Organization.Loader(dataStreams(OrganizationFiles.Select(x => new FileInfo(x))));
+			Stareater.Players.PlayerAssets.OrganizationsLoader(dataStreams(OrganizationFiles.Select(x => new FileInfo(x))));
 		}
 		
 		public static void LoadPlayerColors()
