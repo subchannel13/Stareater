@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.IO;
-using Stareater.Utils;
 using Ikadn.Ikon.Types;
 using Ikadn.Ikon;
 
@@ -21,32 +19,20 @@ namespace Stareater.Players
 		}
 
 		#region Loading related
-		private const string DataFilePath = "./data/organizations.txt";
-
-		#region Attribute keys
-		const string NameKey = "name";
-		const string DescriptionKey = "description";
-		#endregion
-
 		public static Organization[] List { get; private set; }
 
-		public static IEnumerable<double> Loader()
+		public static void Loader(IEnumerable<TextReader> dataSources)
 		{
 			var list = new List<Organization>();
-			using (var parser = new IkonParser(new StreamReader(DataFilePath))) {
-				var data = parser.ParseAll();
-				yield return 0.5;
-
-				foreach (double p in Methods.ProgressReportHelper(0.5, 0.5, data.Count)) {
-					list.Add(load(data.Dequeue().To<IkonComposite>()));
-					yield return p;
-				}
-
-				list.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+			foreach(var source in dataSources)
+			{
+				var parser = new IkonParser(source);
+				foreach(var item in parser.ParseAll())
+					list.Add(load(item.Value.To<IkonComposite>()));
 			}
 			
+			list.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
 			List = list.ToArray();
-			yield return 1;
 		}
 
 		public static bool IsLoaded
@@ -59,8 +45,11 @@ namespace Stareater.Players
 			return new Organization(
 				data[NameKey].To<string>(),
 				data[DescriptionKey].To<string>()
-				);
+			);
 		}
+		
+		const string NameKey = "name";
+		const string DescriptionKey = "description";
 		#endregion
 	}
 }

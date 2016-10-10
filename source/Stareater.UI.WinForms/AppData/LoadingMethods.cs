@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Stareater.Localization;
 using System.IO;
 
@@ -53,7 +52,17 @@ namespace Stareater.AppData
 				dataStreams(new DirectoryInfo(LanguagesFolder + langCode + folderSufix).EnumerateFiles())
 			);
 		}
+		#endregion
 
+		#region Organizations
+		private static readonly string[] OrganizationFiles = { "./data/organizations.txt" };
+		
+		public static void LoadOrganizations()
+		{
+			Stareater.Players.Organization.Loader(dataStreams(OrganizationFiles.Select(x => new FileInfo(x))));
+		}
+		#endregion
+		
 		private static IEnumerable<TextReader> dataStreams(IEnumerable<FileInfo> files)
 		{
 			foreach (var file in files)
@@ -63,6 +72,5 @@ namespace Stareater.AppData
 				stream.Close();
 			}
 		}
-		#endregion
 	}
 }

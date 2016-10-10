@@ -52,13 +52,13 @@ namespace Stareater.GUI
 		private void FormMain_Load(object sender, EventArgs e)
 		{
 			AssetController.Get.AddLoader(LoadingMethods.InitializeLocalization, this.languageReady);
-			//TODO(v0.6)
+			AssetController.Get.AddLoader(LoadingMethods.LoadOrganizations);
+			//TODO(v0.6) convert loading calls below to use LoadingMethods like one above
 			Action<IEnumerable<double>> processor = (x) =>
 			{
 				foreach(var p in x)
 					;
 			};
-			AssetController.Get.AddLoader(() => processor(Stareater.Players.Organization.Loader()));
 			AssetController.Get.AddLoader(() => processor(Stareater.Players.PlayerAssets.ColorLoader()));
 			AssetController.Get.AddLoader(() => processor(Stareater.Players.PlayerAssets.AILoader()));
 			AssetController.Get.AddLoader(() => processor(Stareater.Galaxy.MapAssets.StartConditionsLoader()));
