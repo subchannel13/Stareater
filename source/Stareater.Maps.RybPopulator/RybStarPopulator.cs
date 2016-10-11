@@ -16,6 +16,7 @@ namespace Stareater.Galaxy.RybPopulator
 {
 	public class RybStarPopulator : IStarPopulator
 	{
+		private const string MapsFolder = "./maps/"; //TODO(v0.6) try to move it to view
 		private const string ParametersFile = "rybPopulator.txt";
 
 		private const string LanguageContext = "DefaultPopulator";
@@ -33,7 +34,7 @@ namespace Stareater.Galaxy.RybPopulator
 		public RybStarPopulator()
 		{
 			TaggableQueue<object, IkadnBaseObject> data; 
-			using (var parser = new IkonParser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))
+			using (var parser = new IkonParser(new StreamReader(MapsFolder + ParametersFile)))
 				data = parser.ParseAll();
 
 			var starTypes = new List<StarType>();

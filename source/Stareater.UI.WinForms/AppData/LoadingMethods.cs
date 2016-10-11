@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Stareater.Galaxy;
+using Stareater.Galaxy.Builders;
 using Stareater.Localization;
 using System.IO;
 using Stareater.Players;
@@ -78,6 +80,28 @@ namespace Stareater.AppData
 		#endregion
 		
 		#region Map assets
+		private static readonly string[] StartConditionsFiles = { "./data/startConditions.txt" };
+		public const string MapsFolder = "./maps/";
+		
+		public static void LoadStarConnectors()
+		{
+			MapAssets.ConnectorsLoader(loadFromDLLs<IStarConnector>(MapsFolder));
+		}
+		
+		public static void LoadStarPopulators()
+		{
+			MapAssets.PopulatorsLoader(loadFromDLLs<IStarPopulator>(MapsFolder));
+		}
+		
+		public static void LoadStarPositioners()
+		{
+			MapAssets.PositionersLoader(loadFromDLLs<IStarPositioner>(MapsFolder));
+		}
+		
+		public static void LoadStartConditions()
+		{
+			MapAssets.StartConditionsLoader(dataStreams(StartConditionsFiles.Select(x => new FileInfo(x))));
+		}
 		#endregion
 		
 		private static IEnumerable<TextReader> dataStreams(IEnumerable<FileInfo> files)

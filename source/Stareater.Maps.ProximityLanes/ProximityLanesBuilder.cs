@@ -19,6 +19,7 @@ namespace Stareater.Galaxy.ProximityLanes
 {
 	public class ProximityLanesBuilder : IStarConnector
 	{
+		const string MapsFolder = "./maps/"; //TODO(v0.6) try to move it to view
 		const string ParametersFile = "proximityLanes.txt";
 
 		const string LanguageContext = "ProximityLanes";
@@ -32,7 +33,7 @@ namespace Stareater.Galaxy.ProximityLanes
 		public ProximityLanesBuilder()
 		{
 			TaggableQueue<object, IkadnBaseObject> data;
-			using (var parser = new IkonParser(new StreamReader(MapAssets.MapsFolder + ParametersFile)))
+			using (var parser = new IkonParser(new StreamReader(MapsFolder + ParametersFile)))
 				data = parser.ParseAll();
 
 			degreesParameter = loadDegrees(data);

@@ -55,16 +55,10 @@ namespace Stareater.GUI
 			AssetController.Get.AddLoader(LoadingMethods.LoadOrganizations);
 			AssetController.Get.AddLoader(LoadingMethods.LoadPlayerColors);
 			AssetController.Get.AddLoader(LoadingMethods.LoadAis);
-			//TODO(v0.6) convert loading calls below to use LoadingMethods like one above
-			Action<IEnumerable<double>> processor = (x) =>
-			{
-				foreach(var p in x)
-					;
-			};
-			AssetController.Get.AddLoader(() => processor(Stareater.Galaxy.MapAssets.StartConditionsLoader()));
-			AssetController.Get.AddLoader(() => processor(Stareater.Galaxy.MapAssets.PositionersLoader()));
-			AssetController.Get.AddLoader(() => processor(Stareater.Galaxy.MapAssets.ConnectorsLoader()));
-			AssetController.Get.AddLoader(() => processor(Stareater.Galaxy.MapAssets.PopulatorsLoader()));
+			AssetController.Get.AddLoader(LoadingMethods.LoadStartConditions);
+			AssetController.Get.AddLoader(LoadingMethods.LoadStarPositioners);
+			AssetController.Get.AddLoader(LoadingMethods.LoadStarConnectors);
+			AssetController.Get.AddLoader(LoadingMethods.LoadStarPopulators);
 		}
 		
 		private void FormMain_FormClosing(object sender, FormClosingEventArgs e)

@@ -166,21 +166,6 @@ namespace Stareater.Utils
 
 		//TODO(v0.6) remove method
 		/// <summary>
-		/// Creates instances of all classes assignable to T, in a given DLL file.
-		/// </summary>
-		/// <typeparam name="T">Base type of desired classes.</typeparam>
-		/// <param name="fileName">Path to DLL file.</param>
-		/// <returns>Instances</returns>
-		public static IEnumerable<T> LoadFromDLL<T>(string fileName)
-		{
-			Type targetType = typeof(T);
-			foreach (var type in Assembly.UnsafeLoadFrom(fileName).GetTypes()) //TODO(later) consider more secure approach
-				if (targetType.IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
-					yield return (T)Activator.CreateInstance(type);
-		}
-
-		//TODO(v0.6) remove method
-		/// <summary>
 		/// Generates sequence of precentages (real number from [0, 1]) for reporting progress.
 		/// </summary>
 		/// <param name="progressOffset">Starting percentage</param>
@@ -192,26 +177,6 @@ namespace Stareater.Utils
 		{
 			for (int i = 1; i <= inputSize; i++)
 				yield return progressOffset + (progressScale * i) / inputSize;
-		}
-
-		//TODO(v0.6) remove method
-		/// <summary>
-		/// Generates sequence of precentages (real number from [0, 1]) for reporting progress and data that has to be processed.
-		/// </summary>
-		/// <typeparam name="T">Type of data for processing.</typeparam>
-		/// <param name="progressOffset">Starting percentage</param>
-		/// <param name="progressScale">Size of returned range (difference between lowest and highest returned number)</param>
-		/// <param name="inputData">Collection where each element has to be processed</param>
-		/// <returns>Sequence of precentages and data</returns>
-		public static IEnumerable<ProgressData<T>> ProgressReportHelper<T>(double progressOffset, double progressScale,
-			ICollection<T> inputData)
-		{
-			int inputSize = inputData.Count;
-			int i = 1;
-			foreach (T item in inputData) {
-				yield return new ProgressData<T>(progressOffset + (progressScale * i) / inputSize, item);
-				i++;
-			}
 		}
 
 		/// <summary>
