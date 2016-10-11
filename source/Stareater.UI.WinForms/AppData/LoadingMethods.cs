@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Stareater.Localization;
 using System.IO;
+using Stareater.Players;
 
 namespace Stareater.AppData
 {
@@ -55,18 +57,27 @@ namespace Stareater.AppData
 		#endregion
 
 		#region Player assets
+		private const string AIsFolder = "./players/";
 		private static readonly string[] OrganizationFiles = { "./data/organizations.txt" };
 		private static readonly string[] PlayersColorFiles = { "./data/playerData.txt" };
 		
+		public static void LoadAis()
+		{
+			PlayerAssets.AILoader(loadFromDLLs<IOffscreenPlayerFactory>(AIsFolder));
+		}
+		
 		public static void LoadOrganizations()
 		{
-			Stareater.Players.PlayerAssets.OrganizationsLoader(dataStreams(OrganizationFiles.Select(x => new FileInfo(x))));
+			PlayerAssets.OrganizationsLoader(dataStreams(OrganizationFiles.Select(x => new FileInfo(x))));
 		}
 		
 		public static void LoadPlayerColors()
 		{
-			Stareater.Players.PlayerAssets.ColorLoader(dataStreams(PlayersColorFiles.Select(x => new FileInfo(x))));
+			PlayerAssets.ColorLoader(dataStreams(PlayersColorFiles.Select(x => new FileInfo(x))));
 		}
+		#endregion
+		
+		#region Map assets
 		#endregion
 		
 		private static IEnumerable<TextReader> dataStreams(IEnumerable<FileInfo> files)
@@ -77,6 +88,17 @@ namespace Stareater.AppData
 				yield return stream;
 				stream.Close();
 			}
+		}
+		
+		private static IEnumerable<T> loadFromDLLs<T>(string folderPath)
+		{
+			var dllFiles = new List<FileInfo>(new DirectoryInfo(folderPath).EnumerateFiles("*.dll"));
+			Type targetType = typeof(T);
+			
+			foreach (var file in dllFiles)
+				foreach (var type in Assembly.UnsafeLoadFrom(file.FullName).GetTypes()) //TODO(later) consider more secure approach
+					if (targetType.IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
+						yield return (T)Activator.CreateInstance(type);
 		}
 	}
 }

@@ -3,7 +3,6 @@ using Ikadn;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
 using Stareater.Localization;
-using System.Collections.Generic;
 
 namespace Stareater.AppData
 {

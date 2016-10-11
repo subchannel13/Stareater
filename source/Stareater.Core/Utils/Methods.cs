@@ -164,6 +164,7 @@ namespace Stareater.Utils
 			return false;
 		}
 
+		//TODO(v0.6) remove method
 		/// <summary>
 		/// Creates instances of all classes assignable to T, in a given DLL file.
 		/// </summary>
@@ -178,6 +179,7 @@ namespace Stareater.Utils
 					yield return (T)Activator.CreateInstance(type);
 		}
 
+		//TODO(v0.6) remove method
 		/// <summary>
 		/// Generates sequence of precentages (real number from [0, 1]) for reporting progress.
 		/// </summary>
