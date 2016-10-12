@@ -249,7 +249,7 @@ namespace Stareater.GUI
 					postDelayedEvent(showMainMenu);
 				else if (form.Result == MainMenuResult.LoadGame) {
 					this.gameController.Stop();
-					saveController.Load(form.SelectedGameData);
+					saveController.Load(form.SelectedGameData, LoadingMethods.GameDataSources());
 					this.gameController.Start(this);
 					this.initPlayers();
 					this.restartRenderers(); //TODO(v0.6) render thread my try to draw old map before new one is available

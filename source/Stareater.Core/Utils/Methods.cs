@@ -164,21 +164,6 @@ namespace Stareater.Utils
 			return false;
 		}
 
-		//TODO(v0.6) remove method
-		/// <summary>
-		/// Generates sequence of precentages (real number from [0, 1]) for reporting progress.
-		/// </summary>
-		/// <param name="progressOffset">Starting percentage</param>
-		/// <param name="progressScale">Size of returned range (difference between lowest and highest returned number)</param>
-		/// <param name="inputSize">Cardinality of returned sequence</param>
-		/// <returns>Sequence of precentages</returns>
-		public static IEnumerable<double> ProgressReportHelper(double progressOffset, double progressScale,
-			int inputSize)
-		{
-			for (int i = 1; i <= inputSize; i++)
-				yield return progressOffset + (progressScale * i) / inputSize;
-		}
-
 		/// <summary>
 		/// Generates an arithmetic sequence.
 		/// </summary>

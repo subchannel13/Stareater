@@ -104,6 +104,15 @@ namespace Stareater.AppData
 		}
 		#endregion
 		
+		#region Game data
+		private static readonly string StaticDataFolder = "./data/statics/";
+		
+		public static IEnumerable<TextReader> GameDataSources()
+		{
+			return dataStreams(new DirectoryInfo(StaticDataFolder).EnumerateFiles());
+		}
+		#endregion
+		
 		private static IEnumerable<TextReader> dataStreams(IEnumerable<FileInfo> files)
 		{
 			foreach (var file in files)

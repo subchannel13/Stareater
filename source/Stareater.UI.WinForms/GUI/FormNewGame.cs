@@ -57,7 +57,7 @@ namespace Stareater.GUI
 
 		public void CreateGame(GameController gameController)
 		{
-			gameController.CreateGame(controller);
+			gameController.CreateGame(controller, LoadingMethods.GameDataSources());
 		}
 
 		private void setLanguage()

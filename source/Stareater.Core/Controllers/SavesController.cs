@@ -123,9 +123,9 @@ namespace Stareater.Controllers
 			}
 		}
 		
-		public void Load(SavedGameInfo savedGameData)
+		public void Load(SavedGameInfo savedGameData, IEnumerable<TextReader> staticDataSources)
 		{
-			this.gameController.LoadGame(GameBuilder.LoadGame(savedGameData.RawData));
+			this.gameController.LoadGame(GameBuilder.LoadGame(savedGameData.RawData, staticDataSources));
 		}
 		#endregion
 	}

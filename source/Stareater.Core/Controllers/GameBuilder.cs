@@ -20,9 +20,9 @@ namespace Stareater.Controllers
 {
 	static class GameBuilder
 	{
-		public static MainGame CreateGame(Random rng, Player[] players, NewGameController controller)
+		public static MainGame CreateGame(Random rng, Player[] players, NewGameController controller, IEnumerable<TextReader> staticDataSources)
 		{
-			var statics = loadStatics();
+			var statics = StaticsDB.Load(staticDataSources);
 			var states = createStates(rng, controller, players, statics);
 			var derivates = createDerivates(players, controller.SelectedStart, statics, states);
 			
@@ -33,9 +33,9 @@ namespace Stareater.Controllers
 			return game;
 		}
 		
-		public static MainGame LoadGame(IkonComposite saveData)
+		public static MainGame LoadGame(IkonComposite saveData, IEnumerable<TextReader> staticDataSources)
 		{
-			var statics = loadStatics();
+			var statics = StaticsDB.Load(staticDataSources);
 			
 			var deindexer = new ObjectDeindexer();
 			int turn = saveData[MainGame.TurnKey].To<int>();
@@ -66,16 +66,6 @@ namespace Stareater.Controllers
 		}
 		
 		#region Creation helper methods
-		private static StaticsDB loadStatics()
-		{
-			var statics = new StaticsDB();
-			foreach (FileInfo file in new DirectoryInfo(StaticDataFolder).EnumerateFiles())
-				foreach(double p in statics.Load(file.FullName))
-					;
-			
-			return statics;
-		}
-		
 		private static TemporaryDB createDerivates(Player[] players, StartingConditions startingConditions, StaticsDB statics, StatesDB states)
 		{
 			var derivates = new TemporaryDB(players, statics.Technologies);
@@ -109,10 +99,10 @@ namespace Stareater.Controllers
 		{
 			var colonies = new ColonyCollection();
 			for(int playerI = 0; playerI < players.Length; playerI++) {
-				//TODO(v0.5): pick top most suitable planets
+				//TODO(later): pick top most suitable planets
 				for(int colonyI = 0; colonyI < startingConditions.Colonies; colonyI++)
 					colonies.Add(new Colony(
-						1,	//TODO(v0.5): make a constant
+						1,	//TODO(v0.6): make a constant
 						starSystems[homeSystemIndices[playerI]].Planets[colonyI],
 						players[playerI]
 					));
@@ -194,11 +184,10 @@ namespace Stareater.Controllers
 				
 				foreach(var colony in colonies.OwnedBy(player)) {
 					colony.Population = weights.Relative(colony) * totalPopulation;
-					//TODO(v0.5): add infrastructure to colony
+					//TODO(later): add infrastructure to colony
 					derivates.Colonies.Of(colony).CalculateBaseEffects(statics, derivates.Players.Of(player));
 				}
 			}
-
 		}
 		
 		private static void initPlayers(TemporaryDB derivates, Player[] players, StatesDB states, StaticsDB statics)
@@ -323,7 +312,5 @@ namespace Stareater.Controllers
 			return derivates;
 		}
 		#endregion
-		
-		private static readonly string StaticDataFolder = "./data/statics/";
 	}
 }

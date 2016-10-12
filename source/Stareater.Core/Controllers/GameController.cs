@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Stareater.Controllers.Data;
@@ -26,7 +27,7 @@ namespace Stareater.Controllers
 			this.State = GameState.NoGame;
 		}
 	
-		public void CreateGame(NewGameController controller)
+		public void CreateGame(NewGameController controller, IEnumerable<TextReader> staticDataSources)
 		{
 			if (State != GameState.NoGame)
 				throw new InvalidOperationException("Game is already created.");
@@ -38,7 +39,7 @@ namespace Stareater.Controllers
 			
 			var rng = new Random();
 			
-			this.gameObj = GameBuilder.CreateGame(rng, players, controller);
+			this.gameObj = GameBuilder.CreateGame(rng, players, controller, staticDataSources);
 			makePlayers();
 		}
 		

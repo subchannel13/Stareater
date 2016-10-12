@@ -39,7 +39,7 @@ namespace Stareater.GameData.Databases
 		public Dictionary<string, SpecialEquipmentType> SpecialEquipment { get; private set; }
 		public Dictionary<string, ThrusterType> Thrusters { get; private set; }
 		
-		public StaticsDB()
+		private StaticsDB()
 		{
 			this.Armors = new Dictionary<string, ArmorType>();
 			this.Buildings = new Dictionary<string, BuildingType>();
@@ -60,97 +60,88 @@ namespace Stareater.GameData.Databases
 			this.Technologies = new List<Technology>();
 		}
 		
-		public IEnumerable<double> Load(params string[] paths)
+		public static StaticsDB Load(IEnumerable<TextReader> dataSources)
 		{
-			double progressScale = 1.0 / paths.Length;
-			double fileReadWeight = 0.5 / paths.Length;
-			double dataTranslateWeight = 0.5 / paths.Length;
+			var db = new StaticsDB();
 			
-			for(int i = 0; i < paths.Length; i++) {
-				using (var parser = new Parser(new StreamReader(paths[i]))) {
-					var dataSet = parser.ParseAll();
-					double progressOffset = i * progressScale + fileReadWeight;
-					yield return progressOffset;
-					
-					foreach (double p in Methods.ProgressReportHelper(progressOffset, dataTranslateWeight, dataSet.Count)) {
-						var data = dataSet.Dequeue().To<IkonComposite>();
-						
-						switch((string)data.Tag) {
-							case BuildingTag:
-								Buildings.Add(data[GeneralCodeKey].To<string>(), loadBuilding(data));
-								break;
-							case ColonizersTag:
-								loadColonizers(data.To<IkonComposite>());
-								break;
-							case ColonyFormulasTag:
-								ColonyFormulas = loadColonyFormulas(data);
-								break;
-							case ConstructableTag:
-								Constructables.Add(loadConstructable(data));
-								break;
-							case DevelopmentFocusesTag:
-								DevelopmentFocusOptions.AddRange(loadFocusOptions(data));
-								break;
-							case DevelopmentTag:
-								Technologies.Add(loadTech(data, TechnologyCategory.Development));
-								break;
-							case PlayerFormulasTag:
-								PlayerFormulas = loadPlayerFormulas(data);
-								break;
-							case PredefinedDesignTag:
-								PredeginedDesigns.Add(loadPredefDesign(data));
-								break;
-							case ResearchTag:
-								Technologies.Add(loadTech(data, TechnologyCategory.Research));
-								break;
-							case ShipFormulasTag:
-								ShipFormulas = loadShipFormulas(data);
-								break;
-							case TraitTag:
-								Traits.Add(data[GeneralCodeKey].To<string>(), loadTrait(data));
-								break;
+			foreach(var source in dataSources) 
+			{
+				var parser = new Parser(source);
+				foreach (var data in parser.ParseAll().Select(x => x.Value.To<IkonComposite>())) 
+				{
+					switch((string)data.Tag) {
+						case BuildingTag:
+							db.Buildings.Add(data[GeneralCodeKey].To<string>(), loadBuilding(data));
+							break;
+						case ColonizersTag:
+							db.loadColonizers(data.To<IkonComposite>());
+							break;
+						case ColonyFormulasTag:
+							db.ColonyFormulas = loadColonyFormulas(data);
+							break;
+						case ConstructableTag:
+							db.Constructables.Add(loadConstructable(data));
+							break;
+						case DevelopmentFocusesTag:
+							db.DevelopmentFocusOptions.AddRange(loadFocusOptions(data));
+							break;
+						case DevelopmentTag:
+							db.Technologies.Add(loadTech(data, TechnologyCategory.Development));
+							break;
+						case PlayerFormulasTag:
+							db.PlayerFormulas = loadPlayerFormulas(data);
+							break;
+						case PredefinedDesignTag:
+							db.PredeginedDesigns.Add(loadPredefDesign(data));
+							break;
+						case ResearchTag:
+							db.Technologies.Add(loadTech(data, TechnologyCategory.Research));
+							break;
+						case ShipFormulasTag:
+							db.ShipFormulas = loadShipFormulas(data);
+							break;
+						case TraitTag:
+							db.Traits.Add(data[GeneralCodeKey].To<string>(), loadTrait(data));
+							break;
 
-							case ArmorTag:
-								Armors.Add(data[GeneralCodeKey].To<string>(), loadArmor(data));
-								break;
-							case HullTag:
-								Hulls.Add(data[GeneralCodeKey].To<string>(), loadHull(data));
-								break;
-							case IsDriveTag:
-								IsDrives.Add(data[GeneralCodeKey].To<string>(), loadIsDrive(data));
-								break;
-							case MissionEquipmentTag:
-								MissionEquipment.Add(data[GeneralCodeKey].To<string>(), loadMissionEquiptment(data));
-								break;
-							case ReactorTag:
-								Reactors.Add(data[GeneralCodeKey].To<string>(), loadReactor(data));
-								break;
-							case SensorTag:
-								Sensors.Add(data[GeneralCodeKey].To<string>(), loadSensor(data));
-								break;
-							case ShieldTag:
-								Shields.Add(data[GeneralCodeKey].To<string>(), loadShield(data));
-								break;
-							case SpecialEquipmentTag:
-								SpecialEquipment.Add(data[GeneralCodeKey].To<string>(), loadSpecialEquiptment(data));
-								break;
-							case ThrusterTag:
-								Thrusters.Add(data[GeneralCodeKey].To<string>(), loadThruster(data));
-								break;
-							default:
-								throw new FormatException("Invalid game data object with tag " + data.Tag);
-						}
-						
-						yield return p;
+						case ArmorTag:
+							db.Armors.Add(data[GeneralCodeKey].To<string>(), loadArmor(data));
+							break;
+						case HullTag:
+							db.Hulls.Add(data[GeneralCodeKey].To<string>(), loadHull(data));
+							break;
+						case IsDriveTag:
+							db.IsDrives.Add(data[GeneralCodeKey].To<string>(), loadIsDrive(data));
+							break;
+						case MissionEquipmentTag:
+							db.MissionEquipment.Add(data[GeneralCodeKey].To<string>(), loadMissionEquiptment(data));
+							break;
+						case ReactorTag:
+							db.Reactors.Add(data[GeneralCodeKey].To<string>(), loadReactor(data));
+							break;
+						case SensorTag:
+							db.Sensors.Add(data[GeneralCodeKey].To<string>(), loadSensor(data));
+							break;
+						case ShieldTag:
+							db.Shields.Add(data[GeneralCodeKey].To<string>(), loadShield(data));
+							break;
+						case SpecialEquipmentTag:
+							db.SpecialEquipment.Add(data[GeneralCodeKey].To<string>(), loadSpecialEquiptment(data));
+							break;
+						case ThrusterTag:
+							db.Thrusters.Add(data[GeneralCodeKey].To<string>(), loadThruster(data));
+							break;
+						default:
+							throw new FormatException("Invalid game data object with tag " + data.Tag);
 					}
 				}
 			}
 			
-			yield return 1;
+			return db;
 		}
 		
 		#region Colony Formulas
-		private ColonyFormulaSet loadColonyFormulas(IkonComposite data)
+		private static ColonyFormulaSet loadColonyFormulas(IkonComposite data)
 		{
 			return new ColonyFormulaSet(
 				data[ColonizationPopulationThreshold].To<Formula>(),
@@ -171,7 +162,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		
-		private DerivedStatistic loadDerivedStat(IkonComposite data)
+		private static DerivedStatistic loadDerivedStat(IkonComposite data)
 		{
 			return new DerivedStatistic(
 				data[DerivedStatBase].To<Formula>(),
@@ -179,7 +170,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		
-		private PopulationActivityFormulas loadPopulationActivity(IkonComposite data, string key)
+		private static PopulationActivityFormulas loadPopulationActivity(IkonComposite data, string key)
 		{
 			return new PopulationActivityFormulas(
 				data[key].To<IkonComposite>()[PopulationActivityImprovised].To<Formula>(),
@@ -188,7 +179,7 @@ namespace Stareater.GameData.Databases
 		}
 		#endregion
 		
-		private PlayerFormulaSet loadPlayerFormulas(IkonComposite data)
+		private static PlayerFormulaSet loadPlayerFormulas(IkonComposite data)
 		{
 			return new PlayerFormulaSet(
 				data[PlayerResearch].To<Formula>(),
@@ -196,7 +187,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 
-		private ShipFormulaSet loadShipFormulas(IkonComposite data)
+		private static ShipFormulaSet loadShipFormulas(IkonComposite data)
 		{
 			var colonizerBuildings = new Dictionary<string, Formula>();
 			var buildingData = data[ShipColonyBuildings].To<IkonComposite>();
@@ -217,7 +208,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 
-		private BodyTraitType loadTrait(IkonComposite data)
+		private static BodyTraitType loadTrait(IkonComposite data)
 		{
 			return new BodyTraitType(
 				data[GeneralNameKey].To<string>(),
@@ -228,7 +219,7 @@ namespace Stareater.GameData.Databases
 		}
 		
 		#region Constructables
-		private BuildingType loadBuilding(IkonComposite data)
+		private static BuildingType loadBuilding(IkonComposite data)
 		{
 			return new BuildingType(
 				data[GeneralNameKey].To<string>(),
@@ -237,7 +228,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		
-		private Constructable loadConstructable(IkonComposite data)
+		private static Constructable loadConstructable(IkonComposite data)
 		{
 			return new Constructable(
 				data[GeneralNameKey].To<string>(),
@@ -256,7 +247,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		
-		private SiteType siteType(string rawData)
+		private static SiteType siteType(string rawData)
 		{
 			switch(rawData.ToLower())
 			{
@@ -269,7 +260,7 @@ namespace Stareater.GameData.Databases
 			}
 		}
 		
-		private IEnumerable<IConstructionEffect> loadConstructionEffects(IEnumerable<IkonComposite> data)
+		private static IEnumerable<IConstructionEffect> loadConstructionEffects(IEnumerable<IkonComposite> data)
 		{
 			foreach (var effectData in data) 
 				switch (effectData.Tag.ToString().ToLower()) 
@@ -297,7 +288,7 @@ namespace Stareater.GameData.Databases
 				this.SystemColonizerDesigns.Add(loadPredefDesign(designData));
 		}
 		
-		private PredefinedDesign loadPredefDesign(IkonComposite data)
+		private static PredefinedDesign loadPredefDesign(IkonComposite data)
 		{
 			return new PredefinedDesign(
 				data[DesignName].To<string>(),
@@ -310,7 +301,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		
-		private List<KeyValuePair<string, int>> loadDesignMissionEquipment(IList<Ikadn.IkadnBaseObject> data)
+		private static List<KeyValuePair<string, int>> loadDesignMissionEquipment(IList<Ikadn.IkadnBaseObject> data)
 		{
 			var result = new List<KeyValuePair<string, int>>();
 			
@@ -320,7 +311,7 @@ namespace Stareater.GameData.Databases
 			return result;
 		}
 		
-		private Dictionary<string, int> loadDesignSpecialEquipment(IList<Ikadn.IkadnBaseObject> data)
+		private static Dictionary<string, int> loadDesignSpecialEquipment(IList<Ikadn.IkadnBaseObject> data)
 		{
 			var result = new Dictionary<string, int>();
 			
@@ -331,7 +322,7 @@ namespace Stareater.GameData.Databases
 		}
 		
 		#region Ship components
-		private ArmorType loadArmor(IkonComposite data)
+		private static ArmorType loadArmor(IkonComposite data)
 		{
 			return new ArmorType(
 				data[GeneralCodeKey].To<string>(),
@@ -346,7 +337,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 
-		private IEnumerable<AAbilityType> loadEquipmentAbilities(IEnumerable<IkonComposite> data)
+		private static IEnumerable<AAbilityType> loadEquipmentAbilities(IEnumerable<IkonComposite> data)
 		{
 			foreach(var abilityData in data)
 			{
@@ -371,7 +362,7 @@ namespace Stareater.GameData.Databases
 			}
 		}
 		
-		private HullType loadHull(IkonComposite data)
+		private static HullType loadHull(IkonComposite data)
 		{
 			return new HullType(
 				data[GeneralCodeKey].To<string>(),
@@ -396,7 +387,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		
-		private IsDriveType loadIsDrive(IkonComposite data)
+		private static IsDriveType loadIsDrive(IkonComposite data)
 		{
 			return new IsDriveType(
 				data[GeneralCodeKey].To<string>(),
@@ -411,7 +402,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		
-		private MissionEquipmentType loadMissionEquiptment(IkonComposite data)
+		private static MissionEquipmentType loadMissionEquiptment(IkonComposite data)
 		{
 			return new MissionEquipmentType(
 				data[GeneralCodeKey].To<string>(),
@@ -426,7 +417,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		
-		private ReactorType loadReactor(IkonComposite data)
+		private static ReactorType loadReactor(IkonComposite data)
 		{
 			return new ReactorType(
 				data[GeneralCodeKey].To<string>(),
@@ -440,7 +431,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		
-		private SensorType loadSensor(IkonComposite data)
+		private static SensorType loadSensor(IkonComposite data)
 		{
 			return new SensorType(
 				data[GeneralCodeKey].To<string>(),
@@ -453,7 +444,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		
-		private ShieldType loadShield(IkonComposite data)
+		private static ShieldType loadShield(IkonComposite data)
 		{
 			return new ShieldType(
 				data[GeneralCodeKey].To<string>(),
@@ -473,7 +464,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		
-		private SpecialEquipmentType loadSpecialEquiptment(IkonComposite data)
+		private static SpecialEquipmentType loadSpecialEquiptment(IkonComposite data)
 		{
 			return new SpecialEquipmentType(
 				data[GeneralCodeKey].To<string>(),
@@ -489,7 +480,7 @@ namespace Stareater.GameData.Databases
 			);
 		}
 
-		private ThrusterType loadThruster(IkonComposite data)
+		private static ThrusterType loadThruster(IkonComposite data)
 		{
 			return new ThrusterType(
 				data[GeneralCodeKey].To<string>(),
@@ -505,7 +496,7 @@ namespace Stareater.GameData.Databases
 		#endregion
 
 		#region Technologies
-		private IEnumerable<DevelopmentFocus> loadFocusOptions(IkonComposite data)
+		private static IEnumerable<DevelopmentFocus> loadFocusOptions(IkonComposite data)
 		{
 			foreach(var array in data[FocusList].To<IkonArray>()) {
 				double[] weights = array.To<double[]>();
@@ -514,7 +505,7 @@ namespace Stareater.GameData.Databases
 			}
 		}
 			
-		private IEnumerable<Prerequisite> loadPrerequisites(IList<Ikadn.IkadnBaseObject> dataArray)
+		private static IEnumerable<Prerequisite> loadPrerequisites(IList<Ikadn.IkadnBaseObject> dataArray)
 		{
 			for(int i = 0; i < dataArray.Count; i += 2)
 				yield return new Prerequisite(
@@ -523,7 +514,7 @@ namespace Stareater.GameData.Databases
 				);
 		}
 		
-		private Technology loadTech(IkonComposite data, TechnologyCategory category)
+		private static Technology loadTech(IkonComposite data, TechnologyCategory category)
 		{
 			return new Technology(
 				data[GeneralNameKey].To<string>(),
