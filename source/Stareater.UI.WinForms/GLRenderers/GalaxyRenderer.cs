@@ -188,7 +188,9 @@ namespace Stareater.GLRenderers
 		{
 			if (starDrawList >= 0){
 				GL.DeleteLists(starDrawList, 1);
+				GL.DeleteLists(wormholeDrawList, 1);
 				starDrawList = -1;
+				wormholeDrawList = -1;
 			}
 		}
 		
