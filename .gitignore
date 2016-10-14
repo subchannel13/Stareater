@@ -11,6 +11,3 @@ release/
 build/images/galaxyTextures.*
 build/settings.txt
 documentation/Graphs/*.png
-build/gliConfig.ini
-build/gliInterceptLog.txt
-build/gliLog.txt
