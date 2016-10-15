@@ -67,6 +67,9 @@ namespace Stareater.GraphicsEngine
 		{
 			while(!this.shouldStop)
 			{
+				if (settingsChanged.Check())
+					this.pullSettings();
+
 				double dt = this.watch.Elapsed.TotalSeconds;
 				
 				this.watch.Restart();

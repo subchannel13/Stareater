@@ -78,6 +78,7 @@ namespace Stareater.GUI
 			applySettings();
 			postDelayedEvent(showMainMenu);
 		}
+
 		private void applySettings()
 		{
 			this.Font = SettingsWinforms.Get.FormFont;
