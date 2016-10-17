@@ -139,8 +139,10 @@ namespace Stareater.GLRenderers
 
 		private void rebuildCache()
 		{
+			TextRenderUtil.Get.Prepare(this.currentPlayer.Stars.Select(x => x.Name.ToText(LocalizationManifest.Get.CurrentLanguage)));
+
 			this.stars.Clear();
-			foreach(var star in this.currentPlayer.Stars)
+			foreach (var star in this.currentPlayer.Stars)
 				this.stars.Add(star, star.Position, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
 			
 			this.fleetsReal.Clear();
