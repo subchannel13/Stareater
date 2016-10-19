@@ -11,7 +11,7 @@ namespace Stareater.Controllers.Views
 	{
 		internal const string LangContext = "Technologies";
 		
-		private readonly Technology technology;
+		private readonly DevelopmentTopic technology;
 		private IDictionary<string, double> textVars;
 		
 		public double Cost { get; private set; }
@@ -23,7 +23,7 @@ namespace Stareater.Controllers.Views
 		internal TechnologyTopic(TechnologyProgress tech)
 		{
 			this.technology = tech.Topic;
-			this.textVars = new Var(Technology.LevelKey, tech.NextLevel).Get;
+			this.textVars = new Var(DevelopmentTopic.LevelKey, tech.NextLevel).Get;
 				
 			this.Cost = tech.Topic.Cost.Evaluate(textVars);
 			this.InvestedPoints = tech.InvestedPoints;
@@ -35,7 +35,7 @@ namespace Stareater.Controllers.Views
 		internal TechnologyTopic(TechnologyProgress tech, ScienceResult investmentResult)
 		{
 			this.technology = tech.Topic;
-			this.textVars = new Var(Technology.LevelKey, tech.NextLevel).Get;
+			this.textVars = new Var(DevelopmentTopic.LevelKey, tech.NextLevel).Get;
 				
 			this.Cost = tech.Topic.Cost.Evaluate(textVars);
 			this.InvestedPoints = tech.InvestedPoints;

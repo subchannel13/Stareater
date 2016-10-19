@@ -11,7 +11,7 @@ namespace Stareater.GameData
 		public const int NotStarted = -1;
 		public const int Unordered = -1;
 			
-		public TechnologyProgress(Technology topic, Player owner) : 
+		public TechnologyProgress(DevelopmentTopic topic, Player owner) : 
 			this (owner, topic, NotStarted, 0)
 		{ }
 
@@ -49,7 +49,7 @@ namespace Stareater.GameData
 			
 			while(tmplevel < Topic.MaxLevel && Prerequisite.AreSatisfied(Topic.Prerequisites, tmplevel + 1, techLevels))
 			{
-				double pointsLeft = this.Topic.Cost.Evaluate(new Var(Technology.LevelKey, tmplevel + 1).Get) - tmpInvested;
+				double pointsLeft = this.Topic.Cost.Evaluate(new Var(DevelopmentTopic.LevelKey, tmplevel + 1).Get) - tmpInvested;
 				
 				if (pointsLeft > points)
 					return new ScienceResult(newLevels, totalInvested + points, this, tmpInvested + points);

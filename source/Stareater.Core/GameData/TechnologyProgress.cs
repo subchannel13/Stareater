@@ -10,11 +10,11 @@ namespace Stareater.GameData
 	partial class TechnologyProgress 
 	{
 		public Player Owner { get; private set; }
-		public Technology Topic { get; private set; }
+		public DevelopmentTopic Topic { get; private set; }
 		public int Level { get; private set; }
 		public double InvestedPoints { get; private set; }
 
-		public TechnologyProgress(Player owner, Technology topic, int level, double investedPoints) 
+		public TechnologyProgress(Player owner, DevelopmentTopic topic, int level, double investedPoints) 
 		{
 			this.Owner = owner;
 			this.Topic = topic;
@@ -30,7 +30,7 @@ namespace Stareater.GameData
 			this.Owner = deindexer.Get<Player>(ownerSave.To<int>());
 
 			var topicSave = rawData[TopicKey];
-			this.Topic = deindexer.Get<Technology>(topicSave.To<string>());
+			this.Topic = deindexer.Get<DevelopmentTopic>(topicSave.To<string>());
 
 			var levelSave = rawData[LevelKey];
 			this.Level = levelSave.To<int>();

@@ -153,11 +153,11 @@ namespace Stareater.Controllers
 			return wormholes;
 		}
 		
-		private static TechProgressCollection createTechAdvances(Player[] players, IEnumerable<Technology> technologies)
+		private static TechProgressCollection createTechAdvances(Player[] players, IEnumerable<DevelopmentTopic> technologies)
 		{
 			var techProgress = new TechProgressCollection();
 			foreach(Player player in players)
-				foreach(Technology tech in technologies)
+				foreach(DevelopmentTopic tech in technologies)
 					techProgress.Add(new TechnologyProgress(tech, player));
 			
 			return techProgress;

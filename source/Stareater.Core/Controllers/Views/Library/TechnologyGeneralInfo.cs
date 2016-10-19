@@ -9,9 +9,9 @@ namespace Stareater.Controllers.Views.Library
 	{
 		private const string LangContext = TechnologyTopic.LangContext;
 		
-		private readonly Technology Data;
+		private readonly DevelopmentTopic Data;
 		
-		internal TechnologyGeneralInfo(Technology data)
+		internal TechnologyGeneralInfo(DevelopmentTopic data)
 		{
 			this.Data = data;
 		}
@@ -21,7 +21,7 @@ namespace Stareater.Controllers.Views.Library
 			if (level < 0 || level > this.Data.MaxLevel)
 				throw new ArgumentOutOfRangeException("level");
 					
-			return LocalizationManifest.Get.CurrentLanguage[LangContext][this.Data.NameCode].Text(new Var(Technology.LevelKey, level).Get);
+			return LocalizationManifest.Get.CurrentLanguage[LangContext][this.Data.NameCode].Text(new Var(DevelopmentTopic.LevelKey, level).Get);
 		}
 		
 		public string Description(int level)
@@ -29,7 +29,7 @@ namespace Stareater.Controllers.Views.Library
 			if (level < 0 || level > this.Data.MaxLevel)
 				throw new ArgumentOutOfRangeException("level");
 			
-			return LocalizationManifest.Get.CurrentLanguage[LangContext][this.Data.DescriptionCode].Text(new Var(Technology.LevelKey, level).Get);
+			return LocalizationManifest.Get.CurrentLanguage[LangContext][this.Data.DescriptionCode].Text(new Var(DevelopmentTopic.LevelKey, level).Get);
 		}
 		
 		public string ImagePath 

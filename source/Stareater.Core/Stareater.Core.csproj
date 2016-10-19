@@ -337,7 +337,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\StarIntelligence.partial.cs" />
-    <Compile Include="GameData\Technology.cs" />
+    <Compile Include="GameData\DevelopmentTopic.cs" />
     <Compile Include="GameData\TechnologyProgress.cs">
       <DependentUpon>TechnologyProgress.tt</DependentUpon>
       <AutoGen>True</AutoGen>

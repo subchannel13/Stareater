@@ -27,7 +27,7 @@ namespace Stareater.GameLogic
 		public Design ColonyShipDesign { get; private set; }
 		public Design SystemColonizerDesign { get; private set; }
 		
-		public PlayerProcessor(Player player, IEnumerable<Technology> technologies)
+		public PlayerProcessor(Player player, IEnumerable<DevelopmentTopic> technologies)
 		{
 			this.Player = player;
 			

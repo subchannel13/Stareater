@@ -21,7 +21,7 @@ namespace Stareater.Controllers.Views
 		
 		public string Message {
 			get {
-				var topicVars = new Var(Technology.LevelKey, report.TechProgress.Item.NextLevel).Get;
+				var topicVars = new Var(DevelopmentTopic.LevelKey, report.TechProgress.Item.NextLevel).Get;
 				
 				var vars = new TextVar(topicVar, LocalizationManifest.Get.CurrentLanguage[TechnologyTopic.LangContext][report.TechProgress.Item.Topic.NameCode].Text(topicVars)).
 					And(levelVar, report.TechProgress.Item.Level.ToString()).Get;

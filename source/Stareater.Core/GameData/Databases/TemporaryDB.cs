@@ -14,7 +14,7 @@ namespace Stareater.GameData.Databases
 		public StellarisProcessorCollection Stellarises { get; private set; }
 		public PlayerProcessorCollection Players { get; private set; }
 		
-		public TemporaryDB(Player[] players, IEnumerable<Technology> technologies)
+		public TemporaryDB(Player[] players, IEnumerable<DevelopmentTopic> technologies)
 		{
 			this.Colonies = new ColonyProcessorCollection();
 			this.Stellarises = new StellarisProcessorCollection();

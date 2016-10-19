@@ -8,7 +8,7 @@
 	
 	Generate("Stareater.GameData", "TechnologyProgress",
 		new DataInfo("Owner", "Player").FromIndexer(),
-		new DataInfo("Topic", "Technology").SaveIdCode(),
+		new DataInfo("Topic", "DevelopmentTopic").SaveIdCode(),
 		new DataInfo("Level", "int"),
 		new DataInfo("InvestedPoints", "double").SaveKey("Invested")
 	);

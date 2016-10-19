@@ -26,7 +26,7 @@ namespace Stareater.GameData.Databases
 		public List<PredefinedDesign> PredeginedDesigns { get; private set; }
 		public ShipFormulaSet ShipFormulas { get; private set; }
 		public List<PredefinedDesign> SystemColonizerDesigns { get; private set; }
-		public List<Technology> Technologies { get; private set; }
+		public List<DevelopmentTopic> Technologies { get; private set; }
 		public Dictionary<string, BodyTraitType> Traits { get; private set; }
 		
 		public Dictionary<string, ArmorType> Armors { get; private set; }
@@ -57,7 +57,7 @@ namespace Stareater.GameData.Databases
 			this.Thrusters = new Dictionary<string, ThrusterType>();
 			this.Traits = new Dictionary<string, BodyTraitType>();
 			this.PredeginedDesigns = new List<PredefinedDesign>();
-			this.Technologies = new List<Technology>();
+			this.Technologies = new List<DevelopmentTopic>();
 		}
 		
 		public static StaticsDB Load(IEnumerable<TextReader> dataSources)
@@ -514,9 +514,9 @@ namespace Stareater.GameData.Databases
 				);
 		}
 		
-		private static Technology loadTech(IkonComposite data, TechnologyCategory category)
+		private static DevelopmentTopic loadTech(IkonComposite data, TechnologyCategory category)
 		{
-			return new Technology(
+			return new DevelopmentTopic(
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
