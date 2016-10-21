@@ -236,10 +236,10 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Development related
-		public IEnumerable<TechnologyTopic> DevelopmentTopics()
+		public IEnumerable<DevelopmentTopicInfo> DevelopmentTopics()
 		{
 			var game = this.gameInstance;
-			var playerTechs = game.Derivates.Of(this.PlayerInstance).DevelopmentOrder(game.States.TechnologyAdvances);
+			var playerTechs = game.Derivates.Of(this.PlayerInstance).DevelopmentOrder(game.States.DevelopmentAdvances);
 		
 			if (game.Derivates.Of(this.PlayerInstance).DevelopmentPlan == null)
 				game.Derivates.Of(this.PlayerInstance).CalculateDevelopment(
@@ -252,13 +252,13 @@ namespace Stareater.Controllers
 			
 			foreach(var techProgress in playerTechs)
 				if (investments.ContainsKey(techProgress))
-					yield return new TechnologyTopic(techProgress, investments[techProgress]);
+					yield return new DevelopmentTopicInfo(techProgress, investments[techProgress]);
 				else
-					yield return new TechnologyTopic(techProgress);
+					yield return new DevelopmentTopicInfo(techProgress);
 			
 		}
 		
-		public IEnumerable<TechnologyTopic> ReorderDevelopmentTopics(IEnumerable<string> idCodeOrder)
+		public IEnumerable<DevelopmentTopicInfo> ReorderDevelopmentTopics(IEnumerable<string> idCodeOrder)
 		{
 			if (this.IsReadOnly)
 				return DevelopmentTopics();
@@ -312,10 +312,10 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Research related
-		public IEnumerable<TechnologyTopic> ResearchTopics()
+		public IEnumerable<DevelopmentTopicInfo> ResearchTopics()
 		{
 			var game = this.gameInstance;
-			var playerTechs = game.Derivates.Of(this.PlayerInstance).ResearchOrder(game.States.TechnologyAdvances);
+			var playerTechs = game.Derivates.Of(this.PlayerInstance).ResearchOrder(game.States.DevelopmentAdvances);
 		
 			if (game.Derivates.Of(this.PlayerInstance).ResearchPlan == null)
 				game.Derivates.Of(this.PlayerInstance).CalculateResearch(
@@ -328,9 +328,9 @@ namespace Stareater.Controllers
 			
 			foreach(var techProgress in playerTechs)
 				if (investments.ContainsKey(techProgress))
-					yield return new TechnologyTopic(techProgress, investments[techProgress]);
+					yield return new DevelopmentTopicInfo(techProgress, investments[techProgress]);
 				else
-					yield return new TechnologyTopic(techProgress);
+					yield return new DevelopmentTopicInfo(techProgress);
 		}
 		
 		public int ResearchFocus
@@ -339,7 +339,7 @@ namespace Stareater.Controllers
 			{
 				var game = this.gameInstance;
 				string focused = this.PlayerInstance.Orders.ResearchFocus;
-				var playerTechs = game.Derivates.Of(this.PlayerInstance).ResearchOrder(game.States.TechnologyAdvances).ToList();
+				var playerTechs = game.Derivates.Of(this.PlayerInstance).ResearchOrder(game.States.DevelopmentAdvances).ToList();
 				
 				for (int i = 0; i < playerTechs.Count; i++)
 					if (playerTechs[i].Topic.IdCode == focused)
@@ -353,7 +353,7 @@ namespace Stareater.Controllers
 				if (this.IsReadOnly)
 					return;
 				
-				var playerTechs = this.gameInstance.Derivates.Of(this.PlayerInstance).ResearchOrder(this.gameInstance.States.TechnologyAdvances).ToList();
+				var playerTechs = this.gameInstance.Derivates.Of(this.PlayerInstance).ResearchOrder(this.gameInstance.States.DevelopmentAdvances).ToList();
 				if (value >= 0 && value < playerTechs.Count) {
 					this.PlayerInstance.Orders.ResearchFocus = playerTechs[value].Topic.IdCode;
 					this.gameInstance.Derivates.Of(this.PlayerInstance).InvalidateResearch();

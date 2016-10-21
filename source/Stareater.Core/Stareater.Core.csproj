@@ -124,7 +124,7 @@
     <Compile Include="Controllers\Views\StellarisInfo.cs" />
     <Compile Include="Controllers\Views\TechnologyCategory.cs" />
     <Compile Include="Controllers\Views\TechnologyReportInfo.cs" />
-    <Compile Include="Controllers\Views\TechnologyTopic.cs" />
+    <Compile Include="Controllers\Views\DevelopmentTopicInfo.cs" />
     <Compile Include="Controllers\FleetController.cs" />
     <Compile Include="Controllers\GameBuilder.cs" />
     <Compile Include="Controllers\GameController.cs" />

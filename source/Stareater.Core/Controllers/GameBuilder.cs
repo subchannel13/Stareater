@@ -247,7 +247,7 @@ namespace Stareater.Controllers
 				players.Add(Player.Load(rawData, deindexer));
 			
 			var techs = new TechProgressCollection();
-			foreach(var rawData in stateData[StatesDB.TechnologyAdvancesKey].To<IEnumerable<IkonComposite>>())
+			foreach(var rawData in stateData[StatesDB.DevelopmentAdvancesKey].To<IEnumerable<IkonComposite>>())
 				techs.Add(TechnologyProgress.Load(rawData, deindexer));
 			
 			var reports = new ReportCollection();

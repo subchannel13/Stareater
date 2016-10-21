@@ -13,7 +13,7 @@ namespace Stareater.GUI
 	public sealed partial class FormDevelopment : Form
 	{
 		private readonly PlayerController controller;
-		private IList<TechnologyTopic> topics;
+		private IList<DevelopmentTopicInfo> topics;
 		
 		public FormDevelopment()
 		{

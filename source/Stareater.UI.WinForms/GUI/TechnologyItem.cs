@@ -14,14 +14,14 @@ namespace Stareater.GUI
 		
 		private const string LocalizationLevel = "Level";
 		
-		public TechnologyTopic Data { get; private set; }
+		public DevelopmentTopicInfo Data { get; private set; }
 		
 		public TechnologyItem()
 		{
 			InitializeComponent();
 		}
 		
-		public void SetData(TechnologyTopic topicInfo)
+		public void SetData(DevelopmentTopicInfo topicInfo)
 		{
 			this.Data = topicInfo;
 			

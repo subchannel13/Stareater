@@ -7,7 +7,7 @@ namespace Stareater.Controllers.Views.Library
 {
 	public class TechnologyGeneralInfo
 	{
-		private const string LangContext = TechnologyTopic.LangContext;
+		private const string LangContext = DevelopmentTopicInfo.LangContext;
 		
 		private readonly DevelopmentTopic Data;
 		

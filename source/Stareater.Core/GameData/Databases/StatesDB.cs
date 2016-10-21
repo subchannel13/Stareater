@@ -27,7 +27,7 @@ namespace Stareater.GameData.Databases
 		
 		public DesignCollection Designs { get; private set; }
 		public ReportCollection Reports { get; private set; }
-		public TechProgressCollection TechnologyAdvances { get; private set; }
+		public TechProgressCollection DevelopmentAdvances { get; private set; }
 		
 		private int nextDesignId = 0;
 		
@@ -41,7 +41,7 @@ namespace Stareater.GameData.Databases
 			this.Stars = stars;
 			this.Stellarises = stellarises;
 			this.Wormholes = wormholes;
-			this.TechnologyAdvances = technologyProgresses;
+			this.DevelopmentAdvances = technologyProgresses;
 			this.Reports = reports;
 			this.Designs = designs;
 			this.Fleets = fleets;
@@ -86,8 +86,8 @@ namespace Stareater.GameData.Databases
 			copy.Designs = new DesignCollection();
 			copy.Designs.Add(playersRemap.Designs.Values);
 			
-			copy.TechnologyAdvances = new TechProgressCollection();
-			copy.TechnologyAdvances.Add(this.TechnologyAdvances.Select(x => x.Copy(playersRemap)));
+			copy.DevelopmentAdvances = new TechProgressCollection();
+			copy.DevelopmentAdvances.Add(this.DevelopmentAdvances.Select(x => x.Copy(playersRemap)));
 			
 			return copy;
 		}
@@ -150,7 +150,7 @@ namespace Stareater.GameData.Databases
 			data.Add(IdleFleetsKey, new IkonArray().AddAll(this.Fleets.Select(x => x.Save(indexer))));
 			data.Add(DesignsKey, new IkonArray().AddAll(this.Designs.Select(x => x.Save(indexer))));
 			data.Add(ReportsKey, new IkonArray().AddAll(this.Reports.Select(x => x.Save(indexer))));
-			data.Add(TechnologyAdvancesKey, new IkonArray().AddAll(this.TechnologyAdvances.Select(x => x.Save(indexer))));
+			data.Add(DevelopmentAdvancesKey, new IkonArray().AddAll(this.DevelopmentAdvances.Select(x => x.Save(indexer))));
 						
 			return data;
 		}
@@ -159,12 +159,12 @@ namespace Stareater.GameData.Databases
 		public const string ColoniesKey = "colonies";
 		public const string ColonizationKey = "colonizations";
 		public const string DesignsKey = "designs";
+		public const string DevelopmentAdvancesKey = "developmentAdvances";
 		public const string IdleFleetsKey = "idleFleets";
 		public const string PlanetsKey = "planets";
 		public const string ReportsKey = "reports";
 		public const string StarsKey = "stars";
 		public const string StellarisesKey = "stellarises";
-		public const string TechnologyAdvancesKey = "techAdvances";
 		public const string WormholesKey = "wormholes";
 		#endregion
 		
