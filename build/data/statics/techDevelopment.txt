@@ -13,9 +13,7 @@
 	code: HydroFarm
 	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8
-	prerequisites [
-		:Bio # lvl [-1, -1, -1, 0, 0, 1, 1];
-	]
+	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
 }
 
@@ -90,8 +88,6 @@
 	cost # 6e12 * (lvl + 1) ^ 2;
 	maxLvl= 10
 	prerequisites [
-		:Bio # 4;
-		:Chem # 2;
 	]
 	image: ./images/technologies/industry.png
 }
@@ -102,9 +98,7 @@
 	code: Colonizer
 	cost # 70e9 * (lvl + 1) ^ 2;
 	maxLvl= 10
-	prerequisites [
-		:Bio # lvl - 5;
-	]
+	prerequisites []
 	image: ./images/technologies/industry.png
 }
 

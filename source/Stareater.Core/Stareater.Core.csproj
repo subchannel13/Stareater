@@ -185,6 +185,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameData\ResearchTopic.cs" />
     <Compile Include="GameData\Ships\AAbilityType.cs" />
     <Compile Include="GameData\Ships\DirectShootAbility.cs" />
     <Compile Include="GameData\Ships\IAbilityVisitor.cs" />

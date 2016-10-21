@@ -22,11 +22,12 @@ namespace Stareater.GameData.Databases
 		public List<PredefinedDesign> ColonyShipDesigns { get; private set; }
 		public List<Constructable> Constructables { get; private set; }
 		public List<DevelopmentFocus> DevelopmentFocusOptions { get; private set; }
+		public List<DevelopmentTopic> DevelopmentTopics { get; private set; }
 		public PlayerFormulaSet PlayerFormulas { get; private set; }
 		public List<PredefinedDesign> PredeginedDesigns { get; private set; }
+		public List<ResearchTopic> ResearchTopics { get; private set; }
 		public ShipFormulaSet ShipFormulas { get; private set; }
 		public List<PredefinedDesign> SystemColonizerDesigns { get; private set; }
-		public List<DevelopmentTopic> Technologies { get; private set; }
 		public Dictionary<string, BodyTraitType> Traits { get; private set; }
 		
 		public Dictionary<string, ArmorType> Armors { get; private set; }
@@ -42,10 +43,6 @@ namespace Stareater.GameData.Databases
 		private StaticsDB()
 		{
 			this.Armors = new Dictionary<string, ArmorType>();
-			this.Buildings = new Dictionary<string, BuildingType>();
-			this.Constructables = new List<Constructable>();
-			this.ColonyShipDesigns = new List<PredefinedDesign>();
-			this.DevelopmentFocusOptions = new List<DevelopmentFocus>();
 			this.Hulls = new Dictionary<string, HullType>();
 			this.IsDrives = new Dictionary<string, IsDriveType>();
 			this.Reactors = new Dictionary<string, ReactorType>();
@@ -53,11 +50,18 @@ namespace Stareater.GameData.Databases
 			this.Sensors = new Dictionary<string, SensorType>();
 			this.Shields = new Dictionary<string, ShieldType>();
 			this.SpecialEquipment = new Dictionary<string, SpecialEquipmentType>();
-			this.SystemColonizerDesigns = new List<PredefinedDesign>();
 			this.Thrusters = new Dictionary<string, ThrusterType>();
-			this.Traits = new Dictionary<string, BodyTraitType>();
+
+			this.ColonyShipDesigns = new List<PredefinedDesign>();
 			this.PredeginedDesigns = new List<PredefinedDesign>();
-			this.Technologies = new List<DevelopmentTopic>();
+			this.SystemColonizerDesigns = new List<PredefinedDesign>();
+
+			this.Buildings = new Dictionary<string, BuildingType>();
+			this.Constructables = new List<Constructable>();
+			this.DevelopmentFocusOptions = new List<DevelopmentFocus>();
+			this.DevelopmentTopics = new List<DevelopmentTopic>();
+			this.ResearchTopics = new List<ResearchTopic>();
+			this.Traits = new Dictionary<string, BodyTraitType>();
 		}
 		
 		public static StaticsDB Load(IEnumerable<TextReader> dataSources)
@@ -86,7 +90,7 @@ namespace Stareater.GameData.Databases
 							db.DevelopmentFocusOptions.AddRange(loadFocusOptions(data));
 							break;
 						case DevelopmentTag:
-							db.Technologies.Add(loadTech(data, TechnologyCategory.Development));
+							db.DevelopmentTopics.Add(loadDevelopmentTopic(data, TechnologyCategory.Development));
 							break;
 						case PlayerFormulasTag:
 							db.PlayerFormulas = loadPlayerFormulas(data);
@@ -95,7 +99,7 @@ namespace Stareater.GameData.Databases
 							db.PredeginedDesigns.Add(loadPredefDesign(data));
 							break;
 						case ResearchTag:
-							db.Technologies.Add(loadTech(data, TechnologyCategory.Research));
+							db.ResearchTopics.Add(loadResearchTopic(data));
 							break;
 						case ShipFormulasTag:
 							db.ShipFormulas = loadShipFormulas(data);
@@ -514,7 +518,7 @@ namespace Stareater.GameData.Databases
 				);
 		}
 		
-		private static DevelopmentTopic loadTech(IkonComposite data, TechnologyCategory category)
+		private static DevelopmentTopic loadDevelopmentTopic(IkonComposite data, TechnologyCategory category)
 		{
 			return new DevelopmentTopic(
 				data[GeneralNameKey].To<string>(),
@@ -525,6 +529,18 @@ namespace Stareater.GameData.Databases
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(),
 				data[GeneralMaxLevelKey].To<int>(),
 				category
+			 );
+		}
+		
+		private static ResearchTopic loadResearchTopic(IkonComposite data)
+		{
+			return new ResearchTopic(
+				data[GeneralNameKey].To<string>(),
+				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralImageKey].To<string>(),
+				data[GeneralCodeKey].To<string>(),
+				data[GeneralCostKey].To<Formula>(),
+				data[ResearchUnlocksKey].To<IkonArray>().Select(x => x.To<string[]>()).ToArray()
 			 );
 		}
 		#endregion
@@ -615,6 +631,7 @@ namespace Stareater.GameData.Databases
 		private const string DesignType = "type";
 		
 		private const string FocusList = "list";
+		private const string ResearchUnlocksKey = "devTopics";
 		
 		private const string GeneralNameKey = "nameCode";
 		private const string GeneralDescriptionKey = "descCode";

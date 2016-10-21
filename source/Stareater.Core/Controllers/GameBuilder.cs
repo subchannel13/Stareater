@@ -50,7 +50,7 @@ namespace Stareater.Controllers
 			deindexer.AddAll(statics.Sensors.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Shields.Values, x => x.IdCode);
 			deindexer.AddAll(statics.SpecialEquipment.Values, x => x.IdCode);
-			deindexer.AddAll(statics.Technologies, x => x.IdCode);
+			deindexer.AddAll(statics.DevelopmentTopics, x => x.IdCode);
 			deindexer.AddAll(statics.Thrusters.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Traits.Values, x => x.IdCode);
 			
@@ -68,7 +68,7 @@ namespace Stareater.Controllers
 		#region Creation helper methods
 		private static TemporaryDB createDerivates(Player[] players, StartingConditions startingConditions, StaticsDB statics, StatesDB states)
 		{
-			var derivates = new TemporaryDB(players, statics.Technologies);
+			var derivates = new TemporaryDB(players, statics.DevelopmentTopics);
 			
 			initColonies(players, states.Colonies, startingConditions, derivates, statics);
 			initStellarises(derivates, states.Stellarises);
@@ -87,7 +87,7 @@ namespace Stareater.Controllers
 			var planets = createPlanets(starSystems);
 			var colonies = createColonies(players, starSystems, starPositions.HomeSystems, newGameData.SelectedStart);
 			var stellarises = createStellarises(players, starSystems, starPositions.HomeSystems);
-			var techAdvances = createTechAdvances(players, statics.Technologies);
+			var techAdvances = createTechAdvances(players, statics.DevelopmentTopics);
 
 			return new StatesDB(stars, wormholes, planets, colonies, stellarises, techAdvances,
 			                    new ReportCollection(), new DesignCollection(), new FleetCollection(),
@@ -200,7 +200,9 @@ namespace Stareater.Controllers
 					player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 				
 				player.Orders.DevelopmentFocusIndex = statics.DevelopmentFocusOptions.Count / 2;
-				player.Orders.ResearchFocus = derivates.Of(player).ResearchOrder(states.TechnologyAdvances).First().Topic.IdCode;
+				//TODO(v0.6) focus can be null when all research is done
+				player.Orders.ResearchFocus = statics.ResearchTopics.First().IdCode;
+				//player.Orders.ResearchFocus = derivates.Of(player).ResearchOrder(states.TechnologyAdvances).First().Topic.IdCode;
 			}
 			
 			foreach (var player in players) {
@@ -287,7 +289,7 @@ namespace Stareater.Controllers
 		
 		private static TemporaryDB initDerivates(StaticsDB statics, Player[] players, StatesDB states)
 		{
-			var derivates = new TemporaryDB(players, statics.Technologies);
+			var derivates = new TemporaryDB(players, statics.DevelopmentTopics);
 			
 			foreach(var colony in states.Colonies) {
 				var colonyProc = new ColonyProcessor(colony);

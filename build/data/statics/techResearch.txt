@@ -2,49 +2,44 @@
 	nameCode: BIO_NAME
 	descCode: BIO_DESC
 	code: Bio
-	cost # 10;
-	maxLvl= 7
-	prerequisites [] 
 	image: ./images/technologies/hydroponicFarms.png
+	cost # 10;
+	devTopics []
 }
 
 { ResearchTopic
 	nameCode : PHY_NAME
 	descCode : PHY_DESC
 	code: Phy
-	cost # 10;
-	maxLvl= 7
-	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
+	cost # 10;
+	devTopics []
 }
 
 { ResearchTopic
 	nameCode : CHEM_NAME
 	descCode : CHEM_DESC
 	code: Chem
-	cost # 10;
-	maxLvl= 7
-	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
+	cost # 10;
+	devTopics []
 }
 
 { ResearchTopic
 	nameCode : MAT_NAME
 	descCode : MAT_DESC
 	code: Mat
-	cost # 10;
-	maxLvl= 7
-	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
+	cost # 10;
+	devTopics []
 }
 
 { ResearchTopic
 	nameCode : SOC_NAME
 	descCode : SOC_DESC
 	code: Soc
-	cost # 10;
-	maxLvl= 7
-	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
+	cost # 10;
+	devTopics []
 }
 

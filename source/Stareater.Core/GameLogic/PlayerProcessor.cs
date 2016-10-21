@@ -155,6 +155,7 @@ namespace Stareater.GameLogic
 		
 		public IEnumerable<TechnologyProgress> ResearchOrder(TechProgressCollection techAdvances)
 		{
+			//TODO(v0.6) make research equivalent of TechProgressCollection
 			var techLevels = techAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var playerTechs = techAdvances
 				.Of(Player)

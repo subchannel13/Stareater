@@ -21,7 +21,6 @@
 	
 	maxLvl= 10
 	prerequisites [
-		:Phy # 1;
 	]
 	
 	armorFactor # 2 + 0.2 * lvl;
@@ -37,7 +36,6 @@
 	
 	maxLvl= 10
 	prerequisites [
-		:Phy # 2;
 	]
 	
 	armorFactor # 3 + 0.3 * lvl;
