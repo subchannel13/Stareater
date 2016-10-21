@@ -14,7 +14,7 @@ namespace Stareater.GUI.Reports
 			this.openResearch = openResearch;
 		}
 		
-		public void Visit(TechnologyReportInfo reportInfo)
+		public void Visit(DevelopmentReportInfo reportInfo)
 		{
 			if (reportInfo.Category == TechnologyCategory.Development)
 				this.openDevelopment(); 

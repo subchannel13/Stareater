@@ -32,7 +32,7 @@ namespace Stareater.GameData
 			
 		}
 		
-		public void Progress(DevelopmentResult progressData)
+		public void Progress(ResearchResult progressData)
 		{
 			this.Level += (int)progressData.CompletedCount;
 			this.InvestedPoints = progressData.LeftoverPoints;

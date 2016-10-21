@@ -312,7 +312,7 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Research related
-		public IEnumerable<DevelopmentTopicInfo> ResearchTopics()
+		public IEnumerable<ResearchTopicInfo> ResearchTopics()
 		{
 			var game = this.gameInstance;
 			var playerTechs = game.Derivates.Of(this.PlayerInstance).ResearchOrder(game.States.DevelopmentAdvances);
@@ -328,9 +328,9 @@ namespace Stareater.Controllers
 			
 			foreach(var techProgress in playerTechs)
 				if (investments.ContainsKey(techProgress))
-					yield return new DevelopmentTopicInfo(techProgress, investments[techProgress]);
+					yield return new ResearchTopicInfo(techProgress, investments[techProgress]);
 				else
-					yield return new DevelopmentTopicInfo(techProgress);
+					yield return new ResearchTopicInfo(techProgress);
 		}
 		
 		public int ResearchFocus

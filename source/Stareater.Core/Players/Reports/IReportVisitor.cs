@@ -2,6 +2,7 @@
 {
 	interface IReportVisitor
 	{
-		void Visit(TechnologyReport report);
+		void Visit(DevelopmentReport report);
+		void Visit(ResearchReport report);
 	}
 }

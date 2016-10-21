@@ -14,9 +14,14 @@ namespace Stareater.Controllers.Views
 			return wrapped;
 		}
 		
-		public void Visit(TechnologyReport report)
+		public void Visit(DevelopmentReport report)
 		{
-			wrapped = new TechnologyReportInfo(report);
+			wrapped = new DevelopmentReportInfo(report);
+		}
+		
+		public void Visit(ResearchReport report)
+		{
+			wrapped = new ResearchReportInfo(report);
 		}
 	}
 }

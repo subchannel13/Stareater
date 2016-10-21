@@ -21,7 +21,7 @@ namespace Stareater.GameLogic
 		public const string LevelSufix = "Lvl";
 		
 		public IEnumerable<DevelopmentResult> DevelopmentPlan { get; protected set; }
-		public IEnumerable<DevelopmentResult> ResearchPlan { get; protected set; }
+		public IEnumerable<ResearchResult> ResearchPlan { get; protected set; }
 		public Player Player { get; private set; }
 		public Dictionary<Design, DesignStats> DesignStats { get; private set; }
 		public Design ColonyShipDesign { get; private set; }
@@ -51,7 +51,7 @@ namespace Stareater.GameLogic
 			
 			copy.DesignStats = new Dictionary<Design, DesignStats>(playersRemap.Designs.Keys.Where(x => x.Owner == this.Player).ToDictionary(x => x, x => this.DesignStats[x]));
 			copy.DevelopmentPlan = (this.DevelopmentPlan != null) ? new List<DevelopmentResult>(this.DevelopmentPlan) : null;
-			copy.ResearchPlan  = (this.ResearchPlan != null) ? new List<DevelopmentResult>(this.ResearchPlan) : null;
+			copy.ResearchPlan  = (this.ResearchPlan != null) ? new List<ResearchResult>(this.ResearchPlan) : null;
 			copy.TechLevels = new Dictionary<string, double>(this.TechLevels);
 			
 			return copy;
@@ -115,15 +115,12 @@ namespace Stareater.GameLogic
 				focused = advanceOrder[0].Topic.IdCode;
 			
 			double focusWeight = statics.PlayerFormulas.FocusedResearchWeight;
-			var results = new List<DevelopmentResult>();
+			var results = new List<ResearchResult>();
 			for (int i = 0; i < advanceOrder.Count; i++) {
 				double weight = advanceOrder[i].Topic.IdCode == focused ? focusWeight : 1;
 				weight /= advanceOrder.Count + focusWeight - 1;
 				
-				results.Add(advanceOrder[i].SimulateInvestment(
-					weight,
-					techLevels
-				));
+				results.Add(advanceOrder[i].SimulateInvestment(weight));
 			}
 			
 			this.ResearchPlan = results;
@@ -153,7 +150,7 @@ namespace Stareater.GameLogic
 			return playerTechs;
 		}
 		
-		public IEnumerable<DevelopmentProgress> ResearchOrder(TechProgressCollection techAdvances)
+		public IEnumerable<ResearchProgress> ResearchOrder(TechProgressCollection techAdvances)
 		{
 			//TODO(v0.6) make research equivalent of TechProgressCollection
 			var techLevels = techAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
@@ -226,10 +223,15 @@ namespace Stareater.GameLogic
 
 		private void advanceTechnologies(StatesDB states)
 		{
-			foreach(var techProgress in this.DevelopmentPlan.Concat(this.ResearchPlan)) {
+			foreach(var techProgress in this.DevelopmentPlan) {
 				techProgress.Item.Progress(techProgress);
 				if (techProgress.CompletedCount > 0)
-					states.Reports.Add(new TechnologyReport(techProgress));
+					states.Reports.Add(new DevelopmentReport(techProgress));
+			}
+			foreach(var techProgress in this.ResearchPlan) {
+				techProgress.Item.Progress(techProgress);
+				if (techProgress.CompletedCount > 0)
+					states.Reports.Add(new ResearchReport(techProgress));
 			}
 			this.Calculate(states.DevelopmentAdvances.Of(Player));
 

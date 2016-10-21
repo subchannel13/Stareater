@@ -2,6 +2,7 @@
 {
 	public interface IReportInfoVisitor
 	{
-		void Visit(TechnologyReportInfo reportInfo);
+		void Visit(DevelopmentReportInfo reportInfo);
+		void Visit(ResearchReportInfo reportInfo);
 	}
 }

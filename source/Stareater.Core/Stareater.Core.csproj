@@ -105,6 +105,7 @@
     <Compile Include="Controllers\Views\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Views\PlayerInfo.cs" />
     <Compile Include="Controllers\Views\ReportWrapper.cs" />
+    <Compile Include="Controllers\Views\ResearchReportInfo.cs" />
     <Compile Include="Controllers\Views\ResearchTopicInfo.cs" />
     <Compile Include="Controllers\Views\SavedGameInfo.cs" />
     <Compile Include="Controllers\Views\Ships\AbilityInfo.cs" />
@@ -124,7 +125,7 @@
     <Compile Include="Controllers\Views\Ships\WaypointInfo.cs" />
     <Compile Include="Controllers\Views\StellarisInfo.cs" />
     <Compile Include="Controllers\Views\TechnologyCategory.cs" />
-    <Compile Include="Controllers\Views\TechnologyReportInfo.cs" />
+    <Compile Include="Controllers\Views\DevelopmentReportInfo.cs" />
     <Compile Include="Controllers\Views\DevelopmentTopicInfo.cs" />
     <Compile Include="Controllers\FleetController.cs" />
     <Compile Include="Controllers\GameBuilder.cs" />
@@ -426,7 +427,8 @@
     <Compile Include="Players\Reports\IReport.cs" />
     <Compile Include="Players\Reports\IReportVisitor.cs" />
     <Compile Include="Players\Reports\ReportFactory.cs" />
-    <Compile Include="Players\Reports\TechnologyReport.cs" />
+    <Compile Include="Players\Reports\DevelopmentReport.cs" />
+    <Compile Include="Players\Reports\ResearchReport.cs" />
     <Compile Include="Ships\Component.cs" />
     <Compile Include="Ships\Design.cs">
       <DependentUpon>Design.tt</DependentUpon>

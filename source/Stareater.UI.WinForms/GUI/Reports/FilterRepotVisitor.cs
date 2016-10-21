@@ -10,7 +10,7 @@ namespace Stareater.GUI.Reports
 
 		#region IReportInfoVisitor implementation
 
-		public void Visit(TechnologyReportInfo reportInfo)
+		public void Visit(DevelopmentReportInfo reportInfo)
 		{
 			this.ShowItem = SettingsWinforms.Get.ReportTechnology;
 		}

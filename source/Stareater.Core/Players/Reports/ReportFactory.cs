@@ -11,8 +11,10 @@ namespace Stareater.Players.Reports
 	{
 		public static IReport Load(IkonComposite reportData, ObjectDeindexer deindexer)
 		{
-			if (reportData.Tag.Equals(TechnologyReport.SaveTag))
-				return TechnologyReport.Load(reportData, deindexer);
+			if (reportData.Tag.Equals(DevelopmentReport.SaveTag))
+				return DevelopmentReport.Load(reportData, deindexer);
+			if (reportData.Tag.Equals(ResearchReport.SaveTag))
+				return DevelopmentReport.Load(reportData, deindexer);
 
 			//TODO(later): add error handling
 			throw new NotImplementedException();
