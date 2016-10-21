@@ -5,31 +5,31 @@ using Stareater.Players;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	class TechProgressCollection : ICollection<TechnologyProgress>, IDelayedCollection<TechnologyProgress>
+	class TechProgressCollection : ICollection<DevelopmentProgress>, IDelayedCollection<DevelopmentProgress>
 	{
-		private HashSet<TechnologyProgress> innerSet = new HashSet<TechnologyProgress>();
-		private readonly List<TechnologyProgress> toAdd = new List<TechnologyProgress>();
-		private readonly List<TechnologyProgress> toRemove = new List<TechnologyProgress>();
+		private HashSet<DevelopmentProgress> innerSet = new HashSet<DevelopmentProgress>();
+		private readonly List<DevelopmentProgress> toAdd = new List<DevelopmentProgress>();
+		private readonly List<DevelopmentProgress> toRemove = new List<DevelopmentProgress>();
 
-		Dictionary<Player, List<TechnologyProgress>> OfIndex = new Dictionary<Player, List<TechnologyProgress>>();
+		Dictionary<Player, List<DevelopmentProgress>> OfIndex = new Dictionary<Player, List<DevelopmentProgress>>();
 
-		public IList<TechnologyProgress> Of(Player key) 
+		public IList<DevelopmentProgress> Of(Player key) 
 		{
 			return (OfIndex.ContainsKey(key)) ? 
 				OfIndex[key] : 
-				new List<TechnologyProgress>();
+				new List<DevelopmentProgress>();
 		}
 	
-		public void Add(TechnologyProgress item)
+		public void Add(DevelopmentProgress item)
 		{
 			innerSet.Add(item); 
 
 			if (!OfIndex.ContainsKey(item.Owner))
-				OfIndex.Add(item.Owner, new List<TechnologyProgress>());
+				OfIndex.Add(item.Owner, new List<DevelopmentProgress>());
 			OfIndex[item.Owner].Add(item);
 		}
 
-		public void Add(IEnumerable<TechnologyProgress> items)
+		public void Add(IEnumerable<DevelopmentProgress> items)
 		{
 			foreach(var item in items)
 				Add(item);
@@ -42,12 +42,12 @@ namespace Stareater.GameData.Databases.Tables
 			OfIndex.Clear();
 		}
 
-		public bool Contains(TechnologyProgress item)
+		public bool Contains(DevelopmentProgress item)
 		{
 			return innerSet.Contains(item);
 		}
 
-		public void CopyTo(TechnologyProgress[] array, int arrayIndex)
+		public void CopyTo(DevelopmentProgress[] array, int arrayIndex)
 		{
 			innerSet.CopyTo(array, arrayIndex);
 		}
@@ -62,7 +62,7 @@ namespace Stareater.GameData.Databases.Tables
 			get { return false; }
 		}
 
-		public bool Remove(TechnologyProgress item)
+		public bool Remove(DevelopmentProgress item)
 		{
 			if (innerSet.Remove(item)) {
 				OfIndex[item.Owner].Remove(item);
@@ -73,7 +73,7 @@ namespace Stareater.GameData.Databases.Tables
 			return false;
 		}
 
-		public IEnumerator<TechnologyProgress> GetEnumerator()
+		public IEnumerator<DevelopmentProgress> GetEnumerator()
 		{
 			return innerSet.GetEnumerator();
 		}
@@ -83,12 +83,12 @@ namespace Stareater.GameData.Databases.Tables
 			return innerSet.GetEnumerator();
 		}
 
-		public void PendAdd(TechnologyProgress element)
+		public void PendAdd(DevelopmentProgress element)
 		{
 			toAdd.Add(element);
 		}
 		
-		public void PendRemove(TechnologyProgress element)
+		public void PendRemove(DevelopmentProgress element)
 		{
 			toRemove.Add(element);
 		}

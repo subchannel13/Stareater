@@ -105,6 +105,7 @@
     <Compile Include="Controllers\Views\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Views\PlayerInfo.cs" />
     <Compile Include="Controllers\Views\ReportWrapper.cs" />
+    <Compile Include="Controllers\Views\ResearchTopicInfo.cs" />
     <Compile Include="Controllers\Views\SavedGameInfo.cs" />
     <Compile Include="Controllers\Views\Ships\AbilityInfo.cs" />
     <Compile Include="Controllers\Views\Ships\MissionEquipInfo.cs" />
@@ -185,6 +186,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameData\ResearchProgress.cs">
+      <DependentUpon>ResearchProgress.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GameData\ResearchProgress.partial.cs" />
+    <Compile Include="GameData\ResearchProgress.txt">
+      <DependentUpon>ResearchProgress.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameData\ResearchTopic.cs" />
     <Compile Include="GameData\Ships\AAbilityType.cs" />
     <Compile Include="GameData\Ships\DirectShootAbility.cs" />
@@ -194,6 +204,14 @@
     <Compile Include="GameLogic\AbilityStats.cs" />
     <Compile Include="GameLogic\IConstructionVisitor.cs" />
     <Compile Include="GameLogic\InvalidMissionVisitor.cs" />
+    <Compile Include="GameLogic\ResearchResult.cs">
+      <DependentUpon>ResearchResult.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="GameLogic\ResearchResult.txt">
+      <DependentUpon>ResearchResult.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameLogic\ShipConstructionCounter.cs" />
     <Compile Include="GameLogic\ShipConstructionUpdater.cs" />
     <Compile Include="GameLogic\SpaceBattleProcessor.cs" />
@@ -339,11 +357,11 @@
     </Compile>
     <Compile Include="GameData\StarIntelligence.partial.cs" />
     <Compile Include="GameData\DevelopmentTopic.cs" />
-    <Compile Include="GameData\TechnologyProgress.cs">
-      <DependentUpon>TechnologyProgress.tt</DependentUpon>
+    <Compile Include="GameData\DevelopmentProgress.cs">
+      <DependentUpon>DevelopmentProgress.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="GameData\TechnologyProgress.partial.cs" />
+    <Compile Include="GameData\DevelopmentProgress.partial.cs" />
     <Compile Include="GameLogic\ConstructionResult.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -368,12 +386,12 @@
     <Compile Include="GameLogic\ColonyProcessor.cs" />
     <Compile Include="GameLogic\ConstructionAddBuilding.cs" />
     <Compile Include="GameLogic\PlayerProcessor.cs" />
-    <Compile Include="GameLogic\ScienceResult.cs">
-      <DependentUpon>ScienceResult.tt</DependentUpon>
+    <Compile Include="GameLogic\DevelopmentResult.cs">
+      <DependentUpon>DevelopmentResult.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="GameLogic\ScienceResult.txt">
-      <DependentUpon>ScienceResult.tt</DependentUpon>
+    <Compile Include="GameLogic\DevelopmentResult.txt">
+      <DependentUpon>DevelopmentResult.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameLogic\StellarisProcessor.cs" />
@@ -610,13 +628,17 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlayersRemap.cs</LastGenOutput>
     </None>
+    <None Include="GameData\ResearchProgress.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ResearchProgress.cs</LastGenOutput>
+    </None>
     <None Include="GameData\StarIntelligence.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StarIntelligence.cs</LastGenOutput>
     </None>
-    <None Include="GameData\TechnologyProgress.tt">
+    <None Include="GameData\DevelopmentProgress.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TechnologyProgress.cs</LastGenOutput>
+      <LastGenOutput>DevelopmentProgress.cs</LastGenOutput>
     </None>
     <None Include="GameLogic\ConstructionResult.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -626,9 +648,13 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DesignStats.cs</LastGenOutput>
     </None>
-    <None Include="GameLogic\ScienceResult.tt">
+    <None Include="GameLogic\DevelopmentResult.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ScienceResult.cs</LastGenOutput>
+      <LastGenOutput>DevelopmentResult.cs</LastGenOutput>
+    </None>
+    <None Include="GameLogic\ResearchResult.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ResearchResult.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="Players\Player.tt">

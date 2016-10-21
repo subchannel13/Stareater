@@ -158,7 +158,7 @@ namespace Stareater.Controllers
 			var techProgress = new TechProgressCollection();
 			foreach(Player player in players)
 				foreach(DevelopmentTopic tech in technologies)
-					techProgress.Add(new TechnologyProgress(tech, player));
+					techProgress.Add(new DevelopmentProgress(tech, player));
 			
 			return techProgress;
 		}
@@ -248,7 +248,7 @@ namespace Stareater.Controllers
 			
 			var techs = new TechProgressCollection();
 			foreach(var rawData in stateData[StatesDB.DevelopmentAdvancesKey].To<IEnumerable<IkonComposite>>())
-				techs.Add(TechnologyProgress.Load(rawData, deindexer));
+				techs.Add(DevelopmentProgress.Load(rawData, deindexer));
 			
 			var reports = new ReportCollection();
 			foreach(var rawData in stateData[StatesDB.ReportsKey].To<IEnumerable<IkonComposite>>())

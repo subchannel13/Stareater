@@ -1,0 +1,12 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/CustomTuple.tt" #><#
+	
+	usings.Add("Stareater.GameData");
+	
+	Generate("Stareater.GameLogic", "ResearchResult",
+		new DataInfo("CompletedCount", "long"),
+		new DataInfo("InvestedPoints", "double"),
+		new DataInfo("Item", "ResearchProgress"),
+		new DataInfo("LeftoverPoints", "double")
+	);
+#>

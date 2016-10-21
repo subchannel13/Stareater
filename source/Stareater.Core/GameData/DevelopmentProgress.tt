@@ -1,0 +1,15 @@
+﻿<#@ output extension=".cs" #>
+<#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
+
+	usings.Add("System");
+	usings.Add("Stareater.Players");
+	
+	modifer = "partial";
+	
+	Generate("Stareater.GameData", "DevelopmentProgress",
+		new DataInfo("Owner", "Player").FromIndexer(),
+		new DataInfo("Topic", "DevelopmentTopic").SaveIdCode(),
+		new DataInfo("Level", "int"),
+		new DataInfo("InvestedPoints", "double").SaveKey("Invested")
+	);
+#>

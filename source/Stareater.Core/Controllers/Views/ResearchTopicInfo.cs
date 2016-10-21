@@ -7,11 +7,11 @@ using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views
 {
-	public class DevelopmentTopicInfo
+	public class ResearchTopicInfo
 	{
 		internal const string LangContext = "Technologies";
 		
-		private readonly DevelopmentTopic topic;
+		private readonly ResearchTopic topic;
 		private IDictionary<string, double> textVars;
 		
 		public double Cost { get; private set; }
@@ -20,7 +20,7 @@ namespace Stareater.Controllers.Views
 		public int Level { get; private set; }
 		public int NextLevel { get; private set; }
 		
-		internal DevelopmentTopicInfo(DevelopmentProgress tech)
+		internal ResearchTopicInfo(ResearchProgress tech)
 		{
 			this.topic = tech.Topic;
 			this.textVars = new Var(DevelopmentTopic.LevelKey, tech.NextLevel).Get;
@@ -32,7 +32,7 @@ namespace Stareater.Controllers.Views
 			this.NextLevel = tech.NextLevel;
 		}
 		
-		internal DevelopmentTopicInfo(DevelopmentProgress tech, DevelopmentResult investmentResult)
+		internal ResearchTopicInfo(ResearchProgress tech, DevelopmentResult investmentResult)
 		{
 			this.topic = tech.Topic;
 			this.textVars = new Var(DevelopmentTopic.LevelKey, tech.NextLevel).Get;
