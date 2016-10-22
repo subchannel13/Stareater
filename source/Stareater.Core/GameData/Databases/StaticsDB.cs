@@ -90,7 +90,7 @@ namespace Stareater.GameData.Databases
 							db.DevelopmentFocusOptions.AddRange(loadFocusOptions(data));
 							break;
 						case DevelopmentTag:
-							db.DevelopmentTopics.Add(loadDevelopmentTopic(data, TechnologyCategory.Development));
+							db.DevelopmentTopics.Add(loadDevelopmentTopic(data));
 							break;
 						case PlayerFormulasTag:
 							db.PlayerFormulas = loadPlayerFormulas(data);
@@ -518,7 +518,7 @@ namespace Stareater.GameData.Databases
 				);
 		}
 		
-		private static DevelopmentTopic loadDevelopmentTopic(IkonComposite data, TechnologyCategory category)
+		private static DevelopmentTopic loadDevelopmentTopic(IkonComposite data)
 		{
 			return new DevelopmentTopic(
 				data[GeneralNameKey].To<string>(),
@@ -526,9 +526,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralCostKey].To<Formula>(),
-				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(),
-				data[GeneralMaxLevelKey].To<int>(),
-				category
+				data[GeneralMaxLevelKey].To<int>()
 			 );
 		}
 		

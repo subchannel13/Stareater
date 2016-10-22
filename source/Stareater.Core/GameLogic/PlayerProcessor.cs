@@ -141,10 +141,8 @@ namespace Stareater.GameLogic
 			var techLevels = techAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var playerTechs = techAdvances
 				.Of(Player)
-				.Where(x => (
-					x.Topic.Category == TechnologyCategory.Development && 
-					x.CanProgress(techLevels))
-				).ToList();
+				.Where(x => (x.CanProgress()))
+				.ToList();
 			playerTechs.Sort(technologySort);
 			
 			return playerTechs;
@@ -236,7 +234,7 @@ namespace Stareater.GameLogic
 			var newTechLevels = states.DevelopmentAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var validTechs = new HashSet<string>(
 					states.DevelopmentAdvances
-					.Where(x => x.CanProgress(newTechLevels))
+					.Where(x => x.CanProgress())
 					.Select(x => x.Topic.IdCode)
 				);
 

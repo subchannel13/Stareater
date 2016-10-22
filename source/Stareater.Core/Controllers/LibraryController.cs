@@ -20,9 +20,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				foreach(var tech in this.gameController.GameInstance.Statics.DevelopmentTopics.
-				        Where(x => x.Category == TechnologyCategory.Development).
-				        OrderBy(x => x.IdCode))
+				foreach(var tech in this.gameController.GameInstance.Statics.DevelopmentTopics.OrderBy(x => x.IdCode))
 					yield return new TechnologyGeneralInfo(tech);
 			}
 		}
@@ -31,9 +29,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				foreach(var tech in this.gameController.GameInstance.Statics.DevelopmentTopics.
-				        Where(x => x.Category == TechnologyCategory.Research).
-				        OrderBy(x => x.IdCode))
+				foreach(var tech in this.gameController.GameInstance.Statics.ResearchTopics.OrderBy(x => x.IdCode))
 					yield return new TechnologyGeneralInfo(tech);
 			}
 		}

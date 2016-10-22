@@ -27,11 +27,9 @@ namespace Stareater.GameData
 			}
 		}
 		
-		public bool CanProgress(IDictionary<string, double> techLevels)
+		public bool CanProgress()
 		{
-			return Level < Topic.MaxLevel && 
-				Prerequisite.AreSatisfied(Topic.Prerequisites, NextLevel, techLevels);
-			
+			return Level < Topic.MaxLevel;
 		}
 		
 		public void Progress(DevelopmentResult progressData)
@@ -48,7 +46,7 @@ namespace Stareater.GameData
 			double tmpInvested = InvestedPoints;
 			double totalInvested = 0;
 			
-			while(tmplevel < Topic.MaxLevel && Prerequisite.AreSatisfied(Topic.Prerequisites, tmplevel + 1, techLevels))
+			while(tmplevel < Topic.MaxLevel)
 			{
 				double pointsLeft = this.Topic.Cost.Evaluate(new Var(DevelopmentTopic.LevelKey, tmplevel + 1).Get) - tmpInvested;
 				

@@ -16,20 +16,16 @@ namespace Stareater.GameData
 		public string ImagePath { get; private set; }
 		public string IdCode { get; private set; }
 		public Formula Cost { get; private set; }
-		public IEnumerable<Prerequisite> Prerequisites { get; private set; } //TODO(v0.6) could maybe remove, research will unlock development topics directly
 		public int MaxLevel { get; private set; }
-		public TechnologyCategory Category { get; private set; } //TODO(v0.6) remove, research topics will have their own class
 		
-		public DevelopmentTopic(string nameCode, string descriptionCode, string imagePath, string code, Formula cost, IEnumerable<Prerequisite> prerequisites, int maxLevel, TechnologyCategory category)
+		public DevelopmentTopic(string nameCode, string descriptionCode, string imagePath, string code, Formula cost, int maxLevel)
 		{
 			this.NameCode = nameCode;
 			this.DescriptionCode = descriptionCode;
 			this.ImagePath = imagePath;
 			this.IdCode = code;
 			this.Cost = cost;
-			this.Prerequisites = prerequisites;
 			this.MaxLevel = maxLevel;
-			this.Category = category;
 		}
 		
 		#region Equals and GetHashCode implementation
