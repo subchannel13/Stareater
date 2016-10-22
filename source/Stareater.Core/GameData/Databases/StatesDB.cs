@@ -27,21 +27,23 @@ namespace Stareater.GameData.Databases
 		
 		public DesignCollection Designs { get; private set; }
 		public ReportCollection Reports { get; private set; }
-		public TechProgressCollection DevelopmentAdvances { get; private set; }
+		public DevelopmentProgressCollection DevelopmentAdvances { get; private set; }
+		public ResearchProgressCollection ResearchAdvances { get; private set; }
 		
 		private int nextDesignId = 0;
 		
 		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, 
-		                ColonyCollection Colonies, StellarisCollection stellarises, 
-		                TechProgressCollection technologyProgresses, ReportCollection reports,
-		                DesignCollection designs, FleetCollection fleets, ColonizationCollection colonizations)
+		                ColonyCollection Colonies, StellarisCollection stellarises,
+		                DevelopmentProgressCollection developmentAdvances, ResearchProgressCollection researchAdvances, 
+						ReportCollection reports, DesignCollection designs, FleetCollection fleets, ColonizationCollection colonizations)
 		{
 			this.Colonies = Colonies;
 			this.Planets = planets;
 			this.Stars = stars;
 			this.Stellarises = stellarises;
 			this.Wormholes = wormholes;
-			this.DevelopmentAdvances = technologyProgresses;
+			this.DevelopmentAdvances = developmentAdvances;
+			this.ResearchAdvances = researchAdvances;
 			this.Reports = reports;
 			this.Designs = designs;
 			this.Fleets = fleets;
@@ -86,8 +88,11 @@ namespace Stareater.GameData.Databases
 			copy.Designs = new DesignCollection();
 			copy.Designs.Add(playersRemap.Designs.Values);
 			
-			copy.DevelopmentAdvances = new TechProgressCollection();
+			copy.DevelopmentAdvances = new DevelopmentProgressCollection();
 			copy.DevelopmentAdvances.Add(this.DevelopmentAdvances.Select(x => x.Copy(playersRemap)));
+
+			copy.ResearchAdvances = new ResearchProgressCollection();
+			copy.ResearchAdvances.Add(this.ResearchAdvances.Select(x => x.Copy(playersRemap)));
 			
 			return copy;
 		}
@@ -151,6 +156,7 @@ namespace Stareater.GameData.Databases
 			data.Add(DesignsKey, new IkonArray().AddAll(this.Designs.Select(x => x.Save(indexer))));
 			data.Add(ReportsKey, new IkonArray().AddAll(this.Reports.Select(x => x.Save(indexer))));
 			data.Add(DevelopmentAdvancesKey, new IkonArray().AddAll(this.DevelopmentAdvances.Select(x => x.Save(indexer))));
+			data.Add(ResearchAdvancesKey, new IkonArray().AddAll(this.ResearchAdvances.Select(x => x.Save(indexer))));
 						
 			return data;
 		}
@@ -163,6 +169,7 @@ namespace Stareater.GameData.Databases
 		public const string IdleFleetsKey = "idleFleets";
 		public const string PlanetsKey = "planets";
 		public const string ReportsKey = "reports";
+		public const string ResearchAdvancesKey = "researchAdvances";
 		public const string StarsKey = "stars";
 		public const string StellarisesKey = "stellarises";
 		public const string WormholesKey = "wormholes";

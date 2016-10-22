@@ -12,7 +12,7 @@ namespace Stareater.GUI
 	public sealed partial class FormResearch : Form
 	{
 		private readonly PlayerController controller;
-		private IList<DevelopmentTopicInfo> topics;
+		private IList<ResearchTopicInfo> topics;
 		
 		private Control lastTopic = null;
 		
@@ -50,13 +50,13 @@ namespace Stareater.GUI
 			topicList.SuspendLayout();
 			
 			while (topicList.Controls.Count < topics.Count) {
-				var topicControl = new TechnologyItem();
+				var topicControl = new ResearchItem();
 				topicControl.MouseEnter += topic_OnMouseEnter;
 				topicList.Controls.Add(topicControl);
 			}
 
 			for (int i = 0; i < topics.Count; i++)
-				(topicList.Controls[i] as TechnologyItem).SetData(topics[i]);
+				(topicList.Controls[i] as ResearchItem).SetData(topics[i]);
 			
 			topicList.ResumeLayout();
 		}
@@ -69,7 +69,7 @@ namespace Stareater.GUI
 				techDescription.Text = "";
 				techLevel.Text = "";
 			} else if (lastTopic != topic) {
-				var selection = topic as TechnologyItem;
+				var selection = topic as ResearchItem;
 				
 				techImage.Image = ImageCache.Get[selection.Data.ImagePath];
 				techName.Text = selection.Data.Name;

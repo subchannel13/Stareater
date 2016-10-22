@@ -54,7 +54,7 @@ namespace Stareater.GUI
 			topicList.SuspendLayout();
 			
 			while (topicList.Controls.Count < topics.Count) {
-				var topicControl = new TechnologyItem();
+				var topicControl = new DevelopmentItem();
 				topicControl.MouseEnter += topic_OnMouseEnter;
 				topicList.Controls.Add(topicControl);
 			}
@@ -62,7 +62,7 @@ namespace Stareater.GUI
 				topicList.Controls.RemoveAt(topicList.Controls.Count - 1);
 
 			for (int i = 0; i < topics.Count; i++)
-				(topicList.Controls[i] as TechnologyItem).SetData(topics[i]);
+				(topicList.Controls[i] as DevelopmentItem).SetData(topics[i]);
 			
 			topicList.ResumeLayout();
 		}
@@ -75,7 +75,7 @@ namespace Stareater.GUI
 				techDescription.Text = "";
 				techLevel.Text = "";
 			} else {
-				var selection = topic as TechnologyItem;
+				var selection = topic as DevelopmentItem;
 				
 				techImage.Image = ImageCache.Get[selection.Data.ImagePath];
 				techName.Text = selection.Data.Name;

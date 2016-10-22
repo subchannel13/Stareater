@@ -108,7 +108,7 @@ namespace Stareater.GameLogic
 		{
 			var techLevels = states.DevelopmentAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			
-			var advanceOrder = this.ResearchOrder(states.DevelopmentAdvances).ToList();
+			var advanceOrder = this.ResearchOrder(states.ResearchAdvances).ToList();
 			string focused = Player.Orders.ResearchFocus;
 			
 			if (advanceOrder.Count > 0 && advanceOrder.All(x => x.Topic.IdCode != focused))
@@ -136,7 +136,7 @@ namespace Stareater.GameLogic
 			this.ResearchPlan = null;
 		}
 		
-		public IEnumerable<DevelopmentProgress> DevelopmentOrder(TechProgressCollection techAdvances)
+		public IEnumerable<DevelopmentProgress> DevelopmentOrder(DevelopmentProgressCollection techAdvances)
 		{
 			var techLevels = techAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var playerTechs = techAdvances
@@ -150,17 +150,15 @@ namespace Stareater.GameLogic
 			return playerTechs;
 		}
 		
-		public IEnumerable<ResearchProgress> ResearchOrder(TechProgressCollection techAdvances)
+		public IEnumerable<ResearchProgress> ResearchOrder(ResearchProgressCollection techAdvances)
 		{
 			//TODO(v0.6) make research equivalent of TechProgressCollection
 			var techLevels = techAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var playerTechs = techAdvances
 				.Of(Player)
-				.Where(x => (
-					x.Topic.Category == TechnologyCategory.Research &&
-					x.CanProgress(techLevels))
-				).ToList();
-			playerTechs.Sort(technologySort);
+				.Where(x =>	x.CanProgress())
+				.OrderBy(x => x.Topic.IdCode)
+				.ToList();
 			
 			return playerTechs;
 		}

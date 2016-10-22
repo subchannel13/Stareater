@@ -169,6 +169,12 @@
     <Compile Include="GUI\ControlListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GUI\ResearchItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\ResearchItem.Designer.cs">
+      <DependentUpon>ResearchItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\DesignItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -393,11 +399,11 @@
     <Compile Include="GUI\ShipGroupItem.Designer.cs">
       <DependentUpon>ShipGroupItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\TechnologyItem.cs">
+    <Compile Include="GUI\DevelopmentItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\TechnologyItem.Designer.cs">
-      <DependentUpon>TechnologyItem.cs</DependentUpon>
+    <Compile Include="GUI\DevelopmentItem.Designer.cs">
+      <DependentUpon>DevelopmentItem.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -420,6 +426,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ConstructionSiteView.resx">
       <DependentUpon>ConstructionSiteView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ResearchItem.resx">
+      <DependentUpon>ResearchItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\DesignItem.resx">
       <DependentUpon>DesignItem.cs</DependentUpon>
@@ -531,8 +540,8 @@
     <EmbeddedResource Include="GUI\ShipGroupItem.resx">
       <DependentUpon>ShipGroupItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\TechnologyItem.resx">
-      <DependentUpon>TechnologyItem.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\DevelopmentItem.resx">
+      <DependentUpon>DevelopmentItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

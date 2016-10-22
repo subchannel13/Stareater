@@ -15,6 +15,11 @@ namespace Stareater.GUI.Reports
 			this.ShowItem = SettingsWinforms.Get.ReportTechnology;
 		}
 
+		public void Visit(ResearchReportInfo reportInfo)
+		{
+			this.ShowItem = SettingsWinforms.Get.ReportTechnology;
+		}
+
 		#endregion
 	}
 }

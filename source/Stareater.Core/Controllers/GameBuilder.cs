@@ -87,9 +87,10 @@ namespace Stareater.Controllers
 			var planets = createPlanets(starSystems);
 			var colonies = createColonies(players, starSystems, starPositions.HomeSystems, newGameData.SelectedStart);
 			var stellarises = createStellarises(players, starSystems, starPositions.HomeSystems);
-			var techAdvances = createTechAdvances(players, statics.DevelopmentTopics);
+			var developmentAdvances = createDevelopmentAdvances(players, statics.DevelopmentTopics);
+			var researchAdvances = createResearchAdvances(players, statics.ResearchTopics);
 
-			return new StatesDB(stars, wormholes, planets, colonies, stellarises, techAdvances,
+			return new StatesDB(stars, wormholes, planets, colonies, stellarises, developmentAdvances, researchAdvances,
 			                    new ReportCollection(), new DesignCollection(), new FleetCollection(),
 			                    new ColonizationCollection());
 		}
@@ -153,16 +154,26 @@ namespace Stareater.Controllers
 			return wormholes;
 		}
 		
-		private static TechProgressCollection createTechAdvances(Player[] players, IEnumerable<DevelopmentTopic> technologies)
+		private static DevelopmentProgressCollection createDevelopmentAdvances(Player[] players, IEnumerable<DevelopmentTopic> technologies)
 		{
-			var techProgress = new TechProgressCollection();
-			foreach(Player player in players)
-				foreach(DevelopmentTopic tech in technologies)
+			var techProgress = new DevelopmentProgressCollection();
+			foreach(var player in players)
+				foreach(var tech in technologies)
 					techProgress.Add(new DevelopmentProgress(tech, player));
 			
 			return techProgress;
 		}
-		
+
+		private static ResearchProgressCollection createResearchAdvances(Player[] players, IEnumerable<ResearchTopic> technologies)
+		{
+			var techProgress = new ResearchProgressCollection();
+			foreach (var player in players)
+				foreach (var tech in technologies)
+					techProgress.Add(new ResearchProgress(tech, player));
+
+			return techProgress;
+		}
+
 		private static void initColonies(Player[] players, ColonyCollection colonies, StartingConditions startingConditions, 
 		                                 TemporaryDB derivates, StaticsDB statics)
 		{
@@ -245,10 +256,14 @@ namespace Stareater.Controllers
 			var players = new List<Player>();
 			foreach(var rawData in saveData[MainGame.PlayersKey].To<IEnumerable<IkonComposite>>())
 				players.Add(Player.Load(rawData, deindexer));
-			
-			var techs = new TechProgressCollection();
-			foreach(var rawData in stateData[StatesDB.DevelopmentAdvancesKey].To<IEnumerable<IkonComposite>>())
-				techs.Add(DevelopmentProgress.Load(rawData, deindexer));
+
+			var developments = new DevelopmentProgressCollection();
+			foreach (var rawData in stateData[StatesDB.DevelopmentAdvancesKey].To<IEnumerable<IkonComposite>>())
+				developments.Add(DevelopmentProgress.Load(rawData, deindexer));
+
+			var research = new ResearchProgressCollection();
+			foreach (var rawData in stateData[StatesDB.ResearchAdvancesKey].To<IEnumerable<IkonComposite>>())
+				research.Add(ResearchProgress.Load(rawData, deindexer));
 			
 			var reports = new ReportCollection();
 			foreach(var rawData in stateData[StatesDB.ReportsKey].To<IEnumerable<IkonComposite>>())
@@ -282,7 +297,7 @@ namespace Stareater.Controllers
 				players[i].Orders = PlayerOrders.Load(ordersData[i].To<IkonComposite>(), deindexer);
 				                                  
 			return new Tuple<StatesDB, Player[]>(
-				new StatesDB(stars, wormholes, planets, colonies, stellarises, techs, reports, designs, fleets, colonizations),
+				new StatesDB(stars, wormholes, planets, colonies, stellarises, developments, research, reports, designs, fleets, colonizations),
 				players.ToArray()
 			);
 		}

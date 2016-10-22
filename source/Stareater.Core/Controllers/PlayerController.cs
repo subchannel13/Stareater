@@ -315,7 +315,7 @@ namespace Stareater.Controllers
 		public IEnumerable<ResearchTopicInfo> ResearchTopics()
 		{
 			var game = this.gameInstance;
-			var playerTechs = game.Derivates.Of(this.PlayerInstance).ResearchOrder(game.States.DevelopmentAdvances);
+			var playerTechs = game.Derivates.Of(this.PlayerInstance).ResearchOrder(game.States.ResearchAdvances);
 		
 			if (game.Derivates.Of(this.PlayerInstance).ResearchPlan == null)
 				game.Derivates.Of(this.PlayerInstance).CalculateResearch(
@@ -339,7 +339,7 @@ namespace Stareater.Controllers
 			{
 				var game = this.gameInstance;
 				string focused = this.PlayerInstance.Orders.ResearchFocus;
-				var playerTechs = game.Derivates.Of(this.PlayerInstance).ResearchOrder(game.States.DevelopmentAdvances).ToList();
+				var playerTechs = game.Derivates.Of(this.PlayerInstance).ResearchOrder(game.States.ResearchAdvances).ToList();
 				
 				for (int i = 0; i < playerTechs.Count; i++)
 					if (playerTechs[i].Topic.IdCode == focused)
@@ -353,7 +353,7 @@ namespace Stareater.Controllers
 				if (this.IsReadOnly)
 					return;
 				
-				var playerTechs = this.gameInstance.Derivates.Of(this.PlayerInstance).ResearchOrder(this.gameInstance.States.DevelopmentAdvances).ToList();
+				var playerTechs = this.gameInstance.Derivates.Of(this.PlayerInstance).ResearchOrder(this.gameInstance.States.ResearchAdvances).ToList();
 				if (value >= 0 && value < playerTechs.Count) {
 					this.PlayerInstance.Orders.ResearchFocus = playerTechs[value].Topic.IdCode;
 					this.gameInstance.Derivates.Of(this.PlayerInstance).InvalidateResearch();

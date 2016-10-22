@@ -7,19 +7,21 @@ namespace Stareater.GUI.Reports
 	{
 		private Action openDevelopment;
 		private Action openResearch;
-		
+
 		public OpenReportVisitor(Action openDevelopment, Action openResearch)
 		{
 			this.openDevelopment = openDevelopment;
 			this.openResearch = openResearch;
 		}
-		
+
 		public void Visit(DevelopmentReportInfo reportInfo)
 		{
-			if (reportInfo.Category == TechnologyCategory.Development)
-				this.openDevelopment(); 
-			else
-				this.openResearch();
+			this.openDevelopment();
+		}
+
+		public void Visit(ResearchReportInfo reportInfo)
+		{
+			this.openResearch();
 		}
 	}
 }

@@ -187,6 +187,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameData\Databases\Tables\ResearchProgressCollection.cs">
+      <DependentUpon>ResearchProgressCollection.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="GameData\ResearchProgress.cs">
       <DependentUpon>ResearchProgress.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -333,8 +338,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StarCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="GameData\Databases\Tables\TechProgressCollection.cs">
-      <DependentUpon>TechProgressCollection.tt</DependentUpon>
+    <Compile Include="GameData\Databases\Tables\DevelopmentProgressCollection.cs">
+      <DependentUpon>DevelopmentProgressCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -558,6 +563,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ConstructionOrders.cs</LastGenOutput>
     </None>
+    <None Include="GameData\Databases\Tables\ResearchProgressCollection.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ResearchProgressCollection.cs</LastGenOutput>
+    </None>
     <None Include="GameData\Databases\Tables\PlayerOrders.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlayerOrders.cs</LastGenOutput>
@@ -606,9 +615,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StellarisCollection.cs</LastGenOutput>
     </None>
-    <None Include="GameData\Databases\Tables\TechProgressCollection.tt">
+    <None Include="GameData\Databases\Tables\DevelopmentProgressCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TechProgressCollection.cs</LastGenOutput>
+      <LastGenOutput>DevelopmentProgressCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\WormholeCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

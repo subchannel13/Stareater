@@ -20,5 +20,10 @@ namespace Stareater.GUI.Reports
 		{
 			this.Result = ImageCache.Get[reportInfo.ImagePath];
 		}
+
+		public void Visit(ResearchReportInfo reportInfo)
+		{
+			this.Result = ImageCache.Get[reportInfo.ImagePath];
+		}
 	}
 }
