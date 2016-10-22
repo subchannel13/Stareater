@@ -68,7 +68,7 @@ namespace Stareater.GameData
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{
-			var other = obj as DevelopmentProgress;
+			var other = obj as ResearchProgress;
 			if (other == null)
 				return false;
 			return object.Equals(this.Topic, other.Topic) && object.Equals(this.Owner, other.Owner);
