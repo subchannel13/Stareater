@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Stareater.GameData;
 using Stareater.GameLogic;
 using Stareater.Localization;
@@ -19,8 +20,9 @@ namespace Stareater.Controllers.Views
 		public double Investment { get; private set; }
 		public int Level { get; private set; }
 		public int NextLevel { get; private set; }
+		public DevelopmentTopicInfo[] Unlocks { get; private set; }
 		
-		internal ResearchTopicInfo(ResearchProgress tech)
+		internal ResearchTopicInfo(ResearchProgress tech, IEnumerable<DevelopmentTopic> developmentTopics)
 		{
 			this.topic = tech.Topic;
 			this.textVars = new Var(DevelopmentTopic.LevelKey, tech.NextLevel).Get;
@@ -30,9 +32,12 @@ namespace Stareater.Controllers.Views
 			this.Investment = 0;
 			this.Level = tech.Level;
 			this.NextLevel = tech.NextLevel;
+			this.Unlocks = tech.Topic.Unlocks[tech.NextLevel].Select(id => new DevelopmentTopicInfo(new DevelopmentProgress(
+				developmentTopics.First(x => x.IdCode == id), tech.Owner)
+			)).ToArray();
 		}
-		
-		internal ResearchTopicInfo(ResearchProgress tech, ResearchResult investmentResult)
+
+		internal ResearchTopicInfo(ResearchProgress tech, ResearchResult investmentResult, IEnumerable<DevelopmentTopic> developmentTopics)
 		{
 			this.topic = tech.Topic;
 			this.textVars = new Var(DevelopmentTopic.LevelKey, tech.NextLevel).Get;
@@ -42,6 +47,9 @@ namespace Stareater.Controllers.Views
 			this.Investment = investmentResult.InvestedPoints;
 			this.Level = tech.Level;
 			this.NextLevel = investmentResult.CompletedCount > 1 ? tech.Level + (int)investmentResult.CompletedCount : tech.NextLevel;
+			this.Unlocks = tech.Topic.Unlocks[tech.NextLevel].Select(id => new DevelopmentTopicInfo(new DevelopmentProgress(
+				developmentTopics.First(x => x.IdCode == id), tech.Owner)
+			)).ToArray();
 		}
 		
 		public string Name 

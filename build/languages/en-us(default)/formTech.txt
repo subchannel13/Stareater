@@ -9,4 +9,5 @@ Level §
 developmentPoints = Development points
 focusedResearchTitle = Research focus
 otherResearchHeader = Other fields
+researchUnlock = Unlocks:
 -

@@ -19,7 +19,7 @@ namespace Stareater.Controllers.Views
 		public double Investment { get; private set; }
 		public int Level { get; private set; }
 		public int NextLevel { get; private set; }
-		
+
 		internal DevelopmentTopicInfo(DevelopmentProgress tech)
 		{
 			this.topic = tech.Topic;

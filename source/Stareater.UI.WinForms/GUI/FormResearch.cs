@@ -80,12 +80,18 @@ namespace Stareater.GUI
 			else if (lastTopic != topic)
 			{
 				var selection = topic as ResearchItem;
+				lastTopic = topic;
 
 				techImage.Image = ImageCache.Get[selection.Data.ImagePath];
 				techName.Text = selection.Data.Name;
-				techDescription.Text = selection.Data.Description;
 				techLevel.Text = selection.TopicLevelText;
-				lastTopic = topic;
+				techDescription.Text = 
+					selection.Data.Description + 
+					Environment.NewLine +
+					Environment.NewLine +
+					LocalizationManifest.Get.CurrentLanguage["FormTech"]["researchUnlock"].Text() +
+					Environment.NewLine +
+					string.Join(Environment.NewLine, selection.Data.Unlocks.Select(x => x.Name));
 			}
 		}
 

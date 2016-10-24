@@ -4,7 +4,11 @@
 	code: Bio
 	image: ./images/technologies/hydroponicFarms.png
 	cost # 10;
-	devTopics []
+	devTopics [
+		[
+			:HydroFarm
+		]
+	]
 }
 
 { ResearchTopic
@@ -13,7 +17,11 @@
 	code: Phy
 	image: ./images/technologies/hydroponicFarms.png
 	cost # 10;
-	devTopics []
+	devTopics [
+		[
+			:Laser
+		]
+	]
 }
 
 { ResearchTopic
@@ -22,7 +30,11 @@
 	code: Chem
 	image: ./images/technologies/hydroponicFarms.png
 	cost # 10;
-	devTopics []
+	devTopics [
+		[
+			:Ind
+		]
+	]
 }
 
 { ResearchTopic
@@ -31,7 +43,11 @@
 	code: Mat
 	image: ./images/technologies/hydroponicFarms.png
 	cost # 10;
-	devTopics []
+	devTopics [
+		[
+			:Ecm
+		]
+	]
 }
 
 { ResearchTopic
@@ -40,6 +56,11 @@
 	code: Soc
 	image: ./images/technologies/hydroponicFarms.png
 	cost # 10;
-	devTopics []
+	devTopics [
+		[
+			:Colonizer
+			:SpaceProgram
+		]
+	]
 }
 

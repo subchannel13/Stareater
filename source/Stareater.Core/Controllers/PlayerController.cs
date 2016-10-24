@@ -328,9 +328,9 @@ namespace Stareater.Controllers
 			
 			foreach(var techProgress in playerTechs)
 				if (investments.ContainsKey(techProgress))
-					yield return new ResearchTopicInfo(techProgress, investments[techProgress]);
+					yield return new ResearchTopicInfo(techProgress, investments[techProgress], game.Statics.DevelopmentTopics);
 				else
-					yield return new ResearchTopicInfo(techProgress);
+					yield return new ResearchTopicInfo(techProgress, game.Statics.DevelopmentTopics);
 		}
 		
 		public int ResearchFocus
