@@ -13,64 +13,74 @@ namespace Stareater.GUI
 	{
 		private readonly PlayerController controller;
 		private IList<ResearchTopicInfo> topics;
-		
+
 		private Control lastTopic = null;
-		
+
 		public FormResearch()
 		{
 			InitializeComponent();
 		}
-		
+
 		public FormResearch(PlayerController controller) : this()
 		{
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.controller = controller;
 			this.topics = controller.ResearchTopics().ToList();
-			
+
 			updateList();
-			
-			if (topics.Count > 0)
-				topicList.SelectedIndex = controller.ResearchFocus;
-			
-			updateDescription(topicList.SelectedItem);
-				
+
+			updateDescription(focusedItem);
+
 			Context context = LocalizationManifest.Get.CurrentLanguage["FormTech"];
 			this.Text = context["ResearchTitle"].Text();
+			this.focusedLabel.Text = context["focusedResearchTitle"].Text();
+			this.listTitle.Text = context["otherResearchHeader"].Text();
 		}
-		
+
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
-			if (keyData == Keys.Escape) 
+			if (keyData == Keys.Escape)
 				this.Close();
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
-		
+
 		private void updateList()
 		{
 			topicList.SuspendLayout();
-			
-			while (topicList.Controls.Count < topics.Count) {
+
+			while (topicList.Controls.Count < topics.Count - 1)
+			{
 				var topicControl = new ResearchItem();
 				topicControl.MouseEnter += topic_OnMouseEnter;
+				topicControl.Click += topicList_SelectedIndexChanged;
 				topicList.Controls.Add(topicControl);
 			}
 
 			for (int i = 0; i < topics.Count; i++)
-				(topicList.Controls[i] as ResearchItem).SetData(topics[i]);
-			
+				if (controller.ResearchFocus != i)
+				{
+					int controlIndex = i + (controller.ResearchFocus < i ? -1 : 0);
+					(topicList.Controls[controlIndex] as ResearchItem).SetData(topics[i]);
+					topicList.Controls[controlIndex].Tag = i;
+				}
+
+			focusedItem.SetData(topics[controller.ResearchFocus]);
 			topicList.ResumeLayout();
 		}
-		
+
 		private void updateDescription(Control topic)
 		{
-			if (topic == null) {
+			if (topic == null)
+			{
 				techImage.Image = null;
 				techName.Text = "";
 				techDescription.Text = "";
 				techLevel.Text = "";
-			} else if (lastTopic != topic) {
+			}
+			else if (lastTopic != topic)
+			{
 				var selection = topic as ResearchItem;
-				
+
 				techImage.Image = ImageCache.Get[selection.Data.ImagePath];
 				techName.Text = selection.Data.Name;
 				techDescription.Text = selection.Data.Description;
@@ -78,22 +88,21 @@ namespace Stareater.GUI
 				lastTopic = topic;
 			}
 		}
-		
+
 		private void topic_OnMouseEnter(object sender, EventArgs e)
 		{
 			updateDescription(sender as Control);
 		}
-		
+
 		private void topicList_MouseLeave(object sender, EventArgs e)
 		{
-			updateDescription(topicList.SelectedItem);
+			updateDescription(this.focusedItem);
 		}
-		
+
 		private void topicList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			this.controller.ResearchFocus = topicList.SelectedIndex;
-			this.topics = controller.ResearchTopics().ToList();
-			
+			this.controller.ResearchFocus = (int)(sender as ResearchItem).Tag;
+
 			updateList();
 		}
 	}

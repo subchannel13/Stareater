@@ -1,12 +1,4 @@
-﻿/*
- * Created by SharpDevelop.
- * User: ekraiva
- * Date: 29.4.2014.
- * Time: 11:08
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-namespace Stareater.GUI
+﻿namespace Stareater.GUI
 {
 	partial class FormResearch
 	{
@@ -14,21 +6,23 @@ namespace Stareater.GUI
 		/// Designer variable used to keep track of non-visual components.
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
-		
+
 		/// <summary>
 		/// Disposes resources used by the form.
 		/// </summary>
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing) {
-				if (components != null) {
+			if (disposing)
+			{
+				if (components != null)
+				{
 					components.Dispose();
 				}
 			}
 			base.Dispose(disposing);
 		}
-		
+
 		/// <summary>
 		/// This method is required for Windows Forms designer support.
 		/// Do not change the method contents inside the source code editor. The Forms designer might
@@ -40,7 +34,10 @@ namespace Stareater.GUI
 			this.techLevel = new System.Windows.Forms.Label();
 			this.techName = new System.Windows.Forms.Label();
 			this.techImage = new System.Windows.Forms.PictureBox();
-			this.topicList = new Stareater.GUI.ControlListView();
+			this.topicList = new System.Windows.Forms.FlowLayoutPanel();
+			this.focusedLabel = new System.Windows.Forms.Label();
+			this.focusedItem = new Stareater.GUI.ResearchItem();
+			this.listTitle = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.techImage)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -83,19 +80,46 @@ namespace Stareater.GUI
 			// topicList
 			// 
 			this.topicList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.topicList.Location = new System.Drawing.Point(12, 12);
+			this.topicList.Location = new System.Drawing.Point(12, 117);
 			this.topicList.Name = "topicList";
-			this.topicList.SelectedIndex = -1;
-			this.topicList.Size = new System.Drawing.Size(277, 385);
+			this.topicList.Size = new System.Drawing.Size(277, 280);
 			this.topicList.TabIndex = 28;
-			this.topicList.SelectedIndexChanged += new System.EventHandler(this.topicList_SelectedIndexChanged);
 			this.topicList.MouseLeave += new System.EventHandler(this.topicList_MouseLeave);
+			// 
+			// focusedLabel
+			// 
+			this.focusedLabel.AutoSize = true;
+			this.focusedLabel.Location = new System.Drawing.Point(12, 9);
+			this.focusedLabel.Name = "focusedLabel";
+			this.focusedLabel.Size = new System.Drawing.Size(48, 13);
+			this.focusedLabel.TabIndex = 29;
+			this.focusedLabel.Text = "focused:";
+			// 
+			// focusedItem
+			// 
+			this.focusedItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(196)))), ((int)(((byte)(255)))));
+			this.focusedItem.Location = new System.Drawing.Point(15, 25);
+			this.focusedItem.Name = "focusedItem";
+			this.focusedItem.Size = new System.Drawing.Size(250, 50);
+			this.focusedItem.TabIndex = 30;
+			// 
+			// listTitle
+			// 
+			this.listTitle.AutoSize = true;
+			this.listTitle.Location = new System.Drawing.Point(12, 101);
+			this.listTitle.Name = "listTitle";
+			this.listTitle.Size = new System.Drawing.Size(62, 13);
+			this.listTitle.TabIndex = 31;
+			this.listTitle.Text = "other topics";
 			// 
 			// FormResearch
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(559, 409);
+			this.Controls.Add(this.listTitle);
+			this.Controls.Add(this.focusedItem);
+			this.Controls.Add(this.focusedLabel);
 			this.Controls.Add(this.topicList);
 			this.Controls.Add(this.techDescription);
 			this.Controls.Add(this.techLevel);
@@ -112,10 +136,13 @@ namespace Stareater.GUI
 			this.PerformLayout();
 
 		}
-		private Stareater.GUI.ControlListView topicList;
+		private System.Windows.Forms.FlowLayoutPanel topicList;
 		private System.Windows.Forms.PictureBox techImage;
 		private System.Windows.Forms.Label techName;
 		private System.Windows.Forms.Label techLevel;
 		private System.Windows.Forms.TextBox techDescription;
+		private System.Windows.Forms.Label focusedLabel;
+		private ResearchItem focusedItem;
+		private System.Windows.Forms.Label listTitle;
 	}
 }
