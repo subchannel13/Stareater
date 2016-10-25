@@ -180,6 +180,10 @@
     <Compile Include="FormResearch.Designer.cs">
       <DependentUpon>FormResearch.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormResearchComplete.cs" />
+    <Compile Include="FormResearchComplete.Designer.cs">
+      <DependentUpon>FormResearchComplete.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSaveLoad.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -349,6 +353,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormResearch.resx">
       <DependentUpon>FormResearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormResearchComplete.resx">
+      <DependentUpon>FormResearchComplete.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSaveLoad.resx">
       <DependentUpon>FormSaveLoad.cs</DependentUpon>
