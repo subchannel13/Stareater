@@ -170,14 +170,16 @@ namespace Stareater.Controllers
 		private void processCombat()
 		{
 			if (gameObj.Processor.HasConflicts)
-				initaiteCombat();
+				this.initaiteCombat();
 			else
 				this.EndCombatPhase();
 		}
 		
 		private void postcombatTurnProcessing()
 		{
+			this.presentBreakthroughs();
 			gameObj.Processor.ProcessPostcombat();
+			
 			lock(threadLocker)
 			{
 				this.endTurnCopy = null;
@@ -200,6 +202,7 @@ namespace Stareater.Controllers
 
 		private void initaiteCombat()
 		{
+			//TODO(v0.6) does it work when there are multiple conflicts per turn?
 			var conflict = gameObj.Processor.NextConflict();
 			var controller = new SpaceBattleController(conflict, this, gameObj, playerControllers);
 			var participants = conflict.Combatants.Select(x => x.Owner).Distinct().ToList();
@@ -217,6 +220,17 @@ namespace Stareater.Controllers
 			controller.Start();
 		}
 		
+		private void presentBreakthroughs()
+		{
+			foreach(var playerProc in this.gameObj.Derivates.Players)
+				foreach(var breakthrough in playerProc.Breakthroughs())
+					this.stateListener.OnResearchComplete(new ResearchCompleteController(
+						gameObj, 
+						playerProc.Player, 
+						breakthrough.Item.Topic
+					));
+			//TODO(v0.6) AI handling?
+		}
 		#endregion
 	}
 }

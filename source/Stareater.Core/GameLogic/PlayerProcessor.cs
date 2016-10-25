@@ -208,6 +208,11 @@ namespace Stareater.GameLogic
 		#endregion
 		
 		#region Postcombat processing
+		public IEnumerable<ResearchResult> Breakthroughs()
+		{
+			return this.ResearchPlan.Where(x => x.CompletedCount > 0);
+		}
+		
 		public void ProcessPostcombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
 			this.advanceTechnologies(states);

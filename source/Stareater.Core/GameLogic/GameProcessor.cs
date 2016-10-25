@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NGenerics.DataStructures.Mathematical;
+using Stareater.GameData;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
 using Stareater.Galaxy;
@@ -20,6 +20,16 @@ namespace Stareater.GameLogic
 			this.game = game;
 		}
 
+		public bool IsOver
+		{
+			get
+			{
+				 //TODO(later) end game by leaving stareater
+				return game.States.Colonies.Select(x => x.Owner).Distinct().Count() <= 1;
+			}
+		}
+		
+		#region Turn processing
 		public void ProcessPrecombat()
 		{
 			this.CalculateBaseEffects();
@@ -55,7 +65,9 @@ namespace Stareater.GameLogic
 			
 			this.game.Turn++;
 		}
+		#endregion
 
+		#region Derived stats calculation
 		public void CalculateBaseEffects()
 		{
 			foreach (var stellaris in this.game.Derivates.Stellarises)
@@ -97,21 +109,14 @@ namespace Stareater.GameLogic
 			foreach (var colonyProc in this.game.Derivates.Colonies)
 				colonyProc.CalculateDerivedEffects(this.game.Statics, this.game.Derivates.Of(colonyProc.Owner));
 		}
-
-		public bool HasConflicts 
+		#endregion
+		
+		#region Conflict cycling
+		public bool HasConflicts
 		{
 			get
 			{
 				return this.conflicts.Count != 0;
-			}
-		}
-		
-		public bool IsOver
-		{
-			get
-			{
-				 //TODO(later) end game by leaving stareater
-				return game.States.Colonies.Select(x => x.Owner).Distinct().Count() <= 1;
 			}
 		}
 		
@@ -131,6 +136,7 @@ namespace Stareater.GameLogic
 				this.game.States.Fleets.Add(fleet);
 			}
 		}
+		#endregion
 		
 		private void commitFleetOrders()
 		{

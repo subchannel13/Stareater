@@ -471,6 +471,29 @@ namespace Stareater.GUI
 		
 		
 		#region IGameStateListener implementation
+		public IBattleEventListener OnDoCombat(SpaceBattleController battleController)
+		{
+			if (this.InvokeRequired)
+				this.Invoke(new Action<SpaceBattleController>(initCombatGui), battleController);
+			
+			return this;
+		}
+		
+		public void OnGameOver()
+		{
+			if (this.InvokeRequired) {
+				postDelayedEvent(this.OnGameOver);
+				return;
+			}
+			
+			this.nextRenderer = this.gameOverRenderer;
+			
+			abilityList.Visible = false;
+			endTurnButton.Visible = false;
+			unitInfoPanel.Visible = false;
+			menuStrip.Visible = true;
+		}
+		
 		public void OnNewTurn()
 		{
 			if (this.InvokeRequired) {
@@ -495,27 +518,13 @@ namespace Stareater.GUI
 			if (systemRenderer != null) systemRenderer.OnNewTurn();
 		}
 		
-		public void OnGameOver()
-		{
-			if (this.InvokeRequired) {
-				postDelayedEvent(this.OnGameOver);
-				return;
-			}
-			
-			this.nextRenderer = this.gameOverRenderer;
-			
-			abilityList.Visible = false;
-			endTurnButton.Visible = false;
-			unitInfoPanel.Visible = false;
-			menuStrip.Visible = true;
-		}
-		
-		public IBattleEventListener OnDoCombat(SpaceBattleController battleController)
+		public void OnResearchComplete(ResearchCompleteController controller)
 		{
 			if (this.InvokeRequired)
-				this.Invoke(new Action<SpaceBattleController>(initCombatGui), battleController);
-			
-			return this;
+			{
+				this.Invoke(new Action<ResearchCompleteController>(OnResearchComplete), controller);
+				return;
+			}
 		}
 		
 		private void initCombatGui(SpaceBattleController battleController)

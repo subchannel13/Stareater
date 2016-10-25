@@ -14,5 +14,6 @@ namespace Stareater.Controllers.Views
 		
 		void OnNewTurn();
 		void OnGameOver();
+		void OnResearchComplete(ResearchCompleteController controller);
 	}
 }
