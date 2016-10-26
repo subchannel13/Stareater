@@ -26,6 +26,7 @@ namespace Winforms_Mockups
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.TextBox textBox2;
 		private System.Windows.Forms.Button button9;
+		private System.Windows.Forms.PictureBox pictureBox1;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -60,14 +61,16 @@ namespace Winforms_Mockups
 			this.button2 = new System.Windows.Forms.Button();
 			this.textBox2 = new System.Windows.Forms.TextBox();
 			this.button9 = new System.Windows.Forms.Button();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.controlListView1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-			this.label1.Location = new System.Drawing.Point(12, 9);
+			this.label1.Location = new System.Drawing.Point(98, 12);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(48, 13);
 			this.label1.TabIndex = 0;
@@ -76,7 +79,7 @@ namespace Winforms_Mockups
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(12, 22);
+			this.label2.Location = new System.Drawing.Point(98, 25);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(42, 13);
 			this.label2.TabIndex = 1;
@@ -86,11 +89,11 @@ namespace Winforms_Mockups
 			// 
 			this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 			| System.Windows.Forms.AnchorStyles.Left)));
-			this.textBox1.Location = new System.Drawing.Point(12, 57);
+			this.textBox1.Location = new System.Drawing.Point(12, 98);
 			this.textBox1.Multiline = true;
 			this.textBox1.Name = "textBox1";
 			this.textBox1.ReadOnly = true;
-			this.textBox1.Size = new System.Drawing.Size(222, 376);
+			this.textBox1.Size = new System.Drawing.Size(222, 335);
 			this.textBox1.TabIndex = 17;
 			this.textBox1.Text = "Lore ipsum\r\nDoloret reat msddo mowerr maugad sad\r\ndaod coksal. Je sorof msoerta n" +
 	"aue usfa.\r\n";
@@ -180,11 +183,22 @@ namespace Winforms_Mockups
 			this.button9.Text = "Confirm";
 			this.button9.UseVisualStyleBackColor = true;
 			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.Image = global::Winforms_Mockups.Properties.Resources.hydroponic_farms;
+			this.pictureBox1.Location = new System.Drawing.Point(12, 12);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(80, 80);
+			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+			this.pictureBox1.TabIndex = 25;
+			this.pictureBox1.TabStop = false;
+			// 
 			// FormResearchComplete
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(587, 445);
+			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.button9);
 			this.Controls.Add(this.textBox2);
 			this.Controls.Add(this.button3);
@@ -198,6 +212,7 @@ namespace Winforms_Mockups
 			this.Name = "FormResearchComplete";
 			this.Text = "Research complete!";
 			this.controlListView1.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

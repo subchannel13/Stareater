@@ -169,6 +169,12 @@
     <Compile Include="GUI\ControlListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GUI\FormResearchComplete.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FormResearchComplete.Designer.cs">
+      <DependentUpon>FormResearchComplete.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ResearchItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -427,6 +433,9 @@
     <EmbeddedResource Include="GUI\ConstructionSiteView.resx">
       <DependentUpon>ConstructionSiteView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormResearchComplete.resx">
+      <DependentUpon>FormResearchComplete.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\ResearchItem.resx">
       <DependentUpon>ResearchItem.cs</DependentUpon>
     </EmbeddedResource>
@@ -581,6 +590,10 @@
     <ProjectReference Include="..\Stareater.Core\Stareater.Core.csproj">
       <Project>{452BB6D1-D27F-4D71-A05B-A6DDC4013E33}</Project>
       <Name>Stareater.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Zvjezdojedac\Zvjezdojedac.csproj">
+      <Project>{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}</Project>
+      <Name>Zvjezdojedac</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
