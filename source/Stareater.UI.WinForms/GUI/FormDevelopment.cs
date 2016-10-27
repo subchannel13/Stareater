@@ -56,6 +56,7 @@ namespace Stareater.GUI
 			while (topicList.Controls.Count < topics.Count) {
 				var topicControl = new DevelopmentItem();
 				topicControl.MouseEnter += topic_OnMouseEnter;
+				topicControl.MouseLeave += topicList_OnMouseLeave;
 				topicList.Controls.Add(topicControl);
 			}
 			while (topicList.Controls.Count > topics.Count)
@@ -87,7 +88,7 @@ namespace Stareater.GUI
 		private void reorderTopic(int fromIndex, int toIndex)
 		{
 			if (toIndex < 0) toIndex = 0;
-			if (toIndex >= topics.Count)	toIndex = topics.Count - 1;
+			if (toIndex >= topics.Count) toIndex = topics.Count - 1;
 			if (fromIndex == toIndex)
 				return;
 			
@@ -123,7 +124,7 @@ namespace Stareater.GUI
 			updateDescription(sender as Control);
 		}
 		
-		private void topicList_MouseLeave(object sender, EventArgs e)
+		private void topicList_OnMouseLeave(object sender, EventArgs e)
 		{
 			updateDescription(topicList.SelectedItem);
 		}

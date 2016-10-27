@@ -1,0 +1,9 @@
+﻿:FormResearchComplete
+FormTitle = Research complete!
+doneButton = Confirm
+priorityTitle = Choose advancement priority:
+
+Level §
+		Level {=lvl}
+	\
+-

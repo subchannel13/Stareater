@@ -173,6 +173,8 @@ namespace Stareater.GUI
 			this.Controls.Add(this.acceptButton);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormResearchComplete";
+			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "FormResearchComplete";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormResearchComplete_FormClosed);
 			((System.ComponentModel.ISupportInitialize)(this.topicThumbnail)).EndInit();

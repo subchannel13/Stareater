@@ -83,5 +83,30 @@ namespace Stareater.Controllers.Views
 				return topic.IdCode;
 			}
 		}
+		
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			var other = obj as DevelopmentTopicInfo;
+			return other != null && object.Equals(this.topic, other.topic);
+		}
+
+		public override int GetHashCode()
+		{
+			return topic != null ? topic.GetHashCode() : 0;
+		}
+
+		public static bool operator ==(DevelopmentTopicInfo lhs, DevelopmentTopicInfo rhs) {
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(DevelopmentTopicInfo lhs, DevelopmentTopicInfo rhs) {
+			return !(lhs == rhs);
+		}
+		#endregion
 	}
 }

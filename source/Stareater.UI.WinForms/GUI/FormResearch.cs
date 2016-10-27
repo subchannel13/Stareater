@@ -25,7 +25,6 @@ namespace Stareater.GUI
 		{
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.controller = controller;
-			this.topics = controller.ResearchTopics().ToList();
 
 			updateList();
 
@@ -46,6 +45,7 @@ namespace Stareater.GUI
 
 		private void updateList()
 		{
+			this.topics = controller.ResearchTopics().ToList();
 			topicList.SuspendLayout();
 
 			while (topicList.Controls.Count < topics.Count - 1)
