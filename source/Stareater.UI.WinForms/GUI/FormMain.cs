@@ -522,9 +522,12 @@ namespace Stareater.GUI
 		{
 			if (this.InvokeRequired)
 			{
-				this.Invoke(new Action<ResearchCompleteController>(OnResearchComplete), controller);
+				this.BeginInvoke(new Action<ResearchCompleteController>(OnResearchComplete), controller);
 				return;
 			}
+			
+			using(var form = new FormResearchComplete(controller))
+				form.ShowDialog();
 		}
 		
 		private void initCombatGui(SpaceBattleController battleController)

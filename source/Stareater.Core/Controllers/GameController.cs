@@ -129,17 +129,17 @@ namespace Stareater.Controllers
 			Task.Factory.StartNew(precombatTurnProcessing).ContinueWith(checkTaskException);
 		}
 
-		internal void EndCombatPhase()
-		{
-			Task.Factory.StartNew(postcombatTurnProcessing).ContinueWith(checkTaskException);
-		}
-
 		internal void ConflictResolved(SpaceBattleGame battleGame)
 		{
 			this.gameObj.Processor.ConflictResolved(battleGame);
 			this.processCombat();
 		}
-
+		
+		internal void BreakthroughReviewed(ResearchCompleteController controller)
+		{
+			//TODO(v0.6) pull development topic priorities
+			this.processBreakthroughs();
+		}
 		#endregion
 		
 		#region Background processing
@@ -172,12 +172,19 @@ namespace Stareater.Controllers
 			if (gameObj.Processor.HasConflicts)
 				this.initaiteCombat();
 			else
-				this.EndCombatPhase();
+				this.processBreakthroughs();
+		}
+		
+		private void processBreakthroughs()
+		{
+			if (this.gameObj.Derivates.Players.Any(x => x.HasBreakthrough))
+				this.presentBreakthrough();
+			else
+				this.postcombatTurnProcessing();
 		}
 		
 		private void postcombatTurnProcessing()
 		{
-			this.presentBreakthroughs();
 			gameObj.Processor.ProcessPostcombat();
 			
 			lock(threadLocker)
@@ -202,7 +209,6 @@ namespace Stareater.Controllers
 
 		private void initaiteCombat()
 		{
-			//TODO(v0.6) does it work when there are multiple conflicts per turn?
 			var conflict = gameObj.Processor.NextConflict();
 			var controller = new SpaceBattleController(conflict, this, gameObj, playerControllers);
 			var participants = conflict.Combatants.Select(x => x.Owner).Distinct().ToList();
@@ -220,16 +226,17 @@ namespace Stareater.Controllers
 			controller.Start();
 		}
 		
-		private void presentBreakthroughs()
+		private void presentBreakthrough()
 		{
-			foreach(var playerProc in this.gameObj.Derivates.Players)
-				foreach(var breakthrough in playerProc.Breakthroughs())
-					this.stateListener.OnResearchComplete(new ResearchCompleteController(
-						gameObj, 
-						playerProc.Player, 
-						breakthrough.Item.Topic
-					));
+			var playerProc = this.gameObj.Derivates.Players.First(x => x.HasBreakthrough);
+			
 			//TODO(v0.6) AI handling?
+			this.stateListener.OnResearchComplete(new ResearchCompleteController(
+				playerProc.Player, 
+				playerProc.NextBreakthrough().Item.Topic,
+				this,
+				gameObj
+			));
 		}
 		#endregion
 	}

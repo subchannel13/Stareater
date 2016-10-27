@@ -27,6 +27,8 @@ namespace Stareater.GameLogic
 		public Design ColonyShipDesign { get; private set; }
 		public Design SystemColonizerDesign { get; private set; }
 		
+		private Queue<ResearchResult> breakthroughs = new Queue<ResearchResult>();
+		
 		public PlayerProcessor(Player player, IEnumerable<DevelopmentTopic> technologies)
 		{
 			this.Player = player;
@@ -178,7 +180,6 @@ namespace Stareater.GameLogic
 
 		public void ProcessPrecombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
-			this.CalculateDevelopment(statics, states, derivates.Colonies.OwnedBy(this.Player));
 			this.updateColonizationOrders(states);
 
 			foreach (var colonyProc in derivates.Colonies.OwnedBy(this.Player))
@@ -186,6 +187,8 @@ namespace Stareater.GameLogic
 
 			foreach (var stellarisProc in derivates.Stellarises.OwnedBy(this.Player))
 				stellarisProc.ProcessPrecombat(states, derivates);
+			
+			this.breakthroughs = new Queue<ResearchResult>(this.ResearchPlan.Where(x => x.CompletedCount > 0));
 			
 			/*
 			 * TODO(later): Process stars
@@ -208,9 +211,17 @@ namespace Stareater.GameLogic
 		#endregion
 		
 		#region Postcombat processing
-		public IEnumerable<ResearchResult> Breakthroughs()
+		public bool HasBreakthrough
 		{
-			return this.ResearchPlan.Where(x => x.CompletedCount > 0);
+			get
+			{
+				return this.breakthroughs.Any();
+			}
+		}
+		
+		public ResearchResult NextBreakthrough()
+		{
+			return this.breakthroughs.Dequeue();
 		}
 		
 		public void ProcessPostcombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)

@@ -66,6 +66,7 @@ namespace Stareater.GUI
 			this.acceptButton.TabIndex = 0;
 			this.acceptButton.Text = "confirm";
 			this.acceptButton.UseVisualStyleBackColor = true;
+			this.acceptButton.Click += new System.EventHandler(this.acceptButton_Click);
 			// 
 			// topicThumbnail
 			// 
@@ -133,6 +134,7 @@ namespace Stareater.GUI
 			this.reorderDownAction.Size = new System.Drawing.Size(50, 50);
 			this.reorderDownAction.TabIndex = 22;
 			this.reorderDownAction.UseVisualStyleBackColor = true;
+			this.reorderDownAction.Click += new System.EventHandler(this.reorderDownAction_Click);
 			// 
 			// reorderUpAction
 			// 
@@ -142,6 +144,7 @@ namespace Stareater.GUI
 			this.reorderUpAction.Size = new System.Drawing.Size(50, 50);
 			this.reorderUpAction.TabIndex = 21;
 			this.reorderUpAction.UseVisualStyleBackColor = true;
+			this.reorderUpAction.Click += new System.EventHandler(this.reorderUpAction_Click);
 			// 
 			// techDescription
 			// 
@@ -171,6 +174,7 @@ namespace Stareater.GUI
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormResearchComplete";
 			this.Text = "FormResearchComplete";
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormResearchComplete_FormClosed);
 			((System.ComponentModel.ISupportInitialize)(this.topicThumbnail)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

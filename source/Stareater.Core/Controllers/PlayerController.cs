@@ -50,11 +50,6 @@ namespace Stareater.Controllers
 			this.gameController.EndGalaxyPhase(this);
 		}
 
-		public void EndCombatPhase()
-		{
-			this.gameController.EndCombatPhase();
-		}
-
 		public bool IsReadOnly
 		{
 			get { return this.gameController.IsReadOnly; }
