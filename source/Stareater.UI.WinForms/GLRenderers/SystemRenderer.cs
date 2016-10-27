@@ -293,7 +293,7 @@ namespace Stareater.GLRenderers
 		{
 			if (emptyPlanetView.InvokeRequired)
 			{
-				emptyPlanetView.Invoke(new Action<object>(setView), view);
+				emptyPlanetView.BeginInvoke(new Action<object>(setView), view);
 				return;
 			}
 			

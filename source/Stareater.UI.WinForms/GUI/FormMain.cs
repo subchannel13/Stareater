@@ -474,7 +474,7 @@ namespace Stareater.GUI
 		public IBattleEventListener OnDoCombat(SpaceBattleController battleController)
 		{
 			if (this.InvokeRequired)
-				this.Invoke(new Action<SpaceBattleController>(initCombatGui), battleController);
+				this.BeginInvoke(new Action<SpaceBattleController>(initCombatGui), battleController);
 			
 			return this;
 		}
@@ -555,7 +555,7 @@ namespace Stareater.GUI
 		{
 			if (this.InvokeRequired)
 			{
-				this.Invoke(new Action<CombatantInfo>(PlayUnit), unitInfo);
+				this.BeginInvoke(new Action<CombatantInfo>(PlayUnit), unitInfo);
 				return;
 			}
 			
@@ -621,7 +621,7 @@ namespace Stareater.GUI
 		{
 			if (this.InvokeRequired)
 			{
-				this.Invoke(new Action(((IGalaxyViewListener)this).FleetDeselected));
+				this.BeginInvoke(new Action(((IGalaxyViewListener)this).FleetDeselected));
 				return;
 			}
 			
@@ -633,7 +633,7 @@ namespace Stareater.GUI
 		{
 			if (this.InvokeRequired)
 			{
-				this.Invoke(new Action<IEnumerable<FleetInfo>>(((IGalaxyViewListener)this).FleetClicked), fleets);
+				this.BeginInvoke(new Action<IEnumerable<FleetInfo>>(((IGalaxyViewListener)this).FleetClicked), fleets);
 				return;
 			}
 			
@@ -667,7 +667,7 @@ namespace Stareater.GUI
 		{
 			if (this.InvokeRequired)
 			{
-				this.Invoke(new Action<StarSystemController>(((IGalaxyViewListener)this).SystemOpened), systemController);
+				this.BeginInvoke(new Action<StarSystemController>(((IGalaxyViewListener)this).SystemOpened), systemController);
 				return;
 			}
 			
@@ -687,7 +687,7 @@ namespace Stareater.GUI
 		{
 			if (this.InvokeRequired)
 			{
-				this.Invoke(new Action<StarSystemController>(((IGalaxyViewListener)this).SystemSelected), systemController);
+				this.BeginInvoke(new Action<StarSystemController>(((IGalaxyViewListener)this).SystemSelected), systemController);
 				return;
 			}
 			

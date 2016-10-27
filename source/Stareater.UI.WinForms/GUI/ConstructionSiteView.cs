@@ -23,7 +23,7 @@ namespace Stareater.GUI
 		{
 			if (this.InvokeRequired)
 			{
-				this.Invoke(new Action<AConstructionSiteController>(SetView), siteController);
+				this.BeginInvoke(new Action<AConstructionSiteController>(SetView), siteController);
 				return;
 			}
 			
