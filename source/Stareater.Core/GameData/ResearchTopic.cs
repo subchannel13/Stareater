@@ -24,6 +24,6 @@ namespace Stareater.GameData
 			this.Unlocks = unlocks;
 		}
 		
-		public int MaxLevel { get { return this.Unlocks.Length; } }
+		public int MaxLevel { get { return this.Unlocks.Length - 1; } }
 	}
 }
