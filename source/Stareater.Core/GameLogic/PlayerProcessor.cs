@@ -210,6 +210,15 @@ namespace Stareater.GameLogic
 		#endregion
 		
 		#region Postcombat processing
+		public void BreakthroughReviewed(IList<string> selectedPriorities, StatesDB states)
+		{
+			for(int priority = 0; priority < selectedPriorities.Count; priority++)
+			{
+				var progress = states.DevelopmentAdvances.Of(this.Player).First(x => x.Topic.IdCode == selectedPriorities[priority]);
+				progress.Priority = priority;
+			}
+		}
+		
 		public bool HasBreakthrough
 		{
 			get

@@ -13,13 +13,15 @@ namespace Stareater.GameData
 		public DevelopmentTopic Topic { get; private set; }
 		public int Level { get; private set; }
 		public double InvestedPoints { get; private set; }
+		public int Priority { get; set; }
 
-		public DevelopmentProgress(Player owner, DevelopmentTopic topic, int level, double investedPoints) 
+		public DevelopmentProgress(Player owner, DevelopmentTopic topic, int level, double investedPoints, int priority) 
 		{
 			this.Owner = owner;
 			this.Topic = topic;
 			this.Level = level;
 			this.InvestedPoints = investedPoints;
+			this.Priority = priority;
  
 			 
 		} 
@@ -38,13 +40,16 @@ namespace Stareater.GameData
 
 			var investedPointsSave = rawData[InvestedKey];
 			this.InvestedPoints = investedPointsSave.To<double>();
+
+			var prioritySave = rawData[PriorityKey];
+			this.Priority = prioritySave.To<int>();
  
 			 
 		}
 
 		internal DevelopmentProgress Copy(PlayersRemap playersRemap) 
 		{
-			return new DevelopmentProgress(playersRemap.Players[this.Owner], this.Topic, this.Level, this.InvestedPoints);
+			return new DevelopmentProgress(playersRemap.Players[this.Owner], this.Topic, this.Level, this.InvestedPoints, this.Priority);
  
 		} 
  
@@ -60,6 +65,8 @@ namespace Stareater.GameData
 			data.Add(LevelKey, new IkonInteger(this.Level));
 
 			data.Add(InvestedKey, new IkonFloat(this.InvestedPoints));
+
+			data.Add(PriorityKey, new IkonInteger(this.Priority));
 			return data;
  
 		}
@@ -77,6 +84,7 @@ namespace Stareater.GameData
 		private const string TopicKey = "topic";
 		private const string LevelKey = "level";
 		private const string InvestedKey = "invested";
+		private const string PriorityKey = "priority";
  
 		#endregion
 

@@ -23,7 +23,8 @@ namespace Stareater.Controllers.Views
 		internal DevelopmentTopicInfo(DevelopmentProgress tech)
 		{
 			this.topic = tech.Topic;
-			this.textVars = new Var(DevelopmentTopic.LevelKey, tech.NextLevel).Get;
+			this.textVars = new Var(DevelopmentTopic.LevelKey, tech.NextLevel).
+				And(DevelopmentTopic.PriorityKey, tech.Priority).Get;
 				
 			this.Cost = tech.Topic.Cost.Evaluate(textVars);
 			this.InvestedPoints = tech.InvestedPoints;
@@ -35,7 +36,8 @@ namespace Stareater.Controllers.Views
 		internal DevelopmentTopicInfo(DevelopmentProgress tech, DevelopmentResult investmentResult)
 		{
 			this.topic = tech.Topic;
-			this.textVars = new Var(DevelopmentTopic.LevelKey, tech.NextLevel).Get;
+			this.textVars = new Var(DevelopmentTopic.LevelKey, tech.NextLevel).
+				And(DevelopmentTopic.PriorityKey, tech.Priority).Get;
 				
 			this.Cost = tech.Topic.Cost.Evaluate(textVars);
 			this.InvestedPoints = tech.InvestedPoints;

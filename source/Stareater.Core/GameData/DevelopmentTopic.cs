@@ -9,6 +9,7 @@ namespace Stareater.GameData
 	class DevelopmentTopic
 	{
 		public const string LevelKey = "lvl";
+		public const string PriorityKey = "priority";
 		
 		public string NameCode { get; private set; }
 		public string DescriptionCode{ get; private set; }

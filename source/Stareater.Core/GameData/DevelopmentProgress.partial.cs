@@ -12,7 +12,7 @@ namespace Stareater.GameData
 		public const int Unordered = -1;
 			
 		public DevelopmentProgress(DevelopmentTopic topic, Player owner) : 
-			this (owner, topic, NotStarted, 0)
+			this (owner, topic, NotStarted, 0, 0)
 		{ }
 
 		public int NextLevel
@@ -48,7 +48,9 @@ namespace Stareater.GameData
 			
 			while(tmplevel < Topic.MaxLevel)
 			{
-				double pointsLeft = this.Topic.Cost.Evaluate(new Var(DevelopmentTopic.LevelKey, tmplevel + 1).Get) - tmpInvested;
+				var vars = new Var(DevelopmentTopic.LevelKey, tmplevel + 1).
+					And(DevelopmentTopic.PriorityKey, this.Priority).Get;
+				double pointsLeft = this.Topic.Cost.Evaluate(vars) - tmpInvested;
 				
 				if (pointsLeft > points)
 					return new DevelopmentResult(newLevels, totalInvested + points, this, tmpInvested + points);

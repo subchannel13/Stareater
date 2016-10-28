@@ -10,6 +10,7 @@
 		new DataInfo("Owner", "Player").FromIndexer(),
 		new DataInfo("Topic", "DevelopmentTopic").SaveIdCode(),
 		new DataInfo("Level", "int"),
-		new DataInfo("InvestedPoints", "double").SaveKey("Invested")
+		new DataInfo("InvestedPoints", "double").SaveKey("Invested"),
+		new DataInfo("Priority", "int").Public()
 	);
 #>

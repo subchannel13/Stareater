@@ -139,7 +139,7 @@ namespace Stareater.Controllers
 		
 		internal void BreakthroughReviewed(ResearchCompleteController controller)
 		{
-			//TODO(v0.6) pull development topic priorities
+			this.gameObj.Derivates.Of(controller.Owner).BreakthroughReviewed(controller.SelectedPriorities, this.gameObj.States);
 			processingSync.Release();
 		}
 		#endregion

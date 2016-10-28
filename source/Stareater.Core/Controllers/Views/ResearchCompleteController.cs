@@ -9,21 +9,21 @@ namespace Stareater.Controllers.Views
 {
 	public class ResearchCompleteController
 	{
-		private readonly Player player;
-		private readonly ResearchProgress topicProgress;
 		private readonly GameController gameController;
 		private readonly MainGame game;
-		
 		private readonly List<string> priorities = new List<string>();
 		
-		internal ResearchCompleteController(Player player, ResearchTopic topic, GameController gameController, MainGame game)
+		internal Player Owner { get; private set; }
+		internal ResearchProgress TopicProgress { get; private set; }
+		
+		internal ResearchCompleteController(Player owner, ResearchTopic topic, GameController gameController, MainGame game)
 		{
 			this.game = game;
 			this.gameController = gameController;
-			this.player = player;
-			this.topicProgress = this.game.States.ResearchAdvances.Of(player).First(x => x.Topic == topic);
+			this.Owner = owner;
+			this.TopicProgress = this.game.States.ResearchAdvances.Of(owner).First(x => x.Topic == topic);
 			
-			this.priorities.AddRange(this.topicProgress.Topic.Unlocks[this.topicProgress.NextLevel]);
+			this.priorities.AddRange(this.TopicProgress.Topic.Unlocks[this.TopicProgress.NextLevel]);
 		}
 
 		public void Done()
@@ -35,7 +35,7 @@ namespace Stareater.Controllers.Views
 		{
 			get
 			{
-				return new ResearchTopicInfo(topicProgress, this.game.Statics.DevelopmentTopics);
+				return new ResearchTopicInfo(TopicProgress, this.game.Statics.DevelopmentTopics);
 			}
 		}
 
@@ -43,9 +43,10 @@ namespace Stareater.Controllers.Views
 		{
 			get
 			{
-				return this.priorities.Select(devTopic => new DevelopmentTopicInfo(
-					new DevelopmentProgress(this.player, this.game.Statics.DevelopmentTopics.First(x => x.IdCode == devTopic), 0, 0)
-				));
+				for(int i = 0; i < this.priorities.Count; i++)
+					yield return new DevelopmentTopicInfo(
+						new DevelopmentProgress(this.Owner, this.game.Statics.DevelopmentTopics.First(x => x.IdCode == this.priorities[i]), 0, 0, i)
+					);
 			}
 		}
 		
@@ -59,6 +60,11 @@ namespace Stareater.Controllers.Views
 				this.priorities.Insert(priority, unlock.IdCode);
 			else
 				this.priorities.Add(unlock.IdCode);
+		}
+		
+		internal IList<string> SelectedPriorities
+		{
+			get { return this.priorities; }
 		}
 	}
 }
