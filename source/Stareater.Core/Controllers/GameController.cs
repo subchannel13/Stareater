@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Stareater.Controllers.Data;
 using Stareater.Controllers.Views;
@@ -14,6 +15,7 @@ namespace Stareater.Controllers
 		internal const string ReportContext = "Reports";
 		
 		private object threadLocker = new object();
+		private Semaphore processingSync = new Semaphore(0, 1);
 		private MainGame gameObj;
 		
 		private GameController endTurnCopy = null;
@@ -126,19 +128,19 @@ namespace Stareater.Controllers
 				this.endTurnCopy.State = this.State;
 			}
 			
-			Task.Factory.StartNew(precombatTurnProcessing).ContinueWith(checkTaskException);
+			Task.Factory.StartNew(turnProcessing).ContinueWith(checkTaskException);
 		}
 
 		internal void ConflictResolved(SpaceBattleGame battleGame)
 		{
 			this.gameObj.Processor.ConflictResolved(battleGame);
-			this.processCombat();
+			processingSync.Release();
 		}
 		
 		internal void BreakthroughReviewed(ResearchCompleteController controller)
 		{
 			//TODO(v0.6) pull development topic priorities
-			this.processBreakthroughs();
+			processingSync.Release();
 		}
 		#endregion
 		
@@ -160,31 +162,22 @@ namespace Stareater.Controllers
 #endif
 		}
 
-		private void precombatTurnProcessing()
+		private void turnProcessing()
 		{
 			gameObj.Processor.ProcessPrecombat();
 
-			this.processCombat();
-		}
-		
-		private void processCombat()
-		{
-			if (gameObj.Processor.HasConflicts)
+			while (gameObj.Processor.HasConflicts)
+			{
 				this.initaiteCombat();
-			else
-				this.processBreakthroughs();
-		}
-		
-		private void processBreakthroughs()
-		{
-			if (this.gameObj.Derivates.Players.Any(x => x.HasBreakthrough))
+				processingSync.WaitOne();
+			}
+			
+			while (this.gameObj.Derivates.Players.Any(x => x.HasBreakthrough))
+			{
 				this.presentBreakthrough();
-			else
-				this.postcombatTurnProcessing();
-		}
-		
-		private void postcombatTurnProcessing()
-		{
+				processingSync.WaitOne();
+			}
+			
 			gameObj.Processor.ProcessPostcombat();
 			
 			lock(threadLocker)
