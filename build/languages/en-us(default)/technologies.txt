@@ -21,6 +21,12 @@ HYDRO_FARM_DESC §
 	E1 #D3 (lvl + 1) * 0.125;
 	E2 #D2 (lvl + 1) * 0.25;
 	E3 #D3 (lvl + 1) * 0.005;
+GREEN_HOUSE_NAME = Green house
+GREEN_HOUSE_DESC = More food on fertile soil.
+GMO_FOOD_NAME = GMO food
+GMO_FOOD_DESC = More food per farmer.
+SOIL_ENRICH_NAME = Soil enrichment
+SOIL_ENRICH_DESC = Makes planet's soil fertile.
 
 IND_NAME = Industry
 IND_DESC = No description

@@ -1,0 +1,52 @@
+{ ResearchTopic
+	nameCode: BIO_NAME
+	descCode: BIO_DESC
+	code: Bio
+	image: ./images/technologies/hydroponicFarms.png
+	cost # 10;
+	devTopics [
+		[ :HydroFarm :GreenHouse ]
+		[ :GmoFood ]
+		[ :SoilEnrich ]
+	]
+}
+
+{ DevelopmentTopic
+	nameCode: HYDRO_FARM_NAME
+	descCode: HYDRO_FARM_DESC
+	code: HydroFarm
+	cost # 50e9 * (lvl + 3 ^lvl);
+	maxLvl= 8
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	nameCode: GREEN_HOUSE_NAME
+	descCode: GREEN_HOUSE_DESC
+	code: GreenHouse
+	cost # 50e9 * (lvl + 3 ^lvl);
+	maxLvl= 8
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	nameCode: GMO_FOOD_NAME
+	descCode: GMO_FOOD_DESC
+	code: GmoFood
+	cost # 50e9 * (lvl + 3 ^lvl);
+	maxLvl= 8
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	nameCode: SOIL_ENRICH_NAME
+	descCode: SOIL_ENRICH_DESC
+	code: SoilEnrich
+	cost # 50e9 * (lvl + 3 ^lvl);
+	maxLvl= 8
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}

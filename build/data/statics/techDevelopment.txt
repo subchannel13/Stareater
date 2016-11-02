@@ -8,20 +8,10 @@
 }
 
 { DevelopmentTopic
-	nameCode: HYDRO_FARM_NAME
-	descCode: HYDRO_FARM_DESC
-	code: HydroFarm
-	cost # 50e9 * (lvl + 3 ^lvl);
-	maxLvl= 8
-	prerequisites []
-	image: ./images/technologies/hydroponicFarms.png
-}
-
-{ DevelopmentTopic
 	nameCode: IND_NAME
 	descCode: IND_DESC
 	code: Ind
-	cost # 80e9 * (lvl + 2 ^ lvl);
+	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/industry.png

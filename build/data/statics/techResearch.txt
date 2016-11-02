@@ -1,26 +1,11 @@
 { ResearchTopic
-	nameCode: BIO_NAME
-	descCode: BIO_DESC
-	code: Bio
-	image: ./images/technologies/hydroponicFarms.png
-	cost # 10;
-	devTopics [
-		[
-			:HydroFarm
-		]
-	]
-}
-
-{ ResearchTopic
 	nameCode : PHY_NAME
 	descCode : PHY_DESC
 	code: Phy
 	image: ./images/technologies/hydroponicFarms.png
 	cost # 10;
 	devTopics [
-		[
-			:Laser
-		]
+		[ :Laser ]
 	]
 }
 
@@ -31,9 +16,7 @@
 	image: ./images/technologies/hydroponicFarms.png
 	cost # 10;
 	devTopics [
-		[
-			:Ind
-		]
+		[ :Ind ]
 	]
 }
 
@@ -44,9 +27,7 @@
 	image: ./images/technologies/hydroponicFarms.png
 	cost # 10;
 	devTopics [
-		[
-			:Ecm
-		]
+		[ :Ecm ]
 	]
 }
 
@@ -57,10 +38,7 @@
 	image: ./images/technologies/hydroponicFarms.png
 	cost # 10;
 	devTopics [
-		[
-			:Colonizer
-			:SpaceProgram
-		]
+		[ :Colonizer :SpaceProgram ]
 	]
 }
 

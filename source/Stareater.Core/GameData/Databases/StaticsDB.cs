@@ -144,7 +144,7 @@ namespace Stareater.GameData.Databases
 			}
 			
 			foreach(var research in db.ResearchTopics)
-				for(int level = 0; level < research.MaxLevel; level++)
+				for(int level = 0; level <= research.MaxLevel; level++)
 					foreach(var unlock in research.Unlocks[level])
 						db.DevelopmentRequirements[unlock] = new DevelopmentRequirement(research.IdCode, level);
 			
