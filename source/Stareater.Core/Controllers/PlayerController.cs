@@ -234,7 +234,7 @@ namespace Stareater.Controllers
 		public IEnumerable<DevelopmentTopicInfo> DevelopmentTopics()
 		{
 			var game = this.gameInstance;
-			var playerTechs = game.Derivates.Of(this.PlayerInstance).DevelopmentOrder(game.States.DevelopmentAdvances);
+			var playerTechs = game.Derivates.Of(this.PlayerInstance).DevelopmentOrder(game.States.DevelopmentAdvances, game.States.ResearchAdvances, game.Statics);
 		
 			if (game.Derivates.Of(this.PlayerInstance).DevelopmentPlan == null)
 				game.Derivates.Of(this.PlayerInstance).CalculateDevelopment(

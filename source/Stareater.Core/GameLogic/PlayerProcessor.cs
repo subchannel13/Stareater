@@ -93,7 +93,7 @@ namespace Stareater.GameLogic
 			
 			var focus = statics.DevelopmentFocusOptions[Player.Orders.DevelopmentFocusIndex];
 			var techLevels = states.DevelopmentAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
-			var advanceOrder = this.DevelopmentOrder(states.DevelopmentAdvances).ToList();
+			var advanceOrder = this.DevelopmentOrder(states.DevelopmentAdvances, states.ResearchAdvances, statics).ToList();
 			
 			var results = new List<DevelopmentResult>();
 			for (int i = 0; i < advanceOrder.Count && i < focus.Weights.Length; i++) {
@@ -138,12 +138,12 @@ namespace Stareater.GameLogic
 			this.ResearchPlan = null;
 		}
 		
-		public IEnumerable<DevelopmentProgress> DevelopmentOrder(DevelopmentProgressCollection techAdvances)
+		public IEnumerable<DevelopmentProgress> DevelopmentOrder(DevelopmentProgressCollection developmentAdvances, ResearchProgressCollection researchAdvances, StaticsDB statics)
 		{
-			var techLevels = techAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
-			var playerTechs = techAdvances
+			var researchLevels = researchAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
+			var playerTechs = developmentAdvances
 				.Of(Player)
-				.Where(x => (x.CanProgress()))
+				.Where(x => (x.CanProgress(researchLevels, statics)))
 				.ToList();
 			playerTechs.Sort(technologySort);
 			
@@ -152,7 +152,6 @@ namespace Stareater.GameLogic
 		
 		public IEnumerable<ResearchProgress> ResearchOrder(ResearchProgressCollection techAdvances)
 		{
-			var techLevels = techAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var playerTechs = techAdvances
 				.Of(Player)
 				.Where(x =>	x.CanProgress())
@@ -234,14 +233,14 @@ namespace Stareater.GameLogic
 		
 		public void ProcessPostcombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
-			this.advanceTechnologies(states);
+			this.advanceTechnologies(states, statics);
 			this.checkColonizationValidity(states);
 			this.doConstruction(statics, states, derivates);
 			this.unlockPredefinedDesigns(statics, states);
 			this.updateDesigns(statics, states, derivates);
 		}
 
-		private void advanceTechnologies(StatesDB states)
+		private void advanceTechnologies(StatesDB states, StaticsDB statics)
 		{
 			foreach(var techProgress in this.DevelopmentPlan) {
 				techProgress.Item.Progress(techProgress);
@@ -255,10 +254,10 @@ namespace Stareater.GameLogic
 			}
 			this.Calculate(states.DevelopmentAdvances.Of(Player));
 
-			var newTechLevels = states.DevelopmentAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
+			var researchLevels = states.ResearchAdvances.Of(Player).ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var validTechs = new HashSet<string>(
 					states.DevelopmentAdvances
-					.Where(x => x.CanProgress())
+					.Where(x => x.CanProgress(researchLevels, statics))
 					.Select(x => x.Topic.IdCode)
 				);
 

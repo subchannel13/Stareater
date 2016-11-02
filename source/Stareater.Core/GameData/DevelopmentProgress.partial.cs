@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Stareater.GameData.Databases;
 using Stareater.GameLogic;
 using Stareater.Players;
 using Stareater.Utils.Collections;
@@ -27,9 +29,13 @@ namespace Stareater.GameData
 			}
 		}
 		
-		public bool CanProgress()
+		public bool CanProgress(Dictionary<string, double> researchLevels, StaticsDB statics)
 		{
-			return Level < Topic.MaxLevel;
+			var requirement = statics.DevelopmentRequirements.ContainsKey(this.Topic.IdCode) ? 
+				statics.DevelopmentRequirements[this.Topic.IdCode] : 
+				null;
+
+			return Level < Topic.MaxLevel && (requirement == null || researchLevels[requirement.Code] >= requirement.Level);
 		}
 		
 		public void Progress(DevelopmentResult progressData)

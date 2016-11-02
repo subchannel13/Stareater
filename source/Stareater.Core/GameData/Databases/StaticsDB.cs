@@ -22,6 +22,7 @@ namespace Stareater.GameData.Databases
 		public List<PredefinedDesign> ColonyShipDesigns { get; private set; }
 		public List<Constructable> Constructables { get; private set; }
 		public List<DevelopmentFocus> DevelopmentFocusOptions { get; private set; }
+		public Dictionary<string, DevelopmentRequirement> DevelopmentRequirements { get; private set; }
 		public List<DevelopmentTopic> DevelopmentTopics { get; private set; }
 		public PlayerFormulaSet PlayerFormulas { get; private set; }
 		public List<PredefinedDesign> PredeginedDesigns { get; private set; }
@@ -59,6 +60,7 @@ namespace Stareater.GameData.Databases
 			this.Buildings = new Dictionary<string, BuildingType>();
 			this.Constructables = new List<Constructable>();
 			this.DevelopmentFocusOptions = new List<DevelopmentFocus>();
+			this.DevelopmentRequirements = new Dictionary<string, DevelopmentRequirement>();
 			this.DevelopmentTopics = new List<DevelopmentTopic>();
 			this.ResearchTopics = new List<ResearchTopic>();
 			this.Traits = new Dictionary<string, BodyTraitType>();
@@ -140,6 +142,11 @@ namespace Stareater.GameData.Databases
 					}
 				}
 			}
+			
+			foreach(var research in db.ResearchTopics)
+				for(int level = 0; level < research.MaxLevel; level++)
+					foreach(var unlock in research.Unlocks[level])
+						db.DevelopmentRequirements[unlock] = new DevelopmentRequirement(research.IdCode, level);
 			
 			return db;
 		}
