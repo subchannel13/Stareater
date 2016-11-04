@@ -183,6 +183,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameData\Databases\Tables\ColonizationCollection.cs" />
     <Compile Include="GameData\Databases\Tables\ResearchProgressCollection.cs">
       <DependentUpon>ResearchProgressCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -220,10 +221,6 @@
       <DependentUpon>ColonizationProject.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameData\Databases\Tables\ColonizationCollection.cs">
-      <DependentUpon>ColonizationCollection.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\Databases\Tables\ColonizationPlan.cs">
       <DependentUpon>ColonizationPlan.tt</DependentUpon>
@@ -519,10 +516,6 @@
     <None Include="GameData\ColonizationProject.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ColonizationProject.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\ColonizationCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ColonizationCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\ColonizationPlan.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

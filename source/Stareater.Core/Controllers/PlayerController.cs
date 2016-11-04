@@ -213,7 +213,7 @@ namespace Stareater.Controllers
 		public IEnumerable<ColonizationController> ColonizationProjects()
 		{
 			var planets = new HashSet<Planet>();
-			planets.UnionWith(this.gameInstance.States.ColonizationProjects.OwnedBy(this.PlayerInstance).Select(x => x.Destination));
+			planets.UnionWith(this.gameInstance.States.ColonizationProjects.OwnedBy[this.PlayerInstance].Select(x => x.Destination));
 			planets.UnionWith(this.PlayerInstance.Orders.ColonizationOrders.Keys);
 			
 			foreach(var planet in planets)

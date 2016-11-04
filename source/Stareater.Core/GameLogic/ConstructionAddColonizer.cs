@@ -23,7 +23,7 @@ namespace Stareater.GameLogic
 		#region IConstructionEffect implementation
 		public void Apply(StatesDB states, TemporaryDB derivates, AConstructionSite site, long quantity)
 		{
-			var project = states.ColonizationProjects.Of(Destination).FirstOrDefault(x => x.Owner == this.ColonizerDesign.Owner);
+			var project = states.ColonizationProjects.Of[Destination].FirstOrDefault(x => x.Owner == this.ColonizerDesign.Owner);
 			var missions = new LinkedList<AMission>();
 			missions.AddLast(new SkipTurnMission());
 			
