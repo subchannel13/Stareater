@@ -2,6 +2,7 @@
 
 namespace Stareater.Controllers.Data 
 {
+	//TODO(later) investigate if this class is needed at all
 	class GameCopy 
 	{
 		public MainGame Game;

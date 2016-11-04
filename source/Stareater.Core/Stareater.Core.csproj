@@ -77,6 +77,7 @@
     <Compile Include="Controllers\ColonyController.cs" />
     <Compile Include="Controllers\ColonizationController.cs" />
     <Compile Include="Controllers\Data\ColonizerFinder.cs" />
+    <Compile Include="Controllers\Data\GameCopy.cs" />
     <Compile Include="Controllers\Data\MissionInfoFactory.cs" />
     <Compile Include="Controllers\LibraryController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
@@ -90,11 +91,6 @@
     <Compile Include="Controllers\Views\DevelopmentFocusInfo.cs" />
     <Compile Include="Controllers\Views\FoundGalaxyObject.cs" />
     <Compile Include="Controllers\Views\GalaxyObjectType.cs" />
-    <Compile Include="Controllers\Data\GameCopy.cs">
-      <DependentUpon>GameCopy.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Controllers\Views\GameState.cs" />
     <Compile Include="Controllers\Views\IBattleEventListener.cs" />
     <Compile Include="Controllers\Views\IGameStateListener.cs" />
@@ -148,7 +144,6 @@
     <Compile Include="Galaxy\Builders\StarPositions.cs" />
     <Compile Include="Galaxy\Builders\StarSystem.cs" />
     <Compile Include="Galaxy\Builders\WormholeEndpoints.cs">
-      <DependentUpon>WormholeEndpoints.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -213,11 +208,6 @@
     <Compile Include="GameLogic\IConstructionVisitor.cs" />
     <Compile Include="GameLogic\InvalidMissionVisitor.cs" />
     <Compile Include="GameLogic\ResearchResult.cs">
-      <DependentUpon>ResearchResult.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="GameLogic\ResearchResult.txt">
-      <DependentUpon>ResearchResult.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameLogic\ShipConstructionCounter.cs" />
@@ -282,7 +272,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\GalaxyRemap.cs">
-      <DependentUpon>GalaxyRemap.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -297,7 +286,6 @@
     <Compile Include="GameData\PlayersRemap.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PlayersRemap.tt</DependentUpon>
     </Compile>
     <Compile Include="GameData\Ships\AComponentType.cs" />
     <Compile Include="GameData\Ships\ArmorType.cs" />
@@ -373,18 +361,12 @@
     <Compile Include="GameLogic\ConstructionResult.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ConstructionResult.tt</DependentUpon>
     </Compile>
     <Compile Include="GameLogic\ConstructionAddColonizer.cs" />
     <Compile Include="GameLogic\ConstructionAddShip.cs" />
     <Compile Include="GameLogic\DesignStats.cs">
-      <DependentUpon>DesignStats.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameLogic\DesignStats.txt">
-      <DependentUpon>DesignStats.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameLogic\FleetMovement.cs" />
     <Compile Include="GameLogic\FleetProcessingVisitor.cs" />
@@ -395,11 +377,6 @@
     <Compile Include="GameLogic\ConstructionAddBuilding.cs" />
     <Compile Include="GameLogic\PlayerProcessor.cs" />
     <Compile Include="GameLogic\DevelopmentResult.cs">
-      <DependentUpon>DevelopmentResult.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="GameLogic\DevelopmentResult.txt">
-      <DependentUpon>DevelopmentResult.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameLogic\StellarisProcessor.cs" />
@@ -469,11 +446,6 @@
     <Compile Include="Utils\Collections\QuadTreeNode.cs" />
     <Compile Include="Utils\Collections\TextVar.cs" />
     <Compile Include="Utils\Collections\Var.cs" />
-    <Compile Include="Utils\CustomTuple.cs">
-      <DependentUpon>CustomTuple.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Utils\NumberFormatters\RomanFromatter.cs" />
     <Compile Include="Utils\NumberFormatters\RoundingMethod.cs" />
     <Compile Include="Utils\ProgressData.cs" />
@@ -509,17 +481,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />
-    <None Include="Controllers\Data\GameCopy.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>GameCopy.cs</LastGenOutput>
-    </None>
     <None Include="Galaxy\AConstructionSite.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AConstructionSite.cs</LastGenOutput>
-    </None>
-    <None Include="Galaxy\Builders\WormholeEndpoints.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>WormholeEndpoints.cs</LastGenOutput>
     </None>
     <None Include="Galaxy\Colony.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -625,10 +589,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WormholeCollection.cs</LastGenOutput>
     </None>
-    <None Include="GameData\GalaxyRemap.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>GalaxyRemap.cs</LastGenOutput>
-    </None>
     <None Include="GameData\Intelligence.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Intelligence.cs</LastGenOutput>
@@ -636,10 +596,6 @@
     <None Include="GameData\PlanetIntelligence.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlanetIntelligence.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\PlayersRemap.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PlayersRemap.cs</LastGenOutput>
     </None>
     <None Include="GameData\ResearchProgress.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -653,22 +609,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DevelopmentProgress.cs</LastGenOutput>
     </None>
-    <None Include="GameLogic\ConstructionResult.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ConstructionResult.cs</LastGenOutput>
-    </None>
-    <None Include="GameLogic\DesignStats.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DesignStats.cs</LastGenOutput>
-    </None>
-    <None Include="GameLogic\DevelopmentResult.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DevelopmentResult.cs</LastGenOutput>
-    </None>
-    <None Include="GameLogic\ResearchResult.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ResearchResult.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
     <None Include="Players\Player.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -681,10 +621,6 @@
     <None Include="Utils\Collections\IndexedCollectionBase.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>IndexedCollectionBase.cs</LastGenOutput>
-    </None>
-    <None Include="Utils\CustomTuple.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CustomTuple.cs</LastGenOutput>
     </None>
     <None Include="Utils\StateTable.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

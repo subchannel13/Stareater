@@ -16,7 +16,9 @@ namespace Stareater.GameData
 		public IDictionary<ColonizationProject, ColonizationProject> Colonizations;
 		public IDictionary<AMission, AMission> Missions;
 
-		public PlayersRemap(IDictionary<Player, Player> players, IDictionary<AConstructionSite, Colony> colonies, IDictionary<AConstructionSite, StellarisAdmin> stellarises, IDictionary<Design, Design> designs, IDictionary<Fleet, Fleet> fleets, IDictionary<ColonizationProject, ColonizationProject> colonizations, IDictionary<AMission, AMission> missions) 
+		public PlayersRemap(IDictionary<Player, Player> players, IDictionary<AConstructionSite, Colony> colonies, IDictionary<AConstructionSite, StellarisAdmin> stellarises, 
+		                    IDictionary<Design, Design> designs, IDictionary<Fleet, Fleet> fleets, IDictionary<ColonizationProject, ColonizationProject> colonizations, 
+		                    IDictionary<AMission, AMission> missions)
 		{
 			this.Players = players;
 			this.Colonies = colonies;

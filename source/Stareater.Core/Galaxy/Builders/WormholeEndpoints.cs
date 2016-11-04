@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using Stareater.Galaxy;
-using Stareater.Players;
-
-namespace Stareater.Galaxy.Builders 
+﻿namespace Stareater.Galaxy.Builders 
 {
 	public class WormholeEndpoints 
 	{

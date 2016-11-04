@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Stareater.Galaxy;
-using Stareater.Players;
 
 namespace Stareater.GameData 
 {
