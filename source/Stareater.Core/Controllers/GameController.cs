@@ -222,14 +222,17 @@ namespace Stareater.Controllers
 		private void presentBreakthrough()
 		{
 			var playerProc = this.gameObj.Derivates.Players.First(x => x.HasBreakthrough);
-			
-			//TODO(v0.6) AI handling?
-			this.stateListener.OnResearchComplete(new ResearchCompleteController(
+			var controller = new ResearchCompleteController(
 				playerProc.Player, 
 				playerProc.NextBreakthrough().Item.Topic,
 				this,
 				gameObj
-			));
+			);
+			
+			if (playerProc.Player.ControlType == PlayerControlType.LocalAI)
+				playerProc.Player.OffscreenControl.OnResearchComplete(controller);
+			else
+				this.stateListener.OnResearchComplete(controller);
 		}
 		#endregion
 	}

@@ -33,6 +33,11 @@ namespace Stareater.Players.DefaultAI
 			this.playerController.EndGalaxyPhase();
 		}
 
+		public void OnResearchComplete(ResearchCompleteController controller)
+		{
+			controller.Done();
+		}
+		
 		public IBattleEventListener StartBattle(SpaceBattleController controller)
 		{
 			this.battleController = controller;

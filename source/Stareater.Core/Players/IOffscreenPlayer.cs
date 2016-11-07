@@ -9,6 +9,7 @@ namespace Stareater.Players
 		PlayerController Controller { set; }
 		
 		void PlayTurn();
+		void OnResearchComplete(ResearchCompleteController controller);
 		IBattleEventListener StartBattle(SpaceBattleController controller);
 		
 		IkadnBaseObject Save();
