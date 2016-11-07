@@ -8,8 +8,6 @@ namespace Stareater.GameData.Databases.Tables
 {
 	class ColonyCollection : AIndexedCollection<Colony>
 	{
-		Dictionary<Planet, Colony> AtPlanetIndex = new Dictionary<Planet, Colony>();
-
 		public ScalarIndex<Colony, Planet> AtPlanet { get; private set; }
 		public CollectionIndex<Colony, StarData> AtStar { get; private set; }
 		public CollectionIndex<Colony, Player> OwnedBy { get; private set; }
@@ -19,7 +17,8 @@ namespace Stareater.GameData.Databases.Tables
 			this.AtPlanet = new ScalarIndex<Colony, Planet>(x => x.Location.Planet);
 			this.AtStar = new CollectionIndex<Colony, StarData>(x => x.Star);
 			this.OwnedBy = new CollectionIndex<Colony, Player>(x => x.Owner);
-			this.RegisterIndices(this.OwnedBy);
+
+			this.RegisterIndices(this.AtPlanet, this.AtStar, this.OwnedBy);
 		}
 	}
 }
