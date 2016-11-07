@@ -146,7 +146,7 @@ namespace Stareater.GameLogic
 					var totalDamage = new Dictionary<Design, double>();
 					var totalUpgrades = new Dictionary<Design, double>();
 					var shipCount = new Dictionary<Design, double>();
-					foreach (var fleet in this.game.States.Fleets.At(order.Key).Where(x => x.Owner == player))
+					foreach (var fleet in this.game.States.Fleets.At[order.Key].Where(x => x.Owner == player))
 					{
 						foreach(var ship in fleet.Ships)
 						{
@@ -233,7 +233,7 @@ namespace Stareater.GameLogic
 				var playerProc = this.game.Derivates.Of(project.Owner);
 				bool colonyExists = this.game.States.Colonies.AtPlanetContains(project.Destination);
 				
-				var colonizers = this.game.States.Fleets.At(project.Destination.Star.Position).Where(
+				var colonizers = this.game.States.Fleets.At[project.Destination.Star.Position].Where(
 					x => 
 					{
 						if (x.Owner != project.Owner || x.Missions.Count == 0)
@@ -307,7 +307,7 @@ namespace Stareater.GameLogic
 			{
 				var player = stellaris.Owner;
 				var localFleet = this.game.States.Fleets.
-					At(stellaris.Location.Star.Position).
+					At[stellaris.Location.Star.Position].
 					Where(x => x.Owner == player).ToList();
 				var repairPoints = this.game.Derivates.Colonies.
 					At(stellaris.Location.Star).
@@ -386,7 +386,7 @@ namespace Stareater.GameLogic
  			 */
 			foreach(var star in game.States.Stars) 
 			{
-				var perPlayerFleets = this.game.States.Fleets.At(star.Position).GroupBy(x => x.Owner);
+				var perPlayerFleets = this.game.States.Fleets.At[star.Position].GroupBy(x => x.Owner);
 				foreach(var fleets in perPlayerFleets) 
 				{
 					var missionGroups = new Dictionary<LinkedList<AMission>, List<Fleet>>();

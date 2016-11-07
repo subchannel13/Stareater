@@ -38,7 +38,7 @@ namespace Stareater.GameLogic
 			
 			missions.AddLast(new ColonizationMission(Destination));
 			
-			var fleet = states.Fleets.At(site.Location.Star.Position).FirstOrDefault(x => x.Owner == site.Owner && x.Missions.SequenceEqual(missions));
+			var fleet = states.Fleets.At[site.Location.Star.Position].FirstOrDefault(x => x.Owner == site.Owner && x.Missions.SequenceEqual(missions));
 			if (fleet == null)
 			{
 				fleet = new Fleet(site.Owner, site.Location.Star.Position, missions);

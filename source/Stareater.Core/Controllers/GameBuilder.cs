@@ -322,7 +322,7 @@ namespace Stareater.Controllers
 				var playerProc = derivates.Players.Of(player);
 				playerProc.Initialize(statics, states);
 				
-				foreach(var design in states.Designs.OwnedBy(player))
+				foreach(var design in states.Designs.OwnedBy[player])
 					playerProc.Analyze(design, statics);
 			}
 

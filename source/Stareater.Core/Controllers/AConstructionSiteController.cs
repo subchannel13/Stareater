@@ -70,7 +70,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var playerTechs = Game.States.DevelopmentAdvances.Of(this.Player);
+				var playerTechs = Game.States.DevelopmentAdvances.Of[this.Player];
 				var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 				var localEffencts = Processor.LocalEffects(Game.Statics).Get;
 

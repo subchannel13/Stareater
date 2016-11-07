@@ -46,7 +46,7 @@ namespace Stareater.Controllers
 				foreach(var item in base.ConstructableItems)
 					yield return item;
 				
-				foreach(var design in Game.States.Designs.OwnedBy(this.Player).Where(x => !x.IsVirtual && !x.IsObsolete))
+				foreach(var design in Game.States.Designs.OwnedBy[this.Player].Where(x => !x.IsVirtual && !x.IsObsolete))
 					yield return new ConstructableItem(
 						design.ConstructionProject,
 						Game.Derivates.Players.Of(this.Player)

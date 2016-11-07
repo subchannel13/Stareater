@@ -102,7 +102,7 @@ namespace Stareater.Controllers
 		
 		public IEnumerable<FleetInfo> FleetsAt(Vector2D position)
 		{
-			var fleets = this.gameInstance.States.Fleets.At(position).Where(x => x.Owner != this.PlayerInstance || !x.Owner.Orders.ShipOrders.ContainsKey(x.Position));
+			var fleets = this.gameInstance.States.Fleets.At[position].Where(x => x.Owner != this.PlayerInstance || !x.Owner.Orders.ShipOrders.ContainsKey(x.Position));
 			
 			if (this.PlayerInstance.Orders.ShipOrders.ContainsKey(position))
 				fleets = fleets.Concat(this.PlayerInstance.Orders.ShipOrders[position]);
@@ -159,7 +159,7 @@ namespace Stareater.Controllers
 		{
 			var game = this.gameInstance;
 			return game.States.Designs.
-				OwnedBy(this.PlayerInstance).
+				OwnedBy[this.PlayerInstance].
 				Select(x => new DesignInfo(x, game.Derivates.Of(this.PlayerInstance).DesignStats[x], game.Statics));
 		}
 		
@@ -202,7 +202,7 @@ namespace Stareater.Controllers
 		public long ShipCount(DesignInfo design)
 		{
 			return this.gameInstance.States.Fleets.
-				OwnedBy(this.PlayerInstance).
+				OwnedBy[this.PlayerInstance].
 				SelectMany(x => x.Ships).
 				Where(x => x.Design == design.Data).
 				Aggregate(0L, (sum, x) => sum + x.Quantity);
@@ -364,7 +364,7 @@ namespace Stareater.Controllers
 				var game = this.gameInstance;
 				var wrapper = new ReportWrapper();
 				
-				foreach(var report in game.States.Reports.Of(this.PlayerInstance))
+				foreach(var report in game.States.Reports.Of[this.PlayerInstance])
 					yield return wrapper.Wrap(report);
 			}
 		}

@@ -185,7 +185,6 @@
     </Compile>
     <Compile Include="GameData\Databases\Tables\ColonizationCollection.cs" />
     <Compile Include="GameData\Databases\Tables\ResearchProgressCollection.cs">
-      <DependentUpon>ResearchProgressCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -238,19 +237,16 @@
     <Compile Include="GameData\Constructable.cs" />
     <Compile Include="GameData\Databases\Tables\DerivedStatistic.cs" />
     <Compile Include="GameData\Databases\Tables\DesignCollection.cs">
-      <DependentUpon>DesignCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\Databases\Tables\DevelopmentFocus.cs" />
     <Compile Include="GameData\Databases\Tables\FleetCollection.cs">
-      <DependentUpon>FleetCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\Tables\PlayerFormulaSet.cs" />
     <Compile Include="GameData\Databases\Tables\PlayerOrders.partial.cs" />
     <Compile Include="GameData\Databases\Tables\ReportCollection.cs">
-      <DependentUpon>ReportCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\Databases\Tables\ShipFormulaSet.cs" />
@@ -326,7 +322,6 @@
       <DependentUpon>StarCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="GameData\Databases\Tables\DevelopmentProgressCollection.cs">
-      <DependentUpon>DevelopmentProgressCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -525,10 +520,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ConstructionOrders.cs</LastGenOutput>
     </None>
-    <None Include="GameData\Databases\Tables\ResearchProgressCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ResearchProgressCollection.cs</LastGenOutput>
-    </None>
     <None Include="GameData\Databases\Tables\PlayerOrders.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlayerOrders.cs</LastGenOutput>
@@ -540,18 +531,6 @@
     <None Include="GameData\Databases\Tables\ColonyProcessorCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ColonyProcessorCollection.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\DesignCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DesignCollection.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\FleetCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>FleetCollection.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\ReportCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ReportCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\ShipGroupCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -576,10 +555,6 @@
     <None Include="GameData\Databases\Tables\StellarisCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StellarisCollection.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\DevelopmentProgressCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DevelopmentProgressCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\WormholeCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

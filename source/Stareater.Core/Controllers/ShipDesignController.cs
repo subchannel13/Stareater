@@ -22,7 +22,7 @@ namespace Stareater.Controllers
 			this.game = game;
 			this.player = player;
 			
-			this.playersTechLevels = game.States.DevelopmentAdvances.Of(this.player)
+			this.playersTechLevels = game.States.DevelopmentAdvances.Of[this.player]
 				.ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			
 			this.armorInfo = bestArmor();

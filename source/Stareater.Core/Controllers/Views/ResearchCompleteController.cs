@@ -21,7 +21,7 @@ namespace Stareater.Controllers.Views
 			this.game = game;
 			this.gameController = gameController;
 			this.Owner = owner;
-			this.TopicProgress = this.game.States.ResearchAdvances.Of(owner).First(x => x.Topic == topic);
+			this.TopicProgress = this.game.States.ResearchAdvances.Of[owner].First(x => x.Topic == topic);
 			
 			this.priorities.AddRange(this.TopicProgress.Topic.Unlocks[this.TopicProgress.NextLevel]);
 		}

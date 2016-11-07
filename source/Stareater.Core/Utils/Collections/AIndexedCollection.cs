@@ -10,9 +10,9 @@ namespace Stareater.Utils.Collections
 		private readonly List<T> toRemove = new List<T>();
 		private readonly List<IIndex<T>> indices = new List<IIndex<T>>();
 
-		protected void RegisterIndex(IIndex<T> index)
+		protected void RegisterIndices(params IIndex<T>[] index)
 		{
-			this.indices.Add(index);
+			this.indices.AddRange(index);
 		}
 		
 		public void Add(IEnumerable<T> items)
