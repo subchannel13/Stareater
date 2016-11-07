@@ -268,7 +268,7 @@ namespace Stareater.GameLogic
 		{
 			var occupiedTargets = new HashSet<Planet>();
 			foreach(var order in this.Player.Orders.ColonizationOrders)
-				if (states.Colonies.AtPlanetContains(order.Key)) //TODO(later) use intelligence instead
+				if (states.Colonies.AtPlanet.Contains(order.Key)) //TODO(later) use intelligence instead
 					occupiedTargets.Add(order.Key);
 			foreach(var planet in occupiedTargets)
 				this.Player.Orders.ColonizationOrders.Remove(planet);
@@ -279,7 +279,7 @@ namespace Stareater.GameLogic
 			var oldPlans = Player.Orders.ConstructionPlans;
 			Player.Orders.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
 
-			foreach (var colony in states.Colonies.OwnedBy(Player))
+			foreach (var colony in states.Colonies.OwnedBy[Player])
 				if (oldPlans.ContainsKey(colony)) {
 					var updatedPlans = updateConstructionPlans(
 						statics,

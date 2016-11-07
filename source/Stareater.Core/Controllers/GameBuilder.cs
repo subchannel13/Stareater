@@ -187,13 +187,13 @@ namespace Stareater.Controllers
 			foreach(Player player in players) {
 				var weights = new ChoiceWeights<Colony>();
 				
-				foreach(Colony colony in colonies.OwnedBy(player))
+				foreach(Colony colony in colonies.OwnedBy[player])
 					weights.Add(colony, derivates.Colonies.Of(colony).MaxPopulation);
 				
 				double totalPopulation = Math.Min(startingConditions.Population, weights.Total);
 				double totalInfrastructure = Math.Min(startingConditions.Infrastructure, weights.Total);
 				
-				foreach(var colony in colonies.OwnedBy(player)) {
+				foreach(var colony in colonies.OwnedBy[player]) {
 					colony.Population = weights.Relative(colony) * totalPopulation;
 					//TODO(later): add infrastructure to colony
 					derivates.Colonies.Of(colony).CalculateBaseEffects(statics, derivates.Players.Of(player));
@@ -204,7 +204,7 @@ namespace Stareater.Controllers
 		private static void initPlayers(TemporaryDB derivates, Player[] players, StatesDB states, StaticsDB statics)
 		{
 			foreach(Player player in players) {
-				foreach(var colony in states.Colonies.OwnedBy(player))
+				foreach(var colony in states.Colonies.OwnedBy[player])
 					player.Orders.ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 				
 				foreach(var stellaris in states.Stellarises.OwnedBy(player))
@@ -223,7 +223,7 @@ namespace Stareater.Controllers
 					star => new StarSystem(star, states.Planets.At(star).ToArray())
 				));
 				
-				foreach(var colony in states.Colonies.OwnedBy(player))
+				foreach(var colony in states.Colonies.OwnedBy[player])
 					player.Intelligence.StarFullyVisited(colony.Star, 0);
 			}
 		}

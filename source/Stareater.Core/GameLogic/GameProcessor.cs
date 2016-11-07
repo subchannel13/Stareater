@@ -231,7 +231,7 @@ namespace Stareater.GameLogic
 			foreach(var project in this.game.States.ColonizationProjects)
 			{
 				var playerProc = this.game.Derivates.Of(project.Owner);
-				bool colonyExists = this.game.States.Colonies.AtPlanetContains(project.Destination);
+				bool colonyExists = this.game.States.Colonies.AtPlanet.Contains(project.Destination);
 				
 				var colonizers = this.game.States.Fleets.At[project.Destination.Star.Position].Where(
 					x => 

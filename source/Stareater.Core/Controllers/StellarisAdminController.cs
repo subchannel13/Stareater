@@ -81,7 +81,7 @@ namespace Stareater.Controllers
 			get 
 			{ 
 				return Game.States.Colonies.
-					AtStar(Location).
+					AtStar[Location].
 					Where(x => x.Owner == Site.Owner).
 					Sum(x => x.Population);
 			}

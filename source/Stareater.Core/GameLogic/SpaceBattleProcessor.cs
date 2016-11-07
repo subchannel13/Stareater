@@ -36,7 +36,7 @@ namespace Stareater.GameLogic
 			double maxPlanets = this.mainGame.States.Planets.Max(x => x.Position) - 1;
 			var star = mainGame.States.Stars.At(game.Location);
 			var planets = this.mainGame.States.Planets.At(star);
-			var colonies = this.mainGame.States.Colonies.AtStar(star);
+			var colonies = this.mainGame.States.Colonies.AtStar[star];
 			
 			var rings = new Dictionary<int, List<Vector2D>>();
 			for(int i = 0; i <= SpaceBattleGame.BattlefieldRadius; i++)

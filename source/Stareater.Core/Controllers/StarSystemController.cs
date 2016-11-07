@@ -40,8 +40,8 @@ namespace Stareater.Controllers
 		{
 			if (this.player.Intelligence.About(Star).Planets[planet].LastVisited != PlanetIntelligence.NeverVisited)
 				//TODO(later): show last known colony information
-				if (game.States.Colonies.AtPlanetContains(planet))
-					return new ColonyInfo(game.States.Colonies.AtPlanet(planet));
+				if (game.States.Colonies.AtPlanet.Contains(planet))
+					return new ColonyInfo(game.States.Colonies.AtPlanet[planet]);
 			
 			return null;
 		}
@@ -73,10 +73,10 @@ namespace Stareater.Controllers
 
 			if (planet == null)
 				return Views.BodyType.Empty;
-			if (!game.States.Colonies.AtPlanetContains(planet))
+			if (!game.States.Colonies.AtPlanet.Contains(planet))
 				return Views.BodyType.NotColonised;
 
-			var colony = game.States.Colonies.AtPlanet(planet);
+			var colony = game.States.Colonies.AtPlanet[planet];
 
 			return colony.Owner == this.player ? 
 				Views.BodyType.OwnColony : 
@@ -96,7 +96,7 @@ namespace Stareater.Controllers
 			if (planet == null)
 				throw new ArgumentOutOfRangeException("bodyPosition");
 
-			return new ColonyController(game, game.States.Colonies.AtPlanet(planet), IsReadOnly, this.player);
+			return new ColonyController(game, game.States.Colonies.AtPlanet[planet], IsReadOnly, this.player);
 		}
 
 		public ColonizationController EmptyPlanetController(int bodyPosition)

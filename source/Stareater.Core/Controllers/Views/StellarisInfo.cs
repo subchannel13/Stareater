@@ -18,7 +18,7 @@ namespace Stareater.Controllers.Views
 			this.Owner = new PlayerInfo(stellaris.Owner);
 			
 			this.Population = game.States.Colonies.
-				AtStar(stellaris.Location.Star).
+				AtStar[stellaris.Location.Star].
 				Where(x => x.Owner == stellaris.Owner).
 				Sum(x => x.Population);
 		}

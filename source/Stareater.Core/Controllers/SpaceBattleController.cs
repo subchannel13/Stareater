@@ -39,7 +39,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var colonies = this.mainGame.States.Colonies.AtStar(this.Star);
+				var colonies = this.mainGame.States.Colonies.AtStar[this.Star];
 				var planets = this.mainGame.States.Planets.At(this.Star);
 				
 				for(int i = 0; i < this.battleGame.Planets.Length; i++)

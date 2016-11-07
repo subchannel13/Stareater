@@ -39,9 +39,9 @@ namespace Stareater.Controllers
 		{
 			get 
 			{ 
-				return !game.States.Colonies.AtPlanetContains(PlanetBody) ? 
+				return !game.States.Colonies.AtPlanet.Contains(PlanetBody) ? 
 					0 : 
-					game.States.Colonies.AtPlanet(PlanetBody).Population;
+					game.States.Colonies.AtPlanet[PlanetBody].Population;
 			}
 		}
 		
@@ -49,8 +49,8 @@ namespace Stareater.Controllers
 		{
 			get
 			{ 
-				if (game.States.Colonies.AtPlanetContains(PlanetBody))
-					return game.Derivates.Of(game.States.Colonies.AtPlanet(PlanetBody)).MaxPopulation;
+				if (game.States.Colonies.AtPlanet.Contains(PlanetBody))
+					return game.Derivates.Of(game.States.Colonies.AtPlanet[PlanetBody]).MaxPopulation;
 				
 				var vars = new Var(ColonyProcessor.PlanetSizeKey, PlanetBody.Size);
 				return game.Statics.ColonyFormulas.UncolonizedMaxPopulation.Evaluate(vars.Get);

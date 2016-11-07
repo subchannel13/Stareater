@@ -295,7 +295,6 @@
     <Compile Include="GameData\Databases\StatesDB.cs" />
     <Compile Include="GameData\Databases\StaticsDB.cs" />
     <Compile Include="GameData\Databases\Tables\ColonyCollection.cs">
-      <DependentUpon>ColonyCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -439,6 +438,7 @@
     <Compile Include="Utils\Collections\QuadTree.cs" />
     <Compile Include="Utils\Collections\QuadTreeNode.cs" />
     <Compile Include="Utils\Collections\CollectionIndex.cs" />
+    <Compile Include="Utils\Collections\ScalarIndex.cs" />
     <Compile Include="Utils\Collections\TextVar.cs" />
     <Compile Include="Utils\Collections\Var.cs" />
     <Compile Include="Utils\NumberFormatters\RomanFromatter.cs" />
@@ -523,10 +523,6 @@
     <None Include="GameData\Databases\Tables\PlayerOrders.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlayerOrders.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\ColonyCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ColonyCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\ColonyProcessorCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
