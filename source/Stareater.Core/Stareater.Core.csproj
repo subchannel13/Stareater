@@ -318,7 +318,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\Tables\WormholeCollection.cs">
-      <DependentUpon>WormholeCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -420,11 +419,6 @@
     <Compile Include="Utils\Collections\AIndexedCollection.cs" />
     <Compile Include="Utils\Collections\IDelayedCollection.cs" />
     <Compile Include="Utils\Collections\IIndex.cs" />
-    <Compile Include="Utils\Collections\IndexedCollectionBase.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IndexedCollectionBase.tt</DependentUpon>
-    </Compile>
     <Compile Include="Utils\Collections\QuadTreeElement.cs" />
     <Compile Include="Utils\Collections\ObjectDeindexer.cs" />
     <Compile Include="Utils\Collections\ObjectIndexer.cs" />
@@ -517,10 +511,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlayerOrders.cs</LastGenOutput>
     </None>
-    <None Include="GameData\Databases\Tables\WormholeCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>WormholeCollection.cs</LastGenOutput>
-    </None>
     <None Include="GameData\Intelligence.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Intelligence.cs</LastGenOutput>
@@ -549,10 +539,6 @@
     <None Include="Ships\Design.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Design.cs</LastGenOutput>
-    </None>
-    <None Include="Utils\Collections\IndexedCollectionBase.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IndexedCollectionBase.cs</LastGenOutput>
     </None>
     <None Include="Utils\StateTable.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -32,7 +32,7 @@ namespace Stareater.GameLogic
 			{
 				var lastStar = site.Location.Star;
 				var nextStar = Destination.Star;
-				var wormhole = states.Wormholes.At(lastStar).FirstOrDefault(x => x.FromStar == nextStar || x.ToStar == nextStar);
+				var wormhole = states.Wormholes.At[lastStar].FirstOrDefault(x => x.FromStar == nextStar || x.ToStar == nextStar);
 				missions.AddLast(new MoveMission(Destination.Star, wormhole));
 			}
 			
