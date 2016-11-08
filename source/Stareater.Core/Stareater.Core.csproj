@@ -251,16 +251,13 @@
     </Compile>
     <Compile Include="GameData\Databases\Tables\ShipFormulaSet.cs" />
     <Compile Include="GameData\Databases\Tables\ShipGroupCollection.cs">
-      <DependentUpon>ShipGroupCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="GameData\Databases\Tables\StellarisProcessorCollection.cs">
-      <DependentUpon>StellarisProcessorCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\Tables\StellarisCollection.cs">
-      <DependentUpon>StellarisCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -300,17 +297,14 @@
     </Compile>
     <Compile Include="GameData\Databases\Tables\ColonyFormulaSet.cs" />
     <Compile Include="GameData\Databases\Tables\ColonyProcessorCollection.cs">
-      <DependentUpon>ColonyProcessorCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\Tables\PlanetCollection.cs">
-      <DependentUpon>PlanetCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\Tables\PlayerProcessorCollection.cs">
-      <DependentUpon>PlayerProcessorCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -318,7 +312,6 @@
     <Compile Include="GameData\Databases\Tables\StarCollection.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>StarCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="GameData\Databases\Tables\DevelopmentProgressCollection.cs">
       <AutoGen>True</AutoGen>
@@ -523,34 +516,6 @@
     <None Include="GameData\Databases\Tables\PlayerOrders.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlayerOrders.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\ColonyProcessorCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ColonyProcessorCollection.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\ShipGroupCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ShipGroupCollection.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\StellarisProcessorCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StellarisProcessorCollection.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\PlanetCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PlanetCollection.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\PlayerProcessorCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PlayerProcessorCollection.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\StarCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StarCollection.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\StellarisCollection.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StellarisCollection.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\WormholeCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -79,7 +79,7 @@ namespace Stareater.Controllers
 		
 		public StarSystemController OpenStarSystem(Vector2D position)
 		{
-			return this.OpenStarSystem(this.gameInstance.States.Stars.At(position));
+			return this.OpenStarSystem(this.gameInstance.States.Stars.At[position]);
 		}
 				
 		public FleetController SelectFleet(FleetInfo fleet)
@@ -112,7 +112,7 @@ namespace Stareater.Controllers
 		
 		public StarData Star(Vector2D position)
 		{
-			return this.gameInstance.States.Stars.At(position);
+			return this.gameInstance.States.Stars.At[position];
 		}
 		
 		public int StarCount
@@ -144,7 +144,7 @@ namespace Stareater.Controllers
 		#region Stellarises and colonies
 		public IEnumerable<StellarisInfo> Stellarises()
 		{
-			foreach(var stellaris in this.gameInstance.States.Stellarises.OwnedBy(this.PlayerInstance))
+			foreach(var stellaris in this.gameInstance.States.Stellarises.OwnedBy[this.PlayerInstance])
 				yield return new StellarisInfo(stellaris, this.gameInstance);
 		}
 		#endregion
@@ -240,7 +240,7 @@ namespace Stareater.Controllers
 				game.Derivates.Of(this.PlayerInstance).CalculateDevelopment(
 					game.Statics,
 					game.States,
-					game.Derivates.Colonies.OwnedBy(this.PlayerInstance)
+					game.Derivates.Colonies.OwnedBy[this.PlayerInstance]
 				);
 			
 			var investments = game.Derivates.Of(this.PlayerInstance).DevelopmentPlan.ToDictionary(x => x.Item);
@@ -301,7 +301,7 @@ namespace Stareater.Controllers
 			{
 				var game = this.gameInstance;
 				
-				return game.Derivates.Colonies.OwnedBy(this.PlayerInstance).Sum(x => x.Development);
+				return game.Derivates.Colonies.OwnedBy[this.PlayerInstance].Sum(x => x.Development);
 			}
 		}
 		#endregion
@@ -316,7 +316,7 @@ namespace Stareater.Controllers
 				game.Derivates.Of(this.PlayerInstance).CalculateResearch(
 					game.Statics,
 					game.States,
-					game.Derivates.Colonies.OwnedBy(this.PlayerInstance)
+					game.Derivates.Colonies.OwnedBy[this.PlayerInstance]
 				);
 			
 			var investments = game.Derivates.Of(this.PlayerInstance).ResearchPlan.ToDictionary(x => x.Item);

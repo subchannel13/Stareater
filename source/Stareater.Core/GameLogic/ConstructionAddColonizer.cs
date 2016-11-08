@@ -45,8 +45,8 @@ namespace Stareater.GameLogic
 				states.Fleets.Add(fleet);
 			}
 
-			if (fleet.Ships.DesignContains(ColonizerDesign))
-				fleet.Ships.Design(ColonizerDesign).Quantity += quantity;
+			if (fleet.Ships.WithDesign.Contains(ColonizerDesign))
+				fleet.Ships.WithDesign[ColonizerDesign].Quantity += quantity;
 			else
 				fleet.Ships.Add(new ShipGroup(ColonizerDesign, quantity, 0, 0));
 		}

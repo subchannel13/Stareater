@@ -87,19 +87,19 @@ namespace Stareater.GameLogic
 			foreach (var stellaris in this.game.Derivates.Stellarises)
 				stellaris.CalculateSpending(
 					this.game.Derivates.Of(stellaris.Owner),
-					this.game.Derivates.Colonies.At(stellaris.Location)
+					this.game.Derivates.Colonies.At[stellaris.Location]
 				);
 
 			foreach (var player in this.game.Derivates.Players) {
 				player.CalculateDevelopment(
 					this.game.Statics,
 					this.game.States,
-					this.game.Derivates.Colonies.OwnedBy(player.Player)
+					this.game.Derivates.Colonies.OwnedBy[player.Player]
 				);
 				player.CalculateResearch(
 					this.game.Statics,
 					this.game.States,
-					this.game.Derivates.Colonies.OwnedBy(player.Player)
+					this.game.Derivates.Colonies.OwnedBy[player.Player]
 				);
 			}
 		}
@@ -216,7 +216,7 @@ namespace Stareater.GameLogic
 			
 			this.conflicts.Clear();
 			foreach(var position in conflictPositions.OrderBy(x => x.Value))
-				if (this.game.States.Stars.AtContains(position.Key))
+				if (this.game.States.Stars.At.Contains(position.Key))
 					conflicts.Enqueue(new SpaceBattleGame(position.Key, visits[position.Key], position.Value, this.game));
 			//TODO(later) deep space interception
 			
@@ -250,7 +250,7 @@ namespace Stareater.GameLogic
 				{
 					var colony = new Colony(0, project.Destination, project.Owner);
 					var colonyProc = new ColonyProcessor(colony);
-					colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Players.Of(colony.Owner));
+					colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Players.Of[colony.Owner]);
 					
 					foreach(var fleet in colonizers)
 					{
@@ -283,7 +283,7 @@ namespace Stareater.GameLogic
 					this.game.States.Colonies.Add(colony);
 					this.game.Derivates.Colonies.Add(colonyProc);
 
-					if (this.game.States.Stellarises.At(project.Destination.Star).All(x => x.Owner != project.Owner))
+					if (this.game.States.Stellarises.At[project.Destination.Star].All(x => x.Owner != project.Owner))
 					{
 						var stellaris = new StellarisAdmin(project.Destination.Star, project.Owner);
 						this.game.States.Stellarises.Add(stellaris);
@@ -310,7 +310,7 @@ namespace Stareater.GameLogic
 					At[stellaris.Location.Star.Position].
 					Where(x => x.Owner == player).ToList();
 				var repairPoints = this.game.Derivates.Colonies.
-					At(stellaris.Location.Star).
+					At[stellaris.Location.Star].
 					Where(x => x.Owner == player).
 					Aggregate(0.0, (sum, x) => sum + x.RepairPoints);
 				
@@ -410,8 +410,8 @@ namespace Stareater.GameLogic
 						{
 							this.game.States.Fleets.PendRemove(fleet);
 							foreach (var ship in fleet.Ships)
-								if (newFleet.Ships.DesignContains(ship.Design))
-									newFleet.Ships.Design(ship.Design).Quantity += ship.Quantity;
+								if (newFleet.Ships.WithDesign.Contains(ship.Design))
+									newFleet.Ships.WithDesign[ship.Design].Quantity += ship.Quantity;
 								else
 									newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity, ship.Damage, ship.UpgradePoints));
 						}

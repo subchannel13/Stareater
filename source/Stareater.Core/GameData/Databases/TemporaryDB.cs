@@ -45,17 +45,17 @@ namespace Stareater.GameData.Databases
 		
 		internal PlayerProcessor Of(Player player)
 		{
-			return this.Players.Of(player);
+			return this.Players.Of[player];
 		}
 
 		internal ColonyProcessor Of(Colony colony)
 		{
-			return this.Colonies.Of(colony);
+			return this.Colonies.Of[colony];
 		}
 
 		internal StellarisProcessor Of(StellarisAdmin stellaris)
 		{
-			return this.Stellarises.Of(stellaris);
+			return this.Stellarises.Of[stellaris];
 		}
 	}
 }

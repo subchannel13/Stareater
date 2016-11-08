@@ -48,7 +48,7 @@ namespace Stareater.Controllers
 		
 		public StellarisInfo StarsAdministration()
 		{
-			var stellaris = game.States.Stellarises.At(Star).FirstOrDefault(x => x.Owner == this.player);
+			var stellaris = game.States.Stellarises.At[Star].FirstOrDefault(x => x.Owner == this.player);
 			if (this.player.Intelligence.About(Star).LastVisited != StarIntelligence.NeverVisited && stellaris != null)
 				//TODO(later): show last known star system information
 				return new StellarisInfo(stellaris, this.game);
@@ -59,17 +59,17 @@ namespace Stareater.Controllers
 		public BodyType BodyType(int bodyIndex)
 		{
 			if (bodyIndex == StarIndex) {
-				if (game.States.Stellarises.At(Star).Count == 0)
+				if (game.States.Stellarises.At[Star].Count == 0)
 					return Views.BodyType.NoStellarises;
 					
-				var stellarises = game.States.Stellarises.At(Star);
+				var stellarises = game.States.Stellarises.At[Star];
 				
 				return stellarises.Any(x => x.Owner == this.player) ?
 					Views.BodyType.OwnStellaris : 
 					Views.BodyType.ForeignStellaris;
 			} 
 
-			var planet = game.States.Planets.At(Star).FirstOrDefault(x => x.Position == bodyIndex);
+			var planet = game.States.Planets.At[Star].FirstOrDefault(x => x.Position == bodyIndex);
 
 			if (planet == null)
 				return Views.BodyType.Empty;
@@ -85,13 +85,13 @@ namespace Stareater.Controllers
 
 		public bool IsColonizing(int position)
 		{
-			var planet = this.game.States.Planets.At(this.Star).First(x => x.Position == position);
+			var planet = this.game.States.Planets.At[this.Star].First(x => x.Position == position);
 			return planet != null && this.player.Orders.ColonizationOrders.ContainsKey(planet);
 		}
 		
 		public ColonyController ColonyController(int bodyPosition)
 		{
-			var planet = game.States.Planets.At(Star).FirstOrDefault(x => x.Position == bodyPosition);
+			var planet = game.States.Planets.At[Star].FirstOrDefault(x => x.Position == bodyPosition);
 			
 			if (planet == null)
 				throw new ArgumentOutOfRangeException("bodyPosition");
@@ -101,7 +101,7 @@ namespace Stareater.Controllers
 
 		public ColonizationController EmptyPlanetController(int bodyPosition)
 		{
-			var planet = game.States.Planets.At(Star).FirstOrDefault(x => x.Position == bodyPosition);
+			var planet = game.States.Planets.At[Star].FirstOrDefault(x => x.Position == bodyPosition);
 			
 			if (planet == null)
 				throw new ArgumentOutOfRangeException("bodyPosition");
@@ -111,7 +111,7 @@ namespace Stareater.Controllers
 		
 		public StellarisAdminController StellarisController()
 		{
-			var stellaris = game.States.Stellarises.At(Star).FirstOrDefault(x => x.Owner == this.player);
+			var stellaris = game.States.Stellarises.At[Star].FirstOrDefault(x => x.Owner == this.player);
 			return new StellarisAdminController(game, stellaris, IsReadOnly, this.player);
 		}
 	}

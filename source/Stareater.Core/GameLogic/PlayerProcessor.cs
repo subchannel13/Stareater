@@ -180,10 +180,10 @@ namespace Stareater.GameLogic
 		{
 			this.updateColonizationOrders(states);
 
-			foreach (var colonyProc in derivates.Colonies.OwnedBy(this.Player))
+			foreach (var colonyProc in derivates.Colonies.OwnedBy[this.Player])
 				colonyProc.ProcessPrecombat(states, derivates);
 
-			foreach (var stellarisProc in derivates.Stellarises.OwnedBy(this.Player))
+			foreach (var stellarisProc in derivates.Stellarises.OwnedBy[this.Player])
 				stellarisProc.ProcessPrecombat(states, derivates);
 			
 			this.breakthroughs = new Queue<ResearchResult>(this.ResearchPlan.Where(x => x.CompletedCount > 0));
@@ -293,19 +293,20 @@ namespace Stareater.GameLogic
 				else
 					Player.Orders.ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 
-			foreach (var stellaris in states.Stellarises.OwnedBy(Player))
-				if (oldPlans.ContainsKey(stellaris)) {
-					var updatedPlans = updateConstructionPlans(
-						statics,
-						oldPlans[stellaris],
-						derivates.Of(stellaris),
-						this.TechLevels
-					);
-
-					Player.Orders.ConstructionPlans.Add(stellaris, updatedPlans);
-				}
-				else
-					Player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
+				foreach (var stellaris in states.Stellarises.OwnedBy[Player])
+					if (oldPlans.ContainsKey(stellaris)) 
+					{
+						var updatedPlans = updateConstructionPlans(
+							statics,
+							oldPlans[stellaris],
+							derivates.Of(stellaris),
+							this.TechLevels
+						);
+	
+						Player.Orders.ConstructionPlans.Add(stellaris, updatedPlans);
+					}
+					else
+						Player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 		}
 		
 		private void updateDesigns(StaticsDB statics, StatesDB states, TemporaryDB derivates)
@@ -350,7 +351,7 @@ namespace Stareater.GameLogic
 
 			//Removing inactive discarded designs
 			var shipConstruction = new ShipConstructionCounter();
-			shipConstruction.Check(derivates.Stellarises.OwnedBy(this.Player));
+			shipConstruction.Check(derivates.Stellarises.OwnedBy[this.Player]);
 			
 			var activeDesigns = new HashSet<Design>(states.Fleets.
 			                                        SelectMany(x => x.Ships).

@@ -78,7 +78,7 @@ namespace Stareater.Controllers
 					if (Prerequisite.AreSatisfied(constructable.Prerequisites, 0, techLevels) &&
 						constructable.ConstructableAt == Site.Type &&
 						constructable.Condition.Evaluate(localEffencts) > 0)
-						yield return new ConstructableItem(constructable, Game.Derivates.Players.Of(this.Player));
+						yield return new ConstructableItem(constructable, Game.Derivates.Players.Of[this.Player]);
 			}
 		}
 		
@@ -105,7 +105,7 @@ namespace Stareater.Controllers
 					var cost = item.Type.Cost.Evaluate(vars);
 					yield return new ConstructableItem(
 						item.Type, 
-						Game.Derivates.Players.Of(this.Player), 
+						Game.Derivates.Players.Of[this.Player],
 						item,
 						item.LeftoverPoints
 					);

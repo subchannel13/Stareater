@@ -66,7 +66,7 @@ namespace Stareater.GameLogic
 
 		void IMissionVisitor.Visit(MoveMission mission)
 		{
-			var playerProc = game.Derivates.Players.Of(fleet.Owner);
+			var playerProc = game.Derivates.Players.Of[fleet.Owner];
 			double baseSpeed = fleet.Ships.Select(x => x.Design).
 				Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
 				
@@ -80,7 +80,7 @@ namespace Stareater.GameLogic
 			if (distance <= speed * (1 - time)) {
 				this.newPosition = mission.Destination.Position;
 				
-				fleet.Owner.Intelligence.StarFullyVisited(game.States.Stars.At(mission.Destination.Position), game.Turn);
+				fleet.Owner.Intelligence.StarFullyVisited(game.States.Stars.At[mission.Destination.Position], game.Turn);
 				this.time += distance / speed;
 				
 				this.movementSteps.Add(new FleetMovement(

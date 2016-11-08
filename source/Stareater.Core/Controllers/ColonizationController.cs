@@ -124,7 +124,7 @@ namespace Stareater.Controllers
 			if (this.player.Orders.ColonizationOrders.ContainsKey(this.PlanetBody))
 				used.UnionWith(this.player.Orders.ColonizationOrders[this.PlanetBody].Sources);
 			
-			foreach(var stellaris in this.game.States.Stellarises.OwnedBy(this.player))
+			foreach(var stellaris in this.game.States.Stellarises.OwnedBy[this.player])
 				if (!used.Contains(stellaris.Location.Star))
 					yield return new StellarisInfo(stellaris, this.game);
 		}
@@ -137,7 +137,7 @@ namespace Stareater.Controllers
 			var stars = new HashSet<StarData>();
 			stars.UnionWith(this.player.Orders.ColonizationOrders[this.PlanetBody].Sources);
 			
-			return stars.Select(x => new StellarisInfo(this.game.States.Stellarises.At(x).First(s => s.Owner == this.player), this.game));
+			return stars.Select(x => new StellarisInfo(this.game.States.Stellarises.At[x].First(s => s.Owner == this.player), this.game));
 		}
 		#endregion
 		
@@ -147,10 +147,10 @@ namespace Stareater.Controllers
 			
 			foreach(var source in sources)
 			{
-				var stellaris = this.game.States.Stellarises.At(source).First(x => x.Owner == this.player);
-				this.game.Derivates.Stellarises.Of(stellaris).CalculateSpending(
+				var stellaris = this.game.States.Stellarises.At[source].First(x => x.Owner == this.player);
+				this.game.Derivates.Stellarises.Of[stellaris].CalculateSpending(
 					playerProcessor, 
-					this.game.Derivates.Colonies.At(stellaris.Location.Star).Where(x => x.Owner == this.player)
+					this.game.Derivates.Colonies.At[stellaris.Location.Star].Where(x => x.Owner == this.player)
 				);
 			}
 		}

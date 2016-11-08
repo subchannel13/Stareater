@@ -80,7 +80,7 @@ namespace Stareater.Controllers
 		
 		public void SelectGroup(ShipGroupInfo group, long quantity)
 		{
-			quantity = Methods.Clamp(quantity, 0, this.Fleet.FleetData.Ships.Design(group.Data.Design).Quantity);
+			quantity = Methods.Clamp(quantity, 0, this.Fleet.FleetData.Ships.WithDesign[group.Data.Design].Quantity);
 			selection[group.Data.Design] = quantity;
 			
 			if (selection[group.Data.Design] <= 0)
@@ -94,7 +94,7 @@ namespace Stareater.Controllers
 		
 		public FleetController Send(IEnumerable<Vector2D> waypoints)
 		{
-			if (!this.game.States.Stars.AtContains(this.Fleet.Position))
+			if (!this.game.States.Stars.At.Contains(this.Fleet.Position))
 				return this;
 			
 			if (this.CanMove && waypoints != null && waypoints.LastOrDefault() != this.Fleet.FleetData.Position)
@@ -103,15 +103,15 @@ namespace Stareater.Controllers
 				var lastPoint = this.Fleet.FleetData.Position;
 				foreach(var point in waypoints)
 				{
-					var lastStar = this.game.States.Stars.At(lastPoint);
-					var nextStar = this.game.States.Stars.At(point);
+					var lastStar = this.game.States.Stars.At[lastPoint];
+					var nextStar = this.game.States.Stars.At[point];
 					var wormhole = this.game.States.Wormholes.At(lastStar).FirstOrDefault(x => x.FromStar == nextStar || x.ToStar == nextStar); //TODO(later) simplify query
 					missions.Add(new MoveMission(nextStar, wormhole));
 				}
 				
 				return this.giveOrder(missions);
 			}
-			else if (this.game.States.Stars.AtContains(this.Fleet.FleetData.Position))
+			else if (this.game.States.Stars.At.Contains(this.Fleet.FleetData.Position))
 				return this.giveOrder(new AMission[0]);
 			
 			return this;
@@ -119,7 +119,7 @@ namespace Stareater.Controllers
 		
 		public void SimulateTravel(StarData destination)
 		{
-			if (!this.game.States.Stars.AtContains(this.Fleet.Position))
+			if (!this.game.States.Stars.At.Contains(this.Fleet.Position))
 				return;
 			
 			this.simulationWaypoints.Clear();
@@ -141,8 +141,8 @@ namespace Stareater.Controllers
 			
 			if (similarFleet != null) {
 				foreach(var shipGroup in newFleet.Ships)
-					if (similarFleet.Ships.DesignContains(shipGroup.Design))
-						similarFleet.Ships.Design(shipGroup.Design).Quantity += shipGroup.Quantity;
+					if (similarFleet.Ships.WithDesign.Contains(shipGroup.Design))
+						similarFleet.Ships.WithDesign[shipGroup.Design].Quantity += shipGroup.Quantity;
 					else
 						similarFleet.Ships.Add(shipGroup);
 				
@@ -158,7 +158,7 @@ namespace Stareater.Controllers
 		
 		private void calcEta()
 		{
-			var playerProc = game.Derivates.Players.Of(this.Fleet.Owner.Data);
+			var playerProc = game.Derivates.Players.Of[this.Fleet.Owner.Data];
 			double baseSpeed = this.selection.Keys.
 				Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
 			

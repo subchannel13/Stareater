@@ -410,7 +410,7 @@ namespace Stareater.Controllers
 				return; //TODO(v0.5) move the check to IsDesignValid
 			
 			game.States.Designs.Add(desing); //TODO(v0.5) add to changes DB and propagate to states during turn processing
-			game.Derivates.Players.Of(this.player).Analyze(desing, this.game.Statics);
+			game.Derivates.Players.Of[this.player].Analyze(desing, this.game.Statics);
 		}
 		#endregion
 	}

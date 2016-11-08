@@ -180,7 +180,7 @@ namespace Stareater.Controllers
 			foreach(Colony colony in colonies) {
 				var colonyProc = new ColonyProcessor(colony);
 				
-				colonyProc.CalculateBaseEffects(statics, derivates.Players.Of(colony.Owner));
+				colonyProc.CalculateBaseEffects(statics, derivates.Players.Of[colony.Owner]);
 				derivates.Colonies.Add(colonyProc);
 			}
 			
@@ -188,7 +188,7 @@ namespace Stareater.Controllers
 				var weights = new ChoiceWeights<Colony>();
 				
 				foreach(Colony colony in colonies.OwnedBy[player])
-					weights.Add(colony, derivates.Colonies.Of(colony).MaxPopulation);
+					weights.Add(colony, derivates.Colonies.Of[colony].MaxPopulation);
 				
 				double totalPopulation = Math.Min(startingConditions.Population, weights.Total);
 				double totalInfrastructure = Math.Min(startingConditions.Infrastructure, weights.Total);
@@ -196,7 +196,7 @@ namespace Stareater.Controllers
 				foreach(var colony in colonies.OwnedBy[player]) {
 					colony.Population = weights.Relative(colony) * totalPopulation;
 					//TODO(later): add infrastructure to colony
-					derivates.Colonies.Of(colony).CalculateBaseEffects(statics, derivates.Players.Of(player));
+					derivates.Colonies.Of[colony].CalculateBaseEffects(statics, derivates.Players.Of[player]);
 				}
 			}
 		}
@@ -207,7 +207,7 @@ namespace Stareater.Controllers
 				foreach(var colony in states.Colonies.OwnedBy[player])
 					player.Orders.ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 				
-				foreach(var stellaris in states.Stellarises.OwnedBy(player))
+				foreach(var stellaris in states.Stellarises.OwnedBy[player])
 					player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 				
 				player.Orders.DevelopmentFocusIndex = statics.DevelopmentFocusOptions.Count / 2;
@@ -217,10 +217,10 @@ namespace Stareater.Controllers
 			}
 			
 			foreach (var player in players) {
-				derivates.Players.Of(player).Initialize(statics, states);
+				derivates.Players.Of[player].Initialize(statics, states);
 				
 				player.Intelligence.Initialize(states.Stars.Select(
-					star => new StarSystem(star, states.Planets.At(star).ToArray())
+					star => new StarSystem(star, states.Planets.At[star].ToArray())
 				));
 				
 				foreach(var colony in states.Colonies.OwnedBy[player])
@@ -308,7 +308,7 @@ namespace Stareater.Controllers
 			
 			foreach(var colony in states.Colonies) {
 				var colonyProc = new ColonyProcessor(colony);
-				colonyProc.CalculateBaseEffects(statics, derivates.Players.Of(colony.Owner));
+				colonyProc.CalculateBaseEffects(statics, derivates.Players.Of[colony.Owner]);
 				derivates.Colonies.Add(colonyProc);
 			}
 			
@@ -319,7 +319,7 @@ namespace Stareater.Controllers
 			}
 			
 			foreach (var player in players) {
-				var playerProc = derivates.Players.Of(player);
+				var playerProc = derivates.Players.Of[player];
 				playerProc.Initialize(statics, states);
 				
 				foreach(var design in states.Designs.OwnedBy[player])

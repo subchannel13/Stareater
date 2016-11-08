@@ -27,7 +27,7 @@ namespace Stareater
 		public SpaceBattleGame(Vector2D location, IEnumerable<FleetMovement> fleets, double startTime, MainGame mainGame)
 		{
 			this.Combatants = new List<Combatant>();
-			this.Planets = new CombatPlanet[mainGame.States.Planets.At(mainGame.States.Stars.At(location)).Count];
+			this.Planets = new CombatPlanet[mainGame.States.Planets.At[mainGame.States.Stars.At[location]].Count];
 			this.PlayOrder = new Queue<Combatant>();
 			this.Retreated = new List<Combatant>();
 			this.Rng = new Random();

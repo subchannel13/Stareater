@@ -33,9 +33,9 @@ namespace Stareater.Controllers
 		#region Buildings
 		protected override void RecalculateSpending()
 		{
-			Game.Derivates.Stellarises.At(Location).CalculateSpending(
+			Game.Derivates.Stellarises.At[Location].CalculateSpending(
 				Game.Derivates.Of(Site.Owner),
-				Game.Derivates.Colonies.At(Location)
+				Game.Derivates.Colonies.At[Location]
 			);
 		}
 		
@@ -49,7 +49,7 @@ namespace Stareater.Controllers
 				foreach(var design in Game.States.Designs.OwnedBy[this.Player].Where(x => !x.IsVirtual && !x.IsObsolete))
 					yield return new ConstructableItem(
 						design.ConstructionProject,
-						Game.Derivates.Players.Of(this.Player)
+						Game.Derivates.Players.Of[this.Player]
 					);
 			}
 		}
@@ -69,7 +69,7 @@ namespace Stareater.Controllers
 			get 
 			{ 
 				var workplaces = Game.Derivates.Colonies.
-					At(Location).
+					At[Location].
 					Where(x => x.Owner == Site.Owner).
 					Sum(x => x.Organization * x.Colony.Population);
 				
@@ -94,7 +94,7 @@ namespace Stareater.Controllers
 			get 
 			{ 
 				return Game.Derivates.Stellarises.
-					Of(Site as StellarisAdmin).
+					Of[Site as StellarisAdmin].
 					SpendingPlan.Sum(x => x.InvestedPoints);
 			}
 		}
@@ -104,7 +104,7 @@ namespace Stareater.Controllers
 			get 
 			{ 
 				return Game.Derivates.Colonies.
-					At(Location).
+					At[Location].
 					Where(x => x.Owner == Site.Owner).
 					Sum(x => x.Development);
 			}

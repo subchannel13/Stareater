@@ -26,7 +26,7 @@ namespace Stareater.Controllers
 			this.battleGame = battleGame;
 			this.mainGame = mainGame;
 			this.gameController = gameController;
-			this.Star = mainGame.States.Stars.At(battleGame.Location);
+			this.Star = mainGame.States.Stars.At[battleGame.Location];
 			this.players = players;
 		}
 	
@@ -40,7 +40,7 @@ namespace Stareater.Controllers
 			get 
 			{
 				var colonies = this.mainGame.States.Colonies.AtStar[this.Star];
-				var planets = this.mainGame.States.Planets.At(this.Star);
+				var planets = this.mainGame.States.Planets.At[this.Star];
 				
 				for(int i = 0; i < this.battleGame.Planets.Length; i++)
 					yield return new CombatPlanetInfo(this.battleGame.Planets[i]);
