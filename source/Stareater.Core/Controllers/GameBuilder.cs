@@ -41,7 +41,9 @@ namespace Stareater.Controllers
 			int turn = saveData[MainGame.TurnKey].To<int>();
 			
 			deindexer.AddAll(statics.Constructables, x => x.IdCode);
+			deindexer.AddAll(statics.DevelopmentTopics, x => x.IdCode);
 			deindexer.AddAll(statics.PredeginedDesigns);
+			deindexer.AddAll(statics.ResearchTopics, x => x.IdCode);
 			deindexer.AddAll(statics.Armors.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Hulls.Values, x => x.IdCode);
 			deindexer.AddAll(statics.IsDrives.Values, x => x.IdCode);
@@ -50,7 +52,6 @@ namespace Stareater.Controllers
 			deindexer.AddAll(statics.Sensors.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Shields.Values, x => x.IdCode);
 			deindexer.AddAll(statics.SpecialEquipment.Values, x => x.IdCode);
-			deindexer.AddAll(statics.DevelopmentTopics, x => x.IdCode);
 			deindexer.AddAll(statics.Thrusters.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Traits.Values, x => x.IdCode);
 			

@@ -175,7 +175,7 @@ namespace Stareater.Controllers
 			while (this.gameObj.Derivates.Players.Any(x => x.HasBreakthrough))
 			{
 				this.presentBreakthrough();
-				processingSync.WaitOne();
+				processingSync.WaitOne(); //TODO(v0.6) per player sync instead of global
 			}
 			
 			gameObj.Processor.ProcessPostcombat();
@@ -230,7 +230,7 @@ namespace Stareater.Controllers
 			);
 			
 			if (playerProc.Player.ControlType == PlayerControlType.LocalAI)
-				playerProc.Player.OffscreenControl.OnResearchComplete(controller);
+				playerProc.Player.OffscreenControl.OnResearchComplete(controller); //TODO(0.6) do in separate thread/task
 			else
 				this.stateListener.OnResearchComplete(controller);
 		}
