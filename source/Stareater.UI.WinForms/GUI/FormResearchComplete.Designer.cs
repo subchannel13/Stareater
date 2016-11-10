@@ -19,7 +19,7 @@ namespace Stareater.GUI
 		private System.Windows.Forms.Label levelLabel;
 		private System.Windows.Forms.Label topicName;
 		private System.Windows.Forms.TextBox topicDescription;
-		private Zvjezdojedac.GUI.ControlListView unlockedList;
+		private Stareater.GUI.ControlListView unlockedList;
 		private System.Windows.Forms.Label priorityTitle;
 		
 		/// <summary>
@@ -48,7 +48,7 @@ namespace Stareater.GUI
 			this.levelLabel = new System.Windows.Forms.Label();
 			this.topicName = new System.Windows.Forms.Label();
 			this.topicDescription = new System.Windows.Forms.TextBox();
-			this.unlockedList = new Zvjezdojedac.GUI.ControlListView();
+			this.unlockedList = new Stareater.GUI.ControlListView();
 			this.priorityTitle = new System.Windows.Forms.Label();
 			this.reorderDownAction = new System.Windows.Forms.Button();
 			this.reorderUpAction = new System.Windows.Forms.Button();
