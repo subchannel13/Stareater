@@ -12,6 +12,7 @@ using Stareater.Controllers.Views.Ships;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
+using Stareater.GLData;
 using Stareater.GLRenderers;
 using Stareater.GUI.Reports;
 using Stareater.GraphicsEngine;
@@ -373,6 +374,7 @@ namespace Stareater.GUI
 		private void glCanvas_Load(object sender, EventArgs e)
 		{
 			GalaxyTextures.Get.Load(); //TODO(v0.6) make general initialization logic for rendering
+			ShaderLibrary.Load();
 			
 			GL.Enable(EnableCap.DepthTest);
 			GL.Enable(EnableCap.Blend);
