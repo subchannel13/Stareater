@@ -115,8 +115,12 @@
     <Compile Include="AppData\ImageCache.cs" />
     <Compile Include="AppData\LoadingMethods.cs" />
     <Compile Include="AppData\SettingsWinforms.cs" />
+    <Compile Include="GLData\IGlProgram.cs" />
     <Compile Include="GLData\ShaderLibrary.cs" />
+    <Compile Include="GLData\SpriteBatchDrawable.cs" />
     <Compile Include="GLData\SpriteGlProgram.cs" />
+    <Compile Include="GLData\VertexBuffer.cs" />
+    <Compile Include="GLData\VertexBufferBuilder.cs" />
     <Compile Include="GLRenderers\CharTextureInfo.cs" />
     <Compile Include="GLRenderers\GalaxySelectionType.cs" />
     <Compile Include="GLRenderers\GalaxyTextures.cs" />

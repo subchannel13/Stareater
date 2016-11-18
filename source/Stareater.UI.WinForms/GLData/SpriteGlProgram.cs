@@ -1,16 +1,35 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
+using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace Stareater.GLData
 {
-	class SpriteGlProgram
+	class SpriteGlProgram : IGlProgram
 	{
+		public const int VertexSize = 4 * sizeof(float);
+			
 		private int vertexShaderId;
 		private int fragmentShaderId;
-		private int programId;
+		public int ProgramId { get; private set; }
+		public int AttributeIndices { get; private set; }
+		
+		public int LocalTransformId { get; private set; }
+		public int ZId { get; private set; }
+		public int TextureSamplerId { get; private set; }
+		public int ColorId { get; private set; }
 	
+		public int LocalPositionId { get; private set; }
+		public int TexturePositionId { get; private set; }
+
+		public void Activate()
+		{
+			GL.UseProgram(this.ProgramId);
+		}
+		
 		public void Load()
 		{
 			string vertexShaderSource;
@@ -25,12 +44,18 @@ namespace Stareater.GLData
 			
 			this.vertexShaderId = loadShader(ShaderType.VertexShader, vertexShaderSource);
 			this.fragmentShaderId = loadShader(ShaderType.FragmentShader, fragmentShaderSource);
-			this.programId = buildProgram(this.vertexShaderId, this.fragmentShaderId);
+			this.ProgramId = buildProgram(this.vertexShaderId, this.fragmentShaderId);
 			
-			ErrorCode err;
-		    while ((err = GL.GetError()) != ErrorCode.NoError) {
-		        System.Diagnostics.Trace.WriteLine("OpenGL error: \n" + err);
-		    }
+			this.ColorId = GL.GetUniformLocation(this.ProgramId, "color");
+			this.LocalTransformId = GL.GetUniformLocation(this.ProgramId, "localtransform");
+			this.TextureSamplerId = GL.GetUniformLocation(this.ProgramId, "textureSampler");
+			this.ZId = GL.GetUniformLocation(this.ProgramId, "z");
+
+			this.LocalPositionId = GL.GetAttribLocation(this.ProgramId, "localPosition");
+			this.TexturePositionId = GL.GetAttribLocation(this.ProgramId, "texturePosition");
+			this.AttributeIndices = (1 << this.LocalPositionId) | (1 << this.TexturePositionId);
+			
+			ShaderLibrary.PrintGlErrors("Load sprite program");
 		}
 		
 		private int loadShader(ShaderType type, string source)
@@ -64,6 +89,7 @@ namespace Stareater.GLData
 			var programObject = GL.CreateProgram();
 			GL.AttachShader(programObject, vertexShader);
 			GL.AttachShader(programObject, fragmentShader);
+			GL.BindFragDataLocation(programObject, 0, "outputF");
 			GL.LinkProgram(programObject);
 		
 			int linked;
@@ -77,6 +103,22 @@ namespace Stareater.GLData
 			}
 			
 			return programObject;
+		}
+		
+		public class ObjectData
+		{
+			public Matrix4 LocalTransform { get; private set; }
+			public float Z { get; private set; }
+			public int TextureId { get; private set; }
+			public Color4 Color { get; private set; }
+			
+			public ObjectData(Matrix4 localTransform, float z, int textureId, Color color)
+			{
+				this.LocalTransform = localTransform;
+				this.Z = z;
+				this.TextureId = textureId;
+				this.Color = new Color4(color.R, color.G, color.B, color.A);
+			}
 		}
 	}
 }
