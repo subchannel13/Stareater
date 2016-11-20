@@ -26,11 +26,11 @@ namespace Stareater.GLRenderers
 		private const int MaxZoom = 10;
 		private const int MinZoom = -10;
 		
-		private const float FarZ = -1;
+		private const float FarZ = 1;
 		private const float Layers = 16.0f;
 		private const float StarNameZRange = 1 / Layers;
 		
-		private const float WormholeZ = -8 / Layers;
+		private const float WormholeZ = 8 / Layers;
 		private const float PathZ = -7 / Layers;
 		private const float StarColorZ = -6 / Layers;
 		private const float StarSaturationZ = -5 / Layers;
@@ -347,28 +347,20 @@ namespace Stareater.GLRenderers
 			screenLength = screenSize.X > screenSize.Y ? 
 				(float)(2 * screenSize.X * semiRadius * aspect / screenSize.X) : 
 				(float)(2 * screenSize.Y * semiRadius * aspect / screenSize.Y);
-			
-			GL.MatrixMode(MatrixMode.Projection);
-			GL.LoadIdentity();
-			GL.Ortho(
-				-aspect * semiRadius + originOffset.X, aspect * semiRadius + originOffset.X,
-				-semiRadius + originOffset.Y, semiRadius + originOffset.Y, 
-				0, -FarZ);
 
-			GL.GetFloat(GetPName.ProjectionMatrix, out this.invProjection);
-			this.invProjection.Invert();
-			GL.MatrixMode(MatrixMode.Modelview);
-
-			var right = (float)(-aspect * semiRadius + originOffset.X);
-			var left = (float)(aspect * semiRadius + originOffset.X);
-			var top = (float)(-semiRadius + originOffset.Y);
-			var bottom = (float)(semiRadius + originOffset.Y);
+			var left = (float)(-aspect * semiRadius + originOffset.X);
+			var right = (float)(aspect * semiRadius + originOffset.X);
+			var bottom = (float)(-semiRadius + originOffset.Y);
+			var top = (float)(semiRadius + originOffset.Y);
 			this.projection = new Matrix4(
 				2 / (right - left), 0, 0, 0,
 				0, 2 / (top - bottom), 0, 0,
-				0, 0, 2 / -FarZ, 0,
+				0, 0, 2 / FarZ, 0,
 				-(right + left) / (right - left), -(top + bottom) / (top - bottom), -1, 1
 			);
+
+			this.invProjection = new Matrix4(projection.Row0, projection.Row1, projection.Row2, projection.Row3);
+			this.invProjection.Invert();
 		}
 		
 		private void setupStarsList(int listId)
@@ -403,12 +395,8 @@ namespace Stareater.GLRenderers
 			}
 		}
 		
-		private void setupWormholeList(/*int listId*/)
+		private void setupWormholeList()
 		{
-			//this.wormholeDrawList = listId;
-			
-			//GL.Enable(EnableCap.Texture2D);
-			//GL.Color4(Color.Blue);
 			var vboBuilder = new VertexArrayBuilder(6);
 			vboBuilder.BeginObject();
 			
@@ -438,7 +426,7 @@ namespace Stareater.GLRenderers
 			this.wormholeBatch = new SpriteBatchDrawable(
 				this.wormholeVbo,
 				new [] { new SpriteGlProgram.ObjectData(
-					Matrix4.Identity, 0.5f/*WormholeZ*/, GalaxyTextures.Get.PathLine.TextureId, Color.Blue
+					Matrix4.Identity, WormholeZ, GalaxyTextures.Get.PathLine.TextureId, Color.Blue
 				)}
 			);
 		}

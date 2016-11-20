@@ -378,7 +378,6 @@ namespace Stareater.GUI
 			
 			GL.Enable(EnableCap.DepthTest);
 			GL.Enable(EnableCap.Blend);
-			//GL.Enable(EnableCap.VertexArray);
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			
 			this.timingLoop.Start();
