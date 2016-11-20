@@ -7,10 +7,10 @@ namespace Stareater.GLData
 {
 	class SpriteBatchDrawable
 	{
-		private readonly VertexBuffer vbo;
+		private readonly VertexArray vbo;
 		private readonly IEnumerable<SpriteGlProgram.ObjectData> objects;
 		
-		public SpriteBatchDrawable(VertexBuffer vbo, IEnumerable<SpriteGlProgram.ObjectData> objects)
+		public SpriteBatchDrawable(VertexArray vbo, IEnumerable<SpriteGlProgram.ObjectData> objects)
 		{
 			this.vbo = vbo;
 			this.objects = objects;
@@ -25,7 +25,7 @@ namespace Stareater.GLData
 			
 			GL.VertexAttribPointer(program.LocalPositionId, 2, VertexAttribPointerType.Float, false, SpriteGlProgram.VertexSize, 0);
 			GL.VertexAttribPointer(program.TexturePositionId, 2, VertexAttribPointerType.Float, false, SpriteGlProgram.VertexSize, 2 * sizeof(float));*/
-			
+
 			GL.ActiveTexture(TextureUnit.Texture0);
 			GL.Uniform1(program.TextureSamplerId, 0);
 		}
@@ -42,7 +42,7 @@ namespace Stareater.GLData
 				GL.Uniform1(program.ZId, batch.Z);
 				GL.Uniform4(program.ColorId, batch.Color);
 			
-				GL.DrawArrays(BeginMode.Triangles, 0 /*vbo.ObjectStart(objectIndex)*/, 6 /*vbo.ObjectSize(objectIndex)*/);
+				GL.DrawArrays(BeginMode.Triangles, 0 /*vbo.ObjectStart(objectIndex)*/, 36 /*vbo.ObjectSize(objectIndex)*/);
 				ShaderLibrary.PrintGlErrors("Draw sprites");
 				objectIndex++;
 			}

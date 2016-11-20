@@ -5,13 +5,13 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Stareater.GLData
 {
-	class VertexBuffer
+	class VertexArray
 	{
 		private int vbo;
 		private int[] objectStart;
 		private int[] objectSize;
 		
-		public VertexBuffer(int vbo, IEnumerable<int> objectStart, IEnumerable<int> objectSize)
+		public VertexArray(int vbo, IEnumerable<int> objectStart, IEnumerable<int> objectSize)
 		{
 			this.vbo = vbo;
 			this.objectStart = objectStart.ToArray();

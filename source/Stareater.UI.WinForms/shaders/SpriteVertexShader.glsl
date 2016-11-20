@@ -1,12 +1,12 @@
 ﻿#version 150
 
-uniform highp mat4 localtransform;
-uniform mediump float z;
+uniform mat4 localtransform;
+uniform float z;
 
-in highp vec2 localPosition;
-in highp vec2 texturePosition;
+in vec2 localPosition;
+in vec2 texturePosition;
 
-out highp vec2 textureCoord;
+out vec2 textureCoord;
 
 void main()
 {

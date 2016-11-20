@@ -119,8 +119,8 @@
     <Compile Include="GLData\ShaderLibrary.cs" />
     <Compile Include="GLData\SpriteBatchDrawable.cs" />
     <Compile Include="GLData\SpriteGlProgram.cs" />
-    <Compile Include="GLData\VertexBuffer.cs" />
-    <Compile Include="GLData\VertexBufferBuilder.cs" />
+    <Compile Include="GLData\VertexArray.cs" />
+    <Compile Include="GLData\VertexArrayBuilder.cs" />
     <Compile Include="GLRenderers\CharTextureInfo.cs" />
     <Compile Include="GLRenderers\GalaxySelectionType.cs" />
     <Compile Include="GLRenderers\GalaxyTextures.cs" />
@@ -619,10 +619,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GLData" />
-    <Folder Include="shaders" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

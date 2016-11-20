@@ -180,7 +180,7 @@ namespace Stareater.GLRenderers
 		}
 		
 		#region ARenderer implementation
-		VertexBuffer wormholeVbo = null;
+		VertexArray wormholeVbo = null;
 		SpriteBatchDrawable wormholeBatch = null;
 		
 		public override void Activate()
@@ -355,10 +355,20 @@ namespace Stareater.GLRenderers
 				-semiRadius + originOffset.Y, semiRadius + originOffset.Y, 
 				0, -FarZ);
 
-			GL.GetFloat(GetPName.ProjectionMatrix, out this.projection);
-			this.invProjection = new Matrix4(this.projection.Row0, this.projection.Row1, this.projection.Row2, this.projection.Row3);
+			GL.GetFloat(GetPName.ProjectionMatrix, out this.invProjection);
 			this.invProjection.Invert();
 			GL.MatrixMode(MatrixMode.Modelview);
+
+			var right = (float)(-aspect * semiRadius + originOffset.X);
+			var left = (float)(aspect * semiRadius + originOffset.X);
+			var top = (float)(-semiRadius + originOffset.Y);
+			var bottom = (float)(semiRadius + originOffset.Y);
+			this.projection = new Matrix4(
+				2 / (right - left), 0, 0, 0,
+				0, 2 / (top - bottom), 0, 0,
+				0, 0, 2 / -FarZ, 0,
+				-(right + left) / (right - left), -(top + bottom) / (top - bottom), -1, 1
+			);
 		}
 		
 		private void setupStarsList(int listId)
@@ -399,15 +409,8 @@ namespace Stareater.GLRenderers
 			
 			//GL.Enable(EnableCap.Texture2D);
 			//GL.Color4(Color.Blue);
-			var vboBuilder = new VertexBufferBuilder(6);
+			var vboBuilder = new VertexArrayBuilder(6);
 			vboBuilder.BeginObject();
-			
-			vboBuilder.AddTexturedRect(
-				new NGenerics.DataStructures.Mathematical.Vector2D(0, 0),
-				new NGenerics.DataStructures.Mathematical.Vector2D(1, 0),
-				new NGenerics.DataStructures.Mathematical.Vector2D(0, 1),
-				GalaxyTextures.Get.PathLine.TextureCoords.Select(x => new NGenerics.DataStructures.Mathematical.Vector2D(x.X, x.Y)).ToArray()
-			);
 			
 			foreach (var wormhole in this.currentPlayer.Wormholes) {
 				var direction = wormhole.ToStar.Position - wormhole.FromStar.Position;
@@ -418,7 +421,6 @@ namespace Stareater.GLRenderers
 					new NGenerics.DataStructures.Mathematical.Vector2D(-direction.Y, direction.X) * 0.8,
 					GalaxyTextures.Get.PathLine.TextureCoords.Select(x => new NGenerics.DataStructures.Mathematical.Vector2D(x.X, x.Y)).ToArray()
 				);
-				break;
 				/*GL.PushMatrix();
 				GL.MultMatrix(pathMatrix(
 					new Vector2d(wormhole.FromStar.Position.X, wormhole.FromStar.Position.Y), 
@@ -436,7 +438,7 @@ namespace Stareater.GLRenderers
 			this.wormholeBatch = new SpriteBatchDrawable(
 				this.wormholeVbo,
 				new [] { new SpriteGlProgram.ObjectData(
-					Matrix4.Identity, 0/*WormholeZ*/, GalaxyTextures.Get.PathLine.TextureId, Color.Blue
+					Matrix4.Identity, 0.5f/*WormholeZ*/, GalaxyTextures.Get.PathLine.TextureId, Color.Blue
 				)}
 			);
 		}

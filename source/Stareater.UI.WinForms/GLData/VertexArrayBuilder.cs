@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Stareater.GLData
 {
-	class VertexBufferBuilder
+	class VertexArrayBuilder
 	{
 		private List<float> vertices = new List<float>();
 		private List<int> objectStarts = new List<int>();
@@ -14,7 +14,7 @@ namespace Stareater.GLData
 		private int vertexSize;
 		private int objectSize = 0;
 		
-		public VertexBufferBuilder(int vertexSize)
+		public VertexArrayBuilder(int vertexSize)
 		{
 			this.vertexSize = vertexSize;
 		}
@@ -32,7 +32,7 @@ namespace Stareater.GLData
 		
 		public static int Vao;
 		
-		public VertexBuffer GenBuffer()
+		public VertexArray GenBuffer()
 		{
 			//int vao;
 			int vbo;
@@ -50,7 +50,7 @@ namespace Stareater.GLData
 			GL.VertexAttribPointer(program.TexturePositionId, 2, VertexAttribPointerType.Float, false, SpriteGlProgram.VertexSize, 2 * sizeof(float));
 			GL.EnableVertexAttribArray(program.TexturePositionId);
 			
-			return new VertexBuffer(vbo, this.objectStarts, this.objectSizes);
+			return new VertexArray(vbo, this.objectStarts, this.objectSizes);
 		}
 		
 		public void AddTexturedRect(Vector2D center, Vector2D width, Vector2D height, Vector2D[] textureCoords)

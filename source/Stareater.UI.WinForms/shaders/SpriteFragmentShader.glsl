@@ -1,13 +1,16 @@
 ﻿#version 150
 
 uniform sampler2D textureSampler;
-uniform mediump vec4 color;
+uniform vec4 color;
 
-in highp vec2 textureCoord;
+in vec2 textureCoord;
 
 out vec4 outputF;
 
 void main()
 {
-   outputF = texture2D(textureSampler, textureCoord) * color;
+   outputF = vec4(textureCoord.x, textureCoord.y, 0, 1);
+   //texture2D(textureSampler, textureCoord);
+   // * color;
+   //outputF = color;
 }
