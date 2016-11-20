@@ -418,7 +418,7 @@ namespace Stareater.GLRenderers
 				vboBuilder.AddTexturedRect(
 					(wormhole.FromStar.Position + wormhole.ToStar.Position) / 2,
 					wormhole.ToStar.Position - wormhole.FromStar.Position,
-					new NGenerics.DataStructures.Mathematical.Vector2D(-direction.Y, direction.X) * 0.8,
+					new NGenerics.DataStructures.Mathematical.Vector2D(-direction.Y, direction.X) * 0.8 * PathWidth,
 					GalaxyTextures.Get.PathLine.TextureCoords.Select(x => new NGenerics.DataStructures.Mathematical.Vector2D(x.X, x.Y)).ToArray()
 				);
 				/*GL.PushMatrix();

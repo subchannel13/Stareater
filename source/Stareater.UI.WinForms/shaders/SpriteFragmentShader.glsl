@@ -9,8 +9,5 @@ out vec4 outputF;
 
 void main()
 {
-   outputF = vec4(textureCoord.x, textureCoord.y, 0, 1);
-   //texture2D(textureSampler, textureCoord);
-   // * color;
-   //outputF = color;
+   outputF = texture2D(textureSampler, textureCoord) * color;
 }

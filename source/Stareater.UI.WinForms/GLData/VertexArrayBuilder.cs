@@ -56,11 +56,10 @@ namespace Stareater.GLData
 		public void AddTexturedRect(Vector2D center, Vector2D width, Vector2D height, Vector2D[] textureCoords)
 		{
 			this.add(center - width / 2 + height /2);
-			this.add(textureCoords[0]);
+			this.add(textureCoords[3]);
 			
 			this.add(center + width / 2 + height /2);
-			this.vertices.Add((float)textureCoords[1].X);
-			this.vertices.Add((float)textureCoords[0].Y);
+			this.add(textureCoords[2]);
 		
 			this.add(center + width / 2 - height /2);
 			this.add(textureCoords[1]);
@@ -70,11 +69,10 @@ namespace Stareater.GLData
 			this.add(textureCoords[1]);
 		
 			this.add(center - width / 2 - height /2);
-			this.vertices.Add((float)textureCoords[0].X);
-			this.vertices.Add((float)textureCoords[1].Y);
+			this.add(textureCoords[0]);
 		
 			this.add(center - width / 2 + height /2);
-			this.add(textureCoords[0]);
+			this.add(textureCoords[3]);
 		
 			this.objectSize += 6;
 		}
