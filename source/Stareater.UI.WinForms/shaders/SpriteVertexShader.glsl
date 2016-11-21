@@ -1,4 +1,4 @@
-﻿#version 150
+﻿#version 140
 
 uniform mat4 localtransform;
 uniform float z;

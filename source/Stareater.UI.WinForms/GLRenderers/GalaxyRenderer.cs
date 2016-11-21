@@ -181,7 +181,7 @@ namespace Stareater.GLRenderers
 		
 		#region ARenderer implementation
 		VertexArray wormholeVbo = null;
-		SpriteBatchDrawable wormholeBatch = null;
+		SpriteDrawable wormholes = null;
 		
 		public override void Activate()
 		{
@@ -216,9 +216,7 @@ namespace Stareater.GLRenderers
 				this.ResetLists();
 			}
 			
-			//drawList(wormholeDrawList, setupWormholeList);
-			this.wormholeBatch.Prepare();
-			this.wormholeBatch.Draw(this.projection);
+			this.wormholes.Draw(this.projection);
 			/*drawFleetMovement();
 			drawMovementSimulation();
 			drawList(starDrawList, setupStarsList);
@@ -408,7 +406,7 @@ namespace Stareater.GLRenderers
 			
 			vboBuilder.EndObject();
 			this.wormholeVbo = vboBuilder.GenBuffer(ShaderLibrary.Sprite);
-			this.wormholeBatch = new SpriteBatchDrawable(
+			this.wormholes = new SpriteDrawable(
 				this.wormholeVbo,
 				new [] { new SpriteGlProgram.ObjectData(
 					Matrix4.Identity, WormholeZ, GalaxyTextures.Get.PathLine.TextureId, Color.Blue

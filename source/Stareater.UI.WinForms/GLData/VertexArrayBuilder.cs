@@ -40,6 +40,7 @@ namespace Stareater.GLData
 			GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
 			GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(this.vertices.Count * sizeof (float)), this.vertices.ToArray(), BufferUsageHint.StaticDraw);
 			forProgram.SetupAttributes();
+			GL.BindVertexArray(0);
 			
 			return new VertexArray(vao, vbo, this.objectStarts, this.objectSizes);
 		}

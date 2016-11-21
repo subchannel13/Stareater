@@ -22,7 +22,7 @@ namespace Stareater.GLData
 		
 		public void Bind()
 		{
-			GL.BindBuffer(BufferTarget.ArrayBuffer, this.vbo);
+			GL.BindVertexArray(this.vao);
 		}
 		
 		public int ObjectStart(int index)
