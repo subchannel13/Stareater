@@ -20,11 +20,6 @@ namespace Stareater.GLData
 		{
 			var program = ShaderLibrary.Sprite;
 			GL.UseProgram(program.ProgramId);
-			//vbo.Bind();
-			/*ShaderLibrary.Use(program);
-			
-			GL.VertexAttribPointer(program.LocalPositionId, 2, VertexAttribPointerType.Float, false, SpriteGlProgram.VertexSize, 0);
-			GL.VertexAttribPointer(program.TexturePositionId, 2, VertexAttribPointerType.Float, false, SpriteGlProgram.VertexSize, 2 * sizeof(float));*/
 
 			GL.ActiveTexture(TextureUnit.Texture0);
 			GL.Uniform1(program.TextureSamplerId, 0);
@@ -42,7 +37,7 @@ namespace Stareater.GLData
 				GL.Uniform1(program.ZId, batch.Z);
 				GL.Uniform4(program.ColorId, batch.Color);
 			
-				GL.DrawArrays(BeginMode.Triangles, 0 /*vbo.ObjectStart(objectIndex)*/, 36 /*vbo.ObjectSize(objectIndex)*/);
+				GL.DrawArrays(BeginMode.Triangles, vbo.ObjectStart(objectIndex), vbo.ObjectSize(objectIndex));
 				ShaderLibrary.PrintGlErrors("Draw sprites");
 				objectIndex++;
 			}

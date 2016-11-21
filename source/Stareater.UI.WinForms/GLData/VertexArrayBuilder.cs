@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NGenerics.DataStructures.Mathematical;
 using OpenTK.Graphics.OpenGL;
+using Stareater.GLRenderers;
 
 namespace Stareater.GLData
 {
@@ -30,27 +31,53 @@ namespace Stareater.GLData
 			this.objectSizes.Add(this.objectSize);
 		}
 		
-		public static int Vao;
-		
-		public VertexArray GenBuffer()
+		public VertexArray GenBuffer(IGlProgram forProgram)
 		{
-			//int vao;
-			int vbo;
-
-			Vao = GL.GenVertexArray();
-			GL.BindVertexArray(Vao);
+			var vao = GL.GenVertexArray();
+			GL.BindVertexArray(vao);
 			
-			vbo = GL.GenBuffer();
+			var vbo = GL.GenBuffer();
 			GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
 			GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(this.vertices.Count * sizeof (float)), this.vertices.ToArray(), BufferUsageHint.StaticDraw);
-		
-			var program = ShaderLibrary.Sprite;
-			GL.VertexAttribPointer(program.LocalPositionId, 2, VertexAttribPointerType.Float, false, SpriteGlProgram.VertexSize, 0);
-			GL.EnableVertexAttribArray(program.LocalPositionId);
-			GL.VertexAttribPointer(program.TexturePositionId, 2, VertexAttribPointerType.Float, false, SpriteGlProgram.VertexSize, 2 * sizeof(float));
-			GL.EnableVertexAttribArray(program.TexturePositionId);
+			forProgram.SetupAttributes();
 			
-			return new VertexArray(vbo, this.objectStarts, this.objectSizes);
+			return new VertexArray(vao, vbo, this.objectStarts, this.objectSizes);
+		}
+		
+		public void AddPathRect(Vector2D fromPosition, Vector2D toPosition, double width, TextureInfo textureinfo)
+		{
+			var center = (fromPosition + toPosition) / 2;
+			var length = toPosition - fromPosition;
+			var direction = new Vector2D(length.X, length.Y);
+			direction.Normalize();
+			var widthDir = new Vector2D(-direction.Y, direction.X) * width;
+			
+			this.add(center - length / 2 + widthDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[3].X);
+			this.vertices.Add(textureinfo.TextureCoords[3].Y);
+			
+			this.add(center + length / 2 + widthDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[2].X);
+			this.vertices.Add(textureinfo.TextureCoords[2].Y);
+		
+			this.add(center + length / 2 - widthDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[1].X);
+			this.vertices.Add(textureinfo.TextureCoords[1].Y);
+		
+			
+			this.add(center + length / 2 - widthDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[1].X);
+			this.vertices.Add(textureinfo.TextureCoords[1].Y);
+		
+			this.add(center - length / 2 - widthDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[0].X);
+			this.vertices.Add(textureinfo.TextureCoords[0].Y);
+		
+			this.add(center - length / 2 + widthDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[3].X);
+			this.vertices.Add(textureinfo.TextureCoords[3].Y);
+		
+			this.objectSize += 6;
 		}
 		
 		public void AddTexturedRect(Vector2D center, Vector2D width, Vector2D height, Vector2D[] textureCoords)

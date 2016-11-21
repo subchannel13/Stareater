@@ -15,7 +15,6 @@ namespace Stareater.GLData
 		private int vertexShaderId;
 		private int fragmentShaderId;
 		public int ProgramId { get; private set; }
-		public int AttributeIndices { get; private set; }
 		
 		public int LocalTransformId { get; private set; }
 		public int ZId { get; private set; }
@@ -53,9 +52,16 @@ namespace Stareater.GLData
 
 			this.LocalPositionId = GL.GetAttribLocation(this.ProgramId, "localPosition");
 			this.TexturePositionId = GL.GetAttribLocation(this.ProgramId, "texturePosition");
-			this.AttributeIndices = (1 << this.LocalPositionId) | (1 << this.TexturePositionId);
 			
 			ShaderLibrary.PrintGlErrors("Load sprite program");
+		}
+		
+		public void SetupAttributes()
+		{
+			GL.VertexAttribPointer(this.LocalPositionId, 2, VertexAttribPointerType.Float, false, VertexSize, 0);
+			GL.EnableVertexAttribArray(this.LocalPositionId);
+			GL.VertexAttribPointer(this.TexturePositionId, 2, VertexAttribPointerType.Float, false, VertexSize, 2 * sizeof(float));
+			GL.EnableVertexAttribArray(this.TexturePositionId);
 		}
 		
 		private int loadShader(ShaderType type, string source)

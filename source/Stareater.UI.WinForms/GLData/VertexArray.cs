@@ -7,12 +7,14 @@ namespace Stareater.GLData
 {
 	class VertexArray
 	{
+		private int vao;
 		private int vbo;
 		private int[] objectStart;
 		private int[] objectSize;
 		
-		public VertexArray(int vbo, IEnumerable<int> objectStart, IEnumerable<int> objectSize)
+		public VertexArray(int vao, int vbo, IEnumerable<int> objectStart, IEnumerable<int> objectSize)
 		{
+			this.vao = vbo;
 			this.vbo = vbo;
 			this.objectStart = objectStart.ToArray();
 			this.objectSize = objectSize.ToArray();

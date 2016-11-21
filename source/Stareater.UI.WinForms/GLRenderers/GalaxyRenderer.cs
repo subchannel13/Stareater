@@ -403,26 +403,11 @@ namespace Stareater.GLRenderers
 			foreach (var wormhole in this.currentPlayer.Wormholes) {
 				var direction = wormhole.ToStar.Position - wormhole.FromStar.Position;
 				direction.Normalize();
-				vboBuilder.AddTexturedRect(
-					(wormhole.FromStar.Position + wormhole.ToStar.Position) / 2,
-					wormhole.ToStar.Position - wormhole.FromStar.Position,
-					new NGenerics.DataStructures.Mathematical.Vector2D(-direction.Y, direction.X) * 0.8 * PathWidth,
-					GalaxyTextures.Get.PathLine.TextureCoords.Select(x => new NGenerics.DataStructures.Mathematical.Vector2D(x.X, x.Y)).ToArray()
-				);
-				/*GL.PushMatrix();
-				GL.MultMatrix(pathMatrix(
-					new Vector2d(wormhole.FromStar.Position.X, wormhole.FromStar.Position.Y), 
-					new Vector2d(wormhole.ToStar.Position.X, wormhole.ToStar.Position.Y)
-				));
-				GL.Scale(1, 0.8, 1);
-				
-				TextureUtils.DrawSprite(GalaxyTextures.Get.PathLine, WormholeZ);
-				
-				GL.PopMatrix();*/
+				vboBuilder.AddPathRect(wormhole.FromStar.Position, wormhole.ToStar.Position, 0.8 * PathWidth, GalaxyTextures.Get.PathLine);
 			}
 			
 			vboBuilder.EndObject();
-			this.wormholeVbo = vboBuilder.GenBuffer();
+			this.wormholeVbo = vboBuilder.GenBuffer(ShaderLibrary.Sprite);
 			this.wormholeBatch = new SpriteBatchDrawable(
 				this.wormholeVbo,
 				new [] { new SpriteGlProgram.ObjectData(
