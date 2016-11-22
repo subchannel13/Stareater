@@ -26,7 +26,7 @@ namespace Stareater.GLData
 			this.objectSizes.Add(this.objectSize);
 		}
 		
-		public VertexArray GenBuffer(IGlProgram forProgram)
+		public VertexArray Generate(IGlProgram forProgram)
 		{
 			var vao = GL.GenVertexArray();
 			GL.BindVertexArray(vao);
@@ -109,40 +109,14 @@ namespace Stareater.GLData
 			this.objectSize += 6;
 		}
 		
-		public void AddTexturedRect(float x0, float y0, float w, float h, float tx0, float ty0, float tx1, float ty1)
+		public void AddTexturedVertex(float x, float y, float tx, float ty)
 		{
-			this.vertices.Add(x0 - w / 2); 
-			this.vertices.Add(y0 + h / 2);
-			this.vertices.Add(tx0);
-			this.vertices.Add(ty0);
+			this.vertices.Add(x); 
+			this.vertices.Add(y);
+			this.vertices.Add(tx);
+			this.vertices.Add(ty);
 		
-			this.vertices.Add(x0 + w / 2); 
-			this.vertices.Add(y0 + h / 2);
-			this.vertices.Add(tx1);
-			this.vertices.Add(ty0);
-		
-			this.vertices.Add(x0 + w / 2); 
-			this.vertices.Add(y0 - h / 2);
-			this.vertices.Add(tx1);
-			this.vertices.Add(ty1);
-		
-		
-			this.vertices.Add(x0 + w / 2); 
-			this.vertices.Add(y0 - h / 2);
-			this.vertices.Add(tx1);
-			this.vertices.Add(ty1);
-		
-			this.vertices.Add(x0 - w / 2); 
-			this.vertices.Add(y0 - h / 2);
-			this.vertices.Add(tx0);
-			this.vertices.Add(ty1);
-		
-			this.vertices.Add(x0 - w / 2); 
-			this.vertices.Add(y0 + h / 2);
-			this.vertices.Add(tx0);
-			this.vertices.Add(ty0);
-		
-			this.objectSize += 6;
+			this.objectSize++;
 		}
 		
 		private void add(Vector2D v)

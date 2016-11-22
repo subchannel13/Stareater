@@ -13,9 +13,12 @@ namespace Stareater.GLRenderers
 		{
 			this.TextureCoords = new Vector2[] {
 				offset,
-				offset + new Vector2(0, size.Height),
-				offset + new Vector2(size.Width, size.Height),
 				offset + new Vector2(size.Width, 0),
+				offset + new Vector2(size.Width, size.Height),
+				
+				offset + new Vector2(size.Width, size.Height),
+				offset + new Vector2(0, size.Height),
+				offset,
 			};
 			
 			this.Aspect = size.Width / size.Height;

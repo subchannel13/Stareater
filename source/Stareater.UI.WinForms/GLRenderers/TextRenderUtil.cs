@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using Stareater.GLData;
 
 namespace Stareater.GLRenderers
 {
-	public class TextRenderUtil
+	class TextRenderUtil
 	{
 		#region Singleton
 		static TextRenderUtil instance = null;
@@ -29,13 +30,15 @@ namespace Stareater.GLRenderers
 
 		const float SpaceUnitWidth = 0.25f;
 		
-		private int textureId;
 		private Bitmap textureBitmap;
 		private Font font;
 		private Vector2 nextCharOffset;
 
 		private Dictionary<char, CharTextureInfo> characterInfos = new Dictionary<char, CharTextureInfo>();
 		private readonly Vector2[] unitQuad;
+		private readonly Vector2[] unitQuadTriangles;
+		
+		public int TextureId { get; private set; }
 		
 		private TextRenderUtil()
 		{
@@ -45,9 +48,72 @@ namespace Stareater.GLRenderers
 				new Vector2(1, -1),
 				new Vector2(1, 0),
 			};
+			this.unitQuadTriangles = new Vector2[] {
+				new Vector2(0, 0),
+				new Vector2(1, 0),
+				new Vector2(1, -1),
+				
+				new Vector2(1, -1),
+				new Vector2(0, -1),
+				new Vector2(0, 0),
+			};
 		}
 
-		//TODO(v0.6) use for caching star names
+		private void lazyInitialization()
+		{
+			if (this.textureBitmap == null)
+				this.textureBitmap = new Bitmap(Width, Height);
+			
+			if (this.font == null)
+				this.font = new Font(FontFamily, FontSize, FontStyle.Bold);
+			
+			if (this.TextureId == 0)
+				this.TextureId = TextureUtils.CreateTexture(this.textureBitmap);
+		}
+		
+		private float measureWidth(string text)
+		{
+			float textWidth = 0;
+			
+			foreach (char c in text) {
+				if (!this.characterInfos.ContainsKey(c))
+					Prepare(new string[] { text });
+				        
+				if (!char.IsWhiteSpace(c))
+					textWidth += this.characterInfos[c].Aspect;
+				else if (c == ' ')
+					textWidth += SpaceUnitWidth;
+				else
+					throw new ArgumentException("Unsupported whitespace character, character code: " + (int)c);
+			}
+			
+			return textWidth;
+		}
+		
+		public void BufferText(string text, float adjustment, Matrix4 transform, VertexArrayBuilder vaoBuilder)
+		{
+			float textWidth = measureWidth(text);
+			float charOffset = textWidth * adjustment;
+			
+			foreach (char c in text)
+				if (!char.IsWhiteSpace(c)) 
+				{
+					var charInfo = this.characterInfos[c];
+					
+					for (int v = 0; v < 6; v++) 
+					{
+						var charPos = Vector4.Transform(
+							new Vector4(unitQuadTriangles[v].X * charInfo.Aspect + charOffset, unitQuadTriangles[v].Y, 0, 1), 
+							transform
+						);
+						vaoBuilder.AddTexturedVertex(charPos.X, charPos.Y, charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y);
+					}
+					charOffset += charInfo.Aspect;
+				}
+				else if (c == ' ')
+					charOffset += SpaceUnitWidth;
+		}
+		
 		public void Prepare(IEnumerable<string> texts)
 		{
 			var missinCharacters = new HashSet<char>();
@@ -56,7 +122,7 @@ namespace Stareater.GLRenderers
 					if (!this.characterInfos.ContainsKey(c) && !char.IsWhiteSpace(c))
 						missinCharacters.Add(c);
 
-			if (missinCharacters.Count == 0 && this.textureId != 0)
+			if (missinCharacters.Count == 0 && this.TextureId != 0)
 				return;
 
 			lazyInitialization();
@@ -85,39 +151,15 @@ namespace Stareater.GLRenderers
 				}
 			}
 
-			TextureUtils.UpdateTexture(this.textureId, this.textureBitmap);
+			TextureUtils.UpdateTexture(this.TextureId, this.textureBitmap);
 		}
 		
-		private void lazyInitialization()
-		{
-			if (this.textureBitmap == null)
-				this.textureBitmap = new Bitmap(Width, Height);
-			
-			if (this.font == null)
-				this.font = new Font(FontFamily, FontSize, FontStyle.Bold);
-			
-			if (this.textureId == 0)
-				this.textureId = TextureUtils.CreateTexture(this.textureBitmap);
-		}
-
 		public void RenderText(string text, float adjustment)
 		{
-			float textWidth = 0;
-			foreach (char c in text) {
-				if (!this.characterInfos.ContainsKey(c))
-					Prepare(new string[] { text });
-				        
-				if (!char.IsWhiteSpace(c))
-					textWidth += this.characterInfos[c].Aspect;
-				else if (c == ' ')
-					textWidth += SpaceUnitWidth;
-				else
-					throw new ArgumentException("Unsupported whitespace character, character code: " + (int)c);
-			}
-
-			GL.BindTexture(TextureTarget.Texture2D, this.textureId);
-
+			float textWidth = measureWidth(text);
 			float charOffset = textWidth * adjustment;
+			
+			GL.BindTexture(TextureTarget.Texture2D, this.TextureId);
 			GL.Begin(BeginMode.Quads);
 
 			foreach (char c in text)
