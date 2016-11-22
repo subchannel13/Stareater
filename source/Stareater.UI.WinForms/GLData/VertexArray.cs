@@ -25,6 +25,15 @@ namespace Stareater.GLData
 			GL.BindVertexArray(this.vao);
 		}
 		
+		public void Delete()
+		{
+			GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+			GL.DeleteBuffer(this.vbo);
+			
+			GL.BindVertexArray(0);
+			GL.DeleteVertexArray(this.vao);
+		}
+		
 		public int ObjectStart(int index)
 		{
 			return this.objectStart[index];

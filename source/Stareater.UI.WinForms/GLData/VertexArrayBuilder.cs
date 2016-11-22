@@ -12,18 +12,13 @@ namespace Stareater.GLData
 		private List<int> objectStarts = new List<int>();
 		private List<int> objectSizes = new List<int>();
 	
-		private int vertexSize;
 		private int objectSize = 0;
-		
-		public VertexArrayBuilder(int vertexSize)
-		{
-			this.vertexSize = vertexSize;
-		}
 		
 		public void BeginObject()
 		{
+			var previous = this.objectStarts.Count - 1;
 			this.objectSize = 0;
-			this.objectStarts.Add(this.vertices.Count);
+			this.objectStarts.Add(this.objectStarts.Count == 0 ? 0 : (this.objectStarts[previous] + this.objectSizes[previous]));
 		}
 		
 		public void EndObject()
@@ -81,26 +76,35 @@ namespace Stareater.GLData
 			this.objectSize += 6;
 		}
 		
-		public void AddTexturedRect(Vector2D center, Vector2D width, Vector2D height, Vector2D[] textureCoords)
+		public void AddTexturedRect(Vector2D center, int width, int height, TextureInfo textureinfo)
 		{
-			this.add(center - width / 2 + height /2);
-			this.add(textureCoords[3]);
+			var widthDir = new Vector2D(width, 0);
+			var heightDir = new Vector2D(0, height);
 			
-			this.add(center + width / 2 + height /2);
-			this.add(textureCoords[2]);
+			this.add(center - widthDir / 2 + heightDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[3].X);
+			this.vertices.Add(textureinfo.TextureCoords[3].Y);
+			
+			this.add(center + widthDir / 2 + heightDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[2].X);
+			this.vertices.Add(textureinfo.TextureCoords[2].Y);
 		
-			this.add(center + width / 2 - height /2);
-			this.add(textureCoords[1]);
+			this.add(center + widthDir / 2 - heightDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[1].X);
+			this.vertices.Add(textureinfo.TextureCoords[1].Y);
 		
 			
-			this.add(center + width / 2 - height /2);
-			this.add(textureCoords[1]);
+			this.add(center + widthDir / 2 - heightDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[1].X);
+			this.vertices.Add(textureinfo.TextureCoords[1].Y);
 		
-			this.add(center - width / 2 - height /2);
-			this.add(textureCoords[0]);
+			this.add(center - widthDir / 2 - heightDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[0].X);
+			this.vertices.Add(textureinfo.TextureCoords[0].Y);
 		
-			this.add(center - width / 2 + height /2);
-			this.add(textureCoords[3]);
+			this.add(center - widthDir / 2 + heightDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[3].X);
+			this.vertices.Add(textureinfo.TextureCoords[3].Y);
 		
 			this.objectSize += 6;
 		}
