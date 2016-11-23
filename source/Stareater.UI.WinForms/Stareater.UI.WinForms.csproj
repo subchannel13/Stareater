@@ -117,7 +117,6 @@
     <Compile Include="AppData\SettingsWinforms.cs" />
     <Compile Include="GLData\IGlProgram.cs" />
     <Compile Include="GLData\ShaderLibrary.cs" />
-    <Compile Include="GLData\SpriteDrawable.cs" />
     <Compile Include="GLData\SpriteGlProgram.cs" />
     <Compile Include="GLData\SpriteInfo.cs" />
     <Compile Include="GLData\VertexArray.cs" />
@@ -129,7 +128,9 @@
     <Compile Include="GLRenderers\IGalaxyViewListener.cs" />
     <Compile Include="GLRenderers\GalaxyRenderer.cs" />
     <Compile Include="GLRenderers\SpaceCombatRenderer.cs" />
+    <Compile Include="GLRenderers\SpriteDrawable.cs" />
     <Compile Include="GLRenderers\SystemRenderer.cs" />
+    <Compile Include="GLRenderers\TextDrawable.cs" />
     <Compile Include="GLRenderers\TextRenderUtil.cs" />
     <Compile Include="GLRenderers\TextureInfo.cs" />
     <Compile Include="GLRenderers\TextureUtils.cs" />

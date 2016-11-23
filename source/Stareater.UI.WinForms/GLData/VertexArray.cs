@@ -14,7 +14,7 @@ namespace Stareater.GLData
 		
 		public VertexArray(int vao, int vbo, IEnumerable<int> objectStart, IEnumerable<int> objectSize)
 		{
-			this.vao = vbo;
+			this.vao = vao;
 			this.vbo = vbo;
 			this.objectStart = objectStart.ToArray();
 			this.objectSize = objectSize.ToArray();
@@ -23,6 +23,11 @@ namespace Stareater.GLData
 		public void Bind()
 		{
 			GL.BindVertexArray(this.vao);
+		}
+		
+		public void BindVbo()
+		{
+			GL.BindBuffer(BufferTarget.ArrayBuffer, this.vbo);
 		}
 		
 		public void Delete()

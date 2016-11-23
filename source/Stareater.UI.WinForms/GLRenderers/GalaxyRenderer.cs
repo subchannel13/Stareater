@@ -55,6 +55,9 @@ namespace Stareater.GLRenderers
 		
 		private Matrix4 projection;
 		private Matrix4 invProjection;
+		private SpriteDrawable wormholeSprites = null;
+		private List<SpriteDrawable> starSprites = null;
+		private TextDrawable etaTextSprites = null;
 		private int starDrawList = NoCallList; //TODO(v0.6) remove
 
 		private int zoomLevel = 2;
@@ -179,9 +182,6 @@ namespace Stareater.GLRenderers
 		}
 		
 		#region ARenderer implementation
-		SpriteDrawable wormholeSprites = null;
-		List<SpriteDrawable> starSprites = null;
-		
 		public override void Activate()
 		{
 			this.rebuildCache();
@@ -227,7 +227,7 @@ namespace Stareater.GLRenderers
 				drawable.Draw(this.projection);
 			drawFleetMarkers();
 			drawSelectionMarkers();
-			//drawMovementEta();
+			drawMovementEta();
 		}
 
 		public override void ResetLists()
@@ -285,14 +285,23 @@ namespace Stareater.GLRenderers
 					var destination = this.SelectedFleet.SimulationWaypoints[this.SelectedFleet.SimulationWaypoints.Count - 1];
 					var numVars = new Var("eta", Math.Ceiling(this.SelectedFleet.Eta)).Get;
 					var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.SelectedFleet.Eta, RoundingMethod.Ceil, 0)).Get;
+					var transform = 
+						Matrix4.CreateScale(EtaTextScale) * 
+						Matrix4.CreateTranslation((float)destination.X, (float)destination.Y + 0.5f, 0);
 					
-					GL.PushMatrix();
-					GL.Translate(destination.X, destination.Y + 0.5, EtaZ);
-					GL.Scale(EtaTextScale, EtaTextScale, EtaTextScale);
-		
-					//TODO(v0.6) convert to VAO
-					TextRenderUtil.Get.RenderText(LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars), -0.5f);
-					GL.PopMatrix();
+					if (this.etaTextSprites == null)
+						this.etaTextSprites = new TextDrawable(
+							new SpriteGlProgram.ObjectData(
+								new Matrix4(),
+								EtaZ,
+								TextRenderUtil.Get.TextureId,
+								Color.White
+							),
+							-0.5f
+						);
+					
+					this.etaTextSprites.ObjectData.LocalTransform = transform;
+					this.etaTextSprites.Draw(this.projection, LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars));
 				}
 			}
 		}

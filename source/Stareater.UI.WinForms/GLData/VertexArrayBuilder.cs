@@ -39,6 +39,12 @@ namespace Stareater.GLData
 			
 			return new VertexArray(vao, vbo, this.objectStarts, this.objectSizes);
 		}
+
+		public void Update(VertexArray vao)
+		{
+			vao.BindVbo();
+			GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(this.vertices.Count * sizeof (float)), this.vertices.ToArray(), BufferUsageHint.StaticDraw);
+		}
 		
 		public void AddPathRect(Vector2D fromPosition, Vector2D toPosition, double width, TextureInfo textureinfo)
 		{

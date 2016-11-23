@@ -113,11 +113,11 @@ namespace Stareater.GLData
 		
 		public class ObjectData
 		{
-			public Matrix4 LocalTransform { get; private set; }
 			public float Z { get; private set; }
 			public int TextureId { get; private set; }
 			public Color4 Color { get; private set; }
-			
+			public Matrix4 LocalTransform { get; set; }
+
 			public ObjectData(Matrix4 localTransform, float z, int textureId, Color color)
 			{
 				this.LocalTransform = localTransform;

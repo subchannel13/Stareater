@@ -1,8 +1,9 @@
 ﻿using System;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using Stareater.GLData;
 
-namespace Stareater.GLData
+namespace Stareater.GLRenderers
 {
 	class SpriteDrawable
 	{
