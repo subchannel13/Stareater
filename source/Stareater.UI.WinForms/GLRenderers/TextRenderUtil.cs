@@ -154,6 +154,7 @@ namespace Stareater.GLRenderers
 			TextureUtils.UpdateTexture(this.TextureId, this.textureBitmap);
 		}
 		
+		//TODO(v0.6) remove, use buffer instead
 		public void RenderText(string text, float adjustment)
 		{
 			float textWidth = measureWidth(text);

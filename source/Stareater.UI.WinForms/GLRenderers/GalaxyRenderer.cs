@@ -46,7 +46,7 @@ namespace Stareater.GLRenderers
 		private const float EtaTextScale = 0.25f;
 		private const float FleetIndicatorScale = 0.2f;
 		private const float FleetSelectorScale = 0.3f;
-		private const double PathWidth = 0.1;
+		private const float PathWidth = 0.1f;
 		private const float StarNameScale = 0.35f;
 
 		public FleetController SelectedFleet { private get; set; }
@@ -221,11 +221,11 @@ namespace Stareater.GLRenderers
 			}
 			
 			this.wormholeSprites.Draw(this.projection);
-			//drawFleetMovement();
-			//drawMovementSimulation();
+			drawFleetMovement();
+			drawMovementSimulation();
 			foreach(var drawable in this.starSprites)
 				drawable.Draw(this.projection);
-			//drawFleetMarkers();
+			drawFleetMarkers();
 			drawSelectionMarkers();
 			//drawMovementEta();
 		}
@@ -241,17 +241,14 @@ namespace Stareater.GLRenderers
 		#region Drawing setup and helpers
 		private void drawFleetMarkers()
 		{
-			foreach (var fleet in this.fleetPositions) {
-				GL.Color4(fleet.Key.Owner.Color);
-				
-				GL.PushMatrix();
-				GL.Translate(fleet.Value.X, fleet.Value.Y, FleetZ);
-				GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
-
-				//TODO(v0.6) convert to sprite info
-				//TextureUtils.DrawSprite(GalaxyTextures.Get.FleetIndicator);
-				GL.PopMatrix();
-			}
+			foreach (var fleet in this.fleetPositions)
+				TextureUtils.DrawSprite(
+					GalaxyTextures.Get.FleetIndicator, 
+					this.projection, 
+					Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation((float)fleet.Value.X, (float)fleet.Value.Y, 0),
+					FleetZ, 
+					fleet.Key.Owner.Color
+				);
 		}
 
 		private void drawFleetMovement()
@@ -261,19 +258,18 @@ namespace Stareater.GLRenderers
 					continue;
 
 				var lastPosition = fleetPos.Value;
-				GL.Color4(Color.DarkGreen);
-				
 				foreach(var waypoint in fleetPos.Key.Missions.Waypoints)
 				{
-					GL.PushMatrix();
-					GL.MultMatrix(pathMatrix(
-						new Vector2d(lastPosition.X, lastPosition.Y),
-						new Vector2d(waypoint.Destionation.X, waypoint.Destionation.Y)
-					));
-						
-					//TODO(v0.6) convert to sprite info
-					//TextureUtils.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
-					GL.PopMatrix();
+					TextureUtils.DrawSprite(
+						GalaxyTextures.Get.PathLine, 
+						this.projection, 
+						pathMatrix(
+							new Vector2((float)lastPosition.X, (float)lastPosition.Y),
+							new Vector2((float)waypoint.Destionation.X, (float)waypoint.Destionation.Y)
+						),
+						PathZ, 
+						Color.DarkGreen
+					);
 					
 					lastPosition = waypoint.Destionation;
 				}
@@ -294,6 +290,7 @@ namespace Stareater.GLRenderers
 					GL.Translate(destination.X, destination.Y + 0.5, EtaZ);
 					GL.Scale(EtaTextScale, EtaTextScale, EtaTextScale);
 		
+					//TODO(v0.6) convert to VAO
 					TextRenderUtil.Get.RenderText(LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars), -0.5f);
 					GL.PopMatrix();
 				}
@@ -304,16 +301,20 @@ namespace Stareater.GLRenderers
 		{
 			if (this.SelectedFleet != null && this.SelectedFleet.SimulationWaypoints.Count > 0)
 			{
-				GL.Enable(EnableCap.Texture2D);
-				GL.Color4(Color.LimeGreen);
-				
 				var last = this.fleetPositions[this.SelectedFleet.Fleet];
-				foreach (var next in this.SelectedFleet.SimulationWaypoints) {
-					GL.PushMatrix();
-					GL.MultMatrix(pathMatrix(new Vector2d(last.X, last.Y), new Vector2d(next.X, next.Y)));
-					//TODO(v0.6) convert to sprite info
-					//TextureUtils.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
-					GL.PopMatrix();
+				foreach (var next in this.SelectedFleet.SimulationWaypoints) 
+				{
+					TextureUtils.DrawSprite(
+						GalaxyTextures.Get.PathLine, 
+						this.projection, 
+						pathMatrix(
+							new Vector2((float)last.X, (float)last.Y),
+							new Vector2((float)next.X, (float)next.Y)
+						),
+						PathZ, 
+						Color.LimeGreen
+					);
+					
 					last = next;
 				}
 			}
@@ -616,19 +617,19 @@ namespace Stareater.GLRenderers
 			);
 		}
 		
-		private double[] pathMatrix(Vector2d fromPoint, Vector2d toPoint)
+		private Matrix4 pathMatrix(Vector2 fromPoint, Vector2 toPoint)
 		{
 			var xAxis = toPoint - fromPoint;
-			var yAxis = new Vector2d(xAxis.Y, -xAxis.X);
-			double yScale = PathWidth / yAxis.Length;
+			var yAxis = new Vector2(xAxis.Y, -xAxis.X);
+			var yScale = PathWidth / yAxis.Length;
 			
 			var center = (fromPoint + toPoint) / 2;
-			return new double[] {
+			return new Matrix4(
 				xAxis.X, yAxis.X, 0, 0,
 				xAxis.Y * yScale, yAxis.Y * yScale, 0, 0,
 				0, 0, 1, 0,
 				center.X, center.Y, 0, 1
-			};
+			);
 		}
 		
 		private FleetInfo lastSelectedIdleFleet
