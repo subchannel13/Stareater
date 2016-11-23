@@ -58,7 +58,6 @@ namespace Stareater.GLRenderers
 		private SpriteDrawable wormholeSprites = null;
 		private List<SpriteDrawable> starSprites = null;
 		private TextDrawable etaTextSprites = null;
-		private int starDrawList = NoCallList; //TODO(v0.6) remove
 
 		private int zoomLevel = 2;
 		private Vector4? lastMousePosition = null;
@@ -185,25 +184,10 @@ namespace Stareater.GLRenderers
 		public override void Activate()
 		{
 			this.rebuildCache();
-			setupWormholeSprites();
-			setupStarSprites();
+			this.setupVaos();
 			
 			if (this.currentSelection == GalaxySelectionType.Star)
 				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
-		}
-		
-		public override void Deactivate()
-		{
-			if (starDrawList >= 0){
-				GL.DeleteLists(starDrawList, 1);
-				starDrawList = -1;
-			}
-			
-			if (wormholeSprites != null)
-			{
-				this.wormholeSprites.Vao.Delete();
-				this.wormholeSprites = null;
-			}
 		}
 		
 		public override void Draw(double deltaTime)
@@ -232,9 +216,7 @@ namespace Stareater.GLRenderers
 
 		public override void ResetLists()
 		{
-			//TODO(v0.6) reset VAOs
-			GL.DeleteLists(starDrawList, 1);
-			this.starDrawList = NoCallList;
+			this.setupVaos();
 		}
 		#endregion
 
@@ -375,9 +357,14 @@ namespace Stareater.GLRenderers
 			this.invProjection.Invert();
 		}
 		
+		private void setupVaos()
+		{
+			this.setupStarSprites();
+			this.setupWormholeSprites();
+		}
+		
 		private void setupStarSprites()
 		{
-			this.starSprites = new List<SpriteDrawable>();
 			var batchData = new List<SpriteGlProgram.ObjectData>();
 			var vaoBuilder = new VertexArrayBuilder();
 			int objectIndex = 0;
@@ -426,16 +413,24 @@ namespace Stareater.GLRenderers
 					TextRenderUtil.Get.TextureId, 
 					starNameColor(star)
 				));
-				starNameZ += StarNameZRange / this.currentPlayer.StarCount;
+				starNameZ -= StarNameZRange / this.currentPlayer.StarCount;
 			}
 			
-			var starVao = vaoBuilder.Generate(ShaderLibrary.Sprite);
+			VertexArray starVao;
+			if (this.starSprites == null)
+			{
+				this.starSprites = new List<SpriteDrawable>();
+				starVao = vaoBuilder.Generate(ShaderLibrary.Sprite);
+			}
+			else
+			{
+				starVao = this.starSprites[0].Vao;
+				vaoBuilder.Update(starVao);
+				this.starSprites.Clear();
+			}
+			
 			for(int i = 0; i < batchData.Count; i++)
-				this.starSprites.Add(new SpriteDrawable(
-					starVao,
-					i,
-					batchData[i]
-				));
+				this.starSprites.Add(new SpriteDrawable(starVao, i, batchData[i]));
 		}
 		
 		private void setupWormholeSprites()
@@ -448,16 +443,21 @@ namespace Stareater.GLRenderers
 				direction.Normalize();
 				vboBuilder.AddPathRect(wormhole.FromStar.Position, wormhole.ToStar.Position, 0.8 * PathWidth, GalaxyTextures.Get.PathLine.Texture);
 			}
-			
 			vboBuilder.EndObject();
-			var wormholeVbo = vboBuilder.Generate(ShaderLibrary.Sprite);
-			this.wormholeSprites = new SpriteDrawable(
-				wormholeVbo,
-				0,
-				new SpriteGlProgram.ObjectData(
-					Matrix4.Identity, WormholeZ, GalaxyTextures.Get.PathLine.Texture.Id, Color.Blue
-				)
-			);
+			
+			if (this.wormholeSprites == null)
+			{
+				var wormholeVba = vboBuilder.Generate(ShaderLibrary.Sprite);
+				this.wormholeSprites = new SpriteDrawable(
+					wormholeVba,
+					0,
+					new SpriteGlProgram.ObjectData(
+						Matrix4.Identity, WormholeZ, GalaxyTextures.Get.PathLine.Texture.Id, Color.Blue
+					)
+				);
+			}
+			else
+				vboBuilder.Update(this.wormholeSprites.Vao);
 		}
 		#endregion
 		
