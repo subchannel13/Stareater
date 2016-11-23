@@ -4,10 +4,11 @@ using System.Drawing;
 using System.IO;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
+using Stareater.GLData;
 
 namespace Stareater.GLRenderers
 {
-	public class GalaxyTextures
+	class GalaxyTextures
 	{
 		#region Singleton
 		static GalaxyTextures instance = null;
@@ -46,6 +47,7 @@ namespace Stareater.GLRenderers
 		private bool loaded = false;
 		private int textureId;
 		private Dictionary<string, TextureInfo> sprites;
+		private VertexArray vertexArray;
 		
 		public TextureInfo Asteroids { get; private set;}
 		public TextureInfo ColonizationMark { get; private set;}
@@ -57,7 +59,7 @@ namespace Stareater.GLRenderers
 		public TextureInfo RockPlanet { get; private set;}
 		public TextureInfo StarColor { get; private set;}
 		public TextureInfo StarGlow { get; private set;}
-		public TextureInfo SelectedStar { get; private set;}
+		public SpriteInfo SelectedStar { get; private set;}
 		public TextureInfo SystemStar { get; private set;}
 		
 		public void Load()
@@ -65,11 +67,29 @@ namespace Stareater.GLRenderers
 			if (this.loaded)
 				return;
 			
-			var textureImage = new Bitmap(AtlasImagePath);
-			this.textureId = TextureUtils.CreateTexture(textureImage);
+			using (var textureImage = new Bitmap(AtlasImagePath))
+				this.textureId = TextureUtils.CreateTexture(textureImage);
 			
-			var ikonParser = new IkonParser(new StreamReader(AtlasIkonPath));
-			var ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
+			IkonComposite ikonData;
+			using(var ikonParser = new IkonParser(new StreamReader(AtlasIkonPath)))
+				ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
+			
+			this.sprites = new Dictionary<string, TextureInfo>();
+			var spriteIndices = new Dictionary<string, int>();
+			var vaoBuilder = new VertexArrayBuilder();
+			int spriteIndex = 0;
+			foreach(var name in ikonData.Keys)
+			{
+				var spriteTexture = new TextureInfo(textureId, ikonData[name].To<IkonArray>());
+				this.sprites.Add(name, spriteTexture);
+				spriteIndices[name] = spriteIndex;
+				spriteIndex++;
+				
+				vaoBuilder.BeginObject();
+				vaoBuilder.AddTexturedRect(spriteTexture);
+				vaoBuilder.EndObject();
+			}
+			this.vertexArray = vaoBuilder.Generate(ShaderLibrary.Sprite);
 
 			/*
 			 * If any sprite is missing, try running {repo root}/scripts/gen_textures.bat script.
@@ -82,17 +102,10 @@ namespace Stareater.GLRenderers
 			MoveToArrow = new TextureInfo(textureId, ikonData[MoveArrowTag].To<IkonArray>());
 			PathLine = new TextureInfo(textureId, ikonData[PathLineTag].To<IkonArray>());
 			RockPlanet = new TextureInfo(textureId, ikonData[RockPlanetTag].To<IkonArray>());
-			SelectedStar = new TextureInfo(textureId, ikonData[SelectedStarTag].To<IkonArray>());
+			SelectedStar = new SpriteInfo(this.vertexArray, textureId, spriteIndices[SelectedStarTag]);
 			StarColor = new TextureInfo(textureId, ikonData[StarColorTag].To<IkonArray>());
 			StarGlow = new TextureInfo(textureId, ikonData[StarGlowTag].To<IkonArray>());
 			SystemStar = new TextureInfo(textureId, ikonData[SystemStarTag].To<IkonArray>());
-			
-			this.sprites = new Dictionary<string, TextureInfo>();
-			foreach(var name in ikonData.Keys)
-				this.sprites.Add(name, new TextureInfo(textureId, ikonData[name].To<IkonArray>()));
-			
-			ikonParser.Dispose();
-			textureImage.Dispose();
 			
 			this.loaded = true;
 		}

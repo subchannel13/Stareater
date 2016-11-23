@@ -21,17 +21,17 @@ namespace Stareater.GLData
 		{
 			var program = ShaderLibrary.Sprite;
 			GL.UseProgram(program.ProgramId);
-			Vao.Bind();
+			this.Vao.Bind();
 			GL.ActiveTexture(TextureUnit.Texture0);
 			GL.Uniform1(program.TextureSamplerId, 0);
 			
-			var mvp = view * objectData.LocalTransform;
+			var mvp = this.objectData.LocalTransform * view;
 			GL.UniformMatrix4(program.LocalTransformId, false, ref mvp);
-			GL.BindTexture(TextureTarget.Texture2D, objectData.TextureId);
-			GL.Uniform1(program.ZId, objectData.Z);
-			GL.Uniform4(program.ColorId, objectData.Color);
+			GL.BindTexture(TextureTarget.Texture2D, this.objectData.TextureId);
+			GL.Uniform1(program.ZId, this.objectData.Z);
+			GL.Uniform4(program.ColorId, this.objectData.Color);
 		
-			GL.DrawArrays(BeginMode.Triangles, Vao.ObjectStart(objectIndex), Vao.ObjectSize(objectIndex));
+			GL.DrawArrays(BeginMode.Triangles, Vao.ObjectStart(this.objectIndex), Vao.ObjectSize(this.objectIndex));
 			ShaderLibrary.PrintGlErrors("Draw sprites");
 		}
 	}

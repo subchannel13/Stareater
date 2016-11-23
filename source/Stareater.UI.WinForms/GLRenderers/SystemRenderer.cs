@@ -97,7 +97,8 @@ namespace Stareater.GLRenderers
 			if (selectedBody == StarSystemController.StarIndex) {
 				GL.Color4(Color.White);
 				GL.Scale(StarSelectorScale, StarSelectorScale, StarSelectorScale);
-				TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
+				//TODO(v0.6) convert to sprite info
+				//TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
 			}
 		
 			GL.PopMatrix();
@@ -159,7 +160,8 @@ namespace Stareater.GLRenderers
 				
 				if (selectedBody == planet.Position){
 					GL.Scale(PlanetSelectorScale, PlanetSelectorScale, PlanetSelectorScale);
-					TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
+					//TODO(v0.6) convert to sprite info
+					//TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
 				}
 			
 				GL.PopMatrix();

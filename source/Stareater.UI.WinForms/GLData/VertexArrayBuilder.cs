@@ -109,6 +109,39 @@ namespace Stareater.GLData
 			this.objectSize += 6;
 		}
 		
+		public void AddTexturedRect(TextureInfo textureinfo)
+		{
+			var widthDir = new Vector2D(1, 0);
+			var heightDir = new Vector2D(0, 1);
+			
+			this.add(-widthDir / 2 + heightDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[3].X);
+			this.vertices.Add(textureinfo.TextureCoords[3].Y);
+			
+			this.add(widthDir / 2 + heightDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[2].X);
+			this.vertices.Add(textureinfo.TextureCoords[2].Y);
+		
+			this.add(widthDir / 2 - heightDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[1].X);
+			this.vertices.Add(textureinfo.TextureCoords[1].Y);
+		
+			
+			this.add(widthDir / 2 - heightDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[1].X);
+			this.vertices.Add(textureinfo.TextureCoords[1].Y);
+		
+			this.add(-widthDir / 2 - heightDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[0].X);
+			this.vertices.Add(textureinfo.TextureCoords[0].Y);
+		
+			this.add(-widthDir / 2 + heightDir /2);
+			this.vertices.Add(textureinfo.TextureCoords[3].X);
+			this.vertices.Add(textureinfo.TextureCoords[3].Y);
+		
+			this.objectSize += 6;
+		}
+		
 		public void AddTexturedVertex(float x, float y, float tx, float ty)
 		{
 			this.vertices.Add(x); 

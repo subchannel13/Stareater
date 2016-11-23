@@ -55,7 +55,7 @@ namespace Stareater.GLRenderers
 		
 		private Matrix4 projection;
 		private Matrix4 invProjection;
-		private int starDrawList = NoCallList;
+		private int starDrawList = NoCallList; //TODO(v0.6) remove
 
 		private int zoomLevel = 2;
 		private Vector4? lastMousePosition = null;
@@ -221,13 +221,13 @@ namespace Stareater.GLRenderers
 			}
 			
 			this.wormholeSprites.Draw(this.projection);
-			/*drawFleetMovement();
-			drawMovementSimulation();*/
+			//drawFleetMovement();
+			//drawMovementSimulation();
 			foreach(var drawable in this.starSprites)
 				drawable.Draw(this.projection);
-			/*drawFleetMarkers();
+			//drawFleetMarkers();
 			drawSelectionMarkers();
-			drawMovementEta();*/
+			//drawMovementEta();
 		}
 
 		public override void ResetLists()
@@ -318,26 +318,23 @@ namespace Stareater.GLRenderers
 		
 		private void drawSelectionMarkers()
 		{
-			if (this.currentSelection == GalaxySelectionType.Star) {
-				GL.Color4(Color.White);
-				GL.PushMatrix();
-				GL.Translate(this.lastSelectedStarPosition.X, this.lastSelectedStarPosition.Y, SelectionIndicatorZ);
-
-				TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar);
-				GL.PopMatrix();
+			var transform = new Matrix4();
+			
+			if (this.currentSelection == GalaxySelectionType.Star)
+				transform = Matrix4.CreateTranslation((float)this.lastSelectedStarPosition.X, (float)this.lastSelectedStarPosition.Y, 0);
+			else if (this.currentSelection == GalaxySelectionType.Fleet) 
+			{
+				var markerPosition = this.fleetPositions[this.lastSelectedIdleFleet];
+				transform = Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation((float)markerPosition.X, (float)markerPosition.Y, 0);
 			}
 			
-			if (this.currentSelection == GalaxySelectionType.Fleet) {
-				var markerPosition = this.fleetPositions[this.lastSelectedIdleFleet];
-
-				GL.Color4(Color.White);
-				GL.PushMatrix();
-				GL.Translate(markerPosition.X, markerPosition.Y, SelectionIndicatorZ);
-				GL.Scale(FleetSelectorScale, FleetSelectorScale, FleetSelectorScale);
-
-				TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar);
-				GL.PopMatrix();
-			}
+			TextureUtils.DrawSprite(
+				GalaxyTextures.Get.SelectedStar, 
+				this.projection, 
+				transform,
+				SelectionIndicatorZ, 
+				Color.White
+			);
 		}
 		
 		protected override void setupPerspective()
