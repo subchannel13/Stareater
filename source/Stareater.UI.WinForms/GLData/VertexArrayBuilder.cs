@@ -49,29 +49,29 @@ namespace Stareater.GLData
 			var widthDir = new Vector2D(-direction.Y, direction.X) * width;
 			
 			this.add(center - length / 2 + widthDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[3].X);
-			this.vertices.Add(textureinfo.TextureCoords[3].Y);
+			this.vertices.Add(textureinfo.Coordinates[3].X);
+			this.vertices.Add(textureinfo.Coordinates[3].Y);
 			
 			this.add(center + length / 2 + widthDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[2].X);
-			this.vertices.Add(textureinfo.TextureCoords[2].Y);
+			this.vertices.Add(textureinfo.Coordinates[2].X);
+			this.vertices.Add(textureinfo.Coordinates[2].Y);
 		
 			this.add(center + length / 2 - widthDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[1].X);
-			this.vertices.Add(textureinfo.TextureCoords[1].Y);
+			this.vertices.Add(textureinfo.Coordinates[1].X);
+			this.vertices.Add(textureinfo.Coordinates[1].Y);
 		
 			
 			this.add(center + length / 2 - widthDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[1].X);
-			this.vertices.Add(textureinfo.TextureCoords[1].Y);
+			this.vertices.Add(textureinfo.Coordinates[1].X);
+			this.vertices.Add(textureinfo.Coordinates[1].Y);
 		
 			this.add(center - length / 2 - widthDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[0].X);
-			this.vertices.Add(textureinfo.TextureCoords[0].Y);
+			this.vertices.Add(textureinfo.Coordinates[0].X);
+			this.vertices.Add(textureinfo.Coordinates[0].Y);
 		
 			this.add(center - length / 2 + widthDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[3].X);
-			this.vertices.Add(textureinfo.TextureCoords[3].Y);
+			this.vertices.Add(textureinfo.Coordinates[3].X);
+			this.vertices.Add(textureinfo.Coordinates[3].Y);
 		
 			this.objectSize += 6;
 		}
@@ -82,29 +82,29 @@ namespace Stareater.GLData
 			var heightDir = new Vector2D(0, height);
 			
 			this.add(center - widthDir / 2 + heightDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[3].X);
-			this.vertices.Add(textureinfo.TextureCoords[3].Y);
+			this.vertices.Add(textureinfo.Coordinates[3].X);
+			this.vertices.Add(textureinfo.Coordinates[3].Y);
 			
 			this.add(center + widthDir / 2 + heightDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[2].X);
-			this.vertices.Add(textureinfo.TextureCoords[2].Y);
+			this.vertices.Add(textureinfo.Coordinates[2].X);
+			this.vertices.Add(textureinfo.Coordinates[2].Y);
 		
 			this.add(center + widthDir / 2 - heightDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[1].X);
-			this.vertices.Add(textureinfo.TextureCoords[1].Y);
+			this.vertices.Add(textureinfo.Coordinates[1].X);
+			this.vertices.Add(textureinfo.Coordinates[1].Y);
 		
 			
 			this.add(center + widthDir / 2 - heightDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[1].X);
-			this.vertices.Add(textureinfo.TextureCoords[1].Y);
+			this.vertices.Add(textureinfo.Coordinates[1].X);
+			this.vertices.Add(textureinfo.Coordinates[1].Y);
 		
 			this.add(center - widthDir / 2 - heightDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[0].X);
-			this.vertices.Add(textureinfo.TextureCoords[0].Y);
+			this.vertices.Add(textureinfo.Coordinates[0].X);
+			this.vertices.Add(textureinfo.Coordinates[0].Y);
 		
 			this.add(center - widthDir / 2 + heightDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[3].X);
-			this.vertices.Add(textureinfo.TextureCoords[3].Y);
+			this.vertices.Add(textureinfo.Coordinates[3].X);
+			this.vertices.Add(textureinfo.Coordinates[3].Y);
 		
 			this.objectSize += 6;
 		}
@@ -115,29 +115,29 @@ namespace Stareater.GLData
 			var heightDir = new Vector2D(0, 1);
 			
 			this.add(-widthDir / 2 + heightDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[3].X);
-			this.vertices.Add(textureinfo.TextureCoords[3].Y);
+			this.vertices.Add(textureinfo.Coordinates[3].X);
+			this.vertices.Add(textureinfo.Coordinates[3].Y);
 			
 			this.add(widthDir / 2 + heightDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[2].X);
-			this.vertices.Add(textureinfo.TextureCoords[2].Y);
+			this.vertices.Add(textureinfo.Coordinates[2].X);
+			this.vertices.Add(textureinfo.Coordinates[2].Y);
 		
 			this.add(widthDir / 2 - heightDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[1].X);
-			this.vertices.Add(textureinfo.TextureCoords[1].Y);
+			this.vertices.Add(textureinfo.Coordinates[1].X);
+			this.vertices.Add(textureinfo.Coordinates[1].Y);
 		
 			
 			this.add(widthDir / 2 - heightDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[1].X);
-			this.vertices.Add(textureinfo.TextureCoords[1].Y);
+			this.vertices.Add(textureinfo.Coordinates[1].X);
+			this.vertices.Add(textureinfo.Coordinates[1].Y);
 		
 			this.add(-widthDir / 2 - heightDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[0].X);
-			this.vertices.Add(textureinfo.TextureCoords[0].Y);
+			this.vertices.Add(textureinfo.Coordinates[0].X);
+			this.vertices.Add(textureinfo.Coordinates[0].Y);
 		
 			this.add(-widthDir / 2 + heightDir /2);
-			this.vertices.Add(textureinfo.TextureCoords[3].X);
-			this.vertices.Add(textureinfo.TextureCoords[3].Y);
+			this.vertices.Add(textureinfo.Coordinates[3].X);
+			this.vertices.Add(textureinfo.Coordinates[3].Y);
 		
 			this.objectSize += 6;
 		}

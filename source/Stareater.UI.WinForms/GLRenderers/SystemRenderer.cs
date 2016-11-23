@@ -93,7 +93,8 @@ namespace Stareater.GLRenderers
 			GL.PushMatrix();
 			GL.Scale(StarScale, StarScale, StarScale);
 
-			TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
+			//TODO(v0.6) convert to sprite info
+			//TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
 			if (selectedBody == StarSystemController.StarIndex) {
 				GL.Color4(Color.White);
 				GL.Scale(StarSelectorScale, StarSelectorScale, StarSelectorScale);
@@ -137,13 +138,16 @@ namespace Stareater.GLRenderers
 				switch(planet.Type)
 				{
 					case PlanetType.Asteriod:
-						TextureUtils.DrawSprite(GalaxyTextures.Get.Asteroids, StarColorZ);
+						//TODO(v0.6) convert to sprite info
+						//TextureUtils.DrawSprite(GalaxyTextures.Get.Asteroids, StarColorZ);
 						break;
 					case PlanetType.GasGiant:
-						TextureUtils.DrawSprite(GalaxyTextures.Get.GasGiant, StarColorZ);
+						//TODO(v0.6) convert to sprite info
+						//TextureUtils.DrawSprite(GalaxyTextures.Get.GasGiant, StarColorZ);
 						break;
 					case PlanetType.Rock:
-						TextureUtils.DrawSprite(GalaxyTextures.Get.RockPlanet, StarColorZ);
+						//TODO(v0.6) convert to sprite info
+						//TextureUtils.DrawSprite(GalaxyTextures.Get.RockPlanet, StarColorZ);
 						break;
 				}
 				
@@ -153,8 +157,10 @@ namespace Stareater.GLRenderers
 					GL.Translate(0.6, 0.5, 0);
 					GL.Scale(0.4, 0.4, 1);
 					
-					TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMark, MarkZ);
-					TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMarkColor, MarkColorZ);
+					//TODO(v0.6) convert to sprite info
+					//TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMark, MarkZ);
+					//TODO(v0.6) convert to sprite info
+					//TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMarkColor, MarkColorZ);
 					GL.PopMatrix();
 				}
 				

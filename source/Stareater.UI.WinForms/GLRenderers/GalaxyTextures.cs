@@ -46,21 +46,22 @@ namespace Stareater.GLRenderers
 		
 		private bool loaded = false;
 		private int textureId;
-		private Dictionary<string, TextureInfo> sprites;
+		private Dictionary<string, SpriteInfo> spriteNames  = new Dictionary<string, SpriteInfo>();
+		private Dictionary<string, int> spriteIndices  = new Dictionary<string, int>();
 		private VertexArray vertexArray;
 		
-		public TextureInfo Asteroids { get; private set;}
-		public TextureInfo ColonizationMark { get; private set;}
-		public TextureInfo ColonizationMarkColor { get; private set;}
-		public TextureInfo FleetIndicator { get; private set;}
-		public TextureInfo GasGiant { get; private set;}
-		public TextureInfo MoveToArrow { get; private set;}
-		public TextureInfo PathLine { get; private set;}
-		public TextureInfo RockPlanet { get; private set;}
-		public TextureInfo StarColor { get; private set;}
-		public TextureInfo StarGlow { get; private set;}
+		public SpriteInfo Asteroids { get; private set;}
+		public SpriteInfo ColonizationMark { get; private set;}
+		public SpriteInfo ColonizationMarkColor { get; private set;}
+		public SpriteInfo FleetIndicator { get; private set;}
+		public SpriteInfo GasGiant { get; private set;}
+		public SpriteInfo MoveToArrow { get; private set;}
+		public SpriteInfo PathLine { get; private set;}
+		public SpriteInfo RockPlanet { get; private set;}
+		public SpriteInfo StarColor { get; private set;}
+		public SpriteInfo StarGlow { get; private set;}
 		public SpriteInfo SelectedStar { get; private set;}
-		public TextureInfo SystemStar { get; private set;}
+		public SpriteInfo SystemStar { get; private set;}
 		
 		public void Load()
 		{
@@ -74,14 +75,13 @@ namespace Stareater.GLRenderers
 			using(var ikonParser = new IkonParser(new StreamReader(AtlasIkonPath)))
 				ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
 			
-			this.sprites = new Dictionary<string, TextureInfo>();
-			var spriteIndices = new Dictionary<string, int>();
 			var vaoBuilder = new VertexArrayBuilder();
+			var textures = new Dictionary<string, TextureInfo>();
 			int spriteIndex = 0;
 			foreach(var name in ikonData.Keys)
 			{
 				var spriteTexture = new TextureInfo(textureId, ikonData[name].To<IkonArray>());
-				this.sprites.Add(name, spriteTexture);
+				textures[name] = spriteTexture;
 				spriteIndices[name] = spriteIndex;
 				spriteIndex++;
 				
@@ -94,18 +94,20 @@ namespace Stareater.GLRenderers
 			/*
 			 * If any sprite is missing, try running {repo root}/scripts/gen_textures.bat script.
 			 */
-			Asteroids = new TextureInfo(textureId, ikonData[AsteroidsTag].To<IkonArray>());
-			ColonizationMark = new TextureInfo(textureId, ikonData[ColonizationMarkTag].To<IkonArray>());
-			ColonizationMarkColor = new TextureInfo(textureId, ikonData[ColonizationMarkColorTag].To<IkonArray>());
-			FleetIndicator = new TextureInfo(textureId, ikonData[FleetIndicatorTag].To<IkonArray>());
-			GasGiant = new TextureInfo(textureId, ikonData[GasGiantTag].To<IkonArray>());
-			MoveToArrow = new TextureInfo(textureId, ikonData[MoveArrowTag].To<IkonArray>());
-			PathLine = new TextureInfo(textureId, ikonData[PathLineTag].To<IkonArray>());
-			RockPlanet = new TextureInfo(textureId, ikonData[RockPlanetTag].To<IkonArray>());
-			SelectedStar = new SpriteInfo(this.vertexArray, textureId, spriteIndices[SelectedStarTag]);
-			StarColor = new TextureInfo(textureId, ikonData[StarColorTag].To<IkonArray>());
-			StarGlow = new TextureInfo(textureId, ikonData[StarGlowTag].To<IkonArray>());
-			SystemStar = new TextureInfo(textureId, ikonData[SystemStarTag].To<IkonArray>());
+			Func<string, SpriteInfo> makeSprite = 
+				x => new SpriteInfo(this.vertexArray, spriteIndices[x], textures[x]);
+			Asteroids = makeSprite(AsteroidsTag);
+			ColonizationMark = makeSprite(ColonizationMarkTag);
+			ColonizationMarkColor = makeSprite(ColonizationMarkColorTag);
+			FleetIndicator = makeSprite(FleetIndicatorTag);
+			GasGiant = makeSprite(GasGiantTag);
+			MoveToArrow = makeSprite(MoveArrowTag);
+			PathLine = makeSprite(PathLineTag);
+			RockPlanet = makeSprite(RockPlanetTag);
+			SelectedStar = makeSprite(SelectedStarTag);
+			StarColor = makeSprite(StarColorTag);
+			StarGlow = makeSprite(StarGlowTag);
+			SystemStar = makeSprite(SystemStarTag);
 			
 			this.loaded = true;
 		}
@@ -121,15 +123,15 @@ namespace Stareater.GLRenderers
 			this.loaded = false;
 		}
 		
-		public TextureInfo Sprite(string spriteName)
+		public SpriteInfo Sprite(string spriteName)
 		{
-			if (!this.sprites.ContainsKey(spriteName))
+			if (!this.spriteNames.ContainsKey(spriteName))
 			{
 				var file = new FileInfo(spriteName);
-				this.sprites.Add(spriteName, this.sprites[file.Name]);
+				this.spriteNames.Add(spriteName, this.spriteNames[file.Name]);
 			}
 			
-			return this.sprites[spriteName];
+			return this.spriteNames[spriteName];
 		}
 	}
 }

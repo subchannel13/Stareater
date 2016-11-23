@@ -66,7 +66,7 @@ namespace Stareater.GLRenderers
 			
 			var mvp = transform * view;
 			GL.UniformMatrix4(program.LocalTransformId, false, ref mvp);
-			GL.BindTexture(TextureTarget.Texture2D, spriteInfo.TextureId);
+			GL.BindTexture(TextureTarget.Texture2D, spriteInfo.Texture.Id);
 			GL.Uniform1(program.ZId, z);
 			GL.Uniform4(program.ColorId, color);
 		
@@ -76,11 +76,11 @@ namespace Stareater.GLRenderers
 		
 		public static void DrawSprite(TextureInfo textureInfo)
 		{
-			GL.BindTexture(TextureTarget.Texture2D, textureInfo.TextureId);
+			GL.BindTexture(TextureTarget.Texture2D, textureInfo.Id);
 			GL.Begin(BeginMode.Quads);
 
 			for(int i = 0; i < SpriteQuad.Length; i++) {
-				GL.TexCoord2(textureInfo.TextureCoords[i]);
+				GL.TexCoord2(textureInfo.Coordinates[i]);
 				GL.Vertex2(SpriteQuad[i]);
 			}
 			
@@ -89,11 +89,11 @@ namespace Stareater.GLRenderers
 		
 		public static void DrawSprite(TextureInfo textureInfo, float zOffset)
 		{
-			GL.BindTexture(TextureTarget.Texture2D, textureInfo.TextureId);
+			GL.BindTexture(TextureTarget.Texture2D, textureInfo.Id);
 			GL.Begin(BeginMode.Quads);
 
 			for(int i = 0; i < SpriteQuad.Length; i++) {
-				GL.TexCoord2(textureInfo.TextureCoords[i]);
+				GL.TexCoord2(textureInfo.Coordinates[i]);
 				GL.Vertex3(SpriteQuad[i].X, SpriteQuad[i].Y, zOffset);
 			}
 			

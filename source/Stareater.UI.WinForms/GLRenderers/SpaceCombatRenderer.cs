@@ -121,7 +121,8 @@ namespace Stareater.GLRenderers
 			
 			GL.Enable(EnableCap.Texture2D);
 			GL.Color4(Controller.Star.Color);
-			TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
+			//TODO(v0.6) convert to sprite info
+			//TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
 			
 			foreach(var planet in this.Controller.Planets)
 			{
@@ -133,13 +134,16 @@ namespace Stareater.GLRenderers
 				switch(planet.Type)
 				{
 					case PlanetType.Asteriod:
-						TextureUtils.DrawSprite(GalaxyTextures.Get.Asteroids, StarColorZ);
+						//TODO(v0.6) convert to sprite info
+						//TextureUtils.DrawSprite(GalaxyTextures.Get.Asteroids, StarColorZ);
 						break;
 					case PlanetType.GasGiant:
-						TextureUtils.DrawSprite(GalaxyTextures.Get.GasGiant, StarColorZ);
+						//TODO(v0.6) convert to sprite info
+						//TextureUtils.DrawSprite(GalaxyTextures.Get.GasGiant, StarColorZ);
 						break;
 					case PlanetType.Rock:
-						TextureUtils.DrawSprite(GalaxyTextures.Get.RockPlanet, StarColorZ);
+						//TODO(v0.6) convert to sprite info
+						//TextureUtils.DrawSprite(GalaxyTextures.Get.RockPlanet, StarColorZ);
 						break;
 				}
 				
@@ -176,7 +180,8 @@ namespace Stareater.GLRenderers
 				GL.Translate(hexX(hex.Key), hexY(hex.Key), CombatantZ);
 				GL.Color4(unit.Owner.Color.R, unit.Owner.Color.G, unit.Owner.Color.B, (byte)(alpha * 255)); //TODO(later) color units
 				
-				TextureUtils.DrawSprite(GalaxyTextures.Get.Sprite(unit.Design.ImagePath));
+				//TODO(v0.6) convert to sprite info
+				//TextureUtils.DrawSprite(GalaxyTextures.Get.Sprite(unit.Design.ImagePath));
 				
 				var otherUnits = hex.Where(x => x != unit).Select(x => x.Owner).Distinct().ToList();
 				for(int i = 0; i < otherUnits.Count; i++)
@@ -186,7 +191,8 @@ namespace Stareater.GLRenderers
 					GL.Scale(0.2, 0.2, 1);
 					GL.Color4(otherUnits[i].Color);
 					
-					TextureUtils.DrawSprite(GalaxyTextures.Get.FleetIndicator);
+					//TODO(v0.6) convert to sprite info
+					//TextureUtils.DrawSprite(GalaxyTextures.Get.FleetIndicator);
 					GL.PopMatrix();
 				}
 				
@@ -229,7 +235,8 @@ namespace Stareater.GLRenderers
 				
 				GL.Color4(Methods.HexDistance(move) <= SpaceBattleController.BattlefieldRadius ? Color.Green : Color.White);
 				
-				TextureUtils.DrawSprite(GalaxyTextures.Get.MoveToArrow);
+				//TODO(v0.6) convert to sprite info
+				//TextureUtils.DrawSprite(GalaxyTextures.Get.MoveToArrow);
 				GL.PopMatrix();
 			}
 		}

@@ -248,7 +248,8 @@ namespace Stareater.GLRenderers
 				GL.Translate(fleet.Value.X, fleet.Value.Y, FleetZ);
 				GL.Scale(FleetIndicatorScale, FleetIndicatorScale, FleetIndicatorScale);
 
-				TextureUtils.DrawSprite(GalaxyTextures.Get.FleetIndicator);
+				//TODO(v0.6) convert to sprite info
+				//TextureUtils.DrawSprite(GalaxyTextures.Get.FleetIndicator);
 				GL.PopMatrix();
 			}
 		}
@@ -270,7 +271,8 @@ namespace Stareater.GLRenderers
 						new Vector2d(waypoint.Destionation.X, waypoint.Destionation.Y)
 					));
 						
-					TextureUtils.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
+					//TODO(v0.6) convert to sprite info
+					//TextureUtils.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
 					GL.PopMatrix();
 					
 					lastPosition = waypoint.Destionation;
@@ -309,7 +311,8 @@ namespace Stareater.GLRenderers
 				foreach (var next in this.SelectedFleet.SimulationWaypoints) {
 					GL.PushMatrix();
 					GL.MultMatrix(pathMatrix(new Vector2d(last.X, last.Y), new Vector2d(next.X, next.Y)));
-					TextureUtils.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
+					//TODO(v0.6) convert to sprite info
+					//TextureUtils.DrawSprite(GalaxyTextures.Get.PathLine, PathZ);
 					GL.PopMatrix();
 					last = next;
 				}
@@ -374,13 +377,13 @@ namespace Stareater.GLRenderers
 				vaoBuilder.BeginObject();
 				
 				foreach (var star in colorGroup)
-					vaoBuilder.AddTexturedRect(star.Position, 1, 1, GalaxyTextures.Get.StarColor);
+					vaoBuilder.AddTexturedRect(star.Position, 1, 1, GalaxyTextures.Get.StarColor.Texture);
 				
 				vaoBuilder.EndObject();
 				batchData.Add(new SpriteGlProgram.ObjectData(
 					Matrix4.Identity, 
 					StarColorZ,
-					GalaxyTextures.Get.StarColor.TextureId, 
+					GalaxyTextures.Get.StarColor.Texture.Id, 
 					colorGroup.Key
 				));
 				objectIndex++;
@@ -388,13 +391,13 @@ namespace Stareater.GLRenderers
 			
 			vaoBuilder.BeginObject();
 			foreach (var star in this.stars.GetAll())
-				vaoBuilder.AddTexturedRect(star.Position, 1, 1, GalaxyTextures.Get.StarGlow);				
+				vaoBuilder.AddTexturedRect(star.Position, 1, 1, GalaxyTextures.Get.StarGlow.Texture);				
 			
 			vaoBuilder.EndObject();
 			batchData.Add(new SpriteGlProgram.ObjectData(
 				Matrix4.Identity, 
 				StarSaturationZ,
-				GalaxyTextures.Get.StarGlow.TextureId, 
+				GalaxyTextures.Get.StarGlow.Texture.Id, 
 				Color.White
 			));
 			
@@ -433,7 +436,7 @@ namespace Stareater.GLRenderers
 			foreach (var wormhole in this.currentPlayer.Wormholes) {
 				var direction = wormhole.ToStar.Position - wormhole.FromStar.Position;
 				direction.Normalize();
-				vboBuilder.AddPathRect(wormhole.FromStar.Position, wormhole.ToStar.Position, 0.8 * PathWidth, GalaxyTextures.Get.PathLine);
+				vboBuilder.AddPathRect(wormhole.FromStar.Position, wormhole.ToStar.Position, 0.8 * PathWidth, GalaxyTextures.Get.PathLine.Texture);
 			}
 			
 			vboBuilder.EndObject();
@@ -442,7 +445,7 @@ namespace Stareater.GLRenderers
 				wormholeVbo,
 				0,
 				new SpriteGlProgram.ObjectData(
-					Matrix4.Identity, WormholeZ, GalaxyTextures.Get.PathLine.TextureId, Color.Blue
+					Matrix4.Identity, WormholeZ, GalaxyTextures.Get.PathLine.Texture.Id, Color.Blue
 				)
 			);
 		}

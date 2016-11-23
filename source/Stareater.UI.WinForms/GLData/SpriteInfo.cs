@@ -1,18 +1,19 @@
 ﻿using System;
+using Stareater.GLRenderers;
 
 namespace Stareater.GLData
 {
 	class SpriteInfo
 	{
 		public VertexArray SpriteSheet { get; private set; }
-		public int TextureId { get; private set; }
 		public int SpriteIndex { get; private set; }
+		public TextureInfo Texture { get; private set; }
 		
-		public SpriteInfo(VertexArray spriteSheet, int textureId, int spriteIndex)
+		public SpriteInfo(VertexArray spriteSheet, int spriteIndex, TextureInfo texture)
 		{
 			this.SpriteSheet = spriteSheet;
-			this.TextureId = textureId;
 			this.SpriteIndex = spriteIndex;
+			this.Texture = texture;
 		}
 	}
 }
