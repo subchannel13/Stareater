@@ -13,15 +13,17 @@ namespace Stareater.GLRenderers
 {
 	class SystemRenderer : AScene
 	{
-		private const double DefaultViewSize = 1;
+		private const float DefaultViewSize = 1;
 		
-		private const float FarZ = -1;
-		private const float SelectionZ = -0.6f;
-		private const float MarkColorZ = -0.7f;
-		private const float MarkZ = -0.75f;
-		private const float StarColorZ = -0.8f;
-		private const float PlanetZ = -0.8f;
-		private const float OrbitZ = -0.9f;
+		private const float FarZ = 1;
+		private const float Layers = 16.0f;
+		
+		private const float SelectionZ = 5 / Layers;
+		private const float MarkColorZ = 6 / Layers;
+		private const float MarkZ = 7 / Layers;
+		private const float StarColorZ = 8 / Layers;
+		private const float PlanetZ = 8 / Layers;
+		private const float OrbitZ = 9 / Layers;
 		
 		private const float PanClickTolerance = 0.01f;
 		
@@ -42,9 +44,7 @@ namespace Stareater.GLRenderers
 		private readonly ConstructionSiteView siteView;
 		private readonly EmpyPlanetView emptyPlanetView;
 		private readonly Action systemClosedHandler;
-		
-		private Matrix4 invProjection;
-		
+
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
 		private float originOffset;
@@ -86,15 +86,17 @@ namespace Stareater.GLRenderers
 		#region ARenderer implementation
 		public override void Draw(double deltaTime)
 		{
-			GL.PushMatrix();
+			/*GL.PushMatrix();
 			GL.Translate(0, BodiesY, 0);
 			
 			GL.Color4(controller.Star.Color);
 			GL.PushMatrix();
-			GL.Scale(StarScale, StarScale, StarScale);
+			GL.Scale(StarScale, StarScale, StarScale);*/
+			var transform = Matrix4.CreateScale(StarScale) * Matrix4.CreateTranslation(0, BodiesY, 0);
 
 			//TODO(v0.6) convert to sprite info
 			//TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
+			TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, this.projection, transform, StarColorZ, controller.Star.Color);
 			if (selectedBody == StarSystemController.StarIndex) {
 				GL.Color4(Color.White);
 				GL.Scale(StarSelectorScale, StarSelectorScale, StarSelectorScale);
@@ -102,7 +104,7 @@ namespace Stareater.GLRenderers
 				//TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
 			}
 		
-			GL.PopMatrix();
+			//GL.PopMatrix();
 			
 			foreach(Planet planet in controller.Planets)
 			{ 
@@ -182,21 +184,10 @@ namespace Stareater.GLRenderers
 			//TODO(later): make call list
 		}
 
-		protected override void setupPerspective()
+		protected override Matrix4 calculatePerspective()
 		{
-			double aspect = canvasSize.X / (double)canvasSize.Y;
-			const double semiRadius = 0.5 * DefaultViewSize;
-
-			GL.MatrixMode(MatrixMode.Projection);
-			GL.LoadIdentity();
-			GL.Ortho(
-				-aspect * semiRadius + originOffset, aspect * semiRadius + originOffset,
-				-semiRadius, semiRadius, 
-				0, -FarZ);
-
-			GL.GetFloat(GetPName.ProjectionMatrix, out invProjection);
-			invProjection.Invert();
-			GL.MatrixMode(MatrixMode.Modelview);
+			var aspect = canvasSize.X / canvasSize.Y;
+			return orthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2(originOffset, 0));
 		}
 		#endregion
 		

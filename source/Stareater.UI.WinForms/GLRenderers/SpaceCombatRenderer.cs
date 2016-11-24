@@ -16,7 +16,7 @@ namespace Stareater.GLRenderers
 {
 	class SpaceCombatRenderer : AScene
 	{
-		private const double DefaultViewSize = 17;
+		private const float DefaultViewSize = 17;
 		private const double HexHeightScale = 0.9;
 		private static readonly double HexHeight = Math.Sqrt(3) * HexHeightScale;
 		
@@ -33,7 +33,6 @@ namespace Stareater.GLRenderers
 		private const double AnimationPeriod = 1.5;
 		private static readonly Color SelectionColor = Color.Yellow;
 		
-		private Matrix4 invProjection;
 		private int gridList = NoCallList;
 		private double animationTime = 0;
 		private CombatantInfo currentUnit = null;
@@ -65,21 +64,10 @@ namespace Stareater.GLRenderers
 			this.gridList = NoCallList;
 		}
 		
-		protected override void setupPerspective()
+		protected override Matrix4 calculatePerspective()
 		{
-			double aspect = canvasSize.X / (double)canvasSize.Y;
-			const double semiRadius = 0.5 * DefaultViewSize;
-
-			GL.MatrixMode(MatrixMode.Projection);
-			GL.LoadIdentity();
-			GL.Ortho(
-				-aspect * semiRadius, aspect * semiRadius,
-				-semiRadius, semiRadius, 
-				0, -FarZ);
-
-			GL.GetFloat(GetPName.ProjectionMatrix, out invProjection);
-			invProjection.Invert();
-			GL.MatrixMode(MatrixMode.Modelview);
+			var aspect = canvasSize.X / canvasSize.Y;
+			return orthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2());
 		}
 		#endregion
 		

@@ -21,7 +21,7 @@ namespace Stareater.GLRenderers
 {
 	class GalaxyRenderer : AScene
 	{
-		private const double DefaultViewSize = 15;
+		private const float DefaultViewSize = 15;
 		private const double ZoomBase = 1.2f;
 		private const int MaxZoom = 10;
 		private const int MinZoom = -10;
@@ -53,8 +53,6 @@ namespace Stareater.GLRenderers
 		private IGalaxyViewListener galaxyViewListener;
 		private SignalFlag refreshData = new SignalFlag();
 		
-		private Matrix4 projection;
-		private Matrix4 invProjection;
 		private SpriteDrawable wormholeSprites = null;
 		private List<SpriteDrawable> starSprites = null;
 		private TextDrawable etaTextSprites = null;
@@ -332,29 +330,17 @@ namespace Stareater.GLRenderers
 			);
 		}
 		
-		protected override void setupPerspective()
+		protected override Matrix4 calculatePerspective()
 		{
-			double aspect = canvasSize.X / (double)canvasSize.Y;
-			double semiRadius = 0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel);
+			var aspect = canvasSize.X / canvasSize.Y;
+			var radius = DefaultViewSize / (float)Math.Pow(ZoomBase, zoomLevel);
 
 			//TODO(later): test this, perhaps by flipping the monitor.
 			screenLength = screenSize.X > screenSize.Y ? 
-				(float)(2 * screenSize.X * semiRadius * aspect / screenSize.X) : 
-				(float)(2 * screenSize.Y * semiRadius * aspect / screenSize.Y);
+				(float)(screenSize.X * radius * aspect / screenSize.X) : 
+				(float)(screenSize.Y * radius * aspect / screenSize.Y);
 
-			var left = (float)(-aspect * semiRadius + originOffset.X);
-			var right = (float)(aspect * semiRadius + originOffset.X);
-			var bottom = (float)(-semiRadius + originOffset.Y);
-			var top = (float)(semiRadius + originOffset.Y);
-			this.projection = new Matrix4(
-				2 / (right - left), 0, 0, 0,
-				0, 2 / (top - bottom), 0, 0,
-				0, 0, 2 / FarZ, 0,
-				-(right + left) / (right - left), -(top + bottom) / (top - bottom), -1, 1
-			);
-
-			this.invProjection = new Matrix4(projection.Row0, projection.Row1, projection.Row2, projection.Row3);
-			this.invProjection.Invert();
+			return orthogonalPerspective(aspect * radius, radius, FarZ, originOffset);
 		}
 		
 		private void setupVaos()
@@ -620,8 +606,8 @@ namespace Stareater.GLRenderers
 		private Vector4 mouseToView(int x, int y)
 		{
 			return new Vector4(
-				2 * x / (float)this.canvasSize.X - 1,
-				1 - 2 * y / (float)this.canvasSize.Y, 
+				2 * x / this.canvasSize.X - 1,
+				1 - 2 * y / this.canvasSize.Y, 
 				0, 1
 			);
 		}

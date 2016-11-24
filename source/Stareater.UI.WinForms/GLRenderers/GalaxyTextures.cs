@@ -89,25 +89,26 @@ namespace Stareater.GLRenderers
 				vaoBuilder.AddTexturedRect(spriteTexture);
 				vaoBuilder.EndObject();
 			}
+			
 			this.vertexArray = vaoBuilder.Generate(ShaderLibrary.Sprite);
-
+			foreach(var name in ikonData.Keys)
+				this.spriteNames.Add(name, new SpriteInfo(this.vertexArray, spriteIndices[name], textures[name]));
+			
 			/*
 			 * If any sprite is missing, try running {repo root}/scripts/gen_textures.bat script.
 			 */
-			Func<string, SpriteInfo> makeSprite = 
-				x => new SpriteInfo(this.vertexArray, spriteIndices[x], textures[x]);
-			Asteroids = makeSprite(AsteroidsTag);
-			ColonizationMark = makeSprite(ColonizationMarkTag);
-			ColonizationMarkColor = makeSprite(ColonizationMarkColorTag);
-			FleetIndicator = makeSprite(FleetIndicatorTag);
-			GasGiant = makeSprite(GasGiantTag);
-			MoveToArrow = makeSprite(MoveArrowTag);
-			PathLine = makeSprite(PathLineTag);
-			RockPlanet = makeSprite(RockPlanetTag);
-			SelectedStar = makeSprite(SelectedStarTag);
-			StarColor = makeSprite(StarColorTag);
-			StarGlow = makeSprite(StarGlowTag);
-			SystemStar = makeSprite(SystemStarTag);
+			Asteroids = this.spriteNames[AsteroidsTag];
+			ColonizationMark = this.spriteNames[ColonizationMarkTag];
+			ColonizationMarkColor = this.spriteNames[ColonizationMarkColorTag];
+			FleetIndicator = this.spriteNames[FleetIndicatorTag];
+			GasGiant = this.spriteNames[GasGiantTag];
+			MoveToArrow = this.spriteNames[MoveArrowTag];
+			PathLine = this.spriteNames[PathLineTag];
+			RockPlanet = this.spriteNames[RockPlanetTag];
+			SelectedStar = this.spriteNames[SelectedStarTag];
+			StarColor = this.spriteNames[StarColorTag];
+			StarGlow = this.spriteNames[StarGlowTag];
+			SystemStar = this.spriteNames[SystemStarTag];
 			
 			this.loaded = true;
 		}

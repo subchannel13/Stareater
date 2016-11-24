@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.AppData;
 using Stareater.Localization;
@@ -8,7 +9,7 @@ namespace Stareater.GLRenderers
 {
 	class GameOverRenderer : AScene
 	{
-		private const double DefaultViewSize = 5;
+		private const float DefaultViewSize = 5;
 		private const float FarZ = -1;
 		
 		#region implemented abstract members of ARenderer
@@ -24,19 +25,10 @@ namespace Stareater.GLRenderers
 			//no op
 		}
 		
-		protected override void setupPerspective()
+		protected override Matrix4 calculatePerspective()
 		{
-			double aspect = canvasSize.X / (double)canvasSize.Y;
-			const double semiRadius = 0.5 * DefaultViewSize;
-
-			GL.MatrixMode(MatrixMode.Projection);
-			GL.LoadIdentity();
-			GL.Ortho(
-				-aspect * semiRadius, aspect * semiRadius,
-				-semiRadius, semiRadius, 
-				0, -FarZ);
-
-			GL.MatrixMode(MatrixMode.Modelview);
+			var aspect = canvasSize.X / canvasSize.Y;
+			return orthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2());
 		}		
 		#endregion
 	}
