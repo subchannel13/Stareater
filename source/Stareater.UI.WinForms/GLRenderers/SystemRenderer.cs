@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
@@ -86,25 +85,13 @@ namespace Stareater.GLRenderers
 		#region ARenderer implementation
 		public override void Draw(double deltaTime)
 		{
-			/*GL.PushMatrix();
-			GL.Translate(0, BodiesY, 0);
-			
-			GL.Color4(controller.Star.Color);
-			GL.PushMatrix();
-			GL.Scale(StarScale, StarScale, StarScale);*/
-			var transform = Matrix4.CreateScale(StarScale) * Matrix4.CreateTranslation(0, BodiesY, 0);
+			var panTransform = Matrix4.CreateTranslation(0, BodiesY, 0);
+			var starTransform = Matrix4.CreateScale(StarScale) * panTransform;
 
-			//TODO(v0.6) convert to sprite info
-			//TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, StarColorZ);
-			TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, this.projection, transform, StarColorZ, controller.Star.Color);
-			if (selectedBody == StarSystemController.StarIndex) {
-				GL.Color4(Color.White);
-				GL.Scale(StarSelectorScale, StarSelectorScale, StarSelectorScale);
-				//TODO(v0.6) convert to sprite info
-				//TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
-			}
-		
-			//GL.PopMatrix();
+			TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, this.projection, starTransform, StarColorZ, controller.Star.Color);
+			
+			if (selectedBody == StarSystemController.StarIndex)
+				TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, this.projection, Matrix4.CreateScale(StarSelectorScale) * starTransform, SelectionZ, Color.White);
 			
 			foreach(Planet planet in controller.Planets)
 			{ 
@@ -112,12 +99,12 @@ namespace Stareater.GLRenderers
 				float orbitMin = orbitR - OrbitWidth;
 				float orbitMax = orbitR + OrbitWidth;
 				
-				GL.Disable(EnableCap.Texture2D);
+				//GL.Disable(EnableCap.Texture2D);
 				
 				var colony = controller.PlanetsColony(planet);
-				GL.Color4(colony != null ? colony.Owner.Color : Color.FromArgb(64, 64, 64));
+				//GL.Color4(colony != null ? colony.Owner.Color : Color.FromArgb(64, 64, 64));
 				
-				GL.Begin(BeginMode.Quads);
+				/*GL.Begin(BeginMode.Quads);
 				for(int i = 0; i < 100; i++)
 				{
 					float angle0 = (float)Math.PI * i / 50f;
@@ -131,57 +118,38 @@ namespace Stareater.GLRenderers
 				GL.End();
 				
 				GL.Color4(Color.White);
-				GL.Enable(EnableCap.Texture2D);
+				GL.Enable(EnableCap.Texture2D);*/
 				
-				GL.PushMatrix();
-				GL.Translate(orbitR, 0, 0);
-				GL.Scale(PlanetScale, PlanetScale, PlanetScale);
+				var planetTransform = Matrix4.CreateScale(PlanetScale) * Matrix4.CreateTranslation(orbitR, 0, 0) * panTransform;
 	
 				switch(planet.Type)
 				{
 					case PlanetType.Asteriod:
-						//TODO(v0.6) convert to sprite info
-						//TextureUtils.DrawSprite(GalaxyTextures.Get.Asteroids, StarColorZ);
+						TextureUtils.DrawSprite(GalaxyTextures.Get.Asteroids, this.projection, planetTransform, PlanetZ, Color.White);
 						break;
 					case PlanetType.GasGiant:
-						//TODO(v0.6) convert to sprite info
-						//TextureUtils.DrawSprite(GalaxyTextures.Get.GasGiant, StarColorZ);
+						TextureUtils.DrawSprite(GalaxyTextures.Get.GasGiant, this.projection, planetTransform, PlanetZ, Color.White);
 						break;
 					case PlanetType.Rock:
-						//TODO(v0.6) convert to sprite info
-						//TextureUtils.DrawSprite(GalaxyTextures.Get.RockPlanet, StarColorZ);
+						TextureUtils.DrawSprite(GalaxyTextures.Get.RockPlanet, this.projection, planetTransform, PlanetZ, Color.White);
 						break;
 				}
 				
 				if (this.controller.IsColonizing(planet.Position))
 				{
-					GL.PushMatrix();
-					GL.Translate(0.6, 0.5, 0);
-					GL.Scale(0.4, 0.4, 1);
-					
-					//TODO(v0.6) convert to sprite info
-					//TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMark, MarkZ);
-					//TODO(v0.6) convert to sprite info
-					//TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMarkColor, MarkColorZ);
-					GL.PopMatrix();
+					var markTransform = Matrix4.CreateScale(0.4f, 0.4f, 1) * Matrix4.CreateTranslation(0.6f, 0.5f, 0) * planetTransform;
+					TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMark, this.projection, markTransform, MarkZ, Color.White);
+					TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMarkColor, this.projection, markTransform, MarkColorZ, this.currentPlayer.Info.Color);
 				}
 				
-				if (selectedBody == planet.Position){
-					GL.Scale(PlanetSelectorScale, PlanetSelectorScale, PlanetSelectorScale);
-					//TODO(v0.6) convert to sprite info
-					//TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, SelectionZ);
-				}
-			
-				GL.PopMatrix();
+				if (selectedBody == planet.Position)
+					TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, this.projection, Matrix4.CreateScale(PlanetSelectorScale) * planetTransform, SelectionZ, Color.White);
 			}
-			
-			GL.PopMatrix();
 		}
 
 		public override void ResetLists()
 		{
 			//no op
-			//TODO(later): make call list
 		}
 
 		protected override Matrix4 calculatePerspective()
