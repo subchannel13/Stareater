@@ -115,7 +115,8 @@
     <Compile Include="AppData\ImageCache.cs" />
     <Compile Include="AppData\LoadingMethods.cs" />
     <Compile Include="AppData\SettingsWinforms.cs" />
-    <Compile Include="GLData\IGlProgram.cs" />
+    <Compile Include="GLData\AGlProgram.cs" />
+    <Compile Include="GLData\PlanetOrbitGlProgram.cs" />
     <Compile Include="GLData\ShaderLibrary.cs" />
     <Compile Include="GLData\SpriteGlProgram.cs" />
     <Compile Include="GLData\SpriteInfo.cs" />
@@ -593,11 +594,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="shaders\SpriteVertexShader.glsl">
+    <EmbeddedResource Include="shaders\SpriteVertex.glsl">
       <LogicalName>SpriteVertexShader</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="shaders\SpriteFragmentShader.glsl">
+    <EmbeddedResource Include="shaders\SpriteFragment.glsl">
       <LogicalName>SpriteFragmentShader</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="shaders\OrbitVertex.glsl">
+      <LogicalName>OrbitVertexShader</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="shaders\OrbitFragment.glsl">
+      <LogicalName>OrbitFragmentShader</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

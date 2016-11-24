@@ -26,7 +26,7 @@ namespace Stareater.GLData
 			this.objectSizes.Add(this.objectSize);
 		}
 		
-		public VertexArray Generate(IGlProgram forProgram)
+		public VertexArray Generate(AGlProgram forProgram)
 		{
 			var vao = GL.GenVertexArray();
 			GL.BindVertexArray(vao);

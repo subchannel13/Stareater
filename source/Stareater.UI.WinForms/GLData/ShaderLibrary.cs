@@ -5,10 +5,14 @@ namespace Stareater.GLData
 {
 	static class ShaderLibrary
 	{
+		public static PlanetOrbitGlProgram PlanetOrbit { get; private set; }
 		public static SpriteGlProgram Sprite { get; private set; }
 		
 		public static void Load()
 		{
+			PlanetOrbit = new PlanetOrbitGlProgram();
+			PlanetOrbit.Load();
+				
 			Sprite = new SpriteGlProgram();
 			Sprite.Load();
 		}
