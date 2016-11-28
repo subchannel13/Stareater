@@ -36,6 +36,7 @@ namespace Stareater.GLData
 			GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(this.vertices.Count * sizeof (float)), this.vertices.ToArray(), BufferUsageHint.StaticDraw);
 			forProgram.SetupAttributes();
 			GL.BindVertexArray(0);
+			ShaderLibrary.PrintGlErrors("Generate VAO");
 			
 			return new VertexArray(vao, vbo, this.objectStarts, this.objectSizes);
 		}
@@ -44,6 +45,16 @@ namespace Stareater.GLData
 		{
 			vao.BindVbo();
 			GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(this.vertices.Count * sizeof (float)), this.vertices.ToArray(), BufferUsageHint.StaticDraw);
+		}
+		
+		public void AddOrbitVertex(float x, float y)
+		{
+			this.vertices.Add(x); 
+			this.vertices.Add(y);
+			this.vertices.Add(x);
+			this.vertices.Add(y);
+		
+			this.objectSize++;
 		}
 		
 		public void AddPathRect(Vector2D fromPosition, Vector2D toPosition, double width, TextureInfo textureinfo)

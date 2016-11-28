@@ -353,7 +353,6 @@ namespace Stareater.GLRenderers
 		{
 			var batchData = new List<SpriteGlProgram.ObjectData>();
 			var vaoBuilder = new VertexArrayBuilder();
-			int objectIndex = 0;
 			
 			foreach(var colorGroup in this.stars.GetAll().GroupBy(x => x.Color))
 			{
@@ -369,7 +368,6 @@ namespace Stareater.GLRenderers
 					GalaxyTextures.Get.StarColor.Texture.Id, 
 					colorGroup.Key
 				));
-				objectIndex++;
 			}
 			
 			vaoBuilder.BeginObject();

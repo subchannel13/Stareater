@@ -32,7 +32,6 @@ namespace Stareater.GLData
 		{
 			string vertexShaderSource;
 			string fragmentShaderSource;
-			var bla = Assembly.GetExecutingAssembly().GetManifestResourceNames();
 			
 			using(var stream = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("SpriteVertexShader")))
 				vertexShaderSource = stream.ReadToEnd();

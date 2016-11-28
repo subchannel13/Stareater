@@ -4,13 +4,13 @@ uniform float minR;
 uniform float maxR;
 uniform vec4 color;
 
-varying  vec2 orbitPosition;
+in  vec2 orbitPositionFrag;
 
 out vec4 outputF;
 
 void main()
 {
-   float r = length(orbitPosition);
+   float r = length(orbitPositionFrag);
    
    if (r >= minR && r <= maxR)
       outputF = color;
