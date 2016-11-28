@@ -52,7 +52,7 @@ namespace Stareater.GLRenderers
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
 		private float originOffset;
-		private const float minOffset = -StarScale / 2;
+		private float minOffset;// = -StarScale / 2;
 		private float maxOffset;
 		
 		private int selectedBody;
@@ -95,8 +95,7 @@ namespace Stareater.GLRenderers
 		#region ARenderer implementation
 		public override void Draw(double deltaTime)
 		{
-			var panTransform = Matrix4.CreateTranslation(0, BodiesY, 0);
-			var starTransform = Matrix4.CreateScale(StarScale) * panTransform;
+			var starTransform = Matrix4.CreateScale(StarScale);
 
 			TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, this.projection, starTransform, StarColorZ, controller.Star.Color);
 			
@@ -105,12 +104,12 @@ namespace Stareater.GLRenderers
 			
 			//TODO(v0.6) Add texture to circle
 			foreach(var orbit in this.planetOrbits)
-				orbit.Draw(panTransform * this.projection);
+				orbit.Draw(this.projection);
 			
 			foreach(Planet planet in controller.Planets)
 			{ 
 				var orbitR = planet.Position * OrbitStep + OrbitOffset;
-				var planetTransform = Matrix4.CreateScale(PlanetScale) * Matrix4.CreateTranslation(orbitR, 0, 0) * panTransform;
+				var planetTransform = Matrix4.CreateScale(PlanetScale) * Matrix4.CreateTranslation(orbitR, 0, 0);
 	
 				switch(planet.Type)
 				{
@@ -145,7 +144,9 @@ namespace Stareater.GLRenderers
 		protected override Matrix4 calculatePerspective()
 		{
 			var aspect = canvasSize.X / canvasSize.Y;
-			return orthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2(originOffset, 0));
+			this.minOffset = aspect * DefaultViewSize / 2 - StarScale / 2;
+			this.limitPan();
+			return orthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2(originOffset, -BodiesY));
 		}
 		#endregion
 		
@@ -229,6 +230,7 @@ namespace Stareater.GLRenderers
 			}
 		}
 
+		//TODO(v0.6) Move to base class 
 		private Vector4 mouseToView(int x, int y)
 		{
 			return new Vector4(
@@ -240,10 +242,10 @@ namespace Stareater.GLRenderers
 		
 		private void limitPan()
 		{
-			if (originOffset < minOffset) 
-				originOffset = minOffset;
 			if (originOffset > maxOffset) 
 				originOffset = maxOffset;
+			if (originOffset < minOffset) 
+				originOffset = minOffset;
 		}
 		
 		private void setView(object view)
