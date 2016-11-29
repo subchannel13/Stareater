@@ -47,12 +47,12 @@ namespace Stareater.GLRenderers
 		private readonly EmpyPlanetView emptyPlanetView;
 		private readonly Action systemClosedHandler;
 
-		private List<OrbitDrawable> planetOrbits = null;
+		private BatchDrawable<OrbitDrawable, PlanetOrbitGlProgram.ObjectData> planetOrbits = null;
 		
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
 		private float originOffset;
-		private float minOffset;// = -StarScale / 2;
+		private float minOffset;
 		private float maxOffset;
 		
 		private int selectedBody;
@@ -62,6 +62,10 @@ namespace Stareater.GLRenderers
 			this.systemClosedHandler = systemClosedHandler; 
 			this.emptyPlanetView = emptyPlanetView;
 			this.siteView = siteView;
+
+			this.planetOrbits = new BatchDrawable<OrbitDrawable, PlanetOrbitGlProgram.ObjectData>(
+				ShaderLibrary.PlanetOrbit,
+				(vao, i, data) => new OrbitDrawable(vao, i, data));
 		}
 		
 		public override void Activate()
@@ -103,8 +107,7 @@ namespace Stareater.GLRenderers
 				TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, this.projection, Matrix4.CreateScale(StarSelectorScale) * starTransform, SelectionZ, Color.White);
 			
 			//TODO(v0.6) Add texture to circle
-			foreach(var orbit in this.planetOrbits)
-				orbit.Draw(this.projection);
+			this.planetOrbits.Draw(this.projection);
 			
 			foreach(Planet planet in controller.Planets)
 			{ 
@@ -296,23 +299,8 @@ namespace Stareater.GLRenderers
 					Matrix4.Identity 
 				));
 			}
-			
-			VertexArray starVao;
-			if (this.planetOrbits == null)
-			{
-				this.planetOrbits = new List<OrbitDrawable>();
-				starVao = vaoBuilder.Generate(ShaderLibrary.PlanetOrbit);
-			}
-			else
-			{
-				//TODO(v0.6) Not guarenteed to have any elements, make batch drawable
-				starVao = this.planetOrbits[0].Vao;
-				vaoBuilder.Update(starVao);
-				this.planetOrbits.Clear();
-			}
-			
-			for(int i = 0; i < batchData.Count; i++)
-				this.planetOrbits.Add(new OrbitDrawable(starVao, i, batchData[i]));
+
+			this.planetOrbits.Update(vaoBuilder, batchData);
 		}
 	}
 }

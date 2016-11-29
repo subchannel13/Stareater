@@ -54,7 +54,7 @@ namespace Stareater.GLRenderers
 		private SignalFlag refreshData = new SignalFlag();
 		
 		private SpriteDrawable wormholeSprites = null;
-		private List<SpriteDrawable> starSprites = null;
+		private BatchDrawable<SpriteDrawable, SpriteGlProgram.ObjectData> starSprites = null;
 		private TextDrawable etaTextSprites = null;
 
 		private int zoomLevel = 2;
@@ -78,6 +78,9 @@ namespace Stareater.GLRenderers
 		public GalaxyRenderer(IGalaxyViewListener galaxyViewListener)
 		{ 
 			this.galaxyViewListener = galaxyViewListener;
+			this.starSprites = new BatchDrawable<SpriteDrawable, SpriteGlProgram.ObjectData>(
+				ShaderLibrary.Sprite, 
+				(vao, i, data) => new SpriteDrawable(vao, i, data));
 		}
 		
 		public PlayerController CurrentPlayer
@@ -205,8 +208,7 @@ namespace Stareater.GLRenderers
 			this.wormholeSprites.Draw(this.projection);
 			drawFleetMovement();
 			drawMovementSimulation();
-			foreach(var drawable in this.starSprites)
-				drawable.Draw(this.projection);
+			this.starSprites.Draw(this.projection);
 			drawFleetMarkers();
 			drawSelectionMarkers();
 			drawMovementEta();
@@ -399,22 +401,8 @@ namespace Stareater.GLRenderers
 				));
 				starNameZ -= StarNameZRange / this.currentPlayer.StarCount;
 			}
-			
-			VertexArray starVao;
-			if (this.starSprites == null)
-			{
-				this.starSprites = new List<SpriteDrawable>();
-				starVao = vaoBuilder.Generate(ShaderLibrary.Sprite);
-			}
-			else
-			{
-				starVao = this.starSprites[0].Vao;
-				vaoBuilder.Update(starVao);
-				this.starSprites.Clear();
-			}
-			
-			for(int i = 0; i < batchData.Count; i++)
-				this.starSprites.Add(new SpriteDrawable(starVao, i, batchData[i]));
+
+			this.starSprites.Update(vaoBuilder, batchData);
 		}
 		
 		private void setupWormholeSprites()

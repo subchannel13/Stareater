@@ -5,7 +5,7 @@ using Stareater.GLData;
 
 namespace Stareater.GLRenderers
 {
-	class SpriteDrawable
+	class SpriteDrawable : IDrawable
 	{
 		public VertexArray Vao { get; private set; }
 		private readonly int objectIndex;
