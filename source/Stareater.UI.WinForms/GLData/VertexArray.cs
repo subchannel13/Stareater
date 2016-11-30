@@ -48,5 +48,11 @@ namespace Stareater.GLData
 		{
 			return this.objectSize[index];
 		}
+		
+		public void Update(IEnumerable<int> objectStart, IEnumerable<int> objectSize)
+		{
+			this.objectStart = objectStart.ToArray();
+			this.objectSize = objectSize.ToArray();
+		}
 	}
 }

@@ -265,6 +265,9 @@ namespace Stareater.GLRenderers
 		
 		private void setupVaos()
 		{
+			if (this.controller == null)
+				return; //FIXME(v0.6) move check to better place
+			
 			var batchData = new List<PlanetOrbitGlProgram.ObjectData>();
 			var vaoBuilder = new VertexArrayBuilder();
 			

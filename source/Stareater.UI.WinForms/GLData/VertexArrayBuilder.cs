@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using NGenerics.DataStructures.Mathematical;
 using OpenTK.Graphics.OpenGL;
-using Stareater.GLRenderers;
 
 namespace Stareater.GLData
 {
@@ -45,6 +44,7 @@ namespace Stareater.GLData
 		{
 			vao.BindVbo();
 			GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(this.vertices.Count * sizeof (float)), this.vertices.ToArray(), BufferUsageHint.StaticDraw);
+			vao.Update(this.objectStarts, this.objectSizes);
 		}
 		
 		public void AddOrbitVertex(float x, float y)
