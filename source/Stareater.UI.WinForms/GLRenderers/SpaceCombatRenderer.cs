@@ -30,14 +30,15 @@ namespace Stareater.GLRenderers
 		private const float MovemenentZ = 1 / Layers;
 		
 		private const float DefaultViewSize = 17;
-		private const double HexHeightScale = 0.9;
-		private static readonly double HexHeight = Math.Sqrt(3) * HexHeightScale;
+		private const float HexHeightScale = 0.9f;
+		private static readonly float HexHeight = (float)Math.Sqrt(3) * HexHeightScale;
 		private static readonly Matrix4 PopulationTransform = Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f, 0);
 		
 		private const double AnimationPeriod = 1.5;
 		private static readonly Color SelectionColor = Color.Yellow;
 		
 		private double animationTime = 0;
+		private OrbitDrawable gridDrawable = null;
 		private BatchDrawable<SpriteDrawable, SpriteGlProgram.ObjectData> bodySprites = null;
 		private BatchDrawable<SpriteDrawable, SpriteGlProgram.ObjectData> unitSprites = null;
 		
@@ -76,7 +77,7 @@ namespace Stareater.GLRenderers
 				alpha *= 0.65;
 			this.unitSprites[this.currentUnitIndex].ObjectData.Color = new Color4(this.currentUnit.Owner.Color.R, this.currentUnit.Owner.Color.G, this.currentUnit.Owner.Color.B, (byte)(alpha * 255));
 			
-			//drawList(gridList, setupGrid);
+			this.gridDrawable.Draw(this.projection);
 			this.bodySprites.Draw(this.projection);
 			this.unitSprites.Draw(this.projection);
 		}
@@ -185,29 +186,55 @@ namespace Stareater.GLRenderers
 			this.bodySprites.Update(vaoBuilder, batchData);
 		}
 		
-		private void setupGrid(/*int listId*/)
+		private void setupGrid()
 		{
-			//this.gridList = listId;
+			if (this.gridDrawable != null)
+				return;
 			
-			//GL.Disable(EnableCap.Texture2D);
-			//GL.Color4(Color.Green);
+			var vaoBuilder = new VertexArrayBuilder();
+			vaoBuilder.BeginObject();
 			
 			for(int x = -SpaceBattleController.BattlefieldRadius; x <= SpaceBattleController.BattlefieldRadius; x++)
 			{
 				int yHeight = (SpaceBattleController.BattlefieldRadius * 2 - Math.Abs(x));
-				double yOffset = Math.Abs(x) % 2 != 0 ? HexHeight / 2 : 0;
+				var yOffset = Math.Abs(x) % 2 != 0 ? HexHeight / 2 : 0;
 					
 				for(int y = -(int)Math.Ceiling(yHeight / 2.0); y <= (int)Math.Floor(yHeight / 2.0); y++)
 				{
-					/*GL.Begin(BeginMode.TriangleStrip);
-					for(int i = 0; i <= 6; i++)
+					var nearPoints = new List<Vector2>();
+					var farPoints = new List<Vector2>();
+					for(int i = 0; i < 6; i++)
 					{
-						GL.Vertex3(0.95 * Math.Cos(i * Math.PI / 3) + x * 1.5, 0.95 * Math.Sin(i * Math.PI / 3) * HexHeightScale + y * HexHeight + yOffset, GridZ);
-						GL.Vertex3(1.05 * Math.Cos(i * Math.PI / 3) + x * 1.5, 1.05 * Math.Sin(i * Math.PI / 3) * HexHeightScale + y * HexHeight + yOffset, GridZ);
+						var cos = (float)Math.Cos(i * Math.PI / 3);
+						var sin = (float)Math.Sin(i * Math.PI / 3);
+						nearPoints.Add(new Vector2(0.95f * cos + x * 1.5f, 0.95f * sin * HexHeightScale + y * HexHeight + yOffset));
+						farPoints.Add(new Vector2(1.05f * cos + x * 1.5f, 1.05f * sin * HexHeightScale + y * HexHeight + yOffset));
 					}
-					GL.End();*/
+					
+					for(int i = 0; i < 6; i++)
+					{
+						var j = (i + 1) % 6;
+						vaoBuilder.AddFlatOrbitVertex(nearPoints[j].X, nearPoints[j].Y);
+						vaoBuilder.AddFlatOrbitVertex(farPoints[j].X, farPoints[j].Y);
+						vaoBuilder.AddFlatOrbitVertex(farPoints[i].X, farPoints[i].Y);
+						
+						vaoBuilder.AddFlatOrbitVertex(farPoints[i].X, farPoints[i].Y);
+						vaoBuilder.AddFlatOrbitVertex(nearPoints[i].X, nearPoints[i].Y);
+						vaoBuilder.AddFlatOrbitVertex(nearPoints[j].X, nearPoints[j].Y);
+					}
 				}
 			}
+			vaoBuilder.EndObject();
+			
+			this.gridDrawable = new OrbitDrawable(
+				vaoBuilder.Generate(ShaderLibrary.PlanetOrbit),
+				0,
+				new PlanetOrbitGlProgram.ObjectData(
+					GridZ,
+					0, 1,
+					Color.Green,
+					Matrix4.Identity)
+			);
 		}
 		
 		private void setupUnits()
@@ -306,16 +333,7 @@ namespace Stareater.GLRenderers
 		{
 			return combatants.Aggregate((a, b) => a.Count * a.Design.Size > b.Count * b.Design.Size ? a : b);
 		}
-		
-		private Vector4 mouseToView(int x, int y)
-		{
-			return new Vector4(
-				2 * x / (float)this.canvasSize.X - 1,
-				1 - 2 * y / (float)this.canvasSize.Y, 
-				0, 1
-			);
-		}
-		
+
 		private static float hexX(NGenerics.DataStructures.Mathematical.Vector2D coordinate)
 		{
 			return (float)(coordinate.X * 1.5);

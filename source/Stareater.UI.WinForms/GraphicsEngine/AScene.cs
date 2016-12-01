@@ -75,6 +75,15 @@ namespace Stareater.GLRenderers
 		{ }
 		#endregion
 		
+		protected Vector4 mouseToView(int x, int y)
+		{
+			return new Vector4(
+				2 * x / canvasSize.X - 1,
+				1 - 2 * y / canvasSize.Y, 
+				0, 1
+			);
+		}
+		
 		protected static Matrix4 orthogonalPerspective(float width, float height, float farZ, Vector2 originOffset)
 		{
 			var left = (float)(-width / 2 + originOffset.X);

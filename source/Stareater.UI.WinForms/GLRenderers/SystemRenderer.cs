@@ -233,16 +233,6 @@ namespace Stareater.GLRenderers
 			}
 		}
 
-		//TODO(v0.6) Move to base class 
-		private Vector4 mouseToView(int x, int y)
-		{
-			return new Vector4(
-				2 * x / (float)canvasSize.X - 1,
-				1 - 2 * y / (float)canvasSize.Y, 
-				0, 1
-			);
-		}
-		
 		private void limitPan()
 		{
 			if (originOffset > maxOffset) 

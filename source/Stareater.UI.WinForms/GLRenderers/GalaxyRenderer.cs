@@ -588,16 +588,7 @@ namespace Stareater.GLRenderers
 			if (this.originOffset.Y > mapBoundsMax.Y) 
 				this.originOffset.Y = mapBoundsMax.Y;
 		}
-		
-		private Vector4 mouseToView(int x, int y)
-		{
-			return new Vector4(
-				2 * x / this.canvasSize.X - 1,
-				1 - 2 * y / this.canvasSize.Y, 
-				0, 1
-			);
-		}
-		
+				
 		private Matrix4 pathMatrix(Vector2 fromPoint, Vector2 toPoint)
 		{
 			var xAxis = toPoint - fromPoint;

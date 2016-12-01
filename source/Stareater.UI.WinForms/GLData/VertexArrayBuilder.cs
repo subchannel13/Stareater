@@ -47,6 +47,16 @@ namespace Stareater.GLData
 			vao.Update(this.objectStarts, this.objectSizes);
 		}
 		
+		public void AddFlatOrbitVertex(float x, float y)
+		{
+			this.vertices.Add(x); 
+			this.vertices.Add(y);
+			this.vertices.Add(0);
+			this.vertices.Add(0);
+		
+			this.objectSize++;
+		}
+		
 		public void AddOrbitVertex(float x, float y)
 		{
 			this.vertices.Add(x); 
