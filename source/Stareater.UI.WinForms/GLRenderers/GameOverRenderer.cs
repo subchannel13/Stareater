@@ -1,23 +1,28 @@
 ﻿using System;
 using System.Drawing;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using Stareater.AppData;
 using Stareater.Localization;
+using Stareater.GLData;
 
 namespace Stareater.GLRenderers
 {
 	class GameOverRenderer : AScene
 	{
 		private const float DefaultViewSize = 5;
-		private const float FarZ = -1;
+		private const float FarZ = 1;
+		
+		private TextDrawable textDrawable = null;
 		
 		#region implemented abstract members of ARenderer
 		public override void Draw(double deltaTime)
 		{
-			GL.Color4(Color.Red);
-			GL.Translate(0, 0.5, 0);
-			TextRenderUtil.Get.RenderText(LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text(), -0.5f);
+			if (this.textDrawable == null)
+				this.textDrawable = new TextDrawable(
+					new SpriteGlProgram.ObjectData(
+						Matrix4.CreateTranslation(0, 0.5f, 0), 0, TextRenderUtil.Get.TextureId, Color.Red),
+					-0.5f);
+			
+			this.textDrawable.Draw(this.projection, LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text());
 		}
 		
 		public override void ResetLists()
