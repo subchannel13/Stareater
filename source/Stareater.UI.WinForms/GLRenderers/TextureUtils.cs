@@ -49,7 +49,6 @@ namespace Stareater.GLRenderers
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height,
 				0, PixelFormat.Bgra, PixelType.UnsignedByte, textureData.Scan0);
 
-			GL.TexEnv(TextureEnvTarget.TextureEnv, TextureEnvParameter.TextureEnvMode, (float)TextureEnvMode.Modulate);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.Linear);
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)TextureMagFilter.Linear);
 
@@ -72,32 +71,6 @@ namespace Stareater.GLRenderers
 		
 			GL.DrawArrays(BeginMode.Triangles, spriteInfo.SpriteSheet.ObjectStart(spriteInfo.SpriteIndex), spriteInfo.SpriteSheet.ObjectSize(spriteInfo.SpriteIndex));
 			ShaderLibrary.PrintGlErrors("Draw sprites");
-		}
-		
-		public static void DrawSprite(TextureInfo textureInfo)
-		{
-			GL.BindTexture(TextureTarget.Texture2D, textureInfo.Id);
-			GL.Begin(BeginMode.Quads);
-
-			for(int i = 0; i < SpriteQuad.Length; i++) {
-				GL.TexCoord2(textureInfo.Coordinates[i]);
-				GL.Vertex2(SpriteQuad[i]);
-			}
-			
-			GL.End();
-		}
-		
-		public static void DrawSprite(TextureInfo textureInfo, float zOffset)
-		{
-			GL.BindTexture(TextureTarget.Texture2D, textureInfo.Id);
-			GL.Begin(BeginMode.Quads);
-
-			for(int i = 0; i < SpriteQuad.Length; i++) {
-				GL.TexCoord2(textureInfo.Coordinates[i]);
-				GL.Vertex3(SpriteQuad[i].X, SpriteQuad[i].Y, zOffset);
-			}
-			
-			GL.End();
 		}
 	}
 }

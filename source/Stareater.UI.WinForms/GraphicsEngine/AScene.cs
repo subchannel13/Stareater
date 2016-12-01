@@ -42,21 +42,6 @@ namespace Stareater.GLRenderers
 			this.projection = this.calculatePerspective();
 			this.invProjection = Matrix4.Invert(new Matrix4(this.projection.Row0, this.projection.Row1, this.projection.Row2, this.projection.Row3));
 		}
-		
-		//TODO(v0.6) remove
-		protected static void drawList(int listId, Action<int> listGenerator)
-		{
-			if (listId == NoCallList)
-			{
-				listId = GL.GenLists(1);
-				
-				GL.NewList(listId, ListMode.Compile);
-				listGenerator(listId);
-				GL.EndList();
-			}
-			
-			GL.CallList(listId);
-		}	
 
 		#region Input handling
 		public virtual void OnKeyPress(System.Windows.Forms.KeyPressEventArgs e)

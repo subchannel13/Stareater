@@ -153,33 +153,5 @@ namespace Stareater.GLRenderers
 
 			TextureUtils.UpdateTexture(this.TextureId, this.textureBitmap);
 		}
-		
-		//TODO(v0.6) remove, use buffer instead
-		public void RenderText(string text, float adjustment)
-		{
-			float textWidth = measureWidth(text);
-			float charOffset = textWidth * adjustment;
-			
-			GL.BindTexture(TextureTarget.Texture2D, this.TextureId);
-			GL.Begin(BeginMode.Quads);
-
-			foreach (char c in text)
-				if (!char.IsWhiteSpace(c)) {
-					var charInfo = this.characterInfos[c];
-
-					for (int v = 0; v < 4; v++) {
-						GL.TexCoord2(charInfo.TextureCoords[v]);
-						GL.Vertex2(
-							unitQuad[v].X * charInfo.Aspect + charOffset,
-							unitQuad[v].Y
-						);
-					}
-					charOffset += charInfo.Aspect;
-				}
-				else if (c == ' ')
-					charOffset += SpaceUnitWidth;
-
-			GL.End();
-		}
 	}
 }

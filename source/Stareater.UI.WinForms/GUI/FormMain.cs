@@ -426,8 +426,6 @@ namespace Stareater.GUI
 			}
 			
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-			GL.MatrixMode(MatrixMode.Modelview);
-			GL.LoadIdentity();
 			
 #if DEBUG
 			try {
