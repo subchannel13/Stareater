@@ -207,6 +207,7 @@
     <Compile Include="GameLogic\AbilityStats.cs" />
     <Compile Include="GameLogic\IConstructionVisitor.cs" />
     <Compile Include="GameLogic\InvalidMissionVisitor.cs" />
+    <Compile Include="GameLogic\NativesProcessor.cs" />
     <Compile Include="GameLogic\ResearchResult.cs">
       <AutoGen>True</AutoGen>
     </Compile>
@@ -379,6 +380,7 @@
     <Compile Include="Localization\StarNames\IStarName.cs" />
     <Compile Include="Localization\StarNames\ProperStarName.cs" />
     <Compile Include="Players\IOffscreenPlayerFactory.cs" />
+    <Compile Include="Players\Natives\StareaterPlayerFactory.cs" />
     <Compile Include="Players\Player.cs">
       <DependentUpon>Player.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -556,7 +558,9 @@
     <None Include="AppData\Expressions\Parser.frame" />
     <None Include="AppData\Expressions\Scanner.frame" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Players\Natives" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

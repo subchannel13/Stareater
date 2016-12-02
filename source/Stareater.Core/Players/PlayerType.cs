@@ -27,11 +27,8 @@ namespace Stareater.Players
 
 		public override bool Equals(object obj)
 		{
-			PlayerType other = obj as PlayerType;
-			if (other == null)
-				return false;
-
-			return ControlType.Equals(other.ControlType) && OffscreenPlayerFactory == other.OffscreenPlayerFactory;
+			var other = obj as PlayerType;
+			return other != null && ControlType.Equals(other.ControlType) && OffscreenPlayerFactory == other.OffscreenPlayerFactory;
 		}
 
 		public override int GetHashCode()

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Stareater.Controllers.Data;
 using Stareater.Controllers.Views;
 using Stareater.Players;
+using Stareater.Players.Natives;
 
 namespace Stareater.Controllers
 {
@@ -35,13 +36,14 @@ namespace Stareater.Controllers
 				throw new InvalidOperationException("Game is already created.");
 
 			//TODO(later): Pass organization to player
-			Player[] players = controller.PlayerList.Select(info =>
+			var players = controller.PlayerList.Select(info =>
 				new Player(info.Name, info.Color, /*info.Organization, */info.ControlType)
-			).ToArray();
+			).ToList();
+			players.Add(new Player("no name", System.Drawing.Color.Gray, new PlayerType(PlayerControlType.Neutral, new StareaterPlayerFactory())));
 			
 			var rng = new Random();
 			
-			this.gameObj = GameBuilder.CreateGame(rng, players, controller, staticDataSources);
+			this.gameObj = GameBuilder.CreateGame(rng, players.ToArray(), controller, staticDataSources);
 			makePlayers();
 		}
 		

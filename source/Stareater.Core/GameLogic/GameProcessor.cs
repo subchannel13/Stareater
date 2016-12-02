@@ -44,6 +44,7 @@ namespace Stareater.GameLogic
 					this.game.States,
 					this.game.Derivates
 				);
+			//TODO(v0.6) process natives
 			
 			this.moveShips();
 			this.detectConflicts();

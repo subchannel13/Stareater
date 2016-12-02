@@ -21,7 +21,7 @@ namespace Stareater.GLData
 		{
 			ErrorCode err;
 		    while ((err = GL.GetError()) != ErrorCode.NoError) {
-		        System.Diagnostics.Trace.WriteLine(title + ": OpenGL error " + err);
+		        System.Diagnostics.Trace.WriteLine(title + ": OpenGL error " + err); //TODO(v0.6) throw exception
 		    }
 		}
 	}
