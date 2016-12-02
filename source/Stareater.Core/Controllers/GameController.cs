@@ -38,12 +38,12 @@ namespace Stareater.Controllers
 			//TODO(later): Pass organization to player
 			var players = controller.PlayerList.Select(info =>
 				new Player(info.Name, info.Color, /*info.Organization, */info.ControlType)
-			).ToList();
-			players.Add(new Player("no name", System.Drawing.Color.Gray, new PlayerType(PlayerControlType.Neutral, new StareaterPlayerFactory())));
+			).ToArray();
+			var organellePlayer = new Player("no name", System.Drawing.Color.Gray, new PlayerType(PlayerControlType.Neutral, new OrganellePlayerFactory()));
 			
 			var rng = new Random();
 			
-			this.gameObj = GameBuilder.CreateGame(rng, players.ToArray(), controller, staticDataSources);
+			this.gameObj = GameBuilder.CreateGame(rng, players, organellePlayer, controller, staticDataSources);
 			makePlayers();
 		}
 		

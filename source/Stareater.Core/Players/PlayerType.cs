@@ -38,6 +38,7 @@ namespace Stareater.Players
 		
 		public const string AiControllerTag = "Ai";
 		public const string NoControllerTag = "None";
+		public const string OrganelleControllerTag = "Organelle";
 		public const string FactoryIdKey = "factory";
 	}
 }

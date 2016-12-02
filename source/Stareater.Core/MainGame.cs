@@ -14,6 +14,7 @@ namespace Stareater
 	class MainGame
 	{
 		public Player[] Players { get; private set; }
+		public Player StareaterOrganelles { get; private set; }
 		public int Turn { get; set; }
 
 		public StaticsDB Statics { get; private set; }
@@ -21,11 +22,12 @@ namespace Stareater
 		public TemporaryDB Derivates { get; private set; }
 
 		public GameProcessor Processor { get; private set; }
-			
-		public MainGame(Player[] players, StaticsDB statics, StatesDB states, TemporaryDB derivates)
+
+		public MainGame(Player[] players, Player organellePlayer, StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
 			this.Turn = 0;
-			
+
+			this.StareaterOrganelles = organellePlayer;
 			this.Players = players;
 			this.Statics = statics;
 			this.States = states;
@@ -41,15 +43,17 @@ namespace Stareater
 		{
 			var copy = new MainGame();
 
+			var extraPlayers = new Player[] { this.StareaterOrganelles };
 			GalaxyRemap galaxyRemap = this.States.CopyGalaxy();
 			PlayersRemap playersRemap = this.States.CopyPlayers(
-				this.Players.ToDictionary(x => x, x => x.Copy(galaxyRemap)),
+				this.Players.Concat(extraPlayers).ToDictionary(x => x, x => x.Copy(galaxyRemap)),
 				galaxyRemap);
 
 			foreach (var playerPair in playersRemap.Players)
 				playerPair.Value.Orders = playerPair.Key.Orders.Copy(playersRemap, galaxyRemap);
 
 			copy.Players = this.Players.Select(p => playersRemap.Players[p]).ToArray();
+			copy.StareaterOrganelles = playersRemap.Players[this.StareaterOrganelles];
 			copy.Turn = this.Turn;
 
 			copy.Statics = this.Statics;
@@ -59,7 +63,7 @@ namespace Stareater
 			return new GameCopy(copy, playersRemap, galaxyRemap);
 		}
 
-		//TODO leave or move to processor
+		//TODO(v0.6) leave or move to processor
 		public void CalculateDerivedEffects()
 		{
 			Processor.CalculateBaseEffects();
@@ -114,6 +118,7 @@ namespace Stareater
 		public const string SaveGameTag = "Game";
 		public const string TurnKey = "turn";
 		public const string OrdersKey = "orders";
+		public const string OrganellePlayerKey = "organelles";
 		public const string PlayersKey = "players";
 		public const string StatesKey = "states";
 		#endregion

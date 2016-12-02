@@ -3,15 +3,12 @@ using Ikadn.Ikon.Types;
 
 namespace Stareater.Players.Natives
 {
-	public class StareaterPlayerFactory : IOffscreenPlayerFactory
+	public class OrganellePlayerFactory : IOffscreenPlayerFactory
 	{
-		internal const string FactoryId = "DefaultAI";
-		
 		#region IOffscreenPlayerFactory implementation
 		public IOffscreenPlayer Create()
 		{
-			//TODO(v0.6)
-			throw new NotImplementedException();
+			return new OrganellePlayer();
 		}
 		
 		public IOffscreenPlayer Load(IkonComposite rawData)
@@ -21,7 +18,7 @@ namespace Stareater.Players.Natives
 		
 		public string Id 
 		{
-			get { return FactoryId; }
+			get { return "OrganelleAI"; }
 		}
 		
 		public string Name 

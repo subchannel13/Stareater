@@ -20,13 +20,13 @@ namespace Stareater.Controllers
 {
 	static class GameBuilder
 	{
-		public static MainGame CreateGame(Random rng, Player[] players, NewGameController controller, IEnumerable<TextReader> staticDataSources)
+		public static MainGame CreateGame(Random rng, Player[] players, Player organellePlayer, NewGameController controller, IEnumerable<TextReader> staticDataSources)
 		{
 			var statics = StaticsDB.Load(staticDataSources);
 			var states = createStates(rng, controller, players, statics);
 			var derivates = createDerivates(players, controller.SelectedStart, statics, states);
 			
-			var game = new MainGame(players, statics, states, derivates);
+			var game = new MainGame(players, organellePlayer, statics, states, derivates);
 			game.CalculateDerivedEffects();
 			
 			Stareater.AppData.Settings.Get.LastGame.StartConditions = controller.SelectedStart;
@@ -58,9 +58,10 @@ namespace Stareater.Controllers
 			var loadedStates = loadSaveData(saveData, deindexer, statics);
 			var states = loadedStates.Item1;
 			var players = loadedStates.Item2;
+			var organellePlayer = loadedStates.Item3;
 			var derivates = initDerivates(statics, players, states);
 			
-			var game = new MainGame(players.ToArray(), statics, states, derivates);
+			var game = new MainGame(players.ToArray(), organellePlayer, statics, states, derivates);
 			game.CalculateDerivedEffects();
 			
 			return game;
@@ -237,7 +238,7 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Loading helper methods
-		private static Tuple<StatesDB, Player[]> loadSaveData(IkonComposite saveData, ObjectDeindexer deindexer, StaticsDB statics)
+		private static Tuple<StatesDB, Player[], Player> loadSaveData(IkonComposite saveData, ObjectDeindexer deindexer, StaticsDB statics)
 		{
 			var stateData = saveData[MainGame.StatesKey].To<IkonComposite>();
 			var ordersData = saveData[MainGame.OrdersKey].To<IkonArray>();
@@ -257,6 +258,8 @@ namespace Stareater.Controllers
 			var players = new List<Player>();
 			foreach(var rawData in saveData[MainGame.PlayersKey].To<IEnumerable<IkonComposite>>())
 				players.Add(Player.Load(rawData, deindexer));
+
+			var organellePlayer = Player.Load(saveData[MainGame.OrganellePlayerKey].To<IkonComposite>(), deindexer);
 
 			var developments = new DevelopmentProgressCollection();
 			foreach (var rawData in stateData[StatesDB.DevelopmentAdvancesKey].To<IEnumerable<IkonComposite>>())
@@ -297,9 +300,10 @@ namespace Stareater.Controllers
 			for(int i = 0; i < players.Count; i++)
 				players[i].Orders = PlayerOrders.Load(ordersData[i].To<IkonComposite>(), deindexer);
 				                                  
-			return new Tuple<StatesDB, Player[]>(
+			return new Tuple<StatesDB, Player[], Player>(
 				new StatesDB(stars, wormholes, planets, colonies, stellarises, developments, research, reports, designs, fleets, colonizations),
-				players.ToArray()
+				players.ToArray(),
+				organellePlayer
 			);
 		}
 		

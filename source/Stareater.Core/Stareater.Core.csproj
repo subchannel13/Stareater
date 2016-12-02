@@ -380,7 +380,8 @@
     <Compile Include="Localization\StarNames\IStarName.cs" />
     <Compile Include="Localization\StarNames\ProperStarName.cs" />
     <Compile Include="Players\IOffscreenPlayerFactory.cs" />
-    <Compile Include="Players\Natives\StareaterPlayerFactory.cs" />
+    <Compile Include="Players\Natives\OrganellePlayer.cs" />
+    <Compile Include="Players\Natives\OrganellePlayerFactory.cs" />
     <Compile Include="Players\Player.cs">
       <DependentUpon>Player.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -558,9 +559,7 @@
     <None Include="AppData\Expressions\Parser.frame" />
     <None Include="AppData\Expressions\Scanner.frame" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Players\Natives" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
