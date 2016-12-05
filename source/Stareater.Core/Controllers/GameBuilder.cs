@@ -24,7 +24,7 @@ namespace Stareater.Controllers
 		{
 			var statics = StaticsDB.Load(staticDataSources);
 			var states = createStates(rng, controller, players, statics);
-			var derivates = createDerivates(players, controller.SelectedStart, statics, states);
+			var derivates = createDerivates(players, organellePlayer, controller.SelectedStart, statics, states);
 			
 			var game = new MainGame(players, organellePlayer, statics, states, derivates);
 			game.CalculateDerivedEffects();
@@ -59,7 +59,7 @@ namespace Stareater.Controllers
 			var states = loadedStates.Item1;
 			var players = loadedStates.Item2;
 			var organellePlayer = loadedStates.Item3;
-			var derivates = initDerivates(statics, players, states);
+			var derivates = initDerivates(statics, players, organellePlayer, states);
 			
 			var game = new MainGame(players.ToArray(), organellePlayer, statics, states, derivates);
 			game.CalculateDerivedEffects();
@@ -68,9 +68,9 @@ namespace Stareater.Controllers
 		}
 		
 		#region Creation helper methods
-		private static TemporaryDB createDerivates(Player[] players, StartingConditions startingConditions, StaticsDB statics, StatesDB states)
+		private static TemporaryDB createDerivates(Player[] players, Player organellePlayer, StartingConditions startingConditions, StaticsDB statics, StatesDB states)
 		{
-			var derivates = new TemporaryDB(players, statics.DevelopmentTopics);
+			var derivates = new TemporaryDB(players, organellePlayer, statics.DevelopmentTopics);
 			
 			initColonies(players, states.Colonies, startingConditions, derivates, statics);
 			initStellarises(derivates, states.Stellarises);
@@ -307,9 +307,9 @@ namespace Stareater.Controllers
 			);
 		}
 		
-		private static TemporaryDB initDerivates(StaticsDB statics, Player[] players, StatesDB states)
+		private static TemporaryDB initDerivates(StaticsDB statics, Player[] players, Player organellePlayer, StatesDB states)
 		{
-			var derivates = new TemporaryDB(players, statics.DevelopmentTopics);
+			var derivates = new TemporaryDB(players, organellePlayer, statics.DevelopmentTopics);
 			
 			foreach(var colony in states.Colonies) {
 				var colonyProc = new ColonyProcessor(colony);

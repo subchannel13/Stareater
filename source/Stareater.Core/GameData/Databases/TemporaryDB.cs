@@ -15,15 +15,16 @@ namespace Stareater.GameData.Databases
 		public PlayerProcessorCollection Players { get; private set; }
 		public NativesProcessor Natives { get; private set; }
 		
-		public TemporaryDB(Player[] players, IEnumerable<DevelopmentTopic> technologies)
+		public TemporaryDB(Player[] players, Player organellePlayer, IEnumerable<DevelopmentTopic> technologies)
 		{
 			this.Colonies = new ColonyProcessorCollection();
 			this.Stellarises = new StellarisProcessorCollection();
 			this.Players = new PlayerProcessorCollection();
-			this.Natives = new NativesProcessor();
+			this.Natives = new NativesProcessor(organellePlayer);
 			
 			foreach (var player in players)
 				this.Players.Add(new PlayerProcessor(player, technologies));
+			this.Players.Add(new PlayerProcessor(organellePlayer, new DevelopmentTopic[0]));
 		}
 
 		public TemporaryDB()
@@ -42,7 +43,7 @@ namespace Stareater.GameData.Databases
 			copy.Players = new PlayerProcessorCollection();
 			copy.Players.Add(this.Players.Select(x => x.Copy(playersRemap)));
 
-			copy.Natives = this.Natives.Copy();
+			copy.Natives = this.Natives.Copy(playersRemap);
 
 			return copy;
 		}

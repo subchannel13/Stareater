@@ -387,7 +387,7 @@ namespace Stareater.Controllers
 			if (!IsDesignValid)
 				return;
 
-			var desing = new Design(
+			var design = new Design(
 				this.game.States.MakeDesignId(),
 				this.player,
 				false,
@@ -404,13 +404,13 @@ namespace Stareater.Controllers
 				selectedSpecialEquipment, 
 				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level)
 			);
-			desing.CalcHash(this.game.Statics);
+			design.CalcHash(this.game.Statics);
 			
-			if (this.game.States.Designs.Contains(desing))
+			if (this.game.States.Designs.Contains(design))
 				return; //TODO(v0.5) move the check to IsDesignValid
 			
-			game.States.Designs.Add(desing); //TODO(v0.5) add to changes DB and propagate to states during turn processing
-			game.Derivates.Players.Of[this.player].Analyze(desing, this.game.Statics);
+			game.States.Designs.Add(design); //TODO(v0.6) add to changes DB and propagate to states during turn processing
+			game.Derivates.Players.Of[this.player].Analyze(design, this.game.Statics);
 		}
 		#endregion
 	}

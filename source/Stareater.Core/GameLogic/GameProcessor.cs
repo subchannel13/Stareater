@@ -44,7 +44,8 @@ namespace Stareater.GameLogic
 					this.game.States,
 					this.game.Derivates
 				);
-			//TODO(v0.6) process natives
+			this.game.Derivates.Natives.ProcessPrecombat(this.game.Statics, this.game.States, this.game.Derivates); 
+			//TODO(v0.6) process natives postcombat
 			
 			this.moveShips();
 			this.detectConflicts();
@@ -55,7 +56,7 @@ namespace Stareater.GameLogic
 			this.doColonization();
 			this.mergeFleets();
 			
-			foreach (var playerProc in this.game.Derivates.Players)
+			foreach (var playerProc in this.game.Players.Select(x => this.game.Derivates.Of(x)))
 				playerProc.ProcessPostcombat(this.game.Statics, this.game.States, this.game.Derivates);
 
 			this.doRepairs();
