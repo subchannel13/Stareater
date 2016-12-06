@@ -20,17 +20,7 @@ namespace Stareater.GameLogic
 		public void Apply(StatesDB states, TemporaryDB derivates, AConstructionSite site, long quantity)
 		{
 			//TODO(v0.6) report new ship construction
-			var fleet = states.Fleets.At[site.Location.Star.Position].FirstOrDefault(x => x.Owner == site.Owner && x.Missions.Count == 0);
-
-			if (fleet == null) {
-				fleet = new Fleet(site.Owner, site.Location.Star.Position, new LinkedList<AMission>());
-				states.Fleets.Add(fleet);
-			}
-			
-			if (fleet.Ships.WithDesign.Contains(Design))
-				fleet.Ships.WithDesign[Design].Quantity += quantity;
-			else
-				fleet.Ships.Add(new ShipGroup(Design, quantity, 0, 0));
+			derivates.Of(site.Owner).SpawnShip(site.Location.Star, this.Design, quantity, new AMission[0], states);
 		}
 		
 		public void Accept(IConstructionVisitor visitor)

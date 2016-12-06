@@ -38,7 +38,7 @@ namespace Stareater.GameLogic
 			this.commitFleetOrders();
 
 			this.game.States.Reports.Clear();
-			foreach (var playerProc in this.game.Derivates.Players)
+			foreach (var playerProc in this.game.Players.Select(x => this.game.Derivates.Of(x)))
 				playerProc.ProcessPrecombat(
 					this.game.Statics,
 					this.game.States,

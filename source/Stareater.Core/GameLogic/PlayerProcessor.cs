@@ -10,6 +10,7 @@ using Stareater.GameData.Ships;
 using Stareater.Players;
 using Stareater.Players.Reports;
 using Stareater.Ships;
+using Stareater.Ships.Missions;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 
@@ -174,7 +175,6 @@ namespace Stareater.GameLogic
 		#endregion
 		
 		#region Precombat processing
-
 		public void ProcessPrecombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
 			this.updateColonizationOrders(states);
@@ -191,6 +191,23 @@ namespace Stareater.GameLogic
 			 * TODO(later): Process stars
 			 * - Perform migration
 			 */
+		}
+		
+		public void SpawnShip(StarData star, Design design, long quantity, IEnumerable<AMission> missions, StatesDB states)
+		{
+			var missionList = new LinkedList<AMission>(missions);
+			var fleet = states.Fleets.At[star.Position].FirstOrDefault(x => x.Owner == this.Player && x.Missions.SequenceEqual(missionList));
+			
+			if (fleet == null)
+			{
+				fleet = new Fleet(this.Player, star.Position, missionList);
+				states.Fleets.Add(fleet);
+			}
+
+			if (fleet.Ships.WithDesign.Contains(design))
+				fleet.Ships.WithDesign[design].Quantity += quantity;
+			else
+				fleet.Ships.Add(new ShipGroup(design, quantity, 0, 0));
 		}
 
 		private void updateColonizationOrders(StatesDB states)

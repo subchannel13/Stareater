@@ -38,17 +38,8 @@ namespace Stareater.GameLogic
 			
 			missions.AddLast(new ColonizationMission(Destination));
 			
-			var fleet = states.Fleets.At[site.Location.Star.Position].FirstOrDefault(x => x.Owner == site.Owner && x.Missions.SequenceEqual(missions));
-			if (fleet == null)
-			{
-				fleet = new Fleet(site.Owner, site.Location.Star.Position, missions);
-				states.Fleets.Add(fleet);
-			}
-
-			if (fleet.Ships.WithDesign.Contains(ColonizerDesign))
-				fleet.Ships.WithDesign[ColonizerDesign].Quantity += quantity;
-			else
-				fleet.Ships.Add(new ShipGroup(ColonizerDesign, quantity, 0, 0));
+			//TODO(v0.6) report new ship construction
+			derivates.Of(site.Owner).SpawnShip(site.Location.Star, this.ColonizerDesign, quantity, missions, states);
 		}
 		
 		public void Accept(IConstructionVisitor visitor)
