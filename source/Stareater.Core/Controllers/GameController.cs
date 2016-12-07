@@ -216,12 +216,14 @@ namespace Stareater.Controllers
 				
 			foreach(var player in participants)
 			{
-				var playerController = this.playerControllers.First(x => this.gameObj.MainPlayers[x.PlayerIndex] == player); //TODO(v0.6) crashes when natives attack
+				var playerController = (player.ControlType == PlayerControlType.Neutral) ?
+					this.organelleController :
+					this.playerControllers.First(x => this.gameObj.MainPlayers[x.PlayerIndex] == player);
 				
 				if (player.ControlType == PlayerControlType.LocalAI)
 					controller.Register(playerController, player.OffscreenControl.StartBattle(controller));
 				else
-					controller.Register(playerController, this.stateListener.OnDoCombat(controller));
+					controller.Register(playerController, this.stateListener.OnDoCombat(controller)); //TODO(v0.6) gives human control over natives
 			}
 			
 			controller.Start();
