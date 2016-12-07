@@ -16,10 +16,9 @@ namespace Stareater.Controllers
 		private readonly SpaceBattleGame battleGame;
 		private readonly MainGame mainGame;
 		private readonly GameController gameController;
-		private readonly PlayerController[] players;
 		private readonly Dictionary<Player, IBattleEventListener> playerListeners;
 		
-		internal SpaceBattleController(SpaceBattleGame battleGame, GameController gameController, MainGame mainGame, PlayerController[] players)
+		internal SpaceBattleController(SpaceBattleGame battleGame, GameController gameController, MainGame mainGame)
 		{
 			this.playerListeners = new Dictionary<Player, IBattleEventListener>();
 			
@@ -27,7 +26,6 @@ namespace Stareater.Controllers
 			this.mainGame = mainGame;
 			this.gameController = gameController;
 			this.Star = mainGame.States.Stars.At[battleGame.Location];
-			this.players = players;
 		}
 	
 		#region Battle information

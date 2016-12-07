@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -75,6 +76,12 @@ namespace Stareater.Controllers
 			initColonies(players, states.Colonies, startingConditions, derivates, statics);
 			initStellarises(derivates, states.Stellarises);
 			initPlayers(derivates, players, states, statics);
+			
+			organellePlayer.Intelligence.Initialize(states.Stars.Select(
+					star => new StarSystem(star, states.Planets.At[star].ToArray())
+			));
+			foreach(var star in states.Stars)
+				organellePlayer.Intelligence.StarFullyVisited(star, 0);
 			
 			return derivates;
 		}
@@ -203,9 +210,9 @@ namespace Stareater.Controllers
 			}
 		}
 		
-		private static void initPlayers(TemporaryDB derivates, Player[] players, StatesDB states, StaticsDB statics)
+		private static void initPlayers(TemporaryDB derivates, IEnumerable<Player> players, StatesDB states, StaticsDB statics)
 		{
-			foreach(Player player in players) {
+			foreach(var player in players) {
 				foreach(var colony in states.Colonies.OwnedBy[player])
 					player.Orders.ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 				
@@ -215,7 +222,6 @@ namespace Stareater.Controllers
 				player.Orders.DevelopmentFocusIndex = statics.DevelopmentFocusOptions.Count / 2;
 				//TODO(v0.6) focus can be null when all research is done
 				player.Orders.ResearchFocus = statics.ResearchTopics.First().IdCode;
-				//player.Orders.ResearchFocus = derivates.Of(player).ResearchOrder(states.TechnologyAdvances).First().Topic.IdCode;
 			}
 			
 			foreach (var player in players) {

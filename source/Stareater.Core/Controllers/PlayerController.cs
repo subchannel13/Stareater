@@ -8,7 +8,6 @@ using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.Players;
-using Stareater.Utils;
 
 namespace Stareater.Controllers
 {
@@ -16,17 +15,14 @@ namespace Stareater.Controllers
 	public class PlayerController
 	{
 		public int PlayerIndex { get; private set; }
+		internal Player PlayerInstance { get; private set; }
 		private GameController gameController;
 		
-		internal PlayerController(int playerIndex, GameController gameController)
+		internal PlayerController(int playerIndex, Player playerInstance, GameController gameController)
 		{
 			this.PlayerIndex = playerIndex;
+			this.PlayerInstance = playerInstance;
 			this.gameController = gameController;
-		}
-		
-		internal Player PlayerInstance
-		{
-			get { return this.gameController.GameInstance.Players[this.PlayerIndex]; }
 		}
 		
 		private MainGame gameInstance

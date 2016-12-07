@@ -142,7 +142,10 @@ namespace Stareater.GameLogic
 		
 		private void commitFleetOrders()
 		{
-			foreach (var player in this.game.Players) {
+			var extraPlayers = new [] {this.game.StareaterOrganelles}; //TODO(v0.6) add game property
+			
+			foreach (var player in this.game.Players.Concat(extraPlayers))
+			{
 				foreach (var order in player.Orders.ShipOrders) 
 				{
 					var totalDamage = new Dictionary<Design, double>();

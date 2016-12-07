@@ -6,6 +6,7 @@ using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Ikadn.Ikon.Types;
 using Stareater.Controllers.Views.Combat;
+using Stareater.Galaxy;
 
 namespace Stareater.Players.Natives
 {
@@ -22,6 +23,24 @@ namespace Stareater.Players.Natives
 		public void PlayTurn()
 		{
 			//TODO(v0.6);
+			var ownFleet = this.playerController.Fleets.Where(x => x.Owner == this.playerController.Info).ToList();
+			var inhabitedStars = new HashSet<StarData>(this.playerController.Stars.Where(x => this.playerController.KnownColonies(x).Any()));
+			
+			foreach(var movingFleet in ownFleet.Where(x => x.IsMoving))
+				inhabitedStars.ExceptWith(movingFleet.Missions.Waypoints.Select(x => this.playerController.Star(x.Destionation)));
+			
+			foreach(var fleet in ownFleet.Where(x => !x.IsMoving))
+			{
+				if (!inhabitedStars.Any())
+					break;
+				
+				var destination = inhabitedStars.First();
+				var fleetControl = this.playerController.SelectFleet(fleet);
+				foreach(var shipGroup in fleetControl.ShipGroups)
+					fleetControl.SelectGroup(shipGroup, shipGroup.Quantity);
+				fleetControl.Send(new []{ destination.Position });
+				inhabitedStars.Remove(destination);
+			}
 		}
 
 		public void OnResearchComplete(ResearchCompleteController controller)
@@ -42,6 +61,7 @@ namespace Stareater.Players.Natives
 
 		public void PlayUnit(CombatantInfo unitInfo)
 		{
+			battleController.UnitDone();
 			//TODO(v0.6);
 		}
 	}

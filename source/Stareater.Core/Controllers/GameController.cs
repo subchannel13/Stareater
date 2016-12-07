@@ -23,6 +23,7 @@ namespace Stareater.Controllers
 		private IGameStateListener stateListener;
 		private Task aiGalaxyPhase = null;
 		private PlayerController[] playerControllers = null;
+		private PlayerController organelleController = null;
 		private HashSet<int> endedTurnPlayers = new HashSet<int>();
 
 		public GameController()
@@ -92,11 +93,14 @@ namespace Stareater.Controllers
 			
 			for (int i = 0; i < this.gameObj.Players.Length; i++)
 			{
-				this.playerControllers[i] = new PlayerController(i, this);
+				this.playerControllers[i] = new PlayerController(i, this.gameObj.Players[i], this);
 				
 				if (this.gameObj.Players[i].OffscreenControl != null)
 					this.gameObj.Players[i].OffscreenControl.Controller = this.playerControllers[i];
 			}
+			
+			this.organelleController = new PlayerController(this.gameObj.Players.Length, this.gameObj.StareaterOrganelles, this);
+			this.gameObj.StareaterOrganelles.OffscreenControl.Controller = this.organelleController;
 		}
 		
 		#region Turn processing
@@ -149,6 +153,8 @@ namespace Stareater.Controllers
 		#region Background processing
 		private void aiDoGalaxyPhase() 
 		{
+			organelleController.PlayerInstance.OffscreenControl.PlayTurn();
+			
 			foreach(var aiController in this.playerControllers.Where(x => x.PlayerInstance.ControlType == PlayerControlType.LocalAI))
 				aiController.PlayerInstance.OffscreenControl.PlayTurn();
 		}
@@ -205,12 +211,12 @@ namespace Stareater.Controllers
 		private void initaiteCombat()
 		{
 			var conflict = gameObj.Processor.NextConflict();
-			var controller = new SpaceBattleController(conflict, this, gameObj, playerControllers);
+			var controller = new SpaceBattleController(conflict, this, gameObj);
 			var participants = conflict.Combatants.Select(x => x.Owner).Distinct().ToList();
 				
 			foreach(var player in participants)
 			{
-				var playerController = this.playerControllers.First(x => this.gameObj.Players[x.PlayerIndex] == player);
+				var playerController = this.playerControllers.First(x => this.gameObj.Players[x.PlayerIndex] == player); //TODO(v0.6) crashes when natives attack
 				
 				if (player.ControlType == PlayerControlType.LocalAI)
 					controller.Register(playerController, player.OffscreenControl.StartBattle(controller));

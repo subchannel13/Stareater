@@ -31,7 +31,7 @@ namespace Stareater.GameLogic
 			
 			if (nativeDesign == null)
 			{
-				var someDesign = states.Designs.First(); //TODO(v0.6) make predefined native designs
+				var someDesign = states.Designs.First(x => x.IsDrive != null); //TODO(v0.6) make predefined native designs
 				nativeDesign = new Design(
 					states.MakeDesignId(), this.OrganellePlayer, false, true, "test", someDesign.ImageIndex,
 					someDesign.Armor, someDesign.Hull, someDesign.IsDrive, someDesign.Reactor, someDesign.Sensors,

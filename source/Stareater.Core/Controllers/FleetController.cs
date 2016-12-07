@@ -8,7 +8,6 @@ using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
 using Stareater.Utils;
-using Stareater.Controllers.Data;
 
 namespace Stareater.Controllers
 {

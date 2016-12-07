@@ -407,7 +407,7 @@ namespace Stareater.Controllers
 			design.CalcHash(this.game.Statics);
 			
 			if (this.game.States.Designs.Contains(design))
-				return; //TODO(v0.5) move the check to IsDesignValid
+				return; //TODO(v0.6) move the check to IsDesignValid
 			
 			game.States.Designs.Add(design); //TODO(v0.6) add to changes DB and propagate to states during turn processing
 			game.Derivates.Players.Of[this.player].Analyze(design, this.game.Statics);
