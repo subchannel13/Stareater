@@ -83,7 +83,7 @@ namespace Stareater.Controllers
 		#region Unit order and battle event management
 		internal void Register(PlayerController player, IBattleEventListener eventListener)
 		{
-			playerListeners.Add(mainGame.Players[player.PlayerIndex], eventListener);
+			playerListeners.Add(mainGame.MainPlayers[player.PlayerIndex], eventListener);
 		}
 		
 		internal void Start()

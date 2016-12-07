@@ -13,7 +13,7 @@ namespace Stareater
 {
 	class MainGame
 	{
-		public Player[] Players { get; private set; }
+		public Player[] MainPlayers { get; private set; }
 		public Player StareaterOrganelles { get; private set; }
 		public int Turn { get; set; }
 
@@ -28,7 +28,7 @@ namespace Stareater
 			this.Turn = 0;
 
 			this.StareaterOrganelles = organellePlayer;
-			this.Players = players;
+			this.MainPlayers = players;
 			this.Statics = statics;
 			this.States = states;
 			this.Derivates = derivates;
@@ -39,20 +39,30 @@ namespace Stareater
 		private MainGame()
 		{ }
 		
+		public IEnumerable<Player> AllPlayers
+		{
+			get
+			{
+				foreach(var player in this.MainPlayers)
+					yield return player;
+				
+				yield return this.StareaterOrganelles;
+			}
+		}
+		
 		public GameCopy ReadonlyCopy()
 		{
 			var copy = new MainGame();
 
-			var extraPlayers = new Player[] { this.StareaterOrganelles };
 			GalaxyRemap galaxyRemap = this.States.CopyGalaxy();
 			PlayersRemap playersRemap = this.States.CopyPlayers(
-				this.Players.Concat(extraPlayers).ToDictionary(x => x, x => x.Copy(galaxyRemap)),
+				this.AllPlayers.ToDictionary(x => x, x => x.Copy(galaxyRemap)),
 				galaxyRemap);
 
 			foreach (var playerPair in playersRemap.Players)
 				playerPair.Value.Orders = playerPair.Key.Orders.Copy(playersRemap, galaxyRemap);
 
-			copy.Players = this.Players.Select(p => playersRemap.Players[p]).ToArray();
+			copy.MainPlayers = this.MainPlayers.Select(p => playersRemap.Players[p]).ToArray();
 			copy.StareaterOrganelles = playersRemap.Players[this.StareaterOrganelles];
 			copy.Turn = this.Turn;
 
@@ -76,7 +86,7 @@ namespace Stareater
 		{
 			var indexer = new ObjectIndexer();
 			
-			indexer.AddAll(this.Players);
+			indexer.AddAll(this.MainPlayers);
 			indexer.AddAll(Statics.PredeginedDesigns);
 			
 			indexer.AddAll(States.Designs);
@@ -104,11 +114,11 @@ namespace Stareater
 
 			gameData.Add(StatesKey, this.States.Save(indexer));
 
-			foreach(var player in this.Players)
+			foreach(var player in this.MainPlayers)
 				playersData.Add(player.Save(indexer));
 			gameData.Add(PlayersKey, playersData);
 			
-			foreach(var player in this.Players)
+			foreach(var player in this.MainPlayers)
 				ordersData.Add(player.Orders.Save(indexer));
 			gameData.Add(OrdersKey, ordersData);
 			

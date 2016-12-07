@@ -38,7 +38,7 @@ namespace Stareater.GameLogic
 			this.commitFleetOrders();
 
 			this.game.States.Reports.Clear();
-			foreach (var playerProc in this.game.Players.Select(x => this.game.Derivates.Of(x)))
+			foreach (var playerProc in this.game.MainPlayers.Select(x => this.game.Derivates.Of(x)))
 				playerProc.ProcessPrecombat(
 					this.game.Statics,
 					this.game.States,
@@ -56,7 +56,7 @@ namespace Stareater.GameLogic
 			this.doColonization();
 			this.mergeFleets();
 			
-			foreach (var playerProc in this.game.Players.Select(x => this.game.Derivates.Of(x)))
+			foreach (var playerProc in this.game.MainPlayers.Select(x => this.game.Derivates.Of(x)))
 				playerProc.ProcessPostcombat(this.game.Statics, this.game.States, this.game.Derivates);
 
 			this.doRepairs();
@@ -142,9 +142,7 @@ namespace Stareater.GameLogic
 		
 		private void commitFleetOrders()
 		{
-			var extraPlayers = new [] {this.game.StareaterOrganelles}; //TODO(v0.6) add game property
-			
-			foreach (var player in this.game.Players.Concat(extraPlayers))
+			foreach (var player in this.game.AllPlayers)
 			{
 				foreach (var order in player.Orders.ShipOrders) 
 				{

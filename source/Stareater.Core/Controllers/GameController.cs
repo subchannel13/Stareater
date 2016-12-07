@@ -89,17 +89,17 @@ namespace Stareater.Controllers
 
 		private void makePlayers()
 		{
-			this.playerControllers = new PlayerController[this.gameObj.Players.Length];
+			this.playerControllers = new PlayerController[this.gameObj.MainPlayers.Length];
 			
-			for (int i = 0; i < this.gameObj.Players.Length; i++)
+			for (int i = 0; i < this.gameObj.MainPlayers.Length; i++)
 			{
-				this.playerControllers[i] = new PlayerController(i, this.gameObj.Players[i], this);
+				this.playerControllers[i] = new PlayerController(i, this.gameObj.MainPlayers[i], this);
 				
-				if (this.gameObj.Players[i].OffscreenControl != null)
-					this.gameObj.Players[i].OffscreenControl.Controller = this.playerControllers[i];
+				if (this.gameObj.MainPlayers[i].OffscreenControl != null)
+					this.gameObj.MainPlayers[i].OffscreenControl.Controller = this.playerControllers[i];
 			}
 			
-			this.organelleController = new PlayerController(this.gameObj.Players.Length, this.gameObj.StareaterOrganelles, this);
+			this.organelleController = new PlayerController(this.gameObj.MainPlayers.Length, this.gameObj.StareaterOrganelles, this);
 			this.gameObj.StareaterOrganelles.OffscreenControl.Controller = this.organelleController;
 		}
 		
@@ -216,7 +216,7 @@ namespace Stareater.Controllers
 				
 			foreach(var player in participants)
 			{
-				var playerController = this.playerControllers.First(x => this.gameObj.Players[x.PlayerIndex] == player); //TODO(v0.6) crashes when natives attack
+				var playerController = this.playerControllers.First(x => this.gameObj.MainPlayers[x.PlayerIndex] == player); //TODO(v0.6) crashes when natives attack
 				
 				if (player.ControlType == PlayerControlType.LocalAI)
 					controller.Register(playerController, player.OffscreenControl.StartBattle(controller));

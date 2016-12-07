@@ -22,7 +22,6 @@ namespace Stareater.Players.Natives
 
 		public void PlayTurn()
 		{
-			//TODO(v0.6);
 			var ownFleet = this.playerController.Fleets.Where(x => x.Owner == this.playerController.Info).ToList();
 			var inhabitedStars = new HashSet<StarData>(this.playerController.Stars.Where(x => this.playerController.KnownColonies(x).Any()));
 			
