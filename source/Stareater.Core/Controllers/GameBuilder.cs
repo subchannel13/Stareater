@@ -77,11 +77,7 @@ namespace Stareater.Controllers
 			initStellarises(derivates, states.Stellarises);
 			initPlayers(derivates, players, states, statics);
 			
-			organellePlayer.Intelligence.Initialize(states.Stars.Select(
-					star => new StarSystem(star, states.Planets.At[star].ToArray())
-			));
-			foreach(var star in states.Stars)
-				organellePlayer.Intelligence.StarFullyVisited(star, 0);
+			derivates.Natives.Initialize(states);
 			
 			return derivates;
 		}

@@ -19,6 +19,17 @@ namespace Stareater.GameLogic
 		{
 			this.OrganellePlayer = organellePlayer;
 		}
+
+		public void Initialize(StatesDB states)
+		{
+			this.OrganellePlayer.Intelligence.Initialize(states.Stars.Select(
+					star => new Stareater.Galaxy.Builders.StarSystem(star, states.Planets.At[star].ToArray())
+			));
+			foreach(var star in states.Stars)
+				this.OrganellePlayer.Intelligence.StarFullyVisited(star, 0);
+			
+			//TODO(v0.6) initialize designs
+		}
 		
 		internal NativesProcessor Copy(PlayersRemap playersRemap)
 		{
