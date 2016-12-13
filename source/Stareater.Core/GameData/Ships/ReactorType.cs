@@ -29,7 +29,7 @@ namespace Stareater.GameData.Ships
 			
 		}
 
-		public static Component<ReactorType> MakeBest(Dictionary<string, double> playersTechLevels, Component<HullType> hull, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics)
+		public static Component<ReactorType> MakeBest(IDictionary<string, double> playersTechLevels, Component<HullType> hull, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics)
 		{
 			var shipVars = PlayerProcessor.DesignBaseVars(hull, specialEquipment, statics).Get;
 

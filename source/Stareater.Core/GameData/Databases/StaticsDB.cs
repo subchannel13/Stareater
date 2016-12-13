@@ -5,7 +5,6 @@ using System.Linq;
 
 using Ikadn.Ikon.Types;
 using Stareater.AppData.Expressions;
-using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameData.Reading;
@@ -24,13 +23,14 @@ namespace Stareater.GameData.Databases
 		public List<DevelopmentFocus> DevelopmentFocusOptions { get; private set; }
 		public Dictionary<string, DevelopmentRequirement> DevelopmentRequirements { get; private set; }
 		public List<DevelopmentTopic> DevelopmentTopics { get; private set; }
+		public Dictionary<string, PredefinedDesign> NativeDesigns { get; private set; }
 		public PlayerFormulaSet PlayerFormulas { get; private set; }
 		public List<PredefinedDesign> PredeginedDesigns { get; private set; }
 		public List<ResearchTopic> ResearchTopics { get; private set; }
 		public ShipFormulaSet ShipFormulas { get; private set; }
 		public List<PredefinedDesign> SystemColonizerDesigns { get; private set; }
 		public Dictionary<string, BodyTraitType> Traits { get; private set; }
-		
+
 		public Dictionary<string, ArmorType> Armors { get; private set; }
 		public Dictionary<string, HullType> Hulls { get; private set; }
 		public Dictionary<string, IsDriveType> IsDrives { get; private set; }
@@ -40,7 +40,7 @@ namespace Stareater.GameData.Databases
 		public Dictionary<string, ShieldType> Shields { get; private set; }
 		public Dictionary<string, SpecialEquipmentType> SpecialEquipment { get; private set; }
 		public Dictionary<string, ThrusterType> Thrusters { get; private set; }
-		
+
 		private StaticsDB()
 		{
 			this.Armors = new Dictionary<string, ArmorType>();
@@ -54,6 +54,7 @@ namespace Stareater.GameData.Databases
 			this.Thrusters = new Dictionary<string, ThrusterType>();
 
 			this.ColonyShipDesigns = new List<PredefinedDesign>();
+			this.NativeDesigns = new Dictionary<string, PredefinedDesign>();
 			this.PredeginedDesigns = new List<PredefinedDesign>();
 			this.SystemColonizerDesigns = new List<PredefinedDesign>();
 
@@ -93,6 +94,9 @@ namespace Stareater.GameData.Databases
 							break;
 						case DevelopmentTag:
 							db.DevelopmentTopics.Add(loadDevelopmentTopic(data));
+							break;
+						case NativesTag:
+							db.loadNatives(data.To<IkonComposite>());
 							break;
 						case PlayerFormulasTag:
 							db.PlayerFormulas = loadPlayerFormulas(data);
@@ -297,6 +301,12 @@ namespace Stareater.GameData.Databases
 			
 			foreach(var designData in data[ColonizerSystem].To<IEnumerable<IkonComposite>>())
 				this.SystemColonizerDesigns.Add(loadPredefDesign(designData));
+		}
+
+		private void loadNatives(IkonComposite data)
+		{
+			foreach(var designName in data.Keys)
+				this.NativeDesigns[designName] = loadPredefDesign(data[designName].To<IkonComposite>());
 		}
 		
 		private static PredefinedDesign loadPredefDesign(IkonComposite data)
@@ -557,6 +567,7 @@ namespace Stareater.GameData.Databases
 		private const string ConstructableTag = "Constructable";
 		private const string DevelopmentFocusesTag = "DevelopmentFocusOptions";
 		private const string DevelopmentTag = "DevelopmentTopic";
+		private const string NativesTag = "Natives";
 		private const string PlayerFormulasTag = "PlayerFormulas";
 		private const string PredefinedDesignTag = "PredefinedDesign";
 		private const string ResearchTag = "ResearchTopic";

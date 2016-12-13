@@ -1,0 +1,16 @@
+{ Natives
+	catalyzer 
+		{ PredefinedDesign
+			name "Catalyzer"
+			
+			hull: cruiser
+			hullImageIndex= 0
+			
+			hasIsDrive []
+			
+			equipment []
+			specials [
+				:colony =1
+			]
+		}
+}

@@ -8,11 +8,13 @@ using Stareater.GameData.Ships;
 using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GameLogic
 {
 	class NativesProcessor
 	{
+		private const string CatalyzerId = "catalyzer";
 		public Player OrganellePlayer { get; private set; }
 		
 		public NativesProcessor(Player organellePlayer)
@@ -20,7 +22,7 @@ namespace Stareater.GameLogic
 			this.OrganellePlayer = organellePlayer;
 		}
 
-		public void Initialize(StatesDB states)
+		public void Initialize(StatesDB states, StaticsDB statics, TemporaryDB derivates)
 		{
 			this.OrganellePlayer.Intelligence.Initialize(states.Stars.Select(
 					star => new Stareater.Galaxy.Builders.StarSystem(star, states.Planets.At[star].ToArray())
@@ -28,7 +30,8 @@ namespace Stareater.GameLogic
 			foreach(var star in states.Stars)
 				this.OrganellePlayer.Intelligence.StarFullyVisited(star, 0);
 			
-			//TODO(v0.6) initialize designs
+			foreach(var template in statics.NativeDesigns)
+				makeDesign(statics, states, template.Key, template.Value, derivates.Of(this.OrganellePlayer));
 		}
 		
 		internal NativesProcessor Copy(PlayersRemap playersRemap)
@@ -38,23 +41,42 @@ namespace Stareater.GameLogic
 
 		public void ProcessPrecombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
 		{
-			var nativeDesign = states.Designs.OwnedBy[this.OrganellePlayer].FirstOrDefault();
-			
-			if (nativeDesign == null)
-			{
-				var someDesign = states.Designs.First(x => x.IsDrive != null); //TODO(v0.6) make predefined native designs
-				nativeDesign = new Design(
-					states.MakeDesignId(), this.OrganellePlayer, false, true, "test", someDesign.ImageIndex,
-					someDesign.Armor, someDesign.Hull, someDesign.IsDrive, someDesign.Reactor, someDesign.Sensors,
-					someDesign.Shield, new List<Component<MissionEquipmentType>>(someDesign.MissionEquipment), 
-					new List<Component<SpecialEquipmentType>>(someDesign.SpecialEquipment), someDesign.Thrusters);
-				nativeDesign.CalcHash(statics);
-				states.Designs.Add(nativeDesign);
-				derivates.Of(this.OrganellePlayer).Analyze(nativeDesign, statics);
-			}
+			var nativeDesign = states.Designs.OwnedBy[this.OrganellePlayer].First(x => x.IdCode == CatalyzerId);
 			
 			var star = states.Stars.First();
 			derivates.Of(this.OrganellePlayer).SpawnShip(star, nativeDesign, 1, new AMission[0], states);
+		}
+		
+		private void makeDesign(StaticsDB statics, StatesDB states, string id, PredefinedDesign predefDesign, PlayerProcessor playerProc)
+		{
+			var techLevels = new Var().
+				Init(statics.DevelopmentTopics.Select(x => x.IdCode), false).
+				Init(statics.ResearchTopics.Select(x => x.IdCode), false).Get;
+				     
+			var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
+			var specials = predefDesign.SpecialEquipment.OrderBy(x => x.Key).Select(
+				x => statics.SpecialEquipment[x.Key].MakeBest(techLevels, x.Value)
+			).ToList();
+			
+			var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels); //TODO(0.5) get id from template
+			var reactor = ReactorType.MakeBest(techLevels, hull, specials, statics); //TODO(0.5) get id from template
+			var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(techLevels, hull, reactor, specials, statics) : null; //TODO(0.5) get id from template
+			var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels); //TODO(0.5) get id from template
+			var shield = predefDesign.ShieldCode != null ? statics.Shields[predefDesign.ShieldCode].MakeBest(techLevels) : null;
+			var equipment = predefDesign.MissionEquipment.Select(
+				x => statics.MissionEquipment[x.Key].MakeBest(techLevels, x.Value)
+			).ToList();
+			
+			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels); //TODO(0.5) get id from template
+
+			var design = new Design(
+				id, playerProc.Player, false, true, predefDesign.Name, predefDesign.HullImageIndex,
+			    armor, hull, isDrive, reactor, sensor, shield, equipment, specials, thruster
+			);
+			design.CalcHash(statics);
+			
+			states.Designs.Add(design);
+			playerProc.Analyze(design, statics);
 		}
 	}
 }

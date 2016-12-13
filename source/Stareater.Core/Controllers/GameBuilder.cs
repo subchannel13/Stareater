@@ -77,7 +77,7 @@ namespace Stareater.Controllers
 			initStellarises(derivates, states.Stellarises);
 			initPlayers(derivates, players, states, statics);
 			
-			derivates.Natives.Initialize(states);
+			derivates.Natives.Initialize(states, statics, derivates);
 			
 			return derivates;
 		}

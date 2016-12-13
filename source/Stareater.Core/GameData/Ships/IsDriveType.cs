@@ -28,7 +28,7 @@ namespace Stareater.GameData.Ships
 			this.MinSize = minSize;
 		}
 		
-		public static Component<IsDriveType> MakeBest(Dictionary<string, double> playersTechLevels, Component<HullType> hull, Component<ReactorType> reactor, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics)
+		public static Component<IsDriveType> MakeBest(IDictionary<string, double> playersTechLevels, Component<HullType> hull, Component<ReactorType> reactor, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics)
 		{
 			var shipVars = PlayerProcessor.DesignPoweredVars(hull, reactor, specialEquipment, statics).Get;
 			
