@@ -16,10 +16,10 @@ namespace Stareater.GameData.Ships
 		public Formula Absorption;
 		public Formula AbsorptionMax;
 		
-		public ArmorType(string code, string nameCode, string descCode, string imagePath,
+		public ArmorType(string code, string nameCode, string descCode, bool isVirtual, string imagePath,
 		                 IEnumerable<Prerequisite> prerequisites, int maxLevel, 
 		                 Formula armorFactor, Formula absorption, Formula absorptionMax)
-			: base(code, nameCode, descCode, prerequisites, maxLevel)
+			: base(code, nameCode, descCode, isVirtual, prerequisites, maxLevel)
 		{
 			this.ArmorFactor = armorFactor;
 			this.Absorption = absorption;

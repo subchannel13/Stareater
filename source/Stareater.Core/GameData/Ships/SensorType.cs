@@ -11,10 +11,10 @@ namespace Stareater.GameData.Ships
 		
 		public Formula Detection;
 		
-		public SensorType(string code, string nameCode, string descCode, string imagePath,
+		public SensorType(string code, string nameCode, string descCode, bool isVirtual, string imagePath,
 		                 IEnumerable<Prerequisite> prerequisites, int maxLevel, 
 		                 Formula detection)
-			: base(code, nameCode, descCode, prerequisites, maxLevel)
+			: base(code, nameCode, descCode, isVirtual, prerequisites, maxLevel)
 		{
 			this.Detection = detection;
 			this.ImagePath = imagePath;

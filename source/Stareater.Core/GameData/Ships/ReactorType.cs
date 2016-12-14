@@ -18,10 +18,10 @@ namespace Stareater.GameData.Ships
 		public Formula Power { get; private set; }
 		public Formula MinSize { get; private set; }
 		
-		public ReactorType(string code, string nameCode, string descCode, string imagePath, 
+		public ReactorType(string code, string nameCode, string descCode, bool isVirtual, string imagePath, 
 		                   IEnumerable<Prerequisite> prerequisites, int maxLevel, 
 		                   Formula power, Formula minSize)
-			: base(code, nameCode, descCode, prerequisites, maxLevel)
+			: base(code, nameCode, descCode, isVirtual, prerequisites, maxLevel)
 		{
 			this.ImagePath = imagePath;
 			this.Power = power;

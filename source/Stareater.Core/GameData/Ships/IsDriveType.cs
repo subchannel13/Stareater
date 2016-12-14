@@ -17,10 +17,10 @@ namespace Stareater.GameData.Ships
 		public Formula Speed { get; private set; }
 		public Formula MinSize { get; private set; }
 		
-		public IsDriveType(string code, string nameCode, string descCode, string imagePath,
+		public IsDriveType(string code, string nameCode, string descCode, bool isVirtual, string imagePath,
 		                   IEnumerable<Prerequisite> prerequisites, int maxLevel, Formula cost, 
 		                   Formula speed, Formula minSize)
-			: base(code, nameCode, descCode, prerequisites, maxLevel)
+			: base(code, nameCode, descCode, isVirtual, prerequisites, maxLevel)
 		{
 			this.Cost = cost;
 			this.ImagePath = imagePath;

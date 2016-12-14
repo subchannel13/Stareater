@@ -12,6 +12,9 @@ FIGHTER_HULL_NAME = Fighter
 FIGHTER_HULL_DESC = Space version of air superiority fighter.
 CRUISER_HULL_NAME = Cruiser
 CRUISER_HULL_DESC = No description.
+
+CATALYZER_HULL_NAME = Catalyzer
+CATALYZER_HULL_DESC = No description.
 -
 
 :IsDrives

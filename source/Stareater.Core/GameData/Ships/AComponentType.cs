@@ -15,16 +15,18 @@ namespace Stareater.GameData.Ships
 		public string IdCode { get; private set; }
 		public string NameCode { get; private set; }
 		public string DescCode { get; private set; }
+		public bool IsVirtual { get; private set; }
 
 		public IEnumerable<Prerequisite> Prerequisites { get; private set; }
 		public int MaxLevel { get; private set; }
 		
-		protected AComponentType(string code, string nameCode, string descCode, 
+		protected AComponentType(string code, string nameCode, string descCode, bool isVirtual,
 		                      IEnumerable<Prerequisite> prerequisites, int maxLevel)
 		{
 			this.IdCode = code;
 			this.NameCode = nameCode;
 			this.DescCode = descCode;
+			this.IsVirtual = isVirtual;
 			this.Prerequisites = prerequisites;
 			this.MaxLevel = maxLevel;
 		}

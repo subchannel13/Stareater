@@ -349,6 +349,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
+				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -389,6 +390,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
+				data.Keys.Contains(GeneralVirtualKey),
 				data[HullImages].To<string[]>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -414,6 +416,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
+				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -429,6 +432,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
+				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -444,6 +448,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
+				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -458,6 +463,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
+				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -471,6 +477,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
+				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -491,6 +498,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
+				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -507,6 +515,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
+				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -651,6 +660,7 @@ namespace Stareater.GameData.Databases
 		
 		private const string GeneralNameKey = "nameCode";
 		private const string GeneralDescriptionKey = "descCode";
+		private const string GeneralVirtualKey = "virtual";
 		private const string GeneralImageKey = "image";
 		private const string GeneralCodeKey = "code";
 		private const string GeneralPrerequisitesKey = "prerequisites";
