@@ -38,7 +38,7 @@ namespace Stareater.GameData.Ships
 				Where(x =>
 				      {
 				      	shipVars[AComponentType.LevelKey] = x.Level;
-				      	return x.TypeInfo.MinSize.Evaluate(shipVars) <= shipVars[HullType.IsDriveSizeKey];
+				      	return x.TypeInfo.MinSize.Evaluate(shipVars) <= shipVars[HullType.IsDriveSizeKey] && x.TypeInfo.CanPick;
 				      }),
 				x =>
 				{
