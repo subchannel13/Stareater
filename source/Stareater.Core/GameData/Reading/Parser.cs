@@ -4,11 +4,12 @@ using Ikadn.Ikon;
 
 namespace Stareater.GameData.Reading
 {
-	public class Parser : IkonParser
+	class Parser : IkonParser
 	{
 		public Parser(TextReader reader) : base(reader)
 		{
 			this.RegisterFactory(new ExpressionFactory());
+			this.RegisterFactory(new NoValueFactory());
 			this.RegisterFactory(new SingleLineFactory());
 		}
 	}

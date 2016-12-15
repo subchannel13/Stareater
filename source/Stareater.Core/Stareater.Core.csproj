@@ -189,6 +189,8 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\DevelopmentRequirement.cs" />
+    <Compile Include="GameData\Reading\NoValue.cs" />
+    <Compile Include="GameData\Reading\NoValueFactory.cs" />
     <Compile Include="GameData\ResearchProgress.cs">
       <DependentUpon>ResearchProgress.tt</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -18,7 +18,7 @@
 	nameCode: CATALYZER_HULL_NAME
 	descCode: CATALYZER_HULL_DESC
 	code: catalyzer
-	virtual []
+	cannotPick.
 	images [ 
 		:./images/ships/catalyzer
 	]

@@ -20,11 +20,12 @@ namespace Stareater.GameData.Ships
 		
 		public Formula PowerUsage { get; private set; }
 		
-		public ShieldType(string code, string nameCode, string descCode, bool isVirtual, string imagePath,
-		                 IEnumerable<Prerequisite> prerequisites, int maxLevel, Formula cost, 
-		                 Formula hpFactor, Formula regenerationFactor, Formula thickness, Formula reduction, 
+		public ShieldType(string code, string nameCode, string descCode, string imagePath,
+		                 IEnumerable<Prerequisite> prerequisites, int maxLevel, 
+		                 bool canPick, Formula cost, Formula hpFactor, Formula regenerationFactor, 
+		                 Formula thickness, Formula reduction,
 		                 Formula cloaking, Formula jamming, Formula powerUsage)
-			: base(code, nameCode, descCode, isVirtual, prerequisites, maxLevel)
+			: base(code, nameCode, descCode, prerequisites, maxLevel, canPick)
 		{
 			this.ImagePath = imagePath;
 			this.Cost = cost;

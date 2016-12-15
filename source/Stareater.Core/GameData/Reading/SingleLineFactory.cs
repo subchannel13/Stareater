@@ -4,7 +4,7 @@ using Ikadn.Ikon.Types;
 
 namespace Stareater.GameData.Reading
 {
-	public class SingleLineFactory : IIkadnObjectFactory
+	class SingleLineFactory : IIkadnObjectFactory
 	{
 		public IkadnBaseObject Parse(IkadnParser parser)
 		{

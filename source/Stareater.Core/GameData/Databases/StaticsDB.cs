@@ -349,10 +349,10 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
-				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
+				!data.Keys.Contains(GeneralCannotPickKey),
 				data[ArmorFactor].To<Formula>(),
 				data[ArmorAbsorb].To<Formula>(),
 				data[ArmorAbsorbMax].To<Formula>()
@@ -390,10 +390,10 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
-				data.Keys.Contains(GeneralVirtualKey),
 				data[HullImages].To<string[]>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
+				!data.Keys.Contains(GeneralCannotPickKey),
 				data[GeneralCostKey].To<Formula>(),
 				data[HullSize].To<Formula>(),
 				data[HullSpace].To<Formula>(),
@@ -416,10 +416,10 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
-				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
+				!data.Keys.Contains(GeneralCannotPickKey),
 				data[GeneralCostKey].To<Formula>(),
 				data[IsDriveSpeed].To<Formula>(),
 				data[IsDriveMinSize].To<Formula>()
@@ -432,11 +432,11 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
-				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
 				data[GeneralCostKey].To<Formula>(),
+				!data.Keys.Contains(GeneralCannotPickKey),
 				data[SpecialEquipmentSizeKey].To<Formula>(),
 				loadEquipmentAbilities(data[MissionEquipmentAbilitiesKey].To<IEnumerable<IkonComposite>>()).ToArray()
 			);
@@ -448,10 +448,10 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
-				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
+				!data.Keys.Contains(GeneralCannotPickKey),
 				data[EquipmentPowerKey].To<Formula>(),
 				data[ReactorMinSize].To<Formula>()
 			);
@@ -463,10 +463,10 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
-				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
+				!data.Keys.Contains(GeneralCannotPickKey),
 				data[SensorDetection].To<Formula>()
 			);
 		}
@@ -477,10 +477,10 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
-				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
+				!data.Keys.Contains(GeneralCannotPickKey),
 				data[GeneralCostKey].To<Formula>(),
 				data[ShieldHpFactor].To<Formula>(),
 				data[ShieldRegeneration].To<Formula>(),
@@ -498,11 +498,10 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
-				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
-				!data.Keys.Contains(SpecialEquipmentCannotPick),
+				!data.Keys.Contains(GeneralCannotPickKey),
 				data[GeneralCostKey].To<Formula>(),
 				data[SpecialEquipmentSizeKey].To<Formula>(),
 				data[SpecialEquipmentMaxCountKey].To<Formula>()
@@ -515,10 +514,10 @@ namespace Stareater.GameData.Databases
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
-				data.Keys.Contains(GeneralVirtualKey),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
+				!data.Keys.Contains(GeneralCannotPickKey),
 				data[ThrusterEvasion].To<Formula>(),
 				data[ThrusterSpeed].To<Formula>()
 			);
@@ -660,11 +659,11 @@ namespace Stareater.GameData.Databases
 		
 		private const string GeneralNameKey = "nameCode";
 		private const string GeneralDescriptionKey = "descCode";
-		private const string GeneralVirtualKey = "virtual";
 		private const string GeneralImageKey = "image";
 		private const string GeneralCodeKey = "code";
 		private const string GeneralPrerequisitesKey = "prerequisites";
 		private const string GeneralMaxLevelKey = "maxLvl";
+		private const string GeneralCannotPickKey = "cannotPick";
 		private const string GeneralCostKey = "cost";
 		
 		private const string PopulationActivityImprovised = "improvised";
@@ -711,7 +710,6 @@ namespace Stareater.GameData.Databases
 		private const string ShieldRegeneration = "restoration";
 		private const string ShieldThickness = "thickness";
 		
-		private const string SpecialEquipmentCannotPick = "cannotPick";
 		private const string SpecialEquipmentMaxCountKey = "maxCount";
 		private const string SpecialEquipmentSizeKey = "size";
 		

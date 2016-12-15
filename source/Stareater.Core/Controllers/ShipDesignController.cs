@@ -113,7 +113,7 @@ namespace Stareater.Controllers
 		#region Component lists
 		public IEnumerable<HullInfo> Hulls()
 		{
-			return game.Statics.Hulls.Values.Select(x => new HullInfo(x, x.HighestLevel(playersTechLevels)));
+			return game.Statics.Hulls.Values.Where(x => x.CanPick).Select(x => new HullInfo(x, x.HighestLevel(playersTechLevels)));
 		}
 		
 		public ArmorInfo Armor
@@ -139,14 +139,14 @@ namespace Stareater.Controllers
 		public IEnumerable<ShieldInfo> Shields()
 		{
 			return this.game.Statics.Shields.Values.
-				Where(x => x.IsAvailable(playersTechLevels)).
+				Where(x => x.IsAvailable(playersTechLevels) && x.CanPick).
 				Select(x => new ShieldInfo(x, x.HighestLevel(playersTechLevels), this.selectedHull));
 		}
 
 		public IEnumerable<MissionEquipInfo> MissionEquipment()
 		{
 			return this.game.Statics.MissionEquipment.Values.
-				Where(x => x.IsAvailable(playersTechLevels)).
+				Where(x => x.IsAvailable(playersTechLevels) && x.CanPick).
 				Select(x => new MissionEquipInfo(x, x.HighestLevel(playersTechLevels)));
 		}
 		

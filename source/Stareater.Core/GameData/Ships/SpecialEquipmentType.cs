@@ -8,20 +8,17 @@ namespace Stareater.GameData.Ships
 	class SpecialEquipmentType : AComponentType
 	{
 		public string ImagePath { get; private set; }
-		public bool CanPick { get; private set; }
 		
 		public Formula Cost { get; private set; }
 		public Formula Size { get; private set; }
 		public Formula MaxCount { get; private set; }
 		
-		public SpecialEquipmentType(string code, string nameCode, string descCode, bool isVirtual, string imagePath,
+		public SpecialEquipmentType(string code, string nameCode, string descCode, string imagePath,
 		                 IEnumerable<Prerequisite> prerequisites, int maxLevel, 
 		                 bool canPick, Formula cost, Formula size, Formula maxCount)
-			: base(code, nameCode, descCode, isVirtual, prerequisites, maxLevel)
+			: base(code, nameCode, descCode, prerequisites, maxLevel, canPick)
 		{
 			this.ImagePath = imagePath;
-			this.CanPick = canPick;
-			
 			this.Cost = cost;
 			this.Size = size;
 			this.MaxCount = maxCount;

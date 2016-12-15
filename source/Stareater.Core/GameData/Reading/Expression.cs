@@ -5,7 +5,7 @@ using Stareater.AppData.Expressions;
 
 namespace Stareater.GameData.Reading
 {
-	public class Expression : IkadnBaseObject
+	class Expression : IkadnBaseObject
 	{
 		public Formula Formula { get; private set; }
 		
@@ -25,7 +25,7 @@ namespace Stareater.GameData.Reading
 
 			if (target.IsAssignableFrom(typeof(Formula)))
 				return (T)(object)this.Formula;
-			else if (target.IsAssignableFrom(this.GetType()))
+			else if (target.IsInstanceOfType(this))
 				return (T)(object)this;
 			else
 				throw new InvalidOperationException("Cast to " + target.Name + " is not supported for " + Tag);
