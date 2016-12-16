@@ -14,6 +14,21 @@
 		}
 }
 
+{ Armor
+	nameCode: GRAPHENE_ARMOR_NAME
+	descCode: GRAPHENE_ARMOR_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: graphene
+	cannotPick.
+	
+	maxLvl= 0
+	prerequisites []
+	
+	armorFactor # 1;
+	reduction # 1;
+	reductionMax # 1;
+}
+
 { Hull
 	nameCode: CATALYZER_HULL_NAME
 	descCode: CATALYZER_HULL_DESC

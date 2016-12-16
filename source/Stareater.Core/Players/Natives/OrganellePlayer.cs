@@ -7,6 +7,7 @@ using Stareater.Controllers.Views;
 using Ikadn.Ikon.Types;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Galaxy;
+using Stareater.Utils;
 
 namespace Stareater.Players.Natives
 {
@@ -60,8 +61,17 @@ namespace Stareater.Players.Natives
 
 		public void PlayUnit(CombatantInfo unitInfo)
 		{
+			var destination = unitInfo.ValidMoves.Aggregate(
+				unitInfo.Position,
+				(a, b) => (Methods.HexDistance(a) <= Methods.HexDistance(b)) ? a : b
+			);
+			
+			if (destination != unitInfo.Position)
+				battleController.MoveTo(destination);
+			
+			//TODO(v0.6) shoot catalysis beam at star
+			
 			battleController.UnitDone();
-			//TODO(v0.6);
 		}
 	}
 }

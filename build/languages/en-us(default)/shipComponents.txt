@@ -5,6 +5,9 @@ DURAPLAST_ARMOR_NAME = Duraplast
 DURAPLAST_ARMOR_DESC = No description.
 DURALOY_ARMOR_NAME = Duraloy
 DURALOY_ARMOR_DESC = No description.
+
+GRAPHENE_ARMOR_NAME = Graphene hide
+GRAPHENE_ARMOR_DESC = No description.
 -
 
 :Hulls

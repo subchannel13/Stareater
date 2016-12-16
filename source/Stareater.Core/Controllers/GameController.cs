@@ -16,7 +16,7 @@ namespace Stareater.Controllers
 		internal const string ReportContext = "Reports";
 		
 		private object threadLocker = new object();
-		private Semaphore processingSync = new Semaphore(0, 1);
+		private AutoResetEvent processingSync = new AutoResetEvent(true);
 		private MainGame gameObj;
 		
 		private GameController endTurnCopy = null;
@@ -140,13 +140,13 @@ namespace Stareater.Controllers
 		internal void ConflictResolved(SpaceBattleGame battleGame)
 		{
 			this.gameObj.Processor.ConflictResolved(battleGame);
-			processingSync.Release();
+			processingSync.Set();
 		}
 		
 		internal void BreakthroughReviewed(ResearchCompleteController controller)
 		{
 			this.gameObj.Derivates.Of(controller.Owner).BreakthroughReviewed(controller.SelectedPriorities, this.gameObj.States);
-			processingSync.Release();
+			processingSync.Set();
 		}
 		#endregion
 		
@@ -176,14 +176,14 @@ namespace Stareater.Controllers
 
 			while (gameObj.Processor.HasConflicts)
 			{
-				this.initaiteCombat();
 				processingSync.WaitOne();
+				this.initaiteCombat();
 			}
 			
 			while (this.gameObj.Derivates.Players.Any(x => x.HasBreakthrough))
 			{
-				this.presentBreakthrough();
 				processingSync.WaitOne(); //TODO(v0.6) per player sync instead of global
+				this.presentBreakthrough();
 			}
 			
 			gameObj.Processor.ProcessPostcombat();
@@ -220,10 +220,10 @@ namespace Stareater.Controllers
 					this.organelleController :
 					this.playerControllers.First(x => this.gameObj.MainPlayers[x.PlayerIndex] == player);
 				
-				if (player.ControlType == PlayerControlType.LocalAI)
+				if (player.OffscreenControl != null)
 					controller.Register(playerController, player.OffscreenControl.StartBattle(controller));
 				else
-					controller.Register(playerController, this.stateListener.OnDoCombat(controller)); //TODO(v0.6) gives human control over natives
+					controller.Register(playerController, this.stateListener.OnDoCombat(controller));
 			}
 			
 			controller.Start();

@@ -38,7 +38,7 @@
 	prerequisites [
 		:Colonizer #lvl - 1;
 	]
-	cannotPick []
+	cannotPick.
 	
 	cost # 100e6;
 	size # 200;
