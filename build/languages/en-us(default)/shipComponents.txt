@@ -32,6 +32,9 @@ LASER_NAME = Laser
 LASER_DESC = No description.
 NUKE_NAME = Nuclear bomb
 NUKE_DESC = No description.
+
+CATALYZER_NAME = Catalisys capsule
+CATALYZER_DESC = No description.
 -
 
 :Reactors

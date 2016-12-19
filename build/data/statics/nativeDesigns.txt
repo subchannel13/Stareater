@@ -8,7 +8,9 @@
 			
 			hasIsDrive []
 			
-			equipment []
+			equipment [
+				:catalyzer =1
+			]
 			specials [
 			]
 		}
@@ -57,4 +59,27 @@
 	jamming # 0;
 	cloaking # 0;
 	sensors # 0;
+}
+
+{ MissionEquipment
+	nameCode: CATALYZER_NAME
+	descCode: CATALYZER_DESC
+	image: ./images/technologies/hydroponicFarms.png
+	code: catalyzer
+	
+	maxLvl= 0
+	prerequisites []
+	
+	cost # 0;
+	size # 500;
+	
+	abilities [
+		{ StarShot
+			image: ./images/technologies/hydroponicFarms.png
+			range # 0;
+			energyCost # 0;
+			
+			applyTrait: catalyzed
+		}
+	]
 }

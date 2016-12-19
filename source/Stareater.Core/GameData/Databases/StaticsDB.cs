@@ -370,12 +370,20 @@ namespace Stareater.GameData.Databases
 							abilityData[GeneralImageKey].To<string>(),
 							abilityData[DirectShootFirepower].To<Formula>(),
 							abilityData[DirectShootAccuracy].To<Formula>(),
-							abilityData[DirectShootRange].To<Formula>(),
-							abilityData[DirectShootEnergyCost].To<Formula>(),
+							abilityData[AbilityRange].To<Formula>(),
+							abilityData[AbilityEnergyCost].To<Formula>(),
 							abilityData.ToOrDefault(DirectShootAccuracyRangePenalty, new Formula(0)),
 							abilityData.ToOrDefault(DirectShootArmorEfficiency, new Formula(1)),
 							abilityData.ToOrDefault(DirectShootShieldEfficiency, new Formula(1)),
 							abilityData.ToOrDefault(DirectShootPlanetEfficiency, new Formula(1))
+						);
+						break;
+					case StarShotTag:
+						yield return new StarShootAbility(
+							abilityData[GeneralImageKey].To<string>(),
+							abilityData[AbilityRange].To<Formula>(),
+							abilityData[AbilityEnergyCost].To<Formula>(),
+							abilityData[StarShootTrait].To<string>()
 						);
 						break;
 					default:
@@ -593,6 +601,7 @@ namespace Stareater.GameData.Databases
 		private const string ThrusterTag = "Thruster";
 		
 		private const string DirectShotTag = "DirectShot";
+		private const string StarShotTag = "StarShot";
 		
 		private const string ColonizationPopulationThreshold = "colonizationPopThreshold";
 		private const string ColonyDevelopment = "development";
@@ -715,15 +724,19 @@ namespace Stareater.GameData.Databases
 		
 		private const string ThrusterEvasion = "evasion";
 		private const string ThrusterSpeed = "speed";
-		
+
+
+		private const string AbilityRange = "range";
+		private const string AbilityEnergyCost = "energyCost";
+
 		private const string DirectShootAccuracy = "accuracy";
 		private const string DirectShootAccuracyRangePenalty = "accuracyRangePenalty";
 		private const string DirectShootArmorEfficiency = "armorEfficiency";
-		private const string DirectShootEnergyCost = "energyCost";
 		private const string DirectShootFirepower = "firePower";
 		private const string DirectShootPlanetEfficiency = "planetEfficiency";
-		private const string DirectShootRange = "range";
 		private const string DirectShootShieldEfficiency = "shieldEfficiency";
+
+		private const string StarShootTrait = "applyTrait";
 		#endregion
 	}
 }
