@@ -36,7 +36,7 @@ namespace Stareater.GUI
 			var scales = new List<int>();
 			scales.AddRange(Methods.Range(5, 95, 5));
 			scales.AddRange(Methods.Range(100, 200, 10));
-			scales.AddRange(Methods.Range(200, 400, 20, true));
+			scales.AddRange(Methods.Range(200, 400, 20, false));
 			scales.Reverse();
 
 			for (int i = 0; i < scales.Count; i++)

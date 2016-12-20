@@ -178,7 +178,7 @@ namespace Stareater.Utils
 			for (; x < last; x += step)
 				yield return x;
 
-			if (x == last && skipLast)
+			if (x == last && !skipLast)
 				yield return x;
 		}
 

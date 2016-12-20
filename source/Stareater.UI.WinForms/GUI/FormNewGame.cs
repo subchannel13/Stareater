@@ -55,8 +55,11 @@ namespace Stareater.GUI
 				DialogResult = System.Windows.Forms.DialogResult.Cancel;
 		}
 
+		//TODO(v0.6) expose NewGameController and perform this at caller
+		//TODO(later) make option for shuffling players
 		public void CreateGame(GameController gameController)
 		{
+			controller.ShufflePlayers(new Random());
 			gameController.CreateGame(controller, LoadingMethods.GameDataSources());
 		}
 

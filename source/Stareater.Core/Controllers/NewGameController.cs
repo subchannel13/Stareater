@@ -127,6 +127,15 @@ namespace Stareater.Controllers
 			if (players.Count > 2)
 				players.RemoveAt(index);
 		}
+		
+		public void ShufflePlayers(Random random)
+		{
+			var oldPlayers = new PickList<NewGamePlayerInfo>(random, this.players);
+			this.players.Clear();
+			
+			while(oldPlayers.InnerList.Count > 0)
+				this.players.Add(oldPlayers.Take());
+		}
 
 		private static PlayerType localHuman = new PlayerType(PlayerControlType.LocalHuman, LocalizationManifest.Get.CurrentLanguage["PlayerTypes"]["localHuman"].Text());
 		#endregion

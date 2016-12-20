@@ -96,7 +96,6 @@ namespace Stareater.Galaxy.Square
 			}
 		}
 
-
 		public StarPositions Generate(Random rng, int playerCount)
 		{
 			int size = sizeOptions[sizeParameter.Value].Size;
