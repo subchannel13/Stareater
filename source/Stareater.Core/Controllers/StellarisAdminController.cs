@@ -25,8 +25,7 @@ namespace Stareater.Controllers
 		{ 
 			get
 			{
-				//TODO(later) add star traits
-				yield break;
+				return this.Location.Traits.Select(x => new TraitInfo(x));
 			}
 		}
 		

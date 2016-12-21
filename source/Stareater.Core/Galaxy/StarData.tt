@@ -2,6 +2,7 @@
 <#@ include file="$(ProjectDir)/Utils/StateTable.tt" #><#
 	
 	usings.Add("System");
+	usings.Add("System.Collections.Generic");
 	usings.Add("System.Linq");
 	usings.Add("System.Drawing");
 	usings.Add("NGenerics.DataStructures.Mathematical");
@@ -9,12 +10,14 @@
 	
 	modifer = "public partial";
 	SaveNeedsObjectIndexer = false;
-	LoadNeedsObjectDeindexer = false;
 
 	Generate("Stareater.Galaxy", "StarData",
 		new DataInfo("Color", "Color"),
 		new DataInfo("ImageSizeScale", "float").SaveKey("Size"),
 		new DataInfo("Name", "IStarName").SaveMethod("Save()").LoadCode("loadName(" + SaveName + ")"),
-		new DataInfo("Position", "Vector2D").SaveKeyValue("pos")
+		new DataInfo("Position", "Vector2D").SaveKeyValue("pos"),
+		new DataInfo("Traits", "List",
+			new GenericParamInfo("BodyTraitType").SaveIdCodeMethod("IdCode")
+		)
 	);
 #>

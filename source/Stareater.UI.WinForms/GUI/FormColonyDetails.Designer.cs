@@ -33,7 +33,7 @@
 			this.growthInfo = new System.Windows.Forms.Label();
 			this.populationInfo = new System.Windows.Forms.Label();
 			this.planetInfoGroup = new System.Windows.Forms.GroupBox();
-			this.traitsList = new System.Windows.Forms.FlowLayoutPanel();
+			this.traitList = new System.Windows.Forms.FlowLayoutPanel();
 			this.environmentInfo = new System.Windows.Forms.Label();
 			this.sizeInfo = new System.Windows.Forms.Label();
 			this.buildingsGroup = new System.Windows.Forms.GroupBox();
@@ -103,7 +103,7 @@
 			// 
 			// planetInfoGroup
 			// 
-			this.planetInfoGroup.Controls.Add(this.traitsList);
+			this.planetInfoGroup.Controls.Add(this.traitList);
 			this.planetInfoGroup.Controls.Add(this.environmentInfo);
 			this.planetInfoGroup.Controls.Add(this.sizeInfo);
 			this.planetInfoGroup.Location = new System.Drawing.Point(204, 12);
@@ -115,11 +115,11 @@
 			// 
 			// traitsList
 			// 
-			this.traitsList.AutoScroll = true;
-			this.traitsList.Location = new System.Drawing.Point(6, 45);
-			this.traitsList.Name = "traitsList";
-			this.traitsList.Size = new System.Drawing.Size(172, 76);
-			this.traitsList.TabIndex = 2;
+			this.traitList.AutoScroll = true;
+			this.traitList.Location = new System.Drawing.Point(6, 45);
+			this.traitList.Name = "traitsList";
+			this.traitList.Size = new System.Drawing.Size(172, 76);
+			this.traitList.TabIndex = 2;
 			// 
 			// environmentInfo
 			// 
@@ -262,7 +262,7 @@
 		private System.Windows.Forms.GroupBox buildingsGroup;
 		private System.Windows.Forms.Label sizeInfo;
 		private System.Windows.Forms.Label environmentInfo;
-		private System.Windows.Forms.FlowLayoutPanel traitsList;
+		private System.Windows.Forms.FlowLayoutPanel traitList;
 		private System.Windows.Forms.GroupBox planetInfoGroup;
 		private System.Windows.Forms.Label populationInfo;
 		private System.Windows.Forms.Label growthInfo;

@@ -77,7 +77,7 @@ namespace Stareater.GUI
 				thumbnail.Size = new Size(32, 32);
 				thumbnail.SizeMode = PictureBoxSizeMode.Zoom;
 				thumbnail.Image = ImageCache.Get[trait.ImagePath];
-				this.traitsList.Controls.Add(thumbnail);
+				this.traitList.Controls.Add(thumbnail);
 			}
 			
 			foreach (var data in controller.Buildings) 

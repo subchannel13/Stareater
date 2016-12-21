@@ -3,6 +3,7 @@
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 using NGenerics.DataStructures.Mathematical;
@@ -16,19 +17,21 @@ namespace Stareater.Galaxy
 		public float ImageSizeScale { get; private set; }
 		public IStarName Name { get; private set; }
 		public Vector2D Position { get; private set; }
+		public List<BodyTraitType> Traits { get; private set; }
 
-		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position) 
+		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position, List<BodyTraitType> traits) 
 		{
 			this.Color = color;
 			this.ImageSizeScale = imageSizeScale;
 			this.Name = name;
 			this.Position = position;
+			this.Traits = traits;
  
 			 
 		} 
 
 
-		private StarData(IkonComposite rawData) 
+		private StarData(IkonComposite rawData, ObjectDeindexer deindexer) 
 		{
 			var colorSave = rawData[ColorKey];
 			var colorArray = colorSave.To<IkonArray>();
@@ -48,13 +51,18 @@ namespace Stareater.Galaxy
 			double positionX = positionArray[0].To<double>();
 			double positionY = positionArray[1].To<double>();
 			this.Position = new Vector2D(positionX, positionY);
+
+			var traitsSave = rawData[TraitsKey];
+			this.Traits = new List<BodyTraitType>();
+			foreach(var item in traitsSave.To<IkonArray>())
+				this.Traits.Add(deindexer.Get<BodyTraitType>(item.To<string>()));
  
 			 
 		}
 
 		internal StarData Copy() 
 		{
-			return new StarData(this.Color, this.ImageSizeScale, this.Name, this.Position);
+			return new StarData(this.Color, this.ImageSizeScale, this.Name, this.Position, this.Traits);
  
 		} 
  
@@ -77,13 +85,18 @@ namespace Stareater.Galaxy
 			positionData.Add(new IkonFloat(this.Position.X));
 			positionData.Add(new IkonFloat(this.Position.Y));
 			data.Add(PositionKey, positionData);
+
+			var traitsData = new IkonArray();
+			foreach(var item in this.Traits)
+				traitsData.Add(new IkonText(item.IdCode));
+			data.Add(TraitsKey, traitsData);
 			return data;
  
 		}
 
 		public static StarData Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
-			var loadedData = new StarData(rawData);
+			var loadedData = new StarData(rawData, deindexer);
 			deindexer.Add(loadedData);
 			return loadedData;
 		}
@@ -94,6 +107,7 @@ namespace Stareater.Galaxy
 		private const string SizeKey = "size";
 		private const string NameKey = "name";
 		private const string PositionKey = "pos";
+		private const string TraitsKey = "traits";
  
 		#endregion
 

@@ -101,7 +101,7 @@ namespace Stareater.Galaxy.RybPopulator
 			//TODO(later): Randomize star type distribution
 			//TODO(later): Star size and radiation distribution
 			foreach (var position in starPositions.Stars) {
-				var star = new StarData(starTypes[colorI++ % starTypes.Length].Hue, 1, namer.NextName(), position);
+				var star = new StarData(starTypes[colorI++ % starTypes.Length].Hue, 1, namer.NextName(), position, new List<BodyTraitType>());
 				
 				yield return new StarSystem(
 					star,
