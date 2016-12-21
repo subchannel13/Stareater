@@ -21,8 +21,7 @@ namespace Stareater.GameData.Ships
 
 		public override void Accept(IAbilityVisitor visitor)
 		{
-			//TODO(v0.6)
-			throw new NotImplementedException();
+			visitor.Visit(this);
 		}
 	}
 }
