@@ -229,7 +229,7 @@ namespace Stareater.GUI
 					form.CreateGame(gameController);
 					this.gameController.Start(this);
 					this.initPlayers();
-					this.restartRenderers();
+					this.restartRenderers(); //TODO(v0.6) can cause race condition where no stellarises has been initialized yet
 				}
 				else
 					postDelayedEvent(showMainMenu);

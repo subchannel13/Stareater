@@ -201,6 +201,7 @@ namespace Stareater.GameLogic
 				var fleets = visits[step.LocalFleet.Position];
 				fleets.Add(step);
 				
+				//TODO(v0.6) doesn't detect attacking undefended colonies
 				bool inConflict = fleets.Aggregate(
 					false,
 					(isInConflict, fleet) => isInConflict | fleets.Any(

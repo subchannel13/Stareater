@@ -176,9 +176,11 @@ namespace Stareater.Controllers
 
 			while (gameObj.Processor.HasConflicts)
 			{
-				processingSync.WaitOne();
+				processingSync.WaitOne(); //TODO(v0.6) try blocking only participants
 				this.initaiteCombat();
 			}
+			processingSync.WaitOne(); //TODO(v0.6) make more orderly synchronization mechanism
+			processingSync.Set();
 			
 			while (this.gameObj.Derivates.Players.Any(x => x.HasBreakthrough))
 			{
@@ -186,7 +188,9 @@ namespace Stareater.Controllers
 				this.presentBreakthrough();
 			}
 			
+			processingSync.WaitOne();
 			gameObj.Processor.ProcessPostcombat();
+			processingSync.Set();
 			
 			lock(threadLocker)
 			{
@@ -213,7 +217,7 @@ namespace Stareater.Controllers
 			var conflict = gameObj.Processor.NextConflict();
 			var controller = new SpaceBattleController(conflict, this, gameObj);
 			var participants = conflict.Combatants.Select(x => x.Owner).Distinct().ToList();
-				
+
 			foreach(var player in participants)
 			{
 				var playerController = (player.ControlType == PlayerControlType.Neutral) ?
