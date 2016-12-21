@@ -78,6 +78,12 @@ namespace Stareater.Controllers
 			this.battleGame.Processor.UseAbility(ability.Index, ability.Quantity, planet.Data);
 			this.checkNextUnit();
 		}
+		
+		public void UseAbilityOnStar(AbilityInfo ability)
+		{
+			this.battleGame.Processor.UseAbility(ability.Index, ability.Quantity, this.Star);
+			this.checkNextUnit();
+		}
 		#endregion
 		
 		#region Unit order and battle event management

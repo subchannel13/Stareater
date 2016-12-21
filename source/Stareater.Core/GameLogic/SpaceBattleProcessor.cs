@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
+using Stareater.Galaxy;
 using Stareater.Players;
 using Stareater.SpaceCombat;
 using Stareater.Utils;
@@ -259,7 +260,7 @@ namespace Stareater.GameLogic
 			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
 			var chargesLeft = quantity;
 			
-			if (Methods.HexDistance(target.Position, unit.Position) > abilityStats.Range)
+			if (!abilityStats.TargetShips || Methods.HexDistance(target.Position, unit.Position) > abilityStats.Range)
 				return;
 			
 			if (abilityStats.IsInstantDamage)
@@ -274,7 +275,7 @@ namespace Stareater.GameLogic
 			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
 			var chargesLeft = quantity;
 			
-			if (Methods.HexDistance(planet.Position, unit.Position) > abilityStats.Range)
+			if (!abilityStats.TargetColony || Methods.HexDistance(planet.Position, unit.Position) > abilityStats.Range)
 				return;
 			
 			if (abilityStats.IsInstantDamage && planet.Colony != null)
@@ -286,6 +287,26 @@ namespace Stareater.GameLogic
 				
 				planet.Colony.Population -= casualties;
 				chargesLeft -= Math.Ceiling(casualties / killsPerShot);
+			}
+			
+			unit.AbilityCharges[index] = chargesLeft;
+		}
+		
+		public void UseAbility(int index, double quantity, StarData star)
+		{
+			var unit = this.game.PlayOrder.Peek();
+			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
+			var chargesLeft = quantity;
+			
+			if (!abilityStats.TargetStar || Methods.HexDistance(unit.Position) > abilityStats.Range)
+				return;
+			
+			if (abilityStats.IsInstantDamage)
+			{
+				if (!star.Traits.Contains(abilityStats.AppliesTrait))
+					star.Traits.Add(abilityStats.AppliesTrait);
+				
+				chargesLeft -= quantity;
 			}
 			
 			unit.AbilityCharges[index] = chargesLeft;

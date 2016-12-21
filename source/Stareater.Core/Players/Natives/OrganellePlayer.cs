@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Ikadn.Ikon.Types;
@@ -67,9 +67,20 @@ namespace Stareater.Players.Natives
 			);
 			
 			if (destination != unitInfo.Position)
+			{
 				battleController.MoveTo(destination);
+				return;
+			}
 			
-			//TODO(v0.6) shoot catalysis beam at star
+			if (unitInfo.Position == new Vector2D(0, 0))
+			{
+				var ability = unitInfo.Abilities.FirstOrDefault();
+				if (ability != null && ability.Quantity > 0)
+				{
+					battleController.UseAbilityOnStar(ability);
+					return;
+				}
+			}
 			
 			battleController.UnitDone();
 		}
