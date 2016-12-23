@@ -22,6 +22,7 @@ namespace Stareater.Controllers
 		private GameController endTurnCopy = null;
 		private IGameStateListener stateListener;
 		private Task aiGalaxyPhase = null;
+		private Task processingPhase = null;
 		private PlayerController[] playerControllers = null;
 		private PlayerController organelleController = null;
 		private HashSet<int> endedTurnPlayers = new HashSet<int>();
@@ -69,8 +70,9 @@ namespace Stareater.Controllers
 		public void Stop()
 		{
 			this.State = GameState.NoGame;
-			//TODO(later): stop AI tasks
-			//UNDONE(later): what else to do here?
+			
+			if (this.aiGalaxyPhase != null) this.aiGalaxyPhase.Wait();
+			if (this.processingPhase != null) this.processingPhase.Wait();
 		}
 		
 		public IEnumerable<PlayerController> LocalHumanPlayers()
@@ -134,7 +136,7 @@ namespace Stareater.Controllers
 				this.endTurnCopy.State = this.State;
 			}
 			
-			Task.Factory.StartNew(turnProcessing).ContinueWith(checkTaskException);
+			this.processingPhase = Task.Factory.StartNew(turnProcessing).ContinueWith(checkTaskException);
 		}
 
 		internal void ConflictResolved(SpaceBattleGame battleGame)
