@@ -4,6 +4,6 @@ namespace Stareater.Galaxy
 {
 	interface ITraitEffect
 	{
-		void PrecombatApply(StatesDB states, StaticsDB statics);
+		void PostcombatApply(LocationBody location, StatesDB states, StaticsDB statics);
 	}
 }

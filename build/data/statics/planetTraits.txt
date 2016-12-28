@@ -6,3 +6,12 @@
 	
 	effect {Passive}
 }
+
+{ Trait
+	nameCode: IRRADIATED_TRAIT_NAME
+	descCode: IRRADIATED_TRAIT_DESC
+	image :./images/technologies/hydroponicFarms.png
+	code: irradiated
+	
+	effect {Passive}
+}

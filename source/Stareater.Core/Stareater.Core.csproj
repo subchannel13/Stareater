@@ -179,6 +179,7 @@
     </Compile>
     <Compile Include="Galaxy\StellarisAdmin.partial.cs" />
     <Compile Include="Galaxy\StarNamer.cs" />
+    <Compile Include="Galaxy\TraitEffectAfflictPlanets.cs" />
     <Compile Include="Galaxy\TraitEffectPassive.cs" />
     <Compile Include="Galaxy\Wormhole.cs">
       <DependentUpon>Wormhole.tt</DependentUpon>

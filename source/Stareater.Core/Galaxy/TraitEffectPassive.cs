@@ -8,7 +8,7 @@ namespace Stareater.Galaxy
 {
 	class TraitEffectPassive : ITraitEffect
 	{
-		public void PrecombatApply(StatesDB states, StaticsDB statics)
+		public void PostcombatApply(LocationBody location, StatesDB states, StaticsDB statics)
 		{
 			//no operation
 		}

@@ -4,5 +4,7 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: catalyzed
 	
-	effect {Passive}
+	effect {AfflictPlanets
+		trait: irradiated
+	}
 }

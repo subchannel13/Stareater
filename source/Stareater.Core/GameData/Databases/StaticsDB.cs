@@ -238,6 +238,8 @@ namespace Stareater.GameData.Databases
 		{
 			switch ((string)data.Tag)
 			{
+				case AfflictTraitTag:
+					return new TraitEffectAfflictPlanets(data[AfflictTraitId].To<string>());
 				case PassiveTraitTag:
 					return new TraitEffectPassive();
 			}
@@ -615,6 +617,7 @@ namespace Stareater.GameData.Databases
 		private const string DirectShotTag = "DirectShot";
 		private const string StarShotTag = "StarShot";
 
+		private const string AfflictTraitTag = "AfflictPlanets";
 		private const string PassiveTraitTag = "Passive";
 		
 		private const string ColonizationPopulationThreshold = "colonizationPopThreshold";
@@ -753,6 +756,8 @@ namespace Stareater.GameData.Databases
 		private const string DirectShootShieldEfficiency = "shieldEfficiency";
 
 		private const string StarShootTrait = "applyTrait";
+
+		private const string AfflictTraitId = "trait";
 		#endregion
 	}
 }
