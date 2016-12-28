@@ -3,4 +3,6 @@
 	descCode: CATALYZED_TRAIT_DESC
 	image :./images/technologies/hydroponicFarms.png
 	code: catalyzed
+	
+	effect {Passive}
 }

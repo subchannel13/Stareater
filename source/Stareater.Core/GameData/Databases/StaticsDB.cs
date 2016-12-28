@@ -229,8 +229,20 @@ namespace Stareater.GameData.Databases
 				data[GeneralNameKey].To<string>(),
 				data[GeneralDescriptionKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
-				data[GeneralCodeKey].To<string>()
+				data[GeneralCodeKey].To<string>(),
+				loadTraitEffect(data[TraitEffectKey].To<IkonComposite>())
 			);
+		}
+
+		private static ITraitEffect loadTraitEffect(IkonComposite data)
+		{
+			switch ((string)data.Tag)
+			{
+				case PassiveTraitTag:
+					return new TraitEffectPassive();
+			}
+
+			throw new ArgumentException("Unknown trait");
 		}
 		
 		#region Constructables
@@ -602,6 +614,8 @@ namespace Stareater.GameData.Databases
 		
 		private const string DirectShotTag = "DirectShot";
 		private const string StarShotTag = "StarShot";
+
+		private const string PassiveTraitTag = "Passive";
 		
 		private const string ColonizationPopulationThreshold = "colonizationPopThreshold";
 		private const string ColonyDevelopment = "development";
@@ -677,7 +691,9 @@ namespace Stareater.GameData.Databases
 		
 		private const string PopulationActivityImprovised = "improvised";
 		private const string PopulationActivityOrganized = "organized";
-		
+
+		private const string TraitEffectKey = "effect";
+
 		
 		private const string ArmorAbsorb = "reduction";
 		private const string ArmorAbsorbMax = "reductionMax";

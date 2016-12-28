@@ -157,6 +157,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Galaxy\ITraitEffect.cs" />
     <Compile Include="Galaxy\LocationBody.cs" />
     <Compile Include="Galaxy\Planet.cs">
       <DependentUpon>Planet.tt</DependentUpon>
@@ -178,6 +179,7 @@
     </Compile>
     <Compile Include="Galaxy\StellarisAdmin.partial.cs" />
     <Compile Include="Galaxy\StarNamer.cs" />
+    <Compile Include="Galaxy\TraitEffectPassive.cs" />
     <Compile Include="Galaxy\Wormhole.cs">
       <DependentUpon>Wormhole.tt</DependentUpon>
       <AutoGen>True</AutoGen>

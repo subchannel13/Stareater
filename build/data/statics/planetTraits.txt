@@ -3,4 +3,6 @@
 	descCode: FERTILE_TRAIT_DESC
 	image :./images/technologies/hydroponicFarms.png
 	code: fertile
+	
+	effect {Passive}
 }
