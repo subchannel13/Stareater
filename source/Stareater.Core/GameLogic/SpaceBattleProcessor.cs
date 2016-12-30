@@ -303,8 +303,8 @@ namespace Stareater.GameLogic
 			
 			if (abilityStats.IsInstantDamage)
 			{
-				if (!star.Traits.Contains(abilityStats.AppliesTrait))
-					star.Traits.Add(abilityStats.AppliesTrait);
+				if (star.Traits.All(x => x.Type.IdCode != abilityStats.AppliesTrait.IdCode))
+					star.Traits.Add(abilityStats.AppliesTrait.Instantiate(star));
 				
 				chargesLeft -= quantity;
 			}

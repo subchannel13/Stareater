@@ -81,7 +81,7 @@ namespace Stareater.GameLogic
 				And(PopulationKey, Colony.Population).
 				UnionWith(playerProcessor.TechLevels).
 				Init(statics.Traits.Keys, false).
-				UnionWith(Colony.Location.Planet.Traits, x => x.IdCode, x => 1);
+				UnionWith(Colony.Location.Planet.Traits, x => x.Type.IdCode, x => 1);
 				
 			vars.Init(statics.Constructables.Where(x => x.ConstructableAt == SiteType.Colony).Select(x => x.IdCode.ToLower() + NewBuidingPrefix), false);
 

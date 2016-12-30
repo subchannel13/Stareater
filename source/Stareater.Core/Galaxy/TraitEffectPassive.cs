@@ -8,7 +8,12 @@ namespace Stareater.Galaxy
 {
 	class TraitEffectPassive : ITraitEffect
 	{
-		public void PostcombatApply(LocationBody location, StatesDB states, StaticsDB statics)
+		public ITraitEffect Instantiate(LocationBody location)
+		{
+			return new TraitEffectPassive();
+		}
+
+		public void PostcombatApply(StatesDB states, StaticsDB statics)
 		{
 			//no operation
 		}

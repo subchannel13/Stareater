@@ -20,5 +20,15 @@ namespace Stareater.Galaxy
 			this.IdCode = idCode;
 			this.Effect = effect;
 		}
+
+		internal BodyTrait Instantiate(StarData location)
+		{
+			return new BodyTrait(this, location);
+		}
+
+		internal BodyTrait Instantiate(Planet location)
+		{
+			return new BodyTrait(this, location);
+		}
 	}
 }

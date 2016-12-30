@@ -1,5 +1,6 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
@@ -15,7 +16,7 @@ namespace Stareater.Galaxy
 		public int Position { get; private set; }
 		public PlanetType Type { get; private set; }
 		public double Size { get; private set; }
-		public List<BodyTraitType> Traits { get; private set; }
+		public List<BodyTrait> Traits { get; private set; }
 
 		public Planet(StarData star, int position, PlanetType type, double size, List<BodyTraitType> traits) 
 		{
@@ -23,11 +24,23 @@ namespace Stareater.Galaxy
 			this.Position = position;
 			this.Type = type;
 			this.Size = size;
-			this.Traits = traits;
+			this.Traits = traits.Select(x => x.Instantiate(this)).ToList();
  
 			 
 		} 
 
+		private Planet(Planet original, StarData star) 
+		{
+			this.Star = star;
+			this.Position = original.Position;
+			this.Type = original.Type;
+			this.Size = original.Size;
+			this.Traits = new List<BodyTrait>();
+			foreach(var item in original.Traits)
+				this.Traits.Add(item);
+ 
+			 
+		}
 
 		private Planet(IkonComposite rawData, ObjectDeindexer deindexer) 
 		{
@@ -44,16 +57,16 @@ namespace Stareater.Galaxy
 			this.Size = sizeSave.To<double>();
 
 			var traitsSave = rawData[TraitsKey];
-			this.Traits = new List<BodyTraitType>();
+			this.Traits = new List<BodyTrait>();
 			foreach(var item in traitsSave.To<IkonArray>())
-				this.Traits.Add(deindexer.Get<BodyTraitType>(item.To<string>()));
+				this.Traits.Add(deindexer.Get<BodyTraitType>(item.To<string>()).Instantiate(this));
  
 			 
 		}
 
 		internal Planet Copy(GalaxyRemap galaxyRemap) 
 		{
-			return new Planet(galaxyRemap.Stars[this.Star], this.Position, this.Type, this.Size, this.Traits);
+			return new Planet(this, galaxyRemap.Stars[this.Star]);
  
 		} 
  
@@ -72,7 +85,7 @@ namespace Stareater.Galaxy
 
 			var traitsData = new IkonArray();
 			foreach(var item in this.Traits)
-				traitsData.Add(new IkonText(item.IdCode));
+				traitsData.Add(new IkonText(item.Type.IdCode));
 			data.Add(TraitsKey, traitsData);
 			return data;
  

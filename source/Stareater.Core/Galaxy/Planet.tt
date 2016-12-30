@@ -14,7 +14,7 @@
 		new DataInfo("Type", "PlanetType").IsEnum(),
 		new DataInfo("Size", "double"),
 		new DataInfo("Traits", "List",
-			new GenericParamInfo("BodyTraitType").SaveIdCodeMethod("IdCode")
-		)
+			new GenericParamInfo("BodyTrait").SaveIdCodeMethod("Type.IdCode").LoadCode("deindexer.Get<BodyTraitType>(item.To<string>()).Instantiate(this)")
+		).InitValue("traits.Select(x => x.Instantiate(this)).ToList()").InitParam("List<BodyTraitType>", "traits")
 	);
 #>

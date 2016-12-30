@@ -25,7 +25,7 @@ namespace Stareater.Controllers
 		{ 
 			get
 			{
-				return this.Location.Traits.Select(x => new TraitInfo(x));
+				return this.Location.Traits.Select(x => new TraitInfo(x.Type));
 			}
 		}
 		
