@@ -57,10 +57,14 @@ namespace Stareater.GameLogic
 			{
 				foreach (var trait in star.Traits)
 					trait.Effect.PostcombatApply(this.game.States, this.game.Statics);
+				star.Traits.ApplyPending();
 
 				foreach(var planet in this.game.States.Planets.At[star])
+				{
 					foreach (var trait in planet.Traits)
 						trait.Effect.PostcombatApply(this.game.States, this.game.Statics);
+					planet.Traits.ApplyPending();
+				}
 			}
 
 			this.doColonization();

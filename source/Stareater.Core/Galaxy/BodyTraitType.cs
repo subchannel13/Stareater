@@ -10,9 +10,9 @@ namespace Stareater.Galaxy
 		public string ImagePath { get; private set; }
 		public string IdCode { get; private set; }
 
-		internal ITraitEffect Effect { get; private set; }
+		internal ITraitEffectType Effect { get; private set; }
 
-		internal BodyTraitType(string nameCode, string descriptionCode, string imagePath, string idCode, ITraitEffect effect)
+		internal BodyTraitType(string nameCode, string descriptionCode, string imagePath, string idCode, ITraitEffectType effect)
 		{
 			this.NameCode = nameCode;
 			this.DescriptionCode = descriptionCode;

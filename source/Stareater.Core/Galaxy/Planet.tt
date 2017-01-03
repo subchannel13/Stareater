@@ -13,8 +13,8 @@
 		new DataInfo("Position", "int"),
 		new DataInfo("Type", "PlanetType").IsEnum(),
 		new DataInfo("Size", "double"),
-		new DataInfo("Traits", "List",
+		new DataInfo("Traits", "PendableSet",
 			new GenericParamInfo("BodyTrait").SaveIdCodeMethod("Type.IdCode").LoadCode("deindexer.Get<BodyTraitType>(item.To<string>()).Instantiate(this)")
-		).InitValue("traits.Select(x => x.Instantiate(this)).ToList()").InitParam("List<BodyTraitType>", "traits")
+		).InitValue("new PendableSet<BodyTrait>(traits.Select(x => x.Instantiate(this)))").InitParam("List<BodyTraitType>", "traits")
 	);
 #>

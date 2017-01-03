@@ -234,14 +234,14 @@ namespace Stareater.GameData.Databases
 			);
 		}
 
-		private static ITraitEffect loadTraitEffect(IkonComposite data)
+		private static ITraitEffectType loadTraitEffect(IkonComposite data)
 		{
 			switch ((string)data.Tag)
 			{
 				case AfflictTraitTag:
-					return new TraitEffectAfflictPlanets(data[AfflictTraitId].To<string>());
+					return new TraitEffectTypeAfflictPlanets(data[AfflictsTraitId].To<string>(), data[DurationTraitId].To<Formula>().Evaluate(null));
 				case PassiveTraitTag:
-					return new TraitEffectPassive();
+					return new TraitEffectTypePassive();
 			}
 
 			throw new ArgumentException("Unknown trait");
@@ -757,7 +757,8 @@ namespace Stareater.GameData.Databases
 
 		private const string StarShootTrait = "applyTrait";
 
-		private const string AfflictTraitId = "trait";
+		private const string AfflictsTraitId = "trait";
+		private const string DurationTraitId = "duration";
 		#endregion
 	}
 }

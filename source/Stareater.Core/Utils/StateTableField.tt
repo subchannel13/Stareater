@@ -157,6 +157,7 @@ private static string initSaveAssignLogic(string lowerName, string typeName)
 		case "HashSet":
 		case "LinkedList":
 		case "List":
+		case "PendableSet":
 		case "Vector2D":
 			return dataVar;
 		default:
@@ -552,7 +553,7 @@ class DataInfo
 	
 	public DataInfo FromIndexer()
 	{
-		if (this.type.EndsWith("Collection") || this.type.EndsWith("List"))
+		if (this.type.EndsWith("Collection") || this.type.EndsWith("List") || this.type.EndsWith("Set"))
 		{
 			string dataVar = this.LowerName + "Data";
 			

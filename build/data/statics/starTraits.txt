@@ -5,6 +5,7 @@
 	code: catalyzed
 	
 	effect {AfflictPlanets
+		duration # 3;
 		trait: irradiated
 	}
 }

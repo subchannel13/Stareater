@@ -9,6 +9,12 @@ namespace Stareater.Utils.Collections
 		List<T> toAdd = null;
 		List<T> toRemove = null;
 		
+		public PendableSet()
+		{ }
+			
+		public PendableSet(IEnumerable<T> elements) : base(elements)
+		{ }
+		
 		public void PendAdd(T element)
 		{
 			if (toAdd == null) toAdd = new List<T>();

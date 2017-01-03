@@ -1,6 +1,5 @@
 ﻿ 
 
-
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
@@ -18,7 +17,7 @@ namespace Stareater.Galaxy
 		public float ImageSizeScale { get; private set; }
 		public IStarName Name { get; private set; }
 		public Vector2D Position { get; private set; }
-		public List<BodyTrait> Traits { get; private set; }
+		public PendableSet<BodyTrait> Traits { get; private set; }
 
 		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position, List<BodyTraitType> traits) 
 		{
@@ -26,7 +25,7 @@ namespace Stareater.Galaxy
 			this.ImageSizeScale = imageSizeScale;
 			this.Name = name;
 			this.Position = position;
-			this.Traits = traits.Select(x => x.Instantiate(this)).ToList();
+			this.Traits = new PendableSet<BodyTrait>(traits.Select(x => x.Instantiate(this)));
  
 			 
 		} 
@@ -37,7 +36,7 @@ namespace Stareater.Galaxy
 			this.ImageSizeScale = original.ImageSizeScale;
 			this.Name = original.Name;
 			this.Position = original.Position;
-			this.Traits = new List<BodyTrait>();
+			this.Traits = new PendableSet<BodyTrait>();
 			foreach(var item in original.Traits)
 				this.Traits.Add(item);
  
@@ -66,7 +65,7 @@ namespace Stareater.Galaxy
 			this.Position = new Vector2D(positionX, positionY);
 
 			var traitsSave = rawData[TraitsKey];
-			this.Traits = new List<BodyTrait>();
+			this.Traits = new PendableSet<BodyTrait>();
 			foreach(var item in traitsSave.To<IkonArray>())
 				this.Traits.Add(deindexer.Get<BodyTraitType>(item.To<string>()).Instantiate(this));
  

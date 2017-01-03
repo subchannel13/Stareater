@@ -1,6 +1,5 @@
 ﻿ 
 
-
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
@@ -16,7 +15,7 @@ namespace Stareater.Galaxy
 		public int Position { get; private set; }
 		public PlanetType Type { get; private set; }
 		public double Size { get; private set; }
-		public List<BodyTrait> Traits { get; private set; }
+		public PendableSet<BodyTrait> Traits { get; private set; }
 
 		public Planet(StarData star, int position, PlanetType type, double size, List<BodyTraitType> traits) 
 		{
@@ -24,7 +23,7 @@ namespace Stareater.Galaxy
 			this.Position = position;
 			this.Type = type;
 			this.Size = size;
-			this.Traits = traits.Select(x => x.Instantiate(this)).ToList();
+			this.Traits = new PendableSet<BodyTrait>(traits.Select(x => x.Instantiate(this)));
  
 			 
 		} 
@@ -35,7 +34,7 @@ namespace Stareater.Galaxy
 			this.Position = original.Position;
 			this.Type = original.Type;
 			this.Size = original.Size;
-			this.Traits = new List<BodyTrait>();
+			this.Traits = new PendableSet<BodyTrait>();
 			foreach(var item in original.Traits)
 				this.Traits.Add(item);
  
@@ -57,7 +56,7 @@ namespace Stareater.Galaxy
 			this.Size = sizeSave.To<double>();
 
 			var traitsSave = rawData[TraitsKey];
-			this.Traits = new List<BodyTrait>();
+			this.Traits = new PendableSet<BodyTrait>();
 			foreach(var item in traitsSave.To<IkonArray>())
 				this.Traits.Add(deindexer.Get<BodyTraitType>(item.To<string>()).Instantiate(this));
  

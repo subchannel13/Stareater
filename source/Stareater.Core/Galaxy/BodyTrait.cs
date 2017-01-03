@@ -14,7 +14,7 @@ namespace Stareater.Galaxy
 		private BodyTrait(BodyTraitType type, LocationBody location)
 		{
 			this.Type = type;
-			this.Effect = type.Effect.Instantiate(location);
+			this.Effect = type.Effect.Instantiate(location, this);
 		}
 
 		internal BodyTrait(BodyTraitType type, StarData location) : 
