@@ -31,12 +31,16 @@ namespace Stareater.Galaxy
 			this.Effect = effect;
 		}
 
+		internal BodyTrait(BodyTraitType type, Planet location) :
+			this(type, new LocationBody(location.Star, location))
+		{ }
+
 		internal BodyTrait(BodyTraitType type, StarData location) : 
 			this(type, new LocationBody(location))
 		{ }
 
-		internal BodyTrait(BodyTraitType type, Planet location) :
-			this(type, new LocationBody(location.Star, location))
+		internal BodyTrait(BodyTraitType type, Planet location, IkonComposite loadData) :
+			this(type, new LocationBody(location.Star, location), loadData)
 		{ }
 
 		internal BodyTrait(BodyTraitType type, StarData location, IkonComposite loadData) :

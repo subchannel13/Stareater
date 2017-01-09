@@ -67,7 +67,7 @@ namespace Stareater.Galaxy
 			var traitsSave = rawData[TraitsKey];
 			this.Traits = new PendableSet<BodyTrait>();
 			foreach(var item in traitsSave.To<IkonArray>())
-				this.Traits.Add(deindexer.Get<BodyTraitType>(item.To<string>()).Load(this, item));
+				this.Traits.Add(deindexer.Get<BodyTraitType>(item.Tag as string).Load(this, item));
  
 			 
 		}

@@ -22,16 +22,21 @@ namespace Stareater.Galaxy
 			this.Effect = effect;
 		}
 
+		internal BodyTrait Instantiate(Planet location)
+		{
+			return new BodyTrait(this, location);
+		}
+		
 		internal BodyTrait Instantiate(StarData location)
 		{
 			return new BodyTrait(this, location);
 		}
 
-		internal BodyTrait Instantiate(Planet location)
+		public BodyTrait Load(Planet location, Ikadn.IkadnBaseObject loadData)
 		{
-			return new BodyTrait(this, location);
+			return new BodyTrait(this, location, loadData.To<IkonComposite>());
 		}
-
+		
 		public BodyTrait Load(StarData location, Ikadn.IkadnBaseObject loadData)
 		{
 			return new BodyTrait(this, location, loadData.To<IkonComposite>());
