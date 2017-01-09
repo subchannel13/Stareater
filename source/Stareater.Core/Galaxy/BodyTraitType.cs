@@ -1,4 +1,5 @@
 ﻿using System;
+using Ikadn.Ikon.Types;
 
 namespace Stareater.Galaxy
 {
@@ -29,6 +30,11 @@ namespace Stareater.Galaxy
 		internal BodyTrait Instantiate(Planet location)
 		{
 			return new BodyTrait(this, location);
+		}
+
+		public BodyTrait Load(StarData location, Ikadn.IkadnBaseObject loadData)
+		{
+			return new BodyTrait(this, location, loadData.To<IkonComposite>());
 		}
 	}
 }

@@ -86,7 +86,7 @@ namespace Stareater
 		{
 			var indexer = new ObjectIndexer();
 			
-			indexer.AddAll(this.MainPlayers);
+			indexer.AddAll(this.AllPlayers);
 			indexer.AddAll(Statics.PredeginedDesigns);
 			
 			indexer.AddAll(States.Designs);
@@ -117,10 +117,12 @@ namespace Stareater
 			foreach(var player in this.MainPlayers)
 				playersData.Add(player.Save(indexer));
 			gameData.Add(PlayersKey, playersData);
+			gameData.Add(OrganellePlayerKey, this.StareaterOrganelles.Save(indexer));
 			
 			foreach(var player in this.MainPlayers)
 				ordersData.Add(player.Orders.Save(indexer));
 			gameData.Add(OrdersKey, ordersData);
+			gameData.Add(OrganelleOrdersKey, this.StareaterOrganelles.Orders.Save(indexer));
 			
 			return gameData;
 		}
@@ -128,6 +130,7 @@ namespace Stareater
 		public const string SaveGameTag = "Game";
 		public const string TurnKey = "turn";
 		public const string OrdersKey = "orders";
+		public const string OrganelleOrdersKey = "organelleOrders";
 		public const string OrganellePlayerKey = "organelles";
 		public const string PlayersKey = "players";
 		public const string StatesKey = "states";

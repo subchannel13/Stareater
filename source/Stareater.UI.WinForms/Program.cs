@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using Stareater.GUI;
 
 namespace StareaterUI
 {
@@ -30,7 +29,7 @@ namespace StareaterUI
 			}
 			catch (Exception e)
 			{
-				using(var form = new FormError(e.ToString()))
+				using(var form = new Stareater.GUI.FormError(e.ToString()))
 					form.ShowDialog();
 			}
 #endif
@@ -39,7 +38,7 @@ namespace StareaterUI
 		static void guiExceptionLogger(object sender, ThreadExceptionEventArgs e)
 		{
 #if !DEBUG			
-			using(var form = new FormError(e.Exception.ToString()))
+			using(var form = new Stareater.GUI.FormError(e.Exception.ToString()))
 					form.ShowDialog();
 #else			
 			Trace.TraceError(e.Exception.ToString());

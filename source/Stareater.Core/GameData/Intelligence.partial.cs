@@ -9,6 +9,7 @@ namespace Stareater.GameData
 	{
 		public void Initialize(IEnumerable<StarSystem> starSystems)
 		{
+			starKnowledge.Clear();
 			foreach(var system in starSystems)
 				starKnowledge.Add(system.Star, new StarIntelligence(system.Planets));
 		}

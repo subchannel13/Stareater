@@ -38,7 +38,7 @@ namespace Stareater.Galaxy
 			this.Position = original.Position;
 			this.Traits = new PendableSet<BodyTrait>();
 			foreach(var item in original.Traits)
-				this.Traits.Add(item);
+				this.Traits.Add(item.Copy());
  
 			 
 		}
@@ -67,7 +67,7 @@ namespace Stareater.Galaxy
 			var traitsSave = rawData[TraitsKey];
 			this.Traits = new PendableSet<BodyTrait>();
 			foreach(var item in traitsSave.To<IkonArray>())
-				this.Traits.Add(deindexer.Get<BodyTraitType>(item.To<string>()).Instantiate(this));
+				this.Traits.Add(deindexer.Get<BodyTraitType>(item.To<string>()).Load(this, item));
  
 			 
 		}
@@ -100,7 +100,7 @@ namespace Stareater.Galaxy
 
 			var traitsData = new IkonArray();
 			foreach(var item in this.Traits)
-				traitsData.Add(new IkonText(item.Type.IdCode));
+				traitsData.Add(item.Save());
 			data.Add(TraitsKey, traitsData);
 			return data;
  

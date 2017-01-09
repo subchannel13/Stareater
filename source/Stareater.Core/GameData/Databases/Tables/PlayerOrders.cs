@@ -25,7 +25,7 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			this.DevelopmentFocusIndex = 0;
 			this.DevelopmentQueue = new Dictionary<string, int>();
-			this.ResearchFocus = null;
+			this.ResearchFocus = "";
 			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
 			this.ShipOrders = new Dictionary<Vector2D, HashSet<Fleet>>();
 			this.ColonizationOrders = new Dictionary<Planet, ColonizationPlan>();

@@ -16,7 +16,7 @@
 			new GenericParamInfo("string"), 
 			new GenericParamInfo("int")
 		).Public().EmptyInit().SaveAssign("saveDevelopment()").LoadCode("loadDevelopmet(" + SaveName + ", deindexer)"),
-		new DataInfo("ResearchFocus", "string").Public().InitValue("null").EmptyInit(),
+		new DataInfo("ResearchFocus", "string").Public().InitValue("\"\"").EmptyInit(),
 		new DataInfo("ConstructionPlans", "Dictionary", 
 			new GenericParamInfo("AConstructionSite"), 
 			new GenericParamInfo("ConstructionOrders").CopyMethod("Copy()")

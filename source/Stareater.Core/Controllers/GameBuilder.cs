@@ -301,6 +301,7 @@ namespace Stareater.Controllers
 			
 			for(int i = 0; i < players.Count; i++)
 				players[i].Orders = PlayerOrders.Load(ordersData[i].To<IkonComposite>(), deindexer);
+			organellePlayer.Orders = PlayerOrders.Load(saveData[MainGame.OrganelleOrdersKey].To<IkonComposite>(), deindexer);
 				                                  
 			return new Tuple<StatesDB, Player[], Player>(
 				new StatesDB(stars, wormholes, planets, colonies, stellarises, developments, research, reports, designs, fleets, colonizations),
@@ -332,6 +333,8 @@ namespace Stareater.Controllers
 				foreach(var design in states.Designs.OwnedBy[player])
 					playerProc.Analyze(design, statics);
 			}
+			
+			derivates.Natives.Initialize(states, statics, derivates);
 
 			return derivates;
 		}

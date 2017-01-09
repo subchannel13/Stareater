@@ -14,7 +14,7 @@ using Stareater.Utils;
 
 namespace Stareater.GameData.Databases
 {
-	internal class StaticsDB
+	class StaticsDB
 	{
 		public Dictionary<string, BuildingType> Buildings { get; private set; }
 		public ColonyFormulaSet ColonyFormulas { get; private set; }
@@ -757,8 +757,8 @@ namespace Stareater.GameData.Databases
 
 		private const string StarShootTrait = "applyTrait";
 
-		private const string AfflictsTraitId = "trait";
-		private const string DurationTraitId = "duration";
+		public const string AfflictsTraitId = "trait";
+		public const string DurationTraitId = "duration";
 		#endregion
 	}
 }

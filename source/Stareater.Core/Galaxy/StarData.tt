@@ -17,7 +17,7 @@
 		new DataInfo("Name", "IStarName").SaveMethod("Save()").LoadCode("loadName(" + SaveName + ")"),
 		new DataInfo("Position", "Vector2D").SaveKeyValue("pos"),
 		new DataInfo("Traits", "PendableSet",
-			new GenericParamInfo("BodyTrait").SaveIdCodeMethod("Type.IdCode").LoadCode("deindexer.Get<BodyTraitType>(item.To<string>()).Instantiate(this)")
+			new GenericParamInfo("BodyTrait").CopyMethod("Copy()").SaveMethod("Save()").LoadCode("deindexer.Get<BodyTraitType>(item.To<string>()).Load(this, item)")
 		).InitValue("new PendableSet<BodyTrait>(traits.Select(x => x.Instantiate(this)))").InitParam("List<BodyTraitType>", "traits")
 	);
 #>

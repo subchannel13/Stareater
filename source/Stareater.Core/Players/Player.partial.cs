@@ -4,6 +4,7 @@ using System.Linq;
 using Ikadn;
 using Ikadn.Ikon.Types;
 using Stareater.GameData.Ships;
+using Stareater.Players.Natives;
 
 namespace Stareater.Players
 {
@@ -15,10 +16,7 @@ namespace Stareater.Players
 		{
 			this.ControlType = type.ControlType;
 			
-			if (type.OffscreenPlayerFactory != null)
-				this.OffscreenControl = type.OffscreenPlayerFactory.Create();
-			else
-				this.OffscreenControl = null;
+			this.OffscreenControl = type.OffscreenPlayerFactory != null ? type.OffscreenPlayerFactory.Create() : null;
 		}
 		
 		private void copyDesigns(Player original)
@@ -44,6 +42,8 @@ namespace Stareater.Players
 				//TODO(later): what if no factory was found?
 				return PlayerAssets.AIDefinitions.First(x => x.Id == factoryId).Load(dataMap);
 			}
+			else if (dataMap.Tag.Equals(PlayerType.OrganelleControllerTag))
+				return new OrganellePlayerFactory().Load(dataMap);
 			
 			//TODO(later): Invalid controller data
 			return null;
