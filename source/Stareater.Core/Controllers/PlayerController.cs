@@ -174,6 +174,18 @@ namespace Stareater.Controllers
 			this.PlayerInstance.Orders.RefitOrders.Remove(design.Data);
 		}
 		
+		public IEnumerable<DesignInfo> RefitCandidates(DesignInfo design)
+		{
+			//TODO(v0.6)
+			return this.ShipsDesigns();
+		}
+		
+		public double RefitCost(DesignInfo design, DesignInfo refitWith)
+		{
+			//TODO(v0.6)
+			return 0;
+		}
+		
 		public void RefitDesign(DesignInfo design, DesignInfo refitWith)
 		{
 			//TODO(v0.6) check refit compatibility, if designs are for same hull

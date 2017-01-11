@@ -6,6 +6,7 @@ disbandDesign = Remove
 keepDesign = Keep
 markedForRemoval = (to be removed)
 refittingWith = Refitting to
+refitCost = Cost
 refitTitle = Refit to
 
 armor §

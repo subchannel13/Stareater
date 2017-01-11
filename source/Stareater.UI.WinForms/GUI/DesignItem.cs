@@ -82,16 +82,17 @@ namespace Stareater.GUI
 			Action<DesignInfo> disbandDesign = x => this.controller.DisbandDesign(this.data);
 			Action<DesignInfo> keepDesign = x => this.controller.KeepDesign(this.data);
 			Action<DesignInfo> refitDesign = x => this.controller.RefitDesign(this.data, x);
+			var formatter = new ThousandsFormatter();
 			
 			var refitOptions = new IShipComponentType[] 
 			{ 
 				new ShipComponentType<DesignInfo>(context["disbandDesign"].Text(), global::Stareater.Properties.Resources.cancel, null, disbandDesign),  
 				new ShipComponentType<DesignInfo>(context["keepDesign"].Text(), global::Stareater.Properties.Resources.start, null, keepDesign)
 			}.Concat(
-					this.controller.ShipsDesigns().Where(x => x.Constructable).Select(x => new ShipComponentType<DesignInfo>(
-					x.Name,
-					ImageCache.Get[x.ImagePath],
-					x, refitDesign
+					this.controller.RefitCandidates(this.data).Where(x => x.Constructable).Select(x => new ShipComponentType<DesignInfo>(
+						x.Name + Environment.NewLine + context["refitCost"].Text() + ": " + formatter.Format(this.controller.RefitCost(this.data, x)),
+						ImageCache.Get[x.ImagePath],
+						x, refitDesign
 			)));
 			
 			using(var form = new FormPickComponent(context["refitTitle"].Text(), refitOptions))
