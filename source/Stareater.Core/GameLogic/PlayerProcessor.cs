@@ -24,9 +24,10 @@ namespace Stareater.GameLogic
 		public IEnumerable<ResearchResult> ResearchPlan { get; protected set; }
 		public Player Player { get; private set; }
 		public Dictionary<Design, DesignStats> DesignStats { get; private set; }
+		public Dictionary<Design, Dictionary<Design, double>> RefitCosts { get; private set; }
 		public Design ColonyShipDesign { get; private set; }
 		public Design SystemColonizerDesign { get; private set; }
-		
+
 		private Queue<ResearchResult> breakthroughs = new Queue<ResearchResult>();
 		
 		public PlayerProcessor(Player player, IEnumerable<DevelopmentTopic> technologies)
@@ -36,6 +37,7 @@ namespace Stareater.GameLogic
 			this.DevelopmentPlan = null;
 			this.ResearchPlan = null;
 			this.DesignStats = new Dictionary<Design, DesignStats>();
+			this.RefitCosts = new Dictionary<Design, Dictionary<Design, double>>();
 			this.TechLevels = new Dictionary<string, double>();
 			foreach (var tech in technologies) {
 				this.TechLevels.Add(tech.IdCode + LevelSufix, DevelopmentProgress.NotStarted);
@@ -51,8 +53,9 @@ namespace Stareater.GameLogic
 		{
 			var copy = new PlayerProcessor(playersRemap.Players[this.Player]);
 			
-			copy.DesignStats = new Dictionary<Design, DesignStats>(playersRemap.Designs.Keys.Where(x => x.Owner == this.Player).ToDictionary(x => x, x => this.DesignStats[x]));
+			copy.DesignStats = this.DesignStats.ToDictionary(x => playersRemap.Designs[x.Key], x => x.Value);
 			copy.DevelopmentPlan = (this.DevelopmentPlan != null) ? new List<DevelopmentResult>(this.DevelopmentPlan) : null;
+			copy.RefitCosts = this.RefitCosts.ToDictionary(x => playersRemap.Designs[x.Key], x => x.Value.ToDictionary(y => playersRemap.Designs[y.Key], y => y.Value));
 			copy.ResearchPlan  = (this.ResearchPlan != null) ? new List<ResearchResult>(this.ResearchPlan) : null;
 			copy.TechLevels = new Dictionary<string, double>(this.TechLevels);
 			
@@ -382,7 +385,11 @@ namespace Stareater.GameLogic
 				design.Owner.Orders.RefitOrders.Remove(design);
 				states.Designs.Remove(design);
 				this.DesignStats.Remove(design);
+				this.RefitCosts.Remove(design);
 			}
+			foreach(var design in this.RefitCosts.Keys)
+				foreach(var discarded in discardedDesigns)
+					this.RefitCosts[design].Remove(discarded);
 		}
 
 		#endregion
@@ -447,6 +454,12 @@ namespace Stareater.GameLogic
 		}
 		
 		public void Analyze(Design design, StaticsDB statics)
+		{
+			this.calcDesignStats(design, statics);
+			this.calcRefitCosts(design, statics);
+		}
+		
+		private void calcDesignStats(Design design, StaticsDB statics)
 		{
 			var shipVars = DesignPoweredVars(design.Hull, design.Reactor, design.SpecialEquipment, statics);
 			var hullVars = new Var(AComponentType.LevelKey, design.Hull.Level).Get;
@@ -531,6 +544,18 @@ namespace Stareater.GameLogic
 	                statics.ShipFormulas.Jamming.Evaluate(shipVars.Get)
 	            )
 			);
+		}
+		
+		private void calcRefitCosts(Design design, StaticsDB statics)
+		{
+			this.RefitCosts.Add(design, new Dictionary<Design, double>());
+			
+			var otherDesigns = this.DesignStats.Keys.Where(x => x.Hull.TypeInfo == design.Hull.TypeInfo && x != design).ToList();
+			foreach(var otherDesign in otherDesigns)
+			{
+				this.RefitCosts[design].Add(otherDesign, 0);
+				this.RefitCosts[otherDesign].Add(design, 0);
+			}
 		}
 		#endregion
 		

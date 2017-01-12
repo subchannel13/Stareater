@@ -46,7 +46,8 @@ namespace Stareater.GUI
 			{
 				this.data = value;
 
-				thumbnail.Image = ImageCache.Get[data.ImagePath];
+				this.thumbnail.Image = ImageCache.Get[data.ImagePath];
+				this.actionButton.Visible = this.data.Constructable;
 				this.makeNameText();
 			}
 		}

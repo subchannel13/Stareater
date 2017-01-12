@@ -176,14 +176,15 @@ namespace Stareater.Controllers
 		
 		public IEnumerable<DesignInfo> RefitCandidates(DesignInfo design)
 		{
-			//TODO(v0.6)
-			return this.ShipsDesigns();
+			var game = this.gameInstance;
+			var playerProc = game.Derivates.Of(this.PlayerInstance);
+			return playerProc.RefitCosts[design.Data].Select(x => new DesignInfo(x.Key, playerProc.DesignStats[x.Key], game.Statics));
 		}
 		
 		public double RefitCost(DesignInfo design, DesignInfo refitWith)
 		{
-			//TODO(v0.6)
-			return 0;
+			var game = this.gameInstance;
+			return game.Derivates.Of(this.PlayerInstance).RefitCosts[design.Data][refitWith.Data];
 		}
 		
 		public void RefitDesign(DesignInfo design, DesignInfo refitWith)

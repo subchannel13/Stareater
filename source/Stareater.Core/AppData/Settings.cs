@@ -37,14 +37,17 @@ namespace Stareater.AppData
 			{
 				instance.load(instance.loadData());
 			}
+			#if DEBUG
 			catch(Exception e)
 			{
-				instance.initDefault();
-				
-				#if DEBUG
 				System.Diagnostics.Trace.TraceError(e.ToString());
-				#endif
 			}
+			#else
+			catch(Exception)
+			{
+				instance.initDefault();
+			}
+			#endif
 		}
 		
 		protected virtual void initDefault()
