@@ -178,7 +178,10 @@ namespace Stareater.Controllers
 		{
 			var game = this.gameInstance;
 			var playerProc = game.Derivates.Of(this.PlayerInstance);
-			return playerProc.RefitCosts[design.Data].Select(x => new DesignInfo(x.Key, playerProc.DesignStats[x.Key], game.Statics));
+			
+			return playerProc.RefitCosts[design.Data].
+				Where(x => !x.Key.IsObsolete && !x.Key.IsVirtual).
+				Select(x => new DesignInfo(x.Key, playerProc.DesignStats[x.Key], game.Statics));
 		}
 		
 		public double RefitCost(DesignInfo design, DesignInfo refitWith)

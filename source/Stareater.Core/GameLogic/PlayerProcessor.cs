@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Stareater.AppData.Expressions;
 using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.GameData.Databases;
@@ -456,7 +457,7 @@ namespace Stareater.GameLogic
 		public void Analyze(Design design, StaticsDB statics)
 		{
 			this.calcDesignStats(design, statics);
-			this.calcRefitCosts(design, statics);
+			this.calcRefitCosts(design);
 		}
 		
 		private void calcDesignStats(Design design, StaticsDB statics)
@@ -546,16 +547,53 @@ namespace Stareater.GameLogic
 			);
 		}
 		
-		private void calcRefitCosts(Design design, StaticsDB statics)
+		private void calcRefitCosts(Design design)
 		{
 			this.RefitCosts.Add(design, new Dictionary<Design, double>());
 			
 			var otherDesigns = this.DesignStats.Keys.Where(x => x.Hull.TypeInfo == design.Hull.TypeInfo && x != design).ToList();
 			foreach(var otherDesign in otherDesigns)
 			{
-				this.RefitCosts[design].Add(otherDesign, 0);
-				this.RefitCosts[otherDesign].Add(design, 0);
+				this.RefitCosts[design].Add(otherDesign, refitCost(design, otherDesign));
+				this.RefitCosts[otherDesign].Add(design, refitCost(otherDesign, design));
 			}
+		}
+		
+		private double refitCost(Design fromDesign, Design toDesign)
+		{
+			double cost = 0;
+			
+			cost += refitComponentCost(fromDesign.Hull, toDesign.Hull, x => x.Cost);
+			//TODO(v0.6) armor cost
+			//TODO(v0.6) reactor cost
+			//TODO(v0.6) sensor cost
+			//TODO(v0.6) thruster cost
+			cost += refitComponentCost(fromDesign.IsDrive, toDesign.IsDrive, x => x.Cost);
+			cost += refitComponentCost(fromDesign.Shield, toDesign.Shield, x => x.Cost);
+			
+			var oldEquipment = fromDesign.MissionEquipment.
+				GroupBy(x => x).
+				ToDictionary(
+					x => x.Key.TypeInfo, 
+					x => new Component<MissionEquipmentType>(x.Key.TypeInfo, x.Key.Level, x.Sum(y => y.Quantity))
+				);
+			//TODO(v0.6) mission equipment cost
+			//TODO(v0.6) special equipment cost
+			
+			return cost;
+		}
+		
+		private double refitComponentCost<T>(Component<T> fromComponent, Component<T> toComponent, Func<T, Formula> costFormula)
+		{
+			if (toComponent == null)
+				return 0;
+			
+			if (fromComponent == null || fromComponent.TypeInfo != toComponent.TypeInfo || fromComponent.Level != toComponent.Level)
+				return costFormula(toComponent.TypeInfo).Evaluate(new Var(AComponentType.LevelKey, toComponent.Level).Get);
+			
+			//TODO(0.6) same type but different level cost
+			
+			return 0;
 		}
 		#endregion
 		
