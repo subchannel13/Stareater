@@ -333,27 +333,31 @@ namespace Stareater.GameLogic
 					Aggregate(0.0, (sum, x) => sum + x.RepairPoints);
 				
 				//TODO(v0.6) do repairs
-				
+
+				var refitOrders = player.Orders.RefitOrders;
+				var refitCosts = this.game.Derivates.Of(player).RefitCosts;
 				var groupsFrom = new Dictionary<ShipGroup, Fleet>();
+
 				foreach(var fleet in localFleet)
 					foreach(var shipGroup in fleet.Ships)
 						groupsFrom.Add(shipGroup, fleet);
 				var upgradableShips = localFleet.
 					SelectMany(x => x.Ships).
-					Where(x => player.Orders.RefitOrders.ContainsKey(x.Design) && player.Orders.RefitOrders[x.Design] != null).ToList();
+					Where(x => refitOrders.ContainsKey(x.Design) && refitOrders[x.Design] != null).ToList();
 				var totalNeededUpgradePoints = upgradableShips.
-					Select(x => player.Orders.RefitOrders[x.Design].Cost * x.Quantity - x.UpgradePoints).
+					Select(x => refitCosts[x.Design][refitOrders[x.Design]] * x.Quantity - x.UpgradePoints).
 					Aggregate(0.0, (sum, x) => x > 0 ? sum + x : sum);
 				
 				foreach(var shipGroup in upgradableShips)
 				{
-					var refitTo = player.Orders.RefitOrders[shipGroup.Design];
-					var fullUpgradeCost = refitTo.Cost * shipGroup.Quantity - shipGroup.UpgradePoints; //TODO(v0.6) make smarter cost function which takes component difference into account
+					var refitTo = refitOrders[shipGroup.Design];
+					var refitCost = refitCosts[shipGroup.Design][refitOrders[shipGroup.Design]];
+					var fullUpgradeCost = refitCost * shipGroup.Quantity - shipGroup.UpgradePoints;
 					var investment = repairPoints * fullUpgradeCost / totalNeededUpgradePoints;
 					
 					if (fullUpgradeCost < investment)
 					{
-						shipGroup.UpgradePoints = refitTo.Cost * shipGroup.Quantity;
+						shipGroup.UpgradePoints = refitCost * shipGroup.Quantity;
 						investment -= investment - fullUpgradeCost;
 					}
 					else
@@ -361,12 +365,12 @@ namespace Stareater.GameLogic
 					
 					repairPoints -= investment;
 					totalNeededUpgradePoints -= fullUpgradeCost;
-					var upgradedShips = (long)Math.Floor(shipGroup.UpgradePoints / refitTo.Cost);
+					var upgradedShips = refitCost > 0 ? (long)Math.Floor(shipGroup.UpgradePoints / refitCost) : shipGroup.Quantity;
 					
 					if (upgradedShips > 0)
 					{
 						shipGroup.Quantity -= upgradedShips;
-						shipGroup.UpgradePoints -= upgradedShips * refitTo.Cost;
+						shipGroup.UpgradePoints -= upgradedShips * refitCost;
 						
 						var fleet = groupsFrom[shipGroup];
 						var existingGroup = fleet.Ships.FirstOrDefault(x => x.Design == refitTo);
