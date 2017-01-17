@@ -564,43 +564,46 @@ namespace Stareater.GameLogic
 			double cost = 0;
 			var hullVars = new Var(AComponentType.LevelKey, toDesign.Hull.Level).Get;
 			
-			var hullCost = refitComponentCost(fromDesign.Hull, toDesign.Hull, x => x.Cost, null);
+			var hullCost = refitComponentCost(fromDesign.Hull, toDesign.Hull, x => x.Cost, null, shipFormulas);
 			if (hullCost > 0)
 				cost += hullCost;
 			else
 			{
 				hullCost = toDesign.Hull.TypeInfo.Cost.Evaluate(new Var(AComponentType.LevelKey, toDesign.Hull.Level).Get);
-				cost += hullCost * shipFormulas.ArmorCostPortion *  refitComponentCost(fromDesign.Armor, toDesign.Armor, x => new Formula(1), null);
-				cost += hullCost * shipFormulas.ReactorCostPortion *  refitComponentCost(fromDesign.Reactor, toDesign.Reactor, x => new Formula(1), null);
-				cost += hullCost * shipFormulas.SensorCostPortion *  refitComponentCost(fromDesign.Sensors, toDesign.Sensors, x => new Formula(1), null);
-				cost += hullCost * shipFormulas.ThrustersCostPortion *  refitComponentCost(fromDesign.Thrusters, toDesign.Thrusters, x => new Formula(1), null);
+				cost += hullCost * shipFormulas.ArmorCostPortion *  refitComponentCost(fromDesign.Armor, toDesign.Armor, x => new Formula(1), null, shipFormulas);
+				cost += hullCost * shipFormulas.ReactorCostPortion *  refitComponentCost(fromDesign.Reactor, toDesign.Reactor, x => new Formula(1), null, shipFormulas);
+				cost += hullCost * shipFormulas.SensorCostPortion *  refitComponentCost(fromDesign.Sensors, toDesign.Sensors, x => new Formula(1), null, shipFormulas);
+				cost += hullCost * shipFormulas.ThrustersCostPortion *  refitComponentCost(fromDesign.Thrusters, toDesign.Thrusters, x => new Formula(1), null, shipFormulas);
 			}
 			
-			cost += refitComponentCost(fromDesign.IsDrive, toDesign.IsDrive, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.SizeIS.Evaluate(hullVars)));
-			cost += refitComponentCost(fromDesign.Shield, toDesign.Shield, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.SizeShield.Evaluate(hullVars)));
-			cost += refitComponentCost(fromDesign.MissionEquipment, toDesign.MissionEquipment, x => x.Cost, null);
-			cost += refitComponentCost(fromDesign.SpecialEquipment, toDesign.SpecialEquipment, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.Size.Evaluate(hullVars)));
+			cost += refitComponentCost(fromDesign.IsDrive, toDesign.IsDrive, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.SizeIS.Evaluate(hullVars)), shipFormulas);
+			cost += refitComponentCost(fromDesign.Shield, toDesign.Shield, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.SizeShield.Evaluate(hullVars)), shipFormulas);
+			cost += refitComponentCost(fromDesign.MissionEquipment, toDesign.MissionEquipment, x => x.Cost, null, shipFormulas);
+			cost += refitComponentCost(fromDesign.SpecialEquipment, toDesign.SpecialEquipment, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.Size.Evaluate(hullVars)), shipFormulas);
 			
 			return cost;
 		}
 		
-		private double refitComponentCost<T>(Component<T> fromComponent, Component<T> toComponent, Func<T, Formula> costFormula, Var extraVars) where T : AComponentType
+		private double refitComponentCost<T>(Component<T> fromComponent, Component<T> toComponent, Func<T, Formula> costFormula, Var extraVars, ShipFormulaSet shipFormulas) where T : AComponentType
 		{
 			if (toComponent == null)
 				return 0;
 
 			if (extraVars == null)
 				extraVars = new Var();
+			var fullCost = costFormula(toComponent.TypeInfo).Evaluate(new Var(AComponentType.LevelKey, toComponent.Level).UnionWith(extraVars.Get).Get);
 			
-			if (fromComponent == null || fromComponent.TypeInfo != toComponent.TypeInfo || fromComponent.Level != toComponent.Level)
-				return costFormula(toComponent.TypeInfo).Evaluate(new Var(AComponentType.LevelKey, toComponent.Level).UnionWith(extraVars.Get).Get);
+			if (fromComponent == null || fromComponent.TypeInfo != toComponent.TypeInfo)
+				return fullCost;
 			
-			//TODO(0.6) same type but different level cost
-			
+			if (fromComponent.Level < toComponent.Level)
+				return fullCost * shipFormulas.LevelRefitCost.Evaluate(new Var(AComponentType.LevelKey, toComponent.Level - fromComponent.Level).Get);
+
+			//refit from higher to lower or the same level is free
 			return 0;
 		}
 
-		private double refitComponentCost<T>(List<Component<T>> fromComponents, List<Component<T>> toComponents, Func<T, Formula> costFormula, Var extraVars) where T : AComponentType
+		private double refitComponentCost<T>(List<Component<T>> fromComponents, List<Component<T>> toComponents, Func<T, Formula> costFormula, Var extraVars, ShipFormulaSet shipFormulas) where T : AComponentType
 		{
 			double cost = 0;
 
@@ -625,8 +628,8 @@ namespace Stareater.GameLogic
 						oldEquipment.Remove(equip.TypeInfo);
 				}
 
-				cost += similarQuantity * refitComponentCost(oldEquip, equip, costFormula, extraVars);
-				cost += (equip.Quantity - similarQuantity) * refitComponentCost(null, equip, costFormula, extraVars);
+				cost += similarQuantity * refitComponentCost(oldEquip, equip, costFormula, extraVars, shipFormulas);
+				cost += (equip.Quantity - similarQuantity) * refitComponentCost(null, equip, costFormula, extraVars, shipFormulas);
 			}
 
 			return cost;

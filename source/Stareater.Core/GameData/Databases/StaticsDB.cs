@@ -220,6 +220,7 @@ namespace Stareater.GameData.Databases
 				colonizerBuildings,
 				data[ShipNaturalCloakBonus].To<Formula>().Evaluate(null),
 				data[ShipSensorRangePenalty].To<Formula>().Evaluate(null),
+				data[ShipLevelRefitCost].To<Formula>(),
 				data[ShipArmorCostPortion].To<Formula>().Evaluate(null),
 				data[ShipReactorCostPortion].To<Formula>().Evaluate(null),
 				data[ShipSensorCostPortion].To<Formula>().Evaluate(null),
@@ -653,6 +654,7 @@ namespace Stareater.GameData.Databases
 		private const string ShipColonyBuildings = "colonyBuildings";
 		private const string ShipNaturalCloakBonus = "naturalCloakBonus";
 		private const string ShipSensorRangePenalty = "sensorRangePenalty";
+		private const string ShipLevelRefitCost = "levelRefitCost";
 		private const string ShipArmorCostPortion = "armorCostPortion";
 		private const string ShipReactorCostPortion = "reactorCostPortion";
 		private const string ShipSensorCostPortion = "sensorCostPortion";
