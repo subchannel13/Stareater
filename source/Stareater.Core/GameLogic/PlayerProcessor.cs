@@ -457,7 +457,7 @@ namespace Stareater.GameLogic
 		public void Analyze(Design design, StaticsDB statics)
 		{
 			this.calcDesignStats(design, statics);
-			this.calcRefitCosts(design);
+			this.calcRefitCosts(design, statics.ShipFormulas);
 		}
 		
 		private void calcDesignStats(Design design, StaticsDB statics)
@@ -547,28 +547,35 @@ namespace Stareater.GameLogic
 			);
 		}
 		
-		private void calcRefitCosts(Design design)
+		private void calcRefitCosts(Design design, ShipFormulaSet shipFormulas)
 		{
 			this.RefitCosts.Add(design, new Dictionary<Design, double>());
 			
 			var otherDesigns = this.DesignStats.Keys.Where(x => x.Hull.TypeInfo == design.Hull.TypeInfo && x != design).ToList();
 			foreach(var otherDesign in otherDesigns)
 			{
-				this.RefitCosts[design].Add(otherDesign, refitCost(design, otherDesign));
-				this.RefitCosts[otherDesign].Add(design, refitCost(otherDesign, design));
+				this.RefitCosts[design].Add(otherDesign, refitCost(design, otherDesign, shipFormulas));
+				this.RefitCosts[otherDesign].Add(design, refitCost(otherDesign, design, shipFormulas));
 			}
 		}
 		
-		private double refitCost(Design fromDesign, Design toDesign)
+		private double refitCost(Design fromDesign, Design toDesign, ShipFormulaSet shipFormulas)
 		{
 			double cost = 0;
 			var hullVars = new Var(AComponentType.LevelKey, toDesign.Hull.Level).Get;
 			
-			cost += refitComponentCost(fromDesign.Hull, toDesign.Hull, x => x.Cost, null);
-			//TODO(v0.6) armor cost
-			//TODO(v0.6) reactor cost
-			//TODO(v0.6) sensor cost
-			//TODO(v0.6) thruster cost
+			var hullCost = refitComponentCost(fromDesign.Hull, toDesign.Hull, x => x.Cost, null);
+			if (hullCost > 0)
+				cost += hullCost;
+			else
+			{
+				hullCost = toDesign.Hull.TypeInfo.Cost.Evaluate(new Var(AComponentType.LevelKey, toDesign.Hull.Level).Get);
+				cost += hullCost * shipFormulas.ArmorCostPortion *  refitComponentCost(fromDesign.Armor, toDesign.Armor, x => new Formula(1), null);
+				cost += hullCost * shipFormulas.ReactorCostPortion *  refitComponentCost(fromDesign.Reactor, toDesign.Reactor, x => new Formula(1), null);
+				cost += hullCost * shipFormulas.SensorCostPortion *  refitComponentCost(fromDesign.Sensors, toDesign.Sensors, x => new Formula(1), null);
+				cost += hullCost * shipFormulas.ThrustersCostPortion *  refitComponentCost(fromDesign.Thrusters, toDesign.Thrusters, x => new Formula(1), null);
+			}
+			
 			cost += refitComponentCost(fromDesign.IsDrive, toDesign.IsDrive, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.SizeIS.Evaluate(hullVars)));
 			cost += refitComponentCost(fromDesign.Shield, toDesign.Shield, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.SizeShield.Evaluate(hullVars)));
 			cost += refitComponentCost(fromDesign.MissionEquipment, toDesign.MissionEquipment, x => x.Cost, null);

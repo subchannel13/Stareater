@@ -219,7 +219,11 @@ namespace Stareater.GameData.Databases
 				data[ShipColonyPopulation].To<Formula>(),
 				colonizerBuildings,
 				data[ShipNaturalCloakBonus].To<Formula>().Evaluate(null),
-				data[ShipSensorRangePenalty].To<Formula>().Evaluate(null)
+				data[ShipSensorRangePenalty].To<Formula>().Evaluate(null),
+				data[ShipArmorCostPortion].To<Formula>().Evaluate(null),
+				data[ShipReactorCostPortion].To<Formula>().Evaluate(null),
+				data[ShipSensorCostPortion].To<Formula>().Evaluate(null),
+				data[ShipThrustersCostPortion].To<Formula>().Evaluate(null)
 			);
 		}
 
@@ -649,6 +653,10 @@ namespace Stareater.GameData.Databases
 		private const string ShipColonyBuildings = "colonyBuildings";
 		private const string ShipNaturalCloakBonus = "naturalCloakBonus";
 		private const string ShipSensorRangePenalty = "sensorRangePenalty";
+		private const string ShipArmorCostPortion = "armorCostPortion";
+		private const string ShipReactorCostPortion = "reactorCostPortion";
+		private const string ShipSensorCostPortion = "sensorCostPortion";
+		private const string ShipThrustersCostPortion = "thrustersCostPortion";
 
 		private const string BuildingHitPointsKey = "hitPoints";
 		
