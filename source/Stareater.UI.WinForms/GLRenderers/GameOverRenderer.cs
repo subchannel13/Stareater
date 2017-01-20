@@ -3,6 +3,7 @@ using System.Drawing;
 using OpenTK;
 using Stareater.Localization;
 using Stareater.GLData;
+using Stareater.GraphicsEngine;
 
 namespace Stareater.GLRenderers
 {
@@ -14,7 +15,7 @@ namespace Stareater.GLRenderers
 		private TextDrawable textDrawable = null;
 		
 		#region implemented abstract members of ARenderer
-		public override void Draw(double deltaTime)
+		protected override void FrameUpdate(double deltaTime)
 		{
 			if (this.textDrawable == null)
 				this.textDrawable = new TextDrawable(
@@ -25,15 +26,10 @@ namespace Stareater.GLRenderers
 			this.textDrawable.Draw(this.projection, LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text());
 		}
 		
-		public override void ResetLists()
-		{
-			//no op
-		}
-		
 		protected override Matrix4 calculatePerspective()
 		{
 			var aspect = canvasSize.X / canvasSize.Y;
-			return orthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2());
+			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2());
 		}		
 		#endregion
 	}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NGenerics.DataStructures.Mathematical;
 using OpenTK.Graphics.OpenGL;
+using Stareater.GraphicsEngine;
 
 namespace Stareater.GLData
 {

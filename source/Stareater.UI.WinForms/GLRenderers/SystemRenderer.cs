@@ -9,6 +9,7 @@ using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.GLData;
 using Stareater.GUI;
+using Stareater.GraphicsEngine;
 
 namespace Stareater.GLRenderers
 {
@@ -97,7 +98,7 @@ namespace Stareater.GLRenderers
 		}
 		
 		#region ARenderer implementation
-		public override void Draw(double deltaTime)
+		protected override void FrameUpdate(double deltaTime)
 		{
 			var starTransform = Matrix4.CreateScale(StarScale);
 
@@ -139,7 +140,8 @@ namespace Stareater.GLRenderers
 			}
 		}
 
-		public override void ResetLists()
+		//TODO(0.6) refactor and remove
+		public void ResetLists()
 		{
 			this.setupVaos();
 		}
@@ -149,7 +151,7 @@ namespace Stareater.GLRenderers
 			var aspect = canvasSize.X / canvasSize.Y;
 			this.minOffset = aspect * DefaultViewSize / 2 - StarScale / 2;
 			this.limitPan();
-			return orthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2(originOffset, -BodiesY));
+			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2(originOffset, -BodiesY));
 		}
 		#endregion
 		

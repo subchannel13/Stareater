@@ -115,7 +115,6 @@
     <Compile Include="AppData\ImageCache.cs" />
     <Compile Include="AppData\LoadingMethods.cs" />
     <Compile Include="AppData\SettingsWinforms.cs" />
-    <Compile Include="GLData\AGlProgram.cs" />
     <Compile Include="GLData\PlanetOrbitGlProgram.cs" />
     <Compile Include="GLData\ShaderLibrary.cs" />
     <Compile Include="GLData\SpriteGlProgram.cs" />
@@ -138,7 +137,11 @@
     <Compile Include="GLRenderers\TextDrawable.cs" />
     <Compile Include="GLRenderers\TextRenderUtil.cs" />
     <Compile Include="GLRenderers\TextureUtils.cs" />
+    <Compile Include="GraphicsEngine\AGlProgram.cs" />
     <Compile Include="GraphicsEngine\AScene.cs" />
+    <Compile Include="GraphicsEngine\IShaderUniformData.cs" />
+    <Compile Include="GraphicsEngine\PolygonData.cs" />
+    <Compile Include="GraphicsEngine\SceneObject.cs" />
     <Compile Include="GraphicsEngine\SignalFlag.cs" />
     <Compile Include="GraphicsEngine\TimingLoop.cs" />
     <Compile Include="GuiUtils\NumberInput.cs" />

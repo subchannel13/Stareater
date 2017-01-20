@@ -13,6 +13,7 @@ using Stareater.Galaxy;
 using Stareater.Utils;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GLData;
+using Stareater.GraphicsEngine;
 
 namespace Stareater.GLRenderers
 {
@@ -67,7 +68,7 @@ namespace Stareater.GLRenderers
 		}
 		
 		#region ARenderer implementation
-		public override void Draw(double deltaTime)
+		protected override void FrameUpdate(double deltaTime)
 		{
 			this.animationTime += deltaTime;
 			
@@ -82,7 +83,8 @@ namespace Stareater.GLRenderers
 			this.unitSprites.Draw(this.projection);
 		}
 		
-		public override void ResetLists()
+		//TODO(0.6) refactor and remove
+		public void ResetLists()
 		{
 			this.setupGrid();
 			this.setupBodies();
@@ -92,7 +94,7 @@ namespace Stareater.GLRenderers
 		protected override Matrix4 calculatePerspective()
 		{
 			var aspect = canvasSize.X / canvasSize.Y;
-			return orthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2());
+			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2());
 		}
 		#endregion
 		

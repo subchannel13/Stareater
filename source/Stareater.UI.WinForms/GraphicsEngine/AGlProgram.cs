@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenTK.Graphics.OpenGL;
 
-namespace Stareater.GLData
+namespace Stareater.GraphicsEngine
 {
 	abstract class AGlProgram
 	{

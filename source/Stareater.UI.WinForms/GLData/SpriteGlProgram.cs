@@ -5,6 +5,7 @@ using System.Reflection;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using Stareater.GraphicsEngine;
 
 namespace Stareater.GLData
 {
@@ -62,9 +63,9 @@ namespace Stareater.GLData
 			GL.EnableVertexAttribArray(this.TexturePositionId);
 		}
 		
-		public class ObjectData
+		public class ObjectData : IShaderUniformData
 		{
-			public float Z { get; private set; }
+			public float Z { get; private set; } //TODO(v0.6) remove, redundant
 			public int TextureId { get; private set; }
 			public Color4 Color { get; set; }
 			public Matrix4 LocalTransform { get; set; }
@@ -76,6 +77,15 @@ namespace Stareater.GLData
 				this.TextureId = textureId;
 				this.Color = new Color4(color.R, color.G, color.B, color.A);
 			}
+
+			#region IShaderUniformData implementation
+
+			public AGlProgram ForProgram 
+			{
+				get { return ShaderLibrary.Sprite; }
+			}
+
+			#endregion
 		}
 	}
 }

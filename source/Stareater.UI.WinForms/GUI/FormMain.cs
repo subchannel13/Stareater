@@ -431,7 +431,7 @@ namespace Stareater.GUI
 			try {
 #endif
 				if (currentRenderer != null)
-					currentRenderer.Draw(this.animationDeltaTime); //TODO(v0.6) move to scene object
+					currentRenderer.Draw(this.animationDeltaTime);
 #if DEBUG
 			} catch(Exception ex)
 			{

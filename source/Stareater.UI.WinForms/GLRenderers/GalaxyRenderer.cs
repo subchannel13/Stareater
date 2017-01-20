@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows.Forms;
 
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
@@ -191,7 +190,7 @@ namespace Stareater.GLRenderers
 				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
 		}
 		
-		public override void Draw(double deltaTime)
+		protected override void FrameUpdate(double deltaTime)
 		{
 			if (this.refreshData.Check())
 			{
@@ -214,7 +213,8 @@ namespace Stareater.GLRenderers
 			drawMovementEta();
 		}
 
-		public override void ResetLists()
+		//TODO(0.6) refactor and remove
+		public void ResetLists()
 		{
 			this.setupVaos();
 		}
@@ -342,7 +342,7 @@ namespace Stareater.GLRenderers
 				(float)(screenSize.X * radius * aspect / screenSize.X) : 
 				(float)(screenSize.Y * radius * aspect / screenSize.Y);
 
-			return orthogonalPerspective(aspect * radius, radius, FarZ, originOffset);
+			return calcOrthogonalPerspective(aspect * radius, radius, FarZ, originOffset);
 		}
 		
 		private void setupVaos()
