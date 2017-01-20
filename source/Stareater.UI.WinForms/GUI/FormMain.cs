@@ -426,7 +426,7 @@ namespace Stareater.GUI
 			}
 			
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-			
+
 #if DEBUG
 			try {
 #endif

@@ -4,6 +4,8 @@ using System.Reflection;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using Stareater.GLData;
+using Stareater.GLRenderers;
 using Stareater.GraphicsEngine;
 
 namespace Stareater.GLData
@@ -64,7 +66,7 @@ namespace Stareater.GLData
 			GL.EnableVertexAttribArray(this.OrbitPositionId);
 		}
 		
-		public class ObjectData : IShaderUniformData
+		public class ObjectData : IShaderData
 		{
 			public float Z { get; private set; } //TODO(v0.6) remove, redundant
 			public float MinRadius { get; private set; }
@@ -88,6 +90,15 @@ namespace Stareater.GLData
 				get { return ShaderLibrary.PlanetOrbit; }
 			}
 
+			public int VertexDataSize 
+			{ 
+				get { return 4; }
+			}
+			
+			public IDrawable MakeDrawable(VertexArray vao, int objectIndex)
+			{
+				return new OrbitDrawable(vao, objectIndex, this);
+			}
 			#endregion
 		}
 	}

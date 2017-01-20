@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using OpenTK;
+using Stareater.GLData;
+using Stareater.GLRenderers;
 
 namespace Stareater.GraphicsEngine
 {
@@ -9,36 +12,31 @@ namespace Stareater.GraphicsEngine
 	{
 		protected const int NoCallList = -1;
 		
-		private List<SceneObject> Children = new List<SceneObject>();
+		private List<SceneObject> children = new List<SceneObject>();
+		private HashSet<float> dirtyLayers = new HashSet<float>();
+		private Dictionary<float, List<IDrawable>> drawables = new Dictionary<float, List<IDrawable>>();
+		private Dictionary<float, List<VertexArray>> Vaos = new Dictionary<float, List<VertexArray>>();
 		
 		public void Draw(double deltaTime)
 		{
 			this.FrameUpdate(deltaTime);
+			
+			if (this.dirtyLayers.Count > 0)
+				this.setupDrawables();
+			
+			foreach(var drawable in this.drawables.OrderBy(x => x.Key).SelectMany(x => x.Value))
+				drawable.Draw(this.projection);
 		}
 		
 		protected abstract void FrameUpdate(double deltaTime);
 		
-		#region Initialization/deinitialization
+		#region Scene events
 		public virtual void Activate()
 		{ }
 		
 		public virtual void Deactivate()
 		{ }
-		#endregion
 		
-		#region Scene objects
-		protected void Add(SceneObject sceneObject)
-		{
-			this.Children.Add(sceneObject);
-		}
-		
-		protected void ClearScene()
-		{
-			this.Children.Clear();
-		}
-		#endregion
-		
-		#region Events
 		public void ResetProjection(float screenWidth, float screenHeigth, float canvasWidth, float canvasHeigth)
 		{
 			this.canvasSize = new Vector2(canvasWidth, canvasHeigth);
@@ -47,7 +45,38 @@ namespace Stareater.GraphicsEngine
 		}
 		#endregion
 		
-		#region Perspective and viewport
+		#region Input handling
+		public virtual void OnKeyPress(System.Windows.Forms.KeyPressEventArgs e)
+		{ }
+		
+		public virtual void OnMouseDoubleClick(MouseEventArgs e)
+		{ }
+		
+		public virtual void OnMouseClick(MouseEventArgs e)
+		{ }
+		
+		public virtual void OnMouseMove(MouseEventArgs e)
+		{ }
+
+		public virtual void OnMouseScroll(MouseEventArgs e)
+		{ }
+		#endregion
+		
+		#region Scene objects
+		protected void Add(SceneObject sceneObject)
+		{
+			this.children.Add(sceneObject);
+			this.dirtyLayers.UnionWith(sceneObject.Children.Select(x => x.Z));
+		}
+		
+		protected void ClearScene()
+		{
+			this.children.Clear();
+			this.dirtyLayers.UnionWith(this.drawables.Keys);
+		}
+		#endregion
+		
+		#region Perspective and viewport calculation
 		protected Vector2 canvasSize { get; private set; }
 		protected Vector2 screenSize { get; private set; }
 		protected Matrix4 invProjection { get; private set; }
@@ -86,21 +115,43 @@ namespace Stareater.GraphicsEngine
 		}
 		#endregion
 
-		#region Input handling
-		public virtual void OnKeyPress(System.Windows.Forms.KeyPressEventArgs e)
-		{ }
-		
-		public virtual void OnMouseDoubleClick(MouseEventArgs e)
-		{ }
-		
-		public virtual void OnMouseClick(MouseEventArgs e)
-		{ }
-		
-		public virtual void OnMouseMove(MouseEventArgs e)
-		{ }
-
-		public virtual void OnMouseScroll(MouseEventArgs e)
-		{ }
+		#region Rendering logic
+		private void setupDrawables()
+		{
+			foreach(var layer in this.dirtyLayers)
+			{
+				foreach(var vao in this.Vaos[layer])
+					vao.Delete();
+				this.Vaos[layer].Clear();
+				this.drawables[layer] = new List<IDrawable>();
+				
+				var vaoBuilders = new Dictionary<AGlProgram, VertexArrayBuilder>();
+				var drawableData = new List<PolygonData>();
+				foreach(var polygon in this.children.SelectMany(x => x.Children).Where(x => Math.Abs(x.Z - layer) < 1e-3))
+				{
+					if (!vaoBuilders.ContainsKey(polygon.ShaderData.ForProgram))
+						vaoBuilders[polygon.ShaderData.ForProgram] = new VertexArrayBuilder();
+					
+					var builder = vaoBuilders[polygon.ShaderData.ForProgram];
+					builder.BeginObject();
+					builder.Add(polygon.VertexData, polygon.ShaderData.VertexDataSize);
+					builder.EndObject();
+					
+					drawableData.Add(polygon);
+				}
+				
+				var vaos = new Dictionary<AGlProgram, VertexArray>();
+				foreach(var builder in vaoBuilders)
+					vaos.Add(builder.Key, builder.Value.Generate(builder.Key));
+				
+				for (int i = 0; i < drawableData.Count; i++)
+				{
+					var data = drawableData[i];
+					this.drawables[data.Z].Add(data.ShaderData.MakeDrawable(vaos[data.ShaderData.ForProgram], i));
+				}
+			}
+			this.dirtyLayers.Clear();
+		}
 		#endregion
 	}
 }

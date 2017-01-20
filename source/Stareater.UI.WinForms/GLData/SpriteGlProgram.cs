@@ -5,6 +5,7 @@ using System.Reflection;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using Stareater.GLRenderers;
 using Stareater.GraphicsEngine;
 
 namespace Stareater.GLData
@@ -63,7 +64,7 @@ namespace Stareater.GLData
 			GL.EnableVertexAttribArray(this.TexturePositionId);
 		}
 		
-		public class ObjectData : IShaderUniformData
+		public class ObjectData : IShaderData
 		{
 			public float Z { get; private set; } //TODO(v0.6) remove, redundant
 			public int TextureId { get; private set; }
@@ -85,6 +86,15 @@ namespace Stareater.GLData
 				get { return ShaderLibrary.Sprite; }
 			}
 
+			public int VertexDataSize 
+			{ 
+				get { return 4; }
+			}
+			
+			public IDrawable MakeDrawable(VertexArray vao, int objectIndex)
+			{
+				return new SpriteDrawable(vao, objectIndex, this);
+			}
 			#endregion
 		}
 	}

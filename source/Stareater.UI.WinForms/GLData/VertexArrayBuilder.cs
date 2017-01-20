@@ -47,7 +47,14 @@ namespace Stareater.GLData
 			GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(this.vertices.Count * sizeof (float)), this.vertices.ToArray(), BufferUsageHint.StaticDraw);
 			vao.Update(this.objectStarts, this.objectSizes);
 		}
+
+		public void Add(ICollection<float> vertexData, int vertexDataSize)
+		{
+			this.vertices.AddRange(vertexData);
+			this.objectSize += vertexData.Count / vertexDataSize;
+		}
 		
+		//TODO(v0.6) move below methods to dedicated class
 		public void AddFlatOrbitVertex(float x, float y)
 		{
 			this.vertices.Add(x); 

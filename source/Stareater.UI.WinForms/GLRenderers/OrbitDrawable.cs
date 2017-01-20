@@ -5,6 +5,7 @@ using Stareater.GLData;
 
 namespace Stareater.GLRenderers
 {
+	//TODO(v0.6) Move to GlProgram inner class
 	class OrbitDrawable : IDrawable
 	{
 		public VertexArray Vao { get; private set; }
