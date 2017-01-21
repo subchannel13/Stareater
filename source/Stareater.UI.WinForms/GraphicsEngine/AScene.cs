@@ -11,8 +11,8 @@ namespace Stareater.GraphicsEngine
 	abstract class AScene
 	{
 		protected const int NoCallList = -1;
-		
-		private List<SceneObject> children = new List<SceneObject>();
+
+		private HashSet<SceneObject> children = new HashSet<SceneObject>();
 		private HashSet<float> dirtyLayers = new HashSet<float>();
 		private Dictionary<float, List<IDrawable>> drawables = new Dictionary<float, List<IDrawable>>();
 		private Dictionary<float, List<VertexArray>> Vaos = new Dictionary<float, List<VertexArray>>();
@@ -66,7 +66,13 @@ namespace Stareater.GraphicsEngine
 		protected void Add(SceneObject sceneObject)
 		{
 			this.children.Add(sceneObject);
-			this.dirtyLayers.UnionWith(sceneObject.Children.Select(x => x.Z));
+			this.dirtyLayers.UnionWith(sceneObject.RenderData.Select(x => x.Z));
+		}
+
+		protected void Remove(SceneObject sceneObject)
+		{
+			this.children.Remove(sceneObject);
+			this.dirtyLayers.UnionWith(sceneObject.RenderData.Select(x => x.Z));
 		}
 		
 		protected void ClearScene()
@@ -120,14 +126,19 @@ namespace Stareater.GraphicsEngine
 		{
 			foreach(var layer in this.dirtyLayers)
 			{
-				foreach(var vao in this.Vaos[layer])
-					vao.Delete();
-				this.Vaos[layer].Clear();
+				if (this.Vaos.ContainsKey(layer))
+				{
+					foreach (var vao in this.Vaos[layer])
+						vao.Delete();
+					this.Vaos[layer].Clear();
+				}
+				else
+					this.Vaos[layer] = new List<VertexArray>();
 				this.drawables[layer] = new List<IDrawable>();
 				
 				var vaoBuilders = new Dictionary<AGlProgram, VertexArrayBuilder>();
 				var drawableData = new List<PolygonData>();
-				foreach(var polygon in this.children.SelectMany(x => x.Children).Where(x => Math.Abs(x.Z - layer) < 1e-3))
+				foreach(var polygon in this.children.SelectMany(x => x.RenderData).Where(x => Math.Abs(x.Z - layer) < 1e-3))
 				{
 					if (!vaoBuilders.ContainsKey(polygon.ShaderData.ForProgram))
 						vaoBuilders[polygon.ShaderData.ForProgram] = new VertexArrayBuilder();
@@ -141,8 +152,12 @@ namespace Stareater.GraphicsEngine
 				}
 				
 				var vaos = new Dictionary<AGlProgram, VertexArray>();
-				foreach(var builder in vaoBuilders)
-					vaos.Add(builder.Key, builder.Value.Generate(builder.Key));
+				foreach (var builder in vaoBuilders)
+				{
+					var vao = builder.Value.Generate(builder.Key);
+					vaos.Add(builder.Key, vao);
+					this.Vaos[layer].Add(vao);
+				}
 				
 				for (int i = 0; i < drawableData.Count; i++)
 				{

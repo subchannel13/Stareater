@@ -7,6 +7,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using Stareater.GLRenderers;
 using Stareater.GraphicsEngine;
+using System.Collections.Generic;
 
 namespace Stareater.GLData
 {
@@ -63,7 +64,35 @@ namespace Stareater.GLData
 			GL.VertexAttribPointer(this.TexturePositionId, 2, VertexAttribPointerType.Float, false, VertexSize, 2 * sizeof(float));
 			GL.EnableVertexAttribArray(this.TexturePositionId);
 		}
-		
+
+		public static IEnumerable<Vector2> PathRectVertexData(Vector2 fromPosition, Vector2 toPosition, float width, TextureInfo textureinfo)
+		{
+			var center = (fromPosition + toPosition) / 2;
+			var length = toPosition - fromPosition;
+			var direction = new Vector2(length.X, length.Y);
+			direction.Normalize();
+			var widthDir = new Vector2(-direction.Y, direction.X) * width;
+
+			yield return center - length / 2 + widthDir / 2;
+			yield return textureinfo.Coordinates[3];
+
+			yield return center + length / 2 + widthDir / 2;
+			yield return textureinfo.Coordinates[2];
+
+			yield return center + length / 2 - widthDir / 2;
+			yield return textureinfo.Coordinates[1];
+
+
+			yield return center + length / 2 - widthDir / 2;
+			yield return textureinfo.Coordinates[1];
+
+			yield return center - length / 2 - widthDir / 2;
+			yield return textureinfo.Coordinates[0];
+
+			yield return center - length / 2 + widthDir / 2;
+			yield return textureinfo.Coordinates[3];
+		}
+
 		public class ObjectData : IShaderData
 		{
 			public float Z { get; private set; } //TODO(v0.6) remove, redundant

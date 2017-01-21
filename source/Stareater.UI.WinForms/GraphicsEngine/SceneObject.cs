@@ -6,11 +6,11 @@ namespace Stareater.GraphicsEngine
 {
 	class SceneObject
 	{
-		public IEnumerable<PolygonData> Children { get; private set; }
+		public IEnumerable<PolygonData> RenderData { get; private set; }
 		
-		public SceneObject(IEnumerable<PolygonData> children)
+		public SceneObject(IEnumerable<PolygonData> renderData)
 		{
-			this.Children = children;
+			this.RenderData = renderData;
 		}
 	}
 }

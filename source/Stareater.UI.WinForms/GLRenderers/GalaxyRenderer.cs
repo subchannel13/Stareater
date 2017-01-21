@@ -52,7 +52,7 @@ namespace Stareater.GLRenderers
 		private IGalaxyViewListener galaxyViewListener;
 		private SignalFlag refreshData = new SignalFlag();
 		
-		private SpriteDrawable wormholeSprites = null;
+		private SceneObject wormholeSprites = null;
 		private BatchDrawable<SpriteDrawable, SpriteGlProgram.ObjectData> starSprites = null;
 		private TextDrawable etaTextSprites = null;
 
@@ -204,7 +204,6 @@ namespace Stareater.GLRenderers
 				this.ResetLists();
 			}
 			
-			this.wormholeSprites.Draw(this.projection);
 			drawFleetMovement();
 			drawMovementSimulation();
 			this.starSprites.Draw(this.projection);
@@ -407,29 +406,24 @@ namespace Stareater.GLRenderers
 		
 		private void setupWormholeSprites()
 		{
-			var vboBuilder = new VertexArrayBuilder();
-			vboBuilder.BeginObject();
-			
-			foreach (var wormhole in this.currentPlayer.Wormholes) {
-				var direction = wormhole.ToStar.Position - wormhole.FromStar.Position;
-				direction.Normalize();
-				vboBuilder.AddPathRect(wormhole.FromStar.Position, wormhole.ToStar.Position, 0.8 * PathWidth, GalaxyTextures.Get.PathLine.Texture);
-			}
-			vboBuilder.EndObject();
-			
-			if (this.wormholeSprites == null)
-			{
-				var wormholeVba = vboBuilder.Generate(ShaderLibrary.Sprite);
-				this.wormholeSprites = new SpriteDrawable(
-					wormholeVba,
-					0,
+			if (this.wormholeSprites != null)
+				this.Remove(this.wormholeSprites);
+
+			this.wormholeSprites = new SceneObject(new[]{
+				new PolygonData(
+					WormholeZ,
 					new SpriteGlProgram.ObjectData(
 						Matrix4.Identity, WormholeZ, GalaxyTextures.Get.PathLine.Texture.Id, Color.Blue
-					)
-				);
-			}
-			else
-				vboBuilder.Update(this.wormholeSprites.Vao);
+					),
+					this.currentPlayer.Wormholes.SelectMany(wormhole => SpriteGlProgram.PathRectVertexData(
+						convert(wormhole.FromStar.Position),
+						convert(wormhole.ToStar.Position),
+						0.8f * PathWidth,
+						GalaxyTextures.Get.PathLine.Texture
+					))
+				)
+			});
+			this.Add(this.wormholeSprites);
 		}
 		#endregion
 		
@@ -588,8 +582,13 @@ namespace Stareater.GLRenderers
 			if (this.originOffset.Y > mapBoundsMax.Y) 
 				this.originOffset.Y = mapBoundsMax.Y;
 		}
-				
-		private Matrix4 pathMatrix(Vector2 fromPoint, Vector2 toPoint)
+
+		private static Vector2 convert(NGenerics.DataStructures.Mathematical.Vector2D v)
+		{
+			return new Vector2((float)v.X, (float)v.Y);
+		}
+
+		private static Matrix4 pathMatrix(Vector2 fromPoint, Vector2 toPoint)
 		{
 			var xAxis = toPoint - fromPoint;
 			var yAxis = new Vector2(xAxis.Y, -xAxis.X);

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using OpenTK;
 
 namespace Stareater.GraphicsEngine
 {
@@ -15,5 +17,9 @@ namespace Stareater.GraphicsEngine
 			this.ShaderData = shaderUniforms;
 			this.VertexData = vertexData;
 		}
+
+		public PolygonData(float z, IShaderData shaderUniforms, IEnumerable<Vector2> vertexData) :
+			this(z, shaderUniforms, vertexData.SelectMany(v => new [] {v.X, v.Y}).ToList())
+		{ }
 	}
 }
