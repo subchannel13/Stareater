@@ -2,17 +2,18 @@
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.GLData;
+using Stareater.GLData.SpriteShader;
 
 namespace Stareater.GLRenderers
 {
 	class TextDrawable
 	{
-		public SpriteGlProgram.ObjectData ObjectData { get; private set; }
+		public SpriteData ObjectData { get; private set; }
 		private VertexArray vao = null;
 		private float textAdjustment;
 		private string lastText = null;
 		
-		public TextDrawable(SpriteGlProgram.ObjectData objectData, float textAdjustment)
+		public TextDrawable(SpriteData objectData, float textAdjustment)
 		{
 			this.ObjectData = objectData;
 			this.textAdjustment = textAdjustment;

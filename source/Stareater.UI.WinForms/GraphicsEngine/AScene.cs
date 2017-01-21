@@ -24,7 +24,7 @@ namespace Stareater.GraphicsEngine
 			if (this.dirtyLayers.Count > 0)
 				this.setupDrawables();
 			
-			foreach(var drawable in this.drawables.OrderBy(x => x.Key).SelectMany(x => x.Value))
+			foreach(var drawable in this.drawables.OrderByDescending(x => x.Key).SelectMany(x => x.Value))
 				drawable.Draw(this.projection);
 		}
 		
@@ -73,6 +73,14 @@ namespace Stareater.GraphicsEngine
 		{
 			this.children.Remove(sceneObject);
 			this.dirtyLayers.UnionWith(sceneObject.RenderData.Select(x => x.Z));
+		}
+
+		protected void Update(ref SceneObject oldObject, SceneObject newObject)
+		{
+			if (oldObject != null)
+				this.Remove(oldObject);
+			this.Add(newObject);
+			oldObject = newObject;
 		}
 		
 		protected void ClearScene()

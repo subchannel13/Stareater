@@ -4,6 +4,7 @@ using OpenTK;
 using Stareater.Localization;
 using Stareater.GLData;
 using Stareater.GraphicsEngine;
+using Stareater.GLData.SpriteShader;
 
 namespace Stareater.GLRenderers
 {
@@ -19,7 +20,7 @@ namespace Stareater.GLRenderers
 		{
 			if (this.textDrawable == null)
 				this.textDrawable = new TextDrawable(
-					new SpriteGlProgram.ObjectData(
+					new SpriteData(
 						Matrix4.CreateTranslation(0, 0.5f, 0), 0, TextRenderUtil.Get.TextureId, Color.Red),
 					-0.5f);
 			

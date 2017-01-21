@@ -14,6 +14,7 @@ using Stareater.Utils;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GLData;
 using Stareater.GraphicsEngine;
+using Stareater.GLData.SpriteShader;
 
 namespace Stareater.GLRenderers
 {
@@ -40,8 +41,8 @@ namespace Stareater.GLRenderers
 		
 		private double animationTime = 0;
 		private OrbitDrawable gridDrawable = null;
-		private BatchDrawable<SpriteDrawable, SpriteGlProgram.ObjectData> bodySprites = null;
-		private BatchDrawable<SpriteDrawable, SpriteGlProgram.ObjectData> unitSprites = null;
+		private BatchDrawable<SpriteDrawable, SpriteData> bodySprites = null;
+		private BatchDrawable<SpriteDrawable, SpriteData> unitSprites = null;
 		
 		private CombatantInfo currentUnit = null;
 		private int currentUnitIndex = 0;
@@ -50,12 +51,12 @@ namespace Stareater.GLRenderers
 
 		public SpaceCombatRenderer()
 		{
-			this.bodySprites = new BatchDrawable<SpriteDrawable, SpriteGlProgram.ObjectData>(
-				ShaderLibrary.Sprite, 
+			this.bodySprites = new BatchDrawable<SpriteDrawable, SpriteData>(
+				ShaderLibrary.Sprite,
 				(vao, i, data) => new SpriteDrawable(vao, i, data));
-			
-			this.unitSprites = new BatchDrawable<SpriteDrawable, SpriteGlProgram.ObjectData>(
-				ShaderLibrary.Sprite, 
+
+			this.unitSprites = new BatchDrawable<SpriteDrawable, SpriteData>(
+				ShaderLibrary.Sprite,
 				(vao, i, data) => new SpriteDrawable(vao, i, data));
 		}
 		
@@ -135,14 +136,14 @@ namespace Stareater.GLRenderers
 		
 		private void setupBodies()
 		{
-			var batchData = new List<SpriteGlProgram.ObjectData>();
+			var batchData = new List<SpriteData>();
 			var vaoBuilder = new VertexArrayBuilder();
 			var formatter = new ThousandsFormatter();
 			
 			vaoBuilder.BeginObject();
 			vaoBuilder.AddTexturedRect(GalaxyTextures.Get.SystemStar.Texture);
 			vaoBuilder.EndObject();
-			batchData.Add(new SpriteGlProgram.ObjectData(Matrix4.Identity, StarColorZ, GalaxyTextures.Get.StarColor.Texture.Id, this.Controller.Star.Color));
+			batchData.Add(new SpriteData(Matrix4.Identity, StarColorZ, GalaxyTextures.Get.StarColor.Texture.Id, this.Controller.Star.Color));
 			
 			foreach(var planet in this.Controller.Planets)
 			{
@@ -165,7 +166,7 @@ namespace Stareater.GLRenderers
 				vaoBuilder.BeginObject();
 				vaoBuilder.AddTexturedRect(planetTexture.Texture); //FIXME sometimes bugs out
 				vaoBuilder.EndObject();
-				batchData.Add(new SpriteGlProgram.ObjectData(
+				batchData.Add(new SpriteData(
 					planetTransform, 
 					PlanetColorZ,
 					planetTexture.Texture.Id,
@@ -177,7 +178,7 @@ namespace Stareater.GLRenderers
 					TextRenderUtil.Get.BufferText(formatter.Format(planet.Population), -1, Matrix4.Identity, vaoBuilder);
 					vaoBuilder.EndObject();
 					
-					batchData.Add(new SpriteGlProgram.ObjectData(
+					batchData.Add(new SpriteData(
 						PopulationTransform * planetTransform, 
 						MoreCombatantsZ,
 						TextRenderUtil.Get.TextureId,
@@ -241,7 +242,7 @@ namespace Stareater.GLRenderers
 		
 		private void setupUnits()
 		{
-			var batchData = new List<SpriteGlProgram.ObjectData>();
+			var batchData = new List<SpriteData>();
 			var vaoBuilder = new VertexArrayBuilder();
 			
 			var units = this.Controller.Units.GroupBy(x => x.Position);
@@ -263,7 +264,7 @@ namespace Stareater.GLRenderers
 				vaoBuilder.BeginObject();
 				vaoBuilder.AddTexturedRect(unitSprite.Texture);
 				vaoBuilder.EndObject();
-				batchData.Add(new SpriteGlProgram.ObjectData(
+				batchData.Add(new SpriteData(
 					hexTransform, 
 					CombatantZ, 
 					unitSprite.Texture.Id, 
@@ -276,7 +277,7 @@ namespace Stareater.GLRenderers
 					vaoBuilder.AddTexturedRect(GalaxyTextures.Get.FleetIndicator.Texture);
 					vaoBuilder.EndObject();
 					
-					batchData.Add(new SpriteGlProgram.ObjectData(
+					batchData.Add(new SpriteData(
 						Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, 0.2f * i + 0.5f, 0) * hexTransform, 
 						MoreCombatantsZ, 
 						GalaxyTextures.Get.FleetIndicator.Texture.Id, 
@@ -287,7 +288,7 @@ namespace Stareater.GLRenderers
 				TextRenderUtil.Get.BufferText(formatter.Format(unit.Count), -1, Matrix4.Identity, vaoBuilder);
 				vaoBuilder.EndObject();
 				
-				batchData.Add(new SpriteGlProgram.ObjectData(
+				batchData.Add(new SpriteData(
 					Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f, 0) * hexTransform, 
 					MoreCombatantsZ,
 					TextRenderUtil.Get.TextureId,
@@ -300,7 +301,7 @@ namespace Stareater.GLRenderers
 			this.unitSprites.Update(vaoBuilder, batchData);
 		}
 		
-		private void setupValidMoves(VertexArrayBuilder vaoBuilder, ICollection<SpriteGlProgram.ObjectData> batchData)
+		private void setupValidMoves(VertexArrayBuilder vaoBuilder, ICollection<SpriteData> batchData)
 		{
 			var center = new Vector2(hexX(this.currentUnit.Position), hexY(this.currentUnit.Position));
 			foreach(var move in this.currentUnit.ValidMoves)
@@ -322,7 +323,7 @@ namespace Stareater.GLRenderers
 				vaoBuilder.BeginObject();
 				vaoBuilder.AddTexturedRect(GalaxyTextures.Get.MoveToArrow.Texture);
 				vaoBuilder.EndObject();
-				batchData.Add(new SpriteGlProgram.ObjectData(
+				batchData.Add(new SpriteData(
 					Matrix4.CreateScale(0.4f, 0.4f, 1) * Matrix4.CreateTranslation(-0.25f, 0, 0) * moveTransform, 
 					MovemenentZ, 
 					GalaxyTextures.Get.MoveToArrow.Texture.Id, 

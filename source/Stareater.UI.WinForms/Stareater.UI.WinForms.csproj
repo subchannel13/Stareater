@@ -117,8 +117,11 @@
     <Compile Include="AppData\SettingsWinforms.cs" />
     <Compile Include="GLData\PlanetOrbitGlProgram.cs" />
     <Compile Include="GLData\ShaderLibrary.cs" />
-    <Compile Include="GLData\SpriteGlProgram.cs" />
+    <Compile Include="GLData\SpriteShader\SpriteData.cs" />
+    <Compile Include="GLData\SpriteShader\SpriteDrawable.cs" />
+    <Compile Include="GLData\SpriteShader\SpriteGlProgram.cs" />
     <Compile Include="GLData\SpriteInfo.cs" />
+    <Compile Include="GLData\SpriteShader\SpriteHelpers.cs" />
     <Compile Include="GLData\TextureInfo.cs" />
     <Compile Include="GLData\VertexArray.cs" />
     <Compile Include="GLData\VertexArrayBuilder.cs" />
@@ -127,12 +130,11 @@
     <Compile Include="GLRenderers\GalaxySelectionType.cs" />
     <Compile Include="GLRenderers\GalaxyTextures.cs" />
     <Compile Include="GLRenderers\GameOverRenderer.cs" />
-    <Compile Include="GLRenderers\IDrawable.cs" />
+    <Compile Include="GLData\IDrawable.cs" />
     <Compile Include="GLRenderers\IGalaxyViewListener.cs" />
     <Compile Include="GLRenderers\GalaxyRenderer.cs" />
     <Compile Include="GLRenderers\OrbitDrawable.cs" />
     <Compile Include="GLRenderers\SpaceCombatRenderer.cs" />
-    <Compile Include="GLRenderers\SpriteDrawable.cs" />
     <Compile Include="GLRenderers\SystemRenderer.cs" />
     <Compile Include="GLRenderers\TextDrawable.cs" />
     <Compile Include="GLRenderers\TextRenderUtil.cs" />
