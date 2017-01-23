@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Reflection;
-using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using Stareater.GLRenderers;
 using Stareater.GraphicsEngine;
-using System.Collections.Generic;
 
 namespace Stareater.GLData.SpriteShader
 {

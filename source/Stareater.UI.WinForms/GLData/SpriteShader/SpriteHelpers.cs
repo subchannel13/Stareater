@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using OpenTK;
 
 namespace Stareater.GLData.SpriteShader
@@ -67,6 +66,11 @@ namespace Stareater.GLData.SpriteShader
 			yield return y;
 			yield return tx;
 			yield return ty;
+		}
+		
+		public static IEnumerable<Vector2> UnitRectVertexData(TextureInfo textureinfo)
+		{
+			return TexturedRectVertexData(new Vector2(0, 0), 1, 1, textureinfo);
 		}
 	}
 }

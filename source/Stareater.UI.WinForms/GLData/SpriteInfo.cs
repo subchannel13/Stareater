@@ -1,5 +1,4 @@
 ﻿using System;
-using Stareater.GLRenderers;
 
 namespace Stareater.GLData
 {

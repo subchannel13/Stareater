@@ -53,6 +53,7 @@ namespace Stareater.GLRenderers
 		private IGalaxyViewListener galaxyViewListener;
 		private SignalFlag refreshData = new SignalFlag();
 		
+		private IEnumerable<SceneObject> fleetMarkers = null;
 		private SceneObject wormholeSprites = null;
 		private IEnumerable<SceneObject> starSprites = null;
 		private TextDrawable etaTextSprites = null;
@@ -199,7 +200,6 @@ namespace Stareater.GLRenderers
 			
 			drawFleetMovement();
 			drawMovementSimulation();
-			drawFleetMarkers();
 			drawSelectionMarkers();
 			drawMovementEta();
 		}
@@ -212,18 +212,6 @@ namespace Stareater.GLRenderers
 		#endregion
 
 		#region Drawing setup and helpers
-		private void drawFleetMarkers()
-		{
-			foreach (var fleet in this.fleetPositions)
-				TextureUtils.DrawSprite(
-					GalaxyTextures.Get.FleetIndicator, 
-					this.projection, 
-					Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation((float)fleet.Value.X, (float)fleet.Value.Y, 0),
-					FleetZ, 
-					fleet.Key.Owner.Color
-				);
-		}
-
 		private void drawFleetMovement()
 		{
 			foreach (var fleetPos in this.fleetPositions) {
@@ -335,11 +323,49 @@ namespace Stareater.GLRenderers
 
 			return calcOrthogonalPerspective(aspect * radius, radius, FarZ, originOffset);
 		}
-		
+
+		private Matrix4 fleetTransform(FleetInfo fleet)
+		{
+			var atStar = this.QueryScene(fleet.Position, 1).Any(x => x.Data is StarData);
+			var displayPosition = new Vector3((float)fleet.Position.X, (float)fleet.Position.Y, 0);
+
+			if (!fleet.IsMoving)
+			{
+				var players = this.fleetsReal.
+					Query(fleet.Position, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0)).
+					Select(x => x.Owner).
+					Where(x => x != this.currentPlayer.Info).
+					Distinct().ToList(); //TODO(v0.6) sort players by some key
+				
+				int index = (fleet.Owner == this.currentPlayer.Info) ? 0 : (1 + players.IndexOf(fleet.Owner));
+				displayPosition += new Vector3(0.5f, 0.5f - 0.2f * index, 0);
+			}
+			else if (fleet.IsMoving && atStar)
+				displayPosition += new Vector3(-0.5f, 0.5f, 0);
+
+			return Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation(displayPosition);
+		}
+
 		private void setupVaos()
 		{
+			this.setupFleetMarkers();
 			this.setupStarSprites();
 			this.setupWormholeSprites();
+		}
+		
+		private void setupFleetMarkers()
+		{
+			this.UpdateScene(
+				ref this.fleetMarkers,
+				this.currentPlayer.Fleets.Select(fleet => new SceneObject(
+					new []{
+						new PolygonData(
+							FleetZ,
+							new SpriteData(fleetTransform(fleet), FleetZ, GalaxyTextures.Get.FleetIndicator.Texture.Id, fleet.Owner.Color),
+							SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.FleetIndicator.Texture)
+						)
+					}))
+			);
 		}
 		
 		private void setupStarSprites()
