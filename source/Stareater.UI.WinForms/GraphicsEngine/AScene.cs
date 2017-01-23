@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Forms;
 using OpenTK;
 using Stareater.GLData;
-using Stareater.GLRenderers;
 
 namespace Stareater.GraphicsEngine
 {
@@ -63,30 +62,36 @@ namespace Stareater.GraphicsEngine
 		#endregion
 		
 		#region Scene objects
-		protected void Add(SceneObject sceneObject)
+		protected void AddToScene(SceneObject sceneObject)
 		{
 			this.children.Add(sceneObject);
 			this.dirtyLayers.UnionWith(sceneObject.RenderData.Select(x => x.Z));
 		}
 
-		protected void Remove(SceneObject sceneObject)
+		protected void RemoveFromScene(SceneObject sceneObject)
 		{
 			this.children.Remove(sceneObject);
 			this.dirtyLayers.UnionWith(sceneObject.RenderData.Select(x => x.Z));
 		}
 
-		protected void Update(ref SceneObject oldObject, SceneObject newObject)
+		protected void UpdateScene(ref SceneObject oldObject, SceneObject newObject)
 		{
 			if (oldObject != null)
-				this.Remove(oldObject);
-			this.Add(newObject);
+				this.RemoveFromScene(oldObject);
+			
+			this.AddToScene(newObject);
 			oldObject = newObject;
 		}
 		
-		protected void ClearScene()
+		protected void UpdateScene(ref IEnumerable<SceneObject> oldObjects, IEnumerable<SceneObject> newObjects)
 		{
-			this.children.Clear();
-			this.dirtyLayers.UnionWith(this.drawables.Keys);
+			if (oldObjects != null)
+				foreach(var obj in oldObjects)
+					this.RemoveFromScene(obj);
+			
+			foreach(var obj in newObjects)
+				this.AddToScene(obj);
+			oldObjects = newObjects;
 		}
 		#endregion
 		

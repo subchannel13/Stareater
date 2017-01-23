@@ -54,7 +54,7 @@ namespace Stareater.GLRenderers
 		private SignalFlag refreshData = new SignalFlag();
 		
 		private SceneObject wormholeSprites = null;
-		private BatchDrawable<SpriteDrawable, SpriteData> starSprites = null;
+		private IEnumerable<SceneObject> starSprites = null;
 		private TextDrawable etaTextSprites = null;
 
 		private int zoomLevel = 2;
@@ -78,9 +78,6 @@ namespace Stareater.GLRenderers
 		public GalaxyRenderer(IGalaxyViewListener galaxyViewListener)
 		{ 
 			this.galaxyViewListener = galaxyViewListener;
-			this.starSprites = new BatchDrawable<SpriteDrawable, SpriteData>(
-				ShaderLibrary.Sprite,
-				(vao, i, data) => new SpriteDrawable(vao, i, data));
 		}
 		
 		public PlayerController CurrentPlayer
@@ -207,7 +204,6 @@ namespace Stareater.GLRenderers
 			
 			drawFleetMovement();
 			drawMovementSimulation();
-			this.starSprites.Draw(this.projection);
 			drawFleetMarkers();
 			drawSelectionMarkers();
 			drawMovementEta();
@@ -353,61 +349,36 @@ namespace Stareater.GLRenderers
 		
 		private void setupStarSprites()
 		{
-			var batchData = new List<SpriteData>();
-			var vaoBuilder = new VertexArrayBuilder();
-			
-			foreach(var colorGroup in this.stars.GetAll().GroupBy(x => x.Color))
-			{
-				vaoBuilder.BeginObject();
-				
-				foreach (var star in colorGroup)
-					vaoBuilder.AddTexturedRect(star.Position, 1, 1, GalaxyTextures.Get.StarColor.Texture);
-				
-				vaoBuilder.EndObject();
-				batchData.Add(new SpriteData(
-					Matrix4.Identity, 
-					StarColorZ,
-					GalaxyTextures.Get.StarColor.Texture.Id, 
-					colorGroup.Key
-				));
-			}
-			
-			vaoBuilder.BeginObject();
-			foreach (var star in this.stars.GetAll())
-				vaoBuilder.AddTexturedRect(star.Position, 1, 1, GalaxyTextures.Get.StarGlow.Texture);				
-			
-			vaoBuilder.EndObject();
-			batchData.Add(new SpriteData(
-				Matrix4.Identity, 
-				StarSaturationZ,
-				GalaxyTextures.Get.StarGlow.Texture.Id, 
-				Color.White
-			));
-			
-			float starNameZ = StarNameZ;
-			foreach (var star in this.currentPlayer.Stars) {
-				var transform = 
-					Matrix4.CreateScale(StarNameScale) *
-					Matrix4.CreateTranslation((float)star.Position.X, (float)star.Position.Y - 0.5f, 0);
-				vaoBuilder.BeginObject();
-				TextRenderUtil.Get.BufferText(star.Name.ToText(LocalizationManifest.Get.CurrentLanguage), -0.5f, transform, vaoBuilder);
-				vaoBuilder.EndObject();
-				
-				batchData.Add(new SpriteData(
-					Matrix4.Identity, 
-					starNameZ,
-					TextRenderUtil.Get.TextureId, 
-					starNameColor(star)
-				));
-				starNameZ -= StarNameZRange / this.currentPlayer.StarCount;
-			}
-
-			this.starSprites.Update(vaoBuilder, batchData);
+			this.UpdateScene(
+				ref this.starSprites,
+				this.currentPlayer.Stars.Select(star => new SceneObject(
+					new []{
+						new PolygonData(
+							StarColorZ,
+							new SpriteData(Matrix4.Identity, StarColorZ, GalaxyTextures.Get.StarColor.Texture.Id, star.Color),
+							SpriteHelpers.TexturedRectVertexData(convert(star.Position), 1, 1, GalaxyTextures.Get.StarColor.Texture)
+						),
+						new PolygonData(
+							StarSaturationZ,
+							new SpriteData(Matrix4.Identity, StarSaturationZ, GalaxyTextures.Get.StarGlow.Texture.Id, Color.White),
+							SpriteHelpers.TexturedRectVertexData(convert(star.Position), 1, 1, GalaxyTextures.Get.StarGlow.Texture)
+						),
+						new PolygonData(
+							StarNameZ,
+							new SpriteData(Matrix4.Identity, StarNameZ, TextRenderUtil.Get.TextureId, starNameColor(star)),
+							TextRenderUtil.Get.BufferText(
+								star.Name.ToText(LocalizationManifest.Get.CurrentLanguage), 
+								-0.5f, 
+								Matrix4.CreateScale(StarNameScale) * Matrix4.CreateTranslation((float)star.Position.X, (float)star.Position.Y - 0.5f, 0)
+							).ToList()
+						)
+					})));
 		}
 		
 		private void setupWormholeSprites()
 		{
-			this.Update(ref this.wormholeSprites, 
+			this.UpdateScene(
+				ref this.wormholeSprites,
 				new SceneObject(new[] {
 					new PolygonData(
 						WormholeZ,
