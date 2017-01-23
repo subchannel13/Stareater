@@ -142,6 +142,7 @@
     <Compile Include="GraphicsEngine\AGlProgram.cs" />
     <Compile Include="GraphicsEngine\AScene.cs" />
     <Compile Include="GraphicsEngine\IShaderData.cs" />
+    <Compile Include="GraphicsEngine\PhysicalData.cs" />
     <Compile Include="GraphicsEngine\PolygonData.cs" />
     <Compile Include="GraphicsEngine\SceneObject.cs" />
     <Compile Include="GraphicsEngine\SignalFlag.cs" />

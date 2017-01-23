@@ -37,6 +37,11 @@ namespace Stareater.Utils.Collections
 			return root.Query(center + size / 2, center - size / 2);
 		}
 
+		public void Add(T newItem, double centerX, double centerY, double sizeX, double sizeY)
+		{
+			this.Add(newItem, new Vector2D(centerX, centerY), new Vector2D(sizeX, sizeY));
+		}
+		
 		public void Add(T newItem, Vector2D center, Vector2D size)
 		{
 			var boundedItem = new QuadTreeElement<T>(newItem, center + size / 2, center - size / 2);

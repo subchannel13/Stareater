@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using OpenTK;
+using Stareater.Utils.Collections;
 using Stareater.GLData;
 
 namespace Stareater.GraphicsEngine
@@ -11,7 +12,8 @@ namespace Stareater.GraphicsEngine
 	{
 		protected const int NoCallList = -1;
 
-		private HashSet<SceneObject> children = new HashSet<SceneObject>();
+		private HashSet<SceneObject> sceneObjects = new HashSet<SceneObject>();
+		private QuadTree<SceneObject> physicalObjects = new QuadTree<SceneObject>();
 		private HashSet<float> dirtyLayers = new HashSet<float>();
 		private Dictionary<float, List<IDrawable>> drawables = new Dictionary<float, List<IDrawable>>();
 		private Dictionary<float, List<VertexArray>> Vaos = new Dictionary<float, List<VertexArray>>();
@@ -64,14 +66,24 @@ namespace Stareater.GraphicsEngine
 		#region Scene objects
 		protected void AddToScene(SceneObject sceneObject)
 		{
-			this.children.Add(sceneObject);
+			this.sceneObjects.Add(sceneObject);
 			this.dirtyLayers.UnionWith(sceneObject.RenderData.Select(x => x.Z));
+			
+			if (sceneObject.PhysicalShape != null)
+				this.physicalObjects.Add(
+					sceneObject, 
+					sceneObject.PhysicalShape.Center.X, sceneObject.PhysicalShape.Center.Y, 
+					sceneObject.PhysicalShape.Size.X, sceneObject.PhysicalShape.Size.Y
+				);
 		}
 
 		protected void RemoveFromScene(SceneObject sceneObject)
 		{
-			this.children.Remove(sceneObject);
+			this.sceneObjects.Remove(sceneObject);
 			this.dirtyLayers.UnionWith(sceneObject.RenderData.Select(x => x.Z));
+			
+			if (sceneObject.PhysicalShape != null)
+				this.physicalObjects.Remove(sceneObject);
 		}
 
 		protected void UpdateScene(ref SceneObject oldObject, SceneObject newObject)
@@ -92,6 +104,16 @@ namespace Stareater.GraphicsEngine
 			foreach(var obj in newObjects)
 				this.AddToScene(obj);
 			oldObjects = newObjects;
+		}
+		
+		protected IEnumerable<SceneObject> QueryScene(NGenerics.DataStructures.Mathematical.Vector2D center)
+		{
+			return this.physicalObjects.Query(center, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
+		}
+		
+		protected IEnumerable<SceneObject> QueryScene(NGenerics.DataStructures.Mathematical.Vector2D center, double radius)
+		{
+			return this.physicalObjects.Query(center, new NGenerics.DataStructures.Mathematical.Vector2D(radius, radius));
 		}
 		#endregion
 		
@@ -151,7 +173,7 @@ namespace Stareater.GraphicsEngine
 				
 				var vaoBuilders = new Dictionary<AGlProgram, VertexArrayBuilder>();
 				var drawableData = new List<PolygonData>();
-				foreach(var polygon in this.children.SelectMany(x => x.RenderData).Where(x => Math.Abs(x.Z - layer) < 1e-3))
+				foreach(var polygon in this.sceneObjects.SelectMany(x => x.RenderData).Where(x => Math.Abs(x.Z - layer) < 1e-3))
 				{
 					if (!vaoBuilders.ContainsKey(polygon.ShaderData.ForProgram))
 						vaoBuilders[polygon.ShaderData.ForProgram] = new VertexArrayBuilder();

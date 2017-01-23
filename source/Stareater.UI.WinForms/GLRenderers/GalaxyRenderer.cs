@@ -65,7 +65,6 @@ namespace Stareater.GLRenderers
 		private Vector2 mapBoundsMin;
 		private Vector2 mapBoundsMax;
 
-		private QuadTree<StarData> stars = new QuadTree<StarData>();
 		private QuadTree<FleetInfo> fleetsReal = new QuadTree<FleetInfo>();
 		private QuadTree<FleetInfo> fleetsDisplayed = new QuadTree<FleetInfo>(); //TODO(v0.6) try to remove either this member or fleetPositions
 		private Dictionary<FleetInfo, NGenerics.DataStructures.Mathematical.Vector2D> fleetPositions = new Dictionary<FleetInfo, NGenerics.DataStructures.Mathematical.Vector2D>();
@@ -142,10 +141,6 @@ namespace Stareater.GLRenderers
 		{
 			TextRenderUtil.Get.Prepare(this.currentPlayer.Stars.Select(x => x.Name.ToText(LocalizationManifest.Get.CurrentLanguage)));
 
-			this.stars.Clear();
-			foreach (var star in this.currentPlayer.Stars)
-				this.stars.Add(star, star.Position, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
-			
 			this.fleetsReal.Clear();
 			foreach(var fleet in this.currentPlayer.Fleets)
 				this.fleetsReal.Add(fleet, fleet.Position, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
@@ -154,7 +149,7 @@ namespace Stareater.GLRenderers
 			this.fleetPositions.Clear();
 			foreach(var fleet in this.currentPlayer.Fleets)
 			{
-				bool atStar = this.stars.Query(fleet.Position, new NGenerics.DataStructures.Mathematical.Vector2D(1, 1)).Any();
+				bool atStar = this.QueryScene(fleet.Position, 1).Any(x => x.Data is StarData);
 				this.cacheFleet(fleet, atStar);
 			}
 		}
@@ -173,7 +168,7 @@ namespace Stareater.GLRenderers
 			foreach(var fleet in toAdd)
 				this.fleetsReal.Add(fleet, fleet.Position, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
 			
-			bool atStar = this.stars.Query(position, new NGenerics.DataStructures.Mathematical.Vector2D(1, 1)).Any();
+			bool atStar = this.QueryScene(position, 1).Any(x => x.Data is StarData);
 			foreach(var fleet in this.currentPlayer.FleetsAt(position))
 				this.cacheFleet(fleet, atStar);
 		}
@@ -372,7 +367,10 @@ namespace Stareater.GLRenderers
 								Matrix4.CreateScale(StarNameScale) * Matrix4.CreateTranslation((float)star.Position.X, (float)star.Position.Y - 0.5f, 0)
 							).ToList()
 						)
-					})));
+					},
+					new PhysicalData(convert(star.Position), new Vector2(0, 0)),
+					star
+				)));
 		}
 		
 		private void setupWormholeSprites()
@@ -440,12 +438,15 @@ namespace Stareater.GLRenderers
 			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
 			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 
-			var starsFound = this.stars.Query(searchPoint, searchSize).OrderBy(x => (x.Position - searchPoint).Magnitude()).ToList();
+			var starsFound = this.QueryScene(searchPoint, searchRadius).
+				Where(x => x.Data is StarData).
+				OrderBy(x => (x.PhysicalShape.Center - convert(searchPoint)).LengthSquared).
+				ToList();
 
 			if (!starsFound.Any())
 				return;
 
-			this.SelectedFleet.SimulateTravel(starsFound[0]);
+			this.SelectedFleet.SimulateTravel(starsFound[0].Data as StarData);
 		}
 
 		public override void OnMouseScroll(MouseEventArgs e)
@@ -477,7 +478,11 @@ namespace Stareater.GLRenderers
 			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
 			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 			
-			var starsFound = this.stars.Query(searchPoint, searchSize).OrderBy(x => (x.Position - searchPoint).Magnitude()).ToList();
+			var starsFound = this.QueryScene(searchPoint, searchRadius).
+				Where(x => x.Data is StarData).
+				Select(x => x.Data as StarData).
+				OrderBy(x => (x.Position - searchPoint).Magnitude()).
+				ToList();
 			var fleetFound = this.fleetsDisplayed.Query(searchPoint, searchSize).OrderBy(x => (x.Position - searchPoint).Magnitude()).ToList();
 			
 			var foundAny = starsFound.Any() || fleetFound.Any();
@@ -532,7 +537,11 @@ namespace Stareater.GLRenderers
 			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
 			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 
-			var starsFound = this.stars.Query(searchPoint, searchSize).OrderBy(x => (x.Position - searchPoint).Magnitude()).ToList();
+			var starsFound = this.QueryScene(searchPoint, searchRadius).
+				Where(x => x.Data is StarData).
+				Select(x => x.Data as StarData).
+				OrderBy(x => (x.Position - searchPoint).Magnitude()).
+				ToList();
 
 			if (starsFound.Any())
 				this.galaxyViewListener.SystemOpened(this.currentPlayer.OpenStarSystem(starsFound[0]));
