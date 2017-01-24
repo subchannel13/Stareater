@@ -84,6 +84,13 @@ namespace Stareater.GraphicsEngine
 			
 			if (sceneObject.PhysicalShape != null)
 				this.physicalObjects.Remove(sceneObject);
+			
+		}
+		
+		protected void RemoveFromScene(ref SceneObject sceneObject)
+		{
+			this.RemoveFromScene(sceneObject);
+			sceneObject = null;
 		}
 
 		protected void UpdateScene(ref SceneObject oldObject, SceneObject newObject)

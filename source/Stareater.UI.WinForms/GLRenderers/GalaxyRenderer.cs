@@ -53,10 +53,11 @@ namespace Stareater.GLRenderers
 		private IGalaxyViewListener galaxyViewListener;
 		private SignalFlag refreshData = new SignalFlag();
 		
+		private IEnumerable<SceneObject> fleetMovementPaths = null;
 		private IEnumerable<SceneObject> fleetMarkers = null;
+		private SceneObject movementEtaText = null;
 		private SceneObject wormholeSprites = null;
 		private IEnumerable<SceneObject> starSprites = null;
-		private TextDrawable etaTextSprites = null;
 
 		private int zoomLevel = 2;
 		private Vector4? lastMousePosition = null;
@@ -198,10 +199,8 @@ namespace Stareater.GLRenderers
 				this.ResetLists();
 			}
 			
-			drawFleetMovement();
 			drawMovementSimulation();
 			drawSelectionMarkers();
-			drawMovementEta();
 		}
 
 		//TODO(0.6) refactor and remove
@@ -212,61 +211,6 @@ namespace Stareater.GLRenderers
 		#endregion
 
 		#region Drawing setup and helpers
-		private void drawFleetMovement()
-		{
-			foreach (var fleetPos in this.fleetPositions) {
-				if (!fleetPos.Key.IsMoving)
-					continue;
-
-				var lastPosition = fleetPos.Value;
-				foreach(var waypoint in fleetPos.Key.Missions.Waypoints)
-				{
-					TextureUtils.DrawSprite(
-						GalaxyTextures.Get.PathLine, 
-						this.projection, 
-						pathMatrix(
-							new Vector2((float)lastPosition.X, (float)lastPosition.Y),
-							new Vector2((float)waypoint.Destionation.X, (float)waypoint.Destionation.Y)
-						),
-						PathZ, 
-						Color.DarkGreen
-					);
-					
-					lastPosition = waypoint.Destionation;
-				}
-			}
-		}
-		
-		private void drawMovementEta()
-		{
-			if (this.SelectedFleet != null && this.SelectedFleet.SimulationWaypoints.Count > 0)
-			{
-				if (this.SelectedFleet.Eta > 0)
-				{
-					var destination = this.SelectedFleet.SimulationWaypoints[this.SelectedFleet.SimulationWaypoints.Count - 1];
-					var numVars = new Var("eta", Math.Ceiling(this.SelectedFleet.Eta)).Get;
-					var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.SelectedFleet.Eta, RoundingMethod.Ceil, 0)).Get;
-					var transform = 
-						Matrix4.CreateScale(EtaTextScale) * 
-						Matrix4.CreateTranslation((float)destination.X, (float)destination.Y + 0.5f, 0);
-					
-					if (this.etaTextSprites == null)
-						this.etaTextSprites = new TextDrawable(
-							new SpriteData(
-								new Matrix4(),
-								EtaZ,
-								TextRenderUtil.Get.TextureId,
-								Color.White
-							),
-							-0.5f
-						);
-					
-					this.etaTextSprites.ObjectData.LocalTransform = transform;
-					this.etaTextSprites.Draw(this.projection, LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars));
-				}
-			}
-		}
-		
 		private void drawMovementSimulation()
 		{
 			if (this.SelectedFleet != null && this.SelectedFleet.SimulationWaypoints.Count > 0)
@@ -324,7 +268,7 @@ namespace Stareater.GLRenderers
 			return calcOrthogonalPerspective(aspect * radius, radius, FarZ, originOffset);
 		}
 
-		private Matrix4 fleetTransform(FleetInfo fleet)
+		private Vector3 fleetTransform(FleetInfo fleet)
 		{
 			var atStar = this.QueryScene(fleet.Position, 1).Any(x => x.Data is StarData);
 			var displayPosition = new Vector3((float)fleet.Position.X, (float)fleet.Position.Y, 0);
@@ -343,12 +287,14 @@ namespace Stareater.GLRenderers
 			else if (fleet.IsMoving && atStar)
 				displayPosition += new Vector3(-0.5f, 0.5f, 0);
 
-			return Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation(displayPosition);
+			return displayPosition;
 		}
 
 		private void setupVaos()
 		{
 			this.setupFleetMarkers();
+			this.setupFleetMovement();
+			this.setupMovementEta();
 			this.setupStarSprites();
 			this.setupWormholeSprites();
 		}
@@ -361,11 +307,85 @@ namespace Stareater.GLRenderers
 					new []{
 						new PolygonData(
 							FleetZ,
-							new SpriteData(fleetTransform(fleet), FleetZ, GalaxyTextures.Get.FleetIndicator.Texture.Id, fleet.Owner.Color),
+							new SpriteData(
+								Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation(fleetTransform(fleet)), 
+								FleetZ, 
+								GalaxyTextures.Get.FleetIndicator.Texture.Id, 
+								fleet.Owner.Color
+							),
 							SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.FleetIndicator.Texture)
 						)
-					}))
+					})).ToList()
 			);
+		}
+		
+		private void setupFleetMovement()
+		{
+			this.UpdateScene(
+				ref this.fleetMovementPaths,
+				this.currentPlayer.Fleets.Where(x => x.IsMoving).Select(
+					fleet => 
+					{
+						var lastPosition = fleetTransform(fleet).Xy;
+						var vertexData = new List<Vector2>();
+						foreach(var waypoint in fleet.Missions.Waypoints)
+						{
+							var nextPosition = convert(waypoint.Destionation);
+							vertexData.AddRange(SpriteHelpers.PathRectVertexData(
+								lastPosition,
+								nextPosition,
+								PathWidth,
+								GalaxyTextures.Get.PathLine.Texture
+							));
+							lastPosition = nextPosition;
+						}
+							
+						return new SceneObject(
+							new []{
+							new PolygonData(
+								PathZ,
+								new SpriteData(Matrix4.Identity, PathZ, GalaxyTextures.Get.PathLine.Texture.Id, Color.DarkGreen),
+								vertexData
+							)
+						});
+					}).ToList()
+			);
+		}
+		
+		private void setupMovementEta()
+		{
+			var needEta = this.SelectedFleet != null && this.SelectedFleet.SimulationWaypoints.Count > 0 && this.SelectedFleet.Eta > 0;
+			
+			if (this.movementEtaText != null && !needEta)
+			{
+				this.RemoveFromScene(ref this.movementEtaText);
+				return;
+			}
+			
+			if (needEta)
+			{
+				var destination = this.SelectedFleet.SimulationWaypoints[this.SelectedFleet.SimulationWaypoints.Count - 1];
+				var numVars = new Var("eta", Math.Ceiling(this.SelectedFleet.Eta)).Get;
+				var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.SelectedFleet.Eta, RoundingMethod.Ceil, 0)).Get;
+				var transform = 
+					Matrix4.CreateScale(EtaTextScale) * 
+					Matrix4.CreateTranslation((float)destination.X, (float)destination.Y + 0.5f, 0);
+				
+				this.UpdateScene(
+					ref this.movementEtaText,
+					new SceneObject(
+						new []{
+							new PolygonData(
+								EtaZ,
+								new SpriteData(transform, EtaZ, TextRenderUtil.Get.TextureId, Color.White),
+								TextRenderUtil.Get.BufferText(
+									LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars),
+									-0.5f,
+									Matrix4.Identity
+								).ToList())
+						}
+					));
+			}
 		}
 		
 		private void setupStarSprites()
@@ -396,7 +416,8 @@ namespace Stareater.GLRenderers
 					},
 					new PhysicalData(convert(star.Position), new Vector2(0, 0)),
 					star
-				)));
+				)).ToList()
+			);
 		}
 		
 		private void setupWormholeSprites()
@@ -473,6 +494,7 @@ namespace Stareater.GLRenderers
 				return;
 
 			this.SelectedFleet.SimulateTravel(starsFound[0].Data as StarData);
+			this.setupMovementEta();
 		}
 
 		public override void OnMouseScroll(MouseEventArgs e)
@@ -525,6 +547,8 @@ namespace Stareater.GLRenderers
 					this.SelectedFleet = this.SelectedFleet.Send(this.SelectedFleet.SimulationWaypoints);
 					this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = this.SelectedFleet.Fleet;
 					this.galaxyViewListener.FleetClicked(new FleetInfo[] { this.SelectedFleet.Fleet });
+					this.setupFleetMarkers();
+					this.setupFleetMovement();
 					this.updateFleetCache(this.SelectedFleet.Fleet.Position);
 					return;
 				}
@@ -532,6 +556,7 @@ namespace Stareater.GLRenderers
 				{
 					this.galaxyViewListener.FleetDeselected();
 					this.SelectedFleet = null;
+					this.setupMovementEta();
 				}
 
 
