@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using OpenTK;
 using Stareater.Localization;
-using Stareater.GLData;
 using Stareater.GraphicsEngine;
 using Stareater.GLData.SpriteShader;
 
@@ -11,21 +11,32 @@ namespace Stareater.GLRenderers
 	class GameOverRenderer : AScene
 	{
 		private const float DefaultViewSize = 5;
+		private const float TextZ = 0;
 		private const float FarZ = 1;
 		
-		private TextDrawable textDrawable = null;
+		private SceneObject text = null;
 		
 		#region implemented abstract members of ARenderer
-		protected override void FrameUpdate(double deltaTime)
+		public override void Activate()
 		{
-			if (this.textDrawable == null)
-				this.textDrawable = new TextDrawable(
-					new SpriteData(
-						Matrix4.CreateTranslation(0, 0.5f, 0), 0, TextRenderUtil.Get.TextureId, Color.Red),
-					-0.5f);
-			
-			this.textDrawable.Draw(this.projection, LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text());
+			this.UpdateScene(
+				ref this.text,
+				new SceneObject(
+					new []{
+						new PolygonData(
+							TextZ,
+							new SpriteData(Matrix4.CreateTranslation(0, 0.5f, 0), TextZ, TextRenderUtil.Get.TextureId, Color.Red),
+							TextRenderUtil.Get.BufferText(
+								LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text(),
+								-0.5f,
+								Matrix4.Identity).ToList()
+						)
+					}
+			));
 		}
+		
+		protected override void FrameUpdate(double deltaTime)
+		{ }
 		
 		protected override Matrix4 calculatePerspective()
 		{
