@@ -56,6 +56,8 @@ namespace Stareater.GLRenderers
 		private IEnumerable<SceneObject> fleetMovementPaths = null;
 		private IEnumerable<SceneObject> fleetMarkers = null;
 		private SceneObject movementEtaText = null;
+		private SceneObject movementSimulationPath = null;
+		private SceneObject selectionMarkers = null;
 		private SceneObject wormholeSprites = null;
 		private IEnumerable<SceneObject> starSprites = null;
 
@@ -198,9 +200,6 @@ namespace Stareater.GLRenderers
 				this.rebuildCache();
 				this.ResetLists();
 			}
-			
-			drawMovementSimulation();
-			drawSelectionMarkers();
 		}
 
 		//TODO(0.6) refactor and remove
@@ -211,50 +210,6 @@ namespace Stareater.GLRenderers
 		#endregion
 
 		#region Drawing setup and helpers
-		private void drawMovementSimulation()
-		{
-			if (this.SelectedFleet != null && this.SelectedFleet.SimulationWaypoints.Count > 0)
-			{
-				var last = this.fleetPositions[this.SelectedFleet.Fleet];
-				foreach (var next in this.SelectedFleet.SimulationWaypoints) 
-				{
-					TextureUtils.DrawSprite(
-						GalaxyTextures.Get.PathLine, 
-						this.projection, 
-						pathMatrix(
-							new Vector2((float)last.X, (float)last.Y),
-							new Vector2((float)next.X, (float)next.Y)
-						),
-						PathZ, 
-						Color.LimeGreen
-					);
-					
-					last = next;
-				}
-			}
-		}
-		
-		private void drawSelectionMarkers()
-		{
-			var transform = new Matrix4();
-			
-			if (this.currentSelection == GalaxySelectionType.Star)
-				transform = Matrix4.CreateTranslation((float)this.lastSelectedStarPosition.X, (float)this.lastSelectedStarPosition.Y, 0);
-			else if (this.currentSelection == GalaxySelectionType.Fleet) 
-			{
-				var markerPosition = this.fleetPositions[this.lastSelectedIdleFleet];
-				transform = Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation((float)markerPosition.X, (float)markerPosition.Y, 0);
-			}
-			
-			TextureUtils.DrawSprite(
-				GalaxyTextures.Get.SelectedStar, 
-				this.projection, 
-				transform,
-				SelectionIndicatorZ, 
-				Color.White
-			);
-		}
-		
 		protected override Matrix4 calculatePerspective()
 		{
 			var aspect = canvasSize.X / canvasSize.Y;
@@ -268,6 +223,19 @@ namespace Stareater.GLRenderers
 			return calcOrthogonalPerspective(aspect * radius, radius, FarZ, originOffset);
 		}
 
+		private IEnumerable<Vector2> fleetMovementPathVertices(FleetInfo fleet, IEnumerable<Vector2> waypoints)
+		{
+			var lastPosition = fleetTransform(fleet).Xy;
+			foreach(var nextPosition in waypoints)
+			{
+				foreach(var v in SpriteHelpers.PathRectVertexData(lastPosition, nextPosition, PathWidth, GalaxyTextures.Get.PathLine.Texture))
+					yield return v;
+
+				lastPosition = nextPosition;
+			}
+		}
+		
+		//TODO(v0.6) rename to fleetPosition
 		private Vector3 fleetTransform(FleetInfo fleet)
 		{
 			var atStar = this.QueryScene(fleet.Position, 1).Any(x => x.Data is StarData);
@@ -295,6 +263,8 @@ namespace Stareater.GLRenderers
 			this.setupFleetMarkers();
 			this.setupFleetMovement();
 			this.setupMovementEta();
+			this.setupMovementSimulation();
+			this.setupSelectionMarkers();
 			this.setupStarSprites();
 			this.setupWormholeSprites();
 		}
@@ -323,46 +293,21 @@ namespace Stareater.GLRenderers
 		{
 			this.UpdateScene(
 				ref this.fleetMovementPaths,
-				this.currentPlayer.Fleets.Where(x => x.IsMoving).Select(
-					fleet => 
-					{
-						var lastPosition = fleetTransform(fleet).Xy;
-						var vertexData = new List<Vector2>();
-						foreach(var waypoint in fleet.Missions.Waypoints)
-						{
-							var nextPosition = convert(waypoint.Destionation);
-							vertexData.AddRange(SpriteHelpers.PathRectVertexData(
-								lastPosition,
-								nextPosition,
-								PathWidth,
-								GalaxyTextures.Get.PathLine.Texture
-							));
-							lastPosition = nextPosition;
-						}
-							
-						return new SceneObject(
-							new []{
-							new PolygonData(
-								PathZ,
-								new SpriteData(Matrix4.Identity, PathZ, GalaxyTextures.Get.PathLine.Texture.Id, Color.DarkGreen),
-								vertexData
-							)
-						});
-					}).ToList()
+				this.currentPlayer.Fleets.Where(x => x.IsMoving).Select(fleet => new SceneObject(
+					new []{
+						new PolygonData(
+							PathZ,
+							new SpriteData(Matrix4.Identity, PathZ, GalaxyTextures.Get.PathLine.Texture.Id, Color.DarkGreen),
+							fleetMovementPathVertices(fleet, fleet.Missions.Waypoints.Select(v => convert(v.Destionation)))
+						)
+					})).ToList()
 			);
 		}
 		
+		//TODO(v0.6) bundle with movement simulation
 		private void setupMovementEta()
 		{
-			var needEta = this.SelectedFleet != null && this.SelectedFleet.SimulationWaypoints.Count > 0 && this.SelectedFleet.Eta > 0;
-			
-			if (this.movementEtaText != null && !needEta)
-			{
-				this.RemoveFromScene(ref this.movementEtaText);
-				return;
-			}
-			
-			if (needEta)
+			if (this.SelectedFleet != null && this.SelectedFleet.SimulationWaypoints.Count > 0 && this.SelectedFleet.Eta > 0)
 			{
 				var destination = this.SelectedFleet.SimulationWaypoints[this.SelectedFleet.SimulationWaypoints.Count - 1];
 				var numVars = new Var("eta", Math.Ceiling(this.SelectedFleet.Eta)).Get;
@@ -386,8 +331,50 @@ namespace Stareater.GLRenderers
 						}
 					));
 			}
+			else if (this.movementEtaText != null)
+				this.RemoveFromScene(ref this.movementEtaText);
 		}
 		
+		private void setupMovementSimulation()
+		{
+			if (this.SelectedFleet != null && this.SelectedFleet.SimulationWaypoints.Count > 0)
+				this.UpdateScene(
+					ref this.movementSimulationPath,
+					new SceneObject(
+						new []{
+							new PolygonData(
+								PathZ,
+								new SpriteData(Matrix4.Identity, PathZ, GalaxyTextures.Get.PathLine.Texture.Id, Color.LimeGreen),
+								fleetMovementPathVertices(this.SelectedFleet.Fleet, this.SelectedFleet.SimulationWaypoints.Select(v => convert(v)))
+							)
+						})
+				);
+			else if (this.movementSimulationPath != null)
+				this.RemoveFromScene(ref this.movementSimulationPath);
+		}
+
+		private void setupSelectionMarkers()
+		{
+			var transform = new Matrix4();
+			
+			if (this.currentSelection == GalaxySelectionType.Star)
+				transform = Matrix4.CreateTranslation((float)this.lastSelectedStarPosition.X, (float)this.lastSelectedStarPosition.Y, 0);
+			else if (this.currentSelection == GalaxySelectionType.Fleet) 
+				transform = Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation(this.fleetTransform(this.lastSelectedIdleFleet));
+			
+			this.UpdateScene(
+				ref this.selectionMarkers,
+				new SceneObject(
+					new []{
+							new PolygonData(
+								SelectionIndicatorZ,
+								new SpriteData(transform, SelectionIndicatorZ, GalaxyTextures.Get.SelectedStar.Texture.Id, Color.White),
+								SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SelectedStar.Texture)
+							)
+						})
+			);
+		}
+
 		private void setupStarSprites()
 		{
 			this.UpdateScene(
@@ -495,6 +482,7 @@ namespace Stareater.GLRenderers
 
 			this.SelectedFleet.SimulateTravel(starsFound[0].Data as StarData);
 			this.setupMovementEta();
+			this.setupMovementSimulation();
 		}
 
 		public override void OnMouseScroll(MouseEventArgs e)
@@ -549,6 +537,7 @@ namespace Stareater.GLRenderers
 					this.galaxyViewListener.FleetClicked(new FleetInfo[] { this.SelectedFleet.Fleet });
 					this.setupFleetMarkers();
 					this.setupFleetMovement();
+					this.setupSelectionMarkers();
 					this.updateFleetCache(this.SelectedFleet.Fleet.Position);
 					return;
 				}
@@ -557,6 +546,8 @@ namespace Stareater.GLRenderers
 					this.galaxyViewListener.FleetDeselected();
 					this.SelectedFleet = null;
 					this.setupMovementEta();
+					this.setupMovementSimulation();
+					this.setupSelectionMarkers();
 				}
 
 
@@ -568,12 +559,14 @@ namespace Stareater.GLRenderers
 				this.currentSelection = GalaxySelectionType.Star;
 				this.lastSelectedStars[this.currentPlayer.PlayerIndex] = starsFound[0].Position;
 				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(starsFound[0]));
+				this.setupSelectionMarkers();
 			}
 			else
 			{
 				this.currentSelection = GalaxySelectionType.Fleet;
 				this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = fleetFound[0]; //TODO(v0.6) marks wrong fleet when there are multiple players 
 				this.galaxyViewListener.FleetClicked(fleetFound);
+				this.setupSelectionMarkers();
 			}
 			
 		}
