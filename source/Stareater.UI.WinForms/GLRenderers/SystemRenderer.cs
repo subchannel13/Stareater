@@ -8,6 +8,8 @@ using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.GLData;
+using Stareater.GLData.OrbitShader;
+using Stareater.GLData.SpriteShader;
 using Stareater.GUI;
 using Stareater.GraphicsEngine;
 
@@ -48,7 +50,9 @@ namespace Stareater.GLRenderers
 		private readonly EmpyPlanetView emptyPlanetView;
 		private readonly Action systemClosedHandler;
 
-		private BatchDrawable<OrbitDrawable, PlanetOrbitGlProgram.ObjectData> planetOrbits = null;
+		private SceneObject starSprite = null;
+		private IEnumerable<SceneObject> planetSprites = null;
+		private BatchDrawable<OrbitDrawable, OrbitData> planetOrbits = null;
 		
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
@@ -64,7 +68,7 @@ namespace Stareater.GLRenderers
 			this.emptyPlanetView = emptyPlanetView;
 			this.siteView = siteView;
 
-			this.planetOrbits = new BatchDrawable<OrbitDrawable, PlanetOrbitGlProgram.ObjectData>(
+			this.planetOrbits = new BatchDrawable<OrbitDrawable, OrbitData>(
 				ShaderLibrary.PlanetOrbit,
 				(vao, i, data) => new OrbitDrawable(vao, i, data));
 		}
@@ -101,8 +105,6 @@ namespace Stareater.GLRenderers
 		protected override void FrameUpdate(double deltaTime)
 		{
 			var starTransform = Matrix4.CreateScale(StarScale);
-
-			TextureUtils.DrawSprite(GalaxyTextures.Get.SystemStar, this.projection, starTransform, StarColorZ, controller.Star.Color);
 			
 			if (selectedBody == StarSystemController.StarIndex)
 				TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, this.projection, Matrix4.CreateScale(StarSelectorScale) * starTransform, SelectionZ, Color.White);
@@ -111,29 +113,9 @@ namespace Stareater.GLRenderers
 			this.planetOrbits.Draw(this.projection);
 			
 			foreach(Planet planet in controller.Planets)
-			{ 
+			{
 				var orbitR = planet.Position * OrbitStep + OrbitOffset;
 				var planetTransform = Matrix4.CreateScale(PlanetScale) * Matrix4.CreateTranslation(orbitR, 0, 0);
-	
-				switch(planet.Type)
-				{
-					case PlanetType.Asteriod:
-						TextureUtils.DrawSprite(GalaxyTextures.Get.Asteroids, this.projection, planetTransform, PlanetZ, Color.White);
-						break;
-					case PlanetType.GasGiant:
-						TextureUtils.DrawSprite(GalaxyTextures.Get.GasGiant, this.projection, planetTransform, PlanetZ, Color.White);
-						break;
-					case PlanetType.Rock:
-						TextureUtils.DrawSprite(GalaxyTextures.Get.RockPlanet, this.projection, planetTransform, PlanetZ, Color.White);
-						break;
-				}
-				
-				if (this.controller.IsColonizing(planet.Position))
-				{
-					var markTransform = Matrix4.CreateScale(0.4f, 0.4f, 1) * Matrix4.CreateTranslation(0.6f, 0.5f, 0) * planetTransform;
-					TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMark, this.projection, markTransform, MarkZ, Color.White);
-					TextureUtils.DrawSprite(GalaxyTextures.Get.ColonizationMarkColor, this.projection, markTransform, MarkColorZ, this.currentPlayer.Info.Color);
-				}
 				
 				if (selectedBody == planet.Position)
 					TextureUtils.DrawSprite(GalaxyTextures.Get.SelectedStar, this.projection, Matrix4.CreateScale(PlanetSelectorScale) * planetTransform, SelectionZ, Color.White);
@@ -255,12 +237,56 @@ namespace Stareater.GLRenderers
 			siteView.Visible = view.Equals(siteView);
 		}
 		
+		private IEnumerable<PolygonData> planetSpriteData(Planet planet)
+		{
+			var orbitR = planet.Position * OrbitStep + OrbitOffset;
+			var planetTransform = Matrix4.CreateScale(PlanetScale) * Matrix4.CreateTranslation(orbitR, 0, 0);
+			var sprite = new TextureInfo();
+
+			switch(planet.Type)
+			{
+				case PlanetType.Asteriod:
+					sprite = GalaxyTextures.Get.Asteroids.Texture;
+					break;
+				case PlanetType.GasGiant:
+					sprite = GalaxyTextures.Get.GasGiant.Texture;
+					break;
+				case PlanetType.Rock:
+					sprite = GalaxyTextures.Get.RockPlanet.Texture;
+					break;
+			}
+			
+			yield return new PolygonData(
+				PlanetZ,
+				new SpriteData(planetTransform, PlanetZ, sprite.Id, Color.White),
+				SpriteHelpers.UnitRectVertexData(sprite)
+			);
+			
+			if (this.controller.IsColonizing(planet.Position))
+			{
+				var markTransform = Matrix4.CreateScale(0.4f, 0.4f, 1) * Matrix4.CreateTranslation(0.6f, 0.5f, 0) * planetTransform;
+				
+				yield return new PolygonData(
+					MarkZ,
+					new SpriteData(markTransform, MarkZ, GalaxyTextures.Get.ColonizationMark.Texture.Id, Color.White),
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.ColonizationMark.Texture)
+				);
+				yield return new PolygonData(
+					MarkColorZ,
+					new SpriteData(markTransform, MarkColorZ, GalaxyTextures.Get.ColonizationMarkColor.Texture.Id, this.currentPlayer.Info.Color),
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.ColonizationMarkColor.Texture)
+				);
+			}
+		}
+		
 		private void setupVaos()
 		{
 			if (this.controller == null)
 				return; //FIXME(v0.6) move check to better place
 			
-			var batchData = new List<PlanetOrbitGlProgram.ObjectData>();
+			this.setupBodies();
+			
+			var batchData = new List<OrbitData>();
 			var vaoBuilder = new VertexArrayBuilder();
 			
 			foreach(Planet planet in controller.Planets)
@@ -286,7 +312,7 @@ namespace Stareater.GLRenderers
 				vaoBuilder.EndObject();
 				
 				var colony = controller.PlanetsColony(planet);
-				batchData.Add(new PlanetOrbitGlProgram.ObjectData(
+				batchData.Add(new OrbitData(
 					OrbitZ,
 					orbitR - OrbitWidth / 2,
 					orbitR + OrbitWidth / 2,
@@ -296,6 +322,28 @@ namespace Stareater.GLRenderers
 			}
 
 			this.planetOrbits.Update(vaoBuilder, batchData);
+		}
+
+		private void setupBodies()
+		{
+			var starTransform = Matrix4.CreateScale(StarScale);
+			
+			this.UpdateScene(
+				ref this.starSprite,
+				new SceneObject(
+					new []{
+						new PolygonData(
+							StarColorZ,
+							new SpriteData(starTransform, StarColorZ, GalaxyTextures.Get.SystemStar.Texture.Id, controller.Star.Color),
+							SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar.Texture)
+						)
+					}
+			));
+			
+			this.UpdateScene(
+				ref this.planetSprites,
+				this.controller.Planets.Select(planet => new SceneObject(planetSpriteData(planet).ToArray())
+			));
 		}
 	}
 }

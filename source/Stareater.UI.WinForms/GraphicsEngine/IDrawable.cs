@@ -1,6 +1,6 @@
 ﻿using OpenTK;
 
-namespace Stareater.GLData
+namespace Stareater.GraphicsEngine
 {
 	interface IDrawable
 	{

@@ -1,18 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using Stareater.GLData;
-using Stareater.GLRenderers;
 using Stareater.GraphicsEngine;
 
-namespace Stareater.GLData
+namespace Stareater.GLData.OrbitShader
 {
 	class PlanetOrbitGlProgram : AGlProgram
 	{
-		public const int VertexSize = 4 * sizeof(float);
+		public const int VertexSize = 4;
 			
 		private int vertexShaderId;
 		private int fragmentShaderId;
@@ -60,46 +57,10 @@ namespace Stareater.GLData
 		
 		public override void SetupAttributes()
 		{
-			GL.VertexAttribPointer(this.LocalPositionId, 2, VertexAttribPointerType.Float, false, VertexSize, 0);
+			GL.VertexAttribPointer(this.LocalPositionId, 2, VertexAttribPointerType.Float, false, VertexSize * sizeof(float), 0);
 			GL.EnableVertexAttribArray(this.LocalPositionId);
-			GL.VertexAttribPointer(this.OrbitPositionId, 2, VertexAttribPointerType.Float, false, VertexSize, 2 * sizeof(float));
+			GL.VertexAttribPointer(this.OrbitPositionId, 2, VertexAttribPointerType.Float, false, VertexSize * sizeof(float), 2 * sizeof(float));
 			GL.EnableVertexAttribArray(this.OrbitPositionId);
-		}
-		
-		public class ObjectData : IShaderData
-		{
-			public float Z { get; private set; } //TODO(v0.6) remove, redundant
-			public float MinRadius { get; private set; }
-			public float MaxRadius { get; private set; }
-			public Color4 Color { get; private set; }
-			public Matrix4 LocalTransform { get; set; }
-
-			public ObjectData(float z, float minRadius, float maxRadius, Color4 color, Matrix4 localTransform)
-			{
-				this.Z = z;
-				this.MinRadius = minRadius;
-				this.MaxRadius = maxRadius;
-				this.Color = color;
-				this.LocalTransform = localTransform;
-			}
-
-			#region IShaderUniformData implementation
-
-			public AGlProgram ForProgram
-			{
-				get { return ShaderLibrary.PlanetOrbit; }
-			}
-
-			public int VertexDataSize 
-			{ 
-				get { return 4; }
-			}
-			
-			public IDrawable MakeDrawable(VertexArray vao, int objectIndex)
-			{
-				return new OrbitDrawable(vao, objectIndex, this);
-			}
-			#endregion
 		}
 	}
 }

@@ -115,7 +115,9 @@
     <Compile Include="AppData\ImageCache.cs" />
     <Compile Include="AppData\LoadingMethods.cs" />
     <Compile Include="AppData\SettingsWinforms.cs" />
-    <Compile Include="GLData\PlanetOrbitGlProgram.cs" />
+    <Compile Include="GLData\OrbitShader\OrbitData.cs" />
+    <Compile Include="GLData\OrbitShader\OrbitDrawable.cs" />
+    <Compile Include="GLData\OrbitShader\PlanetOrbitGlProgram.cs" />
     <Compile Include="GLData\ShaderLibrary.cs" />
     <Compile Include="GLData\SpriteShader\SpriteData.cs" />
     <Compile Include="GLData\SpriteShader\SpriteDrawable.cs" />
@@ -130,10 +132,8 @@
     <Compile Include="GLRenderers\GalaxySelectionType.cs" />
     <Compile Include="GLRenderers\GalaxyTextures.cs" />
     <Compile Include="GLRenderers\GameOverRenderer.cs" />
-    <Compile Include="GLData\IDrawable.cs" />
     <Compile Include="GLRenderers\IGalaxyViewListener.cs" />
     <Compile Include="GLRenderers\GalaxyRenderer.cs" />
-    <Compile Include="GLRenderers\OrbitDrawable.cs" />
     <Compile Include="GLRenderers\SpaceCombatRenderer.cs" />
     <Compile Include="GLRenderers\SystemRenderer.cs" />
     <Compile Include="GLRenderers\TextDrawable.cs" />
@@ -141,6 +141,7 @@
     <Compile Include="GLRenderers\TextureUtils.cs" />
     <Compile Include="GraphicsEngine\AGlProgram.cs" />
     <Compile Include="GraphicsEngine\AScene.cs" />
+    <Compile Include="GraphicsEngine\IDrawable.cs" />
     <Compile Include="GraphicsEngine\IShaderData.cs" />
     <Compile Include="GraphicsEngine\PhysicalData.cs" />
     <Compile Include="GraphicsEngine\PolygonData.cs" />
@@ -637,7 +638,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="GLData\OrbitShader" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -2,17 +2,17 @@
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.GLData;
+using Stareater.GraphicsEngine;
 
-namespace Stareater.GLRenderers
+namespace Stareater.GLData.OrbitShader
 {
-	//TODO(v0.6) Move to GlProgram inner class
 	class OrbitDrawable : IDrawable
 	{
 		public VertexArray Vao { get; private set; }
 		private readonly int objectIndex;
-		private readonly PlanetOrbitGlProgram.ObjectData objectData;
+		private readonly OrbitData objectData;
 		
-		public OrbitDrawable(VertexArray vao, int objectIndex, PlanetOrbitGlProgram.ObjectData objectData)
+		public OrbitDrawable(VertexArray vao, int objectIndex, OrbitData objectData)
 		{
 			this.objectIndex = objectIndex;
 			this.objectData = objectData;

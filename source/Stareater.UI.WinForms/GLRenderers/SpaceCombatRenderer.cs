@@ -13,6 +13,7 @@ using Stareater.Galaxy;
 using Stareater.Utils;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GLData;
+using Stareater.GLData.OrbitShader;
 using Stareater.GraphicsEngine;
 using Stareater.GLData.SpriteShader;
 
@@ -232,7 +233,7 @@ namespace Stareater.GLRenderers
 			this.gridDrawable = new OrbitDrawable(
 				vaoBuilder.Generate(ShaderLibrary.PlanetOrbit),
 				0,
-				new PlanetOrbitGlProgram.ObjectData(
+				new OrbitData(
 					GridZ,
 					0, 1,
 					Color.Green,
