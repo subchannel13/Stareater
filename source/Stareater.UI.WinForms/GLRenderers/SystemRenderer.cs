@@ -102,7 +102,6 @@ namespace Stareater.GLRenderers
 			this.originOffset = bestColony != null ? bestColony.Location.Position * OrbitStep + OrbitOffset : 0.5f;
 			
 			this.select(StarSystemController.StarIndex);
-			this.setupVaos();
 		}
 		
 		#region ARenderer implementation
@@ -316,20 +315,17 @@ namespace Stareater.GLRenderers
 			
 			this.UpdateScene(
 				ref this.starSprite,
-				new SceneObject(
-					new []{
-						new PolygonData(
-							StarColorZ,
-							new SpriteData(starTransform, StarColorZ, GalaxyTextures.Get.SystemStar.Texture.Id, controller.Star.Color),
-							SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar.Texture)
-						)
-					}
-			));
+				new SceneObject(new PolygonData(
+					StarColorZ,
+					new SpriteData(starTransform, StarColorZ, GalaxyTextures.Get.SystemStar.Texture.Id, controller.Star.Color),
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar.Texture)
+				))
+			);
 			
 			this.UpdateScene(
 				ref this.planetSprites,
-				this.controller.Planets.Select(planet => new SceneObject(new [] {planetSpriteData(planet)})
-			));
+				this.controller.Planets.Select(planet => new SceneObject(planetSpriteData(planet))).ToList()
+			);
 		}
 		
 		private void setupColonizationMarkers()
@@ -367,15 +363,12 @@ namespace Stareater.GLRenderers
 
 			this.UpdateScene(
 				ref this.selectionMarker,
-				new SceneObject(
-					new []{
-						new PolygonData(
-							SelectionZ,
-							new SpriteData(transform, SelectionZ, GalaxyTextures.Get.SelectedStar.Texture.Id, Color.White),
-							SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SelectedStar.Texture)
-						)
-					}
-			));
+				new SceneObject(new PolygonData(
+					SelectionZ,
+					new SpriteData(transform, SelectionZ, GalaxyTextures.Get.SelectedStar.Texture.Id, Color.White),
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SelectedStar.Texture)
+				))
+			);
 		}
 	}
 }

@@ -16,5 +16,9 @@ namespace Stareater.GraphicsEngine
 			this.PhysicalShape = shape;
 			this.RenderData = renderData;
 		}
+		
+		public SceneObject(PolygonData renderData, PhysicalData shape = null, object data = null) :
+			this(new [] { renderData }, shape, data)
+		{ }
 	}
 }

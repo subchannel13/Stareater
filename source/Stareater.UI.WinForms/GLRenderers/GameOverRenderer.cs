@@ -21,18 +21,15 @@ namespace Stareater.GLRenderers
 		{
 			this.UpdateScene(
 				ref this.text,
-				new SceneObject(
-					new []{
-						new PolygonData(
-							TextZ,
-							new SpriteData(Matrix4.CreateTranslation(0, 0.5f, 0), TextZ, TextRenderUtil.Get.TextureId, Color.Red),
-							TextRenderUtil.Get.BufferText(
-								LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text(),
-								-0.5f,
-								Matrix4.Identity).ToList()
-						)
-					}
-			));
+				new SceneObject(new PolygonData(
+					TextZ,
+					new SpriteData(Matrix4.CreateTranslation(0, 0.5f, 0), TextZ, TextRenderUtil.Get.TextureId, Color.Red),
+					TextRenderUtil.Get.BufferText(
+						LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text(),
+						-0.5f,
+						Matrix4.Identity).ToList()
+				))
+			);
 		}
 		
 		protected override void FrameUpdate(double deltaTime)
