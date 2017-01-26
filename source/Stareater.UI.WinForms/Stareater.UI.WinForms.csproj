@@ -117,6 +117,7 @@
     <Compile Include="AppData\SettingsWinforms.cs" />
     <Compile Include="GLData\OrbitShader\OrbitData.cs" />
     <Compile Include="GLData\OrbitShader\OrbitDrawable.cs" />
+    <Compile Include="GLData\OrbitShader\OrbitHelpers.cs" />
     <Compile Include="GLData\OrbitShader\PlanetOrbitGlProgram.cs" />
     <Compile Include="GLData\ShaderLibrary.cs" />
     <Compile Include="GLData\SpriteShader\SpriteData.cs" />

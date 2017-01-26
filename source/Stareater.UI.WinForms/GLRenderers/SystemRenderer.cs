@@ -51,10 +51,10 @@ namespace Stareater.GLRenderers
 		private readonly Action systemClosedHandler;
 
 		private IEnumerable<SceneObject> colonizationMarkers = null;
+		private IEnumerable<SceneObject> planetOrbits = null;
 		private IEnumerable<SceneObject> planetSprites = null;
 		private SceneObject selectionMarker = null;
 		private SceneObject starSprite = null;
-		private BatchDrawable<OrbitDrawable, OrbitData> planetOrbits = null;
 		
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
@@ -70,10 +70,6 @@ namespace Stareater.GLRenderers
 			this.systemClosedHandler = systemClosedHandler; 
 			this.emptyPlanetView = emptyPlanetView;
 			this.siteView = siteView;
-
-			this.planetOrbits = new BatchDrawable<OrbitDrawable, OrbitData>(
-				ShaderLibrary.PlanetOrbit,
-				(vao, i, data) => new OrbitDrawable(vao, i, data));
 		}
 		
 		public override void Activate()
@@ -111,9 +107,6 @@ namespace Stareater.GLRenderers
 			if (!this.colonizationMarked.SetEquals(beingColonized))
 				this.setupColonizationMarkers();
 			this.colonizationMarked = beingColonized;
-			
-			//TODO(v0.6) Add texture to circle
-			this.planetOrbits.Draw(this.projection);
 		}
 
 		//TODO(0.6) refactor and remove
@@ -270,43 +263,6 @@ namespace Stareater.GLRenderers
 			this.setupBodies();
 			this.setupColonizationMarkers();
 			this.setupSelectionMarker();
-			
-			var batchData = new List<OrbitData>();
-			var vaoBuilder = new VertexArrayBuilder();
-			
-			foreach(Planet planet in controller.Planets)
-			{ 
-				var orbitR = planet.Position * OrbitStep + OrbitOffset;
-				var orbitMin = orbitR - OrbitWidth * 3;
-				var orbitMax = orbitR + OrbitWidth * 3;
-				
-				vaoBuilder.BeginObject();
-				for(int i = 0; i < OrbitPieces; i++)
-				{
-					var angle0 = 2 * (float)Math.PI * i / OrbitPieces;
-					var angle1 = 2 * (float)Math.PI * (i +1) / OrbitPieces;
-					
-					vaoBuilder.AddOrbitVertex(orbitMin * (float)Math.Cos(angle1), orbitMin * (float)Math.Sin(angle1));
-					vaoBuilder.AddOrbitVertex(orbitMax * (float)Math.Cos(angle1), orbitMax * (float)Math.Sin(angle1));
-					vaoBuilder.AddOrbitVertex(orbitMax * (float)Math.Cos(angle0), orbitMax * (float)Math.Sin(angle0));
-					
-					vaoBuilder.AddOrbitVertex(orbitMax * (float)Math.Cos(angle0), orbitMax * (float)Math.Sin(angle0));
-					vaoBuilder.AddOrbitVertex(orbitMin * (float)Math.Cos(angle0), orbitMin * (float)Math.Sin(angle0));
-					vaoBuilder.AddOrbitVertex(orbitMin * (float)Math.Cos(angle1), orbitMin * (float)Math.Sin(angle1));
-				}
-				vaoBuilder.EndObject();
-				
-				var colony = controller.PlanetsColony(planet);
-				batchData.Add(new OrbitData(
-					OrbitZ,
-					orbitR - OrbitWidth / 2,
-					orbitR + OrbitWidth / 2,
-					colony != null ? colony.Owner.Color : Color.FromArgb(64, 64, 64),
-					Matrix4.Identity 
-				));
-			}
-
-			this.planetOrbits.Update(vaoBuilder, batchData);
 		}
 
 		private void setupBodies()
@@ -325,6 +281,25 @@ namespace Stareater.GLRenderers
 			this.UpdateScene(
 				ref this.planetSprites,
 				this.controller.Planets.Select(planet => new SceneObject(planetSpriteData(planet))).ToList()
+			);
+			
+			//TODO(v0.6) Add texture to circle
+			this.UpdateScene(
+				ref this.planetOrbits,
+				this.controller.Planets.Select(
+					planet => 
+					{
+						var orbitR = planet.Position * OrbitStep + OrbitOffset;
+						var colony = controller.PlanetsColony(planet);
+						var color = colony != null ? colony.Owner.Color : Color.FromArgb(64, 64, 64);
+						
+						return new SceneObject(new PolygonData(
+							OrbitZ,
+							new OrbitData(OrbitZ, orbitR - OrbitWidth / 2, orbitR + OrbitWidth / 2, color, Matrix4.Identity),
+							OrbitHelpers.PlanetOrbit(orbitR, OrbitWidth, OrbitPieces).ToList()
+						));
+					}
+				).ToList()
 			);
 		}
 		
@@ -352,7 +327,8 @@ namespace Stareater.GLRenderers
 									SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.ColonizationMarkColor.Texture)
 								)
 							});
-					}).ToList());
+					}).ToList()
+			);
 		}
 		
 		private void setupSelectionMarker()

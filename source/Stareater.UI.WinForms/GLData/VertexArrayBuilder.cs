@@ -64,16 +64,6 @@ namespace Stareater.GLData
 		
 			this.objectSize++;
 		}
-		
-		public void AddOrbitVertex(float x, float y)
-		{
-			this.vertices.Add(x); 
-			this.vertices.Add(y);
-			this.vertices.Add(x);
-			this.vertices.Add(y);
-		
-			this.objectSize++;
-		}
 
 		public void AddTexturedRect(TextureInfo textureinfo)
 		{
