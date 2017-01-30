@@ -5,6 +5,14 @@ namespace Stareater.GLData.OrbitShader
 {
 	static class OrbitHelpers
 	{
+		public static IEnumerable<float> FlatOrbitVertex(float x, float y)
+		{
+			yield return x; 
+			yield return y;
+			yield return 0;
+			yield return 0;
+		}
+		
 		public static IEnumerable<float> PlanetOrbit(float orbitR, float orbitWidth, float orbitPieces)
 		{
 			//TODO(v0.6) find better heuristic for width multiplyer

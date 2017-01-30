@@ -55,16 +55,6 @@ namespace Stareater.GLData
 		}
 		
 		//TODO(v0.6) move below methods to dedicated class
-		public void AddFlatOrbitVertex(float x, float y)
-		{
-			this.vertices.Add(x); 
-			this.vertices.Add(y);
-			this.vertices.Add(0);
-			this.vertices.Add(0);
-		
-			this.objectSize++;
-		}
-
 		public void AddTexturedRect(TextureInfo textureinfo)
 		{
 			var widthDir = new Vector2D(1, 0);

@@ -102,7 +102,7 @@ namespace Stareater.GraphicsEngine
 			oldObject = newObject;
 		}
 		
-		protected void UpdateScene(ref IEnumerable<SceneObject> oldObjects, IEnumerable<SceneObject> newObjects)
+		protected void UpdateScene(ref IEnumerable<SceneObject> oldObjects, ICollection<SceneObject> newObjects)
 		{
 			if (oldObjects != null)
 				foreach(var obj in oldObjects)

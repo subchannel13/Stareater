@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using NGenerics.DataStructures.Mathematical;
 using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
 using Stareater.Controllers;
+using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
@@ -41,26 +41,17 @@ namespace Stareater.GLRenderers
 		private static readonly Color SelectionColor = Color.Yellow;
 		
 		private double animationTime = 0;
-		private OrbitDrawable gridDrawable = null;
-		private BatchDrawable<SpriteDrawable, SpriteData> bodySprites = null;
-		private BatchDrawable<SpriteDrawable, SpriteData> unitSprites = null;
+		private SceneObject gridLines = null;
+		private IEnumerable<SceneObject> movementSprites = null;
+		private IEnumerable<SceneObject> planetSprites = null;
+		private IEnumerable<SceneObject> unitSprites = null;
+		private SceneObject starSprite = null;
 		
 		private CombatantInfo currentUnit = null;
-		private int currentUnitIndex = 0;
+		private PolygonData currentUnitDrawable = null;
 		
 		public SpaceBattleController Controller { get; private set; }
 
-		public SpaceCombatRenderer()
-		{
-			this.bodySprites = new BatchDrawable<SpriteDrawable, SpriteData>(
-				ShaderLibrary.Sprite,
-				(vao, i, data) => new SpriteDrawable(vao, i, data));
-
-			this.unitSprites = new BatchDrawable<SpriteDrawable, SpriteData>(
-				ShaderLibrary.Sprite,
-				(vao, i, data) => new SpriteDrawable(vao, i, data));
-		}
-		
 		public AbilityInfo SelectedAbility { private get; set; }
 		
 		public void StartCombat(SpaceBattleController controller)
@@ -78,18 +69,16 @@ namespace Stareater.GLRenderers
 			var alpha = Math.Abs(animationPhase - 0.5) * 0.6 + 0.4;
 			if (this.Controller.Units.Select(x => x.Owner).Distinct().All(x => this.currentUnit.CloakedFor(x) || x == currentUnit.Owner))
 				alpha *= 0.65;
-			this.unitSprites[this.currentUnitIndex].ObjectData.Color = new Color4(this.currentUnit.Owner.Color.R, this.currentUnit.Owner.Color.G, this.currentUnit.Owner.Color.B, (byte)(alpha * 255));
 			
-			this.gridDrawable.Draw(this.projection);
-			this.bodySprites.Draw(this.projection);
-			this.unitSprites.Draw(this.projection);
+			//TODO(v0.6) update selected unit draw data
+			//Color = new Color4(this.currentUnit.Owner.Color.R, this.currentUnit.Owner.Color.G, this.currentUnit.Owner.Color.B, (byte)(alpha * 255));
 		}
 		
 		//TODO(0.6) refactor and remove
 		public void ResetLists()
 		{
-			this.setupGrid();
 			this.setupBodies();
+			this.setupGrid();
 			this.setupUnits();
 		}
 		
@@ -127,6 +116,7 @@ namespace Stareater.GLRenderers
 		{
 			this.currentUnit = unitInfo;
 			this.SelectedAbility = unitInfo.Abilities.FirstOrDefault(x => x.Quantity > 0);
+			this.setupBodies();
 			this.setupUnits();
 		}
 		
@@ -135,68 +125,102 @@ namespace Stareater.GLRenderers
 			this.Controller.UnitDone();
 		}
 		
+		private IEnumerable<PolygonData> planetSpriteData(CombatPlanetInfo planet)
+		{
+			var planetTransform = Matrix4.CreateTranslation(hexX(planet.Position), hexY(planet.Position), 0);
+			var sprite = new TextureInfo();
+
+			switch(planet.Type)
+			{
+				case PlanetType.Asteriod:
+					sprite = GalaxyTextures.Get.Asteroids.Texture;
+					break;
+				case PlanetType.GasGiant:
+					sprite = GalaxyTextures.Get.GasGiant.Texture;
+					break;
+				case PlanetType.Rock:
+					sprite = GalaxyTextures.Get.RockPlanet.Texture;
+					break;
+			}
+			
+			yield return new PolygonData(
+				PlanetColorZ,
+				new SpriteData(planetTransform, PlanetColorZ, sprite.Id, Color.White),
+				SpriteHelpers.UnitRectVertexData(sprite)
+			);
+			
+			if (planet.Population > 0)
+				yield return new PolygonData(
+					MoreCombatantsZ,
+					new SpriteData(PopulationTransform * planetTransform, MoreCombatantsZ, TextRenderUtil.Get.TextureId, planet.Owner != null ? planet.Owner.Color : Color.Gray),
+					TextRenderUtil.Get.BufferText(new ThousandsFormatter().Format(planet.Population), -1, Matrix4.Identity).ToList()
+				);
+		}
+		
+		private IEnumerable<PolygonData> unitSpriteData(IGrouping<Vector2D, CombatantInfo> hex, IEnumerable<PlayerInfo> players)
+		{
+			var hexTransform = Matrix4.CreateTranslation(hexX(hex.Key), hexY(hex.Key), 0);
+			
+			var unitSelected = (this.currentUnit != null && this.currentUnit.Position == hex.Key);
+			var unit = unitSelected ? this.currentUnit : biggestStack(hex);
+			var unitSprite = GalaxyTextures.Get.Sprite(unit.Design.ImagePath);
+			var alpha = players.All(x => unit.CloakedFor(x) || x == unit.Owner) ? 0.65 : 1;
+			
+			var unitDrawable = new PolygonData(
+				CombatantZ,
+				new SpriteData(hexTransform, CombatantZ, unitSprite.Texture.Id, Color.FromArgb((int)(alpha * 255), unit.Owner.Color)),
+				SpriteHelpers.UnitRectVertexData(unitSprite.Texture)
+			);
+			if (unitSelected)
+				this.currentUnitDrawable = unitDrawable;
+			
+			yield return unitDrawable;
+			
+			var otherUnits = hex.Where(x => x != unit).Select(x => x.Owner).Distinct().ToList();
+			for(int i = 0; i < otherUnits.Count; i++)
+				yield return new PolygonData(
+					CombatantZ,
+					new SpriteData(
+						Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, 0.2f * i + 0.5f, 0) * hexTransform, 
+						MoreCombatantsZ, 
+						GalaxyTextures.Get.FleetIndicator.Texture.Id,
+						otherUnits[i].Color
+					),
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.FleetIndicator.Texture)
+				);
+			
+			yield return new PolygonData(
+				CombatantZ,
+				new SpriteData(
+					Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f, 0) * hexTransform,
+					MoreCombatantsZ,
+					TextRenderUtil.Get.TextureId,
+					Color.Gray
+				),
+				TextRenderUtil.Get.BufferText(new ThousandsFormatter().Format(unit.Count), -1, Matrix4.Identity).ToList()
+			);
+		}
+		
 		private void setupBodies()
 		{
-			var batchData = new List<SpriteData>();
-			var vaoBuilder = new VertexArrayBuilder();
-			var formatter = new ThousandsFormatter();
-			
-			vaoBuilder.BeginObject();
-			vaoBuilder.AddTexturedRect(GalaxyTextures.Get.SystemStar.Texture);
-			vaoBuilder.EndObject();
-			batchData.Add(new SpriteData(Matrix4.Identity, StarColorZ, GalaxyTextures.Get.StarColor.Texture.Id, this.Controller.Star.Color));
-			
-			foreach(var planet in this.Controller.Planets)
-			{
-				var planetTransform = Matrix4.CreateTranslation(hexX(planet.Position), hexY(planet.Position), 0);
-				SpriteInfo planetTexture = null;
-				
-				switch(planet.Type)
-				{
-					case PlanetType.Asteriod:
-						planetTexture = GalaxyTextures.Get.Asteroids;
-						break;
-					case PlanetType.GasGiant:
-						planetTexture = GalaxyTextures.Get.GasGiant;
-						break;
-					case PlanetType.Rock:
-						planetTexture = GalaxyTextures.Get.RockPlanet;
-						break;
-				}
-				
-				vaoBuilder.BeginObject();
-				vaoBuilder.AddTexturedRect(planetTexture.Texture); //FIXME sometimes bugs out
-				vaoBuilder.EndObject();
-				batchData.Add(new SpriteData(
-					planetTransform, 
-					PlanetColorZ,
-					planetTexture.Texture.Id,
-					Color.White));
-				
-				if (planet.Population > 0)
-				{
-					vaoBuilder.BeginObject();
-					TextRenderUtil.Get.BufferText(formatter.Format(planet.Population), -1, Matrix4.Identity, vaoBuilder);
-					vaoBuilder.EndObject();
-					
-					batchData.Add(new SpriteData(
-						PopulationTransform * planetTransform, 
-						MoreCombatantsZ,
-						TextRenderUtil.Get.TextureId,
-						planet.Owner != null ? planet.Owner.Color : Color.Gray));
-				}
-			}
+			this.UpdateScene(
+				ref this.starSprite,
+				new SceneObject(new PolygonData(
+					StarColorZ,
+					new SpriteData(Matrix4.Identity, StarColorZ, GalaxyTextures.Get.StarColor.Texture.Id, this.Controller.Star.Color),
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar.Texture)
+				))
+			);
 
-			this.bodySprites.Update(vaoBuilder, batchData);
+			this.UpdateScene(
+				ref this.planetSprites,
+				this.Controller.Planets.Select(planet => new SceneObject(planetSpriteData(planet))).ToList()
+			);
 		}
 		
 		private void setupGrid()
 		{
-			if (this.gridDrawable != null)
-				return;
-			
-			var vaoBuilder = new VertexArrayBuilder();
-			vaoBuilder.BeginObject();
+			var gridVertexData = new List<float>();
 			
 			for(int x = -SpaceBattleController.BattlefieldRadius; x <= SpaceBattleController.BattlefieldRadius; x++)
 			{
@@ -218,93 +242,46 @@ namespace Stareater.GLRenderers
 					for(int i = 0; i < 6; i++)
 					{
 						var j = (i + 1) % 6;
-						vaoBuilder.AddFlatOrbitVertex(nearPoints[j].X, nearPoints[j].Y);
-						vaoBuilder.AddFlatOrbitVertex(farPoints[j].X, farPoints[j].Y);
-						vaoBuilder.AddFlatOrbitVertex(farPoints[i].X, farPoints[i].Y);
+						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearPoints[j].X, nearPoints[j].Y));
+						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farPoints[j].X, farPoints[j].Y));
+						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farPoints[i].X, farPoints[i].Y));
 						
-						vaoBuilder.AddFlatOrbitVertex(farPoints[i].X, farPoints[i].Y);
-						vaoBuilder.AddFlatOrbitVertex(nearPoints[i].X, nearPoints[i].Y);
-						vaoBuilder.AddFlatOrbitVertex(nearPoints[j].X, nearPoints[j].Y);
+						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farPoints[i].X, farPoints[i].Y));
+						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearPoints[i].X, nearPoints[i].Y));
+						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearPoints[j].X, nearPoints[j].Y));
 					}
 				}
 			}
-			vaoBuilder.EndObject();
 			
-			this.gridDrawable = new OrbitDrawable(
-				vaoBuilder.Generate(ShaderLibrary.PlanetOrbit),
-				0,
-				new OrbitData(
+			this.UpdateScene(
+				ref this.gridLines,
+				new SceneObject(new PolygonData(
 					GridZ,
-					0, 1,
-					Color.Green,
-					Matrix4.Identity)
+					new OrbitData(GridZ, 0, 1, Color.Green, Matrix4.Identity),
+					gridVertexData
+				))
 			);
 		}
 		
 		private void setupUnits()
 		{
-			var batchData = new List<SpriteData>();
-			var vaoBuilder = new VertexArrayBuilder();
-			
 			var units = this.Controller.Units.GroupBy(x => x.Position);
 			var players = this.Controller.Units.Select(x => x.Owner).Distinct();
-			var formatter = new ThousandsFormatter();
 			
-			foreach(var hex in units)
-			{
-				var hexTransform = Matrix4.CreateTranslation(hexX(hex.Key), hexY(hex.Key), 0);
-				
-				var unitSelected = (this.currentUnit != null && this.currentUnit.Position == hex.Key);
-				var unit = unitSelected ? this.currentUnit : biggestStack(hex);
-				var unitSprite = GalaxyTextures.Get.Sprite(unit.Design.ImagePath);
-				var alpha = players.All(x => unit.CloakedFor(x) || x == unit.Owner) ? 0.65 : 1;
-				
-				if (unitSelected)
-					currentUnitIndex = batchData.Count;
-				
-				vaoBuilder.BeginObject();
-				vaoBuilder.AddTexturedRect(unitSprite.Texture);
-				vaoBuilder.EndObject();
-				batchData.Add(new SpriteData(
-					hexTransform, 
-					CombatantZ, 
-					unitSprite.Texture.Id, 
-					Color.FromArgb((int)(alpha * 255), unit.Owner.Color)));
-				
-				var otherUnits = hex.Where(x => x != unit).Select(x => x.Owner).Distinct().ToList();
-				for(int i = 0; i < otherUnits.Count; i++)
-				{
-					vaoBuilder.BeginObject();
-					vaoBuilder.AddTexturedRect(GalaxyTextures.Get.FleetIndicator.Texture);
-					vaoBuilder.EndObject();
-					
-					batchData.Add(new SpriteData(
-						Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, 0.2f * i + 0.5f, 0) * hexTransform, 
-						MoreCombatantsZ, 
-						GalaxyTextures.Get.FleetIndicator.Texture.Id, 
-						otherUnits[i].Color));
-				}
-				
-				vaoBuilder.BeginObject();
-				TextRenderUtil.Get.BufferText(formatter.Format(unit.Count), -1, Matrix4.Identity, vaoBuilder);
-				vaoBuilder.EndObject();
-				
-				batchData.Add(new SpriteData(
-					Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f, 0) * hexTransform, 
-					MoreCombatantsZ,
-					TextRenderUtil.Get.TextureId,
-					Color.Gray));
-			}
+			this.UpdateScene(
+				ref this.unitSprites,
+				units.Select(hex => new SceneObject(unitSpriteData(hex, players))).ToList()
+			);
 			
 			if (this.currentUnit != null)
-				setupValidMoves(vaoBuilder, batchData);
-			
-			this.unitSprites.Update(vaoBuilder, batchData);
+				this.setupValidMoves();
 		}
 		
-		private void setupValidMoves(VertexArrayBuilder vaoBuilder, ICollection<SpriteData> batchData)
+		private void setupValidMoves()
 		{
 			var center = new Vector2(hexX(this.currentUnit.Position), hexY(this.currentUnit.Position));
+			var arrowData = new List<SpriteData>();
+			
 			foreach(var move in this.currentUnit.ValidMoves)
 			{
 				var moveTransform = Matrix4.CreateTranslation(hexX(move), hexY(move), 0);
@@ -321,15 +298,22 @@ namespace Stareater.GLRenderers
 					) * moveTransform;
 				}
 				
-				vaoBuilder.BeginObject();
-				vaoBuilder.AddTexturedRect(GalaxyTextures.Get.MoveToArrow.Texture);
-				vaoBuilder.EndObject();
-				batchData.Add(new SpriteData(
+				arrowData.Add(new SpriteData(
 					Matrix4.CreateScale(0.4f, 0.4f, 1) * Matrix4.CreateTranslation(-0.25f, 0, 0) * moveTransform, 
 					MovemenentZ, 
 					GalaxyTextures.Get.MoveToArrow.Texture.Id, 
-					Methods.HexDistance(move) <= SpaceBattleController.BattlefieldRadius ? Color.Green : Color.White));
+					Methods.HexDistance(move) <= SpaceBattleController.BattlefieldRadius ? Color.Green : Color.White
+				));
 			}
+			
+			this.UpdateScene(
+				ref this.movementSprites,
+				arrowData.Select(arrow => new SceneObject(new PolygonData(
+					MovemenentZ,
+					arrow,
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.MoveToArrow.Texture)
+				))).ToList()
+			);
 		}
 		
 		#region Helper methods
@@ -338,12 +322,12 @@ namespace Stareater.GLRenderers
 			return combatants.Aggregate((a, b) => a.Count * a.Design.Size > b.Count * b.Design.Size ? a : b);
 		}
 
-		private static float hexX(NGenerics.DataStructures.Mathematical.Vector2D coordinate)
+		private static float hexX(Vector2D coordinate)
 		{
 			return (float)(coordinate.X * 1.5);
 		}
 		
-		private static float hexY(NGenerics.DataStructures.Mathematical.Vector2D coordinate)
+		private static float hexY(Vector2D coordinate)
 		{
 			return (float)(HexHeight * (coordinate.Y + ((int)Math.Abs(coordinate.X) % 2 != 0 ? 0.5 : 0)));
 		}
