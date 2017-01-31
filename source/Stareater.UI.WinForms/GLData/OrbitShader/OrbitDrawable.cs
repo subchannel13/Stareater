@@ -8,22 +8,22 @@ namespace Stareater.GLData.OrbitShader
 {
 	class OrbitDrawable : IDrawable
 	{
-		public VertexArray Vao { get; private set; }
+		private readonly VertexArray vao;
 		private readonly int objectIndex;
-		private readonly OrbitData objectData;
+		private OrbitData objectData;
 		
 		public OrbitDrawable(VertexArray vao, int objectIndex, OrbitData objectData)
 		{
 			this.objectIndex = objectIndex;
 			this.objectData = objectData;
-			this.Vao = vao;
+			this.vao = vao;
 		}
 		
 		public void Draw(Matrix4 view)
 		{
 			var program = ShaderLibrary.PlanetOrbit;
 			GL.UseProgram(program.ProgramId);
-			this.Vao.Bind();
+			this.vao.Bind(); //TODO(v0.6) set program and bind VAO outside
 			
 			var mvp = this.objectData.LocalTransform * view;
 			GL.UniformMatrix4(program.LocalTransformId, false, ref mvp);
@@ -32,8 +32,13 @@ namespace Stareater.GLData.OrbitShader
 			GL.Uniform1(program.MinRId, this.objectData.MinRadius);
 			GL.Uniform1(program.MaxRId, this.objectData.MaxRadius);
 		
-			GL.DrawArrays(BeginMode.Triangles, Vao.ObjectStart(this.objectIndex), Vao.ObjectSize(this.objectIndex));
+			GL.DrawArrays(BeginMode.Triangles, vao.ObjectStart(this.objectIndex), vao.ObjectSize(this.objectIndex));
 			ShaderLibrary.PrintGlErrors("Draw orbits");
+		}
+
+		public void Update(IShaderData shaderUniforms)
+		{
+			this.objectData = shaderUniforms as OrbitData;
 		}
 	}
 }

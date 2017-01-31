@@ -8,33 +8,38 @@ namespace Stareater.GLData.SpriteShader
 {
 	class SpriteDrawable : IDrawable
 	{
-		public VertexArray Vao { get; private set; }
+		private readonly VertexArray vao;
 		private readonly int objectIndex;
-		public SpriteData ObjectData { get; private set; }
+		private SpriteData objectData;
 
 		public SpriteDrawable(VertexArray vao, int objectIndex, SpriteData objectData)
 		{
-			this.Vao = vao;
+			this.vao = vao;
 			this.objectIndex = objectIndex;
-			this.ObjectData = objectData;
+			this.objectData = objectData;
 		}
 
 		public void Draw(Matrix4 view)
 		{
 			var program = ShaderLibrary.Sprite;
 			GL.UseProgram(program.ProgramId);
-			this.Vao.Bind();
+			this.vao.Bind(); //TODO(v0.6) set program and bind VAO outside
 			GL.ActiveTexture(TextureUnit.Texture0);
 			GL.Uniform1(program.TextureSamplerId, 0);
 
-			var mvp = this.ObjectData.LocalTransform * view;
+			var mvp = this.objectData.LocalTransform * view;
 			GL.UniformMatrix4(program.LocalTransformId, false, ref mvp);
-			GL.BindTexture(TextureTarget.Texture2D, this.ObjectData.TextureId);
-			GL.Uniform1(program.ZId, this.ObjectData.Z);
-			GL.Uniform4(program.ColorId, this.ObjectData.Color);
+			GL.BindTexture(TextureTarget.Texture2D, this.objectData.TextureId);
+			GL.Uniform1(program.ZId, this.objectData.Z);
+			GL.Uniform4(program.ColorId, this.objectData.Color);
 
-			GL.DrawArrays(BeginMode.Triangles, Vao.ObjectStart(this.objectIndex), Vao.ObjectSize(this.objectIndex));
+			GL.DrawArrays(BeginMode.Triangles, vao.ObjectStart(this.objectIndex), vao.ObjectSize(this.objectIndex));
 			ShaderLibrary.PrintGlErrors("Draw sprites");
+		}
+		
+		public void Update(IShaderData shaderUniforms)
+		{
+			this.objectData = shaderUniforms as SpriteData;
 		}
 	}
 }

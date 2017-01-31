@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using OpenTK;
+using System.Linq;
 
 namespace Stareater.GraphicsEngine
 {
@@ -10,7 +10,7 @@ namespace Stareater.GraphicsEngine
 		public PhysicalData PhysicalShape { get; private set; }
 		public object Data { get; private set; }
 		
-		public SceneObject(IEnumerable<PolygonData> renderData, PhysicalData shape = null, object data = null)
+		public SceneObject(PolygonData[] renderData, PhysicalData shape = null, object data = null)
 		{
 			this.Data = data;
 			this.PhysicalShape = shape;
@@ -19,6 +19,10 @@ namespace Stareater.GraphicsEngine
 		
 		public SceneObject(PolygonData renderData, PhysicalData shape = null, object data = null) :
 			this(new [] { renderData }, shape, data)
+		{ }
+		
+		public SceneObject(IEnumerable<PolygonData> renderData, PhysicalData shape = null, object data = null) :
+			this(renderData.ToArray() , shape, data)
 		{ }
 	}
 }

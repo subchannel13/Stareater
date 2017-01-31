@@ -70,8 +70,13 @@ namespace Stareater.GLRenderers
 			if (this.Controller.Units.Select(x => x.Owner).Distinct().All(x => this.currentUnit.CloakedFor(x) || x == currentUnit.Owner))
 				alpha *= 0.65;
 			
-			//TODO(v0.6) update selected unit draw data
-			//Color = new Color4(this.currentUnit.Owner.Color.R, this.currentUnit.Owner.Color.G, this.currentUnit.Owner.Color.B, (byte)(alpha * 255));
+			var oldData = this.currentUnitDrawable.ShaderData as SpriteData;
+			this.currentUnitDrawable.UpdateDrawable(new SpriteData(
+				oldData.LocalTransform,
+				oldData.Z,
+				oldData.TextureId,
+				Color.FromArgb((int)(alpha * 255), this.currentUnit.Owner.Color)
+			));
 		}
 		
 		//TODO(0.6) refactor and remove

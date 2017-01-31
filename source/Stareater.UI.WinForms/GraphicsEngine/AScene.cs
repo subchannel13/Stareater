@@ -204,7 +204,7 @@ namespace Stareater.GraphicsEngine
 				for (int i = 0; i < drawableData.Count; i++)
 				{
 					var data = drawableData[i];
-					this.drawables[data.Z].Add(data.ShaderData.MakeDrawable(vaos[data.ShaderData.ForProgram], i));
+					this.drawables[data.Z].Add(data.MakeDrawable(vaos[data.ShaderData.ForProgram], i));
 				}
 			}
 			this.dirtyLayers.Clear();
