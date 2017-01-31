@@ -54,23 +54,5 @@ namespace Stareater.GLRenderers
 
 			image.UnlockBits(textureData);
 		}
-		
-		public static void DrawSprite(SpriteInfo spriteInfo, Matrix4 view, Matrix4 transform, float z, Color color)
-		{
-			var program = ShaderLibrary.Sprite;
-			GL.UseProgram(program.ProgramId);
-			spriteInfo.SpriteSheet.Bind();
-			GL.ActiveTexture(TextureUnit.Texture0);
-			GL.Uniform1(program.TextureSamplerId, 0);
-			
-			var mvp = transform * view;
-			GL.UniformMatrix4(program.LocalTransformId, false, ref mvp);
-			GL.BindTexture(TextureTarget.Texture2D, spriteInfo.Texture.Id);
-			GL.Uniform1(program.ZId, z);
-			GL.Uniform4(program.ColorId, color);
-		
-			GL.DrawArrays(BeginMode.Triangles, spriteInfo.SpriteSheet.ObjectStart(spriteInfo.SpriteIndex), spriteInfo.SpriteSheet.ObjectSize(spriteInfo.SpriteIndex));
-			ShaderLibrary.PrintGlErrors("Draw sprites");
-		}
 	}
 }

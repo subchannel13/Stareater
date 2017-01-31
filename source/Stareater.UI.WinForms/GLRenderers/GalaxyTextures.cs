@@ -46,22 +46,20 @@ namespace Stareater.GLRenderers
 		
 		private bool loaded = false;
 		private int textureId;
-		private Dictionary<string, SpriteInfo> spriteNames  = new Dictionary<string, SpriteInfo>();
-		private Dictionary<string, int> spriteIndices  = new Dictionary<string, int>();
-		private VertexArray vertexArray;
+		private Dictionary<string, TextureInfo> spriteNames  = new Dictionary<string, TextureInfo>();
 		
-		public SpriteInfo Asteroids { get; private set;}
-		public SpriteInfo ColonizationMark { get; private set;}
-		public SpriteInfo ColonizationMarkColor { get; private set;}
-		public SpriteInfo FleetIndicator { get; private set;}
-		public SpriteInfo GasGiant { get; private set;}
-		public SpriteInfo MoveToArrow { get; private set;}
-		public SpriteInfo PathLine { get; private set;}
-		public SpriteInfo RockPlanet { get; private set;}
-		public SpriteInfo StarColor { get; private set;}
-		public SpriteInfo StarGlow { get; private set;}
-		public SpriteInfo SelectedStar { get; private set;}
-		public SpriteInfo SystemStar { get; private set;}
+		public TextureInfo Asteroids { get; private set;}
+		public TextureInfo ColonizationMark { get; private set;}
+		public TextureInfo ColonizationMarkColor { get; private set;}
+		public TextureInfo FleetIndicator { get; private set;}
+		public TextureInfo GasGiant { get; private set;}
+		public TextureInfo MoveToArrow { get; private set;}
+		public TextureInfo PathLine { get; private set;}
+		public TextureInfo RockPlanet { get; private set;}
+		public TextureInfo StarColor { get; private set;}
+		public TextureInfo StarGlow { get; private set;}
+		public TextureInfo SelectedStar { get; private set;}
+		public TextureInfo SystemStar { get; private set;}
 		
 		public void Load()
 		{
@@ -75,28 +73,13 @@ namespace Stareater.GLRenderers
 			using(var ikonParser = new IkonParser(new StreamReader(AtlasIkonPath)))
 				ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
 			
-			var vaoBuilder = new VertexArrayBuilder();
-			var textures = new Dictionary<string, TextureInfo>();
-			int spriteIndex = 0;
 			foreach(var name in ikonData.Keys)
-			{
-				var spriteTexture = new TextureInfo(textureId, ikonData[name].To<IkonArray>());
-				textures[name] = spriteTexture;
-				spriteIndices[name] = spriteIndex;
-				spriteIndex++;
-				
-				vaoBuilder.BeginObject();
-				vaoBuilder.AddTexturedRect(spriteTexture);
-				vaoBuilder.EndObject();
-			}
-			
-			this.vertexArray = vaoBuilder.Generate(ShaderLibrary.Sprite);
-			foreach(var name in ikonData.Keys)
-				this.spriteNames.Add(name, new SpriteInfo(this.vertexArray, spriteIndices[name], textures[name]));
-			
+				this.spriteNames[name] = new TextureInfo(textureId, ikonData[name].To<IkonArray>());
+
 			/*
 			 * If any sprite is missing, try running {repo root}/scripts/gen_textures.bat script.
 			 */
+			//TODO(v0.6) generate texture atlas here
 			Asteroids = this.spriteNames[AsteroidsTag];
 			ColonizationMark = this.spriteNames[ColonizationMarkTag];
 			ColonizationMarkColor = this.spriteNames[ColonizationMarkColorTag];
@@ -124,7 +107,7 @@ namespace Stareater.GLRenderers
 			this.loaded = false;
 		}
 		
-		public SpriteInfo Sprite(string spriteName)
+		public TextureInfo Sprite(string spriteName)
 		{
 			if (!this.spriteNames.ContainsKey(spriteName))
 			{

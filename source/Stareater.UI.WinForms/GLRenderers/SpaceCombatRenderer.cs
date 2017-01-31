@@ -133,13 +133,13 @@ namespace Stareater.GLRenderers
 			switch(planet.Type)
 			{
 				case PlanetType.Asteriod:
-					sprite = GalaxyTextures.Get.Asteroids.Texture;
+					sprite = GalaxyTextures.Get.Asteroids;
 					break;
 				case PlanetType.GasGiant:
-					sprite = GalaxyTextures.Get.GasGiant.Texture;
+					sprite = GalaxyTextures.Get.GasGiant;
 					break;
 				case PlanetType.Rock:
-					sprite = GalaxyTextures.Get.RockPlanet.Texture;
+					sprite = GalaxyTextures.Get.RockPlanet;
 					break;
 			}
 			
@@ -168,8 +168,8 @@ namespace Stareater.GLRenderers
 			
 			var unitDrawable = new PolygonData(
 				CombatantZ,
-				new SpriteData(hexTransform, CombatantZ, unitSprite.Texture.Id, Color.FromArgb((int)(alpha * 255), unit.Owner.Color)),
-				SpriteHelpers.UnitRectVertexData(unitSprite.Texture)
+				new SpriteData(hexTransform, CombatantZ, unitSprite.Id, Color.FromArgb((int)(alpha * 255), unit.Owner.Color)),
+				SpriteHelpers.UnitRectVertexData(unitSprite)
 			);
 			if (unitSelected)
 				this.currentUnitDrawable = unitDrawable;
@@ -183,10 +183,10 @@ namespace Stareater.GLRenderers
 					new SpriteData(
 						Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, 0.2f * i + 0.5f, 0) * hexTransform, 
 						MoreCombatantsZ, 
-						GalaxyTextures.Get.FleetIndicator.Texture.Id,
+						GalaxyTextures.Get.FleetIndicator.Id,
 						otherUnits[i].Color
 					),
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.FleetIndicator.Texture)
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.FleetIndicator)
 				);
 			
 			yield return new PolygonData(
@@ -207,8 +207,8 @@ namespace Stareater.GLRenderers
 				ref this.starSprite,
 				new SceneObject(new PolygonData(
 					StarColorZ,
-					new SpriteData(Matrix4.Identity, StarColorZ, GalaxyTextures.Get.StarColor.Texture.Id, this.Controller.Star.Color),
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar.Texture)
+					new SpriteData(Matrix4.Identity, StarColorZ, GalaxyTextures.Get.StarColor.Id, this.Controller.Star.Color),
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar)
 				))
 			);
 
@@ -301,7 +301,7 @@ namespace Stareater.GLRenderers
 				arrowData.Add(new SpriteData(
 					Matrix4.CreateScale(0.4f, 0.4f, 1) * Matrix4.CreateTranslation(-0.25f, 0, 0) * moveTransform, 
 					MovemenentZ, 
-					GalaxyTextures.Get.MoveToArrow.Texture.Id, 
+					GalaxyTextures.Get.MoveToArrow.Id, 
 					Methods.HexDistance(move) <= SpaceBattleController.BattlefieldRadius ? Color.Green : Color.White
 				));
 			}
@@ -311,7 +311,7 @@ namespace Stareater.GLRenderers
 				arrowData.Select(arrow => new SceneObject(new PolygonData(
 					MovemenentZ,
 					arrow,
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.MoveToArrow.Texture)
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.MoveToArrow)
 				))).ToList()
 			);
 		}

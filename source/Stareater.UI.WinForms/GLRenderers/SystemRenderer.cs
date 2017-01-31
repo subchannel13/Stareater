@@ -233,13 +233,13 @@ namespace Stareater.GLRenderers
 			switch(planet.Type)
 			{
 				case PlanetType.Asteriod:
-					sprite = GalaxyTextures.Get.Asteroids.Texture;
+					sprite = GalaxyTextures.Get.Asteroids;
 					break;
 				case PlanetType.GasGiant:
-					sprite = GalaxyTextures.Get.GasGiant.Texture;
+					sprite = GalaxyTextures.Get.GasGiant;
 					break;
 				case PlanetType.Rock:
-					sprite = GalaxyTextures.Get.RockPlanet.Texture;
+					sprite = GalaxyTextures.Get.RockPlanet;
 					break;
 			}
 			
@@ -273,8 +273,8 @@ namespace Stareater.GLRenderers
 				ref this.starSprite,
 				new SceneObject(new PolygonData(
 					StarColorZ,
-					new SpriteData(starTransform, StarColorZ, GalaxyTextures.Get.SystemStar.Texture.Id, controller.Star.Color),
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar.Texture)
+					new SpriteData(starTransform, StarColorZ, GalaxyTextures.Get.SystemStar.Id, controller.Star.Color),
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar)
 				))
 			);
 			
@@ -318,13 +318,13 @@ namespace Stareater.GLRenderers
 							new [] {
 								new PolygonData(
 									MarkZ,
-									new SpriteData(markTransform, MarkZ, GalaxyTextures.Get.ColonizationMark.Texture.Id, Color.White),
-									SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.ColonizationMark.Texture)
+									new SpriteData(markTransform, MarkZ, GalaxyTextures.Get.ColonizationMark.Id, Color.White),
+									SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.ColonizationMark)
 								),
 								new PolygonData(
 									MarkColorZ,
-									new SpriteData(markTransform, MarkColorZ, GalaxyTextures.Get.ColonizationMarkColor.Texture.Id, this.currentPlayer.Info.Color),
-									SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.ColonizationMarkColor.Texture)
+									new SpriteData(markTransform, MarkColorZ, GalaxyTextures.Get.ColonizationMarkColor.Id, this.currentPlayer.Info.Color),
+									SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.ColonizationMarkColor)
 								)
 							});
 					}).ToList()
@@ -341,8 +341,8 @@ namespace Stareater.GLRenderers
 				ref this.selectionMarker,
 				new SceneObject(new PolygonData(
 					SelectionZ,
-					new SpriteData(transform, SelectionZ, GalaxyTextures.Get.SelectedStar.Texture.Id, Color.White),
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SelectedStar.Texture)
+					new SpriteData(transform, SelectionZ, GalaxyTextures.Get.SelectedStar.Id, Color.White),
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SelectedStar)
 				))
 			);
 		}

@@ -90,31 +90,7 @@ namespace Stareater.GLRenderers
 			
 			return textWidth;
 		}
-		
-		public void BufferText(string text, float adjustment, Matrix4 transform, VertexArrayBuilder vaoBuilder)
-		{
-			float textWidth = measureWidth(text);
-			float charOffset = textWidth * adjustment;
-			
-			foreach (char c in text)
-				if (!char.IsWhiteSpace(c)) 
-				{
-					var charInfo = this.characterInfos[c];
-					
-					for (int v = 0; v < 6; v++) 
-					{
-						var charPos = Vector4.Transform(
-							new Vector4(unitQuadTriangles[v].X * charInfo.Aspect + charOffset, unitQuadTriangles[v].Y, 0, 1), 
-							transform
-						);
-						vaoBuilder.AddTexturedVertex(charPos.X, charPos.Y, charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y);
-					}
-					charOffset += charInfo.Aspect;
-				}
-				else if (c == ' ')
-					charOffset += SpaceUnitWidth;
-		}
-		
+
 		public IEnumerable<float> BufferText(string text, float adjustment, Matrix4 transform)
 		{
 			float textWidth = measureWidth(text);
@@ -139,7 +115,7 @@ namespace Stareater.GLRenderers
 				else if (c == ' ')
 					charOffset += SpaceUnitWidth;
 		}
-		
+
 		public void Prepare(IEnumerable<string> texts)
 		{
 			var missinCharacters = new HashSet<char>();

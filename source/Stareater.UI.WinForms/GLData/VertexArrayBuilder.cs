@@ -53,55 +53,5 @@ namespace Stareater.GLData
 			this.vertices.AddRange(vertexData);
 			this.objectSize += vertexData.Count / vertexDataSize;
 		}
-		
-		//TODO(v0.6) move below methods to dedicated class
-		public void AddTexturedRect(TextureInfo textureinfo)
-		{
-			var widthDir = new Vector2D(1, 0);
-			var heightDir = new Vector2D(0, 1);
-			
-			this.add(-widthDir / 2 + heightDir /2);
-			this.vertices.Add(textureinfo.Coordinates[3].X);
-			this.vertices.Add(textureinfo.Coordinates[3].Y);
-			
-			this.add(widthDir / 2 + heightDir /2);
-			this.vertices.Add(textureinfo.Coordinates[2].X);
-			this.vertices.Add(textureinfo.Coordinates[2].Y);
-		
-			this.add(widthDir / 2 - heightDir /2);
-			this.vertices.Add(textureinfo.Coordinates[1].X);
-			this.vertices.Add(textureinfo.Coordinates[1].Y);
-		
-			
-			this.add(widthDir / 2 - heightDir /2);
-			this.vertices.Add(textureinfo.Coordinates[1].X);
-			this.vertices.Add(textureinfo.Coordinates[1].Y);
-		
-			this.add(-widthDir / 2 - heightDir /2);
-			this.vertices.Add(textureinfo.Coordinates[0].X);
-			this.vertices.Add(textureinfo.Coordinates[0].Y);
-		
-			this.add(-widthDir / 2 + heightDir /2);
-			this.vertices.Add(textureinfo.Coordinates[3].X);
-			this.vertices.Add(textureinfo.Coordinates[3].Y);
-		
-			this.objectSize += 6;
-		}
-		
-		public void AddTexturedVertex(float x, float y, float tx, float ty)
-		{
-			this.vertices.Add(x); 
-			this.vertices.Add(y);
-			this.vertices.Add(tx);
-			this.vertices.Add(ty);
-		
-			this.objectSize++;
-		}
-		
-		private void add(Vector2D v)
-		{
-			this.vertices.Add((float)v.X);
-			this.vertices.Add((float)v.Y);
-		}
 	}
 }

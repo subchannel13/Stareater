@@ -171,7 +171,7 @@ namespace Stareater.GLRenderers
 			var lastPosition = fleetDisplayPosition(fleet).Xy;
 			foreach(var nextPosition in waypoints)
 			{
-				foreach(var v in SpriteHelpers.PathRectVertexData(lastPosition, nextPosition, PathWidth, GalaxyTextures.Get.PathLine.Texture))
+				foreach(var v in SpriteHelpers.PathRectVertexData(lastPosition, nextPosition, PathWidth, GalaxyTextures.Get.PathLine))
 					yield return v;
 
 				lastPosition = nextPosition;
@@ -225,10 +225,10 @@ namespace Stareater.GLRenderers
 								new SpriteData(
 									Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation(displayPosition), 
 									FleetZ, 
-									GalaxyTextures.Get.FleetIndicator.Texture.Id, 
+									GalaxyTextures.Get.FleetIndicator.Id, 
 									fleet.Owner.Color
 								),
-								SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.FleetIndicator.Texture)
+								SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.FleetIndicator)
 							),
 							new PhysicalData(displayPosition.Xy, new Vector2(0, 0)),
 							fleet
@@ -243,7 +243,7 @@ namespace Stareater.GLRenderers
 				ref this.fleetMovementPaths,
 				this.currentPlayer.Fleets.Where(x => x.IsMoving).Select(fleet => new SceneObject(new PolygonData(
 					PathZ,
-					new SpriteData(Matrix4.Identity, PathZ, GalaxyTextures.Get.PathLine.Texture.Id, Color.DarkGreen),
+					new SpriteData(Matrix4.Identity, PathZ, GalaxyTextures.Get.PathLine.Id, Color.DarkGreen),
 					fleetMovementPathVertices(fleet, fleet.Missions.Waypoints.Select(v => convert(v.Destionation)))
 				))).ToList()
 			);
@@ -284,7 +284,7 @@ namespace Stareater.GLRenderers
 					ref this.movementSimulationPath,
 					new SceneObject(new PolygonData(
 						PathZ,
-						new SpriteData(Matrix4.Identity, PathZ, GalaxyTextures.Get.PathLine.Texture.Id, Color.LimeGreen),
+						new SpriteData(Matrix4.Identity, PathZ, GalaxyTextures.Get.PathLine.Id, Color.LimeGreen),
 						fleetMovementPathVertices(this.SelectedFleet.Fleet, this.SelectedFleet.SimulationWaypoints.Select(v => convert(v)))
 					))
 				);
@@ -305,8 +305,8 @@ namespace Stareater.GLRenderers
 				ref this.selectionMarkers,
 				new SceneObject(new PolygonData(
 					SelectionIndicatorZ,
-					new SpriteData(transform, SelectionIndicatorZ, GalaxyTextures.Get.SelectedStar.Texture.Id, Color.White),
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SelectedStar.Texture)
+					new SpriteData(transform, SelectionIndicatorZ, GalaxyTextures.Get.SelectedStar.Id, Color.White),
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SelectedStar)
 				))
 			);
 		}
@@ -319,13 +319,13 @@ namespace Stareater.GLRenderers
 					new []{
 						new PolygonData(
 							StarColorZ,
-							new SpriteData(Matrix4.Identity, StarColorZ, GalaxyTextures.Get.StarColor.Texture.Id, star.Color),
-							SpriteHelpers.TexturedRectVertexData(convert(star.Position), 1, 1, GalaxyTextures.Get.StarColor.Texture)
+							new SpriteData(Matrix4.Identity, StarColorZ, GalaxyTextures.Get.StarColor.Id, star.Color),
+							SpriteHelpers.TexturedRectVertexData(convert(star.Position), 1, 1, GalaxyTextures.Get.StarColor)
 						),
 						new PolygonData(
 							StarSaturationZ,
-							new SpriteData(Matrix4.Identity, StarSaturationZ, GalaxyTextures.Get.StarGlow.Texture.Id, Color.White),
-							SpriteHelpers.TexturedRectVertexData(convert(star.Position), 1, 1, GalaxyTextures.Get.StarGlow.Texture)
+							new SpriteData(Matrix4.Identity, StarSaturationZ, GalaxyTextures.Get.StarGlow.Id, Color.White),
+							SpriteHelpers.TexturedRectVertexData(convert(star.Position), 1, 1, GalaxyTextures.Get.StarGlow)
 						),
 						new PolygonData(
 							StarNameZ,
@@ -350,13 +350,13 @@ namespace Stareater.GLRenderers
 				new SceneObject(new PolygonData(
 					WormholeZ,
 					new SpriteData(
-						Matrix4.Identity, WormholeZ, GalaxyTextures.Get.PathLine.Texture.Id, Color.Blue
+						Matrix4.Identity, WormholeZ, GalaxyTextures.Get.PathLine.Id, Color.Blue
 					),
 					this.currentPlayer.Wormholes.SelectMany(wormhole => SpriteHelpers.PathRectVertexData(
 						convert(wormhole.FromStar.Position),
 						convert(wormhole.ToStar.Position),
 						0.8f * PathWidth,
-						GalaxyTextures.Get.PathLine.Texture
+						GalaxyTextures.Get.PathLine
 					))
 				))
 			);

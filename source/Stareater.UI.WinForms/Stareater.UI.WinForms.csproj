@@ -123,12 +123,10 @@
     <Compile Include="GLData\SpriteShader\SpriteData.cs" />
     <Compile Include="GLData\SpriteShader\SpriteDrawable.cs" />
     <Compile Include="GLData\SpriteShader\SpriteGlProgram.cs" />
-    <Compile Include="GLData\SpriteInfo.cs" />
     <Compile Include="GLData\SpriteShader\SpriteHelpers.cs" />
     <Compile Include="GLData\TextureInfo.cs" />
     <Compile Include="GLData\VertexArray.cs" />
     <Compile Include="GLData\VertexArrayBuilder.cs" />
-    <Compile Include="GLRenderers\BatchDrawable.cs" />
     <Compile Include="GLRenderers\CharTextureInfo.cs" />
     <Compile Include="GLRenderers\GalaxySelectionType.cs" />
     <Compile Include="GLRenderers\GalaxyTextures.cs" />
@@ -137,7 +135,6 @@
     <Compile Include="GLRenderers\GalaxyRenderer.cs" />
     <Compile Include="GLRenderers\SpaceCombatRenderer.cs" />
     <Compile Include="GLRenderers\SystemRenderer.cs" />
-    <Compile Include="GLRenderers\TextDrawable.cs" />
     <Compile Include="GLRenderers\TextRenderUtil.cs" />
     <Compile Include="GLRenderers\TextureUtils.cs" />
     <Compile Include="GraphicsEngine\AGlProgram.cs" />
