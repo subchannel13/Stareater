@@ -25,8 +25,9 @@ namespace Stareater.GraphicsEngine
 			if (this.dirtyLayers.Count > 0)
 				this.setupDrawables();
 			
-			foreach(var drawable in this.drawables.OrderByDescending(x => x.Key).SelectMany(x => x.Value))
-				drawable.Draw(this.projection);
+			foreach(var layer in this.drawables.OrderByDescending(x => x.Key))
+				foreach(var drawable in layer.Value)
+					drawable.Draw(this.projection, layer.Key);
 		}
 		
 		protected abstract void FrameUpdate(double deltaTime);

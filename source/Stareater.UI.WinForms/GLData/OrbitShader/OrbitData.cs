@@ -7,15 +7,13 @@ namespace Stareater.GLData.OrbitShader
 {
 	class OrbitData : IShaderData
 	{
-		public float Z { get; private set; } //TODO(v0.6) remove, redundant
 		public float MinRadius { get; private set; }
 		public float MaxRadius { get; private set; }
 		public Color4 Color { get; private set; }
 		public Matrix4 LocalTransform { get; set; }
 
-		public OrbitData(float z, float minRadius, float maxRadius, Color4 color, Matrix4 localTransform)
+		public OrbitData(float minRadius, float maxRadius, Color4 color, Matrix4 localTransform)
 		{
-			this.Z = z;
 			this.MinRadius = minRadius;
 			this.MaxRadius = maxRadius;
 			this.Color = color;

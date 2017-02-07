@@ -19,7 +19,7 @@ namespace Stareater.GLData.SpriteShader
 			this.objectData = objectData;
 		}
 
-		public void Draw(Matrix4 view)
+		public void Draw(Matrix4 view, float z)
 		{
 			var program = ShaderLibrary.Sprite;
 			GL.UseProgram(program.ProgramId);
@@ -30,7 +30,7 @@ namespace Stareater.GLData.SpriteShader
 			var mvp = this.objectData.LocalTransform * view;
 			GL.UniformMatrix4(program.LocalTransformId, false, ref mvp);
 			GL.BindTexture(TextureTarget.Texture2D, this.objectData.TextureId);
-			GL.Uniform1(program.ZId, this.objectData.Z);
+			GL.Uniform1(program.ZId, z);
 			GL.Uniform4(program.ColorId, this.objectData.Color);
 
 			GL.DrawArrays(BeginMode.Triangles, vao.ObjectStart(this.objectIndex), vao.ObjectSize(this.objectIndex));

@@ -19,7 +19,7 @@ namespace Stareater.GLData.OrbitShader
 			this.vao = vao;
 		}
 		
-		public void Draw(Matrix4 view)
+		public void Draw(Matrix4 view, float z)
 		{
 			var program = ShaderLibrary.PlanetOrbit;
 			GL.UseProgram(program.ProgramId);
@@ -27,7 +27,7 @@ namespace Stareater.GLData.OrbitShader
 			
 			var mvp = this.objectData.LocalTransform * view;
 			GL.UniformMatrix4(program.LocalTransformId, false, ref mvp);
-			GL.Uniform1(program.ZId, this.objectData.Z);
+			GL.Uniform1(program.ZId, z);
 			GL.Uniform4(program.ColorId, this.objectData.Color);
 			GL.Uniform1(program.MinRId, this.objectData.MinRadius);
 			GL.Uniform1(program.MaxRId, this.objectData.MaxRadius);

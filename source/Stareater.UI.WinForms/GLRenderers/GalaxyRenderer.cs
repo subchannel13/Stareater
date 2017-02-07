@@ -223,8 +223,7 @@ namespace Stareater.GLRenderers
 							new PolygonData(
 								FleetZ,
 								new SpriteData(
-									Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation(displayPosition), 
-									FleetZ, 
+									Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation(displayPosition),
 									GalaxyTextures.Get.FleetIndicator.Id, 
 									fleet.Owner.Color
 								),
@@ -243,7 +242,7 @@ namespace Stareater.GLRenderers
 				ref this.fleetMovementPaths,
 				this.currentPlayer.Fleets.Where(x => x.IsMoving).Select(fleet => new SceneObject(new PolygonData(
 					PathZ,
-					new SpriteData(Matrix4.Identity, PathZ, GalaxyTextures.Get.PathLine.Id, Color.DarkGreen),
+					new SpriteData(Matrix4.Identity, GalaxyTextures.Get.PathLine.Id, Color.DarkGreen),
 					fleetMovementPathVertices(fleet, fleet.Missions.Waypoints.Select(v => convert(v.Destionation)))
 				))).ToList()
 			);
@@ -265,7 +264,7 @@ namespace Stareater.GLRenderers
 					ref this.movementEtaText,
 					new SceneObject(new PolygonData(
 						EtaZ,
-						new SpriteData(transform, EtaZ, TextRenderUtil.Get.TextureId, Color.White),
+						new SpriteData(transform, TextRenderUtil.Get.TextureId, Color.White),
 						TextRenderUtil.Get.BufferText(
 							LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars),
 							-0.5f,
@@ -284,7 +283,7 @@ namespace Stareater.GLRenderers
 					ref this.movementSimulationPath,
 					new SceneObject(new PolygonData(
 						PathZ,
-						new SpriteData(Matrix4.Identity, PathZ, GalaxyTextures.Get.PathLine.Id, Color.LimeGreen),
+						new SpriteData(Matrix4.Identity, GalaxyTextures.Get.PathLine.Id, Color.LimeGreen),
 						fleetMovementPathVertices(this.SelectedFleet.Fleet, this.SelectedFleet.SimulationWaypoints.Select(v => convert(v)))
 					))
 				);
@@ -305,7 +304,7 @@ namespace Stareater.GLRenderers
 				ref this.selectionMarkers,
 				new SceneObject(new PolygonData(
 					SelectionIndicatorZ,
-					new SpriteData(transform, SelectionIndicatorZ, GalaxyTextures.Get.SelectedStar.Id, Color.White),
+					new SpriteData(transform, GalaxyTextures.Get.SelectedStar.Id, Color.White),
 					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SelectedStar)
 				))
 			);
@@ -319,17 +318,17 @@ namespace Stareater.GLRenderers
 					new []{
 						new PolygonData(
 							StarColorZ,
-							new SpriteData(Matrix4.Identity, StarColorZ, GalaxyTextures.Get.StarColor.Id, star.Color),
+							new SpriteData(Matrix4.Identity, GalaxyTextures.Get.StarColor.Id, star.Color),
 							SpriteHelpers.TexturedRectVertexData(convert(star.Position), 1, 1, GalaxyTextures.Get.StarColor)
 						),
 						new PolygonData(
 							StarSaturationZ,
-							new SpriteData(Matrix4.Identity, StarSaturationZ, GalaxyTextures.Get.StarGlow.Id, Color.White),
+							new SpriteData(Matrix4.Identity, GalaxyTextures.Get.StarGlow.Id, Color.White),
 							SpriteHelpers.TexturedRectVertexData(convert(star.Position), 1, 1, GalaxyTextures.Get.StarGlow)
 						),
 						new PolygonData(
 							StarNameZ,
-							new SpriteData(Matrix4.Identity, StarNameZ, TextRenderUtil.Get.TextureId, starNameColor(star)),
+							new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, starNameColor(star)),
 							TextRenderUtil.Get.BufferText(
 								star.Name.ToText(LocalizationManifest.Get.CurrentLanguage), 
 								-0.5f, 
@@ -350,7 +349,7 @@ namespace Stareater.GLRenderers
 				new SceneObject(new PolygonData(
 					WormholeZ,
 					new SpriteData(
-						Matrix4.Identity, WormholeZ, GalaxyTextures.Get.PathLine.Id, Color.Blue
+						Matrix4.Identity, GalaxyTextures.Get.PathLine.Id, Color.Blue
 					),
 					this.currentPlayer.Wormholes.SelectMany(wormhole => SpriteHelpers.PathRectVertexData(
 						convert(wormhole.FromStar.Position),

@@ -245,7 +245,7 @@ namespace Stareater.GLRenderers
 			
 			return new PolygonData(
 				PlanetZ,
-				new SpriteData(planetTransform(planet.Position), PlanetZ, sprite.Id, Color.White),
+				new SpriteData(planetTransform(planet.Position), sprite.Id, Color.White),
 				SpriteHelpers.UnitRectVertexData(sprite)
 			);
 		}
@@ -273,7 +273,7 @@ namespace Stareater.GLRenderers
 				ref this.starSprite,
 				new SceneObject(new PolygonData(
 					StarColorZ,
-					new SpriteData(starTransform, StarColorZ, GalaxyTextures.Get.SystemStar.Id, controller.Star.Color),
+					new SpriteData(starTransform, GalaxyTextures.Get.SystemStar.Id, controller.Star.Color),
 					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar)
 				))
 			);
@@ -295,7 +295,7 @@ namespace Stareater.GLRenderers
 						
 						return new SceneObject(new PolygonData(
 							OrbitZ,
-							new OrbitData(OrbitZ, orbitR - OrbitWidth / 2, orbitR + OrbitWidth / 2, color, Matrix4.Identity),
+							new OrbitData(orbitR - OrbitWidth / 2, orbitR + OrbitWidth / 2, color, Matrix4.Identity),
 							OrbitHelpers.PlanetOrbit(orbitR, OrbitWidth, OrbitPieces).ToList()
 						));
 					}
@@ -318,12 +318,12 @@ namespace Stareater.GLRenderers
 							new [] {
 								new PolygonData(
 									MarkZ,
-									new SpriteData(markTransform, MarkZ, GalaxyTextures.Get.ColonizationMark.Id, Color.White),
+									new SpriteData(markTransform, GalaxyTextures.Get.ColonizationMark.Id, Color.White),
 									SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.ColonizationMark)
 								),
 								new PolygonData(
 									MarkColorZ,
-									new SpriteData(markTransform, MarkColorZ, GalaxyTextures.Get.ColonizationMarkColor.Id, this.currentPlayer.Info.Color),
+									new SpriteData(markTransform, GalaxyTextures.Get.ColonizationMarkColor.Id, this.currentPlayer.Info.Color),
 									SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.ColonizationMarkColor)
 								)
 							});
@@ -341,7 +341,7 @@ namespace Stareater.GLRenderers
 				ref this.selectionMarker,
 				new SceneObject(new PolygonData(
 					SelectionZ,
-					new SpriteData(transform, SelectionZ, GalaxyTextures.Get.SelectedStar.Id, Color.White),
+					new SpriteData(transform, GalaxyTextures.Get.SelectedStar.Id, Color.White),
 					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SelectedStar)
 				))
 			);

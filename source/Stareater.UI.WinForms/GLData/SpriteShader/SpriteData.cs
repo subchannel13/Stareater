@@ -9,15 +9,13 @@ namespace Stareater.GLData.SpriteShader
 {
 	class SpriteData : IShaderData
 	{
-		public float Z { get; private set; } //TODO(v0.6) remove, redundant
 		public int TextureId { get; private set; }
 		public Color4 Color { get; set; }
 		public Matrix4 LocalTransform { get; set; }
 
-		public SpriteData(Matrix4 localTransform, float z, int textureId, Color color)
+		public SpriteData(Matrix4 localTransform, int textureId, Color color)
 		{
 			this.LocalTransform = localTransform;
-			this.Z = z;
 			this.TextureId = textureId;
 			this.Color = new Color4(color.R, color.G, color.B, color.A);
 		}

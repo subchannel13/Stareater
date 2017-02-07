@@ -23,7 +23,7 @@ namespace Stareater.GLRenderers
 				ref this.text,
 				new SceneObject(new PolygonData(
 					TextZ,
-					new SpriteData(Matrix4.CreateTranslation(0, 0.5f, 0), TextZ, TextRenderUtil.Get.TextureId, Color.Red),
+					new SpriteData(Matrix4.CreateTranslation(0, 0.5f, 0), TextRenderUtil.Get.TextureId, Color.Red),
 					TextRenderUtil.Get.BufferText(
 						LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text(),
 						-0.5f,
