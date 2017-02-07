@@ -19,6 +19,8 @@ namespace Stareater.GLData.OrbitShader
 		public int MinRId { get; private set; }
 		public int MaxRId { get; private set; }
 		public int ColorId { get; private set; }
+		public int TextureSamplerId { get; private set; }
+		public int TextureTransformId { get; private set; }
 	
 		public int LocalPositionId { get; private set; }
 		public int OrbitPositionId { get; private set; }
@@ -47,6 +49,8 @@ namespace Stareater.GLData.OrbitShader
 			this.LocalTransformId = GL.GetUniformLocation(this.ProgramId, "localtransform");
 			this.MinRId = GL.GetUniformLocation(this.ProgramId, "minR");
 			this.MaxRId = GL.GetUniformLocation(this.ProgramId, "maxR");
+			this.TextureSamplerId = GL.GetUniformLocation(this.ProgramId, "textureSampler");
+			this.TextureTransformId = GL.GetUniformLocation(this.ProgramId, "textureTransform");
 			this.ZId = GL.GetUniformLocation(this.ProgramId, "z");
 
 			this.LocalPositionId = GL.GetAttribLocation(this.ProgramId, "localPosition");

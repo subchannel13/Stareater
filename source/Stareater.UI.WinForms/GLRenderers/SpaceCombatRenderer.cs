@@ -244,13 +244,13 @@ namespace Stareater.GLRenderers
 					for(int i = 0; i < 6; i++)
 					{
 						var j = (i + 1) % 6;
-						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearPoints[j].X, nearPoints[j].Y));
-						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farPoints[j].X, farPoints[j].Y));
-						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farPoints[i].X, farPoints[i].Y));
+						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearPoints[j].X, nearPoints[j].Y, 0));
+						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farPoints[j].X, farPoints[j].Y, 1));
+						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farPoints[i].X, farPoints[i].Y, 1));
 						
-						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farPoints[i].X, farPoints[i].Y));
-						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearPoints[i].X, nearPoints[i].Y));
-						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearPoints[j].X, nearPoints[j].Y));
+						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farPoints[i].X, farPoints[i].Y, 1));
+						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearPoints[i].X, nearPoints[i].Y, 0));
+						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearPoints[j].X, nearPoints[j].Y, 0));
 					}
 				}
 			}
@@ -259,7 +259,7 @@ namespace Stareater.GLRenderers
 				ref this.gridLines,
 				new SceneObject(new PolygonData(
 					GridZ,
-					new OrbitData(0, 1, Color.Green, Matrix4.Identity),
+					new OrbitData(0, 1, Color.Green, Matrix4.Identity, GalaxyTextures.Get.PathLine),
 					gridVertexData
 				))
 			);

@@ -5,11 +5,11 @@ namespace Stareater.GLData.OrbitShader
 {
 	static class OrbitHelpers
 	{
-		public static IEnumerable<float> FlatOrbitVertex(float x, float y)
+		public static IEnumerable<float> FlatOrbitVertex(float x, float y, float r)
 		{
 			yield return x; 
 			yield return y;
-			yield return 0;
+			yield return r;
 			yield return 0;
 		}
 		

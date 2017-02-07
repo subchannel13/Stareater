@@ -3,6 +3,8 @@
 uniform float minR;
 uniform float maxR;
 uniform vec4 color;
+uniform sampler2D textureSampler;
+uniform mat3 textureTransform;
 
 in vec2 orbitPositionFrag;
 
@@ -27,9 +29,11 @@ void main()
 {
    vec2 p = cartToPolar(orbitPositionFrag);
    float r = p.x;
+   float a = p.y;
+   vec3 samplePoint = textureTransform * vec3(a - floor(a), (r - minR) / (maxR - minR), 1);
    
    if (r >= minR && r <= maxR)
-      outputF = color;
+      outputF = texture2D(textureSampler, samplePoint.xy) * color;
    else
       outputF = vec4(0, 0, 0, 0);
 }

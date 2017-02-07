@@ -24,13 +24,18 @@ namespace Stareater.GLData.OrbitShader
 			var program = ShaderLibrary.PlanetOrbit;
 			GL.UseProgram(program.ProgramId);
 			this.vao.Bind(); //TODO(v0.6) set program and bind VAO outside
+			GL.ActiveTexture(TextureUnit.Texture0);
+			GL.Uniform1(program.TextureSamplerId, 0);
+			GL.BindTexture(TextureTarget.Texture2D, this.objectData.TextureId);
 			
 			var mvp = this.objectData.LocalTransform * view;
+			var textureTransform = this.objectData.TextureTransform;
 			GL.UniformMatrix4(program.LocalTransformId, false, ref mvp);
 			GL.Uniform1(program.ZId, z);
 			GL.Uniform4(program.ColorId, this.objectData.Color);
 			GL.Uniform1(program.MinRId, this.objectData.MinRadius);
 			GL.Uniform1(program.MaxRId, this.objectData.MaxRadius);
+			GL.UniformMatrix3(program.TextureTransformId, false, ref textureTransform);
 		
 			GL.DrawArrays(BeginMode.Triangles, vao.ObjectStart(this.objectIndex), vao.ObjectSize(this.objectIndex));
 			ShaderLibrary.PrintGlErrors("Draw orbits");

@@ -283,7 +283,6 @@ namespace Stareater.GLRenderers
 				this.controller.Planets.Select(planet => new SceneObject(planetSpriteData(planet))).ToList()
 			);
 			
-			//TODO(v0.6) Add texture to circle
 			this.UpdateScene(
 				ref this.planetOrbits,
 				this.controller.Planets.Select(
@@ -295,7 +294,7 @@ namespace Stareater.GLRenderers
 						
 						return new SceneObject(new PolygonData(
 							OrbitZ,
-							new OrbitData(orbitR - OrbitWidth / 2, orbitR + OrbitWidth / 2, color, Matrix4.Identity),
+							new OrbitData(orbitR - OrbitWidth / 2, orbitR + OrbitWidth / 2, color, Matrix4.Identity, GalaxyTextures.Get.PathLine),
 							OrbitHelpers.PlanetOrbit(orbitR, OrbitWidth, OrbitPieces).ToList()
 						));
 					}

@@ -11,13 +11,24 @@ namespace Stareater.GLData.OrbitShader
 		public float MaxRadius { get; private set; }
 		public Color4 Color { get; private set; }
 		public Matrix4 LocalTransform { get; set; }
+		public int TextureId { get; private set; }
+		public Matrix3 TextureTransform { get; private set; }
 
-		public OrbitData(float minRadius, float maxRadius, Color4 color, Matrix4 localTransform)
+		public OrbitData(float minRadius, float maxRadius, Color4 color, Matrix4 localTransform, TextureInfo sprite)
 		{
 			this.MinRadius = minRadius;
 			this.MaxRadius = maxRadius;
 			this.Color = color;
 			this.LocalTransform = localTransform;
+			this.TextureId = sprite.Id;
+			
+			var corner = sprite.Coordinates[0];
+			var size = sprite.Coordinates[2] - sprite.Coordinates[0];
+			this.TextureTransform = new Matrix3(
+				size.X, 0, 0,
+				0, size.Y, 0,
+				corner.X, corner.Y, 1
+			);
 		}
 
 		#region IShaderUniformData implementation
