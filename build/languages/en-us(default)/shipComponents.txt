@@ -28,6 +28,8 @@ SUBSPACE_ISDRIVE_DESC = No description.
 -
 
 :MissionEquipment
+HARPOON_NAME = Harpoon missile
+HARPOON_DESC = No description.
 LASER_NAME = Laser
 LASER_DESC = No description.
 NUKE_NAME = Nuclear bomb

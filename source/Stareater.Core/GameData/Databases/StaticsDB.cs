@@ -392,6 +392,7 @@ namespace Stareater.GameData.Databases
 							abilityData[AbilityRange].To<Formula>(),
 							abilityData[AbilityEnergyCost].To<Formula>(),
 							abilityData.ToOrDefault(DirectShootAccuracyRangePenalty, new Formula(0)),
+							abilityData.ToOrDefault(AbilityAmmo, new Formula(double.PositiveInfinity)),
 							abilityData.ToOrDefault(DirectShootArmorEfficiency, new Formula(1)),
 							abilityData.ToOrDefault(DirectShootShieldEfficiency, new Formula(1)),
 							abilityData.ToOrDefault(DirectShootPlanetEfficiency, new Formula(1))
@@ -755,8 +756,9 @@ namespace Stareater.GameData.Databases
 		private const string ThrusterSpeed = "speed";
 
 
-		private const string AbilityRange = "range";
+		private const string AbilityAmmo = "ammo";
 		private const string AbilityEnergyCost = "energyCost";
+		private const string AbilityRange = "range";
 
 		private const string DirectShootAccuracy = "accuracy";
 		private const string DirectShootAccuracyRangePenalty = "accuracyRangePenalty";
