@@ -99,7 +99,7 @@ namespace Stareater.GLRenderers
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
 			
 			var hexX = Math.Round(mousePoint.X / 1.5, MidpointRounding.AwayFromZero);
-			var hex = new NGenerics.DataStructures.Mathematical.Vector2D(
+			var hex = new Vector2D(
 				hexX,
 				Math.Round(mousePoint.Y / HexHeight - ((int)Math.Abs(hexX) % 2 != 0 ? 0.5 : 0), MidpointRounding.AwayFromZero)
 			);

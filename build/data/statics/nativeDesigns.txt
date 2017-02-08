@@ -66,6 +66,7 @@
 	descCode: CATALYZER_DESC
 	image: ./images/technologies/hydroponicFarms.png
 	code: catalyzer
+	cannotPick.
 	
 	maxLvl= 0
 	prerequisites []
