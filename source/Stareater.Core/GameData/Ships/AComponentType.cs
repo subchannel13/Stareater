@@ -55,7 +55,7 @@ namespace Stareater.GameData.Ships
 		
 		public static Component<T> MakeBest<T>(IEnumerable<T> assortment, IDictionary<string, double> techLevels) where T: AComponentType, IIncrementalComponent
 		{
-			return Methods.FindBest(
+			return Methods.FindBestOrDefault(
 				assortment.Where(x => x.IsAvailable(techLevels) && x.CanPick).Select(x => new Component<T>(x, x.HighestLevel(techLevels))),
 				x => x.TypeInfo.ComparisonValue(x.Level)
 			);

@@ -33,7 +33,7 @@ namespace Stareater.GameData.Ships
 		{
 			var shipVars = PlayerProcessor.DesignBaseVars(hull, specialEquipment, statics).Get;
 
-			return Methods.FindBest(
+			return Methods.FindBestOrDefault(
 				statics.Reactors.Values.Where(x => x.IsAvailable(playersTechLevels)).
 				Select(x => new Component<ReactorType>(x, x.HighestLevel(playersTechLevels))).
 				Where(x =>

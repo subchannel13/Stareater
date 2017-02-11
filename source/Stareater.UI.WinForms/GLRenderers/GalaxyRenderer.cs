@@ -537,11 +537,6 @@ namespace Stareater.GLRenderers
 				this.originOffset.Y = mapBoundsMax.Y;
 		}
 
-		private static Vector2 convert(NGenerics.DataStructures.Mathematical.Vector2D v)
-		{
-			return new Vector2((float)v.X, (float)v.Y);
-		}
-
 		private static Matrix4 pathMatrix(Vector2 fromPoint, Vector2 toPoint)
 		{
 			var xAxis = toPoint - fromPoint;

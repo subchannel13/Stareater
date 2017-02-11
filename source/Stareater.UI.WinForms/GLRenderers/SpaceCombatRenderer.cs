@@ -16,6 +16,7 @@ using Stareater.GLData;
 using Stareater.GLData.OrbitShader;
 using Stareater.GraphicsEngine;
 using Stareater.GLData.SpriteShader;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GLRenderers
 {
@@ -33,6 +34,7 @@ namespace Stareater.GLRenderers
 		private const float MovemenentZ = 1 / Layers;
 		
 		private const float DefaultViewSize = 17;
+		private const float GridThickness = 0.05f;
 		private const float HexHeightScale = 0.9f;
 		private static readonly float HexHeight = (float)Math.Sqrt(3) * HexHeightScale;
 		private static readonly Matrix4 PopulationTransform = Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f, 0);
@@ -222,37 +224,95 @@ namespace Stareater.GLRenderers
 		
 		private void setupGrid()
 		{
-			var gridVertexData = new List<float>();
-			
-			for(int x = -SpaceBattleController.BattlefieldRadius; x <= SpaceBattleController.BattlefieldRadius; x++)
+			var edges = new QuadTree<Tuple<Vector2, Vector2>>();
+			var points = new QuadTree<Vector2>();
+			var intersections = new Dictionary<Vector2, List<Tuple<Vector2, Vector2>>>();
+
+			for (int x = -SpaceBattleController.BattlefieldRadius; x <= SpaceBattleController.BattlefieldRadius; x++)
 			{
 				int yHeight = (SpaceBattleController.BattlefieldRadius * 2 - Math.Abs(x));
-				var yOffset = Math.Abs(x) % 2 != 0 ? HexHeight / 2 : 0;
-					
-				for(int y = -(int)Math.Ceiling(yHeight / 2.0); y <= (int)Math.Floor(yHeight / 2.0); y++)
+				var yOffset = Math.Abs(x) % 2 != 0 ? 0.5f : 0;
+
+				for (int y = -(int)Math.Ceiling(yHeight / 2.0); y <= (int)Math.Floor(yHeight / 2.0); y++)
 				{
-					var nearPoints = new List<Vector2>();
-					var farPoints = new List<Vector2>();
-					for(int i = 0; i < 6; i++)
+					for (int i = 0; i < 6; i++)
 					{
-						var cos = (float)Math.Cos(i * Math.PI / 3);
-						var sin = (float)Math.Sin(i * Math.PI / 3);
-						nearPoints.Add(new Vector2(0.95f * cos + x * 1.5f, 0.95f * sin * HexHeightScale + y * HexHeight + yOffset));
-						farPoints.Add(new Vector2(1.05f * cos + x * 1.5f, 1.05f * sin * HexHeightScale + y * HexHeight + yOffset));
-					}
-					
-					for(int i = 0; i < 6; i++)
-					{
-						var j = (i + 1) % 6;
-						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearPoints[j].X, nearPoints[j].Y, 0));
-						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farPoints[j].X, farPoints[j].Y, 1));
-						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farPoints[i].X, farPoints[i].Y, 1));
-						
-						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farPoints[i].X, farPoints[i].Y, 1));
-						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearPoints[i].X, nearPoints[i].Y, 0));
-						gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearPoints[j].X, nearPoints[j].Y, 0));
+						var endpoints = new Vector2[2];
+						for (int p = 0; p < 2; p++)
+						{
+							var point = new Vector2(
+								(float)Math.Cos((i + p) * Math.PI / 3) + x * 1.5f,
+								(float)Math.Sin((i + p) * Math.PI / 3) * HexHeightScale + (y + yOffset) * HexHeight);
+
+							var query = points.Query(convert(point), new Vector2D(0.1, 0.1)).ToList();
+							endpoints[p] = query.Any() ? query.First() : point;
+
+							if (!query.Any())
+							{
+								points.Add(point, convert(point), new Vector2D(0, 0));
+								intersections.Add(point, new List<Tuple<Vector2, Vector2>>());
+							}
+						}
+
+						var midpoint = convert(endpoints[0] + endpoints[1]) / 2;
+
+						if (edges.Query(midpoint, new Vector2D(0.1, 0.1)).Any())
+							continue;
+
+						var edge = new Tuple<Vector2, Vector2>(endpoints[0], endpoints[1]);
+						edges.Add(edge, midpoint, new Vector2D(0, 0));
+
+						for (int p = 0; p < 2; p++)
+							intersections[endpoints[p]].Add(edge);
 					}
 				}
+			}
+
+			var gridVertexData = new List<float>();
+
+			foreach (var edge in edges.GetAll().ToList())
+			{
+				var ortoDirection = (edge.Item2 - edge.Item1).Normalized().PerpendicularLeft;
+
+				var fromNeighbours = intersections[edge.Item1].
+					Where(e => e != edge).
+					SelectMany(e => new [] { e.Item1, e.Item2}).
+					Where(v => (v - edge.Item1).LengthSquared > 0.1).
+					Select(v => (v - edge.Item1).Normalized()).ToList();
+				var fromLeft = Methods.FindBest(fromNeighbours, (v) => Vector2.Dot(v, ortoDirection));
+				var fromRight = Methods.FindBest(fromNeighbours, (v) => -Vector2.Dot(v, ortoDirection));
+
+				var toNeighbours = intersections[edge.Item2].
+					Where(e => e != edge).
+					SelectMany(e => new[] { e.Item1, e.Item2 }).
+					Where(v => (v - edge.Item2).LengthSquared > 0.1).
+					Select(v => (v - edge.Item2).Normalized()).ToList();
+				var toLeft = Methods.FindBest(toNeighbours, (v) => Vector2.Dot(v, ortoDirection));
+				var toRight = Methods.FindBest(toNeighbours, (v) => -Vector2.Dot(v, ortoDirection));
+
+				var nearI = edge.Item1 + (-ortoDirection + fromRight.PerpendicularLeft) * 0.5f * GridThickness;
+				var nearJ = edge.Item2 + (-ortoDirection + toRight.PerpendicularRight) * 0.5f * GridThickness;
+				var farI = edge.Item1;
+				var farJ = edge.Item2;
+
+				gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearJ.X, nearJ.Y, 0));
+				gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farJ.X, farJ.Y, 0.5f));
+				gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farI.X, farI.Y, 0.5f));
+
+				gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farI.X, farI.Y, 0.5f));
+				gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearI.X, nearI.Y, 0));
+				gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearJ.X, nearJ.Y, 0));
+
+				nearI = edge.Item1 + (ortoDirection + fromLeft.PerpendicularRight) * 0.5f * GridThickness;
+				nearJ = edge.Item2 + (ortoDirection + toLeft.PerpendicularLeft) * 0.5f * GridThickness;
+
+				gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearJ.X, nearJ.Y, 0));
+				gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farJ.X, farJ.Y, 0.5f));
+				gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farI.X, farI.Y, 0.5f));
+
+				gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(farI.X, farI.Y, 0.5f));
+				gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearI.X, nearI.Y, 0));
+				gridVertexData.AddRange(OrbitHelpers.FlatOrbitVertex(nearJ.X, nearJ.Y, 0));
 			}
 			
 			this.UpdateScene(

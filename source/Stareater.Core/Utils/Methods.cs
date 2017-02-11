@@ -34,8 +34,8 @@ namespace Stareater.Utils
 		/// </summary>
 		/// <param name="source">Input collection of elements</param>
 		/// <param name="fitnessFunc">Fitness function</param>
-		/// <returns>Element with highest fitenss</returns>
-		public static T FindBest<T>(IEnumerable<T> source, Func<T, IComparable> fitnessFunc) where T : class
+		/// <returns>Element with highest fitenss or null if collection is empty</returns>
+		public static T FindBestOrDefault<T>(IEnumerable<T> source, Func<T, IComparable> fitnessFunc) where T : class
 		{
 			T best = null;
 			IComparable bestValue = null;
@@ -44,6 +44,30 @@ namespace Stareater.Utils
 			{
 				var itemValue = fitnessFunc(item);
 				if (best == null || itemValue.CompareTo(bestValue) > 0)
+				{
+					best = item;
+					bestValue = itemValue;
+				}
+			}
+
+			return best;
+		}
+
+		/// <summary>
+		/// Finds an element with highest fitness function value.
+		/// </summary>
+		/// <param name="source">Input collection of elements</param>
+		/// <param name="fitnessFunc">Fitness function</param>
+		/// <returns>Element with highest fitenss</returns>
+		public static T FindBest<T>(IEnumerable<T> source, Func<T, IComparable> fitnessFunc)
+		{
+			T best = source.First();
+			IComparable bestValue = fitnessFunc(best);
+
+			foreach (var item in source.Skip(1))
+			{
+				var itemValue = fitnessFunc(item);
+				if (itemValue.CompareTo(bestValue) > 0)
 				{
 					best = item;
 					bestValue = itemValue;

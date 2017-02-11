@@ -211,5 +211,17 @@ namespace Stareater.GraphicsEngine
 			this.dirtyLayers.Clear();
 		}
 		#endregion
+
+		#region Math helpers
+		protected static Vector2 convert(NGenerics.DataStructures.Mathematical.Vector2D v)
+		{
+			return new Vector2((float)v.X, (float)v.Y);
+		}
+
+		protected static NGenerics.DataStructures.Mathematical.Vector2D convert(Vector2 v)
+		{
+			return new NGenerics.DataStructures.Mathematical.Vector2D(v.X, v.Y);
+		}
+		#endregion
 	}
 }
