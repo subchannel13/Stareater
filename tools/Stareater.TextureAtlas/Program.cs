@@ -15,8 +15,8 @@ namespace Stareater.TextureAtlas
 		static Dictionary<string, Bitmap> items = new Dictionary<string, Bitmap>();
 		static Dictionary<string, FileInfo> files = new Dictionary<string, FileInfo>();
 		static int margin = 4;
-		static int width = 512;
-		static int heigth = 512;
+		static int width = 1024;
+		static int heigth = 1024;
 		static string outputIkonPath = "output.txt";
 		static string outputImagePath = "output.png";
 		static string compositeTag = "TextureAtlas";

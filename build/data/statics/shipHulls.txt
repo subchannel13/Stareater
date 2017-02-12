@@ -6,6 +6,8 @@
 		:./images/ships/fighter1
 		:./images/ships/fighter2
 		:./images/ships/fighter3
+		:./images/ships/fighter4
+		:./images/ships/fighter5
 	]
 	
 	maxLvl= 0
@@ -28,6 +30,40 @@
 	jamming # 10;
 	cloaking # 10;
 	sensors # -10;
+}
+
+{ Hull
+	nameCode: SHUTTLE_HULL_NAME
+	descCode: SHUTTLE_HULL_DESC
+	code: shuttle
+	images [ 
+		:./images/ships/shuttle1
+		:./images/ships/shuttle2
+		:./images/ships/shuttle3
+		:./images/ships/shuttle4
+		:./images/ships/shuttle5
+	]
+	
+	maxLvl= 0
+	prerequisites [
+	]
+	cost # 30e6;
+	
+	size # 25;
+	space # 25;
+	
+	sizeIS # 5;
+	sizeReactor # 5;
+	sizeShield # 5;
+	
+	armorBase # 30;
+	armorAbsorb # 0.2;
+	shieldBase # 30;
+	
+	inertia # 12;
+	jamming # 8;
+	cloaking # 8;
+	sensors # -7;
 }
 
 { Hull
