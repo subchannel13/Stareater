@@ -123,14 +123,14 @@ namespace Stareater.GameLogic
 			var snapped = snapPosition(position);
 			
 			if (Math.Abs(snapped.Magnitude()) < 1e-3 && position.Magnitude() > 0)
-				return neighborPositions(new Vector2D(0, 0)).
+				return Methods.HexNeighbours(new Vector2D(0, 0)).
 					Aggregate((a, b) => (a - position).Magnitude() > (b - position).Magnitude() ? a : b);
 			
 			var corrected = snapped;
 			while(Methods.HexDistance(corrected) > SpaceBattleGame.BattlefieldRadius)
 			{
 				var distance = Methods.HexDistance(corrected);
-				corrected = neighborPositions(corrected).
+				corrected = Methods.HexNeighbours(corrected).
 					Where(x => Methods.HexDistance(x) < distance).
 					Aggregate((a, b) => (a - snapped).Magnitude() > (b - snapped).Magnitude() ? a : b);
 			}
@@ -380,14 +380,7 @@ namespace Stareater.GameLogic
 		#region Math helpers
 		private static IEnumerable<Vector2D> neighborPositions(Vector2D position)
 		{
-			var yOffset = (int)Math.Abs(position.X) % 2 == 0 ? 0 : 1;
-				
-			yield return position + new Vector2D(0, 1);
-			yield return position + new Vector2D(1, 0 + yOffset);
-			yield return position + new Vector2D(1, -1 + yOffset);
-			yield return position + new Vector2D(0, -1);
-			yield return position + new Vector2D(-1, -1 + yOffset);
-			yield return position + new Vector2D(-1, 0 + yOffset);
+			return Methods.HexNeighbours(position);
 		}
 		
 		private static double Probability(double modifer)

@@ -115,6 +115,23 @@ namespace Stareater.Utils
 		}
 		
 		/// <summary>
+		/// Returns coordinates of immediate neighbour of a tile on hexagonal grid. 
+		/// </summary>
+		/// <param name="position">Position of a tile</param>
+		/// <returns>Positions of neighbours</returns>
+		public static IEnumerable<Vector2D> HexNeighbours(Vector2D position)
+		{
+			var yOffset = (int)Math.Abs(position.X) % 2 == 0 ? 0 : 1;
+				
+			yield return position + new Vector2D(0, 1);
+			yield return position + new Vector2D(1, 0 + yOffset);
+			yield return position + new Vector2D(1, -1 + yOffset);
+			yield return position + new Vector2D(0, -1);
+			yield return position + new Vector2D(-1, -1 + yOffset);
+			yield return position + new Vector2D(-1, 0 + yOffset);
+		}
+		
+		/// <summary>
 		/// Tests whether one rectangle ("outer") is completely contains other rectrangle ("inner").
 		/// </summary>
 		/// <param name="outerTopRight">Top right corner of "outer" rectangle</param>
