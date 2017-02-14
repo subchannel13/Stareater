@@ -99,11 +99,12 @@ namespace Stareater.GameLogic
 				foreach(var shipGroup in fleet.LocalFleet.Ships)
 				{
 					var designStats = mainGame.Derivates.Of(shipGroup.Design.Owner).DesignStats[shipGroup.Design];
+					var ammo = designStats.Abilities.Select(x => double.IsInfinity(x.Ammo) ? double.PositiveInfinity : x.Ammo * x.Quantity * (double)shipGroup.Quantity).ToArray();
 					var abilities = designStats.Abilities.Select(x => x.Quantity * (double)shipGroup.Quantity).ToArray();
 					var simiralCombatant = this.game.Combatants.FirstOrDefault(x => x.Position == position && x.Ships.Design == shipGroup.Design);
 					
 					if (simiralCombatant == null)
-						this.game.Combatants.Add(new Combatant(position, fleet.OriginalFleet.Owner, shipGroup, designStats, abilities));
+						this.game.Combatants.Add(new Combatant(position, fleet.OriginalFleet.Owner, shipGroup, designStats, ammo, abilities));
 					else
 					{
 						simiralCombatant.Ships.Quantity += shipGroup.Quantity;
@@ -187,7 +188,11 @@ namespace Stareater.GameLogic
 				unit.ShieldPoints = Math.Min(unit.ShieldPoints, stats.ShieldPoints);
 				
 				for(int i = 0; i < unit.AbilityCharges.Length; i++)
+				{
 					unit.AbilityCharges[i] = stats.Abilities[i].Quantity * (double)unit.Ships.Quantity;
+					if (!double.IsInfinity(stats.Abilities[i].Ammo))
+						unit.AbilityCharges[i] = Math.Min(unit.AbilityCharges[i], unit.AbilityAmmo[i]);
+				}
 				
 				this.rollCloaking(unit, stats, players);
 			}
@@ -259,14 +264,18 @@ namespace Stareater.GameLogic
 			var unit = this.game.PlayOrder.Peek();
 			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
 			var chargesLeft = quantity;
+			var spent = 0.0;
 			
 			if (!abilityStats.TargetShips || Methods.HexDistance(target.Position, unit.Position) > abilityStats.Range)
 				return;
 			
 			if (abilityStats.IsInstantDamage)
-				chargesLeft = this.doDirectAttack(unit, abilityStats, quantity, target);
+				spent = this.doDirectAttack(unit, abilityStats, quantity, target);
 			
-			unit.AbilityCharges[index] = chargesLeft;
+			spent = Math.Min(spent, quantity);
+			unit.AbilityCharges[index] -= spent;
+			if (!double.IsInfinity(unit.AbilityAmmo[index]))
+				unit.AbilityAmmo[index] -= spent;
 		}
 		
 		public void UseAbility(int index, double quantity, CombatPlanet planet)
@@ -274,6 +283,7 @@ namespace Stareater.GameLogic
 			var unit = this.game.PlayOrder.Peek();
 			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
 			var chargesLeft = quantity;
+			var spent = 0.0;
 			
 			if (!abilityStats.TargetColony || Methods.HexDistance(planet.Position, unit.Position) > abilityStats.Range)
 				return;
@@ -286,10 +296,12 @@ namespace Stareater.GameLogic
 				//TODO(later) roll for target, building or population
 				
 				planet.Colony.Population -= casualties;
-				chargesLeft -= Math.Ceiling(casualties / killsPerShot);
+				spent = Math.Ceiling(casualties / killsPerShot);
 			}
 			
-			unit.AbilityCharges[index] = chargesLeft;
+			unit.AbilityCharges[index] -= spent;
+			if (!double.IsInfinity(unit.AbilityAmmo[index]))
+				unit.AbilityAmmo[index] -= spent;
 		}
 		
 		public void UseAbility(int index, double quantity, StarData star)
@@ -326,10 +338,11 @@ namespace Stareater.GameLogic
 			var distance = Methods.HexDistance(attacker.Position, target.Position);
 			var detection = sensorStrength(target.Position, attacker.Owner);
 			var targetStealth = targetStats.Jamming + (target.CloakedFor.Contains(attacker.Owner) ? this.mainGame.Statics.ShipFormulas.NaturalCloakBonus : 0);
+			var spent = 0.0;
 				
-			while (target.HitPoints > 0 && quantity > 0)
+			while (target.HitPoints > 0 && quantity > spent)
 			{
-				quantity--;
+				spent++;
 				
 				
 				if (targetStealth > detection && Math.Pow(sigmoidBase, targetStealth - detection) > this.game.Rng.NextDouble())
@@ -362,18 +375,19 @@ namespace Stareater.GameLogic
 				target.ShieldPoints = targetStats.ShieldPoints;
 			}
 			
-			return Math.Max(quantity, 0);
+			return spent;
 		}
 		
 		private double doDirectAttack(Combatant attacker, AbilityStats abilityStats, double quantity, Combatant target)
 		{
 			var targetStats = this.mainGame.Derivates.Of(target.Owner).DesignStats[target.Ships.Design];
+			var spent = 0.0;
 			
-			while(quantity > 0)
-				quantity = attackTop(attacker, abilityStats, quantity, target, targetStats);
+			while(quantity > spent && target.Ships.Quantity > 0)
+				spent =+ attackTop(attacker, abilityStats, quantity - spent, target, targetStats);
 			
 			//TODO(later) do different calculation for multiple ships below top of the stack
-			return quantity;
+			return spent;
 		}
 		#endregion
 		

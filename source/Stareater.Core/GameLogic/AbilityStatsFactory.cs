@@ -10,7 +10,7 @@ namespace Stareater.GameLogic
 	class AbilityStatsFactory : IAbilityVisitor
 	{
 		private int level;
-		private StaticsDB statics;
+		private readonly StaticsDB statics;
 		
 		private int range = 0;
 		private bool isInstantDamage = false;
@@ -22,6 +22,7 @@ namespace Stareater.GameLogic
 		private double accuracy = 0;
 		private double energyCost = 0;
 		private double accuracyRangePenalty = 0;
+		private double ammo = 0;
 		private double armorEfficiency = 0;
 		private double shieldEfficiency = 0;
 		private double planetEfficiency = 0;
@@ -40,7 +41,7 @@ namespace Stareater.GameLogic
 			type.Accept(factory);
 			
 			return new AbilityStats(type, level, quantity, factory.range, factory.isInstantDamage, factory.targetColony, factory.targetShips, factory.targetStar,
-			                       factory.firePower, factory.accuracy, factory.energyCost, 
+			                       factory.firePower, factory.accuracy, factory.energyCost, factory.ammo,
 			                       factory.accuracyRangePenalty, factory.armorEfficiency, factory.shieldEfficiency, factory.planetEfficiency,
 			                       factory.appliesTrait);
 		}
@@ -59,6 +60,7 @@ namespace Stareater.GameLogic
 			this.firePower = ability.FirePower.Evaluate(vars);
 			this.accuracy = ability.Accuracy.Evaluate(vars);
 			this.energyCost = ability.EnergyCost.Evaluate(vars);
+			this.ammo = ability.Ammo.Evaluate(vars);
 			this.accuracyRangePenalty = ability.AccuracyRangePenalty.Evaluate(vars);
 			this.armorEfficiency = ability.ArmorEfficiency.Evaluate(vars);
 			this.shieldEfficiency = ability.ShieldEfficiency.Evaluate(vars);
