@@ -8,6 +8,7 @@ using Ikadn.Ikon.Types;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Galaxy;
 using Stareater.Utils;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Players.Natives
 {
@@ -15,6 +16,7 @@ namespace Stareater.Players.Natives
 	{
 		private PlayerController playerController;
 		private SpaceBattleController battleController;
+		private Random random = new Random(); //TODO(later) find better place for RNG
 
 		public PlayerController Controller
 		{
@@ -24,22 +26,19 @@ namespace Stareater.Players.Natives
 		public void PlayTurn()
 		{
 			var ownFleet = this.playerController.Fleets.Where(x => x.Owner == this.playerController.Info).ToList();
-			var inhabitedStars = new HashSet<StarData>(this.playerController.Stars.Where(x => this.playerController.KnownColonies(x).Any()));
-			
-			foreach(var movingFleet in ownFleet.Where(x => x.IsMoving))
-				inhabitedStars.ExceptWith(movingFleet.Missions.Waypoints.Select(x => this.playerController.Star(x.Destionation)));
+			var invastigating = ownFleet.Where(x => x.IsMoving).SelectMany(x => x.Missions.Waypoints).ToList();
+			var stars = new PickList<StarData>(random, this.playerController.Stars.Where(s => invastigating.All(x => x.Destionation != s.Position)));
 			
 			foreach(var fleet in ownFleet.Where(x => !x.IsMoving))
 			{
-				if (!inhabitedStars.Any())
+				if (stars.Count() == 0)
 					break;
 				
-				var destination = inhabitedStars.First();
+				var destination = stars.Pick();
 				var fleetControl = this.playerController.SelectFleet(fleet);
 				foreach(var shipGroup in fleetControl.ShipGroups)
 					fleetControl.SelectGroup(shipGroup, shipGroup.Quantity);
 				fleetControl.Send(new []{ destination.Position });
-				inhabitedStars.Remove(destination);
 			}
 		}
 
