@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.IO;
 using System.Drawing.Imaging;
 using Ikadn.Ikon.Types;
@@ -12,14 +11,14 @@ namespace Stareater.TextureAtlas
 {
 	class Program
 	{
-		static Dictionary<string, Bitmap> items = new Dictionary<string, Bitmap>();
-		static Dictionary<string, FileInfo> files = new Dictionary<string, FileInfo>();
+		static readonly Dictionary<string, Bitmap> items = new Dictionary<string, Bitmap>();
+		static readonly Dictionary<string, FileInfo> files = new Dictionary<string, FileInfo>();
 		static int margin = 4;
 		static int width = 1024;
 		static int heigth = 1024;
 		static string outputIkonPath = "output.txt";
 		static string outputImagePath = "output.png";
-		static string compositeTag = "TextureAtlas";
+		const string compositeTag = "TextureAtlas";
 
 		static void Main(string[] args)
 		{
@@ -29,13 +28,13 @@ namespace Stareater.TextureAtlas
 			} else
 				ReadParameters(args);
 
-			AtlasBuilder builder = new AtlasBuilder(
+			var builder = new AtlasBuilder(
 				items.Select(x => new KeyValuePair<string, Size>(x.Key, x.Value.Size)).ToArray(), 
 				margin, new Size(width, heigth)
 			);
 
-			IkonComposite atlasIkon = new IkonComposite(compositeTag);
-			Bitmap atlasImage = new Bitmap(width, heigth);
+			var atlasIkon = new IkonComposite(compositeTag);
+			var atlasImage = new Bitmap(width, heigth);
 
 			using(Graphics g = Graphics.FromImage(atlasImage))
 				foreach (var x in builder.Build()) {
@@ -46,19 +45,19 @@ namespace Stareater.TextureAtlas
 					if (nameParams.Contains("hStretch"))
 						bounds.Inflate(-1, 0);
 					
-					IkonArray textureCoords = new IkonArray();
+					var textureCoords = new IkonArray();
 					textureCoords.Add(serializeRectangle(bounds.Left, bounds.Top));
 					textureCoords.Add(serializeRectangle(bounds.Right, bounds.Top));
 					textureCoords.Add(serializeRectangle(bounds.Right, bounds.Bottom));
 					textureCoords.Add(serializeRectangle(bounds.Left, bounds.Bottom));
 
 					atlasIkon.Add(nameParams[0], textureCoords);
-					Rectangle destRect = new Rectangle(x.Value.Location, x.Value.Size);
+					var destRect = new Rectangle(x.Value.Location, x.Value.Size);
 					g.DrawImage(items[x.Key], destRect);
 				}
 
 			using (var outStream = new StreamWriter(outputIkonPath)) {
-				IkadnWriter writer = new IkadnWriter(outStream);
+				var writer = new IkadnWriter(outStream);
 				atlasIkon.Compose(writer);
 			}
 
@@ -67,7 +66,7 @@ namespace Stareater.TextureAtlas
 
 		private static Ikadn.IkadnBaseObject serializeRectangle(float x, float y)
 		{
-			IkonArray result = new IkonArray();
+			var result = new IkonArray();
 			result.Add(new IkonNumeric(x / width));
 			result.Add(new IkonNumeric(y / heigth));
 
@@ -76,7 +75,7 @@ namespace Stareater.TextureAtlas
 		
 		static void ReadParameters(string[] args)
 		{
-			Queue<string> parameters = new Queue<string>(args);
+			var parameters = new Queue<string>(args);
 
 			foreach (var file in new DirectoryInfo(parameters.Dequeue()).GetFiles()) {
 				if (file.Extension.ToLower() != ".png" && file.Extension.ToLower() != ".bmp" && file.Extension.ToLower() != ".jpg")

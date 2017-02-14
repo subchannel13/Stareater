@@ -47,23 +47,23 @@
 	maxLvl= 0
 	prerequisites [
 	]
-	cost # 30e6;
+	cost # 50e6;
 	
-	size # 25;
-	space # 25;
+	size # 50;
+	space # 50;
 	
-	sizeIS # 5;
-	sizeReactor # 5;
-	sizeShield # 5;
+	sizeIS # 10;
+	sizeReactor # 10;
+	sizeShield # 10;
 	
-	armorBase # 30;
+	armorBase # 60;
 	armorAbsorb # 0.2;
-	shieldBase # 30;
+	shieldBase # 60;
 	
-	inertia # 12;
-	jamming # 8;
-	cloaking # 8;
-	sensors # -7;
+	inertia # 13;
+	jamming # 7;
+	cloaking # 7;
+	sensors # -5;
 }
 
 { Hull
@@ -86,9 +86,9 @@
 	sizeReactor # 40;
 	sizeShield # 40;
 	
-	armorBase # 270;
+	armorBase # 300;
 	armorAbsorb # 0.5;
-	shieldBase # 270;
+	shieldBase # 300;
 	
 	inertia # 16;
 	jamming # 3;
