@@ -8,34 +8,37 @@ namespace Stareater.AppData
 	public class LastGameInfo
 	{
 		public StartingConditions StartConditions { get; set; }
+		public IkonComposite StarPositionerConfig { get; set; }
 
 		public LastGameInfo()
 		{
-			StartConditions = null;
+			this.StartConditions = null;
+			this.StarPositionerConfig = null;
 		}
 
 		public LastGameInfo(IkonComposite ikstonData) : this()
 		{
-			this.StartConditions = ikstonData.ToOrDefault(
-				StartingConditionsKey,
-				x => new StartingConditions(x.To<IkonComposite>()),
-				this.StartConditions
-			);
+			this.StartConditions = ikstonData.ToOrDefault(StartingConditionsKey, x => new StartingConditions(x.To<IkonComposite>()), null);
+			this.StarPositionerConfig = ikstonData.ToOrDefault(StarPositionerKey, x => x.To<IkonComposite>(), null);
 		}
 
 		public IkonComposite BuildSaveData()
 		{
 			var lastGameData = new IkonComposite(ClassName);
 
-			if (StartConditions != null)
-				lastGameData.Add(StartingConditionsKey, StartConditions.BuildSaveData()); //TODO(v0.5) check if data is valid before loading
+			if (this.StartConditions != null)
+				lastGameData.Add(StartingConditionsKey, this.StartConditions.BuildSaveData()); //TODO(v0.5) check if data is valid before loading
+			
+			if (this.StarPositionerConfig != null)
+				lastGameData.Add(StarPositionerKey, this.StarPositionerConfig);
 
 			return lastGameData;
 		}
 
 		#region Attribute keys
 		const string ClassName = "LastGame";
-		const string StartingConditionsKey = "StartinConditions";
+		const string StartingConditionsKey = "startingConditions";
+		const string StarPositionerKey = "starPositioner";
 		#endregion
 	}
 }

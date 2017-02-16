@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Linq;
 
+using Ikadn.Ikon.Types;
 using Stareater.AppData;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
@@ -10,6 +12,7 @@ using Stareater.Galaxy.Builders;
 using Stareater.Localization;
 using Stareater.Players;
 using Stareater.Utils.Collections;
+using Stareater.Utils.PluginParameters;
 
 namespace Stareater.Controllers
 {
@@ -39,7 +42,7 @@ namespace Stareater.Controllers
 				aiPlayers.Pick()));
 
 			this.CustomStart = LastStartingCondition ?? DefaultStartingCondition;
-			this.StarPositioner = MapAssets.StarPositioners[0];
+			this.StarPositioner = loalBuilderConfig(Settings.Get.LastGame.StarPositionerConfig, MapAssets.StarPositioners);
 			this.StarConnector = MapAssets.StarConnectors[0];
 			this.StarPopulator = MapAssets.StarPopulators[0];
 		}
@@ -172,5 +175,62 @@ namespace Stareater.Controllers
 				return PlayerAssets.IsLoaded && MapAssets.IsLoaded;
 			}
 		}
+
+		#region
+		internal void SaveLastGame()
+		{
+			Settings.Get.LastGame.StartConditions = this.SelectedStart;
+			Settings.Get.LastGame.StarPositionerConfig = saveBuilderConfig(this.StarPositioner);
+		}
+
+		//TODO(v0.6) may fail if format is incorrect
+		private static IkonComposite saveBuilderConfig<T>(T generator) where T : IMapBuilderPiece
+		{
+			var data = new IkonComposite(generator.Code);
+			
+			var selectors = new IkonArray();
+			foreach(var selector in generator.Parameters.Selectors)
+				selectors.Add(new IkonInteger(selector.Value));
+			data.Add(SelectorParamKey, selectors);
+			
+			var intRanges = new IkonArray();
+			foreach(var range in generator.Parameters.IntegerRanges)
+				intRanges.Add(new IkonInteger(range.Value));
+			data.Add(IntRangeParamKey, intRanges);
+			
+			var realRanges = new IkonArray();
+			foreach(var range in generator.Parameters.RealRanges)
+				realRanges.Add(new IkonFloat(range.Value));
+			data.Add(RealRangeParamKey, realRanges);
+			
+			return data;
+		}
+
+		private static T loalBuilderConfig<T>(IkonComposite config, T[] generators) where T : IMapBuilderPiece
+		{
+			if (config == null || generators.All(x => x.Code != config.Tag as string))
+				return generators[0];
+			
+			var generator = generators.First(x => x.Code == config.Tag as string);
+			
+			var data = config[SelectorParamKey].To<IkonArray>();
+			for(int i = 0; i < data.Count; i++)
+				generator.Parameters.Selectors[i].Value = data[i].To<int>();
+			
+			data = config[IntRangeParamKey].To<IkonArray>();
+			for(int i = 0; i < data.Count; i++)
+				generator.Parameters.IntegerRanges[i].Value = data[i].To<int>();
+			
+			data = config[RealRangeParamKey].To<IkonArray>();
+			for(int i = 0; i < data.Count; i++)
+				generator.Parameters.RealRanges[i].Value = data[i].To<double>();
+			
+			return generator;
+		}
+		
+		private const string SelectorParamKey = "selectors";
+		private const string IntRangeParamKey = "intRanges";
+		private const string RealRangeParamKey = "realRanges";
+		#endregion
 	}
 }

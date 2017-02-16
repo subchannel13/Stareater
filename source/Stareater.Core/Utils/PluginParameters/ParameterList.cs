@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections.ObjectModel;
 
 namespace Stareater.Utils.PluginParameters
 {
 	//TODO convert to visitor pattern
 	public class ParameterList
 	{
-		public IEnumerable<SelectorParameter> Selectors { get; private set; }
-		public IEnumerable<RangeParameter<int>> IntegerRanges { get; private set; }
-		public IEnumerable<RangeParameter<double>> RealRanges { get; private set; }
+		public SelectorParameter[] Selectors { get; private set; }
+		public RangeParameter<int>[] IntegerRanges { get; private set; }
+		public RangeParameter<double>[] RealRanges { get; private set; }
 
 		private readonly Dictionary<ParameterBase, int> parameterOrder = new Dictionary<ParameterBase, int>();
 
@@ -31,9 +30,9 @@ namespace Stareater.Utils.PluginParameters
 				parameterOrder.Add(parameters[i], i);
 			}
 
-			Selectors = new ReadOnlyCollection<SelectorParameter>(selectorList);
-			IntegerRanges = new ReadOnlyCollection<RangeParameter<int>>(integerRangeList);
-			RealRanges = new ReadOnlyCollection<RangeParameter<double>>(realRangeList);
+			Selectors = selectorList.ToArray();
+			IntegerRanges = integerRangeList.ToArray();
+			RealRanges = realRangeList.ToArray();
 		}
 
 		public int IndexOf(ParameterBase parameter)

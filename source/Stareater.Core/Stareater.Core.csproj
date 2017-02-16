@@ -139,6 +139,7 @@
     </Compile>
     <Compile Include="Galaxy\BodyTrait.cs" />
     <Compile Include="Galaxy\BodyTraitType.cs" />
+    <Compile Include="Galaxy\Builders\IMapBuilderPiece.cs" />
     <Compile Include="Galaxy\Builders\IStarConnector.cs" />
     <Compile Include="Galaxy\Builders\IStarPopulator.cs" />
     <Compile Include="Galaxy\Builders\IStarPositioner.cs" />

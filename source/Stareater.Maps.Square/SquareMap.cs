@@ -73,6 +73,11 @@ namespace Stareater.Galaxy.Square
 			return (2 * displacement * 100).ToString("0") + "%";
 		}
 
+		public string Code
+		{
+			get { return "SquareMap"; }
+		}
+
 		public string Name
 		{
 			get { return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["name"].Text(); }
