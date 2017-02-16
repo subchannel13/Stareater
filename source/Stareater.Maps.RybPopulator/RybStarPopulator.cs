@@ -69,6 +69,11 @@ namespace Stareater.Galaxy.RybPopulator
 			);
 		}
 
+		public string Code
+		{
+			get { return "RybPopulator"; }
+		}
+		
 		public string Name
 		{
 			get { return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["name"].Text(); }

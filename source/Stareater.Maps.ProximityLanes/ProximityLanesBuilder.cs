@@ -54,6 +54,11 @@ namespace Stareater.Galaxy.ProximityLanes
 			return new SelectorParameter(LanguageContext, DegreeKey, parameterOptions, (int)Math.Ceiling(parameterOptions.Count / 2.0));
 		}
 
+		public string Code
+		{
+			get { return "ProximityLanes"; }
+		}
+		
 		public string Name
 		{
 			get { return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["name"].Text(); }

@@ -9,6 +9,8 @@ namespace Stareater.AppData
 	{
 		public StartingConditions StartConditions { get; set; }
 		public IkonComposite StarPositionerConfig { get; set; }
+		public IkonComposite StarConnectorConfig { get; set; }
+		public IkonComposite StarPopulatorConfig { get; set; }
 
 		public LastGameInfo()
 		{
@@ -20,6 +22,8 @@ namespace Stareater.AppData
 		{
 			this.StartConditions = ikstonData.ToOrDefault(StartingConditionsKey, x => new StartingConditions(x.To<IkonComposite>()), null);
 			this.StarPositionerConfig = ikstonData.ToOrDefault(StarPositionerKey, x => x.To<IkonComposite>(), null);
+			this.StarConnectorConfig = ikstonData.ToOrDefault(StarConnectorKey, x => x.To<IkonComposite>(), null);
+			this.StarPopulatorConfig = ikstonData.ToOrDefault(StarPopulatorKey, x => x.To<IkonComposite>(), null);
 		}
 
 		public IkonComposite BuildSaveData()
@@ -31,6 +35,12 @@ namespace Stareater.AppData
 			
 			if (this.StarPositionerConfig != null)
 				lastGameData.Add(StarPositionerKey, this.StarPositionerConfig);
+			
+			if (this.StarConnectorConfig != null)
+				lastGameData.Add(StarConnectorKey, this.StarConnectorConfig);
+			
+			if (this.StarPopulatorConfig != null)
+				lastGameData.Add(StarPopulatorKey, this.StarPopulatorConfig);
 
 			return lastGameData;
 		}
@@ -38,6 +48,8 @@ namespace Stareater.AppData
 		#region Attribute keys
 		const string ClassName = "LastGame";
 		const string StartingConditionsKey = "startingConditions";
+		const string StarConnectorKey = "starConnector";
+		const string StarPopulatorKey = "starPopulator";
 		const string StarPositionerKey = "starPositioner";
 		#endregion
 	}

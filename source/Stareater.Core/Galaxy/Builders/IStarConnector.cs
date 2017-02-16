@@ -5,11 +5,10 @@ using Stareater.Utils.PluginParameters;
 
 namespace Stareater.Galaxy.Builders
 {
-	public interface IStarConnector
+	public interface IStarConnector : IMapBuilderPiece
 	{
 		string Name { get; }
 		string Description { get; }
-		ParameterList Parameters { get; }
 		IEnumerable<WormholeEndpoints> Generate(Random rng, StarPositions starPositions);
 	}
 }

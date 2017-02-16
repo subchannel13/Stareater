@@ -43,8 +43,8 @@ namespace Stareater.Controllers
 
 			this.CustomStart = LastStartingCondition ?? DefaultStartingCondition;
 			this.StarPositioner = loalBuilderConfig(Settings.Get.LastGame.StarPositionerConfig, MapAssets.StarPositioners);
-			this.StarConnector = MapAssets.StarConnectors[0];
-			this.StarPopulator = MapAssets.StarPopulators[0];
+			this.StarConnector = loalBuilderConfig(Settings.Get.LastGame.StarConnectorConfig, MapAssets.StarConnectors);
+			this.StarPopulator = loalBuilderConfig(Settings.Get.LastGame.StarPopulatorConfig, MapAssets.StarPopulators);
 		}
 
 		private string generateAiName()
@@ -181,6 +181,8 @@ namespace Stareater.Controllers
 		{
 			Settings.Get.LastGame.StartConditions = this.SelectedStart;
 			Settings.Get.LastGame.StarPositionerConfig = saveBuilderConfig(this.StarPositioner);
+			Settings.Get.LastGame.StarConnectorConfig = saveBuilderConfig(this.StarConnector);
+			Settings.Get.LastGame.StarPopulatorConfig = saveBuilderConfig(this.StarPopulator);
 		}
 
 		//TODO(v0.6) may fail if format is incorrect
