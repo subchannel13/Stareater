@@ -8,9 +8,9 @@ namespace Stareater.AppData
 	public class LastGameInfo
 	{
 		public StartingConditions StartConditions { get; set; }
-		public IkonComposite StarPositionerConfig { get; set; }
-		public IkonComposite StarConnectorConfig { get; set; }
-		public IkonComposite StarPopulatorConfig { get; set; }
+		public IkonArray StarPositionerConfig { get; set; }
+		public IkonArray StarConnectorConfig { get; set; }
+		public IkonArray StarPopulatorConfig { get; set; }
 
 		public LastGameInfo()
 		{
@@ -21,9 +21,9 @@ namespace Stareater.AppData
 		public LastGameInfo(IkonComposite ikstonData) : this()
 		{
 			this.StartConditions = ikstonData.ToOrDefault(StartingConditionsKey, x => new StartingConditions(x.To<IkonComposite>()), null);
-			this.StarPositionerConfig = ikstonData.ToOrDefault(StarPositionerKey, x => x.To<IkonComposite>(), null);
-			this.StarConnectorConfig = ikstonData.ToOrDefault(StarConnectorKey, x => x.To<IkonComposite>(), null);
-			this.StarPopulatorConfig = ikstonData.ToOrDefault(StarPopulatorKey, x => x.To<IkonComposite>(), null);
+			this.StarPositionerConfig = ikstonData.ToOrDefault(StarPositionerKey, x => x.To<IkonArray>(), null);
+			this.StarConnectorConfig = ikstonData.ToOrDefault(StarConnectorKey, x => x.To<IkonArray>(), null);
+			this.StarPopulatorConfig = ikstonData.ToOrDefault(StarPopulatorKey, x => x.To<IkonArray>(), null);
 		}
 
 		public IkonComposite BuildSaveData()

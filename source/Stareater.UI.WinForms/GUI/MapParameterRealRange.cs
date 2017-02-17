@@ -7,7 +7,7 @@ namespace Stareater.GUI
 {
 	public partial class MapParameterRealRange : UserControl
 	{
-		private RangeParameter<double> parameter;
+		private ContinuousRangeParameter parameter;
 		private Action changeListener;
 
 		public MapParameterRealRange()
@@ -15,7 +15,7 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 
-		public void SetData(RangeParameter<double> parameterInfo, Action changeListener)
+		public void SetData(ContinuousRangeParameter parameterInfo, Action changeListener)
 		{
 			this.parameter = parameterInfo;
 			this.changeListener = changeListener;

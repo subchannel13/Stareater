@@ -7,9 +7,9 @@ using Stareater.Localization;
 
 namespace Stareater.Utils.PluginParameters
 {
-	public class SelectorParameter : ParameterBase, IEnumerable<KeyValuePair<int, string>>
+	public class SelectorParameter : AParameterBase, IEnumerable<KeyValuePair<int, string>>
 	{
-		public int Value { get; set; }
+		private int selectedIndex;
 		private IList<KeyValuePair<int, string>> values;
 
 		public SelectorParameter(string contextKey, string nameKey, IEnumerable<KeyValuePair<int, string>> values, int current) :
@@ -22,6 +22,19 @@ namespace Stareater.Utils.PluginParameters
 		public int Count
 		{
 			get { return values.Count; }
+		}
+		
+		public int Value 
+		{ 
+			get
+			{
+				return this.selectedIndex;
+			}
+			
+			set
+			{
+				this.selectedIndex = Methods.Clamp(value, 0, this.values.Count - 1);
+			}
 		}
 
 		public KeyValuePair<int, string> this[int optionIndex]
@@ -41,5 +54,14 @@ namespace Stareater.Utils.PluginParameters
 		{
 			throw new NotSupportedException("Use generic method instead");
 		}
+		
+		#region implemented abstract members of ParameterBase
+
+		public override void Accept(IParameterVisitor visitor)
+		{
+			visitor.Visit(this);
+		}
+
+		#endregion
 	}
 }

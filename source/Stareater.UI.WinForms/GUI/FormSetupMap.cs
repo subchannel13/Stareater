@@ -133,21 +133,11 @@ namespace Stareater.GUI
 			this.mapPreview.Image = preview;
 		}
 
-		private void extractParameters(ParameterList parameters)
+		private void extractParameters(IEnumerable<AParameterBase> parameters)
 		{
-			var parameterGuis = new Dictionary<int, Control>();
-			foreach (var parameterInfo in parameters.Selectors) {
-				var parameterControl = new MapParameterSelector();
-				parameterControl.SetData(parameterInfo, this.makePreview);
-				parameterGuis.Add(parameterGuis.Count, parameterControl);
-			}
-			foreach (var parameterInfo in parameters.RealRanges) {
-				var parameterControl = new MapParameterRealRange();
-				parameterControl.SetData(parameterInfo, this.makePreview);
-				parameterGuis.Add(parameterGuis.Count, parameterControl);
-			}
-			for(int i = 0; i < parameterGuis.Count; i++)
-				parametersPanel.Controls.Add(parameterGuis[i]);
+			var converter = new ParametarUiVisitor(parameters, this.makePreview);
+			foreach(var control in converter.MakeUi())
+				parametersPanel.Controls.Add(control);
 		}
 
 		private void acceptButton_Click(object sender, EventArgs e)

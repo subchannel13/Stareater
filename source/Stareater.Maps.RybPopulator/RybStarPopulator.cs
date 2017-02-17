@@ -26,7 +26,6 @@ namespace Stareater.Galaxy.RybPopulator
 		private const string StarMinRadiationKey = "minRadiation";
 		private const string StarMaxRadiationKey = "maxRadiation";
 
-		private ParameterList parameters;
 		private SelectorParameter climateParameter;
 
 		private readonly StarType[] starTypes;
@@ -54,10 +53,6 @@ namespace Stareater.Galaxy.RybPopulator
 				{1, "normalClimate"},
 				{2, "paradiseClimate"},
 			}, 1);
-
-			parameters = new ParameterList(new ParameterBase[] {
-				climateParameter,
-			});
 		}
 
 		private Color extractColor(IList<IkadnBaseObject> arrayValue)
@@ -92,9 +87,9 @@ namespace Stareater.Galaxy.RybPopulator
 			}
 		}
 
-		public ParameterList Parameters
+		public IEnumerable<AParameterBase> Parameters
 		{
-			get { return parameters; }
+			get { yield return climateParameter; }
 		}
 
 		public IEnumerable<StarSystem> Generate(Random rng, StarPositions starPositions, IEnumerable<BodyTraitType> planetTraits)

@@ -80,6 +80,8 @@
     <Compile Include="Controllers\Data\GameCopy.cs" />
     <Compile Include="Controllers\Data\MissionInfoFactory.cs" />
     <Compile Include="Controllers\LibraryController.cs" />
+    <Compile Include="Controllers\NewGameHelpers\ParameterLoadingVisitor.cs" />
+    <Compile Include="Controllers\NewGameHelpers\ParameterSavingVisitor.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\SpaceBattleController.cs" />
     <Compile Include="Controllers\Views\BodyType.cs" />
@@ -443,6 +445,9 @@
     <Compile Include="Utils\Collections\Var.cs" />
     <Compile Include="Utils\NumberFormatters\RomanFromatter.cs" />
     <Compile Include="Utils\NumberFormatters\RoundingMethod.cs" />
+    <Compile Include="Utils\PluginParameters\ContinuousRangeParameter.cs" />
+    <Compile Include="Utils\PluginParameters\DiscreteRangeParameter.cs" />
+    <Compile Include="Utils\PluginParameters\IParameterVisitor.cs" />
     <Compile Include="Utils\ProgressData.cs" />
     <Compile Include="Utils\Collections\PendableSet.cs" />
     <Compile Include="Localization\IText.cs" />
@@ -458,9 +463,8 @@
     <Compile Include="Utils\Collections\PickList.cs" />
     <Compile Include="Utils\Methods.cs" />
     <Compile Include="Utils\NumberFormatters\DecimalsFormatter.cs" />
-    <Compile Include="Utils\PluginParameters\ParameterBase.cs" />
-    <Compile Include="Utils\PluginParameters\ParameterList.cs" />
-    <Compile Include="Utils\PluginParameters\RangeParameter.cs" />
+    <Compile Include="Utils\PluginParameters\AParameterBase.cs" />
+    <Compile Include="Utils\PluginParameters\ARangeParameter.cs" />
     <Compile Include="Utils\PluginParameters\SelectorParameter.cs" />
     <Compile Include="Utils\NumberFormatters\ThousandsFormatter.cs" />
     <Compile Include="Utils\StateTable.cs">
@@ -569,7 +573,9 @@
     <None Include="AppData\Expressions\Parser.frame" />
     <None Include="AppData\Expressions\Scanner.frame" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Controllers\NewGameHelpers" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

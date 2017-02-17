@@ -27,7 +27,6 @@ namespace Stareater.Galaxy.ProximityLanes
 		const double Epsilon = 1e-9;
 
 		private SelectorParameter degreesParameter;
-		private ParameterList parameters;
 		private DegreeOption[] degreeOptions;
 
 		public ProximityLanesBuilder()
@@ -37,9 +36,6 @@ namespace Stareater.Galaxy.ProximityLanes
 				data = parser.ParseAll();
 
 			degreesParameter = loadDegrees(data);
-			this.parameters = new ParameterList(new ParameterBase[]{
-				degreesParameter,
-			});
 		}
 
 		private SelectorParameter loadDegrees(TaggableQueue<object, IkadnBaseObject> data)
@@ -76,9 +72,9 @@ namespace Stareater.Galaxy.ProximityLanes
 			}
 		}
 
-		public ParameterList Parameters
+		public IEnumerable<AParameterBase> Parameters
 		{
-			get { return parameters; }
+			get { yield return degreesParameter; }
 		}
 
 

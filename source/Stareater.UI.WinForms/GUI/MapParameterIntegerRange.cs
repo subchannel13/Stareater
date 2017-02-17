@@ -8,16 +8,18 @@ namespace Stareater.GUI
 {
 	public partial class MapParameterIntegerRange : UserControl
 	{
-		RangeParameter<int> parameter;
+		DiscreteRangeParameter parameter;
+		private Action changeListener;
 
 		public MapParameterIntegerRange()
 		{
 			InitializeComponent();
 		}
 
-		public void SetData(RangeParameter<int> parameterInfo)
+		public void SetData(DiscreteRangeParameter parameterInfo, Action changeListener)
 		{
 			this.parameter = parameterInfo;
+			this.changeListener = changeListener;
 
 			nameLabel.Text = parameterInfo.Name;
 			valueLabel.Text = parameterInfo.ValueDescription;
@@ -31,6 +33,7 @@ namespace Stareater.GUI
 		{
 			parameter.Value = e.NewValue;
 			valueLabel.Text = parameter.ValueDescription;
+			changeListener();
 		}
 	}
 }

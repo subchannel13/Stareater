@@ -192,6 +192,7 @@
     <Compile Include="GUI\FormResearchComplete.Designer.cs">
       <DependentUpon>FormResearchComplete.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\ParametarUiVisitor.cs" />
     <Compile Include="GUI\ResearchItem.cs">
       <SubType>UserControl</SubType>
     </Compile>

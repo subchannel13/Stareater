@@ -29,8 +29,7 @@ namespace Stareater.Galaxy.Square
 		const string EmptyPositionsRatio = "emptyPositionsRatio";
 
 		private readonly SelectorParameter sizeParameter;
-		private readonly RangeParameter<double> displacementParameter;
-		private ParameterList parameters;
+		private readonly ContinuousRangeParameter displacementParameter;
 		private SizeOption[] sizeOptions;
 
 		private double starDistance = 1;
@@ -49,11 +48,7 @@ namespace Stareater.Galaxy.Square
 			this.emptyPositionsRatio = constants[EmptyPositionsRatio].To<double>();
 
 			sizeParameter = loadSizes(data);
-			displacementParameter = new RangeParameter<double>(LanguageContext, "displacement", 0, 0.5, constants[DefaultDisplacementKey].To<double>(), displacementPercentage);
-			this.parameters = new ParameterList(new ParameterBase[]{
-				sizeParameter,
-				displacementParameter,
-			});
+			displacementParameter = new ContinuousRangeParameter(LanguageContext, "displacement", 0, 0.5, constants[DefaultDisplacementKey].To<double>(), displacementPercentage);
 		}
 
 		private SelectorParameter loadSizes(TaggableQueue<object, IkadnBaseObject> data)
@@ -93,11 +88,12 @@ namespace Stareater.Galaxy.Square
 			}
 		}
 
-		public ParameterList Parameters
+		public IEnumerable<AParameterBase> Parameters
 		{
 			get
 			{
-				return parameters;
+				yield return sizeParameter;
+				yield return displacementParameter;
 			}
 		}
 
