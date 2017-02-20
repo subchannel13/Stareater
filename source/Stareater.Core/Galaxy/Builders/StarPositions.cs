@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Stareater.Utils;
 using NGenerics.DataStructures.Mathematical;
 
 namespace Stareater.Galaxy.Builders
@@ -13,7 +11,7 @@ namespace Stareater.Galaxy.Builders
 		/// Positions of stars.
 		/// </summary>
 		public Vector2D[] Stars;
-		
+ 			
 		/// <summary>
 		/// Indices of positions for home systems.
 		/// </summary>
