@@ -7,11 +7,10 @@ using Ikadn;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
+using NGenerics.DataStructures.General;
 using NGenerics.DataStructures.Mathematical;
-using NGenerics.DataStructures.Queues;
 using Stareater.Galaxy.Builders;
 using Stareater.Localization;
-using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.PluginParameters;
 
@@ -80,67 +79,65 @@ namespace Stareater.Galaxy.ProximityLanes
 
 		public IEnumerable<WormholeEndpoints> Generate(Random rng, StarPositions starPositions)
 		{
-			var starGroups = new Dictionary<int, int>();
-			for (int star = 0; star < starPositions.Stars.Length; star++) {
-				
-				int group = 0;
-				for (int i = 1; i < starPositions.HomeSystems.Length; i++)
-					if ((starPositions.Stars[star] - starPositions.Stars[starPositions.HomeSystems[group]]).Magnitude() >
-						(starPositions.Stars[star] - starPositions.Stars[starPositions.HomeSystems[i]]).Magnitude())
-						group = i;
-
-				starGroups.Add(star, group);
+			var maxGraph = new Graph<Vector2D>(false);
+			var starIndex = new Dictionary<Vertex<Vector2D>, int>();
+			for(int i = 0; i < starPositions.Stars.Length; i++)
+			{
+				var v = new Vertex<Vector2D>(starPositions.Stars[i]);
+				maxGraph.AddVertex(v);
+				starIndex[v] = i;
 			}
-
-			var lanes = new List<WormholeEndpoints>();
-			for (int group = 0; group < starPositions.HomeSystems.Length; group++) {
-				lanes.AddRange(connectGroup(
-					starPositions.Stars, 
-					Methods.SelectIndices(starGroups, x => x.Value == group).ToArray(),
-					starPositions.HomeSystems[group]));
-			}
-
-			return lanes;
+			foreach(var edge in genMaxEdges(maxGraph.Vertices.ToList()))
+				maxGraph.AddEdge(edge);
+			
+			return maxGraph.Edges.Select(e => new WormholeEndpoints(starIndex[e.FromVertex], starIndex[e.ToVertex])).ToList();
 		}
 
-		private IEnumerable<WormholeEndpoints> connectGroup(Vector2D[] positions, int[] indices, int root)
+		private IEnumerable<Edge<Vector2D>> genMaxEdges(IList<Vertex<Vector2D>> vertices)
 		{
-			var closed = new HashSet<int>();
-			var possibleEdges = new PriorityQueue<WormholeEndpoints, double>(PriorityQueueType.Minimum);
+			var starEdges = new List<Edge<Vector2D>>();
 
-			closeVertex(possibleEdges, root, positions, indices, closed);
-			var usedEdges = new List<Tuple<Vector2D, Vector2D>>();
+			for (int i = 0; i < vertices.Count; i++)
+			{
+				for (int j = 0; j < vertices.Count; j++)
+				{
+					if (i == j) continue;
+					var lane = vertices[j].Data - vertices[i].Data;
+					var length = lane.Magnitude();
 
-			while (closed.Count < indices.Length) {
-				var edge = possibleEdges.Dequeue();
-				int openVertex = -1;
+					var shadowedEdges = new List<Edge<Vector2D>>();
+					var overshadowed = false;
+					var duplicate = false;
+					foreach (var edge in starEdges.Where(e => e.FromVertex == vertices[i] || e.ToVertex == vertices[i]))
+					{
+						var otherVertex = edge.FromVertex != vertices[i] ? edge.FromVertex : edge.ToVertex;
+						var k = vertices.IndexOf(otherVertex);
 
-				if (closed.Contains(edge.FromIndex))
-					if (closed.Contains(edge.ToIndex))
-						continue;
-					else
-						openVertex = edge.ToIndex;
-				else
-					openVertex = edge.FromIndex;
+						if (k == j)
+						{
+							duplicate = true;
+							break;
+						}
 
-				var line = new Tuple<Vector2D, Vector2D>(positions[edge.FromIndex], positions[edge.ToIndex]);
-				if (!Methods.LineIntersects(line, usedEdges, Epsilon)) {
-					usedEdges.Add(line);
-					yield return edge;
+						var edgeLane = vertices[k].Data - vertices[i].Data;
+						var edgeLength = edgeLane.Magnitude();
+
+						var projection = lane.DotProduct(edgeLane) / length;
+
+						if (projection > length)
+							shadowedEdges.Add(edge);
+
+						projection = edgeLane.DotProduct(lane) / edgeLength;
+						overshadowed |= projection > edgeLength;
+					}
+
+					starEdges.RemoveAll(shadowedEdges.Contains);
+					if (!overshadowed && !duplicate)
+						starEdges.Add(new Edge<Vector2D>(vertices[i], vertices[j], false));
 				}
-
-				closeVertex(possibleEdges, openVertex, positions, indices, closed);
 			}
-		}
 
-		private static void closeVertex(PriorityQueue<WormholeEndpoints, double> freeEdges, int vertexToClose, IList<Vector2D> positions, int[] vertexIndices, ISet<int> closed)
-		{
-			closed.Add(vertexToClose);
-			foreach (var vertex in vertexIndices)
-				if (!closed.Contains(vertex)) {
-					double weight = (positions[vertexToClose] - positions[vertex]).Magnitude();
-					freeEdges.Add(new WormholeEndpoints(vertexToClose, vertex), weight);
-				}
+			return starEdges;
 		}
 	}
 }
