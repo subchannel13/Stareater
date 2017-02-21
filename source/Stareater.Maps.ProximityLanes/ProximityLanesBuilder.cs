@@ -9,6 +9,7 @@ using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
 using NGenerics.DataStructures.General;
 using NGenerics.DataStructures.Mathematical;
+using NGenerics.DataStructures.Queues;
 using Stareater.Galaxy.Builders;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
@@ -81,16 +82,21 @@ namespace Stareater.Galaxy.ProximityLanes
 		{
 			var maxGraph = new Graph<Vector2D>(false);
 			var starIndex = new Dictionary<Vertex<Vector2D>, int>();
+			var homeNodes = new List<Vertex<Vector2D>>();
 			for(int i = 0; i < starPositions.Stars.Length; i++)
 			{
-				var v = new Vertex<Vector2D>(starPositions.Stars[i]);
-				maxGraph.AddVertex(v);
-				starIndex[v] = i;
+				var vertex = new Vertex<Vector2D>(starPositions.Stars[i]);
+				maxGraph.AddVertex(vertex);
+				starIndex[vertex] = i;
+				if (starPositions.HomeSystems.Contains(i))
+					homeNodes.Add(vertex);
 			}
 			foreach(var edge in genMaxEdges(maxGraph.Vertices.ToList()))
 				maxGraph.AddEdge(edge);
 			
-			return maxGraph.Edges.Select(e => new WormholeEndpoints(starIndex[e.FromVertex], starIndex[e.ToVertex])).ToList();
+			var tree = genMinEdges(maxGraph, homeNodes);
+			
+			return tree.Select(e => new WormholeEndpoints(starIndex[e.FromVertex], starIndex[e.ToVertex])).ToList();
 		}
 
 		private IEnumerable<Edge<Vector2D>> genMaxEdges(IList<Vertex<Vector2D>> vertices)
@@ -138,6 +144,101 @@ namespace Stareater.Galaxy.ProximityLanes
 			}
 
 			return starEdges;
+		}
+		
+		private IEnumerable<Edge<Vector2D>> genMinEdges(Graph<Vector2D> graph, IEnumerable<Vertex<Vector2D>> homeNodes)
+		{
+			var centroid = graph.Vertices.Aggregate(new Vector2D(0, 0), (subsum, vertex) => subsum + vertex.Data) / graph.Vertices.Count;
+			var centralNode = graph.Vertices.Aggregate((a, b) => ((a.Data - centroid).Magnitude() < (b.Data - centroid).Magnitude()) ? a : b);
+				
+			var criticalNodes = new HashSet<Vertex<Vector2D>>();
+			criticalNodes.Add(centralNode);
+			foreach(var home in homeNodes)
+			{
+				var current = centralNode;
+				foreach(var node in Astar(graph, home, centralNode))
+				{
+					criticalNodes.Add(node);
+					yield return node.GetIncidentEdgeWith(current);
+					current = node;
+				}
+			}
+			
+			var treeNodes = new HashSet<Vertex<Vector2D>>(criticalNodes);
+			var potentialEdges = new Dictionary<Edge<Vector2D>, double>();
+			var critPathDistance = new Dictionary<Vertex<Vector2D>, double>();
+			foreach(var node in criticalNodes)
+				critPathDistance[node] = 0;
+			
+			while(treeNodes.Count < graph.Vertices.Count)
+			{
+				potentialEdges.Clear();
+				foreach(var node in treeNodes)
+				{
+					var degree = node.IncidentEdges.Count(e => treeNodes.Contains(e.FromVertex) && treeNodes.Contains(e.ToVertex));
+					
+					foreach(var edge in node.IncidentEdges)
+					{
+						if (treeNodes.Contains(edge.FromVertex) && treeNodes.Contains(edge.ToVertex))
+							continue;
+						
+						potentialEdges[edge] = (edge.FromVertex.Data - edge.ToVertex.Data).Magnitude() + degree *0 + critPathDistance[node];
+					}
+				}
+				
+				var currentEdge = potentialEdges.Aggregate((a, b) => a.Value < b.Value ? a : b).Key;
+				yield return currentEdge;
+				
+				var fromNode = treeNodes.Contains(currentEdge.FromVertex) ? currentEdge.FromVertex : currentEdge.ToVertex;
+				var toNode = treeNodes.Contains(currentEdge.FromVertex) ? currentEdge.ToVertex : currentEdge.FromVertex;
+				var length = (currentEdge.FromVertex.Data - currentEdge.ToVertex.Data).Magnitude();
+				
+				treeNodes.Add(toNode);
+				critPathDistance[toNode] = critPathDistance[fromNode] + length;
+			}
+		}
+		
+		private IEnumerable<Vertex<Vector2D>> Astar(Graph<Vector2D> graph, Vertex<Vector2D> fromNode, Vertex<Vector2D> toNode)
+		{
+			var cameFrom = new Dictionary<Vertex<Vector2D>, Vertex<Vector2D>>();
+			var closedSet = new HashSet<Vertex<Vector2D>>();
+			var openSet = new PriorityQueue<Vertex<Vector2D>, double>(PriorityQueueType.Minimum);
+			openSet.Enqueue(fromNode, (fromNode.Data - toNode.Data).Magnitude());
+			
+			var gScore = graph.Vertices.ToDictionary(x => x, x => double.PositiveInfinity);
+			gScore[fromNode] = 0;
+			Vertex<Vector2D> current;
+		
+		    while (openSet.Count > 0)
+		    {
+		    	current = openSet.Dequeue();
+		    	if (current == toNode)
+		    		break;
+		
+		    	openSet.Remove(current);
+		    	closedSet.Add(current);
+		    	foreach(var neighbor in current.IncidentEdges.SelectMany(e => new [] {e.FromVertex, e.ToVertex}.Where(v => v != current)))
+		    	{
+		    		if (closedSet.Contains(neighbor))
+		    			continue;
+		    		
+		            var tentative_gScore = gScore[current] + (current.Data - neighbor.Data).Magnitude();
+		            if (!openSet.Contains(neighbor))
+		            	openSet.Add(neighbor, tentative_gScore);
+		            else if (tentative_gScore >= gScore[neighbor])
+		            	continue;
+
+		            cameFrom[neighbor] = current;
+		            gScore[neighbor] = tentative_gScore;
+		    	}
+		    }
+		    
+		    current = toNode;
+		    while (cameFrom.ContainsKey(current))
+			{
+				current = cameFrom[current];
+				yield return current;
+			}
 		}
 	}
 }
