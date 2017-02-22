@@ -64,11 +64,7 @@ namespace Stareater.Galaxy.ProximityLanes
 		{
 			get
 			{
-				var vars = new TextVar(
-					"minDegree", degreeOptions[degreesParameter.Value].Min.ToString()).And(
-					"maxDegree", degreeOptions[degreesParameter.Value].Max.ToString());
-				
-				return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["description"].Text(null, vars.Get);
+				return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["description"].Text(degreesParameter.Value);
 			}
 		}
 
@@ -94,9 +90,12 @@ namespace Stareater.Galaxy.ProximityLanes
 			foreach(var edge in genMaxEdges(maxGraph.Vertices.ToList()))
 				maxGraph.AddEdge(edge);
 			
-			var tree = genMinEdges(maxGraph, homeNodes);
+			var tree = genMinEdges(maxGraph, homeNodes).ToList();
+			var extraEdgeCount = (int)((maxGraph.Edges.Count - tree.Count) * this.degreeOptions[this.degreesParameter.Value].Ratio);
 			
-			return tree.Select(e => new WormholeEndpoints(starIndex[e.FromVertex], starIndex[e.ToVertex])).ToList();
+			return (extraEdgeCount == 0) ?
+				tree.Select(e => new WormholeEndpoints(starIndex[e.FromVertex], starIndex[e.ToVertex])).ToList() :
+				maxGraph.Edges.Select(e => new WormholeEndpoints(starIndex[e.FromVertex], starIndex[e.ToVertex])).ToList();
 		}
 
 		private IEnumerable<Edge<Vector2D>> genMaxEdges(IList<Vertex<Vector2D>> vertices)

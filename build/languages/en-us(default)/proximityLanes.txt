@@ -1,8 +1,12 @@
 ﻿:ProximityLanes
 name = Short wormholes
 description §
-		{=minDegree} - {=maxDegree} short wormholes
+		{few}{average}{many} short wormholes
 	\
+	few ? lanes = 0; =Few
+	average ? lanes = 1; =Average
+	many ? lanes = 2; =Many
+
 degree = Wormhole frequency
 few = Few
 average = Normal

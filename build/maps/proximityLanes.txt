@@ -1,17 +1,14 @@
 { Degree
 	nameKey "few"
-	min =1
-	max =3
+	ratio =0
 }
 
 { Degree
 	nameKey "average"
-	min =2
-	max =4
+	ratio =0.2
 }
 
 { Degree
 	nameKey "many"
-	min =3
-	max =6
+	ratio =1
 }
