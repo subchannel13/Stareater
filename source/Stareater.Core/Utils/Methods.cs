@@ -188,8 +188,9 @@ namespace Stareater.Utils
 			foreach (var usedEdge in otherLines) {
 				Vector2D x1 = usedEdge.Item1;
 				Vector2D v1 = usedEdge.Item2 - x1;
+				var cross = v0.X * v1.Y - v0.Y * v1.X; //FIX workaraound for NGenerics bug
 
-				if (Math.Abs(v0.CrossProduct(v1).Z) < Epsilon)
+				if (Math.Abs(cross) < Epsilon)
 					if ((x0 - x1).Magnitude() < Epsilon)
 						return true;
 					else
