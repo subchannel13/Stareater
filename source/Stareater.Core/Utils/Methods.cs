@@ -170,41 +170,6 @@ namespace Stareater.Utils
 		{
 			return x * (right - left) + left;
 		}
-		
-		/// <summary>
-		/// Test whether a line segment intersects other line segments.
-		/// </summary>
-		/// <param name="line">Line to test</param>
-		/// <param name="otherLines">Set of lines to test against</param>
-		/// <param name="Epsilon">Tolerance when testing for parallelism</param>
-		/// <returns></returns>
-		public static bool LineIntersects(Tuple<Vector2D, Vector2D> line, IEnumerable<Tuple<Vector2D, Vector2D>> otherLines, double Epsilon)
-		{
-			Vector2D x0 = line.Item1;
-			Vector2D v0 = line.Item2 - x0;
-			var n0 = new Vector2D(-v0.Y, v0.X);
-			double v0magSquare = v0.X * v0.X + v0.Y * v0.Y;
-
-			foreach (var usedEdge in otherLines) {
-				Vector2D x1 = usedEdge.Item1;
-				Vector2D v1 = usedEdge.Item2 - x1;
-				var cross = v0.X * v1.Y - v0.Y * v1.X; //FIX workaraound for NGenerics bug
-
-				if (Math.Abs(cross) < Epsilon)
-					if ((x0 - x1).Magnitude() < Epsilon)
-						return true;
-					else
-						continue;
-
-				double t1 = n0.DotProduct(x0 - x1) / n0.DotProduct(v1);
-				double t0 = v0.DotProduct(x1 + v1 * t1 - x0) / v0magSquare;
-
-				if (t0 > 0 && t0 < 1 && t1 > 0 && t1 < 1)
-					return true;
-			}
-
-			return false;
-		}
 
 		/// <summary>
 		/// Generates an arithmetic sequence.
