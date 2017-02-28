@@ -79,40 +79,39 @@ namespace Stareater.GLRenderers
 			this.galaxyViewListener = galaxyViewListener;
 		}
 		
-		public PlayerController CurrentPlayer
-		{
-			set
-			{
-				this.currentPlayer = value;
-				
-				//Assumes all players can see the same map size
-				if (this.lastSelectedStars.Count == 0)
-				{
-					this.mapBoundsMin = new Vector2(
-						(float)this.currentPlayer.Stars.Min(star => star.Position.X) - StarMinClickRadius,
-						(float)this.currentPlayer.Stars.Min(star => star.Position.Y) - StarMinClickRadius
-					);
-					this.mapBoundsMax = new Vector2(
-						(float)this.currentPlayer.Stars.Max(star => star.Position.X) + StarMinClickRadius,
-						(float)this.currentPlayer.Stars.Max(star => star.Position.Y) + StarMinClickRadius
-					);
-				}
-				
-				if (!this.lastSelectedStars.ContainsKey(this.currentPlayer.PlayerIndex))
-				{
-					var bestStar = this.currentPlayer.Stellarises().Aggregate((a, b) => a.Population > b.Population ? a : b);
-
-					this.lastSelectedStars.Add(this.currentPlayer.PlayerIndex, bestStar.HostStar.Position);
-					this.originOffset = new Vector2((float)this.lastSelectedStar.Position.X, (float)this.lastSelectedStar.Position.Y);
-					this.currentSelection = GalaxySelectionType.Star;
-					this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
-				}
-			}
-		}
-		
 		public void OnNewTurn()
 		{
 			this.refreshData.Set();
+		}
+		
+		public void SwitchPlayer(PlayerController player)
+		{
+			this.currentPlayer = player;
+			
+			//Assumes all players can see the same map size
+			if (this.lastSelectedStars.Count == 0)
+			{
+				this.mapBoundsMin = new Vector2(
+					(float)this.currentPlayer.Stars.Min(star => star.Position.X) - StarMinClickRadius,
+					(float)this.currentPlayer.Stars.Min(star => star.Position.Y) - StarMinClickRadius
+				);
+				this.mapBoundsMax = new Vector2(
+					(float)this.currentPlayer.Stars.Max(star => star.Position.X) + StarMinClickRadius,
+					(float)this.currentPlayer.Stars.Max(star => star.Position.Y) + StarMinClickRadius
+				);
+			}
+			
+			if (!this.lastSelectedStars.ContainsKey(this.currentPlayer.PlayerIndex))
+			{
+				var bestStar = this.currentPlayer.Stellarises().Aggregate((a, b) => a.Population > b.Population ? a : b);
+
+				this.lastSelectedStars.Add(this.currentPlayer.PlayerIndex, bestStar.HostStar.Position);
+			}
+			
+			this.originOffset = new Vector2((float)this.lastSelectedStar.Position.X, (float)this.lastSelectedStar.Position.Y);
+			this.currentSelection = GalaxySelectionType.Star;
+			this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
+			this.setupPerspective();
 		}
 
 		private void rebuildCache()

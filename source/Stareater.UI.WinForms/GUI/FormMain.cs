@@ -122,7 +122,7 @@ namespace Stareater.GUI
 			if (this.currentPlayerIndex < this.playerControllers.Length - 1)
 			{
 				this.currentPlayerIndex++;
-				this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
+				this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
 			}
 
 			if (galaxyRenderer != null) galaxyRenderer.ResetLists();
@@ -279,7 +279,7 @@ namespace Stareater.GUI
 				this.galaxyRenderer.Deactivate();
 			
 			this.galaxyRenderer = new GalaxyRenderer(this);
-			this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
+			this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
 			
 			this.systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement, empyPlanetView);
 			this.combatRenderer = new SpaceCombatRenderer();
@@ -502,7 +502,7 @@ namespace Stareater.GUI
 			}
 			
 			this.currentPlayerIndex = 0;
-			this.galaxyRenderer.CurrentPlayer = this.currentPlayer;
+			this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
 			
 			if (this.currentRenderer == this.combatRenderer)
 			{

@@ -165,7 +165,7 @@ namespace Stareater.Utils
 		/// <param name="x">Interpolation weight, 0 = left, 1 = right</param>
 		/// <param name="left">Left value</param>
 		/// <param name="right">Right value</param>
-		/// <returns></returns>
+		/// <returns>Interpolated value</returns>
 		public static double Lerp(double x, double left, double right)
 		{
 			return x * (right - left) + left;
