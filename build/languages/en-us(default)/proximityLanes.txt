@@ -1,14 +1,16 @@
 ﻿:ProximityLanes
-name = Short wormholes
+name = Short starlanes
 description §
-		{few}{average}{many} short wormholes
+		{minimal}{few}{average}{many} short starlanes
 	\
-	few ? lanes = 0; =Few
-	average ? lanes = 1; =Average
-	many ? lanes = 2; =Many
+	minimal ? lanes = 0; =Scarce
+	few ? lanes = 1; =Few
+	average ? lanes = 2; =Abundant
+	many ? lanes = 3; =A lot of
 
-degree = Wormhole frequency
+degree = Starlane frequency
+minimal = Minimal
 few = Few
-average = Normal
-many = Abundant
+average = Abundant
+many = Maximal
 -
