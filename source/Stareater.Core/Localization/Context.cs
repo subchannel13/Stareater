@@ -55,12 +55,12 @@ namespace Stareater.Localization
 					throw new KeyNotFoundException("Entry key is null");
 
 				entryKey = entryKey.ToLower();
-				if (entries.ContainsKey(entryKey))
-					return entries[entryKey];
-				else if (this != LocalizationManifest.Get.DefaultLanguage[name])
-					return LocalizationManifest.Get.DefaultLanguage[name][entryKey];
+				if (this.entries.ContainsKey(entryKey))
+					return this.entries[entryKey];
+				else if (this != LocalizationManifest.Get.DefaultLanguage[this.name])
+					return LocalizationManifest.Get.DefaultLanguage[this.name][entryKey];
 				else
-					throw new KeyNotFoundException("entryKey: " + entryKey);
+					throw new KeyNotFoundException("entryKey: " + entryKey + " context: " + this.name);
 			}
 		}
 	}
