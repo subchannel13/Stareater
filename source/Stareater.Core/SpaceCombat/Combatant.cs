@@ -30,7 +30,7 @@ namespace Stareater.SpaceCombat
 			this.AbilityAmmo = abilityAmmo;
 			this.AbilityCharges = abilityCharges;
 
-			this.HitPoints = stats.HitPoints;
+			this.HitPoints = stats.HitPoints - ships.Damage;
 			this.ShieldPoints = stats.ShieldPoints;
 		}
 	}

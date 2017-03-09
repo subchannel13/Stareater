@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using Stareater.Utils.Collections;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 using Stareater.Players;
-using Stareater.Ships;
 
 namespace Stareater.GameData.Databases.Tables
 {

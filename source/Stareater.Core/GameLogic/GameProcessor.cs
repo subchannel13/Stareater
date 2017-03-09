@@ -146,6 +146,7 @@ namespace Stareater.GameLogic
 			//TODO(later) decide what to do with retreated ships, send them to nearest fiendly system?
 			foreach(var unit in battleGame.Combatants.Concat(battleGame.Retreated))
 			{
+				unit.Ships.Damage = this.game.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].HitPoints - unit.HitPoints;
 				var fleet = new Fleet(unit.Owner, battleGame.Location, new LinkedList<AMission>());
 				fleet.Ships.Add(unit.Ships);
 				
@@ -332,7 +333,26 @@ namespace Stareater.GameLogic
 					Where(x => x.Owner == player).
 					Aggregate(0.0, (sum, x) => sum + x.RepairPoints);
 				
-				//TODO(v0.6) do repairs
+				var damagedShips = localFleet.SelectMany(x => x.Ships).Where(x => x.Damage > 0);
+				var totalNeededRepairPoints = damagedShips.Sum(x => x.Damage * x.Design.Cost / this.game.Derivates.Of(player).DesignStats[x.Design].HitPoints); //TODO(v0.6) make repair cost function
+				
+				foreach(var shipGroup in damagedShips)
+				{
+					var repirPerHp = shipGroup.Design.Cost / this.game.Derivates.Of(player).DesignStats[shipGroup.Design].HitPoints; //TODO(v0.6) make repair cost function
+					var fullRepairCost = shipGroup.Damage * repirPerHp;
+					var investment = repairPoints * fullRepairCost / totalNeededRepairPoints;
+					
+					if (fullRepairCost < investment)
+					{
+						shipGroup.Damage = 0;
+						investment -= investment - fullRepairCost;
+					}
+					else
+						shipGroup.Damage += investment / repirPerHp;
+					
+					repairPoints -= investment;
+					totalNeededRepairPoints -= fullRepairCost;
+				}
 
 				var refitOrders = player.Orders.RefitOrders;
 				var refitCosts = this.game.Derivates.Of(player).RefitCosts;
