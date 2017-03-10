@@ -19,6 +19,7 @@ namespace Stareater.GameData.Databases.Tables
 		public double NaturalCloakBonus { get; private set; }
 		public double SensorRangePenalty { get; private set; }
 
+		public double RepairCostFactor { get; private set; }
 		public Formula LevelRefitCost { get; private set; }
 		public double ArmorCostPortion { get; private set; }
 		public double ReactorCostPortion { get; private set; }
@@ -28,7 +29,7 @@ namespace Stareater.GameData.Databases.Tables
 		public ShipFormulaSet(Formula cloaking, Formula combatSpeed, Formula detection, Formula evasion, 
 		                      Formula hitPoints, Formula jamming,
 		                      Formula colonizerPopulation, Dictionary<string, Formula> colonizerBuildings,
-		                      double naturalCloakBonus, double sensorRangePenalty, Formula levelRefitCost,
+		                      double naturalCloakBonus, double sensorRangePenalty, double repairCostFactor, Formula levelRefitCost,
 		                      double armorCostPortion, double reactorCostPortion, double sensorCostPortion, double thrustersCostPortion)
 		{
 			this.Cloaking = cloaking;
@@ -41,6 +42,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.ColonizerBuildings = colonizerBuildings;
 			this.NaturalCloakBonus = naturalCloakBonus;
 			this.SensorRangePenalty = sensorRangePenalty;
+			this.RepairCostFactor = repairCostFactor;
 			this.LevelRefitCost = levelRefitCost;
 			this.ArmorCostPortion = armorCostPortion;
 			this.ReactorCostPortion = reactorCostPortion;
