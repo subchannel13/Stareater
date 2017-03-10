@@ -76,7 +76,7 @@ namespace Stareater.AppData
 				using (var parser = new IkonParser(new StreamReader(SettingsFilePath)))
 					data = parser.ParseAll();
 			else
-				data = new TaggableQueue<object, IkadnBaseObject>();
+				data = null;
 
 			return data;
 		}

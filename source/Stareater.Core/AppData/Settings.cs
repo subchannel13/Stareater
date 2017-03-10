@@ -35,7 +35,11 @@ namespace Stareater.AppData
 		{
 			try
 			{
-				instance.load(instance.loadData());
+				var data = instance.loadData();
+				if (data != null)
+					instance.load(data);
+				else
+					instance.initDefault();
 			}
 			#if DEBUG
 			catch(Exception e)
@@ -52,6 +56,7 @@ namespace Stareater.AppData
 		
 		protected virtual void initDefault()
 		{
+			this.LanguageId = null;
 			this.LastGame = new LastGameInfo();
 		}
 	

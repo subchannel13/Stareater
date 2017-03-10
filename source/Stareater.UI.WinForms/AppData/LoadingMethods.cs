@@ -44,6 +44,9 @@ namespace Stareater.AppData
 				infos.Add(new LanguageInfo(code, lang["General"]["LanguageName"].Text()));
 			}
 
+			if (SettingsWinforms.Get.LanguageId == null)
+				currentLanguage = defaultLanguage;
+
 			LocalizationManifest.Initialize(infos, defaultLanguage, currentLanguage);
 		}
 
