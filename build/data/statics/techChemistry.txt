@@ -1,0 +1,20 @@
+{ ResearchTopic
+	nameCode : CHEM_NAME
+	descCode : CHEM_DESC
+	code: Chem
+	image: ./images/technologies/hydroponicFarms.png
+	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
+	devTopics [
+		[ :Ind ]
+	]
+}
+
+{ DevelopmentTopic
+	nameCode: IND_NAME
+	descCode: IND_DESC
+	code: Ind
+	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/industry.png
+}

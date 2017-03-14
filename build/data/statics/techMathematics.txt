@@ -1,0 +1,10 @@
+{ ResearchTopic
+	nameCode : MAT_NAME
+	descCode : MAT_DESC
+	code: Mat
+	image: ./images/technologies/hydroponicFarms.png
+	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
+	devTopics [
+		[ :Ecm ]
+	]
+}

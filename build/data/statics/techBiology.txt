@@ -3,7 +3,7 @@
 	descCode: BIO_DESC
 	code: Bio
 	image: ./images/technologies/hydroponicFarms.png
-	cost # 10;
+	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
 		[ :HydroFarm :GreenHouse ]
 		[ :GmoFood ]

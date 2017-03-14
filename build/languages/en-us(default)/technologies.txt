@@ -1,6 +1,8 @@
 :Technologies
 BIO_NAME = Biology
 BIO_DESC = No description
+ENERGY_NAME = Energetics
+ENERGY_DESC = No description
 PHY_NAME = Physics
 PHY_DESC = No description
 CHEM_NAME = Chemistry

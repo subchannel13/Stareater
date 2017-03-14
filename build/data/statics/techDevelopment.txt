@@ -8,16 +8,6 @@
 }
 
 { DevelopmentTopic
-	nameCode: IND_NAME
-	descCode: IND_DESC
-	code: Ind
-	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
-	maxLvl= 10
-	prerequisites []
-	image: ./images/technologies/industry.png
-}
-
-{ DevelopmentTopic
 	nameCode: ROBO_NAME
 	descCode: ROBO_DESC
 	code: Robo

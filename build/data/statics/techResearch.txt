@@ -3,40 +3,19 @@
 	descCode : PHY_DESC
 	code: Phy
 	image: ./images/technologies/hydroponicFarms.png
-	cost # 10;
+	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
 		[ :Laser ]
 	]
 }
 
-{ ResearchTopic
-	nameCode : CHEM_NAME
-	descCode : CHEM_DESC
-	code: Chem
-	image: ./images/technologies/hydroponicFarms.png
-	cost # 10;
-	devTopics [
-		[ :Ind ]
-	]
-}
-
-{ ResearchTopic
-	nameCode : MAT_NAME
-	descCode : MAT_DESC
-	code: Mat
-	image: ./images/technologies/hydroponicFarms.png
-	cost # 10;
-	devTopics [
-		[ :Ecm ]
-	]
-}
 
 { ResearchTopic
 	nameCode : SOC_NAME
 	descCode : SOC_DESC
 	code: Soc
 	image: ./images/technologies/hydroponicFarms.png
-	cost # 10;
+	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
 		[ :Colonizer :SpaceProgram ]
 	]
