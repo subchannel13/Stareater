@@ -1,20 +1,22 @@
 { ResearchTopic
-	nameCode : MAT_NAME
-	descCode : MAT_DESC
-	code: Mat
+	nameCode : PHY_NAME
+	descCode : PHY_DESC
+	code: Phy
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
-		[ :Ecm ]
+		[ :Laser ]
 	]
 }
 
 { DevelopmentTopic
-	nameCode: ECM_NAME
-	descCode: ECM_DESC
-	code: Ecm
-	cost # 300e9 * (lvl + 2 ^lvl);
+	nameCode: EM_SHIELD_NAME
+	descCode: EM_SHIELD_DESC
+	code: EmShield
+	cost # 1.5e12 * (lvl + 2 ^lvl);
 	maxLvl= 10
-	prerequisites []
+	prerequisites [
+		:Ecm # 5;
+	]
 	image: ./images/technologies/hydroponicFarms.png
 }

@@ -3,14 +3,33 @@ BIO_NAME = Biology
 BIO_DESC = No description
 ENERGY_NAME = Energetics
 ENERGY_DESC = No description
-PHY_NAME = Physics
-PHY_DESC = No description
 CHEM_NAME = Chemistry
 CHEM_DESC = No description
 MAT_NAME = Mathematics
 MAT_DESC = No description
+MECH_NAME = Mechanics
+MECH_DESC = No description
+PHY_NAME = Physics
+PHY_DESC = No description
 SOC_NAME = Sociology
 SOC_DESC = No description
+
+AUTOCANNON_NAME = Autocannon
+AUTOCANNON_DESC = No description
+COMBUSTION_NAME = Chemical power
+COMBUSTION_DESC = No description
+HARPOON_NAME = Harpoon missiles
+HARPOON_DESC = No description
+HYDRO_THRUST_NAME = Rocketry
+HYDRO_THRUST_DESC = No description
+LASER_NAME = Lasers
+LASER_DESC = No description
+NUKE_BOMB_NAME = Nuclear bomb
+NUKE_BOMB_DESC = No description
+NUKE_DRIVE_NAME = Nuclear drive
+NUKE_DRIVE_DESC = No description
+RADAR_NAME = Radar
+RADAR_DESC = No description
 
 HYDRO_FARM_NAME = Hydroponic farms
 HYDRO_FARM_DESC §
@@ -34,8 +53,7 @@ IND_NAME = Industry
 IND_DESC = No description
 ROBO_NAME = Robotics
 ROBO_DESC = No description
-LASER_NAME = Lasers
-LASER_DESC = No description
+
 ECM_NAME = ECM
 ECM_DESC = No description
 EM_SHIELD_NAME = EM shield

@@ -1,0 +1,21 @@
+{ ResearchTopic
+	nameCode : MECH_NAME
+	descCode : MECH_DESC
+	code: Mech
+	image: ./images/technologies/hydroponicFarms.png
+	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
+	devTopics [
+	]
+}
+
+{ DevelopmentTopic
+	nameCode: ROBO_NAME
+	descCode: ROBO_DESC
+	code: Robo
+	cost # 150e9 * (lvl + 2 ^ lvl);
+	maxLvl= 10
+	prerequisites [
+		:Ind # 5;
+	]
+	image : ./images/technologies/industry.png
+}

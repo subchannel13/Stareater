@@ -197,7 +197,6 @@ namespace Stareater.GameData.Databases
 		private static PlayerFormulaSet loadPlayerFormulas(IkonComposite data)
 		{
 			return new PlayerFormulaSet(
-				data[PlayerResearch].To<Formula>(),
 				data[PlayerResearchFocusWeight].To<Formula>()
 			);
 		}
@@ -643,7 +642,6 @@ namespace Stareater.GameData.Databases
 		private const string ColonySpaceliftFactor = "spaceliftFactor";
 		private const string UncolonizedMaxPopulation = "uncolonizedMaxPopulation";
 		
-		private const string PlayerResearch = "research";
 		private const string PlayerResearchFocusWeight = "focusedResearchWeight";
 		
 		private const string ShipCloaking = "cloaking";

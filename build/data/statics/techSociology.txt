@@ -1,0 +1,40 @@
+{ ResearchTopic
+	nameCode : SOC_NAME
+	descCode : SOC_DESC
+	code: Soc
+	image: ./images/technologies/hydroponicFarms.png
+	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
+	devTopics [
+		[ :Colonizer :SpaceProgram ]
+	]
+}
+
+{ DevelopmentTopic
+	nameCode: IND_NAME
+	descCode: IND_DESC
+	code: Ind
+	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/industry.png
+}
+
+{ DevelopmentTopic
+	nameCode: COLONIZER_NAME
+	descCode: COLONIZER_DESC
+	code: Colonizer
+	cost # 70e9 * (lvl + 1) ^ 2;
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/industry.png
+}
+
+{ DevelopmentTopic
+	nameCode: SPACE_PROGRAM_NAME
+	descCode: SPACE_PROGRAM_DESC
+	code: SpaceProgram
+	cost # 80e9 * (lvl + 1) ^ 2;
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/spaceport.png
+}

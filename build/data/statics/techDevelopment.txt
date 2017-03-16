@@ -8,15 +8,43 @@
 }
 
 { DevelopmentTopic
-	nameCode: ROBO_NAME
-	descCode: ROBO_DESC
-	code: Robo
-	cost # 150e9 * (lvl + 2 ^ lvl);
+	nameCode: AUTOCANNON_NAME
+	descCode: AUTOCANNON_DESC
+	code: autocannon
+	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
-	prerequisites [
-		:Ind # 5;
-	]
-	image : ./images/technologies/industry.png
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	nameCode: COMBUSTION_NAME
+	descCode: COMBUSTION_DESC
+	code: combustion
+	cost # 300e9 * (lvl + 2 ^ lvl);
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	nameCode: HARPOON_NAME
+	descCode: HARPOON_DESC
+	code: harpoon
+	cost # 300e9 * (lvl + 2 ^ lvl);
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	nameCode: HYDRO_THRUST_NAME
+	descCode: HYDRO_THRUST_DESC
+	code: hydro_trust
+	cost # 300e9 * (lvl + 2 ^ lvl);
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
 }
 
 { DevelopmentTopic
@@ -26,68 +54,35 @@
 	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites []
-	image: ./images/technologies/laser.png
+	image: ./images/technologies/hydroponicFarms.png
 }
 
 { DevelopmentTopic
-	nameCode: ECM_NAME
-	descCode: ECM_DESC
-	code: Ecm
-	cost # 300e9 * (lvl + 2 ^lvl);
+	nameCode: NUKE_BOMB_NAME
+	descCode: NUKE_BOMB_DESC
+	code: nuke_bomb
+	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
 }
 
 { DevelopmentTopic
-	nameCode: EM_SHIELD_NAME
-	descCode: EM_SHIELD_DESC
-	code: EmShield
-	cost # 1.5e12 * (lvl + 2 ^lvl);
-	maxLvl= 10
-	prerequisites [
-		:Ecm # 5;
-	]
-	image: ./images/technologies/hydroponicFarms.png
-}
-
-{ DevelopmentTopic
-	nameCode: TITANIUM_NAME
-	descCode: TITANIUM_DESC
-	code: Titanium
-	cost # 300e9 * (lvl + 1) ^ 2;
+	nameCode: NUKE_DRIVE_NAME
+	descCode: NUKE_DRIVE_DESC
+	code: nuke_drive
+	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
 }
 
 { DevelopmentTopic
-	nameCode: DURAPLAST_NAME
-	descCode: DURAPLAST_DESC
-	code: Duraplast
-	cost # 6e12 * (lvl + 1) ^ 2;
-	maxLvl= 10
-	prerequisites [
-	]
-	image: ./images/technologies/industry.png
-}
-
-{ DevelopmentTopic
-	nameCode: COLONIZER_NAME
-	descCode: COLONIZER_DESC
-	code: Colonizer
-	cost # 70e9 * (lvl + 1) ^ 2;
+	nameCode: RADAR_NAME
+	descCode: RADAR_DESC
+	code: radar
+	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites []
-	image: ./images/technologies/industry.png
-}
-
-{ DevelopmentTopic
-	nameCode: SPACE_PROGRAM_NAME
-	descCode: SPACE_PROGRAM_DESC
-	code: SpaceProgram
-	cost # 80e9 * (lvl + 1) ^ 2;
-	maxLvl= 10
-	prerequisites []
-	image: ./images/technologies/spaceport.png
+	image: ./images/technologies/hydroponicFarms.png
 }

@@ -10,11 +10,22 @@
 }
 
 { DevelopmentTopic
-	nameCode: IND_NAME
-	descCode: IND_DESC
-	code: Ind
-	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
+	nameCode: TITANIUM_NAME
+	descCode: TITANIUM_DESC
+	code: Titanium
+	cost # 300e9 * (lvl + 1) ^ 2;
 	maxLvl= 10
 	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	nameCode: DURAPLAST_NAME
+	descCode: DURAPLAST_DESC
+	code: Duraplast
+	cost # 6e12 * (lvl + 1) ^ 2;
+	maxLvl= 10
+	prerequisites [
+	]
 	image: ./images/technologies/industry.png
 }
