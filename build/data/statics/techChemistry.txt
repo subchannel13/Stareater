@@ -5,14 +5,24 @@
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
-		[ :Ind ]
+		[ :NukeTorpedo :Metalworking ]
 	]
 }
 
 { DevelopmentTopic
-	nameCode: TITANIUM_NAME
-	descCode: TITANIUM_DESC
-	code: Titanium
+	nameCode: TORPEDO_NAME
+	descCode: TORPEDO_DESC
+	code: NukeTorpedo
+	cost # 300e9 * (lvl + 1) ^ 2;
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	nameCode: METALWORK_NAME
+	descCode: METALWORK_DESC
+	code: Metalworking
 	cost # 300e9 * (lvl + 1) ^ 2;
 	maxLvl= 10
 	prerequisites []

@@ -5,8 +5,38 @@
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
-		[ :Laser ]
+		[ :Lidar :FusionBeam :IonBeam ]
 	]
+}
+
+{ DevelopmentTopic
+	nameCode: LIDAR_NAME
+	descCode: LIDAR_DESC
+	code: Lidar
+	cost # 1.5e12 * (lvl + 2 ^lvl);
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	nameCode: FUSION_BEAM_NAME
+	descCode: FUSION_BEAM_DESC
+	code: FusionBeam
+	cost # 1.5e12 * (lvl + 2 ^lvl);
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	nameCode: ION_BEAM_NAME
+	descCode: ION_BEAM_DESC
+	code: IonBeam
+	cost # 1.5e12 * (lvl + 2 ^lvl);
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
 }
 
 { DevelopmentTopic

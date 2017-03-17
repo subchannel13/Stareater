@@ -14,9 +14,14 @@ namespace Stareater.Localization.Reading
 			var entries = new Dictionary<string, IText>();
 
 			while (parser.Reader.PeekNextNonwhite() != ClosingChar)
-				entries.Add(
-					IkonParser.ReadIdentifier(parser.Reader).ToLower(),
-					parser.ParseNext().To<IText>());
+			{
+				var id = IkonParser.ReadIdentifier(parser.Reader).ToLower();
+				
+				if (!entries.ContainsKey(id))
+					entries.Add(id, parser.ParseNext().To<IText>());
+				else
+					System.Diagnostics.Trace.WriteLine("Duplicate localization entry, id: " + id + " in context: " + contextName);
+			}
 
 			parser.Reader.Read();
 

@@ -38,16 +38,6 @@
 }
 
 { DevelopmentTopic
-	nameCode: HYDRO_THRUST_NAME
-	descCode: HYDRO_THRUST_DESC
-	code: hydro_trust
-	cost # 300e9 * (lvl + 2 ^ lvl);
-	maxLvl= 10
-	prerequisites []
-	image: ./images/technologies/hydroponicFarms.png
-}
-
-{ DevelopmentTopic
 	nameCode: LASER_NAME
 	descCode: LASER_DESC
 	code: Laser
@@ -81,6 +71,16 @@
 	nameCode: RADAR_NAME
 	descCode: RADAR_DESC
 	code: radar
+	cost # 300e9 * (lvl + 2 ^ lvl);
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	nameCode: ROCKET_NAME
+	descCode: ROCKET_DESC
+	code: rocketry
 	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites []

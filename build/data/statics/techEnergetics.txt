@@ -5,5 +5,36 @@
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
+		[ :ParticleScreen :ExtraReactor :MiniReactor ]
 	]
+}
+
+{ DevelopmentTopic
+	nameCode: PART_SCREEN_NAME
+	descCode: PART_SCREEN_DESC
+	code: ParticleScreen
+	cost # 50e9 * (lvl + 3 ^lvl);
+	maxLvl= 8
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	nameCode: EXTRA_REACTOR_NAME
+	descCode: EXTRA_REACTOR_DESC
+	code: ExtraReactor
+	cost # 50e9 * (lvl + 3 ^lvl);
+	maxLvl= 8
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	nameCode: MINI_REACTOR_NAME
+	descCode: MINI_REACTOR_DESC
+	code: MiniReactor
+	cost # 50e9 * (lvl + 3 ^lvl);
+	maxLvl= 8
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
 }

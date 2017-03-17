@@ -5,7 +5,38 @@
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
+		[ :Cargo :Surveyor :MineTools ]
 	]
+}
+
+{ DevelopmentTopic
+	nameCode: CARGO_NAME
+	descCode: CARGO_DESC
+	code: Cargo
+	cost # 150e9 * (lvl + 2 ^ lvl);
+	maxLvl= 10
+	prerequisites []
+	image : ./images/technologies/industry.png
+}
+
+{ DevelopmentTopic
+	nameCode: SURVEY_NAME
+	descCode: SURVEY_DESC
+	code: Surveyor
+	cost # 150e9 * (lvl + 2 ^ lvl);
+	maxLvl= 10
+	prerequisites []
+	image : ./images/technologies/industry.png
+}
+
+{ DevelopmentTopic
+	nameCode: MINE_TOOLS_NAME
+	descCode: MINE_TOOLS_DESC
+	code: MineTools
+	cost # 150e9 * (lvl + 2 ^ lvl);
+	maxLvl= 10
+	prerequisites []
+	image : ./images/technologies/industry.png
 }
 
 { DevelopmentTopic

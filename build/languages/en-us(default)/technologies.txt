@@ -20,8 +20,6 @@ COMBUSTION_NAME = Chemical power
 COMBUSTION_DESC = No description
 HARPOON_NAME = Harpoon missiles
 HARPOON_DESC = No description
-HYDRO_THRUST_NAME = Rocketry
-HYDRO_THRUST_DESC = No description
 LASER_NAME = Lasers
 LASER_DESC = No description
 NUKE_BOMB_NAME = Nuclear bomb
@@ -30,6 +28,8 @@ NUKE_DRIVE_NAME = Nuclear drive
 NUKE_DRIVE_DESC = No description
 RADAR_NAME = Radar
 RADAR_DESC = No description
+ROCKET_NAME = Rocketry
+ROCKET_DESC = No description
 
 HYDRO_FARM_NAME = Hydroponic farms
 HYDRO_FARM_DESC §
@@ -49,13 +49,44 @@ GMO_FOOD_DESC = More food per farmer.
 SOIL_ENRICH_NAME = Soil enrichment
 SOIL_ENRICH_DESC = Makes planet's soil fertile.
 
+PART_SCREEN_NAME = Particle screen
+PART_SCREEN_DESC = No description
+EXTRA_REACTOR_NAME = Large reactor chamber
+EXTRA_REACTOR_DESC = No description
+MINI_REACTOR_NAME = Reactor miniaturization
+MINI_REACTOR_DESC = No description
+
+TORPEDO_NAME = Nuclear torpedo
+TORPEDO_DESC = No description
+METALWORK_NAME = Metalworking
+METALWORK_DESC = No description
+
+ECM_NAME = ECM
+ECM_DESC = No description
+COMP_NAME = Electronic computer
+COMP_DESC = No description
+TELESCOPE_NAME = Large telescopes
+TELESCOPE_DESC = No description
+
+CARGO_NAME = Cargo bay
+CARGO_DESC = No description
+SURVEY_NAME = Surveyor
+SURVEY_DESC = No description
+MINE_TOOLS_NAME = Mining power tools
+MINE_TOOLS_DESC = No description
+
+LIDAR_NAME = Lidar
+LIDAR_DESC = No description
+FUSION_BEAM_NAME = Fusion beam
+FUSION_BEAM_DESC = No description
+ION_BEAM_NAME = Ion cannon
+ION_BEAM_DESC = No description
+
 IND_NAME = Industry
 IND_DESC = No description
 ROBO_NAME = Robotics
 ROBO_DESC = No description
 
-ECM_NAME = ECM
-ECM_DESC = No description
 EM_SHIELD_NAME = EM shield
 EM_SHIELD_DESC = No description
 TITANIUM_NAME = Titanium armour
