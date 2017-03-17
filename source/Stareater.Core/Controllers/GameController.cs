@@ -77,7 +77,7 @@ namespace Stareater.Controllers
 		
 		public IEnumerable<PlayerController> LocalHumanPlayers()
 		{
-			return this.playerControllers.Where(x => x.PlayerInstance.ControlType == PlayerControlType.LocalHuman);
+			return this.playerControllers.Where(x => x.PlayerInstance(this.gameObj).ControlType == PlayerControlType.LocalHuman);
 		}
 		
 		internal MainGame GameInstance
@@ -95,13 +95,13 @@ namespace Stareater.Controllers
 			
 			for (int i = 0; i < this.gameObj.MainPlayers.Length; i++)
 			{
-				this.playerControllers[i] = new PlayerController(i, this.gameObj.MainPlayers[i], this);
+				this.playerControllers[i] = new PlayerController(i, this);
 				
 				if (this.gameObj.MainPlayers[i].OffscreenControl != null)
 					this.gameObj.MainPlayers[i].OffscreenControl.Controller = this.playerControllers[i];
 			}
 			
-			this.organelleController = new PlayerController(this.gameObj.MainPlayers.Length, this.gameObj.StareaterOrganelles, this);
+			this.organelleController = new PlayerController(this.gameObj.MainPlayers.Length, this);
 			this.gameObj.StareaterOrganelles.OffscreenControl.Controller = this.organelleController;
 		}
 		
@@ -155,10 +155,10 @@ namespace Stareater.Controllers
 		#region Background processing
 		private void aiDoGalaxyPhase() 
 		{
-			organelleController.PlayerInstance.OffscreenControl.PlayTurn();
-			
-			foreach(var aiController in this.playerControllers.Where(x => x.PlayerInstance.ControlType == PlayerControlType.LocalAI))
-				aiController.PlayerInstance.OffscreenControl.PlayTurn();
+			organelleController.PlayerInstance(this.gameObj).OffscreenControl.PlayTurn();
+
+			foreach (var aiController in this.playerControllers.Where(x => x.PlayerInstance(this.gameObj).ControlType == PlayerControlType.LocalAI))
+				aiController.PlayerInstance(this.gameObj).OffscreenControl.PlayTurn();
 		}
 
 		private void checkTaskException(Task lastTask)
