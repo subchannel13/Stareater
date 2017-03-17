@@ -36,18 +36,20 @@
 			this.techImage = new System.Windows.Forms.PictureBox();
 			this.topicList = new System.Windows.Forms.FlowLayoutPanel();
 			this.focusedLabel = new System.Windows.Forms.Label();
-			this.focusedItem = new Stareater.GUI.ResearchItem();
 			this.listTitle = new System.Windows.Forms.Label();
+			this.focusedItem = new Stareater.GUI.ResearchItem();
 			((System.ComponentModel.ISupportInitialize)(this.techImage)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// techDescription
 			// 
+			this.techDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.techDescription.Location = new System.Drawing.Point(297, 98);
 			this.techDescription.Multiline = true;
 			this.techDescription.Name = "techDescription";
 			this.techDescription.ReadOnly = true;
-			this.techDescription.Size = new System.Drawing.Size(250, 299);
+			this.techDescription.Size = new System.Drawing.Size(250, 361);
 			this.techDescription.TabIndex = 27;
 			this.techDescription.Text = "Description here";
 			// 
@@ -79,10 +81,13 @@
 			// 
 			// topicList
 			// 
+			this.topicList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+			this.topicList.AutoScroll = true;
 			this.topicList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.topicList.Location = new System.Drawing.Point(12, 117);
 			this.topicList.Name = "topicList";
-			this.topicList.Size = new System.Drawing.Size(277, 280);
+			this.topicList.Size = new System.Drawing.Size(277, 342);
 			this.topicList.TabIndex = 28;
 			this.topicList.MouseLeave += new System.EventHandler(this.topicList_MouseLeave);
 			// 
@@ -95,14 +100,6 @@
 			this.focusedLabel.TabIndex = 29;
 			this.focusedLabel.Text = "focused:";
 			// 
-			// focusedItem
-			// 
-			this.focusedItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(196)))), ((int)(((byte)(255)))));
-			this.focusedItem.Location = new System.Drawing.Point(15, 25);
-			this.focusedItem.Name = "focusedItem";
-			this.focusedItem.Size = new System.Drawing.Size(250, 50);
-			this.focusedItem.TabIndex = 30;
-			// 
 			// listTitle
 			// 
 			this.listTitle.AutoSize = true;
@@ -112,11 +109,19 @@
 			this.listTitle.TabIndex = 31;
 			this.listTitle.Text = "other topics";
 			// 
+			// focusedItem
+			// 
+			this.focusedItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(196)))), ((int)(((byte)(255)))));
+			this.focusedItem.Location = new System.Drawing.Point(15, 25);
+			this.focusedItem.Name = "focusedItem";
+			this.focusedItem.Size = new System.Drawing.Size(250, 50);
+			this.focusedItem.TabIndex = 30;
+			// 
 			// FormResearch
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(559, 409);
+			this.ClientSize = new System.Drawing.Size(559, 471);
 			this.Controls.Add(this.listTitle);
 			this.Controls.Add(this.focusedItem);
 			this.Controls.Add(this.focusedLabel);
