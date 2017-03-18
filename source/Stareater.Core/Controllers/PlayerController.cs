@@ -52,9 +52,9 @@ namespace Stareater.Controllers
 			this.gameController.EndGalaxyPhase(this);
 		}
 
-		public bool IsReadOnly //TODO(v0.6) make part of the game object
+		public bool IsReadOnly
 		{
-			get { return this.gameController.IsReadOnly; }
+			get { return this.gameInstance.IsReadOnly; }
 		}
 		#endregion
 			
@@ -77,7 +77,7 @@ namespace Stareater.Controllers
 		public StarSystemController OpenStarSystem(StarData star)
 		{
 			var game = this.gameInstance;
-			return new StarSystemController(game, star, this.IsReadOnly, this.PlayerInstance(game));
+			return new StarSystemController(game, star, game.IsReadOnly, this.PlayerInstance(game));
 		}
 		
 		public StarSystemController OpenStarSystem(Vector2D position)
@@ -100,7 +100,7 @@ namespace Stareater.Controllers
 					Where(x => x.Owner != this.PlayerInstance(game) || !x.Owner.Orders.ShipOrders.ContainsKey(x.Position)).
 					Concat(this.PlayerInstance(game).Orders.ShipOrders.SelectMany(x => x.Value)).
 					Select(
-						x => new FleetInfo(x, this.gameInstance.Derivates.Of(x.Owner), this.gameInstance.Statics)
+						x => new FleetInfo(x, game.Derivates.Of(x.Owner), game.Statics)
 					);
 			}
 		}
@@ -161,7 +161,7 @@ namespace Stareater.Controllers
 		public ShipDesignController NewDesign()
 		{
 			var game = this.gameInstance;
-			return (!this.gameController.IsReadOnly) ? new ShipDesignController(game, this.PlayerInstance(game)) : null;
+			return (!game.IsReadOnly) ? new ShipDesignController(game, this.PlayerInstance(game)) : null;
 		}
 		
 		public IEnumerable<DesignInfo> ShipsDesigns()
@@ -174,10 +174,10 @@ namespace Stareater.Controllers
 		
 		public void DisbandDesign(DesignInfo design)
 		{
-			if (this.gameController.IsReadOnly)
+			var game = this.gameInstance;
+			if (game.IsReadOnly)
 				return;
 
-			var game = this.gameInstance;
 			this.PlayerInstance(game).Orders.RefitOrders[design.Data] = null;
 		}
 
@@ -189,10 +189,11 @@ namespace Stareater.Controllers
 		
 		public void KeepDesign(DesignInfo design)
 		{
-			if (this.gameController.IsReadOnly)
+			var game = this.gameInstance;
+			if (game.IsReadOnly)
 				return;
 
-			this.PlayerInstance(this.gameInstance).Orders.RefitOrders.Remove(design.Data);
+			this.PlayerInstance(game).Orders.RefitOrders.Remove(design.Data);
 		}
 		
 		public IEnumerable<DesignInfo> RefitCandidates(DesignInfo design)
@@ -213,9 +214,11 @@ namespace Stareater.Controllers
 		
 		public void RefitDesign(DesignInfo design, DesignInfo refitWith)
 		{
-			if (this.gameController.IsReadOnly)
+			var game = this.gameInstance;
+			if (game.IsReadOnly)
 				return;
-			var player = this.PlayerInstance(this.gameInstance);
+			
+			var player = this.PlayerInstance(game);
 
 			//TODO(v0.6) check refit compatibility, if designs are for same hull
 			if (!refitWith.Constructable || player.Orders.RefitOrders.ContainsKey(refitWith.Data))
@@ -226,14 +229,16 @@ namespace Stareater.Controllers
 		
 		public DesignInfo RefittingWith(DesignInfo design)
 		{
-			var player = this.PlayerInstance(this.gameInstance);
-			if (this.gameController.IsReadOnly || !player.Orders.RefitOrders.ContainsKey(design.Data))
+			var game = this.gameInstance;
+			var player = this.PlayerInstance(game);
+
+			if (game.IsReadOnly || !player.Orders.RefitOrders.ContainsKey(design.Data))
 				return null;
 			
 			var targetDesign = player.Orders.RefitOrders[design.Data];
 			
 			return targetDesign != null ?
-				new DesignInfo(targetDesign, this.gameInstance.Derivates.Of(targetDesign.Owner).DesignStats[targetDesign], this.gameInstance.Statics) :
+				new DesignInfo(targetDesign, game.Derivates.Of(targetDesign.Owner).DesignStats[targetDesign], game.Statics) :
 				null;
 		}
 		
@@ -258,7 +263,7 @@ namespace Stareater.Controllers
 			planets.UnionWith(player.Orders.ColonizationOrders.Keys);
 			
 			foreach(var planet in planets)
-				yield return new ColonizationController(game, planet, this.IsReadOnly, player);
+				yield return new ColonizationController(game, planet, game.IsReadOnly, player);
 		}
 		
 		public IEnumerable<FleetInfo> EnrouteColonizers(Planet destination)
@@ -268,7 +273,7 @@ namespace Stareater.Controllers
 			
 			foreach(var fleet in game.States.Fleets.Where(x => x.Owner == this.PlayerInstance(game)))
 				if (finder.Check(fleet))
-					yield return new FleetInfo(fleet, game.Derivates.Of(fleet.Owner), this.gameInstance.Statics);
+					yield return new FleetInfo(fleet, game.Derivates.Of(fleet.Owner), game.Statics);
 		}
 		#endregion
 		
@@ -298,10 +303,11 @@ namespace Stareater.Controllers
 		
 		public IEnumerable<DevelopmentTopicInfo> ReorderDevelopmentTopics(IEnumerable<string> idCodeOrder)
 		{
-			if (this.IsReadOnly)
+			var game = this.gameInstance;
+			if (game.IsReadOnly)
 				return DevelopmentTopics();
 
-			var modelQueue = this.PlayerInstance(this.gameInstance).Orders.DevelopmentQueue;
+			var modelQueue = this.PlayerInstance(game).Orders.DevelopmentQueue;
 			modelQueue.Clear();
 			
 			int i = 0;
@@ -310,7 +316,7 @@ namespace Stareater.Controllers
 				i++;
 			}
 
-			this.gameInstance.Derivates.Of(this.PlayerInstance(this.gameInstance)).InvalidateDevelopment();
+			game.Derivates.Of(this.PlayerInstance(game)).InvalidateDevelopment();
 			return DevelopmentTopics();
 		}
 		
@@ -328,14 +334,16 @@ namespace Stareater.Controllers
 			
 			set
 			{
-				if (this.IsReadOnly)
+				var game = this.gameInstance;
+				if (game.IsReadOnly)
 					return;
-				var player = this.PlayerInstance((this.gameInstance));
+				
+				var player = this.PlayerInstance(game);
 
-				if (value >= 0 && value < this.gameInstance.Statics.DevelopmentFocusOptions.Count)
+				if (value >= 0 && value < game.Statics.DevelopmentFocusOptions.Count)
 					player.Orders.DevelopmentFocusIndex = value;
 
-				this.gameInstance.Derivates.Of(player).InvalidateDevelopment();
+				game.Derivates.Of(player).InvalidateDevelopment();
 			}
 		}
 		
@@ -390,11 +398,11 @@ namespace Stareater.Controllers
 			
 			set
 			{
-				if (this.IsReadOnly)
+				var game = this.gameInstance;
+				if (game.IsReadOnly)
 					return;
 
-				var game = this.gameInstance;
-				var playerTechs = this.gameInstance.Derivates.Of(this.PlayerInstance(game)).ResearchOrder(game.States.ResearchAdvances).ToList();
+				var playerTechs = game.Derivates.Of(this.PlayerInstance(game)).ResearchOrder(game.States.ResearchAdvances).ToList();
 				if (value >= 0 && value < playerTechs.Count) 
 				{
 					this.PlayerInstance(game).Orders.ResearchFocus = playerTechs[value].Topic.IdCode;

@@ -17,6 +17,7 @@ namespace Stareater
 		public Player StareaterOrganelles { get; private set; }
 		public int Turn { get; set; }
 
+		public bool IsReadOnly { get; set; }
 		public StaticsDB Statics { get; private set; }
 		public StatesDB States { get; private set; }
 		public TemporaryDB Derivates { get; private set; }
@@ -29,6 +30,7 @@ namespace Stareater
 
 			this.StareaterOrganelles = organellePlayer;
 			this.MainPlayers = players;
+			this.IsReadOnly = false;
 			this.Statics = statics;
 			this.States = states;
 			this.Derivates = derivates;
@@ -66,6 +68,7 @@ namespace Stareater
 			copy.StareaterOrganelles = playersRemap.Players[this.StareaterOrganelles];
 			copy.Turn = this.Turn;
 
+			copy.IsReadOnly = true;
 			copy.Statics = this.Statics;
 			copy.States = this.States.Copy(playersRemap, galaxyRemap);
 			copy.Derivates = this.Derivates.Copy(playersRemap);

@@ -108,18 +108,9 @@ namespace Stareater.Controllers
 		#region Turn processing
 		public GameState State { get; private set; }
 		
-		public bool IsReadOnly
-		{
-			get 
-			{ 
-				lock(threadLocker)
-					return endTurnCopy != null; 
-			}
-		}
-		
 		internal void EndGalaxyPhase(PlayerController player)
 		{
-			if (this.IsReadOnly)
+			if (this.GameInstance.IsReadOnly)
 				return;
 
 			lock(threadLocker)
