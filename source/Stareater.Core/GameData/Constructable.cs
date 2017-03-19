@@ -7,8 +7,7 @@ namespace Stareater.GameData
 {
 	class Constructable
 	{
-		public string NameCode { get; private set; }
-		public string DescriptionCode{ get; private set; }
+		public string LanguageCode { get; private set; }
 		public bool LiteralText { get; private set; }
 		public string ImagePath { get; private set; }
 		
@@ -24,12 +23,11 @@ namespace Stareater.GameData
 		
 		public IEnumerable<IConstructionEffect> Effects { get; private set; }
 		
-		public Constructable(string nameCode, string descriptionCode, bool literalText, string imagePath, string idCode, 
+		public Constructable(string languageCode, bool literalText, string imagePath, string idCode, 
 		                     IEnumerable<Prerequisite> prerequisites, SiteType constructableAt, bool isVirtual, string stockpileGroup,
 		                     Formula condition, Formula cost, Formula turnLimit, IEnumerable<IConstructionEffect> effects)
 		{
-			this.NameCode = nameCode;
-			this.DescriptionCode = descriptionCode;
+			this.LanguageCode = languageCode;
 			this.LiteralText = literalText;
 			this.ImagePath = imagePath;
 			this.IdCode = idCode;

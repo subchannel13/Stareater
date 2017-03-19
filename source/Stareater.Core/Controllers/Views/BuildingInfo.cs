@@ -20,7 +20,7 @@ namespace Stareater.Controllers.Views
 		{
 			get 
 			{
-				return LocalizationManifest.Get.CurrentLanguage[LangContext][building.NameCode].Text();
+				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(building.LanguageCode).Text();
 			}
 		}
 		

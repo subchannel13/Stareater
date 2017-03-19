@@ -1,6 +1,5 @@
 ﻿{ Thruster
-	nameCode: HYDROGEN_THRUSTER_NAME
-	descCode: HYDROGEN_THRUSTER_DESC
+	langCode: HYDROGEN_THRUSTER
 	image :./images/technologies/hydroponicFarms.png
 	code: hydrogen
 	

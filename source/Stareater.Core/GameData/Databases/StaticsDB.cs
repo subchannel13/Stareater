@@ -231,8 +231,7 @@ namespace Stareater.GameData.Databases
 		private static BodyTraitType loadTrait(IkonComposite data)
 		{
 			return new BodyTraitType(
-				data[GeneralNameKey].To<string>(),
-				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
 				loadTraitEffect(data[TraitEffectKey].To<IkonComposite>())
@@ -256,7 +255,7 @@ namespace Stareater.GameData.Databases
 		private static BuildingType loadBuilding(IkonComposite data)
 		{
 			return new BuildingType(
-				data[GeneralNameKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				data[BuildingHitPointsKey].To<Formula>()
 			);
@@ -265,8 +264,7 @@ namespace Stareater.GameData.Databases
 		private static Constructable loadConstructable(IkonComposite data)
 		{
 			return new Constructable(
-				data[GeneralNameKey].To<string>(),
-				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				false,
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
@@ -366,8 +364,7 @@ namespace Stareater.GameData.Databases
 		{
 			return new ArmorType(
 				data[GeneralCodeKey].To<string>(),
-				data[GeneralNameKey].To<string>(),
-				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -416,8 +413,7 @@ namespace Stareater.GameData.Databases
 		{
 			return new HullType(
 				data[GeneralCodeKey].To<string>(),
-				data[GeneralNameKey].To<string>(),
-				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				data[HullImages].To<string[]>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -442,8 +438,7 @@ namespace Stareater.GameData.Databases
 		{
 			return new IsDriveType(
 				data[GeneralCodeKey].To<string>(),
-				data[GeneralNameKey].To<string>(),
-				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -458,8 +453,7 @@ namespace Stareater.GameData.Databases
 		{
 			return new MissionEquipmentType(
 				data[GeneralCodeKey].To<string>(),
-				data[GeneralNameKey].To<string>(),
-				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -474,8 +468,7 @@ namespace Stareater.GameData.Databases
 		{
 			return new ReactorType(
 				data[GeneralCodeKey].To<string>(),
-				data[GeneralNameKey].To<string>(),
-				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -489,8 +482,7 @@ namespace Stareater.GameData.Databases
 		{
 			return new SensorType(
 				data[GeneralCodeKey].To<string>(),
-				data[GeneralNameKey].To<string>(),
-				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -503,8 +495,7 @@ namespace Stareater.GameData.Databases
 		{
 			return new ShieldType(
 				data[GeneralCodeKey].To<string>(),
-				data[GeneralNameKey].To<string>(),
-				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -524,8 +515,7 @@ namespace Stareater.GameData.Databases
 		{
 			return new SpecialEquipmentType(
 				data[GeneralCodeKey].To<string>(),
-				data[GeneralNameKey].To<string>(),
-				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -540,8 +530,7 @@ namespace Stareater.GameData.Databases
 		{
 			return new ThrusterType(
 				data[GeneralCodeKey].To<string>(),
-				data[GeneralNameKey].To<string>(),
-				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()),
 				data[GeneralMaxLevelKey].To<int>(),
@@ -574,8 +563,7 @@ namespace Stareater.GameData.Databases
 		private static DevelopmentTopic loadDevelopmentTopic(IkonComposite data)
 		{
 			return new DevelopmentTopic(
-				data[GeneralNameKey].To<string>(),
-				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralCostKey].To<Formula>(),
@@ -586,8 +574,7 @@ namespace Stareater.GameData.Databases
 		private static ResearchTopic loadResearchTopic(IkonComposite data)
 		{
 			return new ResearchTopic(
-				data[GeneralNameKey].To<string>(),
-				data[GeneralDescriptionKey].To<string>(),
+				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
 				data[GeneralCostKey].To<Formula>(),
@@ -693,9 +680,8 @@ namespace Stareater.GameData.Databases
 		
 		private const string FocusList = "list";
 		private const string ResearchUnlocksKey = "devTopics";
-		
-		private const string GeneralNameKey = "nameCode";
-		private const string GeneralDescriptionKey = "descCode";
+
+		private const string GeneralLangKey = "langCode";
 		private const string GeneralImageKey = "image";
 		private const string GeneralCodeKey = "code";
 		private const string GeneralPrerequisitesKey = "prerequisites";

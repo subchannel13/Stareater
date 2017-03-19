@@ -8,8 +8,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: AUTOCANNON_NAME
-	descCode: AUTOCANNON_DESC
+	langCode: AUTOCANNON
 	code: autocannon
 	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
@@ -18,8 +17,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: COMBUSTION_NAME
-	descCode: COMBUSTION_DESC
+	langCode: COMBUSTION
 	code: combustion
 	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
@@ -28,8 +26,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: HARPOON_NAME
-	descCode: HARPOON_DESC
+	langCode: HARPOON
 	code: harpoon
 	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
@@ -38,8 +35,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: LASER_NAME
-	descCode: LASER_DESC
+	langCode: LASER
 	code: Laser
 	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
@@ -48,8 +44,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: NUKE_BOMB_NAME
-	descCode: NUKE_BOMB_DESC
+	langCode: NUKE_BOMB
 	code: nuke_bomb
 	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
@@ -58,8 +53,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: NUKE_DRIVE_NAME
-	descCode: NUKE_DRIVE_DESC
+	langCode: NUKE_DRIVE
 	code: nuke_drive
 	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
@@ -68,8 +62,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: RADAR_NAME
-	descCode: RADAR_DESC
+	langCode: RADAR
 	code: radar
 	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
@@ -78,8 +71,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: ROCKET_NAME
-	descCode: ROCKET_DESC
+	langCode: ROCKET
 	code: rocketry
 	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10

@@ -1,6 +1,5 @@
 ﻿{ MissionEquipment
-	nameCode: LASER_NAME
-	descCode: LASER_DESC
+	langCode: LASER
 	image: ./images/technologies/hydroponicFarms.png
 	code: laser
 	
@@ -27,8 +26,7 @@
 }
 
 { MissionEquipment
-	nameCode: HARPOON_NAME
-	descCode: HARPOON_DESC
+	langCode: HARPOON
 	image: ./images/technologies/hydroponicFarms.png
 	code: harpoon
 	
@@ -53,8 +51,7 @@
 }
 
 { MissionEquipment
-	nameCode: NUKE_NAME
-	descCode: NUKE_DESC
+	langCode: NUKE
 	image: ./images/technologies/hydroponicFarms.png
 	code: nukeBomb
 	

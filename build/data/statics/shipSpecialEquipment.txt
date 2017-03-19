@@ -1,6 +1,5 @@
 ﻿{ SpecialEquipment
-	nameCode: EXTRA_THRUSTERS_NAME
-	descCode: EXTRA_THRUSTERS_DESC
+	langCode: EXTRA_THRUSTERS
 	image :./images/technologies/hydroponicFarms.png
 	code: extraThrusters
 	
@@ -14,8 +13,7 @@
 }
 
 { SpecialEquipment
-	nameCode: HEAVY_ARMOR_NAME
-	descCode: HEAVY_ARMOR_DESC
+	langCode: HEAVY_ARMOR
 	image :./images/technologies/hydroponicFarms.png
 	code: heavyArmor
 	
@@ -29,8 +27,7 @@
 }
 
 { SpecialEquipment
-	nameCode: COLONIZER_NAME
-	descCode: COLONIZER_DESC
+	langCode: COLONIZER
 	image :./images/technologies/hydroponicFarms.png
 	code: colony
 	

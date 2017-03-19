@@ -56,7 +56,7 @@ namespace Stareater.Controllers.Views
 		{
 			get 
 			{
-				return LocalizationManifest.Get.CurrentLanguage[LangContext][topic.NameCode].Text(textVars);
+				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(topic.LanguageCode).Text(textVars);
 			}
 		}
 		
@@ -64,7 +64,7 @@ namespace Stareater.Controllers.Views
 		{ 
 			get 
 			{
-				return LocalizationManifest.Get.CurrentLanguage[LangContext][topic.DescriptionCode].Text(textVars);
+				return LocalizationManifest.Get.CurrentLanguage[LangContext].Description(topic.LanguageCode).Text(textVars);
 			}
 		}
 		

@@ -48,6 +48,16 @@ namespace Stareater.Localization
 			return entries.ContainsKey(entryKey);
 		}
 
+		public IText Description(string entryKey)
+		{
+			return this[entryKey + "_DESC"];
+		}
+
+		public IText Name(string entryKey)
+		{
+			return this[entryKey + "_NAME"];
+		}
+
 		public IText this[string entryKey]
 		{
 			get {

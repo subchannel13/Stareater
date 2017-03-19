@@ -1,6 +1,5 @@
 ﻿{ IsDrive
-	nameCode: NUCLEAR_ISDRIVE_NAME
-	descCode: NUCLEAR_ISDRIVE_DESC
+	langCode: NUCLEAR_ISDRIVE
 	image :./images/technologies/hydroponicFarms.png
 	code: nuclear
 	
@@ -14,8 +13,7 @@
 }
 
 { IsDrive
-	nameCode: SUBSPACE_ISDRIVE_NAME
-	descCode: SUBSPACE_ISDRIVE_DESC
+	langCode: SUBSPACE_ISDRIVE
 	image :./images/technologies/hydroponicFarms.png
 	code: subspace
 	

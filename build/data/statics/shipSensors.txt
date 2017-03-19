@@ -1,6 +1,5 @@
 ﻿{ Sensor
-	nameCode: EM_SENSOR_NAME
-	descCode: EM_SENSOR_DESC
+	langCode: EM_SENSOR
 	image :./images/technologies/hydroponicFarms.png
 	code: em
 	

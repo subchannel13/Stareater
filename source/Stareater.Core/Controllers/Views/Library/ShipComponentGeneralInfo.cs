@@ -23,7 +23,7 @@ namespace Stareater.Controllers.Views.Library
 			if (level < 0 || level > this.Data.MaxLevel)
 				throw new ArgumentOutOfRangeException("level");
 					
-			return LocalizationManifest.Get.CurrentLanguage[langContext][this.Data.NameCode].Text(new Var(AComponentType.LevelKey, level).Get);
+			return LocalizationManifest.Get.CurrentLanguage[langContext].Name(this.Data.LanguageCode).Text(new Var(AComponentType.LevelKey, level).Get);
 		}
 		
 		public string Description(int level)
@@ -31,7 +31,7 @@ namespace Stareater.Controllers.Views.Library
 			if (level < 0 || level > this.Data.MaxLevel)
 				throw new ArgumentOutOfRangeException("level");
 			
-			return LocalizationManifest.Get.CurrentLanguage[langContext][this.Data.DescCode].Text(new Var(AComponentType.LevelKey, level).Get);
+			return LocalizationManifest.Get.CurrentLanguage[langContext].Description(this.Data.LanguageCode).Text(new Var(AComponentType.LevelKey, level).Get);
 		}
 		
 		public string ImagePath 

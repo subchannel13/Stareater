@@ -1,6 +1,5 @@
 ﻿{ Reactor
-	nameCode: NUCLEAR_REACTOR_NAME
-	descCode: NUCLEAR_REACTOR_DESC
+	langCode: NUCLEAR_REACTOR
 	image :./images/technologies/hydroponicFarms.png
 	code: nuclear
 	
@@ -13,8 +12,7 @@
 }
 
 { Reactor
-	nameCode: CHEMICAL_REACTOR_NAME
-	descCode: CHEMICAL_REACTOR_DESC
+	langCode: CHEMICAL_REACTOR
 	image :./images/technologies/hydroponicFarms.png
 	code: chemical
 	

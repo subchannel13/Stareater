@@ -1,6 +1,5 @@
 ﻿{ Shield
-	nameCode: ECM_SHIELD_NAME
-	descCode: ECM_SHIELD_DESC
+	langCode: ECM_SHIELD
 	image :./images/technologies/hydroponicFarms.png
 	code: ecm
 	
@@ -21,8 +20,7 @@
 }
 
 { Shield
-	nameCode: EM_SHIELD_NAME
-	descCode: EM_SHIELD_DESC
+	langCode: EM_SHIELD
 	image :./images/technologies/hydroponicFarms.png
 	code: em
 	
@@ -43,8 +41,7 @@
 }
 
 { Shield
-	nameCode: PARTICLE_SHIELD_NAME
-	descCode: PARTICLE_SHIELD_DESC
+	langCode: PARTICLE_SHIELD
 	image :./images/technologies/hydroponicFarms.png
 	code: particle
 	

@@ -1,6 +1,5 @@
 { ResearchTopic
-	nameCode : CHEM_NAME
-	descCode : CHEM_DESC
+	langCode : CHEM
 	code: Chem
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
@@ -10,8 +9,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: TORPEDO_NAME
-	descCode: TORPEDO_DESC
+	langCode: TORPEDO
 	code: NukeTorpedo
 	cost # 300e9 * (lvl + 1) ^ 2;
 	maxLvl= 10
@@ -20,8 +18,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: METALWORK_NAME
-	descCode: METALWORK_DESC
+	langCode: METALWORK
 	code: Metalworking
 	cost # 300e9 * (lvl + 1) ^ 2;
 	maxLvl= 10
@@ -30,8 +27,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: DURAPLAST_NAME
-	descCode: DURAPLAST_DESC
+	langCode: DURAPLAST
 	code: Duraplast
 	cost # 6e12 * (lvl + 1) ^ 2;
 	maxLvl= 10

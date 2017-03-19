@@ -1,6 +1,5 @@
 { Trait
-	nameCode: CATALYZED_TRAIT_NAME
-	descCode: CATALYZED_TRAIT_DESC
+	langCode: CATALYZED_TRAIT
 	image :./images/technologies/hydroponicFarms.png
 	code: catalyzed
 	

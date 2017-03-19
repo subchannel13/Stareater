@@ -1,6 +1,5 @@
 { ResearchTopic
-	nameCode: BIO_NAME
-	descCode: BIO_DESC
+	langCode: BIO
 	code: Bio
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
@@ -12,8 +11,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: HYDRO_FARM_NAME
-	descCode: HYDRO_FARM_DESC
+	langCode: HYDRO_FARM
 	code: HydroFarm
 	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8
@@ -22,8 +20,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: GREEN_HOUSE_NAME
-	descCode: GREEN_HOUSE_DESC
+	langCode: GREEN_HOUSE
 	code: GreenHouse
 	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8
@@ -32,8 +29,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: GMO_FOOD_NAME
-	descCode: GMO_FOOD_DESC
+	langCode: GMO_FOOD
 	code: GmoFood
 	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8
@@ -42,8 +38,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: SOIL_ENRICH_NAME
-	descCode: SOIL_ENRICH_DESC
+	langCode: SOIL_ENRICH
 	code: SoilEnrich
 	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8

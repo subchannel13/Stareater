@@ -17,8 +17,7 @@
 }
 
 { Armor
-	nameCode: GRAPHENE_ARMOR_NAME
-	descCode: GRAPHENE_ARMOR_DESC
+	langCode: GRAPHENE_ARMOR
 	image :./images/technologies/hydroponicFarms.png
 	code: graphene
 	cannotPick.
@@ -32,8 +31,7 @@
 }
 
 { Hull
-	nameCode: CATALYZER_HULL_NAME
-	descCode: CATALYZER_HULL_DESC
+	langCode: CATALYZER_HULL
 	code: catalyzer
 	cannotPick.
 	images [ 
@@ -62,8 +60,7 @@
 }
 
 { MissionEquipment
-	nameCode: CATALYZER_NAME
-	descCode: CATALYZER_DESC
+	langCode: CATALYZER
 	image: ./images/technologies/hydroponicFarms.png
 	code: catalyzer
 	cannotPick.

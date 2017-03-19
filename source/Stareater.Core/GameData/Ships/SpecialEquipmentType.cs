@@ -13,10 +13,10 @@ namespace Stareater.GameData.Ships
 		public Formula Size { get; private set; }
 		public Formula MaxCount { get; private set; }
 		
-		public SpecialEquipmentType(string code, string nameCode, string descCode, string imagePath,
+		public SpecialEquipmentType(string code, string languageCode, string imagePath,
 		                 IEnumerable<Prerequisite> prerequisites, int maxLevel, 
 		                 bool canPick, Formula cost, Formula size, Formula maxCount)
-			: base(code, nameCode, descCode, prerequisites, maxLevel, canPick)
+			: base(code, languageCode, prerequisites, maxLevel, canPick)
 		{
 			this.ImagePath = imagePath;
 			this.Cost = cost;

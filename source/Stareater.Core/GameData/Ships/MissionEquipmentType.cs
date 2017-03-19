@@ -13,10 +13,10 @@ namespace Stareater.GameData.Ships
 		public Formula Size { get; private set; }
 		public AAbilityType[] Abilities { get; private set; }
 		
-		public MissionEquipmentType(string code, string nameCode, string descCode, string imagePath,
+		public MissionEquipmentType(string code, string languageCode, string imagePath,
 		                 IEnumerable<Prerequisite> prerequisites, int maxLevel, Formula cost, 
 		                 bool canPick, Formula size, AAbilityType[] abilities)
-			: base(code, nameCode, descCode, prerequisites, maxLevel, canPick)
+			: base(code, languageCode, prerequisites, maxLevel, canPick)
 		{
 			this.ImagePath = imagePath;
 			

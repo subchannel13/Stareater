@@ -40,8 +40,8 @@ namespace Stareater.Controllers.Views
 			get 
 			{
 				return Constructable.LiteralText ? 
-					Constructable.NameCode : 
-					LocalizationManifest.Get.CurrentLanguage[LangContext][Constructable.NameCode].Text();
+					Constructable.LanguageCode : 
+					LocalizationManifest.Get.CurrentLanguage[LangContext].Name(Constructable.LanguageCode).Text();
 			}
 		}
 		
@@ -50,8 +50,8 @@ namespace Stareater.Controllers.Views
 			get 
 			{
 				return Constructable.LiteralText ? 
-					Constructable.DescriptionCode : 
-					LocalizationManifest.Get.CurrentLanguage[LangContext][Constructable.DescriptionCode].Text();
+					"" : 
+					LocalizationManifest.Get.CurrentLanguage[LangContext].Description(Constructable.LanguageCode).Text();
 			}
 		}
 		

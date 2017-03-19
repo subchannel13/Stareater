@@ -1,6 +1,5 @@
 ﻿{ Armor
-	nameCode: TITANIUM_ARMOR_NAME
-	descCode: TITANIUM_ARMOR_DESC
+	langCode: TITANIUM_ARMOR
 	image :./images/technologies/hydroponicFarms.png
 	code: titanium
 	
@@ -14,8 +13,7 @@
 }
 
 { Armor
-	nameCode: DURAPLAST_ARMOR_NAME
-	descCode: DURAPLAST_ARMOR_DESC
+	langCode: DURAPLAST_ARMOR
 	image :./images/technologies/hydroponicFarms.png
 	code: duraplast
 	
@@ -29,8 +27,7 @@
 }
 
 { Armor
-	nameCode: DURALOY_ARMOR_NAME
-	descCode: DURALOY_ARMOR_DESC
+	langCode: DURALOY_ARMOR
 	image :./images/technologies/hydroponicFarms.png
 	code: duraloy
 	

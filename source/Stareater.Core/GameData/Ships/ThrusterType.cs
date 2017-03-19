@@ -14,10 +14,10 @@ namespace Stareater.GameData.Ships
 		public Formula Evasion;
 		public Formula Speed;
 
-		public ThrusterType(string code, string nameCode, string descCode, string imagePath,
+		public ThrusterType(string code, string languageCode, string imagePath,
 		                 IEnumerable<Prerequisite> prerequisites, int maxLevel, bool canPick, 
 						 Formula evasion, Formula speed)
-			: base(code, nameCode, descCode, prerequisites, maxLevel, canPick)
+			: base(code, languageCode, prerequisites, maxLevel, canPick)
 		{
 			this.Evasion = evasion;
 			this.Speed = speed;

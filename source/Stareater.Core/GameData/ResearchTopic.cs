@@ -5,8 +5,7 @@ namespace Stareater.GameData
 {
 	class ResearchTopic
 	{
-		public string NameCode { get; private set; }
-		public string DescriptionCode{ get; private set; }
+		public string LanguageCode { get; private set; }
 		
 		public string ImagePath { get; private set; }
 		public string IdCode { get; private set; }
@@ -14,10 +13,9 @@ namespace Stareater.GameData
 		
 		public string[][] Unlocks { get; private set; }
 		
-		public ResearchTopic(string nameCode, string descriptionCode, string imagePath, string idCode, Formula cost, string[][] unlocks)
+		public ResearchTopic(string languageCode, string imagePath, string idCode, Formula cost, string[][] unlocks)
 		{
-			this.NameCode = nameCode;
-			this.DescriptionCode = descriptionCode;
+			this.LanguageCode = languageCode;
 			this.ImagePath = imagePath;
 			this.IdCode = idCode;
 			this.Cost = cost;

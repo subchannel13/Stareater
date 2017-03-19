@@ -10,24 +10,21 @@ namespace Stareater.Controllers.Views.Library
 		private const string LangContext = DevelopmentTopicInfo.LangContext;
 
 		private readonly int maxLevel;
-		private readonly string nameCode;
-		private readonly string descriptionCode;
+		private readonly string languageCode;
 		private readonly string imagePath;
 		
 		internal TechnologyGeneralInfo(DevelopmentTopic data)
 		{
-			this.descriptionCode = data.DescriptionCode;
 			this.imagePath = data.ImagePath;
 			this.maxLevel = data.MaxLevel;
-			this.nameCode = data.NameCode;
+			this.languageCode = data.LanguageCode;
 		}
 
 		internal TechnologyGeneralInfo(ResearchTopic data)
 		{
-			this.descriptionCode = data.DescriptionCode;
 			this.imagePath = data.ImagePath;
 			this.maxLevel = data.MaxLevel;
-			this.nameCode = data.NameCode;
+			this.languageCode = data.LanguageCode;
 		}
 		
 		public string Name(int level)
@@ -35,7 +32,7 @@ namespace Stareater.Controllers.Views.Library
 			if (level < 0 || level > this.maxLevel)
 				throw new ArgumentOutOfRangeException("level");
 					
-			return LocalizationManifest.Get.CurrentLanguage[LangContext][this.nameCode].Text(new Var(DevelopmentTopic.LevelKey, level).Get);
+			return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(this.languageCode).Text(new Var(DevelopmentTopic.LevelKey, level).Get);
 		}
 		
 		public string Description(int level)
@@ -43,7 +40,7 @@ namespace Stareater.Controllers.Views.Library
 			if (level < 0 || level > this.maxLevel)
 				throw new ArgumentOutOfRangeException("level");
 			
-			return LocalizationManifest.Get.CurrentLanguage[LangContext][this.descriptionCode].Text(new Var(DevelopmentTopic.LevelKey, level).Get);
+			return LocalizationManifest.Get.CurrentLanguage[LangContext].Description(this.languageCode).Text(new Var(DevelopmentTopic.LevelKey, level).Get);
 		}
 		
 		public string ImagePath 

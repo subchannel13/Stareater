@@ -5,18 +5,16 @@ namespace Stareater.Galaxy
 {
 	public class BodyTraitType
 	{
-		public string NameCode { get; private set; }
-		public string DescriptionCode{ get; private set; }
+		public string LanguageCode { get; private set; }
 		
 		public string ImagePath { get; private set; }
 		public string IdCode { get; private set; }
 
 		internal ITraitEffectType Effect { get; private set; }
 
-		internal BodyTraitType(string nameCode, string descriptionCode, string imagePath, string idCode, ITraitEffectType effect)
+		internal BodyTraitType(string languageCode, string imagePath, string idCode, ITraitEffectType effect)
 		{
-			this.NameCode = nameCode;
-			this.DescriptionCode = descriptionCode;
+			this.LanguageCode = languageCode;
 			this.ImagePath = imagePath;
 			this.IdCode = idCode;
 			this.Effect = effect;

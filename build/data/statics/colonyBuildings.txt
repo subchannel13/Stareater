@@ -1,6 +1,5 @@
 { Constructable
-	nameCode: IND_NAME
-	descCode: IND_DESC
+	langCode: IND
 	image: ./images/buildings/factory.png
 	
 	code: Infra
@@ -21,7 +20,7 @@
 }
 
 { Building
-	nameCode: IND_NAME
+	langCode: IND
 	image: ./images/buildings/factory.png
 	
 	code: Infra
@@ -30,8 +29,7 @@
 }
 
 { Constructable
-	nameCode: POP_NAME
-	descCode: POP_DESC
+	langCode: POP
 	image: ./images/buildings/housing.png
 	
 	code: Housing

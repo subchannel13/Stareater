@@ -1,6 +1,5 @@
 { Constructable
-	nameCode: JUMPGATE_NAME
-	descCode: JUMPGATE_DESC
+	langCode: JUMPGATE
 	image: ./images/buildings/factory.png
 	
 	code: Jump

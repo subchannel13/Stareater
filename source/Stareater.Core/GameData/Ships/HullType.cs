@@ -30,13 +30,13 @@ namespace Stareater.GameData.Ships
 		public Formula CloakingBase { get; private set; }
 		public Formula SensorsBase { get; private set; }
 		
-		public HullType(string code, string nameCode, string descCode, string[] imagePaths,
+		public HullType(string code, string languageCode, string[] imagePaths,
 		                IEnumerable<Prerequisite> prerequisites, int maxLevel, bool canPick, Formula cost, 
 		                Formula size, Formula spaceFree, 
 		                Formula sizeIS, Formula sizeReactor, Formula sizeShield,
 		                Formula armorBase, Formula armorAbsorption, Formula shieldBase, 
 		                Formula inertiaBase, Formula jammingBase, Formula cloakingBase, Formula sensorsBase)
-			: base(code, nameCode, descCode, prerequisites, maxLevel, canPick)
+			: base(code, languageCode, prerequisites, maxLevel, canPick)
 		{
 			this.ImagePaths = imagePaths;
 			this.Cost = cost;

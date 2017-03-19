@@ -28,7 +28,7 @@ namespace Stareater.Controllers.Views.Ships
 		{ 
 			get
 			{
-				return LocalizationManifest.Get.CurrentLanguage[LangContext][this.Type.NameCode].Text(this.Level);
+				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(this.Type.LanguageCode).Text(this.Level);
 			}
 		}
 		

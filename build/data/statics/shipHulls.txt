@@ -1,6 +1,5 @@
 ﻿{ Hull
-	nameCode: FIGHTER_HULL_NAME
-	descCode: FIGHTER_HULL_DESC
+	langCode: FIGHTER_HULL
 	code: fighter
 	images [ 
 		:./images/ships/fighter1
@@ -33,8 +32,7 @@
 }
 
 { Hull
-	nameCode: SHUTTLE_HULL_NAME
-	descCode: SHUTTLE_HULL_DESC
+	langCode: SHUTTLE_HULL
 	code: shuttle
 	images [ 
 		:./images/ships/shuttle1
@@ -67,8 +65,7 @@
 }
 
 { Hull
-	nameCode: CRUISER_HULL_NAME
-	descCode: CRUISER_HULL_DESC
+	langCode: CRUISER_HULL
 	code: cruiser
 	images [ 
 		:./images/ships/cruiser1

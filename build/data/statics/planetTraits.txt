@@ -1,6 +1,5 @@
 { Trait
-	nameCode: FERTILE_TRAIT_NAME
-	descCode: FERTILE_TRAIT_DESC
+	langCode: FERTILE_TRAIT
 	image :./images/technologies/hydroponicFarms.png
 	code: fertile
 	
@@ -8,8 +7,7 @@
 }
 
 { Trait
-	nameCode: IRRADIATED_TRAIT_NAME
-	descCode: IRRADIATED_TRAIT_DESC
+	langCode: IRRADIATED_TRAIT
 	image :./images/technologies/hydroponicFarms.png
 	code: irradiated
 	

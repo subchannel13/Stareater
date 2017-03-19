@@ -37,7 +37,7 @@ namespace Stareater.GameLogic
 					this.newQueue.Add(item);
 				else if (!this.deleteItem)
 					this.newQueue.Add(new Constructable(
-						item.NameCode, item.DescriptionCode, item.LiteralText, item.ImagePath, item.IdCode,
+						item.LanguageCode, item.LiteralText, item.ImagePath, item.IdCode,
 						item.Prerequisites, item.ConstructableAt, item.IsVirtual, item.StockpileGroup,
 						item.Condition, newCost, item.TurnLimit,
 						this.newEffects.ToArray()));

@@ -9,18 +9,16 @@ namespace Stareater.GameData
 		public const string LevelKey = "lvl";
 		public const string PriorityKey = "priority";
 		
-		public string NameCode { get; private set; }
-		public string DescriptionCode{ get; private set; }
+		public string LanguageCode { get; private set; }
 		
 		public string ImagePath { get; private set; }
 		public string IdCode { get; private set; }
 		public Formula Cost { get; private set; }
 		public int MaxLevel { get; private set; }
 		
-		public DevelopmentTopic(string nameCode, string descriptionCode, string imagePath, string code, Formula cost, int maxLevel)
+		public DevelopmentTopic(string languageCode, string imagePath, string code, Formula cost, int maxLevel)
 		{
-			this.NameCode = nameCode;
-			this.DescriptionCode = descriptionCode;
+			this.LanguageCode = languageCode;
 			this.ImagePath = imagePath;
 			this.IdCode = code;
 			this.Cost = cost;

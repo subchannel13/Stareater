@@ -13,19 +13,17 @@ namespace Stareater.GameData.Ships
 		public const string SizeKey = "size";
 		
 		public string IdCode { get; private set; }
-		public string NameCode { get; private set; }
-		public string DescCode { get; private set; }
+		public string LanguageCode { get; private set; }
 
 		public IEnumerable<Prerequisite> Prerequisites { get; private set; }
 		public int MaxLevel { get; private set; }
 		public bool CanPick { get; private set; }
 		
-		protected AComponentType(string code, string nameCode, string descCode,
+		protected AComponentType(string code, string languageCode,
 		                      IEnumerable<Prerequisite> prerequisites, int maxLevel, bool canPick)
 		{
 			this.IdCode = code;
-			this.NameCode = nameCode;
-			this.DescCode = descCode;
+			this.LanguageCode = languageCode;
 			this.Prerequisites = prerequisites;
 			this.MaxLevel = maxLevel;
 			this.CanPick = canPick;

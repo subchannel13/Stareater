@@ -23,7 +23,7 @@ namespace Stareater.Controllers.Views
 			get {
 				var topicVars = new Var(DevelopmentTopic.LevelKey, report.TechProgress.Item.NextLevel).Get;
 				
-				var vars = new TextVar(topicVar, LocalizationManifest.Get.CurrentLanguage[DevelopmentTopicInfo.LangContext][report.TechProgress.Item.Topic.NameCode].Text(topicVars)).
+				var vars = new TextVar(topicVar, LocalizationManifest.Get.CurrentLanguage[DevelopmentTopicInfo.LangContext].Name(report.TechProgress.Item.Topic.LanguageCode).Text(topicVars)).
 					And(levelVar, report.TechProgress.Item.Level.ToString()).Get;
 				
 				return LocalizationManifest.Get.CurrentLanguage[GameController.ReportContext][TechnologyReportKey].Text(null, vars);
