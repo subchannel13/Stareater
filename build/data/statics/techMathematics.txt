@@ -1,6 +1,5 @@
 { ResearchTopic
-	nameCode : MAT_NAME
-	descCode : MAT_DESC
+	langCode : MAT
 	code: Mat
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
@@ -10,8 +9,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: ECM_NAME
-	descCode: ECM_DESC
+	langCode: ECM
 	code: Ecm
 	cost # 300e9 * (lvl + 2 ^lvl);
 	maxLvl= 10
@@ -20,8 +18,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: COMP_NAME
-	descCode: COMP_DESC
+	langCode: COMP
 	code: Computer
 	cost # 300e9 * (lvl + 2 ^lvl);
 	maxLvl= 10
@@ -30,8 +27,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: TELESCOPE_NAME
-	descCode: TELESCOPE_DESC
+	langCode: TELESCOPE
 	code: Telescope
 	cost # 300e9 * (lvl + 2 ^lvl);
 	maxLvl= 10

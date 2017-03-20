@@ -1,6 +1,5 @@
 { ResearchTopic
-	nameCode : SOC_NAME
-	descCode : SOC_DESC
+	langCode: SOC
 	code: Soc
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
@@ -10,8 +9,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: IND_NAME
-	descCode: IND_DESC
+	langCode: IND
 	code: Ind
 	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
 	maxLvl= 10
@@ -20,8 +18,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: COLONIZER_NAME
-	descCode: COLONIZER_DESC
+	langCode: COLONIZER
 	code: Colonizer
 	cost # 70e9 * (lvl + 1) ^ 2;
 	maxLvl= 10
@@ -30,8 +27,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: SPACE_PROGRAM_NAME
-	descCode: SPACE_PROGRAM_DESC
+	langCode: SPACE_PROGRAM
 	code: SpaceProgram
 	cost # 80e9 * (lvl + 1) ^ 2;
 	maxLvl= 10

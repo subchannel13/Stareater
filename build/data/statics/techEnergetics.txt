@@ -1,6 +1,5 @@
 { ResearchTopic
-	nameCode: ENERGY_NAME
-	descCode: ENERGY_DESC
+	langCode: ENERGY
 	code: Energy
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
@@ -10,8 +9,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: PART_SCREEN_NAME
-	descCode: PART_SCREEN_DESC
+	langCode: PART_SCREEN
 	code: ParticleScreen
 	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8
@@ -20,8 +18,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: EXTRA_REACTOR_NAME
-	descCode: EXTRA_REACTOR_DESC
+	langCode: EXTRA_REACTOR
 	code: ExtraReactor
 	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8
@@ -30,8 +27,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: MINI_REACTOR_NAME
-	descCode: MINI_REACTOR_DESC
+	langCode: MINI_REACTOR
 	code: MiniReactor
 	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8

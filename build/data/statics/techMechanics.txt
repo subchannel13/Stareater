@@ -1,6 +1,5 @@
 { ResearchTopic
-	nameCode : MECH_NAME
-	descCode : MECH_DESC
+	langCode : MECH
 	code: Mech
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
@@ -10,8 +9,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: CARGO_NAME
-	descCode: CARGO_DESC
+	langCode: CARGO
 	code: Cargo
 	cost # 150e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
@@ -20,8 +18,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: SURVEY_NAME
-	descCode: SURVEY_DESC
+	langCode: SURVEY
 	code: Surveyor
 	cost # 150e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
@@ -30,8 +27,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: MINE_TOOLS_NAME
-	descCode: MINE_TOOLS_DESC
+	langCode: MINE_TOOLS
 	code: MineTools
 	cost # 150e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
@@ -40,8 +36,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: ROBO_NAME
-	descCode: ROBO_DESC
+	langCode: ROBO
 	code: Robo
 	cost # 150e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10

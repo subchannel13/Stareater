@@ -1,6 +1,5 @@
 { ResearchTopic
-	nameCode : PHY_NAME
-	descCode : PHY_DESC
+	langCode: PHY
 	code: Phy
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
@@ -10,8 +9,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: LIDAR_NAME
-	descCode: LIDAR_DESC
+	langCode: LIDAR
 	code: Lidar
 	cost # 1.5e12 * (lvl + 2 ^lvl);
 	maxLvl= 10
@@ -20,8 +18,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: FUSION_BEAM_NAME
-	descCode: FUSION_BEAM_DESC
+	langCode: FUSION_BEAM
 	code: FusionBeam
 	cost # 1.5e12 * (lvl + 2 ^lvl);
 	maxLvl= 10
@@ -30,8 +27,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: ION_BEAM_NAME
-	descCode: ION_BEAM_DESC
+	langCode: ION_BEAM
 	code: IonBeam
 	cost # 1.5e12 * (lvl + 2 ^lvl);
 	maxLvl= 10
@@ -40,8 +36,7 @@
 }
 
 { DevelopmentTopic
-	nameCode: EM_SHIELD_NAME
-	descCode: EM_SHIELD_DESC
+	langCode: EM_SHIELD
 	code: EmShield
 	cost # 1.5e12 * (lvl + 2 ^lvl);
 	maxLvl= 10
