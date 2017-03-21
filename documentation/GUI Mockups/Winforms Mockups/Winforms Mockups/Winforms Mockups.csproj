@@ -138,6 +138,14 @@
     <Compile Include="FormCombat.Designer.cs">
       <DependentUpon>FormCombat.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormDiplomacyAudiency.cs" />
+    <Compile Include="FormDiplomacyAudiency.Designer.cs">
+      <DependentUpon>FormDiplomacyAudiency.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormDiplomacyRelations.cs" />
+    <Compile Include="FormDiplomacyRelations.Designer.cs">
+      <DependentUpon>FormDiplomacyRelations.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -258,6 +266,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelationsPlayerInfo.cs" />
+    <Compile Include="RelationsPlayerInfo.Designer.cs">
+      <DependentUpon>RelationsPlayerInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="ReportItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -333,6 +345,12 @@
     <EmbeddedResource Include="FormCombat.resx">
       <DependentUpon>FormCombat.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormDiplomacyAudiency.resx">
+      <DependentUpon>FormDiplomacyAudiency.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDiplomacyRelations.resx">
+      <DependentUpon>FormDiplomacyRelations.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -403,6 +421,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RelationsPlayerInfo.resx">
+      <DependentUpon>RelationsPlayerInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ReportItem.resx">
       <DependentUpon>ReportItem.cs</DependentUpon>
     </EmbeddedResource>

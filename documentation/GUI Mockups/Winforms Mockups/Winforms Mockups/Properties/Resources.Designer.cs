@@ -213,6 +213,16 @@ namespace Winforms_Mockups.Properties {
 		/// <summary>
 		///   Looks up a localized resource of type System.Drawing.Bitmap.
 		/// </summary>
+		internal static System.Drawing.Bitmap message {
+			get {
+				object obj = ResourceManager.GetObject("message", resourceCulture);
+				return ((System.Drawing.Bitmap)(obj));
+			}
+		}
+		
+		/// <summary>
+		///   Looks up a localized resource of type System.Drawing.Bitmap.
+		/// </summary>
 		internal static System.Drawing.Bitmap metalic {
 			get {
 				object obj = ResourceManager.GetObject("metalic", resourceCulture);
