@@ -424,5 +424,15 @@ namespace Stareater.Controllers
 			}
 		}
 		#endregion
+		
+		#region Diplomacy related
+		public IEnumerable<ContactInfo> DiplomaticContacts()
+		{
+			var game = this.gameInstance;
+			foreach(var player in game.MainPlayers)
+				if (player != this.PlayerInstance(game))
+					yield return new ContactInfo();
+		}
+		#endregion
 	}
 }

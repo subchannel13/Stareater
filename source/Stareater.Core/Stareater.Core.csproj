@@ -86,6 +86,7 @@
     <Compile Include="Controllers\Views\Combat\CombatantInfo.cs" />
     <Compile Include="Controllers\Views\Combat\CombatPlanetInfo.cs" />
     <Compile Include="Controllers\Views\ConstructableItem.cs" />
+    <Compile Include="Controllers\Views\ContactInfo.cs" />
     <Compile Include="Controllers\Views\DevelopmentFocusInfo.cs" />
     <Compile Include="Controllers\Views\FoundGalaxyObject.cs" />
     <Compile Include="Controllers\Views\GalaxyObjectType.cs" />
