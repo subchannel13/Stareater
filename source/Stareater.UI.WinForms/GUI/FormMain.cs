@@ -157,6 +157,12 @@ namespace Stareater.GUI
 				form.ShowDialog();
 		}
 		
+		void diplomacyToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using(var form = new FormRelations(this.currentPlayer))
+				form.ShowDialog();
+		}
+		
 		private void colonizationToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using(var form = new FormColonization(this.currentPlayer))

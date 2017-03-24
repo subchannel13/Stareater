@@ -54,6 +54,7 @@
 			this.unitDoneAction = new System.Windows.Forms.Button();
 			this.abilityList = new System.Windows.Forms.FlowLayoutPanel();
 			this.workaroundForWinformsAnchorBug = new System.Windows.Forms.Panel();
+			this.diplomacyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip.SuspendLayout();
 			this.fleetPanel.SuspendLayout();
 			this.unitInfoPanel.SuspendLayout();
@@ -99,6 +100,7 @@
 			this.designsToolStripMenuItem,
 			this.developmentToolStripMenuItem,
 			this.researchToolStripMenuItem,
+			this.diplomacyToolStripMenuItem,
 			this.colonizationToolStripMenuItem,
 			this.reportsToolStripMenuItem,
 			this.libraryToolStripMenuItem});
@@ -310,6 +312,13 @@
 			this.workaroundForWinformsAnchorBug.Size = new System.Drawing.Size(884, 538);
 			this.workaroundForWinformsAnchorBug.TabIndex = 9;
 			// 
+			// diplomacyToolStripMenuItem
+			// 
+			this.diplomacyToolStripMenuItem.Name = "diplomacyToolStripMenuItem";
+			this.diplomacyToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
+			this.diplomacyToolStripMenuItem.Text = "Diplomacy";
+			this.diplomacyToolStripMenuItem.Click += new System.EventHandler(this.diplomacyToolStripMenuItem_Click);
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -362,5 +371,6 @@
 		private System.Windows.Forms.FlowLayoutPanel abilityList;
 		private System.Windows.Forms.ToolStripMenuItem libraryToolStripMenuItem;
 		private System.Windows.Forms.Panel workaroundForWinformsAnchorBug;
+		private System.Windows.Forms.ToolStripMenuItem diplomacyToolStripMenuItem;
 	}
 }
