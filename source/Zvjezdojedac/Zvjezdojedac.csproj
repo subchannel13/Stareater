@@ -105,9 +105,6 @@
     <Compile Include="GUI\CombatantPositions.Designer.cs">
       <DependentUpon>CombatantPositions.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ControlListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="GUI\FormPlaneti.cs">
       <SubType>Form</SubType>
     </Compile>
