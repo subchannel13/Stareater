@@ -431,7 +431,7 @@ namespace Stareater.Controllers
 			var game = this.gameInstance;
 			foreach(var player in game.MainPlayers)
 				if (player != this.PlayerInstance(game))
-					yield return new ContactInfo();
+					yield return new ContactInfo(player);
 		}
 		#endregion
 	}
