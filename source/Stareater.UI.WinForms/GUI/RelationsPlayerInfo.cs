@@ -20,5 +20,20 @@ namespace Stareater.GUI
 			this.playerName.Text = contact.Player.Name;
 			this.playerColor.BackColor = contact.Player.Color;
 		}
+
+		private void playerName_Click(object sender, EventArgs e)
+		{
+			this.InvokeOnClick(this, e);
+		}
+
+		private void playerColor_Click(object sender, EventArgs e)
+		{
+			this.InvokeOnClick(this, e);
+		}
+
+		private void treatyList_Click(object sender, EventArgs e)
+		{
+			this.InvokeOnClick(this, e);
+		}
 	}
 }

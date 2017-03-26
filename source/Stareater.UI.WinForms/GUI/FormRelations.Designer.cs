@@ -44,13 +44,14 @@ namespace Stareater.GUI
 			// 
 			// playerList
 			// 
-			this.playerList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)));
+			this.playerList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.playerList.Location = new System.Drawing.Point(12, 12);
 			this.playerList.Name = "playerList";
 			this.playerList.SelectedIndex = -1;
 			this.playerList.Size = new System.Drawing.Size(350, 267);
 			this.playerList.TabIndex = 0;
+			this.playerList.SelectedIndexChanged += new System.EventHandler(this.playerList_SelectedIndexChanged);
 			// 
 			// audienceAction
 			// 

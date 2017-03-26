@@ -53,6 +53,7 @@ namespace Stareater.GUI
 			this.playerColor.Size = new System.Drawing.Size(33, 33);
 			this.playerColor.TabIndex = 0;
 			this.playerColor.TabStop = false;
+			this.playerColor.Click += new System.EventHandler(this.playerColor_Click);
 			// 
 			// playerName
 			// 
@@ -61,6 +62,7 @@ namespace Stareater.GUI
 			this.playerName.Size = new System.Drawing.Size(114, 32);
 			this.playerName.TabIndex = 1;
 			this.playerName.Text = "label1";
+			this.playerName.Click += new System.EventHandler(this.playerName_Click);
 			// 
 			// treatyList
 			// 
@@ -70,6 +72,7 @@ namespace Stareater.GUI
 			this.treatyList.Name = "treatyList";
 			this.treatyList.Size = new System.Drawing.Size(154, 75);
 			this.treatyList.TabIndex = 2;
+			this.treatyList.Click += new System.EventHandler(this.treatyList_Click);
 			// 
 			// RelationsPlayerInfo
 			// 

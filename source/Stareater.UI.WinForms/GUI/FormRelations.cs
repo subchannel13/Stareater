@@ -39,5 +39,10 @@ namespace Stareater.GUI
 				this.Close();
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
+
+		private void playerList_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			this.audienceAction.Visible = true;
+		}
 	}
 }

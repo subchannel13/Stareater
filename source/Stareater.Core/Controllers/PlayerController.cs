@@ -433,6 +433,11 @@ namespace Stareater.Controllers
 				if (player != this.PlayerInstance(game))
 					yield return new ContactInfo(player);
 		}
+
+		public bool IsAudienceRequested(ContactInfo contact)
+		{
+			return false;
+		}
 		#endregion
 	}
 }
