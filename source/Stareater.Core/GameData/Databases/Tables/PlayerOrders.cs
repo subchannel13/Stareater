@@ -20,6 +20,7 @@ namespace Stareater.GameData.Databases.Tables
 		public Dictionary<Vector2D, HashSet<Fleet>> ShipOrders { get; set; }
 		public Dictionary<Planet, ColonizationPlan> ColonizationOrders { get; set; }
 		public Dictionary<Design, Design> RefitOrders { get; set; }
+		public HashSet<int> AudienceRequests { get; private set; }
 
 		public PlayerOrders() 
 		{
@@ -30,6 +31,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.ShipOrders = new Dictionary<Vector2D, HashSet<Fleet>>();
 			this.ColonizationOrders = new Dictionary<Planet, ColonizationPlan>();
 			this.RefitOrders = new Dictionary<Design, Design>();
+			this.AudienceRequests = new HashSet<int>();
  
 			 
 		} 
@@ -53,6 +55,9 @@ namespace Stareater.GameData.Databases.Tables
 			this.RefitOrders = new Dictionary<Design, Design>();
 			foreach(var item in original.RefitOrders)
 				this.RefitOrders.Add(playersRemap.Designs[item.Key], copyRefitTo(item.Value, playersRemap));
+			this.AudienceRequests = new HashSet<int>();
+			foreach(var item in original.AudienceRequests)
+				this.AudienceRequests.Add(item);
  
 			 
 		}
@@ -79,6 +84,11 @@ namespace Stareater.GameData.Databases.Tables
 
 			var refitOrdersSave = rawData[RefitOrdersKey];
 			this.RefitOrders = loadRefitOrders(refitOrdersSave, deindexer);
+
+			var audienceRequestsSave = rawData[AudienceRequestsKey];
+			this.AudienceRequests = new HashSet<int>();
+			foreach(var item in audienceRequestsSave.To<IkonArray>())
+				this.AudienceRequests.Add(item.To<int>());
  
 			 
 		}
@@ -107,6 +117,11 @@ namespace Stareater.GameData.Databases.Tables
 			data.Add(ColonizationOrdersKey, saveColonizationOrders(indexer));
 
 			data.Add(RefitOrdersKey, saveRefitOrders(indexer));
+
+			var audienceRequestsData = new IkonArray();
+			foreach(var item in this.AudienceRequests)
+				audienceRequestsData.Add(new IkonInteger(item));
+			data.Add(AudienceRequestsKey, audienceRequestsData);
 			return data;
  
 		}
@@ -142,6 +157,7 @@ namespace Stareater.GameData.Databases.Tables
 		private const string RefitOrdersTag = "refitOrders";
 		private const string FromDesignKey = "from";
 		private const string ToDesignKey = "to";
+		private const string AudienceRequestsKey = "audienceRequests";
  
 		#endregion
 

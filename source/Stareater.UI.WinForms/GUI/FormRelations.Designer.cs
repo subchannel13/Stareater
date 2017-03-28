@@ -44,8 +44,8 @@ namespace Stareater.GUI
 			// 
 			// playerList
 			// 
-			this.playerList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+			this.playerList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)));
 			this.playerList.Location = new System.Drawing.Point(12, 12);
 			this.playerList.Name = "playerList";
 			this.playerList.SelectedIndex = -1;
@@ -64,6 +64,7 @@ namespace Stareater.GUI
 			this.audienceAction.Text = "button1";
 			this.audienceAction.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.audienceAction.UseVisualStyleBackColor = true;
+			this.audienceAction.Click += new System.EventHandler(this.audienceAction_Click);
 			// 
 			// FormRelations
 			// 

@@ -415,7 +415,8 @@ namespace Stareater.Controllers
 		#region Report related
 		public IEnumerable<IReportInfo> Reports
 		{
-			get {
+			get 
+			{
 				var game = this.gameInstance;
 				var wrapper = new ReportWrapper();
 
@@ -436,7 +437,30 @@ namespace Stareater.Controllers
 
 		public bool IsAudienceRequested(ContactInfo contact)
 		{
-			return false;
+			var game = this.gameInstance;
+			var contactIndex = Array.IndexOf(game.MainPlayers, contact.PlayerData);
+			
+			return this.PlayerInstance(game).Orders.AudienceRequests.Contains(contactIndex);
+		}
+		
+		public void RequestAudience(ContactInfo contact)
+		{
+			var game = this.gameInstance;
+			if (game.IsReadOnly)
+				return;
+			
+			var contactIndex = Array.IndexOf(game.MainPlayers, contact.PlayerData);
+			this.PlayerInstance(game).Orders.AudienceRequests.Add(contactIndex);
+		}
+		
+		public void CancelAudience(ContactInfo contact)
+		{
+			var game = this.gameInstance;
+			if (game.IsReadOnly)
+				return;
+			
+			var contactIndex = Array.IndexOf(game.MainPlayers, contact.PlayerData);
+			this.PlayerInstance(game).Orders.AudienceRequests.Remove(contactIndex);
 		}
 		#endregion
 	}

@@ -32,6 +32,9 @@
 		new DataInfo("RefitOrders", "Dictionary", 
 			new GenericParamInfo("Design").SaveKey("FromDesignKey", "from"),
 			new GenericParamInfo("Design").SaveKey("ToDesignKey", "to").CopyWith("copyRefitTo", Flag.PlayerRemap)
-		).Public().EmptyInit().SaveAssign("saveRefitOrders(indexer)").LoadCode("loadRefitOrders(" + SaveName + ", deindexer)")
+		).Public().EmptyInit().SaveAssign("saveRefitOrders(indexer)").LoadCode("loadRefitOrders(" + SaveName + ", deindexer)"),
+		new DataInfo("AudienceRequests", "HashSet",
+			new GenericParamInfo("int")
+		).EmptyInit()
 	);
 #>

@@ -40,9 +40,38 @@ namespace Stareater.GUI
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
 
+		private void updateAudienceButton()
+		{
+			this.audienceAction.Visible = playerList.HasSelection;
+			
+			if (!playerList.HasSelection)
+				return;
+			
+			var context = LocalizationManifest.Get.CurrentLanguage["FormRelations"];
+			var contact = (playerList.SelectedItem as RelationsPlayerInfo).Data;
+			
+			this.audienceAction.Text = this.controller.IsAudienceRequested(contact) ?
+				context["cancelAudience"].Text() :
+				context["audience"].Text();
+		}
+		
 		private void playerList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			this.audienceAction.Visible = true;
+			updateAudienceButton();
+		}
+
+		private void audienceAction_Click(object sender, EventArgs e)
+		{
+			if (!playerList.HasSelection)
+				return;
+
+			var contact = (playerList.SelectedItem as RelationsPlayerInfo).Data;
+			if (this.controller.IsAudienceRequested(contact))
+				this.controller.CancelAudience(contact);
+			else
+				this.controller.RequestAudience(contact);
+			
+			updateAudienceButton();
 		}
 	}
 }
