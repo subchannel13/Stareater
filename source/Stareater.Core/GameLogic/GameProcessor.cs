@@ -14,6 +14,7 @@ namespace Stareater.GameLogic
 		private readonly MainGame game;
 		private readonly List<FleetMovement> fleetMovement = new List<FleetMovement>();
 		private readonly Queue<SpaceBattleGame> conflicts = new Queue<SpaceBattleGame>();
+		private readonly Queue<object> audiences = new Queue<object>();
 
 		public GameProcessor(MainGame game)
 		{
@@ -128,7 +129,7 @@ namespace Stareater.GameLogic
 		#endregion
 		
 		#region Conflict cycling
-		public bool HasConflicts
+		public bool HasConflict
 		{
 			get
 			{
@@ -154,7 +155,18 @@ namespace Stareater.GameLogic
 			}
 		}
 		#endregion
-		
+
+		#region Diplomacy
+		public bool HasAudience 
+		{
+			get
+			{
+				return this.audiences.Count != 0;
+			}
+		}
+
+		#endregion
+
 		private void commitFleetOrders()
 		{
 			foreach (var player in this.game.AllPlayers)

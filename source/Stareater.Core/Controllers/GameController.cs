@@ -167,7 +167,13 @@ namespace Stareater.Controllers
 		{
 			gameObj.Processor.ProcessPrecombat();
 
-			while (gameObj.Processor.HasConflicts)
+			while (gameObj.Processor.HasAudience)
+			{
+				processingSync.WaitOne(); //TODO(v0.6) try blocking only participants
+				this.holdAudience();
+			}
+
+			while (gameObj.Processor.HasConflict)
 			{
 				processingSync.WaitOne(); //TODO(v0.6) try blocking only participants
 				this.initaiteCombat();
@@ -199,12 +205,17 @@ namespace Stareater.Controllers
  				restartAiGalaxyPhase();
 			}
 		}
-		
+
 		private void restartAiGalaxyPhase()
 		{
 			this.aiGalaxyPhase = Task.Factory.StartNew(aiDoGalaxyPhase).ContinueWith(checkTaskException);
 		}
 
+		private void holdAudience()
+		{
+			processingSync.Set();
+		}
+		
 		private void initaiteCombat()
 		{
 			var conflict = gameObj.Processor.NextConflict();
