@@ -42,7 +42,9 @@ namespace Stareater.GUI
 			this.playerColor = new System.Windows.Forms.PictureBox();
 			this.playerName = new System.Windows.Forms.Label();
 			this.treatyList = new System.Windows.Forms.FlowLayoutPanel();
+			this.audienceRequest = new Stareater.GUI.TreatyInfo();
 			((System.ComponentModel.ISupportInitialize)(this.playerColor)).BeginInit();
+			this.treatyList.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// playerColor
@@ -67,12 +69,22 @@ namespace Stareater.GUI
 			// treatyList
 			// 
 			this.treatyList.AutoScroll = true;
+			this.treatyList.Controls.Add(this.audienceRequest);
 			this.treatyList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
 			this.treatyList.Location = new System.Drawing.Point(3, 42);
 			this.treatyList.Name = "treatyList";
 			this.treatyList.Size = new System.Drawing.Size(154, 75);
 			this.treatyList.TabIndex = 2;
 			this.treatyList.Click += new System.EventHandler(this.treatyList_Click);
+			// 
+			// audienceRequest
+			// 
+			this.audienceRequest.Location = new System.Drawing.Point(0, 3);
+			this.audienceRequest.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+			this.audienceRequest.Name = "audienceRequest";
+			this.audienceRequest.Size = new System.Drawing.Size(135, 20);
+			this.audienceRequest.TabIndex = 0;
+			this.audienceRequest.Visible = false;
 			// 
 			// RelationsPlayerInfo
 			// 
@@ -85,8 +97,11 @@ namespace Stareater.GUI
 			this.Name = "RelationsPlayerInfo";
 			this.Size = new System.Drawing.Size(160, 120);
 			((System.ComponentModel.ISupportInitialize)(this.playerColor)).EndInit();
+			this.treatyList.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
+
+		private TreatyInfo audienceRequest;
 	}
 }

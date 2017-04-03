@@ -28,6 +28,7 @@ namespace Stareater.GUI
 			{
 				var contactControl = new RelationsPlayerInfo();
 				contactControl.SetData(contact);
+				contactControl.RequestedAudience(this.controller.IsAudienceRequested(contact));
 				playerList.Controls.Add(contactControl);
 			}
 			playerList.ResumeLayout();
@@ -65,12 +66,14 @@ namespace Stareater.GUI
 			if (!playerList.HasSelection)
 				return;
 
-			var contact = (playerList.SelectedItem as RelationsPlayerInfo).Data;
+			var contactView = playerList.SelectedItem as RelationsPlayerInfo;
+			var contact = contactView.Data;
 			if (this.controller.IsAudienceRequested(contact))
 				this.controller.CancelAudience(contact);
 			else
 				this.controller.RequestAudience(contact);
 			
+			contactView.RequestedAudience(this.controller.IsAudienceRequested(contact));
 			updateAudienceButton();
 		}
 	}
