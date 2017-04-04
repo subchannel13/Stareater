@@ -70,6 +70,7 @@
     <Compile Include="AppData\Expressions\Variable.cs" />
     <Compile Include="AppData\LastGameInfo.cs" />
     <Compile Include="Controllers\AConstructionSiteController.cs" />
+    <Compile Include="Controllers\AudienceController.cs" />
     <Compile Include="Controllers\ColonyController.cs" />
     <Compile Include="Controllers\ColonizationController.cs" />
     <Compile Include="Controllers\Data\ColonizerFinder.cs" />

@@ -130,6 +130,11 @@ namespace Stareater.Controllers
 			this.processingPhase = Task.Factory.StartNew(turnProcessing).ContinueWith(checkTaskException);
 		}
 
+		public void AudienceConcluded(AudienceController audienceController)
+		{
+			processingSync.Set();
+		}
+		
 		internal void ConflictResolved(SpaceBattleGame battleGame)
 		{
 			this.gameObj.Processor.ConflictResolved(battleGame);
@@ -213,7 +218,10 @@ namespace Stareater.Controllers
 
 		private void holdAudience()
 		{
-			processingSync.Set();
+			var controller = new AudienceController(this);
+			
+			//TODO(v0.6) inform participants about audience
+			controller.Done();
 		}
 		
 		private void initaiteCombat()
