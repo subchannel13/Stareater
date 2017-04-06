@@ -477,6 +477,12 @@ namespace Stareater.GUI
 		
 		
 		#region IGameStateListener implementation
+		public void OnDoAudience(AudienceController controller)
+		{
+			System.Diagnostics.Trace.WriteLine("Audience held");
+			controller.Done();
+		}
+		
 		public IBattleEventListener OnDoCombat(SpaceBattleController battleController)
 		{
 			if (this.InvokeRequired)

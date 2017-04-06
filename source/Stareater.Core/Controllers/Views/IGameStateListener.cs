@@ -10,6 +10,7 @@ namespace Stareater.Controllers.Views
 	/// </remarks>
 	public interface IGameStateListener
 	{
+		void OnDoAudience(AudienceController controller);
 		IBattleEventListener OnDoCombat(SpaceBattleController battleController);
 		
 		void OnNewTurn();

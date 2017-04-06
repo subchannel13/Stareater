@@ -132,6 +132,7 @@ namespace Stareater.Controllers
 
 		public void AudienceConcluded(AudienceController audienceController)
 		{
+			this.gameObj.Processor.AudienceOver();
 			processingSync.Set();
 		}
 		
@@ -220,8 +221,8 @@ namespace Stareater.Controllers
 		{
 			var controller = new AudienceController(this);
 			
-			//TODO(v0.6) inform participants about audience
-			controller.Done();
+			this.stateListener.OnDoAudience(controller);
+			//TODO(v0.6) inform AIs				
 		}
 		
 		private void initaiteCombat()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.GameData;
+using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
 using Stareater.Galaxy;
@@ -14,7 +15,7 @@ namespace Stareater.GameLogic
 		private readonly MainGame game;
 		private readonly List<FleetMovement> fleetMovement = new List<FleetMovement>();
 		private readonly Queue<SpaceBattleGame> conflicts = new Queue<SpaceBattleGame>();
-		private readonly Queue<object> audiences = new Queue<object>();
+		private readonly Queue<Player[]> audiences = new Queue<Player[]>();
 
 		public GameProcessor(MainGame game)
 		{
@@ -50,6 +51,7 @@ namespace Stareater.GameLogic
 			
 			this.moveShips();
 			this.detectConflicts();
+			this.enqueueAudiences();
 		}
 
 		public void ProcessPostcombat()
@@ -165,6 +167,10 @@ namespace Stareater.GameLogic
 			}
 		}
 
+		public void AudienceOver()
+		{
+			this.audiences.Dequeue();
+		}
 		#endregion
 
 		private void commitFleetOrders()
@@ -421,6 +427,13 @@ namespace Stareater.GameLogic
 			}
 		}
 
+		private void enqueueAudiences()
+		{
+			foreach(var player in this.game.MainPlayers)
+				foreach(var audience in player.Orders.AudienceRequests)
+					this.audiences.Enqueue(new [] { player, this.game.MainPlayers[audience] }); //TODO(v0.6) eliminate duplicates
+		}
+		
 		private void mergeFleets()
 		{
 			var filter = new InvalidMissionVisitor(this.game);
