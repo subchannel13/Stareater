@@ -2,6 +2,6 @@
 FormTitle = Relations
 
 audience = Audience
-audienceRequested = Requested audience
+audienceRequested = Audience
 cancelAudience = Cancel audience
 -

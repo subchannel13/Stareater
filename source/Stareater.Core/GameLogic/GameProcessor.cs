@@ -167,7 +167,7 @@ namespace Stareater.GameLogic
 			}
 		}
 
-		public void AudienceOver()
+		public void NextAudience()
 		{
 			this.audiences.Dequeue();
 		}

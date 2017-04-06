@@ -479,10 +479,16 @@ namespace Stareater.GUI
 		#region IGameStateListener implementation
 		public void OnDoAudience(AudienceController controller)
 		{
-			System.Diagnostics.Trace.WriteLine("Audience held");
-			controller.Done();
+			if (this.InvokeRequired)
+			{
+				this.BeginInvoke(new Action<AudienceController>(OnDoAudience), controller);
+				return;
+			}
+			
+			using(var form = new FormAudience(controller))
+				form.ShowDialog();
 		}
-		
+
 		public IBattleEventListener OnDoCombat(SpaceBattleController battleController)
 		{
 			if (this.InvokeRequired)
@@ -490,7 +496,7 @@ namespace Stareater.GUI
 			
 			return this;
 		}
-		
+
 		public void OnGameOver()
 		{
 			if (this.InvokeRequired) {
@@ -505,7 +511,7 @@ namespace Stareater.GUI
 			unitInfoPanel.Visible = false;
 			menuStrip.Visible = true;
 		}
-		
+
 		public void OnNewTurn()
 		{
 			if (this.InvokeRequired) {
@@ -529,7 +535,7 @@ namespace Stareater.GUI
 			if (galaxyRenderer != null) galaxyRenderer.OnNewTurn();
 			if (systemRenderer != null) systemRenderer.OnNewTurn();
 		}
-		
+
 		public void OnResearchComplete(ResearchCompleteController controller)
 		{
 			if (this.InvokeRequired)
@@ -541,7 +547,7 @@ namespace Stareater.GUI
 			using(var form = new FormResearchComplete(controller))
 				form.ShowDialog();
 		}
-		
+
 		private void initCombatGui(SpaceBattleController battleController)
 		{
 			this.conflictController = battleController;

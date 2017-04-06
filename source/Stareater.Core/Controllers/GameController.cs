@@ -132,7 +132,6 @@ namespace Stareater.Controllers
 
 		public void AudienceConcluded(AudienceController audienceController)
 		{
-			this.gameObj.Processor.AudienceOver();
 			processingSync.Set();
 		}
 		
@@ -219,6 +218,7 @@ namespace Stareater.Controllers
 
 		private void holdAudience()
 		{
+			gameObj.Processor.NextAudience();
 			var controller = new AudienceController(this);
 			
 			this.stateListener.OnDoAudience(controller);

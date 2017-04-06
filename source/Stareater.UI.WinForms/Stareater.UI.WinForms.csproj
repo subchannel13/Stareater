@@ -182,6 +182,10 @@
     <Compile Include="GUI\ControlListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GUI\FormAudience.cs" />
+    <Compile Include="GUI\FormAudience.Designer.cs">
+      <DependentUpon>FormAudience.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\FormRelations.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -464,6 +468,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ConstructionSiteView.resx">
       <DependentUpon>ConstructionSiteView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FormAudience.resx">
+      <DependentUpon>FormAudience.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormRelations.resx">
       <DependentUpon>FormRelations.cs</DependentUpon>
