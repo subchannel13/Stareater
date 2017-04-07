@@ -1,3 +1,5 @@
 ﻿:FormAudience
 FormTitle = Audience
+
+endButton = End audience
 -

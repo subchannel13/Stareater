@@ -167,9 +167,9 @@ namespace Stareater.GameLogic
 			}
 		}
 
-		public void NextAudience()
+		public Player[] NextAudience()
 		{
-			this.audiences.Dequeue();
+			return this.audiences.Dequeue();
 		}
 		#endregion
 

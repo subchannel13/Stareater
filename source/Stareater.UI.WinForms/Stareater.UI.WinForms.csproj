@@ -199,6 +199,10 @@
       <DependentUpon>FormResearchComplete.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\ParametarUiVisitor.cs" />
+    <Compile Include="GUI\PlayerView.cs" />
+    <Compile Include="GUI\PlayerView.Designer.cs">
+      <DependentUpon>PlayerView.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\RelationsPlayerInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -477,6 +481,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormResearchComplete.resx">
       <DependentUpon>FormResearchComplete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PlayerView.resx">
+      <DependentUpon>PlayerView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\RelationsPlayerInfo.resx">
       <DependentUpon>RelationsPlayerInfo.cs</DependentUpon>

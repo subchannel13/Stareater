@@ -218,8 +218,8 @@ namespace Stareater.Controllers
 
 		private void holdAudience()
 		{
-			gameObj.Processor.NextAudience();
-			var controller = new AudienceController(this);
+			var participants = gameObj.Processor.NextAudience();
+			var controller = new AudienceController(this, participants);
 			
 			this.stateListener.OnDoAudience(controller);
 			//TODO(v0.6) inform AIs				
