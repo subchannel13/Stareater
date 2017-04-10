@@ -213,6 +213,7 @@
     <Compile Include="GameData\Ships\IAbilityVisitor.cs" />
     <Compile Include="GameData\Ships\MissionEquipmentType.cs" />
     <Compile Include="GameData\Ships\StarShootAbility.cs" />
+    <Compile Include="GameData\Treaty.cs" />
     <Compile Include="GameLogic\AbilityStatsFactory.cs" />
     <Compile Include="GameLogic\AbilityStats.cs" />
     <Compile Include="GameLogic\IConstructionVisitor.cs" />

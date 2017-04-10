@@ -19,6 +19,7 @@ namespace Stareater.GUI
 		private System.Windows.Forms.FlowLayoutPanel treatyList;
 		private Stareater.GUI.TreatyInfo audienceRequest;
 		private System.Windows.Forms.Button endAudienceAction;
+		private System.Windows.Forms.Button warAction;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -46,6 +47,7 @@ namespace Stareater.GUI
 			this.treatyList = new System.Windows.Forms.FlowLayoutPanel();
 			this.audienceRequest = new Stareater.GUI.TreatyInfo();
 			this.endAudienceAction = new System.Windows.Forms.Button();
+			this.warAction = new System.Windows.Forms.Button();
 			this.treatyList.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -93,11 +95,22 @@ namespace Stareater.GUI
 			this.endAudienceAction.UseVisualStyleBackColor = true;
 			this.endAudienceAction.Click += new System.EventHandler(this.endAudienceAction_Click);
 			// 
+			// warAction
+			// 
+			this.warAction.Location = new System.Drawing.Point(12, 170);
+			this.warAction.Name = "warAction";
+			this.warAction.Size = new System.Drawing.Size(75, 30);
+			this.warAction.TabIndex = 5;
+			this.warAction.Text = "button1";
+			this.warAction.UseVisualStyleBackColor = true;
+			this.warAction.Click += new System.EventHandler(this.warAction_Click);
+			// 
 			// FormAudience
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(434, 262);
+			this.Controls.Add(this.warAction);
 			this.Controls.Add(this.endAudienceAction);
 			this.Controls.Add(this.treatyList);
 			this.Controls.Add(this.player2View);

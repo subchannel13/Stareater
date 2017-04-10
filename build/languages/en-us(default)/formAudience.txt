@@ -2,4 +2,6 @@
 FormTitle = Audience
 
 endButton = End audience
+declareWar = Declare war
+declarePeace = Offer peace
 -

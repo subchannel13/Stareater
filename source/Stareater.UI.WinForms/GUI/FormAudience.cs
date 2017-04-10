@@ -25,8 +25,18 @@ namespace Stareater.GUI
 			
 			player1View.SetData(this.controller.Participant1);
 			player2View.SetData(this.controller.Participant2);
+			
+			updateTreaties();
 		}
-		
+
+		private void updateTreaties()
+		{
+			var context = LocalizationManifest.Get.CurrentLanguage["FormAudience"];
+			
+			this.warAction.Text = context[this.controller.IsAtWar ? "declarePeace" : "declareWar"].Text();
+			//TODO(v0.6) update treaty list
+		}
+
 		private void formAudience_FormClosed(object sender, FormClosedEventArgs e)
 		{
 			controller.Done();
@@ -35,6 +45,16 @@ namespace Stareater.GUI
 		private void endAudienceAction_Click(object sender, EventArgs e)
 		{
 			this.Close();
+		}
+
+		private void warAction_Click(object sender, EventArgs e)
+		{
+			if (this.controller.IsAtWar)
+				this.controller.DeclearePeace();
+			else
+				this.controller.DecleareWar();
+
+			updateTreaties();
 		}
 	}
 }
