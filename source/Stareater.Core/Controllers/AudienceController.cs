@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Stareater.Controllers.Views;
 using Stareater.GameData;
 using Stareater.Players;
@@ -9,14 +10,17 @@ namespace Stareater.Controllers
 	public class AudienceController
 	{
 		private readonly GameController gameController;
-		private readonly Player[] participants;
-		private readonly HashSet<Treaty> treaties = new HashSet<Treaty>();
-		
-		internal AudienceController(GameController gameController, Player[] participants)
+		internal readonly Player[] Participants;
+		internal readonly HashSet<Treaty> Treaties = new HashSet<Treaty>();
+
+		internal AudienceController(Player[] participants, GameController gameController, MainGame gameObj)
 		{
 			this.gameController = gameController;
-			this.participants = participants;
-			//TODO(v0.6) fetch treaties between parties
+			this.Participants = participants;
+
+			//TODO(later) make fetching with array simpler
+			foreach(var treaty in gameObj.States.Treaties.Of[participants[0]].Where(x => x.Party2 == participants[1]))
+				Treaties.Add(treaty);
 		}
 		
 		public void Done()
@@ -26,29 +30,29 @@ namespace Stareater.Controllers
 
 		public PlayerInfo Participant1 
 		{
-			get { return new PlayerInfo(this.participants[0]); }
+			get { return new PlayerInfo(this.Participants[0]); }
 		}
 
 		public PlayerInfo Participant2 
 		{
-			get { return new PlayerInfo(this.participants[1]); }
+			get { return new PlayerInfo(this.Participants[1]); }
 		}
 
 		public bool IsAtWar 
 		{
-			get { return this.treaties.Count != 0; }
+			get { return this.Treaties.Count != 0; }
 		}
 
 		public void DecleareWar()
 		{
 			if (!this.IsAtWar)
-				this.treaties.Add(new Treaty(this.participants[0], this.participants[1]));
+				this.Treaties.Add(new Treaty(this.Participants[0], this.Participants[1]));
 		}
 
 		public void DeclearePeace()
 		{
 			if (this.IsAtWar)
-				this.treaties.Clear();
+				this.Treaties.Clear();
 		}
 	}
 }

@@ -96,7 +96,7 @@ namespace Stareater.Controllers
 			var researchAdvances = createResearchAdvances(players, statics.ResearchTopics);
 
 			return new StatesDB(stars, wormholes, planets, colonies, stellarises, developmentAdvances, researchAdvances,
-			                    new ReportCollection(), new DesignCollection(), new FleetCollection(),
+			                    new TreatyCollection(), new ReportCollection(), new DesignCollection(), new FleetCollection(),
 			                    new ColonizationCollection());
 		}
 		
@@ -271,6 +271,10 @@ namespace Stareater.Controllers
 			foreach (var rawData in stateData[StatesDB.ResearchAdvancesKey].To<IEnumerable<IkonComposite>>())
 				research.Add(ResearchProgress.Load(rawData, deindexer));
 			
+			var treaties = new TreatyCollection();
+			foreach (var rawData in stateData[StatesDB.TreatiesKey].To<IEnumerable<IkonComposite>>())
+				treaties.Add(Treaty.Load(rawData, deindexer));
+				
 			var reports = new ReportCollection();
 			foreach(var rawData in stateData[StatesDB.ReportsKey].To<IEnumerable<IkonComposite>>())
 				reports.Add(ReportFactory.Load(rawData, deindexer));
@@ -304,7 +308,7 @@ namespace Stareater.Controllers
 			organellePlayer.Orders = PlayerOrders.Load(saveData[MainGame.OrganelleOrdersKey].To<IkonComposite>(), deindexer);
 				                                  
 			return new Tuple<StatesDB, Player[], Player>(
-				new StatesDB(stars, wormholes, planets, colonies, stellarises, developments, research, reports, designs, fleets, colonizations),
+				new StatesDB(stars, wormholes, planets, colonies, stellarises, developments, research, treaties, reports, designs, fleets, colonizations),
 				players.ToArray(),
 				organellePlayer
 			);

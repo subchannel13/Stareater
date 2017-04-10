@@ -195,6 +195,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameData\Databases\Tables\TreatyCollection.cs" />
     <Compile Include="GameData\DevelopmentRequirement.cs" />
     <Compile Include="GameData\Reading\NoValue.cs" />
     <Compile Include="GameData\Reading\NoValueFactory.cs" />
@@ -213,7 +214,10 @@
     <Compile Include="GameData\Ships\IAbilityVisitor.cs" />
     <Compile Include="GameData\Ships\MissionEquipmentType.cs" />
     <Compile Include="GameData\Ships\StarShootAbility.cs" />
-    <Compile Include="GameData\Treaty.cs" />
+    <Compile Include="GameData\Treaty.cs">
+      <DependentUpon>Treaty.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="GameLogic\AbilityStatsFactory.cs" />
     <Compile Include="GameLogic\AbilityStats.cs" />
     <Compile Include="GameLogic\IConstructionVisitor.cs" />
@@ -546,6 +550,10 @@
     <None Include="GameData\DevelopmentProgress.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DevelopmentProgress.cs</LastGenOutput>
+    </None>
+    <None Include="GameData\Treaty.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Treaty.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="Players\Player.tt">

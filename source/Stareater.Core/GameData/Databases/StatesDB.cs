@@ -29,13 +29,15 @@ namespace Stareater.GameData.Databases
 		public ReportCollection Reports { get; private set; }
 		public DevelopmentProgressCollection DevelopmentAdvances { get; private set; }
 		public ResearchProgressCollection ResearchAdvances { get; private set; }
+		public TreatyCollection Treaties { get; private set; }
 		
 		private int nextDesignId = 0;
 		
 		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, 
 		                ColonyCollection Colonies, StellarisCollection stellarises,
-		                DevelopmentProgressCollection developmentAdvances, ResearchProgressCollection researchAdvances, 
-						ReportCollection reports, DesignCollection designs, FleetCollection fleets, ColonizationCollection colonizations)
+		                DevelopmentProgressCollection developmentAdvances, ResearchProgressCollection researchAdvances,
+						TreatyCollection treaties,ReportCollection reports, DesignCollection designs,
+						FleetCollection fleets, ColonizationCollection colonizations)
 		{
 			this.Colonies = Colonies;
 			this.Planets = planets;
@@ -47,7 +49,8 @@ namespace Stareater.GameData.Databases
 			this.Reports = reports;
 			this.Designs = designs;
 			this.Fleets = fleets;
-			this.ColonizationProjects = colonizations;			
+			this.ColonizationProjects = colonizations;
+			this.Treaties = treaties;
 		}
 
 		private StatesDB()
@@ -93,6 +96,9 @@ namespace Stareater.GameData.Databases
 
 			copy.ResearchAdvances = new ResearchProgressCollection();
 			copy.ResearchAdvances.Add(this.ResearchAdvances.Select(x => x.Copy(playersRemap)));
+			
+			copy.Treaties = new TreatyCollection();
+			copy.Treaties.Add(this.Treaties.Select(x => x.Copy(playersRemap)));
 			
 			return copy;
 		}
@@ -157,6 +163,7 @@ namespace Stareater.GameData.Databases
 			data.Add(ReportsKey, new IkonArray().AddAll(this.Reports.Select(x => x.Save(indexer))));
 			data.Add(DevelopmentAdvancesKey, new IkonArray().AddAll(this.DevelopmentAdvances.Select(x => x.Save(indexer))));
 			data.Add(ResearchAdvancesKey, new IkonArray().AddAll(this.ResearchAdvances.Select(x => x.Save(indexer))));
+			data.Add(TreatiesKey, new IkonArray().AddAll(this.Treaties.Select(x => x.Save(indexer))));
 						
 			return data;
 		}
@@ -172,6 +179,7 @@ namespace Stareater.GameData.Databases
 		public const string ResearchAdvancesKey = "researchAdvances";
 		public const string StarsKey = "stars";
 		public const string StellarisesKey = "stellarises";
+		public const string TreatiesKey = "treaties";
 		public const string WormholesKey = "wormholes";
 		#endregion
 		

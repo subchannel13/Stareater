@@ -171,6 +171,15 @@ namespace Stareater.GameLogic
 		{
 			return this.audiences.Dequeue();
 		}
+
+		public void AudienceConcluded(Player[] participants, HashSet<Treaty> treaties)
+		{
+			participants[0].Orders.AudienceRequests.Remove(Array.IndexOf(this.game.MainPlayers, participants[1]));
+			
+			foreach(var oldTreaty in this.game.States.Treaties.Of[participants[0]].Where(x => x.Party2 == participants[1]).ToList())
+				this.game.States.Treaties.Remove(oldTreaty);
+			this.game.States.Treaties.Add(treaties);
+		}
 		#endregion
 
 		private void commitFleetOrders()
@@ -430,8 +439,12 @@ namespace Stareater.GameLogic
 		private void enqueueAudiences()
 		{
 			foreach(var player in this.game.MainPlayers)
+			{
 				foreach(var audience in player.Orders.AudienceRequests)
 					this.audiences.Enqueue(new [] { player, this.game.MainPlayers[audience] }); //TODO(v0.6) eliminate duplicates
+				
+				player.Orders.AudienceRequests.Clear();
+			}
 		}
 		
 		private void mergeFleets()
