@@ -1,14 +1,6 @@
-﻿/*
- * Created by SharpDevelop.
- * User: ekraiva
- * Date: 30.3.2017.
- * Time: 14:24
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-namespace Stareater.GUI
+﻿namespace Stareater.GUI
 {
-	partial class TreatyInfo
+	partial class TreatyBriefView
 	{
 		/// <summary>
 		/// Designer variable used to keep track of non-visual components.

@@ -4,9 +4,9 @@ using System.Windows.Forms;
 
 namespace Stareater.GUI
 {
-	public partial class TreatyInfo : UserControl
+	public partial class TreatyBriefView : UserControl
 	{
-		public TreatyInfo()
+		public TreatyBriefView()
 		{
 			InitializeComponent();
 		}

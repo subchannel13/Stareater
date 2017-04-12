@@ -6,11 +6,11 @@ using Stareater.Properties;
 
 namespace Stareater.GUI
 {
-	public partial class RelationsPlayerInfo : UserControl
+	public partial class RelationsPlayerView : UserControl
 	{
 		public ContactInfo Data { get; private set; }
 
-		public RelationsPlayerInfo()
+		public RelationsPlayerView()
 		{
 			InitializeComponent();
 		}
@@ -23,6 +23,14 @@ namespace Stareater.GUI
 			this.playerColor.BackColor = contact.Player.Color;
 			
 			this.audienceRequest.SetData(Resources.message, LocalizationManifest.Get.CurrentLanguage["FormRelations"]["audienceRequested"].Text());
+			this.treatyList.SuspendLayout();
+			foreach(var treaty in contact.Treaties)
+			{
+				var control = new TreatyBriefView();
+				control.SetData(Resources.cancel, treaty.Name);
+				this.treatyList.Controls.Add(control);
+			}
+			this.treatyList.ResumeLayout();
 		}
 		
 		public void RequestedAudience(bool isRequested)

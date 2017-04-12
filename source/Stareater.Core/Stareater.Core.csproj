@@ -132,6 +132,7 @@
     <Compile Include="Controllers\StellarisAdminController.cs" />
     <Compile Include="Controllers\StarSystemController.cs" />
     <Compile Include="Controllers\Views\TraitInfo.cs" />
+    <Compile Include="Controllers\Views\TreatyInfo.cs" />
     <Compile Include="Galaxy\AConstructionSite.cs">
       <DependentUpon>AConstructionSite.tt</DependentUpon>
       <AutoGen>True</AutoGen>

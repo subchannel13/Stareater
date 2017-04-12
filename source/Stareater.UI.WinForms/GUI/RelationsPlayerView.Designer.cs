@@ -1,14 +1,6 @@
-﻿/*
- * Created by SharpDevelop.
- * User: ekraiva
- * Date: 24.3.2017.
- * Time: 15:41
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-namespace Stareater.GUI
+﻿namespace Stareater.GUI
 {
-	partial class RelationsPlayerInfo
+	partial class RelationsPlayerView
 	{
 		/// <summary>
 		/// Designer variable used to keep track of non-visual components.
@@ -42,7 +34,7 @@ namespace Stareater.GUI
 			this.playerColor = new System.Windows.Forms.PictureBox();
 			this.playerName = new System.Windows.Forms.Label();
 			this.treatyList = new System.Windows.Forms.FlowLayoutPanel();
-			this.audienceRequest = new Stareater.GUI.TreatyInfo();
+			this.audienceRequest = new Stareater.GUI.TreatyBriefView();
 			((System.ComponentModel.ISupportInitialize)(this.playerColor)).BeginInit();
 			this.treatyList.SuspendLayout();
 			this.SuspendLayout();
@@ -102,6 +94,6 @@ namespace Stareater.GUI
 
 		}
 
-		private TreatyInfo audienceRequest;
+		private TreatyBriefView audienceRequest;
 	}
 }

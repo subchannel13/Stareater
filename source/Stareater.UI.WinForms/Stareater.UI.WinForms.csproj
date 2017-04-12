@@ -203,11 +203,11 @@
     <Compile Include="GUI\PlayerView.Designer.cs">
       <DependentUpon>PlayerView.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\RelationsPlayerInfo.cs">
+    <Compile Include="GUI\RelationsPlayerView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\RelationsPlayerInfo.Designer.cs">
-      <DependentUpon>RelationsPlayerInfo.cs</DependentUpon>
+    <Compile Include="GUI\RelationsPlayerView.Designer.cs">
+      <DependentUpon>RelationsPlayerView.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\ResearchItem.cs">
       <SubType>UserControl</SubType>
@@ -445,11 +445,11 @@
     <Compile Include="GUI\DevelopmentItem.Designer.cs">
       <DependentUpon>DevelopmentItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\TreatyInfo.cs">
+    <Compile Include="GUI\TreatyBriefView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\TreatyInfo.Designer.cs">
-      <DependentUpon>TreatyInfo.cs</DependentUpon>
+    <Compile Include="GUI\TreatyBriefView.Designer.cs">
+      <DependentUpon>TreatyBriefView.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -485,8 +485,8 @@
     <EmbeddedResource Include="GUI\PlayerView.resx">
       <DependentUpon>PlayerView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\RelationsPlayerInfo.resx">
-      <DependentUpon>RelationsPlayerInfo.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\RelationsPlayerView.resx">
+      <DependentUpon>RelationsPlayerView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ResearchItem.resx">
       <DependentUpon>ResearchItem.cs</DependentUpon>
@@ -604,8 +604,8 @@
     <EmbeddedResource Include="GUI\DevelopmentItem.resx">
       <DependentUpon>DevelopmentItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\TreatyInfo.resx">
-      <DependentUpon>TreatyInfo.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\TreatyBriefView.resx">
+      <DependentUpon>TreatyBriefView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

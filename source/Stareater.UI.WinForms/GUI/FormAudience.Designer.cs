@@ -1,12 +1,4 @@
-﻿/*
- * Created by SharpDevelop.
- * User: ekraiva
- * Date: 6.4.2017.
- * Time: 12:06
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-namespace Stareater.GUI
+﻿namespace Stareater.GUI
 {
 	partial class FormAudience
 	{
@@ -17,7 +9,7 @@ namespace Stareater.GUI
 		private Stareater.GUI.PlayerView player1View;
 		private Stareater.GUI.PlayerView player2View;
 		private System.Windows.Forms.FlowLayoutPanel treatyList;
-		private Stareater.GUI.TreatyInfo audienceRequest;
+		private Stareater.GUI.TreatyBriefView audienceRequest;
 		private System.Windows.Forms.Button endAudienceAction;
 		private System.Windows.Forms.Button warAction;
 		
@@ -45,7 +37,7 @@ namespace Stareater.GUI
 			this.player1View = new Stareater.GUI.PlayerView();
 			this.player2View = new Stareater.GUI.PlayerView();
 			this.treatyList = new System.Windows.Forms.FlowLayoutPanel();
-			this.audienceRequest = new Stareater.GUI.TreatyInfo();
+			this.audienceRequest = new Stareater.GUI.TreatyBriefView();
 			this.endAudienceAction = new System.Windows.Forms.Button();
 			this.warAction = new System.Windows.Forms.Button();
 			this.treatyList.SuspendLayout();

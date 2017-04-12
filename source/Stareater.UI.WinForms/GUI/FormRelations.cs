@@ -23,15 +23,15 @@ namespace Stareater.GUI
 			this.audienceAction.Text = context["audience"].Text();
 			this.audienceAction.Visible = false;
 
-			playerList.SuspendLayout();
+			this.playerList.SuspendLayout();
 			foreach (var contact in this.controller.DiplomaticContacts())
 			{
-				var contactControl = new RelationsPlayerInfo();
+				var contactControl = new RelationsPlayerView();
 				contactControl.SetData(contact);
 				contactControl.RequestedAudience(this.controller.IsAudienceRequested(contact));
-				playerList.Controls.Add(contactControl);
+				this.playerList.Controls.Add(contactControl);
 			}
-			playerList.ResumeLayout();
+			this.playerList.ResumeLayout();
 		}
 		
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -49,7 +49,7 @@ namespace Stareater.GUI
 				return;
 			
 			var context = LocalizationManifest.Get.CurrentLanguage["FormRelations"];
-			var contact = (playerList.SelectedItem as RelationsPlayerInfo).Data;
+			var contact = (playerList.SelectedItem as RelationsPlayerView).Data;
 			
 			this.audienceAction.Text = this.controller.IsAudienceRequested(contact) ?
 				context["cancelAudience"].Text() :
@@ -66,7 +66,7 @@ namespace Stareater.GUI
 			if (!playerList.HasSelection)
 				return;
 
-			var contactView = playerList.SelectedItem as RelationsPlayerInfo;
+			var contactView = playerList.SelectedItem as RelationsPlayerView;
 			var contact = contactView.Data;
 			if (this.controller.IsAudienceRequested(contact))
 				this.controller.CancelAudience(contact);
