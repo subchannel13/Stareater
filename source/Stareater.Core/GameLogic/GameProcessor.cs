@@ -243,15 +243,19 @@ namespace Stareater.GameLogic
 				var fleets = visits[step.LocalFleet.Position];
 				fleets.Add(step);
 				
-				//TODO(v0.6) doesn't detect attacking undefended colonies
-				bool inConflict = fleets.Aggregate(
-					false,
-					(isInConflict, fleet) => isInConflict | fleets.Any(
-						x => x.OriginalFleet.Owner != fleet.OriginalFleet.Owner && 
-							x.ArrivalTime <= fleet.DepartureTime && x.DepartureTime >= fleet.ArrivalTime
-					)
-				);
+				if (!game.States.Stars.At.Contains(step.LocalFleet.Position))
+					continue; //TODO(later) no deepspace interception for now
+				var star = game.States.Stars.At[step.LocalFleet.Position];
 				
+				//TODO(v0.6) doesn't detect attacking undefended colonies
+				var players = new HashSet<Player>(fleets.Where(x => x.ArrivalTime < step.ArrivalTime).Select(x => x.OriginalFleet.Owner));
+				players.UnionWith(game.States.Colonies.AtStar[star].Select(x => x.Owner));
+				players.Remove(step.LocalFleet.Owner);
+
+				bool inConflict = step.LocalFleet.Owner == game.StareaterOrganelles ? 
+					players.Any() :
+					game.States.Treaties.Of[step.LocalFleet.Owner].Any(x => players.Contains(x.Party1) || players.Contains(x.Party2));
+
 				if (inConflict)
 				{
 					if (!conflictPositions.ContainsKey(step.LocalFleet.Position))

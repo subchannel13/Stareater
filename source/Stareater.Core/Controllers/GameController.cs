@@ -178,6 +178,9 @@ namespace Stareater.Controllers
 				processingSync.WaitOne(); //TODO(v0.6) try blocking only participants
 				this.holdAudience();
 			}
+			//TODO(v0.6) diplomatic actions don't take place this turn
+			processingSync.WaitOne(); //TODO(v0.6) make more orderly synchronization mechanism
+			processingSync.Set();
 
 			while (gameObj.Processor.HasConflict)
 			{
