@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using Stareater.GLData;
@@ -27,8 +28,10 @@ namespace Stareater.GLRenderers
 		private GalaxyTextures()
 		{ }
 		
+		const int SpriteMargin = 4;
 		const string AtlasImagePath = "./images/galaxyTextures.png";
 		const string AtlasIkonPath = "./images/galaxyTextures.txt";
+		const string SpritesPath = "./images/";
 		
 		const string AsteroidsTag = "asteroids";
 		const string AtlasTag = "TextureAtlas";
@@ -66,12 +69,7 @@ namespace Stareater.GLRenderers
 			if (this.loaded)
 				return;
 			
-			using (var textureImage = new Bitmap(AtlasImagePath))
-				this.textureId = TextureUtils.CreateTexture(textureImage);
-			
-			IkonComposite ikonData;
-			using(var ikonParser = new IkonParser(new StreamReader(AtlasIkonPath)))
-				ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
+			var ikonData = loadAtlas();
 			
 			foreach(var name in ikonData.Keys)
 				this.spriteNames[name] = new TextureInfo(textureId, ikonData[name].To<IkonArray>());
@@ -116,6 +114,53 @@ namespace Stareater.GLRenderers
 			}
 			
 			return this.spriteNames[spriteName];
+		}
+
+		private IkonComposite loadAtlas()
+		{
+			var atlasFile = new FileInfo(AtlasImagePath);
+			var metadataFile = new FileInfo(AtlasIkonPath);
+			var extraSprites = new DirectoryInfo(SpritesPath).GetFiles().Where(x => x.Name != atlasFile.Name && x.Name != metadataFile.Name).ToList();
+			
+			IkonComposite ikonData;
+			using(var ikonParser = new IkonParser(new StreamReader(AtlasIkonPath)))
+				ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
+
+			using (var atlasImage = new Bitmap(AtlasImagePath))
+			{
+				if (extraSprites.Any())
+				{
+					var atlasBuilder = new AtlasBuilder(ikonData, SpriteMargin, atlasImage.Size);
+					using(Graphics g = Graphics.FromImage(atlasImage))
+					{
+						foreach(var spriteFile in extraSprites)
+							using(var sprite = new Bitmap(spriteFile.FullName))
+							{
+								var spriteRegion = atlasBuilder.Add(sprite.Size);
+								g.DrawImage(sprite, spriteRegion);
+
+								var textureCoords = new IkonArray();
+								textureCoords.Add(serializeSpriteCorner(spriteRegion.Left, spriteRegion.Top, atlasImage.Size));
+								textureCoords.Add(serializeSpriteCorner(spriteRegion.Right, spriteRegion.Top, atlasImage.Size));
+								textureCoords.Add(serializeSpriteCorner(spriteRegion.Right, spriteRegion.Bottom, atlasImage.Size));
+								textureCoords.Add(serializeSpriteCorner(spriteRegion.Left, spriteRegion.Bottom, atlasImage.Size));
+								ikonData.Add(Path.GetFileNameWithoutExtension(spriteFile.Name), textureCoords);
+							}
+					}
+				}
+				this.textureId = TextureUtils.CreateTexture(atlasImage);
+			}
+			
+			return ikonData;
+		}
+
+		Ikadn.IkadnBaseObject serializeSpriteCorner(int x, int y, Size atlasSize)
+		{
+			var result = new IkonArray();
+			result.Add(new IkonFloat(x / (double)atlasSize.Width));
+			result.Add(new IkonFloat(y / (double)atlasSize.Height));
+
+			return result;
 		}
 	}
 }
