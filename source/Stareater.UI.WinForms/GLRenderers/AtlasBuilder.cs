@@ -8,7 +8,7 @@ namespace Stareater.GLRenderers
 	class AtlasBuilder
 	{
 		private readonly Dictionary<string, Rectangle> sizes;
-		PartitionNode bucket;
+		private readonly PartitionNode bucket;
 		private readonly int margin;
 
 		public AtlasBuilder(IkonComposite sizes, int margin, Size bucketSize)
@@ -23,7 +23,7 @@ namespace Stareater.GLRenderers
 				var sizeData = sizes[name].To<IkonArray[]>();
 				var height = (sizeData[2].To<double[]>()[1] - sizeData[0].To<double[]>()[1]) * bucketSize.Height;
 				var width = (sizeData[2].To<double[]>()[0] - sizeData[0].To<double[]>()[0]) * bucketSize.Width;
-				var size = new Size((int)width + 2 * margin, (int)height + 2 * margin);
+				var size = new Size((int)Math.Round(width) + 2 * margin, (int)Math.Round(height) + 2 * margin);
 				var itemPosition = bucket.Add(size);
 				
 				if (!itemPosition.HasValue)
@@ -34,7 +34,7 @@ namespace Stareater.GLRenderers
 
 		public Rectangle Add(Size itemSize)
 		{
-			itemSize = itemSize + new Size(margin, margin);
+			itemSize = itemSize + new Size(2 * margin, 2 * margin);
 			var itemPosition = bucket.Add(itemSize);
 			if (itemPosition == null)
 				throw new Exception("Bucket is too small");
@@ -53,6 +53,7 @@ namespace Stareater.GLRenderers
 			bool isDividerVertical;
 			int dividerPosition;
 			
+			bool filledUp = false;
 			PartitionNode leftChild;
 			PartitionNode rightChild;
 	
@@ -64,7 +65,7 @@ namespace Stareater.GLRenderers
 	
 			public Point? Add(Size itemSize)
 			{
-				if (size.Width < itemSize.Width || size.Height < itemSize.Height)
+				if (size.Width < itemSize.Width || size.Height < itemSize.Height || this.filledUp)
 					return null;
 	
 				Point? result;
@@ -112,6 +113,7 @@ namespace Stareater.GLRenderers
 					return result;
 				}
 				
+				this.filledUp = true;
 				return new Point();
 			}
 		}

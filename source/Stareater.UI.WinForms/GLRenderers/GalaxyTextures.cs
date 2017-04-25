@@ -133,6 +133,9 @@ namespace Stareater.GLRenderers
 					var atlasBuilder = new AtlasBuilder(ikonData, SpriteMargin, atlasImage.Size);
 					using(Graphics g = Graphics.FromImage(atlasImage))
 					{
+						g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+						g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.None; 
+
 						foreach(var spriteFile in extraSprites)
 							using(var sprite = new Bitmap(spriteFile.FullName))
 							{
