@@ -17,15 +17,6 @@
 }
 
 { DevelopmentTopic
-	langCode: COMBUSTION
-	code: combustion
-	cost # 300e9 * (lvl + 2 ^ lvl);
-	maxLvl= 10
-	prerequisites []
-	image: ./images/technologies/hydroponicFarms.png
-}
-
-{ DevelopmentTopic
 	langCode: HARPOON
 	code: harpoon
 	cost # 300e9 * (lvl + 2 ^ lvl);
@@ -55,6 +46,15 @@
 { DevelopmentTopic
 	langCode: NUKE_DRIVE
 	code: nuke_drive
+	cost # 300e9 * (lvl + 2 ^ lvl);
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	langCode: NUCLEAR_REACTOR
+	code: NuclearReactor
 	cost # 300e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites []

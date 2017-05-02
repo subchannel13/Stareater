@@ -5,6 +5,7 @@
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
 		[ :Lidar :FusionBeam :IonBeam ]
+		[ :EmShield :NeutrinoScan :Gauss ]
 	]
 }
 
@@ -38,6 +39,28 @@
 { DevelopmentTopic
 	langCode: EM_SHIELD
 	code: EmShield
+	cost # 1.5e12 * (lvl + 2 ^lvl);
+	maxLvl= 10
+	prerequisites [
+		:Ecm # 5;
+	]
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	langCode: NEUTRINO_SCAN
+	code: NeutrinoScan
+	cost # 1.5e12 * (lvl + 2 ^lvl);
+	maxLvl= 10
+	prerequisites [
+		:Ecm # 5;
+	]
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	langCode: GAUSS
+	code: Gauss
 	cost # 1.5e12 * (lvl + 2 ^lvl);
 	maxLvl= 10
 	prerequisites [

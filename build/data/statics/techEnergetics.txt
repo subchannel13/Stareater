@@ -5,6 +5,7 @@
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
 		[ :ParticleScreen :ExtraReactor :MiniReactor ]
+		[ :ShieldShare :WebScreen :FusionReactor ]
 	]
 }
 
@@ -29,6 +30,33 @@
 { DevelopmentTopic
 	langCode: MINI_REACTOR
 	code: MiniReactor
+	cost # 50e9 * (lvl + 3 ^lvl);
+	maxLvl= 8
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	langCode: SHIELD_SHARE
+	code: ShieldShare
+	cost # 50e9 * (lvl + 3 ^lvl);
+	maxLvl= 8
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	langCode: WEB_SCREEN
+	code: WebScreen
+	cost # 50e9 * (lvl + 3 ^lvl);
+	maxLvl= 8
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	langCode: FUSION_REACTOR
+	code: FusionReactor
 	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8
 	prerequisites []

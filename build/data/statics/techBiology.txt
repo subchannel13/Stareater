@@ -5,7 +5,7 @@
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
 		[ :HydroFarm :GreenHouse ]
-		[ :GmoFood ]
+		[ :GmoFood :GravTolerance ]
 		[ :SoilEnrich ]
 	]
 }
@@ -31,6 +31,15 @@
 { DevelopmentTopic
 	langCode: GMO_FOOD
 	code: GmoFood
+	cost # 50e9 * (lvl + 3 ^lvl);
+	maxLvl= 8
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	langCode: GRAV_TOL
+	code: GravTolerance
 	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8
 	prerequisites []

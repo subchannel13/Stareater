@@ -4,7 +4,8 @@
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
-		[ :Ecm :Computer :Telescope ]
+		[ :Ecm :Computer ]
+		[ :Warp :Simulation :SmartBomb ]
 	]
 }
 
@@ -27,8 +28,26 @@
 }
 
 { DevelopmentTopic
-	langCode: TELESCOPE
-	code: Telescope
+	langCode: WARP
+	code: Warp
+	cost # 300e9 * (lvl + 2 ^lvl);
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	langCode: SIMULATION
+	code: Simulation
+	cost # 300e9 * (lvl + 2 ^lvl);
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	langCode: SMART_BOMB
+	code: SmartBomb
 	cost # 300e9 * (lvl + 2 ^lvl);
 	maxLvl= 10
 	prerequisites []

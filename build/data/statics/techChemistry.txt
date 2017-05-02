@@ -5,6 +5,7 @@
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
 		[ :NukeTorpedo :Metalworking ]
+		[ :FuelTank :Metallurgy :GasExploit ]
 	]
 }
 
@@ -27,8 +28,28 @@
 }
 
 { DevelopmentTopic
-	langCode: DURAPLAST
-	code: Duraplast
+	langCode: FUEL_TANK
+	code: FuelTank
+	cost # 6e12 * (lvl + 1) ^ 2;
+	maxLvl= 10
+	prerequisites [
+	]
+	image: ./images/technologies/industry.png
+}
+
+{ DevelopmentTopic
+	langCode: METALLURGY
+	code: Metallurgy
+	cost # 6e12 * (lvl + 1) ^ 2;
+	maxLvl= 10
+	prerequisites [
+	]
+	image: ./images/technologies/industry.png
+}
+
+{ DevelopmentTopic
+	langCode: GAS_EXPLOIT
+	code: GasExploit
 	cost # 6e12 * (lvl + 1) ^ 2;
 	maxLvl= 10
 	prerequisites [

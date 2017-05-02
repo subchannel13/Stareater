@@ -5,6 +5,7 @@
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
 		[ :Cargo :Surveyor :MineTools ]
+		[ :ExtraThrust :Robo :NeutronThrust ]
 	]
 }
 
@@ -36,8 +37,30 @@
 }
 
 { DevelopmentTopic
+	langCode: EXTRA_THRUST
+	code: ExtraThrust
+	cost # 150e9 * (lvl + 2 ^ lvl);
+	maxLvl= 10
+	prerequisites [
+		:Ind # 5;
+	]
+	image : ./images/technologies/industry.png
+}
+
+{ DevelopmentTopic
 	langCode: ROBO
 	code: Robo
+	cost # 150e9 * (lvl + 2 ^ lvl);
+	maxLvl= 10
+	prerequisites [
+		:Ind # 5;
+	]
+	image : ./images/technologies/industry.png
+}
+
+{ DevelopmentTopic
+	langCode: NEUTRON_THRUST
+	code: NeutronThrust
 	cost # 150e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites [

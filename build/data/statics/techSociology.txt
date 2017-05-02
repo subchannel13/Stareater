@@ -5,16 +5,8 @@
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
 		[ :Colonizer :SpaceProgram ]
+		[ :HeavyInd :Sdi ]
 	]
-}
-
-{ DevelopmentTopic
-	langCode: IND
-	code: Ind
-	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
-	maxLvl= 10
-	prerequisites []
-	image: ./images/technologies/industry.png
 }
 
 { DevelopmentTopic
@@ -33,4 +25,31 @@
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/spaceport.png
+}
+
+{ DevelopmentTopic
+	langCode: HEAVY_IND
+	code: HeavyInd
+	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/industry.png
+}
+
+{ DevelopmentTopic
+	langCode: SDI
+	code: Sdi
+	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/industry.png
+}
+
+{ DevelopmentTopic
+	langCode: IND
+	code: Ind
+	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
+	maxLvl= 10
+	prerequisites []
+	image: ./images/technologies/industry.png
 }
