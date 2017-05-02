@@ -183,7 +183,9 @@
     <Compile Include="GUI\ControlListView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GUI\FormAudience.cs" />
+    <Compile Include="GUI\FormAudience.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI\FormAudience.Designer.cs">
       <DependentUpon>FormAudience.cs</DependentUpon>
     </Compile>
@@ -200,7 +202,9 @@
       <DependentUpon>FormResearchComplete.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\ParametarUiVisitor.cs" />
-    <Compile Include="GUI\PlayerView.cs" />
+    <Compile Include="GUI\PlayerView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="GUI\PlayerView.Designer.cs">
       <DependentUpon>PlayerView.cs</DependentUpon>
     </Compile>

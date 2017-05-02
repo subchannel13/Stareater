@@ -80,7 +80,7 @@ namespace Stareater.GUI
 			// topicText
 			// 
 			this.topicText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-			| System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.topicText.Location = new System.Drawing.Point(218, 67);
 			this.topicText.Name = "topicText";
 			this.topicText.Size = new System.Drawing.Size(373, 414);
@@ -91,7 +91,7 @@ namespace Stareater.GUI
 			// topicList
 			// 
 			this.topicList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-			| System.Windows.Forms.AnchorStyles.Left)));
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.topicList.AutoScroll = true;
 			this.topicList.Controls.Add(this.researchLink);
 			this.topicList.Controls.Add(this.developmentLink);
@@ -109,6 +109,7 @@ namespace Stareater.GUI
 			this.topicList.Name = "topicList";
 			this.topicList.Size = new System.Drawing.Size(200, 466);
 			this.topicList.TabIndex = 1;
+			this.topicList.WrapContents = false;
 			// 
 			// researchLink
 			// 
