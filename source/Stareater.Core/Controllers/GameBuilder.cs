@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 using Ikadn.Ikon.Types;
@@ -21,7 +19,7 @@ namespace Stareater.Controllers
 {
 	static class GameBuilder
 	{
-		public static MainGame CreateGame(Random rng, Player[] players, Player organellePlayer, NewGameController controller, IEnumerable<TextReader> staticDataSources)
+		public static MainGame CreateGame(Random rng, Player[] players, Player organellePlayer, NewGameController controller, IEnumerable<TracableStream> staticDataSources)
 		{
 			var statics = StaticsDB.Load(staticDataSources);
 			var states = createStates(rng, controller, players, statics);
@@ -34,7 +32,7 @@ namespace Stareater.Controllers
 			return game;
 		}
 		
-		public static MainGame LoadGame(IkonComposite saveData, IEnumerable<TextReader> staticDataSources)
+		public static MainGame LoadGame(IkonComposite saveData, IEnumerable<TracableStream> staticDataSources)
 		{
 			var statics = StaticsDB.Load(staticDataSources);
 			

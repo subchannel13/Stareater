@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Stareater.Localization.Reading;
+using Stareater.Utils;
 
 namespace Stareater.Localization
 {
@@ -10,18 +12,28 @@ namespace Stareater.Localization
 
 		public string Code { get; private set; }
 
-		public Language(string code, IEnumerable<TextReader> dataSources)
+		public Language(string code, IEnumerable<TracableStream> dataSources)
 		{
 			this.Code = code;
 
 			foreach (var source in dataSources)
 			{
-				var parser = new Parser(source);
-
-				while (parser.HasNext())
+				var parser = new Parser(source.Stream);
+				try
 				{
-					var conext = parser.ParseNext().To<Context>();
-					contexts.Add((string)conext.Tag, conext);
+					while (parser.HasNext())
+					{
+						var conext = parser.ParseNext().To<Context>();
+						contexts.Add((string)conext.Tag, conext);
+					}
+				}
+				catch (IOException e)
+				{
+					throw new IOException(source.SourceInfo, e);
+				}
+				catch(FormatException e)
+				{
+					throw new FormatException(source.SourceInfo, e);
 				}
 			}
 		}

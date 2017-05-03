@@ -130,6 +130,9 @@ namespace Stareater.GLRenderers
 			{
 				if (extraSprites.Any())
 				{
+#if DEBUG
+					System.Diagnostics.Trace.WriteLine("Adding loose sprites to atlas: " + string.Join(" ", extraSprites.Select(x => x.Name)));
+#endif
 					var atlasBuilder = new AtlasBuilder(ikonData, SpriteMargin, atlasImage.Size);
 					using(Graphics g = Graphics.FromImage(atlasImage))
 					{

@@ -5,7 +5,7 @@ namespace Stareater.Utils
 {
 	public class ChoiceWeights<T>
 	{
-		private Dictionary<T, double> weights = new Dictionary<T, double>();
+		private readonly Dictionary<T, double> weights = new Dictionary<T, double>();
 		public double Total { get; private set; }
 		
 		public ChoiceWeights()
@@ -15,13 +15,13 @@ namespace Stareater.Utils
 		
 		public void Add(T item, double choiceWeight)
 		{
-			weights.Add(item, choiceWeight);
-			Total += choiceWeight;
+			this.weights.Add(item, choiceWeight);
+			this.Total += choiceWeight;
 		}
 		
 		public double Relative(T item)
 		{
-			return weights[item] / Total;
+			return this.weights[item] / this.Total;
 		}
 	}
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Drawing;
 using System.IO;
-using Ikadn.Ikon.Types;
+using System.Linq;
 using Ikadn.Ikon;
+using Ikadn.Ikon.Types;
+using Stareater.Utils;
 
 namespace Stareater.Players
 {
@@ -14,13 +15,27 @@ namespace Stareater.Players
 		public static IOffscreenPlayerFactory[] AIDefinitions { get; private set; }
 		public static Organization[] Organizations { get; private set; }
 
-		public static void ColorLoader(IEnumerable<TextReader> dataSources)
+		public static void ColorLoader(IEnumerable<TracableStream> dataSources)
 		{
 			var colorList = new List<Color>();
 			foreach(var source in dataSources)
 			{
-				var parser = new IkonParser(source);
-				var colorsData = parser.ParseNext().To<IkonComposite>()[ColorsKey].To<IkonArray>();
+				var parser = new IkonParser(source.Stream);
+				IkonArray colorsData;
+
+				try
+				{
+					colorsData = parser.ParseNext().To<IkonComposite>()[ColorsKey].To<IkonArray>();
+				} 
+				catch (IOException e)
+				{
+					throw new IOException(source.SourceInfo, e);
+				}
+				catch(FormatException e)
+				{
+					throw new FormatException(source.SourceInfo, e);
+				}
+
 				foreach(var item in colorsData)
 				{
 					var colorData = item.To<IkonArray>();
@@ -40,19 +55,30 @@ namespace Stareater.Players
 			AIDefinitions = aiFactories.ToArray();
 		}
 
-		public static void OrganizationsLoader(IEnumerable<TextReader> dataSources)
+		public static void OrganizationsLoader(IEnumerable<TracableStream> dataSources)
 		{
 			var list = new List<Organization>();
 			foreach (var source in dataSources)
 			{
-				var parser = new IkonParser(source);
-				foreach (var item in parser.ParseAll())
+				var parser = new IkonParser(source.Stream);
+				try
 				{
-					var data = item.Value.To<IkonComposite>();
-					list.Add(new Organization(
-						data[OrganizationNameKey].To<string>(),
-						data[OrganizationDescriptionKey].To<string>()
-					));
+					foreach (var item in parser.ParseAll())
+					{
+						var data = item.Value.To<IkonComposite>();
+						list.Add(new Organization(
+							data[OrganizationNameKey].To<string>(),
+							data[OrganizationDescriptionKey].To<string>()
+						));
+					}
+				} 
+				catch (IOException e)
+				{
+					throw new IOException(source.SourceInfo, e);
+				}
+				catch(FormatException e)
+				{
+					throw new FormatException(source.SourceInfo, e);
 				}
 			}
 

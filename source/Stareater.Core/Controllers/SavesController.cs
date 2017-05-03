@@ -6,6 +6,7 @@ using System.IO;
 using Ikadn;
 using Ikadn.Ikon.Types;
 using Ikadn.Ikon;
+using Stareater.Utils;
 
 namespace Stareater.Controllers
 {
@@ -123,7 +124,7 @@ namespace Stareater.Controllers
 			}
 		}
 		
-		public void Load(SavedGameInfo savedGameData, IEnumerable<TextReader> staticDataSources)
+		public void Load(SavedGameInfo savedGameData, IEnumerable<TracableStream> staticDataSources)
 		{
 			this.gameController.LoadGame(GameBuilder.LoadGame(savedGameData.RawData, staticDataSources));
 		}

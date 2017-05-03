@@ -434,6 +434,7 @@
     <Compile Include="SpaceCombat\CombatPlanet.cs" />
     <Compile Include="Utils\BitHash.cs" />
     <Compile Include="Utils\BitHashBuilder.cs" />
+    <Compile Include="Utils\TracableStream.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />
     <Compile Include="Utils\Collections\AIndexedCollection.cs" />
     <Compile Include="Utils\Collections\IDelayedCollection.cs" />

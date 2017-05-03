@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,6 +7,7 @@ using Stareater.Controllers.Data;
 using Stareater.Controllers.Views;
 using Stareater.Players;
 using Stareater.Players.Natives;
+using Stareater.Utils;
 
 namespace Stareater.Controllers
 {
@@ -32,7 +32,7 @@ namespace Stareater.Controllers
 			this.State = GameState.NoGame;
 		}
 	
-		public void CreateGame(NewGameController controller, IEnumerable<TextReader> staticDataSources)
+		public void CreateGame(NewGameController controller, IEnumerable<TracableStream> staticDataSources)
 		{
 			if (State != GameState.NoGame)
 				throw new InvalidOperationException("Game is already created.");

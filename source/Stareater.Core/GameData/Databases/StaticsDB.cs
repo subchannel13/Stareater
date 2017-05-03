@@ -67,83 +67,94 @@ namespace Stareater.GameData.Databases
 			this.Traits = new Dictionary<string, BodyTraitType>();
 		}
 		
-		public static StaticsDB Load(IEnumerable<TextReader> dataSources)
+		public static StaticsDB Load(IEnumerable<TracableStream> dataSources)
 		{
 			var db = new StaticsDB();
 			
 			foreach(var source in dataSources) 
 			{
-				var parser = new Parser(source);
-				foreach (var data in parser.ParseAll().Select(x => x.Value.To<IkonComposite>())) 
+				var parser = new Parser(source.Stream);
+				try
 				{
-					switch((string)data.Tag) {
-						case BuildingTag:
-							db.Buildings.Add(data[GeneralCodeKey].To<string>(), loadBuilding(data));
-							break;
-						case ColonizersTag:
-							db.loadColonizers(data.To<IkonComposite>());
-							break;
-						case ColonyFormulasTag:
-							db.ColonyFormulas = loadColonyFormulas(data);
-							break;
-						case ConstructableTag:
-							db.Constructables.Add(loadConstructable(data));
-							break;
-						case DevelopmentFocusesTag:
-							db.DevelopmentFocusOptions.AddRange(loadFocusOptions(data));
-							break;
-						case DevelopmentTag:
-							db.DevelopmentTopics.Add(loadDevelopmentTopic(data));
-							break;
-						case NativesTag:
-							db.loadNatives(data.To<IkonComposite>());
-							break;
-						case PlayerFormulasTag:
-							db.PlayerFormulas = loadPlayerFormulas(data);
-							break;
-						case PredefinedDesignTag:
-							db.PredeginedDesigns.Add(loadPredefDesign(data));
-							break;
-						case ResearchTag:
-							db.ResearchTopics.Add(loadResearchTopic(data));
-							break;
-						case ShipFormulasTag:
-							db.ShipFormulas = loadShipFormulas(data);
-							break;
-						case TraitTag:
-							db.Traits.Add(data[GeneralCodeKey].To<string>(), loadTrait(data));
-							break;
-
-						case ArmorTag:
-							db.Armors.Add(data[GeneralCodeKey].To<string>(), loadArmor(data));
-							break;
-						case HullTag:
-							db.Hulls.Add(data[GeneralCodeKey].To<string>(), loadHull(data));
-							break;
-						case IsDriveTag:
-							db.IsDrives.Add(data[GeneralCodeKey].To<string>(), loadIsDrive(data));
-							break;
-						case MissionEquipmentTag:
-							db.MissionEquipment.Add(data[GeneralCodeKey].To<string>(), loadMissionEquiptment(data));
-							break;
-						case ReactorTag:
-							db.Reactors.Add(data[GeneralCodeKey].To<string>(), loadReactor(data));
-							break;
-						case SensorTag:
-							db.Sensors.Add(data[GeneralCodeKey].To<string>(), loadSensor(data));
-							break;
-						case ShieldTag:
-							db.Shields.Add(data[GeneralCodeKey].To<string>(), loadShield(data));
-							break;
-						case SpecialEquipmentTag:
-							db.SpecialEquipment.Add(data[GeneralCodeKey].To<string>(), loadSpecialEquiptment(data));
-							break;
-						case ThrusterTag:
-							db.Thrusters.Add(data[GeneralCodeKey].To<string>(), loadThruster(data));
-							break;
-						default:
-							throw new FormatException("Invalid game data object with tag " + data.Tag);
+					foreach (var data in parser.ParseAll().Select(x => x.Value.To<IkonComposite>())) 
+					{
+						switch((string)data.Tag) {
+							case BuildingTag:
+								db.Buildings.Add(data[GeneralCodeKey].To<string>(), loadBuilding(data));
+								break;
+							case ColonizersTag:
+								db.loadColonizers(data.To<IkonComposite>());
+								break;
+							case ColonyFormulasTag:
+								db.ColonyFormulas = loadColonyFormulas(data);
+								break;
+							case ConstructableTag:
+								db.Constructables.Add(loadConstructable(data));
+								break;
+							case DevelopmentFocusesTag:
+								db.DevelopmentFocusOptions.AddRange(loadFocusOptions(data));
+								break;
+							case DevelopmentTag:
+								db.DevelopmentTopics.Add(loadDevelopmentTopic(data));
+								break;
+							case NativesTag:
+								db.loadNatives(data.To<IkonComposite>());
+								break;
+							case PlayerFormulasTag:
+								db.PlayerFormulas = loadPlayerFormulas(data);
+								break;
+							case PredefinedDesignTag:
+								db.PredeginedDesigns.Add(loadPredefDesign(data));
+								break;
+							case ResearchTag:
+								db.ResearchTopics.Add(loadResearchTopic(data));
+								break;
+							case ShipFormulasTag:
+								db.ShipFormulas = loadShipFormulas(data);
+								break;
+							case TraitTag:
+								db.Traits.Add(data[GeneralCodeKey].To<string>(), loadTrait(data));
+								break;
+	
+							case ArmorTag:
+								db.Armors.Add(data[GeneralCodeKey].To<string>(), loadArmor(data));
+								break;
+							case HullTag:
+								db.Hulls.Add(data[GeneralCodeKey].To<string>(), loadHull(data));
+								break;
+							case IsDriveTag:
+								db.IsDrives.Add(data[GeneralCodeKey].To<string>(), loadIsDrive(data));
+								break;
+							case MissionEquipmentTag:
+								db.MissionEquipment.Add(data[GeneralCodeKey].To<string>(), loadMissionEquiptment(data));
+								break;
+							case ReactorTag:
+								db.Reactors.Add(data[GeneralCodeKey].To<string>(), loadReactor(data));
+								break;
+							case SensorTag:
+								db.Sensors.Add(data[GeneralCodeKey].To<string>(), loadSensor(data));
+								break;
+							case ShieldTag:
+								db.Shields.Add(data[GeneralCodeKey].To<string>(), loadShield(data));
+								break;
+							case SpecialEquipmentTag:
+								db.SpecialEquipment.Add(data[GeneralCodeKey].To<string>(), loadSpecialEquiptment(data));
+								break;
+							case ThrusterTag:
+								db.Thrusters.Add(data[GeneralCodeKey].To<string>(), loadThruster(data));
+								break;
+							default:
+								throw new FormatException("Invalid game data object with tag " + data.Tag);
+						}
 					}
+				}
+				catch (IOException e)
+				{
+					throw new IOException(source.SourceInfo, e);
+				}
+				catch(FormatException e)
+				{
+					throw new FormatException(source.SourceInfo, e);
 				}
 			}
 			
