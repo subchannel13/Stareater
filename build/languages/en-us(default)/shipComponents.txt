@@ -44,8 +44,8 @@ CATALYZER_DESC = No description.
 :Reactors
 NUCLEAR_REACTOR_NAME = Nuclear reactor
 NUCLEAR_REACTOR_DESC = No description.
-CHEMICAL_REACTOR_NAME = Chemical reactor
-CHEMICAL_REACTOR_DESC = No description.
+CHEMICAL_REACTOR_NAME = Turbine APU
+CHEMICAL_REACTOR_DESC = Auxiliary power unit for powering ship's hyraulic and providing electricity.
 -
 
 :Sensors
