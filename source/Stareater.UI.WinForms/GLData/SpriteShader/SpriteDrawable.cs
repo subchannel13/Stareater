@@ -33,7 +33,7 @@ namespace Stareater.GLData.SpriteShader
 			GL.Uniform1(program.ZId, z);
 			GL.Uniform4(program.ColorId, this.objectData.Color);
 
-			GL.DrawArrays(BeginMode.Triangles, vao.ObjectStart(this.objectIndex), vao.ObjectSize(this.objectIndex));
+			GL.DrawArrays(PrimitiveType.Triangles, vao.ObjectStart(this.objectIndex), vao.ObjectSize(this.objectIndex));
 			ShaderLibrary.PrintGlErrors("Draw sprites");
 		}
 		

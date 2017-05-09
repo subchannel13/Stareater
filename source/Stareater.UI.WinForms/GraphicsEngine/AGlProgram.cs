@@ -44,7 +44,7 @@ namespace Stareater.GraphicsEngine
 			GL.LinkProgram(programObject);
 		
 			int linked;
-			GL.GetProgram(programObject, ProgramParameter.LinkStatus, out linked);
+			GL.GetProgram(programObject, GetProgramParameterName.LinkStatus, out linked);
 			if (linked == 0)
 			{
 				System.Diagnostics.Trace.WriteLine("Program link error");

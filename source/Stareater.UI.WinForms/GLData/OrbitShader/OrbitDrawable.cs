@@ -37,7 +37,7 @@ namespace Stareater.GLData.OrbitShader
 			GL.Uniform1(program.MaxRId, this.objectData.MaxRadius);
 			GL.UniformMatrix3(program.TextureTransformId, false, ref textureTransform);
 		
-			GL.DrawArrays(BeginMode.Triangles, vao.ObjectStart(this.objectIndex), vao.ObjectSize(this.objectIndex));
+			GL.DrawArrays(PrimitiveType.Triangles, vao.ObjectStart(this.objectIndex), vao.ObjectSize(this.objectIndex));
 			ShaderLibrary.PrintGlErrors("Draw orbits");
 		}
 
