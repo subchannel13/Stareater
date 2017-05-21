@@ -25,7 +25,7 @@ namespace Stareater.Galaxy.ProximityLanes
 		const string LanguageContext = "ProximityLanes";
 		const string DegreeKey = "Degree";
 		const double Epsilon = 1e-9;
-		const double MinimalAngleCos = 0.97;
+		const double MinimalAngleCos = 0.90;
 
 		private SelectorParameter degreesParameter;
 		private DegreeOption[] degreeOptions;
@@ -90,7 +90,8 @@ namespace Stareater.Galaxy.ProximityLanes
 			}
 			foreach(var edge in genMaxEdges(maxGraph.Vertices.ToList()))
 				maxGraph.AddEdge(edge);
-			
+
+			this.removeOutliers(maxGraph);
 			var treeEdges = new HashSet<Edge<Vector2D>>(genMinEdges(maxGraph, homeNodes));
 			
 			return genFinal(maxGraph, treeEdges).Select(e => new WormholeEndpoints(starIndex[e.FromVertex], starIndex[e.ToVertex])).ToList();
@@ -114,7 +115,30 @@ namespace Stareater.Galaxy.ProximityLanes
 				yield return edge;
 			}
 		}
-		
+
+		private void removeOutliers(Graph<Vector2D> graph)
+		{
+			var orderedEdges = graph.Edges.OrderByDescending(e => e.Weight).ToList();
+			foreach (var e in orderedEdges)
+			{
+				graph.RemoveEdge(e);
+				var pathPoints = Astar(graph, e.FromVertex, e.ToVertex).ToList();
+				var longestHop = 0.0;
+				var length = 0.0;
+				var lastHop = e.ToVertex;
+				foreach (var v in pathPoints)
+				{
+					var dist = (lastHop.Data - v.Data).Magnitude();
+					longestHop = Math.Max(longestHop, dist);
+					length += dist;
+					lastHop = v;
+				}
+
+				if (pathPoints.Count <= 2 || longestHop > e.Weight || length > e.Weight * 1.5)
+					graph.AddEdge(e);
+			}
+		}
+
 		private IEnumerable<Edge<Vector2D>> genMinEdges(Graph<Vector2D> graph, IEnumerable<Vertex<Vector2D>> homeNodes)
 		{
 			var centroid = graph.Vertices.Aggregate(new Vector2D(0, 0), (subsum, vertex) => subsum + vertex.Data) / graph.Vertices.Count;

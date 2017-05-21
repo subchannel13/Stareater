@@ -11,6 +11,7 @@ description §
 degree = Starlane frequency
 minimal = Minimal
 few = Few
-average = Abundant
-many = Maximal
+average = Decent
+many = Many
+maximal = Maximal
 -

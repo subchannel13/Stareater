@@ -5,15 +5,20 @@
 
 { Degree
 	nameKey "few"
-	ratio =0.33
+	ratio =0.2
 }
 
 { Degree
 	nameKey "average"
-	ratio =0.5
+	ratio =0.35
 }
 
 { Degree
 	nameKey "many"
+	ratio =0.65
+}
+
+{ Degree
+	nameKey "maximal"
 	ratio =1
 }
