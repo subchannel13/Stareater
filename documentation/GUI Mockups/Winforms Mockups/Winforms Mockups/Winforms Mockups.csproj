@@ -116,6 +116,10 @@
     <Compile Include="DesignItem.Designer.cs">
       <DependentUpon>DesignItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormBombardment.cs" />
+    <Compile Include="FormBombardment.Designer.cs">
+      <DependentUpon>FormBombardment.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormBuildingQueue.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -332,6 +336,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DesignItem.resx">
       <DependentUpon>DesignItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormBombardment.resx">
+      <DependentUpon>FormBombardment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormBuildingQueue.resx">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
