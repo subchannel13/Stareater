@@ -153,7 +153,18 @@ namespace Stareater.GameLogic
 
 		public bool IsOver 
 		{
-			get { return this.game.Turn >= this.game.TurnLimit; }
+			get 
+			{ 
+				if (this.game.Turn >= this.game.TurnLimit)
+					return true;
+				
+				var players = this.game.Combatants.Select(x => x.Owner).
+					Concat(this.game.Planets.Where(x => x.Colony != null).Select(x => x.Colony.Owner)).
+					Distinct();
+				
+				//TODO(v0.6) doesn't check war declarations
+				return players.Count() < 2;
+			}
 		}
 		
 		private void makeUnitOrder()
