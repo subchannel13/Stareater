@@ -136,7 +136,18 @@ namespace Stareater.Controllers
 			processingSync.Set();
 		}
 		
-		internal void ConflictResolved(SpaceBattleGame battleGame)
+		internal void SpaceCombatResolved(SpaceBattleGame battleGame, bool doBombardment)
+		{
+			if (doBombardment)
+				this.initiateBombardment(battleGame);
+			else 
+			{
+				this.gameObj.Processor.ConflictResolved(battleGame);
+				processingSync.Set();
+			}
+		}
+		
+		internal void BombardmentResolved(SpaceBattleGame battleGame)
 		{
 			this.gameObj.Processor.ConflictResolved(battleGame);
 			processingSync.Set();
@@ -245,6 +256,25 @@ namespace Stareater.Controllers
 					controller.Register(playerController, player.OffscreenControl.StartBattle(controller));
 				else
 					controller.Register(playerController, this.stateListener.OnDoCombat(controller));
+			}
+			
+			controller.Start();
+		}
+
+		void initiateBombardment(SpaceBattleGame battleGame)
+		{
+			var controller = new BombardmentController(battleGame, this.gameObj, this);
+			
+			//TODO(v0.6) doesn't take proper players into account
+			foreach(var player in battleGame.Combatants.Select(x => x.Owner).Distinct())
+			{
+				var playerController = (player.ControlType == PlayerControlType.Neutral) ?
+					this.organelleController :
+					this.playerControllers.First(x => this.gameObj.MainPlayers[x.PlayerIndex] == player);
+				if (player.OffscreenControl != null)
+					controller.Register(playerController, player.OffscreenControl.StartBombardment(controller));
+				else
+					controller.Register(playerController, this.stateListener.OnDoBombardment(controller));
 			}
 			
 			controller.Start();

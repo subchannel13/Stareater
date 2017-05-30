@@ -19,7 +19,7 @@ using Stareater.GraphicsEngine;
 
 namespace Stareater.GUI
 {
-	internal partial class FormMain : Form, IGameStateListener, IBattleEventListener, IGalaxyViewListener
+	internal partial class FormMain : Form, IGameStateListener, IBattleEventListener, IBombardEventListener, IGalaxyViewListener
 	{
 		private const float MaxDeltaTime = 0.5f;
 		
@@ -37,6 +37,7 @@ namespace Stareater.GUI
 		private PlayerController[] playerControllers = null;
 		private FleetController fleetController = null;
 		private SpaceBattleController conflictController = null;
+		private BombardmentController bombardmentController = null;
 		private OpenReportVisitor reportOpener;
 		private int currentPlayerIndex = 0;
 		
@@ -496,6 +497,14 @@ namespace Stareater.GUI
 			
 			return this;
 		}
+		
+		public IBombardEventListener OnDoBombardment(BombardmentController bombardController)
+		{
+			if (this.InvokeRequired)
+				this.BeginInvoke(new Action<BombardmentController>(initBombardGui), bombardController);
+			
+			return this;
+		}
 
 		public void OnGameOver()
 		{
@@ -566,6 +575,11 @@ namespace Stareater.GUI
 			unitInfoPanel.Visible = true;
 			menuStrip.Visible = false;
 		}
+		
+		private void initBombardGui(BombardmentController bombardController)
+		{
+			//TODO(v0.6)
+		}
 		#endregion
 		
 		#region IBattleEventListener implementation
@@ -632,6 +646,15 @@ namespace Stareater.GUI
 					ability
 				));
 		}
+		#endregion
+		
+		#region IBombardEventListener implementation
+
+		public void BombardTurn()
+		{
+			this.bombardmentController.Leave();
+		}
+
 		#endregion
 		
 		#region IGalaxyViewListener

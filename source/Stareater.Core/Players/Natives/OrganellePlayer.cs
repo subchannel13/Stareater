@@ -12,10 +12,11 @@ using Stareater.Utils.Collections;
 
 namespace Stareater.Players.Natives
 {
-	class OrganellePlayer : IOffscreenPlayer, IBattleEventListener
+	class OrganellePlayer : IOffscreenPlayer, IBattleEventListener, IBombardEventListener
 	{
 		private PlayerController playerController;
 		private SpaceBattleController battleController;
+		private BombardmentController bombardController;
 		private Random random = new Random(); //TODO(later) find better place for RNG
 
 		public PlayerController Controller
@@ -53,6 +54,12 @@ namespace Stareater.Players.Natives
 			return this;
 		}
 
+		public IBombardEventListener StartBombardment(BombardmentController controller)
+		{
+			this.bombardController = controller;
+			return this;
+		}
+		
 		public Ikadn.IkadnBaseObject Save()
 		{
 			return new IkonComposite(PlayerType.OrganelleControllerTag);
@@ -83,5 +90,14 @@ namespace Stareater.Players.Natives
 			
 			battleController.UnitDone();
 		}
+
+		#region IBombardEventListener implementation
+
+		public void BombardTurn()
+		{
+			this.bombardController.Leave();
+		}
+
+		#endregion
 	}
 }

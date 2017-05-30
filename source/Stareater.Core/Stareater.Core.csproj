@@ -71,6 +71,7 @@
     <Compile Include="AppData\LastGameInfo.cs" />
     <Compile Include="Controllers\AConstructionSiteController.cs" />
     <Compile Include="Controllers\AudienceController.cs" />
+    <Compile Include="Controllers\BombardmentController.cs" />
     <Compile Include="Controllers\ColonyController.cs" />
     <Compile Include="Controllers\ColonizationController.cs" />
     <Compile Include="Controllers\Data\ColonizerFinder.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Controllers\Views\GalaxyObjectType.cs" />
     <Compile Include="Controllers\Views\GameState.cs" />
     <Compile Include="Controllers\Views\IBattleEventListener.cs" />
+    <Compile Include="Controllers\Views\IBombardEventListener.cs" />
     <Compile Include="Controllers\Views\IGameStateListener.cs" />
     <Compile Include="Controllers\Views\IReportInfo.cs" />
     <Compile Include="Controllers\Views\IReportInfoVisitor.cs" />

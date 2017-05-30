@@ -101,7 +101,7 @@ namespace Stareater.Controllers
 		private void checkNextUnit()
 		{
 			if (this.battleGame.Processor.IsOver)
-				this.gameController.ConflictResolved(this.battleGame);
+				this.gameController.SpaceCombatResolved(this.battleGame, true);
 			else
 				this.playNexUnit();
 		}

@@ -7,11 +7,12 @@ using Stareater.Controllers.Views.Combat;
 
 namespace Stareater.Players.DefaultAI
 {
-	class DefaultAIPlayer : IOffscreenPlayer, IBattleEventListener
+	class DefaultAIPlayer : IOffscreenPlayer, IBattleEventListener, IBombardEventListener
 	{
 		private readonly Random random = new Random();
 		private PlayerController playerController;
 		private SpaceBattleController battleController;
+		private BombardmentController bombardController;
 		
 		public PlayerController Controller 
 		{ 
@@ -43,12 +44,27 @@ namespace Stareater.Players.DefaultAI
 			this.battleController = controller;
 			return this;
 		}
+		
+		public IBombardEventListener StartBombardment(BombardmentController controller)
+		{
+			this.bombardController = controller;
+			return this;
+		}
 
 		#region IBattleEventListener implementation
 		public void PlayUnit(CombatantInfo unitInfo)
 		{
 			this.battleController.UnitDone();
 		}
+		#endregion
+		
+		#region IBombardEventListener implementation
+
+		public void BombardTurn()
+		{
+			this.bombardController.Leave();
+		}
+
 		#endregion
 		
 		public Ikadn.IkadnBaseObject Save()
