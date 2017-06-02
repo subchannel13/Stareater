@@ -14,6 +14,11 @@ namespace Stareater.Controllers.Views.Combat
 			this.Data = data;
 		}
 		
+		public int OrdinalPosition 
+		{
+			get { return Data.PlanetData.Position; }
+		}
+		
 		public Vector2D Position 
 		{
 			get { return Data.Position; }

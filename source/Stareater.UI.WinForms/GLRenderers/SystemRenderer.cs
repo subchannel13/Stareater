@@ -82,10 +82,10 @@ namespace Stareater.GLRenderers
 			this.ResetLists();
 		}
 		
-		public void SetStarSystem(StarSystemController controller, PlayerController gameController)
+		public void SetStarSystem(StarSystemController controller, PlayerController playerController)
 		{
 			this.controller = controller;
-			this.currentPlayer = gameController;
+			this.currentPlayer = playerController;
 			
 			this.maxOffset = controller.Planets.Count() * OrbitStep + OrbitOffset + PlanetScale / 2;
 			
@@ -120,6 +120,7 @@ namespace Stareater.GLRenderers
 			var aspect = canvasSize.X / canvasSize.Y;
 			this.minOffset = aspect * DefaultViewSize / 2 - StarScale / 2;
 			this.limitPan();
+			
 			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2(originOffset, -BodiesY));
 		}
 		#endregion
@@ -173,7 +174,7 @@ namespace Stareater.GLRenderers
 				Vector4.Transform(lastMousePosition.Value, invProjection)
 				).X;
 
-			limitPan();
+			this.limitPan();
 			
 			lastMousePosition = currentPosition;
 			this.setupPerspective();

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Stareater.Controllers.Views;
+using Stareater.Controllers.Views.Combat;
 using Stareater.Players;
 
 namespace Stareater.Controllers
@@ -28,12 +30,21 @@ namespace Stareater.Controllers
 		
 		internal void Start()
 		{
-			gameController.BombardmentResolved(this.battleGame);
+			this.playerListeners.Values.First().BombardTurn();
 		}
 
 		public void Leave()
 		{
-			throw new NotImplementedException();
+			gameController.BombardmentResolved(this.battleGame);
+		}
+
+		public IEnumerable<CombatPlanetInfo> Planets 
+		{
+			get
+			{
+				//TODO(v0.6)
+				return new CombatPlanetInfo[0];
+			}
 		}
 	}
 }

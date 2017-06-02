@@ -26,6 +26,7 @@ namespace Stareater.GUI
 		private TimingLoop timingLoop;
 		private AScene currentRenderer = null;
 		private AScene nextRenderer = null;
+		private BombardmentRenderer bombardRenderer;
 		private GalaxyRenderer galaxyRenderer;
 		private SystemRenderer systemRenderer;
 		private SpaceCombatRenderer combatRenderer;
@@ -134,6 +135,9 @@ namespace Stareater.GUI
 		{
 			if (this.currentRenderer == systemRenderer)
 				switchToGalaxyView();
+			else if (this.currentRenderer == bombardRenderer)
+				this.bombardmentController.Leave();
+				
 		}
 		
 		private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
@@ -288,6 +292,7 @@ namespace Stareater.GUI
 			this.galaxyRenderer = new GalaxyRenderer(this);
 			this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
 			
+			this.bombardRenderer = new BombardmentRenderer();
 			this.systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement, empyPlanetView);
 			this.combatRenderer = new SpaceCombatRenderer();
 			this.gameOverRenderer = new GameOverRenderer();
@@ -494,6 +499,8 @@ namespace Stareater.GUI
 		{
 			if (this.InvokeRequired)
 				this.BeginInvoke(new Action<SpaceBattleController>(initCombatGui), battleController);
+			else
+				initCombatGui(battleController);
 			
 			return this;
 		}
@@ -502,6 +509,8 @@ namespace Stareater.GUI
 		{
 			if (this.InvokeRequired)
 				this.BeginInvoke(new Action<BombardmentController>(initBombardGui), bombardController);
+			else
+				initBombardGui(bombardController);
 			
 			return this;
 		}
@@ -531,7 +540,7 @@ namespace Stareater.GUI
 			this.currentPlayerIndex = 0;
 			this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
 			
-			if (this.currentRenderer == this.combatRenderer)
+			if (this.currentRenderer == this.combatRenderer || this.currentRenderer == this.bombardRenderer)
 			{
 				this.nextRenderer = this.galaxyRenderer;
 				
@@ -578,7 +587,21 @@ namespace Stareater.GUI
 		
 		private void initBombardGui(BombardmentController bombardController)
 		{
-			//TODO(v0.6)
+			this.bombardmentController = bombardController;
+			
+			this.fleetController = null;
+			
+			this.bombardRenderer.StartBombardment(bombardmentController);
+			this.nextRenderer = this.bombardRenderer;
+			
+			abilityList.Visible = false;
+			constructionManagement.Visible = false;
+			empyPlanetView.Visible = false;
+			fleetPanel.Visible = false;
+			endTurnButton.Visible = false;
+			returnButton.Visible = true;
+			unitInfoPanel.Visible = false;
+			menuStrip.Visible = false;
 		}
 		#endregion
 		
@@ -652,7 +675,7 @@ namespace Stareater.GUI
 
 		public void BombardTurn()
 		{
-			this.bombardmentController.Leave();
+			//TODO(v0.6)
 		}
 
 		#endregion

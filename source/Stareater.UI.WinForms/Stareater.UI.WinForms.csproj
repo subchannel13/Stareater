@@ -127,6 +127,7 @@
     <Compile Include="GLData\VertexArray.cs" />
     <Compile Include="GLData\VertexArrayBuilder.cs" />
     <Compile Include="GLRenderers\AtlasBuilder.cs" />
+    <Compile Include="GLRenderers\BombardmentRenderer.cs" />
     <Compile Include="GLRenderers\CharTextureInfo.cs" />
     <Compile Include="GLRenderers\GalaxySelectionType.cs" />
     <Compile Include="GLRenderers\GalaxyTextures.cs" />
