@@ -7,6 +7,8 @@ using OpenTK;
 using Stareater.Controllers;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Galaxy;
+using Stareater.Localization;
+using Stareater.Utils.NumberFormatters;
 using Stareater.GLData;
 using Stareater.GLData.OrbitShader;
 using Stareater.GLData.SpriteShader;
@@ -22,11 +24,12 @@ namespace Stareater.GLRenderers
 		private const float FarZ = 1;
 		private const float Layers = 8.0f;
 		
-		private const float StarColorZ = 1 / Layers;
-		private const float PlanetZ = 1 / Layers;
-		private const float OrbitZ = 2 / Layers;
+		private const float PopCountZ = 1 / Layers;
+		private const float StarColorZ = 2 / Layers;
+		private const float PlanetZ = 2 / Layers;
+		private const float OrbitZ = 3 / Layers;
 		
-		private const float BodiesY = 0.2f;
+		private const float BodiesY = 0.0f;
 		private const float OrbitStep = 0.3f;
 		private const float OrbitOffset = 0.5f;
 		private const float OrbitWidth = 0.01f;
@@ -34,9 +37,10 @@ namespace Stareater.GLRenderers
 		private const float OrbitPieces = 32;
 		private const float StarScale = 0.5f;
 		private const float PlanetScale = 0.15f;
-		private const float StarSelectorScale = 1.1f;
-		private const float PlanetSelectorScale = 1.1f;
+		private const float PopCountTopMargin = 0.03f;
+		private const float TextScale = 0.03f;
 		
+		private IEnumerable<SceneObject> colonyInfos = null;
 		private IEnumerable<SceneObject> planetOrbits = null;
 		private IEnumerable<SceneObject> planetSprites = null;
 		private SceneObject starSprite = null;
@@ -167,6 +171,7 @@ namespace Stareater.GLRenderers
 				return; //FIXME(v0.6) move check to better place
 			
 			this.setupBodies();
+			this.setupUi();
 		}
 		
 		private void setupBodies()
@@ -199,6 +204,31 @@ namespace Stareater.GLRenderers
 							OrbitZ,
 							new OrbitData(orbitR - OrbitWidth / 2, orbitR + OrbitWidth / 2, color, Matrix4.Identity, GalaxyTextures.Get.PathLine),
 							OrbitHelpers.PlanetOrbit(orbitR, OrbitWidth, OrbitPieces).ToList()
+						));
+					}
+				).ToList()
+			);
+		}
+
+		private void setupUi()
+		{
+			var formatter = new ThousandsFormatter();
+			
+			this.UpdateScene(
+				ref this.colonyInfos,
+				this.controller.Planets.Where(x => x.Owner != null).Select(
+					planet => 
+					{
+						var xOffset = planet.OrdinalPosition * OrbitStep + OrbitOffset;
+						
+						return new SceneObject(new PolygonData(
+							PopCountZ,
+							new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, Color.White),
+							TextRenderUtil.Get.BufferText(
+								LocalizationManifest.Get.CurrentLanguage["FormMain"]["Population"].Text() + ": " + formatter.Format(planet.Population), 
+								-0.5f, 
+								Matrix4.CreateScale(TextScale) * Matrix4.CreateTranslation(xOffset, -PlanetScale / 2 - PopCountTopMargin, 0)
+							).ToList()
 						));
 					}
 				).ToList()

@@ -204,8 +204,9 @@ namespace Stareater.GraphicsEngine
 				
 				for (int i = 0; i < drawableData.Count; i++)
 				{
+					//TODO(later) wrong index when multiple programs draw in same "z" layer
 					var data = drawableData[i];
-					this.drawables[data.Z].Add(data.MakeDrawable(vaos[data.ShaderData.ForProgram], i));
+					this.drawables[data.Z].Add(data.MakeDrawable(vaos[data.ShaderData.ForProgram], i)); 
 				}
 			}
 			this.dirtyLayers.Clear();
