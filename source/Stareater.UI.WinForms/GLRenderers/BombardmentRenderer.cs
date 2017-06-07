@@ -29,7 +29,7 @@ namespace Stareater.GLRenderers
 		private const float PlanetZ = 2 / Layers;
 		private const float OrbitZ = 3 / Layers;
 		
-		private const float BodiesY = 0.0f;
+		private const float BodiesY = 0.01f;
 		private const float OrbitStep = 0.3f;
 		private const float OrbitOffset = 0.5f;
 		private const float OrbitWidth = 0.01f;
@@ -38,11 +38,14 @@ namespace Stareater.GLRenderers
 		private const float StarScale = 0.5f;
 		private const float PlanetScale = 0.15f;
 		private const float PopCountTopMargin = 0.03f;
+		private const float TitleTopMargin = 0.05f;
 		private const float TextScale = 0.03f;
+		private const float TitleScale = 0.06f;
 		
 		private IEnumerable<SceneObject> colonyInfos = null;
 		private IEnumerable<SceneObject> planetOrbits = null;
 		private IEnumerable<SceneObject> planetSprites = null;
+		private SceneObject titleText = null;
 		private SceneObject starSprite = null;
 		
 		private BombardmentController controller;
@@ -72,6 +75,7 @@ namespace Stareater.GLRenderers
 			var aspect = canvasSize.X / canvasSize.Y;
 			this.minOffset = aspect * DefaultViewSize / 2 - StarScale / 2;
 			this.limitPan();
+			this.setupTitle();
 			
 			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2(originOffset, -BodiesY));
 		}
@@ -125,6 +129,7 @@ namespace Stareater.GLRenderers
 			
 			lastMousePosition = currentPosition;
 			this.setupPerspective();
+			this.setupTitle();
 		}
 		#endregion
 		
@@ -232,6 +237,22 @@ namespace Stareater.GLRenderers
 						));
 					}
 				).ToList()
+			);
+		}
+
+		private void setupTitle()
+		{
+			this.UpdateScene(
+				ref this.titleText,
+				new SceneObject(new PolygonData(
+					PopCountZ,
+					new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, Color.White),
+					TextRenderUtil.Get.BufferText(
+						LocalizationManifest.Get.CurrentLanguage["FormMain"]["BombardTitle"].Text(), 
+						-0.5f,
+						Matrix4.CreateScale(TitleScale) * Matrix4.CreateTranslation(originOffset, DefaultViewSize / 2 - BodiesY - TitleTopMargin, 0)
+					).ToList()
+				))
 			);
 		}
 	}
