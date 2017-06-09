@@ -32,9 +32,11 @@ namespace Stareater.GLRenderers
 		const string AtlasImagePath = "./images/galaxyTextures.png";
 		const string AtlasIkonPath = "./images/galaxyTextures.txt";
 		const string SpritesPath = "./images/";
+
+		const string AtlasTag = "TextureAtlas";
 		
 		const string AsteroidsTag = "asteroids";
-		const string AtlasTag = "TextureAtlas";
+		const string BombButtonTag = "bombard";
 		const string ColonizationMarkTag = "colonizationMark";
 		const string ColonizationMarkColorTag = "colonizationMarkColor";
 		const string FleetIndicatorTag = "fleetIndicator";
@@ -52,6 +54,7 @@ namespace Stareater.GLRenderers
 		private Dictionary<string, TextureInfo> spriteNames  = new Dictionary<string, TextureInfo>();
 		
 		public TextureInfo Asteroids { get; private set;}
+		public TextureInfo BombButton { get; private set;}
 		public TextureInfo ColonizationMark { get; private set;}
 		public TextureInfo ColonizationMarkColor { get; private set;}
 		public TextureInfo FleetIndicator { get; private set;}
@@ -79,6 +82,7 @@ namespace Stareater.GLRenderers
 			 */
 			//TODO(v0.6) generate texture atlas here
 			Asteroids = this.spriteNames[AsteroidsTag];
+			BombButton  = this.spriteNames[BombButtonTag];
 			ColonizationMark = this.spriteNames[ColonizationMarkTag];
 			ColonizationMarkColor = this.spriteNames[ColonizationMarkColorTag];
 			FleetIndicator = this.spriteNames[FleetIndicatorTag];

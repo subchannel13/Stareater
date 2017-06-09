@@ -34,17 +34,20 @@ namespace Stareater.GLRenderers
 		private const float OrbitOffset = 0.5f;
 		private const float OrbitWidth = 0.01f;
 		
-		private const float OrbitPieces = 32;
+		private const float TitleTopMargin = 0.05f;
+		private const float TitleScale = 0.06f;
 		private const float StarScale = 0.5f;
 		private const float PlanetScale = 0.15f;
+		private const float OrbitPieces = 32;
 		private const float PopCountTopMargin = 0.03f;
-		private const float TitleTopMargin = 0.05f;
 		private const float TextScale = 0.03f;
-		private const float TitleScale = 0.06f;
+		private const float ButtonSize = 0.1f;
+		private const float ButtonTopMargin = 0.03f;
 		
 		private IEnumerable<SceneObject> colonyInfos = null;
 		private IEnumerable<SceneObject> planetOrbits = null;
 		private IEnumerable<SceneObject> planetSprites = null;
+		private IEnumerable<SceneObject> bombButtons = null;
 		private SceneObject titleText = null;
 		private SceneObject starSprite = null;
 		
@@ -218,10 +221,11 @@ namespace Stareater.GLRenderers
 		private void setupUi()
 		{
 			var formatter = new ThousandsFormatter();
+			var colonies = this.controller.Planets.Where(x => x.Owner != null).ToList();
 			
 			this.UpdateScene(
 				ref this.colonyInfos,
-				this.controller.Planets.Where(x => x.Owner != null).Select(
+				colonies.Select(
 					planet => 
 					{
 						var xOffset = planet.OrdinalPosition * OrbitStep + OrbitOffset;
@@ -237,6 +241,25 @@ namespace Stareater.GLRenderers
 						));
 					}
 				).ToList()
+			);
+			
+			
+			const float yOffset = -PlanetScale / 2 - PopCountTopMargin - TextScale - ButtonTopMargin - ButtonSize / 2;
+			//TODO(v0.6) buttons for only hostile colonies
+			this.UpdateScene(
+				ref this.bombButtons,
+				colonies.Select(
+					colony => 
+					{ 
+						var xOffset = colony.OrdinalPosition * OrbitStep + OrbitOffset;
+						
+						//TODO(v0.6) Use scene object physical shape
+						return new SceneObject(new PolygonData(
+							PopCountZ,
+							new SpriteData(Matrix4.CreateScale(ButtonSize) * Matrix4.CreateTranslation(xOffset, yOffset, 0), GalaxyTextures.Get.BombButton.Id, Color.White),
+							SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.BombButton)
+						));
+					}).ToList()
 			);
 		}
 
