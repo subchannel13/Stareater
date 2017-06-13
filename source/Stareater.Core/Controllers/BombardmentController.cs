@@ -33,9 +33,17 @@ namespace Stareater.Controllers
 		
 		internal void Start()
 		{
+			//TODO(v0.6) pick random player
 			this.playerListeners.Values.First().BombardTurn();
 		}
 
+		public void Bombard(int planetPosition)
+		{
+			this.battleGame.Processor.Bombard(this.battleGame.Planets.First(x => x.PlanetData.Position == planetPosition));
+			//TODO(v0.6) rotate players
+			this.playerListeners.Values.First().BombardTurn();
+		}
+		
 		public void Leave()
 		{
 			gameController.BombardmentResolved(this.battleGame);

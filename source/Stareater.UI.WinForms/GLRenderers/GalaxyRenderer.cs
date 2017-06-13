@@ -443,7 +443,7 @@ namespace Stareater.GLRenderers
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
 			var searchRadius = Math.Max(screenLength * ClickRadius, StarMinClickRadius); //TODO(v0.6) doesn't scale with zoom
-			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
+			var searchPoint = convert(mousePoint.Xy);
 			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 			
 			var allObjects = this.QueryScene(searchPoint, searchRadius).

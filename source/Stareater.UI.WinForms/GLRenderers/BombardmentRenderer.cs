@@ -97,16 +97,11 @@ namespace Stareater.GLRenderers
 			if (panAbsPath > PanClickTolerance)
 				return;
 			
-			int? newSelection = null;
-			float mouseX = Vector4.Transform(mouseToView(e.X, e.Y), invProjection).X;
+			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
+			var buttons = this.QueryScene(convert(mousePoint.Xy)).ToList();
 			
-			if (mouseX > -(OrbitOffset - OrbitStep / 2))
-				newSelection = StarSystemController.StarIndex;
-			
-			foreach(var planet in controller.Planets)
-				if (mouseX > planet.OrdinalPosition * OrbitStep + OrbitOffset - OrbitStep / 2)
-					newSelection = planet.OrdinalPosition;
-			
+			if (buttons.Any())
+				this.controller.Bombard((int)buttons.First().Data);
 		}
 		
 		public override void OnMouseMove(MouseEventArgs e)
@@ -226,20 +221,15 @@ namespace Stareater.GLRenderers
 			this.UpdateScene(
 				ref this.colonyInfos,
 				colonies.Select(
-					planet => 
-					{
-						var xOffset = planet.OrdinalPosition * OrbitStep + OrbitOffset;
-						
-						return new SceneObject(new PolygonData(
-							PopCountZ,
-							new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, Color.White),
-							TextRenderUtil.Get.BufferText(
-								LocalizationManifest.Get.CurrentLanguage["FormMain"]["Population"].Text() + ": " + formatter.Format(planet.Population), 
-								-0.5f, 
-								Matrix4.CreateScale(TextScale) * Matrix4.CreateTranslation(xOffset, -PlanetScale / 2 - PopCountTopMargin, 0)
-							).ToList()
-						));
-					}
+					planet => new SceneObject(new PolygonData(
+						PopCountZ,
+						new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, Color.White),
+						TextRenderUtil.Get.BufferText(
+							LocalizationManifest.Get.CurrentLanguage["FormMain"]["Population"].Text() + ": " + formatter.Format(planet.Population), 
+							-0.5f, 
+							Matrix4.CreateScale(TextScale) * Matrix4.CreateTranslation(planet.OrdinalPosition * OrbitStep + OrbitOffset, -PlanetScale / 2 - PopCountTopMargin, 0)
+						).ToList()
+					))
 				).ToList()
 			);
 			
@@ -253,12 +243,15 @@ namespace Stareater.GLRenderers
 					{ 
 						var xOffset = colony.OrdinalPosition * OrbitStep + OrbitOffset;
 						
-						//TODO(v0.6) Use scene object physical shape
-						return new SceneObject(new PolygonData(
-							PopCountZ,
-							new SpriteData(Matrix4.CreateScale(ButtonSize) * Matrix4.CreateTranslation(xOffset, yOffset, 0), GalaxyTextures.Get.BombButton.Id, Color.White),
-							SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.BombButton)
-						));
+						return new SceneObject(
+							new PolygonData(
+								PopCountZ,
+								new SpriteData(Matrix4.CreateScale(ButtonSize) * Matrix4.CreateTranslation(xOffset, yOffset, 0), GalaxyTextures.Get.BombButton.Id, Color.White),
+								SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.BombButton)
+							),
+							new PhysicalData(new Vector2(xOffset, yOffset), new Vector2(ButtonSize, ButtonSize)),
+							colony.OrdinalPosition
+						);
 					}).ToList()
 			);
 		}

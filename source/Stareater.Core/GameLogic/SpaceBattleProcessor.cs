@@ -269,6 +269,16 @@ namespace Stareater.GameLogic
 				this.nextRound();
 		}
 
+		public void Bombard(CombatPlanet planet)
+		{
+			//TODO(v0.6) separate space combat and bombardment
+			foreach(var unit in this.game.Combatants)
+				for(int i = 0; i < unit.AbilityCharges.Length; i++)
+					this.UseAbility(i, unit.AbilityCharges[i], planet);
+			
+			//TODO(v0.6) end bombard turn
+		}
+		
 		public void UseAbility(int index, double quantity, Combatant target)
 		{
 			var unit = this.game.PlayOrder.Peek();
