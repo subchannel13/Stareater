@@ -68,6 +68,11 @@ namespace Stareater.GLRenderers
 			this.ResetLists();
 		}
 		
+		public void NewTurn()
+		{
+			this.setupUi();
+		}
+		
 		#region AScene implementation
 		protected override void FrameUpdate(double deltaTime)
 		{

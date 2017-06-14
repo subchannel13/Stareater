@@ -675,7 +675,13 @@ namespace Stareater.GUI
 
 		public void BombardTurn()
 		{
-			//TODO(v0.6)
+			if (this.InvokeRequired)
+			{
+				this.BeginInvoke(new Action(BombardTurn));
+				return;
+			}
+			
+			this.bombardRenderer.NewTurn();
 		}
 
 		#endregion

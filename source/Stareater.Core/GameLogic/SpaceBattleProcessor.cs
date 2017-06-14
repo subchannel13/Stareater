@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
-using Stareater.Players;
 using Stareater.SpaceCombat;
 using Stareater.Utils;
 
@@ -11,8 +10,6 @@ namespace Stareater.GameLogic
 {
 	class SpaceBattleProcessor : ACombatProcessor
 	{
-		private const double sigmoidBase = 0.90483741803595957316424905944644; //e^-0.1
-		
 		public SpaceBattleProcessor(SpaceBattleGame battleGame, MainGame mainGame) : base (battleGame, mainGame)
 		{ }
 		
@@ -160,80 +157,6 @@ namespace Stareater.GameLogic
 			}
 		}
 		
-		private void makeUnitOrder()
-		{
-			foreach(var unit in this.game.Combatants)
-			{
-				var stats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
-				unit.Initiative = this.game.Rng.NextDouble() + stats.CombatSpeed;
-			}
-			
-			var units = new List<Combatant>(this.game.Combatants);
-			units.Sort((a, b) => -a.Initiative.CompareTo(b.Initiative));
-			
-			foreach(var unit in units)
-				this.game.PlayOrder.Enqueue(unit);
-		}
-		
-		private void nextRound()
-		{
-			this.game.Turn++;
-			this.game.Combatants.RemoveAll(x => x.Ships.Quantity <= 0);
-			var players = this.game.Combatants.Select(x => x.Owner).Distinct();
-			
-			foreach(var unit in this.game.Combatants)
-			{
-				var stats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
-				
-				unit.MovementPoints += 1;
-				unit.MovementPoints = Math.Min(unit.MovementPoints, 1);
-				
-				unit.ShieldPoints += stats.ShieldRegeneration;
-				unit.ShieldPoints = Math.Min(unit.ShieldPoints, stats.ShieldPoints);
-				
-				for(int i = 0; i < unit.AbilityCharges.Length; i++)
-				{
-					unit.AbilityCharges[i] = stats.Abilities[i].Quantity * (double)unit.Ships.Quantity;
-					if (!double.IsInfinity(stats.Abilities[i].Ammo))
-						unit.AbilityCharges[i] = Math.Min(unit.AbilityCharges[i], unit.AbilityAmmo[i]);
-				}
-				
-				this.rollCloaking(unit, stats, players);
-			}
-			
-			foreach(var planet in this.game.Planets.Where(x => x.Colony != null && x.Colony.Population < 1))
-			{
-				this.mainGame.States.Colonies.Remove(planet.Colony);
-				this.mainGame.Derivates.Colonies.Remove(this.mainGame.Derivates.Of(planet.Colony));
-				planet.Colony = null;
-				 //TODO(later) if stellaris should be removed too
-			}
-			
-			this.makeUnitOrder();
-		}
-		
-		private double sensorStrength(Vector2D position, Player owner)
-		{
-			var designStats = this.mainGame.Derivates.Of(owner).DesignStats;
-			var rangePenalty = this.mainGame.Statics.ShipFormulas.SensorRangePenalty;
-			
-			return this.game.Combatants.Where(x => x.Owner == owner).Max(
-				x => 
-				{
-					var distance = Methods.HexDistance(x.Position, position);
-					return designStats[x.Ships.Design].Detection + distance * rangePenalty;
-				}
-			);
-		}
-		
-		private void rollCloaking(Combatant unit, DesignStats stats, IEnumerable<Player> players)
-		{
-			unit.CloakedFor.Clear();
-			foreach(var player in players.Where(x => x != unit.Owner))
-		        if (Probability(stats.Cloaking - sensorStrength(unit.Position, player)) > this.game.Rng.NextDouble())
-					unit.CloakedFor.Add(player);
-		}
-		
 		#region Unit actions
 		public void MoveTo(Vector2D destination)
 		{
@@ -307,7 +230,7 @@ namespace Stareater.GameLogic
 		{
 			return unit.MovementPoints <= 0 ? 
 				new Vector2D[0] : 
-				neighborPositions(unit.Position);
+				Methods.HexNeighbours(unit.Position);
 		}
 		
 		#region Damage dealing
@@ -366,29 +289,6 @@ namespace Stareater.GameLogic
 			
 			//TODO(later) do different calculation for multiple ships below top of the stack
 			return spent;
-		}
-		#endregion
-		
-		#region Math helpers
-		private static IEnumerable<Vector2D> neighborPositions(Vector2D position)
-		{
-			return Methods.HexNeighbours(position);
-		}
-		
-		private static double Probability(double modifer)
-		{
-			if (modifer < 0)
-				return 0.5 * Math.Pow(sigmoidBase, -modifer);
-			else
-				return 1 - 0.5 * Math.Pow(sigmoidBase, modifer);
-		}
-		
-		private static double Reduce(double attack, double defense, double defenseEffect)
-		{
-			if (attack <= 0 || double.IsPositiveInfinity(defense))
-				return 0;
-
-			return attack * Math.Pow(2, -defenseEffect * defense / attack);
 		}
 		#endregion
 	}
