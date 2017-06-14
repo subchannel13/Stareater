@@ -244,9 +244,8 @@ namespace Stareater.Controllers
 		{
 			var conflict = gameObj.Processor.NextConflict();
 			var controller = new SpaceBattleController(conflict, this, gameObj);
-			var participants = conflict.Combatants.Select(x => x.Owner).Distinct().ToList();
 
-			foreach(var player in participants)
+			foreach(var player in controller.Participants)
 			{
 				var playerController = (player.ControlType == PlayerControlType.Neutral) ?
 					this.organelleController :

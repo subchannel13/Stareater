@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
-using Stareater.GameLogic;
 using Stareater.SpaceCombat;
 
 namespace Stareater
@@ -12,7 +11,6 @@ namespace Stareater
 		public static readonly int BattlefieldRadius = 4;
 		
 		public Random Rng { get; private set; }
-		public SpaceBattleProcessor Processor = null;
 		
 		public Vector2D Location { get; private set; }
 		public int TurnLimit;
@@ -24,18 +22,16 @@ namespace Stareater
 		
 		public CombatPlanet[] Planets { get; private set; }
 		
-		public SpaceBattleGame(Vector2D location, IEnumerable<FleetMovement> fleets, double startTime, MainGame mainGame)
+		public SpaceBattleGame(Vector2D location, MainGame mainGame)
 		{
 			this.Combatants = new List<Combatant>();
 			this.Planets = new CombatPlanet[mainGame.States.Planets.At[mainGame.States.Stars.At[location]].Count];
 			this.PlayOrder = new Queue<Combatant>();
 			this.Retreated = new List<Combatant>();
 			this.Rng = new Random();
-			this.Processor = new SpaceBattleProcessor(this, mainGame);
 			this.Turn = 0;
 			
 			this.Location = location;
-			this.Processor.Initialize(fleets, startTime);
 		}
 	}
 }

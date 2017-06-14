@@ -14,7 +14,7 @@ namespace Stareater.GameLogic
 	{
 		private readonly MainGame game;
 		private readonly List<FleetMovement> fleetMovement = new List<FleetMovement>();
-		private readonly Queue<SpaceBattleGame> conflicts = new Queue<SpaceBattleGame>();
+		private readonly Queue<Conflict> conflicts = new Queue<Conflict>();
 		private readonly Queue<Player[]> audiences = new Queue<Player[]>();
 
 		public GameProcessor(MainGame game)
@@ -139,7 +139,7 @@ namespace Stareater.GameLogic
 			}
 		}
 		
-		public SpaceBattleGame NextConflict()
+		public Conflict NextConflict()
 		{
 			return this.conflicts.Dequeue();
 		}
@@ -267,7 +267,7 @@ namespace Stareater.GameLogic
 			this.conflicts.Clear();
 			foreach(var position in conflictPositions.OrderBy(x => x.Value))
 				if (this.game.States.Stars.At.Contains(position.Key))
-					conflicts.Enqueue(new SpaceBattleGame(position.Key, visits[position.Key], position.Value, this.game));
+					conflicts.Enqueue(new Conflict(position.Key, visits[position.Key], position.Value));
 			//TODO(later) deep space interception
 			
 			//FIXME(later) could make "fleet trail" if fleet visits multiple stars in the same turn

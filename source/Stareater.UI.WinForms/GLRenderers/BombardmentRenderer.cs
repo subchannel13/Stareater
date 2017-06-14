@@ -233,7 +233,6 @@ namespace Stareater.GLRenderers
 				).ToList()
 			);
 			
-			
 			const float yOffset = -PlanetScale / 2 - PopCountTopMargin - TextScale - ButtonTopMargin - ButtonSize / 2;
 			//TODO(v0.6) buttons for only hostile colonies
 			this.UpdateScene(

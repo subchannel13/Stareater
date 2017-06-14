@@ -6,6 +6,7 @@ using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
+using Stareater.GameLogic;
 using Stareater.Players;
 using Stareater.SpaceCombat;
 
@@ -18,14 +19,19 @@ namespace Stareater.Controllers
 		private readonly GameController gameController;
 		private readonly Dictionary<Player, IBattleEventListener> playerListeners;
 		
-		internal SpaceBattleController(SpaceBattleGame battleGame, GameController gameController, MainGame mainGame)
+		private SpaceBattleProcessor processor = null;
+		
+		internal SpaceBattleController(Conflict conflict, GameController gameController, MainGame mainGame)
 		{
 			this.playerListeners = new Dictionary<Player, IBattleEventListener>();
 			
-			this.battleGame = battleGame;
+			this.battleGame = new SpaceBattleGame(conflict.Location, mainGame);
 			this.mainGame = mainGame;
 			this.gameController = gameController;
 			this.Star = mainGame.States.Stars.At[battleGame.Location];
+			
+			this.processor = new SpaceBattleProcessor(this.battleGame, mainGame);
+			this.processor.Initialize(conflict.Fleets, conflict.StartTime);
 		}
 	
 		#region Battle information
@@ -48,7 +54,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{ 
-				return this.battleGame.Combatants.Select(x => new CombatantInfo(x, mainGame, this.battleGame.Processor.ValidMoves(x)));
+				return this.battleGame.Combatants.Select(x => new CombatantInfo(x, mainGame, this.processor.ValidMoves(x)));
 			}
 		}
 		#endregion
@@ -56,36 +62,46 @@ namespace Stareater.Controllers
 		#region Unit actions
 		public void MoveTo(Vector2D destination)
 		{
-			this.battleGame.Processor.MoveTo(destination);
+			this.processor.MoveTo(destination);
 			this.checkNextUnit();
 		}
 		
 		public void UnitDone()
 		{
-			this.battleGame.Processor.UnitDone();
+			this.processor.UnitDone();
 			this.checkNextUnit();
 		}
 		
 		public void UseAbility(AbilityInfo ability, CombatantInfo target)
 		{
-			this.battleGame.Processor.UseAbility(ability.Index, ability.Quantity, target.Data);
+			this.processor.UseAbility(ability.Index, ability.Quantity, target.Data);
 			this.checkNextUnit();
 		}
 		
 		public void UseAbility(AbilityInfo ability, CombatPlanetInfo planet)
 		{
-			this.battleGame.Processor.UseAbility(ability.Index, ability.Quantity, planet.Data);
+			this.processor.UseAbility(ability.Index, ability.Quantity, planet.Data);
 			this.checkNextUnit();
 		}
 		
 		public void UseAbilityOnStar(AbilityInfo ability)
 		{
-			this.battleGame.Processor.UseAbility(ability.Index, ability.Quantity, this.Star);
+			this.processor.UseAbility(ability.Index, ability.Quantity, this.Star);
 			this.checkNextUnit();
 		}
 		#endregion
 		
 		#region Unit order and battle event management
+		internal IEnumerable<Player> Participants
+		{
+			get 
+			{
+				return this.battleGame.Combatants.Select(x => x.Owner).Concat(
+					this.battleGame.Planets.Where(x => x.Colony != null).Select(x => x.Colony.Owner)
+				).Distinct();
+			}
+		}
+		
 		internal void Register(PlayerController player, IBattleEventListener eventListener)
 		{
 			playerListeners.Add(player.PlayerInstance(this.mainGame), eventListener);
@@ -99,7 +115,7 @@ namespace Stareater.Controllers
 		//TODO(v0.6) callers can cause stack overflow if they perform multiple unit action in a single function
 		private void checkNextUnit()
 		{
-			if (this.battleGame.Processor.IsOver)
+			if (this.processor.IsOver)
 				this.gameController.SpaceCombatResolved(this.battleGame, true); //TODO(v0.6) check for bombardment
 			else
 				this.playNexUnit();
@@ -111,7 +127,7 @@ namespace Stareater.Controllers
 			playerListeners[currentUnit.Owner].PlayUnit(new CombatantInfo(
 				currentUnit, 
 				mainGame, 
-				this.battleGame.Processor.ValidMoves(currentUnit)
+				this.processor.ValidMoves(currentUnit)
 			));
 		}
 		#endregion

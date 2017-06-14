@@ -4,6 +4,7 @@ using System.Linq;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Galaxy;
+using Stareater.GameLogic;
 using Stareater.Players;
 
 namespace Stareater.Controllers
@@ -14,6 +15,8 @@ namespace Stareater.Controllers
 		private readonly MainGame mainGame;
 		private readonly GameController gameController;
 		private readonly Dictionary<Player, IBombardEventListener> playerListeners;
+		
+		private SpaceBattleProcessor processor = null;
 		
 		internal BombardmentController(SpaceBattleGame battleGame, MainGame mainGame, GameController gameController)
 		{
@@ -39,7 +42,7 @@ namespace Stareater.Controllers
 
 		public void Bombard(int planetPosition)
 		{
-			this.battleGame.Processor.Bombard(this.battleGame.Planets.First(x => x.PlanetData.Position == planetPosition));
+			this.processor.Bombard(this.battleGame.Planets.First(x => x.PlanetData.Position == planetPosition));
 			//TODO(v0.6) rotate players
 			this.playerListeners.Values.First().BombardTurn();
 		}

@@ -223,6 +223,7 @@
     </Compile>
     <Compile Include="GameLogic\AbilityStatsFactory.cs" />
     <Compile Include="GameLogic\AbilityStats.cs" />
+    <Compile Include="GameLogic\Conflict.cs" />
     <Compile Include="GameLogic\IConstructionVisitor.cs" />
     <Compile Include="GameLogic\InvalidMissionVisitor.cs" />
     <Compile Include="GameLogic\NativesProcessor.cs" />
