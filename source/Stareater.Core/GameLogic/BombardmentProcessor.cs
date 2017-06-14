@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Stareater.SpaceCombat;
 
 namespace Stareater.GameLogic
@@ -7,6 +8,22 @@ namespace Stareater.GameLogic
 	{
 		public BombardmentProcessor(SpaceBattleGame battleGame, MainGame mainGame) : base(battleGame, mainGame)
 		{ }
+		
+		public bool IsOver 
+		{
+			get 
+			{ 
+				if (this.game.Turn >= this.game.TurnLimit)
+					return true;
+				
+				//TODO(v0.6) check only hostile colonies
+				var colonies = this.game.Planets.Where(x => x.Colony != null);
+				
+				//TODO(v0.6) doesn't check war declarations
+				//TODO(v0.6) check if attacker has any bombs left
+				return !colonies.Any();
+			}
+		}
 		
 		public void Bombard(CombatPlanet planet)
 		{

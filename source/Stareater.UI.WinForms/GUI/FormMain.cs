@@ -526,6 +526,7 @@ namespace Stareater.GUI
 			
 			abilityList.Visible = false;
 			endTurnButton.Visible = false;
+			returnButton.Visible = false;
 			unitInfoPanel.Visible = false;
 			menuStrip.Visible = true;
 		}
@@ -546,6 +547,7 @@ namespace Stareater.GUI
 				
 				abilityList.Visible = false;
 				endTurnButton.Visible = true;
+				returnButton.Visible = false;
 				unitInfoPanel.Visible = false;
 				menuStrip.Visible = true;
 			}

@@ -44,8 +44,12 @@ namespace Stareater.Controllers
 		public void Bombard(int planetPosition)
 		{
 			this.processor.Bombard(this.battleGame.Planets.First(x => x.PlanetData.Position == planetPosition));
+			
 			//TODO(v0.6) rotate players
-			this.playerListeners.Values.First().BombardTurn();
+			if (!this.processor.IsOver)
+				this.playerListeners.Values.First().BombardTurn();
+			else
+				gameController.BombardmentResolved(this.battleGame);
 		}
 		
 		public void Leave()
