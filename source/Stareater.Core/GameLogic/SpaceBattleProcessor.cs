@@ -9,18 +9,12 @@ using Stareater.Utils;
 
 namespace Stareater.GameLogic
 {
-	class SpaceBattleProcessor
+	class SpaceBattleProcessor : ACombatProcessor
 	{
 		private const double sigmoidBase = 0.90483741803595957316424905944644; //e^-0.1
 		
-		private readonly SpaceBattleGame game;
-		private readonly MainGame mainGame;
-		
-		public SpaceBattleProcessor(SpaceBattleGame battleGame, MainGame mainGame)
-		{
-			this.game = battleGame;
-			this.mainGame = mainGame;
-		}
+		public SpaceBattleProcessor(SpaceBattleGame battleGame, MainGame mainGame) : base (battleGame, mainGame)
+		{ }
 		
 		#region Initialization
 		public void Initialize(IEnumerable<FleetMovement> fleets, double startTime)
@@ -268,16 +262,6 @@ namespace Stareater.GameLogic
 			if (this.game.PlayOrder.Count == 0)
 				this.nextRound();
 		}
-
-		public void Bombard(CombatPlanet planet)
-		{
-			//TODO(v0.6) separate space combat and bombardment
-			foreach(var unit in this.game.Combatants)
-				for(int i = 0; i < unit.AbilityCharges.Length; i++)
-					this.UseAbility(i, unit.AbilityCharges[i], planet);
-			
-			//TODO(v0.6) end bombard turn
-		}
 		
 		public void UseAbility(int index, double quantity, Combatant target)
 		{
@@ -293,32 +277,6 @@ namespace Stareater.GameLogic
 				spent = this.doDirectAttack(unit, abilityStats, quantity, target);
 			
 			spent = Math.Min(spent, quantity);
-			unit.AbilityCharges[index] -= spent;
-			if (!double.IsInfinity(unit.AbilityAmmo[index]))
-				unit.AbilityAmmo[index] -= spent;
-		}
-		
-		public void UseAbility(int index, double quantity, CombatPlanet planet)
-		{
-			var unit = this.game.PlayOrder.Peek();
-			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
-			var chargesLeft = quantity;
-			var spent = 0.0;
-			
-			if (!abilityStats.TargetColony || Methods.HexDistance(planet.Position, unit.Position) > abilityStats.Range)
-				return;
-			
-			if (abilityStats.IsInstantDamage && planet.Colony != null)
-			{
-				var killsPerShot = abilityStats.FirePower / planet.PopulationHitPoints;
-				var casualties = Math.Min(quantity * killsPerShot, planet.Colony.Population);
-				//TODO(later) factor in shields and armor
-				//TODO(later) roll for target, building or population
-				
-				planet.Colony.Population -= casualties;
-				spent = Math.Ceiling(casualties / killsPerShot);
-			}
-			
 			unit.AbilityCharges[index] -= spent;
 			if (!double.IsInfinity(unit.AbilityAmmo[index]))
 				unit.AbilityAmmo[index] -= spent;

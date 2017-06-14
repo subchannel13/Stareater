@@ -16,7 +16,7 @@ namespace Stareater.Controllers
 		private readonly GameController gameController;
 		private readonly Dictionary<Player, IBombardEventListener> playerListeners;
 		
-		private SpaceBattleProcessor processor = null;
+		private BombardmentProcessor processor = null;
 		
 		internal BombardmentController(SpaceBattleGame battleGame, MainGame mainGame, GameController gameController)
 		{
@@ -27,6 +27,7 @@ namespace Stareater.Controllers
 			this.gameController = gameController;
 			
 			this.Star = mainGame.States.Stars.At[battleGame.Location];
+			this.processor = new BombardmentProcessor(battleGame, mainGame);
 		}
 		
 		internal void Register(PlayerController player, IBombardEventListener eventListener)
