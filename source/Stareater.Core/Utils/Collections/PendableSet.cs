@@ -3,7 +3,6 @@ using System;
 
 namespace Stareater.Utils.Collections
 {
-	[Serializable]
 	public class PendableSet<T> : HashSet<T>, IDelayedCollection<T>
 	{
 		List<T> toAdd = null;

@@ -11,3 +11,5 @@ release/
 build/images/galaxyTextures.*
 build/settings.txt
 documentation/Graphs/*.png
+*.lastcodeanalysissucceeded
+*.CodeAnalysisLog.xml

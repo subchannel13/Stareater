@@ -201,12 +201,14 @@ namespace Stareater.GLRenderers
 
 		private void setupVaos()
 		{
+			//setup stars first so fleets can query them 
+			this.setupStarSprites();
+
 			this.setupFleetMarkers();
 			this.setupFleetMovement();
 			this.setupMovementEta();
 			this.setupMovementSimulation();
 			this.setupSelectionMarkers();
-			this.setupStarSprites();
 			this.setupWormholeSprites();
 		}
 		
