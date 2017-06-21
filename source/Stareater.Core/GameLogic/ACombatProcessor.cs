@@ -19,6 +19,30 @@ namespace Stareater.GameLogic
 			this.mainGame = mainGame;
 		}
 		
+		public bool CanBombard
+		{
+			get
+			{
+				if (this.game.Turn >= this.game.TurnLimit)
+					return false;
+				
+				//TODO(v0.6) check only hostile colonies
+				var colonies = this.game.Planets.Where(x => x.Colony != null);
+				
+				//TODO(v0.6) doesn't check war declarations between players
+				return colonies.Any() && this.game.Combatants.Any(
+					unit =>
+					{
+						var statList = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities;
+						for(int i = 0; i < statList.Count; i++)
+							if (statList[i].TargetColony && (double.IsInfinity(statList[i].Ammo) || unit.AbilityAmmo[i] >= 1))
+								return true;
+						
+						return false;
+					});
+			}
+		}
+		
 		public void UseAbility(int index, double quantity, CombatPlanet planet)
 		{
 			var unit = this.game.PlayOrder.Peek();

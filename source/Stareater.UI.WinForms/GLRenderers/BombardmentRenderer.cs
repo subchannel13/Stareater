@@ -70,7 +70,7 @@ namespace Stareater.GLRenderers
 		
 		public void NewTurn()
 		{
-			this.setupUi();
+			this.setupVaos();
 		}
 		
 		#region AScene implementation

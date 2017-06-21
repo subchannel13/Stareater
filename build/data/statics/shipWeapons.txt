@@ -71,6 +71,7 @@
 			energyCost # 0;
 			
 			planetEfficiency # 5;
+			ammo # 5;
 		}
 	]
 }

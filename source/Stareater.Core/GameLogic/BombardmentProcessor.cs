@@ -13,15 +13,7 @@ namespace Stareater.GameLogic
 		{
 			get 
 			{ 
-				if (this.game.Turn >= this.game.TurnLimit)
-					return true;
-				
-				//TODO(v0.6) check only hostile colonies
-				var colonies = this.game.Planets.Where(x => x.Colony != null);
-				
-				//TODO(v0.6) doesn't check war declarations
-				//TODO(v0.6) check if attacker has any bombs left
-				return !colonies.Any();
+				return !this.CanBombard;
 			}
 		}
 		
