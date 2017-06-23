@@ -25,12 +25,15 @@ namespace Stareater.GameLogic
 			{
 				if (this.game.Turn >= this.game.TurnLimit)
 					return false;
-				
-				//TODO(v0.6) check only hostile colonies
-				var colonies = this.game.Planets.Where(x => x.Colony != null);
-				
-				//TODO(v0.6) doesn't check war declarations between players
-				return colonies.Any() && this.game.Combatants.Any(
+
+				var colonies = this.game.Planets.Where(x => x.Colony != null).ToList();
+				var hostileShips = this.game.Combatants.Where(
+					ship => colonies.Any(planet => this.mainGame.Processor.IsAtWar(ship.Owner, planet.Colony.Owner))
+				);
+
+				return this.game.Combatants.Where(
+					ship => colonies.Any(planet => this.mainGame.Processor.IsAtWar(ship.Owner, planet.Colony.Owner))
+				).Any(
 					unit =>
 					{
 						var statList = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities;
@@ -39,7 +42,8 @@ namespace Stareater.GameLogic
 								return true;
 						
 						return false;
-					});
+					}
+				);
 			}
 		}
 		

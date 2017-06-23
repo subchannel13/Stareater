@@ -80,7 +80,6 @@ namespace Stareater.GLRenderers
 			/*
 			 * If any sprite is missing, try running {repo root}/scripts/gen_textures.bat script.
 			 */
-			//TODO(v0.6) generate texture atlas here
 			Asteroids = this.spriteNames[AsteroidsTag];
 			BombButton  = this.spriteNames[BombButtonTag];
 			ColonizationMark = this.spriteNames[ColonizationMarkTag];
