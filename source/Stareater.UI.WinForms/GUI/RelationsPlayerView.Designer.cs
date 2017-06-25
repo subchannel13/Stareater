@@ -54,7 +54,7 @@
 			this.playerName.Location = new System.Drawing.Point(43, 4);
 			this.playerName.Name = "playerName";
 			this.playerName.Size = new System.Drawing.Size(114, 32);
-			this.playerName.TabIndex = 1;
+			this.playerName.TabIndex = 0;
 			this.playerName.Text = "label1";
 			this.playerName.Click += new System.EventHandler(this.playerName_Click);
 			// 
@@ -66,7 +66,7 @@
 			this.treatyList.Location = new System.Drawing.Point(3, 42);
 			this.treatyList.Name = "treatyList";
 			this.treatyList.Size = new System.Drawing.Size(154, 75);
-			this.treatyList.TabIndex = 2;
+			this.treatyList.TabIndex = 1;
 			this.treatyList.Click += new System.EventHandler(this.treatyList_Click);
 			// 
 			// audienceRequest
@@ -78,7 +78,7 @@
 			this.audienceRequest.TabIndex = 0;
 			this.audienceRequest.Visible = false;
 			// 
-			// RelationsPlayerInfo
+			// RelationsPlayerView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -86,7 +86,7 @@
 			this.Controls.Add(this.treatyList);
 			this.Controls.Add(this.playerName);
 			this.Controls.Add(this.playerColor);
-			this.Name = "RelationsPlayerInfo";
+			this.Name = "RelationsPlayerView";
 			this.Size = new System.Drawing.Size(160, 120);
 			((System.ComponentModel.ISupportInitialize)(this.playerColor)).EndInit();
 			this.treatyList.ResumeLayout(false);

@@ -91,7 +91,7 @@
 			this.saveGameButton.Location = new System.Drawing.Point(90, 100);
 			this.saveGameButton.Name = "saveGameButton";
 			this.saveGameButton.Size = new System.Drawing.Size(115, 30);
-			this.saveGameButton.TabIndex = 6;
+			this.saveGameButton.TabIndex = 2;
 			this.saveGameButton.Text = "Spremi / učitaj igru";
 			this.saveGameButton.UseVisualStyleBackColor = true;
 			this.saveGameButton.Click += new System.EventHandler(this.saveGameButton_Click);

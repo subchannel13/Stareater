@@ -56,7 +56,7 @@ namespace Stareater.GUI
 			this.messageLabel.Location = new System.Drawing.Point(53, 3);
 			this.messageLabel.Name = "messageLabel";
 			this.messageLabel.Size = new System.Drawing.Size(194, 44);
-			this.messageLabel.TabIndex = 1;
+			this.messageLabel.TabIndex = 0;
 			this.messageLabel.Text = "label1";
 			this.messageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.messageLabel.Click += new System.EventHandler(this.messageLabel_Click);
@@ -72,6 +72,7 @@ namespace Stareater.GUI
 			this.Size = new System.Drawing.Size(250, 50);
 			((System.ComponentModel.ISupportInitialize)(this.thumbnail)).EndInit();
 			this.ResumeLayout(false);
+
 		}
 		private System.Windows.Forms.Label messageLabel;
 		private System.Windows.Forms.PictureBox thumbnail;

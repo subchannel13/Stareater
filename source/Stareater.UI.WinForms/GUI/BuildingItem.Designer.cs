@@ -58,7 +58,7 @@ namespace Stareater.GUI
 			this.nameLabel.Location = new System.Drawing.Point(41, 3);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(37, 13);
-			this.nameLabel.TabIndex = 1;
+			this.nameLabel.TabIndex = 0;
 			this.nameLabel.Text = "name";
 			// 
 			// countLabel
@@ -67,7 +67,7 @@ namespace Stareater.GUI
 			this.countLabel.Location = new System.Drawing.Point(41, 18);
 			this.countLabel.Name = "countLabel";
 			this.countLabel.Size = new System.Drawing.Size(22, 13);
-			this.countLabel.TabIndex = 2;
+			this.countLabel.TabIndex = 1;
 			this.countLabel.Text = "xxx";
 			// 
 			// BuildingItem
@@ -83,6 +83,7 @@ namespace Stareater.GUI
 			((System.ComponentModel.ISupportInitialize)(this.thumbnail)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 		private System.Windows.Forms.Label countLabel;
 		private System.Windows.Forms.Label nameLabel;

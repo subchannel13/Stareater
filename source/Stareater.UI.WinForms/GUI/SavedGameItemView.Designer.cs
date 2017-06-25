@@ -50,7 +50,7 @@
 			this.turnText.Location = new System.Drawing.Point(78, 26);
 			this.turnText.Name = "turnText";
 			this.turnText.Size = new System.Drawing.Size(50, 13);
-			this.turnText.TabIndex = 7;
+			this.turnText.TabIndex = 1;
 			this.turnText.Text = "Turn 251";
 			this.turnText.Click += new System.EventHandler(this.TurnTextClick);
 			// 
@@ -60,7 +60,7 @@
 			this.gameName.Location = new System.Drawing.Point(78, 3);
 			this.gameName.Name = "gameName";
 			this.gameName.Size = new System.Drawing.Size(217, 20);
-			this.gameName.TabIndex = 9;
+			this.gameName.TabIndex = 0;
 			this.gameName.Text = "Game name here";
 			// 
 			// SavedGameItemView

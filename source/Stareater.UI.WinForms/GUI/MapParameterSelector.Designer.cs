@@ -40,7 +40,7 @@
 			this.valueSelector.Location = new System.Drawing.Point(0, 16);
 			this.valueSelector.Name = "valueSelector";
 			this.valueSelector.Size = new System.Drawing.Size(140, 21);
-			this.valueSelector.TabIndex = 21;
+			this.valueSelector.TabIndex = 1;
 			this.valueSelector.SelectedIndexChanged += new System.EventHandler(this.valueSelector_SelectedIndexChanged);
 			// 
 			// nameLabel
@@ -49,7 +49,7 @@
 			this.nameLabel.Location = new System.Drawing.Point(-3, 0);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(35, 13);
-			this.nameLabel.TabIndex = 22;
+			this.nameLabel.TabIndex = 0;
 			this.nameLabel.Text = "label1";
 			// 
 			// MapParameterSelector

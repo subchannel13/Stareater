@@ -50,17 +50,17 @@
 			this.nameText.Location = new System.Drawing.Point(39, 0);
 			this.nameText.Name = "nameText";
 			this.nameText.Size = new System.Drawing.Size(93, 20);
-			this.nameText.TabIndex = 1;
+			this.nameText.TabIndex = 0;
 			this.nameText.Text = "label1";
 			// 
-			// TreatyInfo
+			// TreatyBriefView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.nameText);
 			this.Controls.Add(this.thumbnailImage);
 			this.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
-			this.Name = "TreatyInfo";
+			this.Name = "TreatyBriefView";
 			this.Size = new System.Drawing.Size(135, 20);
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
 			this.ResumeLayout(false);

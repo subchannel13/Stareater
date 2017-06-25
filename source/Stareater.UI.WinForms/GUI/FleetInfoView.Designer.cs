@@ -57,13 +57,13 @@ namespace Stareater.GUI
 			// quantityLabel
 			// 
 			this.quantityLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-			| System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.quantityLabel.BackColor = System.Drawing.Color.Transparent;
 			this.quantityLabel.Location = new System.Drawing.Point(48, 0);
 			this.quantityLabel.Name = "quantityLabel";
 			this.quantityLabel.Size = new System.Drawing.Size(99, 31);
-			this.quantityLabel.TabIndex = 2;
+			this.quantityLabel.TabIndex = 0;
 			this.quantityLabel.Text = "label1";
 			this.quantityLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.quantityLabel.Click += new System.EventHandler(this.quantityLabel_Click);

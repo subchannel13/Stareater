@@ -50,7 +50,7 @@
 			this.techDescription.Name = "techDescription";
 			this.techDescription.ReadOnly = true;
 			this.techDescription.Size = new System.Drawing.Size(250, 361);
-			this.techDescription.TabIndex = 27;
+			this.techDescription.TabIndex = 6;
 			this.techDescription.Text = "Description here";
 			// 
 			// techLevel
@@ -59,7 +59,7 @@
 			this.techLevel.Location = new System.Drawing.Point(383, 26);
 			this.techLevel.Name = "techLevel";
 			this.techLevel.Size = new System.Drawing.Size(43, 13);
-			this.techLevel.TabIndex = 26;
+			this.techLevel.TabIndex = 5;
 			this.techLevel.Text = "Level X";
 			// 
 			// techName
@@ -68,7 +68,7 @@
 			this.techName.Location = new System.Drawing.Point(383, 12);
 			this.techName.Name = "techName";
 			this.techName.Size = new System.Drawing.Size(61, 13);
-			this.techName.TabIndex = 25;
+			this.techName.TabIndex = 4;
 			this.techName.Text = "Tech name";
 			// 
 			// techImage
@@ -88,7 +88,7 @@
 			this.topicList.Location = new System.Drawing.Point(12, 117);
 			this.topicList.Name = "topicList";
 			this.topicList.Size = new System.Drawing.Size(277, 342);
-			this.topicList.TabIndex = 28;
+			this.topicList.TabIndex = 3;
 			this.topicList.MouseLeave += new System.EventHandler(this.topicList_MouseLeave);
 			// 
 			// focusedLabel
@@ -97,7 +97,7 @@
 			this.focusedLabel.Location = new System.Drawing.Point(12, 9);
 			this.focusedLabel.Name = "focusedLabel";
 			this.focusedLabel.Size = new System.Drawing.Size(48, 13);
-			this.focusedLabel.TabIndex = 29;
+			this.focusedLabel.TabIndex = 0;
 			this.focusedLabel.Text = "focused:";
 			// 
 			// listTitle
@@ -106,7 +106,7 @@
 			this.listTitle.Location = new System.Drawing.Point(12, 101);
 			this.listTitle.Name = "listTitle";
 			this.listTitle.Size = new System.Drawing.Size(62, 13);
-			this.listTitle.TabIndex = 31;
+			this.listTitle.TabIndex = 2;
 			this.listTitle.Text = "other topics";
 			// 
 			// focusedItem
@@ -115,7 +115,7 @@
 			this.focusedItem.Location = new System.Drawing.Point(15, 25);
 			this.focusedItem.Name = "focusedItem";
 			this.focusedItem.Size = new System.Drawing.Size(250, 50);
-			this.focusedItem.TabIndex = 30;
+			this.focusedItem.TabIndex = 1;
 			// 
 			// FormResearch
 			// 

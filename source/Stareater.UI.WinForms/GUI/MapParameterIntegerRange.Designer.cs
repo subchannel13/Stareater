@@ -37,7 +37,7 @@
 			this.valueLabel.Location = new System.Drawing.Point(5, 33);
 			this.valueLabel.Name = "valueLabel";
 			this.valueLabel.Size = new System.Drawing.Size(137, 13);
-			this.valueLabel.TabIndex = 28;
+			this.valueLabel.TabIndex = 2;
 			this.valueLabel.Text = "label1";
 			this.valueLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			// 
@@ -47,7 +47,7 @@
 			this.valueSlider.Location = new System.Drawing.Point(2, 16);
 			this.valueSlider.Name = "valueSlider";
 			this.valueSlider.Size = new System.Drawing.Size(140, 17);
-			this.valueSlider.TabIndex = 27;
+			this.valueSlider.TabIndex = 1;
 			this.valueSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.valueSlider_Scroll);
 			// 
 			// nameLabel
@@ -56,7 +56,7 @@
 			this.nameLabel.Location = new System.Drawing.Point(-1, 0);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(35, 13);
-			this.nameLabel.TabIndex = 26;
+			this.nameLabel.TabIndex = 0;
 			this.nameLabel.Text = "label1";
 			// 
 			// MapParameterIntegerRange

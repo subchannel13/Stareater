@@ -59,7 +59,7 @@ namespace Stareater.GUI
 			this.addButton.Location = new System.Drawing.Point(20, 75);
 			this.addButton.Name = "addButton";
 			this.addButton.Size = new System.Drawing.Size(23, 23);
-			this.addButton.TabIndex = 3;
+			this.addButton.TabIndex = 4;
 			this.addButton.Click += new System.EventHandler(this.addButton_Click);
 			// 
 			// thumbnailImage
@@ -78,7 +78,7 @@ namespace Stareater.GUI
 			this.fromLabel.Location = new System.Drawing.Point(10, 46);
 			this.fromLabel.Name = "fromLabel";
 			this.fromLabel.Size = new System.Drawing.Size(33, 13);
-			this.fromLabel.TabIndex = 6;
+			this.fromLabel.TabIndex = 3;
 			this.fromLabel.Text = "From:";
 			// 
 			// targetName
@@ -87,7 +87,7 @@ namespace Stareater.GUI
 			this.targetName.Location = new System.Drawing.Point(49, 3);
 			this.targetName.Name = "targetName";
 			this.targetName.Size = new System.Drawing.Size(88, 13);
-			this.targetName.TabIndex = 5;
+			this.targetName.TabIndex = 0;
 			this.targetName.Text = "Alpha Centauri III";
 			// 
 			// sourceList
@@ -98,7 +98,7 @@ namespace Stareater.GUI
 			this.sourceList.Location = new System.Drawing.Point(49, 46);
 			this.sourceList.Name = "sourceList";
 			this.sourceList.Size = new System.Drawing.Size(0, 0);
-			this.sourceList.TabIndex = 7;
+			this.sourceList.TabIndex = 5;
 			// 
 			// targetInfo
 			// 
@@ -106,7 +106,7 @@ namespace Stareater.GUI
 			this.targetInfo.Location = new System.Drawing.Point(49, 16);
 			this.targetInfo.Name = "targetInfo";
 			this.targetInfo.Size = new System.Drawing.Size(120, 13);
-			this.targetInfo.TabIndex = 8;
+			this.targetInfo.TabIndex = 1;
 			this.targetInfo.Text = "0.01 / 100 G population";
 			// 
 			// enrouteInfo
@@ -115,7 +115,7 @@ namespace Stareater.GUI
 			this.enrouteInfo.Location = new System.Drawing.Point(49, 29);
 			this.enrouteInfo.Name = "enrouteInfo";
 			this.enrouteInfo.Size = new System.Drawing.Size(80, 13);
-			this.enrouteInfo.TabIndex = 9;
+			this.enrouteInfo.TabIndex = 2;
 			this.enrouteInfo.Text = "+x.xx X enroute";
 			// 
 			// ColonizationTargetView

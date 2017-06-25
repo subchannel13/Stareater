@@ -70,7 +70,7 @@
 			this.popInfoGroup.Location = new System.Drawing.Point(82, 12);
 			this.popInfoGroup.Name = "popInfoGroup";
 			this.popInfoGroup.Size = new System.Drawing.Size(116, 64);
-			this.popInfoGroup.TabIndex = 1;
+			this.popInfoGroup.TabIndex = 0;
 			this.popInfoGroup.TabStop = false;
 			this.popInfoGroup.Text = "Population";
 			// 
@@ -109,15 +109,15 @@
 			this.planetInfoGroup.Location = new System.Drawing.Point(204, 12);
 			this.planetInfoGroup.Name = "planetInfoGroup";
 			this.planetInfoGroup.Size = new System.Drawing.Size(185, 131);
-			this.planetInfoGroup.TabIndex = 2;
+			this.planetInfoGroup.TabIndex = 1;
 			this.planetInfoGroup.TabStop = false;
 			this.planetInfoGroup.Text = "Planet";
 			// 
-			// traitsList
+			// traitList
 			// 
 			this.traitList.AutoScroll = true;
 			this.traitList.Location = new System.Drawing.Point(6, 45);
-			this.traitList.Name = "traitsList";
+			this.traitList.Name = "traitList";
 			this.traitList.Size = new System.Drawing.Size(172, 76);
 			this.traitList.TabIndex = 2;
 			// 
@@ -145,7 +145,7 @@
 			this.buildingsGroup.Location = new System.Drawing.Point(12, 82);
 			this.buildingsGroup.Name = "buildingsGroup";
 			this.buildingsGroup.Size = new System.Drawing.Size(186, 201);
-			this.buildingsGroup.TabIndex = 3;
+			this.buildingsGroup.TabIndex = 2;
 			this.buildingsGroup.TabStop = false;
 			this.buildingsGroup.Text = "Buildings";
 			// 
@@ -168,7 +168,7 @@
 			this.productivityGroup.Location = new System.Drawing.Point(204, 149);
 			this.productivityGroup.Name = "productivityGroup";
 			this.productivityGroup.Size = new System.Drawing.Size(185, 134);
-			this.productivityGroup.TabIndex = 4;
+			this.productivityGroup.TabIndex = 3;
 			this.productivityGroup.TabStop = false;
 			this.productivityGroup.Text = "Productivity";
 			// 
@@ -250,6 +250,7 @@
 			this.productivityGroup.ResumeLayout(false);
 			this.productivityGroup.PerformLayout();
 			this.ResumeLayout(false);
+
 		}
 		private System.Windows.Forms.Label miningInfo;
 		private System.Windows.Forms.Label industryInfo;

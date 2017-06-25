@@ -60,7 +60,7 @@
 			this.coloniesInfoGroup.Location = new System.Drawing.Point(82, 12);
 			this.coloniesInfoGroup.Name = "coloniesInfoGroup";
 			this.coloniesInfoGroup.Size = new System.Drawing.Size(116, 64);
-			this.coloniesInfoGroup.TabIndex = 1;
+			this.coloniesInfoGroup.TabIndex = 0;
 			this.coloniesInfoGroup.TabStop = false;
 			this.coloniesInfoGroup.Text = "Colonies";
 			// 
@@ -106,7 +106,7 @@
 			this.traitList.Location = new System.Drawing.Point(204, 12);
 			this.traitList.Name = "traitList";
 			this.traitList.Size = new System.Drawing.Size(170, 76);
-			this.traitList.TabIndex = 3;
+			this.traitList.TabIndex = 1;
 			// 
 			// outputInfoGroup
 			// 
@@ -115,7 +115,7 @@
 			this.outputInfoGroup.Location = new System.Drawing.Point(204, 94);
 			this.outputInfoGroup.Name = "outputInfoGroup";
 			this.outputInfoGroup.Size = new System.Drawing.Size(170, 70);
-			this.outputInfoGroup.TabIndex = 4;
+			this.outputInfoGroup.TabIndex = 3;
 			this.outputInfoGroup.TabStop = false;
 			this.outputInfoGroup.Text = "Output";
 			// 

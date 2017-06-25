@@ -49,7 +49,7 @@ namespace Stareater.GUI
 			this.queueButton.Location = new System.Drawing.Point(8, 21);
 			this.queueButton.Name = "queueButton";
 			this.queueButton.Size = new System.Drawing.Size(88, 88);
-			this.queueButton.TabIndex = 0;
+			this.queueButton.TabIndex = 1;
 			this.queueButton.Text = "button1";
 			this.queueButton.UseVisualStyleBackColor = true;
 			this.queueButton.Click += new System.EventHandler(this.queueButton_Click);
@@ -61,7 +61,7 @@ namespace Stareater.GUI
 			this.nameLabel.Location = new System.Drawing.Point(8, 5);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(136, 13);
-			this.nameLabel.TabIndex = 1;
+			this.nameLabel.TabIndex = 0;
 			this.nameLabel.Text = "Construction site name";
 			// 
 			// industrySlider

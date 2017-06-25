@@ -47,18 +47,18 @@ namespace Stareater.GUI
 			this.controlButton.Location = new System.Drawing.Point(174, 3);
 			this.controlButton.Name = "controlButton";
 			this.controlButton.Size = new System.Drawing.Size(23, 23);
-			this.controlButton.TabIndex = 6;
+			this.controlButton.TabIndex = 1;
 			this.controlButton.Click += new System.EventHandler(this.controlButton_Click);
 			// 
 			// starName
 			// 
 			this.starName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.starName.AutoSize = true;
 			this.starName.Location = new System.Drawing.Point(3, 8);
 			this.starName.Name = "starName";
 			this.starName.Size = new System.Drawing.Size(55, 13);
-			this.starName.TabIndex = 4;
+			this.starName.TabIndex = 0;
 			this.starName.Text = "Star name";
 			// 
 			// ColonizationSourceView

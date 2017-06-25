@@ -53,7 +53,7 @@ namespace Stareater.GUI
 			this.nameLabel.Location = new System.Drawing.Point(8, 5);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(112, 13);
-			this.nameLabel.TabIndex = 2;
+			this.nameLabel.TabIndex = 0;
 			this.nameLabel.Text = "System body name";
 			// 
 			// detailsButton
@@ -61,7 +61,7 @@ namespace Stareater.GUI
 			this.detailsButton.Location = new System.Drawing.Point(274, 86);
 			this.detailsButton.Name = "detailsButton";
 			this.detailsButton.Size = new System.Drawing.Size(75, 23);
-			this.detailsButton.TabIndex = 7;
+			this.detailsButton.TabIndex = 3;
 			this.detailsButton.Text = "button1";
 			this.detailsButton.UseVisualStyleBackColor = true;
 			// 
@@ -71,7 +71,7 @@ namespace Stareater.GUI
 			this.estimationLabel.Location = new System.Drawing.Point(102, 21);
 			this.estimationLabel.Name = "estimationLabel";
 			this.estimationLabel.Size = new System.Drawing.Size(35, 13);
-			this.estimationLabel.TabIndex = 6;
+			this.estimationLabel.TabIndex = 2;
 			this.estimationLabel.Text = "label1";
 			// 
 			// colonizeButton
@@ -80,7 +80,7 @@ namespace Stareater.GUI
 			this.colonizeButton.Location = new System.Drawing.Point(8, 21);
 			this.colonizeButton.Name = "colonizeButton";
 			this.colonizeButton.Size = new System.Drawing.Size(88, 88);
-			this.colonizeButton.TabIndex = 5;
+			this.colonizeButton.TabIndex = 1;
 			this.colonizeButton.Text = "button1";
 			this.colonizeButton.UseVisualStyleBackColor = true;
 			this.colonizeButton.Click += new System.EventHandler(this.ColonizeButtonClick);

@@ -63,7 +63,7 @@ namespace Stareater.GUI
 			this.acceptButton.Location = new System.Drawing.Point(531, 368);
 			this.acceptButton.Name = "acceptButton";
 			this.acceptButton.Size = new System.Drawing.Size(75, 23);
-			this.acceptButton.TabIndex = 0;
+			this.acceptButton.TabIndex = 8;
 			this.acceptButton.Text = "confirm";
 			this.acceptButton.UseVisualStyleBackColor = true;
 			this.acceptButton.Click += new System.EventHandler(this.acceptButton_Click);
@@ -82,7 +82,7 @@ namespace Stareater.GUI
 			this.levelLabel.Location = new System.Drawing.Point(98, 25);
 			this.levelLabel.Name = "levelLabel";
 			this.levelLabel.Size = new System.Drawing.Size(39, 13);
-			this.levelLabel.TabIndex = 4;
+			this.levelLabel.TabIndex = 1;
 			this.levelLabel.Text = "level X";
 			// 
 			// topicName
@@ -92,21 +92,21 @@ namespace Stareater.GUI
 			this.topicName.Location = new System.Drawing.Point(98, 12);
 			this.topicName.Name = "topicName";
 			this.topicName.Size = new System.Drawing.Size(73, 13);
-			this.topicName.TabIndex = 3;
+			this.topicName.TabIndex = 0;
 			this.topicName.Text = "Topic name";
 			// 
 			// topicDescription
 			// 
-			this.topicDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)));
+			this.topicDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.topicDescription.Location = new System.Drawing.Point(12, 98);
 			this.topicDescription.Multiline = true;
 			this.topicDescription.Name = "topicDescription";
 			this.topicDescription.ReadOnly = true;
 			this.topicDescription.Size = new System.Drawing.Size(222, 293);
-			this.topicDescription.TabIndex = 18;
+			this.topicDescription.TabIndex = 2;
 			this.topicDescription.Text = "Lore ipsum\r\nDoloret reat msddo mowerr maugad sad\r\ndaod coksal. Je sorof msoerta n" +
-				"aue usfa.\r\n";
+    "aue usfa.\r\n";
 			// 
 			// unlockedList
 			// 
@@ -115,7 +115,7 @@ namespace Stareater.GUI
 			this.unlockedList.Name = "unlockedList";
 			this.unlockedList.SelectedIndex = -1;
 			this.unlockedList.Size = new System.Drawing.Size(277, 173);
-			this.unlockedList.TabIndex = 19;
+			this.unlockedList.TabIndex = 4;
 			// 
 			// priorityTitle
 			// 
@@ -123,7 +123,7 @@ namespace Stareater.GUI
 			this.priorityTitle.Location = new System.Drawing.Point(240, 12);
 			this.priorityTitle.Name = "priorityTitle";
 			this.priorityTitle.Size = new System.Drawing.Size(75, 13);
-			this.priorityTitle.TabIndex = 20;
+			this.priorityTitle.TabIndex = 3;
 			this.priorityTitle.Text = "choose priority";
 			// 
 			// reorderDownAction
@@ -132,7 +132,7 @@ namespace Stareater.GUI
 			this.reorderDownAction.Location = new System.Drawing.Point(523, 98);
 			this.reorderDownAction.Name = "reorderDownAction";
 			this.reorderDownAction.Size = new System.Drawing.Size(50, 50);
-			this.reorderDownAction.TabIndex = 22;
+			this.reorderDownAction.TabIndex = 6;
 			this.reorderDownAction.UseVisualStyleBackColor = true;
 			this.reorderDownAction.Click += new System.EventHandler(this.reorderDownAction_Click);
 			// 
@@ -142,7 +142,7 @@ namespace Stareater.GUI
 			this.reorderUpAction.Location = new System.Drawing.Point(523, 42);
 			this.reorderUpAction.Name = "reorderUpAction";
 			this.reorderUpAction.Size = new System.Drawing.Size(50, 50);
-			this.reorderUpAction.TabIndex = 21;
+			this.reorderUpAction.TabIndex = 5;
 			this.reorderUpAction.UseVisualStyleBackColor = true;
 			this.reorderUpAction.Click += new System.EventHandler(this.reorderUpAction_Click);
 			// 
@@ -153,7 +153,7 @@ namespace Stareater.GUI
 			this.techDescription.Name = "techDescription";
 			this.techDescription.ReadOnly = true;
 			this.techDescription.Size = new System.Drawing.Size(277, 161);
-			this.techDescription.TabIndex = 24;
+			this.techDescription.TabIndex = 7;
 			this.techDescription.Text = "Description here";
 			// 
 			// FormResearchComplete

@@ -75,7 +75,7 @@
 			this.imageLeftButton.Margin = new System.Windows.Forms.Padding(3, 3, 1, 3);
 			this.imageLeftButton.Name = "imageLeftButton";
 			this.imageLeftButton.Size = new System.Drawing.Size(16, 16);
-			this.imageLeftButton.TabIndex = 1;
+			this.imageLeftButton.TabIndex = 0;
 			this.imageLeftButton.UseVisualStyleBackColor = true;
 			this.imageLeftButton.Click += new System.EventHandler(this.imageLeft_ButtonClick);
 			// 
@@ -87,7 +87,7 @@
 			this.imageRightButton.Margin = new System.Windows.Forms.Padding(1, 3, 3, 3);
 			this.imageRightButton.Name = "imageRightButton";
 			this.imageRightButton.Size = new System.Drawing.Size(16, 16);
-			this.imageRightButton.TabIndex = 2;
+			this.imageRightButton.TabIndex = 1;
 			this.imageRightButton.UseVisualStyleBackColor = true;
 			this.imageRightButton.Click += new System.EventHandler(this.imageRight_ButtonClick);
 			// 
@@ -98,7 +98,7 @@
 			this.hullPicker.Location = new System.Drawing.Point(129, 38);
 			this.hullPicker.Name = "hullPicker";
 			this.hullPicker.Size = new System.Drawing.Size(170, 21);
-			this.hullPicker.TabIndex = 6;
+			this.hullPicker.TabIndex = 3;
 			this.hullPicker.SelectedIndexChanged += new System.EventHandler(this.hullSelector_SelectedIndexChanged);
 			// 
 			// nameInput
@@ -106,7 +106,7 @@
 			this.nameInput.Location = new System.Drawing.Point(129, 12);
 			this.nameInput.Name = "nameInput";
 			this.nameInput.Size = new System.Drawing.Size(170, 20);
-			this.nameInput.TabIndex = 5;
+			this.nameInput.TabIndex = 2;
 			this.nameInput.TextChanged += new System.EventHandler(this.nameInput_TextChanged);
 			this.nameInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nameInput_KeyPress);
 			// 
@@ -115,7 +115,7 @@
 			this.acceptButton.Location = new System.Drawing.Point(337, 377);
 			this.acceptButton.Name = "acceptButton";
 			this.acceptButton.Size = new System.Drawing.Size(75, 23);
-			this.acceptButton.TabIndex = 24;
+			this.acceptButton.TabIndex = 19;
 			this.acceptButton.Text = "Build";
 			this.acceptButton.UseVisualStyleBackColor = true;
 			this.acceptButton.Click += new System.EventHandler(this.acceptButton_Click);
@@ -136,7 +136,7 @@
 			this.hasIsDrive.Location = new System.Drawing.Point(159, 70);
 			this.hasIsDrive.Name = "hasIsDrive";
 			this.hasIsDrive.Size = new System.Drawing.Size(128, 17);
-			this.hasIsDrive.TabIndex = 27;
+			this.hasIsDrive.TabIndex = 4;
 			this.hasIsDrive.Text = "IS drive (X.XX ly/turn)";
 			this.hasIsDrive.UseVisualStyleBackColor = true;
 			this.hasIsDrive.CheckedChanged += new System.EventHandler(this.hasIsDrive_CheckedChanged);
@@ -148,7 +148,7 @@
 			this.powerInfo.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
 			this.powerInfo.Name = "powerInfo";
 			this.powerInfo.Size = new System.Drawing.Size(58, 13);
-			this.powerInfo.TabIndex = 35;
+			this.powerInfo.TabIndex = 8;
 			this.powerInfo.Text = "Power: X%";
 			// 
 			// armorInfo
@@ -158,7 +158,7 @@
 			this.armorInfo.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
 			this.armorInfo.Name = "armorInfo";
 			this.armorInfo.Size = new System.Drawing.Size(65, 13);
-			this.armorInfo.TabIndex = 36;
+			this.armorInfo.TabIndex = 6;
 			this.armorInfo.Text = "Armor: xxx X";
 			// 
 			// mobilityInfo
@@ -168,7 +168,7 @@
 			this.mobilityInfo.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
 			this.mobilityInfo.Name = "mobilityInfo";
 			this.mobilityInfo.Size = new System.Drawing.Size(64, 13);
-			this.mobilityInfo.TabIndex = 37;
+			this.mobilityInfo.TabIndex = 7;
 			this.mobilityInfo.Text = "Mobility: +xx";
 			// 
 			// sensorInfo
@@ -178,7 +178,7 @@
 			this.sensorInfo.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
 			this.sensorInfo.Name = "sensorInfo";
 			this.sensorInfo.Size = new System.Drawing.Size(58, 13);
-			this.sensorInfo.TabIndex = 38;
+			this.sensorInfo.TabIndex = 9;
 			this.sensorInfo.Text = "Sensors: X";
 			// 
 			// shieldImage
@@ -197,7 +197,7 @@
 			this.pickShieldAction.Location = new System.Drawing.Point(159, 95);
 			this.pickShieldAction.Name = "pickShieldAction";
 			this.pickShieldAction.Size = new System.Drawing.Size(140, 24);
-			this.pickShieldAction.TabIndex = 40;
+			this.pickShieldAction.TabIndex = 5;
 			this.pickShieldAction.Text = "Shield name";
 			this.pickShieldAction.UseVisualStyleBackColor = true;
 			this.pickShieldAction.Click += new System.EventHandler(this.pickShieldAction_Click);
@@ -209,7 +209,7 @@
 			this.stealthInfo.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
 			this.stealthInfo.Name = "stealthInfo";
 			this.stealthInfo.Size = new System.Drawing.Size(66, 13);
-			this.stealthInfo.TabIndex = 41;
+			this.stealthInfo.TabIndex = 10;
 			this.stealthInfo.Text = "Stealth: X, X";
 			// 
 			// costInfo
@@ -219,7 +219,7 @@
 			this.costInfo.Margin = new System.Windows.Forms.Padding(15, 0, 3, 0);
 			this.costInfo.Name = "costInfo";
 			this.costInfo.Size = new System.Drawing.Size(62, 13);
-			this.costInfo.TabIndex = 42;
+			this.costInfo.TabIndex = 11;
 			this.costInfo.Text = "Cost: x.xx X";
 			// 
 			// spaceInfo
@@ -228,7 +228,7 @@
 			this.spaceInfo.Location = new System.Drawing.Point(12, 377);
 			this.spaceInfo.Name = "spaceInfo";
 			this.spaceInfo.Size = new System.Drawing.Size(319, 23);
-			this.spaceInfo.TabIndex = 43;
+			this.spaceInfo.TabIndex = 18;
 			// 
 			// equipmentList
 			// 
@@ -237,7 +237,7 @@
 			this.equipmentList.Name = "equipmentList";
 			this.equipmentList.SelectedIndex = -1;
 			this.equipmentList.Size = new System.Drawing.Size(400, 203);
-			this.equipmentList.TabIndex = 44;
+			this.equipmentList.TabIndex = 12;
 			// 
 			// addEquipAction
 			// 
@@ -245,7 +245,7 @@
 			this.addEquipAction.Location = new System.Drawing.Point(12, 334);
 			this.addEquipAction.Name = "addEquipAction";
 			this.addEquipAction.Size = new System.Drawing.Size(30, 30);
-			this.addEquipAction.TabIndex = 45;
+			this.addEquipAction.TabIndex = 13;
 			this.addEquipAction.UseVisualStyleBackColor = true;
 			this.addEquipAction.Click += new System.EventHandler(this.addEquipAction_Click);
 			// 
@@ -255,7 +255,7 @@
 			this.removeEquipAction.Location = new System.Drawing.Point(382, 334);
 			this.removeEquipAction.Name = "removeEquipAction";
 			this.removeEquipAction.Size = new System.Drawing.Size(30, 30);
-			this.removeEquipAction.TabIndex = 46;
+			this.removeEquipAction.TabIndex = 17;
 			this.removeEquipAction.UseVisualStyleBackColor = true;
 			this.removeEquipAction.Click += new System.EventHandler(this.removeEquipAction_Click);
 			// 
@@ -266,7 +266,7 @@
 			this.customAmountAction.Location = new System.Drawing.Point(231, 334);
 			this.customAmountAction.Name = "customAmountAction";
 			this.customAmountAction.Size = new System.Drawing.Size(30, 30);
-			this.customAmountAction.TabIndex = 47;
+			this.customAmountAction.TabIndex = 16;
 			this.customAmountAction.UseVisualStyleBackColor = true;
 			this.customAmountAction.Click += new System.EventHandler(this.customAmountAction_Click);
 			// 
@@ -275,7 +275,7 @@
 			this.lessEquipAction.Location = new System.Drawing.Point(195, 334);
 			this.lessEquipAction.Name = "lessEquipAction";
 			this.lessEquipAction.Size = new System.Drawing.Size(30, 30);
-			this.lessEquipAction.TabIndex = 48;
+			this.lessEquipAction.TabIndex = 15;
 			this.lessEquipAction.Text = "-";
 			this.lessEquipAction.UseVisualStyleBackColor = true;
 			this.lessEquipAction.Click += new System.EventHandler(this.lessEquipAction_Click);
@@ -285,7 +285,7 @@
 			this.moreEquipAction.Location = new System.Drawing.Point(159, 334);
 			this.moreEquipAction.Name = "moreEquipAction";
 			this.moreEquipAction.Size = new System.Drawing.Size(30, 30);
-			this.moreEquipAction.TabIndex = 49;
+			this.moreEquipAction.TabIndex = 14;
 			this.moreEquipAction.Text = "+";
 			this.moreEquipAction.UseVisualStyleBackColor = true;
 			this.moreEquipAction.Click += new System.EventHandler(this.moreEquipAction_Click);

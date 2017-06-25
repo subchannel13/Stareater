@@ -37,7 +37,7 @@
 			// amountLabel
 			// 
 			this.amountLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-			| System.Windows.Forms.AnchorStyles.Left)));
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.amountLabel.Location = new System.Drawing.Point(0, 0);
 			this.amountLabel.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
 			this.amountLabel.Name = "amountLabel";
@@ -60,11 +60,11 @@
 			// nameLabel
 			// 
 			this.nameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-			| System.Windows.Forms.AnchorStyles.Left)));
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.nameLabel.Location = new System.Drawing.Point(86, 0);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(150, 30);
-			this.nameLabel.TabIndex = 2;
+			this.nameLabel.TabIndex = 1;
 			this.nameLabel.Text = "Name";
 			this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.nameLabel.Click += new System.EventHandler(this.nameLabel_Click);

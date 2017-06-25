@@ -51,7 +51,7 @@ namespace Stareater.GUI
 			this.costLabel.Location = new System.Drawing.Point(41, 20);
 			this.costLabel.Name = "costLabel";
 			this.costLabel.Size = new System.Drawing.Size(106, 13);
-			this.costLabel.TabIndex = 4;
+			this.costLabel.TabIndex = 1;
 			this.costLabel.Text = "label1";
 			this.costLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			this.costLabel.Click += new System.EventHandler(this.costLabel_Click);
@@ -62,7 +62,7 @@ namespace Stareater.GUI
 			this.nameLabel.Location = new System.Drawing.Point(42, 3);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(35, 13);
-			this.nameLabel.TabIndex = 3;
+			this.nameLabel.TabIndex = 0;
 			this.nameLabel.Text = "Name";
 			this.nameLabel.Click += new System.EventHandler(this.nameLabel_Click);
 			// 
@@ -71,7 +71,7 @@ namespace Stareater.GUI
 			this.investmentLabel.Location = new System.Drawing.Point(143, 20);
 			this.investmentLabel.Name = "investmentLabel";
 			this.investmentLabel.Size = new System.Drawing.Size(54, 13);
-			this.investmentLabel.TabIndex = 5;
+			this.investmentLabel.TabIndex = 2;
 			this.investmentLabel.Text = "label1";
 			this.investmentLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			this.investmentLabel.Click += new System.EventHandler(this.investmentLabel_Click);

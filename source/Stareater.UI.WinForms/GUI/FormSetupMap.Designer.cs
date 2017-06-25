@@ -57,7 +57,7 @@
 			this.parametersPanel.Location = new System.Drawing.Point(0, 81);
 			this.parametersPanel.Name = "parametersPanel";
 			this.parametersPanel.Size = new System.Drawing.Size(176, 252);
-			this.parametersPanel.TabIndex = 36;
+			this.parametersPanel.TabIndex = 2;
 			// 
 			// acceptButton
 			// 
@@ -66,7 +66,7 @@
 			this.acceptButton.Location = new System.Drawing.Point(107, 351);
 			this.acceptButton.Name = "acceptButton";
 			this.acceptButton.Size = new System.Drawing.Size(75, 23);
-			this.acceptButton.TabIndex = 37;
+			this.acceptButton.TabIndex = 3;
 			this.acceptButton.Text = "button1";
 			this.acceptButton.UseVisualStyleBackColor = true;
 			this.acceptButton.Click += new System.EventHandler(this.acceptButton_Click);
@@ -78,7 +78,7 @@
 			this.wormholeSelector.Location = new System.Drawing.Point(3, 30);
 			this.wormholeSelector.Name = "wormholeSelector";
 			this.wormholeSelector.Size = new System.Drawing.Size(170, 21);
-			this.wormholeSelector.TabIndex = 38;
+			this.wormholeSelector.TabIndex = 1;
 			// 
 			// populatorSelector
 			// 
@@ -87,7 +87,7 @@
 			this.populatorSelector.Location = new System.Drawing.Point(3, 57);
 			this.populatorSelector.Name = "populatorSelector";
 			this.populatorSelector.Size = new System.Drawing.Size(170, 21);
-			this.populatorSelector.TabIndex = 39;
+			this.populatorSelector.TabIndex = 2;
 			// 
 			// panel1
 			// 
@@ -101,7 +101,7 @@
 			this.panel1.Margin = new System.Windows.Forms.Padding(0);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(176, 81);
-			this.panel1.TabIndex = 40;
+			this.panel1.TabIndex = 1;
 			// 
 			// panel2
 			// 
@@ -110,7 +110,7 @@
 			this.panel2.Location = new System.Drawing.Point(12, 12);
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(176, 333);
-			this.panel2.TabIndex = 41;
+			this.panel2.TabIndex = 0;
 			// 
 			// mapPreview
 			// 

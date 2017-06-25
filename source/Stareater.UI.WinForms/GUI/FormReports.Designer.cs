@@ -55,7 +55,7 @@ namespace Stareater.GUI
 			this.filterButton.Location = new System.Drawing.Point(294, 355);
 			this.filterButton.Name = "filterButton";
 			this.filterButton.Size = new System.Drawing.Size(50, 50);
-			this.filterButton.TabIndex = 1;
+			this.filterButton.TabIndex = 2;
 			this.filterButton.UseVisualStyleBackColor = true;
 			this.filterButton.Click += new System.EventHandler(this.filterButton_Click);
 			// 
@@ -65,7 +65,7 @@ namespace Stareater.GUI
 			this.openButton.Location = new System.Drawing.Point(294, 127);
 			this.openButton.Name = "openButton";
 			this.openButton.Size = new System.Drawing.Size(50, 50);
-			this.openButton.TabIndex = 2;
+			this.openButton.TabIndex = 1;
 			this.openButton.UseVisualStyleBackColor = true;
 			this.openButton.Click += new System.EventHandler(this.openButton_Click);
 			// 
@@ -80,9 +80,10 @@ namespace Stareater.GUI
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormReports";
 			this.ShowInTaskbar = false;
-			this.Text = "FormReports";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+			this.Text = "FormReports";
 			this.ResumeLayout(false);
+
 		}
 		private System.Windows.Forms.Button openButton;
 		private System.Windows.Forms.Button filterButton;

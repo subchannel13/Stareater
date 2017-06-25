@@ -48,7 +48,7 @@
 			this.nameLabel.Location = new System.Drawing.Point(42, 3);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(35, 13);
-			this.nameLabel.TabIndex = 1;
+			this.nameLabel.TabIndex = 0;
 			this.nameLabel.Text = "label1";
 			this.nameLabel.Click += new System.EventHandler(this.nameLabel_Click);
 			// 
@@ -58,7 +58,7 @@
 			this.organizationLabel.Location = new System.Drawing.Point(42, 16);
 			this.organizationLabel.Name = "organizationLabel";
 			this.organizationLabel.Size = new System.Drawing.Size(35, 13);
-			this.organizationLabel.TabIndex = 2;
+			this.organizationLabel.TabIndex = 1;
 			this.organizationLabel.Text = "label1";
 			this.organizationLabel.Click += new System.EventHandler(this.organizationLabel_Click);
 			// 

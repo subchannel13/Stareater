@@ -55,7 +55,7 @@ namespace Stareater.GUI
 			this.countHeader.Location = new System.Drawing.Point(262, 9);
 			this.countHeader.Name = "countHeader";
 			this.countHeader.Size = new System.Drawing.Size(33, 13);
-			this.countHeader.TabIndex = 16;
+			this.countHeader.TabIndex = 1;
 			this.countHeader.Text = "Ships";
 			// 
 			// designHeader
@@ -64,7 +64,7 @@ namespace Stareater.GUI
 			this.designHeader.Location = new System.Drawing.Point(12, 9);
 			this.designHeader.Name = "designHeader";
 			this.designHeader.Size = new System.Drawing.Size(40, 13);
-			this.designHeader.TabIndex = 15;
+			this.designHeader.TabIndex = 0;
 			this.designHeader.Text = "Design";
 			// 
 			// designList
@@ -74,7 +74,7 @@ namespace Stareater.GUI
 			this.designList.Location = new System.Drawing.Point(12, 25);
 			this.designList.Name = "designList";
 			this.designList.Size = new System.Drawing.Size(367, 316);
-			this.designList.TabIndex = 17;
+			this.designList.TabIndex = 2;
 			// 
 			// newDesignButton
 			// 
@@ -82,13 +82,13 @@ namespace Stareater.GUI
 			this.newDesignButton.Location = new System.Drawing.Point(12, 344);
 			this.newDesignButton.Name = "newDesignButton";
 			this.newDesignButton.Size = new System.Drawing.Size(56, 56);
-			this.newDesignButton.TabIndex = 19;
+			this.newDesignButton.TabIndex = 3;
 			this.newDesignButton.Click += new System.EventHandler(this.newDesignButton_Click);
 			// 
 			// infoList
 			// 
 			this.infoList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-			| System.Windows.Forms.AnchorStyles.Left)));
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.infoList.AutoScroll = true;
 			this.infoList.Controls.Add(this.designThumbnail);
 			this.infoList.Controls.Add(this.designName);
@@ -98,7 +98,7 @@ namespace Stareater.GUI
 			this.infoList.Location = new System.Drawing.Point(383, 25);
 			this.infoList.Name = "infoList";
 			this.infoList.Size = new System.Drawing.Size(200, 377);
-			this.infoList.TabIndex = 20;
+			this.infoList.TabIndex = 4;
 			// 
 			// designThumbnail
 			// 
@@ -115,7 +115,7 @@ namespace Stareater.GUI
 			this.designName.Location = new System.Drawing.Point(3, 86);
 			this.designName.Name = "designName";
 			this.designName.Size = new System.Drawing.Size(69, 13);
-			this.designName.TabIndex = 1;
+			this.designName.TabIndex = 0;
 			this.designName.Text = "Design name";
 			// 
 			// hullName
@@ -124,7 +124,7 @@ namespace Stareater.GUI
 			this.hullName.Location = new System.Drawing.Point(3, 99);
 			this.hullName.Name = "hullName";
 			this.hullName.Size = new System.Drawing.Size(54, 13);
-			this.hullName.TabIndex = 2;
+			this.hullName.TabIndex = 1;
 			this.hullName.Text = "Hull name";
 			// 
 			// equipmentInfo
@@ -133,7 +133,7 @@ namespace Stareater.GUI
 			this.equipmentInfo.Margin = new System.Windows.Forms.Padding(3, 10, 3, 0);
 			this.equipmentInfo.Name = "equipmentInfo";
 			this.equipmentInfo.Size = new System.Drawing.Size(184, 253);
-			this.equipmentInfo.TabIndex = 3;
+			this.equipmentInfo.TabIndex = 2;
 			this.equipmentInfo.Text = "x x XXX";
 			// 
 			// FormShipDesignList

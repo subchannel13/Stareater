@@ -66,7 +66,7 @@
 			this.treatyList.Location = new System.Drawing.Point(146, 58);
 			this.treatyList.Name = "treatyList";
 			this.treatyList.Size = new System.Drawing.Size(154, 75);
-			this.treatyList.TabIndex = 3;
+			this.treatyList.TabIndex = 2;
 			// 
 			// audienceRequest
 			// 
@@ -92,7 +92,7 @@
 			this.warAction.Location = new System.Drawing.Point(12, 170);
 			this.warAction.Name = "warAction";
 			this.warAction.Size = new System.Drawing.Size(75, 30);
-			this.warAction.TabIndex = 5;
+			this.warAction.TabIndex = 3;
 			this.warAction.Text = "button1";
 			this.warAction.UseVisualStyleBackColor = true;
 			this.warAction.Click += new System.EventHandler(this.warAction_Click);

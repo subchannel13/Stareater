@@ -54,7 +54,7 @@ namespace Stareater.GUI
 			this.levelLabel.Location = new System.Drawing.Point(53, 17);
 			this.levelLabel.Name = "levelLabel";
 			this.levelLabel.Size = new System.Drawing.Size(38, 13);
-			this.levelLabel.TabIndex = 8;
+			this.levelLabel.TabIndex = 1;
 			this.levelLabel.Text = "level 2";
 			this.levelLabel.Click += new System.EventHandler(this.levelLabel_Click);
 			this.levelLabel.MouseEnter += new System.EventHandler(this.levelLabel_MouseEnter);
@@ -66,7 +66,7 @@ namespace Stareater.GUI
 			this.investmentLabel.Location = new System.Drawing.Point(179, 30);
 			this.investmentLabel.Name = "investmentLabel";
 			this.investmentLabel.Size = new System.Drawing.Size(45, 13);
-			this.investmentLabel.TabIndex = 7;
+			this.investmentLabel.TabIndex = 3;
 			this.investmentLabel.Text = "+1.54 G";
 			this.investmentLabel.Click += new System.EventHandler(this.investmentLabel_Click);
 			this.investmentLabel.MouseEnter += new System.EventHandler(this.investmentLabel_MouseEnter);
@@ -76,7 +76,7 @@ namespace Stareater.GUI
 			this.costLabel.Location = new System.Drawing.Point(53, 30);
 			this.costLabel.Name = "costLabel";
 			this.costLabel.Size = new System.Drawing.Size(120, 17);
-			this.costLabel.TabIndex = 6;
+			this.costLabel.TabIndex = 2;
 			this.costLabel.Text = "20.52 G / 80 G";
 			this.costLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			this.costLabel.Click += new System.EventHandler(this.costLabel_Click);
@@ -89,12 +89,12 @@ namespace Stareater.GUI
 			this.nameLabel.Location = new System.Drawing.Point(53, 3);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(105, 13);
-			this.nameLabel.TabIndex = 5;
+			this.nameLabel.TabIndex = 0;
 			this.nameLabel.Text = "Hydroponic farms";
 			this.nameLabel.Click += new System.EventHandler(this.nameLabel_Click);
 			this.nameLabel.MouseEnter += new System.EventHandler(this.nameLabel_MouseEnter);
 			// 
-			// TechnologyItem
+			// DevelopmentItem
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -104,11 +104,12 @@ namespace Stareater.GUI
 			this.Controls.Add(this.costLabel);
 			this.Controls.Add(this.nameLabel);
 			this.Controls.Add(this.thumbnailImage);
-			this.Name = "TechnologyItem";
+			this.Name = "DevelopmentItem";
 			this.Size = new System.Drawing.Size(250, 50);
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 		private System.Windows.Forms.Label nameLabel;
 		private System.Windows.Forms.Label costLabel;

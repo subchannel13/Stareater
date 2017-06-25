@@ -52,7 +52,7 @@ namespace Stareater.GUI
 			this.quantitySlider.Maximum = 100;
 			this.quantitySlider.Name = "quantitySlider";
 			this.quantitySlider.Size = new System.Drawing.Size(120, 23);
-			this.quantitySlider.TabIndex = 1;
+			this.quantitySlider.TabIndex = 0;
 			this.quantitySlider.TickStyle = System.Windows.Forms.TickStyle.None;
 			this.quantitySlider.Scroll += new System.EventHandler(this.quantitySlider_Scroll);
 			// 
@@ -61,7 +61,7 @@ namespace Stareater.GUI
 			this.quantityInput.Location = new System.Drawing.Point(138, 12);
 			this.quantityInput.Name = "quantityInput";
 			this.quantityInput.Size = new System.Drawing.Size(60, 20);
-			this.quantityInput.TabIndex = 2;
+			this.quantityInput.TabIndex = 1;
 			this.quantityInput.TextChanged += new System.EventHandler(this.quantityInput_TextChanged);
 			// 
 			// acceptButton
@@ -70,7 +70,7 @@ namespace Stareater.GUI
 			this.acceptButton.Location = new System.Drawing.Point(123, 41);
 			this.acceptButton.Name = "acceptButton";
 			this.acceptButton.Size = new System.Drawing.Size(75, 23);
-			this.acceptButton.TabIndex = 3;
+			this.acceptButton.TabIndex = 2;
 			this.acceptButton.Text = "button1";
 			this.acceptButton.UseVisualStyleBackColor = true;
 			this.acceptButton.Click += new System.EventHandler(this.acceptButton_Click);

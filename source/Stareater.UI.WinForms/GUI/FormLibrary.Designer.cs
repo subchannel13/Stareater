@@ -84,7 +84,7 @@ namespace Stareater.GUI
 			this.topicText.Location = new System.Drawing.Point(218, 67);
 			this.topicText.Name = "topicText";
 			this.topicText.Size = new System.Drawing.Size(373, 414);
-			this.topicText.TabIndex = 0;
+			this.topicText.TabIndex = 5;
 			this.topicText.Text = "label1";
 			this.topicText.Visible = false;
 			// 
@@ -108,7 +108,7 @@ namespace Stareater.GUI
 			this.topicList.Location = new System.Drawing.Point(12, 12);
 			this.topicList.Name = "topicList";
 			this.topicList.Size = new System.Drawing.Size(200, 466);
-			this.topicList.TabIndex = 1;
+			this.topicList.TabIndex = 0;
 			this.topicList.WrapContents = false;
 			// 
 			// researchLink
@@ -141,7 +141,7 @@ namespace Stareater.GUI
 			this.armorLink.Margin = new System.Windows.Forms.Padding(3, 10, 3, 0);
 			this.armorLink.Name = "armorLink";
 			this.armorLink.Size = new System.Drawing.Size(50, 13);
-			this.armorLink.TabIndex = 3;
+			this.armorLink.TabIndex = 2;
 			this.armorLink.TabStop = true;
 			this.armorLink.Text = "linkArmor";
 			this.armorLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.armorLink_LinkClicked);
@@ -153,7 +153,7 @@ namespace Stareater.GUI
 			this.hullLink.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
 			this.hullLink.Name = "hullLink";
 			this.hullLink.Size = new System.Drawing.Size(41, 13);
-			this.hullLink.TabIndex = 4;
+			this.hullLink.TabIndex = 3;
 			this.hullLink.TabStop = true;
 			this.hullLink.Text = "linkHull";
 			this.hullLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.hullLink_LinkClicked);
@@ -165,7 +165,7 @@ namespace Stareater.GUI
 			this.isDriveLink.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
 			this.isDriveLink.Name = "isDriveLink";
 			this.isDriveLink.Size = new System.Drawing.Size(61, 13);
-			this.isDriveLink.TabIndex = 5;
+			this.isDriveLink.TabIndex = 4;
 			this.isDriveLink.TabStop = true;
 			this.isDriveLink.Text = "linkIsDrives";
 			this.isDriveLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.isDriveLink_LinkClicked);
@@ -177,7 +177,7 @@ namespace Stareater.GUI
 			this.missionEquipLink.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
 			this.missionEquipLink.Name = "missionEquipLink";
 			this.missionEquipLink.Size = new System.Drawing.Size(85, 13);
-			this.missionEquipLink.TabIndex = 6;
+			this.missionEquipLink.TabIndex = 5;
 			this.missionEquipLink.TabStop = true;
 			this.missionEquipLink.Text = "linkMissionEquip";
 			this.missionEquipLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.missionEquipLink_LinkClicked);
@@ -189,7 +189,7 @@ namespace Stareater.GUI
 			this.reactorLink.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
 			this.reactorLink.Name = "reactorLink";
 			this.reactorLink.Size = new System.Drawing.Size(61, 13);
-			this.reactorLink.TabIndex = 7;
+			this.reactorLink.TabIndex = 6;
 			this.reactorLink.TabStop = true;
 			this.reactorLink.Text = "linkReactor";
 			this.reactorLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.reactorLink_LinkClicked);
@@ -201,7 +201,7 @@ namespace Stareater.GUI
 			this.sensorLink.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
 			this.sensorLink.Name = "sensorLink";
 			this.sensorLink.Size = new System.Drawing.Size(56, 13);
-			this.sensorLink.TabIndex = 8;
+			this.sensorLink.TabIndex = 7;
 			this.sensorLink.TabStop = true;
 			this.sensorLink.Text = "linkSensor";
 			this.sensorLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.sensorLink_LinkClicked);
@@ -213,7 +213,7 @@ namespace Stareater.GUI
 			this.specialEquipLink.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
 			this.specialEquipLink.Name = "specialEquipLink";
 			this.specialEquipLink.Size = new System.Drawing.Size(85, 13);
-			this.specialEquipLink.TabIndex = 9;
+			this.specialEquipLink.TabIndex = 8;
 			this.specialEquipLink.TabStop = true;
 			this.specialEquipLink.Text = "linkSpecialEquip";
 			this.specialEquipLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.specialEquipLink_LinkClicked);
@@ -225,7 +225,7 @@ namespace Stareater.GUI
 			this.thrusterLink.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
 			this.thrusterLink.Name = "thrusterLink";
 			this.thrusterLink.Size = new System.Drawing.Size(62, 13);
-			this.thrusterLink.TabIndex = 10;
+			this.thrusterLink.TabIndex = 9;
 			this.thrusterLink.TabStop = true;
 			this.thrusterLink.Text = "linkThruster";
 			this.thrusterLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.thrusterLink_LinkClicked);
@@ -237,7 +237,7 @@ namespace Stareater.GUI
 			this.topicSeparator.Margin = new System.Windows.Forms.Padding(3, 10, 3, 2);
 			this.topicSeparator.Name = "topicSeparator";
 			this.topicSeparator.Size = new System.Drawing.Size(150, 3);
-			this.topicSeparator.TabIndex = 2;
+			this.topicSeparator.TabIndex = 10;
 			// 
 			// topicName
 			// 
@@ -245,7 +245,7 @@ namespace Stareater.GUI
 			this.topicName.Location = new System.Drawing.Point(264, 12);
 			this.topicName.Name = "topicName";
 			this.topicName.Size = new System.Drawing.Size(58, 13);
-			this.topicName.TabIndex = 2;
+			this.topicName.TabIndex = 1;
 			this.topicName.Text = "Item Name";
 			this.topicName.Visible = false;
 			// 
@@ -255,7 +255,7 @@ namespace Stareater.GUI
 			this.levelLabel.Location = new System.Drawing.Point(264, 30);
 			this.levelLabel.Name = "levelLabel";
 			this.levelLabel.Size = new System.Drawing.Size(32, 13);
-			this.levelLabel.TabIndex = 3;
+			this.levelLabel.TabIndex = 2;
 			this.levelLabel.Text = "level:";
 			this.levelLabel.Visible = false;
 			// 
@@ -264,7 +264,7 @@ namespace Stareater.GUI
 			this.levelInput.Location = new System.Drawing.Point(334, 28);
 			this.levelInput.Name = "levelInput";
 			this.levelInput.Size = new System.Drawing.Size(40, 20);
-			this.levelInput.TabIndex = 4;
+			this.levelInput.TabIndex = 3;
 			this.levelInput.Visible = false;
 			this.levelInput.ValueChanged += new System.EventHandler(this.levelInput_ValueChanged);
 			// 
@@ -274,7 +274,7 @@ namespace Stareater.GUI
 			this.maxLevelInfo.Location = new System.Drawing.Point(380, 30);
 			this.maxLevelInfo.Name = "maxLevelInfo";
 			this.maxLevelInfo.Size = new System.Drawing.Size(20, 13);
-			this.maxLevelInfo.TabIndex = 5;
+			this.maxLevelInfo.TabIndex = 4;
 			this.maxLevelInfo.Text = "/ x";
 			this.maxLevelInfo.Visible = false;
 			// 

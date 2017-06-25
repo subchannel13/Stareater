@@ -54,7 +54,7 @@
 			this.issuesLink.Location = new System.Drawing.Point(12, 352);
 			this.issuesLink.Name = "issuesLink";
 			this.issuesLink.Size = new System.Drawing.Size(115, 13);
-			this.issuesLink.TabIndex = 1;
+			this.issuesLink.TabIndex = 2;
 			this.issuesLink.TabStop = true;
 			this.issuesLink.Text = "Stareater bug reporting";
 			this.issuesLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.IssuesLinkLinkClicked);
@@ -62,13 +62,13 @@
 			// errorText
 			// 
 			this.errorText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-			| System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.errorText.Location = new System.Drawing.Point(12, 38);
 			this.errorText.Name = "errorText";
 			this.errorText.ReadOnly = true;
 			this.errorText.Size = new System.Drawing.Size(518, 303);
-			this.errorText.TabIndex = 2;
+			this.errorText.TabIndex = 1;
 			this.errorText.Text = "";
 			// 
 			// closeButton

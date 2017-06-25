@@ -44,13 +44,13 @@ namespace Stareater.GUI
 			// optionList
 			// 
 			this.optionList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-									| System.Windows.Forms.AnchorStyles.Left)));
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.optionList.AutoScroll = true;
 			this.optionList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.optionList.Location = new System.Drawing.Point(12, 25);
 			this.optionList.Name = "optionList";
 			this.optionList.Size = new System.Drawing.Size(214, 389);
-			this.optionList.TabIndex = 0;
+			this.optionList.TabIndex = 1;
 			// 
 			// thumbnailImage
 			// 
@@ -64,7 +64,7 @@ namespace Stareater.GUI
 			// descriptionLabel
 			// 
 			this.descriptionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-									| System.Windows.Forms.AnchorStyles.Left)));
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.descriptionLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.descriptionLabel.Location = new System.Drawing.Point(278, 12);
 			this.descriptionLabel.Name = "descriptionLabel";
@@ -75,14 +75,14 @@ namespace Stareater.GUI
 			// queueList
 			// 
 			this.queueList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-									| System.Windows.Forms.AnchorStyles.Left)));
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.queueList.AutoScroll = true;
 			this.queueList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.queueList.Location = new System.Drawing.Point(232, 215);
 			this.queueList.Name = "queueList";
 			this.queueList.SelectedIndex = -1;
 			this.queueList.Size = new System.Drawing.Size(246, 199);
-			this.queueList.TabIndex = 3;
+			this.queueList.TabIndex = 4;
 			// 
 			// moveUpButton
 			// 
@@ -90,7 +90,7 @@ namespace Stareater.GUI
 			this.moveUpButton.Location = new System.Drawing.Point(484, 248);
 			this.moveUpButton.Name = "moveUpButton";
 			this.moveUpButton.Size = new System.Drawing.Size(40, 40);
-			this.moveUpButton.TabIndex = 4;
+			this.moveUpButton.TabIndex = 5;
 			this.moveUpButton.UseVisualStyleBackColor = true;
 			this.moveUpButton.Click += new System.EventHandler(this.moveUpButton_Click);
 			// 
@@ -100,7 +100,7 @@ namespace Stareater.GUI
 			this.moveDownButton.Location = new System.Drawing.Point(484, 294);
 			this.moveDownButton.Name = "moveDownButton";
 			this.moveDownButton.Size = new System.Drawing.Size(40, 40);
-			this.moveDownButton.TabIndex = 5;
+			this.moveDownButton.TabIndex = 6;
 			this.moveDownButton.UseVisualStyleBackColor = true;
 			this.moveDownButton.Click += new System.EventHandler(this.moveDownButton_Click);
 			// 
@@ -110,7 +110,7 @@ namespace Stareater.GUI
 			this.removeButton.Location = new System.Drawing.Point(483, 340);
 			this.removeButton.Name = "removeButton";
 			this.removeButton.Size = new System.Drawing.Size(40, 40);
-			this.removeButton.TabIndex = 6;
+			this.removeButton.TabIndex = 7;
 			this.removeButton.UseVisualStyleBackColor = true;
 			this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
 			// 
@@ -120,7 +120,7 @@ namespace Stareater.GUI
 			this.optionsLabel.Location = new System.Drawing.Point(12, 9);
 			this.optionsLabel.Name = "optionsLabel";
 			this.optionsLabel.Size = new System.Drawing.Size(46, 13);
-			this.optionsLabel.TabIndex = 7;
+			this.optionsLabel.TabIndex = 0;
 			this.optionsLabel.Text = "Options:";
 			// 
 			// queueLabel
@@ -129,7 +129,7 @@ namespace Stareater.GUI
 			this.queueLabel.Location = new System.Drawing.Point(232, 199);
 			this.queueLabel.Name = "queueLabel";
 			this.queueLabel.Size = new System.Drawing.Size(42, 13);
-			this.queueLabel.TabIndex = 8;
+			this.queueLabel.TabIndex = 3;
 			this.queueLabel.Text = "Queue:";
 			// 
 			// FormBuildingQueue
@@ -153,6 +153,7 @@ namespace Stareater.GUI
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 		private System.Windows.Forms.Label queueLabel;
 		private System.Windows.Forms.Label optionsLabel;

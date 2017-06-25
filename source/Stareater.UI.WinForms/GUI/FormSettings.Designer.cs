@@ -69,7 +69,7 @@
 			this.confirmButton.Location = new System.Drawing.Point(327, 181);
 			this.confirmButton.Name = "confirmButton";
 			this.confirmButton.Size = new System.Drawing.Size(75, 23);
-			this.confirmButton.TabIndex = 3;
+			this.confirmButton.TabIndex = 13;
 			this.confirmButton.Text = "U redu";
 			this.confirmButton.UseVisualStyleBackColor = true;
 			this.confirmButton.Click += new System.EventHandler(this.confirmButton_Click);
@@ -80,7 +80,7 @@
 			this.guiScaleTitle.Location = new System.Drawing.Point(12, 58);
 			this.guiScaleTitle.Name = "guiScaleTitle";
 			this.guiScaleTitle.Size = new System.Drawing.Size(83, 13);
-			this.guiScaleTitle.TabIndex = 4;
+			this.guiScaleTitle.TabIndex = 2;
 			this.guiScaleTitle.Text = "Velicina sučelja:";
 			// 
 			// guiScaleSelector
@@ -90,7 +90,7 @@
 			this.guiScaleSelector.Location = new System.Drawing.Point(127, 55);
 			this.guiScaleSelector.Name = "guiScaleSelector";
 			this.guiScaleSelector.Size = new System.Drawing.Size(61, 21);
-			this.guiScaleSelector.TabIndex = 5;
+			this.guiScaleSelector.TabIndex = 3;
 			this.guiScaleSelector.SelectedIndexChanged += new System.EventHandler(this.guiScaleSelector_SelectedIndexChanged);
 			// 
 			// rendererInfo
@@ -100,7 +100,7 @@
 			this.rendererInfo.Location = new System.Drawing.Point(214, 152);
 			this.rendererInfo.Name = "rendererInfo";
 			this.rendererInfo.Size = new System.Drawing.Size(137, 26);
-			this.rendererInfo.TabIndex = 6;
+			this.rendererInfo.TabIndex = 12;
 			this.rendererInfo.Text = "Rendering hardware:\r\nA line long equipment name";
 			// 
 			// fpsTitle
@@ -109,7 +109,7 @@
 			this.fpsTitle.Location = new System.Drawing.Point(214, 33);
 			this.fpsTitle.Name = "fpsTitle";
 			this.fpsTitle.Size = new System.Drawing.Size(30, 13);
-			this.fpsTitle.TabIndex = 7;
+			this.fpsTitle.TabIndex = 5;
 			this.fpsTitle.Text = "FPS:";
 			// 
 			// fpsTimingTitle
@@ -118,35 +118,35 @@
 			this.fpsTimingTitle.Location = new System.Drawing.Point(214, 82);
 			this.fpsTimingTitle.Name = "fpsTimingTitle";
 			this.fpsTimingTitle.Size = new System.Drawing.Size(92, 26);
-			this.fpsTimingTitle.TabIndex = 9;
+			this.fpsTimingTitle.TabIndex = 8;
 			this.fpsTimingTitle.Text = "Precise framerate \r\ntiming:";
 			// 
 			// fpsInput
 			// 
 			this.fpsInput.Increment = new decimal(new int[] {
-			15,
-			0,
-			0,
-			0});
+            15,
+            0,
+            0,
+            0});
 			this.fpsInput.Location = new System.Drawing.Point(306, 31);
 			this.fpsInput.Maximum = new decimal(new int[] {
-			300,
-			0,
-			0,
-			0});
+            300,
+            0,
+            0,
+            0});
 			this.fpsInput.Minimum = new decimal(new int[] {
-			30,
-			0,
-			0,
-			0});
+            30,
+            0,
+            0,
+            0});
 			this.fpsInput.Name = "fpsInput";
 			this.fpsInput.Size = new System.Drawing.Size(45, 20);
-			this.fpsInput.TabIndex = 11;
+			this.fpsInput.TabIndex = 6;
 			this.fpsInput.Value = new decimal(new int[] {
-			30,
-			0,
-			0,
-			0});
+            30,
+            0,
+            0,
+            0});
 			// 
 			// unlimitedFpsCheck
 			// 
@@ -154,7 +154,7 @@
 			this.unlimitedFpsCheck.Location = new System.Drawing.Point(214, 57);
 			this.unlimitedFpsCheck.Name = "unlimitedFpsCheck";
 			this.unlimitedFpsCheck.Size = new System.Drawing.Size(116, 17);
-			this.unlimitedFpsCheck.TabIndex = 13;
+			this.unlimitedFpsCheck.TabIndex = 7;
 			this.unlimitedFpsCheck.Text = "Unlimited framerate";
 			this.unlimitedFpsCheck.UseVisualStyleBackColor = true;
 			this.unlimitedFpsCheck.CheckedChanged += new System.EventHandler(this.UnlimitedFpsCheckCheckedChanged);
@@ -165,7 +165,7 @@
 			this.busyFrameLimitAlways.Location = new System.Drawing.Point(306, 80);
 			this.busyFrameLimitAlways.Name = "busyFrameLimitAlways";
 			this.busyFrameLimitAlways.Size = new System.Drawing.Size(58, 17);
-			this.busyFrameLimitAlways.TabIndex = 14;
+			this.busyFrameLimitAlways.TabIndex = 9;
 			this.busyFrameLimitAlways.TabStop = true;
 			this.busyFrameLimitAlways.Text = "Always";
 			this.busyFrameLimitAlways.UseVisualStyleBackColor = true;
@@ -176,7 +176,7 @@
 			this.busyFrameLimitPlugged.Location = new System.Drawing.Point(306, 103);
 			this.busyFrameLimitPlugged.Name = "busyFrameLimitPlugged";
 			this.busyFrameLimitPlugged.Size = new System.Drawing.Size(95, 17);
-			this.busyFrameLimitPlugged.TabIndex = 15;
+			this.busyFrameLimitPlugged.TabIndex = 10;
 			this.busyFrameLimitPlugged.TabStop = true;
 			this.busyFrameLimitPlugged.Text = "When plugged";
 			this.busyFrameLimitPlugged.UseVisualStyleBackColor = true;
@@ -187,7 +187,7 @@
 			this.busyFrameLimitNever.Location = new System.Drawing.Point(306, 126);
 			this.busyFrameLimitNever.Name = "busyFrameLimitNever";
 			this.busyFrameLimitNever.Size = new System.Drawing.Size(54, 17);
-			this.busyFrameLimitNever.TabIndex = 16;
+			this.busyFrameLimitNever.TabIndex = 11;
 			this.busyFrameLimitNever.TabStop = true;
 			this.busyFrameLimitNever.Text = "Never";
 			this.busyFrameLimitNever.UseVisualStyleBackColor = true;
@@ -198,7 +198,7 @@
 			this.vsyncCheck.Location = new System.Drawing.Point(214, 8);
 			this.vsyncCheck.Name = "vsyncCheck";
 			this.vsyncCheck.Size = new System.Drawing.Size(54, 17);
-			this.vsyncCheck.TabIndex = 17;
+			this.vsyncCheck.TabIndex = 4;
 			this.vsyncCheck.Text = "vsync";
 			this.vsyncCheck.UseVisualStyleBackColor = true;
 			this.vsyncCheck.CheckedChanged += new System.EventHandler(this.vsyncCheck_CheckedChanged);

@@ -48,7 +48,7 @@
 			this.controllerPicker.Location = new System.Drawing.Point(261, 12);
 			this.controllerPicker.Name = "controllerPicker";
 			this.controllerPicker.Size = new System.Drawing.Size(115, 21);
-			this.controllerPicker.TabIndex = 40;
+			this.controllerPicker.TabIndex = 4;
 			this.controllerPicker.SelectedIndexChanged += new System.EventHandler(this.controllerPicker_SelectedIndexChanged);
 			// 
 			// controllerLabel
@@ -57,7 +57,7 @@
 			this.controllerLabel.Location = new System.Drawing.Point(188, 15);
 			this.controllerLabel.Name = "controllerLabel";
 			this.controllerLabel.Size = new System.Drawing.Size(54, 13);
-			this.controllerLabel.TabIndex = 39;
+			this.controllerLabel.TabIndex = 3;
 			this.controllerLabel.Text = "Controller:";
 			// 
 			// organizationDescription
@@ -67,7 +67,7 @@
 			this.organizationDescription.Name = "organizationDescription";
 			this.organizationDescription.ReadOnly = true;
 			this.organizationDescription.Size = new System.Drawing.Size(188, 111);
-			this.organizationDescription.TabIndex = 38;
+			this.organizationDescription.TabIndex = 9;
 			this.organizationDescription.Text = "North American Space Agency\r\n\r\n+2 on Space program\r\n+1 on Laser\r\n3\r\n4\r\n5";
 			// 
 			// organizationPicker
@@ -77,7 +77,7 @@
 			this.organizationPicker.Location = new System.Drawing.Point(261, 65);
 			this.organizationPicker.Name = "organizationPicker";
 			this.organizationPicker.Size = new System.Drawing.Size(115, 21);
-			this.organizationPicker.TabIndex = 37;
+			this.organizationPicker.TabIndex = 8;
 			this.organizationPicker.SelectedIndexChanged += new System.EventHandler(this.organizationPicker_SelectedIndexChanged);
 			// 
 			// organizationLabel
@@ -86,7 +86,7 @@
 			this.organizationLabel.Location = new System.Drawing.Point(188, 68);
 			this.organizationLabel.Name = "organizationLabel";
 			this.organizationLabel.Size = new System.Drawing.Size(69, 13);
-			this.organizationLabel.TabIndex = 36;
+			this.organizationLabel.TabIndex = 7;
 			this.organizationLabel.Text = "Organization:";
 			// 
 			// nameInput
@@ -94,7 +94,7 @@
 			this.nameInput.Location = new System.Drawing.Point(261, 39);
 			this.nameInput.Name = "nameInput";
 			this.nameInput.Size = new System.Drawing.Size(115, 20);
-			this.nameInput.TabIndex = 35;
+			this.nameInput.TabIndex = 6;
 			this.nameInput.TextChanged += new System.EventHandler(this.nameInput_TextChanged);
 			// 
 			// nameLabel
@@ -103,7 +103,7 @@
 			this.nameLabel.Location = new System.Drawing.Point(188, 42);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(38, 13);
-			this.nameLabel.TabIndex = 34;
+			this.nameLabel.TabIndex = 5;
 			this.nameLabel.Text = "Name:";
 			// 
 			// removeButton
@@ -111,7 +111,7 @@
 			this.removeButton.Location = new System.Drawing.Point(107, 209);
 			this.removeButton.Name = "removeButton";
 			this.removeButton.Size = new System.Drawing.Size(75, 23);
-			this.removeButton.TabIndex = 33;
+			this.removeButton.TabIndex = 2;
 			this.removeButton.Text = "Remove";
 			this.removeButton.UseVisualStyleBackColor = true;
 			this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
@@ -121,7 +121,7 @@
 			this.addButton.Location = new System.Drawing.Point(12, 209);
 			this.addButton.Name = "addButton";
 			this.addButton.Size = new System.Drawing.Size(75, 23);
-			this.addButton.TabIndex = 32;
+			this.addButton.TabIndex = 1;
 			this.addButton.Text = "Add";
 			this.addButton.UseVisualStyleBackColor = true;
 			this.addButton.Click += new System.EventHandler(this.addButton_Click);
@@ -132,7 +132,7 @@
 			this.colorsLayout.Name = "colorsLayout";
 			this.colorsLayout.SelectedIndex = -1;
 			this.colorsLayout.Size = new System.Drawing.Size(89, 191);
-			this.colorsLayout.TabIndex = 42;
+			this.colorsLayout.TabIndex = 10;
 			this.colorsLayout.SelectedIndexChanged += new System.EventHandler(this.colorsLayout_SelectedIndexChanged);
 			// 
 			// playerViewsLayout
@@ -141,7 +141,7 @@
 			this.playerViewsLayout.Name = "playerViewsLayout";
 			this.playerViewsLayout.SelectedIndex = -1;
 			this.playerViewsLayout.Size = new System.Drawing.Size(170, 191);
-			this.playerViewsLayout.TabIndex = 41;
+			this.playerViewsLayout.TabIndex = 0;
 			this.playerViewsLayout.SelectedIndexChanged += new System.EventHandler(this.playerViewsLayout_SelectedIndexChanged);
 			// 
 			// acceptButton
@@ -150,7 +150,7 @@
 			this.acceptButton.Location = new System.Drawing.Point(339, 209);
 			this.acceptButton.Name = "acceptButton";
 			this.acceptButton.Size = new System.Drawing.Size(75, 23);
-			this.acceptButton.TabIndex = 43;
+			this.acceptButton.TabIndex = 11;
 			this.acceptButton.Text = "accept";
 			this.acceptButton.UseVisualStyleBackColor = true;
 			this.acceptButton.Click += new System.EventHandler(this.acceptButton_Click);
@@ -181,6 +181,7 @@
 			this.Text = "FormSetupPlayers";
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 
 		#endregion

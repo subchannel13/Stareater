@@ -38,7 +38,7 @@
 			this.nameLabel.Location = new System.Drawing.Point(-3, 0);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(35, 13);
-			this.nameLabel.TabIndex = 23;
+			this.nameLabel.TabIndex = 0;
 			this.nameLabel.Text = "label1";
 			// 
 			// valueSlider
@@ -48,7 +48,7 @@
 			this.valueSlider.Maximum = 10499;
 			this.valueSlider.Name = "valueSlider";
 			this.valueSlider.Size = new System.Drawing.Size(140, 17);
-			this.valueSlider.TabIndex = 24;
+			this.valueSlider.TabIndex = 1;
 			this.valueSlider.Scroll += new System.Windows.Forms.ScrollEventHandler(this.valueSlider_Scroll);
 			// 
 			// valueLabel
@@ -56,7 +56,7 @@
 			this.valueLabel.Location = new System.Drawing.Point(3, 33);
 			this.valueLabel.Name = "valueLabel";
 			this.valueLabel.Size = new System.Drawing.Size(137, 13);
-			this.valueLabel.TabIndex = 25;
+			this.valueLabel.TabIndex = 2;
 			this.valueLabel.Text = "label1";
 			this.valueLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			// 

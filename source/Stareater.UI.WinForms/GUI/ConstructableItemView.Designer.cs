@@ -53,7 +53,7 @@ namespace Stareater.GUI
 			this.nameLabel.Location = new System.Drawing.Point(42, 3);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(35, 13);
-			this.nameLabel.TabIndex = 1;
+			this.nameLabel.TabIndex = 0;
 			this.nameLabel.Text = "Name";
 			this.nameLabel.Click += new System.EventHandler(this.nameLabel_Click);
 			this.nameLabel.MouseEnter += new System.EventHandler(this.nameLabel_MouseEnter);
@@ -63,7 +63,7 @@ namespace Stareater.GUI
 			this.costLabel.Location = new System.Drawing.Point(41, 20);
 			this.costLabel.Name = "costLabel";
 			this.costLabel.Size = new System.Drawing.Size(106, 13);
-			this.costLabel.TabIndex = 2;
+			this.costLabel.TabIndex = 1;
 			this.costLabel.Text = "label1";
 			this.costLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
 			this.costLabel.Click += new System.EventHandler(this.costLabel_Click);
@@ -82,6 +82,7 @@ namespace Stareater.GUI
 			((System.ComponentModel.ISupportInitialize)(this.thumbnail)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 		private System.Windows.Forms.Label costLabel;
 		private System.Windows.Forms.Label nameLabel;

@@ -48,7 +48,7 @@ namespace Stareater.GUI
 			this.nameLabel.Location = new System.Drawing.Point(69, 3);
 			this.nameLabel.Name = "nameLabel";
 			this.nameLabel.Size = new System.Drawing.Size(175, 40);
-			this.nameLabel.TabIndex = 3;
+			this.nameLabel.TabIndex = 0;
 			this.nameLabel.Text = "name";
 			this.nameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.nameLabel.MouseEnter += new System.EventHandler(this.nameLabel_MouseEnter);
@@ -68,7 +68,7 @@ namespace Stareater.GUI
 			this.countLabel.Location = new System.Drawing.Point(250, 3);
 			this.countLabel.Name = "countLabel";
 			this.countLabel.Size = new System.Drawing.Size(49, 40);
-			this.countLabel.TabIndex = 5;
+			this.countLabel.TabIndex = 1;
 			this.countLabel.Text = "x.xx X";
 			this.countLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.countLabel.MouseEnter += new System.EventHandler(this.countLabel_MouseEnter);
@@ -79,7 +79,7 @@ namespace Stareater.GUI
 			this.actionButton.Location = new System.Drawing.Point(305, 7);
 			this.actionButton.Name = "actionButton";
 			this.actionButton.Size = new System.Drawing.Size(32, 32);
-			this.actionButton.TabIndex = 6;
+			this.actionButton.TabIndex = 2;
 			this.actionButton.UseVisualStyleBackColor = true;
 			this.actionButton.Click += new System.EventHandler(this.actionButton_Click);
 			// 

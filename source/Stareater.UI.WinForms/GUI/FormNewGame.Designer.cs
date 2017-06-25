@@ -99,7 +99,7 @@
 			this.setupStartSelector.Location = new System.Drawing.Point(188, 128);
 			this.setupStartSelector.Name = "setupStartSelector";
 			this.setupStartSelector.Size = new System.Drawing.Size(170, 21);
-			this.setupStartSelector.TabIndex = 7;
+			this.setupStartSelector.TabIndex = 4;
 			this.setupStartSelector.SelectedIndexChanged += new System.EventHandler(this.setupStartSelector_SelectedIndexChanged);
 			// 
 			// FormNewGame
@@ -122,6 +122,7 @@
 			this.Text = "Nova igra";
 			this.ResumeLayout(false);
 			this.PerformLayout();
+
 		}
 
 		#endregion
