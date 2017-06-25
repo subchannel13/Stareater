@@ -14,7 +14,7 @@ namespace Stareater.GUI
 		public FormError(string errorMessage) : this()
 		{
 			this.errorText.Text = errorMessage;
-			this.issuesLink.Links.Add(0, this.issuesLink.Text.Length, "http://github.com/subchannel13/zvjezdojedac/issues");
+			this.issuesLink.Links.Add(0, this.issuesLink.Text.Length, "http://github.com/subchannel13/Stareater/issues");
 		}
 		
 		void IssuesLinkLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
