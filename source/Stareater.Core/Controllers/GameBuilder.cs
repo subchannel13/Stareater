@@ -61,6 +61,7 @@ namespace Stareater.Controllers
 			var derivates = initDerivates(statics, players, organellePlayer, states);
 			
 			var game = new MainGame(players.ToArray(), organellePlayer, statics, states, derivates);
+			game.Turn = turn;
 			game.CalculateDerivedEffects();
 			
 			return game;
