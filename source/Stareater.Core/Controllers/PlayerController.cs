@@ -393,7 +393,7 @@ namespace Stareater.Controllers
 					if (playerTechs[i].Topic.IdCode == focused)
 						return i;
 				
-				return 0; //TODO(later) think of some smarter default research
+				return 0; //TODO(v0.7) think of some smarter default research
 			}
 			
 			set

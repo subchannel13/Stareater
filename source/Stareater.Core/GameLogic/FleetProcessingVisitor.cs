@@ -72,7 +72,7 @@ namespace Stareater.GameLogic
 				
 			var speed = baseSpeed;
 			if (mission.UsedWormhole != null)
-				speed += 0.5; //TODO(later) consider making moddable
+				speed += 0.5; //TODO(v0.7) consider making moddable
 			
 			this.movementDirection = mission.Destination.Position - fleet.Position;
 			var distance = this.movementDirection.Magnitude();

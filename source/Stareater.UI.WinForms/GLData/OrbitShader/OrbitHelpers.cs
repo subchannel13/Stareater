@@ -15,7 +15,7 @@ namespace Stareater.GLData.OrbitShader
 		
 		public static IEnumerable<float> PlanetOrbit(float orbitR, float orbitWidth, float orbitPieces)
 		{
-			//TODO(v0.6) find better heuristic for width multiplyer
+			//TODO(v0.7) find better heuristic for width multiplyer
 			var orbitMin = orbitR - orbitWidth * 3;
 			var orbitMax = orbitR + orbitWidth * 3;
 				

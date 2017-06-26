@@ -109,10 +109,10 @@ namespace Stareater.Controllers
 		
 		internal void Start()
 		{
-			this.checkNextUnit(); //TODO(0.6) AI vs AI could cause stack overflow
+			this.checkNextUnit(); //TODO(0.7) AI vs AI could cause stack overflow
 		}
 
-		//TODO(v0.6) callers can cause stack overflow if they perform multiple unit action in a single function
+		//TODO(v0.7) callers can cause stack overflow if they perform multiple unit action in a single function
 		private void checkNextUnit()
 		{
 			if (this.processor.IsOver)

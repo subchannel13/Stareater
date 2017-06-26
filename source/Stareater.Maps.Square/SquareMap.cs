@@ -18,7 +18,7 @@ namespace Stareater.Galaxy.Square
 {
 	public class SquareMap : IStarPositioner
 	{
-		const string MapsFolder = "./maps/"; //TODO(v0.6) try to move it to view
+		const string MapsFolder = "./maps/"; //TODO(v0.7) try to move it to view
 		const string ParametersFile = "squareMap.txt";
 		const string LanguageContext = "SquareMap";
 		const string ConstantsKey = "Constants";

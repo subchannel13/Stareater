@@ -332,7 +332,7 @@ namespace Stareater.GUI
 			this.equipmentAction.MissionEquipmentAction = x =>
 			{
 				int i = this.equipmentList.SelectedIndex;
-				bool removed = this.controller.MissionEquipCount(i) - 1 <= 0; //HACK(v0.5) refactor to full list update or somethig that would simplify this
+				bool removed = this.controller.MissionEquipCount(i) - 1 <= 0; //HACK(v0.7) refactor to full list update or somethig that would simplify this
 				
 				this.controller.MissionEquipSetAmount(i, this.controller.MissionEquipCount(i) - 1);
 				if (removed)

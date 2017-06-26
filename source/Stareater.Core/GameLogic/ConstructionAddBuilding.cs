@@ -19,7 +19,7 @@ namespace Stareater.GameLogic
 
 		public void Apply(StatesDB states, TemporaryDB derivates, AConstructionSite site, long quantity)
 		{
-			//TODO(v0.5) report new building construction
+			//TODO(v0.7) report new building construction
 			var vars = new Var("quantity", quantity);
 			quantity = (long)this.quantity.Evaluate(vars.Get);
 			

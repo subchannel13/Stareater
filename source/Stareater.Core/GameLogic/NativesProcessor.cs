@@ -67,16 +67,16 @@ namespace Stareater.GameLogic
 					x => statics.SpecialEquipment[x.Key].MakeBest(techLevels, x.Value)
 				).ToList();
 				
-				var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels); //TODO(0.5) get id from template
-				var reactor = ReactorType.MakeBest(techLevels, hull, specials, statics); //TODO(0.5) get id from template
-				var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(techLevels, hull, reactor, specials, statics) : null; //TODO(0.5) get id from template
-				var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels); //TODO(0.5) get id from template
+				var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels); //TODO(0.7) get id from template
+				var reactor = ReactorType.MakeBest(techLevels, hull, specials, statics); //TODO(0.7) get id from template
+				var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(techLevels, hull, reactor, specials, statics) : null; //TODO(0.7) get id from template
+				var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels); //TODO(0.7) get id from template
 				var shield = predefDesign.ShieldCode != null ? statics.Shields[predefDesign.ShieldCode].MakeBest(techLevels) : null;
 				var equipment = predefDesign.MissionEquipment.Select(
 					x => statics.MissionEquipment[x.Key].MakeBest(techLevels, x.Value)
 				).ToList();
 				
-				var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels); //TODO(0.5) get id from template
+				var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels); //TODO(0.7) get id from template
 	
 				design = new Design(
 					id, playerProc.Player, false, true, predefDesign.Name, predefDesign.HullImageIndex,

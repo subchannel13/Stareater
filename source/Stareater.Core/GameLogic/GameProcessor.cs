@@ -47,7 +47,7 @@ namespace Stareater.GameLogic
 					this.game.Derivates
 				);
 			this.game.Derivates.Natives.ProcessPrecombat(this.game.Statics, this.game.States, this.game.Derivates); 
-			//TODO(v0.6) process natives postcombat
+			//TODO(later) process natives postcombat
 			
 			this.moveShips();
 			this.detectConflicts();
@@ -221,7 +221,7 @@ namespace Stareater.GameLogic
 						foreach(var ship in fleet.Ships)
 						{
 							ship.Damage = totalDamage[ship.Design] * ship.Quantity / shipCount[ship.Design];
-							ship.UpgradePoints = totalUpgrades[ship.Design] * ship.Quantity / shipCount[ship.Design]; //TODO(v0.6) test
+							ship.UpgradePoints = totalUpgrades[ship.Design] * ship.Quantity / shipCount[ship.Design];
 						}
 						this.game.States.Fleets.Add(fleet);
 					}
@@ -449,7 +449,7 @@ namespace Stareater.GameLogic
 			foreach(var player in this.game.MainPlayers)
 			{
 				foreach(var audience in player.Orders.AudienceRequests)
-					this.audiences.Enqueue(new [] { player, this.game.MainPlayers[audience] }); //TODO(v0.6) eliminate duplicates
+					this.audiences.Enqueue(new [] { player, this.game.MainPlayers[audience] }); //TODO(v0.7) eliminate duplicates
 				
 				player.Orders.AudienceRequests.Clear();
 			}

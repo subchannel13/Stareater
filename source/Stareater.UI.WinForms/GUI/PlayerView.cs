@@ -14,7 +14,7 @@ namespace Stareater.GUI
 		public void SetData(PlayerInfo playerInfo) {
 			flagImage.BackColor = playerInfo.Color;
 			nameLabel.Text = playerInfo.Name;
-			organizationLabel.Text = ""; //TODO(later) add organization info
+			organizationLabel.Text = ""; //TODO(v0.7) add organization info
 		}
 		
 		private void flagImage_Click(object sender, EventArgs e)

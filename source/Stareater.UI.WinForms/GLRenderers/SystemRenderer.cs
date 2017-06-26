@@ -109,7 +109,7 @@ namespace Stareater.GLRenderers
 			this.colonizationMarked = beingColonized;
 		}
 
-		//TODO(0.6) refactor and remove
+		//TODO(v0.7) refactor and remove
 		public void ResetLists()
 		{
 			this.setupVaos();
@@ -132,7 +132,7 @@ namespace Stareater.GLRenderers
 				case ReturnToGalaxyKey:
 					this.systemClosedHandler();
 					break;
-				//TODO(later): add hotkeys for star and planets
+				//TODO(later) add hotkeys for star and planets
 			}
 		}
 		
@@ -200,7 +200,7 @@ namespace Stareater.GLRenderers
 					setView(emptyPlanetView);
 					break;
 				default:
-					//TODO(later): add implementation, foregin planet, empty system, foreign system
+					//TODO(later) add implementation, foregin planet, empty system, foreign system
 					break;
 			}
 			

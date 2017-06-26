@@ -22,7 +22,6 @@ namespace Stareater.AppData
 
 		public string LanguageId { get; private set; }
 		public LastGameInfo LastGame { get; private set; }
-		//TODO(v0.6) remember other game options like map shape and size
 
 		public void ChangeLanguage(string id, Language language)
 		{

@@ -80,7 +80,7 @@ namespace Stareater.GLRenderers
 			));
 		}
 		
-		//TODO(0.6) refactor and remove
+		//TODO(v0.7) refactor and remove
 		public void ResetLists()
 		{
 			this.setupBodies();

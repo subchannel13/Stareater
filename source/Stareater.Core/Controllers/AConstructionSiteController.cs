@@ -115,7 +115,7 @@ namespace Stareater.Controllers
 		
 		public bool CanPick(ConstructableItem data)
 		{
-			return Processor.SpendingPlan.All(x => x.Type.IdCode != data.IdCode);	//TODO(later): consider building count
+			return Processor.SpendingPlan.All(x => x.Type.IdCode != data.IdCode);	//TODO(v0.7): consider building count
 		}
 		
 		public void Enqueue(ConstructableItem data)

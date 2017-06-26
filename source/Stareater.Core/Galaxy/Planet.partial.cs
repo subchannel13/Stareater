@@ -5,8 +5,8 @@ namespace Stareater.Galaxy
 {
 	public partial class Planet
 	{
-		//TODO(v0.5): Make trait list readonly to view, consider making whole class private
-		
+		//TODO(v0.7): Make trait list readonly to view, consider making whole class private
+
 		/*public const double AtmosphereDensityMin = -5;
 		public const double AtmosphereDensityMax = 10;
 		public const double GravityMin = -5;
@@ -17,7 +17,7 @@ namespace Stareater.Galaxy
 		public const double TemperatureMax = 10;
 
 		public const double OptimalCondition = 0;*/
-		
+
 		/*public Planet(StarData star, int position, PlanetType type, int size, int gravity, double atmosphereDensityFactor, double mineralsSurface, double mineralsDeep)
 		{
 			this.Star = star;
@@ -56,32 +56,32 @@ namespace Stareater.Galaxy
 	
 		private double calcAtmosphereDensity(double factor)
 		{
-			//TODO(v0.5): specify how is atmosphere density calculated
+			//TODO(later): specify how is atmosphere density calculated
 			return Math.Round(Methods.Lerp(factor, AtmosphereDensityMin, AtmosphereDensityMax), MidpointRounding.AwayFromZero);
 		}
 		
 		private double calcGravity()
 		{
-			//TODO(v0.5): specify how is gravity calculated
+			//TODO(later): specify how is gravity calculated
 			return Math.Round(Size / 100, MidpointRounding.AwayFromZero) - 10;
 		}
 		
 		private double calcRadiation()
 		{
-			//TODO(v0.5): specify how is radiation calculated
+			//TODO(later): specify how is radiation calculated
 			return Star.Radiation - Position - (AtmosphereDensity + AtmosphereDensityMin);
 		}
 		
 		private double calcTemperature()
 		{
-			//TODO(v0.5): specify how is temperature calculated
+			//TODO(later): specify how is temperature calculated
 			double radiation = Math.Max(Star.Radiation - Position, 0);
 			double absorbed = Math.Min(radiation, AtmosphereDensity + AtmosphereDensityMin);
 			
 			return Math.Round(absorbed + (AtmosphereDensity > OptimalCondition ? AtmosphereDensity / 2 : 0));
 		}
 		
-		//TODO(v0.5): expose stuff like radiation absorption and green house effect to view
+		//TODO(later): expose stuff like radiation absorption and green house effect to view
 		*/
 
 		/*internal Planet Copy(StarData starRemap)
@@ -90,7 +90,7 @@ namespace Stareater.Galaxy
 				AtmosphereDensity, GravityDeviation, RadiationDeviation, TemperatureDeviation,
 				MineralsSurface, MineralsDeep);
 		}*/
-		
+
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{

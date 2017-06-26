@@ -21,7 +21,7 @@ namespace Stareater.GameLogic
 		{
 			foreach(var unit in this.game.Combatants)
 			{
-				//TODO(v0.6) hack, maybe move range check out of UseAbility
+				//TODO(v0.7) hack, maybe move range check out of UseAbility
 				unit.Position = planet.Position;
 				
 				for(int i = 0; i < unit.AbilityCharges.Length; i++)

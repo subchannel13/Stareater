@@ -76,7 +76,7 @@ namespace Stareater
 			return new GameCopy(copy, playersRemap, galaxyRemap);
 		}
 
-		//TODO(v0.6) leave or move to processor
+		//TODO(v0.7) leave or move to processor
 		public void CalculateDerivedEffects()
 		{
 			Processor.CalculateBaseEffects();

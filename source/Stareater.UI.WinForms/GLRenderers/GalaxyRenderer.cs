@@ -144,7 +144,7 @@ namespace Stareater.GLRenderers
 			}
 		}
 
-		//TODO(0.6) refactor and remove
+		//TODO(v0.7) refactor and remove
 		public void ResetLists()
 		{
 			this.setupVaos();
@@ -157,7 +157,7 @@ namespace Stareater.GLRenderers
 			var aspect = canvasSize.X / canvasSize.Y;
 			var radius = DefaultViewSize / (float)Math.Pow(ZoomBase, zoomLevel);
 
-			//TODO(later): test this, perhaps by flipping the monitor.
+			//TODO(later) test this, perhaps by flipping the monitor.
 			screenLength = screenSize.X > screenSize.Y ? 
 				(float)(screenSize.X * radius * aspect / screenSize.X) : 
 				(float)(screenSize.Y * radius * aspect / screenSize.Y);
@@ -177,7 +177,7 @@ namespace Stareater.GLRenderers
 			}
 		}
 		
-		//TODO(v0.6) rename to fleetPosition
+		//TODO(v0.7) rename to fleetPosition
 		private Vector3 fleetDisplayPosition(FleetInfo fleet)
 		{
 			var atStar = this.QueryScene(fleet.Position, 1).Any(x => x.Data is StarData);
@@ -188,7 +188,7 @@ namespace Stareater.GLRenderers
 				var players = this.currentPlayer.FleetsAt(fleet.Position).
 					Select(x => x.Owner).
 					Where(x => x != this.currentPlayer.Info).
-					Distinct().ToList(); //TODO(v0.6) sort players by some key
+					Distinct().ToList(); //TODO(v0.7) sort players by some key
 				
 				int index = (fleet.Owner == this.currentPlayer.Info) ? 0 : (1 + players.IndexOf(fleet.Owner));
 				displayPosition += new Vector3(0.5f, 0.5f - 0.2f * index, 0);
@@ -249,7 +249,7 @@ namespace Stareater.GLRenderers
 			);
 		}
 		
-		//TODO(v0.6) bundle with movement simulation
+		//TODO(v0.7) bundle with movement simulation
 		private void setupMovementEta()
 		{
 			if (this.SelectedFleet != null && this.SelectedFleet.SimulationWaypoints.Count > 0 && this.SelectedFleet.Eta > 0)
@@ -440,7 +440,7 @@ namespace Stareater.GLRenderers
 
 		public override void OnMouseClick(MouseEventArgs e)
 		{
-			if (panAbsPath > PanClickTolerance) //TODO(v0.6) maybe make AScene differentiate between click and drag
+			if (panAbsPath > PanClickTolerance) //TODO(v0.7) maybe make AScene differentiate between click and drag
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
@@ -496,7 +496,7 @@ namespace Stareater.GLRenderers
 			else
 			{
 				this.currentSelection = GalaxySelectionType.Fleet;
-				this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = fleetFound[0]; //TODO(v0.6) marks wrong fleet when there are multiple players 
+				this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = fleetFound[0]; //TODO(v0.7) marks wrong fleet when there are multiple players 
 				this.galaxyViewListener.FleetClicked(fleetFound);
 				this.setupSelectionMarkers();
 			}

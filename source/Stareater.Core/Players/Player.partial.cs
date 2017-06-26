@@ -10,7 +10,7 @@ namespace Stareater.Players
 {
 	partial class Player
 	{
-		private Organization organization; //TODO(later): add to type
+		private Organization organization; //TODO(v0.7) add to type
 		
 		private void initPlayerControl(PlayerType type)
 		{
@@ -39,13 +39,13 @@ namespace Stareater.Players
 			else if (dataMap.Tag.Equals(PlayerType.AiControllerTag))
 			{
 				string factoryId = dataMap[PlayerType.FactoryIdKey].To<string>();
-				//TODO(later): what if no factory was found?
+				//TODO(later) what if no factory was found?
 				return PlayerAssets.AIDefinitions.First(x => x.Id == factoryId).Load(dataMap);
 			}
 			else if (dataMap.Tag.Equals(PlayerType.OrganelleControllerTag))
 				return new OrganellePlayerFactory().Load(dataMap);
 			
-			//TODO(later): Invalid controller data
+			//TODO(later) Invalid controller data
 			return null;
 		}
 	}

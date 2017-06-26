@@ -16,7 +16,7 @@ namespace Stareater.Galaxy.RybPopulator
 {
 	public class RybStarPopulator : IStarPopulator
 	{
-		private const string MapsFolder = "./maps/"; //TODO(v0.6) try to move it to view
+		private const string MapsFolder = "./maps/"; //TODO(v0.7) try to move it to view
 		private const string ParametersFile = "rybPopulator.txt";
 
 		private const string LanguageContext = "DefaultPopulator";

@@ -104,10 +104,10 @@ namespace Stareater.Controllers
 		{
 			var colonies = new ColonyCollection();
 			for(int playerI = 0; playerI < players.Length; playerI++) {
-				//TODO(later): pick top most suitable planets
+				//TODO(v0.7): pick top most suitable planets
 				for(int colonyI = 0; colonyI < startingConditions.Colonies; colonyI++)
 					colonies.Add(new Colony(
-						1,	//TODO(v0.6): make a constant
+						1,	//TODO(v0.7): make a constant
 						starSystems[homeSystemIndices[playerI]].Planets[colonyI],
 						players[playerI]
 					));
@@ -199,7 +199,7 @@ namespace Stareater.Controllers
 				
 				foreach(var colony in colonies.OwnedBy[player]) {
 					colony.Population = weights.Relative(colony) * totalPopulation;
-					//TODO(later): add infrastructure to colony
+					//TODO(v0.7): add infrastructure to colony
 					derivates.Colonies.Of[colony].CalculateBaseEffects(statics, derivates.Players.Of[player]);
 				}
 			}
@@ -215,7 +215,7 @@ namespace Stareater.Controllers
 					player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 				
 				player.Orders.DevelopmentFocusIndex = statics.DevelopmentFocusOptions.Count / 2;
-				//TODO(v0.6) focus can be null when all research is done
+				//TODO(v0.7) focus can be null when all research is done
 				player.Orders.ResearchFocus = statics.ResearchTopics.First().IdCode;
 			}
 			

@@ -37,7 +37,7 @@ namespace Stareater.Controllers
 			if (State != GameState.NoGame)
 				throw new InvalidOperationException("Game is already created.");
 
-			//TODO(later): Pass organization to player
+			//TODO(v0.7): Pass organization to player
 			var players = controller.PlayerList.Select(info =>
 				new Player(info.Name, info.Color, /*info.Organization, */info.ControlType)
 			).ToArray();
@@ -186,24 +186,24 @@ namespace Stareater.Controllers
 
 			while (gameObj.Processor.HasAudience)
 			{
-				processingSync.WaitOne(); //TODO(v0.6) try blocking only participants
+				processingSync.WaitOne(); //TODO(v0.7) try blocking only participants
 				this.holdAudience();
 			}
-			//TODO(v0.6) diplomatic actions don't take place this turn
-			processingSync.WaitOne(); //TODO(v0.6) make more orderly synchronization mechanism
+			//TODO(v0.7) diplomatic actions don't take place this turn
+			processingSync.WaitOne(); //TODO(v0.7) make more orderly synchronization mechanism
 			processingSync.Set();
 
 			while (gameObj.Processor.HasConflict)
 			{
-				processingSync.WaitOne(); //TODO(v0.6) try blocking only participants
+				processingSync.WaitOne(); //TODO(v0.7) try blocking only participants
 				this.initaiteCombat();
 			}
-			processingSync.WaitOne(); //TODO(v0.6) make more orderly synchronization mechanism
+			processingSync.WaitOne(); //TODO(v0.7) make more orderly synchronization mechanism
 			processingSync.Set();
 			
 			while (this.gameObj.Derivates.Players.Any(x => x.HasBreakthrough))
 			{
-				processingSync.WaitOne(); //TODO(v0.6) per player sync instead of global
+				processingSync.WaitOne(); //TODO(v0.7) per player sync instead of global
 				this.presentBreakthrough();
 			}
 			
@@ -237,7 +237,7 @@ namespace Stareater.Controllers
 			var controller = new AudienceController(participants, this, gameObj);
 			
 			this.stateListener.OnDoAudience(controller);
-			//TODO(v0.6) inform AIs				
+			//TODO(later) inform AIs				
 		}
 		
 		private void initaiteCombat()
@@ -290,7 +290,7 @@ namespace Stareater.Controllers
 			);
 			
 			if (playerProc.Player.ControlType == PlayerControlType.LocalAI)
-				playerProc.Player.OffscreenControl.OnResearchComplete(controller); //TODO(0.6) do in separate thread/task
+				playerProc.Player.OffscreenControl.OnResearchComplete(controller); //TODO(0.7) do in separate thread/task
 			else
 				this.stateListener.OnResearchComplete(controller);
 		}

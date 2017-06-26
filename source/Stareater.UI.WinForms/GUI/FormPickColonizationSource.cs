@@ -47,7 +47,7 @@ namespace Stareater.GUI
 		
 		private void sourceList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			//TODO(v0.5) change ETA info
+			//TODO(v0.7) change ETA info
 			this.sourceInfo.Text = "";
 		}
 		

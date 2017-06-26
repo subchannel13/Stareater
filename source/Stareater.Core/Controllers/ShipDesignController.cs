@@ -375,7 +375,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				//TODO(v0.5): check name length and uniqueness
+				//TODO(v0.7): check name length and uniqueness
 				return this.selectedHull != null && this.ImageIndex >= 0 && this.ImageIndex < this.selectedHull.ImagePaths.Length &&
 					(this.availableIsDrive != null || !this.HasIsDrive) &&
 					this.SpaceUsed <= this.SpaceTotal;
@@ -407,9 +407,9 @@ namespace Stareater.Controllers
 			design.CalcHash(this.game.Statics);
 			
 			if (this.game.States.Designs.Contains(design))
-				return; //TODO(v0.6) move the check to IsDesignValid
+				return; //TODO(v0.7) move the check to IsDesignValid
 			
-			game.States.Designs.Add(design); //TODO(v0.6) add to changes DB and propagate to states during turn processing
+			game.States.Designs.Add(design); //TODO(v0.7) add to changes DB and propagate to states during turn processing
 			game.Derivates.Players.Of[this.player].Analyze(design, this.game.Statics);
 		}
 		#endregion

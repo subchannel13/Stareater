@@ -31,7 +31,7 @@ namespace Stareater.AppData
 			var lastGameData = new IkonComposite(ClassName);
 
 			if (this.StartConditions != null)
-				lastGameData.Add(StartingConditionsKey, this.StartConditions.BuildSaveData()); //TODO(v0.5) check if data is valid before loading
+				lastGameData.Add(StartingConditionsKey, this.StartConditions.BuildSaveData()); //TODO(v0.7) check if data is valid before loading
 			
 			if (this.StarPositionerConfig != null)
 				lastGameData.Add(StarPositionerKey, this.StarPositionerConfig);

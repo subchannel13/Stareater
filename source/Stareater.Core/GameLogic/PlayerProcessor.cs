@@ -192,7 +192,7 @@ namespace Stareater.GameLogic
 			this.breakthroughs = new Queue<ResearchResult>(this.ResearchPlan.Where(x => x.CompletedCount > 0));
 			
 			/*
-			 * TODO(later):
+			 * TODO(later)
 			 * - Perform migration
 			 */
 		}

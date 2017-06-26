@@ -50,10 +50,10 @@ namespace Stareater.GameLogic
 		public void CalculateBaseEffects()
 		{
 			/*
-			 * TODO(v0.6): Preprocess stars
+			 * TODO(v0.7) Preprocess stars
 			 * - Calculate system effects
 			 */
-			//TODO(v0.6): Where to calculate stuff like migration?
+			//TODO(v0.7) Where to calculate stuff like migration?
 		}
 
 		public void CalculateSpending(

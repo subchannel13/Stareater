@@ -240,7 +240,7 @@ namespace Stareater.GUI
 					form.CreateGame(gameController);
 					this.gameController.Start(this);
 					this.initPlayers();
-					this.restartRenderers(); //TODO(v0.6) can cause race condition where no stellarises has been initialized yet
+					this.restartRenderers(); //TODO(v0.7) can cause race condition where no stellarises has been initialized yet
 				}
 				else
 					postDelayedEvent(showMainMenu);
@@ -265,7 +265,7 @@ namespace Stareater.GUI
 					saveController.Load(form.SelectedGameData, LoadingMethods.GameDataSources());
 					this.gameController.Start(this);
 					this.initPlayers();
-					this.restartRenderers(); //TODO(v0.6) render thread my try to draw old map before new one is available
+					this.restartRenderers(); //TODO(v0.7) render thread my try to draw old map before new one is available
 				}
 		}
 		
@@ -386,7 +386,7 @@ namespace Stareater.GUI
 		private void glCanvas_Load(object sender, EventArgs e)
 		{
 			ShaderLibrary.Load();
-			GalaxyTextures.Get.Load(); //TODO(v0.6) make general initialization logic for rendering
+			GalaxyTextures.Get.Load(); //TODO(v0.7) make general initialization logic for rendering
 			
 			GL.Enable(EnableCap.DepthTest);
 			GL.Enable(EnableCap.Blend);

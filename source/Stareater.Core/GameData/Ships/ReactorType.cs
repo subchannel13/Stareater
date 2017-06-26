@@ -39,7 +39,7 @@ namespace Stareater.GameData.Ships
 				Where(x =>
 				      {
 				      	shipVars[AComponentType.LevelKey] = x.Level;
-				      	return x.TypeInfo.MinSize.Evaluate(shipVars) <= shipVars[HullType.ReactorSizeKey] && x.TypeInfo.CanPick; //TODO(v0.6) use final reactor size
+				      	return x.TypeInfo.MinSize.Evaluate(shipVars) <= shipVars[HullType.ReactorSizeKey] && x.TypeInfo.CanPick; //TODO(v0.7) use final reactor size
 				      }),
 				x =>
 				{

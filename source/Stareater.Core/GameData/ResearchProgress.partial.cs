@@ -38,8 +38,8 @@ namespace Stareater.GameData
 			this.InvestedPoints = progressData.LeftoverPoints;
 		}
 
-		//TODO(v0.6) consider moving to player processor and merging with development progress
-		//TODO(v0.6) consider merging ResearchResult and DevelopmentResearch classes
+		//TODO(v0.7) consider moving to player processor and merging with development progress
+		//TODO(v0.7) consider merging ResearchResult and DevelopmentResearch classes
 		public ResearchResult SimulateInvestment(double points)
 		{
 			int tmplevel = Level;

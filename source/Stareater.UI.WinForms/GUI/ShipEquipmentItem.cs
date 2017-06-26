@@ -41,7 +41,7 @@ namespace Stareater.GUI
 			{
 				this.amount = value;
 
-				amountLabel.Text = amount.ToString() + " x"; //TODO(v0.5) format
+				amountLabel.Text = amount.ToString() + " x"; //TODO(v0.6) format
 			}
 		}
 		
