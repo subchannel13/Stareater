@@ -27,7 +27,7 @@ namespace Stareater.Controllers
 			this.gameController = gameController;
 			
 			this.Star = mainGame.States.Stars.At[battleGame.Location];
-			this.processor = new BombardmentProcessor(battleGame, mainGame);
+			this.processor = new BombardmentProcessor(new BombardBattleGame(battleGame), mainGame);
 		}
 		
 		internal void Register(PlayerController player, IBombardEventListener eventListener)

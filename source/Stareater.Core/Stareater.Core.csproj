@@ -69,6 +69,7 @@
     <Compile Include="AppData\Expressions\UnaryOperators.cs" />
     <Compile Include="AppData\Expressions\Variable.cs" />
     <Compile Include="AppData\LastGameInfo.cs" />
+    <Compile Include="BombardBattleGame.cs" />
     <Compile Include="Controllers\AConstructionSiteController.cs" />
     <Compile Include="Controllers\AudienceController.cs" />
     <Compile Include="Controllers\BombardmentController.cs" />
@@ -434,6 +435,7 @@
     <Compile Include="Ships\Missions\MissionType.cs" />
     <Compile Include="Ships\Missions\MoveMission.cs" />
     <Compile Include="Ships\Missions\SkipTurnMission.cs" />
+    <Compile Include="ABattleGame.cs" />
     <Compile Include="SpaceBattleGame.cs" />
     <Compile Include="SpaceCombat\Combatant.cs" />
     <Compile Include="SpaceCombat\CombatPlanet.cs" />
@@ -587,9 +589,7 @@
     <None Include="AppData\Expressions\Parser.frame" />
     <None Include="AppData\Expressions\Scanner.frame" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\NewGameHelpers" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

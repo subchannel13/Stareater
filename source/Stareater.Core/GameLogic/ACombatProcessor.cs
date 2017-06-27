@@ -8,93 +8,71 @@ using Stareater.Utils;
 
 namespace Stareater.GameLogic
 {
-	class ACombatProcessor
+	abstract class ACombatProcessor
 	{
-		protected readonly SpaceBattleGame game;
 		protected readonly MainGame mainGame;
 		
-		public ACombatProcessor(SpaceBattleGame game, MainGame mainGame)
+		public ACombatProcessor(MainGame mainGame)
 		{
-			this.game = game;
 			this.mainGame = mainGame;
 		}
+
+		protected abstract ABattleGame battleGame { get; }
 		
 		public bool CanBombard
 		{
 			get
 			{
-				if (this.game.Turn >= this.game.TurnLimit)
+				if (this.battleGame.Turn >= this.battleGame.TurnLimit)
 					return false;
 
-				var colonies = this.game.Planets.Where(x => x.Colony != null).ToList();
-				var hostileShips = this.game.Combatants.Where(
+				var colonies = this.battleGame.Planets.Where(x => x.Colony != null).ToList();
+				var hostileShips = this.battleGame.Combatants.Where(
 					ship => colonies.Any(planet => this.mainGame.Processor.IsAtWar(ship.Owner, planet.Colony.Owner))
 				);
 
-				return this.game.Combatants.Where(
+				return this.battleGame.Combatants.Where(
 					ship => colonies.Any(planet => this.mainGame.Processor.IsAtWar(ship.Owner, planet.Colony.Owner))
-				).Any(
-					unit =>
-					{
-						var statList = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities;
-						for(int i = 0; i < statList.Count; i++)
-							if (statList[i].TargetColony && (double.IsInfinity(statList[i].Ammo) || unit.AbilityAmmo[i] >= 1))
-								return true;
-						
-						return false;
-					}
-				);
+				).Any(unit => unitCanBombard(unit));
 			}
 		}
-		
-		public void UseAbility(int index, double quantity, CombatPlanet planet)
+
+		/*TODO(v0.7) add methods for attacking other kind of targets, 
+		 * extrude functionality form UseAbiliy methods in SpaceBattleProcessor */
+		protected double attackPlanet(AbilityStats abilityStats, double quantity, CombatPlanet planet)
 		{
-			var unit = this.game.PlayOrder.Peek();
-			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
-			var chargesLeft = quantity;
 			var spent = 0.0;
-			
-			if (!abilityStats.TargetColony || Methods.HexDistance(planet.Position, unit.Position) > abilityStats.Range)
-				return;
-			
+
 			if (abilityStats.IsInstantDamage && planet.Colony != null)
 			{
 				var killsPerShot = abilityStats.FirePower / planet.PopulationHitPoints;
 				var casualties = Math.Min(quantity * killsPerShot, planet.Colony.Population);
 				//TODO(later) factor in shields and armor
 				//TODO(later) roll for target, building or population
-				
+
 				planet.Colony.Population -= casualties;
 				spent = Math.Ceiling(casualties / killsPerShot);
 			}
-			
-			unit.AbilityCharges[index] -= spent;
-			if (!double.IsInfinity(unit.AbilityAmmo[index]))
-				unit.AbilityAmmo[index] -= spent;
+
+			return spent;
 		}
-		
-		protected void makeUnitOrder()
+
+		protected void calculateInitiative()
 		{
-			foreach(var unit in this.game.Combatants)
+			foreach(var unit in this.battleGame.Combatants)
 			{
 				var stats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
-				unit.Initiative = this.game.Rng.NextDouble() + stats.CombatSpeed;
+				unit.Initiative = this.battleGame.Rng.NextDouble() + stats.CombatSpeed;
 			}
-			
-			var units = new List<Combatant>(this.game.Combatants);
-			units.Sort((a, b) => -a.Initiative.CompareTo(b.Initiative));
-			
-			foreach(var unit in units)
-				this.game.PlayOrder.Enqueue(unit);
 		}
 		
-		protected void nextRound()
+		protected virtual void nextRound()
 		{
-			this.game.Turn++;
-			this.game.Combatants.RemoveAll(x => x.Ships.Quantity <= 0);
-			var players = this.game.Combatants.Select(x => x.Owner).Distinct();
+			this.battleGame.Turn++;
+			this.battleGame.Combatants.RemoveAll(x => x.Ships.Quantity <= 0);
+			var players = this.battleGame.Combatants.Select(x => x.Owner).Distinct();
 			
-			foreach(var unit in this.game.Combatants)
+			foreach(var unit in this.battleGame.Combatants)
 			{
 				var stats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
 				
@@ -114,15 +92,13 @@ namespace Stareater.GameLogic
 				this.rollCloaking(unit, stats, players);
 			}
 			
-			foreach(var planet in this.game.Planets.Where(x => x.Colony != null && x.Colony.Population < 1))
+			foreach(var planet in this.battleGame.Planets.Where(x => x.Colony != null && x.Colony.Population < 1))
 			{
 				this.mainGame.States.Colonies.Remove(planet.Colony);
 				this.mainGame.Derivates.Colonies.Remove(this.mainGame.Derivates.Of(planet.Colony));
 				planet.Colony = null;
 				 //TODO(later) if stellaris should be removed too
 			}
-			
-			this.makeUnitOrder();
 		}
 		
 		protected double sensorStrength(Vector2D position, Player owner)
@@ -130,7 +106,7 @@ namespace Stareater.GameLogic
 			var designStats = this.mainGame.Derivates.Of(owner).DesignStats;
 			var rangePenalty = this.mainGame.Statics.ShipFormulas.SensorRangePenalty;
 			
-			return this.game.Combatants.Where(x => x.Owner == owner).Max(
+			return this.battleGame.Combatants.Where(x => x.Owner == owner).Max(
 				x => 
 				{
 					var distance = Methods.HexDistance(x.Position, position);
@@ -143,10 +119,20 @@ namespace Stareater.GameLogic
 		{
 			unit.CloakedFor.Clear();
 			foreach(var player in players.Where(x => x != unit.Owner))
-		        if (Probability(stats.Cloaking - sensorStrength(unit.Position, player)) > this.game.Rng.NextDouble())
+		        if (Probability(stats.Cloaking - sensorStrength(unit.Position, player)) > this.battleGame.Rng.NextDouble())
 					unit.CloakedFor.Add(player);
 		}
 		
+		protected bool unitCanBombard(Combatant unit)
+		{
+			var statList = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities;
+			for (int i = 0; i < statList.Count; i++)
+				if (statList[i].TargetColony && (double.IsInfinity(statList[i].Ammo) || unit.AbilityAmmo[i] >= 1))
+					return true;
+
+			return false;
+		}
+
 		#region Math helpers
 		protected const double sigmoidBase = 0.90483741803595957316424905944644; //e^-0.1
 		

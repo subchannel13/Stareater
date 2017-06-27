@@ -10,9 +10,15 @@ namespace Stareater.GameLogic
 {
 	class SpaceBattleProcessor : ACombatProcessor
 	{
-		public SpaceBattleProcessor(SpaceBattleGame battleGame, MainGame mainGame) : base (battleGame, mainGame)
-		{ }
-		
+		protected readonly SpaceBattleGame game;
+
+		public SpaceBattleProcessor(SpaceBattleGame battleGame, MainGame mainGame) : base(mainGame)
+		{
+			this.game = battleGame;
+		}
+
+		protected override ABattleGame battleGame => game;
+
 		#region Initialization
 		public void Initialize(IEnumerable<FleetMovement> fleets, double startTime)
 		{
@@ -20,6 +26,7 @@ namespace Stareater.GameLogic
 			this.initBodies();
 			this.makeUnitOrder();
 			
+			//TODO(v0.7) move to state constructor
 			this.game.TurnLimit = (int)Math.Ceiling(50 * (1 - startTime));
 		}
 
@@ -142,6 +149,7 @@ namespace Stareater.GameLogic
 		}
 		#endregion
 
+		#region Battle lifecycle
 		public bool IsOver 
 		{
 			get 
@@ -155,7 +163,25 @@ namespace Stareater.GameLogic
 				return players.Any(party1 => players.Any(party2 => this.mainGame.Processor.IsAtWar(party1, party2)));
 			}
 		}
-		
+
+		protected override void nextRound()
+		{
+			base.nextRound();
+			this.makeUnitOrder();
+		}
+
+		protected void makeUnitOrder()
+		{
+			this.calculateInitiative();
+
+			var units = new List<Combatant>(this.battleGame.Combatants);
+			units.Sort((a, b) => -a.Initiative.CompareTo(b.Initiative));
+
+			foreach (var unit in units)
+				this.game.PlayOrder.Enqueue(unit);
+		}
+		#endregion
+
 		#region Unit actions
 		public void MoveTo(Vector2D destination)
 		{
@@ -203,7 +229,23 @@ namespace Stareater.GameLogic
 			if (!double.IsInfinity(unit.AbilityAmmo[index]))
 				unit.AbilityAmmo[index] -= spent;
 		}
-		
+
+		public void UseAbility(int index, double quantity, CombatPlanet planet)
+		{
+			var unit = this.game.PlayOrder.Peek();
+			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
+			var chargesLeft = quantity;
+
+			if (!abilityStats.TargetColony || Methods.HexDistance(planet.Position, unit.Position) > abilityStats.Range)
+				return;
+
+			var spent = this.attackPlanet(abilityStats, quantity, planet);
+
+			unit.AbilityCharges[index] -= spent;
+			if (!double.IsInfinity(unit.AbilityAmmo[index]))
+				unit.AbilityAmmo[index] -= spent;
+		}
+
 		public void UseAbility(int index, double quantity, StarData star)
 		{
 			var unit = this.game.PlayOrder.Peek();
@@ -224,7 +266,7 @@ namespace Stareater.GameLogic
 			unit.AbilityCharges[index] = chargesLeft;
 		}
 		#endregion
-		
+
 		public IEnumerable<Vector2D> ValidMoves(Combatant unit)
 		{
 			return unit.MovementPoints <= 0 ? 
