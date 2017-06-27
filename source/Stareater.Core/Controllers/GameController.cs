@@ -263,9 +263,8 @@ namespace Stareater.Controllers
 		void initiateBombardment(SpaceBattleGame battleGame)
 		{
 			var controller = new BombardmentController(new BombardBattleGame(battleGame), this.gameObj, this);
-			
-			//TODO(v0.6) doesn't take proper players into account
-			foreach(var player in battleGame.Combatants.Select(x => x.Owner).Distinct())
+
+			foreach(var player in controller.Participants)
 			{
 				var playerController = (player.ControlType == PlayerControlType.Neutral) ?
 					this.organelleController :

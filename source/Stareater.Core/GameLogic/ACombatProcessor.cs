@@ -123,6 +123,7 @@ namespace Stareater.GameLogic
 					unit.CloakedFor.Add(player);
 		}
 		
+		//TODO(v0.7) maybe include colony owner check
 		protected bool unitCanBombard(Combatant unit)
 		{
 			var statList = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities;

@@ -40,6 +40,14 @@ namespace Stareater.Controllers
 			this.checkNextPlayer(); //TODO(0.7) AI vs AI could cause stack overflow
 		}
 
+		internal IEnumerable<Player> Participants
+		{
+			get
+			{
+				return this.processor.Participants;
+			}
+		}
+
 		private void checkNextPlayer()
 		{
 			if (!this.processor.IsOver)

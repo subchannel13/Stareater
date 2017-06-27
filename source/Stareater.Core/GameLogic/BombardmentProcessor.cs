@@ -28,6 +28,20 @@ namespace Stareater.GameLogic
 			}
 		}
 
+		public IEnumerable<Player> Participants
+		{
+			get
+			{
+				var colonies = this.battleGame.Planets.Where(x => x.Colony != null).ToList();
+
+				return this.game.Combatants.
+					Where(
+						unit => colonies.Any(planet => this.mainGame.Processor.IsAtWar(unit.Owner, planet.Colony.Owner)) && unitCanBombard(unit)
+					).Select(x => x.Owner).
+					Distinct();
+			}
+		}
+
 		private void makePlayerOrder()
 		{
 			this.calculateInitiative();
@@ -55,6 +69,12 @@ namespace Stareater.GameLogic
 			this.game.PlayOrder.Clear();
 			foreach (var player in initiativeSum.Keys.OrderBy(x => initiativeSum[x] / fleetWeight[x]))
 				this.game.PlayOrder.Enqueue(player);
+		}
+
+		protected override void nextRound()
+		{
+			base.nextRound();
+			this.makePlayerOrder();
 		}
 
 		public void Bombard(CombatPlanet planet)
