@@ -11,14 +11,14 @@ namespace Stareater.Controllers
 {
 	public class BombardmentController
 	{
-		private readonly SpaceBattleGame battleGame;
+		private readonly BombardBattleGame battleGame;
 		private readonly MainGame mainGame;
 		private readonly GameController gameController;
 		private readonly Dictionary<Player, IBombardEventListener> playerListeners;
 		
 		private BombardmentProcessor processor = null;
 		
-		internal BombardmentController(SpaceBattleGame battleGame, MainGame mainGame, GameController gameController)
+		internal BombardmentController(BombardBattleGame battleGame, MainGame mainGame, GameController gameController)
 		{
 			this.playerListeners = new Dictionary<Player, IBombardEventListener>();
 			
@@ -27,7 +27,7 @@ namespace Stareater.Controllers
 			this.gameController = gameController;
 			
 			this.Star = mainGame.States.Stars.At[battleGame.Location];
-			this.processor = new BombardmentProcessor(new BombardBattleGame(battleGame), mainGame);
+			this.processor = new BombardmentProcessor(battleGame, mainGame);
 		}
 		
 		internal void Register(PlayerController player, IBombardEventListener eventListener)
@@ -37,19 +37,22 @@ namespace Stareater.Controllers
 		
 		internal void Start()
 		{
-			//TODO(v0.6) pick random player
-			this.playerListeners.Values.First().BombardTurn();
+			this.checkNextPlayer(); //TODO(0.7) AI vs AI could cause stack overflow
+		}
+
+		private void checkNextPlayer()
+		{
+			if (!this.processor.IsOver)
+				playerListeners[this.battleGame.PlayOrder.Peek()].BombardTurn();
+			else
+				gameController.BombardmentResolved(this.battleGame);
 		}
 
 		public void Bombard(int planetPosition)
 		{
 			this.processor.Bombard(this.battleGame.Planets.First(x => x.PlanetData.Position == planetPosition));
-			
-			//TODO(v0.6) rotate players
-			if (!this.processor.IsOver)
-				this.playerListeners.Values.First().BombardTurn();
-			else
-				gameController.BombardmentResolved(this.battleGame);
+
+			this.checkNextPlayer();
 		}
 		
 		public void Leave()

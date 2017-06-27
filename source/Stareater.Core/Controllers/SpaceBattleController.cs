@@ -118,10 +118,10 @@ namespace Stareater.Controllers
 			if (this.processor.IsOver)
 				this.gameController.SpaceCombatResolved(this.battleGame, this.processor.CanBombard);
 			else
-				this.playNexUnit();
+				this.playNextUnit();
 		}
 		
-		private void playNexUnit()
+		private void playNextUnit()
 		{
 			var currentUnit = this.battleGame.PlayOrder.Peek();
 			playerListeners[currentUnit.Owner].PlayUnit(new CombatantInfo(

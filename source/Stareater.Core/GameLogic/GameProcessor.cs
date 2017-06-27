@@ -144,7 +144,7 @@ namespace Stareater.GameLogic
 			return this.conflicts.Dequeue();
 		}
 
-		public void ConflictResolved(SpaceBattleGame battleGame)
+		public void ConflictResolved(ABattleGame battleGame)
 		{
 			//TODO(later) decide what to do with retreated ships, send them to nearest fiendly system?
 			foreach(var unit in battleGame.Combatants.Concat(battleGame.Retreated))

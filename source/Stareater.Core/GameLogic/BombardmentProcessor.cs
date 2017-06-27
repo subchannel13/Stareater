@@ -66,8 +66,11 @@ namespace Stareater.GameLogic
 				for (int i = 0; i < unit.AbilityCharges.Length; i++)
 					this.attackPlanet(unitStats.Abilities[i], unit.AbilityCharges[i], planet);
 			}
-			
-			this.nextRound();
+
+			this.game.PlayOrder.Dequeue();
+
+			if (this.game.PlayOrder.Count == 0)
+				this.nextRound();
 		}
 	}
 }

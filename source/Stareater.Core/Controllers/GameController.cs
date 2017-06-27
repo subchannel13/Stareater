@@ -147,7 +147,7 @@ namespace Stareater.Controllers
 			}
 		}
 		
-		internal void BombardmentResolved(SpaceBattleGame battleGame)
+		internal void BombardmentResolved(ABattleGame battleGame)
 		{
 			this.gameObj.Processor.ConflictResolved(battleGame);
 			processingSync.Set();
@@ -262,7 +262,7 @@ namespace Stareater.Controllers
 
 		void initiateBombardment(SpaceBattleGame battleGame)
 		{
-			var controller = new BombardmentController(battleGame, this.gameObj, this);
+			var controller = new BombardmentController(new BombardBattleGame(battleGame), this.gameObj, this);
 			
 			//TODO(v0.6) doesn't take proper players into account
 			foreach(var player in battleGame.Combatants.Select(x => x.Owner).Distinct())
