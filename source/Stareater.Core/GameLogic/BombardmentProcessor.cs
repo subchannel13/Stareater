@@ -84,7 +84,13 @@ namespace Stareater.GameLogic
 				var unitStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
 
 				for (int i = 0; i < unit.AbilityCharges.Length; i++)
-					this.attackPlanet(unitStats.Abilities[i], unit.AbilityCharges[i], planet);
+				{
+					var spent = this.attackPlanet(unitStats.Abilities[i], unit.AbilityCharges[i], planet);
+
+					unit.AbilityCharges[i] -= spent;
+					if (!double.IsInfinity(unit.AbilityAmmo[i]))
+						unit.AbilityAmmo[i] -= spent;
+				}
 			}
 
 			this.game.PlayOrder.Dequeue();

@@ -160,7 +160,7 @@ namespace Stareater.GameLogic
 				//TODO(later) check planetary defenses
 				var players = this.game.Combatants.Select(x => x.Owner).Distinct().ToList();
 				
-				return players.Any(party1 => players.Any(party2 => this.mainGame.Processor.IsAtWar(party1, party2)));
+				return players.All(party1 => players.All(party2 => party1 == party2 || !this.mainGame.Processor.IsAtWar(party1, party2)));
 			}
 		}
 
