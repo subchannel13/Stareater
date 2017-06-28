@@ -74,10 +74,21 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var planets = this.mainGame.States.Planets.At[this.Star];
-				
-				for(int i = 0; i < this.battleGame.Planets.Length; i++)
-					yield return new CombatPlanetInfo(this.battleGame.Planets[i]);
+				return this.battleGame.Planets.
+					Where(x => x.Colony != null).
+					Select(x => new CombatPlanetInfo(x));
+			}
+		}
+
+		public IEnumerable<CombatPlanetInfo> Targets
+		{
+			get
+			{
+				var player = this.battleGame.PlayOrder.Peek();
+
+				return this.battleGame.Planets.
+					Where(x => x.Colony != null && this.mainGame.Processor.IsAtWar(player, x.Colony.Owner)).
+					Select(x => new CombatPlanetInfo(x));
 			}
 		}
 	}

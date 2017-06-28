@@ -43,7 +43,9 @@ namespace Stareater.GLRenderers
 		private const float TextScale = 0.03f;
 		private const float ButtonSize = 0.1f;
 		private const float ButtonTopMargin = 0.03f;
-		
+
+		private const float ButtonY = -PlanetScale / 2 - PopCountTopMargin - TextScale - ButtonTopMargin - ButtonSize / 2;
+
 		private IEnumerable<SceneObject> colonyInfos = null;
 		private IEnumerable<SceneObject> planetOrbits = null;
 		private IEnumerable<SceneObject> planetSprites = null;
@@ -221,11 +223,10 @@ namespace Stareater.GLRenderers
 		private void setupUi()
 		{
 			var formatter = new ThousandsFormatter();
-			var colonies = this.controller.Planets.Where(x => x.Owner != null).ToList();
 			
 			this.UpdateScene(
 				ref this.colonyInfos,
-				colonies.Select(
+				this.controller.Planets.Where(x => x.Owner != null).Select(
 					planet => new SceneObject(new PolygonData(
 						PopCountZ,
 						new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, Color.White),
@@ -237,12 +238,10 @@ namespace Stareater.GLRenderers
 					))
 				).ToList()
 			);
-			
-			const float yOffset = -PlanetScale / 2 - PopCountTopMargin - TextScale - ButtonTopMargin - ButtonSize / 2;
-			//TODO(v0.6) buttons for only hostile colonies
+
 			this.UpdateScene(
 				ref this.bombButtons,
-				colonies.Select(
+				this.controller.Targets.Select(
 					colony => 
 					{ 
 						var xOffset = colony.OrdinalPosition * OrbitStep + OrbitOffset;
@@ -250,10 +249,10 @@ namespace Stareater.GLRenderers
 						return new SceneObject(
 							new PolygonData(
 								PopCountZ,
-								new SpriteData(Matrix4.CreateScale(ButtonSize) * Matrix4.CreateTranslation(xOffset, yOffset, 0), GalaxyTextures.Get.BombButton.Id, Color.White),
+								new SpriteData(Matrix4.CreateScale(ButtonSize) * Matrix4.CreateTranslation(xOffset, ButtonY, 0), GalaxyTextures.Get.BombButton.Id, Color.White),
 								SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.BombButton)
 							),
-							new PhysicalData(new Vector2(xOffset, yOffset), new Vector2(ButtonSize, ButtonSize)),
+							new PhysicalData(new Vector2(xOffset, ButtonY), new Vector2(ButtonSize, ButtonSize)),
 							colony.OrdinalPosition
 						);
 					}).ToList()
