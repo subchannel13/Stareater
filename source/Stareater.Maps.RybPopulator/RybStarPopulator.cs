@@ -95,7 +95,7 @@ namespace Stareater.Galaxy.RybPopulator
 		public IEnumerable<StarSystem> Generate(Random rng, StarPositions starPositions, IEnumerable<BodyTraitType> planetTraits)
 		{
 			int colorI = 0;
-			var namer = new StarNamer(starPositions.Stars.Length);
+			var namer = new StarNamer(starPositions.Stars.Length, new Random());
 
 			//UNDONE(later): Picks star types cyclicaly
 			//TODO(later): Randomize star type distribution

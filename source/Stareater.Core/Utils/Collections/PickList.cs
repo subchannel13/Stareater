@@ -34,24 +34,30 @@ namespace Stareater.Utils.Collections
 
 		public T Pick()
 		{
-			return getRandom(false);
+			return this.getRandom((x) => false);
 		}
-
+		
+		public T PickOrTake(Predicate<T> shouldRemove)
+		{
+			return this.getRandom(shouldRemove);
+		}
+		
 		public T Take()
 		{
-			return getRandom(true);
+			return this.getRandom((x) => true);
 		}
 
-		private T getRandom(bool removeAfter)
+		private T getRandom(Predicate<T> removeAfter)
 		{
-			if (InnerList.Count < 1)
+			if (this.InnerList.Count < 1)
 				return default(T);
 
-			int which = (rng ?? staticRng).Next(InnerList.Count);
-			T ret = InnerList[which];
-			if (removeAfter) {
-				InnerList[which] = InnerList[InnerList.Count - 1];
-				InnerList.RemoveAt(InnerList.Count - 1);
+			int which = (this.rng ?? staticRng).Next(this.InnerList.Count);
+			T ret = this.InnerList[which];
+			
+			if (removeAfter(ret)) {
+				this.InnerList[which] = this.InnerList[this.InnerList.Count - 1];
+				this.InnerList.RemoveAt(this.InnerList.Count - 1);
 			}
 
 			return ret;
@@ -59,14 +65,20 @@ namespace Stareater.Utils.Collections
 
 		public void Add(T element)
 		{
-			InnerList.Add(element);
+			this.InnerList.Add(element);
 		}
 
 		public int Count()
 		{
-			return InnerList.Count;
+			return this.InnerList.Count;
 		}
 
 		public List<T> InnerList { get; private set; }
+		
+		public void RemoveAt(int i)
+		{
+			this.InnerList[i] = this.InnerList[this.InnerList.Count - 1];
+			this.InnerList.RemoveAt(this.InnerList.Count - 1);
+		}
 	}
 }

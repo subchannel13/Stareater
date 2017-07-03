@@ -8,29 +8,49 @@ namespace Stareater.Galaxy
 {
 	public class StarNamer
 	{
-		PickList<IStarName> starNames = new PickList<IStarName>();
+		private readonly PickList<IStarName> starNames = new PickList<IStarName>();
 		
-		public StarNamer(int starCount)
+		public StarNamer(int starCount, Random random)
 		{
-			//UNDONE(v0.6): Currently picks any subset of available names
-			//TODO(v0.6): Make namer respect constellation designations (no beta without alpha)
-			Language lang = LocalizationManifest.Get.DefaultLanguage;
+			var lang = LocalizationManifest.Get.DefaultLanguage;
 
-			int properNamesCount = lang[ProperStarName.ContextName].KeySet().Count;
-			for (int i = 0; i < properNamesCount; i++)
-				starNames.Add(new ProperStarName(i));
+			var constellationCount = lang[ConstellationStarName.ConstellationsContext].KeySet().Count / 2;
+			var designationCount = LocalizationManifest.Get.DefaultLanguage[ConstellationStarName.DesignationContext].KeySet().Count;
+			var usedDesignations = new Dictionary<int, int>();
+			var constellationMaxNames = new Dictionary<int, int>();
+			var constellationPool = new PickList<int>(random);
 
-			int constellationCount = lang[ConstellationStarName.ConstellationsContext].KeySet().Count / 2;
-			int designationCount = lang[ConstellationStarName.DesignationContext].KeySet().Count;
-
-			for (int constell = 0; constell < constellationCount; constell++)
-				for (int desig = 0; desig < designationCount; desig++)
-					starNames.Add(new ConstellationStarName(constell, desig));
+			for (int i = 0; i <= constellationCount; i++)
+			{
+				usedDesignations.Add(i, 0);
+				constellationMaxNames.Add(i, designationCount - 1);
+				constellationPool.Add(i);
+			}
+			constellationMaxNames[constellationCount] = lang[ProperStarName.ContextName].KeySet().Count - 1;
+			
+			for(int i = 0; i < starCount; i++)
+				usedDesignations[constellationPool.PickOrTake(x => usedDesignations[x] >= constellationMaxNames[x])]++;
+			
+			// Proper names
+			var namePool = new PickList<int>();
+			for(int i = 0; i < lang[ProperStarName.ContextName].KeySet().Count; i++)
+				namePool.Add(i);
+			for(int i = 0; i < usedDesignations[constellationCount]; i++)
+				this.starNames.Add(new ProperStarName(namePool.Take()));
+			
+			// Constellation names
+			usedDesignations.Remove(constellationCount);
+			foreach(var constellation in usedDesignations)
+				for(int i = 0; i < constellation.Value; i++)
+					this.starNames.Add((constellation.Value == 1) ? 
+					                   (IStarName)new ConstellationStarName(constellation.Key) :
+					                   (IStarName)new ConstellationStarName(constellation.Key, i)
+					);
 		}
 
 		public IStarName NextName()
 		{
-			return starNames.Take();
+			return this.starNames.Take();
 		}
 	}
 }
