@@ -18,7 +18,10 @@ namespace Stareater.GameLogic
 			this.makePlayerOrder();
 		}
 
-		protected override ABattleGame battleGame => game;
+		protected override ABattleGame battleGame 
+		{
+			get { return this.game; }
+		}
 
 		public bool IsOver 
 		{

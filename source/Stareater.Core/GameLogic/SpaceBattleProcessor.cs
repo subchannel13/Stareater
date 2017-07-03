@@ -17,7 +17,10 @@ namespace Stareater.GameLogic
 			this.game = battleGame;
 		}
 
-		protected override ABattleGame battleGame => game;
+		protected override ABattleGame battleGame 
+		{
+			get { return this.game; }
+		}
 
 		#region Initialization
 		public void Initialize(IEnumerable<FleetMovement> fleets, double startTime)
