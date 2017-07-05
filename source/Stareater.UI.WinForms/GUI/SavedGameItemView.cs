@@ -21,7 +21,7 @@ namespace Stareater.GUI
 		{
 			get
 			{
-				return this.gameData;//TODO(v0.6) ?? new SavedGameInfo(this.gameName.Text, 0);
+				return this.gameData;
 			}
 			set
 			{

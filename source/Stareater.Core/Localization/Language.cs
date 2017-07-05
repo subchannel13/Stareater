@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Ikadn;
 using Stareater.Localization.Reading;
 using Stareater.Utils;
 
@@ -18,7 +19,13 @@ namespace Stareater.Localization
 
 			foreach (var source in dataSources)
 			{
-				var parser = new Parser(source.Stream);
+				var parser = new IkadnParser(source.Stream);
+				parser.RegisterFactory(new ContextFactory());
+				parser.RegisterFactory(new SingleLineFactory());
+				parser.RegisterFactory(new TextBlockFactory());
+				parser.RegisterFactory(new ExpressionTextFactory());
+				parser.RegisterFactory(new ConditionalTextFactory());
+				
 				try
 				{
 					while (parser.HasNext())

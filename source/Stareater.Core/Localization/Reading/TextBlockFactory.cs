@@ -51,10 +51,19 @@ namespace Stareater.Localization.Reading
 						substitutions.Add(substitutionName, null);
 				}
 				else {
-					string textPart = Parser.ParseString(parser.Reader,
-						new int[]{SubstitutionOpenChar, '\n','\r'},
-						EscapeChar, c => c
-					);
+					var terminatingCharsSet = new int[] { SubstitutionOpenChar, '\n','\r' };
+					var escaping = false;
+					var textPart = parser.Reader.ReadConditionally(c =>
+					{
+						if (c == EscapeChar && !escaping) {
+							escaping = true;
+							return new ReadingDecision((char)c, CharacterAction.Skip);
+						}
+						escaping = false;
+						return new ReadingDecision((char)c, terminatingCharsSet.Contains(c) ?
+							CharacterAction.Stop :
+							CharacterAction.AcceptAsIs);
+					});
 
 					if (parser.Reader.Peek() != SubstitutionOpenChar) {
 						textRunBuilder.AppendLine(textPart);
