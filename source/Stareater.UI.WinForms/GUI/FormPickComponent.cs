@@ -36,12 +36,12 @@ namespace Stareater.GUI
 				
 				groupTitle.AutoSize = true;
 				this.componentPanel.SetFlowBreak(groupTitle, true);
-				groupTitle.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
+				groupTitle.Margin = new Padding(3, 6, 3, 6);
 				groupTitle.Name = "groupTitle";
 				groupTitle.Size = new System.Drawing.Size(149, 13);
 				groupTitle.Text = group2Title;
 				
-				dummy.Margin = new System.Windows.Forms.Padding(0);
+				dummy.Margin = new Padding(0);
 				dummy.Name = "dummy";
 				dummy.Size = new System.Drawing.Size(0, 0);
 			}

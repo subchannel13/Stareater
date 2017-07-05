@@ -132,7 +132,7 @@ namespace Stareater.Controllers
 
 		public void AudienceConcluded(AudienceController audienceController)
 		{
-			this.gameObj.Processor.AudienceConcluded(audienceController.Participants, audienceController.Treaties);
+			this.gameObj.Processor.AudienceConcluded(audienceController.Participants, audienceController.TreatyData);
 			processingSync.Set();
 		}
 		

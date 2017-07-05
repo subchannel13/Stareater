@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Stareater.Controllers;
 using Stareater.Localization;
+using Stareater.Properties;
 
 namespace Stareater.GUI
 {
@@ -34,6 +35,16 @@ namespace Stareater.GUI
 			var context = LocalizationManifest.Get.CurrentLanguage["FormAudience"];
 			
 			this.warAction.Text = context[this.controller.IsAtWar ? "declarePeace" : "declareWar"].Text();
+			
+			this.treatyList.SuspendLayout();
+			this.treatyList.Controls.Clear();
+			foreach(var treaty in this.controller.Treaties)
+			{
+				var control = new TreatyBriefView();
+				control.SetData(Resources.cancel, treaty.Name);
+				this.treatyList.Controls.Add(control);
+			}
+			this.treatyList.ResumeLayout();
 			//TODO(v0.6) update treaty list
 		}
 
