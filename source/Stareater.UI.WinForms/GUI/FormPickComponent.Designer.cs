@@ -15,6 +15,7 @@ namespace Stareater.GUI
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
 		private System.Windows.Forms.FlowLayoutPanel componentPanel;
+		private System.Windows.Forms.ImageList thumbnailList;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -37,7 +38,9 @@ namespace Stareater.GUI
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.componentPanel = new System.Windows.Forms.FlowLayoutPanel();
+			this.thumbnailList = new System.Windows.Forms.ImageList(this.components);
 			this.SuspendLayout();
 			// 
 			// componentPanel
@@ -47,6 +50,12 @@ namespace Stareater.GUI
 			this.componentPanel.Name = "componentPanel";
 			this.componentPanel.Size = new System.Drawing.Size(284, 262);
 			this.componentPanel.TabIndex = 0;
+			// 
+			// thumbnailList
+			// 
+			this.thumbnailList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+			this.thumbnailList.ImageSize = new System.Drawing.Size(48, 48);
+			this.thumbnailList.TransparentColor = System.Drawing.Color.Transparent;
 			// 
 			// FormPickComponent
 			// 
