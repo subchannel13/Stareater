@@ -11,7 +11,8 @@ namespace Stareater.GUI
 	public sealed partial class FormResearchComplete : Form
 	{
 		private readonly ResearchCompleteController controller;
-		
+		private bool confirmed = false;
+
 		public FormResearchComplete()
 		{
 			InitializeComponent();
@@ -87,10 +88,15 @@ namespace Stareater.GUI
 			
 			unlockedList.ResumeLayout();
 		}
-		
+
+		private void FormResearchComplete_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if (!this.confirmed)
+				e.Cancel = true;
+		}
+
 		private void FormResearchComplete_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			//TODO(v0.6) allow closing only through "confirm" button
 			this.controller.Done();
 		}
 
@@ -106,6 +112,7 @@ namespace Stareater.GUI
 		
 		private void acceptButton_Click(object sender, EventArgs e)
 		{
+			this.confirmed = true;
 			this.Close();
 		}
 

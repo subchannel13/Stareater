@@ -97,8 +97,8 @@ namespace Stareater.GUI
 			// 
 			// topicDescription
 			// 
-			this.topicDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+			this.topicDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)));
 			this.topicDescription.Location = new System.Drawing.Point(12, 98);
 			this.topicDescription.Multiline = true;
 			this.topicDescription.Name = "topicDescription";
@@ -106,7 +106,7 @@ namespace Stareater.GUI
 			this.topicDescription.Size = new System.Drawing.Size(222, 293);
 			this.topicDescription.TabIndex = 2;
 			this.topicDescription.Text = "Lore ipsum\r\nDoloret reat msddo mowerr maugad sad\r\ndaod coksal. Je sorof msoerta n" +
-    "aue usfa.\r\n";
+				"aue usfa.\r\n";
 			// 
 			// unlockedList
 			// 
@@ -176,6 +176,7 @@ namespace Stareater.GUI
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "FormResearchComplete";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormResearchComplete_FormClosing);
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormResearchComplete_FormClosed);
 			((System.ComponentModel.ISupportInitialize)(this.topicThumbnail)).EndInit();
 			this.ResumeLayout(false);
