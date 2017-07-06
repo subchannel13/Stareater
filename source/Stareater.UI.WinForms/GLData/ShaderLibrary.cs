@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
 using Stareater.GLData.OrbitShader;
 using Stareater.GLData.SpriteShader;
@@ -22,8 +23,19 @@ namespace Stareater.GLData
 		public static void PrintGlErrors(string title)
 		{
 			ErrorCode err;
-		    while ((err = GL.GetError()) != ErrorCode.NoError) {
-		        System.Diagnostics.Trace.WriteLine(title + ": OpenGL error " + err); //TODO(v0.6) throw exception
+			var messages = new List<string>();
+			
+		    while ((err = GL.GetError()) != ErrorCode.NoError)
+		    	messages.Add(title + ": OpenGL error " + err);
+    
+		    if (messages.Count > 0)
+		    {
+			    #if DEBUG
+			    foreach(var message in messages)
+			        System.Diagnostics.Trace.WriteLine(message);
+			    #else
+			    throw new Exception(string.Join(Environment.NewLine, messages));
+			    #endif
 		    }
 		}
 	}

@@ -45,7 +45,6 @@ namespace Stareater.GUI
 				this.treatyList.Controls.Add(control);
 			}
 			this.treatyList.ResumeLayout();
-			//TODO(v0.6) update treaty list
 		}
 
 		private void formAudience_FormClosed(object sender, FormClosedEventArgs e)

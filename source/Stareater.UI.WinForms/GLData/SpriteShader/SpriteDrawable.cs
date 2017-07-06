@@ -23,7 +23,7 @@ namespace Stareater.GLData.SpriteShader
 		{
 			var program = ShaderLibrary.Sprite;
 			GL.UseProgram(program.ProgramId);
-			this.vao.Bind(); //TODO(v0.6) set program and bind VAO outside
+			this.vao.Bind(); //TODO(v0.7) set program and bind VAO outside
 			GL.ActiveTexture(TextureUnit.Texture0);
 			GL.Uniform1(program.TextureSamplerId, 0);
 
