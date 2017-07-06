@@ -40,8 +40,8 @@ namespace Stareater.GLRenderers
 		private const float EtaZ = 1 / Layers;
 		
 		private const float PanClickTolerance = 0.01f;
-		private const float ClickRadius = 0.02f;
-		private const float StarMinClickRadius = 0.6f;
+		private const float ClickRadius = 0.01f;
+		private const float StarMinClickRadius = 0.75f;
 		
 		private const float EtaTextScale = 0.25f;
 		private const float FleetIndicatorScale = 0.2f;
@@ -402,7 +402,7 @@ namespace Stareater.GLRenderers
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(currentPosition, invProjection);
-			var searchRadius = Math.Max(screenLength * ClickRadius, StarMinClickRadius); //TODO(v0.6) doesn't scale with zoom
+			var searchRadius = Math.Max(screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
 			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
 			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 
@@ -444,7 +444,7 @@ namespace Stareater.GLRenderers
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
-			var searchRadius = Math.Max(screenLength * ClickRadius, StarMinClickRadius); //TODO(v0.6) doesn't scale with zoom
+			var searchRadius = Math.Max(screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
 			var searchPoint = convert(mousePoint.Xy);
 			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 			
@@ -509,7 +509,7 @@ namespace Stareater.GLRenderers
 				return;
 			
 			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
-			var searchRadius = Math.Max(screenLength * ClickRadius, StarMinClickRadius); //TODO(v0.6) doesn't scale with zoom
+			var searchRadius = Math.Max(screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
 			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
 			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 
