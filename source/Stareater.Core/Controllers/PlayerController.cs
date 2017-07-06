@@ -219,9 +219,11 @@ namespace Stareater.Controllers
 				return;
 			
 			var player = this.PlayerInstance(game);
+			var playerProc = game.Derivates.Of(this.PlayerInstance(game));
 
-			//TODO(v0.6) check refit compatibility, if designs are for same hull
-			if (!refitWith.Constructable || player.Orders.RefitOrders.ContainsKey(refitWith.Data))
+			if (!refitWith.Constructable || 
+			    player.Orders.RefitOrders.ContainsKey(refitWith.Data) || 
+			    !playerProc.RefitCosts[design.Data].ContainsKey(refitWith.Data))
 				return;
 
 			player.Orders.RefitOrders[design.Data] = refitWith.Data;
