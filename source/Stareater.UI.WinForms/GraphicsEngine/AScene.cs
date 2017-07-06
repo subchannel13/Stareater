@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using Stareater.Utils.Collections;
 using Stareater.GLData;
 
@@ -39,10 +40,13 @@ namespace Stareater.GraphicsEngine
 		public virtual void Deactivate()
 		{ }
 		
-		public void ResetProjection(float screenWidth, float screenHeigth, float canvasWidth, float canvasHeigth)
+		public void ResetProjection(Control canvas)
 		{
-			this.canvasSize = new Vector2(canvasWidth, canvasHeigth);
-			this.screenSize = new Vector2(screenWidth, screenHeigth);
+			var screen = Screen.FromControl(canvas);
+			GL.Viewport(canvas.ClientRectangle);
+			
+			this.canvasSize = new Vector2(canvas.Width, canvas.Height);
+			this.screenSize = new Vector2(screen.Bounds.Width, screen.Bounds.Height);
 			this.setupPerspective();
 		}
 		#endregion

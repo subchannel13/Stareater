@@ -433,7 +433,7 @@ namespace Stareater.GUI
 					this.currentRenderer.Deactivate();
 
 				this.currentRenderer = this.nextRenderer;
-				this.glCanvas_Resize(null, null);
+				this.currentRenderer.ResetProjection(this.glCanvas);
 				this.currentRenderer.Activate();
 			}
 			
@@ -456,13 +456,8 @@ namespace Stareater.GUI
 		
 		private void glCanvas_Resize(object sender, EventArgs e)
 		{
-			var screen = Screen.FromControl(this.glCanvas);
-			GL.Viewport(this.glCanvas.ClientRectangle); //TODO(v0.6) move to scene object
-			
 			if (this.currentRenderer != null)
-				this.currentRenderer.ResetProjection(
-					screen.Bounds.Width, screen.Bounds.Height,
-					this.glCanvas.Width, this.glCanvas.Height); //TODO(v0.6) move to scene object
+				this.currentRenderer.ResetProjection(this.glCanvas);
 		}
 		
 		#endregion
