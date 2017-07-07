@@ -313,9 +313,11 @@ namespace Stareater.GLRenderers
 
 		private void setupStarSprites()
 		{
+			var stars = this.currentPlayer.Stars.OrderBy(x => x.Position.Y).ToList();
+
 			this.UpdateScene(
 				ref this.starSprites,
-				this.currentPlayer.Stars.Select(star => new SceneObject(
+				stars.Select((star, i) => new SceneObject(
 					new []{
 						new PolygonData(
 							StarColorZ,
@@ -327,8 +329,9 @@ namespace Stareater.GLRenderers
 							new SpriteData(Matrix4.Identity, GalaxyTextures.Get.StarGlow.Id, Color.White),
 							SpriteHelpers.TexturedRectVertexData(convert(star.Position), 1, 1, GalaxyTextures.Get.StarGlow)
 						),
+						//TODO(v0.7) scale star names with zoom level
 						new PolygonData(
-							StarNameZ,
+							StarNameZ - (i * StarNameZRange) / stars.Count,
 							new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, starNameColor(star)),
 							TextRenderUtil.Get.BufferText(
 								star.Name.ToText(LocalizationManifest.Get.CurrentLanguage), 

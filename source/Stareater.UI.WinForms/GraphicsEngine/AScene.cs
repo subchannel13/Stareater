@@ -185,7 +185,7 @@ namespace Stareater.GraphicsEngine
 				
 				var vaoBuilders = new Dictionary<AGlProgram, VertexArrayBuilder>();
 				var drawableData = new List<PolygonData>();
-				foreach(var polygon in this.sceneObjects.SelectMany(x => x.RenderData).Where(x => Math.Abs(x.Z - layer) < 1e-3))
+				foreach(var polygon in this.sceneObjects.SelectMany(x => x.RenderData).Where(x => x.Z == layer))
 				{
 					if (!vaoBuilders.ContainsKey(polygon.ShaderData.ForProgram))
 						vaoBuilders[polygon.ShaderData.ForProgram] = new VertexArrayBuilder();
