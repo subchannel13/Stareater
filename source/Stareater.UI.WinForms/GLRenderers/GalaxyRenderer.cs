@@ -72,6 +72,7 @@ namespace Stareater.GLRenderers
 		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
 		private Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D> lastSelectedStars = new Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D>();
 		private Dictionary<int, FleetInfo> lastSelectedIdleFleets = new Dictionary<int, FleetInfo>();
+		private Dictionary<int, Vector2> lastOffset = new Dictionary<int, Vector2>(); //TODO(v0.7) remember player's zoom level too, unify with last selected object
 		private PlayerController currentPlayer = null;
 
 		public GalaxyRenderer(IGalaxyViewListener galaxyViewListener)
@@ -86,6 +87,9 @@ namespace Stareater.GLRenderers
 		
 		public void SwitchPlayer(PlayerController player)
 		{
+			if (this.currentPlayer != null)
+				this.lastOffset[this.currentPlayer.PlayerIndex] = originOffset;
+			
 			this.currentPlayer = player;
 			
 			//Assumes all players can see the same map size
@@ -105,10 +109,11 @@ namespace Stareater.GLRenderers
 			{
 				var bestStar = this.currentPlayer.Stellarises().Aggregate((a, b) => a.Population > b.Population ? a : b);
 
-				this.lastSelectedStars.Add(this.currentPlayer.PlayerIndex, bestStar.HostStar.Position);
+				this.lastSelectedStars[this.currentPlayer.PlayerIndex] = bestStar.HostStar.Position;
+				this.lastOffset[this.currentPlayer.PlayerIndex] = convert(bestStar.HostStar.Position);
 			}
 			
-			this.originOffset = new Vector2((float)this.lastSelectedStar.Position.X, (float)this.lastSelectedStar.Position.Y);
+			this.originOffset = this.lastOffset[this.currentPlayer.PlayerIndex];
 			this.currentSelection = GalaxySelectionType.Star;
 			this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
 			this.setupPerspective();
@@ -572,7 +577,7 @@ namespace Stareater.GLRenderers
 			}
 		}
 		
-		//TODO(v0.6) remove one of lastSelectedStar methods
+		//TODO(v0.7) remove one of lastSelectedStar methods
 		private NGenerics.DataStructures.Mathematical.Vector2D lastSelectedStarPosition
 		{
 			get 
