@@ -57,7 +57,7 @@ namespace Stareater.GLRenderers
 		
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
-		private float originOffset;
+		private float originOffset = 0;
 		private float minOffset;
 		private float maxOffset;
 		
@@ -66,6 +66,7 @@ namespace Stareater.GLRenderers
 			this.controller = controller;
 			
 			this.maxOffset = controller.Planets.Count() * OrbitStep + OrbitOffset + PlanetScale / 2;
+			this.lastMousePosition = null;
 			
 			this.ResetLists();
 		}

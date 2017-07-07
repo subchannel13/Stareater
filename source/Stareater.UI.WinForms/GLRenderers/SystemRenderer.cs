@@ -96,6 +96,7 @@ namespace Stareater.GLRenderers
 					(prev, next) => next == null || (prev != null && prev.Population >= next.Population) ? prev : next
 				);
 			this.originOffset = bestColony != null ? bestColony.Location.Position * OrbitStep + OrbitOffset : 0.5f;
+			this.lastMousePosition = null;
 			
 			this.select(StarSystemController.StarIndex);
 		}
