@@ -65,6 +65,9 @@ namespace Stareater.GLRenderers
 		#region ARenderer implementation
 		protected override void FrameUpdate(double deltaTime)
 		{
+			if (this.currentUnit == null)
+				return;
+			
 			this.animationTime += deltaTime;
 			
 			double animationPhase = Methods.GetPhase(this.animationTime, AnimationPeriod);

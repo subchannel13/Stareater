@@ -183,7 +183,8 @@ namespace Stareater.GameLogic
 
         public bool IsAtWar(Player party1, Player party2)
         {
-            return this.game.States.Treaties.Of[party1].Any(x => x.Party1 == party2 || x.Party2 == party2);
+        	return party1 == this.game.StareaterOrganelles || party2 == this.game.StareaterOrganelles ||
+            	this.game.States.Treaties.Of[party1].Any(x => x.Party1 == party2 || x.Party2 == party2);
         }
 		#endregion
 
