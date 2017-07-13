@@ -76,7 +76,6 @@
     <Compile Include="Controllers\ColonyController.cs" />
     <Compile Include="Controllers\ColonizationController.cs" />
     <Compile Include="Controllers\Data\ColonizerFinder.cs" />
-    <Compile Include="Controllers\Data\GameCopy.cs" />
     <Compile Include="Controllers\Data\MissionInfoFactory.cs" />
     <Compile Include="Controllers\LibraryController.cs" />
     <Compile Include="Controllers\NewGameHelpers\ParameterLoadingVisitor.cs" />
@@ -441,6 +440,17 @@
     <Compile Include="SpaceCombat\CombatPlanet.cs" />
     <Compile Include="Utils\BitHash.cs" />
     <Compile Include="Utils\BitHashBuilder.cs" />
+    <Compile Include="Utils\StateEngine\AEnumerableStrategy.cs" />
+    <Compile Include="Utils\StateEngine\PropertyStrategy.cs" />
+    <Compile Include="Utils\StateEngine\ArrayStrategy.cs" />
+    <Compile Include="Utils\StateEngine\ClassStrategy.cs" />
+    <Compile Include="Utils\StateEngine\CollectionStrategy.cs" />
+    <Compile Include="Utils\StateEngine\CopySession.cs" />
+    <Compile Include="Utils\StateEngine\DictionaryStrategy.cs" />
+    <Compile Include="Utils\StateEngine\ITypeStrategy.cs" />
+    <Compile Include="Utils\StateEngine\StateManager.cs" />
+    <Compile Include="Utils\StateEngine\StateProperty.cs" />
+    <Compile Include="Utils\StateEngine\TerminalStrategy.cs" />
     <Compile Include="Utils\TracableStream.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />
     <Compile Include="Utils\Collections\AIndexedCollection.cs" />
@@ -588,7 +598,9 @@
     <None Include="AppData\Expressions\Parser.frame" />
     <None Include="AppData\Expressions\Scanner.frame" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Utils\StateEngine" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

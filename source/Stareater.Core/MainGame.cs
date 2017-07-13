@@ -7,7 +7,7 @@ using Stareater.GameLogic;
 using Stareater.Players;
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
-using Stareater.Controllers.Data;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater
 {
@@ -52,8 +52,10 @@ namespace Stareater
 			}
 		}
 		
-		public GameCopy ReadonlyCopy()
+		public MainGame ReadonlyCopy(StateManager stateManager)
 		{
+			return stateManager.Copy(this);
+			
 			var copy = new MainGame();
 
 			GalaxyRemap galaxyRemap = this.States.CopyGalaxy();
@@ -73,7 +75,7 @@ namespace Stareater
 			copy.States = this.States.Copy(playersRemap, galaxyRemap);
 			copy.Derivates = this.Derivates.Copy(playersRemap);
 
-			return new GameCopy(copy, playersRemap, galaxyRemap);
+			return copy;
 		}
 
 		//TODO(v0.7) leave or move to processor

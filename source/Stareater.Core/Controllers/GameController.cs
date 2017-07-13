@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Stareater.Controllers.Data;
 using Stareater.Controllers.Views;
 using Stareater.Players;
 using Stareater.Players.Natives;
 using Stareater.Utils;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Controllers
 {
 	public class GameController
 	{
 		internal const string ReportContext = "Reports";
+		private static StateManager stateManager = new StateManager();
 		
 		private object threadLocker = new object();
 		private AutoResetEvent processingSync = new AutoResetEvent(true);
@@ -123,7 +124,7 @@ namespace Stareater.Controllers
 				this.endTurnCopy = new GameController();
 				var gameCopy = gameObj.ReadonlyCopy();
 				
-				this.endTurnCopy.gameObj = gameCopy.Game;
+				this.endTurnCopy.gameObj = gameCopy;
 				this.endTurnCopy.State = this.State;
 			}
 			
