@@ -20,30 +20,21 @@ namespace Stareater.Utils.StateEngine
 				Select(x => new PropertyStrategy(x)).
 				ToList();
 		}
-		
-		#region ITypeStrategy implementation
-		public object Copy(object originalValue, CopySession session)
-		{
-			var copy = this.constructor();
 
-			foreach (var property in this.properties)
-				property.Copy(originalValue, copy, session);
+        #region ITypeStrategy implementation
+        public object Create(object originalValue)
+        {
+            return this.constructor();
+        }
 
-			return copy;
-		}
-		
-		public IEnumerable<Type> Dependencies
-		{
-			get 
-			{
-				return getProperties(this.type).
-					Select(x => x.PropertyType).
-					ToList();
-			}
-		}
-		#endregion
-		
-		private static IEnumerable<PropertyInfo> getProperties(Type type)
+        public void FillCopy(object originalValue, object copyInstance, CopySession session)
+        {
+            foreach (var property in this.properties)
+                property.Copy(originalValue, copyInstance, session);
+        }
+        #endregion
+
+        private static IEnumerable<PropertyInfo> getProperties(Type type)
 		{
 			return type.GetProperties().Where(StateManager.IsStateData);
 		}

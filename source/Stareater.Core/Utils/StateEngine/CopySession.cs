@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Stareater.Utils.StateEngine
 {
@@ -19,7 +20,13 @@ namespace Stareater.Utils.StateEngine
                 return null;
 
             if (!this.copies.ContainsKey(originalValue))
-                this.copies[originalValue] = this.expertGetter(originalValue.GetType()).Copy(originalValue, this);
+            {
+                var expert = this.expertGetter(originalValue.GetType());
+                var copy = expert.Create(originalValue);
+
+                this.copies[originalValue] = copy;
+                expert.FillCopy(originalValue, copy, this);
+            }
 
             return this.copies[originalValue];
         }

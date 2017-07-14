@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -18,23 +17,19 @@ namespace Stareater.Utils.StateEngine
 			this.copyChildrenInvoker = BuildCopyInvoker(type, copyChildrenMethod);
 		}
 
-		#region ITypeStrategy implementation
-		public object Copy(object originalValue, CopySession session)
-		{
-			if (originalValue == null)
-				return null;
-			else
-			{
-				var enumerableCopy = this.enumerableConstructor(originalValue);
-				this.copyChildrenInvoker(originalValue, enumerableCopy, session);
-				return enumerableCopy;
-			}
-		}
-		
-		public abstract IEnumerable<Type> Dependencies { get; }
-		#endregion
+        #region ITypeStrategy implementation
+        public object Create(object originalValue)
+        {
+            return this.enumerableConstructor(originalValue);
+        }
 
-		private static Action<object, object, CopySession> BuildCopyInvoker(Type type, MethodInfo copyChildrenMethod)
+        public void FillCopy(object originalValue, object copyInstance, CopySession session)
+        {
+            this.copyChildrenInvoker(originalValue, copyInstance, session);
+        }
+        #endregion
+
+        private static Action<object, object, CopySession> BuildCopyInvoker(Type type, MethodInfo copyChildrenMethod)
 		{
 			var originalParam = Expression.Parameter(typeof(object), "original");
 			var copyParam = Expression.Parameter(typeof(object), "copy");

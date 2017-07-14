@@ -78,8 +78,11 @@ namespace Stareater.GameLogic
 			this.ScientistEfficiency = original.ScientistEfficiency;
 			this.WorkingPopulation = original.WorkingPopulation;
 		}
-		
-		internal ColonyProcessor Copy(PlayersRemap playerRemap)
+
+        private ColonyProcessor()
+        { }
+
+        internal ColonyProcessor Copy(PlayersRemap playerRemap)
 		{
 			return new ColonyProcessor(playerRemap.Colonies[this.Colony], this);
 		}

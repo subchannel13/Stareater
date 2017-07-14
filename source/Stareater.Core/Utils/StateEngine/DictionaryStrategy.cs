@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -10,17 +11,6 @@ namespace Stareater.Utils.StateEngine
 		public DictionaryStrategy(Type type)
 			: base(type, BuildConstructor(type), CopyMethodInfo(type))
 		{ }
-
-		#region implemented abstract members of AEnumerableStrategy
-		public override IEnumerable<Type> Dependencies
-		{
-			get 
-			{
-				foreach(var type in this.type.GetGenericArguments())
-					yield return type;
-			}
-		}
-		#endregion
 		
 		private static void copyChildren<K, V>(IDictionary<K, V> originalDictionary, IDictionary<K, V> dictionaryCopy, CopySession session)
 		{
@@ -44,7 +34,9 @@ namespace Stareater.Utils.StateEngine
 
 		private static MethodInfo CopyMethodInfo(Type type)
 		{
-			return typeof(DictionaryStrategy).
+            var interfaceType = type.GetInterfaces().First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+
+            return typeof(DictionaryStrategy).
 				GetMethod("copyChildren", BindingFlags.NonPublic | BindingFlags.Static).
 				MakeGenericMethod(type.GetGenericArguments());
 		}

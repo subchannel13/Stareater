@@ -48,9 +48,9 @@ namespace Stareater.GameLogic
 			this.DesignStats = new Dictionary<Design, DesignStats>();
 			this.RefitCosts = new Dictionary<Design, Dictionary<Design, double>>();
 			this.TechLevels = new Dictionary<string, double>();
-			foreach (var tech in technologies) {
+
+            foreach (var tech in technologies)
 				this.TechLevels.Add(tech.IdCode + LevelSufix, DevelopmentProgress.NotStarted);
-			}
 		}
 
 		public PlayerProcessor(Player player)
@@ -58,7 +58,10 @@ namespace Stareater.GameLogic
 			this.Player = player;
 		}
 
-		internal PlayerProcessor Copy(PlayersRemap playersRemap)
+        private PlayerProcessor()
+        { }
+
+        internal PlayerProcessor Copy(PlayersRemap playersRemap)
 		{
 			var copy = new PlayerProcessor(playersRemap.Players[this.Player]);
 			

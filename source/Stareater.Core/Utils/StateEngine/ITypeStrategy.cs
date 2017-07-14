@@ -5,7 +5,7 @@ namespace Stareater.Utils.StateEngine
 {
 	interface ITypeStrategy
 	{
-		object Copy(object originalValue, CopySession session);
-		IEnumerable<Type> Dependencies { get; }
-	}
+        object Create(object originalValue);
+        void FillCopy(object originalValue, object copyInstance, CopySession session);
+    }
 }
