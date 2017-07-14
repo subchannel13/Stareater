@@ -9,6 +9,7 @@ using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameLogic
 {
@@ -21,25 +22,41 @@ namespace Stareater.GameLogic
 		private const string PopulationGrowthKey = "popGrowth";
 		private const string PopulationKey = "pop";
 		
+		[StateProperty]
 		public Colony Colony { get; set; }
 		
+		[StateProperty]
 		public double Environment { get; private set; }
+		[StateProperty]
 		public double MaxPopulation { get; private set; }
+		[StateProperty]
 		public double PopulationGrowth { get; private set; }
+		[StateProperty]
 		public double Organization { get; private set; }
+		[StateProperty]
 		public double SpaceliftFactor { get; private set; }
-		
+
+		[StateProperty]
 		public double FarmerEfficiency { get; private set; }
+		[StateProperty]
 		public double GardenerEfficiency { get; private set; }
+		[StateProperty]
 		public double MinerEfficiency { get; private set; }
+		[StateProperty]
 		public double BuilderEfficiency { get; private set; }
+		[StateProperty]
 		public double ScientistEfficiency { get; private set; }
-		
+
+		[StateProperty]
 		public double Farmers { get; private set; }
+		[StateProperty]
 		public double Gardeners { get; private set; }
+		[StateProperty]
 		public double WorkingPopulation { get; private set; }
-		
+
+		[StateProperty]
 		public double Development { get; private set; }
+		[StateProperty]
 		public double RepairPoints { get; protected set; }
 		
 		public ColonyProcessor(Colony colony) : base()

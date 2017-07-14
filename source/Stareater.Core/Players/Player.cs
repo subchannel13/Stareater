@@ -1,7 +1,9 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,12 +15,19 @@ namespace Stareater.Players
 {
 	partial class Player 
 	{
+		[StateProperty]
 		public string Name { get; private set; }
+		[StateProperty]
 		public Color Color { get; private set; }
+		[StateProperty]
 		public PlayerControlType ControlType { get; private set; }
+		[StateProperty]
 		public IOffscreenPlayer OffscreenControl { get; private set; }
+		[StateProperty]
 		public HashSet<PredefinedDesign> UnlockedDesigns { get; private set; }
+		[StateProperty]
 		public Intelligence Intelligence { get; private set; }
+		[StateProperty]
 		public PlayerOrders Orders { get; set; }
 
 		public Player(string name, Color color, PlayerType type) 
@@ -87,6 +96,8 @@ namespace Stareater.Players
  
 		}
 
+		private Player() 
+		{ }
 		internal Player Copy(GalaxyRemap galaxyRemap) 
 		{
 			return new Player(this, galaxyRemap);

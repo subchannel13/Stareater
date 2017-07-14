@@ -11,6 +11,9 @@ namespace Stareater.Utils.StateEngine
 
 		public PropertyStrategy(PropertyInfo property)
 		{
+            if (property.DeclaringType != property.ReflectedType)
+                property = property.DeclaringType.GetProperty(property.Name);
+
 			this.getter = BuildGetAccessor(property);
 			this.setter = BuildSetAccessor(property);
 		}

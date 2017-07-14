@@ -1,7 +1,9 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 using System;
 using System.Collections.Generic;
 using NGenerics.DataStructures.Mathematical;
@@ -13,13 +15,21 @@ namespace Stareater.GameData.Databases.Tables
 {
 	partial class PlayerOrders 
 	{
+		[StateProperty]
 		public int DevelopmentFocusIndex { get; set; }
+		[StateProperty]
 		public Dictionary<string, int> DevelopmentQueue { get; set; }
+		[StateProperty]
 		public string ResearchFocus { get; set; }
+		[StateProperty]
 		public Dictionary<AConstructionSite, ConstructionOrders> ConstructionPlans { get; set; }
+		[StateProperty]
 		public Dictionary<Vector2D, HashSet<Fleet>> ShipOrders { get; set; }
+		[StateProperty]
 		public Dictionary<Planet, ColonizationPlan> ColonizationOrders { get; set; }
+		[StateProperty]
 		public Dictionary<Design, Design> RefitOrders { get; set; }
+		[StateProperty]
 		public HashSet<int> AudienceRequests { get; private set; }
 
 		public PlayerOrders() 

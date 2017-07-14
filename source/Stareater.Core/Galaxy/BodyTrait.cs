@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Ikadn;
 using Ikadn.Ikon.Types;
 
@@ -11,6 +9,7 @@ namespace Stareater.Galaxy
 	public class BodyTrait
 	{
 		internal BodyTraitType Type { get; private set; }
+		//TODO(v0.7) can have mutable state, needs to be copied
 		internal ITraitEffect Effect { get; private set; }
 
 		private BodyTrait(BodyTraitType type, LocationBody location)

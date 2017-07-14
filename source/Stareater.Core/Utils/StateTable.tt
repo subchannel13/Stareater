@@ -2,7 +2,7 @@
 
 <#+
 private string modifer = "";
-private List<string> usings = new List<string>(new string[] { "Ikadn.Ikon.Types", "Stareater.Utils.Collections" });
+private List<string> usings = new List<string>(new string[] { "Ikadn.Ikon.Types", "Stareater.Utils.Collections", "Stareater.Utils.StateEngine" });
 private List<string> genericTypes = new List<string>();
 
 private string SuperClass = null;
@@ -51,6 +51,7 @@ private void WriteFields(params DataInfo[] dataInfos)
 	{
 		if (field.BaseInit)
 			continue;
+		WriteLine(indent.Get + "[StateProperty]");
 		
 		if (!field.PublicGet && !field.PublicSet)
 			WriteLine(indent.Get + "private " + field.Type + " " + field.Name + ";");
@@ -98,6 +99,17 @@ private void WriteContructorDefinition(string className, params DataInfo[] dataI
 		
 		Write(")");
 	}
+}
+
+private bool NeedsDefaultConstructor(params DataInfo[] dataInfos)
+{
+	foreach(var field in dataInfos) 
+	{
+		if (field.InitParams == null || field.InitParams.Length > 0)
+			return true;
+	}
+	
+	return false;
 }
 
 private void WriteFieldInits(params DataInfo[] dataInfos)
@@ -226,6 +238,12 @@ private void WriteLoadContructorDefinition(string className)
 		deindexer = (LoadNeedsObjectDeindexer) ? ", deindexer" : "";
 		Write(" : base(rawData" + deindexer + ")");
 	}
+}
+
+private void WriteDefaultContructorDefinition(string className)
+{
+	string constructorModifer = modifer.Contains("abstract") ? "protected" : "private";
+	Write(constructorModifer + " " + className + "()");
 }
 
 private void WriteFieldCopys(params DataInfo[] dataInfos)
@@ -574,6 +592,11 @@ namespace <#+ Write(namespaceName); #>
 			<#+ WriteFieldLoad(dataInfos); #> 
 			<#+ SetDebugId(); #> 
 		}
+
+<#+ if (NeedsDefaultConstructor(dataInfos)) { #>
+		<#+ WriteDefaultContructorDefinition(className); #> 
+		{ }
+<#+ } #>
 
 <#+ if (!modifer.Contains("abstract")) { #>
 		internal <#+ WriteCopyMethodDefinition(className, dataInfos); #> 

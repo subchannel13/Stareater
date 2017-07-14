@@ -1,7 +1,9 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 using System;
 using System.Linq;
 using Stareater.GameData;
@@ -15,18 +17,23 @@ namespace Stareater.Galaxy
 		public StellarisAdmin(StarData star, Player owner) : base(new LocationBody(star), owner) 
 		{
 			 
+			 
 		} 
 
 		private StellarisAdmin(StellarisAdmin original, StarData star, Player owner) : base(original, new LocationBody(star), owner) 
 		{
+			 
 			 
 		}
 
 		private StellarisAdmin(IkonComposite rawData, ObjectDeindexer deindexer) : base(rawData, deindexer) 
 		{
 			 
+			 
 		}
 
+		private StellarisAdmin() 
+		{ }
 		internal StellarisAdmin Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap) 
 		{
 			return new StellarisAdmin(this, galaxyRemap.Stars[this.Location.Star], playersRemap.Players[this.Owner]);
@@ -55,5 +62,7 @@ namespace Stareater.Galaxy
 		private const string OwnerKey = "owner";
  
 		#endregion
+
+ 
 	}
 }

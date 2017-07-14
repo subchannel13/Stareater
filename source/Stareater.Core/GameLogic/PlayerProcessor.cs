@@ -14,6 +14,7 @@ using Stareater.Ships;
 using Stareater.Ships.Missions;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameLogic
 {
@@ -21,12 +22,19 @@ namespace Stareater.GameLogic
 	{
 		public const string LevelSufix = "Lvl";
 		
+		[StateProperty]
 		public IEnumerable<DevelopmentResult> DevelopmentPlan { get; protected set; }
+		[StateProperty]
 		public IEnumerable<ResearchResult> ResearchPlan { get; protected set; }
+		[StateProperty]
 		public Player Player { get; private set; }
+		[StateProperty]
 		public Dictionary<Design, DesignStats> DesignStats { get; private set; }
+		[StateProperty]
 		public Dictionary<Design, Dictionary<Design, double>> RefitCosts { get; private set; }
+		[StateProperty]
 		public Design ColonyShipDesign { get; private set; }
+		[StateProperty]
 		public Design SystemColonizerDesign { get; private set; }
 
 		private Queue<ResearchResult> breakthroughs = new Queue<ResearchResult>();

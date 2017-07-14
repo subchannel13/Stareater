@@ -13,15 +13,21 @@ namespace Stareater
 {
 	class MainGame
 	{
+		[StateProperty]
 		public Player[] MainPlayers { get; private set; }
+		[StateProperty]
 		public Player StareaterOrganelles { get; private set; }
+		[StateProperty]
 		public int Turn { get; set; }
 
-		public bool IsReadOnly { get; set; }
-		public StaticsDB Statics { get; private set; }
+		[StateProperty]
 		public StatesDB States { get; private set; }
+		[StateProperty]
 		public TemporaryDB Derivates { get; private set; }
+		
+		public StaticsDB Statics { get; private set; }
 
+		public bool IsReadOnly { get; set; }
 		public GameProcessor Processor { get; private set; }
 
 		public MainGame(Player[] players, Player organellePlayer, StaticsDB statics, StatesDB states, TemporaryDB derivates)
@@ -54,27 +60,11 @@ namespace Stareater
 		
 		public MainGame ReadonlyCopy(StateManager stateManager)
 		{
-			return stateManager.Copy(this);
+			var copy = stateManager.Copy(this);
 			
-			var copy = new MainGame();
-
-			GalaxyRemap galaxyRemap = this.States.CopyGalaxy();
-			PlayersRemap playersRemap = this.States.CopyPlayers(
-				this.AllPlayers.ToDictionary(x => x, x => x.Copy(galaxyRemap)),
-				galaxyRemap);
-
-			foreach (var playerPair in playersRemap.Players)
-				playerPair.Value.Orders = playerPair.Key.Orders.Copy(playersRemap, galaxyRemap);
-
-			copy.MainPlayers = this.MainPlayers.Select(p => playersRemap.Players[p]).ToArray();
-			copy.StareaterOrganelles = playersRemap.Players[this.StareaterOrganelles];
-			copy.Turn = this.Turn;
-
 			copy.IsReadOnly = true;
 			copy.Statics = this.Statics;
-			copy.States = this.States.Copy(playersRemap, galaxyRemap);
-			copy.Derivates = this.Derivates.Copy(playersRemap);
-
+			
 			return copy;
 		}
 

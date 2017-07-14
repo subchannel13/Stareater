@@ -1,7 +1,9 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 using System;
 using System.Collections.Generic;
 using Stareater.Galaxy;
@@ -10,12 +12,14 @@ namespace Stareater.GameData
 {
 	partial class Intelligence 
 	{
+		[StateProperty]
 		private Dictionary<StarData, StarIntelligence> starKnowledge;
 
 		public Intelligence() 
 		{
 			this.starKnowledge = new Dictionary<StarData, StarIntelligence>();
  
+			 
 		} 
 
 		private Intelligence(Intelligence original, GalaxyRemap galaxyRemap) 
@@ -24,6 +28,7 @@ namespace Stareater.GameData
 			foreach(var item in original.starKnowledge)
 				this.starKnowledge.Add(galaxyRemap.Stars[item.Key], item.Value.Copy(galaxyRemap));
  
+			 
 		}
 
 		private Intelligence(IkonComposite rawData, ObjectDeindexer deindexer) 
@@ -39,6 +44,7 @@ namespace Stareater.GameData
 				);
 			}
  
+			 
 		}
 
 		internal Intelligence Copy(GalaxyRemap galaxyRemap) 
@@ -79,5 +85,7 @@ namespace Stareater.GameData
 		private const string StarIntelligenceKey = "intell";
  
 		#endregion
+
+ 
 	}
 }

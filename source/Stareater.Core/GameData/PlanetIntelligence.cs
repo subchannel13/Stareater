@@ -1,14 +1,18 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 using System;
 
 namespace Stareater.GameData 
 {
 	partial class PlanetIntelligence 
 	{
+		[StateProperty]
 		public double Explored { get; private set; }
+		[StateProperty]
 		public int LastVisited { get; private set; }
 
 		public PlanetIntelligence() 
@@ -16,6 +20,7 @@ namespace Stareater.GameData
 			this.Explored = Unexplored;
 			this.LastVisited = NeverVisited;
  
+			 
 		} 
 
 		private PlanetIntelligence(PlanetIntelligence original) 
@@ -23,6 +28,7 @@ namespace Stareater.GameData
 			this.Explored = original.Explored;
 			this.LastVisited = original.LastVisited;
  
+			 
 		}
 
 		private PlanetIntelligence(IkonComposite rawData) 
@@ -33,6 +39,7 @@ namespace Stareater.GameData
 			var lastVisitedSave = rawData[LastVisitedKey];
 			this.LastVisited = lastVisitedSave.To<int>();
  
+			 
 		}
 
 		internal PlanetIntelligence Copy() 
@@ -66,5 +73,7 @@ namespace Stareater.GameData
 		private const string LastVisitedKey = "lastVisited";
  
 		#endregion
+
+ 
 	}
 }

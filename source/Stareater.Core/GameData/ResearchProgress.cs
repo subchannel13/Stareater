@@ -1,7 +1,9 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 using System;
 using Stareater.Players;
 
@@ -9,9 +11,13 @@ namespace Stareater.GameData
 {
 	partial class ResearchProgress 
 	{
+		[StateProperty]
 		public Player Owner { get; private set; }
+		[StateProperty]
 		public ResearchTopic Topic { get; private set; }
+		[StateProperty]
 		public int Level { get; private set; }
+		[StateProperty]
 		public double InvestedPoints { get; private set; }
 
 		public ResearchProgress(Player owner, ResearchTopic topic, int level, double investedPoints) 
@@ -42,6 +48,8 @@ namespace Stareater.GameData
 			 
 		}
 
+		private ResearchProgress() 
+		{ }
 		internal ResearchProgress Copy(PlayersRemap playersRemap) 
 		{
 			return new ResearchProgress(playersRemap.Players[this.Owner], this.Topic, this.Level, this.InvestedPoints);

@@ -1,7 +1,9 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 using System;
 using Stareater.Players;
 
@@ -9,7 +11,9 @@ namespace Stareater.GameData
 {
 	class Treaty 
 	{
+		[StateProperty]
 		public Player Party1 { get; private set; }
+		[StateProperty]
 		public Player Party2 { get; private set; }
 
 		public Treaty(Player party1, Player party2) 
@@ -32,6 +36,8 @@ namespace Stareater.GameData
 			 
 		}
 
+		private Treaty() 
+		{ }
 		internal Treaty Copy(PlayersRemap playersRemap) 
 		{
 			return new Treaty(playersRemap.Players[this.Party1], playersRemap.Players[this.Party2]);

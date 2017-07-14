@@ -1,7 +1,9 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 using System;
 using System.Collections.Generic;
 using Stareater.Galaxy;
@@ -10,7 +12,9 @@ namespace Stareater.GameData.Databases.Tables
 {
 	class ColonizationPlan 
 	{
+		[StateProperty]
 		public Planet Destination { get; private set; }
+		[StateProperty]
 		public List<StarData> Sources { get; private set; }
 
 		public ColonizationPlan(Planet destination) 
@@ -44,6 +48,8 @@ namespace Stareater.GameData.Databases.Tables
 			 
 		}
 
+		private ColonizationPlan() 
+		{ }
 		internal ColonizationPlan Copy(GalaxyRemap galaxyRemap) 
 		{
 			return new ColonizationPlan(this, galaxyRemap, galaxyRemap.Planets[this.Destination]);

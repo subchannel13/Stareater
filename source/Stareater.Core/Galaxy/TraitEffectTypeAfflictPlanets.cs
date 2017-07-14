@@ -32,6 +32,7 @@ namespace Stareater.Galaxy
 			private readonly BodyTrait parentTrait;
 			private readonly StarData star;
 			
+			//TODO(v0.7) not going to be copied with state manager
 			private int duration;
 			
 			public TraitEffectAfflictPlanets(TraitEffectTypeAfflictPlanets type, BodyTrait parentTrait, StarData star, int duration)

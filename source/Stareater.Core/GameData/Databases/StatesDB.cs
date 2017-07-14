@@ -8,6 +8,7 @@ using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Databases
 {
@@ -15,11 +16,16 @@ namespace Stareater.GameData.Databases
 	{
 		private const string DesignIdPrefix = "ShipDesign";
 		
+		[StateProperty]
 		public StarCollection Stars { get; private set; }
+		[StateProperty]
 		public WormholeCollection Wormholes { get; private set; }
-		
+
+		[StateProperty]
 		public PlanetCollection Planets { get; private set; }
+		[StateProperty]
 		public ColonyCollection Colonies { get; private set; }
+		[StateProperty]
 		public StellarisCollection Stellarises { get; private set; }
 		
 		public ColonizationCollection ColonizationProjects { get; private set; }

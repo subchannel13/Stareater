@@ -9,6 +9,7 @@ using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameLogic
 {
@@ -17,6 +18,7 @@ namespace Stareater.GameLogic
 		private const string CatalyzerId = "catalyzer";
 		private const long MaxCatalyzers = 5;
 
+		[StateProperty]
 		public Player OrganellePlayer { get; private set; }
 		
 		public NativesProcessor(Player organellePlayer)

@@ -1,7 +1,9 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 using System;
 using System.Collections.Generic;
 using Stareater.GameData;
@@ -13,22 +15,39 @@ namespace Stareater.Ships
 {
 	partial class Design 
 	{
+		[StateProperty]
 		public string IdCode { get; private set; }
+		[StateProperty]
 		public Player Owner { get; private set; }
+		[StateProperty]
 		public bool IsObsolete { get; set; }
+		[StateProperty]
 		public bool IsVirtual { get; private set; }
+		[StateProperty]
 		public string Name { get; private set; }
+		[StateProperty]
 		public int ImageIndex { get; private set; }
+		[StateProperty]
 		public Component<ArmorType> Armor { get; private set; }
+		[StateProperty]
 		public Component<HullType> Hull { get; private set; }
+		[StateProperty]
 		public Component<IsDriveType> IsDrive { get; private set; }
+		[StateProperty]
 		public Component<ReactorType> Reactor { get; private set; }
+		[StateProperty]
 		public Component<SensorType> Sensors { get; private set; }
+		[StateProperty]
 		public Component<ShieldType> Shield { get; private set; }
+		[StateProperty]
 		public List<Component<MissionEquipmentType>> MissionEquipment { get; private set; }
+		[StateProperty]
 		public List<Component<SpecialEquipmentType>> SpecialEquipment { get; private set; }
+		[StateProperty]
 		public Component<ThrusterType> Thrusters { get; private set; }
+		[StateProperty]
 		private BitHash hash;
+		[StateProperty]
 		public double Cost { get; private set; }
 
 		public Design(string idCode, Player owner, bool isObsolete, bool isVirtual, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment, Component<ThrusterType> thrusters) 
@@ -143,6 +162,8 @@ namespace Stareater.Ships
 			 
 		}
 
+		private Design() 
+		{ }
 		internal Design Copy(PlayersRemap playersRemap) 
 		{
 			return new Design(this, playersRemap.Players[this.Owner]);

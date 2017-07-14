@@ -122,7 +122,7 @@ namespace Stareater.Controllers
 					return;
 				
 				this.endTurnCopy = new GameController();
-				var gameCopy = gameObj.ReadonlyCopy();
+				var gameCopy = gameObj.ReadonlyCopy(stateManager);
 				
 				this.endTurnCopy.gameObj = gameCopy;
 				this.endTurnCopy.State = this.State;

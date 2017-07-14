@@ -50,7 +50,7 @@ namespace Stareater.Utils.StateEngine
 		
 		private static Func<object> BuildConstructor(Type type)
 		{
-			var ctorInfo = type.GetConstructor(new Type[0]);
+            var ctorInfo = type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[0], null);
 			var funcBody = Expression.New(ctorInfo);
 			
 			var expr =

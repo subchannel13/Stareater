@@ -1,7 +1,9 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +13,15 @@ namespace Stareater.Galaxy
 {
 	public partial class Planet 
 	{
+		[StateProperty]
 		public StarData Star { get; private set; }
+		[StateProperty]
 		public int Position { get; private set; }
+		[StateProperty]
 		public PlanetType Type { get; private set; }
+		[StateProperty]
 		public double Size { get; private set; }
+		[StateProperty]
 		public PendableSet<BodyTrait> Traits { get; private set; }
 
 		public Planet(StarData star, int position, PlanetType type, double size, List<BodyTraitType> traits) 
@@ -63,6 +70,8 @@ namespace Stareater.Galaxy
 			 
 		}
 
+		private Planet() 
+		{ }
 		internal Planet Copy(GalaxyRemap galaxyRemap) 
 		{
 			return new Planet(this, galaxyRemap.Stars[this.Star]);

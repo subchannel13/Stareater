@@ -1,7 +1,9 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 using System;
 using System.Collections.Generic;
 using NGenerics.DataStructures.Mathematical;
@@ -14,9 +16,13 @@ namespace Stareater.Galaxy
 {
 	partial class Fleet 
 	{
+		[StateProperty]
 		public Player Owner { get; private set; }
+		[StateProperty]
 		public Vector2D Position { get; private set; }
+		[StateProperty]
 		public LinkedList<AMission> Missions { get; private set; }
+		[StateProperty]
 		public ShipGroupCollection Ships { get; private set; }
 
 		public Fleet(Player owner, Vector2D position, LinkedList<AMission> missions) 
@@ -67,6 +73,8 @@ namespace Stareater.Galaxy
 			 
 		}
 
+		private Fleet() 
+		{ }
 		internal Fleet Copy(PlayersRemap playersRemap) 
 		{
 			return new Fleet(this, playersRemap, playersRemap.Players[this.Owner]);

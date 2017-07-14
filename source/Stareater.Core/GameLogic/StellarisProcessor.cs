@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Stareater.AppData.Expressions;
 using Stareater.Galaxy;
 using Stareater.GameData;
-using Stareater.GameData.Databases;
 using Stareater.Players;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameLogic
 {
 	class StellarisProcessor : AConstructionSiteProcessor
 	{
+		[StateProperty]
 		public StellarisAdmin Stellaris { get; set; }
 
 		public StellarisProcessor(StellarisAdmin stellaris) : base()

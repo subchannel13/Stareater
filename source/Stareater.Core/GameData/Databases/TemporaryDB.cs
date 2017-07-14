@@ -5,14 +5,19 @@ using Stareater.GameData.Databases.Tables;
 using Stareater.GameLogic;
 using Stareater.Players;
 using Stareater.Galaxy;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Databases
 {
 	class TemporaryDB
 	{
+		[StateProperty]
 		public ColonyProcessorCollection Colonies { get; private set; }
+		[StateProperty]
 		public StellarisProcessorCollection Stellarises { get; private set; }
+		[StateProperty]
 		public PlayerProcessorCollection Players { get; private set; }
+		[StateProperty]
 		public NativesProcessor Natives { get; private set; }
 		
 		public TemporaryDB(Player[] players, Player organellePlayer, IEnumerable<DevelopmentTopic> technologies)

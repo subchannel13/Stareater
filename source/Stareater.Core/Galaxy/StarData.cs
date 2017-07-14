@@ -1,7 +1,9 @@
 ﻿ 
 
+
 using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +15,15 @@ namespace Stareater.Galaxy
 {
 	public partial class StarData 
 	{
+		[StateProperty]
 		public Color Color { get; private set; }
+		[StateProperty]
 		public float ImageSizeScale { get; private set; }
+		[StateProperty]
 		public IStarName Name { get; private set; }
+		[StateProperty]
 		public Vector2D Position { get; private set; }
+		[StateProperty]
 		public PendableSet<BodyTrait> Traits { get; private set; }
 
 		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position, List<BodyTraitType> traits) 
@@ -72,6 +79,8 @@ namespace Stareater.Galaxy
 			 
 		}
 
+		private StarData() 
+		{ }
 		internal StarData Copy() 
 		{
 			return new StarData(this);
