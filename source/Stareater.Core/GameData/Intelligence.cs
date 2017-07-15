@@ -13,7 +13,7 @@ namespace Stareater.GameData
 	partial class Intelligence 
 	{
 		[StateProperty]
-		private Dictionary<StarData, StarIntelligence> starKnowledge;
+		private Dictionary<StarData, StarIntelligence> starKnowledge { get; set; }
 
 		public Intelligence() 
 		{

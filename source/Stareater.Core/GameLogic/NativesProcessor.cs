@@ -26,6 +26,9 @@ namespace Stareater.GameLogic
 			this.OrganellePlayer = organellePlayer;
 		}
 
+		private NativesProcessor()
+		{ }
+
 		public void Initialize(StatesDB states, StaticsDB statics, TemporaryDB derivates)
 		{
 			this.OrganellePlayer.Intelligence.Initialize(states.Stars.Select(

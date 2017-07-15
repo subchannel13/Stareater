@@ -36,7 +36,8 @@ namespace Stareater.Utils.StateEngine
 
         private static IEnumerable<PropertyInfo> getProperties(Type type)
 		{
-			return type.GetProperties().Where(StateManager.IsStateData);
+			return type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).
+				Where(StateManager.IsStateData);
 		}
 		
 		private static Func<object> BuildConstructor(Type type)

@@ -25,7 +25,7 @@ namespace Stareater.Utils.StateEngine
 
 		private static Func<object, object> BuildGetAccessor(PropertyInfo property)
 		{
-			var method = property.GetGetMethod();
+			var method = property.GetGetMethod(true);
 			var obj = Expression.Parameter(typeof(object), "o");
 
 			var expr =

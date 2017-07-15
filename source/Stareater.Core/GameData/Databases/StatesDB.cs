@@ -27,14 +27,21 @@ namespace Stareater.GameData.Databases
 		public ColonyCollection Colonies { get; private set; }
 		[StateProperty]
 		public StellarisCollection Stellarises { get; private set; }
-		
+
+		[StateProperty]
 		public ColonizationCollection ColonizationProjects { get; private set; }
+		[StateProperty]
 		public FleetCollection Fleets { get; private set; }
-		
+
+		[StateProperty]
 		public DesignCollection Designs { get; private set; }
+		[StateProperty]
 		public ReportCollection Reports { get; private set; }
+		[StateProperty]
 		public DevelopmentProgressCollection DevelopmentAdvances { get; private set; }
+		[StateProperty]
 		public ResearchProgressCollection ResearchAdvances { get; private set; }
+		[StateProperty]
 		public TreatyCollection Treaties { get; private set; }
 		
 		private int nextDesignId = 0;

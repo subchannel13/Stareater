@@ -54,7 +54,7 @@ private void WriteFields(params DataInfo[] dataInfos)
 		WriteLine(indent.Get + "[StateProperty]");
 		
 		if (!field.PublicGet && !field.PublicSet)
-			WriteLine(indent.Get + "private " + field.Type + " " + field.Name + ";");
+			WriteLine(indent.Get + "private " + field.Type + " " + field.Name + " { get; set; }");
 		else
 		{
 			string getMod = field.PublicGet ? "" : "private ";
