@@ -7,7 +7,6 @@ namespace Stareater.GameData.Ships
 {
 	class HullType : AComponentType
 	{
-		public const string HullSizeKey = "shipSize";
 		public const string IsDriveSizeKey = "hullIsSize"; //base hull's IS drive size
 		public const string ReactorSizeKey = "hullReactorSize"; //base hull's reactor size
 

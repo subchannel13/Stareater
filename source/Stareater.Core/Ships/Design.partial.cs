@@ -152,7 +152,7 @@ namespace Stareater.Ships
 			double specialsCost = specialEquipment.Sum(
 				x => x.Quantity * x.TypeInfo.Cost.Evaluate(
 					new Var(AComponentType.LevelKey, x.Level).
-					And(HullType.HullSizeKey, hullSize).Get
+					And(AComponentType.SizeKey, hullSize).Get
 				)
 			);
 

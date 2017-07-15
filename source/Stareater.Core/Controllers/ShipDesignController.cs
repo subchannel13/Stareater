@@ -287,7 +287,7 @@ namespace Stareater.Controllers
 			{ 
 				Func<Component<SpecialEquipmentType>, IDictionary<string, double>> specEquipVars = x => 
 					new Var(AComponentType.LevelKey, x.Level).
-						And(HullType.HullSizeKey, this.selectedHull.Size).Get;
+						And(AComponentType.SizeKey, this.selectedHull.Size).Get;
 				
 				return (this.HasIsDrive ? this.selectedHull.IsDriveSize : 0) + 
 					(this.Shield != null ? this.selectedHull.ShieldSize : 0) +
