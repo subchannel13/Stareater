@@ -7,15 +7,19 @@ using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.GameData.Databases;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameLogic
 {
 	abstract class AConstructionSiteProcessor
 	{
 		private const string BuidingCountPrefix = "_count";
-		
+
+		[StateProperty]
 		public double Production { get; protected set; }
+		[StateProperty]
 		public double SpendingRatioEffective { get; protected set; }
+		[StateProperty]
 		public IEnumerable<ConstructionResult> SpendingPlan { get; protected set; }
 
 		protected AConstructionSiteProcessor()

@@ -176,9 +176,9 @@ namespace Stareater.GameLogic
 			return playerTechs;
 		}
 		#endregion
-		
+
 		#region Galaxy phase
-		
+		[StateProperty]
 		public IDictionary<string, double> TechLevels { get; private set; }
 
 		public void Calculate(IEnumerable<DevelopmentProgress> techAdvances)
