@@ -41,12 +41,14 @@ namespace Stareater.GLRenderers
 		
 		private const float PanClickTolerance = 0.01f;
 		private const float ClickRadius = 0.01f;
+		private const float TurnTextMargin = 0.005f;
 		private const float StarMinClickRadius = 0.75f;
 		
 		private const float EtaTextScale = 0.25f;
 		private const float FleetIndicatorScale = 0.2f;
 		private const float FleetSelectorScale = 0.3f;
 		private const float PathWidth = 0.1f;
+		private const float TurnTextScale = 0.02f;
 		private const float StarNameScale = 0.35f;
 
 		public FleetController SelectedFleet { private get; set; }
@@ -57,6 +59,7 @@ namespace Stareater.GLRenderers
 		private IEnumerable<SceneObject> fleetMarkers = null;
 		private SceneObject movementEtaText = null;
 		private SceneObject movementSimulationPath = null;
+		private SceneObject turnCounter = null;
 		private SceneObject selectionMarkers = null;
 		private SceneObject wormholeSprites = null;
 		private IEnumerable<SceneObject> starSprites = null;
@@ -167,6 +170,8 @@ namespace Stareater.GLRenderers
 				(float)(screenSize.X * radius * aspect / screenSize.X) : 
 				(float)(screenSize.Y * radius * aspect / screenSize.Y);
 
+			this.setupTurnCounter();
+
 			return calcOrthogonalPerspective(aspect * radius, radius, FarZ, originOffset);
 		}
 
@@ -215,7 +220,8 @@ namespace Stareater.GLRenderers
 			this.setupMovementSimulation();
 			this.setupSelectionMarkers();
 			this.setupWormholeSprites();
-		}
+			this.setupTurnCounter();
+        }
 		
 		private void setupFleetMarkers()
 		{
@@ -295,6 +301,33 @@ namespace Stareater.GLRenderers
 				);
 			else if (this.movementSimulationPath != null)
 				this.RemoveFromScene(ref this.movementSimulationPath);
+		}
+
+		private void setupTurnCounter()
+		{
+			var aspect = canvasSize.X / canvasSize.Y;
+			var zoom = (float)Math.Pow(ZoomBase, zoomLevel);
+            var radius = DefaultViewSize / zoom;
+			var uiScale = screenLength / zoom;
+			var transform =
+					Matrix4.CreateScale(TurnTextScale * uiScale) *
+					Matrix4.CreateTranslation(
+						aspect * radius / 2 + originOffset.X - uiScale * TurnTextMargin, 
+						radius / 2 + originOffset.Y - uiScale * TurnTextMargin, 
+						0
+					);
+
+			this.UpdateScene(
+				ref this.turnCounter,
+				new SceneObject(new PolygonData(
+					EtaZ,
+					new SpriteData(transform, TextRenderUtil.Get.TextureId, Color.LightGray),
+					TextRenderUtil.Get.BufferText(
+						LocalizationManifest.Get.CurrentLanguage["FormMain"]["Turn"].Text() + " " + this.currentPlayer.Turn,
+						-1,
+						Matrix4.Identity
+					).ToList()))
+			);
 		}
 
 		private void setupSelectionMarkers()

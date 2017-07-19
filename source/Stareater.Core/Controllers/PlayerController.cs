@@ -45,7 +45,12 @@ namespace Stareater.Controllers
 		{
 			get { return new LibraryController(this.gameController); }
 		}
-		
+
+		public int Turn
+		{
+			get { return this.gameInstance.Turn + 1; }
+		}
+
 		#region Turn progression
 		public void EndGalaxyPhase()
 		{
@@ -427,7 +432,7 @@ namespace Stareater.Controllers
 			}
 		}
 		#endregion
-		
+
 		#region Diplomacy related
 		public IEnumerable<ContactInfo> DiplomaticContacts()
 		{
