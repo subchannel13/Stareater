@@ -7,16 +7,18 @@ namespace Stareater.GUI.ShipDesigns
 	{
 		public string Name { get; private set; }
 		public Image Image { get; private set; }
-		
+		public double AmountLimit { get; private set; }
+
 		private readonly T item;
 		private readonly Action<T> dispatchAction;
 		
-		public ShipComponentType(string name, Image image, T item, Action<T> selectAction)
+		public ShipComponentType(string name, Image image, double amountLimit, T item, Action<T> selectAction)
 		{
 			this.item = item;
 			this.dispatchAction = selectAction;
 			this.Name = name;
 			this.Image = image;
+			this.AmountLimit = amountLimit;
 		}
 
 		public void Dispatch()

@@ -40,8 +40,12 @@ namespace Stareater.GUI
 			set
 			{
 				this.amount = value;
+				var formatter = new ThousandsFormatter();
 
-				amountLabel.Text = new ThousandsFormatter().Format(amount) + " x";
+                if (double.IsPositiveInfinity(this.data.AmountLimit))
+					amountLabel.Text = formatter.Format(amount) + " x";
+				else
+					amountLabel.Text = formatter.Format(amount) + " / " + formatter.Format(this.data.AmountLimit);
 			}
 		}
 		

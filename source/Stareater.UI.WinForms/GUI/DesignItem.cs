@@ -87,12 +87,13 @@ namespace Stareater.GUI
 			
 			var refitOptions = new IShipComponentType[] 
 			{ 
-				new ShipComponentType<DesignInfo>(context["disbandDesign"].Text(), global::Stareater.Properties.Resources.cancel, null, disbandDesign),  
-				new ShipComponentType<DesignInfo>(context["keepDesign"].Text(), global::Stareater.Properties.Resources.start, null, keepDesign)
+				new ShipComponentType<DesignInfo>(context["disbandDesign"].Text(), global::Stareater.Properties.Resources.cancel, 0, null, disbandDesign),  
+				new ShipComponentType<DesignInfo>(context["keepDesign"].Text(), global::Stareater.Properties.Resources.start, 0, null, keepDesign)
 			}.Concat(
 					this.controller.RefitCandidates(this.data).Where(x => x.Constructable).Select(x => new ShipComponentType<DesignInfo>(
 						x.Name + Environment.NewLine + context["refitCost"].Text() + ": " + formatter.Format(this.controller.RefitCost(this.data, x)),
-						ImageCache.Get[x.ImagePath],
+						ImageCache.Get[x.ImagePath], 
+						0,
 						x, refitDesign
 			)));
 			
