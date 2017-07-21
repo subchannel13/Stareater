@@ -8,6 +8,7 @@ using Stareater.Players;
 using Stareater.Players.Natives;
 using Stareater.Utils;
 using Stareater.Utils.StateEngine;
+using Ikadn;
 
 namespace Stareater.Controllers
 {
@@ -54,6 +55,11 @@ namespace Stareater.Controllers
 		{
 			this.gameObj = game;
 			makePlayers();
+		}
+
+		internal IEnumerable<IkadnBaseObject> Save()
+		{
+			return this.GameInstance.Save(stateManager);
 		}
 
 		/// <summary>
@@ -105,7 +111,7 @@ namespace Stareater.Controllers
 			this.organelleController = new PlayerController(this.gameObj.MainPlayers.Length, this);
 			this.gameObj.StareaterOrganelles.OffscreenControl.Controller = this.organelleController;
 		}
-		
+
 		#region Turn processing
 		public GameState State { get; private set; }
 		

@@ -526,6 +526,7 @@ namespace Stareater.GUI
 			menuStrip.Visible = true;
 		}
 
+		//TODO(v0.7) autosave
 		public void OnNewTurn()
 		{
 			if (this.InvokeRequired) {

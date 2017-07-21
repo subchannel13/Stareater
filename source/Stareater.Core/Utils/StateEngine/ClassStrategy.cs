@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Ikadn;
+using Ikadn.Ikon.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -32,9 +34,16 @@ namespace Stareater.Utils.StateEngine
             foreach (var property in this.properties)
                 property.Copy(originalValue, copyInstance, session);
         }
-        #endregion
 
-        private static IEnumerable<PropertyInfo> getProperties(Type type)
+		public IEnumerable<KeyValuePair<object, IkadnBaseObject>> Serialize(object originalValue, SaveSession session)
+		{
+			var gameData = new IkonComposite(type.Name); //TODO(v0.7) take name from attribute
+			//TODO(v0.7)
+			yield break;
+		}
+		#endregion
+
+		private static IEnumerable<PropertyInfo> getProperties(Type type)
 		{
 			return type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).
 				Where(StateManager.IsStateData);

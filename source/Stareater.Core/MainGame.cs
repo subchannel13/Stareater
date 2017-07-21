@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Stareater.GameData;
+﻿using System.Collections.Generic;
 using Stareater.GameData.Databases;
 using Stareater.GameLogic;
 using Stareater.Players;
-using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
+using Ikadn;
 
 namespace Stareater
 {
@@ -97,8 +94,11 @@ namespace Stareater
 			return indexer;
 		}
 		
-		internal IkonComposite Save()
+		internal IEnumerable<IkadnBaseObject> Save(StateManager stateManager)
 		{
+			//TODO(v0.7) is the method necessary?
+			return stateManager.Save(this);
+		/*
 			ObjectIndexer indexer = this.GenerateIndices();
 			
 			var gameData = new IkonComposite(SaveGameTag);
@@ -119,7 +119,7 @@ namespace Stareater
 			gameData.Add(OrdersKey, ordersData);
 			gameData.Add(OrganelleOrdersKey, this.StareaterOrganelles.Orders.Save(indexer));
 			
-			return gameData;
+			return gameData;*/
 		}
 		
 		public const string SaveGameTag = "Game";

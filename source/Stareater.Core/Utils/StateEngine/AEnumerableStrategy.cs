@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Ikadn;
+using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -27,9 +29,15 @@ namespace Stareater.Utils.StateEngine
         {
             this.copyChildrenInvoker(originalValue, copyInstance, session);
         }
-        #endregion
 
-        private static Action<object, object, CopySession> BuildCopyInvoker(Type type, MethodInfo copyChildrenMethod)
+		public IEnumerable<KeyValuePair<object, IkadnBaseObject>> Serialize(object originalValue, SaveSession session)
+		{
+			//TODO(v0.7)
+			yield break;
+		}
+		#endregion
+
+		private static Action<object, object, CopySession> BuildCopyInvoker(Type type, MethodInfo copyChildrenMethod)
 		{
 			var originalParam = Expression.Parameter(typeof(object), "original");
 			var copyParam = Expression.Parameter(typeof(object), "copy");
