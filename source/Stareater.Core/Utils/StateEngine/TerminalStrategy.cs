@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using Ikadn;
+using Ikadn.Ikon.Types;
 
 namespace Stareater.Utils.StateEngine
 {
 	class TerminalStrategy : ITypeStrategy
 	{
-		private Func<object, IkadnBaseObject> serializationMethod;
+		private Func<object, IkonBaseObject> serializationMethod;
 
-		public TerminalStrategy(Func<object, IkadnBaseObject> serializationMethod)
+		public TerminalStrategy(Func<object, IkonBaseObject> serializationMethod)
 		{
 			this.serializationMethod = serializationMethod;
 		}
@@ -24,9 +23,9 @@ namespace Stareater.Utils.StateEngine
             return originalValue;
         }
 
-		public IEnumerable<KeyValuePair<object, IkadnBaseObject>> Serialize(object originalValue, SaveSession session)
+		public IkonBaseObject Serialize(object originalValue, SaveSession session)
 		{
-			yield return new KeyValuePair<object, IkadnBaseObject>(originalValue, this.serializationMethod(originalValue));
+			return this.serializationMethod(originalValue);
 		}
 		#endregion
 	}

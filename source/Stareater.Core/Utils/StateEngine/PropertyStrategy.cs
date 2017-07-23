@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ikadn.Ikon.Types;
+using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -9,6 +10,8 @@ namespace Stareater.Utils.StateEngine
 		private Func<object, object> getter;
 		private Action<object, object> setter;
 
+		public string Name { get; private set; } //TODO(v0.7) take name from attribute
+
 		public PropertyStrategy(PropertyInfo property)
 		{
             if (property.DeclaringType != property.ReflectedType)
@@ -16,11 +19,17 @@ namespace Stareater.Utils.StateEngine
 
 			this.getter = BuildGetAccessor(property);
 			this.setter = BuildSetAccessor(property);
+			this.Name = property.Name;
 		}
 
 		public void Copy(object originalObject, object objectCopy, CopySession session)
 		{
 			this.setter(objectCopy, session.CopyOf(this.getter(originalObject)));
+		}
+
+		public IkonBaseObject Serialize(object originalObject, SaveSession session)
+		{
+			return session.Serialize(this.getter(originalObject));
 		}
 
 		private static Func<object, object> BuildGetAccessor(PropertyInfo property)

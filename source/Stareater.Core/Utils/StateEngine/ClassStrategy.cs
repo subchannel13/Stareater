@@ -1,5 +1,4 @@
-﻿using Ikadn;
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,11 +34,15 @@ namespace Stareater.Utils.StateEngine
                 property.Copy(originalValue, copyInstance, session);
         }
 
-		public IEnumerable<KeyValuePair<object, IkadnBaseObject>> Serialize(object originalValue, SaveSession session)
+		public IkonBaseObject Serialize(object originalValue, SaveSession session)
 		{
-			var gameData = new IkonComposite(type.Name); //TODO(v0.7) take name from attribute
-			//TODO(v0.7)
-			yield break;
+			var data = new IkonComposite(type.Name); //TODO(v0.7) take name from attribute
+			var reference = session.SaveReference(originalValue, data);
+
+			foreach (var property in this.properties)
+				data.Add(property.Name, property.Serialize(originalValue, session));
+
+			return reference;
 		}
 		#endregion
 

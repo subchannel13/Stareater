@@ -1,4 +1,4 @@
-﻿using Ikadn;
+﻿using Ikadn.Ikon.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace Stareater.Utils.StateEngine
 	{
         private readonly Dictionary<Type, ITypeStrategy> experts = new Dictionary<Type, ITypeStrategy>();
 
-		public void AddTerminalExpert(Type type, Func<object, IkadnBaseObject> serializationMethod)
+		public void AddTerminalExpert(Type type, Func<object, IkonBaseObject> serializationMethod)
 		{
 			this.experts[type] = new TerminalStrategy(serializationMethod);
 		}
@@ -20,9 +20,14 @@ namespace Stareater.Utils.StateEngine
             return (T)new CopySession(getTypeStrategy).CopyOf(obj);
         }
 
-		public IEnumerable<IkadnBaseObject> Save(object obj)
+		public IEnumerable<IkonBaseObject> Save(object obj)
 		{
-			return new SaveSession(getTypeStrategy).Save(obj);
+			var session = new SaveSession(getTypeStrategy);
+
+			yield return session.Serialize(obj);
+
+			foreach (var data in session.GetSerialzedData())
+				yield return data;
 		}
 
 		private ITypeStrategy getTypeStrategy(Type type)

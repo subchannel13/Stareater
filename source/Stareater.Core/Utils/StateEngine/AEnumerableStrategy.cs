@@ -1,4 +1,4 @@
-﻿using Ikadn;
+﻿using Ikadn.Ikon.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -30,10 +30,10 @@ namespace Stareater.Utils.StateEngine
             this.copyChildrenInvoker(originalValue, copyInstance, session);
         }
 
-		public IEnumerable<KeyValuePair<object, IkadnBaseObject>> Serialize(object originalValue, SaveSession session)
+		public IkonBaseObject Serialize(object originalValue, SaveSession session)
 		{
 			//TODO(v0.7)
-			yield break;
+			return null;
 		}
 		#endregion
 
