@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ikadn.Ikon.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -9,13 +10,23 @@ namespace Stareater.Utils.StateEngine
 	class CollectionStrategy : AEnumerableStrategy
 	{
 		public CollectionStrategy(Type type)
-			: base(type, BuildConstructor(type), CopyMethodInfo(type))
+			: base(type, BuildConstructor(type), CopyMethodInfo(type), SerializeMethodInfo(type))
 		{ }
 		
 		private static void copyChildren<T>(ICollection<T> originalCollection, ICollection<T> collectionCopy, CopySession session)
 		{
 			foreach (var element in originalCollection)
 				collectionCopy.Add((T)session.CopyOf(element));
+		}
+
+		public static IkonBaseObject serializeChildren<T>(ICollection<T> originalCollection, SaveSession session)
+		{
+			var data = new IkonArray();
+
+			foreach (var element in originalCollection)
+				data.Add(session.Serialize(element));
+
+			return data;
 		}
 
 		private static Func<object, object> BuildConstructor(Type type)
@@ -39,6 +50,13 @@ namespace Stareater.Utils.StateEngine
             return typeof(CollectionStrategy).
 				GetMethod("copyChildren", BindingFlags.NonPublic | BindingFlags.Static).
 				MakeGenericMethod(interfaceType.GetGenericArguments()[0]);
+		}
+
+		private static MethodInfo SerializeMethodInfo(Type type)
+		{
+			return typeof(CollectionStrategy).
+				GetMethod("serializeChildren", BindingFlags.NonPublic | BindingFlags.Static).
+				MakeGenericMethod(type.GetElementType());
 		}
 	}
 }

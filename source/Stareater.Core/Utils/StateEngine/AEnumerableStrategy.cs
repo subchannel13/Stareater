@@ -1,6 +1,5 @@
 ﻿using Ikadn.Ikon.Types;
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -10,13 +9,15 @@ namespace Stareater.Utils.StateEngine
 	{
 		private Func<object, object> enumerableConstructor;
 		private Action<object, object, CopySession> copyChildrenInvoker;
+		private Func<object, SaveSession, IkonBaseObject> serializeChildrenInvoker;
 		protected Type type;
 
-		protected AEnumerableStrategy(Type type, Func<object, object> enumerableConstructor, MethodInfo copyChildrenMethod)
+		protected AEnumerableStrategy(Type type, Func<object, object> enumerableConstructor, MethodInfo copyChildrenMethod, MethodInfo serializeChildrenMethod)
 		{
 			this.type = type;
 			this.enumerableConstructor = enumerableConstructor;
 			this.copyChildrenInvoker = BuildCopyInvoker(type, copyChildrenMethod);
+			this.serializeChildrenInvoker = BuildSerializeInvoker(type, serializeChildrenMethod);
 		}
 
         #region ITypeStrategy implementation
@@ -32,8 +33,7 @@ namespace Stareater.Utils.StateEngine
 
 		public IkonBaseObject Serialize(object originalValue, SaveSession session)
 		{
-			//TODO(v0.7)
-			return null;
+			return this.serializeChildrenInvoker(originalValue, session);
 		}
 		#endregion
 
@@ -53,6 +53,25 @@ namespace Stareater.Utils.StateEngine
 					),
 					originalParam,
 					copyParam,
+					sessionParam
+				);
+
+			return expr.Compile();
+		}
+
+		private static Func<object, SaveSession, IkonBaseObject> BuildSerializeInvoker(Type type, MethodInfo serializeChildrenMethod)
+		{
+			var originalParam = Expression.Parameter(typeof(object), "original");
+			var sessionParam = Expression.Parameter(typeof(SaveSession), "session");
+
+			var expr =
+				Expression.Lambda<Func<object, SaveSession, IkonBaseObject>>(
+					Expression.Call(
+						serializeChildrenMethod,
+						Expression.Convert(originalParam, type),
+						sessionParam
+					),
+					originalParam,
 					sessionParam
 				);
 
