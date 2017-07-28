@@ -1,10 +1,10 @@
-﻿using System;
-using Ikadn;
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
 {
+	[StateType(saveMethod: "Save")]
 	struct LocationBody
 	{
 		public StarData Star;
@@ -18,8 +18,16 @@ namespace Stareater.Galaxy
 		
 		public LocationBody(StarData star) : this(star, null)
 		{ }
-		
-		public IkadnBaseObject Save(ObjectIndexer indexer)
+
+		public IkonBaseObject Save(SaveSession session)
+		{
+			return this.Planet == null ?
+				new IkonComposite(StarTag).Add(IdKey, session.Serialize(this.Star)) :
+				new IkonComposite(PlanetTag).Add(IdKey, session.Serialize(this.Planet));
+		}
+
+		//TODO(v0.7) remove
+		public IkonBaseObject Save(ObjectIndexer indexer)
 		{
 			return this.Planet == null ? 
 				new IkonComposite(StarTag).Add(IdKey, new IkonInteger(indexer.IndexOf(this.Star))) : 

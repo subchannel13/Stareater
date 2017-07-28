@@ -39,7 +39,7 @@ namespace Stareater.Utils.StateEngine
 			var data = new IkonComposite(type.Name); //TODO(v0.7) take name from attribute
 			var reference = session.SaveReference(originalValue, data);
 
-			foreach (var property in this.properties)
+			foreach (var property in this.properties.Where(x => x.Attribute.DoSave))
 				data.Add(property.Name, property.Serialize(originalValue, session));
 
 			return reference;

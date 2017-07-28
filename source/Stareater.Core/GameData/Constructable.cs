@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Stareater.AppData.Expressions;
 using Stareater.GameLogic;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData
 {
+	[StateType(true)]
 	class Constructable
 	{
 		public string LanguageCode { get; private set; }

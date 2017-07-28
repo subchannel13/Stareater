@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Stareater.Utils.StateEngine;
+using System.Collections.Generic;
 
 namespace Stareater.GameLogic 
 {
+	[StateType(true)]
 	class DesignStats 
 	{
 		public double GalaxySpeed;

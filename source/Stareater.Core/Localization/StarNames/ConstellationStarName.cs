@@ -1,9 +1,9 @@
-﻿using System;
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Localization.StarNames
 {
-	public class ConstellationStarName : IStarName
+	class ConstellationStarName : IStarName
 	{
 		internal const string ConstellationsContext = "ConstellationNames";
 		private const string ConstellationKeyPrefix = "constellation";
@@ -40,7 +40,17 @@ namespace Stareater.Localization.StarNames
 		}
 
 		#region Saving
-		public Ikadn.IkadnBaseObject Save()
+        public IkonBaseObject Save(SaveSession session)
+		{
+			IkonComposite data = new IkonComposite(SaveTag);
+			data.Add(ConstellationKey, new IkonInteger(this.constellation));
+			data.Add(DesignationKey, new IkonInteger(this.designation));
+
+			return data;
+		}
+
+		//TODO(0.7) remove
+		public IkonBaseObject Save()
 		{
 			IkonComposite data = new IkonComposite(SaveTag);
 			data.Add(ConstellationKey, new IkonInteger(this.constellation));

@@ -27,5 +27,15 @@ namespace Stareater.Utils.Collections
 		{
 			return indices[typeof(T)][item];
 		}
+
+		public int IndexOf(object item)
+		{
+			return indices[item.GetType()][item];
+		}
+
+		public bool HasType(Type type)
+		{
+			return this.indices.ContainsKey(type);
+		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Linq;
 using Ikadn.Ikon.Types;
 using Stareater.GameData.Databases;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
 {
@@ -29,10 +29,15 @@ namespace Stareater.Galaxy
 				return new TraitEffectPassive();
 			}
 
-			public void Save(IkonComposite destination)
+			public void SaveInto(IkonComposite destination)
 			{
 				//no operation
 			}
+
+			public IkonBaseObject Save(SaveSession session)
+			{
+				return new IkonComposite("");
+            }
 		}
 	}
 }

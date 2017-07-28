@@ -4,6 +4,7 @@ using Ikadn.Ikon.Types;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players.DefaultAI
 {
@@ -66,8 +67,16 @@ namespace Stareater.Players.DefaultAI
 		}
 
 		#endregion
-		
-		public Ikadn.IkadnBaseObject Save()
+
+		public IkonBaseObject Save(SaveSession session)
+		{
+			var data = new IkonComposite(PlayerType.AiControllerTag);
+			data.Add(PlayerType.FactoryIdKey, new IkonText(DefaultAIFactory.FactoryId));
+
+			return data;
+		}
+
+        public IkonBaseObject Save()
 		{
 			var data = new IkonComposite(PlayerType.AiControllerTag);
 			data.Add(PlayerType.FactoryIdKey, new IkonText(DefaultAIFactory.FactoryId));

@@ -96,8 +96,23 @@ namespace Stareater
 		
 		internal IEnumerable<IkadnBaseObject> Save(StateManager stateManager)
 		{
+			var indexer = new ObjectIndexer();
+			indexer.AddAll(Statics.Armors);
+			indexer.AddAll(Statics.Constructables);
+			indexer.AddAll(Statics.DevelopmentTopics);
+			indexer.AddAll(Statics.Hulls);
+			indexer.AddAll(Statics.IsDrives);
+			indexer.AddAll(Statics.MissionEquipment);
+			indexer.AddAll(Statics.PredeginedDesigns);
+			indexer.AddAll(Statics.Reactors);
+			indexer.AddAll(Statics.ResearchTopics);
+			indexer.AddAll(Statics.Sensors);
+			indexer.AddAll(Statics.Shields);
+			indexer.AddAll(Statics.Thrusters);
+			indexer.AddAll(Statics.Traits);
+
 			//TODO(v0.7) is the method necessary?
-			return stateManager.Save(this);
+			return stateManager.Save(this, indexer);
 		/*
 			ObjectIndexer indexer = this.GenerateIndices();
 			

@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Stareater.AppData.Expressions;
 using Stareater.GameData.Databases;
 using Stareater.GameLogic;
 using Stareater.Ships;
 using Stareater.Utils;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Ships
 {
+	[StateType(true)]
 	class ReactorType : AComponentType
 	{
 		public const string TotalPowerKey = "totalPower";

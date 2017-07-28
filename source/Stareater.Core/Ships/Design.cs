@@ -45,7 +45,7 @@ namespace Stareater.Ships
 		public List<Component<SpecialEquipmentType>> SpecialEquipment { get; private set; }
 		[StateProperty]
 		public Component<ThrusterType> Thrusters { get; private set; }
-		[StateProperty]
+		[StateProperty(doSave: false)]
 		private BitHash hash { get; set; }
 		[StateProperty]
 		public double Cost { get; private set; }

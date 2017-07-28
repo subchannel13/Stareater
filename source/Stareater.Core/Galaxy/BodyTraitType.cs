@@ -1,8 +1,9 @@
-﻿using System;
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
 {
+	[StateType(true)]
 	public class BodyTraitType
 	{
 		public string LanguageCode { get; private set; }

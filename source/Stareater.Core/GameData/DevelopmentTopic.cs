@@ -1,9 +1,9 @@
-﻿using System;
-using Stareater.AppData.Expressions;
+﻿using Stareater.AppData.Expressions;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData
 {
-
+	[StateType(true)]
 	class DevelopmentTopic
 	{
 		public const string LevelKey = "lvl";

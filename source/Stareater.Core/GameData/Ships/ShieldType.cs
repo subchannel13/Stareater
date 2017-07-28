@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Stareater.AppData.Expressions;
 using Stareater.Ships;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Ships
 {
+	[StateType(true)]
 	class ShieldType : AComponentType
 	{
 		public string ImagePath { get; private set; }

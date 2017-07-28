@@ -1,16 +1,20 @@
-﻿using System;
-using System.Linq;
-using Ikadn;
+﻿using Ikadn;
 using Ikadn.Ikon.Types;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
 {
 	//TODO(later) make planet and star traits internal
 	public class BodyTrait
 	{
+		[StateProperty]
 		internal BodyTraitType Type { get; private set; }
 		//TODO(v0.7) can have mutable state, needs to be copied
+		[StateProperty]
 		internal ITraitEffect Effect { get; private set; }
+
+		private BodyTrait()
+		{ }
 
 		private BodyTrait(BodyTraitType type, LocationBody location)
 		{
@@ -54,7 +58,7 @@ namespace Stareater.Galaxy
 		internal IkadnBaseObject Save()
 		{
 			var data = new IkonComposite(this.Type.IdCode);
-			this.Effect.Save(data);
+			this.Effect.SaveInto(data);
 			
 			return data;
 		}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Stareater.Utils.StateEngine
 {
-    class CopySession
+    public class CopySession
     {
         private readonly Func<Type, ITypeStrategy> expertGetter;
         private readonly Dictionary<object, object> copies = new Dictionary<object, object>();

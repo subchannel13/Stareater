@@ -19,7 +19,7 @@ namespace Stareater.Utils.StateEngine
 				collectionCopy.Add((T)session.CopyOf(element));
 		}
 
-		public static IkonBaseObject serializeChildren<T>(ICollection<T> originalCollection, SaveSession session)
+		private static IkonBaseObject serializeChildren<T>(ICollection<T> originalCollection, SaveSession session)
 		{
 			var data = new IkonArray();
 
@@ -54,9 +54,11 @@ namespace Stareater.Utils.StateEngine
 
 		private static MethodInfo SerializeMethodInfo(Type type)
 		{
+			var interfaceType = type.GetInterfaces().First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
+
 			return typeof(CollectionStrategy).
 				GetMethod("serializeChildren", BindingFlags.NonPublic | BindingFlags.Static).
-				MakeGenericMethod(type.GetElementType());
+				MakeGenericMethod(interfaceType.GetGenericArguments()[0]);
 		}
 	}
 }

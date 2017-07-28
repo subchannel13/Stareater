@@ -1,19 +1,22 @@
 ﻿using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Stareater.Utils.StateEngine
 {
-	class SaveSession
+	public class SaveSession
 	{
 		private readonly Func<Type, ITypeStrategy> expertGetter;
-		private readonly Dictionary<object, IkonBaseObject> savedData = new Dictionary<object, IkonBaseObject>();
+		private readonly ObjectIndexer indexer;
+        private readonly Dictionary<object, IkonBaseObject> savedData = new Dictionary<object, IkonBaseObject>();
 		private readonly Dictionary<Type, int> nextReference = new Dictionary<Type, int>();
 
-		public SaveSession(Func<Type, ITypeStrategy> expertGetter)
+		public SaveSession(Func<Type, ITypeStrategy> expertGetter, ObjectIndexer indexer)
 		{
 			this.expertGetter = expertGetter;
+			this.indexer = indexer;
 		}
 
 		internal IkonBaseObject Serialize(object originalValue)
@@ -23,6 +26,9 @@ namespace Stareater.Utils.StateEngine
 
 			if (this.savedData.ContainsKey(originalValue))
 				return new IkonReference(this.savedData[originalValue].ReferenceNames.First());
+
+			if (this.indexer.HasType(originalValue.GetType()))
+                return new IkonInteger(this.indexer.IndexOf(originalValue));
 
 			var data = this.expertGetter(originalValue.GetType()).Serialize(originalValue, this);
 			if (!this.savedData.ContainsKey(originalValue))

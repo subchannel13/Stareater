@@ -21,7 +21,7 @@ namespace Stareater.Players
 		public Color Color { get; private set; }
 		[StateProperty]
 		public PlayerControlType ControlType { get; private set; }
-		[StateProperty]
+		[StateProperty(false)]
 		public IOffscreenPlayer OffscreenControl { get; private set; }
 		[StateProperty]
 		public HashSet<PredefinedDesign> UnlockedDesigns { get; private set; }

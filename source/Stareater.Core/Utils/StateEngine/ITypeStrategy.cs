@@ -2,7 +2,7 @@
 
 namespace Stareater.Utils.StateEngine
 {
-	interface ITypeStrategy
+	public interface ITypeStrategy
 	{
         object Create(object originalValue);
         void FillCopy(object originalValue, object copyInstance, CopySession session);

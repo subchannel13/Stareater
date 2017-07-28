@@ -5,9 +5,9 @@ namespace Stareater.Utils.StateEngine
 {
 	class TerminalStrategy : ITypeStrategy
 	{
-		private Func<object, IkonBaseObject> serializationMethod;
+		private Func<object, SaveSession, IkonBaseObject> serializationMethod;
 
-		public TerminalStrategy(Func<object, IkonBaseObject> serializationMethod)
+		public TerminalStrategy(Func<object, SaveSession, IkonBaseObject> serializationMethod)
 		{
 			this.serializationMethod = serializationMethod;
 		}
@@ -25,7 +25,7 @@ namespace Stareater.Utils.StateEngine
 
 		public IkonBaseObject Serialize(object originalValue, SaveSession session)
 		{
-			return this.serializationMethod(originalValue);
+			return this.serializationMethod(originalValue, session);
 		}
 		#endregion
 	}

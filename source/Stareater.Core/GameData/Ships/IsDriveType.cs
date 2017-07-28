@@ -1,14 +1,15 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using Stareater.AppData.Expressions;
 using Stareater.GameData.Databases;
 using Stareater.GameLogic;
 using Stareater.Ships;
 using Stareater.Utils;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Ships
 {
+	[StateType(true)]
 	class IsDriveType : AComponentType
 	{
 		public Formula Cost { get; private set; }

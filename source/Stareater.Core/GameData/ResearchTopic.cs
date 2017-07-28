@@ -1,8 +1,9 @@
-﻿using System;
-using Stareater.AppData.Expressions;
+﻿using Stareater.AppData.Expressions;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData
 {
+	[StateType(true)]
 	class ResearchTopic
 	{
 		public string LanguageCode { get; private set; }

@@ -461,6 +461,7 @@
     <Compile Include="Utils\StateEngine\ITypeStrategy.cs" />
     <Compile Include="Utils\StateEngine\StateManager.cs" />
     <Compile Include="Utils\StateEngine\StateProperty.cs" />
+    <Compile Include="Utils\StateEngine\StateType.cs" />
     <Compile Include="Utils\StateEngine\TerminalStrategy.cs" />
     <Compile Include="Utils\TracableStream.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />

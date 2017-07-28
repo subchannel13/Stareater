@@ -1,7 +1,9 @@
 ﻿using Stareater.GameData;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameLogic 
 {
+	[StateType(true)]
 	class DevelopmentResult 
 	{
 		public long CompletedCount;

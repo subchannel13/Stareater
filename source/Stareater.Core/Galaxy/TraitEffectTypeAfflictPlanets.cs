@@ -2,6 +2,7 @@
 using System.Linq;
 using Ikadn.Ikon.Types;
 using Stareater.GameData.Databases;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
 {
@@ -65,9 +66,14 @@ namespace Stareater.Galaxy
 				return new TraitEffectAfflictPlanets(this.type, this.parentTrait, this.star, this.duration);
 			}
 			
-			public void Save(IkonComposite destination)
+			public void SaveInto(IkonComposite destination)
 			{
 				destination.Add(StaticsDB.DurationTraitId, new IkonInteger(this.duration));
+			}
+
+			public IkonBaseObject Save(SaveSession session)
+			{
+				return new IkonInteger(this.duration);
 			}
 		}
 	}

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Stareater.Utils.StateEngine;
 
 namespace Stareater.Utils
 {
+	[StateType(true)]
 	public class BitHash
 	{
 		private readonly uint[] contents;

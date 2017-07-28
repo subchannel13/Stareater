@@ -9,6 +9,7 @@ using Stareater.Controllers.Views.Combat;
 using Stareater.Galaxy;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players.Natives
 {
@@ -59,8 +60,13 @@ namespace Stareater.Players.Natives
 			this.bombardController = controller;
 			return this;
 		}
-		
-		public Ikadn.IkadnBaseObject Save()
+
+		public IkonBaseObject Save(SaveSession session)
+		{
+			return new IkonComposite(PlayerType.OrganelleControllerTag);
+		}
+
+		public IkonBaseObject Save()
 		{
 			return new IkonComposite(PlayerType.OrganelleControllerTag);
 		}

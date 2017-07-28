@@ -1,5 +1,5 @@
-﻿using System;
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Localization.StarNames
 {
@@ -21,7 +21,16 @@ namespace Stareater.Localization.StarNames
 		}
 
 		#region Saving
-		public Ikadn.IkadnBaseObject Save()
+		public IkonBaseObject Save(SaveSession session)
+		{
+			IkonComposite data = new IkonComposite(SaveTag);
+			data.Add(IndexKey, new IkonInteger(this.properNameIndex));
+
+			return data;
+		}
+
+		//TODO(v0.7) remove
+		public IkonBaseObject Save()
 		{
 			IkonComposite data = new IkonComposite(SaveTag);
 			data.Add(IndexKey, new IkonInteger(this.properNameIndex));

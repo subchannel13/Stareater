@@ -57,9 +57,11 @@ namespace Stareater.Utils.StateEngine
 
 		private static MethodInfo SerializeMethodInfo(Type type)
 		{
+			var interfaceType = type.GetInterfaces().First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+
 			return typeof(DictionaryStrategy).
 				GetMethod("serializeChildren", BindingFlags.NonPublic | BindingFlags.Static).
-				MakeGenericMethod(type.GetElementType());
+				MakeGenericMethod(type.GetGenericArguments());
 		}
 	}
 }

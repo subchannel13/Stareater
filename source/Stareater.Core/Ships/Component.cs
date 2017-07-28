@@ -3,13 +3,17 @@ using Ikadn;
 using Ikadn.Ikon.Types;
 using Stareater.GameData.Ships;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Ships
 {
 	class Component<T> where T : AComponentType
 	{
+		[StateProperty]
 		public T TypeInfo { get; private set; }
+		[StateProperty]
 		public int Level { get; private set; }
+		[StateProperty]
 		public int Quantity { get; private set; }
 		
 		public Component(T typeInfo, int level, int quantity = 1)
@@ -18,6 +22,9 @@ namespace Stareater.Ships
 			this.Level = level;
 			this.Quantity = quantity;
 		}
+
+		private Component()
+		{ }
 		
 		public IkadnBaseObject Save()
 		{

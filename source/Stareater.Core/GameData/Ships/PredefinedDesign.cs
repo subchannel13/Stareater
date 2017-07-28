@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Stareater.GameData.Databases;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Ships
 {
+	[StateType(true)]
 	class PredefinedDesign
 	{
 		public string Name { get; private set; }
