@@ -116,12 +116,14 @@ namespace Stareater.Controllers
 		private void save(FileInfo saveFile, string title)
 		{
 			using (var output = new StreamWriter(saveFile.Create())) {
-				var gameData = gameController.Save();
-				//TODO(v0.7) add save game title
-				/*gameData.Add(SaveGameTitleKey, new IkonText(title));
+				var saveData = new IkonComposite(MainGame.SaveGameTag);
+
+				//TODO(v0.7) make title and version separate IKADN objects
+				saveData.Add(SaveGameTitleKey, new IkonText(title));
+				saveData.Add("Data", new IkonArray(gameController.Save()));
 
 				var writer = new IkadnWriter(output);
-				gameData.Compose(writer);*/
+				saveData.Compose(writer);
 			}
 		}
 		
