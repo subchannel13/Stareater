@@ -10,11 +10,10 @@ using System.Linq;
 
 namespace Stareater.GameData.Databases.Tables 
 {
+	[StateType(saveMethod: "Save")]
 	partial class ConstructionOrders 
 	{
-		[StateProperty]
 		public double SpendingRatio { get; set; }
-		[StateProperty]
 		public List<Constructable> Queue { get; private set; }
 
 		public ConstructionOrders(double spendingRatio) 
@@ -54,10 +53,15 @@ namespace Stareater.GameData.Databases.Tables
 		{
 			return new ConstructionOrders(this);
  
-		} 
- 
+		}
+
 
 		#region Saving
+		public IkonComposite Save(SaveSession save)
+		{
+			return Save((ObjectIndexer)null);
+		}
+
 		public IkonComposite Save(ObjectIndexer indexer) 
 		{
 			var data = new IkonComposite(TableTag);

@@ -19,7 +19,7 @@ namespace Stareater
 
 		[StateProperty]
 		public StatesDB States { get; private set; }
-		[StateProperty]
+		[StateProperty(doSave: false)]
 		public TemporaryDB Derivates { get; private set; }
 		
 		public StaticsDB Statics { get; private set; }

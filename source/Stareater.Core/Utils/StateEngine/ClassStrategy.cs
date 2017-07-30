@@ -40,7 +40,8 @@ namespace Stareater.Utils.StateEngine
 			var reference = session.SaveReference(originalValue, data);
 
 			foreach (var property in this.properties.Where(x => x.Attribute.DoSave))
-				data.Add(property.Name, property.Serialize(originalValue, session));
+				if (property.HasValue(originalValue))
+					data.Add(property.Name, property.Serialize(originalValue, session));
 
 			return reference;
 		}

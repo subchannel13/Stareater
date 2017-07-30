@@ -30,6 +30,11 @@ namespace Stareater.Utils.StateEngine
 			this.setter(objectCopy, Attribute.DoCopy ? session.CopyOf(this.getter(originalObject)) : null);
 		}
 
+		public bool HasValue(object originalObject)
+		{
+			return this.getter(originalObject) != null;
+		}
+
 		public IkonBaseObject Serialize(object originalObject, SaveSession session)
 		{
 			return session.Serialize(this.getter(originalObject));
