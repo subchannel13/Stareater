@@ -44,26 +44,36 @@ namespace Stareater.Controllers
 				return;
 			}
 			
-			foreach (var file in saveFolder.EnumerateFiles("*." + SaveNameExtension)) {
+			foreach (var file in saveFolder.EnumerateFiles("*." + SaveNameExtension))
+			{
 				saveNames.Add(file.Name);
 
-				using (var parser = new IkonParser(file.OpenText())) {
+#if DEBUG
+				if (file.Length == 0)
+				{
+					System.Diagnostics.Trace.TraceWarning("Empty save file: " + file.Name);
+					continue;
+				}
+#endif
+
+				using (var parser = new IkonParser(file.OpenText()))
+				{
 #if !DEBUG
 					try
 					{
-#endif						
-						var rawData = parser.ParseNext() as IkonComposite;
-						saveFiles.Add(
-							new SavedGameInfo(
-								rawData[SaveGameTitleKey].To<string>(),
-								rawData[MainGame.TurnKey].To<int>(),
-								rawData,
-								file
-							),
-							file.LastWriteTimeUtc
-						);
+#endif
+					var rawData = parser.ParseNext() as IkonComposite;
+					saveFiles.Add(
+						new SavedGameInfo(
+							rawData[SaveGameTitleKey].To<string>(),
+							rawData[MainGame.TurnKey].To<int>(),
+							rawData,
+							file
+						),
+						file.LastWriteTimeUtc
+					);
 #if !DEBUG
-					}
+				}
 					catch(IOException)
 					{
 						//TODO(later) Notify about corrupted save file						
@@ -78,9 +88,9 @@ namespace Stareater.Controllers
 				;
 			this.games = new LinkedList<SavedGameInfo>(saveFiles.OrderByDescending(x => x.Value).Select(x => x.Key));
 		}
-		#endregion
+#endregion
 
-		#region Indicators
+#region Indicators
 		public bool CanSave
 		{
 			get { return gameController.State == GameState.Running; }
@@ -93,9 +103,9 @@ namespace Stareater.Controllers
 				return this.games;
 			}
 		}
-		#endregion
+#endregion
 
-		#region Saving / Loading
+#region Saving / Loading
 		public void NewSave(string title)
 		{
 			string fileName = SaveNamePrefix + this.nextSaveNumber + "." + SaveNameExtension;
@@ -131,6 +141,6 @@ namespace Stareater.Controllers
 		{
 			this.gameController.LoadGame(GameBuilder.LoadGame(savedGameData.RawData, staticDataSources));
 		}
-		#endregion
+#endregion
 	}
 }
