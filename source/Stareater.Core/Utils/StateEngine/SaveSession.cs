@@ -19,10 +19,10 @@ namespace Stareater.Utils.StateEngine
 			this.indexer = indexer;
 		}
 
-		internal IkonBaseObject Serialize(object originalValue)
+		public IkonBaseObject Serialize(object originalValue)
 		{
 			if (originalValue == null)
-				return null; //TODO(v0.7) how to serialize null?
+				throw new ArgumentNullException("Null can't be serialized");
 
 			if (this.savedData.ContainsKey(originalValue))
 				return new IkonReference(this.savedData[originalValue].ReferenceNames.First());
@@ -30,11 +30,7 @@ namespace Stareater.Utils.StateEngine
 			if (this.indexer.HasType(originalValue.GetType()))
                 return new IkonInteger(this.indexer.IndexOf(originalValue));
 
-			var data = this.expertGetter(originalValue.GetType()).Serialize(originalValue, this);
-			if (!this.savedData.ContainsKey(originalValue))
-				this.SaveReference(originalValue, data);
-
-			return data;
+			return this.expertGetter(originalValue.GetType()).Serialize(originalValue, this);
 		}
 
 		internal IEnumerable<IkonBaseObject> GetSerialzedData()
@@ -49,7 +45,8 @@ namespace Stareater.Utils.StateEngine
 
 			var referenceName = originalValue.GetType().Name + this.nextReference[originalValue.GetType()].ToString();
 			this.savedData[originalValue] = serializedValue;
-			serializedValue.ReferenceNames.Add(referenceName);
+			this.nextReference[originalValue.GetType()]++;
+            serializedValue.ReferenceNames.Add(referenceName);
 
 			return new IkonReference(referenceName);
 		}
