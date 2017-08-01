@@ -10,13 +10,19 @@ namespace Stareater.Utils.StateEngine
 	class CollectionStrategy : AEnumerableStrategy
 	{
 		public CollectionStrategy(Type type)
-			: base(type, BuildConstructor(type), CopyMethodInfo(type), SerializeMethodInfo(type))
+			: base(type, BuildConstructor(type), CopyMethodInfo(type), DependencyMethodInfo(type), SerializeMethodInfo(type))
 		{ }
 		
 		private static void copyChildren<T>(ICollection<T> originalCollection, ICollection<T> collectionCopy, CopySession session)
 		{
 			foreach (var element in originalCollection)
 				collectionCopy.Add((T)session.CopyOf(element));
+		}
+
+		private static IEnumerable<object> listChildren<T>(ICollection<T> originalCollection)
+		{
+			foreach (var element in originalCollection)
+				yield return element;
 		}
 
 		private static IkonBaseObject serializeChildren<T>(ICollection<T> originalCollection, SaveSession session)
@@ -49,6 +55,15 @@ namespace Stareater.Utils.StateEngine
 
             return typeof(CollectionStrategy).
 				GetMethod("copyChildren", BindingFlags.NonPublic | BindingFlags.Static).
+				MakeGenericMethod(interfaceType.GetGenericArguments()[0]);
+		}
+
+		private static MethodInfo DependencyMethodInfo(Type type)
+		{
+			var interfaceType = type.GetInterfaces().First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
+
+			return typeof(CollectionStrategy).
+				GetMethod("listChildren", BindingFlags.NonPublic | BindingFlags.Static).
 				MakeGenericMethod(interfaceType.GetGenericArguments()[0]);
 		}
 

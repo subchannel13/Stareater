@@ -1,5 +1,6 @@
 ﻿using Ikadn.Ikon.Types;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -9,14 +10,17 @@ namespace Stareater.Utils.StateEngine
 	{
 		private Func<object, object> enumerableConstructor;
 		private Action<object, object, CopySession> copyChildrenInvoker;
+		private Func<object, IEnumerable<object>> childDependencyInvoker;
 		private Func<object, SaveSession, IkonBaseObject> serializeChildrenInvoker;
 		protected Type type;
 
-		protected AEnumerableStrategy(Type type, Func<object, object> enumerableConstructor, MethodInfo copyChildrenMethod, MethodInfo serializeChildrenMethod)
+		protected AEnumerableStrategy(Type type, Func<object, object> enumerableConstructor, MethodInfo copyChildrenMethod,
+			MethodInfo childDependencyMethod, MethodInfo serializeChildrenMethod)
 		{
 			this.type = type;
 			this.enumerableConstructor = enumerableConstructor;
 			this.copyChildrenInvoker = BuildCopyInvoker(type, copyChildrenMethod);
+			this.childDependencyInvoker = BuildChildDependencyInvoker(type, childDependencyMethod);
 			this.serializeChildrenInvoker = BuildSerializeInvoker(type, serializeChildrenMethod);
 		}
 
@@ -30,6 +34,11 @@ namespace Stareater.Utils.StateEngine
         {
             this.copyChildrenInvoker(originalValue, copyInstance, session);
         }
+
+		public IEnumerable<object> Dependencies(object originalValue)
+		{
+			return this.childDependencyInvoker(originalValue);
+		}
 
 		public IkonBaseObject Serialize(object originalValue, SaveSession session)
 		{
@@ -54,6 +63,22 @@ namespace Stareater.Utils.StateEngine
 					originalParam,
 					copyParam,
 					sessionParam
+				);
+
+			return expr.Compile();
+		}
+
+		private static Func<object, IEnumerable<object>> BuildChildDependencyInvoker(Type type, MethodInfo childDependencyMethod)
+		{
+			var originalParam = Expression.Parameter(typeof(object), "original");
+
+			var expr =
+				Expression.Lambda<Func<object, IEnumerable<object>>>(
+					Expression.Call(
+						childDependencyMethod,
+						Expression.Convert(originalParam, type)
+					),
+					originalParam
 				);
 
 			return expr.Compile();

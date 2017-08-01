@@ -34,13 +34,18 @@ namespace Stareater.Utils.StateEngine
                 property.Copy(originalValue, copyInstance, session);
         }
 
+		public IEnumerable<object> Dependencies(object originalValue)
+		{
+			return this.properties.Select(x => x.Get(originalValue)).Where(x => x != null);
+		}
+
 		public IkonBaseObject Serialize(object originalValue, SaveSession session)
 		{
 			var data = new IkonComposite(type.Name); //TODO(v0.7) take name from attribute
 			var reference = session.SaveReference(originalValue, data);
 
 			foreach (var property in this.properties.Where(x => x.Attribute.DoSave))
-				if (property.HasValue(originalValue))
+				if (property.Get(originalValue) != null)
 					data.Add(property.Name, property.Serialize(originalValue, session));
 
 			return reference;

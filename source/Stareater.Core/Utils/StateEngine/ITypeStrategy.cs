@@ -1,4 +1,5 @@
 ﻿using Ikadn.Ikon.Types;
+using System.Collections.Generic;
 
 namespace Stareater.Utils.StateEngine
 {
@@ -6,6 +7,7 @@ namespace Stareater.Utils.StateEngine
 	{
         object Create(object originalValue);
         void FillCopy(object originalValue, object copyInstance, CopySession session);
-		IkonBaseObject Serialize(object originalValue, SaveSession session);
+		IEnumerable<object> Dependencies(object originalValue);
+        IkonBaseObject Serialize(object originalValue, SaveSession session);
 	}
 }

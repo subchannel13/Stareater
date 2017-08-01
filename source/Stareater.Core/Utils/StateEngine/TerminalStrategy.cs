@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ikadn.Ikon.Types;
 
 namespace Stareater.Utils.StateEngine
@@ -22,6 +23,11 @@ namespace Stareater.Utils.StateEngine
         {
             return originalValue;
         }
+
+		public IEnumerable<object> Dependencies(object originalValue)
+		{
+			yield break;
+		}
 
 		public IkonBaseObject Serialize(object originalValue, SaveSession session)
 		{

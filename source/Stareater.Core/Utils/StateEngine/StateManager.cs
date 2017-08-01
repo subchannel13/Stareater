@@ -44,15 +44,19 @@ namespace Stareater.Utils.StateEngine
             return (T)new CopySession(getTypeStrategy).CopyOf(obj);
         }
 
-		public IEnumerable<IkonBaseObject> Save(object obj, ObjectIndexer indexer)
+		public IkonBaseObject Save(object obj, ObjectIndexer indexer)
 		{
 			var session = new SaveSession(getTypeStrategy, indexer);
 
-			yield return session.Serialize(obj);
+			var mainData = session.Serialize(obj);
+			var referencedData = session.GetSerialzedData();
 
-			foreach (var data in session.GetSerialzedData())
-				yield return data;
-		}
+			var result = new IkonComposite("Save"); //TODO(v0.7) make constant
+			result.Add("references", new IkonArray(referencedData)); //TODO(v0.7) make constant
+			result.Add("entryPoint", mainData); //TODO(v0.7) make constant
+
+			return result;
+        }
 
 		private ITypeStrategy getTypeStrategy(Type type)
         {

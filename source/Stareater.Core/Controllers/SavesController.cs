@@ -130,7 +130,7 @@ namespace Stareater.Controllers
 
 				//TODO(v0.7) make title and version separate IKADN objects
 				saveData.Add(SaveGameTitleKey, new IkonText(title));
-				saveData.Add("Data", new IkonArray(gameController.Save()));
+				saveData.Add("Data", gameController.Save());
 
 				var writer = new IkadnWriter(output);
 				saveData.Compose(writer);

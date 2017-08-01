@@ -10,7 +10,7 @@ namespace Stareater.Utils.StateEngine
 	class DictionaryStrategy : AEnumerableStrategy
 	{
 		public DictionaryStrategy(Type type)
-			: base(type, BuildConstructor(type), CopyMethodInfo(type), SerializeMethodInfo(type))
+			: base(type, BuildConstructor(type), CopyMethodInfo(type), DependencyMethodInfo(type), SerializeMethodInfo(type))
 		{ }
 		
 		private static void copyChildren<K, V>(IDictionary<K, V> originalDictionary, IDictionary<K, V> dictionaryCopy, CopySession session)
@@ -18,6 +18,15 @@ namespace Stareater.Utils.StateEngine
 			foreach (var element in originalDictionary)
 				dictionaryCopy.Add((K)session.CopyOf(element.Key), (V)session.CopyOf(element.Value));
 		}
+
+		private static IEnumerable<object> listChildren<K, V>(IDictionary<K, V> originalDictionary)
+		{
+			foreach (var element in originalDictionary)
+			{
+				yield return element.Key;
+				yield return element.Value;
+			}
+        }
 
 		private static IkonBaseObject serializeChildren<K, V>(IDictionary<K, V> originalDictionary, SaveSession session)
 		{
@@ -52,7 +61,16 @@ namespace Stareater.Utils.StateEngine
 
             return typeof(DictionaryStrategy).
 				GetMethod("copyChildren", BindingFlags.NonPublic | BindingFlags.Static).
-				MakeGenericMethod(type.GetGenericArguments());
+				MakeGenericMethod(interfaceType.GetGenericArguments());
+		}
+
+		private static MethodInfo DependencyMethodInfo(Type type)
+		{
+			var interfaceType = type.GetInterfaces().First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+
+			return typeof(DictionaryStrategy).
+				GetMethod("listChildren", BindingFlags.NonPublic | BindingFlags.Static).
+				MakeGenericMethod(interfaceType.GetGenericArguments());
 		}
 
 		private static MethodInfo SerializeMethodInfo(Type type)
@@ -61,7 +79,7 @@ namespace Stareater.Utils.StateEngine
 
 			return typeof(DictionaryStrategy).
 				GetMethod("serializeChildren", BindingFlags.NonPublic | BindingFlags.Static).
-				MakeGenericMethod(type.GetGenericArguments());
+				MakeGenericMethod(interfaceType.GetGenericArguments());
 		}
 	}
 }

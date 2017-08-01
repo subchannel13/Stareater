@@ -10,8 +10,10 @@ namespace Stareater.Utils.StateEngine
 	{
 		private readonly Func<Type, ITypeStrategy> expertGetter;
 		private readonly ObjectIndexer indexer;
-        private readonly Dictionary<object, IkonBaseObject> savedData = new Dictionary<object, IkonBaseObject>();
-		private readonly Dictionary<Type, int> nextReference = new Dictionary<Type, int>();
+        private readonly Dictionary<object, IkonBaseObject> referencedData = new Dictionary<object, IkonBaseObject>();
+		private readonly HashSet<object> unreferencedData = new HashSet<object>();
+        private readonly Dictionary<Type, int> nextReference = new Dictionary<Type, int>();
+		private readonly Dictionary<object, ICollection<object>> dependencies = new Dictionary<object, ICollection<object>>();
 
 		public SaveSession(Func<Type, ITypeStrategy> expertGetter, ObjectIndexer indexer)
 		{
@@ -24,18 +26,47 @@ namespace Stareater.Utils.StateEngine
 			if (originalValue == null)
 				throw new ArgumentNullException("Null can't be serialized");
 
-			if (this.savedData.ContainsKey(originalValue))
-				return new IkonReference(this.savedData[originalValue].ReferenceNames.First());
+			if (this.referencedData.ContainsKey(originalValue))
+				return new IkonReference(this.referencedData[originalValue].ReferenceNames.First());
 
 			if (this.indexer.HasType(originalValue.GetType()))
                 return new IkonInteger(this.indexer.IndexOf(originalValue));
 
-			return this.expertGetter(originalValue.GetType()).Serialize(originalValue, this);
+			var expert = this.expertGetter(originalValue.GetType());
+			var serialized = expert.Serialize(originalValue, this);
+
+			if (!this.referencedData.ContainsKey(originalValue))
+				this.unreferencedData.Add(originalValue);
+
+			this.dependencies[originalValue] = new HashSet<object>(
+				expert.Dependencies(originalValue)
+			);
+
+			return serialized;
 		}
 
 		internal IEnumerable<IkonBaseObject> GetSerialzedData()
 		{
-			return this.savedData.Values;
+			var dependencyNodes = new HashSet<object>(
+				this.referencedData.Keys.Concat(this.unreferencedData)
+			);
+			var lastCount = dependencyNodes.Count;
+
+			while(dependencyNodes.Count > 0)
+			{
+				foreach (var node in dependencyNodes.ToList())
+					if (this.dependencies[node].All(x => !dependencyNodes.Contains(x)))
+					{
+						if (this.referencedData.ContainsKey(node))
+							yield return this.referencedData[node];
+
+						dependencyNodes.Remove(node);
+					}
+
+				if (lastCount == dependencyNodes.Count)
+					throw new Exception("Infinite loop");
+				lastCount = dependencyNodes.Count;
+            }
 		}
 
 		internal IkonReference SaveReference(object originalValue, IkonBaseObject serializedValue)
@@ -44,7 +75,7 @@ namespace Stareater.Utils.StateEngine
 				this.nextReference[originalValue.GetType()] = 0;
 
 			var referenceName = originalValue.GetType().Name + this.nextReference[originalValue.GetType()].ToString();
-			this.savedData[originalValue] = serializedValue;
+			this.referencedData[originalValue] = serializedValue;
 			this.nextReference[originalValue.GetType()]++;
             serializedValue.ReferenceNames.Add(referenceName);
 

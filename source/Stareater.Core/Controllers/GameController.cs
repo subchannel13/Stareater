@@ -57,7 +57,7 @@ namespace Stareater.Controllers
 			makePlayers();
 		}
 
-		internal IEnumerable<IkadnBaseObject> Save()
+		internal IkadnBaseObject Save()
 		{
 			return this.GameInstance.Save(stateManager);
 		}
