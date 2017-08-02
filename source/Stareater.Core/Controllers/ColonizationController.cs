@@ -63,7 +63,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{ 
-				return this.player.Orders.ColonizationOrders.ContainsKey(this.PlanetBody);
+				return this.game.Orders[this.player].ColonizationOrders.ContainsKey(this.PlanetBody);
 			}
 		}
 
@@ -74,11 +74,11 @@ namespace Stareater.Controllers
 			
 			ColonizationPlan plan = null;
 			if (this.IsColonizing)
-				plan = this.player.Orders.ColonizationOrders[this.PlanetBody];
+				plan = this.game.Orders[this.player].ColonizationOrders[this.PlanetBody];
 			else
 			{
 				plan = new ColonizationPlan(this.PlanetBody);
-				this.player.Orders.ColonizationOrders.Add(this.PlanetBody, plan);
+				this.game.Orders[this.player].ColonizationOrders.Add(this.PlanetBody, plan);
 			}
 			
 			if (colonizationSources != null && colonizationSources.Length > 0)
@@ -94,7 +94,7 @@ namespace Stareater.Controllers
 			if (!this.IsColonizing || this.IsReadOnly)
 				return;
 			
-			var plan = this.player.Orders.ColonizationOrders[this.PlanetBody];
+			var plan = this.game.Orders[this.player].ColonizationOrders[this.PlanetBody];
 			IEnumerable<StarData> toUpdate = new StarData[0];
 			
 			if (colonizationSources != null && colonizationSources.Length > 0)
@@ -110,7 +110,7 @@ namespace Stareater.Controllers
 			}
 			
 			if (plan.Sources.Count == 0)
-				this.player.Orders.ColonizationOrders.Remove(this.PlanetBody);
+				this.game.Orders[this.player].ColonizationOrders.Remove(this.PlanetBody);
 			else
 				updateStellarises(plan.Sources);
 			
@@ -121,8 +121,8 @@ namespace Stareater.Controllers
 		{
 			var used = new HashSet<StarData>();
 			
-			if (this.player.Orders.ColonizationOrders.ContainsKey(this.PlanetBody))
-				used.UnionWith(this.player.Orders.ColonizationOrders[this.PlanetBody].Sources);
+			if (this.game.Orders[this.player].ColonizationOrders.ContainsKey(this.PlanetBody))
+				used.UnionWith(this.game.Orders[this.player].ColonizationOrders[this.PlanetBody].Sources);
 			
 			foreach(var stellaris in this.game.States.Stellarises.OwnedBy[this.player])
 				if (!used.Contains(stellaris.Location.Star))
@@ -131,11 +131,11 @@ namespace Stareater.Controllers
 		
 		public IEnumerable<StellarisInfo> Sources()
 		{
-			if (!this.player.Orders.ColonizationOrders.ContainsKey(this.PlanetBody))
+			if (!this.game.Orders[this.player].ColonizationOrders.ContainsKey(this.PlanetBody))
 				return new StellarisInfo[0];
 			
 			var stars = new HashSet<StarData>();
-			stars.UnionWith(this.player.Orders.ColonizationOrders[this.PlanetBody].Sources);
+			stars.UnionWith(this.game.Orders[this.player].ColonizationOrders[this.PlanetBody].Sources);
 			
 			return stars.Select(x => new StellarisInfo(this.game.States.Stellarises.At[x].First(s => s.Owner == this.player), this.game));
 		}
@@ -149,6 +149,7 @@ namespace Stareater.Controllers
 			{
 				var stellaris = this.game.States.Stellarises.At[source].First(x => x.Owner == this.player);
 				this.game.Derivates.Stellarises.Of[stellaris].CalculateSpending(
+					this.game,
 					playerProcessor, 
 					this.game.Derivates.Colonies.At[stellaris.Location.Star].Where(x => x.Owner == this.player)
 				);

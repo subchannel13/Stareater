@@ -59,8 +59,7 @@ namespace Stareater.GameLogic
 			//TODO(v0.7) Where to calculate stuff like migration?
 		}
 
-		public void CalculateSpending(
-			PlayerProcessor playerProcessor, IEnumerable<ColonyProcessor> systemColonies)
+		public void CalculateSpending(MainGame game, PlayerProcessor playerProcessor, IEnumerable<ColonyProcessor> systemColonies)
 		{
 			var vars = new Var().UnionWith(playerProcessor.TechLevels).Get;
 
@@ -71,14 +70,14 @@ namespace Stareater.GameLogic
 				x.SpaceliftFactor
 			);
 			double industryPoints = 
-				Stellaris.Owner.Orders.ConstructionPlans[Stellaris].SpendingRatio *
+				game.Orders[Stellaris.Owner].ConstructionPlans[Stellaris].SpendingRatio *
 				industryPotential;
 
-			var normalQueue = Stellaris.Owner.Orders.ConstructionPlans[Stellaris].Queue;
+			var normalQueue = game.Orders[Stellaris.Owner].ConstructionPlans[Stellaris].Queue;
 			this.SpendingPlan = SimulateSpending(
 				Stellaris,
 				industryPoints,
-				colonizationQueue(playerProcessor).Concat(normalQueue),
+				colonizationQueue(game, playerProcessor).Concat(normalQueue),
 				vars
 			);
 			this.Production = this.SpendingPlan.Sum(x => x.InvestedPoints);
@@ -99,9 +98,9 @@ namespace Stareater.GameLogic
 			}
 		}
 		
-		private IEnumerable<Constructable> colonizationQueue(PlayerProcessor playerProcessor)
+		private IEnumerable<Constructable> colonizationQueue(MainGame game, PlayerProcessor playerProcessor)
 		{
-			foreach(var plan in this.Site.Owner.Orders.ColonizationOrders.Values)
+			foreach(var plan in game.Orders[this.Site.Owner].ColonizationOrders.Values)
 				if (plan.Sources.Contains(this.Site.Location.Star))
 				{
 					var colonizer = (plan.Destination.Star == this.Site.Location.Star) ?

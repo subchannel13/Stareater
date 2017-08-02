@@ -47,11 +47,11 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return this.Site.Owner.Orders.ConstructionPlans[this.Site].SpendingRatio;
+				return this.Game.Orders[this.Site.Owner].ConstructionPlans[this.Site].SpendingRatio;
 			}
 			set
 			{
-				this.Site.Owner.Orders.ConstructionPlans[this.Site].SpendingRatio = Methods.Clamp(value, 0, 1);
+				this.Game.Orders[this.Site.Owner].ConstructionPlans[this.Site].SpendingRatio = Methods.Clamp(value, 0, 1);
 				this.RecalculateSpending();
 			}
 		}
@@ -94,7 +94,7 @@ namespace Stareater.Controllers
 					
 				foreach(var item in Processor.SpendingPlan)
 				{
-					if (!item.Type.IsVirtual && item.Type == this.Player.Orders.ConstructionPlans[Site].Queue[orderI])
+					if (!item.Type.IsVirtual && item.Type == this.Game.Orders[this.Player].ConstructionPlans[Site].Queue[orderI])
 					{
 						orderIndex.Add(orderI);
 						orderI++;
@@ -122,8 +122,8 @@ namespace Stareater.Controllers
 		{
 			if (IsReadOnly)
 				return;
-			
-			this.Player.Orders.ConstructionPlans[Site].Queue.Add(data.Constructable);
+
+			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.Add(data.Constructable);
 			this.RecalculateSpending();
 		}
 		
@@ -131,8 +131,8 @@ namespace Stareater.Controllers
 		{
 			if (IsReadOnly || orderIndex[index] == NotOrder)
 				return;
-			
-			this.Player.Orders.ConstructionPlans[Site].Queue.RemoveAt(orderIndex[index]);
+
+			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.RemoveAt(orderIndex[index]);
 			this.RecalculateSpending();
 		}
 		
@@ -141,9 +141,9 @@ namespace Stareater.Controllers
 			if (IsReadOnly || orderIndex[fromIndex] == NotOrder || orderIndex[toIndex] == NotOrder)
 				return;
 			
-			var item = this.Player.Orders.ConstructionPlans[Site].Queue[orderIndex[fromIndex]];
-			this.Player.Orders.ConstructionPlans[Site].Queue.RemoveAt(orderIndex[fromIndex]);
-			this.Player.Orders.ConstructionPlans[Site].Queue.Insert(orderIndex[toIndex], item);
+			var item = this.Game.Orders[this.Player].ConstructionPlans[Site].Queue[orderIndex[fromIndex]];
+			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.RemoveAt(orderIndex[fromIndex]);
+			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.Insert(orderIndex[toIndex], item);
 			this.RecalculateSpending();
 		}
 		#endregion

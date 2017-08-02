@@ -26,6 +26,8 @@ namespace Stareater.Controllers
 			var derivates = createDerivates(players, organellePlayer, controller.SelectedStart, statics, states);
 			
 			var game = new MainGame(players, organellePlayer, statics, states, derivates);
+			initOrders(game);
+			initPlayers(game);
 			game.CalculateDerivedEffects();
 			
 			controller.SaveLastGame();
@@ -61,6 +63,15 @@ namespace Stareater.Controllers
 			var derivates = initDerivates(statics, players, organellePlayer, states);
 			
 			var game = new MainGame(players.ToArray(), organellePlayer, statics, states, derivates);
+			foreach (var player in players)
+			{
+				var playerProc = derivates.Players.Of[player];
+				playerProc.Initialize(game);
+
+				foreach (var design in states.Designs.OwnedBy[player])
+					playerProc.Analyze(design, statics);
+			}
+
 			game.Turn = turn;
 			game.CalculateDerivedEffects();
 			
@@ -74,13 +85,12 @@ namespace Stareater.Controllers
 			
 			initColonies(players, states.Colonies, startingConditions, derivates, statics);
 			initStellarises(derivates, states.Stellarises);
-			initPlayers(derivates, players, states, statics);
 			
 			derivates.Natives.Initialize(states, statics, derivates);
 			
 			return derivates;
 		}
-		
+
 		private static StatesDB createStates(Random rng, NewGameController newGameData, Player[] players, StaticsDB statics)
 		{
 			var starPositions = newGameData.StarPositioner.Generate(rng, newGameData.PlayerList.Count);
@@ -204,29 +214,35 @@ namespace Stareater.Controllers
 				}
 			}
 		}
-		
-		private static void initPlayers(TemporaryDB derivates, IEnumerable<Player> players, StatesDB states, StaticsDB statics)
+
+		private static void initOrders(MainGame game)
 		{
-			foreach(var player in players) {
-				foreach(var colony in states.Colonies.OwnedBy[player])
-					player.Orders.ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
-				
-				foreach(var stellaris in states.Stellarises.OwnedBy[player])
-					player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
-				
-				player.Orders.DevelopmentFocusIndex = statics.DevelopmentFocusOptions.Count / 2;
+			foreach (var player in game.AllPlayers)
+			{
+				var orders = game.Orders[player];
+
+				foreach (var colony in game.States.Colonies.OwnedBy[player])
+					orders.ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
+
+				foreach (var stellaris in game.States.Stellarises.OwnedBy[player])
+					orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
+
+				orders.DevelopmentFocusIndex = game.Statics.DevelopmentFocusOptions.Count / 2;
 				//TODO(v0.7) focus can be null when all research is done
-				player.Orders.ResearchFocus = statics.ResearchTopics.First().IdCode;
+				orders.ResearchFocus = game.Statics.ResearchTopics.First().IdCode;
 			}
-			
-			foreach (var player in players) {
-				derivates.Players.Of[player].Initialize(statics, states);
+		}
+
+		private static void initPlayers(MainGame game)
+		{
+			foreach (var player in game.MainPlayers) {
+				game.Derivates.Players.Of[player].Initialize(game);
 				
-				player.Intelligence.Initialize(states.Stars.Select(
-					star => new StarSystem(star, states.Planets.At[star].ToArray())
+				player.Intelligence.Initialize(game.States.Stars.Select(
+					star => new StarSystem(star, game.States.Planets.At[star].ToArray())
 				));
 				
-				foreach(var colony in states.Colonies.OwnedBy[player])
+				foreach(var colony in game.States.Colonies.OwnedBy[player])
 					player.Intelligence.StarFullyVisited(colony.Star, 0);
 			}
 		}
@@ -302,10 +318,11 @@ namespace Stareater.Controllers
 			foreach(var rawData in stateData[StatesDB.StellarisesKey].To<IEnumerable<IkonComposite>>())
 				stellarises.Add(StellarisAdmin.Load(rawData, deindexer));
 			
-			for(int i = 0; i < players.Count; i++)
+			/*for(int i = 0; i < players.Count; i++)
 				players[i].Orders = PlayerOrders.Load(ordersData[i].To<IkonComposite>(), deindexer);
 			organellePlayer.Orders = PlayerOrders.Load(saveData[MainGame.OrganelleOrdersKey].To<IkonComposite>(), deindexer);
-				                                  
+			*/
+
 			return new Tuple<StatesDB, Player[], Player>(
 				new StatesDB(stars, wormholes, planets, colonies, stellarises, developments, research, treaties, reports, designs, fleets, colonizations),
 				players.ToArray(),
@@ -327,14 +344,6 @@ namespace Stareater.Controllers
 				var stellarisProc = new StellarisProcessor(stellaris);
 				stellarisProc.CalculateBaseEffects();
 				derivates.Stellarises.Add(stellarisProc);
-			}
-			
-			foreach (var player in players) {
-				var playerProc = derivates.Players.Of[player];
-				playerProc.Initialize(statics, states);
-				
-				foreach(var design in states.Designs.OwnedBy[player])
-					playerProc.Analyze(design, statics);
 			}
 			
 			derivates.Natives.Initialize(states, statics, derivates);

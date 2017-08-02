@@ -30,20 +30,21 @@ namespace Stareater.Controllers
 		protected override void RecalculateSpending()
 		{
 			var colony = Site as Colony;
-			var playerProc = Game.Derivates.Of(Site.Owner);
+			var playerProc = this.Game.Derivates.Of(Site.Owner);
 			
-			Game.Derivates.Of(colony).CalculateSpending(
-				Game.Statics,
+			this.Game.Derivates.Of(colony).CalculateSpending(
+				this.Game,
 				playerProc
 			);
-			
-			Game.Derivates.Stellarises.At[colony.Star].CalculateSpending(
-				playerProc,
-				Game.Derivates.Colonies.At[colony.Star]
+
+			this.Game.Derivates.Stellarises.At[colony.Star].CalculateSpending(
+				this.Game,
+                playerProc,
+				this.Game.Derivates.Colonies.At[colony.Star]
 			);
-			
-			Game.Derivates.Of(colony).CalculateDerivedEffects(
-				Game.Statics,
+
+			this.Game.Derivates.Of(colony).CalculateDerivedEffects(
+				this.Game.Statics,
 				playerProc
 			);
 		}

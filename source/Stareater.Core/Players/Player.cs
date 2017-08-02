@@ -27,8 +27,6 @@ namespace Stareater.Players
 		public HashSet<PredefinedDesign> UnlockedDesigns { get; private set; }
 		[StateProperty]
 		public Intelligence Intelligence { get; private set; }
-		[StateProperty]
-		public PlayerOrders Orders { get; set; }
 
 		public Player(string name, Color color, PlayerType type) 
 		{
@@ -38,7 +36,6 @@ namespace Stareater.Players
 			
 			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
 			this.Intelligence = new Intelligence();
-			this.Orders = new PlayerOrders();
  
 			#if DEBUG
 			this.id = NextId();
@@ -56,7 +53,6 @@ namespace Stareater.Players
 			foreach(var item in original.UnlockedDesigns)
 				this.UnlockedDesigns.Add(item);
 			this.Intelligence = original.Intelligence.Copy(galaxyRemap);
-			
  
 			#if DEBUG
 			this.id = NextId();
@@ -146,7 +142,6 @@ namespace Stareater.Players
 		private const string OffscreenControlKey = "offscreenControl";
 		private const string UnlockedDesignsKey = "unlockedDesigns";
 		private const string IntelligenceKey = "intelligence";
-		private const string OrdersKey = "orders";
  
 		#endregion
 

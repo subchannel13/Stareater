@@ -152,20 +152,21 @@ namespace Stareater.GameLogic
 			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
 		}
 		
-		public void CalculateSpending(StaticsDB statics, PlayerProcessor playerProcessor)
+		public void CalculateSpending(MainGame game, PlayerProcessor playerProcessor)
 		{
-			var vars = this.LocalEffects(statics).UnionWith(playerProcessor.TechLevels).Get;
-			ColonyFormulaSet formulas = statics.ColonyFormulas;
+			var vars = this.LocalEffects(game.Statics).UnionWith(playerProcessor.TechLevels).Get;
+			ColonyFormulaSet formulas = game.Statics.ColonyFormulas;
+			var orders = game.Orders[this.Colony.Owner];
 
 			double industryPotential = this.WorkingPopulation * this.BuilderEfficiency;
-			double industryPoints = 
-				Colony.Owner.Orders.ConstructionPlans[Colony].SpendingRatio * 
+			double industryPoints =
+				orders.ConstructionPlans[this.Colony].SpendingRatio * 
 				industryPotential;
 			
 			this.SpendingPlan = SimulateSpending(
 				Colony, 
-				industryPoints, 
-				Colony.Owner.Orders.ConstructionPlans[Colony].Queue, 
+				industryPoints,
+				orders.ConstructionPlans[this.Colony].Queue, 
 				vars
 			);
 			this.Production = this.SpendingPlan.Sum(x => x.InvestedPoints);

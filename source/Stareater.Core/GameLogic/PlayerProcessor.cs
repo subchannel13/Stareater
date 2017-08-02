@@ -74,41 +74,23 @@ namespace Stareater.GameLogic
 			return copy;
 		}
 		
-		public void Initialize(StaticsDB statics, StatesDB states)
+		public void Initialize(MainGame game)
 		{
-			this.Calculate(states.DevelopmentAdvances.Of[this.Player]);
-			this.unlockPredefinedDesigns(statics, states);
+			this.Calculate(game.States.DevelopmentAdvances.Of[this.Player]);
+			this.unlockPredefinedDesigns(game);
 		}
 		
 		#region Technology related
-		private int technologyOrderKey(DevelopmentProgress tech)
-		{
-			var playersOrder = Player.Orders.DevelopmentQueue;
-				
-			return playersOrder.ContainsKey(tech.Topic.IdCode) ? playersOrder[tech.Topic.IdCode] : int.MaxValue;
-			
-		}
-		
-		private int technologySort(DevelopmentProgress leftTech, DevelopmentProgress rightTech)
-		{
-			int primaryComparison = technologyOrderKey(leftTech).CompareTo(technologyOrderKey(rightTech));
-			
-			return primaryComparison == 0 ? 
-				string.Compare(leftTech.Topic.IdCode, rightTech.Topic.IdCode, StringComparison.Ordinal) : 
-				primaryComparison;
-			
-		}
-		
-		public void CalculateDevelopment(StaticsDB statics, StatesDB states, IList<ColonyProcessor> colonyProcessors)
+		public void CalculateDevelopment(MainGame game, IList<ColonyProcessor> colonyProcessors)
 		{
 			double developmentPoints = 0;
 			
 			foreach (var colonyProc in colonyProcessors)
 				developmentPoints += colonyProc.Development;
 			
-			var focus = statics.DevelopmentFocusOptions[Player.Orders.DevelopmentFocusIndex];
-			var techLevels = states.DevelopmentAdvances.Of[Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
-			var advanceOrder = this.DevelopmentOrder(states.DevelopmentAdvances, states.ResearchAdvances, statics).ToList();
+			var focus = game.Statics.DevelopmentFocusOptions[game.Orders[Player].DevelopmentFocusIndex];
+			var techLevels = game.States.DevelopmentAdvances.Of[Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
+			var advanceOrder = this.DevelopmentOrder(game.States.DevelopmentAdvances, game.States.ResearchAdvances, game).ToList();
 			
 			var results = new List<DevelopmentResult>();
 			for (int i = 0; i < advanceOrder.Count && i < focus.Weights.Length; i++) {
@@ -121,17 +103,17 @@ namespace Stareater.GameLogic
 			this.DevelopmentPlan = results;
 		}
 		
-		public void CalculateResearch(StaticsDB statics, StatesDB states, IList<ColonyProcessor> colonyProcessors)
+		public void CalculateResearch(MainGame game, IList<ColonyProcessor> colonyProcessors)
 		{
-			var techLevels = states.DevelopmentAdvances.Of[Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
+			var techLevels = game.States.DevelopmentAdvances.Of[Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			
-			var advanceOrder = this.ResearchOrder(states.ResearchAdvances).ToList();
-			string focused = Player.Orders.ResearchFocus;
+			var advanceOrder = this.ResearchOrder(game.States.ResearchAdvances).ToList();
+			string focused = game.Orders[Player].ResearchFocus;
 			
 			if (advanceOrder.Count > 0 && advanceOrder.All(x => x.Topic.IdCode != focused))
 				focused = advanceOrder[0].Topic.IdCode;
 			
-			double focusWeight = statics.PlayerFormulas.FocusedResearchWeight;
+			double focusWeight = game.Statics.PlayerFormulas.FocusedResearchWeight;
 			var results = new List<ResearchResult>();
 			for (int i = 0; i < advanceOrder.Count; i++) {
 				double weight = advanceOrder[i].Topic.IdCode == focused ? focusWeight : 1;
@@ -153,16 +135,26 @@ namespace Stareater.GameLogic
 			this.ResearchPlan = null;
 		}
 		
-		public IEnumerable<DevelopmentProgress> DevelopmentOrder(DevelopmentProgressCollection developmentAdvances, ResearchProgressCollection researchAdvances, StaticsDB statics)
+		public IEnumerable<DevelopmentProgress> DevelopmentOrder(DevelopmentProgressCollection developmentAdvances, ResearchProgressCollection researchAdvances, MainGame game)
 		{
 			var researchLevels = researchAdvances.Of[Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var playerTechs = developmentAdvances
 				.Of[Player]
-				.Where(x => (x.CanProgress(researchLevels, statics)))
+				.Where(x => (x.CanProgress(researchLevels, game.Statics)))
 				.ToList();
-			playerTechs.Sort(technologySort);
+			var orders = game.Orders[this.Player].DevelopmentQueue;
+
+			var orderedTech = playerTechs.
+				Where(x => orders.ContainsKey(x.Topic.IdCode)).
+				OrderBy(x => orders[x.Topic.IdCode]).
+				ToList();
+			orderedTech.AddRange(
+				playerTechs.
+				Where(x => !orders.ContainsKey(x.Topic.IdCode)).
+				OrderBy(x => x.Topic.IdCode)
+            );
 			
-			return playerTechs;
+			return orderedTech;
 		}
 		
 		public IEnumerable<ResearchProgress> ResearchOrder(ResearchProgressCollection techAdvances)
@@ -190,15 +182,15 @@ namespace Stareater.GameLogic
 		#endregion
 		
 		#region Precombat processing
-		public void ProcessPrecombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
+		public void ProcessPrecombat(MainGame game)
 		{
-			this.updateColonizationOrders(states);
+			this.updateColonizationOrders(game);
 
-			foreach (var colonyProc in derivates.Colonies.OwnedBy[this.Player])
-				colonyProc.ProcessPrecombat(states, derivates);
+			foreach (var colonyProc in game.Derivates.Colonies.OwnedBy[this.Player])
+				colonyProc.ProcessPrecombat(game.States, game.Derivates);
 
-			foreach (var stellarisProc in derivates.Stellarises.OwnedBy[this.Player])
-				stellarisProc.ProcessPrecombat(states, derivates);
+			foreach (var stellarisProc in game.Derivates.Stellarises.OwnedBy[this.Player])
+				stellarisProc.ProcessPrecombat(game.States, game.Derivates);
 			
 			this.breakthroughs = new Queue<ResearchResult>(this.ResearchPlan.Where(x => x.CompletedCount > 0));
 			
@@ -225,17 +217,17 @@ namespace Stareater.GameLogic
 				fleet.Ships.Add(new ShipGroup(design, quantity, 0, 0));
 		}
 
-		private void updateColonizationOrders(StatesDB states)
+		private void updateColonizationOrders(MainGame game)
 		{
-			foreach(var project in states.ColonizationProjects.OwnedBy[this.Player])
-				if (!this.Player.Orders.ColonizationOrders.ContainsKey(project.Destination))
-					states.ColonizationProjects.PendRemove(project);
+			foreach(var project in game.States.ColonizationProjects.OwnedBy[this.Player])
+				if (!game.Orders[this.Player].ColonizationOrders.ContainsKey(project.Destination))
+					game.States.ColonizationProjects.PendRemove(project);
 			
-			foreach(var order in this.Player.Orders.ColonizationOrders)
-				if (states.ColonizationProjects.Of[order.Key].All(x => x.Owner != this.Player))
-					states.ColonizationProjects.PendAdd(new ColonizationProject(this.Player, order.Value.Destination));
-			
-			states.ColonizationProjects.ApplyPending();
+			foreach(var order in game.Orders[this.Player].ColonizationOrders)
+				if (game.States.ColonizationProjects.Of[order.Key].All(x => x.Owner != this.Player))
+					game.States.ColonizationProjects.PendAdd(new ColonizationProject(this.Player, order.Value.Destination));
+
+			game.States.ColonizationProjects.ApplyPending();
 		}
 		#endregion
 		
@@ -262,110 +254,110 @@ namespace Stareater.GameLogic
 			return this.breakthroughs.Dequeue();
 		}
 		
-		public void ProcessPostcombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
+		public void ProcessPostcombat(MainGame game)
 		{
-			this.advanceTechnologies(states, statics);
-			this.checkColonizationValidity(states);
-			this.doConstruction(statics, states, derivates);
-			this.unlockPredefinedDesigns(statics, states);
-			this.updateDesigns(statics, states, derivates);
+			this.advanceTechnologies(game);
+			this.checkColonizationValidity(game);
+			this.doConstruction(game);
+			this.unlockPredefinedDesigns(game);
+			this.updateDesigns(game);
 		}
 
-		private void advanceTechnologies(StatesDB states, StaticsDB statics)
+		private void advanceTechnologies(MainGame game)
 		{
 			foreach(var techProgress in this.DevelopmentPlan) {
 				techProgress.Item.Progress(techProgress);
 				if (techProgress.CompletedCount > 0)
-					states.Reports.Add(new DevelopmentReport(techProgress));
+					game.States.Reports.Add(new DevelopmentReport(techProgress));
 			}
 			foreach(var techProgress in this.ResearchPlan) {
 				techProgress.Item.Progress(techProgress);
 				if (techProgress.CompletedCount > 0)
-					states.Reports.Add(new ResearchReport(techProgress));
+					game.States.Reports.Add(new ResearchReport(techProgress));
 			}
-			this.Calculate(states.DevelopmentAdvances.Of[Player]);
+			this.Calculate(game.States.DevelopmentAdvances.Of[Player]);
 
-			var researchLevels = states.ResearchAdvances.Of[Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
+			var researchLevels = game.States.ResearchAdvances.Of[Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var validTechs = new HashSet<string>(
-					states.DevelopmentAdvances
-					.Where(x => x.CanProgress(researchLevels, statics))
+					game.States.DevelopmentAdvances
+					.Where(x => x.CanProgress(researchLevels, game.Statics))
 					.Select(x => x.Topic.IdCode)
 				);
 
-			Player.Orders.DevelopmentQueue = updateTechQueue(Player.Orders.DevelopmentQueue, validTechs);
+			game.Orders[this.Player].DevelopmentQueue = updateTechQueue(game.Orders[this.Player].DevelopmentQueue, validTechs);
 		}
 
-		private void checkColonizationValidity(StatesDB states)
+		private void checkColonizationValidity(MainGame game)
 		{
 			var occupiedTargets = new HashSet<Planet>();
-			foreach(var order in this.Player.Orders.ColonizationOrders)
-				if (states.Colonies.AtPlanet.Contains(order.Key)) //TODO(later) use intelligence instead
+			foreach(var order in game.Orders[this.Player].ColonizationOrders)
+				if (game.States.Colonies.AtPlanet.Contains(order.Key)) //TODO(later) use intelligence instead
 					occupiedTargets.Add(order.Key);
 			foreach(var planet in occupiedTargets)
-				this.Player.Orders.ColonizationOrders.Remove(planet);
+				game.Orders[this.Player].ColonizationOrders.Remove(planet);
 		}
 
-		private void doConstruction(StaticsDB statics, StatesDB states, TemporaryDB derivates)
+		private void doConstruction(MainGame game)
 		{
-			var oldPlans = Player.Orders.ConstructionPlans;
-			Player.Orders.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
+			var oldPlans = game.Orders[this.Player].ConstructionPlans;
+			game.Orders[this.Player].ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
 
-			foreach (var colony in states.Colonies.OwnedBy[Player])
+			foreach (var colony in game.States.Colonies.OwnedBy[Player])
 				if (oldPlans.ContainsKey(colony)) {
 					var updatedPlans = updateConstructionPlans(
-						statics,
+						game.Statics,
 						oldPlans[colony],
-						derivates.Of(colony),
+						game.Derivates.Of(colony),
 						this.TechLevels
 					);
 
-					Player.Orders.ConstructionPlans.Add(colony, updatedPlans);
+					game.Orders[this.Player].ConstructionPlans.Add(colony, updatedPlans);
 				}
 				else
-					Player.Orders.ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
+					game.Orders[this.Player].ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 
-				foreach (var stellaris in states.Stellarises.OwnedBy[Player])
+				foreach (var stellaris in game.States.Stellarises.OwnedBy[Player])
 					if (oldPlans.ContainsKey(stellaris)) 
 					{
 						var updatedPlans = updateConstructionPlans(
-							statics,
+							game.Statics,
 							oldPlans[stellaris],
-							derivates.Of(stellaris),
+							game.Derivates.Of(stellaris),
 							this.TechLevels
 						);
-	
-						Player.Orders.ConstructionPlans.Add(stellaris, updatedPlans);
+
+						game.Orders[this.Player].ConstructionPlans.Add(stellaris, updatedPlans);
 					}
 					else
-						Player.Orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
+						game.Orders[this.Player].ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 		}
 		
-		private void updateDesigns(StaticsDB statics, StatesDB states, TemporaryDB derivates)
+		private void updateDesigns(MainGame game)
 		{
 			//Generate upgraded designs
 			var upgradesTo = new Dictionary<Design, Design>();
 			var newDesigns = new HashSet<Design>();
-			foreach(var design in states.Designs.OwnedBy[this.Player])
+			foreach(var design in game.States.Designs.OwnedBy[this.Player])
 			{
-				var upgrade = this.DesignUpgrade(design, statics, states);
-				if (states.Designs.Contains(upgrade))
+				var upgrade = this.DesignUpgrade(design, game.Statics, game.States);
+				if (game.States.Designs.Contains(upgrade))
 					continue;
 				
 				if (newDesigns.Contains(upgrade))
 					upgrade = newDesigns.First(x => x == upgrade);
 				else
-					this.Analyze(upgrade, statics);
+					this.Analyze(upgrade, game.Statics);
 				
 				design.IsObsolete = true;
 				upgradesTo[design] = upgrade;
 				newDesigns.Add(upgrade);
 			}
-			states.Designs.Add(newDesigns);
+			game.States.Designs.Add(newDesigns);
 			
 			//Update refit orders to upgrade obsolete designs
 			foreach(var upgrade in upgradesTo)
 			{
-				var orders = this.Player.Orders.RefitOrders;
+				var orders = game.Orders[this.Player].RefitOrders;
 				
 				if (!orders.ContainsKey(upgrade.Key))
 					orders[upgrade.Key] = upgrade.Value;
@@ -373,29 +365,32 @@ namespace Stareater.GameLogic
 					orders[upgrade.Key] = upgradesTo[orders[upgrade.Key]];
 			}
 			
-			foreach(var site in this.Player.Orders.ConstructionPlans.Keys.ToList())
+			foreach(var site in game.Orders[this.Player].ConstructionPlans.Keys.ToList())
 			{
-				var updater = new ShipConstructionUpdater(this.Player.Orders.ConstructionPlans[site].Queue, this.Player.Orders.RefitOrders);
-				this.Player.Orders.ConstructionPlans[site].Queue.Clear();
-				this.Player.Orders.ConstructionPlans[site].Queue.AddRange(updater.Run());
+				var updater = new ShipConstructionUpdater(
+					game.Orders[this.Player].ConstructionPlans[site].Queue,
+					game.Orders[this.Player].RefitOrders
+				);
+				game.Orders[this.Player].ConstructionPlans[site].Queue.Clear();
+				game.Orders[this.Player].ConstructionPlans[site].Queue.AddRange(updater.Run());
 			}
 
 			//Removing inactive discarded designs
 			var shipConstruction = new ShipConstructionCounter();
-			shipConstruction.Check(derivates.Stellarises.OwnedBy[this.Player]);
+			shipConstruction.Check(game.Derivates.Stellarises.OwnedBy[this.Player]);
 			
-			var activeDesigns = new HashSet<Design>(states.Fleets.
+			var activeDesigns = new HashSet<Design>(game.States.Fleets.
 			                                        SelectMany(x => x.Ships).
 			                                        Select(x => x.Design).
 			                                        Concat(shipConstruction.Designs));
-			var discardedDesigns = this.Player.Orders.RefitOrders.
+			var discardedDesigns = game.Orders[this.Player].RefitOrders.
 				Where(x => x.Value == null && !activeDesigns.Contains(x.Key)).
 				Select(x => x.Key).ToList();
 			
 			foreach(var design in discardedDesigns)
 			{
-				design.Owner.Orders.RefitOrders.Remove(design);
-				states.Designs.Remove(design);
+				game.Orders[design.Owner].RefitOrders.Remove(design);
+				game.States.Designs.Remove(design);
 				this.DesignStats.Remove(design);
 				this.RefitCosts.Remove(design);
 			}
@@ -681,20 +676,20 @@ namespace Stareater.GameLogic
 			return states.Designs.First(x => x == design);
 		}
 		
-		private void unlockPredefinedDesigns(StaticsDB statics, StatesDB states)
+		private void unlockPredefinedDesigns(MainGame game)
 		{
-			var playerTechs = states.DevelopmentAdvances.Of[Player];
+			var playerTechs = game.States.DevelopmentAdvances.Of[Player];
 			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 				
-			foreach(var predefDesign in statics.PredeginedDesigns)
-				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(statics), 0, techLevels))
+			foreach(var predefDesign in game.Statics.PredeginedDesigns)
+				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(game.Statics), 0, techLevels))
 				{
 					Player.UnlockedDesigns.Add(predefDesign);
-					makeDesign(statics, states, predefDesign, techLevels, false);
+					makeDesign(game.Statics, game.States, predefDesign, techLevels, false);
 				}
 			
-			this.ColonyShipDesign = updateVirtualDesign(this.ColonyShipDesign, statics, states, statics.ColonyShipDesigns, techLevels);
-			this.SystemColonizerDesign = updateVirtualDesign(this.SystemColonizerDesign, statics, states, statics.SystemColonizerDesigns, techLevels);
+			this.ColonyShipDesign = updateVirtualDesign(this.ColonyShipDesign, game, game.Statics.ColonyShipDesigns, techLevels);
+			this.SystemColonizerDesign = updateVirtualDesign(this.SystemColonizerDesign, game, game.Statics.SystemColonizerDesigns, techLevels);
 		}
 		
 		private static Dictionary<string, int> updateTechQueue(IEnumerable<KeyValuePair<string, int>> queue, ICollection<string> validItems)
@@ -723,17 +718,17 @@ namespace Stareater.GameLogic
 			return newOrders;
 		}
 
-		private Design updateVirtualDesign(Design oldDesign, StaticsDB statics, StatesDB states, IEnumerable<PredefinedDesign> predefDesigns, Dictionary<string, double> techLevels)
+		private Design updateVirtualDesign(Design oldDesign, MainGame game, IEnumerable<PredefinedDesign> predefDesigns, Dictionary<string, double> techLevels)
 		{
 			var newDesign = makeDesign(
-				statics, states,
-				predefDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(statics), 0, techLevels)),
+				game.Statics, game.States,
+				predefDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(game.Statics), 0, techLevels)),
 				techLevels, true);
 			
 			if (newDesign != oldDesign && oldDesign != null)
 			{
 				oldDesign.IsObsolete = true;
-				oldDesign.Owner.Orders.RefitOrders[oldDesign] = null;
+				game.Orders[oldDesign.Owner].RefitOrders[oldDesign] = null;
 			}
 			
 			return newDesign;

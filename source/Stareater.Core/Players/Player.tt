@@ -17,7 +17,6 @@
 		new DataInfo("ControlType", "PlayerControlType").Init("initPlayerControl(type);", "PlayerType", "type").CopyCode("copyPlayerControl(original);").IsEnum(),
 		new DataInfo("OffscreenControl", "IOffscreenPlayer").NoInit().CopyCode("").SaveMethod("Save()", "new IkonComposite(\"None\")").LoadCode("loadControl(" + SaveName + ")"),
 		new DataInfo("UnlockedDesigns", "HashSet", new GenericParamInfo("PredefinedDesign").FromIndexer()).EmptyInit(),
-		new DataInfo("Intelligence", "Intelligence").EmptyInit().IsState(Flag.GalaxyRemap),
-		new DataInfo("Orders", "PlayerOrders").EmptyInit().CopyCode("").Public().NoSaveLoad()
+		new DataInfo("Intelligence", "Intelligence").EmptyInit().IsState(Flag.GalaxyRemap)
 	);
 #>

@@ -101,9 +101,10 @@ namespace Stareater.Controllers
 			get
 			{
 				var game = this.gameInstance;
-				return game.States.Fleets.
-					Where(x => x.Owner != this.PlayerInstance(game) || !x.Owner.Orders.ShipOrders.ContainsKey(x.Position)).
-					Concat(this.PlayerInstance(game).Orders.ShipOrders.SelectMany(x => x.Value)).
+				var orders = game.Orders[this.PlayerInstance(game)];
+                return game.States.Fleets.
+					Where(x => x.Owner != this.PlayerInstance(game) || !game.Orders[x.Owner].ShipOrders.ContainsKey(x.Position)).
+					Concat(orders.ShipOrders.SelectMany(x => x.Value)).
 					Select(
 						x => new FleetInfo(x, game.Derivates.Of(x.Owner), game.Statics)
 					);
@@ -114,10 +115,11 @@ namespace Stareater.Controllers
 		{
 			var game = this.gameInstance;
 			var player = this.PlayerInstance(game);
-			var fleets = game.States.Fleets.At[position].Where(x => x.Owner != player || !x.Owner.Orders.ShipOrders.ContainsKey(x.Position));
+			var orders = game.Orders[this.PlayerInstance(game)];
+			var fleets = game.States.Fleets.At[position].Where(x => x.Owner != player || !game.Orders[x.Owner].ShipOrders.ContainsKey(x.Position));
 
-			if (player.Orders.ShipOrders.ContainsKey(position))
-				fleets = fleets.Concat(player.Orders.ShipOrders[position]);
+			if (orders.ShipOrders.ContainsKey(position))
+				fleets = fleets.Concat(orders.ShipOrders[position]);
 			
 			return fleets.Select(x => new FleetInfo(x, game.Derivates.Of(x.Owner), game.Statics));
 		}
@@ -183,13 +185,15 @@ namespace Stareater.Controllers
 			if (game.IsReadOnly)
 				return;
 
-			this.PlayerInstance(game).Orders.RefitOrders[design.Data] = null;
+			game.Orders[this.PlayerInstance(game)].RefitOrders[design.Data] = null;
 		}
 
 		public bool IsMarkedForRemoval(DesignInfo design)
 		{
-			var player = this.PlayerInstance(this.gameInstance);
-			return player.Orders.RefitOrders.ContainsKey(design.Data) && player.Orders.RefitOrders[design.Data] == null;
+			var game = this.gameInstance;
+			var player = this.PlayerInstance(game);
+			var orders = game.Orders[player];
+			return orders.RefitOrders.ContainsKey(design.Data) && orders.RefitOrders[design.Data] == null;
 		}
 		
 		public void KeepDesign(DesignInfo design)
@@ -198,7 +202,7 @@ namespace Stareater.Controllers
 			if (game.IsReadOnly)
 				return;
 
-			this.PlayerInstance(game).Orders.RefitOrders.Remove(design.Data);
+			game.Orders[this.PlayerInstance(game)].RefitOrders.Remove(design.Data);
 		}
 		
 		public IEnumerable<DesignInfo> RefitCandidates(DesignInfo design)
@@ -225,24 +229,26 @@ namespace Stareater.Controllers
 			
 			var player = this.PlayerInstance(game);
 			var playerProc = game.Derivates.Of(this.PlayerInstance(game));
+			var orders = game.Orders[player];
 
-			if (!refitWith.Constructable || 
-			    player.Orders.RefitOrders.ContainsKey(refitWith.Data) || 
+			if (!refitWith.Constructable ||
+				orders.RefitOrders.ContainsKey(refitWith.Data) || 
 			    !playerProc.RefitCosts[design.Data].ContainsKey(refitWith.Data))
 				return;
 
-			player.Orders.RefitOrders[design.Data] = refitWith.Data;
+			orders.RefitOrders[design.Data] = refitWith.Data;
 		}
 		
 		public DesignInfo RefittingWith(DesignInfo design)
 		{
 			var game = this.gameInstance;
 			var player = this.PlayerInstance(game);
+			var orders = game.Orders[player];
 
-			if (game.IsReadOnly || !player.Orders.RefitOrders.ContainsKey(design.Data))
+			if (game.IsReadOnly || !orders.RefitOrders.ContainsKey(design.Data))
 				return null;
 			
-			var targetDesign = player.Orders.RefitOrders[design.Data];
+			var targetDesign = orders.RefitOrders[design.Data];
 			
 			return targetDesign != null ?
 				new DesignInfo(targetDesign, game.Derivates.Of(targetDesign.Owner).DesignStats[targetDesign], game.Statics) :
@@ -267,7 +273,7 @@ namespace Stareater.Controllers
 			var player = this.PlayerInstance(game);
 			var planets = new HashSet<Planet>();
 			planets.UnionWith(game.States.ColonizationProjects.OwnedBy[player].Select(x => x.Destination));
-			planets.UnionWith(player.Orders.ColonizationOrders.Keys);
+			planets.UnionWith(game.Orders[player].ColonizationOrders.Keys);
 			
 			foreach(var planet in planets)
 				yield return new ColonizationController(game, planet, game.IsReadOnly, player);
@@ -289,12 +295,11 @@ namespace Stareater.Controllers
 		{
 			var game = this.gameInstance;
 			var player = this.PlayerInstance(game);
-			var playerTechs = game.Derivates.Of(player).DevelopmentOrder(game.States.DevelopmentAdvances, game.States.ResearchAdvances, game.Statics);
+			var playerTechs = game.Derivates.Of(player).DevelopmentOrder(game.States.DevelopmentAdvances, game.States.ResearchAdvances, game);
 
 			if (game.Derivates.Of(player).DevelopmentPlan == null)
 				game.Derivates.Of(player).CalculateDevelopment(
-					game.Statics,
-					game.States,
+					game,
 					game.Derivates.Colonies.OwnedBy[player]
 				);
 
@@ -314,7 +319,7 @@ namespace Stareater.Controllers
 			if (game.IsReadOnly)
 				return DevelopmentTopics();
 
-			var modelQueue = this.PlayerInstance(game).Orders.DevelopmentQueue;
+			var modelQueue = game.Orders[this.PlayerInstance(game)].DevelopmentQueue;
 			modelQueue.Clear();
 			
 			int i = 0;
@@ -336,7 +341,8 @@ namespace Stareater.Controllers
 		{ 
 			get
 			{
-				return this.PlayerInstance(this.gameInstance).Orders.DevelopmentFocusIndex;
+				var game = this.gameInstance;
+				return game.Orders[this.PlayerInstance(game)].DevelopmentFocusIndex;
 			}
 			
 			set
@@ -348,7 +354,7 @@ namespace Stareater.Controllers
 				var player = this.PlayerInstance(game);
 
 				if (value >= 0 && value < game.Statics.DevelopmentFocusOptions.Count)
-					player.Orders.DevelopmentFocusIndex = value;
+					game.Orders[player].DevelopmentFocusIndex = value;
 
 				game.Derivates.Of(player).InvalidateDevelopment();
 			}
@@ -374,8 +380,7 @@ namespace Stareater.Controllers
 
 			if (game.Derivates.Of(player).ResearchPlan == null)
 				game.Derivates.Of(player).CalculateResearch(
-					game.Statics,
-					game.States,
+					game,
 					game.Derivates.Colonies.OwnedBy[player]
 				);
 
@@ -393,7 +398,7 @@ namespace Stareater.Controllers
 			get 
 			{
 				var game = this.gameInstance;
-				string focused = this.PlayerInstance(game).Orders.ResearchFocus;
+				string focused = game.Orders[this.PlayerInstance(game)].ResearchFocus;
 				var playerTechs = game.Derivates.Of(this.PlayerInstance(game)).ResearchOrder(game.States.ResearchAdvances).ToList();
 				
 				for (int i = 0; i < playerTechs.Count; i++)
@@ -412,7 +417,7 @@ namespace Stareater.Controllers
 				var playerTechs = game.Derivates.Of(this.PlayerInstance(game)).ResearchOrder(game.States.ResearchAdvances).ToList();
 				if (value >= 0 && value < playerTechs.Count) 
 				{
-					this.PlayerInstance(game).Orders.ResearchFocus = playerTechs[value].Topic.IdCode;
+					game.Orders[this.PlayerInstance(game)].ResearchFocus = playerTechs[value].Topic.IdCode;
 					game.Derivates.Of(this.PlayerInstance(game)).InvalidateResearch();
 				}
 			}
@@ -449,7 +454,7 @@ namespace Stareater.Controllers
 			var game = this.gameInstance;
 			var contactIndex = Array.IndexOf(game.MainPlayers, contact.PlayerData);
 			
-			return this.PlayerInstance(game).Orders.AudienceRequests.Contains(contactIndex);
+			return game.Orders[this.PlayerInstance(game)].AudienceRequests.Contains(contactIndex);
 		}
 		
 		public void RequestAudience(ContactInfo contact)
@@ -459,7 +464,7 @@ namespace Stareater.Controllers
 				return;
 			
 			var contactIndex = Array.IndexOf(game.MainPlayers, contact.PlayerData);
-			this.PlayerInstance(game).Orders.AudienceRequests.Add(contactIndex);
+			game.Orders[this.PlayerInstance(game)].AudienceRequests.Add(contactIndex);
 		}
 		
 		public void CancelAudience(ContactInfo contact)
@@ -469,7 +474,7 @@ namespace Stareater.Controllers
 				return;
 			
 			var contactIndex = Array.IndexOf(game.MainPlayers, contact.PlayerData);
-			this.PlayerInstance(game).Orders.AudienceRequests.Remove(contactIndex);
+			game.Orders[this.PlayerInstance(game)].AudienceRequests.Remove(contactIndex);
 		}
 		#endregion
 	}

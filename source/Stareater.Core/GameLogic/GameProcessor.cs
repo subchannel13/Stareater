@@ -42,9 +42,7 @@ namespace Stareater.GameLogic
 			this.game.States.Reports.Clear();
 			foreach (var playerProc in this.game.MainPlayers.Select(x => this.game.Derivates.Of(x)))
 				playerProc.ProcessPrecombat(
-					this.game.Statics,
-					this.game.States,
-					this.game.Derivates
+					this.game
 				);
 			this.game.Derivates.Natives.ProcessPrecombat(this.game.Statics, this.game.States, this.game.Derivates); 
 			//TODO(later) process natives postcombat
@@ -74,7 +72,7 @@ namespace Stareater.GameLogic
 			this.mergeFleets();
 			
 			foreach (var playerProc in this.game.MainPlayers.Select(x => this.game.Derivates.Of(x)))
-				playerProc.ProcessPostcombat(this.game.Statics, this.game.States, this.game.Derivates);
+				playerProc.ProcessPostcombat(this.game);
 
 			this.doRepairs();
 
@@ -99,25 +97,24 @@ namespace Stareater.GameLogic
 		{
 			foreach (var colonyProc in this.game.Derivates.Colonies)
 				colonyProc.CalculateSpending(
-					this.game.Statics,
+					this.game,
 					this.game.Derivates.Of(colonyProc.Owner)
 				);
 
 			foreach (var stellaris in this.game.Derivates.Stellarises)
 				stellaris.CalculateSpending(
+					this.game,
 					this.game.Derivates.Of(stellaris.Owner),
 					this.game.Derivates.Colonies.At[stellaris.Location]
 				);
 
 			foreach (var player in this.game.Derivates.Players) {
 				player.CalculateDevelopment(
-					this.game.Statics,
-					this.game.States,
+					this.game,
 					this.game.Derivates.Colonies.OwnedBy[player.Player]
 				);
 				player.CalculateResearch(
-					this.game.Statics,
-					this.game.States,
+					this.game,
 					this.game.Derivates.Colonies.OwnedBy[player.Player]
 				);
 			}
@@ -174,7 +171,7 @@ namespace Stareater.GameLogic
 
 		public void AudienceConcluded(Player[] participants, HashSet<Treaty> treaties)
 		{
-			participants[0].Orders.AudienceRequests.Remove(Array.IndexOf(this.game.MainPlayers, participants[1]));
+			this.game.Orders[participants[0]].AudienceRequests.Remove(Array.IndexOf(this.game.MainPlayers, participants[1]));
 			
 			foreach(var oldTreaty in this.game.States.Treaties.Of[participants[0]].Where(x => x.Party2 == participants[1]).ToList())
 				this.game.States.Treaties.Remove(oldTreaty);
@@ -192,7 +189,7 @@ namespace Stareater.GameLogic
 		{
 			foreach (var player in this.game.AllPlayers)
 			{
-				foreach (var order in player.Orders.ShipOrders) 
+				foreach (var order in this.game.Orders[player].ShipOrders) 
 				{
 					var totalDamage = new Dictionary<Design, double>();
 					var totalUpgrades = new Dictionary<Design, double>();
@@ -228,7 +225,7 @@ namespace Stareater.GameLogic
 					}
 				}
 
-				player.Orders.ShipOrders.Clear();
+				this.game.Orders[player].ShipOrders.Clear();
 			}
 		}
 
@@ -348,7 +345,7 @@ namespace Stareater.GameLogic
 				
 				if (colonyExists || !colonyExists && arrivedPopulation >= colonizationTreshold)
 				{
-					project.Owner.Orders.ColonizationOrders.Remove(project.Destination);
+					this.game.Orders[project.Owner].ColonizationOrders.Remove(project.Destination);
 					this.game.States.ColonizationProjects.PendRemove(project);
 				}
 			}
@@ -392,7 +389,7 @@ namespace Stareater.GameLogic
 					totalNeededRepairPoints -= fullRepairCost;
 				}
 
-				var refitOrders = player.Orders.RefitOrders;
+				var refitOrders = this.game.Orders[player].RefitOrders;
 				var refitCosts = this.game.Derivates.Of(player).RefitCosts;
 				var groupsFrom = new Dictionary<ShipGroup, Fleet>();
 
@@ -449,10 +446,10 @@ namespace Stareater.GameLogic
 		{
 			foreach(var player in this.game.MainPlayers)
 			{
-				foreach(var audience in player.Orders.AudienceRequests)
+				foreach(var audience in this.game.Orders[player].AudienceRequests)
 					this.audiences.Enqueue(new [] { player, this.game.MainPlayers[audience] }); //TODO(v0.7) eliminate duplicates
-				
-				player.Orders.AudienceRequests.Clear();
+
+				this.game.Orders[player].AudienceRequests.Clear();
 			}
 		}
 		

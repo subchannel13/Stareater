@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Ikadn;
 using Stareater.GameData.Databases;
+using Stareater.GameData.Databases.Tables;
 using Stareater.GameLogic;
 using Stareater.Players;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
-using Ikadn;
+using System.Collections.Generic;
 
 namespace Stareater
 {
@@ -19,6 +20,8 @@ namespace Stareater
 
 		[StateProperty]
 		public StatesDB States { get; private set; }
+		[StateProperty]
+		public Dictionary<Player, PlayerOrders> Orders { get; private set; }
 		[StateProperty(doSave: false)]
 		public TemporaryDB Derivates { get; private set; }
 		
@@ -39,6 +42,10 @@ namespace Stareater
 			this.Derivates = derivates;
 
 			this.Processor = new GameProcessor(this);
+
+			this.Orders = new Dictionary<Player, PlayerOrders>();
+			foreach (var player in this.AllPlayers)
+				this.Orders[player] = new PlayerOrders();
 		}
 
 		private MainGame()

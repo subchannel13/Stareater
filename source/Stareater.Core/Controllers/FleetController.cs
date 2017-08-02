@@ -182,12 +182,12 @@ namespace Stareater.Controllers
 			
 			//create regroup order if there is none
 			HashSet<Fleet> shipOrders;
-			if (!this.Fleet.FleetData.Owner.Orders.ShipOrders.ContainsKey(this.Fleet.FleetData.Position)) {
+			if (!this.game.Orders[this.Fleet.FleetData.Owner].ShipOrders.ContainsKey(this.Fleet.FleetData.Position)) {
 				shipOrders = new HashSet<Fleet>();
-				this.Fleet.FleetData.Owner.Orders.ShipOrders.Add(this.Fleet.FleetData.Position, shipOrders);
+				this.game.Orders[this.Fleet.FleetData.Owner].ShipOrders.Add(this.Fleet.FleetData.Position, shipOrders);
 			}
 			else
-				shipOrders = this.Fleet.FleetData.Owner.Orders.ShipOrders[this.Fleet.FleetData.Position];
+				shipOrders = this.game.Orders[this.Fleet.FleetData.Owner].ShipOrders[this.Fleet.FleetData.Position];
 			
 			//remove current fleet from regroup
 			shipOrders.Remove(this.Fleet.FleetData);
