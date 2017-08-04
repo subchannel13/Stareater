@@ -14,6 +14,7 @@ using Stareater.Players.Reports;
 using Stareater.Ships;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Controllers
 {
@@ -34,7 +35,7 @@ namespace Stareater.Controllers
 			return game;
 		}
 		
-		public static MainGame LoadGame(IkonComposite saveData, IEnumerable<TracableStream> staticDataSources)
+		public static MainGame LoadGame(IkonComposite saveData, IEnumerable<TracableStream> staticDataSources, StateManager stateManager)
 		{
 			var statics = StaticsDB.Load(staticDataSources);
 			
@@ -55,7 +56,8 @@ namespace Stareater.Controllers
 			deindexer.AddAll(statics.SpecialEquipment.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Thrusters.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Traits.Values, x => x.IdCode);
-			
+
+			return stateManager.Load<MainGame>(saveData);
 			var loadedStates = loadSaveData(saveData, deindexer, statics);
 			var states = loadedStates.Item1;
 			var players = loadedStates.Item2;

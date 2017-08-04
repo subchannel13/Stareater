@@ -10,8 +10,8 @@ using System.Linq;
 
 namespace Stareater.GameData.Databases.Tables 
 {
-	[StateType(saveMethod: "Save")]
-	partial class ConstructionOrders 
+	[StateType(saveMethod: "Save", loadMethod: "Load")]
+    partial class ConstructionOrders 
 	{
 		public double SpendingRatio { get; set; }
 		public List<Constructable> Queue { get; private set; }

@@ -14,13 +14,29 @@ namespace Stareater.Utils.StateEngine
 
 		public StateManager()
 		{
-			this.experts[typeof(bool)] = new TerminalStrategy((x, session) => new IkonInteger((bool)x ? 1 : -1));
-			this.experts[typeof(double)] = new TerminalStrategy((x, session) => new IkonFloat((double)x));
-			this.experts[typeof(float)] = new TerminalStrategy((x, session) => new IkonFloat((float)x));
-			this.experts[typeof(int)] = new TerminalStrategy((x, session) => new IkonInteger((int)x));
-			this.experts[typeof(string)] = new TerminalStrategy((x, session) => new IkonText((string)x));
+			this.experts[typeof(bool)] = new TerminalStrategy(
+				(x, session) => new IkonInteger((bool)x ? 1 : -1),
+				(x, session) => x.To<int>() >= 0
+			);
+			this.experts[typeof(double)] = new TerminalStrategy(
+				(x, session) => new IkonFloat((double)x),
+				(x, session) => x.To<double>()
+			);
+			this.experts[typeof(float)] = new TerminalStrategy(
+				(x, session) => new IkonFloat((float)x),
+				(x, session) => x.To<float>()
+			);
+			this.experts[typeof(int)] = new TerminalStrategy(
+				(x, session) => new IkonInteger((int)x),
+				(x, session) => x.To<int>()
+			);
+			this.experts[typeof(string)] = new TerminalStrategy(
+				(x, session) => new IkonText((string)x),
+				(x, session) => x.To<string>()
+			);
 
-			this.experts[typeof(System.Drawing.Color)] = new TerminalStrategy((x, session) =>
+			this.experts[typeof(System.Drawing.Color)] = new TerminalStrategy(
+				(x, session) =>
 				{
 					var color = (System.Drawing.Color)x;
                     return new IkonArray(new[] {
@@ -28,21 +44,46 @@ namespace Stareater.Utils.StateEngine
                         new IkonInteger(color.G),
                         new IkonInteger(color.B),
 					});
-				});
-			this.experts[typeof(NGenerics.DataStructures.Mathematical.Vector2D)] = new TerminalStrategy((x, session) =>
-			{
-				var vector = (NGenerics.DataStructures.Mathematical.Vector2D)x;
-				return new IkonArray(new[] {
-						new IkonFloat(vector.X),
-						new IkonFloat(vector.Y),
-					});
-			});
+				},
+				(x, session) =>
+				{
+					var data = x.To<IkonArray>();
+					return System.Drawing.Color.FromArgb(
+						data[0].To<int>(),
+						data[1].To<int>(),
+						data[2].To<int>()
+					);
+				}
+            );
+			this.experts[typeof(NGenerics.DataStructures.Mathematical.Vector2D)] = new TerminalStrategy(
+				(x, session) =>
+				{
+					var vector = (NGenerics.DataStructures.Mathematical.Vector2D)x;
+					return new IkonArray(new[] {
+							new IkonFloat(vector.X),
+							new IkonFloat(vector.Y),
+						});
+				},
+				(x, session) =>
+				{
+					var data = x.To<IkonArray>();
+					return new NGenerics.DataStructures.Mathematical.Vector2D(
+						data[0].To<int>(),
+						data[1].To<int>()
+					);
+				}
+			);
 		}
 
         public T Copy<T>(T obj)
         {
             return (T)new CopySession(getTypeStrategy).CopyOf(obj);
         }
+
+		public T Load<T>(IkonComposite saveData)
+		{
+			return (T)new LoadSession(getTypeStrategy).Load(typeof(T), saveData["entryPoint"]);
+		}
 
 		public IkonBaseObject Save(object obj, ObjectIndexer indexer)
 		{
@@ -89,17 +130,23 @@ namespace Stareater.Utils.StateEngine
 				return new ClassStrategy(type);
 
 			if (type.IsEnum)
-				return new TerminalStrategy((x, session) => new IkonComposite(x.ToString()));
+				return new TerminalStrategy(
+					(x, session) => new IkonComposite(x.ToString()),
+					(x, session) => Enum.Parse(type, (string)x.Tag)
+                );
 
 			var properties = (StateType)type.GetCustomAttributes(true).
 				Concat(type.GetInterfaces().SelectMany(x => x.GetCustomAttributes(true))).
 				FirstOrDefault(x => x is StateType);
 
 			if (properties != null && properties.NotStateData)
-				return new TerminalStrategy(null);
+				return new TerminalStrategy(null, null);
 
 			if (properties != null && properties.SaveMethod != null)
-				return new TerminalStrategy(BuildSaveMethodCaller(type, properties.SaveMethod));
+				return new TerminalStrategy(
+					BuildSaveMethodCaller(type, properties.SaveMethod),
+					BuildLoadMethodCaller(type, properties.LoaderClass, properties.LoadMethod)
+				);
 
 			throw new ArgumentException("Undefined terminal strategy for type: " + type.Name);
 		}
@@ -118,6 +165,26 @@ namespace Stareater.Utils.StateEngine
 						sessionParam
 					),
 					originalParam,
+					sessionParam
+				);
+
+			return expr.Compile();
+		}
+
+		private static Func<Ikadn.IkadnBaseObject, LoadSession, object> BuildLoadMethodCaller(Type type, Type loaderClass, string loadMethod)
+		{
+			var dataParam = Expression.Parameter(typeof(object), "rawData");
+			var sessionParam = Expression.Parameter(typeof(LoadSession), "session");
+			var method = (loaderClass ?? type).GetMethod(loadMethod, BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(LoadSession) }, null);
+
+			var expr =
+				Expression.Lambda<Func<Ikadn.IkadnBaseObject, LoadSession, object>>(
+					Expression.Call(
+						method,
+						dataParam,
+                        sessionParam
+					),
+					dataParam,
 					sessionParam
 				);
 

@@ -139,7 +139,7 @@ namespace Stareater.Controllers
 		
 		public void Load(SavedGameInfo savedGameData, IEnumerable<TracableStream> staticDataSources)
 		{
-			this.gameController.LoadGame(GameBuilder.LoadGame(savedGameData.RawData, staticDataSources));
+			this.gameController.LoadGame(GameBuilder.LoadGame(savedGameData.RawData, staticDataSources, GameController.GetStateManager()));
 		}
 #endregion
 	}

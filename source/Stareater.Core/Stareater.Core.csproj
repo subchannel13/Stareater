@@ -450,6 +450,7 @@
     <Compile Include="SpaceCombat\CombatPlanet.cs" />
     <Compile Include="Utils\BitHash.cs" />
     <Compile Include="Utils\BitHashBuilder.cs" />
+    <Compile Include="Utils\StateEngine\LoadSession.cs" />
     <Compile Include="Utils\StateEngine\SaveSession.cs" />
     <Compile Include="Utils\StateEngine\AEnumerableStrategy.cs" />
     <Compile Include="Utils\StateEngine\PropertyStrategy.cs" />

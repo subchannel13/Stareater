@@ -9,28 +9,73 @@ namespace Stareater.Utils.StateEngine
 {
 	class ArrayStrategy : AEnumerableStrategy
 	{
-		public ArrayStrategy(Type type)
-			: base(type, BuildConstructor(type), CopyMethodInfo(type), DependencyMethodInfo(type), SerializeMethodInfo(type))
-		{ }
+		private Func<object, object> mirrorConstructor;
+		private Func<int, object> lengthConstructor;
 
-		private static void copyChildren<T>(T[] originalArray, T[] arrayCopy, CopySession session)
+		public ArrayStrategy(Type type)
+			: base(type)
+		{
+			this.mirrorConstructor = BuildMirrorConstructor(type);
+			this.lengthConstructor = BuildLengthConstructor(type);
+		}
+
+		public override object Create(object originalValue)
+		{
+			return this.mirrorConstructor(originalValue);
+		}
+
+		private void copyChildren<T>(T[] originalArray, T[] arrayCopy, CopySession session)
 		{
 			for (int i = 0; i < originalArray.Length; i++)
 				arrayCopy[i] = (T)session.CopyOf(originalArray[i]);
 		}
 
-		private static IEnumerable<object> listChildren<T>(T[] originalArray)
+		private IEnumerable<object> listChildren<T>(T[] originalArray)
 		{
 			foreach (var element in originalArray)
 				yield return element;
 		}
 
-		private static IkonBaseObject serializeChildren<T>(T[] originalArray, SaveSession session)
+		private IkonBaseObject serializeChildren<T>(T[] originalArray, SaveSession session)
 		{
 			return new IkonArray(originalArray.Select(x => session.Serialize(x)));
 		}
 
-		private static Func<object, object> BuildConstructor(Type type)
+		private object deserializeChildren<T>(Ikadn.IkadnBaseObject rawData, LoadSession session)
+		{
+			var saveData = rawData.To<IkonArray>();
+			var result = (T[])this.lengthConstructor(saveData.Count);
+
+			for (int i = 0; i < saveData.Count; i++)
+				result[i] = (T)session.Load(this.type, saveData[i]);
+
+			return result;
+		}
+
+		protected override MethodInfo getMethodInfo(Type type, string name)
+		{
+			return typeof(ArrayStrategy).
+				GetMethod(name, BindingFlags.NonPublic | BindingFlags.Instance).
+				MakeGenericMethod(type.GetElementType());
+		}
+
+		private static Func<int, object> BuildLengthConstructor(Type type)
+		{
+			var lengthParam = Expression.Parameter(typeof(int), "length");
+			var funcBody = Expression.NewArrayBounds(
+				type.GetElementType(),
+				Expression.ArrayLength(lengthParam)
+			);
+
+			var expr =
+				Expression.Lambda<Func<int, object>>(
+					funcBody, lengthParam
+				);
+
+			return expr.Compile();
+		}
+
+		private static Func<object, object> BuildMirrorConstructor(Type type)
 		{
 			var originalArray = Expression.Parameter(typeof(object), "original");
 			var funcBody = Expression.NewArrayBounds(
@@ -44,28 +89,6 @@ namespace Stareater.Utils.StateEngine
 				);
 
 			return expr.Compile();
-		}
-
-		//TODO(v0.7) try to unify with other AEnumerables
-		private static MethodInfo CopyMethodInfo(Type type)
-		{
-			return typeof(ArrayStrategy).
-				GetMethod("copyChildren", BindingFlags.NonPublic | BindingFlags.Static).
-				MakeGenericMethod(type.GetElementType());
-		}
-
-		private static MethodInfo DependencyMethodInfo(Type type)
-		{
-			return typeof(ArrayStrategy).
-				GetMethod("listChildren", BindingFlags.NonPublic | BindingFlags.Static).
-				MakeGenericMethod(type.GetElementType());
-		}
-
-		private static MethodInfo SerializeMethodInfo(Type type)
-		{
-			return typeof(ArrayStrategy).
-				GetMethod("serializeChildren", BindingFlags.NonPublic | BindingFlags.Static).
-				MakeGenericMethod(type.GetElementType());
 		}
 	}
 }

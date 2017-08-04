@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Ikadn;
 
 namespace Stareater.Utils.StateEngine
 {
@@ -10,6 +11,7 @@ namespace Stareater.Utils.StateEngine
 	{
 		private Func<object, object> getter;
 		private Action<object, object> setter;
+		private Type type;
 
 		public string Name { get; private set; } //TODO(v0.7) take name from attribute
 		public StateProperty Attribute { get; private set; }
@@ -22,6 +24,7 @@ namespace Stareater.Utils.StateEngine
 			this.Attribute = (StateProperty)property.GetCustomAttributes(true).First(a => a is StateProperty);
 			this.getter = BuildGetAccessor(property);
 			this.setter = BuildSetAccessor(property);
+			this.type = property.PropertyType;
 			this.Name = property.Name;
 		}
 
@@ -35,9 +38,19 @@ namespace Stareater.Utils.StateEngine
 			return this.getter(originalObject);
 		}
 
+		public void SetNull(object parentObject)
+		{
+			this.setter(parentObject, null);
+        }
+
 		public IkonBaseObject Serialize(object originalObject, SaveSession session)
 		{
 			return session.Serialize(this.getter(originalObject));
+		}
+
+		public void Deserialize(object parentObject, IkadnBaseObject rawData, LoadSession session)
+		{
+			this.setter(parentObject, session.Load(this.type, rawData));
 		}
 
 		private static Func<object, object> BuildGetAccessor(PropertyInfo property)

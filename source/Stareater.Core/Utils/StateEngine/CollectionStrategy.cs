@@ -9,23 +9,32 @@ namespace Stareater.Utils.StateEngine
 {
 	class CollectionStrategy : AEnumerableStrategy
 	{
+		private Func<object> constructor;
+
 		public CollectionStrategy(Type type)
-			: base(type, BuildConstructor(type), CopyMethodInfo(type), DependencyMethodInfo(type), SerializeMethodInfo(type))
-		{ }
-		
-		private static void copyChildren<T>(ICollection<T> originalCollection, ICollection<T> collectionCopy, CopySession session)
+			: base(type)
+		{
+			this.constructor = BuildConstructor(type);
+		}
+
+		public override object Create(object originalValue)
+		{
+			return this.constructor();
+		}
+
+		private void copyChildren<T>(ICollection<T> originalCollection, ICollection<T> collectionCopy, CopySession session)
 		{
 			foreach (var element in originalCollection)
 				collectionCopy.Add((T)session.CopyOf(element));
 		}
 
-		private static IEnumerable<object> listChildren<T>(ICollection<T> originalCollection)
+		private IEnumerable<object> listChildren<T>(ICollection<T> originalCollection)
 		{
 			foreach (var element in originalCollection)
 				yield return element;
 		}
 
-		private static IkonBaseObject serializeChildren<T>(ICollection<T> originalCollection, SaveSession session)
+		private IkonBaseObject serializeChildren<T>(ICollection<T> originalCollection, SaveSession session)
 		{
 			var data = new IkonArray();
 
@@ -35,45 +44,32 @@ namespace Stareater.Utils.StateEngine
 			return data;
 		}
 
-		private static Func<object, object> BuildConstructor(Type type)
+		private object deserializeChildren<T>(Ikadn.IkadnBaseObject rawData, LoadSession session)
+		{
+			var saveData = rawData.To<IkonArray>();
+			var result = (ICollection<T>)this.constructor();
+
+			foreach (var elementData in saveData)
+				result.Add((T)session.Load(this.type, elementData));
+
+			return result;
+		}
+
+		protected override MethodInfo getMethodInfo(Type type, string name)
+		{
+			var interfaceType = type.GetInterfaces().First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
+
+			return typeof(CollectionStrategy).
+				GetMethod(name, BindingFlags.NonPublic | BindingFlags.Instance).
+				MakeGenericMethod(interfaceType.GetGenericArguments()[0]);
+		}
+
+		private static Func<object> BuildConstructor(Type type)
 		{
 			var ctorInfo = type.GetConstructor(new Type[0]);
 			var funcBody = Expression.New(ctorInfo);
 
-			var expr =
-				Expression.Lambda<Func<object, object>>(
-					funcBody,
-					Expression.Parameter(typeof(object), "o")
-				);
-
-			return expr.Compile();
-		}
-
-		private static MethodInfo CopyMethodInfo(Type type)
-		{
-            var interfaceType = type.GetInterfaces().First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
-
-            return typeof(CollectionStrategy).
-				GetMethod("copyChildren", BindingFlags.NonPublic | BindingFlags.Static).
-				MakeGenericMethod(interfaceType.GetGenericArguments()[0]);
-		}
-
-		private static MethodInfo DependencyMethodInfo(Type type)
-		{
-			var interfaceType = type.GetInterfaces().First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
-
-			return typeof(CollectionStrategy).
-				GetMethod("listChildren", BindingFlags.NonPublic | BindingFlags.Static).
-				MakeGenericMethod(interfaceType.GetGenericArguments()[0]);
-		}
-
-		private static MethodInfo SerializeMethodInfo(Type type)
-		{
-			var interfaceType = type.GetInterfaces().First(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
-
-			return typeof(CollectionStrategy).
-				GetMethod("serializeChildren", BindingFlags.NonPublic | BindingFlags.Static).
-				MakeGenericMethod(interfaceType.GetGenericArguments()[0]);
+			return Expression.Lambda<Func<object>>(funcBody).Compile();
 		}
 	}
 }

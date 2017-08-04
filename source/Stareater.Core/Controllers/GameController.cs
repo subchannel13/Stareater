@@ -15,7 +15,15 @@ namespace Stareater.Controllers
 	public class GameController
 	{
 		internal const string ReportContext = "Reports";
-		private static StateManager stateManager = new StateManager();
+		private static StateManager stateManager = null;
+
+		internal static StateManager GetStateManager()
+		{
+			if (stateManager == null)
+				stateManager = new StateManager();
+
+			return stateManager;
+		}
 		
 		private object threadLocker = new object();
 		private AutoResetEvent processingSync = new AutoResetEvent(true);
@@ -59,7 +67,7 @@ namespace Stareater.Controllers
 
 		internal IkadnBaseObject Save()
 		{
-			return this.GameInstance.Save(stateManager);
+			return this.GameInstance.Save(GetStateManager());
 		}
 
 		/// <summary>
@@ -128,7 +136,7 @@ namespace Stareater.Controllers
 					return;
 				
 				this.endTurnCopy = new GameController();
-				var gameCopy = gameObj.ReadonlyCopy(stateManager);
+				var gameCopy = gameObj.ReadonlyCopy(GetStateManager());
 				
 				this.endTurnCopy.gameObj = gameCopy;
 				this.endTurnCopy.State = this.State;
