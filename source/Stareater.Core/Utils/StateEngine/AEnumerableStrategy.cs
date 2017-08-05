@@ -60,7 +60,7 @@ namespace Stareater.Utils.StateEngine
 			var expr =
 				Expression.Lambda<Action<object, object, object, CopySession>>(
 					Expression.Call(
-						thisParam,
+						Expression.Convert(thisParam, copyChildrenMethod.DeclaringType),
                         copyChildrenMethod, 
 						Expression.Convert(originalParam, type), 
 						Expression.Convert(copyParam, type),
@@ -83,7 +83,7 @@ namespace Stareater.Utils.StateEngine
 			var expr =
 				Expression.Lambda<Func<object, object, IEnumerable<object>>>(
 					Expression.Call(
-						thisParam,
+						Expression.Convert(thisParam, childDependencyMethod.DeclaringType),
 						childDependencyMethod,
 						Expression.Convert(originalParam, type)
 					),
@@ -103,7 +103,7 @@ namespace Stareater.Utils.StateEngine
 			var expr =
 				Expression.Lambda<Func<object, object, SaveSession, IkonBaseObject>>(
 					Expression.Call(
-						thisParam,
+						Expression.Convert(thisParam, serializeChildrenMethod.DeclaringType),
 						serializeChildrenMethod,
 						Expression.Convert(originalParam, type),
 						sessionParam
@@ -125,7 +125,7 @@ namespace Stareater.Utils.StateEngine
 			var expr =
 				Expression.Lambda<Func<object, IkadnBaseObject, LoadSession, object>>(
 					Expression.Call(
-						thisParam,
+						Expression.Convert(thisParam, deserializeChildrenMethod.DeclaringType),
 						deserializeChildrenMethod,
 						saveDataParam,
 						sessionParam

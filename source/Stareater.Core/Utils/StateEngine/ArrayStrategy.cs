@@ -62,14 +62,14 @@ namespace Stareater.Utils.StateEngine
 		private static Func<int, object> BuildLengthConstructor(Type type)
 		{
 			var lengthParam = Expression.Parameter(typeof(int), "length");
-			var funcBody = Expression.NewArrayBounds(
-				type.GetElementType(),
-				Expression.ArrayLength(lengthParam)
-			);
 
 			var expr =
 				Expression.Lambda<Func<int, object>>(
-					funcBody, lengthParam
+					Expression.NewArrayBounds(
+						type.GetElementType(),
+						lengthParam
+					), 
+					lengthParam
 				);
 
 			return expr.Compile();

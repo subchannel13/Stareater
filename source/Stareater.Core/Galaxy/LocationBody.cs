@@ -4,7 +4,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
 {
-	[StateType(saveMethod: "Save")]
+	[StateType(saveMethod: "Save", loadMethod: "Load")]
 	struct LocationBody
 	{
 		public StarData Star;
