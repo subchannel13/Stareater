@@ -3,6 +3,7 @@ using System.Linq;
 using Ikadn;
 using Ikadn.Ikon.Types;
 using Stareater.Localization.StarNames;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
 {
@@ -46,6 +47,13 @@ namespace Stareater.Galaxy
 		{
 			return rawData.Tag.Equals(ConstellationStarName.SaveTag) ? 
 				ConstellationStarName.Load(rawData.To<IkonComposite>()) : 
+				ProperStarName.Load(rawData.To<IkonComposite>());
+		}
+
+		public static IStarName loadName(IkadnBaseObject rawData, LoadSession session)
+		{
+			return rawData.Tag.Equals(ConstellationStarName.SaveTag) ?
+				ConstellationStarName.Load(rawData.To<IkonComposite>()) :
 				ProperStarName.Load(rawData.To<IkonComposite>());
 		}
 	}

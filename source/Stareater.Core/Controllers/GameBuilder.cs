@@ -57,7 +57,7 @@ namespace Stareater.Controllers
 			deindexer.AddAll(statics.Thrusters.Values, x => x.IdCode);
 			deindexer.AddAll(statics.Traits.Values, x => x.IdCode);
 
-			return stateManager.Load<MainGame>(saveData);
+			return stateManager.Load<MainGame>(saveData, deindexer);
 			var loadedStates = loadSaveData(saveData, deindexer, statics);
 			var states = loadedStates.Item1;
 			var players = loadedStates.Item2;

@@ -50,7 +50,7 @@ namespace Stareater.Utils.StateEngine
 			var result = (ICollection<T>)this.constructor();
 
 			foreach (var elementData in saveData)
-				result.Add((T)session.Load(this.type, elementData));
+				result.Add(session.Load<T>(elementData));
 
 			return result;
 		}

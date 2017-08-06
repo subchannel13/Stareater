@@ -40,5 +40,10 @@ namespace Stareater.Galaxy
 		{
 			return new BodyTrait(this, location, loadData.To<IkonComposite>());
 		}
+
+		private static ITraitEffect Load(Ikadn.IkadnBaseObject loadData, LoadSession session)
+		{
+			return null; //TODO(v0.7) stub, refactor traits so they don't depend on a body
+		}
 	}
 }

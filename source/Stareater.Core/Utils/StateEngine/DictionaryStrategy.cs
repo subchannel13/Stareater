@@ -57,8 +57,8 @@ namespace Stareater.Utils.StateEngine
 
 			for (int i = 0; i < saveData.Count; i += 2)
 				result.Add(
-					(K)session.Load(this.type, saveData[i]),
-					(V)session.Load(this.type, saveData[i + 1])
+					session.Load<K>(saveData[i]),
+					session.Load<V>(saveData[i + 1])
 				);
 
 			return result;

@@ -11,6 +11,7 @@ namespace Stareater.Utils.StateEngine
 	{
 		private Func<object, object> getter;
 		private Action<object, object> setter;
+		private Action<object, IkadnBaseObject, LoadSession> deserializer;
 		private Type type;
 
 		public string Name { get; private set; } //TODO(v0.7) take name from attribute
@@ -24,6 +25,7 @@ namespace Stareater.Utils.StateEngine
 			this.Attribute = (StateProperty)property.GetCustomAttributes(true).First(a => a is StateProperty);
 			this.getter = BuildGetAccessor(property);
 			this.setter = BuildSetAccessor(property);
+			this.deserializer = BuildDeserializer(property);
 			this.type = property.PropertyType;
 			this.Name = property.Name;
 		}
@@ -50,7 +52,7 @@ namespace Stareater.Utils.StateEngine
 
 		public void Deserialize(object parentObject, IkadnBaseObject rawData, LoadSession session)
 		{
-			this.setter(parentObject, session.Load(this.type, rawData));
+			this.deserializer(parentObject, rawData, session);
 		}
 
 		private static Func<object, object> BuildGetAccessor(PropertyInfo property)
@@ -84,6 +86,32 @@ namespace Stareater.Utils.StateEngine
 						Expression.Convert(value, method.GetParameters()[0].ParameterType)),
 					obj,
 					value);
+
+			return expr.Compile();
+		}
+
+		private static Action<object, IkadnBaseObject, LoadSession> BuildDeserializer(PropertyInfo property)
+		{
+			var method = property.GetSetMethod(true);
+			var obj = Expression.Parameter(typeof(object), "o");
+			var saveDataParam = Expression.Parameter(typeof(IkadnBaseObject), "rawData");
+			var sessionParam = Expression.Parameter(typeof(LoadSession), "session");
+
+			var loadMethod = typeof(LoadSession).
+				GetMethod("Load", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).
+				MakeGenericMethod(property.PropertyType); ;
+
+			var expr =
+				Expression.Lambda<Action<object, IkadnBaseObject, LoadSession>>(
+					Expression.Call(
+						Expression.Convert(obj, method.DeclaringType),
+						method,
+						Expression.Call(sessionParam, loadMethod, saveDataParam)
+					),
+					obj,
+					saveDataParam,
+					sessionParam
+				);
 
 			return expr.Compile();
 		}

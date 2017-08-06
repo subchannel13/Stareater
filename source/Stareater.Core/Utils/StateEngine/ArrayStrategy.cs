@@ -47,7 +47,7 @@ namespace Stareater.Utils.StateEngine
 			var result = (T[])this.lengthConstructor(saveData.Count);
 
 			for (int i = 0; i < saveData.Count; i++)
-				result[i] = (T)session.Load(this.type, saveData[i]);
+				result[i] = session.Load<T>(saveData[i]);
 
 			return result;
 		}

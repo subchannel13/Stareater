@@ -75,6 +75,18 @@ namespace Stareater.GameData.Databases.Tables
  
 		}
 
+		public static ConstructionOrders Load(Ikadn.IkadnBaseObject rawData, LoadSession session)
+		{
+			var saveData = rawData.To<IkonComposite>();
+			var result = new ConstructionOrders(saveData[SpendingRatioKey].To<double>());
+
+			var queueSave = saveData[QueueKey];
+			foreach (var item in queueSave.To<IkonArray>())
+				result.Queue.Add(session.Deindexer.Get<Constructable>(item.To<string>()));
+
+			return result;
+		}
+
 		public static ConstructionOrders Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
 			var loadedData = new ConstructionOrders(rawData, deindexer);

@@ -1,4 +1,5 @@
 ﻿using Ikadn;
+using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;
 
@@ -10,18 +11,22 @@ namespace Stareater.Utils.StateEngine
 
 		private Func<Type, ITypeStrategy> expertGetter;
 
-		internal LoadSession(Func<Type, ITypeStrategy> expertGetter)
+		internal LoadSession(Func<Type, ITypeStrategy> expertGetter, ObjectDeindexer deindexer)
 		{
 			this.expertGetter = expertGetter;
+			this.Deindexer = deindexer;
 		}
 
-		internal object Load(Type type, IkadnBaseObject data)
+		public ObjectDeindexer Deindexer { get; private set; }
+
+		internal T Load<T>(IkadnBaseObject data)
 		{
 			if (deserialized.ContainsKey(data))
-				return deserialized[data];
+				return (T)deserialized[data];
 
-			var expert = this.expertGetter(type);
-			return expert.Deserialize(data, this);
+			var expert = this.expertGetter(typeof(T));
+			return (T)expert.Deserialize(data, this);
 		}
+
 	}
 }

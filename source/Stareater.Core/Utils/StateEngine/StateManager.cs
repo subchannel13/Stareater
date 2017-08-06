@@ -80,9 +80,9 @@ namespace Stareater.Utils.StateEngine
             return (T)new CopySession(getTypeStrategy).CopyOf(obj);
         }
 
-		public T Load<T>(IkonComposite saveData)
+		public T Load<T>(IkonComposite saveData, ObjectDeindexer deindexer)
 		{
-			return (T)new LoadSession(getTypeStrategy).Load(typeof(T), saveData["entryPoint"]);
+			return new LoadSession(getTypeStrategy, deindexer).Load<T>(saveData["entryPoint"]);
 		}
 
 		public IkonBaseObject Save(object obj, ObjectIndexer indexer)
@@ -173,16 +173,23 @@ namespace Stareater.Utils.StateEngine
 
 		private static Func<Ikadn.IkadnBaseObject, LoadSession, object> BuildLoadMethodCaller(Type type, Type loaderClass, string loadMethod)
 		{
-			var dataParam = Expression.Parameter(typeof(object), "rawData");
+			var dataParam = Expression.Parameter(typeof(Ikadn.IkadnBaseObject), "rawData");
 			var sessionParam = Expression.Parameter(typeof(LoadSession), "session");
-			var method = (loaderClass ?? type).GetMethod(loadMethod, BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(LoadSession) }, null);
+			var method = (loaderClass ?? type).GetMethod(
+				loadMethod,
+				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static, null, 
+				new[] { typeof(Ikadn.IkadnBaseObject), typeof(LoadSession) }, null
+			);
 
 			var expr =
 				Expression.Lambda<Func<Ikadn.IkadnBaseObject, LoadSession, object>>(
-					Expression.Call(
-						method,
-						dataParam,
-                        sessionParam
+					Expression.Convert(
+						Expression.Call(
+							method,
+							dataParam,
+							sessionParam
+						),
+						typeof(object)
 					),
 					dataParam,
 					sessionParam

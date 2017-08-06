@@ -33,7 +33,19 @@ namespace Stareater.Galaxy
 				new IkonComposite(StarTag).Add(IdKey, new IkonInteger(indexer.IndexOf(this.Star))) : 
 				new IkonComposite(PlanetTag).Add(IdKey, new IkonInteger(indexer.IndexOf(this.Planet)));
 		}
-		
+
+		public static LocationBody Load(Ikadn.IkadnBaseObject rawData, LoadSession session)
+		{
+			var saveData = rawData.To<IkonComposite>();
+			if (rawData.Tag.Equals(StarTag))
+				return new LocationBody(session.Load<StarData>(saveData[IdKey]));
+			else
+			{
+				Planet planet = session.Load<Planet>(saveData[IdKey]);
+				return new LocationBody(planet.Star, planet);
+			}
+		}
+
 		public static LocationBody Load(IkonComposite rawData, ObjectDeindexer deindexer)
 		{
 			if (rawData.Tag.Equals(StarTag))
