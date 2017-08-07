@@ -5,6 +5,7 @@ using Ikadn;
 using Ikadn.Ikon.Types;
 using Stareater.GameData.Ships;
 using Stareater.Players.Natives;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players
 {
@@ -29,7 +30,12 @@ namespace Stareater.Players
 			this.ControlType = original.ControlType;
 			this.OffscreenControl = null;
 		}
-		
+
+		private static IOffscreenPlayer loadControl(IkadnBaseObject rawData, LoadSession session)
+		{
+			return loadControl(rawData);
+		}
+
 		private static IOffscreenPlayer loadControl(IkadnBaseObject rawData)
 		{
 			var dataMap = rawData.To<IkonComposite>();

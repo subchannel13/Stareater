@@ -7,7 +7,8 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Ships
 {
-	class Component<T> where T : AComponentType
+	[StateType(saveMethod: "Save", loadMethod: "Load")]
+    class Component<T> where T : AComponentType
 	{
 		[StateProperty]
 		public T TypeInfo { get; private set; }
@@ -25,7 +26,12 @@ namespace Stareater.Ships
 
 		private Component()
 		{ }
-		
+
+		public IkadnBaseObject Save(SaveSession session)
+		{
+			return Save();
+		}
+
 		public IkadnBaseObject Save()
 		{
 			var data = new IkonArray();
@@ -38,7 +44,16 @@ namespace Stareater.Ships
 			
 			return data;
 		}
-		
+
+		public static Component<T> Load(IkonArray rawData, LoadSession session)
+		{
+			return new Component<T>(
+				session.Deindexer.Get<T>(rawData[TypeIndex].To<string>()),
+				rawData[LevelIndex].To<int>(),
+				QuantityIndex < rawData.Count ? rawData[QuantityIndex].To<int>() : 1
+			);
+		}
+
 		public static Component<T> Load(IkonArray rawData, ObjectDeindexer deindexer)
 		{
 			return new Component<T>(

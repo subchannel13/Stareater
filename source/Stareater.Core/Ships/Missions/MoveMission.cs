@@ -4,12 +4,15 @@ using Ikadn.Ikon.Types;
 using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.Utils.Collections;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Ships.Missions
 {
 	class MoveMission : AMission
 	{
+		[StateProperty]
 		public StarData Destination { get; private set; }
+		[StateProperty]
 		public Wormhole UsedWormhole { get; private set; }
 		
 		public MoveMission(StarData destination, Wormhole usedWormhole)
@@ -17,7 +20,10 @@ namespace Stareater.Ships.Missions
 			this.Destination = destination;
 			this.UsedWormhole = usedWormhole;
 		}
-		
+
+		private MoveMission()
+		{ }
+
 		public override void Accept(IMissionVisitor visitor)
 		{
 			visitor.Visit(this);
@@ -38,7 +44,18 @@ namespace Stareater.Ships.Missions
 		{
 			return new MoveMission(this.Destination, this.UsedWormhole);
 		}
-		
+
+		public override Ikadn.IkadnBaseObject Save(SaveSession session)
+		{
+			var saveData = new IkonComposite(MissionTag);
+			saveData.Add(DestinationKey, session.Serialize(this.Destination));
+
+			if (this.UsedWormhole != null)
+				saveData.Add(WormholeKey, session.Serialize(this.UsedWormhole));
+
+			return saveData;
+		}
+
 		public override Ikadn.IkadnBaseObject Save(ObjectIndexer indexer)
 		{
 			var saveData = new IkonComposite(MissionTag);
@@ -49,7 +66,19 @@ namespace Stareater.Ships.Missions
 			
 			return saveData;
 		}
-		
+
+		public static AMission Load(Ikadn.IkadnBaseObject rawData, LoadSession session)
+		{
+			var dataStruct = rawData as IkonComposite;
+			var destination = session.Load<StarData>(dataStruct[DestinationKey]);
+			Wormhole usedWormhole = null;
+
+			if (dataStruct.Keys.Contains(WormholeKey))
+				usedWormhole = session.Load<Wormhole>(dataStruct[WormholeKey]);
+
+			return new MoveMission(destination, usedWormhole);
+		}
+
 		public static AMission Load(Ikadn.IkadnBaseObject rawData, ObjectDeindexer deindexer)
 		{
 			var dataStruct = rawData as IkonComposite;

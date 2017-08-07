@@ -30,6 +30,10 @@ namespace Stareater.Utils.StateEngine
 				(x, session) => new IkonInteger((int)x),
 				(x, session) => x.To<int>()
 			);
+			this.experts[typeof(long)] = new TerminalStrategy(
+				(x, session) => new IkonInteger((long)x),
+				(x, session) => x.To<long>()
+			);
 			this.experts[typeof(string)] = new TerminalStrategy(
 				(x, session) => new IkonText((string)x),
 				(x, session) => x.To<string>()

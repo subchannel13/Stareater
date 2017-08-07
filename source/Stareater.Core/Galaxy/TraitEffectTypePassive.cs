@@ -36,7 +36,7 @@ namespace Stareater.Galaxy
 
 			public IkonBaseObject Save(SaveSession session)
 			{
-				return new IkonComposite("");
+				return new IkonComposite("Passive");
             }
 		}
 	}
