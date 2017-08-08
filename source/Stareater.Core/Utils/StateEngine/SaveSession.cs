@@ -12,7 +12,7 @@ namespace Stareater.Utils.StateEngine
 		private readonly ObjectIndexer indexer;
         private readonly Dictionary<object, IkonBaseObject> referencedData = new Dictionary<object, IkonBaseObject>();
 		private readonly HashSet<object> unreferencedData = new HashSet<object>();
-        private readonly Dictionary<Type, int> nextReference = new Dictionary<Type, int>();
+        private readonly Dictionary<string, int> nextReference = new Dictionary<string, int>();
 		private readonly Dictionary<object, ICollection<object>> dependencies = new Dictionary<object, ICollection<object>>();
 
 		public SaveSession(Func<Type, ITypeStrategy> expertGetter, ObjectIndexer indexer)
@@ -69,14 +69,14 @@ namespace Stareater.Utils.StateEngine
             }
 		}
 
-		internal IkonReference SaveReference(object originalValue, IkonBaseObject serializedValue)
+		internal IkonReference SaveReference(object originalValue, IkonBaseObject serializedValue, string namePrefix)
 		{
-			if (!this.nextReference.ContainsKey(originalValue.GetType()))
-				this.nextReference[originalValue.GetType()] = 0;
+			if (!this.nextReference.ContainsKey(namePrefix))
+				this.nextReference[namePrefix] = 0;
 
-			var referenceName = originalValue.GetType().Name + this.nextReference[originalValue.GetType()].ToString();
+			var referenceName = namePrefix + this.nextReference[namePrefix].ToString();
 			this.referencedData[originalValue] = serializedValue;
-			this.nextReference[originalValue.GetType()]++;
+			this.nextReference[namePrefix]++;
             serializedValue.ReferenceNames.Add(referenceName);
 
 			return new IkonReference(referenceName);

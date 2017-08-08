@@ -7,7 +7,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Ships
 {
-	[StateType(saveMethod: "Save", loadMethod: "Load")]
+	[StateType(saveTag: "Component")]
     class Component<T> where T : AComponentType
 	{
 		[StateProperty]

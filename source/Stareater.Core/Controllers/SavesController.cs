@@ -66,7 +66,7 @@ namespace Stareater.Controllers
 					saveFiles.Add(
 						new SavedGameInfo(
 							rawData[SaveGameTitleKey].To<string>(),
-							rawData[MainGame.TurnKey].To<int>(),
+							0, //TODO(v0.7) read turn number from file
 							rawData,
 							file
 						),

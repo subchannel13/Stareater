@@ -121,7 +121,12 @@ namespace Stareater.Utils.StateEngine
             if (type.IsInterface || type.IsAbstract)
                 throw new ArgumentException("Type must be concrete");
 
-            if (type.IsArray)
+			var properties = (StateType)getBaseTypes(type).
+				Concat(type.GetInterfaces()).
+                SelectMany(x => x.GetCustomAttributes(true)).
+				FirstOrDefault(x => x is StateType);
+
+			if (type.IsArray)
                 return new ArrayStrategy(type);
 
             if (type.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IDictionary<,>)))
@@ -131,17 +136,13 @@ namespace Stareater.Utils.StateEngine
 				return new CollectionStrategy(type);
 
 			if (type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Any(IsStateData))
-				return new ClassStrategy(type);
+				return new ClassStrategy(type, properties);
 
 			if (type.IsEnum)
 				return new TerminalStrategy(
 					(x, session) => new IkonComposite(x.ToString()),
 					(x, session) => Enum.Parse(type, (string)x.Tag)
                 );
-
-			var properties = (StateType)type.GetCustomAttributes(true).
-				Concat(type.GetInterfaces().SelectMany(x => x.GetCustomAttributes(true))).
-				FirstOrDefault(x => x is StateType);
 
 			if (properties != null && properties.NotStateData)
 				return new TerminalStrategy(null, null);
@@ -154,6 +155,16 @@ namespace Stareater.Utils.StateEngine
 
 			throw new ArgumentException("Undefined terminal strategy for type: " + type.Name);
 		}
+
+		private static IEnumerable<Type> getBaseTypes(Type type)
+		{
+			do
+			{
+				yield return type;
+				type = type.BaseType;
+			}
+			while (type != null);
+        }
 
 		private static Func<object, SaveSession, IkonBaseObject> BuildSaveMethodCaller(Type type, string saveMethod)
 		{

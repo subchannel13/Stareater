@@ -13,14 +13,18 @@ namespace Stareater.Utils.StateEngine
 		private Type type;
 		private Func<object> constructor;
 		private List<PropertyStrategy> properties;
+		private string saveTag;
 		
-		public ClassStrategy(Type type)
+		public ClassStrategy(Type type, StateType attributes)
 		{
 			this.type = type;
 			this.constructor = BuildConstructor(type);
 			this.properties = getProperties(type).
 				Select(x => new PropertyStrategy(x)).
 				ToList();
+
+			attributes = attributes ?? new StateType();
+			this.saveTag = attributes.SaveTag ?? type.Name;
 		}
 
         #region ITypeStrategy implementation
@@ -42,8 +46,8 @@ namespace Stareater.Utils.StateEngine
 
 		public IkonBaseObject Serialize(object originalValue, SaveSession session)
 		{
-			var data = new IkonComposite(type.Name); //TODO(v0.7) take name from attribute
-			var reference = session.SaveReference(originalValue, data);
+			var data = new IkonComposite(this.saveTag);
+			var reference = session.SaveReference(originalValue, data, this.saveTag);
 
 			foreach (var property in this.properties.Where(x => x.Attribute.DoSave))
 				if (property.Get(originalValue) != null)
