@@ -6,14 +6,12 @@ using System.Windows.Forms;
 
 using OpenTK;
 using Stareater.Controllers;
-using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.Localization;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
-using Stareater.GLData;
 using Stareater.GraphicsEngine;
 using Stareater.GLData.SpriteShader;
 
@@ -308,7 +306,7 @@ namespace Stareater.GLRenderers
 			var aspect = canvasSize.X / canvasSize.Y;
 			var zoom = (float)Math.Pow(ZoomBase, zoomLevel);
             var radius = DefaultViewSize / zoom;
-			var uiScale = screenLength / zoom;
+			var uiScale = screenLength;
 			var transform =
 					Matrix4.CreateScale(TurnTextScale * uiScale) *
 					Matrix4.CreateTranslation(
