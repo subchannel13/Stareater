@@ -27,7 +27,7 @@ namespace Stareater.Utils.Collections
 			
 			this.ids[type].Add(id, item);
 		}
-		
+
 		public void AddAll<T>(IEnumerable<T> items)
 		{
 			foreach(var item in items)
@@ -39,7 +39,12 @@ namespace Stareater.Utils.Collections
 			foreach(var item in items)
 				this.Add(item, idMethod(item));
 		}
-		
+
+		public bool HasType(Type type)
+		{
+			return this.indices.ContainsKey(type);
+		}
+
 		public T Get<T>(int index)
 		{
 			return (T)this.indices[typeof(T)][index];

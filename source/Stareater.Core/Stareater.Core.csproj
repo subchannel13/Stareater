@@ -460,6 +460,7 @@
     <Compile Include="Utils\StateEngine\CopySession.cs" />
     <Compile Include="Utils\StateEngine\DictionaryStrategy.cs" />
     <Compile Include="Utils\StateEngine\ITypeStrategy.cs" />
+    <Compile Include="Utils\StateEngine\StateBaseType.cs" />
     <Compile Include="Utils\StateEngine\StateManager.cs" />
     <Compile Include="Utils\StateEngine\StateProperty.cs" />
     <Compile Include="Utils\StateEngine\StateType.cs" />

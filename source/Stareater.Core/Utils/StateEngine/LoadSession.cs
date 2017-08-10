@@ -24,7 +24,10 @@ namespace Stareater.Utils.StateEngine
 			if (deserialized.ContainsKey(data))
 				return (T)deserialized[data];
 
-			var expert = this.expertGetter(typeof(T));
+			if (this.Deindexer.HasType(typeof(T)))
+				return this.Deindexer.Get<T>(data.To<int>());
+
+            var expert = this.expertGetter(typeof(T));
 			return (T)expert.Deserialize(data, this);
 		}
 

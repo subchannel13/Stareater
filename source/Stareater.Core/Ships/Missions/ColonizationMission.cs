@@ -8,6 +8,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Ships.Missions
 {
+	[StateType(saveMethod: "Save", saveTag: MissionTag)]
 	class ColonizationMission : AMission
 	{
 		[StateProperty]
@@ -32,7 +33,7 @@ namespace Stareater.Ships.Missions
 			return new ColonizationMission(galaxyRemap.Planets[this.Target]);
 		}
 
-		public override IkadnBaseObject Save(SaveSession session)
+		public override IkonBaseObject Save(SaveSession session)
 		{
 			var saveData = new IkonComposite(MissionTag);
 			saveData.Add(TargetKey, session.Serialize(this.Target));
@@ -47,6 +48,12 @@ namespace Stareater.Ships.Missions
 			
 			return saveData;
 		}
+
+		public static AMission Load(IkadnBaseObject rawData, LoadSession session)
+		{
+			return new ColonizationMission(session.Load<Planet>(rawData.To<IkonComposite>()[TargetKey]));
+		}
+
 		public override bool Equals(object obj)
 		{
 			var other = obj as ColonizationMission;

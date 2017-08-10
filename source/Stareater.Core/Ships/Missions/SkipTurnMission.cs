@@ -7,6 +7,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Ships.Missions
 {
+	[StateType(saveMethod: "Save", saveTag: MissionTag)]
 	class SkipTurnMission : AMission
 	{
 		#region implemented abstract members of AMission
@@ -25,7 +26,7 @@ namespace Stareater.Ships.Missions
 			return new IkonComposite(MissionTag);
 		}
 
-		public override IkadnBaseObject Save(SaveSession session)
+		public override IkonBaseObject Save(SaveSession session)
 		{
 			return new IkonComposite(MissionTag);
 		}

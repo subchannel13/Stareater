@@ -4,12 +4,14 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
 {
-	[StateType(saveMethod: "Save", loadMethod: "Load")]
-	struct LocationBody
+	//TODO(v0.7) try to remove the need for this class
+	class LocationBody
 	{
-		public StarData Star;
-		public Planet Planet;
-		
+		[StateProperty]
+		public StarData Star { get; private set; }
+		[StateProperty]
+		public Planet Planet { get; private set; }
+
 		public LocationBody(StarData star, Planet planet)
 		{
 			this.Star = star;
@@ -17,6 +19,9 @@ namespace Stareater.Galaxy
 		}
 		
 		public LocationBody(StarData star) : this(star, null)
+		{ }
+
+		private LocationBody()
 		{ }
 
 		public IkonBaseObject Save(SaveSession session)

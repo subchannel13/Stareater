@@ -118,10 +118,7 @@ namespace Stareater.Utils.StateEngine
 
         public static ITypeStrategy MakeExpert(Type type)
         {
-            if (type.IsInterface || type.IsAbstract)
-                throw new ArgumentException("Type must be concrete");
-
-			var properties = (StateType)getBaseTypes(type).
+            var typeAttributes = (StateType)getBaseTypes(type).
 				Concat(type.GetInterfaces()).
                 SelectMany(x => x.GetCustomAttributes(true)).
 				FirstOrDefault(x => x is StateType);
@@ -136,7 +133,7 @@ namespace Stareater.Utils.StateEngine
 				return new CollectionStrategy(type);
 
 			if (type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Any(IsStateData))
-				return new ClassStrategy(type, properties);
+				return new ClassStrategy(type, typeAttributes);
 
 			if (type.IsEnum)
 				return new TerminalStrategy(
@@ -144,13 +141,24 @@ namespace Stareater.Utils.StateEngine
 					(x, session) => Enum.Parse(type, (string)x.Tag)
                 );
 
-			if (properties != null && properties.NotStateData)
+			if (typeAttributes != null && typeAttributes.NotStateData)
 				return new TerminalStrategy(null, null);
 
-			if (properties != null && properties.SaveMethod != null)
+			if (typeAttributes != null && typeAttributes.SaveMethod != null)
 				return new TerminalStrategy(
-					BuildSaveMethodCaller(type, properties.SaveMethod),
-					BuildLoadMethodCaller(type, properties.LoaderClass, properties.LoadMethod)
+					BuildSaveMethodCaller(type, typeAttributes.SaveMethod),
+					typeAttributes.LoadMethod != null ? BuildLoadMethodCaller(type, null, typeAttributes.LoadMethod) : null
+				);
+
+			var baseAttributes = (StateBaseType)getBaseTypes(type).
+				Concat(type.GetInterfaces()).
+				SelectMany(x => x.GetCustomAttributes(true)).
+				FirstOrDefault(x => x is StateBaseType);
+
+			if ((type.IsInterface || type.IsAbstract) && baseAttributes != null)
+				return new TerminalStrategy(
+					null,
+					BuildLoadMethodCaller(type, baseAttributes.LoaderClass, baseAttributes.LoadMethod)
 				);
 
 			throw new ArgumentException("Undefined terminal strategy for type: " + type.Name);

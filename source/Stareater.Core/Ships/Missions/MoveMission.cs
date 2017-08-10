@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
 using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.Utils.Collections;
@@ -8,6 +6,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Ships.Missions
 {
+	[StateType(saveMethod: "Save", saveTag: MissionTag)]
 	class MoveMission : AMission
 	{
 		[StateProperty]
@@ -45,7 +44,7 @@ namespace Stareater.Ships.Missions
 			return new MoveMission(this.Destination, this.UsedWormhole);
 		}
 
-		public override Ikadn.IkadnBaseObject Save(SaveSession session)
+		public override IkonBaseObject Save(SaveSession session)
 		{
 			var saveData = new IkonComposite(MissionTag);
 			saveData.Add(DestinationKey, session.Serialize(this.Destination));

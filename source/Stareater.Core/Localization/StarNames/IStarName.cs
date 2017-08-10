@@ -4,7 +4,8 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Localization.StarNames
 {
-	[StateType(saveMethod: "Save", loaderClass: typeof(StarData), loadMethod: "loadName")]
+	[StateType(saveMethod: "Save")]
+	[StateBaseType(loaderClass: typeof(StarData), loadMethod: "loadName")]
 	public interface IStarName
 	{
 		string ToText(Language language);

@@ -5,7 +5,8 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players
 {
-	[StateType(saveMethod: "Save", loaderClass:typeof(Player), loadMethod: "loadControl")]
+	[StateType(saveMethod: "Save")]
+	[StateBaseType(loaderClass: typeof(Player), loadMethod: "loadControl")]
 	public interface IOffscreenPlayer
 	{
 		PlayerController Controller { set; }

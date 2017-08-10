@@ -1,19 +1,19 @@
-﻿using System;
-using Ikadn;
+﻿using Ikadn;
 using Stareater.GameData;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
+using Ikadn.Ikon.Types;
 
 namespace Stareater.Ships.Missions
 {
-	[StateType(saveMethod: "Save", loaderClass: typeof(MissionFactory), loadMethod: "Load")]
+	[StateBaseType(loaderClass: typeof(MissionFactory), loadMethod: "Load")]
 	abstract class AMission
 	{
 		public abstract void Accept(IMissionVisitor visitor);
 
 		public abstract AMission Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap);
 		public abstract IkadnBaseObject Save(ObjectIndexer indexer);
-		public abstract IkadnBaseObject Save(SaveSession session);
+		public abstract IkonBaseObject Save(SaveSession session);
 
 		#region Equals and GetHashCode implementation
 		public abstract override bool Equals(object obj);

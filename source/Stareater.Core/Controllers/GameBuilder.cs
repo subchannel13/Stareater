@@ -40,25 +40,25 @@ namespace Stareater.Controllers
 			var statics = StaticsDB.Load(staticDataSources);
 			
 			var deindexer = new ObjectDeindexer();
-			int turn = saveData[MainGame.TurnKey].To<int>();
+			//int turn = saveData[MainGame.TurnKey].To<int>();
 			
-			deindexer.AddAll(statics.Constructables, x => x.IdCode);
-			deindexer.AddAll(statics.DevelopmentTopics, x => x.IdCode);
+			deindexer.AddAll(statics.Constructables);
+			deindexer.AddAll(statics.DevelopmentTopics);
 			deindexer.AddAll(statics.PredeginedDesigns);
-			deindexer.AddAll(statics.ResearchTopics, x => x.IdCode);
-			deindexer.AddAll(statics.Armors.Values, x => x.IdCode);
-			deindexer.AddAll(statics.Hulls.Values, x => x.IdCode);
-			deindexer.AddAll(statics.IsDrives.Values, x => x.IdCode);
-			deindexer.AddAll(statics.MissionEquipment.Values, x => x.IdCode);
-			deindexer.AddAll(statics.Reactors.Values, x => x.IdCode);
-			deindexer.AddAll(statics.Sensors.Values, x => x.IdCode);
-			deindexer.AddAll(statics.Shields.Values, x => x.IdCode);
-			deindexer.AddAll(statics.SpecialEquipment.Values, x => x.IdCode);
-			deindexer.AddAll(statics.Thrusters.Values, x => x.IdCode);
-			deindexer.AddAll(statics.Traits.Values, x => x.IdCode);
+			deindexer.AddAll(statics.ResearchTopics);
+			deindexer.AddAll(statics.Armors.Values);
+			deindexer.AddAll(statics.Hulls.Values);
+			deindexer.AddAll(statics.IsDrives.Values);
+			deindexer.AddAll(statics.MissionEquipment.Values);
+			deindexer.AddAll(statics.Reactors.Values);
+			deindexer.AddAll(statics.Sensors.Values);
+			deindexer.AddAll(statics.Shields.Values);
+			deindexer.AddAll(statics.SpecialEquipment.Values);
+			deindexer.AddAll(statics.Thrusters.Values);
+			deindexer.AddAll(statics.Traits.Values);
 
-			return stateManager.Load<MainGame>(saveData, deindexer);
-			var loadedStates = loadSaveData(saveData, deindexer, statics);
+			return stateManager.Load<MainGame>(saveData["Data"].To<IkonComposite>(), deindexer);
+			/*var loadedStates = loadSaveData(saveData, deindexer, statics);
 			var states = loadedStates.Item1;
 			var players = loadedStates.Item2;
 			var organellePlayer = loadedStates.Item3;
@@ -77,7 +77,7 @@ namespace Stareater.Controllers
 			game.Turn = turn;
 			game.CalculateDerivedEffects();
 			
-			return game;
+			return game;*/
 		}
 		
 		#region Creation helper methods
