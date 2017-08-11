@@ -3,6 +3,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Localization.StarNames
 {
+	[StateType(saveMethod: "Save")]
 	class ConstellationStarName : IStarName
 	{
 		internal const string ConstellationsContext = "ConstellationNames";

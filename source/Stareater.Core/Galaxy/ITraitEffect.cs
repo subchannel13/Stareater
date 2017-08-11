@@ -4,8 +4,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
 {
-	[StateType(saveMethod: "Save")]
-	[StateBaseType(loaderClass: typeof(BodyTraitType), loadMethod: "Load")]
+	[StateBaseType("Load", typeof(BodyTraitType))]
 	interface ITraitEffect
 	{
 		void PostcombatApply(StatesDB states, StaticsDB statics);

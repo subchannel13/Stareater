@@ -42,7 +42,7 @@ namespace Stareater.Controllers
 			var deindexer = new ObjectDeindexer();
 			//int turn = saveData[MainGame.TurnKey].To<int>();
 			
-			deindexer.AddAll(statics.Constructables);
+			deindexer.AddAll(statics.Constructables, x => x.IdCode);
 			deindexer.AddAll(statics.DevelopmentTopics);
 			deindexer.AddAll(statics.PredeginedDesigns);
 			deindexer.AddAll(statics.ResearchTopics);
@@ -57,7 +57,14 @@ namespace Stareater.Controllers
 			deindexer.AddAll(statics.Thrusters.Values);
 			deindexer.AddAll(statics.Traits.Values);
 
-			return stateManager.Load<MainGame>(saveData["Data"].To<IkonComposite>(), deindexer);
+			return stateManager.Load<MainGame>(
+				saveData["Data"].To<IkonComposite>(), 
+				deindexer,
+				new Dictionary<Type, Action<object>>()
+				{
+					{typeof(Design), x => ((Design)x).CalcHash(statics) }
+				}
+			);
 			/*var loadedStates = loadSaveData(saveData, deindexer, statics);
 			var states = loadedStates.Item1;
 			var players = loadedStates.Item2;

@@ -8,6 +8,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players.DefaultAI
 {
+	[StateType(saveMethod: "Save")]
 	class DefaultAIPlayer : IOffscreenPlayer, IBattleEventListener, IBombardEventListener
 	{
 		private readonly Random random = new Random();

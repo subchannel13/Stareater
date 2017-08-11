@@ -2,7 +2,7 @@
 
 namespace Stareater.Utils.StateEngine
 {
-	class StateType : Attribute
+	public class StateType : Attribute
 	{
 		public bool NotStateData { get; private set; }
 		public string SaveTag { get; private set; }

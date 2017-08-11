@@ -8,7 +8,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Ships.Missions
 {
-	[StateType(saveMethod: "Save", saveTag: MissionTag)]
+	[StateType(saveTag: MissionTag)]
 	class ColonizationMission : AMission
 	{
 		[StateProperty]

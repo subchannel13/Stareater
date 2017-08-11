@@ -14,7 +14,7 @@ namespace Stareater.GameData.Databases.Tables
     partial class ConstructionOrders 
 	{
 		public double SpendingRatio { get; set; }
-		public List<Constructable> Queue { get; private set; }
+		public List<Constructable> Queue { get; private set; } //TODO(v0.7) make different type which works better with mix of static and state data.
 
 		public ConstructionOrders(double spendingRatio) 
 		{

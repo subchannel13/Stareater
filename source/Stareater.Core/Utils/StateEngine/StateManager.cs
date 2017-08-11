@@ -84,9 +84,10 @@ namespace Stareater.Utils.StateEngine
             return (T)new CopySession(getTypeStrategy).CopyOf(obj);
         }
 
-		public T Load<T>(IkonComposite saveData, ObjectDeindexer deindexer)
+		public T Load<T>(IkonComposite saveData, ObjectDeindexer deindexer, Dictionary<Type, Action<object>> postLoadActions)
 		{
-			return new LoadSession(getTypeStrategy, deindexer).Load<T>(saveData["entryPoint"]);
+			return new LoadSession(getTypeStrategy, deindexer, postLoadActions).
+				Load<T>(saveData["entryPoint"]);
 		}
 
 		public IkonBaseObject Save(object obj, ObjectIndexer indexer)
@@ -118,6 +119,8 @@ namespace Stareater.Utils.StateEngine
 
         public static ITypeStrategy MakeExpert(Type type)
         {
+			if (type == typeof(Ships.Missions.ColonizationMission))
+				type = type;
             var typeAttributes = (StateType)getBaseTypes(type).
 				Concat(type.GetInterfaces()).
                 SelectMany(x => x.GetCustomAttributes(true)).
@@ -132,9 +135,6 @@ namespace Stareater.Utils.StateEngine
 			if (type.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>)))
 				return new CollectionStrategy(type);
 
-			if (type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Any(IsStateData))
-				return new ClassStrategy(type, typeAttributes);
-
 			if (type.IsEnum)
 				return new TerminalStrategy(
 					(x, session) => new IkonComposite(x.ToString()),
@@ -143,12 +143,6 @@ namespace Stareater.Utils.StateEngine
 
 			if (typeAttributes != null && typeAttributes.NotStateData)
 				return new TerminalStrategy(null, null);
-
-			if (typeAttributes != null && typeAttributes.SaveMethod != null)
-				return new TerminalStrategy(
-					BuildSaveMethodCaller(type, typeAttributes.SaveMethod),
-					typeAttributes.LoadMethod != null ? BuildLoadMethodCaller(type, null, typeAttributes.LoadMethod) : null
-				);
 
 			var baseAttributes = (StateBaseType)getBaseTypes(type).
 				Concat(type.GetInterfaces()).
@@ -159,6 +153,15 @@ namespace Stareater.Utils.StateEngine
 				return new TerminalStrategy(
 					null,
 					BuildLoadMethodCaller(type, baseAttributes.LoaderClass, baseAttributes.LoadMethod)
+				);
+
+			if (type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Any(IsStateData))
+				return new ClassStrategy(type, typeAttributes);
+
+			if (typeAttributes != null && typeAttributes.SaveMethod != null)
+				return new TerminalStrategy(
+					BuildSaveMethodCaller(type, typeAttributes.SaveMethod),
+					typeAttributes.LoadMethod != null ? BuildLoadMethodCaller(type, null, typeAttributes.LoadMethod) : null
 				);
 
 			throw new ArgumentException("Undefined terminal strategy for type: " + type.Name);

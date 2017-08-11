@@ -17,6 +17,7 @@ namespace Stareater.Galaxy
 			return new TraitEffectPassive();
 		}
 
+		[StateType(saveMethod: "Save")]
 		class TraitEffectPassive : ITraitEffect
 		{
 			public void PostcombatApply(StatesDB states, StaticsDB statics)

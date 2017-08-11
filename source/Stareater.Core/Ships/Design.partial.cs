@@ -93,7 +93,7 @@ namespace Stareater.Ships
 
 		public override int GetHashCode()
 		{
-			return hash.GetHashCode();
+			return this.hash.GetHashCode();
 		}
 
 		public static bool operator ==(Design lhs, Design rhs) {

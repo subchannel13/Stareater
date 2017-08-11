@@ -28,9 +28,9 @@ namespace Stareater.Ships.Missions
 			AMission mission = null;
 
 			if (rawData.Tag.Equals(MoveMission.MissionTag))
-				mission = MoveMission.Load(rawData, session);
+				mission = session.Load<MoveMission>(rawData);
 			else if (rawData.Tag.Equals(ColonizationMission.MissionTag))
-				mission = ColonizationMission.Load(rawData, session);
+				mission = session.Load<ColonizationMission>(rawData);
 			else
 				throw new KeyNotFoundException("Unknown order type: " + rawData.Tag);
 

@@ -27,6 +27,7 @@ namespace Stareater.Galaxy
 			return new TraitEffectAfflictPlanets(this, parentTrait, location.Star, loadData[StaticsDB.DurationTraitId].To<int>());
 		}
 
+		[StateType(saveMethod: "Save")]
 		class TraitEffectAfflictPlanets : ITraitEffect
 		{
 			private readonly TraitEffectTypeAfflictPlanets type;

@@ -3,6 +3,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Localization.StarNames
 {
+	[StateType(saveMethod: "Save")]
 	class ProperStarName : IStarName
 	{
 		internal const string ContextName = "ProperStarNames";

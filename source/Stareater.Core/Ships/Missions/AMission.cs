@@ -6,7 +6,7 @@ using Ikadn.Ikon.Types;
 
 namespace Stareater.Ships.Missions
 {
-	[StateBaseType(loaderClass: typeof(MissionFactory), loadMethod: "Load")]
+	[StateBaseType("Load", typeof(MissionFactory))]
 	abstract class AMission
 	{
 		public abstract void Accept(IMissionVisitor visitor);
