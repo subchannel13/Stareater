@@ -57,34 +57,35 @@ namespace Stareater.Controllers
 			deindexer.AddAll(statics.Thrusters.Values);
 			deindexer.AddAll(statics.Traits.Values);
 
-			return stateManager.Load<MainGame>(
+			var game = stateManager.Load<MainGame>(
 				saveData["Data"].To<IkonComposite>(), 
 				deindexer,
 				new Dictionary<Type, Action<object>>()
 				{
-					{typeof(Design), x => ((Design)x).CalcHash(statics) }
+					{ typeof(Design),
+						x =>
+						{
+							var design = (Design)x;
+							design.CalcHash(statics);
+							deindexer.Add(design.ConstructionProject, design.IdCode);
+						}
+					}
 				}
 			);
-			/*var loadedStates = loadSaveData(saveData, deindexer, statics);
-			var states = loadedStates.Item1;
-			var players = loadedStates.Item2;
-			var organellePlayer = loadedStates.Item3;
-			var derivates = initDerivates(statics, players, organellePlayer, states);
-			
-			var game = new MainGame(players.ToArray(), organellePlayer, statics, states, derivates);
-			foreach (var player in players)
+
+			var derivates = initDerivates(statics, game.MainPlayers, game.StareaterOrganelles, game.States);
+			game.Initialze(statics, derivates);
+			foreach (var player in game.MainPlayers)
 			{
 				var playerProc = derivates.Players.Of[player];
 				playerProc.Initialize(game);
 
-				foreach (var design in states.Designs.OwnedBy[player])
+				foreach (var design in game.States.Designs.OwnedBy[player])
 					playerProc.Analyze(design, statics);
 			}
-
-			game.Turn = turn;
 			game.CalculateDerivedEffects();
-			
-			return game;*/
+
+			return game;
 		}
 		
 		#region Creation helper methods

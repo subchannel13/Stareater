@@ -24,21 +24,19 @@ namespace Stareater.Utils.StateEngine
 		internal T Load<T>(IkadnBaseObject data)
 		{
 			if (deserialized.ContainsKey(data))
-				return (T)postprocess(typeof(T), deserialized[data]);
+				return (T)deserialized[data];
 
 			if (this.Deindexer.HasType(typeof(T)))
-				return (T)postprocess(typeof(T), this.Deindexer.Get<T>(data.To<int>()));
+				return this.Deindexer.Get<T>(data.To<int>());
 
             var expert = this.expertGetter(typeof(T));
-			return (T)postprocess(typeof(T), expert.Deserialize(data, this));
-		}
+			var result = expert.Deserialize(data, this);
 
-		private object postprocess(Type type, object obj)
-		{
-			if (postLoadActions.ContainsKey(type))
-				postLoadActions[type](obj);
+			if (postLoadActions.ContainsKey(typeof(T)))
+				postLoadActions[typeof(T)](result);
+			this.deserialized[data] = result;
 
-			return obj;
+			return (T)result;
 		}
 	}
 }

@@ -61,6 +61,13 @@ namespace Stareater
 				yield return this.StareaterOrganelles;
 			}
 		}
+
+		public void Initialze(StaticsDB statics, TemporaryDB derivates)
+		{
+			this.Statics = statics;
+			this.Derivates = derivates;
+			this.Processor = new GameProcessor(this);
+		}
 		
 		public MainGame ReadonlyCopy(StateManager stateManager)
 		{
