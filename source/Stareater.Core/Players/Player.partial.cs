@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Ikadn;
 using Ikadn.Ikon.Types;
@@ -33,26 +32,16 @@ namespace Stareater.Players
 
 		private static IOffscreenPlayer loadControl(IkadnBaseObject rawData, LoadSession session)
 		{
-			return loadControl(rawData);
-		}
+			var tag = rawData.Tag as string;
 
-		private static IOffscreenPlayer loadControl(IkadnBaseObject rawData)
-		{
-			var dataMap = rawData.To<IkonComposite>();
-			
-			if (dataMap.Tag.Equals(PlayerType.NoControllerTag))
+			if (tag.Equals(PlayerType.NoControllerTag))
 				return null;
-			else if (dataMap.Tag.Equals(PlayerType.AiControllerTag))
-			{
-				string factoryId = dataMap[PlayerType.FactoryIdKey].To<string>();
-				//TODO(later) what if no factory was found?
-				return PlayerAssets.AIDefinitions.First(x => x.Id == factoryId).Load(dataMap);
-			}
-			else if (dataMap.Tag.Equals(PlayerType.OrganelleControllerTag))
-				return new OrganellePlayerFactory().Load(dataMap);
-			
-			//TODO(later) Invalid controller data
-			return null;
+			else if (tag.Equals(PlayerType.OrganelleControllerTag))
+				return new OrganellePlayerFactory().Load(rawData.To<IkonComposite>(), session);
+			else if (PlayerAssets.AIDefinitions.ContainsKey(tag))
+				return PlayerAssets.AIDefinitions[tag].Load(rawData.To<IkonComposite>(), session);
+
+			throw new KeyNotFoundException("Can't load player controller for " + tag);
 		}
 	}
 }

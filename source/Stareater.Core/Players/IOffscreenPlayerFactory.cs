@@ -1,5 +1,5 @@
-﻿using System;
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players
 {
@@ -9,6 +9,6 @@ namespace Stareater.Players
 		string Name { get; }
 		
 		IOffscreenPlayer Create();
-		IOffscreenPlayer Load(IkonComposite rawData);
+		IOffscreenPlayer Load(IkonComposite rawData, LoadSession session);
 	}
 }

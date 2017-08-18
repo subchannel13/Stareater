@@ -23,7 +23,6 @@ namespace Stareater.Utils.StateEngine
 				Select(x => new PropertyStrategy(x)).
 				ToList();
 
-			attributes = attributes ?? new StateType();
 			this.saveTag = attributes.SaveTag ?? type.Name;
 		}
 

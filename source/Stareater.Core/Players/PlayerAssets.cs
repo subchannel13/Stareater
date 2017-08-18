@@ -12,7 +12,7 @@ namespace Stareater.Players
 	public static class PlayerAssets
 	{
 		public static Color[] Colors { get; private set; }
-		public static IOffscreenPlayerFactory[] AIDefinitions { get; private set; }
+		public static Dictionary<string, IOffscreenPlayerFactory> AIDefinitions { get; private set; }
 		public static Organization[] Organizations { get; private set; }
 
 		public static void ColorLoader(IEnumerable<TracableStream> dataSources)
@@ -52,8 +52,8 @@ namespace Stareater.Players
 
 		public static void AILoader(IEnumerable<IOffscreenPlayerFactory> aiFactories)
 		{
-			AIDefinitions = aiFactories.ToArray();
-		}
+			AIDefinitions = aiFactories.ToDictionary(x => x.Id);
+        }
 
 		public static void OrganizationsLoader(IEnumerable<TracableStream> dataSources)
 		{

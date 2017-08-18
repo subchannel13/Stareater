@@ -21,7 +21,7 @@ namespace Stareater.Utils.StateEngine
 
 		public ObjectDeindexer Deindexer { get; private set; }
 
-		internal T Load<T>(IkadnBaseObject data)
+		public T Load<T>(IkadnBaseObject data)
 		{
 			if (deserialized.ContainsKey(data))
 				return (T)deserialized[data];

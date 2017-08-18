@@ -119,12 +119,7 @@ namespace Stareater.Utils.StateEngine
 
         public static ITypeStrategy MakeExpert(Type type)
         {
-			if (type == typeof(Ships.Missions.ColonizationMission))
-				type = type;
-            var typeAttributes = (StateType)getBaseTypes(type).
-				Concat(type.GetInterfaces()).
-                SelectMany(x => x.GetCustomAttributes(true)).
-				FirstOrDefault(x => x is StateType);
+			var typeAttributes = getAttribute<StateType>(type) ?? new StateType();
 
 			if (type.IsArray)
                 return new ArrayStrategy(type);
@@ -141,13 +136,10 @@ namespace Stareater.Utils.StateEngine
 					(x, session) => Enum.Parse(type, (string)x.Tag)
                 );
 
-			if (typeAttributes != null && typeAttributes.NotStateData)
+			if (typeAttributes.NotStateData)
 				return new TerminalStrategy(null, null);
 
-			var baseAttributes = (StateBaseType)getBaseTypes(type).
-				Concat(type.GetInterfaces()).
-				SelectMany(x => x.GetCustomAttributes(true)).
-				FirstOrDefault(x => x is StateBaseType);
+			var baseAttributes = getAttribute<StateBaseType>(type);
 
 			if ((type.IsInterface || type.IsAbstract) && baseAttributes != null)
 				return new TerminalStrategy(
@@ -155,10 +147,11 @@ namespace Stareater.Utils.StateEngine
 					BuildLoadMethodCaller(type, baseAttributes.LoaderClass, baseAttributes.LoadMethod)
 				);
 
-			if (type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Any(IsStateData))
+			if (type.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public).Any(IsStateData) ||
+				typeAttributes.SaveTag != null)
 				return new ClassStrategy(type, typeAttributes);
 
-			if (typeAttributes != null && typeAttributes.SaveMethod != null)
+			if (typeAttributes.SaveMethod != null)
 				return new TerminalStrategy(
 					BuildSaveMethodCaller(type, typeAttributes.SaveMethod),
 					typeAttributes.LoadMethod != null ? BuildLoadMethodCaller(type, null, typeAttributes.LoadMethod) : null
@@ -167,14 +160,21 @@ namespace Stareater.Utils.StateEngine
 			throw new ArgumentException("Undefined terminal strategy for type: " + type.Name);
 		}
 
-		private static IEnumerable<Type> getBaseTypes(Type type)
+		private static T getAttribute<T>(Type type)
 		{
+			var superTypes = new List<Type>();
+			var baseType = type;
 			do
 			{
-				yield return type;
-				type = type.BaseType;
+				superTypes.Add(baseType);
+				baseType = baseType.BaseType;
 			}
-			while (type != null);
+			while (baseType != null);
+			superTypes.AddRange(type.GetInterfaces());
+
+			return (T)superTypes.
+				SelectMany(x => x.GetCustomAttributes(true)).
+				FirstOrDefault(x => x is T);
         }
 
 		private static Func<object, SaveSession, IkonBaseObject> BuildSaveMethodCaller(Type type, string saveMethod)

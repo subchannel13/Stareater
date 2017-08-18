@@ -62,6 +62,7 @@ namespace Stareater.Controllers
 		internal void LoadGame(MainGame game)
 		{
 			this.gameObj = game;
+			this.endedTurnPlayers.Clear();
 			makePlayers();
 		}
 

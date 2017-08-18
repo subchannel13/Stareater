@@ -1,5 +1,5 @@
-﻿using System;
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players.Natives
 {
@@ -11,9 +11,9 @@ namespace Stareater.Players.Natives
 			return new OrganellePlayer();
 		}
 		
-		public IOffscreenPlayer Load(IkonComposite rawData)
+		public IOffscreenPlayer Load(IkonComposite rawData, LoadSession session)
 		{
-			return this.Create();
+			return session.Load<OrganellePlayer>(rawData);
 		}
 		
 		public string Id 

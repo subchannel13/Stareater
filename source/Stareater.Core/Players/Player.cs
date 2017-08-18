@@ -76,7 +76,7 @@ namespace Stareater.Players
 			this.ControlType = (PlayerControlType)Enum.Parse(typeof(PlayerControlType), (string)controlTypeSave.Tag);
 
 			var offscreenControlSave = rawData[OffscreenControlKey];
-			this.OffscreenControl = loadControl(offscreenControlSave);
+			this.OffscreenControl = loadControl(offscreenControlSave, null);
 
 			var unlockedDesignsSave = rawData[UnlockedDesignsKey];
 			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
@@ -115,7 +115,7 @@ namespace Stareater.Players
 
 			data.Add(ControlTypeKey, new IkonComposite(this.ControlType.ToString()));
 
-			data.Add(OffscreenControlKey, this.OffscreenControl != null ? this.OffscreenControl.Save() : new IkonComposite("None"));
+			//data.Add(OffscreenControlKey, this.OffscreenControl != null ? this.OffscreenControl.Save() : new IkonComposite("None"));
 
 			var unlockedDesignsData = new IkonArray();
 			foreach(var item in this.UnlockedDesigns)

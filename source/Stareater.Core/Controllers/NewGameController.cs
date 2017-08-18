@@ -29,7 +29,7 @@ namespace Stareater.Controllers
 
 		public NewGameController()
 		{
-			foreach (var aiFactory in PlayerAssets.AIDefinitions)
+			foreach (var aiFactory in PlayerAssets.AIDefinitions.Values)
 				aiPlayers.Add(new PlayerType(PlayerControlType.LocalAI, aiFactory));
 
 			players.Add(new NewGamePlayerInfo("Marko Kovač",

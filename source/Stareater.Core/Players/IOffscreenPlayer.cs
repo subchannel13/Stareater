@@ -14,10 +14,5 @@ namespace Stareater.Players
 		void OnResearchComplete(ResearchCompleteController controller);
 		IBattleEventListener StartBattle(SpaceBattleController controller);
 		IBombardEventListener StartBombardment(BombardmentController controller);
-
-		IkonBaseObject Save(SaveSession session);
-
-		//TODO(v0.7) remove
-		IkonBaseObject Save();
 	}
 }

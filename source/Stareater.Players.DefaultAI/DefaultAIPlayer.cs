@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Ikadn.Ikon.Types;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
@@ -8,7 +7,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players.DefaultAI
 {
-	[StateType(saveMethod: "Save")]
+	[StateType(saveTag: DefaultAIFactory.FactoryId)]
 	class DefaultAIPlayer : IOffscreenPlayer, IBattleEventListener, IBombardEventListener
 	{
 		private readonly Random random = new Random();
@@ -68,22 +67,6 @@ namespace Stareater.Players.DefaultAI
 		}
 
 		#endregion
-
-		public IkonBaseObject Save(SaveSession session)
-		{
-			var data = new IkonComposite(PlayerType.AiControllerTag);
-			data.Add(PlayerType.FactoryIdKey, new IkonText(DefaultAIFactory.FactoryId));
-
-			return data;
-		}
-
-        public IkonBaseObject Save()
-		{
-			var data = new IkonComposite(PlayerType.AiControllerTag);
-			data.Add(PlayerType.FactoryIdKey, new IkonText(DefaultAIFactory.FactoryId));
-			
-			return data;
-		}
 
 		private void manage(AConstructionSiteController controller)
 		{

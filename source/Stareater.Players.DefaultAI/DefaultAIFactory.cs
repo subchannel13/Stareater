@@ -1,5 +1,6 @@
 ﻿using Ikadn.Ikon.Types;
 using Stareater.Localization;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players.DefaultAI
 {
@@ -22,9 +23,9 @@ namespace Stareater.Players.DefaultAI
 			return new DefaultAIPlayer();
 		}
 		
-		public IOffscreenPlayer Load(IkonComposite rawData)
+		public IOffscreenPlayer Load(IkonComposite rawData, LoadSession session)
 		{
-			return new DefaultAIPlayer();
+			return session.Load<DefaultAIPlayer>(rawData);
 		}
 	}
 }
