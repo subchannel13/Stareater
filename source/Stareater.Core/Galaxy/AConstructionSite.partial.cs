@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Ikadn;
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
 using Stareater.GameData;
-using Stareater.Players;
-using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
@@ -16,7 +9,7 @@ namespace Stareater.Galaxy
 	{
 		public abstract SiteType Type { get; }
 
-		public static AConstructionSite Load(IkadnBaseObject rawData, LoadSession session)
+		public static AConstructionSite Load(IkonBaseObject rawData, LoadSession session)
 		{
 			if (rawData.Tag.Equals("Colony")) //TODO(v0.7) use constant from Colony class
 				return session.Load<Colony>(rawData);

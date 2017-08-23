@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Ikadn;
 
 namespace Stareater.Utils.StateEngine
 {
@@ -11,7 +10,7 @@ namespace Stareater.Utils.StateEngine
 	{
 		private Func<object, object> getter;
 		private Action<object, object> setter;
-		private Action<object, IkadnBaseObject, LoadSession> deserializer;
+		private Action<object, IkonBaseObject, LoadSession> deserializer;
 		private Type type;
 
 		public string Name { get; private set; } //TODO(v0.7) take name from attribute
@@ -50,7 +49,7 @@ namespace Stareater.Utils.StateEngine
 			return session.Serialize(this.getter(originalObject));
 		}
 
-		public void Deserialize(object parentObject, IkadnBaseObject rawData, LoadSession session)
+		public void Deserialize(object parentObject, IkonBaseObject rawData, LoadSession session)
 		{
 			this.deserializer(parentObject, rawData, session);
 		}
@@ -90,19 +89,19 @@ namespace Stareater.Utils.StateEngine
 			return expr.Compile();
 		}
 
-		private static Action<object, IkadnBaseObject, LoadSession> BuildDeserializer(PropertyInfo property)
+		private static Action<object, IkonBaseObject, LoadSession> BuildDeserializer(PropertyInfo property)
 		{
 			var method = property.GetSetMethod(true);
 			var obj = Expression.Parameter(typeof(object), "o");
-			var saveDataParam = Expression.Parameter(typeof(IkadnBaseObject), "rawData");
+			var saveDataParam = Expression.Parameter(typeof(IkonBaseObject), "rawData");
 			var sessionParam = Expression.Parameter(typeof(LoadSession), "session");
 
 			var loadMethod = typeof(LoadSession).
-				GetMethod("Load", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).
-				MakeGenericMethod(property.PropertyType); ;
+				GetMethod("Load", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[] { typeof(IkonBaseObject) }, null).
+				MakeGenericMethod(property.PropertyType);
 
 			var expr =
-				Expression.Lambda<Action<object, IkadnBaseObject, LoadSession>>(
+				Expression.Lambda<Action<object, IkonBaseObject, LoadSession>>(
 					Expression.Call(
 						Expression.Convert(obj, method.DeclaringType),
 						method,

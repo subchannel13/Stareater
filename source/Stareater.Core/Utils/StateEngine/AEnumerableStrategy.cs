@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
-using Ikadn;
 
 namespace Stareater.Utils.StateEngine
 {
@@ -12,7 +11,7 @@ namespace Stareater.Utils.StateEngine
 		private Action<object, object, object, CopySession> copyChildrenInvoker;
 		private Func<object, object, IEnumerable<object>> childDependencyInvoker;
 		private Func<object, object, SaveSession, IkonBaseObject> serializeChildrenInvoker;
-		private Func<object, IkadnBaseObject, LoadSession, object> deserializeChildrenInvoker;
+		private Func<object, IkonBaseObject, LoadSession, object> deserializeChildrenInvoker;
 		protected Type type;
 
 		protected AEnumerableStrategy(Type type)
@@ -42,7 +41,7 @@ namespace Stareater.Utils.StateEngine
 			return this.serializeChildrenInvoker(this, originalValue, session);
 		}
 
-		public object Deserialize(IkadnBaseObject data, LoadSession session)
+		public object Deserialize(IkonBaseObject data, LoadSession session)
 		{
 			return this.deserializeChildrenInvoker(this, data, session);
 		}
@@ -116,14 +115,14 @@ namespace Stareater.Utils.StateEngine
 			return expr.Compile();
 		}
 
-		private static Func<object, IkadnBaseObject, LoadSession, object> BuildDeserializeInvoker(Type type, MethodInfo deserializeChildrenMethod)
+		private static Func<object, IkonBaseObject, LoadSession, object> BuildDeserializeInvoker(Type type, MethodInfo deserializeChildrenMethod)
 		{
 			var thisParam = Expression.Parameter(typeof(object), "thisObj");
-			var saveDataParam = Expression.Parameter(typeof(IkadnBaseObject), "rawData");
+			var saveDataParam = Expression.Parameter(typeof(IkonBaseObject), "rawData");
 			var sessionParam = Expression.Parameter(typeof(LoadSession), "session");
 
 			var expr =
-				Expression.Lambda<Func<object, IkadnBaseObject, LoadSession, object>>(
+				Expression.Lambda<Func<object, IkonBaseObject, LoadSession, object>>(
 					Expression.Call(
 						Expression.Convert(thisParam, deserializeChildrenMethod.DeclaringType),
 						deserializeChildrenMethod,

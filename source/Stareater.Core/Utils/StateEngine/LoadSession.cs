@@ -1,4 +1,4 @@
-﻿using Ikadn;
+﻿using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;
@@ -7,11 +7,12 @@ namespace Stareater.Utils.StateEngine
 {
 	public class LoadSession
 	{
-		private readonly Dictionary<IkadnBaseObject, object> deserialized = new Dictionary<IkadnBaseObject, object>();
+		private readonly Dictionary<IkonBaseObject, object> deserialized = new Dictionary<IkonBaseObject, object>();
 
 		private Func<Type, ITypeStrategy> expertGetter;
 		private Dictionary<Type, Action<object>> postLoadActions;
 
+		//TODO(v0.7) check if post load actions are still needed
 		internal LoadSession(Func<Type, ITypeStrategy> expertGetter, ObjectDeindexer deindexer, Dictionary<Type, Action<object>> postLoadActions)
 		{
 			this.expertGetter = expertGetter;
@@ -19,9 +20,15 @@ namespace Stareater.Utils.StateEngine
 			this.Deindexer = deindexer;
 		}
 
+		//TODO(v0.7) try to refactor to make it private
 		public ObjectDeindexer Deindexer { get; private set; }
 
-		public T Load<T>(IkadnBaseObject data)
+		public T Load<T>(Ikadn.IkadnBaseObject data)
+		{
+			return Load<T>(data.To<IkonBaseObject>());
+		}
+
+        public T Load<T>(IkonBaseObject data)
 		{
 			if (deserialized.ContainsKey(data))
 				return (T)deserialized[data];

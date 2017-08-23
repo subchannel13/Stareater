@@ -9,6 +9,6 @@ namespace Stareater.Utils.StateEngine
 		void FillCopy(object originalValue, object copyInstance, CopySession session);
 		IEnumerable<object> Dependencies(object originalValue);
 		IkonBaseObject Serialize(object originalValue, SaveSession session);
-		object Deserialize(Ikadn.IkadnBaseObject data, LoadSession session);
+		object Deserialize(IkonBaseObject data, LoadSession session);
 	}
 }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Ikadn;
 
 namespace Stareater.Utils.StateEngine
 {
@@ -55,14 +54,14 @@ namespace Stareater.Utils.StateEngine
 			return reference;
 		}
 
-		public object Deserialize(IkadnBaseObject rawData, LoadSession session)
+		public object Deserialize(IkonBaseObject rawData, LoadSession session)
 		{
 			var loadedValue = this.constructor();
 			var saveData = rawData.To<IkonComposite>();
 
 			foreach (var property in this.properties.Where(x => x.Attribute.DoSave))
 				if (saveData.Keys.Contains(property.Name))
-					property.Deserialize(loadedValue, saveData[property.Name], session);
+					property.Deserialize(loadedValue, saveData[property.Name].To<IkonBaseObject>(), session);
 				else
 					property.SetNull(loadedValue);
 

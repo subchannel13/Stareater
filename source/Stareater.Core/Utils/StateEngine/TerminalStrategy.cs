@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ikadn;
 using Ikadn.Ikon.Types;
 
 namespace Stareater.Utils.StateEngine
@@ -8,9 +7,9 @@ namespace Stareater.Utils.StateEngine
 	class TerminalStrategy : ITypeStrategy
 	{
 		private Func<object, SaveSession, IkonBaseObject> serializationMethod;
-		private Func<IkadnBaseObject, LoadSession, object> deserializationMethod;
+		private Func<IkonBaseObject, LoadSession, object> deserializationMethod;
 
-		public TerminalStrategy(Func<object, SaveSession, IkonBaseObject> serializationMethod, Func<IkadnBaseObject, LoadSession, object> deserializationMethod)
+		public TerminalStrategy(Func<object, SaveSession, IkonBaseObject> serializationMethod, Func<IkonBaseObject, LoadSession, object> deserializationMethod)
 		{
 			this.serializationMethod = serializationMethod;
 			this.deserializationMethod = deserializationMethod;
@@ -37,7 +36,7 @@ namespace Stareater.Utils.StateEngine
 			return this.serializationMethod(originalValue, session);
 		}
 
-		public object Deserialize(IkadnBaseObject data, LoadSession session)
+		public object Deserialize(IkonBaseObject data, LoadSession session)
 		{
 			return this.deserializationMethod(data, session);
 		}

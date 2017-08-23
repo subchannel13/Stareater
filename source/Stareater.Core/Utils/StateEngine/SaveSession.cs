@@ -10,9 +10,11 @@ namespace Stareater.Utils.StateEngine
 	{
 		private readonly Func<Type, ITypeStrategy> expertGetter;
 		private readonly ObjectIndexer indexer;
+
         private readonly Dictionary<object, IkonBaseObject> referencedData = new Dictionary<object, IkonBaseObject>();
+		private readonly Dictionary<string, int> nextReference = new Dictionary<string, int>();
+
 		private readonly HashSet<object> unreferencedData = new HashSet<object>();
-        private readonly Dictionary<string, int> nextReference = new Dictionary<string, int>();
 		private readonly Dictionary<object, ICollection<object>> dependencies = new Dictionary<object, ICollection<object>>();
 
 		public SaveSession(Func<Type, ITypeStrategy> expertGetter, ObjectIndexer indexer)
