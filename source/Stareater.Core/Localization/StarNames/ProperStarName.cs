@@ -1,53 +1,28 @@
-﻿using Ikadn.Ikon.Types;
-using Stareater.Utils.StateEngine;
+﻿using Stareater.Utils.StateEngine;
 
 namespace Stareater.Localization.StarNames
 {
-	[StateType(saveMethod: "Save")]
+	[StateType(saveTag: SaveTag)]
 	class ProperStarName : IStarName
 	{
 		internal const string ContextName = "ProperStarNames";
 		private const string KeyPrefix = "proper";
-		
-		int properNameIndex;
-			
+
+		private int nameIndex { get; set; }
+
 		public ProperStarName(int properNameIndex)
 		{
-			this.properNameIndex = properNameIndex;
+			this.nameIndex = properNameIndex;
 		}
-		
+
+		private ProperStarName()
+		{ }
+
 		public string ToText(Language language)
 		{
-			return language[ContextName][KeyPrefix + properNameIndex.ToString()].Text();
+			return language[ContextName][KeyPrefix + nameIndex.ToString()].Text();
 		}
 
-		#region Saving
-		public IkonBaseObject Save(SaveSession session)
-		{
-			IkonComposite data = new IkonComposite(SaveTag);
-			data.Add(IndexKey, new IkonInteger(this.properNameIndex));
-
-			return data;
-		}
-
-		//TODO(v0.7) remove
-		public IkonBaseObject Save()
-		{
-			IkonComposite data = new IkonComposite(SaveTag);
-			data.Add(IndexKey, new IkonInteger(this.properNameIndex));
-			
-			return data;
-		}
-
-		public static IStarName Load(IkonComposite rawData)
-		{
-			return new ProperStarName(
-				rawData[IndexKey].To<int>()
-			);
-		}
-		
 		public const string SaveTag = "Proper";
-		private const string IndexKey = "index";
-		#endregion
 	}
 }

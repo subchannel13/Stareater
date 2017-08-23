@@ -43,18 +43,11 @@ namespace Stareater.Galaxy
 		}
 		#endregion
 		
-		public static IStarName loadName(IkadnBaseObject rawData)
-		{
-			return rawData.Tag.Equals(ConstellationStarName.SaveTag) ? 
-				ConstellationStarName.Load(rawData.To<IkonComposite>()) : 
-				ProperStarName.Load(rawData.To<IkonComposite>());
-		}
-
 		public static IStarName loadName(IkadnBaseObject rawData, LoadSession session)
 		{
 			return rawData.Tag.Equals(ConstellationStarName.SaveTag) ?
-				ConstellationStarName.Load(rawData.To<IkonComposite>()) :
-				ProperStarName.Load(rawData.To<IkonComposite>());
+				(IStarName)session.Load<ConstellationStarName>(rawData) :
+				(IStarName)session.Load<ProperStarName>(rawData);
 		}
 	}
 }

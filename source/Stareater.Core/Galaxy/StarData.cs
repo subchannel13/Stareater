@@ -63,7 +63,7 @@ namespace Stareater.Galaxy
 			this.ImageSizeScale = imageSizeScaleSave.To<float>();
 
 			var nameSave = rawData[NameKey];
-			this.Name = loadName(nameSave);
+			//this.Name = loadName(nameSave);
 
 			var positionSave = rawData[PositionKey];
 			var positionArray = positionSave.To<IkonArray>();
@@ -100,7 +100,7 @@ namespace Stareater.Galaxy
 
 			data.Add(SizeKey, new IkonFloat(this.ImageSizeScale));
 
-			data.Add(NameKey, this.Name.Save());
+			//data.Add(NameKey, this.Name.Save());
 
 			var positionData = new IkonArray();
 			positionData.Add(new IkonFloat(this.Position.X));
