@@ -72,8 +72,8 @@ namespace Stareater.Utils.StateEngine
 				{
 					var data = x.To<IkonArray>();
 					return new NGenerics.DataStructures.Mathematical.Vector2D(
-						data[0].To<int>(),
-						data[1].To<int>()
+						data[0].To<double>(),
+						data[1].To<double>()
 					);
 				}
 			);

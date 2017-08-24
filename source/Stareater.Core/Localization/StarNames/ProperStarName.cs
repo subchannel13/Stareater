@@ -8,6 +8,7 @@ namespace Stareater.Localization.StarNames
 		internal const string ContextName = "ProperStarNames";
 		private const string KeyPrefix = "proper";
 
+		[StateProperty(saveKey: "index")]
 		private int nameIndex { get; set; }
 
 		public ProperStarName(int properNameIndex)

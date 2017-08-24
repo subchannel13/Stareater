@@ -13,7 +13,7 @@ namespace Stareater.Utils.StateEngine
 		private Action<object, IkonBaseObject, LoadSession> deserializer;
 		private Type type;
 
-		public string Name { get; private set; } //TODO(v0.7) take name from attribute
+		public string Name { get; private set; }
 		public StateProperty Attribute { get; private set; }
 
 		public PropertyStrategy(PropertyInfo property)
@@ -26,7 +26,7 @@ namespace Stareater.Utils.StateEngine
 			this.setter = BuildSetAccessor(property);
 			this.deserializer = BuildDeserializer(property);
 			this.type = property.PropertyType;
-			this.Name = property.Name;
+			this.Name = this.Attribute.SaveKey ?? property.Name;
 		}
 
 		public void Copy(object originalObject, object objectCopy, CopySession session)

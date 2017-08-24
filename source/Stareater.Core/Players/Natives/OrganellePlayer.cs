@@ -62,16 +62,6 @@ namespace Stareater.Players.Natives
 			return this;
 		}
 
-		public IkonBaseObject Save(SaveSession session)
-		{
-			return new IkonComposite(PlayerType.OrganelleControllerTag);
-		}
-
-		public IkonBaseObject Save()
-		{
-			return new IkonComposite(PlayerType.OrganelleControllerTag);
-		}
-
 		public void PlayUnit(CombatantInfo unitInfo)
 		{
 			var destination = unitInfo.ValidMoves.Aggregate(
