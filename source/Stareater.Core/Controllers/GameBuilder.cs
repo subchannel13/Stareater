@@ -40,7 +40,6 @@ namespace Stareater.Controllers
 			var statics = StaticsDB.Load(staticDataSources);
 			
 			var deindexer = new ObjectDeindexer();
-			//int turn = saveData[MainGame.TurnKey].To<int>();
 			
 			deindexer.AddAll(statics.Constructables, x => x.IdCode);
 			deindexer.AddAll(statics.DevelopmentTopics);

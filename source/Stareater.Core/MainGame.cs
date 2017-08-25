@@ -128,28 +128,6 @@ namespace Stareater
 
 			//TODO(v0.7) is the method necessary?
 			return stateManager.Save(this, indexer);
-		/*
-			ObjectIndexer indexer = this.GenerateIndices();
-			
-			var gameData = new IkonComposite(SaveGameTag);
-			var playersData = new IkonArray();
-			var ordersData = new IkonArray();
-
-			gameData.Add(TurnKey, new IkonInteger(this.Turn));
-
-			gameData.Add(StatesKey, this.States.Save(indexer));
-
-			foreach(var player in this.MainPlayers)
-				playersData.Add(player.Save(indexer));
-			gameData.Add(PlayersKey, playersData);
-			gameData.Add(OrganellePlayerKey, this.StareaterOrganelles.Save(indexer));
-			
-			foreach(var player in this.MainPlayers)
-				ordersData.Add(player.Orders.Save(indexer));
-			gameData.Add(OrdersKey, ordersData);
-			gameData.Add(OrganelleOrdersKey, this.StareaterOrganelles.Orders.Save(indexer));
-			
-			return gameData;*/
 		}
 		
 		public const string SaveGameTag = "Game";

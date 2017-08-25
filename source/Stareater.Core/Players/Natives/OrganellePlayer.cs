@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
-using Ikadn.Ikon.Types;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Galaxy;
 using Stareater.Utils;
