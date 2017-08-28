@@ -1,9 +1,7 @@
-﻿using System;
-using Stareater.Galaxy;
-using Stareater.GameData.Databases;
+﻿using Stareater.GameData.Databases;
 using Stareater.GameData.Ships;
-using Stareater.GameLogic;
 using Stareater.Utils.Collections;
+using Stareater.Galaxy.BodyTraits;
 
 namespace Stareater.GameLogic
 {
@@ -27,7 +25,7 @@ namespace Stareater.GameLogic
 		private double shieldEfficiency = 0;
 		private double planetEfficiency = 0;
 		
-		private BodyTraitType appliesTrait = null;
+		private TraitType appliesTrait = null;
 		
 		private AbilityStatsFactory(int level, StaticsDB statics)
 		{

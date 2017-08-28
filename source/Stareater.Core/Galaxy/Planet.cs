@@ -1,4 +1,4 @@
-﻿ 
+﻿
 
 
 using Ikadn.Ikon.Types;
@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Stareater.GameData;
+using Stareater.Galaxy.BodyTraits;
 
 namespace Stareater.Galaxy 
 {
@@ -22,15 +23,15 @@ namespace Stareater.Galaxy
 		[StateProperty]
 		public double Size { get; private set; }
 		[StateProperty]
-		public PendableSet<BodyTrait> Traits { get; private set; }
+		internal PendableSet<ITrait> Traits { get; private set; }
 
-		public Planet(StarData star, int position, PlanetType type, double size, List<BodyTraitType> traits) 
+		public Planet(StarData star, int position, PlanetType type, double size, List<TraitType> traits) 
 		{
 			this.Star = star;
 			this.Position = position;
 			this.Type = type;
 			this.Size = size;
-			this.Traits = new PendableSet<BodyTrait>(traits.Select(x => x.Instantiate(this)));
+			this.Traits = new PendableSet<ITrait>(traits.Select(x => x.Make()));
  
 			 
 		} 
@@ -41,9 +42,9 @@ namespace Stareater.Galaxy
 			this.Position = original.Position;
 			this.Type = original.Type;
 			this.Size = original.Size;
-			this.Traits = new PendableSet<BodyTrait>();
-			foreach(var item in original.Traits)
-				this.Traits.Add(item.Copy());
+			this.Traits = new PendableSet<ITrait>();
+			/*foreach(var item in original.Traits)
+				this.Traits.Add(item.Copy());*/
  
 			 
 		}
@@ -63,9 +64,9 @@ namespace Stareater.Galaxy
 			this.Size = sizeSave.To<double>();
 
 			var traitsSave = rawData[TraitsKey];
-			this.Traits = new PendableSet<BodyTrait>();
-			foreach(var item in traitsSave.To<IkonArray>())
-				this.Traits.Add(deindexer.Get<BodyTraitType>(item.Tag as string).Load(this, item));
+			this.Traits = new PendableSet<ITrait>();
+			/*foreach(var item in traitsSave.To<IkonArray>())
+				this.Traits.Add(deindexer.Get<TraitType>(item.Tag as string).Load(this, item));*/
  
 			 
 		}
@@ -92,8 +93,8 @@ namespace Stareater.Galaxy
 			data.Add(SizeKey, new IkonFloat(this.Size));
 
 			var traitsData = new IkonArray();
-			foreach(var item in this.Traits)
-				traitsData.Add(item.Save());
+			/*foreach(var item in this.Traits)
+				traitsData.Add(item.Save());*/
 			data.Add(TraitsKey, traitsData);
 			return data;
  

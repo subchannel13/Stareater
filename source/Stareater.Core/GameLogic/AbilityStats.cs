@@ -1,6 +1,5 @@
-﻿using System;
-using Stareater.Galaxy;
-using Stareater.GameData.Ships;
+﻿using Stareater.GameData.Ships;
+using Stareater.Galaxy.BodyTraits;
 
 namespace Stareater.GameLogic
 {
@@ -26,13 +25,13 @@ namespace Stareater.GameLogic
 		public double ShieldEfficiency { get; private set; }
 		public double PlanetEfficiency { get; private set; }
 		
-		public BodyTraitType AppliesTrait { get; private set; }
+		public TraitType AppliesTrait { get; private set; }
 		
 		public AbilityStats(AAbilityType type, int level, int quantity, 
 		                    int range, bool isInstantDamage, bool targetColony, bool targetShips, bool targetStar,
 		                    double firePower, double accuracy, double energyCost, double ammo,
 		                    double accuracyRangePenalty, double armorEfficiency, double shieldEfficiency, double planetEfficiency,
-		                    BodyTraitType appliesTrait)
+		                    TraitType appliesTrait)
 		{
 			this.Type = type;
 			this.Level = level;

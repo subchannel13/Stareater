@@ -1,13 +1,12 @@
-﻿using System;
-using Stareater.Galaxy;
+﻿using Stareater.Galaxy.BodyTraits;
 
 namespace Stareater.Controllers.Views
 {
 	public class TraitInfo
 	{
-		private readonly BodyTraitType data;
+		private readonly TraitType data;
 		
-		internal TraitInfo(BodyTraitType data)
+		internal TraitInfo(TraitType data)
 		{
 			this.data = data;
 		}

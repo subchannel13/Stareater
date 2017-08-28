@@ -5,12 +5,12 @@ using System.Linq;
 
 using Ikadn.Ikon.Types;
 using Stareater.AppData.Expressions;
-using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameData.Reading;
 using Stareater.GameData.Ships;
 using Stareater.GameLogic;
 using Stareater.Utils;
+using Stareater.Galaxy.BodyTraits;
 
 namespace Stareater.GameData.Databases
 {
@@ -29,7 +29,7 @@ namespace Stareater.GameData.Databases
 		public List<ResearchTopic> ResearchTopics { get; private set; }
 		public ShipFormulaSet ShipFormulas { get; private set; }
 		public List<PredefinedDesign> SystemColonizerDesigns { get; private set; }
-		public Dictionary<string, BodyTraitType> Traits { get; private set; }
+		public Dictionary<string, TraitType> Traits { get; private set; }
 
 		public Dictionary<string, ArmorType> Armors { get; private set; }
 		public Dictionary<string, HullType> Hulls { get; private set; }
@@ -64,7 +64,7 @@ namespace Stareater.GameData.Databases
 			this.DevelopmentRequirements = new Dictionary<string, DevelopmentRequirement>();
 			this.DevelopmentTopics = new List<DevelopmentTopic>();
 			this.ResearchTopics = new List<ResearchTopic>();
-			this.Traits = new Dictionary<string, BodyTraitType>();
+			this.Traits = new Dictionary<string, TraitType>();
 		}
 		
 		public static StaticsDB Load(IEnumerable<TracableStream> dataSources)
@@ -239,9 +239,9 @@ namespace Stareater.GameData.Databases
 			);
 		}
 
-		private static BodyTraitType loadTrait(IkonComposite data)
+		private static TraitType loadTrait(IkonComposite data)
 		{
-			return new BodyTraitType(
+			return new TraitType(
 				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
@@ -254,9 +254,9 @@ namespace Stareater.GameData.Databases
 			switch ((string)data.Tag)
 			{
 				case AfflictTraitTag:
-					return new TraitEffectTypeAfflictPlanets(data[AfflictsTraitId].To<string>(), data[DurationTraitId].To<Formula>().Evaluate(null));
+					return new EffectTypeAfflictPlanets(data[AfflictsTraitId].To<string>(), data[DurationTraitId].To<Formula>().Evaluate(null));
 				case PassiveTraitTag:
-					return new TraitEffectTypePassive();
+					return new EffectTypePassive();
 			}
 
 			throw new ArgumentException("Unknown trait");

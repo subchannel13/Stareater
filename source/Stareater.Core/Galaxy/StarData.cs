@@ -1,4 +1,4 @@
-﻿ 
+﻿
 
 
 using Ikadn.Ikon.Types;
@@ -10,6 +10,7 @@ using System.Linq;
 using System.Drawing;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Localization.StarNames;
+using Stareater.Galaxy.BodyTraits;
 
 namespace Stareater.Galaxy 
 {
@@ -24,15 +25,15 @@ namespace Stareater.Galaxy
 		[StateProperty]
 		public Vector2D Position { get; private set; }
 		[StateProperty]
-		public PendableSet<BodyTrait> Traits { get; private set; }
+		internal PendableSet<ITrait> Traits { get; private set; }
 
-		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position, List<BodyTraitType> traits) 
+		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position, List<TraitType> traits) 
 		{
 			this.Color = color;
 			this.ImageSizeScale = imageSizeScale;
 			this.Name = name;
 			this.Position = position;
-			this.Traits = new PendableSet<BodyTrait>(traits.Select(x => x.Instantiate(this)));
+			this.Traits = new PendableSet<ITrait>(traits.Select(x => x.Make()));
  
 			 
 		} 
@@ -43,9 +44,9 @@ namespace Stareater.Galaxy
 			this.ImageSizeScale = original.ImageSizeScale;
 			this.Name = original.Name;
 			this.Position = original.Position;
-			this.Traits = new PendableSet<BodyTrait>();
-			foreach(var item in original.Traits)
-				this.Traits.Add(item.Copy());
+			this.Traits = new PendableSet<ITrait>();
+			/*foreach(var item in original.Traits)
+				this.Traits.Add(item.Copy());*/
  
 			 
 		}
@@ -72,9 +73,9 @@ namespace Stareater.Galaxy
 			this.Position = new Vector2D(positionX, positionY);
 
 			var traitsSave = rawData[TraitsKey];
-			this.Traits = new PendableSet<BodyTrait>();
-			foreach(var item in traitsSave.To<IkonArray>())
-				this.Traits.Add(deindexer.Get<BodyTraitType>(item.Tag as string).Load(this, item));
+			this.Traits = new PendableSet<ITrait>();
+			/*foreach(var item in traitsSave.To<IkonArray>())
+				this.Traits.Add(deindexer.Get<TraitType>(item.Tag as string).Load(this, item));*/
  
 			 
 		}
@@ -108,8 +109,8 @@ namespace Stareater.Galaxy
 			data.Add(PositionKey, positionData);
 
 			var traitsData = new IkonArray();
-			foreach(var item in this.Traits)
-				traitsData.Add(item.Save());
+			/*foreach(var item in this.Traits)
+				traitsData.Add(item.Save());*/
 			data.Add(TraitsKey, traitsData);
 			return data;
  
