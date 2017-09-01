@@ -11,7 +11,7 @@ namespace Stareater.GuiUtils
 	{
 		private const double MinimumPerTurnDone = 1e-3;
 		
-		public static string ConstructionEstimation(ConstructableItem construction, IText neverText, IText perTurnText, IText etaText)
+		public static string ConstructionEstimation(ConstructableInfo construction, IText neverText, IText perTurnText, IText etaText)
 		{
 			var textVars = new TextVar();
 			

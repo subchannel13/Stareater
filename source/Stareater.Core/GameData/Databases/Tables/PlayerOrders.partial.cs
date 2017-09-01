@@ -45,7 +45,7 @@ namespace Stareater.GameData.Databases.Tables
 		}
 		
 		//TODO(later) make separate collections for colony and stellaris construction orders
-		private Dictionary<AConstructionSite, ConstructionOrders> loadConstruction(IkadnBaseObject rawData, ObjectDeindexer deindexer)
+		/*private Dictionary<AConstructionSite, ConstructionOrders> loadConstruction(IkadnBaseObject rawData, ObjectDeindexer deindexer)
 		{
 			var queue = new Dictionary<AConstructionSite, ConstructionOrders>();
 			
@@ -58,7 +58,7 @@ namespace Stareater.GameData.Databases.Tables
 			}
 				
 			return queue;
-		}
+		}*/
 		
 		private Dictionary<string, int> loadDevelopmet(IkadnBaseObject rawData, ObjectDeindexer deindexer)
 		{
@@ -134,7 +134,7 @@ namespace Stareater.GameData.Databases.Tables
 					planData.Add(LocationKey, new IkonInteger(indexer.IndexOf((Colony)plan.Key)));
 				}
 				
-				planData.Add(OrdersKey, plan.Value.Save(indexer));
+				//planData.Add(OrdersKey, plan.Value.Save(indexer));
 				queue.Add(planData);
 			}
 			

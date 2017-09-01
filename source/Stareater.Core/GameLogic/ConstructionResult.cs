@@ -1,4 +1,4 @@
-﻿using Stareater.GameData;
+﻿using Stareater.GameData.Construction;
 using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameLogic 
@@ -9,15 +9,15 @@ namespace Stareater.GameLogic
 		public long CompletedCount;
 		public double InvestedPoints;
 		public double FromStockpile;
-		public Constructable Type;
+		public IConstructionProject Project;
 		public double LeftoverPoints;
 
-		public ConstructionResult(long completedCount, double investedPoints, double fromStockpile, Constructable type, double leftoverPoints) 
+		public ConstructionResult(long completedCount, double investedPoints, double fromStockpile, IConstructionProject project, double leftoverPoints) 
 		{
 			this.CompletedCount = completedCount;
 			this.InvestedPoints = investedPoints;
 			this.FromStockpile = fromStockpile;
-			this.Type = type;
+			this.Project = project;
 			this.LeftoverPoints = leftoverPoints;
 		}
 	}

@@ -8,6 +8,7 @@ using Stareater.GameData;
 using Stareater.Players;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
+using Stareater.GameData.Construction;
 
 namespace Stareater.GameLogic
 {
@@ -98,7 +99,7 @@ namespace Stareater.GameLogic
 			}
 		}
 		
-		private IEnumerable<Constructable> colonizationQueue(MainGame game, PlayerProcessor playerProcessor)
+		private IEnumerable<IConstructionProject> colonizationQueue(MainGame game, PlayerProcessor playerProcessor)
 		{
 			foreach(var plan in game.Orders[this.Site.Owner].ColonizationOrders.Values)
 				if (plan.Sources.Contains(this.Site.Location.Star))
@@ -106,13 +107,8 @@ namespace Stareater.GameLogic
 					var colonizer = (plan.Destination.Star == this.Site.Location.Star) ?
 						playerProcessor.SystemColonizerDesign :
 						playerProcessor.ColonyShipDesign;
-					
-					yield return new Constructable(
-						colonizer.Name, true, colonizer.ImagePath, colonizer.IdCode, 
-						new Prerequisite[0], SiteType.StarSystem, true, Constructable.ShipStockpile,
-						new Formula(true), new Formula(colonizer.Cost), new Formula(double.PositiveInfinity), 
-						new IConstructionEffect[] { new ConstructionAddColonizer(colonizer, plan.Destination) }
-					);
+
+					yield return new ColonizerProject(colonizer, plan);
 				}
 		}
 	}

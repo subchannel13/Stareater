@@ -62,8 +62,8 @@ namespace Stareater.Galaxy
 
 			var missionsSave = rawData[MissionsKey];
 			this.Missions = new LinkedList<AMission>();
-			foreach(var item in missionsSave.To<IkonArray>())
-				this.Missions.AddLast(MissionFactory.Load(item, deindexer));
+			/*foreach(var item in missionsSave.To<IkonArray>())
+				this.Missions.AddLast(MissionFactory.Load(item, deindexer));*/
 
 			var shipsSave = rawData[ShipsKey];
 			this.Ships = new ShipGroupCollection();

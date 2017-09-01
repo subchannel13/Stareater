@@ -6,6 +6,7 @@ using Stareater.GameData;
 using Stareater.GameData.Databases;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
+using Stareater.GameData.Construction;
 
 namespace Stareater.GameLogic
 {
@@ -49,10 +50,10 @@ namespace Stareater.GameLogic
 		{
 			foreach (var construction in this.SpendingPlan) {
 				if (construction.CompletedCount >= 1)
-					foreach(var effect in construction.Type.Effects)
+					foreach(var effect in construction.Project.Effects)
 						effect.Apply(states, derivates, this.Site, construction.CompletedCount);
 				
-				var stockpileKey = construction.Type.StockpileGroup;
+				var stockpileKey = construction.Project.StockpileGroup;
 				if (construction.FromStockpile > 0 && this.Site.Stockpile.ContainsKey(stockpileKey))
 					this.Site.Stockpile[stockpileKey] -= construction.FromStockpile;
 				
@@ -71,7 +72,7 @@ namespace Stareater.GameLogic
 		
 		protected static IEnumerable<ConstructionResult> SimulateSpending(
 			AConstructionSite site, double industryPoints, 
-			IEnumerable<Constructable> queue, IDictionary<string, double> vars)
+			IEnumerable<IConstructionProject> queue, IDictionary<string, double> vars)
 		{
 			var spendingPlan = new List<ConstructionResult>();
 			var planStockpile = new Dictionary<string, double>(site.Stockpile);

@@ -1,46 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Stareater.AppData.Expressions;
 using Stareater.GameData;
 using Stareater.Ships;
+using Stareater.GameData.Construction;
+using System;
 
 namespace Stareater.GameLogic
 {
-	class ShipConstructionUpdater : IConstructionVisitor
+	class ShipConstructionUpdater : IConstructionProjectVisitor
 	{
-		private List<Constructable> oldQueue;
+		private List<IConstructionProject> oldQueue;
 		private Dictionary<Design, Design> refitOrders;
-		private List<Constructable> newQueue = new List<Constructable>();
+		private List<IConstructionProject> newQueue = new List<IConstructionProject>();
 		private bool changeItem;
 		private bool deleteItem;
-		private List<IConstructionEffect> newEffects = new List<IConstructionEffect>();
-		private Formula newCost;
+		private IConstructionProject newProject;
 		
-		public ShipConstructionUpdater(List<Constructable> oldQueue, Dictionary<Design, Design> refitOrders)
+		public ShipConstructionUpdater(List<IConstructionProject> oldQueue, Dictionary<Design, Design> refitOrders)
 		{
-			this.oldQueue = new List<Constructable>(oldQueue);
+			this.oldQueue = new List<IConstructionProject>(oldQueue);
 			this.refitOrders = refitOrders;
 		}
 		
-		public IEnumerable<Constructable> Run()
+		public IEnumerable<IConstructionProject> Run()
 		{
 			foreach(var item in this.oldQueue)
 			{
 				this.changeItem = false;
 				this.deleteItem = false;
-				this.newEffects.Clear();
-				this.newCost = item.Cost;
-				foreach(var effect in item.Effects)
-					effect.Accept(this);
+				this.newProject = null;
+
+				item.Accept(this);
 				
 				if (!this.changeItem)
 					this.newQueue.Add(item);
 				else if (!this.deleteItem)
-					this.newQueue.Add(new Constructable(
-						item.LanguageCode, item.LiteralText, item.ImagePath, item.IdCode,
-						item.Prerequisites, item.ConstructableAt, item.IsVirtual, item.StockpileGroup,
-						item.Condition, newCost, item.TurnLimit,
-						this.newEffects.ToArray()));
+					this.newQueue.Add(newProject);
 			}
 			
 			return this.newQueue;
@@ -53,35 +48,26 @@ namespace Stareater.GameLogic
 			
 			this.changeItem = true;
 			this.deleteItem |= this.refitOrders[design] == null;
-			if (!this.deleteItem)
-				this.newCost = new Formula(this.refitOrders[design].Cost);
 			
 			return this.refitOrders[design];
 		}
-			
-		
-		#region IConstructionVisitor implementation
 
-		public void Visit(ConstructionAddColonizer constructionEffect)
+
+		#region IConstructionProjectVisitor implementation
+		public void Visit(ColonizerProject project)
 		{
-			this.newEffects.Add(new ConstructionAddColonizer(
-				checkDesign(constructionEffect.ColonizerDesign),
-				constructionEffect.Destination
-			));
+			newProject = new ColonizerProject(checkDesign(project.Colonizer), project.Plan);
 		}
 
-		public void Visit(ConstructionAddShip constructionEffect)
+		public void Visit(ShipProject project)
 		{
-			this.newEffects.Add(new ConstructionAddShip(
-				checkDesign(constructionEffect.Design)
-			));
-		}
+			newProject = new ShipProject(checkDesign(project.Type));
+        }
 
-		public void Visit(ConstructionAddBuilding constructionEffect)
+		public void Visit(StaticProject project)
 		{
-			this.newEffects.Add(constructionEffect);
+			//no operation
 		}
-
 		#endregion
 	}
 }

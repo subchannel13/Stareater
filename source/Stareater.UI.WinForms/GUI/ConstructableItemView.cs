@@ -13,14 +13,14 @@ namespace Stareater.GUI
 		private static readonly Color EnabledColor = Color.Silver;
 		private static readonly Color DisabledColor = Color.FromArgb(216, 216, 216);
 		
-		private ConstructableItem data;
+		private ConstructableInfo data;
 		
 		public ConstructableItemView()
 		{
 			InitializeComponent();
 		}
 		
-		public ConstructableItem Data 
+		public ConstructableInfo Data 
 		{
 			get
 			{

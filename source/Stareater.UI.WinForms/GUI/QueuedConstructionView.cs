@@ -10,14 +10,14 @@ namespace Stareater.GUI
 {
 	public partial class QueuedConstructionView : UserControl
 	{
-		private ConstructableItem data;
+		private ConstructableInfo data;
 		
 		public QueuedConstructionView()
 		{
 			InitializeComponent();
 		}
 		
-		public ConstructableItem Data 
+		public ConstructableInfo Data 
 		{
 			get
 			{

@@ -54,8 +54,8 @@ namespace Stareater.GameData.Databases.Tables
 				this.DevelopmentQueue.Add(item.Key, item.Value);
 			this.ResearchFocus = original.ResearchFocus;
 			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
-			foreach(var item in original.ConstructionPlans)
-				this.ConstructionPlans.Add(playersRemap.Site(item.Key), item.Value.Copy());
+			/*foreach(var item in original.ConstructionPlans)
+				this.ConstructionPlans.Add(playersRemap.Site(item.Key), item.Value.Copy());*/
 			this.ShipOrders = new Dictionary<Vector2D, HashSet<Fleet>>();
 			foreach(var item in original.ShipOrders)
 				this.ShipOrders.Add(item.Key, copyFleetRegroup(item.Value, playersRemap));
@@ -83,11 +83,11 @@ namespace Stareater.GameData.Databases.Tables
 			var researchFocusSave = rawData[ResearchFocusKey];
 			this.ResearchFocus = researchFocusSave.To<string>();
 
-			var constructionPlansSave = rawData[ConstructionPlansKey];
-			this.ConstructionPlans = loadConstruction(constructionPlansSave, deindexer);
+			//var constructionPlansSave = rawData[ConstructionPlansKey];
+			//this.ConstructionPlans = loadConstruction(constructionPlansSave, deindexer);
 
-			var shipOrdersSave = rawData[ShipOrdersKey];
-			this.ShipOrders = loadShipOrders(shipOrdersSave, deindexer);
+			/*var shipOrdersSave = rawData[ShipOrdersKey];
+			this.ShipOrders = loadShipOrders(shipOrdersSave, deindexer);*/
 
 			var colonizationOrdersSave = rawData[ColonizationOrdersKey];
 			this.ColonizationOrders = loadColonizationOrders(colonizationOrdersSave, deindexer);
@@ -101,14 +101,7 @@ namespace Stareater.GameData.Databases.Tables
 				this.AudienceRequests.Add(item.To<int>());
  
 			 
-		}
-
-		internal PlayerOrders Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap) 
-		{
-			return new PlayerOrders(this, playersRemap, galaxyRemap);
- 
 		} 
- 
 
 		#region Saving
 		public IkonComposite Save(ObjectIndexer indexer) 
@@ -135,14 +128,6 @@ namespace Stareater.GameData.Databases.Tables
 			return data;
  
 		}
-
-		public static PlayerOrders Load(IkonComposite rawData, ObjectDeindexer deindexer)
-		{
-			var loadedData = new PlayerOrders(rawData, deindexer);
-			deindexer.Add(loadedData);
-			return loadedData;
-		}
- 
 
 		private const string TableTag = "PlayerOrders";
 		private const string DevelopmentFocusIndexKey = "developmentFocusIndex";

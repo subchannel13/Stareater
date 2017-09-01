@@ -61,14 +61,7 @@ namespace Stareater.Controllers
 				deindexer,
 				new Dictionary<Type, Action<object>>()
 				{
-					{ typeof(Design),
-						x =>
-						{
-							var design = (Design)x;
-							design.CalcHash(statics);
-							deindexer.Add(design.ConstructionProject, design.IdCode);
-						}
-					}
+					{ typeof(Design), x => ((Design)x).CalcHash(statics) }
 				}
 			);
 

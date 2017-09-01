@@ -75,6 +75,7 @@
     <Compile Include="Controllers\BombardmentController.cs" />
     <Compile Include="Controllers\ColonyController.cs" />
     <Compile Include="Controllers\ColonizationController.cs" />
+    <Compile Include="Controllers\ConstructionInfoExtractor.cs" />
     <Compile Include="Controllers\Data\ColonizerFinder.cs" />
     <Compile Include="Controllers\Data\MissionInfoFactory.cs" />
     <Compile Include="Controllers\LibraryController.cs" />
@@ -87,7 +88,7 @@
     <Compile Include="Controllers\Views\ColonyInfo.cs" />
     <Compile Include="Controllers\Views\Combat\CombatantInfo.cs" />
     <Compile Include="Controllers\Views\Combat\CombatPlanetInfo.cs" />
-    <Compile Include="Controllers\Views\ConstructableItem.cs" />
+    <Compile Include="Controllers\Views\ConstructableInfo.cs" />
     <Compile Include="Controllers\Views\ContactInfo.cs" />
     <Compile Include="Controllers\Views\DevelopmentFocusInfo.cs" />
     <Compile Include="Controllers\Views\FoundGalaxyObject.cs" />
@@ -197,7 +198,13 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameData\Construction\IConstructionProjectVisitor.cs" />
+    <Compile Include="GameData\Construction\ShipProject.cs" />
+    <Compile Include="GameData\Construction\IConstructionProject.cs" />
+    <Compile Include="GameData\Construction\ProjectFactory.cs" />
+    <Compile Include="GameData\Construction\StaticProject.cs" />
     <Compile Include="GameData\Databases\Tables\ColonizationCollection.cs" />
+    <Compile Include="GameData\Databases\Tables\ConstructionOrders.cs" />
     <Compile Include="GameData\Databases\Tables\ResearchProgressCollection.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -232,7 +239,7 @@
     <Compile Include="GameLogic\ACombatProcessor.cs" />
     <Compile Include="GameLogic\BombardmentProcessor.cs" />
     <Compile Include="GameLogic\Conflict.cs" />
-    <Compile Include="GameLogic\IConstructionVisitor.cs" />
+    <Compile Include="GameData\Construction\IConstructionEffectVisitor.cs" />
     <Compile Include="GameLogic\InvalidMissionVisitor.cs" />
     <Compile Include="GameLogic\NativesProcessor.cs" />
     <Compile Include="GameLogic\ResearchResult.cs">
@@ -254,17 +261,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="GameData\Databases\Tables\ConstructionOrders.cs">
-      <DependentUpon>ConstructionOrders.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="GameData\Databases\Tables\PlayerOrders.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PlayerOrders.tt</DependentUpon>
     </Compile>
-    <Compile Include="GameData\Constructable.cs" />
+    <Compile Include="GameData\ConstructableType.cs" />
     <Compile Include="GameData\Databases\Tables\DerivedStatistic.cs" />
     <Compile Include="GameData\Databases\Tables\DesignCollection.cs">
       <AutoGen>True</AutoGen>
@@ -378,8 +380,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="GameLogic\ConstructionAddColonizer.cs" />
-    <Compile Include="GameLogic\ConstructionAddShip.cs" />
+    <Compile Include="GameData\Construction\ConstructionAddColonizer.cs" />
+    <Compile Include="GameData\Construction\ConstructionAddShip.cs" />
     <Compile Include="GameLogic\DesignStats.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -387,10 +389,10 @@
     <Compile Include="GameLogic\FleetMovement.cs" />
     <Compile Include="GameLogic\FleetProcessingVisitor.cs" />
     <Compile Include="GameLogic\GameProcessor.cs" />
-    <Compile Include="GameLogic\IConstructionEffect.cs" />
+    <Compile Include="GameData\Construction\IConstructionEffect.cs" />
     <Compile Include="GameLogic\AConstructionSiteProcessor.cs" />
     <Compile Include="GameLogic\ColonyProcessor.cs" />
-    <Compile Include="GameLogic\ConstructionAddBuilding.cs" />
+    <Compile Include="GameData\Construction\ConstructionAddBuilding.cs" />
     <Compile Include="GameLogic\PlayerProcessor.cs" />
     <Compile Include="GameLogic\DevelopmentResult.cs">
       <AutoGen>True</AutoGen>
@@ -555,10 +557,6 @@
     <None Include="GameData\Databases\Tables\ColonizationPlan.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ColonizationPlan.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\ConstructionOrders.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ConstructionOrders.cs</LastGenOutput>
     </None>
     <None Include="GameData\Databases\Tables\PlayerOrders.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

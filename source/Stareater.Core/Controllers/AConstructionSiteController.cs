@@ -7,6 +7,7 @@ using Stareater.GameLogic;
 using Stareater.GameData;
 using Stareater.Players;
 using Stareater.Utils;
+using Stareater.GameData.Construction;
 
 namespace Stareater.Controllers
 {
@@ -66,7 +67,7 @@ namespace Stareater.Controllers
 			}
 		}
 			
-		public virtual IEnumerable<ConstructableItem> ConstructableItems
+		public virtual IEnumerable<ConstructableInfo> ConstructableItems
 		{
 			get
 			{
@@ -78,11 +79,11 @@ namespace Stareater.Controllers
 					if (Prerequisite.AreSatisfied(constructable.Prerequisites, 0, techLevels) &&
 						constructable.ConstructableAt == Site.Type &&
 						constructable.Condition.Evaluate(localEffencts) > 0)
-						yield return new ConstructableItem(constructable, Game.Derivates.Players.Of[this.Player]);
+						yield return new ConstructableInfo(new StaticProject(constructable), Game.Derivates.Players.Of[this.Player]);
 			}
 		}
 		
-		public IEnumerable<ConstructableItem> ConstructionQueue
+		public IEnumerable<ConstructableInfo> ConstructionQueue
 		{
 			get
 			{
@@ -94,7 +95,7 @@ namespace Stareater.Controllers
 					
 				foreach(var item in Processor.SpendingPlan)
 				{
-					if (!item.Type.IsVirtual && item.Type == this.Game.Orders[this.Player].ConstructionPlans[Site].Queue[orderI])
+					if (!item.Project.IsVirtual && item.Project == this.Game.Orders[this.Player].ConstructionPlans[Site].Queue[orderI])
 					{
 						orderIndex.Add(orderI);
 						orderI++;
@@ -102,9 +103,9 @@ namespace Stareater.Controllers
 					else
 						orderIndex.Add(NotOrder);
 					
-					var cost = item.Type.Cost.Evaluate(vars);
-					yield return new ConstructableItem(
-						item.Type, 
+					var cost = item.Project.Cost.Evaluate(vars);
+					yield return new ConstructableInfo(
+						item.Project, 
 						Game.Derivates.Players.Of[this.Player],
 						item,
 						item.LeftoverPoints
@@ -113,17 +114,17 @@ namespace Stareater.Controllers
 			}
 		}
 		
-		public bool CanPick(ConstructableItem data)
+		public bool CanPick(ConstructableInfo data)
 		{
-			return Processor.SpendingPlan.All(x => x.Type.IdCode != data.IdCode);	//TODO(v0.7): consider building count
+			return Processor.SpendingPlan.All(x => !x.Project.Equals(data.Project)); //TODO(v0.7): consider building count
 		}
 		
-		public void Enqueue(ConstructableItem data)
+		public void Enqueue(ConstructableInfo data)
 		{
 			if (IsReadOnly)
 				return;
 
-			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.Add(data.Constructable);
+			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.Add(data.Project);
 			this.RecalculateSpending();
 		}
 		

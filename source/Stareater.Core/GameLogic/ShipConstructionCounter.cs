@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Stareater.Ships;
+using Stareater.GameData.Construction;
 
 namespace Stareater.GameLogic
 {
-	class ShipConstructionCounter : IConstructionVisitor
+	class ShipConstructionCounter : IConstructionProjectVisitor
 	{
 		private Dictionary<Design, long> shipsInConstruction = new Dictionary<Design, long>();
 		private long quantity = 0;
@@ -15,8 +16,7 @@ namespace Stareater.GameLogic
 			foreach(var item in constructionSites.SelectMany(x => x.SpendingPlan))
 			{
 				this.quantity = item.CompletedCount;
-				foreach(var effect in item.Type.Effects)
-					effect.Accept(this);
+				item.Project.Accept(this);
 			}
 		}
 
@@ -32,19 +32,19 @@ namespace Stareater.GameLogic
 			else
 				shipsInConstruction.Add(design, quantity);
 		}
-		
-		#region IConstructionVisitor implementation
-		public void Visit(ConstructionAddColonizer constructionEffect)
+
+		#region IConstructionProjectVisitor implementation
+		public void Visit(ShipProject project)
 		{
-			this.add(constructionEffect.ColonizerDesign);
+			this.add(project.Type);
 		}
 
-		public void Visit(ConstructionAddShip constructionEffect)
+		public void Visit(StaticProject project)
 		{
-			this.add(constructionEffect.Design);
+			//no operation
 		}
 
-		public void Visit(ConstructionAddBuilding constructionEffect)
+		public void Visit(ColonizerProject project)
 		{
 			//no operation
 		}

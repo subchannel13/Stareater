@@ -13,8 +13,6 @@ namespace Stareater.Ships
 {
 	partial class Design
 	{
-		private Constructable constructionProject = null;
-			
 		public void CalcHash(StaticsDB statics)
 		{
 			var hashBuilder = new BitHashBuilder();
@@ -64,21 +62,6 @@ namespace Stareater.Ships
 			get
 			{
 				return Hull.TypeInfo.ImagePaths[this.ImageIndex];
-			}
-		}
-		
-		public Constructable ConstructionProject
-		{
-			get {
-				if (this.constructionProject == null)
-					this.constructionProject = new Constructable(
-						this.Name, true, this.ImagePath,
-						this.IdCode, new Prerequisite[0], SiteType.StarSystem, false, Constructable.ShipStockpile,
-						new Formula(true), new Formula(this.Cost), new Formula(double.PositiveInfinity),
-						new IConstructionEffect[] { new ConstructionAddShip(this) }
-					);
-				
-				return this.constructionProject;
 			}
 		}
 		

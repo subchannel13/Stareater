@@ -4,7 +4,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
 {
-	[StateBaseType("Load")]
+	[StateBaseType("Load", typeof(AConstructionSite))]
 	abstract partial class AConstructionSite
 	{
 		public abstract SiteType Type { get; }

@@ -15,7 +15,7 @@ namespace Stareater.GameLogic
 {
 	class ColonyProcessor : AConstructionSiteProcessor
 	{
-		private const string NewBuidingPrefix = "_delta";
+		internal const string NewBuidingPrefix = "_delta";
 		
 		private const string MaxPopulationKey = "maxPop";
 		public const string PlanetSizeKey = "size";
@@ -143,12 +143,13 @@ namespace Stareater.GameLogic
 		public void CalculateDerivedEffects(StaticsDB statics, PlayerProcessor playerProcessor)
 		{
 			var vars = calcVars(statics, playerProcessor);
-			var formulas = statics.ColonyFormulas;
-			
-			foreach(var construction in SpendingPlan)
+			var counter = new NewBuildingsCounter(vars); //TODO(v0.7) rename class and variable?
+
+			foreach (var construction in SpendingPlan)
 				if (construction.CompletedCount > 0)
-					vars[construction.Type.IdCode.ToLower() + NewBuidingPrefix] = construction.CompletedCount;
-			
+					counter.Count(construction.Project, construction.CompletedCount);
+
+			var formulas = statics.ColonyFormulas;
 			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
 		}
 		

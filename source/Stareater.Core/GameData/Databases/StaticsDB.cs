@@ -8,9 +8,9 @@ using Stareater.AppData.Expressions;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameData.Reading;
 using Stareater.GameData.Ships;
-using Stareater.GameLogic;
 using Stareater.Utils;
 using Stareater.Galaxy.BodyTraits;
+using Stareater.GameData.Construction;
 
 namespace Stareater.GameData.Databases
 {
@@ -19,7 +19,7 @@ namespace Stareater.GameData.Databases
 		public Dictionary<string, BuildingType> Buildings { get; private set; }
 		public ColonyFormulaSet ColonyFormulas { get; private set; }
 		public List<PredefinedDesign> ColonyShipDesigns { get; private set; }
-		public List<Constructable> Constructables { get; private set; }
+		public List<ConstructableType> Constructables { get; private set; }
 		public List<DevelopmentFocus> DevelopmentFocusOptions { get; private set; }
 		public Dictionary<string, DevelopmentRequirement> DevelopmentRequirements { get; private set; }
 		public List<DevelopmentTopic> DevelopmentTopics { get; private set; }
@@ -59,7 +59,7 @@ namespace Stareater.GameData.Databases
 			this.SystemColonizerDesigns = new List<PredefinedDesign>();
 
 			this.Buildings = new Dictionary<string, BuildingType>();
-			this.Constructables = new List<Constructable>();
+			this.Constructables = new List<ConstructableType>();
 			this.DevelopmentFocusOptions = new List<DevelopmentFocus>();
 			this.DevelopmentRequirements = new Dictionary<string, DevelopmentRequirement>();
 			this.DevelopmentTopics = new List<DevelopmentTopic>();
@@ -272,16 +272,14 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		
-		private static Constructable loadConstructable(IkonComposite data)
+		private static ConstructableType loadConstructable(IkonComposite data)
 		{
-			return new Constructable(
+			return new ConstructableType(
 				data[GeneralLangKey].To<string>(),
-				false,
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
 				loadPrerequisites(data[GeneralPrerequisitesKey].To<IkonArray>()).ToArray(), 
 				siteType(data[ConstructableSiteKey].To<string>()),
-				false,
 				data[ConstructableStockpileKey].To<string>(),
 				data[ConstructableConditionKey].To<Formula>(),
 				data[GeneralCostKey].To<Formula>(),

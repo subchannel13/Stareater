@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Stareater.Galaxy;
-using Stareater.GameData;
 using Stareater.GameData.Databases;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
 
-namespace Stareater.GameLogic
+namespace Stareater.GameData.Construction
 {
 	class ConstructionAddColonizer : IConstructionEffect
 	{
@@ -40,11 +38,6 @@ namespace Stareater.GameLogic
 			
 			//TODO(v0.7) report new ship construction
 			derivates.Of(site.Owner).SpawnShip(site.Location.Star, this.ColonizerDesign, quantity, missions, states);
-		}
-		
-		public void Accept(IConstructionVisitor visitor)
-		{
-			visitor.Visit(this);
 		}
 		#endregion
 	}

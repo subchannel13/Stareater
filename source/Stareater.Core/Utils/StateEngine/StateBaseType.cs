@@ -7,7 +7,7 @@ namespace Stareater.Utils.StateEngine
 		public string LoadMethod { get; private set; }
 		public Type LoaderClass { get; private set; }
 
-		public StateBaseType(string loadMethod, Type loaderClass = null)
+		public StateBaseType(string loadMethod, Type loaderClass)
 		{
 			this.LoaderClass = loaderClass;
 			this.LoadMethod = loadMethod;

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Stareater.AppData.Expressions;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
-using Stareater.GameData;
 using Stareater.GameLogic;
 using Stareater.Players;
+using Stareater.GameData.Construction;
 
 namespace Stareater.Controllers
 {
@@ -39,18 +37,15 @@ namespace Stareater.Controllers
 			);
 		}
 		
-		public override IEnumerable<ConstructableItem> ConstructableItems 
+		public override IEnumerable<ConstructableInfo> ConstructableItems 
 		{
 			get 
 			{ 
 				foreach(var item in base.ConstructableItems)
 					yield return item;
-				
-				foreach(var design in Game.States.Designs.OwnedBy[this.Player].Where(x => !x.IsVirtual && !x.IsObsolete))
-					yield return new ConstructableItem(
-						design.ConstructionProject,
-						Game.Derivates.Players.Of[this.Player]
-					);
+
+				foreach (var design in Game.States.Designs.OwnedBy[this.Player].Where(x => !x.IsVirtual && !x.IsObsolete))
+                    yield return new ConstructableInfo(new ShipProject(design), Game.Derivates.Players.Of[this.Player]);
 			}
 		}
 		#endregion
