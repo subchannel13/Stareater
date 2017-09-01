@@ -22,6 +22,9 @@ namespace Stareater.GameData.Construction
 			this.Plan = plan;
 		}
 
+		private ColonizerProject()
+		{ }
+
 		public Formula Condition
 		{
 			get { return new Formula(true); }

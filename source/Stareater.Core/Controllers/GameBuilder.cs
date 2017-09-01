@@ -41,7 +41,7 @@ namespace Stareater.Controllers
 			
 			var deindexer = new ObjectDeindexer();
 			
-			deindexer.AddAll(statics.Constructables, x => x.IdCode);
+			deindexer.AddAll(statics.Constructables);
 			deindexer.AddAll(statics.DevelopmentTopics);
 			deindexer.AddAll(statics.PredeginedDesigns);
 			deindexer.AddAll(statics.ResearchTopics);

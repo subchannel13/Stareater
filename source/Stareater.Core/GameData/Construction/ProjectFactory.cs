@@ -11,7 +11,7 @@ namespace Stareater.GameData.Construction
 			if (rawData.Tag.Equals(StaticProject.Tag))
 				return session.Load<StaticProject>(rawData);
 			else if (rawData.Tag.Equals(ShipProject.Tag))
-				return session.Load<StaticProject>(rawData);
+				return session.Load<ShipProject>(rawData);
 			else
 				throw new KeyNotFoundException("Unknown construction project type: " + rawData.Tag);
 		}

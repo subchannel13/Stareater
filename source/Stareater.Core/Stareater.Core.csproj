@@ -198,6 +198,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="GameData\Construction\ColonizerProject.cs" />
+    <Compile Include="GameData\Construction\IConstructionEffect.cs" />
     <Compile Include="GameData\Construction\IConstructionProjectVisitor.cs" />
     <Compile Include="GameData\Construction\ShipProject.cs" />
     <Compile Include="GameData\Construction\IConstructionProject.cs" />
@@ -239,9 +241,9 @@
     <Compile Include="GameLogic\ACombatProcessor.cs" />
     <Compile Include="GameLogic\BombardmentProcessor.cs" />
     <Compile Include="GameLogic\Conflict.cs" />
-    <Compile Include="GameData\Construction\IConstructionEffectVisitor.cs" />
     <Compile Include="GameLogic\InvalidMissionVisitor.cs" />
     <Compile Include="GameLogic\NativesProcessor.cs" />
+    <Compile Include="GameLogic\NewBuildingsCounter.cs" />
     <Compile Include="GameLogic\ResearchResult.cs">
       <AutoGen>True</AutoGen>
     </Compile>
@@ -389,7 +391,6 @@
     <Compile Include="GameLogic\FleetMovement.cs" />
     <Compile Include="GameLogic\FleetProcessingVisitor.cs" />
     <Compile Include="GameLogic\GameProcessor.cs" />
-    <Compile Include="GameData\Construction\IConstructionEffect.cs" />
     <Compile Include="GameLogic\AConstructionSiteProcessor.cs" />
     <Compile Include="GameLogic\ColonyProcessor.cs" />
     <Compile Include="GameData\Construction\ConstructionAddBuilding.cs" />

@@ -17,6 +17,9 @@ namespace Stareater.GameData.Construction
 			this.Type = design;
 		}
 
+		private ShipProject()
+		{ }
+
 		public string StockpileGroup
 		{
 			get { return ConstructableType.ShipStockpile; }
@@ -49,7 +52,7 @@ namespace Stareater.GameData.Construction
 
 		public void Accept(IConstructionProjectVisitor visitor)
 		{
-			this.Accept(visitor);
+			visitor.Visit(this);
 		}
 
 		#region Equals
