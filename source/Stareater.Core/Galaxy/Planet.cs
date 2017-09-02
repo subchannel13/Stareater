@@ -1,27 +1,26 @@
-﻿
-
-
-using Ikadn.Ikon.Types;
-using Stareater.Utils.Collections;
+﻿using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Stareater.GameData;
 using Stareater.Galaxy.BodyTraits;
 
-namespace Stareater.Galaxy 
+namespace Stareater.Galaxy
 {
 	public partial class Planet 
 	{
 		[StateProperty]
 		public StarData Star { get; private set; }
+
 		[StateProperty]
 		public int Position { get; private set; }
+
 		[StateProperty]
 		public PlanetType Type { get; private set; }
+
 		[StateProperty]
 		public double Size { get; private set; }
+
+		//TODO(v0.7): Make trait list readonly to view, consider making whole class private
 		[StateProperty]
 		internal PendableSet<ITrait> Traits { get; private set; }
 
@@ -32,91 +31,45 @@ namespace Stareater.Galaxy
 			this.Type = type;
 			this.Size = size;
 			this.Traits = new PendableSet<ITrait>(traits.Select(x => x.Make()));
- 
-			 
 		} 
-
-		private Planet(Planet original, StarData star) 
-		{
-			this.Star = star;
-			this.Position = original.Position;
-			this.Type = original.Type;
-			this.Size = original.Size;
-			this.Traits = new PendableSet<ITrait>();
-			/*foreach(var item in original.Traits)
-				this.Traits.Add(item.Copy());*/
- 
-			 
-		}
-
-		private Planet(IkonComposite rawData, ObjectDeindexer deindexer) 
-		{
-			var starSave = rawData[StarKey];
-			this.Star = deindexer.Get<StarData>(starSave.To<int>());
-
-			var positionSave = rawData[PositionKey];
-			this.Position = positionSave.To<int>();
-
-			var typeSave = rawData[TypeKey];
-			this.Type = (PlanetType)Enum.Parse(typeof(PlanetType), (string)typeSave.Tag);
-
-			var sizeSave = rawData[SizeKey];
-			this.Size = sizeSave.To<double>();
-
-			var traitsSave = rawData[TraitsKey];
-			this.Traits = new PendableSet<ITrait>();
-			/*foreach(var item in traitsSave.To<IkonArray>())
-				this.Traits.Add(deindexer.Get<TraitType>(item.Tag as string).Load(this, item));*/
- 
-			 
-		}
-
+		
 		private Planet() 
 		{ }
-		internal Planet Copy(GalaxyRemap galaxyRemap) 
+
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
 		{
-			return new Planet(this, galaxyRemap.Stars[this.Star]);
- 
-		} 
- 
-
-		#region Saving
-		public IkonComposite Save(ObjectIndexer indexer) 
-		{
-			var data = new IkonComposite(TableTag);
-			data.Add(StarKey, new IkonInteger(indexer.IndexOf(this.Star)));
-
-			data.Add(PositionKey, new IkonInteger(this.Position));
-
-			data.Add(TypeKey, new IkonComposite(this.Type.ToString()));
-
-			data.Add(SizeKey, new IkonFloat(this.Size));
-
-			var traitsData = new IkonArray();
-			/*foreach(var item in this.Traits)
-				traitsData.Add(item.Save());*/
-			data.Add(TraitsKey, traitsData);
-			return data;
- 
+			var other = obj as Planet;
+			if (other == null)
+				return false;
+			return object.Equals(this.Star, other.Star) && this.Position == other.Position;
 		}
 
-		public static Planet Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		public override int GetHashCode()
 		{
-			var loadedData = new Planet(rawData, deindexer);
-			deindexer.Add(loadedData);
-			return loadedData;
+			int hashCode = 0;
+			unchecked
+			{
+				if (Star != null)
+					hashCode += 1000000007 * Star.GetHashCode();
+				hashCode += 1000000009 * Position.GetHashCode();
+			}
+			return hashCode;
 		}
- 
 
-		private const string TableTag = "Planet";
-		private const string StarKey = "star";
-		private const string PositionKey = "position";
-		private const string TypeKey = "type";
-		private const string SizeKey = "size";
-		private const string TraitsKey = "traits";
- 
+		public static bool operator ==(Planet lhs, Planet rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(Planet lhs, Planet rhs)
+		{
+			return !(lhs == rhs);
+		}
 		#endregion
-
- 
 	}
 }

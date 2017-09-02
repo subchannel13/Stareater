@@ -1,29 +1,31 @@
-﻿
-
-
-using Ikadn.Ikon.Types;
-using Stareater.Utils.Collections;
+﻿using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Localization.StarNames;
 using Stareater.Galaxy.BodyTraits;
+using Ikadn;
 
-namespace Stareater.Galaxy 
+namespace Stareater.Galaxy
 {
 	public partial class StarData 
 	{
+		public const int MaxPlanets = 8;
+
 		[StateProperty]
 		public Color Color { get; private set; }
+
 		[StateProperty]
 		public float ImageSizeScale { get; private set; }
+
 		[StateProperty]
 		public IStarName Name { get; private set; }
+
 		[StateProperty]
 		public Vector2D Position { get; private set; }
+
 		[StateProperty]
 		internal PendableSet<ITrait> Traits { get; private set; }
 
@@ -34,105 +36,49 @@ namespace Stareater.Galaxy
 			this.Name = name;
 			this.Position = position;
 			this.Traits = new PendableSet<ITrait>(traits.Select(x => x.Make()));
- 
-			 
-		} 
-
-		private StarData(StarData original) 
-		{
-			this.Color = original.Color;
-			this.ImageSizeScale = original.ImageSizeScale;
-			this.Name = original.Name;
-			this.Position = original.Position;
-			this.Traits = new PendableSet<ITrait>();
-			/*foreach(var item in original.Traits)
-				this.Traits.Add(item.Copy());*/
- 
-			 
-		}
-
-		private StarData(IkonComposite rawData, ObjectDeindexer deindexer) 
-		{
-			var colorSave = rawData[ColorKey];
-			var colorArray = colorSave.To<IkonArray>();
-			int colorR = colorArray[0].To<int>();
-			int colorG = colorArray[1].To<int>();
-			int colorB = colorArray[2].To<int>();
-			this.Color = Color.FromArgb(colorR, colorG, colorB);
-
-			var imageSizeScaleSave = rawData[SizeKey];
-			this.ImageSizeScale = imageSizeScaleSave.To<float>();
-
-			var nameSave = rawData[NameKey];
-			//this.Name = loadName(nameSave);
-
-			var positionSave = rawData[PositionKey];
-			var positionArray = positionSave.To<IkonArray>();
-			double positionX = positionArray[0].To<double>();
-			double positionY = positionArray[1].To<double>();
-			this.Position = new Vector2D(positionX, positionY);
-
-			var traitsSave = rawData[TraitsKey];
-			this.Traits = new PendableSet<ITrait>();
-			/*foreach(var item in traitsSave.To<IkonArray>())
-				this.Traits.Add(deindexer.Get<TraitType>(item.Tag as string).Load(this, item));*/
- 
-			 
 		}
 
 		private StarData() 
 		{ }
-		internal StarData Copy() 
+
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
 		{
-			return new StarData(this);
- 
-		} 
- 
-
-		#region Saving
-		public IkonComposite Save() 
-		{
-			var data = new IkonComposite(TableTag);
-			var colorData = new IkonArray();
-			colorData.Add(new IkonInteger(this.Color.R));
-			colorData.Add(new IkonInteger(this.Color.G));
-			colorData.Add(new IkonInteger(this.Color.B));
-			data.Add(ColorKey, colorData);
-
-			data.Add(SizeKey, new IkonFloat(this.ImageSizeScale));
-
-			//data.Add(NameKey, this.Name.Save());
-
-			var positionData = new IkonArray();
-			positionData.Add(new IkonFloat(this.Position.X));
-			positionData.Add(new IkonFloat(this.Position.Y));
-			data.Add(PositionKey, positionData);
-
-			var traitsData = new IkonArray();
-			/*foreach(var item in this.Traits)
-				traitsData.Add(item.Save());*/
-			data.Add(TraitsKey, traitsData);
-			return data;
- 
+			var other = obj as StarData;
+			return other != null && object.Equals(this.Position, other.Position);
 		}
 
-		public static StarData Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		public override int GetHashCode()
 		{
-			var loadedData = new StarData(rawData, deindexer);
-			deindexer.Add(loadedData);
-			return loadedData;
+			int hashCode = 0;
+			unchecked
+			{
+				if (Position != null)
+					hashCode += 1000000007 * Position.GetHashCode();
+			}
+			return hashCode;
 		}
- 
 
-		private const string TableTag = "StarData";
-		private const string ColorKey = "color";
-		private const string SizeKey = "size";
-		private const string NameKey = "name";
-		private const string PositionKey = "pos";
-		private const string TraitsKey = "traits";
- 
+		public static bool operator ==(StarData lhs, StarData rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(StarData lhs, StarData rhs)
+		{
+			return !(lhs == rhs);
+		}
 		#endregion
 
- 
+		public static IStarName loadName(IkadnBaseObject rawData, LoadSession session)
+		{
+			return rawData.Tag.Equals(ConstellationStarName.SaveTag) ?
+				(IStarName)session.Load<ConstellationStarName>(rawData) :
+				(IStarName)session.Load<ProperStarName>(rawData);
+		}
 	}
 }

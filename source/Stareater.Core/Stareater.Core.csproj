@@ -168,22 +168,14 @@
     </Compile>
     <Compile Include="Galaxy\BodyTraits\ITraitEffectType.cs" />
     <Compile Include="Galaxy\LocationBody.cs" />
-    <Compile Include="Galaxy\Planet.cs">
-      <DependentUpon>Planet.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="Galaxy\Planet.cs" />
     <Compile Include="Galaxy\ShipGroup.cs">
       <DependentUpon>ShipGroup.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Galaxy\PlanetType.cs" />
-    <Compile Include="Galaxy\StarData.cs">
-      <DependentUpon>StarData.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="Galaxy\StarData.cs" />
     <Compile Include="Galaxy\StellarisAdmin.cs">
       <DependentUpon>StellarisAdmin.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -193,11 +185,7 @@
     <Compile Include="Galaxy\StarNamer.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectTypeAfflictPlanets.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectTypePassive.cs" />
-    <Compile Include="Galaxy\Wormhole.cs">
-      <DependentUpon>Wormhole.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="Galaxy\Wormhole.cs" />
     <Compile Include="GameData\Construction\ColonizerProject.cs" />
     <Compile Include="GameData\Construction\IConstructionEffect.cs" />
     <Compile Include="GameData\Construction\IConstructionProjectVisitor.cs" />
@@ -393,8 +381,6 @@
     <Compile Include="Localization\Reading\TextBlockFactory.cs" />
     <Compile Include="Galaxy\AConstructionSite.partial.cs" />
     <Compile Include="Galaxy\MapAssets.cs" />
-    <Compile Include="Galaxy\Planet.partial.cs" />
-    <Compile Include="Galaxy\StarData.partial.cs" />
     <Compile Include="Galaxy\StartingConditions.cs" />
     <Compile Include="Localization\StarNames\ConstellationStarName.cs" />
     <Compile Include="Localization\StarNames\IStarName.cs" />
@@ -516,25 +502,13 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Fleet.cs</LastGenOutput>
     </None>
-    <None Include="Galaxy\Planet.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Planet.cs</LastGenOutput>
-    </None>
     <None Include="Galaxy\ShipGroup.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ShipGroup.cs</LastGenOutput>
     </None>
-    <None Include="Galaxy\StarData.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StarData.cs</LastGenOutput>
-    </None>
     <None Include="Galaxy\StellarisAdmin.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StellarisAdmin.cs</LastGenOutput>
-    </None>
-    <None Include="Galaxy\Wormhole.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Wormhole.cs</LastGenOutput>
     </None>
     <None Include="GameData\ColonizationProject.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -53,7 +53,7 @@ namespace Stareater.Galaxy
 		protected AConstructionSite(IkonComposite rawData, ObjectDeindexer deindexer) 
 		{
 			var locationSave = rawData[LocationKey];
-			this.Location = LocationBody.Load(locationSave.To<IkonComposite>(), deindexer);
+			//this.Location = LocationBody.Load(locationSave.To<IkonComposite>(), deindexer);
 
 			var ownerSave = rawData[OwnerKey];
 			this.Owner = deindexer.Get<Player>(ownerSave.To<int>());
@@ -94,7 +94,7 @@ namespace Stareater.Galaxy
 		public virtual IkonComposite Save(ObjectIndexer indexer) 
 		{
 			var data = new IkonComposite(TableTag);
-			data.Add(LocationKey, this.Location.Save(indexer));
+			//data.Add(LocationKey, this.Location.Save(indexer));
 
 			data.Add(OwnerKey, new IkonInteger(indexer.IndexOf(this.Owner)));
 
