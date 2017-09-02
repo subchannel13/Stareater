@@ -63,36 +63,15 @@ namespace Stareater.GameData.Construction
 			visitor.Visit(this);
 		}
 
-		#region Equals
-		public override bool Equals(object obj)
+		public bool Equals(IConstructionProject project)
 		{
-			var other = obj as ColonizerProject;
+			var other = project as ColonizerProject;
 
 			if (other == null)
 				return false;
 
 			return this.Colonizer.Equals(other.Colonizer) && this.Plan.Equals(other.Plan);
 		}
-
-		public override int GetHashCode()
-		{
-			return this.Plan.GetHashCode();
-		}
-
-		public static bool operator ==(ColonizerProject lhs, ColonizerProject rhs)
-		{
-			if (ReferenceEquals(lhs, rhs))
-				return true;
-			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
-				return false;
-			return lhs.Equals(rhs);
-		}
-
-		public static bool operator !=(ColonizerProject lhs, ColonizerProject rhs)
-		{
-			return !(lhs == rhs);
-		}
-		#endregion
 
 		public const string Tag = "Colonizer";
 	}

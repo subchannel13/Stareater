@@ -65,36 +65,15 @@ namespace Stareater.GameData.Construction
 			visitor.Visit(this);
 		}
 
-		#region Equals
-		public override bool Equals(object obj)
+		public bool Equals(IConstructionProject project)
 		{
-			var other = obj as StaticProject;
+			var other = project as StaticProject;
 
 			if (other == null)
 				return false;
 
 			return this.Type.IdCode == other.Type.IdCode;
 		}
-
-		public override int GetHashCode()
-		{
-			return this.Type.IdCode.GetHashCode();
-		}
-
-		public static bool operator ==(StaticProject lhs, StaticProject rhs)
-		{
-			if (ReferenceEquals(lhs, rhs))
-				return true;
-			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
-				return false;
-			return lhs.Equals(rhs);
-		}
-
-		public static bool operator !=(StaticProject lhs, StaticProject rhs)
-		{
-			return !(lhs == rhs);
-		}
-		#endregion
 
 		public const string Tag = "Static";
 	}

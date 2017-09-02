@@ -17,6 +17,6 @@ namespace Stareater.GameData.Construction
 
 		void Accept(IConstructionProjectVisitor visitor);
 
-		//Should override Equals
+		bool Equals(IConstructionProject project);
 	}
 }
