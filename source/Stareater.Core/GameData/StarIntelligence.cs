@@ -1,105 +1,37 @@
-﻿ 
-
-
-using Ikadn.Ikon.Types;
-using Stareater.Utils.Collections;
-using Stareater.Utils.StateEngine;
-using System;
+﻿using Stareater.Utils.StateEngine;
 using System.Collections.Generic;
 using Stareater.Galaxy;
+using System.Linq;
 
-namespace Stareater.GameData 
+namespace Stareater.GameData
 {
 	partial class StarIntelligence 
 	{
+		public const int NeverVisited = -1;
+
 		[StateProperty]
 		public int LastVisited { get; private set; }
+
 		[StateProperty]
 		public Dictionary<Planet, PlanetIntelligence> Planets { get; private set; }
 
 		public StarIntelligence(IEnumerable<Planet> planets) 
 		{
 			this.LastVisited = NeverVisited;
-			this.Planets = new Dictionary<Planet, PlanetIntelligence>();
-			foreach(var item in planets)
-				this.Planets.Add(item, new PlanetIntelligence());
- 
-			 
-		} 
-
-		private StarIntelligence(StarIntelligence original, GalaxyRemap galaxyRemap) 
-		{
-			this.LastVisited = original.LastVisited;
-			this.Planets = new Dictionary<Planet, PlanetIntelligence>();
-			foreach(var item in original.Planets)
-				this.Planets.Add(galaxyRemap.Planets[item.Key], item.Value.Copy());
- 
-			 
+			this.Planets = planets.ToDictionary(x => x, x => new PlanetIntelligence());
 		}
 
-		private StarIntelligence(IkonComposite rawData, ObjectDeindexer deindexer) 
-		{
-			var lastVisitedSave = rawData[LastVisitedKey];
-			this.LastVisited = lastVisitedSave.To<int>();
-
-			var planetsSave = rawData[PlanetsKey];
-			this.Planets = new Dictionary<Planet, PlanetIntelligence>();
-			foreach(var item in planetsSave.To<IEnumerable<IkonComposite>>()) {
-				var itemKey = item[PlanetKey];
-				var itemValue = item[PlanetIntelligenceKey];
-				this.Planets.Add(
-					deindexer.Get<Planet>(itemKey.To<int>()),
-					PlanetIntelligence.Load(itemValue.To<IkonComposite>(), deindexer)
-				);
-			}
- 
-			 
-		}
-
-		private StarIntelligence() 
+		private StarIntelligence()
 		{ }
-		internal StarIntelligence Copy(GalaxyRemap galaxyRemap) 
-		{
-			return new StarIntelligence(this, galaxyRemap);
- 
-		} 
- 
 
-		#region Saving
-		public IkonComposite Save(ObjectIndexer indexer) 
+		public bool IsVisited
 		{
-			var data = new IkonComposite(TableTag);
-			data.Add(LastVisitedKey, new IkonInteger(this.LastVisited));
-
-			var planetsData = new IkonArray();
-			foreach(var item in this.Planets) {
-				var itemData = new IkonComposite(PlanetIntellTag);
-				itemData.Add(PlanetKey, new IkonInteger(indexer.IndexOf(item.Key)));
-				itemData.Add(PlanetIntelligenceKey, item.Value.Save());
-				planetsData.Add(itemData);
-			}
-			data.Add(PlanetsKey, planetsData);
-			return data;
- 
+			get { return LastVisited != NeverVisited; }
 		}
 
-		public static StarIntelligence Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		public void Visit(int turn)
 		{
-			var loadedData = new StarIntelligence(rawData, deindexer);
-			deindexer.Add(loadedData);
-			return loadedData;
+			this.LastVisited = turn;
 		}
- 
-
-		private const string TableTag = "StarIntelligence";
-		private const string LastVisitedKey = "lastVisited";
-		private const string PlanetsKey = "planets";
-		private const string PlanetIntellTag = "PlanetIntell";
-		private const string PlanetKey = "planet";
-		private const string PlanetIntelligenceKey = "intell";
- 
-		#endregion
-
- 
 	}
 }

@@ -52,7 +52,7 @@ namespace Stareater.Players
 			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
 			foreach(var item in original.UnlockedDesigns)
 				this.UnlockedDesigns.Add(item);
-			this.Intelligence = original.Intelligence.Copy(galaxyRemap);
+			//this.Intelligence = original.Intelligence.Copy(galaxyRemap);
  
 			#if DEBUG
 			this.id = NextId();
@@ -84,7 +84,7 @@ namespace Stareater.Players
 				this.UnlockedDesigns.Add(deindexer.Get<PredefinedDesign>(item.To<int>()));
 
 			var intelligenceSave = rawData[IntelligenceKey];
-			this.Intelligence = Intelligence.Load(intelligenceSave.To<IkonComposite>(), deindexer);
+			//this.Intelligence = Intelligence.Load(intelligenceSave.To<IkonComposite>(), deindexer);
  
 			#if DEBUG
 			this.id = NextId();
@@ -122,7 +122,7 @@ namespace Stareater.Players
 				unlockedDesignsData.Add(new IkonInteger(indexer.IndexOf(item)));
 			data.Add(UnlockedDesignsKey, unlockedDesignsData);
 
-			data.Add(IntelligenceKey, this.Intelligence.Save(indexer));
+			//data.Add(IntelligenceKey, this.Intelligence.Save(indexer));
 			return data;
  
 		}

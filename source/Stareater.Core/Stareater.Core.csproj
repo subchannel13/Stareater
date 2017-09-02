@@ -213,6 +213,8 @@
     </Compile>
     <Compile Include="GameData\Databases\Tables\TreatyCollection.cs" />
     <Compile Include="GameData\DevelopmentRequirement.cs" />
+    <Compile Include="GameData\Intelligence.cs" />
+    <Compile Include="GameData\PlanetIntelligence.cs" />
     <Compile Include="GameData\Reading\NoValue.cs" />
     <Compile Include="GameData\Reading\NoValueFactory.cs" />
     <Compile Include="GameData\ResearchProgress.cs">
@@ -231,6 +233,7 @@
     <Compile Include="GameData\Ships\IAbilityVisitor.cs" />
     <Compile Include="GameData\Ships\MissionEquipmentType.cs" />
     <Compile Include="GameData\Ships\StarShootAbility.cs" />
+    <Compile Include="GameData\StarIntelligence.cs" />
     <Compile Include="GameData\Treaty.cs">
       <DependentUpon>Treaty.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -299,16 +302,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="GameData\Intelligence.cs">
-      <DependentUpon>Intelligence.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameData\PlanetIntelligence.cs">
-      <DependentUpon>PlanetIntelligence.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="GameData\PlayersRemap.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -358,19 +351,11 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\TemporaryDB.cs" />
-    <Compile Include="GameData\Intelligence.partial.cs" />
-    <Compile Include="GameData\PlanetIntelligence.partial.cs" />
     <Compile Include="GameData\Prerequisite.cs" />
     <Compile Include="GameData\Reading\Expression.cs" />
     <Compile Include="GameData\Reading\ExpressionFactory.cs" />
     <Compile Include="GameData\Reading\Parser.cs" />
     <Compile Include="GameData\Reading\SingleLineFactory.cs" />
-    <Compile Include="GameData\StarIntelligence.cs">
-      <DependentUpon>StarIntelligence.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameData\StarIntelligence.partial.cs" />
     <Compile Include="GameData\DevelopmentTopic.cs" />
     <Compile Include="GameData\DevelopmentProgress.cs">
       <DependentUpon>DevelopmentProgress.tt</DependentUpon>
@@ -563,21 +548,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlayerOrders.cs</LastGenOutput>
     </None>
-    <None Include="GameData\Intelligence.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Intelligence.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\PlanetIntelligence.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PlanetIntelligence.cs</LastGenOutput>
-    </None>
     <None Include="GameData\ResearchProgress.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ResearchProgress.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\StarIntelligence.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StarIntelligence.cs</LastGenOutput>
     </None>
     <None Include="GameData\DevelopmentProgress.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

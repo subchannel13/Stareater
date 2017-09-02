@@ -1,16 +1,11 @@
-﻿ 
-
-
-using Ikadn.Ikon.Types;
-using Stareater.Utils.Collections;
-using Stareater.Utils.StateEngine;
-using System;
+﻿using Stareater.Utils.StateEngine;
 using System.Collections.Generic;
 using Stareater.Galaxy;
+using Stareater.Galaxy.Builders;
 
-namespace Stareater.GameData 
+namespace Stareater.GameData
 {
-	partial class Intelligence 
+	class Intelligence 
 	{
 		[StateProperty]
 		private Dictionary<StarData, StarIntelligence> starKnowledge { get; set; }
@@ -18,74 +13,30 @@ namespace Stareater.GameData
 		public Intelligence() 
 		{
 			this.starKnowledge = new Dictionary<StarData, StarIntelligence>();
- 
-			 
-		} 
-
-		private Intelligence(Intelligence original, GalaxyRemap galaxyRemap) 
-		{
-			this.starKnowledge = new Dictionary<StarData, StarIntelligence>();
-			foreach(var item in original.starKnowledge)
-				this.starKnowledge.Add(galaxyRemap.Stars[item.Key], item.Value.Copy(galaxyRemap));
- 
-			 
+			
 		}
 
-		private Intelligence(IkonComposite rawData, ObjectDeindexer deindexer) 
+		public void Initialize(IEnumerable<StarSystem> starSystems)
 		{
-			var starKnowledgeSave = rawData[StarKnowledgeKey];
-			this.starKnowledge = new Dictionary<StarData, StarIntelligence>();
-			foreach(var item in starKnowledgeSave.To<IEnumerable<IkonComposite>>()) {
-				var itemKey = item[StarDataKey];
-				var itemValue = item[StarIntelligenceKey];
-				this.starKnowledge.Add(
-					deindexer.Get<StarData>(itemKey.To<int>()),
-					StarIntelligence.Load(itemValue.To<IkonComposite>(), deindexer)
-				);
+			this.starKnowledge.Clear();
+			foreach (var system in starSystems)
+				starKnowledge.Add(system.Star, new StarIntelligence(system.Planets));
+		}
+
+		public void StarFullyVisited(StarData star, int turn)
+		{
+			var starInfo = starKnowledge[star];
+
+			starInfo.Visit(turn);
+			foreach (var planetInfo in starInfo.Planets.Values)
+			{
+				planetInfo.Visit(turn);
 			}
- 
-			 
 		}
 
-		internal Intelligence Copy(GalaxyRemap galaxyRemap) 
+		public StarIntelligence About(StarData star)
 		{
-			return new Intelligence(this, galaxyRemap);
- 
-		} 
- 
-
-		#region Saving
-		public IkonComposite Save(ObjectIndexer indexer) 
-		{
-			var data = new IkonComposite(TableTag);
-			var starKnowledgeData = new IkonArray();
-			foreach(var item in this.starKnowledge) {
-				var itemData = new IkonComposite(StarIntellTag);
-				itemData.Add(StarDataKey, new IkonInteger(indexer.IndexOf(item.Key)));
-				itemData.Add(StarIntelligenceKey, item.Value.Save(indexer));
-				starKnowledgeData.Add(itemData);
-			}
-			data.Add(StarKnowledgeKey, starKnowledgeData);
-			return data;
- 
+			return starKnowledge[star];
 		}
-
-		public static Intelligence Load(IkonComposite rawData, ObjectDeindexer deindexer)
-		{
-			var loadedData = new Intelligence(rawData, deindexer);
-			deindexer.Add(loadedData);
-			return loadedData;
-		}
- 
-
-		private const string TableTag = "Intelligence";
-		private const string StarKnowledgeKey = "starKnowledge";
-		private const string StarIntellTag = "StarIntell";
-		private const string StarDataKey = "star";
-		private const string StarIntelligenceKey = "intell";
- 
-		#endregion
-
- 
 	}
 }

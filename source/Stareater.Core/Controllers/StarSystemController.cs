@@ -30,7 +30,7 @@ namespace Stareater.Controllers
 		{
 			get {
 				var planetInfos = this.player.Intelligence.About(Star).Planets;
-				var knownPlanets = planetInfos.Where(x => x.Value.Explored >= PlanetIntelligence.FullyExplored).Select(x => x.Key);
+				var knownPlanets = planetInfos.Where(x => x.Value.Explored).Select(x => x.Key);
 				
 				return knownPlanets.OrderBy(x => x.Position);
 			}
