@@ -1,5 +1,4 @@
-﻿using System;
-using Stareater.Galaxy;
+﻿using Stareater.Galaxy;
 using Stareater.Ships.Missions;
 
 namespace Stareater.Controllers.Data

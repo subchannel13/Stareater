@@ -1,8 +1,4 @@
-﻿using Ikadn;
-using Stareater.GameData;
-using Stareater.Utils.Collections;
-using Stareater.Utils.StateEngine;
-using Ikadn.Ikon.Types;
+﻿using Stareater.Utils.StateEngine;
 
 namespace Stareater.Ships.Missions
 {
@@ -10,10 +6,6 @@ namespace Stareater.Ships.Missions
 	abstract class AMission
 	{
 		public abstract void Accept(IMissionVisitor visitor);
-
-		public abstract AMission Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap);
-		public abstract IkadnBaseObject Save(ObjectIndexer indexer);
-		public abstract IkonBaseObject Save(SaveSession session);
 
 		#region Equals and GetHashCode implementation
 		public abstract override bool Equals(object obj);

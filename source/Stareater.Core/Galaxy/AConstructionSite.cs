@@ -1,24 +1,22 @@
-﻿ 
-
-
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
-using System;
 using System.Collections.Generic;
-using Stareater.GameData;
 using Stareater.Players;
 
-namespace Stareater.Galaxy 
+namespace Stareater.Galaxy
 {
 	abstract partial class AConstructionSite 
 	{
 		[StateProperty]
 		public LocationBody Location { get; private set; }
+
 		[StateProperty]
 		public Player Owner { get; private set; }
+
 		[StateProperty]
 		public Dictionary<string, double> Buildings { get; private set; }
+
 		[StateProperty]
 		public Dictionary<string, double> Stockpile { get; private set; }
 

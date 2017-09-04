@@ -94,8 +94,8 @@ namespace Stareater.Galaxy
 			data.Add(PositionKey, positionData);
 
 			var missionsData = new IkonArray();
-			foreach(var item in this.Missions)
-				missionsData.Add(item.Save(indexer));
+			/*foreach(var item in this.Missions)
+				missionsData.Add(item.Save(indexer));*/
 			data.Add(MissionsKey, missionsData);
 
 			var shipsData = new IkonArray();

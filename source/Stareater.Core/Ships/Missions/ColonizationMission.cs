@@ -28,32 +28,6 @@ namespace Stareater.Ships.Missions
 			visitor.Visit(this);
 		}
 
-		public override AMission Copy(PlayersRemap playersRemap, GalaxyRemap galaxyRemap)
-		{
-			return new ColonizationMission(galaxyRemap.Planets[this.Target]);
-		}
-
-		public override IkonBaseObject Save(SaveSession session)
-		{
-			var saveData = new IkonComposite(MissionTag);
-			saveData.Add(TargetKey, session.Serialize(this.Target));
-
-			return saveData;
-		}
-
-        public override IkadnBaseObject Save(ObjectIndexer indexer)
-		{
-			var saveData = new IkonComposite(MissionTag);
-			saveData.Add(TargetKey, new IkonInteger(indexer.IndexOf(this.Target)));
-			
-			return saveData;
-		}
-
-		public static AMission Load(IkadnBaseObject rawData, LoadSession session)
-		{
-			return new ColonizationMission(session.Load<Planet>(rawData.To<IkonComposite>()[TargetKey]));
-		}
-
 		public override bool Equals(object obj)
 		{
 			var other = obj as ColonizationMission;
@@ -65,9 +39,6 @@ namespace Stareater.Ships.Missions
 		}
 		#endregion
 		
-		#region Saving keys
 		public const string MissionTag = "Colonize";
-		public const string TargetKey = "what";
- 		#endregion
 	}
 }
