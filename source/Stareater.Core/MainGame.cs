@@ -88,26 +88,6 @@ namespace Stareater
 		}
 		
 		#region Saving
-		public ObjectIndexer GenerateIndices()
-		{
-			var indexer = new ObjectIndexer();
-			
-			indexer.AddAll(this.AllPlayers);
-			indexer.AddAll(Statics.PredeginedDesigns);
-			
-			indexer.AddAll(States.Designs);
-			indexer.AddAll(States.DevelopmentAdvances);
-			
-			indexer.AddAll(States.Planets);
-			indexer.AddAll(States.Stars);
-			indexer.AddAll(States.Wormholes);
-			
-			indexer.AddAll(States.Colonies);
-			indexer.AddAll(States.Stellarises);
-		
-			return indexer;
-		}
-		
 		internal IkadnBaseObject Save(StateManager stateManager)
 		{
 			var indexer = new ObjectIndexer();
@@ -131,12 +111,6 @@ namespace Stareater
 		}
 		
 		public const string SaveGameTag = "Game";
-		public const string TurnKey = "turn";
-		public const string OrdersKey = "orders";
-		public const string OrganelleOrdersKey = "organelleOrders";
-		public const string OrganellePlayerKey = "organelles";
-		public const string PlayersKey = "players";
-		public const string StatesKey = "states";
 		#endregion
 	}
 }

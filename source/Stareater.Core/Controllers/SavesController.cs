@@ -62,10 +62,12 @@ namespace Stareater.Controllers
 					try
 					{
 #endif
+					var versionData = parser.ParseNext() as IkonArray;
+					var title = parser.ParseNext().To<string>();
 					var rawData = parser.ParseNext() as IkonComposite;
 					saveFiles.Add(
 						new SavedGameInfo(
-							rawData[SaveGameTitleKey].To<string>(),
+							title,
 							0, //TODO(v0.7) read turn number from file
 							rawData,
 							file
@@ -125,15 +127,20 @@ namespace Stareater.Controllers
 
 		private void save(FileInfo saveFile, string title)
 		{
-			using (var output = new StreamWriter(saveFile.Create())) {
-				var saveData = new IkonComposite(MainGame.SaveGameTag);
-
-				//TODO(v0.7) make title and version separate IKADN objects
-				saveData.Add(SaveGameTitleKey, new IkonText(title));
-				saveData.Add("Data", gameController.Save());
+			using (var output = new StreamWriter(saveFile.Create()))
+			{
+				var version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
+				var versionData = new IkonArray();
+				versionData.Add(new IkonInteger(version.Major));
+				versionData.Add(new IkonInteger(version.Minor));
+				versionData.Add(new IkonInteger(version.Revision));
+				versionData.Add(new IkonInteger(version.Build));
 
 				var writer = new IkadnWriter(output);
-				saveData.Compose(writer);
+				versionData.Compose(writer);
+				new IkonText(title).Compose(writer);
+				//TODO(v0.7) add view's preview data
+				gameController.Save().Compose(writer);
 			}
 		}
 		

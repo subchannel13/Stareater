@@ -395,7 +395,6 @@
     <Compile Include="Utils\PluginParameters\ContinuousRangeParameter.cs" />
     <Compile Include="Utils\PluginParameters\DiscreteRangeParameter.cs" />
     <Compile Include="Utils\PluginParameters\IParameterVisitor.cs" />
-    <Compile Include="Utils\ProgressData.cs" />
     <Compile Include="Utils\Collections\PendableSet.cs" />
     <Compile Include="Localization\IText.cs" />
     <Compile Include="Localization\Language.cs" />
@@ -413,28 +412,10 @@
     <Compile Include="Utils\PluginParameters\ARangeParameter.cs" />
     <Compile Include="Utils\PluginParameters\SelectorParameter.cs" />
     <Compile Include="Utils\NumberFormatters\ThousandsFormatter.cs" />
-    <Compile Include="Utils\StateTable.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StateTable.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Utils\StateTableField.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StateTableField.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />
     <None Include="packages.config" />
-    <None Include="Utils\StateTable.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StateTable.cs</LastGenOutput>
-    </None>
-    <None Include="Utils\StateTableField.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StateTableField.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

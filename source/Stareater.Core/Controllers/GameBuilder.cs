@@ -57,7 +57,7 @@ namespace Stareater.Controllers
 			deindexer.AddAll(statics.Traits.Values);
 
 			var game = stateManager.Load<MainGame>(
-				saveData["Data"].To<IkonComposite>(), 
+				saveData.To<IkonComposite>(), 
 				deindexer,
 				new Dictionary<Type, Action<object>>()
 				{
