@@ -1,12 +1,13 @@
 ﻿using Ikadn.Ikon.Types;
-using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using System.Collections.Generic;
 using Stareater.Players;
+using Stareater.GameData;
 
 namespace Stareater.Galaxy
 {
-	abstract partial class AConstructionSite 
+	[StateBaseType("Load", typeof(AConstructionSite))]
+	abstract class AConstructionSite 
 	{
 		[StateProperty]
 		public LocationBody Location { get; private set; }
@@ -30,107 +31,55 @@ namespace Stareater.Galaxy
 			#if DEBUG
 			this.id = NextId();
 			#endif
- 
 		} 
-
-		protected AConstructionSite(AConstructionSite original, LocationBody location, Player owner) : this(location, owner) 
-		{
-			this.Buildings = new Dictionary<string, double>();
-			foreach(var item in original.Buildings)
-				this.Buildings.Add(item.Key, item.Value);
-			this.Stockpile = new Dictionary<string, double>();
-			foreach(var item in original.Stockpile)
-				this.Stockpile.Add(item.Key, item.Value);
- 
-			#if DEBUG
-			this.id = NextId();
-			#endif
- 
-		}
-
-		protected AConstructionSite(IkonComposite rawData, ObjectDeindexer deindexer) 
-		{
-			var locationSave = rawData[LocationKey];
-			//this.Location = LocationBody.Load(locationSave.To<IkonComposite>(), deindexer);
-
-			var ownerSave = rawData[OwnerKey];
-			this.Owner = deindexer.Get<Player>(ownerSave.To<int>());
-
-			var buildingsSave = rawData[BuildingsKey];
-			this.Buildings = new Dictionary<string, double>();
-			foreach(var item in buildingsSave.To<IEnumerable<IkonComposite>>()) {
-				var itemKey = item[BuildingTypeKey];
-				var itemValue = item[BuildingAmountKey];
-				this.Buildings.Add(
-					itemKey.To<string>(),
-					itemValue.To<double>()
-				);
-			}
-
-			var stockpileSave = rawData[StockpileKey];
-			this.Stockpile = new Dictionary<string, double>();
-			foreach(var item in stockpileSave.To<IEnumerable<IkonComposite>>()) {
-				var itemKey = item[StockpileGroupKey];
-				var itemValue = item[StockpileAmountKey];
-				this.Stockpile.Add(
-					itemKey.To<string>(),
-					itemValue.To<double>()
-				);
-			}
- 
-			#if DEBUG
-			this.id = NextId();
-			#endif
- 
-		}
-
+		
 		protected AConstructionSite() 
 		{ }
- 
 
-		#region Saving
-		public virtual IkonComposite Save(ObjectIndexer indexer) 
+		public abstract SiteType Type { get; }
+
+		public static AConstructionSite Load(IkonBaseObject rawData, LoadSession session)
 		{
-			var data = new IkonComposite(TableTag);
-			//data.Add(LocationKey, this.Location.Save(indexer));
-
-			data.Add(OwnerKey, new IkonInteger(indexer.IndexOf(this.Owner)));
-
-			var buildingsData = new IkonArray();
-			foreach(var item in this.Buildings) {
-				var itemData = new IkonComposite(BuildingsTag);
-				itemData.Add(BuildingTypeKey, new IkonText(item.Key));
-				itemData.Add(BuildingAmountKey, new IkonFloat(item.Value));
-				buildingsData.Add(itemData);
-			}
-			data.Add(BuildingsKey, buildingsData);
-
-			var stockpileData = new IkonArray();
-			foreach(var item in this.Stockpile) {
-				var itemData = new IkonComposite(StockpileTag);
-				itemData.Add(StockpileGroupKey, new IkonText(item.Key));
-				itemData.Add(StockpileAmountKey, new IkonFloat(item.Value));
-				stockpileData.Add(itemData);
-			}
-			data.Add(StockpileKey, stockpileData);
-			return data;
- 
+			if (rawData.Tag.Equals(Colony.Tag))
+				return session.Load<Colony>(rawData);
+			else
+				return session.Load<StellarisAdmin>(rawData);
 		}
 
- 
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			var other = obj as AConstructionSite;
+			if (other == null)
+				return false;
+			return this.Location == other.Location && object.Equals(this.Owner, other.Owner);
+		}
 
-		protected abstract string TableTag { get; }
-		private const string LocationKey = "location";
-		private const string OwnerKey = "owner";
-		private const string BuildingsKey = "buildings";
-		private const string BuildingsTag = "buildings";
-		private const string BuildingTypeKey = "type";
-		private const string BuildingAmountKey = "amount";
-		private const string StockpileKey = "stockpile";
-		private const string StockpileTag = "stockpile";
-		private const string StockpileGroupKey = "group";
-		private const string StockpileAmountKey = "amount";
- 
+		public override int GetHashCode()
+		{
+			int hashCode = 0;
+			unchecked
+			{
+				hashCode += 1000000007 * Location.GetHashCode();
+				if (Owner != null)
+					hashCode += 100000009 * Owner.GetHashCode();
+			}
+			return hashCode;
+		}
+
+		public static bool operator ==(AConstructionSite lhs, AConstructionSite rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(AConstructionSite lhs, AConstructionSite rhs)
+		{
+			return !(lhs == rhs);
+		}
 		#endregion
 
 		#region object ID
@@ -153,6 +102,5 @@ namespace Stareater.Galaxy
 		}
 		#endif
 		#endregion
- 
 	}
 }

@@ -136,11 +136,7 @@
     <Compile Include="Controllers\StarSystemController.cs" />
     <Compile Include="Controllers\Views\TraitInfo.cs" />
     <Compile Include="Controllers\Views\TreatyInfo.cs" />
-    <Compile Include="Galaxy\AConstructionSite.cs">
-      <DependentUpon>AConstructionSite.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="Galaxy\AConstructionSite.cs" />
     <Compile Include="Galaxy\BodyTraits\ITrait.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectAfflictPlanets.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectPassive.cs" />
@@ -155,12 +151,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Galaxy\Colony.cs">
-      <DependentUpon>Colony.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Galaxy\Colony.partial.cs" />
+    <Compile Include="Galaxy\Colony.cs" />
     <Compile Include="Galaxy\Fleet.cs">
       <DependentUpon>Fleet.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -176,12 +167,7 @@
     </Compile>
     <Compile Include="Galaxy\PlanetType.cs" />
     <Compile Include="Galaxy\StarData.cs" />
-    <Compile Include="Galaxy\StellarisAdmin.cs">
-      <DependentUpon>StellarisAdmin.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Galaxy\StellarisAdmin.partial.cs" />
+    <Compile Include="Galaxy\StellarisAdmin.cs" />
     <Compile Include="Galaxy\StarNamer.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectTypeAfflictPlanets.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectTypePassive.cs" />
@@ -370,7 +356,6 @@
     <Compile Include="Localization\Reading\ExpressionTextFactory.cs" />
     <Compile Include="Localization\PlaceholderText.cs" />
     <Compile Include="Localization\Reading\TextBlockFactory.cs" />
-    <Compile Include="Galaxy\AConstructionSite.partial.cs" />
     <Compile Include="Galaxy\MapAssets.cs" />
     <Compile Include="Galaxy\StartingConditions.cs" />
     <Compile Include="Localization\StarNames\ConstellationStarName.cs" />
@@ -476,14 +461,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />
-    <None Include="Galaxy\AConstructionSite.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AConstructionSite.cs</LastGenOutput>
-    </None>
-    <None Include="Galaxy\Colony.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Colony.cs</LastGenOutput>
-    </None>
     <None Include="Galaxy\Fleet.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Fleet.cs</LastGenOutput>
@@ -491,10 +468,6 @@
     <None Include="Galaxy\ShipGroup.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ShipGroup.cs</LastGenOutput>
-    </None>
-    <None Include="Galaxy\StellarisAdmin.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StellarisAdmin.cs</LastGenOutput>
     </None>
     <None Include="GameData\ColonizationProject.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
