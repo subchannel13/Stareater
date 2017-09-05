@@ -1,24 +1,29 @@
-﻿ 
-
-
-using Ikadn.Ikon.Types;
-using Stareater.Utils.Collections;
+﻿using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
-using System;
 using Stareater.Players;
+using System.Collections.Generic;
+using Stareater.GameData.Databases;
+using Stareater.GameLogic;
 
-namespace Stareater.GameData 
+namespace Stareater.GameData
 {
-	partial class DevelopmentProgress 
+	class DevelopmentProgress 
 	{
+		public const int NotStarted = -1;
+		public const int Unordered = -1;
+
 		[StateProperty]
 		public Player Owner { get; private set; }
+
 		[StateProperty]
 		public DevelopmentTopic Topic { get; private set; }
+
 		[StateProperty]
 		public int Level { get; private set; }
+
 		[StateProperty]
 		public double InvestedPoints { get; private set; }
+
 		[StateProperty]
 		public int Priority { get; set; }
 
@@ -29,74 +34,106 @@ namespace Stareater.GameData
 			this.Level = level;
 			this.InvestedPoints = investedPoints;
 			this.Priority = priority;
- 
-			 
-		} 
-
-
-		private DevelopmentProgress(IkonComposite rawData, ObjectDeindexer deindexer) 
-		{
-			var ownerSave = rawData[OwnerKey];
-			this.Owner = deindexer.Get<Player>(ownerSave.To<int>());
-
-			var topicSave = rawData[TopicKey];
-			this.Topic = deindexer.Get<DevelopmentTopic>(topicSave.To<string>());
-
-			var levelSave = rawData[LevelKey];
-			this.Level = levelSave.To<int>();
-
-			var investedPointsSave = rawData[InvestedKey];
-			this.InvestedPoints = investedPointsSave.To<double>();
-
-			var prioritySave = rawData[PriorityKey];
-			this.Priority = prioritySave.To<int>();
- 
-			 
 		}
+
+		public DevelopmentProgress(DevelopmentTopic topic, Player owner) :
+			this(owner, topic, NotStarted, 0, 0)
+		{ }
 
 		private DevelopmentProgress() 
 		{ }
-		internal DevelopmentProgress Copy(PlayersRemap playersRemap) 
+
+		public int NextLevel
 		{
-			return new DevelopmentProgress(playersRemap.Players[this.Owner], this.Topic, this.Level, this.InvestedPoints, this.Priority);
- 
-		} 
- 
+			get
+			{
+				if (Level < 0)
+					return 0;
+				else if (Level >= Topic.MaxLevel)
+					return Topic.MaxLevel;
 
-		#region Saving
-		public IkonComposite Save(ObjectIndexer indexer) 
-		{
-			var data = new IkonComposite(TableTag);
-			data.Add(OwnerKey, new IkonInteger(indexer.IndexOf(this.Owner)));
-
-			data.Add(TopicKey, new IkonText(this.Topic.IdCode));
-
-			data.Add(LevelKey, new IkonInteger(this.Level));
-
-			data.Add(InvestedKey, new IkonFloat(this.InvestedPoints));
-
-			data.Add(PriorityKey, new IkonInteger(this.Priority));
-			return data;
- 
+				return Level + 1;
+			}
 		}
 
-		public static DevelopmentProgress Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		public bool CanProgress(Dictionary<string, double> researchLevels, StaticsDB statics)
 		{
-			var loadedData = new DevelopmentProgress(rawData, deindexer);
-			deindexer.Add(loadedData);
-			return loadedData;
-		}
- 
+			var requirement = statics.DevelopmentRequirements.ContainsKey(this.Topic.IdCode) ?
+				statics.DevelopmentRequirements[this.Topic.IdCode] :
+				null;
 
-		private const string TableTag = "DevelopmentProgress";
-		private const string OwnerKey = "owner";
-		private const string TopicKey = "topic";
-		private const string LevelKey = "level";
-		private const string InvestedKey = "invested";
-		private const string PriorityKey = "priority";
- 
+			return Level < Topic.MaxLevel && (requirement == null || researchLevels[requirement.Code] >= requirement.Level);
+		}
+
+		public void Progress(DevelopmentResult progressData)
+		{
+			this.Level += (int)progressData.CompletedCount;
+			this.InvestedPoints = progressData.LeftoverPoints;
+		}
+
+		//TODO(v0.7) consider moving to player processor
+		public DevelopmentResult SimulateInvestment(double points, IDictionary<string, double> techLevels)
+		{
+			int tmplevel = Level;
+			int newLevels = 0;
+			double tmpInvested = InvestedPoints;
+			double totalInvested = 0;
+
+			while (tmplevel < Topic.MaxLevel)
+			{
+				var vars = new Var(DevelopmentTopic.LevelKey, tmplevel + 1).
+					And(DevelopmentTopic.PriorityKey, this.Priority).Get;
+				double pointsLeft = this.Topic.Cost.Evaluate(vars) - tmpInvested;
+
+				if (pointsLeft > points)
+					return new DevelopmentResult(newLevels, totalInvested + points, this, tmpInvested + points);
+
+				tmplevel++;
+				newLevels++;
+
+				tmpInvested = 0;
+				totalInvested += pointsLeft;
+				points -= pointsLeft;
+			}
+
+			return new DevelopmentResult(newLevels, totalInvested, this, tmpInvested);
+		}
+
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			var other = obj as DevelopmentProgress;
+			if (other == null)
+				return false;
+			return object.Equals(this.Topic, other.Topic) && object.Equals(this.Owner, other.Owner);
+		}
+
+		public override int GetHashCode()
+		{
+			int hashCode = 0;
+			unchecked
+			{
+				if (Topic != null)
+					hashCode += 1000000007 * Topic.GetHashCode();
+				if (Owner != null)
+					hashCode += 1000000009 * Owner.GetHashCode();
+			}
+			return hashCode;
+		}
+
+		public static bool operator ==(DevelopmentProgress lhs, DevelopmentProgress rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(DevelopmentProgress lhs, DevelopmentProgress rhs)
+		{
+			return !(lhs == rhs);
+		}
 		#endregion
-
- 
 	}
 }

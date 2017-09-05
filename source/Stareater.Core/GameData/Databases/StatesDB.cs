@@ -44,7 +44,7 @@ namespace Stareater.GameData.Databases
 		[StateProperty]
 		public TreatyCollection Treaties { get; private set; }
 		
-		private int nextDesignId = 0;
+		private int nextDesignId = 0; //TODO(v0.7) may not work correctly after loading
 		
 		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, 
 		                ColonyCollection Colonies, StellarisCollection stellarises,

@@ -152,12 +152,8 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Galaxy\Colony.cs" />
-    <Compile Include="Galaxy\Fleet.cs">
-      <DependentUpon>Fleet.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Galaxy\BodyTraits\ITraitEffectType.cs" />
+    <Compile Include="Galaxy\Fleet.cs" />
     <Compile Include="Galaxy\LocationBody.cs" />
     <Compile Include="Galaxy\Planet.cs" />
     <Compile Include="Galaxy\PlanetType.cs" />
@@ -185,21 +181,13 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\Tables\TreatyCollection.cs" />
+    <Compile Include="GameData\DevelopmentProgress.cs" />
     <Compile Include="GameData\DevelopmentRequirement.cs" />
     <Compile Include="GameData\Intelligence.cs" />
     <Compile Include="GameData\PlanetIntelligence.cs" />
     <Compile Include="GameData\Reading\NoValue.cs" />
     <Compile Include="GameData\Reading\NoValueFactory.cs" />
-    <Compile Include="GameData\ResearchProgress.cs">
-      <DependentUpon>ResearchProgress.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameData\ResearchProgress.partial.cs" />
-    <Compile Include="GameData\ResearchProgress.txt">
-      <DependentUpon>ResearchProgress.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-    </Compile>
+    <Compile Include="GameData\ResearchProgress.cs" />
     <Compile Include="GameData\ResearchTopic.cs" />
     <Compile Include="GameData\Ships\AAbilityType.cs" />
     <Compile Include="GameData\Ships\DirectShootAbility.cs" />
@@ -207,11 +195,7 @@
     <Compile Include="GameData\Ships\MissionEquipmentType.cs" />
     <Compile Include="GameData\Ships\StarShootAbility.cs" />
     <Compile Include="GameData\StarIntelligence.cs" />
-    <Compile Include="GameData\Treaty.cs">
-      <DependentUpon>Treaty.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="GameData\Treaty.cs" />
     <Compile Include="GameLogic\AbilityStatsFactory.cs" />
     <Compile Include="GameLogic\AbilityStats.cs" />
     <Compile Include="GameLogic\ACombatProcessor.cs" />
@@ -314,12 +298,6 @@
     <Compile Include="GameData\Reading\Parser.cs" />
     <Compile Include="GameData\Reading\SingleLineFactory.cs" />
     <Compile Include="GameData\DevelopmentTopic.cs" />
-    <Compile Include="GameData\DevelopmentProgress.cs">
-      <DependentUpon>DevelopmentProgress.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameData\DevelopmentProgress.partial.cs" />
     <Compile Include="GameLogic\ConstructionResult.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -448,22 +426,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />
-    <None Include="Galaxy\Fleet.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Fleet.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\ResearchProgress.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ResearchProgress.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\DevelopmentProgress.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DevelopmentProgress.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Treaty.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Treaty.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
     <None Include="Utils\StateTable.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
