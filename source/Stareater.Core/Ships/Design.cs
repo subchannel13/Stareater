@@ -1,54 +1,66 @@
-﻿ 
-
-
-using Ikadn.Ikon.Types;
-using Stareater.Utils.Collections;
+﻿using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
-using System;
 using System.Collections.Generic;
-using Stareater.GameData;
 using Stareater.GameData.Ships;
 using Stareater.Players;
 using Stareater.Utils;
+using Stareater.GameData.Databases;
+using System.Linq;
 
-namespace Stareater.Ships 
+namespace Stareater.Ships
 {
-	partial class Design 
+	class Design 
 	{
 		[StateProperty]
 		public string IdCode { get; private set; }
+
 		[StateProperty]
 		public Player Owner { get; private set; }
+
 		[StateProperty]
 		public bool IsObsolete { get; set; }
+
 		[StateProperty]
 		public bool IsVirtual { get; private set; }
+
 		[StateProperty]
 		public string Name { get; private set; }
+
 		[StateProperty]
 		public int ImageIndex { get; private set; }
+
 		[StateProperty]
 		public Component<ArmorType> Armor { get; private set; }
+
 		[StateProperty]
 		public Component<HullType> Hull { get; private set; }
+
 		[StateProperty]
 		public Component<IsDriveType> IsDrive { get; private set; }
+
 		[StateProperty]
 		public Component<ReactorType> Reactor { get; private set; }
+
 		[StateProperty]
 		public Component<SensorType> Sensors { get; private set; }
+
 		[StateProperty]
 		public Component<ShieldType> Shield { get; private set; }
+
 		[StateProperty]
 		public List<Component<MissionEquipmentType>> MissionEquipment { get; private set; }
+
 		[StateProperty]
 		public List<Component<SpecialEquipmentType>> SpecialEquipment { get; private set; }
+
 		[StateProperty]
 		public Component<ThrusterType> Thrusters { get; private set; }
+
 		[StateProperty(doSave: false)]
-		private BitHash hash { get; set; }
+		private BitHash hash { get; set; } //TODO(v0.7) try to move design stats
+
 		[StateProperty]
-		public double Cost { get; private set; }
+		public double Cost { get; private set; } //TODO(0.7) try to move design stats
 
 		public Design(string idCode, Player owner, bool isObsolete, bool isVirtual, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment, Component<ThrusterType> thrusters) 
 		{
@@ -69,182 +81,139 @@ namespace Stareater.Ships
 			this.Thrusters = thrusters;
 			
 			this.Cost = initCost();
- 
-			 
-		} 
-
-		private Design(Design original, Player owner) 
-		{
-			this.IdCode = original.IdCode;
-			this.Owner = owner;
-			this.IsObsolete = original.IsObsolete;
-			this.IsVirtual = original.IsVirtual;
-			this.Name = original.Name;
-			this.ImageIndex = original.ImageIndex;
-			this.Armor = original.Armor;
-			this.Hull = original.Hull;
-			this.IsDrive = original.IsDrive;
-			this.Reactor = original.Reactor;
-			this.Sensors = original.Sensors;
-			this.Shield = original.Shield;
-			this.MissionEquipment = new List<Component<MissionEquipmentType>>();
-			foreach(var item in original.MissionEquipment)
-				this.MissionEquipment.Add(item);
-			this.SpecialEquipment = new List<Component<SpecialEquipmentType>>();
-			foreach(var item in original.SpecialEquipment)
-				this.SpecialEquipment.Add(item);
-			this.Thrusters = original.Thrusters;
-			this.hash = original.hash;
-			this.Cost = original.Cost;
- 
-			 
-		}
-
-		private Design(IkonComposite rawData, ObjectDeindexer deindexer) 
-		{
-			var idCodeSave = rawData[IdCodeKey];
-			this.IdCode = idCodeSave.To<string>();
-
-			var ownerSave = rawData[OwnerKey];
-			this.Owner = deindexer.Get<Player>(ownerSave.To<int>());
-
-			var isObsoleteSave = rawData[IsObsoleteKey];
-			this.IsObsolete = isObsoleteSave.To<int>() >= 0;
-
-			var isVirtualSave = rawData[IsVirtualKey];
-			this.IsVirtual = isVirtualSave.To<int>() >= 0;
-
-			var nameSave = rawData[NameKey];
-			this.Name = nameSave.To<string>();
-
-			var imageIndexSave = rawData[ImageIndexKey];
-			this.ImageIndex = imageIndexSave.To<int>();
-
-			var armorSave = rawData[ArmorKey];
-			this.Armor = Component<ArmorType>.Load(armorSave.To<IkonArray>(), deindexer);
-
-			var hullSave = rawData[HullKey];
-			this.Hull = Component<HullType>.Load(hullSave.To<IkonArray>(), deindexer);
-
-			if (rawData.Keys.Contains(IsDriveKey))
-			{
-				var isDriveSave = rawData[IsDriveKey];
-				this.IsDrive = Component<IsDriveType>.Load(isDriveSave.To<IkonArray>(), deindexer);
-			}
-
-			var reactorSave = rawData[ReactorKey];
-			this.Reactor = Component<ReactorType>.Load(reactorSave.To<IkonArray>(), deindexer);
-
-			var sensorsSave = rawData[SensorsKey];
-			this.Sensors = Component<SensorType>.Load(sensorsSave.To<IkonArray>(), deindexer);
-
-			if (rawData.Keys.Contains(ShieldKey))
-			{
-				var shieldSave = rawData[ShieldKey];
-				this.Shield = Component<ShieldType>.Load(shieldSave.To<IkonArray>(), deindexer);
-			}
-
-			var missionEquipmentSave = rawData[EquipmentKey];
-			this.MissionEquipment = new List<Component<MissionEquipmentType>>();
-			foreach(var item in missionEquipmentSave.To<IkonArray>())
-				this.MissionEquipment.Add(Component<MissionEquipmentType>.Load(item.To<IkonArray>(), deindexer));
-
-			var specialEquipmentSave = rawData[SpecialsKey];
-			this.SpecialEquipment = new List<Component<SpecialEquipmentType>>();
-			foreach(var item in specialEquipmentSave.To<IkonArray>())
-				this.SpecialEquipment.Add(Component<SpecialEquipmentType>.Load(item.To<IkonArray>(), deindexer));
-
-			var thrustersSave = rawData[ThrustersKey];
-			this.Thrusters = Component<ThrusterType>.Load(thrustersSave.To<IkonArray>(), deindexer);
-
-			this.Cost = initCost();
- 
-			 
-		}
+ 		}
 
 		private Design() 
 		{ }
-		internal Design Copy(PlayersRemap playersRemap) 
+
+		public void CalcHash(StaticsDB statics)
 		{
-			return new Design(this, playersRemap.Players[this.Owner]);
- 
-		} 
- 
+			var hashBuilder = new BitHashBuilder();
 
-		#region Saving
-		public IkonComposite Save(ObjectIndexer indexer) 
-		{
-			var data = new IkonComposite(TableTag);
-			data.Add(IdCodeKey, new IkonText(this.IdCode));
+			HashComponent(hashBuilder, this.Armor, statics.Armors);
+			HashComponent(hashBuilder, this.Reactor, statics.Reactors);
+			HashComponent(hashBuilder, this.Sensors, statics.Sensors);
+			HashComponent(hashBuilder, this.Thrusters, statics.Thrusters);
 
-			data.Add(OwnerKey, new IkonInteger(indexer.IndexOf(this.Owner)));
-
-			data.Add(IsObsoleteKey, new IkonInteger(this.IsObsolete ? 1 : -1));
-
-			data.Add(IsVirtualKey, new IkonInteger(this.IsVirtual ? 1 : -1));
-
-			data.Add(NameKey, new IkonText(this.Name));
-
-			data.Add(ImageIndexKey, new IkonInteger(this.ImageIndex));
-
-			data.Add(ArmorKey, this.Armor.Save());
-
-			data.Add(HullKey, this.Hull.Save());
+			HashComponent(hashBuilder, this.Hull, statics.Hulls);
+			hashBuilder.Add(this.SpecialEquipment.Count, statics.SpecialEquipment.Count);
 
 			if (this.IsDrive != null)
-				data.Add(IsDriveKey, this.IsDrive.Save());
+			{
+				hashBuilder.Add(1, 2);
+				HashComponent(hashBuilder, this.IsDrive, statics.IsDrives);
+			}
+			else
+				hashBuilder.Add(0, 2);
 
-			data.Add(ReactorKey, this.Reactor.Save());
+			HashComponent(hashBuilder, this.Shield, statics.Shields);
 
-			data.Add(SensorsKey, this.Sensors.Save());
+			int maxEquips = this.SpecialEquipment.Count > 0 ? (this.SpecialEquipment.Max(x => x.Quantity) + 1) : 0;
+			foreach (var equip in this.SpecialEquipment.OrderBy(x => x.TypeInfo.IdCode))
+			{
+				HashComponent(hashBuilder, equip, statics.SpecialEquipment);
+				hashBuilder.Add(equip.Quantity, maxEquips);
+			}
 
-			if (this.Shield != null)
-				data.Add(ShieldKey, this.Shield.Save());
+			maxEquips = this.MissionEquipment.Count > 0 ? (this.MissionEquipment.Max(x => x.Quantity) + 1) : 0;
+			foreach (var equip in this.MissionEquipment.OrderBy(x => x.TypeInfo.IdCode))
+			{
+				HashComponent(hashBuilder, equip, statics.MissionEquipment);
+				hashBuilder.Add(equip.Quantity, maxEquips);
+			}
 
-			var missionEquipmentData = new IkonArray();
-			foreach(var item in this.MissionEquipment)
-				missionEquipmentData.Add(item.Save());
-			data.Add(EquipmentKey, missionEquipmentData);
-
-			var specialEquipmentData = new IkonArray();
-			foreach(var item in this.SpecialEquipment)
-				specialEquipmentData.Add(item.Save());
-			data.Add(SpecialsKey, specialEquipmentData);
-
-			data.Add(ThrustersKey, this.Thrusters.Save());
-			return data;
- 
+			this.hash = hashBuilder.Create();
 		}
 
-		public static Design Load(IkonComposite rawData, ObjectDeindexer deindexer)
+		public string ImagePath
 		{
-			var loadedData = new Design(rawData, deindexer);
-			deindexer.Add(loadedData);
-			return loadedData;
+			get
+			{
+				return Hull.TypeInfo.ImagePaths[this.ImageIndex];
+			}
 		}
- 
 
-		private const string TableTag = "Design";
-		private const string IdCodeKey = "idCode";
-		private const string OwnerKey = "owner";
-		private const string IsObsoleteKey = "isObsolete";
-		private const string IsVirtualKey = "isVirtual";
-		private const string NameKey = "name";
-		private const string ImageIndexKey = "imageIndex";
-		private const string ArmorKey = "armor";
-		private const string HullKey = "hull";
-		private const string IsDriveKey = "isDrive";
-		private const string ReactorKey = "reactor";
-		private const string SensorsKey = "sensors";
-		private const string ShieldKey = "shield";
-		private const string EquipmentKey = "equipment";
-		private const string SpecialsKey = "specials";
-		private const string ThrustersKey = "thrusters";
-		private const string HashKey = "hash";
-		private const string CostKey = "cost";
- 
+		private double initCost()
+		{
+			return CalculateCost(this.Hull, this.IsDrive, this.Shield, this.MissionEquipment, this.SpecialEquipment);
+		}
+
+		private static void HashComponent<T>(BitHashBuilder hashBuilder, Component<T> component, IDictionary<string, T> componentAssortiment) where T : AComponentType
+		{
+			var indices = componentAssortiment.Keys.OrderBy(x => x).ToList();
+			var index = component != null ? indices.IndexOf(component.TypeInfo.IdCode) : componentAssortiment.Count;
+
+			hashBuilder.Add(index, componentAssortiment.Count + 1);
+			if (component != null)
+				hashBuilder.Add(component.Level, component.TypeInfo.MaxLevel + 1);
+		}
+
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			var other = obj as Design;
+			if (other == null)
+				return false;
+			return this.hash == other.hash && this.Owner == other.Owner;
+		}
+
+		public override int GetHashCode()
+		{
+			return this.hash.GetHashCode();
+		}
+
+		public static bool operator ==(Design lhs, Design rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+				return false;
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(Design lhs, Design rhs)
+		{
+			return !(lhs == rhs);
+		}
 		#endregion
 
- 
+		public static double CalculateCost(Component<HullType> hull, Component<IsDriveType> isDrive, Component<ShieldType> shield,
+										   List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment)
+		{
+			var hullVars = new Var(AComponentType.LevelKey, hull.Level).Get;
+			double hullCost = hull.TypeInfo.Cost.Evaluate(hullVars);
+
+			double isDriveCost = 0;
+			if (isDrive != null)
+			{
+				var driveVars = new Var(AComponentType.LevelKey, isDrive.Level).
+					And(AComponentType.SizeKey, hull.TypeInfo.SizeIS.Evaluate(hullVars)).Get;
+				isDriveCost = isDrive.TypeInfo.Cost.Evaluate(driveVars);
+			}
+
+			double shieldCost = 0;
+			if (shield != null)
+			{
+				var shieldVars = new Var(AComponentType.LevelKey, shield.Level).
+					And(AComponentType.SizeKey, hull.TypeInfo.SizeShield.Evaluate(hullVars)).Get;
+				shieldCost = shield.TypeInfo.Cost.Evaluate(shieldVars);
+			}
+
+			double weaponsCost = missionEquipment.Sum(
+				x => x.Quantity * x.TypeInfo.Cost.Evaluate(
+					new Var(AComponentType.LevelKey, x.Level).Get
+				)
+			);
+
+			double hullSize = hull.TypeInfo.Size.Evaluate(hullVars);
+			double specialsCost = specialEquipment.Sum(
+				x => x.Quantity * x.TypeInfo.Cost.Evaluate(
+					new Var(AComponentType.LevelKey, x.Level).
+					And(AComponentType.SizeKey, hullSize).Get
+				)
+			);
+
+			return hullCost + isDriveCost + shieldCost + weaponsCost + specialsCost;
+		}
 	}
 }

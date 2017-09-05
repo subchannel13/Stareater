@@ -43,8 +43,8 @@ namespace Stareater.Galaxy
 			foreach(var item in original.Missions)
 				this.Missions.AddLast(playersRemap.Missions[item]);
 			this.Ships = new ShipGroupCollection();
-			foreach(var item in original.Ships)
-				this.Ships.Add(item.Copy(playersRemap));
+			/*foreach(var item in original.Ships)
+				this.Ships.Add(item.Copy(playersRemap));*/
  
 			 
 		}
@@ -67,8 +67,8 @@ namespace Stareater.Galaxy
 
 			var shipsSave = rawData[ShipsKey];
 			this.Ships = new ShipGroupCollection();
-			foreach(var item in shipsSave.To<IkonArray>())
-				this.Ships.Add(ShipGroup.Load(item.To<IkonComposite>(), deindexer));
+			/*foreach(var item in shipsSave.To<IkonArray>())
+				this.Ships.Add(ShipGroup.Load(item.To<IkonComposite>(), deindexer));*/
  
 			 
 		}
@@ -99,8 +99,8 @@ namespace Stareater.Galaxy
 			data.Add(MissionsKey, missionsData);
 
 			var shipsData = new IkonArray();
-			foreach(var item in this.Ships)
-				shipsData.Add(item.Save(indexer));
+			/*foreach(var item in this.Ships)
+				shipsData.Add(item.Save(indexer));*/
 			data.Add(ShipsKey, shipsData);
 			return data;
  
