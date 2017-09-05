@@ -1,30 +1,30 @@
-﻿ 
-
-
-using Ikadn.Ikon.Types;
-using Stareater.Utils.Collections;
-using Stareater.Utils.StateEngine;
-using System;
+﻿using Stareater.Utils.StateEngine;
 using System.Collections.Generic;
 using System.Drawing;
-using Stareater.GameData.Databases.Tables;
 using Stareater.GameData;
 using Stareater.GameData.Ships;
+using Ikadn.Ikon.Types;
+using Stareater.Players.Natives;
 
-namespace Stareater.Players 
+namespace Stareater.Players
 {
 	partial class Player 
 	{
 		[StateProperty]
 		public string Name { get; private set; }
+
 		[StateProperty]
 		public Color Color { get; private set; }
+
 		[StateProperty]
 		public PlayerControlType ControlType { get; private set; }
+
 		[StateProperty(false)]
 		public IOffscreenPlayer OffscreenControl { get; private set; }
+
 		[StateProperty]
 		public HashSet<PredefinedDesign> UnlockedDesigns { get; private set; }
+
 		[StateProperty]
 		public Intelligence Intelligence { get; private set; }
 
@@ -32,8 +32,10 @@ namespace Stareater.Players
 		{
 			this.Name = name;
 			this.Color = color;
-			initPlayerControl(type);
-			
+
+			this.ControlType = type.ControlType;
+			this.OffscreenControl = type.OffscreenPlayerFactory != null ? type.OffscreenPlayerFactory.Create() : null;
+
 			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
 			this.Intelligence = new Intelligence();
  
@@ -42,112 +44,27 @@ namespace Stareater.Players
 			#endif
  
 		} 
-
-		private Player(Player original, GalaxyRemap galaxyRemap) 
-		{
-			this.Name = original.Name;
-			this.Color = original.Color;
-			copyPlayerControl(original);
-			
-			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
-			foreach(var item in original.UnlockedDesigns)
-				this.UnlockedDesigns.Add(item);
-			//this.Intelligence = original.Intelligence.Copy(galaxyRemap);
- 
-			#if DEBUG
-			this.id = NextId();
-			#endif
- 
-		}
-
-		private Player(IkonComposite rawData, ObjectDeindexer deindexer) 
-		{
-			var nameSave = rawData[NameKey];
-			this.Name = nameSave.To<string>();
-
-			var colorSave = rawData[ColorKey];
-			var colorArray = colorSave.To<IkonArray>();
-			int colorR = colorArray[0].To<int>();
-			int colorG = colorArray[1].To<int>();
-			int colorB = colorArray[2].To<int>();
-			this.Color = Color.FromArgb(colorR, colorG, colorB);
-
-			var controlTypeSave = rawData[ControlTypeKey];
-			this.ControlType = (PlayerControlType)Enum.Parse(typeof(PlayerControlType), (string)controlTypeSave.Tag);
-
-			var offscreenControlSave = rawData[OffscreenControlKey];
-			this.OffscreenControl = loadControl(offscreenControlSave, null);
-
-			var unlockedDesignsSave = rawData[UnlockedDesignsKey];
-			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
-			foreach(var item in unlockedDesignsSave.To<IkonArray>())
-				this.UnlockedDesigns.Add(deindexer.Get<PredefinedDesign>(item.To<int>()));
-
-			var intelligenceSave = rawData[IntelligenceKey];
-			//this.Intelligence = Intelligence.Load(intelligenceSave.To<IkonComposite>(), deindexer);
- 
-			#if DEBUG
-			this.id = NextId();
-			#endif
- 
-		}
-
+		
 		private Player() 
 		{ }
-		internal Player Copy(GalaxyRemap galaxyRemap) 
+
+		private static IOffscreenPlayer loadControl(Ikadn.IkadnBaseObject rawData, LoadSession session)
 		{
-			return new Player(this, galaxyRemap);
- 
-		} 
- 
+			var tag = rawData.Tag as string;
 
-		#region Saving
-		public IkonComposite Save(ObjectIndexer indexer) 
-		{
-			var data = new IkonComposite(TableTag);
-			data.Add(NameKey, new IkonText(this.Name));
+			if (tag.Equals(PlayerType.NoControllerTag))
+				return null;
+			else if (tag.Equals(PlayerType.OrganelleControllerTag))
+				return new OrganellePlayerFactory().Load(rawData.To<IkonComposite>(), session);
+			else if (PlayerAssets.AIDefinitions.ContainsKey(tag))
+				return PlayerAssets.AIDefinitions[tag].Load(rawData.To<IkonComposite>(), session);
 
-			var colorData = new IkonArray();
-			colorData.Add(new IkonInteger(this.Color.R));
-			colorData.Add(new IkonInteger(this.Color.G));
-			colorData.Add(new IkonInteger(this.Color.B));
-			data.Add(ColorKey, colorData);
-
-			data.Add(ControlTypeKey, new IkonComposite(this.ControlType.ToString()));
-
-			//data.Add(OffscreenControlKey, this.OffscreenControl != null ? this.OffscreenControl.Save() : new IkonComposite("None"));
-
-			var unlockedDesignsData = new IkonArray();
-			foreach(var item in this.UnlockedDesigns)
-				unlockedDesignsData.Add(new IkonInteger(indexer.IndexOf(item)));
-			data.Add(UnlockedDesignsKey, unlockedDesignsData);
-
-			//data.Add(IntelligenceKey, this.Intelligence.Save(indexer));
-			return data;
- 
+			throw new KeyNotFoundException("Can't load player controller for " + tag);
 		}
-
-		public static Player Load(IkonComposite rawData, ObjectDeindexer deindexer)
-		{
-			var loadedData = new Player(rawData, deindexer);
-			deindexer.Add(loadedData);
-			return loadedData;
-		}
- 
-
-		private const string TableTag = "Player";
-		private const string NameKey = "name";
-		private const string ColorKey = "color";
-		private const string ControlTypeKey = "controlType";
-		private const string OffscreenControlKey = "offscreenControl";
-		private const string UnlockedDesignsKey = "unlockedDesigns";
-		private const string IntelligenceKey = "intelligence";
- 
-		#endregion
 
 		#region object ID
-		#if DEBUG
-		private long id;
+#if DEBUG
+		private long id { get; set; }
 
 		public override string ToString()
 		{
@@ -163,8 +80,9 @@ namespace Stareater.Players
 				return LastId;
 			}
 		}
-		#endif
+#endif
 		#endregion
- 
+
+		private Organization organization; //TODO(v0.7) add to type
 	}
 }

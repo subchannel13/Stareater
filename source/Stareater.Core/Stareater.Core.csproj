@@ -194,7 +194,9 @@
     <Compile Include="GameData\Construction\ProjectFactory.cs" />
     <Compile Include="GameData\Construction\StaticProject.cs" />
     <Compile Include="GameData\Databases\Tables\ColonizationCollection.cs" />
+    <Compile Include="GameData\Databases\Tables\ColonizationPlan.cs" />
     <Compile Include="GameData\Databases\Tables\ConstructionOrders.cs" />
+    <Compile Include="GameData\Databases\Tables\PlayerOrders.cs" />
     <Compile Include="GameData\Databases\Tables\ResearchProgressCollection.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -249,16 +251,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="GameData\Databases\Tables\ColonizationPlan.cs">
-      <DependentUpon>ColonizationPlan.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameData\Databases\Tables\PlayerOrders.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PlayerOrders.tt</DependentUpon>
-    </Compile>
     <Compile Include="GameData\ConstructableType.cs" />
     <Compile Include="GameData\Databases\Tables\DerivedStatistic.cs" />
     <Compile Include="GameData\Databases\Tables\DesignCollection.cs">
@@ -270,7 +262,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="GameData\Databases\Tables\PlayerFormulaSet.cs" />
-    <Compile Include="GameData\Databases\Tables\PlayerOrders.partial.cs" />
     <Compile Include="GameData\Databases\Tables\ReportCollection.cs">
       <AutoGen>True</AutoGen>
     </Compile>
@@ -388,12 +379,7 @@
     <Compile Include="Players\IOffscreenPlayerFactory.cs" />
     <Compile Include="Players\Natives\OrganellePlayer.cs" />
     <Compile Include="Players\Natives\OrganellePlayerFactory.cs" />
-    <Compile Include="Players\Player.cs">
-      <DependentUpon>Player.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Players\Player.partial.cs" />
+    <Compile Include="Players\Player.cs" />
     <Compile Include="Players\PlayerAssets.cs" />
     <Compile Include="Players\PlayerControlType.cs" />
     <Compile Include="Controllers\NewGameController.cs" />
@@ -514,14 +500,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ColonizationProject.cs</LastGenOutput>
     </None>
-    <None Include="GameData\Databases\Tables\ColonizationPlan.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ColonizationPlan.cs</LastGenOutput>
-    </None>
-    <None Include="GameData\Databases\Tables\PlayerOrders.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PlayerOrders.cs</LastGenOutput>
-    </None>
     <None Include="GameData\ResearchProgress.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ResearchProgress.cs</LastGenOutput>
@@ -535,10 +513,6 @@
       <LastGenOutput>Treaty.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="Players\Player.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Player.cs</LastGenOutput>
-    </None>
     <None Include="Ships\Design.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Design.cs</LastGenOutput>
