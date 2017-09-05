@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Stareater.GameData
 {
-	partial class StarIntelligence 
+	class StarIntelligence 
 	{
 		public const int NeverVisited = -1;
 

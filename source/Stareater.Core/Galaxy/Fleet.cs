@@ -7,7 +7,7 @@ using Stareater.Ships.Missions;
 
 namespace Stareater.Galaxy
 {
-	partial class Fleet 
+	class Fleet 
 	{
 		[StateProperty]
 		public Player Owner { get; private set; }

@@ -4,7 +4,7 @@ using Stareater.Players;
 
 namespace Stareater.GameData
 {
-	partial class ColonizationProject 
+	class ColonizationProject 
 	{
 		[StateProperty]
 		public Player Owner { get; private set; }

@@ -10,7 +10,7 @@ using Ikadn;
 
 namespace Stareater.Galaxy
 {
-	public partial class StarData 
+	public class StarData 
 	{
 		public const int MaxPlanets = 8;
 

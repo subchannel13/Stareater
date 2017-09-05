@@ -6,7 +6,7 @@ using Stareater.Galaxy.BodyTraits;
 
 namespace Stareater.Galaxy
 {
-	public partial class Planet 
+	public class Planet 
 	{
 		[StateProperty]
 		public StarData Star { get; private set; }

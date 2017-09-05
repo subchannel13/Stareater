@@ -8,7 +8,7 @@ using Stareater.Players.Natives;
 
 namespace Stareater.Players
 {
-	partial class Player 
+	class Player 
 	{
 		[StateProperty]
 		public string Name { get; private set; }

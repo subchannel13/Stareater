@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Stareater.Utils.Collections;
+﻿using Stareater.Utils.Collections;
 using Stareater.Galaxy;
 using Stareater.GameLogic;
 using Stareater.Players;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	partial class ColonyProcessorCollection : AIndexedCollection<ColonyProcessor>
+	class ColonyProcessorCollection : AIndexedCollection<ColonyProcessor>
 	{
 		public CollectionIndex<ColonyProcessor, StarData> At { get; private set; }
 		public ScalarIndex<ColonyProcessor, Colony> Of { get; private set; }

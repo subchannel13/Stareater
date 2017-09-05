@@ -2,7 +2,7 @@
 
 namespace Stareater.GameData
 {
-	partial class PlanetIntelligence 
+	class PlanetIntelligence 
 	{
 		public const int NeverVisited = -1;
 

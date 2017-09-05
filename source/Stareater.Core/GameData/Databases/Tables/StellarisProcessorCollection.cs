@@ -1,12 +1,11 @@
-﻿using System;
-using Stareater.Utils.Collections;
+﻿using Stareater.Utils.Collections;
 using Stareater.Galaxy;
 using Stareater.GameLogic;
 using Stareater.Players;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	partial class StellarisProcessorCollection : AIndexedCollection<StellarisProcessor>
+	class StellarisProcessorCollection : AIndexedCollection<StellarisProcessor>
 	{
 		public ScalarIndex<StellarisProcessor, StarData> At { get; private set; }
 		public ScalarIndex<StellarisProcessor, StellarisAdmin> Of { get; private set; }

@@ -6,7 +6,7 @@ using Stareater.Ships;
 
 namespace Stareater.GameData.Databases.Tables
 {
-	partial class PlayerOrders 
+	class PlayerOrders 
 	{
 		//TODO(later): move or remove
 		public const double DefaultSiteSpendingRatio = 1;
