@@ -257,7 +257,7 @@ namespace Stareater.GUI
 		{
 			var saveController = new SavesController(gameController, SettingsWinforms.Get.FileStorageRootPath);
 			
-			using(var form = new FormSaveLoad(saveController))
+			using(var form = new FormSaveLoad(saveController, gameController))
 				if (form.ShowDialog() != DialogResult.OK)
 					postDelayedEvent(showMainMenu);
 				else if (form.Result == MainMenuResult.LoadGame) {

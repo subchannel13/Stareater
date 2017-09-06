@@ -32,7 +32,7 @@ namespace Stareater.GUI
 				if (value != null)
 				{
 					this.gameName.Text = gameData.Title;
-					this.turnText.Text = context["Turn"].Text(null, new TextVar("turn", gameData.Turn.ToString()).Get);
+                    this.turnText.Text = context["Turn"].Text(null, new TextVar("turn", gameData.PreviewData.To<int>().ToString()).Get);
 				}
 				else
 				{

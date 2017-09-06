@@ -13,8 +13,9 @@ namespace Stareater.GUI
 	public sealed partial class FormSaveLoad : Form
 	{
 		public const string LanguageContext = "FormSaveLoad";
-		
-		private SavesController controller;
+
+		private GameController gameController;
+        private SavesController saveController;
 		private Label noSavedMessage = null;
 		private SavedGameItemView selectedGame = null;
 		
@@ -25,18 +26,19 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 		
-		public FormSaveLoad(SavesController controller) : this()
+		public FormSaveLoad(SavesController saveController, GameController gameController) : this()
 		{
 			this.Text = LocalizationManifest.Get.CurrentLanguage[FormSaveLoad.LanguageContext]["FormTitle"].Text();
 			this.Font = SettingsWinforms.Get.FormFont;
-			this.controller = controller;
+			this.gameController = gameController;
+			this.saveController = saveController;
 			
-			if (controller.CanSave) {
+			if (saveController.CanSave) {
 				addSavedGame(null);
 				this.saveButton.Enabled = true;
 			}
 			
-			foreach (var data in controller.Games)
+			foreach (var data in saveController.Games)
 				addSavedGame(data);
 			
 			updateNoSaveMessage();
@@ -64,7 +66,7 @@ namespace Stareater.GUI
 		
 		private void updateNoSaveMessage()
 		{
-			if (noSavedMessage == null && !controller.Games.Any())
+			if (noSavedMessage == null && !saveController.Games.Any())
 			{
 				Context context = LocalizationManifest.Get.CurrentLanguage[FormSaveLoad.LanguageContext];
 				
@@ -79,10 +81,12 @@ namespace Stareater.GUI
 		
 		private void saveButton_Click(object sender, EventArgs e)
 		{
-			if (this.selectedGame.Data == null)
-				this.controller.NewSave(this.selectedGame.GameName);
+			var preview = new SavePreviewGenerator(this.gameController);
+
+            if (this.selectedGame.Data == null)
+				this.saveController.NewSave(this.selectedGame.GameName, preview.Make());
 			else
-				this.controller.OverwriteSave(this.selectedGame.Data, this.selectedGame.GameName);
+				this.saveController.OverwriteSave(this.selectedGame.Data, this.selectedGame.GameName, preview.Make());
 
 			this.Result = MainMenuResult.SaveGame;
 			this.DialogResult = DialogResult.OK;

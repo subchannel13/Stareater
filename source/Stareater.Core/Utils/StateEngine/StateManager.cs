@@ -97,7 +97,7 @@ namespace Stareater.Utils.StateEngine
 			var mainData = session.Serialize(obj);
 			var referencedData = session.GetSerialzedData();
 
-			var result = new IkonComposite("Save"); //TODO(v0.7) make constant
+			var result = new IkonComposite(MainGame.SaveGameTag); //TODO(v0.7) make constant
 			result.Add("references", new IkonArray(referencedData)); //TODO(v0.7) make constant
 			result.Add("entryPoint", mainData); //TODO(v0.7) make constant
 

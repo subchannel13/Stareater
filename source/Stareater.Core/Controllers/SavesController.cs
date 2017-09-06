@@ -64,13 +64,12 @@ namespace Stareater.Controllers
 #endif
 					var versionData = parser.ParseNext() as IkonArray;
 					var title = parser.ParseNext().To<string>();
-					var rawData = parser.ParseNext() as IkonComposite;
+					var previewData = parser.ParseNext() as IkonBaseObject;
 					saveFiles.Add(
 						new SavedGameInfo(
 							title,
-							0, //TODO(v0.7) read turn number from file
-							rawData,
-							file
+							previewData,
+                            file
 						),
 						file.LastWriteTimeUtc
 					);
@@ -108,24 +107,24 @@ namespace Stareater.Controllers
 #endregion
 
 #region Saving / Loading
-		public void NewSave(string title)
+		public void NewSave(string title, IkonBaseObject previewData)
 		{
 			string fileName = SaveNamePrefix + this.nextSaveNumber + "." + SaveNameExtension;
 
 			var saveFile = new FileInfo(this.saveFolderPath + fileName);
 			saveFile.Directory.Create();
 
-			save(saveFile, title);
+			save(saveFile, title, previewData);
 			
 			this.nextSaveNumber++;
 		}
 
-		public void OverwriteSave(SavedGameInfo savedGameData, string title)
+		public void OverwriteSave(SavedGameInfo savedGameData, string title, IkonBaseObject previewData)
 		{
-			save(savedGameData.FileInfo, title);
+			save(savedGameData.FileInfo, title, previewData);
 		}
 
-		private void save(FileInfo saveFile, string title)
+		private void save(FileInfo saveFile, string title, IkonBaseObject previewData)
 		{
 			using (var output = new StreamWriter(saveFile.Create()))
 			{
@@ -139,14 +138,18 @@ namespace Stareater.Controllers
 				var writer = new IkadnWriter(output);
 				versionData.Compose(writer);
 				new IkonText(title).Compose(writer);
-				//TODO(v0.7) add view's preview data
+				previewData.Compose(writer);
 				gameController.Save().Compose(writer);
 			}
 		}
 		
 		public void Load(SavedGameInfo savedGameData, IEnumerable<TracableStream> staticDataSources)
 		{
-			this.gameController.LoadGame(GameBuilder.LoadGame(savedGameData.RawData, staticDataSources, GameController.GetStateManager()));
+			IkonComposite saveRawData;
+			using (var parser = new IkonParser(savedGameData.FileInfo.OpenText()))
+				saveRawData = parser.ParseAll().Dequeue(MainGame.SaveGameTag).To<IkonComposite>();
+
+			this.gameController.LoadGame(GameBuilder.LoadGame(saveRawData, staticDataSources, GameController.GetStateManager()));
 		}
 #endregion
 	}

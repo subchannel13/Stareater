@@ -1,5 +1,4 @@
-﻿using System;
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
 using System.IO;
 
 namespace Stareater.Controllers.Views
@@ -7,18 +6,16 @@ namespace Stareater.Controllers.Views
 	public class SavedGameInfo
 	{
 		public string Title { get; private set; }
-		public int Turn { get; private set; }
+		public IkonBaseObject PreviewData { get; private set; }
 
 		internal FileInfo FileInfo { get; private set; }
-		internal IkonComposite RawData { get; private set; }
 
-		internal SavedGameInfo(string title, int turn, IkonComposite rawData, FileInfo fileInfo)
+		internal SavedGameInfo(string title, IkonBaseObject previewData, FileInfo fileInfo)
 		{
 			this.Title = title;
-			this.Turn = turn;
+			this.PreviewData = previewData;
 
 			this.FileInfo = fileInfo;
-			this.RawData = rawData;
 		}
 	}
 }
