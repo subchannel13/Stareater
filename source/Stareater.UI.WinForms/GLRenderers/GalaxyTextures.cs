@@ -6,6 +6,7 @@ using System.Linq;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using Stareater.GLData;
+using Stareater.AppData;
 
 namespace Stareater.GLRenderers
 {
@@ -123,13 +124,17 @@ namespace Stareater.GLRenderers
 		{
 			var atlasFile = new FileInfo(AtlasImagePath);
 			var metadataFile = new FileInfo(AtlasIkonPath);
-			var extraSprites = new DirectoryInfo(SpritesPath).GetFiles().Where(x => x.Name != atlasFile.Name && x.Name != metadataFile.Name).ToList();
+			var rootFolder = SettingsWinforms.Get.DataRootPath ?? "";
+            var extraSprites = new DirectoryInfo(rootFolder + SpritesPath).
+				GetFiles().
+				Where(x => x.Name != atlasFile.Name && x.Name != metadataFile.Name).
+				ToList();
 			
 			IkonComposite ikonData;
-			using(var ikonParser = new IkonParser(new StreamReader(AtlasIkonPath)))
+			using(var ikonParser = new IkonParser(new StreamReader(rootFolder + AtlasIkonPath)))
 				ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
 
-			using (var atlasImage = new Bitmap(AtlasImagePath))
+			using (var atlasImage = new Bitmap(rootFolder + AtlasImagePath))
 			{
 				if (extraSprites.Any())
 				{

@@ -9,7 +9,7 @@ set buildDir=..\build
 set debugDir=..\source\Stareater.UI.WinForms\bin\Debug
 set releaseDir=..\source\Stareater.UI.WinForms\bin\Release
 
-for %%D in (data images languages maps players) do (
+for %%D in (maps players) do (
 	if not exist %buildDir%\%%D (
 		echo Creating directory %buildDir%\%%D
 		mkdir %buildDir%\%%D
@@ -22,7 +22,7 @@ for %%B in (%debugDir% %releaseDir%) do (
 		mkdir %%B
 	)
 	
-	for %%D in (data images languages maps players) do (
+	for %%D in (maps players) do (
 		if exist %%B\%%D (
 			echo Path %%B\%%D already exists, no action taken
 		) else (

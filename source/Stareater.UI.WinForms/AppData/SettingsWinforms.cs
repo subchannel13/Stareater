@@ -43,6 +43,8 @@ namespace Stareater.AppData
 		public bool VSync { get; set; }
 		public BusySpinMode FramerateBusySpinUsage { get; set; }
 
+		public string DataRootPath { get; set; }
+
 		public Font FormFont
 		{
 			get
@@ -66,6 +68,8 @@ namespace Stareater.AppData
 			this.VSync = true;
 			
 			this.ReportTechnology = true;
+
+			this.DataRootPath = null;
 		}
 	
 		protected override TaggableQueue<object, IkadnBaseObject> loadData()

@@ -24,6 +24,7 @@ namespace Stareater.GUI
 
 		public IkonBaseObject Make()
 		{
+			//TODO(later) assumes single player
 			var player = this.controller.LocalHumanPlayers().First();
 			var starData = new IkonArray();
 			foreach(var star in player.Stars)

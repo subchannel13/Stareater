@@ -24,7 +24,7 @@ namespace Stareater.AppData
 			Language defaultLanguage = null;
 			var infos = new List<LanguageInfo>();
 
-			foreach (var folder in new DirectoryInfo(LanguagesFolder).EnumerateDirectories())
+			foreach (var folder in new DirectoryInfo(rootFolder + LanguagesFolder).EnumerateDirectories())
 			{
 				string code = folder.Name;
 
@@ -57,7 +57,7 @@ namespace Stareater.AppData
 
 			return new Language(
 				langCode,
-				dataStreams(new DirectoryInfo(LanguagesFolder + langCode + folderSufix).EnumerateFiles())
+				dataStreams(new DirectoryInfo(rootFolder + LanguagesFolder + langCode + folderSufix).EnumerateFiles())
 			);
 		}
 		#endregion
@@ -69,17 +69,17 @@ namespace Stareater.AppData
 		
 		public static void LoadAis()
 		{
-			PlayerAssets.AILoader(loadFromDLLs<IOffscreenPlayerFactory>(AIsFolder));
+			PlayerAssets.AILoader(loadFromDLLs<IOffscreenPlayerFactory>(rootFolder + AIsFolder));
 		}
 		
 		public static void LoadOrganizations()
 		{
-			PlayerAssets.OrganizationsLoader(dataStreams(OrganizationFiles.Select(x => new FileInfo(x))));
+			PlayerAssets.OrganizationsLoader(dataStreams(OrganizationFiles.Select(x => new FileInfo(rootFolder + x))));
 		}
 		
 		public static void LoadPlayerColors()
 		{
-			PlayerAssets.ColorLoader(dataStreams(PlayersColorFiles.Select(x => new FileInfo(x))));
+			PlayerAssets.ColorLoader(dataStreams(PlayersColorFiles.Select(x => new FileInfo(rootFolder + x))));
 		}
 		#endregion
 		
@@ -89,22 +89,22 @@ namespace Stareater.AppData
 		
 		public static void LoadStarConnectors()
 		{
-			MapAssets.ConnectorsLoader(loadFromDLLs<IStarConnector>(MapsFolder));
+			MapAssets.ConnectorsLoader(loadFromDLLs<IStarConnector>(rootFolder + MapsFolder));
 		}
 		
 		public static void LoadStarPopulators()
 		{
-			MapAssets.PopulatorsLoader(loadFromDLLs<IStarPopulator>(MapsFolder));
+			MapAssets.PopulatorsLoader(loadFromDLLs<IStarPopulator>(rootFolder + MapsFolder));
 		}
 		
 		public static void LoadStarPositioners()
 		{
-			MapAssets.PositionersLoader(loadFromDLLs<IStarPositioner>(MapsFolder));
+			MapAssets.PositionersLoader(loadFromDLLs<IStarPositioner>(rootFolder + MapsFolder));
 		}
 		
 		public static void LoadStartConditions()
 		{
-			MapAssets.StartConditionsLoader(dataStreams(StartConditionsFiles.Select(x => new FileInfo(x))));
+			MapAssets.StartConditionsLoader(dataStreams(StartConditionsFiles.Select(x => new FileInfo(rootFolder + x))));
 		}
 		#endregion
 		
@@ -113,7 +113,7 @@ namespace Stareater.AppData
 		
 		public static IEnumerable<TracableStream> GameDataSources()
 		{
-			return dataStreams(new DirectoryInfo(StaticDataFolder).EnumerateFiles());
+			return dataStreams(new DirectoryInfo(rootFolder + StaticDataFolder).EnumerateFiles());
 		}
 		#endregion
 		
@@ -125,6 +125,11 @@ namespace Stareater.AppData
 				yield return new TracableStream(stream, file.FullName);
 				stream.Close();
 			}
+		}
+
+		private static string rootFolder
+		{
+			get { return SettingsWinforms.Get.DataRootPath ?? ""; }
 		}
 		
 		private static IEnumerable<T> loadFromDLLs<T>(string folderPath)
