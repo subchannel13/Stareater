@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Stareater.Utils.PluginParameters;
 
 namespace Stareater.Galaxy.Builders
@@ -8,5 +7,7 @@ namespace Stareater.Galaxy.Builders
 	{
 		string Code { get; }
 		IEnumerable<AParameterBase> Parameters { get; }
+
+		void Initialize(string dataPath);
 	}
 }

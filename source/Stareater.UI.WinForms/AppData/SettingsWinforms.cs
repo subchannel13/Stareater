@@ -44,6 +44,7 @@ namespace Stareater.AppData
 		public BusySpinMode FramerateBusySpinUsage { get; set; }
 
 		public string DataRootPath { get; set; }
+		public string PluginRootPath { get; set; }
 
 		public Font FormFont
 		{

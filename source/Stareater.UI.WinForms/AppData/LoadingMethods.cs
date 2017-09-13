@@ -24,7 +24,7 @@ namespace Stareater.AppData
 			Language defaultLanguage = null;
 			var infos = new List<LanguageInfo>();
 
-			foreach (var folder in new DirectoryInfo(rootFolder + LanguagesFolder).EnumerateDirectories())
+			foreach (var folder in new DirectoryInfo(dataFolder + LanguagesFolder).EnumerateDirectories())
 			{
 				string code = folder.Name;
 
@@ -57,7 +57,7 @@ namespace Stareater.AppData
 
 			return new Language(
 				langCode,
-				dataStreams(new DirectoryInfo(rootFolder + LanguagesFolder + langCode + folderSufix).EnumerateFiles())
+				dataStreams(new DirectoryInfo(dataFolder + LanguagesFolder + langCode + folderSufix).EnumerateFiles())
 			);
 		}
 		#endregion
@@ -69,17 +69,17 @@ namespace Stareater.AppData
 		
 		public static void LoadAis()
 		{
-			PlayerAssets.AILoader(loadFromDLLs<IOffscreenPlayerFactory>(rootFolder + AIsFolder));
+			PlayerAssets.AILoader(loadFromDLLs<IOffscreenPlayerFactory>(pluginFolder + AIsFolder));
 		}
 		
 		public static void LoadOrganizations()
 		{
-			PlayerAssets.OrganizationsLoader(dataStreams(OrganizationFiles.Select(x => new FileInfo(rootFolder + x))));
+			PlayerAssets.OrganizationsLoader(dataStreams(OrganizationFiles.Select(x => new FileInfo(dataFolder + x))));
 		}
 		
 		public static void LoadPlayerColors()
 		{
-			PlayerAssets.ColorLoader(dataStreams(PlayersColorFiles.Select(x => new FileInfo(rootFolder + x))));
+			PlayerAssets.ColorLoader(dataStreams(PlayersColorFiles.Select(x => new FileInfo(dataFolder + x))));
 		}
 		#endregion
 		
@@ -89,22 +89,31 @@ namespace Stareater.AppData
 		
 		public static void LoadStarConnectors()
 		{
-			MapAssets.ConnectorsLoader(loadFromDLLs<IStarConnector>(rootFolder + MapsFolder));
+			MapAssets.ConnectorsLoader(loadFromDLLs<IStarConnector>(
+				pluginFolder + MapsFolder, 
+				x => x.Initialize(dataFolder + MapsFolder)
+			));
 		}
 		
 		public static void LoadStarPopulators()
 		{
-			MapAssets.PopulatorsLoader(loadFromDLLs<IStarPopulator>(rootFolder + MapsFolder));
+			MapAssets.PopulatorsLoader(loadFromDLLs<IStarPopulator>(
+				pluginFolder + MapsFolder, 
+				x => x.Initialize(dataFolder + MapsFolder)
+			));
 		}
 		
 		public static void LoadStarPositioners()
 		{
-			MapAssets.PositionersLoader(loadFromDLLs<IStarPositioner>(rootFolder + MapsFolder));
+			MapAssets.PositionersLoader(loadFromDLLs<IStarPositioner>(
+				pluginFolder + MapsFolder, 
+				x => x.Initialize(dataFolder + MapsFolder)
+			));
 		}
 		
 		public static void LoadStartConditions()
 		{
-			MapAssets.StartConditionsLoader(dataStreams(StartConditionsFiles.Select(x => new FileInfo(rootFolder + x))));
+			MapAssets.StartConditionsLoader(dataStreams(StartConditionsFiles.Select(x => new FileInfo(dataFolder + x))));
 		}
 		#endregion
 		
@@ -113,7 +122,7 @@ namespace Stareater.AppData
 		
 		public static IEnumerable<TracableStream> GameDataSources()
 		{
-			return dataStreams(new DirectoryInfo(rootFolder + StaticDataFolder).EnumerateFiles());
+			return dataStreams(new DirectoryInfo(dataFolder + StaticDataFolder).EnumerateFiles());
 		}
 		#endregion
 		
@@ -127,20 +136,31 @@ namespace Stareater.AppData
 			}
 		}
 
-		private static string rootFolder
+		private static string dataFolder
 		{
 			get { return SettingsWinforms.Get.DataRootPath ?? ""; }
 		}
-		
-		private static IEnumerable<T> loadFromDLLs<T>(string folderPath)
+
+		private static string pluginFolder
+		{
+			get { return SettingsWinforms.Get.PluginRootPath ?? ""; }
+		}
+
+		private static IEnumerable<T> loadFromDLLs<T>(string folderPath, Action<T> initFunction = null)
 		{
 			var dllFiles = new List<FileInfo>(new DirectoryInfo(folderPath).EnumerateFiles("*.dll"));
 			Type targetType = typeof(T);
-			
+
 			foreach (var file in dllFiles)
 				foreach (var type in Assembly.UnsafeLoadFrom(file.FullName).GetTypes()) //TODO(later) consider more secure approach
 					if (targetType.IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
-						yield return (T)Activator.CreateInstance(type);
+					{
+						var instance = (T)Activator.CreateInstance(type);
+						if (initFunction != null)
+							initFunction(instance);
+
+                        yield return instance;
+					}
 		}
 	}
 }

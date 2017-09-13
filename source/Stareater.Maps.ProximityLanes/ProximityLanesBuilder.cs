@@ -12,14 +12,12 @@ using NGenerics.DataStructures.Mathematical;
 using NGenerics.DataStructures.Queues;
 using Stareater.Galaxy.Builders;
 using Stareater.Localization;
-using Stareater.Utils.Collections;
 using Stareater.Utils.PluginParameters;
 
 namespace Stareater.Galaxy.ProximityLanes
 {
 	public class ProximityLanesBuilder : IStarConnector
 	{
-		const string MapsFolder = "./maps/"; //TODO(v0.7) try to move it to view
 		const string ParametersFile = "proximityLanes.txt";
 
 		const string LanguageContext = "ProximityLanes";
@@ -30,10 +28,10 @@ namespace Stareater.Galaxy.ProximityLanes
 		private SelectorParameter degreesParameter;
 		private DegreeOption[] degreeOptions;
 
-		public ProximityLanesBuilder()
+		public void Initialize(string dataPath)
 		{
 			TaggableQueue<object, IkadnBaseObject> data;
-			using (var parser = new IkonParser(new StreamReader(MapsFolder + ParametersFile)))
+			using (var parser = new IkonParser(new StreamReader(dataPath + ParametersFile)))
 				data = parser.ParseAll();
 
 			degreesParameter = loadDegrees(data);

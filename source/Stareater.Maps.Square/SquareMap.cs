@@ -18,7 +18,6 @@ namespace Stareater.Galaxy.Square
 {
 	public class SquareMap : IStarPositioner
 	{
-		const string MapsFolder = "./maps/"; //TODO(v0.7) try to move it to view
 		const string ParametersFile = "squareMap.txt";
 		const string LanguageContext = "SquareMap";
 		const string ConstantsKey = "Constants";
@@ -28,18 +27,18 @@ namespace Stareater.Galaxy.Square
 		const string HomeSystemDistance = "homeSystemDistance";
 		const string EmptyPositionsRatio = "emptyPositionsRatio";
 
-		private readonly SelectorParameter sizeParameter;
-		private readonly ContinuousRangeParameter displacementParameter;
+		private SelectorParameter sizeParameter;
+		private ContinuousRangeParameter displacementParameter;
 		private SizeOption[] sizeOptions;
 
 		private double starDistance = 1;
 		private double homeSystemDistance = 0.5;
 		private double emptyPositionsRatio = 0.25;
 
-		public SquareMap()
+		public void Initialize(string dataPath)
 		{
 			TaggableQueue<object, IkadnBaseObject> data;
-			using (var parser = new IkonParser(new StreamReader(MapsFolder + ParametersFile)))
+			using (var parser = new IkonParser(new StreamReader(dataPath + ParametersFile)))
 				data = parser.ParseAll();
 
 			var constants = data.Dequeue(ConstantsKey).To<IkonComposite>();
@@ -47,17 +46,17 @@ namespace Stareater.Galaxy.Square
 			this.homeSystemDistance = constants[HomeSystemDistance].To<double>();
 			this.emptyPositionsRatio = constants[EmptyPositionsRatio].To<double>();
 
-			sizeParameter = loadSizes(data);
-			displacementParameter = new ContinuousRangeParameter(LanguageContext, "displacement", 0, 0.5, constants[DefaultDisplacementKey].To<double>(), displacementPercentage);
+			this.sizeParameter = loadSizes(data);
+			this.displacementParameter = new ContinuousRangeParameter(LanguageContext, "displacement", 0, 0.5, constants[DefaultDisplacementKey].To<double>(), displacementPercentage);
 		}
 
 		private SelectorParameter loadSizes(TaggableQueue<object, IkadnBaseObject> data)
 		{
 			this.sizeOptions = new SizeOption[data.CountOf(SizeKey)];
 			var parameterOptions = new Dictionary<int, string>();
-			for (int i = 0; i < sizeOptions.Length; i++) {
-				sizeOptions[i] = new SizeOption(data.Dequeue(SizeKey).To<IkonComposite>());
-				parameterOptions.Add(i, sizeOptions[i].Name);
+			for (int i = 0; i < this.sizeOptions.Length; i++) {
+				this.sizeOptions[i] = new SizeOption(data.Dequeue(SizeKey).To<IkonComposite>());
+				parameterOptions.Add(i, this.sizeOptions[i].Name);
 			}
 
 			return new SelectorParameter(LanguageContext, SizeKey, parameterOptions, (int)Math.Ceiling(parameterOptions.Count / 2.0));

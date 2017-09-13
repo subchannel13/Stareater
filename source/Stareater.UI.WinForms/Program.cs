@@ -60,6 +60,11 @@ namespace StareaterUI
 							throw new ArgumentException("Missing path arguments for " + option);
 						SettingsWinforms.Get.DataRootPath = args.Dequeue();
 						break;
+					case "-plugins":
+						if (args.Count == 0)
+							throw new ArgumentException("Missing path arguments for " + option);
+						SettingsWinforms.Get.PluginRootPath = args.Dequeue();
+						break;
 					default:
 						throw new ArgumentException("Unknown option " + option);
 				}

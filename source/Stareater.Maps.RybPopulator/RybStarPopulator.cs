@@ -17,7 +17,6 @@ namespace Stareater.Galaxy.RybPopulator
 {
 	public class RybStarPopulator : IStarPopulator
 	{
-		private const string MapsFolder = "./maps/"; //TODO(v0.7) try to move it to view
 		private const string ParametersFile = "rybPopulator.txt";
 
 		private const string LanguageContext = "DefaultPopulator";
@@ -29,12 +28,12 @@ namespace Stareater.Galaxy.RybPopulator
 
 		private SelectorParameter climateParameter;
 
-		private readonly StarType[] starTypes;
+		private StarType[] starTypes;
 
-		public RybStarPopulator()
+		public void Initialize(string dataPath)
 		{
 			TaggableQueue<object, IkadnBaseObject> data; 
-			using (var parser = new IkonParser(new StreamReader(MapsFolder + ParametersFile)))
+			using (var parser = new IkonParser(new StreamReader(dataPath + ParametersFile)))
 				data = parser.ParseAll();
 
 			var starTypes = new List<StarType>();
@@ -48,6 +47,7 @@ namespace Stareater.Galaxy.RybPopulator
 			}
 			this.starTypes = starTypes.ToArray();
 
+			//TODO(later) make data driven
 			this.climateParameter = new SelectorParameter(LanguageContext, "climate", new Dictionary<int, string>()
 			{
 				{0, "hostileClimate"},
