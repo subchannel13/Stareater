@@ -11,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BDEE6D
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zvjezdojedac", "Zvjezdojedac\Zvjezdojedac.csproj", "{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stareater.Core", "Stareater.Core\Stareater.Core.csproj", "{452BB6D1-D27F-4D71-A05B-A6DDC4013E33}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stareater.UI.WinForms", "Stareater.UI.WinForms\Stareater.UI.WinForms.csproj", "{F0BCE0AD-AE04-4B9B-B63C-D55E580CC007}"
@@ -43,16 +41,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6F2E432A-0C27-4A47-B110-CCA402BBCD4F}.Release|x86.ActiveCfg = Release|Any CPU
 		{452BB6D1-D27F-4D71-A05B-A6DDC4013E33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{452BB6D1-D27F-4D71-A05B-A6DDC4013E33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{452BB6D1-D27F-4D71-A05B-A6DDC4013E33}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
