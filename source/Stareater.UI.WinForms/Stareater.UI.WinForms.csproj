@@ -51,6 +51,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>App icon.ico</ApplicationIcon>
+	<StartArguments>-root ../../../../build/</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
