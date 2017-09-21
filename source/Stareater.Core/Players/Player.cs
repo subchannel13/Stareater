@@ -17,6 +17,9 @@ namespace Stareater.Players
 		public Color Color { get; private set; }
 
 		[StateProperty]
+		public Organization Organization { get; private set; }
+
+		[StateProperty]
 		public PlayerControlType ControlType { get; private set; }
 
 		[StateProperty(false)]
@@ -28,10 +31,11 @@ namespace Stareater.Players
 		[StateProperty]
 		public Intelligence Intelligence { get; private set; }
 
-		public Player(string name, Color color, PlayerType type) 
+		public Player(string name, Color color, Organization Organization, PlayerType type) 
 		{
 			this.Name = name;
 			this.Color = color;
+			this.Organization = Organization;
 
 			this.ControlType = type.ControlType;
 			this.OffscreenControl = type.OffscreenPlayerFactory != null ? type.OffscreenPlayerFactory.Create() : null;
@@ -82,7 +86,5 @@ namespace Stareater.Players
 		}
 #endif
 		#endregion
-
-		private Organization organization; //TODO(v0.7) add to type
 	}
 }

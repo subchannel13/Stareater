@@ -159,7 +159,7 @@ namespace Stareater.GameLogic
 		{
 			var playerTechs = techAdvances
 				.Of[Player]
-				.Where(x =>	x.CanProgress())
+				.Where(x =>	x.CanProgress)
 				.OrderBy(x => x.Topic.IdCode)
 				.ToList();
 			

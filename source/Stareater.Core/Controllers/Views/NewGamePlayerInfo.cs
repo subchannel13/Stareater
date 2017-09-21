@@ -1,16 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Drawing;
+﻿using System.Drawing;
 using Stareater.Players;
 
 namespace Stareater.Controllers.Views
 {
-	public struct NewGamePlayerInfo
+	public class NewGamePlayerInfo
 	{
-		public string Name;
-		public Color Color;
-		public Organization Organization;
-		public PlayerType ControlType;
+		public string Name { get; private set; }
+		public Color Color { get; private set; }
+		public Organization Organization { get; private set; }
+		public PlayerType ControlType { get; private set; }
 
 		public NewGamePlayerInfo(string Name, Color Color, Organization Organization,
 			PlayerType Type)

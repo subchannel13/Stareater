@@ -33,12 +33,13 @@ namespace Stareater.AppData
 			{
 				if (cache.ContainsKey(path))
 					return cache[path];
-				
-				var file = new FileInfo(path);
-				Image image;
+
+				var root = SettingsWinforms.Get.DataRootPath ?? "";
+                var file = new FileInfo(root + path);
 				if (file.Extension == "")
-					file = new FileInfo(path + ".png");
-				
+					file = new FileInfo(root + path + ".png");
+
+				Image image;
 				if (cache.ContainsKey(file.FullName)) {
 					image = cache[file.FullName];
 					cache.Add(path, image);

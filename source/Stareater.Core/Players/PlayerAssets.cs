@@ -60,7 +60,7 @@ namespace Stareater.Players
 			var list = new List<Organization>();
 			foreach (var source in dataSources)
 			{
-				var parser = new IkonParser(source.Stream);
+				var parser = new IkonParser(source.Stream); //TODO(v0.7) use extended data parser
 				try
 				{
 					foreach (var item in parser.ParseAll())

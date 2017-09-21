@@ -50,10 +50,12 @@ namespace Stareater.GameData
 			}
 		}
 
-		public bool CanProgress()
+		public bool CanProgress
 		{
-			return Level < Topic.MaxLevel;
-
+			get
+			{
+				return Level < Topic.MaxLevel;
+			}
 		}
 
 		public void Progress(ResearchResult progressData)
