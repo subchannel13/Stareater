@@ -92,6 +92,11 @@ namespace Stareater.Players
 			get { return Colors != null && AIDefinitions != null && Organizations != null; }
 		}
 
+		internal static Organization RandomOrganization(Random rng)
+		{
+			return Organizations[rng.Next(Organizations.Length)];
+		}
+
 		#region Attribute keys
 		private const string ColorsKey = "Colors";
 		private const string OrganizationNameKey = "name";

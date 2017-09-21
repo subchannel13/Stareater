@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Stareater.Utils.StateEngine;
+using System.Collections.Generic;
 
 namespace Stareater.Players
 {
+	[StateType(true)]
 	public class Organization
 	{
 		public string Name { get; private set; }

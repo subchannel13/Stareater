@@ -47,8 +47,9 @@ namespace Stareater.Controllers
 			if (State != GameState.NoGame)
 				throw new InvalidOperationException("Game is already created.");
 
+			var rng = new Random();
 			var players = controller.PlayerList.Select(info =>
-				new Player(info.Name, info.Color, info.Organization, info.ControlType)
+				new Player(info.Name, info.Color, info.Organization ?? PlayerAssets.RandomOrganization(rng), info.ControlType)
 			).ToArray();
 			var organellePlayer = new Player(
 				"no name", 
@@ -56,9 +57,7 @@ namespace Stareater.Controllers
 				new Organization("", "", new string[0]),
 				new PlayerType(PlayerControlType.Neutral, new OrganellePlayerFactory())
 			);
-			
-			var rng = new Random();
-			
+
 			this.gameObj = GameBuilder.CreateGame(rng, players, organellePlayer, controller, staticDataSources);
 			makePlayers();
 		}
