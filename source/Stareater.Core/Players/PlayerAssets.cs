@@ -68,7 +68,8 @@ namespace Stareater.Players
 						var data = item.Value.To<IkonComposite>();
 						list.Add(new Organization(
 							data[OrganizationNameKey].To<string>(),
-							data[OrganizationDescriptionKey].To<string>()
+							data[OrganizationDescriptionKey].To<string>(),
+							data[OrganizationAffinitiesKey].To<string[]>()
 						));
 					}
 				} 
@@ -95,6 +96,7 @@ namespace Stareater.Players
 		private const string ColorsKey = "Colors";
 		private const string OrganizationNameKey = "name";
 		private const string OrganizationDescriptionKey = "description";
+		private const string OrganizationAffinitiesKey = "affinities";
 		#endregion
 	}
 }

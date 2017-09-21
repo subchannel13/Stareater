@@ -105,8 +105,6 @@ namespace Stareater.GameLogic
 		
 		public void CalculateResearch(MainGame game, IList<ColonyProcessor> colonyProcessors)
 		{
-			var techLevels = game.States.DevelopmentAdvances.Of[Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
-			
 			var advanceOrder = this.ResearchOrder(game.States.ResearchAdvances).ToList();
 			string focused = game.Orders[Player].ResearchFocus;
 			

@@ -1,34 +1,41 @@
 { Organization
 	name "NASA"
 	description "North American Space Agency."
+	affinities [ "Soc" ]
 }
 
 { Organization
 	name "ESA"
 	description "European Space Agency."
+	affinities [ "Phy" ]
 }
 
 { Organization
 	name "JAXA"
 	description "Japan Aerospace Exploration Agency."
+	affinities [ "Mech" ]
 }
 
 { Organization
 	name "CNSA"
 	description "China National Space Administration."
+	affinities [ "Chem" ]
 }
 
 { Organization
 	name "CCCP"
 	description "Soviet space program."
+	affinities [ "Energy" ]
 }
 
 { Organization
 	name "ISRO"
 	description "Indian Space Research Organisation."
+	affinities [ "Mat" ]
 }
 
 { Organization
 	name "UKSA"
 	description "UK Space Agency."
+	affinities [ "Bio" ]
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Ikadn;
+﻿using Ikadn;
 
 namespace Stareater.GameData.Reading
 {

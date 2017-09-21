@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace Stareater.Players
 {
@@ -7,11 +6,13 @@ namespace Stareater.Players
 	{
 		public string Name { get; private set; }
 		public string Description { get; private set; }
+		public IEnumerable<string> ResearchAffinities { get; private set; }
 
-		internal Organization(string name, string description)
+		internal Organization(string name, string description, IEnumerable<string> affinities)
 		{
 			this.Name = name;
 			this.Description = description;
+			this.ResearchAffinities = affinities;
 		}
 	}
 }
