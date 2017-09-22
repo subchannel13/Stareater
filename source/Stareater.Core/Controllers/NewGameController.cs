@@ -19,13 +19,13 @@ namespace Stareater.Controllers
 {
 	public class NewGameController
 	{
-		const int MaxPlayers = 4;
+		private const int MaxPlayers = 4;
 
-		PickList<Color> colors = new PickList<Color>(PlayerAssets.Colors);
-		PickList<Organization> organizations = new PickList<Organization>(PlayerAssets.Organizations);
-		PickList<PlayerType> aiPlayers = new PickList<PlayerType>();
+		private readonly PickList<Color> colors = new PickList<Color>(PlayerAssets.Colors);
+		private readonly PickList<OrganizationInfo> organizations = new PickList<OrganizationInfo>(PlayerAssets.Organizations);
+		private readonly PickList<PlayerType> aiPlayers = new PickList<PlayerType>();
 
-		List<NewGamePlayerInfo> players = new List<NewGamePlayerInfo>();
+		private readonly List<NewGamePlayerInfo> players = new List<NewGamePlayerInfo>();
 
 		public NewGameController()
 		{
@@ -99,7 +99,7 @@ namespace Stareater.Controllers
 				players[index].ControlType);
 		}
 
-		public void UpdatePlayer(int index, Organization newOrganization)
+		public void UpdatePlayer(int index, OrganizationInfo newOrganization)
 		{
 			players[index] = new NewGamePlayerInfo(
 				players[index].Name,
@@ -175,6 +175,14 @@ namespace Stareater.Controllers
 			{
 				return PlayerAssets.IsLoaded && MapAssets.IsLoaded;
 			}
+		}
+
+		internal static Organization Resolve(OrganizationInfo selection, Random rng)
+		{
+			if (selection == null)
+				return PlayerAssets.OrganizationsRaw[rng.Next(PlayerAssets.OrganizationsRaw.Length)];
+
+			return selection.Data;
 		}
 
 		internal void SaveLastGame()

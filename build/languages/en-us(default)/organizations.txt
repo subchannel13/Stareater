@@ -1,0 +1,22 @@
+:Organizations
+NASA_NAME = NASA
+NASA_DESC = North American Space Agency.
+
+ESA_NAME = ESA
+ESA_DESC = European Space Agency.
+	
+JAXA_NAME = JAXA
+JAXA_DESC = Japan Aerospace Exploration Agency.
+	
+CNSA_NAME = CNSA
+CNSA_DESC = China National Space Administration.
+	
+CCCP_NAME = CCCP
+CCCP_DESC = Soviet space program.
+	
+ISRO_NAME = ISRO
+ISRO_DESC = Indian Space Research Organisation.
+	
+UKSA_NAME = UKSA
+UKSA_DESC = UK Space Agency.
+-

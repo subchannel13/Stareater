@@ -49,12 +49,12 @@ namespace Stareater.Controllers
 
 			var rng = new Random();
 			var players = controller.PlayerList.Select(info =>
-				new Player(info.Name, info.Color, info.Organization ?? PlayerAssets.RandomOrganization(rng), info.ControlType)
+				new Player(info.Name, info.Color, NewGameController.Resolve(info.Organization, rng), info.ControlType)
 			).ToArray();
 			var organellePlayer = new Player(
 				"no name", 
 				System.Drawing.Color.Gray,
-				new Organization("", "", new string[0]),
+				new Organization("", new string[0]),
 				new PlayerType(PlayerControlType.Neutral, new OrganellePlayerFactory())
 			);
 

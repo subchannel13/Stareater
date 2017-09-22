@@ -102,6 +102,7 @@
     <Compile Include="Controllers\Views\Library\ShipComponentGeneralInfo.cs" />
     <Compile Include="Controllers\Views\Library\TechnologyGeneralInfo.cs" />
     <Compile Include="Controllers\Views\NewGamePlayerInfo.cs" />
+    <Compile Include="Controllers\Views\OrganizationInfo.cs" />
     <Compile Include="Controllers\Views\PlayerInfo.cs" />
     <Compile Include="Controllers\Views\ReportWrapper.cs" />
     <Compile Include="Controllers\Views\ResearchCompleteController.cs" />

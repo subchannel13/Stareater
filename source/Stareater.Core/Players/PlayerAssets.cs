@@ -6,14 +6,22 @@ using System.Linq;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using Stareater.Utils;
+using Stareater.GameData.Reading;
+using Stareater.Controllers.Views;
 
 namespace Stareater.Players
 {
 	public static class PlayerAssets
 	{
+		internal static Organization[] OrganizationsRaw { get; private set; }
+
 		public static Color[] Colors { get; private set; }
 		public static Dictionary<string, IOffscreenPlayerFactory> AIDefinitions { get; private set; }
-		public static Organization[] Organizations { get; private set; }
+
+		public static IEnumerable<OrganizationInfo> Organizations
+		{
+			get { return OrganizationsRaw.Select(x => new OrganizationInfo(x)).ToList(); }
+		}
 
 		public static void ColorLoader(IEnumerable<TracableStream> dataSources)
 		{
@@ -60,15 +68,14 @@ namespace Stareater.Players
 			var list = new List<Organization>();
 			foreach (var source in dataSources)
 			{
-				var parser = new IkonParser(source.Stream); //TODO(v0.7) use extended data parser
+				var parser = new Parser(source.Stream);
 				try
 				{
 					foreach (var item in parser.ParseAll())
 					{
 						var data = item.Value.To<IkonComposite>();
 						list.Add(new Organization(
-							data[OrganizationNameKey].To<string>(),
-							data[OrganizationDescriptionKey].To<string>(),
+							data[OrganizationLangCodeKey].To<string>(),
 							data[OrganizationAffinitiesKey].To<string[]>()
 						));
 					}
@@ -83,24 +90,17 @@ namespace Stareater.Players
 				}
 			}
 
-			list.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
-			Organizations = list.ToArray();
+			OrganizationsRaw = list.ToArray();
 		}
 
 		public static bool IsLoaded
 		{
-			get { return Colors != null && AIDefinitions != null && Organizations != null; }
-		}
-
-		internal static Organization RandomOrganization(Random rng)
-		{
-			return Organizations[rng.Next(Organizations.Length)];
+			get { return Colors != null && AIDefinitions != null && OrganizationsRaw != null; }
 		}
 
 		#region Attribute keys
 		private const string ColorsKey = "Colors";
-		private const string OrganizationNameKey = "name";
-		private const string OrganizationDescriptionKey = "description";
+		private const string OrganizationLangCodeKey = "langCode";
 		private const string OrganizationAffinitiesKey = "affinities";
 		#endregion
 	}

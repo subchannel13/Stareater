@@ -7,16 +7,16 @@ namespace Stareater.Controllers.Views
 	{
 		public string Name { get; private set; }
 		public Color Color { get; private set; }
-		public Organization Organization { get; private set; }
+		public OrganizationInfo Organization { get; private set; }
 		public PlayerType ControlType { get; private set; }
 
-		public NewGamePlayerInfo(string Name, Color Color, Organization Organization,
-			PlayerType Type)
+		internal NewGamePlayerInfo(string name, Color color, OrganizationInfo organization,
+			PlayerType type)
 		{
-			this.Color = Color;
-			this.Name = Name;
-			this.Organization = Organization;
-			this.ControlType = Type;
+			this.Color = color;
+			this.Name = name;
+			this.Organization = organization;
+			this.ControlType = type;
 		}
 	}
 }

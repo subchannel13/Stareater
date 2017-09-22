@@ -36,9 +36,9 @@ namespace Stareater.GUI
 			foreach(var playerType in controller.PlayerTypes)
 				controllerPicker.Items.Add(new Tag<PlayerType>(playerType, playerType.Name));
 
-			organizationPicker.Items.Add(new Tag<Organization>(null, LocalizationManifest.Get.CurrentLanguage["General"]["RandomOrganization"].Text()));
+			organizationPicker.Items.Add(new Tag<OrganizationInfo>(null, LocalizationManifest.Get.CurrentLanguage["General"]["RandomOrganization"].Text()));
 			foreach (var org in PlayerAssets.Organizations)
-				organizationPicker.Items.Add(new Tag<Organization>(org, org.Name));
+				organizationPicker.Items.Add(new Tag<OrganizationInfo>(org, org.Name));
 
 			foreach (var color in PlayerAssets.Colors) {
 				var colorItem = new ColorItem();
@@ -107,7 +107,7 @@ namespace Stareater.GUI
 			controllerPicker.SelectedItem = new Tag<PlayerType>(playerInfo.ControlType, null);
 
 			if (playerInfo.Organization != null)
-				organizationPicker.SelectedItem = new Tag<Organization>(playerInfo.Organization, null);
+				organizationPicker.SelectedItem = new Tag<OrganizationInfo>(playerInfo.Organization, null);
 			else
 				organizationPicker.SelectedIndex = 0;
 
@@ -139,7 +139,7 @@ namespace Stareater.GUI
 				return;
 
 			if (!eventClutch) {
-				controller.UpdatePlayer(playerViewsLayout.SelectedIndex, (organizationPicker.SelectedItem as Tag<Organization>).Value);
+				controller.UpdatePlayer(playerViewsLayout.SelectedIndex, (organizationPicker.SelectedItem as Tag<OrganizationInfo>).Value);
 				selectedPlayerView.SetData(controller.PlayerList[playerViewsLayout.SelectedIndex]);
 			}
 			
