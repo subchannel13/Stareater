@@ -3,13 +3,14 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: nuclear
 	
-	maxLvl= 10
+	maxLvl = 4
 	prerequisites [
+		:nuclearDrive #lvl - 1;
 	]
-	cost # 1e6 * size;
+	cost # 2e6 * size;
 	
 	minSize # 5;
-	speed # 0.8 * limit(totalPower / (200 * hullIsSize), 0, 1);
+	speed # 0.8 * limit(totalPower / (200 * hullIsSize * 0.5 ^ (lvl / 4)), 0, 1);
 }
 
 { IsDrive
@@ -17,11 +18,12 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: subspace
 	
-	maxLvl= 1
+	maxLvl = 1
 	prerequisites [
+		:warp #1;
 	]
-	cost # 1e6 * size;
+	cost # 2e6 * size;
 	
 	minSize # 5;
-	speed # 3 * limit(totalPower / (2 * hullIsSize), 0, 1);
+	speed # 3;
 }

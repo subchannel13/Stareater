@@ -29,7 +29,7 @@
 
 { DevelopmentTopic
 	langCode: WARP
-	code: Warp
+	code: warp
 	cost # 300e9 * (lvl + 2 ^lvl);
 	maxLvl= 10
 	prerequisites []

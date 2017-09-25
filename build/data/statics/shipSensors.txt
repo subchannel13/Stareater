@@ -3,9 +3,10 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: em
 	
-	maxLvl= 10
+	maxLvl = 4
 	prerequisites [
+		:radar #lvl - 1;
 	]
 	
-	detection # 10;
+	detection # 10 + 0.5 * lvl;
 }

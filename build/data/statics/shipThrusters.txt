@@ -3,10 +3,11 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: hydrogen
 	
-	maxLvl= 10
+	maxLvl = 4
 	prerequisites [
+		:rocketry #lvl - 1;
 	]
 	
-	speed # 0.5;
-	evasion # 20;
+	speed # 0.5 + 0.25 * lvl / 4;
+	evasion # 20 + lvl;
 }

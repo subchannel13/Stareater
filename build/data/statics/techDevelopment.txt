@@ -10,7 +10,7 @@
 { DevelopmentTopic
 	langCode: AUTOCANNON
 	code: autocannon
-	cost # 300e9 * (lvl + 2 ^ lvl);
+	cost # lvl [1, 3, 6, 10] * 20e9;
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
@@ -19,7 +19,7 @@
 { DevelopmentTopic
 	langCode: HARPOON
 	code: harpoon
-	cost # 300e9 * (lvl + 2 ^ lvl);
+	cost # lvl [1, 3, 6, 10] * 20e9;
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
@@ -27,17 +27,8 @@
 
 { DevelopmentTopic
 	langCode: LASER
-	code: Laser
-	cost # 300e9 * (lvl + 2 ^ lvl);
-	maxLvl= 10
-	prerequisites []
-	image: ./images/technologies/hydroponicFarms.png
-}
-
-{ DevelopmentTopic
-	langCode: NUKE_BOMB
-	code: nuke_bomb
-	cost # 300e9 * (lvl + 2 ^ lvl);
+	code: laser
+	cost # lvl [1, 3, 6, 10] * 20e9;
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
@@ -45,8 +36,8 @@
 
 { DevelopmentTopic
 	langCode: NUKE_DRIVE
-	code: nuke_drive
-	cost # 300e9 * (lvl + 2 ^ lvl);
+	code: nuclearDrive
+	cost # lvl [1, 3, 6, 10] * 20e9;
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
@@ -54,8 +45,8 @@
 
 { DevelopmentTopic
 	langCode: NUCLEAR_REACTOR
-	code: NuclearReactor
-	cost # 300e9 * (lvl + 2 ^ lvl);
+	code: nuclearPower
+	cost # lvl [1, 3, 6, 10] * 20e9;
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
@@ -64,7 +55,7 @@
 { DevelopmentTopic
 	langCode: RADAR
 	code: radar
-	cost # 300e9 * (lvl + 2 ^ lvl);
+	cost # lvl [1, 3, 6, 10] * 20e9;
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
@@ -73,7 +64,7 @@
 { DevelopmentTopic
 	langCode: ROCKET
 	code: rocketry
-	cost # 300e9 * (lvl + 2 ^ lvl);
+	cost # lvl [1, 3, 6, 10] * 20e9;
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png

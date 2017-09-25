@@ -12,7 +12,7 @@
 	
 	environment # 1;
 	organization # limit(infra_count / pop, 0, 1);
-	spaceliftFactor # 0.2;
+	spaceliftFactor # 1 / (5 - 0.1 * rocketryLvl / 4);
 	
 	farming
 	{ Work

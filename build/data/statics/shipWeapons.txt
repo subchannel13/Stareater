@@ -1,15 +1,41 @@
 ﻿{ MissionEquipment
+	langCode: AUTOCANNON
+	image: ./images/technologies/hydroponicFarms.png
+	code: autocannon
+	
+	maxLvl = 4
+	prerequisites [
+		:autocannon #lvl - 1;
+	]
+	
+	cost # 25e6 * 0.2 ^ (lvl / 4);
+	size # lvl [5, 5, 4, 4, 3];
+	
+	abilities [
+		{ DirectShot
+			image: ./images/technologies/hydroponicFarms.png
+			firePower # 10;
+			accuracy # 30;
+			range # 1;
+			energyCost # 0;
+			
+			accuracyRangePenalty # -4;
+		}
+	]
+}
+
+{ MissionEquipment
 	langCode: LASER
 	image: ./images/technologies/hydroponicFarms.png
 	code: laser
 	
-	maxLvl= 5
+	maxLvl = 4
 	prerequisites [
-		:Laser #lvl - 1;
+		:laser #lvl - 1;
 	]
 	
-	cost # 2e6;
-	size # 5;
+	cost # 25e6 * 0.2 ^ (lvl / 4);
+	size # lvl [5, 5, 4, 4, 3];
 	
 	abilities [
 		{ DirectShot
@@ -30,12 +56,13 @@
 	image: ./images/technologies/hydroponicFarms.png
 	code: harpoon
 	
-	maxLvl= 5
+	maxLvl = 4
 	prerequisites [
+		:harpoon #lvl - 1;
 	]
 	
-	cost # 2e6;
-	size # 5;
+	cost # 25e6 * 0.2 ^ (lvl / 4);
+	size # lvl [5, 5, 4, 4, 4];
 	
 	abilities [
 		{ DirectShot
@@ -55,12 +82,13 @@
 	image: ./images/technologies/hydroponicFarms.png
 	code: nukeBomb
 	
-	maxLvl= 5
+	maxLvl = 4
 	prerequisites [
+		:NuclearReactor #lvl - 1;
 	]
 	
-	cost # 2e6;
-	size # 5;
+	cost # 25e6 * 0.2 ^ (lvl / 4);
+	size # lvl [10, 9, 8, 7, 5];
 	
 	abilities [
 		{ DirectShot

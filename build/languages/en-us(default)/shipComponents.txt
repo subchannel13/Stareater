@@ -30,12 +30,14 @@ SUBSPACE_ISDRIVE_DESC = No description.
 -
 
 :MissionEquipment
+AUTOCANNON_NAME = Autocannon
+AUTOCANNON_DESC = Spaceborn machine gun. Short ranged but powerful and doesn't require much power.
 HARPOON_NAME = Harpoon missile
-HARPOON_DESC = No description.
+HARPOON_DESC = Spaceborn seeking missiles.
 LASER_NAME = Laser
-LASER_DESC = No description.
+LASER_DESC = High power laser beam projector, adequate for long range space combat.
 NUKE_NAME = Nuclear bomb
-NUKE_DESC = No description.
+NUKE_DESC = Dreaded weapon of mass destruction.
 
 CATALYZER_NAME = Catalisys capsule
 CATALYZER_DESC = No description.

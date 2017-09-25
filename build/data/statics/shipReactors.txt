@@ -3,12 +3,13 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: nuclear
 	
-	maxLvl= 10
+	maxLvl = 4
 	prerequisites [
+		:nuclearPower #lvl - 1;
 	]
 	
 	minSize # 5;
-	power # (hullReactorSize - 4) * 5;
+	power # (hullReactorSize - 4) * 5 * 2 ^ (lvl / 4);
 }
 
 { Reactor
@@ -16,7 +17,7 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: chemical
 	
-	maxLvl= 10
+	maxLvl = 4
 	prerequisites [
 	]
 	
