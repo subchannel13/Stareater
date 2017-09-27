@@ -51,8 +51,8 @@ CHEMICAL_REACTOR_DESC = Auxiliary power unit for powering ship's hyraulic and pr
 -
 
 :Sensors
-EM_SENSOR_NAME = Electromagnetic sensor
-EM_SENSOR_DESC = No description.
+EM_SENSOR_NAME = Radar
+EM_SENSOR_DESC = An object-detection system that uses radio waves.
 -
 
 :Shields
@@ -75,5 +75,5 @@ COLONIZER_DESC = No description.
 
 :Thrusters
 HYDROGEN_THRUSTER_NAME = Hydrogen thrusters
-HYDROGEN_THRUSTER_DESC = No description.
+HYDROGEN_THRUSTER_DESC = Standard rocket engine which propels a ship by burning hydrogen-oxygen mixture.
 -

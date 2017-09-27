@@ -1,18 +1,18 @@
-:Technologies
+﻿:Technologies
 BIO_NAME = Biology
-BIO_DESC = No description.
+BIO_DESC = A natural science involving the study of life and living organisms.
 ENERGY_NAME = Energetics
-ENERGY_DESC = No description.
+ENERGY_DESC = A study of energy under trasnformation.
 CHEM_NAME = Chemistry
-CHEM_DESC = No description.
+CHEM_DESC = A branch of physical science that studies the composition, structure, properties and change of matter.
 MAT_NAME = Mathematics
-MAT_DESC = No description.
+MAT_DESC = A study of topics such as quantity (numbers), structure, space (geometry) and calculus.
 MECH_NAME = Mechanics
-MECH_DESC = No description.
+MECH_DESC = A discipline that applies engineering, physics, and materials science principles to design, analyze, manufacture, and maintain mechanical systems.
 PHY_NAME = Physics
-PHY_DESC = No description.
+PHY_DESC = A natural science that involves the study of matter and its motion and behavior through space and time, along with related concepts such as energy and force.
 SOC_NAME = Sociology
-SOC_DESC = No description.
+SOC_DESC = A scientific study of society, including patterns of social relationships, social interaction, and culture.
 
 AUTOCANNON_NAME = Autocannon
 AUTOCANNON_DESC = Standard air-to-air machine gun repurposed for space combat. Short ranged but powerful and doesn't require much power.
@@ -25,11 +25,11 @@ NUKE_BOMB_DESC = Dreaded weapon of mass destruction.
 NUKE_DRIVE_NAME = Nuclear drive
 NUKE_DRIVE_DESC = Interplanetary propulsion system which originally caused Mars expedition to be pulled in a stareater. It's fuel efficient enough to serve as first interstellar drive.
 NUCLEAR_REACTOR_NAME = Nuclear reactor
-NUCLEAR_REACTOR_DESC = No description.
+NUCLEAR_REACTOR_DESC = A reactor which converts energy of nuclear fission to heat and electricity.
 RADAR_NAME = Radar
-RADAR_DESC = No description.
+RADAR_DESC = An object-detection system that uses radio waves to determine the range, angle, or velocity of objects.
 ROCKET_NAME = Rocketry
-ROCKET_DESC = No description.
+ROCKET_DESC = Improvements in rocket engine design and fuel composition and containment.
 
 HYDRO_FARM_NAME = Hydroponic farms
 HYDRO_FARM_DESC §

@@ -59,6 +59,7 @@ namespace Stareater.Controllers
 			);
 
 			this.gameObj = GameBuilder.CreateGame(rng, players, organellePlayer, controller, staticDataSources);
+			this.endedTurnPlayers.Clear();
 			makePlayers();
 		}
 		
@@ -125,7 +126,7 @@ namespace Stareater.Controllers
 		}
 
 		#region Turn processing
-		public GameState State { get; private set; }
+		public GameState State { get; private set; } //TODO(v0.7) remove this property, new game and load game should instantiate new game controller
 		
 		internal void EndGalaxyPhase(PlayerController player)
 		{
