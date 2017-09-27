@@ -5,5 +5,9 @@ rem to {projRoot}/build/
 
 del ..\build\*.exe
 del ..\build\*.dll
+del ..\build\maps\*.dll
+del ..\build\players\*.dll
 copy ..\source\Stareater.UI.WinForms\bin\Release\stareater.exe ..\build\
 copy ..\source\Stareater.UI.WinForms\bin\Release\*.dll ..\build\
+copy ..\source\Stareater.UI.WinForms\bin\Release\maps\*.dll ..\build\maps\
+copy ..\source\Stareater.UI.WinForms\bin\Release\players\*.dll ..\build\players\

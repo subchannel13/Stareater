@@ -159,7 +159,7 @@ namespace Stareater.AppData
 						if (initFunction != null)
 							initFunction(instance);
 
-                        yield return instance;
+						yield return instance;
 					}
 		}
 	}
