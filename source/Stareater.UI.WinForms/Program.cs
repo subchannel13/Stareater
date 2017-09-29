@@ -55,15 +55,26 @@ namespace StareaterUI
 
 				switch(option)
 				{
+					case "-plugins":
+						if (args.Count == 0)
+							throw new ArgumentException("Missing path arguments for " + option);
+						SettingsWinforms.Get.PluginRootPath = args.Dequeue();
+						break;
 					case "-root":
 						if (args.Count == 0)
 							throw new ArgumentException("Missing path arguments for " + option);
 						SettingsWinforms.Get.DataRootPath = args.Dequeue();
 						break;
-					case "-plugins":
+					case "-wait":
 						if (args.Count == 0)
 							throw new ArgumentException("Missing path arguments for " + option);
-						SettingsWinforms.Get.PluginRootPath = args.Dequeue();
+						int waitTime = 0;
+						if (!int.TryParse(args.Dequeue(), out waitTime))
+							if (args.Count == 0)
+								throw new ArgumentException("Invalid arguments format for " + option);
+						waitTime = Math.Min(waitTime, 60);
+						if (waitTime > 0)
+							Thread.Sleep(waitTime * 1000);
 						break;
 					default:
 						throw new ArgumentException("Unknown option " + option);
