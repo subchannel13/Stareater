@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Ikadn;
 using Ikadn.Ikon;
+using System;
 
 namespace Stareater.Localization.Reading
 {
@@ -16,11 +17,11 @@ namespace Stareater.Localization.Reading
 			while (parser.Reader.PeekNextNonwhite() != ClosingChar)
 			{
 				var id = IkonParser.ReadIdentifier(parser.Reader).ToLower();
-				
+
 				if (!entries.ContainsKey(id))
 					entries.Add(id, parser.ParseNext().To<IText>());
 				else
-					System.Diagnostics.Trace.WriteLine("Duplicate localization entry, id: " + id + " in context: " + contextName);
+					AppData.ErrorReporter.Get.Report(new ArgumentException("Duplicate localization entry, id: " + id + " in context: " + contextName));
 			}
 
 			parser.Reader.Read();

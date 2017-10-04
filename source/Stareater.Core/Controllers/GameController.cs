@@ -9,6 +9,7 @@ using Stareater.Players.Natives;
 using Stareater.Utils;
 using Stareater.Utils.StateEngine;
 using Ikadn;
+using Stareater.AppData;
 
 namespace Stareater.Controllers
 {
@@ -191,13 +192,8 @@ namespace Stareater.Controllers
 
 		private void checkTaskException(Task lastTask)
 		{
-			if (!lastTask.IsFaulted)
-				return;
-#if DEBUG
-			System.Diagnostics.Trace.TraceError(lastTask.Exception.ToString());
-#else
-			throw lastTask.Exception;
-#endif
+			if (lastTask.IsFaulted)
+				ErrorReporter.Get.Report(lastTask.Exception);
 		}
 
 		private void turnProcessing()

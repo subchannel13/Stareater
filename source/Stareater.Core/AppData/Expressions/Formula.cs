@@ -22,18 +22,15 @@ namespace Stareater.AppData.Expressions
 		
 		public double Evaluate(IDictionary<string, double> variables)
 		{
-#if DEBUG
 			try {
-#endif
-			return root.Evaluate(variables);
-#if DEBUG
+				return root.Evaluate(variables);
 			}
 			catch(KeyNotFoundException)
 			{
-				System.Diagnostics.Trace.WriteLine("Missing vars: " + string.Join(" ", this.Variables.Where(x => !variables.ContainsKey(x)).ToArray()));
-				throw;
+				ErrorReporter.Get.Report(new KeyNotFoundException("Missing vars: " + string.Join(" ", this.Variables.Where(x => !variables.ContainsKey(x)).ToArray())));
 			}
-#endif
+
+			return double.NaN;
 		}
 		
 		public ISet<string> Variables 
