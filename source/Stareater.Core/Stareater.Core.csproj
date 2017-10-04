@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppData\AssetController.cs" />
+    <Compile Include="AppData\ErrorReporter.cs" />
     <Compile Include="AppData\Expressions\BooleanAlgebra.cs" />
     <Compile Include="AppData\Expressions\Comparisons.cs" />
     <Compile Include="AppData\Expressions\Constant.cs" />

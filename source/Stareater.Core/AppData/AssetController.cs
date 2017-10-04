@@ -44,7 +44,7 @@ namespace Stareater.AppData
 		private void checkCompletion(Task previousTask, Action nextTask)
 		{
 			if (previousTask.IsFaulted)
-				System.Diagnostics.Trace.TraceError(previousTask.Exception.ToString()); //TODO(later) make user friendly variant for release
+				ErrorReporter.Get.Report(previousTask.Exception);
 			
 			nextTask();
 		}

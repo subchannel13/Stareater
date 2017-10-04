@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -21,6 +22,8 @@ namespace StareaterUI
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			Application.ThreadException += guiExceptionLogger;
 
+			ErrorReporter.Get.OnException += logException;
+
 #if !DEBUG
 			try
 			{
@@ -31,20 +34,40 @@ namespace StareaterUI
 			}
 			catch (Exception e)
 			{
-				using(var form = new Stareater.GUI.FormError(e.ToString()))
-					form.ShowDialog();
+				logException(e);
 			}
 #endif
 		}
 
 		static void guiExceptionLogger(object sender, ThreadExceptionEventArgs e)
 		{
-#if !DEBUG			
-			using(var form = new Stareater.GUI.FormError(e.Exception.ToString()))
+			logException(e.Exception);
+		}
+
+		static void logException(Exception e)
+		{
+			var textBuilder = new StringBuilder();
+			unpackText(textBuilder, e);
+
+#if !DEBUG
+			using(var form = new Stareater.GUI.FormError(textBuilder.ToString()))
 					form.ShowDialog();
-#else			
-			Trace.TraceError(e.Exception.ToString());
+#else
+			Trace.TraceError(textBuilder.ToString());
 #endif
+		}
+
+		private static void unpackText(StringBuilder textBuilder, Exception e)
+		{
+			textBuilder.AppendLine(e.ToString());
+
+			if (e is AggregateException)
+				foreach (var innerException in (e as AggregateException).InnerExceptions)
+					unpackText(textBuilder, innerException);
+
+			if (e is System.Reflection.ReflectionTypeLoadException)
+				foreach (var innerException in (e as System.Reflection.ReflectionTypeLoadException).LoaderExceptions)
+					unpackText(textBuilder, innerException);
 		}
 
 		private static void parseArguments(Queue<string> args)
