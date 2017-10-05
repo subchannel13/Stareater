@@ -78,19 +78,25 @@ namespace Stareater.Galaxy.ProximityLanes
 			var maxGraph = new Graph<Vector2D>(false);
 			var starIndex = new Dictionary<Vertex<Vector2D>, int>();
 			var homeNodes = new List<Vertex<Vector2D>>();
-			for(int i = 0; i < starPositions.Stars.Length; i++)
+			Vertex<Vector2D> stareaterMain = null;
+
+            for (int i = 0; i < starPositions.Stars.Length; i++)
 			{
 				var vertex = new Vertex<Vector2D>(starPositions.Stars[i]);
 				maxGraph.AddVertex(vertex);
 				starIndex[vertex] = i;
+
 				if (starPositions.HomeSystems.Contains(i))
 					homeNodes.Add(vertex);
+
+				if (i == starPositions.StareaterMain)
+					stareaterMain = vertex;
 			}
 			foreach(var edge in genMaxEdges(maxGraph.Vertices.ToList()))
 				maxGraph.AddEdge(edge);
 
 			this.removeOutliers(maxGraph);
-			var treeEdges = new HashSet<Edge<Vector2D>>(genMinEdges(maxGraph, homeNodes));
+			var treeEdges = new HashSet<Edge<Vector2D>>(genMinEdges(maxGraph, homeNodes, stareaterMain));
 			
 			return genFinal(maxGraph, treeEdges).Select(e => new WormholeEndpoints(starIndex[e.FromVertex], starIndex[e.ToVertex])).ToList();
 		}
@@ -137,17 +143,14 @@ namespace Stareater.Galaxy.ProximityLanes
 			}
 		}
 
-		private IEnumerable<Edge<Vector2D>> genMinEdges(Graph<Vector2D> graph, IEnumerable<Vertex<Vector2D>> homeNodes)
+		private IEnumerable<Edge<Vector2D>> genMinEdges(Graph<Vector2D> graph, IEnumerable<Vertex<Vector2D>> homeNodes, Vertex<Vector2D> stareaterMain)
 		{
-			var centroid = graph.Vertices.Aggregate(new Vector2D(0, 0), (subsum, vertex) => subsum + vertex.Data) / graph.Vertices.Count;
-			var centralNode = graph.Vertices.Aggregate((a, b) => ((a.Data - centroid).Magnitude() < (b.Data - centroid).Magnitude()) ? a : b);
-				
 			var criticalNodes = new HashSet<Vertex<Vector2D>>();
-			criticalNodes.Add(centralNode);
+			criticalNodes.Add(stareaterMain);
 			foreach(var home in homeNodes)
 			{
-				var current = centralNode;
-				foreach(var node in Astar(graph, home, centralNode))
+				var current = stareaterMain;
+				foreach(var node in Astar(graph, home, stareaterMain))
 				{
 					criticalNodes.Add(node);
 					yield return node.GetIncidentEdgeWith(current);

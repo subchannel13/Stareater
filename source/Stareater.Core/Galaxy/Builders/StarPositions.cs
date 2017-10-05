@@ -17,10 +17,16 @@ namespace Stareater.Galaxy.Builders
 		/// </summary>
 		public int[] HomeSystems;
 
-		public StarPositions(IEnumerable<Vector2D> stars, IEnumerable<int> homeSystems)
+		/// <summary>
+		/// Index of position for stareater main system.
+		/// </summary>
+		public int StareaterMain;
+
+		public StarPositions(IEnumerable<Vector2D> stars, IEnumerable<int> homeSystems, int stareaterMain)
 		{
 			this.HomeSystems = homeSystems.ToArray();
 			this.Stars = stars.ToArray();
+			this.StareaterMain = stareaterMain;
 		}
 	}
 }

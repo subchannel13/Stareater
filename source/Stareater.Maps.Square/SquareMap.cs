@@ -138,7 +138,10 @@ namespace Stareater.Galaxy.Square
 				homeSystems.Add(candidate);
 			}
 
-			return new StarPositions(positions, homeSystems);
+			var centroid = positions.Aggregate(new Vector2D(0, 0), (subsum, vertex) => subsum + vertex) / positions.Count;
+			var centralNode = positions.Aggregate((a, b) => ((a - centroid).Magnitude() < (b - centroid).Magnitude()) ? a : b);
+
+			return new StarPositions(positions, homeSystems, positions.IndexOf(centralNode));
 		}
 	}
 }
