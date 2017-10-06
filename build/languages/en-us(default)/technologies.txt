@@ -1,4 +1,4 @@
-﻿:Technologies
+:Technologies
 BIO_NAME = Biology
 BIO_DESC = A natural science involving the study of life and living organisms.
 ENERGY_NAME = Energetics

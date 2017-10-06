@@ -19,7 +19,7 @@
 }
 
 { Organization
-	langCode: CCCP
+	langCode: SSSR
 	affinities [ :Energy ]
 }
 

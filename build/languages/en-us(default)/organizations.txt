@@ -11,8 +11,8 @@ JAXA_DESC = Japan Aerospace Exploration Agency.
 CNSA_NAME = CNSA
 CNSA_DESC = China National Space Administration.
 	
-CCCP_NAME = CCCP
-CCCP_DESC = Soviet space program.
+SSSR_NAME = SSSR
+SSSR_DESC = Soviet space program.
 	
 ISRO_NAME = ISRO
 ISRO_DESC = Indian Space Research Organisation.
