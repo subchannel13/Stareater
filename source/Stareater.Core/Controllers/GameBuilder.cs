@@ -106,9 +106,10 @@ namespace Stareater.Controllers
 			var developmentAdvances = createDevelopmentAdvances(players, statics.DevelopmentTopics);
 			var researchAdvances = createResearchAdvances(players, statics.ResearchTopics);
 
-			return new StatesDB(stars, wormholes, planets, colonies, stellarises, developmentAdvances, researchAdvances,
-			                    new TreatyCollection(), new ReportCollection(), new DesignCollection(), new FleetCollection(),
-			                    new ColonizationCollection());
+			return new StatesDB(stars, starSystems[starPositions.StareaterMain].Star, wormholes, planets, 
+				colonies, stellarises, developmentAdvances, researchAdvances,
+				new TreatyCollection(), new ReportCollection(), new DesignCollection(), new FleetCollection(),
+				new ColonizationCollection());
 		}
 		
 		private static ColonyCollection createColonies(Player[] players, 

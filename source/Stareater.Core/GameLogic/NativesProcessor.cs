@@ -52,9 +52,7 @@ namespace Stareater.GameLogic
 			if (catalizers < MaxCatalyzers)
 			{
 				var nativeDesign = states.Designs.OwnedBy[this.OrganellePlayer].First(x => x.IdCode == CatalyzerId);
-				
-				var star = states.Stars.First();
-				derivates.Of(this.OrganellePlayer).SpawnShip(star, nativeDesign, 1, new AMission[0], states);
+				derivates.Of(this.OrganellePlayer).SpawnShip(states.StareaterBrain, nativeDesign, 1, new AMission[0], states);
 			}
 		}
 		

@@ -20,6 +20,8 @@ namespace Stareater.GameData.Databases
 		public StarCollection Stars { get; private set; }
 		[StateProperty]
 		public WormholeCollection Wormholes { get; private set; }
+		[StateProperty]
+		public StarData StareaterBrain { get; private set; }
 
 		[StateProperty]
 		public PlanetCollection Planets { get; private set; }
@@ -46,7 +48,7 @@ namespace Stareater.GameData.Databases
 		
 		private int nextDesignId = 0; //TODO(v0.7) may not work correctly after loading
 		
-		public StatesDB(StarCollection stars, WormholeCollection wormholes, PlanetCollection planets, 
+		public StatesDB(StarCollection stars, StarData stareaterBrain, WormholeCollection wormholes, PlanetCollection planets, 
 		                ColonyCollection Colonies, StellarisCollection stellarises,
 		                DevelopmentProgressCollection developmentAdvances, ResearchProgressCollection researchAdvances,
 						TreatyCollection treaties,ReportCollection reports, DesignCollection designs,
@@ -55,7 +57,8 @@ namespace Stareater.GameData.Databases
 			this.Colonies = Colonies;
 			this.Planets = planets;
 			this.Stars = stars;
-			this.Stellarises = stellarises;
+			this.StareaterBrain = stareaterBrain;
+            this.Stellarises = stellarises;
 			this.Wormholes = wormholes;
 			this.DevelopmentAdvances = developmentAdvances;
 			this.ResearchAdvances = researchAdvances;
