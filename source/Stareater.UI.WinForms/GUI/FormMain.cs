@@ -180,7 +180,13 @@ namespace Stareater.GUI
 				if (form.ShowDialog() == DialogResult.OK)
 					form.Result.Accept(this.reportOpener);
 		}
-		
+
+		private void stareaterToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			using (var form = new FormStareater())
+				form.ShowDialog();
+		}
+
 		private void libraryToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			using(var form = new FormLibrary(this.currentPlayer.Library))

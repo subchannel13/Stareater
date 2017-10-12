@@ -116,7 +116,9 @@
     <Compile Include="DesignItem.Designer.cs">
       <DependentUpon>DesignItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormBombardment.cs" />
+    <Compile Include="FormBombardment.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormBombardment.Designer.cs">
       <DependentUpon>FormBombardment.cs</DependentUpon>
     </Compile>
@@ -138,15 +140,21 @@
     <Compile Include="FormColony.Designer.cs">
       <DependentUpon>FormColony.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormCombat.cs" />
+    <Compile Include="FormCombat.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormCombat.Designer.cs">
       <DependentUpon>FormCombat.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormDiplomacyAudiency.cs" />
+    <Compile Include="FormDiplomacyAudiency.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormDiplomacyAudiency.Designer.cs">
       <DependentUpon>FormDiplomacyAudiency.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormDiplomacyRelations.cs" />
+    <Compile Include="FormDiplomacyRelations.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormDiplomacyRelations.Designer.cs">
       <DependentUpon>FormDiplomacyRelations.cs</DependentUpon>
     </Compile>
@@ -192,7 +200,9 @@
     <Compile Include="FormResearch.Designer.cs">
       <DependentUpon>FormResearch.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormResearchComplete.cs" />
+    <Compile Include="FormResearchComplete.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormResearchComplete.Designer.cs">
       <DependentUpon>FormResearchComplete.cs</DependentUpon>
     </Compile>
@@ -232,6 +242,12 @@
     <Compile Include="FormShipDesignList.Designer.cs">
       <DependentUpon>FormShipDesignList.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormStareater.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStareater.Designer.cs">
+      <DependentUpon>FormStareater.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormStarSystem.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -270,7 +286,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RelationsPlayerInfo.cs" />
+    <Compile Include="RelationsPlayerInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="RelationsPlayerInfo.Designer.cs">
       <DependentUpon>RelationsPlayerInfo.cs</DependentUpon>
     </Compile>
@@ -399,6 +417,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormShipDesignList.resx">
       <DependentUpon>FormShipDesignList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStareater.resx">
+      <DependentUpon>FormStareater.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormStarSystem.resx">
       <DependentUpon>FormStarSystem.cs</DependentUpon>

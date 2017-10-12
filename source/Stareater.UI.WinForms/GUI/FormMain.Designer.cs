@@ -37,6 +37,7 @@
 			this.designsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.developmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.researchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.diplomacyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.colonizationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.libraryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,7 +55,7 @@
 			this.unitDoneAction = new System.Windows.Forms.Button();
 			this.abilityList = new System.Windows.Forms.FlowLayoutPanel();
 			this.workaroundForWinformsAnchorBug = new System.Windows.Forms.Panel();
-			this.diplomacyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.stareaterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip.SuspendLayout();
 			this.fleetPanel.SuspendLayout();
 			this.unitInfoPanel.SuspendLayout();
@@ -96,14 +97,15 @@
 			// menuStrip
 			// 
 			this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-			this.mainMenuToolStripMenuItem,
-			this.designsToolStripMenuItem,
-			this.developmentToolStripMenuItem,
-			this.researchToolStripMenuItem,
-			this.diplomacyToolStripMenuItem,
-			this.colonizationToolStripMenuItem,
-			this.reportsToolStripMenuItem,
-			this.libraryToolStripMenuItem});
+            this.mainMenuToolStripMenuItem,
+            this.designsToolStripMenuItem,
+            this.developmentToolStripMenuItem,
+            this.researchToolStripMenuItem,
+            this.diplomacyToolStripMenuItem,
+            this.colonizationToolStripMenuItem,
+            this.reportsToolStripMenuItem,
+            this.stareaterToolStripMenuItem,
+            this.libraryToolStripMenuItem});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
 			this.menuStrip.Size = new System.Drawing.Size(884, 24);
@@ -137,6 +139,13 @@
 			this.researchToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
 			this.researchToolStripMenuItem.Text = "Research";
 			this.researchToolStripMenuItem.Click += new System.EventHandler(this.researchToolStripMenuItem_Click);
+			// 
+			// diplomacyToolStripMenuItem
+			// 
+			this.diplomacyToolStripMenuItem.Name = "diplomacyToolStripMenuItem";
+			this.diplomacyToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
+			this.diplomacyToolStripMenuItem.Text = "Diplomacy";
+			this.diplomacyToolStripMenuItem.Click += new System.EventHandler(this.diplomacyToolStripMenuItem_Click);
 			// 
 			// colonizationToolStripMenuItem
 			// 
@@ -287,7 +296,7 @@
 			// abilityList
 			// 
 			this.abilityList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-			| System.Windows.Forms.AnchorStyles.Left)));
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.abilityList.AutoScroll = true;
 			this.abilityList.BackColor = System.Drawing.Color.Black;
 			this.abilityList.Location = new System.Drawing.Point(12, 50);
@@ -312,12 +321,12 @@
 			this.workaroundForWinformsAnchorBug.Size = new System.Drawing.Size(884, 538);
 			this.workaroundForWinformsAnchorBug.TabIndex = 9;
 			// 
-			// diplomacyToolStripMenuItem
+			// stareaterToolStripMenuItem
 			// 
-			this.diplomacyToolStripMenuItem.Name = "diplomacyToolStripMenuItem";
-			this.diplomacyToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
-			this.diplomacyToolStripMenuItem.Text = "Diplomacy";
-			this.diplomacyToolStripMenuItem.Click += new System.EventHandler(this.diplomacyToolStripMenuItem_Click);
+			this.stareaterToolStripMenuItem.Name = "stareaterToolStripMenuItem";
+			this.stareaterToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+			this.stareaterToolStripMenuItem.Text = "Stareater";
+			this.stareaterToolStripMenuItem.Click += new System.EventHandler(this.stareaterToolStripMenuItem_Click);
 			// 
 			// FormMain
 			// 
@@ -372,5 +381,6 @@
 		private System.Windows.Forms.ToolStripMenuItem libraryToolStripMenuItem;
 		private System.Windows.Forms.Panel workaroundForWinformsAnchorBug;
 		private System.Windows.Forms.ToolStripMenuItem diplomacyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem stareaterToolStripMenuItem;
 	}
 }
