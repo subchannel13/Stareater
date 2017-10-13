@@ -84,6 +84,7 @@
     <Compile Include="Controllers\NewGameHelpers\ParameterSavingVisitor.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\SpaceBattleController.cs" />
+    <Compile Include="Controllers\StareaterController.cs" />
     <Compile Include="Controllers\Views\BodyType.cs" />
     <Compile Include="Controllers\Views\BuildingInfo.cs" />
     <Compile Include="Controllers\Views\ColonyInfo.cs" />

@@ -183,7 +183,7 @@ namespace Stareater.GUI
 
 		private void stareaterToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var form = new FormStareater())
+			using (var form = new FormStareater(this.currentPlayer.Stareater))
 				form.ShowDialog();
 		}
 

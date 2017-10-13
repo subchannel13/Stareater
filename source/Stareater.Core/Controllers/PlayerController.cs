@@ -41,6 +41,15 @@ namespace Stareater.Controllers
 			get { return new PlayerInfo(this.PlayerInstance(this.gameInstance)); }
 		}
 
+		public StareaterController Stareater
+		{
+			get
+			{
+				var game = this.gameInstance;
+				return new StareaterController(game, this.PlayerInstance(game));
+			}
+		}
+
 		public LibraryController Library 
 		{
 			get { return new LibraryController(this.gameController); }

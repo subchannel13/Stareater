@@ -21,6 +21,8 @@ namespace Stareater.GameData.Databases
 		[StateProperty]
 		public WormholeCollection Wormholes { get; private set; }
 		[StateProperty]
+		//TODO(v0.7) maybe give natives stellarises with special buildings and use it in
+		//derivates to deduce which star is the brain
 		public StarData StareaterBrain { get; private set; }
 
 		[StateProperty]

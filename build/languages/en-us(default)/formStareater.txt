@@ -1,0 +1,5 @@
+﻿:FormStareater
+FormTitle = Stareater status
+controlledByYou = You control the Stareater
+notControlledByYou = You don't control the Stareater
+-
