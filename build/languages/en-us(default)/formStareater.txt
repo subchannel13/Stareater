@@ -2,4 +2,12 @@
 FormTitle = Stareater status
 controlledByYou = You control the Stareater
 notControlledByYou = You don't control the Stareater
+eject = Eject
+noStar = <none>
+
+ejectionEta §
+		ETA: {=eta} turn{pluralDec}{pluralPrefix}
+	\
+	pluralDec    ? (eta < 10) ∧ (ceil(eta * 10) % 10 ≠ 1); =s
+	pluralPrefix ? (eta ≥ 10) ∧ ((eta < 20) ∨ (round(eta) % 10 ≠ 1)); =s
 -

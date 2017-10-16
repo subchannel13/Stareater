@@ -35,6 +35,9 @@ namespace Stareater.GameData.Databases.Tables
 		[StateProperty]
 		public HashSet<int> AudienceRequests { get; private set; }
 
+		[StateProperty]
+		public StarData EjectingStar { get; set; }
+
 		public PlayerOrders()
 		{
 			this.DevelopmentFocusIndex = 0;
@@ -45,6 +48,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.ColonizationOrders = new Dictionary<Planet, ColonizationPlan>();
 			this.RefitOrders = new Dictionary<Design, Design>();
 			this.AudienceRequests = new HashSet<int>();
+			this.EjectingStar = null;
  		}
 	}
 }

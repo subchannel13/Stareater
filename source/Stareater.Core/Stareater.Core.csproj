@@ -93,6 +93,7 @@
     <Compile Include="Controllers\Views\ConstructableInfo.cs" />
     <Compile Include="Controllers\Views\ContactInfo.cs" />
     <Compile Include="Controllers\Views\DevelopmentFocusInfo.cs" />
+    <Compile Include="Controllers\Views\EjectionProgressInfo.cs" />
     <Compile Include="Controllers\Views\FoundGalaxyObject.cs" />
     <Compile Include="Controllers\Views\GalaxyObjectType.cs" />
     <Compile Include="Controllers\Views\GameState.cs" />

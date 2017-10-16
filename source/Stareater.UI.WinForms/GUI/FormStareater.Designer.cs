@@ -52,6 +52,7 @@
 			this.starSelector.Name = "starSelector";
 			this.starSelector.Size = new System.Drawing.Size(150, 21);
 			this.starSelector.TabIndex = 1;
+			this.starSelector.SelectedIndexChanged += new System.EventHandler(this.starSelector_SelectedIndexChanged);
 			// 
 			// ejectLabel
 			// 
