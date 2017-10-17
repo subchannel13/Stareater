@@ -91,6 +91,7 @@ namespace Stareater
 		internal IkadnBaseObject Save(StateManager stateManager)
 		{
 			var indexer = new ObjectIndexer();
+			indexer.AddAll(PlayerAssets.OrganizationsRaw);
 			indexer.AddAll(Statics.Armors.Values);
 			indexer.AddAll(Statics.Constructables);
 			indexer.AddAll(Statics.DevelopmentTopics);

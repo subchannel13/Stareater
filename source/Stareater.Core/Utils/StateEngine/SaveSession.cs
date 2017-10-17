@@ -32,7 +32,7 @@ namespace Stareater.Utils.StateEngine
 				return new IkonReference(this.referencedData[originalValue].ReferenceNames.First());
 
 			if (this.indexer.HasType(originalValue.GetType()))
-                return new IkonInteger(this.indexer.IndexOf(originalValue));
+				return new IkonInteger(this.indexer.IndexOf(originalValue));
 
 			var expert = this.expertGetter(originalValue.GetType());
 			var serialized = expert.Serialize(originalValue, this);

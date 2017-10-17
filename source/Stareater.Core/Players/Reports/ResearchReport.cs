@@ -1,21 +1,22 @@
-﻿using System;
-using Ikadn;
-using Ikadn.Ikon.Types;
-using Stareater.GameData;
-using Stareater.GameLogic;
-using Stareater.Utils.Collections;
+﻿using Stareater.GameLogic;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players.Reports
 {
+	[StateType(saveTag: SaveTag)]
 	class ResearchReport : IReport
 	{
+		[StateProperty]
 		public ResearchResult TechProgress { get; private set; }
 		
 		internal ResearchReport(ResearchResult techProgress)
 		{
 			this.TechProgress = techProgress;
 		}
-		
+
+		private ResearchReport()
+		{ }
+
 		public Player Owner {
 			get {
 				return this.TechProgress.Item.Owner;
@@ -27,31 +28,6 @@ namespace Stareater.Players.Reports
 			visitor.Visit(this);
 		}
 		
-		public IkadnBaseObject Save(ObjectIndexer indexer)
-		{
-			var data = new IkonComposite(SaveTag);
-			data.Add(CountKey, new IkonInteger(this.TechProgress.CompletedCount));
-			data.Add(InvestedKey, new IkonFloat(this.TechProgress.InvestedPoints));
-			data.Add(LeftoverKey, new IkonFloat(this.TechProgress.LeftoverPoints));
-			data.Add(TopicKey, new IkonInteger(indexer.IndexOf(this.TechProgress.Item)));
-			
-			return data;
-		}
-		
-		public static IReport Load(IkonComposite reportData, ObjectDeindexer deindexer)
-		{
-			return new ResearchReport(new ResearchResult(
-				reportData[CountKey].To<long>(),
-				reportData[InvestedKey].To<double>(),
-				deindexer.Get<ResearchProgress>(reportData[TopicKey].To<int>()),
-				reportData[LeftoverKey].To<double>()
-			));
-		}
-		
 		public const string SaveTag = "ResearchReport";
-		private const string CountKey = "count";
-		private const string InvestedKey = "invested";
-		private const string LeftoverKey = "leftover";
-		private const string TopicKey = "topic";
 	}
 }

@@ -55,7 +55,7 @@ namespace Stareater.Controllers
 			var organellePlayer = new Player(
 				"no name", 
 				System.Drawing.Color.Gray,
-				new Organization("", new string[0]),
+				null,
 				new PlayerType(PlayerControlType.Neutral, new OrganellePlayerFactory())
 			);
 

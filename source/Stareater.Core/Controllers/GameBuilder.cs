@@ -40,7 +40,8 @@ namespace Stareater.Controllers
 			var statics = StaticsDB.Load(staticDataSources);
 			
 			var deindexer = new ObjectDeindexer();
-			
+
+			deindexer.AddAll(PlayerAssets.OrganizationsRaw);
 			deindexer.AddAll(statics.Constructables);
 			deindexer.AddAll(statics.DevelopmentTopics);
 			deindexer.AddAll(statics.PredeginedDesigns);
