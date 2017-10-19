@@ -78,11 +78,13 @@ namespace Stareater.Utils.StateEngine
 		private static Func<object> BuildConstructor(Type type)
 		{
             var ctorInfo = type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[0], null);
-			var funcBody = Expression.New(ctorInfo);
-			
+
+			if (ctorInfo == null)
+				throw new ArgumentException(type.FullName + " has no default constructor");
+
 			var expr =
 				Expression.Lambda<Func<object>>(
-					funcBody
+					Expression.New(ctorInfo)
 				);
 
 			return expr.Compile();

@@ -16,15 +16,15 @@ namespace StareaterUI
 		[STAThread]
 		static void Main(string[] args)
 		{
+			ErrorReporter.Get.OnException += logException;
+
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			
+
+#if !DEBUG
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 			Application.ThreadException += guiExceptionLogger;
 
-			ErrorReporter.Get.OnException += logException;
-
-#if !DEBUG
 			try
 			{
 #endif

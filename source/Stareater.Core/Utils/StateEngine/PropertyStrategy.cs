@@ -57,6 +57,10 @@ namespace Stareater.Utils.StateEngine
 		private static Func<object, object> BuildGetAccessor(PropertyInfo property)
 		{
 			var method = property.GetGetMethod(true);
+
+			if (method == null)
+				throw new ArgumentException("Can't find getter for " + property.Name + " in " + property.DeclaringType.FullName);
+
 			var obj = Expression.Parameter(typeof(object), "o");
 
 			var expr =
@@ -74,6 +78,10 @@ namespace Stareater.Utils.StateEngine
 		private static Action<object, object> BuildSetAccessor(PropertyInfo property)
 		{
 			var method = property.GetSetMethod(true);
+
+			if (method == null)
+				throw new ArgumentException("Can't find setter for " + property.Name + " in " + property.DeclaringType.FullName);
+
 			var obj = Expression.Parameter(typeof(object), "o");
 			var value = Expression.Parameter(typeof(object));
 
@@ -92,6 +100,10 @@ namespace Stareater.Utils.StateEngine
 		private static Action<object, IkonBaseObject, LoadSession> BuildDeserializer(PropertyInfo property)
 		{
 			var method = property.GetSetMethod(true);
+
+			if (method == null)
+				throw new ArgumentException("Can't find setter for " + property.Name + " in " + property.DeclaringType.FullName);
+
 			var obj = Expression.Parameter(typeof(object), "o");
 			var saveDataParam = Expression.Parameter(typeof(IkonBaseObject), "rawData");
 			var sessionParam = Expression.Parameter(typeof(LoadSession), "session");
