@@ -23,6 +23,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
+				//TODO(v0.7) move to player processor
 				return this.game.States.Fleets.
 					At[this.game.States.StareaterBrain.Position].
 					Where(x => x.Owner == player).

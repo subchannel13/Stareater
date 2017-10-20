@@ -33,6 +33,7 @@
 			this.ejectLabel = new System.Windows.Forms.Label();
 			this.selectionInfo = new System.Windows.Forms.Label();
 			this.gameProgressInfo = new System.Windows.Forms.Label();
+			this.closeAction = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// whoControlsLabel
@@ -83,11 +84,23 @@
 			this.gameProgressInfo.TabIndex = 4;
 			this.gameProgressInfo.Text = "Victory points:";
 			// 
+			// closeAction
+			// 
+			this.closeAction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.closeAction.Location = new System.Drawing.Point(252, 181);
+			this.closeAction.Name = "closeAction";
+			this.closeAction.Size = new System.Drawing.Size(75, 23);
+			this.closeAction.TabIndex = 5;
+			this.closeAction.Text = "button1";
+			this.closeAction.UseVisualStyleBackColor = true;
+			this.closeAction.Click += new System.EventHandler(this.closeAction_Click);
+			// 
 			// FormStareater
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(339, 216);
+			this.Controls.Add(this.closeAction);
 			this.Controls.Add(this.gameProgressInfo);
 			this.Controls.Add(this.selectionInfo);
 			this.Controls.Add(this.ejectLabel);
@@ -110,5 +123,6 @@
 		private System.Windows.Forms.Label ejectLabel;
 		private System.Windows.Forms.Label selectionInfo;
 		private System.Windows.Forms.Label gameProgressInfo;
+		private System.Windows.Forms.Button closeAction;
 	}
 }

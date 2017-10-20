@@ -68,6 +68,7 @@ namespace Stareater.GameLogic
 				}
 			}
 
+			this.doStareaterActions();
 			this.doColonization();
 			this.mergeFleets();
 			
@@ -278,7 +279,41 @@ namespace Stareater.GameLogic
 				this.game.States.Fleets.Add(fleet.LocalFleet);
 		}
 
-		private void doColonization()
+		private void doStareaterActions()
+		{
+			foreach(var player in this.game.MainPlayers.Where(x => this.game.Orders[x].EjectingStar != null))
+			{
+				//TODO(v0.7) move to player processor
+				var hasControl = this.game.States.Fleets.
+					At[this.game.States.StareaterBrain.Position].
+					Where(x => x.Owner == player).
+					Any();
+
+				if (!hasControl)
+					continue;
+
+				var star = this.game.Orders[player].EjectingStar;
+				this.game.States.Stars.Remove(star);
+
+                foreach (var lane in this.game.States.Wormholes.At[star])
+					this.game.States.Wormholes.PendRemove(lane);
+				this.game.States.Wormholes.ApplyPending();
+
+				foreach (var planet in this.game.States.Planets.At[star])
+					this.game.States.Planets.PendRemove(planet);
+				this.game.States.Planets.ApplyPending();
+
+				foreach (var stellaris in this.game.States.Stellarises.At[star])
+					this.game.States.Stellarises.PendRemove(stellaris);
+				this.game.States.Stellarises.ApplyPending();
+
+				foreach (var colony in this.game.States.Colonies.AtStar[star])
+					this.game.States.Colonies.PendRemove(colony);
+				this.game.States.Colonies.ApplyPending();
+			}
+		}
+
+        private void doColonization()
 		{
 			foreach(var project in this.game.States.ColonizationProjects)
 			{

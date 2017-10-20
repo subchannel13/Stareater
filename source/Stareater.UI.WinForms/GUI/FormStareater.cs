@@ -26,6 +26,7 @@ namespace Stareater.GUI
             var context = lang["FormStareater"];
 
 			this.Text = context["FormTitle"].Text();
+			this.closeAction.Text = context["close"].Text();
 			this.ejectLabel.Text = context["eject"].Text() + ":";
 
 			if (controller.HasControl)
@@ -75,6 +76,11 @@ namespace Stareater.GUI
 
 			controller.EjectTarget = (this.starSelector.SelectedItem as Tag<StarData>).Value;
 			updateEta();
+		}
+
+		private void closeAction_Click(object sender, EventArgs e)
+		{
+			this.Close();
 		}
 	}
 }

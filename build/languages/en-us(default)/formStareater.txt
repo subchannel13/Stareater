@@ -1,5 +1,6 @@
 ﻿:FormStareater
 FormTitle = Stareater status
+close = Close
 controlledByYou = You control the Stareater
 notControlledByYou = You don't control the Stareater
 eject = Eject
