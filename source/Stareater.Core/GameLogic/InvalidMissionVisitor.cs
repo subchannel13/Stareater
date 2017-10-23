@@ -46,7 +46,8 @@ namespace Stareater.GameLogic
 
 		public void Visit(MoveMission mission)
 		{
-			this.remainingMissions.AddLast(mission);
+			if (this.game.States.Stars.Contains(mission.Destination))
+				this.remainingMissions.AddLast(mission);
 		}
 
 		public void Visit(SkipTurnMission mission)

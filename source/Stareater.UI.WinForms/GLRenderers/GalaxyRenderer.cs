@@ -105,14 +105,10 @@ namespace Stareater.GLRenderers
 					(float)this.currentPlayer.Stars.Max(star => star.Position.Y) + StarMinClickRadius
 				);
 			}
-			
-			if (!this.lastSelectedStars.ContainsKey(this.currentPlayer.PlayerIndex))
-			{
-				var bestStar = this.currentPlayer.Stellarises().Aggregate((a, b) => a.Population > b.Population ? a : b);
 
-				this.lastSelectedStars[this.currentPlayer.PlayerIndex] = bestStar.HostStar.Position;
-				this.lastOffset[this.currentPlayer.PlayerIndex] = convert(bestStar.HostStar.Position);
-			}
+			if (!this.lastSelectedStars.ContainsKey(this.currentPlayer.PlayerIndex) || 
+				!this.currentPlayer.Stars.Any(x => x.Position == this.lastSelectedStars[this.currentPlayer.PlayerIndex]))
+				this.selectDefaultStar();
 			
 			this.originOffset = this.lastOffset[this.currentPlayer.PlayerIndex];
 			this.currentSelection = GalaxySelectionType.Star;
@@ -631,6 +627,17 @@ namespace Stareater.GLRenderers
 			}
 			
 			return Color.FromArgb(64, 64, 64);
+		}
+
+		private void selectDefaultStar()
+		{
+			var stellarises = this.currentPlayer.Stellarises();
+            var bestStar = stellarises.Any() ? 
+				stellarises.Aggregate((a, b) => a.Population > b.Population ? a : b) : 
+				stellarises.First();
+
+			this.lastSelectedStars[this.currentPlayer.PlayerIndex] = bestStar.HostStar.Position;
+			this.lastOffset[this.currentPlayer.PlayerIndex] = convert(bestStar.HostStar.Position);
 		}
 		#endregion
 	}

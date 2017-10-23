@@ -91,6 +91,10 @@ namespace Stareater.Controllers
 		public StarSystemController OpenStarSystem(StarData star)
 		{
 			var game = this.gameInstance;
+
+			if (!game.States.Stars.Contains(star))
+				throw new ArgumentException("Star doesn't exist");
+
 			return new StarSystemController(game, star, game.IsReadOnly, this.PlayerInstance(game));
 		}
 		
