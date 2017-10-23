@@ -21,13 +21,17 @@ namespace Stareater.GameLogic
 	class PlayerProcessor
 	{
 		public const string LevelSufix = "Lvl";
-		
+
+		[StateProperty]
+		public Player Player { get; private set; }
+
 		[StateProperty]
 		public IEnumerable<DevelopmentResult> DevelopmentPlan { get; protected set; }
 		[StateProperty]
 		public IEnumerable<ResearchResult> ResearchPlan { get; protected set; }
 		[StateProperty]
-		public Player Player { get; private set; }
+		public IDictionary<string, double> TechLevels { get; private set; }
+		
 		[StateProperty]
 		public Dictionary<Design, DesignStats> DesignStats { get; private set; }
 		[StateProperty]
@@ -36,6 +40,9 @@ namespace Stareater.GameLogic
 		public Design ColonyShipDesign { get; private set; }
 		[StateProperty]
 		public Design SystemColonizerDesign { get; private set; }
+
+		[StateProperty]
+		public bool ControlsStareater { get; private set; }
 
 		private Queue<ResearchResult> breakthroughs = new Queue<ResearchResult>();
 		
@@ -76,8 +83,9 @@ namespace Stareater.GameLogic
 		
 		public void Initialize(MainGame game)
 		{
-			this.Calculate(game.States.DevelopmentAdvances.Of[this.Player]);
-			this.unlockPredefinedDesigns(game);
+			this.calculate(game);
+			this.initTechAdvances(game.States.DevelopmentAdvances.Of[this.Player]);
+            this.unlockPredefinedDesigns(game);
 		}
 		
 		#region Technology related
@@ -165,17 +173,21 @@ namespace Stareater.GameLogic
 			
 			return playerTechs;
 		}
+
+		private void initTechAdvances(IEnumerable<DevelopmentProgress> techAdvances)
+		{
+			foreach (var tech in techAdvances)
+				TechLevels[tech.Topic.IdCode + LevelSufix] = tech.Level;
+		}
 		#endregion
 
 		#region Galaxy phase
-		[StateProperty]
-		public IDictionary<string, double> TechLevels { get; private set; }
-
-		public void Calculate(IEnumerable<DevelopmentProgress> techAdvances)
+		private void calculate(MainGame game)
 		{
-			foreach (var tech in techAdvances) {
-				TechLevels[tech.Topic.IdCode + LevelSufix] = tech.Level;
-			}
+			this.ControlsStareater = game.States.Fleets.
+					At[game.States.StareaterBrain.Position].
+					Where(x => x.Owner == this.Player).
+					Any();
 		}
 		#endregion
 		
@@ -259,6 +271,7 @@ namespace Stareater.GameLogic
 			this.doConstruction(game);
 			this.unlockPredefinedDesigns(game);
 			this.updateDesigns(game);
+			this.calculate(game);
 		}
 
 		private void advanceTechnologies(MainGame game)
@@ -273,7 +286,7 @@ namespace Stareater.GameLogic
 				if (techProgress.CompletedCount > 0)
 					game.States.Reports.Add(new ResearchReport(techProgress));
 			}
-			this.Calculate(game.States.DevelopmentAdvances.Of[Player]);
+			this.initTechAdvances(game.States.DevelopmentAdvances.Of[Player]);
 
 			var researchLevels = game.States.ResearchAdvances.Of[Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var validTechs = new HashSet<string>(

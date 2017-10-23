@@ -283,13 +283,7 @@ namespace Stareater.GameLogic
 		{
 			foreach(var player in this.game.MainPlayers.Where(x => this.game.Orders[x].EjectingStar != null))
 			{
-				//TODO(v0.7) move to player processor
-				var hasControl = this.game.States.Fleets.
-					At[this.game.States.StareaterBrain.Position].
-					Where(x => x.Owner == player).
-					Any();
-
-				if (!hasControl)
+				if (!this.game.Derivates.Of(player).ControlsStareater)
 					continue;
 
 				var star = this.game.Orders[player].EjectingStar;
@@ -304,11 +298,17 @@ namespace Stareater.GameLogic
 				this.game.States.Planets.ApplyPending();
 
 				foreach (var stellaris in this.game.States.Stellarises.At[star])
+				{
 					this.game.States.Stellarises.PendRemove(stellaris);
+					this.game.Derivates.Stellarises.Remove(this.game.Derivates.Of(stellaris));
+				}
 				this.game.States.Stellarises.ApplyPending();
 
 				foreach (var colony in this.game.States.Colonies.AtStar[star])
+				{
 					this.game.States.Colonies.PendRemove(colony);
+					this.game.Derivates.Colonies.Remove(this.game.Derivates.Of(colony));
+				}
 				this.game.States.Colonies.ApplyPending();
 			}
 		}

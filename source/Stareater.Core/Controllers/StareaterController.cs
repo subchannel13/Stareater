@@ -23,11 +23,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				//TODO(v0.7) move to player processor
-				return this.game.States.Fleets.
-					At[this.game.States.StareaterBrain.Position].
-					Where(x => x.Owner == player).
-					Any();
+				return this.game.Derivates.Of(this.player).ControlsStareater;
 			}
 		}
 
@@ -35,7 +31,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return this.game.States.Stars;
+				return this.game.States.Stars.Where(x => x != this.game.States.StareaterBrain);
 			}
 		}
 
@@ -47,7 +43,7 @@ namespace Stareater.Controllers
 			}
 			set
 			{
-				if (this.game.IsReadOnly)
+				if (this.game.IsReadOnly && value != this.game.States.StareaterBrain)
 					return;
 
 				this.game.Orders[this.player].EjectingStar = value; //TODO(v0.7) check input
