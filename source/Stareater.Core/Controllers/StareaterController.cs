@@ -56,7 +56,8 @@ namespace Stareater.Controllers
 			{
 				return new EjectionProgressInfo(
 					this.HasControl && this.EjectTarget != null,
-					1 //TODO(v0.7) calculate ETA
+					1, //TODO(v0.7) calculate ETA
+					0 //TODO(v0.7) calculate victory points
 				);
 			}
 		}

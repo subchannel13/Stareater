@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System;
 using Stareater.Utils.Collections;
+using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI
 {
@@ -60,12 +61,13 @@ namespace Stareater.GUI
 		{
 			var context = LocalizationManifest.Get.CurrentLanguage["FormStareater"];
 			var progress = this.controller.EjectionProgress;
+			var formatter = new DecimalsFormatter(0, 1);
 
-			this.selectionInfo.Text = 
+            this.selectionInfo.Text = 
 				progress.CanProgress ? 
 				context["ejectionEta"].Text(
 					new Var("eta", Math.Ceiling(progress.Eta)).Get,
-					new TextVar("eta", Math.Ceiling(progress.Eta).ToString()).Get) : 
+					new TextVar("eta", formatter.Format(progress.Eta).ToString()).And("vp", formatter.Format(progress.Eta).ToString()).Get) : 
 				"";
 		}
 
