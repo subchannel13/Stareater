@@ -43,9 +43,14 @@ namespace Stareater.GameLogic
 
 		[StateProperty]
 		public bool ControlsStareater { get; private set; }
+		[StateProperty]
+		public double EjectEta { get; private set; }
+		//TODO(v0.7) make a class which unifies ejection data
+		[StateProperty]
+		public Dictionary<Player, double> EjectVictoryPoints { get; private set; } 
 
 		private Queue<ResearchResult> breakthroughs = new Queue<ResearchResult>();
-		
+
 		public PlayerProcessor(Player player, IEnumerable<DevelopmentTopic> technologies)
 		{
 			this.Player = player;
@@ -188,6 +193,11 @@ namespace Stareater.GameLogic
 					At[game.States.StareaterBrain.Position].
 					Where(x => x.Owner == this.Player).
 					Any();
+
+			this.EjectEta = this.ControlsStareater ? 1 : 0; //TODO(later) calculate ETA
+			this.EjectVictoryPoints = game.MainPlayers.ToDictionary(x => x, x => 0.0);
+			if (this.ControlsStareater)
+				this.EjectVictoryPoints[this.Player] = 1; //TODO(later) calculate victory points
 		}
 		#endregion
 		

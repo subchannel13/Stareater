@@ -31,6 +31,9 @@ namespace Stareater.Players
 		[StateProperty]
 		public Intelligence Intelligence { get; private set; }
 
+		[StateProperty]
+		public double VictoryPoints { get; set; }
+
 		public Player(string name, Color color, Organization Organization, PlayerType type) 
 		{
 			this.Name = name;
@@ -42,6 +45,7 @@ namespace Stareater.Players
 
 			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
 			this.Intelligence = new Intelligence();
+			this.VictoryPoints = 0;
  
 			#if DEBUG
 			this.id = NextId();

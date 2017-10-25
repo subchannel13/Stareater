@@ -47,6 +47,16 @@ namespace Stareater.GUI
 				(ejectables.FindIndex(x => x.Value == controller.EjectTarget) + 1) :
 				0;
 
+			var progressText = context["progressHeading"].Text();
+			var formatter = new DecimalsFormatter(0, 1);
+			foreach (var info in controller.GameProgress.OrderByDescending(x => x.VictoryPoints))
+				progressText += Environment.NewLine + context["playerProgress"].Text(
+					new TextVar("vp", formatter.Format(info.VictoryPoints)).
+					And("name", info.Player.Name).Get
+				);
+
+			this.gameProgressInfo.Text = progressText;
+
 			updateEta();
         }
 
@@ -67,7 +77,7 @@ namespace Stareater.GUI
 				progress.CanProgress ? 
 				context["ejectionEta"].Text(
 					new Var("eta", Math.Ceiling(progress.Eta)).Get,
-					new TextVar("eta", formatter.Format(progress.Eta).ToString()).And("vp", formatter.Format(progress.Eta).ToString()).Get) : 
+					new TextVar("eta", formatter.Format(progress.Eta)).And("vp", formatter.Format(progress.Eta)).Get) : 
 				"";
 		}
 

@@ -12,4 +12,9 @@ ejectionEta §
 	\
 	pluralDec    ? (eta < 10) ∧ (ceil(eta * 10) % 10 ≠ 1); =s
 	pluralPrefix ? (eta ≥ 10) ∧ ((eta < 20) ∨ (round(eta) % 10 ≠ 1)); =s
+	
+progressHeading = Victory points:
+playerProgress §
+		{=vp} {=name}
+	\
 -

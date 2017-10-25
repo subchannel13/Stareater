@@ -54,11 +54,21 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return new EjectionProgressInfo(
+				var playerProc = this.game.Derivates.Of(this.player);
+
+                return new EjectionProgressInfo(
 					this.HasControl && this.EjectTarget != null,
-					1, //TODO(v0.7) calculate ETA
-					0 //TODO(v0.7) calculate victory points
+					playerProc.EjectEta,
+					playerProc.EjectVictoryPoints[this.player]
 				);
+			}
+		}
+
+		public IEnumerable<PlayerProgressInfo> GameProgress
+		{
+			get
+			{
+				return this.game.MainPlayers.Select(x => new PlayerProgressInfo(x));
 			}
 		}
 	}
