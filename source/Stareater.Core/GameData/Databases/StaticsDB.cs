@@ -172,7 +172,8 @@ namespace Stareater.GameData.Databases
 			return new ColonyFormulaSet(
 				data[ColonizationPopulationThreshold].To<Formula>(),
 				data[UncolonizedMaxPopulation].To<Formula>(),
-				data[ColonyFarmFields].To<Formula>(),
+				data[ColonyVictoryWorth].To<Formula>(),
+                data[ColonyFarmFields].To<Formula>(),
 				data[ColonyEnvironment].To<Formula>(),
 				data[ColonyMaxPopulation].To<Formula>(),
 				loadDerivedStat(data[ColonyPopulationGrowth].To<IkonComposite>()),
@@ -636,6 +637,7 @@ namespace Stareater.GameData.Databases
 		private const string ColonyPopulationHitPoints = "popHp";
 		private const string ColonyRepairPoints = "repair";
 		private const string ColonySpaceliftFactor = "spaceliftFactor";
+		private const string ColonyVictoryWorth = "victoryPointWorth";
 		private const string UncolonizedMaxPopulation = "uncolonizedMaxPopulation";
 		
 		private const string PlayerResearchFocusWeight = "focusedResearchWeight";

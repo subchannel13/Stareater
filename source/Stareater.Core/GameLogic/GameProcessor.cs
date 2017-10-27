@@ -7,6 +7,7 @@ using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
 using Stareater.Galaxy;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GameLogic
 {
@@ -310,6 +311,9 @@ namespace Stareater.GameLogic
 					this.game.Derivates.Colonies.Remove(this.game.Derivates.Of(colony));
 				}
 				this.game.States.Colonies.ApplyPending();
+
+				foreach (var vpRewards in this.game.Derivates.Of(player).EjectVictoryPoints)
+					vpRewards.Key.VictoryPoints += vpRewards.Value;
 			}
 		}
 

@@ -21,6 +21,12 @@ namespace Stareater.Utils.Collections
 			return this;
 		}
 
+		public Var Set(string name, double value)
+		{
+			variables[name] = value;
+			return this;
+		}
+
 		public IDictionary<string, double> Get
 		{
 			get {

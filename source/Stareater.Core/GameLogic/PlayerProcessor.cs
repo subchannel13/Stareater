@@ -88,9 +88,9 @@ namespace Stareater.GameLogic
 		
 		public void Initialize(MainGame game)
 		{
-			this.calculate(game);
 			this.initTechAdvances(game.States.DevelopmentAdvances.Of[this.Player]);
             this.unlockPredefinedDesigns(game);
+			this.CalculateStareater(game);
 		}
 		
 		#region Technology related
@@ -187,7 +187,7 @@ namespace Stareater.GameLogic
 		#endregion
 
 		#region Galaxy phase
-		private void calculate(MainGame game)
+		public void CalculateStareater(MainGame game)
 		{
 			this.ControlsStareater = game.States.Fleets.
 					At[game.States.StareaterBrain.Position].
@@ -196,8 +196,17 @@ namespace Stareater.GameLogic
 
 			this.EjectEta = this.ControlsStareater ? 1 : 0; //TODO(later) calculate ETA
 			this.EjectVictoryPoints = game.MainPlayers.ToDictionary(x => x, x => 0.0);
-			if (this.ControlsStareater)
-				this.EjectVictoryPoints[this.Player] = 1; //TODO(later) calculate victory points
+			var targetStar = game.Orders[this.Player].EjectingStar;
+			var vars = new Var("pop", 0).And("turn", game.Turn).Get;
+
+			if (this.ControlsStareater && targetStar != null)
+			{
+				foreach (var colony in game.States.Colonies.AtStar[targetStar])
+				{
+					vars["pop"] = colony.Population;
+					this.EjectVictoryPoints[colony.Owner] = game.Statics.ColonyFormulas.VictoryPointWorth.Evaluate(vars);
+				}
+			}
 		}
 		#endregion
 		
@@ -281,7 +290,7 @@ namespace Stareater.GameLogic
 			this.doConstruction(game);
 			this.unlockPredefinedDesigns(game);
 			this.updateDesigns(game);
-			this.calculate(game);
+			this.CalculateStareater(game);
 		}
 
 		private void advanceTechnologies(MainGame game)

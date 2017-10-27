@@ -77,7 +77,7 @@ namespace Stareater.GUI
 				progress.CanProgress ? 
 				context["ejectionEta"].Text(
 					new Var("eta", Math.Ceiling(progress.Eta)).Get,
-					new TextVar("eta", formatter.Format(progress.Eta)).And("vp", formatter.Format(progress.Eta)).Get) : 
+					new TextVar("eta", formatter.Format(progress.Eta)).And("vp", formatter.Format(progress.VictoryPoints)).Get) : 
 				"";
 		}
 

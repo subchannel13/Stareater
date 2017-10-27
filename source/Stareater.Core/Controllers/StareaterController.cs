@@ -47,7 +47,8 @@ namespace Stareater.Controllers
 					return;
 
 				this.game.Orders[this.player].EjectingStar = value; //TODO(v0.7) check input
-			}
+				this.game.Derivates.Of(this.player).CalculateStareater(this.game);
+            }
 		}
 
 		public EjectionProgressInfo EjectionProgress
