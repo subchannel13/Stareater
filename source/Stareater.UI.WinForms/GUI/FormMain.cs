@@ -522,14 +522,16 @@ namespace Stareater.GUI
 				postDelayedEvent(this.OnGameOver);
 				return;
 			}
-			
+
+			this.gameOverRenderer.SetResults(this.gameController.Results);
 			this.nextRenderer = this.gameOverRenderer;
 			
-			abilityList.Visible = false;
-			endTurnButton.Visible = false;
-			returnButton.Visible = false;
-			unitInfoPanel.Visible = false;
-			menuStrip.Visible = true;
+			this.abilityList.Visible = false;
+			this.endTurnButton.Visible = false;
+			this.returnButton.Visible = false;
+			this.unitInfoPanel.Visible = false;
+			this.constructionManagement.Visible = false;
+			this.menuStrip.Visible = true;
 		}
 
 		//TODO(v0.7) autosave

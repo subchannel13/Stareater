@@ -100,7 +100,18 @@ namespace Stareater.Controllers
 		{
 			return this.playerControllers.Where(x => x.PlayerInstance(this.gameObj).ControlType == PlayerControlType.LocalHuman);
 		}
-		
+
+		public ResultsController Results
+		{
+			get
+			{
+				if (!gameObj.Processor.IsOver)
+					throw new InvalidOperationException("Game is not over yet");
+
+				return new ResultsController(this.gameObj);
+			}
+		}
+
 		internal MainGame GameInstance
 		{
 			get 
@@ -128,7 +139,7 @@ namespace Stareater.Controllers
 
 		#region Turn processing
 		public GameState State { get; private set; } //TODO(v0.7) remove this property, new game and load game should instantiate new game controller
-		
+
 		internal void EndGalaxyPhase(PlayerController player)
 		{
 			if (this.GameInstance.IsReadOnly)

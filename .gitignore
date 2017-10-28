@@ -4,6 +4,7 @@
 *.pdb
 *.suo
 .nuget/
+.vs/
 bin/
 packages/
 obj/

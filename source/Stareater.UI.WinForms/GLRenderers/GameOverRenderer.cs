@@ -5,25 +5,33 @@ using OpenTK;
 using Stareater.Localization;
 using Stareater.GraphicsEngine;
 using Stareater.GLData.SpriteShader;
+using Stareater.Controllers;
+using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GLRenderers
 {
 	class GameOverRenderer : AScene
 	{
-		private const float DefaultViewSize = 5;
+		private const float DefaultViewSize = 7;
 		private const float TextZ = 0;
 		private const float FarZ = 1;
+
+		private const float TextSize = 0.4f;
 		
-		private SceneObject text = null;
-		
+		private SceneObject headerText = null;
+		private SceneObject scoresText = null;
+		private SceneObject namesText = null;
+
+		private ResultsController controller;
+
 		#region implemented abstract members of ARenderer
 		public override void Activate()
 		{
 			this.UpdateScene(
-				ref this.text,
+				ref this.headerText,
 				new SceneObject(new PolygonData(
 					TextZ,
-					new SpriteData(Matrix4.CreateTranslation(0, 0.5f, 0), TextRenderUtil.Get.TextureId, Color.Red),
+					new SpriteData(Matrix4.CreateTranslation(0, 2f, 0), TextRenderUtil.Get.TextureId, Color.Red),
 					TextRenderUtil.Get.BufferText(
 						LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text(),
 						-0.5f,
@@ -41,5 +49,45 @@ namespace Stareater.GLRenderers
 			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2());
 		}		
 		#endregion
+
+		public void SetResults(ResultsController controller)
+		{
+			this.controller = controller;
+
+			var scores = controller.Scores.OrderByDescending(x => x.VictoryPoints).ToList();
+			var formatter = new DecimalsFormatter(0, 0);
+
+			this.UpdateScene(
+				ref this.scoresText,
+				new SceneObject(scores.Select(
+					(x, i) => new PolygonData(
+						TextZ,
+						new SpriteData(
+							Matrix4.CreateScale(TextSize, TextSize, 1) * Matrix4.CreateTranslation(-0.2f, -0.5f * i + 0.8f, 0), 
+							TextRenderUtil.Get.TextureId, Color.White),
+							TextRenderUtil.Get.BufferText(
+								formatter.Format(x.VictoryPoints),
+								-1f,
+								Matrix4.Identity
+							).ToList()
+				)))
+			);
+
+			this.UpdateScene(
+				ref this.namesText,
+				new SceneObject(scores.Select(
+					(x, i) => new PolygonData(
+						TextZ,
+						new SpriteData(
+							Matrix4.CreateScale(TextSize, TextSize, 1) * Matrix4.CreateTranslation(0, -0.5f * i + 0.8f, 0),
+							TextRenderUtil.Get.TextureId, Color.White),
+							TextRenderUtil.Get.BufferText(
+								x.Player.Name,
+								0f,
+								Matrix4.Identity
+							).ToList()
+				)))
+			);
+		}
 	}
 }
