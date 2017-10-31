@@ -39,8 +39,9 @@ namespace Stareater.GameData.Ships
 				Select(x => new Component<ReactorType>(x, x.HighestLevel(playersTechLevels))).
 				Where(x =>
 				      {
-				      	shipVars[AComponentType.LevelKey] = x.Level;
-				      	return x.TypeInfo.MinSize.Evaluate(shipVars) <= shipVars[HullType.ReactorSizeKey] && x.TypeInfo.CanPick; //TODO(v0.7) use final reactor size
+						  shipVars[AComponentType.LevelKey] = x.Level;
+						  //TODO(v0.7) use final reactor size, enable large reactor special
+						  return x.TypeInfo.MinSize.Evaluate(shipVars) <= shipVars[HullType.ReactorSizeKey] && x.TypeInfo.CanPick; 
 				      }),
 				x =>
 				{

@@ -13,17 +13,17 @@
 	
 	environment # 1;
 	organization # limit(infra_count / pop, 0, 1);
-	spaceliftFactor # 1 / (5 - 0.1 * rocketryLvl / 4);
+	spaceliftFactor # 1 / (5 - 0.1 * rocketryUpg / 4);
 	
 	farming
 	{ Work
 		improvised	# 3 + if(fertile, 4, 0);
-		organized	# 4 + if(fertile, 4, 0);
+		organized	# 4 + if(fertile, 4, 0) + 2 * (greenHouseLvl / 5);
 	}
 	gardening
 	{ Work
 		improvised	# 1.5;
-		organized	# 1.5;
+		organized	# 1.5 + 1 * (hydroFarmLvl / 5);
 	}
 	mining
 	{ Work

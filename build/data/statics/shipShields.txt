@@ -45,14 +45,15 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: particle
 	
-	maxLvl= 1
+	maxLvl= 5
 	prerequisites [
+		:particleScreen #lvl;
 	]
 	
 	reduction # 1;
 	restoration # 0.1;
 	shieldFactor # 1000;
-	thickness # 1 + 0.2 * lvl;
+	thickness # 2 + 0.5 * lvl;
 	
 	cloaking # 5 + 0.5 * lvl;
 	jamming # 5 + 0.15 * lvl;

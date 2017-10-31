@@ -24,3 +24,18 @@
 	minSize # 0;
 	power # hullReactorSize * 2;
 }
+
+{ Reactor
+	langCode: NUCLEAR_REACTOR_SMALL
+	image :./images/technologies/hydroponicFarms.png
+	code: nuclearSmall
+	
+	maxLvl = 4
+	prerequisites [
+		:nuclearPower #lvl - 1;
+		:miniReactor #0;
+	]
+	
+	minSize # 0;
+	power # hullReactorSize * 3 * 2 ^ (lvl / 4);
+}

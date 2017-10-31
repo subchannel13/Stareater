@@ -41,3 +41,18 @@
 	size # 200;
 	maxCount # inf;
 }
+
+{ SpecialEquipment
+	langCode: EXTRA_REACTOR
+	image :./images/technologies/hydroponicFarms.png
+	code: extraReactor
+	
+	maxLvl= 5
+	prerequisites [
+		:extraReactor #lvl;
+	]
+	
+	cost # 20e3 * size;
+	size # 0.1 * size;
+	maxCount # 2;
+}

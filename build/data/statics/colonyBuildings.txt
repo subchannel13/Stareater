@@ -7,7 +7,7 @@
 	stockpile: infra
 	prerequisites [] 
 	
-	cost # 10 * 3 ^ (1 - max(IndLvl + 1, 0) / 11);
+	cost # 10 * 3 ^ (1 - max(IndUpg + 1, 0) / 11);
 	condition # maxPop > infra_count;
 	turnLimit # maxPop - infra_count;
 	

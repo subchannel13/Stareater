@@ -21,6 +21,7 @@ namespace Stareater.GameLogic
 	class PlayerProcessor
 	{
 		public const string LevelSufix = "Lvl";
+		public const string UpgradeSufix = "Upg";
 
 		[StateProperty]
 		public Player Player { get; private set; }
@@ -61,8 +62,11 @@ namespace Stareater.GameLogic
 			this.RefitCosts = new Dictionary<Design, Dictionary<Design, double>>();
 			this.TechLevels = new Dictionary<string, double>();
 
-            foreach (var tech in technologies)
-				this.TechLevels.Add(tech.IdCode + LevelSufix, DevelopmentProgress.NotStarted);
+			foreach (var tech in technologies)
+			{
+				this.TechLevels.Add(tech.IdCode + LevelSufix, 0);
+				this.TechLevels.Add(tech.IdCode + UpgradeSufix, DevelopmentProgress.NotStarted);
+			}
 		}
 
 		public PlayerProcessor(Player player)
@@ -182,7 +186,10 @@ namespace Stareater.GameLogic
 		private void initTechAdvances(IEnumerable<DevelopmentProgress> techAdvances)
 		{
 			foreach (var tech in techAdvances)
-				TechLevels[tech.Topic.IdCode + LevelSufix] = tech.Level;
+			{
+				this.TechLevels[tech.Topic.IdCode + LevelSufix] = tech.Level == DevelopmentProgress.NotStarted ? 0 : (tech.Level + 1);
+				this.TechLevels[tech.Topic.IdCode + UpgradeSufix] = tech.Level;
+			}
 		}
 		#endregion
 

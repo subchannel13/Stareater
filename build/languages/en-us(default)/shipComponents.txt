@@ -48,6 +48,8 @@ NUCLEAR_REACTOR_NAME = Nuclear reactor
 NUCLEAR_REACTOR_DESC = No description.
 CHEMICAL_REACTOR_NAME = Turbine APU
 CHEMICAL_REACTOR_DESC = Auxiliary power unit for powering ship's hyraulic and providing electricity.
+NUCLEAR_REACTOR_SMALL_NAME = Thermoelectric generator
+NUCLEAR_REACTOR_SMALL_DESC = No description.
 -
 
 :Sensors
@@ -67,6 +69,8 @@ PARTICLE_SHIELD_DESC = No description.
 :SpecialEquipment
 EXTRA_THRUSTERS_NAME = Extra thrusters
 EXTRA_THRUSTERS_DESC = No description.
+EXTRA_REACTOR_NAME = Large reactor
+EXTRA_REACTOR_DESC = No description.
 HEAVY_ARMOR_NAME = Heavy armor
 HEAVY_ARMOR_DESC = No description.
 COLONIZER_NAME = Colonizer

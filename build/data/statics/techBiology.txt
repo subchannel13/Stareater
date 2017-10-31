@@ -4,33 +4,33 @@
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
-		[ :HydroFarm :GreenHouse ]
-		[ :GmoFood :GravTolerance ]
-		[ :SoilEnrich ]
+		[ :hydroFarm :greenHouse ]
+		[ :gmoFood :gravTolerance ]
+		[ :soilEnrich ]
 	]
 }
 
 { DevelopmentTopic
 	langCode: HYDRO_FARM
-	code: HydroFarm
-	cost # 50e9 * (lvl + 3 ^lvl);
-	maxLvl= 8
+	code: hydroFarm
+	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 10];
+	maxLvl= 4
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
 }
 
 { DevelopmentTopic
 	langCode: GREEN_HOUSE
-	code: GreenHouse
-	cost # 50e9 * (lvl + 3 ^lvl);
-	maxLvl= 8
+	code: greenHouse
+	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 10];
+	maxLvl= 4
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
 }
 
 { DevelopmentTopic
 	langCode: GMO_FOOD
-	code: GmoFood
+	code: gmoFood
 	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8
 	prerequisites []
@@ -39,7 +39,7 @@
 
 { DevelopmentTopic
 	langCode: GRAV_TOL
-	code: GravTolerance
+	code: gravTolerance
 	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8
 	prerequisites []
@@ -48,7 +48,7 @@
 
 { DevelopmentTopic
 	langCode: SOIL_ENRICH
-	code: SoilEnrich
+	code: soilEnrich
 	cost # 50e9 * (lvl + 3 ^lvl);
 	maxLvl= 8
 	prerequisites []
