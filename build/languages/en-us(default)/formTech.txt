@@ -2,6 +2,7 @@
 DevelopmentTitle = Development topics
 ResearchTitle = Research topics
 
+Level0 = Prototype
 Level §
 		Level {=lvl}
 	\

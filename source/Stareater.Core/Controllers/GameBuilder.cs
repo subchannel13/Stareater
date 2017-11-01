@@ -252,6 +252,9 @@ namespace Stareater.Controllers
 					foreach (var unlock in research.Topic.Unlocks[research.Level])
 						development.First(x => x.Topic.IdCode == unlock).Priority = 0;
 				}
+				foreach (var topic in development.Where(x => !game.Statics.DevelopmentRequirements.ContainsKey(x.Topic.IdCode)))
+					topic.Progress(new DevelopmentResult(1, 0, topic, 0));
+
 				game.Derivates.Players.Of[player].Initialize(game);
 				
 				player.Intelligence.Initialize(game.States.Stars.Select(

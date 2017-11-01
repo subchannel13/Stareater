@@ -29,8 +29,8 @@ namespace Stareater.GUI
 			
 			thumbnailImage.Image = ImageCache.Get[topicInfo.ImagePath];
 			nameLabel.Text = topicInfo.Name;
-			levelLabel.Text = TopicLevelText;
-			costLabel.Text = thousandsFormat.Format(topicInfo.InvestedPoints) + " / " +thousandsFormat.Format(topicInfo.Cost);
+			levelLabel.Text = this.TopicLevelText;
+			costLabel.Text = thousandsFormat.Format(topicInfo.InvestedPoints) + " / " + thousandsFormat.Format(topicInfo.Cost);
 			
 			if (topicInfo.Investment > 0)
 				investmentLabel.Text = "+" + thousandsFormat.Format(topicInfo.Investment);
@@ -92,7 +92,10 @@ namespace Stareater.GUI
 		{
 			get
 			{
-				return LocalizationManifest.Get.CurrentLanguage[LanguageContext][LocalizationLevel].Text(null, new TextVar("lvl", Data.NextLevel.ToString()).Get);
+				var context = LocalizationManifest.Get.CurrentLanguage[LanguageContext];
+				return Data.NextLevel == 0 ?
+					context["Level0"].Text() :
+					context[LocalizationLevel].Text(null, new TextVar("lvl", Data.NextLevel.ToString()).Get);
 			}
 		}
 	}
