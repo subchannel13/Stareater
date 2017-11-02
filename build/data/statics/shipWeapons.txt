@@ -3,12 +3,12 @@
 	image: ./images/technologies/hydroponicFarms.png
 	code: autocannon
 	
-	maxLvl = 4
+	maxLvl = 5
 	prerequisites [
-		:autocannon #lvl - 1;
+		:autocannon #lvl;
 	]
 	
-	cost # 25e6 * 0.2 ^ (lvl / 4);
+	cost # 25e6 * 0.2 ^ (lvl / 5);
 	size # lvl [5, 5, 4, 4, 3];
 	
 	abilities [
@@ -29,12 +29,12 @@
 	image: ./images/technologies/hydroponicFarms.png
 	code: laser
 	
-	maxLvl = 4
+	maxLvl = 5
 	prerequisites [
-		:laser #lvl - 1;
+		:laser #lvl;
 	]
 	
-	cost # 25e6 * 0.2 ^ (lvl / 4);
+	cost # 25e6 * 0.2 ^ (lvl / 5);
 	size # lvl [5, 5, 4, 4, 3];
 	
 	abilities [
@@ -56,12 +56,12 @@
 	image: ./images/technologies/hydroponicFarms.png
 	code: harpoon
 	
-	maxLvl = 4
+	maxLvl = 5
 	prerequisites [
-		:harpoon #lvl - 1;
+		:harpoon #lvl;
 	]
 	
-	cost # 25e6 * 0.2 ^ (lvl / 4);
+	cost # 25e6 * 0.2 ^ (lvl / 5);
 	size # lvl [5, 5, 4, 4, 4];
 	
 	abilities [
@@ -82,12 +82,12 @@
 	image: ./images/technologies/hydroponicFarms.png
 	code: nukeBomb
 	
-	maxLvl = 4
+	maxLvl = 5
 	prerequisites [
-		:NuclearReactor #lvl - 1;
+		:NuclearReactor #lvl;
 	]
 	
-	cost # 25e6 * 0.2 ^ (lvl / 4);
+	cost # 25e6 * 0.2 ^ (lvl / 5);
 	size # lvl [10, 9, 8, 7, 5];
 	
 	abilities [

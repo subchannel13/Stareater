@@ -3,14 +3,14 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: nuclear
 	
-	maxLvl = 4
+	maxLvl = 5
 	prerequisites [
-		:nuclearDrive #lvl - 1;
+		:nuclearDrive #lvl;
 	]
 	cost # 2e6 * size;
 	
 	minSize # 5;
-	speed # 0.8 * limit(totalPower / (200 * hullIsSize * 0.5 ^ (lvl / 4)), 0, 1);
+	speed # 0.8 * limit(totalPower / (200 * hullIsSize * 0.5 ^ (lvl / 5)), 0, 1);
 }
 
 { IsDrive
