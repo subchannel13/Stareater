@@ -9,7 +9,7 @@
 	]
 	
 	minSize # 5;
-	power # (hullReactorSize - 4) * 5 * 2 ^ (lvl / 4);
+	power # (reactorSize - 4) * 5 * 2 ^ (lvl / 4);
 }
 
 { Reactor
@@ -22,7 +22,7 @@
 	]
 	
 	minSize # 0;
-	power # hullReactorSize * 2;
+	power # reactorSize * 2;
 }
 
 { Reactor
@@ -37,5 +37,5 @@
 	]
 	
 	minSize # 0;
-	power # hullReactorSize * 3 * 2 ^ (lvl / 4);
+	power # reactorSize * 3 * 2 ^ (lvl / 4);
 }

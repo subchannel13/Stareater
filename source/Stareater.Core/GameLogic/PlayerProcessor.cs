@@ -448,13 +448,18 @@ namespace Stareater.GameLogic
 				And("hullCloak", hull.TypeInfo.CloakingBase.Evaluate(hullVars)).
 				And("hullJamming", hull.TypeInfo.JammingBase.Evaluate(hullVars)).
 				And("hullInertia", hull.TypeInfo.InertiaBase.Evaluate(hullVars)).
+				And("hullReactor", hull.TypeInfo.SizeReactor.Evaluate(hullVars)).
+				And("hullShield", hull.TypeInfo.SizeShield.Evaluate(hullVars)).
 				And(HullType.IsDriveSizeKey, hull.TypeInfo.SizeIS.Evaluate(hullVars)).
 				And(HullType.ReactorSizeKey, hull.TypeInfo.SizeReactor.Evaluate(hullVars)).
 				Init(statics.SpecialEquipment.Keys, 0).
 				Init(statics.SpecialEquipment.Keys.Select(x => x + AComponentType.LevelSuffix), 0).
 				UnionWith(specialEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).
 				UnionWith(specialEquipment, x => x.TypeInfo.IdCode + AComponentType.LevelSuffix, x => x.Level);
-			
+
+			shipVars.And("reactorSize", statics.ShipFormulas.ReactorSize.Evaluate(shipVars.Get));
+			shipVars.And("shieldSize", statics.ShipFormulas.ShieldSize.Evaluate(shipVars.Get));
+
 			return shipVars;
 		}
 		

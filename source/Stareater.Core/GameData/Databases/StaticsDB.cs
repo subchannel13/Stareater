@@ -229,6 +229,8 @@ namespace Stareater.GameData.Databases
 				data[ShipJamming].To<Formula>(),
 				data[ShipColonyPopulation].To<Formula>(),
 				colonizerBuildings,
+				data[ShipReactorSize].To<Formula>(),
+				data[ShipShieldSize].To<Formula>(),
 				data[ShipNaturalCloakBonus].To<Formula>().Evaluate(null),
 				data[ShipSensorRangePenalty].To<Formula>().Evaluate(null),
 				data[ShipRepairCostFactor].To<Formula>().Evaluate(null),
@@ -650,6 +652,8 @@ namespace Stareater.GameData.Databases
 		private const string ShipJamming = "jamming";
 		private const string ShipColonyPopulation = "colonyPop";
 		private const string ShipColonyBuildings = "colonyBuildings";
+		private const string ShipReactorSize = "reactorSize";
+		private const string ShipShieldSize = "shieldSize";
 		private const string ShipNaturalCloakBonus = "naturalCloakBonus";
 		private const string ShipSensorRangePenalty = "sensorRangePenalty";
 		private const string ShipRepairCostFactor = "repairCostFactor";
