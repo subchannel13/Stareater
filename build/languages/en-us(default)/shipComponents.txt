@@ -80,4 +80,6 @@ COLONIZER_DESC = No description.
 :Thrusters
 HYDROGEN_THRUSTER_NAME = Hydrogen thrusters
 HYDROGEN_THRUSTER_DESC = Standard rocket engine which propels a ship by burning hydrogen-oxygen mixture.
+ION_THRUSTER_NAME = Ion thrusters
+ION_THRUSTER_DESC = No description.
 -

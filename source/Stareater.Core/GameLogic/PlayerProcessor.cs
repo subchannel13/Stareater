@@ -684,7 +684,7 @@ namespace Stareater.GameLogic
 		}
 		#endregion
 		
-		private Design makeDesign(StaticsDB statics, StatesDB states, PredefinedDesign predefDesign, Dictionary<string, double> techLevels, bool isVirtual)
+		private Design makeDesign(StaticsDB statics, StatesDB states, DesignTemplate predefDesign, Dictionary<string, double> techLevels, bool isVirtual)
 		{
 			var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
 			var specials = predefDesign.SpecialEquipment.OrderBy(x => x.Key).Select(
@@ -760,7 +760,7 @@ namespace Stareater.GameLogic
 			return newOrders;
 		}
 
-		private Design updateVirtualDesign(Design oldDesign, MainGame game, IEnumerable<PredefinedDesign> predefDesigns, Dictionary<string, double> techLevels)
+		private Design updateVirtualDesign(Design oldDesign, MainGame game, IEnumerable<DesignTemplate> predefDesigns, Dictionary<string, double> techLevels)
 		{
 			var newDesign = makeDesign(
 				game.Statics, game.States,

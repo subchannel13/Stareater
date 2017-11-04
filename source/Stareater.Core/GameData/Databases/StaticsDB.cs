@@ -18,17 +18,17 @@ namespace Stareater.GameData.Databases
 	{
 		public Dictionary<string, BuildingType> Buildings { get; private set; }
 		public ColonyFormulaSet ColonyFormulas { get; private set; }
-		public List<PredefinedDesign> ColonyShipDesigns { get; private set; }
+		public List<DesignTemplate> ColonyShipDesigns { get; private set; }
 		public List<ConstructableType> Constructables { get; private set; }
 		public List<DevelopmentFocus> DevelopmentFocusOptions { get; private set; }
 		public Dictionary<string, DevelopmentRequirement> DevelopmentRequirements { get; private set; }
 		public List<DevelopmentTopic> DevelopmentTopics { get; private set; }
 		public Dictionary<string, PredefinedDesign> NativeDesigns { get; private set; }
 		public PlayerFormulaSet PlayerFormulas { get; private set; }
-		public List<PredefinedDesign> PredeginedDesigns { get; private set; }
+		public List<DesignTemplate> PredeginedDesigns { get; private set; }
 		public List<ResearchTopic> ResearchTopics { get; private set; }
 		public ShipFormulaSet ShipFormulas { get; private set; }
-		public List<PredefinedDesign> SystemColonizerDesigns { get; private set; }
+		public List<DesignTemplate> SystemColonizerDesigns { get; private set; }
 		public Dictionary<string, TraitType> Traits { get; private set; }
 
 		public Dictionary<string, ArmorType> Armors { get; private set; }
@@ -53,10 +53,10 @@ namespace Stareater.GameData.Databases
 			this.SpecialEquipment = new Dictionary<string, SpecialEquipmentType>();
 			this.Thrusters = new Dictionary<string, ThrusterType>();
 
-			this.ColonyShipDesigns = new List<PredefinedDesign>();
+			this.ColonyShipDesigns = new List<DesignTemplate>();
 			this.NativeDesigns = new Dictionary<string, PredefinedDesign>();
-			this.PredeginedDesigns = new List<PredefinedDesign>();
-			this.SystemColonizerDesigns = new List<PredefinedDesign>();
+			this.PredeginedDesigns = new List<DesignTemplate>();
+			this.SystemColonizerDesigns = new List<DesignTemplate>();
 
 			this.Buildings = new Dictionary<string, BuildingType>();
 			this.Constructables = new List<ConstructableType>();
@@ -104,7 +104,7 @@ namespace Stareater.GameData.Databases
 								db.PlayerFormulas = loadPlayerFormulas(data);
 								break;
 							case PredefinedDesignTag:
-								db.PredeginedDesigns.Add(loadPredefDesign(data));
+								db.PredeginedDesigns.Add(loadDesignTemplate(data));
 								break;
 							case ResearchTag:
 								db.ResearchTopics.Add(loadResearchTopic(data));
@@ -326,10 +326,10 @@ namespace Stareater.GameData.Databases
 		private void loadColonizers(IkonComposite data)
 		{
 			foreach(var designData in data[ColonizerInterstellar].To<IEnumerable<IkonComposite>>())
-				this.ColonyShipDesigns.Add(loadPredefDesign(designData));
+				this.ColonyShipDesigns.Add(loadDesignTemplate(designData));
 			
 			foreach(var designData in data[ColonizerSystem].To<IEnumerable<IkonComposite>>())
-				this.SystemColonizerDesigns.Add(loadPredefDesign(designData));
+				this.SystemColonizerDesigns.Add(loadDesignTemplate(designData));
 		}
 
 		private void loadNatives(IkonComposite data)
@@ -338,19 +338,19 @@ namespace Stareater.GameData.Databases
 				this.NativeDesigns[designName] = loadPredefDesign(data[designName].To<IkonComposite>());
 		}
 		
-		private static PredefinedDesign loadPredefDesign(IkonComposite data)
+		private static DesignTemplate loadDesignTemplate(IkonComposite data)
 		{
-			return new PredefinedDesign(
+			return new DesignTemplate(
 				data[DesignName].To<string>(),
 				data[DesignHull].To<string>(),
 				data[DesignHullImageIndex].To<int>(),
-				data.Keys.Contains(DesignIsDrive),
+				data.Keys.Contains(DesignHasIsDrive),
 				data.Keys.Contains(DesignShield) ? data[DesignShield].To<string>() : null,
 				loadDesignMissionEquipment(data[DesignMissionEquipment].To<IkonArray>()),
 				loadDesignSpecialEquipment(data[DesignSpecialEquipment].To<IkonArray>())
 			);
 		}
-		
+
 		private static List<KeyValuePair<string, int>> loadDesignMissionEquipment(IList<Ikadn.IkadnBaseObject> data)
 		{
 			var result = new List<KeyValuePair<string, int>>();
@@ -370,7 +370,47 @@ namespace Stareater.GameData.Databases
 			
 			return result;
 		}
-		
+
+		private static PredefinedDesign loadPredefDesign(IkonComposite data)
+		{
+			return new PredefinedDesign(
+				data[DesignName].To<string>(),
+				loadPredefinedComponent(data[DesignHull].To<IkonArray>()),
+				data[DesignHullImageIndex].To<int>(),
+				data.Keys.Contains(DesignIsDrive) ? loadPredefinedComponent(data[DesignIsDrive].To<IkonArray>()) : null,
+				data.Keys.Contains(DesignShield) ? loadPredefinedComponent(data[DesignShield].To<IkonArray>()) : null,
+				loadPredefinedEquipment(data[DesignMissionEquipment].To<IkonArray>()),
+				loadPredefinedEquipment(data[DesignSpecialEquipment].To<IkonArray>()),
+				loadPredefinedComponent(data[DesignArmor].To<IkonArray>()),
+				loadPredefinedComponent(data[DesignReactor].To<IkonArray>()),
+				loadPredefinedComponent(data[DesignSensor].To<IkonArray>()),
+				loadPredefinedComponent(data[DesignThrusters].To<IkonArray>())
+			);
+		}
+
+		private static PredefinedComponent loadPredefinedComponent(IkonArray data)
+		{
+			return new PredefinedComponent(
+				data[0].To<string>(),
+				data[1].To<int>(),
+				0
+			);
+		}
+
+		private static List<PredefinedComponent> loadPredefinedEquipment(IkonArray data)
+		{
+			var result = new List<PredefinedComponent>();
+
+			for (int i = 0; i < data.Count / 3; i++)
+				result.Add(new PredefinedComponent(
+					data[i * 3].To<string>(),
+					data[i * 3 + 1].To<int>(),
+					data[i * 3 + 2].To<int>()
+				));
+
+			return result;
+		}
+
 		#region Ship components
 		private static ArmorType loadArmor(IkonComposite data)
 		{
@@ -685,12 +725,17 @@ namespace Stareater.GameData.Databases
 		private const string DerivedStatTotal = "total";
 		
 		private const string DesignName = "name";
-		private const string DesignIsDrive = "hasIsDrive";
+		private const string DesignArmor = "armor";
+		private const string DesignHasIsDrive = "hasIsDrive";
+		private const string DesignIsDrive = "isDrive";
 		private const string DesignHull = "hull";
 		private const string DesignHullImageIndex = "hullImageIndex";
-		private const string DesignShield = "shield";
 		private const string DesignMissionEquipment = "equipment";
+		private const string DesignReactor = "reactor";
+		private const string DesignSensor = "sensor";
+		private const string DesignShield = "shield";
 		private const string DesignSpecialEquipment = "specials";
+		private const string DesignThrusters = "thrusters";
 		private const string DesignType = "type";
 		
 		private const string FocusList = "list";

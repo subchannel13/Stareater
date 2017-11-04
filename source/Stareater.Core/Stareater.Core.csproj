@@ -199,6 +199,8 @@
     <Compile Include="GameData\Ships\DirectShootAbility.cs" />
     <Compile Include="GameData\Ships\IAbilityVisitor.cs" />
     <Compile Include="GameData\Ships\MissionEquipmentType.cs" />
+    <Compile Include="GameData\Ships\PredefinedComponent.cs" />
+    <Compile Include="GameData\Ships\PredefinedDesign.cs" />
     <Compile Include="GameData\Ships\StarShootAbility.cs" />
     <Compile Include="GameData\StarIntelligence.cs" />
     <Compile Include="GameData\Treaty.cs" />
@@ -258,7 +260,7 @@
     <Compile Include="GameData\Ships\HullType.cs" />
     <Compile Include="GameData\Ships\IIncrementalComponent.cs" />
     <Compile Include="GameData\Ships\IsDriveType.cs" />
-    <Compile Include="GameData\Ships\PredefinedDesign.cs" />
+    <Compile Include="GameData\Ships\DesignTemplate.cs" />
     <Compile Include="GameData\Ships\ReactorType.cs" />
     <Compile Include="GameData\Ships\SensorType.cs" />
     <Compile Include="GameData\Ships\ShieldType.cs" />

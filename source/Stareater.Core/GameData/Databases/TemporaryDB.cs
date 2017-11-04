@@ -34,24 +34,6 @@ namespace Stareater.GameData.Databases
 
 		public TemporaryDB()
 		{ }
-
-		internal TemporaryDB Copy(PlayersRemap playersRemap)
-		{
-			var copy = new TemporaryDB();
-
-			copy.Colonies = new ColonyProcessorCollection();
-			copy.Colonies.Add(this.Colonies.Select(x => x.Copy(playersRemap)));
-
-			copy.Stellarises = new StellarisProcessorCollection();
-			copy.Stellarises.Add(this.Stellarises.Select(x => x.Copy(playersRemap)));
-
-			copy.Players = new PlayerProcessorCollection();
-			copy.Players.Add(this.Players.Select(x => x.Copy(playersRemap)));
-
-			copy.Natives = this.Natives.Copy(playersRemap);
-
-			return copy;
-		}
 		
 		internal PlayerProcessor Of(Player player)
 		{

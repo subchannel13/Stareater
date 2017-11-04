@@ -36,14 +36,9 @@ namespace Stareater.GameLogic
 			));
 			foreach(var star in states.Stars)
 				this.OrganellePlayer.Intelligence.StarFullyVisited(star, 0);
-			
-			foreach(var template in statics.NativeDesigns)
-				makeDesign(statics, states, template.Key, template.Value, derivates.Of(this.OrganellePlayer));
-		}
-		
-		internal NativesProcessor Copy(PlayersRemap playersRemap)
-		{
-			return new NativesProcessor(playersRemap.Players[this.OrganellePlayer]);
+
+			foreach(var designData in statics.NativeDesigns)
+				makeDesign(statics, states, designData.Key, designData.Value, derivates.Of(this.OrganellePlayer));
 		}
 
 		public void ProcessPrecombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
@@ -56,34 +51,29 @@ namespace Stareater.GameLogic
 			}
 		}
 		
-		private void makeDesign(StaticsDB statics, StatesDB states, string id, PredefinedDesign predefDesign, PlayerProcessor playerProc)
+		private void makeDesign(StaticsDB statics, StatesDB states, string id, PredefinedDesign designData, PlayerProcessor playerProc)
 		{
 			var design = states.Designs.FirstOrDefault(x => x.IdCode == id);
 			if (design == null)
 			{
-				var techLevels = new Var().
-					Init(statics.DevelopmentTopics.Select(x => x.IdCode), false).
-					Init(statics.ResearchTopics.Select(x => x.IdCode), false).Get;
-					     
-				var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
-				var specials = predefDesign.SpecialEquipment.OrderBy(x => x.Key).Select(
-					x => statics.SpecialEquipment[x.Key].MakeBest(techLevels, x.Value)
+				var armor = new Component<ArmorType>(statics.Armors[designData.Armor.IdCode], designData.Armor.Level);
+				var hull = new Component<HullType>(statics.Hulls[designData.Hull.IdCode], designData.Hull.Level);
+				var reactor = new Component<ReactorType>(statics.Reactors[designData.Reactor.IdCode], designData.Reactor.Level);
+				var sensor = new Component<SensorType>(statics.Sensors[designData.Sensors.IdCode], designData.Sensors.Level);
+				var thruster = new Component<ThrusterType>(statics.Thrusters[designData.Thrusters.IdCode], designData.Thrusters.Level);
+
+				var isDrive = designData.IsDrive != null ? new Component<IsDriveType>(statics.IsDrives[designData.IsDrive.IdCode], designData.IsDrive.Level) : null;
+				var shield = designData.Shield != null ? new Component<ShieldType>(statics.Shields[designData.Shield.IdCode], designData.Shield.Level) : null;
+				var equipment = designData.MissionEquipment.Select(
+					x => new Component<MissionEquipmentType>(statics.MissionEquipment[x.IdCode], x.Level, x.Amount)
 				).ToList();
-				
-				var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels); //TODO(0.7) get id from template
-				var reactor = ReactorType.MakeBest(techLevels, hull, specials, statics); //TODO(0.7) get id from template
-				var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(techLevels, hull, reactor, specials, statics) : null; //TODO(0.7) get id from template
-				var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels); //TODO(0.7) get id from template
-				var shield = predefDesign.ShieldCode != null ? statics.Shields[predefDesign.ShieldCode].MakeBest(techLevels) : null;
-				var equipment = predefDesign.MissionEquipment.Select(
-					x => statics.MissionEquipment[x.Key].MakeBest(techLevels, x.Value)
+				var specials = designData.SpecialEquipment.Select(
+					x => new Component<SpecialEquipmentType>(statics.SpecialEquipment[x.IdCode], x.Level, x.Amount)
 				).ToList();
-				
-				var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels); //TODO(0.7) get id from template
-	
+
 				design = new Design(
-					id, playerProc.Player, false, true, predefDesign.Name, predefDesign.HullImageIndex,
-				    armor, hull, isDrive, reactor, sensor, shield, equipment, specials, thruster
+					id, playerProc.Player, false, true, designData.Name, designData.HullImageIndex,
+					armor, hull, isDrive, reactor, sensor, shield, equipment, specials, thruster
 				);
 				
 				design.CalcHash(statics);

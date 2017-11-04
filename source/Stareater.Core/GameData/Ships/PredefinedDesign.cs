@@ -1,38 +1,43 @@
-﻿using System.Collections.Generic;
-using Stareater.GameData.Databases;
-using Stareater.Utils.StateEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Stareater.GameData.Ships
 {
-	[StateType(true)]
 	class PredefinedDesign
 	{
 		public string Name { get; private set; }
-		
-		public string HullCode { get; private set; }
+
+		public PredefinedComponent Hull { get; private set; }
 		public int HullImageIndex { get; private set; }
-		
-		public bool HasIsDrive { get; private set; }
-		public string ShieldCode { get; private set; }
-		public List<KeyValuePair<string, int>> MissionEquipment { get; private set; }
-		public Dictionary<string, int> SpecialEquipment { get; private set; }
-		
-		public PredefinedDesign(string name, string hullCode, int hullImageIndex, bool hasIsDrive, string shieldCode, 
-		                        List<KeyValuePair<string, int>> missionEquipment, Dictionary<string, int> specialEquipment)
+
+		public PredefinedComponent IsDrive { get; private set; }
+		public PredefinedComponent Shield { get; private set; }
+		public List<PredefinedComponent> MissionEquipment { get; private set; }
+		public List<PredefinedComponent> SpecialEquipment { get; private set; }
+
+		public PredefinedComponent Armor { get; private set; }
+		public PredefinedComponent Reactor { get; private set; }
+		public PredefinedComponent Sensors { get; private set; }
+		public PredefinedComponent Thrusters { get; private set; }
+
+		public PredefinedDesign(string name, PredefinedComponent hull, int hullImageIndex, 
+			PredefinedComponent isDrive, PredefinedComponent shield, 
+			List<PredefinedComponent> missionEquipment, List<PredefinedComponent> specialEquipment, 
+			PredefinedComponent armor, PredefinedComponent reactor, PredefinedComponent sensors, PredefinedComponent thrusters)
 		{
 			this.Name = name;
-			
-			this.HasIsDrive = hasIsDrive;
-			this.HullCode = hullCode;
+			this.Hull = hull;
 			this.HullImageIndex = hullImageIndex;
-			this.ShieldCode = shieldCode;
+			this.IsDrive = isDrive;
+			this.Shield = shield;
 			this.MissionEquipment = missionEquipment;
 			this.SpecialEquipment = specialEquipment;
-		}
-		
-		public IEnumerable<Prerequisite> Prerequisites(StaticsDB statics)
-		{
-			return statics.Hulls[HullCode].Prerequisites;
+			this.Armor = armor;
+			this.Reactor = reactor;
+			this.Sensors = sensors;
+			this.Thrusters = thrusters;
 		}
 	}
 }

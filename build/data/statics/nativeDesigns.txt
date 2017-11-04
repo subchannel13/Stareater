@@ -3,16 +3,21 @@
 		{ PredefinedDesign
 			name "Catalyzer"
 			
-			hull: catalyzer
+			hull [:catalyzer =0]
 			hullImageIndex= 0
 			
-			hasIsDrive []
+			isDrive [:subspace =0]
 			
 			equipment [
 				:catalyzer =1
 			]
 			specials [
 			]
+			
+			armor [:graphene =0]
+			reactor [:nuclear =0]
+			sensor [:em =0]
+			thrusters [:ion =0]
 		}
 }
 
@@ -80,4 +85,17 @@
 			applyTrait: catalyzed
 		}
 	]
+}
+
+{ Thruster
+	langCode: ION_THRUSTER
+	image :./images/technologies/hydroponicFarms.png
+	code: ion
+	cannotPick.
+	
+	maxLvl= 0
+	prerequisites []
+	
+	speed # 0.75;
+	evasion # 5;
 }

@@ -26,7 +26,7 @@ namespace Stareater.Players
 		public IOffscreenPlayer OffscreenControl { get; private set; }
 
 		[StateProperty]
-		public HashSet<PredefinedDesign> UnlockedDesigns { get; private set; }
+		public HashSet<DesignTemplate> UnlockedDesigns { get; private set; }
 
 		[StateProperty]
 		public Intelligence Intelligence { get; private set; }
@@ -43,7 +43,7 @@ namespace Stareater.Players
 			this.ControlType = type.ControlType;
 			this.OffscreenControl = type.OffscreenPlayerFactory != null ? type.OffscreenPlayerFactory.Create() : null;
 
-			this.UnlockedDesigns = new HashSet<PredefinedDesign>();
+			this.UnlockedDesigns = new HashSet<DesignTemplate>();
 			this.Intelligence = new Intelligence();
 			this.VictoryPoints = 0;
  
