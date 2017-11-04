@@ -175,7 +175,7 @@ namespace Stareater.Controllers
 		private readonly List<Component<MissionEquipmentType>> selectedMissionEquipment = new List<Component<MissionEquipmentType>>();
 		private readonly List<Component<SpecialEquipmentType>> selectedSpecialEquipment = new List<Component<SpecialEquipmentType>>();
 
-		void onHullChange()
+		private void onHullChange()
 		{
 			if (this.ImageIndex < 0 || this.ImageIndex >= this.selectedHull.ImagePaths.Length)
 				this.ImageIndex = 0;
@@ -236,7 +236,6 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				
 				return game.Statics.ShipFormulas.HitPoints.Evaluate(
 					this.shipBaseVars().
 					And("armorFactor", this.armorInfo.ArmorFactor).Get
@@ -305,13 +304,15 @@ namespace Stareater.Controllers
 		{
 			this.selectedMissionEquipment.Add(new Component<MissionEquipmentType>(equipInfo.Type, equipInfo.Level, 1));
 		}
-		
+
+		//TODO(v0.7) is it redundant with "SetAmount"
 		public void AddSpecialEquip(SpecialEquipInfo equipInfo)
 		{
 			if (this.selectedSpecialEquipment.Any(x => x.TypeInfo == equipInfo.Type))
 				return;
 
 			this.selectedSpecialEquipment.Add(new Component<SpecialEquipmentType>(equipInfo.Type, equipInfo.Level, 1));
+			this.onHullChange();
 		}
 
 		public HullInfo Hull 
@@ -368,6 +369,8 @@ namespace Stareater.Controllers
 					this.selectedSpecialEquipment.RemoveAt(i);
 				else if (amount > 0 && amount <= equipInfo.MaxCount)
 					this.selectedSpecialEquipment[i] = new Component<SpecialEquipmentType>(equipInfo.Type, equipInfo.Level, amount);
+
+			this.onHullChange();
 		}
 
 		//TODO(later) consider returning a reason for invalidity 

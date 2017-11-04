@@ -81,11 +81,6 @@ namespace Stareater.GameLogic
 
         private ColonyProcessor()
         { }
-
-        internal ColonyProcessor Copy(PlayersRemap playerRemap)
-		{
-			return new ColonyProcessor(playerRemap.Colonies[this.Colony], this);
-		}
 				
 		public Player Owner 
 		{ 

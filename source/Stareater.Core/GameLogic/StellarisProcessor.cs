@@ -29,11 +29,6 @@ namespace Stareater.GameLogic
 
         private StellarisProcessor()
         { }
-
-        internal StellarisProcessor Copy(PlayersRemap playerRemap)
-		{
-			return new StellarisProcessor(playerRemap.Stellarises[this.Stellaris], this);
-		}
 		
 		public Player Owner
 		{

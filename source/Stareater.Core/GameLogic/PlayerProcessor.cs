@@ -76,19 +76,6 @@ namespace Stareater.GameLogic
 
         private PlayerProcessor()
         { }
-
-        internal PlayerProcessor Copy(PlayersRemap playersRemap)
-		{
-			var copy = new PlayerProcessor(playersRemap.Players[this.Player]);
-			
-			copy.DesignStats = this.DesignStats.ToDictionary(x => playersRemap.Designs[x.Key], x => x.Value);
-			copy.DevelopmentPlan = (this.DevelopmentPlan != null) ? new List<DevelopmentResult>(this.DevelopmentPlan) : null;
-			copy.RefitCosts = this.RefitCosts.ToDictionary(x => playersRemap.Designs[x.Key], x => x.Value.ToDictionary(y => playersRemap.Designs[y.Key], y => y.Value));
-			copy.ResearchPlan  = (this.ResearchPlan != null) ? new List<ResearchResult>(this.ResearchPlan) : null;
-			copy.TechLevels = new Dictionary<string, double>(this.TechLevels);
-			
-			return copy;
-		}
 		
 		public void Initialize(MainGame game)
 		{
