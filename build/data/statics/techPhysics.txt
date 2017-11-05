@@ -42,7 +42,7 @@
 	cost # 1.5e12 * (lvl + 2 ^lvl);
 	maxLvl= 10
 	prerequisites [
-		:Ecm # 5;
+		:ecm # 5;
 	]
 	image: ./images/technologies/hydroponicFarms.png
 }
@@ -53,7 +53,7 @@
 	cost # 1.5e12 * (lvl + 2 ^lvl);
 	maxLvl= 10
 	prerequisites [
-		:Ecm # 5;
+		:ecm # 5;
 	]
 	image: ./images/technologies/hydroponicFarms.png
 }
@@ -64,7 +64,7 @@
 	cost # 1.5e12 * (lvl + 2 ^lvl);
 	maxLvl= 10
 	prerequisites [
-		:Ecm # 5;
+		:ecm # 5;
 	]
 	image: ./images/technologies/hydroponicFarms.png
 }

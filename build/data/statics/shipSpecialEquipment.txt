@@ -56,3 +56,18 @@
 	size # 0.1 * size;
 	maxCount # 2;
 }
+
+{ SpecialEquipment
+	langCode: COMP
+	image :./images/technologies/hydroponicFarms.png
+	code: comp
+	
+	maxLvl= 5
+	prerequisites [
+		:computer #lvl;
+	]
+	
+	cost # 0;
+	size # 0;
+	maxCount # 1;
+}

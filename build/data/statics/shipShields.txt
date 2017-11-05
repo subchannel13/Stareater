@@ -3,8 +3,9 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: ecm
 	
-	maxLvl= 8
+	maxLvl= 5
 	prerequisites [
+		:ecm #lvl;
 	]
 	
 	reduction # 0;
