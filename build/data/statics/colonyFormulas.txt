@@ -27,8 +27,8 @@
 	}
 	mining
 	{ Work
-		improvised	# 10;
-		organized	# 20;
+		improvised	# 10 + 2 * mineToolsLvl / 5;
+		organized	# 20 + 10 * mineToolsLvl / 5;
 	}
 	industry
 	{ Work

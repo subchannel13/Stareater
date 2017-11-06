@@ -130,3 +130,57 @@
 		}
 	]
 }
+
+{ MissionEquipment
+	langCode: FUSION_BEAM
+	image: ./images/technologies/hydroponicFarms.png
+	code: fusionBeam
+	
+	maxLvl = 5
+	prerequisites [
+		:fusionBeam #lvl;
+	]
+	
+	cost # 25e6 * 0.2 ^ (lvl / 5);
+	size # lvl [5, 5, 4, 4, 3];
+	
+	abilities [
+		{ DirectShot
+			image: ./images/technologies/hydroponicFarms.png
+			firePower # 5;
+			accuracy # 30;
+			range # 3;
+			energyCost # 10;
+			
+			accuracyRangePenalty # -2;
+			armorEfficiency # 0.5;
+		}
+	]
+}
+
+{ MissionEquipment
+	langCode: ION_BEAM
+	image: ./images/technologies/hydroponicFarms.png
+	code: ionBeam
+	
+	maxLvl = 5
+	prerequisites [
+		:ionBeam #lvl;
+	]
+	
+	cost # 25e6 * 0.2 ^ (lvl / 5);
+	size # lvl [5, 5, 4, 4, 3];
+	
+	abilities [
+		{ DirectShot
+			image: ./images/technologies/hydroponicFarms.png
+			firePower # 5;
+			accuracy # 30;
+			range # 3;
+			energyCost # 10;
+			
+			accuracyRangePenalty # -2;
+			armorEfficiency # 0.5;
+		}
+	]
+}

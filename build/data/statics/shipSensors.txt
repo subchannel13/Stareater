@@ -10,3 +10,16 @@
 	
 	detection # 10 + 0.5 * lvl;
 }
+
+{ Sensor
+	langCode: LIDAR
+	image :./images/technologies/hydroponicFarms.png
+	code: lidar
+	
+	maxLvl = 5
+	prerequisites [
+		:lidar #lvl;
+	]
+	
+	detection # 12 + 0.5 * lvl;
+}

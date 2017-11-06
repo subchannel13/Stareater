@@ -1,4 +1,4 @@
-{ Colonizers
+{ colonizers
 	system [
 		{ PredefinedDesign
 			name "System colonizer"

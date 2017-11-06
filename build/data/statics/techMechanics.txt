@@ -4,15 +4,15 @@
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
-		[ :Cargo :Surveyor :MineTools ]
-		[ :ExtraThrust :Robo :NeutronThrust ]
+		[ :cargo :surveyor :mineTools ]
+		[ :extraThrust :robo :neutronThrust ]
 	]
 }
 
 { DevelopmentTopic
 	langCode: CARGO
-	code: Cargo
-	cost # 150e9 * (lvl + 2 ^ lvl);
+	code: cargo
+	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 3, 10];
 	maxLvl= 10
 	prerequisites []
 	image : ./images/technologies/industry.png
@@ -20,8 +20,8 @@
 
 { DevelopmentTopic
 	langCode: SURVEY
-	code: Surveyor
-	cost # 150e9 * (lvl + 2 ^ lvl);
+	code: surveyor
+	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 3, 10];
 	maxLvl= 10
 	prerequisites []
 	image : ./images/technologies/industry.png
@@ -29,8 +29,8 @@
 
 { DevelopmentTopic
 	langCode: MINE_TOOLS
-	code: MineTools
-	cost # 150e9 * (lvl + 2 ^ lvl);
+	code: mineTools
+	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 3, 10];
 	maxLvl= 10
 	prerequisites []
 	image : ./images/technologies/industry.png
@@ -38,7 +38,7 @@
 
 { DevelopmentTopic
 	langCode: EXTRA_THRUST
-	code: ExtraThrust
+	code: extraThrust
 	cost # 150e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites [
@@ -49,7 +49,7 @@
 
 { DevelopmentTopic
 	langCode: ROBO
-	code: Robo
+	code: robo
 	cost # 150e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites [
@@ -60,7 +60,7 @@
 
 { DevelopmentTopic
 	langCode: NEUTRON_THRUST
-	code: NeutronThrust
+	code: neutronThrust
 	cost # 150e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites [

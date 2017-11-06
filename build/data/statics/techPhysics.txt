@@ -4,15 +4,15 @@
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
-		[ :Lidar :FusionBeam :IonBeam ]
-		[ :EmShield :NeutrinoScan :Gauss ]
+		[ :lidar :fusionBeam :ionBeam ]
+		[ :emShield :neutrinoScan :gauss ]
 	]
 }
 
 { DevelopmentTopic
 	langCode: LIDAR
-	code: Lidar
-	cost # 1.5e12 * (lvl + 2 ^lvl);
+	code: lidar
+	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 3, 10];
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
@@ -20,8 +20,8 @@
 
 { DevelopmentTopic
 	langCode: FUSION_BEAM
-	code: FusionBeam
-	cost # 1.5e12 * (lvl + 2 ^lvl);
+	code: fusionBeam
+	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 3, 10];
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
@@ -29,8 +29,8 @@
 
 { DevelopmentTopic
 	langCode: ION_BEAM
-	code: IonBeam
-	cost # 1.5e12 * (lvl + 2 ^lvl);
+	code: ionBeam
+	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 3, 10];
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
@@ -38,7 +38,7 @@
 
 { DevelopmentTopic
 	langCode: EM_SHIELD
-	code: EmShield
+	code: emShield
 	cost # 1.5e12 * (lvl + 2 ^lvl);
 	maxLvl= 10
 	prerequisites [
@@ -49,7 +49,7 @@
 
 { DevelopmentTopic
 	langCode: NEUTRINO_SCAN
-	code: NeutrinoScan
+	code: neutrinoScan
 	cost # 1.5e12 * (lvl + 2 ^lvl);
 	maxLvl= 10
 	prerequisites [
@@ -60,7 +60,7 @@
 
 { DevelopmentTopic
 	langCode: GAUSS
-	code: Gauss
+	code: gauss
 	cost # 1.5e12 * (lvl + 2 ^lvl);
 	maxLvl= 10
 	prerequisites [

@@ -1,6 +1,6 @@
 { ShipFormulas
 	evasion # baseEvasion + 2 * extraThrusters - hullInertia;
-	hitPoints # hullHp * armorFactor * (1 + 0.5 * heavyArmor);
+	hitPoints # hullHp * armorFactor * (1 + 0.5 * heavyArmor) / (1 + 0.5 cargo);
 	
 	combatSpeed # thrust + 0.05 * extraThrusters;
 	

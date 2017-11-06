@@ -4,15 +4,15 @@
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
-		[ :Colonizer :SpaceProgram ]
-		[ :HeavyInd :Sdi ]
+		[ :colonizer :spaceProgram ]
+		[ :heavyInd :sdi ]
 	]
 }
 
 { DevelopmentTopic
 	langCode: COLONIZER
-	code: Colonizer
-	cost # 70e9 * (lvl + 1) ^ 2;
+	code: colonizer
+	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 10];
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/industry.png
@@ -20,8 +20,8 @@
 
 { DevelopmentTopic
 	langCode: SPACE_PROGRAM
-	code: SpaceProgram
-	cost # 80e9 * (lvl + 1) ^ 2;
+	code: spaceProgram
+	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 10];
 	maxLvl= 10
 	prerequisites []
 	image: ./images/technologies/spaceport.png
@@ -29,7 +29,7 @@
 
 { DevelopmentTopic
 	langCode: HEAVY_IND
-	code: HeavyInd
+	code: heavyInd
 	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
 	maxLvl= 10
 	prerequisites []
@@ -38,7 +38,7 @@
 
 { DevelopmentTopic
 	langCode: SDI
-	code: Sdi
+	code: sdi
 	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
 	maxLvl= 10
 	prerequisites []

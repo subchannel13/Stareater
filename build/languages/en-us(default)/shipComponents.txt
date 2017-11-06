@@ -38,6 +38,12 @@ LASER_NAME = Laser
 LASER_DESC = High power laser beam projector, adequate for long range space combat.
 NUKE_NAME = Nuclear bomb
 NUKE_DESC = Dreaded weapon of mass destruction.
+TORPEDO_NAME = Nuclear torpedo
+TORPEDO_DESC = No description.
+FUSION_BEAM_NAME = Fusion beam
+FUSION_BEAM_DESC = No description.
+ION_BEAM_NAME = Ion cannon
+ION_BEAM_DESC = No description.
 
 CATALYZER_NAME = Catalisys capsule
 CATALYZER_DESC = No description.
@@ -55,6 +61,8 @@ NUCLEAR_REACTOR_SMALL_DESC = No description.
 :Sensors
 EM_SENSOR_NAME = Radar
 EM_SENSOR_DESC = An object-detection system that uses radio waves.
+LIDAR_NAME = Lidar
+LIDAR_DESC = No description.
 -
 
 :Shields
@@ -75,6 +83,12 @@ HEAVY_ARMOR_NAME = Heavy armor
 HEAVY_ARMOR_DESC = No description.
 COLONIZER_NAME = Colonizer
 COLONIZER_DESC = No description.
+COMP_NAME = Electronic computer
+COMP_DESC = No description.
+CARGO_NAME = Cargo bay
+CARGO_DESC = No description.
+SURVEY_NAME = Surveyor
+SURVEY_DESC = No description.
 -
 
 :Thrusters

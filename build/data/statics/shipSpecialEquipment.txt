@@ -33,7 +33,7 @@
 	
 	maxLvl= 5
 	prerequisites [
-		:Colonizer #lvl - 1;
+		:colonizer #lvl - 1;
 	]
 	cannotPick.
 	
@@ -69,5 +69,35 @@
 	
 	cost # 0;
 	size # 0;
+	maxCount # 1;
+}
+
+{ SpecialEquipment
+	langCode: CARGO
+	image :./images/technologies/hydroponicFarms.png
+	code: cargo
+	
+	maxLvl= 5
+	prerequisites [
+		:cargo #lvl;
+	]
+	
+	cost # 1e6 * size;
+	size # 0;
+	maxCount # 2;
+}
+
+{ SpecialEquipment
+	langCode: SURVEY
+	image :./images/technologies/hydroponicFarms.png
+	code: surveyor
+	
+	maxLvl= 5
+	prerequisites [
+		:surveyor #lvl;
+	]
+	
+	cost # 10e3 * size;
+	size # 0.01 * size;
 	maxCount # 1;
 }
