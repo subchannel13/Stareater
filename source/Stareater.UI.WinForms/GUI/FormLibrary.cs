@@ -36,6 +36,7 @@ namespace Stareater.GUI
 			missionEquipLink.Text = context["missionEquip"].Text();
 			reactorLink.Text = context["reactor"].Text();
 			sensorLink.Text = context["sensor"].Text();
+			shieldLink.Text = context["shield"].Text();
 			specialEquipLink.Text = context["specialEquip"].Text();
 			thrusterLink.Text = context["thruster"].Text();
 		}
@@ -131,7 +132,12 @@ namespace Stareater.GUI
 		{
 			makeSubtopics(controller.Sensors.Select(x => new LibraryPage(x.Name, x.Description, x.ImagePath, x.MaxLevel)));
 		}
-		
+
+		private void shieldLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			makeSubtopics(controller.Shields.Select(x => new LibraryPage(x.Name, x.Description, x.ImagePath, x.MaxLevel)));
+		}
+
 		private void specialEquipLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			makeSubtopics(controller.SpecialEquipment.Select(x => new LibraryPage(x.Name, x.Description, x.ImagePath, x.MaxLevel)));

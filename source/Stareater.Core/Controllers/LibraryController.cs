@@ -88,7 +88,16 @@ namespace Stareater.Controllers
 					yield return new ShipComponentGeneralInfo(item, SensorInfo.LangContext, item.ImagePath);
 			}
 		}
-		
+
+		public IEnumerable<ShipComponentGeneralInfo> Shields
+		{
+			get
+			{
+				foreach (var item in this.gameController.GameInstance.Statics.Shields.Values.OrderBy(x => x.IdCode))
+					yield return new ShipComponentGeneralInfo(item, ShieldInfo.LangContext, item.ImagePath);
+			}
+		}
+
 		public IEnumerable<ShipComponentGeneralInfo> SpecialEquipment
 		{
 			get

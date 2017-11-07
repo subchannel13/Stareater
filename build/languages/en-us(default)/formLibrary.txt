@@ -10,6 +10,7 @@ missionEquip = Weapons
 reactor = Reactors
 research = Research
 sensor = Sensors
+shield = Shields
 specialEquip = Special equipment
 thruster = Thrusters
 -

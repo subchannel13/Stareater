@@ -72,6 +72,7 @@ namespace Stareater.GUI
 			this.levelInput = new System.Windows.Forms.NumericUpDown();
 			this.maxLevelInfo = new System.Windows.Forms.Label();
 			this.topicThumbnail = new System.Windows.Forms.PictureBox();
+			this.shieldLink = new System.Windows.Forms.LinkLabel();
 			this.topicList.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.levelInput)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.topicThumbnail)).BeginInit();
@@ -101,6 +102,7 @@ namespace Stareater.GUI
 			this.topicList.Controls.Add(this.missionEquipLink);
 			this.topicList.Controls.Add(this.reactorLink);
 			this.topicList.Controls.Add(this.sensorLink);
+			this.topicList.Controls.Add(this.shieldLink);
 			this.topicList.Controls.Add(this.specialEquipLink);
 			this.topicList.Controls.Add(this.thrusterLink);
 			this.topicList.Controls.Add(this.topicSeparator);
@@ -209,7 +211,7 @@ namespace Stareater.GUI
 			// specialEquipLink
 			// 
 			this.specialEquipLink.AutoSize = true;
-			this.specialEquipLink.Location = new System.Drawing.Point(3, 135);
+			this.specialEquipLink.Location = new System.Drawing.Point(3, 151);
 			this.specialEquipLink.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
 			this.specialEquipLink.Name = "specialEquipLink";
 			this.specialEquipLink.Size = new System.Drawing.Size(85, 13);
@@ -221,7 +223,7 @@ namespace Stareater.GUI
 			// thrusterLink
 			// 
 			this.thrusterLink.AutoSize = true;
-			this.thrusterLink.Location = new System.Drawing.Point(3, 151);
+			this.thrusterLink.Location = new System.Drawing.Point(3, 167);
 			this.thrusterLink.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
 			this.thrusterLink.Name = "thrusterLink";
 			this.thrusterLink.Size = new System.Drawing.Size(62, 13);
@@ -233,7 +235,7 @@ namespace Stareater.GUI
 			// topicSeparator
 			// 
 			this.topicSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.topicSeparator.Location = new System.Drawing.Point(3, 174);
+			this.topicSeparator.Location = new System.Drawing.Point(3, 190);
 			this.topicSeparator.Margin = new System.Windows.Forms.Padding(3, 10, 3, 2);
 			this.topicSeparator.Name = "topicSeparator";
 			this.topicSeparator.Size = new System.Drawing.Size(150, 3);
@@ -287,6 +289,18 @@ namespace Stareater.GUI
 			this.topicThumbnail.TabIndex = 6;
 			this.topicThumbnail.TabStop = false;
 			// 
+			// shieldLink
+			// 
+			this.shieldLink.AutoSize = true;
+			this.shieldLink.Location = new System.Drawing.Point(3, 135);
+			this.shieldLink.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+			this.shieldLink.Name = "shieldLink";
+			this.shieldLink.Size = new System.Drawing.Size(52, 13);
+			this.shieldLink.TabIndex = 11;
+			this.shieldLink.TabStop = true;
+			this.shieldLink.Text = "linkShield";
+			this.shieldLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.shieldLink_LinkClicked);
+			// 
 			// FormLibrary
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -312,5 +326,7 @@ namespace Stareater.GUI
 			this.PerformLayout();
 
 		}
+
+		private System.Windows.Forms.LinkLabel shieldLink;
 	}
 }
