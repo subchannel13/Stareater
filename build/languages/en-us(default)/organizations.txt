@@ -1,22 +1,50 @@
 :Organizations
 NASA_NAME = NASA
-NASA_DESC = North American Space Agency.
+NASA_DESC §
+		North American Space Agency.
+		
+		Starts with sociology level 1
+	\
 
 ESA_NAME = ESA
-ESA_DESC = European Space Agency.
+ESA_DESC §
+		European Space Agency.
+		
+		Starts with physics level 1
+	\
 	
 JAXA_NAME = JAXA
-JAXA_DESC = Japan Aerospace Exploration Agency.
+JAXA_DESC §
+		Japan Aerospace Exploration Agency.
+		
+		Starts with mechanics level 1
+	\
 	
 CNSA_NAME = CNSA
-CNSA_DESC = China National Space Administration.
+CNSA_DESC §
+		China National Space Administration.
+		
+		Starts with chemistry level 1
+	\
 	
 SSSR_NAME = SSSR
-SSSR_DESC = Soviet space program.
+SSSR_DESC §
+		Soviet space program.
+		
+		Starts with energetics level 1
+	\
 	
 ISRO_NAME = ISRO
-ISRO_DESC = Indian Space Research Organisation.
+ISRO_DESC §
+		Indian Space Research Organisation.
+		
+		Starts with mathematics level 1
+	\
 	
 UKSA_NAME = UKSA
-UKSA_DESC = UK Space Agency.
+UKSA_DESC §
+		UK Space Agency.
+		
+		Starts with biology level 1
+	\
 -
