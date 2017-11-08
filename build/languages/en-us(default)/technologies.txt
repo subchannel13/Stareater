@@ -112,14 +112,19 @@ NEUTRINO_SCAN_DESC = Detector for neutrino emissions escaping from hostile stars
 GAUSS_NAME = Gauss cannon
 GAUSS_DESC = No description.
 
-COLONIZER_NAME = Colonizer
-COLONIZER_DESC = Improves colonizer capacity.
-SPACE_PROGRAM_NAME = Space program
-SPACE_PROGRAM_DESC = Better space program operations.
+CHILD_CARE_NAME = Childe care
+CHILD_CARE_DESC = No description.
+FARM_LAWS_NAME = Farming regulation
+FARM_LAWS_DESC = No description.
+MINE_LAWS_NAME = Mining regulation
+MINE_LAWS_DESC = No description.
 HEAVY_IND_NAME = Heavy industry
 HEAVY_IND_DESC = Allow for higher industrialization level of the colony.
 SDI_NAME = SDI
 SDI_DESC = Strategic defense initiative defines a framework for defending colony from weapons of mass destruction and spaceborn threats.
 IND_NAME = Industry
 IND_DESC = No description.
+COLONIZER_NAME = Colonizer
+COLONIZER_DESC = Improves colonizer capacity.
+
 -

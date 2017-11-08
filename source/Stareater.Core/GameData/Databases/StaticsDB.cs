@@ -201,7 +201,8 @@ namespace Stareater.GameData.Databases
 		{
 			return new PopulationActivityFormulas(
 				data[key].To<IkonComposite>()[PopulationActivityImprovised].To<Formula>(),
-				data[key].To<IkonComposite>()[PopulationActivityOrganized].To<Formula>()
+				data[key].To<IkonComposite>()[PopulationActivityOrganized].To<Formula>(),
+                data[key].To<IkonComposite>()[PopulationActivityOrganizationFactor].To<Formula>()
 			);
 		}
 		#endregion
@@ -751,6 +752,7 @@ namespace Stareater.GameData.Databases
 		
 		private const string PopulationActivityImprovised = "improvised";
 		private const string PopulationActivityOrganized = "organized";
+		private const string PopulationActivityOrganizationFactor = "orgFactor";
 
 		private const string TraitEffectKey = "effect";
 

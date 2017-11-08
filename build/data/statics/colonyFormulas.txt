@@ -7,7 +7,7 @@
 	
 	populationGrowth 
 	{ Stat
-		base # pop * 0.04;
+		base # pop * 0.04 * (1 + 0.5 * childCareLvl / 5);
 		total # base + housing_delta;
 	}
 	
@@ -19,26 +19,31 @@
 	{ Work
 		improvised	# 3 + if(fertile, 4, 0);
 		organized	# 4 + if(fertile, 4, 0) + 2 * (greenHouseLvl / 5);
+		orgFactor # 0.5 + 0.5 * farmLawsLvl / 5;
 	}
 	gardening
 	{ Work
 		improvised	# 1.5;
 		organized	# 1.5 + 1 * (hydroFarmLvl / 5);
+		orgFactor # 0.5 + 0.5 * farmLawsLvl / 5;
 	}
 	mining
 	{ Work
 		improvised	# 10 + 2 * mineToolsLvl / 5;
 		organized	# 20 + 10 * mineToolsLvl / 5;
+		orgFactor # 0.5 + 0.5 * mineLawsLvl / 5;
 	}
 	industry
 	{ Work
 		improvised	# 2;
 		organized	# 5;
+		orgFactor # 1;
 	}
 	development 
 	{ Work
 		improvised	# 1;
 		organized	# 3;
+		orgFactor # 1;
 	}
 	
 	repair # 0.2 * min(infra_count, pop);
