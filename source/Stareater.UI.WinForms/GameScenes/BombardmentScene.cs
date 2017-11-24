@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -14,9 +13,9 @@ using Stareater.GLData.OrbitShader;
 using Stareater.GLData.SpriteShader;
 using Stareater.GraphicsEngine;
 
-namespace Stareater.GLRenderers
+namespace Stareater.GameScenes
 {
-	class BombardmentRenderer : AScene
+	class BombardmentScene : AScene
 	{
 		private const float DefaultViewSize = 1;
 		private const float PanClickTolerance = 0.01f;

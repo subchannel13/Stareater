@@ -8,9 +8,9 @@ using Stareater.GLData.SpriteShader;
 using Stareater.Controllers;
 using Stareater.Utils.NumberFormatters;
 
-namespace Stareater.GLRenderers
+namespace Stareater.GameScenes
 {
-	class GameOverRenderer : AScene
+	class GameOverScene : AScene
 	{
 		private const float DefaultViewSize = 7;
 		private const float TextZ = 0;

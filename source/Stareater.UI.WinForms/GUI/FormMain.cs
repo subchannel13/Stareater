@@ -13,7 +13,7 @@ using Stareater.Localization;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GLData;
-using Stareater.GLRenderers;
+using Stareater.GameScenes;
 using Stareater.GUI.Reports;
 using Stareater.GraphicsEngine;
 
@@ -26,11 +26,11 @@ namespace Stareater.GUI
 		private TimingLoop timingLoop;
 		private AScene currentRenderer = null;
 		private AScene nextRenderer = null;
-		private BombardmentRenderer bombardRenderer;
-		private GalaxyRenderer galaxyRenderer;
-		private SystemRenderer systemRenderer;
-		private SpaceCombatRenderer combatRenderer;
-		private GameOverRenderer gameOverRenderer;
+		private BombardmentScene bombardRenderer;
+		private GalaxyScene galaxyRenderer;
+		private StarSystemScene systemRenderer;
+		private SpaceCombatScene combatRenderer;
+		private GameOverScene gameOverRenderer;
 		private double animationDeltaTime = 0;
 
 		private Queue<Action> delayedGuiEvents = new Queue<Action>();
@@ -295,13 +295,13 @@ namespace Stareater.GUI
 			if (this.galaxyRenderer != null)
 				this.galaxyRenderer.Deactivate();
 			
-			this.galaxyRenderer = new GalaxyRenderer(this);
+			this.galaxyRenderer = new GalaxyScene(this);
 			this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
 			
-			this.bombardRenderer = new BombardmentRenderer();
-			this.systemRenderer = new SystemRenderer(switchToGalaxyView, constructionManagement, empyPlanetView);
-			this.combatRenderer = new SpaceCombatRenderer();
-			this.gameOverRenderer = new GameOverRenderer();
+			this.bombardRenderer = new BombardmentScene();
+			this.systemRenderer = new StarSystemScene(switchToGalaxyView, constructionManagement, empyPlanetView);
+			this.combatRenderer = new SpaceCombatScene();
+			this.gameOverRenderer = new GameOverScene();
 			
 			switchToGalaxyView();
 		}

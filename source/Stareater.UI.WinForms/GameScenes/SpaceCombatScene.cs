@@ -18,9 +18,9 @@ using Stareater.GraphicsEngine;
 using Stareater.GLData.SpriteShader;
 using Stareater.Utils.Collections;
 
-namespace Stareater.GLRenderers
+namespace Stareater.GameScenes
 {
-	class SpaceCombatRenderer : AScene
+	class SpaceCombatScene : AScene
 	{
 		private const float FarZ = 1;
 		private const float Layers = 16.0f;

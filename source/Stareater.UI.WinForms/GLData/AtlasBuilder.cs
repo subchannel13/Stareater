@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using Ikadn.Ikon.Types;
 
-namespace Stareater.GLRenderers
+namespace Stareater.GLData
 {
 	class AtlasBuilder
 	{
