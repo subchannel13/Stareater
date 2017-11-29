@@ -147,6 +147,7 @@
     <Compile Include="GraphicsEngine\PhysicalData.cs" />
     <Compile Include="GraphicsEngine\PolygonData.cs" />
     <Compile Include="GraphicsEngine\SceneObject.cs" />
+    <Compile Include="GLData\SceneObjectBuilder.cs" />
     <Compile Include="GraphicsEngine\SignalFlag.cs" />
     <Compile Include="GraphicsEngine\TimingLoop.cs" />
     <Compile Include="GuiUtils\NumberInput.cs" />

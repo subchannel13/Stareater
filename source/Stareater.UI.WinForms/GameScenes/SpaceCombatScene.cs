@@ -155,7 +155,7 @@ namespace Stareater.GameScenes
 			yield return new PolygonData(
 				PlanetColorZ,
 				new SpriteData(planetTransform, sprite.Id, Color.White),
-				SpriteHelpers.UnitRectVertexData(sprite)
+				SpriteHelpers.UnitRectVertexData(sprite).ToList()
 			);
 			
 			if (planet.Population > 0)
@@ -178,7 +178,7 @@ namespace Stareater.GameScenes
 			var unitDrawable = new PolygonData(
 				CombatantZ,
 				new SpriteData(hexTransform, unitSprite.Id, Color.FromArgb((int)(alpha * 255), unit.Owner.Color)),
-				SpriteHelpers.UnitRectVertexData(unitSprite)
+				SpriteHelpers.UnitRectVertexData(unitSprite).ToList()
 			);
 			if (unitSelected)
 				this.currentUnitDrawable = unitDrawable;
@@ -194,7 +194,7 @@ namespace Stareater.GameScenes
 						GalaxyTextures.Get.FleetIndicator.Id,
 						otherUnits[i].Color
 					),
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.FleetIndicator)
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.FleetIndicator).ToList()
 				);
 			
 			yield return new PolygonData(
@@ -215,7 +215,7 @@ namespace Stareater.GameScenes
 				new SceneObject(new PolygonData(
 					StarColorZ,
 					new SpriteData(Matrix4.Identity, GalaxyTextures.Get.StarColor.Id, this.Controller.Star.Color),
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar)
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar).ToList()
 				))
 			);
 
@@ -375,7 +375,7 @@ namespace Stareater.GameScenes
 				arrowData.Select(arrow => new SceneObject(new PolygonData(
 					MovemenentZ,
 					arrow,
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.MoveToArrow)
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.MoveToArrow).ToList()
 				))).ToList()
 			);
 		}

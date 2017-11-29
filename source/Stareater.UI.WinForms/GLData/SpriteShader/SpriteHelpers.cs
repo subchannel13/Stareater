@@ -68,9 +68,10 @@ namespace Stareater.GLData.SpriteShader
 			yield return ty;
 		}
 		
-		public static IEnumerable<Vector2> UnitRectVertexData(TextureInfo textureinfo)
+		public static IEnumerable<float> UnitRectVertexData(TextureInfo textureinfo)
 		{
-			return TexturedRectVertexData(new Vector2(0, 0), 1, 1, textureinfo);
+			return TexturedRectVertexData(new Vector2(0, 0), 1, 1, textureinfo).
+				SelectMany(v => new[] { v.X, v.Y });
 		}
 	}
 }

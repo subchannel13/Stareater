@@ -162,11 +162,11 @@ namespace Stareater.GameScenes
 					sprite = GalaxyTextures.Get.RockPlanet;
 					break;
 			}
-			
+
 			return new PolygonData(
 				PlanetZ,
 				new SpriteData(planetTransform(planet.OrdinalPosition), sprite.Id, Color.White),
-				SpriteHelpers.UnitRectVertexData(sprite)
+				SpriteHelpers.UnitRectVertexData(sprite).ToList()
 			);
 		}
 		
@@ -193,7 +193,7 @@ namespace Stareater.GameScenes
 				new SceneObject(new PolygonData(
 					StarColorZ,
 					new SpriteData(starTransform, GalaxyTextures.Get.SystemStar.Id, controller.Star.Color),
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar)
+					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar).ToList()
 				))
 			);
 			
@@ -250,7 +250,7 @@ namespace Stareater.GameScenes
 							new PolygonData(
 								PopCountZ,
 								new SpriteData(Matrix4.CreateScale(ButtonSize) * Matrix4.CreateTranslation(xOffset, ButtonY, 0), GalaxyTextures.Get.BombButton.Id, Color.White),
-								SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.BombButton)
+								SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.BombButton).ToList()
 							),
 							new PhysicalData(new Vector2(xOffset, ButtonY), new Vector2(ButtonSize, ButtonSize)),
 							colony.OrdinalPosition

@@ -172,7 +172,7 @@ namespace Stareater.GameScenes
 
 		private IEnumerable<Vector2> fleetMovementPathVertices(FleetInfo fleet, IEnumerable<Vector2> waypoints)
 		{
-			var lastPosition = fleetDisplayPosition(fleet).Xy;
+			var lastPosition = fleetDisplayPosition(fleet);
 			foreach(var nextPosition in waypoints)
 			{
 				foreach(var v in SpriteHelpers.PathRectVertexData(lastPosition, nextPosition, PathWidth, GalaxyTextures.Get.PathLine))
@@ -183,10 +183,10 @@ namespace Stareater.GameScenes
 		}
 		
 		//TODO(v0.7) rename to fleetPosition
-		private Vector3 fleetDisplayPosition(FleetInfo fleet)
+		private Vector2 fleetDisplayPosition(FleetInfo fleet)
 		{
 			var atStar = this.QueryScene(fleet.Position, 1).Any(x => x.Data is StarData);
-			var displayPosition = new Vector3((float)fleet.Position.X, (float)fleet.Position.Y, 0);
+			var displayPosition = new Vector2((float)fleet.Position.X, (float)fleet.Position.Y);
 
 			if (!fleet.IsMoving)
 			{
@@ -196,10 +196,10 @@ namespace Stareater.GameScenes
 					Distinct().ToList(); //TODO(v0.7) sort players by some key
 				
 				int index = (fleet.Owner == this.currentPlayer.Info) ? 0 : (1 + players.IndexOf(fleet.Owner));
-				displayPosition += new Vector3(0.5f, 0.5f - 0.2f * index, 0);
+				displayPosition += new Vector2(0.5f, 0.5f - 0.2f * index);
 			}
 			else if (fleet.IsMoving && atStar)
-				displayPosition += new Vector3(-0.5f, 0.5f, 0);
+				displayPosition += new Vector2(-0.5f, 0.5f);
 
 			return displayPosition;
 		}
@@ -226,19 +226,12 @@ namespace Stareater.GameScenes
 					fleet => 
 					{
 						var displayPosition = fleetDisplayPosition(fleet);
-						return new SceneObject(
-							new PolygonData(
-								FleetZ,
-								new SpriteData(
-									Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation(displayPosition),
-									GalaxyTextures.Get.FleetIndicator.Id, 
-									fleet.Owner.Color
-								),
-								SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.FleetIndicator)
-							),
-							new PhysicalData(displayPosition.Xy, new Vector2(0, 0)),
-							fleet
-						);
+
+						return new SceneObjectBuilder(fleet, displayPosition, 0).
+							StartSimpleSprite(FleetZ, GalaxyTextures.Get.FleetIndicator, fleet.Owner.Color).
+							Scale(FleetSelectorScale).
+							Translate(displayPosition).
+							Build();
 					}).ToList()
 			);
 		}
@@ -247,11 +240,12 @@ namespace Stareater.GameScenes
 		{
 			this.UpdateScene(
 				ref this.fleetMovementPaths,
-				this.currentPlayer.Fleets.Where(x => x.IsMoving).Select(fleet => new SceneObject(new PolygonData(
-					PathZ,
-					new SpriteData(Matrix4.Identity, GalaxyTextures.Get.PathLine.Id, Color.DarkGreen),
-					fleetMovementPathVertices(fleet, fleet.Missions.Waypoints.Select(v => convert(v.Destionation)))
-				))).ToList()
+				this.currentPlayer.Fleets.Where(x => x.IsMoving).Select(fleet =>
+					new SceneObjectBuilder().
+					StartSprite(PathZ, GalaxyTextures.Get.PathLine.Id, Color.DarkGreen).
+					AddVertices(fleetMovementPathVertices(fleet, fleet.Missions.Waypoints.Select(v => convert(v.Destionation)))).
+					Build()
+				).ToList()
 			);
 		}
 		
@@ -263,20 +257,20 @@ namespace Stareater.GameScenes
 				var destination = this.SelectedFleet.SimulationWaypoints[this.SelectedFleet.SimulationWaypoints.Count - 1];
 				var numVars = new Var("eta", Math.Ceiling(this.SelectedFleet.Eta)).Get;
 				var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.SelectedFleet.Eta, RoundingMethod.Ceil, 0)).Get;
-				var transform = 
-					Matrix4.CreateScale(EtaTextScale) * 
-					Matrix4.CreateTranslation((float)destination.X, (float)destination.Y + 0.5f, 0);
 				
 				this.UpdateScene(
 					ref this.movementEtaText,
-					new SceneObject(new PolygonData(
-						EtaZ,
-						new SpriteData(transform, TextRenderUtil.Get.TextureId, Color.White),
-						TextRenderUtil.Get.BufferText(
-							LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars),
-							-0.5f,
-							Matrix4.Identity
-						).ToList()))
+					new SceneObjectBuilder().
+						StartSprite(EtaZ, TextRenderUtil.Get.TextureId, Color.White).
+						Scale(EtaTextScale).
+						Translate(destination.X, destination.Y + 0.5).
+						AddVertices(
+							TextRenderUtil.Get.BufferText(
+								LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars),
+								-0.5f,
+								Matrix4.Identity
+						)).
+						Build()
 				);
 			}
 			else if (this.movementEtaText != null)
@@ -288,11 +282,10 @@ namespace Stareater.GameScenes
 			if (this.SelectedFleet != null && this.SelectedFleet.SimulationWaypoints.Count > 0)
 				this.UpdateScene(
 					ref this.movementSimulationPath,
-					new SceneObject(new PolygonData(
-						PathZ,
-						new SpriteData(Matrix4.Identity, GalaxyTextures.Get.PathLine.Id, Color.LimeGreen),
-						fleetMovementPathVertices(this.SelectedFleet.Fleet, this.SelectedFleet.SimulationWaypoints.Select(v => convert(v)))
-					))
+					new SceneObjectBuilder().
+						StartSprite(PathZ, GalaxyTextures.Get.PathLine.Id, Color.LimeGreen).
+						AddVertices(fleetMovementPathVertices(this.SelectedFleet.Fleet, this.SelectedFleet.SimulationWaypoints.Select(v => convert(v)))).
+						Build()
 				);
 			else if (this.movementSimulationPath != null)
 				this.RemoveFromScene(ref this.movementSimulationPath);
@@ -314,33 +307,37 @@ namespace Stareater.GameScenes
 
 			this.UpdateScene(
 				ref this.turnCounter,
-				new SceneObject(new PolygonData(
-					EtaZ,
-					new SpriteData(transform, TextRenderUtil.Get.TextureId, Color.LightGray),
-					TextRenderUtil.Get.BufferText(
-						LocalizationManifest.Get.CurrentLanguage["FormMain"]["Turn"].Text() + " " + this.currentPlayer.Turn,
-						-1,
-						Matrix4.Identity
-					).ToList()))
+				new SceneObjectBuilder().
+					StartSprite(EtaZ, TextRenderUtil.Get.TextureId, Color.LightGray).
+					Transform(transform).
+					AddVertices(
+						TextRenderUtil.Get.BufferText(
+							LocalizationManifest.Get.CurrentLanguage["FormMain"]["Turn"].Text() + " " + this.currentPlayer.Turn,
+							-1,
+							Matrix4.Identity
+					)).
+					Build()
 			);
 		}
 
 		private void setupSelectionMarkers()
 		{
 			var transform = new Matrix4();
-			
+
 			if (this.currentSelection == GalaxySelectionType.Star)
 				transform = Matrix4.CreateTranslation((float)this.lastSelectedStarPosition.X, (float)this.lastSelectedStarPosition.Y, 0);
-			else if (this.currentSelection == GalaxySelectionType.Fleet) 
-				transform = Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation(this.fleetDisplayPosition(this.lastSelectedIdleFleet));
+			else if (this.currentSelection == GalaxySelectionType.Fleet)
+			{
+				var displayPosition = this.fleetDisplayPosition(this.lastSelectedIdleFleet);
+				transform = Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation(displayPosition.X, displayPosition.Y, 0);
+			}
 			
 			this.UpdateScene(
 				ref this.selectionMarkers,
-				new SceneObject(new PolygonData(
-					SelectionIndicatorZ,
-					new SpriteData(transform, GalaxyTextures.Get.SelectedStar.Id, Color.White),
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SelectedStar)
-				))
+				new SceneObjectBuilder().
+					StartSimpleSprite(SelectionIndicatorZ, GalaxyTextures.Get.SelectedStar, Color.White).
+					Transform(transform).
+					Build()
 			);
 		}
 
@@ -350,32 +347,23 @@ namespace Stareater.GameScenes
 
 			this.UpdateScene(
 				ref this.starSprites,
-				stars.Select((star, i) => new SceneObject(
-					new []{
-						new PolygonData(
-							StarColorZ,
-							new SpriteData(Matrix4.Identity, GalaxyTextures.Get.StarColor.Id, star.Color),
-							SpriteHelpers.TexturedRectVertexData(convert(star.Position), 1, 1, GalaxyTextures.Get.StarColor)
-						),
-						new PolygonData(
-							StarSaturationZ,
-							new SpriteData(Matrix4.Identity, GalaxyTextures.Get.StarGlow.Id, Color.White),
-							SpriteHelpers.TexturedRectVertexData(convert(star.Position), 1, 1, GalaxyTextures.Get.StarGlow)
-						),
-						//TODO(v0.7) scale star names with zoom level
-						new PolygonData(
-							StarNameZ - (i * StarNameZRange) / stars.Count,
-							new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, starNameColor(star)),
-							TextRenderUtil.Get.BufferText(
-								star.Name.ToText(LocalizationManifest.Get.CurrentLanguage), 
-								-0.5f, 
+				stars.Select((star, i) => new SceneObjectBuilder(star, convert(star.Position), 0).
+					StartSimpleSprite(StarColorZ, GalaxyTextures.Get.StarColor, star.Color).
+					Translate(convert(star.Position)).
+
+					StartSimpleSprite(StarSaturationZ, GalaxyTextures.Get.StarGlow, Color.White).
+					Translate(convert(star.Position)).
+
+					//TODO(v0.7) scale star names with zoom level
+					StartSprite(StarNameZ - (i * StarNameZRange) / stars.Count, TextRenderUtil.Get.TextureId, starNameColor(star)).
+					AddVertices(
+						TextRenderUtil.Get.BufferText(
+								star.Name.ToText(LocalizationManifest.Get.CurrentLanguage),
+								-0.5f,
 								Matrix4.CreateScale(StarNameScale) * Matrix4.CreateTranslation((float)star.Position.X, (float)star.Position.Y - 0.5f, 0)
-							).ToList()
-						)
-					},
-					new PhysicalData(convert(star.Position), new Vector2(0, 0)),
-					star
-				)).ToList()
+					)).
+					Build()
+				).ToList()
 			);
 		}
 		
@@ -383,18 +371,16 @@ namespace Stareater.GameScenes
 		{
 			this.UpdateScene(
 				ref this.wormholeSprites,
-				new SceneObject(new PolygonData(
-					WormholeZ,
-					new SpriteData(
-						Matrix4.Identity, GalaxyTextures.Get.PathLine.Id, Color.Blue
-					),
-					this.currentPlayer.Wormholes.SelectMany(wormhole => SpriteHelpers.PathRectVertexData(
-						convert(wormhole.FromStar.Position),
-						convert(wormhole.ToStar.Position),
-						0.8f * PathWidth,
-						GalaxyTextures.Get.PathLine
-					))
-				))
+				new SceneObjectBuilder().
+					StartSprite(WormholeZ, GalaxyTextures.Get.PathLine.Id, Color.Blue).
+					AddVertices(
+						this.currentPlayer.Wormholes.SelectMany(wormhole => SpriteHelpers.PathRectVertexData(
+							convert(wormhole.FromStar.Position),
+							convert(wormhole.ToStar.Position),
+							0.8f * PathWidth,
+							GalaxyTextures.Get.PathLine
+					))).
+					Build()
 			);
 		}
 		#endregion
