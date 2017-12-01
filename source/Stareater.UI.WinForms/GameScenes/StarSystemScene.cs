@@ -100,8 +100,10 @@ namespace Stareater.GameScenes
 			
 			this.select(StarSystemController.StarIndex);
 		}
-		
-		#region ARenderer implementation
+
+		#region AScene implementation
+		protected override float GuiLayerThickness => 1 / Layers;
+
 		protected override void FrameUpdate(double deltaTime)
 		{
 			var beingColonized = new HashSet<Planet>(this.controller.Planets.Where(x => this.controller.IsColonizing(x.Position)));

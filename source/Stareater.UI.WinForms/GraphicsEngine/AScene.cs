@@ -11,8 +11,6 @@ namespace Stareater.GraphicsEngine
 {
 	abstract class AScene
 	{
-		protected const int NoCallList = -1;
-
 		private HashSet<SceneObject> sceneObjects = new HashSet<SceneObject>();
 		private QuadTree<SceneObject> physicalObjects = new QuadTree<SceneObject>();
 		private HashSet<float> dirtyLayers = new HashSet<float>();
@@ -166,6 +164,10 @@ namespace Stareater.GraphicsEngine
 			this.projection = this.calculatePerspective();
 			this.invProjection = Matrix4.Invert(new Matrix4(this.projection.Row0, this.projection.Row1, this.projection.Row2, this.projection.Row3));
 		}
+		#endregion
+
+		#region GUI
+		protected abstract float GuiLayerThickness { get; }
 		#endregion
 
 		#region Rendering logic

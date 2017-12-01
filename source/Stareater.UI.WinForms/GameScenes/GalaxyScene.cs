@@ -29,14 +29,14 @@ namespace Stareater.GameScenes
 		private const float Layers = 16.0f;
 		private const float StarNameZRange = 1 / Layers;
 		
-		private const float WormholeZ = 8 / Layers;
-		private const float PathZ = 7 / Layers;
-		private const float StarColorZ = 6 / Layers;
-		private const float StarSaturationZ = 5 / Layers;
-		private const float StarNameZ = 4 / Layers;
-		private const float FleetZ = 3 / Layers;
-		private const float SelectionIndicatorZ = 2 / Layers;
-		private const float EtaZ = 1 / Layers;
+		private const float WormholeZ = 9 / Layers;
+		private const float PathZ = 8 / Layers;
+		private const float StarColorZ = 7 / Layers;
+		private const float StarSaturationZ = 6 / Layers;
+		private const float StarNameZ = 5 / Layers;
+		private const float FleetZ = 4 / Layers;
+		private const float SelectionIndicatorZ = 3 / Layers;
+		private const float EtaZ = 2 / Layers;
 		
 		private const float PanClickTolerance = 0.01f;
 		private const float ClickRadius = 0.01f;
@@ -122,7 +122,9 @@ namespace Stareater.GameScenes
 			TextRenderUtil.Get.Prepare(this.currentPlayer.Stars.Select(x => x.Name.ToText(LocalizationManifest.Get.CurrentLanguage)));
 		}
 
-		#region ARenderer implementation
+		#region AScene implementation
+		protected override float GuiLayerThickness => 1 / Layers;
+
 		public override void Activate()
 		{
 			this.rebuildCache();

@@ -13,8 +13,11 @@ namespace Stareater.GameScenes
 	class GameOverScene : AScene
 	{
 		private const float DefaultViewSize = 7;
-		private const float TextZ = 0;
+		
 		private const float FarZ = 1;
+		private const float Layers = 4.0f;
+
+		private const float TextZ = 2 / Layers;
 
 		private const float TextSize = 0.4f;
 		
@@ -24,7 +27,9 @@ namespace Stareater.GameScenes
 
 		private ResultsController controller;
 
-		#region implemented abstract members of ARenderer
+		#region AScene implemented
+		protected override float GuiLayerThickness => 1 / Layers;
+
 		public override void Activate()
 		{
 			this.UpdateScene(

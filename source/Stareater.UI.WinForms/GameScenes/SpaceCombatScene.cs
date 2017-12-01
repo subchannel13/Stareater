@@ -25,13 +25,13 @@ namespace Stareater.GameScenes
 		private const float FarZ = 1;
 		private const float Layers = 16.0f;
 		
-		private const float CellBackgroundZ = 6 / Layers;
-		private const float GridZ = 5 / Layers;
-		private const float PlanetColorZ = 4 / Layers;
-		private const float StarColorZ = 4 / Layers;
-		private const float CombatantZ = 3 / Layers;
-		private const float MoreCombatantsZ = 2 / Layers;
-		private const float MovemenentZ = 1 / Layers;
+		private const float CellBackgroundZ = 7 / Layers;
+		private const float GridZ = 6 / Layers;
+		private const float PlanetColorZ = 5 / Layers;
+		private const float StarColorZ = 5 / Layers;
+		private const float CombatantZ = 4 / Layers;
+		private const float MoreCombatantsZ = 3 / Layers;
+		private const float MovemenentZ = 2 / Layers;
 		
 		private const float DefaultViewSize = 17;
 		private const float GridThickness = 0.05f;
@@ -61,8 +61,10 @@ namespace Stareater.GameScenes
 			this.Controller = controller;
 			this.ResetLists();
 		}
-		
-		#region ARenderer implementation
+
+		#region AScene implementation
+		protected override float GuiLayerThickness => 1 / Layers;
+
 		protected override void FrameUpdate(double deltaTime)
 		{
 			if (this.currentUnit == null)

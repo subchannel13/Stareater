@@ -23,10 +23,10 @@ namespace Stareater.GameScenes
 		private const float FarZ = 1;
 		private const float Layers = 8.0f;
 		
-		private const float PopCountZ = 1 / Layers;
-		private const float StarColorZ = 2 / Layers;
-		private const float PlanetZ = 2 / Layers;
-		private const float OrbitZ = 3 / Layers;
+		private const float PopCountZ = 2 / Layers;
+		private const float StarColorZ = 3 / Layers;
+		private const float PlanetZ = 3 / Layers;
+		private const float OrbitZ = 4 / Layers;
 		
 		private const float BodiesY = 0.01f;
 		private const float OrbitStep = 0.3f;
@@ -74,8 +74,10 @@ namespace Stareater.GameScenes
 		{
 			this.setupVaos();
 		}
-		
+
 		#region AScene implementation
+		protected override float GuiLayerThickness => 1 / Layers;
+
 		protected override void FrameUpdate(double deltaTime)
 		{
 			//no operation
