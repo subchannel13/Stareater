@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.Utils.Collections;
 using Stareater.GLData;
+using Stareater.GraphicsEngine.GuiElements;
 
 namespace Stareater.GraphicsEngine
 {
@@ -16,6 +16,8 @@ namespace Stareater.GraphicsEngine
 		private HashSet<float> dirtyLayers = new HashSet<float>();
 		private Dictionary<float, List<IDrawable>> drawables = new Dictionary<float, List<IDrawable>>();
 		private Dictionary<float, List<VertexArray>> Vaos = new Dictionary<float, List<VertexArray>>();
+
+		private HashSet<IGuiElement> guiElements = new HashSet<IGuiElement>();
 		
 		public void Draw(double deltaTime)
 		{
@@ -23,10 +25,16 @@ namespace Stareater.GraphicsEngine
 			
 			if (this.dirtyLayers.Count > 0)
 				this.setupDrawables();
-			
-			foreach(var layer in this.drawables.OrderByDescending(x => x.Key))
-				foreach(var drawable in layer.Value)
-					drawable.Draw(this.projection, layer.Key);
+
+			var guiLayer = this.GuiLayerThickness;
+
+			foreach (var layer in this.drawables.OrderByDescending(x => x.Key))
+			{
+				var view = layer.Key > guiLayer ? this.projection : this.guiProjection;
+
+				foreach (var drawable in layer.Value)
+					drawable.Draw(view, layer.Key);
+			}
 		}
 		
 		protected abstract void FrameUpdate(double deltaTime);
@@ -65,22 +73,9 @@ namespace Stareater.GraphicsEngine
 		public virtual void OnMouseScroll(MouseEventArgs e)
 		{ }
 		#endregion
-		
-		#region Scene objects
-		protected void AddToScene(SceneObject sceneObject)
-		{
-			this.sceneObjects.Add(sceneObject);
-			this.dirtyLayers.UnionWith(sceneObject.RenderData.Select(x => x.Z));
-			
-			if (sceneObject.PhysicalShape != null)
-				this.physicalObjects.Add(
-					sceneObject, 
-					sceneObject.PhysicalShape.Center.X, sceneObject.PhysicalShape.Center.Y, 
-					sceneObject.PhysicalShape.Size.X, sceneObject.PhysicalShape.Size.Y
-				);
-		}
 
-		protected void RemoveFromScene(SceneObject sceneObject)
+		#region Scene objects
+		public void RemoveFromScene(SceneObject sceneObject)
 		{
 			this.sceneObjects.Remove(sceneObject);
 			this.dirtyLayers.UnionWith(sceneObject.RenderData.Select(x => x.Z));
@@ -89,30 +84,30 @@ namespace Stareater.GraphicsEngine
 				this.physicalObjects.Remove(sceneObject);
 			
 		}
-		
-		protected void RemoveFromScene(ref SceneObject sceneObject)
+
+		public void RemoveFromScene(ref SceneObject sceneObject)
 		{
 			this.RemoveFromScene(sceneObject);
 			sceneObject = null;
 		}
 
-		protected void UpdateScene(ref SceneObject oldObject, SceneObject newObject)
+		public void UpdateScene(ref SceneObject oldObject, SceneObject newObject)
 		{
 			if (oldObject != null)
 				this.RemoveFromScene(oldObject);
 			
-			this.AddToScene(newObject);
+			this.addToScene(newObject);
 			oldObject = newObject;
 		}
-		
-		protected void UpdateScene(ref IEnumerable<SceneObject> oldObjects, ICollection<SceneObject> newObjects)
+
+		public void UpdateScene(ref IEnumerable<SceneObject> oldObjects, ICollection<SceneObject> newObjects)
 		{
 			if (oldObjects != null)
 				foreach(var obj in oldObjects)
 					this.RemoveFromScene(obj);
 			
 			foreach(var obj in newObjects)
-				this.AddToScene(obj);
+				this.addToScene(obj);
 			oldObjects = newObjects;
 		}
 		
@@ -125,14 +120,28 @@ namespace Stareater.GraphicsEngine
 		{
 			return this.physicalObjects.Query(center, new NGenerics.DataStructures.Mathematical.Vector2D(radius, radius));
 		}
+
+		private void addToScene(SceneObject sceneObject)
+		{
+			this.sceneObjects.Add(sceneObject);
+			this.dirtyLayers.UnionWith(sceneObject.RenderData.Select(x => x.Z));
+
+			if (sceneObject.PhysicalShape != null)
+				this.physicalObjects.Add(
+					sceneObject,
+					sceneObject.PhysicalShape.Center.X, sceneObject.PhysicalShape.Center.Y,
+					sceneObject.PhysicalShape.Size.X, sceneObject.PhysicalShape.Size.Y
+				);
+		}
 		#endregion
-		
+
 		#region Perspective and viewport calculation
 		protected Vector2 canvasSize { get; private set; }
 		protected Vector2 screenSize { get; private set; }
 		protected Matrix4 invProjection { get; private set; }
 		protected Matrix4 projection { get; private set; }
-		
+		private Matrix4 guiProjection;
+
 		protected abstract Matrix4 calculatePerspective();
 		
 		protected static Matrix4 calcOrthogonalPerspective(float width, float height, float farZ, Vector2 originOffset)
@@ -163,11 +172,22 @@ namespace Stareater.GraphicsEngine
 		{
 			this.projection = this.calculatePerspective();
 			this.invProjection = Matrix4.Invert(new Matrix4(this.projection.Row0, this.projection.Row1, this.projection.Row2, this.projection.Row3));
+
+			if (canvasSize.X >= canvasSize.Y)
+				this.guiProjection = calcOrthogonalPerspective(canvasSize.X / canvasSize.Y, 1, 1, new Vector2());
+			else
+				this.guiProjection = calcOrthogonalPerspective(1, canvasSize.Y / canvasSize.X, 1, new Vector2());
 		}
 		#endregion
 
 		#region GUI
 		protected abstract float GuiLayerThickness { get; }
+
+		protected void AddElement(IGuiElement element)
+		{
+			this.guiElements.Add(element);
+			element.Attach(this, this.GuiLayerThickness);
+		}
 		#endregion
 
 		#region Rendering logic

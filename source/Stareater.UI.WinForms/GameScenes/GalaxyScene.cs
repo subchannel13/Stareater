@@ -15,6 +15,7 @@ using Stareater.Utils.NumberFormatters;
 using Stareater.GraphicsEngine;
 using Stareater.GLData.SpriteShader;
 using Stareater.GLData;
+using Stareater.GraphicsEngine.GuiElements;
 
 namespace Stareater.GameScenes
 {
@@ -80,6 +81,7 @@ namespace Stareater.GameScenes
 		public GalaxyScene(IGalaxyViewListener galaxyViewListener)
 		{ 
 			this.galaxyViewListener = galaxyViewListener;
+			this.AddElement(new GlButton()); //TODO(v0.7) set position and size
 		}
 		
 		public void OnNewTurn()

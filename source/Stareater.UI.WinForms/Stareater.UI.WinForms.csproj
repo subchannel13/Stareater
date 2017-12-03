@@ -142,6 +142,8 @@
     <Compile Include="GLData\TextureUtils.cs" />
     <Compile Include="GraphicsEngine\AGlProgram.cs" />
     <Compile Include="GraphicsEngine\AScene.cs" />
+    <Compile Include="GraphicsEngine\GuiElements\GlButton.cs" />
+    <Compile Include="GraphicsEngine\GuiElements\IGuiElement.cs" />
     <Compile Include="GraphicsEngine\IDrawable.cs" />
     <Compile Include="GraphicsEngine\IShaderData.cs" />
     <Compile Include="GraphicsEngine\PhysicalData.cs" />
