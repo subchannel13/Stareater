@@ -95,6 +95,15 @@ namespace Stareater.GLData
 			return this;
 		}
 
+		public SceneObjectBuilder Scale(float scaleX, float scaleY)
+		{
+			this.assertStarted();
+
+			this.localTransform *= Matrix4.CreateScale(scaleX, scaleY, 1);
+
+			return this;
+		}
+
 		public SceneObjectBuilder Translate(double x, double y)
 		{
 			this.assertStarted();

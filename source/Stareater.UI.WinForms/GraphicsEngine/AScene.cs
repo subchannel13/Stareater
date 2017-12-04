@@ -6,6 +6,7 @@ using OpenTK.Graphics.OpenGL;
 using Stareater.Utils.Collections;
 using Stareater.GLData;
 using Stareater.GraphicsEngine.GuiElements;
+using Stareater.AppData;
 
 namespace Stareater.GraphicsEngine
 {
@@ -173,10 +174,12 @@ namespace Stareater.GraphicsEngine
 			this.projection = this.calculatePerspective();
 			this.invProjection = Matrix4.Invert(new Matrix4(this.projection.Row0, this.projection.Row1, this.projection.Row2, this.projection.Row3));
 
-			if (canvasSize.X >= canvasSize.Y)
-				this.guiProjection = calcOrthogonalPerspective(canvasSize.X / canvasSize.Y, 1, 1, new Vector2());
-			else
-				this.guiProjection = calcOrthogonalPerspective(1, canvasSize.Y / canvasSize.X, 1, new Vector2());
+			var width = canvasSize.X / SettingsWinforms.Get.GuiScale;
+			var height = canvasSize.Y / SettingsWinforms.Get.GuiScale;
+
+			this.guiProjection = calcOrthogonalPerspective(width, height, 1, new Vector2());
+			foreach (var element in this.guiElements)
+				element.RecalculatePosition(width / 2, height / 2);
 		}
 		#endregion
 

@@ -81,7 +81,12 @@ namespace Stareater.GameScenes
 		public GalaxyScene(IGalaxyViewListener galaxyViewListener)
 		{ 
 			this.galaxyViewListener = galaxyViewListener;
-			this.AddElement(new GlButton()); //TODO(v0.7) set position and size
+
+			var turnButton = new GlButton();
+			turnButton.Position.
+				FixedSize(80, 80).
+				ParentRelative(1, 0, 10, 10);
+			this.AddElement(turnButton);
 		}
 		
 		public void OnNewTurn()
