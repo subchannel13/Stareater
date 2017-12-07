@@ -71,7 +71,7 @@ namespace Stareater.GameScenes
 				this.TextureId = TextureUtils.CreateTexture(this.textureBitmap);
 		}
 		
-		private float measureWidth(string text)
+		public float MeasureWidth(string text)
 		{
 			float textWidth = 0;
 			
@@ -92,7 +92,7 @@ namespace Stareater.GameScenes
 
 		public IEnumerable<float> BufferText(string text, float adjustment, Matrix4 transform)
 		{
-			float textWidth = measureWidth(text);
+			float textWidth = MeasureWidth(text);
 			float charOffset = textWidth * adjustment;
 			
 			foreach (char c in text)

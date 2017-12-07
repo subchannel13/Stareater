@@ -48,18 +48,18 @@ namespace Stareater.GameScenes
 		private const float FleetIndicatorScale = 0.2f;
 		private const float FleetSelectorScale = 0.3f;
 		private const float PathWidth = 0.1f;
-		private const float TurnTextScale = 0.02f;
 		private const float StarNameScale = 0.35f;
 
 		public FleetController SelectedFleet { private get; set; }
 		private IGalaxyViewListener galaxyViewListener;
 		private SignalFlag refreshData = new SignalFlag();
+
+		private GuiText turnCounter;
 		
 		private IEnumerable<SceneObject> fleetMovementPaths = null;
 		private IEnumerable<SceneObject> fleetMarkers = null;
 		private SceneObject movementEtaText = null;
 		private SceneObject movementSimulationPath = null;
-		private SceneObject turnCounter = null;
 		private SceneObject selectionMarkers = null;
 		private SceneObject wormholeSprites = null;
 		private IEnumerable<SceneObject> starSprites = null;
@@ -82,7 +82,15 @@ namespace Stareater.GameScenes
 		{ 
 			this.galaxyViewListener = galaxyViewListener;
 
-			var turnButton = new GlButton();
+			this.turnCounter = new GuiText();
+			this.turnCounter.TextColor = Color.LightGray;
+			this.turnCounter.TextSize = 30;
+			this.turnCounter.Position.
+				WrapContent().
+				ParentRelative(1, 1, 10, 5);
+			this.AddElement(turnCounter);
+
+			var turnButton = new GuiButton();
 			turnButton.Position.
 				FixedSize(80, 80).
 				ParentRelative(1, 0, 10, 10);
@@ -302,31 +310,7 @@ namespace Stareater.GameScenes
 
 		private void setupTurnCounter()
 		{
-			var aspect = canvasSize.X / canvasSize.Y;
-			var zoom = (float)Math.Pow(ZoomBase, zoomLevel);
-            var radius = DefaultViewSize / zoom;
-			var uiScale = screenLength;
-			var transform =
-					Matrix4.CreateScale(TurnTextScale * uiScale) *
-					Matrix4.CreateTranslation(
-						aspect * radius / 2 + originOffset.X - uiScale * TurnTextMargin, 
-						radius / 2 + originOffset.Y - uiScale * TurnTextMargin, 
-						0
-					);
-
-			this.UpdateScene(
-				ref this.turnCounter,
-				new SceneObjectBuilder().
-					StartSprite(EtaZ, TextRenderUtil.Get.TextureId, Color.LightGray).
-					Transform(transform).
-					AddVertices(
-						TextRenderUtil.Get.BufferText(
-							LocalizationManifest.Get.CurrentLanguage["FormMain"]["Turn"].Text() + " " + this.currentPlayer.Turn,
-							-1,
-							Matrix4.Identity
-					)).
-					Build()
-			);
+			this.turnCounter.Text = LocalizationManifest.Get.CurrentLanguage["FormMain"]["Turn"].Text() + " " + this.currentPlayer.Turn;
 		}
 
 		private void setupSelectionMarkers()

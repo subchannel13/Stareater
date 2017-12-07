@@ -143,7 +143,8 @@
     <Compile Include="GraphicsEngine\AGlProgram.cs" />
     <Compile Include="GraphicsEngine\AScene.cs" />
     <Compile Include="GraphicsEngine\GuiElements\ElementPosition.cs" />
-    <Compile Include="GraphicsEngine\GuiElements\GlButton.cs" />
+    <Compile Include="GraphicsEngine\GuiElements\GuiButton.cs" />
+    <Compile Include="GraphicsEngine\GuiElements\GuiText.cs" />
     <Compile Include="GraphicsEngine\GuiElements\IGuiElement.cs" />
     <Compile Include="GraphicsEngine\IDrawable.cs" />
     <Compile Include="GraphicsEngine\IShaderData.cs" />

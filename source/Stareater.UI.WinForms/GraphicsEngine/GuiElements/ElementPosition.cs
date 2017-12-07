@@ -8,9 +8,15 @@ namespace Stareater.GraphicsEngine.GuiElements
 		public Vector2 Center { get; private set; }
 		public Vector2 Size { get; private set; }
 
+		private IGuiElement targetElement;
 		private List<IPositioner> positioners = new List<IPositioner>();
 		private float lastParentWidth = 0;
 		private float lastParentHeight = 0;
+
+		public ElementPosition(IGuiElement targetElement)
+		{
+			this.targetElement = targetElement;
+		}
 
 		public void Recalculate(float parentWidth, float parentHeight)
 		{
@@ -38,7 +44,23 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 			return this;
 		}
+		public ElementPosition WrapContent()
+		{
+			this.positioners.Add(new WrapContentPositioner());
+
+			return this;
+		}
 		#endregion
+
+		private float contentWidth()
+		{
+			return this.targetElement.ContentWidth();
+		}
+
+		private float contentHeight()
+		{
+			return this.targetElement.ContentHeight();
+		}
 
 		private interface IPositioner
 		{
@@ -68,6 +90,17 @@ namespace Stareater.GraphicsEngine.GuiElements
 				element.Center = new Vector2(
 					this.marginX + windowX * this.xPortion,
 					this.marginY + windowY * this.yPortion
+				);
+			}
+		}
+
+		private class WrapContentPositioner : IPositioner
+		{
+			public void Recalculate(ElementPosition element, float parentWidth, float parentHeight)
+			{
+				element.Size = new Vector2(
+					element.contentWidth(),
+					element.contentHeight()
 				);
 			}
 		}

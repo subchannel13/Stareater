@@ -36,6 +36,7 @@ namespace Stareater.GLData
 		
 		const string AsteroidsTag = "asteroids";
 		const string BombButtonTag = "bombard";
+		const string ButtonBackgroundTag = "buttonBackground";
 		const string ColonizationMarkTag = "colonizationMark";
 		const string ColonizationMarkColorTag = "colonizationMarkColor";
 		const string FleetIndicatorTag = "fleetIndicator";
@@ -54,6 +55,7 @@ namespace Stareater.GLData
 		
 		public TextureInfo Asteroids { get; private set;}
 		public TextureInfo BombButton { get; private set;}
+		public TextureInfo ButtonBackground { get; private set; }
 		public TextureInfo ColonizationMark { get; private set;}
 		public TextureInfo ColonizationMarkColor { get; private set;}
 		public TextureInfo FleetIndicator { get; private set;}
@@ -79,19 +81,20 @@ namespace Stareater.GLData
 			/*
 			 * If any sprite is missing, try running {repo root}/scripts/gen_textures.bat script.
 			 */
-			Asteroids = this.spriteNames[AsteroidsTag];
-			BombButton  = this.spriteNames[BombButtonTag];
-			ColonizationMark = this.spriteNames[ColonizationMarkTag];
-			ColonizationMarkColor = this.spriteNames[ColonizationMarkColorTag];
-			FleetIndicator = this.spriteNames[FleetIndicatorTag];
-			GasGiant = this.spriteNames[GasGiantTag];
-			MoveToArrow = this.spriteNames[MoveArrowTag];
-			PathLine = this.spriteNames[PathLineTag];
-			RockPlanet = this.spriteNames[RockPlanetTag];
-			SelectedStar = this.spriteNames[SelectedStarTag];
-			StarColor = this.spriteNames[StarColorTag];
-			StarGlow = this.spriteNames[StarGlowTag];
-			SystemStar = this.spriteNames[SystemStarTag];
+			this.Asteroids = this.spriteNames[AsteroidsTag];
+			this.BombButton = this.spriteNames[BombButtonTag];
+			this.ButtonBackground = this.spriteNames[ButtonBackgroundTag];
+			this.ColonizationMark = this.spriteNames[ColonizationMarkTag];
+			this.ColonizationMarkColor = this.spriteNames[ColonizationMarkColorTag];
+			this.FleetIndicator = this.spriteNames[FleetIndicatorTag];
+			this.GasGiant = this.spriteNames[GasGiantTag];
+			this.MoveToArrow = this.spriteNames[MoveArrowTag];
+			this.PathLine = this.spriteNames[PathLineTag];
+			this.RockPlanet = this.spriteNames[RockPlanetTag];
+			this.SelectedStar = this.spriteNames[SelectedStarTag];
+			this.StarColor = this.spriteNames[StarColorTag];
+			this.StarGlow = this.spriteNames[StarGlowTag];
+			this.SystemStar = this.spriteNames[SystemStarTag];
 			
 			this.loaded = true;
 		}

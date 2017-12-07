@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
-	class GlButton : IGuiElement
+	class GuiButton : IGuiElement
 	{
 		private AScene scene;
 		private float z;
@@ -11,9 +11,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public ElementPosition Position { get; private set; }
 
-		public GlButton()
+		public GuiButton()
 		{
-			this.Position = new ElementPosition();
+			this.Position = new ElementPosition(this);
 		}
 
 		void IGuiElement.Attach(AScene scene, float z)
@@ -30,12 +30,22 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.updateScene();
 		}
 
+		float IGuiElement.ContentWidth()
+		{
+			return 0;
+		}
+
+		float IGuiElement.ContentHeight()
+		{
+			return 0;
+		}
+
 		private void updateScene()
 		{
 			scene.UpdateScene(
 				ref this.graphicObject,
 				new SceneObjectBuilder().
-					StartSimpleSprite(this.z, GalaxyTextures.Get.BombButton, Color.White). //TODO(v0.7) make separate drawing mechanism
+					StartSimpleSprite(this.z, GalaxyTextures.Get.ButtonBackground, Color.White). //TODO(v0.7) make separate drawing mechanism
 					Scale(this.Position.Size.X, this.Position.Size.Y).
 					Translate(this.Position.Center).
 					Build()
