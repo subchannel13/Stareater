@@ -15,7 +15,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public GuiText()
 		{
-			this.Position = new ElementPosition(this);
+			this.Position = new ElementPosition(() => this.contentWidth(), () => this.TextSize);
 		}
 
 		private string mText = null;
@@ -65,23 +65,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.updateScene();
 		}
 
-		float IGuiElement.ContentWidth()
-		{
-			return string.IsNullOrWhiteSpace(this.Text) ? 0 :
-				TextRenderUtil.Get.MeasureWidth(this.Text) * this.TextSize;
-		}
-
-		float IGuiElement.ContentHeight()
-		{
-			return this.TextSize;
-		}
-
 		private void updateScene()
 		{
-			if (string.IsNullOrWhiteSpace(this.Text))
+			if (this.scene == null || string.IsNullOrWhiteSpace(this.Text))
 				return;
 
-			scene.UpdateScene(
+			this.scene.UpdateScene(
 				ref this.graphicObject,
 				new SceneObjectBuilder().
 					StartSprite(z, TextRenderUtil.Get.TextureId, this.TextColor).
@@ -90,6 +79,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 					Translate(this.Position.Center).
 					Build()
 			);
+		}
+
+		private float contentWidth()
+		{
+			return string.IsNullOrWhiteSpace(this.Text) ? 0 :
+				TextRenderUtil.Get.MeasureWidth(this.Text) * this.TextSize;
 		}
 	}
 }

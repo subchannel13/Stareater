@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 
 namespace Stareater.GraphicsEngine.GuiElements
@@ -8,14 +9,16 @@ namespace Stareater.GraphicsEngine.GuiElements
 		public Vector2 Center { get; private set; }
 		public Vector2 Size { get; private set; }
 
-		private IGuiElement targetElement;
 		private List<IPositioner> positioners = new List<IPositioner>();
+		private Func<float> contentWidth;
+		private Func<float> contentHeight;
 		private float lastParentWidth = 0;
 		private float lastParentHeight = 0;
 
-		public ElementPosition(IGuiElement targetElement)
+		public ElementPosition(Func<float> contentWidth, Func<float> contentHeight)
 		{
-			this.targetElement = targetElement;
+			this.contentWidth = contentWidth;
+			this.contentHeight = contentHeight;
 		}
 
 		public void Recalculate(float parentWidth, float parentHeight)
@@ -51,16 +54,6 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return this;
 		}
 		#endregion
-
-		private float contentWidth()
-		{
-			return this.targetElement.ContentWidth();
-		}
-
-		private float contentHeight()
-		{
-			return this.targetElement.ContentHeight();
-		}
 
 		private interface IPositioner
 		{

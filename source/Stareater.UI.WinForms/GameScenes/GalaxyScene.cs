@@ -82,15 +82,22 @@ namespace Stareater.GameScenes
 		{ 
 			this.galaxyViewListener = galaxyViewListener;
 
-			this.turnCounter = new GuiText();
-			this.turnCounter.TextColor = Color.LightGray;
-			this.turnCounter.TextSize = 30;
+			this.turnCounter = new GuiText
+			{
+				TextColor = Color.LightGray,
+				TextSize = 30
+			};
 			this.turnCounter.Position.
 				WrapContent().
 				ParentRelative(1, 1, 10, 5);
 			this.AddElement(turnCounter);
 
-			var turnButton = new GuiButton();
+			var turnButton = new GuiButton
+			{
+				Text = LocalizationManifest.Get.CurrentLanguage["GalaxyScene"]["EndTurn"].Text(), //TODO(v0.7) add support for multiline text
+				TextColor = Color.White,
+				TextSize = 20
+			};
 			turnButton.Position.
 				FixedSize(80, 80).
 				ParentRelative(1, 0, 10, 10);
@@ -310,7 +317,7 @@ namespace Stareater.GameScenes
 
 		private void setupTurnCounter()
 		{
-			this.turnCounter.Text = LocalizationManifest.Get.CurrentLanguage["FormMain"]["Turn"].Text() + " " + this.currentPlayer.Turn;
+			this.turnCounter.Text = LocalizationManifest.Get.CurrentLanguage["GalaxyScene"]["Turn"].Text() + " " + this.currentPlayer.Turn;
 		}
 
 		private void setupSelectionMarkers()

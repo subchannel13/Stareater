@@ -35,19 +35,12 @@ namespace Stareater.GameScenes
 		private Vector2 nextCharOffset;
 
 		private Dictionary<char, CharTextureInfo> characterInfos = new Dictionary<char, CharTextureInfo>();
-		private readonly Vector2[] unitQuad;
 		private readonly Vector2[] unitQuadTriangles;
 		
 		public int TextureId { get; private set; }
 		
 		private TextRenderUtil()
 		{
-			this.unitQuad = new Vector2[] {
-				new Vector2(0, 0),
-				new Vector2(0, -1),
-				new Vector2(1, -1),
-				new Vector2(1, 0),
-			};
 			this.unitQuadTriangles = new Vector2[] {
 				new Vector2(0, 0),
 				new Vector2(1, 0),

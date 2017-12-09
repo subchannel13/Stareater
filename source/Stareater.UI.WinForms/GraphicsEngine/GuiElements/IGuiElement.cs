@@ -6,8 +6,5 @@
 
 		ElementPosition Position { get; }
 		void RecalculatePosition(float parentWidth, float parentHeight);
-
-		float ContentWidth();
-		float ContentHeight();
 	}
 }
