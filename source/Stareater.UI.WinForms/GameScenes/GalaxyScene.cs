@@ -94,6 +94,7 @@ namespace Stareater.GameScenes
 
 			var turnButton = new GuiButton
 			{
+				ClickCallback = this.galaxyViewListener.TurnEnded, //TODO(v0.7) call callback on click
 				Text = LocalizationManifest.Get.CurrentLanguage["GalaxyScene"]["EndTurn"].Text(), //TODO(v0.7) add support for multiline text
 				TextColor = Color.White,
 				TextSize = 20

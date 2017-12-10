@@ -6,6 +6,8 @@ namespace Stareater.GameScenes
 {
 	public interface IGalaxyViewListener
 	{
+		void TurnEnded();
+
 		void FleetDeselected();
 		void FleetClicked(IEnumerable<FleetInfo> fleets);
 		

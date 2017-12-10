@@ -119,16 +119,7 @@ namespace Stareater.GUI
 		
 		private void endTurnButton_Click(object sender, EventArgs e)
 		{
-			this.currentPlayer.EndGalaxyPhase();
 			
-			if (this.currentPlayerIndex < this.playerControllers.Length - 1)
-			{
-				this.currentPlayerIndex++;
-				this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
-			}
-
-			if (galaxyRenderer != null) galaxyRenderer.ResetLists();
-			if (systemRenderer != null) systemRenderer.ResetLists();
 		}
 		
 		private void returnButton_Click(object sender, EventArgs e)
@@ -192,6 +183,7 @@ namespace Stareater.GUI
 			using(var form = new FormLibrary(this.currentPlayer.Library))
 				form.ShowDialog();
 		}
+
 		#region Delayed Events
 		private void postDelayedEvent(Action eventAction)
 		{
@@ -289,7 +281,7 @@ namespace Stareater.GUI
 			this.playerControllers = this.gameController.LocalHumanPlayers().ToArray();
 			this.currentPlayerIndex = 0;
 		}
-		
+
 		private void restartRenderers()
 		{
 			if (this.galaxyRenderer != null)
@@ -691,8 +683,22 @@ namespace Stareater.GUI
 		}
 
 		#endregion
-		
+
 		#region IGalaxyViewListener
+		void IGalaxyViewListener.TurnEnded()
+		{
+			this.currentPlayer.EndGalaxyPhase();
+
+			if (this.currentPlayerIndex < this.playerControllers.Length - 1)
+			{
+				this.currentPlayerIndex++;
+				this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
+			}
+
+			if (galaxyRenderer != null) galaxyRenderer.ResetLists();
+			if (systemRenderer != null) systemRenderer.ResetLists();
+		}
+
 		void IGalaxyViewListener.FleetDeselected() 
 		{
 			if (this.InvokeRequired)

@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using Stareater.GameScenes;
 using Stareater.GLData;
+using System;
 using System.Drawing;
 
 namespace Stareater.GraphicsEngine.GuiElements
@@ -17,6 +18,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			this.Position = new ElementPosition(() => 0, () => 0);
 		}
+
+		public Action ClickCallback { get; set; }
 
 		private string mText = null;
 		public string Text
