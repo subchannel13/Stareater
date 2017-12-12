@@ -87,7 +87,6 @@ namespace Stareater.GUI
 			this.Font = SettingsWinforms.Get.FormFont;
 
 			Context context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
-			this.endTurnButton.Text = context["EndTurn"].Text();
 			this.returnButton.Text = context["Return"].Text();
 			this.mainMenuToolStripMenuItem.Text = context["MainMenu"].Text();
 			this.developmentToolStripMenuItem.Text = context["DevelopmentMenu"].Text();
@@ -466,7 +465,6 @@ namespace Stareater.GUI
 		{
 			constructionManagement.Visible = false;
 			empyPlanetView.Visible = false;
-			endTurnButton.Visible = true;
 			returnButton.Visible = false;
 			
 			this.nextRenderer = galaxyRenderer;
@@ -519,7 +517,6 @@ namespace Stareater.GUI
 			this.nextRenderer = this.gameOverRenderer;
 			
 			this.abilityList.Visible = false;
-			this.endTurnButton.Visible = false;
 			this.returnButton.Visible = false;
 			this.unitInfoPanel.Visible = false;
 			this.constructionManagement.Visible = false;
@@ -542,7 +539,6 @@ namespace Stareater.GUI
 				this.nextRenderer = this.galaxyRenderer;
 				
 				abilityList.Visible = false;
-				endTurnButton.Visible = true;
 				returnButton.Visible = false;
 				unitInfoPanel.Visible = false;
 				menuStrip.Visible = true;
@@ -577,7 +573,6 @@ namespace Stareater.GUI
 			constructionManagement.Visible = false;
 			empyPlanetView.Visible = false;
 			fleetPanel.Visible = false;
-			endTurnButton.Visible = false;
 			returnButton.Visible = false;
 			unitInfoPanel.Visible = true;
 			menuStrip.Visible = false;
@@ -596,7 +591,6 @@ namespace Stareater.GUI
 			constructionManagement.Visible = false;
 			empyPlanetView.Visible = false;
 			fleetPanel.Visible = false;
-			endTurnButton.Visible = false;
 			returnButton.Visible = true;
 			unitInfoPanel.Visible = false;
 			menuStrip.Visible = false;
@@ -758,7 +752,6 @@ namespace Stareater.GUI
 			this.constructionManagement.Visible = false;
 			this.empyPlanetView.Visible = false;
 			this.fleetPanel.Visible = false;
-			this.endTurnButton.Visible = false;
 			this.returnButton.Visible = true;
 			
 			this.systemRenderer.SetStarSystem(systemController, this.currentPlayer);

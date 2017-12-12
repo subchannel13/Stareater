@@ -40,8 +40,8 @@
 			this.diplomacyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.colonizationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.stareaterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.libraryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.endTurnButton = new System.Windows.Forms.Button();
 			this.returnButton = new System.Windows.Forms.Button();
 			this.fleetPanel = new System.Windows.Forms.Panel();
 			this.shipList = new System.Windows.Forms.FlowLayoutPanel();
@@ -55,7 +55,6 @@
 			this.unitDoneAction = new System.Windows.Forms.Button();
 			this.abilityList = new System.Windows.Forms.FlowLayoutPanel();
 			this.workaroundForWinformsAnchorBug = new System.Windows.Forms.Panel();
-			this.stareaterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip.SuspendLayout();
 			this.fleetPanel.SuspendLayout();
 			this.unitInfoPanel.SuspendLayout();
@@ -161,25 +160,19 @@
 			this.reportsToolStripMenuItem.Text = "Reports";
 			this.reportsToolStripMenuItem.Click += new System.EventHandler(this.reportsToolStripMenuItem_Click);
 			// 
+			// stareaterToolStripMenuItem
+			// 
+			this.stareaterToolStripMenuItem.Name = "stareaterToolStripMenuItem";
+			this.stareaterToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+			this.stareaterToolStripMenuItem.Text = "Stareater";
+			this.stareaterToolStripMenuItem.Click += new System.EventHandler(this.stareaterToolStripMenuItem_Click);
+			// 
 			// libraryToolStripMenuItem
 			// 
 			this.libraryToolStripMenuItem.Name = "libraryToolStripMenuItem";
 			this.libraryToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
 			this.libraryToolStripMenuItem.Text = "Library";
 			this.libraryToolStripMenuItem.Click += new System.EventHandler(this.libraryToolStripMenuItem_Click);
-			// 
-			// endTurnButton
-			// 
-			this.endTurnButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.endTurnButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.endTurnButton.Location = new System.Drawing.Point(792, 446);
-			this.endTurnButton.Name = "endTurnButton";
-			this.endTurnButton.Size = new System.Drawing.Size(80, 80);
-			this.endTurnButton.TabIndex = 3;
-			this.endTurnButton.Text = "button1";
-			this.endTurnButton.UseVisualStyleBackColor = true;
-			this.endTurnButton.Visible = false;
-			this.endTurnButton.Click += new System.EventHandler(this.endTurnButton_Click);
 			// 
 			// returnButton
 			// 
@@ -311,7 +304,6 @@
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.unitInfoPanel);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.fleetPanel);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.returnButton);
-			this.workaroundForWinformsAnchorBug.Controls.Add(this.endTurnButton);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.constructionManagement);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.empyPlanetView);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.glCanvas);
@@ -320,13 +312,6 @@
 			this.workaroundForWinformsAnchorBug.Name = "workaroundForWinformsAnchorBug";
 			this.workaroundForWinformsAnchorBug.Size = new System.Drawing.Size(884, 538);
 			this.workaroundForWinformsAnchorBug.TabIndex = 9;
-			// 
-			// stareaterToolStripMenuItem
-			// 
-			this.stareaterToolStripMenuItem.Name = "stareaterToolStripMenuItem";
-			this.stareaterToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
-			this.stareaterToolStripMenuItem.Text = "Stareater";
-			this.stareaterToolStripMenuItem.Click += new System.EventHandler(this.stareaterToolStripMenuItem_Click);
 			// 
 			// FormMain
 			// 
@@ -360,7 +345,6 @@
 		private System.Windows.Forms.ToolStripMenuItem designsToolStripMenuItem;
 		private System.Windows.Forms.Button returnButton;
 		private System.Windows.Forms.ToolStripMenuItem developmentToolStripMenuItem;
-		private System.Windows.Forms.Button endTurnButton;
 		private System.Windows.Forms.ToolStripMenuItem mainMenuToolStripMenuItem;
 		private System.Windows.Forms.MenuStrip menuStrip;
 		private Stareater.GUI.ConstructionSiteView constructionManagement;

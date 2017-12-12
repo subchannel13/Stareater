@@ -67,24 +67,29 @@ namespace Stareater.GraphicsEngine
 		public void HandleMouseDoubleClick(MouseEventArgs e)
 		{
 			//TODO(later) differentiate between left and right click
-			this.onMouseDoubleClick(Vector4.Transform(mouseToView(e.X, e.Y), invProjection).Xy);
+			this.onMouseDoubleClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy);
 		}
 
 		public void HandleMouseClick(MouseEventArgs e)
 		{
 			//TODO(later) differentiate between left and right click
-			//TODO(v0.7) add GUI event processing
-			this.onMouseClick(Vector4.Transform(mouseToView(e.X, e.Y), invProjection).Xy);
+			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
+
+			foreach (var element in this.guiElements)
+				if (element.OnMouseClick(mouseGuiPoint))
+					return;
+
+			this.onMouseClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy);
 		}
 
 		public void HandleMouseMove(MouseEventArgs e)
 		{
-			this.onMouseMove(mouseToView(e.X, e.Y), e.Button);
+			this.onMouseMove(this.mouseToView(e.X, e.Y), e.Button);
 		}
 
 		public void HandleMouseScroll(MouseEventArgs e)
 		{
-			this.onMouseScroll(Vector4.Transform(mouseToView(e.X, e.Y), invProjection).Xy, e.Delta);
+			this.onMouseScroll(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy, e.Delta);
 		}
 
 		protected virtual void onKeyPress(char c)
@@ -170,6 +175,7 @@ namespace Stareater.GraphicsEngine
 		protected Matrix4 invProjection { get; private set; }
 		protected Matrix4 projection { get; private set; }
 		private Matrix4 guiProjection;
+		private Matrix4 guiInvProjection;
 
 		protected abstract Matrix4 calculatePerspective();
 		
@@ -206,6 +212,7 @@ namespace Stareater.GraphicsEngine
 			var height = canvasSize.Y / SettingsWinforms.Get.GuiScale;
 
 			this.guiProjection = calcOrthogonalPerspective(width, height, 1, new Vector2());
+			this.guiInvProjection = Matrix4.Invert(new Matrix4(this.guiProjection.Row0, this.guiProjection.Row1, this.guiProjection.Row2, this.guiProjection.Row3));
 			foreach (var element in this.guiElements)
 				element.RecalculatePosition(width / 2, height / 2);
 		}

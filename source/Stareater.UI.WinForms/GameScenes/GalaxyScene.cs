@@ -101,7 +101,7 @@ namespace Stareater.GameScenes
 			};
 			turnButton.Position.
 				FixedSize(80, 80).
-				ParentRelative(1, 0, 10, 10);
+				ParentRelative(1, -1, 10, 10);
 			this.AddElement(turnButton);
 		}
 		

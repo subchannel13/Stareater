@@ -71,7 +71,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		bool IGuiElement.OnMouseClick(Vector2 mousePosition)
 		{
 			var innerPoint = mousePosition - this.Position.Center;
-			if (Math.Abs(innerPoint.X) > this.Position.Size.X || Math.Abs(innerPoint.Y) > this.Position.Size.Y)
+			if (Math.Abs(innerPoint.X) > this.Position.Size.X / 2 || Math.Abs(innerPoint.Y) > this.Position.Size.Y / 2)
 				return false;
 
 			this.ClickCallback();
