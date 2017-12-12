@@ -68,6 +68,16 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.updateScene();
 		}
 
+		bool IGuiElement.OnMouseClick(Vector2 mousePosition)
+		{
+			var innerPoint = mousePosition - this.Position.Center;
+			if (Math.Abs(innerPoint.X) > this.Position.Size.X || Math.Abs(innerPoint.Y) > this.Position.Size.Y)
+				return false;
+
+			this.ClickCallback();
+			return true;
+		}
+
 		private void updateScene()
 		{
 			if (this.scene == null)

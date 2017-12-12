@@ -57,21 +57,49 @@ namespace Stareater.GraphicsEngine
 			this.setupPerspective();
 		}
 		#endregion
-		
+
 		#region Input handling
-		public virtual void OnKeyPress(System.Windows.Forms.KeyPressEventArgs e)
-		{ }
-		
-		public virtual void OnMouseDoubleClick(MouseEventArgs e)
-		{ }
-		
-		public virtual void OnMouseClick(MouseEventArgs e)
-		{ }
-		
-		public virtual void OnMouseMove(MouseEventArgs e)
+		public void HandleKeyPress(System.Windows.Forms.KeyPressEventArgs e)
+		{
+			this.onKeyPress(e.KeyChar);
+		}
+
+		public void HandleMouseDoubleClick(MouseEventArgs e)
+		{
+			//TODO(later) differentiate between left and right click
+			this.onMouseDoubleClick(Vector4.Transform(mouseToView(e.X, e.Y), invProjection).Xy);
+		}
+
+		public void HandleMouseClick(MouseEventArgs e)
+		{
+			//TODO(later) differentiate between left and right click
+			//TODO(v0.7) add GUI event processing
+			this.onMouseClick(Vector4.Transform(mouseToView(e.X, e.Y), invProjection).Xy);
+		}
+
+		public void HandleMouseMove(MouseEventArgs e)
+		{
+			this.onMouseMove(mouseToView(e.X, e.Y), e.Button);
+		}
+
+		public void HandleMouseScroll(MouseEventArgs e)
+		{
+			this.onMouseScroll(Vector4.Transform(mouseToView(e.X, e.Y), invProjection).Xy, e.Delta);
+		}
+
+		protected virtual void onKeyPress(char c)
 		{ }
 
-		public virtual void OnMouseScroll(MouseEventArgs e)
+		protected virtual void onMouseDoubleClick(Vector2 mousePoint)
+		{ }
+
+		protected virtual void onMouseClick(Vector2 mousePoint)
+		{ }
+
+		protected virtual void onMouseMove(Vector4 mouseViewPosition, MouseButtons mouseClicks)
+		{ }
+
+		protected virtual void onMouseScroll(Vector2 mousePoint, int delta)
 		{ }
 		#endregion
 

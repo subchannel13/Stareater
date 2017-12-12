@@ -99,12 +99,10 @@ namespace Stareater.GameScenes
 			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2());
 		}
 		#endregion
-		
+
 		#region Mouse events
-		public override void OnMouseClick(MouseEventArgs e)
+		protected override void onMouseClick(Vector2 mousePoint)
 		{
-			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
-			
 			var hexX = Math.Round(mousePoint.X / 1.5, MidpointRounding.AwayFromZero);
 			var hex = new Vector2D(
 				hexX,

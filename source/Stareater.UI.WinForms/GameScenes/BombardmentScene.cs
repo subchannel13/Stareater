@@ -101,40 +101,37 @@ namespace Stareater.GameScenes
 		}
 		
 		#region Input events
-		public override void OnMouseClick(MouseEventArgs e)
+		protected override void onMouseClick(Vector2 mousePoint)
 		{
-			if (panAbsPath > PanClickTolerance)
+			if (this.panAbsPath > PanClickTolerance)
 				return;
 			
-			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
-			var buttons = this.QueryScene(convert(mousePoint.Xy)).ToList();
+			var buttons = this.QueryScene(convert(mousePoint)).ToList();
 			
 			if (buttons.Any())
 				this.controller.Bombard((int)buttons.First().Data);
 		}
-		
-		public override void OnMouseMove(MouseEventArgs e)
+
+		protected override void onMouseMove(Vector4 mouseViewPosition, MouseButtons mouseClicks)
 		{
-			Vector4 currentPosition = mouseToView(e.X, e.Y);
+			if (!this.lastMousePosition.HasValue)
+				this.lastMousePosition = mouseViewPosition;
 
-			if (!lastMousePosition.HasValue)
-				lastMousePosition = currentPosition;
-
-			if (!e.Button.HasFlag(MouseButtons.Left)) {
-				lastMousePosition = currentPosition;
-				panAbsPath = 0;
+			if (!mouseClicks.HasFlag(MouseButtons.Left)) {
+				this.lastMousePosition = mouseViewPosition;
+				this.panAbsPath = 0;
 				return;
 			}
-			
-			panAbsPath += (currentPosition - lastMousePosition.Value).Length;
 
-			originOffset -= (Vector4.Transform(currentPosition, invProjection) -
-				Vector4.Transform(lastMousePosition.Value, invProjection)
+			this.panAbsPath += (mouseViewPosition - this.lastMousePosition.Value).Length;
+
+			this.originOffset -= (Vector4.Transform(mouseViewPosition, this.invProjection) -
+				Vector4.Transform(this.lastMousePosition.Value, this.invProjection)
 				).X;
 
 			this.limitPan();
-			
-			lastMousePosition = currentPosition;
+
+			this.lastMousePosition = mouseViewPosition;
 			this.setupPerspective();
 			this.setupTitle();
 		}

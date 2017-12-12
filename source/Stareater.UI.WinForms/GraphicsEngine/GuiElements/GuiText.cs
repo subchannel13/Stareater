@@ -65,6 +65,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.updateScene();
 		}
 
+		bool IGuiElement.OnMouseClick(Vector2 mousePosition)
+		{
+			return false;
+		}
+
 		private void updateScene()
 		{
 			if (this.scene == null || string.IsNullOrWhiteSpace(this.Text))

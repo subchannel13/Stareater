@@ -1,4 +1,6 @@
-﻿namespace Stareater.GraphicsEngine.GuiElements
+﻿using OpenTK;
+
+namespace Stareater.GraphicsEngine.GuiElements
 {
 	interface IGuiElement
 	{
@@ -6,5 +8,7 @@
 
 		ElementPosition Position { get; }
 		void RecalculatePosition(float parentWidth, float parentHeight);
+
+		bool OnMouseClick(Vector2 mousePosition);
 	}
 }

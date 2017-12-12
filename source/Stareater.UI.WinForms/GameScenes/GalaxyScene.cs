@@ -385,23 +385,21 @@ namespace Stareater.GameScenes
 			);
 		}
 		#endregion
-		
+
 		#region Mouse events
-		public override void OnMouseMove(MouseEventArgs e)
+		protected override void onMouseMove(Vector4 mouseViewPosition, MouseButtons mouseClicks)
 		{
-			Vector4 currentPosition = mouseToView(e.X, e.Y);
+			if (!this.lastMousePosition.HasValue)
+				this.lastMousePosition = mouseViewPosition;
 
-			if (!lastMousePosition.HasValue)
-				lastMousePosition = currentPosition;
-
-			if (e.Button.HasFlag(MouseButtons.Left)) 
-				mousePan(currentPosition);
+			if (mouseClicks.HasFlag(MouseButtons.Left))
+				this.mousePan(mouseViewPosition);
 			else {
-				lastMousePosition = currentPosition;
-				panAbsPath = 0;
+				this.lastMousePosition = mouseViewPosition;
+				this.panAbsPath = 0;
 				
 				if (this.SelectedFleet != null)
-					simulateFleetMovement(currentPosition);
+					this.simulateFleetMovement(mouseViewPosition);
 			}
 		}
 		
@@ -442,33 +440,31 @@ namespace Stareater.GameScenes
 			this.setupMovementSimulation();
 		}
 
-		public override void OnMouseScroll(MouseEventArgs e)
+		protected override void onMouseScroll(Vector2 mousePoint, int delta)
 		{
 			float oldZoom = 1 / (float)(0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel));
 
-			if (e.Delta > 0)
-				zoomLevel++;
-			else 
-				zoomLevel--;
+			if (delta > 0)
+				this.zoomLevel++;
+			else
+				this.zoomLevel--;
 
-			zoomLevel = Methods.Clamp(zoomLevel, MinZoom, MaxZoom);
+			this.zoomLevel = Methods.Clamp(zoomLevel, MinZoom, MaxZoom);
 
-			float newZoom = 1 / (float)(0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel));
-			Vector2 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection).Xy;
+			float newZoom = 1 / (float)(0.5 * DefaultViewSize / Math.Pow(ZoomBase, this.zoomLevel));
 
-			originOffset = (originOffset * oldZoom + mousePoint * (newZoom - oldZoom)) / newZoom;
-			limitPan();
+			this.originOffset = (this.originOffset * oldZoom + mousePoint * (newZoom - oldZoom)) / newZoom;
+			this.limitPan();
 			this.setupPerspective();
 		}
 
-		public override void OnMouseClick(MouseEventArgs e)
+		protected override void onMouseClick(Vector2 mousePoint)
 		{
 			if (panAbsPath > PanClickTolerance) //TODO(v0.7) maybe make AScene differentiate between click and drag
 				return;
 			
-			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
-			var searchRadius = Math.Max(screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
-			var searchPoint = convert(mousePoint.Xy);
+			var searchRadius = Math.Max(this.screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
+			var searchPoint = convert(mousePoint);
 			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 			
 			var allObjects = this.QueryScene(searchPoint, searchRadius).
@@ -525,15 +521,14 @@ namespace Stareater.GameScenes
 			}
 			
 		}
-		
-		public override void OnMouseDoubleClick(MouseEventArgs e)
+
+		protected override void onMouseDoubleClick(Vector2 mousePoint)
 		{
 			if (panAbsPath > PanClickTolerance)
 				return;
 			
-			Vector4 mousePoint = Vector4.Transform(mouseToView(e.X, e.Y), invProjection);
 			var searchRadius = Math.Max(screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
-			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
+			var searchPoint = convert(mousePoint);
 			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 
 			var starsFound = this.QueryScene(searchPoint, searchRadius).
