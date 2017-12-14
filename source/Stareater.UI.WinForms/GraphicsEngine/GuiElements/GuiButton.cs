@@ -11,6 +11,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		private AScene scene;
 		private float z;
 		private SceneObject graphicObject = null;
+		private bool isHovered = false;
 
 		public ElementPosition Position { get; private set; }
 
@@ -20,6 +21,28 @@ namespace Stareater.GraphicsEngine.GuiElements
 		}
 
 		public Action ClickCallback { get; set; }
+
+		private TextureInfo? mBackgroundHover = null;
+		public TextureInfo? BackgroundHover
+		{
+			get { return this.mBackgroundHover; }
+			set
+			{
+				this.mBackgroundHover = value;
+				this.updateScene();
+			}
+		}
+
+		private TextureInfo? mBackgroundNormal = null;
+		public TextureInfo? BackgroundNormal
+		{
+			get { return this.mBackgroundNormal; }
+			set
+			{
+				this.mBackgroundNormal = value;
+				this.updateScene();
+			}
+		}
 
 		private string mText = null;
 		public string Text
@@ -70,12 +93,20 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		bool IGuiElement.OnMouseClick(Vector2 mousePosition)
 		{
-			var innerPoint = mousePosition - this.Position.Center;
-			if (Math.Abs(innerPoint.X) > this.Position.Size.X / 2 || Math.Abs(innerPoint.Y) > this.Position.Size.Y / 2)
+			if (this.isOutside(mousePosition))
 				return false;
 
 			this.ClickCallback();
 			return true;
+		}
+
+		void IGuiElement.OnMouseMove(Vector2 mousePosition)
+		{
+			var oldState = this.isHovered;
+
+            this.isHovered = !this.isOutside(mousePosition);
+			if (this.isHovered != oldState)
+				this.updateScene();
 		}
 
 		private void updateScene()
@@ -83,8 +114,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 			if (this.scene == null)
 				return;
 
+			var background = (this.isHovered ? this.BackgroundHover : this.mBackgroundNormal).Value;
 			var soBuilder = new SceneObjectBuilder().
-				StartSimpleSprite(this.z, GalaxyTextures.Get.ButtonBackground, Color.White). //TODO(v0.7) make separate drawing mechanism
+				StartSimpleSprite(this.z, background, Color.White).
 				Scale(this.Position.Size.X, this.Position.Size.Y).
 				Translate(this.Position.Center);
 
@@ -99,5 +131,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 				soBuilder.Build()
 			);
 		}
+
+		private bool isOutside(Vector2 mousePosition)
+		{
+			var innerPoint = mousePosition - this.Position.Center;
+			return Math.Abs(innerPoint.X) > this.Position.Size.X / 2 ||
+				Math.Abs(innerPoint.Y) > this.Position.Size.Y / 2;
+        }
 	}
 }

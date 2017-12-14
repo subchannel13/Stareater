@@ -58,6 +58,8 @@ namespace Stareater.GLData
 		public TextureInfo ButtonBackground { get; private set; }
 		public TextureInfo ColonizationMark { get; private set;}
 		public TextureInfo ColonizationMarkColor { get; private set;}
+		public TextureInfo EndTurnHover { get; private set; }
+		public TextureInfo EndTurnNormal { get; private set; }
 		public TextureInfo FleetIndicator { get; private set;}
 		public TextureInfo GasGiant { get; private set;}
 		public TextureInfo MoveToArrow { get; private set;}
@@ -86,6 +88,8 @@ namespace Stareater.GLData
 			this.ButtonBackground = this.spriteNames[ButtonBackgroundTag];
 			this.ColonizationMark = this.spriteNames[ColonizationMarkTag];
 			this.ColonizationMarkColor = this.spriteNames[ColonizationMarkColorTag];
+			this.EndTurnHover = this.spriteNames["endTurnHover"];
+			this.EndTurnNormal = this.spriteNames["endTurnNormal"];
 			this.FleetIndicator = this.spriteNames[FleetIndicatorTag];
 			this.GasGiant = this.spriteNames[GasGiantTag];
 			this.MoveToArrow = this.spriteNames[MoveArrowTag];

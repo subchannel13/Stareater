@@ -84,6 +84,11 @@ namespace Stareater.GraphicsEngine
 
 		public void HandleMouseMove(MouseEventArgs e)
 		{
+			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
+
+			foreach (var element in this.guiElements)
+				element.OnMouseMove(mouseGuiPoint);
+
 			this.onMouseMove(this.mouseToView(e.X, e.Y), e.Button);
 		}
 
