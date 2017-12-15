@@ -6,19 +6,9 @@ using System.Drawing;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
-	class GuiButton : IGuiElement
+	class GuiButton : AGuiElement
 	{
-		private AScene scene;
-		private float z;
-		private SceneObject graphicObject = null;
 		private bool isHovered = false;
-
-		public ElementPosition Position { get; private set; }
-
-		public GuiButton()
-		{
-			this.Position = new ElementPosition(() => 0, () => 0);
-		}
 
 		public Action ClickCallback { get; set; }
 
@@ -29,7 +19,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			set
 			{
 				this.mBackgroundHover = value;
-				this.updateScene();
+				this.UpdateScene();
 			}
 		}
 
@@ -40,7 +30,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			set
 			{
 				this.mBackgroundNormal = value;
-				this.updateScene();
+				this.UpdateScene();
 			}
 		}
 
@@ -51,7 +41,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			set
 			{
 				this.mText = value;
-				this.updateScene();
+				this.UpdateScene();
 			}
 		}
 
@@ -62,7 +52,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			set
 			{
 				this.mTextColor = value;
-				this.updateScene();
+				this.UpdateScene();
 			}
 		}
 
@@ -73,25 +63,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 			set
 			{
 				this.mTextSize = value;
-				this.updateScene();
+				this.UpdateScene();
 			}
 		}
 
-		void IGuiElement.Attach(AScene scene, float z)
-		{
-			this.scene = scene;
-			this.z = z;
-
-			this.updateScene();
-		}
-
-		void IGuiElement.RecalculatePosition(float parentWidth, float parentHeight)
-		{
-			this.Position.Recalculate(parentWidth, parentHeight);
-			this.updateScene();
-		}
-
-		bool IGuiElement.OnMouseClick(Vector2 mousePosition)
+		public override bool OnMouseClick(Vector2 mousePosition)
 		{
 			if (this.isOutside(mousePosition))
 				return false;
@@ -100,36 +76,30 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return true;
 		}
 
-		void IGuiElement.OnMouseMove(Vector2 mousePosition)
+		public override void OnMouseMove(Vector2 mousePosition)
 		{
 			var oldState = this.isHovered;
 
             this.isHovered = !this.isOutside(mousePosition);
 			if (this.isHovered != oldState)
-				this.updateScene();
+				this.UpdateScene();
 		}
 
-		private void updateScene()
+		protected override SceneObject MakeSceneObject()
 		{
-			if (this.scene == null)
-				return;
-
 			var background = (this.isHovered ? this.BackgroundHover : this.mBackgroundNormal).Value;
 			var soBuilder = new SceneObjectBuilder().
-				StartSimpleSprite(this.z, background, Color.White).
+				StartSimpleSprite(this.Z, background, Color.White).
 				Scale(this.Position.Size.X, this.Position.Size.Y).
 				Translate(this.Position.Center);
 
 			if (!string.IsNullOrWhiteSpace(this.Text))
-				soBuilder.StartSprite(z / 2, TextRenderUtil.Get.TextureId, this.TextColor). //TODO(v0.7) better define GUI z range
+				soBuilder.StartSprite(this.Z / 2, TextRenderUtil.Get.TextureId, this.TextColor). //TODO(v0.7) better define GUI z range
 					AddVertices(TextRenderUtil.Get.BufferText(this.Text, -0.5f, Matrix4.Identity)).
 					Scale(this.TextSize, this.TextSize).
 					Translate(this.Position.Center);
 
-			this.scene.UpdateScene(
-				ref this.graphicObject,
-				soBuilder.Build()
-			);
+			return soBuilder.Build();
 		}
 
 		private bool isOutside(Vector2 mousePosition)

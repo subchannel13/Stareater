@@ -18,7 +18,7 @@ namespace Stareater.GraphicsEngine
 		private Dictionary<float, List<IDrawable>> drawables = new Dictionary<float, List<IDrawable>>();
 		private Dictionary<float, List<VertexArray>> Vaos = new Dictionary<float, List<VertexArray>>();
 
-		private HashSet<IGuiElement> guiElements = new HashSet<IGuiElement>();
+		private HashSet<AGuiElement> guiElements = new HashSet<AGuiElement>();
 		
 		public void Draw(double deltaTime)
 		{
@@ -226,7 +226,7 @@ namespace Stareater.GraphicsEngine
 		#region GUI
 		protected abstract float GuiLayerThickness { get; }
 
-		protected void AddElement(IGuiElement element)
+		protected void AddElement(AGuiElement element)
 		{
 			this.guiElements.Add(element);
 			element.Attach(this, this.GuiLayerThickness);
