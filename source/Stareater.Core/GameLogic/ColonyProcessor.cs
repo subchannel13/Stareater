@@ -58,7 +58,11 @@ namespace Stareater.GameLogic
 		public double Development { get; private set; }
 		[StateProperty]
 		public double RepairPoints { get; protected set; }
-		
+		[StateProperty]
+		public double MaintenanceCost { get; protected set; }
+		[StateProperty]
+		public double MaintenanceLimit { get; protected set; }
+
 		public ColonyProcessor(Colony colony) : base()
 		{
 			this.Colony = colony;
@@ -133,7 +137,11 @@ namespace Stareater.GameLogic
 			
 			this.WorkingPopulation = this.Colony.Population - this.Farmers;
 			this.RepairPoints = formulas.RepairPoints.Evaluate(vars);
-		}
+
+			//TODO(v0.7) unstub trait cost
+			this.MaintenanceCost = this.Colony.Population * this.Colony.Location.Planet.Traits.Sum(x => 0.1);
+			this.MaintenanceLimit = this.WorkingPopulation * this.BuilderEfficiency * this.SpaceliftFactor;
+        }
 		
 		public void CalculateDerivedEffects(StaticsDB statics, PlayerProcessor playerProcessor)
 		{

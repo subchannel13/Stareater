@@ -86,7 +86,15 @@ namespace Stareater.GameLogic
             this.unlockPredefinedDesigns(game);
 			this.CalculateStareater(game);
 		}
-		
+
+		public void CalculateBaseEffects(TemporaryDB derivates)
+		{
+			var maintenanceCost = derivates.Colonies.OwnedBy[this.Player].Sum(x => x.MaintenanceCost);
+            var availabeMaintenance = derivates.Colonies.OwnedBy[this.Player].Sum(x => x.MaintenanceLimit);
+
+			this.MaintenanceRatio = Methods.Clamp(maintenanceCost / availabeMaintenance, 0, 1);
+		}
+
 		#region Technology related
 		public void CalculateDevelopment(MainGame game, IList<ColonyProcessor> colonyProcessors)
 		{

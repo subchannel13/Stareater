@@ -42,9 +42,7 @@ namespace Stareater.GameLogic
 
 			this.game.States.Reports.Clear();
 			foreach (var playerProc in this.game.MainPlayers.Select(x => this.game.Derivates.Of(x)))
-				playerProc.ProcessPrecombat(
-					this.game
-				);
+				playerProc.ProcessPrecombat(this.game);
 			this.game.Derivates.Natives.ProcessPrecombat(this.game.Statics, this.game.States, this.game.Derivates); 
 			//TODO(later) process natives postcombat
 			
@@ -93,7 +91,9 @@ namespace Stareater.GameLogic
 				stellaris.CalculateBaseEffects();
 			foreach (var colonyProc in this.game.Derivates.Colonies)
 				colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Of(colonyProc.Owner));
-		}
+			foreach (var playerProc in this.game.Derivates.Players)
+				playerProc.CalculateBaseEffects(this.game.Derivates);
+        }
 
 		public void CalculateSpendings()
 		{
