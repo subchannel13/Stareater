@@ -32,7 +32,9 @@ namespace Stareater.GameLogic
 		public IEnumerable<ResearchResult> ResearchPlan { get; protected set; }
 		[StateProperty]
 		public IDictionary<string, double> TechLevels { get; private set; }
-		
+		[StateProperty]
+		public double MaintenanceRatio { get; private set; }
+
 		[StateProperty]
 		public Dictionary<Design, DesignStats> DesignStats { get; private set; }
 		[StateProperty]
@@ -55,7 +57,7 @@ namespace Stareater.GameLogic
 		public PlayerProcessor(Player player, IEnumerable<DevelopmentTopic> technologies)
 		{
 			this.Player = player;
-			
+
 			this.DevelopmentPlan = null;
 			this.ResearchPlan = null;
 			this.DesignStats = new Dictionary<Design, DesignStats>();
@@ -79,7 +81,8 @@ namespace Stareater.GameLogic
 		
 		public void Initialize(MainGame game)
 		{
-			this.initTechAdvances(game.States.DevelopmentAdvances.Of[this.Player]);
+			this.MaintenanceRatio = 0.1; //TODO(v0.7) calculate from colonies
+            this.initTechAdvances(game.States.DevelopmentAdvances.Of[this.Player]);
             this.unlockPredefinedDesigns(game);
 			this.CalculateStareater(game);
 		}

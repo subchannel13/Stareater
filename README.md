@@ -4,6 +4,8 @@ Stareater is a turn based 4X strategy game set in space. Play as a leader of a n
 
 Although this is a C# project, builds can be run with Mono in both Linux and Mac OS.
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/IvanKravarscan/5)
+
 # How to build
 
 Instructions for Windows and debug configuration:

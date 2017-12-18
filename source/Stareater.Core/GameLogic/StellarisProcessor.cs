@@ -61,7 +61,8 @@ namespace Stareater.GameLogic
 
 			double industryPotential = systemColonies.Sum(x =>
 				(1 - x.SpendingRatioEffective) *
-				x.WorkingPopulation *
+				(1 - playerProcessor.MaintenanceRatio) * 
+                x.WorkingPopulation *
 				x.BuilderEfficiency *
 				x.SpaceliftFactor
 			);
@@ -83,7 +84,7 @@ namespace Stareater.GameLogic
 				0;
 
 			foreach (var colonyProc in systemColonies)
-				colonyProc.CalculateDevelopment(this.SpendingRatioEffective);
+				colonyProc.CalculateDevelopment(this.SpendingRatioEffective, playerProcessor.MaintenanceRatio);
 		}
 
 		protected override AConstructionSite Site 

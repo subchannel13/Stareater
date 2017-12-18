@@ -154,7 +154,10 @@ namespace Stareater.GameLogic
 			ColonyFormulaSet formulas = game.Statics.ColonyFormulas;
 			var orders = game.Orders[this.Colony.Owner];
 
-			double industryPotential = this.WorkingPopulation * this.BuilderEfficiency;
+			double industryPotential =
+				(1 - playerProcessor.MaintenanceRatio) *
+				this.BuilderEfficiency *
+				this.WorkingPopulation;
 			double industryPoints =
 				orders.ConstructionPlans[this.Colony].SpendingRatio * 
 				industryPotential;
@@ -172,11 +175,12 @@ namespace Stareater.GameLogic
 				0;
 		}
 		
-		public void CalculateDevelopment(double systemSpandingRatio)
+		public void CalculateDevelopment(double systemSpandingRatio, double maintenanceRatio)
 		{
 			this.Development = 
 				(1 - this.SpendingRatioEffective) * 
 				(1 - systemSpandingRatio) *
+				(1 - maintenanceRatio) *
 				this.WorkingPopulation *
 				this.ScientistEfficiency;
 		}
