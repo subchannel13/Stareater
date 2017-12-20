@@ -81,7 +81,6 @@ namespace Stareater.GameLogic
 		
 		public void Initialize(MainGame game)
 		{
-			this.MaintenanceRatio = 0.1; //TODO(v0.7) calculate from colonies
             this.initTechAdvances(game.States.DevelopmentAdvances.Of[this.Player]);
             this.unlockPredefinedDesigns(game);
 			this.CalculateStareater(game);
@@ -92,6 +91,7 @@ namespace Stareater.GameLogic
 			var maintenanceCost = derivates.Colonies.OwnedBy[this.Player].Sum(x => x.MaintenanceCost);
             var availabeMaintenance = derivates.Colonies.OwnedBy[this.Player].Sum(x => x.MaintenanceLimit);
 
+			//TODO(later) what to do if cost is too high?
 			this.MaintenanceRatio = Methods.Clamp(maintenanceCost / availabeMaintenance, 0, 1);
 		}
 

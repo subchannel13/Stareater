@@ -249,6 +249,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
+				data[TraitMaintenanceKey].To<Formula>().Evaluate(null),
 				loadTraitEffect(data[TraitEffectKey].To<IkonComposite>())
 			);
 		}
@@ -754,6 +755,7 @@ namespace Stareater.GameData.Databases
 		private const string PopulationActivityOrganized = "organized";
 		private const string PopulationActivityOrganizationFactor = "orgFactor";
 
+		private const string TraitMaintenanceKey = "cost";
 		private const string TraitEffectKey = "effect";
 
 		

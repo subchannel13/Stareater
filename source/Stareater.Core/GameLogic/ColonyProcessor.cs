@@ -138,8 +138,8 @@ namespace Stareater.GameLogic
 			this.WorkingPopulation = this.Colony.Population - this.Farmers;
 			this.RepairPoints = formulas.RepairPoints.Evaluate(vars);
 
-			//TODO(v0.7) unstub trait cost
-			this.MaintenanceCost = this.Colony.Population * this.Colony.Location.Planet.Traits.Sum(x => 0.1);
+			//TODO(v0.7) base cost for planet type like no air on asteroids
+			this.MaintenanceCost = this.Colony.Population * this.Colony.Location.Planet.Traits.Sum(x => x.Type.MaintenanceCost);
 			this.MaintenanceLimit = this.WorkingPopulation * this.BuilderEfficiency * this.SpaceliftFactor;
         }
 		

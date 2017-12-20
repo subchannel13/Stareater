@@ -3,6 +3,8 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: catalyzed
 	
+	cost# 0;
+	
 	effect {AfflictPlanets
 		duration # 3;
 		trait: irradiated

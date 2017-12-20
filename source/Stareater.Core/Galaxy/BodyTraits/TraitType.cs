@@ -10,14 +10,16 @@ namespace Stareater.Galaxy.BodyTraits
 
 		public string ImagePath { get; private set; }
 		public string IdCode { get; private set; }
+		public double MaintenanceCost { get; private set; }
 
 		internal ITraitEffectType Effect { get; private set; }
 
-		internal TraitType(string languageCode, string imagePath, string idCode, ITraitEffectType effect)
+		internal TraitType(string languageCode, string imagePath, string idCode, double maintenanceCost, ITraitEffectType effect)
 		{
 			this.LanguageCode = languageCode;
 			this.ImagePath = imagePath;
 			this.IdCode = idCode;
+			this.MaintenanceCost = maintenanceCost;
 			this.Effect = effect;
 		}
 

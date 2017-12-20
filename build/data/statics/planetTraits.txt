@@ -3,6 +3,8 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: fertile
 	
+	cost# 0;
+	
 	effect {Passive}
 }
 
@@ -10,6 +12,8 @@
 	langCode: IRRADIATED_TRAIT
 	image :./images/technologies/hydroponicFarms.png
 	code: irradiated
+	
+	cost# 2;
 	
 	effect {Passive}
 }
