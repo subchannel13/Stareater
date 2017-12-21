@@ -115,7 +115,7 @@ namespace Stareater.GameLogic
 			this.Environment = formulas.EnvironmentFactor.Evaluate(vars);
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
 			this.Organization = formulas.Organization.Evaluate(vars);
-			this.SpaceliftFactor = formulas.SpaceliftFactor.Evaluate(vars);
+			this.SpaceliftFactor = formulas.SpaceliftFactor.Evaluate(vars); //TODO(v0.7) doesn't take planet type into account
 			
 			this.FarmerEfficiency = formulas.Farming.Evaluate(this.Organization, vars);
 			this.GardenerEfficiency = formulas.Gardening.Evaluate(this.Organization, vars);
@@ -138,8 +138,10 @@ namespace Stareater.GameLogic
 			this.WorkingPopulation = this.Colony.Population - this.Farmers;
 			this.RepairPoints = formulas.RepairPoints.Evaluate(vars);
 
-			//TODO(v0.7) base cost for planet type like no air on asteroids
-			this.MaintenanceCost = this.Colony.Population * this.Colony.Location.Planet.Traits.Sum(x => x.Type.MaintenanceCost);
+			this.MaintenanceCost = this.Colony.Population * (
+				formulas.BasePlanetMaintenance[this.Colony.Location.Planet.Type].Evaluate(vars) + 
+                this.Colony.Location.Planet.Traits.Sum(x => x.Type.MaintenanceCost)
+			);
 			this.MaintenanceLimit = this.WorkingPopulation * this.BuilderEfficiency * this.SpaceliftFactor;
         }
 		

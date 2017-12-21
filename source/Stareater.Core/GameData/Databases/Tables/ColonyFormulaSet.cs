@@ -1,5 +1,6 @@
-﻿using System;
-using Stareater.AppData.Expressions;
+﻿using Stareater.AppData.Expressions;
+using System.Collections.Generic;
+using Stareater.Galaxy;
 
 namespace Stareater.GameData.Databases.Tables
 {
@@ -22,10 +23,11 @@ namespace Stareater.GameData.Databases.Tables
 		
 		public PopulationActivityFormulas Development { get; private set; }
 		public PopulationActivityFormulas Industry { get; private set; }
-		
+
+		public Dictionary<PlanetType, Formula> BasePlanetMaintenance { get; private set; }
 		public Formula RepairPoints { get; private set; }
 		public Formula PopulationHitPoints { get; private set; }
-		
+
 		public ColonyFormulaSet(
 			Formula colonizationPopThreshold, Formula uncolonizedMaxPopulation, Formula victoryPointWorth, 
 			Formula farmFields, Formula environmentFactor, Formula maxPopulation, DerivedStatistic populationGrowth, 
@@ -33,7 +35,8 @@ namespace Stareater.GameData.Databases.Tables
 			PopulationActivityFormulas farming, PopulationActivityFormulas gardening,
 			PopulationActivityFormulas mining, PopulationActivityFormulas development, 
 			PopulationActivityFormulas industry,
-			Formula repairPoints, Formula populationHitPoints)
+			Dictionary<PlanetType, Formula> BasePlanetMaintenance,
+            Formula repairPoints, Formula populationHitPoints)
 		{
 			this.ColonizationPopulationThreshold = colonizationPopThreshold;
 			this.UncolonizedMaxPopulation = uncolonizedMaxPopulation;
@@ -51,7 +54,8 @@ namespace Stareater.GameData.Databases.Tables
 			this.Mining = mining;
 			this.Development = development;
 			this.Industry = industry;
-			
+
+			this.BasePlanetMaintenance = BasePlanetMaintenance;
 			this.RepairPoints = repairPoints;
 			this.PopulationHitPoints = populationHitPoints;
 		}

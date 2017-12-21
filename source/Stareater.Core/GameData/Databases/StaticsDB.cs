@@ -184,6 +184,13 @@ namespace Stareater.GameData.Databases
 				loadPopulationActivity(data, ColonyMining),
 				loadPopulationActivity(data, ColonyDevelopment),
 				loadPopulationActivity(data, ColonyIndustry),
+				new Dictionary<Galaxy.PlanetType, Formula>()
+				{
+					{Galaxy.PlanetType.Asteriod, data[BaseMaintenanceAsteroid].To<Formula>()},
+					{Galaxy.PlanetType.GasGiant, data[BaseMaintenanceGasGiant].To<Formula>()},
+					{Galaxy.PlanetType.Rock, data[BaseMaintenanceRock].To<Formula>()},
+
+				},
 				data[ColonyRepairPoints].To<Formula>(),
 				data[ColonyPopulationHitPoints].To<Formula>()
 			);
@@ -666,7 +673,10 @@ namespace Stareater.GameData.Databases
 
 		private const string AfflictTraitTag = "AfflictPlanets";
 		private const string PassiveTraitTag = "Passive";
-		
+
+		private const string BaseMaintenanceAsteroid = "asteriodCost";
+		private const string BaseMaintenanceGasGiant = "gasGiantCost";
+		private const string BaseMaintenanceRock = "rockCost";
 		private const string ColonizationPopulationThreshold = "colonizationPopThreshold";
 		private const string ColonyDevelopment = "development";
 		private const string ColonyEnvironment = "environment";

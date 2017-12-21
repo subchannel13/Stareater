@@ -46,6 +46,9 @@
 		orgFactor # 1;
 	}
 	
+	asteriodCost # 1;
+	gasGiantCost # 0;
+	rockCost # 0;
 	repair # 0.2 * min(infra_count, pop);
 	popHp # 1e-5;
 }
