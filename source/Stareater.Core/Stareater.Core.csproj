@@ -181,6 +181,7 @@
     <Compile Include="GameData\Databases\Tables\ColonizationCollection.cs" />
     <Compile Include="GameData\Databases\Tables\ColonizationPlan.cs" />
     <Compile Include="GameData\Databases\Tables\ConstructionOrders.cs" />
+    <Compile Include="GameData\Databases\Tables\PlanetForumlaSet.cs" />
     <Compile Include="GameData\Databases\Tables\PlayerOrders.cs" />
     <Compile Include="GameData\Databases\Tables\ResearchProgressCollection.cs">
       <AutoGen>True</AutoGen>

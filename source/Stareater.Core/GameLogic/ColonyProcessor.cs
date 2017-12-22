@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using Stareater.Galaxy;
@@ -111,11 +110,12 @@ namespace Stareater.GameLogic
 		{
 			var vars = calcVars(statics, playerProcessor);
 			var formulas = statics.ColonyFormulas;
+			var planetFormulas = statics.PlanetForumlas[this.Colony.Location.Planet.Type];
 			
 			this.Environment = formulas.EnvironmentFactor.Evaluate(vars);
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
 			this.Organization = formulas.Organization.Evaluate(vars);
-			this.SpaceliftFactor = formulas.SpaceliftFactor.Evaluate(vars); //TODO(v0.7) doesn't take planet type into account
+			this.SpaceliftFactor = planetFormulas.SpaceliftFactor.Evaluate(vars);
 			
 			this.FarmerEfficiency = formulas.Farming.Evaluate(this.Organization, vars);
 			this.GardenerEfficiency = formulas.Gardening.Evaluate(this.Organization, vars);
@@ -139,7 +139,7 @@ namespace Stareater.GameLogic
 			this.RepairPoints = formulas.RepairPoints.Evaluate(vars);
 
 			this.MaintenanceCost = this.Colony.Population * (
-				formulas.BasePlanetMaintenance[this.Colony.Location.Planet.Type].Evaluate(vars) + 
+				planetFormulas.MaintenanceCost.Evaluate(vars) + 
                 this.Colony.Location.Planet.Traits.Sum(x => x.Type.MaintenanceCost)
 			);
 			this.MaintenanceLimit = this.WorkingPopulation * this.BuilderEfficiency * this.SpaceliftFactor;

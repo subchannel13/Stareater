@@ -1,5 +1,4 @@
-﻿using System;
-using Stareater.AppData.Expressions;
+﻿using Stareater.AppData.Expressions;
 
 namespace Stareater.GameData.Databases.Tables
 {

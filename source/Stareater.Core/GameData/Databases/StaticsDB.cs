@@ -11,6 +11,7 @@ using Stareater.GameData.Ships;
 using Stareater.Utils;
 using Stareater.Galaxy.BodyTraits;
 using Stareater.GameData.Construction;
+using Stareater.Galaxy;
 
 namespace Stareater.GameData.Databases
 {
@@ -24,6 +25,7 @@ namespace Stareater.GameData.Databases
 		public Dictionary<string, DevelopmentRequirement> DevelopmentRequirements { get; private set; }
 		public List<DevelopmentTopic> DevelopmentTopics { get; private set; }
 		public Dictionary<string, PredefinedDesign> NativeDesigns { get; private set; }
+		public Dictionary<PlanetType, PlanetForumlaSet> PlanetForumlas { get; private set; }
 		public PlayerFormulaSet PlayerFormulas { get; private set; }
 		public List<DesignTemplate> PredeginedDesigns { get; private set; }
 		public List<ResearchTopic> ResearchTopics { get; private set; }
@@ -63,6 +65,7 @@ namespace Stareater.GameData.Databases
 			this.DevelopmentFocusOptions = new List<DevelopmentFocus>();
 			this.DevelopmentRequirements = new Dictionary<string, DevelopmentRequirement>();
 			this.DevelopmentTopics = new List<DevelopmentTopic>();
+			this.PlanetForumlas = new Dictionary<PlanetType, PlanetForumlaSet>();
 			this.ResearchTopics = new List<ResearchTopic>();
 			this.Traits = new Dictionary<string, TraitType>();
 		}
@@ -99,6 +102,10 @@ namespace Stareater.GameData.Databases
 								break;
 							case NativesTag:
 								db.loadNatives(data.To<IkonComposite>());
+								break;
+							case PlanetForumlasTag:
+								var formulaSet = loadPlanetFormulas(data);
+                                db.PlanetForumlas[formulaSet.Key] = formulaSet.Value;
 								break;
 							case PlayerFormulasTag:
 								db.PlayerFormulas = loadPlayerFormulas(data);
@@ -178,19 +185,11 @@ namespace Stareater.GameData.Databases
 				data[ColonyMaxPopulation].To<Formula>(),
 				loadDerivedStat(data[ColonyPopulationGrowth].To<IkonComposite>()),
 				data[ColonyOrganization].To<Formula>(),
-				data[ColonySpaceliftFactor].To<Formula>(),
 				loadPopulationActivity(data, ColonyFarming),
 				loadPopulationActivity(data, ColonyGardening),
 				loadPopulationActivity(data, ColonyMining),
 				loadPopulationActivity(data, ColonyDevelopment),
 				loadPopulationActivity(data, ColonyIndustry),
-				new Dictionary<Galaxy.PlanetType, Formula>()
-				{
-					{Galaxy.PlanetType.Asteriod, data[BaseMaintenanceAsteroid].To<Formula>()},
-					{Galaxy.PlanetType.GasGiant, data[BaseMaintenanceGasGiant].To<Formula>()},
-					{Galaxy.PlanetType.Rock, data[BaseMaintenanceRock].To<Formula>()},
-
-				},
 				data[ColonyRepairPoints].To<Formula>(),
 				data[ColonyPopulationHitPoints].To<Formula>()
 			);
@@ -213,8 +212,32 @@ namespace Stareater.GameData.Databases
 			);
 		}
 		#endregion
-		
-		private static PlayerFormulaSet loadPlayerFormulas(IkonComposite data)
+
+		private static KeyValuePair<PlanetType, PlanetForumlaSet> loadPlanetFormulas(IkonComposite data)
+		{
+			var key = PlanetType.None;
+			switch(data[PlanetTypeKey].To<string>())
+			{
+				case PlanetTypeAsteroid:
+					key = PlanetType.Asteriod;
+					break;
+				case PlanetTypeGasGiant:
+					key = PlanetType.GasGiant;
+					break;
+				case PlanetTypeRock:
+					key = PlanetType.Rock;
+					break;
+			}
+
+			return new KeyValuePair<PlanetType, PlanetForumlaSet>(
+				key,
+				new PlanetForumlaSet(
+					data[PlanetSpaceliftFactor].To<Formula>(),
+					data[PlanetMaintenanceCost].To<Formula>()
+			));
+		}
+
+        private static PlayerFormulaSet loadPlayerFormulas(IkonComposite data)
 		{
 			return new PlayerFormulaSet(
 				data[PlayerResearchFocusWeight].To<Formula>()
@@ -652,6 +675,7 @@ namespace Stareater.GameData.Databases
 		private const string DevelopmentFocusesTag = "DevelopmentFocusOptions";
 		private const string DevelopmentTag = "DevelopmentTopic";
 		private const string NativesTag = "Natives";
+		private const string PlanetForumlasTag = "PlanetFormulas";
 		private const string PlayerFormulasTag = "PlayerFormulas";
 		private const string PredefinedDesignTag = "PredefinedDesign";
 		private const string ResearchTag = "ResearchTopic";
@@ -674,9 +698,6 @@ namespace Stareater.GameData.Databases
 		private const string AfflictTraitTag = "AfflictPlanets";
 		private const string PassiveTraitTag = "Passive";
 
-		private const string BaseMaintenanceAsteroid = "asteriodCost";
-		private const string BaseMaintenanceGasGiant = "gasGiantCost";
-		private const string BaseMaintenanceRock = "rockCost";
 		private const string ColonizationPopulationThreshold = "colonizationPopThreshold";
 		private const string ColonyDevelopment = "development";
 		private const string ColonyEnvironment = "environment";
@@ -690,10 +711,16 @@ namespace Stareater.GameData.Databases
 		private const string ColonyPopulationGrowth = "populationGrowth";
 		private const string ColonyPopulationHitPoints = "popHp";
 		private const string ColonyRepairPoints = "repair";
-		private const string ColonySpaceliftFactor = "spaceliftFactor";
 		private const string ColonyVictoryWorth = "victoryPointWorth";
 		private const string UncolonizedMaxPopulation = "uncolonizedMaxPopulation";
-		
+
+		private const string PlanetTypeKey = "type";
+		private const string PlanetTypeAsteroid = "asteriod";
+		private const string PlanetTypeGasGiant = "gasGiant";
+		private const string PlanetTypeRock = "rock";
+		private const string PlanetMaintenanceCost = "baseMaintenance";
+		private const string PlanetSpaceliftFactor = "spaceliftFactor";
+
 		private const string PlayerResearchFocusWeight = "focusedResearchWeight";
 		
 		private const string ShipCloaking = "cloaking";

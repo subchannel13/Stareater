@@ -13,7 +13,6 @@
 	
 	environment # 1;
 	organization # limit(infra_count / pop, 0, 1);
-	spaceliftFactor # 1 / (5 - 0.1 * rocketryLvl / 5);
 	
 	farming
 	{ Work
@@ -46,9 +45,24 @@
 		orgFactor # 1;
 	}
 	
-	asteriodCost # 1;
-	gasGiantCost # 0;
-	rockCost # 0;
 	repair # 0.2 * min(infra_count, pop);
 	popHp # 1e-5;
+}
+
+{ PlanetFormulas
+	type: asteriod
+	baseMaintenance # 0.5;
+	spaceliftFactor # 1;
+}
+
+{ PlanetFormulas
+	type: gasGiant
+	baseMaintenance # 0;
+	spaceliftFactor # 1 / (5 - 0.1 * rocketryLvl / 5);
+}
+
+{ PlanetFormulas
+	type: rock
+	baseMaintenance # 0;
+	spaceliftFactor # 1 / (5 - 0.1 * rocketryLvl / 5);
 }
