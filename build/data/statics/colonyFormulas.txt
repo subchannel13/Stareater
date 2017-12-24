@@ -4,6 +4,9 @@
 	maxPopulation # size / 10 * 1e9;
 	victoryPointWorth # 1e-6 * pop * 0.98 ^ turn;
 	farmFields # 0.1 * size / 10 * 1e9;
+	spaceliftFactor # 1 / limit(
+			if(noGrav, 0, 5) - 0.1 * rocketryLvl / 5,
+		1, 20);
 	
 	populationGrowth 
 	{ Stat
@@ -51,18 +54,15 @@
 
 { PlanetFormulas
 	type: asteriod
-	baseMaintenance # 0.5;
-	spaceliftFactor # 1;
+	baseTraits [ :noAtmo :noGrav ]
 }
 
 { PlanetFormulas
 	type: gasGiant
-	baseMaintenance # 0;
-	spaceliftFactor # 1 / (5 - 0.1 * rocketryLvl / 5);
+	baseTraits []
 }
 
 { PlanetFormulas
 	type: rock
-	baseMaintenance # 0;
-	spaceliftFactor # 1 / (5 - 0.1 * rocketryLvl / 5);
+	baseTraits []
 }

@@ -185,6 +185,7 @@ namespace Stareater.GameData.Databases
 				data[ColonyMaxPopulation].To<Formula>(),
 				loadDerivedStat(data[ColonyPopulationGrowth].To<IkonComposite>()),
 				data[ColonyOrganization].To<Formula>(),
+				data[ColonySpaceliftFactor].To<Formula>(),
 				loadPopulationActivity(data, ColonyFarming),
 				loadPopulationActivity(data, ColonyGardening),
 				loadPopulationActivity(data, ColonyMining),
@@ -232,8 +233,7 @@ namespace Stareater.GameData.Databases
 			return new KeyValuePair<PlanetType, PlanetForumlaSet>(
 				key,
 				new PlanetForumlaSet(
-					data[PlanetSpaceliftFactor].To<Formula>(),
-					data[PlanetMaintenanceCost].To<Formula>()
+					data[PlanetBaseTraits].To<string[]>()
 			));
 		}
 
@@ -711,6 +711,7 @@ namespace Stareater.GameData.Databases
 		private const string ColonyPopulationGrowth = "populationGrowth";
 		private const string ColonyPopulationHitPoints = "popHp";
 		private const string ColonyRepairPoints = "repair";
+		private const string ColonySpaceliftFactor = "spaceliftFactor";
 		private const string ColonyVictoryWorth = "victoryPointWorth";
 		private const string UncolonizedMaxPopulation = "uncolonizedMaxPopulation";
 
@@ -718,8 +719,7 @@ namespace Stareater.GameData.Databases
 		private const string PlanetTypeAsteroid = "asteriod";
 		private const string PlanetTypeGasGiant = "gasGiant";
 		private const string PlanetTypeRock = "rock";
-		private const string PlanetMaintenanceCost = "baseMaintenance";
-		private const string PlanetSpaceliftFactor = "spaceliftFactor";
+		private const string PlanetBaseTraits = "baseTraits";
 
 		private const string PlayerResearchFocusWeight = "focusedResearchWeight";
 		

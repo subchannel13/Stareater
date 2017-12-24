@@ -57,7 +57,15 @@ namespace Stareater.Utils.Collections
 			
 			return this;
 		}
-		
+
+		public Var UnionWith(IEnumerable<string> variables)
+		{
+			foreach (var name in variables)
+				this.variables[name] = 1;
+
+			return this;
+		}
+
 		public Var UnionWith<T>(IEnumerable<T> collection, Func<T, string> keySelector, Func<T, double> valueSelector)
 		{
 			foreach (var element in collection)

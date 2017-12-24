@@ -1,16 +1,16 @@
 ﻿using Stareater.AppData.Expressions;
+using Stareater.Galaxy.BodyTraits;
+using System.Collections.Generic;
 
 namespace Stareater.GameData.Databases.Tables
 {
 	class PlanetForumlaSet
 	{
-		public Formula SpaceliftFactor { get; private set; }
-		public Formula MaintenanceCost { get; private set; }
+		public IEnumerable<string> ImpliciteTraits { get; private set; }
 
-		public PlanetForumlaSet(Formula spaceliftFactor, Formula maintenanceCost)
+		public PlanetForumlaSet(IEnumerable<string> impliciteTraits)
 		{
-			this.SpaceliftFactor = spaceliftFactor;
-			this.MaintenanceCost = maintenanceCost;
+			this.ImpliciteTraits = impliciteTraits;
 		}
 	}
 }

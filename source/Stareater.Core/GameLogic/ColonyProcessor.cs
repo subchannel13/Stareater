@@ -99,7 +99,8 @@ namespace Stareater.GameLogic
 				And(PopulationKey, Colony.Population).
 				UnionWith(playerProcessor.TechLevels).
 				Init(statics.Traits.Keys, false).
-				UnionWith(Colony.Location.Planet.Traits, x => x.Type.IdCode, x => 1);
+				UnionWith(Colony.Location.Planet.Traits.Select(x => x.Type.IdCode)).
+				UnionWith(statics.PlanetForumlas[this.Colony.Location.Planet.Type].ImpliciteTraits);
 				
 			vars.Init(statics.Constructables.Where(x => x.ConstructableAt == SiteType.Colony).Select(x => x.IdCode.ToLower() + NewBuidingPrefix), false);
 
@@ -110,12 +111,12 @@ namespace Stareater.GameLogic
 		{
 			var vars = calcVars(statics, playerProcessor);
 			var formulas = statics.ColonyFormulas;
-			var planetFormulas = statics.PlanetForumlas[this.Colony.Location.Planet.Type];
-			
+			var planetEffects = statics.PlanetForumlas[this.Colony.Location.Planet.Type];
+
 			this.Environment = formulas.EnvironmentFactor.Evaluate(vars);
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
 			this.Organization = formulas.Organization.Evaluate(vars);
-			this.SpaceliftFactor = planetFormulas.SpaceliftFactor.Evaluate(vars);
+			this.SpaceliftFactor = formulas.SpaceliftFactor.Evaluate(vars);
 			
 			this.FarmerEfficiency = formulas.Farming.Evaluate(this.Organization, vars);
 			this.GardenerEfficiency = formulas.Gardening.Evaluate(this.Organization, vars);
@@ -139,7 +140,7 @@ namespace Stareater.GameLogic
 			this.RepairPoints = formulas.RepairPoints.Evaluate(vars);
 
 			this.MaintenanceCost = this.Colony.Population * (
-				planetFormulas.MaintenanceCost.Evaluate(vars) + 
+				planetEffects.ImpliciteTraits.Sum(x => statics.Traits[x].MaintenanceCost) + 
                 this.Colony.Location.Planet.Traits.Sum(x => x.Type.MaintenanceCost)
 			);
 			this.MaintenanceLimit = this.WorkingPopulation * this.BuilderEfficiency * this.SpaceliftFactor;

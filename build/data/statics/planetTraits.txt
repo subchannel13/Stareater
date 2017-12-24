@@ -13,7 +13,27 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: irradiated
 	
-	cost# 2;
+	cost# 1;
+	
+	effect {Passive}
+}
+
+{ Trait
+	langCode: NO_ATMOSPHERE
+	image :./images/technologies/hydroponicFarms.png
+	code: noAtmo
+	
+	cost# 0.5;
+	
+	effect {Passive}
+}
+
+{ Trait
+	langCode: NO_GRAVITY
+	image :./images/technologies/hydroponicFarms.png
+	code: noGrav
+	
+	cost# 0.2;
 	
 	effect {Passive}
 }
