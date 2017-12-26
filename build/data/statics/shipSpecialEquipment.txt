@@ -101,3 +101,18 @@
 	size # 0.01 * size;
 	maxCount # 1;
 }
+
+{ SpecialEquipment
+	langCode: SHIELD_SHARE
+	image :./images/technologies/hydroponicFarms.png
+	code: shieldShare
+	
+	maxLvl= 5
+	prerequisites [
+		:shieldShare #lvl;
+	]
+	
+	cost # 10e3 * size;
+	size # 0.01 * size;
+	maxCount # 1;
+}

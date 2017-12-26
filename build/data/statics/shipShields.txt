@@ -62,3 +62,25 @@
 	cost # 2e6 * size;
 	power # size * (1 + 0.05 * lvl);
 }
+
+{ Shield
+	langCode: WEB_SCREEN
+	image :./images/technologies/hydroponicFarms.png
+	code: webScreen
+	
+	maxLvl= 5
+	prerequisites [
+		:webScreen #lvl;
+	]
+	
+	reduction # 0;
+	restoration # 0.1;
+	shieldFactor # 0.5;
+	thickness # 5 + 1 * lvl;
+	
+	cloaking # -2 + 0.2 * lvl;
+	jamming # -2 + 0.2 * lvl;
+	
+	cost # 2e6 * size;
+	power # size * (2 + 0.1 * lvl);
+}

@@ -5,11 +5,25 @@
 	
 	maxLvl = 4
 	prerequisites [
-		:nuclearPower #lvl - 1;
+		:reactorLevel #lvl;
 	]
 	
-	minSize # 5;
+	minSize # 10;
 	power # (reactorSize - 4) * 5 * 2 ^ (lvl / 4);
+}
+
+{ Reactor
+	langCode: FUSION_REACTOR
+	image :./images/technologies/hydroponicFarms.png
+	code: fusion
+	
+	maxLvl = 5
+	prerequisites [
+		:reactorLevel #if(lvl > 0, lvl - 2, -1);
+	]
+	
+	minSize # 40;
+	power # (reactorSize - 4) * 10 * 2 ^ (lvl / 5);
 }
 
 { Reactor
@@ -32,7 +46,7 @@
 	
 	maxLvl = 4
 	prerequisites [
-		:nuclearPower #lvl - 1;
+		:reactorLevel #lvl;
 		:miniReactor #0;
 	]
 	

@@ -52,6 +52,8 @@ CATALYZER_DESC = No description.
 :Reactors
 NUCLEAR_REACTOR_NAME = Nuclear reactor
 NUCLEAR_REACTOR_DESC = No description.
+FUSION_REACTOR_NAME = Fusion reactor
+FUSION_REACTOR_DESC = No description.
 CHEMICAL_REACTOR_NAME = Turbine APU
 CHEMICAL_REACTOR_DESC = Auxiliary power unit for powering ship's hyraulic and providing electricity.
 NUCLEAR_REACTOR_SMALL_NAME = Thermoelectric generator
@@ -72,6 +74,8 @@ EM_SHIELD_NAME = EM shield
 EM_SHIELD_DESC = No description.
 PARTICLE_SHIELD_NAME = Particle shield
 PARTICLE_SHIELD_DESC = No description.
+WEB_SCREEN_NAME = Web screen
+WEB_SCREEN_DESC = No description.
 -
 
 :SpecialEquipment

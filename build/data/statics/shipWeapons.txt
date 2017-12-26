@@ -84,7 +84,7 @@
 	
 	maxLvl = 5
 	prerequisites [
-		:nuclearPower #lvl;
+		:reactorLevel #lvl - 1;
 	]
 	
 	cost # 25e6 * 0.2 ^ (lvl / 5);

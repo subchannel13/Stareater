@@ -5,28 +5,30 @@
 	victoryPointWorth # 1e-6 * pop * 0.98 ^ turn;
 	farmFields # 0.1 * size / 10 * 1e9;
 	spaceliftFactor # 1 / limit(
-			if(noGrav, 0, 5) - 0.1 * rocketryLvl / 5,
+			if(noGrav, 0, 5) - 2 * rocketryLvl / 5,
 		1, 20);
 	
 	populationGrowth 
 	{ Stat
-		base # pop * 0.04 * (1 + 0.5 * childCareLvl / 5);
+		base # pop * 0.04 * 
+			(1 + 0.5 * childCareLvl / 5) * 
+			if(noGrav, 0.8 ^ (1 - microgravTol / 5), 1);
 		total # base + housing_delta;
 	}
 	
-	environment # 1;
+	environment # if(noGrav, 0.8 ^ (1 - microgravTol / 5), 1);
 	organization # limit(infra_count / pop, 0, 1);
 	
 	farming
 	{ Work
-		improvised	# 3 + if(fertile, 4, 0);
-		organized	# 4 + if(fertile, 4, 0) + 2 * (greenHouseLvl / 5);
+		improvised	# 3 + if(fertile, 4 + 2 * (greenHouseLvl / 5), 0);
+		organized	# 4 + if(fertile, 4 + 2 * (greenHouseLvl / 5), 0) +  2 * (gmoFood / 5);
 		orgFactor # 0.5 + 0.5 * farmLawsLvl / 5;
 	}
 	gardening
 	{ Work
 		improvised	# 1.5;
-		organized	# 1.5 + 1 * (hydroFarmLvl / 5);
+		organized	# 1.5 + 1 * (hydroFarmLvl / 5) +  0.5 * (gmoFood / 5);
 		orgFactor # 0.5 + 0.5 * farmLawsLvl / 5;
 	}
 	mining

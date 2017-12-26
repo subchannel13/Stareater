@@ -44,15 +44,6 @@
 }
 
 { DevelopmentTopic
-	langCode: NUCLEAR_REACTOR
-	code: nuclearPower
-	cost # lvl [1, 3, 6, 10] * 20e9;
-	maxLvl= 10
-	prerequisites []
-	image: ./images/technologies/hydroponicFarms.png
-}
-
-{ DevelopmentTopic
 	langCode: RADAR
 	code: radar
 	cost # lvl [1, 3, 6, 10] * 20e9;
