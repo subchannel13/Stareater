@@ -84,7 +84,7 @@
 	
 	maxLvl = 5
 	prerequisites [
-		:reactorLevel #lvl - 1;
+		:nukeWarhead #lvl - 1;
 	]
 	
 	cost # 25e6 * 0.2 ^ (lvl / 5);
@@ -107,11 +107,11 @@
 { MissionEquipment
 	langCode: TORPEDO
 	image: ./images/technologies/hydroponicFarms.png
-	code: nukeTorpedo
+	code: nukeWarhead
 	
 	maxLvl = 4
 	prerequisites [
-		:nukeTorpedo #lvl;
+		:nukeWarhead #lvl;
 	]
 	
 	cost # 25e6 * 0.2 ^ (lvl / 4);
