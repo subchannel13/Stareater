@@ -12,41 +12,41 @@
 	{ Stat
 		base # pop * 0.04 * 
 			(1 + 0.5 * childCareLvl / 5) * 
-			if(noGrav, 0.8 ^ (1 - microgravTol / 5), 1);
+			if(noGrav, 0.8 ^ (1 - microgravTolLvl / 5), 1);
 		total # base + housing_delta;
 	}
 	
-	environment # if(noGrav, 0.8 ^ (1 - microgravTol / 5), 1);
+	environment # if(noGrav, 0.8 ^ (1 - microgravTolLvl / 5), 1);
 	organization # limit(infra_count / pop, 0, 1);
 	
 	farming
 	{ Work
 		improvised	# 3 + if(fertile, 4 + 2 * (greenHouseLvl / 5), 0);
-		organized	# 4 + if(fertile, 4 + 2 * (greenHouseLvl / 5), 0) +  2 * gmoFood / 5;
+		organized	# 4 + if(fertile, 4 + 2 * (greenHouseLvl / 5), 0) +  2 * gmoFoodLvl / 5;
 		orgFactor # 0.5 + 0.5 * farmLawsLvl / 5;
 	}
 	gardening
 	{ Work
 		improvised	# 1.5;
-		organized	# 1.5 + 1 * (hydroFarmLvl / 5) +  0.5 * (gmoFood / 5);
+		organized	# 1.5 + 1 * (hydroFarmLvl / 5) +  0.5 * (gmoFoodLvl / 5);
 		orgFactor # 0.5 + 0.5 * farmLawsLvl / 5;
 	}
 	mining
 	{ Work
 		improvised	# 10 + 2 * mineToolsLvl / 5;
-		organized	# 20 + 10 * mineToolsLvl / 5 + 5 * recycle / 5;
+		organized	# 20 + 10 * mineToolsLvl / 5 + 5 * recycleLvl / 5;
 		orgFactor # 0.5 + 0.5 * mineLawsLvl / 5;
 	}
 	industry
 	{ Work
 		improvised	# 2;
-		organized	# 5 + 2 * recycle / 5;
+		organized	# 5 + 2 * recycleLvl / 5;
 		orgFactor # 1;
 	}
 	development 
 	{ Work
 		improvised	# 2;
-		organized	# 5 + 1 * recycle / 5;
+		organized	# 5 + 1 * recycleLvl / 5;
 		orgFactor # 1;
 	}
 	
