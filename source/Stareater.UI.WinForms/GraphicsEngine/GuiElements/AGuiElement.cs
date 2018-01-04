@@ -2,7 +2,6 @@
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
-	//TODO(v0.7) consider converting to abstract class with scene attachment mechanism and overridable input handling
 	abstract class AGuiElement
 	{
 		private AScene scene;
@@ -35,7 +34,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		protected void UpdateScene()
 		{
-			if (this.scene == null )
+			if (this.scene == null)
 				return;
 
 			var sceneObject = this.MakeSceneObject();
@@ -68,5 +67,14 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			return 0;
 		}
-    }
+
+		protected void Apply<T>(ref T state, T newValue)
+		{
+			var oldValue = state;
+			state = newValue;
+
+			if ((oldValue == null && newValue != null) || !oldValue.Equals(newValue))
+				this.UpdateScene();
+		}
+	}
 }

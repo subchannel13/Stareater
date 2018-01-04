@@ -14,8 +14,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mText; }
 			set
 			{
-				this.mText = value;
-				this.UpdateScene();
+				Apply(ref this.mText, value);
 			}
 		}
 
@@ -25,8 +24,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mTextColor; }
 			set
 			{
-				this.mTextColor = value;
-				this.UpdateScene();
+				Apply(ref this.mTextColor, value);
 			}
 		}
 
@@ -36,8 +34,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mTextSize; }
 			set
 			{
-				this.mTextSize = value;
-				this.UpdateScene();
+				Apply(ref this.mTextSize, value);
 			}
 		}
 
@@ -50,7 +47,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				StartSprite(this.Z, TextRenderUtil.Get.TextureId, this.TextColor).
 				AddVertices(TextRenderUtil.Get.BufferText(this.Text, -0.5f, Matrix4.Identity)).
 				Scale(this.TextSize, this.TextSize).
-				Translate(this.Position.Center).
+				Translate(this.Position.Center + new Vector2(0, this.TextSize / 2)).
 				Build();
 		}
 

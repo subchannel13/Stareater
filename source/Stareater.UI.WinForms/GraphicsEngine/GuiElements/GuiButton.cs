@@ -22,8 +22,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundHover; }
 			set
 			{
-				this.mBackgroundHover = value;
-				this.UpdateScene();
+				Apply(ref this.mBackgroundHover, value);
 			}
 		}
 
@@ -33,8 +32,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundNormal; }
 			set
 			{
-				this.mBackgroundNormal = value;
-				this.UpdateScene();
+				Apply(ref this.mBackgroundNormal, value);
 			}
 		}
 
@@ -44,8 +42,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mText; }
 			set
 			{
-				this.mText = value;
-				this.UpdateScene();
+				Apply(ref this.mText, value);
 			}
 		}
 
@@ -55,8 +52,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mTextColor; }
 			set
 			{
-				this.mTextColor = value;
-				this.UpdateScene();
+				Apply(ref this.mTextColor, value);
 			}
 		}
 
@@ -66,8 +62,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mTextSize; }
 			set
 			{
-				this.mTextSize = value;
-				this.UpdateScene();
+				Apply(ref this.mTextSize, value);
 			}
 		}
 
@@ -75,9 +70,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			var inside = !this.isOutside(mousePosition);
 
-			setAndUpdate(
-				ref this.isPressed,
-				inside);
+			Apply(ref this.isPressed, inside);
 
 			return inside;
 		}
@@ -86,9 +79,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			if (this.isOutside(mousePosition) || !this.isPressed)
 			{
-				setAndUpdate(
-					ref this.isPressed,
-					false);
+				Apply(ref this.isPressed, false);
 
 				return false;
 			}
@@ -101,9 +92,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override void OnMouseMove(Vector2 mousePosition)
 		{
-			setAndUpdate(
-				ref this.isHovered, 
-				!this.isOutside(mousePosition));
+			Apply(ref this.isHovered, !this.isOutside(mousePosition));
 		}
 
 		protected override SceneObject MakeSceneObject()
@@ -131,14 +120,5 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return Math.Abs(innerPoint.X) > this.Position.Size.X / 2 ||
 				Math.Abs(innerPoint.Y) > this.Position.Size.Y / 2;
         }
-
-		private void setAndUpdate(ref bool state, bool newValue)
-		{
-			var oldValue = state;
-			state = newValue;
-
-			if (oldValue != newValue)
-				this.UpdateScene();
-		}
 	}
 }
