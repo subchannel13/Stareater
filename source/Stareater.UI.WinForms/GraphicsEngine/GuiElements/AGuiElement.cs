@@ -44,7 +44,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 				this.scene.UpdateScene(ref this.graphicObject, sceneObject);
 		}
 
-		public virtual bool OnMouseClick(Vector2 mousePosition)
+		public virtual bool OnMouseDown(Vector2 mousePosition)
+		{
+			return false;
+		}
+
+		public virtual bool OnMouseUp(Vector2 mousePosition)
 		{
 			return false;
 		}

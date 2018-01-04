@@ -8,6 +8,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 {
 	class GuiButton : AGuiElement
 	{
+		private const float PressOffsetX = 1.5f;
+		private const float PressOffsetY = -3;
+
+		private bool isPressed = false;
 		private bool isHovered = false;
 
 		public Action ClickCallback { get; set; }
@@ -67,31 +71,50 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
-		public override bool OnMouseClick(Vector2 mousePosition)
+		public override bool OnMouseDown(Vector2 mousePosition)
 		{
-			if (this.isOutside(mousePosition))
-				return false;
+			var inside = !this.isOutside(mousePosition);
 
+			setAndUpdate(
+				ref this.isPressed,
+				inside);
+
+			return inside;
+		}
+
+		public override bool OnMouseUp(Vector2 mousePosition)
+		{
+			if (this.isOutside(mousePosition) || !this.isPressed)
+			{
+				setAndUpdate(
+					ref this.isPressed,
+					false);
+
+				return false;
+			}
+
+			this.isPressed = false;
 			this.ClickCallback();
+			this.UpdateScene();
 			return true;
 		}
 
 		public override void OnMouseMove(Vector2 mousePosition)
 		{
-			var oldState = this.isHovered;
-
-            this.isHovered = !this.isOutside(mousePosition);
-			if (this.isHovered != oldState)
-				this.UpdateScene();
+			setAndUpdate(
+				ref this.isHovered, 
+				!this.isOutside(mousePosition));
 		}
 
 		protected override SceneObject MakeSceneObject()
 		{
+			var pressOffset = this.isPressed && this.isHovered ? new Vector2(PressOffsetX, PressOffsetY) : new Vector2(0, 0);
+
 			var background = (this.isHovered ? this.BackgroundHover : this.mBackgroundNormal).Value;
 			var soBuilder = new SceneObjectBuilder().
 				StartSimpleSprite(this.Z, background, Color.White).
 				Scale(this.Position.Size.X, this.Position.Size.Y).
-				Translate(this.Position.Center);
+				Translate(this.Position.Center + pressOffset);
 
 			if (!string.IsNullOrWhiteSpace(this.Text))
 				soBuilder.StartSprite(this.Z / 2, TextRenderUtil.Get.TextureId, this.TextColor). //TODO(v0.7) better define GUI z range
@@ -108,5 +131,14 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return Math.Abs(innerPoint.X) > this.Position.Size.X / 2 ||
 				Math.Abs(innerPoint.Y) > this.Position.Size.Y / 2;
         }
+
+		private void setAndUpdate(ref bool state, bool newValue)
+		{
+			var oldValue = state;
+			state = newValue;
+
+			if (oldValue != newValue)
+				this.UpdateScene();
+		}
 	}
 }

@@ -70,13 +70,25 @@ namespace Stareater.GraphicsEngine
 			this.onMouseDoubleClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy);
 		}
 
-		public void HandleMouseClick(MouseEventArgs e)
+		public void HandleMouseDown(MouseEventArgs e)
 		{
 			//TODO(later) differentiate between left and right click
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 
 			foreach (var element in this.guiElements)
-				if (element.OnMouseClick(mouseGuiPoint))
+				if (element.OnMouseDown(mouseGuiPoint))
+					return;
+
+			this.onMouseClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy);
+		}
+
+		public void HandleMouseUp(MouseEventArgs e)
+		{
+			//TODO(later) differentiate between left and right click
+			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
+
+			foreach (var element in this.guiElements)
+				if (element.OnMouseUp(mouseGuiPoint))
 					return;
 
 			this.onMouseClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy);

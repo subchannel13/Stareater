@@ -397,13 +397,19 @@ namespace Stareater.GUI
 			if (this.currentRenderer != null)
 				this.currentRenderer.HandleKeyPress(e);
 		}
-		
-		private void glCanvas_MouseClick(object sender, MouseEventArgs e)
+
+		private void glCanvas_MouseDown(object sender, MouseEventArgs e)
 		{
 			if (this.currentRenderer != null)
-				this.currentRenderer.HandleMouseClick(e);
+				this.currentRenderer.HandleMouseDown(e);
 		}
-		
+
+		private void glCanvas_MouseUp(object sender, MouseEventArgs e)
+		{
+			if (this.currentRenderer != null)
+				this.currentRenderer.HandleMouseUp(e);
+		}
+
 		private void glCanvas_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
 			if (this.currentRenderer != null)
