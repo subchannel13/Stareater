@@ -10,9 +10,11 @@
 	
 	populationGrowth 
 	{ Stat
-		base # pop * 0.04 * 
-			(1 + 0.5 * childCareLvl / 5) * 
-			if(noGrav, 0.8 ^ (1 - microgravTolLvl / 5), 1);
+		base # pop * 0.04 * (
+				(1 + 0.5 * childCareLvl / 5) * 
+				if(noGrav, 0.8 ^ (1 - microgravTolLvl / 5), 1) -
+				maintenancePenalty
+			);
 		total # base + housing_delta;
 	}
 	

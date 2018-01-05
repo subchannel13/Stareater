@@ -91,8 +91,24 @@ namespace Stareater.GameLogic
 			var maintenanceCost = derivates.Colonies.OwnedBy[this.Player].Sum(x => x.MaintenanceCost);
             var availabeMaintenance = derivates.Colonies.OwnedBy[this.Player].Sum(x => x.MaintenanceLimit);
 
-			//TODO(later) what to do if cost is too high?
-			this.MaintenanceRatio = Methods.Clamp(maintenanceCost / availabeMaintenance, 0, 1);
+			//TODO(later) make player adjustable
+			var maintenanceLimit = 0.5;
+			this.MaintenanceRatio = Methods.Clamp(maintenanceCost / availabeMaintenance, 0, maintenanceLimit);
+
+			if (maintenanceCost > availabeMaintenance * maintenanceLimit)
+			{
+				availabeMaintenance *= maintenanceLimit;
+                var needMaintenance = derivates.Colonies.OwnedBy[this.Player].
+					Where(x => x.MaintenanceCost > 0).
+					OrderBy(x => x.MaintenancePerPop);
+
+				foreach (var colony in needMaintenance)
+				{
+					var spent = Math.Min(availabeMaintenance, colony.MaintenanceCost);
+					availabeMaintenance -= spent;
+					colony.MaintenancePenalty = colony.MaintenancePerPop * (1 - spent / colony.MaintenanceCost);
+                }
+			}
 		}
 
 		#region Technology related

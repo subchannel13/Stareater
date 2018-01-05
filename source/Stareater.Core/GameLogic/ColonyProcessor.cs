@@ -20,7 +20,8 @@ namespace Stareater.GameLogic
 		public const string PlanetSizeKey = "size";
 		private const string PopulationGrowthKey = "popGrowth";
 		private const string PopulationKey = "pop";
-		
+		private const string MaintenancePenaltyKey = "maintenancePenalty";
+
 		[StateProperty]
 		public Colony Colony { get; set; }
 		
@@ -56,11 +57,15 @@ namespace Stareater.GameLogic
 		[StateProperty]
 		public double Development { get; private set; }
 		[StateProperty]
-		public double RepairPoints { get; protected set; }
+		public double RepairPoints { get; private set; }
 		[StateProperty]
-		public double MaintenanceCost { get; protected set; }
+		public double MaintenanceCost { get; private set; }
 		[StateProperty]
-		public double MaintenanceLimit { get; protected set; }
+		public double MaintenancePerPop { get; private set; }
+		[StateProperty]
+		public double MaintenanceLimit { get; private set; }
+		[StateProperty]
+		public double MaintenancePenalty { get; set; }
 
 		public ColonyProcessor(Colony colony) : base()
 		{
@@ -139,16 +144,18 @@ namespace Stareater.GameLogic
 			this.WorkingPopulation = this.Colony.Population - this.Farmers;
 			this.RepairPoints = formulas.RepairPoints.Evaluate(vars);
 
-			this.MaintenanceCost = this.Colony.Population * (
-				planetEffects.ImpliciteTraits.Sum(x => statics.Traits[x].MaintenanceCost) + 
-                this.Colony.Location.Planet.Traits.Sum(x => x.Type.MaintenanceCost)
-			);
-			this.MaintenanceLimit = this.WorkingPopulation * this.BuilderEfficiency * this.SpaceliftFactor;
+			this.MaintenancePerPop =
+				planetEffects.ImpliciteTraits.Sum(x => statics.Traits[x].MaintenanceCost) +
+				this.Colony.Location.Planet.Traits.Sum(x => x.Type.MaintenanceCost);
+			this.MaintenanceCost = this.Colony.Population * this.MaintenancePerPop;
+            this.MaintenanceLimit = this.WorkingPopulation * this.BuilderEfficiency * this.SpaceliftFactor;
+			this.MaintenancePenalty = 0;
         }
 		
 		public void CalculateDerivedEffects(StaticsDB statics, PlayerProcessor playerProcessor)
 		{
 			var vars = calcVars(statics, playerProcessor);
+			vars[MaintenancePenaltyKey] = this.MaintenancePenalty;
 			var counter = new NewBuildingsCounter(vars); //TODO(v0.7) rename class and variable?
 
 			foreach (var construction in SpendingPlan)
