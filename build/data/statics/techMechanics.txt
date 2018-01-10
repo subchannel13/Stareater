@@ -4,25 +4,16 @@
 	image: ./images/technologies/hydroponicFarms.png
 	cost # lvl [13, 12, 11, 10, 9, 8, 7, 6];
 	devTopics [
-		[ :cargo :surveyor :mineTools ]
-		[ :extraThrust :robo :neutronThrust ]
+		[ :computer :surveyor :mineTools ]
+		[ :cargo :extraThrust :neutronThrust ]
 	]
 }
 
 { DevelopmentTopic
-	langCode: CARGO
-	code: cargo
+	langCode: COMP
+	code: computer
 	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 3, 10];
-	maxLvl= 10
-	prerequisites []
-	image : ./images/technologies/industry.png
-}
-
-{ DevelopmentTopic
-	langCode: SURVEY
-	code: surveyor
-	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 3, 10];
-	maxLvl= 10
+	maxLvl= 4
 	prerequisites []
 	image : ./images/technologies/industry.png
 }
@@ -31,7 +22,26 @@
 	langCode: MINE_TOOLS
 	code: mineTools
 	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 3, 10];
-	maxLvl= 10
+	maxLvl= 4
+	prerequisites []
+	image : ./images/technologies/industry.png
+}
+
+{ DevelopmentTopic
+	langCode: SURVEY
+	code: surveyor
+	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 3, 10];
+	maxLvl= 4
+	prerequisites []
+	image : ./images/technologies/industry.png
+}
+
+
+{ DevelopmentTopic
+	langCode: CARGO
+	code: cargo
+	cost # lvl [1, 3, 6, 10] * 500e9 * priority [1, 3, 10];
+	maxLvl= 4
 	prerequisites []
 	image : ./images/technologies/industry.png
 }
@@ -39,28 +49,25 @@
 { DevelopmentTopic
 	langCode: EXTRA_THRUST
 	code: extraThrust
-	cost # 150e9 * (lvl + 2 ^ lvl);
-	maxLvl= 10
-	prerequisites [
-		:Ind # 5;
-	]
-	image : ./images/technologies/industry.png
-}
-
-{ DevelopmentTopic
-	langCode: ROBO
-	code: robo
-	cost # 150e9 * (lvl + 2 ^ lvl);
-	maxLvl= 10
-	prerequisites [
-		:Ind # 5;
-	]
+	cost # lvl [1, 3, 6, 10] * 500e9 * priority [1, 3, 10];
+	maxLvl= 4
+	prerequisites []
 	image : ./images/technologies/industry.png
 }
 
 { DevelopmentTopic
 	langCode: NEUTRON_THRUST
 	code: neutronThrust
+	cost # lvl [1, 3, 6, 10] * 500e9 * priority [1, 3, 10];
+	maxLvl= 4
+	prerequisites []
+	image : ./images/technologies/industry.png
+}
+
+
+{ DevelopmentTopic
+	langCode: ROBO
+	code: robo
 	cost # 150e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
 	prerequisites [

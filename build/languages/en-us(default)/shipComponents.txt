@@ -93,6 +93,8 @@ CARGO_NAME = Cargo bay
 CARGO_DESC = No description.
 SURVEY_NAME = Surveyor
 SURVEY_DESC = No description.
+SHIELD_SHARE_NAME = Area shield
+SHIELD_SHARE_DESC = No description.
 -
 
 :Thrusters
@@ -100,4 +102,6 @@ HYDROGEN_THRUSTER_NAME = Hydrogen thrusters
 HYDROGEN_THRUSTER_DESC = Standard rocket engine which propels a ship by burning hydrogen-oxygen mixture.
 ION_THRUSTER_NAME = Ion thrusters
 ION_THRUSTER_DESC = No description.
+NEUTRON_THRUSTER_NAME = Neutron thrusters
+NEUTRON_THRUSTER_DESC = No description.
 -

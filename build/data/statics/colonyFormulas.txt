@@ -47,8 +47,8 @@
 	}
 	development 
 	{ Work
-		improvised	# 2;
-		organized	# 5 + 1 * recycleLvl / 5;
+		improvised	# 2 + 0.5 * compSciLvl / 5;
+		organized	# 5 + 1 * recycleLvl / 5 + 2.5 * compSciLvl / 5;
 		orgFactor # 1;
 	}
 	

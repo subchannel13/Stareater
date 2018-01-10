@@ -11,3 +11,17 @@
 	speed # 0.5 + 0.25 * lvl / 5;
 	evasion # 20 + lvl;
 }
+
+{ Thruster
+	langCode: NEUTRON_THRUSTER
+	image :./images/technologies/hydroponicFarms.png
+	code: neutron
+	
+	maxLvl = 4
+	prerequisites [
+		:neutronThrust #lvl;
+	]
+	
+	speed # 0.65 + 0.35 * lvl / 4;
+	evasion # 23 + lvl;
+}

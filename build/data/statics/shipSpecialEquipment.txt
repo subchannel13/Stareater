@@ -62,13 +62,13 @@
 	image :./images/technologies/hydroponicFarms.png
 	code: comp
 	
-	maxLvl= 5
+	maxLvl= 4
 	prerequisites [
-		:computer #lvl;
+		:computer #lvl - 1;
 	]
 	
-	cost # 0;
-	size # 0;
+	cost # 0.2e6 * size * 0.1 ^ lvl / 4;
+	size # 0.2 * size * 0.1 ^ lvl / 4;
 	maxCount # 1;
 }
 
