@@ -37,11 +37,12 @@
 	image: ./images/technologies/hydroponicFarms.png
 }
 
+
 { DevelopmentTopic
 	langCode: HEAVY_IND
 	code: heavyInd
-	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
-	maxLvl= 5
+	cost # lvl [1, 3, 6, 10] * 500e9 * priority [1, 10];
+	maxLvl= 4
 	prerequisites []
 	image: ./images/technologies/industry.png
 }
@@ -49,11 +50,12 @@
 { DevelopmentTopic
 	langCode: SDI
 	code: sdi
-	cost # 80e9 * (lvl + 2 ^ lvl) * 3 ^ priority;
-	maxLvl= 10
+	cost # lvl [1, 3, 6, 10] * 500e9 * priority [1, 10];
+	maxLvl= 4
 	prerequisites []
 	image: ./images/technologies/industry.png
 }
+
 
 { DevelopmentTopic
 	langCode: IND

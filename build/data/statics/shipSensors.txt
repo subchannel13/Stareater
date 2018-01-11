@@ -23,3 +23,16 @@
 	
 	detection # 12 + 0.5 * lvl;
 }
+
+{ Sensor
+	langCode: NEUTRINO
+	image :./images/technologies/hydroponicFarms.png
+	code: neutrino
+	
+	maxLvl = 5
+	prerequisites [
+		:neutrinoScan #lvl;
+	]
+	
+	detection # 15 + 0.5 * lvl;
+}

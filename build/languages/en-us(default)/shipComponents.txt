@@ -44,6 +44,8 @@ FUSION_BEAM_NAME = Fusion beam
 FUSION_BEAM_DESC = No description.
 ION_BEAM_NAME = Ion cannon
 ION_BEAM_DESC = No description.
+GAUSS_NAME = Gauss cannon
+GAUSS_DESC = No description.
 
 CATALYZER_NAME = Catalisys capsule
 CATALYZER_DESC = No description.
@@ -65,6 +67,8 @@ EM_SENSOR_NAME = Radar
 EM_SENSOR_DESC = An object-detection system that uses radio waves.
 LIDAR_NAME = Lidar
 LIDAR_DESC = No description.
+NEUTRINO_NAME = Neutrino sensor
+NEUTRINO_DESC = No description.
 -
 
 :Shields

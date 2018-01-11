@@ -184,3 +184,29 @@
 		}
 	]
 }
+
+{ MissionEquipment
+	langCode: GAUSS
+	image: ./images/technologies/hydroponicFarms.png
+	code: gauss
+	
+	maxLvl = 5
+	prerequisites [
+		:gauss #lvl;
+	]
+	
+	cost # 25e6 * 0.2 ^ (lvl / 5);
+	size # lvl [5, 5, 4, 4, 3];
+	
+	abilities [
+		{ DirectShot
+			image: ./images/technologies/hydroponicFarms.png
+			firePower # 20;
+			accuracy # 20;
+			range # 1;
+			energyCost # 5;
+			
+			accuracyRangePenalty # -2;
+		}
+	]
+}

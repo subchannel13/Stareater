@@ -71,15 +71,15 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var playerTechs = Game.States.DevelopmentAdvances.Of[this.Player];
-				var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
-				var localEffencts = Processor.LocalEffects(Game.Statics).Get;
+				var playerTechs = this.Game.States.DevelopmentAdvances.Of[this.Player];
+				var techLevels = this.Game.Derivates.Of(this.Player).TechLevels;
+				var localEffencts = this.Processor.LocalEffects(this.Game.Statics).UnionWith(techLevels).Get;
 
-				foreach (var constructable in Game.Statics.Constructables)
+				foreach (var constructable in this.Game.Statics.Constructables)
 					if (Prerequisite.AreSatisfied(constructable.Prerequisites, 0, techLevels) &&
 						constructable.ConstructableAt == Site.Type &&
 						constructable.Condition.Evaluate(localEffencts) > 0)
-						yield return new ConstructableInfo(new StaticProject(constructable), Game.Derivates.Players.Of[this.Player]);
+						yield return new ConstructableInfo(new StaticProject(constructable), this.Game.Derivates.Players.Of[this.Player]);
 			}
 		}
 		
