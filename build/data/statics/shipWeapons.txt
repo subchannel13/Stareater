@@ -62,17 +62,17 @@
 	]
 	
 	cost # 25e6 * 0.2 ^ (lvl / 5);
-	size # lvl [5, 5, 4, 4, 4];
+	size # 2;
 	
 	abilities [
 		{ DirectShot
 			image: ./images/technologies/hydroponicFarms.png
-			firePower # 20;
+			firePower # 5;
 			accuracy # 30;
 			range # 0;
 			energyCost # 0;
 			
-			ammo # 2;
+			ammo # lvl [2, 2, 3, 3, 3];
 		}
 	]
 }
