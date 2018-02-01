@@ -8,7 +8,8 @@ using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.GameLogic;
 using Stareater.Players;
-using Stareater.SpaceCombat;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace Stareater.Controllers
 {
@@ -18,7 +19,9 @@ namespace Stareater.Controllers
 		private readonly MainGame mainGame;
 		private readonly GameController gameController;
 		private readonly Dictionary<Player, IBattleEventListener> playerListeners;
-		
+
+		private BlockingCollection<Action> messageQueue = new BlockingCollection<Action>(1);
+
 		private SpaceBattleProcessor processor = null;
 		
 		internal SpaceBattleController(Conflict conflict, GameController gameController, MainGame mainGame)
@@ -62,32 +65,27 @@ namespace Stareater.Controllers
 		#region Unit actions
 		public void MoveTo(Vector2D destination)
 		{
-			this.processor.MoveTo(destination);
-			this.checkNextUnit();
+			this.messageQueue.Add(() => this.processor.MoveTo(destination));
 		}
 		
 		public void UnitDone()
 		{
-			this.processor.UnitDone();
-			this.checkNextUnit();
+			this.messageQueue.Add(() => this.processor.UnitDone());
 		}
 		
 		public void UseAbility(AbilityInfo ability, CombatantInfo target)
 		{
-			this.processor.UseAbility(ability.Index, ability.Quantity, target.Data);
-			this.checkNextUnit();
+			this.messageQueue.Add(() => this.processor.UseAbility(ability.Index, ability.Quantity, target.Data));
 		}
 		
 		public void UseAbility(AbilityInfo ability, CombatPlanetInfo planet)
 		{
-			this.processor.UseAbility(ability.Index, ability.Quantity, planet.Data);
-			this.checkNextUnit();
+			this.messageQueue.Add(() => this.processor.UseAbility(ability.Index, ability.Quantity, planet.Data));
 		}
 		
 		public void UseAbilityOnStar(AbilityInfo ability)
 		{
-			this.processor.UseAbility(ability.Index, ability.Quantity, this.Star);
-			this.checkNextUnit();
+			this.messageQueue.Add(() => this.processor.UseAbility(ability.Index, ability.Quantity, this.Star));
 		}
 		#endregion
 		
@@ -109,10 +107,16 @@ namespace Stareater.Controllers
 		
 		internal void Start()
 		{
-			this.checkNextUnit(); //TODO(0.7) AI vs AI could cause stack overflow
+			this.checkNextUnit();
+
+			while (!this.processor.IsOver)
+			{
+				var message = this.messageQueue.Take();
+				message();
+				this.checkNextUnit();
+			}
 		}
 
-		//TODO(v0.7) callers can cause stack overflow if they perform multiple unit action in a single function
 		private void checkNextUnit()
 		{
 			if (this.processor.IsOver)
@@ -124,11 +128,15 @@ namespace Stareater.Controllers
 		private void playNextUnit()
 		{
 			var currentUnit = this.battleGame.PlayOrder.Peek();
-			playerListeners[currentUnit.Owner].PlayUnit(new CombatantInfo(
-				currentUnit, 
-				mainGame, 
-				this.processor.ValidMoves(currentUnit)
-			));
+
+			Task.Factory.StartNew(() =>
+				playerListeners[currentUnit.Owner].PlayUnit(new CombatantInfo(
+					currentUnit, 
+					mainGame, 
+					this.processor.ValidMoves(currentUnit)
+				))
+			);
+			//TODO(later) check for exception
 		}
 		#endregion
 	}

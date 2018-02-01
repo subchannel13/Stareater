@@ -33,6 +33,7 @@ namespace Stareater.Controllers
 		private GameController endTurnCopy = null;
 		private IGameStateListener stateListener;
 		private Task aiGalaxyPhase = null;
+		private Task combatPhase = null;
 		private Task processingPhase = null;
 		private PlayerController[] playerControllers = null;
 		private PlayerController organelleController = null;
@@ -93,6 +94,7 @@ namespace Stareater.Controllers
 			this.State = GameState.NoGame;
 			
 			if (this.aiGalaxyPhase != null) this.aiGalaxyPhase.Wait();
+			if (this.combatPhase != null) this.combatPhase.Wait();
 			if (this.processingPhase != null) this.processingPhase.Wait();
 		}
 		
@@ -301,8 +303,8 @@ namespace Stareater.Controllers
 				else
 					controller.Register(playerController, this.stateListener.OnDoBombardment(controller));
 			}
-			
-			controller.Start();
+
+			this.combatPhase = Task.Factory.StartNew(controller.Start).ContinueWith(checkTaskException);
 		}
 		
 		private void presentBreakthrough()

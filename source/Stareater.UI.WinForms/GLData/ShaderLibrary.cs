@@ -2,7 +2,6 @@
 using OpenTK.Graphics.OpenGL;
 using Stareater.GLData.OrbitShader;
 using Stareater.GLData.SpriteShader;
-using System;
 
 namespace Stareater.GLData
 {
@@ -34,7 +33,7 @@ namespace Stareater.GLData
 			    foreach(var message in messages)
 			        System.Diagnostics.Trace.WriteLine(message);
 			    #else
-			    throw new Exception(string.Join(Environment.NewLine, messages));
+			    throw new System.Exception(string.Join(System.Environment.NewLine, messages));
 			    #endif
 		    }
 		}
