@@ -6,6 +6,7 @@ using Stareater.Controllers.Views.Combat;
 using Stareater.Galaxy;
 using Stareater.GameLogic;
 using Stareater.Players;
+using System.Collections.Concurrent;
 
 namespace Stareater.Controllers
 {
@@ -15,7 +16,8 @@ namespace Stareater.Controllers
 		private readonly MainGame mainGame;
 		private readonly GameController gameController;
 		private readonly Dictionary<Player, IBombardEventListener> playerListeners;
-		
+
+		private BlockingCollection<Action> messageQueue = new BlockingCollection<Action>(1);
 		private BombardmentProcessor processor = null;
 		
 		internal BombardmentController(BombardBattleGame battleGame, MainGame mainGame, GameController gameController)
@@ -37,7 +39,14 @@ namespace Stareater.Controllers
 		
 		internal void Start()
 		{
-			this.checkNextPlayer(); //TODO(0.7) AI vs AI could cause stack overflow
+			this.checkNextPlayer();
+
+			while (!this.processor.IsOver)
+			{
+				var message = this.messageQueue.Take();
+				message();
+				this.checkNextPlayer();
+			}
 		}
 
 		internal IEnumerable<Player> Participants
@@ -58,13 +67,12 @@ namespace Stareater.Controllers
 
 		public void Bombard(int planetPosition)
 		{
-			this.processor.Bombard(this.battleGame.Planets.First(x => x.PlanetData.Position == planetPosition));
-
-			this.checkNextPlayer();
+			this.messageQueue.Add(() => this.processor.Bombard(this.battleGame.Planets.First(x => x.PlanetData.Position == planetPosition)));
 		}
 		
 		public void Leave()
 		{
+			//TODO(later) remove current player instead of ending whole phase
 			gameController.BombardmentResolved(this.battleGame);
 		}
 

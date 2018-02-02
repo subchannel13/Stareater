@@ -285,8 +285,8 @@ namespace Stareater.Controllers
 				else
 					controller.Register(playerController, this.stateListener.OnDoCombat(controller));
 			}
-			
-			controller.Start();
+
+			this.combatPhase = Task.Factory.StartNew(controller.Start).ContinueWith(checkTaskException);
 		}
 
 		void initiateBombardment(SpaceBattleGame battleGame)

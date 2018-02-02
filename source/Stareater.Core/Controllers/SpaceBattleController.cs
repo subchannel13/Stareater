@@ -21,7 +21,6 @@ namespace Stareater.Controllers
 		private readonly Dictionary<Player, IBattleEventListener> playerListeners;
 
 		private BlockingCollection<Action> messageQueue = new BlockingCollection<Action>(1);
-
 		private SpaceBattleProcessor processor = null;
 		
 		internal SpaceBattleController(Conflict conflict, GameController gameController, MainGame mainGame)
