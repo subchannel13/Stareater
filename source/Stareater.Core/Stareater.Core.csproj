@@ -202,6 +202,7 @@
     <Compile Include="GameData\Ships\MissionEquipmentType.cs" />
     <Compile Include="GameData\Ships\PredefinedComponent.cs" />
     <Compile Include="GameData\Ships\PredefinedDesign.cs" />
+    <Compile Include="GameData\Ships\ProjectileAbility.cs" />
     <Compile Include="GameData\Ships\StarShootAbility.cs" />
     <Compile Include="GameData\StarIntelligence.cs" />
     <Compile Include="GameData\Treaty.cs" />
@@ -368,6 +369,7 @@
     <Compile Include="SpaceBattleGame.cs" />
     <Compile Include="SpaceCombat\Combatant.cs" />
     <Compile Include="SpaceCombat\CombatPlanet.cs" />
+    <Compile Include="SpaceCombat\Projectile.cs" />
     <Compile Include="Utils\BitHash.cs" />
     <Compile Include="Utils\BitHashBuilder.cs" />
     <Compile Include="Utils\StateEngine\LoadSession.cs" />

@@ -12,6 +12,7 @@ namespace Stareater.GameLogic
 		
 		private int range = 0;
 		private bool isInstantDamage = false;
+		private bool isProjectile = false;
 		private bool targetColony = false;
 		private bool targetShips = false;
 		private bool targetStar = false;
@@ -38,7 +39,8 @@ namespace Stareater.GameLogic
 			var factory = new AbilityStatsFactory(level, statics);
 			type.Accept(factory);
 			
-			return new AbilityStats(type, level, quantity, factory.range, factory.isInstantDamage, factory.targetColony, factory.targetShips, factory.targetStar,
+			return new AbilityStats(type, level, quantity, factory.range, factory.isInstantDamage, factory.isProjectile,
+								   factory.targetColony, factory.targetShips, factory.targetStar,
 			                       factory.firePower, factory.accuracy, factory.energyCost, factory.ammo,
 			                       factory.accuracyRangePenalty, factory.armorEfficiency, factory.shieldEfficiency, factory.planetEfficiency,
 			                       factory.appliesTrait);
@@ -63,6 +65,18 @@ namespace Stareater.GameLogic
 			this.armorEfficiency = ability.ArmorEfficiency.Evaluate(vars);
 			this.shieldEfficiency = ability.ShieldEfficiency.Evaluate(vars);
 			this.planetEfficiency = ability.PlanetEfficiency.Evaluate(vars);
+		}
+
+		public void Visit(ProjectileAbility ability)
+		{
+			var vars = new Var(AComponentType.LevelKey, this.level).Get;
+
+			this.range = int.MaxValue;
+			this.isProjectile = true;
+			this.targetColony = true;
+			this.targetShips = true;
+
+			this.ammo = double.PositiveInfinity; //TODO(v0.7)
 		}
 
 		public void Visit(StarShootAbility ability)

@@ -11,6 +11,7 @@ namespace Stareater.GameLogic
 		
 		public int Range { get; private set; }
 		public bool IsInstantDamage { get; private set; }
+		public bool IsProjectile { get; private set; }
 		public bool TargetColony { get; private set; }
 		public bool TargetShips { get; private set; }
 		public bool TargetStar { get; private set; }
@@ -28,7 +29,8 @@ namespace Stareater.GameLogic
 		public TraitType AppliesTrait { get; private set; }
 		
 		public AbilityStats(AAbilityType type, int level, int quantity, 
-		                    int range, bool isInstantDamage, bool targetColony, bool targetShips, bool targetStar,
+		                    int range, bool isInstantDamage, bool isProjectile,
+							bool targetColony, bool targetShips, bool targetStar,
 		                    double firePower, double accuracy, double energyCost, double ammo,
 		                    double accuracyRangePenalty, double armorEfficiency, double shieldEfficiency, double planetEfficiency,
 		                    TraitType appliesTrait)
@@ -39,6 +41,7 @@ namespace Stareater.GameLogic
 			
 			this.Range = range;
 			this.IsInstantDamage = isInstantDamage;
+			this.IsProjectile = isProjectile;
 			this.TargetColony = targetColony;
 			this.TargetShips = targetShips;
 			this.TargetStar = targetStar;

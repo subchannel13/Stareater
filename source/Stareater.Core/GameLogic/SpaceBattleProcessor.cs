@@ -223,9 +223,14 @@ namespace Stareater.GameLogic
 			
 			if (!abilityStats.TargetShips || Methods.HexDistance(target.Position, unit.Position) > abilityStats.Range)
 				return;
-			
+
 			if (abilityStats.IsInstantDamage)
 				spent = this.doDirectAttack(unit, abilityStats, quantity, target);
+			else if (abilityStats.IsProjectile)
+			{
+				this.doLaunchProjectile(unit, abilityStats, quantity, target);
+				spent = quantity;
+            }
 			
 			spent = Math.Min(spent, quantity);
 			unit.AbilityCharges[index] -= spent;
@@ -333,6 +338,12 @@ namespace Stareater.GameLogic
 			
 			//TODO(later) do different calculation for multiple ships below top of the stack
 			return spent;
+		}
+
+		private void doLaunchProjectile(Combatant attacker, AbilityStats abilityStats, double quantity, Combatant target)
+		{
+			this.game.Projectiles.Add(new Projectile(target, attacker.Position));
+			//TODO(v0.7) quantity
 		}
 		#endregion
 	}

@@ -10,6 +10,7 @@ namespace Stareater
 		public static readonly int BattlefieldRadius = 4;
 
 		public Queue<Combatant> PlayOrder { get; private set; }
+		public List<Projectile> Projectiles { get; private set; }
 
 		public SpaceBattleGame(Vector2D location, MainGame mainGame) : 
 			base(
@@ -19,6 +20,7 @@ namespace Stareater
 			)
 		{
 			this.PlayOrder = new Queue<Combatant>();
+			this.Projectiles = new List<Projectile>();
 		}
 	}
 }

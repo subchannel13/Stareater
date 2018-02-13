@@ -479,6 +479,11 @@ namespace Stareater.GameData.Databases
 							abilityData.ToOrDefault(DirectShootPlanetEfficiency, new Formula(1))
 						);
 						break;
+					case ProjectileShotTag:
+						yield return new ProjectileAbility(
+							abilityData[GeneralImageKey].To<string>()
+						);
+                        break;
 					case StarShotTag:
 						yield return new StarShootAbility(
 							abilityData[GeneralImageKey].To<string>(),
@@ -693,6 +698,7 @@ namespace Stareater.GameData.Databases
 		private const string ThrusterTag = "Thruster";
 		
 		private const string DirectShotTag = "DirectShot";
+		private const string ProjectileShotTag = "Projectile";
 		private const string StarShotTag = "StarShot";
 
 		private const string AfflictTraitTag = "AfflictPlanets";

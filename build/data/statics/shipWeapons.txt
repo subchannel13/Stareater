@@ -118,7 +118,7 @@
 	size # lvl [10, 9, 8, 7, 5];
 	
 	abilities [
-		{ DirectShot
+		{ Projectile
 			image: ./images/technologies/hydroponicFarms.png
 			firePower # 20;
 			accuracy # 0;
@@ -126,7 +126,7 @@
 			energyCost # 0;
 			
 			planetEfficiency # 5;
-			ammo # 5;
+			ammo # 2;
 		}
 	]
 }
