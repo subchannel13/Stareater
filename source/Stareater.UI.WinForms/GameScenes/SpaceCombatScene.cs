@@ -25,17 +25,19 @@ namespace Stareater.GameScenes
 		private const float FarZ = 1;
 		private const float Layers = 16.0f;
 		
-		private const float CellBackgroundZ = 7 / Layers;
-		private const float GridZ = 6 / Layers;
-		private const float PlanetColorZ = 5 / Layers;
-		private const float StarColorZ = 5 / Layers;
-		private const float CombatantZ = 4 / Layers;
+		private const float CellBackgroundZ = 8 / Layers;
+		private const float GridZ = 7 / Layers;
+		private const float PlanetColorZ = 6 / Layers;
+		private const float StarColorZ = 6 / Layers;
+		private const float CombatantZ = 5 / Layers;
+		private const float ProjectileZ = 4 / Layers;
 		private const float MoreCombatantsZ = 3 / Layers;
 		private const float MovemenentZ = 2 / Layers;
 		
 		private const float DefaultViewSize = 17;
 		private const float GridThickness = 0.05f;
 		private const float HexHeightScale = 0.9f;
+		private const float ProjectileScale = 0.5f;
 		private static readonly float HexHeight = (float)Math.Sqrt(3) * HexHeightScale;
 		private static readonly Matrix4 PopulationTransform = Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f, 0);
 		
@@ -46,6 +48,7 @@ namespace Stareater.GameScenes
 		private SceneObject gridLines = null;
 		private IEnumerable<SceneObject> movementSprites = null;
 		private IEnumerable<SceneObject> planetSprites = null;
+		private IEnumerable<SceneObject> projectileSprites = null;
 		private IEnumerable<SceneObject> unitSprites = null;
 		private SceneObject starSprite = null;
 		
@@ -91,6 +94,7 @@ namespace Stareater.GameScenes
 			this.setupBodies();
 			this.setupGrid();
 			this.setupUnits();
+			this.setupProjectiles();
 		}
 		
 		protected override Matrix4 calculatePerspective()
@@ -127,6 +131,7 @@ namespace Stareater.GameScenes
 			this.SelectedAbility = unitInfo.Abilities.FirstOrDefault(x => x.Quantity > 0);
 			this.setupBodies();
 			this.setupUnits();
+			this.setupProjectiles();
 		}
 		
 		public void OnUnitDone()
@@ -165,8 +170,31 @@ namespace Stareater.GameScenes
 					TextRenderUtil.Get.BufferText(new ThousandsFormatter().Format(planet.Population), -1, Matrix4.Identity).ToList()
 				);
 		}
-		
-		private IEnumerable<PolygonData> unitSpriteData(IGrouping<Vector2D, CombatantInfo> hex, IEnumerable<PlayerInfo> players)
+
+		private IEnumerable<PolygonData> projectileSpriteData(IGrouping<Vector2D, ProjectileInfo> hex)
+		{
+			var hexTransform = Matrix4.CreateTranslation(hexX(hex.Key), hexY(hex.Key), 0);
+			var shownProjectile = hex.Aggregate((a, b) => a.Count > b.Count ? a : b);
+			var unitSprite = GalaxyTextures.Get.Sprite(shownProjectile.ImagePath);
+
+			yield return new PolygonData(
+				ProjectileZ,
+				new SpriteData(Matrix4.CreateScale(ProjectileScale, ProjectileScale, 1) * hexTransform, unitSprite.Id, shownProjectile.Owner.Color),
+				SpriteHelpers.UnitRectVertexData(unitSprite).ToList()
+			);
+
+			yield return new PolygonData(
+				ProjectileZ,
+				new SpriteData(
+					Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f * ProjectileScale, 0) * hexTransform,
+					TextRenderUtil.Get.TextureId,
+					Color.Gray
+				),
+				TextRenderUtil.Get.BufferText(new ThousandsFormatter().Format(shownProjectile.Count), -1, Matrix4.Identity).ToList()
+			);
+		}
+
+        private IEnumerable<PolygonData> unitSpriteData(IGrouping<Vector2D, CombatantInfo> hex, IEnumerable<PlayerInfo> players)
 		{
 			var hexTransform = Matrix4.CreateTranslation(hexX(hex.Key), hexY(hex.Key), 0);
 			
@@ -327,7 +355,17 @@ namespace Stareater.GameScenes
 				))
 			);
 		}
-		
+
+		private void setupProjectiles()
+		{
+			var projectiles = this.Controller.Projectiles.GroupBy(x => x.Position);
+
+			this.UpdateScene(
+				ref this.projectileSprites,
+				projectiles.Select(hex => new SceneObject(projectileSpriteData(hex))).ToList()
+			);
+		}
+
 		private void setupUnits()
 		{
 			var units = this.Controller.Units.GroupBy(x => x.Position);

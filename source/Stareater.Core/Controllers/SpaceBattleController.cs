@@ -51,7 +51,15 @@ namespace Stareater.Controllers
 					yield return new CombatPlanetInfo(this.battleGame.Planets[i]);
 			}
 		}
-		
+
+		public IEnumerable<ProjectileInfo> Projectiles
+		{
+			get
+			{
+				return this.battleGame.Projectiles.Select(x => new ProjectileInfo(x));
+			}
+		}
+
 		public IEnumerable<CombatantInfo> Units
 		{
 			get 

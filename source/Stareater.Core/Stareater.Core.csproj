@@ -91,6 +91,7 @@
     <Compile Include="Controllers\Views\ColonyInfo.cs" />
     <Compile Include="Controllers\Views\Combat\CombatantInfo.cs" />
     <Compile Include="Controllers\Views\Combat\CombatPlanetInfo.cs" />
+    <Compile Include="Controllers\Views\Combat\ProjectileInfo.cs" />
     <Compile Include="Controllers\Views\ConstructableInfo.cs" />
     <Compile Include="Controllers\Views\ContactInfo.cs" />
     <Compile Include="Controllers\Views\DevelopmentFocusInfo.cs" />

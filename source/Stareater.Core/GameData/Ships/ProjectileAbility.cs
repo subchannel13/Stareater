@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Stareater.GameData.Ships
+﻿namespace Stareater.GameData.Ships
 {
 	class ProjectileAbility : AAbilityType
 	{
-		public ProjectileAbility(string imagePath) : base(imagePath)
+		public string ProjectileImage { get; private set; }
+
+		public ProjectileAbility(string imagePath, string projectileImage)
+			: base(imagePath)
 		{
-			//TODO
+			this.ProjectileImage = projectileImage;
 		}
 
 		public override void Accept(IAbilityVisitor visitor)

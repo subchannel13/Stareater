@@ -120,6 +120,7 @@
 	abilities [
 		{ Projectile
 			image: ./images/technologies/hydroponicFarms.png
+			projectileImage: torpedo
 			firePower # 20;
 			accuracy # 0;
 			range # 0;

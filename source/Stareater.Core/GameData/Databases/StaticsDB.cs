@@ -481,7 +481,8 @@ namespace Stareater.GameData.Databases
 						break;
 					case ProjectileShotTag:
 						yield return new ProjectileAbility(
-							abilityData[GeneralImageKey].To<string>()
+							abilityData[GeneralImageKey].To<string>(),
+							abilityData[ProjectileShootImage].To<string>()
 						);
                         break;
 					case StarShotTag:
@@ -859,6 +860,8 @@ namespace Stareater.GameData.Databases
 		private const string DirectShootFirepower = "firePower";
 		private const string DirectShootPlanetEfficiency = "planetEfficiency";
 		private const string DirectShootShieldEfficiency = "shieldEfficiency";
+
+		private const string ProjectileShootImage = "projectileImage";
 
 		private const string StarShootTrait = "applyTrait";
 

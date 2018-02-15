@@ -27,6 +27,7 @@ namespace Stareater.GameLogic
 		private double planetEfficiency = 0;
 		
 		private TraitType appliesTrait = null;
+		private string projectileImage = null;
 		
 		private AbilityStatsFactory(int level, StaticsDB statics)
 		{
@@ -43,7 +44,7 @@ namespace Stareater.GameLogic
 								   factory.targetColony, factory.targetShips, factory.targetStar,
 			                       factory.firePower, factory.accuracy, factory.energyCost, factory.ammo,
 			                       factory.accuracyRangePenalty, factory.armorEfficiency, factory.shieldEfficiency, factory.planetEfficiency,
-			                       factory.appliesTrait);
+			                       factory.appliesTrait, factory.projectileImage);
 		}
 
 		#region IAbilityVisitor implementation
@@ -77,6 +78,7 @@ namespace Stareater.GameLogic
 			this.targetShips = true;
 
 			this.ammo = double.PositiveInfinity; //TODO(v0.7)
+			this.projectileImage = ability.ProjectileImage;
 		}
 
 		public void Visit(StarShootAbility ability)

@@ -230,7 +230,7 @@ namespace Stareater.GameLogic
 			{
 				this.doLaunchProjectile(unit, abilityStats, quantity, target);
 				spent = quantity;
-            }
+			}
 			
 			spent = Math.Min(spent, quantity);
 			unit.AbilityCharges[index] -= spent;
@@ -342,8 +342,13 @@ namespace Stareater.GameLogic
 
 		private void doLaunchProjectile(Combatant attacker, AbilityStats abilityStats, double quantity, Combatant target)
 		{
-			this.game.Projectiles.Add(new Projectile(target, attacker.Position));
-			//TODO(v0.7) quantity
+			this.game.Projectiles.Add(new Projectile(
+				attacker.Owner, 
+				abilityStats, 
+				target, 
+				attacker.Position, 
+				(long)quantity
+			));
 		}
 		#endregion
 	}
