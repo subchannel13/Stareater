@@ -170,10 +170,28 @@ namespace Stareater.GameLogic
 		protected override void nextRound()
 		{
 			base.nextRound();
+			this.moveProjectiles();
 			this.makeUnitOrder();
 		}
 
-		protected void makeUnitOrder()
+		private void moveProjectiles()
+		{
+			foreach (var missile in this.game.Projectiles)
+			{
+				while (missile.MovementPoints > 0 && missile.Position != missile.Target.Position)
+				{
+					missile.Position = Methods.FindBest(
+						Methods.HexNeighbours(missile.Position), 
+						hex => -Methods.HexDistance(missile.Target.Position, hex)
+					);
+					missile.MovementPoints -= 1 / missile.Stats.Speed;
+                }
+
+				missile.MovementPoints = Math.Min(missile.MovementPoints + 1, 1);
+			}
+		}
+
+        private void makeUnitOrder()
 		{
 			this.calculateInitiative();
 

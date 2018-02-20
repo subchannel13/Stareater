@@ -27,14 +27,16 @@ namespace Stareater.GameLogic
 		public double PlanetEfficiency { get; private set; }
 		
 		public TraitType AppliesTrait { get; private set; }
+
 		public string ProjectileImage { get; private set; }
+		public double Speed { get; private set; }
 
 		public AbilityStats(AAbilityType type, int level, int quantity, 
 		                    int range, bool isInstantDamage, bool isProjectile,
 							bool targetColony, bool targetShips, bool targetStar,
 		                    double firePower, double accuracy, double energyCost, double ammo,
 		                    double accuracyRangePenalty, double armorEfficiency, double shieldEfficiency, double planetEfficiency,
-		                    TraitType appliesTrait, string projectileImage)
+		                    TraitType appliesTrait, string projectileImage, double speed)
 		{
 			this.Type = type;
 			this.Level = level;
@@ -57,7 +59,9 @@ namespace Stareater.GameLogic
 			this.PlanetEfficiency = planetEfficiency;
 			
 			this.AppliesTrait = appliesTrait;
+
 			this.ProjectileImage = projectileImage;
+			this.Speed = speed;
 		}
 	}
 }
