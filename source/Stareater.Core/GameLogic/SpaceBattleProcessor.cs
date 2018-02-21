@@ -5,6 +5,7 @@ using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 using Stareater.SpaceCombat;
 using Stareater.Utils;
+using Stareater.Players;
 
 namespace Stareater.GameLogic
 {
@@ -186,8 +187,14 @@ namespace Stareater.GameLogic
 					);
 					missile.MovementPoints -= 1 / missile.Stats.Speed;
                 }
-
 				missile.MovementPoints = Math.Min(missile.MovementPoints + 1, 1);
+
+				if (missile.Position == missile.Target.Position)
+				{
+					this.doDirectAttack(missile.Owner, missile.Position, missile.Stats, missile.Count, missile.Target);
+					//TODO(v0.7) apply area damage
+					missile.Count = 0;
+                }
 			}
 		}
 
@@ -243,7 +250,7 @@ namespace Stareater.GameLogic
 				return;
 
 			if (abilityStats.IsInstantDamage)
-				spent = this.doDirectAttack(unit, abilityStats, quantity, target);
+				spent = this.doDirectAttack(unit.Owner, unit.Position, abilityStats, quantity, target);
 			else if (abilityStats.IsProjectile)
 			{
 				this.doLaunchProjectile(unit, abilityStats, quantity, target);
@@ -301,22 +308,21 @@ namespace Stareater.GameLogic
 		}
 		
 		#region Damage dealing
-		private double attackTop(Combatant attacker, AbilityStats abilityStats, double quantity, Combatant target, DesignStats targetStats)
+		private double attackTop(Player attackSide, Vector2D attackFrom, AbilityStats abilityStats, double quantity, Combatant target, DesignStats targetStats)
 		{
-			var distance = Methods.HexDistance(attacker.Position, target.Position);
-			var detection = sensorStrength(target.Position, attacker.Owner);
-			var targetStealth = targetStats.Jamming + (target.CloakedFor.Contains(attacker.Owner) ? this.mainGame.Statics.ShipFormulas.NaturalCloakBonus : 0);
+			var distance = Methods.HexDistance(attackFrom, target.Position);
+			var detection = sensorStrength(target.Position, attackSide);
+			var targetStealth = targetStats.Jamming + (target.CloakedFor.Contains(attackSide) ? this.mainGame.Statics.ShipFormulas.NaturalCloakBonus : 0);
 			var spent = 0.0;
 				
 			while (target.HitPoints > 0 && quantity > spent)
 			{
 				spent++;
 				
-				
-				if (targetStealth > detection && Math.Pow(sigmoidBase, targetStealth - detection) > this.game.Rng.NextDouble())
+				if (targetStealth > detection && Math.Pow(sigmoidBase, targetStealth - detection) < this.game.Rng.NextDouble())
 					continue;
 				
-				if (Probability(abilityStats.Accuracy - targetStats.Evasion + distance * abilityStats.AccuracyRangePenalty) < this.game.Rng.NextDouble())
+				if (Probability(abilityStats.Accuracy - targetStats.Evasion + distance * abilityStats.AccuracyRangePenalty) > this.game.Rng.NextDouble())
 					continue;
 				
 				double firePower = abilityStats.FirePower;
@@ -346,13 +352,13 @@ namespace Stareater.GameLogic
 			return spent;
 		}
 		
-		private double doDirectAttack(Combatant attacker, AbilityStats abilityStats, double quantity, Combatant target)
+		private double doDirectAttack(Player attackSide, Vector2D attackFrom, AbilityStats abilityStats, double quantity, Combatant target)
 		{
 			var targetStats = this.mainGame.Derivates.Of(target.Owner).DesignStats[target.Ships.Design];
 			var spent = 0.0;
 			
 			while(quantity > spent && target.Ships.Quantity > 0)
-				spent =+ attackTop(attacker, abilityStats, quantity - spent, target, targetStats);
+				spent =+ attackTop(attackSide, attackFrom, abilityStats, quantity - spent, target, targetStats);
 			
 			//TODO(later) do different calculation for multiple ships below top of the stack
 			return spent;
@@ -361,11 +367,11 @@ namespace Stareater.GameLogic
 		private void doLaunchProjectile(Combatant attacker, AbilityStats abilityStats, double quantity, Combatant target)
 		{
 			this.game.Projectiles.Add(new Projectile(
-				attacker.Owner, 
+				attacker.Owner,
+				(long)quantity, 
 				abilityStats, 
 				target, 
-				attacker.Position, 
-				(long)quantity
+				attacker.Position
 			));
 		}
 		#endregion

@@ -79,8 +79,14 @@ namespace Stareater.GameLogic
 			this.targetColony = true;
 			this.targetShips = true;
 
-			this.ammo = double.PositiveInfinity; //TODO(v0.7)
-			this.speed = 1.5; //TODO(v0.7)
+			this.firePower = ability.FirePower.Evaluate(vars);
+			this.accuracy = ability.Accuracy.Evaluate(vars);
+			this.armorEfficiency = 1; //TODO(v0.7)
+			this.shieldEfficiency = 1; //TODO(v0.7)
+			this.planetEfficiency = 1; //TODO(v0.7)
+
+			this.ammo = ability.Ammo.Evaluate(vars);
+			this.speed = ability.Speed.Evaluate(vars); //TODO(later) include player techs
 			this.projectileImage = ability.ProjectileImage;
 		}
 
