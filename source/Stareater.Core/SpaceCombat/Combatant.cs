@@ -18,8 +18,10 @@ namespace Stareater.SpaceCombat
 		public double[] AbilityAmmo;
 		public double[] AbilityCharges;
 		
-		public double HitPoints;
-		public double ShieldPoints;
+		public double TopArmor;
+		public double TopShields;
+		public double RestArmor;
+		public double RestShields;
 		public HashSet<Player> CloakedFor = new HashSet<Player>();
 		
 		public Combatant(Vector2D position, Player owner, ShipGroup ships, DesignStats stats, double[] abilityAmmo, double[] abilityCharges)
@@ -30,8 +32,10 @@ namespace Stareater.SpaceCombat
 			this.AbilityAmmo = abilityAmmo;
 			this.AbilityCharges = abilityCharges;
 
-			this.HitPoints = stats.HitPoints - ships.Damage;
-			this.ShieldPoints = stats.ShieldPoints;
+			this.TopArmor = stats.HitPoints - ships.Damage / ships.Quantity;
+			this.TopShields = stats.ShieldPoints;
+			this.RestArmor = stats.HitPoints * ships.Quantity - ships.Damage - this.TopArmor;
+			this.RestShields = stats.ShieldPoints * (ships.Quantity - 1);
 		}
 	}
 }

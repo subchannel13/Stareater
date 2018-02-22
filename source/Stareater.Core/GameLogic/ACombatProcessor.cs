@@ -78,11 +78,12 @@ namespace Stareater.GameLogic
 				
 				unit.MovementPoints += 1;
 				unit.MovementPoints = Math.Min(unit.MovementPoints, 1);
-				
-				unit.ShieldPoints += stats.ShieldRegeneration;
-				unit.ShieldPoints = Math.Min(unit.ShieldPoints, stats.ShieldPoints);
-				
-				for(int i = 0; i < unit.AbilityCharges.Length; i++)
+
+				var restCount = unit.Ships.Quantity - 1;
+				unit.TopShields = Math.Min(unit.TopShields + stats.ShieldRegeneration, stats.ShieldPoints);
+				unit.RestShields = Math.Min(unit.RestShields + stats.ShieldRegeneration * restCount, stats.ShieldPoints * restCount);
+
+				for (int i = 0; i < unit.AbilityCharges.Length; i++)
 				{
 					unit.AbilityCharges[i] = stats.Abilities[i].Quantity * (double)unit.Ships.Quantity;
 					if (!double.IsInfinity(stats.Abilities[i].Ammo))

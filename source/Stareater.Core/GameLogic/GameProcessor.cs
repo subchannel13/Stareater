@@ -147,7 +147,10 @@ namespace Stareater.GameLogic
 			//TODO(later) decide what to do with retreated ships, send them to nearest fiendly system?
 			foreach(var unit in battleGame.Combatants.Concat(battleGame.Retreated))
 			{
-				unit.Ships.Damage = this.game.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].HitPoints - unit.HitPoints;
+                unit.Ships.Damage = this.game.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].HitPoints * unit.Ships .Quantity - 
+					unit.TopArmor - 
+					unit.RestArmor;
+
 				var fleet = new Fleet(unit.Owner, battleGame.Location, new LinkedList<AMission>());
 				fleet.Ships.Add(unit.Ships);
 				

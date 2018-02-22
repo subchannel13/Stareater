@@ -315,7 +315,7 @@ namespace Stareater.GameLogic
 			var targetStealth = targetStats.Jamming + (target.CloakedFor.Contains(attackSide) ? this.mainGame.Statics.ShipFormulas.NaturalCloakBonus : 0);
 			var spent = 0.0;
 				
-			while (target.HitPoints > 0 && quantity > spent)
+			while (target.TopArmor > 0 && quantity > spent)
 			{
 				spent++;
 				
@@ -327,27 +327,31 @@ namespace Stareater.GameLogic
 				
 				double firePower = abilityStats.FirePower;
 				
-				if (target.ShieldPoints > 0)
+				if (target.TopShields > 0)
 				{
 					double shieldFire = firePower - Reduce(firePower, targetStats.ShieldThickness, abilityStats.ShieldEfficiency);
 					double shieldDamage = Reduce(shieldFire, targetStats.ShieldReduction, 1);
 					firePower -= shieldFire - shieldDamage; //damage reduction difference
 					
-					shieldDamage = Math.Min(shieldDamage, target.ShieldPoints);
-					target.ShieldPoints -= shieldDamage;
+					shieldDamage = Math.Min(shieldDamage, target.TopShields);
+					target.TopShields -= shieldDamage;
 					firePower -= shieldDamage;
 				}
 				
 				double armorDamage = Reduce(firePower, targetStats.ArmorReduction, abilityStats.ArmorEfficiency);
-				target.HitPoints -= armorDamage;
+				target.TopArmor -= armorDamage;
 			}
 			
-			if (target.HitPoints <= 0)
+			if (target.TopArmor <= 0)
 			{
 				target.Ships.Quantity--;
-				target.HitPoints = targetStats.HitPoints;
-				target.ShieldPoints = targetStats.ShieldPoints;
-			}
+				var safeCount = Math.Max(target.Ships.Quantity, 1);
+
+				target.TopArmor = target.RestArmor / safeCount;
+				target.TopShields = target.RestShields / safeCount;
+				target.RestArmor -= target.TopArmor;
+				target.RestShields -= target.TopShields;
+            }
 			
 			return spent;
 		}

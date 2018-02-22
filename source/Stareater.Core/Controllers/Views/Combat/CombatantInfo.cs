@@ -89,7 +89,7 @@ namespace Stareater.Controllers.Views.Combat
 		{
 			get 
 			{ 
-				return this.Data.HitPoints;
+				return this.Data.TopArmor;
 			}
 		}
 		
@@ -105,7 +105,7 @@ namespace Stareater.Controllers.Views.Combat
 		{
 			get 
 			{ 
-				return this.Data.ShieldPoints;
+				return this.Data.TopShields;
 			}
 		}
 		
