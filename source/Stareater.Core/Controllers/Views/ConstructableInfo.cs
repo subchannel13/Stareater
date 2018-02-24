@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Stareater.GameLogic;
-using Stareater.Localization;
 using Stareater.Utils.Collections;
 using Stareater.GameData.Construction;
+using Stareater.GameLogic.Planning;
 
 namespace Stareater.Controllers.Views
 {

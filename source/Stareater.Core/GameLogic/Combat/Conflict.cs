@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NGenerics.DataStructures.Mathematical;
+using Stareater.GameLogic.Planning;
 
-namespace Stareater.GameLogic
+namespace Stareater.GameLogic.Combat
 {
 	class Conflict
 	{

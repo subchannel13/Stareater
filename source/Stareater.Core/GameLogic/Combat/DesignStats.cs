@@ -1,7 +1,7 @@
 ﻿using Stareater.Utils.StateEngine;
 using System.Collections.Generic;
 
-namespace Stareater.GameLogic 
+namespace Stareater.GameLogic.Combat
 {
 	[StateType(true)]
 	class DesignStats 

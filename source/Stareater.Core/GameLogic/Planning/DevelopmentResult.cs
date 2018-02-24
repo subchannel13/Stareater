@@ -1,20 +1,20 @@
 ﻿using Stareater.GameData;
 using Stareater.Utils.StateEngine;
 
-namespace Stareater.GameLogic 
+namespace Stareater.GameLogic.Planning
 {
-	class ResearchResult 
+	class DevelopmentResult 
 	{
 		[StateProperty]
 		public long CompletedCount { get; private set; }
 		[StateProperty]
 		public double InvestedPoints { get; private set; }
 		[StateProperty]
-		public ResearchProgress Item { get; private set; }
+		public DevelopmentProgress Item { get; private set; }
 		[StateProperty]
 		public double LeftoverPoints { get; private set; }
 
-		public ResearchResult(long completedCount, double investedPoints, ResearchProgress item, double leftoverPoints) 
+		public DevelopmentResult(long completedCount, double investedPoints, DevelopmentProgress item, double leftoverPoints) 
 		{
 			this.CompletedCount = completedCount;
 			this.InvestedPoints = investedPoints;
@@ -22,7 +22,7 @@ namespace Stareater.GameLogic
 			this.LeftoverPoints = leftoverPoints;
 		}
 
-		private ResearchResult()
+		private DevelopmentResult()
 		{ }
 	}
 }

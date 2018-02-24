@@ -10,11 +10,11 @@ using Stareater.GameData.Databases;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameLogic;
 using Stareater.Players;
-using Stareater.Players.Reports;
 using Stareater.Ships;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
+using Stareater.GameLogic.Planning;
 
 namespace Stareater.Controllers
 {

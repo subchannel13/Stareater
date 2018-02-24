@@ -154,10 +154,7 @@
     <Compile Include="Galaxy\Builders\IStarPositioner.cs" />
     <Compile Include="Galaxy\Builders\StarPositions.cs" />
     <Compile Include="Galaxy\Builders\StarSystem.cs" />
-    <Compile Include="Galaxy\Builders\WormholeEndpoints.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="Galaxy\Builders\WormholeEndpoints.cs" />
     <Compile Include="Galaxy\Colony.cs" />
     <Compile Include="Galaxy\BodyTraits\ITraitEffectType.cs" />
     <Compile Include="Galaxy\Fleet.cs" />
@@ -184,10 +181,7 @@
     <Compile Include="GameData\Databases\Tables\ConstructionOrders.cs" />
     <Compile Include="GameData\Databases\Tables\PlanetForumlaSet.cs" />
     <Compile Include="GameData\Databases\Tables\PlayerOrders.cs" />
-    <Compile Include="GameData\Databases\Tables\ResearchProgressCollection.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="GameData\Databases\Tables\ResearchProgressCollection.cs" />
     <Compile Include="GameData\Databases\Tables\TreatyCollection.cs" />
     <Compile Include="GameData\DevelopmentProgress.cs" />
     <Compile Include="GameData\DevelopmentRequirement.cs" />
@@ -207,57 +201,36 @@
     <Compile Include="GameData\Ships\StarShootAbility.cs" />
     <Compile Include="GameData\StarIntelligence.cs" />
     <Compile Include="GameData\Treaty.cs" />
-    <Compile Include="GameLogic\AbilityStatsFactory.cs" />
-    <Compile Include="GameLogic\AbilityStats.cs" />
+    <Compile Include="GameLogic\Combat\AbilityStatsFactory.cs" />
+    <Compile Include="GameLogic\Combat\AbilityStats.cs" />
     <Compile Include="GameLogic\ACombatProcessor.cs" />
     <Compile Include="GameLogic\BombardmentProcessor.cs" />
-    <Compile Include="GameLogic\Conflict.cs" />
-    <Compile Include="GameLogic\InvalidMissionVisitor.cs" />
+    <Compile Include="GameLogic\Combat\Conflict.cs" />
+    <Compile Include="GameLogic\Combat\DesignStats.cs" />
+    <Compile Include="GameLogic\Planning\InvalidMissionVisitor.cs" />
     <Compile Include="GameLogic\NativesProcessor.cs" />
-    <Compile Include="GameLogic\NewBuildingsCounter.cs" />
-    <Compile Include="GameLogic\ResearchResult.cs">
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="GameLogic\ShipConstructionCounter.cs" />
-    <Compile Include="GameLogic\ShipConstructionUpdater.cs" />
+    <Compile Include="GameLogic\Planning\NewBuildingsCounter.cs" />
+    <Compile Include="GameLogic\Planning\ConstructionResult.cs" />
+    <Compile Include="GameLogic\Planning\ResearchResult.cs" />
+    <Compile Include="GameLogic\Planning\ShipConstructionCounter.cs" />
+    <Compile Include="GameLogic\Planning\ShipConstructionUpdater.cs" />
     <Compile Include="GameLogic\SpaceBattleProcessor.cs" />
     <Compile Include="Localization\LanguageInfo.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="GameData\BuildingType.cs" />
     <Compile Include="GameData\ConstructableType.cs" />
     <Compile Include="GameData\Databases\Tables\DerivedStatistic.cs" />
-    <Compile Include="GameData\Databases\Tables\DesignCollection.cs">
-      <AutoGen>True</AutoGen>
-    </Compile>
+    <Compile Include="GameData\Databases\Tables\DesignCollection.cs" />
     <Compile Include="GameData\Databases\Tables\DevelopmentFocus.cs" />
-    <Compile Include="GameData\Databases\Tables\FleetCollection.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="GameData\Databases\Tables\FleetCollection.cs" />
     <Compile Include="GameData\Databases\Tables\PlayerFormulaSet.cs" />
-    <Compile Include="GameData\Databases\Tables\ReportCollection.cs">
-      <AutoGen>True</AutoGen>
-    </Compile>
+    <Compile Include="GameData\Databases\Tables\ReportCollection.cs" />
     <Compile Include="GameData\Databases\Tables\ShipFormulaSet.cs" />
-    <Compile Include="GameData\Databases\Tables\ShipGroupCollection.cs">
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="GameData\Databases\Tables\StellarisProcessorCollection.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameData\Databases\Tables\StellarisCollection.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameData\GalaxyRemap.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameData\PlayersRemap.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="GameData\Databases\Tables\ShipGroupCollection.cs" />
+    <Compile Include="GameData\Databases\Tables\StellarisProcessorCollection.cs" />
+    <Compile Include="GameData\Databases\Tables\StellarisCollection.cs" />
+    <Compile Include="GameData\GalaxyRemap.cs" />
+    <Compile Include="GameData\PlayersRemap.cs" />
     <Compile Include="GameData\Ships\AComponentType.cs" />
     <Compile Include="GameData\Ships\ArmorType.cs" />
     <Compile Include="GameData\Ships\HullType.cs" />
@@ -272,36 +245,15 @@
     <Compile Include="GameData\SiteType.cs" />
     <Compile Include="GameData\Databases\StatesDB.cs" />
     <Compile Include="GameData\Databases\StaticsDB.cs" />
-    <Compile Include="GameData\Databases\Tables\ColonyCollection.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="GameData\Databases\Tables\ColonyCollection.cs" />
     <Compile Include="GameData\Databases\Tables\ColonyFormulaSet.cs" />
-    <Compile Include="GameData\Databases\Tables\ColonyProcessorCollection.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameData\Databases\Tables\PlanetCollection.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameData\Databases\Tables\PlayerProcessorCollection.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="GameData\Databases\Tables\ColonyProcessorCollection.cs" />
+    <Compile Include="GameData\Databases\Tables\PlanetCollection.cs" />
+    <Compile Include="GameData\Databases\Tables\PlayerProcessorCollection.cs" />
     <Compile Include="GameData\Databases\Tables\PopulationActivityFormulas.cs" />
-    <Compile Include="GameData\Databases\Tables\StarCollection.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameData\Databases\Tables\DevelopmentProgressCollection.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameData\Databases\Tables\WormholeCollection.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="GameData\Databases\Tables\StarCollection.cs" />
+    <Compile Include="GameData\Databases\Tables\DevelopmentProgressCollection.cs" />
+    <Compile Include="GameData\Databases\Tables\WormholeCollection.cs" />
     <Compile Include="GameData\Databases\TemporaryDB.cs" />
     <Compile Include="GameData\Prerequisite.cs" />
     <Compile Include="GameData\Reading\Expression.cs" />
@@ -309,26 +261,16 @@
     <Compile Include="GameData\Reading\Parser.cs" />
     <Compile Include="GameData\Reading\SingleLineFactory.cs" />
     <Compile Include="GameData\DevelopmentTopic.cs" />
-    <Compile Include="GameLogic\ConstructionResult.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="GameData\Construction\ConstructionAddColonizer.cs" />
     <Compile Include="GameData\Construction\ConstructionAddShip.cs" />
-    <Compile Include="GameLogic\DesignStats.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="GameLogic\FleetMovement.cs" />
-    <Compile Include="GameLogic\FleetProcessingVisitor.cs" />
+    <Compile Include="GameLogic\Planning\FleetMovement.cs" />
+    <Compile Include="GameLogic\Planning\FleetProcessingVisitor.cs" />
     <Compile Include="GameLogic\GameProcessor.cs" />
     <Compile Include="GameLogic\AConstructionSiteProcessor.cs" />
     <Compile Include="GameLogic\ColonyProcessor.cs" />
     <Compile Include="GameData\Construction\ConstructionAddBuilding.cs" />
     <Compile Include="GameLogic\PlayerProcessor.cs" />
-    <Compile Include="GameLogic\DevelopmentResult.cs">
-      <AutoGen>True</AutoGen>
-    </Compile>
+    <Compile Include="GameLogic\Planning\DevelopmentResult.cs" />
     <Compile Include="GameLogic\StellarisProcessor.cs" />
     <Compile Include="Localization\ChainText.cs" />
     <Compile Include="Localization\ConditionalText.cs" />

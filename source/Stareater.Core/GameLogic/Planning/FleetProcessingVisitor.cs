@@ -5,7 +5,7 @@ using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 using Stareater.Ships.Missions;
 
-namespace Stareater.GameLogic
+namespace Stareater.GameLogic.Planning
 {
 	class FleetProcessingVisitor : IMissionVisitor
 	{

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Stareater.Galaxy;
 using Stareater.Players;
 using Stareater.Ships.Missions;
 
-namespace Stareater.GameLogic
+namespace Stareater.GameLogic.Planning
 {
 	class InvalidMissionVisitor : IMissionVisitor
 	{

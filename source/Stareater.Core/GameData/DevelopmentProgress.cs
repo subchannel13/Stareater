@@ -3,7 +3,7 @@ using Stareater.Utils.StateEngine;
 using Stareater.Players;
 using System.Collections.Generic;
 using Stareater.GameData.Databases;
-using Stareater.GameLogic;
+using Stareater.GameLogic.Planning;
 
 namespace Stareater.GameData
 {

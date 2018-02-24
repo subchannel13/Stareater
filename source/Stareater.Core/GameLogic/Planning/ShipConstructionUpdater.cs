@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
-using Stareater.AppData.Expressions;
-using Stareater.GameData;
 using Stareater.Ships;
 using Stareater.GameData.Construction;
-using System;
 
-namespace Stareater.GameLogic
+namespace Stareater.GameLogic.Planning
 {
 	class ShipConstructionUpdater : IConstructionProjectVisitor
 	{

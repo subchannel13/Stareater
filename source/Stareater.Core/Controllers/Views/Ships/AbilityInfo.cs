@@ -1,4 +1,4 @@
-﻿using Stareater.GameLogic;
+﻿using Stareater.GameLogic.Combat;
 
 namespace Stareater.Controllers.Views.Ships
 {

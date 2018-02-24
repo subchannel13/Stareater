@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Stareater.GameData.Databases;
 using Stareater.GameData.Ships;
 using Stareater.GameLogic;
 using Stareater.Ships;
 using Stareater.Utils.Collections;
+using Stareater.GameLogic.Combat;
 
 namespace Stareater.Controllers.Views.Ships
 {

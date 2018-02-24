@@ -1,7 +1,7 @@
 ﻿using Stareater.GameData.Construction;
 using System.Collections.Generic;
 
-namespace Stareater.GameLogic
+namespace Stareater.GameLogic.Planning
 {
 	class NewBuildingsCounter : IConstructionProjectVisitor
 	{

@@ -6,6 +6,8 @@ using Stareater.Galaxy;
 using Stareater.SpaceCombat;
 using Stareater.Utils;
 using Stareater.Players;
+using Stareater.GameLogic.Combat;
+using Stareater.GameLogic.Planning;
 
 namespace Stareater.GameLogic
 {

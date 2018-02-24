@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 
 using Stareater.Galaxy;
-using Stareater.GameData;
 using Stareater.GameData.Databases;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using Stareater.GameData.Construction;
+using Stareater.GameLogic.Planning;
 
 namespace Stareater.GameLogic
 {

@@ -1,4 +1,4 @@
-﻿using Stareater.GameLogic;
+﻿using Stareater.GameLogic.Planning;
 using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players.Reports

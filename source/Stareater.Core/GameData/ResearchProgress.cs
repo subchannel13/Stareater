@@ -1,7 +1,7 @@
 ﻿using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using Stareater.Players;
-using Stareater.GameLogic;
+using Stareater.GameLogic.Planning;
 
 namespace Stareater.GameData
 {

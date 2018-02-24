@@ -4,8 +4,8 @@ using System.Linq;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Views.Ships;
 using Stareater.GameData.Databases;
-using Stareater.GameLogic;
 using Stareater.SpaceCombat;
+using Stareater.GameLogic.Combat;
 
 namespace Stareater.Controllers.Views.Combat
 {

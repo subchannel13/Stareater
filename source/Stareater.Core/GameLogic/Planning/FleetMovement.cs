@@ -1,8 +1,7 @@
-﻿using System;
-using NGenerics.DataStructures.Mathematical;
+﻿using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 
-namespace Stareater.GameLogic
+namespace Stareater.GameLogic.Planning
 {
 	class FleetMovement
 	{

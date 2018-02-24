@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Stareater.Ships;
 using Stareater.GameData.Construction;
 
-namespace Stareater.GameLogic
+namespace Stareater.GameLogic.Planning
 {
 	class ShipConstructionCounter : IConstructionProjectVisitor
 	{

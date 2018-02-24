@@ -3,7 +3,7 @@ using Stareater.GameData.Ships;
 using Stareater.Utils.Collections;
 using Stareater.Galaxy.BodyTraits;
 
-namespace Stareater.GameLogic
+namespace Stareater.GameLogic.Combat
 {
 	class AbilityStatsFactory : IAbilityVisitor
 	{

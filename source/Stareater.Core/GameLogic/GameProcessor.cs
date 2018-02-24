@@ -7,6 +7,8 @@ using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
 using Stareater.Galaxy;
+using Stareater.GameLogic.Combat;
+using Stareater.GameLogic.Planning;
 
 namespace Stareater.GameLogic
 {

@@ -1,7 +1,6 @@
-﻿using System;
-using Stareater.Galaxy;
+﻿using Stareater.Galaxy;
 using Stareater.GameData.Databases;
-using Stareater.GameLogic;
+using Stareater.GameLogic.Combat;
 
 namespace Stareater.Controllers.Views.Ships
 {

@@ -5,6 +5,7 @@ using NGenerics.DataStructures.Mathematical;
 using Stareater.Players;
 using Stareater.SpaceCombat;
 using Stareater.Utils;
+using Stareater.GameLogic.Combat;
 
 namespace Stareater.GameLogic
 {

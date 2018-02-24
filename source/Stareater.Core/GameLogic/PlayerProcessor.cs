@@ -15,6 +15,8 @@ using Stareater.Ships.Missions;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
+using Stareater.GameLogic.Planning;
+using Stareater.GameLogic.Combat;
 
 namespace Stareater.GameLogic
 {
