@@ -310,40 +310,27 @@ namespace Stareater.GameLogic
 		}
 		
 		#region Damage dealing
-		private double attackTop(Player attackSide, Vector2D attackFrom, AbilityStats abilityStats, double quantity, Combatant target, DesignStats targetStats)
+		private bool makeShot(double hitChance, AbilityStats abilityStats, Combatant target, DesignStats targetStats)
 		{
-			var distance = Methods.HexDistance(attackFrom, target.Position);
-			var detection = sensorStrength(target.Position, attackSide);
-			var targetStealth = targetStats.Jamming + (target.CloakedFor.Contains(attackSide) ? this.mainGame.Statics.ShipFormulas.NaturalCloakBonus : 0);
-			var spent = 0.0;
-				
-			while (target.TopArmor > 0 && quantity > spent)
+			if (hitChance < this.game.Rng.NextDouble())
+				return false;
+
+			double firePower = abilityStats.FirePower;
+
+			if (target.TopShields > 0)
 			{
-				spent++;
-				
-				if (targetStealth > detection && Math.Pow(sigmoidBase, targetStealth - detection) < this.game.Rng.NextDouble())
-					continue;
-				
-				if (Probability(abilityStats.Accuracy - targetStats.Evasion + distance * abilityStats.AccuracyRangePenalty) > this.game.Rng.NextDouble())
-					continue;
-				
-				double firePower = abilityStats.FirePower;
-				
-				if (target.TopShields > 0)
-				{
-					double shieldFire = firePower - Reduce(firePower, targetStats.ShieldThickness, abilityStats.ShieldEfficiency);
-					double shieldDamage = Reduce(shieldFire, targetStats.ShieldReduction, 1);
-					firePower -= shieldFire - shieldDamage; //damage reduction difference
-					
-					shieldDamage = Math.Min(shieldDamage, target.TopShields);
-					target.TopShields -= shieldDamage;
-					firePower -= shieldDamage;
-				}
-				
-				double armorDamage = Reduce(firePower, targetStats.ArmorReduction, abilityStats.ArmorEfficiency);
-				target.TopArmor -= armorDamage;
+				double shieldFire = firePower - Reduce(firePower, targetStats.ShieldThickness, abilityStats.ShieldEfficiency);
+				double shieldDamage = Reduce(shieldFire, targetStats.ShieldReduction, 1);
+				firePower -= shieldFire - shieldDamage; //damage reduction difference
+
+				shieldDamage = Math.Min(shieldDamage, target.TopShields);
+				target.TopShields -= shieldDamage;
+				firePower -= shieldDamage;
 			}
-			
+
+			double armorDamage = Reduce(firePower, targetStats.ArmorReduction, abilityStats.ArmorEfficiency);
+			target.TopArmor -= armorDamage;
+
 			if (target.TopArmor <= 0)
 			{
 				target.Ships.Quantity--;
@@ -353,18 +340,27 @@ namespace Stareater.GameLogic
 				target.TopShields = target.RestShields / safeCount;
 				target.RestArmor -= target.TopArmor;
 				target.RestShields -= target.TopShields;
-            }
-			
-			return spent;
+			}
+
+			return true;
 		}
 		
 		private double doDirectAttack(Player attackSide, Vector2D attackFrom, AbilityStats abilityStats, double quantity, Combatant target)
 		{
 			var targetStats = this.mainGame.Derivates.Of(target.Owner).DesignStats[target.Ships.Design];
+			var distance = Methods.HexDistance(attackFrom, target.Position);
+			var detection = sensorStrength(target.Position, attackSide);
+			var targetStealth = targetStats.Jamming + (target.CloakedFor.Contains(attackSide) ? this.mainGame.Statics.ShipFormulas.NaturalCloakBonus : 0);
+			var stealthHitChance = targetStealth > detection ? 1 - Math.Pow(sigmoidBase, targetStealth - detection) : 0;
+			var evasionHitChance = Probability(abilityStats.Accuracy - targetStats.Evasion + distance * abilityStats.AccuracyRangePenalty);
+
 			var spent = 0.0;
-			
-			while(quantity > spent && target.Ships.Quantity > 0)
-				spent =+ attackTop(attackSide, attackFrom, abilityStats, quantity - spent, target, targetStats);
+
+			while (quantity > spent && target.Ships.Quantity > 0)
+			{
+				this.makeShot(stealthHitChance * evasionHitChance, abilityStats, target, targetStats);
+				spent++;
+			}
 			
 			//TODO(later) do different calculation for multiple ships below top of the stack
 			return spent;
