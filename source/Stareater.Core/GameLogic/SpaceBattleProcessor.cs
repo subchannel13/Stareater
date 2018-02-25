@@ -310,11 +310,16 @@ namespace Stareater.GameLogic
 		}
 		
 		#region Damage dealing
-		private bool makeShot(double hitChance, AbilityStats abilityStats, Combatant target, DesignStats targetStats)
+		private double chanceToHit(double attackAccuracy, double attackerDetection, DesignStats targetStats, bool targetCloaked)
 		{
-			if (hitChance < this.game.Rng.NextDouble())
-				return false;
+			var targetStealth = targetStats.Jamming + (targetCloaked ? this.mainGame.Statics.ShipFormulas.NaturalCloakBonus : 0);
 
+			return (targetStealth > attackerDetection ? Math.Pow(sigmoidBase, targetStealth - attackerDetection) : 1) *
+				 Probability(attackAccuracy - targetStats.Evasion);
+		}
+
+		private static bool doDamage(AbilityStats abilityStats, Combatant target, DesignStats targetStats)
+		{
 			double firePower = abilityStats.FirePower;
 
 			if (target.TopShields > 0)
@@ -340,29 +345,50 @@ namespace Stareater.GameLogic
 				target.TopShields = target.RestShields / safeCount;
 				target.RestArmor -= target.TopArmor;
 				target.RestShields -= target.TopShields;
+
+				return true;
 			}
 
-			return true;
+			return false;
 		}
 		
 		private double doDirectAttack(Player attackSide, Vector2D attackFrom, AbilityStats abilityStats, double quantity, Combatant target)
 		{
 			var targetStats = this.mainGame.Derivates.Of(target.Owner).DesignStats[target.Ships.Design];
-			var distance = Methods.HexDistance(attackFrom, target.Position);
-			var detection = sensorStrength(target.Position, attackSide);
-			var targetStealth = targetStats.Jamming + (target.CloakedFor.Contains(attackSide) ? this.mainGame.Statics.ShipFormulas.NaturalCloakBonus : 0);
-			var stealthHitChance = targetStealth > detection ? 1 - Math.Pow(sigmoidBase, targetStealth - detection) : 0;
-			var evasionHitChance = Probability(abilityStats.Accuracy - targetStats.Evasion + distance * abilityStats.AccuracyRangePenalty);
-
+			var hitChance = chanceToHit(
+				abilityStats.Accuracy + Methods.HexDistance(attackFrom, target.Position) * abilityStats.AccuracyRangePenalty,
+				sensorStrength(target.Position, attackSide),
+				targetStats, target.CloakedFor.Contains(attackSide));
 			var spent = 0.0;
 
 			while (quantity > spent && target.Ships.Quantity > 0)
 			{
-				this.makeShot(stealthHitChance * evasionHitChance, abilityStats, target, targetStats);
 				spent++;
+
+				if (hitChance < this.game.Rng.NextDouble())
+					doDamage(abilityStats, target, targetStats);
 			}
 			
 			//TODO(later) do different calculation for multiple ships below top of the stack
+			return spent;
+		}
+
+		private double doProjectileAttack(Player attackSide, AbilityStats abilityStats, double quantity, Combatant target)
+		{
+			var targetStats = this.mainGame.Derivates.Of(target.Owner).DesignStats[target.Ships.Design];
+			var hitChance = chanceToHit(
+				abilityStats.Accuracy, sensorStrength(target.Position, attackSide),
+				targetStats, target.CloakedFor.Contains(attackSide));
+			var spent = 0.0;
+
+			while (quantity > spent && target.Ships.Quantity > 0)
+			{
+				spent++;
+
+				if (hitChance < this.game.Rng.NextDouble())
+					doDamage(abilityStats, target, targetStats);
+			}
+
 			return spent;
 		}
 
