@@ -193,12 +193,12 @@ namespace Stareater.GameLogic
 
 				if (missile.Position == missile.Target.Position)
 				{
-					this.doDirectAttack(missile.Owner, missile.Position, missile.Stats, missile.Count, missile.Target);
-					//TODO(v0.7) apply area damage
-					missile.Count = 0;
+					this.doProjectileAttack(missile.Owner, missile.Stats, missile.Count, missile.Target);
+					this.game.Projectiles.PendRemove(missile);
                 }
 			}
-		}
+			this.game.Projectiles.ApplyPending();
+        }
 
         private void makeUnitOrder()
 		{
@@ -318,13 +318,11 @@ namespace Stareater.GameLogic
 				 Probability(attackAccuracy - targetStats.Evasion);
 		}
 
-		private static bool doDamage(AbilityStats abilityStats, Combatant target, DesignStats targetStats)
+		private static bool doTopDamage(double firePower, double shieldEfficiency, double armorEfficiency, Combatant target, DesignStats targetStats)
 		{
-			double firePower = abilityStats.FirePower;
-
 			if (target.TopShields > 0)
 			{
-				double shieldFire = firePower - Reduce(firePower, targetStats.ShieldThickness, abilityStats.ShieldEfficiency);
+				double shieldFire = firePower - Reduce(firePower, targetStats.ShieldThickness, shieldEfficiency);
 				double shieldDamage = Reduce(shieldFire, targetStats.ShieldReduction, 1);
 				firePower -= shieldFire - shieldDamage; //damage reduction difference
 
@@ -333,7 +331,7 @@ namespace Stareater.GameLogic
 				firePower -= shieldDamage;
 			}
 
-			double armorDamage = Reduce(firePower, targetStats.ArmorReduction, abilityStats.ArmorEfficiency);
+			double armorDamage = Reduce(firePower, targetStats.ArmorReduction, armorEfficiency);
 			target.TopArmor -= armorDamage;
 
 			if (target.TopArmor <= 0)
@@ -351,6 +349,52 @@ namespace Stareater.GameLogic
 
 			return false;
 		}
+
+		private static bool doRestDamage(double maxTargets, double firePower, double shieldEfficiency, double armorEfficiency, Combatant target, DesignStats targetStats)
+		{
+			var targetRestCount = Math.Max(target.Ships.Quantity - 1, 0);
+			var splashTargets = Methods.Clamp(maxTargets, 0, targetRestCount);
+
+			if (target.RestShields > 0)
+			{
+				double shieldFire = firePower - Reduce(firePower, targetStats.ShieldThickness, shieldEfficiency);
+				double shieldDamage = Reduce(shieldFire, targetStats.ShieldReduction, 1);
+				firePower -= shieldFire - shieldDamage; //damage reduction difference
+
+				shieldDamage = Math.Min(shieldDamage * splashTargets, target.RestShields);
+				target.RestShields -= shieldDamage;
+				firePower -= shieldDamage;
+			}
+
+			double armorDamage = Reduce(firePower, targetStats.ArmorReduction, armorEfficiency);
+			target.RestArmor -= armorDamage * splashTargets;
+
+			if (target.RestArmor <= 0)
+			{
+				target.Ships.Quantity = 1;
+
+				target.RestArmor = 0;
+				target.RestShields = 0;
+
+				return true;
+			}
+
+			return false;
+		}
+
+		private static void updateStackTop(Combatant stack)
+		{
+			if (stack.TopArmor > 0 || stack.Ships.Quantity <= 0)
+				return;
+
+			stack.Ships.Quantity--;
+			var safeCount = Math.Max(stack.Ships.Quantity, 1);
+
+			stack.TopArmor = stack.RestArmor / safeCount;
+			stack.TopShields = stack.RestShields / safeCount;
+			stack.RestArmor -= stack.TopArmor;
+			stack.RestShields -= stack.TopShields;
+		}
 		
 		private double doDirectAttack(Player attackSide, Vector2D attackFrom, AbilityStats abilityStats, double quantity, Combatant target)
 		{
@@ -366,30 +410,40 @@ namespace Stareater.GameLogic
 				spent++;
 
 				if (hitChance < this.game.Rng.NextDouble())
-					doDamage(abilityStats, target, targetStats);
+				{
+					doTopDamage(abilityStats.FirePower, abilityStats.ShieldEfficiency, abilityStats.ArmorEfficiency, target, targetStats);
+					updateStackTop(target);
+				}
 			}
 			
 			//TODO(later) do different calculation for multiple ships below top of the stack
 			return spent;
 		}
 
-		private double doProjectileAttack(Player attackSide, AbilityStats abilityStats, double quantity, Combatant target)
+		private void doProjectileAttack(Player attackSide, AbilityStats abilityStats, double quantity, Combatant target)
 		{
 			var targetStats = this.mainGame.Derivates.Of(target.Owner).DesignStats[target.Ships.Design];
 			var hitChance = chanceToHit(
 				abilityStats.Accuracy, sensorStrength(target.Position, attackSide),
 				targetStats, target.CloakedFor.Contains(attackSide));
-			var spent = 0.0;
 
-			while (quantity > spent && target.Ships.Quantity > 0)
+			while (quantity > 0 && target.Ships.Quantity > 0)
 			{
-				spent++;
+				quantity--;
+				bool hit = hitChance < this.game.Rng.NextDouble();
 
-				if (hitChance < this.game.Rng.NextDouble())
-					doDamage(abilityStats, target, targetStats);
+				if (hit)
+					doTopDamage(abilityStats.FirePower, abilityStats.ShieldEfficiency, abilityStats.ArmorEfficiency, target, targetStats);
+				else if (abilityStats.SplashMaxTargets > 0)
+					doTopDamage(abilityStats.SplashFirePower, abilityStats.SplashShieldEfficiency, abilityStats.SplashArmorEfficiency, target, targetStats);
+
+				doRestDamage(
+					abilityStats.SplashMaxTargets - (hit ? 1 : 0), 
+					abilityStats.SplashFirePower, abilityStats.SplashShieldEfficiency, abilityStats.SplashArmorEfficiency, 
+					target, targetStats);
+
+				updateStackTop(target);
 			}
-
-			return spent;
 		}
 
 		private void doLaunchProjectile(Combatant attacker, AbilityStats abilityStats, double quantity, Combatant target)

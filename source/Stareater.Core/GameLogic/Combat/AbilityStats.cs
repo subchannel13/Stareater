@@ -30,25 +30,30 @@ namespace Stareater.GameLogic.Combat
 
 		public string ProjectileImage { get; private set; }
 		public double Speed { get; private set; }
+		public double SplashMaxTargets { get; private set; }
+		public double SplashFirePower { get; private set; }
+		public double SplashShieldEfficiency { get; private set; }
+		public double SplashArmorEfficiency { get; private set; }
 
-		public AbilityStats(AAbilityType type, int level, int quantity, 
-		                    int range, bool isInstantDamage, bool isProjectile,
+		public AbilityStats(AAbilityType type, int level, int quantity,
+							int range, bool isInstantDamage, bool isProjectile,
 							bool targetColony, bool targetShips, bool targetStar,
-		                    double firePower, double accuracy, double energyCost, double ammo,
-		                    double accuracyRangePenalty, double armorEfficiency, double shieldEfficiency, double planetEfficiency,
-		                    TraitType appliesTrait, string projectileImage, double speed)
+							double firePower, double accuracy, double energyCost, double ammo,
+							double accuracyRangePenalty, double armorEfficiency, double shieldEfficiency, double planetEfficiency,
+							TraitType appliesTrait, string projectileImage, double speed, double splashMaxTargets,
+                            double splashFirePower, double splashShieldEfficiency, double splashArmorEfficiency)
 		{
 			this.Type = type;
 			this.Level = level;
 			this.Quantity = quantity;
-			
+
 			this.Range = range;
 			this.IsInstantDamage = isInstantDamage;
 			this.IsProjectile = isProjectile;
 			this.TargetColony = targetColony;
 			this.TargetShips = targetShips;
 			this.TargetStar = targetStar;
-			
+
 			this.FirePower = firePower;
 			this.Accuracy = accuracy;
 			this.EnergyCost = energyCost;
@@ -57,11 +62,15 @@ namespace Stareater.GameLogic.Combat
 			this.ArmorEfficiency = armorEfficiency;
 			this.ShieldEfficiency = shieldEfficiency;
 			this.PlanetEfficiency = planetEfficiency;
-			
+
 			this.AppliesTrait = appliesTrait;
 
 			this.ProjectileImage = projectileImage;
 			this.Speed = speed;
+			this.SplashMaxTargets = splashMaxTargets;
+            this.SplashFirePower = splashFirePower;
+			this.SplashShieldEfficiency = splashShieldEfficiency;
+			this.SplashArmorEfficiency = splashArmorEfficiency;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using NGenerics.DataStructures.Mathematical;
 using Stareater.SpaceCombat;
+using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +11,7 @@ namespace Stareater
 		public static readonly int BattlefieldRadius = 4;
 
 		public Queue<Combatant> PlayOrder { get; private set; }
-		public List<Projectile> Projectiles { get; private set; }
+		public PendableSet<Projectile> Projectiles { get; private set; }
 
 		public SpaceBattleGame(Vector2D location, MainGame mainGame) : 
 			base(
@@ -20,7 +21,7 @@ namespace Stareater
 			)
 		{
 			this.PlayOrder = new Queue<Combatant>();
-			this.Projectiles = new List<Projectile>();
+			this.Projectiles = new PendableSet<Projectile>();
 		}
 	}
 }

@@ -30,6 +30,10 @@ namespace Stareater.GameLogic.Combat
 
 		private string projectileImage = null;
 		private double speed = 0;
+		public double splashMaxTargets = 0;
+		public double splashFirePower = 0;
+		public double splashShieldEfficiency = 0;
+		public double splashArmorEfficiency = 0;
 
 		private AbilityStatsFactory(int level, StaticsDB statics)
 		{
@@ -46,7 +50,8 @@ namespace Stareater.GameLogic.Combat
 								   factory.targetColony, factory.targetShips, factory.targetStar,
 			                       factory.firePower, factory.accuracy, factory.energyCost, factory.ammo,
 			                       factory.accuracyRangePenalty, factory.armorEfficiency, factory.shieldEfficiency, factory.planetEfficiency,
-			                       factory.appliesTrait, factory.projectileImage, factory.speed);
+			                       factory.appliesTrait, factory.projectileImage, factory.speed, factory.splashMaxTargets,
+								   factory.splashFirePower, factory.splashShieldEfficiency, factory.splashArmorEfficiency);
 		}
 
 		#region IAbilityVisitor implementation
@@ -88,6 +93,11 @@ namespace Stareater.GameLogic.Combat
 			this.ammo = ability.Ammo.Evaluate(vars);
 			this.speed = ability.Speed.Evaluate(vars); //TODO(later) include player techs
 			this.projectileImage = ability.ProjectileImage;
+
+			this.splashMaxTargets = 2; //TODO(v0.7)
+			this.splashFirePower = 1; //TODO(v0.7)
+			this.splashShieldEfficiency = 1; //TODO(v0.7)
+			this.splashArmorEfficiency = 1; //TODO(v0.7)
 		}
 
 		public void Visit(StarShootAbility ability)
