@@ -371,7 +371,7 @@ namespace Stareater.GameLogic
 
 			if (target.RestArmor <= 0)
 			{
-				target.Ships.Quantity = 1;
+				target.Ships.Quantity = Math.Min(target.Ships.Quantity, 1);
 
 				target.RestArmor = 0;
 				target.RestShields = 0;
@@ -409,7 +409,7 @@ namespace Stareater.GameLogic
 			{
 				spent++;
 
-				if (hitChance < this.game.Rng.NextDouble())
+				if (hitChance > this.game.Rng.NextDouble())
 				{
 					doTopDamage(abilityStats.FirePower, abilityStats.ShieldEfficiency, abilityStats.ArmorEfficiency, target, targetStats);
 					updateStackTop(target);
@@ -430,7 +430,7 @@ namespace Stareater.GameLogic
 			while (quantity > 0 && target.Ships.Quantity > 0)
 			{
 				quantity--;
-				bool hit = hitChance < this.game.Rng.NextDouble();
+				bool hit = hitChance > this.game.Rng.NextDouble();
 
 				if (hit)
 					doTopDamage(abilityStats.FirePower, abilityStats.ShieldEfficiency, abilityStats.ArmorEfficiency, target, targetStats);
@@ -438,7 +438,7 @@ namespace Stareater.GameLogic
 					doTopDamage(abilityStats.SplashFirePower, abilityStats.SplashShieldEfficiency, abilityStats.SplashArmorEfficiency, target, targetStats);
 
 				doRestDamage(
-					abilityStats.SplashMaxTargets - (hit ? 1 : 0), 
+					abilityStats.SplashMaxTargets - 1,
 					abilityStats.SplashFirePower, abilityStats.SplashShieldEfficiency, abilityStats.SplashArmorEfficiency, 
 					target, targetStats);
 
