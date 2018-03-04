@@ -181,21 +181,33 @@ namespace Stareater.GameLogic
 		{
 			foreach (var missile in this.game.Projectiles)
 			{
-				while (missile.MovementPoints > 0 && missile.Position != missile.Target.Position)
-				{
-					missile.Position = Methods.FindBest(
-						Methods.HexNeighbours(missile.Position), 
-						hex => -Methods.HexDistance(missile.Target.Position, hex)
-					);
-					missile.MovementPoints -= 1 / missile.Stats.Speed;
-                }
-				missile.MovementPoints = Math.Min(missile.MovementPoints + 1, 1);
+				while (missile.Target != null && missile.Count > 0)
+					if (missile.Target.Ships.Quantity <= 0) //TODO(v0.7) check for retreat
+					{
+						//TODO(v0.7) check war declarations
+						missile.Target = this.game.Combatants.
+								Where(x => x.Position == missile.Position && x.Ships.Quantity > 0 && x.Owner != missile.Owner).
+								OrderBy(x => x.Ships.Quantity).
+								FirstOrDefault();
+					}
+					else if (missile.Position == missile.Target.Position)
+					{
+						missile.Count -= (long)this.doProjectileAttack(missile.Owner, missile.Stats, missile.Count, missile.Target);
+					}
+					else if (missile.MovementPoints > 0)
+					{
+						missile.Position = Methods.FindBest(
+							Methods.HexNeighbours(missile.Position),
+							hex => -Methods.HexDistance(missile.Target.Position, hex)
+						);
+						missile.MovementPoints -= 1 / missile.Stats.Speed;
+					}
+					else
+						break;
 
-				if (missile.Position == missile.Target.Position)
-				{
-					this.doProjectileAttack(missile.Owner, missile.Stats, missile.Count, missile.Target);
+				missile.MovementPoints = Math.Min(missile.MovementPoints + 1, 1);
+				if (missile.Count <= 0)
 					this.game.Projectiles.PendRemove(missile);
-                }
 			}
 			this.game.Projectiles.ApplyPending();
         }
@@ -241,6 +253,7 @@ namespace Stareater.GameLogic
 				this.nextRound();
 		}
 		
+		//TODO(later) check target validity
 		public void UseAbility(int index, double quantity, Combatant target)
 		{
 			var unit = this.game.PlayOrder.Peek();
@@ -420,12 +433,13 @@ namespace Stareater.GameLogic
 			return spent;
 		}
 
-		private void doProjectileAttack(Player attackSide, AbilityStats abilityStats, double quantity, Combatant target)
+		private double doProjectileAttack(Player attackSide, AbilityStats abilityStats, double quantity, Combatant target)
 		{
 			var targetStats = this.mainGame.Derivates.Of(target.Owner).DesignStats[target.Ships.Design];
 			var hitChance = chanceToHit(
 				abilityStats.Accuracy, sensorStrength(target.Position, attackSide),
 				targetStats, target.CloakedFor.Contains(attackSide));
+			var spent = 0.0;
 
 			while (quantity > 0 && target.Ships.Quantity > 0)
 			{
@@ -442,8 +456,12 @@ namespace Stareater.GameLogic
 					abilityStats.SplashFirePower, abilityStats.SplashShieldEfficiency, abilityStats.SplashArmorEfficiency, 
 					target, targetStats);
 
+				//TODO(v0.7) spill leftover spalsh damage to other stacks
+
 				updateStackTop(target);
 			}
+
+			return spent;
 		}
 
 		private void doLaunchProjectile(Combatant attacker, AbilityStats abilityStats, double quantity, Combatant target)

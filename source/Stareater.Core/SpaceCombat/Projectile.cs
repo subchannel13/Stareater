@@ -9,7 +9,7 @@ namespace Stareater.SpaceCombat
 		public Player Owner { get; private set; }
 		public long Count { get; set; }
 		public AbilityStats Stats { get; private set; }
-		public Combatant Target { get; private set; }
+		public Combatant Target { get; set; }
 
 		public Vector2D Position;
 		public double MovementPoints = 1;
