@@ -192,7 +192,7 @@ namespace Stareater.GameLogic
 					}
 					else if (missile.Position == missile.Target.Position)
 					{
-						missile.Count -= (long)this.doProjectileAttack(missile.Owner, missile.Stats, missile.Count, missile.Target);
+						missile.Count -= this.doProjectileAttack(missile.Owner, missile.Stats, missile.Count, missile.Target);
 					}
 					else if (missile.MovementPoints > 0)
 					{
@@ -433,17 +433,17 @@ namespace Stareater.GameLogic
 			return spent;
 		}
 
-		private double doProjectileAttack(Player attackSide, AbilityStats abilityStats, double quantity, Combatant target)
+		private long doProjectileAttack(Player attackSide, AbilityStats abilityStats, double quantity, Combatant target)
 		{
 			var targetStats = this.mainGame.Derivates.Of(target.Owner).DesignStats[target.Ships.Design];
 			var hitChance = chanceToHit(
 				abilityStats.Accuracy, sensorStrength(target.Position, attackSide),
 				targetStats, target.CloakedFor.Contains(attackSide));
-			var spent = 0.0;
+			long spent = 0;
 
-			while (quantity > 0 && target.Ships.Quantity > 0)
+			while (quantity > spent && target.Ships.Quantity > 0)
 			{
-				quantity--;
+				spent++;
 				bool hit = hitChance > this.game.Rng.NextDouble();
 
 				if (hit)
