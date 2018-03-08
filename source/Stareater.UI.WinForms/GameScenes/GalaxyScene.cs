@@ -404,39 +404,16 @@ namespace Stareater.GameScenes
 		
 		private void mousePan(Vector4 currentPosition)
 		{
-			panAbsPath += (currentPosition - lastMousePosition.Value).Length;
+			this.panAbsPath += (currentPosition - this.lastMousePosition.Value).Length;
 
-			originOffset -= (Vector4.Transform(currentPosition, invProjection) -
-				Vector4.Transform(lastMousePosition.Value, invProjection)
+			this.originOffset -= (Vector4.Transform(currentPosition, this.invProjection) -
+				Vector4.Transform(this.lastMousePosition.Value, this.invProjection)
 				).Xy;
 
-			limitPan();
-			
-			lastMousePosition = currentPosition;
+			this.limitPan();
+
+			this.lastMousePosition = currentPosition;
 			this.setupPerspective();
-		}
-		
-		private void simulateFleetMovement(Vector4 currentPosition)
-		{
-			if (!this.SelectedFleet.CanMove)
-				return;
-			
-			Vector4 mousePoint = Vector4.Transform(currentPosition, invProjection);
-			var searchRadius = Math.Max(screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
-			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
-			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
-
-			var starsFound = this.QueryScene(searchPoint, searchRadius).
-				Where(x => x.Data is StarData).
-				OrderBy(x => (x.PhysicalShape.Center - convert(searchPoint)).LengthSquared).
-				ToList();
-
-			if (!starsFound.Any())
-				return;
-
-			this.SelectedFleet.SimulateTravel(starsFound[0].Data as StarData);
-			this.setupMovementEta();
-			this.setupMovementSimulation();
 		}
 
 		protected override void onMouseScroll(Vector2 mousePoint, int delta)
@@ -540,8 +517,31 @@ namespace Stareater.GameScenes
 				this.galaxyViewListener.SystemOpened(this.currentPlayer.OpenStarSystem(starsFound[0]));
 		}
 		#endregion
-		
+
 		#region Helper methods
+		private void simulateFleetMovement(Vector4 currentPosition)
+		{
+			if (!this.SelectedFleet.CanMove)
+				return;
+
+			Vector4 mousePoint = Vector4.Transform(currentPosition, invProjection);
+			var searchRadius = Math.Max(screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
+			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
+			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
+
+			var starsFound = this.QueryScene(searchPoint, searchRadius).
+				Where(x => x.Data is StarData).
+				OrderBy(x => (x.PhysicalShape.Center - convert(searchPoint)).LengthSquared).
+				ToList();
+
+			if (!starsFound.Any())
+				return;
+
+			this.SelectedFleet.SimulateTravel(starsFound[0].Data as StarData);
+			this.setupMovementEta();
+			this.setupMovementSimulation();
+		}
+
 		private void limitPan()
 		{
 			if (this.originOffset.X < mapBoundsMin.X) 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
 using NGenerics.DataStructures.Mathematical;
 using OpenTK;
 using Stareater.Controllers;
@@ -17,11 +16,16 @@ using Stareater.GLData.OrbitShader;
 using Stareater.GraphicsEngine;
 using Stareater.GLData.SpriteShader;
 using Stareater.Utils.Collections;
+using System.Windows.Forms;
 
 namespace Stareater.GameScenes
 {
 	class SpaceCombatScene : AScene
 	{
+		private const double ZoomBase = 1.2f;
+		private const int MaxZoom = 10;
+		private const int MinZoom = -10;
+
 		private const float FarZ = 1;
 		private const float Layers = 16.0f;
 		
@@ -43,7 +47,12 @@ namespace Stareater.GameScenes
 		
 		private const double AnimationPeriod = 1.5;
 		private static readonly Color SelectionColor = Color.Yellow;
-		
+
+		private int zoomLevel = 0;
+		private Vector4? lastMousePosition = null;
+		private float panAbsPath = 0;
+		private Vector2 originOffset = Vector2.Zero;
+
 		private double animationTime = 0;
 		private SceneObject gridLines = null;
 		private IEnumerable<SceneObject> movementSprites = null;
@@ -100,7 +109,9 @@ namespace Stareater.GameScenes
 		protected override Matrix4 calculatePerspective()
 		{
 			var aspect = canvasSize.X / canvasSize.Y;
-			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2());
+			var radius = DefaultViewSize / (float)Math.Pow(ZoomBase, zoomLevel);
+
+			return calcOrthogonalPerspective(aspect * radius, radius, FarZ, originOffset);
 		}
 		#endregion
 
@@ -123,8 +134,54 @@ namespace Stareater.GameScenes
 			
 			this.ResetLists();
 		}
+
+		protected override void onMouseMove(Vector4 mouseViewPosition, MouseButtons mouseClicks)
+		{
+			if (!this.lastMousePosition.HasValue)
+				this.lastMousePosition = mouseViewPosition;
+
+			if (mouseClicks.HasFlag(MouseButtons.Left))
+				this.mousePan(mouseViewPosition);
+			else
+			{
+				this.lastMousePosition = mouseViewPosition;
+				this.panAbsPath = 0;
+			}
+		}
+
+		private void mousePan(Vector4 currentPosition)
+		{
+			this.panAbsPath += (currentPosition - this.lastMousePosition.Value).Length;
+
+			this.originOffset -= (Vector4.Transform(currentPosition, this.invProjection) -
+				Vector4.Transform(this.lastMousePosition.Value, this.invProjection)
+				).Xy;
+
+			this.limitPan();
+
+			this.lastMousePosition = currentPosition;
+			this.setupPerspective();
+		}
+
+		protected override void onMouseScroll(Vector2 mousePoint, int delta)
+		{
+			float oldZoom = 1 / (float)(0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel));
+
+			if (delta > 0)
+				this.zoomLevel++;
+			else
+				this.zoomLevel--;
+
+			this.zoomLevel = Methods.Clamp(zoomLevel, MinZoom, MaxZoom);
+
+			float newZoom = 1 / (float)(0.5 * DefaultViewSize / Math.Pow(ZoomBase, this.zoomLevel));
+
+			this.originOffset = (this.originOffset * oldZoom + mousePoint * (newZoom - oldZoom)) / newZoom;
+			this.limitPan();
+			this.setupPerspective();
+		}
 		#endregion
-		
+
 		public void OnUnitTurn(CombatantInfo unitInfo)
 		{
 			this.currentUnit = unitInfo;
@@ -417,8 +474,15 @@ namespace Stareater.GameScenes
 				))).ToList()
 			);
 		}
-		
+
 		#region Helper methods
+		private void limitPan()
+		{
+			var radius = SpaceBattleController.BattlefieldRadius * 1.5f;
+			this.originOffset.X = Methods.Clamp(this.originOffset.X, -radius, radius);
+			this.originOffset.Y = Methods.Clamp(this.originOffset.Y, -radius, radius);
+		}
+
 		private CombatantInfo biggestStack(IEnumerable<CombatantInfo> combatants)
 		{
 			return combatants.Aggregate((a, b) => a.Count * a.Design.Size > b.Count * b.Design.Size ? a : b);
