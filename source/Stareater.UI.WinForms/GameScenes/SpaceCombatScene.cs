@@ -101,7 +101,7 @@ namespace Stareater.GameScenes
 		public void ResetLists()
 		{
 			this.setupBodies();
-			this.setupGrid();
+			this.setupGrid(); //TODO(v0.7) doesn't have to be called on every mouse event
 			this.setupUnits();
 			this.setupProjectiles();
 		}
@@ -478,9 +478,9 @@ namespace Stareater.GameScenes
 		#region Helper methods
 		private void limitPan()
 		{
-			var radius = SpaceBattleController.BattlefieldRadius * 1.5f;
-			this.originOffset.X = Methods.Clamp(this.originOffset.X, -radius, radius);
-			this.originOffset.Y = Methods.Clamp(this.originOffset.Y, -radius, radius);
+			var radius = SpaceBattleController.BattlefieldRadius;
+			this.originOffset.X = Methods.Clamp(this.originOffset.X, -radius * 1.5f, radius * 1.5f);
+			this.originOffset.Y = Methods.Clamp(this.originOffset.Y, -radius * HexHeight, radius * HexHeight);
 		}
 
 		private CombatantInfo biggestStack(IEnumerable<CombatantInfo> combatants)
