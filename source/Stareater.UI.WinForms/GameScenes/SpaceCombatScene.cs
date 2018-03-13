@@ -25,6 +25,7 @@ namespace Stareater.GameScenes
 		private const double ZoomBase = 1.2f;
 		private const int MaxZoom = 10;
 		private const int MinZoom = -10;
+		private const float PanClickTolerance = 0.01f;
 
 		private const float FarZ = 1;
 		private const float Layers = 16.0f;
@@ -118,6 +119,9 @@ namespace Stareater.GameScenes
 		#region Mouse events
 		protected override void onMouseClick(Vector2 mousePoint)
 		{
+			if (panAbsPath > PanClickTolerance) //TODO(v0.7) maybe make AScene differentiate between click and drag
+				return;
+
 			var hexX = Math.Round(mousePoint.X / 1.5, MidpointRounding.AwayFromZero);
 			var hex = new Vector2D(
 				hexX,
@@ -129,7 +133,7 @@ namespace Stareater.GameScenes
 				this.Controller.UseAbility(this.SelectedAbility, biggestStack(enemies));
 			else if (this.Controller.Planets.Any(x => x.Position == hex && x.Owner != this.currentUnit.Owner) && this.SelectedAbility != null)
 				this.Controller.UseAbility(this.SelectedAbility, this.Controller.Planets.First(x => x.Position == hex));
-			else
+			else if (this.currentUnit.ValidMoves.Contains(hex))
 				this.Controller.MoveTo(hex);
 			
 			this.ResetLists();
@@ -186,6 +190,14 @@ namespace Stareater.GameScenes
 		{
 			this.currentUnit = unitInfo;
 			this.SelectedAbility = unitInfo.Abilities.FirstOrDefault(x => x.Quantity > 0);
+
+			var unitCenter = new Vector2(hexX(unitInfo.Position), hexY(unitInfo.Position));
+			if (!this.isVisible(unitCenter))
+			{
+				this.originOffset = unitCenter;
+				this.setupPerspective();
+			}
+
 			this.setupBodies();
 			this.setupUnits();
 			this.setupProjectiles();

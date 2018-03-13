@@ -7,6 +7,7 @@ using Stareater.Utils.Collections;
 using Stareater.GLData;
 using Stareater.GraphicsEngine.GuiElements;
 using Stareater.AppData;
+using Stareater.Utils;
 
 namespace Stareater.GraphicsEngine
 {
@@ -78,8 +79,6 @@ namespace Stareater.GraphicsEngine
 			foreach (var element in this.guiElements)
 				if (element.OnMouseDown(mouseGuiPoint))
 					return;
-
-			this.onMouseClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy);
 		}
 
 		public void HandleMouseUp(MouseEventArgs e)
@@ -210,7 +209,19 @@ namespace Stareater.GraphicsEngine
 				-(right + left) / (right - left), -(top + bottom) / (top - bottom), -1, 1
 			);
 		}
-		
+
+		protected bool isVisible(Vector2 point)
+		{
+			var viewPoint = convert(Vector4.Transform(new Vector4(point.X, point.Y, 0, 1), this.projection).Xy);
+
+			return Methods.IsRectEnveloped(
+				new NGenerics.DataStructures.Mathematical.Vector2D(1, 1),
+				new NGenerics.DataStructures.Mathematical.Vector2D(-1, -1),
+				viewPoint,
+				viewPoint
+			);
+		}
+
 		protected Vector4 mouseToView(int x, int y)
 		{
 			return new Vector4(
