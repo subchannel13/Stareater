@@ -17,6 +17,7 @@ using Stareater.GraphicsEngine;
 using Stareater.GLData.SpriteShader;
 using Stareater.Utils.Collections;
 using System.Windows.Forms;
+using Stareater.GraphicsEngine.Animators;
 
 namespace Stareater.GameScenes
 {
@@ -80,22 +81,7 @@ namespace Stareater.GameScenes
 
 		protected override void FrameUpdate(double deltaTime)
 		{
-			if (this.currentUnit == null)
-				return;
-			
-			this.animationTime += deltaTime;
-			
-			double animationPhase = Methods.GetPhase(this.animationTime, AnimationPeriod);
-			var alpha = Math.Abs(animationPhase - 0.5) * 0.6 + 0.4;
-			if (this.Controller.Units.Select(x => x.Owner).Distinct().All(x => this.currentUnit.CloakedFor(x) || x == currentUnit.Owner))
-				alpha *= 0.65;
-			
-			var oldData = this.currentUnitDrawable.ShaderData as SpriteData;
-			this.currentUnitDrawable.UpdateDrawable(new SpriteData(
-				oldData.LocalTransform,
-				oldData.TextureId,
-				Color.FromArgb((int)(alpha * 255), this.currentUnit.Owner.Color)
-			));
+			//no operation
 		}
 		
 		//TODO(v0.7) refactor and remove
@@ -263,8 +249,11 @@ namespace Stareater.GameScenes
 			);
 		}
 
-        private IEnumerable<PolygonData> unitSpriteData(IGrouping<Vector2D, CombatantInfo> hex, IEnumerable<PlayerInfo> players)
+        private SceneObject unitSprite(IGrouping<Vector2D, CombatantInfo> hex, IEnumerable<PlayerInfo> players)
 		{
+			var polygons = new List<PolygonData>();
+			IAnimator animator = null;
+
 			var hexTransform = Matrix4.CreateTranslation(hexX(hex.Key), hexY(hex.Key), 0);
 			
 			var unitSelected = (this.currentUnit != null && this.currentUnit.Position == hex.Key);
@@ -278,13 +267,21 @@ namespace Stareater.GameScenes
 				SpriteHelpers.UnitRectVertexData(unitSprite).ToList()
 			);
 			if (unitSelected)
+			{
 				this.currentUnitDrawable = unitDrawable;
-			
-			yield return unitDrawable;
+				animator = new PulsingAlpha(
+					unitDrawable, 
+					AnimationPeriod, 
+					0.6, 
+					x => (x + 0.4) * alpha, 
+					unit.Owner.Color);
+			}
+
+			polygons.Add(unitDrawable);			
 			
 			var otherUnits = hex.Where(x => x != unit).Select(x => x.Owner).Distinct().ToList();
 			for(int i = 0; i < otherUnits.Count; i++)
-				yield return new PolygonData(
+				polygons.Add(new PolygonData(
 					CombatantZ,
 					new SpriteData(
 						Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, 0.2f * i + 0.5f, 0) * hexTransform,  
@@ -292,9 +289,9 @@ namespace Stareater.GameScenes
 						otherUnits[i].Color
 					),
 					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.FleetIndicator).ToList()
-				);
-			
-			yield return new PolygonData(
+				));
+
+			polygons.Add(new PolygonData(
 				CombatantZ,
 				new SpriteData(
 					Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f, 0) * hexTransform,
@@ -302,7 +299,9 @@ namespace Stareater.GameScenes
 					Color.Gray
 				),
 				TextRenderUtil.Get.BufferText(new ThousandsFormatter().Format(unit.Count), -1, Matrix4.Identity).ToList()
-			);
+			));
+
+			return new SceneObject(polygons, animator: animator);
 		}
 		
 		private void setupBodies()
@@ -442,7 +441,7 @@ namespace Stareater.GameScenes
 			
 			this.UpdateScene(
 				ref this.unitSprites,
-				units.Select(hex => new SceneObject(unitSpriteData(hex, players))).ToList()
+				units.Select(hex => unitSprite(hex, players)).ToList()
 			);
 			
 			if (this.currentUnit != null)

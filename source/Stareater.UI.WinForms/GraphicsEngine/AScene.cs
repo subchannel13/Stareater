@@ -15,6 +15,7 @@ namespace Stareater.GraphicsEngine
 	{
 		private HashSet<SceneObject> sceneObjects = new HashSet<SceneObject>();
 		private QuadTree<SceneObject> physicalObjects = new QuadTree<SceneObject>();
+		private HashSet<IAnimator> animators = new HashSet<IAnimator>();
 		private HashSet<float> dirtyLayers = new HashSet<float>();
 		private Dictionary<float, List<IDrawable>> drawables = new Dictionary<float, List<IDrawable>>();
 		private Dictionary<float, List<VertexArray>> Vaos = new Dictionary<float, List<VertexArray>>();
@@ -23,6 +24,9 @@ namespace Stareater.GraphicsEngine
 		
 		public void Draw(double deltaTime)
 		{
+			foreach (var animator in this.animators)
+				animator.OnUpdate(deltaTime);
+			
 			this.FrameUpdate(deltaTime);
 			
 			if (this.dirtyLayers.Count > 0)
@@ -132,7 +136,9 @@ namespace Stareater.GraphicsEngine
 			
 			if (sceneObject.PhysicalShape != null)
 				this.physicalObjects.Remove(sceneObject);
-			
+
+			if (sceneObject.Animator != null)
+				this.animators.Remove(sceneObject.Animator);
 		}
 
 		public void RemoveFromScene(ref SceneObject sceneObject)
@@ -182,6 +188,9 @@ namespace Stareater.GraphicsEngine
 					sceneObject.PhysicalShape.Center.X, sceneObject.PhysicalShape.Center.Y,
 					sceneObject.PhysicalShape.Size.X, sceneObject.PhysicalShape.Size.Y
 				);
+
+			if (sceneObject.Animator != null)
+				this.animators.Add(sceneObject.Animator);
 		}
 		#endregion
 

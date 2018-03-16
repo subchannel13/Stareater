@@ -141,11 +141,13 @@
     <Compile Include="GameScenes\TextRenderUtil.cs" />
     <Compile Include="GLData\TextureUtils.cs" />
     <Compile Include="GraphicsEngine\AGlProgram.cs" />
+    <Compile Include="GraphicsEngine\Animators\PulsingAlpha.cs" />
     <Compile Include="GraphicsEngine\AScene.cs" />
     <Compile Include="GraphicsEngine\GuiElements\ElementPosition.cs" />
     <Compile Include="GraphicsEngine\GuiElements\GuiButton.cs" />
     <Compile Include="GraphicsEngine\GuiElements\GuiText.cs" />
     <Compile Include="GraphicsEngine\GuiElements\AGuiElement.cs" />
+    <Compile Include="GraphicsEngine\IAnimator.cs" />
     <Compile Include="GraphicsEngine\IDrawable.cs" />
     <Compile Include="GraphicsEngine\IShaderData.cs" />
     <Compile Include="GraphicsEngine\PhysicalData.cs" />
