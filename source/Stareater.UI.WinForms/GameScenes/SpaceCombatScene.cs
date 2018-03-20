@@ -55,7 +55,6 @@ namespace Stareater.GameScenes
 		private float panAbsPath = 0;
 		private Vector2 originOffset = Vector2.Zero;
 
-		private double animationTime = 0;
 		private SceneObject gridLines = null;
 		private IEnumerable<SceneObject> movementSprites = null;
 		private IEnumerable<SceneObject> planetSprites = null;

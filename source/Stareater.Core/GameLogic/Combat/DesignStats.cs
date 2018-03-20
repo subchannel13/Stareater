@@ -6,6 +6,7 @@ namespace Stareater.GameLogic.Combat
 	[StateType(true)]
 	class DesignStats 
 	{
+		public double Size;
 		public double GalaxySpeed;
 		public double GalaxyPower;
 		public double CombatSpeed;
@@ -24,11 +25,12 @@ namespace Stareater.GameLogic.Combat
 		public double Cloaking;
 		public double Jamming;
 
-		public DesignStats(double galaxySpeed, double galaxyPower, double combatSpeed, double combatPower, 
+		public DesignStats(double size, double galaxySpeed, double galaxyPower, double combatSpeed, double combatPower, 
 		                   List<AbilityStats> abilities, double colonizerPopulation, Dictionary<string, double> colonizerBuildings, 
 		                   double hitPoints, double shieldPoints, double evasion, double armorReduction, 
 		                   double shieldReduction, double shieldRegeneration, double shieldThickness, double detection, double cloaking, double jamming)
 		{
+			this.Size = size;
 			this.GalaxySpeed = galaxySpeed;
 			this.GalaxyPower = galaxyPower;
 			this.CombatSpeed = combatSpeed;

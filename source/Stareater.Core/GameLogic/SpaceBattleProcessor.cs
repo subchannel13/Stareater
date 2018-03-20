@@ -192,7 +192,13 @@ namespace Stareater.GameLogic
 					}
 					else if (missile.Position == missile.Target.Position)
 					{
-						missile.Count -= this.doProjectileAttack(missile.Owner, missile.Stats, missile.Count, missile.Target);
+						var targets = new List<Combatant>();
+						targets.Add(missile.Target);
+						targets.AddRange(this.game.Combatants.
+							Where(x => x.Position == missile.Position && x != missile.Target && x.Owner != missile.Owner). //TODO(v0.7) check war declarations
+							OrderByDescending(x => x.Ships.Quantity * this.mainGame.Derivates.Of(x.Owner).DesignStats[x.Ships.Design].Size)
+						);
+                        missile.Count -= this.doProjectileAttack(missile.Owner, missile.Stats, missile.Count, targets);
 					}
 					else if (missile.MovementPoints > 0)
 					{
@@ -365,8 +371,7 @@ namespace Stareater.GameLogic
 
 		private static bool doRestDamage(double maxTargets, double firePower, double shieldEfficiency, double armorEfficiency, Combatant target, DesignStats targetStats)
 		{
-			var targetRestCount = Math.Max(target.Ships.Quantity - 1, 0);
-			var splashTargets = Methods.Clamp(maxTargets, 0, targetRestCount);
+			var splashTargets = Methods.Clamp(maxTargets, 0, Math.Max(target.Ships.Quantity - 1, 0));
 
 			if (target.RestShields > 0)
 			{
@@ -433,32 +438,40 @@ namespace Stareater.GameLogic
 			return spent;
 		}
 
-		private long doProjectileAttack(Player attackSide, AbilityStats abilityStats, double quantity, Combatant target)
+		private long doProjectileAttack(Player attackSide, AbilityStats abilityStats, double quantity, IEnumerable<Combatant> targetOrder)
 		{
-			var targetStats = this.mainGame.Derivates.Of(target.Owner).DesignStats[target.Ships.Design];
+			var targets = targetOrder.ToArray();
+			var targetStats = targets.
+				Select(x => this.mainGame.Derivates.Of(x.Owner).DesignStats[x.Ships.Design]).
+				ToList();
+			var mainTarget = targets[0];
 			var hitChance = chanceToHit(
-				abilityStats.Accuracy, sensorStrength(target.Position, attackSide),
-				targetStats, target.CloakedFor.Contains(attackSide));
+				abilityStats.Accuracy, sensorStrength(mainTarget.Position, attackSide),
+				targetStats[0], mainTarget.CloakedFor.Contains(attackSide));
 			long spent = 0;
 
-			while (quantity > spent && target.Ships.Quantity > 0)
+			while (quantity > spent && targets[0].Ships.Quantity > 0)
 			{
 				spent++;
-				bool hit = hitChance > this.game.Rng.NextDouble();
+				var splashTargets = abilityStats.SplashMaxTargets;
 
-				if (hit)
-					doTopDamage(abilityStats.FirePower, abilityStats.ShieldEfficiency, abilityStats.ArmorEfficiency, target, targetStats);
-				else if (abilityStats.SplashMaxTargets > 0)
-					doTopDamage(abilityStats.SplashFirePower, abilityStats.SplashShieldEfficiency, abilityStats.SplashArmorEfficiency, target, targetStats);
+				for (int i = 0; i < targets.Length; i++)
+				{
+					bool hit = (i == 0) && hitChance > this.game.Rng.NextDouble();
 
-				doRestDamage(
-					abilityStats.SplashMaxTargets - 1,
-					abilityStats.SplashFirePower, abilityStats.SplashShieldEfficiency, abilityStats.SplashArmorEfficiency, 
-					target, targetStats);
+					if (hit)
+						doTopDamage(abilityStats.FirePower, abilityStats.ShieldEfficiency, abilityStats.ArmorEfficiency, targets[i], targetStats[i]);
+					else if (splashTargets > 0)
+						doTopDamage(abilityStats.SplashFirePower, abilityStats.SplashShieldEfficiency, abilityStats.SplashArmorEfficiency, targets[i], targetStats[i]);
 
-				//TODO(v0.7) spill leftover spalsh damage to other stacks
+					doRestDamage(
+						splashTargets - 1,
+						abilityStats.SplashFirePower, abilityStats.SplashShieldEfficiency, abilityStats.SplashArmorEfficiency,
+						targets[i], targetStats[i]);
 
-				updateStackTop(target);
+					splashTargets -= Methods.Clamp(splashTargets, 0, Math.Max(targets[i].Ships.Quantity, 0));
+					updateStackTop(targets[i]);
+				}
 			}
 
 			return spent;

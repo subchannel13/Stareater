@@ -590,6 +590,7 @@ namespace Stareater.GameLogic
 			this.DesignStats.Add(
 				design,
 				new DesignStats(
+					design.Hull.TypeInfo.Size.Evaluate(hullVars),
 					galaxySpeed,
 					shipVars[ReactorType.TotalPowerKey],
 					statics.ShipFormulas.CombatSpeed.Evaluate(shipVars.Get),
