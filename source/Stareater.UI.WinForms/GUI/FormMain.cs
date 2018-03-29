@@ -50,6 +50,7 @@ namespace Stareater.GUI
 			this.gameController = new GameController();
 			this.timingLoop = new TimingLoop(this, onNextFrame);
 			this.reportOpener = new OpenReportVisitor(showDevelopment, showResearch);
+			this.nextRenderer = new IntroScene();
 		}
 		
 		private void FormMain_Load(object sender, EventArgs e)
@@ -114,11 +115,6 @@ namespace Stareater.GUI
 				while (delayedGuiEvents.Count > 0)
 					delayedGuiEvents.Dequeue().Invoke();
 			}
-		}
-		
-		private void endTurnButton_Click(object sender, EventArgs e)
-		{
-			
 		}
 		
 		private void returnButton_Click(object sender, EventArgs e)
