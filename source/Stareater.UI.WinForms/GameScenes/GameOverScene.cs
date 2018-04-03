@@ -44,10 +44,7 @@ namespace Stareater.GameScenes
 				))
 			);
 		}
-		
-		protected override void FrameUpdate(double deltaTime)
-		{ }
-		
+
 		protected override Matrix4 calculatePerspective()
 		{
 			var aspect = canvasSize.X / canvasSize.Y;

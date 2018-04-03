@@ -78,10 +78,6 @@ namespace Stareater.GameScenes
 		#region AScene implementation
 		protected override float GuiLayerThickness => 1 / Layers;
 
-		protected override void FrameUpdate(double deltaTime)
-		{
-			//no operation
-		}
 		protected override Matrix4 calculatePerspective()
 		{
 			var aspect = canvasSize.X / canvasSize.Y;

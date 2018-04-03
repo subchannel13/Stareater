@@ -43,7 +43,10 @@ namespace Stareater.GraphicsEngine
 			}
 		}
 		
-		protected abstract void FrameUpdate(double deltaTime);
+		protected virtual void FrameUpdate(double deltaTime)
+		{
+			//no operation
+		}
 		
 		#region Scene events
 		public virtual void Activate()

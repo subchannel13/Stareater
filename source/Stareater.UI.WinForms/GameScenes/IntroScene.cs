@@ -11,6 +11,11 @@ namespace Stareater.GameScenes
 {
 	class IntroScene : AScene
 	{
+		private const int StarfieldRadius = 5;
+		private const int StarfieldSeed = 101;
+		private const float StarDisplacement = 0.7f;
+		private const float StarSize = 0.03f;
+
 		private const float FarZ = 1;
 		private const float Layers = 4.0f;
 
@@ -20,30 +25,40 @@ namespace Stareater.GameScenes
 		private const float StarSaturationZ = 2 / Layers;
 
 		private SceneObject starSprites = null;
+		private Action timeoutCallback;
+
+		private double countDown = 3;
+
+		public IntroScene(Action timeoutCallback)
+		{
+			this.timeoutCallback = timeoutCallback;
+		}
 
 		protected override Matrix4 calculatePerspective()
 		{
 			return calcOrthogonalPerspective(canvasSize.X / canvasSize.Y, 1, FarZ, new Vector2());
 		}
 
-		//TODO(v0.7) remove mandatory override from base class
 		protected override void FrameUpdate(double deltaTime)
 		{
-			//no operation
-		}
+			if (this.countDown <= 0)
+				return;
 
-		//TODO(v0.7) extract constants
+			this.countDown -= deltaTime;
+			if (this.countDown <= 0)
+				this.timeoutCallback();
+        }
+
 		public override void Activate()
 		{
-			const int R = 5;
 			var stars = new List<Vector2>();
-			var random = new Random(101);
+			var random = new Random(StarfieldSeed);
 
-			for (int y = -R; y <= R; y++)
-				for (int x = -R; x <= R; x++)
+			for (int y = -StarfieldRadius; y <= StarfieldRadius; y++)
+				for (int x = -StarfieldRadius; x <= StarfieldRadius; x++)
 					stars.Add(new Vector2(
-						x / 10f + (float)(random.NextDouble() - 0.5) / 15f,
-						y / 10f + (float)(random.NextDouble() - 0.5) / 15f
+						(x + (float)(random.NextDouble() - 0.5) * StarDisplacement) / StarfieldRadius / 2,
+						(y + (float)(random.NextDouble() - 0.5) * StarDisplacement) / StarfieldRadius / 2
 					));
 
 			this.UpdateScene(
@@ -53,8 +68,8 @@ namespace Stareater.GameScenes
 					AddVertices(
 						stars.SelectMany(position => SpriteHelpers.TexturedRectVertexData(
 							position,
-							0.03f,
-							0.03f,
+							StarSize,
+							StarSize,
 							GalaxyTextures.Get.StarColor
 					))).
 
@@ -62,8 +77,8 @@ namespace Stareater.GameScenes
 					AddVertices(
 						stars.SelectMany(position => SpriteHelpers.TexturedRectVertexData(
 							position,
-							0.03f,
-							0.03f,
+							StarSize,
+							StarSize,
 							GalaxyTextures.Get.StarGlow
 					))).
 

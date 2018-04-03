@@ -78,11 +78,6 @@ namespace Stareater.GameScenes
 		#region AScene implementation
 		protected override float GuiLayerThickness => 1 / Layers;
 
-		protected override void FrameUpdate(double deltaTime)
-		{
-			//no operation
-		}
-		
 		//TODO(v0.7) refactor and remove
 		public void ResetLists()
 		{
