@@ -3,5 +3,7 @@
 	interface IAnimator
 	{
 		void OnUpdate(double deltaTime);
+
+		bool Finished { get; }
 	}
 }

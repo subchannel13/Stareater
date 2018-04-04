@@ -263,7 +263,7 @@ namespace Stareater.GameScenes
 			if (unitSelected)
 			{
 				this.currentUnitDrawable = unitDrawable;
-				animator = new PulsingAlpha(
+				animator = new OscillatingAlpha(
 					unitDrawable, 
 					AnimationPeriod, 
 					0.6, 

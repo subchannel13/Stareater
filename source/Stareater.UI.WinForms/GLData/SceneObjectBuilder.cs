@@ -35,7 +35,17 @@ namespace Stareater.GLData
 		public SceneObject Build()
 		{
 			this.applyPolygonData();
-			return new SceneObject(polygons, physicalShape, data);
+			return new SceneObject(this.polygons, this.physicalShape, this.data);
+		}
+
+		public SceneObject Build(Func<IList<PolygonData>, IAnimator> animatorGenerator)
+		{
+			this.applyPolygonData();
+			return new SceneObject(
+				this.polygons, 
+				this.physicalShape,
+				this.data, 
+				animatorGenerator(this.polygons));
 		}
 
 		#region Builder methods

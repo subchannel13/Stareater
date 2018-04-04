@@ -142,7 +142,11 @@
     <Compile Include="GameScenes\TextRenderUtil.cs" />
     <Compile Include="GLData\TextureUtils.cs" />
     <Compile Include="GraphicsEngine\AGlProgram.cs" />
-    <Compile Include="GraphicsEngine\Animators\PulsingAlpha.cs" />
+    <Compile Include="GraphicsEngine\Animators\AnimationSequence.cs" />
+    <Compile Include="GraphicsEngine\Animators\AnimationDelay.cs" />
+    <Compile Include="GraphicsEngine\Animators\OscillatingAlpha.cs" />
+    <Compile Include="GraphicsEngine\Animators\ParallelAnimation.cs" />
+    <Compile Include="GraphicsEngine\Animators\TweenAlpha.cs" />
     <Compile Include="GraphicsEngine\AScene.cs" />
     <Compile Include="GraphicsEngine\GuiElements\ElementPosition.cs" />
     <Compile Include="GraphicsEngine\GuiElements\GuiButton.cs" />
