@@ -41,6 +41,8 @@ namespace Stareater.GLData
 		const string ColonizationMarkColorTag = "colonizationMarkColor";
 		const string FleetIndicatorTag = "fleetIndicator";
 		const string GasGiantTag = "gasGiant";
+		const string IntroStareaterOutlineTag = "introStareaterOutline";
+		const string IntroStareaterUnderlineTag = "introStareaterUnderline";
 		const string MoveArrowTag = "moveArrow";
 		const string PathLineTag = "wormholePath";
 		const string RockPlanetTag = "rockPlanet";
@@ -62,6 +64,8 @@ namespace Stareater.GLData
 		public TextureInfo EndTurnNormal { get; private set; }
 		public TextureInfo FleetIndicator { get; private set;}
 		public TextureInfo GasGiant { get; private set;}
+		public TextureInfo IntroStareaterOutline { get; private set; }
+		public TextureInfo IntroStareaterUnderline { get; private set; }
 		public TextureInfo MoveToArrow { get; private set;}
 		public TextureInfo PathLine { get; private set;}
 		public TextureInfo RockPlanet { get; private set;}
@@ -92,6 +96,8 @@ namespace Stareater.GLData
 			this.EndTurnNormal = this.spriteNames["endTurnNormal"];
 			this.FleetIndicator = this.spriteNames[FleetIndicatorTag];
 			this.GasGiant = this.spriteNames[GasGiantTag];
+			this.IntroStareaterOutline = this.spriteNames[IntroStareaterOutlineTag];
+			this.IntroStareaterUnderline = this.spriteNames[IntroStareaterUnderlineTag];
 			this.MoveToArrow = this.spriteNames[MoveArrowTag];
 			this.PathLine = this.spriteNames[PathLineTag];
 			this.RockPlanet = this.spriteNames[RockPlanetTag];

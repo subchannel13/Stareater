@@ -16,6 +16,7 @@ namespace Stareater.GameScenes
 		private const float StarDisplacement = 0.7f;
 		private const float StarSize = 0.03f;
 		private const float StarSizeVariance = 0.4f;
+		private const float StareaterSize = 0.2f;
 
 		private readonly Vector2 StareaterPathDirection = new Vector2(-2, -1).Normalized();
 		private readonly Vector2 StareaterPathOffset = new Vector2(0, 0.1f);
@@ -25,18 +26,18 @@ namespace Stareater.GameScenes
 		private const float FadeDelayIncrement = 0.1f;
 
 		private const float FarZ = 1;
-		private const float Layers = 4.0f;
+		private const float Layers = 8.0f;
 
 		protected override float GuiLayerThickness => 1 / Layers;
 
-		private const float StarColorZ = 3 / Layers;
-		private const float StarSaturationZ = 2 / Layers;
+		private const float StarColorZ = 4 / Layers;
+		private const float StarSaturationZ = 3 / Layers;
+		private const float StareaterZ = 2 / Layers;
 
 		private IEnumerable<SceneObject> staticStarSprites = null;
 		private IEnumerable<SceneObject> fadingStarSprites = null;
+		private SceneObject stareaterOutlineSprite = null;
 		private Action timeoutCallback;
-
-		private double countDown = 10; //TODO(v0.7) remove, replace with animation event
 
 		public IntroScene(Action timeoutCallback)
 		{
@@ -47,16 +48,6 @@ namespace Stareater.GameScenes
 		{
 			return calcOrthogonalPerspective(canvasSize.X / canvasSize.Y, 1, FarZ, new Vector2());
 		}
-
-		protected override void FrameUpdate(double deltaTime)
-		{
-			if (this.countDown <= 0)
-				return;
-
-			this.countDown -= deltaTime;
-			if (this.countDown <= 0)
-				this.timeoutCallback();
-        }
 
 		public override void Activate()
 		{
@@ -119,6 +110,20 @@ namespace Stareater.GameScenes
 					))
 				).ToList()
 			);
+
+			this.UpdateScene(
+				ref this.stareaterOutlineSprite,
+				new SceneObjectBuilder().
+					StartSimpleSprite(StareaterZ, GalaxyTextures.Get.IntroStareaterOutline, Color.FromArgb(0, Color.White)).
+                    Scale(StareaterSize).
+					Translate(new Vector2(-0.2f, 0)).
+					
+					Build(polygons => new AnimationSequence(
+						new AnimationDelay((fadingStars.Count - 1) * FadeDelayIncrement + FadeDelay - FadeSpeed),
+						new TweenAlpha(polygons[0], 0, 1, -FadeSpeed),
+						new CallbackAnimation(this.timeoutCallback)
+					))
+            );
 		}
 
 		private float pathPhase(Vector2 position)
