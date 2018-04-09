@@ -6,6 +6,7 @@ using OpenTK;
 using Stareater.GLData;
 using System.Drawing;
 using Stareater.GraphicsEngine.Animators;
+using Stareater.Localization;
 
 namespace Stareater.GameScenes
 {
@@ -17,6 +18,7 @@ namespace Stareater.GameScenes
 		private const float StarSize = 0.03f;
 		private const float StarSizeVariance = 0.4f;
 		private const float StareaterSize = 0.2f;
+		private const float TitleSize = 0.06f;
 
 		private readonly Vector2 StareaterPathDirection = new Vector2(-2, -1).Normalized();
 		private readonly Vector2 StareaterPathOffset = new Vector2(0, 0.1f);
@@ -30,13 +32,15 @@ namespace Stareater.GameScenes
 
 		protected override float GuiLayerThickness => 1 / Layers;
 
-		private const float StarColorZ = 4 / Layers;
-		private const float StarSaturationZ = 3 / Layers;
-		private const float StareaterZ = 2 / Layers;
+		private const float StarColorZ = 5 / Layers;
+		private const float StarSaturationZ = 4 / Layers;
+		private const float StareaterZ = 3 / Layers;
+		private const float TitleZ = 2 / Layers;
 
 		private IEnumerable<SceneObject> staticStarSprites = null;
 		private IEnumerable<SceneObject> fadingStarSprites = null;
 		private SceneObject stareaterOutlineSprite = null;
+		private SceneObject stareaterTitleSprite = null;
 		private Action timeoutCallback;
 
 		public IntroScene(Action timeoutCallback)
@@ -55,6 +59,9 @@ namespace Stareater.GameScenes
 			var staticStars = new List<Star>();
 			var fadingStars = new List<Star>();
 			var pathNormal = StareaterPathDirection.PerpendicularLeft;
+
+			var title = LocalizationManifest.Get.CurrentLanguage["FormMainMenu"]["Title"].Text(); //TODO(v0.7) move to formMain
+			TextRenderUtil.Get.Prepare(new string[] { title }); //TODO(v0.7) remove the need for preparation
 
 			for (int y = -StarfieldRadius; y <= StarfieldRadius; y++)
 				for (int x = -StarfieldRadius; x <= StarfieldRadius; x++)
@@ -111,7 +118,8 @@ namespace Stareater.GameScenes
 				).ToList()
 			);
 
-			this.UpdateScene(
+			var delay = (fadingStars.Count - 1) * FadeDelayIncrement + FadeDelay - FadeSpeed;
+            this.UpdateScene(
 				ref this.stareaterOutlineSprite,
 				new SceneObjectBuilder().
 					StartSimpleSprite(StareaterZ, GalaxyTextures.Get.IntroStareaterOutline, Color.FromArgb(0, Color.White)).
@@ -119,11 +127,33 @@ namespace Stareater.GameScenes
 					Translate(new Vector2(-0.2f, 0)).
 					
 					Build(polygons => new AnimationSequence(
-						new AnimationDelay((fadingStars.Count - 1) * FadeDelayIncrement + FadeDelay - FadeSpeed),
-						new TweenAlpha(polygons[0], 0, 1, -FadeSpeed),
-						new CallbackAnimation(this.timeoutCallback)
+						new AnimationDelay(delay),
+						new TweenAlpha(polygons[0], 0, 1, -FadeSpeed)
 					))
             );
+
+			delay += -FadeSpeed;
+            this.UpdateScene(
+				ref this.stareaterTitleSprite,
+				new SceneObjectBuilder().
+					StartSimpleSprite(StareaterZ, GalaxyTextures.Get.IntroStareaterUnderline, Color.FromArgb(0, Color.White)).
+					Scale(StareaterSize, StareaterSize / 4).
+					Translate(new Vector2(-0.2f, StareaterSize / 2)).
+
+					StartSprite(TitleZ, TextRenderUtil.Get.TextureId, Color.FromArgb(0, Color.White)).
+					Scale(TitleSize).
+					Translate(-0.2f, StareaterSize / 2 + TitleSize * 1.1f).
+					AddVertices(TextRenderUtil.Get.BufferText(title, -0.5f, Matrix4.Identity)).
+
+					Build(polygons => new AnimationSequence(
+						new AnimationDelay(delay),
+						new ParallelAnimation(
+							new TweenAlpha(polygons[0], 0, 1, -FadeSpeed),
+							new TweenAlpha(polygons[1], 0, 1, -FadeSpeed)
+                        ),
+						new CallbackAnimation(this.timeoutCallback)
+					))
+			);
 		}
 
 		private float pathPhase(Vector2 position)
