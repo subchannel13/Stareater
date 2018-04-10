@@ -63,6 +63,7 @@ namespace Stareater.GraphicsEngine
 			this.canvasSize = new Vector2(canvas.Width, canvas.Height);
 			this.screenSize = new Vector2(screen.Bounds.Width, screen.Bounds.Height);
 			this.setupPerspective();
+			this.onResize();
 		}
 		#endregion
 
@@ -206,7 +207,10 @@ namespace Stareater.GraphicsEngine
 		private Matrix4 guiInvProjection;
 
 		protected abstract Matrix4 calculatePerspective();
-		
+
+		protected virtual void onResize()
+		{ }
+
 		protected static Matrix4 calcOrthogonalPerspective(float width, float height, float farZ, Vector2 originOffset)
 		{
 			var left = (float)(-width / 2 + originOffset.X);

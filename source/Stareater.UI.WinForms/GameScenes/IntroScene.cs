@@ -14,6 +14,7 @@ namespace Stareater.GameScenes
 	{
 		private const int StarfieldRadius = 5;
 		private const int StarfieldSeed = 101;
+		private const int PaddingSeed = 997;
 		private const float StarDisplacement = 0.7f;
 		private const float StarSize = 0.03f;
 		private const float StarSizeVariance = 0.4f;
@@ -39,6 +40,7 @@ namespace Stareater.GameScenes
 
 		private IEnumerable<SceneObject> staticStarSprites = null;
 		private IEnumerable<SceneObject> fadingStarSprites = null;
+		private IEnumerable<SceneObject> paddingStarsSprite = null;
 		private SceneObject stareaterOutlineSprite = null;
 		private SceneObject stareaterTitleSprite = null;
 		private Action timeoutCallback;
@@ -50,7 +52,50 @@ namespace Stareater.GameScenes
 
 		protected override Matrix4 calculatePerspective()
 		{
-			return calcOrthogonalPerspective(canvasSize.X / canvasSize.Y, 1, FarZ, new Vector2());
+			if (canvasSize.X > canvasSize.Y)
+				return calcOrthogonalPerspective(canvasSize.X / canvasSize.Y, 1, FarZ, new Vector2());
+			else
+				return calcOrthogonalPerspective(1, canvasSize.Y / canvasSize.X, FarZ, new Vector2());
+		}
+
+		protected override void onResize()
+		{
+			var random = new Random(PaddingSeed);
+			var padX = (int)Math.Ceiling(Math.Max(canvasSize.X / canvasSize.Y, 1) * StarfieldRadius);
+            var padY = (int)Math.Ceiling(Math.Max(canvasSize.Y / canvasSize.X, 1) * StarfieldRadius);
+			var stars = new List<Star>();
+
+			for (int y = -padY; y <= padY; y++)
+				for (int x = -padX; x <= padX; x++)
+				{
+					if (Math.Max(Math.Abs(x), Math.Abs(y)) <= StarfieldRadius)
+						continue;
+
+					var position = new Vector2(
+						(x + (float)(random.NextDouble() - 0.5) * StarDisplacement) / StarfieldRadius / 2,
+						(y + (float)(random.NextDouble() - 0.5) * StarDisplacement) / StarfieldRadius / 2
+					);
+					stars.Add(new Star(
+						position,
+						starColor(random),
+						(float)random.NextDouble() * StarSizeVariance + 1 - StarSizeVariance
+					));
+				}
+
+			this.UpdateScene(
+				ref this.paddingStarsSprite,
+				stars.Select(star => new SceneObjectBuilder().
+					StartSimpleSprite(StarColorZ, GalaxyTextures.Get.StarColor, star.Color).
+					Scale(star.Size * StarSize).
+					Translate(star.Position).
+
+					StartSimpleSprite(StarSaturationZ, GalaxyTextures.Get.StarGlow, Color.White).
+					Scale(star.Size * StarSize).
+					Translate(star.Position).
+
+					Build()
+				).ToList()
+			);
 		}
 
 		public override void Activate()
