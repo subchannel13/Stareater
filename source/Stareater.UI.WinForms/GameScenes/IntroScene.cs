@@ -22,11 +22,14 @@ namespace Stareater.GameScenes
 		private const float TitleSize = 0.06f;
 
 		private readonly Vector2 StareaterPathDirection = new Vector2(-2, -1).Normalized();
-		private readonly Vector2 StareaterPathOffset = new Vector2(0, 0.1f);
-		private const float StareaterDistance = 0.3f;
+		private readonly Vector2 StareaterPathOffset = new Vector2(0, 1);
+		private const float StareaterDistance = 3f;
+		private const float StareaterWidth = 1.75f;
 		private const float FadeSpeed = -1;
 		private const float FadeDelay = 0.5f;
 		private const float FadeDelayIncrement = 0.1f;
+		private const float AppearDelay = 0.5f;
+		private const float AppearSpeed = 1;
 
 		private const float FarZ = 1;
 		private const float Layers = 8.0f;
@@ -52,57 +55,46 @@ namespace Stareater.GameScenes
 
 		protected override Matrix4 calculatePerspective()
 		{
-			if (canvasSize.X > canvasSize.Y)
-				return calcOrthogonalPerspective(canvasSize.X / canvasSize.Y, 1, FarZ, new Vector2());
+			var aspect = canvasSize.X / canvasSize.Y;
+
+            if (aspect >= 1)
+				return calcOrthogonalPerspective(aspect, 1, FarZ, new Vector2());
 			else
-				return calcOrthogonalPerspective(1, canvasSize.Y / canvasSize.X, FarZ, new Vector2());
+				return calcOrthogonalPerspective(1, 1 / aspect, FarZ, new Vector2());
 		}
 
 		protected override void onResize()
 		{
-			var random = new Random(PaddingSeed);
-			var padX = (int)Math.Ceiling(Math.Max(canvasSize.X / canvasSize.Y, 1) * StarfieldRadius);
-            var padY = (int)Math.Ceiling(Math.Max(canvasSize.Y / canvasSize.X, 1) * StarfieldRadius);
-			var stars = new List<Star>();
+			if (canvasSize.X == 0 || canvasSize.Y == 0)
+				return;
 
-			for (int y = -padY; y <= padY; y++)
-				for (int x = -padX; x <= padX; x++)
+			var tallAspect = canvasSize.X < canvasSize.Y;
+			var aspect = !tallAspect ? canvasSize.X / canvasSize.Y : canvasSize.Y / canvasSize.X;
+			var pad = (int)Math.Ceiling(StarfieldRadius * (aspect - 1));
+			var stars = new List<Vector2>();
+
+			for (int i = 1; i <= pad; i++)
+				for (int y = -StarfieldRadius; y <= StarfieldRadius; y++)
 				{
-					if (Math.Max(Math.Abs(x), Math.Abs(y)) <= StarfieldRadius)
-						continue;
-
-					var position = new Vector2(
-						(x + (float)(random.NextDouble() - 0.5) * StarDisplacement) / StarfieldRadius / 2,
-						(y + (float)(random.NextDouble() - 0.5) * StarDisplacement) / StarfieldRadius / 2
-					);
-					stars.Add(new Star(
-						position,
-						starColor(random),
-						(float)random.NextDouble() * StarSizeVariance + 1 - StarSizeVariance
-					));
+					stars.Add(new Vector2(-StarfieldRadius - i, y));
+					stars.Add(new Vector2(StarfieldRadius + i, y));
 				}
 
+			if (tallAspect)
+				stars = new List<Vector2>(stars.Select(v => new Vector2(v.Y, v.X)));
+
+			var random = new Random(PaddingSeed);
 			this.UpdateScene(
 				ref this.paddingStarsSprite,
-				stars.Select(star => new SceneObjectBuilder().
-					StartSimpleSprite(StarColorZ, GalaxyTextures.Get.StarColor, star.Color).
-					Scale(star.Size * StarSize).
-					Translate(star.Position).
-
-					StartSimpleSprite(StarSaturationZ, GalaxyTextures.Get.StarGlow, Color.White).
-					Scale(star.Size * StarSize).
-					Translate(star.Position).
-
-					Build()
-				).ToList()
+				stars.Select(position => makeStar(position, random).Build()).ToList()
 			);
 		}
 
 		public override void Activate()
 		{
 			var random = new Random(StarfieldSeed);
-			var staticStars = new List<Star>();
-			var fadingStars = new List<Star>();
+			var staticStars = new List<Vector2>();
+			var fadingStars = new List<Vector2>();
 			var pathNormal = StareaterPathDirection.PerpendicularLeft;
 
 			var title = LocalizationManifest.Get.CurrentLanguage["FormMainMenu"]["Title"].Text(); //TODO(v0.7) move to formMain
@@ -111,50 +103,29 @@ namespace Stareater.GameScenes
 			for (int y = -StarfieldRadius; y <= StarfieldRadius; y++)
 				for (int x = -StarfieldRadius; x <= StarfieldRadius; x++)
 				{
-					var position = new Vector2(
-						(x + (float)(random.NextDouble() - 0.5) * StarDisplacement) / StarfieldRadius / 2,
-						(y + (float)(random.NextDouble() - 0.5) * StarDisplacement) / StarfieldRadius / 2
-					);
-					var star = new Star(
-						position,
-						starColor(random),
-						(float)random.NextDouble() * StarSizeVariance + 1 - StarSizeVariance
-					);
+					var position = new Vector2(x, y);
+					var pathDistance = Math.Abs(Vector2.Dot(pathNormal, position - StareaterPathOffset));
 
-                    if (Math.Abs(Vector2.Dot(pathNormal, position - StareaterPathOffset)) < 0.1 && pathPhase(position) < StareaterDistance)
-						fadingStars.Add(star);
+					if (pathDistance < StareaterWidth && pathPhase(position) < StareaterDistance)
+						fadingStars.Add(position);
 					else
-						staticStars.Add(star);
+						staticStars.Add(position);
 				}
 
 			this.UpdateScene(
 				ref this.staticStarSprites,
-				staticStars.Select(star => new SceneObjectBuilder().
-					StartSimpleSprite(StarColorZ, GalaxyTextures.Get.StarColor, star.Color).
-					Scale(star.Size * StarSize).
-					Translate(star.Position).
-
-					StartSimpleSprite(StarSaturationZ, GalaxyTextures.Get.StarGlow, Color.White).
-					Scale(star.Size * StarSize).
-					Translate(star.Position).
-
+				staticStars.Select(position => 
+					makeStar(position, random).
 					Build()
 				).ToList()
 			);
 
 			this.UpdateScene(
 				ref this.fadingStarSprites,
-				fadingStars.OrderBy(star => pathPhase(star.Position)).Select((star, i) => new SceneObjectBuilder().
-					StartSimpleSprite(StarColorZ, GalaxyTextures.Get.StarColor, star.Color).
-					Scale(star.Size * StarSize).
-					Translate(star.Position).
-
-					StartSimpleSprite(StarSaturationZ, GalaxyTextures.Get.StarGlow, Color.White).
-					Scale(star.Size * StarSize).
-					Translate(star.Position).
-
+				fadingStars.OrderBy(position => pathPhase(position)).Select((position, i) => 
+					makeStar(position, random).
 					Build(polygons => new AnimationSequence(
-						new AnimationDelay(i * FadeDelayIncrement + FadeDelay),
+						new AnimationDelay(FadeDelayIncrement * (i + random.NextDouble() - 0.5) + FadeDelay),
 						new ParallelAnimation(
 							new TweenAlpha(polygons[0], 1, 0, FadeSpeed),
 							new TweenAlpha(polygons[1], 1, 0, FadeSpeed)
@@ -164,37 +135,39 @@ namespace Stareater.GameScenes
 			);
 
 			var delay = (fadingStars.Count - 1) * FadeDelayIncrement + FadeDelay - FadeSpeed;
-            this.UpdateScene(
+			var stareaterPosition = (StareaterPathOffset + StareaterPathDirection * StareaterDistance) / StarfieldRadius / 2 - StareaterPathDirection * StareaterSize / 2;
+			this.UpdateScene(
 				ref this.stareaterOutlineSprite,
 				new SceneObjectBuilder().
 					StartSimpleSprite(StareaterZ, GalaxyTextures.Get.IntroStareaterOutline, Color.FromArgb(0, Color.White)).
                     Scale(StareaterSize).
-					Translate(new Vector2(-0.2f, 0)).
+					Translate(stareaterPosition).
 					
 					Build(polygons => new AnimationSequence(
 						new AnimationDelay(delay),
-						new TweenAlpha(polygons[0], 0, 1, -FadeSpeed)
+						new TweenAlpha(polygons[0], 0, 1, AppearSpeed)
 					))
             );
 
-			delay += -FadeSpeed;
-            this.UpdateScene(
+			delay += AppearDelay;
+			var underlinePosition = stareaterPosition + new Vector2(0, StareaterSize / 2);
+			this.UpdateScene(
 				ref this.stareaterTitleSprite,
 				new SceneObjectBuilder().
 					StartSimpleSprite(StareaterZ, GalaxyTextures.Get.IntroStareaterUnderline, Color.FromArgb(0, Color.White)).
 					Scale(StareaterSize, StareaterSize / 4).
-					Translate(new Vector2(-0.2f, StareaterSize / 2)).
+					Translate(underlinePosition).
 
 					StartSprite(TitleZ, TextRenderUtil.Get.TextureId, Color.FromArgb(0, Color.White)).
 					Scale(TitleSize).
-					Translate(-0.2f, StareaterSize / 2 + TitleSize * 1.1f).
+					Translate(underlinePosition + new Vector2(0, TitleSize * 1.1f)).
 					AddVertices(TextRenderUtil.Get.BufferText(title, -0.5f, Matrix4.Identity)).
 
 					Build(polygons => new AnimationSequence(
 						new AnimationDelay(delay),
 						new ParallelAnimation(
-							new TweenAlpha(polygons[0], 0, 1, -FadeSpeed),
-							new TweenAlpha(polygons[1], 0, 1, -FadeSpeed)
+							new TweenAlpha(polygons[0], 0, 1, AppearSpeed),
+							new TweenAlpha(polygons[1], 0, 1, AppearSpeed)
                         ),
 						new CallbackAnimation(this.timeoutCallback)
 					))
@@ -206,30 +179,31 @@ namespace Stareater.GameScenes
 			return Vector2.Dot(StareaterPathDirection, position - StareaterPathOffset);
         }
 
-		private Color starColor(Random random)
+		private static SceneObjectBuilder makeStar(Vector2 cellPosition, Random random)
 		{
-			var roll = random.NextDouble();
-			
-			if (roll < 0.6)
-				return Color.FromArgb(255, 32, 32);
-			if (roll < 0.8)
-				return Color.FromArgb(255, 224, 0);
+			var position = new Vector2(
+				(cellPosition.X + (float)(random.NextDouble() - 0.5) * StarDisplacement) / StarfieldRadius / 2,
+				(cellPosition.Y + (float)(random.NextDouble() - 0.5) * StarDisplacement) / StarfieldRadius / 2
+			);
 
-			return Color.FromArgb(0, 160, 255);
-		}
+			var colorRoll = random.NextDouble();
+			var color = Color.FromArgb(255, 32, 32);
 
-		private struct Star
-		{
-			public Vector2 Position;
-			public Color Color;
-			public float Size;
+			if (colorRoll > 0.6)
+				color = Color.FromArgb(255, 224, 0);
+			if (colorRoll > 0.8)
+				color = Color.FromArgb(0, 160, 255);
 
-			public Star(Vector2 position, Color color, float size)
-			{
-				this.Position = position;
-				this.Color = color;
-				this.Size = size;
-			}
-		}
+			var size = (float)random.NextDouble() * StarSizeVariance + 1 - StarSizeVariance;
+
+			return new SceneObjectBuilder().
+				StartSimpleSprite(StarColorZ, GalaxyTextures.Get.StarColor, color).
+				Scale(size * StarSize).
+				Translate(position).
+
+				StartSimpleSprite(StarSaturationZ, GalaxyTextures.Get.StarGlow, Color.White).
+				Scale(size * StarSize).
+				Translate(position);
+        }
 	}
 }

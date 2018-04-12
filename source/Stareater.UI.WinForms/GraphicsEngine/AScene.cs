@@ -57,6 +57,9 @@ namespace Stareater.GraphicsEngine
 		
 		public void ResetProjection(Control canvas)
 		{
+			if (canvas.Width == 0 || canvas.Height == 0)
+				return;
+
 			var screen = Screen.FromControl(canvas);
 			GL.Viewport(canvas.ClientRectangle);
 			
