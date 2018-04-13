@@ -109,7 +109,12 @@ namespace Stareater.GameScenes
 					charOffset += SpaceUnitWidth;
 		}
 
-		public void Prepare(IEnumerable<string> texts)
+		public void Prepare()
+		{
+			this.lazyInitialization();
+		}
+
+        public void Prepare(IEnumerable<string> texts)
 		{
 			var missinCharacters = new HashSet<char>();
 			foreach (string text in texts)
@@ -120,7 +125,7 @@ namespace Stareater.GameScenes
 			if (missinCharacters.Count == 0 && this.TextureId != 0)
 				return;
 
-			lazyInitialization();
+			this.lazyInitialization();
 
 			using (Graphics g = Graphics.FromImage(this.textureBitmap)) {
 				if (this.nextCharOffset == Vector2.Zero)

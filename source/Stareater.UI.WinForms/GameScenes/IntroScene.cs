@@ -97,9 +97,6 @@ namespace Stareater.GameScenes
 			var fadingStars = new List<Vector2>();
 			var pathNormal = StareaterPathDirection.PerpendicularLeft;
 
-			var title = LocalizationManifest.Get.CurrentLanguage["FormMainMenu"]["Title"].Text(); //TODO(v0.7) move to formMain
-			TextRenderUtil.Get.Prepare(new string[] { title }); //TODO(v0.7) remove the need for preparation
-
 			for (int y = -StarfieldRadius; y <= StarfieldRadius; y++)
 				for (int x = -StarfieldRadius; x <= StarfieldRadius; x++)
 				{
@@ -151,6 +148,8 @@ namespace Stareater.GameScenes
 
 			delay += AppearDelay;
 			var underlinePosition = stareaterPosition + new Vector2(0, StareaterSize / 2);
+			var title = LocalizationManifest.Get.CurrentLanguage["Intro"]["Title"].Text();
+
 			this.UpdateScene(
 				ref this.stareaterTitleSprite,
 				new SceneObjectBuilder().

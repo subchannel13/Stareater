@@ -379,6 +379,7 @@ namespace Stareater.GUI
 		{
 			ShaderLibrary.Load();
 			GalaxyTextures.Get.Load(); //TODO(v0.7) make general initialization logic for rendering
+			TextRenderUtil.Get.Prepare();
 			
 			GL.Enable(EnableCap.DepthTest);
 			GL.Enable(EnableCap.Blend);
