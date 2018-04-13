@@ -19,6 +19,11 @@ namespace Stareater.GraphicsEngine.Animators
 			this.callback = null;
 		}
 
+		public void FastForward()
+		{
+			this.OnUpdate(0);
+		}
+
 		public bool Finished
 		{
 			get

@@ -1,3 +1,4 @@
 ﻿:Intro
 Title = Stareater
+cancelTip = Click or press Esc to skip
 -

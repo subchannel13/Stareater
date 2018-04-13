@@ -39,6 +39,11 @@ namespace Stareater.GraphicsEngine.Animators
 			));
 		}
 
+		public void FastForward()
+		{
+			throw new InvalidOperationException("Oscillation animator can't be fast forwarded");
+		}
+
 		public bool Finished
 		{
 			get

@@ -24,6 +24,12 @@ namespace Stareater.GraphicsEngine.Animators
 			this.animations.ApplyPending();
 		}
 
+		public void FastForward()
+		{
+			foreach (var animation in this.animations)
+				animation.FastForward();
+        }
+
 		public bool Finished
 		{
 			get

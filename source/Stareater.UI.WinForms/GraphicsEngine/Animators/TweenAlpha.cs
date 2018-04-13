@@ -35,6 +35,12 @@ namespace Stareater.GraphicsEngine.Animators
 			));
 		}
 
+		public void FastForward()
+		{
+			this.currentValue = this.finalValue;
+			this.OnUpdate(0);
+		}
+
 		public bool Finished
 		{
 			get

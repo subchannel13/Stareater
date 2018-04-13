@@ -7,6 +7,7 @@ using Stareater.GLData;
 using System.Drawing;
 using Stareater.GraphicsEngine.Animators;
 using Stareater.Localization;
+using Stareater.GraphicsEngine.GuiElements;
 
 namespace Stareater.GameScenes
 {
@@ -35,6 +36,7 @@ namespace Stareater.GameScenes
 		private const float Layers = 8.0f;
 
 		protected override float GuiLayerThickness => 1 / Layers;
+		private AGuiElement cancelText = null;
 
 		private const float StarColorZ = 5 / Layers;
 		private const float StarSaturationZ = 4 / Layers;
@@ -47,10 +49,20 @@ namespace Stareater.GameScenes
 		private SceneObject stareaterOutlineSprite = null;
 		private SceneObject stareaterTitleSprite = null;
 		private Action timeoutCallback;
+		private bool finished = false;
 
 		public IntroScene(Action timeoutCallback)
 		{
 			this.timeoutCallback = timeoutCallback;
+			this.cancelText = new GuiText()
+			{
+				Text = LocalizationManifest.Get.CurrentLanguage["Intro"]["cancelTip"].Text(),
+				TextColor = Color.Gray,
+				TextSize = 16
+			};
+			this.cancelText.Position.WrapContent().ParentRelative(-1, -1, 5, 5);
+
+			this.AddElement(this.cancelText);
 		}
 
 		protected override Matrix4 calculatePerspective()
@@ -168,9 +180,20 @@ namespace Stareater.GameScenes
 							new TweenAlpha(polygons[0], 0, 1, AppearSpeed),
 							new TweenAlpha(polygons[1], 0, 1, AppearSpeed)
                         ),
-						new CallbackAnimation(this.timeoutCallback)
+						new CallbackAnimation(this.onAnimationFinish)
 					))
 			);
+		}
+
+		protected override void onKeyPress(char c)
+		{
+			if (c == (int)System.Windows.Forms.Keys.Escape)
+				this.onAnimationFinish();
+		}
+
+		protected override void onMouseClick(Vector2 mousePoint)
+		{
+			this.onAnimationFinish();
 		}
 
 		private float pathPhase(Vector2 position)
@@ -204,5 +227,21 @@ namespace Stareater.GameScenes
 				Scale(size * StarSize).
 				Translate(position);
         }
+
+		private void onAnimationFinish()
+		{
+			if (this.finished)
+				return;
+			this.finished = true;
+
+			var animatedObjects = new List<SceneObject>(this.fadingStarSprites);
+			animatedObjects.Add(this.stareaterOutlineSprite);
+			animatedObjects.Add(this.stareaterTitleSprite);
+			
+			foreach (var sceneObject in animatedObjects)
+				sceneObject.Animator.FastForward();
+			this.RemoveElement(this.cancelText);
+			this.timeoutCallback();
+		}
 	}
 }

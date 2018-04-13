@@ -14,6 +14,11 @@
 			this.countdown -= deltaTime;
 		}
 
+		public void FastForward()
+		{
+			this.countdown = 0;
+        }
+
 		public bool Finished
 		{
 			get

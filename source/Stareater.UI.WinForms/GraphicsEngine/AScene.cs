@@ -273,6 +273,12 @@ namespace Stareater.GraphicsEngine
 			this.guiElements.Add(element);
 			element.Attach(this, this.GuiLayerThickness);
 		}
+
+		protected void RemoveElement(AGuiElement element)
+		{
+			this.guiElements.Remove(element);
+			//TODO detach
+		}
 		#endregion
 
 		#region Rendering logic

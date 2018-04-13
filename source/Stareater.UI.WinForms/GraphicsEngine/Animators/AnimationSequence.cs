@@ -25,6 +25,12 @@ namespace Stareater.GraphicsEngine.Animators
 			}
 		}
 
+		public void FastForward()
+		{
+			while (this.sequence.Count > 0)
+				this.sequence.Dequeue().FastForward();
+        }
+
 		public bool Finished
 		{
 			get
