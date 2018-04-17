@@ -44,7 +44,7 @@ namespace Stareater.GLData
 			return new SceneObject(
 				this.polygons, 
 				this.physicalShape,
-				this.data, 
+				this.data,
 				animatorGenerator(this.polygons));
 		}
 

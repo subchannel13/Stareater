@@ -8,6 +8,19 @@ namespace Stareater.GraphicsEngine.GuiElements
 {
 	class GuiText : AGuiElement
 	{
+		private Func<PolygonData, IAnimator> mAnimation = null;
+		public Func<PolygonData, IAnimator> Animation
+		{
+			private get
+			{
+				return this.mAnimation;
+			}
+			set
+			{
+				Apply(ref this.mAnimation, value);
+			}
+		}
+
 		private string mText = null;
 		public string Text
 		{
@@ -43,12 +56,16 @@ namespace Stareater.GraphicsEngine.GuiElements
 			if (string.IsNullOrWhiteSpace(this.Text))
 				return null;
 
-			return new SceneObjectBuilder().
+			var soBuilder = new SceneObjectBuilder().
 				StartSprite(this.Z, TextRenderUtil.Get.TextureId, this.TextColor).
 				AddVertices(TextRenderUtil.Get.BufferText(this.Text, -0.5f, Matrix4.Identity)).
 				Scale(this.TextSize, this.TextSize).
-				Translate(this.Position.Center + new Vector2(0, this.TextSize / 2)).
-				Build();
+				Translate(this.Position.Center + new Vector2(0, this.TextSize / 2));
+
+			if (this.Animation != null)
+				return soBuilder.Build(polygons => this.Animation(polygons[0]));
+			else
+				return soBuilder.Build();
 		}
 
 		protected override float ContentWidth()

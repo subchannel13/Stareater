@@ -277,7 +277,7 @@ namespace Stareater.GraphicsEngine
 		protected void RemoveElement(AGuiElement element)
 		{
 			this.guiElements.Remove(element);
-			//TODO detach
+			element.Detach();
 		}
 		#endregion
 

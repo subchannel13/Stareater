@@ -26,6 +26,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.UpdateScene();
 		}
 
+		public void Detach()
+		{
+			this.scene.RemoveFromScene(ref this.graphicObject);
+		}
+
 		public void RecalculatePosition(float parentWidth, float parentHeight)
 		{
 			this.Position.Recalculate(parentWidth, parentHeight);

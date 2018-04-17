@@ -36,7 +36,7 @@ namespace Stareater.GameScenes
 		private const float Layers = 8.0f;
 
 		protected override float GuiLayerThickness => 1 / Layers;
-		private AGuiElement cancelText = null;
+		private GuiText cancelText = null;
 
 		private const float StarColorZ = 5 / Layers;
 		private const float StarSaturationZ = 4 / Layers;
@@ -57,8 +57,12 @@ namespace Stareater.GameScenes
 			this.cancelText = new GuiText()
 			{
 				Text = LocalizationManifest.Get.CurrentLanguage["Intro"]["cancelTip"].Text(),
-				TextColor = Color.Gray,
-				TextSize = 16
+				TextColor = Color.FromArgb(0, Color.Gray),
+				TextSize = 16,
+				Animation = textPolygons => new AnimationSequence(
+					new AnimationDelay(1),
+					new TweenAlpha(textPolygons, 0, 1, 0.5)
+				)
 			};
 			this.cancelText.Position.WrapContent().ParentRelative(-1, -1, 5, 5);
 
