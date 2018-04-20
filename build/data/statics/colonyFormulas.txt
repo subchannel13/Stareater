@@ -15,9 +15,10 @@
 				if(noGrav, 0.8 ^ (1 - microgravTolLvl / 5), 1) -
 				maintenancePenalty
 			);
-		total # base + housing_delta;
+		total # base;
 	}
 	
+	emigrants # pop * 0.001;
 	environment # if(noGrav, 0.8 ^ (1 - microgravTolLvl / 5), 1);
 	organization # limit(infra_count / pop, 0, 1);
 	

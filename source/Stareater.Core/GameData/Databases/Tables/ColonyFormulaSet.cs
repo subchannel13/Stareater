@@ -12,6 +12,7 @@ namespace Stareater.GameData.Databases.Tables
 		public Formula FarmFields { get; private set; }
 		public Formula EnvironmentFactor { get; private set; }
 		public DerivedStatistic PopulationGrowth { get; private set; }
+		public Formula Emigrants { get; private set; }
 		public Formula Organization { get; private set; }
 		public Formula SpaceliftFactor { get; private set; }
 
@@ -27,7 +28,8 @@ namespace Stareater.GameData.Databases.Tables
 
 		public ColonyFormulaSet(
 			Formula colonizationPopThreshold, Formula uncolonizedMaxPopulation, Formula victoryPointWorth, 
-			Formula farmFields, Formula environmentFactor, Formula maxPopulation, DerivedStatistic populationGrowth, 
+			Formula farmFields, Formula environmentFactor, 
+			Formula maxPopulation, DerivedStatistic populationGrowth, Formula emigrants,
 			Formula organization, Formula spaceliftFactor,
 			PopulationActivityFormulas farming, PopulationActivityFormulas gardening,
 			PopulationActivityFormulas mining, PopulationActivityFormulas development, 
@@ -42,6 +44,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.EnvironmentFactor = environmentFactor;
 			this.MaxPopulation = maxPopulation;
 			this.PopulationGrowth = populationGrowth;
+			this.Emigrants = emigrants;
 			this.Organization = organization;
 			this.SpaceliftFactor = spaceliftFactor;
 			

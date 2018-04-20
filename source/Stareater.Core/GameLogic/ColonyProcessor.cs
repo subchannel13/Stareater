@@ -10,6 +10,7 @@ using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using Stareater.GameLogic.Planning;
+using System;
 
 namespace Stareater.GameLogic
 {
@@ -32,6 +33,8 @@ namespace Stareater.GameLogic
 		public double MaxPopulation { get; private set; }
 		[StateProperty]
 		public double PopulationGrowth { get; private set; }
+		[StateProperty]
+		public double Emigrants { get; private set; }
 		[StateProperty]
 		public double Organization { get; private set; }
 		[StateProperty]
@@ -151,7 +154,11 @@ namespace Stareater.GameLogic
 			this.MaintenanceCost = this.Colony.Population * this.MaintenancePerPop;
             this.MaintenanceLimit = this.WorkingPopulation * this.BuilderEfficiency * this.SpaceliftFactor;
 			this.MaintenancePenalty = 0;
-        }
+
+			vars[MaintenancePenaltyKey] = this.MaintenancePenalty;
+			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
+			this.Emigrants = formulas.Emigrants.Evaluate(vars);
+		}
 		
 		public void CalculateDerivedEffects(StaticsDB statics, PlayerProcessor playerProcessor)
 		{
@@ -162,9 +169,6 @@ namespace Stareater.GameLogic
 			foreach (var construction in SpendingPlan)
 				if (construction.CompletedCount > 0)
 					counter.Count(construction.Project, construction.CompletedCount);
-
-			var formulas = statics.ColonyFormulas;
-			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
 		}
 		
 		public void CalculateSpending(MainGame game, PlayerProcessor playerProcessor)
@@ -224,13 +228,13 @@ namespace Stareater.GameLogic
 
 		public void AddPopulation(double arrivedPopulation)
 		{
-			Colony.Population = Methods.Clamp(Colony.Population + arrivedPopulation, 0, MaxPopulation);
+			Colony.Population = Methods.Clamp(this.Colony.Population + arrivedPopulation, 0, this.MaxPopulation);
 		}
 		
 		public override void ProcessPrecombat(StatesDB states, TemporaryDB derivates)
 		{
 			base.ProcessPrecombat(states, derivates);
-			Colony.Population = Methods.Clamp(Colony.Population + PopulationGrowth, 0, MaxPopulation);			
+			Colony.Population = Methods.Clamp(this.Colony.Population + this.PopulationGrowth, 0, this.MaxPopulation);
 		}
 	}
 }

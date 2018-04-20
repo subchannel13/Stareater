@@ -27,20 +27,3 @@
 	
 	hitPoints # 10;
 }
-
-{ Constructable
-	langCode: POP
-	image: ./images/buildings/housing.png
-	
-	code: Housing
-	site: Colony
-	stockpile: pop
-	prerequisites [] 
-	
-	cost # 10;
-	condition # maxPop - pop * 0.04 > pop;
-	turnLimit # min(maxPop - pop * 1.04, pop * 0.04);
-	
-	effects [
-	]
-}

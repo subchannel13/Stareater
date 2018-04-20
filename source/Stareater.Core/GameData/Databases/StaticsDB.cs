@@ -184,6 +184,7 @@ namespace Stareater.GameData.Databases
 				data[ColonyEnvironment].To<Formula>(),
 				data[ColonyMaxPopulation].To<Formula>(),
 				loadDerivedStat(data[ColonyPopulationGrowth].To<IkonComposite>()),
+				data[ColonyEmigrants].To<Formula>(),
 				data[ColonyOrganization].To<Formula>(),
 				data[ColonySpaceliftFactor].To<Formula>(),
 				loadPopulationActivity(data, ColonyFarming),
@@ -712,6 +713,7 @@ namespace Stareater.GameData.Databases
 		private const string ColonizationPopulationThreshold = "colonizationPopThreshold";
 		private const string ColonyDevelopment = "development";
 		private const string ColonyEnvironment = "environment";
+		private const string ColonyEmigrants = "emigrants";
 		private const string ColonyFarmFields = "farmFields";
 		private const string ColonyFarming = "farming";
 		private const string ColonyGardening = "gardening";
