@@ -49,7 +49,7 @@ namespace Stareater.GameScenes
 		private SceneObject stareaterOutlineSprite = null;
 		private SceneObject stareaterTitleSprite = null;
 		private Action timeoutCallback;
-		private bool finished = false;
+		private bool animationFinished = false;
 
 		public IntroScene(Action timeoutCallback)
 		{
@@ -67,6 +67,22 @@ namespace Stareater.GameScenes
 			this.cancelText.Position.WrapContent().ParentRelative(-1, -1, 5, 5);
 
 			this.AddElement(this.cancelText);
+		}
+
+		protected override void FrameUpdate(double deltaTime)
+		{
+			if (!this.animationFinished)
+				return;
+			this.animationFinished = false;
+
+			var animatedObjects = new List<SceneObject>(this.fadingStarSprites);
+			animatedObjects.Add(this.stareaterOutlineSprite);
+			animatedObjects.Add(this.stareaterTitleSprite);
+
+			foreach (var sceneObject in animatedObjects)
+				sceneObject.Animator.FastForward();
+			this.RemoveElement(this.cancelText);
+			this.timeoutCallback();
 		}
 
 		protected override Matrix4 calculatePerspective()
@@ -234,18 +250,7 @@ namespace Stareater.GameScenes
 
 		private void onAnimationFinish()
 		{
-			if (this.finished)
-				return;
-			this.finished = true;
-
-			var animatedObjects = new List<SceneObject>(this.fadingStarSprites);
-			animatedObjects.Add(this.stareaterOutlineSprite);
-			animatedObjects.Add(this.stareaterTitleSprite);
-			
-			foreach (var sceneObject in animatedObjects)
-				sceneObject.Animator.FastForward();
-			this.RemoveElement(this.cancelText);
-			this.timeoutCallback();
+			this.animationFinished = true;
 		}
 	}
 }
