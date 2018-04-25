@@ -163,6 +163,7 @@
     <Compile Include="GraphicsEngine\SignalFlag.cs" />
     <Compile Include="GraphicsEngine\TimingLoop.cs" />
     <Compile Include="GuiUtils\NumberInput.cs" />
+    <Compile Include="GuiUtils\OneShotEvent.cs" />
     <Compile Include="GUI\BuildingItem.cs">
       <SubType>UserControl</SubType>
     </Compile>

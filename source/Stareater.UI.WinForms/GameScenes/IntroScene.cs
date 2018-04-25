@@ -8,6 +8,7 @@ using System.Drawing;
 using Stareater.GraphicsEngine.Animators;
 using Stareater.Localization;
 using Stareater.GraphicsEngine.GuiElements;
+using Stareater.GuiUtils;
 
 namespace Stareater.GameScenes
 {
@@ -49,7 +50,7 @@ namespace Stareater.GameScenes
 		private SceneObject stareaterOutlineSprite = null;
 		private SceneObject stareaterTitleSprite = null;
 		private Action timeoutCallback;
-		private bool animationFinished = false;
+		private OneShotEvent animationFinished = new OneShotEvent();
 
 		public IntroScene(Action timeoutCallback)
 		{
@@ -71,13 +72,14 @@ namespace Stareater.GameScenes
 
 		protected override void FrameUpdate(double deltaTime)
 		{
-			if (!this.animationFinished)
+			if (!this.animationFinished.TryEnter())
 				return;
-			this.animationFinished = false;
 
-			var animatedObjects = new List<SceneObject>(this.fadingStarSprites);
-			animatedObjects.Add(this.stareaterOutlineSprite);
-			animatedObjects.Add(this.stareaterTitleSprite);
+			var animatedObjects = new List<SceneObject>(this.fadingStarSprites)
+			{
+				this.stareaterOutlineSprite,
+				this.stareaterTitleSprite
+			};
 
 			foreach (var sceneObject in animatedObjects)
 				sceneObject.Animator.FastForward();
@@ -208,12 +210,12 @@ namespace Stareater.GameScenes
 		protected override void onKeyPress(char c)
 		{
 			if (c == (int)System.Windows.Forms.Keys.Escape)
-				this.onAnimationFinish();
+				this.animationFinished.AllowEnter();
 		}
 
 		protected override void onMouseClick(Vector2 mousePoint)
 		{
-			this.onAnimationFinish();
+			this.animationFinished.AllowEnter();
 		}
 
 		private float pathPhase(Vector2 position)
@@ -250,7 +252,7 @@ namespace Stareater.GameScenes
 
 		private void onAnimationFinish()
 		{
-			this.animationFinished = true;
+			this.animationFinished.AllowEnter();
 		}
 	}
 }
