@@ -30,11 +30,7 @@ namespace Stareater.Controllers
 		#region Buildings
 		protected override void RecalculateSpending()
 		{
-			this.Game.Derivates.Stellarises.At[Location].CalculateSpending(
-				this.Game,
-                this.Game.Derivates.Of(Site.Owner),
-				this.Game.Derivates.Colonies.At[Location]
-			);
+			this.Game.Derivates.Stellarises.At[Location].CalculateSpending(this.Game);
 		}
 		
 		public override IEnumerable<ConstructableInfo> ConstructableItems 

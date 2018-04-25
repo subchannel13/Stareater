@@ -37,11 +37,7 @@ namespace Stareater.Controllers
 				playerProc
 			);
 
-			this.Game.Derivates.Stellarises.At[colony.Star].CalculateSpending(
-				this.Game,
-                playerProc,
-				this.Game.Derivates.Colonies.At[colony.Star]
-			);
+			this.Game.Derivates.Stellarises.At[colony.Star].CalculateSpending(this.Game);
 
 			this.Game.Derivates.Of(colony).CalculateDerivedEffects(
 				this.Game.Statics,
