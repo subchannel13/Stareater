@@ -5,6 +5,8 @@ using Stareater.Players;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using Stareater.GameData.Construction;
+using System;
+using Stareater.GameData.Databases;
 
 namespace Stareater.GameLogic
 {
@@ -12,6 +14,12 @@ namespace Stareater.GameLogic
 	{
 		[StateProperty]
 		public StellarisAdmin Stellaris { get; set; }
+
+		[StateProperty]
+		public Dictionary<Colony, double> EmigrantionPlan = new Dictionary<Colony, double>();
+
+		[StateProperty]
+		public Dictionary<Colony, double> ImmigrantionPlan = new Dictionary<Colony, double>();
 
 		public StellarisProcessor(StellarisAdmin stellaris) : base()
 		{
@@ -23,9 +31,9 @@ namespace Stareater.GameLogic
 			this.Stellaris = stellaris;
 		}
 
-        private StellarisProcessor()
-        { }
-		
+		private StellarisProcessor()
+		{ }
+
 		public Player Owner
 		{
 			get
@@ -41,14 +49,53 @@ namespace Stareater.GameLogic
 				return Stellaris.Location.Star;
 			}
 		}
-		
+
 		public void CalculateBaseEffects()
 		{
 			/*
 			 * TODO(v0.7) Preprocess stars
 			 * - Calculate system effects
 			 */
-			//TODO(v0.7) Where to calculate stuff like migration?
+		}
+
+		public void CalculateDerivedEffects(IEnumerable<ColonyProcessor> systemColonies)
+		{
+			var colonies = new PendableSet<ColonyProcessor>(systemColonies.Where(x => x.Colony.Population < x.MaxPopulation));
+			var plans = colonies.ToDictionary(x => x, x => 0.0);
+			var immigrants = systemColonies.Sum(x => x.Emigrants);
+
+			if (immigrants <= 0)
+			{
+				this.ImmigrantionPlan = new Dictionary<Colony, double>();
+				this.EmigrantionPlan = new Dictionary<Colony, double>();
+				return;
+			}
+
+			while(colonies.Count > 0 && immigrants > 0)
+			{
+				var weightSum = plans.Count; //TODO(v0.7) sum desirabilities
+				foreach (var site in colonies)
+				{
+					//TODO(v0.7) assumes each colony has weight of 1
+					var colonyImmigrants = immigrants / weightSum;
+					var maxImmigrants = site.MaxPopulation - site.Colony.Population;
+					if (colonyImmigrants > maxImmigrants)
+					{
+						colonyImmigrants = maxImmigrants;
+						colonies.PendRemove(site);
+					}
+
+					plans[site] += colonyImmigrants;
+					immigrants -= colonyImmigrants;
+					weightSum -= 1;
+				}
+				colonies.ApplyPending();
+			}
+
+			this.ImmigrantionPlan = plans.ToDictionary(x => x.Key.Colony, x => x.Value);
+
+			var emigrationPortion = 1 - immigrants / systemColonies.Sum(x => x.Emigrants);
+			this.EmigrantionPlan = systemColonies.ToDictionary(x => x.Colony, x => x.Emigrants * emigrationPortion);
 		}
 
 		public void CalculateSpending(MainGame game, PlayerProcessor playerProcessor, IEnumerable<ColonyProcessor> systemColonies)
@@ -90,7 +137,17 @@ namespace Stareater.GameLogic
 				return Stellaris;
 			}
 		}
-		
+
+		public override void ProcessPrecombat(StatesDB states, TemporaryDB derivates)
+		{
+			base.ProcessPrecombat(states, derivates);
+
+			foreach (var plan in this.EmigrantionPlan)
+				plan.Key.Population -= plan.Value;
+			foreach (var plan in this.ImmigrantionPlan)
+				plan.Key.Population += plan.Value;
+		}
+
 		private IEnumerable<IConstructionProject> colonizationQueue(MainGame game, PlayerProcessor playerProcessor)
 		{
 			foreach(var plan in game.Orders[this.Site.Owner].ColonizationOrders.Values)

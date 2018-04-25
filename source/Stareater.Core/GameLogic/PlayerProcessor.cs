@@ -384,7 +384,7 @@ namespace Stareater.GameLogic
 					else
 						game.Orders[this.Player].ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 		}
-		
+
 		private void updateDesigns(MainGame game)
 		{
 			//Generate upgraded designs
