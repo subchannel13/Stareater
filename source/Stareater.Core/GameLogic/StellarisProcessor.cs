@@ -58,10 +58,11 @@ namespace Stareater.GameLogic
 			 */
 		}
 
-		public void CalculateDerivedEffects(IEnumerable<ColonyProcessor> systemColonies)
+		public void CalculateDerivedEffects(MainGame game)
 		{
-			var colonies = new PendableSet<ColonyProcessor>(systemColonies.Where(x => x.Colony.Population < x.MaxPopulation));
-			var plans = colonies.ToDictionary(x => x, x => 0.0);
+			var systemColonies = this.systemColonies(game).ToList();
+			var destinations = new PendableSet<ColonyProcessor>(systemColonies.Where(x => x.Colony.Population < x.MaxPopulation));
+			var plans = destinations.ToDictionary(x => x, x => 0.0);
 			var immigrants = systemColonies.Sum(x => x.Emigrants);
 
 			if (immigrants <= 0)
@@ -71,10 +72,10 @@ namespace Stareater.GameLogic
 				return;
 			}
 
-			while(colonies.Count > 0 && immigrants > 0)
+			while(destinations.Count > 0 && immigrants > 0)
 			{
 				var weightSum = plans.Count; //TODO(v0.7) sum desirabilities
-				foreach (var site in colonies)
+				foreach (var site in destinations)
 				{
 					//TODO(v0.7) assumes each colony has weight of 1
 					var colonyImmigrants = immigrants / weightSum;
@@ -82,14 +83,14 @@ namespace Stareater.GameLogic
 					if (colonyImmigrants > maxImmigrants)
 					{
 						colonyImmigrants = maxImmigrants;
-						colonies.PendRemove(site);
+						destinations.PendRemove(site);
 					}
 
 					plans[site] += colonyImmigrants;
 					immigrants -= colonyImmigrants;
 					weightSum -= 1;
 				}
-				colonies.ApplyPending();
+				destinations.ApplyPending();
 			}
 
 			this.ImmigrantionPlan = plans.ToDictionary(x => x.Key.Colony, x => x.Value);
@@ -98,11 +99,13 @@ namespace Stareater.GameLogic
 			this.EmigrantionPlan = systemColonies.ToDictionary(x => x.Colony, x => x.Emigrants * emigrationPortion);
 		}
 
-		public void CalculateSpending(MainGame game, PlayerProcessor playerProcessor, IEnumerable<ColonyProcessor> systemColonies)
+		public void CalculateSpending(MainGame game)
 		{
+			var playerProcessor = game.Derivates.Of(this.Owner);
 			var vars = new Var().UnionWith(playerProcessor.TechLevels).Get;
+			var colonies = this.systemColonies(game).ToList();
 
-			double industryPotential = systemColonies.Sum(x =>
+			double industryPotential = colonies.Sum(x =>
 				(1 - x.SpendingRatioEffective) *
 				(1 - playerProcessor.MaintenanceRatio) * 
                 x.WorkingPopulation *
@@ -126,7 +129,7 @@ namespace Stareater.GameLogic
 				this.Production / industryPotential :
 				0;
 
-			foreach (var colonyProc in systemColonies)
+			foreach (var colonyProc in colonies)
 				colonyProc.CalculateDevelopment(this.SpendingRatioEffective, playerProcessor.MaintenanceRatio);
 		}
 
@@ -159,6 +162,11 @@ namespace Stareater.GameLogic
 
 					yield return new ColonizerProject(colonizer, plan);
 				}
+		}
+
+		private IEnumerable<ColonyProcessor> systemColonies(MainGame game)
+		{
+			return game.Derivates.Colonies.At[this.Location].Where(x => x.Owner == this.Owner);
 		}
 	}
 }

@@ -105,11 +105,7 @@ namespace Stareater.GameLogic
 				);
 
 			foreach (var stellaris in this.game.Derivates.Stellarises)
-				stellaris.CalculateSpending(
-					this.game,
-					this.game.Derivates.Of(stellaris.Owner),
-					this.game.Derivates.Colonies.At[stellaris.Location].Where(x => x.Owner == stellaris.Owner)
-				);
+				stellaris.CalculateSpending(this.game);
 
 			foreach (var player in this.game.Derivates.Players) {
 				player.CalculateDevelopment(
@@ -128,7 +124,7 @@ namespace Stareater.GameLogic
 			foreach (var colonyProc in this.game.Derivates.Colonies)
 				colonyProc.CalculateDerivedEffects(this.game.Statics, this.game.Derivates.Of(colonyProc.Owner));
 			foreach (var stellaris in this.game.Derivates.Stellarises)
-				stellaris.CalculateDerivedEffects(this.game.Derivates.Colonies.At[stellaris.Location].Where(x => x.Owner == stellaris.Owner));
+				stellaris.CalculateDerivedEffects(this.game);
 		}
 		#endregion
 		
