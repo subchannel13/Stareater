@@ -74,11 +74,10 @@ namespace Stareater.GameLogic
 
 			while(destinations.Count > 0 && immigrants > 0)
 			{
-				var weightSum = plans.Count; //TODO(v0.7) sum desirabilities
+				var weightSum = plans.Keys.Sum(x => x.Desirability);
 				foreach (var site in destinations)
 				{
-					//TODO(v0.7) assumes each colony has weight of 1
-					var colonyImmigrants = immigrants / weightSum;
+					var colonyImmigrants = immigrants * site.Desirability / weightSum;
 					var maxImmigrants = site.MaxPopulation - site.Colony.Population;
 					if (colonyImmigrants > maxImmigrants)
 					{

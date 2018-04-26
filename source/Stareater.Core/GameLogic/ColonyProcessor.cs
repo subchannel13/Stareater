@@ -39,6 +39,8 @@ namespace Stareater.GameLogic
 		public double Organization { get; private set; }
 		[StateProperty]
 		public double SpaceliftFactor { get; private set; }
+		[StateProperty]
+		public double Desirability { get; private set; }
 
 		[StateProperty]
 		public double FarmerEfficiency { get; private set; }
@@ -157,6 +159,9 @@ namespace Stareater.GameLogic
 
 			vars[MaintenancePenaltyKey] = this.MaintenancePenalty;
 			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
+
+			vars[MaxPopulationKey] = this.MaxPopulation;
+			this.Desirability = formulas.Desirability.Evaluate(vars);
 			this.Emigrants = formulas.Emigrants.Evaluate(vars);
 		}
 		
@@ -215,7 +220,7 @@ namespace Stareater.GameLogic
 				return Colony;
 			}
 		}
-		
+
 		public override Var LocalEffects(StaticsDB statics)
 		{
 			var vars = base.LocalEffects(statics);

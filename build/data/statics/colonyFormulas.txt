@@ -20,6 +20,7 @@
 	
 	emigrants # pop * 0.001;
 	environment # if(noGrav, 0.8 ^ (1 - microgravTolLvl / 5), 1);
+	desirability # 1 - pop / maxPop;
 	organization # limit(infra_count / pop, 0, 1);
 	
 	farming
