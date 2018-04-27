@@ -3,7 +3,7 @@
 	uncolonizedMaxPopulation # size / 10 * 1e9;
 	maxPopulation # size / 10 * 1e9;
 	victoryPointWorth # 1e-6 * pop * 0.98 ^ turn;
-	farmFields # 0.1 * size / 10 * 1e9;
+	farmFields # (0.1 + 0.2 * subterrainLvl / 5) * size / 10 * 1e9;
 	spaceliftFactor # 1 / limit(
 			if(noGrav, 0, 5) - 2 * rocketryLvl / 5,
 		1, 20);
@@ -25,8 +25,8 @@
 	
 	farming
 	{ Work
-		improvised	# 3 + if(fertile, 4 + 2 * (greenHouseLvl / 5), 0);
-		organized	# 4 + if(fertile, 4 + 2 * (greenHouseLvl / 5), 0) +  2 * gmoFoodLvl / 5;
+		improvised	# 3 + if(fertile, 4 + 2 * greenHouseLvl / 5, 0);
+		organized	# 4 + if(fertile, 4 + 2 * greenHouseLvl / 5, 0) +  2 * gmoFoodLvl / 5;
 		orgFactor # 0.5 + 0.5 * farmLawsLvl / 5;
 	}
 	gardening

@@ -7,6 +7,8 @@ RAD_SHIELD_NAME = Radiation shield
 RAD_SHIELD_DESC = No description
 SPACEPORT_NAME = Launching site
 SPACEPORT_DESC = No description
+SOIL_ENRICH_NAME = Soil enrichment
+SOIL_ENRICH_DESC = Makes planet fertile
 -
 
 :Buildings

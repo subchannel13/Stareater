@@ -46,12 +46,12 @@ namespace Stareater.GameLogic
 			return vars;
 		}
 
-		public virtual void ProcessPrecombat(StatesDB states, TemporaryDB derivates)
+		public virtual void ProcessPrecombat(MainGame game)
 		{
 			foreach (var construction in this.SpendingPlan) {
 				if (construction.CompletedCount >= 1)
 					foreach(var effect in construction.Project.Effects)
-						effect.Apply(states, derivates, this.Site, construction.CompletedCount);
+						effect.Apply(game, this.Site, construction.CompletedCount);
 				
 				var stockpileKey = construction.Project.StockpileGroup;
 				if (construction.FromStockpile > 0 && this.Site.Stockpile.ContainsKey(stockpileKey))

@@ -170,6 +170,7 @@
     <Compile Include="Galaxy\Wormhole.cs" />
     <Compile Include="GameData\ColonizationProject.cs" />
     <Compile Include="GameData\Construction\ColonizerProject.cs" />
+    <Compile Include="GameData\Construction\ConstructionAddTrait.cs" />
     <Compile Include="GameData\Construction\IConstructionEffect.cs" />
     <Compile Include="GameData\Construction\IConstructionProjectVisitor.cs" />
     <Compile Include="GameData\Construction\ShipProject.cs" />

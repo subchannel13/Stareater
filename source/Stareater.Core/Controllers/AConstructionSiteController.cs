@@ -71,15 +71,15 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var playerTechs = this.Game.States.DevelopmentAdvances.Of[this.Player];
+				var playerTechs = this.Game.States.DevelopmentAdvances.Of[this.Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 				var techLevels = this.Game.Derivates.Of(this.Player).TechLevels;
 				var localEffencts = this.Processor.LocalEffects(this.Game.Statics).UnionWith(techLevels).Get;
 
 				foreach (var constructable in this.Game.Statics.Constructables)
-					if (Prerequisite.AreSatisfied(constructable.Prerequisites, 0, techLevels) &&
+					if (Prerequisite.AreSatisfied(constructable.Prerequisites, 0, playerTechs) &&
 						constructable.ConstructableAt == Site.Type &&
-						constructable.Condition.Evaluate(localEffencts) > 0)
-						yield return new ConstructableInfo(new StaticProject(constructable), this.Game.Derivates.Players.Of[this.Player]);
+						constructable.Condition.Evaluate(localEffencts) >= 0)
+						yield return new ConstructableInfo(new StaticProject(constructable), localEffencts, null, 0);
 			}
 		}
 		
@@ -103,10 +103,9 @@ namespace Stareater.Controllers
 					else
 						orderIndex.Add(NotOrder);
 					
-					var cost = item.Project.Cost.Evaluate(vars);
 					yield return new ConstructableInfo(
-						item.Project, 
-						Game.Derivates.Players.Of[this.Player],
+						item.Project,
+						vars,
 						item,
 						item.LeftoverPoints
 					);

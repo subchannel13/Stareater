@@ -239,10 +239,10 @@ namespace Stareater.GameLogic
 			this.updateColonizationOrders(game);
 
 			foreach (var colonyProc in game.Derivates.Colonies.OwnedBy[this.Player])
-				colonyProc.ProcessPrecombat(game.States, game.Derivates);
+				colonyProc.ProcessPrecombat(game);
 
 			foreach (var stellarisProc in game.Derivates.Stellarises.OwnedBy[this.Player])
-				stellarisProc.ProcessPrecombat(game.States, game.Derivates);
+				stellarisProc.ProcessPrecombat(game);
 			
 			this.breakthroughs = new Queue<ResearchResult>(this.ResearchPlan.Where(x => x.CompletedCount > 0));
 			

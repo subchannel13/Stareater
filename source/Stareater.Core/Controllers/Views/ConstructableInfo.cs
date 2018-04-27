@@ -11,14 +11,14 @@ namespace Stareater.Controllers.Views
 		private readonly IDictionary<string, double> vars;
 		private readonly ConstructionInfoExtractor infoExtractor;
 
-		internal ConstructableInfo(IConstructionProject project, PlayerProcessor playerProcessor, 
+		internal ConstructableInfo(IConstructionProject project, IDictionary<string, double> siteVars,
 			ConstructionResult progress, double stockpile)
 		{
 			this.Project = project;
 			this.Stockpile = stockpile;
 
 			this.infoExtractor = new ConstructionInfoExtractor(project);
-            this.vars = new Var().UnionWith(playerProcessor.TechLevels).Get;
+            this.vars = new Var().UnionWith(siteVars).Get;
 			
 			if (progress != null)
 			{
@@ -28,10 +28,6 @@ namespace Stareater.Controllers.Views
 				this.Overflow = progress.LeftoverPoints;
 			}
 		}
-		
-		internal ConstructableInfo(IConstructionProject data, PlayerProcessor playerProcessor) :
-			this(data, playerProcessor, null, 0)
-		{ }
 
 		internal IConstructionProject Project { get; private set; }
 		

@@ -140,9 +140,9 @@ namespace Stareater.GameLogic
 			}
 		}
 
-		public override void ProcessPrecombat(StatesDB states, TemporaryDB derivates)
+		public override void ProcessPrecombat(MainGame game)
 		{
-			base.ProcessPrecombat(states, derivates);
+			base.ProcessPrecombat(game);
 
 			foreach (var plan in this.EmigrantionPlan)
 				plan.Key.Population -= plan.Value;

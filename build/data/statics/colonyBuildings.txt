@@ -27,3 +27,26 @@
 	
 	hitPoints # 10;
 }
+
+
+{ Constructable
+	langCode: SOIL_ENRICH
+	image: ./images/buildings/factory.png
+	
+	code: soil
+	site: Colony
+	stockpile: soil
+	prerequisites [
+		:soilEnrich #lvl;
+	] 
+	
+	cost # 10 * size;
+	condition # -fertile;
+	turnLimit # 1;
+	
+	effects [
+		{ AddTrait
+			traitId: fertile
+		}
+	]
+}

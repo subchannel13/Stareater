@@ -227,6 +227,8 @@ namespace Stareater.GameLogic
 			vars.And(PlanetSizeKey, Colony.Location.Planet.Size);
 			vars.And(MaxPopulationKey, MaxPopulation);
 			vars.And(PopulationKey, Colony.Population);
+			vars.Init(statics.Traits.Keys, false);
+			vars.UnionWith(this.Colony.Location.Planet.Traits.Select(x => x.Type.IdCode));
 			
 			return vars;
 		}
@@ -236,9 +238,9 @@ namespace Stareater.GameLogic
 			Colony.Population = Methods.Clamp(this.Colony.Population + arrivedPopulation, 0, this.MaxPopulation);
 		}
 		
-		public override void ProcessPrecombat(StatesDB states, TemporaryDB derivates)
+		public override void ProcessPrecombat(MainGame game)
 		{
-			base.ProcessPrecombat(states, derivates);
+			base.ProcessPrecombat(game);
 			Colony.Population = Methods.Clamp(this.Colony.Population + this.PopulationGrowth, 0, this.MaxPopulation);
 		}
 	}

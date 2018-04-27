@@ -349,6 +349,11 @@ namespace Stareater.GameData.Databases
 							effectData[AddBuildingQuantity].To<Formula>()
 						);
 						break;
+					case ConstructionAddTraitTag:
+						yield return new ConstructionAddTrait(
+							effectData[AddTraitId].To<string>()
+						);
+						break;
 					default:
 						throw new FormatException("Invalid construction effect with tag " + effectData.Tag);
 				}
@@ -771,7 +776,9 @@ namespace Stareater.GameData.Databases
 		private const string ConstructionAddBuildingTag = "addbuilding";
 		private const string AddBuildingBuildingId = "buildingId";
 		private const string AddBuildingQuantity = "quantity";
-		
+		private const string ConstructionAddTraitTag = "addtrait";
+		private const string AddTraitId = "traitId";
+
 		private const string ColonizerInterstellar = "interstellar";
 		private const string ColonizerSystem = "system";
 		

@@ -1,6 +1,5 @@
 ﻿using Stareater.AppData.Expressions;
 using Stareater.Galaxy;
-using Stareater.GameData.Databases;
 using Stareater.Utils.Collections;
 
 namespace Stareater.GameData.Construction
@@ -16,7 +15,7 @@ namespace Stareater.GameData.Construction
 			this.quantity = quantity;
 		}
 
-		public void Apply(StatesDB states, TemporaryDB derivates, AConstructionSite site, long quantity)
+		public void Apply(MainGame game, AConstructionSite site, long quantity)
 		{
 			//TODO(v0.7) report new building construction
 			var vars = new Var("quantity", quantity);

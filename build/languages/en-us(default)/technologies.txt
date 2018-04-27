@@ -48,6 +48,8 @@ MICROGRAV_TOL_NAME = Low gravity tolerance
 MICROGRAV_TOL_DESC = Lower penalty from low and no planet gravity.
 SOIL_ENRICH_NAME = Soil enrichment
 SOIL_ENRICH_DESC = Makes planet's soil fertile.
+SUBTERRAIN_NAME = Subterrain farms
+SUBTERRAIN_DESC = Allows growing crops underground giving significantly greater farming area.
 
 PART_SCREEN_NAME = Particle screen
 PART_SCREEN_DESC = No description.
