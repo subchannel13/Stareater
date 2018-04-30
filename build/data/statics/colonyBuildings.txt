@@ -40,7 +40,7 @@
 		:soilEnrich #lvl;
 	] 
 	
-	cost # 10 * size;
+	cost # 3e9 * size;
 	condition # -fertile;
 	turnLimit # 1;
 	

@@ -63,6 +63,10 @@ WEB_SCREEN_NAME = Web screen
 WEB_SCREEN_DESC = Silky material which ablates incoming damage.
 REACTOR_TYPE_NAME = Advanced reactor
 REACTOR_TYPE_DESC = More powerful reactor types.
+LASER_SCREEN_NAME = Laser screen
+LASER_SCREEN_DESC = No description.
+ANTI_INERTIA_NAME = Inertia stabilizer
+ANTI_INERTIA_DESC = No description.
 EXTRA_REACTOR_NAME = Large reactor chamber
 EXTRA_REACTOR_DESC = No description.
 

@@ -6,9 +6,10 @@
 	devTopics [
 		[ :particleScreen :reactorLevel :miniReactor ]
 		[ :shieldShare :webScreen :reactorType ]
-		[ :extraReactor ]
+		[ :laserScreen :antiInertia :extraReactor ]
 	]
 }
+
 
 { DevelopmentTopic
 	langCode: PART_SCREEN
@@ -37,6 +38,7 @@
 	image: ./images/technologies/hydroponicFarms.png
 }
 
+
 { DevelopmentTopic
 	langCode: SHIELD_SHARE
 	code: shieldShare
@@ -59,6 +61,25 @@
 	langCode: REACTOR_TYPE
 	code: reactorType
 	cost # lvl [1, 3, 6, 10] * 500e9 * priority [1, 3, 10];
+	maxLvl = 4
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+
+{ DevelopmentTopic
+	langCode: LASER_SCREEN
+	code: laserScreen
+	cost # lvl [1, 3, 6, 10] * 2e12 * priority [1, 3, 10];
+	maxLvl = 4
+	prerequisites []
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	langCode: ANTI_INERTIA
+	code: antiInertia
+	cost # lvl [1, 3, 6, 10] * 2e12 * priority [1, 3, 10];
 	maxLvl = 4
 	prerequisites []
 	image: ./images/technologies/hydroponicFarms.png
