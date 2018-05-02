@@ -53,7 +53,7 @@
 	]
 	
 	reduction # 1;
-	restoration # 0.1;
+	restoration # 1000;
 	shieldFactor # 1000;
 	thickness # 2 + 0.5 * lvl;
 	
@@ -84,4 +84,26 @@
 	
 	cost # 2e6 * size;
 	power # size * (2 + 0.1 * lvl);
+}
+
+{ Shield
+	langCode: LASER_SCREEN
+	image :./images/technologies/hydroponicFarms.png
+	code: laserScreen
+	
+	maxLvl= 5
+	prerequisites [
+		:laserScreen #lvl;
+	]
+	
+	reduction # inf;
+	restoration # 1000;
+	shieldFactor # 1000;
+	thickness # 5 + 1 * lvl;
+	
+	cloaking # -2 + 0.2 * lvl;
+	jamming # -2 + 0.2 * lvl;
+	
+	cost # 2e6 * size;
+	power # size * (4 + 0.2 * lvl);
 }

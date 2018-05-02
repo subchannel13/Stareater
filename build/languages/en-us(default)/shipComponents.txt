@@ -80,6 +80,8 @@ PARTICLE_SHIELD_NAME = Particle shield
 PARTICLE_SHIELD_DESC = No description.
 WEB_SCREEN_NAME = Web screen
 WEB_SCREEN_DESC = No description.
+LASER_SCREEN_NAME = Laser screen
+LASER_SCREEN_DESC = No description.
 -
 
 :SpecialEquipment
@@ -99,6 +101,8 @@ SURVEY_NAME = Surveyor
 SURVEY_DESC = No description.
 SHIELD_SHARE_NAME = Area shield
 SHIELD_SHARE_DESC = No description.
+ANTI_INERTIA_NAME = Inertia stabilizer
+ANTI_INERTIA_DESC = No description.
 -
 
 :Thrusters

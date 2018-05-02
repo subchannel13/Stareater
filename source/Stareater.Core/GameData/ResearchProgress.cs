@@ -13,6 +13,7 @@ namespace Stareater.GameData
 		[StateProperty]
 		public Player Owner { get; private set; }
 
+		//TODO(later) saves as ordinal number, could have same problem as DevelopmentProgress
 		[StateProperty]
 		public ResearchTopic Topic { get; private set; }
 

@@ -116,3 +116,18 @@
 	size # 0.01 * size;
 	maxCount # 1;
 }
+
+{ SpecialEquipment
+	langCode: ANTI_INERTIA
+	image :./images/technologies/hydroponicFarms.png
+	code: antiInertia
+	
+	maxLvl= 5
+	prerequisites [
+		:antiInertia #lvl;
+	]
+	
+	cost # 10e3 * size;
+	size # 0.025 * size;
+	maxCount # lvl;
+}
