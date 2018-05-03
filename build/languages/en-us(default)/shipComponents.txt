@@ -103,6 +103,8 @@ SHIELD_SHARE_NAME = Area shield
 SHIELD_SHARE_DESC = No description.
 ANTI_INERTIA_NAME = Inertia stabilizer
 ANTI_INERTIA_DESC = No description.
+TOW_CABEL_NAME = Tow cable
+TOW_CABEL_DESC = No description.
 -
 
 :Thrusters

@@ -80,6 +80,8 @@ GAS_EXPLOIT_NAME = Gas giant exploitation
 GAS_EXPLOIT_DESC = Ability to exploit gas giants for supplying starships.
 METALLURGY_NAME = Metallurgy
 METALLURGY_DESC = More advanced armor materials.
+TOW_CABEL_NAME = Tow cable
+TOW_CABEL_DESC = No description.
 FUEL_TANK_NAME = Fuel containment
 FUEL_TANK_DESC = Improved fuel tanks which store fuel more efficiently.
 

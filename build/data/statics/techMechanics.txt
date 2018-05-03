@@ -14,7 +14,6 @@
 	code: computer
 	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 3, 10];
 	maxLvl= 4
-	prerequisites []
 	image : ./images/technologies/industry.png
 }
 
@@ -23,7 +22,6 @@
 	code: mineTools
 	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 3, 10];
 	maxLvl= 4
-	prerequisites []
 	image : ./images/technologies/industry.png
 }
 
@@ -32,7 +30,6 @@
 	code: surveyor
 	cost # lvl [1, 3, 6, 10] * 100e9 * priority [1, 3, 10];
 	maxLvl= 4
-	prerequisites []
 	image : ./images/technologies/industry.png
 }
 
@@ -42,7 +39,6 @@
 	code: cargo
 	cost # lvl [1, 3, 6, 10] * 500e9 * priority [1, 3, 10];
 	maxLvl= 4
-	prerequisites []
 	image : ./images/technologies/industry.png
 }
 
@@ -51,7 +47,6 @@
 	code: extraThrust
 	cost # lvl [1, 3, 6, 10] * 500e9 * priority [1, 3, 10];
 	maxLvl= 4
-	prerequisites []
 	image : ./images/technologies/industry.png
 }
 
@@ -60,7 +55,6 @@
 	code: neutronThrust
 	cost # lvl [1, 3, 6, 10] * 500e9 * priority [1, 3, 10];
 	maxLvl= 4
-	prerequisites []
 	image : ./images/technologies/industry.png
 }
 
@@ -70,8 +64,5 @@
 	code: robo
 	cost # 150e9 * (lvl + 2 ^ lvl);
 	maxLvl= 10
-	prerequisites [
-		:Ind # 5;
-	]
 	image : ./images/technologies/industry.png
 }

@@ -127,7 +127,22 @@
 		:antiInertia #lvl;
 	]
 	
-	cost # 10e3 * size;
+	cost # 25e3 * size;
 	size # 0.025 * size;
 	maxCount # lvl;
+}
+
+{ SpecialEquipment
+	langCode: TOW_CABEL
+	image :./images/technologies/hydroponicFarms.png
+	code: towCabel
+	
+	maxLvl= 5
+	prerequisites [
+		:towCabel #lvl;
+	]
+	
+	cost # 200e3 * size;
+	size # 0.2 * size;
+	maxCount # 1;
 }
