@@ -44,7 +44,7 @@
 	industry
 	{ Work
 		improvised	# 2;
-		organized	# 5 + 2 * recycleLvl / 5;
+		organized	# 5 + 2 * recycleLvl / 5 + 3 * roboLvl / 5;
 		orgFactor # 1;
 	}
 	development 
@@ -54,7 +54,7 @@
 		orgFactor # 1;
 	}
 	
-	repair # 0.2 * min(infra_count, pop);
+	repair # (0.2 + 0.3 * serviceToolsLvl / 5) * min(infra_count, pop);
 	popHp # 1e-5;
 }
 

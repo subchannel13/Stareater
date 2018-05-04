@@ -6,6 +6,7 @@
 	devTopics [
 		[ :computer :surveyor :mineTools ]
 		[ :cargo :extraThrust :neutronThrust ]
+		[ :serviceTools :extraArmor :robo ]
 	]
 }
 
@@ -60,9 +61,25 @@
 
 
 { DevelopmentTopic
+	langCode: SERVICE_TOOLS
+	code: serviceTools
+	cost # lvl [1, 3, 6, 10] * 2e12 * priority [1, 3, 10];
+	maxLvl= 4
+	image : ./images/technologies/industry.png
+}
+
+{ DevelopmentTopic
+	langCode: EXTRA_ARMOR
+	code: extraArmor
+	cost # lvl [1, 3, 6, 10] * 2e12 * priority [1, 3, 10];
+	maxLvl= 4
+	image : ./images/technologies/industry.png
+}
+
+{ DevelopmentTopic
 	langCode: ROBO
 	code: robo
-	cost # 150e9 * (lvl + 2 ^ lvl);
-	maxLvl= 10
+	cost # lvl [1, 3, 6, 10] * 2e12 * priority [1, 3, 10];
+	maxLvl= 4
 	image : ./images/technologies/industry.png
 }

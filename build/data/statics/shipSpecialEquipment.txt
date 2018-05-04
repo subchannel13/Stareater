@@ -19,6 +19,7 @@
 	
 	maxLvl= 1
 	prerequisites [
+		:extraArmor #lvl;
 	]
 	
 	cost # 20e3 * size;

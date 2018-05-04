@@ -112,6 +112,10 @@ EXTRA_THRUST_NAME = Additional thrusters
 EXTRA_THRUST_DESC = Extra starship thrusters for higher manuverbility.
 NEUTRON_THRUST_NAME = Neutron thruster
 NEUTRON_THRUST_DESC = Interplanetary thruster technology.
+SERVICE_TOOLS_NAME = Service tools
+SERVICE_TOOLS_DESC = No description.
+EXTRA_ARMOR_NAME = Heavy armor
+EXTRA_ARMOR_DESC = No description.
 ROBO_NAME = Robotics
 ROBO_DESC = Industrial production improvement.
 
