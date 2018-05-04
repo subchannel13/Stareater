@@ -93,10 +93,12 @@ HIGGS_NAME = Higgs zone
 HIGGS_DESC = Makes space around ship superconductive to matter making it travel at the speed of light.
 SMART_BOMB_NAME = Smart bomb
 SMART_BOMB_DESC = Bomb for surgical strikes.
-WARP_NAME = Space warp drive
-WARP_DESC = First true FTL interstellar drive.
-SIMULATION_NAME = Advanced simulations
-SIMULATION_DESC = Advanced simultion methods improve technological development and weapon precision.
+NONREFLECTION_NAME = Nonreflection field
+NONREFLECTION_DESC = No description.
+SKIMMER_NAME = Tachyon skimmer
+SKIMMER_DESC = No description.
+QCOMP_NAME = Quantum computing
+QCOMP_DESC = No description.
 
 COMP_NAME = Electronic computer
 COMP_DESC = No description.

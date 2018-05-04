@@ -29,16 +29,31 @@
 }
 
 { IsDrive
+	langCode: SKIMMER_ISDRIVE
+	image :./images/technologies/hydroponicFarms.png
+	code: skimmer
+	
+	maxLvl = 1
+	prerequisites [
+		:skimmer #1;
+	]
+	cost # 2e6 * size;
+	
+	minSize # 5;
+	speed # 3 * limit(totalPower / (3e3 * hullIsSize * 0.5 ^ (lvl / 5)), 0.2, 1);
+}
+
+{ IsDrive
 	langCode: SUBSPACE_ISDRIVE
 	image :./images/technologies/hydroponicFarms.png
 	code: subspace
 	
 	maxLvl = 1
 	prerequisites [
-		:warp #1;
+		:nuclearDrive #100;
 	]
 	cost # 2e6 * size;
 	
 	minSize # 5;
-	speed # 3;
+	speed # 5;
 }

@@ -6,7 +6,7 @@
 			hull [:catalyzer =0]
 			hullImageIndex= 0
 			
-			isDrive [:subspace =0]
+			isDrive [:skimmer =0]
 			
 			equipment [
 				:catalyzer =1
