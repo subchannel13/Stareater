@@ -45,13 +45,13 @@
 	{ Work
 		improvised	# 2;
 		organized	# 5 + 2 * recycleLvl / 5 + 3 * roboLvl / 5;
-		orgFactor # 1;
+		orgFactor # 0.5 + 0.5 * indLawsLvl / 5;
 	}
 	development 
 	{ Work
 		improvised	# 2 + 0.5 * compSciLvl / 5 + 0.5 * qCompLvl / 5;
 		organized	# 5 + 1 * recycleLvl / 5 + 2.5 * compSciLvl / 5 + 2.5 * qCompLvl / 5;
-		orgFactor # 1;
+		orgFactor # 0.5 + 0.5 * schoolLawsLvl / 5;
 	}
 	
 	repair # (0.2 + 0.3 * serviceToolsLvl / 5) * min(infra_count, pop);

@@ -6,7 +6,7 @@
 	devTopics [
 		[ :childCare :farmLaws :mineLaws ]
 		[ :heavyInd :sdi ]
-		[ :colonizer ]
+		[ :indLaws :schoolLaws ]
 	]
 }
 
@@ -50,6 +50,25 @@
 	maxLvl= 4
 	image: ./images/technologies/industry.png
 }
+
+
+{ DevelopmentTopic
+	langCode: IND_LAWS
+	code: indLaws
+	cost # lvl [1, 3, 6, 10] * 2e12 * priority [1, 10];
+	maxLvl= 4
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	langCode: SCHOOL_LAWS
+	code: schoolLaws
+	cost # lvl [1, 3, 6, 10] * 2e12 * priority [1, 10];
+	maxLvl= 4
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+
 
 
 { DevelopmentTopic

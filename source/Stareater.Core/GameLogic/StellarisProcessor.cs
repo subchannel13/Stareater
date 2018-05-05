@@ -26,11 +26,6 @@ namespace Stareater.GameLogic
 			this.Stellaris = stellaris;
 		}
 
-		private StellarisProcessor(StellarisAdmin stellaris, StellarisProcessor original) : base(original)
-		{
-			this.Stellaris = stellaris;
-		}
-
 		private StellarisProcessor()
 		{ }
 

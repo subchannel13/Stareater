@@ -77,21 +77,6 @@ namespace Stareater.GameLogic
 		{
 			this.Colony = colony;
 		}
-		
-		private ColonyProcessor(Colony colony, ColonyProcessor original) : base(original)
-		{
-			this.Colony = colony;
-			
-			this.BuilderEfficiency = original.BuilderEfficiency;
-			this.Development = original.Development;
-			this.FarmerEfficiency = original.FarmerEfficiency;
-			this.GardenerEfficiency = original.GardenerEfficiency;
-			this.MaxPopulation = original.MaxPopulation;
-			this.MinerEfficiency = original.MinerEfficiency;
-			this.Organization = original.Organization;
-			this.ScientistEfficiency = original.ScientistEfficiency;
-			this.WorkingPopulation = original.WorkingPopulation;
-		}
 
         private ColonyProcessor()
         { }

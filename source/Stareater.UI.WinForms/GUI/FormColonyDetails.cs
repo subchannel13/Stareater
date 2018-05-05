@@ -67,7 +67,7 @@ namespace Stareater.GUI
 			foodInfo.Text = perPop("foodInfo", controller.FoodPerPop);
 			miningInfo.Text = perPop("miningInfo", controller.OrePerPop);
 			industryInfo.Text = perPop("industryInfo", controller.IndustryPerPop);
-			developmentInfo.Text = perPop("developmentInfo", controller.FoodPerPop);
+			developmentInfo.Text = perPop("developmentInfo", controller.DevelopmentPerPop);
 			industryTotalInfo.Text = totalText("industryTotalInfo", controller.IndustryTotal);
 			developmentTotalInfo.Text = totalText("developmentTotalInfo", controller.DevelopmentTotal);
 			
