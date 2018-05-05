@@ -36,3 +36,16 @@
 	
 	detection # 15 + 0.5 * lvl;
 }
+
+{ Sensor
+	langCode: GRAV_SENSOR
+	image :./images/technologies/hydroponicFarms.png
+	code: gravSensor
+	
+	maxLvl = 5
+	prerequisites [
+		:gravSensor #lvl;
+	]
+	
+	detection # 18 + 0.5 * lvl;
+}

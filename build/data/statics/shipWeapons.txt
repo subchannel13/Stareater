@@ -210,3 +210,29 @@
 		}
 	]
 }
+
+{ MissionEquipment
+	langCode: TACHYON
+	image: ./images/technologies/hydroponicFarms.png
+	code: tachyon
+	
+	maxLvl = 5
+	prerequisites [
+		:tachyon #lvl;
+	]
+	
+	cost # 25e6 * 0.2 ^ (lvl / 5);
+	size # lvl [5, 5, 4, 4, 3];
+	
+	abilities [
+		{ DirectShot
+			image: ./images/technologies/hydroponicFarms.png
+			firePower # 8;
+			accuracy # 20;
+			range # 4;
+			energyCost # 10;
+			
+			accuracyRangePenalty # -0.5;
+		}
+	]
+}

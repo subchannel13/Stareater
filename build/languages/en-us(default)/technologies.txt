@@ -131,6 +131,12 @@ NEUTRINO_SCAN_NAME = Neutrino detector
 NEUTRINO_SCAN_DESC = Detector for neutrino emissions escaping from hostile starship reactors.
 GAUSS_NAME = Gauss cannon
 GAUSS_DESC = No description.
+WFIELD_NAME = W field
+WFIELD_DESC = No description.
+TACHYON_NAME = Tachyon beam
+TACHYON_DESC = No description.
+GRAV_SENSOR_NAME = Nanogravity sensor
+GRAV_SENSOR_DESC = No description.
 
 CHILD_CARE_NAME = Childe care
 CHILD_CARE_DESC = No description.

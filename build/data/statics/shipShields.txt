@@ -129,3 +129,25 @@
 	cost # 2e6 * size;
 	power # size * (4 + 0.2 * lvl);
 }
+
+{ Shield
+	langCode: WFIELD
+	image :./images/technologies/hydroponicFarms.png
+	code: wField
+	
+	maxLvl= 5
+	prerequisites [
+		:wField #lvl;
+	]
+	
+	reduction # inf;
+	restoration # 1000;
+	shieldFactor # 1000;
+	thickness # 5 + 1 * lvl;
+	
+	cloaking # -2 + 0.2 * lvl;
+	jamming # -2 + 0.2 * lvl;
+	
+	cost # 2e6 * size;
+	power # size * (4 + 0.2 * lvl);
+}

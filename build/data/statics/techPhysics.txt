@@ -6,8 +6,10 @@
 	devTopics [
 		[ :lidar :fusionBeam :ionBeam ]
 		[ :emShield :neutrinoScan :gauss ]
+		[ :wField :tachyon :gravSensor ]
 	]
 }
+
 
 { DevelopmentTopic
 	langCode: LIDAR
@@ -55,5 +57,30 @@
 	code: gauss
 	cost # lvl [1, 3, 6, 10] * 500e9 * priority [1, 3, 10];
 	maxLvl= 4
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+
+{ DevelopmentTopic
+	langCode: WFIELD
+	code: wField
+	cost # lvl [1, 3, 6, 10] * 2e12 * priority [1, 3, 10];
+	maxLvl = 4
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	langCode: TACHYON
+	code: tachyon
+	cost # lvl [1, 3, 6, 10] * 2e12 * priority [1, 3, 10];
+	maxLvl = 4
+	image: ./images/technologies/hydroponicFarms.png
+}
+
+{ DevelopmentTopic
+	langCode: GRAV_SENSOR
+	code: gravSensor
+	cost # lvl [1, 3, 6, 10] * 2e12 * priority [1, 3, 10];
+	maxLvl = 4
 	image: ./images/technologies/hydroponicFarms.png
 }
