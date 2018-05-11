@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
@@ -26,12 +25,12 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 		
-		public FormSaveLoad(SavesController saveController, GameController gameController) : this()
+		public FormSaveLoad(GameController gameController) : this()
 		{
 			this.Text = LocalizationManifest.Get.CurrentLanguage[FormSaveLoad.LanguageContext]["FormTitle"].Text();
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.gameController = gameController;
-			this.saveController = saveController;
+			this.saveController = new SavesController(gameController, SettingsWinforms.Get.FileStorageRootPath);
 			
 			if (saveController.CanSave) {
 				addSavedGame(null);
@@ -112,6 +111,19 @@ namespace Stareater.GUI
 			this.selectedGame.OnSelect();
 			
 			this.loadButton.Enabled = (this.selectedGame.Data != null);
+		}
+
+		public static void Autosave(GameController gameController)
+		{
+			var saveController = new SavesController(gameController, SettingsWinforms.Get.FileStorageRootPath);
+			var preview = new SavePreviewGenerator(gameController);
+			var title = LocalizationManifest.Get.CurrentLanguage[FormSaveLoad.LanguageContext]["Autosave"].Text();
+
+			var lastAutosave = saveController.Games.FirstOrDefault(x => SavePreviewGenerator.IsAutosave(x.PreviewData));
+			if (lastAutosave == null)
+				saveController.NewSave(title, preview.MakeAutosave());
+			else
+				saveController.OverwriteSave(lastAutosave, title, preview.MakeAutosave());
 		}
 	}
 }

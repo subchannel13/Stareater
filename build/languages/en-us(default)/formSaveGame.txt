@@ -7,4 +7,5 @@ Turn §
 
 NewSave = New slot
 NoSaves = No saved games
+Autosave = Autosave
 -

@@ -14,6 +14,7 @@ namespace Stareater.GUI
 		private const string StarsKey = "Stars";
 		private const string TurnKey = "turn";
 		private const string ColorKey = "color";
+		private const string AutosaveKey = "IsAutosave";
 
 		private GameController controller;
 
@@ -50,6 +51,14 @@ namespace Stareater.GUI
 			return previewData;
 		}
 
+		public IkonBaseObject MakeAutosave()
+		{
+			var data = this.Make() as IkonComposite;
+			data.Add(AutosaveKey, new IkonArray());
+
+			return data;
+		}
+
 		public static int TurnOf(IkonBaseObject previewData)
 		{
 			return previewData.To<IkonComposite>()[TurnKey].To<int>();
@@ -71,5 +80,10 @@ namespace Stareater.GUI
 				);
 			}
         }
+
+		public static bool IsAutosave(IkonBaseObject previewData)
+		{
+			return previewData.To<IkonComposite>().Keys.Contains(AutosaveKey);
+		}
 	}
 }

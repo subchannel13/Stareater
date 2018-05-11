@@ -247,13 +247,12 @@ namespace Stareater.GUI
 		
 		private void showSaveGame()
 		{
-			var saveController = new SavesController(gameController, SettingsWinforms.Get.FileStorageRootPath);
-			
-			using(var form = new FormSaveLoad(saveController, gameController))
+			using(var form = new FormSaveLoad(gameController))
 				if (form.ShowDialog() != DialogResult.OK)
 					postDelayedEvent(showMainMenu);
 				else if (form.Result == MainMenuResult.LoadGame) {
 					this.gameController.Stop();
+					var saveController = new SavesController(gameController, SettingsWinforms.Get.FileStorageRootPath);
 					saveController.Load(form.SelectedGameData, LoadingMethods.GameDataSources());
 					this.gameController.Start(this);
 					this.initPlayers();
@@ -372,7 +371,7 @@ namespace Stareater.GUI
 		{
 			this.combatRenderer.SelectedAbility = (sender as Control).Tag as AbilityInfo;
 		}
-		
+
 		#region Canvas events
 
 		private void glCanvas_Load(object sender, EventArgs e)
@@ -525,7 +524,6 @@ namespace Stareater.GUI
 			this.menuStrip.Visible = true;
 		}
 
-		//TODO(v0.7) autosave
 		public void OnNewTurn()
 		{
 			if (this.InvokeRequired) {
@@ -683,6 +681,7 @@ namespace Stareater.GUI
 		#region IGalaxyViewListener
 		void IGalaxyViewListener.TurnEnded()
 		{
+			FormSaveLoad.Autosave(this.gameController);
 			this.currentPlayer.EndGalaxyPhase();
 
 			if (this.currentPlayerIndex < this.playerControllers.Length - 1)
