@@ -17,7 +17,7 @@ namespace Stareater.Utils.StateEngine
 		public ClassStrategy(Type type, StateType attributes)
 		{
 			this.type = type;
-			this.constructor = BuildConstructor(type);
+			this.constructor = buildConstructor(type);
 			this.properties = getProperties(type).
 				Select(x => new PropertyStrategy(x)).
 				ToList();
@@ -75,7 +75,7 @@ namespace Stareater.Utils.StateEngine
 				Where(StateManager.IsStateData);
 		}
 		
-		private static Func<object> BuildConstructor(Type type)
+		private static Func<object> buildConstructor(Type type)
 		{
             var ctorInfo = type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[0], null);
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Stareater.Controllers.Views;
 using Stareater.GameData;
@@ -10,7 +9,7 @@ namespace Stareater.Controllers
 	public class AudienceController
 	{
 		private readonly GameController gameController;
-		internal readonly Player[] Participants;
+		internal readonly Player[] Participants; //TODO(v0.7) use Pair instead of array
 		internal readonly HashSet<Treaty> TreatyData = new HashSet<Treaty>();
 
 		internal AudienceController(Player[] participants, GameController gameController, MainGame gameObj)
@@ -18,8 +17,7 @@ namespace Stareater.Controllers
 			this.gameController = gameController;
 			this.Participants = participants;
 
-			//TODO(later) make fetching with array simpler
-			foreach(var treaty in gameObj.States.Treaties.Of[participants[0]].Where(x => x.Party2 == participants[1]))
+			foreach (var treaty in gameObj.States.Treaties.Of[participants[0], participants[1]])
 				TreatyData.Add(treaty);
 		}
 		

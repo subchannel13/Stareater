@@ -6,11 +6,11 @@ namespace Stareater.GameData.Databases.Tables
 {
 	class WormholeCollection : AIndexedCollection<Wormhole>
 	{
-		public CollectionIndex<Wormhole, StarData> At { get; private set; }
-		
+		public PairCollectionIndex<Wormhole, StarData> At { get; private set; }
+
 		public WormholeCollection()
 		{
-			this.At = new CollectionIndex<Wormhole, StarData>(x => x.FromStar, x => x.ToStar);
+			this.At = new PairCollectionIndex<Wormhole, StarData>(x => x.Endpoints);
 			this.RegisterIndices(this.At);
 		}
 	}

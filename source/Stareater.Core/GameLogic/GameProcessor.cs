@@ -177,7 +177,7 @@ namespace Stareater.GameLogic
 		{
 			this.game.Orders[participants[0]].AudienceRequests.Remove(Array.IndexOf(this.game.MainPlayers, participants[1]));
 			
-			foreach(var oldTreaty in this.game.States.Treaties.Of[participants[0]].Where(x => x.Party2 == participants[1]).ToList())
+			foreach(var oldTreaty in this.game.States.Treaties.Of[participants[0], participants[1]].ToList())
 				this.game.States.Treaties.Remove(oldTreaty);
 			this.game.States.Treaties.Add(treaties);
 		}
@@ -185,7 +185,7 @@ namespace Stareater.GameLogic
         public bool IsAtWar(Player party1, Player party2)
         {
         	return party1 == this.game.StareaterOrganelles || party2 == this.game.StareaterOrganelles ||
-            	this.game.States.Treaties.Of[party1].Any(x => x.Party1 == party2 || x.Party2 == party2);
+            	this.game.States.Treaties.Of[party1, party2].Any();
         }
 		#endregion
 

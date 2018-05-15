@@ -375,8 +375,8 @@ namespace Stareater.GameScenes
 					StartSprite(WormholeZ, GalaxyTextures.Get.PathLine.Id, Color.Blue).
 					AddVertices(
 						this.currentPlayer.Wormholes.SelectMany(wormhole => SpriteHelpers.PathRectVertexData(
-							convert(wormhole.FromStar.Position),
-							convert(wormhole.ToStar.Position),
+							convert(wormhole.Endpoints.First.Position),
+							convert(wormhole.Endpoints.Second.Position),
 							0.8f * PathWidth,
 							GalaxyTextures.Get.PathLine
 					))).

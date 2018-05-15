@@ -316,6 +316,8 @@
     <Compile Include="SpaceCombat\Projectile.cs" />
     <Compile Include="Utils\BitHash.cs" />
     <Compile Include="Utils\BitHashBuilder.cs" />
+    <Compile Include="Utils\Collections\PairCollectionIndex.cs" />
+    <Compile Include="Utils\Pair.cs" />
     <Compile Include="Utils\StateEngine\LoadSession.cs" />
     <Compile Include="Utils\StateEngine\SaveSession.cs" />
     <Compile Include="Utils\StateEngine\AEnumerableStrategy.cs" />

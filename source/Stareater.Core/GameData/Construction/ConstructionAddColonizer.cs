@@ -29,7 +29,7 @@ namespace Stareater.GameData.Construction
 			{
 				var lastStar = site.Location.Star;
 				var nextStar = Destination.Star;
-				var wormhole = game.States.Wormholes.At[lastStar].FirstOrDefault(x => x.FromStar == nextStar || x.ToStar == nextStar);
+				var wormhole = game.States.Wormholes.At[lastStar, nextStar].FirstOrDefault();
 				missions.AddLast(new MoveMission(Destination.Star, wormhole));
 			}
 			

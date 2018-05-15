@@ -456,10 +456,10 @@ namespace Stareater.Controllers
 		{
 			var game = this.gameInstance;
 			var treaties = game.States.Treaties.Of[this.PlayerInstance(game)];
-			
-			foreach(var player in game.MainPlayers)
+
+			foreach (var player in game.MainPlayers)
 				if (player != this.PlayerInstance(game))
-					yield return new ContactInfo(player, treaties.Where(x => x.Party1 == player || x.Party2 == player));
+					yield return new ContactInfo(player, game.States.Treaties.Of[this.PlayerInstance(game), player]);
 		}
 
 		public bool IsAudienceRequested(ContactInfo contact)

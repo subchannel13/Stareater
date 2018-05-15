@@ -360,8 +360,7 @@ namespace Stareater.GameLogic
 					var updatedPlans = updateConstructionPlans(
 						game.Statics,
 						oldPlans[colony],
-						game.Derivates.Of(colony),
-						this.TechLevels
+						game.Derivates.Of(colony)
 					);
 
 					game.Orders[this.Player].ConstructionPlans.Add(colony, updatedPlans);
@@ -375,8 +374,7 @@ namespace Stareater.GameLogic
 						var updatedPlans = updateConstructionPlans(
 							game.Statics,
 							oldPlans[stellaris],
-							game.Derivates.Of(stellaris),
-							this.TechLevels
+							game.Derivates.Of(stellaris)
 						);
 
 						game.Orders[this.Player].ConstructionPlans.Add(stellaris, updatedPlans);
@@ -765,10 +763,10 @@ namespace Stareater.GameLogic
 			return newQueue;
 		}
 
-		private ConstructionOrders updateConstructionPlans(StaticsDB statics, ConstructionOrders oldOrders, AConstructionSiteProcessor processor, IDictionary<string, double> playersVars)
+		private ConstructionOrders updateConstructionPlans(StaticsDB statics, ConstructionOrders oldOrders, AConstructionSiteProcessor processor)
 		{
 			var newOrders = new ConstructionOrders(oldOrders.SpendingRatio);
-			var vars = processor.LocalEffects(statics).UnionWith(playersVars).Get;
+			var vars = processor.LocalEffects(statics).UnionWith(this.TechLevels).Get;
 
 			foreach (var item in oldOrders.Queue)
 				if (item.Condition.Evaluate(vars) >= 0)

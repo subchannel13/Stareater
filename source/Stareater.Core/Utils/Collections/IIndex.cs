@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Stareater.Utils.Collections
+﻿namespace Stareater.Utils.Collections
 {
 	public interface IIndex<T>
 	{

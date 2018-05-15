@@ -115,7 +115,12 @@ namespace Stareater.Controllers
 		
 		public bool CanPick(ConstructableInfo data)
 		{
-			return Processor.SpendingPlan.All(x => !x.Project.Equals(data.Project)); //TODO(v0.7): consider building count
+			var vars = this.Processor.LocalEffects(this.Game.Statics).
+				UnionWith(this.Game.Derivates.Of(this.Player).TechLevels).Get;
+
+			return this.Processor.SpendingPlan.All(x => 
+				!x.Project.Equals(data.Project)) && 
+				data.Project.Condition.Evaluate(vars) >= 0;
 		}
 		
 		public void Enqueue(ConstructableInfo data)

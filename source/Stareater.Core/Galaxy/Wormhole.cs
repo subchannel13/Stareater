@@ -1,19 +1,16 @@
-﻿using Stareater.Utils.StateEngine;
+﻿using Stareater.Utils;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
 {
 	public class Wormhole
 	{
 		[StateProperty]
-		public StarData FromStar { get; private set; }
-
-		[StateProperty]
-		public StarData ToStar { get; private set; }
+		public Pair<StarData> Endpoints { get; private set; }
 
 		public Wormhole(StarData fromStar, StarData toStar) 
 		{
-			this.FromStar = fromStar;
-			this.ToStar = toStar;
+			this.Endpoints = new Pair<StarData>(fromStar, toStar);
  		} 
 
 		private Wormhole() 
