@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Stareater.Utils.Collections;
 
 namespace ExpressionParser_Tests

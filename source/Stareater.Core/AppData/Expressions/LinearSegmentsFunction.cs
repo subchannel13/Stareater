@@ -18,20 +18,20 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (indexNode.isConstant) {
+			if (indexNode.IsConstant) {
 				double t = indexNode.Evaluate(null);
 				int leftIndex = leftPointIndex(t);
 
-				if (segmentPoints[leftIndex].isConstant && segmentPoints[leftIndex + 1].isConstant)
+				if (segmentPoints[leftIndex].IsConstant && segmentPoints[leftIndex + 1].IsConstant)
 					return new Constant(this.Evaluate(null));
 			}
 
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return indexNode.isConstant && segmentPoints.All(point => point.isConstant); }
+			get { return indexNode.IsConstant && segmentPoints.All(point => point.IsConstant); }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)

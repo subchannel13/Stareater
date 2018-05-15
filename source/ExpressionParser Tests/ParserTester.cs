@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Stareater.AppData.Expressions;
 
 namespace ExpressionParser_Tests

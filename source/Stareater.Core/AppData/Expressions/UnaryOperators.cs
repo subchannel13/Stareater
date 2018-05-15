@@ -9,14 +9,14 @@ namespace Stareater.AppData.Expressions
 	{
 		public IExpressionNode child;
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return child.isConstant; }
+			get { return child.IsConstant; }
 		}
 
 		public IExpressionNode Simplified()
 		{
-			if (child.isConstant)
+			if (child.IsConstant)
 				return new Constant(this.Evaluate(null));
 
 			return this;

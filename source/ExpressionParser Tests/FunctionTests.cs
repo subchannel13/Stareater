@@ -1,13 +1,4 @@
-﻿/*
- * Created by SharpDevelop.
- * User: ekraiva
- * Date: 22.7.2013.
- * Time: 13:28
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Stareater.Utils.Collections;
 
 namespace ExpressionParser_Tests

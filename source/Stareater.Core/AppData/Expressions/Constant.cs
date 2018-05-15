@@ -19,7 +19,7 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
 			get { return true; }
 		}

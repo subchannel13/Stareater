@@ -16,12 +16,12 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			int constCount = sequence.Count(x => x.isConstant);
+			int constCount = sequence.Count(x => x.IsConstant);
 
 			if (constCount == sequence.Length)
 				return new Constant(this.Evaluate(null));
 			else if (constCount > 1) {
-				var grouping = sequence.GroupBy(x => x.isConstant).ToDictionary(x => x.Key);
+				var grouping = sequence.GroupBy(x => x.IsConstant).ToDictionary(x => x.Key);
 
 				if (grouping[true].Any(x => x.Evaluate(null) < 0))
 					return new Constant(-1);
@@ -32,9 +32,9 @@ namespace Stareater.AppData.Expressions
 				return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return sequence.All(x => x.isConstant); }
+			get { return sequence.All(x => x.IsConstant); }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)
@@ -64,12 +64,12 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			int constCount = sequence.Count(x => x.isConstant);
+			int constCount = sequence.Count(x => x.IsConstant);
 
 			if (constCount == sequence.Length)
 				return new Constant(this.Evaluate(null));
 			else if (constCount > 1) {
-				var grouping = sequence.GroupBy(x => x.isConstant).ToDictionary(x => x.Key);
+				var grouping = sequence.GroupBy(x => x.IsConstant).ToDictionary(x => x.Key);
 
 				if (grouping[true].Any(x => x.Evaluate(null) >= 0))
 					return new Constant(1);
@@ -80,9 +80,9 @@ namespace Stareater.AppData.Expressions
 				return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return sequence.All(x => x.isConstant); }
+			get { return sequence.All(x => x.IsConstant); }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)
@@ -112,14 +112,14 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			int constCount = sequence.Count(x => x.isConstant);
+			int constCount = sequence.Count(x => x.IsConstant);
 
 			if (constCount == sequence.Length)
 				return new Constant(this.Evaluate(null));
 			else if (constCount > 1) {
 				List<IExpressionNode> newSequence = new List<IExpressionNode>();
 				
-				var grouping = sequence.GroupBy(x => x.isConstant).ToDictionary(x => x.Key);
+				var grouping = sequence.GroupBy(x => x.IsConstant).ToDictionary(x => x.Key);
 				int truths = grouping[true].Count(x => x.Evaluate(null) >= 0);
 				
 				if (truths > 1)
@@ -135,9 +135,9 @@ namespace Stareater.AppData.Expressions
 				return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return sequence.All(x => x.isConstant); }
+			get { return sequence.All(x => x.IsConstant); }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)

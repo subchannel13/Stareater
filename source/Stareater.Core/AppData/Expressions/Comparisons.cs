@@ -20,14 +20,14 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (this.isConstant)
+			if (this.IsConstant)
 				return new Constant(this.Evaluate(null));
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return leftSide.isConstant && rightSide.isConstant; }
+			get { return leftSide.IsConstant && rightSide.IsConstant; }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)

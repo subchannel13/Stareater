@@ -19,8 +19,8 @@ namespace Stareater.AppData.Expressions
 			if (sequence.Length == 1)
 				return sequence.First();
 
-			var constants = sequence.Where(x => x.isConstant).ToArray();
-			var varing = sequence.Where(x => !x.isConstant).ToList();
+			var constants = sequence.Where(x => x.IsConstant).ToArray();
+			var varing = sequence.Where(x => !x.IsConstant).ToList();
 
 			if (varing.Count == 0)
 				return new Constant(constants.Min(x => x.Evaluate(null)));
@@ -32,9 +32,9 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return sequence.All(element => element.isConstant); }
+			get { return sequence.All(element => element.IsConstant); }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)
@@ -67,8 +67,8 @@ namespace Stareater.AppData.Expressions
 			if (sequence.Length == 1)
 				return sequence.First();
 
-			var constants = sequence.Where(x => x.isConstant).ToArray();
-			var varing = sequence.Where(x => !x.isConstant).ToList();
+			var constants = sequence.Where(x => x.IsConstant).ToArray();
+			var varing = sequence.Where(x => !x.IsConstant).ToList();
 
 			if (varing.Count == 0)
 				return new Constant(constants.Max(x => x.Evaluate(null)));
@@ -80,9 +80,9 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return sequence.All(element => element.isConstant); }
+			get { return sequence.All(element => element.IsConstant); }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)
@@ -112,15 +112,15 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (argument.isConstant)
+			if (argument.IsConstant)
 				return new Constant(this.Evaluate(null));
 
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return argument.isConstant; }
+			get { return argument.IsConstant; }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)
@@ -149,15 +149,15 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (argument.isConstant)
+			if (argument.IsConstant)
 				return new Constant(this.Evaluate(null));
 
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return argument.isConstant; }
+			get { return argument.IsConstant; }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)
@@ -186,15 +186,15 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (argument.isConstant)
+			if (argument.IsConstant)
 				return new Constant(this.Evaluate(null));
 
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return argument.isConstant; }
+			get { return argument.IsConstant; }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)
@@ -223,15 +223,15 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (argument.isConstant)
+			if (argument.IsConstant)
 				return new Constant(this.Evaluate(null));
 
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return argument.isConstant; }
+			get { return argument.IsConstant; }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)
@@ -260,15 +260,15 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (argument.isConstant)
+			if (argument.IsConstant)
 				return new Constant(this.Evaluate(null));
 
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return argument.isConstant; }
+			get { return argument.IsConstant; }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)
@@ -297,15 +297,15 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (argument.isConstant)
+			if (argument.IsConstant)
 				return new Constant(this.Evaluate(null));
 
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return argument.isConstant; }
+			get { return argument.IsConstant; }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)
@@ -338,19 +338,19 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (this.isConstant)
+			if (this.IsConstant)
 				return new Constant(this.Evaluate(null));
 			
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
 			get
 			{
-				return argument.isConstant &&
-					minNode.isConstant &&
-					maxNode.isConstant;
+				return argument.IsConstant &&
+					minNode.IsConstant &&
+					maxNode.IsConstant;
 			}
 		}
 
@@ -394,21 +394,21 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			if (this.isConstant)
+			if (this.IsConstant)
 				return new Constant(this.Evaluate(null));
 
-			if (condition.isConstant)
+			if (condition.IsConstant)
 				return (condition.Evaluate(null) >= 0) ? trueNode : falseNode;
 			
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
 			get
 			{
-				if (condition.isConstant)
-					return ((condition.Evaluate(null) >= 0) ? trueNode : falseNode).isConstant;
+				if (condition.IsConstant)
+					return ((condition.Evaluate(null) >= 0) ? trueNode : falseNode).IsConstant;
 
 				return false;
 			}

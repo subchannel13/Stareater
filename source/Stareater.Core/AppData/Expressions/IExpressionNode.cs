@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Stareater.AppData.Expressions
 {
 	interface IExpressionNode
 	{
 		IExpressionNode Simplified();
-		bool isConstant { get; }
+		bool IsConstant { get; }
 		double Evaluate(IDictionary<string, double> variables);
-		IEnumerable<string> Variables { get; } //TODO(later): add to unit tests
+		IEnumerable<string> Variables { get; }
 	}
 }

@@ -18,7 +18,7 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
-			int constCount = sequence.Count(x => x.isConstant) + inverseSequence.Count(x => x.isConstant);
+			int constCount = sequence.Count(x => x.IsConstant) + inverseSequence.Count(x => x.IsConstant);
 
 			if (sequence.Length == 1 && inverseSequence.Length == 0)
 				return sequence.First();
@@ -29,23 +29,23 @@ namespace Stareater.AppData.Expressions
 				List<IExpressionNode> newInverseSequence = new List<IExpressionNode>();
 
 				return new Summation(
-					sequence.Where(x => !x.isConstant).Concat(new IExpressionNode[] 
+					sequence.Where(x => !x.IsConstant).Concat(new IExpressionNode[] 
 					{
 						new Constant(
-							sequence.Where(x => x.isConstant).Aggregate(0.0, (subSum, element) => subSum + element.Evaluate(null)) -
-							inverseSequence.Where(x => x.isConstant).Aggregate(0.0, (subSum, element) => subSum + element.Evaluate(null))
+							sequence.Where(x => x.IsConstant).Aggregate(0.0, (subSum, element) => subSum + element.Evaluate(null)) -
+							inverseSequence.Where(x => x.IsConstant).Aggregate(0.0, (subSum, element) => subSum + element.Evaluate(null))
 						)
 					}).ToArray(),
-					inverseSequence.Where(x => !x.isConstant).ToArray()
+					inverseSequence.Where(x => !x.IsConstant).ToArray()
 					);
 			}
 			else
 				return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
-			get { return sequence.All(x => x.isConstant) && inverseSequence.All(x => x.isConstant); }
+			get { return sequence.All(x => x.IsConstant) && inverseSequence.All(x => x.IsConstant); }
 		}
 
 		public double Evaluate(IDictionary<string, double> variables)

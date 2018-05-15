@@ -19,17 +19,17 @@ namespace Stareater.AppData.Expressions
 			if (sequence.Length == 1)
 				return sequence[0];
 			
-			if (isConstant)
+			if (IsConstant)
 				return new Constant(Evaluate(null));
 			
 			return this;
 		}
 
-		public bool isConstant
+		public bool IsConstant
 		{
 			get
 			{
-				return sequence.All(element => element.isConstant);
+				return sequence.All(element => element.IsConstant);
 			}
 		}
 
