@@ -81,7 +81,7 @@ namespace Stareater.GameLogic
 					colonies.FirstOrDefault(x => x.Location.Planet == planets[i]),
 					planets[i],
 					position,
-					this.mainGame.Statics.ColonyFormulas.PopulationHitPoints.Evaluate(null) //TODO(later) pass relevant variables
+					this.mainGame.Statics.ColonyFormulas.PopulationHitPoints.Evaluate(null) //TODO(check) pass relevant variables
 				);
 			}
 		}
@@ -258,8 +258,8 @@ namespace Stareater.GameLogic
 			if (this.game.PlayOrder.Count == 0)
 				this.nextRound();
 		}
-		
-		//TODO(later) check target validity
+
+		//TODO(check) check target validity
 		public void UseAbility(int index, double quantity, Combatant target)
 		{
 			var unit = this.game.PlayOrder.Peek();
@@ -433,8 +433,8 @@ namespace Stareater.GameLogic
 					updateStackTop(target);
 				}
 			}
-			
-			//TODO(later) do different calculation for multiple ships below top of the stack
+
+			//TODO(check) do different calculation for multiple ships below top of the stack
 			return spent;
 		}
 

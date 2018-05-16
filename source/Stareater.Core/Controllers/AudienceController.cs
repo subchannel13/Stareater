@@ -3,21 +3,22 @@ using System.Linq;
 using Stareater.Controllers.Views;
 using Stareater.GameData;
 using Stareater.Players;
+using Stareater.Utils;
 
 namespace Stareater.Controllers
 {
 	public class AudienceController
 	{
 		private readonly GameController gameController;
-		internal readonly Player[] Participants; //TODO(v0.7) use Pair instead of array
+		internal readonly Pair<Player> Participants;
 		internal readonly HashSet<Treaty> TreatyData = new HashSet<Treaty>();
 
-		internal AudienceController(Player[] participants, GameController gameController, MainGame gameObj)
+		internal AudienceController(Pair<Player> participants, GameController gameController, MainGame gameObj)
 		{
 			this.gameController = gameController;
 			this.Participants = participants;
 
-			foreach (var treaty in gameObj.States.Treaties.Of[participants[0], participants[1]])
+			foreach (var treaty in gameObj.States.Treaties.Of[participants])
 				TreatyData.Add(treaty);
 		}
 		
@@ -28,12 +29,12 @@ namespace Stareater.Controllers
 
 		public PlayerInfo Participant1 
 		{
-			get { return new PlayerInfo(this.Participants[0]); }
+			get { return new PlayerInfo(this.Participants.First); }
 		}
 
 		public PlayerInfo Participant2 
 		{
-			get { return new PlayerInfo(this.Participants[1]); }
+			get { return new PlayerInfo(this.Participants.Second); }
 		}
 
 		public IEnumerable<TreatyInfo> Treaties
@@ -49,7 +50,7 @@ namespace Stareater.Controllers
 		public void DecleareWar()
 		{
 			if (!this.IsAtWar)
-				this.TreatyData.Add(new Treaty(this.Participants[0], this.Participants[1]));
+				this.TreatyData.Add(new Treaty(this.Participants));
 		}
 
 		public void DeclearePeace()

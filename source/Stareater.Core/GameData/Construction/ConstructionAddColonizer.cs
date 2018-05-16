@@ -35,7 +35,7 @@ namespace Stareater.GameData.Construction
 			
 			missions.AddLast(new ColonizationMission(Destination));
 			
-			//TODO(v0.7) report new ship construction
+			//TODO(v0.8) report new ship construction
 			game.Derivates.Of(site.Owner).
 				SpawnShip(site.Location.Star, this.ColonizerDesign, quantity, missions, game.States);
 		}

@@ -344,7 +344,7 @@ namespace Stareater.GameLogic
 		{
 			var occupiedTargets = new HashSet<Planet>();
 			foreach(var order in game.Orders[this.Player].ColonizationOrders)
-				if (game.States.Colonies.AtPlanet.Contains(order.Key)) //TODO(later) use intelligence instead
+				if (game.States.Colonies.AtPlanet.Contains(order.Key)) //TODO(check) use intelligence instead
 					occupiedTargets.Add(order.Key);
 			foreach(var planet in occupiedTargets)
 				game.Orders[this.Player].ColonizationOrders.Remove(planet);

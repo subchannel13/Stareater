@@ -37,7 +37,7 @@ namespace Stareater.GUI
 		{ 
 			get
 			{
-				//TODO(later) text could be invalid
+				//TODO(v0.7) text could be invalid
 				return NumberInput.DecodeQuantity(this.quantityInput.Text).Value;
 			}
 		}
@@ -63,7 +63,7 @@ namespace Stareater.GUI
 			else
 			{
 				var formatter = new ThousandsFormatter();
-				//TODO(later) text could decimal and unparsable to long later
+				//TODO(v0.7) text could decimal and unparsable to long later
 				this.quantityInput.Text = formatter.Format(this.maximum * (this.quantitySlider.Value / (double) this.quantitySlider.Maximum));
 			}
 			ignoreEvents = false;

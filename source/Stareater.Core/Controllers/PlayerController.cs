@@ -11,7 +11,7 @@ using Stareater.Players;
 
 namespace Stareater.Controllers
 {
-	//TODO(later) filter invisible fleets
+	//TODO(v0.8) filter invisible fleets
 	public class PlayerController
 	{
 		public int PlayerIndex { get; private set; }
@@ -162,8 +162,10 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				foreach (var wormhole in this.gameInstance.States.Wormholes)
-					yield return wormhole;
+				var game = this.gameInstance;
+				var intell = this.PlayerInstance(game).Intelligence;
+
+				return game.States.Wormholes.Where(intell.IsKnown);
 			}
 		}
 		#endregion

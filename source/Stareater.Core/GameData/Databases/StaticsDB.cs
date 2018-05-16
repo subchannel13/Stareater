@@ -648,7 +648,7 @@ namespace Stareater.GameData.Databases
 			foreach(var array in data[FocusList].To<IkonArray>()) {
 				double[] weights = array.To<double[]>();
 				double sum = weights.Sum();
-				yield return new DevelopmentFocus(weights.Select(x => x /sum).ToArray()); //TODO(later): possible div by 0
+				yield return new DevelopmentFocus(weights.Select(x => x /sum).ToArray()); //TODO(v0.7): possible div by 0
 			}
 		}
 			

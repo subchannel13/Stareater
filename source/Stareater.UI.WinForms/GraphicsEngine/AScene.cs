@@ -78,13 +78,13 @@ namespace Stareater.GraphicsEngine
 
 		public void HandleMouseDoubleClick(MouseEventArgs e)
 		{
-			//TODO(later) differentiate between left and right click
+			//TODO(v0.8) differentiate between left and right click
 			this.onMouseDoubleClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy);
 		}
 
 		public void HandleMouseDown(MouseEventArgs e)
 		{
-			//TODO(later) differentiate between left and right click
+			//TODO(v0.8) differentiate between left and right click
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 
 			foreach (var element in this.guiElements)
@@ -94,7 +94,7 @@ namespace Stareater.GraphicsEngine
 
 		public void HandleMouseUp(MouseEventArgs e)
 		{
-			//TODO(later) differentiate between left and right click
+			//TODO(v0.8) differentiate between left and right click
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 
 			foreach (var element in this.guiElements)
@@ -321,7 +321,7 @@ namespace Stareater.GraphicsEngine
 				
 				for (int i = 0; i < drawableData.Count; i++)
 				{
-					//TODO(later) wrong index when multiple programs draw in same "z" layer
+					//TODO(check) wrong index when multiple programs draw in same "z" layer
 					var data = drawableData[i];
 					this.drawables[data.Z].Add(data.MakeDrawable(vaos[data.ShaderData.ForProgram], i)); 
 				}

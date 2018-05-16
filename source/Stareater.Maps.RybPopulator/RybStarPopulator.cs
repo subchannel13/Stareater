@@ -47,7 +47,7 @@ namespace Stareater.Galaxy.RybPopulator
 			}
 			this.starTypes = starTypes.ToArray();
 
-			//TODO(later) make data driven
+			//TODO(v0.7) make data driven
 			this.climateParameter = new SelectorParameter(LanguageContext, "climate", new Dictionary<int, string>()
 			{
 				{0, "hostileClimate"},

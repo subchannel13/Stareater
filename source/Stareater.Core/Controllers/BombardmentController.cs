@@ -72,7 +72,7 @@ namespace Stareater.Controllers
 		
 		public void Leave()
 		{
-			//TODO(later) remove current player instead of ending whole phase
+			//TODO(check) remove current player instead of ending whole phase
 			gameController.BombardmentResolved(this.battleGame);
 		}
 

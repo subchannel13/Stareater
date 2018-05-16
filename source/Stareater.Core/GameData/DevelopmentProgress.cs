@@ -15,7 +15,7 @@ namespace Stareater.GameData
 		[StateProperty]
 		public Player Owner { get; private set; }
 
-		//TODO(later) saves as ordinal number so doesn't load proper topic after modding (or adding more content)
+		//TODO(v0.8) saves as ordinal number so doesn't load proper topic after modding (or adding more content)
 		[StateProperty]
 		public DevelopmentTopic Topic { get; private set; }
 

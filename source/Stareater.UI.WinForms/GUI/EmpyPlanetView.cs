@@ -55,7 +55,7 @@ namespace Stareater.GUI
 				this.controller.StopColonization();
 			else
 			{
-				//TODO(later) smarter default colonization source selection
+				//TODO(v0.8) smarter default colonization source selection
 				this.controller.StartColonization(this.gameController.Stellarises().ToArray());
 			}
 				

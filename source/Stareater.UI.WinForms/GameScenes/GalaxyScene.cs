@@ -184,7 +184,7 @@ namespace Stareater.GameScenes
 			var aspect = canvasSize.X / canvasSize.Y;
 			var radius = DefaultViewSize / (float)Math.Pow(ZoomBase, zoomLevel);
 
-			//TODO(later) test this, perhaps by flipping the monitor.
+			//TODO(v0.7) test this, perhaps by flipping the monitor.
 			screenLength = screenSize.X > screenSize.Y ? 
 				(float)(screenSize.X * radius * aspect / screenSize.X) : 
 				(float)(screenSize.Y * radius * aspect / screenSize.Y);

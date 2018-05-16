@@ -266,9 +266,9 @@ namespace Stareater.Controllers
 			var controller = new AudienceController(participants, this, gameObj);
 			
 			this.stateListener.OnDoAudience(controller);
-			//TODO(later) inform AIs				
+			//TODO(check) inform AIs				
 		}
-		
+
 		private void initaiteCombat()
 		{
 			var conflict = gameObj.Processor.NextConflict();

@@ -4,12 +4,12 @@ namespace Stareater.GameData.Ships
 {
 	class ProjectileAbility : AAbilityType
 	{
-		//TODO(later) consider converting to child ability
+		//TODO(check) consider converting to child ability
 		public Formula FirePower { get; private set; }
 		public Formula Accuracy { get; private set; }
 
 		public Formula Ammo { get; private set; }
-		public Formula Speed { get; private set; } //TODO(later) consider making virtual ship design
+		public Formula Speed { get; private set; } //TODO(check) consider making virtual ship design
 
 		public string ProjectileImage { get; private set; }
 

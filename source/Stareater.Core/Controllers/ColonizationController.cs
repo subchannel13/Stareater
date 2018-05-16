@@ -84,8 +84,8 @@ namespace Stareater.Controllers
 			if (colonizationSources != null && colonizationSources.Length > 0)
 				foreach(var source in colonizationSources)
 					if (!plan.Sources.Contains(source.HostStar))
-						plan.Sources.Add(source.HostStar); //TODO(later) convert source list to set?
-			
+						plan.Sources.Add(source.HostStar); //TODO(check) convert source list to set?
+
 			updateStellarises(plan.Sources);
 		}
 		

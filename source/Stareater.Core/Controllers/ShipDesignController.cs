@@ -373,7 +373,7 @@ namespace Stareater.Controllers
 			this.onHullChange();
 		}
 
-		//TODO(later) consider returning a reason for invalidity 
+		//TODO(check) consider returning a reason for invalidity 
 		public bool IsDesignValid
 		{
 			get

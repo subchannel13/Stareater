@@ -38,5 +38,11 @@ namespace Stareater.GameData
 		{
 			return starKnowledge[star];
 		}
+
+		public bool IsKnown(Wormhole wormhole)
+		{
+			return this.starKnowledge[wormhole.Endpoints.First].IsVisited || 
+				this.starKnowledge[wormhole.Endpoints.Second].IsVisited;
+		}
 	}
 }

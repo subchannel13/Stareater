@@ -9,6 +9,7 @@ using Stareater.Ships.Missions;
 using Stareater.Galaxy;
 using Stareater.GameLogic.Combat;
 using Stareater.GameLogic.Planning;
+using Stareater.Utils;
 
 namespace Stareater.GameLogic
 {
@@ -17,7 +18,7 @@ namespace Stareater.GameLogic
 		private readonly MainGame game;
 		private readonly List<FleetMovement> fleetMovement = new List<FleetMovement>();
 		private readonly Queue<Conflict> conflicts = new Queue<Conflict>();
-		private readonly Queue<Player[]> audiences = new Queue<Player[]>();
+		private readonly Queue<Pair<Player>> audiences = new Queue<Pair<Player>>();
 
 		public GameProcessor(MainGame game)
 		{
@@ -28,7 +29,7 @@ namespace Stareater.GameLogic
 		{
 			get
 			{
-				 //TODO(later) end game by leaving stareater
+				 //TODO(v0.8) end game by leaving stareater
 				return game.States.Colonies.Select(x => x.Owner).Distinct().Count() <= 1;
 			}
 		}
@@ -168,16 +169,14 @@ namespace Stareater.GameLogic
 			}
 		}
 
-		public Player[] NextAudience()
+		public Pair<Player> NextAudience()
 		{
 			return this.audiences.Dequeue();
 		}
 
-		public void AudienceConcluded(Player[] participants, HashSet<Treaty> treaties)
+		public void AudienceConcluded(Pair<Player> participants, HashSet<Treaty> treaties)
 		{
-			this.game.Orders[participants[0]].AudienceRequests.Remove(Array.IndexOf(this.game.MainPlayers, participants[1]));
-			
-			foreach(var oldTreaty in this.game.States.Treaties.Of[participants[0], participants[1]].ToList())
+			foreach(var oldTreaty in this.game.States.Treaties.Of[participants].ToList())
 				this.game.States.Treaties.Remove(oldTreaty);
 			this.game.States.Treaties.Add(treaties);
 		}
@@ -276,7 +275,7 @@ namespace Stareater.GameLogic
 					conflicts.Enqueue(new Conflict(position.Key, visits[position.Key], position.Value));
 			//TODO(later) deep space interception
 			
-			//FIXME(later) could make "fleet trail" if fleet visits multiple stars in the same turn
+			//FIXME(v0.8) could make "fleet trail" if fleet visits multiple stars in the same turn
 			this.game.States.Fleets.Clear();
 			foreach(var fleet in visits.Where(x => !conflictPositions.ContainsKey(x.Key)).SelectMany(x => x.Value))
 				this.game.States.Fleets.Add(fleet.LocalFleet);
@@ -485,13 +484,15 @@ namespace Stareater.GameLogic
 
 		private void enqueueAudiences()
 		{
-			foreach(var player in this.game.MainPlayers)
-			{
-				foreach(var audience in this.game.Orders[player].AudienceRequests)
-					this.audiences.Enqueue(new [] { player, this.game.MainPlayers[audience] }); //TODO(v0.7) eliminate duplicates
+			var requests = this.game.MainPlayers.
+				SelectMany(p1 => this.game.Orders[p1].AudienceRequests.Select(p2 => new Pair<Player>(p1, this.game.MainPlayers[p2]))).
+				Distinct();
 
+			foreach (var request in requests)
+				this.audiences.Enqueue(request);
+
+			foreach (var player in this.game.MainPlayers)
 				this.game.Orders[player].AudienceRequests.Clear();
-			}
 		}
 		
 		private void mergeFleets()

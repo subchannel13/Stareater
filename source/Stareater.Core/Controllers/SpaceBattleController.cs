@@ -144,7 +144,7 @@ namespace Stareater.Controllers
 					this.processor.ValidMoves(currentUnit)
 				))
 			);
-			//TODO(later) check for exception
+			//TODO(check) check for exception
 		}
 		#endregion
 	}

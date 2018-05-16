@@ -9,9 +9,9 @@ namespace Stareater.GameData
 		[StateProperty]
 		public Pair<Player> Parties { get; private set; }
 
-		public Treaty(Player party1, Player party2) 
+		public Treaty(Pair<Player> parties) 
 		{
-			this.Parties = new Pair<Player>(party1, party2);
+			this.Parties = parties;
 		} 
 
 		private Treaty() 

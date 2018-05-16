@@ -23,7 +23,7 @@ namespace Stareater.Players.Natives
 		
 		public string Name 
 		{
-			get { return "no name"; } //TODO(later) make name
+			get { return "no name"; } //TODO(v0.7) make name
 		}
 		#endregion
 	}

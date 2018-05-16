@@ -48,8 +48,8 @@ namespace Stareater.GameLogic
 			{
 				var killsPerShot = abilityStats.FirePower / planet.PopulationHitPoints;
 				var casualties = Math.Min(quantity * killsPerShot, planet.Colony.Population);
-				//TODO(later) factor in shields and armor
-				//TODO(later) roll for target, building or population
+				//TODO(check) factor in shields and armor
+				//TODO(check) roll for target, building or population
 
 				planet.Colony.Population -= casualties;
 				spent = Math.Ceiling(casualties / killsPerShot);
@@ -99,7 +99,7 @@ namespace Stareater.GameLogic
 				this.mainGame.States.Colonies.Remove(planet.Colony);
 				this.mainGame.Derivates.Colonies.Remove(this.mainGame.Derivates.Of(planet.Colony));
 				planet.Colony = null;
-				 //TODO(later) if stellaris should be removed too
+				//TODO(check) check if stellaris should be removed too
 			}
 		}
 		

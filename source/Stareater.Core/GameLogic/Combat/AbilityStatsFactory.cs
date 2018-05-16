@@ -91,7 +91,7 @@ namespace Stareater.GameLogic.Combat
 			this.planetEfficiency = 1; //TODO(v0.7)
 
 			this.ammo = ability.Ammo.Evaluate(vars);
-			this.speed = ability.Speed.Evaluate(vars); //TODO(later) include player techs
+			this.speed = ability.Speed.Evaluate(vars); //TODO(check) include player techs
 			this.projectileImage = ability.ProjectileImage;
 
 			this.splashMaxTargets = 2; //TODO(v0.7)
