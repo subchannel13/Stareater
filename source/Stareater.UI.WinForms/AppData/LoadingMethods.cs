@@ -16,7 +16,8 @@ namespace Stareater.AppData
 		#region Localization
 		private const string LanguagesFolder = "./languages/";
 		private const string DefaultLangSufix = "(default)";
-		private static string DefaultLangCode = null;
+
+		private static string defaultLangCode = null;
 
 		public static void InitializeLocalization()
 		{
@@ -31,12 +32,12 @@ namespace Stareater.AppData
 				if (folder.Name.EndsWith(DefaultLangSufix, StringComparison.InvariantCultureIgnoreCase))
 				{
 					code = code.Remove(code.Length - DefaultLangSufix.Length);
-					DefaultLangCode = code;
+					defaultLangCode = code;
 				}
 				
 				Language lang = LoadLanguage(code);
 
-				if (code == DefaultLangCode)
+				if (code == defaultLangCode)
 					defaultLanguage = lang;
 				if (code == SettingsWinforms.Get.LanguageId)
 					currentLanguage = lang;
@@ -53,7 +54,7 @@ namespace Stareater.AppData
 
 		public static Language LoadLanguage(string langCode)
 		{
-			var folderSufix = langCode == DefaultLangCode ? DefaultLangSufix : "";
+			var folderSufix = langCode == defaultLangCode ? DefaultLangSufix : "";
 
 			return new Language(
 				langCode,

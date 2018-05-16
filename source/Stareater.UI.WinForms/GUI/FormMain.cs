@@ -225,10 +225,12 @@ namespace Stareater.GUI
 
 		private void showNewGame()
 		{
-			using (var form = new FormNewGame()) {
+			using (var form = new FormNewGame())
+			{
 				form.Initialize();
-				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK) {
-					this.gameController.Stop();	
+				if (NewGameController.CanCreateGame && form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
+				{
+					this.gameController.Stop();
 					form.CreateGame(gameController);
 					this.gameController.Start(this);
 					this.initPlayers();

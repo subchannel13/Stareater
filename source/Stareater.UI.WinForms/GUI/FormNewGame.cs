@@ -30,29 +30,28 @@ namespace Stareater.GUI
 
 		public void Initialize()
 		{
-			if (NewGameController.CanCreateGame) {
-				controller = new NewGameController();
-				updatePlayerViews();
+			if (!NewGameController.CanCreateGame)
+				return;
 
-				foreach (var start in MapAssets.Starts)
-					setupStartSelector.Items.Add(new Tag<StartingConditions>(start, start.Name));
-				this.customStartIndex = setupStartSelector.Items.Count;
-				setupStartSelector.Items.Add(new Tag<StartingConditions>(controller.CustomStart, LocalizationManifest.Get.CurrentLanguage["StartingConditions"][NewGameController.CustomStartNameKey].Text()));
-				setupStartSelector.Items.Add(new Tag<StartingConditions>(null, LocalizationManifest.Get.CurrentLanguage["StartingConditions"]["customize"].Text()));
+			controller = new NewGameController();
+			updatePlayerViews();
 
-				if (NewGameController.LastStartingCondition != null)
-				{
-					int i = new List<StartingConditions>(MapAssets.Starts).FindIndex(x => x.Equals(NewGameController.LastStartingCondition));
-					setupStartSelector.SelectedIndex = (i != -1) ? 
-						i : 
-						setupStartSelector.Items.Count - 2;
-				}
-				else
-					setupStartSelector.SelectedItem = new Tag<StartingConditions>(NewGameController.DefaultStartingCondition, null);
-				updateMapDescription();
+			foreach (var start in MapAssets.Starts)
+				setupStartSelector.Items.Add(new Tag<StartingConditions>(start, start.Name));
+			this.customStartIndex = setupStartSelector.Items.Count;
+			setupStartSelector.Items.Add(new Tag<StartingConditions>(controller.CustomStart, LocalizationManifest.Get.CurrentLanguage["StartingConditions"][NewGameController.CustomStartNameKey].Text()));
+			setupStartSelector.Items.Add(new Tag<StartingConditions>(null, LocalizationManifest.Get.CurrentLanguage["StartingConditions"]["customize"].Text()));
+
+			if (NewGameController.LastStartingCondition != null)
+			{
+				int i = new List<StartingConditions>(MapAssets.Starts).FindIndex(x => x.Equals(NewGameController.LastStartingCondition));
+				setupStartSelector.SelectedIndex = (i != -1) ?
+					i :
+					setupStartSelector.Items.Count - 2;
 			}
 			else
-				DialogResult = System.Windows.Forms.DialogResult.Cancel;
+				setupStartSelector.SelectedItem = new Tag<StartingConditions>(NewGameController.DefaultStartingCondition, null);
+			updateMapDescription();
 		}
 
 		//TODO(v0.7) expose NewGameController and perform this at caller
