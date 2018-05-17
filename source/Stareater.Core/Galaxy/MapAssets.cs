@@ -32,7 +32,13 @@ namespace Stareater.Galaxy
 				try
 				{
 					foreach (var item in parser.ParseAll())
-						conditionList.Add(new StartingConditions(item.Value.To<IkonComposite>()));
+					{
+						var start = StartingConditions.Load(item.Value.To<IkonComposite>());
+						if (start != null)
+							conditionList.Add(start);
+						else
+							throw new FormatException();
+					}
 				} 
 				catch (IOException e)
 				{

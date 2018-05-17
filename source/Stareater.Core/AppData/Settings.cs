@@ -66,7 +66,7 @@ namespace Stareater.AppData
 			IkonComposite baseData = data.Dequeue(BaseSettingsTag).To<IkonComposite>();
 			
 			this.LanguageId = baseData[LanguageKey].To<string>();
-			this.LastGame = new LastGameInfo(baseData[LastGameKey].To<IkonComposite>());
+			this.LastGame = LastGameInfo.Load(baseData[LastGameKey].To<IkonComposite>());
 		}
 		#endregion
 		

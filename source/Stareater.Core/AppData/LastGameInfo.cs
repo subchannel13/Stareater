@@ -1,7 +1,7 @@
-﻿using System;
-using Stareater.Galaxy;
+﻿using Stareater.Galaxy;
 using Ikadn.Ikon.Types;
 using Stareater.Utils;
+using System;
 
 namespace Stareater.AppData
 {
@@ -18,20 +18,12 @@ namespace Stareater.AppData
 			this.StarPositionerConfig = null;
 		}
 
-		public LastGameInfo(IkonComposite ikstonData) : this()
-		{
-			this.StartConditions = ikstonData.ToOrDefault(StartingConditionsKey, x => new StartingConditions(x.To<IkonComposite>()), null);
-			this.StarPositionerConfig = ikstonData.ToOrDefault(StarPositionerKey, x => x.To<IkonArray>(), null);
-			this.StarConnectorConfig = ikstonData.ToOrDefault(StarConnectorKey, x => x.To<IkonArray>(), null);
-			this.StarPopulatorConfig = ikstonData.ToOrDefault(StarPopulatorKey, x => x.To<IkonArray>(), null);
-		}
-
 		public IkonComposite BuildSaveData()
 		{
 			var lastGameData = new IkonComposite(ClassName);
 
 			if (this.StartConditions != null)
-				lastGameData.Add(StartingConditionsKey, this.StartConditions.BuildSaveData()); //TODO(v0.7) check if data is valid before loading
+				lastGameData.Add(StartingConditionsKey, this.StartConditions.BuildSaveData());
 			
 			if (this.StarPositionerConfig != null)
 				lastGameData.Add(StarPositionerKey, this.StarPositionerConfig);
@@ -43,6 +35,23 @@ namespace Stareater.AppData
 				lastGameData.Add(StarPopulatorKey, this.StarPopulatorConfig);
 
 			return lastGameData;
+		}
+
+		internal static LastGameInfo Load(IkonComposite ikstonData)
+		{
+			var conditions = ikstonData.ToOrDefault(StartingConditionsKey, x => StartingConditions.Load(x.To<IkonComposite>()), null);
+			if (conditions == null)
+				return null;
+
+			var info = new LastGameInfo
+			{
+				StartConditions = conditions,
+				StarPositionerConfig = ikstonData.ToOrDefault(StarPositionerKey, x => x.To<IkonArray>(), null),
+				StarConnectorConfig = ikstonData.ToOrDefault(StarConnectorKey, x => x.To<IkonArray>(), null),
+				StarPopulatorConfig = ikstonData.ToOrDefault(StarPopulatorKey, x => x.To<IkonArray>(), null)
+			};
+
+			return info;
 		}
 
 		#region Attribute keys

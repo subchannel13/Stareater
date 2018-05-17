@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ikadn.Ikon.Types;
 using Stareater.Localization;
@@ -21,13 +22,6 @@ namespace Stareater.Galaxy
 			this.nameKey = nameKey; //TODO(v0.7) deduce the name from stats
 		}
 
-		public StartingConditions(IkonComposite ikstonData) :
-			this(ikstonData[PopulationKey].To<long>(),
-				ikstonData[ColoniesKey].To<int>(),
-				ikstonData[InfrastructureKey].To<long>(),
-				ikstonData[NameKey].To<string>())
-		{ }
-
 		public string Name
 		{
 			get
@@ -45,6 +39,30 @@ namespace Stareater.Galaxy
 			lastGameData.Add(NameKey, new IkonText(nameKey));
 			
 			return lastGameData;
+		}
+
+		internal static StartingConditions Load(IkonComposite ikstonData)
+		{
+			var requiredKeys = new[] { PopulationKey, ColoniesKey, InfrastructureKey, NameKey };
+			if (!requiredKeys.All(ikstonData.Keys.Contains))
+				return null;
+
+			try
+			{
+				var population = ikstonData[PopulationKey].To<long>();
+				var colonies = ikstonData[ColoniesKey].To<int>();
+				var infrastructure = ikstonData[InfrastructureKey].To<long>();
+				var nameKey = ikstonData[NameKey].To<string>();
+
+				if (population < 0 || colonies < 0 || infrastructure < 0)
+					return null;
+
+				return new StartingConditions(population, colonies, infrastructure, nameKey);
+			}
+			catch
+			{
+				return null;
+			}
 		}
 
 		#region Equals and GetHashCode implementation
@@ -67,7 +85,7 @@ namespace Stareater.Galaxy
 		public static bool operator ==(StartingConditions lhs, StartingConditions rhs) {
 			if (ReferenceEquals(lhs, rhs))
 				return true;
-			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+			if (lhs is null || rhs is null)
 				return false;
 			return lhs.Equals(rhs);
 		}

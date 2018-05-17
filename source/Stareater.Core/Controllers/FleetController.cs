@@ -122,8 +122,8 @@ namespace Stareater.Controllers
 				return;
 			
 			this.simulationWaypoints.Clear();
-			//TODO(check): find shortest path
-			//TODO(check) prevent changing destination midfilght
+			//TODO(later): find shortest path
+			//TODO(later) prevent changing destination midfilght
 			this.simulationWaypoints.Add(new WaypointInfo(
 				destination.Position,
 				this.game.States.Wormholes.At[this.game.States.Stars.At[this.Fleet.Position], destination].Any()
