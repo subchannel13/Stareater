@@ -30,13 +30,16 @@ namespace Stareater.GameData.Databases.Tables
 		public double ReactorCostPortion { get; private set; }
 		public double SensorCostPortion { get; private set; }
 		public double ThrustersCostPortion { get; private set; }
-		
+
+		public Formula WormholeSpeed { get; private set; }
+
 		public ShipFormulaSet(Formula cloaking, Formula combatSpeed, Formula detection, Formula evasion, 
 		                      Formula hitPoints, Formula jamming,
 		                      Formula colonizerPopulation, Dictionary<string, Formula> colonizerBuildings,
 							  Formula reactorSize, Formula shieldSize,
                               double naturalCloakBonus, double sensorRangePenalty, double repairCostFactor, Formula levelRefitCost,
-		                      double armorCostPortion, double reactorCostPortion, double sensorCostPortion, double thrustersCostPortion)
+		                      double armorCostPortion, double reactorCostPortion, double sensorCostPortion, double thrustersCostPortion,
+							  Formula wormholeSpeed)
 		{
 			this.ArmorCostPortion = armorCostPortion;
 			this.Cloaking = cloaking;
@@ -56,6 +59,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.SensorRangePenalty = sensorRangePenalty;
 			this.ShieldSize = shieldSize;
 			this.ThrustersCostPortion = thrustersCostPortion;
+			this.WormholeSpeed = wormholeSpeed;
 		}
 	}
 }

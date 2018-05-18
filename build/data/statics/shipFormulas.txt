@@ -25,4 +25,6 @@
 	reactorCostPortion # 0.2;
 	sensorCostPortion # 0.1;
 	thrustersCostPortion # 0.2;
+	
+	wormholeSpeed # speed + 0.5;
 }

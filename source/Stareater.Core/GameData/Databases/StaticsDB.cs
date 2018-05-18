@@ -271,7 +271,8 @@ namespace Stareater.GameData.Databases
 				data[ShipArmorCostPortion].To<Formula>().Evaluate(null),
 				data[ShipReactorCostPortion].To<Formula>().Evaluate(null),
 				data[ShipSensorCostPortion].To<Formula>().Evaluate(null),
-				data[ShipThrustersCostPortion].To<Formula>().Evaluate(null)
+				data[ShipThrustersCostPortion].To<Formula>().Evaluate(null),
+				data[ShipWormholeSpeed].To<Formula>()
 			);
 		}
 
@@ -761,6 +762,7 @@ namespace Stareater.GameData.Databases
 		private const string ShipReactorCostPortion = "reactorCostPortion";
 		private const string ShipSensorCostPortion = "sensorCostPortion";
 		private const string ShipThrustersCostPortion = "thrustersCostPortion";
+		private const string ShipWormholeSpeed = "wormholeSpeed";
 
 		private const string BuildingHitPointsKey = "hitPoints";
 		

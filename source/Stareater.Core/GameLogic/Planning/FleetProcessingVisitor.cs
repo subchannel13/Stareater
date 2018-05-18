@@ -4,6 +4,7 @@ using System.Linq;
 using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 using Stareater.Ships.Missions;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GameLogic.Planning
 {
@@ -70,9 +71,9 @@ namespace Stareater.GameLogic.Planning
 			double baseSpeed = fleet.Ships.Select(x => x.Design).
 				Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
 				
-			var speed = baseSpeed;
-			if (mission.UsedWormhole != null)
-				speed += 0.5; //TODO(v0.7) consider making moddable
+			var speed = mission.UsedWormhole != null ? 
+				game.Statics.ShipFormulas.WormholeSpeed.Evaluate(new Var("speed", baseSpeed).Get) : 
+				baseSpeed;
 			
 			this.movementDirection = mission.Destination.Position - fleet.Position;
 			var distance = this.movementDirection.Magnitude();

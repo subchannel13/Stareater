@@ -8,6 +8,7 @@ using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
 using Stareater.Utils;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers
 {
@@ -162,12 +163,14 @@ namespace Stareater.Controllers
 				Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
 			
 			var lastPosition = this.Fleet.FleetData.Position;
+			var wormholeSpeed = game.Statics.ShipFormulas.WormholeSpeed;
 			this.eta = 0;
 			
 			foreach(var waypoint in simulationWaypoints)
 			{
-				//TODO(v0.7) consider making moddable
-				var speed = baseSpeed + (waypoint.UsingWormhole ? 0.5 : 0);
+				var speed = waypoint.UsingWormhole ? 
+					wormholeSpeed.Evaluate(new Var("speed", baseSpeed).Get) : 
+					baseSpeed;
 				
 				var distance = (waypoint.Destionation - lastPosition).Magnitude();
 				eta += distance / speed;
