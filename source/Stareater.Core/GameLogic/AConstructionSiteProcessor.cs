@@ -12,7 +12,7 @@ namespace Stareater.GameLogic
 {
 	abstract class AConstructionSiteProcessor
 	{
-		private const string BuidingCountPrefix = "_count";
+		protected const string BuidingCountPrefix = "_count";
 
 		[StateProperty]
 		public double Production { get; protected set; }

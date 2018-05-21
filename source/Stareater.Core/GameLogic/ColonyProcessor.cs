@@ -96,7 +96,7 @@ namespace Stareater.GameLogic
 				UnionWith(playerProcessor.TechLevels).
 				Init(statics.Traits.Keys, false).
 				UnionWith(Colony.Location.Planet.Traits.Select(x => x.Type.IdCode)).
-				UnionWith(statics.PlanetForumlas[this.Colony.Location.Planet.Type].ImpliciteTraits);
+				UnionWith(statics.PlanetForumlas[this.Colony.Location.Planet.Type].ImplicitTraits);
 				
 			vars.Init(statics.Constructables.Where(x => x.ConstructableAt == SiteType.Colony).Select(x => x.IdCode.ToLower() + NewBuidingPrefix), false);
 
@@ -136,7 +136,7 @@ namespace Stareater.GameLogic
 			this.RepairPoints = formulas.RepairPoints.Evaluate(vars);
 
 			this.MaintenancePerPop =
-				planetEffects.ImpliciteTraits.Sum(x => statics.Traits[x].MaintenanceCost) +
+				planetEffects.ImplicitTraits.Sum(x => statics.Traits[x].MaintenanceCost) +
 				this.Colony.Location.Planet.Traits.Sum(x => x.Type.MaintenanceCost);
 			this.MaintenanceCost = this.Colony.Population * this.MaintenancePerPop;
             this.MaintenanceLimit = this.WorkingPopulation * this.BuilderEfficiency * this.SpaceliftFactor;
@@ -227,6 +227,22 @@ namespace Stareater.GameLogic
 		{
 			base.ProcessPrecombat(game);
 			Colony.Population = Methods.Clamp(this.Colony.Population + this.PopulationGrowth, 0, this.MaxPopulation);
+		}
+
+		public static double DesirabilityOf(Planet planet, StaticsDB statics)
+		{
+			var formulas = statics.ColonyFormulas;
+			var vars = new Var(PopulationKey, 0).
+				And(PlanetSizeKey, planet.Size).
+				Init(statics.Buildings.Keys.Select(x => x.ToLower() + BuidingCountPrefix), 0).
+				Init(statics.DevelopmentTopics.Select(x => x.IdCode + PlayerProcessor.LevelSufix), 0).
+				Init(statics.DevelopmentTopics.Select(x => x.IdCode + PlayerProcessor.UpgradeSufix), DevelopmentProgress.NotStarted).
+				Init(statics.Traits.Keys, false).
+				UnionWith(planet.Traits.Select(x => x.Type.IdCode)).
+				UnionWith(statics.PlanetForumlas[planet.Type].ImplicitTraits);
+
+			vars.And(MaxPopulationKey, formulas.MaxPopulation.Evaluate(vars.Get));
+			return formulas.Desirability.Evaluate(vars.Get);
 		}
 	}
 }

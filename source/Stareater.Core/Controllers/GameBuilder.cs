@@ -102,7 +102,7 @@ namespace Stareater.Controllers
 			var stars = createStars(starSystems);
 			var wormholes = createWormholes(starSystems, newGameData.StarConnector.Generate(rng, starPositions));
 			var planets = createPlanets(starSystems);
-			var colonies = createColonies(players, starSystems, starPositions.HomeSystems, newGameData.SelectedStart);
+			var colonies = createColonies(players, starSystems, starPositions.HomeSystems, newGameData.SelectedStart, statics);
 			var stellarises = createStellarises(players, starSystems, starPositions.HomeSystems);
 			var developmentAdvances = createDevelopmentAdvances(players, statics.DevelopmentTopics);
 			var researchAdvances = createResearchAdvances(players, statics.ResearchTopics);
@@ -113,18 +113,28 @@ namespace Stareater.Controllers
 				new ColonizationCollection());
 		}
 		
-		private static ColonyCollection createColonies(Player[] players, 
-			IList<StarSystem> starSystems, IList<int> homeSystemIndices, StartingConditions startingConditions)
+		private static ColonyCollection createColonies(Player[] players, IList<StarSystem> starSystems, 
+			IList<int> homeSystemIndices, StartingConditions startingConditions, StaticsDB statics)
 		{
 			var colonies = new ColonyCollection();
-			for(int playerI = 0; playerI < players.Length; playerI++) {
-				//TODO(v0.7): pick top most suitable planets
-				for(int colonyI = 0; colonyI < startingConditions.Colonies; colonyI++)
+			for(int playerI = 0; playerI < players.Length; playerI++)
+			{
+				var planets = starSystems[homeSystemIndices[playerI]].Planets;
+				var fitness = planets.
+					Select(x => ColonyProcessor.DesirabilityOf(x, statics)).
+					ToList();
+
+				for (int i = 0; i < startingConditions.Colonies; i++)
+				{
+					var planetI = Methods.FindBest(Methods.Range(0, planets.Length, 1), x => fitness[x]);
 					colonies.Add(new Colony(
-						1,	//TODO(v0.7): make a constant
-						starSystems[homeSystemIndices[playerI]].Planets[colonyI],
+						0,
+						planets[planetI],
 						players[playerI]
 					));
+
+					fitness[planetI] = double.NegativeInfinity;
+				}
 			}
 			
 			return colonies;
@@ -141,9 +151,11 @@ namespace Stareater.Controllers
 		
 		private static StarCollection createStars(IEnumerable<StarSystem> starList)
 		{
-			var stars = new StarCollection();
-			stars.Add(starList.Select(x => x.Star));
-			
+			var stars = new StarCollection
+			{
+				starList.Select(x => x.Star)
+			};
+
 			return stars;
 		}
 		
@@ -161,14 +173,16 @@ namespace Stareater.Controllers
 		
 		private static WormholeCollection createWormholes(IList<StarSystem> starList, IEnumerable<WormholeEndpoints> wormholeEndpoints)
 		{
-			var wormholes = new WormholeCollection();
-			wormholes.Add(wormholeEndpoints.Select(
+			var wormholes = new WormholeCollection
+			{
+				wormholeEndpoints.Select(
 				x => new Wormhole(
-					starList[x.FromIndex].Star, 
+					starList[x.FromIndex].Star,
 					starList[x.ToIndex].Star
 				)
-			));
-			
+			)
+			};
+
 			return wormholes;
 		}
 		
@@ -206,14 +220,13 @@ namespace Stareater.Controllers
 				var weights = new ChoiceWeights<Colony>();
 				
 				foreach(Colony colony in colonies.OwnedBy[player])
-					weights.Add(colony, derivates.Colonies.Of[colony].MaxPopulation);
+					weights.Add(colony, derivates.Colonies.Of[colony].Desirability);
 				
 				double totalPopulation = Math.Min(startingConditions.Population, weights.Total);
 				double totalInfrastructure = Math.Min(startingConditions.Infrastructure, weights.Total);
 				
 				foreach(var colony in colonies.OwnedBy[player]) {
 					colony.Population = weights.Relative(colony) * totalPopulation;
-					//TODO(v0.7): add infrastructure to colony
 					derivates.Colonies.Of[colony].CalculateBaseEffects(statics, derivates.Players.Of[player]);
 				}
 			}
