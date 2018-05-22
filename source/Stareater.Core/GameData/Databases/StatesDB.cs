@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Ikadn.Ikon.Types;
-using Stareater.Galaxy;
+﻿using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
-using Stareater.Players;
-using Stareater.Ships;
-using Stareater.Ships.Missions;
-using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Databases

@@ -140,7 +140,7 @@ namespace Stareater.Controllers
 		}
 
 		#region Turn processing
-		public GameState State { get; private set; } //TODO(v0.7) remove this property, new game and load game should instantiate new game controller
+		public GameState State { get; private set; } //TODO(v0.8) remove this property, new game and load game should instantiate new game controller
 
 		internal void EndGalaxyPhase(PlayerController player)
 		{
@@ -215,24 +215,24 @@ namespace Stareater.Controllers
 
 			while (gameObj.Processor.HasAudience)
 			{
-				processingSync.WaitOne(); //TODO(v0.7) try blocking only participants
+				processingSync.WaitOne(); //TODO(v0.8) try blocking only participants
 				this.holdAudience();
 			}
-			//TODO(v0.7) diplomatic actions don't take place this turn
-			processingSync.WaitOne(); //TODO(v0.7) make more orderly synchronization mechanism
+			//TODO(v0.8) diplomatic actions don't take place this turn
+			processingSync.WaitOne(); //TODO(v0.8) make more orderly synchronization mechanism
 			processingSync.Set();
 
 			while (gameObj.Processor.HasConflict)
 			{
-				processingSync.WaitOne(); //TODO(v0.7) try blocking only participants
+				processingSync.WaitOne(); //TODO(v0.8) try blocking only participants
 				this.initaiteCombat();
 			}
-			processingSync.WaitOne(); //TODO(v0.7) make more orderly synchronization mechanism
+			processingSync.WaitOne(); //TODO(v0.8) make more orderly synchronization mechanism
 			processingSync.Set();
 			
 			while (this.gameObj.Derivates.Players.Any(x => x.HasBreakthrough))
 			{
-				processingSync.WaitOne(); //TODO(v0.7) per player sync instead of global
+				processingSync.WaitOne(); //TODO(v0.8) per player sync instead of global
 				this.presentBreakthrough();
 			}
 			
@@ -318,7 +318,7 @@ namespace Stareater.Controllers
 			);
 			
 			if (playerProc.Player.ControlType == PlayerControlType.LocalAI)
-				playerProc.Player.OffscreenControl.OnResearchComplete(controller); //TODO(0.7) do in separate thread/task
+				playerProc.Player.OffscreenControl.OnResearchComplete(controller); //TODO(0.8) do in separate thread/task
 			else
 				this.stateListener.OnResearchComplete(controller);
 		}

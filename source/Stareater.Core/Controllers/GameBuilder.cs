@@ -245,8 +245,7 @@ namespace Stareater.Controllers
 					orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 
 				orders.DevelopmentFocusIndex = game.Statics.DevelopmentFocusOptions.Count / 2;
-				//TODO(v0.7) focus can be null when all research is done
-				orders.ResearchFocus = game.Statics.ResearchTopics.First().IdCode;
+				orders.ResearchFocus = game.Statics.ResearchTopics.Select(x => x.IdCode).FirstOrDefault() ?? "";
 			}
 		}
 

@@ -143,7 +143,10 @@ namespace Stareater.GUI
 		
 		private void researchToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using(var form = new FormResearch(this.currentPlayer))
+			if (!this.currentPlayer.ResearchTopics().Any())
+				return;
+
+			using (var form = new FormResearch(this.currentPlayer))
 				form.ShowDialog();
 		}
 		
@@ -243,7 +246,7 @@ namespace Stareater.GUI
 
 		private void showResearch()
 		{
-			using(var form = new FormResearch(this.currentPlayer))
+			using (var form = new FormResearch(this.currentPlayer))
 				form.ShowDialog();
 		}
 		

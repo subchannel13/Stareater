@@ -27,7 +27,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mText; }
 			set
 			{
-				Apply(ref this.mText, value);
+				Apply(ref this.mText, value); //TODO(v0.8) doesn't update element position
 			}
 		}
 
