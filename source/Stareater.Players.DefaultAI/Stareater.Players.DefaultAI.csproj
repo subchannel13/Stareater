@@ -42,7 +42,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\IKADN.IKON.1.4.0\lib\net40-client\Ikadn.Ikon.dll</HintPath>
     </Reference>
-    <Reference Include="NGenerics">
+    <Reference Include="NGenerics, Version=1.4.1.0, Culture=neutral, PublicKeyToken=e4b41be133ea7faf, processorArchitecture=MSIL">
       <HintPath>..\packages\NGenerics.1.4.1.0\lib\net35\NGenerics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
