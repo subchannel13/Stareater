@@ -21,7 +21,7 @@ namespace Stareater.Controllers
 		private GameController gameController;
 		private int nextSaveNumber;
 		private LinkedList<SavedGameInfo> games;
-		private string saveFolderPath; //TODO(v0.7) remove file dependency
+		private string saveFolderPath; //TODO(later) remove file dependency
 		
 		public SavesController(GameController gameController, string saveFolderRoot)
 		{

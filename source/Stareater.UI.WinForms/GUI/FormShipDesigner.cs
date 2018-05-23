@@ -65,14 +65,16 @@ namespace Stareater.GUI
 				this.equipmentList.Controls.IndexOf(equipmentSeparator);
 			
 			this.controller.AddMissionEquip(equipInfo);
-			
-			var itemView = new ShipEquipmentItem();
-			itemView.Data = new ShipComponentType<MissionEquipInfo>(
-				equipInfo.Name, ImageCache.Get[equipInfo.ImagePath], double.PositiveInfinity, equipInfo,
-				equipmentAction.Dispatch
-			);
-			itemView.Amount = this.controller.MissionEquipCount(index);
-			
+
+			var itemView = new ShipEquipmentItem
+			{
+				Data = new ShipComponentType<MissionEquipInfo>(
+					equipInfo.Name, ImageCache.Get[equipInfo.ImagePath], double.PositiveInfinity, equipInfo,
+					equipmentAction.Dispatch
+				),
+				Amount = this.controller.MissionEquipCount(index)
+			};
+
 			this.equipmentList.Controls.Add(itemView);
 			this.equipmentList.SelectedIndex = ControlListView.NoneSelected;
 			this.equipmentList.Controls.SetChildIndex(itemView, index);
@@ -81,22 +83,26 @@ namespace Stareater.GUI
 		
 		private void addSpecialEquip(SpecialEquipInfo equipInfo)
 		{
-			this.controller.AddSpecialEquip(equipInfo);
+			this.controller.SpecialEquipSetAmount(equipInfo, 1);
 
-			var itemView = new ShipEquipmentItem();
-			itemView.Data = new ShipComponentType<SpecialEquipInfo>(
-				equipInfo.Name, ImageCache.Get[equipInfo.ImagePath], equipInfo.MaxCount, equipInfo,
-				equipmentAction.Dispatch
-			);
-			itemView.Amount = this.controller.SpecialEquipCount(equipInfo);
+			var itemView = new ShipEquipmentItem
+			{
+				Data = new ShipComponentType<SpecialEquipInfo>(
+					equipInfo.Name, ImageCache.Get[equipInfo.ImagePath], equipInfo.MaxCount, equipInfo,
+					equipmentAction.Dispatch
+				),
+				Amount = this.controller.SpecialEquipCount(equipInfo)
+			};
 
 			if (equipmentSeparator == null)
 			{
-				this.equipmentSeparator = new Label();
-				this.equipmentSeparator.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-				this.equipmentSeparator.Size = new System.Drawing.Size(375, 25);
-				this.equipmentSeparator.Text = LocalizationManifest.Get.CurrentLanguage["FormDesign"]["specEquipSeparator"].Text();
-				this.equipmentSeparator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+				this.equipmentSeparator = new Label
+				{
+					Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
+					Size = new System.Drawing.Size(375, 25),
+					Text = LocalizationManifest.Get.CurrentLanguage["FormDesign"]["specEquipSeparator"].Text(),
+					TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+				};
 				this.equipmentList.Controls.Add(this.equipmentSeparator);
 				this.equipmentList.Unselectable(this.equipmentSeparator);
 			}

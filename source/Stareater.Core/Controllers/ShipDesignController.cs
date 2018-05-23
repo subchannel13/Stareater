@@ -305,16 +305,6 @@ namespace Stareater.Controllers
 			this.selectedMissionEquipment.Add(new Component<MissionEquipmentType>(equipInfo.Type, equipInfo.Level, 1));
 		}
 
-		//TODO(v0.7) is it redundant with "SetAmount"
-		public void AddSpecialEquip(SpecialEquipInfo equipInfo)
-		{
-			if (this.selectedSpecialEquipment.Any(x => x.TypeInfo == equipInfo.Type))
-				return;
-
-			this.selectedSpecialEquipment.Add(new Component<SpecialEquipmentType>(equipInfo.Type, equipInfo.Level, 1));
-			this.onHullChange();
-		}
-
 		public HullInfo Hull 
 		{ 
 			get { return this.selectedHull; }
@@ -363,23 +353,29 @@ namespace Stareater.Controllers
 		public void SpecialEquipSetAmount(SpecialEquipInfo equipInfo, int amount)
 		{
 			int i = this.selectedSpecialEquipment.FindIndex(x => x.TypeInfo == equipInfo.Type);
-			
-			if (i >= 0)
-				if (amount == 0)
-					this.selectedSpecialEquipment.RemoveAt(i);
-				else if (amount > 0 && amount <= equipInfo.MaxCount)
-					this.selectedSpecialEquipment[i] = new Component<SpecialEquipmentType>(equipInfo.Type, equipInfo.Level, amount);
+
+			if (i < 0)
+			{
+				i = this.selectedSpecialEquipment.Count;
+				this.selectedSpecialEquipment.Add(new Component<SpecialEquipmentType>(equipInfo.Type, equipInfo.Level, 0));
+			}
+
+			if (amount <= 0)
+				this.selectedSpecialEquipment.RemoveAt(i);
+			else if (amount <= equipInfo.MaxCount)
+				this.selectedSpecialEquipment[i] = new Component<SpecialEquipmentType>(equipInfo.Type, equipInfo.Level, amount);
 
 			this.onHullChange();
 		}
 
-		//TODO(check) consider returning a reason for invalidity 
+		//TODO(later) consider returning a reason for invalidity 
 		public bool IsDesignValid
 		{
 			get
 			{
-				//TODO(v0.7): check name length and uniqueness
+
 				return this.selectedHull != null && this.ImageIndex >= 0 && this.ImageIndex < this.selectedHull.ImagePaths.Length &&
+					!string.IsNullOrWhiteSpace(this.Name) && game.States.Designs.All(x => x.Name == this.Name) &&
 					(this.availableIsDrive != null || !this.HasIsDrive) &&
 					this.SpaceUsed <= this.SpaceTotal;
 			}
@@ -410,9 +406,9 @@ namespace Stareater.Controllers
 			design.CalcHash(this.game.Statics);
 			
 			if (this.game.States.Designs.Contains(design))
-				return; //TODO(v0.7) move the check to IsDesignValid
+				return; //TODO(v0.8) move the check to IsDesignValid
 			
-			game.States.Designs.Add(design); //TODO(v0.7) add to changes DB and propagate to states during turn processing
+			game.States.Designs.Add(design); //TODO(v0.8) add to changes DB and propagate to states during turn processing
 			game.Derivates.Players.Of[this.player].Analyze(design, this.game.Statics);
 		}
 		#endregion
