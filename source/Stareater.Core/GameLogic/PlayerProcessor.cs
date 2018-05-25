@@ -50,7 +50,7 @@ namespace Stareater.GameLogic
 		public bool ControlsStareater { get; private set; }
 		[StateProperty]
 		public double EjectEta { get; private set; }
-		//TODO(v0.7) make a class which unifies ejection data
+		//TODO(v0.8) make a class which unifies ejection data
 		[StateProperty]
 		public Dictionary<Player, double> EjectVictoryPoints { get; private set; } 
 
@@ -344,7 +344,7 @@ namespace Stareater.GameLogic
 		{
 			var occupiedTargets = new HashSet<Planet>();
 			foreach(var order in game.Orders[this.Player].ColonizationOrders)
-				if (game.States.Colonies.AtPlanet.Contains(order.Key)) //TODO(check) use intelligence instead
+				if (game.States.Colonies.AtPlanet.Contains(order.Key)) //TODO(v0.8) use intelligence instead
 					occupiedTargets.Add(order.Key);
 			foreach(var planet in occupiedTargets)
 				game.Orders[this.Player].ColonizationOrders.Remove(planet);

@@ -28,13 +28,13 @@ namespace Stareater.Controllers
 		{
 			this.playerListeners = new Dictionary<Player, IBattleEventListener>();
 			
-			this.battleGame = new SpaceBattleGame(conflict.Location, mainGame);
+			this.battleGame = new SpaceBattleGame(conflict.Location, SpaceBattleProcessor.ConflictDuration(conflict.StartTime), mainGame);
 			this.mainGame = mainGame;
 			this.gameController = gameController;
 			this.Star = mainGame.States.Stars.At[battleGame.Location];
 			
 			this.processor = new SpaceBattleProcessor(this.battleGame, mainGame);
-			this.processor.Initialize(conflict.Fleets, conflict.StartTime);
+			this.processor.Initialize(conflict.Fleets);
 		}
 	
 		#region Battle information

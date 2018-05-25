@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Stareater.GameLogic.Planning
 {
-	class NewBuildingsCounter : IConstructionProjectVisitor
+	class ConstructionCounterVisitor : IConstructionProjectVisitor
 	{
 		private IDictionary<string, double> variables;
 		private long completedCount;
 
-		public NewBuildingsCounter(IDictionary<string, double> variables)
+		public ConstructionCounterVisitor(IDictionary<string, double> variables)
 		{
 			this.variables = variables;
 		}

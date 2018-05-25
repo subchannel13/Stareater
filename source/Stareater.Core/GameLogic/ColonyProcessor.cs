@@ -154,7 +154,7 @@ namespace Stareater.GameLogic
 		{
 			var vars = calcVars(statics, playerProcessor);
 			vars[MaintenancePenaltyKey] = this.MaintenancePenalty;
-			var counter = new NewBuildingsCounter(vars); //TODO(v0.7) rename class and variable?
+			var counter = new ConstructionCounterVisitor(vars);
 
 			foreach (var construction in SpendingPlan)
 				if (construction.CompletedCount > 0)

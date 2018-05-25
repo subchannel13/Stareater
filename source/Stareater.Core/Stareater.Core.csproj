@@ -210,7 +210,7 @@
     <Compile Include="GameLogic\Combat\DesignStats.cs" />
     <Compile Include="GameLogic\Planning\InvalidMissionVisitor.cs" />
     <Compile Include="GameLogic\NativesProcessor.cs" />
-    <Compile Include="GameLogic\Planning\NewBuildingsCounter.cs" />
+    <Compile Include="GameLogic\Planning\ConstructionCounterVisitor.cs" />
     <Compile Include="GameLogic\Planning\ConstructionResult.cs" />
     <Compile Include="GameLogic\Planning\ResearchResult.cs" />
     <Compile Include="GameLogic\Planning\ShipConstructionCounter.cs" />

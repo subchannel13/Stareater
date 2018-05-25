@@ -26,14 +26,11 @@ namespace Stareater.GameLogic
 		}
 
 		#region Initialization
-		public void Initialize(IEnumerable<FleetMovement> fleets, double startTime)
+		public void Initialize(IEnumerable<FleetMovement> fleets)
 		{
 			this.initUnits(fleets);
 			this.initBodies();
 			this.makeUnitOrder();
-			
-			//TODO(v0.7) move to state constructor
-			this.game.TurnLimit = (int)Math.Ceiling(50 * (1 - startTime));
 		}
 
 		private void initBodies()
@@ -81,7 +78,7 @@ namespace Stareater.GameLogic
 					colonies.FirstOrDefault(x => x.Location.Planet == planets[i]),
 					planets[i],
 					position,
-					this.mainGame.Statics.ColonyFormulas.PopulationHitPoints.Evaluate(null) //TODO(check) pass relevant variables
+					this.mainGame.Statics.ColonyFormulas.PopulationHitPoints.Evaluate(null) //TODO(v0.8) pass relevant variables
 				);
 			}
 		}
@@ -152,6 +149,12 @@ namespace Stareater.GameLogic
 				x,
 				Math.Round(position.Y + yOffset, MidpointRounding.AwayFromZero)
 			);
+		}
+
+		public static int ConflictDuration(double startTime)
+		{
+			//TODO(v0.8) make turn limit moddable
+			return (int)Math.Ceiling(50 * (1 - startTime));
 		}
 		#endregion
 
