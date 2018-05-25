@@ -6,8 +6,8 @@ namespace Stareater.GameData.Databases.Tables
 {
 	public class ShipFormulaSet
 	{
-		//TODO(check) add computer accuracy bonus
-		//TODO(check) add free space forumla
+		//TODO(v0.8) add computer accuracy bonus
+		//TODO(v0.8) add free space forumla
 		public Formula Cloaking { get; private set; }
 		public Formula CombatSpeed { get; private set; }
 		public Formula Detection { get; private set; }

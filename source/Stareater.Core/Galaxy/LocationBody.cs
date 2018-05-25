@@ -2,7 +2,7 @@
 
 namespace Stareater.Galaxy
 {
-	//TODO(v0.7) try to remove the need for this class
+	//TODO(v0.8) try to remove the need for this class
 	class LocationBody
 	{
 		[StateProperty]

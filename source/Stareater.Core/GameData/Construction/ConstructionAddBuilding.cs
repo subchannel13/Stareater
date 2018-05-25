@@ -17,7 +17,7 @@ namespace Stareater.GameData.Construction
 
 		public void Apply(MainGame game, AConstructionSite site, long quantity)
 		{
-			//TODO(v0.7) report new building construction
+			//TODO(v0.8) report new building construction
 			var vars = new Var("quantity", quantity);
 			quantity = (long)this.quantity.Evaluate(vars.Get);
 			

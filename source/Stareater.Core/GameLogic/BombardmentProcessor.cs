@@ -64,7 +64,7 @@ namespace Stareater.GameLogic
 				}
 
 				var hull = unit.Ships.Design.Hull;
-				var weight = unit.Ships.Quantity * hull.TypeInfo.Size.Evaluate(new Var(AComponentType.LevelKey, hull.Level).Get); //TODO(v0.7) move size to design stats
+				var weight = unit.Ships.Quantity * hull.TypeInfo.Size.Evaluate(new Var(AComponentType.LevelKey, hull.Level).Get); //TODO(v0.8) move size to design stats
 				initiativeSum[unit.Owner] += unit.Initiative * weight;
 				fleetWeight[unit.Owner] += weight;
 			}

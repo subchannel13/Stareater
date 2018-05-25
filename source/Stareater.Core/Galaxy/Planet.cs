@@ -20,7 +20,7 @@ namespace Stareater.Galaxy
 		[StateProperty]
 		public double Size { get; private set; }
 
-		//TODO(v0.7): Make trait list readonly to view, consider making whole class private
+		//TODO(v0.8): Make trait list readonly to view, consider making whole class private
 		[StateProperty]
 		internal PendableSet<ITrait> Traits { get; private set; }
 

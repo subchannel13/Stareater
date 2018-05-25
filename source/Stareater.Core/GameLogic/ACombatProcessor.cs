@@ -38,7 +38,7 @@ namespace Stareater.GameLogic
 			}
 		}
 
-		/*TODO(v0.7) add methods for attacking other kind of targets, 
+		/*TODO(later) add methods for attacking other kind of targets, 
 		 * extrude functionality form UseAbiliy methods in SpaceBattleProcessor */
 		protected double attackPlanet(AbilityStats abilityStats, double quantity, CombatPlanet planet)
 		{
@@ -48,8 +48,8 @@ namespace Stareater.GameLogic
 			{
 				var killsPerShot = abilityStats.FirePower / planet.PopulationHitPoints;
 				var casualties = Math.Min(quantity * killsPerShot, planet.Colony.Population);
-				//TODO(check) factor in shields and armor
-				//TODO(check) roll for target, building or population
+				//TODO(later) factor in shields and armor
+				//TODO(later) roll for target, building or population
 
 				planet.Colony.Population -= casualties;
 				spent = Math.Ceiling(casualties / killsPerShot);
@@ -99,7 +99,7 @@ namespace Stareater.GameLogic
 				this.mainGame.States.Colonies.Remove(planet.Colony);
 				this.mainGame.Derivates.Colonies.Remove(this.mainGame.Derivates.Of(planet.Colony));
 				planet.Colony = null;
-				//TODO(check) check if stellaris should be removed too
+				//TODO(v0.8) check if stellaris should be removed too
 			}
 		}
 		
@@ -125,7 +125,7 @@ namespace Stareater.GameLogic
 					unit.CloakedFor.Add(player);
 		}
 		
-		//TODO(v0.7) maybe include colony owner check
+		//TODO(v0.8) maybe include colony owner check
 		protected bool unitCanBombard(Combatant unit)
 		{
 			var statList = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities;

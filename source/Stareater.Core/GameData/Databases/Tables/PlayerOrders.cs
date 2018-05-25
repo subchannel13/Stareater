@@ -8,7 +8,7 @@ namespace Stareater.GameData.Databases.Tables
 {
 	class PlayerOrders 
 	{
-		//TODO(v0.7): move or remove
+		//TODO(v0.8): move or remove
 		public const double DefaultSiteSpendingRatio = 1;
 
 		[StateProperty]

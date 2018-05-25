@@ -19,7 +19,7 @@ namespace Stareater.Galaxy
 			this.Colonies = colonies;
 			this.Population = population;
 			this.Infrastructure = infrastructure;
-			this.nameKey = nameKey; //TODO(v0.7) deduce the name from stats
+			this.nameKey = nameKey;
 		}
 
 		public string Name

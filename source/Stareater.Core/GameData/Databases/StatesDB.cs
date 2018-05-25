@@ -13,7 +13,7 @@ namespace Stareater.GameData.Databases
 		[StateProperty]
 		public WormholeCollection Wormholes { get; private set; }
 		[StateProperty]
-		//TODO(v0.7) maybe give natives stellarises with special buildings and use it in
+		//TODO(v0.8) maybe give natives stellarises with special buildings and use it in
 		//derivates to deduce which star is the brain
 		public StarData StareaterBrain { get; private set; }
 
@@ -40,7 +40,7 @@ namespace Stareater.GameData.Databases
 		[StateProperty]
 		public TreatyCollection Treaties { get; private set; }
 		
-		private int nextDesignId = 0; //TODO(v0.7) may not work correctly after loading
+		private int nextDesignId = 0; //TODO(v0.8) may not work correctly after loading
 		
 		public StatesDB(StarCollection stars, StarData stareaterBrain, WormholeCollection wormholes, PlanetCollection planets, 
 		                ColonyCollection Colonies, StellarisCollection stellarises,

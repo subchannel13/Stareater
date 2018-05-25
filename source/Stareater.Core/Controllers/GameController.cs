@@ -318,7 +318,7 @@ namespace Stareater.Controllers
 			);
 			
 			if (playerProc.Player.ControlType == PlayerControlType.LocalAI)
-				playerProc.Player.OffscreenControl.OnResearchComplete(controller); //TODO(0.8) do in separate thread/task
+				playerProc.Player.OffscreenControl.OnResearchComplete(controller); //TODO(v0.8) do in separate thread/task
 			else
 				this.stateListener.OnResearchComplete(controller);
 		}

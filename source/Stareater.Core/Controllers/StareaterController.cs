@@ -43,10 +43,10 @@ namespace Stareater.Controllers
 			}
 			set
 			{
-				if (this.game.IsReadOnly && value != this.game.States.StareaterBrain)
+				if (this.game.IsReadOnly || !this.EjectableStars.Contains(value))
 					return;
 
-				this.game.Orders[this.player].EjectingStar = value; //TODO(v0.7) check input
+				this.game.Orders[this.player].EjectingStar = value;
 				this.game.Derivates.Of(this.player).CalculateStareater(this.game);
             }
 		}
