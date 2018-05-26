@@ -127,6 +127,8 @@
 			energyCost # 0;
 			
 			ammo # 2;
+			splashMaxTargets # 10;
+			splashFirePower # 2;
 		}
 	]
 }

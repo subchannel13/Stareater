@@ -15,6 +15,7 @@ using Stareater.Galaxy;
 
 namespace Stareater.GameData.Databases
 {
+	//TODO(later) let composite keys ignore case
 	class StaticsDB
 	{
 		public Dictionary<string, BuildingType> Buildings { get; private set; }
@@ -494,6 +495,13 @@ namespace Stareater.GameData.Databases
 							abilityData[DirectShootAccuracy].To<Formula>(),
 							abilityData.ToOrDefault(AbilityAmmo, new Formula(double.PositiveInfinity)),
 							abilityData[ProjectileSpeed].To<Formula>(),
+							abilityData.ToOrDefault(DirectShootArmorEfficiency, new Formula(1)),
+							abilityData.ToOrDefault(DirectShootShieldEfficiency, new Formula(1)),
+							abilityData.ToOrDefault(DirectShootPlanetEfficiency, new Formula(1)),
+							abilityData.ToOrDefault(SplashMaxTargets, new Formula(1)),
+							abilityData.ToOrDefault(SplashFirepower, new Formula(1)),
+							abilityData.ToOrDefault(SplashArmorEfficiency, new Formula(1)),
+							abilityData.ToOrDefault(SplashShieldEfficiency, new Formula(1)),
 							abilityData[ProjectileShootImage].To<string>()
 						);
                         break;
@@ -880,6 +888,11 @@ namespace Stareater.GameData.Databases
 
 		private const string ProjectileShootImage = "projectileImage";
 		private const string ProjectileSpeed = "speed";
+
+		private const string SplashArmorEfficiency = "splashArmorEfficiency";
+		private const string SplashFirepower = "splashFirePower";
+		private const string SplashMaxTargets = "splashMaxTargets";
+		private const string SplashShieldEfficiency = "splashShieldEfficiency";
 
 		private const string StarShootTrait = "applyTrait";
 

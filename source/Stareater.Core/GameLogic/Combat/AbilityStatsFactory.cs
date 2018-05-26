@@ -86,18 +86,18 @@ namespace Stareater.GameLogic.Combat
 
 			this.firePower = ability.FirePower.Evaluate(vars);
 			this.accuracy = ability.Accuracy.Evaluate(vars);
-			this.armorEfficiency = 1; //TODO(v0.8) read from ability stats
-			this.shieldEfficiency = 1; //TODO(v0.8) read from ability stats
-			this.planetEfficiency = 1; //TODO(v0.8) read from ability stats
+			this.armorEfficiency = ability.ArmorEfficiency.Evaluate(vars);
+			this.shieldEfficiency = ability.ShieldEfficiency.Evaluate(vars);
+			this.planetEfficiency = ability.PlanetEfficiency.Evaluate(vars);
 
 			this.ammo = ability.Ammo.Evaluate(vars);
 			this.speed = ability.Speed.Evaluate(vars); //TODO(v0.8) include player techs
 			this.projectileImage = ability.ProjectileImage;
 
-			this.splashMaxTargets = 2; //TODO(v0.8) read from ability stats
-			this.splashFirePower = 1; //TODO(v0.8) read from ability stats
-			this.splashShieldEfficiency = 1; //TODO(v0.8) read from ability stats
-			this.splashArmorEfficiency = 1; //TODO(v0.8) read from ability stats
+			this.splashMaxTargets = ability.SplashMaxTargets.Evaluate(vars);
+			this.splashFirePower = ability.SplashFirePower.Evaluate(vars);
+			this.splashArmorEfficiency = ability.SplashArmorEfficiency.Evaluate(vars);
+			this.splashShieldEfficiency = ability.SplashShieldEfficiency.Evaluate(vars);
 		}
 
 		public void Visit(StarShootAbility ability)
