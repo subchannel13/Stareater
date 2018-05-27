@@ -185,11 +185,10 @@ namespace Stareater.GameLogic
 			foreach (var missile in this.game.Projectiles)
 			{
 				while (missile.Target != null && missile.Count > 0)
-					if (missile.Target.Ships.Quantity <= 0) //TODO(v0.7) check for retreat
+					if (missile.Target.Ships.Quantity <= 0 || this.game.Retreated.Contains(missile.Target))
 					{
-						//TODO(v0.7) check war declarations
 						missile.Target = this.game.Combatants.
-								Where(x => x.Position == missile.Position && x.Ships.Quantity > 0 && x.Owner != missile.Owner).
+								Where(x => x.Position == missile.Position && canTarget(missile, x)).
 								OrderBy(x => x.Ships.Quantity).
 								FirstOrDefault();
 					}
@@ -198,7 +197,7 @@ namespace Stareater.GameLogic
 						var targets = new List<Combatant>();
 						targets.Add(missile.Target);
 						targets.AddRange(this.game.Combatants.
-							Where(x => x.Position == missile.Position && x != missile.Target && x.Owner != missile.Owner). //TODO(v0.7) check war declarations
+							Where(x => x.Position == missile.Position && x != missile.Target && canTarget(missile, x)).
 							OrderByDescending(x => x.Ships.Quantity * this.mainGame.Derivates.Of(x.Owner).DesignStats[x.Ships.Design].Size)
 						);
                         missile.Count -= this.doProjectileAttack(missile.Owner, missile.Stats, missile.Count, targets);
@@ -221,7 +220,13 @@ namespace Stareater.GameLogic
 			this.game.Projectiles.ApplyPending();
         }
 
-        private void makeUnitOrder()
+		private bool canTarget(Projectile missile, Combatant unit)
+		{
+			return unit.Ships.Quantity > 0 &&
+				this.mainGame.States.Treaties.Of[unit.Owner, missile.Owner].Any();
+		}
+
+		private void makeUnitOrder()
 		{
 			this.calculateInitiative();
 
@@ -262,16 +267,19 @@ namespace Stareater.GameLogic
 				this.nextRound();
 		}
 
-		//TODO(check) check target validity
 		public void UseAbility(int index, double quantity, Combatant target)
 		{
 			var unit = this.game.PlayOrder.Peek();
 			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
 			var chargesLeft = quantity;
 			var spent = 0.0;
-			
-			if (!abilityStats.TargetShips || Methods.HexDistance(target.Position, unit.Position) > abilityStats.Range)
+
+			if (!this.mainGame.States.Treaties.Of[unit.Owner, target.Owner].Any() ||
+				!abilityStats.TargetShips ||
+				Methods.HexDistance(target.Position, unit.Position) > abilityStats.Range)
+			{
 				return;
+			}
 
 			if (abilityStats.IsInstantDamage)
 				spent = this.doDirectAttack(unit.Owner, unit.Position, abilityStats, quantity, target);
@@ -293,8 +301,12 @@ namespace Stareater.GameLogic
 			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
 			var chargesLeft = quantity;
 
-			if (!abilityStats.TargetColony || Methods.HexDistance(planet.Position, unit.Position) > abilityStats.Range)
+			if (planet.Colony != null && !this.mainGame.States.Treaties.Of[unit.Owner, planet.Colony.Owner].Any() ||
+				!abilityStats.TargetColony ||
+				Methods.HexDistance(planet.Position, unit.Position) > abilityStats.Range)
+			{
 				return;
+			}
 
 			var spent = this.attackPlanet(abilityStats, quantity, planet);
 
@@ -437,7 +449,7 @@ namespace Stareater.GameLogic
 				}
 			}
 
-			//TODO(check) do different calculation for multiple ships below top of the stack
+			//TODO(later) do different calculation for multiple ships below top of the stack
 			return spent;
 		}
 

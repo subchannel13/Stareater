@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Stareater.Utils
 {
-	//TODO(v0.7) add info class for Wormhole and make this private
+	//TODO(v0.8) add info class for Wormhole and make this private
 	public class Pair<T>
 	{
 		[StateProperty]

@@ -6,7 +6,7 @@ namespace Stareater.Utils
 	public class ChoiceWeights<T>
 	{
 		private readonly Dictionary<T, double> weights = new Dictionary<T, double>();
-		public double Total { get; private set; }
+		public double Total { get; private set; } //TODO(v0.8) check if it needs to be public
 		
 		public ChoiceWeights()
 		{

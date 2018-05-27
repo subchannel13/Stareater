@@ -221,9 +221,10 @@ namespace Stareater.Controllers
 				
 				foreach(Colony colony in colonies.OwnedBy[player])
 					weights.Add(colony, derivates.Colonies.Of[colony].Desirability);
-				
-				double totalPopulation = Math.Min(startingConditions.Population, weights.Total);
-				double totalInfrastructure = Math.Min(startingConditions.Infrastructure, weights.Total);
+
+				var maxPopulation = colonies.OwnedBy[player].Sum(x => derivates.Colonies.Of[x].MaxPopulation);
+				double totalPopulation = Math.Min(startingConditions.Population, maxPopulation);
+				double totalInfrastructure = Math.Min(startingConditions.Infrastructure, maxPopulation);
 				
 				foreach(var colony in colonies.OwnedBy[player]) {
 					colony.Population = weights.Relative(colony) * totalPopulation;
