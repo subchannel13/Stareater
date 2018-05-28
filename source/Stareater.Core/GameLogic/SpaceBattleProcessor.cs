@@ -222,8 +222,7 @@ namespace Stareater.GameLogic
 
 		private bool canTarget(Projectile missile, Combatant unit)
 		{
-			return unit.Ships.Quantity > 0 &&
-				this.mainGame.States.Treaties.Of[unit.Owner, missile.Owner].Any();
+			return unit.Ships.Quantity > 0 && this.mainGame.Processor.IsAtWar(unit.Owner, missile.Owner);
 		}
 
 		private void makeUnitOrder()
@@ -274,7 +273,7 @@ namespace Stareater.GameLogic
 			var chargesLeft = quantity;
 			var spent = 0.0;
 
-			if (!this.mainGame.States.Treaties.Of[unit.Owner, target.Owner].Any() ||
+			if (!this.mainGame.Processor.IsAtWar(unit.Owner, target.Owner) ||
 				!abilityStats.TargetShips ||
 				Methods.HexDistance(target.Position, unit.Position) > abilityStats.Range)
 			{
@@ -301,7 +300,7 @@ namespace Stareater.GameLogic
 			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
 			var chargesLeft = quantity;
 
-			if (planet.Colony != null && !this.mainGame.States.Treaties.Of[unit.Owner, planet.Colony.Owner].Any() ||
+			if (planet.Colony != null && !this.mainGame.Processor.IsAtWar(unit.Owner, planet.Colony.Owner) ||
 				!abilityStats.TargetColony ||
 				Methods.HexDistance(planet.Position, unit.Position) > abilityStats.Range)
 			{

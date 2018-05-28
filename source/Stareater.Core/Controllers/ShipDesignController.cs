@@ -375,7 +375,7 @@ namespace Stareater.Controllers
 			{
 
 				return this.selectedHull != null && this.ImageIndex >= 0 && this.ImageIndex < this.selectedHull.ImagePaths.Length &&
-					!string.IsNullOrWhiteSpace(this.Name) && game.States.Designs.All(x => x.Name == this.Name) &&
+					!string.IsNullOrWhiteSpace(this.Name) && game.States.Designs.All(x => x.Name != this.Name.Trim()) &&
 					(this.availableIsDrive != null || !this.HasIsDrive) &&
 					this.SpaceUsed <= this.SpaceTotal;
 			}
@@ -391,7 +391,7 @@ namespace Stareater.Controllers
 				this.player,
 				false,
 				false,
-				this.Name,
+				this.Name.Trim(),
 				this.ImageIndex,
 				new Component<ArmorType>(this.armorInfo.Type, this.armorInfo.Level),
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),

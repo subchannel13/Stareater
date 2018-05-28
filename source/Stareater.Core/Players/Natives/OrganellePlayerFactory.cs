@@ -1,4 +1,5 @@
 ﻿using Ikadn.Ikon.Types;
+using Stareater.Localization;
 using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players.Natives
@@ -23,7 +24,7 @@ namespace Stareater.Players.Natives
 		
 		public string Name 
 		{
-			get { return "no name"; } //TODO(v0.7) make name
+			get { return LocalizationManifest.Get.CurrentLanguage["PlayerTypes"]["natives"].Text(); }
 		}
 		#endregion
 	}

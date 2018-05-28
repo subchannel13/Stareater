@@ -8,4 +8,5 @@ RandomOrganization = Random
 :PlayerTypes
 localHuman = Human
 AI = AI
+natives = Natives
 -

@@ -5,8 +5,6 @@ using Stareater.Players;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using Stareater.GameData.Construction;
-using System;
-using Stareater.GameData.Databases;
 
 namespace Stareater.GameLogic
 {
@@ -48,7 +46,7 @@ namespace Stareater.GameLogic
 		public void CalculateBaseEffects()
 		{
 			/*
-			 * TODO(v0.7) Preprocess stars
+			 * TODO(v0.8) Preprocess stars
 			 * - Calculate system effects
 			 */
 		}

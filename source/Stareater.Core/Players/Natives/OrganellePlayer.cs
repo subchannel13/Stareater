@@ -17,7 +17,7 @@ namespace Stareater.Players.Natives
 		private PlayerController playerController;
 		private SpaceBattleController battleController;
 		private BombardmentController bombardController;
-		private Random random = new Random(); //TODO(check) find better place for RNG
+		private Random random = new Random(); //TODO(v0.8) find better place for RNG
 
 		public PlayerController Controller
 		{

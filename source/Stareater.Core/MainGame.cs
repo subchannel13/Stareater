@@ -79,7 +79,7 @@ namespace Stareater
 			return copy;
 		}
 
-		//TODO(v0.7) leave or move to processor
+		//TODO(v0.8) leave or move to processor
 		public void CalculateDerivedEffects()
 		{
 			Processor.CalculateBaseEffects();
@@ -107,7 +107,7 @@ namespace Stareater
 			indexer.AddAll(Statics.Thrusters.Values);
 			indexer.AddAll(Statics.Traits.Values);
 
-			//TODO(v0.7) is the method necessary?
+			//TODO(v0.8) is the method necessary?
 			return stateManager.Save(this, indexer);
 		}
 		

@@ -10,73 +10,76 @@ namespace Stareater.Utils.StateEngine
 {
 	class StateManager
 	{
-        private readonly Dictionary<Type, ITypeStrategy> experts = new Dictionary<Type, ITypeStrategy>();
+        private readonly Dictionary<Type, ITypeStrategy> experts;
 
 		public StateManager()
 		{
-			this.experts[typeof(bool)] = new TerminalStrategy(
-				(x, session) => new IkonInteger((bool)x ? 1 : -1),
-				(x, session) => x.To<int>() >= 0
-			);
-			this.experts[typeof(double)] = new TerminalStrategy(
-				(x, session) => new IkonFloat((double)x),
-				(x, session) => x.To<double>()
-			);
-			this.experts[typeof(float)] = new TerminalStrategy(
-				(x, session) => new IkonFloat((float)x),
-				(x, session) => x.To<float>()
-			);
-			this.experts[typeof(int)] = new TerminalStrategy(
-				(x, session) => new IkonInteger((int)x),
-				(x, session) => x.To<int>()
-			);
-			this.experts[typeof(long)] = new TerminalStrategy(
-				(x, session) => new IkonInteger((long)x),
-				(x, session) => x.To<long>()
-			);
-			this.experts[typeof(string)] = new TerminalStrategy(
-				(x, session) => new IkonText((string)x),
-				(x, session) => x.To<string>()
-			);
+			this.experts = new Dictionary<Type, ITypeStrategy>
+			{
+				[typeof(bool)] = new TerminalStrategy(
+					(x, session) => new IkonInteger((bool)x ? 1 : -1),
+					(x, session) => x.To<int>() >= 0
+				),
+				[typeof(double)] = new TerminalStrategy(
+					(x, session) => new IkonFloat((double)x),
+					(x, session) => x.To<double>()
+				),
+				[typeof(float)] = new TerminalStrategy(
+					(x, session) => new IkonFloat((float)x),
+					(x, session) => x.To<float>()
+				),
+				[typeof(int)] = new TerminalStrategy(
+					(x, session) => new IkonInteger((int)x),
+					(x, session) => x.To<int>()
+				),
+				[typeof(long)] = new TerminalStrategy(
+					(x, session) => new IkonInteger((long)x),
+					(x, session) => x.To<long>()
+				),
+				[typeof(string)] = new TerminalStrategy(
+					(x, session) => new IkonText((string)x),
+					(x, session) => x.To<string>()
+				),
 
-			this.experts[typeof(System.Drawing.Color)] = new TerminalStrategy(
-				(x, session) =>
-				{
-					var color = (System.Drawing.Color)x;
-                    return new IkonArray(new[] {
-						new IkonInteger(color.R),
-                        new IkonInteger(color.G),
-                        new IkonInteger(color.B),
-					});
-				},
-				(x, session) =>
-				{
-					var data = x.To<IkonArray>();
-					return System.Drawing.Color.FromArgb(
-						data[0].To<int>(),
-						data[1].To<int>(),
-						data[2].To<int>()
-					);
-				}
-            );
-			this.experts[typeof(NGenerics.DataStructures.Mathematical.Vector2D)] = new TerminalStrategy(
-				(x, session) =>
-				{
-					var vector = (NGenerics.DataStructures.Mathematical.Vector2D)x;
-					return new IkonArray(new[] {
-							new IkonFloat(vector.X),
-							new IkonFloat(vector.Y),
+				[typeof(System.Drawing.Color)] = new TerminalStrategy(
+					(x, session) =>
+					{
+						var color = (System.Drawing.Color)x;
+						return new IkonArray(new[] {
+							new IkonInteger(color.R),
+							new IkonInteger(color.G),
+							new IkonInteger(color.B),
 						});
-				},
-				(x, session) =>
-				{
-					var data = x.To<IkonArray>();
-					return new NGenerics.DataStructures.Mathematical.Vector2D(
-						data[0].To<double>(),
-						data[1].To<double>()
-					);
-				}
-			);
+					},
+					(x, session) =>
+					{
+						var data = x.To<IkonArray>();
+						return System.Drawing.Color.FromArgb(
+							data[0].To<int>(),
+							data[1].To<int>(),
+							data[2].To<int>()
+						);
+					}
+				),
+				[typeof(NGenerics.DataStructures.Mathematical.Vector2D)] = new TerminalStrategy(
+					(x, session) =>
+					{
+						var vector = (NGenerics.DataStructures.Mathematical.Vector2D)x;
+						return new IkonArray(new[] {
+								new IkonFloat(vector.X),
+								new IkonFloat(vector.Y),
+							});
+					},
+					(x, session) =>
+					{
+						var data = x.To<IkonArray>();
+						return new NGenerics.DataStructures.Mathematical.Vector2D(
+							data[0].To<double>(),
+							data[1].To<double>()
+						);
+					}
+				)
+			};
 		}
 
         public T Copy<T>(T obj)
@@ -181,7 +184,11 @@ namespace Stareater.Utils.StateEngine
 		{
 			var originalParam = Expression.Parameter(typeof(object), "original");
 			var sessionParam = Expression.Parameter(typeof(SaveSession), "session");
-			var method = type.GetMethod(saveMethod, new[] { typeof(SaveSession) });
+			var method = type.GetMethod(
+				saveMethod,
+				BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, null,
+				new[] { typeof(SaveSession) }, null
+			);
 
 			var expr =
 				Expression.Lambda<Func<object, SaveSession, IkonBaseObject>>(
