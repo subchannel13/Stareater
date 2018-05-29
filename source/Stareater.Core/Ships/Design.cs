@@ -57,10 +57,10 @@ namespace Stareater.Ships
 		public Component<ThrusterType> Thrusters { get; private set; }
 
 		[StateProperty(doSave: false)]
-		private BitHash hash { get; set; } //TODO(v0.7) try to move design stats
+		private BitHash hash { get; set; } //TODO(v0.8) try to move design stats
 
 		[StateProperty]
-		public double Cost { get; private set; } //TODO(v0.7) try to move design stats
+		public double Cost { get; private set; } //TODO(v0.8) try to move design stats
 
 		public Design(string idCode, Player owner, bool isObsolete, bool isVirtual, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment, Component<ThrusterType> thrusters) 
 		{

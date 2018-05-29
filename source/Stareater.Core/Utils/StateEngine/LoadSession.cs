@@ -12,7 +12,7 @@ namespace Stareater.Utils.StateEngine
 		private Func<Type, ITypeStrategy> expertGetter;
 		private Dictionary<Type, Action<object>> postLoadActions;
 
-		//TODO(v0.7) check if post load actions are still needed
+		//TODO(v0.8) check if post load actions are still needed after removing hash from Design
 		internal LoadSession(Func<Type, ITypeStrategy> expertGetter, ObjectDeindexer deindexer, Dictionary<Type, Action<object>> postLoadActions)
 		{
 			this.expertGetter = expertGetter;
@@ -20,7 +20,7 @@ namespace Stareater.Utils.StateEngine
 			this.Deindexer = deindexer;
 		}
 
-		//TODO(v0.7) try to refactor to make it private
+		//TODO(v0.8) try to refactor to make it private
 		public ObjectDeindexer Deindexer { get; private set; }
 
 		public T Load<T>(Ikadn.IkadnBaseObject data)

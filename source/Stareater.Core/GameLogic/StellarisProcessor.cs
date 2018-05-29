@@ -72,6 +72,7 @@ namespace Stareater.GameLogic
 				{
 					var colonyImmigrants = immigrants * site.Desirability / weightSum;
 					var maxImmigrants = site.MaxPopulation - site.Colony.Population;
+
 					if (colonyImmigrants > maxImmigrants)
 					{
 						colonyImmigrants = maxImmigrants;
@@ -80,7 +81,7 @@ namespace Stareater.GameLogic
 
 					plans[site] += colonyImmigrants;
 					immigrants -= colonyImmigrants;
-					weightSum -= 1;
+					weightSum -= site.Desirability;
 				}
 				destinations.ApplyPending();
 			}

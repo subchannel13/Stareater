@@ -194,8 +194,7 @@ namespace Stareater.GameLogic
 					}
 					else if (missile.Position == missile.Target.Position)
 					{
-						var targets = new List<Combatant>();
-						targets.Add(missile.Target);
+						var targets = new List<Combatant> { missile.Target };
 						targets.AddRange(this.game.Combatants.
 							Where(x => x.Position == missile.Position && x != missile.Target && canTarget(missile, x)).
 							OrderByDescending(x => x.Ships.Quantity * this.mainGame.Derivates.Of(x.Owner).DesignStats[x.Ships.Design].Size)
