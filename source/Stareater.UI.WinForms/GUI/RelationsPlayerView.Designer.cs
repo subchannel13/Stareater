@@ -35,6 +35,7 @@
 			this.playerName = new System.Windows.Forms.Label();
 			this.treatyList = new System.Windows.Forms.FlowLayoutPanel();
 			this.audienceRequest = new Stareater.GUI.TreatyBriefView();
+			this.organizationLabel = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.playerColor)).BeginInit();
 			this.treatyList.SuspendLayout();
 			this.SuspendLayout();
@@ -51,9 +52,10 @@
 			// 
 			// playerName
 			// 
+			this.playerName.AutoSize = true;
 			this.playerName.Location = new System.Drawing.Point(43, 4);
 			this.playerName.Name = "playerName";
-			this.playerName.Size = new System.Drawing.Size(114, 32);
+			this.playerName.Size = new System.Drawing.Size(35, 13);
 			this.playerName.TabIndex = 0;
 			this.playerName.Text = "label1";
 			this.playerName.Click += new System.EventHandler(this.playerName_Click);
@@ -78,11 +80,21 @@
 			this.audienceRequest.TabIndex = 0;
 			this.audienceRequest.Visible = false;
 			// 
+			// organizationLabel
+			// 
+			this.organizationLabel.AutoSize = true;
+			this.organizationLabel.Location = new System.Drawing.Point(43, 17);
+			this.organizationLabel.Name = "organizationLabel";
+			this.organizationLabel.Size = new System.Drawing.Size(35, 13);
+			this.organizationLabel.TabIndex = 2;
+			this.organizationLabel.Text = "label1";
+			// 
 			// RelationsPlayerView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.Controls.Add(this.organizationLabel);
 			this.Controls.Add(this.treatyList);
 			this.Controls.Add(this.playerName);
 			this.Controls.Add(this.playerColor);
@@ -91,9 +103,11 @@
 			((System.ComponentModel.ISupportInitialize)(this.playerColor)).EndInit();
 			this.treatyList.ResumeLayout(false);
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
 		private TreatyBriefView audienceRequest;
+		private System.Windows.Forms.Label organizationLabel;
 	}
 }

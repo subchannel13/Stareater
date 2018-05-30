@@ -11,10 +11,11 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 		
-		public void SetData(PlayerInfo playerInfo) {
-			flagImage.BackColor = playerInfo.Color;
-			nameLabel.Text = playerInfo.Name;
-			organizationLabel.Text = ""; //TODO(v0.7) add organization info
+		public void SetData(PlayerInfo playerInfo)
+		{
+			this.flagImage.BackColor = playerInfo.Color;
+			this.nameLabel.Text = playerInfo.Name;
+			this.organizationLabel.Text = playerInfo.Organization.Name;
 		}
 		
 		private void flagImage_Click(object sender, EventArgs e)

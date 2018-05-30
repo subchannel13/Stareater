@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using Stareater.Players;
 
 namespace Stareater.Controllers.Views
@@ -15,14 +14,19 @@ namespace Stareater.Controllers.Views
 		
 		public string Name 
 		{ 
-			get { return Data.Name; }
+			get { return this.Data.Name; }
 		}
 		
 		public Color Color 
 		{ 
-			get { return Data.Color; }
+			get { return this.Data.Color; }
 		}
-		
+
+		public OrganizationInfo Organization
+		{
+			get { return new OrganizationInfo(this.Data.Organization); }
+		}
+
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{
@@ -32,14 +36,14 @@ namespace Stareater.Controllers.Views
 		
 		public override int GetHashCode()
 		{
-			return Data.GetHashCode();
+			return this.Data.GetHashCode();
 		}
 		
 		public static bool operator ==(PlayerInfo lhs, PlayerInfo rhs)
 		{
 			if (ReferenceEquals(lhs, rhs))
 				return true;
-			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+			if (lhs is null || rhs is null)
 				return false;
 			return lhs.Equals(rhs);
 		}

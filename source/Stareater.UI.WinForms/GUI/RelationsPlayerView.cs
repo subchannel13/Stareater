@@ -21,6 +21,7 @@ namespace Stareater.GUI
 
 			this.playerName.Text = contact.Player.Name;
 			this.playerColor.BackColor = contact.Player.Color;
+			this.organizationLabel.Text = contact.Player.Organization.Name;
 			
 			this.audienceRequest.SetData(Resources.message, LocalizationManifest.Get.CurrentLanguage["FormRelations"]["audienceRequested"].Text());
 			this.treatyList.SuspendLayout();

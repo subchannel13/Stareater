@@ -37,8 +37,7 @@ namespace Stareater.GUI
 		{ 
 			get
 			{
-				//TODO(v0.7) text could be invalid
-				return NumberInput.DecodeQuantity(this.quantityInput.Text).Value;
+				return NumberInput.DecodeQuantity(this.quantityInput.Text) ?? this.maximum;
 			}
 		}
 		
@@ -63,8 +62,7 @@ namespace Stareater.GUI
 			else
 			{
 				var formatter = new ThousandsFormatter();
-				//TODO(v0.7) text could decimal and unparsable to long later
-				this.quantityInput.Text = formatter.Format(this.maximum * (this.quantitySlider.Value / (double) this.quantitySlider.Maximum));
+				this.quantityInput.Text = formatter.Format(Math.Round(this.maximum * (this.quantitySlider.Value / (double) this.quantitySlider.Maximum)));
 			}
 			ignoreEvents = false;
 		}

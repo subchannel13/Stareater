@@ -341,10 +341,10 @@ namespace Stareater.GUI
 			this.equipmentAction.MissionEquipmentAction = x =>
 			{
 				int i = this.equipmentList.SelectedIndex;
-				bool removed = this.controller.MissionEquipCount(i) - 1 <= 0; //HACK(v0.7) refactor to full list update or somethig that would simplify this
-				
+				int count = this.controller.MissionEquipCount(i) - 1;
 				this.controller.MissionEquipSetAmount(i, this.controller.MissionEquipCount(i) - 1);
-				if (removed)
+
+				if (count <= 0)
 					this.equipmentList.Controls.Remove(selectedItem);
 				else
 					selectedItem.Amount = this.controller.MissionEquipCount(i);
