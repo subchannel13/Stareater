@@ -15,16 +15,8 @@ namespace Stareater.Utils
 
 		public Pair(T first, T second)
 		{
-			if (first.GetHashCode() < second.GetHashCode())
-			{
-				this.First = first;
-				this.Second = second;
-			}
-			else
-			{
-				this.First = second;
-				this.Second = first;
-			}
+			this.First = first;
+			this.Second = second;
 		}
 
 		private Pair()
@@ -54,9 +46,18 @@ namespace Stareater.Utils
 
 		public override int GetHashCode()
 		{
+			var firstCode = EqualityComparer<T>.Default.GetHashCode(this.First);
+			var secondCode = EqualityComparer<T>.Default.GetHashCode(this.Second);
+			if (firstCode > secondCode)
+			{
+				var temp = firstCode;
+				firstCode = secondCode;
+				secondCode = temp;
+			}
+
 			var hashCode = 43270662;
-			hashCode = hashCode * -1521134295 + EqualityComparer<T>.Default.GetHashCode(this.First);
-			hashCode = hashCode * -1521134295 + EqualityComparer<T>.Default.GetHashCode(this.Second);
+			hashCode = hashCode * -1521134295 + firstCode;
+			hashCode = hashCode * -1521134295 + secondCode;
 			return hashCode;
 		}
 

@@ -80,5 +80,10 @@ namespace Stareater.Galaxy
 				(IStarName)session.Load<ConstellationStarName>(rawData) :
 				(IStarName)session.Load<ProperStarName>(rawData);
 		}
+
+		public override string ToString()
+		{
+			return this.Position.X.ToString("0.0") + "; " + this.Position.Y.ToString("0.0");
+		}
 	}
 }

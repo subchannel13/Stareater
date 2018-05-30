@@ -1,12 +1,13 @@
 ﻿:ProximityLanes
 name = Short starlanes
 description §
-		{minimal}{few}{average}{many} short starlanes
+		{minimal}{few}{average}{many}{max} short starlanes
 	\
 	minimal ? lanes = 0; =Scarce
 	few ? lanes = 1; =Few
 	average ? lanes = 2; =Abundant
 	many ? lanes = 3; =A lot of
+	max ? lanes = 4; =Maximum
 
 degree = Starlane frequency
 minimal = Minimal

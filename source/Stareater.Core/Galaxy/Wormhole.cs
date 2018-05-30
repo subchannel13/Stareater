@@ -15,5 +15,10 @@ namespace Stareater.Galaxy
 
 		private Wormhole() 
 		{ }
+
+		public override string ToString()
+		{
+			return this.Endpoints.First.ToString() + " - " + this.Endpoints.Second.ToString();
+		}
 	}
 }

@@ -90,7 +90,7 @@ namespace Stareater.Utils.StateEngine
 		public T Load<T>(IkonComposite saveData, ObjectDeindexer deindexer, Dictionary<Type, Action<object>> postLoadActions)
 		{
 			return new LoadSession(getTypeStrategy, deindexer, postLoadActions).
-				Load<T>(saveData["entryPoint"]);
+				Load<T>(saveData[EntryPointKey]);
 		}
 
 		public IkonBaseObject Save(object obj, ObjectIndexer indexer)
@@ -101,8 +101,8 @@ namespace Stareater.Utils.StateEngine
 			var referencedData = session.GetSerialzedData();
 
 			var result = new IkonComposite(MainGame.SaveGameTag);
-			result.Add("references", new IkonArray(referencedData)); //TODO(v0.7) make constant
-			result.Add("entryPoint", mainData); //TODO(v0.7) make constant
+			result.Add("references", new IkonArray(referencedData));
+			result.Add(EntryPointKey, mainData);
 
 			return result;
         }
@@ -230,5 +230,7 @@ namespace Stareater.Utils.StateEngine
 
 			return expr.Compile();
 		}
+
+		private const string EntryPointKey = "entryPoint";
 	}
 }
