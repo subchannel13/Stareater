@@ -54,7 +54,7 @@ namespace Stareater.GUI
 			updateMapDescription();
 		}
 
-		//TODO(v0.7) expose NewGameController and perform this at caller
+		//TODO(v0.8) expose NewGameController and perform this at caller
 		//TODO(later) make option for shuffling players
 		public void CreateGame(GameController gameController)
 		{

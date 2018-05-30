@@ -106,7 +106,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				Translate(this.Position.Center + pressOffset);
 
 			if (!string.IsNullOrWhiteSpace(this.Text))
-				soBuilder.StartSprite(this.Z / 2, TextRenderUtil.Get.TextureId, this.TextColor). //TODO(v0.7) better define GUI z range
+				soBuilder.StartSprite(this.Z / 2, TextRenderUtil.Get.TextureId, this.TextColor). //TODO(v0.8) better define GUI z range
 					AddVertices(TextRenderUtil.Get.BufferText(this.Text, -0.5f, Matrix4.Identity)).
 					Scale(this.TextSize, this.TextSize).
 					Translate(this.Position.Center);

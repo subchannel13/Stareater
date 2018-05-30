@@ -90,7 +90,7 @@ namespace Stareater.GameScenes
 		
 		#endregion
 		
-		//TODO(v0.7) refactor and remove
+		//TODO(v0.8) refactor and remove
 		public void ResetLists()
 		{
 			this.setupVaos();

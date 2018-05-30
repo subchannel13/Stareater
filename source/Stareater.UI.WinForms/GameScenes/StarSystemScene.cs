@@ -112,7 +112,7 @@ namespace Stareater.GameScenes
 			this.colonizationMarked = beingColonized;
 		}
 
-		//TODO(v0.7) refactor and remove
+		//TODO(v0.8) refactor and remove
 		public void ResetLists()
 		{
 			this.setupVaos();

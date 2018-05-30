@@ -23,7 +23,7 @@ namespace Stareater.GLData.OrbitShader
 		{
 			var program = ShaderLibrary.PlanetOrbit;
 			GL.UseProgram(program.ProgramId);
-			this.vao.Bind(); //TODO(v0.7) set program and bind VAO outside
+			this.vao.Bind(); //TODO(v0.8) set program and bind VAO outside
 			GL.ActiveTexture(TextureUnit.Texture0);
 			GL.Uniform1(program.TextureSamplerId, 0);
 			GL.BindTexture(TextureTarget.Texture2D, this.objectData.TextureId);

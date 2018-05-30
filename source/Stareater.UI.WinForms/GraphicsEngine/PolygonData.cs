@@ -19,11 +19,6 @@ namespace Stareater.GraphicsEngine
 			this.ShaderData = shaderUniforms;
 			this.VertexData = vertexData;
 		}
-
-		//TODO(v0.7) try to remove
-		public PolygonData(float z, IShaderData shaderUniforms, IEnumerable<Vector2> vertexData) :
-			this(z, shaderUniforms, vertexData.SelectMany(v => new [] {v.X, v.Y}).ToList())
-		{ }
 		
 		public IDrawable MakeDrawable(VertexArray vao, int objectIndex)
 		{

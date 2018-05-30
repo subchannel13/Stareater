@@ -83,7 +83,7 @@ namespace Stareater.GameScenes
 			return textWidth;
 		}
 
-		//TODO(v0.7) add support for multiline text
+		//TODO(v0.8) add support for multiline text
 		public IEnumerable<float> BufferText(string text, float adjustment, Matrix4 transform)
 		{
 			float textWidth = MeasureWidth(text);

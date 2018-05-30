@@ -78,11 +78,11 @@ namespace Stareater.GameScenes
 		#region AScene implementation
 		protected override float GuiLayerThickness => 1 / Layers;
 
-		//TODO(v0.7) refactor and remove
+		//TODO(v0.8) refactor and remove
 		public void ResetLists()
 		{
 			this.setupBodies();
-			this.setupGrid(); //TODO(v0.7) doesn't have to be called on every mouse event
+			this.setupGrid(); //TODO(later) doesn't have to be called on every mouse event
 			this.setupUnits();
 			this.setupProjectiles();
 		}
@@ -99,7 +99,7 @@ namespace Stareater.GameScenes
 		#region Mouse events
 		protected override void onMouseClick(Vector2 mousePoint)
 		{
-			if (panAbsPath > PanClickTolerance) //TODO(v0.7) maybe make AScene differentiate between click and drag
+			if (panAbsPath > PanClickTolerance) //TODO(v0.8) maybe make AScene differentiate between click and drag
 				return;
 
 			var hexX = Math.Round(mousePoint.X / 1.5, MidpointRounding.AwayFromZero);
