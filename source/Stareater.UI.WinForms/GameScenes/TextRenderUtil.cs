@@ -63,50 +63,63 @@ namespace Stareater.GameScenes
 			if (this.TextureId == 0)
 				this.TextureId = TextureUtils.CreateTexture(this.textureBitmap);
 		}
-		
+
 		public float MeasureWidth(string text)
 		{
-			float textWidth = 0;
-			
-			foreach (char c in text) {
-				if (!this.characterInfos.ContainsKey(c))
-					Prepare(new string[] { text });
-				        
-				if (!char.IsWhiteSpace(c))
-					textWidth += this.characterInfos[c].Aspect;
-				else if (c == ' ')
-					textWidth += SpaceUnitWidth;
-				else
-					throw new ArgumentException("Unsupported whitespace character, character code: " + (int)c);
+			var textWidth = 0f;
+
+			foreach (var line in text.Split('\n'))
+			{
+				var lineWidth = 0f;
+
+				foreach (char c in line)
+				{
+					if (!this.characterInfos.ContainsKey(c))
+						Prepare(new string[] { text });
+
+					if (!char.IsWhiteSpace(c))
+						lineWidth += this.characterInfos[c].Aspect;
+					else if (c == ' ')
+						lineWidth += SpaceUnitWidth;
+					else if (c != '\r')
+						throw new ArgumentException("Unsupported whitespace character, character code: " + (int)c);
+				}
+
+				textWidth = Math.Max(textWidth, lineWidth);
 			}
 			
 			return textWidth;
 		}
 
-		//TODO(v0.8) add support for multiline text
 		public IEnumerable<float> BufferText(string text, float adjustment, Matrix4 transform)
 		{
-			float textWidth = MeasureWidth(text);
-			float charOffset = textWidth * adjustment;
-			
+			float textWidth = this.MeasureWidth(text);
+			float charOffsetX = textWidth * adjustment;
+			float charOffsetY = 0;
+
 			foreach (char c in text)
-				if (!char.IsWhiteSpace(c)) 
+				if (!char.IsWhiteSpace(c))
 				{
 					var charInfo = this.characterInfos[c];
-					
-					for (int v = 0; v < 6; v++) 
+
+					for (int v = 0; v < 6; v++)
 					{
 						var charPos = Vector4.Transform(
-							new Vector4(unitQuadTriangles[v].X * charInfo.Aspect + charOffset, unitQuadTriangles[v].Y, 0, 1), 
+							new Vector4(unitQuadTriangles[v].X * charInfo.Aspect + charOffsetX, unitQuadTriangles[v].Y + charOffsetY, 0, 1),
 							transform
 						);
-						foreach(var dataBit in SpriteHelpers.TexturedVertexData(charPos.X, charPos.Y, charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y))
+						foreach (var dataBit in SpriteHelpers.TexturedVertexData(charPos.X, charPos.Y, charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y))
 							yield return dataBit;
 					}
-					charOffset += charInfo.Aspect;
+					charOffsetX += charInfo.Aspect;
 				}
 				else if (c == ' ')
-					charOffset += SpaceUnitWidth;
+					charOffsetX += SpaceUnitWidth;
+				else if (c == '\n')
+				{
+					charOffsetX = textWidth * adjustment;
+					charOffsetY--;
+				}
 		}
 
 		public void Prepare()

@@ -18,7 +18,7 @@ namespace Stareater.Ships
 		public Player Owner { get; private set; }
 
 		[StateProperty]
-		public bool IsObsolete { get; set; }
+		public bool IsObsolete { get; set; } //TODO(v0.8) move to stats
 
 		[StateProperty]
 		public bool IsVirtual { get; private set; }
@@ -166,7 +166,7 @@ namespace Stareater.Ships
 		{
 			if (ReferenceEquals(lhs, rhs))
 				return true;
-			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+			if (lhs is null || rhs is null)
 				return false;
 			return lhs.Equals(rhs);
 		}
