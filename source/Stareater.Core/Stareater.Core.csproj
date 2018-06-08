@@ -130,6 +130,7 @@
     <Compile Include="Controllers\Views\Ships\ReactorInfo.cs" />
     <Compile Include="Controllers\Views\Ships\ShipGroupInfo.cs" />
     <Compile Include="Controllers\Views\Ships\WaypointInfo.cs" />
+    <Compile Include="Controllers\Views\PolicyInfo.cs" />
     <Compile Include="Controllers\Views\StellarisInfo.cs" />
     <Compile Include="Controllers\Views\TechnologyCategory.cs" />
     <Compile Include="Controllers\Views\DevelopmentReportInfo.cs" />

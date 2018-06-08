@@ -27,7 +27,7 @@ namespace Stareater.Controllers
 			}
 		}
 		
-		protected override void RecalculateSpending()
+		protected override void recalculateSpending()
 		{
 			var colony = Site as Colony;
 			var playerProc = this.Game.Derivates.Of(Site.Owner);

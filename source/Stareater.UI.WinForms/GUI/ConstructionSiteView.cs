@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
-using Stareater.Controllers.Views;
 using Stareater.GameData;
 using Stareater.GuiUtils;
 using Stareater.Localization;
@@ -23,27 +24,27 @@ namespace Stareater.GUI
 		{
 			if (this.InvokeRequired)
 			{
-				this.BeginInvoke(new Action<AConstructionSiteController>(SetView), siteController);
+				this.BeginInvoke(new Action<AConstructionSiteController>(this.SetView), siteController);
 				return;
 			}
 			
-			controller = siteController;
-			
-			industrySlider.Value = (int)(siteController.DesiredSpendingRatio * industrySlider.Maximum);
-			
-			setName();
-			resetView();
+			this.controller = siteController;
+
+			this.industrySlider.Value = (int)(siteController.DesiredSpendingRatio * this.industrySlider.Maximum);
+
+			this.setName();
+			this.resetView();
 		}
 
 		private void setName()
 		{
-			if (controller.SiteType == SiteType.Colony)
+			if (this.controller.SiteType == SiteType.Colony)
 			{
-				var colonyController = controller as ColonyController;
+				var colonyController = this.controller as ColonyController;
 				this.nameLabel.Text = LocalizationMethods.PlanetName(colonyController.PlanetBody);
 			}
 			else
-				this.nameLabel.Text = controller.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage);
+				this.nameLabel.Text = this.controller.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage);
 		}
 		
 		private void resetView()
@@ -56,64 +57,71 @@ namespace Stareater.GUI
 			if (!controller.ConstructionQueue.Any()) {
 				this.queueButton.Text = context["NotBuilding"].Text();
 				this.queueButton.Image = null;
-				
-				industrySlider.Enabled = false;
+
+				this.industrySlider.Enabled = false;
 			} else {
 				this.queueButton.Text = "";
-				this.queueButton.Image = ImageCache.Get[controller.ConstructionQueue.First().ImagePath];
-				
-				industrySlider.Enabled = !controller.IsReadOnly;
+				this.queueButton.Image = ImageCache.Get[this.controller.ConstructionQueue.First().ImagePath];
+
+				this.industrySlider.Enabled = !this.controller.IsReadOnly;
 			}
-			
-			resetEstimation();
+
+			var policyColors = new Dictionary<string, Color>()
+			{
+				{ "develop", Color.Yellow }
+			};
+			this.policyName.Text = this.controller.Policy.Name;
+			this.policyButton.BackColor = policyColors[this.controller.Policy.Id];
+
+			this.resetEstimation();
 		}
 		
 		private void resetEstimation()
 		{
-			var constructionItem = controller.ConstructionQueue.FirstOrDefault();
+			var constructionItem = this.controller.ConstructionQueue.FirstOrDefault();
 			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 			
 			if (constructionItem != null)
-				estimationLabel.Text = LocalizationMethods.ConstructionEstimation(
+				this.estimationLabel.Text = LocalizationMethods.ConstructionEstimation(
 					constructionItem, 
 					context["EtaNever"], 
 					context["BuildingsPerTurn"], 
 					context["Eta"]
 				);
 			else
-				estimationLabel.Text = "No construction plans";
+				this.estimationLabel.Text = "No construction plans";
 		}
 		
 		private void queueButton_Click(object sender, EventArgs e)
 		{
-			if (controller == null)
+			if (this.controller == null)
 				return;
 			
-			using (var form = new FormBuildingQueue(controller))
+			using (var form = new FormBuildingQueue(this.controller))
 				form.ShowDialog();
-			
-			resetView();
+
+			this.resetView();
 		}
 
 		private void industrySlider_Scroll(object sender, ScrollEventArgs e)
 		{
 			if (e.Type == ScrollEventType.EndScroll)
 				return;
-			
-			controller.DesiredSpendingRatio = e.NewValue / (double)industrySlider.Maximum;
-			resetEstimation();
+
+			this.controller.DesiredSpendingRatio = e.NewValue / (double)this.industrySlider.Maximum;
+			this.resetEstimation();
 		}
 
 		private void detailsButton_Click(object sender, EventArgs e)
 		{
 			Form form = null;
 
-			switch (controller.SiteType) {
+			switch (this.controller.SiteType) {
 				case SiteType.Colony:
-					form = new FormColonyDetails(controller as ColonyController);
+					form = new FormColonyDetails(this.controller as ColonyController);
 					break;
 				case SiteType.StarSystem:
-					form = new FormStellarisDetails(controller as StellarisAdminController);
+					form = new FormStellarisDetails(this.controller as StellarisAdminController);
 					break;
 			}
 

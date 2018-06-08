@@ -28,7 +28,7 @@ namespace Stareater.Controllers
 		}
 		
 		#region Buildings
-		protected override void RecalculateSpending()
+		protected override void recalculateSpending()
 		{
 			this.Game.Derivates.Stellarises.At[Location].CalculateSpending(this.Game);
 		}

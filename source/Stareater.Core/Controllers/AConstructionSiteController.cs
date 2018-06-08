@@ -40,9 +40,14 @@ namespace Stareater.Controllers
 		internal abstract AConstructionSiteProcessor Processor { get; }
 		
 		public abstract IEnumerable<TraitInfo> Traits { get; }
-		
+
+		public StarData HostStar
+		{
+			get { return Site.Location.Star; }
+		}
+
 		#region Buildings
-		protected abstract void RecalculateSpending();
+		protected abstract void recalculateSpending();
 
 		public double DesiredSpendingRatio
 		{
@@ -53,7 +58,7 @@ namespace Stareater.Controllers
 			set
 			{
 				this.Game.Orders[this.Site.Owner].ConstructionPlans[this.Site].SpendingRatio = Methods.Clamp(value, 0, 1);
-				this.RecalculateSpending();
+				this.recalculateSpending();
 			}
 		}
 
@@ -129,7 +134,7 @@ namespace Stareater.Controllers
 				return;
 
 			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.Add(data.Project);
-			this.RecalculateSpending();
+			this.recalculateSpending();
 		}
 		
 		public void Dequeue(int index)
@@ -138,7 +143,7 @@ namespace Stareater.Controllers
 				return;
 
 			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.RemoveAt(orderIndex[index]);
-			this.RecalculateSpending();
+			this.recalculateSpending();
 		}
 		
 		public void ReorderQueue(int fromIndex, int toIndex)
@@ -149,13 +154,19 @@ namespace Stareater.Controllers
 			var item = this.Game.Orders[this.Player].ConstructionPlans[Site].Queue[orderIndex[fromIndex]];
 			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.RemoveAt(orderIndex[fromIndex]);
 			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.Insert(orderIndex[toIndex], item);
-			this.RecalculateSpending();
+			this.recalculateSpending();
 		}
 		#endregion
-		
-		public StarData HostStar
+
+		#region Policies
+		public PolicyInfo Policy
 		{
-			get { return Site.Location.Star; }
+			get
+			{
+				//TODO(v0.8) unstub
+				return new PolicyInfo();
+			}
 		}
+		#endregion
 	}
 }

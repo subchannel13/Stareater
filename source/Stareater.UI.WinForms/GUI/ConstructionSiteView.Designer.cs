@@ -41,6 +41,8 @@ namespace Stareater.GUI
 			this.industrySlider = new System.Windows.Forms.HScrollBar();
 			this.estimationLabel = new System.Windows.Forms.Label();
 			this.detailsButton = new System.Windows.Forms.Button();
+			this.policyButton = new System.Windows.Forms.Button();
+			this.policyName = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// queueButton
@@ -84,7 +86,7 @@ namespace Stareater.GUI
 			// 
 			// detailsButton
 			// 
-			this.detailsButton.Location = new System.Drawing.Point(274, 86);
+			this.detailsButton.Location = new System.Drawing.Point(274, 77);
 			this.detailsButton.Name = "detailsButton";
 			this.detailsButton.Size = new System.Drawing.Size(75, 23);
 			this.detailsButton.TabIndex = 4;
@@ -92,11 +94,30 @@ namespace Stareater.GUI
 			this.detailsButton.UseVisualStyleBackColor = true;
 			this.detailsButton.Click += new System.EventHandler(this.detailsButton_Click);
 			// 
+			// stanceButton
+			// 
+			this.policyButton.Location = new System.Drawing.Point(99, 77);
+			this.policyButton.Name = "stanceButton";
+			this.policyButton.Size = new System.Drawing.Size(32, 32);
+			this.policyButton.TabIndex = 5;
+			this.policyButton.UseVisualStyleBackColor = true;
+			// 
+			// stanceName
+			// 
+			this.policyName.AutoSize = true;
+			this.policyName.Location = new System.Drawing.Point(137, 82);
+			this.policyName.Name = "stanceName";
+			this.policyName.Size = new System.Drawing.Size(35, 13);
+			this.policyName.TabIndex = 6;
+			this.policyName.Text = "label1";
+			// 
 			// ConstructionSiteView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.ActiveBorder;
+			this.Controls.Add(this.policyName);
+			this.Controls.Add(this.policyButton);
 			this.Controls.Add(this.detailsButton);
 			this.Controls.Add(this.estimationLabel);
 			this.Controls.Add(this.industrySlider);
@@ -113,5 +134,7 @@ namespace Stareater.GUI
 		private System.Windows.Forms.HScrollBar industrySlider;
 		private System.Windows.Forms.Label nameLabel;
 		private System.Windows.Forms.Button queueButton;
+		private System.Windows.Forms.Button policyButton;
+		private System.Windows.Forms.Label policyName;
 	}
 }
