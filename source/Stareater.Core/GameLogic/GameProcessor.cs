@@ -10,6 +10,7 @@ using Stareater.Galaxy;
 using Stareater.GameLogic.Combat;
 using Stareater.GameLogic.Planning;
 using Stareater.Utils;
+using Stareater.GameData.Databases.Tables;
 
 namespace Stareater.GameLogic
 {
@@ -303,6 +304,7 @@ namespace Stareater.GameLogic
 				{
 					this.game.States.Stellarises.PendRemove(stellaris);
 					this.game.Derivates.Stellarises.Remove(this.game.Derivates.Of(stellaris));
+					this.game.Orders[stellaris.Owner].Policies.Remove(stellaris);
 				}
 				this.game.States.Stellarises.ApplyPending();
 
@@ -310,6 +312,7 @@ namespace Stareater.GameLogic
 				{
 					this.game.States.Colonies.PendRemove(colony);
 					this.game.Derivates.Colonies.Remove(this.game.Derivates.Of(colony));
+					this.game.Orders[colony.Owner].ConstructionPlans.Remove(colony);
 				}
 				this.game.States.Colonies.ApplyPending();
 
@@ -374,12 +377,14 @@ namespace Stareater.GameLogic
 					
 					this.game.States.Colonies.Add(colony);
 					this.game.Derivates.Colonies.Add(colonyProc);
+					this.game.Orders[project.Owner].ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 
 					if (this.game.States.Stellarises.At[project.Destination.Star].All(x => x.Owner != project.Owner))
 					{
 						var stellaris = new StellarisAdmin(project.Destination.Star, project.Owner);
 						this.game.States.Stellarises.Add(stellaris);
 						this.game.Derivates.Stellarises.Add(new StellarisProcessor(stellaris));
+						this.game.Orders[project.Owner].Policies.Add(stellaris, new SystemPolicy()); //TODO(v0.8) pick default policy
 					}
 				}
 				

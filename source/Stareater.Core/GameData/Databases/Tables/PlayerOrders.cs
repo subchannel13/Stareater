@@ -21,16 +21,19 @@ namespace Stareater.GameData.Databases.Tables
 		public string ResearchFocus { get; set; }
 
 		[StateProperty]
-		public Dictionary<AConstructionSite, ConstructionOrders> ConstructionPlans { get; set; }
+		public Dictionary<AConstructionSite, ConstructionOrders> ConstructionPlans { get; private set; }
 
 		[StateProperty]
-		public Dictionary<Vector2D, HashSet<Fleet>> ShipOrders { get; set; }
+		public Dictionary<StellarisAdmin, SystemPolicy> Policies { get; private set; }
 
 		[StateProperty]
-		public Dictionary<Planet, ColonizationPlan> ColonizationOrders { get; set; }
+		public Dictionary<Vector2D, HashSet<Fleet>> ShipOrders { get; private set; }
 
 		[StateProperty]
-		public Dictionary<Design, Design> RefitOrders { get; set; }
+		public Dictionary<Planet, ColonizationPlan> ColonizationOrders { get; private set; }
+
+		[StateProperty]
+		public Dictionary<Design, Design> RefitOrders { get; private set; }
 
 		[StateProperty]
 		public HashSet<int> AudienceRequests { get; private set; }
@@ -44,6 +47,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.DevelopmentQueue = new Dictionary<string, int>();
 			this.ResearchFocus = "";
 			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
+			this.Policies = new Dictionary<StellarisAdmin, SystemPolicy>();
 			this.ShipOrders = new Dictionary<Vector2D, HashSet<Fleet>>();
 			this.ColonizationOrders = new Dictionary<Planet, ColonizationPlan>();
 			this.RefitOrders = new Dictionary<Design, Design>();

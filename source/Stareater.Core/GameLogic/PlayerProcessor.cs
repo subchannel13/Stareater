@@ -352,35 +352,34 @@ namespace Stareater.GameLogic
 
 		private void doConstruction(MainGame game)
 		{
-			var oldPlans = game.Orders[this.Player].ConstructionPlans;
-			game.Orders[this.Player].ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
+			var plans = game.Orders[this.Player].ConstructionPlans;
 
 			foreach (var colony in game.States.Colonies.OwnedBy[Player])
-				if (oldPlans.ContainsKey(colony)) {
+				if (plans.ContainsKey(colony)) {
 					var updatedPlans = updateConstructionPlans(
 						game.Statics,
-						oldPlans[colony],
+						plans[colony],
 						game.Derivates.Of(colony)
 					);
 
-					game.Orders[this.Player].ConstructionPlans.Add(colony, updatedPlans);
+					plans[colony] = updatedPlans;
 				}
 				else
-					game.Orders[this.Player].ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
+					plans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 
-				foreach (var stellaris in game.States.Stellarises.OwnedBy[Player])
-					if (oldPlans.ContainsKey(stellaris)) 
-					{
-						var updatedPlans = updateConstructionPlans(
-							game.Statics,
-							oldPlans[stellaris],
-							game.Derivates.Of(stellaris)
-						);
+			foreach (var stellaris in game.States.Stellarises.OwnedBy[Player])
+				if (plans.ContainsKey(stellaris))
+				{
+					var updatedPlans = updateConstructionPlans(
+						game.Statics,
+						plans[stellaris],
+						game.Derivates.Of(stellaris)
+					);
 
-						game.Orders[this.Player].ConstructionPlans.Add(stellaris, updatedPlans);
-					}
-					else
-						game.Orders[this.Player].ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
+					plans[stellaris] = updatedPlans;
+				}
+				else
+					plans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 		}
 
 		private void updateDesigns(MainGame game)

@@ -202,6 +202,7 @@
     <Compile Include="GameData\Ships\ProjectileAbility.cs" />
     <Compile Include="GameData\Ships\StarShootAbility.cs" />
     <Compile Include="GameData\StarIntelligence.cs" />
+    <Compile Include="GameData\SystemPolicy.cs" />
     <Compile Include="GameData\Treaty.cs" />
     <Compile Include="GameLogic\Combat\AbilityStatsFactory.cs" />
     <Compile Include="GameLogic\Combat\AbilityStats.cs" />

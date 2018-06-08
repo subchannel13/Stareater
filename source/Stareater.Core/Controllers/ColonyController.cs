@@ -10,7 +10,7 @@ namespace Stareater.Controllers
 {
 	public class ColonyController : AConstructionSiteController
 	{
-		internal ColonyController(MainGame game, Colony colony, bool readOnly, Player player) : 
+		internal ColonyController(MainGame game, Colony colony, bool readOnly, Player player) :
 			base(colony, readOnly, game, player)
 		{ }
 
@@ -18,20 +18,20 @@ namespace Stareater.Controllers
 		{
 			get { return Game.Derivates.Of((Colony)Site); }
 		}
-		
-		public override IEnumerable<TraitInfo> Traits 
-		{ 
+
+		public override IEnumerable<TraitInfo> Traits
+		{
 			get
 			{
 				return (this.Site as Colony).Location.Planet.Traits.Select(x => new TraitInfo(x.Type));
 			}
 		}
-		
+
 		protected override void recalculateSpending()
 		{
 			var colony = Site as Colony;
 			var playerProc = this.Game.Derivates.Of(Site.Owner);
-			
+
 			this.Game.Derivates.Of(colony).CalculateSpending(
 				this.Game,
 				playerProc
@@ -44,116 +44,127 @@ namespace Stareater.Controllers
 				playerProc
 			);
 		}
-		
+
 		#region Population
-		public double Organization 
-		{ 
+		public double Organization
+		{
 			get
 			{
 				return Game.Derivates.Of(Site as Colony).Organization;
 			}
 		}
-		
-		public double Population 
-		{ 
-			get 
+
+		public double Population
+		{
+			get
 			{
 				return (Site as Colony).Population;
 			}
 		}
-		
+
 		public double PopulationGrowth
-		{ 
+		{
 			get
 			{
 				return Game.Derivates.Of(Site as Colony).PopulationGrowth;
 			}
 		}
-		
-		public double PopulationMax 
-		{ 
+
+		public double PopulationMax
+		{
 			get
 			{
 				return Game.Derivates.Of(Site as Colony).MaxPopulation;
 			}
 		}
 		#endregion
-		
+
 		#region Planet
 		public Planet PlanetBody
 		{
 			get { return Site.Location.Planet; }
 		}
-		
-		public double PlanetEnvironment 
+
+		public double PlanetEnvironment
 		{
-			get 
-			{ 
+			get
+			{
 				return Game.Derivates.Of(Site as Colony).Environment;
 			}
 		}
-		
-		public double PlanetSize 
+
+		public double PlanetSize
 		{
-			get 
-			{ 
+			get
+			{
 				return (Site as Colony).Location.Planet.Size;
 			}
 		}
 		#endregion
-		
+
 		#region Productivity
-		public double DevelopmentPerPop 
+		public double DevelopmentPerPop
 		{
-			get 
-			{ 
-				return Game.Derivates.Of(Site as Colony).ScientistEfficiency; 
+			get
+			{
+				return Game.Derivates.Of(Site as Colony).ScientistEfficiency;
 			}
 		}
-		
-		public double DevelopmentTotal 
+
+		public double DevelopmentTotal
 		{
-			get 
-			{ 
-				return Game.Derivates.Of(Site as Colony).Development; 
+			get
+			{
+				return Game.Derivates.Of(Site as Colony).Development;
 			}
 		}
-		
+
 		public double FoodPerPop
 		{
-			get 
-			{ 
+			get
+			{
 				var colonyStats = this.Game.Derivates.Of(Site as Colony);
-				
+
 				return
 					(colonyStats.FarmerEfficiency * colonyStats.Farmers + colonyStats.GardenerEfficiency * colonyStats.Gardeners) /
 					(colonyStats.Farmers + colonyStats.Gardeners);
 			}
 		}
-		
-		public double IndustryPerPop 
+
+		public double IndustryPerPop
 		{
-			get 
-			{ 
-				return Game.Derivates.Of(Site as Colony).BuilderEfficiency; 
+			get
+			{
+				return Game.Derivates.Of(Site as Colony).BuilderEfficiency;
 			}
 		}
-		
-		public double IndustryTotal 
+
+		public double IndustryTotal
 		{
-			get 
-			{ 
+			get
+			{
 				return Game.Derivates.Of(Site as Colony).SpendingPlan.Sum(x => x.InvestedPoints);
 			}
 		}
-		
-		public double OrePerPop 
+
+		public double OrePerPop
 		{
-			get 
-			{ 
+			get
+			{
 				return Game.Derivates.Of(Site as Colony).MinerEfficiency;
 			}
 		}
 		#endregion
+
+		public override PolicyInfo Policy
+		{
+			get
+			{
+				return new PolicyInfo(
+					this.Game.Orders[this.Site.Owner].
+					Policies[this.Game.States.Stellarises.At[this.Site.Location.Star].First(x => x.Owner == this.Site.Owner)]
+				);
+			}
+		}
 	}
 }

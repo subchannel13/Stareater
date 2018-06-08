@@ -98,6 +98,7 @@ namespace Stareater.GameLogic
 			{
 				this.mainGame.States.Colonies.Remove(planet.Colony);
 				this.mainGame.Derivates.Colonies.Remove(this.mainGame.Derivates.Of(planet.Colony));
+				this.mainGame.Orders[planet.Colony.Owner].ConstructionPlans.Remove(planet.Colony);
 				planet.Colony = null;
 				//TODO(v0.8) check if stellaris should be removed too
 			}

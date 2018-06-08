@@ -159,14 +159,7 @@ namespace Stareater.Controllers
 		#endregion
 
 		#region Policies
-		public PolicyInfo Policy
-		{
-			get
-			{
-				//TODO(v0.8) unstub
-				return new PolicyInfo();
-			}
-		}
+		public abstract PolicyInfo Policy { get; }
 		#endregion
 	}
 }

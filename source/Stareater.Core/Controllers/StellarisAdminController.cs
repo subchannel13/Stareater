@@ -23,14 +23,22 @@ namespace Stareater.Controllers
 		{ 
 			get
 			{
-				return this.Location.Traits.Select(x => new TraitInfo(x.Type));
+				return this.location.Traits.Select(x => new TraitInfo(x.Type));
 			}
 		}
-		
+
+		private StarData location
+		{
+			get
+			{
+				return (Site as StellarisAdmin).Location.Star;
+			}
+		}
+
 		#region Buildings
 		protected override void recalculateSpending()
 		{
-			this.Game.Derivates.Stellarises.At[Location].CalculateSpending(this.Game);
+			this.Game.Derivates.Stellarises.At[location].CalculateSpending(this.Game);
 		}
 		
 		public override IEnumerable<ConstructableInfo> ConstructableItems 
@@ -47,21 +55,13 @@ namespace Stareater.Controllers
 		}
 		#endregion
 		
-		protected StarData Location 
-		{
-			get 
-			{ 
-				return (Site as StellarisAdmin).Location.Star;
-			}
-		}
-		
 		#region Colonies
 		public double OrganisationAverage 
 		{
 			get 
 			{ 
 				var workplaces = Game.Derivates.Colonies.
-					At[Location].
+					At[location].
 					Where(x => x.Owner == Site.Owner).
 					Sum(x => x.Organization * x.Colony.Population);
 				
@@ -73,7 +73,7 @@ namespace Stareater.Controllers
 			get 
 			{ 
 				return Game.States.Colonies.
-					AtStar[Location].
+					AtStar[location].
 					Where(x => x.Owner == Site.Owner).
 					Sum(x => x.Population);
 			}
@@ -96,11 +96,19 @@ namespace Stareater.Controllers
 			get 
 			{ 
 				return Game.Derivates.Colonies.
-					At[Location].
+					At[location].
 					Where(x => x.Owner == Site.Owner).
 					Sum(x => x.Development);
 			}
 		}
 		#endregion
+
+		public override PolicyInfo Policy
+		{
+			get
+			{
+				return new PolicyInfo(this.Game.Orders[this.Site.Owner].Policies[this.Site as StellarisAdmin]);
+			}
+		}
 	}
 }

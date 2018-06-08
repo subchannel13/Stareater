@@ -243,7 +243,10 @@ namespace Stareater.Controllers
 					orders.ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 
 				foreach (var stellaris in game.States.Stellarises.OwnedBy[player])
+				{
 					orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
+					orders.Policies.Add(stellaris, new SystemPolicy()); //TODO(v0.8) pick default policy
+				}
 
 				orders.DevelopmentFocusIndex = game.Statics.DevelopmentFocusOptions.Count / 2;
 				orders.ResearchFocus = game.Statics.ResearchTopics.Select(x => x.IdCode).FirstOrDefault() ?? "";

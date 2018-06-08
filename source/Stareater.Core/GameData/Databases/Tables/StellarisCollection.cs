@@ -7,7 +7,7 @@ namespace Stareater.GameData.Databases.Tables
 {
 	class StellarisCollection : AIndexedCollection<StellarisAdmin>
 	{
-		public CollectionIndex<StellarisAdmin, StarData> At { get; private set; }
+		public CollectionIndex<StellarisAdmin, StarData> At { get; private set; } //TODO(v0.8) make scalar index for both location and player
 		public CollectionIndex<StellarisAdmin, Player> OwnedBy { get; private set; }
 
 		public StellarisCollection()
