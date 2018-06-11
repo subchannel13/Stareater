@@ -94,19 +94,20 @@ namespace Stareater.GUI
 			this.detailsButton.UseVisualStyleBackColor = true;
 			this.detailsButton.Click += new System.EventHandler(this.detailsButton_Click);
 			// 
-			// stanceButton
+			// policyButton
 			// 
 			this.policyButton.Location = new System.Drawing.Point(99, 77);
-			this.policyButton.Name = "stanceButton";
+			this.policyButton.Name = "policyButton";
 			this.policyButton.Size = new System.Drawing.Size(32, 32);
 			this.policyButton.TabIndex = 5;
 			this.policyButton.UseVisualStyleBackColor = true;
+			this.policyButton.Click += new System.EventHandler(this.policyButton_Click);
 			// 
-			// stanceName
+			// policyName
 			// 
 			this.policyName.AutoSize = true;
 			this.policyName.Location = new System.Drawing.Point(137, 82);
-			this.policyName.Name = "stanceName";
+			this.policyName.Name = "policyName";
 			this.policyName.Size = new System.Drawing.Size(35, 13);
 			this.policyName.TabIndex = 6;
 			this.policyName.Text = "label1";

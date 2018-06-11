@@ -57,6 +57,9 @@ namespace Stareater.Controllers
 			}
 			set
 			{
+				if (this.IsReadOnly)
+					return;
+
 				this.Game.Orders[this.Site.Owner].ConstructionPlans[this.Site].SpendingRatio = Methods.Clamp(value, 0, 1);
 				this.recalculateSpending();
 			}
@@ -159,7 +162,18 @@ namespace Stareater.Controllers
 		#endregion
 
 		#region Policies
-		public abstract PolicyInfo Policy { get; }
+		public abstract PolicyInfo Policy { get; set; }
+
+		public PolicyInfo[] Policies
+		{
+			get
+			{
+				//TODO(0.8) read from statics
+				return new PolicyInfo[] {
+					new PolicyInfo(new SystemPolicy())
+				};
+			}
+		}
 		#endregion
 	}
 }

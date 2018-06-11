@@ -165,6 +165,15 @@ namespace Stareater.Controllers
 					Policies[this.Game.States.Stellarises.At[this.Site.Location.Star].First(x => x.Owner == this.Site.Owner)]
 				);
 			}
+
+			set
+			{
+				if (this.IsReadOnly)
+					return;
+
+				this.Game.Orders[this.Site.Owner].
+					Policies[this.Game.States.Stellarises.At[this.Site.Location.Star].First(x => x.Owner == this.Site.Owner)] = value.Data;
+			}
 		}
 	}
 }

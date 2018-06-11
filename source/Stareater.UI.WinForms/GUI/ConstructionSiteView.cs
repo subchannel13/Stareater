@@ -128,5 +128,13 @@ namespace Stareater.GUI
 			form.ShowDialog();
 			form.Dispose();
 		}
+
+		private void policyButton_Click(object sender, EventArgs e)
+		{
+			var policyIndex = Array.FindIndex(this.controller.Policies, this.controller.Policy.Equals);
+			policyIndex = (policyIndex + 1) % this.controller.Policies.Length;
+
+			this.controller.Policy = this.controller.Policies[policyIndex];
+		}
 	}
 }

@@ -109,6 +109,14 @@ namespace Stareater.Controllers
 			{
 				return new PolicyInfo(this.Game.Orders[this.Site.Owner].Policies[this.Site as StellarisAdmin]);
 			}
+
+			set
+			{
+				if (this.IsReadOnly)
+					return;
+
+				this.Game.Orders[this.Site.Owner].Policies[this.Site as StellarisAdmin] = value.Data;
+			}
 		}
 	}
 }
