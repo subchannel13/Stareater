@@ -1,0 +1,9 @@
+{ SystemPolicy
+	langCode: develop
+	code: develop
+}
+
+{ SystemPolicy
+	langCode: exploit
+	code: exploit
+}

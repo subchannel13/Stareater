@@ -162,16 +162,14 @@ namespace Stareater.Controllers
 		#endregion
 
 		#region Policies
+		//TODO(v0.8) apply policy to colonies
 		public abstract PolicyInfo Policy { get; set; }
 
 		public PolicyInfo[] Policies
 		{
 			get
 			{
-				//TODO(0.8) read from statics
-				return new PolicyInfo[] {
-					new PolicyInfo(new SystemPolicy())
-				};
+				return this.Game.Statics.Policies.Select(x => new PolicyInfo(x)).ToArray();
 			}
 		}
 		#endregion

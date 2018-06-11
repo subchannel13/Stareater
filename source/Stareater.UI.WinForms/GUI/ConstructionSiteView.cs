@@ -66,9 +66,11 @@ namespace Stareater.GUI
 				this.industrySlider.Enabled = !this.controller.IsReadOnly;
 			}
 
+			//TODO(later) replace with sprites
 			var policyColors = new Dictionary<string, Color>()
 			{
-				{ "develop", Color.Yellow }
+				{ "develop", Color.Yellow },
+				{ "exploit", Color.Green }
 			};
 			this.policyName.Text = this.controller.Policy.Name;
 			this.policyButton.BackColor = policyColors[this.controller.Policy.Id];
@@ -135,6 +137,7 @@ namespace Stareater.GUI
 			policyIndex = (policyIndex + 1) % this.controller.Policies.Length;
 
 			this.controller.Policy = this.controller.Policies[policyIndex];
+			this.resetView();
 		}
 	}
 }

@@ -8,6 +8,18 @@ namespace Stareater.GameData
 		[StateProperty]
 		public string Id { get; private set; }
 
+		[StateProperty]
+		public string LangCode { get; private set; }
+
+		public SystemPolicy(string id, string langCode)
+		{
+			this.Id = id;
+			this.LangCode = langCode;
+		}
+
+		private SystemPolicy()
+		{ }
+
 		public override bool Equals(object obj)
 		{
 			var other = obj as SystemPolicy;

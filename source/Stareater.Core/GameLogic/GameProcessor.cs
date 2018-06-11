@@ -384,7 +384,7 @@ namespace Stareater.GameLogic
 						var stellaris = new StellarisAdmin(project.Destination.Star, project.Owner);
 						this.game.States.Stellarises.Add(stellaris);
 						this.game.Derivates.Stellarises.Add(new StellarisProcessor(stellaris));
-						this.game.Orders[project.Owner].Policies.Add(stellaris, new SystemPolicy()); //TODO(v0.8) pick default policy
+						this.game.Orders[project.Owner].Policies.Add(stellaris, game.Statics.Policies.First());
 					}
 				}
 				

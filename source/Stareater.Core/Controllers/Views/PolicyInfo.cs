@@ -15,14 +15,12 @@ namespace Stareater.Controllers.Views
 
 		public string Name
 		{
-			//TODO(v0.8) unstub
-			get { return LocalizationManifest.Get.CurrentLanguage["SystemPolicies"]["develop"].Text(); }
+			get { return LocalizationManifest.Get.CurrentLanguage["SystemPolicies"][this.Data.LangCode].Text(); }
 		}
 
 		public string Id
 		{
-			//TODO(v0.8) unstub
-			get { return "develop"; }
+			get { return this.Data.Id; }
 		}
 
 		public override bool Equals(object obj)

@@ -12,6 +12,7 @@ using Stareater.Utils;
 using Stareater.Galaxy.BodyTraits;
 using Stareater.GameData.Construction;
 using Stareater.Galaxy;
+using Stareater.Controllers.Views;
 
 namespace Stareater.GameData.Databases
 {
@@ -32,6 +33,7 @@ namespace Stareater.GameData.Databases
 		public List<ResearchTopic> ResearchTopics { get; private set; }
 		public ShipFormulaSet ShipFormulas { get; private set; }
 		public List<DesignTemplate> SystemColonizerDesigns { get; private set; }
+		public List<SystemPolicy> Policies { get; private set; }
 		public Dictionary<string, TraitType> Traits { get; private set; }
 
 		public Dictionary<string, ArmorType> Armors { get; private set; }
@@ -68,6 +70,7 @@ namespace Stareater.GameData.Databases
 			this.DevelopmentTopics = new List<DevelopmentTopic>();
 			this.PlanetForumlas = new Dictionary<PlanetType, PlanetForumlaSet>();
 			this.ResearchTopics = new List<ResearchTopic>();
+			this.Policies = new List<SystemPolicy>();
 			this.Traits = new Dictionary<string, TraitType>();
 		}
 		
@@ -110,6 +113,9 @@ namespace Stareater.GameData.Databases
 								break;
 							case PlayerFormulasTag:
 								db.PlayerFormulas = loadPlayerFormulas(data);
+								break;
+							case PolicyTag:
+								db.Policies.Add(loadPolicy(data));
 								break;
 							case PredefinedDesignTag:
 								db.PredeginedDesigns.Add(loadDesignTemplate(data));
@@ -173,7 +179,7 @@ namespace Stareater.GameData.Databases
 			
 			return db;
 		}
-		
+
 		#region Colony Formulas
 		private static ColonyFormulaSet loadColonyFormulas(IkonComposite data)
 		{
@@ -274,6 +280,14 @@ namespace Stareater.GameData.Databases
 				data[ShipSensorCostPortion].To<Formula>().Evaluate(null),
 				data[ShipThrustersCostPortion].To<Formula>().Evaluate(null),
 				data[ShipWormholeSpeed].To<Formula>()
+			);
+		}
+
+		private static SystemPolicy loadPolicy(IkonComposite data)
+		{
+			return new SystemPolicy(
+				data[GeneralLangKey].To<string>(),
+				data[GeneralCodeKey].To<string>()
 			);
 		}
 
@@ -703,6 +717,7 @@ namespace Stareater.GameData.Databases
 		private const string NativesTag = "Natives";
 		private const string PlanetForumlasTag = "PlanetFormulas";
 		private const string PlayerFormulasTag = "PlayerFormulas";
+		private const string PolicyTag = "SystemPolicy";
 		private const string PredefinedDesignTag = "PredefinedDesign";
 		private const string ResearchTag = "ResearchTopic";
 		private const string ShipFormulasTag = "ShipFormulas";

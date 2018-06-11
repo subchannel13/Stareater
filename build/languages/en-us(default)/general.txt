@@ -10,7 +10,3 @@ localHuman = Human
 AI = AI
 natives = Natives
 -
-
-:SystemPolicies
-develop = Develop
--
