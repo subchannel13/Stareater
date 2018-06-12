@@ -135,7 +135,8 @@ namespace Stareater.Controllers
 		{
 			if (IsReadOnly)
 				return;
-
+			
+			//TODO(v0.8) check if it can be picked
 			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.Add(data.Project);
 			this.recalculateSpending();
 		}
@@ -162,7 +163,6 @@ namespace Stareater.Controllers
 		#endregion
 
 		#region Policies
-		//TODO(v0.8) apply policy to colonies
 		public abstract PolicyInfo Policy { get; set; }
 
 		public PolicyInfo[] Policies

@@ -287,7 +287,9 @@ namespace Stareater.GameData.Databases
 		{
 			return new SystemPolicy(
 				data[GeneralLangKey].To<string>(),
-				data[GeneralCodeKey].To<string>()
+				data[GeneralCodeKey].To<string>(),
+				data[PolicySpendingRatioKey].To<double>(),
+				data[PolicyBuildingQueueKey].To<string[]>()
 			);
 		}
 
@@ -838,6 +840,9 @@ namespace Stareater.GameData.Databases
 		private const string PopulationActivityImprovised = "improvised";
 		private const string PopulationActivityOrganized = "organized";
 		private const string PopulationActivityOrganizationFactor = "orgFactor";
+
+		private const string PolicySpendingRatioKey = "spendingRatio";
+		private const string PolicyBuildingQueueKey = "queue";
 
 		private const string TraitMaintenanceKey = "cost";
 		private const string TraitEffectKey = "effect";

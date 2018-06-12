@@ -8,6 +8,7 @@ namespace Stareater.GameData.Databases.Tables
 	{
 		[StateProperty]
 		public double SpendingRatio { get; set; }
+
 		[StateProperty]
 		public List<IConstructionProject> Queue { get; private set; }
 

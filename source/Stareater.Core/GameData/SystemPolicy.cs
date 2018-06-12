@@ -11,10 +11,18 @@ namespace Stareater.GameData
 		[StateProperty]
 		public string LangCode { get; private set; }
 
-		public SystemPolicy(string id, string langCode)
+		[StateProperty]
+		public double SpendingRatio { get; private set; }
+
+		[StateProperty]
+		public string[] Queue { get; private set; }
+
+		public SystemPolicy(string id, string langCode, double spendingRatio, string[] queue)
 		{
 			this.Id = id;
 			this.LangCode = langCode;
+			this.SpendingRatio = spendingRatio;
+			this.Queue = queue;
 		}
 
 		private SystemPolicy()

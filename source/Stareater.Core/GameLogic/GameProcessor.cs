@@ -91,7 +91,10 @@ namespace Stareater.GameLogic
 		public void CalculateBaseEffects()
 		{
 			foreach (var stellaris in this.game.Derivates.Stellarises)
+			{
+				stellaris.ApplyPolicy(this.game, this.game.Orders[stellaris.Owner].Policies[stellaris.Stellaris]);
 				stellaris.CalculateBaseEffects();
+			}
 			foreach (var colonyProc in this.game.Derivates.Colonies)
 				colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Of(colonyProc.Owner));
 			foreach (var playerProc in this.game.Derivates.Players)

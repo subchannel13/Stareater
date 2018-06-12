@@ -5,6 +5,9 @@ using Stareater.Players;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using Stareater.GameData.Construction;
+using System;
+using Stareater.GameData;
+using Stareater.GameLogic.Planning;
 
 namespace Stareater.GameLogic
 {
@@ -40,6 +43,56 @@ namespace Stareater.GameLogic
 			get
 			{
 				return Stellaris.Location.Star;
+			}
+		}
+
+		public void ApplyPolicy(MainGame game, SystemPolicy policy)
+		{
+			//TODO(v0.8) remove previous policy buildings
+			var playerProc = game.Derivates.Of(this.Owner);
+			var playerTechs = game.States.DevelopmentAdvances.Of[this.Owner].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
+			var comparer = new ConstructionComparer();
+
+			foreach (var colony in game.States.Colonies.AtStar[this.Location].Where(x => x.Owner == this.Owner))
+			{
+				var plan = game.Orders[this.Owner].ConstructionPlans[colony];
+				plan.SpendingRatio = policy.SpendingRatio;
+
+				var colonyProc = game.Derivates.Of(colony);
+				var colonyVars = colonyProc.LocalEffects(game.Statics).
+					UnionWith(playerProc.TechLevels).Get;
+
+				//TODO(0.8) conver Statics.Constructables to dictionary
+				foreach (var project in policy.Queue.Select(x => game.Statics.Constructables.First(p => p.IdCode == x)))
+					if (plan.Queue.All(x => !comparer.Compare(x, project)) &&
+						Prerequisite.AreSatisfied(project.Prerequisites, 0, playerTechs) &&
+						project.Condition.Evaluate(colonyVars) >= 0)
+					{
+						plan.Queue.Add(new StaticProject(project));
+					}
+
+				colonyProc.CalculateSpending(game, playerProc);
+			}
+
+			this.CalculateSpending(game);
+
+			foreach (var colony in game.States.Colonies.AtStar[this.Location].Where(x => x.Owner == this.Owner))
+				game.Derivates.Of(colony).CalculateDerivedEffects(game.Statics, playerProc);
+		}
+
+		public void UndoPolicy(MainGame game)
+		{
+			var policy = game.Orders[this.Owner].Policies[this.Site as StellarisAdmin];
+			var comparer = new ConstructionComparer();
+
+			foreach (var colony in game.States.Colonies.AtStar[this.Location].Where(x => x.Owner == this.Owner))
+			{
+				var toRemove = new HashSet<IConstructionProject>();
+				foreach (var project in game.Orders[this.Owner].ConstructionPlans[colony].Queue)
+					if (policy.Queue.Any(x => !comparer.Compare(project, game.Statics.Constructables.First(p => p.IdCode == x))))
+						toRemove.Add(project);
+
+				game.Orders[this.Owner].ConstructionPlans[colony].Queue.RemoveAll(toRemove.Contains);
 			}
 		}
 

@@ -15,7 +15,8 @@ namespace Stareater.GameData
 			this.Code = code;
 			this.Level = level;
 		}
-		
+
+		//TODO(v0.8) convert techLevels to accept PlayerProcessor.TechLevels
 		public static bool AreSatisfied(IEnumerable<Prerequisite> prerequisites, int targetLevel, IDictionary<string, double> techLevels)
 		{
 			var levelVars = new Var("lvl", targetLevel).Get;

@@ -171,8 +171,12 @@ namespace Stareater.Controllers
 				if (this.IsReadOnly)
 					return;
 
-				this.Game.Orders[this.Site.Owner].
-					Policies[this.Game.States.Stellarises.At[this.Site.Location.Star].First(x => x.Owner == this.Site.Owner)] = value.Data;
+				var stellaris = this.Game.States.Stellarises.At[this.Site.Location.Star].First(x => x.Owner == this.Site.Owner);
+
+				this.Game.Derivates.Of(stellaris).UndoPolicy(this.Game);
+				this.Game.Orders[this.Site.Owner].Policies[stellaris] = value.Data;
+				this.Game.Derivates.Of(stellaris).ApplyPolicy(this.Game, value.Data);
+				this.recalculateSpending();
 			}
 		}
 	}

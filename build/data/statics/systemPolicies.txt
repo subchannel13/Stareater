@@ -1,9 +1,20 @@
 { SystemPolicy
 	langCode: develop
 	code: develop
+	
+	spendingRatio = 0.9
+	queue [
+		:Infra
+		:soil
+	]
 }
 
 { SystemPolicy
 	langCode: exploit
 	code: exploit
+	
+	spendingRatio = 0.2
+	queue [
+		:Infra
+	]
 }

@@ -115,7 +115,10 @@ namespace Stareater.Controllers
 				if (this.IsReadOnly)
 					return;
 
+				this.Game.Derivates.Of(this.Site as StellarisAdmin).UndoPolicy(this.Game);
 				this.Game.Orders[this.Site.Owner].Policies[this.Site as StellarisAdmin] = value.Data;
+				this.Game.Derivates.Of(this.Site as StellarisAdmin).ApplyPolicy(this.Game, value.Data);
+				this.recalculateSpending();
 			}
 		}
 	}

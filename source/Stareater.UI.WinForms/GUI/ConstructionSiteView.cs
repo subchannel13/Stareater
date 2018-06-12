@@ -137,6 +137,8 @@ namespace Stareater.GUI
 			policyIndex = (policyIndex + 1) % this.controller.Policies.Length;
 
 			this.controller.Policy = this.controller.Policies[policyIndex];
+
+			this.industrySlider.Value = (int)(this.controller.DesiredSpendingRatio * this.industrySlider.Maximum);
 			this.resetView();
 		}
 	}
