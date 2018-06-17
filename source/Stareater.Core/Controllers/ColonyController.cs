@@ -27,6 +27,18 @@ namespace Stareater.Controllers
 			}
 		}
 
+		public override double DesiredSpendingRatio
+		{
+			get
+			{
+				return base.DesiredSpendingRatio;
+			}
+			set
+			{
+				//no operation
+			}
+		}
+
 		protected override void recalculateSpending()
 		{
 			var colony = Site as Colony;

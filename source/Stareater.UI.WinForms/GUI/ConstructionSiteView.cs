@@ -110,6 +110,9 @@ namespace Stareater.GUI
 			if (e.Type == ScrollEventType.EndScroll)
 				return;
 
+			if (this.controller.SiteType == SiteType.Colony && e.NewValue != e.OldValue)
+				e.NewValue = e.OldValue;
+
 			this.controller.DesiredSpendingRatio = e.NewValue / (double)this.industrySlider.Maximum;
 			this.resetEstimation();
 		}

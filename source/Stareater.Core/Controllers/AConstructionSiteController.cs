@@ -49,12 +49,14 @@ namespace Stareater.Controllers
 		#region Buildings
 		protected abstract void recalculateSpending();
 
-		public double DesiredSpendingRatio
+		public virtual double DesiredSpendingRatio
 		{
 			get
 			{
 				return this.Game.Orders[this.Site.Owner].ConstructionPlans[this.Site].SpendingRatio;
 			}
+
+			//TODO(later) make setter only available in stellaris controller
 			set
 			{
 				if (this.IsReadOnly)
