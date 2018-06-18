@@ -104,6 +104,9 @@ namespace Stareater.GUI
 		
 		private void onOption_Click(object sender, EventArgs e)
 		{
+			if (controller.SiteType == GameData.SiteType.Colony)
+				return;
+
 			var itemView = sender as ConstructableItemView;
 			
 			if (controller.CanPick(itemView.Data)) {
@@ -124,6 +127,9 @@ namespace Stareater.GUI
 		
 		private void removeButton_Click(object sender, EventArgs e)
 		{
+			if (controller.SiteType == GameData.SiteType.Colony)
+				return;
+
 			if (controller.IsReadOnly || !queueList.HasSelection ||
 			    (queueList.SelectedItem as QueuedConstructionView).Data.IsVirtual)
 				return;
@@ -137,6 +143,9 @@ namespace Stareater.GUI
 		
 		private void moveUpButton_Click(object sender, EventArgs e)
 		{
+			if (controller.SiteType == GameData.SiteType.Colony)
+				return; 
+
 			if (controller.IsReadOnly || !queueList.HasSelection)
 				return;
 			
@@ -146,6 +155,9 @@ namespace Stareater.GUI
 		
 		private void moveDownButton_Click(object sender, EventArgs e)
 		{
+			if (controller.SiteType == GameData.SiteType.Colony)
+				return;
+
 			if (controller.IsReadOnly || !queueList.HasSelection)
 				return;
 			

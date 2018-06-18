@@ -32,11 +32,26 @@ namespace Stareater.Controllers
 			get
 			{
 				return base.DesiredSpendingRatio;
-			}
+				}
 			set
 			{
 				//no operation
 			}
+		}
+
+		public override void Dequeue(int index)
+		{
+			//no operation
+		}
+
+		public override void Enqueue(ConstructableInfo data)
+		{
+			//no operation
+		}
+
+		public override void ReorderQueue(int fromIndex, int toIndex)
+		{
+			//no operation
 		}
 
 		protected override void recalculateSpending()

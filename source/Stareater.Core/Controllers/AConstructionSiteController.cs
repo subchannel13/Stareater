@@ -132,8 +132,9 @@ namespace Stareater.Controllers
 				!x.Project.Equals(data.Project)) && 
 				data.Project.Condition.Evaluate(vars) >= 0;
 		}
-		
-		public void Enqueue(ConstructableInfo data)
+
+		//TODO(later) make only available in stellaris controller
+		public virtual void Enqueue(ConstructableInfo data)
 		{
 			if (IsReadOnly)
 				return;
@@ -142,8 +143,9 @@ namespace Stareater.Controllers
 			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.Add(data.Project);
 			this.recalculateSpending();
 		}
-		
-		public void Dequeue(int index)
+
+		//TODO(later) make only available in stellaris controller
+		public virtual void Dequeue(int index)
 		{
 			if (IsReadOnly || orderIndex[index] == NotOrder)
 				return;
@@ -151,8 +153,9 @@ namespace Stareater.Controllers
 			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.RemoveAt(orderIndex[index]);
 			this.recalculateSpending();
 		}
-		
-		public void ReorderQueue(int fromIndex, int toIndex)
+
+		//TODO(later) make only available in stellaris controller
+		public virtual void ReorderQueue(int fromIndex, int toIndex)
 		{
 			if (IsReadOnly || orderIndex[fromIndex] == NotOrder || orderIndex[toIndex] == NotOrder)
 				return;
