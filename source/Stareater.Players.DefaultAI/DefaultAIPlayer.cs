@@ -25,11 +25,7 @@ namespace Stareater.Players.DefaultAI
 			foreach(var stellaris in this.playerController.Stellarises())
 			{
 				StarSystemController starSystem = this.playerController.OpenStarSystem(stellaris.HostStar);
-				manage(starSystem.StellarisController());
-				
-				foreach(var planet in starSystem.Planets)
-					if (starSystem.BodyType(planet.Position) == BodyType.OwnColony)
-						manage(starSystem.ColonyController(planet.Position));
+				manage(starSystem.StellarisController());				
 			}
 			
 			this.playerController.EndGalaxyPhase();
