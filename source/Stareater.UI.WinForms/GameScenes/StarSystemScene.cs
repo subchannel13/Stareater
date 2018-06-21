@@ -63,7 +63,7 @@ namespace Stareater.GameScenes
 		private float maxOffset;
 		
 		private int selectedBody;
-		private HashSet<Planet> colonizationMarked = new HashSet<Planet>();
+		private HashSet<PlanetInfo> colonizationMarked = new HashSet<PlanetInfo>();
 		
 		public StarSystemScene(Action systemClosedHandler, ConstructionSiteView siteView, EmpyPlanetView emptyPlanetView)
 		{
@@ -106,7 +106,7 @@ namespace Stareater.GameScenes
 
 		protected override void FrameUpdate(double deltaTime)
 		{
-			var beingColonized = new HashSet<Planet>(this.controller.Planets.Where(x => this.controller.IsColonizing(x.Position)));
+			var beingColonized = new HashSet<PlanetInfo>(this.controller.Planets.Where(x => this.controller.IsColonizing(x.Position)));
 			if (!this.colonizationMarked.SetEquals(beingColonized))
 				this.setupColonizationMarkers();
 			this.colonizationMarked = beingColonized;
@@ -227,7 +227,7 @@ namespace Stareater.GameScenes
 			siteView.Visible = view.Equals(siteView);
 		}
 		
-		private PolygonData planetSpriteData(Planet planet)
+		private PolygonData planetSpriteData(PlanetInfo planet)
 		{
 			var sprite = new TextureInfo();
 
@@ -274,7 +274,7 @@ namespace Stareater.GameScenes
 				ref this.starSprite,
 				new SceneObject(new PolygonData(
 					StarColorZ,
-					new SpriteData(starTransform, GalaxyTextures.Get.SystemStar.Id, controller.Star.Color),
+					new SpriteData(starTransform, GalaxyTextures.Get.SystemStar.Id, controller.HostStar.Color),
 					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar).ToList()
 				))
 			);

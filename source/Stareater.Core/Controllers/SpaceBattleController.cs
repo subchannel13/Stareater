@@ -20,6 +20,7 @@ namespace Stareater.Controllers
 		private readonly MainGame mainGame;
 		private readonly GameController gameController;
 		private readonly Dictionary<Player, IBattleEventListener> playerListeners;
+		private readonly StarData star;
 
 		private BlockingCollection<Action> messageQueue = new BlockingCollection<Action>(1);
 		private SpaceBattleProcessor processor = null;
@@ -31,7 +32,7 @@ namespace Stareater.Controllers
 			this.battleGame = new SpaceBattleGame(conflict.Location, SpaceBattleProcessor.ConflictDuration(conflict.StartTime), mainGame);
 			this.mainGame = mainGame;
 			this.gameController = gameController;
-			this.Star = mainGame.States.Stars.At[battleGame.Location];
+			this.star = mainGame.States.Stars.At[battleGame.Location];
 			
 			this.processor = new SpaceBattleProcessor(this.battleGame, mainGame);
 			this.processor.Initialize(conflict.Fleets);
@@ -40,13 +41,16 @@ namespace Stareater.Controllers
 		#region Battle information
 		public static readonly int BattlefieldRadius = SpaceBattleGame.BattlefieldRadius;
 		
-		public StarData Star { get; private set; }
+		public StarInfo HostStar
+		{
+			get { return new StarInfo(this.star); }
+		}
 		
 		public IEnumerable<CombatPlanetInfo> Planets
 		{
 			get 
 			{
-				var planets = this.mainGame.States.Planets.At[this.Star];
+				var planets = this.mainGame.States.Planets.At[this.star];
 				
 				for(int i = 0; i < this.battleGame.Planets.Length; i++)
 					yield return new CombatPlanetInfo(this.battleGame.Planets[i]);
@@ -93,7 +97,7 @@ namespace Stareater.Controllers
 		
 		public void UseAbilityOnStar(AbilityInfo ability)
 		{
-			this.messageQueue.Add(() => this.processor.UseAbility(ability.Index, ability.Quantity, this.Star));
+			this.messageQueue.Add(() => this.processor.UseAbility(ability.Index, ability.Quantity, this.star));
 		}
 		#endregion
 		

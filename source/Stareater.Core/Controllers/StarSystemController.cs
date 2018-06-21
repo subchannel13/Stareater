@@ -14,8 +14,8 @@ namespace Stareater.Controllers
 		
 		private readonly MainGame game;
 		private readonly Player player;
+		private readonly StarData star;
 		
-		public StarData Star { get; private set; }
 		public bool IsReadOnly { get; private set; }
 		
 		internal StarSystemController(MainGame game, StarData star, bool readOnly, Player player)
@@ -23,33 +23,38 @@ namespace Stareater.Controllers
 			this.game = game;
 			this.player = player;
 			this.IsReadOnly = readOnly;
-			this.Star = star;
+			this.star = star;
 		}
-		
-		public IEnumerable<Planet> Planets
+
+		public StarInfo HostStar
+		{
+			get { return new StarInfo(this.star); }
+		}
+
+		public IEnumerable<PlanetInfo> Planets
 		{
 			get {
-				var planetInfos = this.player.Intelligence.About(Star).Planets;
+				var planetInfos = this.player.Intelligence.About(this.star).Planets;
 				var knownPlanets = planetInfos.Where(x => x.Value.Explored).Select(x => x.Key);
 				
-				return knownPlanets.OrderBy(x => x.Position);
+				return knownPlanets.OrderBy(x => x.Position).Select(x => new PlanetInfo(x));
 			}
 		}
 		
-		public ColonyInfo PlanetsColony(Planet planet)
+		public ColonyInfo PlanetsColony(PlanetInfo planet)
 		{
-			if (this.player.Intelligence.About(Star).Planets[planet].LastVisited != PlanetIntelligence.NeverVisited)
+			if (this.player.Intelligence.About(this.star).Planets[planet.Data].LastVisited != PlanetIntelligence.NeverVisited)
 				//TODO(later) show last known colony information
-				if (game.States.Colonies.AtPlanet.Contains(planet))
-					return new ColonyInfo(game.States.Colonies.AtPlanet[planet]);
+				if (game.States.Colonies.AtPlanet.Contains(planet.Data))
+					return new ColonyInfo(game.States.Colonies.AtPlanet[planet.Data]);
 			
 			return null;
 		}
 		
 		public StellarisInfo StarsAdministration()
 		{
-			var stellaris = game.States.Stellarises.At[Star].FirstOrDefault(x => x.Owner == this.player);
-			if (this.player.Intelligence.About(Star).LastVisited != StarIntelligence.NeverVisited && stellaris != null)
+			var stellaris = game.States.Stellarises.At[this.star].FirstOrDefault(x => x.Owner == this.player);
+			if (this.player.Intelligence.About(this.star).LastVisited != StarIntelligence.NeverVisited && stellaris != null)
 				//TODO(later) show last known star system information
 				return new StellarisInfo(stellaris, this.game);
 			
@@ -59,17 +64,17 @@ namespace Stareater.Controllers
 		public BodyType BodyType(int bodyIndex)
 		{
 			if (bodyIndex == StarIndex) {
-				if (game.States.Stellarises.At[Star].Count == 0)
+				if (game.States.Stellarises.At[this.star].Count == 0)
 					return Views.BodyType.NoStellarises;
 					
-				var stellarises = game.States.Stellarises.At[Star];
+				var stellarises = game.States.Stellarises.At[this.star];
 				
 				return stellarises.Any(x => x.Owner == this.player) ?
 					Views.BodyType.OwnStellaris : 
 					Views.BodyType.ForeignStellaris;
 			} 
 
-			var planet = game.States.Planets.At[Star].FirstOrDefault(x => x.Position == bodyIndex);
+			var planet = game.States.Planets.At[this.star].FirstOrDefault(x => x.Position == bodyIndex);
 
 			if (planet == null)
 				return Views.BodyType.Empty;
@@ -85,13 +90,13 @@ namespace Stareater.Controllers
 
 		public bool IsColonizing(int position)
 		{
-			var planet = this.game.States.Planets.At[this.Star].First(x => x.Position == position);
+			var planet = this.game.States.Planets.At[this.star].First(x => x.Position == position);
 			return planet != null && this.game.Orders[this.player].ColonizationOrders.ContainsKey(planet);
 		}
 		
 		public ColonyController ColonyController(int bodyPosition)
 		{
-			var planet = game.States.Planets.At[Star].FirstOrDefault(x => x.Position == bodyPosition);
+			var planet = game.States.Planets.At[this.star].FirstOrDefault(x => x.Position == bodyPosition);
 			
 			if (planet == null)
 				throw new ArgumentOutOfRangeException("bodyPosition");
@@ -101,7 +106,7 @@ namespace Stareater.Controllers
 
 		public ColonizationController EmptyPlanetController(int bodyPosition)
 		{
-			var planet = game.States.Planets.At[Star].FirstOrDefault(x => x.Position == bodyPosition);
+			var planet = game.States.Planets.At[this.star].FirstOrDefault(x => x.Position == bodyPosition);
 			
 			if (planet == null)
 				throw new ArgumentOutOfRangeException("bodyPosition");
@@ -111,7 +116,7 @@ namespace Stareater.Controllers
 		
 		public StellarisAdminController StellarisController()
 		{
-			var stellaris = game.States.Stellarises.At[Star].FirstOrDefault(x => x.Owner == this.player);
+			var stellaris = game.States.Stellarises.At[this.star].FirstOrDefault(x => x.Owner == this.player);
 			return new StellarisAdminController(game, stellaris, IsReadOnly, this.player);
 		}
 	}

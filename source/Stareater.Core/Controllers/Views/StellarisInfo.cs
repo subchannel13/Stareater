@@ -22,9 +22,9 @@ namespace Stareater.Controllers.Views
 				Sum(x => x.Population);
 		}
 		
-		public StarData HostStar
+		public StarInfo HostStar
 		{
-			get { return Stellaris.Location.Star; }
+			get { return new StarInfo(this.Stellaris.Location.Star); }
 		}
 		
 		#region Equals and GetHashCode implementation

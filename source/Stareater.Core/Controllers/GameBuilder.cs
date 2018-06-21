@@ -113,7 +113,7 @@ namespace Stareater.Controllers
 				new ColonizationCollection());
 		}
 		
-		private static ColonyCollection createColonies(Player[] players, IList<StarSystem> starSystems, 
+		private static ColonyCollection createColonies(Player[] players, IList<StarSystemBuilder> starSystems, 
 			IList<int> homeSystemIndices, StartingConditions startingConditions, StaticsDB statics)
 		{
 			var colonies = new ColonyCollection();
@@ -121,26 +121,25 @@ namespace Stareater.Controllers
 			{
 				var planets = starSystems[homeSystemIndices[playerI]].Planets;
 				var fitness = planets.
-					Select(x => ColonyProcessor.DesirabilityOf(x, statics)).
-					ToList();
+					ToDictionary(x => x, x => ColonyProcessor.DesirabilityOf(x, statics));
 
 				for (int i = 0; i < startingConditions.Colonies; i++)
 				{
-					var planetI = Methods.FindBest(Methods.Range(0, planets.Length, 1), x => fitness[x]);
+					var planet = Methods.FindBest(planets, x => fitness[x]);
 					colonies.Add(new Colony(
 						0,
-						planets[planetI],
+						planet,
 						players[playerI]
 					));
 
-					fitness[planetI] = double.NegativeInfinity;
+					fitness[planet] = double.NegativeInfinity;
 				}
 			}
 			
 			return colonies;
 		}
 		
-		private static PlanetCollection createPlanets(IEnumerable<StarSystem> starSystems)
+		private static PlanetCollection createPlanets(IEnumerable<StarSystemBuilder> starSystems)
 		{
 			var planets = new PlanetCollection();
 			foreach(var system in starSystems)
@@ -149,7 +148,7 @@ namespace Stareater.Controllers
 			return planets;
 		}
 		
-		private static StarCollection createStars(IEnumerable<StarSystem> starList)
+		private static StarCollection createStars(IEnumerable<StarSystemBuilder> starList)
 		{
 			var stars = new StarCollection
 			{
@@ -159,7 +158,7 @@ namespace Stareater.Controllers
 			return stars;
 		}
 		
-		private static StellarisCollection createStellarises(Player[] players, IList<StarSystem> starSystems, IList<int> homeSystemIndices)
+		private static StellarisCollection createStellarises(Player[] players, IList<StarSystemBuilder> starSystems, IList<int> homeSystemIndices)
 		{
 			var stellarises = new StellarisCollection();
 			for(int playerI = 0; playerI < players.Length; playerI++)
@@ -171,7 +170,7 @@ namespace Stareater.Controllers
 			return stellarises;
 		}
 		
-		private static WormholeCollection createWormholes(IList<StarSystem> starList, IEnumerable<WormholeEndpoints> wormholeEndpoints)
+		private static WormholeCollection createWormholes(IList<StarSystemBuilder> starList, IEnumerable<WormholeEndpoints> wormholeEndpoints)
 		{
 			var wormholes = new WormholeCollection
 			{
@@ -220,7 +219,7 @@ namespace Stareater.Controllers
 				var weights = new ChoiceWeights<Colony>();
 				
 				foreach(Colony colony in colonies.OwnedBy[player])
-					weights.Add(colony, derivates.Colonies.Of[colony].Desirability);
+					weights.Add(colony, derivates.Colonies.Of[colony].Desirability); //TODO(v0.8) same key exception if starting conditions asks for more colonies than possible
 
 				var maxPopulation = colonies.OwnedBy[player].Sum(x => derivates.Colonies.Of[x].MaxPopulation);
 				double totalPopulation = Math.Min(startingConditions.Population, maxPopulation);
@@ -273,9 +272,7 @@ namespace Stareater.Controllers
 
 				game.Derivates.Players.Of[player].Initialize(game);
 				
-				player.Intelligence.Initialize(game.States.Stars.Select(
-					star => new StarSystem(star, game.States.Planets.At[star].ToArray())
-				));
+				player.Intelligence.Initialize(game.States);
 				
 				foreach(var colony in game.States.Colonies.OwnedBy[player])
 					player.Intelligence.StarFullyVisited(colony.Star, 0);

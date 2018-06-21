@@ -93,7 +93,7 @@ namespace Stareater.Galaxy.RybPopulator
 			get { yield return climateParameter; }
 		}
 
-		public IEnumerable<StarSystem> Generate(Random rng, StarPositions starPositions, IEnumerable<TraitType> planetTraits)
+		public IEnumerable<StarSystemBuilder> Generate(Random rng, StarPositions starPositions, IEnumerable<TraitType> planetTraits)
 		{
 			int colorI = 0;
 			var namer = new StarNamer(starPositions.Stars.Length, new Random());
@@ -102,15 +102,12 @@ namespace Stareater.Galaxy.RybPopulator
 			//TODO(later): Randomize star type distribution
 			//TODO(later): Star size and radiation distribution
 			foreach (var position in starPositions.Stars) {
-				var star = new StarData(starTypes[colorI++ % starTypes.Length].Hue, 1, namer.NextName(), position, new List<TraitType>());
-				
-				yield return new StarSystem(
-					star,
-					new Planet[] {
-						new Planet(star, 1, PlanetType.Rock, 100, planetTraits.Take(1).ToList()),
-						new Planet(star, 2, PlanetType.Asteriod, 100, new List<TraitType>()),
-						new Planet(star, 3, PlanetType.GasGiant, 100, new List<TraitType>()),
-					});
+				var system = new StarSystemBuilder(starTypes[colorI++ % starTypes.Length].Hue, 1, namer.NextName(), position, new List<TraitType>());
+				system.AddPlanet(1, PlanetType.Rock, 100, planetTraits.Take(1).ToList());
+				system.AddPlanet(2, PlanetType.Asteriod, 100, new List<TraitType>());
+				system.AddPlanet(3, PlanetType.GasGiant, 100, new List<TraitType>());
+
+				yield return system;
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 ﻿using Stareater.Players;
 using System.Linq;
 using System.Collections.Generic;
-using Stareater.Galaxy;
 using Stareater.Controllers.Views;
 
 namespace Stareater.Controllers
@@ -27,26 +26,26 @@ namespace Stareater.Controllers
 			}
 		}
 
-		public IEnumerable<StarData> EjectableStars
+		public IEnumerable<StarInfo> EjectableStars
 		{
 			get
 			{
-				return this.game.States.Stars.Where(x => x != this.game.States.StareaterBrain);
+				return this.game.States.Stars.Where(x => x != this.game.States.StareaterBrain).Select(x => new StarInfo(x));
 			}
 		}
 
-		public StarData EjectTarget
+		public StarInfo EjectTarget
 		{
 			get
 			{
-				return this.game.Orders[this.player].EjectingStar;
+				return new StarInfo(this.game.Orders[this.player].EjectingStar);
 			}
 			set
 			{
 				if (this.game.IsReadOnly || !this.EjectableStars.Contains(value))
 					return;
 
-				this.game.Orders[this.player].EjectingStar = value;
+				this.game.Orders[this.player].EjectingStar = value.Data;
 				this.game.Derivates.Of(this.player).CalculateStareater(this.game);
             }
 		}

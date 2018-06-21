@@ -41,9 +41,9 @@ namespace Stareater.GuiUtils
 			return etaText.Text(numVars, textVars.Get);
 		}
 		
-		public static string PlanetName(Planet planet)
+		public static string PlanetName(PlanetInfo planet)
 		{
-			string starName = planet.Star.Name.ToText(LocalizationManifest.Get.CurrentLanguage);
+			string starName = planet.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage);
 			
 			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 			var textVars = new TextVar(

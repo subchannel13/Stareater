@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using OpenTK;
 using Stareater.Controllers;
 using Stareater.Controllers.Views.Ships;
-using Stareater.Galaxy;
 using Stareater.Localization;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
@@ -16,6 +15,7 @@ using Stareater.GraphicsEngine;
 using Stareater.GLData.SpriteShader;
 using Stareater.GLData;
 using Stareater.GraphicsEngine.GuiElements;
+using Stareater.Controllers.Views;
 
 namespace Stareater.GameScenes
 {
@@ -208,7 +208,7 @@ namespace Stareater.GameScenes
 		
 		private Vector2 fleetDisplayPosition(FleetInfo fleet)
 		{
-			var atStar = this.QueryScene(fleet.Position, 1).Any(x => x.Data is StarData);
+			var atStar = this.QueryScene(fleet.Position, 1).Any(x => x.Data is StarInfo);
 			var displayPosition = new Vector2((float)fleet.Position.X, (float)fleet.Position.Y);
 
 			if (!fleet.IsMoving)
@@ -448,7 +448,7 @@ namespace Stareater.GameScenes
 			var allObjects = this.QueryScene(searchPoint, searchRadius).
 				OrderBy(x => (x.PhysicalShape.Center - convert(searchPoint)).LengthSquared).
 				ToList();
-			var starsFound = allObjects.Where(x => x.Data is StarData).Select(x => x.Data as StarData).ToList();
+			var starsFound = allObjects.Where(x => x.Data is StarInfo).Select(x => x.Data as StarInfo).ToList();
 			var fleetFound = allObjects.Where(x => x.Data is FleetInfo).Select(x => x.Data as FleetInfo).ToList();
 			
 			var foundAny = starsFound.Any() || fleetFound.Any();
@@ -510,8 +510,8 @@ namespace Stareater.GameScenes
 			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 
 			var starsFound = this.QueryScene(searchPoint, searchRadius).
-				Where(x => x.Data is StarData).
-				Select(x => x.Data as StarData).
+				Where(x => x.Data is StarInfo).
+				Select(x => x.Data as StarInfo).
 				OrderBy(x => (x.Position - searchPoint).Magnitude()).
 				ToList();
 
@@ -532,14 +532,14 @@ namespace Stareater.GameScenes
 			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 
 			var starsFound = this.QueryScene(searchPoint, searchRadius).
-				Where(x => x.Data is StarData).
+				Where(x => x.Data is StarInfo).
 				OrderBy(x => (x.PhysicalShape.Center - convert(searchPoint)).LengthSquared).
 				ToList();
 
 			if (!starsFound.Any())
 				return;
 
-			this.SelectedFleet.SimulateTravel(starsFound[0].Data as StarData);
+			this.SelectedFleet.SimulateTravel(starsFound[0].Data as StarInfo);
 			this.setupMovementEta();
 			this.setupMovementSimulation();
 		}
@@ -580,7 +580,7 @@ namespace Stareater.GameScenes
 			}
 		}
 		
-		private StarData lastSelectedStar
+		private StarInfo lastSelectedStar
 		{
 			get 
 			{
@@ -597,7 +597,7 @@ namespace Stareater.GameScenes
 			}
 		}
 		
-		private Color starNameColor(StarData star)
+		private Color starNameColor(StarInfo star)
 		{
 			if (this.currentPlayer.IsStarVisited(star)) {
 				var colonies = this.currentPlayer.KnownColonies(star);

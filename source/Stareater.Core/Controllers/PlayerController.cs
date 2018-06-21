@@ -73,34 +73,34 @@ namespace Stareater.Controllers
 		#endregion
 			
 		#region Map related
-		public bool IsStarVisited(StarData star)
+		public bool IsStarVisited(StarInfo star)
 		{
-			return this.PlayerInstance(this.gameInstance).Intelligence.About(star).IsVisited;
+			return this.PlayerInstance(this.gameInstance).Intelligence.About(star.Data).IsVisited;
 		}
 		
-		public IEnumerable<ColonyInfo> KnownColonies(StarData star)
+		public IEnumerable<ColonyInfo> KnownColonies(StarInfo star)
 		{
 			var game = this.gameInstance;
-			var starKnowledge = this.PlayerInstance(game).Intelligence.About(star);
+			var starKnowledge = this.PlayerInstance(game).Intelligence.About(star.Data);
 			
-			foreach(var colony in game.States.Colonies.AtStar[star])
+			foreach(var colony in game.States.Colonies.AtStar[star.Data])
 				if (starKnowledge.Planets[colony.Location.Planet].LastVisited != PlanetIntelligence.NeverVisited)
 					yield return new ColonyInfo(colony);
 		}
 		
-		public StarSystemController OpenStarSystem(StarData star)
+		public StarSystemController OpenStarSystem(StarInfo star)
 		{
 			var game = this.gameInstance;
 
-			if (!game.States.Stars.Contains(star))
+			if (!game.States.Stars.Contains(star.Data))
 				throw new ArgumentException("Star doesn't exist");
 
-			return new StarSystemController(game, star, game.IsReadOnly, this.PlayerInstance(game));
+			return new StarSystemController(game, star.Data, game.IsReadOnly, this.PlayerInstance(game));
 		}
 		
 		public StarSystemController OpenStarSystem(Vector2D position)
 		{
-			return this.OpenStarSystem(this.gameInstance.States.Stars.At[position]);
+			return this.OpenStarSystem(new StarInfo(this.gameInstance.States.Stars.At[position]));
 		}
 				
 		public FleetController SelectFleet(FleetInfo fleet)
@@ -137,9 +137,9 @@ namespace Stareater.Controllers
 			return fleets.Select(x => new FleetInfo(x, game.Derivates.Of(x.Owner), game.Statics));
 		}
 		
-		public StarData Star(Vector2D position)
+		public StarInfo Star(Vector2D position)
 		{
-			return this.gameInstance.States.Stars.At[position];
+			return new StarInfo(this.gameInstance.States.Stars.At[position]);
 		}
 		
 		public int StarCount
@@ -150,22 +150,22 @@ namespace Stareater.Controllers
 			}
 		}
 		
-		public IEnumerable<StarData> Stars
+		public IEnumerable<StarInfo> Stars
 		{
 			get
 			{
-				return this.gameInstance.States.Stars;
+				return this.gameInstance.States.Stars.Select(x => new StarInfo(x));
 			}
 		}
 
-		public IEnumerable<Wormhole> Wormholes
+		public IEnumerable<WormholeInfo> Wormholes
 		{
 			get
 			{
 				var game = this.gameInstance;
 				var intell = this.PlayerInstance(game).Intelligence;
 
-				return game.States.Wormholes.Where(intell.IsKnown);
+				return game.States.Wormholes.Where(intell.IsKnown).Select(x => new WormholeInfo(x));
 			}
 		}
 		#endregion
@@ -294,10 +294,10 @@ namespace Stareater.Controllers
 				yield return new ColonizationController(game, planet, game.IsReadOnly, player);
 		}
 		
-		public IEnumerable<FleetInfo> EnrouteColonizers(Planet destination)
+		public IEnumerable<FleetInfo> EnrouteColonizers(PlanetInfo destination)
 		{
 			var game = this.gameInstance;
-			var finder = new ColonizerFinder(destination);
+			var finder = new ColonizerFinder(destination.Data);
 			
 			foreach(var fleet in game.States.Fleets.Where(x => x.Owner == this.PlayerInstance(game)))
 				if (finder.Check(fleet))

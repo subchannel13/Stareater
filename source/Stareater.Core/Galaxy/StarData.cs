@@ -10,10 +10,8 @@ using Ikadn;
 
 namespace Stareater.Galaxy
 {
-	public class StarData 
+	class StarData 
 	{
-		public const int MaxPlanets = 8;
-
 		[StateProperty]
 		public Color Color { get; private set; }
 
@@ -27,9 +25,9 @@ namespace Stareater.Galaxy
 		public Vector2D Position { get; private set; }
 
 		[StateProperty]
-		internal PendableSet<ITrait> Traits { get; private set; }
+		public PendableSet<ITrait> Traits { get; private set; }
 
-		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position, List<TraitType> traits) 
+		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position, List<TraitType> traits)
 		{
 			this.Color = color;
 			this.ImageSizeScale = imageSizeScale;
@@ -63,7 +61,7 @@ namespace Stareater.Galaxy
 		{
 			if (ReferenceEquals(lhs, rhs))
 				return true;
-			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+			if (lhs is null || rhs is null)
 				return false;
 			return lhs.Equals(rhs);
 		}
@@ -74,7 +72,7 @@ namespace Stareater.Galaxy
 		}
 		#endregion
 
-		public static IStarName loadName(IkadnBaseObject rawData, LoadSession session)
+		private static IStarName loadName(IkadnBaseObject rawData, LoadSession session)
 		{
 			return rawData.Tag.Equals(ConstellationStarName.SaveTag) ?
 				(IStarName)session.Load<ConstellationStarName>(rawData) :

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
@@ -107,9 +106,9 @@ namespace Stareater.Controllers
 		#endregion
 
 		#region Planet
-		public Planet PlanetBody
+		public PlanetInfo PlanetBody
 		{
-			get { return Site.Location.Planet; }
+			get { return new PlanetInfo(this.Site.Location.Planet); }
 		}
 
 		public double PlanetEnvironment

@@ -1,7 +1,7 @@
 ﻿using Stareater.Utils.StateEngine;
 using System.Collections.Generic;
 using Stareater.Galaxy;
-using Stareater.Galaxy.Builders;
+using Stareater.GameData.Databases;
 
 namespace Stareater.GameData
 {
@@ -16,11 +16,11 @@ namespace Stareater.GameData
 			
 		}
 
-		public void Initialize(IEnumerable<StarSystem> starSystems)
+		public void Initialize(StatesDB states)
 		{
 			this.starKnowledge.Clear();
-			foreach (var system in starSystems)
-				starKnowledge.Add(system.Star, new StarIntelligence(system.Planets));
+			foreach (var star in states.Stars)
+				starKnowledge.Add(star, new StarIntelligence(states.Planets.At[star]));
 		}
 
 		public void StarFullyVisited(StarData star, int turn)

@@ -8,6 +8,6 @@ namespace Stareater.Galaxy.Builders
 	{
 		string Name { get; }
 		string Description { get; }
-		IEnumerable<StarSystem> Generate(Random rng, StarPositions starPositions, IEnumerable<TraitType> planetTraits);
+		IEnumerable<StarSystemBuilder> Generate(Random rng, StarPositions starPositions, IEnumerable<TraitType> planetTraits);
 	}
 }

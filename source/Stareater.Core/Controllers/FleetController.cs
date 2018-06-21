@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NGenerics.DataStructures.Mathematical;
+using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.Players;
@@ -117,7 +118,7 @@ namespace Stareater.Controllers
 			return this;
 		}
 		
-		public void SimulateTravel(StarData destination)
+		public void SimulateTravel(StarInfo destination)
 		{
 			if (!this.game.States.Stars.At.Contains(this.Fleet.Position))
 				return;
@@ -126,8 +127,8 @@ namespace Stareater.Controllers
 			//TODO(later): find shortest path
 			//TODO(later) prevent changing destination midfilght
 			this.simulationWaypoints.Add(new WaypointInfo(
-				destination.Position,
-				this.game.States.Wormholes.At[this.game.States.Stars.At[this.Fleet.Position], destination].Any()
+				destination.Data.Position,
+				this.game.States.Wormholes.At[this.game.States.Stars.At[this.Fleet.Position], destination.Data].Any()
 			));
 			
 			this.calcEta();

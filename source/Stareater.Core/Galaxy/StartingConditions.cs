@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Ikadn.Ikon.Types;
 using Stareater.Localization;
 
@@ -8,11 +6,13 @@ namespace Stareater.Galaxy
 {
 	public class StartingConditions
 	{
+		public const int MaxColonies = 8; //TODO(v0.8) move to map assets
+
 		public int Colonies { get; private set; }
 		public long Population { get; private set; }
 		public long Infrastructure { get; private set; }
 
-		private string nameKey;
+		private readonly string nameKey;
 
 		public StartingConditions(long population, int colonies, long infrastructure, string nameKey)
 		{

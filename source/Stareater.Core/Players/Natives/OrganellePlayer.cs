@@ -4,7 +4,6 @@ using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
-using Stareater.Galaxy;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
@@ -27,8 +26,8 @@ namespace Stareater.Players.Natives
 		public void PlayTurn()
 		{
 			var ownFleet = this.playerController.Fleets.Where(x => x.Owner == this.playerController.Info).ToList();
-			var invastigating = ownFleet.Where(x => x.IsMoving).SelectMany(x => x.Missions.Waypoints).ToList();
-			var stars = new PickList<StarData>(random, this.playerController.Stars.Where(s => invastigating.All(x => x.Destionation != s.Position)));
+			var investigating = ownFleet.Where(x => x.IsMoving).SelectMany(x => x.Missions.Waypoints).ToList();
+			var stars = new PickList<StarInfo>(random, this.playerController.Stars.Where(s => investigating.All(x => x.Destionation != s.Position)));
 			
 			foreach(var fleet in ownFleet.Where(x => !x.IsMoving))
 			{

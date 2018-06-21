@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
-using Stareater.Galaxy;
 using Stareater.GameLogic;
 using Stareater.Players;
 using System.Collections.Concurrent;
@@ -28,7 +27,7 @@ namespace Stareater.Controllers
 			this.mainGame = mainGame;
 			this.gameController = gameController;
 			
-			this.Star = mainGame.States.Stars.At[battleGame.Location];
+			this.Star = new StarInfo(mainGame.States.Stars.At[battleGame.Location]);
 			this.processor = new BombardmentProcessor(battleGame, mainGame);
 		}
 		
@@ -76,7 +75,7 @@ namespace Stareater.Controllers
 			gameController.BombardmentResolved(this.battleGame);
 		}
 
-		public StarData Star { get; private set; }
+		public StarInfo Star { get; private set; }
 		
 		public IEnumerable<CombatPlanetInfo> Planets 
 		{

@@ -1,5 +1,4 @@
-﻿using System;
-using Stareater.Galaxy;
+﻿using Stareater.Galaxy;
 
 namespace Stareater.Controllers.Views
 {
@@ -18,9 +17,9 @@ namespace Stareater.Controllers.Views
 			this.Population = colony.Population;
 		}
 		
-		public Planet Location
+		public PlanetInfo Location
 		{
-			get { return this.Data.Location.Planet; }
+			get { return new PlanetInfo(this.Data.Location.Planet); }
 		}
 	}
 }

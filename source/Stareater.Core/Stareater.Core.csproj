@@ -108,6 +108,7 @@
     <Compile Include="Controllers\Views\Library\TechnologyGeneralInfo.cs" />
     <Compile Include="Controllers\Views\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Views\OrganizationInfo.cs" />
+    <Compile Include="Controllers\Views\PlanetInfo.cs" />
     <Compile Include="Controllers\Views\PlayerInfo.cs" />
     <Compile Include="Controllers\Views\PlayerProgressInfo.cs" />
     <Compile Include="Controllers\Views\ReportWrapper.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Controllers\Views\Ships\ShipGroupInfo.cs" />
     <Compile Include="Controllers\Views\Ships\WaypointInfo.cs" />
     <Compile Include="Controllers\Views\PolicyInfo.cs" />
+    <Compile Include="Controllers\Views\StarInfo.cs" />
     <Compile Include="Controllers\Views\StellarisInfo.cs" />
     <Compile Include="Controllers\Views\TechnologyCategory.cs" />
     <Compile Include="Controllers\Views\DevelopmentReportInfo.cs" />
@@ -144,6 +146,7 @@
     <Compile Include="Controllers\StarSystemController.cs" />
     <Compile Include="Controllers\Views\TraitInfo.cs" />
     <Compile Include="Controllers\Views\TreatyInfo.cs" />
+    <Compile Include="Controllers\Views\WormholeInfo.cs" />
     <Compile Include="Galaxy\AConstructionSite.cs" />
     <Compile Include="Galaxy\BodyTraits\ITrait.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectAfflictPlanets.cs" />
@@ -154,7 +157,7 @@
     <Compile Include="Galaxy\Builders\IStarPopulator.cs" />
     <Compile Include="Galaxy\Builders\IStarPositioner.cs" />
     <Compile Include="Galaxy\Builders\StarPositions.cs" />
-    <Compile Include="Galaxy\Builders\StarSystem.cs" />
+    <Compile Include="Galaxy\Builders\StarSystemBuilder.cs" />
     <Compile Include="Galaxy\Builders\WormholeEndpoints.cs" />
     <Compile Include="Galaxy\Colony.cs" />
     <Compile Include="Galaxy\BodyTraits\ITraitEffectType.cs" />

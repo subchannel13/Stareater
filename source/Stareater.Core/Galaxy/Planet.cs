@@ -6,7 +6,7 @@ using Stareater.Galaxy.BodyTraits;
 
 namespace Stareater.Galaxy
 {
-	public class Planet 
+	class Planet 
 	{
 		[StateProperty]
 		public StarData Star { get; private set; }
@@ -20,9 +20,8 @@ namespace Stareater.Galaxy
 		[StateProperty]
 		public double Size { get; private set; }
 
-		//TODO(v0.8): Make trait list readonly to view, consider making whole class private
 		[StateProperty]
-		internal PendableSet<ITrait> Traits { get; private set; }
+		public PendableSet<ITrait> Traits { get; private set; }
 
 		public Planet(StarData star, int position, PlanetType type, double size, List<TraitType> traits) 
 		{

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Stareater.Galaxy;
 using System.Collections.Generic;
 using Stareater.Controllers.Views;
@@ -41,9 +40,9 @@ namespace Stareater.Controllers
 		
 		public abstract IEnumerable<TraitInfo> Traits { get; }
 
-		public StarData HostStar
+		public StarInfo HostStar
 		{
-			get { return Site.Location.Star; }
+			get { return new StarInfo(Site.Location.Star); }
 		}
 
 		#region Buildings

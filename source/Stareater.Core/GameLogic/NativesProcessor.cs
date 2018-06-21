@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Stareater.Galaxy;
-using Stareater.GameData;
+﻿using System.Linq;
 using Stareater.GameData.Databases;
 using Stareater.GameData.Ships;
 using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
-using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameLogic
@@ -31,9 +26,7 @@ namespace Stareater.GameLogic
 
 		public void Initialize(StatesDB states, StaticsDB statics, TemporaryDB derivates)
 		{
-			this.OrganellePlayer.Intelligence.Initialize(states.Stars.Select(
-					star => new Stareater.Galaxy.Builders.StarSystem(star, states.Planets.At[star].ToArray())
-			));
+			this.OrganellePlayer.Intelligence.Initialize(states);
 			foreach(var star in states.Stars)
 				this.OrganellePlayer.Intelligence.StarFullyVisited(star, 0);
 

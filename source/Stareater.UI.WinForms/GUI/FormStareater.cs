@@ -1,5 +1,4 @@
 ﻿using Stareater.Controllers;
-using Stareater.Galaxy;
 using Stareater.GuiUtils;
 using Stareater.Localization;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Windows.Forms;
 using System;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
+using Stareater.Controllers.Views;
 
 namespace Stareater.GUI
 {
@@ -35,9 +35,9 @@ namespace Stareater.GUI
 			else
 				this.whoControlsLabel.Text = context["notControlledByYou"].Text();
 
-			this.starSelector.Items.Add(new Tag<StarData>(null, context["noStar"].Text()));
+			this.starSelector.Items.Add(new Tag<StarInfo>(null, context["noStar"].Text()));
 			var ejectables = controller.EjectableStars.
-				Select(x => new Tag<StarData>(x, x.Name.ToText(lang))).
+				Select(x => new Tag<StarInfo>(x, x.Name.ToText(lang))).
 				OrderBy(x => x.DisplayText).
 				ToList();
             foreach (var item in ejectables)
@@ -86,7 +86,7 @@ namespace Stareater.GUI
 			if (this.starSelector.SelectedItem == null)
 				return;
 
-			controller.EjectTarget = (this.starSelector.SelectedItem as Tag<StarData>).Value;
+			controller.EjectTarget = (this.starSelector.SelectedItem as Tag<StarInfo>).Value;
 			updateEta();
 		}
 

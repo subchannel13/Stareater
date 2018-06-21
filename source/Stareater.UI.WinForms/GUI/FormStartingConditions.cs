@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Stareater.Localization;
 using Stareater.AppData;
-using Stareater.Galaxy;
 using Stareater.Controllers;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GuiUtils;
+using Stareater.Galaxy;
 
 namespace Stareater.GUI
 {
@@ -29,7 +24,7 @@ namespace Stareater.GUI
 
 		public void Initialize(StartingConditions condition)
 		{
-			coloniesSelector.Maximum = StarData.MaxPlanets;
+			coloniesSelector.Maximum = StartingConditions.MaxColonies;
 			coloniesSelector.Value = condition.Colonies;
 
 			var numberFormat = new ThousandsFormatter(condition.Population, condition.Infrastructure);

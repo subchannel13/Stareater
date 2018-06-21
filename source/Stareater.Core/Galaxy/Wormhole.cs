@@ -3,7 +3,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
 {
-	public class Wormhole
+	class Wormhole
 	{
 		[StateProperty]
 		public Pair<StarData> Endpoints { get; private set; }

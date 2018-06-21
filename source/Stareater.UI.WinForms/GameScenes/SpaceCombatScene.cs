@@ -304,7 +304,7 @@ namespace Stareater.GameScenes
 				ref this.starSprite,
 				new SceneObject(new PolygonData(
 					StarColorZ,
-					new SpriteData(Matrix4.Identity, GalaxyTextures.Get.StarColor.Id, this.Controller.Star.Color),
+					new SpriteData(Matrix4.Identity, GalaxyTextures.Get.StarColor.Id, this.Controller.HostStar.Color),
 					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar).ToList()
 				))
 			);
