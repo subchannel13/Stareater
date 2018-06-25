@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Localization;
-using Stareater.Utils;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GuiUtils;
 

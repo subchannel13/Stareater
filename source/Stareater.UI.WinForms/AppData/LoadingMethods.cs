@@ -17,7 +17,7 @@ namespace Stareater.AppData
 		private const string LanguagesFolder = "./languages/";
 		private const string DefaultLangSufix = "(default)";
 
-		private static string defaultLangCode = null;
+		private static string defaultLangCode;
 
 		public static void InitializeLocalization()
 		{
@@ -45,6 +45,9 @@ namespace Stareater.AppData
 				
 				infos.Add(new LanguageInfo(code, lang["General"]["LanguageName"].Text()));
 			}
+
+			if (defaultLanguage == null)
+				throw new FileNotFoundException("No default language found (language folder with " + DefaultLangSufix + " sufix)");
 
 			LocalizationManifest.Initialize(infos, defaultLanguage, currentLanguage);
 
@@ -119,7 +122,7 @@ namespace Stareater.AppData
 		#endregion
 		
 		#region Game data
-		private static readonly string StaticDataFolder = "./data/statics/";
+		private const string StaticDataFolder = "./data/statics/";
 		
 		public static IEnumerable<TracableStream> GameDataSources()
 		{
@@ -152,16 +155,18 @@ namespace Stareater.AppData
 			var dllFiles = new List<FileInfo>(new DirectoryInfo(folderPath).EnumerateFiles("*.dll"));
 			Type targetType = typeof(T);
 
-			foreach (var file in dllFiles)
-				foreach (var type in Assembly.UnsafeLoadFrom(file.FullName).GetTypes()) //TODO(later) consider more secure approach
-					if (targetType.IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
-					{
-						var instance = (T)Activator.CreateInstance(type);
-						if (initFunction != null)
-							initFunction(instance);
+			//TODO(later) consider more secure approach
+			return dllFiles.
+				SelectMany(file => Assembly.UnsafeLoadFrom(file.FullName).GetTypes()).
+				Where(type => targetType.IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface).
+				Select(type =>
+				{
+					var instance = (T)Activator.CreateInstance(type);
+					if (initFunction != null)
+						initFunction(instance);
 
-						yield return instance;
-					}
+					return instance;
+				});
 		}
 	}
 }

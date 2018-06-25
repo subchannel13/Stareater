@@ -225,7 +225,7 @@ namespace Stareater.GameData.Databases
 
 		private static KeyValuePair<PlanetType, PlanetForumlaSet> loadPlanetFormulas(IkonComposite data)
 		{
-			var key = PlanetType.None;
+			PlanetType key;
 			switch(data[PlanetTypeKey].To<string>())
 			{
 				case PlanetTypeAsteroid:
@@ -237,6 +237,8 @@ namespace Stareater.GameData.Databases
 				case PlanetTypeRock:
 					key = PlanetType.Rock;
 					break;
+				default:
+					throw new FormatException("Unknown planet type " + data[PlanetTypeKey].To<string>());
 			}
 
 			return new KeyValuePair<PlanetType, PlanetForumlaSet>(
@@ -312,9 +314,9 @@ namespace Stareater.GameData.Databases
 					return new EffectTypeAfflictPlanets(data[AfflictsTraitId].To<string>(), data[DurationTraitId].To<Formula>().Evaluate(null));
 				case PassiveTraitTag:
 					return new EffectTypePassive();
+				default:
+					throw new FormatException("Unknown trait effect type " + data.Tag);
 			}
-
-			throw new ArgumentException("Unknown trait");
 		}
 		
 		#region Constructables
@@ -345,7 +347,7 @@ namespace Stareater.GameData.Databases
 		
 		private static SiteType siteType(string rawData)
 		{
-			switch(rawData.ToLower())
+			switch(rawData.ToLower(System.Globalization.CultureInfo.InvariantCulture))
 			{
 				case SiteColony:
 					return SiteType.Colony;
@@ -375,8 +377,6 @@ namespace Stareater.GameData.Databases
 					default:
 						throw new FormatException("Invalid construction effect with tag " + effectData.Tag);
 				}
-			
-			yield break;
 		}
 		#endregion
 
@@ -791,7 +791,6 @@ namespace Stareater.GameData.Databases
 
 		private const string BuildingHitPointsKey = "hitPoints";
 		
-		private const string ConstructableCostKey = "cost";
 		private const string ConstructableSiteKey = "site";
 		private const string ConstructableConditionKey = "condition";
 		private const string ConstructableLimitKey = "turnLimit";
@@ -824,7 +823,6 @@ namespace Stareater.GameData.Databases
 		private const string DesignShield = "shield";
 		private const string DesignSpecialEquipment = "specials";
 		private const string DesignThrusters = "thrusters";
-		private const string DesignType = "type";
 		
 		private const string FocusList = "list";
 		private const string ResearchUnlocksKey = "devTopics";
@@ -875,7 +873,6 @@ namespace Stareater.GameData.Databases
 		private const string IsDriveSpeed = "speed";
 		
 		private const string MissionEquipmentAbilitiesKey = "abilities";
-		private const string MissionEquipmentSizeKey = "size";
 		
 		private const string ReactorMinSize = "minSize";
 
