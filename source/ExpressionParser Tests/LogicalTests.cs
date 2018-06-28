@@ -7,12 +7,19 @@ namespace ExpressionParser_Tests
 	public class LogicalTests
 	{
 		[Test]
+		public void ConjunctionDisjunction()
+		{
+			var test = new ParserTester("1 & 1 | -1", null, 1);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+
+		[Test]
 		public void ConjunctionNormalFalseFalse()
 		{
 			var test = new ParserTester("-5 & -7", null, -1);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
-		
+
 		[Test]
 		public void ConjunctionNormalFalseTrue()
 		{
@@ -82,7 +89,14 @@ namespace ExpressionParser_Tests
 			var test = new ParserTester("2 ⋀ -3", null, -1);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
-		
+
+		[Test]
+		public void DisjunctionConjunction()
+		{
+			var test = new ParserTester("-1 | -1 & 1", null, -1);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+
 		[Test]
 		public void DisjunctionNormalFalseFalse()
 		{

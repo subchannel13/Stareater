@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Globalization;
 
 namespace Stareater.AppData.Expressions
@@ -34,6 +32,9 @@ namespace Stareater.AppData.Expressions
 				case "≥":
 					result = new GreaterThen(leftSide, rightSide, tolerance, false);
 					break;
+				default:
+					SemErr("Unimplemented comparison operator " + operatorSymbol);
+					break;
 			}
 			
 			return result.Simplified();
@@ -43,12 +44,14 @@ namespace Stareater.AppData.Expressions
 		{
 			IExpressionNode result = operands.Dequeue();
 
-			List<IExpressionNode> sequence = new List<IExpressionNode>();
+			var sequence = new List<IExpressionNode>();
 			string lastOperator = null;
 			sequence.Add(result);
 
-			while (operators.Count > 0 || lastOperator != null) {
-				if (operators.Count > 0 && (lastOperator == null || CompatableOperators[operators.Peek()].Contains(lastOperator))) {
+			while (operators.Count > 0 || lastOperator != null)
+			{
+				if (operators.Count > 0 && (lastOperator == null || CompatableOperators[operators.Peek()].Contains(lastOperator)))
+				{
 					lastOperator = operators.Dequeue();
 					sequence.Add(operands.Dequeue());
 				}
@@ -68,11 +71,14 @@ namespace Stareater.AppData.Expressions
 						case "⊕":
 							result = new XorSequence(sequence.ToArray());
 							break;
+						default:
+							SemErr("Unimplemented boolean operator " + lastOperator);
+							break;
 					}
 					sequence.Clear();
+					sequence.Add(result);
 					lastOperator = null;
 				}
-
 			}
 
 			return result.Simplified();
@@ -92,6 +98,7 @@ namespace Stareater.AppData.Expressions
 					sequence.Add(operands.Dequeue());
 				else
 					inverseSequence.Add(operands.Dequeue());
+
 			return new Summation(sequence.ToArray(), inverseSequence.ToArray());
 		}
 
@@ -124,9 +131,13 @@ namespace Stareater.AppData.Expressions
 						case "%":
 							result = new IntegerReminder(sequence.ToArray());
 							break;
+						default:
+							SemErr("Unimplemented multiplication operator " + lastOperator);
+							break;
 					}
 					sequence.Clear();
 					inverseSequence.Clear();
+					sequence.Add(result);
 					lastOperator = null;
 				}
 

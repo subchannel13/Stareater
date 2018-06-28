@@ -9,7 +9,7 @@ namespace ExpressionParser_Tests
 		private readonly ExpressionParser parser;
 		private readonly double expectedOutput;
 		private readonly IDictionary<string, double> variables;
-		private double delta = 0;
+		private readonly double delta = 0;
 
 		public ParserTester(string input, IDictionary<string, double> variables, double expectedOutput)
 		{
@@ -30,12 +30,9 @@ namespace ExpressionParser_Tests
 		{
 			get
 			{
-				if (parser.errors.count > 0)
-					return false;
-
-				if (variables == null)
-					return parser.ParsedFormula.Variables.Count == 0;
-				else if (!parser.ParsedFormula.Variables.SetEquals(variables.Keys))
+				if (parser.errors.count > 0 || 
+					variables == null && parser.ParsedFormula.Variables.Count != 0 ||
+					variables != null && !parser.ParsedFormula.Variables.SetEquals(variables.Keys))
 					return false;
 					
 				double evaluated = parser.ParsedFormula.Evaluate(variables);
@@ -43,8 +40,7 @@ namespace ExpressionParser_Tests
 				return Math.Abs(evaluated - expectedOutput) <= delta ||
 					(double.IsNaN(evaluated) && double.IsNaN(expectedOutput)) ||
 					(double.IsNegativeInfinity(evaluated) && double.IsNegativeInfinity(expectedOutput)) ||
-					(double.IsPositiveInfinity(evaluated) && double.IsPositiveInfinity(expectedOutput))
-					;				
+					(double.IsPositiveInfinity(evaluated) && double.IsPositiveInfinity(expectedOutput));				
 			}
 		}
 

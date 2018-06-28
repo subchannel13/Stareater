@@ -89,7 +89,14 @@ namespace ExpressionParser_Tests
 			var test = new ParserTester("2*3", null, 6);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
-		
+
+		[Test]
+		public void MultiplicationReminder()
+		{
+			var test = new ParserTester("7*3%4", null, 1);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+
 		[Test]
 		public void MultiplicationVar()
 		{
