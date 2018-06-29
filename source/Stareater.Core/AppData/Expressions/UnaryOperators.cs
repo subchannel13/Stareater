@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Stareater.AppData.Expressions
 {
 	abstract class UnaryOperator : IExpressionNode
 	{
-		public IExpressionNode child;
+		protected readonly IExpressionNode child;
+
+		protected UnaryOperator(IExpressionNode child)
+		{
+			this.child = child;
+		}
 
 		public bool IsConstant
 		{
@@ -36,6 +38,9 @@ namespace Stareater.AppData.Expressions
 
 	class Negation : UnaryOperator
 	{
+		public Negation(IExpressionNode child) : base(child)
+		{ }
+
 		public override double Evaluate(IDictionary<string, double> variables)
 		{
 			return -child.Evaluate(variables);
@@ -44,6 +49,9 @@ namespace Stareater.AppData.Expressions
 
 	class ToBoolean : UnaryOperator
 	{
+		public ToBoolean(IExpressionNode child) : base(child)
+		{ }
+
 		public override double Evaluate(IDictionary<string, double> variables)
 		{
 			return Normalize(child.Evaluate(variables));
@@ -57,6 +65,9 @@ namespace Stareater.AppData.Expressions
 
 	class NegateToBoolean : UnaryOperator
 	{
+		public NegateToBoolean(IExpressionNode child) : base(child)
+		{ }
+
 		public override double Evaluate(IDictionary<string, double> variables)
 		{
 			return child.Evaluate(variables) >= 0 ? -1 : 1;

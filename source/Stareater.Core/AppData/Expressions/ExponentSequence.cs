@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Stareater.AppData.Expressions
 {
 	class ExponentSequence : IExpressionNode
 	{
-		IExpressionNode[] sequence;
+		private readonly IExpressionNode[] sequence;
 
 		public ExponentSequence(IExpressionNode[] sequence)
 		{

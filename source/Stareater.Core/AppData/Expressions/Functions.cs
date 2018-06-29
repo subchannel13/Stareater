@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Stareater.AppData.Expressions
 {
 	class MinFunction : IExpressionNode
 	{
-		IExpressionNode[] sequence;
+		private readonly IExpressionNode[] sequence;
 
 		public MinFunction(IExpressionNode[] sequence)
 		{
@@ -55,7 +54,7 @@ namespace Stareater.AppData.Expressions
 
 	class MaxFunction : IExpressionNode
 	{
-		IExpressionNode[] sequence;
+		private readonly IExpressionNode[] sequence;
 
 		public MaxFunction(IExpressionNode[] sequence)
 		{
@@ -103,7 +102,7 @@ namespace Stareater.AppData.Expressions
 
 	class FloorFunction : IExpressionNode
 	{
-		IExpressionNode argument;
+		private readonly IExpressionNode argument;
 
 		public FloorFunction(IExpressionNode argument)
 		{
@@ -140,7 +139,7 @@ namespace Stareater.AppData.Expressions
 
 	class CeilFunction : IExpressionNode
 	{
-		IExpressionNode argument;
+		private readonly IExpressionNode argument;
 
 		public CeilFunction(IExpressionNode argument)
 		{
@@ -177,7 +176,7 @@ namespace Stareater.AppData.Expressions
 
 	class TruncFunction : IExpressionNode
 	{
-		IExpressionNode argument;
+		private readonly IExpressionNode argument;
 
 		public TruncFunction(IExpressionNode argument)
 		{
@@ -214,7 +213,7 @@ namespace Stareater.AppData.Expressions
 
 	class AbsFunction : IExpressionNode
 	{
-		IExpressionNode argument;
+		private readonly IExpressionNode argument;
 
 		public AbsFunction(IExpressionNode argument)
 		{
@@ -251,7 +250,7 @@ namespace Stareater.AppData.Expressions
 
 	class RoundFunction : IExpressionNode
 	{
-		IExpressionNode argument;
+		private readonly IExpressionNode argument;
 
 		public RoundFunction(IExpressionNode argument)
 		{
@@ -288,7 +287,7 @@ namespace Stareater.AppData.Expressions
 
 	class SgnFunction : IExpressionNode
 	{
-		IExpressionNode argument;
+		private readonly IExpressionNode argument;
 
 		public SgnFunction(IExpressionNode argument)
 		{
@@ -325,9 +324,9 @@ namespace Stareater.AppData.Expressions
 
 	class LimitFunction : IExpressionNode
 	{
-		IExpressionNode argument;
-		IExpressionNode minNode;
-		IExpressionNode maxNode;
+		private readonly IExpressionNode argument;
+		private readonly IExpressionNode minNode;
+		private readonly IExpressionNode maxNode;
 
 		public LimitFunction(IExpressionNode argument, IExpressionNode min, IExpressionNode max)
 		{
@@ -360,7 +359,10 @@ namespace Stareater.AppData.Expressions
 			double min = minNode.Evaluate(variables);
 			double max = maxNode.Evaluate(variables);
 
-			return (x < min) ? min : (x > max) ? max : x;
+			if (x < min)
+				return min;
+
+			return (x > max) ? max : x;
 		}
 		
 		public IEnumerable<string> Variables
@@ -381,9 +383,9 @@ namespace Stareater.AppData.Expressions
 
 	class IfThenElseFunction : IExpressionNode
 	{
-		IExpressionNode condition;
-		IExpressionNode trueNode;
-		IExpressionNode falseNode;
+		private readonly IExpressionNode condition;
+		private readonly IExpressionNode trueNode;
+		private readonly IExpressionNode falseNode;
 
 		public IfThenElseFunction(IExpressionNode condition, IExpressionNode trueNode, IExpressionNode falseNode)
 		{

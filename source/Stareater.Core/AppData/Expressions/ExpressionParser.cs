@@ -8,7 +8,7 @@ namespace Stareater.AppData.Expressions
 	{
 		private IExpressionNode makeComparison(IExpressionNode leftSide, string operatorSymbol, IExpressionNode rightSide, double tolerance)
 		{
-			IExpressionNode result = new Constant(double.NaN);
+			IExpressionNode result;
 			
 			switch (operatorSymbol) {
 				case "=":
@@ -34,54 +34,34 @@ namespace Stareater.AppData.Expressions
 					break;
 				default:
 					SemErr("Unimplemented comparison operator " + operatorSymbol);
+					result = new Constant(double.NaN);
 					break;
 			}
 			
 			return result.Simplified();
 		}
 
-		private IExpressionNode makeBooleanAritmenthics(Queue<IExpressionNode> operands, Queue<string> operators)
+		private IExpressionNode makeBooleanAritmenthics(IExpressionNode leftSide, IExpressionNode rightSide, string currentOperator)
 		{
-			IExpressionNode result = operands.Dequeue();
+			var operands = new[] { leftSide, rightSide };
 
-			var sequence = new List<IExpressionNode>();
-			string lastOperator = null;
-			sequence.Add(result);
-
-			while (operators.Count > 0 || lastOperator != null)
+			switch (currentOperator)
 			{
-				if (operators.Count > 0 && (lastOperator == null || CompatableOperators[operators.Peek()].Contains(lastOperator)))
-				{
-					lastOperator = operators.Dequeue();
-					sequence.Add(operands.Dequeue());
-				}
-				else {
-					switch (lastOperator) {
-						case "&":
-						case "∧":
-						case "⋀":
-							result = new ConjunctionSequence(sequence.ToArray());
-							break;
-						case "|":
-						case "∨":
-						case "⋁":
-							result = new DisjunctionSequence(sequence.ToArray());
-							break;
-						case "@":
-						case "⊕":
-							result = new XorSequence(sequence.ToArray());
-							break;
-						default:
-							SemErr("Unimplemented boolean operator " + lastOperator);
-							break;
-					}
-					sequence.Clear();
-					sequence.Add(result);
-					lastOperator = null;
-				}
+				case "&":
+				case "∧":
+				case "⋀":
+					return new ConjunctionSequence(operands).Simplified();
+				case "|":
+				case "∨":
+				case "⋁":
+					return new DisjunctionSequence(operands).Simplified();
+				case "@":
+				case "⊕":
+					return new XorSequence(operands).Simplified();
+				default:
+					SemErr("Unimplemented boolean operator " + currentOperator);
+					return new Constant(double.NaN);
 			}
-
-			return result.Simplified();
 		}
 
 		private IExpressionNode makeSummation(Queue<IExpressionNode> operands, Queue<string> operators)
@@ -102,48 +82,30 @@ namespace Stareater.AppData.Expressions
 			return new Summation(sequence.ToArray(), inverseSequence.ToArray());
 		}
 
-		private IExpressionNode makeMultiplications(Queue<IExpressionNode> operands, Queue<string> operators)
+		private IExpressionNode makeMultiplications(IExpressionNode leftSide, IExpressionNode rightSide, string currentOperator)
 		{
-			IExpressionNode result = operands.Dequeue();
+			var sequence = new[] { leftSide, rightSide };
+			var inverseSequence = new IExpressionNode[0];
 
-			List<IExpressionNode> sequence = new List<IExpressionNode>();
-			List<IExpressionNode> inverseSequence = new List<IExpressionNode>();
-			string lastOperator = null;
-			sequence.Add(result);
-
-			while (operators.Count > 0 || lastOperator != null) {
-				if (operators.Count > 0 && (lastOperator == null || CompatableOperators[operators.Peek()].Contains(lastOperator))) {
-					lastOperator = operators.Dequeue();
-					if (lastOperator == "/")
-						inverseSequence.Add(operands.Dequeue());
-					else
-						sequence.Add(operands.Dequeue());
-				}
-				else {
-					switch (lastOperator) {
-						case "*":
-						case "/":
-							result = new Product(sequence.ToArray(), inverseSequence.ToArray());
-							break;
-						case "\\":
-							result = new IntegerDivision(sequence.ToArray());
-							break;
-						case "%":
-							result = new IntegerReminder(sequence.ToArray());
-							break;
-						default:
-							SemErr("Unimplemented multiplication operator " + lastOperator);
-							break;
-					}
-					sequence.Clear();
-					inverseSequence.Clear();
-					sequence.Add(result);
-					lastOperator = null;
-				}
-
+			if (currentOperator == "/")
+			{
+				sequence = new[] { leftSide };
+				inverseSequence = new[] { rightSide };
 			}
 
-			return result.Simplified();
+			switch (currentOperator)
+			{
+				case "*":
+				case "/":
+					return new Product(sequence, inverseSequence).Simplified();
+				case "\\":
+					return new IntegerDivision(sequence).Simplified();
+				case "%":
+					return new IntegerReminder(sequence).Simplified();
+				default:
+					SemErr("Unimplemented multiplication operator " + currentOperator);
+					return new Constant(double.NaN);
+			}
 		}
 
 		private IExpressionNode makeList(IExpressionNode indexNode, IList<IExpressionNode> segmentPoints, int listStart)
@@ -158,85 +120,77 @@ namespace Stareater.AppData.Expressions
 			return new LinearSegmentsFunction(indexNode, segmentPoints.ToArray()).Simplified();
 		}
 
+		private IExpressionNode makeUnaryOperation(IExpressionNode child, string currentOperator)
+		{
+			if (currentOperator == null)
+				return child;
+
+			switch (currentOperator)
+			{
+				case "-":
+					return new Negation(child).Simplified();
+				case "'":
+					return new ToBoolean(child).Simplified();
+				case "-'":
+					return new NegateToBoolean(child).Simplified();
+				default:
+					SemErr("Unimplemented unary operator " + currentOperator);
+					return new Constant(double.NaN);
+			}
+		}
+
 		private IExpressionNode makeFunction(string identifierName, IList<IExpressionNode> segmentPoints, int listStart)
 		{
-			switch (identifierName.ToLower()) {
+			switch (identifierName.ToLower(CultureInfo.InvariantCulture)) {
 				case "min":
-					if (segmentPoints.Count < 2) {
-						SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has insufficient parameters.");
-						return new Constant(double.NaN);
-					}
-					return new MinFunction(segmentPoints.ToArray());
+					return paramCountAtLeast(segmentPoints.Count, 2, identifierName, listStart) ? 
+						new MinFunction(segmentPoints.ToArray()).Simplified() :
+						new Constant(double.NaN);
 
 				case "max":
-					if (segmentPoints.Count < 2) {
-						SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has insufficient parameters.");
-						return new Constant(double.NaN);
-					}
-					return new MaxFunction(segmentPoints.ToArray());
+					return paramCountAtLeast(segmentPoints.Count, 2, identifierName, listStart) ?
+						new MaxFunction(segmentPoints.ToArray()).Simplified() :
+						new Constant(double.NaN);
 
 				case "floor":
-					if (segmentPoints.Count > 1) {
-						SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has too many parameters.");
-						return new Constant(double.NaN);
-					}
-					return new FloorFunction(segmentPoints[0]);
+					return paramCountExact(segmentPoints.Count, 1, identifierName, listStart) ?
+						new FloorFunction(segmentPoints[0]).Simplified() :
+						new Constant(double.NaN);
 
 				case "ceil":
-					if (segmentPoints.Count > 1) {
-						SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has too many parameters.");
-						return new Constant(double.NaN);
-					}
-					return new CeilFunction(segmentPoints[0]);
+					return paramCountExact(segmentPoints.Count, 1, identifierName, listStart) ?
+						new CeilFunction(segmentPoints[0]).Simplified() :
+						new Constant(double.NaN);
 
 				case "round":
-					if (segmentPoints.Count > 1) {
-						SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has too many parameters.");
-						return new Constant(double.NaN);
-					}
-					return new RoundFunction(segmentPoints[0]);
+					return paramCountExact(segmentPoints.Count, 1, identifierName, listStart) ?
+						new RoundFunction(segmentPoints[0]).Simplified() :
+						new Constant(double.NaN);
 
 				case "trunc":
-					if (segmentPoints.Count > 1) {
-						SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has too many parameters.");
-						return new Constant(double.NaN);
-					}
-					return new TruncFunction(segmentPoints[0]);
+					return paramCountExact(segmentPoints.Count, 1, identifierName, listStart) ?
+						new TruncFunction(segmentPoints[0]).Simplified() :
+						new Constant(double.NaN);
 
 				case "abs":
-					if (segmentPoints.Count > 1) {
-						SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has too many parameters.");
-						return new Constant(double.NaN);
-					}
-					return new AbsFunction(segmentPoints[0]);
+					return paramCountExact(segmentPoints.Count, 1, identifierName, listStart) ?
+						new AbsFunction(segmentPoints[0]).Simplified() :
+						new Constant(double.NaN);
 
 				case "sgn":
-					if (segmentPoints.Count > 1) {
-						SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has too many parameters.");
-						return new Constant(double.NaN);
-					}
-					return new SgnFunction(segmentPoints[0]);
+					return paramCountExact(segmentPoints.Count, 1, identifierName, listStart) ?
+						new SgnFunction(segmentPoints[0]).Simplified() :
+						new Constant(double.NaN);
 
 				case "limit":
-					if (segmentPoints.Count != 3) {
-						if (segmentPoints.Count < 3)
-							SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has insufficient parameters.");
-						else
-							SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has too many parameters.");
-						return new Constant(double.NaN);
-					}
-					return new LimitFunction(segmentPoints[0], segmentPoints[1], segmentPoints[2]);
+					return paramCountExact(segmentPoints.Count, 3, identifierName, listStart) ?
+						new LimitFunction(segmentPoints[0], segmentPoints[1], segmentPoints[2]).Simplified() :
+						new Constant(double.NaN);
 
 				case "if":
-					if (segmentPoints.Count != 3) {
-						if (segmentPoints.Count < 3)
-							SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has insufficient parameters.");
-						else
-							SemErr("Function \"" + identifierName + "\" at " + listStart + "th character has too many parameters.");
-						return new Constant(double.NaN);
-					}
-					return new IfThenElseFunction(segmentPoints[0], segmentPoints[1], segmentPoints[2]);
-
+					return paramCountExact(segmentPoints.Count, 3, identifierName, listStart) ?
+						new IfThenElseFunction(segmentPoints[0], segmentPoints[1], segmentPoints[2]).Simplified() :
+						new Constant(double.NaN);
 				default:
 					if (segmentPoints.Count != 0) {
 						SemErr("Invalid function name \"" + identifierName + "\" at " + listStart + "th character.");
@@ -246,26 +200,36 @@ namespace Stareater.AppData.Expressions
 			}
 		}
 
+		private bool paramCountAtLeast(int count, int minimumCount, string name, int listStart)
+		{
+			if (count < minimumCount)
+			{
+				SemErr("Function \"" + name + "\" at " + listStart + "th character has insufficient parameters.");
+				return false;
+			}
+
+			return true;
+		}
+
+		private bool paramCountExact(int count, int targetCount, string name, int listStart)
+		{
+			if (count < targetCount)
+			{
+				SemErr("Function \"" + name + "\" at " + listStart + "th character has insufficient parameters.");
+				return false;
+			}
+			else if (count > targetCount)
+			{
+				SemErr("Function \"" + name + "\" at " + listStart + "th character has too many parameters.");
+				return false;
+			}
+
+			return true;
+		}
+
 		private double toDouble(string text)
 		{
 			return double.Parse(text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat);
 		}
-
-		private static readonly Dictionary<string, ICollection<string>> CompatableOperators = new Dictionary<string, ICollection<string>>()
-		{
-			{"&", new string[]{"&", "∧", "⋀"}},
-			{"∧", new string[]{"&", "∧", "⋀"}},
-			{"⋀", new string[]{"&", "∧", "⋀"}},
-			{"|", new string[]{"|", "∨", "⋁"}},
-			{"∨", new string[]{"|", "∨", "⋁"}},
-			{"⋁", new string[]{"|", "∨", "⋁"}},
-			{"@", new string[]{"@", "⊕"}},
-			{"⊕", new string[]{"@", "⊕"}},
-
-			{"*", new string[]{"*", "/"}},
-			{"/", new string[]{"*", "/"}},
-			{"%", new string[]{"%"}},
-			{"\\", new string[]{"\\"}}
-		};
 	}
 }

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Stareater.AppData.Expressions
 {
 	class LinearSegmentsFunction : IExpressionNode
 	{
-		IExpressionNode indexNode;
-		IExpressionNode[] segmentPoints;
+		private readonly IExpressionNode indexNode;
+		private readonly IExpressionNode[] segmentPoints;
 
 		public LinearSegmentsFunction(IExpressionNode index, IExpressionNode[] segmentPoints)
 		{
@@ -51,8 +50,8 @@ namespace Stareater.AppData.Expressions
 				return 0;
 			else if (t >= segmentPoints.Length - 1)
 				return segmentPoints.Length - 2;
-
-			return (int)Math.Floor(t);
+			else
+				return (int)Math.Floor(t);
 		}
 		
 		public IEnumerable<string> Variables 

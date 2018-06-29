@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Stareater.AppData.Expressions
 {
 	public class Formula
 	{
-		private IExpressionNode root;
+		private readonly IExpressionNode root;
 		private ISet<string> variables = null;
 
 		internal Formula(IExpressionNode root)

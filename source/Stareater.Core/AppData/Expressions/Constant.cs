@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Stareater.AppData.Expressions
 {
 	class Constant : IExpressionNode
 	{
-		double value;
+		private readonly double value;
 
 		public Constant(double value)
 		{

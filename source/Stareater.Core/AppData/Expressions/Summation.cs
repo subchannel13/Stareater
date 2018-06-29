@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Stareater.AppData.Expressions
 {
 	class Summation: IExpressionNode
 	{
-		IExpressionNode[] sequence;
-		IExpressionNode[] inverseSequence;
+		private readonly IExpressionNode[] sequence;
+		private readonly IExpressionNode[] inverseSequence;
 
 		public Summation(IExpressionNode[] sequence, IExpressionNode[] inverseSequence)
 		{
@@ -24,21 +22,17 @@ namespace Stareater.AppData.Expressions
 				return sequence.First();
 			else if (constCount == sequence.Length + inverseSequence.Length)
 				return new Constant(this.Evaluate(null));
-			else if (constCount > 1) {
-				List<IExpressionNode> newSequence = new List<IExpressionNode>();
-				List<IExpressionNode> newInverseSequence = new List<IExpressionNode>();
-
+			else if (constCount > 1)
 				return new Summation(
 					sequence.Where(x => !x.IsConstant).Concat(new IExpressionNode[] 
 					{
 						new Constant(
-							sequence.Where(x => x.IsConstant).Aggregate(0.0, (subSum, element) => subSum + element.Evaluate(null)) -
-							inverseSequence.Where(x => x.IsConstant).Aggregate(0.0, (subSum, element) => subSum + element.Evaluate(null))
+							sequence.Where(x => x.IsConstant).Select(x => x.Evaluate(null)).Aggregate(0.0, (a, b) => a + b) -
+							inverseSequence.Where(x => x.IsConstant).Select(x => x.Evaluate(null)).Aggregate(0.0, (a, b) => a + b)
 						)
 					}).ToArray(),
 					inverseSequence.Where(x => !x.IsConstant).ToArray()
 					);
-			}
 			else
 				return this;
 		}

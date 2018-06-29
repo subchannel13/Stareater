@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Stareater.AppData.Expressions
 {
@@ -16,11 +14,17 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
+			if (this.sequence[0] is ConjunctionSequence)
+				this.sequence = (this.sequence[0] as ConjunctionSequence).
+					sequence.
+					Concat(this.sequence.Skip(1)).
+					ToArray();
+
 			int constCount = sequence.Count(x => x.IsConstant);
 
 			if (constCount == sequence.Length)
 				return new Constant(this.Evaluate(null));
-			else if (constCount > 1) {
+			else if (constCount > 0) {
 				var grouping = sequence.GroupBy(x => x.IsConstant).ToDictionary(x => x.Key);
 
 				if (grouping[true].Any(x => x.Evaluate(null) < 0))
@@ -64,11 +68,17 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
+			if (this.sequence[0] is DisjunctionSequence)
+				this.sequence = (this.sequence[0] as DisjunctionSequence).
+					sequence.
+					Concat(this.sequence.Skip(1)).
+					ToArray();
+
 			int constCount = sequence.Count(x => x.IsConstant);
 
 			if (constCount == sequence.Length)
 				return new Constant(this.Evaluate(null));
-			else if (constCount > 1) {
+			else if (constCount > 0) {
 				var grouping = sequence.GroupBy(x => x.IsConstant).ToDictionary(x => x.Key);
 
 				if (grouping[true].Any(x => x.Evaluate(null) >= 0))
@@ -112,21 +122,33 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Simplified()
 		{
+			if (this.sequence[0] is XorSequence)
+				this.sequence = (this.sequence[0] as XorSequence).
+					sequence.
+					Concat(this.sequence.Skip(1)).
+					ToArray();
+
 			int constCount = sequence.Count(x => x.IsConstant);
 
 			if (constCount == sequence.Length)
 				return new Constant(this.Evaluate(null));
-			else if (constCount > 1) {
+			else if (constCount > 0) {
 				List<IExpressionNode> newSequence = new List<IExpressionNode>();
-				
+
 				var grouping = sequence.GroupBy(x => x.IsConstant).ToDictionary(x => x.Key);
-				int truths = grouping[true].Count(x => x.Evaluate(null) >= 0);
-				
-				if (truths > 1)
-					return new Constant(-1);
-				if (truths == 1)
+				var constValue = grouping[true].
+					Select(x => x.Evaluate(null) >= 0).
+					Aggregate(false, (last, current) => last != current);
+
+				if (grouping[false].Count() == 1)
+					if (!constValue)
+						return grouping[false].First();
+					else
+						return new Negation(grouping[false].First());
+
+				if (constValue)
 					newSequence.Add(new Constant(1));
-				
+
 				newSequence.AddRange(grouping[false]);
 
 				return new XorSequence(newSequence.ToArray());

@@ -34,16 +34,14 @@ PRODUCTIONS
 				}								(.	node = leftSide; .)
 				.
 	
-	LogicalExpr	<out IExpressionNode node>		(.	IExpressionNode child; 
-													Queue<IExpressionNode> children = new Queue<IExpressionNode>();
-													Queue<string> operators = new Queue<string>(); .)
-				= AddExpr <out child>			(.	children.Enqueue(child); .)
+	LogicalExpr	<out IExpressionNode node>		(.	IExpressionNode child; .)
+				= AddExpr <out child>			(.	IExpressionNode leftSide = child; .)
 				{
 					("&" | "∧" | "⋀"
 					| "|" | "∨" | "⋁"
-					| "@" | "⊕")				(.	operators.Enqueue(t.val); .)
-					AddExpr <out child>			(.	children.Enqueue(child); .)
-				}								(.	node = makeBooleanAritmenthics(children, operators); .)
+					| "@" | "⊕")				(.	string currentOperator = t.val; .)
+					AddExpr <out child>			(.	leftSide = makeBooleanAritmenthics(leftSide, child, currentOperator); .)
+				}								(.	node = leftSide; .)
 				.
 	
 	AddExpr <out IExpressionNode node>			
@@ -57,14 +55,12 @@ PRODUCTIONS
 				}								(.	node = makeSummation(children, operators); .)
 				.
 
-	MultExpr <out IExpressionNode node>			(.	IExpressionNode child; 
-													Queue<IExpressionNode> children = new Queue<IExpressionNode>();
-													Queue<string> operators = new Queue<string>(); .)
-				= ExpExpr <out child>			(.	children.Enqueue(child); .)
+	MultExpr <out IExpressionNode node>			(.	IExpressionNode child; .)
+				= ExpExpr <out child>			(.	IExpressionNode leftSide = child; .)
 				{
-					("*" | "/" | "\\" | "%")	(.	operators.Enqueue(t.val); .)
-					ExpExpr <out child>			(.	children.Enqueue(child); .)
-				}								(.	node = makeMultiplications(children, operators); .)
+					("*" | "/" | "\\" | "%")	(.	string currentOperator = t.val; .)
+					ExpExpr <out child>			(.	leftSide = makeMultiplications(leftSide, child, currentOperator); .)
+				}								(.	node = leftSide; .)
 				.
 
 	ExpExpr <out IExpressionNode node>			(.	IExpressionNode child; 
@@ -87,12 +83,10 @@ PRODUCTIONS
 					.
 					
 	UnaryExpr <out IExpressionNode node>		(.	IExpressionNode child; 
-													UnaryOperator operatorNode = null; .)
-				= [	  "-"						(.	operatorNode = new Negation(); .)
-					| "'"						(.	operatorNode = new ToBoolean(); .)
-					| "-'"						(.	operatorNode = new NegateToBoolean(); .)
-				] Term <out child>				(.	if (operatorNode != null) operatorNode.child = child; 
-													node = (operatorNode != null) ? operatorNode : child; .)
+													string currentOperator = null; .)
+				= [
+					("-" | "'" | "-'")			(.	currentOperator = t.val; .)
+				] Term <out child>				(.	node = makeUnaryOperation(child, currentOperator); .)
 				.
 
 	Term <out IExpressionNode node>				(.	IExpressionNode child; 

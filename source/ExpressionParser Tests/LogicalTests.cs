@@ -156,7 +156,7 @@ namespace ExpressionParser_Tests
 		[Test]
 		public void DisjunctionVar()
 		{
-			var test = new ParserTester("a ∨ 1", new Var("a", -1).Get, 1);
+			var test = new ParserTester("a ∨ 1", null, 1);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
@@ -174,6 +174,7 @@ namespace ExpressionParser_Tests
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		
+		//TODO(v0.7) check XOR tests
 		[Test]
 		public void XorNormalFalseFalse()
 		{
@@ -205,7 +206,7 @@ namespace ExpressionParser_Tests
 		[Test]
 		public void XorSimplificationLazy()
 		{
-			var test = new ParserTester("1 @ 1 @ -1 @ x", null, -1);
+			var test = new ParserTester("1 @ 1 @ -1 @ x", new Var("x", -1).Get, -1);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
 		

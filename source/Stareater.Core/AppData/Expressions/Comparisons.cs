@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Stareater.AppData.Expressions
 {
 	abstract class Comparison : IExpressionNode
 	{
-		IExpressionNode leftSide;
-		IExpressionNode rightSide;
-		double tolerance;
+		private readonly IExpressionNode leftSide;
+		private readonly IExpressionNode rightSide;
+		private readonly double tolerance;
 
-		public Comparison(IExpressionNode leftSide, IExpressionNode rightSide, double tolerance)
+		protected Comparison(IExpressionNode leftSide, IExpressionNode rightSide, double tolerance)
 		{
 			this.leftSide = leftSide;
 			this.rightSide = rightSide;
@@ -79,7 +77,7 @@ namespace Stareater.AppData.Expressions
 
 	class LessThen : Comparison
 	{
-		bool allowEqual;
+		private readonly bool allowEqual;
 
 		public LessThen(IExpressionNode leftSide, IExpressionNode rightSide, double tolerance, bool strictlyLess) :
 			base(leftSide, rightSide, tolerance)
@@ -97,7 +95,7 @@ namespace Stareater.AppData.Expressions
 
 	class GreaterThen : Comparison
 	{
-		bool allowEqual;
+		private readonly bool allowEqual;
 
 		public GreaterThen(IExpressionNode leftSide, IExpressionNode rightSide, double tolerance, bool strictlyGreater) :
 			base(leftSide, rightSide, tolerance)
