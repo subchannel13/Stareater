@@ -223,8 +223,8 @@ namespace Stareater.AppData.Expressions
 				SemErr("Function \"" + name + "\" at " + listStart + "th character has too many parameters.");
 				return false;
 			}
-
-			return true;
+			else
+				return true;
 		}
 
 		private double toDouble(string text)
