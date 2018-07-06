@@ -22,9 +22,24 @@ Instructions for Windows and debug configuration:
   * OS-es other then Windows may not know how to execute the script, in that case one has to manually run texture generator with appropriate parameters
 5. Make sure game data is available to game's executable
   * Game data files are in `{Stareater}/build/` directory
-  * Game's executable file is in `{Stareater}/Stareater.UI.WinForms/bin/Debug/` directory
+  * Game's executable file is in `{Stareater}/source/Stareater.UI.WinForms/bin/Debug/` directory
     * Set IDE to run the project with following command line parameter: `-root ../../../../build/`
     * Alternatively, run `{Stareater}/scripts/copy_build_to_bin.bat` to copy files next to executable
   * Again, scrips may not work on OS-es other then Windows
 6. Build `{Stareater}/source/Zvjezdojedac.sln`
 7. If all steps above were successful, the game can be run
+
+# Licence
+
+Stareater executable and it's source in `{Stareater}/source/Stareater.UI.WinForms/` are licenced under GPLv3.
+
+Following code is licenced under LGPL:
+* `{Stareater}/source/Stareater.Core/` (Stareater core logic)
+* `{Stareater}/source/Stareater.Maps.ProximityLanes/` (2nd stage of default map generator)
+* `{Stareater}/source/Stareater.Maps.RybPopulator/` (3rd stage of default map generator)
+* `{Stareater}/source/Stareater.Maps.Square/` (1st stage of default map generator)
+* `{Stareater}/source/Stareater.Players.DefaultAI/` (default AI player)
+* `{Stareater}/source/Zvjezdojedac editori/` (modding tools for v0.4)
+* `{Stareater}/source/Zvjezdojedac/` (v0.4 game code)
+* `{Stareater}/documentation/` (GUI mockups)
+* `{Stareater}/tools/` (development helper tools)
