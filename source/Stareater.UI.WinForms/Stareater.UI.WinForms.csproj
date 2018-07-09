@@ -141,6 +141,7 @@
     <Compile Include="GameScenes\StarSystemScene.cs" />
     <Compile Include="GameScenes\TextRenderUtil.cs" />
     <Compile Include="GLData\TextureUtils.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="GraphicsEngine\AGlProgram.cs" />
     <Compile Include="GraphicsEngine\Animators\AnimationSequence.cs" />
     <Compile Include="GraphicsEngine\Animators\AnimationDelay.cs" />

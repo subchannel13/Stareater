@@ -41,20 +41,19 @@ namespace Stareater.GameScenes
 		
 		private const float PanClickTolerance = 0.01f;
 		private const float ClickRadius = 0.01f;
-		private const float TurnTextMargin = 0.005f;
 		private const float StarMinClickRadius = 0.75f;
 		
 		private const float EtaTextScale = 0.3f;
-		private const float FleetIndicatorScale = 0.2f;
+		private const float FleetIndicatorScale = 0.25f;
 		private const float FleetSelectorScale = 0.3f;
 		private const float PathWidth = 0.1f;
 		private const float StarNameScale = 0.35f;
 
 		public FleetController SelectedFleet { private get; set; }
-		private IGalaxyViewListener galaxyViewListener;
-		private SignalFlag refreshData = new SignalFlag();
+		private readonly IGalaxyViewListener galaxyViewListener;
+		private readonly SignalFlag refreshData = new SignalFlag();
 
-		private GuiText turnCounter;
+		private readonly GuiText turnCounter;
 		
 		private IEnumerable<SceneObject> fleetMovementPaths = null;
 		private IEnumerable<SceneObject> fleetMarkers = null;
@@ -73,9 +72,9 @@ namespace Stareater.GameScenes
 		private Vector2 mapBoundsMax;
 
 		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
-		private Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D> lastSelectedStars = new Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D>();
-		private Dictionary<int, FleetInfo> lastSelectedIdleFleets = new Dictionary<int, FleetInfo>();
-		private Dictionary<int, Vector2> lastOffset = new Dictionary<int, Vector2>(); //TODO(v0.8) remember player's zoom level too, unify with last selected object
+		private readonly Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D> lastSelectedStars = new Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D>();
+		private readonly Dictionary<int, FleetInfo> lastSelectedIdleFleets = new Dictionary<int, FleetInfo>();
+		private readonly Dictionary<int, Vector2> lastOffset = new Dictionary<int, Vector2>(); //TODO(v0.8) remember player's zoom level too, unify with last selected object
 		private PlayerController currentPlayer = null;
 
 		public GalaxyScene(IGalaxyViewListener galaxyViewListener)
@@ -161,11 +160,11 @@ namespace Stareater.GameScenes
 			if (this.refreshData.Check())
 			{
 				if (this.SelectedFleet != null && !this.SelectedFleet.Valid)
-				this.SelectedFleet = null;
+					this.SelectedFleet = null;
 
 				if (this.currentSelection == GalaxySelectionType.Fleet)
 					this.currentSelection = GalaxySelectionType.None;
-		
+
 				this.rebuildCache();
 				this.ResetLists();
 			}
@@ -186,8 +185,8 @@ namespace Stareater.GameScenes
 
 			//TODO(v0.8) test this, perhaps by flipping the monitor.
 			screenLength = screenSize.X > screenSize.Y ? 
-				(float)(screenSize.X * radius * aspect / screenSize.X) : 
-				(float)(screenSize.Y * radius * aspect / screenSize.Y);
+				screenSize.X * radius * aspect / screenSize.X : 
+				screenSize.Y * radius * aspect / screenSize.Y;
 
 			this.setupTurnCounter();
 
@@ -252,7 +251,7 @@ namespace Stareater.GameScenes
 
 						return new SceneObjectBuilder(fleet, position, 0).
 							StartSimpleSprite(FleetZ, GalaxyTextures.Get.FleetIndicator, fleet.Owner.Color).
-							Scale(FleetSelectorScale).
+							Scale(FleetIndicatorScale).
 							Translate(position).
 							Build();
 					}).ToList()
@@ -443,7 +442,6 @@ namespace Stareater.GameScenes
 			
 			var searchRadius = Math.Max(this.screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
 			var searchPoint = convert(mousePoint);
-			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 			
 			var allObjects = this.QueryScene(searchPoint, searchRadius).
 				OrderBy(x => (x.PhysicalShape.Center - convert(searchPoint)).LengthSquared).
@@ -507,7 +505,6 @@ namespace Stareater.GameScenes
 			
 			var searchRadius = Math.Max(screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
 			var searchPoint = convert(mousePoint);
-			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 
 			var starsFound = this.QueryScene(searchPoint, searchRadius).
 				Where(x => x.Data is StarInfo).
@@ -529,7 +526,6 @@ namespace Stareater.GameScenes
 			Vector4 mousePoint = Vector4.Transform(currentPosition, invProjection);
 			var searchRadius = Math.Max(screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
 			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
-			var searchSize = new NGenerics.DataStructures.Mathematical.Vector2D(searchRadius, searchRadius);
 
 			var starsFound = this.QueryScene(searchPoint, searchRadius).
 				Where(x => x.Data is StarInfo).
@@ -555,21 +551,6 @@ namespace Stareater.GameScenes
 				this.originOffset.Y = mapBoundsMin.Y;
 			if (this.originOffset.Y > mapBoundsMax.Y) 
 				this.originOffset.Y = mapBoundsMax.Y;
-		}
-
-		private static Matrix4 pathMatrix(Vector2 fromPoint, Vector2 toPoint)
-		{
-			var xAxis = toPoint - fromPoint;
-			var yAxis = new Vector2(xAxis.Y, -xAxis.X);
-			var yScale = PathWidth / yAxis.Length;
-			
-			var center = (fromPoint + toPoint) / 2;
-			return new Matrix4(
-				xAxis.X, yAxis.X, 0, 0,
-				xAxis.Y * yScale, yAxis.Y * yScale, 0, 0,
-				0, 0, 1, 0,
-				center.X, center.Y, 0, 1
-			);
 		}
 		
 		private FleetInfo lastSelectedIdleFleet
