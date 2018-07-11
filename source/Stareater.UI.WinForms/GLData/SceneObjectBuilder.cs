@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System;
 using Stareater.GLData.SpriteShader;
 using System.Drawing;
+using Stareater.GLData.OrbitShader;
 
 namespace Stareater.GLData
 {
 	class SceneObjectBuilder
 	{
-		private List<PolygonData> polygons = new List<PolygonData>();
-		private PhysicalData physicalShape = null;
-		private object data = null;
+		private readonly List<PolygonData> polygons = new List<PolygonData>();
+		private readonly PhysicalData physicalShape = null;
+		private readonly object data = null;
 
 		private PolygonType currentPolygonType = PolygonType.None;
 		private float z;
@@ -21,6 +22,12 @@ namespace Stareater.GLData
 		private int textureId;
 		private Color color;
 		private Matrix4 localTransform = Matrix4.Identity;
+		#endregion
+
+		#region Orbit data
+		private float minRadius;
+		private float maxRadius;
+		private TextureInfo sprite;
 		#endregion
 
 		public SceneObjectBuilder()
@@ -61,6 +68,34 @@ namespace Stareater.GLData
 			return this;
 		}
 
+		public SceneObjectBuilder StartSimpleSprite(float z, TextureInfo sprite, Color color)
+		{
+			this.applyPolygonData();
+
+			this.currentPolygonType = PolygonType.Sprite;
+			this.z = z;
+			this.vertexData.AddRange(SpriteHelpers.UnitRectVertexData(sprite));
+			this.textureId = sprite.Id;
+			this.color = color;
+
+			return this;
+		}
+
+		public SceneObjectBuilder StartOrbit(float z, float minRadius, float maxRadius, TextureInfo sprite, Color color)
+		{
+			this.applyPolygonData();
+
+			this.currentPolygonType = PolygonType.Orbit;
+			this.z = z;
+			this.minRadius = minRadius;
+			this.maxRadius = maxRadius;
+			this.vertexData.AddRange(SpriteHelpers.UnitRectVertexData(sprite));
+			this.sprite = sprite;
+			this.color = color;
+
+			return this;
+		}
+
 		public SceneObjectBuilder AddVertices(IEnumerable<float> vertexData)
 		{
 			this.assertStarted();
@@ -79,19 +114,6 @@ namespace Stareater.GLData
 				this.vertexData.Add(v.X);
 				this.vertexData.Add(v.Y);
 			}
-
-			return this;
-		}
-
-		public SceneObjectBuilder StartSimpleSprite(float z, TextureInfo sprite, Color color)
-		{
-			this.applyPolygonData();
-
-			this.currentPolygonType = PolygonType.Sprite;
-			this.z = z;
-			this.vertexData.AddRange(SpriteHelpers.UnitRectVertexData(sprite));
-			this.textureId = sprite.Id;
-			this.color = color;
 
 			return this;
 		}
@@ -149,10 +171,17 @@ namespace Stareater.GLData
 
 			IShaderData shaderData = null;
 
-			if (this.currentPolygonType == PolygonType.Sprite)
-				shaderData = new SpriteData(this.localTransform, this.textureId, this.color);
-			else
-				throw new NotImplementedException(this.currentPolygonType.ToString());
+			switch (this.currentPolygonType)
+			{
+				case PolygonType.Sprite:
+					shaderData = new SpriteData(this.localTransform, this.textureId, this.color);
+					break;
+				case PolygonType.Orbit:
+					shaderData = new OrbitData(this.minRadius, this.maxRadius, this.color, this.localTransform, this.sprite);
+					break;
+				default:
+					throw new NotImplementedException(this.currentPolygonType.ToString());
+			}
 
 			this.polygons.Add(new PolygonData(this.z, shaderData, this.vertexData));
 			

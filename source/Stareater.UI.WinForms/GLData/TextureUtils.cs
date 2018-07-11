@@ -6,19 +6,6 @@ namespace Stareater.GLData
 {
 	static class TextureUtils
 	{
-		public static Vector2[] SpriteQuad 
-		{ 
-			get
-			{
-				return new Vector2[] {
-					new Vector2(-0.5f, -0.5f),
-					new Vector2(0.5f, -0.5f),
-					new Vector2(0.5f, 0.5f),
-					new Vector2(-0.5f, 0.5f),
-				};
-			}
-		}
-		
 		public static int CreateTexture(Bitmap image)
 		{
 			int textureId = GL.GenTexture();

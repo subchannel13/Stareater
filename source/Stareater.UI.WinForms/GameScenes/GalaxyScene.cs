@@ -16,6 +16,7 @@ using Stareater.GLData.SpriteShader;
 using Stareater.GLData;
 using Stareater.GraphicsEngine.GuiElements;
 using Stareater.Controllers.Views;
+using Stareater.GLData.OrbitShader;
 
 namespace Stareater.GameScenes
 {
@@ -29,7 +30,8 @@ namespace Stareater.GameScenes
 		private const float FarZ = 1;
 		private const float Layers = 16.0f;
 		private const float StarNameZRange = 1 / Layers;
-		
+
+		private const float ScanRangeZ = 10 / Layers;
 		private const float WormholeZ = 9 / Layers;
 		private const float PathZ = 8 / Layers;
 		private const float StarColorZ = 7 / Layers;
@@ -57,6 +59,7 @@ namespace Stareater.GameScenes
 		
 		private IEnumerable<SceneObject> fleetMovementPaths = null;
 		private IEnumerable<SceneObject> fleetMarkers = null;
+		private IEnumerable<SceneObject> scanRanges = null;
 		private SceneObject movementEtaText = null;
 		private SceneObject movementSimulationPath = null;
 		private SceneObject selectionMarkers = null;
@@ -231,6 +234,7 @@ namespace Stareater.GameScenes
 			//setup stars first so fleets can query them 
 			this.setupStarSprites();
 
+			this.setupScanRanges();
 			this.setupFleetMarkers();
 			this.setupFleetMovement();
 			this.setupMovementEta();
@@ -239,7 +243,21 @@ namespace Stareater.GameScenes
 			this.setupWormholeSprites();
 			this.setupTurnCounter();
         }
-		
+
+		private void setupScanRanges()
+		{
+			this.UpdateScene(
+				ref this.scanRanges,
+				this.currentPlayer.Stellarises().Select(sellaris =>
+					new SceneObjectBuilder().
+						StartOrbit(ScanRangeZ, 1.95f, 2, GalaxyTextures.Get.PathLine, Color.Orange).
+						Translate(convert(sellaris.HostStar.Position)).
+						AddVertices(OrbitHelpers.Circle(new Vector2(0, 0), 3)).
+						Build()
+				).ToList()
+			);
+		}
+
 		private void setupFleetMarkers()
 		{
 			this.UpdateScene(
@@ -596,10 +614,9 @@ namespace Stareater.GameScenes
 
 		private void selectDefaultStar()
 		{
-			var stellarises = this.currentPlayer.Stellarises();
-            var bestStar = stellarises.Any() ? 
-				stellarises.Aggregate((a, b) => a.Population > b.Population ? a : b) : 
-				stellarises.First();
+			//TODO(v0.7) what is there are no stellarises?
+            var bestStar = this.currentPlayer.Stellarises().
+				Aggregate((a, b) => a.Population > b.Population ? a : b);
 
 			this.lastSelectedStars[this.currentPlayer.PlayerIndex] = bestStar.HostStar.Position;
 			this.lastOffset[this.currentPlayer.PlayerIndex] = convert(bestStar.HostStar.Position);
