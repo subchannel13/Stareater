@@ -299,7 +299,7 @@ namespace Stareater.Controllers
 			
 			foreach(var stellaris in states.Stellarises) {
 				var stellarisProc = new StellarisProcessor(stellaris);
-				stellarisProc.CalculateBaseEffects();
+				stellarisProc.CalculateBaseEffects(statics);
 				derivates.Stellarises.Add(stellarisProc);
 			}
 			

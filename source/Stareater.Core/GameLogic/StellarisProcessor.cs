@@ -8,6 +8,7 @@ using Stareater.GameData.Construction;
 using System;
 using Stareater.GameData;
 using Stareater.GameLogic.Planning;
+using Stareater.GameData.Databases;
 
 namespace Stareater.GameLogic
 {
@@ -21,6 +22,9 @@ namespace Stareater.GameLogic
 
 		[StateProperty]
 		public Dictionary<Colony, double> ImmigrantionPlan = new Dictionary<Colony, double>();
+
+		[StateProperty]
+		public double ScanRange { get; private set; }
 
 		public StellarisProcessor(StellarisAdmin stellaris) : base()
 		{
@@ -96,8 +100,11 @@ namespace Stareater.GameLogic
 			}
 		}
 
-		public void CalculateBaseEffects()
+		public void CalculateBaseEffects(StaticsDB statics)
 		{
+			var vars = this.LocalEffects(statics).Get; //TODO(v0.8) add player techs
+
+			this.ScanRange = statics.StellarisFormulas.ScanRange.Evaluate(vars);
 			/*
 			 * TODO(v0.8) Preprocess stars
 			 * - Calculate system effects

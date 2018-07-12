@@ -12,7 +12,6 @@ using Stareater.Utils;
 using Stareater.Galaxy.BodyTraits;
 using Stareater.GameData.Construction;
 using Stareater.Galaxy;
-using Stareater.Controllers.Views;
 
 namespace Stareater.GameData.Databases
 {
@@ -32,6 +31,7 @@ namespace Stareater.GameData.Databases
 		public List<DesignTemplate> PredeginedDesigns { get; private set; }
 		public List<ResearchTopic> ResearchTopics { get; private set; }
 		public ShipFormulaSet ShipFormulas { get; private set; }
+		public StellarisFormulaSet StellarisFormulas { get; private set; }
 		public List<DesignTemplate> SystemColonizerDesigns { get; private set; }
 		public List<SystemPolicy> Policies { get; private set; }
 		public Dictionary<string, TraitType> Traits { get; private set; }
@@ -86,47 +86,50 @@ namespace Stareater.GameData.Databases
 					foreach (var data in parser.ParseAll().Select(x => x.Value.To<IkonComposite>())) 
 					{
 						switch((string)data.Tag) {
-							case BuildingTag:
+							case "Building":
 								db.Buildings.Add(data[GeneralCodeKey].To<string>(), loadBuilding(data));
 								break;
-							case ColonizersTag:
+							case "Colonizers":
 								db.loadColonizers(data.To<IkonComposite>());
 								break;
-							case ColonyFormulasTag:
+							case "ColonyFormulas":
 								db.ColonyFormulas = loadColonyFormulas(data);
 								break;
-							case ConstructableTag:
+							case "Constructable":
 								db.Constructables.Add(loadConstructable(data));
 								break;
-							case DevelopmentFocusesTag:
+							case "DevelopmentFocusOptions":
 								db.DevelopmentFocusOptions.AddRange(loadFocusOptions(data));
 								break;
-							case DevelopmentTag:
+							case "DevelopmentTopic":
 								db.DevelopmentTopics.Add(loadDevelopmentTopic(data));
 								break;
-							case NativesTag:
+							case "Natives":
 								db.loadNatives(data.To<IkonComposite>());
 								break;
-							case PlanetForumlasTag:
+							case "PlanetFormulas":
 								var formulaSet = loadPlanetFormulas(data);
                                 db.PlanetForumlas[formulaSet.Key] = formulaSet.Value;
 								break;
-							case PlayerFormulasTag:
+							case "PlayerFormulas":
 								db.PlayerFormulas = loadPlayerFormulas(data);
 								break;
-							case PolicyTag:
+							case "SystemPolicy":
 								db.Policies.Add(loadPolicy(data));
 								break;
-							case PredefinedDesignTag:
+							case "PredefinedDesign":
 								db.PredeginedDesigns.Add(loadDesignTemplate(data));
 								break;
-							case ResearchTag:
+							case "ResearchTopic":
 								db.ResearchTopics.Add(loadResearchTopic(data));
 								break;
-							case ShipFormulasTag:
+							case "ShipFormulas":
 								db.ShipFormulas = loadShipFormulas(data);
 								break;
-							case TraitTag:
+							case "StarFormulas":
+								db.StellarisFormulas = loadStarFormulas(data);
+								break;
+							case "Trait":
 								db.Traits.Add(data[GeneralCodeKey].To<string>(), loadTrait(data));
 								break;
 	
@@ -284,7 +287,13 @@ namespace Stareater.GameData.Databases
 				data[ShipWormholeSpeed].To<Formula>()
 			);
 		}
-
+		private static StellarisFormulaSet loadStarFormulas(IkonComposite data)
+		{
+			return new StellarisFormulaSet(
+				data["scanRange"].To<Formula>()
+			);
+		}
+		
 		private static SystemPolicy loadPolicy(IkonComposite data)
 		{
 			return new SystemPolicy(
@@ -710,21 +719,6 @@ namespace Stareater.GameData.Databases
 		#endregion
 		
 		#region Loading tags and keys
-		private const string BuildingTag = "Building";
-		private const string ColonyFormulasTag = "ColonyFormulas";
-		private const string ColonizersTag = "Colonizers";
-		private const string ConstructableTag = "Constructable";
-		private const string DevelopmentFocusesTag = "DevelopmentFocusOptions";
-		private const string DevelopmentTag = "DevelopmentTopic";
-		private const string NativesTag = "Natives";
-		private const string PlanetForumlasTag = "PlanetFormulas";
-		private const string PlayerFormulasTag = "PlayerFormulas";
-		private const string PolicyTag = "SystemPolicy";
-		private const string PredefinedDesignTag = "PredefinedDesign";
-		private const string ResearchTag = "ResearchTopic";
-		private const string ShipFormulasTag = "ShipFormulas";
-		private const string TraitTag = "Trait";
-		
 		private const string ArmorTag = "Armor";
 		private const string HullTag = "Hull";
 		private const string IsDriveTag = "IsDrive"; 

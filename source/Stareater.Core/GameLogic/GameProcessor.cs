@@ -93,7 +93,7 @@ namespace Stareater.GameLogic
 			foreach (var stellaris in this.game.Derivates.Stellarises)
 			{
 				stellaris.ApplyPolicy(this.game, this.game.Orders[stellaris.Owner].Policies[stellaris.Stellaris]);
-				stellaris.CalculateBaseEffects();
+				stellaris.CalculateBaseEffects(game.Statics);
 			}
 			foreach (var colonyProc in this.game.Derivates.Colonies)
 				colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Of(colonyProc.Owner));
@@ -355,7 +355,6 @@ namespace Stareater.GameLogic
 						foreach(var shipGroup in fleet.Ships)
 						{
 							var shipStats = playerProc.DesignStats[shipGroup.Design];
-							var groupPopulation = shipStats.ColonizerPopulation * shipGroup.Quantity;
 							var landingLimit = (long)Math.Ceiling((colonizationTreshold - colony.Population) / shipStats.ColonizerPopulation);
 							var shipsLanded = Math.Min(shipGroup.Quantity, landingLimit);
 							

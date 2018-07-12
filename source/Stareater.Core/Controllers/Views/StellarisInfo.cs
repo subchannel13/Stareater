@@ -10,7 +10,8 @@ namespace Stareater.Controllers.Views
 		
 		public PlayerInfo Owner { get; private set; }
 		public double Population { get; private set; }
-		
+		public float ScanRange { get; private set; }
+
 		internal StellarisInfo(StellarisAdmin stellaris, MainGame game)
 		{
 			this.Stellaris = stellaris;
@@ -20,13 +21,14 @@ namespace Stareater.Controllers.Views
 				AtStar[stellaris.Location.Star].
 				Where(x => x.Owner == stellaris.Owner).
 				Sum(x => x.Population);
+			this.ScanRange = (float)game.Derivates.Of(stellaris).ScanRange;
 		}
 		
 		public StarInfo HostStar
 		{
 			get { return new StarInfo(this.Stellaris.Location.Star); }
 		}
-		
+
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{
@@ -47,7 +49,7 @@ namespace Stareater.Controllers.Views
 		public static bool operator ==(StellarisInfo lhs, StellarisInfo rhs) {
 			if (ReferenceEquals(lhs, rhs))
 				return true;
-			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+			if (lhs is null || rhs is null)
 				return false;
 			return lhs.Equals(rhs);
 		}

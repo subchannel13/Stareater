@@ -187,6 +187,7 @@
     <Compile Include="GameData\Databases\Tables\PlanetForumlaSet.cs" />
     <Compile Include="GameData\Databases\Tables\PlayerOrders.cs" />
     <Compile Include="GameData\Databases\Tables\ResearchProgressCollection.cs" />
+    <Compile Include="GameData\Databases\Tables\StellarisFormulaSet.cs" />
     <Compile Include="GameData\Databases\Tables\TreatyCollection.cs" />
     <Compile Include="GameData\DevelopmentProgress.cs" />
     <Compile Include="GameData\DevelopmentRequirement.cs" />

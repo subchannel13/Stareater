@@ -246,13 +246,15 @@ namespace Stareater.GameScenes
 
 		private void setupScanRanges()
 		{
+			var borderThickness = 0.05f / (float)Math.Pow(ZoomBase, zoomLevel);
+
 			this.UpdateScene(
 				ref this.scanRanges,
-				this.currentPlayer.Stellarises().Select(sellaris =>
+				this.currentPlayer.Stellarises().Select(stellaris =>
 					new SceneObjectBuilder().
-						StartOrbit(ScanRangeZ, 1.95f, 2, GalaxyTextures.Get.PathLine, Color.Orange).
-						Translate(convert(sellaris.HostStar.Position)).
-						AddVertices(OrbitHelpers.Circle(new Vector2(0, 0), 3)).
+						StartOrbit(ScanRangeZ, stellaris.ScanRange - borderThickness, stellaris.ScanRange, GalaxyTextures.Get.PathLine, Color.Orange).
+						Translate(convert(stellaris.HostStar.Position)).
+						AddVertices(OrbitHelpers.Circle(new Vector2(0, 0), stellaris.ScanRange)).
 						Build()
 				).ToList()
 			);
@@ -449,6 +451,7 @@ namespace Stareater.GameScenes
 			this.originOffset = (this.originOffset * oldZoom + mousePoint * (newZoom - oldZoom)) / newZoom;
 			this.limitPan();
 			this.setupPerspective();
+			this.setupScanRanges();
 			this.setupStarSprites();
 			this.setupMovementEta();
 		}
@@ -614,7 +617,7 @@ namespace Stareater.GameScenes
 
 		private void selectDefaultStar()
 		{
-			//TODO(v0.7) what is there are no stellarises?
+			//TODO(v0.8) what if there are no stellarises?
             var bestStar = this.currentPlayer.Stellarises().
 				Aggregate((a, b) => a.Population > b.Population ? a : b);
 
