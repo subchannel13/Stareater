@@ -214,8 +214,7 @@ namespace Stareater.GameLogic
 		{
 			this.ControlsStareater = game.States.Fleets.
 					At[game.States.StareaterBrain.Position].
-					Where(x => x.Owner == this.Player).
-					Any();
+					Any(x => x.Owner == this.Player);
 
 			this.EjectEta = this.ControlsStareater ? 1 : 0; //TODO(later) calculate ETA
 			this.EjectVictoryPoints = game.MainPlayers.ToDictionary(x => x, x => 0.0);

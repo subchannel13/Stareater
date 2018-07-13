@@ -73,6 +73,9 @@ namespace Stareater.GameLogic
 			foreach (var buildingItem in queue) 
 			{
 				var stockpileKey = buildingItem.StockpileGroup;
+				if (!site.Stockpile.ContainsKey(stockpileKey))
+					site.Stockpile[stockpileKey] = 0;
+
 				if (buildingItem.Condition.Evaluate(vars) < 0) 
 				{
 					spendingPlan.Add(new ConstructionResult(0, 0, site.Stockpile[stockpileKey], buildingItem, site.Stockpile[stockpileKey]));

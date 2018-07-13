@@ -93,7 +93,7 @@ namespace Stareater.GameLogic
 			foreach (var stellaris in this.game.Derivates.Stellarises)
 			{
 				stellaris.ApplyPolicy(this.game, this.game.Orders[stellaris.Owner].Policies[stellaris.Stellaris]);
-				stellaris.CalculateBaseEffects(game.Statics);
+				stellaris.CalculateBaseEffects(game);
 			}
 			foreach (var colonyProc in this.game.Derivates.Colonies)
 				colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Of(colonyProc.Owner));

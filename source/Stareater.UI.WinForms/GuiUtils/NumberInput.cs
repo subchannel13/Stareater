@@ -7,7 +7,7 @@ namespace Stareater.GuiUtils
 	{
 		public static long? DecodeQuantity(string text)
 		{
-			long result = -1;
+			long result;
 
 			text = text.Trim();
 			double? prefixedValue = ThousandsFormatter.TryParse(text);

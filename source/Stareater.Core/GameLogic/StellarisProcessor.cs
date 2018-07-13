@@ -100,15 +100,12 @@ namespace Stareater.GameLogic
 			}
 		}
 
-		public void CalculateBaseEffects(StaticsDB statics)
+		public void CalculateBaseEffects(MainGame game)
 		{
-			var vars = this.LocalEffects(statics).Get; //TODO(v0.8) add player techs
+			var vars = this.LocalEffects(game.Statics).
+				UnionWith(game.Derivates.Of(this.Owner).TechLevels).Get;
 
-			this.ScanRange = statics.StellarisFormulas.ScanRange.Evaluate(vars);
-			/*
-			 * TODO(v0.8) Preprocess stars
-			 * - Calculate system effects
-			 */
+			this.ScanRange = game.Statics.StellarisFormulas.ScanRange.Evaluate(vars);
 		}
 
 		public void CalculateDerivedEffects(MainGame game)

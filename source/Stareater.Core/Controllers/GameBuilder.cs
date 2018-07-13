@@ -291,17 +291,11 @@ namespace Stareater.Controllers
 		{
 			var derivates = new TemporaryDB(players, organellePlayer, statics.DevelopmentTopics);
 			
-			foreach(var colony in states.Colonies) {
-				var colonyProc = new ColonyProcessor(colony);
-				colonyProc.CalculateBaseEffects(statics, derivates.Players.Of[colony.Owner]);
-				derivates.Colonies.Add(colonyProc);
-			}
+			foreach(var colony in states.Colonies) 
+				derivates.Colonies.Add(new ColonyProcessor(colony));
 			
-			foreach(var stellaris in states.Stellarises) {
-				var stellarisProc = new StellarisProcessor(stellaris);
-				stellarisProc.CalculateBaseEffects(statics);
-				derivates.Stellarises.Add(stellarisProc);
-			}
+			foreach(var stellaris in states.Stellarises)
+				derivates.Stellarises.Add(new StellarisProcessor(stellaris));
 			
 			derivates.Natives.Initialize(states, statics, derivates);
 
