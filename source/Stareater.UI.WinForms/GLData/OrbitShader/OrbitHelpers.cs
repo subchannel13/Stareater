@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using Stareater.GuiUtils;
 using System;
 using System.Collections.Generic;
 
@@ -45,21 +46,6 @@ namespace Stareater.GLData.OrbitShader
 			yield return y;
 			yield return x;
 			yield return y;
-		}
-
-		public static IEnumerable<float> Circle(Vector2 center, float radius)
-		{
-			var data = new List<float>();
-
-			data.AddRange(orbitVertex(-radius, radius));
-			data.AddRange(orbitVertex(radius, radius));
-			data.AddRange(orbitVertex(radius, -radius));
-
-			data.AddRange(orbitVertex(radius, -radius));
-			data.AddRange(orbitVertex(-radius, -radius));
-			data.AddRange(orbitVertex(-radius, radius));
-
-			return data;
 		}
 	}
 }

@@ -29,7 +29,7 @@ namespace Stareater.GameScenes
 		
 		private const float FarZ = 1;
 		private const float Layers = 16.0f;
-		private const float StarNameZRange = 1 / Layers;
+		private const float InterlayerZRange = 1 / Layers;
 
 		private const float ScanRangeZ = 10 / Layers;
 		private const float WormholeZ = 9 / Layers;
@@ -246,15 +246,19 @@ namespace Stareater.GameScenes
 
 		private void setupScanRanges()
 		{
+			var arcBuilder = new ArcBorderBuilder();
+			arcBuilder.AddCircles(this.currentPlayer.Stellarises(), x => convert(x.HostStar.Position), x => x.ScanRange);
+			
 			var borderThickness = 0.05f / (float)Math.Pow(ZoomBase, zoomLevel);
+			var zStep = InterlayerZRange / (float)arcBuilder.Count;
 
 			this.UpdateScene(
 				ref this.scanRanges,
-				this.currentPlayer.Stellarises().Select(stellaris =>
+				arcBuilder.Vertices().Select((circle, i) =>
 					new SceneObjectBuilder().
-						StartOrbit(ScanRangeZ, stellaris.ScanRange - borderThickness, stellaris.ScanRange, GalaxyTextures.Get.PathLine, Color.Orange).
-						Translate(convert(stellaris.HostStar.Position)).
-						AddVertices(OrbitHelpers.Circle(new Vector2(0, 0), stellaris.ScanRange)).
+						StartOrbit(ScanRangeZ + i * zStep, circle.Radius - borderThickness, circle.Radius, GalaxyTextures.Get.PathLine, Color.Orange).
+						Translate(circle.Center).
+						AddVertices(circle.Vertices).
 						Build()
 				).ToList()
 			);
@@ -373,7 +377,7 @@ namespace Stareater.GameScenes
 					Translate(convert(star.Position)).
 
 					//TODO(v0.8) don't show names when zoomed out too much
-					StartSprite(StarNameZ - (i * StarNameZRange) / stars.Count, TextRenderUtil.Get.TextureId, starNameColor(star)).
+					StartSprite(StarNameZ + (i * InterlayerZRange) / stars.Count, TextRenderUtil.Get.TextureId, starNameColor(star)).
 					AddVertices(
 						TextRenderUtil.Get.BufferText(
 								star.Name.ToText(LocalizationManifest.Get.CurrentLanguage),
