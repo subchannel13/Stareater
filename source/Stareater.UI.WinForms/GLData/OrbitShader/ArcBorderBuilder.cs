@@ -18,7 +18,7 @@ namespace Stareater.GLData.OrbitShader
 			foreach (var circle in circles)
 			{
 				var arcs = new List<Arc>();
-				bool swallowed = false;
+				bool enclosed = false;
 				foreach (var otherCircle in circles.Where(x => x != circle))
 				{
 					var dist = (circle.Center - otherCircle.Center).Length;
@@ -30,7 +30,7 @@ namespace Stareater.GLData.OrbitShader
 					if (dist + circleRadius < otherRadius)
 					{
 						arcs.Clear();
-						swallowed = true;
+						enclosed = true;
 						break;
 					}
 
@@ -41,14 +41,14 @@ namespace Stareater.GLData.OrbitShader
 					));
 				}
 
-				if (!swallowed && !arcs.Any())
+				if (!enclosed && !arcs.Any())
 					arcs.Add(new Arc(circle.Center, circle.Facing, circle.Openness));
 
 				if (!arcs.Any())
 					continue;
 
 				var points = arcs.SelectMany(x => x.Points).ToList();
-				points.Sort();
+				points.Sort(comparePoints);
 				int startI = -1;
 				for (int i = 0; i < points.Count; i++)
 				{
@@ -104,10 +104,11 @@ namespace Stareater.GLData.OrbitShader
 					var facing = faceDirection * rightPoint.OriginalArc.Radius;
 					var openness = Vector2.Dot(faceDirection, rightPoint.Point);
 
-					var midpointHeight = (float)Math.Sqrt(facing.LengthSquared - openness * openness / 4);
+					var midpointOpenness = (openness - 1) / 2 + 1;
+					var midpointHeight = (float)Math.Sqrt(facing.LengthSquared - midpointOpenness * midpointOpenness);
 					var facingPoint = facing * 1.5f;
 
-					var outerPoint1 = (faceDirection * openness / 2 + facing.PerpendicularRight * midpointHeight) * 1.9f;
+					var outerPoint1 = (facing * midpointOpenness + facing.PerpendicularRight * midpointHeight) * 1.9f;
 					data.AddRange(orbitVertex(rightPoint.Point * 1.9f));
 					data.AddRange(new float[] { 0, 0, 0, 0 });
 					data.AddRange(orbitVertex(outerPoint1));
@@ -116,7 +117,7 @@ namespace Stareater.GLData.OrbitShader
 					data.AddRange(orbitVertex(facingPoint));
 					data.AddRange(orbitVertex(outerPoint1));
 
-					var outerPoint2 = (faceDirection * openness / 2 + facing.PerpendicularLeft * midpointHeight) * 1.9f;
+					var outerPoint2 = (facing * midpointOpenness + facing.PerpendicularLeft * midpointHeight) * 1.9f;
 					data.AddRange(orbitVertex(leftPoint.Point * 1.9f));
 					data.AddRange(orbitVertex(outerPoint2));
 					data.AddRange(new float[] { 0, 0, 0, 0 });
@@ -136,6 +137,19 @@ namespace Stareater.GLData.OrbitShader
 			yield return p.Y;
 			yield return p.X;
 			yield return p.Y;
+		}
+
+		private int comparePoints(ArcPoint pointA, ArcPoint pointB)
+		{
+			var angleCompare = pointA.Angle.CompareTo(pointB.Angle);
+
+			if (angleCompare != 0)
+				return angleCompare;
+
+			if (pointA.RightEnd != pointB.RightEnd)
+				return pointA.RightEnd ? 1 : -1;
+			else
+				return 0;
 		}
 
 		class Arc
@@ -169,13 +183,13 @@ namespace Stareater.GLData.OrbitShader
 			}
 		}
 
-		class ArcPoint : IComparable<ArcPoint>
+		class ArcPoint
 		{
 			public Arc OriginalArc { get; private set; }
 			public Vector2 Point { get; private set; }
 			public bool RightEnd { get; private set; }
 
-			private readonly float angle;
+			public float Angle { get; private set; }
 
 			public ArcPoint(Arc originalArc, Vector2 point, bool rightEnd)
 			{
@@ -184,23 +198,7 @@ namespace Stareater.GLData.OrbitShader
 				this.RightEnd = rightEnd;
 
 				var direction = this.Point.Normalized();
-				this.angle = (direction.Y > 0) ? 1 - direction.X : 3 + direction.X;
-			}
-
-			public int CompareTo(ArcPoint other)
-			{
-				var angleCompare = this.angle.CompareTo(other.angle);
-
-				if (angleCompare == 0)
-					if (this.RightEnd != other.RightEnd)
-						if (this.RightEnd)
-							return 1;
-						else
-							return -1;
-					else
-						return 0;
-
-				return this.angle.CompareTo(other.angle);
+				this.Angle = (direction.Y > 0) ? 1 - direction.X : 3 + direction.X;
 			}
 		}
 	}
