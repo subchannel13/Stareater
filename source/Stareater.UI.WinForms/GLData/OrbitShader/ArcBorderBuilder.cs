@@ -7,86 +7,120 @@ namespace Stareater.GLData.OrbitShader
 {
 	class ArcBorderBuilder
 	{
-		private readonly Dictionary<Arc, List<ArcPoint>> arcPoints = new Dictionary<Arc, List<ArcPoint>>();
+		private readonly List<Circle> wholeCircles = new List<Circle>();
+		private readonly Dictionary<Circle, List<ArcPoint>> arcPoints = new Dictionary<Circle, List<ArcPoint>>();
 
 		public void AddCircles<T>(IEnumerable<T> data, Func<T, Vector2> centerFunc, Func<T, float> radiusFunc)
 		{
 			var circles = data.
-				Select(x => new Arc(centerFunc(x), new Vector2(radiusFunc(x), 0), -radiusFunc(x))).
+				Select(x => new Circle(centerFunc(x), radiusFunc(x))).
 				ToList();
 
 			foreach (var circle in circles)
 			{
 				var arcs = new List<Arc>();
 				bool enclosed = false;
-				foreach (var otherCircle in circles.Where(x => x != circle))
-				{
-					var dist = (circle.Center - otherCircle.Center).Length;
-					var circleRadius = circle.Radius;
-					var otherRadius = otherCircle.Radius;
 
-					if (dist > circleRadius + otherRadius)
+				foreach (var other in circles.Where(x => x != circle))
+				{
+					var dist = (circle.Center - other.Center).Length;
+
+					if (dist > circle.Radius + other.Radius)
 						continue;
-					if (dist + circleRadius < otherRadius)
+					if (dist + circle.Radius < other.Radius)
 					{
-						arcs.Clear();
 						enclosed = true;
 						break;
 					}
 
 					arcs.Add(new Arc(
-						circle.Center,
-						(circle.Center - otherCircle.Center).Normalized() * circleRadius,
-						-(dist * dist - otherRadius * otherRadius + circleRadius * circleRadius) / 2 / dist
+						circle,
+						(circle.Center - other.Center).Normalized(),
+						-(dist * dist - other.Radius * other.Radius + circle.Radius * circle.Radius) / 2 / dist
 					));
 				}
 
 				if (!enclosed && !arcs.Any())
-					arcs.Add(new Arc(circle.Center, circle.Facing, circle.Openness));
+					this.wholeCircles.Add(new Circle(circle.Center, circle.Radius));
 
-				if (!arcs.Any())
-					continue;
-
-				var points = arcs.SelectMany(x => x.Points).ToList();
-				points.Sort(comparePoints);
-				int startI = -1;
-				for (int i = 0; i < points.Count; i++)
-				{
-					var prev = (i + points.Count - 1) % points.Count;
-					if (points[i].RightEnd && !points[prev].RightEnd)
-					{
-						startI = i;
-						break;
-					}
-				}
-
-				if (startI < 0)
-					continue;
-
-				points = points.Skip(startI).Concat(points.Take(startI)).ToList();
-				for (int i = 0; i < points.Count; i++)
-				{
-					if (i + 1 < points.Count && points[i].RightEnd == points[i + 1].RightEnd)
-					{
-						if (points[i].RightEnd)
-							points.RemoveAt(i);
-						else
-							points.RemoveAt(i + 1);
-						i--;
-					}
-				}
-
-				arcPoints[circle] = points;
+				if (!enclosed && arcs.Any())
+					arcPoints[circle] = arcsToPoints(arcs);
 			}
+		}
+
+		private static int comparePoints(ArcPoint pointA, ArcPoint pointB)
+		{
+			var angleCompare = pointA.Angle.CompareTo(pointB.Angle);
+
+			if (angleCompare != 0)
+				return angleCompare;
+
+			if (pointA.RightEnd != pointB.RightEnd)
+				return pointA.RightEnd ? 1 : -1;
+			else
+				return 0;
+		}
+
+		private static List<ArcPoint> arcsToPoints(List<Arc> arcs)
+		{
+			var points = arcs.SelectMany(x => x.Points).ToList();
+			points.Sort(comparePoints);
+
+			//Find the start of an arc
+			int startI = -1;
+			for (int i = 0; i < points.Count; i++)
+			{
+				var previous = (i - 1 + points.Count) % points.Count;
+				if (points[i].RightEnd && !points[previous].RightEnd)
+				{
+					startI = i;
+					break;
+				}
+			}
+
+			//All arcs are overlapping in the exclusive manner
+			if (startI < 0)
+				return new List<ArcPoint>();
+
+			//Rotate the list
+			points = points.Skip(startI).Concat(points.Take(startI)).ToList();
+			
+			//Remove excluded points from overlapping arcs
+			for (int i = 0; i < points.Count - 1; i++)
+				if (points[i].RightEnd == points[i + 1].RightEnd)
+				{
+					if (points[i].RightEnd)
+						points.RemoveAt(i);
+					else
+						points.RemoveAt(i + 1);
+					i--;
+				}
+
+			return points;
 		}
 
 		public int Count
 		{
-			get { return this.arcPoints.Count; }
+			get { return this.arcPoints.Count + this.wholeCircles.Count; }
 		}
 
 		public IEnumerable<ArcVertices> Vertices()
 		{
+			foreach(var circle in this.wholeCircles)
+				yield return new ArcVertices(
+					new float[] //TODO(v0.8) make util method somewhere for unit quad
+					{
+						-circle.Radius, circle.Radius, -circle.Radius, circle.Radius,
+						circle.Radius, circle.Radius, circle.Radius, circle.Radius,
+						circle.Radius, -circle.Radius, circle.Radius, -circle.Radius,
+
+						circle.Radius, -circle.Radius, circle.Radius, -circle.Radius,
+						-circle.Radius, -circle.Radius, -circle.Radius, -circle.Radius,
+						-circle.Radius, circle.Radius, -circle.Radius, circle.Radius,
+					},
+					circle.Center, circle.Radius
+				);
+
 			foreach (var circle in this.arcPoints)
 			{
 				var points = circle.Value;
@@ -101,7 +135,7 @@ namespace Stareater.GLData.OrbitShader
 					if (Vector2.Dot(faceDirection.PerpendicularRight, rightPoint.Point) < 0 || rightPoint.Point == leftPoint.Point)
 						faceDirection = -faceDirection;
 					faceDirection = faceDirection.Normalized();
-					var facing = faceDirection * rightPoint.OriginalArc.Radius;
+					var facing = faceDirection * rightPoint.OriginalArc.Origin.Radius;
 					var openness = Vector2.Dot(faceDirection, rightPoint.Point);
 
 					var midpointOpenness = (openness - 1) / 2 + 1;
@@ -139,46 +173,39 @@ namespace Stareater.GLData.OrbitShader
 			yield return p.Y;
 		}
 
-		private int comparePoints(ArcPoint pointA, ArcPoint pointB)
+		class Circle
 		{
-			var angleCompare = pointA.Angle.CompareTo(pointB.Angle);
+			public Vector2 Center { get; private set; }
+			public float Radius { get; private set; }
 
-			if (angleCompare != 0)
-				return angleCompare;
-
-			if (pointA.RightEnd != pointB.RightEnd)
-				return pointA.RightEnd ? 1 : -1;
-			else
-				return 0;
+			public Circle(Vector2 center, float radius)
+			{
+				this.Center = center;
+				this.Radius = radius;
+			}
 		}
 
 		class Arc
 		{
-			public Vector2 Center { get; private set; }
+			public Circle Origin { get; private set; }
 			public Vector2 Facing { get; private set; }
 			public float Openness { get; private set; }
 
-			public Arc(Vector2 center, Vector2 facing, float openness)
+			public Arc(Circle origin, Vector2 facing, float openness)
 			{
-				this.Center = center;
+				this.Origin = origin;
 				this.Facing = facing;
 				this.Openness = openness;
-			}
-
-			public float Radius
-			{
-				get { return this.Facing.Length; }
 			}
 
 			public IEnumerable<ArcPoint> Points
 			{
 				get
 				{
-					var openningHeight = (float)Math.Sqrt(this.Facing.LengthSquared - this.Openness * this.Openness);
-					var faceDirection = this.Facing.Normalized();
+					var openningHeight = (float)Math.Sqrt(this.Origin.Radius * this.Origin.Radius - this.Openness * this.Openness);
 
-					yield return new ArcPoint(this, faceDirection * this.Openness + faceDirection.PerpendicularRight * openningHeight, true);
-					yield return new ArcPoint(this, faceDirection * this.Openness + faceDirection.PerpendicularLeft * openningHeight, false);
+					yield return new ArcPoint(this, this.Facing * this.Openness + this.Facing.PerpendicularRight * openningHeight, true);
+					yield return new ArcPoint(this, this.Facing * this.Openness + this.Facing.PerpendicularLeft * openningHeight, false);
 				}
 			}
 		}
