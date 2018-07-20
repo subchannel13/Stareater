@@ -39,7 +39,21 @@ namespace Stareater.GLData.OrbitShader
 					yield return x;
 			}
 		}
-		
+
+		public static IEnumerable<float> Quad(float size)
+		{
+			return new[]
+			{
+				-size, size, -size, size,
+				size, size, size, size,
+				size, -size, size, -size,
+
+				size, -size, size, -size,
+				-size, -size, -size, -size,
+				-size, size, -size, size,
+			};
+		}
+
 		private static IEnumerable<float> orbitVertex(float x, float y)
 		{
 			yield return x; 

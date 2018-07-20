@@ -17,6 +17,7 @@ using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using Stareater.GameLogic.Planning;
 using Stareater.GameLogic.Combat;
+using NGenerics.DataStructures.Mathematical;
 
 namespace Stareater.GameLogic
 {
@@ -55,6 +56,8 @@ namespace Stareater.GameLogic
 		public Dictionary<Player, double> EjectVictoryPoints { get; private set; } 
 
 		private Queue<ResearchResult> breakthroughs = new Queue<ResearchResult>();
+
+		private QuadTree<Circle> scanRanges = new QuadTree<Circle>();
 
 		public PlayerProcessor(Player player, IEnumerable<DevelopmentTopic> technologies)
 		{
@@ -110,6 +113,13 @@ namespace Stareater.GameLogic
 					availabeMaintenance -= spent;
 					colony.MaintenancePenalty = colony.MaintenancePerPop * (1 - spent / colony.MaintenanceCost);
                 }
+			}
+
+			this.scanRanges.Clear();
+			foreach (var stellaris in derivates.Stellarises.OwnedBy[this.Player])
+			{
+				var range = new Circle(stellaris.Location.Position, stellaris.ScanRange);
+				this.scanRanges.Add(range, range.Center, new Vector2D(range.Radius, range.Radius));
 			}
 		}
 
@@ -210,6 +220,13 @@ namespace Stareater.GameLogic
 		#endregion
 
 		#region Galaxy phase
+		public bool CanSee(Fleet fleet)
+		{
+			return fleet.Owner == this.Player ||
+				this.scanRanges.Query(fleet.Position, new Vector2D()).
+				Any(x => (x.Center - fleet.Position).Magnitude() <= x.Radius);
+		}
+
 		public void CalculateStareater(MainGame game)
 		{
 			this.ControlsStareater = game.States.Fleets.
@@ -447,7 +464,6 @@ namespace Stareater.GameLogic
 				foreach(var discarded in discardedDesigns)
 					this.RefitCosts[design].Remove(discarded);
 		}
-
 		#endregion
 		
 		#region Design stats

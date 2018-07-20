@@ -324,6 +324,7 @@
     <Compile Include="SpaceCombat\Projectile.cs" />
     <Compile Include="Utils\BitHash.cs" />
     <Compile Include="Utils\BitHashBuilder.cs" />
+    <Compile Include="Utils\Circle.cs" />
     <Compile Include="Utils\Collections\PairCollectionIndex.cs" />
     <Compile Include="Utils\Pair.cs" />
     <Compile Include="Utils\StateEngine\LoadSession.cs" />

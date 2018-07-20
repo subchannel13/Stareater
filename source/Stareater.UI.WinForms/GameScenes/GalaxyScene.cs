@@ -247,7 +247,11 @@ namespace Stareater.GameScenes
 		private void setupScanRanges()
 		{
 			var arcBuilder = new ArcBorderBuilder();
-			arcBuilder.AddCircles(this.currentPlayer.Stellarises(), x => convert(x.HostStar.Position), x => x.ScanRange);
+			arcBuilder.AddCircles(
+				this.currentPlayer.Stellarises().
+				Select(x => new Circle(x.HostStar.Position, x.ScanRange)).
+				ToList()
+			);
 			
 			var borderThickness = 0.05f / (float)Math.Pow(ZoomBase, zoomLevel);
 			var zStep = InterlayerZRange / (float)arcBuilder.Count;
@@ -257,7 +261,7 @@ namespace Stareater.GameScenes
 				arcBuilder.Vertices().Select((circle, i) =>
 					new SceneObjectBuilder().
 						StartOrbit(ScanRangeZ + i * zStep, circle.Radius - borderThickness, circle.Radius, GalaxyTextures.Get.PathLine, Color.Orange).
-						Translate(circle.Center).
+						Translate(convert(circle.Center)).
 						AddVertices(circle.Vertices).
 						Build()
 				).ToList()
