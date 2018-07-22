@@ -11,11 +11,10 @@ using Stareater.Players;
 
 namespace Stareater.Controllers
 {
-	//TODO(v0.8) filter invisible fleets
 	public class PlayerController
 	{
 		public int PlayerIndex { get; private set; }
-		private GameController gameController;
+		private readonly GameController gameController;
 		
 		internal PlayerController(int playerIndex, GameController gameController)
 		{
@@ -115,10 +114,11 @@ namespace Stareater.Controllers
 			{
 				var game = this.gameInstance;
 				var orders = game.Orders[this.PlayerInstance(game)];
-				var playerProc = game.Derivates.Of(this.PlayerInstance(game));
+				var player = this.PlayerInstance(game);
+				var playerProc = game.Derivates.Of(player);
 
 				return game.States.Fleets.
-					Where(x => x.Owner != this.PlayerInstance(game) && playerProc.CanSee(x) || !game.Orders[x.Owner].ShipOrders.ContainsKey(x.Position)).
+					Where(x => playerProc.CanSee(x, game)).
 					Concat(orders.ShipOrders.SelectMany(x => x.Value)).
 					Select(
 						x => new FleetInfo(x, game.Derivates.Of(x.Owner), game.Statics)
@@ -459,7 +459,6 @@ namespace Stareater.Controllers
 		public IEnumerable<ContactInfo> DiplomaticContacts()
 		{
 			var game = this.gameInstance;
-			var treaties = game.States.Treaties.Of[this.PlayerInstance(game)];
 
 			foreach (var player in game.MainPlayers)
 				if (player != this.PlayerInstance(game))

@@ -57,7 +57,7 @@ namespace Stareater.GameLogic
 
 		private Queue<ResearchResult> breakthroughs = new Queue<ResearchResult>();
 
-		private QuadTree<Circle> scanRanges = new QuadTree<Circle>();
+		private readonly QuadTree<Circle> scanRanges = new QuadTree<Circle>();
 
 		public PlayerProcessor(Player player, IEnumerable<DevelopmentTopic> technologies)
 		{
@@ -119,7 +119,7 @@ namespace Stareater.GameLogic
 			foreach (var stellaris in derivates.Stellarises.OwnedBy[this.Player])
 			{
 				var range = new Circle(stellaris.Location.Position, stellaris.ScanRange);
-				this.scanRanges.Add(range, range.Center, new Vector2D(range.Radius, range.Radius));
+				this.scanRanges.Add(range, range.Center, new Vector2D(range.Radius * 2, range.Radius * 2));
 			}
 		}
 
@@ -220,11 +220,14 @@ namespace Stareater.GameLogic
 		#endregion
 
 		#region Galaxy phase
-		public bool CanSee(Fleet fleet)
+		public bool CanSee(Fleet fleet, MainGame game)
 		{
-			return fleet.Owner == this.Player ||
-				this.scanRanges.Query(fleet.Position, new Vector2D()).
-				Any(x => (x.Center - fleet.Position).Magnitude() <= x.Radius);
+			if (fleet.Owner == this.Player)
+				return !game.Orders[fleet.Owner].ShipOrders.ContainsKey(fleet.Position);
+			else
+				return this.scanRanges.
+					Query(fleet.Position, new Vector2D()).
+					Any(x => (x.Center - fleet.Position).Magnitude() <= x.Radius);
 		}
 
 		public void CalculateStareater(MainGame game)
