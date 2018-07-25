@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Controllers.Views.Ships;
@@ -11,6 +10,7 @@ using Stareater.Players;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Stareater.GameLogic.Combat;
+using Stareater.Utils;
 
 namespace Stareater.Controllers
 {
@@ -22,8 +22,8 @@ namespace Stareater.Controllers
 		private readonly Dictionary<Player, IBattleEventListener> playerListeners;
 		private readonly StarData star;
 
-		private BlockingCollection<Action> messageQueue = new BlockingCollection<Action>(1);
-		private SpaceBattleProcessor processor = null;
+		private readonly BlockingCollection<Action> messageQueue = new BlockingCollection<Action>(1);
+		private readonly SpaceBattleProcessor processor = null;
 		
 		internal SpaceBattleController(Conflict conflict, GameController gameController, MainGame mainGame)
 		{
@@ -50,8 +50,6 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				var planets = this.mainGame.States.Planets.At[this.star];
-				
 				for(int i = 0; i < this.battleGame.Planets.Length; i++)
 					yield return new CombatPlanetInfo(this.battleGame.Planets[i]);
 			}

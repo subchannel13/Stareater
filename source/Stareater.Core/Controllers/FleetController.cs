@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
@@ -20,10 +19,10 @@ namespace Stareater.Controllers
 		
 		public FleetInfo Fleet { get; private set; }
 
-		private Dictionary<Design, long> selection = new Dictionary<Design, long>();
+		private readonly Dictionary<Design, long> selection = new Dictionary<Design, long>();
+		private readonly List<WaypointInfo> simulationWaypoints = new List<WaypointInfo>();
 		private double eta = 0;
-		private List<WaypointInfo> simulationWaypoints = new List<WaypointInfo>();
-		
+
 		internal FleetController(FleetInfo fleet, MainGame game, Player player)
 		{
 			this.Fleet = fleet;
@@ -66,9 +65,9 @@ namespace Stareater.Controllers
 			get { return this.eta; }
 		}
 		
-		public IList<Vector2D> SimulationWaypoints
+		public IList<Vector2D> SimulationWaypoints()
 		{
-			get { return this.simulationWaypoints.Select(x => x.Destionation).ToList(); }
+			return this.simulationWaypoints.Select(x => x.Destionation).ToList();
 		}
 		
 		public void DeselectGroup(ShipGroupInfo group)
@@ -173,7 +172,7 @@ namespace Stareater.Controllers
 					wormholeSpeed.Evaluate(new Var("speed", baseSpeed).Get) : 
 					baseSpeed;
 				
-				var distance = (waypoint.Destionation - lastPosition).Magnitude();
+				var distance = (waypoint.Destionation - lastPosition).Length;
 				eta += distance / speed;
 				lastPosition = waypoint.Destionation;
 			}

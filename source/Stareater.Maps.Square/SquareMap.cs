@@ -7,7 +7,6 @@ using Ikadn;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy.Builders;
 using Stareater.Localization;
 using Stareater.Utils;
@@ -109,14 +108,14 @@ namespace Stareater.Galaxy.Square
 				emptyPositions.Add(allPositions.Take());
 
 			var positions = new List<Vector2D>();
-			double displacement = displacementParameter.Value;
+			var displacement = displacementParameter.Value;
 
 			for (double y = 0; y < size; y++)
 				for (double x = 0; x < size; x++)
 					if (!emptyPositions.Contains(new Tuple<int, int>((int)x, (int)y)))
 						positions.Add(new Vector2D(
-							(x + displacementParameter.Value * (2 * rng.NextDouble() - 1) - size / 2.0) * starDistance,
-							(y + displacementParameter.Value * (2 * rng.NextDouble() - 1) - size / 2.0) * starDistance
+							(x + displacement * (2 * rng.NextDouble() - 1) - size / 2.0) * starDistance,
+							(y + displacement * (2 * rng.NextDouble() - 1) - size / 2.0) * starDistance
 							));
 
 			var homeSystems = new List<int>();
@@ -133,13 +132,13 @@ namespace Stareater.Galaxy.Square
 
 				int candidate = 0;
 				for (int i = 1; i < positions.Count; i++)
-					if ((desiredPoint - positions[candidate]).Magnitude() > (desiredPoint - positions[i]).Magnitude())
+					if ((desiredPoint - positions[candidate]).Length > (desiredPoint - positions[i]).Length)
 						candidate = i;
 				homeSystems.Add(candidate);
 			}
 
 			var centroid = positions.Aggregate(new Vector2D(0, 0), (subsum, vertex) => subsum + vertex) / positions.Count;
-			var centralNode = positions.Aggregate((a, b) => ((a - centroid).Magnitude() < (b - centroid).Magnitude()) ? a : b);
+			var centralNode = positions.Aggregate((a, b) => ((a - centroid).Length < (b - centroid).Length) ? a : b);
 
 			return new StarPositions(positions, homeSystems, positions.IndexOf(centralNode));
 		}

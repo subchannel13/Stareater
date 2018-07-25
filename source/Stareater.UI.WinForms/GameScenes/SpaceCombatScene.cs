@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using NGenerics.DataStructures.Mathematical;
 using OpenTK;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
@@ -31,7 +30,6 @@ namespace Stareater.GameScenes
 		private const float FarZ = 1;
 		private const float Layers = 16.0f;
 		
-		private const float CellBackgroundZ = 8 / Layers;
 		private const float GridZ = 7 / Layers;
 		private const float PlanetColorZ = 6 / Layers;
 		private const float StarColorZ = 6 / Layers;
@@ -48,8 +46,7 @@ namespace Stareater.GameScenes
 		private static readonly Matrix4 PopulationTransform = Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f, 0);
 		
 		private const double AnimationPeriod = 1.5;
-		private static readonly Color SelectionColor = Color.Yellow;
-
+		
 		private int zoomLevel = 0;
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
@@ -63,7 +60,6 @@ namespace Stareater.GameScenes
 		private SceneObject starSprite = null;
 		
 		private CombatantInfo currentUnit = null;
-		private PolygonData currentUnitDrawable = null;
 		
 		public SpaceBattleController Controller { get; private set; }
 
@@ -262,7 +258,6 @@ namespace Stareater.GameScenes
 			);
 			if (unitSelected)
 			{
-				this.currentUnitDrawable = unitDrawable;
 				animator = new OscillatingAlpha(
 					unitDrawable, 
 					AnimationPeriod, 

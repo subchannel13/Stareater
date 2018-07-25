@@ -4,13 +4,13 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-using NGenerics.DataStructures.Mathematical;
 using Stareater.AppData;
 using Stareater.Controllers;
 using Stareater.Galaxy;
 using Stareater.Galaxy.Builders;
 using Stareater.GuiUtils;
 using Stareater.Localization;
+using Stareater.Utils;
 using Stareater.Utils.PluginParameters;
 
 namespace Stareater.GUI

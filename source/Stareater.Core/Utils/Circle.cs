@@ -1,6 +1,4 @@
-﻿using NGenerics.DataStructures.Mathematical;
-
-namespace Stareater.Utils
+﻿namespace Stareater.Utils
 {
 	public class Circle
 	{

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy.BodyTraits;
 using Stareater.Localization.StarNames;
+using Stareater.Utils;
 
 namespace Stareater.Galaxy.Builders
 {

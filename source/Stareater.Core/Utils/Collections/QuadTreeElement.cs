@@ -1,7 +1,4 @@
-﻿using System;
-using NGenerics.DataStructures.Mathematical;
-
-namespace Stareater.Utils.Collections
+﻿namespace Stareater.Utils.Collections
 {
 	class QuadTreeElement<T>
 	{
@@ -42,6 +39,5 @@ namespace Stareater.Utils.Collections
 			return !(lhs == rhs);
 		}
 		#endregion
-
 	}
 }

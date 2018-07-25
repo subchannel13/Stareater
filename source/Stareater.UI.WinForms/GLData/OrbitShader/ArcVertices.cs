@@ -1,5 +1,5 @@
-﻿using NGenerics.DataStructures.Mathematical;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Stareater.Utils;
 
 namespace Stareater.GLData.OrbitShader
 {

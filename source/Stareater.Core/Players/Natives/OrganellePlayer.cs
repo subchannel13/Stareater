@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
@@ -16,7 +15,7 @@ namespace Stareater.Players.Natives
 		private PlayerController playerController;
 		private SpaceBattleController battleController;
 		private BombardmentController bombardController;
-		private Random random = new Random(); //TODO(v0.8) find better place for RNG
+		private readonly Random random = new Random(); //TODO(v0.8) find better place for RNG
 
 		public PlayerController Controller
 		{

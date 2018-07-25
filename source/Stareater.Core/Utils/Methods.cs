@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 using Ikadn.Ikon.Types;
-using NGenerics.DataStructures.Mathematical;
 
 namespace Stareater.Utils
 {

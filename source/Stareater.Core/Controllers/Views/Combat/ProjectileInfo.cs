@@ -1,5 +1,5 @@
-﻿using NGenerics.DataStructures.Mathematical;
-using Stareater.SpaceCombat;
+﻿using Stareater.SpaceCombat;
+using Stareater.Utils;
 
 namespace Stareater.Controllers.Views.Combat
 {

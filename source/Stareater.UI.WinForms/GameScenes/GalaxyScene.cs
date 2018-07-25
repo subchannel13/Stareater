@@ -75,7 +75,7 @@ namespace Stareater.GameScenes
 		private Vector2 mapBoundsMax;
 
 		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
-		private readonly Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D> lastSelectedStars = new Dictionary<int, NGenerics.DataStructures.Mathematical.Vector2D>();
+		private readonly Dictionary<int, Vector2D> lastSelectedStars = new Dictionary<int, Vector2D>();
 		private readonly Dictionary<int, FleetInfo> lastSelectedIdleFleets = new Dictionary<int, FleetInfo>();
 		private readonly Dictionary<int, Vector2> lastOffset = new Dictionary<int, Vector2>(); //TODO(v0.8) remember player's zoom level too, unify with last selected object
 		private PlayerController currentPlayer = null;
@@ -302,9 +302,11 @@ namespace Stareater.GameScenes
 		//TODO(v0.8) bundle with movement simulation
 		private void setupMovementEta()
 		{
-			if (this.SelectedFleet != null && this.SelectedFleet.SimulationWaypoints.Count > 0 && this.SelectedFleet.Eta > 0)
+			var waypoints = this.SelectedFleet?.SimulationWaypoints();
+
+			if (this.SelectedFleet != null && waypoints.Count > 0 && this.SelectedFleet.Eta > 0)
 			{
-				var destination = this.SelectedFleet.SimulationWaypoints[this.SelectedFleet.SimulationWaypoints.Count - 1];
+				var destination = waypoints[waypoints.Count - 1];
 				var numVars = new Var("eta", Math.Ceiling(this.SelectedFleet.Eta)).Get;
 				var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.SelectedFleet.Eta, RoundingMethod.Ceil, 0)).Get;
 
@@ -329,12 +331,14 @@ namespace Stareater.GameScenes
 		
 		private void setupMovementSimulation()
 		{
-			if (this.SelectedFleet != null && this.SelectedFleet.SimulationWaypoints.Count > 0)
+			var waypoints = this.SelectedFleet?.SimulationWaypoints();
+
+			if (this.SelectedFleet != null && waypoints.Count > 0)
 				this.UpdateScene(
 					ref this.movementSimulationPath,
 					new SceneObjectBuilder().
 						StartSprite(PathZ, GalaxyTextures.Get.PathLine.Id, Color.LimeGreen).
-						AddVertices(fleetMovementPathVertices(this.SelectedFleet.Fleet, this.SelectedFleet.SimulationWaypoints.Select(v => convert(v)))).
+						AddVertices(fleetMovementPathVertices(this.SelectedFleet.Fleet, waypoints.Select(v => convert(v)))).
 						Build()
 				);
 			else if (this.movementSimulationPath != null)
@@ -483,13 +487,13 @@ namespace Stareater.GameScenes
 				starsFound.Any() && 
 				(
 					!fleetFound.Any() ||
-					(starsFound[0].Position - searchPoint).Magnitude() <= (fleetFound[0].Position - searchPoint).Magnitude()
+					(starsFound[0].Position - searchPoint).Length <= (fleetFound[0].Position - searchPoint).Length
 				);
 
 			if (this.SelectedFleet != null)
 				if (foundAny && isStarClosest)
 				{
-					this.SelectedFleet = this.SelectedFleet.Send(this.SelectedFleet.SimulationWaypoints);
+					this.SelectedFleet = this.SelectedFleet.Send(this.SelectedFleet.SimulationWaypoints());
 					this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = this.SelectedFleet.Fleet;
 					this.galaxyViewListener.FleetClicked(new FleetInfo[] { this.SelectedFleet.Fleet });
 					this.setupFleetMarkers();
@@ -538,7 +542,7 @@ namespace Stareater.GameScenes
 			var starsFound = this.QueryScene(searchPoint, searchRadius).
 				Where(x => x.Data is StarInfo).
 				Select(x => x.Data as StarInfo).
-				OrderBy(x => (x.Position - searchPoint).Magnitude()).
+				OrderBy(x => (x.Position - searchPoint).Length).
 				ToList();
 
 			if (starsFound.Any())
@@ -554,7 +558,7 @@ namespace Stareater.GameScenes
 
 			Vector4 mousePoint = Vector4.Transform(currentPosition, invProjection);
 			var searchRadius = Math.Max(screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
-			var searchPoint = new NGenerics.DataStructures.Mathematical.Vector2D(mousePoint.X, mousePoint.Y);
+			var searchPoint = new Vector2D(mousePoint.X, mousePoint.Y);
 
 			var starsFound = this.QueryScene(searchPoint, searchRadius).
 				Where(x => x.Data is StarInfo).
@@ -599,7 +603,7 @@ namespace Stareater.GameScenes
 		}
 		
 		//TODO(v0.8) remove one of lastSelectedStar methods
-		private NGenerics.DataStructures.Mathematical.Vector2D lastSelectedStarPosition
+		private Vector2D lastSelectedStarPosition
 		{
 			get 
 			{

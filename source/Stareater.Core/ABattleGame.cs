@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.SpaceCombat;
+using Stareater.Utils;
 
 namespace Stareater
 {

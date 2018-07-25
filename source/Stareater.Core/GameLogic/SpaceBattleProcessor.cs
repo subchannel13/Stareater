@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 using Stareater.SpaceCombat;
 using Stareater.Utils;
@@ -88,7 +87,7 @@ namespace Stareater.GameLogic
 			foreach(var fleet in fleets)
 			{
 				Vector2D position;
-				if (fleet.MovementDirection.Magnitude() > 0)
+				if (!fleet.MovementDirection.IsZero)
 					position = -fleet.MovementDirection * (SpaceBattleGame.BattlefieldRadius + 0.25);
 				else
 				{
@@ -124,9 +123,9 @@ namespace Stareater.GameLogic
 		{
 			var snapped = snapPosition(position);
 			
-			if (Math.Abs(snapped.Magnitude()) < 1e-3 && position.Magnitude() > 0)
+			if (Math.Abs(snapped.Length) < 1e-3 && !position.IsZero)
 				return Methods.HexNeighbours(new Vector2D(0, 0)).
-					Aggregate((a, b) => (a - position).Magnitude() > (b - position).Magnitude() ? a : b);
+					Aggregate((a, b) => (a - position).Length > (b - position).Length ? a : b);
 			
 			var corrected = snapped;
 			while(Methods.HexDistance(corrected) > SpaceBattleGame.BattlefieldRadius)
@@ -134,7 +133,7 @@ namespace Stareater.GameLogic
 				var distance = Methods.HexDistance(corrected);
 				corrected = Methods.HexNeighbours(corrected).
 					Where(x => Methods.HexDistance(x) < distance).
-					Aggregate((a, b) => (a - snapped).Magnitude() > (b - snapped).Magnitude() ? a : b);
+					Aggregate((a, b) => (a - snapped).Length > (b - snapped).Length ? a : b);
 			}
 							
 			return corrected;
@@ -269,7 +268,6 @@ namespace Stareater.GameLogic
 		{
 			var unit = this.game.PlayOrder.Peek();
 			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
-			var chargesLeft = quantity;
 			var spent = 0.0;
 
 			if (!this.mainGame.Processor.IsAtWar(unit.Owner, target.Owner) ||
@@ -297,7 +295,6 @@ namespace Stareater.GameLogic
 		{
 			var unit = this.game.PlayOrder.Peek();
 			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
-			var chargesLeft = quantity;
 
 			if (planet.Colony != null && !this.mainGame.Processor.IsAtWar(unit.Owner, planet.Colony.Owner) ||
 				!abilityStats.TargetColony ||
@@ -350,7 +347,7 @@ namespace Stareater.GameLogic
 				 Probability(attackAccuracy - targetStats.Evasion);
 		}
 
-		private static bool doTopDamage(double firePower, double shieldEfficiency, double armorEfficiency, Combatant target, DesignStats targetStats)
+		private static void doTopDamage(double firePower, double shieldEfficiency, double armorEfficiency, Combatant target, DesignStats targetStats)
 		{
 			if (target.TopShields > 0)
 			{
@@ -375,14 +372,10 @@ namespace Stareater.GameLogic
 				target.TopShields = target.RestShields / safeCount;
 				target.RestArmor -= target.TopArmor;
 				target.RestShields -= target.TopShields;
-
-				return true;
 			}
-
-			return false;
 		}
 
-		private static bool doRestDamage(double maxTargets, double firePower, double shieldEfficiency, double armorEfficiency, Combatant target, DesignStats targetStats)
+		private static void doRestDamage(double maxTargets, double firePower, double shieldEfficiency, double armorEfficiency, Combatant target, DesignStats targetStats)
 		{
 			var splashTargets = Methods.Clamp(maxTargets, 0, Math.Max(target.Ships.Quantity - 1, 0));
 
@@ -406,11 +399,7 @@ namespace Stareater.GameLogic
 
 				target.RestArmor = 0;
 				target.RestShields = 0;
-
-				return true;
 			}
-
-			return false;
 		}
 
 		private static void updateStackTop(Combatant stack)

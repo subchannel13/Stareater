@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 using Stareater.Ships.Missions;
+using Stareater.Utils;
 using Stareater.Utils.Collections;
 
 namespace Stareater.GameLogic.Planning
@@ -14,11 +14,11 @@ namespace Stareater.GameLogic.Planning
 		private readonly MainGame game;
 		
 		private double time = 0;
-		private LinkedList<AMission> unfinishedMissions = new LinkedList<AMission>();
-		private LinkedList<AMission> missions;
+		private readonly LinkedList<AMission> unfinishedMissions = new LinkedList<AMission>();
+		private readonly LinkedList<AMission> missions;
 		private Vector2D newPosition;
 		private Vector2D movementDirection = new Vector2D();
-		private List<FleetMovement> movementSteps = new List<FleetMovement>();
+		private readonly List<FleetMovement> movementSteps = new List<FleetMovement>();
 		
 		public FleetProcessingVisitor(Fleet fleet, MainGame game)
 		{
@@ -76,7 +76,7 @@ namespace Stareater.GameLogic.Planning
 				baseSpeed;
 			
 			this.movementDirection = mission.Destination.Position - fleet.Position;
-			var distance = this.movementDirection.Magnitude();
+			var distance = this.movementDirection.Length;
 
 			if (distance <= speed * (1 - time)) {
 				this.newPosition = mission.Destination.Position;
@@ -93,8 +93,7 @@ namespace Stareater.GameLogic.Planning
 				));
 			}
 			else {
-				var direction = (mission.Destination.Position - fleet.Position);
-				direction.Normalize();
+				var direction = (mission.Destination.Position - fleet.Position).Unit;
 
 				this.newPosition = fleet.Position + direction * speed;
 				unfinishedMissions.AddLast(mission);

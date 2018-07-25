@@ -82,7 +82,7 @@ namespace Stareater.Galaxy.ProximityLanes
 
             for (int i = 0; i < starPositions.Stars.Length; i++)
 			{
-				var vertex = new Vertex<Vector2D>(starPositions.Stars[i]);
+				var vertex = new Vertex<Vector2D>(new Vector2D(starPositions.Stars[i].X, starPositions.Stars[i].Y));
 				maxGraph.AddVertex(vertex);
 				starIndex[vertex] = i;
 

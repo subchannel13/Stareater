@@ -1,5 +1,5 @@
-﻿using NGenerics.DataStructures.Mathematical;
-using Stareater.Galaxy;
+﻿using Stareater.Galaxy;
+using Stareater.Utils;
 
 namespace Stareater.GameLogic.Planning
 {
@@ -17,10 +17,7 @@ namespace Stareater.GameLogic.Planning
 			this.LocalFleet = localFleet;
 			this.ArrivalTime = arrivalTime;
 			this.DepartureTime = departureTime;
-			this.MovementDirection = movementDirection;
-			
-			if (movementDirection.Magnitude() > 0)
-				movementDirection.Normalize();
+			this.MovementDirection = (!movementDirection.IsZero) ? movementDirection.Unit : movementDirection;
 		}
 	}
 }

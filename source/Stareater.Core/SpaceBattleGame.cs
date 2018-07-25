@@ -1,5 +1,5 @@
-﻿using NGenerics.DataStructures.Mathematical;
-using Stareater.SpaceCombat;
+﻿using Stareater.SpaceCombat;
+using Stareater.Utils;
 using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;

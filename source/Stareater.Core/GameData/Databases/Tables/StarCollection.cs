@@ -1,7 +1,6 @@
-﻿using System;
-using Stareater.Utils.Collections;
+﻿using Stareater.Utils.Collections;
 using Stareater.Galaxy;
-using NGenerics.DataStructures.Mathematical;
+using Stareater.Utils;
 
 namespace Stareater.GameData.Databases.Tables
 {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.Players;
 using Stareater.SpaceCombat;
 using Stareater.Utils;
@@ -13,7 +12,7 @@ namespace Stareater.GameLogic
 	{
 		protected readonly MainGame mainGame;
 		
-		public ACombatProcessor(MainGame mainGame)
+		protected ACombatProcessor(MainGame mainGame)
 		{
 			this.mainGame = mainGame;
 		}
@@ -28,9 +27,6 @@ namespace Stareater.GameLogic
 					return false;
 
 				var colonies = this.battleGame.Planets.Where(x => x.Colony != null).ToList();
-				var hostileShips = this.battleGame.Combatants.Where(
-					ship => colonies.Any(planet => this.mainGame.Processor.IsAtWar(ship.Owner, planet.Colony.Owner))
-				);
 
 				return this.battleGame.Combatants.Where(
 					ship => colonies.Any(planet => this.mainGame.Processor.IsAtWar(ship.Owner, planet.Colony.Owner))

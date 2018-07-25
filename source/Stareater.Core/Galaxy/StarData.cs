@@ -3,10 +3,10 @@ using Stareater.Utils.StateEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.Localization.StarNames;
 using Stareater.Galaxy.BodyTraits;
 using Ikadn;
+using Stareater.Utils;
 
 namespace Stareater.Galaxy
 {
@@ -48,13 +48,7 @@ namespace Stareater.Galaxy
 
 		public override int GetHashCode()
 		{
-			int hashCode = 0;
-			unchecked
-			{
-				if (Position != null)
-					hashCode += 1000000007 * Position.GetHashCode();
-			}
-			return hashCode;
+			return this.Position.GetHashCode();
 		}
 
 		public static bool operator ==(StarData lhs, StarData rhs)

@@ -450,7 +450,8 @@ namespace Stareater.GUI
 #if DEBUG
 			} catch(Exception ex)
 			{
-				System.Diagnostics.Trace.WriteLine(ex);
+				System.Diagnostics.Trace.WriteLine("Canvas paint exception:");
+				System.Diagnostics.Trace.TraceError(ex.ToString());
 			}
 #endif
 			glCanvas.SwapBuffers();

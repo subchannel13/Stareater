@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using NGenerics.DataStructures.Mathematical;
+﻿using System.Collections.Generic;
 
 namespace Stareater.Utils.Collections
 {

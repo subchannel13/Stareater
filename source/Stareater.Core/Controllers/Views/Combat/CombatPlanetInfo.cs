@@ -1,7 +1,6 @@
-﻿using System;
-using NGenerics.DataStructures.Mathematical;
-using Stareater.Galaxy;
+﻿using Stareater.Galaxy;
 using Stareater.SpaceCombat;
+using Stareater.Utils;
 
 namespace Stareater.Controllers.Views.Combat
 {

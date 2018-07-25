@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Views.Ships;
 using Stareater.GameData.Databases;
 using Stareater.SpaceCombat;
 using Stareater.GameLogic.Combat;
+using Stareater.Utils;
 
 namespace Stareater.Controllers.Views.Combat
 {
@@ -13,7 +13,7 @@ namespace Stareater.Controllers.Views.Combat
 	{
 		internal readonly Combatant Data;
 		private readonly DesignStats stats;
-		private IEnumerable<Vector2D> validMoves;
+		private readonly IEnumerable<Vector2D> validMoves;
 		private readonly List<AbilityInfo> abilities;
 		private readonly StaticsDB statics;
 		

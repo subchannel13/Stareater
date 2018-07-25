@@ -17,7 +17,6 @@ using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using Stareater.GameLogic.Planning;
 using Stareater.GameLogic.Combat;
-using NGenerics.DataStructures.Mathematical;
 
 namespace Stareater.GameLogic
 {
@@ -227,7 +226,7 @@ namespace Stareater.GameLogic
 			else
 				return this.scanRanges.
 					Query(fleet.Position, new Vector2D()).
-					Any(x => (x.Center - fleet.Position).Magnitude() <= x.Radius);
+					Any(x => (x.Center - fleet.Position).Length <= x.Radius);
 		}
 
 		public void CalculateStareater(MainGame game)

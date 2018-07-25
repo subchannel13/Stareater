@@ -1,9 +1,9 @@
 ﻿using Stareater.Utils.StateEngine;
 using System.Collections.Generic;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 using Stareater.Ships.Missions;
+using Stareater.Utils;
 
 namespace Stareater.Galaxy
 {

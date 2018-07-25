@@ -61,10 +61,10 @@ namespace Stareater.Utils.StateEngine
 						);
 					}
 				),
-				[typeof(NGenerics.DataStructures.Mathematical.Vector2D)] = new TerminalStrategy(
+				[typeof(Vector2D)] = new TerminalStrategy(
 					(x, session) =>
 					{
-						var vector = (NGenerics.DataStructures.Mathematical.Vector2D)x;
+						var vector = (Vector2D)x;
 						return new IkonArray(new[] {
 								new IkonFloat(vector.X),
 								new IkonFloat(vector.Y),
@@ -73,7 +73,7 @@ namespace Stareater.Utils.StateEngine
 					(x, session) =>
 					{
 						var data = x.To<IkonArray>();
-						return new NGenerics.DataStructures.Mathematical.Vector2D(
+						return new Vector2D(
 							data[0].To<double>(),
 							data[1].To<double>()
 						);

@@ -1,5 +1,4 @@
-﻿using NGenerics.DataStructures.Mathematical;
-using Stareater.Utils;
+﻿using Stareater.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +19,7 @@ namespace Stareater.GLData.OrbitShader
 
 				foreach (var other in circles.Where(x => x != circle))
 				{
-					var dist = (float)(circle.Center - other.Center).Magnitude();
+					var dist = (float)(circle.Center - other.Center).Length;
 
 					if (dist > circle.Radius + other.Radius)
 						continue;
@@ -30,8 +29,7 @@ namespace Stareater.GLData.OrbitShader
 						break;
 					}
 
-					var facing = circle.Center - other.Center;
-					facing.Normalize();
+					var facing = (circle.Center - other.Center).Unit;
 
 					arcs.Add(new Arc(
 						circle,
@@ -117,23 +115,24 @@ namespace Stareater.GLData.OrbitShader
 				var points = circle.Value;
 				var data = new List<float>();
 
+				//TODO(v0.8) handle tessellation
 				for (int i = 0; i < points.Count; i += 2)
 				{
 					var rightPoint = points[i];
 					var leftPoint = points[i + 1];
-					var faceDirection = rightPoint.Point != -leftPoint.Point ? (rightPoint.Point + leftPoint.Point) : perpendicularLeft(rightPoint.Point);
+					var faceDirection = rightPoint.Point != -leftPoint.Point ? (rightPoint.Point + leftPoint.Point) : rightPoint.Point.PerpendicularLeft;
 
-					if (perpendicularRight(faceDirection).DotProduct(rightPoint.Point) < 0 || rightPoint.Point == leftPoint.Point)
+					if (faceDirection.PerpendicularRight.Dot(rightPoint.Point) < 0 || rightPoint.Point == leftPoint.Point)
 						faceDirection = -faceDirection;
-					faceDirection.Normalize();
+					faceDirection = faceDirection.Unit;
 					var facing = faceDirection * circle.Key.Radius;
-					var openness = faceDirection.DotProduct(rightPoint.Point);
+					var openness = faceDirection.Dot(rightPoint.Point);
 
 					var midpointOpenness = (openness - 1) / 2 + 1;
 					var midpointHeight = (float)Math.Sqrt(circle.Key.Radius * circle.Key.Radius - midpointOpenness * midpointOpenness);
 					var facingPoint = facing * 1.5f;
 
-					var outerPoint1 = (facing * midpointOpenness + perpendicularRight(facing) * midpointHeight) * 1.9f;
+					var outerPoint1 = (facing * midpointOpenness + facing.PerpendicularRight * midpointHeight) * 1.9f;
 					data.AddRange(orbitVertex(rightPoint.Point * 1.9f));
 					data.AddRange(new float[] { 0, 0, 0, 0 });
 					data.AddRange(orbitVertex(outerPoint1));
@@ -142,7 +141,7 @@ namespace Stareater.GLData.OrbitShader
 					data.AddRange(orbitVertex(facingPoint));
 					data.AddRange(orbitVertex(outerPoint1));
 
-					var outerPoint2 = (facing * midpointOpenness + perpendicularLeft(facing) * midpointHeight) * 1.9f;
+					var outerPoint2 = (facing * midpointOpenness + facing.PerpendicularLeft * midpointHeight) * 1.9f;
 					data.AddRange(orbitVertex(leftPoint.Point * 1.9f));
 					data.AddRange(orbitVertex(outerPoint2));
 					data.AddRange(new float[] { 0, 0, 0, 0 });
@@ -154,16 +153,6 @@ namespace Stareater.GLData.OrbitShader
 
 				yield return new ArcVertices(data, circle.Key.Center, (float)circle.Key.Radius);
 			}
-		}
-
-		private static Vector2D perpendicularLeft(Vector2D v)
-		{
-			return new Vector2D(-v.Y, v.X);
-		}
-
-		private static Vector2D perpendicularRight(Vector2D v)
-		{
-			return new Vector2D(v.Y, -v.X);
 		}
 
 		private static IEnumerable<float> orbitVertex(Vector2D p)
@@ -193,8 +182,8 @@ namespace Stareater.GLData.OrbitShader
 				{
 					var openningHeight = (float)Math.Sqrt(this.Origin.Radius * this.Origin.Radius - this.Openness * this.Openness);
 
-					yield return new ArcPoint(this, this.Facing * this.Openness + perpendicularRight(this.Facing) * openningHeight, true);
-					yield return new ArcPoint(this, this.Facing * this.Openness + perpendicularLeft(this.Facing) * openningHeight, false);
+					yield return new ArcPoint(this, this.Facing * this.Openness + this.Facing.PerpendicularRight * openningHeight, true);
+					yield return new ArcPoint(this, this.Facing * this.Openness + this.Facing.PerpendicularLeft * openningHeight, false);
 				}
 			}
 		}
@@ -213,8 +202,7 @@ namespace Stareater.GLData.OrbitShader
 				this.Point = point;
 				this.RightEnd = rightEnd;
 
-				var direction = new Vector2D(this.Point.X, this.Point.Y);
-				direction.Normalize();
+				var direction = new Vector2D(this.Point.X, this.Point.Y).Unit;
 				this.Angle = (direction.Y > 0) ? 1 - direction.X : 3 + direction.X;
 			}
 		}

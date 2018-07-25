@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-
-using NGenerics.DataStructures.Mathematical;
 using Stareater.Controllers.Data;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases;
 using Stareater.GameLogic;
+using Stareater.Utils;
 
 namespace Stareater.Controllers.Views.Ships
 {

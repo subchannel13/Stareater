@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using NGenerics.DataStructures.Mathematical;
+﻿using System.Collections.Generic;
 
 namespace Stareater.Utils.Collections
 {
 	class QuadTreeNode<T>
 	{
+		private readonly List<QuadTreeElement<T>> contents = new List<QuadTreeElement<T>>();
+		private readonly List<QuadTreeNode<T>> nodes = new List<QuadTreeNode<T>>(4);
+
+		private readonly Vector2D topRight;
+		private readonly Vector2D bottomLeft;
+
 		public QuadTreeNode(Vector2D topRight, Vector2D bottomLeft)
 		{
 			this.topRight = topRight;
 			this.bottomLeft = bottomLeft;
 		}
-
-		private List<QuadTreeElement<T>> contents = new List<QuadTreeElement<T>>();
-		private List<QuadTreeNode<T>> nodes = new List<QuadTreeNode<T>>(4);
-
-		private Vector2D topRight;
-		private Vector2D bottomLeft;
 
 		public bool IsEmpty
 		{
@@ -67,7 +65,7 @@ namespace Stareater.Utils.Collections
 			    return false;
 			
 			if (nodes.Count == 0)
-				CreateSubNodes(minSize);
+				createSubNodes(minSize);
 
 			foreach (QuadTreeNode<T> node in nodes)
 				if (Methods.IsRectEnveloped(node.topRight, node.bottomLeft, item.TopRight, item.BottomLeft))
@@ -81,9 +79,9 @@ namespace Stareater.Utils.Collections
 			return true;
 		}
 		
-		private void CreateSubNodes(float minSize)
+		private void createSubNodes(float minSize)
 		{
-			var halfSize = new Vector2D((topRight.X - bottomLeft.X) / 2f, (topRight.Y - bottomLeft.Y) / 2f);
+			var halfSize = new Vector2D((topRight.X - bottomLeft.X) / 2, (topRight.Y - bottomLeft.Y) / 2);
 			
 			if (halfSize.X * 2 < minSize || halfSize.Y * 2 < minSize)
 				return;
@@ -107,8 +105,12 @@ namespace Stareater.Utils.Collections
 
 			foreach (QuadTreeNode<T> node in nodes)
 				if (Methods.IsRectEnveloped(node.topRight, node.bottomLeft, item.TopRight, item.BottomLeft))
-					if (node.Remove(item))
+				{
+					var removed = node.Remove(item);
+
+					if (removed)
 						return true;
+				}
 
 			return false;
 		}

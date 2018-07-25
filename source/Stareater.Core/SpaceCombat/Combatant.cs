@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.Galaxy;
 using Stareater.Players;
 using Stareater.GameLogic.Combat;
+using Stareater.Utils;
 
 namespace Stareater.SpaceCombat
 {

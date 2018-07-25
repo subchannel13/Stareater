@@ -1,6 +1,5 @@
-﻿using System;
-using NGenerics.DataStructures.Mathematical;
-using Stareater.Galaxy;
+﻿using Stareater.Galaxy;
+using Stareater.Utils;
 
 namespace Stareater.SpaceCombat
 {

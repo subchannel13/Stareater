@@ -13,14 +13,14 @@ namespace Stareater.GraphicsEngine
 {
 	abstract class AScene
 	{
-		private HashSet<SceneObject> sceneObjects = new HashSet<SceneObject>();
-		private QuadTree<SceneObject> physicalObjects = new QuadTree<SceneObject>();
-		private HashSet<IAnimator> animators = new HashSet<IAnimator>();
-		private HashSet<float> dirtyLayers = new HashSet<float>();
-		private Dictionary<float, List<IDrawable>> drawables = new Dictionary<float, List<IDrawable>>();
-		private Dictionary<float, List<VertexArray>> Vaos = new Dictionary<float, List<VertexArray>>();
+		private readonly HashSet<SceneObject> sceneObjects = new HashSet<SceneObject>();
+		private readonly QuadTree<SceneObject> physicalObjects = new QuadTree<SceneObject>();
+		private readonly HashSet<IAnimator> animators = new HashSet<IAnimator>();
+		private readonly HashSet<float> dirtyLayers = new HashSet<float>();
+		private readonly Dictionary<float, List<IDrawable>> drawables = new Dictionary<float, List<IDrawable>>();
+		private readonly Dictionary<float, List<VertexArray>> Vaos = new Dictionary<float, List<VertexArray>>();
 
-		private HashSet<AGuiElement> guiElements = new HashSet<AGuiElement>();
+		private readonly HashSet<AGuiElement> guiElements = new HashSet<AGuiElement>();
 		
 		public void Draw(double deltaTime)
 		{
@@ -174,14 +174,14 @@ namespace Stareater.GraphicsEngine
 			oldObjects = newObjects;
 		}
 		
-		protected IEnumerable<SceneObject> QueryScene(NGenerics.DataStructures.Mathematical.Vector2D center)
+		protected IEnumerable<SceneObject> QueryScene(Vector2D center)
 		{
-			return this.physicalObjects.Query(center, new NGenerics.DataStructures.Mathematical.Vector2D(0, 0));
+			return this.physicalObjects.Query(center, new Vector2D(0, 0));
 		}
 		
-		protected IEnumerable<SceneObject> QueryScene(NGenerics.DataStructures.Mathematical.Vector2D center, double radius)
+		protected IEnumerable<SceneObject> QueryScene(Vector2D center, double radius)
 		{
-			return this.physicalObjects.Query(center, new NGenerics.DataStructures.Mathematical.Vector2D(radius, radius));
+			return this.physicalObjects.Query(center, new Vector2D(radius, radius));
 		}
 
 		private void addToScene(SceneObject sceneObject)
@@ -216,10 +216,10 @@ namespace Stareater.GraphicsEngine
 
 		protected static Matrix4 calcOrthogonalPerspective(float width, float height, float farZ, Vector2 originOffset)
 		{
-			var left = (float)(-width / 2 + originOffset.X);
-			var right = (float)(width / 2 + originOffset.X);
-			var bottom = (float)(-height / 2 + originOffset.Y);
-			var top = (float)(height / 2 + originOffset.Y);
+			var left = (-width / 2 + originOffset.X);
+			var right = (width / 2 + originOffset.X);
+			var bottom = (-height / 2 + originOffset.Y);
+			var top = (height / 2 + originOffset.Y);
 			
 			return new Matrix4(
 				2 / (right - left), 0, 0, 0,
@@ -234,8 +234,8 @@ namespace Stareater.GraphicsEngine
 			var viewPoint = convert(Vector4.Transform(new Vector4(point.X, point.Y, 0, 1), this.projection).Xy);
 
 			return Methods.IsRectEnveloped(
-				new NGenerics.DataStructures.Mathematical.Vector2D(1, 1),
-				new NGenerics.DataStructures.Mathematical.Vector2D(-1, -1),
+				new Vector2D(1, 1),
+				new Vector2D(-1, -1),
 				viewPoint,
 				viewPoint
 			);
@@ -331,14 +331,14 @@ namespace Stareater.GraphicsEngine
 		#endregion
 
 		#region Math helpers
-		protected static Vector2 convert(NGenerics.DataStructures.Mathematical.Vector2D v)
+		protected static Vector2 convert(Vector2D v)
 		{
 			return new Vector2((float)v.X, (float)v.Y);
 		}
 
-		protected static NGenerics.DataStructures.Mathematical.Vector2D convert(Vector2 v)
+		protected static Vector2D convert(Vector2 v)
 		{
-			return new NGenerics.DataStructures.Mathematical.Vector2D(v.X, v.Y);
+			return new Vector2D(v.X, v.Y);
 		}
 		#endregion
 	}

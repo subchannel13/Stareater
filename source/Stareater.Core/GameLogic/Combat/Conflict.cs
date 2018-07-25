@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using NGenerics.DataStructures.Mathematical;
 using Stareater.GameLogic.Planning;
+using Stareater.Utils;
 
 namespace Stareater.GameLogic.Combat
 {
