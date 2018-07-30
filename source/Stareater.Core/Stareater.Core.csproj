@@ -323,6 +323,9 @@
     <Compile Include="Utils\BitHashBuilder.cs" />
     <Compile Include="Utils\Circle.cs" />
     <Compile Include="Utils\Collections\PairCollectionIndex.cs" />
+    <Compile Include="Utils\Collections\PriorityQueue.cs" />
+    <Compile Include="Utils\Edge.cs" />
+    <Compile Include="Utils\Graph.cs" />
     <Compile Include="Utils\Pair.cs" />
     <Compile Include="Utils\StateEngine\LoadSession.cs" />
     <Compile Include="Utils\StateEngine\SaveSession.cs" />
@@ -376,6 +379,7 @@
     <Compile Include="Utils\PluginParameters\SelectorParameter.cs" />
     <Compile Include="Utils\NumberFormatters\ThousandsFormatter.cs" />
     <Compile Include="Utils\Vector2D.cs" />
+    <Compile Include="Utils\Vertex.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />

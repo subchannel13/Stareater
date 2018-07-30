@@ -302,9 +302,17 @@ namespace Stareater.GameScenes
 		//TODO(v0.8) bundle with movement simulation
 		private void setupMovementEta()
 		{
-			var waypoints = this.SelectedFleet?.SimulationWaypoints();
+			if (this.SelectedFleet == null)
+			{
+				if (this.movementEtaText != null)
+					this.RemoveFromScene(ref this.movementEtaText);
 
-			if (this.SelectedFleet != null && waypoints.Count > 0 && this.SelectedFleet.Eta > 0)
+				return;
+			}
+
+			var waypoints = this.SelectedFleet.SimulationWaypoints();
+
+			if (waypoints.Count > 0 && this.SelectedFleet.Eta > 0)
 			{
 				var destination = waypoints[waypoints.Count - 1];
 				var numVars = new Var("eta", Math.Ceiling(this.SelectedFleet.Eta)).Get;
@@ -325,13 +333,19 @@ namespace Stareater.GameScenes
 						Build()
 				);
 			}
-			else if (this.movementEtaText != null)
-				this.RemoveFromScene(ref this.movementEtaText);
 		}
 		
 		private void setupMovementSimulation()
 		{
-			var waypoints = this.SelectedFleet?.SimulationWaypoints();
+			if (this.SelectedFleet == null)
+			{
+				if (this.movementSimulationPath != null)
+					this.RemoveFromScene(ref this.movementSimulationPath);
+
+				return;
+			}
+
+			var waypoints = this.SelectedFleet.SimulationWaypoints();
 
 			if (this.SelectedFleet != null && waypoints.Count > 0)
 				this.UpdateScene(
@@ -341,8 +355,6 @@ namespace Stareater.GameScenes
 						AddVertices(fleetMovementPathVertices(this.SelectedFleet.Fleet, waypoints.Select(v => convert(v)))).
 						Build()
 				);
-			else if (this.movementSimulationPath != null)
-				this.RemoveFromScene(ref this.movementSimulationPath);
 		}
 
 		private void setupTurnCounter()
