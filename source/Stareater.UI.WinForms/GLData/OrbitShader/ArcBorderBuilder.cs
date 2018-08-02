@@ -46,55 +46,42 @@ namespace Stareater.GLData.OrbitShader
 			}
 		}
 
-		private static int comparePoints(ArcPoint pointA, ArcPoint pointB)
-		{
-			var angleCompare = pointA.Angle.CompareTo(pointB.Angle);
-
-			if (angleCompare != 0)
-				return angleCompare;
-
-			if (pointA.RightEnd != pointB.RightEnd)
-				return pointA.RightEnd ? 1 : -1;
-			else
-				return 0;
-		}
-
 		private static List<ArcPoint> arcsToPoints(List<Arc> arcs)
 		{
-			var points = arcs.SelectMany(x => x.Points).ToList();
-			points.Sort(comparePoints);
+			var points = new LinkedList<ArcPoint>(arcs.
+				SelectMany(x => x.Points).
+				OrderBy(x => x.Angle).
+				ThenBy(x => x.RightEnd)
+			);
 
 			//Find the start of an arc
-			int startI = -1;
-			for (int i = 0; i < points.Count; i++)
+			var originalFirst = points.First.Value;
+			while (!points.First.Value.RightEnd || points.Last.Value.RightEnd)
 			{
-				var previous = (i - 1 + points.Count) % points.Count;
-				if (points[i].RightEnd && !points[previous].RightEnd)
-				{
-					startI = i;
-					break;
-				}
+				//Rotate the list
+				var first = points.First.Value;
+				points.RemoveFirst();
+				points.AddLast(first);
+
+				//Check if rotation went full circle, if so then
+				//all arcs are overlapping in the exclusive manner
+				if (points.First.Value == originalFirst)
+					return new List<ArcPoint>();
 			}
 
-			//All arcs are overlapping in the exclusive manner
-			if (startI < 0)
-				return new List<ArcPoint>();
-
-			//Rotate the list
-			points = points.Skip(startI).Concat(points.Take(startI)).ToList();
-			
 			//Remove excluded points from overlapping arcs
-			for (int i = 0; i < points.Count - 1; i++)
-				if (points[i].RightEnd == points[i + 1].RightEnd)
+			for (var current = points.First; current != points.Last; /* no step */)
+				if (current.Value.RightEnd == current.Next.Value.RightEnd)
 				{
-					if (points[i].RightEnd)
-						points.RemoveAt(i);
+					if (current.Value.RightEnd)
+						points.Remove(current);
 					else
-						points.RemoveAt(i + 1);
-					i--;
+						points.Remove(current.Next);
 				}
+				else
+					current = current.Next;
 
-			return points;
+			return points.ToList();
 		}
 
 		public int Count
