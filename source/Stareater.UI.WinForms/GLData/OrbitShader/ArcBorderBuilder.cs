@@ -8,7 +8,7 @@ namespace Stareater.GLData.OrbitShader
 	class ArcBorderBuilder
 	{
 		private readonly List<Circle> wholeCircles = new List<Circle>();
-		private readonly Dictionary<Circle, List<ArcPoint>> arcPoints = new Dictionary<Circle, List<ArcPoint>>();
+		private readonly Dictionary<Circle, Queue<ArcPoint>> arcPoints = new Dictionary<Circle, Queue<ArcPoint>>();
 
 		public void AddCircles(IEnumerable<Circle> circles)
 		{
@@ -46,7 +46,7 @@ namespace Stareater.GLData.OrbitShader
 			}
 		}
 
-		private static List<ArcPoint> arcsToPoints(List<Arc> arcs)
+		private static Queue<ArcPoint> arcsToPoints(List<Arc> arcs)
 		{
 			var points = new LinkedList<ArcPoint>(arcs.
 				SelectMany(x => x.Points).
@@ -66,7 +66,7 @@ namespace Stareater.GLData.OrbitShader
 				//Check if rotation went full circle, if so then
 				//all arcs are overlapping in the exclusive manner
 				if (points.First.Value == originalFirst)
-					return new List<ArcPoint>();
+					return new Queue<ArcPoint>();
 			}
 
 			//Remove excluded points from overlapping arcs
@@ -74,14 +74,17 @@ namespace Stareater.GLData.OrbitShader
 				if (current.Value.RightEnd == current.Next.Value.RightEnd)
 				{
 					if (current.Value.RightEnd)
-						points.Remove(current);
+					{
+						current = current.Next;
+						points.Remove(current.Previous);
+					}
 					else
 						points.Remove(current.Next);
 				}
 				else
 					current = current.Next;
 
-			return points.ToList();
+			return new Queue<ArcPoint>(points);
 		}
 
 		public int Count
@@ -103,43 +106,68 @@ namespace Stareater.GLData.OrbitShader
 				var data = new List<float>();
 
 				//TODO(v0.8) handle tessellation
-				for (int i = 0; i < points.Count; i += 2)
+				while (points.Any())
 				{
-					var rightPoint = points[i];
-					var leftPoint = points[i + 1];
-					var faceDirection = rightPoint.Point != -leftPoint.Point ? (rightPoint.Point + leftPoint.Point) : rightPoint.Point.PerpendicularLeft;
+					var rightPoint = points.Dequeue();
+					var leftPoint = points.Dequeue();
 
-					if (faceDirection.PerpendicularRight.Dot(rightPoint.Point) < 0 || rightPoint.Point == leftPoint.Point)
-						faceDirection = -faceDirection;
-					faceDirection = faceDirection.Unit;
-					var facing = faceDirection * circle.Key.Radius;
-					var openness = faceDirection.Dot(rightPoint.Point);
-
-					var midpointOpenness = (openness - 1) / 2 + 1;
-					var midpointHeight = (float)Math.Sqrt(circle.Key.Radius * circle.Key.Radius - midpointOpenness * midpointOpenness);
-					var facingPoint = facing * 1.5f;
-
-					var outerPoint1 = (facing * midpointOpenness + facing.PerpendicularRight * midpointHeight) * 1.9f;
-					data.AddRange(orbitVertex(rightPoint.Point * 1.9f));
-					data.AddRange(new float[] { 0, 0, 0, 0 });
-					data.AddRange(orbitVertex(outerPoint1));
-
-					data.AddRange(new float[] { 0, 0, 0, 0 });
-					data.AddRange(orbitVertex(facingPoint));
-					data.AddRange(orbitVertex(outerPoint1));
-
-					var outerPoint2 = (facing * midpointOpenness + facing.PerpendicularLeft * midpointHeight) * 1.9f;
-					data.AddRange(orbitVertex(leftPoint.Point * 1.9f));
-					data.AddRange(orbitVertex(outerPoint2));
-					data.AddRange(new float[] { 0, 0, 0, 0 });
-
-					data.AddRange(new float[] { 0, 0, 0, 0 });
-					data.AddRange(orbitVertex(outerPoint2));
-					data.AddRange(orbitVertex(facingPoint));
+					if (rightPoint.OriginalArc == leftPoint.OriginalArc)
+						singleArcVertices(rightPoint.OriginalArc, data);
+					else
+						multipleArcVertices(rightPoint, leftPoint, data);
 				}
 
 				yield return new ArcVertices(data, circle.Key.Center, (float)circle.Key.Radius);
 			}
+		}
+
+		private void singleArcVertices(Arc arc, List<float> outputData)
+		{
+			var left = arc.Facing * arc.Origin.Radius;
+			var right = arc.Facing * arc.Openness;
+			var top = arc.Facing.PerpendicularRight * arc.Origin.Radius;
+
+			outputData.AddRange(orbitVertex(left + top));
+			outputData.AddRange(orbitVertex(right + top));
+			outputData.AddRange(orbitVertex(right - top));
+
+			outputData.AddRange(orbitVertex(right - top));
+			outputData.AddRange(orbitVertex(left - top));
+			outputData.AddRange(orbitVertex(left + top));
+		}
+
+		private void multipleArcVertices(ArcPoint rightPoint, ArcPoint leftPoint, List<float> outputData)
+		{
+			var circle = rightPoint.OriginalArc.Origin;
+			var faceDirection = rightPoint.Point != -leftPoint.Point ? (rightPoint.Point + leftPoint.Point) : rightPoint.Point.PerpendicularLeft;
+
+			if (faceDirection.PerpendicularRight.Dot(rightPoint.Point) < 0 || rightPoint.Point == leftPoint.Point)
+				faceDirection = -faceDirection;
+			faceDirection = faceDirection.Unit;
+			var facing = faceDirection * circle.Radius;
+			var openness = faceDirection.Dot(rightPoint.Point);
+
+			var midpointOpenness = (openness - 1) / 2 + 1;
+			var midpointHeight = (float)Math.Sqrt(circle.Radius * circle.Radius - midpointOpenness * midpointOpenness);
+			var facingPoint = facing * 1.5f;
+
+			var outerPoint1 = (facing * midpointOpenness + facing.PerpendicularRight * midpointHeight) * 1.9f;
+			outputData.AddRange(orbitVertex(rightPoint.Point * 1.9f));
+			outputData.AddRange(new float[] { 0, 0, 0, 0 });
+			outputData.AddRange(orbitVertex(outerPoint1));
+
+			outputData.AddRange(new float[] { 0, 0, 0, 0 });
+			outputData.AddRange(orbitVertex(facingPoint));
+			outputData.AddRange(orbitVertex(outerPoint1));
+
+			var outerPoint2 = (facing * midpointOpenness + facing.PerpendicularLeft * midpointHeight) * 1.9f;
+			outputData.AddRange(orbitVertex(leftPoint.Point * 1.9f));
+			outputData.AddRange(orbitVertex(outerPoint2));
+			outputData.AddRange(new float[] { 0, 0, 0, 0 });
+
+			outputData.AddRange(new float[] { 0, 0, 0, 0 });
+			outputData.AddRange(orbitVertex(outerPoint2));
+			outputData.AddRange(orbitVertex(facingPoint));
 		}
 
 		private static IEnumerable<float> orbitVertex(Vector2D p)
