@@ -7,6 +7,8 @@ namespace Stareater.GLData.OrbitShader
 {
 	class ArcBorderBuilder
 	{
+		private const float DotLimit = -1e12f;
+
 		private readonly List<Circle> wholeCircles = new List<Circle>();
 		private readonly Dictionary<Circle, Queue<ArcPoint>> arcPoints = new Dictionary<Circle, Queue<ArcPoint>>();
 
@@ -153,27 +155,28 @@ namespace Stareater.GLData.OrbitShader
 			var top = point.Parent.Parent.Radius * (point.RightEnd ? 
 				pointFacing.PerpendicularRight : 
 				pointFacing.PerpendicularLeft);
-
+			
 			var endShape = new LinkedList<Vector2D>(new[]{
+				right + top,
+				right,
 				left,
 				left + top,
-				right + top,
-				right
 			});
 
 			var facingNormal = point.RightEnd ? facing.PerpendicularRight : facing.PerpendicularLeft;
 			for (var current = endShape.First; current != null; /* no step */)
 			{
 				var next = current.Next ?? endShape.First;
-				if ((current.Value.Dot(facingNormal) < 0) != (next.Value.Dot(facingNormal) < 0))
+				if ((current.Value.Dot(facingNormal) < DotLimit) != (next.Value.Dot(facingNormal) < DotLimit))
 				{
 					var line = next.Value - current.Value;
 					var height = current.Value.Dot(facingNormal);
 					var speed = -height / line.Dot(facingNormal);
 					endShape.AddAfter(current, current.Value + line * speed);
+					current = current.Next;
 				}
 
-				if (current.Value.Dot(facingNormal) < 0)
+				if (current.Value.Dot(facingNormal) < DotLimit)
 				{
 					var realNext = current.Next;
 					endShape.Remove(current);
