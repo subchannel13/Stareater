@@ -89,7 +89,6 @@ namespace Stareater.GLData
 			this.z = z;
 			this.minRadius = minRadius;
 			this.maxRadius = maxRadius;
-			this.vertexData.AddRange(SpriteHelpers.UnitRectVertexData(sprite));
 			this.sprite = sprite;
 			this.color = color;
 

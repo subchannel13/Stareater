@@ -272,6 +272,7 @@ namespace Stareater.GameData.Databases
 				data[ShipEvasion].To<Formula>(),
 				data[ShipHitPoints].To<Formula>(),
 				data[ShipJamming].To<Formula>(),
+				data[ShipScaneRange].To<Formula>(),
 				data[ShipColonyPopulation].To<Formula>(),
 				colonizerBuildings,
 				data[ShipReactorSize].To<Formula>(),
@@ -769,6 +770,7 @@ namespace Stareater.GameData.Databases
 		private const string ShipEvasion = "evasion";
 		private const string ShipHitPoints = "hitPoints";
 		private const string ShipJamming = "jamming";
+		private const string ShipScaneRange = "scanRange";
 		private const string ShipColonyPopulation = "colonyPop";
 		private const string ShipColonyBuildings = "colonyBuildings";
 		private const string ShipReactorSize = "reactorSize";

@@ -139,6 +139,18 @@ namespace Stareater.Controllers
 			return fleets.Select(x => new FleetInfo(x, game.Derivates.Of(x.Owner), game.Statics));
 		}
 		
+		public IEnumerable<Circle> ScanAreas()
+		{
+			var game = this.gameInstance;
+			var player = this.PlayerInstance(game);
+
+			foreach (var stellaris in game.States.Stellarises.OwnedBy[player])
+				yield return new Circle(stellaris.Location.Star.Position, game.Derivates.Of(stellaris).ScanRange);
+
+			foreach (var fleet in game.States.Fleets.OwnedBy[player])
+				yield return new Circle(fleet.Position, fleet.Ships.Max(x => game.Derivates.Of(player).DesignStats[x.Design].ScanRange));
+		}
+
 		public StarInfo Star(Vector2D position)
 		{
 			return new StarInfo(this.gameInstance.States.Stars.At[position]);

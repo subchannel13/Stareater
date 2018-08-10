@@ -607,6 +607,7 @@ namespace Stareater.GameLogic
 					design.Hull.TypeInfo.Size.Evaluate(hullVars),
 					galaxySpeed,
 					shipVars[ReactorType.TotalPowerKey],
+					statics.ShipFormulas.ScanRange.Evaluate(shipVars.Get),
 					statics.ShipFormulas.CombatSpeed.Evaluate(shipVars.Get),
 					shipVars[ReactorType.TotalPowerKey] - shieldPower,
 					abilities,

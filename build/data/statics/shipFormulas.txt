@@ -8,6 +8,8 @@
 	cloaking # hullCloak + shieldCloak;
 	jamming # hullJamming + shieldJamming;
 	
+	scanRange # 0.5;
+	
 	colonyPop # 500 * colony * (1 + 0.1 * colony_lvl ^ 2);
 	colonyBuildings { Buildings
 		Infra # 500 * colony * (1 + 0.1 * colony_lvl ^ 2);

@@ -6,26 +6,28 @@ namespace Stareater.GameLogic.Combat
 	[StateType(true)]
 	class DesignStats 
 	{
-		public double Size;
-		public double GalaxySpeed;
-		public double GalaxyPower;
-		public double CombatSpeed;
-		public double CombatPower;
-		public List<AbilityStats> Abilities;
-		public double ColonizerPopulation;
-		public Dictionary<string, double> ColonizerBuildings;
-		public double HitPoints;
-		public double ShieldPoints;
-		public double Evasion;
-		public double ArmorReduction;
-		public double ShieldReduction;
-		public double ShieldRegeneration;
-		public double ShieldThickness;
-		public double Detection;
-		public double Cloaking;
-		public double Jamming;
+		public double Size { get; private set; }
+		public double GalaxySpeed { get; private set; }
+		public double GalaxyPower { get; private set; }
+		public double ScanRange { get; private set; }
+		public double CombatSpeed { get; private set; }
+		public double CombatPower { get; private set; }
+		public List<AbilityStats> Abilities { get; private set; }
+		public double ColonizerPopulation { get; private set; }
+		public Dictionary<string, double> ColonizerBuildings { get; private set; }
+		public double HitPoints { get; private set; }
+		public double ShieldPoints { get; private set; }
+		public double Evasion { get; private set; }
+		public double ArmorReduction { get; private set; }
+		public double ShieldReduction { get; private set; }
+		public double ShieldRegeneration { get; private set; }
+		public double ShieldThickness { get; private set; }
+		public double Detection { get; private set; }
+		public double Cloaking { get; private set; }
+		public double Jamming { get; private set; }
 
-		public DesignStats(double size, double galaxySpeed, double galaxyPower, double combatSpeed, double combatPower, 
+		public DesignStats(double size, double galaxySpeed, double galaxyPower, double scanRange,
+						   double combatSpeed, double combatPower, 
 		                   List<AbilityStats> abilities, double colonizerPopulation, Dictionary<string, double> colonizerBuildings, 
 		                   double hitPoints, double shieldPoints, double evasion, double armorReduction, 
 		                   double shieldReduction, double shieldRegeneration, double shieldThickness, double detection, double cloaking, double jamming)
@@ -33,6 +35,7 @@ namespace Stareater.GameLogic.Combat
 			this.Size = size;
 			this.GalaxySpeed = galaxySpeed;
 			this.GalaxyPower = galaxyPower;
+			this.ScanRange = scanRange;
 			this.CombatSpeed = combatSpeed;
 			this.CombatPower = combatPower;
 			this.Abilities = abilities;

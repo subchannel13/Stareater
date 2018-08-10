@@ -10,7 +10,6 @@ namespace Stareater.Controllers.Views
 		
 		public PlayerInfo Owner { get; private set; }
 		public double Population { get; private set; }
-		public float ScanRange { get; private set; }
 
 		internal StellarisInfo(StellarisAdmin stellaris, MainGame game)
 		{
@@ -21,7 +20,6 @@ namespace Stareater.Controllers.Views
 				AtStar[stellaris.Location.Star].
 				Where(x => x.Owner == stellaris.Owner).
 				Sum(x => x.Population);
-			this.ScanRange = (float)game.Derivates.Of(stellaris).ScanRange;
 		}
 		
 		public StarInfo HostStar

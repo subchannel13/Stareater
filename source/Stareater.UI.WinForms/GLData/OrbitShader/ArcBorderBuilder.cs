@@ -9,7 +9,7 @@ namespace Stareater.GLData.OrbitShader
 	{
 		private const float DotLimit = -1e12f;
 
-		private readonly List<Circle> wholeCircles = new List<Circle>();
+		private readonly Dictionary<Vector2D, Circle> wholeCircles = new Dictionary<Vector2D, Circle>();
 		private readonly Dictionary<Circle, Queue<ArcPoint>> arcPoints = new Dictionary<Circle, Queue<ArcPoint>>();
 
 		public void AddCircles(IEnumerable<Circle> circles)
@@ -18,16 +18,22 @@ namespace Stareater.GLData.OrbitShader
 			{
 				var arcs = new List<Arc>();
 				bool enclosed = false;
+				bool redundant = false;
 
 				foreach (var other in circles.Where(x => x != circle))
 				{
 					var dist = (float)(circle.Center - other.Center).Length;
 
-					if (dist > circle.Radius + other.Radius)
+					if (dist > circle.Radius + other.Radius || dist + other.Radius < circle.Radius)
 						continue;
-					if (dist + circle.Radius < other.Radius)
+					else if (dist + circle.Radius < other.Radius)
 					{
 						enclosed = true;
+						break;
+					}
+					else if (dist + circle.Radius == other.Radius)
+					{
+						redundant = true;
 						break;
 					}
 
@@ -40,8 +46,11 @@ namespace Stareater.GLData.OrbitShader
 					));
 				}
 
-				if (!enclosed && !arcs.Any())
-					this.wholeCircles.Add(new Circle(circle.Center, circle.Radius));
+				if (!enclosed && !redundant && !arcs.Any())
+					this.wholeCircles.Add(circle.Center, new Circle(circle.Center, circle.Radius));
+
+				if (redundant && !this.wholeCircles.ContainsKey(circle.Center))
+					this.wholeCircles.Add(circle.Center, new Circle(circle.Center, circle.Radius));
 
 				if (!enclosed && arcs.Any())
 					arcPoints[circle] = arcsToPoints(arcs);
@@ -96,7 +105,7 @@ namespace Stareater.GLData.OrbitShader
 
 		public IEnumerable<ArcVertices> Vertices()
 		{
-			foreach(var circle in this.wholeCircles)
+			foreach(var circle in this.wholeCircles.Values)
 				yield return new ArcVertices(
 					OrbitHelpers.Quad((float)circle.Radius),
 					circle.Center, (float)circle.Radius
