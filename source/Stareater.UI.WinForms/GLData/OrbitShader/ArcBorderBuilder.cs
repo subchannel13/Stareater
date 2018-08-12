@@ -7,7 +7,7 @@ namespace Stareater.GLData.OrbitShader
 {
 	class ArcBorderBuilder
 	{
-		private const float DotLimit = -1e12f;
+		private const float DotLimit = -1e-12f;
 
 		private readonly Dictionary<Vector2D, Circle> wholeCircles = new Dictionary<Vector2D, Circle>();
 		private readonly Dictionary<Circle, Queue<ArcPoint>> arcPoints = new Dictionary<Circle, Queue<ArcPoint>>();
@@ -22,7 +22,8 @@ namespace Stareater.GLData.OrbitShader
 
 				foreach (var other in circles.Where(x => x != circle))
 				{
-					var dist = (float)(circle.Center - other.Center).Length;
+					var distLine = other.Center - circle.Center;
+					var dist = (float)distLine.Length;
 
 					if (dist > circle.Radius + other.Radius || dist + other.Radius < circle.Radius)
 						continue;
@@ -38,11 +39,15 @@ namespace Stareater.GLData.OrbitShader
 					}
 
 					var facing = (circle.Center - other.Center).Unit;
+					var openness = -(dist * dist - other.Radius * other.Radius + circle.Radius * circle.Radius) / 2 / dist;
+					var height = (float)Math.Sqrt(circle.Radius * circle.Radius - openness * openness);
+					var upperPoint = facing * openness + facing.PerpendicularRight * height;
 
 					arcs.Add(new Arc(
 						circle,
 						facing,
-						-(dist * dist - other.Radius * other.Radius + circle.Radius * circle.Radius) / 2 / dist
+						openness,
+						(-upperPoint.Unit + (distLine - upperPoint).Unit).Unit
 					));
 				}
 
@@ -176,13 +181,14 @@ namespace Stareater.GLData.OrbitShader
 			for (var current = endShape.First; current != null; /* no step */)
 			{
 				var next = current.Next ?? endShape.First;
+				var added = false;
 				if ((current.Value.Dot(facingNormal) < DotLimit) != (next.Value.Dot(facingNormal) < DotLimit))
 				{
 					var line = next.Value - current.Value;
 					var height = current.Value.Dot(facingNormal);
 					var speed = -height / line.Dot(facingNormal);
 					endShape.AddAfter(current, current.Value + line * speed);
-					current = current.Next;
+					added = true;
 				}
 
 				if (current.Value.Dot(facingNormal) < DotLimit)
@@ -192,6 +198,9 @@ namespace Stareater.GLData.OrbitShader
 					current = realNext;
 				}
 				else
+					current = current.Next;
+
+				if (added)
 					current = current.Next;
 			}
 
@@ -235,12 +244,14 @@ namespace Stareater.GLData.OrbitShader
 			public Circle Parent { get; private set; }
 			public Vector2D Facing { get; private set; }
 			public double Openness { get; private set; }
+			public Vector2D EdgeFacing { get; private set; }
 
-			public Arc(Circle parent, Vector2D facing, double openness)
+			public Arc(Circle parent, Vector2D facing, double openness, Vector2D edgeFacing)
 			{
 				this.Parent = parent;
 				this.Facing = facing;
 				this.Openness = openness;
+				this.EdgeFacing = edgeFacing;
 			}
 
 			public float OpenningHeight
