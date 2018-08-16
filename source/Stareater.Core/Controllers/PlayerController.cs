@@ -142,13 +142,8 @@ namespace Stareater.Controllers
 		public IEnumerable<Circle> ScanAreas()
 		{
 			var game = this.gameInstance;
-			var player = this.PlayerInstance(game);
 
-			foreach (var stellaris in game.States.Stellarises.OwnedBy[player])
-				yield return new Circle(stellaris.Location.Star.Position, game.Derivates.Of(stellaris).ScanRange);
-
-			foreach (var fleet in game.States.Fleets.OwnedBy[player])
-				yield return new Circle(fleet.Position, fleet.Ships.Max(x => game.Derivates.Of(player).DesignStats[x.Design].ScanRange));
+			return game.Derivates.Of(this.PlayerInstance(game)).ScanRanges.GetAll();
 		}
 
 		public StarInfo Star(Vector2D position)

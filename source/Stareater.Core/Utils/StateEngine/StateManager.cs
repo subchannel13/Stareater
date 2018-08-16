@@ -78,7 +78,26 @@ namespace Stareater.Utils.StateEngine
 							data[1].To<double>()
 						);
 					}
-				)
+				),
+				[typeof(Circle)] = new TerminalStrategy(
+					(x, session) =>
+					{
+						var circle = (Circle)x;
+						return new IkonArray(new[] {
+								new IkonFloat(circle.Center.X),
+								new IkonFloat(circle.Center.Y),
+								new IkonFloat(circle.Radius),
+							});
+					},
+					(x, session) =>
+					{
+						var data = x.To<IkonArray>();
+						return new Circle(
+							new Vector2D(data[0].To<double>(), data[1].To<double>()),
+							data[2].To<double>()
+						);
+					}
+				),
 			};
 		}
 

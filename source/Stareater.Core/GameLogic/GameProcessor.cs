@@ -97,7 +97,7 @@ namespace Stareater.GameLogic
 			foreach (var colonyProc in this.game.Derivates.Colonies)
 				colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Of(colonyProc.Owner));
 			foreach (var playerProc in this.game.Derivates.Players)
-				playerProc.CalculateBaseEffects(this.game.Derivates);
+				playerProc.CalculateBaseEffects(this.game.States, this.game.Derivates);
         }
 
 		public void CalculateSpendings()

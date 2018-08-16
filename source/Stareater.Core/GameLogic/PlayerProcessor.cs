@@ -45,6 +45,8 @@ namespace Stareater.GameLogic
 		public Design ColonyShipDesign { get; private set; }
 		[StateProperty]
 		public Design SystemColonizerDesign { get; private set; }
+		[StateProperty]
+		public QuadTree<Circle> ScanRanges { get; private set; }
 
 		[StateProperty]
 		public bool ControlsStareater { get; private set; }
@@ -56,8 +58,6 @@ namespace Stareater.GameLogic
 
 		private Queue<ResearchResult> breakthroughs = new Queue<ResearchResult>();
 
-		private readonly QuadTree<Circle> scanRanges = new QuadTree<Circle>();
-
 		public PlayerProcessor(Player player, IEnumerable<DevelopmentTopic> technologies)
 		{
 			this.Player = player;
@@ -66,6 +66,7 @@ namespace Stareater.GameLogic
 			this.ResearchPlan = null;
 			this.DesignStats = new Dictionary<Design, DesignStats>();
 			this.RefitCosts = new Dictionary<Design, Dictionary<Design, double>>();
+			this.ScanRanges = new QuadTree<Circle>();
 			this.TechLevels = new Dictionary<string, double>();
 
 			foreach (var tech in technologies)
@@ -90,7 +91,7 @@ namespace Stareater.GameLogic
 			this.CalculateStareater(game);
 		}
 
-		public void CalculateBaseEffects(TemporaryDB derivates)
+		public void CalculateBaseEffects(StatesDB states, TemporaryDB derivates)
 		{
 			var maintenanceCost = derivates.Colonies.OwnedBy[this.Player].Sum(x => x.MaintenanceCost);
             var availabeMaintenance = derivates.Colonies.OwnedBy[this.Player].Sum(x => x.MaintenanceLimit);
@@ -114,11 +115,16 @@ namespace Stareater.GameLogic
                 }
 			}
 
-			this.scanRanges.Clear();
+			this.ScanRanges.Clear();
 			foreach (var stellaris in derivates.Stellarises.OwnedBy[this.Player])
 			{
 				var range = new Circle(stellaris.Location.Position, stellaris.ScanRange);
-				this.scanRanges.Add(range, range.Center, new Vector2D(range.Radius * 2, range.Radius * 2));
+				this.ScanRanges.Add(range, range.Center, new Vector2D(range.Radius * 2, range.Radius * 2));
+			}
+			foreach(var fleet in states.Fleets.OwnedBy[this.Player])
+			{
+				var range = new Circle(fleet.Position, fleet.Ships.Max(x => this.DesignStats[x.Design].ScanRange));
+				this.ScanRanges.Add(range, range.Center, new Vector2D(range.Radius * 2, range.Radius * 2));
 			}
 		}
 
@@ -224,7 +230,7 @@ namespace Stareater.GameLogic
 			if (fleet.Owner == this.Player)
 				return !game.Orders[fleet.Owner].ShipOrders.ContainsKey(fleet.Position);
 			else
-				return this.scanRanges.
+				return this.ScanRanges.
 					Query(fleet.Position, new Vector2D()).
 					Any(x => (x.Center - fleet.Position).Length <= x.Radius);
 		}

@@ -1,9 +1,14 @@
-﻿namespace Stareater.Utils.Collections
+﻿using Stareater.Utils.StateEngine;
+
+namespace Stareater.Utils.Collections
 {
-	class QuadTreeElement<T>
+	public class QuadTreeElement<T>
 	{
+		[StateProperty]
 		public T Data { get; private set; }
+		[StateProperty]
 		public Vector2D TopRight { get; private set; }
+		[StateProperty]
 		public Vector2D BottomLeft { get; private set; }
 	
 		public QuadTreeElement(T data, Vector2D topRight, Vector2D bottomLeft)
@@ -12,6 +17,9 @@
 			this.TopRight = topRight;
 			this.BottomLeft = bottomLeft;
 		}
+
+		private QuadTreeElement()
+		{ }
 		
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)

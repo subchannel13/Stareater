@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace Stareater.Utils.Collections
 {
-	public class QuadTree<T>
+	public class QuadTree<T> : ICollection<QuadTreeElement<T>>
 	{
 		private const float InitialSize = 4;
 		private const float MinSize = 1.0f / 8;
@@ -37,19 +38,27 @@ namespace Stareater.Utils.Collections
 
 		public void Add(T newItem, double centerX, double centerY, double sizeX, double sizeY)
 		{
-			this.Add(newItem, new Vector2D(centerX, centerY), new Vector2D(sizeX, sizeY));
+			this.Add(new QuadTreeElement<T>(
+				newItem, 
+				new Vector2D(centerX + sizeX / 2, centerY + sizeY / 2),
+				new Vector2D(centerX - sizeX / 2, centerY - sizeY / 2)
+			));
 		}
 		
 		public void Add(T newItem, Vector2D center, Vector2D size)
 		{
-			var boundedItem = new QuadTreeElement<T>(newItem, center + size / 2, center - size / 2);
-			boundedElements.Add(newItem, boundedItem);
+			this.Add(new QuadTreeElement<T>(newItem, center + size / 2, center - size / 2));
+		}
 
-			if (!root.Insert(boundedItem, this.minNodeSize))
+		public void Add(QuadTreeElement<T> item)
+		{
+			boundedElements.Add(item.Data, item);
+
+			if (!root.Insert(item, this.minNodeSize))
 			{
 				var halfSize = (topRight - bottomLeft) / 2;
 
-				while (!Methods.IsRectEnveloped(this.topRight, this.bottomLeft, boundedItem.TopRight, boundedItem.BottomLeft))
+				while (!Methods.IsRectEnveloped(this.topRight, this.bottomLeft, item.TopRight, item.BottomLeft))
 				{
 					this.topRight += halfSize;
 					this.bottomLeft -= halfSize;
@@ -58,7 +67,7 @@ namespace Stareater.Utils.Collections
 
 				var oldRoot = this.root;
 				this.root = new QuadTreeNode<T>(topRight, bottomLeft);
-				this.root.Insert(boundedItem, this.minNodeSize);
+				this.root.Insert(item, this.minNodeSize);
 
 				foreach (var oldItem in oldRoot.SubTreeContents)
 					root.Insert(oldItem, this.minNodeSize);
@@ -71,6 +80,22 @@ namespace Stareater.Utils.Collections
 			boundedElements.Clear();
 		}
 
+		public bool Contains(QuadTreeElement<T> item)
+		{
+			return this.boundedElements.ContainsKey(item.Data) &&
+				item.Equals(this.boundedElements[item.Data]);
+		}
+
+		public int Count
+		{
+			get { return this.boundedElements.Count; }
+		}
+
+		public bool IsReadOnly
+		{
+			get { return false; }
+		}
+
 		public bool Remove(T item)
 		{
 			if (!boundedElements.ContainsKey(item))
@@ -81,10 +106,34 @@ namespace Stareater.Utils.Collections
 			return root.Remove(boundedItem);
 		}
 
+		public bool Remove(QuadTreeElement<T> item)
+		{
+			if (!boundedElements.ContainsKey(item.Data))
+				return false;
+
+			boundedElements.Remove(item.Data);
+			return root.Remove(item);
+		}
+
+		public void CopyTo(QuadTreeElement<T>[] array, int arrayIndex)
+		{
+			boundedElements.Values.CopyTo(array, arrayIndex);
+		}
+
 		public IEnumerable<T> GetAll()
 		{
 			foreach (var element in boundedElements.Keys)
 				yield return element;
+		}
+
+		public IEnumerator<QuadTreeElement<T>> GetEnumerator()
+		{
+			return boundedElements.Values.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return boundedElements.Values.GetEnumerator();
 		}
 	}
 }
