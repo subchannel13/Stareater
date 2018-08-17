@@ -16,7 +16,7 @@ namespace Stareater.GLData.OrbitShader
 		{
 			foreach (var circle in circles)
 			{
-				var arcs = new List<Arc>();
+				var arcs = new Queue<Arc>();
 				bool enclosed = false;
 				bool redundant = false;
 
@@ -38,7 +38,7 @@ namespace Stareater.GLData.OrbitShader
 						break;
 					}
 
-					arcs.Add(new Arc(
+					arcs.Enqueue(new Arc(
 						circle,
 						(circle.Center - other.Center).Unit,
 						-(dist * dist - other.Radius * other.Radius + circle.Radius * circle.Radius) / 2 / dist,
@@ -57,45 +57,37 @@ namespace Stareater.GLData.OrbitShader
 			}
 		}
 
-		private static Queue<ArcPoint> arcsToPoints(List<Arc> arcs)
+		private static Queue<ArcPoint> arcsToPoints(Queue<Arc> arcs)
 		{
-			var points = new LinkedList<ArcPoint>(arcs.
-				SelectMany(x => x.Points).
-				OrderBy(x => x.Angle).
-				ThenBy(x => x.RightEnd)
-			);
+			var acceptedArcs = new List<ArcInterval> { new ArcInterval(arcs.Dequeue()) };
 
-			//Find the start of an arc
-			var originalFirst = points.First.Value;
-			while (!points.First.Value.RightEnd || points.Last.Value.RightEnd)
+			while(arcs.Any())
 			{
-				//Rotate the list
-				var first = points.First.Value;
-				points.RemoveFirst();
-				points.AddLast(first);
+				var newArcs = new List<ArcInterval>();
+				var newPoints = new ArcInterval(arcs.Dequeue());
+				var extendedPoints = new[]
+				{
+					newPoints,
+					newPoints.PeriodicPrevious,
+					newPoints.PeriodicNext
+				};
 
-				//Check if rotation went full circle, if so then
-				//all arcs are overlapping in the exclusive manner
-				if (points.First.Value == originalFirst)
-					return new Queue<ArcPoint>();
+				// Calculate intersection with previous arcs
+				foreach (var interval in extendedPoints)
+				{
+					if (acceptedArcs.All(arc => arc.MinAngle > interval.MaxAngle || arc.MaxAngle < interval.MinAngle))
+						continue;
+
+					var compareArcs = acceptedArcs.Concat(new[] { interval }).ToList();
+					newArcs.Add(new ArcInterval(
+						Methods.FindBest(compareArcs, arc => -arc.Left.Angle).Left,
+						Methods.FindBest(compareArcs, arc => arc.Right.Angle).Right
+					));
+				}
+				acceptedArcs = newArcs;
 			}
 
-			//Remove excluded points from overlapping arcs
-			for (var current = points.First; current != points.Last; /* no step */)
-				if (current.Value.RightEnd == current.Next.Value.RightEnd)
-				{
-					if (current.Value.RightEnd)
-					{
-						current = current.Next;
-						points.Remove(current.Previous);
-					}
-					else
-						points.Remove(current.Next);
-				}
-				else
-					current = current.Next;
-
-			return new Queue<ArcPoint>(points);
+			return new Queue<ArcPoint>(acceptedArcs.SelectMany(arc => new[] { arc.Right, arc.Left }));
 		}
 
 		public int Count
@@ -259,7 +251,7 @@ namespace Stareater.GLData.OrbitShader
 			public Vector2D EdgeFacing { get; private set; }
 
 			public double Angle { get; private set; }
-
+			
 			public ArcPoint(Arc parent, Vector2D point, bool rightEnd, Vector2D edgeFacing)
 			{
 				this.Parent = parent;
@@ -269,6 +261,65 @@ namespace Stareater.GLData.OrbitShader
 
 				var direction = new Vector2D(this.Point.X, this.Point.Y).Unit;
 				this.Angle = (direction.Y > 0) ? 1 - direction.X : 3 + direction.X;
+			}
+
+			public ArcPoint(ArcPoint original, double angleOffset)
+			{
+				this.Parent = original.Parent;
+				this.Point = original.Point;
+				this.RightEnd = original.RightEnd;
+				this.EdgeFacing = original.EdgeFacing;
+
+				this.Angle = original.Angle + angleOffset;
+			}
+		}
+
+		class ArcInterval
+		{
+			public ArcPoint Left { get; private set; }
+			public ArcPoint Right { get; private set; }
+
+			public ArcInterval(Arc parent)
+			{
+				var points = parent.Points.ToArray();
+
+				this.Left = points[1];
+				this.Right = points[0];
+
+				if (this.Right.Angle > this.Left.Angle)
+					this.Right = new ArcPoint(this.Right, -4);
+			}
+
+			public double MinAngle
+			{
+				get { return this.Right.Angle; }
+			}
+
+			public double MaxAngle
+			{
+				get { return this.Left.Angle; }
+			}
+
+			public ArcInterval(ArcInterval original, double angleOffset)
+			{
+				this.Left = new ArcPoint(original.Left, angleOffset);
+				this.Right = new ArcPoint(original.Right, angleOffset);
+			}
+
+			public ArcInterval(ArcPoint left, ArcPoint right)
+			{
+				this.Left = left;
+				this.Right = right;
+			}
+
+			public ArcInterval PeriodicPrevious
+			{
+				get { return new ArcInterval(this, -4); }
+			}
+
+			public ArcInterval PeriodicNext
+			{
+				get { return new ArcInterval(this, 4); }
 			}
 		}
 	}
