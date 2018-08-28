@@ -17,6 +17,7 @@ using Stareater.GLData;
 using Stareater.GraphicsEngine.GuiElements;
 using Stareater.Controllers.Views;
 using Stareater.GLData.OrbitShader;
+using Stareater.AppData;
 
 namespace Stareater.GameScenes
 {
@@ -104,6 +105,18 @@ namespace Stareater.GameScenes
 				FixedSize(80, 80).
 				ParentRelative(1, -1, 10, 10);
 			this.AddElement(turnButton);
+
+			var radarToggle = new ToggleButton(SettingsWinforms.Get.ShowScanRange)
+			{
+				BackgroundHover = GalaxyTextures.Get.ToggleHover,
+				BackgroundNormal = GalaxyTextures.Get.ToggleNormal,
+				BackgroundToggled = GalaxyTextures.Get.ToggleToggled,
+				ToggleCallback = this.toggleRadar,
+			};
+			radarToggle.Position.
+				FixedSize(20, 20).
+				RelativeTo(turnButton, -1, 1, 1, 1, 15, 0);
+			this.AddElement(radarToggle);
 		}
 		
 		public void OnNewTurn()
@@ -144,6 +157,12 @@ namespace Stareater.GameScenes
 		private void rebuildCache()
 		{
 			TextRenderUtil.Get.Prepare(this.currentPlayer.Stars.Select(x => x.Name.ToText(LocalizationManifest.Get.CurrentLanguage)));
+		}
+
+		private void toggleRadar(bool state)
+		{
+			SettingsWinforms.Get.ShowScanRange = state;
+			this.setupScanRanges();
 		}
 
 		#region AScene implementation
@@ -246,6 +265,12 @@ namespace Stareater.GameScenes
 
 		private void setupScanRanges()
 		{
+			if (!SettingsWinforms.Get.ShowScanRange)
+			{
+				this.RemoveFromScene(ref this.scanRanges);
+				return;
+			}
+
 			var arcBuilder = new ArcBorderBuilder();
 			arcBuilder.AddCircles(this.currentPlayer.ScanAreas().ToList());
 			

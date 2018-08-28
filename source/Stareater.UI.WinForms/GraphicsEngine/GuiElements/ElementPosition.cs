@@ -9,9 +9,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 		public Vector2 Center { get; private set; }
 		public Vector2 Size { get; private set; }
 
-		private List<IPositioner> positioners = new List<IPositioner>();
-		private Func<float> contentWidth;
-		private Func<float> contentHeight;
+		private readonly List<IPositioner> positioners = new List<IPositioner>();
+		private readonly Func<float> contentWidth;
+		private readonly Func<float> contentHeight;
 		private float lastParentWidth = 0;
 		private float lastParentHeight = 0;
 
@@ -53,6 +53,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 			return this;
 		}
+
+		public ElementPosition RelativeTo(GuiButton anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis, float marginX, float marginY)
+		{
+			this.positioners.Add(new RelativeToPositioner(anchor, xPortionAnchor, yPortionAnchor, xPortionThis, yPortionThis, marginX, marginY));
+
+			return this;
+		}
 		#endregion
 
 		private interface IPositioner
@@ -62,10 +69,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		private class ParentRelativePositioner : IPositioner
 		{
-			private float xPortion;
-			private float yPortion;
-			private float marginX;
-			private float marginY;
+			private readonly float xPortion;
+			private readonly float yPortion;
+			private readonly float marginX;
+			private readonly float marginY;
 
 			public ParentRelativePositioner(float x, float y, float marginX, float marginY)
 			{
@@ -83,6 +90,36 @@ namespace Stareater.GraphicsEngine.GuiElements
 				element.Center = new Vector2(
 					this.marginX + windowX * this.xPortion,
 					this.marginY + windowY * this.yPortion
+				);
+			}
+		}
+
+		private class RelativeToPositioner : IPositioner
+		{
+			private readonly GuiButton anchor;
+			private readonly float xPortionAnchor;
+			private readonly float yPortionAnchor;
+			private readonly float xPortionThis;
+			private readonly float yPortionThis;
+			private readonly float marginX;
+			private readonly float marginY;
+
+			public RelativeToPositioner(GuiButton anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis, float marginX, float marginY)
+			{
+				this.anchor = anchor;
+				this.xPortionAnchor = xPortionAnchor;
+				this.yPortionAnchor = yPortionAnchor;
+				this.xPortionThis = xPortionThis;
+				this.yPortionThis = yPortionThis;
+				this.marginX = marginX;
+				this.marginY = marginY;
+			}
+
+			public void Recalculate(ElementPosition element, float parentWidth, float parentHeight)
+			{
+				element.Center = new Vector2(
+					this.anchor.Position.Center.X + (this.anchor.Position.Size.X + this.marginX) * this.xPortionAnchor / 2 - element.Size.X * this.xPortionThis / 2,
+					this.anchor.Position.Center.Y + (this.anchor.Position.Size.Y + this.marginY) * this.yPortionAnchor / 2 - element.Size.Y * this.yPortionThis / 2
 				);
 			}
 		}

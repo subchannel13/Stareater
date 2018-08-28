@@ -11,7 +11,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public ElementPosition Position { get; private set; }
 
-		public AGuiElement()
+		protected AGuiElement()
 		{
 			this.Position = new ElementPosition(this.ContentWidth, this.ContentHeight);
 		}
@@ -23,7 +23,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.scene = scene;
 			this.Z = z;
 
-			this.UpdateScene();
+			this.updateScene();
 		}
 
 		public void Detach()
@@ -34,10 +34,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 		public void RecalculatePosition(float parentWidth, float parentHeight)
 		{
 			this.Position.Recalculate(parentWidth, parentHeight);
-			this.UpdateScene();
+			this.updateScene();
 		}
 
-		protected void UpdateScene()
+		protected void updateScene()
 		{
 			if (this.scene == null)
 				return;
@@ -79,7 +79,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			state = newValue;
 
 			if ((oldValue == null && newValue != null) || !oldValue.Equals(newValue))
-				this.UpdateScene();
+				this.updateScene();
 		}
 	}
 }

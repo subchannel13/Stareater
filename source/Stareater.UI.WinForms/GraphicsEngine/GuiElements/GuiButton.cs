@@ -77,6 +77,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override bool OnMouseUp(Vector2 mousePosition)
 		{
+			/*
+			 * If mouse is moved outside of the button after pressing down
+			 * the button has to become unpressed.
+			 */
 			if (this.isOutside(mousePosition) || !this.isPressed)
 			{
 				Apply(ref this.isPressed, false);
@@ -86,7 +90,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 			this.isPressed = false;
 			this.ClickCallback();
-			this.UpdateScene();
+			this.updateScene();
 			return true;
 		}
 

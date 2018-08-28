@@ -154,6 +154,14 @@ namespace Stareater.GraphicsEngine
 			sceneObject = null;
 		}
 
+		public void RemoveFromScene(ref IEnumerable<SceneObject> sceneObject)
+		{
+			if (sceneObject != null)
+				foreach (var obj in sceneObject)
+					this.RemoveFromScene(obj);
+			sceneObject = null;
+		}
+
 		public void UpdateScene(ref SceneObject oldObject, SceneObject newObject)
 		{
 			if (oldObject != null)

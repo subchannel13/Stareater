@@ -55,6 +55,7 @@ namespace Stareater.AppData
 		}
 		
 		public bool ReportTechnology { get; set; }
+		public bool ShowScanRange { get; set; }
 
 		#region Initialization
 		protected override void initDefault()
@@ -69,6 +70,7 @@ namespace Stareater.AppData
 			this.VSync = true;
 			
 			this.ReportTechnology = true;
+			this.ShowScanRange = false;
 
 			this.DataRootPath = null;
 		}
@@ -100,6 +102,7 @@ namespace Stareater.AppData
 			this.VSync = wfSettignsData[VSyncKey].To<int>() >= 0;
 			
 			this.ReportTechnology = wfSettignsData[ReportTechnologyKey].To<int>() >= 0;
+			this.ShowScanRange = wfSettignsData[ShowScanRangeKey].To<int>() >= 0;
 		}
 		#endregion
 		
@@ -110,6 +113,7 @@ namespace Stareater.AppData
 		const string FpsUnlimitedKey = "noFps";
 		const string GuiScaleKey = "guiscale";
 		const string ReportTechnologyKey = "reportTech";
+		const string ShowScanRangeKey = "showRadar";
 		const string VSyncKey = "vsync";
 		#endregion
 
@@ -139,6 +143,7 @@ namespace Stareater.AppData
 			settings.Add(VSyncKey, new IkonInteger(this.VSync ? 1 : -1));
 			
 			settings.Add(ReportTechnologyKey, new IkonInteger(this.ReportTechnology ? 1 : -1));
+			settings.Add(ShowScanRangeKey, new IkonInteger(this.ShowScanRange ? 1 : -1));
 			settings.Compose(writer);
 		}
 		

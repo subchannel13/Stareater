@@ -53,7 +53,7 @@ namespace Stareater.GLData
 		
 		private bool loaded = false;
 		private int textureId;
-		private Dictionary<string, TextureInfo> spriteNames  = new Dictionary<string, TextureInfo>();
+		private readonly Dictionary<string, TextureInfo> spriteNames  = new Dictionary<string, TextureInfo>();
 		
 		public TextureInfo Asteroids { get; private set;}
 		public TextureInfo BombButton { get; private set;}
@@ -73,7 +73,10 @@ namespace Stareater.GLData
 		public TextureInfo StarGlow { get; private set;}
 		public TextureInfo SelectedStar { get; private set;}
 		public TextureInfo SystemStar { get; private set;}
-		
+		public TextureInfo ToggleHover { get; private set; }
+		public TextureInfo ToggleNormal { get; private set; }
+		public TextureInfo ToggleToggled { get; private set; }
+
 		public void Load()
 		{
 			if (this.loaded)
@@ -105,7 +108,10 @@ namespace Stareater.GLData
 			this.StarColor = this.spriteNames[StarColorTag];
 			this.StarGlow = this.spriteNames[StarGlowTag];
 			this.SystemStar = this.spriteNames[SystemStarTag];
-			
+			this.ToggleHover = this.spriteNames["toggleHover"];
+			this.ToggleNormal = this.spriteNames["toggleUntoggled"];
+			this.ToggleToggled = this.spriteNames["toggleToggled"];
+
 			this.loaded = true;
 		}
 		
@@ -164,11 +170,13 @@ namespace Stareater.GLData
 								var spriteRegion = atlasBuilder.Add(sprite.Size);
 								g.DrawImage(sprite, spriteRegion);
 
-								var textureCoords = new IkonArray();
-								textureCoords.Add(serializeSpriteCorner(spriteRegion.Left, spriteRegion.Top, atlasImage.Size));
-								textureCoords.Add(serializeSpriteCorner(spriteRegion.Right, spriteRegion.Top, atlasImage.Size));
-								textureCoords.Add(serializeSpriteCorner(spriteRegion.Right, spriteRegion.Bottom, atlasImage.Size));
-								textureCoords.Add(serializeSpriteCorner(spriteRegion.Left, spriteRegion.Bottom, atlasImage.Size));
+								var textureCoords = new IkonArray
+								{
+									serializeSpriteCorner(spriteRegion.Left, spriteRegion.Top, atlasImage.Size),
+									serializeSpriteCorner(spriteRegion.Right, spriteRegion.Top, atlasImage.Size),
+									serializeSpriteCorner(spriteRegion.Right, spriteRegion.Bottom, atlasImage.Size),
+									serializeSpriteCorner(spriteRegion.Left, spriteRegion.Bottom, atlasImage.Size)
+								};
 								ikonData.Add(Path.GetFileNameWithoutExtension(spriteFile.Name), textureCoords);
 							}
 					}
@@ -181,9 +189,11 @@ namespace Stareater.GLData
 
 		Ikadn.IkadnBaseObject serializeSpriteCorner(int x, int y, Size atlasSize)
 		{
-			var result = new IkonArray();
-			result.Add(new IkonFloat(x / (double)atlasSize.Width));
-			result.Add(new IkonFloat(y / (double)atlasSize.Height));
+			var result = new IkonArray
+			{
+				new IkonFloat(x / (double)atlasSize.Width),
+				new IkonFloat(y / (double)atlasSize.Height)
+			};
 
 			return result;
 		}
