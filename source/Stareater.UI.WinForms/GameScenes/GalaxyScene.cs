@@ -111,6 +111,7 @@ namespace Stareater.GameScenes
 				BackgroundHover = GalaxyTextures.Get.ToggleHover,
 				BackgroundNormal = GalaxyTextures.Get.ToggleNormal,
 				BackgroundToggled = GalaxyTextures.Get.ToggleToggled,
+				ForgroundImage = GalaxyTextures.Get.Radar,
 				ToggleCallback = this.toggleRadar,
 			};
 			radarToggle.Position.

@@ -68,6 +68,7 @@ namespace Stareater.GLData
 		public TextureInfo IntroStareaterUnderline { get; private set; }
 		public TextureInfo MoveToArrow { get; private set;}
 		public TextureInfo PathLine { get; private set;}
+		public TextureInfo Radar { get; private set; }
 		public TextureInfo RockPlanet { get; private set;}
 		public TextureInfo StarColor { get; private set;}
 		public TextureInfo StarGlow { get; private set;}
@@ -103,6 +104,7 @@ namespace Stareater.GLData
 			this.IntroStareaterUnderline = this.spriteNames[IntroStareaterUnderlineTag];
 			this.MoveToArrow = this.spriteNames[MoveArrowTag];
 			this.PathLine = this.spriteNames[PathLineTag];
+			this.Radar = this.spriteNames["radar"];
 			this.RockPlanet = this.spriteNames[RockPlanetTag];
 			this.SelectedStar = this.spriteNames[SelectedStarTag];
 			this.StarColor = this.spriteNames[StarColorTag];

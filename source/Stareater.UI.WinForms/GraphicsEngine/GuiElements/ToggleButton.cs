@@ -47,6 +47,16 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
+		private TextureInfo? mForgroundImage = null;
+		public TextureInfo? ForgroundImage
+		{
+			get { return this.mForgroundImage; }
+			set
+			{
+				Apply(ref this.mForgroundImage, value);
+			}
+		}
+
 		public override bool OnMouseDown(Vector2 mousePosition)
 		{
 			if (this.isOutside(mousePosition))
@@ -84,6 +94,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 				StartSimpleSprite(this.Z, background, Color.White).
 				Scale(this.Position.Size.X, this.Position.Size.Y).
 				Translate(this.Position.Center);
+
+			if (this.mForgroundImage.HasValue)
+				soBuilder.
+					StartSimpleSprite(this.Z / 2, this.mForgroundImage.Value, Color.White).
+					Scale(this.Position.Size.X, this.Position.Size.Y).
+					Translate(this.Position.Center);
 
 			return soBuilder.Build();
 		}
