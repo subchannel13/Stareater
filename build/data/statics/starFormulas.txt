@@ -1,3 +1,0 @@
-{ StarFormulas
-	scanRange # 2;
-}

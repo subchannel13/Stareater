@@ -1,3 +1,0 @@
-{ PlayerFormulas
-	focusedResearchWeight # 4;
-}
