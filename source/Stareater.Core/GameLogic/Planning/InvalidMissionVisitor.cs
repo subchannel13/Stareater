@@ -30,7 +30,7 @@ namespace Stareater.GameLogic.Planning
 					
 			var newFleet = new Fleet(fleet.Owner, fleet.Position, this.remainingMissions);
 			foreach(var ship in fleet.Ships)
-				newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity, ship.Damage, ship.UpgradePoints));
+				newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity, ship.Damage, ship.UpgradePoints, ship.PopulationTransport));
 			
 			return newFleet;
 		}

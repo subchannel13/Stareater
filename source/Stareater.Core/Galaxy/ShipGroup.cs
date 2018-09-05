@@ -17,12 +17,16 @@ namespace Stareater.Galaxy
 		[StateProperty]
 		public double UpgradePoints { get; set; }
 
-		public ShipGroup(Design design, long quantity, double damage, double upgradePoints) 
+		[StateProperty]
+		public double PopulationTransport { get; set; }
+
+		public ShipGroup(Design design, long quantity, double damage, double upgradePoints, double population) 
 		{
 			this.Design = design;
 			this.Quantity = quantity;
 			this.Damage = damage;
-			this.UpgradePoints = upgradePoints;			 
+			this.UpgradePoints = upgradePoints;
+			this.PopulationTransport = population;
 		}
 
 		private ShipGroup() 

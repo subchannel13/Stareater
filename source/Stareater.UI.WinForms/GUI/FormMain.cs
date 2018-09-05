@@ -122,7 +122,6 @@ namespace Stareater.GUI
 				switchToGalaxyView();
 			else if (this.currentRenderer == bombardRenderer)
 				this.bombardmentController.Leave();
-				
 		}
 		
 		private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)

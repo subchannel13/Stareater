@@ -20,7 +20,6 @@ namespace Stareater.GameData.Construction
 		#region IConstructionEffect implementation
 		public void Apply(MainGame game, AConstructionSite site, long quantity)
 		{
-			var project = game.States.ColonizationProjects.Of[Destination].FirstOrDefault(x => x.Owner == this.ColonizerDesign.Owner);
 			var missions = new LinkedList<AMission>();
 			missions.AddLast(new SkipTurnMission());
 			
@@ -34,10 +33,11 @@ namespace Stareater.GameData.Construction
 			}
 			
 			missions.AddLast(new ColonizationMission(Destination));
-			
+
 			//TODO(v0.8) report new ship construction
+			//TODO(v0.8) pick up population
 			game.Derivates.Of(site.Owner).
-				SpawnShip(site.Location.Star, this.ColonizerDesign, quantity, missions, game.States);
+				SpawnShip(site.Location.Star, this.ColonizerDesign, quantity, 0, missions, game.States);
 		}
 		#endregion
 	}

@@ -276,7 +276,7 @@ namespace Stareater.GameLogic
 			 */
 		}
 		
-		public void SpawnShip(StarData star, Design design, long quantity, IEnumerable<AMission> missions, StatesDB states)
+		public void SpawnShip(StarData star, Design design, long quantity, double population, IEnumerable<AMission> missions, StatesDB states)
 		{
 			var missionList = new LinkedList<AMission>(missions);
 			var fleet = states.Fleets.At[star.Position].FirstOrDefault(x => x.Owner == this.Player && x.Missions.SequenceEqual(missionList));
@@ -288,9 +288,12 @@ namespace Stareater.GameLogic
 			}
 
 			if (fleet.Ships.WithDesign.Contains(design))
+			{
 				fleet.Ships.WithDesign[design].Quantity += quantity;
+				fleet.Ships.WithDesign[design].PopulationTransport += population;
+			}
 			else
-				fleet.Ships.Add(new ShipGroup(design, quantity, 0, 0));
+				fleet.Ships.Add(new ShipGroup(design, quantity, 0, 0, population));
 		}
 
 		private void updateColonizationOrders(MainGame game)

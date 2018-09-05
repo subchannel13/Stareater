@@ -17,7 +17,7 @@ namespace Stareater.GameData.Construction
 		{
 			//TODO(v0.8) report new ship construction
 			game.Derivates.Of(site.Owner).
-				SpawnShip(site.Location.Star, this.Design, quantity, new AMission[0], game.States);
+				SpawnShip(site.Location.Star, this.Design, quantity, 0, new AMission[0], game.States);
 		}
 	}
 }

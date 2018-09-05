@@ -389,7 +389,7 @@ namespace Stareater.GameLogic
 					}
 				}
 				
-				if (colonyExists || !colonyExists && arrivedPopulation >= colonizationTreshold)
+				if (colonyExists || arrivedPopulation >= colonizationTreshold)
 				{
 					this.game.Orders[project.Owner].ColonizationOrders.Remove(project.Destination);
 					this.game.States.ColonizationProjects.PendRemove(project);
@@ -482,7 +482,7 @@ namespace Stareater.GameLogic
 						if (existingGroup != null)
 							existingGroup.Quantity += upgradedShips;
 						else
-							fleet.Ships.Add(new ShipGroup(refitTo, upgradedShips, 0, 0));
+							fleet.Ships.Add(new ShipGroup(refitTo, upgradedShips, 0, 0, shipGroup.PopulationTransport));
 					}
 				}
 			}
@@ -547,9 +547,12 @@ namespace Stareater.GameLogic
 							this.game.States.Fleets.PendRemove(fleet);
 							foreach (var ship in fleet.Ships)
 								if (newFleet.Ships.WithDesign.Contains(ship.Design))
+								{
 									newFleet.Ships.WithDesign[ship.Design].Quantity += ship.Quantity;
+									newFleet.Ships.WithDesign[ship.Design].PopulationTransport += ship.PopulationTransport;
+								}
 								else
-									newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity, ship.Damage, ship.UpgradePoints));
+									newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity, ship.Damage, ship.UpgradePoints, ship.PopulationTransport));
 						}
 						this.game.States.Fleets.PendAdd(newFleet);
 					}
