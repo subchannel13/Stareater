@@ -43,7 +43,7 @@ namespace Stareater.GameScenes
 		private const float EtaZ = 2 / Layers;
 		
 		private const float PanClickTolerance = 0.01f;
-		private const float ClickRadius = 0.01f;
+		private const float ClickRadius = 0.5f;
 		private const float StarMinClickRadius = 0.75f;
 		
 		private const float EtaTextScale = 0.3f;
@@ -71,7 +71,7 @@ namespace Stareater.GameScenes
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
 		private Vector2 originOffset = Vector2.Zero;
-		private float screenLength;
+		private float screenUnitScale;
 		private Vector2 mapBoundsMin;
 		private Vector2 mapBoundsMax;
 
@@ -203,15 +203,14 @@ namespace Stareater.GameScenes
 		#region Drawing setup and helpers
 		protected override Matrix4 calculatePerspective()
 		{
-			var aspect = canvasSize.X / canvasSize.Y;
-			var radius = DefaultViewSize / (float)Math.Pow(ZoomBase, zoomLevel);
+			var aspect = this.canvasSize.X / this.canvasSize.Y;
+			var radius = DefaultViewSize * (float)Math.Pow(ZoomBase, -this.zoomLevel);
 
-			//TODO(v0.8) test this, perhaps by flipping the monitor.
-			screenLength = screenSize.X > screenSize.Y ? 
-				screenSize.X * radius * aspect / screenSize.X : 
-				screenSize.Y * radius * aspect / screenSize.Y;
-
-			this.setupTurnCounter();
+			this.screenUnitScale = (float)Math.Pow(ZoomBase, -this.zoomLevel) * this.screenSize.Y / this.canvasSize.Y;
+			
+			// Update screen space elements
+			this.setupTurnCounter(); //TODO(v0.8) should not be here, GUI engine should handle
+			this.setupScanRanges();
 
 			return calcOrthogonalPerspective(aspect * radius, radius, FarZ, originOffset);
 		}
@@ -274,8 +273,8 @@ namespace Stareater.GameScenes
 
 			var arcBuilder = new ArcBorderBuilder();
 			arcBuilder.AddCircles(this.currentPlayer.ScanAreas().ToList());
-			
-			var borderThickness = 0.04f / (float)Math.Pow(ZoomBase, zoomLevel);
+
+			var borderThickness = 0.06f * this.screenUnitScale;
 			var zStep = InterlayerZRange / (float)arcBuilder.Count;
 
 			this.UpdateScene(
@@ -507,9 +506,9 @@ namespace Stareater.GameScenes
 			if (panAbsPath > PanClickTolerance) //TODO(v0.8) maybe make AScene differentiate between click and drag
 				return;
 			
-			var searchRadius = Math.Max(this.screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
+			var searchRadius = Math.Max(this.screenUnitScale * ClickRadius, StarMinClickRadius);
 			var searchPoint = convert(mousePoint);
-			
+
 			var allObjects = this.QueryScene(searchPoint, searchRadius).
 				OrderBy(x => (x.PhysicalShape.Center - convert(searchPoint)).LengthSquared).
 				ToList();
@@ -570,7 +569,7 @@ namespace Stareater.GameScenes
 			if (panAbsPath > PanClickTolerance)
 				return;
 			
-			var searchRadius = Math.Max(screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
+			var searchRadius = Math.Max(this.screenUnitScale * ClickRadius, StarMinClickRadius);
 			var searchPoint = convert(mousePoint);
 
 			var starsFound = this.QueryScene(searchPoint, searchRadius).
@@ -591,7 +590,7 @@ namespace Stareater.GameScenes
 				return;
 
 			Vector4 mousePoint = Vector4.Transform(currentPosition, invProjection);
-			var searchRadius = Math.Max(screenLength * ClickRadius / Math.Pow(ZoomBase, zoomLevel), StarMinClickRadius);
+			var searchRadius = Math.Max(this.screenUnitScale * ClickRadius, StarMinClickRadius);
 			var searchPoint = new Vector2D(mousePoint.X, mousePoint.Y);
 
 			var starsFound = this.QueryScene(searchPoint, searchRadius).
