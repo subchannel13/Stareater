@@ -72,7 +72,7 @@ namespace Stareater.GameScenes
 		}
 
 		#region AScene implementation
-		protected override float GuiLayerThickness => 1 / Layers;
+		protected override float guiLayerThickness => 1 / Layers;
 
 		//TODO(v0.8) refactor and remove
 		public void ResetLists()

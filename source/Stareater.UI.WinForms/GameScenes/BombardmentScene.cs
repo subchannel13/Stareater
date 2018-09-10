@@ -76,7 +76,7 @@ namespace Stareater.GameScenes
 		}
 
 		#region AScene implementation
-		protected override float GuiLayerThickness => 1 / Layers;
+		protected override float guiLayerThickness => 1 / Layers;
 
 		protected override Matrix4 calculatePerspective()
 		{
@@ -102,7 +102,7 @@ namespace Stareater.GameScenes
 			if (this.panAbsPath > PanClickTolerance)
 				return;
 			
-			var buttons = this.QueryScene(convert(mousePoint)).ToList();
+			var buttons = this.queryScene(convert(mousePoint)).ToList();
 			
 			if (buttons.Any())
 				this.controller.Bombard((int)buttons.First().Data);

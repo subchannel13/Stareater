@@ -22,7 +22,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundHover; }
 			set
 			{
-				Apply(ref this.mBackgroundHover, value);
+				apply(ref this.mBackgroundHover, value);
 			}
 		}
 
@@ -32,7 +32,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundNormal; }
 			set
 			{
-				Apply(ref this.mBackgroundNormal, value);
+				apply(ref this.mBackgroundNormal, value);
 			}
 		}
 
@@ -42,7 +42,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mText; }
 			set
 			{
-				Apply(ref this.mText, value);
+				apply(ref this.mText, value);
 			}
 		}
 
@@ -52,7 +52,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mTextColor; }
 			set
 			{
-				Apply(ref this.mTextColor, value);
+				apply(ref this.mTextColor, value);
 			}
 		}
 
@@ -62,7 +62,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mTextSize; }
 			set
 			{
-				Apply(ref this.mTextSize, value);
+				apply(ref this.mTextSize, value);
 			}
 		}
 
@@ -70,7 +70,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			var inside = !this.isOutside(mousePosition);
 
-			Apply(ref this.isPressed, inside);
+			apply(ref this.isPressed, inside);
 
 			return inside;
 		}
@@ -83,7 +83,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			 */
 			if (this.isOutside(mousePosition) || !this.isPressed)
 			{
-				Apply(ref this.isPressed, false);
+				apply(ref this.isPressed, false);
 
 				return false;
 			}
@@ -96,21 +96,21 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override void OnMouseMove(Vector2 mousePosition)
 		{
-			Apply(ref this.isHovered, !this.isOutside(mousePosition));
+			apply(ref this.isHovered, !this.isOutside(mousePosition));
 		}
 
-		protected override SceneObject MakeSceneObject()
+		protected override SceneObject makeSceneObject()
 		{
 			var pressOffset = this.isPressed && this.isHovered ? new Vector2(PressOffsetX, PressOffsetY) : new Vector2(0, 0);
 
 			var background = (this.isHovered ? this.BackgroundHover : this.mBackgroundNormal).Value;
 			var soBuilder = new SceneObjectBuilder().
-				StartSimpleSprite(this.Z, background, Color.White).
+				StartSimpleSprite(this.z, background, Color.White).
 				Scale(this.Position.Size.X, this.Position.Size.Y).
 				Translate(this.Position.Center + pressOffset);
 
 			if (!string.IsNullOrWhiteSpace(this.Text))
-				soBuilder.StartSprite(this.Z / 2, TextRenderUtil.Get.TextureId, this.TextColor). //TODO(v0.8) better define GUI z range
+				soBuilder.StartSprite(this.z / 2, TextRenderUtil.Get.TextureId, this.TextColor). //TODO(v0.8) better define GUI z range
 					AddVertices(TextRenderUtil.Get.BufferText(this.Text, -0.5f, Matrix4.Identity)).
 					Scale(this.TextSize, this.TextSize).
 					Translate(this.Position.Center);

@@ -17,7 +17,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 			set
 			{
-				Apply(ref this.mAnimation, value);
+				this.apply(ref this.mAnimation, value);
 			}
 		}
 
@@ -27,7 +27,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mText; }
 			set
 			{
-				Apply(ref this.mText, value); //TODO(v0.8) doesn't update element position
+				this.apply(ref this.mText, value);
+				this.reposition();
 			}
 		}
 
@@ -37,7 +38,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mTextColor; }
 			set
 			{
-				Apply(ref this.mTextColor, value);
+				this.apply(ref this.mTextColor, value);
 			}
 		}
 
@@ -47,17 +48,17 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mTextSize; }
 			set
 			{
-				Apply(ref this.mTextSize, value);
+				this.apply(ref this.mTextSize, value);
 			}
 		}
 
-		protected override SceneObject MakeSceneObject()
+		protected override SceneObject makeSceneObject()
 		{
 			if (string.IsNullOrWhiteSpace(this.Text))
 				return null;
 
 			var soBuilder = new SceneObjectBuilder().
-				StartSprite(this.Z, TextRenderUtil.Get.TextureId, this.TextColor).
+				StartSprite(this.z, TextRenderUtil.Get.TextureId, this.TextColor).
 				AddVertices(TextRenderUtil.Get.BufferText(this.Text, -0.5f, Matrix4.Identity)).
 				Scale(this.TextSize, this.TextSize).
 				Translate(this.Position.Center + new Vector2(0, this.TextSize / 2));
@@ -68,13 +69,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 				return soBuilder.Build();
 		}
 
-		protected override float ContentWidth()
+		protected override float contentWidth()
 		{
 			return string.IsNullOrWhiteSpace(this.Text) ? 0 :
 				TextRenderUtil.Get.MeasureWidth(this.Text) * this.TextSize;
 		}
 
-		protected override float ContentHeight()
+		protected override float contentHeight()
 		{
 			return this.TextSize;
 		}

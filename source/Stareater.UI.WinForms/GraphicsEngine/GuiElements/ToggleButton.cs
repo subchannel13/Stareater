@@ -23,7 +23,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundHover; }
 			set
 			{
-				Apply(ref this.mBackgroundHover, value);
+				apply(ref this.mBackgroundHover, value);
 			}
 		}
 
@@ -33,7 +33,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundNormal; }
 			set
 			{
-				Apply(ref this.mBackgroundNormal, value);
+				apply(ref this.mBackgroundNormal, value);
 			}
 		}
 
@@ -43,7 +43,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundToggled; }
 			set
 			{
-				Apply(ref this.mBackgroundToggled, value);
+				apply(ref this.mBackgroundToggled, value);
 			}
 		}
 
@@ -53,7 +53,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mForgroundImage; }
 			set
 			{
-				Apply(ref this.mForgroundImage, value);
+				apply(ref this.mForgroundImage, value);
 			}
 		}
 
@@ -79,10 +79,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override void OnMouseMove(Vector2 mousePosition)
 		{
-			Apply(ref this.isHovered, !this.isOutside(mousePosition));
+			apply(ref this.isHovered, !this.isOutside(mousePosition));
 		}
 
-		protected override SceneObject MakeSceneObject()
+		protected override SceneObject makeSceneObject()
 		{
 			var background = this.mBackgroundNormal.Value;
 			if (this.isHovered)
@@ -91,13 +91,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 				background = this.mBackgroundToggled.Value;
 
 			var soBuilder = new SceneObjectBuilder().
-				StartSimpleSprite(this.Z, background, Color.White).
+				StartSimpleSprite(this.z, background, Color.White).
 				Scale(this.Position.Size.X, this.Position.Size.Y).
 				Translate(this.Position.Center);
 
 			if (this.mForgroundImage.HasValue)
 				soBuilder.
-					StartSimpleSprite(this.Z / 2, this.mForgroundImage.Value, Color.White).
+					StartSimpleSprite(this.z / 2, this.mForgroundImage.Value, Color.White).
 					Scale(this.Position.Size.X, this.Position.Size.Y).
 					Translate(this.Position.Center);
 

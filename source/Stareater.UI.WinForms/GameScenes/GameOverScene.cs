@@ -28,7 +28,7 @@ namespace Stareater.GameScenes
 		private ResultsController controller;
 
 		#region AScene implemented
-		protected override float GuiLayerThickness => 1 / Layers;
+		protected override float guiLayerThickness => 1 / Layers;
 
 		public override void Activate()
 		{

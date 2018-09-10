@@ -6,7 +6,7 @@ namespace Stareater.Localization
 {
 	class SingleLineText : IkadnBaseObject, IText
 	{
-		private string text;
+		private readonly string text;
 
 		internal SingleLineText(string line)
 		{
@@ -27,7 +27,7 @@ namespace Stareater.Localization
 		{
 			Type target = typeof(T);
 
-			if (target.IsAssignableFrom(this.GetType()))
+			if (target.IsInstanceOfType(this))
 				return (T)(object)this;
 			else
 				throw new InvalidOperationException("Cast to " + target.Name + " is not supported for " + Tag);

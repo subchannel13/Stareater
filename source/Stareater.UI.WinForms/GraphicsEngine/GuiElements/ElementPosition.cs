@@ -12,8 +12,6 @@ namespace Stareater.GraphicsEngine.GuiElements
 		private readonly List<IPositioner> positioners = new List<IPositioner>();
 		private readonly Func<float> contentWidth;
 		private readonly Func<float> contentHeight;
-		private float lastParentWidth = 0;
-		private float lastParentHeight = 0;
 
 		public ElementPosition(Func<float> contentWidth, Func<float> contentHeight)
 		{
@@ -23,12 +21,6 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public void Recalculate(float parentWidth, float parentHeight)
 		{
-			if (parentHeight == this.lastParentHeight && parentWidth == this.lastParentWidth)
-				return;
-
-			this.lastParentWidth = parentWidth;
-			this.lastParentHeight = parentHeight;
-
 			foreach (var positioner in this.positioners)
 				positioner.Recalculate(this, parentWidth, parentHeight);
 		}

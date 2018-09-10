@@ -8,6 +8,7 @@ using Stareater.GLData;
 using Stareater.GraphicsEngine.GuiElements;
 using Stareater.AppData;
 using Stareater.Utils;
+using System;
 
 namespace Stareater.GraphicsEngine
 {
@@ -18,7 +19,7 @@ namespace Stareater.GraphicsEngine
 		private readonly HashSet<IAnimator> animators = new HashSet<IAnimator>();
 		private readonly HashSet<float> dirtyLayers = new HashSet<float>();
 		private readonly Dictionary<float, List<IDrawable>> drawables = new Dictionary<float, List<IDrawable>>();
-		private readonly Dictionary<float, List<VertexArray>> Vaos = new Dictionary<float, List<VertexArray>>();
+		private readonly Dictionary<float, List<VertexArray>> layerVaos = new Dictionary<float, List<VertexArray>>();
 
 		private readonly HashSet<AGuiElement> guiElements = new HashSet<AGuiElement>();
 		
@@ -27,12 +28,12 @@ namespace Stareater.GraphicsEngine
 			foreach (var animator in this.animators)
 				animator.OnUpdate(deltaTime);
 			
-			this.FrameUpdate(deltaTime);
+			this.frameUpdate(deltaTime);
 			
 			if (this.dirtyLayers.Count > 0)
 				this.setupDrawables();
 
-			var guiLayer = this.GuiLayerThickness;
+			var guiLayer = this.guiLayerThickness;
 
 			foreach (var layer in this.drawables.OrderByDescending(x => x.Key))
 			{
@@ -43,11 +44,11 @@ namespace Stareater.GraphicsEngine
 			}
 		}
 		
-		protected virtual void FrameUpdate(double deltaTime)
+		protected virtual void frameUpdate(double deltaTime)
 		{
 			//no operation
 		}
-		
+
 		#region Scene events
 		public virtual void Activate()
 		{ }
@@ -182,12 +183,12 @@ namespace Stareater.GraphicsEngine
 			oldObjects = newObjects;
 		}
 		
-		protected IEnumerable<SceneObject> QueryScene(Vector2D center)
+		protected IEnumerable<SceneObject> queryScene(Vector2D center)
 		{
 			return this.physicalObjects.Query(center, new Vector2D(0, 0));
 		}
 		
-		protected IEnumerable<SceneObject> QueryScene(Vector2D center, double radius)
+		protected IEnumerable<SceneObject> queryScene(Vector2D center, double radius)
 		{
 			return this.physicalObjects.Query(center, new Vector2D(radius, radius));
 		}
@@ -274,18 +275,25 @@ namespace Stareater.GraphicsEngine
 		#endregion
 
 		#region GUI
-		protected abstract float GuiLayerThickness { get; }
+		protected abstract float guiLayerThickness { get; }
 
-		protected void AddElement(AGuiElement element)
+		protected void addElement(AGuiElement element)
 		{
 			this.guiElements.Add(element);
-			element.Attach(this, this.GuiLayerThickness);
+			element.Attach(this, this.guiLayerThickness);
 		}
 
-		protected void RemoveElement(AGuiElement element)
+		protected void removeElement(AGuiElement element)
 		{
 			this.guiElements.Remove(element);
 			element.Detach();
+		}
+
+		public void UpdatePosition(AGuiElement element)
+		{
+			element.RecalculatePosition(
+				canvasSize.X / SettingsWinforms.Get.GuiScale / 2, 
+				canvasSize.Y / SettingsWinforms.Get.GuiScale / 2);
 		}
 		#endregion
 
@@ -294,14 +302,14 @@ namespace Stareater.GraphicsEngine
 		{
 			foreach(var layer in this.dirtyLayers)
 			{
-				if (this.Vaos.ContainsKey(layer))
+				if (this.layerVaos.ContainsKey(layer))
 				{
-					foreach (var vao in this.Vaos[layer])
+					foreach (var vao in this.layerVaos[layer])
 						vao.Delete();
-					this.Vaos[layer].Clear();
+					this.layerVaos[layer].Clear();
 				}
 				else
-					this.Vaos[layer] = new List<VertexArray>();
+					this.layerVaos[layer] = new List<VertexArray>();
 				this.drawables[layer] = new List<IDrawable>();
 				
 				var vaoBuilders = new Dictionary<AGlProgram, VertexArrayBuilder>();
@@ -324,7 +332,7 @@ namespace Stareater.GraphicsEngine
 				{
 					var vao = builder.Value.Generate(builder.Key);
 					vaos.Add(builder.Key, vao);
-					this.Vaos[layer].Add(vao);
+					this.layerVaos[layer].Add(vao);
 				}
 				
 				for (int i = 0; i < drawableData.Count; i++)

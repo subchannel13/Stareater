@@ -102,9 +102,9 @@ namespace Stareater.GameScenes
 		}
 
 		#region AScene implementation
-		protected override float GuiLayerThickness => 1 / Layers;
+		protected override float guiLayerThickness => 1 / Layers;
 
-		protected override void FrameUpdate(double deltaTime)
+		protected override void frameUpdate(double deltaTime)
 		{
 			var beingColonized = new HashSet<PlanetInfo>(this.controller.Planets.Where(x => this.controller.IsColonizing(x.Position)));
 			if (!this.colonizationMarked.SetEquals(beingColonized))

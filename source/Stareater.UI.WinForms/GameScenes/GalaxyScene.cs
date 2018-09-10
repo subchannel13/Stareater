@@ -93,7 +93,7 @@ namespace Stareater.GameScenes
 			this.turnCounter.Position.
 				WrapContent().
 				ParentRelative(1, 1, 10, 5);
-			this.AddElement(turnCounter);
+			this.addElement(turnCounter);
 
 			var turnButton = new GuiButton
 			{
@@ -104,7 +104,7 @@ namespace Stareater.GameScenes
 			turnButton.Position.
 				FixedSize(80, 80).
 				ParentRelative(1, -1, 10, 10);
-			this.AddElement(turnButton);
+			this.addElement(turnButton);
 
 			var radarToggle = new ToggleButton(SettingsWinforms.Get.ShowScanRange)
 			{
@@ -117,7 +117,7 @@ namespace Stareater.GameScenes
 			radarToggle.Position.
 				FixedSize(20, 20).
 				RelativeTo(turnButton, -1, 1, 1, 1, 15, 0);
-			this.AddElement(radarToggle);
+			this.addElement(radarToggle);
 		}
 		
 		public void OnNewTurn()
@@ -167,7 +167,7 @@ namespace Stareater.GameScenes
 		}
 
 		#region AScene implementation
-		protected override float GuiLayerThickness => 1 / Layers;
+		protected override float guiLayerThickness => 1 / Layers;
 
 		public override void Activate()
 		{
@@ -178,7 +178,7 @@ namespace Stareater.GameScenes
 				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
 		}
 		
-		protected override void FrameUpdate(double deltaTime)
+		protected override void frameUpdate(double deltaTime)
 		{
 			if (this.refreshData.Check())
 			{
@@ -209,7 +209,6 @@ namespace Stareater.GameScenes
 			this.screenUnitScale = (float)Math.Pow(ZoomBase, -this.zoomLevel) * this.screenSize.Y / this.canvasSize.Y;
 			
 			// Update screen space elements
-			this.setupTurnCounter(); //TODO(v0.8) should not be here, GUI engine should handle
 			this.setupScanRanges();
 
 			return calcOrthogonalPerspective(aspect * radius, radius, FarZ, originOffset);
@@ -229,7 +228,7 @@ namespace Stareater.GameScenes
 		
 		private Vector2 fleetDisplayPosition(FleetInfo fleet)
 		{
-			var atStar = this.QueryScene(fleet.Position, 1).Any(x => x.Data is StarInfo);
+			var atStar = this.queryScene(fleet.Position, 1).Any(x => x.Data is StarInfo);
 			var displayPosition = new Vector2((float)fleet.Position.X, (float)fleet.Position.Y);
 
 			if (!fleet.IsMoving)
@@ -509,7 +508,7 @@ namespace Stareater.GameScenes
 			var searchRadius = Math.Max(this.screenUnitScale * ClickRadius, StarMinClickRadius);
 			var searchPoint = convert(mousePoint);
 
-			var allObjects = this.QueryScene(searchPoint, searchRadius).
+			var allObjects = this.queryScene(searchPoint, searchRadius).
 				OrderBy(x => (x.PhysicalShape.Center - convert(searchPoint)).LengthSquared).
 				ToList();
 			var starsFound = allObjects.Where(x => x.Data is StarInfo).Select(x => x.Data as StarInfo).ToList();
@@ -572,7 +571,7 @@ namespace Stareater.GameScenes
 			var searchRadius = Math.Max(this.screenUnitScale * ClickRadius, StarMinClickRadius);
 			var searchPoint = convert(mousePoint);
 
-			var starsFound = this.QueryScene(searchPoint, searchRadius).
+			var starsFound = this.queryScene(searchPoint, searchRadius).
 				Where(x => x.Data is StarInfo).
 				Select(x => x.Data as StarInfo).
 				OrderBy(x => (x.Position - searchPoint).Length).
@@ -593,7 +592,7 @@ namespace Stareater.GameScenes
 			var searchRadius = Math.Max(this.screenUnitScale * ClickRadius, StarMinClickRadius);
 			var searchPoint = new Vector2D(mousePoint.X, mousePoint.Y);
 
-			var starsFound = this.QueryScene(searchPoint, searchRadius).
+			var starsFound = this.queryScene(searchPoint, searchRadius).
 				Where(x => x.Data is StarInfo).
 				OrderBy(x => (x.PhysicalShape.Center - convert(searchPoint)).LengthSquared).
 				ToList();

@@ -92,9 +92,8 @@ namespace StareaterUI
 						if (args.Count == 0)
 							throw new ArgumentException("Missing path arguments for " + option);
 						int waitTime = 0;
-						if (!int.TryParse(args.Dequeue(), out waitTime))
-							if (args.Count == 0)
-								throw new ArgumentException("Invalid arguments format for " + option);
+						if (!int.TryParse(args.Dequeue(), out waitTime) || args.Count == 0)
+							throw new ArgumentException("Invalid arguments format for " + option);
 						waitTime = Math.Min(waitTime, 60);
 						if (waitTime > 0)
 							Thread.Sleep(waitTime * 1000);

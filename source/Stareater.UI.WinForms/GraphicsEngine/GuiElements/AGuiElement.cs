@@ -7,21 +7,19 @@ namespace Stareater.GraphicsEngine.GuiElements
 		private AScene scene;
 		private SceneObject graphicObject = null;
 
-		protected float Z { get; private set; }
+		protected float z { get; private set; }
 
 		public ElementPosition Position { get; private set; }
 
 		protected AGuiElement()
 		{
-			this.Position = new ElementPosition(this.ContentWidth, this.ContentHeight);
+			this.Position = new ElementPosition(this.contentWidth, this.contentHeight);
 		}
-
-		protected abstract SceneObject MakeSceneObject();
 
 		public void Attach(AScene scene, float z)
 		{
 			this.scene = scene;
-			this.Z = z;
+			this.z = z;
 
 			this.updateScene();
 		}
@@ -35,17 +33,6 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			this.Position.Recalculate(parentWidth, parentHeight);
 			this.updateScene();
-		}
-
-		protected void updateScene()
-		{
-			if (this.scene == null)
-				return;
-
-			var sceneObject = this.MakeSceneObject();
-
-			if (sceneObject != null)
-				this.scene.UpdateScene(ref this.graphicObject, sceneObject);
 		}
 
 		public virtual bool OnMouseDown(Vector2 mousePosition)
@@ -63,23 +50,44 @@ namespace Stareater.GraphicsEngine.GuiElements
 			//No operation
 		}
 
-		protected virtual float ContentWidth()
+		protected void updateScene()
 		{
-			return 0;
+			if (this.scene == null)
+				return;
+
+			var sceneObject = this.makeSceneObject();
+
+			if (sceneObject != null)
+				this.scene.UpdateScene(ref this.graphicObject, sceneObject);
 		}
 
-		protected virtual float ContentHeight()
-		{
-			return 0;
-		}
-
-		protected void Apply<T>(ref T state, T newValue)
+		protected void apply<T>(ref T state, T newValue)
 		{
 			var oldValue = state;
 			state = newValue;
 
-			if ((oldValue == null && newValue != null) || !oldValue.Equals(newValue))
+			if (oldValue == null || !oldValue.Equals(newValue))
 				this.updateScene();
+		}
+
+		protected void reposition()
+		{
+			if (this.scene == null)
+				return;
+
+			this.scene.UpdatePosition(this);
+		}
+
+		protected abstract SceneObject makeSceneObject();
+
+		protected virtual float contentWidth()
+		{
+			return 0;
+		}
+
+		protected virtual float contentHeight()
+		{
+			return 0;
 		}
 	}
 }

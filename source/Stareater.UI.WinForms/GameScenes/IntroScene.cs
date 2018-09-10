@@ -36,7 +36,7 @@ namespace Stareater.GameScenes
 		private const float FarZ = 1;
 		private const float Layers = 8.0f;
 
-		protected override float GuiLayerThickness => 1 / Layers;
+		protected override float guiLayerThickness => 1 / Layers;
 		private GuiText cancelText = null;
 
 		private const float StarColorZ = 5 / Layers;
@@ -67,10 +67,10 @@ namespace Stareater.GameScenes
 			};
 			this.cancelText.Position.WrapContent().ParentRelative(-1, -1, 5, 5);
 
-			this.AddElement(this.cancelText);
+			this.addElement(this.cancelText);
 		}
 
-		protected override void FrameUpdate(double deltaTime)
+		protected override void frameUpdate(double deltaTime)
 		{
 			if (!this.animationFinished.TryEnter())
 				return;
@@ -83,7 +83,7 @@ namespace Stareater.GameScenes
 
 			foreach (var sceneObject in animatedObjects)
 				sceneObject.Animator.FastForward();
-			this.RemoveElement(this.cancelText);
+			this.removeElement(this.cancelText);
 			this.timeoutCallback();
 		}
 
