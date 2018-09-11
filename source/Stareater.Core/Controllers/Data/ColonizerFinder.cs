@@ -30,6 +30,11 @@ namespace Stareater.Controllers.Data
 			this.isMatch |= mission.Target == this.destination;
 		}
 
+		void IMissionVisitor.Visit(LoadMission mission)
+		{
+			//no operation
+		}
+
 		void IMissionVisitor.Visit(MoveMission mission)
 		{
 			//no operation

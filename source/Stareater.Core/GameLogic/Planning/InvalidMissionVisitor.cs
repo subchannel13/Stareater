@@ -10,7 +10,7 @@ namespace Stareater.GameLogic.Planning
 	{
 		private readonly MainGame game;
 		private LinkedList<AMission> remainingMissions;
-		private Player owner;
+		private Fleet fleet;
 		
 		public InvalidMissionVisitor(MainGame game)
 		{
@@ -20,7 +20,7 @@ namespace Stareater.GameLogic.Planning
 		public Fleet Check(Fleet fleet)
 		{
 			this.remainingMissions = new LinkedList<AMission>();
-			this.owner = fleet.Owner;
+			this.fleet = fleet;
 			
 			foreach (var mission in fleet.Missions)
 				mission.Accept(this);
@@ -39,7 +39,15 @@ namespace Stareater.GameLogic.Planning
 
 		public void Visit(ColonizationMission mission)
 		{
-			if (game.States.ColonizationProjects.Of[mission.Target].Any(x => x.Owner == owner))
+			if (this.game.States.ColonizationProjects.Of[mission.Target].Any(x => x.Owner == fleet.Owner))
+				this.remainingMissions.AddLast(mission);
+		}
+
+		public void Visit(LoadMission mission)
+		{
+			var stats = this.game.Derivates.Players.Of[fleet.Owner].DesignStats;
+
+			if (fleet.Ships.Sum(x => x.PopulationTransport) < fleet.Ships.Sum(x => stats[x.Design].ColonizerPopulation))
 				this.remainingMissions.AddLast(mission);
 		}
 

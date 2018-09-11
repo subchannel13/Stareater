@@ -310,6 +310,7 @@
     <Compile Include="Ships\Missions\AMission.cs" />
     <Compile Include="Ships\Missions\ColonizationMission.cs" />
     <Compile Include="Ships\Missions\IMissionVisitor.cs" />
+    <Compile Include="Ships\Missions\LoadMission.cs" />
     <Compile Include="Ships\Missions\MissionFactory.cs" />
     <Compile Include="Ships\Missions\MissionType.cs" />
     <Compile Include="Ships\Missions\MoveMission.cs" />

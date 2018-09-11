@@ -21,8 +21,9 @@ namespace Stareater.GameData.Construction
 		public void Apply(MainGame game, AConstructionSite site, long quantity)
 		{
 			var missions = new LinkedList<AMission>();
+			missions.AddLast(new LoadMission());
 			missions.AddLast(new SkipTurnMission());
-			
+
 			//TODO(later) check shortest path
 			if (site.Location.Star != Destination.Star)
 			{

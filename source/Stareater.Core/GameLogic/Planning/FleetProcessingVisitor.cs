@@ -124,7 +124,33 @@ namespace Stareater.GameLogic.Planning
 			this.time = 1;
 		}
 
+		void IMissionVisitor.Visit(LoadMission mission)
+		{
+			var stats = this.game.Derivates.Of(this.fleet.Owner).DesignStats;
+			var capacity = this.fleet.Ships.Sum(x => stats[x.Design].ColonizerPopulation) - this.fleet.Ships.Sum(x => x.PopulationTransport);
+
+			if (!this.game.States.Stars.At.Contains(this.fleet.Position))
+			{
+				this.stay();
+				return;
+			}
+
+			var colonies = this.game.States.Colonies.AtStar[this.game.States.Stars.At[this.fleet.Position]].
+				Where(x => x.Owner==this.fleet.Owner).
+				ToList();
+
+			//TODO(0.8) pick up population
+			this.stay();
+		}
+
 		void IMissionVisitor.Visit(SkipTurnMission mission)
+		{
+			this.stay();
+		}
+		
+		#endregion
+
+		private void stay()
 		{
 			this.movementSteps.Add(new FleetMovement(
 					this.fleet,
@@ -135,7 +161,5 @@ namespace Stareater.GameLogic.Planning
 			));
 			this.time = 1;
 		}
-		
-		#endregion
 	}
 }

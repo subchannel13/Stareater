@@ -8,8 +8,8 @@ namespace Stareater.Controllers.Data
 {
 	class MissionInfoFactory : IMissionVisitor
 	{
-		private Fleet fleet; 
-		private List<WaypointInfo> waypoints = new List<WaypointInfo>();
+		private readonly Fleet fleet; 
+		private readonly List<WaypointInfo> waypoints = new List<WaypointInfo>();
 		
 		private MissionInfoFactory(Fleet fleet)
 		{
@@ -36,6 +36,11 @@ namespace Stareater.Controllers.Data
 		}
 
 		public void Visit(ColonizationMission mission)
+		{
+			//No operation
+		}
+
+		public void Visit(LoadMission mission)
 		{
 			//No operation
 		}

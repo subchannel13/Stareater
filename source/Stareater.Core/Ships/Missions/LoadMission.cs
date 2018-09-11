@@ -3,9 +3,8 @@
 namespace Stareater.Ships.Missions
 {
 	[StateType(saveTag: MissionTag)]
-	class SkipTurnMission : AMission
+	class LoadMission : AMission
 	{
-		#region implemented abstract members of AMission
 		public override void Accept(IMissionVisitor visitor)
 		{
 			visitor.Visit(this);
@@ -13,15 +12,14 @@ namespace Stareater.Ships.Missions
 
 		public override bool Equals(object obj)
 		{
-			return obj is SkipTurnMission;
+			return obj is LoadMission;
 		}
 
 		public override int GetHashCode()
 		{
 			return 1;
 		}
-		#endregion
-		
+
 		public const string MissionTag = "Skip";
 	}
 }
