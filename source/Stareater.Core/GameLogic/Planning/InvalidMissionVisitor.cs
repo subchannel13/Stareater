@@ -47,7 +47,7 @@ namespace Stareater.GameLogic.Planning
 		{
 			var stats = this.game.Derivates.Players.Of[fleet.Owner].DesignStats;
 
-			if (fleet.Ships.Sum(x => x.PopulationTransport) < fleet.Ships.Sum(x => stats[x.Design].ColonizerPopulation))
+			if (fleet.Ships.Sum(x => x.PopulationTransport) < fleet.Ships.Sum(x => stats[x.Design].ColonizerPopulation * x.Quantity))
 				this.remainingMissions.AddLast(mission);
 		}
 

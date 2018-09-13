@@ -340,7 +340,7 @@ namespace Stareater.GameLogic
 						return mission != null && mission.Target == project.Destination;
 					});
 					
-				var arrivedPopulation = colonizers.SelectMany(x => x.Ships).Sum(x => playerProc.DesignStats[x.Design].ColonizerPopulation * x.Quantity);
+				var arrivedPopulation = colonizers.SelectMany(x => x.Ships).Sum(x => x.PopulationTransport);
 				var colonizationTreshold = this.game.Statics.ColonyFormulas.ColonizationPopulationThreshold.Evaluate(null);
 				
 				if (!colonyExists && arrivedPopulation >= colonizationTreshold)
@@ -366,6 +366,7 @@ namespace Stareater.GameLogic
 									colony.Buildings.Add(building.Key, building.Value * shipGroup.Quantity);	
 							
 							shipGroup.Quantity -= shipsLanded;
+							shipGroup.PopulationTransport -= shipsLanded * shipStats.ColonizerPopulation;
 							if (shipGroup.Quantity < 1)
 								fleet.Ships.PendRemove(shipGroup);
 						}

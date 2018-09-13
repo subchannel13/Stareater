@@ -124,10 +124,11 @@ namespace Stareater.GameLogic.Planning
 			this.time = 1;
 		}
 
+		//TODO(later) could pick up population in advance if visiting multiple systems and gets intercepted before loading
 		void IMissionVisitor.Visit(LoadMission mission)
 		{
 			var stats = this.game.Derivates.Of(this.fleet.Owner).DesignStats;
-			var capacity = this.fleet.Ships.Sum(x => stats[x.Design].ColonizerPopulation) - this.fleet.Ships.Sum(x => x.PopulationTransport);
+			var capacity = this.fleet.Ships.Sum(x => stats[x.Design].ColonizerPopulation * x.Quantity) - this.fleet.Ships.Sum(x => x.PopulationTransport);
 
 			if (!this.game.States.Stars.At.Contains(this.fleet.Position))
 			{
@@ -138,9 +139,29 @@ namespace Stareater.GameLogic.Planning
 			var colonies = this.game.States.Colonies.AtStar[this.game.States.Stars.At[this.fleet.Position]].
 				Where(x => x.Owner==this.fleet.Owner).
 				ToList();
+			//TODO(0.8) check if there is enough population on colonies
+			if (colonies.Sum(x => x.Population) < capacity)
+			{
+				this.stay();
+				return;
+			}
 
-			//TODO(0.8) pick up population
-			this.stay();
+			var newFleet = this.localFleet();
+			foreach(var group in newFleet.Ships)
+			{
+				//TODO(0.8) pick up proper population
+				var embarked = stats[group.Design].ColonizerPopulation * group.Quantity - group.PopulationTransport;
+				colonies.First().Population -= embarked;
+				group.PopulationTransport += embarked;
+			}
+
+			this.movementSteps.Add(new FleetMovement(
+					this.fleet,
+					newFleet,
+					this.time,
+					this.time,
+					new Vector2D()
+			));
 		}
 
 		void IMissionVisitor.Visit(SkipTurnMission mission)

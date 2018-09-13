@@ -49,7 +49,7 @@ namespace Stareater.GLData.OrbitShader
 				if (!enclosed && !redundant && !arcs.Any())
 					this.wholeCircles.Add(circle.Center, new Circle(circle.Center, circle.Radius));
 
-				if (redundant && !this.wholeCircles.ContainsKey(circle.Center))
+				if (redundant && !this.wholeCircles.ContainsKey(circle.Center) && !arcs.Any())
 					this.wholeCircles.Add(circle.Center, new Circle(circle.Center, circle.Radius));
 
 				if (!enclosed && arcs.Any())
