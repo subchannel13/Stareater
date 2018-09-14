@@ -5,10 +5,8 @@ using Stareater.Players;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using Stareater.GameData.Construction;
-using System;
 using Stareater.GameData;
 using Stareater.GameLogic.Planning;
-using Stareater.GameData.Databases;
 
 namespace Stareater.GameLogic
 {
@@ -22,6 +20,9 @@ namespace Stareater.GameLogic
 
 		[StateProperty]
 		public Dictionary<Colony, double> ImmigrantionPlan = new Dictionary<Colony, double>();
+
+		[StateProperty]
+		public Dictionary<Colony, double> AvailableIsMigrants = new Dictionary<Colony, double>();
 
 		[StateProperty]
 		public double ScanRange { get; private set; }
@@ -147,6 +148,8 @@ namespace Stareater.GameLogic
 
 			var emigrationPortion = 1 - immigrants / systemColonies.Sum(x => x.Emigrants);
 			this.EmigrantionPlan = systemColonies.ToDictionary(x => x.Colony, x => x.Emigrants * emigrationPortion);
+			//TODO(v0.8) may be zero for the long time due to interplanetary migration
+			this.AvailableIsMigrants = systemColonies.ToDictionary(x => x.Colony, x => x.Emigrants - this.EmigrantionPlan[x.Colony]);
 		}
 
 		public void CalculateSpending(MainGame game)

@@ -20,7 +20,6 @@ namespace Stareater.GameLogic
 		
 		private const string MaxPopulationKey = "maxPop";
 		public const string PlanetSizeKey = "size";
-		private const string PopulationGrowthKey = "popGrowth";
 		private const string PopulationKey = "pop";
 		private const string MaintenancePenaltyKey = "maintenancePenalty";
 

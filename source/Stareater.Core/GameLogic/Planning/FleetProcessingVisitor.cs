@@ -125,10 +125,11 @@ namespace Stareater.GameLogic.Planning
 		}
 
 		//TODO(later) could pick up population in advance if visiting multiple systems and gets intercepted before loading
+		//TODO(later) wouldn't move until fully loaded
 		void IMissionVisitor.Visit(LoadMission mission)
 		{
 			var stats = this.game.Derivates.Of(this.fleet.Owner).DesignStats;
-			var capacity = this.fleet.Ships.Sum(x => stats[x.Design].ColonizerPopulation * x.Quantity) - this.fleet.Ships.Sum(x => x.PopulationTransport);
+			var capacity = this.fleet.Ships.Sum(x => stats[x.Design].ColonizerPopulation * x.Quantity);
 
 			if (!this.game.States.Stars.At.Contains(this.fleet.Position))
 			{
@@ -136,32 +137,39 @@ namespace Stareater.GameLogic.Planning
 				return;
 			}
 
+			var star = this.game.States.Stars.At[this.fleet.Position];
+			var stellaris = this.game.Derivates.Of(this.game.States.Stellarises.At[star].First(x=> x.Owner==this.fleet.Owner));
 			var colonies = this.game.States.Colonies.AtStar[this.game.States.Stars.At[this.fleet.Position]].
 				Where(x => x.Owner==this.fleet.Owner).
 				ToList();
-			//TODO(0.8) check if there is enough population on colonies
-			if (colonies.Sum(x => x.Population) < capacity)
-			{
-				this.stay();
-				return;
-			}
 
 			var newFleet = this.localFleet();
 			foreach(var group in newFleet.Ships)
 			{
-				//TODO(0.8) pick up proper population
-				var embarked = stats[group.Design].ColonizerPopulation * group.Quantity - group.PopulationTransport;
-				colonies.First().Population -= embarked;
-				group.PopulationTransport += embarked;
+				foreach (var colony in colonies)
+				{
+					var embarked = Math.Min(stats[group.Design].ColonizerPopulation * group.Quantity - group.PopulationTransport, stellaris.AvailableIsMigrants[colony]);
+					colony.Population -= embarked;
+					stellaris.AvailableIsMigrants[colony] -= embarked;
+					group.PopulationTransport += embarked;
+				}
+			}
+
+			var endTime = this.time;
+			if (newFleet.Ships.Sum(x => x.PopulationTransport) < capacity)
+			{
+				newFleet.Missions.AddFirst(new LoadMission());
+				endTime = 1;
 			}
 
 			this.movementSteps.Add(new FleetMovement(
 					this.fleet,
 					newFleet,
 					this.time,
-					this.time,
+					endTime,
 					new Vector2D()
 			));
+			this.time = endTime;
 		}
 
 		void IMissionVisitor.Visit(SkipTurnMission mission)
