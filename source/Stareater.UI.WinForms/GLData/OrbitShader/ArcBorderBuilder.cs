@@ -1,4 +1,5 @@
 ﻿using Stareater.Utils;
+using Stareater.Utils.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,29 +15,29 @@ namespace Stareater.GLData.OrbitShader
 
 		public void AddCircles(IEnumerable<Circle> circles)
 		{
-			foreach (var circle in circles)
+			var filteredCircles = new QuadTree<Circle>();
+			foreach(var circle in circles)
+			{
+				var radius = new Vector2D(2 * circle.Radius, 2 * circle.Radius);
+				var isRelevant = filteredCircles.
+					Query(circle.Center, radius).
+					All(other => (other.Center - circle.Center).Length + circle.Radius > other.Radius);
+
+				if (isRelevant)
+					filteredCircles.Add(circle, circle.Center, radius);
+			}
+
+			foreach (var circle in filteredCircles.GetAll())
 			{
 				var arcs = new Queue<Arc>();
-				bool enclosed = false;
-				bool redundant = false;
 
-				foreach (var other in circles.Where(x => x != circle))
+				foreach (var other in filteredCircles.Query(circle.Center, new Vector2D(2 * circle.Radius, 2 * circle.Radius)))
 				{
 					var distLine = other.Center - circle.Center;
 					var dist = (float)distLine.Length;
 
-					if (dist > circle.Radius + other.Radius || dist + other.Radius < circle.Radius)
+					if (dist > circle.Radius + other.Radius || dist + other.Radius < circle.Radius || dist == 0)
 						continue;
-					else if (dist + circle.Radius < other.Radius)
-					{
-						enclosed = true;
-						break;
-					}
-					else if (dist + circle.Radius == other.Radius)
-					{
-						redundant = true;
-						break;
-					}
 
 					arcs.Enqueue(new Arc(
 						circle,
@@ -46,14 +47,10 @@ namespace Stareater.GLData.OrbitShader
 					));
 				}
 
-				if (!enclosed && !redundant && !arcs.Any())
-					this.wholeCircles.Add(circle.Center, new Circle(circle.Center, circle.Radius));
-
-				if (redundant && !this.wholeCircles.ContainsKey(circle.Center) && !arcs.Any())
-					this.wholeCircles.Add(circle.Center, new Circle(circle.Center, circle.Radius));
-
-				if (!enclosed && arcs.Any())
+				if (arcs.Any())
 					arcPoints[circle] = arcsToPoints(arcs);
+				else
+					this.wholeCircles.Add(circle.Center, new Circle(circle.Center, circle.Radius));
 			}
 		}
 
