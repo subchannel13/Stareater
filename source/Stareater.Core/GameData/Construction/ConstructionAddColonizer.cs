@@ -21,8 +21,8 @@ namespace Stareater.GameData.Construction
 		public void Apply(MainGame game, AConstructionSite site, long quantity)
 		{
 			var missions = new LinkedList<AMission>();
-			missions.AddLast(new LoadMission());
 			missions.AddLast(new SkipTurnMission());
+			missions.AddLast(new LoadMission());
 
 			//TODO(later) check shortest path
 			if (site.Location.Star != Destination.Star)
@@ -36,7 +36,6 @@ namespace Stareater.GameData.Construction
 			missions.AddLast(new ColonizationMission(Destination));
 
 			//TODO(v0.8) report new ship construction
-			//TODO(v0.8) pick up population
 			game.Derivates.Of(site.Owner).
 				SpawnShip(site.Location.Star, this.ColonizerDesign, quantity, 0, missions, game.States);
 		}

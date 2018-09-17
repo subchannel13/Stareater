@@ -20,6 +20,6 @@ namespace Stareater.Ships.Missions
 			return 1;
 		}
 
-		public const string MissionTag = "Skip";
+		public const string MissionTag = "Load";
 	}
 }

@@ -139,20 +139,15 @@ namespace Stareater.GameLogic.Planning
 
 			var star = this.game.States.Stars.At[this.fleet.Position];
 			var stellaris = this.game.Derivates.Of(this.game.States.Stellarises.At[star].First(x=> x.Owner==this.fleet.Owner));
-			var colonies = this.game.States.Colonies.AtStar[this.game.States.Stars.At[this.fleet.Position]].
-				Where(x => x.Owner==this.fleet.Owner).
-				ToList();
 
 			var newFleet = this.localFleet();
-			foreach(var group in newFleet.Ships)
+			var availableMigrants = stellaris.IsMigrants;
+			foreach (var group in newFleet.Ships)
 			{
-				foreach (var colony in colonies)
-				{
-					var embarked = Math.Min(stats[group.Design].ColonizerPopulation * group.Quantity - group.PopulationTransport, stellaris.AvailableIsMigrants[colony]);
-					colony.Population -= embarked;
-					stellaris.AvailableIsMigrants[colony] -= embarked;
-					group.PopulationTransport += embarked;
-				}
+				var embarked = Math.Min(stats[group.Design].ColonizerPopulation * group.Quantity - group.PopulationTransport, availableMigrants);
+
+				group.PopulationTransport += embarked;
+				availableMigrants -= embarked;
 			}
 
 			var endTime = this.time;

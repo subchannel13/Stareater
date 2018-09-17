@@ -7,6 +7,8 @@ using Stareater.Utils.StateEngine;
 using Stareater.GameData.Construction;
 using Stareater.GameData;
 using Stareater.GameLogic.Planning;
+using Stareater.Ships.Missions;
+using System;
 
 namespace Stareater.GameLogic
 {
@@ -22,7 +24,7 @@ namespace Stareater.GameLogic
 		public Dictionary<Colony, double> ImmigrantionPlan = new Dictionary<Colony, double>();
 
 		[StateProperty]
-		public Dictionary<Colony, double> AvailableIsMigrants = new Dictionary<Colony, double>();
+		public double IsMigrants;
 
 		[StateProperty]
 		public double ScanRange { get; private set; }
@@ -116,14 +118,25 @@ namespace Stareater.GameLogic
 			var plans = destinations.ToDictionary(x => x, x => 0.0);
 			var immigrants = systemColonies.Sum(x => x.Emigrants);
 
-			if (immigrants <= 0)
+			var stats = game.Derivates.Of(this.Owner).DesignStats;
+			var starEmigrantCapacity = game.States.Fleets.At[this.Site.Location.Star.Position].
+				Where(x => x.Owner == this.Owner && x.Missions.Any(m => m is LoadMission)).
+				SelectMany(x => x.Ships).
+				Sum(x => stats[x.Design].ColonizerPopulation * x.Quantity - x.PopulationTransport);
+
+			this.IsMigrants = 0;
+			this.EmigrantionPlan = systemColonies.ToDictionary(x => x.Colony, x => 0.0);
+			this.ImmigrantionPlan = systemColonies.ToDictionary(x => x.Colony, x => 0.0);
+
+			foreach (var colony in systemColonies.OrderByDescending(x => x.Desirability))
 			{
-				this.ImmigrantionPlan = new Dictionary<Colony, double>();
-				this.EmigrantionPlan = new Dictionary<Colony, double>();
-				return;
+				var migrants = Math.Min(colony.Emigrants, starEmigrantCapacity);
+				this.EmigrantionPlan[colony.Colony] += migrants;
+				this.IsMigrants += migrants;
+				starEmigrantCapacity -= migrants;
 			}
 
-			while(destinations.Count > 0 && immigrants > 0)
+			while (destinations.Count > 0 && immigrants > 0)
 			{
 				var weightSum = plans.Keys.Sum(x => x.Desirability);
 				foreach (var site in destinations)
@@ -148,8 +161,7 @@ namespace Stareater.GameLogic
 
 			var emigrationPortion = 1 - immigrants / systemColonies.Sum(x => x.Emigrants);
 			this.EmigrantionPlan = systemColonies.ToDictionary(x => x.Colony, x => x.Emigrants * emigrationPortion);
-			//TODO(v0.8) may be zero for the long time due to interplanetary migration
-			this.AvailableIsMigrants = systemColonies.ToDictionary(x => x.Colony, x => x.Emigrants - this.EmigrantionPlan[x.Colony]);
+			this.IsMigrants += systemColonies.Sum(x => x.Emigrants - this.EmigrantionPlan[x.Colony]);
 		}
 
 		public void CalculateSpending(MainGame game)
