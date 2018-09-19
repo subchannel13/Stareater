@@ -61,24 +61,21 @@ namespace Stareater.GLData.OrbitShader
 			while(arcs.Any())
 			{
 				var newArcs = new List<ArcInterval>();
-				var newPoints = new ArcInterval(arcs.Dequeue());
-				var extendedPoints = new[]
+				var nextInterval = new ArcInterval(arcs.Dequeue());
+				var nextPeriods = new[]
 				{
-					newPoints,
-					newPoints.PeriodicPrevious,
-					newPoints.PeriodicNext
+					nextInterval,
+					nextInterval.PeriodicPrevious,
+					nextInterval.PeriodicNext
 				};
 
 				// Calculate intersection with previous arcs
-				foreach (var interval in extendedPoints)
+				foreach (var newInterval in nextPeriods)
+					foreach(var oldInterval in acceptedArcs.Where(arc => arc.Intersects(newInterval)))
 				{
-					if (acceptedArcs.All(arc => arc.MinAngle > interval.MaxAngle || arc.MaxAngle < interval.MinAngle))
-						continue;
-
-					var compareArcs = acceptedArcs.Concat(new[] { interval }).ToList();
 					newArcs.Add(new ArcInterval(
-						Methods.FindBest(compareArcs, arc => -arc.Left.Angle).Left,
-						Methods.FindBest(compareArcs, arc => arc.Right.Angle).Right
+						newInterval.MaxAngle < oldInterval.MaxAngle ? newInterval.Left : oldInterval.Left,
+						newInterval.MinAngle > oldInterval.MinAngle ? newInterval.Right: oldInterval.Right
 					));
 				}
 				acceptedArcs = newArcs;
@@ -317,6 +314,11 @@ namespace Stareater.GLData.OrbitShader
 			public ArcInterval PeriodicNext
 			{
 				get { return new ArcInterval(this, 4); }
+			}
+
+			public bool Intersects(ArcInterval other)
+			{
+				return this.MinAngle < other.MaxAngle && this.MaxAngle > other.MinAngle;
 			}
 		}
 	}
