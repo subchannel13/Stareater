@@ -318,7 +318,7 @@ namespace Stareater.GLData.OrbitShader
 
 			public bool Intersects(ArcInterval other)
 			{
-				return this.MinAngle < other.MaxAngle && this.MaxAngle > other.MinAngle;
+				return this.MinAngle <= other.MaxAngle && this.MaxAngle >= other.MinAngle;
 			}
 		}
 	}

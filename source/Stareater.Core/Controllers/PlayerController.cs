@@ -7,6 +7,7 @@ using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.GameData;
 using Stareater.Players;
+using Stareater.Ships.Missions;
 using Stareater.Utils;
 
 namespace Stareater.Controllers
@@ -306,11 +307,10 @@ namespace Stareater.Controllers
 		public IEnumerable<FleetInfo> EnrouteColonizers(PlanetInfo destination)
 		{
 			var game = this.gameInstance;
-			var finder = new ColonizerFinder(destination.Data);
-			
-			foreach(var fleet in game.States.Fleets.Where(x => x.Owner == this.PlayerInstance(game)))
-				if (finder.Check(fleet))
-					yield return new FleetInfo(fleet, game.Derivates.Of(fleet.Owner), game.Statics);
+			var player = this.PlayerInstance(game);
+
+			foreach (var fleet in game.States.Fleets.OwnedBy[player].Where(x => x.Missions.Any(m => m is ColonizationMission)))
+				yield return new FleetInfo(fleet, game.Derivates.Of(fleet.Owner), game.Statics);
 		}
 		#endregion
 		
