@@ -28,10 +28,5 @@ namespace Stareater.GameLogic.Planning
 		{
 			//no operation
 		}
-
-		public void Visit(ColonizerProject project)
-		{
-			//no operation
-		}
 	}
 }

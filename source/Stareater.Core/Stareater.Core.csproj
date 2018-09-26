@@ -74,7 +74,6 @@
     <Compile Include="Controllers\ColonyController.cs" />
     <Compile Include="Controllers\ColonizationController.cs" />
     <Compile Include="Controllers\ConstructionInfoExtractor.cs" />
-    <Compile Include="Controllers\Data\ColonizerFinder.cs" />
     <Compile Include="Controllers\Data\MissionInfoFactory.cs" />
     <Compile Include="Controllers\LibraryController.cs" />
     <Compile Include="Controllers\NewGameHelpers\ParameterLoadingVisitor.cs" />
@@ -170,7 +169,6 @@
     <Compile Include="Galaxy\BodyTraits\EffectTypePassive.cs" />
     <Compile Include="Galaxy\Wormhole.cs" />
     <Compile Include="GameData\ColonizationProject.cs" />
-    <Compile Include="GameData\Construction\ColonizerProject.cs" />
     <Compile Include="GameData\Construction\ConstructionAddTrait.cs" />
     <Compile Include="GameData\Construction\IConstructionEffect.cs" />
     <Compile Include="GameData\Construction\IConstructionProjectVisitor.cs" />
@@ -267,7 +265,6 @@
     <Compile Include="GameData\Reading\Parser.cs" />
     <Compile Include="GameData\Reading\SingleLineFactory.cs" />
     <Compile Include="GameData\DevelopmentTopic.cs" />
-    <Compile Include="GameData\Construction\ConstructionAddColonizer.cs" />
     <Compile Include="GameData\Construction\ConstructionAddShip.cs" />
     <Compile Include="GameLogic\Planning\FleetMovement.cs" />
     <Compile Include="GameLogic\Planning\FleetProcessingVisitor.cs" />

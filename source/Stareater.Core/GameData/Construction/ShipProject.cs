@@ -42,7 +42,7 @@ namespace Stareater.GameData.Construction
 
 		public bool IsVirtual
 		{
-			get { return false; }
+			get { return this.Type.IsVirtual; }
 		}
 
 		public IEnumerable<IConstructionEffect> Effects

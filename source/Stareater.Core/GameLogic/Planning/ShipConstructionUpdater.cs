@@ -6,9 +6,9 @@ namespace Stareater.GameLogic.Planning
 {
 	class ShipConstructionUpdater : IConstructionProjectVisitor
 	{
-		private List<IConstructionProject> oldQueue;
-		private Dictionary<Design, Design> refitOrders;
-		private List<IConstructionProject> newQueue = new List<IConstructionProject>();
+		private readonly List<IConstructionProject> oldQueue;
+		private readonly Dictionary<Design, Design> refitOrders;
+		private readonly List<IConstructionProject> newQueue = new List<IConstructionProject>();
 		private bool changeItem;
 		private bool deleteItem;
 		private IConstructionProject newProject;
@@ -51,11 +51,6 @@ namespace Stareater.GameLogic.Planning
 
 
 		#region IConstructionProjectVisitor implementation
-		public void Visit(ColonizerProject project)
-		{
-			newProject = new ColonizerProject(checkDesign(project.Colonizer), project.Plan);
-		}
-
 		public void Visit(ShipProject project)
 		{
 			newProject = new ShipProject(checkDesign(project.Type));

@@ -225,7 +225,7 @@ namespace Stareater.GameLogic
 						playerProcessor.SystemColonizerDesign :
 						playerProcessor.ColonyShipDesign;
 
-					yield return new ColonizerProject(colonizer, plan);
+					yield return new ShipProject(colonizer);
 				}
 		}
 

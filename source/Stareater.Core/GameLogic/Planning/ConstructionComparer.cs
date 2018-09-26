@@ -17,11 +17,6 @@ namespace Stareater.GameLogic.Planning
 			return this.found;
 		}
 
-		void IConstructionProjectVisitor.Visit(ColonizerProject project)
-		{
-			//no operation
-		}
-
 		void IConstructionProjectVisitor.Visit(ShipProject project)
 		{
 			//no operation

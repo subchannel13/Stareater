@@ -30,12 +30,5 @@ namespace Stareater.Controllers
 			this.ImagePath = project.Type.ImagePath;
 			this.Name = project.Type.Name;
 		}
-
-		public void Visit(ColonizerProject project)
-		{
-			this.Description = "";
-			this.ImagePath = project.Colonizer.ImagePath;
-			this.Name = project.Colonizer.Name;
-		}
 	}
 }
