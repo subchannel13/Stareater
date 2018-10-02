@@ -89,6 +89,7 @@ namespace Stareater.Controllers
 					if (!plan.Sources.Contains(source.Stellaris.Location.Star))
 						plan.Sources.Add(source.Stellaris.Location.Star); //TODO(later) convert source list to set?
 
+			this.game.Derivates.Of(this.player).UpdateAutomation(this.game);
 			updateStellarises(plan.Sources);
 		}
 		
@@ -111,7 +112,8 @@ namespace Stareater.Controllers
 				toUpdate = plan.Sources.ToArray();
 				plan.Sources.Clear();
 			}
-			
+
+			this.game.Derivates.Of(this.player).UpdateAutomation(this.game);
 			if (plan.Sources.Count == 0)
 				this.game.Orders[this.player].ColonizationOrders.Remove(this.planet);
 			else
@@ -146,8 +148,6 @@ namespace Stareater.Controllers
 		
 		private void updateStellarises(IEnumerable<StarData> sources)
 		{
-			var playerProcessor = this.game.Derivates.Of(this.player);
-			
 			foreach(var source in sources)
 			{
 				var stellaris = this.game.States.Stellarises.At[source].First(x => x.Owner == this.player);

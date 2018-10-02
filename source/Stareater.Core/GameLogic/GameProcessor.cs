@@ -37,13 +37,17 @@ namespace Stareater.GameLogic
 		#region Turn processing
 		public void ProcessPrecombat()
 		{
+			var processors = this.game.MainPlayers.Select(x => this.game.Derivates.Of(x)).ToList();
+			foreach (var playerProc in processors)
+				playerProc.UpdateAutomation(this.game);
+
 			this.CalculateBaseEffects();
 			this.CalculateSpendings();
 			this.CalculateDerivedEffects();
 			this.commitFleetOrders();
 
 			this.game.States.Reports.Clear();
-			foreach (var playerProc in this.game.MainPlayers.Select(x => this.game.Derivates.Of(x)))
+			foreach (var playerProc in processors)
 				playerProc.ProcessPrecombat(this.game);
 			this.game.Derivates.Natives.ProcessPrecombat(this.game.Statics, this.game.States, this.game.Derivates); 
 			//TODO(later) process natives postcombat
@@ -379,7 +383,8 @@ namespace Stareater.GameLogic
 					
 					this.game.States.Colonies.Add(colony);
 					this.game.Derivates.Colonies.Add(colonyProc);
-					this.game.Orders[project.Owner].ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
+					this.game.Orders[project.Owner].ConstructionPlans[colony] = new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio);
+					this.game.Orders[project.Owner].AutomatedConstruction[colony] = new ConstructionOrders(0);
 
 					if (this.game.States.Stellarises.At[project.Destination.Star].All(x => x.Owner != project.Owner))
 					{

@@ -170,6 +170,9 @@ namespace Stareater.GameLogic
 			var vars = new Var().UnionWith(playerProcessor.TechLevels).Get;
 			var colonies = this.systemColonies(game).ToList();
 
+			var automationPlan = game.Orders[Stellaris.Owner].AutomatedConstruction[Stellaris];
+			var normalPlan = game.Orders[Stellaris.Owner].ConstructionPlans[Stellaris];
+
 			double industryPotential = colonies.Sum(x =>
 				(1 - x.SpendingRatioEffective) *
 				(1 - playerProcessor.MaintenanceRatio) * 
@@ -178,14 +181,13 @@ namespace Stareater.GameLogic
 				x.SpaceliftFactor
 			);
 			double industryPoints = 
-				game.Orders[Stellaris.Owner].ConstructionPlans[Stellaris].SpendingRatio *
+				Math.Max(normalPlan.SpendingRatio, automationPlan.SpendingRatio) *
 				industryPotential;
 
-			var normalQueue = game.Orders[Stellaris.Owner].ConstructionPlans[Stellaris].Queue;
 			this.SpendingPlan = SimulateSpending(
 				Stellaris,
 				industryPoints,
-				colonizationQueue(game, playerProcessor).Concat(normalQueue),
+				automationPlan.Queue.Concat(normalPlan.Queue),
 				vars
 			);
 			this.Production = this.SpendingPlan.Sum(x => x.InvestedPoints);
@@ -214,19 +216,6 @@ namespace Stareater.GameLogic
 				plan.Key.Population -= plan.Value;
 			foreach (var plan in this.ImmigrantionPlan)
 				plan.Key.Population += plan.Value;
-		}
-
-		private IEnumerable<IConstructionProject> colonizationQueue(MainGame game, PlayerProcessor playerProcessor)
-		{
-			foreach(var plan in game.Orders[this.Site.Owner].ColonizationOrders.Values)
-				if (plan.Sources.Contains(this.Site.Location.Star))
-				{
-					var colonizer = (plan.Destination.Star == this.Site.Location.Star) ?
-						playerProcessor.SystemColonizerDesign :
-						playerProcessor.ColonyShipDesign;
-
-					yield return new ShipProject(colonizer);
-				}
 		}
 
 		private IEnumerable<ColonyProcessor> systemColonies(MainGame game)

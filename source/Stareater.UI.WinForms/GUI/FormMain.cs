@@ -191,10 +191,6 @@ namespace Stareater.GUI
 					eventTimer.Start();
 			}
 		}
-		private void startEventTimer()
-		{
-			eventTimer.Start();
-		}
 
 		private void showDevelopment()
 		{

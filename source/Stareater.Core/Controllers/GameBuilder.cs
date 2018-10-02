@@ -239,11 +239,15 @@ namespace Stareater.Controllers
 				var orders = game.Orders[player];
 
 				foreach (var colony in game.States.Colonies.OwnedBy[player])
-					orders.ConstructionPlans.Add(colony, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
+				{
+					orders.ConstructionPlans[colony] = new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio);
+					orders.AutomatedConstruction[colony] = new ConstructionOrders(0);
+				}
 
 				foreach (var stellaris in game.States.Stellarises.OwnedBy[player])
 				{
 					orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
+					orders.AutomatedConstruction[stellaris] = new ConstructionOrders(0);
 					orders.Policies.Add(stellaris, game.Statics.Policies.First());
 				}
 

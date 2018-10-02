@@ -17,6 +17,7 @@ using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using Stareater.GameLogic.Planning;
 using Stareater.GameLogic.Combat;
+using Stareater.GameData.Construction;
 
 namespace Stareater.GameLogic
 {
@@ -253,6 +254,23 @@ namespace Stareater.GameLogic
 					vars["pop"] = colony.Population;
 					this.EjectVictoryPoints[colony.Owner] = game.Statics.ColonyFormulas.VictoryPointWorth.Evaluate(vars);
 				}
+			}
+		}
+
+		public void UpdateAutomation(MainGame game)
+		{
+			var orders = game.Orders[this.Player];
+			foreach (var stellaris in game.States.Stellarises.OwnedBy[this.Player])
+				orders.AutomatedConstruction[stellaris] = new ConstructionOrders(0);
+
+			var colonizationSources = orders.ColonizationOrders.Values.SelectMany(x => x.Sources).Distinct().ToList();
+
+			//TODO(v0.8) calculate needed number of ships and adjust spending accordingly
+			foreach (var source in colonizationSources)
+			{
+				var plan = orders.AutomatedConstruction[game.States.Stellarises.At[source].First(x => x.Owner == this.Player)];
+				plan.SpendingRatio = 1;
+				plan.Queue.Add(new ShipProject(this.ColonyShipDesign));
 			}
 		}
 		#endregion
