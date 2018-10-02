@@ -58,7 +58,7 @@ namespace Stareater.GameLogic
 		{
 			foreach(var unit in this.battleGame.Combatants)
 			{
-				var stats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
+				var stats = this.mainGame.Derivates[unit.Owner].DesignStats[unit.Ships.Design];
 				unit.Initiative = this.battleGame.Rng.NextDouble() + stats.CombatSpeed;
 			}
 		}
@@ -71,7 +71,7 @@ namespace Stareater.GameLogic
 			
 			foreach(var unit in this.battleGame.Combatants)
 			{
-				var stats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
+				var stats = this.mainGame.Derivates[unit.Owner].DesignStats[unit.Ships.Design];
 				
 				unit.MovementPoints += 1;
 				unit.MovementPoints = Math.Min(unit.MovementPoints, 1);
@@ -93,7 +93,7 @@ namespace Stareater.GameLogic
 			foreach(var planet in this.battleGame.Planets.Where(x => x.Colony != null && x.Colony.Population < 1))
 			{
 				this.mainGame.States.Colonies.Remove(planet.Colony);
-				this.mainGame.Derivates.Colonies.Remove(this.mainGame.Derivates.Of(planet.Colony));
+				this.mainGame.Derivates.Colonies.Remove(this.mainGame.Derivates[planet.Colony]);
 				this.mainGame.Orders[planet.Colony.Owner].ConstructionPlans.Remove(planet.Colony);
 				planet.Colony = null;
 				//TODO(v0.8) check if stellaris should be removed too
@@ -102,7 +102,7 @@ namespace Stareater.GameLogic
 		
 		protected double sensorStrength(Vector2D position, Player owner)
 		{
-			var designStats = this.mainGame.Derivates.Of(owner).DesignStats;
+			var designStats = this.mainGame.Derivates[owner].DesignStats;
 			var rangePenalty = this.mainGame.Statics.ShipFormulas.SensorRangePenalty;
 			
 			return this.battleGame.Combatants.Where(x => x.Owner == owner).Max(
@@ -125,7 +125,7 @@ namespace Stareater.GameLogic
 		//TODO(v0.8) maybe include colony owner check
 		protected bool unitCanBombard(Combatant unit)
 		{
-			var statList = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities;
+			var statList = this.mainGame.Derivates[unit.Owner].DesignStats[unit.Ships.Design].Abilities;
 			for (int i = 0; i < statList.Count; i++)
 				if (statList[i].TargetColony && (double.IsInfinity(statList[i].Ammo) || unit.AbilityAmmo[i] >= 1))
 					return true;

@@ -128,7 +128,7 @@ namespace Stareater.GameLogic.Planning
 		//TODO(later) wouldn't move until fully loaded
 		void IMissionVisitor.Visit(LoadMission mission)
 		{
-			var stats = this.game.Derivates.Of(this.fleet.Owner).DesignStats;
+			var stats = this.game.Derivates[this.fleet.Owner].DesignStats;
 			var capacity = this.fleet.Ships.Sum(x => stats[x.Design].ColonizerPopulation * x.Quantity);
 
 			if (!this.game.States.Stars.At.Contains(this.fleet.Position))
@@ -138,7 +138,7 @@ namespace Stareater.GameLogic.Planning
 			}
 
 			var star = this.game.States.Stars.At[this.fleet.Position];
-			var stellaris = this.game.Derivates.Of(this.game.States.Stellarises.At[star].First(x=> x.Owner==this.fleet.Owner));
+			var stellaris = this.game.Derivates[this.game.States.Stellarises.At[star].First(x=> x.Owner==this.fleet.Owner)];
 
 			var newFleet = this.localFleet();
 			var availableMigrants = stellaris.IsMigrants;

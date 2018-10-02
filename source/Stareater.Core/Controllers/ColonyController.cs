@@ -15,7 +15,7 @@ namespace Stareater.Controllers
 
 		internal override AConstructionSiteProcessor Processor
 		{
-			get { return Game.Derivates.Of((Colony)Site); }
+			get { return Game.Derivates[this.Site as Colony]; }
 		}
 
 		public override IEnumerable<TraitInfo> Traits
@@ -31,7 +31,7 @@ namespace Stareater.Controllers
 			get
 			{
 				return base.DesiredSpendingRatio;
-				}
+			}
 			set
 			{
 				//no operation
@@ -55,17 +55,17 @@ namespace Stareater.Controllers
 
 		protected override void recalculateSpending()
 		{
-			var colony = Site as Colony;
-			var playerProc = this.Game.Derivates.Of(Site.Owner);
+			var colony = this.Site as Colony;
+			var playerProc = this.Game.Derivates[this.Site.Owner];
 
-			this.Game.Derivates.Of(colony).CalculateSpending(
+			this.Game.Derivates[colony].CalculateSpending(
 				this.Game,
 				playerProc
 			);
 
 			this.Game.Derivates.Stellarises.At[colony.Star].CalculateSpending(this.Game);
 
-			this.Game.Derivates.Of(colony).CalculateDerivedEffects(
+			this.Game.Derivates[colony].CalculateDerivedEffects(
 				this.Game.Statics,
 				playerProc
 			);
@@ -76,7 +76,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return Game.Derivates.Of(Site as Colony).Organization;
+				return Game.Derivates[this.Site as Colony].Organization;
 			}
 		}
 
@@ -84,7 +84,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return (Site as Colony).Population;
+				return (this.Site as Colony).Population;
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return Game.Derivates.Of(Site as Colony).PopulationGrowth;
+				return Game.Derivates[this.Site as Colony].PopulationGrowth;
 			}
 		}
 
@@ -100,7 +100,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return Game.Derivates.Of(Site as Colony).MaxPopulation;
+				return Game.Derivates[this.Site as Colony].MaxPopulation;
 			}
 		}
 		#endregion
@@ -115,7 +115,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return Game.Derivates.Of(Site as Colony).Environment;
+				return Game.Derivates[this.Site as Colony].Environment;
 			}
 		}
 
@@ -123,7 +123,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return (Site as Colony).Location.Planet.Size;
+				return (this.Site as Colony).Location.Planet.Size;
 			}
 		}
 		#endregion
@@ -133,7 +133,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return Game.Derivates.Of(Site as Colony).ScientistEfficiency;
+				return Game.Derivates[this.Site as Colony].ScientistEfficiency;
 			}
 		}
 
@@ -141,7 +141,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return Game.Derivates.Of(Site as Colony).Development;
+				return Game.Derivates[this.Site as Colony].Development;
 			}
 		}
 
@@ -149,7 +149,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var colonyStats = this.Game.Derivates.Of(Site as Colony);
+				var colonyStats = this.Game.Derivates[this.Site as Colony];
 
 				return
 					(colonyStats.FarmerEfficiency * colonyStats.Farmers + colonyStats.GardenerEfficiency * colonyStats.Gardeners) /
@@ -161,7 +161,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return Game.Derivates.Of(Site as Colony).BuilderEfficiency;
+				return Game.Derivates[this.Site as Colony].BuilderEfficiency;
 			}
 		}
 
@@ -169,7 +169,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return Game.Derivates.Of(Site as Colony).SpendingPlan.Sum(x => x.InvestedPoints);
+				return Game.Derivates[this.Site as Colony].SpendingPlan.Sum(x => x.InvestedPoints);
 			}
 		}
 
@@ -177,7 +177,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return Game.Derivates.Of(Site as Colony).MinerEfficiency;
+				return Game.Derivates[this.Site as Colony].MinerEfficiency;
 			}
 		}
 		#endregion
@@ -199,9 +199,9 @@ namespace Stareater.Controllers
 
 				var stellaris = this.Game.States.Stellarises.At[this.Site.Location.Star].First(x => x.Owner == this.Site.Owner);
 
-				this.Game.Derivates.Of(stellaris).UndoPolicy(this.Game);
+				this.Game.Derivates[stellaris].UndoPolicy(this.Game);
 				this.Game.Orders[this.Site.Owner].Policies[stellaris] = value.Data;
-				this.Game.Derivates.Of(stellaris).ApplyPolicy(this.Game, value.Data);
+				this.Game.Derivates[stellaris].ApplyPolicy(this.Game, value.Data);
 				this.recalculateSpending();
 			}
 		}

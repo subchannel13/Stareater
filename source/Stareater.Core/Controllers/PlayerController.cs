@@ -116,13 +116,13 @@ namespace Stareater.Controllers
 				var game = this.gameInstance;
 				var orders = game.Orders[this.PlayerInstance(game)];
 				var player = this.PlayerInstance(game);
-				var playerProc = game.Derivates.Of(player);
+				var playerProc = game.Derivates[player];
 
 				return game.States.Fleets.
 					Where(x => playerProc.CanSee(x, game)).
 					Concat(orders.ShipOrders.SelectMany(x => x.Value)).
 					Select(
-						x => new FleetInfo(x, game.Derivates.Of(x.Owner), game.Statics)
+						x => new FleetInfo(x, game.Derivates[x.Owner], game.Statics)
 					);
 			}
 		}
@@ -137,14 +137,14 @@ namespace Stareater.Controllers
 			if (orders.ShipOrders.ContainsKey(position))
 				fleets = fleets.Concat(orders.ShipOrders[position]);
 			
-			return fleets.Select(x => new FleetInfo(x, game.Derivates.Of(x.Owner), game.Statics));
+			return fleets.Select(x => new FleetInfo(x, game.Derivates[x.Owner], game.Statics));
 		}
 		
 		public IEnumerable<Circle> ScanAreas()
 		{
 			var game = this.gameInstance;
 
-			return game.Derivates.Of(this.PlayerInstance(game)).ScanRanges.GetAll();
+			return game.Derivates[this.PlayerInstance(game)].ScanRanges.GetAll();
 		}
 
 		public StarInfo Star(Vector2D position)
@@ -201,7 +201,7 @@ namespace Stareater.Controllers
 			var game = this.gameInstance;
 			return game.States.Designs.
 				OwnedBy[this.PlayerInstance(game)].
-				Select(x => new DesignInfo(x, game.Derivates.Of(this.PlayerInstance(game)).DesignStats[x], game.Statics));
+				Select(x => new DesignInfo(x, game.Derivates[this.PlayerInstance(game)].DesignStats[x], game.Statics));
 		}
 		
 		public void DisbandDesign(DesignInfo design)
@@ -233,7 +233,7 @@ namespace Stareater.Controllers
 		public IEnumerable<DesignInfo> RefitCandidates(DesignInfo design)
 		{
 			var game = this.gameInstance;
-			var playerProc = game.Derivates.Of(this.PlayerInstance(game));
+			var playerProc = game.Derivates[this.PlayerInstance(game)];
 			
 			return playerProc.RefitCosts[design.Data].
 				Where(x => !x.Key.IsObsolete && !x.Key.IsVirtual).
@@ -243,7 +243,7 @@ namespace Stareater.Controllers
 		public double RefitCost(DesignInfo design, DesignInfo refitWith)
 		{
 			var game = this.gameInstance;
-			return game.Derivates.Of(this.PlayerInstance(game)).RefitCosts[design.Data][refitWith.Data];
+			return game.Derivates[this.PlayerInstance(game)].RefitCosts[design.Data][refitWith.Data];
 		}
 		
 		public void RefitDesign(DesignInfo design, DesignInfo refitWith)
@@ -253,7 +253,7 @@ namespace Stareater.Controllers
 				return;
 			
 			var player = this.PlayerInstance(game);
-			var playerProc = game.Derivates.Of(this.PlayerInstance(game));
+			var playerProc = game.Derivates[this.PlayerInstance(game)];
 			var orders = game.Orders[player];
 
 			if (!refitWith.Constructable ||
@@ -276,7 +276,7 @@ namespace Stareater.Controllers
 			var targetDesign = orders.RefitOrders[design.Data];
 			
 			return targetDesign != null ?
-				new DesignInfo(targetDesign, game.Derivates.Of(targetDesign.Owner).DesignStats[targetDesign], game.Statics) :
+				new DesignInfo(targetDesign, game.Derivates[targetDesign.Owner].DesignStats[targetDesign], game.Statics) :
 				null;
 		}
 		
@@ -310,7 +310,7 @@ namespace Stareater.Controllers
 			var player = this.PlayerInstance(game);
 
 			foreach (var fleet in game.States.Fleets.OwnedBy[player].Where(x => x.Missions.Any(m => m is ColonizationMission)))
-				yield return new FleetInfo(fleet, game.Derivates.Of(fleet.Owner), game.Statics);
+				yield return new FleetInfo(fleet, game.Derivates[fleet.Owner], game.Statics);
 		}
 		#endregion
 		
@@ -319,15 +319,15 @@ namespace Stareater.Controllers
 		{
 			var game = this.gameInstance;
 			var player = this.PlayerInstance(game);
-			var playerTechs = game.Derivates.Of(player).DevelopmentOrder(game.States.DevelopmentAdvances, game.States.ResearchAdvances, game);
+			var playerTechs = game.Derivates[player].DevelopmentOrder(game.States.DevelopmentAdvances, game.States.ResearchAdvances, game);
 
-			if (game.Derivates.Of(player).DevelopmentPlan == null)
-				game.Derivates.Of(player).CalculateDevelopment(
+			if (game.Derivates[player].DevelopmentPlan == null)
+				game.Derivates[player].CalculateDevelopment(
 					game,
 					game.Derivates.Colonies.OwnedBy[player]
 				);
 
-			var investments = game.Derivates.Of(player).DevelopmentPlan.ToDictionary(x => x.Item);
+			var investments = game.Derivates[player].DevelopmentPlan.ToDictionary(x => x.Item);
 			
 			foreach(var techProgress in playerTechs)
 				if (investments.ContainsKey(techProgress))
@@ -352,7 +352,7 @@ namespace Stareater.Controllers
 				i++;
 			}
 
-			game.Derivates.Of(this.PlayerInstance(game)).InvalidateDevelopment();
+			game.Derivates[this.PlayerInstance(game)].InvalidateDevelopment();
 			return DevelopmentTopics();
 		}
 		
@@ -380,7 +380,7 @@ namespace Stareater.Controllers
 				if (value >= 0 && value < game.Statics.DevelopmentFocusOptions.Count)
 					game.Orders[player].DevelopmentFocusIndex = value;
 
-				game.Derivates.Of(player).InvalidateDevelopment();
+				game.Derivates[player].InvalidateDevelopment();
 			}
 		}
 		
@@ -400,15 +400,15 @@ namespace Stareater.Controllers
 		{
 			var game = this.gameInstance;
 			var player = this.PlayerInstance(game);
-			var playerTechs = game.Derivates.Of(player).ResearchOrder(game.States.ResearchAdvances);
+			var playerTechs = game.Derivates[player].ResearchOrder(game.States.ResearchAdvances);
 
-			if (game.Derivates.Of(player).ResearchPlan == null)
-				game.Derivates.Of(player).CalculateResearch(
+			if (game.Derivates[player].ResearchPlan == null)
+				game.Derivates[player].CalculateResearch(
 					game,
 					game.Derivates.Colonies.OwnedBy[player]
 				);
 
-			var investments = game.Derivates.Of(player).ResearchPlan.ToDictionary(x => x.Item);
+			var investments = game.Derivates[player].ResearchPlan.ToDictionary(x => x.Item);
 			
 			foreach(var techProgress in playerTechs)
 				if (investments.ContainsKey(techProgress))
@@ -423,7 +423,7 @@ namespace Stareater.Controllers
 			{
 				var game = this.gameInstance;
 				string focused = game.Orders[this.PlayerInstance(game)].ResearchFocus;
-				var playerTechs = game.Derivates.Of(this.PlayerInstance(game)).ResearchOrder(game.States.ResearchAdvances).ToList();
+				var playerTechs = game.Derivates[this.PlayerInstance(game)].ResearchOrder(game.States.ResearchAdvances).ToList();
 				
 				for (int i = 0; i < playerTechs.Count; i++)
 					if (playerTechs[i].Topic.IdCode == focused)
@@ -438,11 +438,11 @@ namespace Stareater.Controllers
 				if (game.IsReadOnly)
 					return;
 
-				var playerTechs = game.Derivates.Of(this.PlayerInstance(game)).ResearchOrder(game.States.ResearchAdvances).ToList();
+				var playerTechs = game.Derivates[this.PlayerInstance(game)].ResearchOrder(game.States.ResearchAdvances).ToList();
 				if (value >= 0 && value < playerTechs.Count) 
 				{
 					game.Orders[this.PlayerInstance(game)].ResearchFocus = playerTechs[value].Topic.IdCode;
-					game.Derivates.Of(this.PlayerInstance(game)).InvalidateResearch();
+					game.Derivates[this.PlayerInstance(game)].InvalidateResearch();
 				}
 			}
 		}

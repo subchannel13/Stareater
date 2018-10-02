@@ -98,7 +98,7 @@ namespace Stareater.GameLogic
 				
 				foreach(var shipGroup in fleet.LocalFleet.Ships)
 				{
-					var designStats = mainGame.Derivates.Of(shipGroup.Design.Owner).DesignStats[shipGroup.Design];
+					var designStats = mainGame.Derivates[shipGroup.Design.Owner].DesignStats[shipGroup.Design];
 					var ammo = designStats.Abilities.Select(x => double.IsInfinity(x.Ammo) ? double.PositiveInfinity : x.Ammo * x.Quantity * (double)shipGroup.Quantity).ToArray();
 					var abilities = designStats.Abilities.Select(x => x.Quantity * (double)shipGroup.Quantity).ToArray();
 					var simiralCombatant = this.game.Combatants.FirstOrDefault(x => x.Position == position && x.Ships.Design == shipGroup.Design);
@@ -116,7 +116,7 @@ namespace Stareater.GameLogic
 			
 			var players = this.game.Combatants.Select(x => x.Owner).Distinct();
 			foreach(var unit in this.game.Combatants)
-				this.rollCloaking(unit, this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design], players);
+				this.rollCloaking(unit, this.mainGame.Derivates[unit.Owner].DesignStats[unit.Ships.Design], players);
 		}
 		
 		private Vector2D correctPosition(Vector2D position)
@@ -196,7 +196,7 @@ namespace Stareater.GameLogic
 						var targets = new List<Combatant> { missile.Target };
 						targets.AddRange(this.game.Combatants.
 							Where(x => x.Position == missile.Position && x != missile.Target && canTarget(missile, x)).
-							OrderByDescending(x => x.Ships.Quantity * this.mainGame.Derivates.Of(x.Owner).DesignStats[x.Ships.Design].Size)
+							OrderByDescending(x => x.Ships.Quantity * this.mainGame.Derivates[x.Owner].DesignStats[x.Ships.Design].Size)
 						);
                         missile.Count -= this.doProjectileAttack(missile.Owner, missile.Stats, missile.Count, targets);
 					}
@@ -246,7 +246,7 @@ namespace Stareater.GameLogic
 			if (Methods.HexDistance(destination) <= SpaceBattleGame.BattlefieldRadius)
 			{
 				unit.Position = destination;
-				unit.MovementPoints -= 1 / mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].CombatSpeed;
+				unit.MovementPoints -= 1 / mainGame.Derivates[unit.Owner].DesignStats[unit.Ships.Design].CombatSpeed;
 			}
 			else
 			{
@@ -267,7 +267,7 @@ namespace Stareater.GameLogic
 		public void UseAbility(int index, double quantity, Combatant target)
 		{
 			var unit = this.game.PlayOrder.Peek();
-			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
+			var abilityStats = this.mainGame.Derivates[unit.Owner].DesignStats[unit.Ships.Design].Abilities[index];
 			var spent = 0.0;
 
 			if (!this.mainGame.Processor.IsAtWar(unit.Owner, target.Owner) ||
@@ -294,7 +294,7 @@ namespace Stareater.GameLogic
 		public void UseAbility(int index, double quantity, CombatPlanet planet)
 		{
 			var unit = this.game.PlayOrder.Peek();
-			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
+			var abilityStats = this.mainGame.Derivates[unit.Owner].DesignStats[unit.Ships.Design].Abilities[index];
 
 			if (planet.Colony != null && !this.mainGame.Processor.IsAtWar(unit.Owner, planet.Colony.Owner) ||
 				!abilityStats.TargetColony ||
@@ -313,7 +313,7 @@ namespace Stareater.GameLogic
 		public void UseAbility(int index, double quantity, StarData star)
 		{
 			var unit = this.game.PlayOrder.Peek();
-			var abilityStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].Abilities[index];
+			var abilityStats = this.mainGame.Derivates[unit.Owner].DesignStats[unit.Ships.Design].Abilities[index];
 			var chargesLeft = quantity;
 			
 			if (!abilityStats.TargetStar || Methods.HexDistance(unit.Position) > abilityStats.Range)
@@ -418,7 +418,7 @@ namespace Stareater.GameLogic
 		
 		private double doDirectAttack(Player attackSide, Vector2D attackFrom, AbilityStats abilityStats, double quantity, Combatant target)
 		{
-			var targetStats = this.mainGame.Derivates.Of(target.Owner).DesignStats[target.Ships.Design];
+			var targetStats = this.mainGame.Derivates[target.Owner].DesignStats[target.Ships.Design];
 			var hitChance = chanceToHit(
 				abilityStats.Accuracy + Methods.HexDistance(attackFrom, target.Position) * abilityStats.AccuracyRangePenalty,
 				sensorStrength(target.Position, attackSide),
@@ -444,7 +444,7 @@ namespace Stareater.GameLogic
 		{
 			var targets = targetOrder.ToArray();
 			var targetStats = targets.
-				Select(x => this.mainGame.Derivates.Of(x.Owner).DesignStats[x.Ships.Design]).
+				Select(x => this.mainGame.Derivates[x.Owner].DesignStats[x.Ships.Design]).
 				ToList();
 			var mainTarget = targets[0];
 			var hitChance = chanceToHit(

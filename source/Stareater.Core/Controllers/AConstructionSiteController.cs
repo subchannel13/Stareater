@@ -19,8 +19,8 @@ namespace Stareater.Controllers
 		internal MainGame Game { get; private set; }
 		internal Player Player { get; private set; }
 		
-		private List<int> orderIndex = new List<int>();
-		
+		private readonly List<int> orderIndex = new List<int>();
+
 		internal AConstructionSiteController(AConstructionSite site, bool readOnly, MainGame game, Player player)
 		{
 			this.Site = site;
@@ -81,7 +81,7 @@ namespace Stareater.Controllers
 			get
 			{
 				var playerTechs = this.Game.States.DevelopmentAdvances.Of[this.Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
-				var techLevels = this.Game.Derivates.Of(this.Player).TechLevels;
+				var techLevels = this.Game.Derivates[this.Player].TechLevels;
 				var localEffencts = this.Processor.LocalEffects(this.Game.Statics).UnionWith(techLevels).Get;
 
 				foreach (var constructable in this.Game.Statics.Constructables)
@@ -99,7 +99,7 @@ namespace Stareater.Controllers
 				orderIndex.Clear();
 				int orderI = 0;
 				
-				var playerProcessor = this.Game.Derivates.Of(this.Player);
+				var playerProcessor = this.Game.Derivates[this.Player];
 				var vars = this.Processor.LocalEffects(this.Game.Statics).UnionWith(playerProcessor.TechLevels).Get;
 					
 				foreach(var item in Processor.SpendingPlan)
@@ -125,7 +125,7 @@ namespace Stareater.Controllers
 		public bool CanPick(ConstructableInfo data)
 		{
 			var vars = this.Processor.LocalEffects(this.Game.Statics).
-				UnionWith(this.Game.Derivates.Of(this.Player).TechLevels).Get;
+				UnionWith(this.Game.Derivates[this.Player].TechLevels).Get;
 
 			return this.Processor.SpendingPlan.All(x => 
 				!x.Project.Equals(data.Project)) && 

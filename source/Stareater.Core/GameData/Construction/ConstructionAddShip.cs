@@ -18,7 +18,7 @@ namespace Stareater.GameData.Construction
 		public void Apply(MainGame game, AConstructionSite site, long quantity)
 		{
 			//TODO(v0.8) report new ship construction
-			var playerProc = game.Derivates.Of(site.Owner);
+			var playerProc = game.Derivates[site.Owner];
 
 			var colonies = game.States.Colonies.AtStar[site.Location.Star].Where(x => x.Owner == site.Owner).ToList();
 			var systemPopulation = colonies.Sum(x => x.Population);

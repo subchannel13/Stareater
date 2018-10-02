@@ -22,7 +22,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return this.game.Derivates.Of(this.player).ControlsStareater;
+				return this.game.Derivates[this.player].ControlsStareater;
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace Stareater.Controllers
 					return;
 
 				this.game.Orders[this.player].EjectingStar = value.Data;
-				this.game.Derivates.Of(this.player).CalculateStareater(this.game);
+				this.game.Derivates[this.player].CalculateStareater(this.game);
             }
 		}
 
@@ -54,7 +54,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				var playerProc = this.game.Derivates.Of(this.player);
+				var playerProc = this.game.Derivates[this.player];
 
                 return new EjectionProgressInfo(
 					this.HasControl && this.EjectTarget != null,

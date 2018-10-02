@@ -84,7 +84,7 @@ namespace Stareater.GameLogic
 		{
 			foreach(var unit in this.game.Combatants)
 			{
-				var unitStats = this.mainGame.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design];
+				var unitStats = this.mainGame.Derivates[unit.Owner].DesignStats[unit.Ships.Design];
 
 				for (int i = 0; i < unit.AbilityCharges.Length; i++)
 				{

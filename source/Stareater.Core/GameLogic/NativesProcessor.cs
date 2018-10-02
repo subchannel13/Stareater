@@ -31,7 +31,7 @@ namespace Stareater.GameLogic
 				this.OrganellePlayer.Intelligence.StarFullyVisited(star, 0);
 
 			foreach(var designData in statics.NativeDesigns)
-				makeDesign(statics, states, designData.Key, designData.Value, derivates.Of(this.OrganellePlayer));
+				makeDesign(statics, states, designData.Key, designData.Value, derivates[this.OrganellePlayer]);
 		}
 
 		public void ProcessPrecombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
@@ -40,7 +40,7 @@ namespace Stareater.GameLogic
 			if (catalizers < MaxCatalyzers)
 			{
 				var nativeDesign = states.Designs.OwnedBy[this.OrganellePlayer].First(x => x.IdCode == CatalyzerId);
-				derivates.Of(this.OrganellePlayer).SpawnShip(states.StareaterBrain, nativeDesign, 1, 0, new AMission[0], states);
+				derivates[this.OrganellePlayer].SpawnShip(states.StareaterBrain, nativeDesign, 1, 0, new AMission[0], states);
 			}
 		}
 		

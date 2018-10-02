@@ -16,7 +16,7 @@ namespace Stareater.Controllers
 
 		internal override AConstructionSiteProcessor Processor
 		{
-			get { return Game.Derivates.Of((StellarisAdmin)Site); }
+			get { return Game.Derivates[this.Site as StellarisAdmin]; }
 		}
 		
 		public override IEnumerable<TraitInfo> Traits 
@@ -31,7 +31,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return (Site as StellarisAdmin).Location.Star;
+				return (this.Site as StellarisAdmin).Location.Star;
 			}
 		}
 
@@ -62,7 +62,7 @@ namespace Stareater.Controllers
 			{ 
 				var workplaces = Game.Derivates.Colonies.
 					At[location].
-					Where(x => x.Owner == Site.Owner).
+					Where(x => x.Owner == this.Site.Owner).
 					Sum(x => x.Organization * x.Colony.Population);
 				
 				return workplaces / PopulationTotal; //FIXME(later): possible div by 0
@@ -74,7 +74,7 @@ namespace Stareater.Controllers
 			{ 
 				return Game.States.Colonies.
 					AtStar[location].
-					Where(x => x.Owner == Site.Owner).
+					Where(x => x.Owner == this.Site.Owner).
 					Sum(x => x.Population);
 			}
 		}
@@ -86,7 +86,7 @@ namespace Stareater.Controllers
 			get 
 			{ 
 				return Game.Derivates.Stellarises.
-					Of[Site as StellarisAdmin].
+					Of[this.Site as StellarisAdmin].
 					SpendingPlan.Sum(x => x.InvestedPoints);
 			}
 		}
@@ -97,7 +97,7 @@ namespace Stareater.Controllers
 			{ 
 				return Game.Derivates.Colonies.
 					At[location].
-					Where(x => x.Owner == Site.Owner).
+					Where(x => x.Owner == this.Site.Owner).
 					Sum(x => x.Development);
 			}
 		}
@@ -115,9 +115,9 @@ namespace Stareater.Controllers
 				if (this.IsReadOnly)
 					return;
 
-				this.Game.Derivates.Of(this.Site as StellarisAdmin).UndoPolicy(this.Game);
+				this.Game.Derivates[this.Site as StellarisAdmin].UndoPolicy(this.Game);
 				this.Game.Orders[this.Site.Owner].Policies[this.Site as StellarisAdmin] = value.Data;
-				this.Game.Derivates.Of(this.Site as StellarisAdmin).ApplyPolicy(this.Game, value.Data);
+				this.Game.Derivates[this.Site as StellarisAdmin].ApplyPolicy(this.Game, value.Data);
 				this.recalculateSpending();
 			}
 		}

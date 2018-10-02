@@ -37,7 +37,7 @@ namespace Stareater.GameLogic
 		#region Turn processing
 		public void ProcessPrecombat()
 		{
-			var processors = this.game.MainPlayers.Select(x => this.game.Derivates.Of(x)).ToList();
+			var processors = this.game.MainPlayers.Select(x => this.game.Derivates[x]).ToList();
 			foreach (var playerProc in processors)
 				playerProc.UpdateAutomation(this.game);
 
@@ -77,7 +77,7 @@ namespace Stareater.GameLogic
 			this.doColonization();
 			this.mergeFleets();
 			
-			foreach (var playerProc in this.game.MainPlayers.Select(x => this.game.Derivates.Of(x)))
+			foreach (var playerProc in this.game.MainPlayers.Select(x => this.game.Derivates[x]))
 				playerProc.ProcessPostcombat(this.game);
 
 			this.doRepairs();
@@ -99,7 +99,7 @@ namespace Stareater.GameLogic
 				stellaris.CalculateBaseEffects(game);
 			}
 			foreach (var colonyProc in this.game.Derivates.Colonies)
-				colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates.Of(colonyProc.Owner));
+				colonyProc.CalculateBaseEffects(this.game.Statics, this.game.Derivates[colonyProc.Owner]);
 			foreach (var playerProc in this.game.Derivates.Players)
 				playerProc.CalculateBaseEffects(this.game.States, this.game.Derivates);
         }
@@ -109,7 +109,7 @@ namespace Stareater.GameLogic
 			foreach (var colonyProc in this.game.Derivates.Colonies)
 				colonyProc.CalculateSpending(
 					this.game,
-					this.game.Derivates.Of(colonyProc.Owner)
+					this.game.Derivates[colonyProc.Owner]
 				);
 
 			foreach (var stellaris in this.game.Derivates.Stellarises)
@@ -130,7 +130,7 @@ namespace Stareater.GameLogic
 		public void CalculateDerivedEffects()
 		{
 			foreach (var colonyProc in this.game.Derivates.Colonies)
-				colonyProc.CalculateDerivedEffects(this.game.Statics, this.game.Derivates.Of(colonyProc.Owner));
+				colonyProc.CalculateDerivedEffects(this.game.Statics, this.game.Derivates[colonyProc.Owner]);
 			foreach (var stellaris in this.game.Derivates.Stellarises)
 				stellaris.CalculateDerivedEffects(this.game);
 		}
@@ -155,7 +155,7 @@ namespace Stareater.GameLogic
 			//TODO(later) decide what to do with retreated ships, send them to nearest fiendly system?
 			foreach(var unit in battleGame.Combatants.Concat(battleGame.Retreated))
 			{
-                unit.Ships.Damage = this.game.Derivates.Of(unit.Owner).DesignStats[unit.Ships.Design].HitPoints * unit.Ships .Quantity - 
+                unit.Ships.Damage = this.game.Derivates[unit.Owner].DesignStats[unit.Ships.Design].HitPoints * unit.Ships .Quantity - 
 					unit.TopArmor - 
 					unit.RestArmor;
 
@@ -292,7 +292,7 @@ namespace Stareater.GameLogic
 		{
 			foreach(var player in this.game.MainPlayers.Where(x => this.game.Orders[x].EjectingStar != null))
 			{
-				if (!this.game.Derivates.Of(player).ControlsStareater)
+				if (!this.game.Derivates[player].ControlsStareater)
 					continue;
 
 				var star = this.game.Orders[player].EjectingStar;
@@ -309,7 +309,7 @@ namespace Stareater.GameLogic
 				foreach (var stellaris in this.game.States.Stellarises.At[star])
 				{
 					this.game.States.Stellarises.PendRemove(stellaris);
-					this.game.Derivates.Stellarises.Remove(this.game.Derivates.Of(stellaris));
+					this.game.Derivates.Stellarises.Remove(this.game.Derivates[stellaris]);
 					this.game.Orders[stellaris.Owner].Policies.Remove(stellaris);
 				}
 				this.game.States.Stellarises.ApplyPending();
@@ -317,12 +317,12 @@ namespace Stareater.GameLogic
 				foreach (var colony in this.game.States.Colonies.AtStar[star])
 				{
 					this.game.States.Colonies.PendRemove(colony);
-					this.game.Derivates.Colonies.Remove(this.game.Derivates.Of(colony));
+					this.game.Derivates.Colonies.Remove(this.game.Derivates[colony]);
 					this.game.Orders[colony.Owner].ConstructionPlans.Remove(colony);
 				}
 				this.game.States.Colonies.ApplyPending();
 
-				foreach (var vpRewards in this.game.Derivates.Of(player).EjectVictoryPoints)
+				foreach (var vpRewards in this.game.Derivates[player].EjectVictoryPoints)
 					vpRewards.Key.VictoryPoints += vpRewards.Value;
 			}
 		}
@@ -331,7 +331,7 @@ namespace Stareater.GameLogic
 		{
 			foreach(var project in this.game.States.ColonizationProjects)
 			{
-				var playerProc = this.game.Derivates.Of(project.Owner);
+				var playerProc = this.game.Derivates[project.Owner];
 				bool colonyExists = this.game.States.Colonies.AtPlanet.Contains(project.Destination);
 				
 				var colonizers = this.game.States.Fleets.At[project.Destination.Star.Position].Where(
@@ -418,7 +418,7 @@ namespace Stareater.GameLogic
 					Where(x => x.Owner == player).
 					Aggregate(0.0, (sum, x) => sum + x.RepairPoints);
 				
-				var designStats = this.game.Derivates.Of(player).DesignStats;
+				var designStats = this.game.Derivates[player].DesignStats;
 				var repairCostFactor = this.game.Statics.ShipFormulas.RepairCostFactor;
 				var damagedShips = localFleet.SelectMany(x => x.Ships).Where(x => x.Damage > 0);
 				var totalNeededRepairPoints = damagedShips.Sum(x => repairCostFactor * x.Damage * x.Design.Cost / designStats[x.Design].HitPoints);
@@ -442,7 +442,7 @@ namespace Stareater.GameLogic
 				}
 
 				var refitOrders = this.game.Orders[player].RefitOrders;
-				var refitCosts = this.game.Derivates.Of(player).RefitCosts;
+				var refitCosts = this.game.Derivates[player].RefitCosts;
 				var groupsFrom = new Dictionary<ShipGroup, Fleet>();
 
 				foreach(var fleet in localFleet)

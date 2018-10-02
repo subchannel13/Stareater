@@ -404,7 +404,7 @@ namespace Stareater.GameLogic
 					var updatedPlans = updateConstructionPlans(
 						game.Statics,
 						plans[colony],
-						game.Derivates.Of(colony)
+						game.Derivates[colony]
 					);
 
 					plans[colony] = updatedPlans;
@@ -418,7 +418,7 @@ namespace Stareater.GameLogic
 					var updatedPlans = updateConstructionPlans(
 						game.Statics,
 						plans[stellaris],
-						game.Derivates.Of(stellaris)
+						game.Derivates[stellaris]
 					);
 
 					plans[stellaris] = updatedPlans;

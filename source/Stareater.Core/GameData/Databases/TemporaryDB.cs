@@ -35,19 +35,28 @@ namespace Stareater.GameData.Databases
 		public TemporaryDB()
 		{ }
 		
-		internal PlayerProcessor Of(Player player)
+		public PlayerProcessor this[Player player]
 		{
-			return this.Players.Of[player];
+			get
+			{
+				return this.Players.Of[player];
+			}
 		}
 
-		internal ColonyProcessor Of(Colony colony)
+		public ColonyProcessor this[Colony colony]
 		{
-			return this.Colonies.Of[colony];
+			get
+			{
+				return this.Colonies.Of[colony];
+			}
 		}
 
-		internal StellarisProcessor Of(StellarisAdmin stellaris)
+		public StellarisProcessor this[StellarisAdmin stellaris]
 		{
-			return this.Stellarises.Of[stellaris];
+			get
+			{
+				return this.Stellarises.Of[stellaris];
+			}
 		}
 	}
 }

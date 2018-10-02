@@ -53,7 +53,7 @@ namespace Stareater.Controllers
 			get
 			{ 
 				if (game.States.Colonies.AtPlanet.Contains(this.planet))
-					return game.Derivates.Of(game.States.Colonies.AtPlanet[this.planet]).MaxPopulation;
+					return game.Derivates[game.States.Colonies.AtPlanet[this.planet]].MaxPopulation;
 				
 				var vars = new Var(ColonyProcessor.PlanetSizeKey, this.planet.Size);
 				return game.Statics.ColonyFormulas.UncolonizedMaxPopulation.Evaluate(vars.Get);
@@ -89,7 +89,7 @@ namespace Stareater.Controllers
 					if (!plan.Sources.Contains(source.Stellaris.Location.Star))
 						plan.Sources.Add(source.Stellaris.Location.Star); //TODO(later) convert source list to set?
 
-			this.game.Derivates.Of(this.player).UpdateAutomation(this.game);
+			this.game.Derivates[this.player].UpdateAutomation(this.game);
 			updateStellarises(plan.Sources);
 		}
 		
@@ -113,7 +113,7 @@ namespace Stareater.Controllers
 				plan.Sources.Clear();
 			}
 
-			this.game.Derivates.Of(this.player).UpdateAutomation(this.game);
+			this.game.Derivates[this.player].UpdateAutomation(this.game);
 			if (plan.Sources.Count == 0)
 				this.game.Orders[this.player].ColonizationOrders.Remove(this.planet);
 			else

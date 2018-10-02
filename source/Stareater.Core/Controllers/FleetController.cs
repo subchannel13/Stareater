@@ -44,7 +44,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return this.Fleet.FleetData.Ships.Select(x => new ShipGroupInfo(x, this.game.Derivates.Of(this.Fleet.Owner.Data).DesignStats[x.Design], this.game.Statics));
+				return this.Fleet.FleetData.Ships.Select(x => new ShipGroupInfo(x, this.game.Derivates[this.Fleet.Owner.Data].DesignStats[x.Design], this.game.Statics));
 			}
 		}
 		
@@ -137,7 +137,7 @@ namespace Stareater.Controllers
 		private FleetInfo addFleet(ICollection<Fleet> shipOrders, Fleet newFleet)
 		{
 			var similarFleet = shipOrders.FirstOrDefault(x => x.Missions.SequenceEqual(newFleet.Missions));
-			var playerProc = this.game.Derivates.Of(this.player);
+			var playerProc = this.game.Derivates[this.player];
 			
 			if (similarFleet != null) {
 				foreach(var shipGroup in newFleet.Ships)

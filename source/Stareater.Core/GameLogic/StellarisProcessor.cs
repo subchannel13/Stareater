@@ -56,7 +56,7 @@ namespace Stareater.GameLogic
 		public void ApplyPolicy(MainGame game, SystemPolicy policy)
 		{
 			//TODO(v0.8) remove previous policy buildings
-			var playerProc = game.Derivates.Of(this.Owner);
+			var playerProc = game.Derivates[this.Owner];
 			var playerTechs = game.States.DevelopmentAdvances.Of[this.Owner].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var comparer = new ConstructionComparer();
 
@@ -65,7 +65,7 @@ namespace Stareater.GameLogic
 				var plan = game.Orders[this.Owner].ConstructionPlans[colony];
 				plan.SpendingRatio = policy.SpendingRatio;
 
-				var colonyProc = game.Derivates.Of(colony);
+				var colonyProc = game.Derivates[colony];
 				var colonyVars = colonyProc.LocalEffects(game.Statics).
 					UnionWith(playerProc.TechLevels).Get;
 
@@ -84,7 +84,7 @@ namespace Stareater.GameLogic
 			this.CalculateSpending(game);
 
 			foreach (var colony in game.States.Colonies.AtStar[this.Location].Where(x => x.Owner == this.Owner))
-				game.Derivates.Of(colony).CalculateDerivedEffects(game.Statics, playerProc);
+				game.Derivates[colony].CalculateDerivedEffects(game.Statics, playerProc);
 		}
 
 		public void UndoPolicy(MainGame game)
@@ -106,7 +106,7 @@ namespace Stareater.GameLogic
 		public void CalculateBaseEffects(MainGame game)
 		{
 			var vars = this.LocalEffects(game.Statics).
-				UnionWith(game.Derivates.Of(this.Owner).TechLevels).Get;
+				UnionWith(game.Derivates[this.Owner].TechLevels).Get;
 
 			this.ScanRange = game.Statics.StellarisFormulas.ScanRange.Evaluate(vars);
 		}
@@ -118,7 +118,7 @@ namespace Stareater.GameLogic
 			var plans = destinations.ToDictionary(x => x, x => 0.0);
 			var immigrants = systemColonies.Sum(x => x.Emigrants);
 
-			var stats = game.Derivates.Of(this.Owner).DesignStats;
+			var stats = game.Derivates[this.Owner].DesignStats;
 			var starEmigrantCapacity = game.States.Fleets.At[this.Site.Location.Star.Position].
 				Where(x => x.Owner == this.Owner && x.Missions.Any(m => m is LoadMission)).
 				SelectMany(x => x.Ships).
@@ -166,7 +166,7 @@ namespace Stareater.GameLogic
 
 		public void CalculateSpending(MainGame game)
 		{
-			var playerProcessor = game.Derivates.Of(this.Owner);
+			var playerProcessor = game.Derivates[this.Owner];
 			var vars = new Var().UnionWith(playerProcessor.TechLevels).Get;
 			var colonies = this.systemColonies(game).ToList();
 

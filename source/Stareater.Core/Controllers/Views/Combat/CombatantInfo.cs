@@ -20,7 +20,7 @@ namespace Stareater.Controllers.Views.Combat
 		internal CombatantInfo(Combatant data, MainGame game, IEnumerable<Vector2D> validMoves)
 		{
 			this.Data = data;
-			this.stats = game.Derivates.Of(data.Owner).DesignStats[data.Ships.Design];
+			this.stats = game.Derivates[data.Owner].DesignStats[data.Ships.Design];
 			this.statics = game.Statics;
 			this.validMoves = validMoves.ToList();
 			
