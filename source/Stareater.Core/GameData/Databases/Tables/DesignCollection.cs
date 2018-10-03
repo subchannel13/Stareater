@@ -1,5 +1,4 @@
-﻿using System;
-using Stareater.Utils.Collections;
+﻿using Stareater.Utils.Collections;
 using Stareater.Ships;
 using Stareater.Players;
 
@@ -12,7 +11,7 @@ namespace Stareater.GameData.Databases.Tables
 		public DesignCollection()
 		{
 			this.OwnedBy = new CollectionIndex<Design, Player>(x => x.Owner);
-			this.RegisterIndices(this.OwnedBy);
+			this.registerIndices(this.OwnedBy);
 		}
 	}
 }

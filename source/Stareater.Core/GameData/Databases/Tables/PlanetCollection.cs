@@ -1,5 +1,4 @@
-﻿using System;
-using Stareater.Utils.Collections;
+﻿using Stareater.Utils.Collections;
 using Stareater.Galaxy;
 
 namespace Stareater.GameData.Databases.Tables
@@ -11,7 +10,7 @@ namespace Stareater.GameData.Databases.Tables
 		public PlanetCollection()
 		{
 			this.At = new CollectionIndex<Planet, StarData>(x => x.Star);
-			this.RegisterIndices(this.At);
+			this.registerIndices(this.At);
 		}
 	}
 }

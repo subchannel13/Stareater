@@ -11,7 +11,7 @@ namespace Stareater.GameData.Databases.Tables
 		public WormholeCollection()
 		{
 			this.At = new PairCollectionIndex<Wormhole, StarData>(x => x.Endpoints);
-			this.RegisterIndices(this.At);
+			this.registerIndices(this.At);
 		}
 	}
 }

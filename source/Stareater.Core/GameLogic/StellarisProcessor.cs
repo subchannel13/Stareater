@@ -60,7 +60,7 @@ namespace Stareater.GameLogic
 			var playerTechs = game.States.DevelopmentAdvances.Of[this.Owner].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var comparer = new ConstructionComparer();
 
-			foreach (var colony in game.States.Colonies.AtStar[this.Location].Where(x => x.Owner == this.Owner))
+			foreach (var colony in game.States.Colonies.AtStar[this.Location, this.Owner])
 			{
 				var plan = game.Orders[this.Owner].ConstructionPlans[colony];
 				plan.SpendingRatio = policy.SpendingRatio;
@@ -83,7 +83,7 @@ namespace Stareater.GameLogic
 
 			this.CalculateSpending(game);
 
-			foreach (var colony in game.States.Colonies.AtStar[this.Location].Where(x => x.Owner == this.Owner))
+			foreach (var colony in game.States.Colonies.AtStar[this.Location, this.Owner])
 				game.Derivates[colony].CalculateDerivedEffects(game.Statics, playerProc);
 		}
 
@@ -92,7 +92,7 @@ namespace Stareater.GameLogic
 			var policy = game.Orders[this.Owner].Policies[this.Site as StellarisAdmin];
 			var comparer = new ConstructionComparer();
 
-			foreach (var colony in game.States.Colonies.AtStar[this.Location].Where(x => x.Owner == this.Owner))
+			foreach (var colony in game.States.Colonies.AtStar[this.Location, this.Owner])
 			{
 				var toRemove = new HashSet<IConstructionProject>();
 				foreach (var project in game.Orders[this.Owner].ConstructionPlans[colony].Queue)
@@ -119,8 +119,8 @@ namespace Stareater.GameLogic
 			var immigrants = systemColonies.Sum(x => x.Emigrants);
 
 			var stats = game.Derivates[this.Owner].DesignStats;
-			var starEmigrantCapacity = game.States.Fleets.At[this.Site.Location.Star.Position].
-				Where(x => x.Owner == this.Owner && x.Missions.Any(m => m is LoadMission)).
+			var starEmigrantCapacity = game.States.Fleets.At[this.Site.Location.Star.Position, this.Owner].
+				Where(x => x.Missions.Any(m => m is LoadMission)).
 				SelectMany(x => x.Ships).
 				Sum(x => stats[x.Design].ColonizerPopulation * x.Quantity - x.PopulationTransport);
 
@@ -220,7 +220,7 @@ namespace Stareater.GameLogic
 
 		private IEnumerable<ColonyProcessor> systemColonies(MainGame game)
 		{
-			return game.Derivates.Colonies.At[this.Location].Where(x => x.Owner == this.Owner);
+			return game.Derivates.Colonies.At[this.Location, this.Owner];
 		}
 	}
 }

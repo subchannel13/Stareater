@@ -239,8 +239,8 @@ namespace Stareater.GameLogic
 		public void CalculateStareater(MainGame game)
 		{
 			this.ControlsStareater = game.States.Fleets.
-					At[game.States.StareaterBrain.Position].
-					Any(x => x.Owner == this.Player);
+					At[game.States.StareaterBrain.Position, this.Player].
+					Any();
 
 			this.EjectEta = this.ControlsStareater ? 1 : 0; //TODO(later) calculate ETA
 			this.EjectVictoryPoints = game.MainPlayers.ToDictionary(x => x, x => 0.0);
@@ -268,7 +268,7 @@ namespace Stareater.GameLogic
 			//TODO(v0.8) calculate needed number of ships and adjust spending accordingly
 			foreach (var source in colonizationSources)
 			{
-				var plan = orders.AutomatedConstruction[game.States.Stellarises.At[source].First(x => x.Owner == this.Player)];
+				var plan = orders.AutomatedConstruction[game.States.Stellarises.At[source, this.Player].First()];
 				plan.SpendingRatio = 1;
 				plan.Queue.Add(new ShipProject(this.ColonyShipDesign));
 			}
@@ -297,7 +297,7 @@ namespace Stareater.GameLogic
 		public void SpawnShip(StarData star, Design design, long quantity, double population, IEnumerable<AMission> missions, StatesDB states)
 		{
 			var missionList = new LinkedList<AMission>(missions);
-			var fleet = states.Fleets.At[star.Position].FirstOrDefault(x => x.Owner == this.Player && x.Missions.SequenceEqual(missionList));
+			var fleet = states.Fleets.At[star.Position, this.Player].FirstOrDefault(x => x.Missions.SequenceEqual(missionList));
 			
 			if (fleet == null)
 			{

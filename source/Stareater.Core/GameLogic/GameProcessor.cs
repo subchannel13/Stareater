@@ -204,7 +204,7 @@ namespace Stareater.GameLogic
 					var totalDamage = new Dictionary<Design, double>();
 					var totalUpgrades = new Dictionary<Design, double>();
 					var shipCount = new Dictionary<Design, double>();
-					foreach (var fleet in this.game.States.Fleets.At[order.Key].Where(x => x.Owner == player))
+					foreach (var fleet in this.game.States.Fleets.At[order.Key, player])
 					{
 						foreach(var ship in fleet.Ships)
 						{
@@ -410,12 +410,9 @@ namespace Stareater.GameLogic
 			foreach(var stellaris in this.game.States.Stellarises)
 			{
 				var player = stellaris.Owner;
-				var localFleet = this.game.States.Fleets.
-					At[stellaris.Location.Star.Position].
-					Where(x => x.Owner == player).ToList();
+				var localFleet = this.game.States.Fleets.At[stellaris.Location.Star.Position, player];
 				var repairPoints = this.game.Derivates.Colonies.
-					At[stellaris.Location.Star].
-					Where(x => x.Owner == player).
+					At[stellaris.Location.Star, player].
 					Aggregate(0.0, (sum, x) => sum + x.RepairPoints);
 				
 				var designStats = this.game.Derivates[player].DesignStats;

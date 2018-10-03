@@ -39,7 +39,7 @@ namespace Stareater.GameLogic.Planning
 
 		public void Visit(ColonizationMission mission)
 		{
-			if (this.game.States.ColonizationProjects.Of[mission.Target].Any(x => x.Owner == fleet.Owner))
+			if (this.game.States.ColonizationProjects.Of[mission.Target, fleet.Owner].Any())
 				this.remainingMissions.AddLast(mission);
 		}
 

@@ -61,8 +61,7 @@ namespace Stareater.Controllers
 			get 
 			{ 
 				var workplaces = Game.Derivates.Colonies.
-					At[location].
-					Where(x => x.Owner == this.Site.Owner).
+					At[location, this.Site.Owner].
 					Sum(x => x.Organization * x.Colony.Population);
 				
 				return workplaces / PopulationTotal; //FIXME(later): possible div by 0
@@ -96,8 +95,7 @@ namespace Stareater.Controllers
 			get 
 			{ 
 				return Game.Derivates.Colonies.
-					At[location].
-					Where(x => x.Owner == this.Site.Owner).
+					At[location, this.Site.Owner].
 					Sum(x => x.Development);
 			}
 		}

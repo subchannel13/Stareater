@@ -11,7 +11,7 @@ namespace Stareater.GameData.Databases.Tables
 		public StarCollection()
 		{
 			this.At = new ScalarIndex<StarData, Vector2D>(x => x.Position);
-			this.RegisterIndices(this.At);
+			this.registerIndices(this.At);
 		}
 	}
 }

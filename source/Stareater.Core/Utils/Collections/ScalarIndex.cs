@@ -5,8 +5,8 @@ namespace Stareater.Utils.Collections
 {
 	class ScalarIndex<TElement, TKey> : IIndex<TElement>
 	{
-		private Func<TElement, TKey> keySelector;
-		private Dictionary<TKey, TElement> elements = new Dictionary<TKey, TElement>();
+		private readonly Func<TElement, TKey> keySelector;
+		private readonly Dictionary<TKey, TElement> elements = new Dictionary<TKey, TElement>();
 		
 		public ScalarIndex(Func<TElement, TKey> keySelector)
 		{

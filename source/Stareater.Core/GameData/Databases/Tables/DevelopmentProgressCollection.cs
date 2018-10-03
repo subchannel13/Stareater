@@ -11,7 +11,7 @@ namespace Stareater.GameData.Databases.Tables
 		public DevelopmentProgressCollection()
 		{
 			this.Of = new CollectionIndex<DevelopmentProgress, Player>(x => x.Owner);
-			this.RegisterIndices(this.Of);
+			this.registerIndices(this.Of);
 		}
 	}
 }

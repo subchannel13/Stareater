@@ -142,7 +142,7 @@ namespace Stareater.Controllers
 			var stars = new HashSet<StarData>();
 			stars.UnionWith(this.game.Orders[this.player].ColonizationOrders[this.planet].Sources);
 			
-			return stars.Select(x => new StellarisInfo(this.game.States.Stellarises.At[x].First(s => s.Owner == this.player), this.game));
+			return stars.Select(x => new StellarisInfo(this.game.States.Stellarises.At[x, this.player].First(), this.game));
 		}
 		#endregion
 		
@@ -150,7 +150,7 @@ namespace Stareater.Controllers
 		{
 			foreach(var source in sources)
 			{
-				var stellaris = this.game.States.Stellarises.At[source].First(x => x.Owner == this.player);
+				var stellaris = this.game.States.Stellarises.At[source, this.player].First();
 				this.game.Derivates.Stellarises.Of[stellaris].CalculateSpending(this.game);
 			}
 		}

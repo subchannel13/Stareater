@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Stareater.Utils.Collections
 {
 	class AIndexedCollection<T> : ICollection<T>, IDelayedCollection<T>
 	{
-		private HashSet<T> innerSet = new HashSet<T>();
+		private readonly HashSet<T> innerSet = new HashSet<T>();
 		private readonly List<T> toAdd = new List<T>();
 		private readonly List<T> toRemove = new List<T>();
 		private readonly List<IIndex<T>> indices = new List<IIndex<T>>();
 
-		protected void RegisterIndices(params IIndex<T>[] index)
+		protected void registerIndices(params IIndex<T>[] index)
 		{
 			this.indices.AddRange(index);
 		}

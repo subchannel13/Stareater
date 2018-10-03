@@ -11,7 +11,7 @@ namespace Stareater.GameData.Databases.Tables
 		public PlayerProcessorCollection()
 		{
 			this.Of = new ScalarIndex<PlayerProcessor, Player>(x => x.Player);
-			this.RegisterIndices(this.Of);
+			this.registerIndices(this.Of);
 		}
 	}
 }

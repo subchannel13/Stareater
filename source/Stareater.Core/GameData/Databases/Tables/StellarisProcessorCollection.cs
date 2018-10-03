@@ -17,7 +17,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.Of = new ScalarIndex<StellarisProcessor, StellarisAdmin>(x => x.Stellaris);
 			this.OwnedBy = new CollectionIndex<StellarisProcessor, Player>(x => x.Owner);
 			
-			this.RegisterIndices(this.At, this.Of, this.OwnedBy);
+			this.registerIndices(this.At, this.Of, this.OwnedBy);
 		}
 	}
 }

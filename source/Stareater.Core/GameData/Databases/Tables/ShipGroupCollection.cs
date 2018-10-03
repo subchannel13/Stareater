@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Stareater.Utils.Collections;
+﻿using Stareater.Utils.Collections;
 using Stareater.Galaxy;
 using Stareater.Ships;
 
@@ -13,7 +11,7 @@ namespace Stareater.GameData.Databases.Tables
 		public ShipGroupCollection()
 		{
 			this.WithDesign = new ScalarIndex<ShipGroup, Design>(x => x.Design);
-			this.RegisterIndices(this.WithDesign);
+			this.registerIndices(this.WithDesign);
 		}
 	}
 }

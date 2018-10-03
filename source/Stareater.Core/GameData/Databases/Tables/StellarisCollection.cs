@@ -7,15 +7,15 @@ namespace Stareater.GameData.Databases.Tables
 {
 	class StellarisCollection : AIndexedCollection<StellarisAdmin>
 	{
-		public CollectionIndex<StellarisAdmin, StarData> At { get; private set; } //TODO(v0.8) make scalar index for both location and player
+		public Collection2Index<StellarisAdmin, StarData, Player> At { get; private set; }
 		public CollectionIndex<StellarisAdmin, Player> OwnedBy { get; private set; }
 
 		public StellarisCollection()
 		{
-			this.At = new CollectionIndex<StellarisAdmin, StarData>(x => x.Location.Star);
+			this.At = new Collection2Index<StellarisAdmin, StarData, Player>(x => new Tuple<StarData, Player>(x.Location.Star, x.Owner));
 			this.OwnedBy = new CollectionIndex<StellarisAdmin, Player>(x => x.Owner);
 			
-			this.RegisterIndices(this.At, this.OwnedBy);
+			this.registerIndices(this.At, this.OwnedBy);
 		}
 	}
 }

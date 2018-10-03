@@ -5,8 +5,8 @@ namespace Stareater.Utils.Collections
 {
 	class CollectionIndex<TElement, TKey> : IIndex<TElement>
 	{
-		private Func<TElement, TKey> keySelector;
-		private Dictionary<TKey, List<TElement>> elements = new Dictionary<TKey, List<TElement>>();
+		private readonly Func<TElement, TKey> keySelector;
+		private readonly Dictionary<TKey, List<TElement>> elements = new Dictionary<TKey, List<TElement>>();
 		
 		public CollectionIndex(Func<TElement, TKey> keySelector)
 		{

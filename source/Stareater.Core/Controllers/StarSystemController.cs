@@ -53,7 +53,7 @@ namespace Stareater.Controllers
 		
 		public StellarisInfo StarsAdministration()
 		{
-			var stellaris = game.States.Stellarises.At[this.star].FirstOrDefault(x => x.Owner == this.player);
+			var stellaris = game.States.Stellarises.At[this.star, this.player].FirstOrDefault();
 			if (this.player.Intelligence.About(this.star).LastVisited != StarIntelligence.NeverVisited && stellaris != null)
 				//TODO(later) show last known star system information
 				return new StellarisInfo(stellaris, this.game);
@@ -67,9 +67,9 @@ namespace Stareater.Controllers
 				if (game.States.Stellarises.At[this.star].Count == 0)
 					return Views.BodyType.NoStellarises;
 					
-				var stellarises = game.States.Stellarises.At[this.star];
+				var stellarises = game.States.Stellarises.At[this.star, this.player];
 				
-				return stellarises.Any(x => x.Owner == this.player) ?
+				return stellarises.Any() ?
 					Views.BodyType.OwnStellaris : 
 					Views.BodyType.ForeignStellaris;
 			} 
@@ -116,7 +116,7 @@ namespace Stareater.Controllers
 		
 		public StellarisAdminController StellarisController()
 		{
-			var stellaris = game.States.Stellarises.At[this.star].FirstOrDefault(x => x.Owner == this.player);
+			var stellaris = game.States.Stellarises.At[this.star, this.player].FirstOrDefault();
 			return new StellarisAdminController(game, stellaris, IsReadOnly, this.player);
 		}
 	}

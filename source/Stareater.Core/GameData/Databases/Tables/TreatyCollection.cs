@@ -12,7 +12,7 @@ namespace Stareater.GameData.Databases.Tables
 		public TreatyCollection()
 		{
 			this.Of = new PairCollectionIndex<Treaty, Player>(x => x.Parties);
-			this.RegisterIndices(this.Of);
+			this.registerIndices(this.Of);
 		}
 	}
 }

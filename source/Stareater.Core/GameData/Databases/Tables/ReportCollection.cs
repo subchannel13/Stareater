@@ -1,5 +1,4 @@
-﻿using System;
-using Stareater.Utils.Collections;
+﻿using Stareater.Utils.Collections;
 using Stareater.Players;
 using Stareater.Players.Reports;
 
@@ -12,7 +11,7 @@ namespace Stareater.GameData.Databases.Tables
 		public ReportCollection()
 		{
 			this.Of = new CollectionIndex<IReport, Player>(x => x.Owner);
-			this.RegisterIndices(this.Of);
+			this.registerIndices(this.Of);
 		}
 	}
 }

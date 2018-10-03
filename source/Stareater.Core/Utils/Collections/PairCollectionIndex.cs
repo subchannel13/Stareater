@@ -5,9 +5,9 @@ namespace Stareater.Utils.Collections
 {
 	class PairCollectionIndex<TElement, TKey> : IIndex<TElement>
 	{
-		private Func<TElement, Pair<TKey>> keySelector;
-		private Dictionary<Pair<TKey>, List<TElement>> pairElements = new Dictionary<Pair<TKey>, List<TElement>>();
-		private Dictionary<TKey, List<TElement>> flatElements = new Dictionary<TKey, List<TElement>>();
+		private readonly Func<TElement, Pair<TKey>> keySelector;
+		private readonly Dictionary<Pair<TKey>, List<TElement>> pairElements = new Dictionary<Pair<TKey>, List<TElement>>();
+		private readonly Dictionary<TKey, List<TElement>> flatElements = new Dictionary<TKey, List<TElement>>();
 
 		public PairCollectionIndex(Func<TElement, Pair<TKey>> keySelector)
 		{
