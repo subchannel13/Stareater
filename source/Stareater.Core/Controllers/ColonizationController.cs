@@ -12,13 +12,15 @@ namespace Stareater.Controllers
 	public class ColonizationController
 	{
 		private readonly MainGame game;
+		private readonly PlayerController playerController;
 		private readonly Player player;
 		private readonly Planet planet;
 		
-		internal ColonizationController(MainGame game, Planet planet, bool readOnly, Player player)
+		internal ColonizationController(MainGame game, Planet planet, bool readOnly, PlayerController playerController)
 		{
 			this.game = game;
-			this.player = player;
+			this.playerController = playerController;
+			this.player = playerController.PlayerInstance(game);
 			this.IsReadOnly = readOnly;
 			this.planet = planet;
 		}
@@ -89,7 +91,7 @@ namespace Stareater.Controllers
 					if (!plan.Sources.Contains(source.Stellaris.Location.Star))
 						plan.Sources.Add(source.Stellaris.Location.Star); //TODO(later) convert source list to set?
 
-			this.game.Derivates[this.player].UpdateAutomation(this.game);
+			playerController.UpdateAutomation();
 			updateStellarises(plan.Sources);
 		}
 		
@@ -113,7 +115,7 @@ namespace Stareater.Controllers
 				plan.Sources.Clear();
 			}
 
-			this.game.Derivates[this.player].UpdateAutomation(this.game);
+			playerController.UpdateAutomation();
 			if (plan.Sources.Count == 0)
 				this.game.Orders[this.player].ColonizationOrders.Remove(this.planet);
 			else

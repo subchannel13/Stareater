@@ -32,5 +32,10 @@ namespace Stareater.Controllers.Views.Ships
 				return this.Data.Quantity;
 			}
 		}
+
+		public double PopulationCapacity
+		{
+			get { return this.stats.ColonizerPopulation * this.Data.Quantity; }
+		}
 	}
 }

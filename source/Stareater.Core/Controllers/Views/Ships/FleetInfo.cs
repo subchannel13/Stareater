@@ -42,7 +42,12 @@ namespace Stareater.Controllers.Views.Ships
 				return this.FleetData.Ships.Select(x => new ShipGroupInfo(x, this.playerProc.DesignStats[x.Design], this.statics));
 			}
 		}
-		
+
+		public double PopulationCapacity
+		{
+			get { return this.FleetData.Ships.Sum(x => this.playerProc.DesignStats[x.Design].ColonizerPopulation); }
+		}
+
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{

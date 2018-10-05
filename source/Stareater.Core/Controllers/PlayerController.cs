@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Stareater.Controllers.Data;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
 using Stareater.GameData;
+using Stareater.GameData.Construction;
+using Stareater.GameData.Databases.Tables;
 using Stareater.Players;
 using Stareater.Ships.Missions;
 using Stareater.Utils;
@@ -95,7 +96,7 @@ namespace Stareater.Controllers
 			if (!game.States.Stars.Contains(star.Data))
 				throw new ArgumentException("Star doesn't exist");
 
-			return new StarSystemController(game, star.Data, game.IsReadOnly, this.PlayerInstance(game));
+			return new StarSystemController(game, star.Data, game.IsReadOnly, this);
 		}
 		
 		public StarSystemController OpenStarSystem(Vector2D position)
@@ -301,7 +302,7 @@ namespace Stareater.Controllers
 			planets.UnionWith(game.Orders[player].ColonizationOrders.Keys);
 			
 			foreach(var planet in planets)
-				yield return new ColonizationController(game, planet, game.IsReadOnly, player);
+				yield return new ColonizationController(game, planet, game.IsReadOnly, this);
 		}
 		
 		public IEnumerable<FleetInfo> EnrouteColonizers(PlanetInfo destination)
@@ -498,6 +499,51 @@ namespace Stareater.Controllers
 			
 			var contactIndex = Array.IndexOf(game.MainPlayers, contact.PlayerData);
 			game.Orders[this.PlayerInstance(game)].AudienceRequests.Remove(contactIndex);
+		}
+		#endregion
+
+		#region Automation
+		internal void UpdateAutomation()
+		{
+			var game = this.gameInstance;
+			var player = this.PlayerInstance(game);
+			var orders = game.Orders[player];
+			foreach (var stellaris in game.States.Stellarises.OwnedBy[player])
+				orders.AutomatedConstruction[stellaris] = new ConstructionOrders(0);
+
+			var colonizerDesign = game.Derivates[player].ColonyShipDesign;
+			var colonizationSources = orders.ColonizationOrders.Values.SelectMany(x => x.Sources).Distinct().ToList();
+			var designStats = game.Derivates[player].DesignStats;
+
+			//TODO(v0.8) calculate needed number of ships and adjust spending accordingly
+			foreach (var source in colonizationSources)
+			{
+				var plan = orders.AutomatedConstruction[game.States.Stellarises.At[source, player].First()];
+				plan.SpendingRatio = 1;
+				plan.Queue.Add(new ShipProject(colonizerDesign));
+
+				var colonizationOrder = orders.ColonizationOrders.Values.First(x => x.Sources.Contains(source));
+
+				foreach (var fleet in this.FleetsAt(source.Position).Where(isColonizerFleet))
+				{
+					var controller = new FleetController(fleet, game, player);
+					foreach(var group in controller.ShipGroups.Where(x => x.PopulationCapacity > 0))
+					{
+						var toSelect = (long)Math.Floor(group.Data.PopulationTransport / designStats[group.Data.Design].ColonizerPopulation);
+						if (toSelect < 1)
+							continue;
+
+						controller.SelectGroup(group, toSelect);
+					}
+
+					controller.Send(new Vector2D[] { colonizationOrder.Destination.Star.Position });
+				}
+			}
+		}
+
+		private bool isColonizerFleet(FleetInfo fleet)
+		{
+			return fleet.FleetData.Missions.All(x => x is LoadMission) && fleet.PopulationCapacity > 0;
 		}
 		#endregion
 	}

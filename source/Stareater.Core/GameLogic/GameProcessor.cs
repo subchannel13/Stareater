@@ -38,8 +38,6 @@ namespace Stareater.GameLogic
 		public void ProcessPrecombat()
 		{
 			var processors = this.game.MainPlayers.Select(x => this.game.Derivates[x]).ToList();
-			foreach (var playerProc in processors)
-				playerProc.UpdateAutomation(this.game);
 
 			this.CalculateBaseEffects();
 			this.CalculateSpendings();

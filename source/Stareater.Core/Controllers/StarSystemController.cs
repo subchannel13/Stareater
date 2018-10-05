@@ -13,15 +13,17 @@ namespace Stareater.Controllers
 		public const int StarIndex = -1;
 		
 		private readonly MainGame game;
+		private readonly PlayerController playerController;
 		private readonly Player player;
 		private readonly StarData star;
 		
 		public bool IsReadOnly { get; private set; }
 		
-		internal StarSystemController(MainGame game, StarData star, bool readOnly, Player player)
+		internal StarSystemController(MainGame game, StarData star, bool readOnly, PlayerController playerController)
 		{
 			this.game = game;
-			this.player = player;
+			this.playerController = playerController;
+			this.player = playerController.PlayerInstance(game);
 			this.IsReadOnly = readOnly;
 			this.star = star;
 		}
@@ -111,7 +113,7 @@ namespace Stareater.Controllers
 			if (planet == null)
 				throw new ArgumentOutOfRangeException("bodyPosition");
 			
-			return new ColonizationController(this.game, planet, IsReadOnly, this.player);
+			return new ColonizationController(this.game, planet, IsReadOnly, this.playerController);
 		}
 		
 		public StellarisAdminController StellarisController()
