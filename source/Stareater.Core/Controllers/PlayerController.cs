@@ -284,6 +284,7 @@ namespace Stareater.Controllers
 		public long ShipCount(DesignInfo design)
 		{
 			var game = this.gameInstance;
+
 			return game.States.Fleets.
 				OwnedBy[this.PlayerInstance(game)].
 				SelectMany(x => x.Ships).
@@ -313,8 +314,33 @@ namespace Stareater.Controllers
 			foreach (var fleet in game.States.Fleets.OwnedBy[player].Where(x => x.Missions.Any(m => m is ColonizationMission)))
 				yield return new FleetInfo(fleet, game.Derivates[fleet.Owner], game.Statics);
 		}
+
+		public DesignInfo ColonizerDesign
+		{
+			get
+			{
+				//TODO(v0.8) read order
+				return null;
+			}
+			set
+			{
+				//TODO(v0.8) set order
+			}
+		}
+
+		public IEnumerable<DesignInfo> ColonizerDesignOptions
+		{
+			get
+			{
+				var game = this.gameInstance;
+				var playerProc = game.Derivates[this.PlayerInstance(game)];
+
+				return playerProc.ColonizerDesignOptions.
+					Select(x => new DesignInfo(x, playerProc.DesignStats[x], game.Statics));
+			}
+		}
 		#endregion
-		
+
 		#region Development related
 		public IEnumerable<DevelopmentTopicInfo> DevelopmentTopics()
 		{

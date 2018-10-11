@@ -3,6 +3,8 @@ using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
+using Stareater.Controllers.Views.Ships;
+using Stareater.GUI.ShipDesigns;
 using Stareater.Localization;
 
 namespace Stareater.GUI
@@ -34,13 +36,41 @@ namespace Stareater.GUI
 			var context = LocalizationManifest.Get.CurrentLanguage["FormColonization"];
 			this.Text = context["title"].Text();
 			this.Font = SettingsWinforms.Get.FormFont;
+
+			this.colonizerDesignText.Text = context["colonizerLabel"].Text() + ":";
+			updateSelectedColonizer();
 		}
-		
+
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
 			if (keyData == Keys.Escape) 
 				this.Close();
 			return base.ProcessCmdKey(ref msg, keyData);
+		}
+
+		private void updateSelectedColonizer()
+		{
+			var design = controller.ColonizerDesign;
+
+			this.selectColonizerAction.Text = design.Name;
+			this.selectColonizerAction.Image = ImageCache.Get[design.ImagePath];
+		}
+
+		private void pickColonizer(DesignInfo design)
+		{
+			controller.ColonizerDesign = design;
+			updateSelectedColonizer();
+		}
+
+		private void selectColonizerAction_Click(object sender, EventArgs e)
+		{
+			var title = LocalizationManifest.Get.CurrentLanguage["FormColonization"]["refitTitle"].Text();
+			var options = controller.ColonizerDesignOptions.Select(desing => new ShipComponentType<DesignInfo>(
+				desing.Name, ImageCache.Get[desing.ImagePath], 0, null, x => pickColonizer(x)
+			));
+
+			using (var form = new FormPickComponent(title, options))
+				form.ShowDialog();
 		}
 	}
 }

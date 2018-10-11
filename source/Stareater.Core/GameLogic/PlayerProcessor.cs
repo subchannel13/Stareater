@@ -42,9 +42,11 @@ namespace Stareater.GameLogic
 		[StateProperty]
 		public Dictionary<Design, Dictionary<Design, double>> RefitCosts { get; private set; }
 		[StateProperty]
-		public Design ColonyShipDesign { get; private set; }
+		public Design ColonyShipDesign { get; private set; } //TODO(v0.8) remove
 		[StateProperty]
-		public Design SystemColonizerDesign { get; private set; }
+		public Design SystemColonizerDesign { get; private set; } //TODO(v0.8) remove
+		[StateProperty]
+		public List<Design> ColonizerDesignOptions { get; private set; } //TODO(v0.8) fill
 		[StateProperty]
 		public QuadTree<Circle> ScanRanges { get; private set; }
 

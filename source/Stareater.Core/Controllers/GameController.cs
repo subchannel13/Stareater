@@ -246,7 +246,7 @@ namespace Stareater.Controllers
 			lock(threadLocker)
 			{
 				this.endTurnCopy = null;
-				this.endedTurnPlayers.Clear();			
+				this.endedTurnPlayers.Clear();
 			}
 
 			foreach (var player in playerControllers)
