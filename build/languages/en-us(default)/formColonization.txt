@@ -1,6 +1,7 @@
 ﻿:FormColonization
 title = Colonization projects
 colonizerLabel = Colony ship design
+colonizerTitle = Pick colony ship design
 
 addSource = Add
 addSourceTitle = Pick source

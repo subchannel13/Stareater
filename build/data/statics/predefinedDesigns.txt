@@ -21,3 +21,17 @@
 	equipment []
 	specials []
 }
+
+{ PredefinedDesign
+	name "Colony ship"
+	
+	hull: cruiser
+	hullImageIndex= 0
+	
+	hasIsDrive []
+	
+	equipment []
+	specials [
+		:colony =1
+	]
+}

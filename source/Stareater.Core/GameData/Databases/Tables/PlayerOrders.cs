@@ -36,6 +36,9 @@ namespace Stareater.GameData.Databases.Tables
 		public Dictionary<Planet, ColonizationPlan> ColonizationOrders { get; private set; }
 
 		[StateProperty]
+		public Design ColonizerDesign { get; set; }
+
+		[StateProperty]
 		public Dictionary<Design, Design> RefitOrders { get; private set; }
 
 		[StateProperty]

@@ -55,20 +55,20 @@ namespace Stareater.GUI
 			this.projectList.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
 			this.projectList.RowCount = 1;
 			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 179F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 208F));
 			this.projectList.Size = new System.Drawing.Size(284, 208);
 			this.projectList.TabIndex = 0;
 			// 
@@ -84,11 +84,13 @@ namespace Stareater.GUI
 			// 
 			// selectColonizerAction
 			// 
+			this.selectColonizerAction.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.selectColonizerAction.Location = new System.Drawing.Point(148, 9);
 			this.selectColonizerAction.Name = "selectColonizerAction";
-			this.selectColonizerAction.Size = new System.Drawing.Size(75, 30);
+			this.selectColonizerAction.Size = new System.Drawing.Size(124, 30);
 			this.selectColonizerAction.TabIndex = 1;
 			this.selectColonizerAction.Text = "button1";
+			this.selectColonizerAction.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.selectColonizerAction.UseVisualStyleBackColor = true;
 			this.selectColonizerAction.Click += new System.EventHandler(this.selectColonizerAction_Click);
 			// 
@@ -99,7 +101,7 @@ namespace Stareater.GUI
 			this.colonizerDesignText.Size = new System.Drawing.Size(130, 33);
 			this.colonizerDesignText.TabIndex = 0;
 			this.colonizerDesignText.Text = "Colony ship design:";
-			this.colonizerDesignText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.colonizerDesignText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// FormColonization
 			// 

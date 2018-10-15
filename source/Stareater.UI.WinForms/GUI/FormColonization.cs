@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
@@ -53,7 +54,7 @@ namespace Stareater.GUI
 			var design = controller.ColonizerDesign;
 
 			this.selectColonizerAction.Text = design.Name;
-			this.selectColonizerAction.Image = ImageCache.Get[design.ImagePath];
+			this.selectColonizerAction.Image = ImageCache.Get.Resized(design.ImagePath, new Size(20, 20));
 		}
 
 		private void pickColonizer(DesignInfo design)
@@ -64,9 +65,9 @@ namespace Stareater.GUI
 
 		private void selectColonizerAction_Click(object sender, EventArgs e)
 		{
-			var title = LocalizationManifest.Get.CurrentLanguage["FormColonization"]["refitTitle"].Text();
+			var title = LocalizationManifest.Get.CurrentLanguage["FormColonization"]["colonizerTitle"].Text();
 			var options = controller.ColonizerDesignOptions.Select(desing => new ShipComponentType<DesignInfo>(
-				desing.Name, ImageCache.Get[desing.ImagePath], 0, null, x => pickColonizer(x)
+				desing.Name, ImageCache.Get[desing.ImagePath], 0, desing, x => pickColonizer(x)
 			));
 
 			using (var form = new FormPickComponent(title, options))

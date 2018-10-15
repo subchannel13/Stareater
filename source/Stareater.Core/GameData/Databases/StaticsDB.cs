@@ -20,7 +20,6 @@ namespace Stareater.GameData.Databases
 	{
 		public Dictionary<string, BuildingType> Buildings { get; private set; }
 		public ColonyFormulaSet ColonyFormulas { get; private set; }
-		public List<DesignTemplate> ColonyShipDesigns { get; private set; }
 		public List<ConstructableType> Constructables { get; private set; }
 		public List<DevelopmentFocus> DevelopmentFocusOptions { get; private set; }
 		public Dictionary<string, DevelopmentRequirement> DevelopmentRequirements { get; private set; }
@@ -32,7 +31,6 @@ namespace Stareater.GameData.Databases
 		public List<ResearchTopic> ResearchTopics { get; private set; }
 		public ShipFormulaSet ShipFormulas { get; private set; }
 		public StellarisFormulaSet StellarisFormulas { get; private set; }
-		public List<DesignTemplate> SystemColonizerDesigns { get; private set; }
 		public List<SystemPolicy> Policies { get; private set; }
 		public Dictionary<string, TraitType> Traits { get; private set; }
 
@@ -58,10 +56,8 @@ namespace Stareater.GameData.Databases
 			this.SpecialEquipment = new Dictionary<string, SpecialEquipmentType>();
 			this.Thrusters = new Dictionary<string, ThrusterType>();
 
-			this.ColonyShipDesigns = new List<DesignTemplate>();
 			this.NativeDesigns = new Dictionary<string, PredefinedDesign>();
 			this.PredeginedDesigns = new List<DesignTemplate>();
-			this.SystemColonizerDesigns = new List<DesignTemplate>();
 
 			this.Buildings = new Dictionary<string, BuildingType>();
 			this.Constructables = new List<ConstructableType>();
@@ -88,9 +84,6 @@ namespace Stareater.GameData.Databases
 						switch((string)data.Tag) {
 							case "Building":
 								db.Buildings.Add(data[GeneralCodeKey].To<string>(), loadBuilding(data));
-								break;
-							case "Colonizers":
-								db.loadColonizers(data.To<IkonComposite>());
 								break;
 							case "ColonyFormulas":
 								db.ColonyFormulas = loadColonyFormulas(data);
@@ -389,15 +382,6 @@ namespace Stareater.GameData.Databases
 				}
 		}
 		#endregion
-
-		private void loadColonizers(IkonComposite data)
-		{
-			foreach(var designData in data[ColonizerInterstellar].To<IEnumerable<IkonComposite>>())
-				this.ColonyShipDesigns.Add(loadDesignTemplate(designData));
-			
-			foreach(var designData in data[ColonizerSystem].To<IEnumerable<IkonComposite>>())
-				this.SystemColonizerDesigns.Add(loadDesignTemplate(designData));
-		}
 
 		private void loadNatives(IkonComposite data)
 		{
@@ -801,9 +785,6 @@ namespace Stareater.GameData.Databases
 		private const string ConstructionAddTraitTag = "addtrait";
 		private const string AddTraitId = "traitId";
 
-		private const string ColonizerInterstellar = "interstellar";
-		private const string ColonizerSystem = "system";
-		
 		private const string DerivedStatBase = "base";
 		private const string DerivedStatTotal = "total";
 		

@@ -319,12 +319,19 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				//TODO(v0.8) read order
-				return null;
+				var game = this.gameInstance;
+				var player = this.PlayerInstance(game);
+				var design = game.Orders[player].ColonizerDesign;
+
+				return new DesignInfo(design, game.Derivates[player].DesignStats[design], game.Statics);
 			}
 			set
 			{
-				//TODO(v0.8) set order
+				if (this.IsReadOnly)
+					return;
+
+				var game = this.gameInstance;
+				game.Orders[this.PlayerInstance(game)].ColonizerDesign = value.Data;
 			}
 		}
 
@@ -537,7 +544,7 @@ namespace Stareater.Controllers
 			foreach (var stellaris in game.States.Stellarises.OwnedBy[player])
 				orders.AutomatedConstruction[stellaris] = new ConstructionOrders(0);
 
-			var colonizerDesign = game.Derivates[player].ColonyShipDesign;
+			var colonizerDesign = game.Orders[player].ColonizerDesign;
 			var colonizationSources = orders.ColonizationOrders.Values.SelectMany(x => x.Sources).Distinct().ToList();
 			var designStats = game.Derivates[player].DesignStats;
 

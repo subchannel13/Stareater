@@ -42,11 +42,7 @@ namespace Stareater.GameLogic
 		[StateProperty]
 		public Dictionary<Design, Dictionary<Design, double>> RefitCosts { get; private set; }
 		[StateProperty]
-		public Design ColonyShipDesign { get; private set; } //TODO(v0.8) remove
-		[StateProperty]
-		public Design SystemColonizerDesign { get; private set; } //TODO(v0.8) remove
-		[StateProperty]
-		public List<Design> ColonizerDesignOptions { get; private set; } //TODO(v0.8) fill
+		public List<Design> ColonizerDesignOptions { get; private set; }
 		[StateProperty]
 		public QuadTree<Circle> ScanRanges { get; private set; }
 
@@ -90,6 +86,7 @@ namespace Stareater.GameLogic
 		{
             this.initTechAdvances(game.States.DevelopmentAdvances.Of[this.Player]);
             this.unlockPredefinedDesigns(game);
+			this.updateDesigns(game);
 			this.CalculateStareater(game);
 		}
 
@@ -476,6 +473,9 @@ namespace Stareater.GameLogic
 			foreach(var design in this.RefitCosts.Keys)
 				foreach(var discarded in discardedDesigns)
 					this.RefitCosts[design].Remove(discarded);
+
+			if (!this.ColonizerDesignOptions.Contains(game.Orders[this.Player].ColonizerDesign))
+				game.Orders[this.Player].ColonizerDesign = this.ColonizerDesignOptions.First();
 		}
 		#endregion
 		
@@ -727,7 +727,7 @@ namespace Stareater.GameLogic
 		}
 		#endregion
 		
-		private Design makeDesign(StaticsDB statics, StatesDB states, DesignTemplate predefDesign, Dictionary<string, double> techLevels, bool isVirtual)
+		private void makeDesign(StaticsDB statics, StatesDB states, DesignTemplate predefDesign, Dictionary<string, double> techLevels, bool isVirtual)
 		{
 			var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
 			var specials = predefDesign.SpecialEquipment.OrderBy(x => x.Key).Select(
@@ -755,26 +755,22 @@ namespace Stareater.GameLogic
 			{
 				states.Designs.Add(design);
 				this.Analyze(design, statics);
-				return design;
 			}
-			
-			return states.Designs.First(x => x == design);
 		}
 		
 		private void unlockPredefinedDesigns(MainGame game)
 		{
-			var playerTechs = game.States.DevelopmentAdvances.Of[Player];
+			var playerTechs = game.States.DevelopmentAdvances.Of[this.Player];
 			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 				
 			foreach(var predefDesign in game.Statics.PredeginedDesigns)
-				if (!Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(game.Statics), 0, techLevels))
+				if (!this.Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(game.Statics), 0, techLevels))
 				{
-					Player.UnlockedDesigns.Add(predefDesign);
+					this.Player.UnlockedDesigns.Add(predefDesign);
 					makeDesign(game.Statics, game.States, predefDesign, techLevels, false);
 				}
-			
-			this.ColonyShipDesign = updateVirtualDesign(this.ColonyShipDesign, game, game.Statics.ColonyShipDesigns, techLevels);
-			this.SystemColonizerDesign = updateVirtualDesign(this.SystemColonizerDesign, game, game.Statics.SystemColonizerDesigns, techLevels);
+
+			this.ColonizerDesignOptions = this.DesignStats.Where(x => x.Value.ColonizerPopulation > 0).Select(x => x.Key).ToList();
 		}
 		
 		private static Dictionary<string, int> updateTechQueue(IEnumerable<KeyValuePair<string, int>> queue, ICollection<string> validItems)
@@ -801,22 +797,6 @@ namespace Stareater.GameLogic
 					newOrders.Queue.Add(item);
 
 			return newOrders;
-		}
-
-		private Design updateVirtualDesign(Design oldDesign, MainGame game, IEnumerable<DesignTemplate> predefDesigns, Dictionary<string, double> techLevels)
-		{
-			var newDesign = makeDesign(
-				game.Statics, game.States,
-				predefDesigns.Last(x => Prerequisite.AreSatisfied(x.Prerequisites(game.Statics), 0, techLevels)),
-				techLevels, true);
-			
-			if (newDesign != oldDesign && oldDesign != null)
-			{
-				oldDesign.IsObsolete = true;
-				game.Orders[oldDesign.Owner].RefitOrders[oldDesign] = null;
-			}
-			
-			return newDesign;
 		}
 	}
 }
