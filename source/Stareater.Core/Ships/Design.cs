@@ -21,9 +21,6 @@ namespace Stareater.Ships
 		public bool IsObsolete { get; set; } //TODO(v0.8) move to stats
 
 		[StateProperty]
-		public bool IsVirtual { get; private set; }
-
-		[StateProperty]
 		public string Name { get; private set; }
 
 		[StateProperty]
@@ -62,12 +59,11 @@ namespace Stareater.Ships
 		[StateProperty]
 		public double Cost { get; private set; } //TODO(v0.8) try to move design stats
 
-		public Design(string idCode, Player owner, bool isObsolete, bool isVirtual, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment, Component<ThrusterType> thrusters) 
+		public Design(string idCode, Player owner, bool isObsolete, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment, Component<ThrusterType> thrusters) 
 		{
 			this.IdCode = idCode;
 			this.Owner = owner;
 			this.IsObsolete = isObsolete;
-			this.IsVirtual = isVirtual;
 			this.Name = name;
 			this.ImageIndex = imageIndex;
 			this.Armor = armor;

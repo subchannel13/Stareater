@@ -535,7 +535,7 @@ namespace Stareater.GameLogic
 			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
 
 			var design = new Design(
-				states.MakeDesignId(), Player, false, oldDesign.IsVirtual, oldDesign.Name, oldDesign.ImageIndex,
+				states.MakeDesignId(), Player, false, oldDesign.Name, oldDesign.ImageIndex,
 			    armor, hull, isDrive, reactor, sensor, shield, equipment, specials, thruster
 			);
 			design.CalcHash(statics);
@@ -727,7 +727,7 @@ namespace Stareater.GameLogic
 		}
 		#endregion
 		
-		private void makeDesign(StaticsDB statics, StatesDB states, DesignTemplate predefDesign, Dictionary<string, double> techLevels, bool isVirtual)
+		private void makeDesign(StaticsDB statics, StatesDB states, DesignTemplate predefDesign, Dictionary<string, double> techLevels)
 		{
 			var hull = statics.Hulls[predefDesign.HullCode].MakeHull(techLevels);
 			var specials = predefDesign.SpecialEquipment.OrderBy(x => x.Key).Select(
@@ -746,7 +746,7 @@ namespace Stareater.GameLogic
 			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
 
 			var design = new Design(
-				states.MakeDesignId(), Player, false, isVirtual, predefDesign.Name, predefDesign.HullImageIndex,
+				states.MakeDesignId(), Player, false, predefDesign.Name, predefDesign.HullImageIndex,
 			    armor, hull, isDrive, reactor, sensor, shield, equipment, specials, thruster
 			);
 			design.CalcHash(statics);
@@ -767,7 +767,7 @@ namespace Stareater.GameLogic
 				if (!this.Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(game.Statics), 0, techLevels))
 				{
 					this.Player.UnlockedDesigns.Add(predefDesign);
-					makeDesign(game.Statics, game.States, predefDesign, techLevels, false);
+					makeDesign(game.Statics, game.States, predefDesign, techLevels);
 				}
 
 			this.ColonizerDesignOptions = this.DesignStats.Where(x => x.Value.ColonizerPopulation > 0).Select(x => x.Key).ToList();

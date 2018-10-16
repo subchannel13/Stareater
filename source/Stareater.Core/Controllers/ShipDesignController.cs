@@ -14,7 +14,7 @@ namespace Stareater.Controllers
 	public class ShipDesignController
 	{
 		private readonly MainGame game;
-		private Player player;
+		private readonly Player player;
 		private readonly Dictionary<string, double> playersTechLevels;
 		
 		internal ShipDesignController(MainGame game, Player player)
@@ -166,11 +166,11 @@ namespace Stareater.Controllers
 		#region Selected components
 		private HullInfo selectedHull = null;
 
-		private ArmorInfo armorInfo = null;
+		private readonly ArmorInfo armorInfo = null;
 		private IsDriveInfo availableIsDrive = null;
 		private ReactorInfo reactorInfo = null;
-		private SensorInfo sensorInfo = null;
-		private ThrusterInfo thrusterInfo = null;
+		private readonly SensorInfo sensorInfo = null;
+		private readonly ThrusterInfo thrusterInfo = null;
 
 		private readonly List<Component<MissionEquipmentType>> selectedMissionEquipment = new List<Component<MissionEquipmentType>>();
 		private readonly List<Component<SpecialEquipmentType>> selectedSpecialEquipment = new List<Component<SpecialEquipmentType>>();
@@ -389,7 +389,6 @@ namespace Stareater.Controllers
 			var design = new Design(
 				this.game.States.MakeDesignId(),
 				this.player,
-				false,
 				false,
 				this.Name.Trim(),
 				this.ImageIndex,

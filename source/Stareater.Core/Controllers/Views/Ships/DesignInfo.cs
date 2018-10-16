@@ -42,7 +42,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return !Data.IsVirtual && !Data.IsObsolete;
+				return !Data.IsObsolete;
 			}
 		}
 		

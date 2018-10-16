@@ -49,8 +49,8 @@ namespace Stareater.Controllers
 					yield return item;
 
 				var localEffencts = this.Processor.LocalEffects(this.Game.Statics).UnionWith(this.Game.Derivates.Players.Of[this.Player].TechLevels).Get;
-				foreach (var design in this.Game.States.Designs.OwnedBy[this.Player].Where(x => !x.IsVirtual && !x.IsObsolete))
-                    yield return new ConstructableInfo(new ShipProject(design), localEffencts, null, 0);
+				foreach (var design in this.Game.States.Designs.OwnedBy[this.Player].Where(x => !x.IsObsolete))
+                    yield return new ConstructableInfo(new ShipProject(design, false), localEffencts, null, 0);
 			}
 		}
 		#endregion

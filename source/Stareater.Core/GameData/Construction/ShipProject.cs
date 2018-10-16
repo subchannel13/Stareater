@@ -12,9 +12,13 @@ namespace Stareater.GameData.Construction
 		[StateProperty]
 		public Design Type { get; set; }
 
-		public ShipProject(Design design)
+		[StateProperty]
+		public bool IsVirtual { get; private set; }
+
+		public ShipProject(Design design, bool isVirtual)
 		{
 			this.Type = design;
+			this.IsVirtual = isVirtual;
 		}
 
 		private ShipProject()
@@ -38,11 +42,6 @@ namespace Stareater.GameData.Construction
 		public Formula TurnLimit
 		{
 			get { return new Formula(double.PositiveInfinity); }
-		}
-
-		public bool IsVirtual
-		{
-			get { return this.Type.IsVirtual; }
 		}
 
 		public IEnumerable<IConstructionEffect> Effects

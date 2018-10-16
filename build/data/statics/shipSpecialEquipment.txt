@@ -36,10 +36,9 @@
 	prerequisites [
 		:colonizer #lvl - 1;
 	]
-	cannotPick.
 	
-	cost # 100e6;
-	size # 200;
+	cost # 25e6;
+	size # 50;
 	maxCount # inf;
 }
 

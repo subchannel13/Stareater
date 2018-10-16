@@ -237,7 +237,7 @@ namespace Stareater.Controllers
 			var playerProc = game.Derivates[this.PlayerInstance(game)];
 			
 			return playerProc.RefitCosts[design.Data].
-				Where(x => !x.Key.IsObsolete && !x.Key.IsVirtual).
+				Where(x => !x.Key.IsObsolete).
 				Select(x => new DesignInfo(x.Key, playerProc.DesignStats[x.Key], game.Statics));
 		}
 		
@@ -553,7 +553,7 @@ namespace Stareater.Controllers
 			{
 				var plan = orders.AutomatedConstruction[game.States.Stellarises.At[source, player].First()];
 				plan.SpendingRatio = 1;
-				plan.Queue.Add(new ShipProject(colonizerDesign));
+				plan.Queue.Add(new ShipProject(colonizerDesign, true));
 
 				var colonizationOrder = orders.ColonizationOrders.Values.First(x => x.Sources.Contains(source));
 

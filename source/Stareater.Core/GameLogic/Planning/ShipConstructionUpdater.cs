@@ -53,7 +53,7 @@ namespace Stareater.GameLogic.Planning
 		#region IConstructionProjectVisitor implementation
 		public void Visit(ShipProject project)
 		{
-			newProject = new ShipProject(checkDesign(project.Type));
+			newProject = new ShipProject(checkDesign(project.Type), false);
         }
 
 		public void Visit(StaticProject project)
