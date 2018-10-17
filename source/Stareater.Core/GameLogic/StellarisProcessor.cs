@@ -7,7 +7,6 @@ using Stareater.Utils.StateEngine;
 using Stareater.GameData.Construction;
 using Stareater.GameData;
 using Stareater.GameLogic.Planning;
-using Stareater.Ships.Missions;
 using System;
 
 namespace Stareater.GameLogic
@@ -114,53 +113,33 @@ namespace Stareater.GameLogic
 		public void CalculateDerivedEffects(MainGame game)
 		{
 			var systemColonies = this.systemColonies(game).ToList();
-			var destinations = new PendableSet<ColonyProcessor>(systemColonies.Where(x => x.Colony.Population < x.MaxPopulation));
-			var plans = destinations.ToDictionary(x => x, x => 0.0);
-			var immigrants = systemColonies.Sum(x => x.Emigrants);
+            var colonyStats = systemColonies.
+                Where(x => x.Colony.Population < x.MaxPopulation).
+                OrderBy(x => x.Desirability).
+                ToList();
 
-			var stats = game.Derivates[this.Owner].DesignStats;
-			var starEmigrantCapacity = game.States.Fleets.At[this.Site.Location.Star.Position, this.Owner].
-				Where(x => x.Missions.Any(m => m is LoadMission)).
-				SelectMany(x => x.Ships).
-				Sum(x => stats[x.Design].ColonizerPopulation * x.Quantity - x.PopulationTransport);
-
-			this.IsMigrants = 0;
 			this.EmigrantionPlan = systemColonies.ToDictionary(x => x.Colony, x => 0.0);
 			this.ImmigrantionPlan = systemColonies.ToDictionary(x => x.Colony, x => 0.0);
 
-			foreach (var colony in systemColonies.OrderByDescending(x => x.Desirability))
+			for (int fromI = 0; fromI < colonyStats.Count; fromI++)
 			{
-				var migrants = Math.Min(colony.Emigrants, starEmigrantCapacity);
-				this.EmigrantionPlan[colony.Colony] += migrants;
-				this.IsMigrants += migrants;
-				starEmigrantCapacity -= migrants;
-			}
+				var origin = colonyStats[fromI];
+				var destinations = colonyStats.Where(x => x.Desirability > origin.Desirability).ToList();
+				var weightSum = destinations.Sum(x => x.Desirability);
+				var emigrants = origin.Emigrants;
 
-			while (destinations.Count > 0 && immigrants > 0)
-			{
-				var weightSum = plans.Keys.Sum(x => x.Desirability);
 				foreach (var site in destinations)
 				{
-					var colonyImmigrants = immigrants * site.Desirability / weightSum;
-					var maxImmigrants = site.MaxPopulation - site.Colony.Population;
+					var immigrants = Math.Min(
+						emigrants * site.Desirability / weightSum,
+						site.MaxPopulation - site.Colony.Population
+					);
 
-					if (colonyImmigrants > maxImmigrants)
-					{
-						colonyImmigrants = maxImmigrants;
-						destinations.PendRemove(site);
-					}
-
-					plans[site] += colonyImmigrants;
-					immigrants -= colonyImmigrants;
-					weightSum -= site.Desirability;
+					this.ImmigrantionPlan[site.Colony] += immigrants;
+					this.EmigrantionPlan[colonyStats[fromI].Colony] += immigrants;
 				}
-				destinations.ApplyPending();
 			}
 
-			this.ImmigrantionPlan = plans.ToDictionary(x => x.Key.Colony, x => x.Value);
-
-			var emigrationPortion = 1 - immigrants / systemColonies.Sum(x => x.Emigrants);
-			this.EmigrantionPlan = systemColonies.ToDictionary(x => x.Colony, x => x.Emigrants * emigrationPortion);
 			this.IsMigrants += systemColonies.Sum(x => x.Emigrants - this.EmigrantionPlan[x.Colony]);
 		}
 
