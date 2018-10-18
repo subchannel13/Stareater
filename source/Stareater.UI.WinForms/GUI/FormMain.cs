@@ -33,7 +33,6 @@ namespace Stareater.GUI
 		private GameOverScene gameOverRenderer;
 		private double animationDeltaTime = 0;
 
-		private Queue<Action> delayedGuiEvents = new Queue<Action>();
 		private GameController gameController = null;
 		private PlayerController[] playerControllers = null;
 		private FleetController fleetController = null;
@@ -106,16 +105,6 @@ namespace Stareater.GUI
 			get { return this.playerControllers[currentPlayerIndex]; }
 		}
 
-		private void eventTimer_Tick(object sender, EventArgs e)
-		{
-			lock (delayedGuiEvents) {
-				eventTimer.Stop();
-
-				while (delayedGuiEvents.Count > 0)
-					delayedGuiEvents.Dequeue().Invoke();
-			}
-		}
-		
 		private void returnButton_Click(object sender, EventArgs e)
 		{
 			if (this.currentRenderer == systemRenderer)
@@ -183,13 +172,7 @@ namespace Stareater.GUI
 		#region Delayed Events
 		private void postDelayedEvent(Action eventAction)
 		{
-			lock (delayedGuiEvents) {
-				delayedGuiEvents.Enqueue(eventAction);
-				if (this.InvokeRequired)
-					this.BeginInvoke(new Action(eventTimer.Start));
-				else
-					eventTimer.Start();
-			}
+			this.BeginInvoke(new Action(eventAction));
 		}
 
 		private void showDevelopment()

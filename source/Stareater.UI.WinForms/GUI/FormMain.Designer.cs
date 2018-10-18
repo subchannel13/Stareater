@@ -27,9 +27,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-			this.eventTimer = new System.Windows.Forms.Timer(this.components);
 			this.glCanvas = new OpenTK.GLControl();
 			this.constructionManagement = new Stareater.GUI.ConstructionSiteView();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
@@ -60,11 +58,6 @@
 			this.unitInfoPanel.SuspendLayout();
 			this.workaroundForWinformsAnchorBug.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// eventTimer
-			// 
-			this.eventTimer.Interval = 1;
-			this.eventTimer.Tick += new System.EventHandler(this.eventTimer_Tick);
 			// 
 			// glCanvas
 			// 
@@ -351,8 +344,6 @@
 		private Stareater.GUI.ConstructionSiteView constructionManagement;
 
 		#endregion
-
-		private System.Windows.Forms.Timer eventTimer;
 		private OpenTK.GLControl glCanvas;
 		private Stareater.GUI.EmpyPlanetView empyPlanetView;
 		private System.Windows.Forms.ToolStripMenuItem colonizationToolStripMenuItem;
