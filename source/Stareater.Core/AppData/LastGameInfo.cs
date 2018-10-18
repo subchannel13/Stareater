@@ -41,7 +41,7 @@ namespace Stareater.AppData
 		{
 			var conditions = ikstonData.ToOrDefault(StartingConditionsKey, x => StartingConditions.Load(x.To<IkonComposite>()), null);
 			if (conditions == null)
-				return null;
+				return new LastGameInfo();
 
 			var info = new LastGameInfo
 			{
