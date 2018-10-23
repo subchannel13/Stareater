@@ -86,6 +86,10 @@ namespace Stareater.GameLogic
 		{
             this.initTechAdvances(game.States.DevelopmentAdvances.Of[this.Player]);
             this.unlockPredefinedDesigns(game);
+
+			foreach (var design in game.States.Designs.OwnedBy[this.Player])
+				this.Analyze(design, game.Statics);
+
 			this.updateDesigns(game);
 			this.CalculateStareater(game);
 		}
@@ -474,6 +478,8 @@ namespace Stareater.GameLogic
 				foreach(var discarded in discardedDesigns)
 					this.RefitCosts[design].Remove(discarded);
 
+			this.ColonizerDesignOptions = this.DesignStats.Where(x => x.Value.ColonizerPopulation > 0).Select(x => x.Key).ToList();
+
 			if (!this.ColonizerDesignOptions.Contains(game.Orders[this.Player].ColonizerDesign))
 				game.Orders[this.Player].ColonizerDesign = this.ColonizerDesignOptions.First();
 		}
@@ -769,8 +775,6 @@ namespace Stareater.GameLogic
 					this.Player.UnlockedDesigns.Add(predefDesign);
 					makeDesign(game.Statics, game.States, predefDesign, techLevels);
 				}
-
-			this.ColonizerDesignOptions = this.DesignStats.Where(x => x.Value.ColonizerPopulation > 0).Select(x => x.Key).ToList();
 		}
 		
 		private static Dictionary<string, int> updateTechQueue(IEnumerable<KeyValuePair<string, int>> queue, ICollection<string> validItems)

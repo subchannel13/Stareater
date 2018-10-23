@@ -332,15 +332,8 @@ namespace Stareater.GameLogic
 				var playerProc = this.game.Derivates[project.Owner];
 				bool colonyExists = this.game.States.Colonies.AtPlanet.Contains(project.Destination);
 				
-				var colonizers = this.game.States.Fleets.At[project.Destination.Star.Position].Where(
-					x => 
-					{
-						if (x.Owner != project.Owner || x.Missions.Count == 0)
-							return false;
-						
-						var mission = x.Missions.First.Value as ColonizationMission;
-						return mission != null && mission.Target == project.Destination;
-					});
+				var colonizers = this.game.States.Fleets.At[project.Destination.Star.Position].
+					Where(x => x.Owner == project.Owner && x.Ships.Any(s => s.PopulationTransport > 0));
 					
 				var arrivedPopulation = colonizers.SelectMany(x => x.Ships).Sum(x => x.PopulationTransport);
 				var colonizationTreshold = this.game.Statics.ColonyFormulas.ColonizationPopulationThreshold.Evaluate(null);
@@ -389,7 +382,8 @@ namespace Stareater.GameLogic
 						var stellaris = new StellarisAdmin(project.Destination.Star, project.Owner);
 						this.game.States.Stellarises.Add(stellaris);
 						this.game.Derivates.Stellarises.Add(new StellarisProcessor(stellaris));
-						this.game.Orders[project.Owner].Policies.Add(stellaris, game.Statics.Policies.First());
+						this.game.Orders[project.Owner].Policies[stellaris] = game.Statics.Policies.First();
+						this.game.Orders[project.Owner].AutomatedConstruction[stellaris] = new ConstructionOrders(0);
 					}
 				}
 				

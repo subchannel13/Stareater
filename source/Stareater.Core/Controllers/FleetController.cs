@@ -20,6 +20,7 @@ namespace Stareater.Controllers
 		public FleetInfo Fleet { get; private set; }
 
 		private readonly Dictionary<Design, long> selection = new Dictionary<Design, long>();
+		private readonly Dictionary<Design, double> selectionPopulation = new Dictionary<Design, double>(); //TODO(v0.8) Make new type and unify with selection quantity
 		private readonly List<WaypointInfo> simulationWaypoints = new List<WaypointInfo>();
 		private double eta = 0;
 
@@ -73,25 +74,32 @@ namespace Stareater.Controllers
 		public void DeselectGroup(ShipGroupInfo group)
 		{
 			selection.Remove(group.Data.Design);
-			
+			selectionPopulation.Remove(group.Data.Design);
+
 			if (!this.CanMove)
 				this.simulationWaypoints.Clear();
 		}
 		
 		public void SelectGroup(ShipGroupInfo group, long quantity)
 		{
+			this.SelectGroup(group, quantity, group.Population * quantity / (double)group.Quantity);
+		}
+
+		public void SelectGroup(ShipGroupInfo group, long quantity, double population)
+		{
 			quantity = Methods.Clamp(quantity, 0, this.Fleet.FleetData.Ships.WithDesign[group.Data.Design].Quantity);
 			selection[group.Data.Design] = quantity;
-			
+			selectionPopulation[group.Data.Design] = population;
+
 			if (selection[group.Data.Design] <= 0)
-				selection.Remove(group.Data.Design);
-			
+				this.DeselectGroup(group);
+
 			if (!this.CanMove)
 				this.simulationWaypoints.Clear();
-			
+
 			this.calcEta();
 		}
-		
+
 		public FleetController Send(IEnumerable<Vector2D> waypoints)
 		{
 			if (!this.game.States.Stars.At.Contains(this.Fleet.Position))
@@ -197,13 +205,8 @@ namespace Stareater.Controllers
 			
 			//add new fleet
 			var newFleet = new Fleet(this.Fleet.FleetData.Owner, this.Fleet.FleetData.Position, new LinkedList<AMission>(newMissions));
-			var movedPopulation = new Dictionary<Design, double>();
 			foreach (var group in this.Fleet.FleetData.Ships.Where(x => this.selection.ContainsKey(x.Design)))
-			{
-				var population = Math.Ceiling(group.PopulationTransport * this.selection[group.Design] / group.Quantity);
-				movedPopulation[group.Design] = population;
-				newFleet.Ships.Add(new ShipGroup(group.Design, this.selection[group.Design], 0, 0, population));
-			}
+				newFleet.Ships.Add(new ShipGroup(group.Design, this.selection[group.Design], 0, 0, this.selectionPopulation[group.Design]));
 
 			var newFleetInfo = this.addFleet(shipOrders, newFleet);
 			
@@ -215,7 +218,7 @@ namespace Stareater.Controllers
 						group.Design, 
 						group.Quantity - this.selection[group.Design], 
 						0, 0, 
-						group.PopulationTransport - movedPopulation[group.Design]));
+						group.PopulationTransport - this.selectionPopulation[group.Design]));
 			if (oldFleet.Ships.Count > 0)
 				this.addFleet(shipOrders, oldFleet);
 

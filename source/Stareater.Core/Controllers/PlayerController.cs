@@ -562,21 +562,66 @@ namespace Stareater.Controllers
 					var controller = new FleetController(fleet, game, player);
 					foreach(var group in controller.ShipGroups.Where(x => x.PopulationCapacity > 0))
 					{
-						var toSelect = (long)Math.Floor(group.Data.PopulationTransport / designStats[group.Data.Design].ColonizerPopulation);
+						var shipCapacity = designStats[group.Data.Design].ColonizerPopulation;
+						var toSelect = (long)Math.Floor(group.Data.PopulationTransport / shipCapacity);
 						if (toSelect < 1)
 							continue;
 
-						controller.SelectGroup(group, toSelect);
+						controller.SelectGroup(group, toSelect, toSelect * shipCapacity);
 					}
 
 					controller.Send(new Vector2D[] { colonizationOrder.Destination.Star.Position });
 				}
+			}
+
+			var transporters = this.Fleets.Where(x => x.FleetData.Owner == player && isTransportFleet(x)).ToList();
+			if(transporters.Count > 0)
+			{
+				var destination = game.States.Colonies.OwnedBy[player].OrderByDescending(x => game.Derivates[x].Desirability).First();
+				var source = game.States.Stellarises.OwnedBy[player].Where(x => x.Location.Star != destination.Star).FirstOrDefault();
+
+				if (source != null)
+					foreach (var fleet in transporters)
+					{
+						var controller = this.SelectFleet(fleet);
+
+						if (fleet.Position != destination.Location.Star.Position)
+						{
+							foreach (var group in fleet.Ships)
+							{
+								var toSend = (long)Math.Floor(group.Population / group.Design.ColonizerPopulation);
+								controller.SelectGroup(group, toSend);
+							}
+							controller.Send(new Vector2D[] { destination.Location.Star.Position });
+
+							var remainingFleet = this.FleetsAt(destination.Location.Star.Position).Where(x => x.FleetData.Owner == player && isTransportFleet(x)).FirstOrDefault();
+							if (remainingFleet != null)
+								controller = this.SelectFleet(remainingFleet);
+							else
+								controller = null;
+						}
+
+						if (controller != null && fleet.Position != source.Location.Star.Position)
+						{
+							foreach (var group in fleet.Ships)
+							{
+								var toSend = (long)Math.Ceiling(group.Population / group.Design.ColonizerPopulation);
+								controller.SelectGroup(group, toSend);
+							}
+							controller.Send(new Vector2D[] { source.Location.Star.Position });
+						}
+					}
 			}
 		}
 
 		private bool isColonizerFleet(FleetInfo fleet)
 		{
 			return fleet.FleetData.Missions.All(x => x is LoadMission) && fleet.PopulationCapacity > 0;
+		}
+
+		private bool isTransportFleet(FleetInfo fleet)
+		{
+			return fleet.PopulationCapacity > 0 && fleet.Missions.Waypoints.Length == 0;
 		}
 		#endregion
 	}

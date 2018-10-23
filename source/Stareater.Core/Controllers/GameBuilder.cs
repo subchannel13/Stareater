@@ -72,9 +72,6 @@ namespace Stareater.Controllers
 			{
 				var playerProc = derivates.Players.Of[player];
 				playerProc.Initialize(game);
-
-				foreach (var design in game.States.Designs.OwnedBy[player])
-					playerProc.Analyze(design, statics);
 			}
 			game.CalculateDerivedEffects();
 
