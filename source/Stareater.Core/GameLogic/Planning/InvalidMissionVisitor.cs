@@ -37,9 +37,9 @@ namespace Stareater.GameLogic.Planning
 
 		#region IMissionVisitor implementation
 
-		public void Visit(ColonizationMission mission)
+		public void Visit(DisembarkMission mission)
 		{
-			if (this.game.States.ColonizationProjects.Of[mission.Target, fleet.Owner].Any())
+			if (fleet.Ships.Sum(x => x.PopulationTransport) > 0 || this.remainingMissions.Any(x => x is LoadMission))
 				this.remainingMissions.AddLast(mission);
 		}
 
@@ -47,6 +47,7 @@ namespace Stareater.GameLogic.Planning
 		{
 			var stats = this.game.Derivates.Players.Of[fleet.Owner].DesignStats;
 
+			//TODO(later) check if destination can give population
 			if (fleet.Ships.Sum(x => x.PopulationTransport) < fleet.Ships.Sum(x => stats[x.Design].ColonizerPopulation * x.Quantity))
 				this.remainingMissions.AddLast(mission);
 		}

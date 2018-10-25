@@ -17,7 +17,7 @@ namespace Stareater.Ships.Missions
 
 		public override int GetHashCode()
 		{
-			return 1;
+			return 2;
 		}
 
 		public const string MissionTag = "Load";

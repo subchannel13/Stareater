@@ -305,7 +305,7 @@
     <Compile Include="Ships\Component.cs" />
     <Compile Include="Ships\Design.cs" />
     <Compile Include="Ships\Missions\AMission.cs" />
-    <Compile Include="Ships\Missions\ColonizationMission.cs" />
+    <Compile Include="Ships\Missions\DisembarkMission.cs" />
     <Compile Include="Ships\Missions\IMissionVisitor.cs" />
     <Compile Include="Ships\Missions\LoadMission.cs" />
     <Compile Include="Ships\Missions\MissionFactory.cs" />

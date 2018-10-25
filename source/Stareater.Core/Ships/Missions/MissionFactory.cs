@@ -10,8 +10,8 @@ namespace Stareater.Ships.Missions
 		{
 			if (rawData.Tag.Equals(MoveMission.MissionTag))
 				return session.Load<MoveMission>(rawData);
-			else if (rawData.Tag.Equals(ColonizationMission.MissionTag))
-				return session.Load<ColonizationMission>(rawData);
+			else if (rawData.Tag.Equals(DisembarkMission.MissionTag))
+				return session.Load<DisembarkMission>(rawData);
 			else if (rawData.Tag.Equals(SkipTurnMission.MissionTag))
 				return new SkipTurnMission();
 			else if (rawData.Tag.Equals(LoadMission.MissionTag))

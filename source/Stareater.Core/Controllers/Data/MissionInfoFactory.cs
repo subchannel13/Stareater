@@ -35,7 +35,7 @@ namespace Stareater.Controllers.Data
 			waypoints.Add(new WaypointInfo(mission.Destination.Position, mission.UsedWormhole != null));
 		}
 
-		public void Visit(ColonizationMission mission)
+		public void Visit(DisembarkMission mission)
 		{
 			//No operation
 		}

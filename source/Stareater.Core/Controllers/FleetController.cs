@@ -124,7 +124,17 @@ namespace Stareater.Controllers
 			
 			return this;
 		}
-		
+
+		public FleetController Disembark()
+		{
+			return this.giveOrder(this.Fleet.FleetData.Missions.Concat(new[] { new DisembarkMission() }));
+		}
+
+		public FleetController LoadPopulation()
+		{
+			return this.giveOrder(this.Fleet.FleetData.Missions.Concat(new[] { new LoadMission() }));
+		}
+
 		public void SimulateTravel(StarInfo destination)
 		{
 			if (!this.game.States.Stars.At.Contains(this.Fleet.Position))
@@ -157,7 +167,8 @@ namespace Stareater.Controllers
 				return new FleetInfo(similarFleet, playerProc, this.game.Statics);
 			}
 			else {
-				shipOrders.Add(newFleet);
+				if (newFleet.Ships.Count > 0)
+					shipOrders.Add(newFleet);
 				var fleetInfo = new FleetInfo(newFleet, playerProc, this.game.Statics);
 
 				return fleetInfo;
@@ -219,8 +230,7 @@ namespace Stareater.Controllers
 						group.Quantity - this.selection[group.Design], 
 						0, 0, 
 						group.PopulationTransport - this.selectionPopulation[group.Design]));
-			if (oldFleet.Ships.Count > 0)
-				this.addFleet(shipOrders, oldFleet);
+			this.Fleet = this.addFleet(shipOrders, oldFleet);
 
 			return new FleetController(
 				newFleetInfo, 

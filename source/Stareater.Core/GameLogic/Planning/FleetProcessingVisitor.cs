@@ -109,18 +109,45 @@ namespace Stareater.GameLogic.Planning
 			}
 		}
 
-		void IMissionVisitor.Visit(ColonizationMission mission)
+		void IMissionVisitor.Visit(DisembarkMission mission)
 		{
-			if (this.newPosition == mission.Target.Star.Position)
-				unfinishedMissions.AddLast(mission);
-			
+			if (!this.game.States.Stars.At.Contains(this.fleet.Position))
+			{
+				this.unfinishedMissions.AddLast(mission);
+				this.stay();
+				return;
+			}
+
+			var newFleet = this.localFleet();
+			var destinations = this.game.States.Colonies.
+				AtStar[this.game.States.Stars.At[this.fleet.Position], this.fleet.Owner].
+				Select(x => this.game.Derivates[x]).
+				ToList();
+
+			foreach (var group in newFleet.Ships.Where(x => x.PopulationTransport > 0))
+			{
+				var weightSum = destinations.Sum(x => x.Desirability);
+				var transported = group.PopulationTransport;
+				foreach (var site in destinations)
+				{
+					var immigrants = Math.Min(
+						transported * site.Desirability / weightSum,
+						site.MaxPopulation - site.Colony.Population
+					);
+
+					site.Colony.Population += immigrants;
+					group.PopulationTransport -= immigrants;
+				}
+			}
+
 			this.movementSteps.Add(new FleetMovement(
-					this.fleet,
-					localFleet(),
-					this.time,
-					1,
-					new Vector2D()
+				this.fleet,
+				newFleet,
+				this.time,
+				1,
+				new Vector2D()
 			));
+
 			this.time = 1;
 		}
 
@@ -148,6 +175,7 @@ namespace Stareater.GameLogic.Planning
 
 				group.PopulationTransport += embarked;
 				availableMigrants -= embarked;
+				stellaris.IsMigrants -= embarked;
 			}
 
 			var endTime = this.time;

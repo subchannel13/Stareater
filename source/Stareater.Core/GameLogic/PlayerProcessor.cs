@@ -617,30 +617,27 @@ namespace Stareater.GameLogic
 					x => AbilityStatsFactory.Create(x, equip.Level, equip.Quantity, statics)
 				)
 			));
-			
-			this.DesignStats.Add(
-				design,
-				new DesignStats(
-					design.Hull.TypeInfo.Size.Evaluate(hullVars),
-					galaxySpeed,
-					shipVars[ReactorType.TotalPowerKey],
-					statics.ShipFormulas.ScanRange.Evaluate(shipVars.Get),
-					statics.ShipFormulas.CombatSpeed.Evaluate(shipVars.Get),
-					shipVars[ReactorType.TotalPowerKey] - shieldPower,
-					abilities,
-	                statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
-	                buildings,
-	                statics.ShipFormulas.HitPoints.Evaluate(shipVars.Get),
-	                shieldHp,
-	                statics.ShipFormulas.Evasion.Evaluate(shipVars.Get),
-	                Methods.Clamp(baseArmorReduction * hullArFactor, 0, maxArmorReduction),
-	                shieldReduction,
-	                shieldRegeneration,
-	                shieldThickness,
-	                statics.ShipFormulas.Detection.Evaluate(shipVars.Get),
-	                statics.ShipFormulas.Cloaking.Evaluate(shipVars.Get),
-	                statics.ShipFormulas.Jamming.Evaluate(shipVars.Get)
-	            )
+
+			this.DesignStats[design] = new DesignStats(
+				design.Hull.TypeInfo.Size.Evaluate(hullVars),
+				galaxySpeed,
+				shipVars[ReactorType.TotalPowerKey],
+				statics.ShipFormulas.ScanRange.Evaluate(shipVars.Get),
+				statics.ShipFormulas.CombatSpeed.Evaluate(shipVars.Get),
+				shipVars[ReactorType.TotalPowerKey] - shieldPower,
+				abilities,
+				statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
+				buildings,
+				statics.ShipFormulas.HitPoints.Evaluate(shipVars.Get),
+				shieldHp,
+				statics.ShipFormulas.Evasion.Evaluate(shipVars.Get),
+				Methods.Clamp(baseArmorReduction * hullArFactor, 0, maxArmorReduction),
+				shieldReduction,
+				shieldRegeneration,
+				shieldThickness,
+				statics.ShipFormulas.Detection.Evaluate(shipVars.Get),
+				statics.ShipFormulas.Cloaking.Evaluate(shipVars.Get),
+				statics.ShipFormulas.Jamming.Evaluate(shipVars.Get)
 			);
 		}
 		
