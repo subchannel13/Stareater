@@ -162,15 +162,14 @@ namespace Stareater.GameLogic
 			if (advanceOrder.Count > 0 && advanceOrder.All(x => x.Topic.IdCode != focused))
 				focused = advanceOrder[0].Topic.IdCode;
 			
-			double focusWeight = game.Statics.PlayerFormulas.FocusedResearchWeight;
 			var results = new List<ResearchResult>();
-			for (int i = 0; i < advanceOrder.Count; i++) {
-				double weight = advanceOrder[i].Topic.IdCode == focused ? focusWeight : 1;
-				weight /= advanceOrder.Count + focusWeight - 1;
-				
-				results.Add(advanceOrder[i].SimulateInvestment(weight));
-			}
-			
+			Methods.WeightedPointDealing(1, advanceOrder.Select(techProgress => new PointReceiver<ResearchProgress>(
+				techProgress,
+				techProgress.Topic.IdCode == focused ? game.Statics.PlayerFormulas.FocusedResearchWeight : 1,
+				x => double.PositiveInfinity,
+				(x, p) => results.Add(x.SimulateInvestment(p))
+			)));
+
 			this.ResearchPlan = results;
 		}
 		
@@ -643,13 +642,13 @@ namespace Stareater.GameLogic
 		
 		private void calcRefitCosts(Design design, ShipFormulaSet shipFormulas)
 		{
-			this.RefitCosts.Add(design, new Dictionary<Design, double>());
+			this.RefitCosts[design] = new Dictionary<Design, double>();
 			
 			var otherDesigns = this.DesignStats.Keys.Where(x => x.Hull.TypeInfo == design.Hull.TypeInfo && x != design).ToList();
 			foreach(var otherDesign in otherDesigns)
 			{
-				this.RefitCosts[design].Add(otherDesign, refitCost(design, otherDesign, shipFormulas));
-				this.RefitCosts[otherDesign].Add(design, refitCost(otherDesign, design, shipFormulas));
+				this.RefitCosts[design][otherDesign] = refitCost(design, otherDesign, shipFormulas);
+				this.RefitCosts[otherDesign][design] = refitCost(otherDesign, design, shipFormulas);
 			}
 		}
 		

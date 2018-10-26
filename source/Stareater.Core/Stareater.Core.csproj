@@ -326,6 +326,7 @@
     <Compile Include="Utils\Edge.cs" />
     <Compile Include="Utils\Graph.cs" />
     <Compile Include="Utils\Pair.cs" />
+    <Compile Include="Utils\PointReceiver.cs" />
     <Compile Include="Utils\StateEngine\LoadSession.cs" />
     <Compile Include="Utils\StateEngine\SaveSession.cs" />
     <Compile Include="Utils\StateEngine\AEnumerableStrategy.cs" />

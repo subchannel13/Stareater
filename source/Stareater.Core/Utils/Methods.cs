@@ -232,5 +232,22 @@ namespace Stareater.Utils
 				valueTransform(composite[key]) :
 				defaultValue;
 		}
+
+		public static double WeightedPointDealing<T>(double points, IEnumerable<PointReceiver<T>> pointReceiver)
+		{
+			if (!pointReceiver.Any())
+				return points;
+
+			var weightSum = pointReceiver.Sum(x => x.Weight);
+			var startingPoints = points;
+			foreach(var receiver in pointReceiver)
+			{
+				var investment = Math.Min(startingPoints * receiver.Weight / weightSum, receiver.Limit());
+				receiver.ReceiveAction(investment);
+				points -= investment;
+			}
+
+			return points;
+		}
 	}
 }
