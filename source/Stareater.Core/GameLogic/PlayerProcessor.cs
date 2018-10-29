@@ -140,16 +140,20 @@ namespace Stareater.GameLogic
 				developmentPoints += colonyProc.Development;
 			
 			var focus = game.Statics.DevelopmentFocusOptions[game.Orders[Player].DevelopmentFocusIndex];
-			var techLevels = game.States.DevelopmentAdvances.Of[Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var advanceOrder = this.DevelopmentOrder(game.States.DevelopmentAdvances, game.States.ResearchAdvances, game).ToList();
 			
 			var results = new List<DevelopmentResult>();
-			for (int i = 0; i < advanceOrder.Count && i < focus.Weights.Length; i++) {
-				results.Add(advanceOrder[i].SimulateInvestment(
-					developmentPoints * focus.Weights[i],
-					techLevels
-				));
-			}
+			Methods.WeightedPointDealing(
+				developmentPoints, 
+				advanceOrder.Take(focus.Weights.Length).Select((techProgress, i) => new PointReceiver<DevelopmentProgress>(
+					techProgress,
+					focus.Weights[i],
+					() => techProgress.InvestmentLimit,
+					p => results.Add(techProgress.SimulateInvestment(p))
+				))
+			);
+
+			//TODO(v0.8) do something with leftover points
 			
 			this.DevelopmentPlan = results;
 		}
@@ -166,8 +170,8 @@ namespace Stareater.GameLogic
 			Methods.WeightedPointDealing(1, advanceOrder.Select(techProgress => new PointReceiver<ResearchProgress>(
 				techProgress,
 				techProgress.Topic.IdCode == focused ? game.Statics.PlayerFormulas.FocusedResearchWeight : 1,
-				x => double.PositiveInfinity,
-				(x, p) => results.Add(x.SimulateInvestment(p))
+				() => techProgress.InvestmentLimit,
+				p => results.Add(techProgress.SimulateInvestment(p))
 			)));
 
 			this.ResearchPlan = results;

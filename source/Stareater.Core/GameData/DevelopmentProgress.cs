@@ -73,7 +73,7 @@ namespace Stareater.GameData
 		}
 
 		//TODO(v0.8) consider moving to player processor
-		public DevelopmentResult SimulateInvestment(double points, IDictionary<string, double> techLevels)
+		public DevelopmentResult SimulateInvestment(double points)
 		{
 			int tmplevel = Level;
 			int newLevels = 0;
@@ -98,6 +98,23 @@ namespace Stareater.GameData
 			}
 
 			return new DevelopmentResult(newLevels, totalInvested, this, tmpInvested);
+		}
+
+		public double InvestmentLimit
+		{
+			get
+			{
+				var vars = new Var(DevelopmentTopic.LevelKey, this.Level + 1);
+				double sum = this.Topic.Cost.Evaluate(vars.Get) - this.InvestedPoints;
+
+				for (int i = this.Level + 1; i < this.Topic.MaxLevel; i++)
+				{
+					vars[DevelopmentTopic.LevelKey] = i + 1;
+					sum += this.Topic.Cost.Evaluate(vars.Get);
+				}
+
+				return sum;
+			}
 		}
 
 		#region Equals and GetHashCode implementation

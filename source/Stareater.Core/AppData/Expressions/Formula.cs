@@ -19,6 +19,7 @@ namespace Stareater.AppData.Expressions
 		internal Formula(bool constCondition) : this(new Constant(constCondition ? 1 : -1))
 		{ }
 		
+		//TODO(v0.8) add trivial variable overload or maybe for multiple variables in alphabetical order
 		public double Evaluate(IDictionary<string, double> variables)
 		{
 			try {
