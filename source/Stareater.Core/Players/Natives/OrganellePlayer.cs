@@ -24,7 +24,7 @@ namespace Stareater.Players.Natives
 
 		public void PlayTurn()
 		{
-			var ownFleet = this.playerController.Fleets.Where(x => x.Owner == this.playerController.Info).ToList();
+			var ownFleet = this.playerController.FleetsMine.ToList();
 			var investigating = ownFleet.Where(x => x.IsMoving).SelectMany(x => x.Missions.Waypoints).ToList();
 			var stars = new PickList<StarInfo>(random, this.playerController.Stars.Where(s => investigating.All(x => x.Destionation != s.Position)));
 			

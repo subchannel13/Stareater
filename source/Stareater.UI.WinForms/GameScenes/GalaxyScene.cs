@@ -292,7 +292,7 @@ namespace Stareater.GameScenes
 		{
 			this.UpdateScene(
 				ref this.fleetMarkers,
-				this.currentPlayer.Fleets.Select(
+				this.currentPlayer.FleetsAll.Select(
 					fleet => 
 					{
 						var position = fleetDisplayPosition(fleet);
@@ -310,7 +310,7 @@ namespace Stareater.GameScenes
 		{
 			this.UpdateScene(
 				ref this.fleetMovementPaths,
-				this.currentPlayer.Fleets.Where(x => x.IsMoving).Select(fleet =>
+				this.currentPlayer.FleetsAll.Where(x => x.IsMoving).Select(fleet =>
 					new SceneObjectBuilder().
 					StartSprite(PathZ, GalaxyTextures.Get.PathLine.Id, Color.DarkGreen).
 					AddVertices(fleetMovementPathVertices(fleet, fleet.Missions.Waypoints.Select(v => convert(v.Destionation)))).

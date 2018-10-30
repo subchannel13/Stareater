@@ -110,7 +110,7 @@ namespace Stareater.Controllers
 			return new FleetController(fleet, game, this.PlayerInstance(game));
 		}
 		
-		public IEnumerable<FleetInfo> Fleets
+		public IEnumerable<FleetInfo> FleetsAll
 		{
 			get
 			{
@@ -127,7 +127,25 @@ namespace Stareater.Controllers
 					);
 			}
 		}
-		
+
+		public IEnumerable<FleetInfo> FleetsMine
+		{
+			get
+			{
+				var game = this.gameInstance;
+				var orders = game.Orders[this.PlayerInstance(game)];
+				var player = this.PlayerInstance(game);
+				var playerProc = game.Derivates[player];
+
+				return game.States.Fleets.
+					OwnedBy[player].
+					Concat(orders.ShipOrders.SelectMany(x => x.Value)).
+					Select(
+						x => new FleetInfo(x, game.Derivates[x.Owner], game.Statics)
+					);
+			}
+		}
+
 		public IEnumerable<FleetInfo> FleetsAt(Vector2D position)
 		{
 			var game = this.gameInstance;
@@ -582,7 +600,7 @@ namespace Stareater.Controllers
 				}
 			}
 
-			var transporters = this.Fleets.Where(x => x.FleetData.Owner == player && isTransportFleet(x)).ToList();
+			var transporters = this.FleetsMine.Where(isTransportFleet).ToList();
 			if(transporters.Count > 0)
 			{
 				var destination = game.States.Colonies.OwnedBy[player].OrderByDescending(x => game.Derivates[x].Desirability).First();
