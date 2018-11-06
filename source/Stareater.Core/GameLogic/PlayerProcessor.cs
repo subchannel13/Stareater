@@ -481,6 +481,7 @@ namespace Stareater.GameLogic
 				foreach(var discarded in discardedDesigns)
 					this.RefitCosts[design].Remove(discarded);
 
+			//TODO(v0.8) don't include obsolete (to be upgraded) designs
 			this.ColonizerDesignOptions = this.DesignStats.Where(x => x.Value.ColonizerPopulation > 0).Select(x => x.Key).ToList();
 
 			if (!this.ColonizerDesignOptions.Contains(game.Orders[this.Player].ColonizerDesign))

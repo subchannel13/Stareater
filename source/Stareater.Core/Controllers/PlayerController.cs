@@ -583,7 +583,7 @@ namespace Stareater.Controllers
 
 				var colonizationOrder = orders.ColonizationOrders.Values.First(x => x.Sources.Contains(source));
 
-				foreach (var fleet in this.FleetsAt(source.Position).Where(isColonizerFleet))
+				foreach (var fleet in this.FleetsAt(source.Position).Where(isTransportFleet))
 				{
 					var controller = new FleetController(fleet, game, player);
 					foreach(var group in controller.ShipGroups.Where(x => x.PopulationCapacity > 0))

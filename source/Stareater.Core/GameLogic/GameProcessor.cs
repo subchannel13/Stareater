@@ -465,19 +465,23 @@ namespace Stareater.GameLogic
 					
 					if (upgradedShips > 0)
 					{
+						var movedPopulation = shipGroup.PopulationTransport * upgradedShips / shipGroup.Quantity;
 						shipGroup.Quantity -= upgradedShips;
 						shipGroup.UpgradePoints -= upgradedShips * refitCost;
-						
+
 						var fleet = groupsFrom[shipGroup];
 						var existingGroup = fleet.Ships.FirstOrDefault(x => x.Design == refitTo);
 						
 						if (shipGroup.Quantity <= 0)
 							fleet.Ships.Remove(shipGroup);
-						
+
 						if (existingGroup != null)
+						{
 							existingGroup.Quantity += upgradedShips;
+							existingGroup.PopulationTransport += movedPopulation;
+						}
 						else
-							fleet.Ships.Add(new ShipGroup(refitTo, upgradedShips, 0, 0, shipGroup.PopulationTransport));
+							fleet.Ships.Add(new ShipGroup(refitTo, upgradedShips, 0, 0, movedPopulation));
 					}
 				}
 			}

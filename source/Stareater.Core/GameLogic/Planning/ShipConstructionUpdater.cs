@@ -49,7 +49,6 @@ namespace Stareater.GameLogic.Planning
 			return this.refitOrders[design];
 		}
 
-
 		#region IConstructionProjectVisitor implementation
 		public void Visit(ShipProject project)
 		{
