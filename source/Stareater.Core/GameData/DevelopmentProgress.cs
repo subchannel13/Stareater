@@ -104,7 +104,8 @@ namespace Stareater.GameData
 		{
 			get
 			{
-				var vars = new Var(DevelopmentTopic.LevelKey, this.Level + 1);
+				var vars = new Var(DevelopmentTopic.LevelKey, this.Level + 1).
+					And(DevelopmentTopic.PriorityKey, this.Priority);
 				double sum = this.Topic.Cost.Evaluate(vars.Get) - this.InvestedPoints;
 
 				for (int i = this.Level + 1; i < this.Topic.MaxLevel; i++)

@@ -242,8 +242,8 @@ namespace Stareater.Controllers
 			processingSync.WaitOne();
 			gameObj.Processor.ProcessPostcombat();
 			processingSync.Set();
-			
-			lock(threadLocker)
+
+			lock (threadLocker)
 			{
 				this.endTurnCopy = null;
 				this.endedTurnPlayers.Clear();

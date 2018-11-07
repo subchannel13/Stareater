@@ -436,17 +436,14 @@ namespace Stareater.GameLogic
 				newDesigns.Add(upgrade);
 			}
 			game.States.Designs.Add(newDesigns);
-			
+
 			//Update refit orders to upgrade obsolete designs
-			foreach(var upgrade in upgradesTo)
-			{
-				var orders = game.Orders[this.Player].RefitOrders;
-				
+			var orders = game.Orders[this.Player].RefitOrders;
+			foreach (var upgrade in upgradesTo)
 				if (!orders.ContainsKey(upgrade.Key))
 					orders[upgrade.Key] = upgrade.Value;
 				else if (orders[upgrade.Key] != null && orders[upgrade.Key].IsObsolete)
 					orders[upgrade.Key] = upgradesTo[orders[upgrade.Key]];
-			}
 			
 			foreach(var site in game.Orders[this.Player].ConstructionPlans.Keys.ToList())
 			{
@@ -482,7 +479,9 @@ namespace Stareater.GameLogic
 					this.RefitCosts[design].Remove(discarded);
 
 			//TODO(v0.8) don't include obsolete (to be upgraded) designs
-			this.ColonizerDesignOptions = this.DesignStats.Where(x => x.Value.ColonizerPopulation > 0).Select(x => x.Key).ToList();
+			this.ColonizerDesignOptions = this.DesignStats.
+				Where(x => x.Value.ColonizerPopulation > 0 && !orders.ContainsKey(x.Key)).
+				Select(x => x.Key).ToList();
 
 			if (!this.ColonizerDesignOptions.Contains(game.Orders[this.Player].ColonizerDesign))
 				game.Orders[this.Player].ColonizerDesign = this.ColonizerDesignOptions.First();
