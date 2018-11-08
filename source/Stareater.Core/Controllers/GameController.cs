@@ -86,9 +86,6 @@ namespace Stareater.Controllers
 			this.stateListener = stateListener;
 			this.State = GameState.Running;
 
-			foreach (var player in playerControllers)
-				player.UpdateAutomation();
-
 			restartAiGalaxyPhase();
 		}
 		
@@ -248,9 +245,6 @@ namespace Stareater.Controllers
 				this.endTurnCopy = null;
 				this.endedTurnPlayers.Clear();
 			}
-
-			foreach (var player in playerControllers)
-				player.UpdateAutomation();
 
 			if (gameObj.Processor.IsOver)
 				stateListener.OnGameOver();

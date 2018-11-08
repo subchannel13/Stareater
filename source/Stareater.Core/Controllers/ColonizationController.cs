@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
@@ -62,7 +63,7 @@ namespace Stareater.Controllers
 			}
 		}
 		#endregion
-		
+
 		#region Colonization
 		public bool IsColonizing 
 		{
@@ -91,7 +92,7 @@ namespace Stareater.Controllers
 					if (!plan.Sources.Contains(source.Stellaris.Location.Star))
 						plan.Sources.Add(source.Stellaris.Location.Star); //TODO(later) convert source list to set?
 
-			playerController.UpdateAutomation();
+			playerController.RunAutomation();
 			updateStellarises(plan.Sources);
 		}
 		
@@ -115,7 +116,7 @@ namespace Stareater.Controllers
 				plan.Sources.Clear();
 			}
 
-			playerController.UpdateAutomation();
+			playerController.RunAutomation();
 			if (plan.Sources.Count == 0)
 				this.game.Orders[this.player].ColonizationOrders.Remove(this.planet);
 			else
@@ -147,7 +148,12 @@ namespace Stareater.Controllers
 			return stars.Select(x => new StellarisInfo(this.game.States.Stellarises.At[x, this.player].First(), this.game));
 		}
 		#endregion
-		
+
+		public void RunAutomation()
+		{
+			this.playerController.RunAutomation();
+		}
+
 		private void updateStellarises(IEnumerable<StarData> sources)
 		{
 			foreach(var source in sources)

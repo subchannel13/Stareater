@@ -127,6 +127,8 @@ namespace Stareater.GameScenes
 		
 		public void SwitchPlayer(PlayerController player)
 		{
+			player.RunAutomation();
+
 			if (this.currentPlayer != null)
 				this.lastOffset[this.currentPlayer.PlayerIndex] = originOffset;
 			

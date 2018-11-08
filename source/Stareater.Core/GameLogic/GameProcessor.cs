@@ -325,6 +325,7 @@ namespace Stareater.GameLogic
 			}
 		}
 
+		//TODO(v0.8) can unintentionally land non-colony ships like scouts
         private void doColonization()
 		{
 			foreach(var project in this.game.States.ColonizationProjects)

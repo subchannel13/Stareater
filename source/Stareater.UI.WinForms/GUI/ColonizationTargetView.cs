@@ -79,8 +79,9 @@ namespace Stareater.GUI
 				using(var form = new FormPickColonizationSource(controller))
 					if (form.ShowDialog() == DialogResult.OK)
 					{
-						controller.StartColonization(form.SelectedSource);
-						updateView();
+						this.controller.StartColonization(form.SelectedSource);
+						this.controller.RunAutomation();
+						this.updateView();
 					}
 		}
 	}

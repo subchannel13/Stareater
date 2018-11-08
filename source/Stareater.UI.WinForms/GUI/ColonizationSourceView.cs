@@ -61,12 +61,13 @@ namespace Stareater.GUI
 		
 		private void controlButton_Click(object sender, EventArgs e)
 		{
-			if (controller.IsColonizing)
-				controller.StopColonization(sourceData);
+			if (this.controller.IsColonizing)
+				this.controller.StopColonization(this.sourceData);
 			else
-				controller.StartColonization(sourceData);
-			
-			updateView();
+				this.controller.StartColonization(this.sourceData);
+			this.controller.RunAutomation();
+
+			this.updateView();
 			
 			if (OnStateChange != null)
 				OnStateChange();

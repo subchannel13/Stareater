@@ -562,7 +562,7 @@ namespace Stareater.Controllers
 		#endregion
 
 		#region Automation
-		internal void UpdateAutomation()
+		public void RunAutomation()
 		{
 			var game = this.gameInstance;
 			var player = this.PlayerInstance(game);

@@ -22,6 +22,8 @@ namespace Stareater.Players.DefaultAI
 		
 		public void PlayTurn()
 		{
+			this.playerController.RunAutomation();
+
 			foreach(var stellaris in this.playerController.Stellarises())
 			{
 				StarSystemController starSystem = this.playerController.OpenStarSystem(stellaris.HostStar);
