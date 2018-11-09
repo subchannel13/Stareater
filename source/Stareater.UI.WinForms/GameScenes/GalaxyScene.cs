@@ -334,11 +334,12 @@ namespace Stareater.GameScenes
 
 			var waypoints = this.SelectedFleet.SimulationWaypoints();
 
-			if (waypoints.Count > 0 && this.SelectedFleet.Eta > 0)
+			if (waypoints.Count > 0 && this.SelectedFleet.SimulationEta > 0)
 			{
 				var destination = waypoints[waypoints.Count - 1];
-				var numVars = new Var("eta", Math.Ceiling(this.SelectedFleet.Eta)).Get;
-				var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.SelectedFleet.Eta, RoundingMethod.Ceil, 0)).Get;
+				var numVars = new Var("eta", Math.Ceiling(this.SelectedFleet.SimulationEta)).Get;
+				var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.SelectedFleet.SimulationEta, RoundingMethod.Ceil, 0)).
+					And("fuel", new ThousandsFormatter().Format(this.SelectedFleet.SimulationFuel)).Get;
 
 				this.UpdateScene(
 					ref this.movementEtaText,

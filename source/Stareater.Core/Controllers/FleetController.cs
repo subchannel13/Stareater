@@ -22,17 +22,20 @@ namespace Stareater.Controllers
 		private readonly Dictionary<Design, long> selection = new Dictionary<Design, long>();
 		private readonly Dictionary<Design, double> selectionPopulation = new Dictionary<Design, double>(); //TODO(v0.8) Make new type and unify with selection quantity
 		private readonly List<WaypointInfo> simulationWaypoints = new List<WaypointInfo>();
-		private double eta = 0;
+		public double SimulationEta { get; private set; }
+		public double SimulationFuel { get; private set; }
 
 		internal FleetController(FleetInfo fleet, MainGame game, Player player)
 		{
 			this.Fleet = fleet;
 			this.game = game;
 			this.player = player;
+			this.SimulationEta = 0;
+			this.SimulationFuel = 0;
 			
 			if (this.Fleet.IsMoving) {
 				this.simulationWaypoints = new List<WaypointInfo>(this.Fleet.Missions.Waypoints);
-				this.calcEta();
+				this.calcSimulation();
 			}
 		}
 		
@@ -60,12 +63,7 @@ namespace Stareater.Controllers
 				return true;
 			}
 		}
-		
-		public double Eta
-		{
-			get { return this.eta; }
-		}
-		
+
 		public IList<Vector2D> SimulationWaypoints()
 		{
 			return this.simulationWaypoints.Select(x => x.Destionation).ToList();
@@ -97,7 +95,7 @@ namespace Stareater.Controllers
 			if (!this.CanMove)
 				this.simulationWaypoints.Clear();
 
-			this.calcEta();
+			this.calcSimulation();
 		}
 
 		public FleetController Send(IEnumerable<Vector2D> waypoints)
@@ -148,7 +146,7 @@ namespace Stareater.Controllers
 				this.game.States.Wormholes.At[this.game.States.Stars.At[this.Fleet.Position], destination.Data].Any()
 			));
 			
-			this.calcEta();
+			this.calcSimulation();
 		}
 
 		
@@ -175,7 +173,7 @@ namespace Stareater.Controllers
 			}
 		}
 		
-		private void calcEta()
+		private void calcSimulation()
 		{
 			var playerProc = game.Derivates.Players.Of[this.Fleet.Owner.Data];
 			double baseSpeed = this.selection.Keys.
@@ -183,16 +181,17 @@ namespace Stareater.Controllers
 			
 			var lastPosition = this.Fleet.FleetData.Position;
 			var wormholeSpeed = game.Statics.ShipFormulas.WormholeSpeed;
-			this.eta = 0;
-			
-			foreach(var waypoint in simulationWaypoints)
+			this.SimulationEta = 0;
+			this.SimulationFuel = 0;
+
+			foreach (var waypoint in simulationWaypoints)
 			{
 				var speed = waypoint.UsingWormhole ? 
 					wormholeSpeed.Evaluate(new Var("speed", baseSpeed).Get) : 
 					baseSpeed;
 				
 				var distance = (waypoint.Destionation - lastPosition).Length;
-				eta += distance / speed;
+				SimulationEta += distance / speed;
 				lastPosition = waypoint.Destionation;
 			}
 		}
