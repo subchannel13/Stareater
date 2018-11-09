@@ -71,6 +71,8 @@ namespace Stareater.GameLogic
 		public double MaintenanceLimit { get; private set; }
 		[StateProperty]
 		public double MaintenancePenalty { get; set; }
+		[StateProperty]
+		public double FuelProduction { get; internal set; }
 
 		public ColonyProcessor(Colony colony) : base()
 		{
@@ -112,7 +114,8 @@ namespace Stareater.GameLogic
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
 			this.Organization = formulas.Organization.Evaluate(vars);
 			this.SpaceliftFactor = formulas.SpaceliftFactor.Evaluate(vars);
-			
+			this.FuelProduction = 0; //TODO(v0.8) calculate
+
 			this.FarmerEfficiency = formulas.Farming.Evaluate(this.Organization, vars);
 			this.GardenerEfficiency = formulas.Gardening.Evaluate(this.Organization, vars);
 			this.MinerEfficiency = formulas.Mining.Evaluate(this.Organization, vars);

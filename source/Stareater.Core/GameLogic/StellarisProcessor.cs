@@ -18,10 +18,8 @@ namespace Stareater.GameLogic
 
 		[StateProperty]
 		public Dictionary<Colony, double> EmigrantionPlan = new Dictionary<Colony, double>();
-
 		[StateProperty]
 		public Dictionary<Colony, double> ImmigrantionPlan = new Dictionary<Colony, double>();
-
 		[StateProperty]
 		public double IsMigrants;
 

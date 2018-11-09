@@ -103,13 +103,54 @@ namespace Stareater.Controllers
 		{
 			return this.OpenStarSystem(new StarInfo(this.gameInstance.States.Stars.At[position]));
 		}
-				
+		
+		public IEnumerable<Circle> ScanAreas()
+		{
+			var game = this.gameInstance;
+
+			return game.Derivates[this.PlayerInstance(game)].ScanRanges.GetAll();
+		}
+
+		public StarInfo Star(Vector2D position)
+		{
+			return new StarInfo(this.gameInstance.States.Stars.At[position]);
+		}
+		
+		public int StarCount
+		{
+			get 
+			{
+				return this.gameInstance.States.Stars.Count;
+			}
+		}
+		
+		public IEnumerable<StarInfo> Stars
+		{
+			get
+			{
+				return this.gameInstance.States.Stars.Select(x => new StarInfo(x));
+			}
+		}
+
+		public IEnumerable<WormholeInfo> Wormholes
+		{
+			get
+			{
+				var game = this.gameInstance;
+				var intell = this.PlayerInstance(game).Intelligence;
+
+				return game.States.Wormholes.Where(intell.IsKnown).Select(x => new WormholeInfo(x));
+			}
+		}
+		#endregion
+
+		#region Fleet related
 		public FleetController SelectFleet(FleetInfo fleet)
 		{
 			var game = this.gameInstance;
 			return new FleetController(fleet, game, this.PlayerInstance(game));
 		}
-		
+
 		public IEnumerable<FleetInfo> FleetsAll
 		{
 			get
@@ -155,50 +196,28 @@ namespace Stareater.Controllers
 
 			if (orders.ShipOrders.ContainsKey(position))
 				fleets = fleets.Concat(orders.ShipOrders[position]);
-			
+
 			return fleets.Select(x => new FleetInfo(x, game.Derivates[x.Owner], game.Statics));
 		}
-		
-		public IEnumerable<Circle> ScanAreas()
-		{
-			var game = this.gameInstance;
 
-			return game.Derivates[this.PlayerInstance(game)].ScanRanges.GetAll();
-		}
-
-		public StarInfo Star(Vector2D position)
-		{
-			return new StarInfo(this.gameInstance.States.Stars.At[position]);
-		}
-		
-		public int StarCount
-		{
-			get 
-			{
-				return this.gameInstance.States.Stars.Count;
-			}
-		}
-		
-		public IEnumerable<StarInfo> Stars
-		{
-			get
-			{
-				return this.gameInstance.States.Stars.Select(x => new StarInfo(x));
-			}
-		}
-
-		public IEnumerable<WormholeInfo> Wormholes
+		public double FuelAvailable
 		{
 			get
 			{
 				var game = this.gameInstance;
-				var intell = this.PlayerInstance(game).Intelligence;
 
-				return game.States.Wormholes.Where(intell.IsKnown).Select(x => new WormholeInfo(x));
+				return game.Derivates.Colonies.
+					OwnedBy[this.PlayerInstance(game)].
+					Sum(x => x.FuelProduction);
 			}
 		}
+
+		public double FuelUsage
+		{
+			get { return 0; }
+		}
 		#endregion
-		
+
 		#region Stellarises and colonies
 		public IEnumerable<StellarisInfo> Stellarises()
 		{

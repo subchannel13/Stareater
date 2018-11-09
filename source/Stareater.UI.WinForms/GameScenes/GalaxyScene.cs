@@ -57,7 +57,8 @@ namespace Stareater.GameScenes
 		private readonly SignalFlag refreshData = new SignalFlag();
 
 		private readonly GuiText turnCounter;
-		
+		private readonly GuiText fuelInfo;
+
 		private IEnumerable<SceneObject> fleetMovementPaths = null;
 		private IEnumerable<SceneObject> fleetMarkers = null;
 		private IEnumerable<SceneObject> scanRanges = null;
@@ -84,6 +85,16 @@ namespace Stareater.GameScenes
 		public GalaxyScene(IGalaxyViewListener galaxyViewListener)
 		{ 
 			this.galaxyViewListener = galaxyViewListener;
+
+			this.fuelInfo = new GuiText
+			{
+				TextColor = Color.Yellow,
+				TextSize = 30
+			};
+			this.fuelInfo.Position.
+				WrapContent().
+				ParentRelative(-1, 1, 10, 5);
+			this.addElement(fuelInfo);
 
 			this.turnCounter = new GuiText
 			{
@@ -155,6 +166,7 @@ namespace Stareater.GameScenes
 			this.currentSelection = GalaxySelectionType.Star;
 			this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
 			this.setupPerspective();
+			this.setupFuelInfo();
 		}
 
 		private void rebuildCache()
@@ -261,6 +273,8 @@ namespace Stareater.GameScenes
 			this.setupMovementSimulation();
 			this.setupSelectionMarkers();
 			this.setupWormholeSprites();
+
+			this.setupFuelInfo();
 			this.setupTurnCounter();
         }
 
@@ -378,6 +392,16 @@ namespace Stareater.GameScenes
 						AddVertices(fleetMovementPathVertices(this.SelectedFleet.Fleet, waypoints.Select(v => convert(v)))).
 						Build()
 				);
+		}
+
+		private void setupFuelInfo()
+		{
+			var formatter = new ThousandsFormatter(this.currentPlayer.FuelUsage, this.currentPlayer.FuelAvailable);
+
+			this.fuelInfo.Text = LocalizationManifest.Get.CurrentLanguage["GalaxyScene"]["FuelInfo"].Text(
+				new TextVar("fuelUsage", formatter.Format(this.currentPlayer.FuelUsage)).
+				And("fuelAvailable", formatter.Format(this.currentPlayer.FuelAvailable)).Get
+			);
 		}
 
 		private void setupTurnCounter()
@@ -534,6 +558,7 @@ namespace Stareater.GameScenes
 					this.setupFleetMarkers();
 					this.setupFleetMovement();
 					this.setupSelectionMarkers();
+					this.setupFuelInfo();
 					return;
 				}
 				else

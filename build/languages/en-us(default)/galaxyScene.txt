@@ -2,4 +2,8 @@
 
 EndTurn = End turn
 Turn = Turn
+
+FuelInfo §
+		{=fuelUsage} / {=fuelAvailable}
+	\
 -
