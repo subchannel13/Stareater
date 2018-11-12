@@ -76,12 +76,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 			public void Recalculate(ElementPosition element, float parentWidth, float parentHeight)
 			{
-				float windowX = parentWidth - 2 * marginX - element.Size.X / 2;
-				float windowY = parentHeight - 2 * marginY - element.Size.Y / 2;
+				float windowX = parentWidth - marginX - element.Size.X / 2;
+				float windowY = parentHeight - marginY - element.Size.Y / 2;
 
 				element.Center = new Vector2(
-					this.marginX + windowX * this.xPortion,
-					this.marginY + windowY * this.yPortion
+					windowX * this.xPortion,
+					windowY * this.yPortion
 				);
 			}
 		}
