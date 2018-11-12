@@ -50,3 +50,21 @@
 		}
 	]
 }
+
+
+{ Constructable
+	langCode: JUMPGATE
+	image: ./images/buildings/factory.png
+	
+	code: Jump
+	site: System
+	stockpile: ship
+	prerequisites [] 
+	
+	cost # 1e9;
+	condition # 1;
+	turnLimit # 1;
+	
+	effects [
+	]
+}

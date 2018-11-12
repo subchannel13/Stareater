@@ -396,10 +396,10 @@ namespace Stareater.GameScenes
 
 		private void setupFuelInfo()
 		{
-			var formatter = new ThousandsFormatter(this.currentPlayer.FuelUsage, this.currentPlayer.FuelAvailable);
+			var formatter = new ThousandsFormatter(this.currentPlayer.FuelAvailable);
 
 			this.fuelInfo.Text = LocalizationManifest.Get.CurrentLanguage["GalaxyScene"]["FuelInfo"].Text(
-				new TextVar("fuelUsage", formatter.Format(this.currentPlayer.FuelUsage)).
+				new TextVar("fuelLeft", formatter.Format(this.currentPlayer.FuelAvailable - this.currentPlayer.FuelUsage)).
 				And("fuelAvailable", formatter.Format(this.currentPlayer.FuelAvailable)).Get
 			);
 		}

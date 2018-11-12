@@ -114,7 +114,6 @@ namespace Stareater.GameLogic
 			this.MaxPopulation = formulas.MaxPopulation.Evaluate(vars);
 			this.Organization = formulas.Organization.Evaluate(vars);
 			this.SpaceliftFactor = formulas.SpaceliftFactor.Evaluate(vars);
-			this.FuelProduction = 0; //TODO(v0.8) calculate
 
 			this.FarmerEfficiency = formulas.Farming.Evaluate(this.Organization, vars);
 			this.GardenerEfficiency = formulas.Gardening.Evaluate(this.Organization, vars);
@@ -150,6 +149,7 @@ namespace Stareater.GameLogic
 			vars[MaxPopulationKey] = this.MaxPopulation;
 			this.Desirability = formulas.Desirability.Evaluate(vars);
 			this.Emigrants = formulas.Emigrants.Evaluate(vars);
+			this.FuelProduction = formulas.FuelProduction.Evaluate(vars);
 		}
 		
 		public void CalculateDerivedEffects(StaticsDB statics, PlayerProcessor playerProcessor)
