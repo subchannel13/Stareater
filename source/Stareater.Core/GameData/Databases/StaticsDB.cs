@@ -279,6 +279,7 @@ namespace Stareater.GameData.Databases
 				data[ShipReactorCostPortion].To<Formula>().Evaluate(null),
 				data[ShipSensorCostPortion].To<Formula>().Evaluate(null),
 				data[ShipThrustersCostPortion].To<Formula>().Evaluate(null),
+				data[ShipFuelUsage].To<Formula>(),
 				data[ShipWormholeSpeed].To<Formula>()
 			);
 		}
@@ -754,6 +755,7 @@ namespace Stareater.GameData.Databases
 		private const string ShipCombatSpeed = "combatSpeed";
 		private const string ShipDetection = "detection";
 		private const string ShipEvasion = "evasion";
+		private const string ShipFuelUsage = "fuelUsage";
 		private const string ShipHitPoints = "hitPoints";
 		private const string ShipJamming = "jamming";
 		private const string ShipScaneRange = "scanRange";

@@ -107,7 +107,8 @@
 	reactorCostPortion # 0.2;
 	sensorCostPortion # 0.1;
 	thrustersCostPortion # 0.2;
-	
+
+	fuelUsage # 2 ^ (max(dist, 1) - 1);	
 	wormholeSpeed # speed + 0.5;
 }
 

@@ -175,12 +175,14 @@ namespace Stareater.Controllers
 		
 		private void calcSimulation()
 		{
-			var playerProc = game.Derivates.Players.Of[this.Fleet.Owner.Data];
+			var player = this.Fleet.Owner.Data;
+			var designStats = this.game.Derivates.Players.Of[player].DesignStats;
 			double baseSpeed = this.selection.Keys.
-				Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
+				Aggregate(double.MaxValue, (s, x) => Math.Min(designStats[x].GalaxySpeed, s));
 			
 			var lastPosition = this.Fleet.FleetData.Position;
-			var wormholeSpeed = game.Statics.ShipFormulas.WormholeSpeed;
+			var wormholeSpeed = this.game.Statics.ShipFormulas.WormholeSpeed;
+			var fleetSize = this.selection.Sum(x => designStats[x.Key].Size * x.Value);
 			this.SimulationEta = 0;
 			this.SimulationFuel = 0;
 
@@ -191,7 +193,17 @@ namespace Stareater.Controllers
 					baseSpeed;
 				
 				var distance = (waypoint.Destionation - lastPosition).Length;
-				SimulationEta += distance / speed;
+				this.SimulationEta += distance / speed;
+
+				if (this.game.States.Stellarises.OwnedBy[player].Any())
+				{
+					var supplyDistance = this.game.States.Stellarises.
+						OwnedBy[player].
+						Min(x => (waypoint.Destionation - x.Location.Star.Position).Length);
+					this.SimulationFuel = Math.Max(
+						fleetSize * this.game.Statics.ShipFormulas.FuelUsage.Evaluate(new Var("dist", supplyDistance).Get), 
+						this.SimulationFuel);
+				}
 				lastPosition = waypoint.Destionation;
 			}
 		}

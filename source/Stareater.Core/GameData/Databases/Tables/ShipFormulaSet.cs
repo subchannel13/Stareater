@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Stareater.AppData.Expressions;
 
 namespace Stareater.GameData.Databases.Tables
@@ -32,6 +31,7 @@ namespace Stareater.GameData.Databases.Tables
 		public double SensorCostPortion { get; private set; }
 		public double ThrustersCostPortion { get; private set; }
 
+		public Formula FuelUsage { get; private set; }
 		public Formula WormholeSpeed { get; private set; }
 
 		public ShipFormulaSet(Formula cloaking, Formula combatSpeed, Formula detection, Formula evasion, 
@@ -40,7 +40,7 @@ namespace Stareater.GameData.Databases.Tables
 							  Formula reactorSize, Formula shieldSize,
                               double naturalCloakBonus, double sensorRangePenalty, double repairCostFactor, Formula levelRefitCost,
 		                      double armorCostPortion, double reactorCostPortion, double sensorCostPortion, double thrustersCostPortion,
-							  Formula wormholeSpeed)
+							  Formula fuelUsage, Formula wormholeSpeed)
 		{
 			this.ArmorCostPortion = armorCostPortion;
 			this.Cloaking = cloaking;
@@ -49,6 +49,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.CombatSpeed = combatSpeed;
 			this.Detection = detection;
 			this.Evasion = evasion;
+			this.FuelUsage = fuelUsage;
 			this.HitPoints = hitPoints;
 			this.Jamming = jamming;
 			this.LevelRefitCost = levelRefitCost;
