@@ -6,6 +6,11 @@ namespace Stareater.Ships.Missions
 	[StateType(saveTag: MissionTag)]
 	class DisembarkMission : AMission
 	{
+		public override bool FullTurnAction
+		{
+			get { return true; }
+		}
+
 		public override void Accept(IMissionVisitor visitor)
 		{
 			visitor.Visit(this);

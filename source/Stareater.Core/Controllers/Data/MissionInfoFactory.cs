@@ -32,7 +32,7 @@ namespace Stareater.Controllers.Data
 
 		public void Visit(MoveMission mission)
 		{
-			waypoints.Add(new WaypointInfo(mission.Destination.Position, mission.UsedWormhole != null));
+			waypoints.Add(new WaypointInfo(mission.Destination, mission.UsedWormhole));
 		}
 
 		public void Visit(DisembarkMission mission)

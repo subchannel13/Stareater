@@ -21,6 +21,11 @@ namespace Stareater.Ships.Missions
 		private MoveMission()
 		{ }
 
+		public override bool FullTurnAction
+		{
+			get { return false; }
+		}
+
 		public override void Accept(IMissionVisitor visitor)
 		{
 			visitor.Visit(this);

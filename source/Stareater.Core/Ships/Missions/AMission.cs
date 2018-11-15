@@ -5,6 +5,7 @@ namespace Stareater.Ships.Missions
 	[StateBaseType("Load", typeof(MissionFactory))]
 	abstract class AMission
 	{
+		public abstract bool FullTurnAction { get; }
 		public abstract void Accept(IMissionVisitor visitor);
 
 		#region Equals and GetHashCode implementation

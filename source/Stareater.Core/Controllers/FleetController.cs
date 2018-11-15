@@ -15,7 +15,6 @@ namespace Stareater.Controllers
 	public class FleetController
 	{
 		private readonly MainGame game;
-		private readonly Player player;
 		
 		public FleetInfo Fleet { get; private set; }
 
@@ -25,11 +24,10 @@ namespace Stareater.Controllers
 		public double SimulationEta { get; private set; }
 		public double SimulationFuel { get; private set; }
 
-		internal FleetController(FleetInfo fleet, MainGame game, Player player)
+		internal FleetController(FleetInfo fleet, MainGame game)
 		{
 			this.Fleet = fleet;
 			this.game = game;
-			this.player = player;
 			this.SimulationEta = 0;
 			this.SimulationFuel = 0;
 			
@@ -38,7 +36,12 @@ namespace Stareater.Controllers
 				this.calcSimulation();
 			}
 		}
-		
+
+		private Player player
+		{
+			get { return this.Fleet.Owner.Data; }
+		}
+
 		public bool Valid
 		{
 			get { return this.game.States.Fleets.Contains(this.Fleet.FleetData); }
@@ -102,9 +105,24 @@ namespace Stareater.Controllers
 		{
 			if (!this.game.States.Stars.At.Contains(this.Fleet.Position))
 				return this;
-			
+
 			if (this.CanMove && waypoints != null && waypoints.LastOrDefault() != this.Fleet.FleetData.Position)
 			{
+				//TODO(later) special case for natives
+				if (this.game.States.Stellarises.OwnedBy[player].Any())
+				{
+					var playerProc = this.game.Derivates[this.player];
+					var availableFuel = 
+						game.Derivates.Colonies.OwnedBy[this.player].Sum(x => x.FuelProduction) -
+						playerProc.TotalFuelUsage(game) +
+						playerProc.FuelUsage(this.Fleet.FleetData, game) -
+						playerProc.FuelUsage(this.unselectedFleet(), game);
+					var fuelUse = playerProc.FuelUsage(this.selectedFleet(new AMission[0]), waypoints.First(), game);
+
+					if (availableFuel < fuelUse)
+						return this;
+				}
+
 				var missions = new List<AMission>();
 				var lastPoint = this.Fleet.FleetData.Position;
 				foreach(var point in waypoints)
@@ -142,8 +160,8 @@ namespace Stareater.Controllers
 			//TODO(later): find shortest path
 			//TODO(later) prevent changing destination midfilght
 			this.simulationWaypoints.Add(new WaypointInfo(
-				destination.Data.Position,
-				this.game.States.Wormholes.At[this.game.States.Stars.At[this.Fleet.Position], destination.Data].Any()
+				destination.Data,
+				this.game.States.Wormholes.At[this.game.States.Stars.At[this.Fleet.Position], destination.Data].FirstOrDefault()
 			));
 			
 			this.calcSimulation();
@@ -175,14 +193,13 @@ namespace Stareater.Controllers
 		
 		private void calcSimulation()
 		{
-			var player = this.Fleet.Owner.Data;
-			var designStats = this.game.Derivates.Players.Of[player].DesignStats;
+			var playerProc = this.game.Derivates.Players.Of[this.Fleet.Owner.Data];
+			var fleet = this.selectedFleet(simulationWaypoints.Select(x => new MoveMission(x.DestionationStar, x.UsedWormhole)));
 			double baseSpeed = this.selection.Keys.
-				Aggregate(double.MaxValue, (s, x) => Math.Min(designStats[x].GalaxySpeed, s));
+				Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
 			
 			var lastPosition = this.Fleet.FleetData.Position;
 			var wormholeSpeed = this.game.Statics.ShipFormulas.WormholeSpeed;
-			var fleetSize = this.selection.Sum(x => designStats[x.Key].Size * x.Value);
 			this.SimulationEta = 0;
 			this.SimulationFuel = 0;
 
@@ -194,16 +211,7 @@ namespace Stareater.Controllers
 				
 				var distance = (waypoint.Destionation - lastPosition).Length;
 				this.SimulationEta += distance / speed;
-
-				if (this.game.States.Stellarises.OwnedBy[player].Any())
-				{
-					var supplyDistance = this.game.States.Stellarises.
-						OwnedBy[player].
-						Min(x => (waypoint.Destionation - x.Location.Star.Position).Length);
-					this.SimulationFuel = Math.Max(
-						fleetSize * this.game.Statics.ShipFormulas.FuelUsage.Evaluate(new Var("dist", supplyDistance).Get), 
-						this.SimulationFuel);
-				}
+				this.SimulationFuel = Math.Max(playerProc.FuelUsage(fleet, waypoint.Destionation, game), this.SimulationFuel);
 				lastPosition = waypoint.Destionation;
 			}
 		}
@@ -225,29 +233,54 @@ namespace Stareater.Controllers
 			//remove current fleet from regroup
 			shipOrders.Remove(this.Fleet.FleetData);
 			
-			//add new fleet
-			var newFleet = new Fleet(this.Fleet.FleetData.Owner, this.Fleet.FleetData.Position, new LinkedList<AMission>(newMissions));
-			foreach (var group in this.Fleet.FleetData.Ships.Where(x => this.selection.ContainsKey(x.Design)))
-				newFleet.Ships.Add(new ShipGroup(group.Design, this.selection[group.Design], 0, 0, this.selectionPopulation[group.Design]));
-
-			var newFleetInfo = this.addFleet(shipOrders, newFleet);
-			
-			//add old fleet remains
-			var oldFleet = new Fleet(this.Fleet.FleetData.Owner, this.Fleet.FleetData.Position, this.Fleet.FleetData.Missions);
-			foreach(var group in this.Fleet.FleetData.Ships) 
-				if (this.selection.ContainsKey(group.Design) && group.Quantity - this.selection[group.Design] > 0)
-					oldFleet.Ships.Add(new ShipGroup(
-						group.Design, 
-						group.Quantity - this.selection[group.Design], 
-						0, 0, 
-						group.PopulationTransport - this.selectionPopulation[group.Design]));
-			this.Fleet = this.addFleet(shipOrders, oldFleet);
+			var newFleetInfo = this.addFleet(shipOrders, this.selectedFleet(newMissions));
+			this.Fleet = this.addFleet(shipOrders, this.unselectedFleet());
 
 			return new FleetController(
 				newFleetInfo, 
-				this.game,
-				this.player
+				this.game
 			);
+		}
+
+		private Fleet selectedFleet(IEnumerable<AMission> newMissions)
+		{
+			var fleet = new Fleet(this.player, this.Fleet.FleetData.Position, new LinkedList<AMission>(newMissions));
+			fleet.Ships.Add(
+				this.Fleet.FleetData.Ships.
+				Where(x => this.selection.ContainsKey(x.Design)).
+				Select(x => new ShipGroup(
+					x.Design, 
+					this.selection[x.Design], 
+					x.Damage * selectedPart(x), x.UpgradePoints * selectedPart(x), 
+					this.selectionPopulation[x.Design])
+				)
+			);
+
+			return fleet;
+		}
+
+		private Fleet unselectedFleet()
+		{
+			var fleet = new Fleet(this.player, this.Fleet.FleetData.Position, this.Fleet.FleetData.Missions);
+			fleet.Ships.Add(
+				this.Fleet.FleetData.Ships.
+				Where(x => !this.selection.ContainsKey(x.Design) || x.Quantity - this.selection[x.Design] > 0).
+				Select(x => new ShipGroup(
+					x.Design,
+					x.Quantity - this.selection[x.Design],
+					x.Damage * (1 - selectedPart(x)), x.UpgradePoints * (1 - selectedPart(x)),
+					x.PopulationTransport - this.selectionPopulation[x.Design])
+				)
+			);
+
+			return fleet;
+		}
+
+		private double selectedPart(ShipGroup originalGroup)
+		{
+			return this.selection.ContainsKey(originalGroup.Design) ? 
+				this.selection[originalGroup.Design] / originalGroup.Quantity : 
+				1;
 		}
 	}
 }

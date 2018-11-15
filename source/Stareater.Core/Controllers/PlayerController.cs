@@ -148,7 +148,7 @@ namespace Stareater.Controllers
 		public FleetController SelectFleet(FleetInfo fleet)
 		{
 			var game = this.gameInstance;
-			return new FleetController(fleet, game, this.PlayerInstance(game));
+			return new FleetController(fleet, game);
 		}
 
 		public IEnumerable<FleetInfo> FleetsAll
@@ -214,7 +214,11 @@ namespace Stareater.Controllers
 
 		public double FuelUsage
 		{
-			get { return 0; }
+			get
+			{
+				var game = this.gameInstance;
+				return Math.Max(game.Derivates[this.PlayerInstance(game)].TotalFuelUsage(game), 0);
+			}
 		}
 		#endregion
 
@@ -604,7 +608,7 @@ namespace Stareater.Controllers
 
 				foreach (var fleet in this.FleetsAt(source.Position).Where(isTransportFleet))
 				{
-					var controller = new FleetController(fleet, game, player);
+					var controller = new FleetController(fleet, game);
 					foreach(var group in controller.ShipGroups.Where(x => x.PopulationCapacity > 0))
 					{
 						var shipCapacity = designStats[group.Data.Design].ColonizerPopulation;

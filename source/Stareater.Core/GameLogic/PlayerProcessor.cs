@@ -261,8 +261,44 @@ namespace Stareater.GameLogic
 				}
 			}
 		}
+
+		public double TotalFuelUsage(MainGame game)
+		{
+			//TODO(v0.8) duplicate from PlayerController.FleetsMine
+			return game.States.Fleets.
+				OwnedBy[this.Player].
+				Concat(game.Orders[this.Player].ShipOrders.SelectMany(x => x.Value)).
+				Sum(fleet => this.FuelUsage(fleet, game));
+		}
+
+		public double FuelUsage(Fleet fleet, MainGame game)
+		{
+			var moveOrder = fleet.Missions.SkipWhile(x => !(x is MoveMission) && !x.FullTurnAction).FirstOrDefault();
+
+			if (moveOrder is MoveMission)
+				return this.FuelUsage(fleet, (moveOrder as MoveMission).Destination.Position, game);
+			else
+				return this.FuelUsage(fleet, fleet.Position, game);
+		}
+
+		public double FuelUsage(Fleet fleet, Vector2D position, MainGame game)
+		{
+			var fleetSize = fleet.Ships.Sum(x => this.DesignStats[x.Design].Size * x.Quantity);
+
+			if (game.States.Stellarises.OwnedBy[this.Player].Any())
+			{
+				var supplyDistance = game.States.Stellarises.
+					OwnedBy[this.Player].
+					Min(x => (position - x.Location.Star.Position).Length);
+				
+				return fleetSize * game.Statics.ShipFormulas.FuelUsage.Evaluate(new Var("dist", supplyDistance).Get);
+			}
+
+			//TODO(later) special case for natives
+			return 0;
+		}
 		#endregion
-		
+
 		#region Precombat processing
 		public void ProcessPrecombat(MainGame game)
 		{
@@ -333,7 +369,7 @@ namespace Stareater.GameLogic
 				return this.breakthroughs.Any();
 			}
 		}
-		
+
 		public ResearchResult NextBreakthrough()
 		{
 			return this.breakthroughs.Dequeue();
