@@ -430,6 +430,7 @@ namespace Stareater.GameData.Databases
 				data[DesignName].To<string>(),
 				loadPredefinedComponent(data[DesignHull].To<IkonArray>()),
 				data[DesignHullImageIndex].To<int>(),
+				!data.Keys.Contains(DesignNotFuelUser),
 				data.Keys.Contains(DesignIsDrive) ? loadPredefinedComponent(data[DesignIsDrive].To<IkonArray>()) : null,
 				data.Keys.Contains(DesignShield) ? loadPredefinedComponent(data[DesignShield].To<IkonArray>()) : null,
 				loadPredefinedEquipment(data[DesignMissionEquipment].To<IkonArray>()),
@@ -799,12 +800,13 @@ namespace Stareater.GameData.Databases
 		private const string DesignHull = "hull";
 		private const string DesignHullImageIndex = "hullImageIndex";
 		private const string DesignMissionEquipment = "equipment";
+		private const string DesignNotFuelUser = "notFuelUser";
 		private const string DesignReactor = "reactor";
 		private const string DesignSensor = "sensor";
 		private const string DesignShield = "shield";
 		private const string DesignSpecialEquipment = "specials";
 		private const string DesignThrusters = "thrusters";
-		
+
 		private const string FocusList = "list";
 		private const string ResearchUnlocksKey = "devTopics";
 

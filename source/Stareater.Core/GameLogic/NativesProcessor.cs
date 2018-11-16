@@ -65,8 +65,8 @@ namespace Stareater.GameLogic
 				).ToList();
 
 				design = new Design(
-					id, playerProc.Player, false, designData.Name, designData.HullImageIndex,
-					armor, hull, isDrive, reactor, sensor, shield, equipment, specials, thruster
+					id, playerProc.Player, false, designData.Name, designData.HullImageIndex, designData.UsesFuel,
+					armor, hull, isDrive, reactor, sensor, thruster, shield, equipment, specials
 				);
 				
 				design.CalcHash(statics);

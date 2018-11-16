@@ -27,6 +27,9 @@ namespace Stareater.Ships
 		public int ImageIndex { get; private set; }
 
 		[StateProperty]
+		public bool UsesFuel { get; private set; }
+
+		[StateProperty]
 		public Component<ArmorType> Armor { get; private set; }
 
 		[StateProperty]
@@ -59,13 +62,16 @@ namespace Stareater.Ships
 		[StateProperty]
 		public double Cost { get; private set; } //TODO(v0.8) try to move design stats
 
-		public Design(string idCode, Player owner, bool isObsolete, string name, int imageIndex, Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment, Component<ThrusterType> thrusters) 
+		public Design(string idCode, Player owner, bool isObsolete, string name, int imageIndex, bool usesFuel, 
+			Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ThrusterType> thrusters, 
+			Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment) 
 		{
 			this.IdCode = idCode;
 			this.Owner = owner;
 			this.IsObsolete = isObsolete;
 			this.Name = name;
 			this.ImageIndex = imageIndex;
+			this.UsesFuel = usesFuel;
 			this.Armor = armor;
 			this.Hull = hull;
 			this.IsDrive = isDrive;

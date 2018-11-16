@@ -108,20 +108,16 @@ namespace Stareater.Controllers
 
 			if (this.CanMove && waypoints != null && waypoints.LastOrDefault() != this.Fleet.FleetData.Position)
 			{
-				//TODO(later) special case for natives
-				if (this.game.States.Stellarises.OwnedBy[player].Any())
-				{
-					var playerProc = this.game.Derivates[this.player];
-					var availableFuel = 
-						game.Derivates.Colonies.OwnedBy[this.player].Sum(x => x.FuelProduction) -
-						playerProc.TotalFuelUsage(game) +
-						playerProc.FuelUsage(this.Fleet.FleetData, game) -
-						playerProc.FuelUsage(this.unselectedFleet(), game);
-					var fuelUse = playerProc.FuelUsage(this.selectedFleet(new AMission[0]), waypoints.First(), game);
+				var playerProc = this.game.Derivates[this.player];
+				var availableFuel = 
+					game.Derivates.Colonies.OwnedBy[this.player].Sum(x => x.FuelProduction) -
+					playerProc.TotalFuelUsage(game) +
+					playerProc.FuelUsage(this.Fleet.FleetData, game) -
+					playerProc.FuelUsage(this.unselectedFleet(), game);
+				var fuelUse = playerProc.FuelUsage(this.selectedFleet(new AMission[0]), waypoints.First(), game);
 
-					if (availableFuel < fuelUse)
-						return this;
-				}
+				if (availableFuel < fuelUse)
+					return this;
 
 				var missions = new List<AMission>();
 				var lastPoint = this.Fleet.FleetData.Position;

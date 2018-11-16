@@ -392,15 +392,16 @@ namespace Stareater.Controllers
 				false,
 				this.Name.Trim(),
 				this.ImageIndex,
+				false,
 				new Component<ArmorType>(this.armorInfo.Type, this.armorInfo.Level),
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
 				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
 				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level),
 				new Component<SensorType>(this.sensorInfo.Type, this.sensorInfo.Level),
+				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level),
 				this.Shield != null ? new Component<ShieldType>(this.Shield.Type, this.Shield.Level) : null,
 				selectedMissionEquipment,
-				selectedSpecialEquipment, 
-				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level)
+				selectedSpecialEquipment
 			);
 			design.CalcHash(this.game.Statics);
 			

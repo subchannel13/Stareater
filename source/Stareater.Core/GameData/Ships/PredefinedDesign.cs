@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Stareater.GameData.Ships
 {
@@ -11,6 +8,7 @@ namespace Stareater.GameData.Ships
 
 		public PredefinedComponent Hull { get; private set; }
 		public int HullImageIndex { get; private set; }
+		public bool UsesFuel { get; private set; }
 
 		public PredefinedComponent IsDrive { get; private set; }
 		public PredefinedComponent Shield { get; private set; }
@@ -22,7 +20,7 @@ namespace Stareater.GameData.Ships
 		public PredefinedComponent Sensors { get; private set; }
 		public PredefinedComponent Thrusters { get; private set; }
 
-		public PredefinedDesign(string name, PredefinedComponent hull, int hullImageIndex, 
+		public PredefinedDesign(string name, PredefinedComponent hull, int hullImageIndex, bool usesFuel,
 			PredefinedComponent isDrive, PredefinedComponent shield, 
 			List<PredefinedComponent> missionEquipment, List<PredefinedComponent> specialEquipment, 
 			PredefinedComponent armor, PredefinedComponent reactor, PredefinedComponent sensors, PredefinedComponent thrusters)
@@ -30,6 +28,7 @@ namespace Stareater.GameData.Ships
 			this.Name = name;
 			this.Hull = hull;
 			this.HullImageIndex = hullImageIndex;
+			this.UsesFuel = usesFuel;
 			this.IsDrive = isDrive;
 			this.Shield = shield;
 			this.MissionEquipment = missionEquipment;

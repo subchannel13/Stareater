@@ -5,6 +5,7 @@
 			
 			hull [:catalyzer =0]
 			hullImageIndex= 0
+			notFuelUser []
 			
 			isDrive [:skimmer =0]
 			
