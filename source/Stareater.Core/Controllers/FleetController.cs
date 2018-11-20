@@ -263,9 +263,9 @@ namespace Stareater.Controllers
 				Where(x => !this.selection.ContainsKey(x.Design) || x.Quantity - this.selection[x.Design] > 0).
 				Select(x => new ShipGroup(
 					x.Design,
-					x.Quantity - this.selection[x.Design],
+					x.Quantity - (this.selection.ContainsKey(x.Design) ? this.selection[x.Design] : 0),
 					x.Damage * (1 - selectedPart(x)), x.UpgradePoints * (1 - selectedPart(x)),
-					x.PopulationTransport - this.selectionPopulation[x.Design])
+					x.PopulationTransport - (this.selection.ContainsKey(x.Design) ? this.selectionPopulation[x.Design] : 0))
 				)
 			);
 
