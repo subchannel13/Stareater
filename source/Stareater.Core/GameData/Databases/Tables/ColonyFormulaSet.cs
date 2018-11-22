@@ -25,8 +25,10 @@ namespace Stareater.GameData.Databases.Tables
 		public PopulationActivityFormulas Industry { get; private set; }
 
 		public Formula FuelProduction { get; private set; }
+		public Formula FuelCost { get; private set; }
 		public Formula RepairPoints { get; private set; }
 		public Formula PopulationHitPoints { get; private set; }
+		public Formula MaintenanceTotalLimit { get; private set; }
 
 		public ColonyFormulaSet(
 			Formula colonizationPopThreshold, Formula uncolonizedMaxPopulation, Formula victoryPointWorth, 
@@ -36,7 +38,8 @@ namespace Stareater.GameData.Databases.Tables
 			PopulationActivityFormulas farming, PopulationActivityFormulas gardening,
 			PopulationActivityFormulas mining, PopulationActivityFormulas development, 
 			PopulationActivityFormulas industry,
-            Formula fuelProduction, Formula repairPoints, Formula populationHitPoints)
+            Formula fuelProduction, Formula fuelCost, Formula repairPoints, 
+			Formula populationHitPoints, Formula MaintenanceTotalLimit)
 		{
 			this.ColonizationPopulationThreshold = colonizationPopThreshold;
 			this.UncolonizedMaxPopulation = uncolonizedMaxPopulation;
@@ -58,8 +61,10 @@ namespace Stareater.GameData.Databases.Tables
 			this.Industry = industry;
 
 			this.FuelProduction = fuelProduction;
+			this.FuelCost = fuelCost;
 			this.RepairPoints = repairPoints;
 			this.PopulationHitPoints = populationHitPoints;
+			this.MaintenanceTotalLimit = MaintenanceTotalLimit;
 		}
 	}
 }

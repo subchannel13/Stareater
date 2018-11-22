@@ -94,19 +94,16 @@ namespace Stareater.GameLogic
 			this.CalculateStareater(game);
 		}
 
-		public void CalculateBaseEffects(StatesDB states, TemporaryDB derivates)
+		public void CalculateBaseEffects(MainGame game)
 		{
-			var maintenanceCost = derivates.Colonies.OwnedBy[this.Player].Sum(x => x.MaintenanceCost);
-            var availabeMaintenance = derivates.Colonies.OwnedBy[this.Player].Sum(x => x.MaintenanceLimit);
-
-			//TODO(later) make player adjustable
-			var maintenanceLimit = 0.5;
-			this.MaintenanceRatio = Methods.Clamp(maintenanceCost / availabeMaintenance, 0, maintenanceLimit);
+			var maintenanceCost = game.Derivates.Colonies.OwnedBy[this.Player].Sum(x => x.MaintenanceCost);
+            var availabeMaintenance = game.Derivates.Colonies.OwnedBy[this.Player].Sum(x => x.MaintenanceLimit);
+			var maintenanceLimit = 0.5; //TODO(later) make player adjustable
 
 			if (maintenanceCost > availabeMaintenance * maintenanceLimit)
 			{
 				availabeMaintenance *= maintenanceLimit;
-                var needMaintenance = derivates.Colonies.OwnedBy[this.Player].
+                var needMaintenance = game.Derivates.Colonies.OwnedBy[this.Player].
 					Where(x => x.MaintenanceCost > 0).
 					OrderBy(x => x.MaintenancePerPop);
 
@@ -118,13 +115,24 @@ namespace Stareater.GameLogic
                 }
 			}
 
+			var fuelDeficit = 
+				game.States.Fleets.OwnedBy[this.Player].Sum(x => this.FuelUsage(x, game)) - 
+				game.Derivates.Colonies.OwnedBy[this.Player].Sum(x => x.FuelProduction);
+			if (fuelDeficit > 0)
+				maintenanceCost += fuelDeficit * game.Statics.ColonyFormulas.FuelCost.Evaluate(null);
+
+			this.MaintenanceRatio = Methods.Clamp(
+				maintenanceCost / availabeMaintenance, 
+				0, 
+				game.Statics.ColonyFormulas.MaintenanceTotalLimit.Evaluate(null));
+
 			this.ScanRanges.Clear();
-			foreach (var stellaris in derivates.Stellarises.OwnedBy[this.Player])
+			foreach (var stellaris in game.Derivates.Stellarises.OwnedBy[this.Player])
 			{
 				var range = new Circle(stellaris.Location.Position, stellaris.ScanRange);
 				this.ScanRanges.Add(range, range.Center, new Vector2D(range.Radius * 2, range.Radius * 2));
 			}
-			foreach(var fleet in states.Fleets.OwnedBy[this.Player])
+			foreach(var fleet in game.States.Fleets.OwnedBy[this.Player])
 			{
 				var range = new Circle(fleet.Position, fleet.Ships.Max(x => this.DesignStats[x.Design].ScanRange));
 				this.ScanRanges.Add(range, range.Center, new Vector2D(range.Radius * 2, range.Radius * 2));

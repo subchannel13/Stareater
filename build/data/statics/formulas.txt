@@ -8,6 +8,8 @@
 			if(noGrav, 0, 5) - 2 * rocketryLvl / 5,
 		1, 20);
 	fuel # 100 * size * limit(infra_count / pop, 0, 1) * limit(pop / maxPop, 0, 1);
+	fuelCost # 1e5;
+	maintenanceLimit # 0.8;
 	
 	populationGrowth 
 	{ Stat

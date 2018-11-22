@@ -197,8 +197,10 @@ namespace Stareater.GameData.Databases
 				loadPopulationActivity(data, ColonyDevelopment),
 				loadPopulationActivity(data, ColonyIndustry),
 				data[ColonyFuelProduction].To<Formula>(),
+				data[ColonyFuelCost].To<Formula>(),
 				data[ColonyRepairPoints].To<Formula>(),
-				data[ColonyPopulationHitPoints].To<Formula>()
+				data[ColonyPopulationHitPoints].To<Formula>(),
+				data[ColonyMaintenanceLimit].To<Formula>()
 			);
 		}
 		
@@ -730,9 +732,11 @@ namespace Stareater.GameData.Databases
 		private const string ColonyEmigrants = "emigrants";
 		private const string ColonyFarmFields = "farmFields";
 		private const string ColonyFarming = "farming";
+		private const string ColonyFuelCost = "fuelCost";
 		private const string ColonyFuelProduction = "fuel";
 		private const string ColonyGardening = "gardening";
 		private const string ColonyIndustry = "industry";
+		private const string ColonyMaintenanceLimit = "maintenanceLimit";
 		private const string ColonyMaxPopulation = "maxPopulation";
 		private const string ColonyMining = "mining";
 		private const string ColonyOrganization = "organization";
