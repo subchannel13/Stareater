@@ -6,6 +6,31 @@ Although this is a C# project, builds can be run with Mono in both Linux and Mac
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/IvanKravarscan/5)
 
+# State of the project
+
+This project is in pre-alpha state (not feature complete) but it is nearing feature completeness. Technically the game can be played already, baring missing content. What is implemented:
+* Starting single player game
+* Hotseat multiplayer
+* Colony management
+* Star system management
+* Research and development
+* Ship design
+* Victory condition (ending a game)
+* Basic space combat
+* Basic diplomacy (war and peace)
+* Barebones AI
+* Basic neutral player (native lifeforms)
+* 3 out of 8 tiers of technologies
+
+Missing features:
+* Espionage
+* Ground combat
+* Advanced space combat
+* Advanced diplomacy
+* Proper AI
+* Planet quality in map generator
+* Higher tier technologies
+
 # How to build
 
 Instructions for Windows and debug configuration:
@@ -13,21 +38,20 @@ Instructions for Windows and debug configuration:
 1. Install NuGet (command line tool for managing external dependencies)
   * You may need to configure your IDE to use it
   * There is an extension for Visual Studio
-  * SharpDevelop already comes with integrated NuGet
 2. Build `{Stareater}/tools/Tools.sln`
   * `{Stareater}` is repository root directory
   * Build with "Debug" configuration
   * It will create texture generator tool needed for the next step
-4. Run `{Stareater}/scripts/gen_textures.bat`
+3. Run `{Stareater}/scripts/gen_textures.bat`
   * OS-es other then Windows may not know how to execute the script, in that case one has to manually run texture generator with appropriate parameters
-5. Make sure game data is available to game's executable
+4. Make sure game data is available to game's executable
   * Game data files are in `{Stareater}/build/` directory
   * Game's executable file is in `{Stareater}/source/Stareater.UI.WinForms/bin/Debug/` directory
     * Set IDE to run the project with following command line parameter: `-root ../../../../build/`
     * Alternatively, run `{Stareater}/scripts/copy_build_to_bin.bat` to copy files next to executable
   * Again, scrips may not work on OS-es other then Windows
-6. Build `{Stareater}/source/Zvjezdojedac.sln`
-7. If all steps above were successful, the game can be run
+5. Build `{Stareater}/source/Zvjezdojedac.sln`
+6. If all steps above were successful, the game can be run
 
 # Licence
 
