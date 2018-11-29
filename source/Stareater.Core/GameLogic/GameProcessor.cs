@@ -390,7 +390,7 @@ namespace Stareater.GameLogic
 				
 				if (colonyExists || arrivedPopulation >= colonizationTreshold)
 				{
-					this.game.Orders[project.Owner].ColonizationOrders.Remove(project.Destination);
+					this.game.Orders[project.Owner].ColonizationTargets.Remove(project.Destination);
 					this.game.States.ColonizationProjects.PendRemove(project);
 				}
 			}

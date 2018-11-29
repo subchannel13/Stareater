@@ -14,11 +14,8 @@ namespace Stareater.GUI
 		/// Designer variable used to keep track of non-visual components.
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
-		private System.Windows.Forms.Button addButton;
 		private System.Windows.Forms.PictureBox thumbnailImage;
-		private System.Windows.Forms.Label fromLabel;
 		private System.Windows.Forms.Label targetName;
-		private System.Windows.Forms.FlowLayoutPanel sourceList;
 		private System.Windows.Forms.Label targetInfo;
 		private System.Windows.Forms.Label enrouteInfo;
 		
@@ -43,24 +40,12 @@ namespace Stareater.GUI
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.addButton = new System.Windows.Forms.Button();
 			this.thumbnailImage = new System.Windows.Forms.PictureBox();
-			this.fromLabel = new System.Windows.Forms.Label();
 			this.targetName = new System.Windows.Forms.Label();
-			this.sourceList = new System.Windows.Forms.FlowLayoutPanel();
 			this.targetInfo = new System.Windows.Forms.Label();
 			this.enrouteInfo = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// addButton
-			// 
-			this.addButton.Image = global::Stareater.Properties.Resources.add;
-			this.addButton.Location = new System.Drawing.Point(20, 75);
-			this.addButton.Name = "addButton";
-			this.addButton.Size = new System.Drawing.Size(23, 23);
-			this.addButton.TabIndex = 4;
-			this.addButton.Click += new System.EventHandler(this.addButton_Click);
 			// 
 			// thumbnailImage
 			// 
@@ -72,15 +57,6 @@ namespace Stareater.GUI
 			this.thumbnailImage.TabIndex = 4;
 			this.thumbnailImage.TabStop = false;
 			// 
-			// fromLabel
-			// 
-			this.fromLabel.AutoSize = true;
-			this.fromLabel.Location = new System.Drawing.Point(10, 46);
-			this.fromLabel.Name = "fromLabel";
-			this.fromLabel.Size = new System.Drawing.Size(33, 13);
-			this.fromLabel.TabIndex = 3;
-			this.fromLabel.Text = "From:";
-			// 
 			// targetName
 			// 
 			this.targetName.AutoSize = true;
@@ -89,16 +65,6 @@ namespace Stareater.GUI
 			this.targetName.Size = new System.Drawing.Size(88, 13);
 			this.targetName.TabIndex = 0;
 			this.targetName.Text = "Alpha Centauri III";
-			// 
-			// sourceList
-			// 
-			this.sourceList.AutoSize = true;
-			this.sourceList.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.sourceList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-			this.sourceList.Location = new System.Drawing.Point(49, 46);
-			this.sourceList.Name = "sourceList";
-			this.sourceList.Size = new System.Drawing.Size(0, 0);
-			this.sourceList.TabIndex = 5;
 			// 
 			// targetInfo
 			// 
@@ -127,14 +93,11 @@ namespace Stareater.GUI
 			this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.Controls.Add(this.enrouteInfo);
 			this.Controls.Add(this.targetInfo);
-			this.Controls.Add(this.sourceList);
-			this.Controls.Add(this.addButton);
 			this.Controls.Add(this.thumbnailImage);
-			this.Controls.Add(this.fromLabel);
 			this.Controls.Add(this.targetName);
 			this.MinimumSize = new System.Drawing.Size(260, 2);
 			this.Name = "ColonizationTargetView";
-			this.Size = new System.Drawing.Size(258, 101);
+			this.Size = new System.Drawing.Size(258, 46);
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

@@ -10,7 +10,7 @@ namespace Stareater.GUI
 {
 	public sealed partial class FormPickColonizationSource : Form
 	{
-		private readonly ColonizationController controller;
+		private readonly PlayerController controller;
 		
 		public StellarisInfo SelectedSource { get; private set; }
 		
@@ -19,11 +19,11 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 		
-		public FormPickColonizationSource(ColonizationController controller) : this()
+		public FormPickColonizationSource(PlayerController controller) : this()
 		{
 			this.controller = controller;
 			
-			foreach(var candidate in controller.AvailableSources())
+			foreach(var candidate in controller.Stellarises()) //TODO(v0.8) filter already assigned colony ship yards
 				sourceList.Items.Add(new Tag<StellarisInfo>(
 					candidate,
 					candidate.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage)

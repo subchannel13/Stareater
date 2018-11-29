@@ -177,7 +177,6 @@
     <Compile Include="GameData\Construction\ProjectFactory.cs" />
     <Compile Include="GameData\Construction\StaticProject.cs" />
     <Compile Include="GameData\Databases\Tables\ColonizationCollection.cs" />
-    <Compile Include="GameData\Databases\Tables\ColonizationPlan.cs" />
     <Compile Include="GameData\Databases\Tables\ConstructionOrders.cs" />
     <Compile Include="GameData\Databases\Tables\PlanetForumlaSet.cs" />
     <Compile Include="GameData\Databases\Tables\PlayerOrders.cs" />

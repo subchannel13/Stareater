@@ -40,49 +40,6 @@ namespace Stareater.GUI
 			this.enrouteInfo.Text =	context["enroute"].Text(
 				new TextVar("count", new ThousandsFormatter().Format(enroutePopulation)).Get
 			);
-			
-			updateView();
-		}
-
-		void updateView()
-		{
-			var sources = controller.Sources().ToArray();
-			
-			while(sourceList.Controls.Count < sources.Length)
-			{
-				var itemView = new ColonizationSourceView(controller);
-				itemView.OnStateChange += onSourceChange;
-				sourceList.Controls.Add(itemView);
-			}
-			while(sourceList.Controls.Count > sources.Length)
-			{
-				var itemView = sourceList.Controls[sourceList.Controls.Count - 1] as ColonizationSourceView;
-				itemView.OnStateChange -= onSourceChange;
-				sourceList.Controls.RemoveAt(sourceList.Controls.Count - 1);
-			}
-			
-			for(int i = 0; i < sources.Length; i++)
-	        {
-				var itemView = sourceList.Controls[i] as ColonizationSourceView;
-				itemView.Data = sources[i];
-	        }
-		}
-		
-		private void onSourceChange()
-		{
-			updateView();
-		}
-		
-		private void addButton_Click(object sender, EventArgs e)
-		{
-			if (this.controller.AvailableSources().Any())
-				using(var form = new FormPickColonizationSource(controller))
-					if (form.ShowDialog() == DialogResult.OK)
-					{
-						this.controller.StartColonization(form.SelectedSource);
-						this.controller.RunAutomation();
-						this.updateView();
-					}
 		}
 	}
 }

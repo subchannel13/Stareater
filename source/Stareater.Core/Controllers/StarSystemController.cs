@@ -93,7 +93,7 @@ namespace Stareater.Controllers
 		public bool IsColonizing(int position)
 		{
 			var planet = this.game.States.Planets.At[this.star].First(x => x.Position == position);
-			return planet != null && this.game.Orders[this.player].ColonizationOrders.ContainsKey(planet);
+			return planet != null && this.game.Orders[this.player].ColonizationTargets.Contains(planet);
 		}
 		
 		public ColonyController ColonyController(int bodyPosition)

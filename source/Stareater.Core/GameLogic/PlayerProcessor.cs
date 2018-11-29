@@ -349,12 +349,12 @@ namespace Stareater.GameLogic
 		private void updateColonizationOrders(MainGame game)
 		{
 			foreach(var project in game.States.ColonizationProjects.OwnedBy[this.Player])
-				if (!game.Orders[this.Player].ColonizationOrders.ContainsKey(project.Destination))
+				if (!game.Orders[this.Player].ColonizationTargets.Contains(project.Destination))
 					game.States.ColonizationProjects.PendRemove(project);
 			
-			foreach(var order in game.Orders[this.Player].ColonizationOrders)
-				if (game.States.ColonizationProjects.Of[order.Key].All(x => x.Owner != this.Player))
-					game.States.ColonizationProjects.PendAdd(new ColonizationProject(this.Player, order.Value.Destination));
+			foreach(var order in game.Orders[this.Player].ColonizationTargets)
+				if (game.States.ColonizationProjects.Of[order].All(x => x.Owner != this.Player))
+					game.States.ColonizationProjects.PendAdd(new ColonizationProject(this.Player, order));
 
 			game.States.ColonizationProjects.ApplyPending();
 		}
@@ -420,11 +420,11 @@ namespace Stareater.GameLogic
 		private void checkColonizationValidity(MainGame game)
 		{
 			var occupiedTargets = new HashSet<Planet>();
-			foreach(var order in game.Orders[this.Player].ColonizationOrders)
-				if (game.States.Colonies.AtPlanet.Contains(order.Key)) //TODO(v0.8) use intelligence instead
-					occupiedTargets.Add(order.Key);
+			foreach(var order in game.Orders[this.Player].ColonizationTargets)
+				if (game.States.Colonies.AtPlanet.Contains(order)) //TODO(v0.8) use intelligence instead
+					occupiedTargets.Add(order);
 			foreach(var planet in occupiedTargets)
-				game.Orders[this.Player].ColonizationOrders.Remove(planet);
+				game.Orders[this.Player].ColonizationTargets.Remove(planet);
 		}
 
 		private void doConstruction(MainGame game)

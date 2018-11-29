@@ -69,7 +69,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{ 
-				return this.game.Orders[this.player].ColonizationOrders.ContainsKey(this.planet);
+				return this.game.Orders[this.player].ColonizationTargets.Contains(this.planet);
 			}
 		}
 
@@ -78,74 +78,22 @@ namespace Stareater.Controllers
 			if (this.IsReadOnly)
 				return;
 			
-			ColonizationPlan plan = null;
-			if (this.IsColonizing)
-				plan = this.game.Orders[this.player].ColonizationOrders[this.planet];
-			else
-			{
-				plan = new ColonizationPlan(this.planet);
-				this.game.Orders[this.player].ColonizationOrders.Add(this.planet, plan);
-			}
+			if (!this.IsColonizing)
+				this.game.Orders[this.player].ColonizationTargets.Add(this.planet);
 			
-			if (colonizationSources != null && colonizationSources.Length > 0)
-				foreach(var source in colonizationSources)
-					if (!plan.Sources.Contains(source.Stellaris.Location.Star))
-						plan.Sources.Add(source.Stellaris.Location.Star); //TODO(later) convert source list to set?
 
 			playerController.RunAutomation();
-			updateStellarises(plan.Sources);
+			//TODO(v0.8) update colony ship yards updateStellarises(...);
 		}
 		
 		public void StopColonization(params StellarisInfo[] colonizationSources)
 		{
 			if (!this.IsColonizing || this.IsReadOnly)
 				return;
-			
-			var plan = this.game.Orders[this.player].ColonizationOrders[this.planet];
-			IEnumerable<StarData> toUpdate = new StarData[0];
-			
-			if (colonizationSources != null && colonizationSources.Length > 0)
-				foreach(var source in colonizationSources)
-				{
-					plan.Sources.Remove(source.Stellaris.Location.Star);
-					toUpdate = colonizationSources.Select(x => x.Stellaris.Location.Star);
-				}
-			else
-			{
-				toUpdate = plan.Sources.ToArray();
-				plan.Sources.Clear();
-			}
 
+			this.game.Orders[this.player].ColonizationTargets.Remove(this.planet);
 			playerController.RunAutomation();
-			if (plan.Sources.Count == 0)
-				this.game.Orders[this.player].ColonizationOrders.Remove(this.planet);
-			else
-				updateStellarises(plan.Sources);
-			
-			updateStellarises(toUpdate);
-		}
-		
-		public IEnumerable<StellarisInfo> AvailableSources()
-		{
-			var used = new HashSet<StarData>();
-			
-			if (this.game.Orders[this.player].ColonizationOrders.ContainsKey(this.planet))
-				used.UnionWith(this.game.Orders[this.player].ColonizationOrders[this.planet].Sources);
-			
-			foreach(var stellaris in this.game.States.Stellarises.OwnedBy[this.player])
-				if (!used.Contains(stellaris.Location.Star))
-					yield return new StellarisInfo(stellaris, this.game);
-		}
-		
-		public IEnumerable<StellarisInfo> Sources()
-		{
-			if (!this.game.Orders[this.player].ColonizationOrders.ContainsKey(this.planet))
-				return new StellarisInfo[0];
-			
-			var stars = new HashSet<StarData>();
-			stars.UnionWith(this.game.Orders[this.player].ColonizationOrders[this.planet].Sources);
-			
-			return stars.Select(x => new StellarisInfo(this.game.States.Stellarises.At[x, this.player].First(), this.game));
+			//TODO(v0.8) update colony ship yards updateStellarises(...);
 		}
 		#endregion
 

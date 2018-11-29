@@ -341,7 +341,7 @@ namespace Stareater.Controllers
 			var player = this.PlayerInstance(game);
 			var planets = new HashSet<Planet>();
 			planets.UnionWith(game.States.ColonizationProjects.OwnedBy[player].Select(x => x.Destination));
-			planets.UnionWith(game.Orders[player].ColonizationOrders.Keys);
+			planets.UnionWith(game.Orders[player].ColonizationTargets);
 			
 			foreach(var planet in planets)
 				yield return new ColonizationController(game, planet, game.IsReadOnly, this);
@@ -594,34 +594,35 @@ namespace Stareater.Controllers
 				orders.AutomatedConstruction[stellaris] = new ConstructionOrders(0);
 
 			var colonizerDesign = game.Orders[player].ColonizerDesign;
-			var colonizationSources = orders.ColonizationOrders.Values.SelectMany(x => x.Sources).Distinct().ToList();
+			var colonizationSources = game.States.Stellarises.OwnedBy[player]; //TODO(v0.8) only colony ship yards
 			var designStats = game.Derivates[player].DesignStats;
 
 			//TODO(v0.8) calculate needed number of ships and adjust spending accordingly
-			foreach (var source in colonizationSources)
-			{
-				var plan = orders.AutomatedConstruction[game.States.Stellarises.At[source, player].First()];
-				plan.SpendingRatio = 1;
-				plan.Queue.Add(new ShipProject(colonizerDesign, true));
-
-				var colonizationOrder = orders.ColonizationOrders.Values.First(x => x.Sources.Contains(source));
-
-				foreach (var fleet in this.FleetsAt(source.Position).Where(isTransportFleet))
+			if (orders.ColonizationTargets.Any())
+				foreach (var source in colonizationSources)
 				{
-					var controller = new FleetController(fleet, game);
-					foreach(var group in controller.ShipGroups.Where(x => x.PopulationCapacity > 0))
+					var plan = orders.AutomatedConstruction[source];
+					plan.SpendingRatio = 1;
+					plan.Queue.Add(new ShipProject(colonizerDesign, true));
+
+					var colonizationOrder = orders.ColonizationTargets.First();
+
+					foreach (var fleet in this.FleetsAt(source.Location.Star.Position).Where(isTransportFleet))
 					{
-						var shipCapacity = designStats[group.Data.Design].ColonizerPopulation;
-						var toSelect = (long)Math.Floor(group.Data.PopulationTransport / shipCapacity);
-						if (toSelect < 1)
-							continue;
+						var controller = new FleetController(fleet, game);
+						foreach (var group in controller.ShipGroups.Where(x => x.PopulationCapacity > 0))
+						{
+							var shipCapacity = designStats[group.Data.Design].ColonizerPopulation;
+							var toSelect = (long)Math.Floor(group.Data.PopulationTransport / shipCapacity);
+							if (toSelect < 1)
+								continue;
 
-						controller.SelectGroup(group, toSelect, toSelect * shipCapacity);
+							controller.SelectGroup(group, toSelect, toSelect * shipCapacity);
+						}
+
+						controller.Send(new Vector2D[] { colonizationOrder.Star.Position });
 					}
-
-					controller.Send(new Vector2D[] { colonizationOrder.Destination.Star.Position });
 				}
-			}
 
 			var transporters = this.FleetsMine.Where(isTransportFleet).ToList();
 			if(transporters.Count > 0)
