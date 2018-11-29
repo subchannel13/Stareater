@@ -39,6 +39,9 @@ namespace Stareater.GUI
 			this.Font = SettingsWinforms.Get.FormFont;
 
 			this.colonizerDesignText.Text = context["colonizerLabel"].Text() + ":";
+			this.capacityText.Text = context["capacityLabel"].Text() + ":";
+			this.projectListTitle.Text = context["projectsTitle"].Text() + ":";
+			this.shipyardListTitle.Text = context["shipyardsTitle"].Text() + ":";
 			updateSelectedColonizer();
 		}
 

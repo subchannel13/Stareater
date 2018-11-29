@@ -2,6 +2,9 @@
 title = Colonization projects
 colonizerLabel = Colony ship design
 colonizerTitle = Pick colony ship design
+capacityLabel = Target transport capacity
+projectsTitle = Planets to colonize
+shipyardsTitle = Colony ship yards
 
 addSource = Add
 addSourceTitle = Pick source
