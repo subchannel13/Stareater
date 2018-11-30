@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers;
+using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
 using Stareater.GUI.ShipDesigns;
 using Stareater.Localization;
@@ -23,17 +24,17 @@ namespace Stareater.GUI
 		{
 			this.controller = controller;
 			
-			var projects = controller.ColonizationProjects().ToList();
 			projectList.RowStyles.Clear();
-			for (int i = 0; i < projects.Count; i++)
-				projectList.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-			
-			for (int i = 0; i < projects.Count; i++) 
+			foreach(var project in controller.ColonizationProjects)
 			{
-				var itemView = new ColonizationTargetView(projects[i], controller);
+				var itemView = new ColonizationTargetView(project, controller);
+				projectList.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 				projectList.Controls.Add(itemView);
 			}
-			
+
+			shipyardList.RowStyles.Clear();
+			this.updateSourceList();
+
 			var context = LocalizationManifest.Get.CurrentLanguage["FormColonization"];
 			this.Text = context["title"].Text();
 			this.Font = SettingsWinforms.Get.FormFont;
@@ -66,6 +67,33 @@ namespace Stareater.GUI
 			updateSelectedColonizer();
 		}
 
+		private void removeSource(StellarisInfo stellaris)
+		{
+			this.controller.RemoveColonizationSource(stellaris);
+			this.updateSourceList();
+		}
+
+		private void updateSourceList()
+		{
+			var sources = controller.ColonizationSources.ToList();
+			this.shipyardList.SuspendLayout();
+
+			while (this.shipyardList.Controls.Count > sources.Count)
+				this.shipyardList.Controls.RemoveAt(this.shipyardList.Controls.Count - 1);
+			while (this.shipyardList.Controls.Count < sources.Count)
+			{
+				if (shipyardList.RowStyles.Count < sources.Count)
+					shipyardList.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+				shipyardList.Controls.Add(new ColonizationSourceView(removeSource));
+			}
+
+			for (int i = 0; i < sources.Count; i++)
+			{
+				(this.shipyardList.Controls[i] as ColonizationSourceView).Data = sources[i];
+			}
+			this.shipyardList.ResumeLayout();
+		}
+
 		private void selectColonizerAction_Click(object sender, EventArgs e)
 		{
 			var title = LocalizationManifest.Get.CurrentLanguage["FormColonization"]["colonizerTitle"].Text();
@@ -75,6 +103,17 @@ namespace Stareater.GUI
 
 			using (var form = new FormPickComponent(title, options))
 				form.ShowDialog();
+		}
+
+		private void addSourceAction_Click(object sender, EventArgs e)
+		{
+			//TODO(v0.8) disable button if no sources available
+			using (var form = new FormPickColonizationSource(this.controller))
+				if (form.ShowDialog() == DialogResult.OK)
+				{
+					this.controller.AddColonizationSource(form.SelectedSource);
+					this.updateSourceList();
+				}
 		}
 	}
 }

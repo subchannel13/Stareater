@@ -45,6 +45,7 @@ namespace Stareater.GUI
 			this.shipyardList = new System.Windows.Forms.TableLayoutPanel();
 			this.shipyardListTitle = new System.Windows.Forms.Label();
 			this.projectListTitle = new System.Windows.Forms.Label();
+			this.addSourceAction = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// projectList
@@ -59,7 +60,7 @@ namespace Stareater.GUI
 			this.projectList.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
 			this.projectList.RowCount = 1;
 			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.projectList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 276F));
 			this.projectList.Size = new System.Drawing.Size(281, 276);
 			this.projectList.TabIndex = 0;
 			// 
@@ -115,8 +116,8 @@ namespace Stareater.GUI
 			this.shipyardList.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
 			this.shipyardList.RowCount = 1;
 			this.shipyardList.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.shipyardList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.shipyardList.Size = new System.Drawing.Size(223, 276);
+			this.shipyardList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 276F));
+			this.shipyardList.Size = new System.Drawing.Size(223, 230);
 			this.shipyardList.TabIndex = 1;
 			// 
 			// shipyardListTitle
@@ -139,11 +140,23 @@ namespace Stareater.GUI
 			this.projectListTitle.TabIndex = 8;
 			this.projectListTitle.Text = "Planets to colonize:";
 			// 
+			// addSourceAction
+			// 
+			this.addSourceAction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.addSourceAction.Image = global::Stareater.Properties.Resources.add;
+			this.addSourceAction.Location = new System.Drawing.Point(319, 309);
+			this.addSourceAction.Name = "addSourceAction";
+			this.addSourceAction.Size = new System.Drawing.Size(40, 40);
+			this.addSourceAction.TabIndex = 10;
+			this.addSourceAction.UseVisualStyleBackColor = true;
+			this.addSourceAction.Click += new System.EventHandler(this.addSourceAction_Click);
+			// 
 			// FormColonization
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(554, 361);
+			this.Controls.Add(this.addSourceAction);
 			this.Controls.Add(this.shipyardListTitle);
 			this.Controls.Add(this.projectListTitle);
 			this.Controls.Add(this.shipyardList);
@@ -169,5 +182,6 @@ namespace Stareater.GUI
 		private System.Windows.Forms.TableLayoutPanel shipyardList;
 		private System.Windows.Forms.Label shipyardListTitle;
 		private System.Windows.Forms.Label projectListTitle;
+		private System.Windows.Forms.Button addSourceAction;
 	}
 }

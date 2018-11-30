@@ -44,6 +44,7 @@ namespace Stareater.GUI
 			// 
 			// controlButton
 			// 
+			this.controlButton.Image = global::Stareater.Properties.Resources.stop;
 			this.controlButton.Location = new System.Drawing.Point(174, 3);
 			this.controlButton.Name = "controlButton";
 			this.controlButton.Size = new System.Drawing.Size(23, 23);
@@ -52,27 +53,28 @@ namespace Stareater.GUI
 			// 
 			// starName
 			// 
-			this.starName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.starName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.starName.AutoSize = true;
-			this.starName.Location = new System.Drawing.Point(3, 8);
+			this.starName.Location = new System.Drawing.Point(0, 0);
 			this.starName.Name = "starName";
-			this.starName.Size = new System.Drawing.Size(55, 13);
+			this.starName.Size = new System.Drawing.Size(166, 30);
 			this.starName.TabIndex = 0;
 			this.starName.Text = "Star name";
+			this.starName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// ColonizationSourceView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+			this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.Controls.Add(this.controlButton);
 			this.Controls.Add(this.starName);
 			this.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
 			this.Name = "ColonizationSourceView";
-			this.Size = new System.Drawing.Size(200, 30);
+			this.Size = new System.Drawing.Size(198, 28);
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 	}

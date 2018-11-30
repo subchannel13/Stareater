@@ -335,18 +335,68 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Colonization related
-		public IEnumerable<ColonizationController> ColonizationProjects()
+		public IEnumerable<ColonizationController> ColonizationProjects
+		{
+			get
+			{
+				var game = this.gameInstance;
+				var player = this.PlayerInstance(game);
+				var planets = new HashSet<Planet>();
+				planets.UnionWith(game.States.ColonizationProjects.OwnedBy[player].Select(x => x.Destination));
+				planets.UnionWith(game.Orders[player].ColonizationTargets);
+
+				foreach (var planet in planets)
+					yield return new ColonizationController(game, planet, game.IsReadOnly, this);
+			}
+		}
+
+		public void AddColonizationSource(StellarisInfo source)
 		{
 			var game = this.gameInstance;
-			var player = this.PlayerInstance(game);
-			var planets = new HashSet<Planet>();
-			planets.UnionWith(game.States.ColonizationProjects.OwnedBy[player].Select(x => x.Destination));
-			planets.UnionWith(game.Orders[player].ColonizationTargets);
-			
-			foreach(var planet in planets)
-				yield return new ColonizationController(game, planet, game.IsReadOnly, this);
+			if (game.IsReadOnly)
+				return;
+
+			game.Orders[this.PlayerInstance(game)].
+				ColonizationSources.
+				Add(source.Stellaris);
 		}
-		
+
+		public void RemoveColonizationSource(StellarisInfo source)
+		{
+			var game = this.gameInstance;
+			if (game.IsReadOnly)
+				return;
+
+			game.Orders[this.PlayerInstance(game)].
+				ColonizationSources.
+				Remove(source.Stellaris);
+		}
+
+		public IEnumerable<StellarisInfo> AvailableColonizationSources
+		{
+			get
+			{
+				var game = this.gameInstance;
+				var player = this.PlayerInstance(game);
+				var usedSources = game.Orders[player].ColonizationSources;
+				return game.States.Stellarises.
+					OwnedBy[player].
+					Where(x => !usedSources.Contains(x)).
+					Select(x => new StellarisInfo(x, game));
+			}
+		}
+
+		public IEnumerable<StellarisInfo> ColonizationSources
+		{
+			get
+			{
+				var game = this.gameInstance;
+				return game.Orders[this.PlayerInstance(game)].
+					ColonizationSources.
+					Select(x => new StellarisInfo(x, game));
+			}
+		}
+
 		public IEnumerable<FleetInfo> EnrouteColonizers(PlanetInfo destination)
 		{
 			var game = this.gameInstance;
@@ -376,10 +426,10 @@ namespace Stareater.Controllers
 			}
 			set
 			{
-				if (this.IsReadOnly)
-					return;
-
 				var game = this.gameInstance;
+				if (game.IsReadOnly)
+					return;
+				
 				game.Orders[this.PlayerInstance(game)].ColonizerDesign = value.Data;
 			}
 		}

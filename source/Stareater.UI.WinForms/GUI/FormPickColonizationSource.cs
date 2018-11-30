@@ -23,7 +23,7 @@ namespace Stareater.GUI
 		{
 			this.controller = controller;
 			
-			foreach(var candidate in controller.Stellarises()) //TODO(v0.8) filter already assigned colony ship yards
+			foreach(var candidate in controller.AvailableColonizationSources)
 				sourceList.Items.Add(new Tag<StellarisInfo>(
 					candidate,
 					candidate.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage)
