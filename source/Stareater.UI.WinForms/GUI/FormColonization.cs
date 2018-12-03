@@ -7,7 +7,9 @@ using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
 using Stareater.GUI.ShipDesigns;
+using Stareater.GuiUtils;
 using Stareater.Localization;
+using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GUI
 {
@@ -23,17 +25,20 @@ namespace Stareater.GUI
 		public FormColonization(PlayerController controller) : this()
 		{
 			this.controller = controller;
-			
-			projectList.RowStyles.Clear();
+
+			this.projectList.RowStyles.Clear();
 			foreach(var project in controller.ColonizationProjects)
 			{
 				var itemView = new ColonizationTargetView(project, controller);
-				projectList.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-				projectList.Controls.Add(itemView);
+				this.projectList.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+				this.projectList.Controls.Add(itemView);
 			}
 
-			shipyardList.RowStyles.Clear();
+			this.shipyardList.RowStyles.Clear();
 			this.updateSourceList();
+			this.updateSelectedColonizer();
+			this.capacityInput.Text = new ThousandsFormatter().Format(controller.TargetTransportCapacity);
+			this.updateSourceButton();
 
 			var context = LocalizationManifest.Get.CurrentLanguage["FormColonization"];
 			this.Text = context["title"].Text();
@@ -43,7 +48,6 @@ namespace Stareater.GUI
 			this.capacityText.Text = context["capacityLabel"].Text() + ":";
 			this.projectListTitle.Text = context["projectsTitle"].Text() + ":";
 			this.shipyardListTitle.Text = context["shipyardsTitle"].Text() + ":";
-			updateSelectedColonizer();
 		}
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -71,6 +75,12 @@ namespace Stareater.GUI
 		{
 			this.controller.RemoveColonizationSource(stellaris);
 			this.updateSourceList();
+			this.updateSourceButton();
+		}
+
+		private void updateSourceButton()
+		{
+			this.addSourceAction.Enabled = this.controller.AvailableColonizationSources.Any();
 		}
 
 		private void updateSourceList()
@@ -107,13 +117,28 @@ namespace Stareater.GUI
 
 		private void addSourceAction_Click(object sender, EventArgs e)
 		{
-			//TODO(v0.8) disable button if no sources available
 			using (var form = new FormPickColonizationSource(this.controller))
 				if (form.ShowDialog() == DialogResult.OK)
 				{
 					this.controller.AddColonizationSource(form.SelectedSource);
 					this.updateSourceList();
+					this.updateSourceButton();
 				}
+		}
+
+		private void capacityInput_TextChanged(object sender, EventArgs e)
+		{
+			var quantity = NumberInput.DecodeQuantity(this.capacityInput.Text);
+			if (quantity.HasValue && quantity.Value < 0)
+				quantity = null;
+
+			if (quantity.HasValue)
+			{
+				this.controller.TargetTransportCapacity = quantity.Value;
+				this.capacityInput.BackColor = SystemColors.Window;
+			}
+			else
+				this.capacityInput.BackColor = Color.LightPink;
 		}
 	}
 }

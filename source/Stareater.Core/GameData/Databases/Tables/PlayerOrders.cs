@@ -39,6 +39,9 @@ namespace Stareater.GameData.Databases.Tables
 		public HashSet<StellarisAdmin> ColonizationSources { get; private set; }
 
 		[StateProperty]
+		public long TargetTransportCapacity { get; set; }
+
+		[StateProperty]
 		public Design ColonizerDesign { get; set; }
 
 		[StateProperty]
@@ -61,6 +64,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.AutomatedConstruction = new Dictionary<AConstructionSite, ConstructionOrders>();
 			this.ColonizationTargets = new HashSet<Planet>();
 			this.ColonizationSources = new HashSet<StellarisAdmin>();
+			this.TargetTransportCapacity = 0;
 			this.RefitOrders = new Dictionary<Design, Design>();
 			this.AudienceRequests = new HashSet<int>();
 			this.EjectingStar = null;

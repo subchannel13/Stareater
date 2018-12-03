@@ -445,6 +445,24 @@ namespace Stareater.Controllers
 					Select(x => new DesignInfo(x, playerProc.DesignStats[x], game.Statics));
 			}
 		}
+
+		public long TargetTransportCapacity
+		{
+			get
+			{
+				var game = this.gameInstance;
+				return game.Orders[this.PlayerInstance(game)].TargetTransportCapacity;
+			}
+			set
+			{
+				var game = this.gameInstance;
+
+				if (game.IsReadOnly || value < 0)
+					return;
+
+				game.Orders[this.PlayerInstance(game)].TargetTransportCapacity = value;
+			}
+		}
 		#endregion
 
 		#region Development related

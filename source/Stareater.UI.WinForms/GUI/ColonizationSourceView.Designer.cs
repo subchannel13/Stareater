@@ -58,7 +58,7 @@ namespace Stareater.GUI
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.starName.Location = new System.Drawing.Point(0, 0);
 			this.starName.Name = "starName";
-			this.starName.Size = new System.Drawing.Size(166, 30);
+			this.starName.Size = new System.Drawing.Size(166, 28);
 			this.starName.TabIndex = 0;
 			this.starName.Text = "Star name";
 			this.starName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

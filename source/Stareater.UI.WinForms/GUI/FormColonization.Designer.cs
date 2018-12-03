@@ -92,6 +92,7 @@ namespace Stareater.GUI
 			this.capacityInput.Size = new System.Drawing.Size(80, 20);
 			this.capacityInput.TabIndex = 7;
 			this.capacityInput.Text = "820 k";
+			this.capacityInput.TextChanged += new System.EventHandler(this.capacityInput_TextChanged);
 			// 
 			// capacityText
 			// 
@@ -110,13 +111,12 @@ namespace Stareater.GUI
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.shipyardList.AutoScroll = true;
 			this.shipyardList.ColumnCount = 1;
-			this.shipyardList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.shipyardList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.shipyardList.Location = new System.Drawing.Point(319, 73);
 			this.shipyardList.Name = "shipyardList";
 			this.shipyardList.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
 			this.shipyardList.RowCount = 1;
 			this.shipyardList.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.shipyardList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 276F));
 			this.shipyardList.Size = new System.Drawing.Size(223, 230);
 			this.shipyardList.TabIndex = 1;
 			// 
