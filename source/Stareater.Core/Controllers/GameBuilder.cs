@@ -246,6 +246,7 @@ namespace Stareater.Controllers
 					orders.ConstructionPlans.Add(stellaris, new ConstructionOrders(PlayerOrders.DefaultSiteSpendingRatio));
 					orders.AutomatedConstruction[stellaris] = new ConstructionOrders(0);
 					orders.Policies.Add(stellaris, game.Statics.Policies.First());
+					orders.ColonizationSources.Add(stellaris);
 				}
 
 				orders.DevelopmentFocusIndex = game.Statics.DevelopmentFocusOptions.Count / 2;

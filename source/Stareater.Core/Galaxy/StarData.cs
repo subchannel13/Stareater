@@ -22,7 +22,7 @@ namespace Stareater.Galaxy
 		public IStarName Name { get; private set; }
 
 		[StateProperty]
-		public Vector2D Position { get; private set; }
+		public Vector2D Position { get; private set; } //TODO(v0.8) restrict to stars only
 
 		[StateProperty]
 		public PendableSet<ITrait> Traits { get; private set; }

@@ -216,6 +216,7 @@
     <Compile Include="GameLogic\Planning\ResearchResult.cs" />
     <Compile Include="GameLogic\Planning\ShipConstructionCounter.cs" />
     <Compile Include="GameLogic\Planning\ShipConstructionUpdater.cs" />
+    <Compile Include="GameLogic\Planning\TransportDestinationVisitior.cs" />
     <Compile Include="GameLogic\SpaceBattleProcessor.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Localization\LanguageInfo.cs" />

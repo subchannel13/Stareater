@@ -45,7 +45,7 @@ namespace Stareater.Controllers.Views.Ships
 
 		public double PopulationCapacity
 		{
-			get { return this.FleetData.Ships.Sum(x => this.playerProc.DesignStats[x.Design].ColonizerPopulation); }
+			get { return this.FleetData.Ships.Sum(x => this.playerProc.DesignStats[x.Design].ColonizerPopulation * x.Quantity); }
 		}
 
 		#region Equals and GetHashCode implementation
