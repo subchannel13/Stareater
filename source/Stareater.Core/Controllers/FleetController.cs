@@ -88,7 +88,10 @@ namespace Stareater.Controllers
 
 		public void SelectGroup(ShipGroupInfo group, long quantity, double population)
 		{
-			quantity = Methods.Clamp(quantity, 0, this.Fleet.FleetData.Ships.WithDesign[group.Data.Design].Quantity);
+			quantity = Methods.Clamp(quantity, 0, group.Quantity);
+			var minPopulation = group.Population - (group.Quantity - quantity) * group.Design.ColonizerPopulation;
+			population = Methods.Clamp(population, minPopulation, group.Population);
+
 			selection[group.Data.Design] = quantity;
 			selectionPopulation[group.Data.Design] = population;
 

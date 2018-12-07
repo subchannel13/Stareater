@@ -7,7 +7,7 @@ namespace Stareater.GameData.Databases.Tables
 {
 	class StellarisProcessorCollection : AIndexedCollection<StellarisProcessor>
 	{
-		public ScalarIndex<StellarisProcessor, StarData> At { get; private set; }
+		public ScalarIndex<StellarisProcessor, StarData> At { get; private set; } //TODO(v0.8) needs a player as secondary key
 		public ScalarIndex<StellarisProcessor, StellarisAdmin> Of { get; private set; }
 		public CollectionIndex<StellarisProcessor, Player> OwnedBy { get; private set; }
 
