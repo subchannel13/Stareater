@@ -228,7 +228,7 @@ namespace Stareater.Controllers
 			}
 			else
 				shipOrders = this.game.Orders[this.Fleet.FleetData.Owner].ShipOrders[this.Fleet.FleetData.Position];
-			
+
 			//remove current fleet from regroup
 			shipOrders.Remove(this.Fleet.FleetData);
 			

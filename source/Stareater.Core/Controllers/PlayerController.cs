@@ -175,13 +175,13 @@ namespace Stareater.Controllers
 			get
 			{
 				var game = this.gameInstance;
-				var orders = game.Orders[this.PlayerInstance(game)];
+				var orders = game.Orders[this.PlayerInstance(game)].ShipOrders;
 				var player = this.PlayerInstance(game);
-				var playerProc = game.Derivates[player];
 
 				return game.States.Fleets.
 					OwnedBy[player].
-					Concat(orders.ShipOrders.SelectMany(x => x.Value)).
+					Where(x => !orders.ContainsKey(x.Position)).
+					Concat(orders.SelectMany(x => x.Value)).
 					Select(
 						x => new FleetInfo(x, game.Derivates[x.Owner], game.Statics)
 					);
@@ -748,7 +748,6 @@ namespace Stareater.Controllers
 					{
 						foreach (var group in controller.ShipGroups.Where(x => x.PopulationCapacity > 0))
 						{
-							var idealCount = Math.Ceiling(missingPopulation / group.Design.ColonizerPopulation);
 							var toSelect = (long)Math.Min(
 								Math.Floor(group.Data.PopulationTransport / group.Design.ColonizerPopulation),
 								Math.Ceiling(missingPopulation / group.Design.ColonizerPopulation)
@@ -775,7 +774,7 @@ namespace Stareater.Controllers
 			if(transporters.Count > 0)
 			{
 				var destination = game.States.Colonies.OwnedBy[player].OrderByDescending(x => game.Derivates[x].Desirability).First();
-				var source = game.States.Stellarises.OwnedBy[player].Where(x => x.Location.Star != destination.Star).FirstOrDefault();
+				var source = game.States.Stellarises.OwnedBy[player].FirstOrDefault(x => x.Location.Star != destination.Star);
 
 				if (source != null)
 					foreach (var fleet in transporters)
@@ -813,11 +812,6 @@ namespace Stareater.Controllers
 						embarkingFleet.LoadPopulation();
 					}
 			}
-		}
-
-		private bool isColonizerFleet(FleetInfo fleet)
-		{
-			return fleet.FleetData.Missions.All(x => x is LoadMission) && fleet.PopulationCapacity > 0;
 		}
 
 		private bool isTransportFleet(FleetInfo fleet)
