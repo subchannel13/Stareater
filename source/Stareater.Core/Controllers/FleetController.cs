@@ -217,20 +217,23 @@ namespace Stareater.Controllers
 		
 		private FleetController giveOrder(IEnumerable<AMission> newMissions)
 		{
-			if (this.selection.Count == 0 || this.Fleet.FleetData.Missions.SequenceEqual(newMissions))
+			var fleet = this.Fleet.FleetData;
+
+			if (this.selection.Count == 0 || fleet.Missions.SequenceEqual(newMissions))
 				return this;
-			
+
 			//create regroup order if there is none
 			HashSet<Fleet> shipOrders;
-			if (!this.game.Orders[this.Fleet.FleetData.Owner].ShipOrders.ContainsKey(this.Fleet.FleetData.Position)) {
+			if (!this.game.Orders[fleet.Owner].ShipOrders.ContainsKey(fleet.Position)) {
 				shipOrders = new HashSet<Fleet>();
-				this.game.Orders[this.Fleet.FleetData.Owner].ShipOrders.Add(this.Fleet.FleetData.Position, shipOrders);
+				shipOrders.UnionWith(this.game.States.Fleets.At[fleet.Position, fleet.Owner]);
+				this.game.Orders[fleet.Owner].ShipOrders.Add(fleet.Position, shipOrders);
 			}
 			else
-				shipOrders = this.game.Orders[this.Fleet.FleetData.Owner].ShipOrders[this.Fleet.FleetData.Position];
+				shipOrders = this.game.Orders[fleet.Owner].ShipOrders[fleet.Position];
 
 			//remove current fleet from regroup
-			shipOrders.Remove(this.Fleet.FleetData);
+			shipOrders.Remove(fleet);
 			
 			var newFleetInfo = this.addFleet(shipOrders, this.selectedFleet(newMissions));
 			this.Fleet = this.addFleet(shipOrders, this.unselectedFleet());

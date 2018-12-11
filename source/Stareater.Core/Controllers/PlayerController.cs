@@ -801,15 +801,15 @@ namespace Stareater.Controllers
 						foreach (var group in embarkingFleet.Fleet.Ships)
 						{
 							var toKeep = (long)Math.Ceiling(group.Population / group.Design.ColonizerPopulation);
-							stationaryFleet.SelectGroup(group, group.Quantity - toKeep);
+							embarkingFleet.SelectGroup(group, group.Quantity - toKeep);
 						}
 						if (fleet.Position != source.Location.Star.Position)
 						{
-							embarkingFleet = stationaryFleet.Send(new Vector2D[] { source.Location.Star.Position });
-							foreach (var group in disembarkingFleet.Fleet.Ships)
+							embarkingFleet = embarkingFleet.Send(new Vector2D[] { source.Location.Star.Position });
+							foreach (var group in embarkingFleet.Fleet.Ships)
 								embarkingFleet.SelectGroup(group, group.Quantity); //TODO(v0.8) add select all
+							embarkingFleet.LoadPopulation();
 						}
-						embarkingFleet.LoadPopulation();
 					}
 			}
 		}
