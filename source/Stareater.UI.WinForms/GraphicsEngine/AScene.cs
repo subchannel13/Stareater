@@ -21,8 +21,15 @@ namespace Stareater.GraphicsEngine
 		private readonly Dictionary<float, List<IDrawable>> drawables = new Dictionary<float, List<IDrawable>>();
 		private readonly Dictionary<float, List<VertexArray>> layerVaos = new Dictionary<float, List<VertexArray>>();
 
-		private readonly HashSet<AGuiElement> guiElements = new HashSet<AGuiElement>();
-		
+		private readonly Dictionary<AGuiElement, HashSet<AGuiElement>> guiHierarchy = new Dictionary<AGuiElement, HashSet<AGuiElement>>();
+		private readonly AGuiElement rootParent;
+
+		public AScene()
+		{
+			this.rootParent = new GuiPanel();
+			this.rootParent.Position.FixedCenter(0, 0);
+		}
+
 		public void Draw(double deltaTime)
 		{
 			foreach (var animator in this.animators)
@@ -88,7 +95,7 @@ namespace Stareater.GraphicsEngine
 			//TODO(v0.8) differentiate between left and right click
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 
-			foreach (var element in this.guiElements)
+			foreach (var element in this.guiDepthFirst())
 				if (element.OnMouseDown(mouseGuiPoint))
 					return;
 		}
@@ -98,7 +105,7 @@ namespace Stareater.GraphicsEngine
 			//TODO(v0.8) differentiate between left and right click
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 
-			foreach (var element in this.guiElements)
+			foreach (var element in this.guiDepthFirst())
 				if (element.OnMouseUp(mouseGuiPoint))
 					return;
 
@@ -109,7 +116,7 @@ namespace Stareater.GraphicsEngine
 		{
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 
-			foreach (var element in this.guiElements)
+			foreach (var element in this.guiDepthFirst())
 				element.OnMouseMove(mouseGuiPoint);
 
 			this.onMouseMove(this.mouseToView(e.X, e.Y), e.Button);
@@ -269,8 +276,9 @@ namespace Stareater.GraphicsEngine
 
 			this.guiProjection = calcOrthogonalPerspective(width, height, 1, new Vector2());
 			this.guiInvProjection = Matrix4.Invert(new Matrix4(this.guiProjection.Row0, this.guiProjection.Row1, this.guiProjection.Row2, this.guiProjection.Row3));
-			foreach (var element in this.guiElements)
-				element.RecalculatePosition(width / 2, height / 2);
+			this.rootParent.Position.FixedSize(width, height);
+			foreach (var element in this.guiDepthFirst())
+				element.RecalculatePosition(width / 2, height / 2); //TODO(v0.8) pass real parent size
 		}
 		#endregion
 
@@ -279,13 +287,24 @@ namespace Stareater.GraphicsEngine
 
 		protected void addElement(AGuiElement element)
 		{
-			this.guiElements.Add(element);
-			element.Attach(this, this.guiLayerThickness);
+			this.addElement(element, this.rootParent);
+		}
+
+		protected void addElement(AGuiElement element, AGuiElement parent)
+		{
+			if (!this.guiHierarchy.ContainsKey(parent))
+				this.guiHierarchy[parent] = new HashSet<AGuiElement>();
+
+			this.guiHierarchy[parent].Add(element);
+			element.Attach(this, this.guiLayerThickness, parent);
 		}
 
 		protected void removeElement(AGuiElement element)
 		{
-			this.guiElements.Remove(element);
+			this.guiHierarchy[element.Parent].Remove(element);
+			if (!this.guiHierarchy[element.Parent].Any())
+				this.guiHierarchy.Remove(element.Parent);
+
 			element.Detach();
 		}
 
@@ -294,6 +313,29 @@ namespace Stareater.GraphicsEngine
 			element.RecalculatePosition(
 				canvasSize.X / SettingsWinforms.Get.GuiScale / 2, 
 				canvasSize.Y / SettingsWinforms.Get.GuiScale / 2);
+		}
+
+		//TODO(v0.8) check users
+		private IEnumerable<AGuiElement> guiDepthFirst()
+		{
+			if (this.guiHierarchy.Count == 0)
+				yield break;
+
+			var parents = new Stack<AGuiElement>();
+			parents.Push(this.rootParent);
+
+			while(parents.Any())
+			{
+				var parent = parents.Pop();
+
+				foreach(var element in this.guiHierarchy[parent])
+				{
+					yield return element;
+
+					if (this.guiHierarchy.ContainsKey(element))
+						parents.Push(element);
+				}
+			}
 		}
 		#endregion
 

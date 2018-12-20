@@ -33,6 +33,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return this;
 		}
 
+		public ElementPosition FixedCenter(float x, float y)
+		{
+			this.Center = new Vector2(x, y);
+
+			return this;
+		}
+
 		public ElementPosition ParentRelative(float x, float y, float marginX, float marginY)
 		{
 			this.positioners.Add(new ParentRelativePositioner(x, y, marginX, marginY));

@@ -10,16 +10,19 @@ namespace Stareater.GraphicsEngine.GuiElements
 		protected float z { get; private set; }
 
 		public ElementPosition Position { get; private set; }
+		public AGuiElement Parent { get; private set; }
 
 		protected AGuiElement()
 		{
 			this.Position = new ElementPosition(this.contentWidth, this.contentHeight);
 		}
 
-		public void Attach(AScene scene, float z)
+		//TODO(v0.8) redo how z is distributed
+		public void Attach(AScene scene, float z, AGuiElement parent)
 		{
 			this.scene = scene;
 			this.z = z;
+			this.Parent = parent;
 
 			this.updateScene();
 		}

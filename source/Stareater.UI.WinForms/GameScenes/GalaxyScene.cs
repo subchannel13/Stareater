@@ -58,6 +58,8 @@ namespace Stareater.GameScenes
 
 		private readonly GuiText turnCounter;
 		private readonly GuiText fuelInfo;
+		private readonly GuiPanel starInfoPanel;
+		private readonly GuiButton starProjectButton;
 
 		private IEnumerable<SceneObject> fleetMovementPaths = null;
 		private IEnumerable<SceneObject> fleetMarkers = null;
@@ -86,25 +88,13 @@ namespace Stareater.GameScenes
 		{ 
 			this.galaxyViewListener = galaxyViewListener;
 
-			this.fuelInfo = new GuiText
-			{
-				TextColor = Color.Yellow,
-				TextSize = 30
-			};
-			this.fuelInfo.Position.
-				WrapContent().
-				ParentRelative(-1, 1, 10, 5);
-			this.addElement(fuelInfo);
+			this.fuelInfo = new GuiText { TextColor = Color.Yellow, TextSize = 30 };
+			this.fuelInfo.Position.WrapContent().ParentRelative(-1, 1, 10, 5);
+			this.addElement(this.fuelInfo);
 
-			this.turnCounter = new GuiText
-			{
-				TextColor = Color.LightGray,
-				TextSize = 30
-			};
-			this.turnCounter.Position.
-				WrapContent().
-				ParentRelative(1, 1, 10, 5);
-			this.addElement(turnCounter);
+			this.turnCounter = new GuiText { TextColor = Color.LightGray, TextSize = 30 };
+			this.turnCounter.Position.WrapContent().ParentRelative(1, 1, 10, 5);
+			this.addElement(this.turnCounter);
 
 			var turnButton = new GuiButton
 			{
@@ -112,9 +102,7 @@ namespace Stareater.GameScenes
 				BackgroundNormal = GalaxyTextures.Get.EndTurnNormal,
 				ClickCallback = this.galaxyViewListener.TurnEnded,
 			};
-			turnButton.Position.
-				FixedSize(80, 80).
-				ParentRelative(1, -1, 10, 10);
+			turnButton.Position.FixedSize(80, 80).ParentRelative(1, -1, 10, 10);
 			this.addElement(turnButton);
 
 			var radarToggle = new ToggleButton(SettingsWinforms.Get.ShowScanRange)
@@ -125,10 +113,20 @@ namespace Stareater.GameScenes
 				ForgroundImage = GalaxyTextures.Get.Radar,
 				ToggleCallback = this.toggleRadar,
 			};
-			radarToggle.Position.
-				FixedSize(20, 20).
-				RelativeTo(turnButton, -1, 1, 1, 1, 15, 0);
+			radarToggle.Position.FixedSize(20, 20).RelativeTo(turnButton, -1, 1, 1, 1, 15, 0);
 			this.addElement(radarToggle);
+
+			this.starInfoPanel = new GuiPanel { Background = GalaxyTextures.Get.PanelBackground };
+			this.starInfoPanel.Position.FixedSize(300, 80).ParentRelative(0, 1, 10, 10);
+			this.addElement(this.starInfoPanel);
+
+			this.starProjectButton = new GuiButton
+			{
+				BackgroundHover = GalaxyTextures.Get.ToggleHover,
+				BackgroundNormal = GalaxyTextures.Get.ToggleNormal,
+			};
+			this.starProjectButton.Position.FixedSize(40, 40).ParentRelative(-1, -1, 5, 5);
+			this.addElement(this.starProjectButton, this.starInfoPanel);
 		}
 		
 		public void OnNewTurn()
