@@ -32,9 +32,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.scene.RemoveFromScene(ref this.graphicObject);
 		}
 
-		public void RecalculatePosition(float parentWidth, float parentHeight)
+		public void RecalculatePosition()
 		{
-			this.Position.Recalculate(parentWidth, parentHeight);
+			this.Position.Recalculate(this.Parent.Position);
 			this.updateScene();
 		}
 
@@ -78,7 +78,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			if (this.scene == null)
 				return;
 
-			this.scene.UpdatePosition(this);
+			this.RecalculatePosition();
 		}
 
 		protected abstract SceneObject makeSceneObject();

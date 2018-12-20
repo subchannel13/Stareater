@@ -278,7 +278,7 @@ namespace Stareater.GraphicsEngine
 			this.guiInvProjection = Matrix4.Invert(new Matrix4(this.guiProjection.Row0, this.guiProjection.Row1, this.guiProjection.Row2, this.guiProjection.Row3));
 			this.rootParent.Position.FixedSize(width, height);
 			foreach (var element in this.guiDepthFirst())
-				element.RecalculatePosition(width / 2, height / 2); //TODO(v0.8) pass real parent size
+				element.RecalculatePosition();
 		}
 		#endregion
 
@@ -306,13 +306,6 @@ namespace Stareater.GraphicsEngine
 				this.guiHierarchy.Remove(element.Parent);
 
 			element.Detach();
-		}
-
-		public void UpdatePosition(AGuiElement element)
-		{
-			element.RecalculatePosition(
-				canvasSize.X / SettingsWinforms.Get.GuiScale / 2, 
-				canvasSize.Y / SettingsWinforms.Get.GuiScale / 2);
 		}
 
 		//TODO(v0.8) check users

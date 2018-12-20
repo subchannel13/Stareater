@@ -19,10 +19,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.contentHeight = contentHeight;
 		}
 
-		public void Recalculate(float parentWidth, float parentHeight)
+		public void Recalculate(ElementPosition parentPosition)
 		{
 			foreach (var positioner in this.positioners)
-				positioner.Recalculate(this, parentWidth, parentHeight);
+				positioner.Recalculate(this, parentPosition);
 		}
 
 		#region Position builders
@@ -63,7 +63,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		private interface IPositioner
 		{
-			void Recalculate(ElementPosition element, float parentWidth, float parentHeight);
+			void Recalculate(ElementPosition element, ElementPosition parentPosition);
 		}
 
 		private class ParentRelativePositioner : IPositioner
@@ -81,14 +81,14 @@ namespace Stareater.GraphicsEngine.GuiElements
 				this.yPortion = y;
 			}
 
-			public void Recalculate(ElementPosition element, float parentWidth, float parentHeight)
+			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
-				float windowX = parentWidth - marginX - element.Size.X / 2;
-				float windowY = parentHeight - marginY - element.Size.Y / 2;
+				float windowX = parentPosition.Size.X / 2 - marginX - element.Size.X / 2;
+				float windowY = parentPosition.Size.Y / 2 - marginY - element.Size.Y / 2;
 
 				element.Center = new Vector2(
-					windowX * this.xPortion,
-					windowY * this.yPortion
+					windowX * this.xPortion + parentPosition.Center.X,
+					windowY * this.yPortion + parentPosition.Center.Y
 				);
 			}
 		}
@@ -114,7 +114,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				this.marginY = marginY;
 			}
 
-			public void Recalculate(ElementPosition element, float parentWidth, float parentHeight)
+			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
 				element.Center = new Vector2(
 					this.anchor.Position.Center.X + (this.anchor.Position.Size.X + this.marginX) * this.xPortionAnchor / 2 - element.Size.X * this.xPortionThis / 2,
@@ -125,7 +125,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		private class WrapContentPositioner : IPositioner
 		{
-			public void Recalculate(ElementPosition element, float parentWidth, float parentHeight)
+			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
 				element.Size = new Vector2(
 					element.contentWidth(),

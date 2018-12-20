@@ -125,7 +125,7 @@ namespace Stareater.GameScenes
 				BackgroundHover = GalaxyTextures.Get.ToggleHover,
 				BackgroundNormal = GalaxyTextures.Get.ToggleNormal,
 			};
-			this.starProjectButton.Position.FixedSize(40, 40).ParentRelative(-1, -1, 5, 5);
+			this.starProjectButton.Position.FixedSize(40, 40).ParentRelative(-1, -1, -15, 5);
 			this.addElement(this.starProjectButton, this.starInfoPanel);
 		}
 		
