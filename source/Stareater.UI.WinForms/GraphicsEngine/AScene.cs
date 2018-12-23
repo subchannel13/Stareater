@@ -24,10 +24,11 @@ namespace Stareater.GraphicsEngine
 		private readonly Dictionary<AGuiElement, HashSet<AGuiElement>> guiHierarchy = new Dictionary<AGuiElement, HashSet<AGuiElement>>();
 		private readonly AGuiElement rootParent;
 
-		public AScene()
+		protected AScene()
 		{
 			this.rootParent = new GuiPanel();
 			this.rootParent.Position.FixedCenter(0, 0);
+			this.rootParent.SetDepth(this.guiLayerThickness, this.guiLayerThickness);
 		}
 
 		public void Draw(double deltaTime)
@@ -296,7 +297,8 @@ namespace Stareater.GraphicsEngine
 				this.guiHierarchy[parent] = new HashSet<AGuiElement>();
 
 			this.guiHierarchy[parent].Add(element);
-			element.Attach(this, this.guiLayerThickness, parent);
+			element.Attach(this, parent);
+			this.updateGuiZ(element);
 		}
 
 		protected void removeElement(AGuiElement element)
@@ -330,11 +332,44 @@ namespace Stareater.GraphicsEngine
 				}
 			}
 		}
+
+		private void updateGuiZ(AGuiElement element)
+		{
+			var layers = 1;
+			var root = element;
+
+			while (root.Parent != this.rootParent)
+			{
+				root = root.Parent;
+				layers++;
+			}
+
+			var zRange = this.guiLayerThickness / layers;
+			if (root.ZRange == zRange)
+				return;
+
+			root.SetDepth(this.guiLayerThickness, zRange);
+			var subtrees = new Queue<AGuiElement>();
+			subtrees.Enqueue(root);
+
+			while (subtrees.Count > 0)
+			{
+				root = subtrees.Dequeue();
+
+				if (this.guiHierarchy.ContainsKey(root))
+					foreach (var item in this.guiHierarchy[root])
+					{
+						item.SetDepth(root.Z0 - root.ZRange, root.ZRange);
+						subtrees.Enqueue(item);
+					}
+			}
+		}
 		#endregion
 
 		#region Rendering logic
 		private void setupDrawables()
 		{
+			//TODO(v0.8) clip child UI elements
 			foreach(var layer in this.dirtyLayers)
 			{
 				if (this.layerVaos.ContainsKey(layer))

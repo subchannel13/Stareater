@@ -7,7 +7,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 		private AScene scene;
 		private SceneObject graphicObject = null;
 
-		protected float z { get; private set; }
+		public float Z0 { get; private set; }
+		public float ZRange { get; private set; }
 
 		public ElementPosition Position { get; private set; }
 		public AGuiElement Parent { get; private set; }
@@ -18,10 +19,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 		}
 
 		//TODO(v0.8) redo how z is distributed
-		public void Attach(AScene scene, float z, AGuiElement parent)
+		public void Attach(AScene scene, AGuiElement parent)
 		{
 			this.scene = scene;
-			this.z = z;
 			this.Parent = parent;
 
 			this.updateScene();
@@ -30,6 +30,14 @@ namespace Stareater.GraphicsEngine.GuiElements
 		public void Detach()
 		{
 			this.scene.RemoveFromScene(ref this.graphicObject);
+		}
+
+		public void SetDepth(float z0, float zRange)
+		{
+			this.Z0 = z0;
+			this.ZRange = zRange;
+
+			this.updateScene();
 		}
 
 		public void RecalculatePosition()

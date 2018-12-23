@@ -58,7 +58,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				return null;
 
 			var soBuilder = new SceneObjectBuilder().
-				StartSprite(this.z, TextRenderUtil.Get.TextureId, this.TextColor).
+				StartSprite(this.Z0, TextRenderUtil.Get.TextureId, this.TextColor).
 				AddVertices(TextRenderUtil.Get.BufferText(this.Text, -0.5f, Matrix4.Identity)).
 				Scale(this.TextSize, this.TextSize).
 				Translate(this.Position.Center + new Vector2(0, this.TextSize / 2));

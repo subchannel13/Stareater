@@ -105,12 +105,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 			var background = (this.isHovered ? this.BackgroundHover : this.mBackgroundNormal).Value;
 			var soBuilder = new SceneObjectBuilder().
-				StartSimpleSprite(this.z, background, Color.White).
+				StartSimpleSprite(this.Z0, background, Color.White).
 				Scale(this.Position.Size.X, this.Position.Size.Y).
 				Translate(this.Position.Center + pressOffset);
 
 			if (!string.IsNullOrWhiteSpace(this.Text))
-				soBuilder.StartSprite(this.z / 2, TextRenderUtil.Get.TextureId, this.TextColor). //TODO(v0.8) better define GUI z range
+				soBuilder.StartSprite(this.Z0 - this.ZRange / 2, TextRenderUtil.Get.TextureId, this.TextColor).
 					AddVertices(TextRenderUtil.Get.BufferText(this.Text, -0.5f, Matrix4.Identity)).
 					Scale(this.TextSize, this.TextSize).
 					Translate(this.Position.Center);

@@ -91,13 +91,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 				background = this.mBackgroundToggled.Value;
 
 			var soBuilder = new SceneObjectBuilder().
-				StartSimpleSprite(this.z, background, Color.White).
+				StartSimpleSprite(this.Z0, background, Color.White).
 				Scale(this.Position.Size.X, this.Position.Size.Y).
 				Translate(this.Position.Center);
 
 			if (this.mForgroundImage.HasValue)
 				soBuilder.
-					StartSimpleSprite(this.z / 2, this.mForgroundImage.Value, Color.White).
+					StartSimpleSprite(this.Z0 - this.ZRange / 2, this.mForgroundImage.Value, Color.White).
 					Scale(this.Position.Size.X, this.Position.Size.Y).
 					Translate(this.Position.Center);
 
