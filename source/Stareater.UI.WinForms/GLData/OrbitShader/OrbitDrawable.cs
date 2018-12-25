@@ -1,7 +1,5 @@
-﻿using System;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using Stareater.GLData;
 using Stareater.GraphicsEngine;
 
 namespace Stareater.GLData.OrbitShader

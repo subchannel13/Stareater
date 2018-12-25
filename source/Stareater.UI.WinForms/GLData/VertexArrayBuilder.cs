@@ -52,5 +52,10 @@ namespace Stareater.GLData
 			this.vertices.AddRange(vertexData);
 			this.objectSize += vertexData.Count / vertexDataSize;
 		}
+
+		public int Count
+		{
+			get { return this.objectStarts.Count; }
+		}
 	}
 }

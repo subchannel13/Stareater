@@ -384,6 +384,7 @@ namespace Stareater.GraphicsEngine
 				
 				var vaoBuilders = new Dictionary<AGlProgram, VertexArrayBuilder>();
 				var drawableData = new List<PolygonData>();
+				var drawableIndices = new List<int>();
 				foreach(var polygon in this.sceneObjects.SelectMany(x => x.RenderData).Where(x => x.Z == layer))
 				{
 					if (!vaoBuilders.ContainsKey(polygon.ShaderData.ForProgram))
@@ -393,8 +394,9 @@ namespace Stareater.GraphicsEngine
 					builder.BeginObject();
 					builder.Add(polygon.VertexData, polygon.ShaderData.VertexDataSize);
 					builder.EndObject();
-					
+
 					drawableData.Add(polygon);
+					drawableIndices.Add(builder.Count - 1);
 				}
 				
 				var vaos = new Dictionary<AGlProgram, VertexArray>();
@@ -407,9 +409,9 @@ namespace Stareater.GraphicsEngine
 				
 				for (int i = 0; i < drawableData.Count; i++)
 				{
-					//TODO(v0.8) wrong index when multiple programs draw in same "z" layer
-					var data = drawableData[i];
-					this.drawables[data.Z].Add(data.MakeDrawable(vaos[data.ShaderData.ForProgram], i)); 
+					var vaoI = drawableIndices[i];
+					var data = drawableData[vaoI];
+					this.drawables[data.Z].Add(data.MakeDrawable(vaos[data.ShaderData.ForProgram], vaoI)); 
 				}
 			}
 			this.dirtyLayers.Clear();

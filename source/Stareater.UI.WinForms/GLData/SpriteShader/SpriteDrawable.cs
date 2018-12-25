@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Stareater.GraphicsEngine;
 
