@@ -8,7 +8,6 @@ using Stareater.GLData;
 using Stareater.GraphicsEngine.GuiElements;
 using Stareater.AppData;
 using Stareater.Utils;
-using System;
 
 namespace Stareater.GraphicsEngine
 {
@@ -20,6 +19,13 @@ namespace Stareater.GraphicsEngine
 		private readonly HashSet<float> dirtyLayers = new HashSet<float>();
 		private readonly Dictionary<float, List<IDrawable>> drawables = new Dictionary<float, List<IDrawable>>();
 		private readonly Dictionary<float, List<VertexArray>> layerVaos = new Dictionary<float, List<VertexArray>>();
+
+		protected Vector2 canvasSize { get; private set; }
+		protected Vector2 screenSize { get; private set; }
+		protected Matrix4 invProjection { get; private set; }
+		protected Matrix4 projection { get; private set; }
+		private Matrix4 guiProjection;
+		private Matrix4 guiInvProjection;
 
 		private readonly Dictionary<AGuiElement, HashSet<AGuiElement>> guiHierarchy = new Dictionary<AGuiElement, HashSet<AGuiElement>>();
 		private readonly AGuiElement rootParent;
@@ -96,7 +102,7 @@ namespace Stareater.GraphicsEngine
 			//TODO(v0.8) differentiate between left and right click
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 
-			foreach (var element in this.guiDepthFirst())
+			foreach (var element in this.eventHandlerSearch(mouseGuiPoint))
 				if (element.OnMouseDown(mouseGuiPoint))
 					return;
 		}
@@ -106,7 +112,7 @@ namespace Stareater.GraphicsEngine
 			//TODO(v0.8) differentiate between left and right click
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 
-			foreach (var element in this.guiDepthFirst())
+			foreach (var element in this.eventHandlerSearch(mouseGuiPoint))
 				if (element.OnMouseUp(mouseGuiPoint))
 					return;
 
@@ -116,8 +122,10 @@ namespace Stareater.GraphicsEngine
 		public void HandleMouseMove(MouseEventArgs e)
 		{
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
-
-			foreach (var element in this.guiDepthFirst())
+			
+			//TODO(v0.8) should propagatin stop on first handler?
+			//TODO(v0.8) how to move out of hidden elements?
+			foreach (var element in this.guiPrefixSearch())
 				element.OnMouseMove(mouseGuiPoint);
 
 			this.onMouseMove(this.mouseToView(e.X, e.Y), e.Button);
@@ -219,13 +227,6 @@ namespace Stareater.GraphicsEngine
 		#endregion
 
 		#region Perspective and viewport calculation
-		protected Vector2 canvasSize { get; private set; }
-		protected Vector2 screenSize { get; private set; }
-		protected Matrix4 invProjection { get; private set; }
-		protected Matrix4 projection { get; private set; }
-		private Matrix4 guiProjection;
-		private Matrix4 guiInvProjection;
-
 		protected abstract Matrix4 calculatePerspective();
 
 		protected virtual void onResize()
@@ -278,7 +279,7 @@ namespace Stareater.GraphicsEngine
 			this.guiProjection = calcOrthogonalPerspective(width, height, 1, new Vector2());
 			this.guiInvProjection = Matrix4.Invert(new Matrix4(this.guiProjection.Row0, this.guiProjection.Row1, this.guiProjection.Row2, this.guiProjection.Row3));
 			this.rootParent.Position.FixedSize(width, height);
-			foreach (var element in this.guiDepthFirst())
+			foreach (var element in this.guiPrefixSearch())
 				element.RecalculatePosition();
 		}
 		#endregion
@@ -310,8 +311,29 @@ namespace Stareater.GraphicsEngine
 			element.Detach();
 		}
 
+		private IEnumerable<AGuiElement> eventHandlerSearch(Vector2 point)
+		{
+			if (this.guiHierarchy.Count == 0)
+				yield break;
+
+			foreach (var parent in this.guiHierarchy[this.rootParent])
+				foreach (var element in this.guiPostfixSearch(parent))
+					if (element.Position.ClipArea.Contains(point))
+						yield return element;
+		}
+
+		private IEnumerable<AGuiElement> guiPostfixSearch(AGuiElement parent)
+		{
+			if (this.guiHierarchy.ContainsKey(parent))
+				foreach (var child in this.guiHierarchy[parent])
+					foreach (var element in guiPostfixSearch(child))
+						yield return element;
+
+			yield return parent;
+		}
+
 		//TODO(v0.8) check users
-		private IEnumerable<AGuiElement> guiDepthFirst()
+		private IEnumerable<AGuiElement> guiPrefixSearch()
 		{
 			if (this.guiHierarchy.Count == 0)
 				yield break;
@@ -319,17 +341,14 @@ namespace Stareater.GraphicsEngine
 			var parents = new Stack<AGuiElement>();
 			parents.Push(this.rootParent);
 
-			while(parents.Any())
+			while (parents.Any())
 			{
 				var parent = parents.Pop();
+				yield return parent;
 
-				foreach(var element in this.guiHierarchy[parent])
-				{
-					yield return element;
-
-					if (this.guiHierarchy.ContainsKey(element))
+				if (this.guiHierarchy.ContainsKey(parent))
+					foreach (var element in this.guiHierarchy[parent])
 						parents.Push(element);
-				}
 			}
 		}
 

@@ -8,6 +8,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 	{
 		public Vector2 Center { get; private set; }
 		public Vector2 Size { get; private set; }
+		public ClipWindow ClipArea { get; private set; }
 
 		private readonly List<IPositioner> positioners = new List<IPositioner>();
 		private readonly Func<float> contentWidth;
@@ -23,6 +24,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			foreach (var positioner in this.positioners)
 				positioner.Recalculate(this, parentPosition);
+
+			if (parentPosition != null)
+				this.ClipArea = new ClipWindow(this.Center, this.Size, parentPosition.ClipArea);
+			else
+				this.ClipArea = new ClipWindow(this.Center, this.Size);
 		}
 
 		#region Position builders

@@ -10,8 +10,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 		public float Z0 { get; private set; }
 		public float ZRange { get; private set; }
 
-		public ElementPosition Position { get; private set; }
 		public AGuiElement Parent { get; private set; }
+		public ElementPosition Position { get; private set; }
 
 		protected AGuiElement()
 		{
@@ -42,7 +42,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public void RecalculatePosition()
 		{
-			this.Position.Recalculate(this.Parent.Position);
+			this.Position.Recalculate((this.Parent != null) ? this.Parent.Position : null);
 			this.updateScene();
 		}
 

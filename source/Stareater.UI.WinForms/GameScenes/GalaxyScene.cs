@@ -124,6 +124,7 @@ namespace Stareater.GameScenes
 			{
 				BackgroundHover = GalaxyTextures.Get.ToggleHover,
 				BackgroundNormal = GalaxyTextures.Get.ToggleNormal,
+				ClickCallback = () => System.Diagnostics.Trace.WriteLine("Click! " + DateTime.Now.ToLongTimeString())
 			};
 			this.starProjectButton.Position.FixedSize(40, 40).ParentRelative(-1, -1, -15, 5);
 			this.addElement(this.starProjectButton, this.starInfoPanel);
