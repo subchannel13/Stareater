@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using Stareater.GLData;
 using System;
 using System.Collections.Generic;
 
@@ -18,6 +19,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			this.contentWidth = contentWidth;
 			this.contentHeight = contentHeight;
+			this.ClipArea = new ClipWindow();
 		}
 
 		public void Recalculate(ElementPosition parentPosition)

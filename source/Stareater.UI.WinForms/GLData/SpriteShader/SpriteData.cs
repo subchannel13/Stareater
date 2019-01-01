@@ -10,8 +10,9 @@ namespace Stareater.GLData.SpriteShader
 		public int TextureId { get; private set; }
 		public Color4 Color { get; set; }
 		public Matrix4 LocalTransform { get; set; }
+		public ClipWindow ClipArea { get; private set; }
 
-		public SpriteData(Matrix4 localTransform, int textureId, Color color)
+		public SpriteData(Matrix4 localTransform, int textureId, Color color, ClipWindow clipArea)
 		{
 			this.LocalTransform = localTransform;
 			this.TextureId = textureId;

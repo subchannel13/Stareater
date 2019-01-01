@@ -5,6 +5,7 @@ using System;
 using Stareater.GLData.SpriteShader;
 using System.Drawing;
 using Stareater.GLData.OrbitShader;
+using Stareater.GraphicsEngine.GuiElements;
 
 namespace Stareater.GLData
 {
@@ -22,6 +23,7 @@ namespace Stareater.GLData
 		private int textureId;
 		private Color color;
 		private Matrix4 localTransform = Matrix4.Identity;
+		private ClipWindow clipArea = null;
 		#endregion
 
 		#region Orbit data
@@ -91,6 +93,13 @@ namespace Stareater.GLData
 			this.maxRadius = maxRadius;
 			this.sprite = sprite;
 			this.color = color;
+
+			return this;
+		}
+
+		public SceneObjectBuilder Clip(ClipWindow clipArea)
+		{
+			this.clipArea = clipArea;
 
 			return this;
 		}
@@ -173,7 +182,7 @@ namespace Stareater.GLData
 			switch (this.currentPolygonType)
 			{
 				case PolygonType.Sprite:
-					shaderData = new SpriteData(this.localTransform, this.textureId, this.color);
+					shaderData = new SpriteData(this.localTransform, this.textureId, this.color, this.clipArea);
 					break;
 				case PolygonType.Orbit:
 					shaderData = new OrbitData(this.minRadius, this.maxRadius, this.color, this.localTransform, this.sprite);

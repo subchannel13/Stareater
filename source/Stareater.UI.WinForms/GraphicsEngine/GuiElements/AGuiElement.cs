@@ -66,6 +66,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 			if (this.scene == null)
 				return;
 
+			if (this.graphicObject != null && this.Position.ClipArea.IsEmpty)
+			{
+				this.scene.RemoveFromScene(this.graphicObject);
+				this.graphicObject = null;
+				return;
+			}
+
 			var sceneObject = this.makeSceneObject();
 
 			if (sceneObject != null)

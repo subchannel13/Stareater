@@ -149,7 +149,7 @@
     <Compile Include="GraphicsEngine\Animators\ParallelAnimation.cs" />
     <Compile Include="GraphicsEngine\Animators\TweenAlpha.cs" />
     <Compile Include="GraphicsEngine\AScene.cs" />
-    <Compile Include="GraphicsEngine\GuiElements\ClipWindow.cs" />
+    <Compile Include="GLData\ClipWindow.cs" />
     <Compile Include="GraphicsEngine\GuiElements\ElementPosition.cs" />
     <Compile Include="GraphicsEngine\GuiElements\GuiButton.cs" />
     <Compile Include="GraphicsEngine\GuiElements\GuiPanel.cs" />

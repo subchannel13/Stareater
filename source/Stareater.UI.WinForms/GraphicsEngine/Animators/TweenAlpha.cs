@@ -31,7 +31,8 @@ namespace Stareater.GraphicsEngine.Animators
 			this.target.UpdateDrawable(new SpriteData(
 				oldData.LocalTransform,
 				oldData.TextureId,
-				Color.FromArgb((int)(this.currentValue * 255), oldColor)
+				Color.FromArgb((int)(this.currentValue * 255), oldColor), 
+				null
 			));
 		}
 

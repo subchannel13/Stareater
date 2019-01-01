@@ -19,6 +19,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		protected override SceneObject makeSceneObject()
 		{
 			return new SceneObjectBuilder().
+				Clip(this.Position.ClipArea).
 				StartSimpleSprite(this.Z0, this.mBackground.Value, Color.White).
 				Scale(this.Position.Size.X, this.Position.Size.Y).
 				Translate(this.Position.Center).

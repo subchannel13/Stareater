@@ -91,6 +91,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				background = this.mBackgroundToggled.Value;
 
 			var soBuilder = new SceneObjectBuilder().
+				Clip(this.Position.ClipArea).
 				StartSimpleSprite(this.Z0, background, Color.White).
 				Scale(this.Position.Size.X, this.Position.Size.Y).
 				Translate(this.Position.Center);

@@ -1,12 +1,18 @@
 ﻿using System;
 using OpenTK;
 
-namespace Stareater.GraphicsEngine.GuiElements
+namespace Stareater.GLData
 {
 	class ClipWindow
 	{
 		private readonly Vector2 min;
 		private readonly Vector2 max;
+
+		public ClipWindow()
+		{
+			this.min = new Vector2();
+			this.max = new Vector2();
+		}
 
 		public ClipWindow(Vector2 center, Vector2 size)
 		{
@@ -25,8 +31,16 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public bool Contains(Vector2 point)
 		{
-			return point.X >= this.min.X && point.X <= this.max.X &&
-				point.Y >= this.min.Y && point.Y <= this.max.Y;
+			return point.X >= this.min.X && point.X < this.max.X &&
+				point.Y >= this.min.Y && point.Y < this.max.Y;
+		}
+
+		public bool IsEmpty
+		{
+			get
+			{
+				return this.min.X >= this.max.X || this.min.Y >= this.max.Y;
+			}
 		}
 	}
 }
