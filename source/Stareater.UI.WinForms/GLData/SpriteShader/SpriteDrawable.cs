@@ -17,13 +17,20 @@ namespace Stareater.GLData.SpriteShader
 			this.objectData = objectData;
 		}
 
-		public void Draw(Matrix4 view, float z)
+		public void Draw(Matrix4 view, float z, Matrix4 viewportTransform)
 		{
 			var program = ShaderLibrary.Sprite;
 			GL.UseProgram(program.ProgramId);
 			this.vao.Bind(); //TODO(v0.8) set program and bind VAO outside
 			GL.ActiveTexture(TextureUnit.Texture0);
 			GL.Uniform1(program.TextureSamplerId, 0);
+
+			if (this.objectData.ClipArea != null)
+			{
+				var area = this.objectData.ClipArea.ScissorRectangle(view * viewportTransform);
+				GL.Enable(EnableCap.ScissorTest);
+				GL.Scissor(area.X, area.Y, area.Width, area.Height);
+			}
 
 			var mvp = this.objectData.LocalTransform * view;
 			GL.UniformMatrix4(program.LocalTransformId, false, ref mvp);
@@ -33,6 +40,9 @@ namespace Stareater.GLData.SpriteShader
 
 			GL.DrawArrays(PrimitiveType.Triangles, vao.ObjectStart(this.objectIndex), vao.ObjectSize(this.objectIndex));
 			ShaderLibrary.PrintGlErrors("Draw sprites");
+
+			if (this.objectData.ClipArea != null)
+				GL.Disable(EnableCap.ScissorTest);
 		}
 		
 		public void Update(IShaderData shaderUniforms)

@@ -32,7 +32,7 @@ namespace Stareater.GraphicsEngine.Animators
 				oldData.LocalTransform,
 				oldData.TextureId,
 				Color.FromArgb((int)(this.currentValue * 255), oldColor), 
-				null
+				oldData.ClipArea
 			));
 		}
 

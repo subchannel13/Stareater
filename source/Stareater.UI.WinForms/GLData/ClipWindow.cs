@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using OpenTK;
 
 namespace Stareater.GLData
@@ -41,6 +42,17 @@ namespace Stareater.GLData
 			{
 				return this.min.X >= this.max.X || this.min.Y >= this.max.Y;
 			}
+		}
+
+		public Rectangle ScissorRectangle(Matrix4 view)
+		{
+			var screenMin = Vector4.Transform(new Vector4(this.min.X, this.min.Y, 0, 1), view);
+			var size = Vector4.Transform(new Vector4(this.max.X, this.max.Y, 0, 1), view) - screenMin;
+
+			return new Rectangle(
+				(int)Math.Floor(screenMin.X), (int)Math.Floor(screenMin.Y), 
+				(int)Math.Ceiling(size.X), (int)Math.Ceiling(size.Y)
+			);
 		}
 	}
 }

@@ -48,13 +48,16 @@ namespace Stareater.GraphicsEngine
 				this.setupDrawables();
 
 			var guiLayer = this.guiLayerThickness;
+			var viewportTransform = 
+				Matrix4.CreateTranslation(1, 1, 0) * 
+				Matrix4.CreateScale(canvasSize.X / 2, canvasSize.Y / 2, 1);
 
 			foreach (var layer in this.drawables.OrderByDescending(x => x.Key))
 			{
 				var view = layer.Key > guiLayer ? this.projection : this.guiProjection;
 
 				foreach (var drawable in layer.Value)
-					drawable.Draw(view, layer.Key);
+					drawable.Draw(view, layer.Key, viewportTransform);
 			}
 		}
 		

@@ -17,6 +17,7 @@ namespace Stareater.GLData.SpriteShader
 			this.LocalTransform = localTransform;
 			this.TextureId = textureId;
 			this.Color = new Color4(color.R, color.G, color.B, color.A);
+			this.ClipArea = clipArea;
 		}
 
 		#region IShaderUniformData implementation

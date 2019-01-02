@@ -17,7 +17,7 @@ namespace Stareater.GLData.OrbitShader
 			this.vao = vao;
 		}
 		
-		public void Draw(Matrix4 view, float z)
+		public void Draw(Matrix4 view, float z, Matrix4 viewportTransform)
 		{
 			var program = ShaderLibrary.PlanetOrbit;
 			GL.UseProgram(program.ProgramId);
