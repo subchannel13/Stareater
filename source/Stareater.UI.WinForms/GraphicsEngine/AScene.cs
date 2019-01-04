@@ -282,8 +282,7 @@ namespace Stareater.GraphicsEngine
 			this.guiProjection = calcOrthogonalPerspective(width, height, 1, new Vector2());
 			this.guiInvProjection = Matrix4.Invert(new Matrix4(this.guiProjection.Row0, this.guiProjection.Row1, this.guiProjection.Row2, this.guiProjection.Row3));
 			this.rootParent.Position.FixedSize(width, height);
-			foreach (var element in this.guiPrefixSearch())
-				element.RecalculatePosition();
+			this.rootParent.RecalculatePosition();
 		}
 		#endregion
 

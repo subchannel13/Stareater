@@ -33,6 +33,16 @@ namespace Stareater.GraphicsEngine.GuiElements
 				this.ClipArea = new ClipWindow(this.Center, this.Size);
 		}
 
+		public IEnumerable<AGuiElement> Dependencies
+		{
+			get
+			{
+				foreach (var positioner in this.positioners)
+					foreach (var element in positioner.Dependencies)
+						yield return element;
+			}
+		}
+
 		#region Position builders
 		public ElementPosition FixedSize(float width, float height)
 		{
@@ -72,6 +82,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		private interface IPositioner
 		{
 			void Recalculate(ElementPosition element, ElementPosition parentPosition);
+			IEnumerable<AGuiElement> Dependencies { get; }
 		}
 
 		private class ParentRelativePositioner : IPositioner
@@ -98,6 +109,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 					windowX * this.xPortion + parentPosition.Center.X,
 					windowY * this.yPortion + parentPosition.Center.Y
 				);
+			}
+
+			public IEnumerable<AGuiElement> Dependencies
+			{
+				get { yield break; }
 			}
 		}
 
@@ -129,6 +145,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 					this.anchor.Position.Center.Y + (this.anchor.Position.Size.Y + this.marginY) * this.yPortionAnchor / 2 - element.Size.Y * this.yPortionThis / 2
 				);
 			}
+
+			public IEnumerable<AGuiElement> Dependencies
+			{
+				get { yield return this.anchor; }
+			}
 		}
 
 		private class WrapContentPositioner : IPositioner
@@ -139,6 +160,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 					element.contentWidth(),
 					element.contentHeight()
 				);
+			}
+
+			public IEnumerable<AGuiElement> Dependencies
+			{
+				get { yield break; }
 			}
 		}
 	}

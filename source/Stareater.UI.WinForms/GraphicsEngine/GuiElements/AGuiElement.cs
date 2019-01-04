@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System.Collections.Generic;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
@@ -6,6 +7,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 	{
 		private AScene scene;
 		private SceneObject graphicObject = null;
+		private HashSet<AGuiElement> dependentElements = new HashSet<AGuiElement>();
 
 		public float Z0 { get; private set; }
 		public float ZRange { get; private set; }
@@ -18,17 +20,24 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.Position = new ElementPosition(this.contentWidth, this.contentHeight);
 		}
 
-		//TODO(v0.8) redo how z is distributed
 		public void Attach(AScene scene, AGuiElement parent)
 		{
 			this.scene = scene;
 			this.Parent = parent;
+
+			this.Parent.dependentElements.Add(this);
+			foreach(var element in this.Position.Dependencies)
+				element.dependentElements.Add(this);
 
 			this.updateScene();
 		}
 
 		public void Detach()
 		{
+			this.Parent.dependentElements.Remove(this);
+			foreach (var element in this.Position.Dependencies)
+				element.dependentElements.Remove(this);
+
 			this.scene.RemoveFromScene(ref this.graphicObject);
 		}
 
@@ -43,6 +52,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 		public void RecalculatePosition()
 		{
 			this.Position.Recalculate((this.Parent != null) ? this.Parent.Position : null);
+
+			foreach (var element in this.dependentElements)
+				element.RecalculatePosition();
+
 			this.updateScene();
 		}
 

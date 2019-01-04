@@ -99,7 +99,8 @@ namespace Stareater.GLData
 
 		public SceneObjectBuilder Clip(ClipWindow clipArea)
 		{
-			this.clipArea = clipArea;
+			if (!clipArea.IsEmpty)
+				this.clipArea = clipArea;
 
 			return this;
 		}

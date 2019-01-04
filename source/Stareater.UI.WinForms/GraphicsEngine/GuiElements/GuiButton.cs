@@ -105,7 +105,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 			var background = (this.isHovered ? this.BackgroundHover : this.mBackgroundNormal).Value;
 			var soBuilder = new SceneObjectBuilder().
-				Clip(this.Position.ClipArea).
+				Clip(this.Position.ClipArea). //TODO(v0.8) add press offset to clip area
 				StartSimpleSprite(this.Z0, background, Color.White).
 				Scale(this.Position.Size.X, this.Position.Size.Y).
 				Translate(this.Position.Center + pressOffset);
