@@ -1,10 +1,14 @@
 ﻿using System.Drawing;
+using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
+using OpenTK;
 
 namespace Stareater.GLData
 {
 	static class TextureUtils
 	{
+		private static Dictionary<int, Vector2> textureSizes = new Dictionary<int, Vector2>();
+
 		public static int CreateTexture(Bitmap image)
 		{
 			int textureId = GL.GenTexture();
@@ -16,6 +20,7 @@ namespace Stareater.GLData
 		public static void DeleteTexture(int textureId)
 		{
 			GL.DeleteTexture(textureId);
+			textureSizes.Remove(textureId);
 		}
 
 		public static void UpdateTexture(int textureId, Bitmap image)
@@ -36,6 +41,12 @@ namespace Stareater.GLData
 			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)TextureMagFilter.Linear);
 
 			image.UnlockBits(textureData);
+			textureSizes[textureId] = new Vector2(image.Width, image.Height);
+		}
+
+		public static Vector2 TextureSize(int textureId)
+		{
+			return textureSizes[textureId];
 		}
 	}
 }

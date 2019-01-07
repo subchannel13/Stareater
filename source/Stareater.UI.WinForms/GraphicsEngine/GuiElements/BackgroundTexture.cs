@@ -20,7 +20,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.PaddingRight = padding;
 			this.PaddingTop = padding;
 			this.PaddingBottom = padding;
-			this.textureSize = GalaxyTextures.Get.Size; //TODO(v0.8) generalize texture management
+			this.textureSize = TextureUtils.TextureSize(sprite.Id);
 		}
 
 		public TextureInfo LeftTexture
