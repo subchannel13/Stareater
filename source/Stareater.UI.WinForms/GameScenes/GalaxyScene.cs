@@ -98,8 +98,8 @@ namespace Stareater.GameScenes
 
 			var turnButton = new GuiButton
 			{
-				BackgroundHover = GalaxyTextures.Get.EndTurnHover,
-				BackgroundNormal = GalaxyTextures.Get.EndTurnNormal,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.EndTurnHover, 0),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.EndTurnNormal, 0),
 				ClickCallback = this.galaxyViewListener.TurnEnded,
 			};
 			turnButton.Position.FixedSize(80, 80).ParentRelative(1, -1, 10, 10);
@@ -107,23 +107,23 @@ namespace Stareater.GameScenes
 
 			var radarToggle = new ToggleButton(SettingsWinforms.Get.ShowScanRange)
 			{
-				BackgroundHover = GalaxyTextures.Get.ToggleHover,
-				BackgroundNormal = GalaxyTextures.Get.ToggleNormal,
-				BackgroundToggled = GalaxyTextures.Get.ToggleToggled,
-				ForgroundImage = GalaxyTextures.Get.Radar,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 0),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 0),
+				BackgroundToggled = new BackgroundTexture(GalaxyTextures.Get.ToggleToggled, 0),
+				ForgroundImage = new BackgroundTexture(GalaxyTextures.Get.Radar, 0),
 				ToggleCallback = this.toggleRadar,
 			};
 			radarToggle.Position.FixedSize(20, 20).RelativeTo(turnButton, -1, 1, 1, 1, 15, 0);
 			this.addElement(radarToggle);
 
-			this.starInfoPanel = new GuiPanel { Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 3, 3, 3, 3) };
+			this.starInfoPanel = new GuiPanel { Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 3) };
 			this.starInfoPanel.Position.FixedSize(300, 80).ParentRelative(0, 1, 10, 10);
 			this.addElement(this.starInfoPanel);
 
 			this.starProjectButton = new GuiButton
 			{
-				BackgroundHover = GalaxyTextures.Get.ToggleHover,
-				BackgroundNormal = GalaxyTextures.Get.ToggleNormal,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 4),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 4),
 				ClickCallback = () => System.Diagnostics.Trace.WriteLine("Click! " + DateTime.Now.ToLongTimeString())
 			};
 			this.starProjectButton.Position.FixedSize(40, 40).ParentRelative(-1, -1, -15, 5);

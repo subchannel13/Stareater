@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using Stareater.GLData;
+using Stareater.GLData.SpriteShader;
 using System;
 using System.Drawing;
 
@@ -17,8 +18,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.isToggled = initialState;
 		}
 
-		private TextureInfo? mBackgroundHover = null;
-		public TextureInfo? BackgroundHover
+		private BackgroundTexture mBackgroundHover = null;
+		public BackgroundTexture BackgroundHover
 		{
 			get { return this.mBackgroundHover; }
 			set
@@ -27,8 +28,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
-		private TextureInfo? mBackgroundNormal = null;
-		public TextureInfo? BackgroundNormal
+		private BackgroundTexture mBackgroundNormal = null;
+		public BackgroundTexture BackgroundNormal
 		{
 			get { return this.mBackgroundNormal; }
 			set
@@ -37,8 +38,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
-		private TextureInfo? mBackgroundToggled = null;
-		public TextureInfo? BackgroundToggled
+		private BackgroundTexture mBackgroundToggled = null;
+		public BackgroundTexture BackgroundToggled
 		{
 			get { return this.mBackgroundToggled; }
 			set
@@ -47,8 +48,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
-		private TextureInfo? mForgroundImage = null;
-		public TextureInfo? ForgroundImage
+		private BackgroundTexture mForgroundImage = null;
+		public BackgroundTexture ForgroundImage
 		{
 			get { return this.mForgroundImage; }
 			set
@@ -84,23 +85,23 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		protected override SceneObject makeSceneObject()
 		{
-			var background = this.mBackgroundNormal.Value;
+			var background = this.mBackgroundNormal;
 			if (this.isHovered)
-				background = this.mBackgroundHover.Value;
+				background = this.mBackgroundHover;
 			if (this.isToggled)
-				background = this.mBackgroundToggled.Value;
+				background = this.mBackgroundToggled;
 
 			var soBuilder = new SceneObjectBuilder().
 				Clip(this.Position.ClipArea).
-				StartSimpleSprite(this.Z0, background, Color.White).
-				Scale(this.Position.Size.X, this.Position.Size.Y).
-				Translate(this.Position.Center);
+				StartSprite(this.Z0, background.Sprite.Id, Color.White).
+				Translate(this.Position.Center).
+				AddVertices(SpriteHelpers.GuiBackgroundVertexData(background, this.Position.Size.X, this.Position.Size.Y));
 
-			if (this.mForgroundImage.HasValue)
+			if (this.mForgroundImage != null)
 				soBuilder.
-					StartSimpleSprite(this.Z0 - this.ZRange / 2, this.mForgroundImage.Value, Color.White).
-					Scale(this.Position.Size.X, this.Position.Size.Y).
-					Translate(this.Position.Center);
+					StartSprite(this.Z0 - this.ZRange / 2, this.mForgroundImage.Sprite.Id, Color.White).
+					Translate(this.Position.Center).
+					AddVertices(SpriteHelpers.GuiBackgroundVertexData(this.mForgroundImage, this.Position.Size.X, this.Position.Size.Y));
 
 			return soBuilder.Build();
 		}

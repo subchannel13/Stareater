@@ -81,12 +81,18 @@ namespace Stareater.GLData.SpriteShader
 			var innerWidth = width - texture.PaddingLeft - texture.PaddingRight;
 			var innerHeight = height - texture.PaddingTop - texture.PaddingBottom;
 
-			return TexturedRectVertexData(new Vector2(-width / 2 + texture.PaddingLeft / 2, 0), texture.PaddingLeft, height, texture.LeftTexture).
-				Concat(TexturedRectVertexData(new Vector2(width / 2 - texture.PaddingRight / 2, 0), texture.PaddingRight, height, texture.RightTexture)).
-				Concat(TexturedRectVertexData(new Vector2(0, height / 2 - texture.PaddingTop / 2), innerWidth, texture.PaddingTop, texture.TopTexture)).
-				Concat(TexturedRectVertexData(new Vector2(0, -height / 2 + texture.PaddingTop / 2), innerWidth, texture.PaddingBottom, texture.BottomTexture)).
-				Concat(TexturedRectVertexData(new Vector2(0, 0), innerWidth, innerHeight, texture.CenterTexture)).
-				SelectMany(v => new[] { v.X, v.Y });
+			var points = TexturedRectVertexData(new Vector2(0, 0), innerWidth, innerHeight, texture.CenterTexture).ToList();
+
+			if (texture.PaddingLeft > 0)
+				points.AddRange(TexturedRectVertexData(new Vector2(-width / 2 + texture.PaddingLeft / 2, 0), texture.PaddingLeft, height, texture.LeftTexture));
+			if (texture.PaddingRight > 0)
+				points.AddRange(TexturedRectVertexData(new Vector2(width / 2 - texture.PaddingRight / 2, 0), texture.PaddingRight, height, texture.RightTexture));
+			if (texture.PaddingTop > 0)
+				points.AddRange(TexturedRectVertexData(new Vector2(0, height / 2 - texture.PaddingTop / 2), innerWidth, texture.PaddingTop, texture.TopTexture));
+			if (texture.PaddingBottom > 0)
+				points.AddRange(TexturedRectVertexData(new Vector2(0, -height / 2 + texture.PaddingTop / 2), innerWidth, texture.PaddingBottom, texture.BottomTexture));
+
+			return points.SelectMany(v => new[] { v.X, v.Y });
 		}
 	}
 }

@@ -5,21 +5,22 @@ namespace Stareater.GraphicsEngine.GuiElements
 {
 	class BackgroundTexture
 	{
+		private Vector2 textureSize;
+
 		public TextureInfo Sprite { get; private set; }
 		public float PaddingLeft { get; private set; }
 		public float PaddingRight { get; private set; }
 		public float PaddingTop { get; private set; }
 		public float PaddingBottom { get; private set; }
-		public Vector2 TextureSize { get; private set; }
 
-		public BackgroundTexture(TextureInfo sprite, int paddingLeft, int paddingRight, int paddingTop, int paddingBottom)
+		public BackgroundTexture(TextureInfo sprite, int padding)
 		{
 			this.Sprite = sprite;
-			this.PaddingLeft = paddingLeft;
-			this.PaddingRight = paddingRight;
-			this.PaddingTop = paddingTop;
-			this.PaddingBottom = paddingBottom;
-			this.TextureSize = GalaxyTextures.Get.Size; //TODO(v0.8) generalize texture management
+			this.PaddingLeft = padding;
+			this.PaddingRight = padding;
+			this.PaddingTop = padding;
+			this.PaddingBottom = padding;
+			this.textureSize = GalaxyTextures.Get.Size; //TODO(v0.8) generalize texture management
 		}
 
 		public TextureInfo LeftTexture
@@ -28,8 +29,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 			{
 				return new TextureInfo(this.Sprite.Id, new Vector2[] {
 					this.Sprite.Coordinates[0],
-					this.Sprite.Coordinates[0] + new Vector2(this.PaddingLeft / this.TextureSize.X, 0),
-					this.Sprite.Coordinates[3] + new Vector2(this.PaddingLeft / this.TextureSize.X, 0),
+					this.Sprite.Coordinates[0] + new Vector2(this.PaddingLeft / this.textureSize.X, 0),
+					this.Sprite.Coordinates[3] + new Vector2(this.PaddingLeft / this.textureSize.X, 0),
 					this.Sprite.Coordinates[3],
 				});
 			}
@@ -40,10 +41,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get
 			{
 				return new TextureInfo(this.Sprite.Id, new Vector2[] {
-					this.Sprite.Coordinates[1] - new Vector2(this.PaddingRight / this.TextureSize.X, 0),
+					this.Sprite.Coordinates[1] - new Vector2(this.PaddingRight / this.textureSize.X, 0),
 					this.Sprite.Coordinates[1],
 					this.Sprite.Coordinates[2],
-					this.Sprite.Coordinates[2] - new Vector2(this.PaddingRight / this.TextureSize.X, 0),
+					this.Sprite.Coordinates[2] - new Vector2(this.PaddingRight / this.textureSize.X, 0),
 				});
 			}
 		}
@@ -53,10 +54,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get
 			{
 				return new TextureInfo(this.Sprite.Id, new Vector2[] {
-					this.Sprite.Coordinates[3] + new Vector2(this.PaddingLeft / this.TextureSize.X, -this.PaddingTop / this.TextureSize.Y),
-					this.Sprite.Coordinates[2] - new Vector2(this.PaddingRight / this.TextureSize.X, this.PaddingTop / this.TextureSize.Y),
-					this.Sprite.Coordinates[2] - new Vector2(this.PaddingRight / this.TextureSize.X, 0),
-					this.Sprite.Coordinates[3] + new Vector2(this.PaddingLeft / this.TextureSize.X, 0),
+					this.Sprite.Coordinates[3] + new Vector2(this.PaddingLeft / this.textureSize.X, -this.PaddingTop / this.textureSize.Y),
+					this.Sprite.Coordinates[2] + new Vector2(-this.PaddingRight / this.textureSize.X, -this.PaddingTop / this.textureSize.Y),
+					this.Sprite.Coordinates[2] + new Vector2(-this.PaddingRight / this.textureSize.X, 0),
+					this.Sprite.Coordinates[3] + new Vector2(this.PaddingLeft / this.textureSize.X, 0),
 				});
 			}
 		}
@@ -66,10 +67,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get
 			{
 				return new TextureInfo(this.Sprite.Id, new Vector2[] {
-					this.Sprite.Coordinates[0] + new Vector2(this.PaddingLeft / this.TextureSize.X, 0),
-					this.Sprite.Coordinates[1] - new Vector2(this.PaddingRight / this.TextureSize.X, 0),
-					this.Sprite.Coordinates[1] - new Vector2(this.PaddingRight / this.TextureSize.X, -this.PaddingBottom / this.TextureSize.Y),
-					this.Sprite.Coordinates[0] + new Vector2(this.PaddingLeft / this.TextureSize.X, this.PaddingBottom / this.TextureSize.Y),
+					this.Sprite.Coordinates[0] + new Vector2(this.PaddingLeft / this.textureSize.X, 0),
+					this.Sprite.Coordinates[1] - new Vector2(this.PaddingRight / this.textureSize.X, 0),
+					this.Sprite.Coordinates[1] - new Vector2(this.PaddingRight / this.textureSize.X, -this.PaddingBottom / this.textureSize.Y),
+					this.Sprite.Coordinates[0] + new Vector2(this.PaddingLeft / this.textureSize.X, this.PaddingBottom / this.textureSize.Y),
 				});
 			}
 		}
@@ -79,10 +80,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get
 			{
 				return new TextureInfo(this.Sprite.Id, new Vector2[] {
-					this.Sprite.Coordinates[0] + new Vector2(this.PaddingLeft / this.TextureSize.X, this.PaddingBottom / this.TextureSize.Y),
-					this.Sprite.Coordinates[1] + new Vector2(-this.PaddingRight / this.TextureSize.X, this.PaddingBottom / this.TextureSize.Y),
-					this.Sprite.Coordinates[2] - new Vector2(this.PaddingRight / this.TextureSize.X, this.PaddingTop / this.TextureSize.Y),
-					this.Sprite.Coordinates[3] + new Vector2(this.PaddingLeft / this.TextureSize.X, -this.PaddingTop / this.TextureSize.Y),
+					this.Sprite.Coordinates[0] + new Vector2(this.PaddingLeft / this.textureSize.X, this.PaddingBottom / this.textureSize.Y),
+					this.Sprite.Coordinates[1] + new Vector2(-this.PaddingRight / this.textureSize.X, this.PaddingBottom / this.textureSize.Y),
+					this.Sprite.Coordinates[2] - new Vector2(this.PaddingRight / this.textureSize.X, this.PaddingTop / this.textureSize.Y),
+					this.Sprite.Coordinates[3] + new Vector2(this.PaddingLeft / this.textureSize.X, -this.PaddingTop / this.textureSize.Y),
 				});
 			}
 		}

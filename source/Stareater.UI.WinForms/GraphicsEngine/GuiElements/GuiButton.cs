@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using Stareater.GameScenes;
 using Stareater.GLData;
+using Stareater.GLData.SpriteShader;
 using System;
 using System.Drawing;
 
@@ -16,8 +17,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public Action ClickCallback { get; set; }
 
-		private TextureInfo? mBackgroundHover = null;
-		public TextureInfo? BackgroundHover
+		private BackgroundTexture mBackgroundHover = null;
+		public BackgroundTexture BackgroundHover
 		{
 			get { return this.mBackgroundHover; }
 			set
@@ -26,8 +27,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
-		private TextureInfo? mBackgroundNormal = null;
-		public TextureInfo? BackgroundNormal
+		private BackgroundTexture mBackgroundNormal = null;
+		public BackgroundTexture BackgroundNormal
 		{
 			get { return this.mBackgroundNormal; }
 			set
@@ -103,12 +104,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			var pressOffset = this.isPressed && this.isHovered ? new Vector2(PressOffsetX, PressOffsetY) : new Vector2(0, 0);
 
-			var background = (this.isHovered ? this.BackgroundHover : this.mBackgroundNormal).Value;
+			var background = this.isHovered ? this.BackgroundHover : this.mBackgroundNormal;
 			var soBuilder = new SceneObjectBuilder().
 				Clip(this.Position.ClipArea). //TODO(v0.8) add press offset to clip area
-				StartSimpleSprite(this.Z0, background, Color.White).
-				Scale(this.Position.Size.X, this.Position.Size.Y).
-				Translate(this.Position.Center + pressOffset);
+				StartSprite(this.Z0, background.Sprite.Id, Color.White).
+				Translate(this.Position.Center + pressOffset).
+				AddVertices(SpriteHelpers.GuiBackgroundVertexData(background, this.Position.Size.X, this.Position.Size.Y));
 
 			if (!string.IsNullOrWhiteSpace(this.Text))
 				soBuilder.StartSprite(this.Z0 - this.ZRange / 2, TextRenderUtil.Get.TextureId, this.TextColor).
