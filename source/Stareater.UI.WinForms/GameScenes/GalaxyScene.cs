@@ -116,7 +116,7 @@ namespace Stareater.GameScenes
 			radarToggle.Position.FixedSize(20, 20).RelativeTo(turnButton, -1, 1, 1, 1, 15, 0);
 			this.addElement(radarToggle);
 
-			this.starInfoPanel = new GuiPanel { Background = GalaxyTextures.Get.PanelBackground };
+			this.starInfoPanel = new GuiPanel { Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 3, 3, 3, 3) };
 			this.starInfoPanel.Position.FixedSize(300, 80).ParentRelative(0, 1, 10, 10);
 			this.addElement(this.starInfoPanel);
 

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
+using OpenTK;
 using Stareater.AppData;
 
 namespace Stareater.GLData
@@ -54,7 +55,9 @@ namespace Stareater.GLData
 		private bool loaded = false;
 		private int textureId;
 		private readonly Dictionary<string, TextureInfo> spriteNames  = new Dictionary<string, TextureInfo>();
-		
+
+		public Vector2 Size { get; private set; }
+
 		public TextureInfo Asteroids { get; private set;}
 		public TextureInfo BombButton { get; private set;}
 		public TextureInfo ButtonBackground { get; private set; }
@@ -186,6 +189,7 @@ namespace Stareater.GLData
 					}
 				}
 				this.textureId = TextureUtils.CreateTexture(atlasImage);
+				this.Size = new Vector2(atlasImage.Width, atlasImage.Height);
 			}
 			
 			return ikonData;

@@ -1,13 +1,13 @@
 ﻿using Stareater.GLData;
-using System.Collections.Generic;
+using Stareater.GLData.SpriteShader;
 using System.Drawing;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
 	class GuiPanel : AGuiElement
 	{
-		private TextureInfo? mBackground = null;
-		public TextureInfo? Background
+		private BackgroundTexture mBackground = null;
+		public BackgroundTexture Background
 		{
 			get { return this.mBackground; }
 			set
@@ -20,9 +20,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			return new SceneObjectBuilder().
 				Clip(this.Position.ClipArea).
-				StartSimpleSprite(this.Z0, this.mBackground.Value, Color.White).
-				Scale(this.Position.Size.X, this.Position.Size.Y).
+				StartSprite(this.Z0, this.mBackground.Sprite.Id, Color.White).
 				Translate(this.Position.Center).
+				AddVertices(SpriteHelpers.GuiBackgroundVertexData(this.mBackground, this.Position.Size.X, this.Position.Size.Y)).
 				Build();
 		}
 	}
