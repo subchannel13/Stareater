@@ -108,7 +108,7 @@ namespace Stareater.GameScenes
 							new Vector4(unitQuadTriangles[v].X * charInfo.Aspect + charOffsetX, unitQuadTriangles[v].Y + charOffsetY, 0, 1),
 							transform
 						);
-						foreach (var dataBit in SpriteHelpers.TexturedVertexData(charPos.X, charPos.Y, charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y))
+						foreach (var dataBit in SpriteHelpers.TexturedVertex(charPos.X, charPos.Y, charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y))
 							yield return dataBit;
 					}
 					charOffsetX += charInfo.Aspect;

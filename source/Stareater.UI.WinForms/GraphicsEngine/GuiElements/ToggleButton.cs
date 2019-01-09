@@ -95,13 +95,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 				Clip(this.Position.ClipArea).
 				StartSprite(this.Z0, background.Sprite.Id, Color.White).
 				Translate(this.Position.Center).
-				AddVertices(SpriteHelpers.GuiBackgroundVertexData(background, this.Position.Size.X, this.Position.Size.Y));
+				AddVertices(SpriteHelpers.GuiBackground(background, this.Position.Size.X, this.Position.Size.Y));
 
 			if (this.mForgroundImage != null)
 				soBuilder.
 					StartSprite(this.Z0 - this.ZRange / 2, this.mForgroundImage.Sprite.Id, Color.White).
 					Translate(this.Position.Center).
-					AddVertices(SpriteHelpers.GuiBackgroundVertexData(this.mForgroundImage, this.Position.Size.X, this.Position.Size.Y));
+					AddVertices(SpriteHelpers.GuiBackground(this.mForgroundImage, this.Position.Size.X, this.Position.Size.Y));
 
 			return soBuilder.Build();
 		}

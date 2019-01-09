@@ -232,7 +232,7 @@ namespace Stareater.GameScenes
 			var lastPosition = fleetDisplayPosition(fleet);
 			foreach(var nextPosition in waypoints)
 			{
-				foreach(var v in SpriteHelpers.PathRectVertexData(lastPosition, nextPosition, PathWidth, GalaxyTextures.Get.PathLine))
+				foreach(var v in SpriteHelpers.PathRect(lastPosition, nextPosition, PathWidth, GalaxyTextures.Get.PathLine))
 					yield return v;
 
 				lastPosition = nextPosition;
@@ -463,7 +463,7 @@ namespace Stareater.GameScenes
 				new SceneObjectBuilder().
 					StartSprite(WormholeZ, GalaxyTextures.Get.PathLine.Id, Color.Blue).
 					AddVertices(
-						this.currentPlayer.Wormholes.SelectMany(wormhole => SpriteHelpers.PathRectVertexData(
+						this.currentPlayer.Wormholes.SelectMany(wormhole => SpriteHelpers.PathRect(
 							convert(wormhole.Endpoints.First.Position),
 							convert(wormhole.Endpoints.Second.Position),
 							0.8f * PathWidth,

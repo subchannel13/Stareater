@@ -22,7 +22,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				Clip(this.Position.ClipArea).
 				StartSprite(this.Z0, this.mBackground.Sprite.Id, Color.White).
 				Translate(this.Position.Center).
-				AddVertices(SpriteHelpers.GuiBackgroundVertexData(this.mBackground, this.Position.Size.X, this.Position.Size.Y)).
+				AddVertices(SpriteHelpers.GuiBackground(this.mBackground, this.Position.Size.X, this.Position.Size.Y)).
 				Build();
 		}
 	}

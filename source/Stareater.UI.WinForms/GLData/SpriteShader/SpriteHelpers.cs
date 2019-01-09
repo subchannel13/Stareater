@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using OpenTK;
 using Stareater.GraphicsEngine.GuiElements;
 
 namespace Stareater.GLData.SpriteShader
 {
-	//TODO(v0.8) remove VertexData prefixes
 	static class SpriteHelpers
 	{
-		public static IEnumerable<Vector2> PathRectVertexData(Vector2 fromPosition, Vector2 toPosition, float width, TextureInfo textureinfo)
+		public static IEnumerable<Vector2> PathRect(Vector2 fromPosition, Vector2 toPosition, float width, TextureInfo textureinfo)
 		{
 			var center = (fromPosition + toPosition) / 2;
 			var length = toPosition - fromPosition;
@@ -37,7 +35,7 @@ namespace Stareater.GLData.SpriteShader
 			yield return textureinfo.Coordinates[3];
 		}
 
-		public static IEnumerable<Vector2> TexturedRectVertexData(Vector2 center, float width, float height, TextureInfo textureinfo)
+		public static IEnumerable<Vector2> TexturedRect(Vector2 center, float width, float height, TextureInfo textureinfo)
 		{
 			var widthDir = new Vector2(width, 0);
 			var heightDir = new Vector2(0, height);
@@ -62,7 +60,7 @@ namespace Stareater.GLData.SpriteShader
 			yield return textureinfo.Coordinates[3];
 		}
 		
-		public static IEnumerable<float> TexturedVertexData(float x, float y, float tx, float ty)
+		public static IEnumerable<float> TexturedVertex(float x, float y, float tx, float ty)
 		{
 			yield return x; 
 			yield return y;
@@ -70,27 +68,27 @@ namespace Stareater.GLData.SpriteShader
 			yield return ty;
 		}
 		
-		public static IEnumerable<float> UnitRectVertexData(TextureInfo textureinfo)
+		public static IEnumerable<float> UnitRect(TextureInfo textureinfo)
 		{
-			return TexturedRectVertexData(new Vector2(0, 0), 1, 1, textureinfo).
+			return TexturedRect(new Vector2(0, 0), 1, 1, textureinfo).
 				SelectMany(v => new[] { v.X, v.Y });
 		}
 
-		public static IEnumerable<float> GuiBackgroundVertexData(BackgroundTexture texture, float width, float height)
+		public static IEnumerable<float> GuiBackground(BackgroundTexture texture, float width, float height)
 		{
 			var innerWidth = width - texture.PaddingLeft - texture.PaddingRight;
 			var innerHeight = height - texture.PaddingTop - texture.PaddingBottom;
 
-			var points = TexturedRectVertexData(new Vector2(0, 0), innerWidth, innerHeight, texture.CenterTexture).ToList();
+			var points = TexturedRect(new Vector2(0, 0), innerWidth, innerHeight, texture.CenterTexture).ToList();
 
 			if (texture.PaddingLeft > 0)
-				points.AddRange(TexturedRectVertexData(new Vector2(-width / 2 + texture.PaddingLeft / 2, 0), texture.PaddingLeft, height, texture.LeftTexture));
+				points.AddRange(TexturedRect(new Vector2(-width / 2 + texture.PaddingLeft / 2, 0), texture.PaddingLeft, height, texture.LeftTexture));
 			if (texture.PaddingRight > 0)
-				points.AddRange(TexturedRectVertexData(new Vector2(width / 2 - texture.PaddingRight / 2, 0), texture.PaddingRight, height, texture.RightTexture));
+				points.AddRange(TexturedRect(new Vector2(width / 2 - texture.PaddingRight / 2, 0), texture.PaddingRight, height, texture.RightTexture));
 			if (texture.PaddingTop > 0)
-				points.AddRange(TexturedRectVertexData(new Vector2(0, height / 2 - texture.PaddingTop / 2), innerWidth, texture.PaddingTop, texture.TopTexture));
+				points.AddRange(TexturedRect(new Vector2(0, height / 2 - texture.PaddingTop / 2), innerWidth, texture.PaddingTop, texture.TopTexture));
 			if (texture.PaddingBottom > 0)
-				points.AddRange(TexturedRectVertexData(new Vector2(0, -height / 2 + texture.PaddingTop / 2), innerWidth, texture.PaddingBottom, texture.BottomTexture));
+				points.AddRange(TexturedRect(new Vector2(0, -height / 2 + texture.PaddingTop / 2), innerWidth, texture.PaddingBottom, texture.BottomTexture));
 
 			return points.SelectMany(v => new[] { v.X, v.Y });
 		}

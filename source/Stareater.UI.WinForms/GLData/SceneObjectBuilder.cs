@@ -76,7 +76,7 @@ namespace Stareater.GLData
 
 			this.currentPolygonType = PolygonType.Sprite;
 			this.z = z;
-			this.vertexData.AddRange(SpriteHelpers.UnitRectVertexData(sprite));
+			this.vertexData.AddRange(SpriteHelpers.UnitRect(sprite));
 			this.textureId = sprite.Id;
 			this.color = color;
 

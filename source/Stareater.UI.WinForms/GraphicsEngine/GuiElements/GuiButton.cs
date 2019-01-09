@@ -109,7 +109,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				Clip(this.Position.ClipArea). //TODO(v0.8) add press offset to clip area
 				StartSprite(this.Z0, background.Sprite.Id, Color.White).
 				Translate(this.Position.Center + pressOffset).
-				AddVertices(SpriteHelpers.GuiBackgroundVertexData(background, this.Position.Size.X, this.Position.Size.Y));
+				AddVertices(SpriteHelpers.GuiBackground(background, this.Position.Size.X, this.Position.Size.Y));
 
 			if (!string.IsNullOrWhiteSpace(this.Text))
 				soBuilder.StartSprite(this.Z0 - this.ZRange / 2, TextRenderUtil.Get.TextureId, this.TextColor).

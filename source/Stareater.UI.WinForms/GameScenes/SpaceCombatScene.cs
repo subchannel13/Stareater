@@ -205,7 +205,7 @@ namespace Stareater.GameScenes
 			yield return new PolygonData(
 				PlanetColorZ,
 				new SpriteData(planetTransform, sprite.Id, Color.White, null),
-				SpriteHelpers.UnitRectVertexData(sprite).ToList()
+				SpriteHelpers.UnitRect(sprite).ToList()
 			);
 			
 			if (planet.Population > 0)
@@ -225,7 +225,7 @@ namespace Stareater.GameScenes
 			yield return new PolygonData(
 				ProjectileZ,
 				new SpriteData(Matrix4.CreateScale(ProjectileScale, ProjectileScale, 1) * hexTransform, unitSprite.Id, shownProjectile.Owner.Color, null),
-				SpriteHelpers.UnitRectVertexData(unitSprite).ToList()
+				SpriteHelpers.UnitRect(unitSprite).ToList()
 			);
 
 			yield return new PolygonData(
@@ -255,7 +255,7 @@ namespace Stareater.GameScenes
 			var unitDrawable = new PolygonData(
 				CombatantZ,
 				new SpriteData(hexTransform, unitSprite.Id, Color.FromArgb((int)(alpha * 255), unit.Owner.Color), null),
-				SpriteHelpers.UnitRectVertexData(unitSprite).ToList()
+				SpriteHelpers.UnitRect(unitSprite).ToList()
 			);
 			if (unitSelected)
 			{
@@ -279,7 +279,7 @@ namespace Stareater.GameScenes
 						otherUnits[i].Color, 
 						null
 					),
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.FleetIndicator).ToList()
+					SpriteHelpers.UnitRect(GalaxyTextures.Get.FleetIndicator).ToList()
 				));
 
 			polygons.Add(new PolygonData(
@@ -303,7 +303,7 @@ namespace Stareater.GameScenes
 				new SceneObject(new PolygonData(
 					StarColorZ,
 					new SpriteData(Matrix4.Identity, GalaxyTextures.Get.StarColor.Id, this.Controller.HostStar.Color, null),
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.SystemStar).ToList()
+					SpriteHelpers.UnitRect(GalaxyTextures.Get.SystemStar).ToList()
 				))
 			);
 
@@ -474,7 +474,7 @@ namespace Stareater.GameScenes
 				arrowData.Select(arrow => new SceneObject(new PolygonData(
 					MovemenentZ,
 					arrow,
-					SpriteHelpers.UnitRectVertexData(GalaxyTextures.Get.MoveToArrow).ToList()
+					SpriteHelpers.UnitRect(GalaxyTextures.Get.MoveToArrow).ToList()
 				))).ToList()
 			);
 		}
