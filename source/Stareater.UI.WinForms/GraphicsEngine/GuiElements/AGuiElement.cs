@@ -20,7 +20,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.Position = new ElementPosition(this.contentWidth, this.contentHeight);
 		}
 
-		public void Attach(AScene scene, AGuiElement parent)
+		public virtual void Attach(AScene scene, AGuiElement parent)
 		{
 			this.scene = scene;
 			this.Parent = parent;

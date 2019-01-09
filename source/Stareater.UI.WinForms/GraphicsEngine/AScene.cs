@@ -289,12 +289,12 @@ namespace Stareater.GraphicsEngine
 		#region GUI
 		protected abstract float guiLayerThickness { get; }
 
-		protected void addElement(AGuiElement element)
+		public void AddElement(AGuiElement element)
 		{
-			this.addElement(element, this.rootParent);
+			this.AddElement(element, this.rootParent);
 		}
 
-		protected void addElement(AGuiElement element, AGuiElement parent)
+		public void AddElement(AGuiElement element, AGuiElement parent)
 		{
 			if (!this.guiHierarchy.ContainsKey(parent))
 				this.guiHierarchy[parent] = new HashSet<AGuiElement>();
@@ -304,13 +304,17 @@ namespace Stareater.GraphicsEngine
 			this.updateGuiZ(element);
 		}
 
-		protected void removeElement(AGuiElement element)
+		public void RemoveElement(AGuiElement element)
 		{
+			if (this.guiHierarchy.ContainsKey(element))
+				foreach (var child in this.guiHierarchy[element].ToList())
+					this.RemoveElement(child);
+
 			this.guiHierarchy[element.Parent].Remove(element);
+			element.Detach();
+
 			if (!this.guiHierarchy[element.Parent].Any())
 				this.guiHierarchy.Remove(element.Parent);
-
-			element.Detach();
 		}
 
 		private IEnumerable<AGuiElement> eventHandlerSearch(Vector2 point)

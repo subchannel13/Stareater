@@ -113,6 +113,7 @@
     <Compile Include="AppData\ImageCache.cs" />
     <Compile Include="AppData\LoadingMethods.cs" />
     <Compile Include="AppData\SettingsWinforms.cs" />
+    <Compile Include="GameScenes\ConstructionSiteView.cs" />
     <Compile Include="GameScenes\IntroScene.cs" />
     <Compile Include="GLData\OrbitShader\ArcBorderBuilder.cs" />
     <Compile Include="GLData\OrbitShader\ArcVertices.cs" />

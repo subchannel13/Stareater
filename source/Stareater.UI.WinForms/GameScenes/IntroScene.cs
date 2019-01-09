@@ -67,7 +67,7 @@ namespace Stareater.GameScenes
 			};
 			this.cancelText.Position.WrapContent().ParentRelative(-1, -1, 5, 5);
 
-			this.addElement(this.cancelText);
+			this.AddElement(this.cancelText);
 		}
 
 		protected override void frameUpdate(double deltaTime)
@@ -83,7 +83,7 @@ namespace Stareater.GameScenes
 
 			foreach (var sceneObject in animatedObjects)
 				sceneObject.Animator.FastForward();
-			this.removeElement(this.cancelText);
+			this.RemoveElement(this.cancelText);
 			this.timeoutCallback();
 		}
 

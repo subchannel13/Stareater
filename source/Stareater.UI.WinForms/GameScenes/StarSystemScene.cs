@@ -46,7 +46,7 @@ namespace Stareater.GameScenes
 
 		private StarSystemController controller;
 		private PlayerController currentPlayer;
-		private readonly ConstructionSiteView siteView;
+		private readonly GUI.ConstructionSiteView siteView;
 		private readonly EmpyPlanetView emptyPlanetView;
 		private readonly Action systemClosedHandler;
 
@@ -65,7 +65,7 @@ namespace Stareater.GameScenes
 		private int selectedBody;
 		private HashSet<PlanetInfo> colonizationMarked = new HashSet<PlanetInfo>();
 		
-		public StarSystemScene(Action systemClosedHandler, ConstructionSiteView siteView, EmpyPlanetView emptyPlanetView)
+		public StarSystemScene(Action systemClosedHandler, GUI.ConstructionSiteView siteView, EmpyPlanetView emptyPlanetView)
 		{
 			this.systemClosedHandler = systemClosedHandler; 
 			this.emptyPlanetView = emptyPlanetView;

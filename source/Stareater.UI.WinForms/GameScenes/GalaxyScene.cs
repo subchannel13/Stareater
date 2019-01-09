@@ -58,8 +58,7 @@ namespace Stareater.GameScenes
 
 		private readonly GuiText turnCounter;
 		private readonly GuiText fuelInfo;
-		private readonly GuiPanel starInfoPanel;
-		private readonly GuiButton starProjectButton;
+		private readonly ConstructionSiteView starInfo;
 
 		private IEnumerable<SceneObject> fleetMovementPaths = null;
 		private IEnumerable<SceneObject> fleetMarkers = null;
@@ -90,11 +89,11 @@ namespace Stareater.GameScenes
 
 			this.fuelInfo = new GuiText { TextColor = Color.Yellow, TextSize = 30 };
 			this.fuelInfo.Position.WrapContent().ParentRelative(-1, 1, 10, 5);
-			this.addElement(this.fuelInfo);
+			this.AddElement(this.fuelInfo);
 
 			this.turnCounter = new GuiText { TextColor = Color.LightGray, TextSize = 30 };
 			this.turnCounter.Position.WrapContent().ParentRelative(1, 1, 10, 5);
-			this.addElement(this.turnCounter);
+			this.AddElement(this.turnCounter);
 
 			var turnButton = new GuiButton
 			{
@@ -103,7 +102,7 @@ namespace Stareater.GameScenes
 				ClickCallback = this.galaxyViewListener.TurnEnded,
 			};
 			turnButton.Position.FixedSize(80, 80).ParentRelative(1, -1, 10, 10);
-			this.addElement(turnButton);
+			this.AddElement(turnButton);
 
 			var radarToggle = new ToggleButton(SettingsWinforms.Get.ShowScanRange)
 			{
@@ -114,20 +113,11 @@ namespace Stareater.GameScenes
 				ToggleCallback = this.toggleRadar,
 			};
 			radarToggle.Position.FixedSize(20, 20).RelativeTo(turnButton, -1, 1, 1, 1, 15, 0);
-			this.addElement(radarToggle);
+			this.AddElement(radarToggle);
 
-			this.starInfoPanel = new GuiPanel { Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 3) };
-			this.starInfoPanel.Position.FixedSize(300, 80).ParentRelative(0, 1, 10, 10);
-			this.addElement(this.starInfoPanel);
-
-			this.starProjectButton = new GuiButton
-			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 4),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 4),
-				ClickCallback = () => System.Diagnostics.Trace.WriteLine("Click! " + DateTime.Now.ToLongTimeString())
-			};
-			this.starProjectButton.Position.FixedSize(40, 40).ParentRelative(-1, -1, -15, 5);
-			this.addElement(this.starProjectButton, this.starInfoPanel);
+			this.starInfo = new ConstructionSiteView();
+			this.starInfo.Position.ParentRelative(0, 1, 10, 10);
+			this.AddElement(this.starInfo);
 		}
 		
 		public void OnNewTurn()
@@ -163,6 +153,7 @@ namespace Stareater.GameScenes
 			
 			this.originOffset = this.lastOffset[this.currentPlayer.PlayerIndex];
 			this.currentSelection = GalaxySelectionType.Star;
+			this.starInfo.SetView(this.currentPlayer.OpenStarSystem(this.lastSelectedStar).StellarisController());
 			this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
 			this.setupPerspective();
 			this.setupFuelInfo();
@@ -186,9 +177,12 @@ namespace Stareater.GameScenes
 		{
 			this.rebuildCache();
 			this.setupVaos();
-			
+
 			if (this.currentSelection == GalaxySelectionType.Star)
+			{
+				this.starInfo.SetView(this.currentPlayer.OpenStarSystem(this.lastSelectedStar).StellarisController());
 				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
+			}
 		}
 		
 		protected override void frameUpdate(double deltaTime)
@@ -577,6 +571,7 @@ namespace Stareater.GameScenes
 			{
 				this.currentSelection = GalaxySelectionType.Star;
 				this.lastSelectedStars[this.currentPlayer.PlayerIndex] = starsFound[0].Position;
+				this.starInfo.SetView(this.currentPlayer.OpenStarSystem(this.lastSelectedStar).StellarisController());
 				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(starsFound[0]));
 				this.setupSelectionMarkers();
 			}
