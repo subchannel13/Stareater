@@ -21,15 +21,9 @@ namespace Stareater.GameScenes
 		{
 			this.Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 3);
 			this.Position.FixedSize(360, 116);
-		}
-
-		public override void Attach(AScene scene, AGuiElement parent)
-		{
-			base.Attach(scene, parent);
 
 			this.title = new GuiText { TextColor = Color.White, TextSize = 14 };
 			this.title.Position.WrapContent().ParentRelative(-1, 1, 8, 4);
-			scene.AddElement(this.title, this);
 
 			this.projectButton = new GuiButton
 			{
@@ -38,6 +32,12 @@ namespace Stareater.GameScenes
 				ClickCallback = () => System.Diagnostics.Trace.WriteLine("Click! " + System.DateTime.Now.ToLongTimeString())
 			};
 			this.projectButton.Position.FixedSize(88, 88).ParentRelative(-1, -1, 8, 8);
+		}
+
+		public override void Attach(AScene scene, AGuiElement parent)
+		{
+			base.Attach(scene, parent);
+			scene.AddElement(this.title, this);
 			scene.AddElement(this.projectButton, this);
 		}
 

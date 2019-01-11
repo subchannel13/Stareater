@@ -158,6 +158,9 @@ namespace Stareater.GraphicsEngine
 		#region Scene objects
 		public void RemoveFromScene(SceneObject sceneObject)
 		{
+			if (sceneObject == null)
+				return;
+
 			this.sceneObjects.Remove(sceneObject);
 			this.dirtyLayers.UnionWith(sceneObject.RenderData.Select(x => x.Z));
 			
@@ -315,6 +318,21 @@ namespace Stareater.GraphicsEngine
 
 			if (!this.guiHierarchy[element.Parent].Any())
 				this.guiHierarchy.Remove(element.Parent);
+		}
+
+		public void HideElement(AGuiElement element)
+		{
+			if (this.guiHierarchy[element.Parent].Contains(element))
+				this.RemoveElement(element);
+		}
+
+		public void ShowElement(AGuiElement element)
+		{
+			if (this.guiHierarchy[this.rootParent].Contains(element))
+				return;
+
+			this.AddElement(element, this.rootParent);
+			element.RecalculatePosition();
 		}
 
 		private IEnumerable<AGuiElement> eventHandlerSearch(Vector2 point)

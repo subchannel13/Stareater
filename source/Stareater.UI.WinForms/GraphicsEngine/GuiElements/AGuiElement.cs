@@ -29,6 +29,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			foreach(var element in this.Position.Dependencies)
 				element.dependentElements.Add(this);
 
+			this.SetDepth(parent.Z0 - parent.ZRange, parent.ZRange);
 			this.updateScene();
 		}
 
@@ -39,6 +40,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				element.dependentElements.Remove(this);
 
 			this.scene.RemoveFromScene(ref this.graphicObject);
+			this.scene = null;
 		}
 
 		public void SetDepth(float z0, float zRange)

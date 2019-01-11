@@ -153,8 +153,7 @@ namespace Stareater.GameScenes
 			
 			this.originOffset = this.lastOffset[this.currentPlayer.PlayerIndex];
 			this.currentSelection = GalaxySelectionType.Star;
-			this.starInfo.SetView(this.currentPlayer.OpenStarSystem(this.lastSelectedStar).StellarisController());
-			this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
+			this.updateStarInfo(this.lastSelectedStar);
 			this.setupPerspective();
 			this.setupFuelInfo();
 		}
@@ -162,6 +161,21 @@ namespace Stareater.GameScenes
 		private void rebuildCache()
 		{
 			TextRenderUtil.Get.Prepare(this.currentPlayer.Stars.Select(x => x.Name.ToText(LocalizationManifest.Get.CurrentLanguage)));
+		}
+
+		private void updateStarInfo(StarInfo star)
+		{
+			var starSystem = this.currentPlayer.OpenStarSystem(this.lastSelectedStar);
+			this.galaxyViewListener.SystemSelected(starSystem);
+
+			//FIXME(later) update owner check when multiple stellarises can exist at the same star
+			if (starSystem.StarsAdministration() != null && starSystem.StarsAdministration().Owner == this.currentPlayer.Info)
+			{
+				this.starInfo.SetView(this.currentPlayer.OpenStarSystem(this.lastSelectedStar).StellarisController());
+				this.ShowElement(this.starInfo);
+			}
+			else
+				this.HideElement(this.starInfo);
 		}
 
 		private void toggleRadar(bool state)
@@ -179,10 +193,7 @@ namespace Stareater.GameScenes
 			this.setupVaos();
 
 			if (this.currentSelection == GalaxySelectionType.Star)
-			{
-				this.starInfo.SetView(this.currentPlayer.OpenStarSystem(this.lastSelectedStar).StellarisController());
-				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(this.lastSelectedStar));
-			}
+				this.updateStarInfo(this.lastSelectedStar);
 		}
 		
 		protected override void frameUpdate(double deltaTime)
@@ -571,8 +582,7 @@ namespace Stareater.GameScenes
 			{
 				this.currentSelection = GalaxySelectionType.Star;
 				this.lastSelectedStars[this.currentPlayer.PlayerIndex] = starsFound[0].Position;
-				this.starInfo.SetView(this.currentPlayer.OpenStarSystem(this.lastSelectedStar).StellarisController());
-				this.galaxyViewListener.SystemSelected(this.currentPlayer.OpenStarSystem(starsFound[0]));
+				this.updateStarInfo(this.lastSelectedStar);
 				this.setupSelectionMarkers();
 			}
 			else
