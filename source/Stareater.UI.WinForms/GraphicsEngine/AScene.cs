@@ -388,7 +388,7 @@ namespace Stareater.GraphicsEngine
 			}
 
 			var zRange = this.guiLayerThickness / layers;
-			if (root.ZRange == zRange)
+			if (root.ZRange <= zRange && root.Z0 == this.guiLayerThickness)
 				return;
 
 			root.SetDepth(this.guiLayerThickness, zRange);
