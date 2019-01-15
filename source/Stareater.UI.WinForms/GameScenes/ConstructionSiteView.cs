@@ -5,7 +5,6 @@ using Stareater.GraphicsEngine;
 using Stareater.GraphicsEngine.GuiElements;
 using Stareater.GuiUtils;
 using Stareater.Localization;
-using System;
 using System.Drawing;
 
 namespace Stareater.GameScenes
@@ -14,8 +13,8 @@ namespace Stareater.GameScenes
 	{
 		private AConstructionSiteController controller;
 
-		private GuiText title;
-		private GuiButton projectButton;
+		private readonly GuiText title;
+		private readonly GuiButton projectButton;
 
 		public ConstructionSiteView()
 		{
@@ -43,8 +42,6 @@ namespace Stareater.GameScenes
 
 		internal void SetView(AConstructionSiteController siteController)
 		{
-			//TODO(v0.8) crashes on not owned stellaris
-
 			this.controller = siteController;
 			if (this.controller.SiteType == SiteType.Colony)
 			{

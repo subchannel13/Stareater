@@ -82,13 +82,34 @@ namespace Stareater.GLData.SpriteShader
 			var points = TexturedRect(new Vector2(0, 0), innerWidth, innerHeight, texture.CenterTexture).ToList();
 
 			if (texture.PaddingLeft > 0)
-				points.AddRange(TexturedRect(new Vector2(-width / 2 + texture.PaddingLeft / 2, 0), texture.PaddingLeft, height, texture.LeftTexture));
+				points.AddRange(TexturedRect(new Vector2(-width / 2 + texture.PaddingLeft / 2, 0), texture.PaddingLeft, innerHeight, texture.LeftTexture));
 			if (texture.PaddingRight > 0)
-				points.AddRange(TexturedRect(new Vector2(width / 2 - texture.PaddingRight / 2, 0), texture.PaddingRight, height, texture.RightTexture));
+				points.AddRange(TexturedRect(new Vector2(width / 2 - texture.PaddingRight / 2, 0), texture.PaddingRight, innerHeight, texture.RightTexture));
 			if (texture.PaddingTop > 0)
 				points.AddRange(TexturedRect(new Vector2(0, height / 2 - texture.PaddingTop / 2), innerWidth, texture.PaddingTop, texture.TopTexture));
 			if (texture.PaddingBottom > 0)
 				points.AddRange(TexturedRect(new Vector2(0, -height / 2 + texture.PaddingTop / 2), innerWidth, texture.PaddingBottom, texture.BottomTexture));
+
+			if (texture.PaddingLeft > 0 && texture.PaddingTop > 0)
+				points.AddRange(TexturedRect(
+					new Vector2(-width / 2 + texture.PaddingLeft / 2, height / 2 - texture.PaddingTop / 2), 
+					texture.PaddingLeft, texture.PaddingTop, texture.TopLeftTexture
+				));
+			if (texture.PaddingRight > 0 && texture.PaddingTop > 0)
+				points.AddRange(TexturedRect(
+					new Vector2(width / 2 - texture.PaddingRight / 2, height / 2 - texture.PaddingTop / 2),
+					texture.PaddingRight, texture.PaddingTop, texture.TopRigthTexture
+				));
+			if (texture.PaddingLeft > 0 && texture.PaddingBottom > 0)
+				points.AddRange(TexturedRect(
+					new Vector2(-width / 2 + texture.PaddingLeft / 2, -height / 2 + texture.PaddingBottom / 2),
+					texture.PaddingLeft, texture.PaddingBottom, texture.BottomLeftTexture
+				));
+			if (texture.PaddingRight > 0 && texture.PaddingBottom > 0)
+				points.AddRange(TexturedRect(
+					new Vector2(width / 2 - texture.PaddingRight / 2, -height / 2 + texture.PaddingBottom / 2),
+					texture.PaddingRight, texture.PaddingBottom, texture.BottomRigthTexture
+					));
 
 			return points.SelectMany(v => new[] { v.X, v.Y });
 		}

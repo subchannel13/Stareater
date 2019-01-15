@@ -28,10 +28,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get
 			{
 				return new TextureInfo(this.Sprite.Id, new Vector2[] {
-					this.Sprite.Coordinates[0],
-					this.Sprite.Coordinates[0] + new Vector2(this.PaddingLeft / this.textureSize.X, 0),
-					this.Sprite.Coordinates[3] + new Vector2(this.PaddingLeft / this.textureSize.X, 0),
-					this.Sprite.Coordinates[3],
+					this.Sprite.Coordinates[0] + new Vector2(0, this.PaddingBottom / this.textureSize.Y),
+					this.Sprite.Coordinates[0] + new Vector2(this.PaddingLeft / this.textureSize.X, this.PaddingBottom / this.textureSize.Y),
+					this.Sprite.Coordinates[3] + new Vector2(this.PaddingLeft / this.textureSize.X, -this.PaddingTop / this.textureSize.Y),
+					this.Sprite.Coordinates[3] - new Vector2(0, this.PaddingTop / this.textureSize.Y),
 				});
 			}
 		}
@@ -41,10 +41,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get
 			{
 				return new TextureInfo(this.Sprite.Id, new Vector2[] {
-					this.Sprite.Coordinates[1] - new Vector2(this.PaddingRight / this.textureSize.X, 0),
-					this.Sprite.Coordinates[1],
-					this.Sprite.Coordinates[2],
-					this.Sprite.Coordinates[2] - new Vector2(this.PaddingRight / this.textureSize.X, 0),
+					this.Sprite.Coordinates[1] + new Vector2(-this.PaddingRight / this.textureSize.X, this.PaddingBottom / this.textureSize.Y),
+					this.Sprite.Coordinates[1] + new Vector2(0, this.PaddingBottom / this.textureSize.Y),
+					this.Sprite.Coordinates[2] - new Vector2(0, this.PaddingTop / this.textureSize.Y),
+					this.Sprite.Coordinates[2] - new Vector2(this.PaddingRight / this.textureSize.X, this.PaddingTop / this.textureSize.Y),
 				});
 			}
 		}
@@ -84,6 +84,58 @@ namespace Stareater.GraphicsEngine.GuiElements
 					this.Sprite.Coordinates[1] + new Vector2(-this.PaddingRight / this.textureSize.X, this.PaddingBottom / this.textureSize.Y),
 					this.Sprite.Coordinates[2] - new Vector2(this.PaddingRight / this.textureSize.X, this.PaddingTop / this.textureSize.Y),
 					this.Sprite.Coordinates[3] + new Vector2(this.PaddingLeft / this.textureSize.X, -this.PaddingTop / this.textureSize.Y),
+				});
+			}
+		}
+
+		public TextureInfo TopLeftTexture
+		{
+			get
+			{
+				return new TextureInfo(this.Sprite.Id, new Vector2[] {
+					this.Sprite.Coordinates[3] - new Vector2(0, this.PaddingTop / this.textureSize.Y),
+					this.Sprite.Coordinates[3] + new Vector2(this.PaddingLeft / this.textureSize.X, -this.PaddingTop / this.textureSize.Y),
+					this.Sprite.Coordinates[3] + new Vector2(this.PaddingLeft / this.textureSize.X, 0),
+					this.Sprite.Coordinates[3],
+				});
+			}
+		}
+
+		public TextureInfo TopRigthTexture
+		{
+			get
+			{
+				return new TextureInfo(this.Sprite.Id, new Vector2[] {
+					this.Sprite.Coordinates[2] - new Vector2(this.PaddingRight / this.textureSize.X, this.PaddingTop / this.textureSize.Y),
+					this.Sprite.Coordinates[2] - new Vector2(0, this.PaddingTop / this.textureSize.Y),
+					this.Sprite.Coordinates[2],
+					this.Sprite.Coordinates[2] - new Vector2(this.PaddingRight / this.textureSize.X, 0),
+				});
+			}
+		}
+
+		public TextureInfo BottomLeftTexture
+		{
+			get
+			{
+				return new TextureInfo(this.Sprite.Id, new Vector2[] {
+					this.Sprite.Coordinates[0],
+					this.Sprite.Coordinates[0] + new Vector2(this.PaddingLeft / this.textureSize.X, 0),
+					this.Sprite.Coordinates[0] + new Vector2(this.PaddingLeft / this.textureSize.X, this.PaddingBottom / this.textureSize.Y),
+					this.Sprite.Coordinates[0] + new Vector2(0, this.PaddingBottom / this.textureSize.Y),
+				});
+			}
+		}
+
+		public TextureInfo BottomRigthTexture
+		{
+			get
+			{
+				return new TextureInfo(this.Sprite.Id, new Vector2[] {
+					this.Sprite.Coordinates[1] - new Vector2(this.PaddingRight / this.textureSize.X, 0),
+					this.Sprite.Coordinates[1],
+					this.Sprite.Coordinates[1] + new Vector2(0, this.PaddingBottom / this.textureSize.Y),
+					this.Sprite.Coordinates[1] + new Vector2(-this.PaddingRight / this.textureSize.X, this.PaddingBottom / this.textureSize.Y),
 				});
 			}
 		}
