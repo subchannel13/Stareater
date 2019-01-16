@@ -30,7 +30,7 @@ namespace Stareater.GameScenes
 				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
 				TextColor = Color.White,
-				TextSize = 14,
+				TextSize = 10,
 				ClickCallback = () => System.Diagnostics.Trace.WriteLine("Click! " + System.DateTime.Now.ToLongTimeString())
 			};
 			this.projectButton.Position.FixedSize(88, 88).ParentRelative(-1, -1, 8, 8);

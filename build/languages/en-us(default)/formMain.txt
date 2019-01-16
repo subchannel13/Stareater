@@ -8,7 +8,11 @@ Return = Return
 GameOver = Game over
 Turn = Turn
 
-NotBuilding = No construction project
+NotBuilding §
+		No
+		construction
+		project
+	\
 SiteDetails = Details
 ColonizeStart = Colonize
 ColonizeStop = Stop colonization
