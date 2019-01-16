@@ -37,6 +37,16 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
+		private BackgroundTexture mForgroundImage = null;
+		public BackgroundTexture ForgroundImage
+		{
+			get { return this.mForgroundImage; }
+			set
+			{
+				apply(ref this.mForgroundImage, value);
+			}
+		}
+
 		private string mText = null;
 		public string Text
 		{
@@ -115,6 +125,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 				soBuilder.StartSprite(this.Z0 - this.ZRange / 2, TextRenderUtil.Get.TextureId, this.TextColor).
 					AddVertices(TextRenderUtil.Get.BufferText(this.Text, -0.5f, Matrix4.Identity)).
 					Scale(this.TextSize, this.TextSize).
+					Translate(this.Position.Center);
+
+			if (this.mForgroundImage != null)
+				soBuilder.
+					StartSimpleSprite(this.Z0 - this.ZRange / 2, this.mForgroundImage.Sprite, Color.White).
+					Scale(this.Position.Size - this.mForgroundImage.PaddingTotal).
 					Translate(this.Position.Center);
 
 			return soBuilder.Build();

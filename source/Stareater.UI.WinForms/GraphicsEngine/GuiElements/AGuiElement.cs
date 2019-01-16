@@ -99,7 +99,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			var oldValue = state;
 			state = newValue;
 
-			if (oldValue == null || !oldValue.Equals(newValue))
+			if (!object.Equals(oldValue, newValue))
 				this.updateScene();
 		}
 

@@ -6,6 +6,7 @@ using Stareater.GraphicsEngine.GuiElements;
 using Stareater.GuiUtils;
 using Stareater.Localization;
 using System.Drawing;
+using System.Linq;
 
 namespace Stareater.GameScenes
 {
@@ -28,6 +29,8 @@ namespace Stareater.GameScenes
 			{
 				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				TextColor = Color.White,
+				TextSize = 14,
 				ClickCallback = () => System.Diagnostics.Trace.WriteLine("Click! " + System.DateTime.Now.ToLongTimeString())
 			};
 			this.projectButton.Position.FixedSize(88, 88).ParentRelative(-1, -1, 8, 8);
@@ -50,6 +53,17 @@ namespace Stareater.GameScenes
 			}
 			else
 				this.title.Text = this.controller.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage);
+
+			if (controller.ConstructionQueue.Any())
+			{
+				this.projectButton.Text = null;
+				this.projectButton.ForgroundImage = new BackgroundTexture(GalaxyTextures.Get.Sprite(this.controller.ConstructionQueue.First().ImagePath), 8);
+			}
+			else
+			{
+				this.projectButton.Text = LocalizationManifest.Get.CurrentLanguage["FormMain"]["NotBuilding"].Text();
+				this.projectButton.ForgroundImage = null;
+			}
 		}
 	}
 }

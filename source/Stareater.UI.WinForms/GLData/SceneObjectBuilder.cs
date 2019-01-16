@@ -136,6 +136,15 @@ namespace Stareater.GLData
 			return this;
 		}
 
+		public SceneObjectBuilder Scale(Vector2 scale)
+		{
+			this.assertStarted();
+
+			this.localTransform *= Matrix4.CreateScale(scale.X, scale.Y, 1);
+
+			return this;
+		}
+
 		public SceneObjectBuilder Scale(float scaleX, float scaleY)
 		{
 			this.assertStarted();

@@ -1,6 +1,6 @@
 { Constructable
 	langCode: IND
-	image: ./images/buildings/factory.png
+	image: ./images/buildings/factory
 	
 	code: Infra
 	site: Colony
@@ -21,7 +21,7 @@
 
 { Building
 	langCode: IND
-	image: ./images/buildings/factory.png
+	image: ./images/buildings/factory
 	
 	code: Infra
 	
@@ -31,7 +31,7 @@
 
 { Constructable
 	langCode: SOIL_ENRICH
-	image: ./images/buildings/factory.png
+	image: ./images/buildings/factory
 	
 	code: soil
 	site: Colony
@@ -54,7 +54,7 @@
 
 { Constructable
 	langCode: JUMPGATE
-	image: ./images/buildings/factory.png
+	image: ./images/buildings/factory
 	
 	code: Jump
 	site: System
