@@ -72,8 +72,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		protected override float contentWidth()
 		{
-			return string.IsNullOrWhiteSpace(this.Text) ? 0 :
-				TextRenderUtil.Get.MeasureWidth(this.Text) * this.TextSize;
+			return TextRenderUtil.Get.MeasureWidth(this.Text) * this.TextSize;
 		}
 
 		protected override float contentHeight()

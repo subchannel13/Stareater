@@ -23,14 +23,6 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.textureSize = TextureUtils.TextureSize(sprite.Id);
 		}
 
-		public Vector2 PaddingTotal
-		{
-			get
-			{
-				return new Vector2(this.PaddingLeft + this.PaddingRight, this.PaddingTop + this.PaddingBottom);
-			}
-		}
-
 		public TextureInfo LeftTexture
 		{
 			get

@@ -66,6 +66,9 @@ namespace Stareater.GameScenes
 
 		public float MeasureWidth(string text)
 		{
+			if (string.IsNullOrEmpty(text))
+				return 0;
+
 			var textWidth = 0f;
 
 			foreach (var line in text.Split('\n'))

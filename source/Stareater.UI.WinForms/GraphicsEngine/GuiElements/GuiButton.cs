@@ -37,8 +37,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
-		private BackgroundTexture mForgroundImage = null;
-		public BackgroundTexture ForgroundImage
+		private TextureInfo? mForgroundImage = null;
+		public TextureInfo? ForgroundImage
 		{
 			get { return this.mForgroundImage; }
 			set
@@ -74,6 +74,16 @@ namespace Stareater.GraphicsEngine.GuiElements
 			set
 			{
 				apply(ref this.mTextSize, value);
+			}
+		}
+
+		private float mPadding = 0;
+		public float Padding
+		{
+			get { return this.mPadding; }
+			set
+			{
+				apply(ref this.mPadding, value);
 			}
 		}
 
@@ -132,13 +142,24 @@ namespace Stareater.GraphicsEngine.GuiElements
 						Translate(this.Position.Center + new Vector2(0, (lines.Length / 2f - i) * this.TextSize));
 			}
 
-			if (this.mForgroundImage != null)
+			if (this.mForgroundImage.HasValue)
 				soBuilder.
-					StartSimpleSprite(this.Z0 - this.ZRange / 2, this.mForgroundImage.Sprite, Color.White).
-					Scale(this.Position.Size - this.mForgroundImage.PaddingTotal).
+					StartSimpleSprite(this.Z0 - this.ZRange / 2, this.mForgroundImage.Value, Color.White).
+					Scale(this.Position.Size - new Vector2(2 * this.mPadding, 2 * this.mPadding)).
 					Translate(this.Position.Center);
 
 			return soBuilder.Build();
+		}
+
+		protected override float contentWidth()
+		{
+			return TextRenderUtil.Get.MeasureWidth(this.Text) * this.TextSize + 2 * this.mPadding;
+		}
+
+		protected override float contentHeight()
+		{
+			//TODO(later) count lines
+			return (string.IsNullOrWhiteSpace(this.Text) ? 0 : this.TextSize) + 2 * this.mPadding;
 		}
 
 		private bool isOutside(Vector2 mousePosition)
