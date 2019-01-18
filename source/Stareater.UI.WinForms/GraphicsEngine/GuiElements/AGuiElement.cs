@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 
 namespace Stareater.GraphicsEngine.GuiElements
@@ -101,6 +102,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 			if (!object.Equals(oldValue, newValue))
 				this.updateScene();
+		}
+
+		protected bool isInside(Vector2 point)
+		{
+			var innerPoint = point - this.Position.Center;
+			return Math.Abs(innerPoint.X) <= this.Position.Size.X / 2 &&
+				Math.Abs(innerPoint.Y) <= this.Position.Size.Y / 2;
 		}
 
 		protected void reposition()

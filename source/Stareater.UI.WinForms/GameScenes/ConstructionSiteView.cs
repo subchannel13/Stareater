@@ -19,6 +19,7 @@ namespace Stareater.GameScenes
 		private readonly GuiText title;
 		private readonly GuiButton projectButton;
 		private readonly GuiButton detailsButton;
+		private readonly GuiSlider investmentSlider;
 		private readonly GuiText estimationLabel;
 
 		public ConstructionSiteView()
@@ -52,8 +53,14 @@ namespace Stareater.GameScenes
 			};
 			this.detailsButton.Position.WrapContent().ParentRelative(1, -1, 8, 8);
 
+			this.investmentSlider = new GuiSlider
+			{
+				SlideCallback = investmentSlider_Change 
+			};
+			this.investmentSlider.Position.FixedSize(150, 15).RelativeTo(this.projectButton, 1, 1, -1, 1, 8, 0);
+
 			this.estimationLabel = new GuiText { TextColor = Color.Black, TextSize = 10 };
-			this.estimationLabel.Position.WrapContent().RelativeTo(this.projectButton, 1, 1, -1, 1, 8, 0);
+			this.estimationLabel.Position.WrapContent().RelativeTo(this.investmentSlider, -1, -1, -1, 1, 0, 8);
 		}
 
 		public override void Attach(AScene scene, AGuiElement parent)
@@ -62,6 +69,7 @@ namespace Stareater.GameScenes
 			scene.AddElement(this.title, this);
 			scene.AddElement(this.projectButton, this);
 			scene.AddElement(this.detailsButton, this);
+			scene.AddElement(this.investmentSlider, this);
 			scene.AddElement(this.estimationLabel, this);
 		}
 
@@ -75,6 +83,8 @@ namespace Stareater.GameScenes
 			}
 			else
 				this.title.Text = this.controller.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage);
+
+			this.investmentSlider.Value = (float)siteController.DesiredSpendingRatio;
 
 			this.resetView();
 		}
@@ -124,6 +134,14 @@ namespace Stareater.GameScenes
 
 			form.ShowDialog();
 			form.Dispose();
+		}
+
+		private void investmentSlider_Change(float ratio)
+		{
+			//TODO(v0.8) make slider read only for colonies
+
+			this.controller.DesiredSpendingRatio = ratio;
+			this.resetEstimation();
 		}
 
 		private void projectButton_Click()

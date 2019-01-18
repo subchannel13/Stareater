@@ -155,6 +155,7 @@
     <Compile Include="GraphicsEngine\GuiElements\ElementPosition.cs" />
     <Compile Include="GraphicsEngine\GuiElements\GuiButton.cs" />
     <Compile Include="GraphicsEngine\GuiElements\GuiPanel.cs" />
+    <Compile Include="GraphicsEngine\GuiElements\GuiSlider.cs" />
     <Compile Include="GraphicsEngine\GuiElements\GuiText.cs" />
     <Compile Include="GraphicsEngine\GuiElements\AGuiElement.cs" />
     <Compile Include="GraphicsEngine\GuiElements\ToggleButton.cs" />

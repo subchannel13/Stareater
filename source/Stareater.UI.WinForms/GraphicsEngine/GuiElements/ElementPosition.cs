@@ -71,7 +71,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return this;
 		}
 
-		public ElementPosition RelativeTo(GuiButton anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis, float marginX, float marginY)
+		public ElementPosition RelativeTo(AGuiElement anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis, float marginX, float marginY)
 		{
 			this.positioners.Add(new RelativeToPositioner(anchor, xPortionAnchor, yPortionAnchor, xPortionThis, yPortionThis, marginX, marginY));
 
@@ -119,7 +119,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		private class RelativeToPositioner : IPositioner
 		{
-			private readonly GuiButton anchor;
+			private readonly AGuiElement anchor;
 			private readonly float xPortionAnchor;
 			private readonly float yPortionAnchor;
 			private readonly float xPortionThis;
@@ -127,7 +127,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			private readonly float marginX;
 			private readonly float marginY;
 
-			public RelativeToPositioner(GuiButton anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis, float marginX, float marginY)
+			public RelativeToPositioner(AGuiElement anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis, float marginX, float marginY)
 			{
 				this.anchor = anchor;
 				this.xPortionAnchor = xPortionAnchor;
