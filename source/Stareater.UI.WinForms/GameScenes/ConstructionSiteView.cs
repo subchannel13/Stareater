@@ -57,7 +57,7 @@ namespace Stareater.GameScenes
 			{
 				SlideCallback = investmentSlider_Change 
 			};
-			this.investmentSlider.Position.FixedSize(150, 15).RelativeTo(this.projectButton, 1, 1, -1, 1, 8, 0);
+			this.investmentSlider.Position.FixedSize(150, 15).RelativeTo(this.projectButton, 1, 1, -1, 1, 8, 0).StretchRightTo(this, 1, 8);
 
 			this.estimationLabel = new GuiText { TextColor = Color.Black, TextSize = 10 };
 			this.estimationLabel.Position.WrapContent().RelativeTo(this.investmentSlider, -1, -1, -1, 1, 0, 8);

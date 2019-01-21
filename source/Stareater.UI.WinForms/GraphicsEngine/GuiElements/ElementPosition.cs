@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using Stareater.GameScenes;
 using Stareater.GLData;
 using System;
 using System.Collections.Generic;
@@ -77,6 +78,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 			return this;
 		}
+
+		public ElementPosition StretchRightTo(AGuiElement anchor, float xPortionAnchor, float marginX)
+		{
+			this.positioners.Add(new StretchRightToPositioner(anchor, xPortionAnchor, marginX));
+
+			return this;
+		}
 		#endregion
 
 		private interface IPositioner
@@ -144,6 +152,34 @@ namespace Stareater.GraphicsEngine.GuiElements
 					this.anchor.Position.Center.X + (this.anchor.Position.Size.X + this.marginX) * this.xPortionAnchor / 2 - element.Size.X * this.xPortionThis / 2,
 					this.anchor.Position.Center.Y + (this.anchor.Position.Size.Y + this.marginY) * this.yPortionAnchor / 2 - element.Size.Y * this.yPortionThis / 2
 				);
+			}
+
+			public IEnumerable<AGuiElement> Dependencies
+			{
+				get { yield return this.anchor; }
+			}
+		}
+
+		private class StretchRightToPositioner : IPositioner
+		{
+			private readonly AGuiElement anchor;
+			private readonly float xPortionAnchor;
+			private readonly float marginX;
+
+			public StretchRightToPositioner(AGuiElement anchor, float xPortionAnchor, float marginX)
+			{
+				this.anchor = anchor;
+				this.xPortionAnchor = xPortionAnchor;
+				this.marginX = marginX;
+			}
+
+			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
+			{
+				var widthDelta = this.anchor.Position.Center.X + xPortionAnchor * (this.anchor.Position.Size.X / 2 - this.marginX) -
+					(element.Center.X + element.Size.X / 2);
+
+				element.Center = new Vector2(element.Center.X + widthDelta / 2, element.Center.Y);
+				element.Size = new Vector2(element.Size.X + widthDelta / 2, element.Size.Y);
 			}
 
 			public IEnumerable<AGuiElement> Dependencies
