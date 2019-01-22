@@ -89,7 +89,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override bool OnMouseDown(Vector2 mousePosition)
 		{
-			var inside = this.isInside(mousePosition);
+			var inside = this.IsInside(mousePosition);
 
 			apply(ref this.isPressed, inside);
 
@@ -102,7 +102,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			 * If mouse is moved outside of the button after pressing down
 			 * the button has to become unpressed.
 			 */
-			if (!this.isInside(mousePosition) || !this.isPressed)
+			if (!this.IsInside(mousePosition) || !this.isPressed)
 			{
 				apply(ref this.isPressed, false);
 
@@ -117,7 +117,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override void OnMouseMove(Vector2 mousePosition)
 		{
-			apply(ref this.isHovered, this.isInside(mousePosition));
+			apply(ref this.isHovered, true);
+		}
+
+		public override void OnMouseLeave()
+		{
+			apply(ref this.isHovered, false);
 		}
 
 		protected override SceneObject makeSceneObject()

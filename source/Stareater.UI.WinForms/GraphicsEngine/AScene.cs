@@ -29,12 +29,15 @@ namespace Stareater.GraphicsEngine
 
 		private readonly Dictionary<AGuiElement, HashSet<AGuiElement>> guiHierarchy = new Dictionary<AGuiElement, HashSet<AGuiElement>>();
 		private readonly AGuiElement rootParent;
+		private AGuiElement mouseHovered;
 
 		protected AScene()
 		{
 			this.rootParent = new GuiPanel();
 			this.rootParent.Position.FixedCenter(0, 0);
 			this.rootParent.SetDepth(this.guiLayerThickness, this.guiLayerThickness);
+
+			this.mouseHovered = this.rootParent;
 		}
 
 		public void Draw(double deltaTime)
@@ -125,13 +128,34 @@ namespace Stareater.GraphicsEngine
 		public void HandleMouseMove(MouseEventArgs e)
 		{
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
-			
-			//TODO(v0.8) should propagatin stop on first handler?
-			//TODO(v0.8) how to move out of hidden elements?
-			foreach (var element in this.guiPrefixSearch())
-				element.OnMouseMove(mouseGuiPoint);
 
-			this.onMouseMove(this.mouseToView(e.X, e.Y), e.Button);
+			//TODO(v0.8) how to move out of hidden elements?
+			AGuiElement handler = null;
+
+			foreach (var element in this.guiPrefixSearch())
+				if (element.IsInside(mouseGuiPoint) && element != this.rootParent)
+				{
+					element.OnMouseMove(mouseGuiPoint);
+					handler = element;
+					break;
+				}
+
+			if (handler == null)
+			{
+				this.onMouseMove(this.mouseToView(e.X, e.Y), e.Button);
+				handler = this.rootParent;
+			}
+
+			if (this.mouseHovered != handler)
+			{
+				if (this.mouseHovered != null)
+					if (this.mouseHovered != this.rootParent)
+						this.mouseHovered.OnMouseLeave();
+					else
+						this.OnMouseLeave();
+
+				this.mouseHovered = handler;
+			}
 		}
 
 		public void HandleMouseScroll(MouseEventArgs e)
@@ -149,6 +173,9 @@ namespace Stareater.GraphicsEngine
 		{ }
 
 		protected virtual void onMouseMove(Vector4 mouseViewPosition, MouseButtons mouseClicks)
+		{ }
+
+		protected virtual void OnMouseLeave()
 		{ }
 
 		protected virtual void onMouseScroll(Vector2 mousePoint, int delta)

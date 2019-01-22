@@ -62,6 +62,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.updateScene();
 		}
 
+		public bool IsInside(Vector2 point)
+		{
+			var innerPoint = point - this.Position.Center;
+			return Math.Abs(innerPoint.X) <= this.Position.Size.X / 2 &&
+				Math.Abs(innerPoint.Y) <= this.Position.Size.Y / 2;
+		}
+
 		public virtual bool OnMouseDown(Vector2 mousePosition)
 		{
 			return false;
@@ -76,6 +83,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			//No operation
 		}
+
+		public virtual void OnMouseLeave()
+		{ }
 
 		protected void updateScene()
 		{
@@ -102,13 +112,6 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 			if (!object.Equals(oldValue, newValue))
 				this.updateScene();
-		}
-
-		protected bool isInside(Vector2 point)
-		{
-			var innerPoint = point - this.Position.Center;
-			return Math.Abs(innerPoint.X) <= this.Position.Size.X / 2 &&
-				Math.Abs(innerPoint.Y) <= this.Position.Size.Y / 2;
 		}
 
 		protected void reposition()

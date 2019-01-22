@@ -60,7 +60,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override bool OnMouseDown(Vector2 mousePosition)
 		{
-			if (this.isOutside(mousePosition))
+			if (!this.IsInside(mousePosition))
 				return false;
 
 			this.isToggled = !this.isToggled;
@@ -71,7 +71,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override bool OnMouseUp(Vector2 mousePosition)
 		{
-			if (this.isOutside(mousePosition))
+			if (!this.IsInside(mousePosition))
 				return false;
 
 			this.ToggleCallback(this.isToggled);
@@ -80,7 +80,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override void OnMouseMove(Vector2 mousePosition)
 		{
-			apply(ref this.isHovered, !this.isOutside(mousePosition));
+			apply(ref this.isHovered, true);
+		}
+
+		public override void OnMouseLeave()
+		{
+			apply(ref this.isHovered, false);
 		}
 
 		protected override SceneObject makeSceneObject()
@@ -104,13 +109,6 @@ namespace Stareater.GraphicsEngine.GuiElements
 					AddVertices(SpriteHelpers.GuiBackground(this.mForgroundImage, this.Position.Size.X, this.Position.Size.Y));
 
 			return soBuilder.Build();
-		}
-
-		private bool isOutside(Vector2 mousePosition)
-		{
-			var innerPoint = mousePosition - this.Position.Center;
-			return Math.Abs(innerPoint.X) > this.Position.Size.X / 2 ||
-				Math.Abs(innerPoint.Y) > this.Position.Size.Y / 2;
 		}
 	}
 }
