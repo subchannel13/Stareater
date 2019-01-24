@@ -179,7 +179,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 					(element.Center.X + element.Size.X / 2);
 
 				element.Center = new Vector2(element.Center.X + widthDelta / 2, element.Center.Y);
-				element.Size = new Vector2(element.Size.X + widthDelta / 2, element.Size.Y);
+				element.Size = new Vector2(element.Size.X + widthDelta, element.Size.Y);
 			}
 
 			public IEnumerable<AGuiElement> Dependencies

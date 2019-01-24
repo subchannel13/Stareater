@@ -23,6 +23,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override bool OnMouseDown(Vector2 mousePosition)
 		{
+			this.OnMouseDrag(mousePosition);
+
+			return true;
+		}
+
+		public override void OnMouseDrag(Vector2 mousePosition)
+		{
 			var newValue = Methods.Clamp((mousePosition.X - this.Position.Center.X) / (this.Position.Size.X - this.knobSize) + 0.5f, 0, 1);
 
 			if (newValue != this.mValue)
@@ -31,8 +38,6 @@ namespace Stareater.GraphicsEngine.GuiElements
 				this.SlideCallback(newValue);
 				this.updateScene();
 			}
-
-			return true;
 		}
 
 		protected override SceneObject makeSceneObject()
