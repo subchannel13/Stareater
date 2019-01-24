@@ -480,24 +480,20 @@ namespace Stareater.GameScenes
 		#endregion
 
 		#region Mouse events
-		protected override void onMouseMove(Vector4 mouseViewPosition, MouseButtons mouseClicks)
+		protected override void onMouseMove(Vector4 mouseViewPosition)
+		{
+			this.lastMousePosition = mouseViewPosition;
+			this.panAbsPath = 0;
+
+			if (this.SelectedFleet != null)
+				this.simulateFleetMovement(mouseViewPosition);
+		}
+
+		protected override void onMouseDrag(Vector4 currentPosition)
 		{
 			if (!this.lastMousePosition.HasValue)
-				this.lastMousePosition = mouseViewPosition;
+				this.lastMousePosition = currentPosition;
 
-			if (mouseClicks.HasFlag(MouseButtons.Left))
-				this.mousePan(mouseViewPosition);
-			else {
-				this.lastMousePosition = mouseViewPosition;
-				this.panAbsPath = 0;
-				
-				if (this.SelectedFleet != null)
-					this.simulateFleetMovement(mouseViewPosition);
-			}
-		}
-		
-		private void mousePan(Vector4 currentPosition)
-		{
 			this.panAbsPath += (currentPosition - this.lastMousePosition.Value).Length;
 
 			this.originOffset -= (Vector4.Transform(currentPosition, this.invProjection) -

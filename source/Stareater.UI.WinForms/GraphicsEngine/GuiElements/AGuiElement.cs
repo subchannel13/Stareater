@@ -74,12 +74,22 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return false;
 		}
 
-		public virtual bool OnMouseUp(Vector2 mousePosition)
+		public virtual void OnMouseUp()
 		{
-			return false;
+			//No operation
+		}
+
+		public virtual void OnMouseDownCanceled()
+		{
+			//No operation
 		}
 
 		public virtual void OnMouseMove(Vector2 mousePosition)
+		{
+			//No operation
+		}
+
+		public virtual void OnMouseDrag(Vector2 mousePosition)
 		{
 			//No operation
 		}

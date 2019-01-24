@@ -60,22 +60,19 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override bool OnMouseDown(Vector2 mousePosition)
 		{
-			if (!this.IsInside(mousePosition))
-				return false;
-
-			this.isToggled = !this.isToggled;
-			this.updateScene();
+			apply(ref this.isToggled, !this.isToggled);
 
 			return true;
 		}
 
-		public override bool OnMouseUp(Vector2 mousePosition)
+		public override void OnMouseUp()
 		{
-			if (!this.IsInside(mousePosition))
-				return false;
-
 			this.ToggleCallback(this.isToggled);
-			return true;
+		}
+
+		public override void OnMouseDownCanceled()
+		{
+			apply(ref this.isToggled, !this.isToggled);
 		}
 
 		public override void OnMouseMove(Vector2 mousePosition)

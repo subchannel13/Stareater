@@ -1,4 +1,5 @@
-﻿using Stareater.GLData;
+﻿using OpenTK;
+using Stareater.GLData;
 using Stareater.GLData.SpriteShader;
 using System.Drawing;
 
@@ -14,6 +15,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 			{
 				apply(ref this.mBackground, value);
 			}
+		}
+
+		public override bool OnMouseDown(Vector2 mousePosition)
+		{
+			return true;
 		}
 
 		protected override SceneObject makeSceneObject()

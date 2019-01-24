@@ -108,16 +108,16 @@ namespace Stareater.GameScenes
 				this.controller.Bombard((int)buttons.First().Data);
 		}
 
-		protected override void onMouseMove(Vector4 mouseViewPosition, MouseButtons mouseClicks)
+		protected override void onMouseMove(Vector4 mouseViewPosition)
+		{
+			this.lastMousePosition = mouseViewPosition;
+			this.panAbsPath = 0;
+		}
+
+		protected override void onMouseDrag(Vector4 mouseViewPosition)
 		{
 			if (!this.lastMousePosition.HasValue)
 				this.lastMousePosition = mouseViewPosition;
-
-			if (!mouseClicks.HasFlag(MouseButtons.Left)) {
-				this.lastMousePosition = mouseViewPosition;
-				this.panAbsPath = 0;
-				return;
-			}
 
 			this.panAbsPath += (mouseViewPosition - this.lastMousePosition.Value).Length;
 
@@ -132,7 +132,7 @@ namespace Stareater.GameScenes
 			this.setupTitle();
 		}
 		#endregion
-		
+
 		private void limitPan()
 		{
 			if (originOffset > maxOffset) 

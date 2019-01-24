@@ -25,12 +25,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			var newValue = Methods.Clamp((mousePosition.X - this.Position.Center.X) / (this.Position.Size.X - this.knobSize) + 0.5f, 0, 1);
 
-			if (!this.IsInside(mousePosition) || newValue == this.mValue)
-				return false;
-
-			this.mValue = newValue;
-			this.SlideCallback(newValue);
-			this.updateScene();
+			if (newValue != this.mValue)
+			{
+				this.mValue = newValue;
+				this.SlideCallback(newValue);
+				this.updateScene();
+			}
 
 			return true;
 		}

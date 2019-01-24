@@ -157,17 +157,17 @@ namespace Stareater.GameScenes
 				this.select(newSelection.Value);
 		}
 
-		protected override void onMouseMove(Vector4 mouseViewPosition, MouseButtons mouseClicks)
+		protected override void onMouseMove(Vector4 mouseViewPosition)
+		{
+			this.lastMousePosition = mouseViewPosition;
+			this.panAbsPath = 0;
+		}
+
+		protected override void onMouseDrag(Vector4 mouseViewPosition)
 		{
 			if (!lastMousePosition.HasValue)
 				this.lastMousePosition = mouseViewPosition;
 
-			if (!mouseClicks.HasFlag(MouseButtons.Left)) {
-				this.lastMousePosition = mouseViewPosition;
-				this.panAbsPath = 0;
-				return;
-			}
-			
 			this.panAbsPath += (mouseViewPosition - this.lastMousePosition.Value).Length;
 
 			this.originOffset -= (Vector4.Transform(mouseViewPosition, this.invProjection) -
@@ -175,12 +175,12 @@ namespace Stareater.GameScenes
 				).X;
 
 			this.limitPan();
-			
+
 			this.lastMousePosition = mouseViewPosition;
 			this.setupPerspective();
 		}
 		#endregion
-		
+
 		private void select(int bodyIndex)
 		{
 			this.selectedBody = bodyIndex;

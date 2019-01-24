@@ -8,6 +8,7 @@ using Stareater.GLData;
 using Stareater.GraphicsEngine.GuiElements;
 using Stareater.AppData;
 using Stareater.Utils;
+using System;
 
 namespace Stareater.GraphicsEngine
 {
@@ -30,6 +31,7 @@ namespace Stareater.GraphicsEngine
 		private readonly Dictionary<AGuiElement, HashSet<AGuiElement>> guiHierarchy = new Dictionary<AGuiElement, HashSet<AGuiElement>>();
 		private readonly AGuiElement rootParent;
 		private AGuiElement mouseHovered;
+		private readonly Dictionary<MouseButtons, AGuiElement> mousePressed = new Dictionary<MouseButtons, AGuiElement>();
 
 		protected AScene()
 		{
@@ -105,44 +107,52 @@ namespace Stareater.GraphicsEngine
 
 		public void HandleMouseDown(MouseEventArgs e)
 		{
-			//TODO(v0.8) differentiate between left and right click
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
+			this.mousePressed[e.Button] = this.rootParent;
 
-			foreach (var element in this.eventHandlerSearch(mouseGuiPoint))
-				if (element.OnMouseDown(mouseGuiPoint))
-					return;
+			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault();
+			//TODO(v0.8) differentiate between left and right click
+			if (handler != null && handler.OnMouseDown(mouseGuiPoint))
+				this.mousePressed[e.Button] = handler;
 		}
 
 		public void HandleMouseUp(MouseEventArgs e)
 		{
-			//TODO(v0.8) differentiate between left and right click
+			if (!this.mousePressed.ContainsKey(e.Button))
+				this.mousePressed[e.Button] = this.rootParent;
+
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
+			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault();
 
-			foreach (var element in this.eventHandlerSearch(mouseGuiPoint))
-				if (element.OnMouseUp(mouseGuiPoint))
-					return;
+			if (handler != null)
+				if (this.mousePressed[e.Button] == handler)
+					handler.OnMouseUp(); //TODO(v0.8) differentiate between left and right click
+				else
+					handler.OnMouseDownCanceled(); //TODO(v0.8) differentiate between left and right click
+			else
+			{
+				this.onMouseClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy);
+			}
 
-			this.onMouseClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy);
+			this.mousePressed[e.Button] = null;
 		}
 
 		public void HandleMouseMove(MouseEventArgs e)
 		{
-			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
-
-			//TODO(v0.8) how to move out of hidden elements?
-			AGuiElement handler = null;
-
-			foreach (var element in this.guiPrefixSearch())
-				if (element.IsInside(mouseGuiPoint) && element != this.rootParent)
-				{
-					element.OnMouseMove(mouseGuiPoint);
-					handler = element;
-					break;
-				}
-
-			if (handler == null)
+			if (this.mousePressed.Values.Any(x => x != null))
 			{
-				this.onMouseMove(this.mouseToView(e.X, e.Y), e.Button);
+				handleMouseDrag(e);
+				return;
+			}
+
+			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
+			AGuiElement handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault();
+
+			if (handler != null && handler != this.rootParent)
+				handler.OnMouseMove(mouseGuiPoint);
+			else
+			{
+				this.onMouseMove(this.mouseToView(e.X, e.Y));
 				handler = this.rootParent;
 			}
 
@@ -152,10 +162,22 @@ namespace Stareater.GraphicsEngine
 					if (this.mouseHovered != this.rootParent)
 						this.mouseHovered.OnMouseLeave();
 					else
-						this.OnMouseLeave();
+						this.onMouseLeave();
 
 				this.mouseHovered = handler;
 			}
+		}
+
+		//TODO(v0.8) pass last mouse position to handlers
+		private void handleMouseDrag(MouseEventArgs e)
+		{
+			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
+
+			foreach (var element in this.mousePressed.Values.Where(x => x != null))
+				if (element != this.rootParent)
+					element.OnMouseDrag(mouseGuiPoint);
+				else
+					this.onMouseDrag(this.mouseToView(e.X, e.Y));
 		}
 
 		public void HandleMouseScroll(MouseEventArgs e)
@@ -172,10 +194,13 @@ namespace Stareater.GraphicsEngine
 		protected virtual void onMouseClick(Vector2 mousePoint)
 		{ }
 
-		protected virtual void onMouseMove(Vector4 mouseViewPosition, MouseButtons mouseClicks)
+		protected virtual void onMouseMove(Vector4 mouseViewPosition)
 		{ }
 
-		protected virtual void OnMouseLeave()
+		protected virtual void onMouseLeave()
+		{ }
+
+		protected virtual void onMouseDrag(Vector4 mouseViewPosition)
 		{ }
 
 		protected virtual void onMouseScroll(Vector2 mousePoint, int delta)
