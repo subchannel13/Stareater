@@ -1,4 +1,5 @@
 ﻿using Stareater.Controllers;
+using Stareater.Controllers.Views;
 using Stareater.GameData;
 using Stareater.GLData;
 using Stareater.GraphicsEngine;
@@ -21,6 +22,7 @@ namespace Stareater.GameScenes
 		private readonly GuiButton detailsButton;
 		private readonly GuiSlider investmentSlider;
 		private readonly GuiText estimationLabel;
+		private readonly CycleButton<PolicyInfo> policyToggle;
 
 		public ConstructionSiteView()
 		{
@@ -61,6 +63,16 @@ namespace Stareater.GameScenes
 
 			this.estimationLabel = new GuiText { TextColor = Color.Black, TextSize = 10 };
 			this.estimationLabel.Position.WrapContent().RelativeTo(this.investmentSlider, -1, -1, -1, 1, 0, 8);
+
+			this.policyToggle = new CycleButton<PolicyInfo>
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				Padding = 4,
+				CycleCallback = x => this.controller.Policy = x,
+				ItemImage = x => GalaxyTextures.Get.Sprite(x.Id + "Policy")
+			};
+			this.policyToggle.Position.FixedSize(32, 32).RelativeTo(this.projectButton, 1, -1, -1, -1, 8, 0);
 		}
 
 		public override void Attach(AScene scene, AGuiElement parent)
@@ -71,6 +83,7 @@ namespace Stareater.GameScenes
 			scene.AddElement(this.detailsButton, this);
 			scene.AddElement(this.investmentSlider, this);
 			scene.AddElement(this.estimationLabel, this);
+			scene.AddElement(this.policyToggle, this);
 		}
 
 		public void SetView(AConstructionSiteController siteController)
@@ -85,6 +98,9 @@ namespace Stareater.GameScenes
 				this.title.Text = this.controller.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage);
 
 			this.investmentSlider.Value = (float)siteController.DesiredSpendingRatio;
+
+			this.policyToggle.Items = siteController.Policies;
+			this.policyToggle.Selection = siteController.Policy;
 
 			this.resetView();
 		}
