@@ -6,10 +6,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 {
 	abstract class AGuiElement
 	{
-		private AScene scene;
 		private SceneObject graphicObject = null;
 		private HashSet<AGuiElement> dependentElements = new HashSet<AGuiElement>();
 
+		protected AScene scene { get; private set; }
 		public float Z0 { get; private set; }
 		public float ZRange { get; private set; }
 

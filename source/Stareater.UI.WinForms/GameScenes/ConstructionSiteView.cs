@@ -94,6 +94,8 @@ namespace Stareater.GameScenes
 			scene.AddElement(this.estimationLabel, this);
 			scene.AddElement(this.policyToggle, this);
 			scene.AddElement(this.policyName, this);
+
+			this.updateSliderVisibility();
 		}
 
 		public void SetView(AConstructionSiteController siteController)
@@ -126,11 +128,11 @@ namespace Stareater.GameScenes
 			{
 				this.projectButton.Text = context["NotBuilding"].Text();
 				this.projectButton.ForgroundImage = null;
-				//TODO(v0.8) make slider read only
 			}
 
 			this.policyName.Text = this.controller.Policy.Name;
 
+			this.updateSliderVisibility();
 			this.resetEstimation();
 		}
 
@@ -145,6 +147,23 @@ namespace Stareater.GameScenes
 				);
 			else
 				this.estimationLabel.Text = "No construction plans";
+		}
+
+		private void updateSliderVisibility()
+		{
+			if (this.scene == null || this.controller == null)
+				return;
+
+			if (controller.ConstructionQueue.Any())
+			{
+				this.scene.ShowElement(this.estimationLabel);
+				this.scene.ShowElement(this.investmentSlider);
+			}
+			else
+			{
+				this.scene.HideElement(this.investmentSlider);
+				this.scene.HideElement(this.estimationLabel);
+			}
 		}
 
 		private void detailsButton_Click()
