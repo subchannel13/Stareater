@@ -25,7 +25,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundHover; }
 			set
 			{
-				apply(ref this.mBackgroundHover, value);
+				this.apply(ref this.mBackgroundHover, value);
 			}
 		}
 
@@ -35,7 +35,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundNormal; }
 			set
 			{
-				apply(ref this.mBackgroundNormal, value);
+				this.apply(ref this.mBackgroundNormal, value);
 			}
 		}
 
@@ -47,7 +47,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mPadding; }
 			set
 			{
-				apply(ref this.mPadding, value);
+				this.apply(ref this.mPadding, value);
 			}
 		}
 
@@ -73,7 +73,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override bool OnMouseDown(Vector2 mousePosition)
 		{
-			apply(ref this.isPressed, true);
+			this.apply(ref this.isPressed, true);
 
 			return true;
 		}
@@ -84,7 +84,6 @@ namespace Stareater.GraphicsEngine.GuiElements
 			if (this.mItems.Count == 0)
 				return;
 
-
 			this.selectedIndex = (this.selectedIndex + 1) % this.mItems.Count;
 			this.CycleCallback(this.mItems[this.selectedIndex]);
 			this.updateForeground();
@@ -92,17 +91,17 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override void OnMouseDownCanceled()
 		{
-			apply(ref this.isPressed, false);
+			this.apply(ref this.isPressed, false);
 		}
 
 		public override void OnMouseMove(Vector2 mousePosition)
 		{
-			apply(ref this.isHovered, true);
+			this.apply(ref this.isHovered, true);
 		}
 
 		public override void OnMouseLeave()
 		{
-			apply(ref this.isHovered, false);
+			this.apply(ref this.isHovered, false);
 		}
 
 		protected override SceneObject makeSceneObject()
@@ -130,7 +129,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			if (this.mItems.Count == 0)
 				return;
 
-			apply(ref this.forgroundImage, this.ItemImage(this.mItems[this.selectedIndex]));
+			this.apply(ref this.forgroundImage, this.ItemImage(this.mItems[this.selectedIndex]));
 		}
 	}
 }

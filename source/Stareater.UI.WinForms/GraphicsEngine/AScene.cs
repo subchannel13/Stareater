@@ -380,7 +380,7 @@ namespace Stareater.GraphicsEngine
 
 		public void ShowElement(AGuiElement element)
 		{
-			if (this.guiHierarchy[element.Parent].Contains(element))
+			if (this.guiHierarchy.ContainsKey(element.Parent) && this.guiHierarchy[element.Parent].Contains(element))
 				return;
 
 			this.AddElement(element, element.Parent);

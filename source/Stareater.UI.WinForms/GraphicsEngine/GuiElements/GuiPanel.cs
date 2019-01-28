@@ -13,7 +13,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackground; }
 			set
 			{
-				apply(ref this.mBackground, value);
+				this.apply(ref this.mBackground, value);
 			}
 		}
 

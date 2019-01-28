@@ -24,7 +24,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundHover; }
 			set
 			{
-				apply(ref this.mBackgroundHover, value);
+				this.apply(ref this.mBackgroundHover, value);
 			}
 		}
 
@@ -34,7 +34,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundNormal; }
 			set
 			{
-				apply(ref this.mBackgroundNormal, value);
+				this.apply(ref this.mBackgroundNormal, value);
 			}
 		}
 
@@ -44,7 +44,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundToggled; }
 			set
 			{
-				apply(ref this.mBackgroundToggled, value);
+				this.apply(ref this.mBackgroundToggled, value);
 			}
 		}
 
@@ -54,13 +54,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mForgroundImage; }
 			set
 			{
-				apply(ref this.mForgroundImage, value);
+				this.apply(ref this.mForgroundImage, value);
 			}
 		}
 
 		public override bool OnMouseDown(Vector2 mousePosition)
 		{
-			apply(ref this.isToggled, !this.isToggled);
+			this.apply(ref this.isToggled, !this.isToggled);
 
 			return true;
 		}
@@ -72,17 +72,17 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override void OnMouseDownCanceled()
 		{
-			apply(ref this.isToggled, !this.isToggled);
+			this.apply(ref this.isToggled, !this.isToggled);
 		}
 
 		public override void OnMouseMove(Vector2 mousePosition)
 		{
-			apply(ref this.isHovered, true);
+			this.apply(ref this.isHovered, true);
 		}
 
 		public override void OnMouseLeave()
 		{
-			apply(ref this.isHovered, false);
+			this.apply(ref this.isHovered, false);
 		}
 
 		protected override SceneObject makeSceneObject()

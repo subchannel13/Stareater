@@ -201,12 +201,6 @@
     <Compile Include="GUI\ConstructableItemView.Designer.cs">
       <DependentUpon>ConstructableItemView.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ConstructionSiteView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\ConstructionSiteView.Designer.cs">
-      <DependentUpon>ConstructionSiteView.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\ControlListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -508,9 +502,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ConstructableItemView.resx">
       <DependentUpon>ConstructableItemView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\ConstructionSiteView.resx">
-      <DependentUpon>ConstructionSiteView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormAudience.resx">
       <DependentUpon>FormAudience.cs</DependentUpon>

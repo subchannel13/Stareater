@@ -116,7 +116,7 @@ namespace Stareater.GameScenes
 			this.AddElement(radarToggle);
 
 			this.starInfo = new ConstructionSiteView();
-			this.starInfo.Position.ParentRelative(0, 1, 10, 10);
+			this.starInfo.Position.ParentRelative(0, -1, 0, 0);
 			this.AddElement(this.starInfo);
 		}
 		

@@ -23,7 +23,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundHover; }
 			set
 			{
-				apply(ref this.mBackgroundHover, value);
+				this.apply(ref this.mBackgroundHover, value);
 			}
 		}
 
@@ -33,7 +33,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mBackgroundNormal; }
 			set
 			{
-				apply(ref this.mBackgroundNormal, value);
+				this.apply(ref this.mBackgroundNormal, value);
 			}
 		}
 
@@ -43,7 +43,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mForgroundImage; }
 			set
 			{
-				apply(ref this.mForgroundImage, value);
+				this.apply(ref this.mForgroundImage, value);
 			}
 		}
 
@@ -53,7 +53,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mText; }
 			set
 			{
-				apply(ref this.mText, value);
+				this.apply(ref this.mText, value);
 			}
 		}
 
@@ -63,7 +63,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mTextColor; }
 			set
 			{
-				apply(ref this.mTextColor, value);
+				this.apply(ref this.mTextColor, value);
 			}
 		}
 
@@ -73,7 +73,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mTextSize; }
 			set
 			{
-				apply(ref this.mTextSize, value);
+				this.apply(ref this.mTextSize, value);
 			}
 		}
 
@@ -83,13 +83,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mPadding; }
 			set
 			{
-				apply(ref this.mPadding, value);
+				this.apply(ref this.mPadding, value);
 			}
 		}
 
 		public override bool OnMouseDown(Vector2 mousePosition)
 		{
-			apply(ref this.isPressed, true);
+			this.apply(ref this.isPressed, true);
 
 			return true;
 		}
@@ -103,17 +103,17 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override void OnMouseDownCanceled()
 		{
-			apply(ref this.isPressed, false);
+			this.apply(ref this.isPressed, false);
 		}
 
 		public override void OnMouseMove(Vector2 mousePosition)
 		{
-			apply(ref this.isHovered, true);
+			this.apply(ref this.isHovered, true);
 		}
 
 		public override void OnMouseLeave()
 		{
-			apply(ref this.isHovered, false);
+			this.apply(ref this.isHovered, false);
 		}
 
 		protected override SceneObject makeSceneObject()

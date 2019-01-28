@@ -46,7 +46,7 @@ namespace Stareater.GameScenes
 
 		private StarSystemController controller;
 		private PlayerController currentPlayer;
-		private readonly GUI.ConstructionSiteView siteView;
+		private readonly ConstructionSiteView siteView;
 		private readonly EmpyPlanetView emptyPlanetView;
 		private readonly Action systemClosedHandler;
 
@@ -65,11 +65,14 @@ namespace Stareater.GameScenes
 		private int selectedBody;
 		private HashSet<PlanetInfo> colonizationMarked = new HashSet<PlanetInfo>();
 		
-		public StarSystemScene(Action systemClosedHandler, GUI.ConstructionSiteView siteView, EmpyPlanetView emptyPlanetView)
+		public StarSystemScene(Action systemClosedHandler, EmpyPlanetView emptyPlanetView)
 		{
 			this.systemClosedHandler = systemClosedHandler; 
 			this.emptyPlanetView = emptyPlanetView;
-			this.siteView = siteView;
+			
+			this.siteView = new ConstructionSiteView();
+			this.siteView.Position.ParentRelative(0, -1, 0, 0);
+			this.AddElement(this.siteView);
 		}
 		
 		public override void Activate()
@@ -224,7 +227,10 @@ namespace Stareater.GameScenes
 			}
 			
 			emptyPlanetView.Visible = view.Equals(emptyPlanetView);
-			siteView.Visible = view.Equals(siteView);
+			if (view.Equals(siteView))
+				this.ShowElement(siteView);
+			else
+				this.HideElement(siteView);
 		}
 		
 		private PolygonData planetSpriteData(PlanetInfo planet)

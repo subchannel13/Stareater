@@ -29,7 +29,6 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
 			this.glCanvas = new OpenTK.GLControl();
-			this.constructionManagement = new Stareater.GUI.ConstructionSiteView();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.mainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.designsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,16 +75,6 @@
 			this.glCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.glCanvas_MouseMove);
 			this.glCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.glCanvas_MouseUp);
 			this.glCanvas.Resize += new System.EventHandler(this.glCanvas_Resize);
-			// 
-			// constructionManagement
-			// 
-			this.constructionManagement.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.constructionManagement.BackColor = System.Drawing.SystemColors.ActiveBorder;
-			this.constructionManagement.Location = new System.Drawing.Point(263, 422);
-			this.constructionManagement.Name = "constructionManagement";
-			this.constructionManagement.Size = new System.Drawing.Size(358, 116);
-			this.constructionManagement.TabIndex = 1;
-			this.constructionManagement.Visible = false;
 			// 
 			// menuStrip
 			// 
@@ -298,7 +287,6 @@
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.unitInfoPanel);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.fleetPanel);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.returnButton);
-			this.workaroundForWinformsAnchorBug.Controls.Add(this.constructionManagement);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.empyPlanetView);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.glCanvas);
 			this.workaroundForWinformsAnchorBug.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -341,7 +329,6 @@
 		private System.Windows.Forms.ToolStripMenuItem developmentToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mainMenuToolStripMenuItem;
 		private System.Windows.Forms.MenuStrip menuStrip;
-		private Stareater.GUI.ConstructionSiteView constructionManagement;
 
 		#endregion
 		private OpenTK.GLControl glCanvas;

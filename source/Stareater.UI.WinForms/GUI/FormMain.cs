@@ -267,7 +267,7 @@ namespace Stareater.GUI
 			this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
 			
 			this.bombardRenderer = new BombardmentScene();
-			this.systemRenderer = new StarSystemScene(switchToGalaxyView, constructionManagement, empyPlanetView);
+			this.systemRenderer = new StarSystemScene(switchToGalaxyView, empyPlanetView);
 			this.combatRenderer = new SpaceCombatScene();
 			this.gameOverRenderer = new GameOverScene();
 			
@@ -293,7 +293,6 @@ namespace Stareater.GUI
 			
 			this.shipList.ResumeLayout();
 			
-			this.constructionManagement.Visible = false;
 			this.empyPlanetView.Visible = false;
 			this.fleetPanel.Visible = true;
 		}
@@ -448,7 +447,6 @@ namespace Stareater.GUI
 		
 		private void switchToGalaxyView()
 		{
-			constructionManagement.Visible = false;
 			empyPlanetView.Visible = false;
 			returnButton.Visible = false;
 			
@@ -504,7 +502,6 @@ namespace Stareater.GUI
 			this.abilityList.Visible = false;
 			this.returnButton.Visible = false;
 			this.unitInfoPanel.Visible = false;
-			this.constructionManagement.Visible = false;
 			this.menuStrip.Visible = true;
 		}
 
@@ -554,7 +551,6 @@ namespace Stareater.GUI
 			this.nextRenderer = this.combatRenderer;
 
 			abilityList.Visible = true;
-			constructionManagement.Visible = false;
 			empyPlanetView.Visible = false;
 			fleetPanel.Visible = false;
 			returnButton.Visible = false;
@@ -572,7 +568,6 @@ namespace Stareater.GUI
 			this.nextRenderer = this.bombardRenderer;
 			
 			abilityList.Visible = false;
-			constructionManagement.Visible = false;
 			empyPlanetView.Visible = false;
 			fleetPanel.Visible = false;
 			returnButton.Visible = true;
@@ -719,7 +714,6 @@ namespace Stareater.GUI
 			
 			this.shipList.ResumeLayout();
 			
-			this.constructionManagement.Visible = false;
 			this.empyPlanetView.Visible = false;
 			this.fleetPanel.Visible = true;
 		}
@@ -734,7 +728,6 @@ namespace Stareater.GUI
 			
 			this.fleetController = null;
 			
-			this.constructionManagement.Visible = false;
 			this.empyPlanetView.Visible = false;
 			this.fleetPanel.Visible = false;
 			this.returnButton.Visible = true;
@@ -750,16 +743,6 @@ namespace Stareater.GUI
 				this.BeginInvoke(new Action<StarSystemController>(((IGalaxyViewListener)this).SystemSelected), systemController);
 				return;
 			}
-			
-			//FIXME(later) update owner check when multiple stellarises can exist at the same star
-			if (systemController.StarsAdministration() == null || systemController.StarsAdministration().Owner != this.currentPlayer.Info)
-			{
-				this.constructionManagement.Visible = false;
-				return;
-			}
-			
-			this.constructionManagement.SetView(systemController.StellarisController());
-			this.constructionManagement.Visible = true;
 			
 			this.fleetController = null;
 			this.fleetPanel.Visible = false;
