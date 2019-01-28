@@ -374,7 +374,7 @@ namespace Stareater.GraphicsEngine
 
 		public void HideElement(AGuiElement element)
 		{
-			if (this.guiHierarchy[element.Parent].Contains(element))
+			if (this.guiHierarchy.ContainsKey(element.Parent) && this.guiHierarchy[element.Parent].Contains(element))
 				this.RemoveElement(element);
 		}
 

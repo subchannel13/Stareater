@@ -105,9 +105,13 @@ namespace Stareater.GameScenes
 			{
 				var colonyController = this.controller as ColonyController;
 				this.title.Text = LocalizationMethods.PlanetName(colonyController.PlanetBody);
+				this.investmentSlider.ReadOnly = true;
 			}
 			else
+			{
 				this.title.Text = this.controller.HostStar.Name.ToText(LocalizationManifest.Get.CurrentLanguage);
+				this.investmentSlider.ReadOnly = false;
+			}
 
 			this.investmentSlider.Value = (float)siteController.DesiredSpendingRatio;
 

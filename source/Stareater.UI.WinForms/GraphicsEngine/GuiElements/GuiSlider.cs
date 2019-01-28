@@ -17,7 +17,17 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mValue; }
 			set
 			{
-				this.apply(ref this.mValue, Methods.Clamp(mValue, 0, 1));
+				this.apply(ref this.mValue, Methods.Clamp(value, 0, 1));
+			}
+		}
+
+		private bool mReadOnly = false;
+		public bool ReadOnly
+		{
+			get { return this.mReadOnly; }
+			set
+			{
+				this.apply(ref this.mReadOnly, value);
 			}
 		}
 
@@ -30,6 +40,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override void OnMouseDrag(Vector2 mousePosition)
 		{
+			if (this.mReadOnly)
+				return;
+
 			var newValue = Methods.Clamp((mousePosition.X - this.Position.Center.X) / (this.Position.Size.X - this.knobSize) + 0.5f, 0, 1);
 
 			if (newValue != this.mValue)
@@ -43,16 +56,19 @@ namespace Stareater.GraphicsEngine.GuiElements
 		protected override SceneObject makeSceneObject()
 		{
 			var railWidth = this.Position.Size.X - this.knobSize;
+			var knobColor = this.mReadOnly ? Color.White : Color.DarkGray;
+			var panelSprite = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 2);
+			//TODO(v0.8) maybe make readonly mode have no knob but a fill from 0 to value
 
 			return new SceneObjectBuilder().
 				Clip(this.Position.ClipArea).
 				StartSimpleSprite(this.Z0, GalaxyTextures.Get.PanelBackground, Color.White).
 				Translate(this.Position.Center).
-				AddVertices(SpriteHelpers.GuiBackground(new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 2), railWidth, this.Position.Size.Y - 4)).
+				AddVertices(SpriteHelpers.GuiBackground(panelSprite, railWidth, this.Position.Size.Y - 4)).
 
-				StartSimpleSprite(this.Z0 - this.ZRange / 2, GalaxyTextures.Get.PanelBackground, Color.Gray).
-				Scale(this.knobSize, this.knobSize).
+				StartSprite(this.Z0 - this.ZRange / 2, GalaxyTextures.Get.PanelBackground.Id, knobColor).
 				Translate(this.Position.Center + new Vector2(railWidth * (this.mValue - 0.5f), 0)).
+				AddVertices(SpriteHelpers.GuiBackground(panelSprite, this.knobSize, this.knobSize)).
 				Build();
 		}
 
