@@ -270,13 +270,19 @@ namespace Stareater.GameLogic
 			}
 		}
 
+		public IEnumerable<Fleet> MyFleets(MainGame game)
+		{
+			var orders = game.Orders[this.Player].ShipOrders;
+
+			return game.States.Fleets.
+				OwnedBy [this.Player].
+				Where(x => !orders.ContainsKey(x.Position)).
+				Concat(orders.SelectMany(x => x.Value));
+		}
+
 		public double TotalFuelUsage(MainGame game)
 		{
-			//TODO(v0.8) duplicate from PlayerController.FleetsMine
-			return game.States.Fleets.
-				OwnedBy[this.Player].
-				Concat(game.Orders[this.Player].ShipOrders.SelectMany(x => x.Value)).
-				Sum(fleet => this.FuelUsage(fleet, game));
+			return this.MyFleets(game).Sum(fleet => this.FuelUsage(fleet, game));
 		}
 
 		public double FuelUsage(Fleet fleet, MainGame game)

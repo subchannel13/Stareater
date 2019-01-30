@@ -338,7 +338,7 @@ namespace Stareater.GameScenes
 				).ToList()
 			);
 		}
-		
+
 		//TODO(v0.8) bundle with movement simulation
 		private void setupMovementEta()
 		{
@@ -352,28 +352,25 @@ namespace Stareater.GameScenes
 
 			var waypoints = this.SelectedFleet.SimulationWaypoints();
 
-			if (waypoints.Count > 0 && this.SelectedFleet.SimulationEta > 0)
-			{
-				var destination = waypoints[waypoints.Count - 1];
-				var numVars = new Var("eta", Math.Ceiling(this.SelectedFleet.SimulationEta)).Get;
-				var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.SelectedFleet.SimulationEta, RoundingMethod.Ceil, 0)).
-					And("fuel", new ThousandsFormatter().Format(this.SelectedFleet.SimulationFuel)).Get;
+			var destination = waypoints[waypoints.Count - 1];
+			var numVars = new Var("eta", Math.Ceiling(this.SelectedFleet.SimulationEta)).Get;
+			var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.SelectedFleet.SimulationEta, RoundingMethod.Ceil, 0)).
+				And("fuel", new ThousandsFormatter().Format(this.SelectedFleet.SimulationFuel)).Get;
 
-				this.UpdateScene(
-					ref this.movementEtaText,
-					new SceneObjectBuilder().
-						StartSprite(EtaZ, TextRenderUtil.Get.TextureId, Color.White).
-						Scale(EtaTextScale / (float)Math.Pow(ZoomBase, zoomLevel)).
-						Translate(destination.X, destination.Y + 0.5).
-						AddVertices(
-							TextRenderUtil.Get.BufferText(
-								LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars),
-								-0.5f,
-								Matrix4.Identity
-						)).
-						Build()
-				);
-			}
+			this.UpdateScene(
+				ref this.movementEtaText,
+				new SceneObjectBuilder().
+					StartSprite(EtaZ, TextRenderUtil.Get.TextureId, Color.White).
+					Scale(EtaTextScale / (float)Math.Pow(ZoomBase, zoomLevel)).
+					Translate(destination.X, destination.Y + 0.5).
+					AddVertices(
+						TextRenderUtil.Get.BufferText(
+							LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars),
+							-0.5f,
+							Matrix4.Identity
+					)).
+					Build()
+			);
 		}
 		
 		private void setupMovementSimulation()

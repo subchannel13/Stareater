@@ -175,13 +175,9 @@ namespace Stareater.Controllers
 			get
 			{
 				var game = this.gameInstance;
-				var orders = game.Orders[this.PlayerInstance(game)].ShipOrders;
-				var player = this.PlayerInstance(game);
 
-				return game.States.Fleets.
-					OwnedBy[player].
-					Where(x => !orders.ContainsKey(x.Position)).
-					Concat(orders.SelectMany(x => x.Value)).
+				return game.Derivates[this.PlayerInstance(game)].
+					MyFleets(game).
 					Select(
 						x => new FleetInfo(x, game.Derivates[x.Owner], game.Statics)
 					);
