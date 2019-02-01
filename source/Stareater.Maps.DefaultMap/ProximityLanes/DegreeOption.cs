@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
 
-namespace Stareater.Galaxy.ProximityLanes
+namespace Stareater.Maps.DefaultMap.ProximityLanes
 {
 	struct DegreeOption
 	{

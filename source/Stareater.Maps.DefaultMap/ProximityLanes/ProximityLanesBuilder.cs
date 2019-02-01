@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-using Ikadn;
+﻿using Ikadn;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
@@ -12,8 +7,12 @@ using Stareater.Localization;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.PluginParameters;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
-namespace Stareater.Galaxy.ProximityLanes
+namespace Stareater.Maps.DefaultMap.ProximityLanes
 {
 	public class ProximityLanesBuilder : IStarConnector
 	{
@@ -40,7 +39,8 @@ namespace Stareater.Galaxy.ProximityLanes
 		{
 			this.degreeOptions = new DegreeOption[data.CountOf(DegreeKey)];
 			var parameterOptions = new Dictionary<int, string>();
-			for (int i = 0; i < degreeOptions.Length; i++) {
+			for (int i = 0; i < degreeOptions.Length; i++)
+			{
 				degreeOptions[i] = new DegreeOption(data.Dequeue(DegreeKey).To<IkonComposite>());
 				parameterOptions.Add(i, degreeOptions[i].Name);
 			}
@@ -52,7 +52,7 @@ namespace Stareater.Galaxy.ProximityLanes
 		{
 			get { return "ProximityLanes"; }
 		}
-		
+
 		public string Name
 		{
 			get { return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["name"].Text(); }
@@ -79,7 +79,7 @@ namespace Stareater.Galaxy.ProximityLanes
 			var homeNodes = new List<Vertex<Vector2D>>();
 			Vertex<Vector2D> stareaterMain = null;
 
-            for (int i = 0; i < starPositions.Stars.Length; i++)
+			for (int i = 0; i < starPositions.Stars.Length; i++)
 			{
 				var vertex = maxGraph.MakeVertex(new Vector2D(starPositions.Stars[i].X, starPositions.Stars[i].Y));
 				starIndex[vertex] = i;
@@ -90,20 +90,20 @@ namespace Stareater.Galaxy.ProximityLanes
 				if (i == starPositions.StareaterMain)
 					stareaterMain = vertex;
 			}
-			foreach(var edge in genMaxEdges(maxGraph.Vertices.ToList()))
+			foreach (var edge in genMaxEdges(maxGraph.Vertices.ToList()))
 				maxGraph.AddEdge(edge);
 
 			this.removeOutliers(maxGraph);
 			var treeEdges = new HashSet<Edge<Vector2D>>(genMinEdges(maxGraph, homeNodes, stareaterMain));
-			
+
 			return genFinal(maxGraph, treeEdges).Select(e => new WormholeEndpoints(starIndex[e.FirstEnd], starIndex[e.SecondEnd])).ToList();
 		}
 
 		private IEnumerable<Edge<Vector2D>> genMaxEdges(IList<Vertex<Vector2D>> vertices)
 		{
 			var edges = new List<Edge<Vector2D>>();
-			for(int i = 0; i < vertices.Count; i++)
-				for(int j = i + 1; j < vertices.Count; j++)
+			for (int i = 0; i < vertices.Count; i++)
+				for (int j = i + 1; j < vertices.Count; j++)
 					edges.Add(new Edge<Vector2D>(vertices[i], vertices[j], (vertices[i].Data - vertices[j].Data).Length));
 
 			edges.Sort((a, b) => a.Weight.CompareTo(b.Weight));
@@ -150,24 +150,24 @@ namespace Stareater.Galaxy.ProximityLanes
 			foreach (var home in homeNodes)
 			{
 				var current = stareaterMain;
-				foreach(var node in Astar(graph, home, stareaterMain))
+				foreach (var node in Astar(graph, home, stareaterMain))
 				{
 					criticalNodes.Add(node);
 					yield return graph.GetEdge(node, current);
 					current = node;
 				}
 			}
-			
+
 			var treeNodes = new HashSet<Vertex<Vector2D>>(criticalNodes);
 			var potentialEdges = new Dictionary<Edge<Vector2D>, double>();
 			var critPathDistance = new Dictionary<Vertex<Vector2D>, double>();
-			foreach(var node in criticalNodes)
+			foreach (var node in criticalNodes)
 				critPathDistance[node] = 0;
-			
-			while(treeNodes.Count < graph.VertexCount)
+
+			while (treeNodes.Count < graph.VertexCount)
 			{
 				potentialEdges.Clear();
-				foreach(var node in treeNodes)
+				foreach (var node in treeNodes)
 				{
 					var edges = graph.GetEdges(node).
 						Where(e => !treeNodes.Contains(e.FirstEnd) || !treeNodes.Contains(e.SecondEnd));
@@ -175,19 +175,19 @@ namespace Stareater.Galaxy.ProximityLanes
 					foreach (var edge in edges)
 						potentialEdges[edge] = (edge.FirstEnd.Data - edge.SecondEnd.Data).Length + critPathDistance[node];
 				}
-				
+
 				var currentEdge = potentialEdges.Aggregate((a, b) => a.Value < b.Value ? a : b).Key;
 				yield return currentEdge;
-				
+
 				var fromNode = treeNodes.Contains(currentEdge.FirstEnd) ? currentEdge.FirstEnd : currentEdge.SecondEnd;
 				var toNode = treeNodes.Contains(currentEdge.FirstEnd) ? currentEdge.SecondEnd : currentEdge.FirstEnd;
 				var length = (currentEdge.FirstEnd.Data - currentEdge.SecondEnd.Data).Length;
-				
+
 				treeNodes.Add(toNode);
 				critPathDistance[toNode] = critPathDistance[fromNode] + length;
 			}
 		}
-		
+
 		private IEnumerable<Edge<Vector2D>> genFinal(Graph<Vector2D> maxGraph, ICollection<Edge<Vector2D>> treeEdges)
 		{
 			var degree = new Dictionary<Vertex<Vector2D>, int>();
@@ -218,11 +218,11 @@ namespace Stareater.Galaxy.ProximityLanes
 			{
 				if (!edgeQueues.ContainsKey(minDegree))
 					minDegree = edgeQueues.Keys.Min();
-				
+
 				var e = edgeQueues[minDegree].Dequeue();
 				if (edgeQueues[minDegree].Count == 0)
 					edgeQueues.Remove(minDegree);
-				
+
 				var eDegree = Math.Max(degree[e.FirstEnd], degree[e.SecondEnd]);
 				if (eDegree != minDegree)
 				{
@@ -239,7 +239,7 @@ namespace Stareater.Galaxy.ProximityLanes
 				}
 			}
 		}
-		
+
 		//TODO(v0.8) move A* to core, to Methods or Graph
 		private static IEnumerable<Vertex<Vector2D>> Astar(Graph<Vector2D> graph, Vertex<Vector2D> fromNode, Vertex<Vector2D> toNode)
 		{
@@ -247,38 +247,38 @@ namespace Stareater.Galaxy.ProximityLanes
 			var closedSet = new HashSet<Vertex<Vector2D>>();
 			var openSet = new PriorityQueue<Vertex<Vector2D>>();
 			openSet.Enqueue(fromNode, (fromNode.Data - toNode.Data).Length);
-			
+
 			var gScore = graph.Vertices.ToDictionary(x => x, x => double.PositiveInfinity);
 			gScore[fromNode] = 0;
 			Vertex<Vector2D> current;
-		
-		    while (openSet.Count > 0)
-		    {
-		    	current = openSet.Dequeue();
-		    	if (current == toNode)
-		    		break;
-		
-		    	closedSet.Add(current);
+
+			while (openSet.Count > 0)
+			{
+				current = openSet.Dequeue();
+				if (current == toNode)
+					break;
+
+				closedSet.Add(current);
 				var edges = graph.GetEdges(current).
 					SelectMany(e => new[] { e.FirstEnd, e.SecondEnd }.Where(v => v != current));
 				foreach (var neighbor in edges)
-		    	{
-		    		if (closedSet.Contains(neighbor))
-		    			continue;
-		    		
-		            var tentative_gScore = gScore[current] + (current.Data - neighbor.Data).Length;
-		            if (!openSet.Contains(neighbor))
-		            	openSet.Enqueue(neighbor, tentative_gScore);
-		            else if (tentative_gScore >= gScore[neighbor])
-		            	continue;
+				{
+					if (closedSet.Contains(neighbor))
+						continue;
 
-		            cameFrom[neighbor] = current;
-		            gScore[neighbor] = tentative_gScore;
-		    	}
-		    }
-		    
-		    current = toNode;
-		    while (cameFrom.ContainsKey(current))
+					var tentative_gScore = gScore[current] + (current.Data - neighbor.Data).Length;
+					if (!openSet.Contains(neighbor))
+						openSet.Enqueue(neighbor, tentative_gScore);
+					else if (tentative_gScore >= gScore[neighbor])
+						continue;
+
+					cameFrom[neighbor] = current;
+					gScore[neighbor] = tentative_gScore;
+				}
+			}
+
+			current = toNode;
+			while (cameFrom.ContainsKey(current))
 			{
 				current = cameFrom[current];
 				yield return current;
@@ -320,7 +320,8 @@ namespace Stareater.Galaxy.ProximityLanes
 			var n0 = new Vector2D(-v0.Y, v0.X);
 			double v0magSquare = v0.X * v0.X + v0.Y * v0.Y;
 
-			foreach (var usedEdge in otherLines) {
+			foreach (var usedEdge in otherLines)
+			{
 				Vector2D x1 = usedEdge.FirstEnd.Data;
 				Vector2D v1 = usedEdge.SecondEnd.Data - x1;
 				var cross = v0.X * v1.Y - v0.Y * v1.X; //FIX workaraound for NGenerics bug

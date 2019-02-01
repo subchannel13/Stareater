@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Stareater.Galaxy.RybPopulator
+namespace Stareater.Maps.DefaultMap.RybPopulator
 {
 	class StarType
 	{

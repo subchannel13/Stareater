@@ -102,11 +102,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppData\BusySpinMode.cs" />
@@ -651,15 +648,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="maps\Stareater.Maps.ProximityLanes.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="maps\Stareater.Maps.RybPopulator.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="maps\Stareater.Maps.Square.pdb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="players\Stareater.Players.DefaultAI.pdb">
@@ -695,13 +683,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App icon.ico" />
-    <None Include="maps\Stareater.Maps.ProximityLanes.dll">
+    <None Include="maps\Stareater.Maps.DefaultMap.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="maps\Stareater.Maps.RybPopulator.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="maps\Stareater.Maps.Square.dll">
+    <None Include="maps\Stareater.Maps.DefaultMap.pdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="players\Stareater.Players.DefaultAI.dll">

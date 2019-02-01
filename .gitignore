@@ -12,5 +12,7 @@ release/
 build/images/galaxyTextures.*
 build/settings.txt
 documentation/Graphs/*.png
+source/Stareater.UI.WinForms/maps/*.xml
+source/Stareater.UI.WinForms/players/*.xml
 *.lastcodeanalysissucceeded
 *.CodeAnalysisLog.xml

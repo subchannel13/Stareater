@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
 
-namespace Stareater.Galaxy.Square
+namespace Stareater.Maps.DefaultMap.SquareShape
 {
 	struct SizeOption
 	{

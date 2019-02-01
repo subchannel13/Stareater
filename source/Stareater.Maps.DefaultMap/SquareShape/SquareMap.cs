@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-using Ikadn;
+﻿using Ikadn;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
@@ -12,8 +7,12 @@ using Stareater.Localization;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.PluginParameters;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
-namespace Stareater.Galaxy.Square
+namespace Stareater.Maps.DefaultMap.SquareShape
 {
 	public class SquareMap : IStarPositioner
 	{
@@ -53,7 +52,8 @@ namespace Stareater.Galaxy.Square
 		{
 			this.sizeOptions = new SizeOption[data.CountOf(SizeKey)];
 			var parameterOptions = new Dictionary<int, string>();
-			for (int i = 0; i < this.sizeOptions.Length; i++) {
+			for (int i = 0; i < this.sizeOptions.Length; i++)
+			{
 				this.sizeOptions[i] = new SizeOption(data.Dequeue(SizeKey).To<IkonComposite>());
 				parameterOptions.Add(i, this.sizeOptions[i].Name);
 			}
@@ -78,8 +78,8 @@ namespace Stareater.Galaxy.Square
 
 		public string Description
 		{
-			get 
-			{ 
+			get
+			{
 				return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["description"].Text(null, new TextVar(
 					"size", Math.Pow(sizeOptions[sizeParameter.Value].Size, 2).ToString()).Get
 				);
@@ -123,7 +123,8 @@ namespace Stareater.Galaxy.Square
 			double deltaPhi = Math.PI * 2.0 / playerCount;
 			double radius = starDistance * homeSystemDistance * size / 2.0;
 
-			for (double player = 0; player < playerCount; player++) {
+			for (double player = 0; player < playerCount; player++)
+			{
 				var desiredPoint = new Vector2D(
 					radius * Math.Cos(phi + player * deltaPhi),
 					radius * Math.Sin(phi + player * deltaPhi)
