@@ -33,7 +33,7 @@ namespace Stareater.GUI
 			if (!NewGameController.CanCreateGame)
 				return;
 
-			controller = new NewGameController();
+			controller = new NewGameController(LoadingMethods.GameDataSources());
 			updatePlayerViews();
 
 			foreach (var start in MapAssets.Starts)
@@ -59,7 +59,7 @@ namespace Stareater.GUI
 		public void CreateGame(GameController gameController)
 		{
 			controller.ShufflePlayers(new Random());
-			gameController.CreateGame(controller, LoadingMethods.GameDataSources());
+			gameController.CreateGame(controller);
 		}
 
 		private void setLanguage()

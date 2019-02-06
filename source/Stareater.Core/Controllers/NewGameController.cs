@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
-using System.Linq;
-
-using Ikadn.Ikon.Types;
 using Stareater.AppData;
 using Stareater.Controllers.NewGameHelpers;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
 using Stareater.Galaxy.Builders;
+using Stareater.GameData.Databases;
 using Stareater.Localization;
 using Stareater.Players;
+using Stareater.Utils;
 using Stareater.Utils.Collections;
-using Stareater.Utils.PluginParameters;
 
 namespace Stareater.Controllers
 {
@@ -27,11 +25,14 @@ namespace Stareater.Controllers
 
 		private readonly List<NewGamePlayerInfo> players = new List<NewGamePlayerInfo>();
 
-		public NewGameController()
+		internal StaticsDB Statics { get; private set; }
+
+		public NewGameController(IEnumerable<TracableStream> staticDataSources)
 		{
 			foreach (var aiFactory in PlayerAssets.AIDefinitions.Values)
 				aiPlayers.Add(new PlayerType(PlayerControlType.LocalAI, aiFactory));
 
+			//TODO(v0.8) move to controller user
 			players.Add(new NewGamePlayerInfo("Marko Kovač",
 				colors.Take(),
 				null,
@@ -41,6 +42,10 @@ namespace Stareater.Controllers
 				colors.Take(),
 				null,
 				aiPlayers.Pick()));
+
+			this.Statics = StaticsDB.Load(staticDataSources);
+			foreach (var populator in MapAssets.StarPopulators)
+				populator.SetGameData(this.Statics.Traits.Values);
 
 			this.CustomStart = LastStartingCondition ?? DefaultStartingCondition;
 			this.StarPositioner = ParameterLoadingVisitor.Load(Settings.Get.LastGame.StarPositionerConfig, MapAssets.StarPositioners);

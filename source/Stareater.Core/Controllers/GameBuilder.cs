@@ -20,9 +20,9 @@ namespace Stareater.Controllers
 {
 	static class GameBuilder
 	{
-		public static MainGame CreateGame(Random rng, Player[] players, Player organellePlayer, NewGameController controller, IEnumerable<TracableStream> staticDataSources)
+		public static MainGame CreateGame(Random rng, Player[] players, Player organellePlayer, NewGameController controller)
 		{
-			var statics = StaticsDB.Load(staticDataSources);
+			var statics = controller.Statics;
 			var states = createStates(rng, controller, players, statics);
 			var derivates = createDerivates(players, organellePlayer, controller.SelectedStart, statics, states);
 			
@@ -94,7 +94,7 @@ namespace Stareater.Controllers
 		private static StatesDB createStates(Random rng, NewGameController newGameData, Player[] players, StaticsDB statics)
 		{
 			var starPositions = newGameData.StarPositioner.Generate(rng, newGameData.PlayerList.Count);
-			var starSystems = newGameData.StarPopulator.Generate(rng, starPositions, statics.Traits.Values).ToArray();
+			var starSystems = newGameData.StarPopulator.Generate(rng, starPositions).ToArray();
 			
 			var stars = createStars(starSystems);
 			var wormholes = createWormholes(starSystems, newGameData.StarConnector.Generate(rng, starPositions));

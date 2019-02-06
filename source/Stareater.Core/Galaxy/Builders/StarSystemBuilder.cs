@@ -17,6 +17,13 @@ namespace Stareater.Galaxy.Builders
 			this.Planets = new List<Planet>();
 		}
 
+		/// <summary>
+		/// Create dummy star system for evaluation purposes
+		/// </summary>
+		/// <param name="traits">Host star traits</param>
+		public StarSystemBuilder(List<TraitType> starTraits) : this (Color.White, 1, null, new Vector2D(), starTraits)
+		{ }
+
 		public void AddPlanet(int position, PlanetType type, double size, List<TraitType> traits)
 		{
 			this.Planets.Add(new Planet(this.Star, position, type, size, traits));

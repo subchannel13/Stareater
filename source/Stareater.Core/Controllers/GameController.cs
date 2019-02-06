@@ -44,7 +44,7 @@ namespace Stareater.Controllers
 			this.State = GameState.NoGame;
 		}
 	
-		public void CreateGame(NewGameController controller, IEnumerable<TracableStream> staticDataSources)
+		public void CreateGame(NewGameController controller)
 		{
 			if (State != GameState.NoGame)
 				throw new InvalidOperationException("Game is already created.");
@@ -60,7 +60,7 @@ namespace Stareater.Controllers
 				new PlayerType(PlayerControlType.Neutral, new OrganellePlayerFactory())
 			);
 
-			this.gameObj = GameBuilder.CreateGame(rng, players, organellePlayer, controller, staticDataSources);
+			this.gameObj = GameBuilder.CreateGame(rng, players, organellePlayer, controller);
 			this.endedTurnPlayers.Clear();
 			makePlayers();
 		}

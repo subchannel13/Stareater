@@ -29,6 +29,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		private SelectorParameter climateParameter;
 
 		private StarType[] starTypes;
+		private TraitType[] planetTraits;
 
 		public void Initialize(string dataPath)
 		{
@@ -55,6 +56,11 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 				{1, "normalClimate"},
 				{2, "paradiseClimate"},
 			}, 1);
+		}
+
+		public void SetGameData(IEnumerable<TraitType> planetTraits)
+		{
+			this.planetTraits = planetTraits.ToArray();
 		}
 
 		private Color extractColor(IList<IkadnBaseObject> arrayValue)
@@ -94,7 +100,17 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			get { yield return climateParameter; }
 		}
 
-		public IEnumerable<StarSystemBuilder> Generate(Random rng, StarPositions starPositions, IEnumerable<TraitType> planetTraits)
+		public double MinPlanets
+		{
+			get { return 0; }
+		}
+
+		public double MaxPlanets
+		{
+			get { return 3; }
+		}
+
+		public IEnumerable<StarSystemBuilder> Generate(Random rng, StarPositions starPositions)
 		{
 			int colorI = 0;
 			var namer = new StarNamer(starPositions.Stars.Length, new Random());
