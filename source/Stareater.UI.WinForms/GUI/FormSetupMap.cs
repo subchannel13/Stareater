@@ -96,8 +96,10 @@ namespace Stareater.GUI
 			);
 			
 			var preview = new Bitmap(this.mapPreview.Width, this.mapPreview.Height);
-			var starColor = new SolidBrush(Color.White);
-			var homeSystemColor = new SolidBrush(Color.Gold);
+			var starColorBottom = new SolidBrush(Color.Gray);
+			var starColorTop = new SolidBrush(Color.White);
+			var homeSystemColorBottom = new SolidBrush(Color.Brown);
+			var homeSystemColorTop = new SolidBrush(Color.Gold);
 			var starlaneColor = new Pen(Color.Blue);
 			
 			using(var g = Graphics.FromImage(preview))
@@ -113,16 +115,28 @@ namespace Stareater.GUI
 						(float)((lane.Endpoints.Second.Position.Y - minCorner.Y) * scale) + PreviewPadding
 					);
 
-				foreach(var system in map.Systems)
+				var scoreOffset = Math.Min(this.controller.WorstSystemScore, map.Systems.Min(x => x.StartingScore));
+				var scoreRange = Math.Min(this.controller.BestSystemScore, map.Systems.Min(x => x.PotentialScore)) - scoreOffset;
+
+				foreach (var system in map.Systems)
 				{
 					var position = (system.Position - minCorner) * scale + new Vector2D(PreviewPadding, PreviewPadding);
-					
+					var startingScoreR = scoreRadius(system.StartingScore, scoreOffset, scoreRange);
+					var potentialScoreR = scoreRadius(system.PotentialScore, scoreOffset, scoreRange);
+
+					var brushTop = system.IsHomeSystem ? homeSystemColorTop : starColorTop;
+					var brushBottom = system.IsHomeSystem ? homeSystemColorBottom : starColorBottom;
+
 					g.FillEllipse(
-						system.IsHomeSystem ? homeSystemColor : starColor, 
-						(float)position.X - (system.IsHomeSystem ? 2 : 1),
-						(float)position.Y - (system.IsHomeSystem ? 2 : 1), 
-						(system.IsHomeSystem ? 5 : 3), 
-						(system.IsHomeSystem ? 5 : 3)
+						brushBottom,
+						(float)position.X - potentialScoreR / 2, (float)position.Y - potentialScoreR / 2,
+						potentialScoreR, potentialScoreR
+					);
+
+					g.FillEllipse(
+						brushTop,
+						(float)position.X - startingScoreR / 2, (float)position.Y - startingScoreR / 2,
+						startingScoreR, startingScoreR
 					);
 				}
 			}
@@ -150,6 +164,12 @@ namespace Stareater.GUI
 				return;
 
 			populateParameters();
+		}
+
+		private float scoreRadius(double score, double offset, double range)
+		{
+			var x = (score - offset) / range;
+			return (float)Methods.Lerp(Math.Log10(x * x * 9 + 1), 3, 11);
 		}
 	}
 }

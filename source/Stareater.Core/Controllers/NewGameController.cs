@@ -165,8 +165,8 @@ namespace Stareater.Controllers
 			{
 				this.mStarPopulator = value;
 
-				this.BestSystemScore = 0;
-				this.WorstSystemScore = 1;
+				this.BestSystemScore = 1;
+				this.WorstSystemScore = 0;
 			}
 		}
 

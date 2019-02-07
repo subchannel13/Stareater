@@ -12,7 +12,8 @@ namespace Stareater.Controllers.Views
 
 		internal MapPreview(IEnumerable<StarSystemBuilder> systems, HashSet<StarData> homewolrds, IEnumerable<Wormhole> starlanes)
 		{
-			this.Systems = systems.Select(x => new SystemPreview(x.Star, homewolrds.Contains(x.Star))).ToList();
+			//TODO(v0.8) calculate scores
+			this.Systems = systems.Select(x => new SystemPreview(x.Star, homewolrds.Contains(x.Star), 0, 1)).ToList();
 			this.Starlanes = starlanes.Select(x => new WormholeInfo(x)).ToList();
 		}
 	}
