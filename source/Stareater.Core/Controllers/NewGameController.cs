@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Linq;
 using Stareater.AppData;
 using Stareater.Controllers.NewGameHelpers;
 using Stareater.Controllers.Views;
@@ -155,7 +156,40 @@ namespace Stareater.Controllers
 
 		public IStarPositioner StarPositioner { get; set; }
 		public IStarConnector StarConnector { get; set; }
-		public IStarPopulator StarPopulator { get; set; }
+
+		private IStarPopulator mStarPopulator = null;
+		public IStarPopulator StarPopulator
+		{
+			get { return this.mStarPopulator; }
+			set
+			{
+				this.mStarPopulator = value;
+
+				this.BestSystemScore = 0;
+				this.WorstSystemScore = 1;
+			}
+		}
+
+		public double BestSystemScore { get; private set; }
+		public double WorstSystemScore { get; private set; }
+
+		public MapPreview GeneratePreview(Random random)
+		{
+			var stars = this.StarPositioner.Generate(random, this.PlayerList.Count);
+			var starlanes = this.StarConnector.Generate(random, stars);
+			var systems = this.StarPopulator.Generate(random, stars);
+
+			var starIndices = new Dictionary<Vector2D, int>();
+			for (int i = 0; i < stars.Stars.Length; i++)
+				starIndices[stars.Stars[i]] = i;
+			var starFromIndex = systems.ToDictionary(x => starIndices[x.Star.Position], x => x.Star);
+
+			return new MapPreview(
+				systems, 
+				new HashSet<StarData>(stars.HomeSystems.Select(x => starFromIndex[x])),
+				starlanes.Select(x => new Wormhole(starFromIndex[x.FromIndex], starFromIndex[x.ToIndex]))
+			);
+		}
 
 		public static StartingConditions DefaultStartingCondition
 		{

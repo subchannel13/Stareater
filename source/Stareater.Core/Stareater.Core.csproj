@@ -100,6 +100,7 @@
     <Compile Include="Controllers\Views\IReportInfoVisitor.cs" />
     <Compile Include="Controllers\Views\Library\ShipComponentGeneralInfo.cs" />
     <Compile Include="Controllers\Views\Library\TechnologyGeneralInfo.cs" />
+    <Compile Include="Controllers\Views\MapPreview.cs" />
     <Compile Include="Controllers\Views\NewGamePlayerInfo.cs" />
     <Compile Include="Controllers\Views\OrganizationInfo.cs" />
     <Compile Include="Controllers\Views\PlanetInfo.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Controllers\Views\PolicyInfo.cs" />
     <Compile Include="Controllers\Views\StarInfo.cs" />
     <Compile Include="Controllers\Views\StellarisInfo.cs" />
+    <Compile Include="Controllers\Views\SystemPreview.cs" />
     <Compile Include="Controllers\Views\TechnologyCategory.cs" />
     <Compile Include="Controllers\Views\DevelopmentReportInfo.cs" />
     <Compile Include="Controllers\Views\DevelopmentTopicInfo.cs" />

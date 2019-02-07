@@ -81,11 +81,11 @@ namespace Stareater.GUI
 		private void makePreview()
 		{
 			var random = new Random();
-			var stars = this.controller.StarPositioner.Generate(random, this.controller.PlayerList.Count);
-			var starlanes = this.controller.StarConnector.Generate(random, stars);
-			
-			var minCorner = stars.Stars.Aggregate((a, b) => new Vector2D(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)));
-			var size = stars.Stars.
+			var map = this.controller.GeneratePreview(random);
+
+			var starPositions = map.Systems.Select(x => x.Position);
+			var minCorner = starPositions.Aggregate((a, b) => new Vector2D(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)));
+			var size = starPositions.
 				Select(x => x - minCorner).
 				Aggregate(
 					(a, b) => new Vector2D(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y))
@@ -104,26 +104,25 @@ namespace Stareater.GUI
 			{
 				g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 				
-				foreach(var lane in starlanes)
+				foreach(var lane in map.Starlanes)
 					g.DrawLine(
 						starlaneColor,
-						(float)((stars.Stars[lane.FromIndex].X - minCorner.X) * scale) + PreviewPadding,
-						(float)((stars.Stars[lane.FromIndex].Y - minCorner.Y) * scale) + PreviewPadding,
-						(float)((stars.Stars[lane.ToIndex].X - minCorner.X) * scale) + PreviewPadding,
-						(float)((stars.Stars[lane.ToIndex].Y - minCorner.Y) * scale) + PreviewPadding
+						(float)((lane.Endpoints.First.Position.X - minCorner.X) * scale) + PreviewPadding,
+						(float)((lane.Endpoints.First.Position.Y - minCorner.Y) * scale) + PreviewPadding,
+						(float)((lane.Endpoints.Second.Position.X - minCorner.X) * scale) + PreviewPadding,
+						(float)((lane.Endpoints.Second.Position.Y - minCorner.Y) * scale) + PreviewPadding
 					);
-					
-				for(int i = 0; i < stars.Stars.Length; i++)
+
+				foreach(var system in map.Systems)
 				{
-					var position = (stars.Stars[i] - minCorner) * scale + new Vector2D(PreviewPadding, PreviewPadding);
-					var isHomeSystem = stars.HomeSystems.Contains(i);
+					var position = (system.Position - minCorner) * scale + new Vector2D(PreviewPadding, PreviewPadding);
 					
 					g.FillEllipse(
-						isHomeSystem ? homeSystemColor : starColor, 
-						(float)position.X - (isHomeSystem ? 2 : 1),
-						(float)position.Y - (isHomeSystem ? 2 : 1), 
-						(isHomeSystem ? 5 : 3), 
-						(isHomeSystem ? 5 : 3)
+						system.IsHomeSystem ? homeSystemColor : starColor, 
+						(float)position.X - (system.IsHomeSystem ? 2 : 1),
+						(float)position.Y - (system.IsHomeSystem ? 2 : 1), 
+						(system.IsHomeSystem ? 5 : 3), 
+						(system.IsHomeSystem ? 5 : 3)
 					);
 				}
 			}
