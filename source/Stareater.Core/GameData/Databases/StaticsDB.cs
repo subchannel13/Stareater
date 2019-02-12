@@ -243,7 +243,9 @@ namespace Stareater.GameData.Databases
 			return new KeyValuePair<PlanetType, PlanetForumlaSet>(
 				key,
 				new PlanetForumlaSet(
-					data[PlanetBaseTraits].To<string[]>()
+					data[PlanetBaseTraits].To<string[]>(),
+					data[PlanetStartingScore].To<Formula>(),
+					data[PlanetPotentialScore].To<Formula>()
 			));
 		}
 
@@ -753,6 +755,8 @@ namespace Stareater.GameData.Databases
 		private const string PlanetTypeGasGiant = "gasGiant";
 		private const string PlanetTypeRock = "rock";
 		private const string PlanetBaseTraits = "baseTraits";
+		private const string PlanetPotentialScore = "bestScore";
+		private const string PlanetStartingScore = "startScore";
 
 		private const string PlayerResearchFocusWeight = "focusedResearchWeight";
 		

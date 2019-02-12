@@ -64,16 +64,25 @@
 { PlanetFormulas
 	type: asteriod
 	baseTraits [ :noAtmo :noGrav ]
+	
+	bestScore # size * 2;
+	startScore # 0;
 }
 
 { PlanetFormulas
 	type: gasGiant
 	baseTraits []
+	
+	bestScore # size * 2;
+	startScore # 0;
 }
 
 { PlanetFormulas
 	type: rock
 	baseTraits []
+	
+	bestScore # size * 2;
+	startScore # 0;
 }
 
 { PlayerFormulas

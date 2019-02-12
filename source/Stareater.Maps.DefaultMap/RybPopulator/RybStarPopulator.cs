@@ -110,14 +110,25 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			get { return 3; }
 		}
 
+		public double MinPlanetSize(PlanetType type)
+		{
+			//TODO(v0.8) load from file
+			return 100;
+		}
+
+		public double MaxPlanetSize(PlanetType type)
+		{
+			//TODO(v0.8) load from file
+			return 100;
+		}
+
 		public IEnumerable<StarSystemBuilder> Generate(Random rng, StarPositions starPositions)
 		{
 			int colorI = 0;
 			var namer = new StarNamer(starPositions.Stars.Length, new Random());
 
-			//UNDONE(later): Picks star types cyclicaly
-			//TODO(later): Randomize star type distribution
-			//TODO(later): Star size and radiation distribution
+			//TODO(v0.8): Randomize star type distribution
+			//TODO(v0.8): Star size and trait distribution
 			foreach (var position in starPositions.Stars)
 			{
 				var system = new StarSystemBuilder(starTypes[colorI++ % starTypes.Length].Hue, 1, namer.NextName(), position, new List<TraitType>());

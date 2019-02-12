@@ -26,6 +26,7 @@ namespace Stareater.Controllers
 
 		private readonly List<NewGamePlayerInfo> players = new List<NewGamePlayerInfo>();
 
+		private SystemEvaluator evaluator;
 		internal StaticsDB Statics { get; private set; }
 
 		public NewGameController(IEnumerable<TracableStream> staticDataSources)
@@ -45,6 +46,7 @@ namespace Stareater.Controllers
 				aiPlayers.Pick()));
 
 			this.Statics = StaticsDB.Load(staticDataSources);
+			this.evaluator = new SystemEvaluator(this.Statics);
 			foreach (var populator in MapAssets.StarPopulators)
 				populator.SetGameData(this.Statics.Traits.Values);
 
@@ -165,8 +167,8 @@ namespace Stareater.Controllers
 			{
 				this.mStarPopulator = value;
 
-				this.BestSystemScore = 1;
-				this.WorstSystemScore = 0;
+				this.BestSystemScore = this.evaluator.BestSystemScore(this.mStarPopulator);
+				this.WorstSystemScore = this.evaluator.WorstSystemScore(this.mStarPopulator);
 			}
 		}
 
@@ -187,7 +189,8 @@ namespace Stareater.Controllers
 			return new MapPreview(
 				systems, 
 				new HashSet<StarData>(stars.HomeSystems.Select(x => starFromIndex[x])),
-				starlanes.Select(x => new Wormhole(starFromIndex[x.FromIndex], starFromIndex[x.ToIndex]))
+				starlanes.Select(x => new Wormhole(starFromIndex[x.FromIndex], starFromIndex[x.ToIndex])),
+				this.evaluator
 			);
 		}
 

@@ -1,5 +1,4 @@
 ﻿using Stareater.AppData.Expressions;
-using Stareater.Galaxy.BodyTraits;
 using System.Collections.Generic;
 
 namespace Stareater.GameData.Databases.Tables
@@ -8,9 +7,14 @@ namespace Stareater.GameData.Databases.Tables
 	{
 		public IEnumerable<string> ImplicitTraits { get; private set; }
 
-		public PlanetForumlaSet(IEnumerable<string> impliciteTraits)
+		public Formula StartingScore { get; private set; }
+		public Formula PotentialScore { get; private set; }
+
+		public PlanetForumlaSet(IEnumerable<string> impliciteTraits, Formula startingScore, Formula potentialScore)
 		{
 			this.ImplicitTraits = impliciteTraits;
+			this.StartingScore = startingScore;
+			this.PotentialScore = potentialScore;
 		}
 	}
 }
