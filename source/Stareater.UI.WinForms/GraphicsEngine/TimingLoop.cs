@@ -109,8 +109,18 @@ namespace Stareater.GraphicsEngine
 		
 		private void pullSettings()
 		{
-			bool onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online; //assumes battery if status is unknown
-			switch(SettingsWinforms.Get.FramerateBusySpinUsage)
+            //assumes battery if status is unknown
+            bool onBattery = true;
+            try
+            {
+                onBattery = SystemInformation.PowerStatus.PowerLineStatus != PowerLineStatus.Online;
+            }
+            catch(NotImplementedException)
+            {
+                //not implemented in Mono, treat as unknown
+            }
+
+            switch (SettingsWinforms.Get.FramerateBusySpinUsage)
 			{
 				case BusySpinMode.Always:
 					this.waitMethod = busyWait;
