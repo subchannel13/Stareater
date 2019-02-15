@@ -64,6 +64,9 @@
 { PlanetFormulas
 	type: asteriod
 	baseTraits [ :noAtmo :noGrav ]
+	bestTraits [ :fertile ]
+	worstTraits []
+	unchangeableTraits []
 	
 	bestScore # size * 2;
 	startScore # 0;
@@ -72,6 +75,9 @@
 { PlanetFormulas
 	type: gasGiant
 	baseTraits []
+	bestTraits [ :fertile ]
+	worstTraits [ :noAtmo :noGrav ]
+	unchangeableTraits []
 	
 	bestScore # size * 2;
 	startScore # 0;
@@ -80,6 +86,9 @@
 { PlanetFormulas
 	type: rock
 	baseTraits []
+	bestTraits [ :fertile ]
+	worstTraits [ :noAtmo :noGrav ]
+	unchangeableTraits []
 	
 	bestScore # size * 2;
 	startScore # 0;

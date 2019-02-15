@@ -168,8 +168,7 @@ namespace Stareater.GUI
 
 		private float scoreRadius(double score, double offset, double range)
 		{
-			var x = (score - offset) / range;
-			return (float)Methods.Lerp(Math.Log10(x * x * 9 + 1), 3, 11);
+			return (float)Methods.Lerp((score - offset) / range, 3, 11);
 		}
 	}
 }

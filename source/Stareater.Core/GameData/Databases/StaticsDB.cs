@@ -244,6 +244,9 @@ namespace Stareater.GameData.Databases
 				key,
 				new PlanetForumlaSet(
 					data[PlanetBaseTraits].To<string[]>(),
+					data[PlanetBestTraits].To<string[]>(),
+					data[PlanetWorstTraits].To<string[]>(),
+					data[PlanetUnchangeableTraits].To<string[]>(),
 					data[PlanetStartingScore].To<Formula>(),
 					data[PlanetPotentialScore].To<Formula>()
 			));
@@ -755,8 +758,11 @@ namespace Stareater.GameData.Databases
 		private const string PlanetTypeGasGiant = "gasGiant";
 		private const string PlanetTypeRock = "rock";
 		private const string PlanetBaseTraits = "baseTraits";
+		private const string PlanetBestTraits = "bestTraits";
+		private const string PlanetUnchangeableTraits = "unchangeableTraits";
 		private const string PlanetPotentialScore = "bestScore";
 		private const string PlanetStartingScore = "startScore";
+		private const string PlanetWorstTraits = "worstTraits";
 
 		private const string PlayerResearchFocusWeight = "focusedResearchWeight";
 		
