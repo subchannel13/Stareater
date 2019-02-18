@@ -32,7 +32,8 @@ namespace Stareater.GameData.Databases
 		public ShipFormulaSet ShipFormulas { get; private set; }
 		public StellarisFormulaSet StellarisFormulas { get; private set; }
 		public List<SystemPolicy> Policies { get; private set; }
-		public Dictionary<string, TraitType> Traits { get; private set; }
+		public Dictionary<string, TraitType> PlanetTraits { get; private set; }
+		public Dictionary<string, TraitType> StarTraits { get; private set; }
 
 		public Dictionary<string, ArmorType> Armors { get; private set; }
 		public Dictionary<string, HullType> Hulls { get; private set; }
@@ -67,7 +68,8 @@ namespace Stareater.GameData.Databases
 			this.PlanetForumlas = new Dictionary<PlanetType, PlanetForumlaSet>();
 			this.ResearchTopics = new List<ResearchTopic>();
 			this.Policies = new List<SystemPolicy>();
-			this.Traits = new Dictionary<string, TraitType>();
+			this.PlanetTraits = new Dictionary<string, TraitType>();
+			this.StarTraits = new Dictionary<string, TraitType>();
 		}
 		
 		public static StaticsDB Load(IEnumerable<TracableStream> dataSources)
@@ -122,10 +124,13 @@ namespace Stareater.GameData.Databases
 							case "StarFormulas":
 								db.StellarisFormulas = loadStarFormulas(data);
 								break;
-							case "Trait":
-								db.Traits.Add(data[GeneralCodeKey].To<string>(), loadTrait(data));
+							case "PlanetTrait":
+								db.PlanetTraits.Add(data[GeneralCodeKey].To<string>(), loadTrait(data));
 								break;
-	
+							case "StarTrait":
+								db.StarTraits.Add(data[GeneralCodeKey].To<string>(), loadTrait(data));
+								break;
+
 							case ArmorTag:
 								db.Armors.Add(data[GeneralCodeKey].To<string>(), loadArmor(data));
 								break;

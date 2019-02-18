@@ -1,4 +1,18 @@
-{ Trait
+{ StarTrait
+	langCode: CATALYZED_TRAIT
+	image :./images/technologies/hydroponicFarms.png
+	code: catalyzed
+	
+	cost# 0;
+	
+	effect {AfflictPlanets
+		duration # 3;
+		trait: irradiated
+	}
+}
+
+
+{ PlanetTrait
 	langCode: FERTILE_TRAIT
 	image :./images/technologies/hydroponicFarms.png
 	code: fertile
@@ -8,7 +22,7 @@
 	effect {Passive}
 }
 
-{ Trait
+{ PlanetTrait
 	langCode: IRRADIATED_TRAIT
 	image :./images/technologies/hydroponicFarms.png
 	code: irradiated
@@ -18,7 +32,7 @@
 	effect {Passive}
 }
 
-{ Trait
+{ PlanetTrait
 	langCode: NO_ATMOSPHERE
 	image :./images/technologies/hydroponicFarms.png
 	code: noAtmo
@@ -28,7 +42,7 @@
 	effect {Passive}
 }
 
-{ Trait
+{ PlanetTrait
 	langCode: NO_GRAVITY
 	image :./images/technologies/hydroponicFarms.png
 	code: noGrav

@@ -109,7 +109,7 @@ namespace Stareater.GameLogic.Combat
 			this.targetStar = true;
 			
 			this.energyCost = ability.EnergyCost.Evaluate(vars);
-			this.appliesTrait = statics.Traits[ability.AppliesTraitId];
+			this.appliesTrait = statics.StarTraits[ability.AppliesTraitId];
 		}
 		#endregion
 	}

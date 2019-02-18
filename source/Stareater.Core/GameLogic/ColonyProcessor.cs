@@ -95,7 +95,7 @@ namespace Stareater.GameLogic
 				And(PlanetSizeKey, Colony.Location.Planet.Size).
 				And(PopulationKey, Colony.Population).
 				UnionWith(playerProcessor.TechLevels).
-				Init(statics.Traits.Keys, false).
+				Init(statics.PlanetTraits.Keys, false).
 				UnionWith(Colony.Location.Planet.Traits.Select(x => x.Type.IdCode)).
 				UnionWith(statics.PlanetForumlas[this.Colony.Location.Planet.Type].ImplicitTraits);
 				
@@ -137,7 +137,7 @@ namespace Stareater.GameLogic
 			this.RepairPoints = formulas.RepairPoints.Evaluate(vars);
 
 			this.MaintenancePerPop =
-				planetEffects.ImplicitTraits.Sum(x => statics.Traits[x].MaintenanceCost) +
+				planetEffects.ImplicitTraits.Sum(x => statics.PlanetTraits[x].MaintenanceCost) +
 				this.Colony.Location.Planet.Traits.Sum(x => x.Type.MaintenanceCost);
 			this.MaintenanceCost = this.Colony.Population * this.MaintenancePerPop;
             this.MaintenanceLimit = this.WorkingPopulation * this.BuilderEfficiency * this.SpaceliftFactor;
@@ -214,7 +214,7 @@ namespace Stareater.GameLogic
 			vars.And(PlanetSizeKey, Colony.Location.Planet.Size);
 			vars.And(MaxPopulationKey, MaxPopulation);
 			vars.And(PopulationKey, Colony.Population);
-			vars.Init(statics.Traits.Keys, false);
+			vars.Init(statics.PlanetTraits.Keys, false);
 			vars.UnionWith(this.Colony.Location.Planet.Traits.Select(x => x.Type.IdCode));
 			
 			return vars;
@@ -239,7 +239,7 @@ namespace Stareater.GameLogic
 				Init(statics.Buildings.Keys.Select(x => x.ToLower() + BuidingCountPrefix), 0).
 				Init(statics.DevelopmentTopics.Select(x => x.IdCode + PlayerProcessor.LevelSufix), 0).
 				Init(statics.DevelopmentTopics.Select(x => x.IdCode + PlayerProcessor.UpgradeSufix), DevelopmentProgress.NotStarted).
-				Init(statics.Traits.Keys, false).
+				Init(statics.PlanetTraits.Keys, false).
 				UnionWith(planet.Traits.Select(x => x.Type.IdCode)).
 				UnionWith(statics.PlanetForumlas[planet.Type].ImplicitTraits);
 

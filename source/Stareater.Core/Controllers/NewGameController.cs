@@ -48,7 +48,7 @@ namespace Stareater.Controllers
 			this.Statics = StaticsDB.Load(staticDataSources);
 			this.evaluator = new SystemEvaluator(this.Statics);
 			foreach (var populator in MapAssets.StarPopulators)
-				populator.SetGameData(this.Statics.Traits.Values);
+				populator.SetGameData(this.Statics.PlanetTraits.Values);
 
 			this.CustomStart = LastStartingCondition ?? DefaultStartingCondition;
 			this.StarPositioner = ParameterLoadingVisitor.Load(Settings.Get.LastGame.StarPositionerConfig, MapAssets.StarPositioners);

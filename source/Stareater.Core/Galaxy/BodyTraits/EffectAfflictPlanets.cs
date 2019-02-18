@@ -33,7 +33,7 @@ namespace Stareater.Galaxy.BodyTraits
 			}
 
 			this.pullAfflictionId();
-			var trait = statics.Traits[afflictionId];
+			var trait = statics.PlanetTraits[afflictionId];
 
 			foreach (var planet in states.Planets.At[star])
 				if (planet.Traits.All(x => x.Type.IdCode != afflictionId))

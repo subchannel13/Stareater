@@ -55,7 +55,8 @@ namespace Stareater.Controllers
 			deindexer.AddAll(statics.Shields.Values);
 			deindexer.AddAll(statics.SpecialEquipment.Values);
 			deindexer.AddAll(statics.Thrusters.Values);
-			deindexer.AddAll(statics.Traits.Values);
+			deindexer.AddAll(statics.PlanetTraits.Values);
+			deindexer.AddAll(statics.StarTraits.Values);
 
 			var game = stateManager.Load<MainGame>(
 				saveData.To<IkonComposite>(), 

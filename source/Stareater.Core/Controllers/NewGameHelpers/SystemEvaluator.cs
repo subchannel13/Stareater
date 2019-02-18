@@ -36,7 +36,7 @@ namespace Stareater.Controllers.NewGameHelpers
 
 				return this.potentialScore(new Planet(
 					planet.Star, planet.Position, planet.Type, planet.Size, 
-					traits.Select(x => this.statics.Traits[x]).ToList()
+					traits.Select(x => this.statics.PlanetTraits[x]).ToList()
 				));
 			});
 		}
@@ -59,8 +59,8 @@ namespace Stareater.Controllers.NewGameHelpers
 
 		private double startingScore(Planet planet)
 		{
-			var vars = new Var().
-				Init(this.statics.Traits.Keys, -1).
+			var vars = new Var(GameLogic.ColonyProcessor.PlanetSizeKey, planet.Size).
+				Init(this.statics.PlanetTraits.Keys, -1).
 				UnionWith(this.statics.PlanetForumlas[planet.Type].ImplicitTraits).
 				UnionWith(planet.Traits.Select(x => x.Type.IdCode)).
 				Get;
@@ -71,7 +71,7 @@ namespace Stareater.Controllers.NewGameHelpers
 		private double potentialScore(Planet planet)
 		{
 			var vars = new Var(GameLogic.ColonyProcessor.PlanetSizeKey, planet.Size).
-				Init(this.statics.Traits.Keys, -1).
+				Init(this.statics.PlanetTraits.Keys, -1).
 				UnionWith(this.statics.PlanetForumlas[planet.Type].ImplicitTraits).
 				UnionWith(planet.Traits.Select(x => x.Type.IdCode)).
 				Get;
@@ -81,7 +81,7 @@ namespace Stareater.Controllers.NewGameHelpers
 
 		private List<TraitType> traitList(IEnumerable<string> traitIds)
 		{
-			return traitIds.Select(x => this.statics.Traits[x]).ToList();
+			return traitIds.Select(x => this.statics.PlanetTraits[x]).ToList();
 		}
 
 		private static PlanetType[] bodyTypes()

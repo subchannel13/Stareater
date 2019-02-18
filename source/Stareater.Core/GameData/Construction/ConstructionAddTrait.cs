@@ -13,7 +13,7 @@ namespace Stareater.GameData.Construction
 
 		public void Apply(MainGame game, AConstructionSite site, long quantity)
 		{
-			var trait = game.Statics.Traits[this.traitId].Make();
+			var trait = game.Statics.PlanetTraits[this.traitId].Make();
 
 			if (site.Location.Planet != null)
 				site.Location.Planet.Traits.Add(trait);

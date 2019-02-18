@@ -105,7 +105,8 @@ namespace Stareater
 			indexer.AddAll(Statics.Shields.Values);
 			indexer.AddAll(Statics.SpecialEquipment.Values);
 			indexer.AddAll(Statics.Thrusters.Values);
-			indexer.AddAll(Statics.Traits.Values);
+			indexer.AddAll(Statics.PlanetTraits.Values);
+			indexer.AddAll(Statics.StarTraits.Values);
 
 			//TODO(v0.8) is the method necessary?
 			return stateManager.Save(this, indexer);

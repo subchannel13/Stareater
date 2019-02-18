@@ -6,6 +6,8 @@ using Stareater.Galaxy;
 using Stareater.Galaxy.BodyTraits;
 using Stareater.Galaxy.Builders;
 using Stareater.Localization;
+using Stareater.Utils;
+using Stareater.Utils.Collections;
 using Stareater.Utils.PluginParameters;
 using System;
 using System.Collections.Generic;
@@ -132,12 +134,23 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			foreach (var position in starPositions.Stars)
 			{
 				var system = new StarSystemBuilder(starTypes[colorI++ % starTypes.Length].Hue, 1, namer.NextName(), position, new List<TraitType>());
-				system.AddPlanet(1, PlanetType.Rock, 100, planetTraits.Take(1).ToList());
-				system.AddPlanet(2, PlanetType.Asteriod, 100, new List<TraitType>());
-				system.AddPlanet(3, PlanetType.GasGiant, 100, new List<TraitType>());
+				system.AddPlanet(1, PlanetType.Rock, Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng));
+				system.AddPlanet(2, PlanetType.Asteriod, Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng));
+				system.AddPlanet(3, PlanetType.GasGiant, Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng));
 
 				yield return system;
 			}
+		}
+
+		private List<TraitType> randomTraits(Random rng)
+		{
+			var targetCount = rng.Next(planetTraits.Length + 1);
+			var options = new PickList<TraitType>(rng, planetTraits);
+
+			while (options.Count() > targetCount)
+				options.Take();
+
+			return options.InnerList;
 		}
 	}
 }
