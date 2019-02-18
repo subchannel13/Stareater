@@ -18,7 +18,9 @@ namespace Stareater.GUI
 	public partial class FormSetupMap : Form
 	{
 		private const int PreviewPadding = 10;
-		
+		private const float MinR = 2;
+		private const float MaxR = 15;
+
 		private NewGameController controller;
 
 		public FormSetupMap()
@@ -116,7 +118,7 @@ namespace Stareater.GUI
 					);
 
 				var scoreOffset = Math.Min(this.controller.WorstSystemScore, map.Systems.Min(x => x.StartingScore));
-				var scoreRange = Math.Min(this.controller.BestSystemScore, map.Systems.Min(x => x.PotentialScore)) - scoreOffset;
+				var scoreRange = Math.Max(this.controller.BestSystemScore, map.Systems.Max(x => x.PotentialScore)) - scoreOffset;
 
 				foreach (var system in map.Systems)
 				{
@@ -168,7 +170,7 @@ namespace Stareater.GUI
 
 		private float scoreRadius(double score, double offset, double range)
 		{
-			return (float)Methods.Lerp((score - offset) / range, 3, 11);
+			return (float)Methods.Lerp((score - offset) / range, MinR, MaxR);
 		}
 	}
 }

@@ -28,20 +28,20 @@
 	
 	farming
 	{ Work
-		improvised	# 3 + if(fertile, 4 + 2 * greenHouseLvl / 5, 0);
-		organized	# 4 + if(fertile, 4 + 2 * greenHouseLvl / 5, 0) +  2 * gmoFoodLvl / 5;
+		improvised	# (3 + if(fertile, 4 + 2 * greenHouseLvl / 5, 0)) * if(toxic, 0.5, 1);
+		organized	# (4 + if(fertile, 4 + 2 * greenHouseLvl / 5, 0) +  2 * gmoFoodLvl / 5) * if(toxic, 0.5, 1);
 		orgFactor # 0.5 + 0.5 * farmLawsLvl / 5;
 	}
 	gardening
 	{ Work
-		improvised	# 1.5;
-		organized	# 1.5 + 1 * (hydroFarmLvl / 5) +  0.5 * (gmoFoodLvl / 5);
+		improvised	# 1.5 * if(toxic, 0.75, 1);
+		organized	# (1.5 + 1 * (hydroFarmLvl / 5) +  0.5 * (gmoFoodLvl / 5)) * if(toxic, 0.75, 1);
 		orgFactor # 0.5 + 0.5 * farmLawsLvl / 5;
 	}
 	mining
 	{ Work
-		improvised	# 10 + 2 * mineToolsLvl / 5;
-		organized	# 20 + 10 * mineToolsLvl / 5 + 5 * recycleLvl / 5;
+		improvised	# (5 + 2 * mineToolsLvl / 5) * if(poor, 0.5, 1) * if(rich, 2, 1);
+		organized	# (10 + 5 * mineToolsLvl / 5 + 5 * recycleLvl / 5) * if(poor, 0.5, 1) * if(rich, 2, 1);
 		orgFactor # 0.5 + 0.5 * mineLawsLvl / 5;
 	}
 	industry
@@ -68,8 +68,11 @@
 	worstTraits []
 	unchangeableTraits []
 	
-	bestScore # size * 2;
-	startScore # size;
+	bestScore # size * 3 * if(poor, 5/11, 5/8) * if(rich, 10/13, 5/8);
+	startScore # size * (
+		3 * if(fertile, if(toxic, 29/90, 0.7), if(toxic, 7/30, 17/30)) * if(poor, 5/11, 5/8) * if(rich, 10/13, 5/8)
+		- if(noAtmo, 0.5, 0) - if(noGrav, 0.2, 0) - if(toxic, 1, 0) - if(radioactive, 2, 0)
+	);
 }
 
 { PlanetFormulas
@@ -79,8 +82,11 @@
 	worstTraits [ :noAtmo :noGrav ]
 	unchangeableTraits []
 	
-	bestScore # size * 2;
-	startScore # size;
+	bestScore # size * 3 * if(poor, 5/11, 5/8) * if(rich, 10/13, 5/8);
+	startScore # size * (
+		3 * if(fertile, if(toxic, 29/90, 0.7), if(toxic, 7/30, 17/30)) * if(poor, 5/11, 5/8) * if(rich, 10/13, 5/8)
+		- if(noAtmo, 0.5, 0) - if(noGrav, 0.2, 0) - if(toxic, 1, 0) - if(radioactive, 2, 0)
+	);
 }
 
 { PlanetFormulas
@@ -90,8 +96,11 @@
 	worstTraits [ :noAtmo :noGrav ]
 	unchangeableTraits []
 	
-	bestScore # size * 2;
-	startScore # size;
+	bestScore # size * 3 * if(poor, 5/11, 5/8) * if(rich, 10/13, 5/8);
+	startScore # size * (
+		3 * if(fertile, if(toxic, 29/90, 0.7), if(toxic, 7/30, 17/30)) * if(poor, 5/11, 5/8) * if(rich, 10/13, 5/8)
+		- if(noAtmo, 0.5, 0) - if(noGrav, 0.2, 0) - if(toxic, 1, 0) - if(radioactive, 2, 0)
+	);
 }
 
 { PlayerFormulas

@@ -51,3 +51,53 @@
 	
 	effect {Passive}
 }
+
+{ PlanetTrait
+	langCode: TOXIC_TRAIT
+	image :./images/technologies/hydroponicFarms.png
+	code: toxic
+	
+	cost# 1;
+	
+	effect {Passive}
+}
+
+{ PlanetTrait
+	langCode: POOR_TRAIT
+	image :./images/technologies/hydroponicFarms.png
+	code: poor
+	
+	cost# 0;
+	
+	effect {Passive}
+}
+
+{ PlanetTrait
+	langCode: RICH_TRAIT
+	image :./images/technologies/hydroponicFarms.png
+	code: rich
+	
+	cost# 0;
+	
+	effect {Passive}
+}
+
+{ PlanetTrait
+	langCode: RICH_CORE_TRAIT
+	image :./images/technologies/hydroponicFarms.png
+	code: richCore
+	
+	cost# 0;
+	
+	effect {Passive}
+}
+
+{ PlanetTrait
+	langCode: RADIOACTIVE_TRAIT
+	image :./images/technologies/hydroponicFarms.png
+	code: radioactive
+	
+	cost# 2;
+	
+	effect {Passive}
+}
