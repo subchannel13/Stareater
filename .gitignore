@@ -16,3 +16,4 @@ source/Stareater.UI.WinForms/maps/*.xml
 source/Stareater.UI.WinForms/players/*.xml
 *.lastcodeanalysissucceeded
 *.CodeAnalysisLog.xml
+/source/Stareater.Core/AppData/Expressions/*.cs.old

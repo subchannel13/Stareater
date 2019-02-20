@@ -74,11 +74,25 @@ namespace Stareater.GameData.Databases
 		
 		public static StaticsDB Load(IEnumerable<TracableStream> dataSources)
 		{
+			//TODO(v0.8) update IKON with HasNext with tag
+			var subformulas = new Dictionary<string, Formula>();
+			foreach (var source in dataSources)
+			{
+				var queue = new Parser(source.Stream).ParseAll();
+
+				while (queue.CountOf("Subformulas") > 0)
+				{
+					var data = queue.Dequeue("Subformulas").To<IkonComposite>();
+					foreach (var key in data.Keys)
+						subformulas[key] = data[key].To<Formula>();
+				}
+			}
+
 			var db = new StaticsDB();
 			
 			foreach(var source in dataSources) 
 			{
-				var parser = new Parser(source.Stream);
+				var parser = new Parser(source.Stream, subformulas);
 				try
 				{
 					foreach (var data in parser.ParseAll().Select(x => x.Value.To<IkonComposite>())) 
@@ -98,6 +112,9 @@ namespace Stareater.GameData.Databases
 								break;
 							case "DevelopmentTopic":
 								db.DevelopmentTopics.Add(loadDevelopmentTopic(data));
+								break;
+							case "Subformulas":
+								//TODO(v0.8) remove after IKON update
 								break;
 							case "Natives":
 								db.loadNatives(data.To<IkonComposite>());

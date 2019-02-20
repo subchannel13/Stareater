@@ -46,14 +46,14 @@ public partial class ExpressionParser {
 	public Token la;   // lookahead token
 	int errDist = minErrDist;
 
+	private readonly Dictionary<string, Formula> subformulas;
+
 -->declarations
 
-	public ExpressionParser(String input) :
-		this(new Scanner(input))
-	{ }
-
-	public ExpressionParser(Scanner scanner) {
-		this.scanner = scanner;
+	public ExpressionParser(String input, Dictionary<string, Formula> subformulas)
+	{
+		this.scanner = new Scanner(input);
+		this.subformulas = subformulas;
 		errors = new Errors();
 	}
 

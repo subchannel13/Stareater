@@ -20,7 +20,7 @@ namespace Stareater.Localization.Reading
 			if (expressionText.Length == 0)
 				throw new FormatException("Expression at " + parser.Reader + " is empty (zero length)");
 			
-			ExpressionParser expressionParser = new ExpressionParser(expressionText);
+			ExpressionParser expressionParser = new ExpressionParser(expressionText, new Dictionary<string, Formula>());
 			expressionParser.Parse();
 			
 			if (expressionParser.errors.count > 0)

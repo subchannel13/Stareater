@@ -5,12 +5,13 @@ namespace Stareater.AppData.Expressions
 {
 	public class Formula
 	{
-		private readonly IExpressionNode root;
 		private ISet<string> variables = null;
+
+		internal IExpressionNode Root { get; private set; }
 
 		internal Formula(IExpressionNode root)
 		{
-			this.root = root;
+			this.Root = root;
 		}
 
 		internal Formula(double constValue) : this(new Constant(constValue))
@@ -23,7 +24,7 @@ namespace Stareater.AppData.Expressions
 		public double Evaluate(IDictionary<string, double> variables)
 		{
 			try {
-				return root.Evaluate(variables);
+				return Root.Evaluate(variables);
 			}
 			catch(KeyNotFoundException)
 			{
@@ -38,7 +39,7 @@ namespace Stareater.AppData.Expressions
 			get 
 			{
 				if (variables == null)
-					variables = new HashSet<string>(root.Variables);
+					variables = new HashSet<string>(Root.Variables);
 				
 				return variables;
 			}

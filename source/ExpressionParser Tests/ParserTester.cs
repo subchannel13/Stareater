@@ -13,7 +13,7 @@ namespace ExpressionParser_Tests
 
 		public ParserTester(string input, IDictionary<string, double> variables, double expectedOutput)
 		{
-			this.parser = new ExpressionParser(input);
+			this.parser = new ExpressionParser(input, new Dictionary<string, Formula>());
 			parser.Parse();
 
 			this.expectedOutput = expectedOutput;
