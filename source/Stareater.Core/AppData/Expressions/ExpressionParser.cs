@@ -191,6 +191,10 @@ namespace Stareater.AppData.Expressions
 					return paramCountExact(segmentPoints.Count, 3, identifierName, listStart) ?
 						new IfThenElseFunction(segmentPoints[0], segmentPoints[1], segmentPoints[2]).Simplified() :
 						new Constant(double.NaN);
+				case "ratio":
+					return paramCountExact(segmentPoints.Count, 2, identifierName, listStart) ?
+						new RatioFunction(segmentPoints[0], segmentPoints[1]).Simplified() :
+						new Constant(double.NaN);
 				default:
 					if (this.subformulas.ContainsKey(identifierName))
 					{

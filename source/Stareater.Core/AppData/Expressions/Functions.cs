@@ -436,4 +436,57 @@ namespace Stareater.AppData.Expressions
 			}
 		}
 	}
+
+	class RatioFunction : IExpressionNode
+	{
+		private readonly IExpressionNode argument;
+		private readonly IExpressionNode baseValue;
+
+		public RatioFunction(IExpressionNode argument, IExpressionNode baseValue)
+		{
+			this.argument = argument;
+			this.baseValue = baseValue;
+		}
+
+		public IExpressionNode Simplified()
+		{
+			if (this.IsConstant)
+				return new Constant(this.Evaluate(null));
+
+			if (this.baseValue.IsConstant && this.baseValue.Evaluate(null) == 0)
+				return this.argument;
+
+			if (this.argument.IsConstant && this.argument.Evaluate(null) == 0)
+				return this.baseValue;
+
+			return this;
+		}
+
+		public bool IsConstant
+		{
+			get
+			{
+				return this.baseValue.IsConstant && this.argument.IsConstant;
+			}
+		}
+
+		public double Evaluate(IDictionary<string, double> variables)
+		{
+			var b = this.baseValue.Evaluate(variables);
+			var x = this.argument.Evaluate(variables);
+			return x / (x + b);
+		}
+
+		public IEnumerable<string> Variables
+		{
+			get
+			{
+				foreach (var variable in this.argument.Variables)
+					yield return variable;
+
+				foreach (var variable in this.baseValue.Variables)
+					yield return variable;
+			}
+		}
+	}
 }

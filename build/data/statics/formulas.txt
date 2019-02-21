@@ -1,5 +1,6 @@
 { Subformulas
-	scoreMiners # if(poor, 6/11, 3/8) * if(rich, 3/13, 3/8);
+	scoreMiners # ratio(2, 5 * if(poor, 0.5, 1) * if(rich ∨ richCore, 2, 1));
+	scoreFoodPop # 0.1 + (1 - 0.1 * (3 + if(fertile, 4, 0)) * if(toxic, 0.5, 1)) / 1.5 / if(toxic, 0.75, 1);
 }
 
 { ColonyFormulas
@@ -68,13 +69,13 @@
 { PlanetFormulas
 	type: asteriod
 	baseTraits [ :noAtmo :noGrav ]
-	bestTraits [ :fertile ]
-	worstTraits []
-	unchangeableTraits []
+	bestTraits [ :fertile :rich ]
+	worstTraits [ :toxic :poor :radioactive ]
+	unchangeableTraits [ :poor :rich :richCore ]
 	
-	bestScore # size * 3 * (1 - scoreMiners);
+	bestScore # size * 2 * (1 - scoreMiners);
 	startScore # size * (
-		3 * if(fertile, if(toxic, 29/90, 0.7), if(toxic, 7/30, 17/30)) * (1 - scoreMiners)
+		2 * (1 - scoreFoodPop) * (1 - scoreMiners)
 		- if(noAtmo, 0.5, 0) - if(noGrav, 0.2, 0) - if(toxic, 1, 0) - if(radioactive, 2, 0)
 	);
 }
@@ -82,13 +83,13 @@
 { PlanetFormulas
 	type: gasGiant
 	baseTraits []
-	bestTraits [ :fertile ]
-	worstTraits [ :noAtmo :noGrav ]
-	unchangeableTraits []
+	bestTraits [ :fertile :rich ]
+	worstTraits [ :noAtmo :noGrav :toxic :poor :radioactive ]
+	unchangeableTraits [ :poor :rich :richCore ]
 	
-	bestScore # size * 3 * (1 - scoreMiners);
+	bestScore # size * 2 * (1 - scoreMiners);
 	startScore # size * (
-		3 * if(fertile, if(toxic, 29/90, 0.7), if(toxic, 7/30, 17/30)) * (1 - scoreMiners)
+		2 * (1 - scoreFoodPop) * (1 - scoreMiners)
 		- if(noAtmo, 0.5, 0) - if(noGrav, 0.2, 0) - if(toxic, 1, 0) - if(radioactive, 2, 0)
 	);
 }
@@ -96,13 +97,13 @@
 { PlanetFormulas
 	type: rock
 	baseTraits []
-	bestTraits [ :fertile ]
-	worstTraits [ :noAtmo :noGrav ]
-	unchangeableTraits []
+	bestTraits [ :fertile :rich ]
+	worstTraits [ :noAtmo :noGrav :toxic :poor :radioactive ]
+	unchangeableTraits [ :poor :rich :richCore ]
 	
-	bestScore # size * 3 * (1 - scoreMiners);
+	bestScore # size * 2 * (1 - scoreMiners);
 	startScore # size * (
-		3 * if(fertile, if(toxic, 29/90, 0.7), if(toxic, 7/30, 17/30)) * (1 - scoreMiners)
+		2 * (1 - scoreFoodPop) * (1 - scoreMiners)
 		- if(noAtmo, 0.5, 0) - if(noGrav, 0.2, 0) - if(toxic, 1, 0) - if(radioactive, 2, 0)
 	);
 }

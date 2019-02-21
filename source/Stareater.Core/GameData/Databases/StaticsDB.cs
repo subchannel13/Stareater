@@ -75,6 +75,7 @@ namespace Stareater.GameData.Databases
 		public static StaticsDB Load(IEnumerable<TracableStream> dataSources)
 		{
 			//TODO(v0.8) update IKON with HasNext with tag
+			//TODO(v0.8) support nested subformulas
 			var subformulas = new Dictionary<string, Formula>();
 			foreach (var source in dataSources)
 			{
