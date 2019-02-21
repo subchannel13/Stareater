@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stareater.AppData.Expressions;
+using Stareater.Utils.Collections;
 
 namespace ExpressionParser_Tests
 {
@@ -11,17 +12,33 @@ namespace ExpressionParser_Tests
 		private readonly IDictionary<string, double> variables;
 		private readonly double delta = 0;
 
-		public ParserTester(string input, IDictionary<string, double> variables, double expectedOutput)
+		public ParserTester(string input, Dictionary<string, string> subformulas, Var variables, double expectedOutput)
 		{
-			this.parser = new ExpressionParser(input, new Dictionary<string, Formula>());
-			parser.Parse();
+			subformulas = subformulas ?? new Dictionary<string, string>();
+			var parsedSubformulas = new Dictionary<string, Formula>();
+			foreach (var subformula in subformulas)
+			{
+				this.parser = new ExpressionParser(subformula.Value, new Dictionary<string, Formula>());
+				parser.Parse();
+
+				if (parser.errors.count == 0)
+					parsedSubformulas[subformula.Key] = parser.ParsedFormula;
+				else
+					break;
+			}
+
+			if (parser == null || parser.errors.count == 0)
+			{
+				this.parser = new ExpressionParser(input, parsedSubformulas);
+				parser.Parse();
+			}
 
 			this.expectedOutput = expectedOutput;
-			this.variables = variables;
+			this.variables = (variables ?? new Var()).Get;
 		}
 
-		public ParserTester(string input, IDictionary<string, double> variables, double expectedOutput, double delta)
-			: this(input, variables, expectedOutput)
+		public ParserTester(string input, Dictionary<string, string> subformulas, Var variables, double expectedOutput, double delta)
+			: this(input, subformulas, variables, expectedOutput)
 		{
 			this.delta = delta;
 		}
@@ -31,8 +48,7 @@ namespace ExpressionParser_Tests
 			get
 			{
 				if (parser.errors.count > 0 || 
-					variables == null && parser.ParsedFormula.Variables.Count != 0 ||
-					variables != null && !parser.ParsedFormula.Variables.SetEquals(variables.Keys))
+					!parser.ParsedFormula.Variables.SetEquals(variables.Keys))
 					return false;
 					
 				double evaluated = parser.ParsedFormula.Evaluate(variables);
@@ -51,8 +67,7 @@ namespace ExpressionParser_Tests
 				if (parser.errors.count != 0)
 					return parser.errors.errorMessages.ToString();
 				
-				if (variables == null && parser.ParsedFormula.Variables.Count > 0 ||
-				    variables != null && !parser.ParsedFormula.Variables.SetEquals(variables.Keys))
+				if (!parser.ParsedFormula.Variables.SetEquals(variables.Keys))
 					return "Unexpected variables";
 				
 				return "Expected: " + expectedOutput + Environment.NewLine + "Evaluated: " + parser.ParsedFormula.Evaluate(variables);
