@@ -5,9 +5,9 @@ namespace Stareater.AppData.Expressions
 {
 	abstract class Comparison : IExpressionNode
 	{
-		private readonly IExpressionNode leftSide;
-		private readonly IExpressionNode rightSide;
-		private readonly double tolerance;
+		protected IExpressionNode leftSide { get; private set; }
+		protected IExpressionNode rightSide { get; private set; }
+		protected double tolerance { get; private set; }
 
 		protected Comparison(IExpressionNode leftSide, IExpressionNode rightSide, double tolerance)
 		{
@@ -47,7 +47,9 @@ namespace Stareater.AppData.Expressions
 					yield return variable;
 			}
 		}
-		
+
+		public abstract IExpressionNode Substitute(Dictionary<string, Formula> mapping);
+
 		protected abstract bool compare(double leftValue, double rightValue, bool withinTolerance);
 	}
 
@@ -56,6 +58,15 @@ namespace Stareater.AppData.Expressions
 		public Equality(IExpressionNode leftSide, IExpressionNode rightSide, double tolerance) :
 			base(leftSide, rightSide, tolerance)
 		{ }
+
+		public override IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new Equality(
+				this.leftSide.Substitute(mapping),
+				this.rightSide.Substitute(mapping),
+				this.tolerance
+			);
+		}
 
 		protected override bool compare(double leftValue, double rightValue, bool withinTolerance)
 		{
@@ -68,6 +79,15 @@ namespace Stareater.AppData.Expressions
 		public Inequality(IExpressionNode leftSide, IExpressionNode rightSide, double tolerance) :
 			base(leftSide, rightSide, tolerance)
 		{ }
+
+		public override IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new Inequality(
+				this.leftSide.Substitute(mapping),
+				this.rightSide.Substitute(mapping),
+				this.tolerance
+			);
+		}
 
 		protected override bool compare(double leftValue, double rightValue, bool withinTolerance)
 		{
@@ -83,6 +103,16 @@ namespace Stareater.AppData.Expressions
 			base(leftSide, rightSide, tolerance)
 		{
 			this.allowEqual = !strictlyLess;
+		}
+
+		public override IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new LessThen(
+				this.leftSide.Substitute(mapping),
+				this.rightSide.Substitute(mapping),
+				this.tolerance,
+				this.allowEqual
+			);
 		}
 
 		protected override bool compare(double leftValue, double rightValue, bool withinTolerance)
@@ -101,6 +131,16 @@ namespace Stareater.AppData.Expressions
 			base(leftSide, rightSide, tolerance)
 		{
 			this.allowEqual = !strictlyGreater;
+		}
+
+		public override IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new GreaterThen(
+				this.leftSide.Substitute(mapping),
+				this.rightSide.Substitute(mapping),
+				this.tolerance,
+				this.allowEqual
+			);
 		}
 
 		protected override bool compare(double leftValue, double rightValue, bool withinTolerance)

@@ -28,6 +28,14 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new LinearSegmentsFunction(
+				this.indexNode.Substitute(mapping),
+				this.segmentPoints.Select(x => x.Substitute(mapping)).ToArray()
+			);
+		}
+
 		public bool IsConstant
 		{
 			get { return indexNode.IsConstant && segmentPoints.All(point => point.IsConstant); }

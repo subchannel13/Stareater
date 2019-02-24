@@ -31,6 +31,11 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new MinFunction(this.sequence.Select(x => x.Substitute(mapping)).ToArray());
+		}
+
 		public bool IsConstant
 		{
 			get { return sequence.All(element => element.IsConstant); }
@@ -79,6 +84,11 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new MaxFunction(this.sequence.Select(x => x.Substitute(mapping)).ToArray());
+		}
+
 		public bool IsConstant
 		{
 			get { return sequence.All(element => element.IsConstant); }
@@ -115,6 +125,11 @@ namespace Stareater.AppData.Expressions
 				return new Constant(this.Evaluate(null));
 
 			return this;
+		}
+
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new FloorFunction(this.argument.Substitute(mapping));
 		}
 
 		public bool IsConstant
@@ -154,6 +169,11 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new CeilFunction(this.argument.Substitute(mapping));
+		}
+
 		public bool IsConstant
 		{
 			get { return argument.IsConstant; }
@@ -189,6 +209,11 @@ namespace Stareater.AppData.Expressions
 				return new Constant(this.Evaluate(null));
 
 			return this;
+		}
+
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new TruncFunction(this.argument.Substitute(mapping));
 		}
 
 		public bool IsConstant
@@ -228,6 +253,11 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new AbsFunction(this.argument.Substitute(mapping));
+		}
+
 		public bool IsConstant
 		{
 			get { return argument.IsConstant; }
@@ -265,6 +295,11 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new RoundFunction(this.argument.Substitute(mapping));
+		}
+
 		public bool IsConstant
 		{
 			get { return argument.IsConstant; }
@@ -300,6 +335,11 @@ namespace Stareater.AppData.Expressions
 				return new Constant(this.Evaluate(null));
 
 			return this;
+		}
+
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new SgnFunction(this.argument.Substitute(mapping));
 		}
 
 		public bool IsConstant
@@ -341,6 +381,15 @@ namespace Stareater.AppData.Expressions
 				return new Constant(this.Evaluate(null));
 			
 			return this;
+		}
+
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new LimitFunction(
+				this.argument.Substitute(mapping),
+				this.minNode.Substitute(mapping),
+				this.maxNode.Substitute(mapping)
+			);
 		}
 
 		public bool IsConstant
@@ -405,6 +454,15 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new IfThenElseFunction(
+				this.condition.Substitute(mapping),
+				this.trueNode.Substitute(mapping),
+				this.falseNode.Substitute(mapping)
+			);
+		}
+
 		public bool IsConstant
 		{
 			get
@@ -460,6 +518,14 @@ namespace Stareater.AppData.Expressions
 				return this.baseValue;
 
 			return this;
+		}
+
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new RatioFunction(
+				this.argument.Substitute(mapping),
+				this.baseValue.Substitute(mapping)
+			);
 		}
 
 		public bool IsConstant

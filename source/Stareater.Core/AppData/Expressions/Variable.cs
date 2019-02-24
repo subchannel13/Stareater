@@ -16,6 +16,14 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			if (mapping.ContainsKey(this.name))
+				return mapping[this.name].Root;
+			else
+				return new Variable(this.name);
+		}
+
 		public bool IsConstant
 		{
 			get { return false; }

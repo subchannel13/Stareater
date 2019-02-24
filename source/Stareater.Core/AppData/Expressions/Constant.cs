@@ -16,6 +16,11 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new Constant(this.value);
+		}
+
 		public bool IsConstant
 		{
 			get { return true; }

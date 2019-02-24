@@ -25,13 +25,14 @@ namespace Stareater.GameData.Reading
 			if (expressionText.Length == 0)
 				throw new FormatException("Expression at " + parser.Reader + " is empty (zero length)");
 
-			var expParser = new ExpressionParser(expressionText, subformulas);
+			//TODO(v0.8) remove subformula parameter
+			var expParser = new ExpressionParser(expressionText, new Dictionary<string, Formula>());
 			expParser.Parse();
 			
 			if (expParser.errors.count > 0)
 				throw new FormatException("Expression at " + parser.Reader.PositionDescription + " is invalid: " + expParser.errors.errorMessages);
 			
-			return new Expression(expParser.ParsedFormula);
+			return new Expression(expParser.ParsedFormula.Substitute(this.subformulas));
 		}
 
 		public char Sign

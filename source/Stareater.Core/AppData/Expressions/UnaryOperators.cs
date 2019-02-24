@@ -24,6 +24,8 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
+		public abstract IExpressionNode Substitute(Dictionary<string, Formula> mapping);
+
 		public abstract double Evaluate(IDictionary<string, double> variables);
 		
 		public IEnumerable<string> Variables
@@ -41,6 +43,11 @@ namespace Stareater.AppData.Expressions
 		public Negation(IExpressionNode child) : base(child)
 		{ }
 
+		public override IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new Negation(this.child.Substitute(mapping));
+		}
+
 		public override double Evaluate(IDictionary<string, double> variables)
 		{
 			return -child.Evaluate(variables);
@@ -51,6 +58,11 @@ namespace Stareater.AppData.Expressions
 	{
 		public ToBoolean(IExpressionNode child) : base(child)
 		{ }
+
+		public override IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new ToBoolean(this.child.Substitute(mapping));
+		}
 
 		public override double Evaluate(IDictionary<string, double> variables)
 		{
@@ -67,6 +79,11 @@ namespace Stareater.AppData.Expressions
 	{
 		public NegateToBoolean(IExpressionNode child) : base(child)
 		{ }
+
+		public override IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new NegateToBoolean(this.child.Substitute(mapping));
+		}
 
 		public override double Evaluate(IDictionary<string, double> variables)
 		{

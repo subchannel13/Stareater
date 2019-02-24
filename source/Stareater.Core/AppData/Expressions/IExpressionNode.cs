@@ -4,8 +4,10 @@ namespace Stareater.AppData.Expressions
 {
 	interface IExpressionNode
 	{
-		IExpressionNode Simplified();
 		bool IsConstant { get; }
+		IExpressionNode Simplified();
+		IExpressionNode Substitute(Dictionary<string, Formula> mapping);
+		
 		double Evaluate(IDictionary<string, double> variables);
 		IEnumerable<string> Variables { get; }
 	}

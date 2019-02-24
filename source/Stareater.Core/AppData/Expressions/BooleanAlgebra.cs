@@ -36,6 +36,11 @@ namespace Stareater.AppData.Expressions
 				return this;
 		}
 
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new ConjunctionSequence(this.sequence.Select(x => x.Substitute(mapping)).ToArray());
+		}
+
 		public bool IsConstant
 		{
 			get { return sequence.All(x => x.IsConstant); }
@@ -45,7 +50,7 @@ namespace Stareater.AppData.Expressions
 		{
 			return sequence.All(x => x.Evaluate(variables) >= 0) ? 1 : -1;
 		}
-		
+
 		public IEnumerable<string> Variables 
 		{ 
 			get
@@ -88,6 +93,11 @@ namespace Stareater.AppData.Expressions
 			}
 			else
 				return this;
+		}
+
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new DisjunctionSequence(this.sequence.Select(x => x.Substitute(mapping)).ToArray());
 		}
 
 		public bool IsConstant
@@ -155,6 +165,11 @@ namespace Stareater.AppData.Expressions
 			}
 			else
 				return this;
+		}
+
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new XorSequence(this.sequence.Select(x => x.Substitute(mapping)).ToArray());
 		}
 
 		public bool IsConstant

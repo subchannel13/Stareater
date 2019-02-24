@@ -37,6 +37,14 @@ namespace Stareater.AppData.Expressions
 				return this;
 		}
 
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new Summation(
+				this.sequence.Select(x => x.Substitute(mapping)).ToArray(),
+				this.inverseSequence.Select(x => x.Substitute(mapping)).ToArray()
+			);
+		}
+
 		public bool IsConstant
 		{
 			get { return sequence.All(x => x.IsConstant) && inverseSequence.All(x => x.IsConstant); }

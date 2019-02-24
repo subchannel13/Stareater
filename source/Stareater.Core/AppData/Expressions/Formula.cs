@@ -6,7 +6,6 @@ namespace Stareater.AppData.Expressions
 	public class Formula
 	{
 		private ISet<string> variables = null;
-
 		internal IExpressionNode Root { get; private set; }
 
 		internal Formula(IExpressionNode root)
@@ -33,13 +32,18 @@ namespace Stareater.AppData.Expressions
 
 			return double.NaN;
 		}
+
+		public Formula Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new Formula(this.Root.Substitute(mapping));
+		}
 		
 		public ISet<string> Variables 
 		{
 			get 
 			{
 				if (variables == null)
-					variables = new HashSet<string>(Root.Variables);
+					variables = new HashSet<string>(this.Root.Variables);
 				
 				return variables;
 			}

@@ -24,6 +24,11 @@ namespace Stareater.AppData.Expressions
 			return this;
 		}
 
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new ExponentSequence(this.sequence.Select(x => x.Substitute(mapping)).ToArray());
+		}
+
 		public bool IsConstant
 		{
 			get
