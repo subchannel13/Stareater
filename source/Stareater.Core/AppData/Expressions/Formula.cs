@@ -42,10 +42,10 @@ namespace Stareater.AppData.Expressions
 		{
 			get 
 			{
-				if (variables == null)
-					variables = new HashSet<string>(this.Root.Variables);
+				if (this.variables == null)
+					this.variables = new HashSet<string>(this.Root.Variables);
 				
-				return variables;
+				return this.variables;
 			}
 		}
 	}

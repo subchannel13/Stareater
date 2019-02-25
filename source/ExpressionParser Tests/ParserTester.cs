@@ -8,30 +8,30 @@ namespace ExpressionParser_Tests
 	class ParserTester
 	{
 		private readonly ExpressionParser parser;
+		private readonly Formula substituedExpr;
 		private readonly double expectedOutput;
 		private readonly IDictionary<string, double> variables;
 		private readonly double delta = 0;
 
 		public ParserTester(string input, Dictionary<string, string> subformulas, Var variables, double expectedOutput)
 		{
+			this.parser = new ExpressionParser(input);
+			this.parser.Parse();
+
 			subformulas = subformulas ?? new Dictionary<string, string>();
 			var parsedSubformulas = new Dictionary<string, Formula>();
 			foreach (var subformula in subformulas)
 			{
-				this.parser = new ExpressionParser(subformula.Value, new Dictionary<string, Formula>());
-				parser.Parse();
+				var subparser = new ExpressionParser(subformula.Value);
+				subparser.Parse();
 
-				if (parser.errors.count == 0)
-					parsedSubformulas[subformula.Key] = parser.ParsedFormula;
-				else
-					break;
+				if (parser.errors.count > 0)
+					throw new FormatException(subparser.errors.errorMessages.ToString());
+
+				parsedSubformulas[subformula.Key] = subparser.ParsedFormula;
 			}
 
-			if (parser == null || parser.errors.count == 0)
-			{
-				this.parser = new ExpressionParser(input, parsedSubformulas);
-				parser.Parse();
-			}
+			this.substituedExpr = (this.parser.errors.count == 0) ? this.parser.ParsedFormula.Substitute(parsedSubformulas) : null;
 
 			this.expectedOutput = expectedOutput;
 			this.variables = (variables ?? new Var()).Get;
@@ -47,16 +47,13 @@ namespace ExpressionParser_Tests
 		{
 			get
 			{
-				if (parser.errors.count > 0 || 
-					!parser.ParsedFormula.Variables.SetEquals(variables.Keys))
+				if (this.parser.errors.count > 0 || 
+					!this.substituedExpr.Variables.SetEquals(this.variables.Keys))
 					return false;
-					
-				double evaluated = parser.ParsedFormula.Evaluate(variables);
-				
-				return Math.Abs(evaluated - expectedOutput) <= delta ||
-					(double.IsNaN(evaluated) && double.IsNaN(expectedOutput)) ||
-					(double.IsNegativeInfinity(evaluated) && double.IsNegativeInfinity(expectedOutput)) ||
-					(double.IsPositiveInfinity(evaluated) && double.IsPositiveInfinity(expectedOutput));				
+
+				return this.isCorrect(this.substituedExpr) && (
+					!this.substituedExpr.Variables.SetEquals(this.parser.ParsedFormula.Variables) || this.isCorrect(this.parser.ParsedFormula)
+				);
 			}
 		}
 
@@ -64,14 +61,24 @@ namespace ExpressionParser_Tests
 		{
 			get
 			{
-				if (parser.errors.count != 0)
-					return parser.errors.errorMessages.ToString();
+				if (this.parser.errors.count != 0)
+					return this.parser.errors.errorMessages.ToString();
 				
-				if (!parser.ParsedFormula.Variables.SetEquals(variables.Keys))
+				if (!this.substituedExpr.Variables.SetEquals(variables.Keys))
 					return "Unexpected variables";
 				
-				return "Expected: " + expectedOutput + Environment.NewLine + "Evaluated: " + parser.ParsedFormula.Evaluate(variables);
+				return "Expected: " + this.expectedOutput + Environment.NewLine + "Evaluated: " + this.parser.ParsedFormula.Evaluate(this.variables);
 			}
+		}
+
+		private bool isCorrect(Formula formula)
+		{
+			double evaluated = formula.Evaluate(variables);
+
+			return Math.Abs(evaluated - this.expectedOutput) <= delta ||
+					(double.IsNaN(evaluated) && double.IsNaN(this.expectedOutput)) ||
+					(double.IsNegativeInfinity(evaluated) && double.IsNegativeInfinity(this.expectedOutput)) ||
+					(double.IsPositiveInfinity(evaluated) && double.IsPositiveInfinity(this.expectedOutput));
 		}
 	}
 }

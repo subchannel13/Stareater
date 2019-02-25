@@ -27,16 +27,13 @@ public partial class ExpressionParser {
 	public Token la;   // lookahead token
 	int errDist = minErrDist;
 
-	private readonly Dictionary<string, Formula> subformulas;
-
 public Formula ParsedFormula { get; private set; }
 
 
 
-	public ExpressionParser(String input, Dictionary<string, Formula> subformulas)
+	public ExpressionParser(String input)
 	{
 		this.scanner = new Scanner(input);
-		this.subformulas = subformulas;
 		errors = new Errors();
 	}
 

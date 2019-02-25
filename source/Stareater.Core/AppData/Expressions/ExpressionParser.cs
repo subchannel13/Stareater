@@ -196,14 +196,7 @@ namespace Stareater.AppData.Expressions
 						new RatioFunction(segmentPoints[0], segmentPoints[1]).Simplified() :
 						new Constant(double.NaN);
 				default:
-					if (this.subformulas.ContainsKey(identifierName))
-					{
-						var formula = this.subformulas[identifierName];
-						return paramCountExact(segmentPoints.Count, 0, identifierName, listStart) ?
-							formula.Root :
-							new Constant(double.NaN);
-					}
-					else if (segmentPoints.Count != 0) {
+					if (segmentPoints.Count != 0) {
 						SemErr("Invalid function name \"" + identifierName + "\" at " + listStart + "th character.");
 						return new Constant(double.NaN);
 					}

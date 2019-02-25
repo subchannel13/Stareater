@@ -26,7 +26,7 @@ namespace Stareater.GameData.Reading
 				throw new FormatException("Expression at " + parser.Reader + " is empty (zero length)");
 
 			//TODO(v0.8) remove subformula parameter
-			var expParser = new ExpressionParser(expressionText, new Dictionary<string, Formula>());
+			var expParser = new ExpressionParser(expressionText);
 			expParser.Parse();
 			
 			if (expParser.errors.count > 0)

@@ -20,7 +20,7 @@ namespace Stareater.Localization.Reading
 			if (expressionText.Length == 0)
 				throw new FormatException("Expression at " + parser.Reader + " is empty (zero length)");
 			
-			ExpressionParser expressionParser = new ExpressionParser(expressionText, new Dictionary<string, Formula>());
+			ExpressionParser expressionParser = new ExpressionParser(expressionText);
 			expressionParser.Parse();
 			
 			if (expressionParser.errors.count > 0)
@@ -31,6 +31,7 @@ namespace Stareater.Localization.Reading
 			if (expressionParser.ParsedFormula.Variables.Count == 0)
 				throw new FormatException("Condition expression at " + parser.Reader + " is constant. If intentional, use format witout condition.");
 			
+			//TODO(later) substitute subformulas
 			return new ConditionalText(expressionParser.ParsedFormula, parser.ParseNext().To<IText>());
 		}
 
