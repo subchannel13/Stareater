@@ -121,7 +121,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		public double MaxPlanetSize(PlanetType type)
 		{
 			//TODO(v0.8) load from file
-			return 100;
+			return 200;
 		}
 
 		public IEnumerable<StarSystemBuilder> Generate(Random rng, StarPositions starPositions)

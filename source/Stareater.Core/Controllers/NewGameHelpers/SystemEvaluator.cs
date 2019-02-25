@@ -52,9 +52,15 @@ namespace Stareater.Controllers.NewGameHelpers
 		public double WorstSystemScore(IStarPopulator starPopulator)
 		{
 			//TODO(later) what about star?
-			return starPopulator.MinPlanets * bodyTypes().Max(x => this.startingScore(
-				new Planet(null, 0, x, starPopulator.MinPlanetSize(x), this.traitList(this.statics.PlanetForumlas[x].WorstTraits))
+			var worstMaintenance = starPopulator.MaxPlanets * bodyTypes().Min(x => this.startingScore(
+				 new Planet(null, 0, x, starPopulator.MaxPlanetSize(x), this.traitList(this.statics.PlanetForumlas[x].WorstTraits))
 			));
+
+			var minimalPlanets = starPopulator.MinPlanets * bodyTypes().Min(x => this.startingScore(
+				 new Planet(null, 0, x, starPopulator.MinPlanetSize(x), this.traitList(this.statics.PlanetForumlas[x].WorstTraits))
+			));
+
+			return Math.Min(minimalPlanets, worstMaintenance);
 		}
 
 		private double startingScore(Planet planet)
