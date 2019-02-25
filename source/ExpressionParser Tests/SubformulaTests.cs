@@ -28,5 +28,17 @@ namespace ExpressionParser_Tests
 			var test = new ParserTester("2 * subformula", subformulas, new Var("x", 3), 18);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
+
+		[Test]
+		public void SubformulaNestedConst()
+		{
+			var subformulas = new Dictionary<string, string>
+			{
+				{"outer", "inner" },
+				{"inner", "5" }
+			};
+			var test = new ParserTester("2 * outer", subformulas, null, 10);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
 	}
 }

@@ -79,15 +79,27 @@ namespace Stareater.GameData.Databases
 			var subformulas = new Dictionary<string, Formula>();
 			foreach (var source in dataSources)
 			{
-				var queue = new Parser(source.Stream).ParseAll();
-
-				while (queue.CountOf("Subformulas") > 0)
+				try
 				{
-					var data = queue.Dequeue("Subformulas").To<IkonComposite>();
-					foreach (var key in data.Keys)
-						subformulas[key] = data[key].To<Formula>();
+					var queue = new Parser(source.Stream).ParseAll();
+
+					while (queue.CountOf("Subformulas") > 0)
+					{
+						var data = queue.Dequeue("Subformulas").To<IkonComposite>();
+						foreach (var key in data.Keys)
+							subformulas[key] = data[key].To<Formula>();
+					}
+				}
+				catch (IOException e)
+				{
+					throw new IOException(source.SourceInfo, e);
+				}
+				catch (FormatException e)
+				{
+					throw new FormatException(source.SourceInfo, e);
 				}
 			}
+			subformulas = ExpressionParser.ResloveSubformulaNesting(subformulas);
 
 			var db = new StaticsDB();
 			

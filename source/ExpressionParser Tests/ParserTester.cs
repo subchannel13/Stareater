@@ -30,6 +30,7 @@ namespace ExpressionParser_Tests
 
 				parsedSubformulas[subformula.Key] = subparser.ParsedFormula;
 			}
+			parsedSubformulas = ExpressionParser.ResloveSubformulaNesting(parsedSubformulas);
 
 			this.substituedExpr = (this.parser.errors.count == 0) ? this.parser.ParsedFormula.Substitute(parsedSubformulas) : null;
 

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
+using System;
+using Stareater.Utils.Collections;
 
 namespace Stareater.AppData.Expressions
 {
@@ -234,6 +236,33 @@ namespace Stareater.AppData.Expressions
 		private double toDouble(string text)
 		{
 			return double.Parse(text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat);
+		}
+
+		public static Dictionary<string, Formula> ResloveSubformulaNesting(Dictionary<string, Formula> rawSubformulas)
+		{
+			var nestedSubformulas = new Dictionary<string, Formula>(rawSubformulas);
+			var dependencies = rawSubformulas.ToDictionary(
+				x => x.Key, 
+				x => x.Value.Variables.Where(name => rawSubformulas.ContainsKey(name)).ToList()
+			);
+
+			while(dependencies.Keys.Any())
+			{
+				var oldCount = dependencies.Count;
+				foreach (var name in dependencies.Keys.ToList())
+					if (dependencies[name].All(x => !dependencies.ContainsKey(x)))
+					{
+						if (dependencies[name].Any())
+							nestedSubformulas[name] = nestedSubformulas[name].Substitute(nestedSubformulas);
+
+						dependencies.Remove(name);
+					}
+
+				if (oldCount == dependencies.Count)
+					throw new FormatException("Subformulas have cyclic dependency");
+			}
+
+			return nestedSubformulas;
 		}
 	}
 }
