@@ -52,7 +52,7 @@ namespace Stareater.AppData.Expressions
 			return new Product(
 				this.sequence.Select(x => x.Substitute(mapping)).ToArray(),
 				this.inverseSequence.Select(x => x.Substitute(mapping)).ToArray()
-			);
+			).Simplified();
 		}
 
 		public bool IsConstant
@@ -106,7 +106,7 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
 		{
-			return new IntegerDivision(this.sequence.Select(x => x.Substitute(mapping)).ToArray());
+			return new IntegerDivision(this.sequence.Select(x => x.Substitute(mapping)).ToArray()).Simplified();
 		}
 
 		public bool IsConstant
@@ -163,7 +163,7 @@ namespace Stareater.AppData.Expressions
 
 		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
 		{
-			return new IntegerReminder(this.sequence.Select(x => x.Substitute(mapping)).ToArray());
+			return new IntegerReminder(this.sequence.Select(x => x.Substitute(mapping)).ToArray()).Simplified();
 		}
 
 		public bool IsConstant

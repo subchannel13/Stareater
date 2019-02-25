@@ -68,7 +68,7 @@ namespace ExpressionParser_Tests
 				if (!this.substituedExpr.Variables.SetEquals(variables.Keys))
 					return "Unexpected variables";
 				
-				return "Expected: " + this.expectedOutput + Environment.NewLine + "Evaluated: " + this.parser.ParsedFormula.Evaluate(this.variables);
+				return "Expected: " + this.expectedOutput + Environment.NewLine + "Evaluated: " + this.substituedExpr.Evaluate(this.variables);
 			}
 		}
 

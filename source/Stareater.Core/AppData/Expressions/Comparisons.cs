@@ -65,7 +65,7 @@ namespace Stareater.AppData.Expressions
 				this.leftSide.Substitute(mapping),
 				this.rightSide.Substitute(mapping),
 				this.tolerance
-			);
+			).Simplified();
 		}
 
 		protected override bool compare(double leftValue, double rightValue, bool withinTolerance)
@@ -86,7 +86,7 @@ namespace Stareater.AppData.Expressions
 				this.leftSide.Substitute(mapping),
 				this.rightSide.Substitute(mapping),
 				this.tolerance
-			);
+			).Simplified();
 		}
 
 		protected override bool compare(double leftValue, double rightValue, bool withinTolerance)
@@ -112,7 +112,7 @@ namespace Stareater.AppData.Expressions
 				this.rightSide.Substitute(mapping),
 				this.tolerance,
 				this.allowEqual
-			);
+			).Simplified();
 		}
 
 		protected override bool compare(double leftValue, double rightValue, bool withinTolerance)
@@ -140,7 +140,7 @@ namespace Stareater.AppData.Expressions
 				this.rightSide.Substitute(mapping),
 				this.tolerance,
 				this.allowEqual
-			);
+			).Simplified();
 		}
 
 		protected override bool compare(double leftValue, double rightValue, bool withinTolerance)

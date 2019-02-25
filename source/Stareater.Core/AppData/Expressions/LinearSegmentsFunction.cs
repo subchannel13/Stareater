@@ -33,7 +33,7 @@ namespace Stareater.AppData.Expressions
 			return new LinearSegmentsFunction(
 				this.indexNode.Substitute(mapping),
 				this.segmentPoints.Select(x => x.Substitute(mapping)).ToArray()
-			);
+			).Simplified();
 		}
 
 		public bool IsConstant

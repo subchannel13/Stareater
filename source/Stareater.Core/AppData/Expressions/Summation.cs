@@ -42,7 +42,7 @@ namespace Stareater.AppData.Expressions
 			return new Summation(
 				this.sequence.Select(x => x.Substitute(mapping)).ToArray(),
 				this.inverseSequence.Select(x => x.Substitute(mapping)).ToArray()
-			);
+			).Simplified();
 		}
 
 		public bool IsConstant
