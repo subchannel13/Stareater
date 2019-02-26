@@ -23,41 +23,71 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 
 		private const string LanguageContext = "DefaultPopulator";
 
+		private const string ClimateLevelKey = "Climate";
+		private const string PotentialLevelKey = "Potential";
 		private const string StarTypeKey = "StarType";
 		private const string StarColorKey = "color";
 		private const string StarMinRadiationKey = "minRadiation";
 		private const string StarMaxRadiationKey = "maxRadiation";
 
 		private SelectorParameter climateParameter;
+		private SelectorParameter potentialParameter;
+
+		private ClimateLevel[] climateLevels;
+		private PotentialLevel[] potentialLevels;
 
 		private StarType[] starTypes;
 		private TraitType[] planetTraits;
 
 		public void Initialize(string dataPath)
 		{
-			TaggableQueue<object, IkadnBaseObject> data;
+			TaggableQueue<object, IkadnBaseObject> queue;
 			using (var parser = new IkonParser(new StreamReader(dataPath + ParametersFile)))
-				data = parser.ParseAll();
+				queue = parser.ParseAll();
+
+			var generalData = queue.Dequeue("General").To<IkonComposite>();
+			this.MinScore = generalData["minScore"].To<double>();
+			this.MaxScore = generalData["maxScore"].To<double>();
+
+			var climates = new List<ClimateLevel>();
+			while (queue.CountOf(ClimateLevelKey) > 0)
+			{
+				var data = queue.Dequeue(ClimateLevelKey).To<IkonComposite>();
+				climates.Add(new ClimateLevel(data["langCode"].To<string>()));
+			}
+			climateLevels = climates.ToArray();
+
+			var potentials = new List<PotentialLevel>();
+			while (queue.CountOf(PotentialLevelKey) > 0)
+			{
+				var data = queue.Dequeue(PotentialLevelKey).To<IkonComposite>();
+				potentials.Add(new PotentialLevel(data["langCode"].To<string>()));
+			}
+			potentialLevels = potentials.ToArray();
 
 			var starTypes = new List<StarType>();
-			while (data.CountOf(StarTypeKey) > 0)
+			while (queue.CountOf(StarTypeKey) > 0)
 			{
-				var starTypeData = data.Dequeue(StarTypeKey).To<IkonComposite>();
+				var data = queue.Dequeue(StarTypeKey).To<IkonComposite>();
 				starTypes.Add(new StarType(
-					extractColor(starTypeData[StarColorKey].To<IkonArray>()),
-					starTypeData[StarMinRadiationKey].To<double>(),
-					starTypeData[StarMaxRadiationKey].To<double>()
+					extractColor(data[StarColorKey].To<IkonArray>()),
+					data[StarMinRadiationKey].To<double>(),
+					data[StarMaxRadiationKey].To<double>()
 				));
 			}
 			this.starTypes = starTypes.ToArray();
 
-			//TODO(v0.8) make data driven
-			this.climateParameter = new SelectorParameter(LanguageContext, "climate", new Dictionary<int, string>()
-			{
-				{0, "hostileClimate"},
-				{1, "normalClimate"},
-				{2, "paradiseClimate"},
-			}, 1);
+			//TODO(v0.8) why Dictionary<int, string>?
+			this.climateParameter = new SelectorParameter(
+				LanguageContext, "climate", 
+				climates.Select((x, i) => i).ToDictionary(i => i, i => climates[i].LanguageCode),
+				generalData["defaultClimate"].To<int>()
+			);
+			this.potentialParameter = new SelectorParameter(
+				LanguageContext, "potential",
+				potentials.Select((x, i) => i).ToDictionary(i => i, i => potentials[i].LanguageCode),
+				generalData["defaultPotential"].To<int>()
+			);
 		}
 
 		public void SetGameData(IEnumerable<TraitType> planetTraits)
@@ -88,41 +118,27 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		{
 			get
 			{
-				return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["description"].Text(new Dictionary<string, double>()
-				{
-					{"badClime", climateParameter.Value == 0 ? 1 : -1},
-					{"avgClime", climateParameter.Value == 1 ? 1 : -1},
-					{"goodClime", climateParameter.Value == 2 ? 1 : -1},
-				});
+				var vars = new Var().
+					Init(climateLevels.Select(x => x.LanguageCode), -1).
+					Set(climateLevels[climateParameter.Value].LanguageCode, 1).
+					Init(potentialLevels.Select(x => x.LanguageCode), -1).
+					Set(potentialLevels[potentialParameter.Value].LanguageCode, 1);
+
+				return LocalizationManifest.Get.CurrentLanguage[LanguageContext]["description"].Text(vars.Get);
 			}
 		}
 
 		public IEnumerable<AParameterBase> Parameters
 		{
-			get { yield return climateParameter; }
+			get
+			{
+				yield return climateParameter;
+				yield return potentialParameter;
+			}
 		}
 
-		public double MinPlanets
-		{
-			get { return 0; }
-		}
-
-		public double MaxPlanets
-		{
-			get { return 3; }
-		}
-
-		public double MinPlanetSize(PlanetType type)
-		{
-			//TODO(v0.8) load from file
-			return 100;
-		}
-
-		public double MaxPlanetSize(PlanetType type)
-		{
-			//TODO(v0.8) load from file
-			return 200;
-		}
+		public double MinScore { get; private set; }
+		public double MaxScore { get; private set; }
 
 		public IEnumerable<StarSystemBuilder> Generate(Random rng, StarPositions starPositions)
 		{

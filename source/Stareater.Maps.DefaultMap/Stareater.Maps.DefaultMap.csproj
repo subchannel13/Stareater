@@ -45,6 +45,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProximityLanes\DegreeOption.cs" />
     <Compile Include="ProximityLanes\ProximityLanesBuilder.cs" />
+    <Compile Include="RybPopulator\ClimateLevel.cs" />
+    <Compile Include="RybPopulator\PotentialLevel.cs" />
     <Compile Include="RybPopulator\RybStarPopulator.cs" />
     <Compile Include="RybPopulator\StarType.cs" />
     <Compile Include="SquareShape\SizeOption.cs" />

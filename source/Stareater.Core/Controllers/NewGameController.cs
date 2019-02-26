@@ -167,8 +167,8 @@ namespace Stareater.Controllers
 			{
 				this.mStarPopulator = value;
 
-				this.BestSystemScore = this.evaluator.BestSystemScore(this.mStarPopulator);
-				this.WorstSystemScore = this.evaluator.WorstSystemScore(this.mStarPopulator);
+				this.BestSystemScore = this.mStarPopulator.MaxScore;
+				this.WorstSystemScore = this.mStarPopulator.MinScore;
 			}
 		}
 

@@ -1,0 +1,57 @@
+﻿:SquareMap
+name = Square map
+description §
+		Square map
+		{=size} stars
+	\
+
+size = Size
+miniatureSize = Miniature
+smallSize = Small
+normalSize = Normal
+displacement = Position randomness
+-
+
+:ProximityLanes
+name = Short starlanes
+description §
+		{minimal}{few}{average}{many}{max} short starlanes
+	\
+	minimal ? lanes = 0; =Scarce
+	few ? lanes = 1; =Few
+	average ? lanes = 2; =Abundant
+	many ? lanes = 3; =A lot of
+	max ? lanes = 4; =Maximum
+
+degree = Starlane frequency
+minimal = Minimal
+few = Few
+average = Decent
+many = Many
+maximal = Maximal
+-
+
+
+:DefaultPopulator
+name = Default planets
+description §
+		Environment: {badClime}{avgClime}{goodClime}
+		Potential: {lowPotent}{normPotent}{highPotent}
+	\
+	badClime ?badClime; =hostile
+	avgClime ?avgClime; =normal
+	goodClime ?goodClime; =paradise
+	lowPotent ?lowPotent; =miserable
+	normPotent ?normPotent; =normal
+	highPotent ?highPotent; =promising
+
+climate = Environment
+badClime = Hostile
+avgClime = Normal
+goodClime = Paradise
+
+potential = Potential
+lowPotent = Miserable
+normPotent = Normal
+highPotent = Promising
+-

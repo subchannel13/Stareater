@@ -41,28 +41,6 @@ namespace Stareater.Controllers.NewGameHelpers
 			});
 		}
 
-		public double BestSystemScore(IStarPopulator starPopulator)
-		{
-			//TODO(later) what about star?
-			return starPopulator.MaxPlanets * bodyTypes().Max(x => this.potentialScore(
-				new Planet(null, 0, x, starPopulator.MaxPlanetSize(x), this.traitList(this.statics.PlanetForumlas[x].BestTraits))
-			));
-		}
-
-		public double WorstSystemScore(IStarPopulator starPopulator)
-		{
-			//TODO(later) what about star?
-			var worstMaintenance = starPopulator.MaxPlanets * bodyTypes().Min(x => this.startingScore(
-				 new Planet(null, 0, x, starPopulator.MaxPlanetSize(x), this.traitList(this.statics.PlanetForumlas[x].WorstTraits))
-			));
-
-			var minimalPlanets = starPopulator.MinPlanets * bodyTypes().Min(x => this.startingScore(
-				 new Planet(null, 0, x, starPopulator.MinPlanetSize(x), this.traitList(this.statics.PlanetForumlas[x].WorstTraits))
-			));
-
-			return Math.Min(minimalPlanets, worstMaintenance);
-		}
-
 		private double startingScore(Planet planet)
 		{
 			var vars = new Var(GameLogic.ColonyProcessor.PlanetSizeKey, planet.Size).

@@ -13,9 +13,7 @@ namespace Stareater.Galaxy.Builders
 
 		IEnumerable<StarSystemBuilder> Generate(Random rng, StarPositions starPositions);
 
-		double MinPlanets { get; }
-		double MaxPlanets { get; }
-		double MinPlanetSize(PlanetType type);
-		double MaxPlanetSize(PlanetType type);
+		double MinScore { get; }
+		double MaxScore { get; }
 	}
 }
