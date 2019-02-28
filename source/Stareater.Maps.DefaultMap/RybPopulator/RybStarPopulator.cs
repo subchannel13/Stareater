@@ -20,8 +20,9 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 	public class RybStarPopulator : IStarPopulator
 	{
 		private const string ParametersFile = "rybPopulator.txt";
-
 		private const string LanguageContext = "DefaultPopulator";
+
+		private const int SysGenRepeats = 5;
 
 		private const string ClimateLevelKey = "Climate";
 		private const string PotentialLevelKey = "Potential";
@@ -140,22 +141,34 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		public double MinScore { get; private set; }
 		public double MaxScore { get; private set; }
 
-		public IEnumerable<StarSystemBuilder> Generate(Random rng, StarPositions starPositions)
+		public IEnumerable<StarSystemBuilder> Generate(Random rng, SystemEvaluator evaluator, StarPositions starPositions)
 		{
-			int colorI = 0;
 			var namer = new StarNamer(starPositions.Stars.Length, new Random());
 
-			//TODO(v0.8): Randomize star type distribution
 			//TODO(v0.8): Star size and trait distribution
 			foreach (var position in starPositions.Stars)
-			{
-				var system = new StarSystemBuilder(starTypes[colorI++ % starTypes.Length].Hue, 1, namer.NextName(), position, new List<TraitType>());
-				system.AddPlanet(1, PlanetType.Rock, Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng));
-				system.AddPlanet(2, PlanetType.Asteriod, Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng));
-				system.AddPlanet(3, PlanetType.GasGiant, Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng));
+				yield return generateSystem(namer, position, rng, evaluator, - 500, 1000);
+		}
 
-				yield return system;
+		private StarSystemBuilder generateSystem(StarNamer namer, Vector2D position, Random rng, SystemEvaluator evaluator, double startingScore, double potentialScore)
+		{
+			var starColor = starTypes[rng.Next(starTypes.Length)].Hue;
+			var starName = namer.NextName();
+
+			var systems = new List<StarSystemBuilder>();
+			for (int i = 0; i < SysGenRepeats; i++)
+			{
+				var system = new StarSystemBuilder(starColor, 1, starName, position, new List<TraitType>());
+				systems.Add(system);
+				var planets = rng.Next(6);
+				for(int p = 0; p < planets; p++)
+					system.AddPlanet(p, bodyTypes()[rng.Next(3)], Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng));
 			}
+
+			return Methods.FindBest(systems, x => -Methods.MeanSquareError(
+				evaluator.StartingScore(x) - startingScore,
+				evaluator.PotentialScore(x) - potentialScore
+			));
 		}
 
 		private List<TraitType> randomTraits(Random rng)
@@ -167,6 +180,11 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 				options.Take();
 
 			return options.InnerList;
+		}
+
+		private static PlanetType[] bodyTypes()
+		{
+			return new[] { PlanetType.Asteriod, PlanetType.GasGiant, PlanetType.Rock };
 		}
 	}
 }

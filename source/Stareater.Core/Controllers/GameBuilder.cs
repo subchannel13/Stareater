@@ -95,7 +95,7 @@ namespace Stareater.Controllers
 		private static StatesDB createStates(Random rng, NewGameController newGameData, Player[] players, StaticsDB statics)
 		{
 			var starPositions = newGameData.StarPositioner.Generate(rng, newGameData.PlayerList.Count);
-			var starSystems = newGameData.StarPopulator.Generate(rng, starPositions).ToArray();
+			var starSystems = newGameData.StarPopulator.Generate(rng, new SystemEvaluator(statics), starPositions).ToArray();
 			
 			var stars = createStars(starSystems);
 			var wormholes = createWormholes(starSystems, newGameData.StarConnector.Generate(rng, starPositions));

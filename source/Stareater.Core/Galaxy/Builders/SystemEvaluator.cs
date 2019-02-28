@@ -1,30 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Stareater.Galaxy;
 using Stareater.Galaxy.BodyTraits;
-using Stareater.Galaxy.Builders;
 using Stareater.GameData.Databases;
 using Stareater.Utils.Collections;
 
-namespace Stareater.Controllers.NewGameHelpers
+namespace Stareater.Galaxy.Builders
 {
-	class SystemEvaluator
+	public class SystemEvaluator
 	{
 		private readonly StaticsDB statics;
 
-		public SystemEvaluator(StaticsDB statics)
+		internal SystemEvaluator(StaticsDB statics)
 		{
 			this.statics = statics;
 		}
 
-		public double StartingScore(StarData star, IEnumerable<Planet> planets)
+		public double StartingScore(StarSystemBuilder system)
+		{
+			//TODO(later) what about star?
+			return this.StartingScore(system.Star, system.Planets);
+		}
+
+		internal double StartingScore(StarData star, IEnumerable<Planet> planets)
 		{
 			//TODO(later) what about star?
 			return planets.Sum(x => this.startingScore(x));
 		}
 
-		public double PotentialScore(StarData star, IEnumerable<Planet> planets)
+		public double PotentialScore(StarSystemBuilder system)
+		{
+			//TODO(later) what about star?
+			return this.PotentialScore(system.Star, system.Planets);
+		}
+
+		internal double PotentialScore(StarData star, IEnumerable<Planet> planets)
 		{
 			//TODO(v0.8) remove negative traits
 			return planets.Sum(planet =>
@@ -66,11 +75,6 @@ namespace Stareater.Controllers.NewGameHelpers
 		private List<TraitType> traitList(IEnumerable<string> traitIds)
 		{
 			return traitIds.Select(x => this.statics.PlanetTraits[x]).ToList();
-		}
-
-		private static PlanetType[] bodyTypes()
-		{
-			return new[] { PlanetType.Asteriod, PlanetType.GasGiant, PlanetType.Rock };
 		}
 	}
 }

@@ -170,6 +170,16 @@ namespace Stareater.Utils
 		}
 
 		/// <summary>
+		/// Mean square of a sequence representing errors (difference from desired value).
+		/// </summary>
+		/// <param name="errors">Sequence of error values</param>
+		/// <returns>Mean square error</returns>
+		public static double MeanSquareError(params double[] errors)
+		{
+			return errors.Average(x => x * x);
+		}
+
+		/// <summary>
 		/// Generates an arithmetic sequence.
 		/// </summary>
 		/// <param name="first">First element of the sequence</param>

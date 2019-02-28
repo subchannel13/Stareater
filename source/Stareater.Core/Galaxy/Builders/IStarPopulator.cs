@@ -11,7 +11,7 @@ namespace Stareater.Galaxy.Builders
 
 		void SetGameData(IEnumerable<TraitType> planetTraits);
 
-		IEnumerable<StarSystemBuilder> Generate(Random rng, StarPositions starPositions);
+		IEnumerable<StarSystemBuilder> Generate(Random rng, SystemEvaluator evaluator, StarPositions starPositions);
 
 		double MinScore { get; }
 		double MaxScore { get; }
