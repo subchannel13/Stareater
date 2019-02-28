@@ -49,12 +49,16 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			var generalData = queue.Dequeue("General").To<IkonComposite>();
 			this.MinScore = generalData["minScore"].To<double>();
 			this.MaxScore = generalData["maxScore"].To<double>();
+			var ranges = generalData["ranges"].To<double[][]>();
 
 			var climates = new List<ClimateLevel>();
 			while (queue.CountOf(ClimateLevelKey) > 0)
 			{
 				var data = queue.Dequeue(ClimateLevelKey).To<IkonComposite>();
-				climates.Add(new ClimateLevel(data["langCode"].To<string>()));
+				climates.Add(new ClimateLevel(
+					data["langCode"].To<string>(),
+					data["rangeWeights"].To<double[]>().Select((x,i) => new WeightedRange(ranges[i][0], ranges[i][1], x)).ToArray()
+				));
 			}
 			climateLevels = climates.ToArray();
 
@@ -62,7 +66,10 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			while (queue.CountOf(PotentialLevelKey) > 0)
 			{
 				var data = queue.Dequeue(PotentialLevelKey).To<IkonComposite>();
-				potentials.Add(new PotentialLevel(data["langCode"].To<string>()));
+				potentials.Add(new PotentialLevel(
+					data["langCode"].To<string>(),
+					data["rangeWeights"].To<double[]>().Select((x, i) => new WeightedRange(ranges[i][0], ranges[i][1], x)).ToArray()
+				));
 			}
 			potentialLevels = potentials.ToArray();
 
@@ -145,9 +152,42 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		{
 			var namer = new StarNamer(starPositions.Stars.Length, new Random());
 
+			var potentials = new Dictionary<Vector2D, double>();
+			var picker = new PickList<Vector2D>(rng, starPositions.Stars);
+			var ranges = this.potentialLevels[this.potentialParameter.Value].Ranges;
+			var weightSum = ranges.Sum(x => x.Weight);
+			foreach (var range in ranges)
+			{
+				var count = (int)Math.Round(range.Weight * picker.Count() / weightSum);
+				while(count > 0)
+				{
+					potentials[picker.Take()] = Methods.Lerp(rng.NextDouble(), range.Min, range.Max);
+					count--;
+				}
+				weightSum -= range.Weight;
+			}
+
+			var starts = new Dictionary<Vector2D, double>();
+			var undistributed = new HashSet<Vector2D>(starPositions.Stars);
+			ranges = this.climateLevels[this.climateParameter.Value].Ranges;
+			weightSum = ranges.Sum(x => x.Weight);
+			foreach (var range in ranges)
+			{
+				picker = new PickList<Vector2D>(undistributed.Where(x => potentials[x] >= range.Min));
+				var count = (int)Math.Round(range.Weight * undistributed.Count / weightSum);
+				while (count > 0)
+				{
+					var star = picker.Take();
+					starts[star] = Methods.Lerp(rng.NextDouble(), range.Min, Math.Min(range.Max, potentials[star]));
+					undistributed.Remove(star);
+					count--;
+				}
+				weightSum -= range.Weight;
+			}
+
 			//TODO(v0.8): Star size and trait distribution
 			foreach (var position in starPositions.Stars)
-				yield return generateSystem(namer, position, rng, evaluator, - 500, 1000);
+			yield return generateSystem(namer, position, rng, evaluator, starts[position], potentials[position]);
 		}
 
 		private StarSystemBuilder generateSystem(StarNamer namer, Vector2D position, Random rng, SystemEvaluator evaluator, double startingScore, double potentialScore)

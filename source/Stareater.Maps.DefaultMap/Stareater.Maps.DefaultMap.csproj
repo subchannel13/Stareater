@@ -51,6 +51,7 @@
     <Compile Include="RybPopulator\StarType.cs" />
     <Compile Include="SquareShape\SizeOption.cs" />
     <Compile Include="SquareShape\SquareMap.cs" />
+    <Compile Include="WeightedRange.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Stareater.Core\Stareater.Core.csproj">
