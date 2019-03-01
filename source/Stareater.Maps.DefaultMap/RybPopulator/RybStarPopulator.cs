@@ -22,7 +22,8 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		private const string ParametersFile = "rybPopulator.txt";
 		private const string LanguageContext = "DefaultPopulator";
 
-		private const int SysGenRepeats = 5;
+		private const int SysGenRepeats = 10;
+		private const int PointSpreadRetries = 5;
 
 		private const string ClimateLevelKey = "Climate";
 		private const string PotentialLevelKey = "Potential";
@@ -152,35 +153,38 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		{
 			var namer = new StarNamer(starPositions.Stars.Length, new Random());
 
+			//TODO(v0.8) set scores for homeworlds
 			var potentials = new Dictionary<Vector2D, double>();
-			var picker = new PickList<Vector2D>(rng, starPositions.Stars);
+			var undistributed = new HashSet<Vector2D>(starPositions.Stars);
 			var ranges = this.potentialLevels[this.potentialParameter.Value].Ranges;
 			var weightSum = ranges.Sum(x => x.Weight);
 			foreach (var range in ranges)
 			{
-				var count = (int)Math.Round(range.Weight * picker.Count() / weightSum);
-				while(count > 0)
+				var count = (int)Math.Round(range.Weight * undistributed.Count() / weightSum);
+				foreach(var star in spreadPoints(rng, undistributed, count))
 				{
-					potentials[picker.Take()] = Methods.Lerp(rng.NextDouble(), range.Min, range.Max);
-					count--;
+					potentials[star] = Methods.Lerp(rng.NextDouble(), range.Min, range.Max);
+					undistributed.Remove(star);
 				}
 				weightSum -= range.Weight;
 			}
 
 			var starts = new Dictionary<Vector2D, double>();
-			var undistributed = new HashSet<Vector2D>(starPositions.Stars);
+			undistributed = new HashSet<Vector2D>(starPositions.Stars);
 			ranges = this.climateLevels[this.climateParameter.Value].Ranges;
 			weightSum = ranges.Sum(x => x.Weight);
 			foreach (var range in ranges)
 			{
-				picker = new PickList<Vector2D>(undistributed.Where(x => potentials[x] >= range.Min));
-				var count = (int)Math.Round(range.Weight * undistributed.Count / weightSum);
-				while (count > 0)
+				var undistributedCandidates = new HashSet<Vector2D>(undistributed.Where(x => potentials[x] >= range.Min));
+				var count = Math.Min(
+					(int)Math.Round(range.Weight * undistributed.Count / weightSum), 
+					undistributedCandidates.Count
+				);
+
+				foreach (var star in spreadPoints(rng, undistributedCandidates, count))
 				{
-					var star = picker.Take();
-					starts[star] = Methods.Lerp(rng.NextDouble(), range.Min, Math.Min(range.Max, potentials[star]));
+					starts[star] = Methods.Lerp(rng.NextDouble(), range.Min, range.Max);
 					undistributed.Remove(star);
-					count--;
 				}
 				weightSum -= range.Weight;
 			}
@@ -188,6 +192,34 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			//TODO(v0.8): Star size and trait distribution
 			foreach (var position in starPositions.Stars)
 			yield return generateSystem(namer, position, rng, evaluator, starts[position], potentials[position]);
+		}
+
+		private IEnumerable<Vector2D> spreadPoints(Random rng, HashSet<Vector2D> points, int count)
+		{
+			if (count == 1)
+				return new Vector2D[] { new PickList<Vector2D>(rng, points).Pick() };
+
+			var bestResult = new List<Vector2D>();
+			var bestFitness = 0.0;
+
+			for (int i = 0; i < PointSpreadRetries; i++)
+			{
+				var picker = new PickList<Vector2D>(rng, points);
+				var candidateResult = new List<Vector2D>();
+				while (candidateResult.Count < count)
+					candidateResult.Add(picker.Take());
+
+				var fitness = candidateResult.Sum(
+					a => candidateResult.Where(b => a != b).Min(b => (a - b).LengthSquared)
+				);
+				if (fitness > bestFitness)
+				{
+					bestResult = candidateResult;
+					bestFitness = fitness;
+				}
+			}
+
+			return bestResult;
 		}
 
 		private StarSystemBuilder generateSystem(StarNamer namer, Vector2D position, Random rng, SystemEvaluator evaluator, double startingScore, double potentialScore)
