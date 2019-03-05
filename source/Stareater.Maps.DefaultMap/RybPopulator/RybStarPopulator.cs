@@ -199,27 +199,34 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			if (count == 1)
 				return new Vector2D[] { new PickList<Vector2D>(rng, points).Pick() };
 
-			var bestResult = new List<Vector2D>();
-			var bestFitness = 0.0;
+			var centroids = new HashSet<Vector2D>();
+			var picker = new PickList<Vector2D>(rng, points);
+			while (centroids.Count < count)
+				centroids.Add(picker.Take());
 
-			for (int i = 0; i < PointSpreadRetries; i++)
+			bool advanced;
+			do
 			{
-				var picker = new PickList<Vector2D>(rng, points);
-				var candidateResult = new List<Vector2D>();
-				while (candidateResult.Count < count)
-					candidateResult.Add(picker.Take());
+				advanced = false;
+				var grouping = centroids.ToDictionary(x => x, x => new List<Vector2D>());
 
-				var fitness = candidateResult.Sum(
-					a => candidateResult.Where(b => a != b).Min(b => (a - b).LengthSquared)
-				);
-				if (fitness > bestFitness)
+				foreach (var point in points)
+					grouping[
+						Methods.FindBest(centroids, x => -(point - x).LengthSquared)
+					].Add(point);
+
+				centroids.Clear();
+				foreach (var group in grouping)
 				{
-					bestResult = candidateResult;
-					bestFitness = fitness;
-				}
-			}
+					var center = group.Value.Aggregate((a, b) => a + b) / group.Value.Count;
+					var closest = Methods.FindBest(group.Value, x => -(center - x).LengthSquared);
 
-			return bestResult;
+					centroids.Add(closest);
+					advanced |= closest != group.Key;
+				}
+			} while (advanced);
+
+			return centroids;
 		}
 
 		private StarSystemBuilder generateSystem(StarNamer namer, Vector2D position, Random rng, SystemEvaluator evaluator, double startingScore, double potentialScore)

@@ -42,6 +42,7 @@ namespace Stareater.Utils.Collections
 			return this.getRandom(shouldRemove);
 		}
 		
+		//TODO(v0.8) map populator may use a method that return certain number of elements
 		public T Take()
 		{
 			return this.getRandom((x) => true);
