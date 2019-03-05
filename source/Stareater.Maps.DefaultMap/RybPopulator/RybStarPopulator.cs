@@ -22,8 +22,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		private const string ParametersFile = "rybPopulator.txt";
 		private const string LanguageContext = "DefaultPopulator";
 
-		private const int SysGenRepeats = 10;
-		private const int PointSpreadRetries = 5;
+		private const int SysGenRepeats = 20;
 
 		private const string ClimateLevelKey = "Climate";
 		private const string PotentialLevelKey = "Potential";
@@ -41,6 +40,9 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		private StarType[] starTypes;
 		private TraitType[] planetTraits;
 
+		private double homeworldSize;
+		private string[] homeworldTraits;
+
 		public void Initialize(string dataPath)
 		{
 			TaggableQueue<object, IkadnBaseObject> queue;
@@ -50,6 +52,8 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			var generalData = queue.Dequeue("General").To<IkonComposite>();
 			this.MinScore = generalData["minScore"].To<double>();
 			this.MaxScore = generalData["maxScore"].To<double>();
+			this.homeworldSize = generalData["homeworldSize"].To<double>();
+			this.homeworldTraits = generalData["homeworldTraits"].To<string[]>();
 			var ranges = generalData["ranges"].To<double[][]>();
 
 			var climates = new List<ClimateLevel>();
@@ -58,7 +62,8 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 				var data = queue.Dequeue(ClimateLevelKey).To<IkonComposite>();
 				climates.Add(new ClimateLevel(
 					data["langCode"].To<string>(),
-					data["rangeWeights"].To<double[]>().Select((x,i) => new WeightedRange(ranges[i][0], ranges[i][1], x)).ToArray()
+					data["rangeWeights"].To<double[]>().Select((x,i) => new WeightedRange(ranges[i][0], ranges[i][1], x)).ToArray(),
+					data["homeSystemStart"].To<double>()
 				));
 			}
 			climateLevels = climates.ToArray();
@@ -69,7 +74,8 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 				var data = queue.Dequeue(PotentialLevelKey).To<IkonComposite>();
 				potentials.Add(new PotentialLevel(
 					data["langCode"].To<string>(),
-					data["rangeWeights"].To<double[]>().Select((x, i) => new WeightedRange(ranges[i][0], ranges[i][1], x)).ToArray()
+					data["rangeWeights"].To<double[]>().Select((x, i) => new WeightedRange(ranges[i][0], ranges[i][1], x)).ToArray(),
+					data["homeSystemPotential"].To<double>()
 				));
 			}
 			potentialLevels = potentials.ToArray();
@@ -152,13 +158,22 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		public IEnumerable<StarSystemBuilder> Generate(Random rng, SystemEvaluator evaluator, StarPositions starPositions)
 		{
 			var namer = new StarNamer(starPositions.Stars.Length, new Random());
+			var uninhabitedStars = starPositions.Stars.Where((x, i) => !starPositions.HomeSystems.Contains(i));
+			var homeStars = new HashSet<Vector2D>(starPositions.HomeSystems.Select(i => starPositions.Stars[i]));
 
-			//TODO(v0.8) set scores for homeworlds
 			var potentials = new Dictionary<Vector2D, double>();
-			var undistributed = new HashSet<Vector2D>(starPositions.Stars);
-			var ranges = this.potentialLevels[this.potentialParameter.Value].Ranges;
-			var weightSum = ranges.Sum(x => x.Weight);
-			foreach (var range in ranges)
+			var starts = new Dictionary<Vector2D, double>();
+			var climate = this.climateLevels[this.climateParameter.Value];
+			var potential = this.potentialLevels[this.potentialParameter.Value];
+			foreach (var home in homeStars)
+			{
+				potentials[home] = potential.HomesystemPotentialScore;
+				starts[home] = Math.Min(climate.HomesystemStartScore, potentials[home]);
+			}
+
+			var undistributed = new HashSet<Vector2D>(uninhabitedStars);
+			var weightSum = potential.Ranges.Sum(x => x.Weight);
+			foreach (var range in potential.Ranges)
 			{
 				var count = (int)Math.Round(range.Weight * undistributed.Count() / weightSum);
 				foreach(var star in spreadPoints(rng, undistributed, count))
@@ -169,11 +184,9 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 				weightSum -= range.Weight;
 			}
 
-			var starts = new Dictionary<Vector2D, double>();
-			undistributed = new HashSet<Vector2D>(starPositions.Stars);
-			ranges = this.climateLevels[this.climateParameter.Value].Ranges;
-			weightSum = ranges.Sum(x => x.Weight);
-			foreach (var range in ranges)
+			undistributed = new HashSet<Vector2D>(uninhabitedStars);
+			weightSum = climate.Ranges.Sum(x => x.Weight);
+			foreach (var range in climate.Ranges)
 			{
 				var undistributedCandidates = new HashSet<Vector2D>(undistributed.Where(x => potentials[x] >= range.Min));
 				var count = Math.Min(
@@ -191,7 +204,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 
 			//TODO(v0.8): Star size and trait distribution
 			foreach (var position in starPositions.Stars)
-			yield return generateSystem(namer, position, rng, evaluator, starts[position], potentials[position]);
+				yield return generateSystem(namer, position, rng, evaluator, starts[position], potentials[position], homeStars.Contains(position));
 		}
 
 		private IEnumerable<Vector2D> spreadPoints(Random rng, HashSet<Vector2D> points, int count)
@@ -229,19 +242,23 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			return centroids;
 		}
 
-		private StarSystemBuilder generateSystem(StarNamer namer, Vector2D position, Random rng, SystemEvaluator evaluator, double startingScore, double potentialScore)
+		private StarSystemBuilder generateSystem(StarNamer namer, Vector2D position, Random rng, SystemEvaluator evaluator, double startingScore, double potentialScore, bool isHomeSystem)
 		{
 			var starColor = starTypes[rng.Next(starTypes.Length)].Hue;
 			var starName = namer.NextName();
 
+			var fixedParts = new StarSystemBuilder(starColor, 1, starName, position, new List<TraitType>());
+			if (isHomeSystem)
+				fixedParts.AddPlanet(0, PlanetType.Rock, this.homeworldSize, this.planetTraits.Where(x => this.homeworldTraits.Contains(x.IdCode)));
+
 			var systems = new List<StarSystemBuilder>();
 			for (int i = 0; i < SysGenRepeats; i++)
 			{
-				var system = new StarSystemBuilder(starColor, 1, starName, position, new List<TraitType>());
+				var system = new StarSystemBuilder(fixedParts);
 				systems.Add(system);
 				var planets = rng.Next(6);
-				for(int p = 0; p < planets; p++)
-					system.AddPlanet(p, bodyTypes()[rng.Next(3)], Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng));
+				for (int p = 0; p < planets; p++)
+					system.AddPlanet(p + (isHomeSystem ? 1 : 0), bodyTypes()[rng.Next(3)], Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng));
 			}
 
 			return Methods.FindBest(systems, x => -Methods.MeanSquareError(
@@ -250,7 +267,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			));
 		}
 
-		private List<TraitType> randomTraits(Random rng)
+		private IEnumerable<TraitType> randomTraits(Random rng)
 		{
 			var targetCount = rng.Next(planetTraits.Length + 1);
 			var options = new PickList<TraitType>(rng, planetTraits);

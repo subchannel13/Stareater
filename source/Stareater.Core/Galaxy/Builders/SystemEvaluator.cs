@@ -45,7 +45,7 @@ namespace Stareater.Galaxy.Builders
 
 				return this.potentialScore(new Planet(
 					planet.Star, planet.Position, planet.Type, planet.Size, 
-					traits.Select(x => this.statics.PlanetTraits[x]).ToList()
+					traits.Select(x => this.statics.PlanetTraits[x])
 				));
 			});
 		}

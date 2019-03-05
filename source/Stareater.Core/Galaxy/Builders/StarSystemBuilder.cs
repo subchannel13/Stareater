@@ -17,6 +17,12 @@ namespace Stareater.Galaxy.Builders
 			this.Planets = new List<Planet>();
 		}
 
+		public StarSystemBuilder(StarSystemBuilder baseSystem)
+		{
+			this.Star = baseSystem.Star; //TODO(v0.8) deep copy if not null
+			this.Planets = new List<Planet>(baseSystem.Planets);
+		}
+
 		/// <summary>
 		/// Create dummy star system for evaluation purposes
 		/// </summary>
@@ -24,7 +30,7 @@ namespace Stareater.Galaxy.Builders
 		public StarSystemBuilder(List<TraitType> starTraits) : this (Color.White, 1, null, new Vector2D(), starTraits)
 		{ }
 
-		public void AddPlanet(int position, PlanetType type, double size, List<TraitType> traits)
+		public void AddPlanet(int position, PlanetType type, double size, IEnumerable<TraitType> traits)
 		{
 			this.Planets.Add(new Planet(this.Star, position, type, size, traits));
 		}

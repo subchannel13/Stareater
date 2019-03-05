@@ -121,7 +121,7 @@ namespace Stareater.Controllers
 				var fitness = planets.
 					ToDictionary(x => x, x => ColonyProcessor.DesirabilityOf(x, statics));
 
-				for (int i = 0; i < startingConditions.Colonies; i++)
+				for (int i = 0; i < Math.Min(startingConditions.Colonies, planets.Count); i++)
 				{
 					var planet = Methods.FindBest(planets, x => fitness[x]);
 					colonies.Add(new Colony(
@@ -217,7 +217,7 @@ namespace Stareater.Controllers
 				var weights = new ChoiceWeights<Colony>();
 				
 				foreach(Colony colony in colonies.OwnedBy[player])
-					weights.Add(colony, derivates.Colonies.Of[colony].Desirability); //TODO(v0.8) same key exception if starting conditions asks for more colonies than possible
+					weights.Add(colony, derivates.Colonies.Of[colony].Desirability);
 
 				var maxPopulation = colonies.OwnedBy[player].Sum(x => derivates.Colonies.Of[x].MaxPopulation);
 				double totalPopulation = Math.Min(startingConditions.Population, maxPopulation);
