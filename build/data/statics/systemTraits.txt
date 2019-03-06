@@ -7,10 +7,40 @@
 	
 	effect {AfflictPlanets
 		duration # 3;
-		trait: irradiated
+		trait: irradiated1
 	}
 }
 
+
+{ PlanetTrait
+	langCode: IRRADIATED_TRAIT_1
+	image :./images/technologies/hydroponicFarms.png
+	code: irradiated1
+	
+	cost# 1;
+	
+	effect {Passive}
+}
+
+{ PlanetTrait
+	langCode: IRRADIATED_TRAIT_2
+	image :./images/technologies/hydroponicFarms.png
+	code: irradiated2
+	
+	cost# 2;
+	
+	effect {Passive}
+}
+
+{ PlanetTrait
+	langCode: IRRADIATED_TRAIT_3
+	image :./images/technologies/hydroponicFarms.png
+	code: irradiated3
+	
+	cost# 4;
+	
+	effect {Passive}
+}
 
 { PlanetTrait
 	langCode: FERTILE_TRAIT
@@ -23,9 +53,9 @@
 }
 
 { PlanetTrait
-	langCode: IRRADIATED_TRAIT
+	langCode: TOXIC_TRAIT
 	image :./images/technologies/hydroponicFarms.png
-	code: irradiated
+	code: toxic
 	
 	cost# 1;
 	
@@ -43,19 +73,59 @@
 }
 
 { PlanetTrait
-	langCode: NO_GRAVITY
+	langCode: DENSE_ATMOSPHERE
 	image :./images/technologies/hydroponicFarms.png
-	code: noGrav
+	code: denseAtmo
 	
-	cost# 0.2;
+	cost# 2;
 	
 	effect {Passive}
 }
 
 { PlanetTrait
-	langCode: TOXIC_TRAIT
+	langCode: MAGNETOSPHERE_TRAIT_1
 	image :./images/technologies/hydroponicFarms.png
-	code: toxic
+	code: magnetosphere1
+	
+	cost# 0;
+	
+	effect {Passive}
+}
+
+{ PlanetTrait
+	langCode: MAGNETOSPHERE_TRAIT_2
+	image :./images/technologies/hydroponicFarms.png
+	code: magnetosphere2
+	
+	cost# 0;
+	
+	effect {Passive}
+}
+
+{ PlanetTrait
+	langCode: NO_GRAVITY
+	image :./images/technologies/hydroponicFarms.png
+	code: noGrav
+	
+	cost# 0.5;
+	
+	effect {Passive}
+}
+
+{ PlanetTrait
+	langCode: LOW_GRAVITY
+	image :./images/technologies/hydroponicFarms.png
+	code: lowGrav
+	
+	cost# 0.25;
+	
+	effect {Passive}
+}
+
+{ PlanetTrait
+	langCode: HIGH_GRAVITY
+	image :./images/technologies/hydroponicFarms.png
+	code: highGrav
 	
 	cost# 1;
 	
@@ -96,6 +166,26 @@
 	langCode: RADIOACTIVE_TRAIT
 	image :./images/technologies/hydroponicFarms.png
 	code: radioactive
+	
+	cost# 2;
+	
+	effect {Passive}
+}
+
+{ PlanetTrait
+	langCode: COLD_TRAIT
+	image :./images/technologies/hydroponicFarms.png
+	code: cold
+	
+	cost# 1;
+	
+	effect {Passive}
+}
+
+{ PlanetTrait
+	langCode: HOT_TRAIT
+	image :./images/technologies/hydroponicFarms.png
+	code: hot
 	
 	cost# 2;
 	

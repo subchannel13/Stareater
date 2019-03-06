@@ -5,7 +5,10 @@
 	bestScore # size * 5 * (1 - scoreFoodPop) * (1 - scoreMiners);
 	startScore # size * (
 		5 * (1 - scoreFoodPop) * (1 - scoreMiners)
-		- if(noAtmo, 0.5, 0) - if(noGrav, 0.2, 0) - if(toxic, 1, 0) - if(radioactive, 2, 0)
+		- max(0, if(irradiated1, 1, 0) + if(irradiated2, 2, 0) + if(irradiated3, 4, 0) - if(magnetosphere1, 1, 0) - if(magnetosphere2, 2, 0))
+		- if(noAtmo, 0.5, 0) - if(denseAtmo, 2, 0) 
+		- if(noGrav, 0.5, 0) - if(lowGrav, 0.25, 0) - if(highGrav, 1, 0)
+		- if(toxic, 1, 0) - if(radioactive, 2, 0) - if(cold, 1, 0) - if(hot, 2, 0)
 	);
 }
 
@@ -76,7 +79,7 @@
 	type: asteriod
 	baseTraits [ :noAtmo :noGrav ]
 	bestTraits [ :fertile :rich ]
-	worstTraits [ :toxic :poor :radioactive ]
+	worstTraits [ :irradiated3 :toxic :poor :radioactive :hot ]
 	unchangeableTraits [ :poor :rich :richCore ]
 	
 	bestScore # bestScore;
@@ -86,8 +89,8 @@
 { PlanetFormulas
 	type: gasGiant
 	baseTraits []
-	bestTraits [ :fertile :rich ]
-	worstTraits [ :noAtmo :noGrav :toxic :poor :radioactive ]
+	bestTraits [ :fertile :rich :magnetosphere2 ]
+	worstTraits [ :irradiated3 :denseAtmo :highGrav :toxic :poor :radioactive :hot ]
 	unchangeableTraits [ :poor :rich :richCore ]
 	
 	bestScore # bestScore;
@@ -97,8 +100,8 @@
 { PlanetFormulas
 	type: rock
 	baseTraits []
-	bestTraits [ :fertile :rich ]
-	worstTraits [ :noAtmo :noGrav :toxic :poor :radioactive ]
+	bestTraits [ :fertile :rich :magnetosphere2 ]
+	worstTraits [ :irradiated3 :denseAtmo :highGrav :toxic :poor :radioactive :hot ]
 	unchangeableTraits [ :poor :rich :richCore ]
 	
 	bestScore # bestScore;
