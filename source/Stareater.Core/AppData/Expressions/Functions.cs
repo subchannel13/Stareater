@@ -495,6 +495,53 @@ namespace Stareater.AppData.Expressions
 		}
 	}
 
+	class CaseFunction : IExpressionNode
+	{
+		private readonly IExpressionNode[] sequence;
+
+		public CaseFunction(IExpressionNode[] sequence)
+		{
+			this.sequence = sequence;
+		}
+
+		public IExpressionNode Simplified()
+		{
+			if (this.IsConstant)
+				return new Constant(this.Evaluate(null));
+
+			return this;
+		}
+
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new CaseFunction(this.sequence.Select(x => x.Substitute(mapping)).ToArray()).Simplified();
+		}
+
+		public bool IsConstant
+		{
+			get { return sequence.All(element => element.IsConstant); }
+		}
+
+		public double Evaluate(IDictionary<string, double> variables)
+		{
+			for (int i = 0; i < this.sequence.Length; i++)
+				if (this.sequence[i].Evaluate(variables) >= 0)
+					return i;
+
+			return this.sequence.Length;
+		}
+
+		public IEnumerable<string> Variables
+		{
+			get
+			{
+				foreach (var node in sequence)
+					foreach (var variable in node.Variables)
+						yield return variable;
+			}
+		}
+	}
+
 	class RatioFunction : IExpressionNode
 	{
 		private readonly IExpressionNode argument;

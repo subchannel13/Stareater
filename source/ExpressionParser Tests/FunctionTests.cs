@@ -131,7 +131,42 @@ namespace ExpressionParser_Tests
 			var test = new ParserTester("if(0, 10, 20)", null, null, 10);
 			Assert.IsTrue(test.IsOK, test.Message);
 		}
-		
+
+		[Test]
+		public void FunctionCaseOneTrue()
+		{
+			var test = new ParserTester("case(0)", null, null, 0);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+
+		[Test]
+		public void FunctionCaseOneFalse()
+		{
+			var test = new ParserTester("case(-1)", null, null, 1);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+
+		[Test]
+		public void FunctionCaseTwoFirst()
+		{
+			var test = new ParserTester("case(1, 1)", null, null, 0);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+
+		[Test]
+		public void FunctionCaseTwoSecond()
+		{
+			var test = new ParserTester("case(-1, 1)", null, null, 1);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+
+		[Test]
+		public void FunctionCaseTwoNone()
+		{
+			var test = new ParserTester("case(-1, -1)", null, null, 2);
+			Assert.IsTrue(test.IsOK, test.Message);
+		}
+
 		[Test]
 		public void FunctionLimitGreater()
 		{
