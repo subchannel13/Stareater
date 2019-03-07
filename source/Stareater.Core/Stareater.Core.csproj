@@ -76,6 +76,9 @@
     <Compile Include="Controllers\LibraryController.cs" />
     <Compile Include="Controllers\NewGameHelpers\ParameterLoadingVisitor.cs" />
     <Compile Include="Controllers\NewGameHelpers\ParameterSavingVisitor.cs" />
+    <Compile Include="Galaxy\BodyTraits\Affliction.cs" />
+    <Compile Include="Galaxy\BodyTraits\EffectTemporary.cs" />
+    <Compile Include="Galaxy\BodyTraits\EffectTypeTemporary.cs" />
     <Compile Include="Galaxy\Builders\SystemEvaluator.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\ResultsController.cs" />

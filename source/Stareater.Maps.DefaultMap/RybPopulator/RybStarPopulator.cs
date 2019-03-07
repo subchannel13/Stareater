@@ -39,6 +39,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 
 		private StarType[] starTypes;
 		private TraitType[] planetTraits;
+		private TraitType[] starTraits;
 
 		private double homeworldSize;
 		private string[] homeworldTraits;
@@ -105,9 +106,10 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			);
 		}
 
-		public void SetGameData(IEnumerable<TraitType> planetTraits)
+		public void SetGameData(IEnumerable<TraitType> planetTraits, IEnumerable<TraitType> starTraits)
 		{
 			this.planetTraits = planetTraits.ToArray();
+			this.starTraits = starTraits.ToArray();
 		}
 
 		private Color extractColor(IList<IkadnBaseObject> arrayValue)
@@ -247,9 +249,10 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			var starColor = starTypes[rng.Next(starTypes.Length)].Hue;
 			var starName = namer.NextName();
 
-			var fixedParts = new StarSystemBuilder(starColor, 1, starName, position, new List<TraitType>());
+			//TODO(v0.8) hardcoded star trait
+			var fixedParts = new StarSystemBuilder(starColor, 1, starName, position, new List<TraitType> { this.starTraits.First(x => x.IdCode == "normlaOut")});
 			if (isHomeSystem)
-				fixedParts.AddPlanet(0, PlanetType.Rock, this.homeworldSize, this.planetTraits.Where(x => this.homeworldTraits.Contains(x.IdCode)));
+				fixedParts.AddPlanet(1, PlanetType.Rock, this.homeworldSize, this.planetTraits.Where(x => this.homeworldTraits.Contains(x.IdCode)));
 
 			var systems = new List<StarSystemBuilder>();
 			for (int i = 0; i < SysGenRepeats; i++)
@@ -258,7 +261,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 				systems.Add(system);
 				var planets = rng.Next(6);
 				for (int p = 0; p < planets; p++)
-					system.AddPlanet(p + (isHomeSystem ? 1 : 0), bodyTypes()[rng.Next(3)], Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng));
+					system.AddPlanet(p + (isHomeSystem ? 2 : 1), bodyTypes()[rng.Next(3)], Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng));
 			}
 
 			return Methods.FindBest(systems, x => -Methods.MeanSquareError(

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Stareater.Controllers.NewGameHelpers;
 using Stareater.Galaxy;
 using Stareater.Galaxy.Builders;
 

@@ -358,9 +358,15 @@ namespace Stareater.GameData.Databases
 			switch ((string)data.Tag)
 			{
 				case AfflictTraitTag:
-					return new EffectTypeAfflictPlanets(data[AfflictsTraitId].To<string>(), data[DurationTraitId].To<Formula>().Evaluate(null));
+					return new EffectTypeAfflictPlanets(
+						data[AfflictionListKey].To<IEnumerable<IkonComposite>>().
+						Select(x => new Affliction(x[AfflictionTraitKey].To<string>(), x[AfflictionConditionKey].To<Formula>())).
+						ToArray()
+					);
 				case PassiveTraitTag:
 					return new EffectTypePassive();
+				case TemporaryTraitTag:
+					return new EffectTypeTemporary(data[DurationTraitKey].To<Formula>().Evaluate(null));
 				default:
 					throw new FormatException("Unknown trait effect type " + data.Tag);
 			}
@@ -765,6 +771,8 @@ namespace Stareater.GameData.Databases
 
 		private const string AfflictTraitTag = "AfflictPlanets";
 		private const string PassiveTraitTag = "Passive";
+		private const string TemporaryTraitTag = "Temporary";
+		private const string AfflictionEffectTag = "Affliction";
 
 		private const string ColonizationPopulationThreshold = "colonizationPopThreshold";
 		private const string ColonyDevelopment = "development";
@@ -945,8 +953,10 @@ namespace Stareater.GameData.Databases
 
 		private const string StarShootTrait = "applyTrait";
 
-		public const string AfflictsTraitId = "trait";
-		public const string DurationTraitId = "duration";
+		public const string AfflictionListKey = "afflictions";
+		public const string AfflictionTraitKey = "trait";
+		public const string AfflictionConditionKey = "condition";
+		public const string DurationTraitKey = "duration";
 		#endregion
 	}
 }

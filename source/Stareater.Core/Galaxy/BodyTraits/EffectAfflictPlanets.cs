@@ -1,4 +1,5 @@
 ﻿using Stareater.GameData.Databases;
+using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using System.Linq;
 
@@ -10,15 +11,11 @@ namespace Stareater.Galaxy.BodyTraits
 		[StateProperty]
 		public TraitType Type { get; private set; }
 
-		[StateProperty]
-		public int Duration { get; set; }
+		private Affliction[] afflictions = null;
 
-		private string afflictionId = null;
-
-		public EffectAfflictPlanets(TraitType traitType, int duration)
+		public EffectAfflictPlanets(TraitType traitType)
 		{
 			this.Type = traitType;
-			this.Duration = duration;
 		}
 
 		private EffectAfflictPlanets()
@@ -26,26 +23,31 @@ namespace Stareater.Galaxy.BodyTraits
 
 		public void PostcombatApply(StatesDB states, StaticsDB statics, StarData star)
 		{
-			if (this.Duration <= 0)
+			this.pullAfflictions();
+			var vars = new Var().
+				Init(statics.StarTraits.Keys, false).
+				UnionWith(star.Traits.Select(x => x.Type.IdCode)).
+				Get;
+
+			foreach (var affliction in this.afflictions)
 			{
-				star.Traits.PendRemove(this);
-				return;
+				var trait = statics.PlanetTraits[affliction.TraitId];
+
+				foreach (var planet in states.Planets.At[star])
+				{
+					vars["position"] = planet.Position;
+					planet.Traits.RemoveWhere(x => x.Type.IdCode == trait.IdCode);
+
+					if (affliction.Condition.Evaluate(vars) >= 0)
+						planet.Traits.Add(trait.Effect.Instantiate(trait));
+				}
 			}
-
-			this.pullAfflictionId();
-			var trait = statics.PlanetTraits[afflictionId];
-
-			foreach (var planet in states.Planets.At[star])
-				if (planet.Traits.All(x => x.Type.IdCode != afflictionId))
-					planet.Traits.Add(trait.Effect.Instantiate(trait));
-
-			this.Duration--;
 		}
 
-		private void pullAfflictionId()
+		private void pullAfflictions()
 		{
-			if (this.afflictionId == null)
-				this.afflictionId = ((EffectTypeAfflictPlanets)this.Type.Effect).AfflictionId;
+			if (this.afflictions == null)
+				this.afflictions = ((EffectTypeAfflictPlanets)this.Type.Effect).Afflictions;
 		}
 
 		public const string SaveTag = "Afflict";

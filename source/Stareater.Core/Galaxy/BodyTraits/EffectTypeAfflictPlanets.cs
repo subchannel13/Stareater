@@ -2,19 +2,16 @@
 {
 	class EffectTypeAfflictPlanets : ITraitEffectType
 	{
-		private readonly double initialDuration;
+		public Affliction[] Afflictions { get; private set; }
 
-		public string AfflictionId { get; private set; }
-		
-		public EffectTypeAfflictPlanets(string afflictionId, double initialDuration) 
+		public EffectTypeAfflictPlanets(Affliction[] afflictions) 
 		{
-			this.AfflictionId = afflictionId;
-			this.initialDuration = initialDuration;
+			this.Afflictions = afflictions;
 		}
 
 		public ITrait Instantiate(TraitType traitType)
 		{
-			return new EffectAfflictPlanets(traitType, (int)this.initialDuration);
+			return new EffectAfflictPlanets(traitType);
 		}
 	}
 }

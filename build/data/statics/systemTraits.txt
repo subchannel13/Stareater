@@ -5,9 +5,38 @@
 	
 	cost# 0;
 	
-	effect {AfflictPlanets
+	effect {Temporary
 		duration # 3;
-		trait: irradiated1
+	}
+}
+
+{ StarTrait
+	langCode: NORMAL_OUT_TRAIT
+	image :./images/technologies/hydroponicFarms.png
+	code: normlaOut
+	
+	cost# 0;
+	
+	effect {AfflictPlanets
+		afflictions [
+			{Affliction 
+				trait: irradiated1
+				condition #position = if(catalyzed, 1, 0);
+			}
+			{Affliction 
+				trait: irradiated2
+				condition #catalyzed ∧ (position = 0);
+			}
+			{Affliction 
+				trait: hot
+				condition #position ≤ if(catalyzed, 2, 3);
+			}
+			
+			{Affliction 
+				trait: cold
+				condition #-catalyzed ∧ (position ≥ 4);
+			}
+		]
 	}
 }
 
