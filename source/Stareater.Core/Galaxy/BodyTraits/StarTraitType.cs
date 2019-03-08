@@ -32,8 +32,6 @@ namespace Stareater.Galaxy.BodyTraits
 
 			if (loadData.Tag.Equals(EffectAfflictPlanets.SaveTag))
 				return session.Load<EffectAfflictPlanets>(loadData);
-			else if (loadData.Tag.Equals(EffectPassive.SaveTag))
-				return session.Load<EffectPassive>(loadData);
 			else if (loadData.Tag.Equals(EffectTemporary.SaveTag))
 				return session.Load<EffectTemporary>(loadData);
 			else

@@ -29,5 +29,10 @@ namespace Stareater.Galaxy.BodyTraits
 		{
 			return this.IdCode.GetHashCode();
 		}
+
+		public override string ToString()
+		{
+			return this.IdCode;
+		}
 	}
 }

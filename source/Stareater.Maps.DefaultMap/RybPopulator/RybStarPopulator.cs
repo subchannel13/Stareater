@@ -27,10 +27,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		private const string ClimateLevelKey = "Climate";
 		private const string PotentialLevelKey = "Potential";
 		private const string StarTypeKey = "StarType";
-		private const string StarColorKey = "color";
-		private const string StarMinRadiationKey = "minRadiation";
-		private const string StarMaxRadiationKey = "maxRadiation";
-
+		
 		private SelectorParameter climateParameter;
 		private SelectorParameter potentialParameter;
 
@@ -39,7 +36,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 
 		private StarType[] starTypes;
 		private PlanetTraitType[] planetTraits;
-		private StarTraitType[] starTraits;
+		private Dictionary<string, StarTraitType> starTraits;
 
 		private double homeworldSize;
 		private string[] homeworldTraits;
@@ -86,9 +83,10 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			{
 				var data = queue.Dequeue(StarTypeKey).To<IkonComposite>();
 				starTypes.Add(new StarType(
-					extractColor(data[StarColorKey].To<IkonArray>()),
-					data[StarMinRadiationKey].To<double>(),
-					data[StarMaxRadiationKey].To<double>()
+					extractColor(data["color"].To<IkonArray>()),
+					data["minSize"].To<double>(),
+					data["maxSize"].To<double>(),
+					data["traits"].To<string[]>()
 				));
 			}
 			this.starTypes = starTypes.ToArray();
@@ -109,7 +107,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		public void SetGameData(IEnumerable<PlanetTraitType> planetTraits, IEnumerable<StarTraitType> starTraits)
 		{
 			this.planetTraits = planetTraits.ToArray();
-			this.starTraits = starTraits.ToArray();
+			this.starTraits = starTraits.ToDictionary(x => x.IdCode);
 		}
 
 		private Color extractColor(IList<IkadnBaseObject> arrayValue)
@@ -246,11 +244,15 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 
 		private StarSystemBuilder generateSystem(StarNamer namer, Vector2D position, Random rng, SystemEvaluator evaluator, double startingScore, double potentialScore, bool isHomeSystem)
 		{
-			var starColor = starTypes[rng.Next(starTypes.Length)].Hue;
+			var starType = starTypes[rng.Next(starTypes.Length)];
 			var starName = namer.NextName();
 
-			//TODO(v0.8) hardcoded star trait
-			var fixedParts = new StarSystemBuilder(starColor, 1, starName, position, new List<StarTraitType> { this.starTraits.First(x => x.IdCode == "normlaOut")});
+			var fixedParts = new StarSystemBuilder(
+				starType.Hue,
+				(float)Methods.Lerp(rng.NextDouble(), starType.MinScale, starType.Maxscale),
+				starName, position, 
+				new List<StarTraitType>(starType.Traits.Select(x => this.starTraits[x]))
+			);
 			if (isHomeSystem)
 				fixedParts.AddPlanet(1, PlanetType.Rock, this.homeworldSize, this.planetTraits.Where(x => this.homeworldTraits.Contains(x.IdCode)));
 

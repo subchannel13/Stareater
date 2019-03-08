@@ -35,6 +35,11 @@ namespace Stareater.Galaxy.BodyTraits
 			//no operation
 		}
 
+		public override string ToString()
+		{
+			return this.Type.IdCode;
+		}
+
 		public const string SaveTag = "Temporary";
 	}
 }

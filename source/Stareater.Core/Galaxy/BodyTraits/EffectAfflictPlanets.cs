@@ -50,6 +50,11 @@ namespace Stareater.Galaxy.BodyTraits
 			}
 		}
 
+		public override string ToString()
+		{
+			return this.Type.IdCode;
+		}
+
 		private void pullAfflictions()
 		{
 			if (this.afflictions == null)

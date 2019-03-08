@@ -151,7 +151,6 @@
     <Compile Include="Galaxy\AConstructionSite.cs" />
     <Compile Include="Galaxy\BodyTraits\IStarTrait.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectAfflictPlanets.cs" />
-    <Compile Include="Galaxy\BodyTraits\EffectPassive.cs" />
     <Compile Include="Galaxy\BodyTraits\StarTraitType.cs" />
     <Compile Include="Galaxy\Builders\IMapBuilderPiece.cs" />
     <Compile Include="Galaxy\Builders\IStarConnector.cs" />
@@ -171,7 +170,6 @@
     <Compile Include="Galaxy\StellarisAdmin.cs" />
     <Compile Include="Galaxy\StarNamer.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectTypeAfflictPlanets.cs" />
-    <Compile Include="Galaxy\BodyTraits\EffectTypePassive.cs" />
     <Compile Include="Galaxy\Wormhole.cs" />
     <Compile Include="GameData\ColonizationProject.cs" />
     <Compile Include="GameData\Construction\ConstructionAddTrait.cs" />

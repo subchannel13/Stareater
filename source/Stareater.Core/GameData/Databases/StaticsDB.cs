@@ -371,8 +371,6 @@ namespace Stareater.GameData.Databases
 						Select(x => new Affliction(x[AfflictionTraitKey].To<string>(), x[AfflictionConditionKey].To<Formula>())).
 						ToArray()
 					);
-				case PassiveTraitTag:
-					return new EffectTypePassive();
 				case TemporaryTraitTag:
 					return new EffectTypeTemporary(data[DurationTraitKey].To<Formula>().Evaluate(null));
 				default:
@@ -778,7 +776,6 @@ namespace Stareater.GameData.Databases
 		private const string StarShotTag = "StarShot";
 
 		private const string AfflictTraitTag = "AfflictPlanets";
-		private const string PassiveTraitTag = "Passive";
 		private const string TemporaryTraitTag = "Temporary";
 		private const string AfflictionEffectTag = "Affliction";
 

@@ -6,7 +6,32 @@
 	cost# 0;
 	
 	effect {Temporary
-		duration # 3;
+		duration# 3;
+	}
+}
+
+{ StarTrait
+	langCode: LOW_OUT_TRAIT
+	image :./images/technologies/hydroponicFarms.png
+	code: lowOut
+	
+	cost# 0;
+	
+	effect {AfflictPlanets
+		afflictions [
+			{Affliction 
+				trait: irradiated1
+				condition #catalyzed ∧ (position = 1);
+			}
+			{Affliction 
+				trait: hot
+				condition #position ≤ if(catalyzed, 2, 1);
+			}
+			{Affliction 
+				trait: cold
+				condition #position ≥ if(catalyzed, 4, 3);
+			}
+		]
 	}
 }
 
@@ -20,21 +45,49 @@
 	effect {AfflictPlanets
 		afflictions [
 			{Affliction 
-				trait: irradiated1
-				condition #position = if(catalyzed, 1, 0);
+				trait: irradiated2
+				condition #catalyzed ∧ (position = 1);
 			}
 			{Affliction 
-				trait: irradiated2
-				condition #catalyzed ∧ (position = 0);
+				trait: irradiated1
+				condition #position = if(catalyzed, 2, 1);
 			}
 			{Affliction 
 				trait: hot
-				condition #position ≤ if(catalyzed, 2, 3);
+				condition #position ≤ if(catalyzed, 3, 2);
 			}
-			
 			{Affliction 
 				trait: cold
 				condition #-catalyzed ∧ (position ≥ 4);
+			}
+		]
+	}
+}
+
+{ StarTrait
+	langCode: HIGH_OUT_TRAIT
+	image :./images/technologies/hydroponicFarms.png
+	code: highOut
+	
+	cost# 0;
+	
+	effect {AfflictPlanets
+		afflictions [
+			{Affliction 
+				trait: irradiated3
+				condition #position ≤ if(catalyzed, 2, 1);
+			}
+			{Affliction 
+				trait: irradiated2
+				condition #if(catalyzed, (position = 3) ∨ (position = 4), position = 2);
+			}
+			{Affliction 
+				trait: irradiated1
+				condition #position = if(catalyzed, 5, 3);
+			}
+			{Affliction 
+				trait: hot
+				condition #catalyzed ∨ (position ≤ 4);
 			}
 		]
 	}
