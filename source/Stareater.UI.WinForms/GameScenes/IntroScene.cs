@@ -24,7 +24,7 @@ namespace Stareater.GameScenes
 		private const float TitleSize = 0.06f;
 
 		private readonly Vector2 StareaterPathDirection = new Vector2(-2, -1).Normalized();
-		private readonly Vector2 StareaterPathOffset = new Vector2(0, 1);
+		private readonly Vector2 StareaterPathOffset = new Vector2(0, 0.8f);
 		private const float StareaterDistance = 3f;
 		private const float StareaterWidth = 1.75f;
 		private const float FadeSpeed = -1;

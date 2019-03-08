@@ -25,6 +25,11 @@ namespace Stareater.Controllers.Views
 			get { return this.Data.Position; }
 		}
 
+		public float Size
+		{
+			get { return this.Data.ImageSizeScale; }
+		}
+		
 		public IStarName Name
 		{
 			get { return this.Data.Name; }

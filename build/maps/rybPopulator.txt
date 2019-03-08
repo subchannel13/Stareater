@@ -53,8 +53,8 @@
 
 { StarType
 	color [=1 =0.125 =0.125]
-	minSize =0.2
-	maxSize =0.4
+	minSize =0.3
+	maxSize =0.5
 	traits [ "lowOut" ]
 }
 

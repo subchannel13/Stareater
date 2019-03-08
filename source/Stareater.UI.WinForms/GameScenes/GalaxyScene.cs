@@ -439,9 +439,11 @@ namespace Stareater.GameScenes
 				ref this.starSprites,
 				stars.Select((star, i) => new SceneObjectBuilder(star, convert(star.Position), 0).
 					StartSimpleSprite(StarColorZ, GalaxyTextures.Get.StarColor, star.Color).
+					Scale(star.Size).
 					Translate(convert(star.Position)).
 
 					StartSimpleSprite(StarSaturationZ, GalaxyTextures.Get.StarGlow, Color.White).
+					Scale(star.Size).
 					Translate(convert(star.Position)).
 
 					//TODO(v0.8) don't show names when zoomed out too much
