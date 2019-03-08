@@ -11,6 +11,15 @@
 		[=-300  =0]
 		[=-600 =-300]
 	]
+	traitGroups [
+		[ "fertile" "toxic" ]
+		[ "noAtmo" "denseAtmo" ]
+		[ "magnetosphere1" "magnetosphere2" ]
+		[ "noGrav" "lowGrav" "highGrav" ]
+		[ "poor" "richCore" "rich" ]
+		[ "radioactive" ]
+	]
+	
 	homeworldSize = 100
 	homeworldTraits [ "fertile" ]
 }

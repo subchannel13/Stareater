@@ -35,8 +35,10 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		private PotentialLevel[] potentialLevels;
 
 		private StarType[] starTypes;
-		private PlanetTraitType[] planetTraits;
+		private Dictionary<string, PlanetTraitType> planetTraits;
 		private Dictionary<string, StarTraitType> starTraits;
+		private string[][] planetTraitIdGroups;
+		private Dictionary<PlanetType, PlanetTraitType[][]> planetTraitGroups;
 
 		private double homeworldSize;
 		private string[] homeworldTraits;
@@ -48,11 +50,12 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 				queue = parser.ParseAll();
 
 			var generalData = queue.Dequeue("General").To<IkonComposite>();
+			var ranges = generalData["ranges"].To<double[][]>();
 			this.MinScore = generalData["minScore"].To<double>();
 			this.MaxScore = generalData["maxScore"].To<double>();
+			this.planetTraitIdGroups = generalData["traitGroups"].To<string[][]>();
 			this.homeworldSize = generalData["homeworldSize"].To<double>();
 			this.homeworldTraits = generalData["homeworldTraits"].To<string[]>();
-			var ranges = generalData["ranges"].To<double[][]>();
 
 			var climates = new List<ClimateLevel>();
 			while (queue.CountOf(ClimateLevelKey) > 0)
@@ -104,10 +107,17 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			);
 		}
 
-		public void SetGameData(IEnumerable<PlanetTraitType> planetTraits, IEnumerable<StarTraitType> starTraits)
+		public void SetGameData(Dictionary<string, StarTraitType> starTraits, Dictionary<string, PlanetTraitType> planetTraits, Dictionary<PlanetType, IEnumerable<string>> implicitTraits)
 		{
-			this.planetTraits = planetTraits.ToArray();
-			this.starTraits = starTraits.ToDictionary(x => x.IdCode);
+			this.planetTraits = planetTraits;
+			this.starTraits = starTraits;
+			this.planetTraitGroups = bodyTypes().ToDictionary(
+				type => type,
+				type => this.planetTraitIdGroups.
+					Where(group => implicitTraits[type].All(id => !group.Contains(id))).
+					Select(group => group.Select(id => this.planetTraits[id]).ToArray()).
+					ToArray()
+			);
 		}
 
 		private Color extractColor(IList<IkadnBaseObject> arrayValue)
@@ -254,16 +264,19 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 				new List<StarTraitType>(starType.Traits.Select(x => this.starTraits[x]))
 			);
 			if (isHomeSystem)
-				fixedParts.AddPlanet(1, PlanetType.Rock, this.homeworldSize, this.planetTraits.Where(x => this.homeworldTraits.Contains(x.IdCode)));
+				fixedParts.AddPlanet(1, PlanetType.Rock, this.homeworldSize, this.homeworldTraits.Select(x => this.planetTraits[x]));
 
 			var systems = new List<StarSystemBuilder>();
 			for (int i = 0; i < SysGenRepeats; i++)
 			{
 				var system = new StarSystemBuilder(fixedParts);
 				systems.Add(system);
-				var planets = rng.Next(6);
+				var planets = rng.Next(5);
 				for (int p = 0; p < planets; p++)
-					system.AddPlanet(p + (isHomeSystem ? 2 : 1), bodyTypes()[rng.Next(3)], Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng));
+				{
+					var type = bodyTypes()[rng.Next(3)];
+					system.AddPlanet(p + (isHomeSystem ? 2 : 1), type, Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng, type));
+				}
 			}
 
 			return Methods.FindBest(systems, x => -Methods.MeanSquareError(
@@ -272,15 +285,15 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			));
 		}
 
-		private IEnumerable<PlanetTraitType> randomTraits(Random rng)
+		private IEnumerable<PlanetTraitType> randomTraits(Random rng, PlanetType bodyType)
 		{
-			var targetCount = rng.Next(planetTraits.Length + 1);
-			var options = new PickList<PlanetTraitType>(rng, planetTraits);
+			var targetCount = rng.Next(this.planetTraitGroups[bodyType].Length + 1);
+			var options = new PickList<PlanetTraitType[]>(rng, this.planetTraitGroups[bodyType]);
 
 			while (options.Count() > targetCount)
 				options.Take();
 
-			return options.InnerList;
+			return options.InnerList.Select(x => x[rng.Next(x.Length)]).ToList();
 		}
 
 		private static PlanetType[] bodyTypes()

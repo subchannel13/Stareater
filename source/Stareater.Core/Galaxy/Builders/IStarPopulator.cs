@@ -9,7 +9,7 @@ namespace Stareater.Galaxy.Builders
 		string Name { get; }
 		string Description { get; }
 
-		void SetGameData(IEnumerable<PlanetTraitType> planetTraits, IEnumerable<StarTraitType> starTraits);
+		void SetGameData(Dictionary<string, StarTraitType> starTraits, Dictionary<string, PlanetTraitType> planetTraits, Dictionary<PlanetType, IEnumerable<string>> implicitTraits);
 
 		IEnumerable<StarSystemBuilder> Generate(Random rng, SystemEvaluator evaluator, StarPositions starPositions);
 
