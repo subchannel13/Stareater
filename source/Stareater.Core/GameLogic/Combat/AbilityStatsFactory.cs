@@ -26,7 +26,7 @@ namespace Stareater.GameLogic.Combat
 		private double shieldEfficiency = 0;
 		private double planetEfficiency = 0;
 		
-		private TraitType appliesTrait = null;
+		private StarTraitType appliesTrait = null;
 
 		private string projectileImage = null;
 		private double speed = 0;

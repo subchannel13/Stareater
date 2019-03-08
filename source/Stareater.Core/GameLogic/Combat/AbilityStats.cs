@@ -26,7 +26,7 @@ namespace Stareater.GameLogic.Combat
 		public double ShieldEfficiency { get; private set; }
 		public double PlanetEfficiency { get; private set; }
 		
-		public TraitType AppliesTrait { get; private set; }
+		public StarTraitType AppliesTrait { get; private set; }
 
 		public string ProjectileImage { get; private set; }
 		public double Speed { get; private set; }
@@ -40,7 +40,7 @@ namespace Stareater.GameLogic.Combat
 							bool targetColony, bool targetShips, bool targetStar,
 							double firePower, double accuracy, double energyCost, double ammo,
 							double accuracyRangePenalty, double armorEfficiency, double shieldEfficiency, double planetEfficiency,
-							TraitType appliesTrait, string projectileImage, double speed, double splashMaxTargets,
+							StarTraitType appliesTrait, string projectileImage, double speed, double splashMaxTargets,
                             double splashFirePower, double splashShieldEfficiency, double splashArmorEfficiency)
 		{
 			this.Type = type;

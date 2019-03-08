@@ -17,29 +17,31 @@ namespace Stareater.Galaxy.Builders
 
 		public double StartingScore(StarSystemBuilder system)
 		{
-			//TODO(later) what about star?
 			return this.StartingScore(system.Star, system.Planets);
 		}
 
 		internal double StartingScore(StarData star, IEnumerable<Planet> planets)
 		{
-			//TODO(later) what about star?
+			foreach (var trait in star.Traits)
+				trait.InitialApply(this.statics, star, planets);
+			
 			return planets.Sum(x => this.startingScore(x));
 		}
 
 		public double PotentialScore(StarSystemBuilder system)
 		{
-			//TODO(later) what about star?
 			return this.PotentialScore(system.Star, system.Planets);
 		}
 
 		internal double PotentialScore(StarData star, IEnumerable<Planet> planets)
 		{
-			//TODO(v0.8) remove negative traits
+			foreach (var trait in star.Traits)
+				trait.InitialApply(this.statics, star, planets);
+
 			return planets.Sum(planet =>
 			{
 				var typeInfo = this.statics.PlanetForumlas[planet.Type];
-				var traits = new HashSet<string>(planet.Traits.Select(x => x.Type.IdCode));
+				var traits = new HashSet<string>(planet.Traits.Select(x => x.IdCode));
 				traits.RemoveWhere(x => typeInfo.WorstTraits.Contains(x) && !typeInfo.UnchangeableTraits.Contains(x));
 				traits.UnionWith(typeInfo.BestTraits.Where(x=> !typeInfo.UnchangeableTraits.Contains(x)));
 
@@ -55,7 +57,7 @@ namespace Stareater.Galaxy.Builders
 			var vars = new Var(GameLogic.ColonyProcessor.PlanetSizeKey, planet.Size).
 				Init(this.statics.PlanetTraits.Keys, -1).
 				UnionWith(this.statics.PlanetForumlas[planet.Type].ImplicitTraits).
-				UnionWith(planet.Traits.Select(x => x.Type.IdCode)).
+				UnionWith(planet.Traits.Select(x => x.IdCode)).
 				Get;
 
 			return this.statics.PlanetForumlas[planet.Type].StartingScore.Evaluate(vars);
@@ -66,15 +68,10 @@ namespace Stareater.Galaxy.Builders
 			var vars = new Var(GameLogic.ColonyProcessor.PlanetSizeKey, planet.Size).
 				Init(this.statics.PlanetTraits.Keys, -1).
 				UnionWith(this.statics.PlanetForumlas[planet.Type].ImplicitTraits).
-				UnionWith(planet.Traits.Select(x => x.Type.IdCode)).
+				UnionWith(planet.Traits.Select(x => x.IdCode)).
 				Get;
 
 			return this.statics.PlanetForumlas[planet.Type].PotentialScore.Evaluate(vars);
-		}
-
-		private List<TraitType> traitList(IEnumerable<string> traitIds)
-		{
-			return traitIds.Select(x => this.statics.PlanetTraits[x]).ToList();
 		}
 	}
 }

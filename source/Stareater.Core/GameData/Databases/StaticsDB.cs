@@ -32,8 +32,8 @@ namespace Stareater.GameData.Databases
 		public ShipFormulaSet ShipFormulas { get; private set; }
 		public StellarisFormulaSet StellarisFormulas { get; private set; }
 		public List<SystemPolicy> Policies { get; private set; }
-		public Dictionary<string, TraitType> PlanetTraits { get; private set; }
-		public Dictionary<string, TraitType> StarTraits { get; private set; }
+		public Dictionary<string, PlanetTraitType> PlanetTraits { get; private set; }
+		public Dictionary<string, StarTraitType> StarTraits { get; private set; }
 
 		public Dictionary<string, ArmorType> Armors { get; private set; }
 		public Dictionary<string, HullType> Hulls { get; private set; }
@@ -68,8 +68,8 @@ namespace Stareater.GameData.Databases
 			this.PlanetForumlas = new Dictionary<PlanetType, PlanetForumlaSet>();
 			this.ResearchTopics = new List<ResearchTopic>();
 			this.Policies = new List<SystemPolicy>();
-			this.PlanetTraits = new Dictionary<string, TraitType>();
-			this.StarTraits = new Dictionary<string, TraitType>();
+			this.PlanetTraits = new Dictionary<string, PlanetTraitType>();
+			this.StarTraits = new Dictionary<string, StarTraitType>();
 		}
 		
 		public static StaticsDB Load(IEnumerable<TracableStream> dataSources)
@@ -155,10 +155,10 @@ namespace Stareater.GameData.Databases
 								db.StellarisFormulas = loadStarFormulas(data);
 								break;
 							case "PlanetTrait":
-								db.PlanetTraits.Add(data[GeneralCodeKey].To<string>(), loadTrait(data));
+								db.PlanetTraits.Add(data[GeneralCodeKey].To<string>(), loadPlanetTrait(data));
 								break;
 							case "StarTrait":
-								db.StarTraits.Add(data[GeneralCodeKey].To<string>(), loadTrait(data));
+								db.StarTraits.Add(data[GeneralCodeKey].To<string>(), loadStarTrait(data));
 								break;
 
 							case ArmorTag:
@@ -342,13 +342,21 @@ namespace Stareater.GameData.Databases
 			);
 		}
 
-		private static TraitType loadTrait(IkonComposite data)
+		private static PlanetTraitType loadPlanetTrait(IkonComposite data)
 		{
-			return new TraitType(
+			return new PlanetTraitType(
 				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
-				data[TraitMaintenanceKey].To<Formula>().Evaluate(null),
+				data[TraitMaintenanceKey].To<Formula>().Evaluate(null)
+			);
+		}
+		private static StarTraitType loadStarTrait(IkonComposite data)
+		{
+			return new StarTraitType(
+				data[GeneralLangKey].To<string>(),
+				data[GeneralImageKey].To<string>(),
+				data[GeneralCodeKey].To<string>(),
 				loadTraitEffect(data[TraitEffectKey].To<IkonComposite>())
 			);
 		}

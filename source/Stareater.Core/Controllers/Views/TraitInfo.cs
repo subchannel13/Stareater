@@ -4,19 +4,16 @@ namespace Stareater.Controllers.Views
 {
 	public class TraitInfo
 	{
-		private readonly TraitType data;
-		
-		internal TraitInfo(TraitType data)
+		internal TraitInfo(PlanetTraitType data)
 		{
-			this.data = data;
+			this.ImagePath = data.ImagePath;
 		}
-		
-		public string ImagePath 
+
+		internal TraitInfo(StarTraitType data)
 		{
-			get
-			{
-				return data.ImagePath;
-			}
+			this.ImagePath = data.ImagePath;
 		}
+
+		public string ImagePath { get; private set; }
 	}
 }

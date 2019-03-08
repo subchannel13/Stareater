@@ -79,6 +79,7 @@
     <Compile Include="Galaxy\BodyTraits\Affliction.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectTemporary.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectTypeTemporary.cs" />
+    <Compile Include="Galaxy\BodyTraits\PlanetTraitType.cs" />
     <Compile Include="Galaxy\Builders\SystemEvaluator.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\ResultsController.cs" />
@@ -148,10 +149,10 @@
     <Compile Include="Controllers\Views\TreatyInfo.cs" />
     <Compile Include="Controllers\Views\WormholeInfo.cs" />
     <Compile Include="Galaxy\AConstructionSite.cs" />
-    <Compile Include="Galaxy\BodyTraits\ITrait.cs" />
+    <Compile Include="Galaxy\BodyTraits\IStarTrait.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectAfflictPlanets.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectPassive.cs" />
-    <Compile Include="Galaxy\BodyTraits\TraitType.cs" />
+    <Compile Include="Galaxy\BodyTraits\StarTraitType.cs" />
     <Compile Include="Galaxy\Builders\IMapBuilderPiece.cs" />
     <Compile Include="Galaxy\Builders\IStarConnector.cs" />
     <Compile Include="Galaxy\Builders\IStarPopulator.cs" />

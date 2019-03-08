@@ -11,7 +11,7 @@ namespace Stareater.Galaxy.Builders
 		internal StarData Star { get; private set; }
 		internal List<Planet> Planets { get; private set; }
 		
-		public StarSystemBuilder(Color color, float imageSizeScale, IStarName name, Vector2D position, List<TraitType> traits)
+		public StarSystemBuilder(Color color, float imageSizeScale, IStarName name, Vector2D position, List<StarTraitType> traits)
 		{
 			this.Star = new StarData(color, imageSizeScale, name, position, traits);
 			this.Planets = new List<Planet>();
@@ -27,10 +27,10 @@ namespace Stareater.Galaxy.Builders
 		/// Create dummy star system for evaluation purposes
 		/// </summary>
 		/// <param name="traits">Host star traits</param>
-		public StarSystemBuilder(List<TraitType> starTraits) : this (Color.White, 1, null, new Vector2D(), starTraits)
+		public StarSystemBuilder(List<StarTraitType> starTraits) : this (Color.White, 1, null, new Vector2D(), starTraits)
 		{ }
 
-		public void AddPlanet(int position, PlanetType type, double size, IEnumerable<TraitType> traits)
+		public void AddPlanet(int position, PlanetType type, double size, IEnumerable<PlanetTraitType> traits)
 		{
 			this.Planets.Add(new Planet(this.Star, position, type, size, traits));
 		}

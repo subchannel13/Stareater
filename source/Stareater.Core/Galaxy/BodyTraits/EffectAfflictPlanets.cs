@@ -1,19 +1,20 @@
 ﻿using Stareater.GameData.Databases;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Stareater.Galaxy.BodyTraits
 {
 	[StateType(saveTag: SaveTag)]
-	class EffectAfflictPlanets : ITrait
+	class EffectAfflictPlanets : IStarTrait
 	{
 		[StateProperty]
-		public TraitType Type { get; private set; }
+		public StarTraitType Type { get; private set; }
 
 		private Affliction[] afflictions = null;
 
-		public EffectAfflictPlanets(TraitType traitType)
+		public EffectAfflictPlanets(StarTraitType traitType)
 		{
 			this.Type = traitType;
 		}
@@ -21,7 +22,12 @@ namespace Stareater.Galaxy.BodyTraits
 		private EffectAfflictPlanets()
 		{ }
 
-		public void PostcombatApply(StatesDB states, StaticsDB statics, StarData star)
+		public void PostcombatApply(StaticsDB statics, StarData star, IEnumerable<Planet> planets)
+		{
+			this.InitialApply(statics, star, planets);
+		}
+
+		public void InitialApply(StaticsDB statics, StarData star, IEnumerable<Planet> planets)
 		{
 			this.pullAfflictions();
 			var vars = new Var().
@@ -33,13 +39,13 @@ namespace Stareater.Galaxy.BodyTraits
 			{
 				var trait = statics.PlanetTraits[affliction.TraitId];
 
-				foreach (var planet in states.Planets.At[star])
+				foreach (var planet in planets)
 				{
 					vars["position"] = planet.Position;
-					planet.Traits.RemoveWhere(x => x.Type.IdCode == trait.IdCode);
+					planet.Traits.RemoveWhere(x => x.IdCode == trait.IdCode);
 
 					if (affliction.Condition.Evaluate(vars) >= 0)
-						planet.Traits.Add(trait.Effect.Instantiate(trait));
+						planet.Traits.Add(trait);
 				}
 			}
 		}

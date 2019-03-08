@@ -21,15 +21,15 @@ namespace Stareater.Galaxy
 		public double Size { get; private set; }
 
 		[StateProperty]
-		public PendableSet<ITrait> Traits { get; private set; }
+		public PendableSet<PlanetTraitType> Traits { get; private set; }
 
-		public Planet(StarData star, int position, PlanetType type, double size, IEnumerable<TraitType> traits) 
+		public Planet(StarData star, int position, PlanetType type, double size, IEnumerable<PlanetTraitType> traits) 
 		{
 			this.Star = star;
 			this.Position = position;
 			this.Type = type;
 			this.Size = size;
-			this.Traits = new PendableSet<ITrait>(traits.Select(x => x.Make()));
+			this.Traits = new PendableSet<PlanetTraitType>(traits);
 		} 
 		
 		private Planet() 

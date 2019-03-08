@@ -38,8 +38,8 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		private PotentialLevel[] potentialLevels;
 
 		private StarType[] starTypes;
-		private TraitType[] planetTraits;
-		private TraitType[] starTraits;
+		private PlanetTraitType[] planetTraits;
+		private StarTraitType[] starTraits;
 
 		private double homeworldSize;
 		private string[] homeworldTraits;
@@ -106,7 +106,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			);
 		}
 
-		public void SetGameData(IEnumerable<TraitType> planetTraits, IEnumerable<TraitType> starTraits)
+		public void SetGameData(IEnumerable<PlanetTraitType> planetTraits, IEnumerable<StarTraitType> starTraits)
 		{
 			this.planetTraits = planetTraits.ToArray();
 			this.starTraits = starTraits.ToArray();
@@ -250,7 +250,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			var starName = namer.NextName();
 
 			//TODO(v0.8) hardcoded star trait
-			var fixedParts = new StarSystemBuilder(starColor, 1, starName, position, new List<TraitType> { this.starTraits.First(x => x.IdCode == "normlaOut")});
+			var fixedParts = new StarSystemBuilder(starColor, 1, starName, position, new List<StarTraitType> { this.starTraits.First(x => x.IdCode == "normlaOut")});
 			if (isHomeSystem)
 				fixedParts.AddPlanet(1, PlanetType.Rock, this.homeworldSize, this.planetTraits.Where(x => this.homeworldTraits.Contains(x.IdCode)));
 
@@ -270,10 +270,10 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			));
 		}
 
-		private IEnumerable<TraitType> randomTraits(Random rng)
+		private IEnumerable<PlanetTraitType> randomTraits(Random rng)
 		{
 			var targetCount = rng.Next(planetTraits.Length + 1);
-			var options = new PickList<TraitType>(rng, planetTraits);
+			var options = new PickList<PlanetTraitType>(rng, planetTraits);
 
 			while (options.Count() > targetCount)
 				options.Take();

@@ -22,7 +22,7 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return (this.Site as Colony).Location.Planet.Traits.Select(x => new TraitInfo(x.Type));
+				return (this.Site as Colony).Location.Planet.Traits.Select(x => new TraitInfo(x));
 			}
 		}
 

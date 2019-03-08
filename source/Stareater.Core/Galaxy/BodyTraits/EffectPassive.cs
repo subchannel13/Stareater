@@ -1,15 +1,16 @@
 ﻿using Stareater.GameData.Databases;
 using Stareater.Utils.StateEngine;
+using System.Collections.Generic;
 
 namespace Stareater.Galaxy.BodyTraits
 {
 	[StateType(saveTag: SaveTag)]
-	class EffectPassive : ITrait
+	class EffectPassive : IStarTrait
 	{
 		[StateProperty]
-		public TraitType Type { get; private set; }
+		public StarTraitType Type { get; private set; }
 
-		public EffectPassive(TraitType type)
+		public EffectPassive(StarTraitType type)
 		{
 			this.Type = type;
 		}
@@ -17,7 +18,12 @@ namespace Stareater.Galaxy.BodyTraits
 		private EffectPassive()
 		{ }
 
-		public void PostcombatApply(StatesDB states, StaticsDB statics, StarData star)
+		public void PostcombatApply(StaticsDB statics, StarData star, IEnumerable<Planet> planets)
+		{
+			//no operation
+		}
+
+		public void InitialApply(StaticsDB statics, StarData star, IEnumerable<Planet> planets)
 		{
 			//no operation
 		}

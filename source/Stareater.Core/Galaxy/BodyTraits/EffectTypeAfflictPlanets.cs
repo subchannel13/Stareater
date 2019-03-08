@@ -9,7 +9,7 @@
 			this.Afflictions = afflictions;
 		}
 
-		public ITrait Instantiate(TraitType traitType)
+		public IStarTrait Instantiate(StarTraitType traitType)
 		{
 			return new EffectAfflictPlanets(traitType);
 		}

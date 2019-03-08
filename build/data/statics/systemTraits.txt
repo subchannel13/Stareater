@@ -47,8 +47,6 @@
 	code: irradiated1
 	
 	cost# 1;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -57,8 +55,6 @@
 	code: irradiated2
 	
 	cost# 2;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -67,8 +63,6 @@
 	code: irradiated3
 	
 	cost# 4;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -77,8 +71,6 @@
 	code: fertile
 	
 	cost# 0;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -87,8 +79,6 @@
 	code: toxic
 	
 	cost# 1;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -97,8 +87,6 @@
 	code: noAtmo
 	
 	cost# 0.5;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -107,8 +95,6 @@
 	code: denseAtmo
 	
 	cost# 2;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -117,8 +103,6 @@
 	code: magnetosphere1
 	
 	cost# 0;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -127,8 +111,6 @@
 	code: magnetosphere2
 	
 	cost# 0;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -137,8 +119,6 @@
 	code: noGrav
 	
 	cost# 0.5;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -147,8 +127,6 @@
 	code: lowGrav
 	
 	cost# 0.25;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -157,8 +135,6 @@
 	code: highGrav
 	
 	cost# 1;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -167,8 +143,6 @@
 	code: poor
 	
 	cost# 0;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -177,8 +151,6 @@
 	code: rich
 	
 	cost# 0;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -187,8 +159,6 @@
 	code: richCore
 	
 	cost# 0;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -197,8 +167,6 @@
 	code: radioactive
 	
 	cost# 2;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -207,8 +175,6 @@
 	code: cold
 	
 	cost# 1;
-	
-	effect {Passive}
 }
 
 { PlanetTrait
@@ -217,6 +183,4 @@
 	code: hot
 	
 	cost# 2;
-	
-	effect {Passive}
 }

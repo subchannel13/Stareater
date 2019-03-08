@@ -9,7 +9,7 @@
 			this.duration = (int)duration;
 		}
 
-		public ITrait Instantiate(TraitType traitType)
+		public IStarTrait Instantiate(StarTraitType traitType)
 		{
 			return new EffectTemporary(traitType, this.duration);
 		}

@@ -4,31 +4,29 @@ using System.Collections.Generic;
 namespace Stareater.Galaxy.BodyTraits
 {
 	[StateType(true)]
-	public class TraitType
+	public class StarTraitType
 	{
 		public string LanguageCode { get; private set; }
 
 		public string ImagePath { get; private set; }
 		public string IdCode { get; private set; }
-		public double MaintenanceCost { get; private set; }
 
 		internal ITraitEffectType Effect { get; private set; }
 
-		internal TraitType(string languageCode, string imagePath, string idCode, double maintenanceCost, ITraitEffectType effect)
+		internal StarTraitType(string languageCode, string imagePath, string idCode, ITraitEffectType effect)
 		{
 			this.LanguageCode = languageCode;
 			this.ImagePath = imagePath;
 			this.IdCode = idCode;
-			this.MaintenanceCost = maintenanceCost;
 			this.Effect = effect;
 		}
 
-		internal ITrait Make()
+		internal IStarTrait Make()
 		{
 			return this.Effect.Instantiate(this);
 		}
 
-		private static ITrait LoadTrait(Ikadn.IkadnBaseObject loadData, LoadSession session)
+		private static IStarTrait LoadTrait(Ikadn.IkadnBaseObject loadData, LoadSession session)
 		{
 			var tag = loadData.Tag as string;
 
@@ -36,6 +34,8 @@ namespace Stareater.Galaxy.BodyTraits
 				return session.Load<EffectAfflictPlanets>(loadData);
 			else if (loadData.Tag.Equals(EffectPassive.SaveTag))
 				return session.Load<EffectPassive>(loadData);
+			else if (loadData.Tag.Equals(EffectTemporary.SaveTag))
+				return session.Load<EffectTemporary>(loadData);
 			else
 				throw new KeyNotFoundException("Unknown order type: " + loadData.Tag);
 		}

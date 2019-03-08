@@ -2,6 +2,6 @@
 {
 	interface ITraitEffectType
 	{
-		ITrait Instantiate(TraitType traitType);
+		IStarTrait Instantiate(StarTraitType traitType);
 	}
 }

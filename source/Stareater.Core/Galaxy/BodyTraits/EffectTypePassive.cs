@@ -2,7 +2,7 @@
 {
 	class EffectTypePassive : ITraitEffectType
 	{
-		public ITrait Instantiate(TraitType traitType)
+		public IStarTrait Instantiate(StarTraitType traitType)
 		{
 			return new EffectPassive(traitType);
 		}

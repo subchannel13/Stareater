@@ -25,15 +25,15 @@ namespace Stareater.Galaxy
 		public Vector2D Position { get; private set; } //TODO(v0.8) restrict to stars only
 
 		[StateProperty]
-		public PendableSet<ITrait> Traits { get; private set; }
+		public PendableSet<IStarTrait> Traits { get; private set; }
 
-		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position, List<TraitType> traits)
+		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position, List<StarTraitType> traits)
 		{
 			this.Color = color;
 			this.ImageSizeScale = imageSizeScale;
 			this.Name = name;
 			this.Position = position;
-			this.Traits = new PendableSet<ITrait>(traits.Select(x => x.Make()));
+			this.Traits = new PendableSet<IStarTrait>(traits.Select(x => x.Make()));
 		}
 
 		private StarData() 
