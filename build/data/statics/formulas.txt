@@ -78,7 +78,7 @@
 	type: asteriod
 	baseTraits [ :noAtmo :noGrav ]
 	bestTraits [ :fertile :rich ]
-	worstTraits [ :irradiated3 :toxic :poor :radioactive :hot ]
+	worstTraits [ :toxic :poor :radioactive ]
 	unchangeableTraits [ :poor :rich :richCore ]
 	
 	bestScore # bestScore;
@@ -89,7 +89,7 @@
 	type: gasGiant
 	baseTraits []
 	bestTraits [ :fertile :rich :magnetosphere2 ]
-	worstTraits [ :irradiated3 :denseAtmo :highGrav :toxic :poor :radioactive :hot ]
+	worstTraits [ :denseAtmo :highGrav :toxic :poor :radioactive ]
 	unchangeableTraits [ :poor :rich :richCore ]
 	
 	bestScore # bestScore;
@@ -100,7 +100,7 @@
 	type: rock
 	baseTraits []
 	bestTraits [ :fertile :rich :magnetosphere2 ]
-	worstTraits [ :irradiated3 :denseAtmo :highGrav :toxic :poor :radioactive :hot ]
+	worstTraits [ :denseAtmo :highGrav :toxic :poor :radioactive ]
 	unchangeableTraits [ :poor :rich :richCore ]
 	
 	bestScore # bestScore;

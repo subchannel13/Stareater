@@ -21,7 +21,7 @@
 	]
 	
 	homeworldSize = 100
-	homeworldTraits [ "fertile" ]
+	homeworldTraits [ "fertile" "magnetosphere1" ]
 }
 
 { Climate

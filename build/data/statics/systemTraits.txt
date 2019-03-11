@@ -1,6 +1,6 @@
 { StarTrait
 	langCode: CATALYZED_TRAIT
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/catalyzed.png
 	code: catalyzed
 	
 	cost# 0;
@@ -12,7 +12,7 @@
 
 { StarTrait
 	langCode: LOW_OUT_TRAIT
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/starOutput1.png
 	code: lowOut
 	
 	cost# 0;
@@ -37,7 +37,7 @@
 
 { StarTrait
 	langCode: NORMAL_OUT_TRAIT
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/starOutput2.png
 	code: normlaOut
 	
 	cost# 0;
@@ -66,7 +66,7 @@
 
 { StarTrait
 	langCode: HIGH_OUT_TRAIT
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/starOutput3.png
 	code: highOut
 	
 	cost# 0;
@@ -96,7 +96,7 @@
 
 { PlanetTrait
 	langCode: IRRADIATED_TRAIT_1
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/starOutput1.png
 	code: irradiated1
 	
 	cost# 1;
@@ -104,7 +104,7 @@
 
 { PlanetTrait
 	langCode: IRRADIATED_TRAIT_2
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/starOutput2.png
 	code: irradiated2
 	
 	cost# 2;
@@ -112,7 +112,7 @@
 
 { PlanetTrait
 	langCode: IRRADIATED_TRAIT_3
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/starOutput3.png
 	code: irradiated3
 	
 	cost# 4;
@@ -120,7 +120,7 @@
 
 { PlanetTrait
 	langCode: FERTILE_TRAIT
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/fertile.png
 	code: fertile
 	
 	cost# 0;
@@ -128,7 +128,7 @@
 
 { PlanetTrait
 	langCode: TOXIC_TRAIT
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/toxic.png
 	code: toxic
 	
 	cost# 1;
@@ -136,7 +136,7 @@
 
 { PlanetTrait
 	langCode: NO_ATMOSPHERE
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/noAtmo.png
 	code: noAtmo
 	
 	cost# 0.5;
@@ -144,7 +144,7 @@
 
 { PlanetTrait
 	langCode: DENSE_ATMOSPHERE
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/denseAtmo.png
 	code: denseAtmo
 	
 	cost# 2;
@@ -152,7 +152,7 @@
 
 { PlanetTrait
 	langCode: MAGNETOSPHERE_TRAIT_1
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/magnetosphere1.png
 	code: magnetosphere1
 	
 	cost# 0;
@@ -160,7 +160,7 @@
 
 { PlanetTrait
 	langCode: MAGNETOSPHERE_TRAIT_2
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/magnetosphere2.png
 	code: magnetosphere2
 	
 	cost# 0;
@@ -168,7 +168,7 @@
 
 { PlanetTrait
 	langCode: NO_GRAVITY
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/noGrav.png
 	code: noGrav
 	
 	cost# 0.5;
@@ -176,7 +176,7 @@
 
 { PlanetTrait
 	langCode: LOW_GRAVITY
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/lowGrav.png
 	code: lowGrav
 	
 	cost# 0.25;
@@ -184,7 +184,7 @@
 
 { PlanetTrait
 	langCode: HIGH_GRAVITY
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/highGrav.png
 	code: highGrav
 	
 	cost# 1;
@@ -192,7 +192,7 @@
 
 { PlanetTrait
 	langCode: POOR_TRAIT
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/poor.png
 	code: poor
 	
 	cost# 0;
@@ -200,7 +200,7 @@
 
 { PlanetTrait
 	langCode: RICH_TRAIT
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/rich.png
 	code: rich
 	
 	cost# 0;
@@ -208,7 +208,7 @@
 
 { PlanetTrait
 	langCode: RICH_CORE_TRAIT
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/richCore.png
 	code: richCore
 	
 	cost# 0;
@@ -216,7 +216,7 @@
 
 { PlanetTrait
 	langCode: RADIOACTIVE_TRAIT
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/radioactive.png
 	code: radioactive
 	
 	cost# 2;
@@ -224,7 +224,7 @@
 
 { PlanetTrait
 	langCode: COLD_TRAIT
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/cold.png
 	code: cold
 	
 	cost# 1;
@@ -232,7 +232,7 @@
 
 { PlanetTrait
 	langCode: HOT_TRAIT
-	image :./images/technologies/hydroponicFarms.png
+	image :./images/traits/hot.png
 	code: hot
 	
 	cost# 2;
