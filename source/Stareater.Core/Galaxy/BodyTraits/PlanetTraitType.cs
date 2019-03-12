@@ -1,4 +1,5 @@
-﻿using Stareater.Utils.StateEngine;
+﻿using Stareater.AppData.Expressions;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy.BodyTraits
 {
@@ -9,9 +10,9 @@ namespace Stareater.Galaxy.BodyTraits
 
 		public string ImagePath { get; private set; }
 		public string IdCode { get; private set; }
-		public double MaintenanceCost { get; private set; }
+		public Formula MaintenanceCost { get; private set; }
 
-		public PlanetTraitType(string languageCode, string imagePath, string idCode, double maintenanceCost)
+		public PlanetTraitType(string languageCode, string imagePath, string idCode, Formula maintenanceCost)
 		{
 			this.LanguageCode = languageCode;
 			this.ImagePath = imagePath;

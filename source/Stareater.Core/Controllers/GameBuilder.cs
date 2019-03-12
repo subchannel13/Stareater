@@ -105,6 +105,12 @@ namespace Stareater.Controllers
 			var developmentAdvances = createDevelopmentAdvances(players, statics.DevelopmentTopics);
 			var researchAdvances = createResearchAdvances(players, statics.ResearchTopics);
 
+			foreach (var star in stars)
+			{
+				foreach (var trait in star.Traits)
+					trait.InitialApply(statics, star, planets.At[star]);
+			}
+
 			return new StatesDB(stars, starSystems[starPositions.StareaterMain].Star, wormholes, planets, 
 				colonies, stellarises, developmentAdvances, researchAdvances,
 				new TreatyCollection(), new ReportCollection(), new DesignCollection(), new FleetCollection(),

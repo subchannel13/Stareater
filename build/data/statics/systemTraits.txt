@@ -99,7 +99,7 @@
 	image :./images/traits/starOutput1.png
 	code: irradiated1
 	
-	cost# 1;
+	cost# if(magnetosphere1 ∨ magnetosphere2, 0, 1);
 }
 
 { PlanetTrait
@@ -107,7 +107,7 @@
 	image :./images/traits/starOutput2.png
 	code: irradiated2
 	
-	cost# 2;
+	cost# 2 - case(magnetosphere1, magnetosphere2) [1, 2, 0];
 }
 
 { PlanetTrait
@@ -115,7 +115,7 @@
 	image :./images/traits/starOutput3.png
 	code: irradiated3
 	
-	cost# 4;
+	cost# 4 - case(magnetosphere1, magnetosphere2) [1, 2, 0];
 }
 
 { PlanetTrait

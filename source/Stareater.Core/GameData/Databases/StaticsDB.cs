@@ -348,7 +348,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
-				data[TraitMaintenanceKey].To<Formula>().Evaluate(null)
+				data[TraitMaintenanceKey].To<Formula>()
 			);
 		}
 		private static StarTraitType loadStarTrait(IkonComposite data)

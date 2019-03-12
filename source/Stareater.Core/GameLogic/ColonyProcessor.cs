@@ -136,9 +136,9 @@ namespace Stareater.GameLogic
 			this.WorkingPopulation = this.Colony.Population - this.Farmers;
 			this.RepairPoints = formulas.RepairPoints.Evaluate(vars);
 
-			this.MaintenancePerPop =
-				planetEffects.ImplicitTraits.Sum(x => statics.PlanetTraits[x].MaintenanceCost) +
-				this.Colony.Location.Planet.Traits.Sum(x => x.MaintenanceCost);
+			this.MaintenancePerPop = this.Colony.Location.Planet.Traits.
+				Concat(planetEffects.ImplicitTraits.Select(x => statics.PlanetTraits[x])).
+				Sum(x => x.MaintenanceCost.Evaluate(vars));
 			this.MaintenanceCost = this.Colony.Population * this.MaintenancePerPop;
             this.MaintenanceLimit = this.WorkingPopulation * this.BuilderEfficiency * this.SpaceliftFactor;
 			this.MaintenancePenalty = 0;
