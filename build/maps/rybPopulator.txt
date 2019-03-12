@@ -12,15 +12,25 @@
 		[=-600 =-300]
 	]
 	traitGroups [
+		[ "poor" "richCore" "rich" ]
+		[ "lowGrav" "highGrav" ]
 		[ "fertile" "toxic" ]
 		[ "noAtmo" "denseAtmo" ]
 		[ "magnetosphere1" "magnetosphere2" ]
-		[ "noGrav" "lowGrav" "highGrav" ]
-		[ "poor" "richCore" "rich" ]
 		[ "radioactive" ]
 	]
+	traitConditions {Conditions
+		richCore "-asteroid"
+		lowGrav "size ≤ if(poor, 100, 80)"
+		highGrav "size ≥ if(rich ∨ richCore, 120, 150)"
+		noAtmo "lowGrav"
+		denseAtmo "-lowGrav"
+		magnetosphere1 "-asteroid"
+		magnetosphere2 "-asteroid"
+	}
 	
 	homeworldSize = 100
+	homeworldPosition = 3
 	homeworldTraits [ "fertile" "magnetosphere1" ]
 }
 

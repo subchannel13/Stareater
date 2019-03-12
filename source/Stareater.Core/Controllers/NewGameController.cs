@@ -183,7 +183,7 @@ namespace Stareater.Controllers
 		{
 			var stars = this.StarPositioner.Generate(random, this.PlayerList.Count);
 			var starlanes = this.StarConnector.Generate(random, stars);
-			var systems = this.StarPopulator.Generate(random, this.evaluator, stars);
+			var systems = this.StarPopulator.Generate(random, this.evaluator, stars).ToList();
 
 			var starIndices = new Dictionary<Vector2D, int>();
 			for (int i = 0; i < stars.Stars.Length; i++)

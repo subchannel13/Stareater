@@ -25,7 +25,7 @@
 			}
 			{Affliction 
 				trait: hot
-				condition #position ≤ if(catalyzed, 2, 1);
+				condition #(position ≤ if(catalyzed, 2, 1)) ∨ (hot ∧ denseAtmo);
 			}
 			{Affliction 
 				trait: cold
@@ -54,7 +54,7 @@
 			}
 			{Affliction 
 				trait: hot
-				condition #position ≤ if(catalyzed, 3, 2);
+				condition #(position ≤ if(catalyzed, 3, 2)) ∨ (hot ∧ denseAtmo);
 			}
 			{Affliction 
 				trait: cold
@@ -87,7 +87,7 @@
 			}
 			{Affliction 
 				trait: hot
-				condition #catalyzed ∨ (position ≤ 4);
+				condition #(catalyzed ∨ (position ≤ 4)) ∨ (hot ∧ denseAtmo);
 			}
 		]
 	}

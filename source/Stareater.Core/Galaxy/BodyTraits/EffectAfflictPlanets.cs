@@ -32,8 +32,8 @@ namespace Stareater.Galaxy.BodyTraits
 			this.pullAfflictions();
 			var vars = new Var().
 				Init(statics.StarTraits.Keys, false).
-				UnionWith(star.Traits.Select(x => x.Type.IdCode)).
-				Get;
+				Init(statics.PlanetTraits.Keys, false).
+				UnionWith(star.Traits.Select(x => x.Type.IdCode));
 
 			foreach (var affliction in this.afflictions)
 			{
@@ -41,10 +41,11 @@ namespace Stareater.Galaxy.BodyTraits
 
 				foreach (var planet in planets)
 				{
-					vars["position"] = planet.Position;
+					vars.UnionWith(planet.Traits.Select(x => x.IdCode));
+					vars.Set("position", planet.Position);
 					planet.Traits.RemoveWhere(x => x.IdCode == trait.IdCode);
 
-					if (affliction.Condition.Evaluate(vars) >= 0)
+					if (affliction.Condition.Evaluate(vars.Get) >= 0)
 						planet.Traits.Add(trait);
 				}
 			}

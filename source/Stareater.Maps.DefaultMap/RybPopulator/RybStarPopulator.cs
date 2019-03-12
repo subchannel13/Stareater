@@ -2,6 +2,7 @@
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
+using Stareater.AppData.Expressions;
 using Stareater.Galaxy;
 using Stareater.Galaxy.BodyTraits;
 using Stareater.Galaxy.Builders;
@@ -38,9 +39,11 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		private Dictionary<string, PlanetTraitType> planetTraits;
 		private Dictionary<string, StarTraitType> starTraits;
 		private string[][] planetTraitIdGroups;
+		private Dictionary<string, Formula> traitConditions;
 		private Dictionary<PlanetType, PlanetTraitType[][]> planetTraitGroups;
 
 		private double homeworldSize;
+		private int homeworldPosition;
 		private string[] homeworldTraits;
 
 		public void Initialize(string dataPath)
@@ -55,7 +58,19 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			this.MaxScore = generalData["maxScore"].To<double>();
 			this.planetTraitIdGroups = generalData["traitGroups"].To<string[][]>();
 			this.homeworldSize = generalData["homeworldSize"].To<double>();
+			this.homeworldPosition = generalData["homeworldPosition"].To<int>();
 			this.homeworldTraits = generalData["homeworldTraits"].To<string[]>();
+
+			this.traitConditions = new Dictionary<string, Formula>();
+			var conditions = generalData["traitConditions"].To<IkonComposite>();
+			foreach(var traitId in conditions.Keys)
+			{
+				var parser = new ExpressionParser(conditions[traitId].To<string>());
+				parser.Parse();
+				if (parser.errors.count > 0)
+					throw new FormatException(parser.errors.errorMessages.ToString());
+				this.traitConditions[traitId] = parser.ParsedFormula;
+			}
 
 			var climates = new List<ClimateLevel>();
 			while (queue.CountOf(ClimateLevelKey) > 0)
@@ -263,8 +278,12 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 				starName, position, 
 				new List<StarTraitType>(starType.Traits.Select(x => this.starTraits[x]))
 			);
+			var usedPositions = new HashSet<int>();
 			if (isHomeSystem)
-				fixedParts.AddPlanet(1, PlanetType.Rock, this.homeworldSize, this.homeworldTraits.Select(x => this.planetTraits[x]));
+			{
+				fixedParts.AddPlanet(this.homeworldPosition, PlanetType.Rock, this.homeworldSize, this.homeworldTraits.Select(x => this.planetTraits[x]));
+				usedPositions.Add(this.homeworldPosition);
+			}
 
 			var systems = new List<StarSystemBuilder>();
 			for (int i = 0; i < SysGenRepeats; i++)
@@ -272,10 +291,16 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 				var system = new StarSystemBuilder(fixedParts);
 				systems.Add(system);
 				var planets = rng.Next(5);
+				var bodyPosition = 1;
 				for (int p = 0; p < planets; p++)
 				{
 					var type = bodyTypes()[rng.Next(3)];
-					system.AddPlanet(p + (isHomeSystem ? 2 : 1), type, Methods.Lerp(rng.NextDouble(), 50, 200), randomTraits(rng, type));
+					var size = Math.Round(Methods.Lerp(rng.NextDouble(), 50, 200));
+					while (usedPositions.Contains(bodyPosition))
+						bodyPosition++;
+					
+					system.AddPlanet(bodyPosition, type, size, randomTraits(rng, type, size));
+					bodyPosition++;
 				}
 			}
 
@@ -285,7 +310,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			));
 		}
 
-		private IEnumerable<PlanetTraitType> randomTraits(Random rng, PlanetType bodyType)
+		private IEnumerable<PlanetTraitType> randomTraits(Random rng, PlanetType bodyType, double size)
 		{
 			var targetCount = rng.Next(this.planetTraitGroups[bodyType].Length + 1);
 			var options = new PickList<PlanetTraitType[]>(rng, this.planetTraitGroups[bodyType]);
@@ -293,7 +318,24 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			while (options.Count() > targetCount)
 				options.Take();
 
-			return options.InnerList.Select(x => x[rng.Next(x.Length)]).ToList();
+			var vars = new Var("size", size).
+				And("asteroid", bodyType == PlanetType.Asteriod).
+				And("rock", bodyType == PlanetType.Rock).
+				And("gasGiant", bodyType == PlanetType.GasGiant).
+				Init(this.planetTraits.Keys, false);
+			foreach (var group in this.planetTraitGroups[bodyType].Where(x => options.InnerList.Contains(x)))
+			{
+				var applicableTraits = new PickList<PlanetTraitType>(rng, group.
+					Where(x => !this.traitConditions.ContainsKey(x.IdCode) || this.traitConditions[x.IdCode].Evaluate(vars.Get) >= 0)
+				);
+				if (applicableTraits.Count() > 0)
+				{
+					var trait = applicableTraits.Pick();
+
+					yield return trait;
+					vars.Set(trait.IdCode, 1);
+				}
+			}
 		}
 
 		private static PlanetType[] bodyTypes()

@@ -21,6 +21,12 @@ namespace Stareater.Utils.Collections
 			return this;
 		}
 
+		public Var And(string name, bool value)
+		{
+			variables.Add(name, value ? 1 : -1);
+			return this;
+		}
+
 		public Var Set(string name, double value)
 		{
 			variables[name] = value;
