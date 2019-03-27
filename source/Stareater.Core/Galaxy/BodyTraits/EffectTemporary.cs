@@ -19,6 +19,9 @@ namespace Stareater.Galaxy.BodyTraits
 			this.Duration = duration;
 		}
 
+		private EffectTemporary()
+		{ }
+
 		public void PostcombatApply(StaticsDB statics, StarData star, IEnumerable<Planet> planets)
 		{
 			if (this.Duration <= 0)

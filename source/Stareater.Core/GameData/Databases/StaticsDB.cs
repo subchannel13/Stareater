@@ -577,7 +577,8 @@ namespace Stareater.GameData.Databases
 							abilityData[GeneralImageKey].To<string>(),
 							abilityData[AbilityRange].To<Formula>(),
 							abilityData[AbilityEnergyCost].To<Formula>(),
-							abilityData[StarShootTrait].To<string>()
+							abilityData[StarShootTrait].To<string>(),
+							abilityData.ToOrDefault(AbilityAmmo, new Formula(double.PositiveInfinity))
 						);
 						break;
 					default:

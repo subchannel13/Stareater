@@ -328,6 +328,8 @@ namespace Stareater.GameLogic
 			}
 			
 			unit.AbilityCharges[index] = chargesLeft;
+			if (!double.IsInfinity(unit.AbilityAmmo[index]))
+				unit.AbilityAmmo[index] -= quantity;
 		}
 		#endregion
 

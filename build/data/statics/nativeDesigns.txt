@@ -10,7 +10,7 @@
 			isDrive [:skimmer =0]
 			
 			equipment [
-				:catalyzer =1
+				:catalyzer =0 =1
 			]
 			specials [
 			]
@@ -82,6 +82,7 @@
 			image: ./images/technologies/hydroponicFarms.png
 			range # 0;
 			energyCost # 0;
+			ammo # 1;
 			
 			applyTrait: catalyzed
 		}
