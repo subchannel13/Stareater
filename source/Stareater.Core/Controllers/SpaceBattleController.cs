@@ -117,6 +117,11 @@ namespace Stareater.Controllers
 		
 		internal void Start()
 		{
+			if (!this.processor.IsOver)
+			{
+				foreach (var participant in this.playerListeners.Values)
+					participant.OnStart();
+			}
 			this.checkNextUnit();
 
 			while (!this.processor.IsOver)

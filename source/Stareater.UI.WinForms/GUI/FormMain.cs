@@ -471,11 +471,8 @@ namespace Stareater.GUI
 
 		public IBattleEventListener OnDoCombat(SpaceBattleController battleController)
 		{
-			if (this.InvokeRequired)
-				this.BeginInvoke(new Action<SpaceBattleController>(initCombatGui), battleController);
-			else
-				initCombatGui(battleController);
-			
+			this.conflictController = battleController;
+
 			return this;
 		}
 		
@@ -541,13 +538,11 @@ namespace Stareater.GUI
 				form.ShowDialog();
 		}
 
-		private void initCombatGui(SpaceBattleController battleController)
+		private void initCombatGui()
 		{
-			this.conflictController = battleController;
-			
 			this.fleetController = null;
 			
-			this.combatRenderer.StartCombat(battleController);
+			this.combatRenderer.StartCombat(this.conflictController);
 			this.nextRenderer = this.combatRenderer;
 
 			abilityList.Visible = true;
@@ -577,6 +572,13 @@ namespace Stareater.GUI
 		#endregion
 		
 		#region IBattleEventListener implementation
+		void IBattleEventListener.OnStart()
+		{
+			if (this.InvokeRequired)
+				this.BeginInvoke(new Action(initCombatGui));
+			else
+				initCombatGui();
+	}
 		public void PlayUnit(CombatantInfo unitInfo)
 		{
 			if (this.InvokeRequired)

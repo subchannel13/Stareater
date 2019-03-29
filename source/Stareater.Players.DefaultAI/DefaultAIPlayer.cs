@@ -51,6 +51,11 @@ namespace Stareater.Players.DefaultAI
 		}
 
 		#region IBattleEventListener implementation
+		void IBattleEventListener.OnStart()
+		{
+			//no operation
+		}
+
 		public void PlayUnit(CombatantInfo unitInfo)
 		{
 			this.battleController.UnitDone();

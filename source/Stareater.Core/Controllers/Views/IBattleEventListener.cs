@@ -1,5 +1,4 @@
-﻿using System;
-using Stareater.Controllers.Views.Combat;
+﻿using Stareater.Controllers.Views.Combat;
 
 namespace Stareater.Controllers.Views
 {
@@ -8,6 +7,7 @@ namespace Stareater.Controllers.Views
 	/// </summary>
 	public interface IBattleEventListener
 	{
+		void OnStart();
 		void PlayUnit(CombatantInfo unitInfo);
 	}
 }

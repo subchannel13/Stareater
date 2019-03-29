@@ -85,6 +85,10 @@ namespace Stareater.Players.Natives
 		}
 
 		#region IBombardEventListener implementation
+		void IBattleEventListener.OnStart()
+		{
+			//no operation
+		}
 
 		public void BombardTurn()
 		{
