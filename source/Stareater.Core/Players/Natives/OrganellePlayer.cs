@@ -58,30 +58,24 @@ namespace Stareater.Players.Natives
 			return this;
 		}
 
+		//TODO(later) assumes unit is catalyzer
 		public void PlayUnit(CombatantInfo unitInfo)
 		{
-			var destination = unitInfo.ValidMoves.Aggregate(
-				unitInfo.Position,
-				(a, b) => (Methods.HexDistance(a) <= Methods.HexDistance(b)) ? a : b
-			);
-			
+			var ability = unitInfo.Abilities.FirstOrDefault();
+			var canShoot = ability != null && ability.Quantity > 0;
+
+			var destination = unitInfo.Position;
+			if (unitInfo.ValidMoves.Any())
+				destination = canShoot ?
+					Methods.FindBest(unitInfo.ValidMoves, x => -Methods.HexDistance(x)) :
+					Methods.FindBest(unitInfo.ValidMoves, x => Methods.HexDistance(x));
+
 			if (destination != unitInfo.Position)
-			{
-				battleController.MoveTo(destination);
-				return;
-			}
-			
-			if (unitInfo.Position == new Vector2D(0, 0))
-			{
-				var ability = unitInfo.Abilities.FirstOrDefault();
-				if (ability != null && ability.Quantity > 0)
-				{
-					battleController.UseAbilityOnStar(ability);
-					return;
-				}
-			}
-			
-			battleController.UnitDone();
+				battleController.MoveTo(destination);			
+			else if (unitInfo.Position == new Vector2D(0, 0) && canShoot)
+				battleController.UseAbilityOnStar(ability);
+			else 
+				battleController.UnitDone();
 		}
 
 		#region IBombardEventListener implementation

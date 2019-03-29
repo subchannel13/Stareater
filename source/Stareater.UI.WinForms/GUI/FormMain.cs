@@ -575,7 +575,7 @@ namespace Stareater.GUI
 		void IBattleEventListener.OnStart()
 		{
 			if (this.InvokeRequired)
-				this.BeginInvoke(new Action(initCombatGui));
+				this.Invoke(new Action(initCombatGui));
 			else
 				initCombatGui();
 	}
