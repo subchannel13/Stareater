@@ -249,15 +249,15 @@ namespace Stareater.Controllers
 			if (game.IsReadOnly)
 				return;
 
-			game.Orders[this.PlayerInstance(game)].RefitOrders[design.Data] = null;
+			game.Orders[this.PlayerInstance(game)].DiscardOrders.Add(design.Data);
 		}
 
 		public bool IsMarkedForRemoval(DesignInfo design)
 		{
 			var game = this.gameInstance;
-			var player = this.PlayerInstance(game);
-			var orders = game.Orders[player];
-			return orders.RefitOrders.ContainsKey(design.Data) && orders.RefitOrders[design.Data] == null;
+			var orders = game.Orders[this.PlayerInstance(game)];
+
+			return orders.DiscardOrders.Contains(design.Data);
 		}
 		
 		public void KeepDesign(DesignInfo design)
@@ -267,6 +267,7 @@ namespace Stareater.Controllers
 				return;
 
 			game.Orders[this.PlayerInstance(game)].RefitOrders.Remove(design.Data);
+			game.Orders[this.PlayerInstance(game)].DiscardOrders.Remove(design.Data);
 		}
 		
 		public IEnumerable<DesignInfo> RefitCandidates(DesignInfo design)
@@ -313,10 +314,8 @@ namespace Stareater.Controllers
 				return null;
 			
 			var targetDesign = orders.RefitOrders[design.Data];
-			
-			return targetDesign != null ?
-				new DesignInfo(targetDesign, game.Derivates[targetDesign.Owner].DesignStats[targetDesign], game.Statics) :
-				null;
+
+			return new DesignInfo(targetDesign, game.Derivates[targetDesign.Owner].DesignStats[targetDesign], game.Statics);
 		}
 		
 		public long ShipCount(DesignInfo design)

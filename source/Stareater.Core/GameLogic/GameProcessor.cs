@@ -433,7 +433,7 @@ namespace Stareater.GameLogic
 						groupsFrom.Add(shipGroup, fleet);
 				var upgradableShips = localFleet.
 					SelectMany(x => x.Ships).
-					Where(x => refitOrders.ContainsKey(x.Design) && refitOrders[x.Design] != null).ToList();
+					Where(x => refitOrders.ContainsKey(x.Design)).ToList();
 				var totalNeededUpgradePoints = upgradableShips.
 					Select(x => refitCosts[x.Design][refitOrders[x.Design]] * x.Quantity - x.UpgradePoints).
 					Aggregate(0.0, (sum, x) => x > 0 ? sum + x : sum);

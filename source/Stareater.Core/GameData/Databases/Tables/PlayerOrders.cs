@@ -48,6 +48,9 @@ namespace Stareater.GameData.Databases.Tables
 		public Dictionary<Design, Design> RefitOrders { get; private set; }
 
 		[StateProperty]
+		public HashSet<Design> DiscardOrders { get; private set; }
+
+		[StateProperty]
 		public HashSet<int> AudienceRequests { get; private set; }
 
 		[StateProperty]
@@ -66,6 +69,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.ColonizationSources = new HashSet<StellarisAdmin>();
 			this.TargetTransportCapacity = 0;
 			this.RefitOrders = new Dictionary<Design, Design>();
+			this.DiscardOrders = new HashSet<Design>();
 			this.AudienceRequests = new HashSet<int>();
 			this.EjectingStar = null;
  		}

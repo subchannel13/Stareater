@@ -492,7 +492,7 @@ namespace Stareater.GameLogic
 			foreach (var upgrade in upgradesTo)
 				if (!orders.ContainsKey(upgrade.Key))
 					orders[upgrade.Key] = upgrade.Value;
-				else if (orders[upgrade.Key] != null && orders[upgrade.Key].IsObsolete)
+				else if (orders[upgrade.Key].IsObsolete)
 					orders[upgrade.Key] = upgradesTo[orders[upgrade.Key]];
 			
 			foreach(var site in game.Orders[this.Player].ConstructionPlans.Keys.ToList())
@@ -513,12 +513,13 @@ namespace Stareater.GameLogic
 			                                        SelectMany(x => x.Ships).
 			                                        Select(x => x.Design).
 			                                        Concat(shipConstruction.Designs));
-			var discardedDesigns = game.Orders[this.Player].RefitOrders.
-				Where(x => x.Value == null && !activeDesigns.Contains(x.Key)).
-				Select(x => x.Key).ToList();
+			var discardedDesigns = game.Orders[this.Player].DiscardOrders.
+				Where(x => !activeDesigns.Contains(x)).
+				ToList();
 			
 			foreach(var design in discardedDesigns)
 			{
+				game.Orders[design.Owner].DiscardOrders.Remove(design);
 				game.Orders[design.Owner].RefitOrders.Remove(design);
 				game.States.Designs.Remove(design);
 				this.DesignStats.Remove(design);
@@ -528,7 +529,7 @@ namespace Stareater.GameLogic
 				foreach(var discarded in discardedDesigns)
 					this.RefitCosts[design].Remove(discarded);
 
-			//TODO(v0.8) don't include obsolete (to be upgraded) designs
+			//TODO(v0.8) doesn't include obsolete (to be upgraded) designs
 			this.ColonizerDesignOptions = this.DesignStats.
 				Where(x => x.Value.ColonizerPopulation > 0 && !orders.ContainsKey(x.Key)).
 				Select(x => x.Key).ToList();
