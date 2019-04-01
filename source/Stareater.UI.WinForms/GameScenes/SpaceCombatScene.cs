@@ -366,7 +366,7 @@ namespace Stareater.GameScenes
 					Where(v => (v - edge.Item1).LengthSquared > 0.1).
 					Select(v => (v - edge.Item1).Normalized()).ToList();
 				var fromLeft = Methods.FindBest(fromNeighbours, (v) => Vector2.Dot(v, ortoDirection));
-				var fromRight = Methods.FindBest(fromNeighbours, (v) => -Vector2.Dot(v, ortoDirection));
+				var fromRight = Methods.FindWorst(fromNeighbours, (v) => Vector2.Dot(v, ortoDirection));
 
 				var toNeighbours = intersections[edge.Item2].
 					Where(e => e != edge).
@@ -374,7 +374,7 @@ namespace Stareater.GameScenes
 					Where(v => (v - edge.Item2).LengthSquared > 0.1).
 					Select(v => (v - edge.Item2).Normalized()).ToList();
 				var toLeft = Methods.FindBest(toNeighbours, (v) => Vector2.Dot(v, ortoDirection));
-				var toRight = Methods.FindBest(toNeighbours, (v) => -Vector2.Dot(v, ortoDirection));
+				var toRight = Methods.FindWorst(toNeighbours, (v) => Vector2.Dot(v, ortoDirection));
 
 				var nearI = edge.Item1 + (-ortoDirection + fromRight.PerpendicularLeft) * 0.5f * GridThickness;
 				var nearJ = edge.Item2 + (-ortoDirection + toRight.PerpendicularRight) * 0.5f * GridThickness;

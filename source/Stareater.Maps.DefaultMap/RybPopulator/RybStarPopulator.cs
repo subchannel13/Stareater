@@ -250,14 +250,14 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 
 				foreach (var point in points)
 					grouping[
-						Methods.FindBest(centroids, x => -(point - x).LengthSquared)
+						Methods.FindWorst(centroids, x => (point - x).LengthSquared)
 					].Add(point);
 
 				centroids.Clear();
 				foreach (var group in grouping)
 				{
 					var center = group.Value.Aggregate((a, b) => a + b) / group.Value.Count;
-					var closest = Methods.FindBest(group.Value, x => -(center - x).LengthSquared);
+					var closest = Methods.FindWorst(group.Value, x => (center - x).LengthSquared);
 
 					centroids.Add(closest);
 					advanced |= closest != group.Key;
@@ -304,7 +304,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 				}
 			}
 
-			return Methods.FindBest(systems, x => -Methods.MeanSquareError(
+			return Methods.FindWorst(systems, x => Methods.MeanSquareError(
 				evaluator.StartingScore(x) - startingScore,
 				evaluator.PotentialScore(x) - potentialScore
 			));

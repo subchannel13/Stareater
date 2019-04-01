@@ -74,7 +74,31 @@ namespace Stareater.Utils
 
 			return best;
 		}
-		
+
+		/// <summary>
+		/// Finds an element with lowest fitness function value.
+		/// </summary>
+		/// <param name="source">Input collection of elements</param>
+		/// <param name="fitnessFunc">Fitness function</param>
+		/// <returns>Element with lowest fitenss</returns>
+		public static T FindWorst<T>(IEnumerable<T> source, Func<T, IComparable> fitnessFunc)
+		{
+			T worst = source.First();
+			IComparable worstValue = fitnessFunc(worst);
+
+			foreach (var item in source.Skip(1))
+			{
+				var itemValue = fitnessFunc(item);
+				if (itemValue.CompareTo(worstValue) < 0)
+				{
+					worst = item;
+					worstValue = itemValue;
+				}
+			}
+
+			return worst;
+		}
+
 		/// <summary>
 		/// Returns the phase (fraction of completion) of a period.
 		/// </summary>

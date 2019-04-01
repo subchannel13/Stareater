@@ -67,7 +67,7 @@ namespace Stareater.Players.Natives
 			var destination = unitInfo.Position;
 			if (unitInfo.ValidMoves.Any())
 				destination = canShoot ?
-					Methods.FindBest(unitInfo.ValidMoves, x => -Methods.HexDistance(x)) :
+					Methods.FindWorst(unitInfo.ValidMoves, x => Methods.HexDistance(x)) :
 					Methods.FindBest(unitInfo.ValidMoves, x => Methods.HexDistance(x));
 
 			if (destination != unitInfo.Position)

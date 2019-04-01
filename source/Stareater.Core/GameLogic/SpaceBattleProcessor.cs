@@ -202,9 +202,9 @@ namespace Stareater.GameLogic
 					}
 					else if (missile.MovementPoints > 0)
 					{
-						missile.Position = Methods.FindBest(
+						missile.Position = Methods.FindWorst(
 							Methods.HexNeighbours(missile.Position),
-							hex => -Methods.HexDistance(missile.Target.Position, hex)
+							hex => Methods.HexDistance(missile.Target.Position, hex)
 						);
 						missile.MovementPoints -= 1 / missile.Stats.Speed;
 					}
