@@ -102,6 +102,7 @@ namespace Stareater.GameScenes
 				ClickCallback = this.galaxyViewListener.TurnEnded,
 			};
 			turnButton.Position.FixedSize(80, 80).ParentRelative(1, -1, 10, 10);
+			turnButton.Tooltip = new StaticTooltip("FormMain", "EndTurn");
 			this.AddElement(turnButton);
 
 			var radarToggle = new ToggleButton(SettingsWinforms.Get.ShowScanRange)
@@ -119,7 +120,7 @@ namespace Stareater.GameScenes
 			this.starInfo.Position.ParentRelative(0, -1, 0, 0);
 			this.AddElement(this.starInfo);
 		}
-		
+
 		public void OnNewTurn()
 		{
 			this.refreshData.Set();

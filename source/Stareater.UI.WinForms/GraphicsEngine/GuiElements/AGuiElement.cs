@@ -15,6 +15,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public AGuiElement Parent { get; private set; }
 		public ElementPosition Position { get; private set; }
+		public StaticTooltip Tooltip { get; set; }
 
 		protected AGuiElement()
 		{

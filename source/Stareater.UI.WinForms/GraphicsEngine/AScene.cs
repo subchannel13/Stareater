@@ -166,6 +166,8 @@ namespace Stareater.GraphicsEngine
 
 				this.mouseHovered = handler;
 			}
+
+			this.restartTooltipTimer(this.guiPostfixSearch(this.rootParent).FirstOrDefault(x => x.Tooltip != null));
 		}
 
 		//TODO(v0.8) pass last mouse position to handlers
@@ -458,6 +460,11 @@ namespace Stareater.GraphicsEngine
 						subtrees.Enqueue(item);
 					}
 			}
+		}
+
+		private void restartTooltipTimer(AGuiElement aGuiElement)
+		{
+			//TODO(v0.8)
 		}
 		#endregion
 

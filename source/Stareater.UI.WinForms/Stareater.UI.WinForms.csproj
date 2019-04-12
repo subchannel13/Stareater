@@ -156,6 +156,7 @@
     <Compile Include="GraphicsEngine\GuiElements\GuiSlider.cs" />
     <Compile Include="GraphicsEngine\GuiElements\GuiText.cs" />
     <Compile Include="GraphicsEngine\GuiElements\AGuiElement.cs" />
+    <Compile Include="GraphicsEngine\GuiElements\StaticTooltip.cs" />
     <Compile Include="GraphicsEngine\GuiElements\ToggleButton.cs" />
     <Compile Include="GraphicsEngine\IAnimator.cs" />
     <Compile Include="GraphicsEngine\IDrawable.cs" />
