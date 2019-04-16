@@ -1,4 +1,7 @@
-﻿namespace Stareater.GraphicsEngine.GuiElements
+﻿using Stareater.Localization;
+using System.Drawing;
+
+namespace Stareater.GraphicsEngine.GuiElements
 {
 	class StaticTooltip
 	{
@@ -9,6 +12,16 @@
 		{
 			this.context = context;
 			this.textKey = textKey;
+		}
+
+		public AGuiElement Make()
+		{
+			return new GuiText()
+			{
+				Text = LocalizationManifest.Get.CurrentLanguage[this.context][this.textKey].Text(),
+				TextColor = Color.White,
+				TextSize = 20
+			};
 		}
 	}
 }

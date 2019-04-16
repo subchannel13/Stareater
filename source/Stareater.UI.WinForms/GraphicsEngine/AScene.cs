@@ -32,6 +32,8 @@ namespace Stareater.GraphicsEngine
 		private readonly AGuiElement rootParent;
 		private AGuiElement mouseHovered;
 		private readonly Dictionary<MouseButtons, AGuiElement> mousePressed = new Dictionary<MouseButtons, AGuiElement>();
+		private AGuiElement tooltipSource;
+		private AGuiElement tooltipElement;
 
 		protected AScene()
 		{
@@ -146,7 +148,7 @@ namespace Stareater.GraphicsEngine
 			}
 
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
-			AGuiElement handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault();
+			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault();
 
 			if (handler != null && handler != this.rootParent)
 				handler.OnMouseMove(mouseGuiPoint);
@@ -167,7 +169,7 @@ namespace Stareater.GraphicsEngine
 				this.mouseHovered = handler;
 			}
 
-			this.restartTooltipTimer(this.guiPostfixSearch(this.rootParent).FirstOrDefault(x => x.Tooltip != null));
+			this.requestTooltip(this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault(x => x.Tooltip != null));
 		}
 
 		//TODO(v0.8) pass last mouse position to handlers
@@ -462,9 +464,22 @@ namespace Stareater.GraphicsEngine
 			}
 		}
 
-		private void restartTooltipTimer(AGuiElement aGuiElement)
+		private void requestTooltip(AGuiElement guiElement)
 		{
-			//TODO(v0.8)
+			if (this.tooltipSource != null)
+			{
+				this.RemoveElement(this.tooltipElement);
+				this.tooltipSource = null;
+				this.tooltipElement = null;
+			}
+
+			if (guiElement == null)
+				return;
+
+			this.tooltipSource = guiElement;
+			this.tooltipElement = guiElement.Tooltip.Make();
+			this.tooltipElement.Position.WrapContent();
+			this.AddElement(this.tooltipElement);
 		}
 		#endregion
 
