@@ -1,9 +1,6 @@
 ﻿:FormMain
 
-EndTurn §
-		End
-		turn
-	\
+EndTurn = End turn
 Return = Return
 GameOver = Game over
 Turn = Turn

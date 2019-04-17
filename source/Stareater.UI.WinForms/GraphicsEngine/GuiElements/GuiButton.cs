@@ -147,15 +147,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return soBuilder.Build();
 		}
 
-		protected override float contentWidth()
-		{
-			return TextRenderUtil.Get.MeasureWidth(this.Text) * this.TextSize + 2 * this.mPadding;
-		}
-
-		protected override float contentHeight()
+		protected override Vector2 measureContent()
 		{
 			//TODO(later) count lines
-			return (string.IsNullOrWhiteSpace(this.Text) ? 0 : this.TextSize) + 2 * this.mPadding;
+			return new Vector2(
+				TextRenderUtil.Get.MeasureWidth(this.Text) * this.TextSize + 2 * this.mPadding,
+				(string.IsNullOrWhiteSpace(this.Text) ? 0 : this.TextSize) + 2 * this.mPadding
+			);
 		}
 	}
 }

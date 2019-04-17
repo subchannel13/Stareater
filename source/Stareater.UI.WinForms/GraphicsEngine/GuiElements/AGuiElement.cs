@@ -19,7 +19,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		protected AGuiElement()
 		{
-			this.Position = new ElementPosition(this.contentWidth, this.contentHeight);
+			this.Position = new ElementPosition(this.measureContent);
 		}
 
 		public virtual void Attach(AScene scene, AGuiElement parent)
@@ -53,14 +53,20 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.updateScene();
 		}
 
-		public void RecalculatePosition()
+		public void RecalculatePosition(bool fullRecalculate)
 		{
+			var oldCenter = this.Position.Center;
+			var oldSize = this.Position.Size;
+
 			this.Position.Recalculate((this.Parent != null) ? this.Parent.Position : null);
 
-			foreach (var element in this.dependentElements)
-				element.RecalculatePosition();
+			if (fullRecalculate || this.Position.Center != oldCenter || this.Position.Size != oldSize)
+			{
+				foreach (var element in this.dependentElements)
+					element.RecalculatePosition(fullRecalculate);
 
-			this.updateScene();
+				this.updateScene();
+			}
 		}
 
 		public bool IsInside(Vector2 point)
@@ -130,19 +136,14 @@ namespace Stareater.GraphicsEngine.GuiElements
 			if (this.scene == null)
 				return;
 
-			this.RecalculatePosition();
+			this.RecalculatePosition(false);
 		}
 
 		protected abstract SceneObject makeSceneObject();
 
-		protected virtual float contentWidth()
+		protected virtual Vector2 measureContent()
 		{
-			return 0;
-		}
-
-		protected virtual float contentHeight()
-		{
-			return 0;
+			return new Vector2();
 		}
 	}
 }

@@ -70,14 +70,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 				return soBuilder.Build();
 		}
 
-		protected override float contentWidth()
+		protected override Vector2 measureContent()
 		{
-			return TextRenderUtil.Get.MeasureWidth(this.Text) * this.TextSize;
-		}
-
-		protected override float contentHeight()
-		{
-			return this.TextSize;
+			//TODO(later) count lines
+			return new Vector2(
+				TextRenderUtil.Get.MeasureWidth(this.Text) * this.TextSize,
+				this.TextSize
+			);
 		}
 	}
 }

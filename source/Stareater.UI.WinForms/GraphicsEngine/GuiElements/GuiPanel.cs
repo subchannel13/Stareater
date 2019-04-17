@@ -1,12 +1,21 @@
 ﻿using OpenTK;
 using Stareater.GLData;
 using Stareater.GLData.SpriteShader;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
 	class GuiPanel : AGuiElement
 	{
+		private readonly List<AGuiElement> children = new List<AGuiElement>();
+
+		public void AddChild(AGuiElement child)
+		{
+			this.children.Add(child);
+		}
+
 		private BackgroundTexture mBackground = null;
 		public BackgroundTexture Background
 		{
@@ -15,6 +24,14 @@ namespace Stareater.GraphicsEngine.GuiElements
 			{
 				this.apply(ref this.mBackground, value);
 			}
+		}
+
+		public override void Attach(AScene scene, AGuiElement parent)
+		{
+			base.Attach(scene, parent);
+
+			foreach(var child in children)
+				scene.AddElement(child, this);
 		}
 
 		public override bool OnMouseDown(Vector2 mousePosition)
@@ -30,6 +47,17 @@ namespace Stareater.GraphicsEngine.GuiElements
 				Translate(this.Position.Center).
 				AddVertices(SpriteHelpers.GuiBackground(this.mBackground, this.Position.Size.X, this.Position.Size.Y)).
 				Build();
+		}
+
+		protected override Vector2 measureContent()
+		{
+			foreach (var child in this.children)
+				child.RecalculatePosition(false);
+
+			return new Vector2(
+				this.children.Max(x => x.Position.Center.X + x.Position.Size.X) - this.children.Min(x => x.Position.Center.X - x.Position.Size.X),
+				this.children.Max(x => x.Position.Center.Y + x.Position.Size.Y) - this.children.Min(x => x.Position.Center.Y - x.Position.Size.Y)
+			) / 2;
 		}
 	}
 }

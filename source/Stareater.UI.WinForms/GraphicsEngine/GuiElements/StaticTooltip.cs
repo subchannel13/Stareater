@@ -1,12 +1,13 @@
-﻿using Stareater.Localization;
+﻿using Stareater.GLData;
+using Stareater.Localization;
 using System.Drawing;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
 	class StaticTooltip
 	{
-		private string context;
-		private string textKey;
+		private readonly string context;
+		private readonly string textKey;
 
 		public StaticTooltip(string context, string textKey)
 		{
@@ -16,12 +17,22 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public AGuiElement Make()
 		{
-			return new GuiText()
+			var text = new GuiText()
 			{
 				Text = LocalizationManifest.Get.CurrentLanguage[this.context][this.textKey].Text(),
 				TextColor = Color.White,
 				TextSize = 20
 			};
+			text.Position.WrapContent();
+
+			var panel = new GuiPanel()
+			{
+				Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 3)
+			};
+			panel.AddChild(text);
+			panel.Position.WrapContent();
+
+			return panel;
 		}
 	}
 }

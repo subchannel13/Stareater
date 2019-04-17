@@ -341,7 +341,7 @@ namespace Stareater.GraphicsEngine
 			this.guiProjection = calcOrthogonalPerspective(width, height, 1, new Vector2());
 			this.guiInvProjection = Matrix4.Invert(new Matrix4(this.guiProjection.Row0, this.guiProjection.Row1, this.guiProjection.Row2, this.guiProjection.Row3));
 			this.rootParent.Position.FixedSize(width, height);
-			this.rootParent.RecalculatePosition();
+			this.rootParent.RecalculatePosition(true);
 		}
 		#endregion
 
@@ -388,7 +388,7 @@ namespace Stareater.GraphicsEngine
 				return;
 
 			this.AddElement(element, element.Parent);
-			element.RecalculatePosition();
+			element.RecalculatePosition(true);
 		}
 
 		private IEnumerable<AGuiElement> eventHandlerSearch(Vector2 point)
@@ -478,8 +478,8 @@ namespace Stareater.GraphicsEngine
 
 			this.tooltipSource = guiElement;
 			this.tooltipElement = guiElement.Tooltip.Make();
-			this.tooltipElement.Position.WrapContent();
 			this.AddElement(this.tooltipElement);
+			this.tooltipElement.RecalculatePosition(true);
 		}
 		#endregion
 

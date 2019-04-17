@@ -13,13 +13,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 		public ClipWindow ClipArea { get; private set; }
 
 		private readonly List<IPositioner> positioners = new List<IPositioner>();
-		private readonly Func<float> contentWidth;
-		private readonly Func<float> contentHeight;
+		private readonly Func<Vector2> contentSize;
 
-		public ElementPosition(Func<float> contentWidth, Func<float> contentHeight)
+		public ElementPosition(Func<Vector2> contentSize)
 		{
-			this.contentWidth = contentWidth;
-			this.contentHeight = contentHeight;
+			this.contentSize = contentSize;
 			this.ClipArea = new ClipWindow();
 		}
 
@@ -192,10 +190,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
-				element.Size = new Vector2(
-					element.contentWidth(),
-					element.contentHeight()
-				);
+				element.Size = element.contentSize();
 			}
 
 			public IEnumerable<AGuiElement> Dependencies

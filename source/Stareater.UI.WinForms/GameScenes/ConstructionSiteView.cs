@@ -32,6 +32,7 @@ namespace Stareater.GameScenes
 
 			this.title = new GuiText { TextColor = Color.White, TextSize = 14 };
 			this.title.Position.WrapContent().ParentRelative(-1, 1, 8, 4);
+			this.AddChild(this.title);
 
 			this.projectButton = new GuiButton
 			{
@@ -43,6 +44,7 @@ namespace Stareater.GameScenes
 				ClickCallback = projectButton_Click
 			};
 			this.projectButton.Position.FixedSize(88, 88).ParentRelative(-1, -1, 8, 8);
+			this.AddChild(this.projectButton);
 
 			this.detailsButton = new GuiButton
 			{
@@ -55,15 +57,18 @@ namespace Stareater.GameScenes
 				ClickCallback = detailsButton_Click
 			};
 			this.detailsButton.Position.WrapContent().ParentRelative(1, -1, 8, 8);
+			this.AddChild(this.detailsButton);
 
 			this.investmentSlider = new GuiSlider
 			{
 				SlideCallback = investmentSlider_Change 
 			};
 			this.investmentSlider.Position.FixedSize(150, 15).RelativeTo(this.projectButton, 1, 1, -1, 1, 8, 0).StretchRightTo(this, 1, 8);
+			this.AddChild(this.investmentSlider);
 
 			this.estimationLabel = new GuiText { TextColor = Color.Black, TextSize = 10 };
 			this.estimationLabel.Position.WrapContent().RelativeTo(this.investmentSlider, -1, -1, -1, 1, 0, 8);
+			this.AddChild(this.estimationLabel);
 
 			this.policyToggle = new CycleButton<PolicyInfo>
 			{
@@ -79,21 +84,16 @@ namespace Stareater.GameScenes
 				ItemImage = x => GalaxyTextures.Get.Sprite(x.Id + "Policy")
 			};
 			this.policyToggle.Position.FixedSize(32, 32).RelativeTo(this.projectButton, 1, -1, -1, -1, 8, 0);
+			this.AddChild(this.policyToggle);
 
 			this.policyName = new GuiText { TextColor = Color.Black, TextSize = 10 };
 			this.policyName.Position.WrapContent().RelativeTo(this.policyToggle, 1, 0, -1, 0, 8, 0);
+			this.AddChild(this.policyName);
 		}
 
 		public override void Attach(AScene scene, AGuiElement parent)
 		{
 			base.Attach(scene, parent);
-			scene.AddElement(this.title, this);
-			scene.AddElement(this.projectButton, this);
-			scene.AddElement(this.detailsButton, this);
-			scene.AddElement(this.investmentSlider, this);
-			scene.AddElement(this.estimationLabel, this);
-			scene.AddElement(this.policyToggle, this);
-			scene.AddElement(this.policyName, this);
 
 			this.updateSliderVisibility();
 		}
