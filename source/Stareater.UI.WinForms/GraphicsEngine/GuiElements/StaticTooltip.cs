@@ -21,9 +21,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 			{
 				Text = LocalizationManifest.Get.CurrentLanguage[this.context][this.textKey].Text(),
 				TextColor = Color.White,
-				TextSize = 20
+				TextSize = 15
 			};
-			text.Position.WrapContent();
+			text.Position.WrapContent(10, 5).ParentRelative(0, 0, 0, 0);
 
 			var panel = new GuiPanel()
 			{

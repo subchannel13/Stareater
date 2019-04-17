@@ -1,6 +1,6 @@
 ﻿using OpenTK;
-using Stareater.GameScenes;
 using Stareater.GLData;
+using Stareater.Utils;
 using System;
 using System.Collections.Generic;
 
@@ -63,9 +63,17 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 			return this;
 		}
+
 		public ElementPosition WrapContent()
 		{
-			this.positioners.Add(new WrapContentPositioner());
+			this.positioners.Add(new WrapContentPositioner(0, 0));
+
+			return this;
+		}
+
+		public ElementPosition WrapContent(float marginX, float marginY)
+		{
+			this.positioners.Add(new WrapContentPositioner(marginX, marginY));
 
 			return this;
 		}
@@ -80,6 +88,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 		public ElementPosition StretchRightTo(AGuiElement anchor, float xPortionAnchor, float marginX)
 		{
 			this.positioners.Add(new StretchRightToPositioner(anchor, xPortionAnchor, marginX));
+
+			return this;
+		}
+
+		public ElementPosition TooltipNear(Vector2 sourcePoint, float sourceMargin, float parentMargin)
+		{
+			this.positioners.Add(new TooltipPositioner(sourcePoint, sourceMargin, parentMargin));
 
 			return this;
 		}
@@ -186,11 +201,50 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
-		private class WrapContentPositioner : IPositioner
+		private class TooltipPositioner : IPositioner
 		{
+			private readonly Vector2 sourcePoint;
+			private readonly float sourceMargin;
+			private readonly float parentMargin;
+
+			public TooltipPositioner(Vector2 sourcePoint, float sourceMargin, float parentMargin)
+			{
+				this.sourcePoint = sourcePoint;
+				this.sourceMargin = sourceMargin;
+				this.parentMargin = parentMargin;
+			}
+
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
-				element.Size = element.contentSize();
+				var leftBound = -parentPosition.Size.X / 2 + this.parentMargin;
+				var rigthBound = Math.Max(parentPosition.Size.X / 2 - this.parentMargin - element.Size.X / 2, leftBound);
+
+				element.Center = new Vector2(
+					Methods.Clamp(this.sourcePoint.X + element.Size.X / 2, leftBound, rigthBound) + parentPosition.Center.X,
+					this.sourcePoint.Y + element.Size.Y / 2 + this.sourceMargin
+				);
+			}
+
+			public IEnumerable<AGuiElement> Dependencies
+			{
+				get { yield break; }
+			}
+		}
+
+		private class WrapContentPositioner : IPositioner
+		{
+			private readonly float marginX;
+			private readonly float marginY;
+
+			public WrapContentPositioner(float marginX, float marginY)
+			{
+				this.marginX = marginX;
+				this.marginY = marginY;
+			}
+
+			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
+			{
+				element.Size = element.contentSize() + new Vector2(this.marginX, this.marginY);
 			}
 
 			public IEnumerable<AGuiElement> Dependencies

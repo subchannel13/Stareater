@@ -169,7 +169,10 @@ namespace Stareater.GraphicsEngine
 				this.mouseHovered = handler;
 			}
 
-			this.requestTooltip(this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault(x => x.Tooltip != null));
+			this.requestTooltip(
+				this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault(x => x.Tooltip != null),
+				mouseGuiPoint
+			);
 		}
 
 		//TODO(v0.8) pass last mouse position to handlers
@@ -464,8 +467,11 @@ namespace Stareater.GraphicsEngine
 			}
 		}
 
-		private void requestTooltip(AGuiElement guiElement)
+		private void requestTooltip(AGuiElement guiElement, Vector2 mousePosition)
 		{
+			if (this.tooltipSource == guiElement)
+				return;
+
 			if (this.tooltipSource != null)
 			{
 				this.RemoveElement(this.tooltipElement);
@@ -478,6 +484,8 @@ namespace Stareater.GraphicsEngine
 
 			this.tooltipSource = guiElement;
 			this.tooltipElement = guiElement.Tooltip.Make();
+			this.tooltipElement.Position.TooltipNear(mousePosition, 5, 5);
+
 			this.AddElement(this.tooltipElement);
 			this.tooltipElement.RecalculatePosition(true);
 		}
