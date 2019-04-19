@@ -28,8 +28,8 @@ namespace Stareater.GraphicsEngine
 		private Matrix4 guiProjection;
 		private Matrix4 guiInvProjection;
 
-		private readonly Dictionary<AGuiElement, HashSet<AGuiElement>> guiHierarchy = new Dictionary<AGuiElement, HashSet<AGuiElement>>();
-		private readonly AGuiElement rootParent;
+		private readonly GuiLayer normalGuiLayer;
+		private readonly GuiLayer tooltipGuiLayer;
 		private AGuiElement mouseHovered;
 		private readonly Dictionary<MouseButtons, AGuiElement> mousePressed = new Dictionary<MouseButtons, AGuiElement>();
 		private AGuiElement tooltipSource;
@@ -37,11 +37,10 @@ namespace Stareater.GraphicsEngine
 
 		protected AScene()
 		{
-			this.rootParent = new GuiPanel();
-			this.rootParent.Position.FixedCenter(0, 0);
-			this.rootParent.SetDepth(this.guiLayerThickness, this.guiLayerThickness);
+			this.normalGuiLayer = new GuiLayer(this.guiLayerThickness, this.guiLayerThickness / 2);
+			this.tooltipGuiLayer = new GuiLayer(this.guiLayerThickness / 2, this.guiLayerThickness / 2);
 
-			this.mouseHovered = this.rootParent;
+			this.mouseHovered = this.normalGuiLayer.Root;
 		}
 
 		public void Draw(double deltaTime)
@@ -110,7 +109,7 @@ namespace Stareater.GraphicsEngine
 		public void HandleMouseDown(MouseEventArgs e)
 		{
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
-			this.mousePressed[e.Button] = this.rootParent;
+			this.mousePressed[e.Button] = this.normalGuiLayer.Root;
 
 			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault();
 			//TODO(v0.8) differentiate between left and right click
@@ -121,7 +120,7 @@ namespace Stareater.GraphicsEngine
 		public void HandleMouseUp(MouseEventArgs e)
 		{
 			if (!this.mousePressed.ContainsKey(e.Button))
-				this.mousePressed[e.Button] = this.rootParent;
+				this.mousePressed[e.Button] = this.normalGuiLayer.Root;
 
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault();
@@ -150,18 +149,18 @@ namespace Stareater.GraphicsEngine
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault();
 
-			if (handler != null && handler != this.rootParent)
+			if (handler != null && handler != this.normalGuiLayer.Root)
 				handler.OnMouseMove(mouseGuiPoint);
 			else
 			{
 				this.onMouseMove(this.mouseToView(e.X, e.Y));
-				handler = this.rootParent;
+				handler = this.normalGuiLayer.Root;
 			}
 
 			if (this.mouseHovered != handler)
 			{
 				if (this.mouseHovered != null)
-					if (this.mouseHovered != this.rootParent)
+					if (this.mouseHovered != this.normalGuiLayer.Root)
 						this.mouseHovered.OnMouseLeave();
 					else
 						this.onMouseLeave();
@@ -181,7 +180,7 @@ namespace Stareater.GraphicsEngine
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 
 			foreach (var element in this.mousePressed.Values.Where(x => x != null))
-				if (element != this.rootParent)
+				if (element != this.normalGuiLayer.Root)
 					element.OnMouseDrag(mouseGuiPoint);
 				else
 					this.onMouseDrag(this.mouseToView(e.X, e.Y));
@@ -343,8 +342,10 @@ namespace Stareater.GraphicsEngine
 
 			this.guiProjection = calcOrthogonalPerspective(width, height, 1, new Vector2());
 			this.guiInvProjection = Matrix4.Invert(new Matrix4(this.guiProjection.Row0, this.guiProjection.Row1, this.guiProjection.Row2, this.guiProjection.Row3));
-			this.rootParent.Position.FixedSize(width, height);
-			this.rootParent.RecalculatePosition(true);
+			this.normalGuiLayer.Root.Position.FixedSize(width, height);
+			this.normalGuiLayer.Root.RecalculatePosition(true);
+			this.tooltipGuiLayer.Root.Position.FixedSize(width, height);
+			this.tooltipGuiLayer.Root.RecalculatePosition(true);
 		}
 		#endregion
 
@@ -353,118 +354,46 @@ namespace Stareater.GraphicsEngine
 
 		public void AddElement(AGuiElement element)
 		{
-			this.AddElement(element, this.rootParent);
+			this.normalGuiLayer.AddElement(element, this);
 		}
 
 		public void AddElement(AGuiElement element, AGuiElement parent)
 		{
-			if (!this.guiHierarchy.ContainsKey(parent))
-				this.guiHierarchy[parent] = new HashSet<AGuiElement>();
-
-			this.guiHierarchy[parent].Add(element);
-			element.Attach(this, parent);
-			this.updateGuiZ(element);
+			this.guiLayers().First(x => x.Contains(parent)).AddElement(element, parent, this);
 		}
 
 		public void RemoveElement(AGuiElement element)
 		{
-			if (this.guiHierarchy.ContainsKey(element))
-				foreach (var child in this.guiHierarchy[element].ToList())
-					this.RemoveElement(child);
-
-			this.guiHierarchy[element.Parent].Remove(element);
-			element.Detach();
-
-			if (!this.guiHierarchy[element.Parent].Any())
-				this.guiHierarchy.Remove(element.Parent);
+			this.guiLayers().First(x => x.Contains(element)).RemoveElement(element);
 		}
 
 		public void HideElement(AGuiElement element)
 		{
-			if (this.guiHierarchy.ContainsKey(element.Parent) && this.guiHierarchy[element.Parent].Contains(element))
+			if (this.normalGuiLayer.Contains(element.Parent) && this.normalGuiLayer.Contains(element))
 				this.RemoveElement(element);
 		}
 
 		public void ShowElement(AGuiElement element)
 		{
-			if (this.guiHierarchy.ContainsKey(element.Parent) && this.guiHierarchy[element.Parent].Contains(element))
+			if (this.normalGuiLayer.Contains(element.Parent) && this.normalGuiLayer.Contains(element))
 				return;
 
 			this.AddElement(element, element.Parent);
 			element.RecalculatePosition(true);
 		}
 
+		private IEnumerable<GuiLayer> guiLayers()
+		{
+			yield return this.tooltipGuiLayer;
+			yield return this.normalGuiLayer;
+		}
+
 		private IEnumerable<AGuiElement> eventHandlerSearch(Vector2 point)
 		{
-			if (this.guiHierarchy.Count == 0)
-				yield break;
-
-			foreach (var parent in this.guiHierarchy[this.rootParent])
-				foreach (var element in this.guiPostfixSearch(parent))
+			foreach (var layer in this.guiLayers())
+				foreach (var element in layer.EnumeratePostfix())
 					if (element.Position.ClipArea.Contains(point))
 						yield return element;
-		}
-
-		private IEnumerable<AGuiElement> guiPostfixSearch(AGuiElement parent)
-		{
-			if (this.guiHierarchy.ContainsKey(parent))
-				foreach (var child in this.guiHierarchy[parent])
-					foreach (var element in guiPostfixSearch(child))
-						yield return element;
-
-			yield return parent;
-		}
-
-		//TODO(v0.8) check users
-		private IEnumerable<AGuiElement> guiPrefixSearch()
-		{
-			if (this.guiHierarchy.Count == 0)
-				yield break;
-
-			var parents = new Stack<AGuiElement>();
-			parents.Push(this.rootParent);
-
-			while (parents.Any())
-			{
-				var parent = parents.Pop();
-				yield return parent;
-
-				if (this.guiHierarchy.ContainsKey(parent))
-					foreach (var element in this.guiHierarchy[parent])
-						parents.Push(element);
-			}
-		}
-
-		private void updateGuiZ(AGuiElement element)
-		{
-			var layers = 1;
-			var root = element;
-
-			while (root.Parent != this.rootParent)
-			{
-				root = root.Parent;
-				layers++;
-			}
-
-			var zRange = this.guiLayerThickness / layers;
-			if (root.ZRange <= zRange && root.Z0 == this.guiLayerThickness)
-				return;
-
-			root.SetDepth(this.guiLayerThickness, zRange);
-			var subtrees = new Queue<AGuiElement>();
-			subtrees.Enqueue(root);
-
-			while (subtrees.Count > 0)
-			{
-				root = subtrees.Dequeue();
-
-				if (this.guiHierarchy.ContainsKey(root))
-					foreach (var item in this.guiHierarchy[root])
-					{
-						item.SetDepth(root.Z0 - root.ZRange, root.ZRange);
-						subtrees.Enqueue(item);
-					}
-			}
 		}
 
 		private void requestTooltip(AGuiElement guiElement, Vector2 mousePosition)
@@ -486,7 +415,7 @@ namespace Stareater.GraphicsEngine
 			this.tooltipElement = guiElement.Tooltip.Make();
 			this.tooltipElement.Position.TooltipNear(mousePosition, 5, 5);
 
-			this.AddElement(this.tooltipElement);
+			this.tooltipGuiLayer.AddElement(this.tooltipElement, this);
 			this.tooltipElement.RecalculatePosition(true);
 		}
 		#endregion
