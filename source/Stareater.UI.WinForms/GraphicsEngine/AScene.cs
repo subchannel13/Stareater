@@ -402,7 +402,7 @@ namespace Stareater.GraphicsEngine
 
 		private void updateTooltip(double deltaTime)
 		{
-			if (this.tooltipEta <= 0)
+			if (this.tooltipEta <= 0 || this.tooltipSource == null)
 				return;
 
 			this.tooltipEta -= deltaTime;

@@ -84,6 +84,7 @@ namespace Stareater.GameScenes
 				ItemImage = x => GalaxyTextures.Get.Sprite(x.Id + "Policy")
 			};
 			this.policyToggle.Position.FixedSize(32, 32).RelativeTo(this.projectButton, 1, -1, -1, -1, 8, 0);
+			this.policyToggle.Tooltip = new StaticTooltip("FormMain", "PolicyTooltip");
 			this.AddChild(this.policyToggle);
 
 			this.policyName = new GuiText { TextColor = Color.Black, TextSize = 10 };

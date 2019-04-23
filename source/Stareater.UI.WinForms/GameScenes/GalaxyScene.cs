@@ -89,6 +89,7 @@ namespace Stareater.GameScenes
 
 			this.fuelInfo = new GuiText { TextColor = Color.Yellow, TextSize = 30 };
 			this.fuelInfo.Position.WrapContent().ParentRelative(-1, 1, 10, 5);
+			this.fuelInfo.Tooltip = new StaticTooltip("FormMain", "FuelTooltip");
 			this.AddElement(this.fuelInfo);
 
 			this.turnCounter = new GuiText { TextColor = Color.LightGray, TextSize = 30 };
@@ -114,6 +115,7 @@ namespace Stareater.GameScenes
 				ToggleCallback = this.toggleRadar,
 			};
 			radarToggle.Position.FixedSize(20, 20).RelativeTo(turnButton, -1, 1, 1, 1, 15, 0);
+			radarToggle.Tooltip = new StaticTooltip("FormMain", "RadarSwitchToolip");
 			this.AddElement(radarToggle);
 
 			this.starInfo = new ConstructionSiteView();

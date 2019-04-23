@@ -4,6 +4,8 @@ EndTurn = End turn
 Return = Return
 GameOver = Game over
 Turn = Turn
+FuelTooltip = Fuel usage and supply
+RadarSwitchToolip = Show scan range
 
 NotBuilding §
 		No
@@ -13,6 +15,7 @@ NotBuilding §
 SiteDetails = Details
 ColonizeStart = Colonize
 ColonizeStop = Stop colonization
+PolicyTooltip = Star sytem policy
 
 AsteriodName §
 		Asteroid belt at {=bodyName}
