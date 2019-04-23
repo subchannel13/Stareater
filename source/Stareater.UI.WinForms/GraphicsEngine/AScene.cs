@@ -14,6 +14,8 @@ namespace Stareater.GraphicsEngine
 {
 	abstract class AScene
 	{
+		private const double TooltipDelay = 0.15;
+
 		private readonly HashSet<SceneObject> sceneObjects = new HashSet<SceneObject>();
 		private readonly QuadTree<SceneObject> physicalObjects = new QuadTree<SceneObject>();
 		private readonly HashSet<IAnimator> animators = new HashSet<IAnimator>();
@@ -34,6 +36,7 @@ namespace Stareater.GraphicsEngine
 		private readonly Dictionary<MouseButtons, AGuiElement> mousePressed = new Dictionary<MouseButtons, AGuiElement>();
 		private AGuiElement tooltipSource;
 		private AGuiElement tooltipElement;
+		private double tooltipEta = -1;
 
 		protected AScene()
 		{
@@ -49,6 +52,7 @@ namespace Stareater.GraphicsEngine
 				animator.OnUpdate(deltaTime);
 			
 			this.frameUpdate(deltaTime);
+			this.updateTooltip(deltaTime);
 			
 			if (this.dirtyLayers.Count > 0)
 				this.setupDrawables();
@@ -66,7 +70,7 @@ namespace Stareater.GraphicsEngine
 					drawable.Draw(view, layer.Key, viewportTransform);
 			}
 		}
-		
+
 		protected virtual void frameUpdate(double deltaTime)
 		{
 			//no operation
@@ -369,13 +373,13 @@ namespace Stareater.GraphicsEngine
 
 		public void HideElement(AGuiElement element)
 		{
-			if (this.normalGuiLayer.Contains(element.Parent) && this.normalGuiLayer.Contains(element))
+			if (this.normalGuiLayer.Contains(element))
 				this.RemoveElement(element);
 		}
 
 		public void ShowElement(AGuiElement element)
 		{
-			if (this.normalGuiLayer.Contains(element.Parent) && this.normalGuiLayer.Contains(element))
+			if (this.normalGuiLayer.Contains(element))
 				return;
 
 			this.AddElement(element, element.Parent);
@@ -396,6 +400,20 @@ namespace Stareater.GraphicsEngine
 						yield return element;
 		}
 
+		private void updateTooltip(double deltaTime)
+		{
+			if (this.tooltipEta <= 0)
+				return;
+
+			this.tooltipEta -= deltaTime;
+
+			if (this.tooltipEta > 0)
+				return;
+
+			this.tooltipGuiLayer.AddElement(this.tooltipElement, this);
+			this.tooltipElement.RecalculatePosition(true);
+		}
+
 		private void requestTooltip(AGuiElement guiElement, Vector2 mousePosition)
 		{
 			if (this.tooltipSource == guiElement)
@@ -403,7 +421,9 @@ namespace Stareater.GraphicsEngine
 
 			if (this.tooltipSource != null)
 			{
-				this.RemoveElement(this.tooltipElement);
+				if (this.tooltipGuiLayer.Contains(this.tooltipElement))
+					this.tooltipGuiLayer.RemoveElement(this.tooltipElement);
+
 				this.tooltipSource = null;
 				this.tooltipElement = null;
 			}
@@ -411,12 +431,10 @@ namespace Stareater.GraphicsEngine
 			if (guiElement == null)
 				return;
 
+			this.tooltipEta = TooltipDelay;
 			this.tooltipSource = guiElement;
 			this.tooltipElement = guiElement.Tooltip.Make();
 			this.tooltipElement.Position.TooltipNear(mousePosition, 5, 5);
-
-			this.tooltipGuiLayer.AddElement(this.tooltipElement, this);
-			this.tooltipElement.RecalculatePosition(true);
 		}
 		#endregion
 
