@@ -10,7 +10,6 @@ namespace Stareater.GraphicsEngine
 
 		private readonly float z0;
 		private readonly float layerThickness;
-		private int subLayers;
 
 		public AGuiElement Root { get; private set; }
 
@@ -18,7 +17,6 @@ namespace Stareater.GraphicsEngine
 		{
 			this.z0 = z0;
 			this.layerThickness = layerThickness;
-			this.subLayers = 0;
 			this.Root = new GuiPanel();
 
 			this.guiHierarchy[this.Root] = new HashSet<AGuiElement>();
@@ -76,30 +74,34 @@ namespace Stareater.GraphicsEngine
 		private void updateGuiZ(AGuiElement element)
 		{
 			var layers = 2;
-			var root = element;
+			var subroot = element;
 
-			while (root.Parent != this.Root)
+			while (subroot.Parent != this.Root)
 			{
-				root = root.Parent;
+				subroot = subroot.Parent;
 				layers++;
 			}
 
-			if (layers <= this.subLayers)
+			var zRange = this.layerThickness / layers;
+			if (subroot.ZRange <= zRange)
 				return;
 
-			this.subLayers = layers;
-			this.Root.SetDepth(this.layerThickness, this.layerThickness / layers);
+			/*
+			 * Updates Z ranges of a subtree, immediate child of layer root.
+			 * Other subtrees should not visually overlap so no update needed.
+			 */
+			subroot.SetDepth(this.z0, zRange);
 			var subtrees = new Queue<AGuiElement>();
-			subtrees.Enqueue(this.Root);
+			subtrees.Enqueue(subroot);
 
 			while (subtrees.Count > 0)
 			{
-				root = subtrees.Dequeue();
+				subroot = subtrees.Dequeue();
 
-				if (this.guiHierarchy.ContainsKey(root))
-					foreach (var item in this.guiHierarchy[root])
+				if (this.guiHierarchy[subroot].Any())
+					foreach (var item in this.guiHierarchy[subroot])
 					{
-						item.SetDepth(root.Z0 - root.ZRange, root.ZRange);
+						item.SetDepth(subroot.Z0 - subroot.ZRange, subroot.ZRange);
 						subtrees.Enqueue(item);
 					}
 			}
