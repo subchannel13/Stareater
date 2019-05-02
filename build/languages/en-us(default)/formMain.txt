@@ -15,7 +15,19 @@ NotBuilding §
 SiteDetails = Details
 ColonizeStart = Colonize
 ColonizeStop = Stop colonization
-PolicyTooltip = Star sytem policy
+
+developPolicyTooltip §
+		Develop sytem
+		
+		Star system policy that emphasises development of colonies.
+	\
+exploitPolicyTooltip §
+		Exploit system
+		
+		Star system policy that emphasises colony explitation. Majority
+		of colony resources are diverted star system projects (ie. star
+		ships) and empire projects (ie. technology development).
+	\
 
 AsteriodName §
 		Asteroid belt at {=bodyName}

@@ -62,7 +62,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				StartSprite(this.Z0, TextRenderUtil.Get.TextureId, this.TextColor).
 				AddVertices(TextRenderUtil.Get.BufferText(this.Text, -0.5f, Matrix4.Identity)).
 				Scale(this.TextSize, this.TextSize).
-				Translate(this.Position.Center + new Vector2(0, this.TextSize / 2));
+				Translate(this.Position.Center + new Vector2(0, this.TextSize * this.lineCount() / 2));
 
 			if (this.Animation != null)
 				return soBuilder.Build(polygons => this.Animation(polygons[0]));
@@ -72,11 +72,16 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		protected override Vector2 measureContent()
 		{
-			//TODO(later) count lines
 			return new Vector2(
 				TextRenderUtil.Get.MeasureWidth(this.Text) * this.TextSize,
-				this.TextSize
+				this.TextSize * this.lineCount()
 			);
+		}
+
+		private int lineCount()
+		{
+			//TODO(later) count lines in a better way
+			return (this.Text != null) ? this.Text.Split('\n').Length : 0;
 		}
 	}
 }

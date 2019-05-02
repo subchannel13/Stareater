@@ -80,11 +80,12 @@ namespace Stareater.GameScenes
 					this.controller.Policy = x;
 					this.investmentSlider.Value = (float)this.controller.DesiredSpendingRatio;
 					this.resetView();
+					//TODO(v0.8) reset tooltip
 				},
 				ItemImage = x => GalaxyTextures.Get.Sprite(x.Id + "Policy")
 			};
 			this.policyToggle.Position.FixedSize(32, 32).RelativeTo(this.projectButton, 1, -1, -1, -1, 8, 0);
-			this.policyToggle.Tooltip = new StaticTooltip("FormMain", "PolicyTooltip");
+			this.policyToggle.Tooltip = new DynamicTooltip("FormMain", () => this.controller.Policy.Id + "PolicyTooltip");
 			this.AddChild(this.policyToggle);
 
 			this.policyName = new GuiText { TextColor = Color.Black, TextSize = 10 };

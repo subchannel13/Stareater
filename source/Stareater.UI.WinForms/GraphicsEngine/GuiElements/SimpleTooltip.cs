@@ -4,12 +4,12 @@ using System.Drawing;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
-	class StaticTooltip
+	class SimpleTooltip : ITooltip
 	{
 		private readonly string context;
 		private readonly string textKey;
 
-		public StaticTooltip(string context, string textKey)
+		public SimpleTooltip(string context, string textKey)
 		{
 			this.context = context;
 			this.textKey = textKey;
