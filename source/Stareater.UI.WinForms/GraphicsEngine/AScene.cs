@@ -36,6 +36,7 @@ namespace Stareater.GraphicsEngine
 		private readonly Dictionary<MouseButtons, AGuiElement> mousePressed = new Dictionary<MouseButtons, AGuiElement>();
 		private AGuiElement tooltipSource;
 		private AGuiElement tooltipElement;
+		private Vector2 tooltipMousePosition;
 		private double tooltipEta = -1;
 
 		protected AScene()
@@ -386,6 +387,18 @@ namespace Stareater.GraphicsEngine
 			element.RecalculatePosition(true);
 		}
 
+		public void ResetTooltipContents()
+		{
+			if (this.tooltipSource == null || !this.tooltipGuiLayer.Contains(this.tooltipElement))
+				return;
+
+			this.tooltipGuiLayer.RemoveElement(this.tooltipElement);
+			this.tooltipElement = this.tooltipSource.Tooltip.Make();
+			this.tooltipElement.Position.TooltipNear(this.tooltipMousePosition, 5, 5);
+			this.tooltipGuiLayer.AddElement(this.tooltipElement, this);
+			this.tooltipElement.RecalculatePosition(true);
+		}
+
 		private IEnumerable<GuiLayer> guiLayers()
 		{
 			yield return this.tooltipGuiLayer;
@@ -435,6 +448,7 @@ namespace Stareater.GraphicsEngine
 			this.tooltipSource = guiElement;
 			this.tooltipElement = guiElement.Tooltip.Make();
 			this.tooltipElement.Position.TooltipNear(mousePosition, 5, 5);
+			this.tooltipMousePosition = mousePosition;
 		}
 		#endregion
 

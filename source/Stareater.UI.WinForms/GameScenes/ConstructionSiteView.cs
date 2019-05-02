@@ -80,7 +80,7 @@ namespace Stareater.GameScenes
 					this.controller.Policy = x;
 					this.investmentSlider.Value = (float)this.controller.DesiredSpendingRatio;
 					this.resetView();
-					//TODO(v0.8) reset tooltip
+					this.scene.ResetTooltipContents();
 				},
 				ItemImage = x => GalaxyTextures.Get.Sprite(x.Id + "Policy")
 			};

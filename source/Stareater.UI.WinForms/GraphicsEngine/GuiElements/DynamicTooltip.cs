@@ -25,7 +25,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			{
 				Text = LocalizationManifest.Get.CurrentLanguage[this.context][this.textKey()].Text(),
 				TextColor = Color.White,
-				TextSize = 15
+				TextSize = 12
 			};
 			text.Position.WrapContent(10, 5).ParentRelative(0, 0, 0, 0);
 
