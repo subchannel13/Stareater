@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Ikadn.Ikon.Types;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Utils
 {
@@ -11,6 +12,55 @@ namespace Stareater.Utils
 	/// </summary>
 	public static class Methods
 	{
+		/// <summary>
+		/// A* search algorithm from one node to another.
+		/// </summary>
+		/// <typeparam name="T">Node type</typeparam>
+		/// <param name="fromNode">Starting node</param>
+		/// <param name="toNode">Goal node</param>
+		/// <param name="heuristicFunc">Heuristic function for a node</param>
+		/// <param name="neighboursFunc">Node neighbours</param>
+		/// <returns></returns>
+		public static IEnumerable<T> AStar<T>(T fromNode, T toNode, Func<T, double> heuristicFunc, Func<T, IEnumerable<T>> neighboursFunc)
+		{
+			var cameFrom = new Dictionary<T, T>();
+			var closedSet = new HashSet<T>();
+			var openSet = new PriorityQueue<T>();
+			var nodeScore = new Dictionary<T, double> { [fromNode] = 0 };
+			openSet.Enqueue(fromNode, heuristicFunc(fromNode));
+			T current;
+
+			while (openSet.Count > 0)
+			{
+				current = openSet.Dequeue();
+				if (current.Equals(toNode))
+					break;
+
+				closedSet.Add(current);
+				foreach (var neighbor in neighboursFunc(current))
+				{
+					if (closedSet.Contains(neighbor))
+						continue;
+
+					var tentativeScore = nodeScore[current] + heuristicFunc(neighbor);
+					if (!openSet.Contains(neighbor))
+						openSet.Enqueue(neighbor, tentativeScore);
+					else if (nodeScore.ContainsKey(neighbor) && tentativeScore >= nodeScore[neighbor])
+						continue;
+
+					cameFrom[neighbor] = current;
+					nodeScore[neighbor] = tentativeScore;
+				}
+			}
+
+			current = toNode;
+			while (cameFrom.ContainsKey(current))
+			{
+				current = cameFrom[current];
+				yield return current;
+			}
+		}
+
 		/// <summary>
 		/// Limits a value to a range.
 		/// </summary>

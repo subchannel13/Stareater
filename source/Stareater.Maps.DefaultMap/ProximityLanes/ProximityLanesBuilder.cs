@@ -124,7 +124,7 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 			foreach (var e in orderedEdges)
 			{
 				graph.RemoveEdge(e);
-				var pathPoints = Astar(graph, e.FirstEnd, e.SecondEnd).ToList();
+				var pathPoints = Methods.AStar(e.FirstEnd, e.SecondEnd, x => (x.Data - e.FirstEnd.Data).LengthSquared, x => graph.GetNeighbours(x)).ToList();
 				var longestHop = 0.0;
 				var length = 0.0;
 				var lastHop = e.SecondEnd;
@@ -150,7 +150,7 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 			foreach (var home in homeNodes)
 			{
 				var current = stareaterMain;
-				foreach (var node in Astar(graph, home, stareaterMain))
+				foreach (var node in Methods.AStar(home, stareaterMain, x => (x.Data - home.Data).LengthSquared, x => graph.GetNeighbours(x)))
 				{
 					criticalNodes.Add(node);
 					yield return graph.GetEdge(node, current);
@@ -237,51 +237,6 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 					neededCount--;
 					yield return e;
 				}
-			}
-		}
-
-		//TODO(v0.8) move A* to core, to Methods or Graph
-		private static IEnumerable<Vertex<Vector2D>> Astar(Graph<Vector2D> graph, Vertex<Vector2D> fromNode, Vertex<Vector2D> toNode)
-		{
-			var cameFrom = new Dictionary<Vertex<Vector2D>, Vertex<Vector2D>>();
-			var closedSet = new HashSet<Vertex<Vector2D>>();
-			var openSet = new PriorityQueue<Vertex<Vector2D>>();
-			openSet.Enqueue(fromNode, (fromNode.Data - toNode.Data).Length);
-
-			var gScore = graph.Vertices.ToDictionary(x => x, x => double.PositiveInfinity);
-			gScore[fromNode] = 0;
-			Vertex<Vector2D> current;
-
-			while (openSet.Count > 0)
-			{
-				current = openSet.Dequeue();
-				if (current == toNode)
-					break;
-
-				closedSet.Add(current);
-				var edges = graph.GetEdges(current).
-					SelectMany(e => new[] { e.FirstEnd, e.SecondEnd }.Where(v => v != current));
-				foreach (var neighbor in edges)
-				{
-					if (closedSet.Contains(neighbor))
-						continue;
-
-					var tentative_gScore = gScore[current] + (current.Data - neighbor.Data).Length;
-					if (!openSet.Contains(neighbor))
-						openSet.Enqueue(neighbor, tentative_gScore);
-					else if (tentative_gScore >= gScore[neighbor])
-						continue;
-
-					cameFrom[neighbor] = current;
-					gScore[neighbor] = tentative_gScore;
-				}
-			}
-
-			current = toNode;
-			while (cameFrom.ContainsKey(current))
-			{
-				current = cameFrom[current];
-				yield return current;
 			}
 		}
 

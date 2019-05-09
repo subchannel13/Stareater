@@ -62,5 +62,10 @@ namespace Stareater.Utils
 		{
 			return this.adjacency[fromNode].Select(toNode => this.GetEdge(fromNode, toNode));
 		}
+
+		public IEnumerable<Vertex<T>> GetNeighbours(Vertex<T> fromNode)
+		{
+			return this.adjacency[fromNode];
+		}
 	}
 }
