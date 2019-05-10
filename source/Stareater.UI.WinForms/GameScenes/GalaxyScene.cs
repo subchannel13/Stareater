@@ -365,7 +365,7 @@ namespace Stareater.GameScenes
 				new SceneObjectBuilder().
 					StartSprite(EtaZ, TextRenderUtil.Get.TextureId, Color.White).
 					Scale(EtaTextScale / (float)Math.Pow(ZoomBase, zoomLevel)).
-					Translate(destination.X, destination.Y + 0.5).
+					Translate(destination.Position.X, destination.Position.Y + 0.5).
 					AddVertices(
 						TextRenderUtil.Get.BufferText(
 							LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars),
@@ -393,7 +393,7 @@ namespace Stareater.GameScenes
 					ref this.movementSimulationPath,
 					new SceneObjectBuilder().
 						StartSprite(PathZ, GalaxyTextures.Get.PathLine.Id, Color.LimeGreen).
-						AddVertices(fleetMovementPathVertices(this.SelectedFleet.Fleet, waypoints.Select(v => convert(v)))).
+						AddVertices(fleetMovementPathVertices(this.SelectedFleet.Fleet, waypoints.Select(x => convert(x.Position)))).
 						Build()
 				);
 		}
@@ -554,7 +554,7 @@ namespace Stareater.GameScenes
 			if (this.SelectedFleet != null)
 				if (foundAny && isStarClosest)
 				{
-					this.SelectedFleet = this.SelectedFleet.Send(this.SelectedFleet.SimulationWaypoints());
+					this.SelectedFleet = this.SelectedFleet.Send(this.SelectedFleet.SimulationWaypoints().Last());
 					this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = this.SelectedFleet.Fleet;
 					this.galaxyViewListener.FleetClicked(new FleetInfo[] { this.SelectedFleet.Fleet });
 					this.setupFleetMarkers();

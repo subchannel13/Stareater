@@ -67,9 +67,9 @@ namespace Stareater.Controllers
 			}
 		}
 
-		public IList<Vector2D> SimulationWaypoints()
+		public IList<StarInfo> SimulationWaypoints()
 		{
-			return this.simulationWaypoints.Select(x => x.Destionation).ToList();
+			return this.simulationWaypoints.Select(x => new StarInfo(x.DestionationStar)).ToList();
 		}
 		
 		public void DeselectGroup(ShipGroupInfo group)
@@ -104,30 +104,32 @@ namespace Stareater.Controllers
 			this.calcSimulation();
 		}
 
-		public FleetController Send(IEnumerable<Vector2D> waypoints)
+		public FleetController Send(StarInfo destination)
 		{
 			if (!this.game.States.Stars.At.Contains(this.Fleet.Position))
 				return this;
 
-			if (this.CanMove && waypoints != null && waypoints.LastOrDefault() != this.Fleet.FleetData.Position)
+			if (this.CanMove && destination.Position != this.Fleet.FleetData.Position)
 			{
 				var playerProc = this.game.Derivates[this.player];
-				var availableFuel = 
+				var availableFuel =
 					game.Derivates.Colonies.OwnedBy[this.player].Sum(x => x.FuelProduction) -
 					playerProc.TotalFuelUsage(game) +
 					playerProc.FuelUsage(this.Fleet.FleetData, game) -
 					playerProc.FuelUsage(this.unselectedFleet(), game);
-				var fuelUse = playerProc.FuelUsage(this.selectedFleet(new AMission[0]), waypoints.First(), game);
+				var fuelUse = playerProc.FuelUsage(this.selectedFleet(new AMission[0]), destination.Position, game);
 
+				//TODO(v0.8) fleet should be able to fly under economic penalty
 				if (availableFuel < fuelUse)
 					return this;
 
+				var waypoints = new StarData[] { destination.Data };
 				var missions = new List<AMission>();
 				var lastPoint = this.Fleet.FleetData.Position;
 				foreach(var point in waypoints)
 				{
 					var lastStar = this.game.States.Stars.At[lastPoint];
-					var nextStar = this.game.States.Stars.At[point];
+					var nextStar = this.game.States.Stars.At[point.Position];
 					var wormhole = this.game.States.Wormholes.At[lastStar].FirstOrDefault(x => x.Endpoints.Any(nextStar));
 					missions.Add(new MoveMission(nextStar, wormhole));
 				}

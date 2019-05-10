@@ -736,7 +736,7 @@ namespace Stareater.Controllers
 							controller.SelectGroup(group, toSelect, 0);
 						}
 
-						controller.Send(new Vector2D[] { source.Location.Position });
+						controller.Send(new StarInfo(source.Location));
 						missingPopulation -= controller.ShipGroups.Sum(x => x.Population);
 					}
 					else if (fleet.Position != destination.Position)
@@ -755,7 +755,7 @@ namespace Stareater.Controllers
 							missingPopulation -= toSelect * group.Design.ColonizerPopulation;
 						}
 
-						controller.Send(new Vector2D[] { destination.Position });
+						controller.Send(new StarInfo(destination));
 
 						if (controller.ShipGroups.Any(x => x.Population >= x.Design.ColonizerPopulation && x.Population > 0))
 							idleTransports.Enqueue(fleet);
@@ -784,7 +784,7 @@ namespace Stareater.Controllers
 						}
 						if (fleet.Position != destination.Location.Star.Position)
 						{
-							disembarkingFleet = stationaryFleet.Send(new Vector2D[] { destination.Location.Star.Position });
+							disembarkingFleet = stationaryFleet.Send(new StarInfo(destination.Location.Star));
 
 							foreach (var group in disembarkingFleet.Fleet.Ships)
 								disembarkingFleet.SelectGroup(group, group.Quantity); //TODO(v0.8) add select all
@@ -800,7 +800,7 @@ namespace Stareater.Controllers
 						}
 						if (fleet.Position != source.Location.Star.Position)
 						{
-							embarkingFleet = embarkingFleet.Send(new Vector2D[] { source.Location.Star.Position });
+							embarkingFleet = embarkingFleet.Send(new StarInfo(source.Location.Star));
 							foreach (var group in embarkingFleet.Fleet.Ships)
 								embarkingFleet.SelectGroup(group, group.Quantity); //TODO(v0.8) add select all
 							embarkingFleet.LoadPopulation();

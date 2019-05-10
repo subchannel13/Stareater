@@ -37,7 +37,7 @@ namespace Stareater.Players.Natives
 				var fleetControl = this.playerController.SelectFleet(fleet);
 				foreach(var shipGroup in fleetControl.ShipGroups)
 					fleetControl.SelectGroup(shipGroup, shipGroup.Quantity);
-				fleetControl.Send(new []{ destination.Position });
+				fleetControl.Send(destination);
 			}
 		}
 
