@@ -18,16 +18,16 @@ namespace Stareater.Utils
 		/// <typeparam name="T">Node type</typeparam>
 		/// <param name="fromNode">Starting node</param>
 		/// <param name="toNode">Goal node</param>
-		/// <param name="heuristicFunc">Heuristic function for a node</param>
+		/// <param name="costFunc">Cost function from one node to another (not necessarily a neighbour)</param>
 		/// <param name="neighboursFunc">Node neighbours</param>
-		/// <returns></returns>
-		public static IEnumerable<T> AStar<T>(T fromNode, T toNode, Func<T, double> heuristicFunc, Func<T, IEnumerable<T>> neighboursFunc)
+		/// <returns>Nodes in the path</returns>
+		public static IEnumerable<T> AStar<T>(T fromNode, T toNode, Func<T, T, double> costFunc, Func<T, IEnumerable<T>> neighboursFunc)
 		{
 			var cameFrom = new Dictionary<T, T>();
 			var closedSet = new HashSet<T>();
 			var openSet = new PriorityQueue<T>();
 			var nodeScore = new Dictionary<T, double> { [fromNode] = 0 };
-			openSet.Enqueue(fromNode, heuristicFunc(fromNode));
+			openSet.Enqueue(fromNode, costFunc(fromNode, toNode));
 			T current;
 
 			while (openSet.Count > 0)
@@ -42,9 +42,9 @@ namespace Stareater.Utils
 					if (closedSet.Contains(neighbor))
 						continue;
 
-					var tentativeScore = nodeScore[current] + heuristicFunc(neighbor);
+					var tentativeScore = nodeScore[current] + costFunc(current, neighbor);
 					if (!openSet.Contains(neighbor))
-						openSet.Enqueue(neighbor, tentativeScore);
+						openSet.Enqueue(neighbor, nodeScore[current] + costFunc(neighbor, toNode));
 					else if (nodeScore.ContainsKey(neighbor) && tentativeScore >= nodeScore[neighbor])
 						continue;
 
@@ -53,6 +53,7 @@ namespace Stareater.Utils
 				}
 			}
 
+			//TODO(v0.8) reverse node output order
 			current = toNode;
 			while (cameFrom.ContainsKey(current))
 			{

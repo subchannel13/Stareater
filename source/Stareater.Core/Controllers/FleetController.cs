@@ -156,8 +156,12 @@ namespace Stareater.Controllers
 		{
 			if (!this.game.States.Stars.At.Contains(this.Fleet.Position))
 				return;
-			
+
+			var playerProc = this.game.Derivates[this.player];
+			var baseSpeed = this.baseTravelSpeed();
 			this.simulationWaypoints.Clear();
+			var waypoints = playerProc.ShortestPathTo(this.game.States.Stars.At[this.Fleet.Position], destination.Data, baseSpeed, this.game);
+				;
 			//TODO(later): find shortest path
 			//TODO(later) prevent changing destination midfilght
 			this.simulationWaypoints.Add(new WaypointInfo(
@@ -191,13 +195,23 @@ namespace Stareater.Controllers
 				return fleetInfo;
 			}
 		}
-		
+
+		private double baseTravelSpeed()
+		{
+			//TODO(v0.8) prevent callers from operating on empty selection
+			if (this.selection.Count == 0)
+				return 0;
+
+			var playerProc = this.game.Derivates.Players.Of[this.Fleet.Owner.Data];
+
+			return this.selection.Keys.Min(x => playerProc.DesignStats[x].GalaxySpeed);
+		}
+
 		private void calcSimulation()
 		{
 			var playerProc = this.game.Derivates.Players.Of[this.Fleet.Owner.Data];
 			var fleet = this.selectedFleet(simulationWaypoints.Select(x => new MoveMission(x.DestionationStar, x.UsedWormhole)));
-			double baseSpeed = this.selection.Keys.
-				Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
+			var baseSpeed = this.baseTravelSpeed();
 			
 			var lastPosition = this.Fleet.FleetData.Position;
 			var wormholeSpeed = this.game.Statics.ShipFormulas.WormholeSpeed;

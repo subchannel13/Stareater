@@ -165,7 +165,7 @@ namespace Stareater.GameLogic
 			
 			this.DevelopmentPlan = results;
 		}
-		
+
 		public void CalculateResearch(MainGame game, IList<ColonyProcessor> colonyProcessors)
 		{
 			var advanceOrder = this.ResearchOrder(game.States.ResearchAdvances).ToList();
@@ -310,6 +310,17 @@ namespace Stareater.GameLogic
 				return 0;
 			else
 				return double.PositiveInfinity;
+		}
+
+		public IEnumerable<StarData> ShortestPathTo(StarData fromStar, StarData toStar, double baseSpeed, MainGame game)
+		{
+			var wormholeSpeed = game.Statics.ShipFormulas.WormholeSpeed.Evaluate(new Var("speed", baseSpeed).Get);
+
+			return Methods.AStar(
+				fromStar, toStar,
+				(a, b) => (a.Position - b.Position).Length / (game.States.Wormholes.At[a, b].Any() ? wormholeSpeed : baseSpeed),
+				x => game.States.Stars
+			);
 		}
 		#endregion
 

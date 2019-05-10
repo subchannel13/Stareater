@@ -110,7 +110,7 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 			var acceptedEdges = new List<Edge<Vector2D>>();
 			foreach (var edge in edges)
 			{
-				if (LineIntersects(edge, acceptedEdges) || !LineAngledWell(edge, acceptedEdges, MinimalAngleCos))
+				if (lineIntersects(edge, acceptedEdges) || !lineAngledWell(edge, acceptedEdges, MinimalAngleCos))
 					continue;
 
 				acceptedEdges.Add(edge);
@@ -124,7 +124,7 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 			foreach (var e in orderedEdges)
 			{
 				graph.RemoveEdge(e);
-				var pathPoints = Methods.AStar(e.FirstEnd, e.SecondEnd, x => (x.Data - e.FirstEnd.Data).LengthSquared, x => graph.GetNeighbours(x)).ToList();
+				var pathPoints = Methods.AStar(e.FirstEnd, e.SecondEnd, (a, b) => (a.Data - b.Data).Length, x => graph.GetNeighbours(x)).ToList();
 				var longestHop = 0.0;
 				var length = 0.0;
 				var lastHop = e.SecondEnd;
@@ -150,7 +150,7 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 			foreach (var home in homeNodes)
 			{
 				var current = stareaterMain;
-				foreach (var node in Methods.AStar(home, stareaterMain, x => (x.Data - home.Data).LengthSquared, x => graph.GetNeighbours(x)))
+				foreach (var node in Methods.AStar(home, stareaterMain, (a, b) => (a.Data - b.Data).Length, x => graph.GetNeighbours(x)))
 				{
 					criticalNodes.Add(node);
 					yield return graph.GetEdge(node, current);
@@ -240,7 +240,7 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 			}
 		}
 
-		private static bool LineAngledWell(Edge<Vector2D> line, IEnumerable<Edge<Vector2D>> otherLines, double maxCos)
+		private static bool lineAngledWell(Edge<Vector2D> line, IEnumerable<Edge<Vector2D>> otherLines, double maxCos)
 		{
 			foreach (var otherLine in otherLines)
 			{
@@ -268,7 +268,7 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 			return true;
 		}
 
-		private static bool LineIntersects(Edge<Vector2D> line, IEnumerable<Edge<Vector2D>> otherLines)
+		private static bool lineIntersects(Edge<Vector2D> line, IEnumerable<Edge<Vector2D>> otherLines)
 		{
 			Vector2D x0 = line.FirstEnd.Data;
 			Vector2D v0 = line.SecondEnd.Data - x0;
@@ -279,7 +279,7 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 			{
 				Vector2D x1 = usedEdge.FirstEnd.Data;
 				Vector2D v1 = usedEdge.SecondEnd.Data - x1;
-				var cross = v0.X * v1.Y - v0.Y * v1.X; //FIX workaraound for NGenerics bug
+				var cross = v0.X * v1.Y - v0.Y * v1.X; //TODO(v0.8) was workaraound for NGenerics bug, use normal cross now
 
 				if (Math.Abs(cross) < Epsilon)
 					if ((x0 - x1).Length < Epsilon)
