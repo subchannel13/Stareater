@@ -171,7 +171,7 @@ namespace Stareater.GameScenes
 			var starSystem = this.currentPlayer.OpenStarSystem(this.lastSelectedStar);
 			this.galaxyViewListener.SystemSelected(starSystem);
 
-			//FIXME(later) update owner check when multiple stellarises can exist at the same star
+			//TODO(later) update owner check when multiple stellarises can exist at the same star
 			if (starSystem.StarsAdministration() != null && starSystem.StarsAdministration().Owner == this.currentPlayer.Info)
 			{
 				this.starInfo.SetView(this.currentPlayer.OpenStarSystem(this.lastSelectedStar).StellarisController());

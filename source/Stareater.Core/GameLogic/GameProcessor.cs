@@ -273,7 +273,7 @@ namespace Stareater.GameLogic
 					conflicts.Enqueue(new Conflict(position.Key, visits[position.Key], position.Value));
 			//TODO(later) deep space interception
 			
-			//FIXME(v0.8) could make "fleet trail" if fleet visits multiple stars in the same turn
+			//TODO(v0.8) could make "fleet trail" if fleet visits multiple stars in the same turn
 			this.game.States.Fleets.Clear();
 			foreach(var fleet in visits.Where(x => !conflictPositions.ContainsKey(x.Key)).SelectMany(x => x.Value))
 				this.game.States.Fleets.Add(fleet.LocalFleet);

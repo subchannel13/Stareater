@@ -64,7 +64,7 @@ namespace Stareater.Controllers
 					At[location, this.Site.Owner].
 					Sum(x => x.Organization * x.Colony.Population);
 				
-				return workplaces / PopulationTotal; //FIXME(later): possible div by 0
+				return workplaces / PopulationTotal; //TODO(later): possible div by 0
 			}
 		}
 		public double PopulationTotal

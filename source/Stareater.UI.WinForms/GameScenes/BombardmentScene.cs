@@ -173,7 +173,7 @@ namespace Stareater.GameScenes
 		private void setupVaos()
 		{
 			if (this.controller == null)
-				return; //FIXME(v0.7) move check to better place
+				return; //TODO(v0.7) move check to better place
 			
 			this.setupBodies();
 			this.setupUi();
