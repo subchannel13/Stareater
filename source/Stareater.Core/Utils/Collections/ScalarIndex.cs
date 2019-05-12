@@ -15,7 +15,7 @@ namespace Stareater.Utils.Collections
 		
 		public bool Contains(TKey key)
 		{
-			return elements.ContainsKey(key);
+			return this.elements.ContainsKey(key);
 		}
 		
 		public TElement this[TKey key]
@@ -29,11 +29,11 @@ namespace Stareater.Utils.Collections
 		#region IIndex implementation
 		public void Add(TElement item)
 		{
-			this.elements[keySelector(item)] = item;
+			this.elements[this.keySelector(item)] = item;
 		}
 		public void Remove(TElement item)
 		{
-			this.elements.Remove(keySelector(item));
+			this.elements.Remove(this.keySelector(item));
 		}
 		public void Clear()
 		{

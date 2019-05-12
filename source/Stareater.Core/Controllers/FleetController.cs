@@ -130,7 +130,7 @@ namespace Stareater.Controllers
 				{
 					var lastStar = this.game.States.Stars.At[lastPoint];
 					var nextStar = this.game.States.Stars.At[point.Position];
-					var wormhole = this.game.States.Wormholes.At[lastStar].FirstOrDefault(x => x.Endpoints.Any(nextStar));
+					var wormhole = this.game.States.Wormholes.At.GetOrDefault(lastStar, nextStar);
 					missions.Add(new MoveMission(nextStar, wormhole));
 				}
 				
@@ -172,7 +172,7 @@ namespace Stareater.Controllers
 			//TODO(later) prevent changing destination midfilght
 			this.simulationWaypoints.Add(new WaypointInfo(
 				destination.Data,
-				this.game.States.Wormholes.At[this.game.States.Stars.At[this.Fleet.Position], destination.Data].FirstOrDefault()
+				this.game.States.Wormholes.At.GetOrDefault(this.game.States.Stars.At[this.Fleet.Position], destination.Data)
 			));
 			
 			this.calcSimulation();

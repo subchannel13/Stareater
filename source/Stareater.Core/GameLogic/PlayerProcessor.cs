@@ -316,9 +316,10 @@ namespace Stareater.GameLogic
 		{
 			var wormholeSpeed = game.Statics.ShipFormulas.WormholeSpeed.Evaluate(new Var("speed", baseSpeed).Get);
 
+            //TODO(v0.8) don't use unexplored wormholes
 			return Methods.AStar(
 				fromStar, toStar,
-				(a, b) => (a.Position - b.Position).Length / (game.States.Wormholes.At[a, b].Any() ? wormholeSpeed : baseSpeed),
+				(a, b) => (a.Position - b.Position).Length / (game.States.Wormholes.At.Contains(a, b) ? wormholeSpeed : baseSpeed),
 				x => game.States.Stars
 			);
 		}

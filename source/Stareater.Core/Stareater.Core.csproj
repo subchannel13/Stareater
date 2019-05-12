@@ -383,6 +383,7 @@
     <Compile Include="Utils\NumberFormatters\ThousandsFormatter.cs" />
     <Compile Include="Utils\Vector2D.cs" />
     <Compile Include="Utils\Vertex.cs" />
+    <Compile Include="Utils\Collections\PairScalarIndex.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AppData\Expressions\Grammar.atg" />
