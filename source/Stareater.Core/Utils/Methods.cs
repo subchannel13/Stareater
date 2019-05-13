@@ -53,13 +53,22 @@ namespace Stareater.Utils
 				}
 			}
 
-			//TODO(v0.8) reverse node output order
-			current = toNode;
-			while (cameFrom.ContainsKey(current))
+			if (!cameFrom.ContainsKey(toNode))
 			{
-				current = cameFrom[current];
-				yield return current;
+				//TODO(v0.8) what to do when destination is unreachable?
+				return new List<T>();
 			}
+
+			var path = new List<T>();
+			current = toNode;
+			while (!current.Equals(fromNode))
+			{
+				path.Add(current);
+				current = cameFrom[current];
+			}
+
+			path.Reverse();
+			return path;
 		}
 
 		/// <summary>

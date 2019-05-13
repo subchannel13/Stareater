@@ -127,7 +127,7 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 				var pathPoints = Methods.AStar(e.FirstEnd, e.SecondEnd, (a, b) => (a.Data - b.Data).Length, x => graph.GetNeighbours(x)).ToList();
 				var longestHop = 0.0;
 				var length = 0.0;
-				var lastHop = e.SecondEnd;
+				var lastHop = e.FirstEnd;
 				foreach (var v in pathPoints)
 				{
 					var dist = (lastHop.Data - v.Data).Length;
@@ -149,7 +149,7 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 			};
 			foreach (var home in homeNodes)
 			{
-				var current = stareaterMain;
+				var current = home;
 				foreach (var node in Methods.AStar(home, stareaterMain, (a, b) => (a.Data - b.Data).Length, x => graph.GetNeighbours(x)))
 				{
 					criticalNodes.Add(node);
