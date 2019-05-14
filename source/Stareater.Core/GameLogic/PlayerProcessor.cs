@@ -312,7 +312,7 @@ namespace Stareater.GameLogic
 				return double.PositiveInfinity;
 		}
 
-		public IEnumerable<StarData> ShortestPathTo(StarData fromStar, StarData toStar, double baseSpeed, MainGame game)
+		public IEnumerable<Move<StarData>> ShortestPathTo(StarData fromStar, StarData toStar, double baseSpeed, MainGame game)
 		{
 			var wormholeSpeed = game.Statics.ShipFormulas.WormholeSpeed.Evaluate(new Var("speed", baseSpeed).Get);
 

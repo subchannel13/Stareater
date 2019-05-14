@@ -21,7 +21,7 @@ namespace Stareater.Utils
 		/// <param name="costFunc">Cost function from one node to another (not necessarily a neighbour)</param>
 		/// <param name="neighboursFunc">Node neighbours</param>
 		/// <returns>Nodes in the path</returns>
-		public static IEnumerable<T> AStar<T>(T fromNode, T toNode, Func<T, T, double> costFunc, Func<T, IEnumerable<T>> neighboursFunc)
+		public static IEnumerable<Move<T>> AStar<T>(T fromNode, T toNode, Func<T, T, double> costFunc, Func<T, IEnumerable<T>> neighboursFunc)
 		{
 			var cameFrom = new Dictionary<T, T>();
 			var closedSet = new HashSet<T>();
@@ -53,18 +53,17 @@ namespace Stareater.Utils
 				}
 			}
 
+			//Destination is unreachable
 			if (!cameFrom.ContainsKey(toNode))
-			{
-				//TODO(v0.8) what to do when destination is unreachable?
-				return new List<T>();
-			}
+				return null;
 
-			var path = new List<T>();
+			var path = new List<Move<T>>();
 			current = toNode;
 			while (!current.Equals(fromNode))
 			{
-				path.Add(current);
-				current = cameFrom[current];
+				var previous = cameFrom[current];
+				path.Add(new Move<T>(previous, current));
+				current = previous;
 			}
 
 			path.Reverse();

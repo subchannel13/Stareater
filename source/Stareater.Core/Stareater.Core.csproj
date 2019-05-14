@@ -326,6 +326,7 @@
     <Compile Include="Utils\Collections\Collection2Index.cs" />
     <Compile Include="Utils\Collections\PairCollectionIndex.cs" />
     <Compile Include="Utils\Collections\PriorityQueue.cs" />
+    <Compile Include="Utils\Move.cs" />
     <Compile Include="Utils\Edge.cs" />
     <Compile Include="Utils\Graph.cs" />
     <Compile Include="Utils\Pair.cs" />

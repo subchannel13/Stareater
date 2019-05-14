@@ -124,19 +124,12 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 			foreach (var e in orderedEdges)
 			{
 				graph.RemoveEdge(e);
-				var pathPoints = Methods.AStar(e.FirstEnd, e.SecondEnd, (a, b) => (a.Data - b.Data).Length, x => graph.GetNeighbours(x)).ToList();
-				var longestHop = 0.0;
-				var length = 0.0;
-				var lastHop = e.FirstEnd;
-				foreach (var v in pathPoints)
-				{
-					var dist = (lastHop.Data - v.Data).Length;
-					longestHop = Math.Max(longestHop, dist);
-					length += dist;
-					lastHop = v;
-				}
+				var path = 
+					Methods.AStar(e.FirstEnd, e.SecondEnd, (a, b) => (a.Data - b.Data).Length, x => graph.GetNeighbours(x)) ?? 
+					new List<Move<Vertex<Vector2D>>>();
+				var strideLenghts = path.Select(x => (x.ToNode.Data - x.FromNode.Data).Length).ToList();
 
-				if (pathPoints.Count <= 2 || longestHop > e.Weight || length > e.Weight * 1.5)
+				if (strideLenghts.Count <= 2 || strideLenghts.Max() > e.Weight || strideLenghts.Sum() > e.Weight * 1.5)
 					graph.AddEdge(e);
 			}
 		}
@@ -149,12 +142,11 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 			};
 			foreach (var home in homeNodes)
 			{
-				var current = home;
-				foreach (var node in Methods.AStar(home, stareaterMain, (a, b) => (a.Data - b.Data).Length, x => graph.GetNeighbours(x)))
+				var path = Methods.AStar(home, stareaterMain, (a, b) => (a.Data - b.Data).Length, x => graph.GetNeighbours(x)) ?? new List<Move<Vertex<Vector2D>>>();
+				foreach (var move in path)
 				{
-					criticalNodes.Add(node);
-					yield return graph.GetEdge(node, current);
-					current = node;
+					criticalNodes.Add(move.FromNode);
+					yield return graph.GetEdge(move.FromNode, move.ToNode);
 				}
 			}
 

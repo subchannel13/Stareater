@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Stareater.Utils.Collections
@@ -61,7 +60,7 @@ namespace Stareater.Utils.Collections
 
 		public bool Contains(TKey item)
 		{
-			return this.items.Any(x => x.Equals(item));
+			return this.items.Any(x => x.Item.Equals(item));
 		}
 
 		private void swap(int index1, int index2)
