@@ -157,24 +157,25 @@ namespace Stareater.Controllers
 			if (!this.game.States.Stars.At.Contains(this.Fleet.Position))
 				return;
 
-            this.simulationWaypoints.Clear();
-            if (!this.selection.Any())
-            {
-                this.calcSimulation();
-                return;
-            }
+			this.simulationWaypoints.Clear();
+			if (!this.selection.Any())
+			{
+				this.calcSimulation();
+				return;
+			}
 
-            var playerProc = this.game.Derivates[this.player];
+			var playerProc = this.game.Derivates[this.player];
 			var baseSpeed = this.baseTravelSpeed();
-			var waypoints = playerProc.ShortestPathTo(this.game.States.Stars.At[this.Fleet.Position], destination.Data, baseSpeed, this.game);
-				;
-			//TODO(later): find shortest path
 			//TODO(later) prevent changing destination midfilght
-			this.simulationWaypoints.Add(new WaypointInfo(
-				destination.Data,
-				this.game.States.Wormholes.At.GetOrDefault(this.game.States.Stars.At[this.Fleet.Position], destination.Data)
-			));
-			
+			this.simulationWaypoints.AddRange(
+				playerProc.
+				ShortestPathTo(this.game.States.Stars.At[this.Fleet.Position], destination.Data, baseSpeed, this.game).
+				Select(x => new WaypointInfo(
+					x.ToNode,
+					this.game.States.Wormholes.At.GetOrDefault(x.FromNode, x.ToNode)
+				))
+			);
+
 			this.calcSimulation();
 		}
 

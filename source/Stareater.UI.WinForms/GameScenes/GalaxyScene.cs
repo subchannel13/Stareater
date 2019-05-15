@@ -345,7 +345,7 @@ namespace Stareater.GameScenes
 		//TODO(v0.8) bundle with movement simulation
 		private void setupMovementEta()
 		{
-			if (this.SelectedFleet == null)
+			if (this.SelectedFleet == null || !this.SelectedFleet.SimulationWaypoints().Any())
 			{
 				if (this.movementEtaText != null)
 					this.RemoveFromScene(ref this.movementEtaText);

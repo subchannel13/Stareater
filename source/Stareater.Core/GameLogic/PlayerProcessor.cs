@@ -319,6 +319,7 @@ namespace Stareater.GameLogic
             //TODO(v0.8) don't use unexplored wormholes
 			return Methods.AStar(
 				fromStar, toStar,
+				x => (x.Position - toStar.Position).Length / wormholeSpeed,
 				(a, b) => (a.Position - b.Position).Length / (game.States.Wormholes.At.Contains(a, b) ? wormholeSpeed : baseSpeed),
 				x => game.States.Stars
 			);
