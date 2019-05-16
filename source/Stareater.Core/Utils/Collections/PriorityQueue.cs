@@ -19,12 +19,13 @@ namespace Stareater.Utils.Collections
 
 			while (i > 0)
 			{
-				var parentI = (i - 1) / 2;
+				var parent = (i - 1) / 2;
 
-				if (this.items[i].Priority.CompareTo(this.items[parentI].Priority) >= 0)
+				if (this.items[i].Priority.CompareTo(this.items[parent].Priority) >= 0)
 					break;
 
-				this.swap(i, parentI);
+				this.swap(i, parent);
+				i = parent;
 			}
 		}
 
@@ -77,8 +78,13 @@ namespace Stareater.Utils.Collections
 
 			public QueueItem(TKey item, double priority)
 			{
-				Item = item;
-				Priority = priority;
+				this.Item = item;
+				this.Priority = priority;
+			}
+
+			public override string ToString()
+			{
+				return this.Priority + " - " + this.Item;
 			}
 		}
 	}

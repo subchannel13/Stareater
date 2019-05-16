@@ -123,18 +123,13 @@ namespace Stareater.Controllers
 				if (availableFuel < fuelUse)
 					return this;
 
-				var waypoints = new StarData[] { destination.Data };
-				var missions = new List<AMission>();
-				var lastPoint = this.Fleet.FleetData.Position;
-				foreach(var point in waypoints)
-				{
-					var lastStar = this.game.States.Stars.At[lastPoint];
-					var nextStar = this.game.States.Stars.At[point.Position];
-					var wormhole = this.game.States.Wormholes.At.GetOrDefault(lastStar, nextStar);
-					missions.Add(new MoveMission(nextStar, wormhole));
-				}
-				
-				return this.giveOrder(missions);
+				//TODO(later) prevent changing destination midfilght
+				return this.giveOrder(
+					playerProc.
+					ShortestPathTo(this.game.States.Stars.At[this.Fleet.Position], destination.Data, this.baseTravelSpeed(), this.game).
+					Select(x => new MoveMission(x.ToNode, this.game.States.Wormholes.At.GetOrDefault(x.FromNode, x.ToNode))).
+					ToList()
+				);
 			}
 			else if (this.game.States.Stars.At.Contains(this.Fleet.FleetData.Position))
 				return this.giveOrder(new AMission[0]);
@@ -164,12 +159,10 @@ namespace Stareater.Controllers
 				return;
 			}
 
-			var playerProc = this.game.Derivates[this.player];
-			var baseSpeed = this.baseTravelSpeed();
 			//TODO(later) prevent changing destination midfilght
 			this.simulationWaypoints.AddRange(
-				playerProc.
-				ShortestPathTo(this.game.States.Stars.At[this.Fleet.Position], destination.Data, baseSpeed, this.game).
+				this.game.Derivates[this.player].
+				ShortestPathTo(this.game.States.Stars.At[this.Fleet.Position], destination.Data, this.baseTravelSpeed(), this.game).
 				Select(x => new WaypointInfo(
 					x.ToNode,
 					this.game.States.Wormholes.At.GetOrDefault(x.FromNode, x.ToNode)
