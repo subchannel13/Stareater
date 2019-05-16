@@ -316,13 +316,19 @@ namespace Stareater.GameLogic
 		{
 			var wormholeSpeed = game.Statics.ShipFormulas.WormholeSpeed.Evaluate(new Var("speed", baseSpeed).Get);
 
-            //TODO(v0.8) don't use unexplored wormholes
 			return Methods.AStar(
 				fromStar, toStar,
 				x => (x.Position - toStar.Position).Length / wormholeSpeed,
-				(a, b) => (a.Position - b.Position).Length / (game.States.Wormholes.At.Contains(a, b) ? wormholeSpeed : baseSpeed),
+				(a, b) => (a.Position - b.Position).Length / (this.VisibleWormholeAt(a, b, game) != null ? wormholeSpeed : baseSpeed),
 				x => game.States.Stars
 			);
+		}
+
+		public Wormhole VisibleWormholeAt(StarData starA, StarData starB, MainGame game)
+		{
+			var wormhole = game.States.Wormholes.At.GetOrDefault(starA, starB);
+
+			return wormhole != null && this.Player.Intelligence.IsKnown(wormhole) ? wormhole : null;
 		}
 		#endregion
 

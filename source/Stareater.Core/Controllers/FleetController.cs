@@ -159,13 +159,13 @@ namespace Stareater.Controllers
 				return;
 			}
 
+			var playerProc = this.game.Derivates[this.player];
 			//TODO(later) prevent changing destination midfilght
 			this.simulationWaypoints.AddRange(
-				this.game.Derivates[this.player].
-				ShortestPathTo(this.game.States.Stars.At[this.Fleet.Position], destination.Data, this.baseTravelSpeed(), this.game).
+				playerProc.ShortestPathTo(this.game.States.Stars.At[this.Fleet.Position], destination.Data, this.baseTravelSpeed(), this.game).
 				Select(x => new WaypointInfo(
 					x.ToNode,
-					this.game.States.Wormholes.At.GetOrDefault(x.FromNode, x.ToNode)
+					playerProc.VisibleWormholeAt(x.FromNode, x.ToNode, this.game)
 				))
 			);
 
