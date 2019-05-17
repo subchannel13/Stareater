@@ -106,7 +106,7 @@ namespace Stareater.Controllers
 
 		public FleetController Send(StarInfo destination)
 		{
-			if (!this.game.States.Stars.At.Contains(this.Fleet.Position))
+			if (!this.game.States.Stars.At.Contains(this.Fleet.Position) || !this.selection.Any())
 				return this;
 
 			if (this.CanMove && destination.Position != this.Fleet.FleetData.Position)

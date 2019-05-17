@@ -315,7 +315,8 @@ namespace Stareater.GameLogic
 		public IEnumerable<Move<StarData>> ShortestPathTo(StarData fromStar, StarData toStar, double baseSpeed, MainGame game)
 		{
 			var wormholeSpeed = game.Statics.ShipFormulas.WormholeSpeed.Evaluate(new Var("speed", baseSpeed).Get);
-
+			
+			//TODO(later) cache result
 			return Methods.AStar(
 				fromStar, toStar,
 				x => (x.Position - toStar.Position).Length / wormholeSpeed,
