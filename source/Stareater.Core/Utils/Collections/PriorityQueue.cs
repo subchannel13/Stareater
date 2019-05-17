@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Stareater.Utils.Collections
@@ -14,19 +15,8 @@ namespace Stareater.Utils.Collections
 
 		public void Enqueue(TKey item, double priority)
 		{
-			int i = this.items.Count;
 			this.items.Add(new QueueItem(item, priority));
-
-			while (i > 0)
-			{
-				var parent = (i - 1) / 2;
-
-				if (this.items[i].Priority.CompareTo(this.items[parent].Priority) >= 0)
-					break;
-
-				this.swap(i, parent);
-				i = parent;
-			}
+			this.bubbleUp(this.items.Count - 1);
 		}
 
 		public TKey Dequeue()
@@ -39,29 +29,67 @@ namespace Stareater.Utils.Collections
 			if (this.items.Count == 0)
 				return result;
 
-			int i = 0;
-			while(true)
-			{
-				var child1 = 2 * i + 1;
-				var child2 = 2 * i + 2;
-				var child1Priority = child1 < this.items.Count ? this.items[child1].Priority : double.PositiveInfinity;
-				var child2Priority = child2 < this.items.Count ? this.items[child2].Priority : double.PositiveInfinity;
-				var priorityI = this.items[i].Priority;
-
-				if (child1Priority >= priorityI && child2Priority >= priorityI)
-					break;
-
-				var nextI = child1Priority.CompareTo(child2Priority) <= 0 ? child1 : child2;
-				this.swap(i, nextI);
-				i = nextI;
-			}
+			this.bubbleDown(0);
 
 			return result;
+		}
+
+		public void EnqueueOrUpdate(TKey item, double priority)
+		{
+			//TODO(later) track item indices in a dictionary
+			var index = this.items.FindIndex(x => x.Item.Equals(item));
+
+			if (index < 0)
+			{
+				this.Enqueue(item, priority);
+				return;
+			}
+
+			var oldPriority = priority;
+			this.items[index] = new QueueItem(item, priority);
+
+			if (priority > oldPriority)
+				this.bubbleDown(index);
+			else
+				this.bubbleUp(index);
 		}
 
 		public bool Contains(TKey item)
 		{
 			return this.items.Any(x => x.Item.Equals(item));
+		}
+
+		private void bubbleDown(int index)
+		{
+			while (true)
+			{
+				var child1 = 2 * index + 1;
+				var child2 = 2 * index + 2;
+				var child1Priority = child1 < this.items.Count ? this.items[child1].Priority : double.PositiveInfinity;
+				var child2Priority = child2 < this.items.Count ? this.items[child2].Priority : double.PositiveInfinity;
+				var priorityI = this.items[index].Priority;
+
+				if (child1Priority >= priorityI && child2Priority >= priorityI)
+					break;
+
+				var nextI = child1Priority <= child2Priority ? child1 : child2;
+				this.swap(index, nextI);
+				index = nextI;
+			}
+		}
+
+		private void bubbleUp(int index)
+		{
+			while (index > 0)
+			{
+				var parent = (index - 1) / 2;
+
+				if (this.items[index].Priority >= this.items[parent].Priority)
+					break;
+
+				this.swap(index, parent);
+				index = parent;
+			}
 		}
 
 		private void swap(int index1, int index2)
@@ -84,7 +112,7 @@ namespace Stareater.Utils.Collections
 
 			public override string ToString()
 			{
-				return this.Priority + " - " + this.Item;
+				return this.Priority + ": " + this.Item;
 			}
 		}
 	}

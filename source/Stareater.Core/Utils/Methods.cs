@@ -47,13 +47,13 @@ namespace Stareater.Utils
 						continue;
 
 					var tentativeScore = nodeScore[current] + costFunc(current, neighbor);
-					if (!openSet.Contains(neighbor))
-						openSet.Enqueue(neighbor, tentativeScore + heuristicFunc(neighbor));
-					else if (nodeScore.ContainsKey(neighbor) && tentativeScore >= nodeScore[neighbor])
+					
+					if (nodeScore.ContainsKey(neighbor) && tentativeScore >= nodeScore[neighbor])
 						continue;
 
 					cameFrom[neighbor] = current;
 					nodeScore[neighbor] = tentativeScore;
+					openSet.EnqueueOrUpdate(neighbor, tentativeScore + heuristicFunc(neighbor));
 				}
 			}
 
