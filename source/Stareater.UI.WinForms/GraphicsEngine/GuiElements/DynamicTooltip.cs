@@ -25,13 +25,15 @@ namespace Stareater.GraphicsEngine.GuiElements
 			{
 				Text = LocalizationManifest.Get.CurrentLanguage[this.context][this.textKey()].Text(),
 				TextColor = Color.White,
-				TextSize = 12
+				TextSize = 12,
+				MasksMouseClick = false
 			};
 			text.Position.WrapContent(10, 5).ParentRelative(0, 0, 0, 0);
 
 			var panel = new GuiPanel()
 			{
-				Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 3)
+				Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 3),
+				MasksMouseClick = false
 			};
 			panel.AddChild(text);
 			panel.Position.WrapContent();

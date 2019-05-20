@@ -15,11 +15,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public AGuiElement Parent { get; private set; }
 		public ElementPosition Position { get; private set; }
+		public bool MasksMouseClick { get; set; }
 		public ITooltip Tooltip { get; set; }
 
 		protected AGuiElement()
 		{
 			this.Position = new ElementPosition(this.measureContent);
+			this.MasksMouseClick = true;
 		}
 
 		public virtual void Attach(AScene scene, AGuiElement parent)
