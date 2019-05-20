@@ -27,8 +27,3 @@
 	langCode: ISRO
 	affinities [ :Mat ]
 }
-
-{ Organization
-	langCode: UKSA
-	affinities [ :Bio ]
-}

@@ -41,8 +41,8 @@
 	
 	farming
 	{ Work
-		improvised	# (3 + if(fertile, 4 + 2 * greenHouseLvl / 5, 0)) * if(toxic, 0.5, 1);
-		organized	# (4 + if(fertile, 4 + 2 * greenHouseLvl / 5, 0) +  2 * gmoFoodLvl / 5) * if(toxic, 0.5, 1);
+		improvised	# (3 + if(fertile, 4, 0)) * if(toxic, 0.5, 1);
+		organized	# (4 + if(fertile, 4, 0) +  2 * gmoFoodLvl / 5) * if(toxic, 0.5, 1);
 		orgFactor # 0.5 + 0.5 * farmLawsLvl / 5;
 	}
 	gardening

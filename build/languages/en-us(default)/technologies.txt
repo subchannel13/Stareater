@@ -29,28 +29,6 @@ RADAR_DESC = An object-detection system that uses radio waves to determine the r
 ROCKET_NAME = Rocketry
 ROCKET_DESC = Improvements in rocket engine design and fuel composition and containment.
 
-HYDRO_FARM_NAME = Hydroponic farms
-HYDRO_FARM_DESC §
-		Improved hydroponic farming.
-		
-		Food per population: +{E1}
-		Food per farmer: +{E2}
-		Population growth: +{E3}%
-	\
-	E1 #D3 (lvl + 1) * 0.125;
-	E2 #D2 (lvl + 1) * 0.25;
-	E3 #D3 (lvl + 1) * 0.005;
-GREEN_HOUSE_NAME = Green house
-GREEN_HOUSE_DESC = More food on fertile soil.
-GMO_FOOD_NAME = GMO food
-GMO_FOOD_DESC = More food per farmer.
-MICROGRAV_TOL_NAME = Low gravity tolerance
-MICROGRAV_TOL_DESC = Lower penalty from low and no planet gravity.
-SOIL_ENRICH_NAME = Soil enrichment
-SOIL_ENRICH_DESC = Makes planet's soil fertile.
-SUBTERRAIN_NAME = Subterrain farms
-SUBTERRAIN_DESC = Allows growing crops underground giving significantly greater farming area.
-
 PART_SCREEN_NAME = Particle screen
 PART_SCREEN_DESC = No description.
 REACTOR_LEVEL_NAME = Reactor design
@@ -74,16 +52,35 @@ NUKE_WARHEAD_NAME = Nuclear warhead
 NUKE_WARHEAD_DESC = No description.
 METALWORK_NAME = Metalworking
 METALWORK_DESC = No description.
+HYDRO_FARM_NAME = Hydroponic farms
+HYDRO_FARM_DESC §
+		Improved hydroponic farming.
+		
+		Food per population: +{E1}
+		Food per farmer: +{E2}
+		Population growth: +{E3}%
+	\
+	E1 #D3 (lvl + 1) * 0.125;
+	E2 #D2 (lvl + 1) * 0.25;
+	E3 #D3 (lvl + 1) * 0.005;
 RECYCLE_NAME = Recycling
 RECYCLE_DESC = No description.
 GAS_EXPLOIT_NAME = Gas giant exploitation
 GAS_EXPLOIT_DESC = Ability to exploit gas giants for supplying starships.
+FUEL_PROCESS_NAME = Fuel processing
+FUEL_PROCESS_DESC = No description.
 METALLURGY_NAME = Metallurgy
 METALLURGY_DESC = More advanced armor materials.
+GMO_FOOD_NAME = GMO food
+GMO_FOOD_DESC = More food per farmer.
 TOW_CABEL_NAME = Tow cable
 TOW_CABEL_DESC = No description.
-FUEL_TANK_NAME = Fuel containment
-FUEL_TANK_DESC = Improved fuel tanks which store fuel more efficiently.
+MICROGRAV_TOL_NAME = Low gravity tolerance
+MICROGRAV_TOL_DESC = Lower penalty from low and no planet gravity.
+SOIL_ENRICH_NAME = Soil enrichment
+SOIL_ENRICH_DESC = Makes planet's soil fertile.
+SUBTERRAIN_NAME = Subterrain farms
+SUBTERRAIN_DESC = Allows growing crops underground giving significantly greater farming area.
 
 ECM_NAME = ECM
 ECM_DESC = No description.
@@ -138,7 +135,7 @@ TACHYON_DESC = No description.
 GRAV_SENSOR_NAME = Nanogravity sensor
 GRAV_SENSOR_DESC = No description.
 
-CHILD_CARE_NAME = Childe care
+CHILD_CARE_NAME = Child care
 CHILD_CARE_DESC = No description.
 FARM_LAWS_NAME = Farming regulation
 FARM_LAWS_DESC = No description.
