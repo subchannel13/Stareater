@@ -73,6 +73,7 @@
     <Compile Include="Controllers\ColonizationController.cs" />
     <Compile Include="Controllers\ConstructionInfoExtractor.cs" />
     <Compile Include="Controllers\Data\MissionInfoFactory.cs" />
+    <Compile Include="Controllers\Data\ShipSelection.cs" />
     <Compile Include="Controllers\LibraryController.cs" />
     <Compile Include="Controllers\NewGameHelpers\ParameterLoadingVisitor.cs" />
     <Compile Include="Controllers\NewGameHelpers\ParameterSavingVisitor.cs" />

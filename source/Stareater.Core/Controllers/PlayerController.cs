@@ -658,33 +658,36 @@ namespace Stareater.Controllers
 			foreach (var stellaris in game.States.Stellarises.OwnedBy[player])
 				orders.AutomatedConstruction[stellaris] = new ConstructionOrders(0);
 
-			var transportFleets = this.FleetsMine.Where(x => x.PopulationCapacity > 0).ToList();
-			var populationDelta = new Dictionary<StarData, double>();
+			var transportFleets = this.FleetsMine.Where(x => x.PopulationCapacity > 0).Select(x => new FleetController(x, game)).ToList();
+			for(int i = 0; i < transportFleets.Count; i++)
+			{
+				foreach (var group in transportFleets[i].ShipGroups.Where(x => x.PopulationCapacity > 0))
+					transportFleets[i].SelectGroup(group, group.Quantity);
 
-			foreach (var fleet in transportFleets.Select(x => x.FleetData))
+				transportFleets[i] = transportFleets[i].SplitSelection();
+			}
+			var colonistDemand = orders.ColonizationTargets.
+				GroupBy(x => x.Star).
+				ToDictionary(x => x.Key, x => colonizationThreshold * x.Count());
+
+			// Enroute colonists
+			foreach (var fleet in transportFleets.Select(x => x.Fleet.FleetData))
 			{
 				var destination = new TransportDestinationVisitior().Trace(fleet);
-				if (!destination.HasValue || game.States.Stars.At.Contains(destination.Value))
+				var star = game.States.Stars.At[destination.Value];
+
+				if (!destination.HasValue || game.States.Stars.At.Contains(destination.Value) || colonistDemand.ContainsKey(star))
 					continue;
 
-				var star = game.States.Stars.At[destination.Value];
-				if (!populationDelta.ContainsKey(star))
-					populationDelta[star] = 0;
-
-				populationDelta[star] += fleet.Ships.Sum(x => x.PopulationTransport);
-			}
-			foreach (var planet in orders.ColonizationTargets)
-			{
-				if (!populationDelta.ContainsKey(planet.Star))
-					populationDelta[planet.Star] = 0;
-				populationDelta[planet.Star] -= colonizationThreshold;
+				colonistDemand[star] -= fleet.Ships.Sum(x => x.PopulationTransport);
 			}
 
 			var colonizerDesign = game.Orders[player].ColonizerDesign;
 			var missingCapacity = this.TargetTransportCapacity +
 				orders.ColonizationTargets.Sum(x => colonizationThreshold) -
-				transportFleets.Sum(x => x.PopulationCapacity);
+				transportFleets.Sum(x => x.Fleet.PopulationCapacity);
 
+			// Build missing transports
 			foreach (var source in this.ColonizationSources.Select(x => x.Stellaris))
 			{
 				if (missingCapacity <= 0)
@@ -696,116 +699,105 @@ namespace Stareater.Controllers
 				//TODO(v0.8) calculate number of ships per turn
 			}
 
-			var idleTransports = new Queue<FleetInfo>(
+			var idleTransports = new Queue<FleetController>(
 				transportFleets.
-				Where(x => !x.FleetData.Missions.Any() || x.FleetData.Missions.First() is LoadMission)
+				Where(x => !x.Fleet.FleetData.Missions.Any() || x.Fleet.FleetData.Missions.First() is LoadMission)
 			);
-			
-			foreach (var destination in populationDelta.Where(x => x.Value < 0).Select(x => x.Key).ToList())
+
+			// Send and filter colonizers
+			var nonColonizers = new List<FleetController>();
+			foreach (var destination in colonistDemand.Where(x => x.Value > 0).Select(x => x.Key))
 			{
-				var missingPopulation = -populationDelta[destination];
+				var missingPopulation = colonistDemand[destination];
 				while (missingPopulation > 0 && idleTransports.Any())
 				{
 					var fleet = idleTransports.Dequeue();
-					var controller = new FleetController(fleet, game);
-					var source = Methods.FindBestOrDefault(game.Derivates.Stellarises.OwnedBy[player], x => x.IsMigrants);
-					var currentStar = game.States.Stars.At[fleet.Position];
 
-					if (game.Derivates.Stellarises.At.Contains(currentStar) && game.Derivates.Stellarises.At[currentStar].IsMigrants > 0)
+					if (fleet.Fleet.Position == destination.Position)
 					{
-						foreach (var group in controller.ShipGroups.Where(x => x.PopulationCapacity > 0))
+						foreach (var group in fleet.ShipGroups)
 						{
-							var toSelect = group.Quantity - (long)Math.Floor(group.Population / group.Design.ColonizerPopulation);
-							if (toSelect < 1)
-								continue;
-
-							controller.SelectGroup(group, toSelect, 0);
-						}
-
-						controller.LoadPopulation();
-					}
-
-					if (fleet.Position == destination.Position && source.Location != destination)
-					{
-						foreach (var group in controller.ShipGroups.Where(x => x.PopulationCapacity > 0))
-						{
-							var toSelect = group.Quantity - (long)Math.Floor(group.Population / group.Design.ColonizerPopulation);
-							if (toSelect < 1)
-								continue;
-
-							controller.SelectGroup(group, toSelect, 0);
-						}
-
-						controller.Send(new StarInfo(source.Location));
-						missingPopulation -= controller.ShipGroups.Sum(x => x.Population);
-					}
-					else if (fleet.Position != destination.Position)
-					{
-						foreach (var group in controller.ShipGroups.Where(x => x.PopulationCapacity > 0))
-						{
-							var toSelect = (long)Math.Min(
-								Math.Floor(group.Data.PopulationTransport / group.Design.ColonizerPopulation),
+							var toStay = (long)Math.Min(
+								group.FullTransporters,
 								Math.Ceiling(missingPopulation / group.Design.ColonizerPopulation)
 							);
 
+							missingPopulation -= toStay * group.Design.ColonizerPopulation;
+							fleet.SelectGroup(group, group.Quantity - toStay);
+						}
+
+						fleet = fleet.SplitSelection();
+					}
+					else
+					{
+						foreach (var group in fleet.ShipGroups)
+						{
+							fleet.DeselectGroup(group);
+							var toSelect = (long)Math.Min(
+									group.FullTransporters,
+									Math.Ceiling(missingPopulation / group.Design.ColonizerPopulation)
+								);
+
 							if (toSelect < 1)
 								continue;
 
-							controller.SelectGroup(group, toSelect, toSelect * group.Design.ColonizerPopulation);
+							fleet.SelectGroup(group, toSelect, toSelect * group.Design.ColonizerPopulation);
 							missingPopulation -= toSelect * group.Design.ColonizerPopulation;
 						}
 
-						controller.Send(new StarInfo(destination));
-
-						if (controller.ShipGroups.Any(x => x.Population >= x.Design.ColonizerPopulation && x.Population > 0))
-							idleTransports.Enqueue(fleet);
+						fleet.Send(new StarInfo(destination));
 					}
+					
+					if (fleet.ShipGroups.Any(x => x.Quantity > 0 && x.PopulationCapacity > 0))
+						nonColonizers.Add(fleet);
 				}
-
-				populationDelta[destination] = -missingPopulation;
 			}
 
-			var transporters = this.FleetsMine.Where(isTransportFleet).ToList();
-			if(transporters.Count > 0)
+			foreach (var fleet in nonColonizers)
+				idleTransports.Enqueue(fleet);
+			
+			var immigrateTo = game.States.Colonies.OwnedBy[player].OrderByDescending(x => game.Derivates[x].Desirability).First();
+			var emmigrateFrom = game.States.Stellarises.OwnedBy[player].FirstOrDefault(x => x.Location.Star != immigrateTo.Star && game.Derivates.Stellarises.At[x.Location.Star].IsMigrants > 0);
+
+			while (idleTransports.Any() && emmigrateFrom != null)
 			{
-				var destination = game.States.Colonies.OwnedBy[player].OrderByDescending(x => game.Derivates[x].Desirability).First();
-				var source = game.States.Stellarises.OwnedBy[player].FirstOrDefault(x => x.Location.Star != destination.Star);
+				var fleet = idleTransports.Dequeue();
 
-				if (source != null)
-					foreach (var fleet in transporters)
-					{
-						var stationaryFleet = this.SelectFleet(fleet);
-						var disembarkingFleet = stationaryFleet;
+				// Load population at emigration point
+				if (fleet.Fleet.Position == emmigrateFrom.Location.Star.Position)
+				{
+					foreach (var group in fleet.ShipGroups)
+						fleet.SelectGroup(group, Math.Max(group.Quantity - group.FullTransporters, 0), 0);
 
-						foreach (var group in fleet.Ships)
-						{
-							var toSend = (long)Math.Floor(group.Population / group.Design.ColonizerPopulation);
-							stationaryFleet.SelectGroup(group, toSend);
-						}
-						if (fleet.Position != destination.Location.Star.Position)
-						{
-							disembarkingFleet = stationaryFleet.Send(new StarInfo(destination.Location.Star));
+					fleet.LoadPopulation();
+				}
 
-							foreach (var group in disembarkingFleet.Fleet.Ships)
-								disembarkingFleet.SelectGroup(group, group.Quantity); //TODO(v0.8) add select all
-						}
-						disembarkingFleet.Disembark();
+				// Send emigrants to destination
+				if (fleet.Fleet.Position != immigrateTo.Star.Position)
+				{
+					foreach (var group in fleet.ShipGroups)
+						fleet.SelectGroup(group, group.FullTransporters, 0);
 
-						var embarkingFleet = stationaryFleet;
+					fleet.Send(new StarInfo(immigrateTo.Star));
+				}
 
-						foreach (var group in embarkingFleet.Fleet.Ships)
-						{
-							var toKeep = (long)Math.Ceiling(group.Population / group.Design.ColonizerPopulation);
-							embarkingFleet.SelectGroup(group, group.Quantity - toKeep);
-						}
-						if (fleet.Position != source.Location.Star.Position)
-						{
-							embarkingFleet = embarkingFleet.Send(new StarInfo(source.Location.Star));
-							foreach (var group in embarkingFleet.Fleet.Ships)
-								embarkingFleet.SelectGroup(group, group.Quantity); //TODO(v0.8) add select all
-							embarkingFleet.LoadPopulation();
-						}
-					}
+				// Disembark immigrants
+				if (fleet.Fleet.Position == immigrateTo.Star.Position)
+				{
+					foreach (var group in fleet.ShipGroups)
+						fleet.SelectGroup(group, group.FullTransporters, 0);
+
+					fleet.Disembark();
+				}
+
+				// Send empty (non-full) transporters to emigration point
+				if (fleet.Fleet.Position != emmigrateFrom.Location.Star.Position)
+				{
+					foreach (var group in fleet.ShipGroups)
+						fleet.SelectGroup(group, Math.Max(group.Quantity - group.FullTransporters, 0), 0);
+
+					fleet.Send(new StarInfo(emmigrateFrom.Location.Star));
+				}
 			}
 		}
 

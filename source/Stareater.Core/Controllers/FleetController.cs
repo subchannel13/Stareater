@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Stareater.Controllers.Data;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
@@ -18,8 +19,7 @@ namespace Stareater.Controllers
 		
 		public FleetInfo Fleet { get; private set; }
 
-		private readonly Dictionary<Design, long> selection = new Dictionary<Design, long>();
-		private readonly Dictionary<Design, double> selectionPopulation = new Dictionary<Design, double>(); //TODO(v0.8) Make new type and unify with selection quantity
+		private readonly Dictionary<Design, ShipSelection> selection;
 		private readonly List<WaypointInfo> simulationWaypoints = new List<WaypointInfo>();
 		public double SimulationEta { get; private set; }
 		public double SimulationFuel { get; private set; }
@@ -30,6 +30,10 @@ namespace Stareater.Controllers
 			this.game = game;
 			this.SimulationEta = 0;
 			this.SimulationFuel = 0;
+			this.selection = fleet.FleetData.Ships.ToDictionary(
+				x => x.Design, 
+				x => new ShipSelection(x.Quantity, x.Quantity, x.PopulationTransport)
+			);
 			
 			if (this.Fleet.IsMoving) {
 				this.simulationWaypoints = new List<WaypointInfo>(this.Fleet.Missions.Waypoints);
@@ -51,19 +55,17 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return this.Fleet.FleetData.Ships.Select(x => new ShipGroupInfo(x, this.game.Derivates[this.Fleet.Owner.Data].DesignStats[x.Design], this.game.Statics));
+				return this.Fleet.FleetData.Ships.
+					Where(x => this.selection[x.Design].MaxQuantity > 0).
+					Select(x => new ShipGroupInfo(x, this.game.Derivates[this.Fleet.Owner.Data].DesignStats[x.Design], this.game.Statics));
 			}
 		}
 		
 		public bool CanMove
 		{
 			get 
-			{ 
-				foreach(var design in this.selection.Keys)
-					if (design.IsDrive == null)
-						return false;
-				
-				return true;
+			{
+				return this.selection.All(x => x.Key.IsDrive != null || x.Value.Quantity <= 0);
 			}
 		}
 
@@ -74,8 +76,7 @@ namespace Stareater.Controllers
 		
 		public void DeselectGroup(ShipGroupInfo group)
 		{
-			selection.Remove(group.Data.Design);
-			selectionPopulation.Remove(group.Data.Design);
+			this.selection[group.Data.Design] = new ShipSelection(0, this.selection[group.Data.Design].MaxQuantity, 0);
 
 			if (!this.CanMove)
 				this.simulationWaypoints.Clear();
@@ -89,14 +90,16 @@ namespace Stareater.Controllers
 		public void SelectGroup(ShipGroupInfo group, long quantity, double population)
 		{
 			quantity = Methods.Clamp(quantity, 0, group.Quantity);
+			if (quantity <= 0)
+			{
+				this.DeselectGroup(group);
+				return;
+			}
+
 			var minPopulation = group.Population - (group.Quantity - quantity) * group.Design.ColonizerPopulation;
 			population = Methods.Clamp(population, minPopulation, group.Population);
 
-			selection[group.Data.Design] = quantity;
-			selectionPopulation[group.Data.Design] = population;
-
-			if (selection[group.Data.Design] <= 0)
-				this.DeselectGroup(group);
+			this.selection[group.Data.Design] = new ShipSelection(quantity, this.selection[group.Data.Design].MaxQuantity, population);
 
 			if (!this.CanMove)
 				this.simulationWaypoints.Clear();
@@ -104,9 +107,18 @@ namespace Stareater.Controllers
 			this.calcSimulation();
 		}
 
+		public FleetController SplitSelection()
+		{
+			var controller = new FleetController(this.Fleet, this.game);
+			foreach (var group in this.selection.Where(x => x.Value.Quantity > 0))
+				controller.selection[group.Key] = new ShipSelection(group.Value.Quantity, group.Value.Quantity, group.Value.Population);
+
+			return controller;
+		}
+
 		public FleetController Send(StarInfo destination)
 		{
-			if (!this.game.States.Stars.At.Contains(this.Fleet.Position) || !this.selection.Any())
+			if (!this.game.States.Stars.At.Contains(this.Fleet.Position) || !this.selection.Any(x => x.Value.Quantity > 0))
 				return this;
 
 			if (this.CanMove && destination.Position != this.Fleet.FleetData.Position)
@@ -153,7 +165,7 @@ namespace Stareater.Controllers
 				return;
 
 			this.simulationWaypoints.Clear();
-			if (!this.selection.Any())
+			if (!this.selection.Any(x => x.Value.Quantity > 0))
 			{
 				this.calcSimulation();
 				return;
@@ -200,7 +212,7 @@ namespace Stareater.Controllers
 		{
 			var playerProc = this.game.Derivates.Players.Of[this.Fleet.Owner.Data];
 
-			return this.selection.Keys.Min(x => playerProc.DesignStats[x].GalaxySpeed);
+			return this.selection.Where(x => x.Value.Quantity > 0).Min(x => playerProc.DesignStats[x.Key].GalaxySpeed);
 		}
 
 		private void calcSimulation()
@@ -208,7 +220,7 @@ namespace Stareater.Controllers
             this.SimulationEta = 0;
             this.SimulationFuel = 0;
 
-            if (!this.selection.Any())
+            if (!this.selection.Any(x => x.Value.Quantity > 0))
                 return;
 
             var playerProc = this.game.Derivates.Players.Of[this.Fleet.Owner.Data];
@@ -235,22 +247,19 @@ namespace Stareater.Controllers
 		{
 			var fleet = this.Fleet.FleetData;
 
-			if (this.selection.Count == 0 || fleet.Missions.SequenceEqual(newMissions))
+			if (!this.selection.Any(x => x.Value.Quantity > 0) || fleet.Missions.SequenceEqual(newMissions))
 				return this;
 
 			//create regroup order if there is none
-			HashSet<Fleet> shipOrders;
-			if (!this.game.Orders[fleet.Owner].ShipOrders.ContainsKey(fleet.Position)) {
-				shipOrders = new HashSet<Fleet>();
-				shipOrders.UnionWith(this.game.States.Fleets.At[fleet.Position, fleet.Owner]);
-				this.game.Orders[fleet.Owner].ShipOrders.Add(fleet.Position, shipOrders);
-			}
-			else
-				shipOrders = this.game.Orders[fleet.Owner].ShipOrders[fleet.Position];
+			if (!this.game.Orders[fleet.Owner].ShipOrders.ContainsKey(fleet.Position))
+				this.game.Orders[fleet.Owner].ShipOrders.Add(fleet.Position, new HashSet<Fleet>(this.game.States.Fleets.At[fleet.Position, fleet.Owner]));
+
+			var shipOrders = this.game.Orders[fleet.Owner].ShipOrders[fleet.Position];
 
 			//remove current fleet from regroup
 			shipOrders.Remove(fleet);
 			
+			//TODO(v0.8) ensure no ship duplication, check orders for similar starting fleet and compare number of ships
 			var newFleetInfo = this.addFleet(shipOrders, this.selectedFleet(newMissions));
 			this.Fleet = this.addFleet(shipOrders, this.unselectedFleet());
 
@@ -265,12 +274,12 @@ namespace Stareater.Controllers
 			var fleet = new Fleet(this.player, this.Fleet.FleetData.Position, new LinkedList<AMission>(newMissions));
 			fleet.Ships.Add(
 				this.Fleet.FleetData.Ships.
-				Where(x => this.selection.ContainsKey(x.Design)).
+				Where(x => this.selection[x.Design].Quantity > 0).
 				Select(x => new ShipGroup(
 					x.Design, 
-					this.selection[x.Design], 
-					x.Damage * selectedPart(x), x.UpgradePoints * selectedPart(x), 
-					this.selectionPopulation[x.Design])
+					this.selection[x.Design].Quantity, 
+					x.Damage * selectedPart(x.Design), x.UpgradePoints * selectedPart(x.Design), 
+					this.selection[x.Design].Population)
 				)
 			);
 
@@ -282,23 +291,21 @@ namespace Stareater.Controllers
 			var fleet = new Fleet(this.player, this.Fleet.FleetData.Position, this.Fleet.FleetData.Missions);
 			fleet.Ships.Add(
 				this.Fleet.FleetData.Ships.
-				Where(x => !this.selection.ContainsKey(x.Design) || x.Quantity - this.selection[x.Design] > 0).
+				Where(x => x.Quantity - this.selection[x.Design].Quantity > 0).
 				Select(x => new ShipGroup(
 					x.Design,
-					x.Quantity - (this.selection.ContainsKey(x.Design) ? this.selection[x.Design] : 0),
-					x.Damage * (1 - selectedPart(x)), x.UpgradePoints * (1 - selectedPart(x)),
-					x.PopulationTransport - (this.selection.ContainsKey(x.Design) ? this.selectionPopulation[x.Design] : 0))
+					x.Quantity - this.selection[x.Design].Quantity,
+					x.Damage * (1 - selectedPart(x.Design)), x.UpgradePoints * (1 - selectedPart(x.Design)),
+					x.PopulationTransport - this.selection[x.Design].Population)
 				)
 			);
 
 			return fleet;
 		}
 
-		private double selectedPart(ShipGroup originalGroup)
+		private double selectedPart(Design design)
 		{
-			return this.selection.ContainsKey(originalGroup.Design) ? 
-				this.selection[originalGroup.Design] / originalGroup.Quantity : 
-				1;
+			return this.selection[design].Quantity / this.selection[design].MaxQuantity;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using Stareater.Galaxy;
 using Stareater.GameData.Databases;
 using Stareater.GameLogic.Combat;
+using System;
 
 namespace Stareater.Controllers.Views.Ships
 {
@@ -41,6 +42,16 @@ namespace Stareater.Controllers.Views.Ships
 		public double Population
 		{
 			get { return this.Data.PopulationTransport; }
+		}
+
+		public long FullTransporters
+		{
+			get
+			{
+				return this.stats.ColonizerPopulation > 0 ? 
+					(long)Math.Floor(this.Data.PopulationTransport / this.stats.ColonizerPopulation) :
+					0L;
+			}
 		}
 	}
 }
