@@ -121,28 +121,14 @@ namespace Stareater.Controllers
 			if (!this.game.States.Stars.At.Contains(this.Fleet.Position) || !this.selection.Any(x => x.Value.Quantity > 0))
 				return this;
 
+			//TODO(later) prevent changing destination midfilght
 			if (this.CanMove && destination.Position != this.Fleet.FleetData.Position)
-			{
-				var playerProc = this.game.Derivates[this.player];
-				var availableFuel =
-					game.Derivates.Colonies.OwnedBy[this.player].Sum(x => x.FuelProduction) -
-					playerProc.TotalFuelUsage(game) +
-					playerProc.FuelUsage(this.Fleet.FleetData, game) -
-					playerProc.FuelUsage(this.unselectedFleet(), game);
-				var fuelUse = playerProc.FuelUsage(this.selectedFleet(new AMission[0]), destination.Position, game);
-
-				//TODO(v0.8) fleet should be able to fly under economic penalty
-				if (availableFuel < fuelUse)
-					return this;
-
-				//TODO(later) prevent changing destination midfilght
 				return this.giveOrder(
-					playerProc.
+					this.game.Derivates[this.player].
 					ShortestPathTo(this.game.States.Stars.At[this.Fleet.Position], destination.Data, this.baseTravelSpeed(), this.game).
 					Select(x => new MoveMission(x.ToNode, this.game.States.Wormholes.At.GetOrDefault(x.FromNode, x.ToNode))).
 					ToList()
 				);
-			}
 			else if (this.game.States.Stars.At.Contains(this.Fleet.FleetData.Position))
 				return this.giveOrder(new AMission[0]);
 			
