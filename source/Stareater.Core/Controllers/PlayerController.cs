@@ -661,8 +661,8 @@ namespace Stareater.Controllers
 			var transportFleets = this.FleetsMine.Where(x => x.PopulationCapacity > 0).Select(x => new FleetController(x, game)).ToList();
 			for(int i = 0; i < transportFleets.Count; i++)
 			{
-				foreach (var group in transportFleets[i].ShipGroups.Where(x => x.PopulationCapacity > 0))
-					transportFleets[i].SelectGroup(group, group.Quantity);
+				foreach (var group in transportFleets[i].ShipGroups)
+					transportFleets[i].SelectGroup(group, group.PopulationCapacity > 0  ? group.Quantity : 0);
 
 				transportFleets[i] = transportFleets[i].SplitSelection();
 			}
@@ -682,7 +682,6 @@ namespace Stareater.Controllers
 				colonistDemand[star] -= fleet.Ships.Sum(x => x.PopulationTransport);
 			}
 
-			var colonizerDesign = game.Orders[player].ColonizerDesign;
 			var missingCapacity = this.TargetTransportCapacity +
 				orders.ColonizationTargets.Sum(x => colonizationThreshold) -
 				transportFleets.Sum(x => x.Fleet.PopulationCapacity);
@@ -695,7 +694,7 @@ namespace Stareater.Controllers
 
 				var plan = orders.AutomatedConstruction[source];
 				plan.SpendingRatio = 1;
-				plan.Queue.Add(new ShipProject(colonizerDesign, true));
+				plan.Queue.Add(new ShipProject(game.Orders[player].ColonizerDesign, true));
 				//TODO(v0.8) calculate number of ships per turn
 			}
 
@@ -706,10 +705,8 @@ namespace Stareater.Controllers
 
 			// Send and filter colonizers
 			var nonColonizers = new List<FleetController>();
-			foreach (var destination in colonistDemand.Where(x => x.Value > 0).Select(x => x.Key))
-			{
-				var missingPopulation = colonistDemand[destination];
-				while (missingPopulation > 0 && idleTransports.Any())
+			foreach (var destination in colonistDemand.Where(x => x.Value > 0).Select(x => x.Key).ToList())
+				while (colonistDemand[destination] > 0 && idleTransports.Any())
 				{
 					var fleet = idleTransports.Dequeue();
 
@@ -717,13 +714,11 @@ namespace Stareater.Controllers
 					{
 						foreach (var group in fleet.ShipGroups)
 						{
-							var toStay = (long)Math.Min(
-								group.FullTransporters,
-								Math.Ceiling(missingPopulation / group.Design.ColonizerPopulation)
-							);
+							var toStay = Math.Min(group.FullTransporters, Math.Ceiling(colonistDemand[destination] / group.Design.ColonizerPopulation));
+							toStay = Math.Max(toStay, 0);
 
-							missingPopulation -= toStay * group.Design.ColonizerPopulation;
-							fleet.SelectGroup(group, group.Quantity - toStay);
+							colonistDemand[destination] -= toStay * group.Design.ColonizerPopulation;
+							fleet.SelectGroup(group, group.Quantity - (long)toStay);
 						}
 
 						fleet = fleet.SplitSelection();
@@ -732,32 +727,25 @@ namespace Stareater.Controllers
 					{
 						foreach (var group in fleet.ShipGroups)
 						{
-							fleet.DeselectGroup(group);
-							var toSelect = (long)Math.Min(
-									group.FullTransporters,
-									Math.Ceiling(missingPopulation / group.Design.ColonizerPopulation)
-								);
+							var toSelect = Math.Min(group.FullTransporters, Math.Ceiling(colonistDemand[destination] / group.Design.ColonizerPopulation));
+							toSelect = Math.Max(toSelect, 0);
 
-							if (toSelect < 1)
-								continue;
-
-							fleet.SelectGroup(group, toSelect, toSelect * group.Design.ColonizerPopulation);
-							missingPopulation -= toSelect * group.Design.ColonizerPopulation;
+							fleet.SelectGroup(group, (long)toSelect, toSelect * group.Design.ColonizerPopulation);
+							colonistDemand[destination] -= toSelect * group.Design.ColonizerPopulation;
 						}
 
 						fleet.Send(new StarInfo(destination));
 					}
 					
-					if (fleet.ShipGroups.Any(x => x.Quantity > 0 && x.PopulationCapacity > 0))
+					if (fleet.ShipGroups.Any())
 						nonColonizers.Add(fleet);
 				}
-			}
 
 			foreach (var fleet in nonColonizers)
 				idleTransports.Enqueue(fleet);
 			
 			var immigrateTo = game.States.Colonies.OwnedBy[player].OrderByDescending(x => game.Derivates[x].Desirability).First();
-			var emmigrateFrom = game.States.Stellarises.OwnedBy[player].FirstOrDefault(x => x.Location.Star != immigrateTo.Star && game.Derivates.Stellarises.At[x.Location.Star].IsMigrants > 0);
+			var emmigrateFrom = game.States.Stellarises.OwnedBy[player].FirstOrDefault(x => game.Derivates.Stellarises.At[x.Location.Star].IsMigrants > 0);
 
 			while (idleTransports.Any() && emmigrateFrom != null)
 			{
@@ -782,7 +770,7 @@ namespace Stareater.Controllers
 				}
 
 				// Disembark immigrants
-				if (fleet.Fleet.Position == immigrateTo.Star.Position)
+				if (fleet.Fleet.Position == immigrateTo.Star.Position && immigrateTo.Star != emmigrateFrom.Location.Star)
 				{
 					foreach (var group in fleet.ShipGroups)
 						fleet.SelectGroup(group, group.FullTransporters, 0);
