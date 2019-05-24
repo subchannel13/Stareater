@@ -19,7 +19,7 @@ namespace Stareater.Controllers
 		
 		public FleetInfo Fleet { get; private set; }
 
-		private readonly Dictionary<Design, ShipSelection> selection;
+		private Dictionary<Design, ShipSelection> selection;
 		private readonly List<WaypointInfo> simulationWaypoints = new List<WaypointInfo>();
 		public double SimulationEta { get; private set; }
 		public double SimulationFuel { get; private set; }
@@ -32,7 +32,7 @@ namespace Stareater.Controllers
 			this.SimulationFuel = 0;
 			this.selection = fleet.FleetData.Ships.ToDictionary(
 				x => x.Design, 
-				x => new ShipSelection(x.Quantity, x.Quantity, x.PopulationTransport)
+				x => new ShipSelection(x.Quantity, x, x.PopulationTransport)
 			);
 			
 			if (this.Fleet.IsMoving) {
@@ -55,9 +55,9 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				return this.Fleet.FleetData.Ships.
-					Where(x => this.selection[x.Design].MaxQuantity > 0).
-					Select(x => new ShipGroupInfo(x, this.game.Derivates[this.Fleet.Owner.Data].DesignStats[x.Design], this.game.Statics));
+				var playerProc = this.game.Derivates[this.Fleet.Owner.Data];
+
+				return this.selection.Select(x => new ShipGroupInfo(x.Value.Ships, playerProc.DesignStats[x.Key], this.game.Statics)).ToList();
 			}
 		}
 		
@@ -76,7 +76,7 @@ namespace Stareater.Controllers
 		
 		public void DeselectGroup(ShipGroupInfo group)
 		{
-			this.selection[group.Data.Design] = new ShipSelection(0, this.selection[group.Data.Design].MaxQuantity, 0);
+			this.selection[group.Data.Design] = new ShipSelection(0, this.selection[group.Data.Design].Ships, 0);
 
 			if (!this.CanMove)
 				this.simulationWaypoints.Clear();
@@ -99,7 +99,7 @@ namespace Stareater.Controllers
 			var minPopulation = group.Population - (group.Quantity - quantity) * group.Design.ColonizerPopulation;
 			population = Methods.Clamp(population, minPopulation, group.Population);
 
-			this.selection[group.Data.Design] = new ShipSelection(quantity, this.selection[group.Data.Design].MaxQuantity, population);
+			this.selection[group.Data.Design] = new ShipSelection(quantity, this.selection[group.Data.Design].Ships, population);
 
 			if (!this.CanMove)
 				this.simulationWaypoints.Clear();
@@ -110,9 +110,21 @@ namespace Stareater.Controllers
 		public FleetController SplitSelection()
 		{
 			var controller = new FleetController(this.Fleet, this.game);
+			controller.selection.Clear();
 			foreach (var group in this.selection.Where(x => x.Value.Quantity > 0))
-				controller.selection[group.Key] = new ShipSelection(group.Value.Quantity, group.Value.Quantity, group.Value.Population);
+				controller.selection[group.Key] = new ShipSelection(
+					group.Value.Quantity, 
+					new ShipGroup(
+						group.Key, 
+						group.Value.Quantity, 
+						group.Value.Ships.Damage * selectedPart(group.Key), 
+						group.Value.Ships.UpgradePoints * selectedPart(group.Key),
+						group.Value.Population
+					),
+					group.Value.Population
+				);
 
+			//TODO(v0.8) remove split ships from current controller instance
 			return controller;
 		}
 
@@ -248,6 +260,10 @@ namespace Stareater.Controllers
 			//TODO(v0.8) ensure no ship duplication, check orders for similar starting fleet and compare number of ships
 			var newFleetInfo = this.addFleet(shipOrders, this.selectedFleet(newMissions));
 			this.Fleet = this.addFleet(shipOrders, this.unselectedFleet());
+			this.selection = this.Fleet.FleetData.Ships.ToDictionary(
+				x => x.Design,
+				x => new ShipSelection(x.Quantity, x, x.PopulationTransport)
+			);
 
 			return new FleetController(
 				newFleetInfo, 
@@ -291,7 +307,7 @@ namespace Stareater.Controllers
 
 		private double selectedPart(Design design)
 		{
-			return this.selection[design].Quantity / this.selection[design].MaxQuantity;
+			return this.selection[design].Quantity / this.selection[design].Ships.Quantity;
 		}
 	}
 }

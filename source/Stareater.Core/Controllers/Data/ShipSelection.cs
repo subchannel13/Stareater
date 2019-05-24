@@ -1,16 +1,18 @@
-﻿namespace Stareater.Controllers.Data
+﻿using Stareater.Galaxy;
+
+namespace Stareater.Controllers.Data
 {
 	class ShipSelection
 	{
 		public long Quantity { get; private set; }
-		public long MaxQuantity { get; private set; }
 		public double Population { get; private set; }
+		public ShipGroup Ships { get; private set; }
 
-		public ShipSelection(long quantity, long maxQuantity, double population)
+		public ShipSelection(long quantity, ShipGroup ships, double population)
 		{
 			this.Quantity = quantity;
-			this.MaxQuantity = maxQuantity;
 			this.Population = population;
+			this.Ships = ships;
 		}
 	}
 }
