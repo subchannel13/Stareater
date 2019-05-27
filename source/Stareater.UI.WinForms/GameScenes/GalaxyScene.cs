@@ -553,7 +553,8 @@ namespace Stareater.GameScenes
 			if (this.SelectedFleet != null)
 				if (foundAny && isStarClosest)
 				{
-					this.SelectedFleet = this.SelectedFleet.Send(this.SelectedFleet.SimulationWaypoints().Last());
+					var destination = this.SelectedFleet.SimulationWaypoints().Any() ? this.SelectedFleet.SimulationWaypoints().Last() : starsFound[0];
+					this.SelectedFleet = this.SelectedFleet.Send(destination);
 					this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = this.SelectedFleet.Fleet;
 					this.galaxyViewListener.FleetClicked(new FleetInfo[] { this.SelectedFleet.Fleet });
 					this.setupFleetMarkers();

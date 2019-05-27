@@ -703,6 +703,7 @@ namespace Stareater.Controllers
 				Where(x => !x.Fleet.FleetData.Missions.Any() || x.Fleet.FleetData.Missions.First() is LoadMission)
 			);
 
+			//TODO(v0.8) doesn't count supply properly when there are ships enroute and a few stationary. Makes stationary fly away.
 			// Send and filter colonizers
 			var nonColonizers = new List<FleetController>();
 			foreach (var destination in colonistDemand.Where(x => x.Value > 0).Select(x => x.Key).ToList())
@@ -736,7 +737,7 @@ namespace Stareater.Controllers
 
 						fleet.Send(new StarInfo(destination));
 					}
-					
+
 					if (fleet.ShipGroups.Any())
 						nonColonizers.Add(fleet);
 				}
@@ -764,7 +765,7 @@ namespace Stareater.Controllers
 				if (fleet.Fleet.Position != immigrateTo.Star.Position)
 				{
 					foreach (var group in fleet.ShipGroups)
-						fleet.SelectGroup(group, group.FullTransporters, 0);
+						fleet.SelectGroup(group, group.FullTransporters, group.Population);
 
 					fleet.Send(new StarInfo(immigrateTo.Star));
 				}
@@ -773,7 +774,7 @@ namespace Stareater.Controllers
 				if (fleet.Fleet.Position == immigrateTo.Star.Position && immigrateTo.Star != emmigrateFrom.Location.Star)
 				{
 					foreach (var group in fleet.ShipGroups)
-						fleet.SelectGroup(group, group.FullTransporters, 0);
+						fleet.SelectGroup(group, group.FullTransporters, group.Population);
 
 					fleet.Disembark();
 				}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Stareater.Controllers.Data;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
@@ -60,7 +61,7 @@ namespace Stareater.Controllers
 				return this.selection.Select(x => new ShipGroupInfo(x.Value.Ships, playerProc.DesignStats[x.Key], this.game.Statics)).ToList();
 			}
 		}
-		
+
 		public bool CanMove
 		{
 			get 
@@ -73,7 +74,17 @@ namespace Stareater.Controllers
 		{
 			return this.simulationWaypoints.Select(x => new StarInfo(x.DestionationStar)).ToList();
 		}
-		
+
+		public long SelectionCount(ShipGroupInfo group)
+		{
+			return this.selection[group.Data.Design].Quantity;
+		}
+
+		public double SelectionPopulation(ShipGroupInfo group)
+		{
+			return this.selection[group.Data.Design].Population;
+		}
+
 		public void DeselectGroup(ShipGroupInfo group)
 		{
 			this.selection[group.Data.Design] = new ShipSelection(0, this.selection[group.Data.Design].Ships, 0);
@@ -276,7 +287,7 @@ namespace Stareater.Controllers
 			var fleet = new Fleet(this.player, this.Fleet.FleetData.Position, new LinkedList<AMission>(newMissions));
 			fleet.Ships.Add(
 				this.Fleet.FleetData.Ships.
-				Where(x => this.selection[x.Design].Quantity > 0).
+				Where(x => this.selection.ContainsKey(x.Design) && this.selection[x.Design].Quantity > 0).
 				Select(x => new ShipGroup(
 					x.Design, 
 					this.selection[x.Design].Quantity, 
@@ -293,7 +304,7 @@ namespace Stareater.Controllers
 			var fleet = new Fleet(this.player, this.Fleet.FleetData.Position, this.Fleet.FleetData.Missions);
 			fleet.Ships.Add(
 				this.Fleet.FleetData.Ships.
-				Where(x => x.Quantity - this.selection[x.Design].Quantity > 0).
+				Where(x => this.selection.ContainsKey(x.Design) && (x.Quantity - this.selection[x.Design].Quantity > 0)).
 				Select(x => new ShipGroup(
 					x.Design,
 					x.Quantity - this.selection[x.Design].Quantity,
@@ -308,6 +319,23 @@ namespace Stareater.Controllers
 		private double selectedPart(Design design)
 		{
 			return this.selection[design].Quantity / this.selection[design].Ships.Quantity;
+		}
+
+		public override string ToString()
+		{
+			var sb = new StringBuilder();
+
+			var star = this.game.States.Stars.At.Contains(this.Fleet.Position) ? game.States.Stars.At[this.Fleet.Position] : null;
+			if (star != null)
+				sb.Append(star.Name.ToText(Localization.LocalizationManifest.Get.CurrentLanguage) + " ");
+			else
+				sb.Append(this.Fleet.Position + " ");
+
+			var count = this.selection.Values.Sum(x => x.Quantity);
+			var pop = this.selection.Values.Sum(x => x.Population);
+			sb.Append($"{count} ships, {pop:0} pop ");
+
+			return sb.ToString();
 		}
 	}
 }
