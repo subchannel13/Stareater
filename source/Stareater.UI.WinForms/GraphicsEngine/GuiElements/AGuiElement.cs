@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
@@ -83,7 +84,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return false;
 		}
 
-		public virtual void OnMouseUp()
+		public virtual void OnMouseUp(Keys modiferKeys)
 		{
 			//No operation
 		}
@@ -93,7 +94,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			//No operation
 		}
 
-		public virtual void OnMouseMove(Vector2 mousePosition)
+		public virtual void OnMouseMove(Vector2 mousePosition, Keys modiferKeys)
 		{
 			//No operation
 		}

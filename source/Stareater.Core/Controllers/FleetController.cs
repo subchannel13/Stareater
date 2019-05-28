@@ -141,10 +141,10 @@ namespace Stareater.Controllers
 
 		public FleetController Send(StarInfo destination)
 		{
+			//TODO(later) prevent changing immediate destination midfilght but allow to change final destination
 			if (!this.game.States.Stars.At.Contains(this.Fleet.Position) || !this.selection.Any(x => x.Value.Quantity > 0))
 				return this;
 
-			//TODO(later) prevent changing destination midfilght
 			if (this.CanMove && destination.Position != this.Fleet.FleetData.Position)
 				return this.giveOrder(
 					this.game.Derivates[this.player].
@@ -155,6 +155,23 @@ namespace Stareater.Controllers
 			else if (this.game.States.Stars.At.Contains(this.Fleet.FleetData.Position))
 				return this.giveOrder(new AMission[0]);
 			
+			return this;
+		}
+
+		public FleetController SendDirectly(StarInfo destination)
+		{
+			if (!this.game.States.Stars.At.Contains(this.Fleet.Position) || !this.selection.Any(x => x.Value.Quantity > 0))
+				return this;
+
+			//TODO(later) prevent changing destination midfilght
+			if (this.CanMove && destination.Position != this.Fleet.FleetData.Position)
+				return this.giveOrder(new AMission[] { new MoveMission(
+					destination.Data, 
+					this.game.States.Wormholes.At.GetOrDefault(this.game.States.Stars.At[this.Fleet.Position], destination.Data)
+				) });
+			else if (this.game.States.Stars.At.Contains(this.Fleet.FleetData.Position))
+				return this.giveOrder(new AMission[0]);
+
 			return this;
 		}
 
@@ -193,7 +210,28 @@ namespace Stareater.Controllers
 			this.calcSimulation();
 		}
 
-		
+		public void SimulateDirectTravel(StarInfo destination)
+		{
+			if (!this.game.States.Stars.At.Contains(this.Fleet.Position))
+				return;
+
+			this.simulationWaypoints.Clear();
+			if (!this.selection.Any(x => x.Value.Quantity > 0))
+			{
+				this.calcSimulation();
+				return;
+			}
+
+			var playerProc = this.game.Derivates[this.player];
+			//TODO(later) prevent changing destination midfilght
+			this.simulationWaypoints.Add(new WaypointInfo(
+					destination.Data,
+					playerProc.VisibleWormholeAt(this.game.States.Stars.At[this.Fleet.Position], destination.Data, this.game)
+			));
+
+			this.calcSimulation();
+		}
+
 		private FleetInfo addFleet(ICollection<Fleet> shipOrders, Fleet newFleet)
 		{
 			var similarFleet = shipOrders.FirstOrDefault(x => x.Missions.SequenceEqual(newFleet.Missions));

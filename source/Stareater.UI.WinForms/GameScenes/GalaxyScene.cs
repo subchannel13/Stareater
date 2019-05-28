@@ -17,6 +17,7 @@ using Stareater.GraphicsEngine.GuiElements;
 using Stareater.Controllers.Views;
 using Stareater.GLData.OrbitShader;
 using Stareater.AppData;
+using System.Windows.Forms;
 
 namespace Stareater.GameScenes
 {
@@ -481,13 +482,13 @@ namespace Stareater.GameScenes
 		#endregion
 
 		#region Mouse events
-		protected override void onMouseMove(Vector4 mouseViewPosition)
+		protected override void onMouseMove(Vector4 mouseViewPosition, Keys modiferKeys)
 		{
 			this.lastMousePosition = mouseViewPosition;
 			this.panAbsPath = 0;
 
 			if (this.SelectedFleet != null)
-				this.simulateFleetMovement(mouseViewPosition);
+				this.simulateFleetMovement(mouseViewPosition, modiferKeys);
 		}
 
 		protected override void onMouseDrag(Vector4 currentPosition)
@@ -528,7 +529,7 @@ namespace Stareater.GameScenes
 			this.setupMovementEta();
 		}
 
-		protected override void onMouseClick(Vector2 mousePoint)
+		protected override void onMouseClick(Vector2 mousePoint, Keys modiferKeys)
 		{
 			if (panAbsPath > PanClickTolerance) //TODO(v0.8) maybe make AScene differentiate between click and drag
 				return;
@@ -554,7 +555,7 @@ namespace Stareater.GameScenes
 				if (foundAny && isStarClosest)
 				{
 					var destination = this.SelectedFleet.SimulationWaypoints().Any() ? this.SelectedFleet.SimulationWaypoints().Last() : starsFound[0];
-					this.SelectedFleet = this.SelectedFleet.Send(destination);
+					this.SelectedFleet = modiferKeys.HasFlag(Keys.Control) ? this.SelectedFleet.SendDirectly(destination) : this.SelectedFleet.Send(destination);
 					this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = this.SelectedFleet.Fleet;
 					this.galaxyViewListener.FleetClicked(new FleetInfo[] { this.SelectedFleet.Fleet });
 					this.setupFleetMarkers();
@@ -613,7 +614,7 @@ namespace Stareater.GameScenes
 		#endregion
 
 		#region Helper methods
-		private void simulateFleetMovement(Vector4 currentPosition)
+		private void simulateFleetMovement(Vector4 currentPosition, Keys modiferKeys)
 		{
 			if (!this.SelectedFleet.CanMove)
 				return;
@@ -630,7 +631,10 @@ namespace Stareater.GameScenes
 			if (!starsFound.Any())
 				return;
 
-			this.SelectedFleet.SimulateTravel(starsFound[0].Data as StarInfo);
+			if (!modiferKeys.HasFlag(Keys.Control))
+				this.SelectedFleet.SimulateTravel(starsFound[0].Data as StarInfo);
+			else
+				this.SelectedFleet.SimulateDirectTravel(starsFound[0].Data as StarInfo);
 			this.setupMovementEta();
 			this.setupMovementSimulation();
 		}

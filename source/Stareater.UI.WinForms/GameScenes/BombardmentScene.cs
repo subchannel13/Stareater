@@ -97,7 +97,7 @@ namespace Stareater.GameScenes
 		}
 		
 		#region Input events
-		protected override void onMouseClick(Vector2 mousePoint)
+		protected override void onMouseClick(Vector2 mousePoint, Keys modiferKeys)
 		{
 			if (this.panAbsPath > PanClickTolerance)
 				return;
@@ -108,7 +108,7 @@ namespace Stareater.GameScenes
 				this.controller.Bombard((int)buttons.First().Data);
 		}
 
-		protected override void onMouseMove(Vector4 mouseViewPosition)
+		protected override void onMouseMove(Vector4 mouseViewPosition, Keys modiferKeys)
 		{
 			this.lastMousePosition = mouseViewPosition;
 			this.panAbsPath = 0;

@@ -4,6 +4,7 @@ using Stareater.GLData;
 using Stareater.GLData.SpriteShader;
 using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
@@ -94,7 +95,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return true;
 		}
 
-		public override void OnMouseUp()
+		public override void OnMouseUp(Keys modiferKeys)
 		{
 			this.isPressed = false;
 			this.ClickCallback();
@@ -106,7 +107,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.apply(ref this.isPressed, false);
 		}
 
-		public override void OnMouseMove(Vector2 mousePosition)
+		public override void OnMouseMove(Vector2 mousePosition, Keys modiferKeys)
 		{
 			this.apply(ref this.isHovered, true);
 		}

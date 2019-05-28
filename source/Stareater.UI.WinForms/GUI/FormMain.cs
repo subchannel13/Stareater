@@ -384,7 +384,7 @@ namespace Stareater.GUI
 		private void glCanvas_MouseUp(object sender, MouseEventArgs e)
 		{
 			if (this.currentRenderer != null)
-				this.currentRenderer.HandleMouseUp(e);
+				this.currentRenderer.HandleMouseUp(e, ModifierKeys & Keys.Modifiers);
 		}
 
 		private void glCanvas_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -396,7 +396,7 @@ namespace Stareater.GUI
 		private void glCanvas_MouseMove(object sender, MouseEventArgs e)
 		{
 			if (this.currentRenderer != null)
-				this.currentRenderer.HandleMouseMove(e);
+				this.currentRenderer.HandleMouseMove(e, ModifierKeys & Keys.Modifiers);
 		}
 		
 		private void glCanvas_MouseScroll(object sender, MouseEventArgs e)

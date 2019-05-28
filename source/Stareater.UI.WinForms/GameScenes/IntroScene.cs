@@ -9,6 +9,7 @@ using Stareater.GraphicsEngine.Animators;
 using Stareater.Localization;
 using Stareater.GraphicsEngine.GuiElements;
 using Stareater.GuiUtils;
+using System.Windows.Forms;
 
 namespace Stareater.GameScenes
 {
@@ -37,7 +38,7 @@ namespace Stareater.GameScenes
 		private const float Layers = 8.0f;
 
 		protected override float guiLayerThickness => 1 / Layers;
-		private GuiText cancelText = null;
+		private readonly GuiText cancelText;
 
 		private const float StarColorZ = 5 / Layers;
 		private const float StarSaturationZ = 4 / Layers;
@@ -49,8 +50,8 @@ namespace Stareater.GameScenes
 		private IEnumerable<SceneObject> paddingStarsSprite = null;
 		private SceneObject stareaterOutlineSprite = null;
 		private SceneObject stareaterTitleSprite = null;
-		private Action timeoutCallback;
-		private OneShotEvent animationFinished = new OneShotEvent();
+		private readonly Action timeoutCallback;
+		private readonly OneShotEvent animationFinished = new OneShotEvent();
 
 		public IntroScene(Action timeoutCallback)
 		{
@@ -213,7 +214,7 @@ namespace Stareater.GameScenes
 				this.animationFinished.AllowEnter();
 		}
 
-		protected override void onMouseClick(Vector2 mousePoint)
+		protected override void onMouseClick(Vector2 mousePoint, Keys modiferKeys)
 		{
 			this.animationFinished.AllowEnter();
 		}

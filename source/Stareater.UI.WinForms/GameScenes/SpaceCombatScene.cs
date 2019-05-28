@@ -93,7 +93,7 @@ namespace Stareater.GameScenes
 		#endregion
 
 		#region Mouse events
-		protected override void onMouseClick(Vector2 mousePoint)
+		protected override void onMouseClick(Vector2 mousePoint, Keys modiferKeys)
 		{
 			if (panAbsPath > PanClickTolerance) //TODO(v0.8) maybe make AScene differentiate between click and drag
 				return;
@@ -115,7 +115,7 @@ namespace Stareater.GameScenes
 			this.ResetLists();
 		}
 
-		protected override void onMouseMove(Vector4 mouseViewPosition)
+		protected override void onMouseMove(Vector4 mouseViewPosition, Keys modiferKeys)
 		{
 			this.lastMousePosition = mouseViewPosition;
 			this.panAbsPath = 0;

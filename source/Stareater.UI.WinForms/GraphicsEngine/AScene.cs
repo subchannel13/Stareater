@@ -122,7 +122,7 @@ namespace Stareater.GraphicsEngine
 				this.mousePressed[e.Button] = handler;
 		}
 
-		public void HandleMouseUp(MouseEventArgs e)
+		public void HandleMouseUp(MouseEventArgs e, Keys modiferKeys)
 		{
 			if (!this.mousePressed.ContainsKey(e.Button))
 				this.mousePressed[e.Button] = this.normalGuiLayer.Root;
@@ -132,18 +132,18 @@ namespace Stareater.GraphicsEngine
 
 			if (handler != null)
 				if (this.mousePressed[e.Button] == handler)
-					handler.OnMouseUp(); //TODO(v0.8) differentiate between left and right click
+					handler.OnMouseUp(modiferKeys); //TODO(v0.8) differentiate between left and right click
 				else
 					handler.OnMouseDownCanceled(); //TODO(v0.8) differentiate between left and right click
 			else
 			{
-				this.onMouseClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy);
+				this.onMouseClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy, modiferKeys);
 			}
 
 			this.mousePressed[e.Button] = null;
 		}
 
-		public void HandleMouseMove(MouseEventArgs e)
+		public void HandleMouseMove(MouseEventArgs e, Keys modiferKeys)
 		{
 			if (this.mousePressed.Values.Any(x => x != null))
 			{
@@ -155,10 +155,10 @@ namespace Stareater.GraphicsEngine
 			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault();
 
 			if (handler != null && handler != this.normalGuiLayer.Root)
-				handler.OnMouseMove(mouseGuiPoint);
+				handler.OnMouseMove(mouseGuiPoint, modiferKeys);
 			else
 			{
-				this.onMouseMove(this.mouseToView(e.X, e.Y));
+				this.onMouseMove(this.mouseToView(e.X, e.Y), modiferKeys);
 				handler = this.normalGuiLayer.Root;
 			}
 
@@ -202,10 +202,10 @@ namespace Stareater.GraphicsEngine
 		protected virtual void onMouseDoubleClick(Vector2 mousePoint)
 		{ }
 
-		protected virtual void onMouseClick(Vector2 mousePoint)
+		protected virtual void onMouseClick(Vector2 mousePoint, Keys modiferKeys)
 		{ }
 
-		protected virtual void onMouseMove(Vector4 mouseViewPosition)
+		protected virtual void onMouseMove(Vector4 mouseViewPosition, Keys modiferKeys)
 		{ }
 
 		protected virtual void onMouseLeave()

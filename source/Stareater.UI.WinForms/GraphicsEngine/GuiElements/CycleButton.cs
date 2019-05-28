@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
@@ -78,7 +79,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return true;
 		}
 
-		public override void OnMouseUp()
+		public override void OnMouseUp(Keys modiferKeys)
 		{
 			this.isPressed = false;
 			if (this.mItems.Count == 0)
@@ -94,7 +95,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.apply(ref this.isPressed, false);
 		}
 
-		public override void OnMouseMove(Vector2 mousePosition)
+		public override void OnMouseMove(Vector2 mousePosition, Keys modiferKeys)
 		{
 			this.apply(ref this.isHovered, true);
 		}
