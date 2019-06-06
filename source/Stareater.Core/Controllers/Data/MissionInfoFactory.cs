@@ -32,6 +32,7 @@ namespace Stareater.Controllers.Data
 
 		public void Visit(MoveMission mission)
 		{
+			//TODO(v0.8) hide waypoints for foreing fleets
 			waypoints.Add(new WaypointInfo(mission.Destination, mission.UsedWormhole));
 		}
 

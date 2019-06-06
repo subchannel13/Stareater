@@ -6,6 +6,10 @@ Although this is a C# project, builds can be run with Mono in both Linux and Mac
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/IvanKravarscan/5)
 
+![Stareater map setup](/graphics/screenshots/map_setup.png)
+![Stareater galaxy map screen](/graphics/screenshots/send_ship.png)
+![Stareater space combat](/graphics/screenshots/combat.png)
+
 # State of the project
 
 This project is in pre-alpha state (not feature complete) but it is nearing feature completeness. Technically the game can be played already, baring missing content. What is implemented:
@@ -15,7 +19,8 @@ This project is in pre-alpha state (not feature complete) but it is nearing feat
 * Star system management
 * Research and development
 * Ship design
-* Victory condition (ending a game)
+* Victory and defeat conditions
+* Moderately balanced map generator
 * Basic space combat
 * Basic diplomacy (war and peace)
 * Barebones AI
@@ -28,7 +33,6 @@ Missing features:
 * Advanced space combat
 * Advanced diplomacy
 * Proper AI
-* Planet quality in map generator
 * Higher tier technologies
 
 # How to build
@@ -67,3 +71,4 @@ Following code is licenced under LGPL:
 * `{Stareater}/source/Zvjezdojedac/` (v0.4 game code)
 * `{Stareater}/documentation/` (GUI mockups)
 * `{Stareater}/tools/` (development helper tools)
+
