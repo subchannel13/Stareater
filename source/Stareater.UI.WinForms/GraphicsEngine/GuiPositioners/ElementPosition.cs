@@ -66,12 +66,12 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			return new OutsidePosition(this, positioner);
 		}
 
-		public OutsidePosition WrapContent()
+		public WrapPosition WrapContent()
 		{
 			var positioner = new WrapContentPositioner();
 			this.positioners.Add(positioner);
 
-			return new OutsidePosition(this, positioner);
+			return new WrapPosition(this, positioner);
 		}
 
 		public OutsidePosition RelativeTo(AGuiElement anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis)
@@ -230,20 +230,20 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			}
 		}
 
-		private class WrapContentPositioner : IOutsidePositioner
+		private class WrapContentPositioner : IWrapPositioner
 		{
-			private float marginX;
-			private float marginY;
+			private float paddingX;
+			private float paddingY;
 
-			public void Margins(float marginX, float marginY)
+			public void Padding(float paddingX, float paddingY)
 			{
-				this.marginX = marginX;
-				this.marginY = marginY;
+				this.paddingX = paddingX;
+				this.paddingY = paddingY;
 			}
 
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
-				element.Size = element.contentSize() + new Vector2(this.marginX, this.marginY);
+				element.Size = element.contentSize() + new Vector2(this.paddingX, this.paddingY);
 			}
 
 			public IEnumerable<AGuiElement> Dependencies

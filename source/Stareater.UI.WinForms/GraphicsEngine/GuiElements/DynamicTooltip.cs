@@ -25,7 +25,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				TextSize = 12,
 				MasksMouseClick = false
 			};
-			text.Position.WrapContent().WithMargins(10, 5).ParentRelative(0, 0);
+			text.Position.WrapContent().WithPadding(10, 5).ParentRelative(0, 0);
 
 			var panel = new GuiPanel()
 			{

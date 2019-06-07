@@ -163,7 +163,9 @@
     <Compile Include="GraphicsEngine\GuiLayer.cs" />
     <Compile Include="GraphicsEngine\GuiPositioners\IOutsidePositioner.cs" />
     <Compile Include="GraphicsEngine\GuiPositioners\IPositioner.cs" />
+    <Compile Include="GraphicsEngine\GuiPositioners\IWrapPositioner.cs" />
     <Compile Include="GraphicsEngine\GuiPositioners\OutsidePosition.cs" />
+    <Compile Include="GraphicsEngine\GuiPositioners\WrapPosition.cs" />
     <Compile Include="GraphicsEngine\IAnimator.cs" />
     <Compile Include="GraphicsEngine\IDrawable.cs" />
     <Compile Include="GraphicsEngine\IShaderData.cs" />
