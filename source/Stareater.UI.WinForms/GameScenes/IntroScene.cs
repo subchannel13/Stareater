@@ -66,7 +66,7 @@ namespace Stareater.GameScenes
 					new TweenAlpha(textPolygons, 0, 1, 0.5)
 				)
 			};
-			this.cancelText.Position.WrapContent().ParentRelative(-1, -1, 5, 5);
+			this.cancelText.Position.WrapContent().Then.ParentRelative(-1, -1).WithMargins(5, 5);
 
 			this.AddElement(this.cancelText);
 		}

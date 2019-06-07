@@ -88,12 +88,12 @@ namespace Stareater.GameScenes
 			this.galaxyViewListener = galaxyViewListener;
 
 			this.fuelInfo = new GuiText { TextColor = Color.Yellow, TextSize = 30 };
-			this.fuelInfo.Position.WrapContent().ParentRelative(-1, 1, 10, 5);
+			this.fuelInfo.Position.WrapContent().Then.ParentRelative(-1, 1).WithMargins(10, 5);
 			this.fuelInfo.Tooltip = new SimpleTooltip("FormMain", "FuelTooltip");
 			this.AddElement(this.fuelInfo);
 
 			this.turnCounter = new GuiText { TextColor = Color.LightGray, TextSize = 30 };
-			this.turnCounter.Position.WrapContent().ParentRelative(1, 1, 10, 5);
+			this.turnCounter.Position.WrapContent().Then.ParentRelative(1, 1).WithMargins(10, 5);
 			this.AddElement(this.turnCounter);
 
 			var turnButton = new GuiButton
@@ -102,7 +102,7 @@ namespace Stareater.GameScenes
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.EndTurnNormal, 0),
 				ClickCallback = this.galaxyViewListener.TurnEnded,
 			};
-			turnButton.Position.FixedSize(80, 80).ParentRelative(1, -1, 10, 10);
+			turnButton.Position.FixedSize(80, 80).ParentRelative(1, -1).WithMargins(10, 10);
 			turnButton.Tooltip = new SimpleTooltip("FormMain", "EndTurn");
 			this.AddElement(turnButton);
 
@@ -114,12 +114,12 @@ namespace Stareater.GameScenes
 				ForgroundImage = new BackgroundTexture(GalaxyTextures.Get.Radar, 0),
 				ToggleCallback = this.toggleRadar,
 			};
-			radarToggle.Position.FixedSize(20, 20).RelativeTo(turnButton, -1, 1, 1, 1, 15, 0);
+			radarToggle.Position.FixedSize(20, 20).RelativeTo(turnButton, -1, 1, 1, 1).WithMargins(15, 0);
 			radarToggle.Tooltip = new SimpleTooltip("FormMain", "RadarSwitchToolip");
 			this.AddElement(radarToggle);
 
 			this.starInfo = new ConstructionSiteView();
-			this.starInfo.Position.ParentRelative(0, -1, 0, 0);
+			this.starInfo.Position.ParentRelative(0, -1).WithMargins(0, 0);
 			this.AddElement(this.starInfo);
 		}
 

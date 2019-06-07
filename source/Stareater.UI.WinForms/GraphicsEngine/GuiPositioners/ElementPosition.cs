@@ -1,10 +1,11 @@
 ﻿using OpenTK;
 using Stareater.GLData;
+using Stareater.GraphicsEngine.GuiElements;
 using Stareater.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace Stareater.GraphicsEngine.GuiElements
+namespace Stareater.GraphicsEngine.GuiPositioners
 {
 	class ElementPosition
 	{
@@ -20,7 +21,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.contentSize = contentSize;
 			this.ClipArea = new ClipWindow();
 		}
-
+		
 		public void Recalculate(ElementPosition parentPosition)
 		{
 			foreach (var positioner in this.positioners)
@@ -57,32 +58,28 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return this;
 		}
 
-		public ElementPosition ParentRelative(float x, float y, float marginX, float marginY)
+		public OutsidePosition ParentRelative(float x, float y)
 		{
-			this.positioners.Add(new ParentRelativePositioner(x, y, marginX, marginY));
+			var positioner = new ParentRelativePositioner(x, y);
+			this.positioners.Add(positioner);
 
-			return this;
+			return new OutsidePosition(this, positioner);
 		}
 
-		public ElementPosition WrapContent()
+		public OutsidePosition WrapContent()
 		{
-			this.positioners.Add(new WrapContentPositioner(0, 0));
+			var positioner = new WrapContentPositioner();
+			this.positioners.Add(positioner);
 
-			return this;
+			return new OutsidePosition(this, positioner);
 		}
 
-		public ElementPosition WrapContent(float marginX, float marginY)
+		public OutsidePosition RelativeTo(AGuiElement anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis)
 		{
-			this.positioners.Add(new WrapContentPositioner(marginX, marginY));
+			var positioner = new RelativeToPositioner(anchor, xPortionAnchor, yPortionAnchor, xPortionThis, yPortionThis);
+			this.positioners.Add(positioner);
 
-			return this;
-		}
-
-		public ElementPosition RelativeTo(AGuiElement anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis, float marginX, float marginY)
-		{
-			this.positioners.Add(new RelativeToPositioner(anchor, xPortionAnchor, yPortionAnchor, xPortionThis, yPortionThis, marginX, marginY));
-
-			return this;
+			return new OutsidePosition(this, positioner);
 		}
 
 		public ElementPosition StretchRightTo(AGuiElement anchor, float xPortionAnchor, float marginX)
@@ -100,25 +97,23 @@ namespace Stareater.GraphicsEngine.GuiElements
 		}
 		#endregion
 
-		private interface IPositioner
-		{
-			void Recalculate(ElementPosition element, ElementPosition parentPosition);
-			IEnumerable<AGuiElement> Dependencies { get; }
-		}
-
-		private class ParentRelativePositioner : IPositioner
+		private class ParentRelativePositioner : IOutsidePositioner
 		{
 			private readonly float xPortion;
 			private readonly float yPortion;
-			private readonly float marginX;
-			private readonly float marginY;
+			private float marginX;
+			private float marginY;
 
-			public ParentRelativePositioner(float x, float y, float marginX, float marginY)
+			public ParentRelativePositioner(float x, float y)
+			{
+				this.xPortion = x;
+				this.yPortion = y;
+			}
+
+			public void Margins(float marginX, float marginY)
 			{
 				this.marginX = marginX;
 				this.marginY = marginY;
-				this.xPortion = x;
-				this.yPortion = y;
 			}
 
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
@@ -138,23 +133,27 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
-		private class RelativeToPositioner : IPositioner
+		private class RelativeToPositioner : IOutsidePositioner
 		{
 			private readonly AGuiElement anchor;
 			private readonly float xPortionAnchor;
 			private readonly float yPortionAnchor;
 			private readonly float xPortionThis;
 			private readonly float yPortionThis;
-			private readonly float marginX;
-			private readonly float marginY;
+			private float marginX;
+			private float marginY;
 
-			public RelativeToPositioner(AGuiElement anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis, float marginX, float marginY)
+			public RelativeToPositioner(AGuiElement anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis)
 			{
 				this.anchor = anchor;
 				this.xPortionAnchor = xPortionAnchor;
 				this.yPortionAnchor = yPortionAnchor;
 				this.xPortionThis = xPortionThis;
 				this.yPortionThis = yPortionThis;
+			}
+
+			public void Margins(float marginX, float marginY)
+			{
 				this.marginX = marginX;
 				this.marginY = marginY;
 			}
@@ -231,12 +230,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
-		private class WrapContentPositioner : IPositioner
+		private class WrapContentPositioner : IOutsidePositioner
 		{
-			private readonly float marginX;
-			private readonly float marginY;
+			private float marginX;
+			private float marginY;
 
-			public WrapContentPositioner(float marginX, float marginY)
+			public void Margins(float marginX, float marginY)
 			{
 				this.marginX = marginX;
 				this.marginY = marginY;

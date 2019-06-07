@@ -71,7 +71,7 @@ namespace Stareater.GameScenes
 			this.emptyPlanetView = emptyPlanetView;
 			
 			this.siteView = new ConstructionSiteView();
-			this.siteView.Position.ParentRelative(0, -1, 0, 0);
+			this.siteView.Position.ParentRelative(0, -1);
 			this.AddElement(this.siteView);
 		}
 		

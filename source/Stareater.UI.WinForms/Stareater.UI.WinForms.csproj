@@ -152,7 +152,7 @@
     <Compile Include="GraphicsEngine\GuiElements\BackgroundTexture.cs" />
     <Compile Include="GraphicsEngine\GuiElements\CycleButton.cs" />
     <Compile Include="GraphicsEngine\GuiElements\DynamicTooltip.cs" />
-    <Compile Include="GraphicsEngine\GuiElements\ElementPosition.cs" />
+    <Compile Include="GraphicsEngine\GuiPositioners\ElementPosition.cs" />
     <Compile Include="GraphicsEngine\GuiElements\GuiButton.cs" />
     <Compile Include="GraphicsEngine\GuiElements\GuiPanel.cs" />
     <Compile Include="GraphicsEngine\GuiElements\GuiSlider.cs" />
@@ -161,6 +161,9 @@
     <Compile Include="GraphicsEngine\GuiElements\SimpleTooltip.cs" />
     <Compile Include="GraphicsEngine\GuiElements\ToggleButton.cs" />
     <Compile Include="GraphicsEngine\GuiLayer.cs" />
+    <Compile Include="GraphicsEngine\GuiPositioners\IOutsidePositioner.cs" />
+    <Compile Include="GraphicsEngine\GuiPositioners\IPositioner.cs" />
+    <Compile Include="GraphicsEngine\GuiPositioners\OutsidePosition.cs" />
     <Compile Include="GraphicsEngine\IAnimator.cs" />
     <Compile Include="GraphicsEngine\IDrawable.cs" />
     <Compile Include="GraphicsEngine\IShaderData.cs" />
