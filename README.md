@@ -6,9 +6,10 @@ Although this is a C# project, builds can be run with Mono in both Linux and Mac
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/IvanKravarscan/5)
 
-![Stareater map setup](/graphics/screenshots/map_setup.png)
-![Stareater galaxy map screen](/graphics/screenshots/send_ship.png)
-![Stareater space combat](/graphics/screenshots/combat.png)
+# Screenshots
+[<img src="./graphics/screenshots/map_setup.png" alt="Stareater map setup" width="25%" height="25%">](/graphics/screenshots/map_setup.png)
+[<img src="./graphics/screenshots/send_ship.png" alt="Stareater galaxy map screen" width="25%" height="25%">](/graphics/screenshots/send_ship.png)
+[<img src="./graphics/screenshots/combat.png" alt="Stareater space combat" width="25%" height="25%">](/graphics/screenshots/combat.png)
 
 # State of the project
 
