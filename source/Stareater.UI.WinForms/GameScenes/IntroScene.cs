@@ -39,6 +39,7 @@ namespace Stareater.GameScenes
 
 		protected override float guiLayerThickness => 1 / Layers;
 		private readonly GuiText cancelText;
+		private readonly GuiPanel menuPanel;
 
 		private const float StarColorZ = 5 / Layers;
 		private const float StarSaturationZ = 4 / Layers;
@@ -50,12 +51,10 @@ namespace Stareater.GameScenes
 		private IEnumerable<SceneObject> paddingStarsSprite = null;
 		private SceneObject stareaterOutlineSprite = null;
 		private SceneObject stareaterTitleSprite = null;
-		private readonly Action timeoutCallback;
 		private readonly OneShotEvent animationFinished = new OneShotEvent();
 
-		public IntroScene(Action timeoutCallback)
+		public IntroScene(Action newGameCallback, Action loadGameCallback, Action settingsCallback, Action quitCallback)
 		{
-			this.timeoutCallback = timeoutCallback;
 			this.cancelText = new GuiText()
 			{
 				Text = LocalizationManifest.Get.CurrentLanguage["Intro"]["cancelTip"].Text(),
@@ -69,6 +68,62 @@ namespace Stareater.GameScenes
 			this.cancelText.Position.WrapContent().Then.ParentRelative(-1, -1).WithMargins(5, 5);
 
 			this.AddElement(this.cancelText);
+
+			this.menuPanel = new GuiPanel();
+			this.menuPanel.Position.WrapContent().Then.Offset(150, 0);
+
+			var context = LocalizationManifest.Get.CurrentLanguage["FormMainMenu"];
+			var newGameButton = new GuiButton
+			{
+				ClickCallback = newGameCallback,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				Padding = 8,
+				Text = context["NewGame"].Text(),
+				TextColor = Color.White,
+				TextSize = 24
+			};
+			newGameButton.Position.WrapContent().Then.ParentRelative(0, 1);
+			this.menuPanel.AddChild(newGameButton);
+
+			var loadButton = new GuiButton
+			{
+				ClickCallback = loadGameCallback,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				Padding = 8,
+				Text = context["Save"].Text(),
+				TextColor = Color.White,
+				TextSize = 24
+			};
+			loadButton.Position.WrapContent().Then.RelativeTo(newGameButton, 0, -1, 0, 1).WithMargins(0, 25);
+			this.menuPanel.AddChild(loadButton);
+
+			var settingsButton = new GuiButton
+			{
+				ClickCallback = settingsCallback,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				Padding = 8,
+				Text = context["Settings"].Text(),
+				TextColor = Color.White,
+				TextSize = 24
+			};
+			settingsButton.Position.WrapContent().Then.RelativeTo(loadButton, 0, -1, 0, 1).WithMargins(0, 25);
+			this.menuPanel.AddChild(settingsButton);
+
+			var quitButton = new GuiButton
+			{
+				ClickCallback = quitCallback,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				Padding = 8,
+				Text = context["Quit"].Text(),
+				TextColor = Color.White,
+				TextSize = 24
+			};
+			quitButton.Position.WrapContent().Then.RelativeTo(settingsButton, 0, -1, 0, 1).WithMargins(0, 25);
+			this.menuPanel.AddChild(quitButton);
 		}
 
 		protected override void frameUpdate(double deltaTime)
@@ -85,61 +140,7 @@ namespace Stareater.GameScenes
 			foreach (var sceneObject in animatedObjects)
 				sceneObject.Animator.FastForward();
 			this.RemoveElement(this.cancelText);
-			this.timeoutCallback();
-
-			var panel = new GuiPanel();
-			panel.Position.WrapContent().Then.Offset(50, 0);
-
-			var context = LocalizationManifest.Get.CurrentLanguage["FormMainMenu"];
-			var newGameButton = new GuiButton
-			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
-				Padding = 8,
-				Text = context["NewGame"].Text(),
-				TextColor = Color.White,
-				TextSize = 24
-			};
-			newGameButton.Position.WrapContent().Then.ParentRelative(0, 1);
-			panel.AddChild(newGameButton);
-
-			var loadButton = new GuiButton
-			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
-				Padding = 8,
-				Text = context["Save"].Text(),
-				TextColor = Color.White,
-				TextSize = 24
-			};
-			loadButton.Position.WrapContent().Then.RelativeTo(newGameButton, 0, -1, 0, 1).WithMargins(0, 8);
-			panel.AddChild(loadButton);
-
-			var settingsButton = new GuiButton
-			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
-				Padding = 8,
-				Text = context["Settings"].Text(),
-				TextColor = Color.White,
-				TextSize = 24
-			};
-			settingsButton.Position.WrapContent().Then.RelativeTo(loadButton, 0, -1, 0, 1).WithMargins(0, 8);
-			panel.AddChild(settingsButton);
-
-			var quitButton = new GuiButton
-			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
-				Padding = 8,
-				Text = context["Quit"].Text(),
-				TextColor = Color.White,
-				TextSize = 24
-			};
-			quitButton.Position.WrapContent().Then.RelativeTo(settingsButton, 0, -1, 0, 1).WithMargins(0, 8);
-			panel.AddChild(quitButton);
-
-			this.AddElement(panel);
+			this.AddElement(this.menuPanel);
 		}
 
 		protected override Matrix4 calculatePerspective()

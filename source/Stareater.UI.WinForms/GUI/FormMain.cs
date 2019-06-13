@@ -78,7 +78,12 @@ namespace Stareater.GUI
 			}
 			
 			applySettings();
-			this.nextRenderer = new IntroScene(() => postDelayedEvent(showMainMenu));
+			this.nextRenderer = new IntroScene(
+				() => postDelayedEvent(showNewGame),
+				() => postDelayedEvent(showSaveGame),
+				() => postDelayedEvent(showSettings),
+				() => Close()
+			);
 		}
 
 		private void applySettings()
@@ -217,8 +222,6 @@ namespace Stareater.GUI
 					this.initPlayers();
 					this.restartRenderers(); //TODO(v0.8) can cause race condition where no stellarises has been initialized yet
 				}
-				else
-					postDelayedEvent(showMainMenu);
 			}
 		}
 
@@ -230,10 +233,9 @@ namespace Stareater.GUI
 		
 		private void showSaveGame()
 		{
-			using(var form = new FormSaveLoad(gameController))
-				if (form.ShowDialog() != DialogResult.OK)
-					postDelayedEvent(showMainMenu);
-				else if (form.Result == MainMenuResult.LoadGame) {
+			using (var form = new FormSaveLoad(gameController))
+				if (form.ShowDialog() == DialogResult.OK && form.Result == MainMenuResult.LoadGame)
+				{
 					this.gameController.Stop();
 					var saveController = new SavesController(gameController, SettingsWinforms.Get.FileStorageRootPath);
 					saveController.Load(form.SelectedGameData, LoadingMethods.GameDataSources());
@@ -248,7 +250,6 @@ namespace Stareater.GUI
 			using (var form = new FormSettings(GL.GetString(StringName.Renderer)))
 				if (form.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
 					applySettings();
-			postDelayedEvent(showMainMenu);
 		}
 		#endregion
 
