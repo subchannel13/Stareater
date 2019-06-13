@@ -86,6 +86,60 @@ namespace Stareater.GameScenes
 				sceneObject.Animator.FastForward();
 			this.RemoveElement(this.cancelText);
 			this.timeoutCallback();
+
+			var panel = new GuiPanel();
+			panel.Position.WrapContent().Then.Offset(50, 0);
+
+			var context = LocalizationManifest.Get.CurrentLanguage["FormMainMenu"];
+			var newGameButton = new GuiButton
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				Padding = 8,
+				Text = context["NewGame"].Text(),
+				TextColor = Color.White,
+				TextSize = 24
+			};
+			newGameButton.Position.WrapContent().Then.ParentRelative(0, 1);
+			panel.AddChild(newGameButton);
+
+			var loadButton = new GuiButton
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				Padding = 8,
+				Text = context["Save"].Text(),
+				TextColor = Color.White,
+				TextSize = 24
+			};
+			loadButton.Position.WrapContent().Then.RelativeTo(newGameButton, 0, -1, 0, 1).WithMargins(0, 8);
+			panel.AddChild(loadButton);
+
+			var settingsButton = new GuiButton
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				Padding = 8,
+				Text = context["Settings"].Text(),
+				TextColor = Color.White,
+				TextSize = 24
+			};
+			settingsButton.Position.WrapContent().Then.RelativeTo(loadButton, 0, -1, 0, 1).WithMargins(0, 8);
+			panel.AddChild(settingsButton);
+
+			var quitButton = new GuiButton
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				Padding = 8,
+				Text = context["Quit"].Text(),
+				TextColor = Color.White,
+				TextSize = 24
+			};
+			quitButton.Position.WrapContent().Then.RelativeTo(settingsButton, 0, -1, 0, 1).WithMargins(0, 8);
+			panel.AddChild(quitButton);
+
+			this.AddElement(panel);
 		}
 
 		protected override Matrix4 calculatePerspective()

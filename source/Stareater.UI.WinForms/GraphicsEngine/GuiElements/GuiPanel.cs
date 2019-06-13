@@ -41,12 +41,15 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		protected override SceneObject makeSceneObject()
 		{
-			return new SceneObjectBuilder().
-				Clip(this.Position.ClipArea).
-				StartSprite(this.Z0, this.mBackground.Sprite.Id, Color.White).
-				Translate(this.Position.Center).
-				AddVertices(SpriteHelpers.GuiBackground(this.mBackground, this.Position.Size.X, this.Position.Size.Y)).
-				Build();
+			if (this.mBackground != null)
+				return new SceneObjectBuilder().
+					Clip(this.Position.ClipArea).
+					StartSprite(this.Z0, this.mBackground.Sprite.Id, Color.White).
+					Translate(this.Position.Center).
+					AddVertices(SpriteHelpers.GuiBackground(this.mBackground, this.Position.Size.X, this.Position.Size.Y)).
+					Build();
+			else
+				return null;
 		}
 
 		protected override Vector2 measureContent()
@@ -55,9 +58,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 				child.RecalculatePosition(false);
 
 			return new Vector2(
-				this.children.Max(x => x.Position.Center.X + x.Position.Size.X) - this.children.Min(x => x.Position.Center.X - x.Position.Size.X),
-				this.children.Max(x => x.Position.Center.Y + x.Position.Size.Y) - this.children.Min(x => x.Position.Center.Y - x.Position.Size.Y)
-			) / 2;
+				this.children.Max(x => x.Position.Center.X + x.Position.Size.X / 2) - this.children.Min(x => x.Position.Center.X - x.Position.Size.X / 2),
+				this.children.Max(x => x.Position.Center.Y + x.Position.Size.Y / 2) - this.children.Min(x => x.Position.Center.Y - x.Position.Size.Y / 2)
+			);
 		}
 	}
 }

@@ -120,6 +120,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 				return;
 			}
 
+			if (this.Position.ClipArea.IsEmpty)
+				return;
+
 			var sceneObject = this.makeSceneObject();
 
 			if (sceneObject != null)

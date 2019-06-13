@@ -9,7 +9,13 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 {
 	class ElementPosition
 	{
+		/// <summary>
+		/// GUI element center.
+		/// </summary>
 		public Vector2 Center { get; private set; }
+		/// <summary>
+		/// Full GUI element size (not half-width and half-height).
+		/// </summary>
 		public Vector2 Size { get; private set; }
 		public ClipWindow ClipArea { get; private set; }
 
@@ -58,6 +64,13 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			return this;
 		}
 
+		public ElementPosition Offset(float x, float y)
+		{
+			this.positioners.Add(new OffsetPositiner(x, y));
+
+			return this;
+		}
+
 		public OutsidePosition ParentRelative(float x, float y)
 		{
 			var positioner = new ParentRelativePositioner(x, y);
@@ -96,6 +109,26 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			return this;
 		}
 		#endregion
+
+		private class OffsetPositiner : IPositioner
+		{
+			private Vector2 offset;
+
+			public OffsetPositiner(float x, float y)
+			{
+				this.offset = new Vector2(x, y);
+			}
+
+			public IEnumerable<AGuiElement> Dependencies
+			{
+				get { yield break; }
+			}
+
+			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
+			{
+				element.Center += this.offset;
+			}
+		}
 
 		private class ParentRelativePositioner : IOutsidePositioner
 		{

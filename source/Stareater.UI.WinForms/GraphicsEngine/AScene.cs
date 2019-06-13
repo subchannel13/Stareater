@@ -384,7 +384,6 @@ namespace Stareater.GraphicsEngine
 				return;
 
 			this.AddElement(element, element.Parent);
-			element.RecalculatePosition(true);
 		}
 
 		public void ResetTooltipContents()
