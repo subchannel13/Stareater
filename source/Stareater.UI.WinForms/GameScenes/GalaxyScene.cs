@@ -83,13 +83,29 @@ namespace Stareater.GameScenes
 		private readonly Dictionary<int, Vector2> lastOffset = new Dictionary<int, Vector2>(); //TODO(v0.8) remember player's zoom level too, unify with last selected object
 		private PlayerController currentPlayer = null;
 
-		public GalaxyScene(IGalaxyViewListener galaxyViewListener)
+		public GalaxyScene(IGalaxyViewListener galaxyViewListener, Action mainMenuCallback)
 		{ 
 			this.galaxyViewListener = galaxyViewListener;
 
-			this.fuelInfo = new GuiText { TextColor = Color.Yellow, TextSize = 30 };
-			this.fuelInfo.Position.WrapContent().Then.ParentRelative(-1, 1).WithMargins(10, 5);
-			this.fuelInfo.Tooltip = new SimpleTooltip("FormMain", "FuelTooltip");
+			var mainMenuButton = new GuiButton
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				ForgroundImage = GalaxyTextures.Get.MainMenu,
+				Padding = 4,
+				ClickCallback = mainMenuCallback,
+				Tooltip = new SimpleTooltip("GalaxyScene", "MainMenuTooltip")
+			};
+			mainMenuButton.Position.FixedSize(32, 32).ParentRelative(-1, 1).WithMargins(5, 5);
+			this.AddElement(mainMenuButton);
+
+			this.fuelInfo = new GuiText
+			{
+				TextColor = Color.Yellow,
+				TextSize = 30,
+				Tooltip = new SimpleTooltip("GalaxyScene", "FuelTooltip")
+			};
+			this.fuelInfo.Position.WrapContent().Then.RelativeTo(mainMenuButton, 1, 0, -1, 0).WithMargins(20, 5);
 			this.AddElement(this.fuelInfo);
 
 			this.turnCounter = new GuiText { TextColor = Color.LightGray, TextSize = 30 };
@@ -101,9 +117,9 @@ namespace Stareater.GameScenes
 				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.EndTurnHover, 0),
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.EndTurnNormal, 0),
 				ClickCallback = this.galaxyViewListener.TurnEnded,
+				Tooltip = new SimpleTooltip("GalaxyScene", "EndTurn")
 			};
 			turnButton.Position.FixedSize(80, 80).ParentRelative(1, -1).WithMargins(10, 10);
-			turnButton.Tooltip = new SimpleTooltip("FormMain", "EndTurn");
 			this.AddElement(turnButton);
 
 			var radarToggle = new ToggleButton(SettingsWinforms.Get.ShowScanRange)
@@ -113,9 +129,9 @@ namespace Stareater.GameScenes
 				BackgroundToggled = new BackgroundTexture(GalaxyTextures.Get.ToggleToggled, 0),
 				ForgroundImage = new BackgroundTexture(GalaxyTextures.Get.Radar, 0),
 				ToggleCallback = this.toggleRadar,
+				Tooltip = new SimpleTooltip("GalaxyScene", "RadarSwitchToolip")
 			};
 			radarToggle.Position.FixedSize(20, 20).RelativeTo(turnButton, -1, 1, 1, 1).WithMargins(15, 0);
-			radarToggle.Tooltip = new SimpleTooltip("FormMain", "RadarSwitchToolip");
 			this.AddElement(radarToggle);
 
 			this.starInfo = new ConstructionSiteView();

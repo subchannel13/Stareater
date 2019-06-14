@@ -30,7 +30,6 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
 			this.glCanvas = new OpenTK.GLControl(OpenTK.Graphics.GraphicsMode.Default, 3, 2, OpenTK.Graphics.GraphicsContextFlags.Default);
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
-			this.mainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.designsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.developmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.researchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,7 +78,6 @@
 			// menuStrip
 			// 
 			this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mainMenuToolStripMenuItem,
             this.designsToolStripMenuItem,
             this.developmentToolStripMenuItem,
             this.researchToolStripMenuItem,
@@ -93,13 +91,6 @@
 			this.menuStrip.Size = new System.Drawing.Size(884, 24);
 			this.menuStrip.TabIndex = 2;
 			this.menuStrip.Text = "menuStrip1";
-			// 
-			// mainMenuToolStripMenuItem
-			// 
-			this.mainMenuToolStripMenuItem.Name = "mainMenuToolStripMenuItem";
-			this.mainMenuToolStripMenuItem.Size = new System.Drawing.Size(80, 20);
-			this.mainMenuToolStripMenuItem.Text = "Main menu";
-			this.mainMenuToolStripMenuItem.Click += new System.EventHandler(this.mainMenuToolStripMenuItem_Click);
 			// 
 			// designsToolStripMenuItem
 			// 
@@ -327,7 +318,6 @@
 		private System.Windows.Forms.ToolStripMenuItem designsToolStripMenuItem;
 		private System.Windows.Forms.Button returnButton;
 		private System.Windows.Forms.ToolStripMenuItem developmentToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem mainMenuToolStripMenuItem;
 		private System.Windows.Forms.MenuStrip menuStrip;
 
 		#endregion

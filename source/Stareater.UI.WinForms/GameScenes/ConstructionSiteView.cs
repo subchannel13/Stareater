@@ -82,10 +82,10 @@ namespace Stareater.GameScenes
 					this.resetView();
 					this.scene.ResetTooltipContents();
 				},
-				ItemImage = x => GalaxyTextures.Get.Sprite(x.Id + "Policy")
+				ItemImage = x => GalaxyTextures.Get.Sprite(x.Id + "Policy"),
+				Tooltip = new DynamicTooltip("FormMain", () => this.controller.Policy.Id + "PolicyTooltip")
 			};
 			this.policyToggle.Position.FixedSize(32, 32).RelativeTo(this.projectButton, 1, -1, -1, -1).WithMargins(8, 0);
-			this.policyToggle.Tooltip = new DynamicTooltip("FormMain", () => this.controller.Policy.Id + "PolicyTooltip");
 			this.AddChild(this.policyToggle);
 
 			this.policyName = new GuiText { TextColor = Color.Black, TextSize = 10 };
@@ -209,6 +209,7 @@ namespace Stareater.GameScenes
 			this.resetView();
 		}
 
+		//TODO(v0.8) use GalaxyScene context
 		private static Context context
 		{
 			get { return LocalizationManifest.Get.CurrentLanguage["FormMain"]; }

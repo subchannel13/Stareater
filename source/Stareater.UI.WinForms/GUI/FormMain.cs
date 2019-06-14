@@ -92,7 +92,6 @@ namespace Stareater.GUI
 
 			Context context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 			this.returnButton.Text = context["Return"].Text();
-			this.mainMenuToolStripMenuItem.Text = context["MainMenu"].Text();
 			this.developmentToolStripMenuItem.Text = context["DevelopmentMenu"].Text();
 			
 			this.glCanvas.VSync = SettingsWinforms.Get.VSync;
@@ -116,11 +115,6 @@ namespace Stareater.GUI
 				switchToGalaxyView();
 			else if (this.currentRenderer == bombardRenderer)
 				this.bombardmentController.Leave();
-		}
-		
-		private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			postDelayedEvent(showMainMenu);
 		}
 		
 		private void designsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -264,7 +258,7 @@ namespace Stareater.GUI
 			if (this.galaxyRenderer != null)
 				this.galaxyRenderer.Deactivate();
 			
-			this.galaxyRenderer = new GalaxyScene(this);
+			this.galaxyRenderer = new GalaxyScene(this, () => postDelayedEvent(showMainMenu));
 			this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
 			
 			this.bombardRenderer = new BombardmentScene();

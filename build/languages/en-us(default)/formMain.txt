@@ -1,11 +1,8 @@
 ﻿:FormMain
 
-EndTurn = End turn
 Return = Return
 GameOver = Game over
 Turn = Turn
-FuelTooltip = Fuel usage and supply
-RadarSwitchToolip = Show scan range
 
 NotBuilding §
 		No
@@ -60,7 +57,6 @@ FleetEta §
 	pluralDec    ? (eta < 10) ∧ (ceil(eta * 10) % 10 ≠ 1); =s
 	pluralPrefix ? (eta ≥ 10) ∧ ((eta < 20) ∨ (round(eta) % 10 ≠ 1)); =s
 	
-MainMenu = Main menu
 DevelopmentMenu = Development
 
 SelectQuantityTitle = Select quantity

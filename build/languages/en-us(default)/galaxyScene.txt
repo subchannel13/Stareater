@@ -6,4 +6,8 @@ Turn = Turn
 FuelInfo §
 		{=fuelLeft} / {=fuelAvailable}
 	\
+	
+MainMenuTooltip = Main menu
+FuelTooltip = Fuel usage and supply
+RadarSwitchToolip = Show scan range
 -

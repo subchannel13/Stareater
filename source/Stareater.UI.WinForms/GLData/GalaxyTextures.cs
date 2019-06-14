@@ -44,6 +44,7 @@ namespace Stareater.GLData
 		const string GasGiantTag = "gasGiant";
 		const string IntroStareaterOutlineTag = "introStareaterOutline";
 		const string IntroStareaterUnderlineTag = "introStareaterUnderline";
+		const string MainMenuTag = "mainMenu";
 		const string MoveArrowTag = "moveArrow";
 		const string PathLineTag = "wormholePath";
 		const string RockPlanetTag = "rockPlanet";
@@ -69,6 +70,7 @@ namespace Stareater.GLData
 		public TextureInfo GasGiant { get; private set;}
 		public TextureInfo IntroStareaterOutline { get; private set; }
 		public TextureInfo IntroStareaterUnderline { get; private set; }
+		public TextureInfo MainMenu { get; private set; }
 		public TextureInfo MoveToArrow { get; private set;}
 		public TextureInfo PanelBackground { get; private set; }
 		public TextureInfo PathLine { get; private set;}
@@ -106,6 +108,7 @@ namespace Stareater.GLData
 			this.GasGiant = this.spriteNames[GasGiantTag];
 			this.IntroStareaterOutline = this.spriteNames[IntroStareaterOutlineTag];
 			this.IntroStareaterUnderline = this.spriteNames[IntroStareaterUnderlineTag];
+			this.MainMenu = this.spriteNames[MainMenuTag];
 			this.MoveToArrow = this.spriteNames[MoveArrowTag];
 			this.PanelBackground = this.spriteNames["panelBackground"];
 			this.PathLine = this.spriteNames[PathLineTag];
