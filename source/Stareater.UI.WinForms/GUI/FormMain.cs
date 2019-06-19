@@ -14,7 +14,6 @@ using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GLData;
 using Stareater.GameScenes;
-using Stareater.GUI.Reports;
 using Stareater.GraphicsEngine;
 
 namespace Stareater.GUI
@@ -38,7 +37,6 @@ namespace Stareater.GUI
 		private FleetController fleetController = null;
 		private SpaceBattleController conflictController = null;
 		private BombardmentController bombardmentController = null;
-		private OpenReportVisitor reportOpener;
 		private int currentPlayerIndex = 0;
 		
 		public FormMain()
@@ -48,7 +46,6 @@ namespace Stareater.GUI
 			this.glCanvas.MouseWheel += glCanvas_MouseScroll;
 			this.gameController = new GameController();
 			this.timingLoop = new TimingLoop(this, onNextFrame);
-			this.reportOpener = new OpenReportVisitor(showDevelopment, showResearch);
 		}
 		
 		private void FormMain_Load(object sender, EventArgs e)
@@ -90,9 +87,8 @@ namespace Stareater.GUI
 		{
 			this.Font = SettingsWinforms.Get.FormFont;
 
-			Context context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 			this.returnButton.Text = context["Return"].Text();
-			this.developmentToolStripMenuItem.Text = context["DevelopmentMenu"].Text();
 			
 			this.glCanvas.VSync = SettingsWinforms.Get.VSync;
 			this.timingLoop.OnSettingsChange();
@@ -116,57 +112,6 @@ namespace Stareater.GUI
 			else if (this.currentRenderer == bombardRenderer)
 				this.bombardmentController.Leave();
 		}
-		
-		private void designsToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			using(var form = new FormShipDesignList(this.currentPlayer))
-				form.ShowDialog();
-		}
-		
-		private void developmentToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			postDelayedEvent(showDevelopment);
-		}
-		
-		private void researchToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (!this.currentPlayer.ResearchTopics().Any())
-				return;
-
-			using (var form = new FormResearch(this.currentPlayer))
-				form.ShowDialog();
-		}
-		
-		void diplomacyToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			using(var form = new FormRelations(this.currentPlayer))
-				form.ShowDialog();
-		}
-		
-		private void colonizationToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			using(var form = new FormColonization(this.currentPlayer))
-				form.ShowDialog();
-		}
-		
-		private void reportsToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			using(var form = new FormReports(this.currentPlayer.Reports))
-				if (form.ShowDialog() == DialogResult.OK)
-					form.Result.Accept(this.reportOpener);
-		}
-
-		private void stareaterToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			using (var form = new FormStareater(this.currentPlayer.Stareater))
-				form.ShowDialog();
-		}
-
-		private void libraryToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			using(var form = new FormLibrary(this.currentPlayer.Library))
-				form.ShowDialog();
-		}
 
 		#region Delayed Events
 		private void postDelayedEvent(Action eventAction)
@@ -174,12 +119,6 @@ namespace Stareater.GUI
 			this.BeginInvoke(new Action(eventAction));
 		}
 
-		private void showDevelopment()
-		{
-			using(var form = new FormDevelopment(this.currentPlayer))
-				form.ShowDialog();
-		}
-		
 		private void showMainMenu()
 		{
 			using (var form = new FormMainMenu(this.gameController))
@@ -219,12 +158,6 @@ namespace Stareater.GUI
 			}
 		}
 
-		private void showResearch()
-		{
-			using (var form = new FormResearch(this.currentPlayer))
-				form.ShowDialog();
-		}
-		
 		private void showSaveGame()
 		{
 			using (var form = new FormSaveLoad(gameController))
@@ -257,7 +190,7 @@ namespace Stareater.GUI
 		{
 			if (this.galaxyRenderer != null)
 				this.galaxyRenderer.Deactivate();
-			
+
 			this.galaxyRenderer = new GalaxyScene(this, () => postDelayedEvent(showMainMenu));
 			this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
 			
@@ -494,7 +427,6 @@ namespace Stareater.GUI
 			this.abilityList.Visible = false;
 			this.returnButton.Visible = false;
 			this.unitInfoPanel.Visible = false;
-			this.menuStrip.Visible = true;
 		}
 
 		public void OnNewTurn()
@@ -514,7 +446,6 @@ namespace Stareater.GUI
 				abilityList.Visible = false;
 				returnButton.Visible = false;
 				unitInfoPanel.Visible = false;
-				menuStrip.Visible = true;
 			}
 			
 			if (galaxyRenderer != null) galaxyRenderer.OnNewTurn();
@@ -545,7 +476,6 @@ namespace Stareater.GUI
 			fleetPanel.Visible = false;
 			returnButton.Visible = false;
 			unitInfoPanel.Visible = true;
-			menuStrip.Visible = false;
 		}
 		
 		private void initBombardGui(BombardmentController bombardController)
@@ -562,7 +492,6 @@ namespace Stareater.GUI
 			fleetPanel.Visible = false;
 			returnButton.Visible = true;
 			unitInfoPanel.Visible = false;
-			menuStrip.Visible = false;
 		}
 		#endregion
 		

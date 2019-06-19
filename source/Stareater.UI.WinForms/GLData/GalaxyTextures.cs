@@ -62,23 +62,31 @@ namespace Stareater.GLData
 		public TextureInfo Asteroids { get; private set;}
 		public TextureInfo BombButton { get; private set;}
 		public TextureInfo ButtonBackground { get; private set; }
+		public TextureInfo Colonization { get; private set; }
 		public TextureInfo ColonizationMark { get; private set;}
 		public TextureInfo ColonizationMarkColor { get; private set;}
+		public TextureInfo Design { get; private set; }
+		public TextureInfo Development { get; private set; }
+		public TextureInfo Diplomacy { get; private set; }
 		public TextureInfo EndTurnHover { get; private set; }
 		public TextureInfo EndTurnNormal { get; private set; }
 		public TextureInfo FleetIndicator { get; private set;}
 		public TextureInfo GasGiant { get; private set;}
 		public TextureInfo IntroStareaterOutline { get; private set; }
 		public TextureInfo IntroStareaterUnderline { get; private set; }
+		public TextureInfo Library { get; private set; }
 		public TextureInfo MainMenu { get; private set; }
 		public TextureInfo MoveToArrow { get; private set;}
 		public TextureInfo PanelBackground { get; private set; }
 		public TextureInfo PathLine { get; private set;}
 		public TextureInfo Radar { get; private set; }
+		public TextureInfo Reports { get; private set; }
+		public TextureInfo Research { get; private set; }
 		public TextureInfo RockPlanet { get; private set;}
 		public TextureInfo StarColor { get; private set;}
 		public TextureInfo StarGlow { get; private set;}
 		public TextureInfo SelectedStar { get; private set;}
+		public TextureInfo Stareater { get; private set; }
 		public TextureInfo SystemStar { get; private set;}
 		public TextureInfo ToggleHover { get; private set; }
 		public TextureInfo ToggleNormal { get; private set; }
@@ -100,21 +108,29 @@ namespace Stareater.GLData
 			this.Asteroids = this.spriteNames[AsteroidsTag];
 			this.BombButton = this.spriteNames[BombButtonTag];
 			this.ButtonBackground = this.spriteNames[ButtonBackgroundTag];
+			this.Colonization = this.spriteNames["colonization"];
 			this.ColonizationMark = this.spriteNames[ColonizationMarkTag];
 			this.ColonizationMarkColor = this.spriteNames[ColonizationMarkColorTag];
+			this.Design = this.spriteNames["design"];
+			this.Diplomacy = this.spriteNames["diplomacy"];
+			this.Development = this.spriteNames["development"];
 			this.EndTurnHover = this.spriteNames["endTurnHover"];
 			this.EndTurnNormal = this.spriteNames["endTurnNormal"];
 			this.FleetIndicator = this.spriteNames[FleetIndicatorTag];
 			this.GasGiant = this.spriteNames[GasGiantTag];
 			this.IntroStareaterOutline = this.spriteNames[IntroStareaterOutlineTag];
 			this.IntroStareaterUnderline = this.spriteNames[IntroStareaterUnderlineTag];
+			this.Library = this.spriteNames["library"];
 			this.MainMenu = this.spriteNames[MainMenuTag];
 			this.MoveToArrow = this.spriteNames[MoveArrowTag];
 			this.PanelBackground = this.spriteNames["panelBackground"];
 			this.PathLine = this.spriteNames[PathLineTag];
 			this.Radar = this.spriteNames["radar"];
+			this.Reports = this.spriteNames["reports"];
+			this.Research = this.spriteNames["research"];
 			this.RockPlanet = this.spriteNames[RockPlanetTag];
 			this.SelectedStar = this.spriteNames[SelectedStarTag];
+			this.Stareater = this.spriteNames["stareater"];
 			this.StarColor = this.spriteNames[StarColorTag];
 			this.StarGlow = this.spriteNames[StarGlowTag];
 			this.SystemStar = this.spriteNames[SystemStarTag];

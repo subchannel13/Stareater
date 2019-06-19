@@ -8,6 +8,14 @@ FuelInfo §
 	\
 	
 MainMenuTooltip = Main menu
+DesignTooltip = Ship designs
+DevelopmentTooltip = Technology development
+ResearchTooltip = Research
+DiplomacyTooltip = Diplomacy
+ColonizationTooltip = Colonization
+ReportsTooltip = Reports
+StareaterTooltip = Stareater control
+LibraryTooltip = Library
 FuelTooltip = Fuel usage and supply
 RadarSwitchToolip = Show scan range
 -

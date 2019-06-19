@@ -15,6 +15,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		private bool isPressed = false;
 		private bool isHovered = false;
+		private float paddingX = 0;
+		private float paddingY = 0;
 
 		public Action ClickCallback { get; set; }
 
@@ -78,13 +80,30 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
-		private float mPadding = 0;
 		public float Padding
 		{
-			get { return this.mPadding; }
 			set
 			{
-				this.apply(ref this.mPadding, value);
+				this.apply(ref this.paddingX, value);
+				this.apply(ref this.paddingY, value);
+			}
+		}
+
+		public float PaddingX
+		{
+			get { return this.paddingX; }
+			set
+			{
+				this.apply(ref this.paddingX, value);
+			}
+		}
+
+		public float PaddingY
+		{
+			get { return this.paddingY; }
+			set
+			{
+				this.apply(ref this.paddingY, value);
 			}
 		}
 
@@ -142,7 +161,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			if (this.mForgroundImage.HasValue)
 				soBuilder.
 					StartSimpleSprite(this.Z0 - this.ZRange / 2, this.mForgroundImage.Value, Color.White).
-					Scale(this.Position.Size - new Vector2(2 * this.mPadding, 2 * this.mPadding)).
+					Scale(this.Position.Size - new Vector2(2 * this.paddingX, 2 * this.paddingY)).
 					Translate(this.Position.Center);
 
 			return soBuilder.Build();
@@ -152,8 +171,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			//TODO(later) count lines
 			return new Vector2(
-				TextRenderUtil.Get.MeasureWidth(this.Text) * this.TextSize + 2 * this.mPadding,
-				(string.IsNullOrWhiteSpace(this.Text) ? 0 : this.TextSize) + 2 * this.mPadding
+				TextRenderUtil.Get.MeasureWidth(this.Text) * this.TextSize + 2 * this.paddingX,
+				(string.IsNullOrWhiteSpace(this.Text) ? 0 : this.TextSize) + 2 * this.paddingY
 			);
 		}
 	}

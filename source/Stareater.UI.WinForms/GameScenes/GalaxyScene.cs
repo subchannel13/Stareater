@@ -18,6 +18,8 @@ using Stareater.Controllers.Views;
 using Stareater.GLData.OrbitShader;
 using Stareater.AppData;
 using System.Windows.Forms;
+using Stareater.GUI;
+using Stareater.GUI.Reports;
 
 namespace Stareater.GameScenes
 {
@@ -77,6 +79,7 @@ namespace Stareater.GameScenes
 		private Vector2 mapBoundsMin;
 		private Vector2 mapBoundsMax;
 
+		private readonly OpenReportVisitor reportOpener;
 		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
 		private readonly Dictionary<int, Vector2D> lastSelectedStars = new Dictionary<int, Vector2D>();
 		private readonly Dictionary<int, FleetInfo> lastSelectedIdleFleets = new Dictionary<int, FleetInfo>();
@@ -86,6 +89,7 @@ namespace Stareater.GameScenes
 		public GalaxyScene(IGalaxyViewListener galaxyViewListener, Action mainMenuCallback)
 		{ 
 			this.galaxyViewListener = galaxyViewListener;
+			this.reportOpener = new OpenReportVisitor(showDevelopment, showResearch);
 
 			var mainMenuButton = new GuiButton
 			{
@@ -107,6 +111,110 @@ namespace Stareater.GameScenes
 			};
 			this.fuelInfo.Position.WrapContent().Then.RelativeTo(mainMenuButton, 1, 0, -1, 0).WithMargins(20, 5);
 			this.AddElement(this.fuelInfo);
+
+			var designButton = new GuiButton
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				ForgroundImage = GalaxyTextures.Get.Design,
+				PaddingX = 12,
+				PaddingY = 4,
+				ClickCallback = () => { using (var form = new FormShipDesignList(this.currentPlayer)) form.ShowDialog(); },
+				Tooltip = new SimpleTooltip("GalaxyScene", "DesignTooltip")
+			};
+			designButton.Position.FixedSize(48, 32).RelativeTo(fuelInfo, 1, 0, -1, 0).WithMargins(20, 5);
+			this.AddElement(designButton);
+
+			var developmentButton = new GuiButton
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				ForgroundImage = GalaxyTextures.Get.Development,
+				PaddingX = 12,
+				PaddingY = 4,
+				ClickCallback = this.showDevelopment,
+				Tooltip = new SimpleTooltip("GalaxyScene", "DevelopmentTooltip")
+			};
+			developmentButton.Position.FixedSize(48, 32).RelativeTo(designButton, 1, 0, -1, 0).WithMargins(5, 5);
+			this.AddElement(developmentButton);
+
+			var researchButton = new GuiButton
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				ForgroundImage = GalaxyTextures.Get.Research,
+				PaddingX = 12,
+				PaddingY = 4,
+				ClickCallback = this.showResearch,
+				Tooltip = new SimpleTooltip("GalaxyScene", "ResearchTooltip")
+			};
+			researchButton.Position.FixedSize(48, 32).RelativeTo(developmentButton, 1, 0, -1, 0).WithMargins(5, 5);
+			this.AddElement(researchButton);
+
+			var diplomacyButton = new GuiButton
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				ForgroundImage = GalaxyTextures.Get.Diplomacy,
+				PaddingX = 12,
+				PaddingY = 4,
+				ClickCallback = () => { using (var form = new FormRelations(this.currentPlayer)) form.ShowDialog(); },
+				Tooltip = new SimpleTooltip("GalaxyScene", "ResearchTooltip")
+			};
+			diplomacyButton.Position.FixedSize(48, 32).RelativeTo(researchButton, 1, 0, -1, 0).WithMargins(5, 5);
+			this.AddElement(diplomacyButton);
+
+			var colonizationButton = new GuiButton
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				ForgroundImage = GalaxyTextures.Get.Colonization,
+				PaddingX = 12,
+				PaddingY = 4,
+				ClickCallback = () => { using (var form = new FormColonization(this.currentPlayer)) form.ShowDialog(); },
+				Tooltip = new SimpleTooltip("GalaxyScene", "ColonizationTooltip")
+			};
+			colonizationButton.Position.FixedSize(48, 32).RelativeTo(diplomacyButton, 1, 0, -1, 0).WithMargins(5, 5);
+			this.AddElement(colonizationButton);
+
+			var reportsButton = new GuiButton
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				ForgroundImage = GalaxyTextures.Get.Reports,
+				PaddingX = 12,
+				PaddingY = 4,
+				ClickCallback = () => { using (var form = new FormReports(this.currentPlayer.Reports)) if (form.ShowDialog() == DialogResult.OK) form.Result.Accept(this.reportOpener); },
+				Tooltip = new SimpleTooltip("GalaxyScene", "ReportsTooltip")
+			};
+			reportsButton.Position.FixedSize(48, 32).RelativeTo(colonizationButton, 1, 0, -1, 0).WithMargins(5, 5);
+			this.AddElement(reportsButton);
+
+			var stareaterButton = new GuiButton
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				ForgroundImage = GalaxyTextures.Get.Stareater,
+				PaddingX = 12,
+				PaddingY = 4,
+				ClickCallback = () => { using (var form = new FormStareater(this.currentPlayer.Stareater)) form.ShowDialog(); },
+				Tooltip = new SimpleTooltip("GalaxyScene", "StareaterTooltip")
+			};
+			stareaterButton.Position.FixedSize(48, 32).RelativeTo(reportsButton, 1, 0, -1, 0).WithMargins(5, 5);
+			this.AddElement(stareaterButton);
+
+			var libraryButton = new GuiButton
+			{
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				ForgroundImage = GalaxyTextures.Get.Library,
+				PaddingX = 12,
+				PaddingY = 4,
+				ClickCallback = () => { using (var form = new FormLibrary(this.currentPlayer.Library)) form.ShowDialog(); },
+				Tooltip = new SimpleTooltip("GalaxyScene", "LibraryTooltip")
+			};
+			libraryButton.Position.FixedSize(48, 32).RelativeTo(stareaterButton, 1, 0, -1, 0).WithMargins(5, 5);
+			this.AddElement(libraryButton);
 
 			this.turnCounter = new GuiText { TextColor = Color.LightGray, TextSize = 30 };
 			this.turnCounter.Position.WrapContent().Then.ParentRelative(1, 1).WithMargins(10, 5);
@@ -175,6 +283,22 @@ namespace Stareater.GameScenes
 			this.updateStarInfo(this.lastSelectedStar);
 			this.setupPerspective();
 			this.setupFuelInfo();
+		}
+
+		private void showDevelopment()
+		{
+			using (var form = new FormDevelopment(this.currentPlayer))
+				form.ShowDialog();
+		}
+
+		private void showResearch()
+		{
+			//TODO(later) remove the need for if
+			if (!this.currentPlayer.ResearchTopics().Any())
+				return;
+
+			using (var form = new FormResearch(this.currentPlayer))
+				form.ShowDialog();
 		}
 
 		private void rebuildCache()

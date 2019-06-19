@@ -29,15 +29,6 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
 			this.glCanvas = new OpenTK.GLControl(OpenTK.Graphics.GraphicsMode.Default, 3, 2, OpenTK.Graphics.GraphicsContextFlags.Default);
-			this.menuStrip = new System.Windows.Forms.MenuStrip();
-			this.designsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.developmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.researchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.diplomacyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.colonizationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.stareaterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.libraryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.returnButton = new System.Windows.Forms.Button();
 			this.fleetPanel = new System.Windows.Forms.Panel();
 			this.shipList = new System.Windows.Forms.FlowLayoutPanel();
@@ -51,7 +42,6 @@
 			this.unitDoneAction = new System.Windows.Forms.Button();
 			this.abilityList = new System.Windows.Forms.FlowLayoutPanel();
 			this.workaroundForWinformsAnchorBug = new System.Windows.Forms.Panel();
-			this.menuStrip.SuspendLayout();
 			this.fleetPanel.SuspendLayout();
 			this.unitInfoPanel.SuspendLayout();
 			this.workaroundForWinformsAnchorBug.SuspendLayout();
@@ -63,7 +53,7 @@
 			this.glCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.glCanvas.Location = new System.Drawing.Point(0, 0);
 			this.glCanvas.Name = "glCanvas";
-			this.glCanvas.Size = new System.Drawing.Size(884, 538);
+			this.glCanvas.Size = new System.Drawing.Size(884, 562);
 			this.glCanvas.TabIndex = 0;
 			this.glCanvas.VSync = false;
 			this.glCanvas.Load += new System.EventHandler(this.glCanvas_Load);
@@ -74,79 +64,6 @@
 			this.glCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.glCanvas_MouseMove);
 			this.glCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.glCanvas_MouseUp);
 			this.glCanvas.Resize += new System.EventHandler(this.glCanvas_Resize);
-			// 
-			// menuStrip
-			// 
-			this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.designsToolStripMenuItem,
-            this.developmentToolStripMenuItem,
-            this.researchToolStripMenuItem,
-            this.diplomacyToolStripMenuItem,
-            this.colonizationToolStripMenuItem,
-            this.reportsToolStripMenuItem,
-            this.stareaterToolStripMenuItem,
-            this.libraryToolStripMenuItem});
-			this.menuStrip.Location = new System.Drawing.Point(0, 0);
-			this.menuStrip.Name = "menuStrip";
-			this.menuStrip.Size = new System.Drawing.Size(884, 24);
-			this.menuStrip.TabIndex = 2;
-			this.menuStrip.Text = "menuStrip1";
-			// 
-			// designsToolStripMenuItem
-			// 
-			this.designsToolStripMenuItem.Name = "designsToolStripMenuItem";
-			this.designsToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
-			this.designsToolStripMenuItem.Text = "Designs";
-			this.designsToolStripMenuItem.Click += new System.EventHandler(this.designsToolStripMenuItem_Click);
-			// 
-			// developmentToolStripMenuItem
-			// 
-			this.developmentToolStripMenuItem.Name = "developmentToolStripMenuItem";
-			this.developmentToolStripMenuItem.Size = new System.Drawing.Size(90, 20);
-			this.developmentToolStripMenuItem.Text = "Development";
-			this.developmentToolStripMenuItem.Click += new System.EventHandler(this.developmentToolStripMenuItem_Click);
-			// 
-			// researchToolStripMenuItem
-			// 
-			this.researchToolStripMenuItem.Name = "researchToolStripMenuItem";
-			this.researchToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
-			this.researchToolStripMenuItem.Text = "Research";
-			this.researchToolStripMenuItem.Click += new System.EventHandler(this.researchToolStripMenuItem_Click);
-			// 
-			// diplomacyToolStripMenuItem
-			// 
-			this.diplomacyToolStripMenuItem.Name = "diplomacyToolStripMenuItem";
-			this.diplomacyToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
-			this.diplomacyToolStripMenuItem.Text = "Diplomacy";
-			this.diplomacyToolStripMenuItem.Click += new System.EventHandler(this.diplomacyToolStripMenuItem_Click);
-			// 
-			// colonizationToolStripMenuItem
-			// 
-			this.colonizationToolStripMenuItem.Name = "colonizationToolStripMenuItem";
-			this.colonizationToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
-			this.colonizationToolStripMenuItem.Text = "Colonization";
-			this.colonizationToolStripMenuItem.Click += new System.EventHandler(this.colonizationToolStripMenuItem_Click);
-			// 
-			// reportsToolStripMenuItem
-			// 
-			this.reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
-			this.reportsToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-			this.reportsToolStripMenuItem.Text = "Reports";
-			this.reportsToolStripMenuItem.Click += new System.EventHandler(this.reportsToolStripMenuItem_Click);
-			// 
-			// stareaterToolStripMenuItem
-			// 
-			this.stareaterToolStripMenuItem.Name = "stareaterToolStripMenuItem";
-			this.stareaterToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
-			this.stareaterToolStripMenuItem.Text = "Stareater";
-			this.stareaterToolStripMenuItem.Click += new System.EventHandler(this.stareaterToolStripMenuItem_Click);
-			// 
-			// libraryToolStripMenuItem
-			// 
-			this.libraryToolStripMenuItem.Name = "libraryToolStripMenuItem";
-			this.libraryToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
-			this.libraryToolStripMenuItem.Text = "Library";
-			this.libraryToolStripMenuItem.Click += new System.EventHandler(this.libraryToolStripMenuItem_Click);
 			// 
 			// returnButton
 			// 
@@ -166,7 +83,7 @@
 			this.fleetPanel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.fleetPanel.Controls.Add(this.shipList);
 			this.fleetPanel.Controls.Add(this.fleetMissionButton);
-			this.fleetPanel.Location = new System.Drawing.Point(234, 422);
+			this.fleetPanel.Location = new System.Drawing.Point(234, 446);
 			this.fleetPanel.Name = "fleetPanel";
 			this.fleetPanel.Size = new System.Drawing.Size(417, 116);
 			this.fleetPanel.TabIndex = 5;
@@ -194,7 +111,7 @@
 			// 
 			this.empyPlanetView.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
 			this.empyPlanetView.BackColor = System.Drawing.SystemColors.ActiveBorder;
-			this.empyPlanetView.Location = new System.Drawing.Point(263, 422);
+			this.empyPlanetView.Location = new System.Drawing.Point(263, 446);
 			this.empyPlanetView.Name = "empyPlanetView";
 			this.empyPlanetView.Size = new System.Drawing.Size(358, 116);
 			this.empyPlanetView.TabIndex = 6;
@@ -208,7 +125,7 @@
 			this.unitInfoPanel.Controls.Add(this.armorInfo);
 			this.unitInfoPanel.Controls.Add(this.shipCount);
 			this.unitInfoPanel.Controls.Add(this.unitDoneAction);
-			this.unitInfoPanel.Location = new System.Drawing.Point(261, 489);
+			this.unitInfoPanel.Location = new System.Drawing.Point(261, 513);
 			this.unitInfoPanel.Name = "unitInfoPanel";
 			this.unitInfoPanel.Size = new System.Drawing.Size(362, 49);
 			this.unitInfoPanel.TabIndex = 7;
@@ -268,7 +185,7 @@
 			this.abilityList.BackColor = System.Drawing.Color.Black;
 			this.abilityList.Location = new System.Drawing.Point(12, 50);
 			this.abilityList.Name = "abilityList";
-			this.abilityList.Size = new System.Drawing.Size(110, 451);
+			this.abilityList.Size = new System.Drawing.Size(110, 475);
 			this.abilityList.TabIndex = 8;
 			this.abilityList.Visible = false;
 			// 
@@ -281,9 +198,9 @@
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.empyPlanetView);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.glCanvas);
 			this.workaroundForWinformsAnchorBug.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.workaroundForWinformsAnchorBug.Location = new System.Drawing.Point(0, 24);
+			this.workaroundForWinformsAnchorBug.Location = new System.Drawing.Point(0, 0);
 			this.workaroundForWinformsAnchorBug.Name = "workaroundForWinformsAnchorBug";
-			this.workaroundForWinformsAnchorBug.Size = new System.Drawing.Size(884, 538);
+			this.workaroundForWinformsAnchorBug.Size = new System.Drawing.Size(884, 562);
 			this.workaroundForWinformsAnchorBug.TabIndex = 9;
 			// 
 			// FormMain
@@ -292,38 +209,27 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(884, 562);
 			this.Controls.Add(this.workaroundForWinformsAnchorBug);
-			this.Controls.Add(this.menuStrip);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.MainMenuStrip = this.menuStrip;
 			this.Name = "FormMain";
 			this.Text = "Stareater";
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
 			this.Load += new System.EventHandler(this.FormMain_Load);
-			this.menuStrip.ResumeLayout(false);
-			this.menuStrip.PerformLayout();
 			this.fleetPanel.ResumeLayout(false);
 			this.unitInfoPanel.ResumeLayout(false);
 			this.unitInfoPanel.PerformLayout();
 			this.workaroundForWinformsAnchorBug.ResumeLayout(false);
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 		private System.Windows.Forms.Button fleetMissionButton;
 		private System.Windows.Forms.FlowLayoutPanel shipList;
 		private System.Windows.Forms.Panel fleetPanel;
-		private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem researchToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem designsToolStripMenuItem;
 		private System.Windows.Forms.Button returnButton;
-		private System.Windows.Forms.ToolStripMenuItem developmentToolStripMenuItem;
-		private System.Windows.Forms.MenuStrip menuStrip;
 
 		#endregion
 		private OpenTK.GLControl glCanvas;
 		private Stareater.GUI.EmpyPlanetView empyPlanetView;
-		private System.Windows.Forms.ToolStripMenuItem colonizationToolStripMenuItem;
 		private System.Windows.Forms.Panel unitInfoPanel;
 		private System.Windows.Forms.Label movementInfo;
 		private System.Windows.Forms.Label shieldInfo;
@@ -331,9 +237,6 @@
 		private System.Windows.Forms.Label shipCount;
 		private System.Windows.Forms.Button unitDoneAction;
 		private System.Windows.Forms.FlowLayoutPanel abilityList;
-		private System.Windows.Forms.ToolStripMenuItem libraryToolStripMenuItem;
 		private System.Windows.Forms.Panel workaroundForWinformsAnchorBug;
-		private System.Windows.Forms.ToolStripMenuItem diplomacyToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem stareaterToolStripMenuItem;
 	}
 }
