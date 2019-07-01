@@ -76,11 +76,11 @@ namespace Stareater.GameScenes
 			var newGameButton = new GuiButton
 			{
 				ClickCallback = newGameCallback,
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
-				Padding = 8,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
+				Padding = 12,
 				Text = context["NewGame"].Text(),
-				TextColor = Color.White,
+				TextColor = Color.Black,
 				TextSize = 24
 			};
 			newGameButton.Position.WrapContent().Then.ParentRelative(0, 1);
@@ -89,11 +89,11 @@ namespace Stareater.GameScenes
 			var loadButton = new GuiButton
 			{
 				ClickCallback = loadGameCallback,
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
-				Padding = 8,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
+				Padding = 12,
 				Text = context["Save"].Text(),
-				TextColor = Color.White,
+				TextColor = Color.Black,
 				TextSize = 24
 			};
 			loadButton.Position.WrapContent().Then.RelativeTo(newGameButton, 0, -1, 0, 1).WithMargins(0, 25);
@@ -102,11 +102,11 @@ namespace Stareater.GameScenes
 			var settingsButton = new GuiButton
 			{
 				ClickCallback = settingsCallback,
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
-				Padding = 8,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
+				Padding = 12,
 				Text = context["Settings"].Text(),
-				TextColor = Color.White,
+				TextColor = Color.Black,
 				TextSize = 24
 			};
 			settingsButton.Position.WrapContent().Then.RelativeTo(loadButton, 0, -1, 0, 1).WithMargins(0, 25);
@@ -115,11 +115,11 @@ namespace Stareater.GameScenes
 			var quitButton = new GuiButton
 			{
 				ClickCallback = quitCallback,
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
-				Padding = 8,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
+				Padding = 12,
 				Text = context["Quit"].Text(),
-				TextColor = Color.White,
+				TextColor = Color.Black,
 				TextSize = 24
 			};
 			quitButton.Position.WrapContent().Then.RelativeTo(settingsButton, 0, -1, 0, 1).WithMargins(0, 25);

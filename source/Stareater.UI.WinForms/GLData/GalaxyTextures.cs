@@ -62,6 +62,8 @@ namespace Stareater.GLData
 		public TextureInfo Asteroids { get; private set;}
 		public TextureInfo BombButton { get; private set;}
 		public TextureInfo ButtonBackground { get; private set; }
+		public TextureInfo ButtonHover { get; private set; }
+		public TextureInfo ButtonNormal { get; private set; }
 		public TextureInfo Colonization { get; private set; }
 		public TextureInfo ColonizationMark { get; private set;}
 		public TextureInfo ColonizationMarkColor { get; private set;}
@@ -108,6 +110,8 @@ namespace Stareater.GLData
 			this.Asteroids = this.spriteNames[AsteroidsTag];
 			this.BombButton = this.spriteNames[BombButtonTag];
 			this.ButtonBackground = this.spriteNames[ButtonBackgroundTag];
+			this.ButtonHover = this.spriteNames["buttonHover"];
+			this.ButtonNormal = this.spriteNames["buttonNormal"];
 			this.Colonization = this.spriteNames["colonization"];
 			this.ColonizationMark = this.spriteNames[ColonizationMarkTag];
 			this.ColonizationMarkColor = this.spriteNames[ColonizationMarkColorTag];

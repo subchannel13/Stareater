@@ -36,10 +36,10 @@ namespace Stareater.GameScenes
 
 			this.projectButton = new GuiButton
 			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
-				Padding = 8,
-				TextColor = Color.White,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
+				Padding = 10,
+				TextColor = Color.Black,
 				TextSize = 10,
 				ClickCallback = projectButton_Click
 			};
@@ -48,10 +48,10 @@ namespace Stareater.GameScenes
 
 			this.detailsButton = new GuiButton
 			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
-				Padding = 8,
-				TextColor = Color.White,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
+				Padding = 10,
+				TextColor = Color.Black,
 				TextSize = 10,
 				Text = context["SiteDetails"].Text(),
 				ClickCallback = detailsButton_Click
