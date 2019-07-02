@@ -27,10 +27,10 @@ namespace Stareater.GameScenes
 
 		public ConstructionSiteView()
 		{
-			this.Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 3);
+			this.Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 6);
 			this.Position.FixedSize(360, 116);
 
-			this.title = new GuiText { TextColor = Color.White, TextSize = 14 };
+			this.title = new GuiText { TextColor = Color.Black, TextSize = 14 };
 			this.title.Position.WrapContent().Then.ParentRelative(-1, 1).WithMargins(8, 4);
 			this.AddChild(this.title);
 
