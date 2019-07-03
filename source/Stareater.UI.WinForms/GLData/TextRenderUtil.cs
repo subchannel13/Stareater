@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using OpenTK;
-using Stareater.GLData;
 using Stareater.GLData.SpriteShader;
 
-namespace Stareater.GameScenes
+namespace Stareater.GLData
 {
 	class TextRenderUtil
 	{
@@ -34,7 +33,7 @@ namespace Stareater.GameScenes
 		private Font font;
 		private Vector2 nextCharOffset;
 
-		private Dictionary<char, CharTextureInfo> characterInfos = new Dictionary<char, CharTextureInfo>();
+		private readonly Dictionary<char, CharTextureInfo> characterInfos = new Dictionary<char, CharTextureInfo>();
 		private readonly Vector2[] unitQuadTriangles;
 		
 		public int TextureId { get; private set; }

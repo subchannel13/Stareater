@@ -136,7 +136,7 @@
     <Compile Include="GameScenes\GalaxyScene.cs" />
     <Compile Include="GameScenes\SpaceCombatScene.cs" />
     <Compile Include="GameScenes\StarSystemScene.cs" />
-    <Compile Include="GameScenes\TextRenderUtil.cs" />
+    <Compile Include="GLData\TextRenderUtil.cs" />
     <Compile Include="GLData\TextureUtils.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="GraphicsEngine\AGlProgram.cs" />

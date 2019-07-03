@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Linq;
 using OpenTK;
 using Stareater.Localization;
@@ -7,6 +6,7 @@ using Stareater.GraphicsEngine;
 using Stareater.GLData.SpriteShader;
 using Stareater.Controllers;
 using Stareater.Utils.NumberFormatters;
+using Stareater.GLData;
 
 namespace Stareater.GameScenes
 {
