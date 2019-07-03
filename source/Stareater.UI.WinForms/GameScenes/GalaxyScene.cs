@@ -301,11 +301,6 @@ namespace Stareater.GameScenes
 				form.ShowDialog();
 		}
 
-		private void rebuildCache()
-		{
-			TextRenderUtil.Get.Prepare(this.currentPlayer.Stars.Select(x => x.Name.ToText(LocalizationManifest.Get.CurrentLanguage)));
-		}
-
 		private void updateStarInfo(StarInfo star)
 		{
 			var starSystem = this.currentPlayer.OpenStarSystem(this.lastSelectedStar);
@@ -332,7 +327,6 @@ namespace Stareater.GameScenes
 
 		public override void Activate()
 		{
-			this.rebuildCache();
 			this.setupVaos();
 
 			if (this.currentSelection == GalaxySelectionType.Star)
@@ -349,7 +343,6 @@ namespace Stareater.GameScenes
 				if (this.currentSelection == GalaxySelectionType.Fleet)
 					this.currentSelection = GalaxySelectionType.None;
 
-				this.rebuildCache();
 				this.ResetLists();
 			}
 		}

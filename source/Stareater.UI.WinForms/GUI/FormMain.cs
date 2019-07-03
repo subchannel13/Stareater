@@ -238,11 +238,12 @@ namespace Stareater.GUI
 		{
 			foreach (var control in this.shipList.Controls) 
 			{
-				var shipGroupItem = control as ShipGroupItem;
-				if (shipGroupItem != null) {
+				if (control is ShipGroupItem shipGroupItem)
+				{
 					shipGroupItem.SelectionChanged -= shipGroupItem_SelectedIndexChanged;
 					shipGroupItem.SplitRequested -= shipGroupItem_SplitRequested;
-				} else
+				}
+				else
 					(control as FleetInfoView).OnSelect -= fleetInfoView_OnSelect;
 			}
 			this.shipList.Controls.Clear();
@@ -288,7 +289,7 @@ namespace Stareater.GUI
 		{
 			ShaderLibrary.Load();
 			GalaxyTextures.Get.Load(); //TODO(v0.8) make general initialization logic for rendering
-			TextRenderUtil.Get.Prepare();
+			TextRenderUtil.Get.Initialize();
 			
 			GL.Enable(EnableCap.DepthTest);
 			GL.Enable(EnableCap.Blend);
@@ -538,16 +539,17 @@ namespace Stareater.GUI
 			this.abilityList.Controls.Clear();
 			Func<Image, string, object, Button> buttonMaker = (image, text, tag) =>
 			{
-				var button = new Button();
-				
-				button.Image = image;
-				button.ImageAlign = ContentAlignment.MiddleLeft;
-				button.Margin = new Padding(3, 3, 3, 0);
-				button.Size = new Size(80, 32);
-				button.Text = text;
-				button.TextImageRelation = TextImageRelation.ImageBeforeText;
-				button.UseVisualStyleBackColor = true;
-				button.Tag = tag;
+				var button = new Button
+				{
+					Image = image,
+					ImageAlign = ContentAlignment.MiddleLeft,
+					Margin = new Padding(3, 3, 3, 0),
+					Size = new Size(80, 32),
+					Text = text,
+					TextImageRelation = TextImageRelation.ImageBeforeText,
+					UseVisualStyleBackColor = true,
+					Tag = tag
+				};
 				button.Click += selectAbility_Click;
 				
 				return button;

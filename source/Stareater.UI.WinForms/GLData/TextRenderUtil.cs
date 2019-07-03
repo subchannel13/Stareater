@@ -52,7 +52,7 @@ namespace Stareater.GLData
 			};
 		}
 
-		private void lazyInitialization()
+		public void Initialize()
 		{
 			if (this.textureBitmap == null)
 				this.textureBitmap = new Bitmap(Width, Height);
@@ -78,7 +78,7 @@ namespace Stareater.GLData
 				foreach (char c in line)
 				{
 					if (!this.characterInfos.ContainsKey(c))
-						Prepare(new string[] { text });
+						this.prepare(text);
 
 					if (!char.IsWhiteSpace(c))
 						lineWidth += this.characterInfos[c].Aspect;
@@ -125,23 +125,17 @@ namespace Stareater.GLData
 				}
 		}
 
-		public void Prepare()
-		{
-			this.lazyInitialization();
-		}
-
-        public void Prepare(IEnumerable<string> texts)
+		private void prepare(string text)
 		{
 			var missinCharacters = new HashSet<char>();
-			foreach (string text in texts)
-				foreach (char c in text)
-					if (!this.characterInfos.ContainsKey(c) && !char.IsWhiteSpace(c))
-						missinCharacters.Add(c);
+			foreach (char c in text)
+				if (!this.characterInfos.ContainsKey(c) && !char.IsWhiteSpace(c))
+					missinCharacters.Add(c);
 
 			if (missinCharacters.Count == 0 && this.TextureId != 0)
 				return;
 
-			this.lazyInitialization();
+			this.Initialize();
 
 			using (var g = Graphics.FromImage(this.textureBitmap)) {
 				if (this.nextCharOffset == Vector2.Zero)
