@@ -24,6 +24,7 @@ namespace Stareater.GLData
 		
 		const int Width = 512;
 		const int Height = 512;
+		const float Spacing = 2 / (float)Width;
 		const float FontSize = 30;	
 		const string FontFamily = "Arial";
 
@@ -142,27 +143,27 @@ namespace Stareater.GLData
 
 			this.lazyInitialization();
 
-			using (Graphics g = Graphics.FromImage(this.textureBitmap)) {
+			using (var g = Graphics.FromImage(this.textureBitmap)) {
 				if (this.nextCharOffset == Vector2.Zero)
 					g.Clear(Color.Transparent);
 
 				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-				Brush textBrush = new SolidBrush(Color.White);
+				var textBrush = new SolidBrush(Color.White);
 
 				foreach (char c in missinCharacters) {
-					SizeF size = g.MeasureString(c.ToString(), font, int.MaxValue, StringFormat.GenericTypographic);
+					var size = g.MeasureString(c.ToString(), font, int.MaxValue, StringFormat.GenericTypographic);
 					size = new SizeF(
 						(float)Math.Ceiling(size.Width) / Width,
 						(float)Math.Ceiling(size.Height) / Height
 					);
 
 					if (this.nextCharOffset.X + size.Width >= 1)
-						this.nextCharOffset = new Vector2(0, this.nextCharOffset.Y + size.Height);
+						this.nextCharOffset = new Vector2(0, this.nextCharOffset.Y + size.Height + Spacing);
 
 					this.characterInfos.Add(c, new CharTextureInfo(nextCharOffset, size));
 					g.DrawString(c.ToString(), font, textBrush, nextCharOffset.X * Width, nextCharOffset.Y * Height, StringFormat.GenericTypographic);
 
-					this.nextCharOffset += new Vector2(size.Width, 0);
+					this.nextCharOffset += new Vector2(size.Width + Spacing, 0);
 				}
 			}
 
