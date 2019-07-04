@@ -11,12 +11,15 @@ namespace Stareater.GLData
 		private readonly PartitionNode bucket;
 		private readonly int margin;
 
-		public AtlasBuilder(IkonComposite sizes, int margin, Size bucketSize)
+		public AtlasBuilder(int margin, Size bucketSize)
 		{
 			this.bucket = new PartitionNode(bucketSize);
 			this.sizes = new Dictionary<string, Rectangle>();
 			this.margin = margin;
+		}
 
+		public AtlasBuilder(IkonComposite sizes, int margin, Size bucketSize) : this(margin, bucketSize)
+		{
 			var marginPoint = new Size(2 * margin, 2 * margin);
 			foreach(var name in sizes.Keys)
 			{
@@ -30,6 +33,11 @@ namespace Stareater.GLData
 					throw new Exception("Bucket is too small");
 				this.sizes[name] = new Rectangle(itemPosition.Value, size);
 			}
+		}
+
+		public Rectangle Add(SizeF itemSize)
+		{
+			return this.Add(new Size((int)Math.Ceiling(itemSize.Width), (int)Math.Ceiling(itemSize.Height)));
 		}
 
 		public Rectangle Add(Size itemSize)
@@ -84,6 +92,20 @@ namespace Stareater.GLData
 					else
 						return null;
 				}
+				else if (size.Height > itemSize.Height)
+				{
+					isDividerVertical = false;
+					dividerPosition = itemSize.Height;
+
+					leftChild = new PartitionNode(new Size(this.size.Width, itemSize.Height));
+					rightChild = new PartitionNode(new Size(this.size.Width, this.size.Height - itemSize.Height));
+
+					result = leftChild.Add(itemSize);
+					if (result == null)
+						throw new Exception("Something is wrong with universe...");
+
+					return result;
+				}
 				else if (size.Width > itemSize.Width)
 				{
 					isDividerVertical = true;
@@ -98,21 +120,7 @@ namespace Stareater.GLData
 					
 					return result;
 				}
-				else if (size.Height > itemSize.Height)
-				{
-					isDividerVertical = false;
-					dividerPosition = itemSize.Height;
-	
-					leftChild = new PartitionNode(new Size(this.size.Width, itemSize.Height));
-					rightChild = new PartitionNode(new Size(this.size.Width, this.size.Height - itemSize.Height));
-	
-					result = leftChild.Add(itemSize);
-					if (result == null)
-						throw new Exception("Something is wrong with universe...");
-	
-					return result;
-				}
-				
+
 				this.filledUp = true;
 				return new Point();
 			}

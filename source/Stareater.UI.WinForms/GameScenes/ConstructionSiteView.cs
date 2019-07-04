@@ -30,7 +30,7 @@ namespace Stareater.GameScenes
 			this.Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 6);
 			this.Position.FixedSize(360, 116);
 
-			this.title = new GuiText { TextColor = Color.Black, TextSize = 14 };
+			this.title = new GuiText { TextColor = Color.Black, TextSize = 9 };
 			this.title.Position.WrapContent().Then.ParentRelative(-1, 1).WithMargins(8, 4);
 			this.AddChild(this.title);
 
@@ -40,10 +40,10 @@ namespace Stareater.GameScenes
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
 				Padding = 10,
 				TextColor = Color.Black,
-				TextSize = 10,
+				TextSize = 8,
 				ClickCallback = projectButton_Click
 			};
-			this.projectButton.Position.FixedSize(88, 88).ParentRelative(-1, -1).WithMargins(8, 8);
+			this.projectButton.Position.FixedSize(88, 88).ParentRelative(-1, -1).WithMargins(8, 8); //TODO(v0.8) wrong margin behaviour
 			this.AddChild(this.projectButton);
 
 			this.detailsButton = new GuiButton
@@ -52,7 +52,7 @@ namespace Stareater.GameScenes
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
 				Padding = 10,
 				TextColor = Color.Black,
-				TextSize = 10,
+				TextSize = 8,
 				Text = context["SiteDetails"].Text(),
 				ClickCallback = detailsButton_Click
 			};

@@ -59,7 +59,7 @@ namespace Stareater.GameScenes
 			{
 				Text = LocalizationManifest.Get.CurrentLanguage["Intro"]["cancelTip"].Text(),
 				TextColor = Color.FromArgb(0, Color.Gray),
-				TextSize = 16,
+				TextSize = 12,
 				Animation = textPolygons => new AnimationSequence(
 					new AnimationDelay(1),
 					new TweenAlpha(textPolygons, 0, 1, 0.5)
@@ -81,7 +81,7 @@ namespace Stareater.GameScenes
 				Padding = 12,
 				Text = context["NewGame"].Text(),
 				TextColor = Color.Black,
-				TextSize = 24
+				TextSize = 18
 			};
 			newGameButton.Position.WrapContent().Then.ParentRelative(0, 1);
 			this.menuPanel.AddChild(newGameButton);
@@ -94,7 +94,7 @@ namespace Stareater.GameScenes
 				Padding = 12,
 				Text = context["Save"].Text(),
 				TextColor = Color.Black,
-				TextSize = 24
+				TextSize = 18
 			};
 			loadButton.Position.WrapContent().Then.RelativeTo(newGameButton, 0, -1, 0, 1).WithMargins(0, 25);
 			this.menuPanel.AddChild(loadButton);
@@ -107,7 +107,7 @@ namespace Stareater.GameScenes
 				Padding = 12,
 				Text = context["Settings"].Text(),
 				TextColor = Color.Black,
-				TextSize = 24
+				TextSize = 18
 			};
 			settingsButton.Position.WrapContent().Then.RelativeTo(loadButton, 0, -1, 0, 1).WithMargins(0, 25);
 			this.menuPanel.AddChild(settingsButton);
@@ -120,7 +120,7 @@ namespace Stareater.GameScenes
 				Padding = 12,
 				Text = context["Quit"].Text(),
 				TextColor = Color.Black,
-				TextSize = 24
+				TextSize = 18
 			};
 			quitButton.Position.WrapContent().Then.RelativeTo(settingsButton, 0, -1, 0, 1).WithMargins(0, 25);
 			this.menuPanel.AddChild(quitButton);

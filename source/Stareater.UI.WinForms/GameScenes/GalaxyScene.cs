@@ -106,7 +106,7 @@ namespace Stareater.GameScenes
 			this.fuelInfo = new GuiText
 			{
 				TextColor = Color.Yellow,
-				TextSize = 30,
+				TextSize = 23,
 				Tooltip = new SimpleTooltip("GalaxyScene", "FuelTooltip")
 			};
 			this.fuelInfo.Position.WrapContent().Then.RelativeTo(mainMenuButton, 1, 0, -1, 0).WithMargins(20, 5);
@@ -216,7 +216,7 @@ namespace Stareater.GameScenes
 			libraryButton.Position.FixedSize(48, 32).RelativeTo(stareaterButton, 1, 0, -1, 0).WithMargins(5, 5);
 			this.AddElement(libraryButton);
 
-			this.turnCounter = new GuiText { TextColor = Color.LightGray, TextSize = 30 };
+			this.turnCounter = new GuiText { TextColor = Color.LightGray, TextSize = 23 };
 			this.turnCounter.Position.WrapContent().Then.ParentRelative(1, 1).WithMargins(10, 5);
 			this.AddElement(this.turnCounter);
 
