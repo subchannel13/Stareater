@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using Ikadn.Ikon.Types;
 
@@ -7,14 +6,12 @@ namespace Stareater.GLData
 {
 	class AtlasBuilder
 	{
-		private readonly Dictionary<string, Rectangle> sizes;
 		private readonly PartitionNode bucket;
 		private readonly int margin;
 
 		public AtlasBuilder(int margin, Size bucketSize)
 		{
 			this.bucket = new PartitionNode(bucketSize);
-			this.sizes = new Dictionary<string, Rectangle>();
 			this.margin = margin;
 		}
 
@@ -27,11 +24,10 @@ namespace Stareater.GLData
 				var height = (sizeData[2].To<double[]>()[1] - sizeData[0].To<double[]>()[1]) * bucketSize.Height;
 				var width = (sizeData[2].To<double[]>()[0] - sizeData[0].To<double[]>()[0]) * bucketSize.Width;
 				var size = new Size((int)Math.Round(width) + 2 * margin, (int)Math.Round(height) + 2 * margin);
-				var itemPosition = bucket.Add(size);
+				var itemPosition = this.bucket.Add(size);
 				
 				if (!itemPosition.HasValue)
 					throw new Exception("Bucket is too small");
-				this.sizes[name] = new Rectangle(itemPosition.Value, size);
 			}
 		}
 
@@ -42,28 +38,28 @@ namespace Stareater.GLData
 
 		public Rectangle Add(Size itemSize)
 		{
-			itemSize = itemSize + new Size(2 * margin, 2 * margin);
-			var itemPosition = bucket.Add(itemSize);
+			itemSize = itemSize + new Size(2 * this.margin, 2 * this.margin);
+			var itemPosition = this.bucket.Add(itemSize);
 			if (itemPosition == null)
 				throw new Exception("Bucket is too small");
 
 			return new Rectangle(
-				itemPosition.Value + new Size(margin, margin),
-				itemSize - new Size(2 * margin, 2 * margin)
+				itemPosition.Value + new Size(this.margin, this.margin),
+				itemSize - new Size(2 * this.margin, 2 * this.margin)
 			);
 		}
 		
 		class PartitionNode
 		{
 			private const int NotSet = -1;
-			
-			Size size;
-			bool isDividerVertical;
-			int dividerPosition;
-			
-			bool filledUp = false;
-			PartitionNode leftChild;
-			PartitionNode rightChild;
+
+			private readonly Size size;
+			private bool isDividerVertical;
+			private int dividerPosition;
+
+			private bool filledUp = false;
+			private PartitionNode leftChild;
+			private PartitionNode rightChild;
 	
 			public PartitionNode(Size size)
 			{
@@ -73,48 +69,46 @@ namespace Stareater.GLData
 	
 			public Point? Add(Size itemSize)
 			{
-				if (size.Width < itemSize.Width || size.Height < itemSize.Height || this.filledUp)
+				if (this.size.Width < itemSize.Width || this.size.Height < itemSize.Height || this.filledUp)
 					return null;
 	
-				Point? result;
-	
-				if (dividerPosition != NotSet) {
-					result = leftChild.Add(itemSize);
+				if (this.dividerPosition != NotSet) {
+					var result = this.leftChild.Add(itemSize);
 					if (result != null)
 					    return result;
 	
-					result = rightChild.Add(itemSize);
+					result = this.rightChild.Add(itemSize);
 					if (result != null)
-						if (isDividerVertical)
-							return result.Value + new Size(dividerPosition, 0);
+						if (this.isDividerVertical)
+							return result.Value + new Size(this.dividerPosition, 0);
 						else
-							return result.Value + new Size(0, dividerPosition);
+							return result.Value + new Size(0, this.dividerPosition);
 					else
 						return null;
 				}
-				else if (size.Height > itemSize.Height)
+				else if (this.size.Height > itemSize.Height)
 				{
-					isDividerVertical = false;
-					dividerPosition = itemSize.Height;
+					this.isDividerVertical = false;
+					this.dividerPosition = itemSize.Height;
 
-					leftChild = new PartitionNode(new Size(this.size.Width, itemSize.Height));
-					rightChild = new PartitionNode(new Size(this.size.Width, this.size.Height - itemSize.Height));
+					this.leftChild = new PartitionNode(new Size(this.size.Width, itemSize.Height));
+					this.rightChild = new PartitionNode(new Size(this.size.Width, this.size.Height - itemSize.Height));
 
-					result = leftChild.Add(itemSize);
+					var result = this.leftChild.Add(itemSize);
 					if (result == null)
 						throw new Exception("Something is wrong with universe...");
 
 					return result;
 				}
-				else if (size.Width > itemSize.Width)
+				else if (this.size.Width > itemSize.Width)
 				{
-					isDividerVertical = true;
-					dividerPosition = itemSize.Width;
+					this.isDividerVertical = true;
+					this.dividerPosition = itemSize.Width;
+
+					this.leftChild = new PartitionNode(new Size(itemSize.Width, this.size.Height));
+					this.rightChild = new PartitionNode(new Size(this.size.Width - itemSize.Width, this.size.Height));
 	
-					leftChild = new PartitionNode(new Size(itemSize.Width, this.size.Height));
-					rightChild = new PartitionNode(new Size(this.size.Width - itemSize.Width, this.size.Height));
-	
-					result = leftChild.Add(itemSize);
+					var result = this.leftChild.Add(itemSize);
 					if (result == null)
 						throw new Exception("Something is wrong with universe...");
 					
