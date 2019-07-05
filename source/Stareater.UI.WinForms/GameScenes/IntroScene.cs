@@ -70,7 +70,7 @@ namespace Stareater.GameScenes
 			this.AddElement(this.cancelText);
 
 			this.menuPanel = new GuiPanel();
-			this.menuPanel.Position.WrapContent().Then.Offset(150, 0);
+			this.menuPanel.Position.WrapContent().Then.ParentRelative(0, 0).Then.Offset(150, 0);
 
 			var context = LocalizationManifest.Get.CurrentLanguage["FormMainMenu"];
 			var newGameButton = new GuiButton
