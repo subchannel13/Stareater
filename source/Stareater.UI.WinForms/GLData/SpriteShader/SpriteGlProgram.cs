@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using OpenTK.Graphics.OpenGL;
 using Stareater.GraphicsEngine;
@@ -21,11 +20,6 @@ namespace Stareater.GLData.SpriteShader
 		public int LocalPositionId { get; private set; }
 		public int TexturePositionId { get; private set; }
 
-		public void Activate()
-		{
-			GL.UseProgram(this.ProgramId);
-		}
-		
 		public void Load()
 		{
 			string vertexShaderSource;

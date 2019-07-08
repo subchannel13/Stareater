@@ -225,7 +225,7 @@ namespace Stareater.GameScenes
 					planet => new SceneObject(new PolygonData(
 						PopCountZ,
 						new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, Color.White, null),
-						TextRenderUtil.Get.BufferText(
+						TextRenderUtil.Get.BufferRaster(
 							LocalizationManifest.Get.CurrentLanguage["FormMain"]["Population"].Text() + ": " + formatter.Format(planet.Population), 
 							-0.5f, 
 							Matrix4.CreateScale(TextScale) * Matrix4.CreateTranslation(planet.OrdinalPosition * OrbitStep + OrbitOffset, -PlanetScale / 2 - PopCountTopMargin, 0)
@@ -261,7 +261,7 @@ namespace Stareater.GameScenes
 				new SceneObject(new PolygonData(
 					PopCountZ,
 					new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, Color.White, null),
-					TextRenderUtil.Get.BufferText(
+					TextRenderUtil.Get.BufferRaster(
 						LocalizationManifest.Get.CurrentLanguage["FormMain"]["BombardTitle"].Text(), 
 						-0.5f,
 						Matrix4.CreateScale(TitleScale) * Matrix4.CreateTranslation(originOffset, DefaultViewSize / 2 - BodiesY - TitleTopMargin, 0)

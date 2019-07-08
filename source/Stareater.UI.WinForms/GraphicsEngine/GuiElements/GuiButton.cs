@@ -155,7 +155,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				var lines = this.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 				for (int i = 0; i < lines.Length; i++)
 					soBuilder.StartSprite(this.Z0 - this.ZRange / 2, TextRenderUtil.Get.TextureId, this.TextColor).
-						AddVertices(TextRenderUtil.Get.BufferText(lines[i], this.fontSize(), -0.5f, Matrix4.Identity)).
+						AddVertices(TextRenderUtil.Get.BufferRaster(lines[i], this.fontSize(), -0.5f, Matrix4.Identity)).
 						Scale(this.fontHeight, this.fontHeight).
 						Translate(this.Position.Center + new Vector2(0, (lines.Length / 2f - i) * this.fontHeight));
 			}

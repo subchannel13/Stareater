@@ -119,12 +119,14 @@ namespace Stareater.GLData
 			return textWidth;
 		}
 
-		public IEnumerable<float> BufferText(string text, float adjustment, Matrix4 transform)
+		//TODO(later) try to remove the need transform parameter
+		public IEnumerable<float> BufferRaster(string text, float adjustment, Matrix4 transform)
 		{
-			return this.BufferText(text, FontSize, adjustment, transform);
+			return this.BufferRaster(text, FontSize, adjustment, transform);
 		}
 
-		public IEnumerable<float> BufferText(string text, float fontSize, float adjustment, Matrix4 transform)
+		//TODO(later) try to remove the need transform parameter
+		public IEnumerable<float> BufferRaster(string text, float fontSize, float adjustment, Matrix4 transform)
 		{
 			float textWidth = this.MeasureWidth(text, fontSize);
 			float charOffsetX = textWidth * adjustment;
@@ -154,6 +156,13 @@ namespace Stareater.GLData
 					charOffsetX = textWidth * adjustment;
 					charOffsetY--;
 				}
+		}
+
+		//TODO(later) try to remove the need transform parameter
+		public IEnumerable<float> BufferSdf(string text, float fontSize, float adjustment, Matrix4 transform)
+		{
+			//TODO(v0.8)
+			yield break;
 		}
 
 		private void prepare(string text, float fontSize)

@@ -6,6 +6,7 @@ using Stareater.GLData.SpriteShader;
 using System.Drawing;
 using Stareater.GLData.OrbitShader;
 using Stareater.GraphicsEngine.GuiElements;
+using Stareater.GLData.SdfShader;
 
 namespace Stareater.GLData
 {
@@ -92,6 +93,18 @@ namespace Stareater.GLData
 			this.minRadius = minRadius;
 			this.maxRadius = maxRadius;
 			this.sprite = sprite;
+			this.color = color;
+
+			return this;
+		}
+
+		public SceneObjectBuilder StartText(string text, float fontSize, float adjustment, float z, int textureId, Color color, Matrix4 transform)
+		{
+			this.applyPolygonData();
+
+			this.currentPolygonType = fontSize <= 20 ? PolygonType.Sprite : PolygonType.Sdf;
+			this.z = z;
+			this.textureId = textureId;
 			this.color = color;
 
 			return this;
@@ -197,6 +210,9 @@ namespace Stareater.GLData
 				case PolygonType.Orbit:
 					shaderData = new OrbitData(this.minRadius, this.maxRadius, this.color, this.localTransform, this.sprite);
 					break;
+				case PolygonType.Sdf:
+					shaderData = new SdfData(this.localTransform, this.textureId, this.color, this.clipArea);
+					break;
 				default:
 					throw new NotImplementedException(this.currentPolygonType.ToString());
 			}
@@ -218,7 +234,8 @@ namespace Stareater.GLData
 		{
 			None,
 			Orbit,
-			Sprite
+			Sprite,
+			Sdf
 		}
 	}
 }

@@ -500,7 +500,7 @@ namespace Stareater.GameScenes
 					Scale(EtaTextScale / (float)Math.Pow(ZoomBase, zoomLevel)).
 					Translate(destination.Position.X, destination.Position.Y + 0.5).
 					AddVertices(
-						TextRenderUtil.Get.BufferText(
+						TextRenderUtil.Get.BufferRaster(
 							LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars),
 							-0.5f,
 							Matrix4.Identity
@@ -585,7 +585,7 @@ namespace Stareater.GameScenes
 					//TODO(v0.8) don't show names when zoomed out too much
 					StartSprite(StarNameZ + (i * InterlayerZRange) / stars.Count, TextRenderUtil.Get.TextureId, starNameColor(star)).
 					AddVertices(
-						TextRenderUtil.Get.BufferText(
+						TextRenderUtil.Get.BufferRaster(
 								star.Name.ToText(LocalizationManifest.Get.CurrentLanguage),
 								-0.5f,
 								Matrix4.CreateScale(StarNameScale / (float)Math.Pow(ZoomBase, zoomLevel)) * 

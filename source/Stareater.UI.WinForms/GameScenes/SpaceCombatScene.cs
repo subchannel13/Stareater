@@ -207,7 +207,7 @@ namespace Stareater.GameScenes
 				yield return new PolygonData(
 					MoreCombatantsZ,
 					new SpriteData(PopulationTransform * planetTransform, TextRenderUtil.Get.TextureId, planet.Owner != null ? planet.Owner.Color : Color.Gray, null),
-					TextRenderUtil.Get.BufferText(new ThousandsFormatter().Format(planet.Population), -1, Matrix4.Identity).ToList()
+					TextRenderUtil.Get.BufferRaster(new ThousandsFormatter().Format(planet.Population), -1, Matrix4.Identity).ToList()
 				);
 		}
 
@@ -231,7 +231,7 @@ namespace Stareater.GameScenes
 					Color.Gray, 
 					null
 				),
-				TextRenderUtil.Get.BufferText(new ThousandsFormatter().Format(shownProjectile.Count), -1, Matrix4.Identity).ToList()
+				TextRenderUtil.Get.BufferRaster(new ThousandsFormatter().Format(shownProjectile.Count), -1, Matrix4.Identity).ToList()
 			);
 		}
 
@@ -285,7 +285,7 @@ namespace Stareater.GameScenes
 					Color.Gray, 
 					null
 				),
-				TextRenderUtil.Get.BufferText(new ThousandsFormatter().Format(unit.Count), -1, Matrix4.Identity).ToList()
+				TextRenderUtil.Get.BufferRaster(new ThousandsFormatter().Format(unit.Count), -1, Matrix4.Identity).ToList()
 			));
 
 			return new SceneObject(polygons, animator: animator);

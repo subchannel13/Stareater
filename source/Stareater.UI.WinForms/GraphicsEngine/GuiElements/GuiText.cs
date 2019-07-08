@@ -62,7 +62,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			var soBuilder = new SceneObjectBuilder().
 				Clip(this.Position.ClipArea).
 				StartSprite(this.Z0, TextRenderUtil.Get.TextureId, this.TextColor).
-				AddVertices(TextRenderUtil.Get.BufferText(this.Text, this.fontSize(), -0.5f, Matrix4.Identity)).
+				AddVertices(TextRenderUtil.Get.BufferRaster(this.Text, this.fontSize(), -0.5f, Matrix4.Identity)).
 				Scale(this.fontHeight, this.fontHeight).
 				Translate(this.Position.Center + new Vector2(0, this.fontHeight * this.lineCount() / 2));
 

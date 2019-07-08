@@ -250,7 +250,7 @@ namespace Stareater.GameScenes
 					StartSprite(TitleZ, TextRenderUtil.Get.TextureId, Color.FromArgb(0, Color.White)).
 					Scale(TitleSize).
 					Translate(underlinePosition + new Vector2(0, TitleSize * 1.1f)).
-					AddVertices(TextRenderUtil.Get.BufferText(title, -0.5f, Matrix4.Identity)).
+					AddVertices(TextRenderUtil.Get.BufferRaster(title, -0.5f, Matrix4.Identity)).
 
 					Build(polygons => new AnimationSequence(
 						new AnimationDelay(delay),

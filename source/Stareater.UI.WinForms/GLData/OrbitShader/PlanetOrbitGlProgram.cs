@@ -25,11 +25,6 @@ namespace Stareater.GLData.OrbitShader
 		public int LocalPositionId { get; private set; }
 		public int OrbitPositionId { get; private set; }
 
-		public void Activate()
-		{
-			GL.UseProgram(this.ProgramId);
-		}
-		
 		public void Load()
 		{
 			string vertexShaderSource;

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
 using Stareater.GLData.OrbitShader;
+using Stareater.GLData.SdfShader;
 using Stareater.GLData.SpriteShader;
 
 namespace Stareater.GLData
@@ -8,13 +9,17 @@ namespace Stareater.GLData
 	static class ShaderLibrary
 	{
 		public static PlanetOrbitGlProgram PlanetOrbit { get; private set; }
+		public static SdfGlProgram Sdf { get; private set; }
 		public static SpriteGlProgram Sprite { get; private set; }
 		
 		public static void Load()
 		{
 			PlanetOrbit = new PlanetOrbitGlProgram();
 			PlanetOrbit.Load();
-				
+
+			Sdf = new SdfGlProgram();
+			Sdf.Load();
+
 			Sprite = new SpriteGlProgram();
 			Sprite.Load();
 		}

@@ -118,6 +118,9 @@
     <Compile Include="GLData\OrbitShader\OrbitDrawable.cs" />
     <Compile Include="GLData\OrbitShader\OrbitHelpers.cs" />
     <Compile Include="GLData\OrbitShader\PlanetOrbitGlProgram.cs" />
+    <Compile Include="GLData\SdfShader\SdfData.cs" />
+    <Compile Include="GLData\SdfShader\SdfDrawable.cs" />
+    <Compile Include="GLData\SdfShader\SdfGlProgram.cs" />
     <Compile Include="GLData\ShaderLibrary.cs" />
     <Compile Include="GLData\SpriteShader\SpriteData.cs" />
     <Compile Include="GLData\SpriteShader\SpriteDrawable.cs" />
@@ -682,6 +685,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="shaders\OrbitFragment.glsl">
       <LogicalName>OrbitFragmentShader</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="shaders\SdfVertex.glsl">
+      <LogicalName>SdfVertexShader</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="shaders\SdfFragment.glsl">
+      <LogicalName>SdfFragmentShader</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

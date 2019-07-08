@@ -37,7 +37,7 @@ namespace Stareater.GameScenes
 				new SceneObject(new PolygonData(
 					TextZ,
 					new SpriteData(Matrix4.CreateTranslation(0, 2f, 0), TextRenderUtil.Get.TextureId, Color.Red, null),
-					TextRenderUtil.Get.BufferText(
+					TextRenderUtil.Get.BufferRaster(
 						LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text(),
 						-0.5f,
 						Matrix4.Identity).ToList()
@@ -70,7 +70,7 @@ namespace Stareater.GameScenes
 							Color.White, 
 							null
 						),
-						TextRenderUtil.Get.BufferText(
+						TextRenderUtil.Get.BufferRaster(
 							formatter.Format(x.VictoryPoints),
 							-1f,
 							Matrix4.Identity
@@ -89,7 +89,7 @@ namespace Stareater.GameScenes
 							Color.White, 
 							null
 						),
-						TextRenderUtil.Get.BufferText(
+						TextRenderUtil.Get.BufferRaster(
 							x.Player.Name,
 							0f,
 							Matrix4.Identity
