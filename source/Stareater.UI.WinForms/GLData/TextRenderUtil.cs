@@ -21,7 +21,9 @@ namespace Stareater.GLData
 			}
 		}
 		#endregion
-		
+
+		public const float SdfTextSize = 10;
+
 		const int Width = 512;
 		const int Height = 512;
 		const int Spacing = 2;
@@ -66,10 +68,18 @@ namespace Stareater.GLData
 				this.TextureId = TextureUtils.CreateTexture(this.textureBitmap);
 		}
 
-		public float FontHeight(float fontSize)
+		private void initializeFor(float fontSize)
 		{
+			if (!this.characterInfos.ContainsKey(fontSize))
+				this.characterInfos[fontSize] = new Dictionary<char, CharTextureInfo>();
+
 			if (!this.fonts.ContainsKey(fontSize))
 				this.fonts[fontSize] = new Font(FontFamily, fontSize, FontStyle.Bold);
+		}
+
+		public float FontHeight(float fontSize)
+		{
+			this.initializeFor(fontSize);
 			var font = this.fonts[fontSize];
 
 			if (!this.fontHeights.ContainsKey(fontSize))
@@ -90,9 +100,7 @@ namespace Stareater.GLData
 			if (string.IsNullOrEmpty(text))
 				return 0;
 
-			if (!this.characterInfos.ContainsKey(fontSize))
-				this.characterInfos[fontSize] = new Dictionary<char, CharTextureInfo>();
-
+			this.initializeFor(fontSize);
 			var characters = this.characterInfos[fontSize];
 			var textWidth = 0f;
 
@@ -103,7 +111,7 @@ namespace Stareater.GLData
 				foreach (char c in line)
 				{
 					if (!characters.ContainsKey(c))
-						this.prepare(text, fontSize);
+						this.prepareRaster(text, fontSize); //TODO(v0.8) should prepare before measurement
 
 					if (!char.IsWhiteSpace(c))
 						lineWidth += characters[c].Aspect;
@@ -128,10 +136,24 @@ namespace Stareater.GLData
 		//TODO(later) try to remove the need transform parameter
 		public IEnumerable<float> BufferRaster(string text, float fontSize, float adjustment, Matrix4 transform)
 		{
-			float textWidth = this.MeasureWidth(text, fontSize);
+			this.prepareRaster(text, fontSize);
+
+			return bufferText(text, this.characterInfos[fontSize], this.MeasureWidth(text, fontSize), adjustment, transform);
+		}
+
+		//TODO(later) try to remove the need transform parameter
+		public IEnumerable<float> BufferSdf(string text, float adjustment, Matrix4 transform)
+		{
+			this.prepareSdf(text);
+
+			return bufferText(text, this.characterInfos[SdfTextSize], this.MeasureWidth(text, SdfTextSize), adjustment, transform);
+		}
+
+		//TODO(later) try to remove the need transform parameter
+		private IEnumerable<float> bufferText(string text, Dictionary<char, CharTextureInfo> characters, float textWidth, float adjustment, Matrix4 transform)
+		{
 			float charOffsetX = textWidth * adjustment;
 			float charOffsetY = 0;
-			var characters = this.characterInfos[fontSize];
 
 			foreach (char c in text)
 				if (!char.IsWhiteSpace(c))
@@ -158,43 +180,33 @@ namespace Stareater.GLData
 				}
 		}
 
-		//TODO(later) try to remove the need transform parameter
-		public IEnumerable<float> BufferSdf(string text, float fontSize, float adjustment, Matrix4 transform)
+		private void prepareRaster(string text, float fontSize)
 		{
-			//TODO(v0.8)
-			yield break;
+			this.initializeFor(fontSize);
+			this.prepare(text, this.characterInfos[fontSize], () => new CharacterRasterDrawer(this.textureBuilder, this.textureBitmap, this.fonts[fontSize]));
 		}
 
-		private void prepare(string text, float fontSize)
+		private void prepareSdf(string text)
 		{
+			this.initializeFor(SdfTextSize);
+			this.prepare(text, this.characterInfos[SdfTextSize],() => new CharacterSdfDrawer(this.textureBuilder, this.textureBitmap, this.fonts[SdfTextSize]));
+		}
+
+		private void prepare(string text, Dictionary<char, CharTextureInfo> characters, Func<ICharacterDrawer> drawerMaker)
+		{
+			this.Initialize();
+			
 			var missinCharacters = new HashSet<char>();
-			var characters = this.characterInfos[fontSize];
 			foreach (char c in text)
 				if (!characters.ContainsKey(c) && !char.IsWhiteSpace(c))
 					missinCharacters.Add(c);
 
-			if (missinCharacters.Count == 0 && this.TextureId != 0)
+			if (missinCharacters.Count == 0)
 				return;
 
-			this.Initialize();
-
-			if (!this.fonts.ContainsKey(fontSize))
-				this.fonts[fontSize] = new Font(FontFamily, fontSize, FontStyle.Bold);
-			var font = this.fonts[fontSize];
-
-			using (var g = Graphics.FromImage(this.textureBitmap))
-			{
-				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-				var textBrush = new SolidBrush(Color.White);
-
-				foreach (char c in missinCharacters)
-				{
-					var rect = this.textureBuilder.Add(g.MeasureString(c.ToString(), font, int.MaxValue, StringFormat.GenericTypographic));
-
-					characters[c] = new CharTextureInfo(rect, Width, Height);
-					g.DrawString(c.ToString(), font, textBrush, rect.Location, StringFormat.GenericTypographic);
-				}
-			}
+			using(var drawer = drawerMaker())
+			foreach (char c in missinCharacters)
+				characters[c] = new CharTextureInfo(drawer.Draw(c), Width, Height);
 
 			TextureUtils.UpdateTexture(this.TextureId, this.textureBitmap);
 		}

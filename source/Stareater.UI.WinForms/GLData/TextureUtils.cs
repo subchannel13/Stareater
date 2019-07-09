@@ -25,9 +25,9 @@ namespace Stareater.GLData
 
 		public static void UpdateTexture(int textureId, Bitmap image)
 		{
-			System.Drawing.Imaging.BitmapData textureData =
+			var textureData =
 				image.LockBits(
-					new System.Drawing.Rectangle(0, 0, image.Width, image.Height),
+					new Rectangle(0, 0, image.Width, image.Height),
 					System.Drawing.Imaging.ImageLockMode.ReadOnly,
 					image.PixelFormat
 				);

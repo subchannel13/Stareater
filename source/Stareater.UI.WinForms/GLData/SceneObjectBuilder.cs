@@ -102,7 +102,16 @@ namespace Stareater.GLData
 		{
 			this.applyPolygonData();
 
-			this.currentPolygonType = fontSize <= 20 ? PolygonType.Sprite : PolygonType.Sdf;
+			if (fontSize < TextRenderUtil.SdfTextSize)
+			{
+				this.currentPolygonType = PolygonType.Sprite;
+				this.AddVertices(TextRenderUtil.Get.BufferRaster(text, fontSize, adjustment, transform));
+			}
+			else
+			{
+				this.currentPolygonType = PolygonType.Sdf;
+				this.AddVertices(TextRenderUtil.Get.BufferSdf(text, adjustment, transform));
+			}
 			this.z = z;
 			this.textureId = textureId;
 			this.color = color;

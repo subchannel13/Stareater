@@ -1,13 +1,10 @@
-﻿using Stareater.GLData.SpriteShader;
-using System.Drawing;
-
-namespace Stareater.GraphicsEngine.Animators
+﻿namespace Stareater.GraphicsEngine.Animators
 {
 	class TweenAlpha : IAnimator
 	{
-		private PolygonData target;
-		private double finalValue;
-		private double changeSpeed;
+		private readonly PolygonData target;
+		private readonly double finalValue;
+		private readonly double changeSpeed;
 
 		private double currentValue;
 
@@ -26,14 +23,7 @@ namespace Stareater.GraphicsEngine.Animators
 			if (this.Finished)
 				this.currentValue = this.finalValue;
 
-			var oldData = this.target.ShaderData as SpriteData;
-			var oldColor = Color.FromArgb(oldData.Color.ToArgb());
-			this.target.UpdateDrawable(new SpriteData(
-				oldData.LocalTransform,
-				oldData.TextureId,
-				Color.FromArgb((int)(this.currentValue * 255), oldColor), 
-				oldData.ClipArea
-			));
+			this.target.ShaderData.Alpha = (float)this.currentValue;
 		}
 
 		public void FastForward()

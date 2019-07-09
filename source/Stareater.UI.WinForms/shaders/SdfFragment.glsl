@@ -9,10 +9,10 @@ out vec4 outputF;
 
 void main()
 {
-   vec4 color = texture2D(textureSampler, textureCoord) * color;
+   vec4 distColor = texture2D(textureSampler, textureCoord);
 
-   if (color.a > 0.5)
-      outputF = texture2D(textureSampler, textureCoord) * color;
+   if (distColor.a > 0.5)
+      outputF = color;
    else
       outputF = vec4(0, 0, 0, 0);
 }

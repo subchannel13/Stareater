@@ -1,5 +1,5 @@
-﻿using System;
-using Stareater.GLData;
+﻿using Stareater.GLData;
+using System.Drawing;
 
 namespace Stareater.GraphicsEngine
 {
@@ -8,6 +8,7 @@ namespace Stareater.GraphicsEngine
 		AGlProgram ForProgram { get; }
 		int VertexDataSize { get; }
 
+		float Alpha { get; set; }
 		IDrawable MakeDrawable(VertexArray vao, int objectIndex);
 	}
 }

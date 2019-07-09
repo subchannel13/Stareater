@@ -21,6 +21,12 @@ namespace Stareater.GLData.SdfShader
 			this.ClipArea = clipArea;
 		}
 
+		public float Alpha
+		{
+			get { return this.Color.A; }
+			set { this.Color = new Color4(this.Color.R, this.Color.G, this.Color.B, value); }
+		}
+
 		public AGlProgram ForProgram => ShaderLibrary.Sdf;
 
 		public int VertexDataSize => SdfGlProgram.VertexSize;

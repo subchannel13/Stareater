@@ -21,6 +21,11 @@ namespace Stareater.GLData.SpriteShader
 		}
 
 		#region IShaderUniformData implementation
+		public float Alpha
+		{
+			get { return this.Color.A; }
+			set { this.Color = new Color4(this.Color.R, this.Color.G, this.Color.B, value); }
+		}
 
 		public AGlProgram ForProgram 
 		{
