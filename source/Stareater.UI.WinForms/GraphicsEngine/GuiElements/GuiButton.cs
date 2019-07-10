@@ -179,7 +179,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		private float fontSize()
 		{
-			return this.fontHeight * SettingsWinforms.Get.GuiScale;
+			return this.TextSize * SettingsWinforms.Get.GuiScale;
 		}
 	}
 }

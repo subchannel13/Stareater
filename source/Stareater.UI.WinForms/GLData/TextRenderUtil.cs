@@ -22,7 +22,7 @@ namespace Stareater.GLData
 		}
 		#endregion
 
-		public const float SdfTextSize = 10;
+		public const float SdfTextSize = 16;
 
 		const int Width = 512;
 		const int Height = 512;
