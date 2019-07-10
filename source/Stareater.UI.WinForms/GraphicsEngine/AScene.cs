@@ -454,8 +454,9 @@ namespace Stareater.GraphicsEngine
 		#region Rendering logic
 		private void setupDrawables()
 		{
-			//TODO(v0.8) clip child UI elements
-			foreach(var layer in this.dirtyLayers)
+			var renderData = this.sceneObjects.SelectMany(x => x.RenderData).GroupBy(x => x.Z).ToDictionary(x => x.Key);
+
+			foreach (var layer in this.dirtyLayers)
 			{
 				if (this.layerVaos.ContainsKey(layer))
 				{
@@ -466,11 +467,14 @@ namespace Stareater.GraphicsEngine
 				else
 					this.layerVaos[layer] = new List<VertexArray>();
 				this.drawables[layer] = new List<IDrawable>();
-				
+
+				if (!renderData.ContainsKey(layer))
+					continue;
+
 				var vaoBuilders = new Dictionary<AGlProgram, VertexArrayBuilder>();
 				var drawableData = new List<PolygonData>();
 				var drawableIndices = new List<int>();
-				foreach(var polygon in this.sceneObjects.SelectMany(x => x.RenderData).Where(x => x.Z == layer))
+				foreach (var polygon in renderData[layer])
 				{
 					if (!vaoBuilders.ContainsKey(polygon.ShaderData.ForProgram))
 						vaoBuilders[polygon.ShaderData.ForProgram] = new VertexArrayBuilder();
@@ -483,7 +487,7 @@ namespace Stareater.GraphicsEngine
 					drawableData.Add(polygon);
 					drawableIndices.Add(builder.Count - 1);
 				}
-				
+
 				var vaos = new Dictionary<AGlProgram, VertexArray>();
 				foreach (var builder in vaoBuilders)
 				{
@@ -494,9 +498,8 @@ namespace Stareater.GraphicsEngine
 				
 				for (int i = 0; i < drawableData.Count; i++)
 				{
-					var vaoI = drawableIndices[i];
-					var data = drawableData[vaoI];
-					this.drawables[data.Z].Add(data.MakeDrawable(vaos[data.ShaderData.ForProgram], vaoI)); 
+					var data = drawableData[i];
+					this.drawables[layer].Add(data.MakeDrawable(vaos[data.ShaderData.ForProgram], drawableIndices[i])); 
 				}
 			}
 			this.dirtyLayers.Clear();

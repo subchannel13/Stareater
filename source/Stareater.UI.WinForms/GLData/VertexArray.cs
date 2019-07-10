@@ -37,7 +37,7 @@ namespace Stareater.GLData
 			GL.BindVertexArray(0);
 			GL.DeleteVertexArray(this.vao);
 		}
-		
+
 		public int ObjectStart(int index)
 		{
 			return this.objectStart[index];
