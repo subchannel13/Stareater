@@ -95,36 +95,21 @@ namespace Stareater.GLData
 			return this.fontHeights[fontSize];
 		}
 
-		public float MeasureWidth(string text, float fontSize)
+		public float WidthOf(string text, float fontSize)
 		{
 			if (string.IsNullOrEmpty(text))
 				return 0;
 
-			this.initializeFor(fontSize);
-			var characters = this.characterInfos[fontSize];
-			var textWidth = 0f;
-
-			foreach (var line in text.Split('\n'))
+			if (fontSize < SdfTextSize)
 			{
-				var lineWidth = 0f;
-
-				foreach (char c in line)
-				{
-					if (!characters.ContainsKey(c))
-						this.prepareRaster(text, fontSize); //TODO(v0.8) should prepare before measurement
-
-					if (!char.IsWhiteSpace(c))
-						lineWidth += characters[c].Aspect;
-					else if (c == ' ')
-						lineWidth += SpaceUnitWidth;
-					else if (c != '\r')
-						throw new ArgumentException("Unsupported whitespace character, character code: " + (int)c);
-				}
-
-				textWidth = Math.Max(textWidth, lineWidth);
+				this.prepareRaster(text, fontSize);
+				return this.measureWidth(text, fontSize);
 			}
-			
-			return textWidth;
+			else
+			{
+				this.prepareSdf(text);
+				return this.measureWidth(text, SdfTextSize);
+			}
 		}
 
 		//TODO(later) try to remove the need transform parameter
@@ -138,7 +123,7 @@ namespace Stareater.GLData
 		{
 			this.prepareRaster(text, fontSize);
 
-			return bufferText(text, this.characterInfos[fontSize], this.MeasureWidth(text, fontSize), adjustment, transform);
+			return bufferText(text, this.characterInfos[fontSize], this.measureWidth(text, fontSize), adjustment, transform);
 		}
 
 		//TODO(later) try to remove the need transform parameter
@@ -146,7 +131,7 @@ namespace Stareater.GLData
 		{
 			this.prepareSdf(text);
 
-			return bufferText(text, this.characterInfos[SdfTextSize], this.MeasureWidth(text, SdfTextSize), adjustment, transform);
+			return bufferText(text, this.characterInfos[SdfTextSize], this.measureWidth(text, SdfTextSize), adjustment, transform);
 		}
 
 		//TODO(later) try to remove the need transform parameter
@@ -178,6 +163,32 @@ namespace Stareater.GLData
 					charOffsetX = textWidth * adjustment;
 					charOffsetY--;
 				}
+		}
+
+		private float measureWidth(string text, float fontSize)
+		{
+			this.initializeFor(fontSize);
+			var characters = this.characterInfos[fontSize];
+			var textWidth = 0f;
+
+			foreach (var line in text.Split('\n'))
+			{
+				var lineWidth = 0f;
+
+				foreach (char c in line)
+				{
+					if (!char.IsWhiteSpace(c))
+						lineWidth += characters[c].Aspect;
+					else if (c == ' ')
+						lineWidth += SpaceUnitWidth;
+					else if (c != '\r')
+						throw new ArgumentException("Unsupported whitespace character, character code: " + (int)c);
+				}
+
+				textWidth = Math.Max(textWidth, lineWidth);
+			}
+
+			return textWidth;
 		}
 
 		private void prepareRaster(string text, float fontSize)

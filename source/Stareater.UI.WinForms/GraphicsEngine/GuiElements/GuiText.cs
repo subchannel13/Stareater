@@ -74,7 +74,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		protected override Vector2 measureContent()
 		{
 			return new Vector2(
-				TextRenderUtil.Get.MeasureWidth(this.Text, this.fontSize()) * this.fontHeight,
+				TextRenderUtil.Get.WidthOf(this.Text, this.fontSize()) * this.fontHeight,
 				this.fontHeight * this.lineCount()
 			);
 		}

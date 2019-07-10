@@ -172,7 +172,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			//TODO(later) count lines
 			return new Vector2(
-				TextRenderUtil.Get.MeasureWidth(this.Text, this.fontSize()) * this.fontHeight + 2 * this.paddingX,
+				TextRenderUtil.Get.WidthOf(this.Text, this.fontSize()) * this.fontHeight + 2 * this.paddingX,
 				(string.IsNullOrWhiteSpace(this.Text) ? 0 : this.fontHeight) + 2 * this.paddingY
 			);
 		}
