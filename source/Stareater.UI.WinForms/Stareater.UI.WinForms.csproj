@@ -114,7 +114,7 @@
     <Compile Include="GameScenes\IntroScene.cs" />
     <Compile Include="GLData\CharacterRasterDrawer.cs" />
     <Compile Include="GLData\CharacterSdfDrawer.cs" />
-    <Compile Include="GLData\FastPixel.cs" />
+    <Compile Include="GLData\GlyphContour.cs" />
     <Compile Include="GLData\ICharacterDrawer.cs" />
     <Compile Include="GLData\OrbitShader\ArcBorderBuilder.cs" />
     <Compile Include="GLData\OrbitShader\ArcVertices.cs" />

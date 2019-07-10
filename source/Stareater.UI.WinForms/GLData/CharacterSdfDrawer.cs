@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Stareater.GLData
 {
@@ -13,7 +15,9 @@ namespace Stareater.GLData
 
 		private readonly AtlasBuilder atlas;
 		private readonly Font font;
-		private readonly FastPixel pixelator;
+		private readonly Bitmap texture;
+		private readonly BitmapData bmpData;
+		private readonly IntPtr bmpPtr;
 		private readonly Bitmap fakeBitmap;
 		private readonly Graphics fakeCanvas;
 
@@ -21,16 +25,18 @@ namespace Stareater.GLData
 		{
 			this.atlas = atlas;
 			this.font = font;
-			this.pixelator = new FastPixel(texture);
+			this.texture = texture;
 			this.fakeBitmap = new Bitmap(1, 1);
 			this.fakeCanvas = Graphics.FromImage(this.fakeBitmap);
 
-			pixelator.Lock();
+			this.bmpData = texture.LockBits(new Rectangle(0, 0, texture.Width, texture.Height), ImageLockMode.ReadWrite, texture.PixelFormat);
+			this.bmpPtr = this.bmpData.Scan0;
+
 		}
 
 		public void Dispose()
 		{
-			pixelator.Unlock(true);
+			this.texture.UnlockBits(bmpData);
 			fakeCanvas.Dispose();
 			fakeBitmap.Dispose();
 		}
@@ -51,15 +57,25 @@ namespace Stareater.GLData
 			var distField = genSdf(contures, width, height);
 
 			for (int y = 0; y < height; y++)
+			{
+				var rgbValues = new byte[4 * width];
 				for (int x = 0; x < width; x++)
-					pixelator.SetPixel(rect.X + x, rect.Y + y, Color.FromArgb((int)(distField[y, x] * 255), 255, 255, 255));
+				{
+					rgbValues[4 * x] = (byte)(distField[y, x] * 255);
+					rgbValues[4 * x + 1] = rgbValues[4 * x];
+					rgbValues[4 * x + 2] = rgbValues[4 * x];
+					rgbValues[4 * x + 3] = rgbValues[4 * x];
+				}
+
+				Marshal.Copy(rgbValues, 0, this.bmpPtr + (rect.Y + y) * bmpData.Stride + rect.X * 4, rgbValues.Length);
+			}
 
 			return rect;
 		}
 
-		private static List<Contour> getContures(GraphicsPath path)
+		private static List<GlyphContour> getContures(GraphicsPath path)
 		{
-			var contoures = new List<Contour>();
+			var contoures = new List<GlyphContour>();
 			var pathIter = new GraphicsPathIterator(path);
 			var pathPoints = path.PathPoints;
 
@@ -67,7 +83,7 @@ namespace Stareater.GLData
 			{
 				var mySubPaths = pathIter.NextSubpath(out int subPathStartIndex, out int subPathEndIndex, out bool isClosed);
 
-				var strokes = new List<Stroke>();
+				var strokes = new List<PointF[]>();
 				while (true)
 				{
 					var count = pathIter.NextPathType(out byte pType, out int startI, out int endI);
@@ -79,19 +95,19 @@ namespace Stareater.GLData
 						throw new Exception("Invalid stroke type " + pType);
 
 					for (int i = 1; i < count; i++)
-						strokes.Add(new Stroke(pathPoints[startI + i - 1], pathPoints[startI + i]));
+						strokes.Add(new PointF[] { pathPoints[startI + i - 1], pathPoints[startI + i] });
 				}
 
 				if (isClosed)
-					strokes.Add(new Stroke(path.PathPoints[subPathEndIndex], path.PathPoints[subPathStartIndex]));
+					strokes.Add(new PointF[] { path.PathPoints[subPathEndIndex], path.PathPoints[subPathStartIndex] });
 
-				contoures.Add(new Contour(strokes));
+				contoures.Add(new GlyphContour(strokes));
 			}
 
 			return contoures;
 		}
 
-		private double[,] genSdf(List<Contour> contures, int width, int height)
+		private double[,] genSdf(List<GlyphContour> contures, int width, int height)
 		{
 			var distField = new double[height, width];
 
@@ -109,84 +125,5 @@ namespace Stareater.GLData
 			return distField;
 		}
 
-		class Contour
-		{
-			private readonly IEnumerable<Stroke> strokes;
-
-			public Contour(IEnumerable<Stroke> strokes)
-			{
-				this.strokes = strokes;
-			}
-
-			public double Distance(Vector2 fromP)
-			{
-				return this.strokes.Min(stroke => stroke.Distance(fromP));
-			}
-
-			public int RayHits(Vector2 fromP)
-			{
-				return this.strokes.
-					Where(stroke => stroke.RayHitTest(fromP)).
-					Count();
-			}
-		}
-
-		class Stroke
-		{
-			private readonly Vector2 p0, p1;
-
-			public Stroke(PointF p0, PointF p1)
-			{
-				this.p0 = new Vector2(p0.X, p0.Y);
-				this.p1 = new Vector2(p1.X, p1.Y);
-			}
-
-			public float Distance(Vector2 fromP)
-			{
-				var p = fromP - this.p0;
-				var dir = this.p1 - this.p0;
-				if (dir.X == 0 && dir.Y == 0)
-					return (fromP - this.p0).Length;
-
-				var t = Vector2.Dot(p, dir) / dir.LengthSquared;
-
-				if (float.IsNaN(t))
-					throw new ArithmeticException();
-
-				if (t <= 0)
-					return (fromP - this.p0).Length;
-				if (t >= 1)
-					return (fromP - this.p1).Length;
-
-				return (fromP - this.p0 * t).Length;
-			}
-
-			public bool RayHitTest(Vector2 fromP)
-			{
-				var dir = this.p1 - this.p0;
-
-				if (dir.Y == 0)
-					return false;
-
-				var yShift = this.p0.Y == fromP.Y || this.p1.Y == fromP.Y ? 
-					Math.Min(0.5f, Math.Abs(dir.Y / 2)) : 
-					0;
-
-				var p = this.p0 - fromP - new Vector2(0, yShift);
-
-				var t = -p.Y / dir.Y;
-
-				if (float.IsNaN(t))
-					throw new ArithmeticException();
-
-				if (t < 0 || t > 1)
-					return false;
-
-				if (t == 0 || t == 1)
-					return this.p0.Y < 0 || this.p1.Y < 0;
-
-				return p.X + t * dir.X > 0;
-			}
-		}
 	}
 }
