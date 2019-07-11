@@ -8,12 +8,12 @@ namespace Stareater.GraphicsEngine.Animators
 	class OscillatingAlpha : IAnimator
 	{
 		private double time = 0;
-		private double period;
-		private double amplitude;
+		private readonly double period;
+		private readonly double amplitude;
 
-		private PolygonData target;
-		private Func<double, double> valueTransform;
-		private Color color;
+		private readonly PolygonData target;
+		private readonly Func<double, double> valueTransform;
+		private readonly Color color;
 
 		public OscillatingAlpha(PolygonData target, double period, double amplitude, Func<double, double> valueTransform, Color color)
 		{
@@ -36,7 +36,8 @@ namespace Stareater.GraphicsEngine.Animators
 				oldData.LocalTransform,
 				oldData.TextureId,
 				Color.FromArgb((int)(alpha * 255), this.color),
-				oldData.ClipArea
+				oldData.ClipArea,
+				oldData.LinearFiltering
 			));
 		}
 

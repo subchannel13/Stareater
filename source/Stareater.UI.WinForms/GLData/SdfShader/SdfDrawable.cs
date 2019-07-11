@@ -35,6 +35,8 @@ namespace Stareater.GLData.SdfShader
 			var mvp = this.objectData.LocalTransform * view;
 			GL.UniformMatrix4(program.LocalTransformId, false, ref mvp);
 			GL.BindTexture(TextureTarget.Texture2D, this.objectData.TextureId);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.Linear);
+			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)TextureMagFilter.Linear);
 			GL.Uniform1(program.ZId, z);
 			GL.Uniform4(program.ColorId, this.objectData.Color);
 

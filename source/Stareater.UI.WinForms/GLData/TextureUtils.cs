@@ -37,9 +37,6 @@ namespace Stareater.GLData
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height,
 				0, PixelFormat.Bgra, PixelType.UnsignedByte, textureData.Scan0);
 
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.Linear);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)TextureMagFilter.Linear);
-
 			image.UnlockBits(textureData);
 			textureSizes[textureId] = new Vector2(image.Width, image.Height);
 		}

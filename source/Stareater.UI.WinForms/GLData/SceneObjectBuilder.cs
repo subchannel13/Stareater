@@ -20,11 +20,12 @@ namespace Stareater.GLData
 		private float z;
 		private List<float> vertexData = new List<float>();
 
-		#region Sprite data
+		#region Sprite / SDF data
 		private int textureId;
 		private Color color;
 		private Matrix4 localTransform = Matrix4.Identity;
 		private ClipWindow clipArea = null;
+		private bool linearFiltering;
 		#endregion
 
 		#region Orbit data
@@ -67,6 +68,7 @@ namespace Stareater.GLData
 			this.z = z;
 			this.textureId = textureId;
 			this.color = color;
+			this.linearFiltering = true;
 
 			return this;
 		}
@@ -80,6 +82,7 @@ namespace Stareater.GLData
 			this.vertexData.AddRange(SpriteHelpers.UnitRect(sprite));
 			this.textureId = sprite.Id;
 			this.color = color;
+			this.linearFiltering = true;
 
 			return this;
 		}
@@ -105,6 +108,7 @@ namespace Stareater.GLData
 			if (fontSize < TextRenderUtil.SdfTextSize)
 			{
 				this.currentPolygonType = PolygonType.Sprite;
+				this.linearFiltering = false;
 				this.AddVertices(TextRenderUtil.Get.BufferRaster(text, fontSize, adjustment, transform));
 			}
 			else
@@ -214,7 +218,7 @@ namespace Stareater.GLData
 			switch (this.currentPolygonType)
 			{
 				case PolygonType.Sprite:
-					shaderData = new SpriteData(this.localTransform, this.textureId, this.color, this.clipArea);
+					shaderData = new SpriteData(this.localTransform, this.textureId, this.color, this.clipArea, this.linearFiltering);
 					break;
 				case PolygonType.Orbit:
 					shaderData = new OrbitData(this.minRadius, this.maxRadius, this.color, this.localTransform, this.sprite);

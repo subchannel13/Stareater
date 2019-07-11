@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 using OpenTK;
 using Stareater.GLData.SpriteShader;
 
@@ -74,23 +75,21 @@ namespace Stareater.GLData
 				this.characterInfos[fontSize] = new Dictionary<char, CharTextureInfo>();
 
 			if (!this.fonts.ContainsKey(fontSize))
-				this.fonts[fontSize] = new Font(FontFamily, fontSize, FontStyle.Bold);
+			{
+				var font = new Font(FontFamily, fontSize, FontStyle.Regular, GraphicsUnit.Pixel);
+				this.fonts[fontSize] = font;
+
+				using(var fakeCanvas = new Bitmap(1,1))
+				using (var g = Graphics.FromImage(fakeCanvas))
+				{
+					this.fontHeights[fontSize] = TextRenderer.MeasureText(g, " ", font, new Size(int.MaxValue, int.MaxValue)).Height;
+				}
+			}
 		}
 
 		public float FontHeight(float fontSize)
 		{
 			this.initializeFor(fontSize);
-			var font = this.fonts[fontSize];
-
-			if (!this.fontHeights.ContainsKey(fontSize))
-			{
-				this.Initialize();
-				using (var g = Graphics.FromImage(this.textureBitmap))
-				{
-					var size = g.MeasureString(" ", font, int.MaxValue, StringFormat.GenericTypographic);
-					this.fontHeights[fontSize] = (float)Math.Ceiling(size.Height);
-				}
-			}
 
 			return this.fontHeights[fontSize];
 		}

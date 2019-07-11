@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using System.Drawing.Text;
+using System.Windows.Forms;
 
 namespace Stareater.GLData
 {
@@ -14,7 +16,7 @@ namespace Stareater.GLData
 			this.atlas = atlas;
 			this.font = font;
 			this.canvas = Graphics.FromImage(texture);
-			this.canvas.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+			this.canvas.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 			this.brush = new SolidBrush(Color.White);
 		}
 
@@ -25,9 +27,14 @@ namespace Stareater.GLData
 
 		public Rectangle Draw(char c)
 		{
-			var rect = this.atlas.Add(this.canvas.MeasureString(c.ToString(), this.font, int.MaxValue, StringFormat.GenericTypographic));
+			var text = c.ToString();
 
-			this.canvas.DrawString(c.ToString(), this.font, this.brush, rect.Location, StringFormat.GenericTypographic);
+			var rect = this.atlas.Add(new SizeF(
+				this.canvas.MeasureString(text, this.font, int.MaxValue, StringFormat.GenericTypographic).Width,
+				TextRenderer.MeasureText(this.canvas, text, this.font, new Size(int.MaxValue, int.MaxValue)).Height
+			));
+
+			this.canvas.DrawString(text, this.font, this.brush, rect.Location, StringFormat.GenericTypographic);
 			return rect;
 		}
 	}

@@ -11,13 +11,15 @@ namespace Stareater.GLData.SpriteShader
 		public Color4 Color { get; set; }
 		public Matrix4 LocalTransform { get; set; }
 		public ClipWindow ClipArea { get; private set; }
+		public bool LinearFiltering { get; private set; }
 
-		public SpriteData(Matrix4 localTransform, int textureId, Color color, ClipWindow clipArea)
+		public SpriteData(Matrix4 localTransform, int textureId, Color color, ClipWindow clipArea, bool linearFiltering)
 		{
 			this.LocalTransform = localTransform;
 			this.TextureId = textureId;
 			this.Color = new Color4(color.R, color.G, color.B, color.A);
 			this.ClipArea = clipArea;
+			this.LinearFiltering = linearFiltering;
 		}
 
 		#region IShaderUniformData implementation
