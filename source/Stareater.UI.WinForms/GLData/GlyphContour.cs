@@ -48,7 +48,7 @@ namespace Stareater.GLData
 			if (t >= 1)
 				return (fromP - stroke[1]).Length;
 
-			return (fromP - stroke[0] * t).Length;
+			return (p - dir * t).Length;
 		}
 
 		private bool rayHitTest(Vector2[] stroke, Vector2 fromP)
@@ -62,7 +62,7 @@ namespace Stareater.GLData
 				Math.Min(0.5f, Math.Abs(dir.Y / 2)) :
 				0;
 
-			var p = stroke[0] - fromP - new Vector2(0, yShift);
+			var p = new Vector2(stroke[0].X - fromP.X, stroke[0].Y - fromP.Y - yShift);
 
 			var t = -p.Y / dir.Y;
 

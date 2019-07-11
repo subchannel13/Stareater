@@ -105,7 +105,7 @@ namespace Stareater.GLData
 		{
 			this.applyPolygonData();
 
-			if (fontSize < TextRenderUtil.SdfTextSize)
+			if (fontSize < TextRenderUtil.SdfSizeThreshold)
 			{
 				this.currentPolygonType = PolygonType.Sprite;
 				this.linearFiltering = false;

@@ -23,7 +23,8 @@ namespace Stareater.GLData
 		}
 		#endregion
 
-		public const float SdfTextSize = 16;
+		public const float SdfSizeThreshold = 16;
+		private const float SdfFontSize = 24;
 
 		const int Width = 512;
 		const int Height = 512;
@@ -99,7 +100,7 @@ namespace Stareater.GLData
 			if (string.IsNullOrEmpty(text))
 				return 0;
 
-			if (fontSize < SdfTextSize)
+			if (fontSize < SdfSizeThreshold)
 			{
 				this.prepareRaster(text, fontSize);
 				return this.measureWidth(text, fontSize);
@@ -107,7 +108,7 @@ namespace Stareater.GLData
 			else
 			{
 				this.prepareSdf(text);
-				return this.measureWidth(text, SdfTextSize);
+				return this.measureWidth(text, SdfFontSize);
 			}
 		}
 
@@ -130,7 +131,7 @@ namespace Stareater.GLData
 		{
 			this.prepareSdf(text);
 
-			return bufferText(text, this.characterInfos[SdfTextSize], this.measureWidth(text, SdfTextSize), adjustment, transform);
+			return bufferText(text, this.characterInfos[SdfFontSize], this.measureWidth(text, SdfFontSize), adjustment, transform);
 		}
 
 		//TODO(later) try to remove the need transform parameter
@@ -198,8 +199,8 @@ namespace Stareater.GLData
 
 		private void prepareSdf(string text)
 		{
-			this.initializeFor(SdfTextSize);
-			this.prepare(text, this.characterInfos[SdfTextSize],() => new CharacterSdfDrawer(this.textureBuilder, this.textureBitmap, this.fonts[SdfTextSize]));
+			this.initializeFor(SdfFontSize);
+			this.prepare(text, this.characterInfos[SdfFontSize],() => new CharacterSdfDrawer(this.textureBuilder, this.textureBitmap, this.fonts[SdfFontSize]));
 		}
 
 		private void prepare(string text, Dictionary<char, CharTextureInfo> characters, Func<ICharacterDrawer> drawerMaker)

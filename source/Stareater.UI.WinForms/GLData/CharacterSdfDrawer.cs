@@ -6,12 +6,13 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Stareater.GLData
 {
 	class CharacterSdfDrawer : ICharacterDrawer
 	{
-		private const int Padding = 2;
+		private const int Padding = 4;
 
 		private readonly AtlasBuilder atlas;
 		private readonly Font font;
@@ -49,11 +50,14 @@ namespace Stareater.GLData
 			path.Flatten();
 
 			var contures = getContures(path);
-			var measuredSize = this.fakeCanvas.MeasureString(text, font, int.MaxValue, StringFormat.GenericTypographic);
+			var measuredSize = new SizeF(
+				this.fakeCanvas.MeasureString(text, this.font, int.MaxValue, StringFormat.GenericTypographic).Width + Padding * 2,
+				TextRenderer.MeasureText(this.fakeCanvas, text, this.font, new Size(int.MaxValue, int.MaxValue)).Height + Padding * 2
+			);
 			var rect = this.atlas.Add(measuredSize);
 			
-			int width = rect.Size.Width + Padding * 2;
-			int height = rect.Size.Height + Padding * 2;
+			int width = rect.Size.Width;
+			int height = rect.Size.Height;
 			var distField = genSdf(contures, width, height);
 
 			for (int y = 0; y < height; y++)
@@ -70,7 +74,7 @@ namespace Stareater.GLData
 				Marshal.Copy(rgbValues, 0, this.bmpPtr + (rect.Y + y) * bmpData.Stride + rect.X * 4, rgbValues.Length);
 			}
 
-			return rect;
+			return new Rectangle(rect.X + Padding, rect.Y + Padding, width - 2 * Padding, height - 2 * Padding);
 		}
 
 		private static List<GlyphContour> getContures(GraphicsPath path)
