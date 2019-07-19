@@ -49,7 +49,7 @@ namespace Stareater.GLData
 			path.AddString(text, font.FontFamily, (int)font.Style, font.Size, new Point(0, 0), StringFormat.GenericTypographic);
 			path.Flatten();
 
-			var contures = getContures(path);
+			var contures = getContures(path).ToList();
 			var measuredSize = new SizeF(
 				this.fakeCanvas.MeasureString(text, this.font, int.MaxValue, StringFormat.GenericTypographic).Width + Padding * 2,
 				TextRenderer.MeasureText(this.fakeCanvas, text, this.font, new Size(int.MaxValue, int.MaxValue)).Height + Padding * 2
@@ -77,38 +77,36 @@ namespace Stareater.GLData
 			return new Rectangle(rect.X + Padding, rect.Y + Padding, width - 2 * Padding, height - 2 * Padding);
 		}
 
-		private static List<GlyphContour> getContures(GraphicsPath path)
+		private static IEnumerable<GlyphContour> getContures(GraphicsPath path)
 		{
-			var contoures = new List<GlyphContour>();
-			var pathIter = new GraphicsPathIterator(path);
 			var pathPoints = path.PathPoints;
+            var pathTypes = path.PathTypes.Select(x => x & (byte)PathPointType.PathTypeMask).ToList();
+            var contoureRanges = new List<KeyValuePair<int, int>>();
+            var start = 0;
+            var count = 0;
 
-			for (int subPathI = 0; subPathI < pathIter.SubpathCount; subPathI++)
-			{
-				var mySubPaths = pathIter.NextSubpath(out int subPathStartIndex, out int subPathEndIndex, out bool isClosed);
+            for (int i = 0; i < pathPoints.Length; i++)
+            {
+                if (pathTypes[i] == (byte)PathPointType.Start)
+                {
+                    contoureRanges.Add(new KeyValuePair<int, int>(start, count));
+                    start = i;
+                    count = 0;
+                }
 
-				var strokes = new List<PointF[]>();
-				while (true)
-				{
-					var count = pathIter.NextPathType(out byte pType, out int startI, out int endI);
+                count++;
+            }
+            contoureRanges.Add(new KeyValuePair<int, int>(start, count));
+         
+            foreach (var group in contoureRanges.Where(x => x.Value > 1))
+            {
+                var strokes = new List<PointF[]>();
+                for (int i = 1; i < group.Value; i++)
+                    strokes.Add(new[] { pathPoints[group.Key + i - 1], pathPoints[group.Key + i] });
 
-					if (count == 0)
-						break;
-
-					if (pType != (byte)PathPointType.Line)
-						throw new Exception("Invalid stroke type " + pType);
-
-					for (int i = 1; i < count; i++)
-						strokes.Add(new PointF[] { pathPoints[startI + i - 1], pathPoints[startI + i] });
-				}
-
-				if (isClosed)
-					strokes.Add(new PointF[] { path.PathPoints[subPathEndIndex], path.PathPoints[subPathStartIndex] });
-
-				contoures.Add(new GlyphContour(strokes));
-			}
-
-			return contoures;
+                strokes.Add(new[] { pathPoints[group.Key + group.Value - 1], pathPoints[group.Key] });
+                yield return new GlyphContour(strokes);
+            }
 		}
 
 		private double[,] genSdf(List<GlyphContour> contures, int width, int height)
