@@ -160,7 +160,7 @@ namespace Stareater.GameScenes
 
 			return new PolygonData(
 				PlanetZ,
-				new SpriteData(planetTransform(planet.OrdinalPosition), sprite.Id, Color.White, null, true),
+				new SpriteData(planetTransform(planet.OrdinalPosition), sprite.Id, Color.White, null),
 				SpriteHelpers.UnitRect(sprite).ToList()
 			);
 		}
@@ -187,7 +187,7 @@ namespace Stareater.GameScenes
 				ref this.starSprite,
 				new SceneObject(new PolygonData(
 					StarColorZ,
-					new SpriteData(starTransform, GalaxyTextures.Get.SystemStar.Id, controller.Star.Color, null, true),
+					new SpriteData(starTransform, GalaxyTextures.Get.SystemStar.Id, controller.Star.Color, null),
 					SpriteHelpers.UnitRect(GalaxyTextures.Get.SystemStar).ToList()
 				))
 			);
@@ -224,7 +224,7 @@ namespace Stareater.GameScenes
 				this.controller.Planets.Where(x => x.Owner != null).Select(
 					planet => new SceneObject(new PolygonData(
 						PopCountZ,
-						new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, Color.White, null, true),
+						new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, Color.White, null),
 						TextRenderUtil.Get.BufferRaster(
 							LocalizationManifest.Get.CurrentLanguage["FormMain"]["Population"].Text() + ": " + formatter.Format(planet.Population), 
 							-0.5f, 
@@ -244,7 +244,7 @@ namespace Stareater.GameScenes
 						return new SceneObject(
 							new PolygonData(
 								PopCountZ,
-								new SpriteData(Matrix4.CreateScale(ButtonSize) * Matrix4.CreateTranslation(xOffset, ButtonY, 0), GalaxyTextures.Get.BombButton.Id, Color.White, null, true),
+								new SpriteData(Matrix4.CreateScale(ButtonSize) * Matrix4.CreateTranslation(xOffset, ButtonY, 0), GalaxyTextures.Get.BombButton.Id, Color.White, null),
 								SpriteHelpers.UnitRect(GalaxyTextures.Get.BombButton).ToList()
 							),
 							new PhysicalData(new Vector2(xOffset, ButtonY), new Vector2(ButtonSize, ButtonSize)),
@@ -260,7 +260,7 @@ namespace Stareater.GameScenes
 				ref this.titleText,
 				new SceneObject(new PolygonData(
 					PopCountZ,
-					new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, Color.White, null, true),
+					new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, Color.White, null),
 					TextRenderUtil.Get.BufferRaster(
 						LocalizationManifest.Get.CurrentLanguage["FormMain"]["BombardTitle"].Text(), 
 						-0.5f,

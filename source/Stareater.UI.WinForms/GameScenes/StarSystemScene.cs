@@ -252,7 +252,7 @@ namespace Stareater.GameScenes
 			
 			return new PolygonData(
 				PlanetZ,
-				new SpriteData(planetTransform(planet.Position), sprite.Id, Color.White, null, true),
+				new SpriteData(planetTransform(planet.Position), sprite.Id, Color.White, null),
 				SpriteHelpers.UnitRect(sprite).ToList()
 			);
 		}
@@ -280,7 +280,7 @@ namespace Stareater.GameScenes
 				ref this.starSprite,
 				new SceneObject(new PolygonData(
 					StarColorZ,
-					new SpriteData(starTransform, GalaxyTextures.Get.SystemStar.Id, controller.HostStar.Color, null, true),
+					new SpriteData(starTransform, GalaxyTextures.Get.SystemStar.Id, controller.HostStar.Color, null),
 					SpriteHelpers.UnitRect(GalaxyTextures.Get.SystemStar).ToList()
 				))
 			);
@@ -324,12 +324,12 @@ namespace Stareater.GameScenes
 							new [] {
 								new PolygonData(
 									MarkZ,
-									new SpriteData(markTransform, GalaxyTextures.Get.ColonizationMark.Id, Color.White, null, true),
+									new SpriteData(markTransform, GalaxyTextures.Get.ColonizationMark.Id, Color.White, null),
 									SpriteHelpers.UnitRect(GalaxyTextures.Get.ColonizationMark).ToList()
 								),
 								new PolygonData(
 									MarkColorZ,
-									new SpriteData(markTransform, GalaxyTextures.Get.ColonizationMarkColor.Id, this.currentPlayer.Info.Color, null, true),
+									new SpriteData(markTransform, GalaxyTextures.Get.ColonizationMarkColor.Id, this.currentPlayer.Info.Color, null),
 									SpriteHelpers.UnitRect(GalaxyTextures.Get.ColonizationMarkColor).ToList()
 								)
 							});
@@ -347,7 +347,7 @@ namespace Stareater.GameScenes
 				ref this.selectionMarker,
 				new SceneObject(new PolygonData(
 					SelectionZ,
-					new SpriteData(transform, GalaxyTextures.Get.SelectedStar.Id, Color.White, null, true),
+					new SpriteData(transform, GalaxyTextures.Get.SelectedStar.Id, Color.White, null),
 					SpriteHelpers.UnitRect(GalaxyTextures.Get.SelectedStar).ToList()
 				))
 			);

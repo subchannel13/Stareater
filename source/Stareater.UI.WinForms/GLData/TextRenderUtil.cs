@@ -62,8 +62,6 @@ namespace Stareater.GLData
 			if (this.textureBitmap == null)
 			{
 				this.textureBitmap = new Bitmap(Width, Height);
-				using (var g = Graphics.FromImage(this.textureBitmap))
-					g.Clear(Color.Transparent);
 			}
 			
 			if (this.TextureId == 0)

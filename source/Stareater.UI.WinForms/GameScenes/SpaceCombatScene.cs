@@ -199,14 +199,14 @@ namespace Stareater.GameScenes
 			
 			yield return new PolygonData(
 				PlanetColorZ,
-				new SpriteData(planetTransform, sprite.Id, Color.White, null, true),
+				new SpriteData(planetTransform, sprite.Id, Color.White, null),
 				SpriteHelpers.UnitRect(sprite).ToList()
 			);
 			
 			if (planet.Population > 0)
 				yield return new PolygonData(
 					MoreCombatantsZ,
-					new SpriteData(PopulationTransform * planetTransform, TextRenderUtil.Get.TextureId, planet.Owner != null ? planet.Owner.Color : Color.Gray, null, true),
+					new SpriteData(PopulationTransform * planetTransform, TextRenderUtil.Get.TextureId, planet.Owner != null ? planet.Owner.Color : Color.Gray, null),
 					TextRenderUtil.Get.BufferRaster(new ThousandsFormatter().Format(planet.Population), -1, Matrix4.Identity).ToList()
 				);
 		}
@@ -219,7 +219,7 @@ namespace Stareater.GameScenes
 
 			yield return new PolygonData(
 				ProjectileZ,
-				new SpriteData(Matrix4.CreateScale(ProjectileScale, ProjectileScale, 1) * hexTransform, unitSprite.Id, shownProjectile.Owner.Color, null, true),
+				new SpriteData(Matrix4.CreateScale(ProjectileScale, ProjectileScale, 1) * hexTransform, unitSprite.Id, shownProjectile.Owner.Color, null),
 				SpriteHelpers.UnitRect(unitSprite).ToList()
 			);
 
@@ -229,7 +229,7 @@ namespace Stareater.GameScenes
 					Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f * ProjectileScale, 0) * hexTransform,
 					TextRenderUtil.Get.TextureId,
 					Color.Gray, 
-					null, true
+					null
 				),
 				TextRenderUtil.Get.BufferRaster(new ThousandsFormatter().Format(shownProjectile.Count), -1, Matrix4.Identity).ToList()
 			);
@@ -249,7 +249,7 @@ namespace Stareater.GameScenes
 			
 			var unitDrawable = new PolygonData(
 				CombatantZ,
-				new SpriteData(hexTransform, unitSprite.Id, Color.FromArgb((int)(alpha * 255), unit.Owner.Color), null, true),
+				new SpriteData(hexTransform, unitSprite.Id, Color.FromArgb((int)(alpha * 255), unit.Owner.Color), null),
 				SpriteHelpers.UnitRect(unitSprite).ToList()
 			);
 			if (unitSelected)
@@ -272,7 +272,7 @@ namespace Stareater.GameScenes
 						Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, 0.2f * i + 0.5f, 0) * hexTransform,  
 						GalaxyTextures.Get.FleetIndicator.Id,
 						otherUnits[i].Color, 
-						null, true
+						null
 					),
 					SpriteHelpers.UnitRect(GalaxyTextures.Get.FleetIndicator).ToList()
 				));
@@ -283,7 +283,7 @@ namespace Stareater.GameScenes
 					Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f, 0) * hexTransform,
 					TextRenderUtil.Get.TextureId,
 					Color.Gray, 
-					null, true
+					null
 				),
 				TextRenderUtil.Get.BufferRaster(new ThousandsFormatter().Format(unit.Count), -1, Matrix4.Identity).ToList()
 			));
@@ -297,7 +297,7 @@ namespace Stareater.GameScenes
 				ref this.starSprite,
 				new SceneObject(new PolygonData(
 					StarColorZ,
-					new SpriteData(Matrix4.Identity, GalaxyTextures.Get.StarColor.Id, this.Controller.HostStar.Color, null, true),
+					new SpriteData(Matrix4.Identity, GalaxyTextures.Get.StarColor.Id, this.Controller.HostStar.Color, null),
 					SpriteHelpers.UnitRect(GalaxyTextures.Get.SystemStar).ToList()
 				))
 			);
@@ -460,7 +460,7 @@ namespace Stareater.GameScenes
 					Matrix4.CreateScale(0.4f, 0.4f, 1) * Matrix4.CreateTranslation(-0.25f, 0, 0) * moveTransform, 
 					GalaxyTextures.Get.MoveToArrow.Id, 
 					Methods.HexDistance(move) <= SpaceBattleController.BattlefieldRadius ? Color.Green : Color.White, 
-					null, true
+					null
 				));
 			}
 			
