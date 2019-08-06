@@ -211,7 +211,7 @@ namespace Stareater.GLData
 							}
 					}
 				}
-				this.textureId = TextureUtils.CreateTexture(atlasImage);
+				this.textureId = TextureUtils.CreateTexture(new ColorMap(atlasImage));
 				this.Size = new Vector2(atlasImage.Width, atlasImage.Height);
 			}
 			

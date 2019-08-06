@@ -34,6 +34,7 @@ namespace Stareater.GLData
 
 		const float SpaceUnitWidth = 0.25f;
 		
+		//TODO(v0.8) change to ColorMap
 		private Bitmap textureBitmap;
 
 		private readonly Dictionary<float, Dictionary<char, CharTextureInfo>> characterInfos = new Dictionary<float, Dictionary<char, CharTextureInfo>>();
@@ -65,7 +66,7 @@ namespace Stareater.GLData
 			}
 			
 			if (this.TextureId == 0)
-				this.TextureId = TextureUtils.CreateTexture(this.textureBitmap);
+				this.TextureId = TextureUtils.CreateTexture(new ColorMap(this.textureBitmap));
 		}
 
 		private void initializeFor(float fontSize)
@@ -217,7 +218,7 @@ namespace Stareater.GLData
 			foreach (char c in missinCharacters)
 				characters[c] = new CharTextureInfo(drawer.Draw(c), Width, Height);
 
-			TextureUtils.UpdateTexture(this.TextureId, this.textureBitmap);
+			TextureUtils.UpdateTexture(this.TextureId, new ColorMap(this.textureBitmap));
 		}
 	}
 }

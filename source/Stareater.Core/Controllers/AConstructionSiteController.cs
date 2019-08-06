@@ -127,18 +127,16 @@ namespace Stareater.Controllers
 			var vars = this.Processor.LocalEffects(this.Game.Statics).
 				UnionWith(this.Game.Derivates[this.Player].TechLevels).Get;
 
-			return this.Processor.SpendingPlan.All(x => 
-				!x.Project.Equals(data.Project)) && 
-				data.Project.Condition.Evaluate(vars) >= 0;
+			return data.Project.Condition.Evaluate(vars) >= 0 &&
+				this.Processor.SpendingPlan.All(x => !x.Project.Equals(data.Project));
 		}
 
 		//TODO(later) make only available in stellaris controller
 		public virtual void Enqueue(ConstructableInfo data)
 		{
-			if (IsReadOnly)
+			if (IsReadOnly || !this.CanPick(data))
 				return;
 			
-			//TODO(v0.8) check if it can be picked
 			this.Game.Orders[this.Player].ConstructionPlans[Site].Queue.Add(data.Project);
 			this.recalculateSpending();
 		}
