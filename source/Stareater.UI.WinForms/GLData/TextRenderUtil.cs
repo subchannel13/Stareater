@@ -34,8 +34,7 @@ namespace Stareater.GLData
 
 		const float SpaceUnitWidth = 0.25f;
 		
-		//TODO(v0.8) change to ColorMap
-		private Bitmap textureBitmap;
+		private ColorMap textureData;
 
 		private readonly Dictionary<float, Dictionary<char, CharTextureInfo>> characterInfos = new Dictionary<float, Dictionary<char, CharTextureInfo>>();
 		private readonly Dictionary<float, Font> fonts = new Dictionary<float, Font>();
@@ -60,13 +59,13 @@ namespace Stareater.GLData
 
 		public void Initialize()
 		{
-			if (this.textureBitmap == null)
+			if (this.textureData == null)
 			{
-				this.textureBitmap = new Bitmap(Width, Height);
+				this.textureData = new ColorMap(Width, Height, Color.FromArgb(0, 255, 255, 255));
 			}
 			
 			if (this.TextureId == 0)
-				this.TextureId = TextureUtils.CreateTexture(new ColorMap(this.textureBitmap));
+				this.TextureId = TextureUtils.CreateTexture(this.textureData);
 		}
 
 		private void initializeFor(float fontSize)
@@ -193,13 +192,13 @@ namespace Stareater.GLData
 		private void prepareRaster(string text, float fontSize)
 		{
 			this.initializeFor(fontSize);
-			this.prepare(text, this.characterInfos[fontSize], () => new CharacterRasterDrawer(this.textureBuilder, this.textureBitmap, this.fonts[fontSize]));
+			this.prepare(text, this.characterInfos[fontSize], () => new CharacterRasterDrawer(this.textureBuilder, this.textureData, this.fonts[fontSize]));
 		}
 
 		private void prepareSdf(string text)
 		{
 			this.initializeFor(SdfFontSize);
-			this.prepare(text, this.characterInfos[SdfFontSize],() => new CharacterSdfDrawer(this.textureBuilder, this.textureBitmap, this.fonts[SdfFontSize]));
+			this.prepare(text, this.characterInfos[SdfFontSize],() => new CharacterSdfDrawer(this.textureBuilder, this.textureData, this.fonts[SdfFontSize]));
 		}
 
 		private void prepare(string text, Dictionary<char, CharTextureInfo> characters, Func<ICharacterDrawer> drawerMaker)
@@ -218,7 +217,7 @@ namespace Stareater.GLData
 			foreach (char c in missinCharacters)
 				characters[c] = new CharTextureInfo(drawer.Draw(c), Width, Height);
 
-			TextureUtils.UpdateTexture(this.TextureId, new ColorMap(this.textureBitmap));
+			TextureUtils.UpdateTexture(this.TextureId, this.textureData);
 		}
 	}
 }

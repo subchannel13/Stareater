@@ -3,9 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace Stareater.GLData
@@ -16,28 +14,21 @@ namespace Stareater.GLData
 
 		private readonly AtlasBuilder atlas;
 		private readonly Font font;
-		private readonly Bitmap texture;
-		private readonly BitmapData bmpData;
-		private readonly IntPtr bmpPtr;
+		private readonly ColorMap texture;
 		private readonly Bitmap fakeBitmap;
 		private readonly Graphics fakeCanvas;
 
-		public CharacterSdfDrawer(AtlasBuilder atlas, Bitmap texture, Font font)
+		public CharacterSdfDrawer(AtlasBuilder atlas, ColorMap texture, Font font)
 		{
 			this.atlas = atlas;
 			this.font = font;
 			this.texture = texture;
 			this.fakeBitmap = new Bitmap(1, 1);
 			this.fakeCanvas = Graphics.FromImage(this.fakeBitmap);
-
-			this.bmpData = texture.LockBits(new Rectangle(0, 0, texture.Width, texture.Height), ImageLockMode.ReadWrite, texture.PixelFormat);
-			this.bmpPtr = this.bmpData.Scan0;
-
 		}
 
 		public void Dispose()
 		{
-			this.texture.UnlockBits(bmpData);
 			fakeCanvas.Dispose();
 			fakeBitmap.Dispose();
 		}
@@ -61,18 +52,8 @@ namespace Stareater.GLData
 			var distField = genSdf(contures, width, height);
 
 			for (int y = 0; y < height; y++)
-			{
-				var rgbValues = new byte[4 * width];
 				for (int x = 0; x < width; x++)
-				{
-					rgbValues[4 * x] = (byte)(distField[y, x] * 255);
-					rgbValues[4 * x + 1] = rgbValues[4 * x];
-					rgbValues[4 * x + 2] = rgbValues[4 * x];
-					rgbValues[4 * x + 3] = rgbValues[4 * x];
-				}
-
-				Marshal.Copy(rgbValues, 0, this.bmpPtr + (rect.Y + y) * bmpData.Stride + rect.X * 4, rgbValues.Length);
-			}
+					this.texture[rect.X + x, rect.Y + y] = Color.FromArgb((int)(distField[y, x] * 255), 255, 255, 255);
 
 			return new Rectangle(rect.X + Padding, rect.Y + Padding, width - 2 * Padding, height - 2 * Padding);
 		}
@@ -109,7 +90,7 @@ namespace Stareater.GLData
             }
 		}
 
-		private double[,] genSdf(List<GlyphContour> contures, int width, int height)
+		private static double[,] genSdf(List<GlyphContour> contures, int width, int height)
 		{
 			var distField = new double[height, width];
 

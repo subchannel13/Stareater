@@ -21,7 +21,7 @@ namespace Stareater.GLData
 			ShaderLibrary.PrintGlErrors("CreateTexture parameters");
 
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height,
-				0, PixelFormat.Bgra, PixelType.UnsignedByte, image.RawColors());
+				0, PixelFormat.Bgra, PixelType.UnsignedByte, image.RawPixels());
 			ShaderLibrary.PrintGlErrors("CreateTexture put data");
 
 			textureSizes[textureId] = new Vector2(image.Width, image.Height);
@@ -44,7 +44,7 @@ namespace Stareater.GLData
 			ShaderLibrary.PrintGlErrors("UpdateTexture bind");
 
 			GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, image.Width, image.Height,
-				PixelFormat.Bgra, PixelType.UnsignedByte, image.RawColors());
+				PixelFormat.Bgra, PixelType.UnsignedByte, image.RawPixels());
 			ShaderLibrary.PrintGlErrors("UpdateTexture put data");
 
 			textureSizes[textureId] = new Vector2(image.Width, image.Height);
