@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using OpenTK.Graphics;
+using System.Drawing;
 using System.Drawing.Text;
 using System.Windows.Forms;
 
@@ -43,7 +44,7 @@ namespace Stareater.GLData
 
 				for (int y = 0; y < textBmp.Height; y++)
 					for (int x = 0; x < textBmp.Width; x++)
-						this.texture[rect.X + x, rect.Y + y] = Color.FromArgb(this.texture[rect.X + x, rect.Y + y].A, 255, 255, 255);
+						this.texture[rect.X + x, rect.Y + y] = new Color4(1, 1, 1, this.texture[rect.X + x, rect.Y + y].A);
 			}
 
 			return rect;

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using OpenTK.Graphics;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
@@ -6,7 +7,7 @@ namespace Stareater.GLData
 {
 	class ColorMap
 	{
-		private readonly Color[,] pixels;
+		private readonly Color4[,] pixels;
 
 		public int Height { get; private set; }
 		public int Width { get; private set; }
@@ -18,11 +19,11 @@ namespace Stareater.GLData
 			this.Width = image.Width;
 		}
 
-		public ColorMap(int width, int height, Color fillColor)
+		public ColorMap(int width, int height, Color4 fillColor)
 		{
 			this.Width = width;
 			this.Height = height;
-			this.pixels = new Color[height, width];
+			this.pixels = new Color4[height, width];
 
 			for (int y = 0; y < height; y++)
 				for (int x = 0; x < width; x++)
@@ -49,22 +50,30 @@ namespace Stareater.GLData
 					this.pixels[offsetY + y, offsetX + x] = imagePixels[y, x];
 		}
 
-		public Color this[int x, int y]
+		public Color4 this[int x, int y]
 		{
 			get { return this.pixels[y, x]; }
 			set { this.pixels[y, x] = value; }
 		}
 
-		private static Color[,] extractPixels(Bitmap image)
+		private static Color4[,] extractPixels(Bitmap image)
 		{
 			var bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly, image.PixelFormat);
 			var bgraValues = new int[bmpData.Width * bmpData.Height];
 			Marshal.Copy(bmpData.Scan0, bgraValues, 0, bgraValues.Length);
 
-			var pixels = new Color[image.Height, image.Width];
+			var pixels = new Color4[image.Height, image.Width];
 			for (int y = 0; y < image.Height; y++)
 				for (int x = 0; x < image.Width; x++)
-					pixels[y, x] = Color.FromArgb(bgraValues[image.Width * y + x]);
+				{
+					var data = bgraValues[image.Width * y + x];
+					pixels[y, x] = new Color4(
+						(byte)(data >> 16 & 0xFF), 
+						(byte)(data >> 8 & 0xFF), 
+						(byte)(data & 0xFF), 
+						(byte)(data >> 24 & 0xFF)
+					);
+				}
 
 			image.UnlockBits(bmpData);
 			return pixels;
