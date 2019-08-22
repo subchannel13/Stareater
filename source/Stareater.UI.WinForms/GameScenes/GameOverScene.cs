@@ -3,10 +3,10 @@ using System.Linq;
 using OpenTK;
 using Stareater.Localization;
 using Stareater.GraphicsEngine;
-using Stareater.GLData.SpriteShader;
 using Stareater.Controllers;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GLData;
+using System.Collections.Generic;
 
 namespace Stareater.GameScenes
 {
@@ -22,10 +22,7 @@ namespace Stareater.GameScenes
 		private const float TextSize = 0.4f;
 		
 		private SceneObject headerText = null;
-		private SceneObject scoresText = null;
-		private SceneObject namesText = null;
-
-		private ResultsController controller;
+		private IEnumerable<SceneObject> tableRows = null;
 
 		#region AScene implemented
 		protected override float guiLayerThickness => 1 / Layers;
@@ -34,14 +31,14 @@ namespace Stareater.GameScenes
 		{
 			this.UpdateScene(
 				ref this.headerText,
-				new SceneObject(new PolygonData(
-					TextZ,
-					new SpriteData(Matrix4.CreateTranslation(0, 2f, 0), TextRenderUtil.Get.TextureId, Color.Red, null),
-					TextRenderUtil.Get.BufferRaster(
-						LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text(),
-						-0.5f,
-						Matrix4.Identity).ToList()
-				))
+				new SceneObjectBuilder().
+					StartText(
+						LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text(), TextRenderUtil.RasterFontSize,
+						-0.5f, TextZ, 1/Layers,
+						TextRenderUtil.Get.TextureId, Color.Red, Matrix4.Identity
+					).
+					Translate(0, 2).
+					Build()
 			);
 		}
 
@@ -54,47 +51,29 @@ namespace Stareater.GameScenes
 
 		public void SetResults(ResultsController controller)
 		{
-			this.controller = controller;
-
 			var scores = controller.Scores.OrderByDescending(x => x.VictoryPoints).ToList();
 			var formatter = new DecimalsFormatter(0, 0);
 
 			this.UpdateScene(
-				ref this.scoresText,
-				new SceneObject(scores.Select(
-					(x, i) => new PolygonData(
-						TextZ,
-						new SpriteData(
-							Matrix4.CreateScale(TextSize, TextSize, 1) * Matrix4.CreateTranslation(-0.2f, -0.5f * i + 0.8f, 0), 
-							TextRenderUtil.Get.TextureId, 
-							Color.White, 
-							null
-						),
-						TextRenderUtil.Get.BufferRaster(
-							formatter.Format(x.VictoryPoints),
-							-1f,
-							Matrix4.Identity
-						).ToList()
-				)))
-			);
-
-			this.UpdateScene(
-				ref this.namesText,
-				new SceneObject(scores.Select(
-					(x, i) => new PolygonData(
-						TextZ,
-						new SpriteData(
-							Matrix4.CreateScale(TextSize, TextSize, 1) * Matrix4.CreateTranslation(0, -0.5f * i + 0.8f, 0),
-							TextRenderUtil.Get.TextureId, 
-							Color.White, 
-							null
-						),
-						TextRenderUtil.Get.BufferRaster(
-							x.Player.Name,
-							0f,
-							Matrix4.Identity
-						).ToList()
-				)))
+				ref this.tableRows,
+				scores.Select((score, i) =>
+					new SceneObjectBuilder().
+						StartText(
+							formatter.Format(score.VictoryPoints), TextRenderUtil.RasterFontSize, 
+							-1, TextZ, 1 / Layers, 
+							TextRenderUtil.Get.TextureId, Color.White, Matrix4.Identity
+						).
+						Scale(TextSize).
+						Translate(-0.2, -0.5 * i + 0.8).
+						StartText(
+							score.Player.Name, TextRenderUtil.RasterFontSize,
+							0, TextZ, 1 / Layers,
+							TextRenderUtil.Get.TextureId, Color.White, Matrix4.Identity
+						).
+						Scale(TextSize).
+						Translate(0, -0.5 * i + 0.8).
+						Build()
+					).ToList()
 			);
 		}
 	}

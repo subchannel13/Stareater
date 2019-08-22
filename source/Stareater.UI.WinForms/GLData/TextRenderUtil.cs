@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using OpenTK;
 using Stareater.GLData.SpriteShader;
@@ -25,11 +26,11 @@ namespace Stareater.GLData
 
 		public const float SdfSizeThreshold = 16;
 		private const float SdfFontSize = 24;
+		public const float RasterFontSize = 15; //TODO(later) remove the need for it
 
 		const int Width = 512;
 		const int Height = 512;
 		const int Spacing = 2;
-		const float FontSize = 30;	
 		const string FontFamily = "Arial";
 
 		const float SpaceUnitWidth = 0.25f;
@@ -95,37 +96,44 @@ namespace Stareater.GLData
 		}
 
 		//TODO(later) try to remove the need transform parameter
-		public IEnumerable<float> BufferRaster(string text, float adjustment, Matrix4 transform)
+		//TODO(later) try to remove whole method
+		public Dictionary<float, IEnumerable<float>> BufferRaster(string text, float adjustment, float z0, float zRange, Matrix4 transform)
 		{
-			return this.BufferRaster(text, FontSize, adjustment, transform);
+			return this.BufferRaster(text, RasterFontSize, adjustment, z0, zRange, transform);
 		}
 
 		//TODO(later) try to remove the need transform parameter
-		public IEnumerable<float> BufferRaster(string text, float fontSize, float adjustment, Matrix4 transform)
+		public Dictionary<float, IEnumerable<float>> BufferRaster(string text, float fontSize, float adjustment, float z0, float zRange, Matrix4 transform)
 		{
 			this.prepareRaster(text, fontSize);
 
-			return bufferText(text, this.characterInfos[fontSize], this.measureWidth(text, fontSize), adjustment, transform);
+			return bufferText(text, this.characterInfos[fontSize], this.measureWidth(text, fontSize), adjustment, z0, zRange, transform);
 		}
 
 		//TODO(later) try to remove the need transform parameter
-		public IEnumerable<float> BufferSdf(string text, float adjustment, Matrix4 transform)
+		public Dictionary<float, IEnumerable<float>> BufferSdf(string text, float adjustment, float z0, float zRange, Matrix4 transform)
 		{
 			this.prepareSdf(text);
 
-			return bufferText(text, this.characterInfos[SdfFontSize], this.measureWidth(text, SdfFontSize), adjustment, transform);
+			return bufferText(text, this.characterInfos[SdfFontSize], this.measureWidth(text, SdfFontSize), adjustment, z0, zRange, transform);
 		}
 
 		//TODO(later) try to remove the need transform parameter
-		private IEnumerable<float> bufferText(string text, Dictionary<char, CharTextureInfo> characters, float textWidth, float adjustment, Matrix4 transform)
+		private Dictionary<float, IEnumerable<float>> bufferText(string text, Dictionary<char, CharTextureInfo> characters, float textWidth, float adjustment, float z0, float zRange, Matrix4 transform)
 		{
 			float charOffsetX = textWidth * adjustment;
 			float charOffsetY = 0;
+			var layers = new List<float>[4];
+			int row = 0;
+			int colunm = 0;
+			for (int i = 0; i < layers.Length; i++)
+				layers[i] = new List<float>();
 
 			foreach (char c in text)
 				if (!char.IsWhiteSpace(c))
 				{
 					var charInfo = characters[c];
+					var layer = 2 * (row % 2) + colunm % 2;
 
 					for (int v = 0; v < 6; v++)
 					{
@@ -133,10 +141,10 @@ namespace Stareater.GLData
 							new Vector4(charInfo.VertexCoords[v].X * charInfo.Aspect + charOffsetX, charInfo.VertexCoords[v].Y + charOffsetY, 0, 1),
 							transform
 						);
-						foreach (var dataBit in SpriteHelpers.TexturedVertex(charPos.X, charPos.Y, charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y))
-							yield return dataBit;
+						layers[layer].AddRange(SpriteHelpers.TexturedVertex(charPos.X, charPos.Y, charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y));
 					}
 					charOffsetX += charInfo.Aspect;
+					colunm++;
 				}
 				else if (c == ' ')
 					charOffsetX += SpaceUnitWidth;
@@ -144,7 +152,12 @@ namespace Stareater.GLData
 				{
 					charOffsetX = textWidth * adjustment;
 					charOffsetY--;
+					row++;
+					colunm = 0;
 				}
+
+			return Enumerable.Range(0, layers.Length).
+				ToDictionary(i => z0 - i * zRange / 4, i => (IEnumerable<float>)layers[i]);
 		}
 
 		private float measureWidth(string text, float fontSize)

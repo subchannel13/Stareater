@@ -218,19 +218,18 @@ namespace Stareater.GameScenes
 		private void setupUi()
 		{
 			var formatter = new ThousandsFormatter();
-			
+
 			this.UpdateScene(
 				ref this.colonyInfos,
 				this.controller.Planets.Where(x => x.Owner != null).Select(
-					planet => new SceneObject(new PolygonData(
-						PopCountZ,
-						new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, Color.White, null),
-						TextRenderUtil.Get.BufferRaster(
-							LocalizationManifest.Get.CurrentLanguage["FormMain"]["Population"].Text() + ": " + formatter.Format(planet.Population), 
-							-0.5f, 
+					planet => new SceneObjectBuilder().
+						StartText(
+							LocalizationManifest.Get.CurrentLanguage["FormMain"]["Population"].Text() + ": " + formatter.Format(planet.Population),
+							TextRenderUtil.RasterFontSize, -0.5f, 
+							PopCountZ, 1/Layers, 
+							TextRenderUtil.Get.TextureId, Color.White,
 							Matrix4.CreateScale(TextScale) * Matrix4.CreateTranslation(planet.OrdinalPosition * OrbitStep + OrbitOffset, -PlanetScale / 2 - PopCountTopMargin, 0)
-						).ToList()
-					))
+						).Build()
 				).ToList()
 			);
 
@@ -258,15 +257,12 @@ namespace Stareater.GameScenes
 		{
 			this.UpdateScene(
 				ref this.titleText,
-				new SceneObject(new PolygonData(
-					PopCountZ,
-					new SpriteData(Matrix4.Identity, TextRenderUtil.Get.TextureId, Color.White, null),
-					TextRenderUtil.Get.BufferRaster(
-						LocalizationManifest.Get.CurrentLanguage["FormMain"]["BombardTitle"].Text(), 
-						-0.5f,
-						Matrix4.CreateScale(TitleScale) * Matrix4.CreateTranslation(originOffset, DefaultViewSize / 2 - BodiesY - TitleTopMargin, 0)
-					).ToList()
-				))
+				new SceneObjectBuilder().StartText(
+					LocalizationManifest.Get.CurrentLanguage["FormMain"]["BombardTitle"].Text(), TextRenderUtil.RasterFontSize,
+					-0.5f, PopCountZ, 1/Layers,
+					TextRenderUtil.Get.TextureId, Color.White,
+					Matrix4.CreateScale(TitleScale) * Matrix4.CreateTranslation(originOffset, DefaultViewSize / 2 - BodiesY - TitleTopMargin, 0)
+				).Build()
 			);
 		}
 	}

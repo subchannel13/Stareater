@@ -202,13 +202,15 @@ namespace Stareater.GameScenes
 				new SpriteData(planetTransform, sprite.Id, Color.White, null),
 				SpriteHelpers.UnitRect(sprite).ToList()
 			);
-			
+
+			var formatter = new ThousandsFormatter();
 			if (planet.Population > 0)
-				yield return new PolygonData(
-					MoreCombatantsZ,
-					new SpriteData(PopulationTransform * planetTransform, TextRenderUtil.Get.TextureId, planet.Owner != null ? planet.Owner.Color : Color.Gray, null),
-					TextRenderUtil.Get.BufferRaster(new ThousandsFormatter().Format(planet.Population), -1, Matrix4.Identity).ToList()
-				);
+				foreach (var layer in TextRenderUtil.Get.BufferRaster(formatter.Format(planet.Population), -1, MoreCombatantsZ, 1 / Layers, Matrix4.Identity))
+					yield return new PolygonData(
+						layer.Key,
+						new SpriteData(PopulationTransform * planetTransform, TextRenderUtil.Get.TextureId, planet.Owner != null ? planet.Owner.Color : Color.Gray, null),
+						layer.Value.ToList()
+					);
 		}
 
 		private IEnumerable<PolygonData> projectileSpriteData(IGrouping<Vector2D, ProjectileInfo> hex)
@@ -223,16 +225,18 @@ namespace Stareater.GameScenes
 				SpriteHelpers.UnitRect(unitSprite).ToList()
 			);
 
-			yield return new PolygonData(
-				ProjectileZ,
-				new SpriteData(
-					Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f * ProjectileScale, 0) * hexTransform,
-					TextRenderUtil.Get.TextureId,
-					Color.Gray, 
-					null
-				),
-				TextRenderUtil.Get.BufferRaster(new ThousandsFormatter().Format(shownProjectile.Count), -1, Matrix4.Identity).ToList()
-			);
+			var formatter = new ThousandsFormatter();
+			foreach (var layer in TextRenderUtil.Get.BufferRaster(formatter.Format(shownProjectile.Count), -1, ProjectileZ, 1 / Layers, Matrix4.Identity))
+				yield return new PolygonData(
+					layer.Key,
+					new SpriteData(
+						Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f * ProjectileScale, 0) * hexTransform,
+						TextRenderUtil.Get.TextureId,
+						Color.Gray,
+						null
+					),
+					layer.Value.ToList()
+				);
 		}
 
         private SceneObject unitSprite(IGrouping<Vector2D, CombatantInfo> hex, IEnumerable<PlayerInfo> players)
@@ -277,15 +281,20 @@ namespace Stareater.GameScenes
 					SpriteHelpers.UnitRect(GalaxyTextures.Get.FleetIndicator).ToList()
 				));
 
-			polygons.Add(new PolygonData(
-				CombatantZ,
-				new SpriteData(
-					Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f, 0) * hexTransform,
-					TextRenderUtil.Get.TextureId,
-					Color.Gray, 
-					null
-				),
-				TextRenderUtil.Get.BufferRaster(new ThousandsFormatter().Format(unit.Count), -1, Matrix4.Identity).ToList()
+			var formatter = new ThousandsFormatter();
+			polygons.AddRange(
+				TextRenderUtil.Get.BufferRaster(formatter.Format(unit.Count), -1, CombatantZ, 1 / Layers, Matrix4.Identity).
+				Select(layer =>
+					new PolygonData(
+						layer.Key,
+						new SpriteData(
+							Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f, 0) * hexTransform,
+							TextRenderUtil.Get.TextureId,
+							Color.Gray, 
+							null
+						),
+						layer.Value.ToList()
+					)
 			));
 
 			return new SceneObject(polygons, animator: animator);

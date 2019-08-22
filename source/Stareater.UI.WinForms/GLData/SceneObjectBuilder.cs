@@ -7,6 +7,7 @@ using System.Drawing;
 using Stareater.GLData.OrbitShader;
 using Stareater.GraphicsEngine.GuiElements;
 using Stareater.GLData.SdfShader;
+using System.Linq;
 
 namespace Stareater.GLData
 {
@@ -17,8 +18,7 @@ namespace Stareater.GLData
 		private readonly object data = null;
 
 		private PolygonType currentPolygonType = PolygonType.None;
-		private float z;
-		private List<float> vertexData = new List<float>();
+		private Dictionary<float, List<float>> vertexData = new Dictionary<float, List<float>>();
 
 		#region Sprite / SDF data
 		private int textureId;
@@ -64,7 +64,7 @@ namespace Stareater.GLData
 			this.applyPolygonData();
 			
 			this.currentPolygonType = PolygonType.Sprite;
-			this.z = z;
+			this.vertexData[z] = new List<float>();
 			this.textureId = textureId;
 			this.color = color;
 
@@ -76,8 +76,7 @@ namespace Stareater.GLData
 			this.applyPolygonData();
 
 			this.currentPolygonType = PolygonType.Sprite;
-			this.z = z;
-			this.vertexData.AddRange(SpriteHelpers.UnitRect(sprite));
+			this.vertexData[z] = new List<float>(SpriteHelpers.UnitRect(sprite));
 			this.textureId = sprite.Id;
 			this.color = color;
 
@@ -89,7 +88,7 @@ namespace Stareater.GLData
 			this.applyPolygonData();
 
 			this.currentPolygonType = PolygonType.Orbit;
-			this.z = z;
+			this.vertexData[z] = new List<float>();
 			this.minRadius = minRadius;
 			this.maxRadius = maxRadius;
 			this.sprite = sprite;
@@ -98,21 +97,22 @@ namespace Stareater.GLData
 			return this;
 		}
 
-		public SceneObjectBuilder StartText(string text, float fontSize, float adjustment, float z, int textureId, Color color, Matrix4 transform)
+		public SceneObjectBuilder StartText(string text, float fontSize, float adjustment, float z0, float zRange, int textureId, Color color, Matrix4 transform)
 		{
 			this.applyPolygonData();
 
 			if (fontSize < TextRenderUtil.SdfSizeThreshold)
 			{
 				this.currentPolygonType = PolygonType.Sprite;
-				this.AddVertices(TextRenderUtil.Get.BufferRaster(text, fontSize, adjustment, transform));
+				foreach(var layer in TextRenderUtil.Get.BufferRaster(text, fontSize, adjustment, z0, zRange, transform))
+					this.vertexData[layer.Key] = new List<float>(layer.Value);
 			}
 			else
 			{
 				this.currentPolygonType = PolygonType.Sdf;
-				this.AddVertices(TextRenderUtil.Get.BufferSdf(text, adjustment, transform));
+				foreach (var layer in TextRenderUtil.Get.BufferRaster(text, fontSize, adjustment, z0, zRange, transform))
+					this.vertexData[layer.Key] = new List<float>(layer.Value);
 			}
-			this.z = z;
 			this.textureId = textureId;
 			this.color = color;
 
@@ -129,24 +129,18 @@ namespace Stareater.GLData
 
 		public SceneObjectBuilder AddVertices(IEnumerable<float> vertexData)
 		{
+			if (this.vertexData.Count != 1)
+				throw new InvalidOperationException("Operation requires exactly one working layer");
 			this.assertStarted();
 
-			this.vertexData.AddRange(vertexData);
+			this.vertexData.First().Value.AddRange(vertexData);
 
 			return this;
 		}
 
 		public SceneObjectBuilder AddVertices(IEnumerable<Vector2> vertices)
 		{
-			this.assertStarted();
-
-			foreach(var v in vertices)
-			{
-				this.vertexData.Add(v.X);
-				this.vertexData.Add(v.Y);
-			}
-
-			return this;
+			return this.AddVertices(vertices.SelectMany(v => new[] { v.X, v.Y }));
 		}
 
 		public SceneObjectBuilder Scale(float scale)
@@ -209,7 +203,7 @@ namespace Stareater.GLData
 			if (this.currentPolygonType == PolygonType.None)
 				return;
 
-			IShaderData shaderData = null;
+			IShaderData shaderData;
 
 			switch (this.currentPolygonType)
 			{
@@ -226,10 +220,11 @@ namespace Stareater.GLData
 					throw new NotImplementedException(this.currentPolygonType.ToString());
 			}
 
-			this.polygons.Add(new PolygonData(this.z, shaderData, this.vertexData));
-			
+			foreach(var layer in this.vertexData)
+				this.polygons.Add(new PolygonData(layer.Key, shaderData, layer.Value));
+
 			//clean up
-			this.vertexData = new List<float>();
+			this.vertexData = new Dictionary<float, List<float>>();
 			this.localTransform = Matrix4.Identity;
 		}
 

@@ -303,7 +303,7 @@ namespace Stareater.GameScenes
 
 		private void updateStarInfo(StarInfo star)
 		{
-			var starSystem = this.currentPlayer.OpenStarSystem(this.lastSelectedStar);
+			var starSystem = this.currentPlayer.OpenStarSystem(star);
 			this.galaxyViewListener.SystemSelected(starSystem);
 
 			//TODO(later) update owner check when multiple stellarises can exist at the same star
@@ -496,15 +496,13 @@ namespace Stareater.GameScenes
 			this.UpdateScene(
 				ref this.movementEtaText,
 				new SceneObjectBuilder().
-					StartSprite(EtaZ, TextRenderUtil.Get.TextureId, Color.White).
+					StartText(
+						LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars), TextRenderUtil.RasterFontSize, 
+						-0.5f, EtaZ, InterlayerZRange, 
+						TextRenderUtil.Get.TextureId, Color.White, Matrix4.Identity
+					).
 					Scale(EtaTextScale / (float)Math.Pow(ZoomBase, zoomLevel)).
 					Translate(destination.Position.X, destination.Position.Y + 0.5).
-					AddVertices(
-						TextRenderUtil.Get.BufferRaster(
-							LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars),
-							-0.5f,
-							Matrix4.Identity
-					)).
 					Build()
 			);
 		}
@@ -570,6 +568,7 @@ namespace Stareater.GameScenes
 		private void setupStarSprites()
 		{
 			var stars = this.currentPlayer.Stars.OrderBy(x => x.Position.Y).ToList();
+			var textZRange = InterlayerZRange / stars.Count;
 
 			this.UpdateScene(
 				ref this.starSprites,
@@ -583,14 +582,12 @@ namespace Stareater.GameScenes
 					Translate(convert(star.Position)).
 
 					//TODO(v0.8) don't show names when zoomed out too much
-					StartSprite(StarNameZ + (i * InterlayerZRange) / stars.Count, TextRenderUtil.Get.TextureId, starNameColor(star)).
-					AddVertices(
-						TextRenderUtil.Get.BufferRaster(
-								star.Name.ToText(LocalizationManifest.Get.CurrentLanguage),
-								-0.5f,
-								Matrix4.CreateScale(StarNameScale / (float)Math.Pow(ZoomBase, zoomLevel)) * 
-								Matrix4.CreateTranslation((float)star.Position.X, (float)star.Position.Y - 0.5f, 0)
-					)).
+					StartText(
+						star.Name.ToText(LocalizationManifest.Get.CurrentLanguage), TextRenderUtil.RasterFontSize,
+						-0.5f, StarNameZ + i * textZRange, textZRange, 
+						TextRenderUtil.Get.TextureId, starNameColor(star),
+						Matrix4.CreateScale(StarNameScale / (float)Math.Pow(ZoomBase, zoomLevel)) * Matrix4.CreateTranslation((float)star.Position.X, (float)star.Position.Y - 0.5f, 0)
+					).
 					Build()
 				).ToList()
 			);

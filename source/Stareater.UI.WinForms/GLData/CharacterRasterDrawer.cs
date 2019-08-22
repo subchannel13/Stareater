@@ -44,7 +44,8 @@ namespace Stareater.GLData
 
 				for (int y = 0; y < textBmp.Height; y++)
 					for (int x = 0; x < textBmp.Width; x++)
-						this.texture[rect.X + x, rect.Y + y] = new Color4(1, 1, 1, this.texture[rect.X + x, rect.Y + y].A);
+						if (rect.X + x < this.texture.Width && rect.Y + y < this.texture.Height)
+							this.texture[rect.X + x, rect.Y + y] = new Color4(1, 1, 1, this.texture[rect.X + x, rect.Y + y].A);
 			}
 
 			return new CharTextureInfo(rect, this.texture.Width, this.texture.Height, 1, 1, 0.5f, -0.5f);

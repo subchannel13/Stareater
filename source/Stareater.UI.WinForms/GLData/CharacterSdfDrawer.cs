@@ -41,6 +41,8 @@ namespace Stareater.GLData
 			path.Flatten();
 
 			var contures = getContures(path).ToList();
+			path.Dispose();
+
 			var measuredSize = new SizeF(
 				this.fakeCanvas.MeasureString(text, this.font, int.MaxValue, StringFormat.GenericTypographic).Width + Padding * 2,
 				TextRenderer.MeasureText(this.fakeCanvas, text, this.font, new Size(int.MaxValue, int.MaxValue)).Height + Padding * 2
