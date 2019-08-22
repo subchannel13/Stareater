@@ -23,7 +23,7 @@ namespace Stareater.GLData
 		public void Dispose()
 		{ }
 
-		public Rectangle Draw(char c)
+		public CharTextureInfo Draw(char c)
 		{
 			var text = c.ToString();
 			Rectangle rect;
@@ -47,7 +47,7 @@ namespace Stareater.GLData
 						this.texture[rect.X + x, rect.Y + y] = new Color4(1, 1, 1, this.texture[rect.X + x, rect.Y + y].A);
 			}
 
-			return rect;
+			return new CharTextureInfo(rect, this.texture.Width, this.texture.Height, 1, 1, 0.5f, -0.5f);
 		}
 	}
 }

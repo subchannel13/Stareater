@@ -33,7 +33,7 @@ namespace Stareater.GLData
 			fakeBitmap.Dispose();
 		}
 
-		public Rectangle Draw(char c)
+		public CharTextureInfo Draw(char c)
 		{
 			var text = c.ToString();
 			var path = new GraphicsPath();
@@ -55,7 +55,12 @@ namespace Stareater.GLData
 				for (int x = 0; x < width; x++)
 					this.texture[rect.X + x, rect.Y + y] = Color.FromArgb((int)(distField[y, x] * 255), 255, 255, 255);
 
-			return new Rectangle(rect.X + Padding, rect.Y + Padding, width - 2 * Padding, height - 2 * Padding);
+			return new CharTextureInfo(
+				rect,
+				this.texture.Width, this.texture.Height,
+				width / (float)(width - 2 * Padding), height / (float)(height - 2 * Padding),
+				0.5f, -0.5f
+			);
 		}
 
 		private static IEnumerable<GlyphContour> getContures(GraphicsPath path)

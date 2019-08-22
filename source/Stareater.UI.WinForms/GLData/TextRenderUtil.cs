@@ -40,29 +40,13 @@ namespace Stareater.GLData
 		private readonly Dictionary<float, Font> fonts = new Dictionary<float, Font>();
 		private readonly Dictionary<float, float> fontHeights = new Dictionary<float, float>();
 		private readonly AtlasBuilder textureBuilder = new AtlasBuilder(Spacing, new Size(Width, Height));
-		private readonly Vector2[] unitQuadTriangles;
 		
 		public int TextureId { get; private set; }
 		
-		private TextRenderUtil()
-		{
-			this.unitQuadTriangles = new Vector2[] {
-				new Vector2(0, 0),
-				new Vector2(1, 0),
-				new Vector2(1, -1),
-				
-				new Vector2(1, -1),
-				new Vector2(0, -1),
-				new Vector2(0, 0),
-			};
-		}
-
 		public void Initialize()
 		{
 			if (this.textureData == null)
-			{
 				this.textureData = new ColorMap(Width, Height, Color.FromArgb(0, 255, 255, 255));
-			}
 			
 			if (this.TextureId == 0)
 				this.TextureId = TextureUtils.CreateTexture(this.textureData);
@@ -146,7 +130,7 @@ namespace Stareater.GLData
 					for (int v = 0; v < 6; v++)
 					{
 						var charPos = Vector4.Transform(
-							new Vector4(unitQuadTriangles[v].X * charInfo.Aspect + charOffsetX, unitQuadTriangles[v].Y + charOffsetY, 0, 1),
+							new Vector4(charInfo.VertexCoords[v].X * charInfo.Aspect + charOffsetX, charInfo.VertexCoords[v].Y + charOffsetY, 0, 1),
 							transform
 						);
 						foreach (var dataBit in SpriteHelpers.TexturedVertex(charPos.X, charPos.Y, charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y))
@@ -215,7 +199,7 @@ namespace Stareater.GLData
 
 			using(var drawer = drawerMaker())
 			foreach (char c in missinCharacters)
-				characters[c] = new CharTextureInfo(drawer.Draw(c), Width, Height);
+				characters[c] = drawer.Draw(c);
 
 			TextureUtils.UpdateTexture(this.TextureId, this.textureData);
 		}

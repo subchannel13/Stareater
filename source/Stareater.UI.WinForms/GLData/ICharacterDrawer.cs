@@ -5,6 +5,6 @@ namespace Stareater.GLData
 {
 	interface ICharacterDrawer : IDisposable
 	{
-		Rectangle Draw(char c);
+		CharTextureInfo Draw(char c);
 	}
 }
