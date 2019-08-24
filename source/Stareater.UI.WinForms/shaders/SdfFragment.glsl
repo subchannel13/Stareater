@@ -9,10 +9,8 @@ out vec4 outputF;
 
 void main()
 {
-   vec4 distColor = texture2D(textureSampler, textureCoord);
-
-   if (distColor.a >= 0.5)
-      outputF = color;
-   else
-      outputF = vec4(0, 0, 0, 0);
+   outputF = vec4(
+      color.r, color.g, color.b, 
+      smoothstep(0.5 - 0.125, 0.5, texture2D(textureSampler, textureCoord).a)
+   );
 }
