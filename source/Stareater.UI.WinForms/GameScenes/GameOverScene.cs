@@ -23,6 +23,7 @@ namespace Stareater.GameScenes
 		
 		private SceneObject headerText = null;
 		private IEnumerable<SceneObject> tableRows = null;
+		private float pixelSize = 1;
 
 		#region AScene implemented
 		protected override float guiLayerThickness => 1 / Layers;
@@ -32,6 +33,7 @@ namespace Stareater.GameScenes
 			this.UpdateScene(
 				ref this.headerText,
 				new SceneObjectBuilder().
+					PixelSize(this.pixelSize).
 					StartText(
 						LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text(), TextRenderUtil.RasterFontSize,
 						-0.5f, TextZ, 1/Layers,
@@ -45,6 +47,7 @@ namespace Stareater.GameScenes
 		protected override Matrix4 calculatePerspective()
 		{
 			var aspect = canvasSize.X / canvasSize.Y;
+			this.pixelSize = DefaultViewSize / canvasSize.Y;
 			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2());
 		}		
 		#endregion
@@ -58,6 +61,7 @@ namespace Stareater.GameScenes
 				ref this.tableRows,
 				scores.Select((score, i) =>
 					new SceneObjectBuilder().
+						PixelSize(this.pixelSize).
 						StartText(
 							formatter.Format(score.VictoryPoints), TextRenderUtil.RasterFontSize, 
 							-1, TextZ, 1 / Layers, 

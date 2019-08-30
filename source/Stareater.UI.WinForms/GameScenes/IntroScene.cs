@@ -52,6 +52,7 @@ namespace Stareater.GameScenes
 		private SceneObject stareaterOutlineSprite = null;
 		private SceneObject stareaterTitleSprite = null;
 		private readonly OneShotEvent animationFinished = new OneShotEvent();
+		private float pixelSize = 1;
 
 		public IntroScene(Action newGameCallback, Action loadGameCallback, Action settingsCallback, Action quitCallback)
 		{
@@ -146,8 +147,9 @@ namespace Stareater.GameScenes
 		protected override Matrix4 calculatePerspective()
 		{
 			var aspect = canvasSize.X / canvasSize.Y;
+			this.pixelSize = (aspect >= 1 ? 1 : aspect) / canvasSize.Y;
 
-            if (aspect >= 1)
+			if (aspect >= 1)
 				return calcOrthogonalPerspective(aspect, 1, FarZ, new Vector2());
 			else
 				return calcOrthogonalPerspective(1, 1 / aspect, FarZ, new Vector2());
@@ -247,6 +249,7 @@ namespace Stareater.GameScenes
 					Scale(StareaterSize, StareaterSize / 4).
 					Translate(underlinePosition).
 
+					PixelSize(this.pixelSize).
 					StartText(
 						title, TextRenderUtil.RasterFontSize, 
 						-0.5f, TitleZ, 1 / Layers, 

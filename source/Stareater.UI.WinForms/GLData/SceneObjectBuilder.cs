@@ -20,11 +20,16 @@ namespace Stareater.GLData
 		private PolygonType currentPolygonType = PolygonType.None;
 		private Dictionary<float, List<float>> vertexData = new Dictionary<float, List<float>>();
 
-		#region Sprite / SDF data
+		#region Sprite and common SDF data
 		private int textureId;
 		private Color color;
 		private Matrix4 localTransform = Matrix4.Identity;
 		private ClipWindow clipArea = null;
+		#endregion
+
+		#region SDF specific data
+		private float? pixelSize = null;
+		private float? smoothDist = null;
 		#endregion
 
 		#region Orbit data
@@ -110,11 +115,19 @@ namespace Stareater.GLData
 			else
 			{
 				this.currentPolygonType = PolygonType.Sdf;
+				this.smoothDist = this.pixelSize;
 				foreach (var layer in TextRenderUtil.Get.BufferRaster(text, fontSize, adjustment, z0, zRange, transform))
 					this.vertexData[layer.Key] = new List<float>(layer.Value);
 			}
 			this.textureId = textureId;
 			this.color = color;
+
+			return this;
+		}
+
+		public SceneObjectBuilder PixelSize(float size)
+		{
+			this.pixelSize = size * TextRenderUtil.SdfFontSize / CharacterSdfDrawer.Padding / 2;
 
 			return this;
 		}
@@ -145,20 +158,12 @@ namespace Stareater.GLData
 
 		public SceneObjectBuilder Scale(float scale)
 		{
-			this.assertStarted();
-
-			this.localTransform *= Matrix4.CreateScale(scale, scale, 1);
-
-			return this;
+			return this.Scale(scale, scale);
 		}
 
 		public SceneObjectBuilder Scale(Vector2 scale)
 		{
-			this.assertStarted();
-
-			this.localTransform *= Matrix4.CreateScale(scale.X, scale.Y, 1);
-
-			return this;
+			return this.Scale(scale.X, scale.Y);
 		}
 
 		public SceneObjectBuilder Scale(float scaleX, float scaleY)
@@ -166,6 +171,9 @@ namespace Stareater.GLData
 			this.assertStarted();
 
 			this.localTransform *= Matrix4.CreateScale(scaleX, scaleY, 1);
+
+			if (this.smoothDist.HasValue)
+				this.smoothDist /= scaleY;
 
 			return this;
 		}
@@ -214,7 +222,9 @@ namespace Stareater.GLData
 					shaderData = new OrbitData(this.minRadius, this.maxRadius, this.color, this.localTransform, this.sprite);
 					break;
 				case PolygonType.Sdf:
-					shaderData = new SdfData(this.localTransform, this.textureId, this.color, this.clipArea);
+					if (!this.smoothDist.HasValue)
+						throw new InvalidOperationException("Pixel size not defined");
+					shaderData = new SdfData(this.localTransform, this.textureId, this.color, this.smoothDist.Value, this.clipArea);
 					break;
 				default:
 					throw new NotImplementedException(this.currentPolygonType.ToString());
@@ -226,6 +236,7 @@ namespace Stareater.GLData
 			//clean up
 			this.vertexData = new Dictionary<float, List<float>>();
 			this.localTransform = Matrix4.Identity;
+			this.smoothDist = null;
 		}
 
 		private void assertStarted()

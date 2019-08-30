@@ -144,6 +144,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 			var background = this.isHovered ? this.BackgroundHover : this.mBackgroundNormal;
 			var soBuilder = new SceneObjectBuilder().
+				PixelSize(1 / SettingsWinforms.Get.GuiScale).
 				Clip(this.Position.ClipArea). //TODO(v0.8) add press offset to clip area
 				StartSprite(this.Z0, background.Sprite.Id, Color.White).
 				Translate(this.Position.Center + pressOffset).

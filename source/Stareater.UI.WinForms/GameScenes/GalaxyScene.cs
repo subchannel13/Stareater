@@ -78,6 +78,7 @@ namespace Stareater.GameScenes
 		private float screenUnitScale;
 		private Vector2 mapBoundsMin;
 		private Vector2 mapBoundsMax;
+		private float pixelSize = 1;
 
 		private readonly OpenReportVisitor reportOpener;
 		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
@@ -360,6 +361,7 @@ namespace Stareater.GameScenes
 			var aspect = this.canvasSize.X / this.canvasSize.Y;
 			var radius = DefaultViewSize * (float)Math.Pow(ZoomBase, -this.zoomLevel);
 
+			this.pixelSize = radius / canvasSize.Y;
 			this.screenUnitScale = (float)Math.Pow(ZoomBase, -this.zoomLevel) * this.screenSize.Y / this.canvasSize.Y;
 			
 			// Update screen space elements
@@ -496,6 +498,7 @@ namespace Stareater.GameScenes
 			this.UpdateScene(
 				ref this.movementEtaText,
 				new SceneObjectBuilder().
+					PixelSize(this.pixelSize).
 					StartText(
 						LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars), TextRenderUtil.RasterFontSize, 
 						-0.5f, EtaZ, InterlayerZRange, 
@@ -582,12 +585,15 @@ namespace Stareater.GameScenes
 					Translate(convert(star.Position)).
 
 					//TODO(v0.8) don't show names when zoomed out too much
+					PixelSize(this.pixelSize).
 					StartText(
 						star.Name.ToText(LocalizationManifest.Get.CurrentLanguage), TextRenderUtil.RasterFontSize,
 						-0.5f, StarNameZ + i * textZRange, textZRange, 
 						TextRenderUtil.Get.TextureId, starNameColor(star),
-						Matrix4.CreateScale(StarNameScale / (float)Math.Pow(ZoomBase, zoomLevel)) * Matrix4.CreateTranslation((float)star.Position.X, (float)star.Position.Y - 0.5f, 0)
+						Matrix4.Identity
 					).
+					Scale(StarNameScale / (float)Math.Pow(ZoomBase, zoomLevel)).
+					Translate(star.Position.X, star.Position.Y - 0.5).
 					Build()
 				).ToList()
 			);

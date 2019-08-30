@@ -16,6 +16,7 @@ namespace Stareater.GLData.SdfShader
 		public int ZId { get; private set; }
 		public int TextureSamplerId { get; private set; }
 		public int ColorId { get; private set; }
+		public int SmoothDistId { get; private set; }
 
 		public int LocalPositionId { get; private set; }
 		public int TexturePositionId { get; private set; }
@@ -37,6 +38,7 @@ namespace Stareater.GLData.SdfShader
 
 			this.ColorId = GL.GetUniformLocation(this.ProgramId, "color");
 			this.LocalTransformId = GL.GetUniformLocation(this.ProgramId, "localtransform");
+			this.SmoothDistId = GL.GetUniformLocation(this.ProgramId, "smoothDist");
 			this.TextureSamplerId = GL.GetUniformLocation(this.ProgramId, "textureSampler");
 			this.ZId = GL.GetUniformLocation(this.ProgramId, "z");
 

@@ -25,8 +25,6 @@ namespace Stareater.GLData.OrbitShader
 			GL.ActiveTexture(TextureUnit.Texture0);
 			GL.Uniform1(program.TextureSamplerId, 0);
 			GL.BindTexture(TextureTarget.Texture2D, this.objectData.TextureId);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.Linear);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)TextureMagFilter.Linear);
 
 			var mvp = this.objectData.LocalTransform * view;
 			var textureTransform = this.objectData.TextureTransform;

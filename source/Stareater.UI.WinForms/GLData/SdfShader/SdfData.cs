@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
 using Stareater.GraphicsEngine;
+using Stareater.Utils;
 using System;
 using System.Drawing;
 
@@ -12,13 +13,15 @@ namespace Stareater.GLData.SdfShader
 		public Color4 Color { get; set; }
 		public Matrix4 LocalTransform { get; set; }
 		public ClipWindow ClipArea { get; private set; }
+		public float SmoothDist { get; private set; }
 
-		public SdfData(Matrix4 localTransform, int textureId, Color color, ClipWindow clipArea)
+		public SdfData(Matrix4 localTransform, int textureId, Color color, float smoothDist, ClipWindow clipArea)
 		{
 			this.LocalTransform = localTransform;
 			this.TextureId = textureId;
 			this.Color = new Color4(color.R, color.G, color.B, color.A);
 			this.ClipArea = clipArea;
+			this.SmoothDist = Methods.Clamp(smoothDist, 0, 0.5f);
 		}
 
 		public float Alpha

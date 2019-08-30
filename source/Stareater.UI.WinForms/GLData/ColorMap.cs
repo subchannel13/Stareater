@@ -56,6 +56,17 @@ namespace Stareater.GLData
 			set { this.pixels[y, x] = value; }
 		}
 
+		public void Save(string filename)
+		{
+			using(var bitmap = new Bitmap(this.Width, this.Height))
+			{
+				var bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+				var pixels = this.RawPixels();
+				Marshal.Copy(pixels, 0, bmpData.Scan0, pixels.Length);
+				bitmap.Save(filename, ImageFormat.Png);
+			}
+		}
+
 		private static Color4[,] extractPixels(Bitmap image)
 		{
 			var bmpData = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly, image.PixelFormat);

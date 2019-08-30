@@ -25,8 +25,8 @@ namespace Stareater.GLData
 		#endregion
 
 		public const float SdfSizeThreshold = 16;
-		private const float SdfFontSize = 24;
-		public const float RasterFontSize = 15; //TODO(later) remove the need for it
+		public const float SdfFontSize = 24;
+		public const float RasterFontSize = 24; //TODO(later) remove the need for it
 
 		const int Width = 512;
 		const int Height = 512;

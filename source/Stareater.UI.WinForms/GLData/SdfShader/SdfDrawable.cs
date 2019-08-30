@@ -35,10 +35,9 @@ namespace Stareater.GLData.SdfShader
 			var mvp = this.objectData.LocalTransform * view;
 			GL.UniformMatrix4(program.LocalTransformId, false, ref mvp);
 			GL.BindTexture(TextureTarget.Texture2D, this.objectData.TextureId);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (float)TextureMinFilter.Linear);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (float)TextureMagFilter.Linear);
 			GL.Uniform1(program.ZId, z);
 			GL.Uniform4(program.ColorId, this.objectData.Color);
+			GL.Uniform1(program.SmoothDistId, this.objectData.SmoothDist);
 
 			GL.DrawArrays(PrimitiveType.Triangles, vao.ObjectStart(this.objectIndex), vao.ObjectSize(this.objectIndex));
 			ShaderLibrary.PrintGlErrors("Draw sprites");

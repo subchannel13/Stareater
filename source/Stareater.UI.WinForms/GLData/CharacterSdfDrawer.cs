@@ -10,7 +10,7 @@ namespace Stareater.GLData
 {
 	class CharacterSdfDrawer : ICharacterDrawer
 	{
-		private const int Padding = 4;
+		public const int Padding = 4;
 
 		private readonly AtlasBuilder atlas;
 		private readonly Font font;

@@ -59,7 +59,8 @@ namespace Stareater.GameScenes
 		private float originOffset = 0;
 		private float minOffset;
 		private float maxOffset;
-		
+		private float pixelSize = 1;
+
 		public void StartBombardment(BombardmentController controller)
 		{
 			this.controller = controller;
@@ -82,6 +83,7 @@ namespace Stareater.GameScenes
 		{
 			var aspect = canvasSize.X / canvasSize.Y;
 			this.minOffset = aspect * DefaultViewSize / 2 - StarScale / 2;
+			this.pixelSize = DefaultViewSize / canvasSize.Y;
 			this.limitPan();
 			this.setupTitle();
 			
@@ -223,6 +225,7 @@ namespace Stareater.GameScenes
 				ref this.colonyInfos,
 				this.controller.Planets.Where(x => x.Owner != null).Select(
 					planet => new SceneObjectBuilder().
+						PixelSize(this.pixelSize).
 						StartText(
 							LocalizationManifest.Get.CurrentLanguage["FormMain"]["Population"].Text() + ": " + formatter.Format(planet.Population),
 							TextRenderUtil.RasterFontSize, -0.5f, 
@@ -257,7 +260,7 @@ namespace Stareater.GameScenes
 		{
 			this.UpdateScene(
 				ref this.titleText,
-				new SceneObjectBuilder().StartText(
+				new SceneObjectBuilder().PixelSize(this.pixelSize).StartText(
 					LocalizationManifest.Get.CurrentLanguage["FormMain"]["BombardTitle"].Text(), TextRenderUtil.RasterFontSize,
 					-0.5f, PopCountZ, 1/Layers,
 					TextRenderUtil.Get.TextureId, Color.White,
