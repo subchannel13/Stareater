@@ -97,29 +97,29 @@ namespace Stareater.GLData
 
 		//TODO(later) try to remove the need transform parameter
 		//TODO(later) try to remove whole method
-		public Dictionary<float, IEnumerable<float>> BufferRaster(string text, float adjustment, float z0, float zRange, Matrix4 transform)
+		public Dictionary<float, IEnumerable<float>> BufferRaster(string text, float adjustment, float z0, float zRange)
 		{
-			return this.BufferRaster(text, RasterFontSize, adjustment, z0, zRange, transform);
+			return this.BufferRaster(text, RasterFontSize, adjustment, z0, zRange);
 		}
 
 		//TODO(later) try to remove the need transform parameter
-		public Dictionary<float, IEnumerable<float>> BufferRaster(string text, float fontSize, float adjustment, float z0, float zRange, Matrix4 transform)
+		public Dictionary<float, IEnumerable<float>> BufferRaster(string text, float fontSize, float adjustment, float z0, float zRange)
 		{
 			this.prepareRaster(text, fontSize);
 
-			return bufferText(text, this.characterInfos[fontSize], this.measureWidth(text, fontSize), adjustment, z0, zRange, transform);
+			return bufferText(text, this.characterInfos[fontSize], this.measureWidth(text, fontSize), adjustment, z0, zRange);
 		}
 
 		//TODO(later) try to remove the need transform parameter
-		public Dictionary<float, IEnumerable<float>> BufferSdf(string text, float adjustment, float z0, float zRange, Matrix4 transform)
+		public Dictionary<float, IEnumerable<float>> BufferSdf(string text, float adjustment, float z0, float zRange)
 		{
 			this.prepareSdf(text);
 
-			return bufferText(text, this.characterInfos[SdfFontSize], this.measureWidth(text, SdfFontSize), adjustment, z0, zRange, transform);
+			return bufferText(text, this.characterInfos[SdfFontSize], this.measureWidth(text, SdfFontSize), adjustment, z0, zRange);
 		}
 
 		//TODO(later) try to remove the need transform parameter
-		private Dictionary<float, IEnumerable<float>> bufferText(string text, Dictionary<char, CharTextureInfo> characters, float textWidth, float adjustment, float z0, float zRange, Matrix4 transform)
+		private Dictionary<float, IEnumerable<float>> bufferText(string text, Dictionary<char, CharTextureInfo> characters, float textWidth, float adjustment, float z0, float zRange)
 		{
 			float charOffsetX = textWidth * adjustment;
 			float charOffsetY = 0;
@@ -137,11 +137,10 @@ namespace Stareater.GLData
 
 					for (int v = 0; v < 6; v++)
 					{
-						var charPos = Vector4.Transform(
-							new Vector4(charInfo.VertexCoords[v].X * charInfo.Aspect + charOffsetX, charInfo.VertexCoords[v].Y + charOffsetY, 0, 1),
-							transform
-						);
-						layers[layer].AddRange(SpriteHelpers.TexturedVertex(charPos.X, charPos.Y, charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y));
+						layers[layer].AddRange(SpriteHelpers.TexturedVertex(
+							charInfo.VertexCoords[v].X * charInfo.Aspect + charOffsetX,
+							charInfo.VertexCoords[v].Y + charOffsetY,
+							charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y));
 					}
 					charOffsetX += charInfo.Aspect;
 					colunm++;

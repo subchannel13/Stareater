@@ -502,7 +502,7 @@ namespace Stareater.GameScenes
 					StartText(
 						LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars), TextRenderUtil.RasterFontSize, 
 						-0.5f, EtaZ, InterlayerZRange, 
-						TextRenderUtil.Get.TextureId, Color.White, Matrix4.Identity
+						TextRenderUtil.Get.TextureId, Color.White
 					).
 					Scale(EtaTextScale / (float)Math.Pow(ZoomBase, zoomLevel)).
 					Translate(destination.Position.X, destination.Position.Y + 0.5).
@@ -589,8 +589,7 @@ namespace Stareater.GameScenes
 					StartText(
 						star.Name.ToText(LocalizationManifest.Get.CurrentLanguage), TextRenderUtil.RasterFontSize,
 						-0.5f, StarNameZ + i * textZRange, textZRange, 
-						TextRenderUtil.Get.TextureId, starNameColor(star),
-						Matrix4.Identity
+						TextRenderUtil.Get.TextureId, starNameColor(star)
 					).
 					Scale(StarNameScale / (float)Math.Pow(ZoomBase, zoomLevel)).
 					Translate(star.Position.X, star.Position.Y - 0.5).

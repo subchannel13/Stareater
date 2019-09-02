@@ -253,7 +253,7 @@ namespace Stareater.GameScenes
 					StartText(
 						title, TextRenderUtil.RasterFontSize, 
 						-0.5f, TitleZ, 1 / Layers, 
-						TextRenderUtil.Get.TextureId, Color.FromArgb(0, Color.White), Matrix4.Identity
+						TextRenderUtil.Get.TextureId, Color.FromArgb(0, Color.White)
 					).
 					Scale(TitleSize).
 					Translate(underlinePosition + new Vector2(0, TitleSize * 1.1f)).

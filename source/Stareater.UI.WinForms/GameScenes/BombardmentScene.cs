@@ -230,9 +230,11 @@ namespace Stareater.GameScenes
 							LocalizationManifest.Get.CurrentLanguage["FormMain"]["Population"].Text() + ": " + formatter.Format(planet.Population),
 							TextRenderUtil.RasterFontSize, -0.5f, 
 							PopCountZ, 1/Layers, 
-							TextRenderUtil.Get.TextureId, Color.White,
-							Matrix4.CreateScale(TextScale) * Matrix4.CreateTranslation(planet.OrdinalPosition * OrbitStep + OrbitOffset, -PlanetScale / 2 - PopCountTopMargin, 0)
-						).Build()
+							TextRenderUtil.Get.TextureId, Color.White
+						).
+						Scale(TextScale).
+						Translate(planet.OrdinalPosition * OrbitStep + OrbitOffset, -PlanetScale / 2 - PopCountTopMargin).
+						Build()
 				).ToList()
 			);
 
@@ -263,9 +265,11 @@ namespace Stareater.GameScenes
 				new SceneObjectBuilder().PixelSize(this.pixelSize).StartText(
 					LocalizationManifest.Get.CurrentLanguage["FormMain"]["BombardTitle"].Text(), TextRenderUtil.RasterFontSize,
 					-0.5f, PopCountZ, 1/Layers,
-					TextRenderUtil.Get.TextureId, Color.White,
-					Matrix4.CreateScale(TitleScale) * Matrix4.CreateTranslation(originOffset, DefaultViewSize / 2 - BodiesY - TitleTopMargin, 0)
-				).Build()
+					TextRenderUtil.Get.TextureId, Color.White
+				).
+				Scale(TitleScale).
+				Translate(originOffset, DefaultViewSize / 2 - BodiesY - TitleTopMargin).
+				Build()
 			);
 		}
 	}

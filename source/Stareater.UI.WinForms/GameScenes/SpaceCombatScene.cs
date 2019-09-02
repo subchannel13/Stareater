@@ -205,7 +205,7 @@ namespace Stareater.GameScenes
 
 			var formatter = new ThousandsFormatter();
 			if (planet.Population > 0)
-				foreach (var layer in TextRenderUtil.Get.BufferRaster(formatter.Format(planet.Population), -1, MoreCombatantsZ, 1 / Layers, Matrix4.Identity))
+				foreach (var layer in TextRenderUtil.Get.BufferRaster(formatter.Format(planet.Population), -1, MoreCombatantsZ, 1 / Layers))
 					yield return new PolygonData(
 						layer.Key,
 						new SpriteData(PopulationTransform * planetTransform, TextRenderUtil.Get.TextureId, planet.Owner != null ? planet.Owner.Color : Color.Gray, null),
@@ -226,7 +226,7 @@ namespace Stareater.GameScenes
 			);
 
 			var formatter = new ThousandsFormatter();
-			foreach (var layer in TextRenderUtil.Get.BufferRaster(formatter.Format(shownProjectile.Count), -1, ProjectileZ, 1 / Layers, Matrix4.Identity))
+			foreach (var layer in TextRenderUtil.Get.BufferRaster(formatter.Format(shownProjectile.Count), -1, ProjectileZ, 1 / Layers))
 				yield return new PolygonData(
 					layer.Key,
 					new SpriteData(
@@ -283,7 +283,7 @@ namespace Stareater.GameScenes
 
 			var formatter = new ThousandsFormatter();
 			polygons.AddRange(
-				TextRenderUtil.Get.BufferRaster(formatter.Format(unit.Count), -1, CombatantZ, 1 / Layers, Matrix4.Identity).
+				TextRenderUtil.Get.BufferRaster(formatter.Format(unit.Count), -1, CombatantZ, 1 / Layers).
 				Select(layer =>
 					new PolygonData(
 						layer.Key,

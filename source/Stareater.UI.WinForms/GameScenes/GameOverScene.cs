@@ -37,7 +37,7 @@ namespace Stareater.GameScenes
 					StartText(
 						LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text(), TextRenderUtil.RasterFontSize,
 						-0.5f, TextZ, 1/Layers,
-						TextRenderUtil.Get.TextureId, Color.Red, Matrix4.Identity
+						TextRenderUtil.Get.TextureId, Color.Red
 					).
 					Translate(0, 2).
 					Build()
@@ -65,14 +65,14 @@ namespace Stareater.GameScenes
 						StartText(
 							formatter.Format(score.VictoryPoints), TextRenderUtil.RasterFontSize, 
 							-1, TextZ, 1 / Layers, 
-							TextRenderUtil.Get.TextureId, Color.White, Matrix4.Identity
+							TextRenderUtil.Get.TextureId, Color.White
 						).
 						Scale(TextSize).
 						Translate(-0.2, -0.5 * i + 0.8).
 						StartText(
 							score.Player.Name, TextRenderUtil.RasterFontSize,
 							0, TextZ, 1 / Layers,
-							TextRenderUtil.Get.TextureId, Color.White, Matrix4.Identity
+							TextRenderUtil.Get.TextureId, Color.White
 						).
 						Scale(TextSize).
 						Translate(0, -0.5 * i + 0.8).
