@@ -71,13 +71,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 		}
 
 		private float mTextSize = 0;
-		private float fontHeight = 0;
 		public float TextSize
 		{
 			get { return this.mTextSize; }
 			set
 			{
-				this.fontHeight = TextRenderUtil.Get.FontHeight(value);
 				this.apply(ref this.mTextSize, value);
 			}
 		}
@@ -156,8 +154,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 				var lines = this.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 				for (int i = 0; i < lines.Length; i++)
 					soBuilder.StartText(lines[i], -0.5f, this.Z0 - this.ZRange / 2, this.ZRange / 2, TextRenderUtil.Get.TextureId, this.TextColor).
-						Scale(this.fontHeight, this.fontHeight).
-						Translate(this.Position.Center + new Vector2(0, (lines.Length / 2f - i) * this.fontHeight));
+						Scale(this.TextSize).
+						Translate(this.Position.Center + new Vector2(0, (lines.Length / 2f - i) * this.TextSize));
 			}
 
 			if (this.mForgroundImage.HasValue)
@@ -173,8 +171,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			//TODO(later) count lines
 			return new Vector2(
-				TextRenderUtil.Get.WidthOf(this.Text) * this.fontHeight + 2 * this.paddingX,
-				(string.IsNullOrWhiteSpace(this.Text) ? 0 : this.fontHeight) + 2 * this.paddingY
+				TextRenderUtil.Get.WidthOf(this.Text) * this.TextSize + 2 * this.paddingX,
+				(string.IsNullOrWhiteSpace(this.Text) ? 0 : this.TextSize) + 2 * this.paddingY
 			);
 		}
 	}

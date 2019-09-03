@@ -118,7 +118,7 @@ namespace Stareater.GLData
 
 		public SceneObjectBuilder PixelSize(float size)
 		{
-			this.pixelSize = size * TextRenderUtil.SdfFontSize / CharacterSdfDrawer.Padding / 2;
+			this.pixelSize = size * TextRenderUtil.SdfFontSize / TextRenderUtil.SdfPadding / 2;
 
 			return this;
 		}
