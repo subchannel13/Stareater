@@ -62,7 +62,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			var soBuilder = new SceneObjectBuilder().
 				PixelSize(1 / SettingsWinforms.Get.GuiScale).
 				Clip(this.Position.ClipArea).
-				StartText(this.Text, this.fontSize(), -0.5f, this.Z0, this.ZRange, TextRenderUtil.Get.TextureId, this.TextColor).
+				StartText(this.Text, -0.5f, this.Z0, this.ZRange, TextRenderUtil.Get.TextureId, this.TextColor).
 				Scale(this.fontHeight, this.fontHeight).
 				Translate(this.Position.Center + new Vector2(0, this.fontHeight * this.lineCount() / 2));
 
@@ -75,14 +75,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 		protected override Vector2 measureContent()
 		{
 			return new Vector2(
-				TextRenderUtil.Get.WidthOf(this.Text, this.fontSize()) * this.fontHeight,
+				TextRenderUtil.Get.WidthOf(this.Text) * this.fontHeight,
 				this.fontHeight * this.lineCount()
 			);
-		}
-
-		private float fontSize()
-		{
-			return this.TextSize * SettingsWinforms.Get.GuiScale;
 		}
 
 		private int lineCount()

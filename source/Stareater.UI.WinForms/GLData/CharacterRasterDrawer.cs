@@ -5,6 +5,7 @@ using System.Windows.Forms;
 
 namespace Stareater.GLData
 {
+	//TODO(later) remove class
 	class CharacterRasterDrawer : ICharacterDrawer
 	{
 		private readonly AtlasBuilder atlas;

@@ -24,7 +24,6 @@ namespace Stareater.GLData
 		}
 		#endregion
 
-		public const float SdfSizeThreshold = 16;
 		public const float SdfFontSize = 24;
 		public const float RasterFontSize = 24; //TODO(later) remove the need for it
 
@@ -37,6 +36,7 @@ namespace Stareater.GLData
 		
 		private ColorMap textureData;
 
+		//TODO(later) remove font size specific where possible
 		private readonly Dictionary<float, Dictionary<char, CharTextureInfo>> characterInfos = new Dictionary<float, Dictionary<char, CharTextureInfo>>();
 		private readonly Dictionary<float, Font> fonts = new Dictionary<float, Font>();
 		private readonly Dictionary<float, float> fontHeights = new Dictionary<float, float>();
@@ -71,6 +71,7 @@ namespace Stareater.GLData
 			}
 		}
 
+		//TODO(later) see if it is needed at all
 		public float FontHeight(float fontSize)
 		{
 			this.initializeFor(fontSize);
@@ -78,49 +79,22 @@ namespace Stareater.GLData
 			return this.fontHeights[fontSize];
 		}
 
-		public float WidthOf(string text, float fontSize)
+		public float WidthOf(string text)
 		{
 			if (string.IsNullOrEmpty(text))
 				return 0;
 
-			if (fontSize < SdfSizeThreshold)
-			{
-				this.prepareRaster(text, fontSize);
-				return this.measureWidth(text, fontSize);
-			}
-			else
-			{
-				this.prepareSdf(text);
-				return this.measureWidth(text, SdfFontSize);
-			}
+			this.prepare(text);
+			return this.measureWidth(text, SdfFontSize); //TODO(later) remove font size parameter
 		}
 
 		//TODO(later) try to remove the need transform parameter
-		//TODO(later) try to remove whole method
-		public Dictionary<float, IEnumerable<float>> BufferRaster(string text, float adjustment, float z0, float zRange)
+		public Dictionary<float, IEnumerable<float>> BufferText(string text, float adjustment, float z0, float zRange)
 		{
-			return this.BufferRaster(text, RasterFontSize, adjustment, z0, zRange);
-		}
+			this.prepare(text);
+			float textWidth = this.measureWidth(text, SdfFontSize);
+			var characters = this.characterInfos[SdfFontSize];
 
-		//TODO(later) try to remove the need transform parameter
-		public Dictionary<float, IEnumerable<float>> BufferRaster(string text, float fontSize, float adjustment, float z0, float zRange)
-		{
-			this.prepareRaster(text, fontSize);
-
-			return bufferText(text, this.characterInfos[fontSize], this.measureWidth(text, fontSize), adjustment, z0, zRange);
-		}
-
-		//TODO(later) try to remove the need transform parameter
-		public Dictionary<float, IEnumerable<float>> BufferSdf(string text, float adjustment, float z0, float zRange)
-		{
-			this.prepareSdf(text);
-
-			return bufferText(text, this.characterInfos[SdfFontSize], this.measureWidth(text, SdfFontSize), adjustment, z0, zRange);
-		}
-
-		//TODO(later) try to remove the need transform parameter
-		private Dictionary<float, IEnumerable<float>> bufferText(string text, Dictionary<char, CharTextureInfo> characters, float textWidth, float adjustment, float z0, float zRange)
-		{
 			float charOffsetX = textWidth * adjustment;
 			float charOffsetY = 0;
 			var layers = new List<float>[4];
@@ -185,22 +159,12 @@ namespace Stareater.GLData
 			return textWidth;
 		}
 
-		private void prepareRaster(string text, float fontSize)
-		{
-			this.initializeFor(fontSize);
-			this.prepare(text, this.characterInfos[fontSize], () => new CharacterRasterDrawer(this.textureBuilder, this.textureData, this.fonts[fontSize]));
-		}
-
-		private void prepareSdf(string text)
-		{
-			this.initializeFor(SdfFontSize);
-			this.prepare(text, this.characterInfos[SdfFontSize],() => new CharacterSdfDrawer(this.textureBuilder, this.textureData, this.fonts[SdfFontSize]));
-		}
-
-		private void prepare(string text, Dictionary<char, CharTextureInfo> characters, Func<ICharacterDrawer> drawerMaker)
+		private void prepare(string text)
 		{
 			this.Initialize();
-			
+			this.initializeFor(SdfFontSize);
+
+			var characters = this.characterInfos[SdfFontSize];
 			var missinCharacters = new HashSet<char>();
 			foreach (char c in text)
 				if (!characters.ContainsKey(c) && !char.IsWhiteSpace(c))
@@ -209,7 +173,7 @@ namespace Stareater.GLData
 			if (missinCharacters.Count == 0)
 				return;
 
-			using(var drawer = drawerMaker())
+			using(var drawer = new CharacterSdfDrawer(this.textureBuilder, this.textureData, this.fonts[SdfFontSize]))
 			foreach (char c in missinCharacters)
 				characters[c] = drawer.Draw(c);
 

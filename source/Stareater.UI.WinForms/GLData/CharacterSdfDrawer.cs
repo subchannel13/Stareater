@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 namespace Stareater.GLData
 {
+	//TODO(later) embed the logic to TextRenderUtils
 	class CharacterSdfDrawer : ICharacterDrawer
 	{
 		public const int Padding = 4;

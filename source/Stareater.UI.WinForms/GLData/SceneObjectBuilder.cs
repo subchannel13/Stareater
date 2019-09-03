@@ -102,23 +102,14 @@ namespace Stareater.GLData
 			return this;
 		}
 
-		public SceneObjectBuilder StartText(string text, float fontSize, float adjustment, float z0, float zRange, int textureId, Color color)
+		public SceneObjectBuilder StartText(string text, float adjustment, float z0, float zRange, int textureId, Color color)
 		{
 			this.applyPolygonData();
 
-			if (fontSize < TextRenderUtil.SdfSizeThreshold)
-			{
-				this.currentPolygonType = PolygonType.Sprite;
-				foreach(var layer in TextRenderUtil.Get.BufferRaster(text, fontSize, adjustment, z0, zRange))
-					this.vertexData[layer.Key] = new List<float>(layer.Value);
-			}
-			else
-			{
-				this.currentPolygonType = PolygonType.Sdf;
-				this.smoothDist = this.pixelSize;
-				foreach (var layer in TextRenderUtil.Get.BufferRaster(text, fontSize, adjustment, z0, zRange))
-					this.vertexData[layer.Key] = new List<float>(layer.Value);
-			}
+			this.currentPolygonType = PolygonType.Sdf;
+			this.smoothDist = this.pixelSize;
+			foreach (var layer in TextRenderUtil.Get.BufferText(text, adjustment, z0, zRange))
+				this.vertexData[layer.Key] = new List<float>(layer.Value);
 			this.textureId = textureId;
 			this.color = color;
 

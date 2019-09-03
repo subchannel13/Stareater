@@ -500,7 +500,7 @@ namespace Stareater.GameScenes
 				new SceneObjectBuilder().
 					PixelSize(this.pixelSize).
 					StartText(
-						LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars), TextRenderUtil.RasterFontSize, 
+						LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars),
 						-0.5f, EtaZ, InterlayerZRange, 
 						TextRenderUtil.Get.TextureId, Color.White
 					).
@@ -587,7 +587,7 @@ namespace Stareater.GameScenes
 					//TODO(v0.8) don't show names when zoomed out too much
 					PixelSize(this.pixelSize).
 					StartText(
-						star.Name.ToText(LocalizationManifest.Get.CurrentLanguage), TextRenderUtil.RasterFontSize,
+						star.Name.ToText(LocalizationManifest.Get.CurrentLanguage),
 						-0.5f, StarNameZ + i * textZRange, textZRange, 
 						TextRenderUtil.Get.TextureId, starNameColor(star)
 					).

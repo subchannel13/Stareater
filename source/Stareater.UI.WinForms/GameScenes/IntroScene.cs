@@ -251,7 +251,7 @@ namespace Stareater.GameScenes
 
 					PixelSize(this.pixelSize).
 					StartText(
-						title, TextRenderUtil.RasterFontSize, 
+						title,
 						-0.5f, TitleZ, 1 / Layers, 
 						TextRenderUtil.Get.TextureId, Color.FromArgb(0, Color.White)
 					).
