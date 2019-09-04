@@ -74,7 +74,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			return new Vector2(
 				TextRenderUtil.Get.WidthOf(this.Text) * this.TextSize,
-				this.TextSize * this.lineCount()
+				this.TextSize * this.lineCount() * TextRenderUtil.Get.LineScale
 			);
 		}
 

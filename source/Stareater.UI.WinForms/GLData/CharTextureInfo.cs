@@ -7,9 +7,9 @@ namespace Stareater.GLData
 	{
 		public Vector2[] VertexCoords { get; private set; }
 		public Vector2[] TextureCoords { get; private set; }
-		public float Aspect { get; private set; }
+		public float Width { get; private set; }
 
-		public CharTextureInfo(Rectangle bitmapRegion, float textureWidth, float textureHeight, float polygonWidth, float polygonHeight, float polygonX, float polygonY)
+		public CharTextureInfo(Rectangle bitmapRegion, float textureWidth, float textureHeight, float polygonWidth, float polygonHeight, float polygonX, float polygonY, float charWidth)
 		{
 			var offset = new Vector2(bitmapRegion.X / textureWidth, bitmapRegion.Y / textureHeight);
 			var width = bitmapRegion.Width / textureWidth;
@@ -25,7 +25,7 @@ namespace Stareater.GLData
 				offset,
 			};
 
-			this.Aspect = bitmapRegion.Width / (float)bitmapRegion.Height;
+			this.Width = charWidth;
 
 			this.VertexCoords = new Vector2[] {
 				new Vector2(-polygonWidth / 2 + polygonX, polygonHeight / 2 + polygonY),

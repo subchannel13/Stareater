@@ -31,16 +31,24 @@ namespace Stareater.GLData
 		const int Width = 512;
 		const int Height = 512;
 		const int Spacing = 2;
-		const string FontFamily = "Arial";
 
 		const float SpaceUnitWidth = 0.25f;
 		
 		private ColorMap textureData;
 
 		private readonly Dictionary<char, CharTextureInfo> characterInfos = new Dictionary<char, CharTextureInfo>();
-		private readonly Font font = new Font(FontFamily, SdfFontSize, FontStyle.Regular, GraphicsUnit.Pixel);
+		private readonly Font font;
 		private readonly AtlasBuilder textureBuilder = new AtlasBuilder(Spacing, new Size(Width, Height));
-		
+
+		public float LineScale { get; private set; }
+
+		private TextRenderUtil()
+		{
+			this.font = new Font("Arial", SdfFontSize, FontStyle.Regular, GraphicsUnit.Pixel);
+			var fontFamily = this.font.FontFamily;
+			this.LineScale = fontFamily.GetLineSpacing(this.font.Style) / (float) fontFamily.GetEmHeight(this.font.Style);
+		}
+
 		public int TextureId { get; private set; }
 		
 		public void Initialize()
@@ -83,11 +91,11 @@ namespace Stareater.GLData
 					for (int v = 0; v < 6; v++)
 					{
 						layers[layer].AddRange(SpriteHelpers.TexturedVertex(
-							charInfo.VertexCoords[v].X * charInfo.Aspect + charOffsetX,
+							charInfo.VertexCoords[v].X + charOffsetX,
 							charInfo.VertexCoords[v].Y + charOffsetY,
 							charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y));
 					}
-					charOffsetX += charInfo.Aspect;
+					charOffsetX += charInfo.Width;
 					colunm++;
 				}
 				else if (c == ' ')
@@ -95,7 +103,7 @@ namespace Stareater.GLData
 				else if (c == '\n')
 				{
 					charOffsetX = textWidth * adjustment;
-					charOffsetY--;
+					charOffsetY -= this.LineScale;
 					row++;
 					colunm = 0;
 				}
@@ -115,7 +123,7 @@ namespace Stareater.GLData
 				foreach (char c in line)
 				{
 					if (!char.IsWhiteSpace(c))
-						lineWidth += this.characterInfos[c].Aspect;
+						lineWidth += this.characterInfos[c].Width;
 					else if (c == ' ')
 						lineWidth += SpaceUnitWidth;
 					else if (c != '\r')
@@ -140,39 +148,50 @@ namespace Stareater.GLData
 			if (missinCharacters.Count == 0)
 				return;
 
-			using (var fakeBitmap = new Bitmap(1, 1))
-			using (var fakeCanvas = Graphics.FromImage(fakeBitmap))
-				foreach (char c in missinCharacters)
-				{
-					var path = new GraphicsPath();
-					path.AddString(c.ToString(), font.FontFamily, (int)font.Style, font.Size, new Point(0, 0), StringFormat.GenericTypographic);
-					path.Flatten();
+			foreach (char c in missinCharacters)
+			{
+				var path = new GraphicsPath();
+				path.AddString(c.ToString(), font.FontFamily, (int)font.Style, font.Size, new Point(0, 0), StringFormat.GenericTypographic);
+				path.Flatten();
 
-					var contures = getContures(path).ToList();
-					path.Dispose();
+				var contures = getContures(path).ToList();
+				var minX = (int)Math.Floor(path.PathPoints.Min(p => p.X));
+				var maxX = (int)Math.Ceiling(path.PathPoints.Max(p => p.X));
+				var minY = (int)Math.Floor(path.PathPoints.Min(p => p.Y));
+				var maxY = (int)Math.Ceiling(path.PathPoints.Max(p => p.Y));
+				path.Dispose();
 
-					//TODO(later) measure from path points instead
-					var measuredSize = new SizeF(
-						fakeCanvas.MeasureString(c.ToString(), this.font, int.MaxValue, StringFormat.GenericTypographic).Width + SdfPadding * 2,
-						TextRenderer.MeasureText(fakeCanvas, c.ToString(), this.font, new Size(int.MaxValue, int.MaxValue)).Height + SdfPadding * 2
-					);
-					var rect = this.textureBuilder.Add(measuredSize);
+				var width = maxX - minX;
+				var height = maxY - minY;
+				var rect = this.textureBuilder.Add(new Size(width + SdfPadding * 2, height + SdfPadding * 2));
 
-					int width = rect.Size.Width;
-					int height = rect.Size.Height;
-					var distField = genSdf(contures, width, height);
+				var distField = new double[rect.Size.Height, rect.Size.Width];
 
-					for (int y = 0; y < height; y++)
-						for (int x = 0; x < width; x++)
-							this.textureData[rect.X + x, rect.Y + y] = Color.FromArgb((int)(distField[y, x] * 255), 255, 255, 255);
+				for (int y = 0; y < rect.Size.Height; y++)
+					for (int x = 0; x < rect.Size.Width; x++)
+					{
+						var fromP = new Vector2(x + minX - SdfPadding, y + minY - SdfPadding);
+						var minDist = Math.Min(contures.Min(shape => shape.Distance(fromP)), SdfPadding);
+						if (contures.Sum(shape => shape.RayHits(fromP)) % 2 != 0)
+							minDist *= -1;
 
-					this.characterInfos[c] = new CharTextureInfo(
-						rect,
-						this.textureData.Width, this.textureData.Height,
-						width / (float)(width - 2 * SdfPadding), height / (float)(height - 2 * SdfPadding),
-						0.5f, -0.5f
-					);
-				}
+						distField[y, x] = -minDist / SdfPadding / 2 + 0.5;
+					}
+
+				for (int y = 0; y < rect.Size.Height; y++)
+					for (int x = 0; x < rect.Size.Width; x++)
+						this.textureData[rect.X + x, rect.Y + y] = Color.FromArgb((int)(distField[y, x] * 255), 255, 255, 255);
+
+				this.characterInfos[c] = new CharTextureInfo(
+					rect,
+					this.textureData.Width, this.textureData.Height,
+					rect.Size.Width / font.Size,
+					rect.Size.Height / font.Size,
+					(minX + maxX) / font.Size / 2,
+					-(minY + maxY) / font.Size / 2,
+					width / font.Size
+				);
+			}
 
 			TextureUtils.UpdateTexture(this.TextureId, this.textureData);
 		}
@@ -207,24 +226,6 @@ namespace Stareater.GLData
 				strokes.Add(new[] { pathPoints[group.Key + group.Value - 1], pathPoints[group.Key] });
 				yield return new GlyphContour(strokes);
 			}
-		}
-
-		private static double[,] genSdf(List<GlyphContour> contures, int width, int height)
-		{
-			var distField = new double[height, width];
-
-			for (int y = 0; y < height; y++)
-				for (int x = 0; x < width; x++)
-				{
-					var fromP = new Vector2(x - SdfPadding, y - SdfPadding);
-					var minDist = Math.Min(contures.Min(shape => shape.Distance(fromP)), SdfPadding);
-					if (contures.Sum(shape => shape.RayHits(fromP)) % 2 != 0)
-						minDist *= -1;
-
-					distField[y, x] = -minDist / SdfPadding / 2 + 0.5;
-				}
-
-			return distField;
 		}
 	}
 }
