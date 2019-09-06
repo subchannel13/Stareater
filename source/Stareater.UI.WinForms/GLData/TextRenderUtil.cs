@@ -71,6 +71,8 @@ namespace Stareater.GLData
 
 		public Dictionary<float, IEnumerable<float>> BufferText(string text, float adjustment, float z0, float zRange)
 		{
+			if (text.StartsWith("Turn"))
+				;
 			this.prepare(text);
 			float textWidth = this.measureWidth(text);
 
@@ -133,7 +135,7 @@ namespace Stareater.GLData
 				textWidth = Math.Max(textWidth, lineWidth);
 			}
 
-			return textWidth;
+			return textWidth + 2 / SdfFontSize;
 		}
 
 		private void prepare(string text)
@@ -189,7 +191,7 @@ namespace Stareater.GLData
 					rect.Size.Height / font.Size,
 					(minX + maxX) / font.Size / 2,
 					-(minY + maxY) / font.Size / 2,
-					width / font.Size
+					maxX / font.Size
 				);
 			}
 

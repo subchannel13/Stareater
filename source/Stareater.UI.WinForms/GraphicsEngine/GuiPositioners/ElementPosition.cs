@@ -276,7 +276,7 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
-				element.Size = element.contentSize() + new Vector2(this.paddingX, this.paddingY);
+				element.Size = element.contentSize() + new Vector2(this.paddingX * 2, this.paddingY * 2);
 			}
 
 			public IEnumerable<AGuiElement> Dependencies

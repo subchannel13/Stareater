@@ -30,7 +30,7 @@ namespace Stareater.GameScenes
 			this.Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 6);
 			this.Position.FixedSize(360, 116);
 
-			this.title = new GuiText { TextColor = Color.Black, TextSize = 8 };
+			this.title = new GuiText { TextColor = Color.Black, TextSize = 12 };
 			this.title.Position.WrapContent().Then.ParentRelative(-1, 1).WithMargins(8, 4);
 			this.AddChild(this.title);
 
@@ -40,7 +40,7 @@ namespace Stareater.GameScenes
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
 				Padding = 10,
 				TextColor = Color.Black,
-				TextSize = 8,
+				TextSize = 12,
 				ClickCallback = projectButton_Click
 			};
 			this.projectButton.Position.FixedSize(88, 88).ParentRelative(-1, -1).WithMargins(8, 8);
@@ -52,7 +52,7 @@ namespace Stareater.GameScenes
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
 				Padding = 10,
 				TextColor = Color.Black,
-				TextSize = 8,
+				TextSize = 12,
 				Text = context["SiteDetails"].Text(),
 				ClickCallback = detailsButton_Click
 			};
@@ -66,7 +66,7 @@ namespace Stareater.GameScenes
 			this.investmentSlider.Position.FixedSize(150, 15).RelativeTo(this.projectButton, 1, 1, -1, 1).WithMargins(8, 0).StretchRightTo(this, 1, 8);
 			this.AddChild(this.investmentSlider);
 
-			this.estimationLabel = new GuiText { TextColor = Color.Black, TextSize = 10 };
+			this.estimationLabel = new GuiText { TextColor = Color.Black, TextSize = 12 };
 			this.estimationLabel.Position.WrapContent().Then.RelativeTo(this.investmentSlider, -1, -1, -1, 1).WithMargins(0, 8);
 			this.AddChild(this.estimationLabel);
 
@@ -88,7 +88,7 @@ namespace Stareater.GameScenes
 			this.policyToggle.Position.FixedSize(32, 32).RelativeTo(this.projectButton, 1, -1, -1, -1).WithMargins(8, 0);
 			this.AddChild(this.policyToggle);
 
-			this.policyName = new GuiText { TextColor = Color.Black, TextSize = 10 };
+			this.policyName = new GuiText { TextColor = Color.Black, TextSize = 12 };
 			this.policyName.Position.WrapContent().Then.RelativeTo(this.policyToggle, 1, 0, -1, 0).WithMargins(8, 0);
 			this.AddChild(this.policyName);
 		}
