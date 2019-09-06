@@ -1,4 +1,5 @@
 ﻿using OpenTK.Graphics;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
@@ -19,12 +20,15 @@ namespace Stareater.GLData
 			this.Width = image.Width;
 		}
 
-		public ColorMap(int width, int height, Color4 fillColor)
+		public ColorMap(int width, int height)
 		{
 			this.Width = width;
 			this.Height = height;
 			this.pixels = new Color4[height, width];
+		}
 
+		public ColorMap(int width, int height, Color4 fillColor) : this(width, height)
+		{
 			for (int y = 0; y < height; y++)
 				for (int x = 0; x < width; x++)
 					this.pixels[y, x] = fillColor;
@@ -48,6 +52,14 @@ namespace Stareater.GLData
 			for (int y = 0; y < height; y++)
 				for (int x = 0; x < width; x++)
 					this.pixels[offsetY + y, offsetX + x] = imagePixels[y, x];
+		}
+
+		public IEnumerable<Color4> Subregion(int minX, int minY, int maxX, int maxY)
+		{
+			for (int y = minY; y <= maxY; y++)
+				for (int x = minX; x <= maxX; x++)
+					if (x >= 0 && x < this.Width && y >= 0 && y < this.Height)
+						yield return this[x, y];
 		}
 
 		public Color4 this[int x, int y]

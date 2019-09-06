@@ -5,6 +5,7 @@ using System.Linq;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using OpenTK;
+using OpenTK.Graphics;
 using Stareater.AppData;
 
 namespace Stareater.GLData
@@ -211,7 +212,29 @@ namespace Stareater.GLData
 							}
 					}
 				}
-				this.textureId = TextureUtils.CreateTexture(new ColorMap(atlasImage));
+
+				//TODO(later) move to atlas generator
+				var atlasData = new ColorMap(atlasImage);
+				for (int y = 0; y < atlasData.Height; y++)
+					for (int x = 0; x < atlasData.Width; x++)
+						if (atlasData[x, y].A == 0)
+						{
+							var colorSum = new Vector4();
+							var alphaSum = 0f;
+							foreach (var color in atlasData.Subregion(x - 1, y - 1, x + 1, y + 1))
+							{
+								colorSum += new Vector4(color.R, color.G, color.B, 1) * color.A;
+								alphaSum += color.A;
+							}
+
+							if (alphaSum > 0)
+							{
+								colorSum /= alphaSum;
+								atlasData[x, y] = new Color4(colorSum.X, colorSum.Y, colorSum.Z, 0);
+							}
+						}
+
+				this.textureId = TextureUtils.CreateTexture(atlasData);
 				this.Size = new Vector2(atlasImage.Width, atlasImage.Height);
 			}
 			
