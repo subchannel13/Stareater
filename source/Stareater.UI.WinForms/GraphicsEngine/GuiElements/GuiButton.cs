@@ -151,14 +151,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 				AddVertices(SpriteHelpers.GuiBackground(background, this.Position.Size.X, this.Position.Size.Y));
 
 			if (!string.IsNullOrWhiteSpace(this.Text))
-			{
-				//TODO(later) split single line if it doesn't fit
-				var lines = this.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-				for (int i = 0; i < lines.Length; i++)
-					soBuilder.StartText(lines[i], -0.5f, this.Z0 - this.ZRange / 2, this.ZRange / 2, TextRenderUtil.Get.TextureId, this.TextColor).
-						Scale(this.TextHeight).
-						Translate(this.Position.Center + new Vector2(0, (this.textSize.Y / 2f - i) * this.TextHeight)); //TODO(later) make correct line spacing
-			}
+				soBuilder.StartText(this.Text, -0.5f, 0.5f, this.Z0 - this.ZRange / 2, this.ZRange / 2, TextRenderUtil.Get.TextureId, this.TextColor).
+					Scale(this.TextHeight).
+					Translate(this.Position.Center + new Vector2(0, this.textSize.Y / 2f * this.TextHeight));
 
 			if (this.mForgroundImage.HasValue)
 				soBuilder.

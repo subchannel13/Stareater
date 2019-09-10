@@ -71,7 +71,7 @@ namespace Stareater.GLData
 			return this.measureSize(text);
 		}
 
-		public Dictionary<float, IEnumerable<float>> BufferText(string text, float adjustment, float z0, float zRange)
+		public Dictionary<float, IEnumerable<float>> BufferText(string text, float adjustment, float alignment, float z0, float zRange)
 		{
 			this.prepare(text);
 			float textWidth = this.measureSize(text).X;
@@ -84,30 +84,38 @@ namespace Stareater.GLData
 			for (int i = 0; i < layers.Length; i++)
 				layers[i] = new List<float>();
 
-			foreach (char c in text)
-				if (!char.IsWhiteSpace(c))
-				{
-					var charInfo = this.characterInfos[c];
-					var layer = 2 * (row % 2) + colunm % 2;
+			foreach (var line in text.Split('\n'))
+			{
+				var lineWidth = line.Sum(c => 
+					c == ' ' ? SpaceUnitWidth : 
+					!char.IsWhiteSpace(c) ? this.characterInfos[c].Width : 
+					0
+				);
+				charOffsetX = textWidth * adjustment + (textWidth - lineWidth) * alignment;
 
-					for (int v = 0; v < 6; v++)
-						layers[layer].AddRange(SpriteHelpers.TexturedVertex(
-							charInfo.VertexCoords[v].X + charOffsetX,
-							charInfo.VertexCoords[v].Y + charOffsetY,
-							charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y));
+				foreach (char c in line)
+					if (!char.IsWhiteSpace(c))
+					{
+						var charInfo = this.characterInfos[c];
+						var layer = 2 * (row % 2) + colunm % 2;
 
-					charOffsetX += charInfo.Width;
-					colunm++;
-				}
-				else if (c == ' ')
-					charOffsetX += SpaceUnitWidth;
-				else if (c == '\n')
-				{
-					charOffsetX = textWidth * adjustment;
-					charOffsetY -= this.lineScale;
-					row++;
-					colunm = 0;
-				}
+						for (int v = 0; v < 6; v++)
+							layers[layer].AddRange(SpriteHelpers.TexturedVertex(
+								charInfo.VertexCoords[v].X + charOffsetX,
+								charInfo.VertexCoords[v].Y + charOffsetY,
+								charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y));
+
+						charOffsetX += charInfo.Width;
+						colunm++;
+					}
+					else if (c == ' ')
+						charOffsetX += SpaceUnitWidth;
+
+				charOffsetY -= this.lineScale;
+				row++;
+				colunm = 0;
+
+			}
 
 			return Enumerable.Range(0, layers.Length).
 				ToDictionary(i => z0 - i * zRange / 4, i => (IEnumerable<float>)layers[i]);
