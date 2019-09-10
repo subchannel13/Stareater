@@ -21,10 +21,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 			{
 				Text = LocalizationManifest.Get.CurrentLanguage[this.context][this.textKey].Text(),
 				TextColor = Color.White,
-				TextSize = 12,
+				TextHeight = 12,
 				MasksMouseClick = false
 			};
-			text.Position.WrapContent().WithPadding(10, 5).ParentRelative(0, 0);
+			text.Position.WrapContent().Then.ParentRelative(0, 0);
 
 			var panel = new GuiPanel()
 			{
@@ -32,7 +32,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				MasksMouseClick = false
 			};
 			panel.AddChild(text);
-			panel.Position.WrapContent();
+			panel.Position.WrapContent().WithPadding(10, 5);
 
 			return panel;
 		}

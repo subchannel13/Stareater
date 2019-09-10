@@ -8,7 +8,7 @@ namespace Stareater.GLData
 {
 	static class TextureUtils
 	{
-		private static Dictionary<int, Vector2> textureSizes = new Dictionary<int, Vector2>();
+		private static readonly Dictionary<int, Vector2> textureSizes = new Dictionary<int, Vector2>();
 
 		public static int CreateTexture(ColorMap image)
 		{

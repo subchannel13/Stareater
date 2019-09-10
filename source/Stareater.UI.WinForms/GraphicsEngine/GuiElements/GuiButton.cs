@@ -17,6 +17,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		private bool isHovered = false;
 		private float paddingX = 0;
 		private float paddingY = 0;
+		private Vector2 textSize;
 
 		public Action ClickCallback { get; set; }
 
@@ -56,6 +57,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mText; }
 			set
 			{
+				this.textSize = TextRenderUtil.Get.SizeOf(value);
 				this.apply(ref this.mText, value);
 			}
 		}
@@ -70,13 +72,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
-		private float mTextSize = 0;
-		public float TextSize
+		private float mTextHeight = 0;
+		public float TextHeight
 		{
-			get { return this.mTextSize; }
+			get { return this.mTextHeight; }
 			set
 			{
-				this.apply(ref this.mTextSize, value);
+				this.apply(ref this.mTextHeight, value);
 			}
 		}
 
@@ -154,8 +156,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 				var lines = this.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 				for (int i = 0; i < lines.Length; i++)
 					soBuilder.StartText(lines[i], -0.5f, this.Z0 - this.ZRange / 2, this.ZRange / 2, TextRenderUtil.Get.TextureId, this.TextColor).
-						Scale(this.TextSize).
-						Translate(this.Position.Center + new Vector2(0, (lines.Length / 2f - i) * this.TextSize));
+						Scale(this.TextHeight).
+						Translate(this.Position.Center + new Vector2(0, (this.textSize.Y / 2f - i) * this.TextHeight)); //TODO(later) make correct line spacing
 			}
 
 			if (this.mForgroundImage.HasValue)
@@ -169,11 +171,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		protected override Vector2 measureContent()
 		{
-			//TODO(later) count lines
-			return new Vector2(
-				TextRenderUtil.Get.WidthOf(this.Text) * this.TextSize + 2 * this.paddingX,
-				(string.IsNullOrWhiteSpace(this.Text) ? 0 : this.TextSize) + 2 * this.paddingY
-			);
+			return this.textSize * this.TextHeight + new Vector2(2 * this.paddingX, 2 * this.paddingY);
 		}
 	}
 }

@@ -8,6 +8,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 {
 	class GuiText : AGuiElement
 	{
+		private Vector2 textSize;
+
 		private Func<PolygonData, IAnimator> mAnimation = null;
 		public Func<PolygonData, IAnimator> Animation
 		{
@@ -27,6 +29,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			get { return this.mText; }
 			set
 			{
+				this.textSize = TextRenderUtil.Get.SizeOf(value);
 				this.apply(ref this.mText, value);
 				this.reposition();
 			}
@@ -42,13 +45,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
-		private float mTextSize = 0;
-		public float TextSize
+		private float mTextHeight = 0;
+		public float TextHeight
 		{
-			get { return this.mTextSize; }
+			get { return this.mTextHeight; }
 			set
 			{
-				this.apply(ref this.mTextSize, value);
+				this.apply(ref this.mTextHeight, value);
 			}
 		}
 
@@ -61,8 +64,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 				PixelSize(1 / SettingsWinforms.Get.GuiScale).
 				Clip(this.Position.ClipArea).
 				StartText(this.Text, -0.5f, this.Z0, this.ZRange, TextRenderUtil.Get.TextureId, this.TextColor).
-				Scale(this.TextSize).
-				Translate(this.Position.Center + new Vector2(0, this.TextSize * this.lineCount() / 2));
+				Scale(this.TextHeight).
+				Translate(this.Position.Center + new Vector2(0, this.TextHeight * textSize.Y / 2));
 
 			if (this.Animation != null)
 				return soBuilder.Build(polygons => this.Animation(polygons[0]));
@@ -72,16 +75,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		protected override Vector2 measureContent()
 		{
-			return new Vector2(
-				TextRenderUtil.Get.WidthOf(this.Text) * this.TextSize,
-				this.TextSize * this.lineCount() * TextRenderUtil.Get.LineScale
-			);
-		}
-
-		private int lineCount()
-		{
-			//TODO(later) count lines in a better way
-			return (this.Text != null) ? this.Text.Split('\n').Length : 0;
+			return this.textSize * this.TextHeight;
 		}
 	}
 }

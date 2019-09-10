@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Windows.Forms;
 using OpenTK;
 using Stareater.GLData.SpriteShader;
 
@@ -25,31 +24,34 @@ namespace Stareater.GLData
 		}
 		#endregion
 
-		public const float SdfFontSize = 24;
-		public const int SdfPadding = 4;
+		const float SdfFontSize = 24;
+		const int SdfPadding = 4;
+
+		public const float AntialiasPixelSize = SdfFontSize / SdfPadding / 2;
 
 		const int Width = 512;
 		const int Height = 512;
 		const int Spacing = 2;
 
 		const float SpaceUnitWidth = 0.25f;
+		const float AntialiasWidth = 1 / SdfFontSize;
 		
 		private ColorMap textureData;
 
 		private readonly Dictionary<char, CharTextureInfo> characterInfos = new Dictionary<char, CharTextureInfo>();
 		private readonly Font font;
 		private readonly AtlasBuilder textureBuilder = new AtlasBuilder(Spacing, new Size(Width, Height));
-
-		public float LineScale { get; private set; }
+		private readonly float lineScale;
 
 		private TextRenderUtil()
 		{
 			this.font = new Font("Arial", SdfFontSize, FontStyle.Regular, GraphicsUnit.Pixel);
 			var fontFamily = this.font.FontFamily;
-			this.LineScale = fontFamily.GetLineSpacing(this.font.Style) / (float) fontFamily.GetEmHeight(this.font.Style);
+			this.lineScale = fontFamily.GetLineSpacing(this.font.Style) / (float) fontFamily.GetEmHeight(this.font.Style);
 		}
 
 		public int TextureId { get; private set; }
+
 		
 		public void Initialize()
 		{
@@ -60,21 +62,19 @@ namespace Stareater.GLData
 				this.TextureId = TextureUtils.CreateTexture(this.textureData);
 		}
 
-		public float WidthOf(string text)
+		public Vector2 SizeOf(string text)
 		{
 			if (string.IsNullOrEmpty(text))
-				return 0;
+				return new Vector2();
 
 			this.prepare(text);
-			return this.measureWidth(text);
+			return this.measureSize(text);
 		}
 
 		public Dictionary<float, IEnumerable<float>> BufferText(string text, float adjustment, float z0, float zRange)
 		{
-			if (text.StartsWith("Turn"))
-				;
 			this.prepare(text);
-			float textWidth = this.measureWidth(text);
+			float textWidth = this.measureSize(text).X;
 
 			float charOffsetX = textWidth * adjustment;
 			float charOffsetY = 0;
@@ -91,12 +91,11 @@ namespace Stareater.GLData
 					var layer = 2 * (row % 2) + colunm % 2;
 
 					for (int v = 0; v < 6; v++)
-					{
 						layers[layer].AddRange(SpriteHelpers.TexturedVertex(
 							charInfo.VertexCoords[v].X + charOffsetX,
 							charInfo.VertexCoords[v].Y + charOffsetY,
 							charInfo.TextureCoords[v].X, charInfo.TextureCoords[v].Y));
-					}
+
 					charOffsetX += charInfo.Width;
 					colunm++;
 				}
@@ -105,7 +104,7 @@ namespace Stareater.GLData
 				else if (c == '\n')
 				{
 					charOffsetX = textWidth * adjustment;
-					charOffsetY -= this.LineScale;
+					charOffsetY -= this.lineScale;
 					row++;
 					colunm = 0;
 				}
@@ -114,18 +113,24 @@ namespace Stareater.GLData
 				ToDictionary(i => z0 - i * zRange / 4, i => (IEnumerable<float>)layers[i]);
 		}
 
-		private float measureWidth(string text)
+		private Vector2 measureSize(string text)
 		{
 			var textWidth = 0f;
+			var textHeight = 0f;
+			var lineY = 0f;
 
 			foreach (var line in text.Split('\n'))
 			{
 				var lineWidth = 0f;
+				var lineHeight = this.lineScale;
 
 				foreach (char c in line)
 				{
 					if (!char.IsWhiteSpace(c))
+					{
 						lineWidth += this.characterInfos[c].Width;
+						lineHeight = Math.Max(lineHeight, this.characterInfos[c].Height);
+					}
 					else if (c == ' ')
 						lineWidth += SpaceUnitWidth;
 					else if (c != '\r')
@@ -133,9 +138,11 @@ namespace Stareater.GLData
 				}
 
 				textWidth = Math.Max(textWidth, lineWidth);
+				textHeight = lineY + lineHeight;
+				lineY += lineScale;
 			}
 
-			return textWidth + 2 / SdfFontSize;
+			return new Vector2(textWidth + 2 * AntialiasWidth, textHeight + 2 * AntialiasWidth);
 		}
 
 		private void prepare(string text)
@@ -191,7 +198,8 @@ namespace Stareater.GLData
 					rect.Size.Height / font.Size,
 					(minX + maxX) / font.Size / 2,
 					-(minY + maxY) / font.Size / 2,
-					maxX / font.Size
+					maxX / font.Size,
+					maxY / font.Size
 				);
 			}
 

@@ -5,7 +5,6 @@ using System;
 using Stareater.GLData.SpriteShader;
 using System.Drawing;
 using Stareater.GLData.OrbitShader;
-using Stareater.GraphicsEngine.GuiElements;
 using Stareater.GLData.SdfShader;
 using System.Linq;
 
@@ -110,6 +109,7 @@ namespace Stareater.GLData
 			this.smoothDist = this.pixelSize;
 			foreach (var layer in TextRenderUtil.Get.BufferText(text, adjustment, z0, zRange))
 				this.vertexData[layer.Key] = new List<float>(layer.Value);
+
 			this.textureId = textureId;
 			this.color = color;
 
@@ -118,7 +118,7 @@ namespace Stareater.GLData
 
 		public SceneObjectBuilder PixelSize(float size)
 		{
-			this.pixelSize = size * TextRenderUtil.SdfFontSize / TextRenderUtil.SdfPadding / 2;
+			this.pixelSize = size * TextRenderUtil.AntialiasPixelSize;
 
 			return this;
 		}
