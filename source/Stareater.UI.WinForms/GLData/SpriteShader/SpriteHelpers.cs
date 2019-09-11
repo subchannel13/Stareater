@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenTK;
 using Stareater.GraphicsEngine.GuiElements;
@@ -76,40 +77,41 @@ namespace Stareater.GLData.SpriteShader
 
 		public static IEnumerable<float> GuiBackground(BackgroundTexture texture, float width, float height)
 		{
-			var innerWidth = width - texture.PaddingLeft - texture.PaddingRight;
-			var innerHeight = height - texture.PaddingTop - texture.PaddingBottom;
+			var polygonPoints = texture.SlicePolygon(width, height).ToList();
+			var texturePoints = texture.SliceTexture().ToList();
+			var points = new List<Vector2>();
+			var spriteTextureSize = TextureUtils.TextureSize(texture.Sprite.Id);
 
-			var points = TexturedRect(new Vector2(0, 0), innerWidth, innerHeight, texture.CenterTexture).ToList();
+			for (int i = 0; i < polygonPoints.Count; i += 4)
+			{
+				var textureMin = texturePoints[i + 0];
+				var textureMax = texturePoints[i + 2];
+				var textureSize = textureMax - textureMin;
+				var polygonSize = polygonPoints[i + 2] - polygonPoints[i + 0];
 
-			if (texture.PaddingLeft > 0)
-				points.AddRange(TexturedRect(new Vector2(-width / 2 + texture.PaddingLeft / 2, 0), texture.PaddingLeft, innerHeight, texture.LeftTexture));
-			if (texture.PaddingRight > 0)
-				points.AddRange(TexturedRect(new Vector2(width / 2 - texture.PaddingRight / 2, 0), texture.PaddingRight, innerHeight, texture.RightTexture));
-			if (texture.PaddingTop > 0)
-				points.AddRange(TexturedRect(new Vector2(0, height / 2 - texture.PaddingTop / 2), innerWidth, texture.PaddingTop, texture.TopTexture));
-			if (texture.PaddingBottom > 0)
-				points.AddRange(TexturedRect(new Vector2(0, -height / 2 + texture.PaddingTop / 2), innerWidth, texture.PaddingBottom, texture.BottomTexture));
+				var textureCenter = (textureMax + textureMin) / 2;
+				var widthDir = new Vector2(Math.Min(polygonSize.X, textureSize.X * spriteTextureSize.X) / spriteTextureSize.X, 0);
+				var heightDir = new Vector2(0, Math.Min(polygonSize.Y, textureSize.Y * spriteTextureSize.Y) / spriteTextureSize.Y);
 
-			if (texture.PaddingLeft > 0 && texture.PaddingTop > 0)
-				points.AddRange(TexturedRect(
-					new Vector2(-width / 2 + texture.PaddingLeft / 2, height / 2 - texture.PaddingTop / 2), 
-					texture.PaddingLeft, texture.PaddingTop, texture.TopLeftTexture
-				));
-			if (texture.PaddingRight > 0 && texture.PaddingTop > 0)
-				points.AddRange(TexturedRect(
-					new Vector2(width / 2 - texture.PaddingRight / 2, height / 2 - texture.PaddingTop / 2),
-					texture.PaddingRight, texture.PaddingTop, texture.TopRigthTexture
-				));
-			if (texture.PaddingLeft > 0 && texture.PaddingBottom > 0)
-				points.AddRange(TexturedRect(
-					new Vector2(-width / 2 + texture.PaddingLeft / 2, -height / 2 + texture.PaddingBottom / 2),
-					texture.PaddingLeft, texture.PaddingBottom, texture.BottomLeftTexture
-				));
-			if (texture.PaddingRight > 0 && texture.PaddingBottom > 0)
-				points.AddRange(TexturedRect(
-					new Vector2(width / 2 - texture.PaddingRight / 2, -height / 2 + texture.PaddingBottom / 2),
-					texture.PaddingRight, texture.PaddingBottom, texture.BottomRigthTexture
-					));
+				points.Add(polygonPoints[i + 3]);
+				points.Add(textureCenter - widthDir / 2 + heightDir / 2);
+
+				points.Add(polygonPoints[i + 2]);
+				points.Add(textureCenter + widthDir / 2 + heightDir / 2);
+
+				points.Add(polygonPoints[i + 1]);
+				points.Add(textureCenter + widthDir / 2 - heightDir / 2);
+
+
+				points.Add(polygonPoints[i + 1]);
+				points.Add(textureCenter + widthDir / 2 - heightDir / 2);
+
+				points.Add(polygonPoints[i + 0]);
+				points.Add(textureCenter - widthDir / 2 - heightDir / 2);
+
+				points.Add(polygonPoints[i + 3]);
+				points.Add(textureCenter - widthDir / 2 + heightDir / 2);
+			}
 
 			return points.SelectMany(v => new[] { v.X, v.Y });
 		}
