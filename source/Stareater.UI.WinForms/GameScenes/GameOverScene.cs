@@ -5,8 +5,8 @@ using Stareater.Localization;
 using Stareater.GraphicsEngine;
 using Stareater.Controllers;
 using Stareater.Utils.NumberFormatters;
-using Stareater.GLData;
 using System.Collections.Generic;
+using Stareater.GraphicsEngine.GuiElements;
 
 namespace Stareater.GameScenes
 {
@@ -17,68 +17,64 @@ namespace Stareater.GameScenes
 		private const float FarZ = 1;
 		private const float Layers = 4.0f;
 
-		private const float TextZ = 2 / Layers;
+		private readonly GuiText title;
+		private readonly List<GuiText> tableCells = new List<GuiText>();
 
-		private const float TextSize = 0.4f;
-		
-		private SceneObject headerText = null;
-		private IEnumerable<SceneObject> tableRows = null;
-		private float pixelSize = 1;
+		public GameOverScene()
+		{
+			this.title = new GuiText
+			{
+				TextColor = Color.Red,
+				TextHeight = 64,
+				Text = LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text()
+			};
+			this.title.Position.WrapContent().Then.ParentRelative(0, 1).WithMargins(0, 20);
+			this.AddElement(this.title);
+		}
 
 		#region AScene implemented
 		protected override float guiLayerThickness => 1 / Layers;
 
-		public override void Activate()
-		{
-			this.UpdateScene(
-				ref this.headerText,
-				new SceneObjectBuilder().
-					PixelSize(this.pixelSize).
-					StartText(
-						LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text(),
-						-0.5f, 0, TextZ, 1/Layers,
-						TextRenderUtil.Get.TextureId, Color.Red
-					).
-					Translate(0, 2).
-					Build()
-			);
-		}
-
 		protected override Matrix4 calculatePerspective()
 		{
 			var aspect = canvasSize.X / canvasSize.Y;
-			this.pixelSize = DefaultViewSize / canvasSize.Y;
+
 			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2());
 		}		
 		#endregion
 
 		public void SetResults(ResultsController controller)
 		{
+			foreach (var cellText in this.tableCells)
+				this.RemoveElement(cellText);
+
+			//TODO(later) add table header
+
 			var scores = controller.Scores.OrderByDescending(x => x.VictoryPoints).ToList();
 			var formatter = new DecimalsFormatter(0, 0);
 
-			this.UpdateScene(
-				ref this.tableRows,
-				scores.Select((score, i) =>
-					new SceneObjectBuilder().
-						PixelSize(this.pixelSize).
-						StartText(
-							formatter.Format(score.VictoryPoints),
-							-1, 0, TextZ, 1 / Layers, 
-							TextRenderUtil.Get.TextureId, Color.White
-						).
-						Scale(TextSize).
-						Translate(-0.2, -0.5 * i + 0.8).
-						StartText(
-							score.Player.Name,
-							0, 0, TextZ, 1 / Layers,
-							TextRenderUtil.Get.TextureId, Color.White
-						).
-						Scale(TextSize).
-						Translate(0, -0.5 * i + 0.8).
-						Build()
-					).ToList()
-			);
+			for(int i = 0; i < scores.Count; i++)
+			{
+				var score = new GuiText
+				{
+					TextColor = Color.White,
+					TextHeight = 30,
+					Text = formatter.Format(scores[i].VictoryPoints)
+				};
+				score.Position.WrapContent().Then.RelativeTo(this.title, 0, -1, 1, 1).Then.Offset(-30, -20 + -40 * i);
+				this.AddElement(score);
+				this.tableCells.Add(score);
+
+				var name = new GuiText
+				{
+					TextColor = Color.White,
+					TextHeight = 30,
+					Text = scores[i].Player.Name
+				};
+				name.Position.WrapContent().Then.RelativeTo(this.title, 0, -1, -1, 1).Then.Offset(30, -20 + -40 * i);
+				this.AddElement(name);
+				this.tableCells.Add(name);
+			}
 		}
 	}
 }
