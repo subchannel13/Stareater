@@ -30,7 +30,7 @@ void main()
    vec2 p = cartToPolar(orbitPositionFrag);
    float r = p.x;
    float a = p.y;
-   vec3 samplePoint = textureTransform * vec3(a - floor(a), (r - minR) / (maxR - minR), 1);
+   vec3 samplePoint = textureTransform * vec3(a / (4 * M_PI) , (r - minR) / (maxR - minR), 1);
    
    if (r >= minR && r <= maxR)
       outputF = texture2D(textureSampler, samplePoint.xy) * color;
