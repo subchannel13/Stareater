@@ -42,8 +42,14 @@ namespace Stareater.TextureAtlas
 					string[] nameParams = x.Key.Split('-');
 
 					var bounds = x.Value;
-					if (nameParams.Contains("hStretch"))
-						bounds.Inflate(-1, 0);
+					foreach (var param in nameParams)
+						if (param.StartsWith("hStretch"))
+						{
+							int amount;
+							if (!int.TryParse(param.Substring("hStretch".Length), out amount))
+								amount = 1;
+							bounds.Inflate(-amount, 0);
+						}
 					
 					var textureCoords = new IkonArray();
 					textureCoords.Add(serializeRectangle(bounds.Left, bounds.Top));

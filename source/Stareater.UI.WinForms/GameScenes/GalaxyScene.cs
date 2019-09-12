@@ -94,14 +94,14 @@ namespace Stareater.GameScenes
 
 			var mainMenuButton = new GuiButton
 			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 7),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 7),
 				ForgroundImage = GalaxyTextures.Get.MainMenu,
 				Padding = 4,
 				ClickCallback = mainMenuCallback,
 				Tooltip = new SimpleTooltip("GalaxyScene", "MainMenuTooltip")
 			};
-			mainMenuButton.Position.FixedSize(32, 32).ParentRelative(-1, 1).WithMargins(5, 5);
+			mainMenuButton.Position.FixedSize(36, 32).ParentRelative(-1, 1).WithMargins(5, 5);
 			this.AddElement(mainMenuButton);
 
 			this.fuelInfo = new GuiText
@@ -115,8 +115,8 @@ namespace Stareater.GameScenes
 
 			var designButton = new GuiButton
 			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 7),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 7),
 				ForgroundImage = GalaxyTextures.Get.Design,
 				PaddingX = 12,
 				PaddingY = 4,
@@ -128,8 +128,8 @@ namespace Stareater.GameScenes
 
 			var developmentButton = new GuiButton
 			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 7),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 7),
 				ForgroundImage = GalaxyTextures.Get.Development,
 				PaddingX = 12,
 				PaddingY = 4,
@@ -141,8 +141,8 @@ namespace Stareater.GameScenes
 
 			var researchButton = new GuiButton
 			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 7),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 7),
 				ForgroundImage = GalaxyTextures.Get.Research,
 				PaddingX = 12,
 				PaddingY = 4,
@@ -154,8 +154,8 @@ namespace Stareater.GameScenes
 
 			var diplomacyButton = new GuiButton
 			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 7),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 7),
 				ForgroundImage = GalaxyTextures.Get.Diplomacy,
 				PaddingX = 12,
 				PaddingY = 4,
@@ -167,8 +167,8 @@ namespace Stareater.GameScenes
 
 			var colonizationButton = new GuiButton
 			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 7),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 7),
 				ForgroundImage = GalaxyTextures.Get.Colonization,
 				PaddingX = 12,
 				PaddingY = 4,
@@ -180,8 +180,8 @@ namespace Stareater.GameScenes
 
 			var reportsButton = new GuiButton
 			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 7),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 7),
 				ForgroundImage = GalaxyTextures.Get.Reports,
 				PaddingX = 12,
 				PaddingY = 4,
@@ -193,8 +193,8 @@ namespace Stareater.GameScenes
 
 			var stareaterButton = new GuiButton
 			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 7),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 7),
 				ForgroundImage = GalaxyTextures.Get.Stareater,
 				PaddingX = 12,
 				PaddingY = 4,
@@ -206,8 +206,8 @@ namespace Stareater.GameScenes
 
 			var libraryButton = new GuiButton
 			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 7),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 7),
 				ForgroundImage = GalaxyTextures.Get.Library,
 				PaddingX = 12,
 				PaddingY = 4,
@@ -233,14 +233,14 @@ namespace Stareater.GameScenes
 
 			var radarToggle = new ToggleButton(SettingsWinforms.Get.ShowScanRange)
 			{
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 0),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 0),
-				BackgroundToggled = new BackgroundTexture(GalaxyTextures.Get.ToggleToggled, 0),
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 7),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 7),
+				BackgroundToggled = new BackgroundTexture(GalaxyTextures.Get.ToggleToggled, 7),
 				ForgroundImage = new BackgroundTexture(GalaxyTextures.Get.Radar, 0),
 				ToggleCallback = this.toggleRadar,
 				Tooltip = new SimpleTooltip("GalaxyScene", "RadarSwitchToolip")
 			};
-			radarToggle.Position.FixedSize(20, 20).RelativeTo(turnButton, -1, 1, 1, 1).WithMargins(15, 0);
+			radarToggle.Position.FixedSize(24, 24).RelativeTo(turnButton, -1, 1, 1, 1).WithMargins(15, 0);
 			this.AddElement(radarToggle);
 
 			this.starInfo = new ConstructionSiteView();
