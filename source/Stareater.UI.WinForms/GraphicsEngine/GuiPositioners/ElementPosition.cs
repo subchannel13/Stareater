@@ -251,10 +251,13 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 				var leftBound = -parentPosition.Size.X / 2 + this.parentMargin;
 				var rigthBound = Math.Max(parentPosition.Size.X / 2 - this.parentMargin - element.Size.X / 2, leftBound);
 
-				element.Center = new Vector2(
-					Methods.Clamp(this.sourcePoint.X + element.Size.X / 2, leftBound, rigthBound) + parentPosition.Center.X,
-					this.sourcePoint.Y + element.Size.Y / 2 + this.sourceMargin
-				);
+				var centerX = Methods.Clamp(this.sourcePoint.X + element.Size.X / 2, leftBound, rigthBound) + parentPosition.Center.X;
+				var centerUpY = this.sourcePoint.Y + element.Size.Y / 2 + this.sourceMargin;
+
+				if (centerUpY - parentPosition.Center.Y + element.Size.Y / 2 <= parentPosition.Size.Y / 2)
+					element.Center = new Vector2(centerX, centerUpY);
+				else
+					element.Center = new Vector2(centerX, this.sourcePoint.Y - element.Size.Y / 2 - this.sourceMargin);
 			}
 
 			public IEnumerable<AGuiElement> Dependencies
