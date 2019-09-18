@@ -81,8 +81,8 @@
 	color [=1 =0.84375 =0]
 	minSize =0.4
 	maxSize =0.7
-	traits [ "normlaOut" ]
-}
+	traits [ "normalOut" ]
+} @HomeStar
 
 { StarType
 	color [=0 =0.578125 =1]

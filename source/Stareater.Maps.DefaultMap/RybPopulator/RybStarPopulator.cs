@@ -42,6 +42,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		private Dictionary<string, Formula> traitConditions;
 		private Dictionary<PlanetType, PlanetTraitType[][]> planetTraitGroups;
 
+		private StarType homeStarType;
 		private double homeworldSize;
 		private int homeworldPosition;
 		private string[] homeworldTraits;
@@ -49,8 +50,12 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 		public void Initialize(string dataPath)
 		{
 			TaggableQueue<object, IkadnBaseObject> queue;
+			IkadnBaseObject homeStarData;
 			using (var parser = new IkonParser(new StreamReader(dataPath + ParametersFile)))
+			{
 				queue = parser.ParseAll();
+				homeStarData = parser.GetNamedObject("HomeStar");
+			}
 
 			var generalData = queue.Dequeue("General").To<IkonComposite>();
 			var ranges = generalData["ranges"].To<double[][]>();
@@ -100,12 +105,16 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 			while (queue.CountOf(StarTypeKey) > 0)
 			{
 				var data = queue.Dequeue(StarTypeKey).To<IkonComposite>();
-				starTypes.Add(new StarType(
+				var type = new StarType(
 					extractColor(data["color"].To<IkonArray>()),
 					data["minSize"].To<double>(),
 					data["maxSize"].To<double>(),
 					data["traits"].To<string[]>()
-				));
+				);
+
+				starTypes.Add(type);
+				if (data == homeStarData)
+					this.homeStarType = type;
 			}
 			this.starTypes = starTypes.ToArray();
 
@@ -269,7 +278,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 
 		private StarSystemBuilder generateSystem(StarNamer namer, Vector2D position, Random rng, SystemEvaluator evaluator, double startingScore, double potentialScore, bool isHomeSystem)
 		{
-			var starType = starTypes[rng.Next(starTypes.Length)];
+			var starType = isHomeSystem ? this.homeStarType : starTypes[rng.Next(starTypes.Length)];
 			var starName = namer.NextName();
 
 			var fixedParts = new StarSystemBuilder(

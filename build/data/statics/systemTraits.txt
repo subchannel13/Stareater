@@ -38,7 +38,7 @@
 { StarTrait
 	langCode: NORMAL_OUT_TRAIT
 	image :./images/traits/starOutput2.png
-	code: normlaOut
+	code: normalOut
 	
 	cost# 0;
 	
