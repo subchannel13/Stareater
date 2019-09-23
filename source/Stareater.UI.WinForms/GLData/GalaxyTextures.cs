@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using Ikadn.Ikon.Types;
 using OpenTK;
 using OpenTK.Graphics;
 using Stareater.AppData;
+using Stareater.Galaxy;
 
 namespace Stareater.GLData
 {
@@ -166,6 +168,21 @@ namespace Stareater.GLData
 			}
 			
 			return this.spriteNames[spriteName];
+		}
+
+		public TextureInfo PlanetSprite(PlanetType type)
+		{
+			switch (type)
+			{
+				case PlanetType.Asteriod:
+					return GalaxyTextures.Get.Asteroids;
+				case PlanetType.GasGiant:
+					return GalaxyTextures.Get.GasGiant;
+				case PlanetType.Rock:
+					return GalaxyTextures.Get.RockPlanet;
+				default:
+					throw new NotImplementedException("No sprite for " + type);
+			}
 		}
 
 		private IkonComposite loadAtlas()

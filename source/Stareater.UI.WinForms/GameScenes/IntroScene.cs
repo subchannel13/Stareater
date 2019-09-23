@@ -252,8 +252,7 @@ namespace Stareater.GameScenes
 					PixelSize(this.pixelSize).
 					StartText(
 						title,
-						-0.5f, 0, TitleZ, 1 / Layers, 
-						TextRenderUtil.Get.TextureId, Color.FromArgb(0, Color.White)
+						-0.5f, 0, TitleZ, 1 / Layers, Color.FromArgb(0, Color.White)
 					).
 					Scale(TitleSize).
 					Translate(underlinePosition + new Vector2(0, TitleSize * 1.2f)).

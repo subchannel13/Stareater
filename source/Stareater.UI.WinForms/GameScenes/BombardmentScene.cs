@@ -228,8 +228,7 @@ namespace Stareater.GameScenes
 						PixelSize(this.pixelSize).
 						StartText(
 							LocalizationManifest.Get.CurrentLanguage["FormMain"]["Population"].Text() + ": " + formatter.Format(planet.Population),
-							-0.5f, 0, PopCountZ, 1 / Layers,
-							TextRenderUtil.Get.TextureId, Color.White
+							-0.5f, 0, PopCountZ, 1 / Layers, Color.White
 						).
 						Scale(TextScale).
 						Translate(planet.OrdinalPosition * OrbitStep + OrbitOffset, -PlanetScale / 2 - PopCountTopMargin).
@@ -263,8 +262,7 @@ namespace Stareater.GameScenes
 				ref this.titleText,
 				new SceneObjectBuilder().PixelSize(this.pixelSize).StartText(
 					LocalizationManifest.Get.CurrentLanguage["FormMain"]["BombardTitle"].Text(),
-					-0.5f, 0, PopCountZ, 1 / Layers,
-					TextRenderUtil.Get.TextureId, Color.White
+					-0.5f, 0, PopCountZ, 1 / Layers, Color.White
 				).
 				Scale(TitleScale).
 				Translate(originOffset, DefaultViewSize / 2 - BodiesY - TitleTopMargin).

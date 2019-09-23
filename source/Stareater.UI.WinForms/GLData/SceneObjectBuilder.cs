@@ -101,7 +101,7 @@ namespace Stareater.GLData
 			return this;
 		}
 
-		public SceneObjectBuilder StartText(string text, float adjustment, float alignment, float z0, float zRange, int textureId, Color color)
+		public SceneObjectBuilder StartText(string text, float adjustment, float alignment, float z0, float zRange, Color color)
 		{
 			this.applyPolygonData();
 
@@ -110,7 +110,7 @@ namespace Stareater.GLData
 			foreach (var layer in TextRenderUtil.Get.BufferText(text, adjustment, alignment, z0, zRange))
 				this.vertexData[layer.Key] = new List<float>(layer.Value);
 
-			this.textureId = textureId;
+			this.textureId = TextRenderUtil.Get.TextureId;
 			this.color = color;
 
 			return this;

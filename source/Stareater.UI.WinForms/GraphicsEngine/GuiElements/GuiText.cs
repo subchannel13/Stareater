@@ -63,7 +63,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			var soBuilder = new SceneObjectBuilder().
 				PixelSize(1 / SettingsWinforms.Get.GuiScale).
 				Clip(this.Position.ClipArea).
-				StartText(this.Text, -0.5f, 0, this.Z0, this.ZRange, TextRenderUtil.Get.TextureId, this.TextColor).
+				StartText(this.Text, -0.5f, 0, this.Z0, this.ZRange, this.TextColor).
 				Scale(this.TextHeight).
 				Translate(this.Position.Center + new Vector2(0, this.TextHeight * textSize.Y / 2));
 

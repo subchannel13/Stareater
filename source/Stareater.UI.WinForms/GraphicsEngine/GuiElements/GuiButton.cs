@@ -151,7 +151,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				AddVertices(SpriteHelpers.GuiBackground(background, this.Position.Size.X, this.Position.Size.Y));
 
 			if (!string.IsNullOrWhiteSpace(this.Text))
-				soBuilder.StartText(this.Text, -0.5f, 0.5f, this.Z0 - this.ZRange / 2, this.ZRange / 2, TextRenderUtil.Get.TextureId, this.TextColor).
+				soBuilder.StartText(this.Text, -0.5f, 0.5f, this.Z0 - this.ZRange / 2, this.ZRange / 2, this.TextColor).
 					Scale(this.TextHeight).
 					Translate(this.Position.Center + new Vector2(0, this.textSize.Y / 2f * this.TextHeight));
 

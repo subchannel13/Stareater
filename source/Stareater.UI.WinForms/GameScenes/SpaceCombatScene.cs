@@ -206,6 +206,7 @@ namespace Stareater.GameScenes
 			var formatter = new ThousandsFormatter();
 			if (planet.Population > 0)
 				foreach (var layer in TextRenderUtil.Get.BufferText(formatter.Format(planet.Population), -1, 0, MoreCombatantsZ, 1 / Layers))
+					//TODO(v0.9) text as sprite data? should be SDF
 					yield return new PolygonData(
 						layer.Key,
 						new SpriteData(PopulationTransform * planetTransform, TextRenderUtil.Get.TextureId, planet.Owner != null ? planet.Owner.Color : Color.Gray, null),
@@ -227,6 +228,7 @@ namespace Stareater.GameScenes
 
 			var formatter = new ThousandsFormatter();
 			foreach (var layer in TextRenderUtil.Get.BufferText(formatter.Format(shownProjectile.Count), -1, 0, ProjectileZ, 1 / Layers))
+				//TODO(v0.9) text as sprite data? should be SDF
 				yield return new PolygonData(
 					layer.Key,
 					new SpriteData(
@@ -287,7 +289,7 @@ namespace Stareater.GameScenes
 				Select(layer =>
 					new PolygonData(
 						layer.Key,
-						new SpriteData(
+						new SpriteData( //TODO(v0.9) text as sprite data? should be SDF
 							Matrix4.CreateScale(0.2f, 0.2f, 1) * Matrix4.CreateTranslation(0.5f, -0.5f, 0) * hexTransform,
 							TextRenderUtil.Get.TextureId,
 							Color.Gray, 

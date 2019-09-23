@@ -87,7 +87,7 @@ namespace Stareater.Controllers
 			
 			foreach(var colony in game.States.Colonies.AtStar[star.Data])
 				if (starKnowledge.Planets[colony.Location.Planet].LastVisited != PlanetIntelligence.NeverVisited)
-					yield return new ColonyInfo(colony);
+					yield return new ColonyInfo(colony, game.Derivates[colony]);
 		}
 		
 		public StarSystemController OpenStarSystem(StarInfo star)

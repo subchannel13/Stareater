@@ -6,12 +6,12 @@ using System.Windows.Forms;
 using OpenTK;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
-using Stareater.Galaxy;
 using Stareater.GLData;
 using Stareater.GLData.OrbitShader;
 using Stareater.GLData.SpriteShader;
 using Stareater.GUI;
 using Stareater.GraphicsEngine;
+using Stareater.Utils.NumberFormatters;
 
 namespace Stareater.GameScenes
 {
@@ -61,7 +61,8 @@ namespace Stareater.GameScenes
 		private float originOffset;
 		private float minOffset;
 		private float maxOffset;
-		
+		private float pixelSize;
+
 		private int selectedBody;
 		private HashSet<PlanetInfo> colonizationMarked = new HashSet<PlanetInfo>();
 		
@@ -125,6 +126,7 @@ namespace Stareater.GameScenes
 		{
 			var aspect = canvasSize.X / canvasSize.Y;
 			this.minOffset = aspect * DefaultViewSize / 2 - StarScale / 2;
+			this.pixelSize = DefaultViewSize / canvasSize.Y;
 			this.limitPan();
 			
 			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2(originOffset, -BodiesY));
@@ -232,31 +234,31 @@ namespace Stareater.GameScenes
 			else
 				this.HideElement(siteView);
 		}
-		
-		private PolygonData planetSpriteData(PlanetInfo planet)
-		{
-			var sprite = new TextureInfo();
 
-			switch(planet.Type)
+		private SceneObject planetDrawables(PlanetInfo planet)
+		{
+			var planetX = planet.Position * OrbitStep + OrbitOffset;
+			var soBuilder = new SceneObjectBuilder().
+						PixelSize(this.pixelSize).
+						StartSimpleSprite(PlanetZ, GalaxyTextures.Get.PlanetSprite(planet.Type), Color.White).
+						Scale(PlanetScale).
+						Translate(planetX, 0);
+
+			var formatter = new ThousandsFormatter();
+			var colony = this.controller.PlanetsColony(planet);
+			if (colony != null)
 			{
-				case PlanetType.Asteriod:
-					sprite = GalaxyTextures.Get.Asteroids;
-					break;
-				case PlanetType.GasGiant:
-					sprite = GalaxyTextures.Get.GasGiant;
-					break;
-				case PlanetType.Rock:
-					sprite = GalaxyTextures.Get.RockPlanet;
-					break;
+				soBuilder.StartText(
+					formatter.Format(colony.Population) + " / " + formatter.Format(colony.PopulationMax),
+					-0.5f, 0, PlanetZ, 1 / Layers, colony.Owner.Color
+				).
+				Scale(this.pixelSize * 20).
+				Translate(planetX, -PlanetScale * 0.7f);
 			}
-			
-			return new PolygonData(
-				PlanetZ,
-				new SpriteData(planetTransform(planet.Position), sprite.Id, Color.White, null),
-				SpriteHelpers.UnitRect(sprite).ToList()
-			);
+
+			return soBuilder.Build();
 		}
-		
+
 		private Matrix4 planetTransform(int position)
 		{
 			return Matrix4.CreateScale(PlanetScale) * Matrix4.CreateTranslation(position * OrbitStep + OrbitOffset, 0, 0);
@@ -284,12 +286,13 @@ namespace Stareater.GameScenes
 					SpriteHelpers.UnitRect(GalaxyTextures.Get.SystemStar).ToList()
 				))
 			);
-			
+
 			this.UpdateScene(
 				ref this.planetSprites,
-				this.controller.Planets.Select(planet => new SceneObject(planetSpriteData(planet))).ToList()
+				this.controller.Planets.Select(planet => planetDrawables(planet)).ToList()
 			);
 			
+
 			this.UpdateScene(
 				ref this.planetOrbits,
 				this.controller.Planets.Select(
