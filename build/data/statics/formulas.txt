@@ -13,8 +13,8 @@
 
 { ColonyFormulas
 	colonizationPopThreshold # 10e3;
-	uncolonizedMaxPopulation # size / 10 * 1e9;
-	maxPopulation # size / 10 * 1e9;
+	uncolonizedMaxPopulation # 1e9 * size / 10;
+	maxPopulation # 1e9 * size / 10;
 	victoryPointWorth # 1e-6 * pop * 0.98 ^ turn;
 	farmFields # 0.1 * 2 ^ (subterrainLvl / 5) * size / 10 * 1e9;
 	spaceliftFactor # 1 / limit(

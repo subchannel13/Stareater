@@ -108,7 +108,7 @@ namespace Stareater.Controllers
 		#region Planet
 		public PlanetInfo PlanetBody
 		{
-			get { return new PlanetInfo(this.Site.Location.Planet); }
+			get { return new PlanetInfo(this.Site.Location.Planet, this.Game); }
 		}
 
 		public double PlanetEnvironment

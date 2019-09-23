@@ -36,7 +36,7 @@ namespace Stareater.Controllers
 
 		public PlanetInfo PlanetBody
 		{
-			get { return new PlanetInfo(this.planet); }
+			get { return new PlanetInfo(this.planet, this.game); }
 		}
 		#endregion
 
@@ -45,9 +45,9 @@ namespace Stareater.Controllers
 		{
 			get 
 			{ 
-				return !game.States.Colonies.AtPlanet.Contains(this.planet) ? 
-					0 : 
-					game.States.Colonies.AtPlanet[this.planet].Population;
+				return !this.game.States.Colonies.AtPlanet.Contains(this.planet) ? 
+					0 :
+					this.game.States.Colonies.AtPlanet[this.planet].Population;
 			}
 		}
 		
@@ -55,11 +55,11 @@ namespace Stareater.Controllers
 		{
 			get
 			{ 
-				if (game.States.Colonies.AtPlanet.Contains(this.planet))
-					return game.Derivates[game.States.Colonies.AtPlanet[this.planet]].MaxPopulation;
+				if (this.game.States.Colonies.AtPlanet.Contains(this.planet))
+					return this.game.Derivates[this.game.States.Colonies.AtPlanet[this.planet]].MaxPopulation;
 				
 				var vars = new Var(ColonyProcessor.PlanetSizeKey, this.planet.Size);
-				return game.Statics.ColonyFormulas.UncolonizedMaxPopulation.Evaluate(vars.Get);
+				return this.game.Statics.ColonyFormulas.UncolonizedMaxPopulation.Evaluate(vars.Get);
 			}
 		}
 		#endregion

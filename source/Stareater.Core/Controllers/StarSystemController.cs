@@ -39,7 +39,7 @@ namespace Stareater.Controllers
 				var planetInfos = this.player.Intelligence.About(this.star).Planets;
 				var knownPlanets = planetInfos.Where(x => x.Value.Explored).Select(x => x.Key);
 				
-				return knownPlanets.OrderBy(x => x.Position).Select(x => new PlanetInfo(x));
+				return knownPlanets.OrderBy(x => x.Position).Select(x => new PlanetInfo(x, this.game));
 			}
 		}
 		

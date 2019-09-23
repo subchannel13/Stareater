@@ -8,7 +8,7 @@ namespace Stareater.Controllers.Views
 		public PlayerInfo Owner { get; private set; }
 		
 		internal Colony Data { get; private set; }
-		private ColonyProcessor processor;
+		private readonly ColonyProcessor processor;
 
 		internal ColonyInfo(Colony colony, ColonyProcessor processor)
 		{
@@ -19,7 +19,7 @@ namespace Stareater.Controllers.Views
 		
 		public PlanetInfo Location
 		{
-			get { return new PlanetInfo(this.Data.Location.Planet); }
+			get { return new PlanetInfo(this.Data.Location.Planet, this.PopulationMax); }
 		}
 
 		public double Population => this.Data.Population;

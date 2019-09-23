@@ -247,14 +247,18 @@ namespace Stareater.GameScenes
 			var formatter = new ThousandsFormatter();
 			var colony = this.controller.PlanetsColony(planet);
 			if (colony != null)
-			{
 				soBuilder.StartText(
 					formatter.Format(colony.Population) + " / " + formatter.Format(colony.PopulationMax),
 					-0.5f, 0, PlanetZ, 1 / Layers, colony.Owner.Color
-				).
-				Scale(this.pixelSize * 20).
+				);
+			else
+				soBuilder.StartText(
+					formatter.Format(planet.PopulationMax),
+					-0.5f, 0, PlanetZ, 1 / Layers, Color.Gray
+				);
+
+			soBuilder.Scale(this.pixelSize * 20).
 				Translate(planetX, -PlanetScale * 0.7f);
-			}
 
 			return soBuilder.Build();
 		}
@@ -300,7 +304,7 @@ namespace Stareater.GameScenes
 					{
 						var orbitR = planet.Position * OrbitStep + OrbitOffset;
 						var colony = controller.PlanetsColony(planet);
-						var color = colony != null ? colony.Owner.Color : Color.FromArgb(64, 64, 64);
+						var color = colony != null ? Color.FromArgb(192, colony.Owner.Color) : Color.FromArgb(64, 64, 64);
 						
 						return new SceneObject(new PolygonData(
 							OrbitZ,

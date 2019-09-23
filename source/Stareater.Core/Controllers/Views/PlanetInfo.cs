@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using Stareater.Galaxy;
+using Stareater.GameData.Databases.Tables;
+using Stareater.GameLogic;
+using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views
 {
@@ -7,9 +10,16 @@ namespace Stareater.Controllers.Views
 	{
 		internal Planet Data { get; private set; }
 		
-		internal PlanetInfo(Planet data)
+		internal PlanetInfo(Planet data, MainGame game) : this(
+			data, 
+			game.Statics.ColonyFormulas.UncolonizedMaxPopulation.Evaluate(new Var(ColonyProcessor.PlanetSizeKey, data.Size).Get)
+		)
+		{ }
+
+		internal PlanetInfo(Planet data, double populationMax)
 		{
 			this.Data = data;
+			this.PopulationMax = populationMax;
 		}
 
 		public PlanetType Type
@@ -26,6 +36,8 @@ namespace Stareater.Controllers.Views
 		{
 			get { return new StarInfo(this.Data.Star); }
 		}
+
+		public double PopulationMax { get; private set; }
 
 		public override bool Equals(object obj)
 		{
