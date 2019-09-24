@@ -32,8 +32,8 @@ namespace Stareater.GameScenes
 		private const float PanClickTolerance = 0.01f;
 		
 		private const float BodiesY = 0.2f;
-		private const float OrbitStep = 0.3f;
-		private const float OrbitOffset = 0.5f;
+		private const float OrbitStep = 0.2f;
+		private const float OrbitOffset = 0.3f;
 		private const float OrbitWidth = 0.01f;
 		
 		private const float OrbitPieces = 32;
@@ -132,6 +132,11 @@ namespace Stareater.GameScenes
 			this.limitPan();
 			
 			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2(originOffset, -BodiesY));
+		}
+
+		protected override void onResize()
+		{
+			this.setupVaos();
 		}
 		#endregion
 
@@ -292,13 +297,11 @@ namespace Stareater.GameScenes
 
 		private void setupBodies()
 		{
-			var starTransform = Matrix4.CreateScale(StarScale);
-			
 			this.UpdateScene(
 				ref this.starSprite,
 				new SceneObject(new PolygonData(
 					StarColorZ,
-					new SpriteData(starTransform, GalaxyTextures.Get.SystemStar.Id, controller.HostStar.Color, null),
+					new SpriteData(Matrix4.CreateScale(StarScale), GalaxyTextures.Get.SystemStar.Id, controller.HostStar.Color, null),
 					SpriteHelpers.UnitRect(GalaxyTextures.Get.SystemStar).ToList()
 				))
 			);
