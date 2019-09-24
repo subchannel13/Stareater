@@ -12,6 +12,8 @@ using Stareater.GLData.SpriteShader;
 using Stareater.GUI;
 using Stareater.GraphicsEngine;
 using Stareater.Utils.NumberFormatters;
+using Stareater.Localization;
+using Stareater.GraphicsEngine.GuiElements;
 
 namespace Stareater.GameScenes
 {
@@ -72,7 +74,21 @@ namespace Stareater.GameScenes
 		{
 			this.systemClosedHandler = systemClosedHandler; 
 			this.emptyPlanetView = emptyPlanetView;
-			
+
+			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
+			var returnButton = new GuiButton
+			{
+				ClickCallback = systemClosedHandler,
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
+				Padding = 12,
+				Text = context["Return"].Text(),
+				TextColor = Color.Black,
+				TextHeight = 20
+			};
+			returnButton.Position.WrapContent().Then.ParentRelative(1, 1).WithMargins(10, 5);
+			this.AddElement(returnButton);
+
 			this.siteView = new ConstructionSiteView();
 			this.siteView.Position.ParentRelative(0, -1);
 			this.AddElement(this.siteView);

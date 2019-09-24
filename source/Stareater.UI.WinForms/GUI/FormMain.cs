@@ -377,7 +377,6 @@ namespace Stareater.GUI
 		private void switchToGalaxyView()
 		{
 			empyPlanetView.Visible = false;
-			returnButton.Visible = false;
 			
 			this.nextRenderer = galaxyRenderer;
 		}
@@ -658,7 +657,6 @@ namespace Stareater.GUI
 			
 			this.empyPlanetView.Visible = false;
 			this.fleetPanel.Visible = false;
-			this.returnButton.Visible = true;
 			
 			this.systemRenderer.SetStarSystem(systemController, this.currentPlayer);
 			this.nextRenderer = systemRenderer;
