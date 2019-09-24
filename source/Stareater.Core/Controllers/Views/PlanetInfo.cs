@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameLogic;
@@ -30,6 +31,14 @@ namespace Stareater.Controllers.Views
 		public int Position
 		{
 			get { return this.Data.Position; }
+		}
+
+		public IEnumerable<TraitInfo> Traits
+		{
+			get
+			{
+				return this.Data.Traits.Select(x => new TraitInfo(x));
+			}
 		}
 
 		public StarInfo HostStar

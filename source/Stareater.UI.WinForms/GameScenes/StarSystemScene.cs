@@ -41,7 +41,9 @@ namespace Stareater.GameScenes
 		private const float PlanetScale = 0.15f;
 		private const float StarSelectorScale = 1.1f;
 		private const float PlanetSelectorScale = 1.1f;
-		
+		private const float TraitScale = 0.04f;
+		private const float TraitSpacing = 0.01f;
+
 		private const char ReturnToGalaxyKey = (char)27; //TODO(later): Make rebindable
 
 		private StarSystemController controller;
@@ -258,7 +260,17 @@ namespace Stareater.GameScenes
 				);
 
 			soBuilder.Scale(this.pixelSize * 20).
-				Translate(planetX, -PlanetScale * 0.7f);
+				Translate(planetX, -PlanetScale * 0.7);
+
+			int i = 0;
+			var traitY0 = -PlanetScale * 0.7 - this.pixelSize * 25 - TraitSpacing - TraitScale / 2;
+			foreach (var trait in planet.Traits)
+			{
+				soBuilder.StartSimpleSprite(PlanetZ, GalaxyTextures.Get.Sprite(trait.ImagePath), Color.White).
+					Scale(TraitScale).
+					Translate(planetX - PlanetScale / 2 + (i % 4) * (TraitScale + TraitSpacing), traitY0 - (i / 4) * (TraitScale + TraitSpacing));
+				i++;
+			}
 
 			return soBuilder.Build();
 		}
