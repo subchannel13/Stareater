@@ -1,16 +1,14 @@
 ﻿using OpenTK;
 using Stareater.GraphicsEngine.GuiPositioners;
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
-	abstract class AGuiElement
+	abstract class AGuiElement : IGuispaceElement
 	{
 		private SceneObject graphicObject = null;
-		private HashSet<AGuiElement> dependentElements = new HashSet<AGuiElement>();
-
+		
 		protected AScene scene { get; private set; }
 		public float Z0 { get; private set; }
 		public float ZRange { get; private set; }
@@ -24,6 +22,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			this.Position = new ElementPosition(this.measureContent);
 			this.MasksMouseClick = true;
+			this.Position.OnReposition += this.updateScene;
 		}
 
 		public virtual void Attach(AScene scene, AGuiElement parent)
@@ -31,20 +30,14 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.scene = scene;
 			this.Parent = parent;
 
-			this.Parent.dependentElements.Add(this);
-			foreach(var element in this.Position.Dependencies)
-				element.dependentElements.Add(this);
-
+			this.Position.Attach(this, parent);
 			this.SetDepth(parent.Z0 - parent.ZRange, parent.ZRange);
 			this.updateScene();
 		}
 
 		public void Detach()
 		{
-			this.Parent.dependentElements.Remove(this);
-			foreach (var element in this.Position.Dependencies)
-				element.dependentElements.Remove(this);
-
+			this.Position.Detach(this);
 			this.scene.RemoveFromScene(ref this.graphicObject);
 			this.scene = null;
 		}
@@ -59,18 +52,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public void RecalculatePosition(bool fullRecalculate)
 		{
-			var oldCenter = this.Position.Center;
-			var oldSize = this.Position.Size;
-
-			this.Position.Recalculate((this.Parent != null) ? this.Parent.Position : null);
-
-			if (fullRecalculate || this.Position.Center != oldCenter || this.Position.Size != oldSize)
-			{
-				foreach (var element in this.dependentElements)
-					element.RecalculatePosition(fullRecalculate);
-
-				this.updateScene();
-			}
+			this.Position.Recalculate(fullRecalculate);
 		}
 
 		public bool IsInside(Vector2 point)

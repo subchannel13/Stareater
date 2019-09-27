@@ -19,27 +19,58 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 		public Vector2 Size { get; private set; }
 		public ClipWindow ClipArea { get; private set; }
 
+		public event Action OnReposition;
+
 		private readonly List<IPositioner> positioners = new List<IPositioner>();
 		private readonly Func<Vector2> contentSize;
+		private readonly ICollection<IGuispaceElement> dependentElements = new HashSet<IGuispaceElement>();
+		private ElementPosition parentPosition = null;
 
 		public ElementPosition(Func<Vector2> contentSize)
 		{
 			this.contentSize = contentSize;
 			this.ClipArea = new ClipWindow();
 		}
-		
-		public void Recalculate(ElementPosition parentPosition)
-		{
-			foreach (var positioner in this.positioners)
-				positioner.Recalculate(this, parentPosition);
 
-			if (parentPosition != null)
-				this.ClipArea = new ClipWindow(this.Center, this.Size, parentPosition.ClipArea);
-			else
-				this.ClipArea = new ClipWindow(this.Center, this.Size);
+		public virtual void Attach(IGuispaceElement thisElement, IGuispaceElement parent)
+		{
+			this.parentPosition = parent.Position;
+			this.parentPosition.dependentElements.Add(thisElement);
+			foreach (var element in this.Dependencies)
+				element.Position.dependentElements.Add(thisElement);
 		}
 
-		public IEnumerable<AGuiElement> Dependencies
+		public void Detach(IGuispaceElement thisElement)
+		{
+			this.parentPosition.dependentElements.Remove(thisElement);
+			this.parentPosition = null;
+			foreach (var element in this.Dependencies)
+				element.Position.dependentElements.Remove(thisElement);
+		}
+
+		public void Recalculate(bool fullRecalculate)
+		{
+			var oldCenter = this.Center;
+			var oldSize = this.Size;
+
+			foreach (var positioner in this.positioners)
+				positioner.Recalculate(this, this.parentPosition);
+
+			if (this.parentPosition != null)
+				this.ClipArea = new ClipWindow(this.Center, this.Size, this.parentPosition.ClipArea);
+			else
+				this.ClipArea = new ClipWindow(this.Center, this.Size);
+
+			if (fullRecalculate || this.Center != oldCenter || this.Size != oldSize)
+			{
+				foreach (var element in this.dependentElements)
+					element.Position.Recalculate(fullRecalculate);
+
+				this.OnReposition();
+			}
+		}
+
+		public IEnumerable<IGuispaceElement> Dependencies
 		{
 			get
 			{
@@ -119,7 +150,7 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 				this.offset = new Vector2(x, y);
 			}
 
-			public IEnumerable<AGuiElement> Dependencies
+			public IEnumerable<IGuispaceElement> Dependencies
 			{
 				get { yield break; }
 			}
@@ -160,7 +191,7 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 				);
 			}
 
-			public IEnumerable<AGuiElement> Dependencies
+			public IEnumerable<IGuispaceElement> Dependencies
 			{
 				get { yield break; }
 			}
@@ -199,7 +230,7 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 				);
 			}
 
-			public IEnumerable<AGuiElement> Dependencies
+			public IEnumerable<IGuispaceElement> Dependencies
 			{
 				get { yield return this.anchor; }
 			}
@@ -227,7 +258,7 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 				element.Size = new Vector2(element.Size.X + widthDelta, element.Size.Y);
 			}
 
-			public IEnumerable<AGuiElement> Dependencies
+			public IEnumerable<IGuispaceElement> Dependencies
 			{
 				get { yield return this.anchor; }
 			}
@@ -260,7 +291,7 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 					element.Center = new Vector2(centerX, this.sourcePoint.Y - element.Size.Y / 2 - this.sourceMargin);
 			}
 
-			public IEnumerable<AGuiElement> Dependencies
+			public IEnumerable<IGuispaceElement> Dependencies
 			{
 				get { yield break; }
 			}
@@ -282,7 +313,7 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 				element.Size = element.contentSize() + new Vector2(this.paddingX * 2, this.paddingY * 2);
 			}
 
-			public IEnumerable<AGuiElement> Dependencies
+			public IEnumerable<IGuispaceElement> Dependencies
 			{
 				get { yield break; }
 			}
