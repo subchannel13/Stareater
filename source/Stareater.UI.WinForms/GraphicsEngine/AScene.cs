@@ -347,10 +347,11 @@ namespace Stareater.GraphicsEngine
 
 			this.guiProjection = calcOrthogonalPerspective(width, height, 1, new Vector2());
 			this.guiInvProjection = Matrix4.Invert(new Matrix4(this.guiProjection.Row0, this.guiProjection.Row1, this.guiProjection.Row2, this.guiProjection.Row3));
-			this.normalGuiLayer.Root.Position.FixedSize(width, height);
-			this.normalGuiLayer.Root.RecalculatePosition(true);
-			this.tooltipGuiLayer.Root.Position.FixedSize(width, height);
-			this.tooltipGuiLayer.Root.RecalculatePosition(true);
+			foreach (var layer in this.guiLayers())
+			{
+				layer.Root.Position.FixedSize(width, height);
+				layer.Root.Position.Recalculate();
+			}
 		}
 		#endregion
 
@@ -395,7 +396,7 @@ namespace Stareater.GraphicsEngine
 			this.tooltipElement = this.tooltipSource.Tooltip.Make();
 			this.tooltipElement.Position.TooltipNear(this.tooltipMousePosition, 5, 5);
 			this.tooltipGuiLayer.AddElement(this.tooltipElement, this);
-			this.tooltipElement.RecalculatePosition(true);
+			this.tooltipElement.Position.Recalculate();
 		}
 
 		private IEnumerable<GuiLayer> guiLayers()
@@ -423,7 +424,7 @@ namespace Stareater.GraphicsEngine
 				return;
 
 			this.tooltipGuiLayer.AddElement(this.tooltipElement, this);
-			this.tooltipElement.RecalculatePosition(true);
+			this.tooltipElement.Position.Recalculate();
 		}
 
 		private void requestTooltip(AGuiElement guiElement, Vector2 mousePosition)

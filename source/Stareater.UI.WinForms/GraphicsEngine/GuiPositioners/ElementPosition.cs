@@ -23,8 +23,8 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 
 		private readonly List<IPositioner> positioners = new List<IPositioner>();
 		private readonly Func<Vector2> contentSize;
-		private readonly ICollection<IGuispaceElement> dependentElements = new HashSet<IGuispaceElement>();
 		private ElementPosition parentPosition = null;
+		private bool calculating = false;
 
 		public ElementPosition(Func<Vector2> contentSize)
 		{
@@ -32,26 +32,32 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			this.ClipArea = new ClipWindow();
 		}
 
-		public virtual void Attach(IGuispaceElement thisElement, IGuispaceElement parent)
+		private void dependsOn(ElementPosition dependency)
+		{
+			dependency.OnReposition -= this.Recalculate;
+			dependency.OnReposition += this.Recalculate;
+		}
+
+		public virtual void Attach(IGuispaceElement parent)
 		{
 			this.parentPosition = parent.Position;
-			this.parentPosition.dependentElements.Add(thisElement);
-			foreach (var element in this.Dependencies)
-				element.Position.dependentElements.Add(thisElement);
+			this.parentPosition.OnReposition += this.Recalculate;
 		}
 
-		public void Detach(IGuispaceElement thisElement)
+		public void Detach()
 		{
-			this.parentPosition.dependentElements.Remove(thisElement);
+			this.parentPosition.OnReposition -= this.Recalculate;
 			this.parentPosition = null;
-			foreach (var element in this.Dependencies)
-				element.Position.dependentElements.Remove(thisElement);
 		}
 
-		public void Recalculate(bool fullRecalculate)
+		public void Recalculate()
 		{
+			if (this.calculating)
+				return;
+
 			var oldCenter = this.Center;
 			var oldSize = this.Size;
+			this.calculating = true;
 
 			foreach (var positioner in this.positioners)
 				positioner.Recalculate(this, this.parentPosition);
@@ -61,23 +67,11 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			else
 				this.ClipArea = new ClipWindow(this.Center, this.Size);
 
-			if (fullRecalculate || this.Center != oldCenter || this.Size != oldSize)
-			{
-				foreach (var element in this.dependentElements)
-					element.Position.Recalculate(fullRecalculate);
-
+			//TODO(v0.9) use something other then positioner count
+			if (this.Center != oldCenter || this.Size != oldSize || this.positioners.Count == 0)
 				this.OnReposition();
-			}
-		}
 
-		public IEnumerable<IGuispaceElement> Dependencies
-		{
-			get
-			{
-				foreach (var positioner in this.positioners)
-					foreach (var element in positioner.Dependencies)
-						yield return element;
-			}
+			this.calculating = false;
 		}
 
 		#region Position builders
@@ -118,17 +112,19 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			return new WrapPosition(this, positioner);
 		}
 
-		public OutsidePosition RelativeTo(AGuiElement anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis)
+		public OutsidePosition RelativeTo(IGuispaceElement anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis)
 		{
-			var positioner = new RelativeToPositioner(anchor, xPortionAnchor, yPortionAnchor, xPortionThis, yPortionThis);
+			var positioner = new RelativeToPositioner(anchor.Position, xPortionAnchor, yPortionAnchor, xPortionThis, yPortionThis);
 			this.positioners.Add(positioner);
+			this.dependsOn(anchor.Position);
 
 			return new OutsidePosition(this, positioner);
 		}
 
-		public ElementPosition StretchRightTo(AGuiElement anchor, float xPortionAnchor, float marginX)
+		public ElementPosition StretchRightTo(IGuispaceElement anchor, float xPortionAnchor, float marginX)
 		{
-			this.positioners.Add(new StretchRightToPositioner(anchor, xPortionAnchor, marginX));
+			this.positioners.Add(new StretchRightToPositioner(anchor.Position, xPortionAnchor, marginX));
+			this.dependsOn(anchor.Position);
 
 			return this;
 		}
@@ -148,11 +144,6 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			public OffsetPositiner(float x, float y)
 			{
 				this.offset = new Vector2(x, y);
-			}
-
-			public IEnumerable<IGuispaceElement> Dependencies
-			{
-				get { yield break; }
 			}
 
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
@@ -190,16 +181,11 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 					windowY * this.yPortion + parentPosition.Center.Y
 				);
 			}
-
-			public IEnumerable<IGuispaceElement> Dependencies
-			{
-				get { yield break; }
-			}
 		}
 
 		private class RelativeToPositioner : IOutsidePositioner
 		{
-			private readonly AGuiElement anchor;
+			private readonly ElementPosition anchor;
 			private readonly float xPortionAnchor;
 			private readonly float yPortionAnchor;
 			private readonly float xPortionThis;
@@ -207,7 +193,7 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			private float marginX;
 			private float marginY;
 
-			public RelativeToPositioner(AGuiElement anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis)
+			public RelativeToPositioner(ElementPosition anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis)
 			{
 				this.anchor = anchor;
 				this.xPortionAnchor = xPortionAnchor;
@@ -225,24 +211,19 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
 				element.Center = new Vector2(
-					this.anchor.Position.Center.X + (this.anchor.Position.Size.X + this.marginX) * this.xPortionAnchor / 2 - element.Size.X * this.xPortionThis / 2,
-					this.anchor.Position.Center.Y + (this.anchor.Position.Size.Y + this.marginY) * this.yPortionAnchor / 2 - element.Size.Y * this.yPortionThis / 2
+					this.anchor.Center.X + (this.anchor.Size.X + this.marginX) * this.xPortionAnchor / 2 - element.Size.X * this.xPortionThis / 2,
+					this.anchor.Center.Y + (this.anchor.Size.Y + this.marginY) * this.yPortionAnchor / 2 - element.Size.Y * this.yPortionThis / 2
 				);
-			}
-
-			public IEnumerable<IGuispaceElement> Dependencies
-			{
-				get { yield return this.anchor; }
 			}
 		}
 
 		private class StretchRightToPositioner : IPositioner
 		{
-			private readonly AGuiElement anchor;
+			private readonly ElementPosition anchor;
 			private readonly float xPortionAnchor;
 			private readonly float marginX;
 
-			public StretchRightToPositioner(AGuiElement anchor, float xPortionAnchor, float marginX)
+			public StretchRightToPositioner(ElementPosition anchor, float xPortionAnchor, float marginX)
 			{
 				this.anchor = anchor;
 				this.xPortionAnchor = xPortionAnchor;
@@ -251,16 +232,11 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
-				var widthDelta = this.anchor.Position.Center.X + xPortionAnchor * (this.anchor.Position.Size.X / 2 - this.marginX) -
+				var widthDelta = this.anchor.Center.X + xPortionAnchor * (this.anchor.Size.X / 2 - this.marginX) -
 					(element.Center.X + element.Size.X / 2);
 
 				element.Center = new Vector2(element.Center.X + widthDelta / 2, element.Center.Y);
 				element.Size = new Vector2(element.Size.X + widthDelta, element.Size.Y);
-			}
-
-			public IEnumerable<IGuispaceElement> Dependencies
-			{
-				get { yield return this.anchor; }
 			}
 		}
 
@@ -290,11 +266,6 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 				else
 					element.Center = new Vector2(centerX, this.sourcePoint.Y - element.Size.Y / 2 - this.sourceMargin);
 			}
-
-			public IEnumerable<IGuispaceElement> Dependencies
-			{
-				get { yield break; }
-			}
 		}
 
 		private class WrapContentPositioner : IWrapPositioner
@@ -311,11 +282,6 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
 				element.Size = element.contentSize() + new Vector2(this.paddingX * 2, this.paddingY * 2);
-			}
-
-			public IEnumerable<IGuispaceElement> Dependencies
-			{
-				get { yield break; }
 			}
 		}
 	}

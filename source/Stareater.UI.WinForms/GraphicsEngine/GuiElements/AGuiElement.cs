@@ -30,14 +30,14 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.scene = scene;
 			this.Parent = parent;
 
-			this.Position.Attach(this, parent);
+			this.Position.Attach(parent);
 			this.SetDepth(parent.Z0 - parent.ZRange, parent.ZRange);
 			this.updateScene();
 		}
 
 		public void Detach()
 		{
-			this.Position.Detach(this);
+			this.Position.Detach();
 			this.scene.RemoveFromScene(ref this.graphicObject);
 			this.scene = null;
 		}
@@ -48,11 +48,6 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.ZRange = zRange;
 
 			this.updateScene();
-		}
-
-		public void RecalculatePosition(bool fullRecalculate)
-		{
-			this.Position.Recalculate(fullRecalculate);
 		}
 
 		public bool IsInside(Vector2 point)
@@ -125,7 +120,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			if (this.scene == null)
 				return;
 
-			this.RecalculatePosition(false);
+			this.Position.Recalculate();
 		}
 
 		protected abstract SceneObject makeSceneObject();

@@ -55,7 +55,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		protected override Vector2 measureContent()
 		{
 			foreach (var child in this.children)
-				child.RecalculatePosition(false);
+				child.Position.Recalculate();
 
 			return new Vector2(
 				this.children.Max(x => x.Position.Center.X + x.Position.Size.X / 2) - this.children.Min(x => x.Position.Center.X - x.Position.Size.X / 2),

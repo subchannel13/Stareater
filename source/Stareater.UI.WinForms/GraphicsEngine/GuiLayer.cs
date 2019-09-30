@@ -36,7 +36,7 @@ namespace Stareater.GraphicsEngine
 			
 			element.Attach(scene, parent);
 			this.updateGuiZ(element);
-			element.RecalculatePosition(true);
+			element.Position.Recalculate();
 		}
 
 		public void RemoveElement(AGuiElement element)
