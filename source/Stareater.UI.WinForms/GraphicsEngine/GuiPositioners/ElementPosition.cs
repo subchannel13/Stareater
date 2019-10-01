@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using Stareater.GLData;
 using Stareater.GraphicsEngine.GuiElements;
+using Stareater.GuiUtils;
 using Stareater.Utils;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 		private readonly List<IPositioner> positioners = new List<IPositioner>();
 		private readonly Func<Vector2> contentSize;
 		private ElementPosition parentPosition = null;
-		private bool calculating = false;
+		private readonly RepeatGate calculationGate = new RepeatGate();
 
 		public ElementPosition(Func<Vector2> contentSize)
 		{
@@ -52,26 +53,25 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 
 		public void Recalculate()
 		{
-			if (this.calculating)
-				return;
+			while (this.calculationGate.TryEnter())
+			{
+				var oldCenter = this.Center;
+				var oldSize = this.Size;
+				var oldClipArea = this.ClipArea;
 
-			var oldCenter = this.Center;
-			var oldSize = this.Size;
-			this.calculating = true;
+				foreach (var positioner in this.positioners)
+					positioner.Recalculate(this, this.parentPosition);
 
-			foreach (var positioner in this.positioners)
-				positioner.Recalculate(this, this.parentPosition);
+				if (this.parentPosition != null)
+					this.ClipArea = new ClipWindow(this.Center, this.Size, this.parentPosition.ClipArea);
+				else
+					this.ClipArea = new ClipWindow(this.Center, this.Size);
 
-			if (this.parentPosition != null)
-				this.ClipArea = new ClipWindow(this.Center, this.Size, this.parentPosition.ClipArea);
-			else
-				this.ClipArea = new ClipWindow(this.Center, this.Size);
+				if (this.Center != oldCenter || this.Size != oldSize || this.ClipArea != oldClipArea)
+					this.OnReposition();
+			}
 
-			//TODO(v0.9) use something other then positioner count
-			if (this.Center != oldCenter || this.Size != oldSize || this.positioners.Count == 0)
-				this.OnReposition();
-
-			this.calculating = false;
+			this.calculationGate.Finish();
 		}
 
 		#region Position builders

@@ -4,7 +4,7 @@ using OpenTK;
 
 namespace Stareater.GLData
 {
-	class ClipWindow
+	class ClipWindow : IEquatable<ClipWindow>
 	{
 		private readonly Vector2 min;
 		private readonly Vector2 max;
@@ -53,6 +53,46 @@ namespace Stareater.GLData
 				(int)Math.Floor(screenMin.X), (int)Math.Floor(screenMin.Y), 
 				(int)Math.Ceiling(size.X), (int)Math.Ceiling(size.Y)
 			);
+		}
+
+		public bool Equals(ClipWindow other)
+		{
+			if (other is null)
+				return false;
+
+			if (Object.ReferenceEquals(this, other))
+				return true;
+
+			if (this.GetType() != other.GetType())
+				return false;
+
+			return (this.max == other.max) && (this.min == other.min) || (this.IsEmpty && other.IsEmpty);
+		}
+
+		public override bool Equals(object obj)
+		{
+			return this.Equals(obj as ClipWindow);
+		}
+
+		public override int GetHashCode()
+		{
+			if (this.IsEmpty)
+				return 0;
+
+			return unchecked(this.min.GetHashCode() * 0x00010000 + this.max.GetHashCode());
+		}
+
+		public static bool operator ==(ClipWindow lhs, ClipWindow rhs)
+		{
+			if (lhs is null)
+				return rhs is null;
+			
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(ClipWindow lhs, ClipWindow rhs)
+		{
+			return !(lhs == rhs);
 		}
 	}
 }
