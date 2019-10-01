@@ -74,6 +74,11 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			this.calculationGate.Finish();
 		}
 
+		public void Propagate()
+		{
+			this.OnReposition?.Invoke();
+		}
+
 		#region Position builders
 		public ElementPosition FixedSize(float width, float height)
 		{

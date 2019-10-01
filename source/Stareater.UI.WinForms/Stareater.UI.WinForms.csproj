@@ -153,6 +153,7 @@
     <Compile Include="GraphicsEngine\Animators\TweenAlpha.cs" />
     <Compile Include="GraphicsEngine\AScene.cs" />
     <Compile Include="GLData\ClipWindow.cs" />
+    <Compile Include="GraphicsEngine\GuiElements\GuiAnchor.cs" />
     <Compile Include="GraphicsEngine\GuiElements\IGuispaceElement.cs" />
     <Compile Include="GraphicsEngine\GuiElements\ITooltip.cs" />
     <Compile Include="GraphicsEngine\GuiElements\BackgroundTexture.cs" />

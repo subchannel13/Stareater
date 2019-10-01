@@ -38,6 +38,7 @@ namespace Stareater.GraphicsEngine
 		private AGuiElement tooltipElement;
 		private Vector2 tooltipMousePosition;
 		private double tooltipEta = -1;
+		private readonly HashSet<GuiAnchor> anchors = new HashSet<GuiAnchor>();
 
 		protected AScene()
 		{
@@ -352,6 +353,8 @@ namespace Stareater.GraphicsEngine
 				layer.Root.Position.FixedSize(width, height);
 				layer.Root.Position.Recalculate();
 			}
+			foreach (var anchor in this.anchors)
+				anchor.Setup(this.projection, this.guiInvProjection);
 		}
 		#endregion
 
@@ -385,6 +388,11 @@ namespace Stareater.GraphicsEngine
 				return;
 
 			this.AddElement(element, element.Parent);
+		}
+
+		public void AddAnchort(GuiAnchor anchor)
+		{
+			this.anchors.Add(anchor);
 		}
 
 		public void ResetTooltipContents()

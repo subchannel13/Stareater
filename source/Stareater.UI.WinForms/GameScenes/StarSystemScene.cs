@@ -57,6 +57,7 @@ namespace Stareater.GameScenes
 		private IEnumerable<SceneObject> colonizationMarkers = null;
 		private IEnumerable<SceneObject> planetOrbits = null;
 		private IEnumerable<SceneObject> planetSprites = null;
+		private List<GuiAnchor> planetAnchors = null;
 		private SceneObject selectionMarker = null;
 		private SceneObject starSprite = null;
 		
@@ -121,6 +122,30 @@ namespace Stareater.GameScenes
 			this.lastMousePosition = null;
 			
 			this.select(StarSystemController.StarIndex);
+
+			this.planetAnchors = new List<GuiAnchor>();
+			foreach (var planet in this.controller.Planets)
+			{
+				var anchor = new GuiAnchor(planet.Position * OrbitStep + OrbitOffset, -PlanetScale * 0.7);
+				this.AddAnchort(anchor);
+
+				var popInfo = new GuiText { TextHeight = 20 };
+				popInfo.Position.WrapContent().Then.RelativeTo(anchor, 0, 0, 0, 1);
+
+				var formatter = new ThousandsFormatter();
+				var colony = this.controller.PlanetsColony(planet);
+				if (colony != null)
+				{
+					popInfo.Text = formatter.Format(colony.Population) + " / " + formatter.Format(colony.PopulationMax);
+					popInfo.TextColor = colony.Owner.Color;
+				}
+				else
+				{
+					popInfo.Text = formatter.Format(planet.PopulationMax);
+					popInfo.TextColor = Color.Gray;
+				}
+				this.AddElement(popInfo);
+			}
 		}
 
 		#region AScene implementation
@@ -266,22 +291,6 @@ namespace Stareater.GameScenes
 						StartSimpleSprite(PlanetZ, GalaxyTextures.Get.PlanetSprite(planet.Type), Color.White).
 						Scale(PlanetScale).
 						Translate(planetX, 0);
-
-			var formatter = new ThousandsFormatter();
-			var colony = this.controller.PlanetsColony(planet);
-			if (colony != null)
-				soBuilder.StartText(
-					formatter.Format(colony.Population) + " / " + formatter.Format(colony.PopulationMax),
-					-0.5f, 0, PlanetZ, 1 / Layers, colony.Owner.Color
-				);
-			else
-				soBuilder.StartText(
-					formatter.Format(planet.PopulationMax),
-					-0.5f, 0, PlanetZ, 1 / Layers, Color.Gray
-				);
-
-			soBuilder.Scale(this.pixelSize * 20).
-				Translate(planetX, -PlanetScale * 0.7);
 
 			int i = 0;
 			var traitY0 = -PlanetScale * 0.7 - this.pixelSize * 25 - TraitSpacing - TraitScale / 2;
