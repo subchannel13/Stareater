@@ -395,6 +395,11 @@ namespace Stareater.GraphicsEngine
 			this.anchors.Add(anchor);
 		}
 
+		public void RemoveAnchor(GuiAnchor anchor)
+		{
+			this.anchors.Remove(anchor);
+		}
+
 		public void ResetTooltipContents()
 		{
 			if (this.tooltipSource == null || !this.tooltipGuiLayer.Contains(this.tooltipElement))

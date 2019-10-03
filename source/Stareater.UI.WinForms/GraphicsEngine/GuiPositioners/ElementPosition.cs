@@ -117,6 +117,11 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			return new WrapPosition(this, positioner);
 		}
 
+		public OutsidePosition RelativeTo(IGuispaceElement anchor)
+		{
+			return this.RelativeTo(anchor, 0, 0, 0, 0);
+		}
+
 		public OutsidePosition RelativeTo(IGuispaceElement anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis)
 		{
 			var positioner = new RelativeToPositioner(anchor.Position, xPortionAnchor, yPortionAnchor, xPortionThis, yPortionThis);

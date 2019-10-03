@@ -22,7 +22,7 @@ namespace Stareater.GUI
 	{
 		private const float MaxDeltaTime = 0.5f;
 		
-		private TimingLoop timingLoop;
+		private readonly TimingLoop timingLoop;
 		private AScene currentRenderer = null;
 		private AScene nextRenderer = null;
 		private BombardmentScene bombardRenderer;
