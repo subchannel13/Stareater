@@ -29,6 +29,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public void GroupWith(SelectableImage<T> otherSelector)
 		{
+			this.group.Remove(this);
 			this.group = otherSelector.group;
 			this.group.Add(this);
 		}
@@ -40,6 +41,18 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.SelectCallback(this.userData);
 
 			this.updateScene();
+		}
+
+		public override void Attach(AScene scene, AGuiElement parent)
+		{
+			base.Attach(scene, parent);
+			this.group.Add(this);
+		}
+
+		public override void Detach()
+		{
+			base.Detach();
+			this.group.Remove(this);
 		}
 
 		private TextureInfo? mForgroundImage = null;

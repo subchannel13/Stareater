@@ -35,7 +35,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.updateScene();
 		}
 
-		public void Detach()
+		public virtual void Detach()
 		{
 			this.Position.Detach();
 			this.scene.RemoveFromScene(ref this.graphicObject);
