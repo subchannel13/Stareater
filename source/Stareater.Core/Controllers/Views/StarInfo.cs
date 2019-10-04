@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Stareater.Galaxy;
 using Stareater.Localization.StarNames;
 using Stareater.Utils;
@@ -33,6 +34,14 @@ namespace Stareater.Controllers.Views
 		public IStarName Name
 		{
 			get { return this.Data.Name; }
+		}
+
+		public IEnumerable<TraitInfo> Traits
+		{
+			get
+			{
+				return this.Data.Traits.Select(x => new TraitInfo(x.Type));
+			}
 		}
 
 		public override bool Equals(object obj)

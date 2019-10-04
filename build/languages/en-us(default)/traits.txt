@@ -1,0 +1,24 @@
+:Traits
+CATALYZED_TRAIT = Catalyzed, produces higher radiation then usual
+LOW_OUT_TRAIT = Low radiation star
+NORMAL_OUT_TRAIT = Normal radiation star
+HIGH_OUT_TRAIT = High radiation star
+IRRADIATED_TRAIT_1 = Irradiated I
+IRRADIATED_TRAIT_2 = Irradiated II
+IRRADIATED_TRAIT_3 = Irradiated III
+FERTILE_TRAIT = Fertile
+TOXIC_TRAIT = Toxic
+NO_ATMOSPHERE = No atmosphere
+DENSE_ATMOSPHERE = Dense atmosphere
+MAGNETOSPHERE_TRAIT_1 = Magnetosphere I
+MAGNETOSPHERE_TRAIT_2 = Magnetosphere II
+NO_GRAVITY = No gravity
+LOW_GRAVITY = Low Gravity
+HIGH_GRAVITY = High gravity
+POOR_TRAIT = Mineral poor
+RICH_TRAIT = Mineral rich
+RICH_CORE_TRAIT = Rich core
+RADIOACTIVE_TRAIT = Radioactive
+COLD_TRAIT = Cold
+HOT_TRAIT = Hot
+-

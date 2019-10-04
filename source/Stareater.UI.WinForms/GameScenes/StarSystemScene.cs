@@ -36,10 +36,7 @@ namespace Stareater.GameScenes
 		private const float OrbitWidth = 0.01f;
 		
 		private const float OrbitPieces = 32;
-		private const float StarScale = 0.5f;
 		private const float PlanetScale = 0.15f;
-		private const float TraitScale = 0.04f;
-		private const float TraitSpacing = 0.01f;
 
 		private const char ReturnToGalaxyKey = (char)27; //TODO(later): Make rebindable
 
@@ -50,8 +47,8 @@ namespace Stareater.GameScenes
 		private readonly Action systemClosedHandler;
 
 		private readonly SelectableImage<int> starSelector;
-		private List<GuiAnchor> planetAnchors = new List<GuiAnchor>();
-		private List<AGuiElement> planetElements = new List<AGuiElement>();
+		private readonly List<GuiAnchor> planetAnchors = new List<GuiAnchor>();
+		private readonly List<AGuiElement> planetElements = new List<AGuiElement>();
 
 		private IEnumerable<SceneObject> colonizationMarkers = null;
 		private IEnumerable<SceneObject> planetOrbits = null;
@@ -88,16 +85,16 @@ namespace Stareater.GameScenes
 			this.AddElement(this.siteView);
 
 			var starAnchor = new GuiAnchor(0, 0);
-			this.AddAnchort(starAnchor);
+			this.AddAnchor(starAnchor);
 
-			this.starSelector = new SelectableImage<int>(0)
+			this.starSelector = new SelectableImage<int>(StarSystemController.StarIndex)
 			{
 				ForgroundImage = GalaxyTextures.Get.SystemStar,
 				SelectorImage = GalaxyTextures.Get.SelectedStar,
 				SelectCallback = select,
 				Padding = 24,
 			};
-			starSelector.Position.FixedSize(200, 200).RelativeTo(starAnchor);
+			starSelector.Position.FixedSize(400, 400).RelativeTo(starAnchor);
 			this.AddElement(starSelector);
 		}
 		
@@ -115,8 +112,8 @@ namespace Stareater.GameScenes
 		{
 			this.controller = controller;
 			this.currentPlayer = playerController;
-			
-			this.maxOffset = controller.Planets.Count() * OrbitStep + OrbitOffset + PlanetScale / 2;
+
+			this.maxOffset = (controller.Planets.Count() + 1) * OrbitStep + OrbitOffset;
 			
 			var bestColony = controller.Planets.
 				Select(x => controller.PlanetsColony(x)).
@@ -138,10 +135,23 @@ namespace Stareater.GameScenes
 				this.RemoveElement(element);
 			this.planetElements.Clear();
 
+			var traitGridBuilder = new GridPositionBuilder(2, 20, 20, 3);
+			foreach (var trait in controller.HostStar.Traits)
+			{
+				var traitImage = new GuiImage
+				{
+					Image = GalaxyTextures.Get.Sprite(trait.ImagePath),
+					Tooltip = new SimpleTooltip("Traits", trait.LangCode)
+				};
+				traitImage.Position.FixedSize(20, 20).RelativeTo(this.starSelector, 1, -1, -1, 1).WithMargins(3, 0);
+				traitGridBuilder.Add(traitImage.Position);
+				this.addPlanetElement(traitImage);
+			}
+
 			foreach (var planet in this.controller.Planets)
 			{
 				var anchor = new GuiAnchor(planet.Position * OrbitStep + OrbitOffset, 0);
-				this.AddAnchort(anchor);
+				this.AddAnchor(anchor);
 				this.planetAnchors.Add(anchor);
 
 				var planetSelector = new SelectableImage<int>(planet.Position)
@@ -153,8 +163,7 @@ namespace Stareater.GameScenes
 				};
 				planetSelector.Position.FixedSize(100, 100).RelativeTo(anchor);
 				planetSelector.GroupWith(starSelector);
-				this.AddElement(planetSelector);
-				this.planetElements.Add(planetSelector);
+				this.addPlanetElement(planetSelector);
 
 				var popInfo = new GuiText { TextHeight = 20 };
 				popInfo.Position.WrapContent().Then.RelativeTo(planetSelector, 0, -1, 0, 1).WithMargins(0, 20);
@@ -171,20 +180,27 @@ namespace Stareater.GameScenes
 					popInfo.Text = formatter.Format(planet.PopulationMax);
 					popInfo.TextColor = Color.Gray;
 				}
-				this.AddElement(popInfo);
-				this.planetElements.Add(popInfo);
+				this.addPlanetElement(popInfo);
 
-				//TODO(v0.9) add traits
-				/*int i = 0;
-				var traitY0 = -PlanetScale * 0.7 - this.pixelSize * 25 - TraitSpacing - TraitScale / 2;
+				traitGridBuilder = new GridPositionBuilder(4, 20, 20, 3);
 				foreach (var trait in planet.Traits)
 				{
-					soBuilder.StartSimpleSprite(PlanetZ, GalaxyTextures.Get.Sprite(trait.ImagePath), Color.White).
-						Scale(TraitScale).
-						Translate(planetX - PlanetScale / 2 + (i % 4) * (TraitScale + TraitSpacing), traitY0 - (i / 4) * (TraitScale + TraitSpacing));
-					i++;
-				}*/
+					var traitImage = new GuiImage
+					{
+						Image = GalaxyTextures.Get.Sprite(trait.ImagePath),
+						Tooltip = new SimpleTooltip("Traits", trait.LangCode)
+					};
+					traitImage.Position.FixedSize(20, 20).RelativeTo(popInfo, 0, -1, 0, 1).WithMargins(0, 10).Offset(-40, 0);
+					traitGridBuilder.Add(traitImage.Position);
+					this.addPlanetElement(traitImage);
+				}
 			}
+		}
+
+		private void addPlanetElement(AGuiElement element)
+		{
+			this.AddElement(element);
+			this.planetElements.Add(element);
 		}
 
 		#region AScene implementation
@@ -207,7 +223,7 @@ namespace Stareater.GameScenes
 		protected override Matrix4 calculatePerspective()
 		{
 			var aspect = canvasSize.X / canvasSize.Y;
-			this.minOffset = aspect * DefaultViewSize / 2 - StarScale / 2;
+			this.minOffset = aspect * DefaultViewSize / 2 - OrbitStep - OrbitOffset;
 			this.limitPan();
 			
 			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2(originOffset, -BodiesY));

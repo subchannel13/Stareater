@@ -390,7 +390,7 @@ namespace Stareater.GraphicsEngine
 			this.AddElement(element, element.Parent);
 		}
 
-		public void AddAnchort(GuiAnchor anchor)
+		public void AddAnchor(GuiAnchor anchor)
 		{
 			this.anchors.Add(anchor);
 		}
