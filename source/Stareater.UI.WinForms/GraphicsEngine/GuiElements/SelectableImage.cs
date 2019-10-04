@@ -129,12 +129,15 @@ namespace Stareater.GraphicsEngine.GuiElements
 					Scale(this.Position.Size - new Vector2(this.padding, this.padding)).
 					Translate(this.Position.Center);
 
-			if (selected && this.mSelectorImage.HasValue)
+			if (this.selected && this.mSelectorImage.HasValue)
 				soBuilder.StartSimpleSprite(this.Z0 - this.ZRange / 2, this.mSelectorImage.Value, Color.White).
 					Scale(this.Position.Size).
 					Translate(this.Position.Center);
 
-			//TODO(v0.9) hover over unselected image
+			if (!this.selected && this.isHovered && this.mSelectorImage.HasValue)
+				soBuilder.StartSimpleSprite(this.Z0 - this.ZRange / 2, this.mSelectorImage.Value, Color.Gray).
+					Scale(this.Position.Size).
+					Translate(this.Position.Center);
 
 			return soBuilder.Build();
 		}
