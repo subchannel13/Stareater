@@ -1,24 +1,105 @@
 :Traits
-CATALYZED_TRAIT = Catalyzed, produces higher radiation then usual
 LOW_OUT_TRAIT = Low radiation star
 NORMAL_OUT_TRAIT = Normal radiation star
 HIGH_OUT_TRAIT = High radiation star
-IRRADIATED_TRAIT_1 = Irradiated I
-IRRADIATED_TRAIT_2 = Irradiated II
-IRRADIATED_TRAIT_3 = Irradiated III
-FERTILE_TRAIT = Fertile
-TOXIC_TRAIT = Toxic
-NO_ATMOSPHERE = No atmosphere
-DENSE_ATMOSPHERE = Dense atmosphere
-MAGNETOSPHERE_TRAIT_1 = Magnetosphere I
-MAGNETOSPHERE_TRAIT_2 = Magnetosphere II
-NO_GRAVITY = No gravity
-LOW_GRAVITY = Low Gravity
-HIGH_GRAVITY = High gravity
-POOR_TRAIT = Mineral poor
-RICH_TRAIT = Mineral rich
-RICH_CORE_TRAIT = Rich core
-RADIOACTIVE_TRAIT = Radioactive
-COLD_TRAIT = Cold
-HOT_TRAIT = Hot
+CATALYZED_TRAIT §
+		Catalyzed
+		
+		Glows brighter then usual, all planets receive increased radiation as if they are one orbit closer to the star.
+	\
+
+IRRADIATED_TRAIT_1 §
+		Irradiated I
+		
+		Harmful solar radiation reaches planet surface.
+		+1 colony maintenance
+	\
+IRRADIATED_TRAIT_2 §
+		Irradiated II
+		
+		Harmful solar radiation reaches planet surface.
+		+2 colony maintenance
+	\
+IRRADIATED_TRAIT_3 §
+		Irradiated III
+		
+		Harmful solar radiation reaches planet surface.
+		+4 colony maintenance
+	\
+FERTILE_TRAIT §
+		Fertile
+		
+		Planet's soil is good for plant growth.
+		+4 farming
+	\
+TOXIC_TRAIT §
+		Toxic
+		
+		Planet's soil is harmful for unprotected humans and plants.
+		+1 colony maintenance
+		-50% farming
+		-25% gardening
+	\
+NO_ATMOSPHERE §
+		No atmosphere
+		
+		Planet has no atmosphere.
+		+0.5 colony maintenance
+		-50% space lift cost
+	\
+DENSE_ATMOSPHERE §
+		Dense atmosphere
+		
+		Planet has very dense atmosphere and strong weather.
+		+2 colony maintenance
+		+50% space lift cost
+	\
+MAGNETOSPHERE_TRAIT_1 §
+		Magnetosphere I
+		
+		Harmful solar radiation is reduced thanks to planet's magnetosphere.
+		-1 colony maintenance due to "irradiated" traits
+	\
+MAGNETOSPHERE_TRAIT_2 §
+		Magnetosphere II
+				
+		Harmful solar radiation is reduced thanks to planet's magnetosphere.
+		-2 colony maintenance due to "irradiated" traits
+	\
+NO_GRAVITY §
+		No gravity
+		
+		+0.5 colony maintenance
+		No space lift cost
+	\
+LOW_GRAVITY §
+		Low Gravity
+		
+		+0.25 colony maintenance
+		-60% space lift cost
+	\
+HIGH_GRAVITY §
+		High gravity
+	
+		+1 colony maintenance
+		+100% space lift cost
+	\
+POOR_TRAIT §
+		Mineral poor
+	\
+RICH_TRAIT §
+		Mineral rich
+	\
+RICH_CORE_TRAIT §
+		Rich core
+	\
+RADIOACTIVE_TRAIT §
+		Radioactive
+	\
+COLD_TRAIT §
+		Cold
+	\
+HOT_TRAIT §
+		Hot
+	\
 -

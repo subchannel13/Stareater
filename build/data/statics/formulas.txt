@@ -18,7 +18,7 @@
 	victoryPointWorth # 1e-6 * pop * 0.98 ^ turn;
 	farmFields # 0.1 * 2 ^ (subterrainLvl / 5) * size / 10 * 1e9;
 	spaceliftFactor # 1 / limit(
-			if(noGrav, 0, 5) - 2 * rocketryLvl / 5,
+			(case(noGrav, lowGrav, highGrav) [0, 2, 10, 5] - 2 * rocketryLvl / 5) * case(noAtmo, denseAtmo) [1, 3, 2],
 		1, 20);
 	fuel # 500 * size * limit(infra_count / pop, 0, 1) * limit(pop / maxPop, 0, 1);
 	fuelCost # 1e5;
