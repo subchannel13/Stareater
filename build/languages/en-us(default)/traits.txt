@@ -80,26 +80,38 @@ LOW_GRAVITY §
 	\
 HIGH_GRAVITY §
 		High gravity
-	
+		
 		+1 colony maintenance
 		+100% space lift cost
 	\
 POOR_TRAIT §
 		Mineral poor
+		
+		-50% mining
 	\
 RICH_TRAIT §
 		Mineral rich
+		
+		+100% mining
 	\
 RICH_CORE_TRAIT §
 		Rich core
+		
+		+100% mining with deep mining
 	\
 RADIOACTIVE_TRAIT §
 		Radioactive
+		
+		+2 colony maintenance
 	\
 COLD_TRAIT §
 		Cold
+		
+		+1 colony maintenance
 	\
 HOT_TRAIT §
 		Hot
+		
+		+2 colony maintenance
 	\
 -
