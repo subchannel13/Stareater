@@ -22,11 +22,9 @@ namespace Stareater.GameScenes
 		private const float DefaultViewSize = 1;
 		
 		private const float FarZ = 1;
-		private const float Layers = 8.0f;
+		private const float Layers = 4.0f;
 		
-		private const float MarkColorZ = 5 / Layers;
-		private const float MarkZ = 6 / Layers;
-		private const float OrbitZ = 7 / Layers;
+		private const float OrbitZ = 3 / Layers;
 		
 		private const float PanClickTolerance = 0.01f;
 		
@@ -34,9 +32,7 @@ namespace Stareater.GameScenes
 		private const float OrbitStep = 0.2f;
 		private const float OrbitOffset = 0.3f;
 		private const float OrbitWidth = 0.01f;
-		
 		private const float OrbitPieces = 32;
-		private const float PlanetScale = 0.15f;
 
 		private const char ReturnToGalaxyKey = (char)27; //TODO(later): Make rebindable
 
@@ -47,10 +43,11 @@ namespace Stareater.GameScenes
 		private readonly Action systemClosedHandler;
 
 		private readonly SelectableImage<int> starSelector;
+		private readonly Dictionary<int, AGuiElement> planetSelectors = new Dictionary<int, AGuiElement>();
+		private readonly Dictionary<int, AGuiElement> colonizationMarkers = new Dictionary<int, AGuiElement>();
 		private readonly List<GuiAnchor> planetAnchors = new List<GuiAnchor>();
-		private readonly List<AGuiElement> planetElements = new List<AGuiElement>();
+		private readonly List<AGuiElement> otherPlanetElements = new List<AGuiElement>();
 
-		private IEnumerable<SceneObject> colonizationMarkers = null;
 		private IEnumerable<SceneObject> planetOrbits = null;
 		
 		private Vector4? lastMousePosition = null;
@@ -131,9 +128,9 @@ namespace Stareater.GameScenes
 				this.RemoveAnchor(anchor);
 			this.planetAnchors.Clear();
 
-			foreach (var element in this.planetElements)
+			foreach (var element in this.planetSelectors.Values.Concat(this.colonizationMarkers.Values).Concat(this.otherPlanetElements))
 				this.RemoveElement(element);
-			this.planetElements.Clear();
+			this.otherPlanetElements.Clear();
 
 			var traitGridBuilder = new GridPositionBuilder(2, 20, 20, 3);
 			foreach (var trait in controller.HostStar.Traits)
@@ -163,7 +160,8 @@ namespace Stareater.GameScenes
 				};
 				planetSelector.Position.FixedSize(100, 100).RelativeTo(anchor);
 				planetSelector.GroupWith(starSelector);
-				this.addPlanetElement(planetSelector);
+				this.planetSelectors[planet.Position] = planetSelector;
+				this.AddElement(planetSelector);
 
 				var popInfo = new GuiText { TextHeight = 20 };
 				popInfo.Position.WrapContent().Then.RelativeTo(planetSelector, 0, -1, 0, 1).WithMargins(0, 20);
@@ -200,7 +198,7 @@ namespace Stareater.GameScenes
 		private void addPlanetElement(AGuiElement element)
 		{
 			this.AddElement(element);
-			this.planetElements.Add(element);
+			this.otherPlanetElements.Add(element);
 		}
 
 		#region AScene implementation
@@ -208,10 +206,13 @@ namespace Stareater.GameScenes
 
 		protected override void frameUpdate(double deltaTime)
 		{
+			//TODO(v0.9) try to remove from frame update
 			var beingColonized = new HashSet<PlanetInfo>(this.controller.Planets.Where(x => this.controller.IsColonizing(x.Position)));
 			if (!this.colonizationMarked.SetEquals(beingColonized))
+			{
+				this.colonizationMarked = beingColonized;
 				this.setupColonizationMarkers();
-			this.colonizationMarked = beingColonized;
+			}
 		}
 
 		//TODO(v0.8) refactor and remove
@@ -321,11 +322,6 @@ namespace Stareater.GameScenes
 				this.HideElement(siteView);
 		}
 
-		private Matrix4 planetTransform(int position)
-		{
-			return Matrix4.CreateScale(PlanetScale) * Matrix4.CreateTranslation(position * OrbitStep + OrbitOffset, 0, 0);
-		}
-		
 		private void setupVaos()
 		{
 			if (this.controller == null)
@@ -358,30 +354,30 @@ namespace Stareater.GameScenes
 		
 		private void setupColonizationMarkers()
 		{
-			this.UpdateScene(
-				ref this.colonizationMarkers,
-				this.controller.Planets.Where(x => this.controller.IsColonizing(x.Position)).Select(
-					planet => 
-					{
-						var markTransform = Matrix4.CreateScale(0.4f, 0.4f, 1) * 
-							Matrix4.CreateTranslation(0.6f, 0.5f, 0) * 
-							planetTransform(planet.Position);
-						
-						return new SceneObject(
-							new [] {
-								new PolygonData(
-									MarkZ,
-									new SpriteData(markTransform, GalaxyTextures.Get.ColonizationMark.Id, Color.White, null),
-									SpriteHelpers.UnitRect(GalaxyTextures.Get.ColonizationMark).ToList()
-								),
-								new PolygonData(
-									MarkColorZ,
-									new SpriteData(markTransform, GalaxyTextures.Get.ColonizationMarkColor.Id, this.currentPlayer.Info.Color, null),
-									SpriteHelpers.UnitRect(GalaxyTextures.Get.ColonizationMarkColor).ToList()
-								)
-							});
-					}).ToList()
-			);
+			foreach (var marker in this.colonizationMarkers.Values)
+				this.RemoveElement(marker);
+			this.colonizationMarkers.Clear();
+
+			foreach(var planet in this.controller.Planets.Where(x => this.controller.IsColonizing(x.Position)))
+			{
+				if (!this.planetSelectors.ContainsKey(planet.Position))
+				{
+					this.colonizationMarked.Remove(planet);
+					continue;
+				}
+
+				var marker = new GuiImage
+				{
+					Images = new[] {
+						new Sprite(GalaxyTextures.Get.ColonizationMark, Color.White),
+						new Sprite(GalaxyTextures.Get.ColonizationMarkColor, this.currentPlayer.Info.Color)
+					}
+				};
+				//TODO(v0.9) position slightly inside planet selector element
+				marker.Position.FixedSize(40, 40).RelativeTo(this.planetSelectors[planet.Position], 1, 1, -1, -1);
+				this.colonizationMarkers[planet.Position] = marker;
+				this.AddElement(marker);
+			}
 		}
 	}
 }

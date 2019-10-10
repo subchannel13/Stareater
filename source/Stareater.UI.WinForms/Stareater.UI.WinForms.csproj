@@ -184,6 +184,7 @@
     <Compile Include="GraphicsEngine\SceneObject.cs" />
     <Compile Include="GLData\SceneObjectBuilder.cs" />
     <Compile Include="GraphicsEngine\SignalFlag.cs" />
+    <Compile Include="GraphicsEngine\Sprite.cs" />
     <Compile Include="GraphicsEngine\TimingLoop.cs" />
     <Compile Include="GuiUtils\NumberInput.cs" />
     <Compile Include="GuiUtils\OneShotEvent.cs" />
