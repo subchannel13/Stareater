@@ -110,8 +110,9 @@
     <Compile Include="AppData\ImageCache.cs" />
     <Compile Include="AppData\LoadingMethods.cs" />
     <Compile Include="AppData\SettingsWinforms.cs" />
-    <Compile Include="GameScenes\ConstructionSiteView.cs" />
+    <Compile Include="GameScenes\Widgets\ConstructionSiteView.cs" />
     <Compile Include="GameScenes\IntroScene.cs" />
+    <Compile Include="GameScenes\Widgets\EmptyPlanetView.cs" />
     <Compile Include="GLData\ColorMap.cs" />
     <Compile Include="GLData\GlyphContour.cs" />
     <Compile Include="GLData\OrbitShader\ArcBorderBuilder.cs" />
@@ -276,12 +277,6 @@
     </Compile>
     <Compile Include="GUI\DesignSpaceInfo.Designer.cs">
       <DependentUpon>DesignSpaceInfo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\EmpyPlanetView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\EmpyPlanetView.Designer.cs">
-      <DependentUpon>EmpyPlanetView.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\FleetInfoView.cs">
       <SubType>UserControl</SubType>
@@ -547,9 +542,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\DesignSpaceInfo.resx">
       <DependentUpon>DesignSpaceInfo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\EmpyPlanetView.resx">
-      <DependentUpon>EmpyPlanetView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FleetInfoView.resx">
       <DependentUpon>FleetInfoView.cs</DependentUpon>

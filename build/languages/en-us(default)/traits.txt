@@ -62,7 +62,7 @@ MAGNETOSPHERE_TRAIT_1 §
 	\
 MAGNETOSPHERE_TRAIT_2 §
 		Magnetosphere II
-				
+		
 		Harmful solar radiation is reduced thanks to planet's magnetosphere.
 		-2 colony maintenance due to "irradiated" traits
 	\

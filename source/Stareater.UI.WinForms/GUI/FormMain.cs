@@ -195,7 +195,7 @@ namespace Stareater.GUI
 			this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
 			
 			this.bombardRenderer = new BombardmentScene();
-			this.systemRenderer = new StarSystemScene(switchToGalaxyView, empyPlanetView);
+			this.systemRenderer = new StarSystemScene(switchToGalaxyView);
 			this.combatRenderer = new SpaceCombatScene();
 			this.gameOverRenderer = new GameOverScene();
 			
@@ -221,7 +221,6 @@ namespace Stareater.GUI
 			
 			this.shipList.ResumeLayout();
 			
-			this.empyPlanetView.Visible = false;
 			this.fleetPanel.Visible = true;
 		}
 
@@ -376,8 +375,6 @@ namespace Stareater.GUI
 		
 		private void switchToGalaxyView()
 		{
-			empyPlanetView.Visible = false;
-			
 			this.nextRenderer = galaxyRenderer;
 		}
 		
@@ -472,7 +469,6 @@ namespace Stareater.GUI
 			this.nextRenderer = this.combatRenderer;
 
 			abilityList.Visible = true;
-			empyPlanetView.Visible = false;
 			fleetPanel.Visible = false;
 			returnButton.Visible = false;
 			unitInfoPanel.Visible = true;
@@ -488,7 +484,6 @@ namespace Stareater.GUI
 			this.nextRenderer = this.bombardRenderer;
 			
 			abilityList.Visible = false;
-			empyPlanetView.Visible = false;
 			fleetPanel.Visible = false;
 			returnButton.Visible = true;
 			unitInfoPanel.Visible = false;
@@ -641,7 +636,6 @@ namespace Stareater.GUI
 			
 			this.shipList.ResumeLayout();
 			
-			this.empyPlanetView.Visible = false;
 			this.fleetPanel.Visible = true;
 		}
 		
@@ -654,8 +648,6 @@ namespace Stareater.GUI
 			}
 			
 			this.fleetController = null;
-			
-			this.empyPlanetView.Visible = false;
 			this.fleetPanel.Visible = false;
 			
 			this.systemRenderer.SetStarSystem(systemController, this.currentPlayer);

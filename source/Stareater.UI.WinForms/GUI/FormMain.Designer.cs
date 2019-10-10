@@ -33,7 +33,6 @@
 			this.fleetPanel = new System.Windows.Forms.Panel();
 			this.shipList = new System.Windows.Forms.FlowLayoutPanel();
 			this.fleetMissionButton = new System.Windows.Forms.Button();
-			this.empyPlanetView = new Stareater.GUI.EmpyPlanetView();
 			this.unitInfoPanel = new System.Windows.Forms.Panel();
 			this.movementInfo = new System.Windows.Forms.Label();
 			this.shieldInfo = new System.Windows.Forms.Label();
@@ -106,16 +105,6 @@
 			this.fleetMissionButton.TabIndex = 0;
 			this.fleetMissionButton.Text = "Missions";
 			this.fleetMissionButton.UseVisualStyleBackColor = true;
-			// 
-			// empyPlanetView
-			// 
-			this.empyPlanetView.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.empyPlanetView.BackColor = System.Drawing.SystemColors.ActiveBorder;
-			this.empyPlanetView.Location = new System.Drawing.Point(263, 446);
-			this.empyPlanetView.Name = "empyPlanetView";
-			this.empyPlanetView.Size = new System.Drawing.Size(358, 116);
-			this.empyPlanetView.TabIndex = 6;
-			this.empyPlanetView.Visible = false;
 			// 
 			// unitInfoPanel
 			// 
@@ -195,7 +184,6 @@
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.unitInfoPanel);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.fleetPanel);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.returnButton);
-			this.workaroundForWinformsAnchorBug.Controls.Add(this.empyPlanetView);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.glCanvas);
 			this.workaroundForWinformsAnchorBug.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.workaroundForWinformsAnchorBug.Location = new System.Drawing.Point(0, 0);
@@ -229,7 +217,6 @@
 
 		#endregion
 		private OpenTK.GLControl glCanvas;
-		private Stareater.GUI.EmpyPlanetView empyPlanetView;
 		private System.Windows.Forms.Panel unitInfoPanel;
 		private System.Windows.Forms.Label movementInfo;
 		private System.Windows.Forms.Label shieldInfo;

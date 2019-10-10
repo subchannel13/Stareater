@@ -20,6 +20,7 @@ using Stareater.AppData;
 using System.Windows.Forms;
 using Stareater.GUI;
 using Stareater.GUI.Reports;
+using Stareater.GameScenes.Widgets;
 
 namespace Stareater.GameScenes
 {

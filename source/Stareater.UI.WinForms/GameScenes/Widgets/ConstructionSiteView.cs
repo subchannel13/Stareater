@@ -11,7 +11,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Stareater.GameScenes
+namespace Stareater.GameScenes.Widgets
 {
 	class ConstructionSiteView : GuiPanel
 	{

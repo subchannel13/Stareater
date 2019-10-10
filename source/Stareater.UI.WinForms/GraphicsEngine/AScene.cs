@@ -387,7 +387,7 @@ namespace Stareater.GraphicsEngine
 			if (this.normalGuiLayer.Contains(element))
 				return;
 
-			this.AddElement(element, element.Parent);
+			this.AddElement(element, element.Parent ?? this.normalGuiLayer.Root);
 		}
 
 		public void AddAnchor(GuiAnchor anchor)

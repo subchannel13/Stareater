@@ -8,12 +8,11 @@ using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.GLData;
 using Stareater.GLData.OrbitShader;
-using Stareater.GLData.SpriteShader;
-using Stareater.GUI;
 using Stareater.GraphicsEngine;
 using Stareater.Utils.NumberFormatters;
 using Stareater.Localization;
 using Stareater.GraphicsEngine.GuiElements;
+using Stareater.GameScenes.Widgets;
 
 namespace Stareater.GameScenes
 {
@@ -39,7 +38,7 @@ namespace Stareater.GameScenes
 		private StarSystemController controller;
 		private PlayerController currentPlayer;
 		private readonly ConstructionSiteView siteView;
-		private readonly EmpyPlanetView emptyPlanetView;
+		private readonly EmptyPlanetView emptyPlanetView;
 		private readonly Action systemClosedHandler;
 
 		private readonly SelectableImage<int> starSelector;
@@ -58,10 +57,15 @@ namespace Stareater.GameScenes
 
 		private HashSet<PlanetInfo> colonizationMarked = new HashSet<PlanetInfo>();
 		
-		public StarSystemScene(Action systemClosedHandler, EmpyPlanetView emptyPlanetView)
+		public StarSystemScene(Action systemClosedHandler)
 		{
 			this.systemClosedHandler = systemClosedHandler; 
-			this.emptyPlanetView = emptyPlanetView;
+			
+			this.siteView = new ConstructionSiteView();
+			this.siteView.Position.ParentRelative(0, -1);
+
+			this.emptyPlanetView = new EmptyPlanetView();
+			this.emptyPlanetView.Position.ParentRelative(0, -1);
 
 			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 			var returnButton = new GuiButton
@@ -76,10 +80,6 @@ namespace Stareater.GameScenes
 			};
 			returnButton.Position.WrapContent().Then.ParentRelative(1, 1).WithMargins(10, 5);
 			this.AddElement(returnButton);
-
-			this.siteView = new ConstructionSiteView();
-			this.siteView.Position.ParentRelative(0, -1);
-			this.AddElement(this.siteView);
 
 			var starAnchor = new GuiAnchor(0, 0);
 			this.AddAnchor(starAnchor);
@@ -282,18 +282,19 @@ namespace Stareater.GameScenes
 			switch(controller.BodyType(bodyIndex))
 			{
 				case BodyType.OwnStellaris:
-					siteView.SetView(controller.StellarisController());
-					setView(siteView);
+					this.siteView.SetView(this.controller.StellarisController());
+					this.setView(siteView);
 					break;
 				case BodyType.OwnColony:
-					siteView.SetView(controller.ColonyController(bodyIndex));
-					setView(siteView);
+					this.siteView.SetView(this.controller.ColonyController(bodyIndex));
+					this.setView(siteView);
 					break;
 				case BodyType.NotColonised:
-					emptyPlanetView.SetView(controller.EmptyPlanetController(bodyIndex), currentPlayer);
-					setView(emptyPlanetView);
+					this.emptyPlanetView.SetView(controller.EmptyPlanetController(bodyIndex), currentPlayer);
+					this.setView(this.emptyPlanetView);
 					break;
 				default:
+					this.setView(null);
 					//TODO(later) add implementation, foregin planet, empty system, foreign system
 					break;
 			}
@@ -307,19 +308,13 @@ namespace Stareater.GameScenes
 				originOffset = minOffset;
 		}
 		
-		private void setView(object view)
+		private void setView(GuiPanel view)
 		{
-			if (emptyPlanetView.InvokeRequired)
-			{
-				emptyPlanetView.BeginInvoke(new Action<object>(setView), view);
-				return;
-			}
-			
-			emptyPlanetView.Visible = view.Equals(emptyPlanetView);
-			if (view.Equals(siteView))
-				this.ShowElement(siteView);
-			else
-				this.HideElement(siteView);
+			foreach (var planetView in new GuiPanel[] { this.siteView, this.emptyPlanetView })
+				if (planetView.Equals(view))
+					this.ShowElement(planetView);
+				else
+					this.HideElement(planetView);
 		}
 
 		private void setupVaos()
