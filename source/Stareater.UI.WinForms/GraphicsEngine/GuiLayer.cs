@@ -31,9 +31,11 @@ namespace Stareater.GraphicsEngine
 
 		public void AddElement(AGuiElement element, AGuiElement parent, AScene scene)
 		{
+			var treeRoot = element.Below ?? parent;
 			this.guiHierarchy[element] = new HashSet<AGuiElement>();
-			this.guiHierarchy[parent].Add(element);
-			
+			this.guiHierarchy[treeRoot].Add(element);
+
+			element.SetDepth(treeRoot.Z0 - treeRoot.ZRange, treeRoot.ZRange);
 			element.Attach(scene, parent);
 			this.updateGuiZ(element);
 			element.Position.Recalculate();
@@ -45,7 +47,7 @@ namespace Stareater.GraphicsEngine
 				foreach (var child in this.guiHierarchy[element].ToList())
 					this.RemoveElement(child);
 
-			this.guiHierarchy[element.Parent].Remove(element);
+			this.guiHierarchy[element.Below ?? element.Parent].Remove(element);
 			this.guiHierarchy.Remove(element);
 			element.Detach();
 		}
@@ -76,10 +78,12 @@ namespace Stareater.GraphicsEngine
 		{
 			var layers = 2;
 			var subroot = element;
+			var treeParent = subroot.Below ?? subroot.Parent;
 
-			while (subroot.Parent != this.Root)
+			while (treeParent != this.Root)
 			{
-				subroot = subroot.Parent;
+				subroot = treeParent;
+				treeParent = subroot.Below ?? subroot.Parent;
 				layers++;
 			}
 

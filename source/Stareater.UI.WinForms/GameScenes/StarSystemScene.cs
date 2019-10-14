@@ -137,10 +137,11 @@ namespace Stareater.GameScenes
 			{
 				var traitImage = new GuiImage
 				{
+					Below = this.starSelector,
 					Image = GalaxyTextures.Get.Sprite(trait.ImagePath),
 					Tooltip = new SimpleTooltip("Traits", trait.LangCode)
 				};
-				traitImage.Position.FixedSize(20, 20).RelativeTo(this.starSelector, 1, -1, -1, 1).WithMargins(3, 0);
+				traitImage.Position.FixedSize(20, 20).RelativeTo(this.starSelector, 0.8f, -0.8f, -1, 1).WithMargins(3, 0);
 				traitGridBuilder.Add(traitImage.Position);
 				this.addPlanetElement(traitImage);
 			}
@@ -368,8 +369,7 @@ namespace Stareater.GameScenes
 						new Sprite(GalaxyTextures.Get.ColonizationMarkColor, this.currentPlayer.Info.Color)
 					}
 				};
-				//TODO(v0.9) position slightly inside planet selector element
-				marker.Position.FixedSize(40, 40).RelativeTo(this.planetSelectors[planet.Position], 1, 1, -1, -1);
+				marker.Position.FixedSize(40, 40).RelativeTo(this.planetSelectors[planet.Position], 0.8f, 0.8f, -1, -1);
 				this.colonizationMarkers[planet.Position] = marker;
 				this.AddElement(marker);
 			}

@@ -14,6 +14,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		public float ZRange { get; private set; }
 
 		public AGuiElement Parent { get; private set; }
+		public AGuiElement Below { get; set; }
 		public ElementPosition Position { get; private set; }
 		public bool MasksMouseClick { get; set; }
 		public ITooltip Tooltip { get; set; }
@@ -31,7 +32,6 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.Parent = parent;
 
 			this.Position.Attach(parent);
-			this.SetDepth(parent.Z0 - parent.ZRange, parent.ZRange);
 			this.updateScene();
 		}
 
