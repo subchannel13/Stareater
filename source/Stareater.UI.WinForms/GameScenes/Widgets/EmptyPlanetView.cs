@@ -3,6 +3,7 @@ using Stareater.GLData;
 using Stareater.GraphicsEngine.GuiElements;
 using Stareater.GuiUtils;
 using Stareater.Localization;
+using System;
 using System.Drawing;
 using System.Linq;
 
@@ -15,9 +16,11 @@ namespace Stareater.GameScenes.Widgets
 
 		private readonly GuiText title;
 		private readonly GuiButton colonizeButton;
+		private readonly Action onColonizationChange;
 
-		public EmptyPlanetView()
+		public EmptyPlanetView(Action onColonizationChange)
 		{
+			this.onColonizationChange = onColonizationChange;
 			this.Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 6);
 			this.Position.FixedSize(360, 116);
 
@@ -63,6 +66,7 @@ namespace Stareater.GameScenes.Widgets
 			this.controller.RunAutomation();
 
 			this.resetView();
+			this.onColonizationChange();
 		}
 
 		private void resetView()

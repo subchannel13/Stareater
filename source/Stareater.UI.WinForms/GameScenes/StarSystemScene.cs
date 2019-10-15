@@ -55,8 +55,6 @@ namespace Stareater.GameScenes
 		private float minOffset;
 		private float maxOffset;
 
-		private HashSet<PlanetInfo> colonizationMarked = new HashSet<PlanetInfo>();
-		
 		public StarSystemScene(Action systemClosedHandler)
 		{
 			this.systemClosedHandler = systemClosedHandler; 
@@ -64,7 +62,7 @@ namespace Stareater.GameScenes
 			this.siteView = new ConstructionSiteView();
 			this.siteView.Position.ParentRelative(0, -1);
 
-			this.emptyPlanetView = new EmptyPlanetView();
+			this.emptyPlanetView = new EmptyPlanetView(this.setupColonizationMarkers);
 			this.emptyPlanetView.Position.ParentRelative(0, -1);
 
 			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
@@ -130,6 +128,8 @@ namespace Stareater.GameScenes
 
 			foreach (var element in this.planetSelectors.Values.Concat(this.colonizationMarkers.Values).Concat(this.otherPlanetElements))
 				this.RemoveElement(element);
+			this.planetSelectors.Clear();
+			this.colonizationMarkers.Clear();
 			this.otherPlanetElements.Clear();
 
 			var traitGridBuilder = new GridPositionBuilder(2, 20, 20, 3);
@@ -194,6 +194,8 @@ namespace Stareater.GameScenes
 					this.addPlanetElement(traitImage);
 				}
 			}
+
+			this.setupColonizationMarkers();
 		}
 
 		private void addPlanetElement(AGuiElement element)
@@ -204,17 +206,6 @@ namespace Stareater.GameScenes
 
 		#region AScene implementation
 		protected override float guiLayerThickness => 1 / Layers;
-
-		protected override void frameUpdate(double deltaTime)
-		{
-			//TODO(v0.9) try to remove from frame update
-			var beingColonized = new HashSet<PlanetInfo>(this.controller.Planets.Where(x => this.controller.IsColonizing(x.Position)));
-			if (!this.colonizationMarked.SetEquals(beingColonized))
-			{
-				this.colonizationMarked = beingColonized;
-				this.setupColonizationMarkers();
-			}
-		}
 
 		//TODO(v0.8) refactor and remove
 		public void ResetLists()
@@ -324,7 +315,6 @@ namespace Stareater.GameScenes
 				return; //TODO(v0.7) move check to better place
 			
 			this.setupBodies();
-			this.setupColonizationMarkers();
 		}
 
 		private void setupBodies()
@@ -357,10 +347,7 @@ namespace Stareater.GameScenes
 			foreach(var planet in this.controller.Planets.Where(x => this.controller.IsColonizing(x.Position)))
 			{
 				if (!this.planetSelectors.ContainsKey(planet.Position))
-				{
-					this.colonizationMarked.Remove(planet);
 					continue;
-				}
 
 				var marker = new GuiImage
 				{

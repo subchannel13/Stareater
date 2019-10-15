@@ -11,7 +11,10 @@ NotBuilding §
 	\
 SiteDetails = Details
 ColonizeStart = Colonize
-ColonizeStop = Stop colonization
+ColonizeStop §
+		Stop
+		colonization
+	\
 
 developPolicyTooltip §
 		Develop sytem
