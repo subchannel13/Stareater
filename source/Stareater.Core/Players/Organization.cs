@@ -4,13 +4,15 @@ using System.Collections.Generic;
 namespace Stareater.Players
 {
 	[StateType(true)]
-	class Organization
+	class Organization : IIdentifiable
 	{
+		public string IdCode { get; internal set; }
 		public string LanguageCode { get; private set; }
 		public IEnumerable<string> ResearchAffinities { get; private set; }
 
-		internal Organization(string languageCode, IEnumerable<string> affinities)
+		public Organization(string id, string languageCode, IEnumerable<string> affinities)
 		{
+			this.IdCode = id;
 			this.LanguageCode = languageCode;
 			this.ResearchAffinities = affinities;
 		}

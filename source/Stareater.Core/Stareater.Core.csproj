@@ -332,6 +332,7 @@
     <Compile Include="Utils\Graph.cs" />
     <Compile Include="Utils\Pair.cs" />
     <Compile Include="Utils\PointReceiver.cs" />
+    <Compile Include="Utils\StateEngine\IIdentifiable.cs" />
     <Compile Include="Utils\StateEngine\LoadSession.cs" />
     <Compile Include="Utils\StateEngine\SaveSession.cs" />
     <Compile Include="Utils\StateEngine\AEnumerableStrategy.cs" />
@@ -354,7 +355,6 @@
     <Compile Include="Utils\Collections\IIndex.cs" />
     <Compile Include="Utils\Collections\QuadTreeElement.cs" />
     <Compile Include="Utils\Collections\ObjectDeindexer.cs" />
-    <Compile Include="Utils\Collections\ObjectIndexer.cs" />
     <Compile Include="Utils\Collections\QuadTree.cs" />
     <Compile Include="Utils\Collections\QuadTreeNode.cs" />
     <Compile Include="Utils\Collections\CollectionIndex.cs" />

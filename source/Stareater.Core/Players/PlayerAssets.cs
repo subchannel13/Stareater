@@ -27,33 +27,33 @@ namespace Stareater.Players
 		{
 			var colorList = new List<Color>();
 			foreach(var source in dataSources)
-			{
-				var parser = new IkonParser(source.Stream);
-				IkonArray colorsData;
+				using (var parser = new IkonParser(source.Stream))
+				{
+					IkonArray colorsData;
 
-				try
-				{
-					colorsData = parser.ParseNext().To<IkonComposite>()[ColorsKey].To<IkonArray>();
-				} 
-				catch (IOException e)
-				{
-					throw new IOException(source.SourceInfo, e);
-				}
-				catch(FormatException e)
-				{
-					throw new FormatException(source.SourceInfo, e);
-				}
+					try
+					{
+						colorsData = parser.ParseNext().To<IkonComposite>()[ColorsKey].To<IkonArray>();
+					}
+					catch (IOException e)
+					{
+						throw new IOException(source.SourceInfo, e);
+					}
+					catch (FormatException e)
+					{
+						throw new FormatException(source.SourceInfo, e);
+					}
 
-				foreach(var item in colorsData)
-				{
-					var colorData = item.To<IkonArray>();
-					colorList.Add(Color.FromArgb(
-						colorData[0].To<int>(),
-						colorData[1].To<int>(),
-						colorData[2].To<int>()
-						));
+					foreach (var item in colorsData)
+					{
+						var colorData = item.To<IkonArray>();
+						colorList.Add(Color.FromArgb(
+							colorData[0].To<int>(),
+							colorData[1].To<int>(),
+							colorData[2].To<int>()
+							));
+					}
 				}
-			}
 
 			Colors = colorList.ToArray();
 		}
@@ -67,28 +67,29 @@ namespace Stareater.Players
 		{
 			var list = new List<Organization>();
 			foreach (var source in dataSources)
-			{
-				var parser = new Parser(source.Stream);
-				try
+				using (var parser = new Parser(source.Stream))
 				{
-					foreach (var item in parser.ParseAll())
+					try
 					{
-						var data = item.Value.To<IkonComposite>();
-						list.Add(new Organization(
-							data[OrganizationLangCodeKey].To<string>(),
-							data[OrganizationAffinitiesKey].To<string[]>()
-						));
+						foreach (var item in parser.ParseAll())
+						{
+							var data = item.Value.To<IkonComposite>();
+							list.Add(new Organization(
+								data[Stareater.GameData.Databases.StaticsDB.GeneralCodeKey].To<string>(),
+								data[OrganizationLangCodeKey].To<string>(),
+								data[OrganizationAffinitiesKey].To<string[]>()
+							));
+						}
 					}
-				} 
-				catch (IOException e)
-				{
-					throw new IOException(source.SourceInfo, e);
+					catch (IOException e)
+					{
+						throw new IOException(source.SourceInfo, e);
+					}
+					catch (FormatException e)
+					{
+						throw new FormatException(source.SourceInfo, e);
+					}
 				}
-				catch(FormatException e)
-				{
-					throw new FormatException(source.SourceInfo, e);
-				}
-			}
 
 			OrganizationsRaw = list.ToArray();
 		}

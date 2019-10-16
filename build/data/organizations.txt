@@ -1,29 +1,35 @@
 { Organization
 	langCode: NASA
+	code: nasa
 	affinities [ :Soc ]
 }
 
 { Organization
 	langCode: ESA
+	code: esa
 	affinities [ :Phy ]
 }
 
 { Organization
 	langCode: JAXA
+	code: jaxa
 	affinities [ :Mech ]
 }
 
 { Organization
 	langCode: CNSA
+	code: cnsa
 	affinities [ :Chem ]
 }
 
 { Organization
 	langCode: SSSR
+	code: sssr
 	affinities [ :Energy ]
 }
 
 { Organization
 	langCode: ISRO
+	code: isro
 	affinities [ :Mat ]
 }

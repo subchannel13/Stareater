@@ -112,9 +112,9 @@ namespace Stareater.Utils.StateEngine
 				Load<T>(saveData[EntryPointKey]);
 		}
 
-		public IkonBaseObject Save(object obj, ObjectIndexer indexer)
+		public IkonBaseObject Save(object obj)
 		{
-			var session = new SaveSession(getTypeStrategy, indexer);
+			var session = new SaveSession(getTypeStrategy);
 
 			var mainData = session.Serialize(obj);
 			var referencedData = session.GetSerialzedData();
@@ -151,6 +151,12 @@ namespace Stareater.Utils.StateEngine
 
 			if (type.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>)))
 				return new CollectionStrategy(type);
+
+			if (type.GetInterfaces().Contains(typeof(IIdentifiable)))
+				return new TerminalStrategy(
+					(x, session) => new IkonText((x as IIdentifiable).IdCode),
+					(x, session) => session.Deindexer.Get(type, x.To<string>())
+				);
 
 			if (type.IsEnum)
 				return new TerminalStrategy(

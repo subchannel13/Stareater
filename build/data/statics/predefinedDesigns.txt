@@ -1,5 +1,6 @@
 { PredefinedDesign
 	name: Interceptor
+	code: interceptor
 	
 	hull: fighter
 	hullImageIndex= 0
@@ -12,6 +13,7 @@
 
 { PredefinedDesign
 	name: Scout
+	code: scout
 	
 	hull: cruiser
 	hullImageIndex= 0
@@ -24,6 +26,7 @@
 
 { PredefinedDesign
 	name "Colony ship"
+	code: colony
 	
 	hull: cruiser
 	hullImageIndex= 0

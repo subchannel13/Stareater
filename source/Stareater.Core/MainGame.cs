@@ -1,9 +1,7 @@
-﻿using Ikadn;
-using Stareater.GameData.Databases;
+﻿using Stareater.GameData.Databases;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameLogic;
 using Stareater.Players;
-using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using System.Collections.Generic;
 
@@ -11,6 +9,8 @@ namespace Stareater
 {
 	class MainGame
 	{
+		public const string SaveGameTag = "Game";
+
 		[StateProperty]
 		public Player[] MainPlayers { get; private set; }
 		[StateProperty]
@@ -86,33 +86,5 @@ namespace Stareater
 			Processor.CalculateSpendings();
 			Processor.CalculateDerivedEffects();
 		}
-		
-		#region Saving
-		internal IkadnBaseObject Save(StateManager stateManager)
-		{
-			var indexer = new ObjectIndexer();
-			indexer.AddAll(PlayerAssets.OrganizationsRaw);
-			indexer.AddAll(Statics.Armors.Values);
-			indexer.AddAll(Statics.Constructables);
-			indexer.AddAll(Statics.DevelopmentTopics);
-			indexer.AddAll(Statics.Hulls.Values);
-			indexer.AddAll(Statics.IsDrives.Values);
-			indexer.AddAll(Statics.MissionEquipment.Values);
-			indexer.AddAll(Statics.PredeginedDesigns);
-			indexer.AddAll(Statics.Reactors.Values);
-			indexer.AddAll(Statics.ResearchTopics);
-			indexer.AddAll(Statics.Sensors.Values);
-			indexer.AddAll(Statics.Shields.Values);
-			indexer.AddAll(Statics.SpecialEquipment.Values);
-			indexer.AddAll(Statics.Thrusters.Values);
-			indexer.AddAll(Statics.PlanetTraits.Values);
-			indexer.AddAll(Statics.StarTraits.Values);
-
-			//TODO(v0.8) is the method necessary?
-			return stateManager.Save(this, indexer);
-		}
-		
-		public const string SaveGameTag = "Game";
-		#endregion
 	}
 }

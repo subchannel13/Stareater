@@ -4,7 +4,7 @@ using Stareater.Utils.StateEngine;
 namespace Stareater.GameData
 {
 	[StateType(true)]
-	class ResearchTopic
+	class ResearchTopic : IIdentifiable
 	{
 		public string LanguageCode { get; private set; }
 		

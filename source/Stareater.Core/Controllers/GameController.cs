@@ -26,8 +26,8 @@ namespace Stareater.Controllers
 			return stateManager;
 		}
 		
-		private object threadLocker = new object();
-		private AutoResetEvent processingSync = new AutoResetEvent(true);
+		private readonly object threadLocker = new object();
+		private readonly AutoResetEvent processingSync = new AutoResetEvent(true);
 		private MainGame gameObj;
 		
 		private GameController endTurnCopy = null;
@@ -37,7 +37,7 @@ namespace Stareater.Controllers
 		private Task processingPhase = null;
 		private PlayerController[] playerControllers = null;
 		private PlayerController organelleController = null;
-		private HashSet<int> endedTurnPlayers = new HashSet<int>();
+		private readonly HashSet<int> endedTurnPlayers = new HashSet<int>();
 
 		public GameController()
 		{ 
@@ -74,7 +74,7 @@ namespace Stareater.Controllers
 
 		internal IkadnBaseObject Save()
 		{
-			return this.GameInstance.Save(GetStateManager());
+			return GetStateManager().Save(this.GameInstance);
 		}
 
 		/// <summary>

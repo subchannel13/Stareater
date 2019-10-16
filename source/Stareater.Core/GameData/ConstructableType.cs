@@ -6,7 +6,7 @@ using Stareater.GameData.Construction;
 namespace Stareater.GameData
 {
 	[StateType(true)]
-	class ConstructableType
+	class ConstructableType : IIdentifiable
 	{
 		public string LanguageCode { get; private set; }
 		public string ImagePath { get; private set; }

@@ -5,10 +5,11 @@ using Stareater.Utils.StateEngine;
 namespace Stareater.GameData.Ships
 {
 	[StateType(true)]
-	class DesignTemplate
+	class DesignTemplate : IIdentifiable
 	{
 		public string Name { get; private set; }
-		
+		public string IdCode { get; private set; }
+
 		public string HullCode { get; private set; }
 		public int HullImageIndex { get; private set; }
 		
@@ -16,11 +17,12 @@ namespace Stareater.GameData.Ships
 		public string ShieldCode { get; private set; }
 		public List<KeyValuePair<string, int>> MissionEquipment { get; private set; }
 		public Dictionary<string, int> SpecialEquipment { get; private set; }
-		
-		public DesignTemplate(string name, string hullCode, int hullImageIndex, bool hasIsDrive, string shieldCode, 
+
+		public DesignTemplate(string name, string idCode, string hullCode, int hullImageIndex, bool hasIsDrive, string shieldCode, 
 		                        List<KeyValuePair<string, int>> missionEquipment, Dictionary<string, int> specialEquipment)
 		{
 			this.Name = name;
+			this.IdCode = idCode;
 			
 			this.HasIsDrive = hasIsDrive;
 			this.HullCode = hullCode;

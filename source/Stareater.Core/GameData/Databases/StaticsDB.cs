@@ -449,6 +449,7 @@ namespace Stareater.GameData.Databases
 		{
 			return new DesignTemplate(
 				data[DesignName].To<string>(),
+				data[GeneralCodeKey].To<string>(),
 				data[DesignHull].To<string>(),
 				data[DesignHullImageIndex].To<int>(),
 				data.Keys.Contains(DesignHasIsDrive),
@@ -778,7 +779,6 @@ namespace Stareater.GameData.Databases
 
 		private const string AfflictTraitTag = "AfflictPlanets";
 		private const string TemporaryTraitTag = "Temporary";
-		private const string AfflictionEffectTag = "Affliction";
 
 		private const string ColonizationPopulationThreshold = "colonizationPopThreshold";
 		private const string ColonyDevelopment = "development";
@@ -873,9 +873,9 @@ namespace Stareater.GameData.Databases
 		private const string FocusList = "list";
 		private const string ResearchUnlocksKey = "devTopics";
 
+		public const string GeneralCodeKey = "code";
 		private const string GeneralLangKey = "langCode";
 		private const string GeneralImageKey = "image";
-		private const string GeneralCodeKey = "code";
 		private const string GeneralPrerequisitesKey = "prerequisites";
 		private const string GeneralMaxLevelKey = "maxLvl";
 		private const string GeneralCannotPickKey = "cannotPick";

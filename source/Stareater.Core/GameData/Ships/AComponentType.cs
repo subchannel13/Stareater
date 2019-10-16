@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Stareater.Ships;
 using Stareater.Utils;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Ships
 {
-	abstract class AComponentType
+	abstract class AComponentType : IIdentifiable
 	{
 		public const string LevelKey = "lvl";
 		public const string LevelSuffix = "_lvl";

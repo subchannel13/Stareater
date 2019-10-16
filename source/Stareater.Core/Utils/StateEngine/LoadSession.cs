@@ -9,8 +9,8 @@ namespace Stareater.Utils.StateEngine
 	{
 		private readonly Dictionary<IkonBaseObject, object> deserialized = new Dictionary<IkonBaseObject, object>();
 
-		private Func<Type, ITypeStrategy> expertGetter;
-		private Dictionary<Type, Action<object>> postLoadActions;
+		private readonly Func<Type, ITypeStrategy> expertGetter;
+		private readonly Dictionary<Type, Action<object>> postLoadActions;
 
 		//TODO(v0.8) check if post load actions are still needed after removing hash from Design
 		internal LoadSession(Func<Type, ITypeStrategy> expertGetter, ObjectDeindexer deindexer, Dictionary<Type, Action<object>> postLoadActions)
@@ -34,7 +34,7 @@ namespace Stareater.Utils.StateEngine
 				return (T)deserialized[data];
 
 			if (this.Deindexer.HasType(typeof(T)))
-				return this.Deindexer.Get<T>(data.To<int>());
+				return this.Deindexer.Get<T>(data.To<string>());
 
             var expert = this.expertGetter(typeof(T));
 			var result = expert.Deserialize(data, this);

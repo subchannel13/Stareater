@@ -4,7 +4,7 @@ using Stareater.Utils.StateEngine;
 namespace Stareater.GameData
 {
 	[StateType(true)]
-	class DevelopmentTopic
+	class DevelopmentTopic : IIdentifiable
 	{
 		public const string LevelKey = "lvl";
 		public const string PriorityKey = "priority";

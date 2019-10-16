@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Stareater.Galaxy.BodyTraits
 {
 	[StateType(true)]
-	public class StarTraitType
+	public class StarTraitType : IIdentifiable
 	{
 		public string LanguageCode { get; private set; }
 
