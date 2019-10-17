@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers.Views;
@@ -21,11 +23,11 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 
-		public void SetData(ResearchTopicInfo topicInfo)
+		public void SetData(ResearchTopicInfo topicInfo, bool showUnlocks)
 		{
 			this.Data = topicInfo;
 			
-			ThousandsFormatter thousandsFormat = new ThousandsFormatter(topicInfo.Cost);
+			var thousandsFormat = new ThousandsFormatter(topicInfo.Cost);
 			
 			thumbnailImage.Image = ImageCache.Get[topicInfo.ImagePath];
 			nameLabel.Text = topicInfo.Name;
@@ -36,6 +38,17 @@ namespace Stareater.GUI
 				investmentLabel.Text = "+" + thousandsFormat.Format(topicInfo.Investment);
 			else
 				investmentLabel.Text = "";
+
+			if (showUnlocks)
+				this.unlocksLabel.Text = LocalizationManifest.Get.CurrentLanguage[LanguageContext]["unlockPriorities"].Text() +
+						":" + Environment.NewLine +
+						string.Join(Environment.NewLine, topicInfo.Unlocks.Select((x, i) => (i + 1) + ") " + x.Name));
+			else
+			{
+				this.unlocksLabel.Text = "";
+				this.AutoSize = false;
+				this.Height = 50;
+			}
 		}
 		
 		void thumbnailImage_Click(object sender, EventArgs e)
@@ -62,7 +75,12 @@ namespace Stareater.GUI
 		{
 			this.InvokeOnClick(this, e);
 		}
-		
+
+		private void unlocksLabel_Click(object sender, EventArgs e)
+		{
+			this.InvokeOnClick(this, e);
+		}
+
 		void thumbnailImage_MouseEnter(object sender, EventArgs e)
 		{
 			this.OnMouseEnter(e);
@@ -87,7 +105,12 @@ namespace Stareater.GUI
 		{
 			this.OnMouseEnter(e);
 		}
-		
+
+		private void unlocksLabel_Enter(object sender, EventArgs e)
+		{
+			this.OnMouseEnter(e);
+		}
+
 		public string TopicLevelText
 		{
 			get

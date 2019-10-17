@@ -12,7 +12,7 @@ namespace Stareater.Controllers.Views
 		internal const string LangContext = "Technologies";
 		
 		private readonly ResearchTopic topic;
-		private IDictionary<string, double> textVars;
+		private readonly IDictionary<string, double> textVars;
 		
 		public double Cost { get; private set; }
 		public double InvestedPoints { get; private set; }

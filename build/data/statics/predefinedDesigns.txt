@@ -1,6 +1,6 @@
 { PredefinedDesign
 	name: Interceptor
-	code: interceptor
+	code: fighter
 	
 	hull: fighter
 	hullImageIndex= 0

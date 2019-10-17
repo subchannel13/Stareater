@@ -34,6 +34,7 @@ namespace Stareater.GUI
 			this.investmentLabel = new System.Windows.Forms.Label();
 			this.costLabel = new System.Windows.Forms.Label();
 			this.nameLabel = new System.Windows.Forms.Label();
+			this.unlocksLabel = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -94,18 +95,32 @@ namespace Stareater.GUI
 			this.nameLabel.Click += new System.EventHandler(this.nameLabel_Click);
 			this.nameLabel.MouseEnter += new System.EventHandler(this.nameLabel_MouseEnter);
 			// 
+			// unlocksLabel
+			// 
+			this.unlocksLabel.AutoSize = true;
+			this.unlocksLabel.Location = new System.Drawing.Point(56, 51);
+			this.unlocksLabel.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+			this.unlocksLabel.Name = "unlocksLabel";
+			this.unlocksLabel.Size = new System.Drawing.Size(85, 13);
+			this.unlocksLabel.TabIndex = 4;
+			this.unlocksLabel.Text = "Unlock priorities:";
+			this.unlocksLabel.Click += new System.EventHandler(this.unlocksLabel_Click);
+			this.unlocksLabel.Enter += new System.EventHandler(this.unlocksLabel_Enter);
+			// 
 			// ResearchItem
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoSize = true;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(196)))), ((int)(((byte)(255)))));
+			this.Controls.Add(this.unlocksLabel);
 			this.Controls.Add(this.levelLabel);
 			this.Controls.Add(this.investmentLabel);
 			this.Controls.Add(this.costLabel);
 			this.Controls.Add(this.nameLabel);
 			this.Controls.Add(this.thumbnailImage);
 			this.Name = "ResearchItem";
-			this.Size = new System.Drawing.Size(250, 50);
+			this.Size = new System.Drawing.Size(250, 67);
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -116,5 +131,6 @@ namespace Stareater.GUI
 		private System.Windows.Forms.Label investmentLabel;
 		private System.Windows.Forms.Label levelLabel;
 		private System.Windows.Forms.PictureBox thumbnailImage;
+		private System.Windows.Forms.Label unlocksLabel;
 	}
 }

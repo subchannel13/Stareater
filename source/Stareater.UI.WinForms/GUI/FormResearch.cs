@@ -60,11 +60,11 @@ namespace Stareater.GUI
 				if (controller.ResearchFocus != i)
 				{
 					int controlIndex = i + (controller.ResearchFocus < i ? -1 : 0);
-					(topicList.Controls[controlIndex] as ResearchItem).SetData(topics[i]);
+					(topicList.Controls[controlIndex] as ResearchItem).SetData(topics[i], true);
 					topicList.Controls[controlIndex].Tag = i;
 				}
 
-			focusedItem.SetData(topics[controller.ResearchFocus]);
+			focusedItem.SetData(topics[controller.ResearchFocus], false);
 			topicList.ResumeLayout();
 		}
 
