@@ -14,7 +14,7 @@ namespace Stareater.GUI
 		private readonly PlayerController controller;
 		private IList<ResearchTopicInfo> topics;
 
-		private Control lastTopic = null;
+		private int selectedField;
 
 		public FormResearch()
 		{
@@ -25,15 +25,16 @@ namespace Stareater.GUI
 		{
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.controller = controller;
+			this.selectedField = controller.ResearchFocus;
 
-			updateList();
+			updateReserchList();
+			updateFieldDescription(this.topicList.Controls[this.selectedField]);
+			this.topicList.SelectedIndex = controller.ResearchFocus;
 
-			updateDescription(focusedItem);
-
-			Context context = LocalizationManifest.Get.CurrentLanguage["FormTech"];
+			var context = LocalizationManifest.Get.CurrentLanguage["FormTech"];
+			this.focusAction.Text = context["focusButton"].Text();
+			this.priorityTitle.Text = context["priorityTitle"].Text();
 			this.Text = context["ResearchTitle"].Text();
-			this.focusedLabel.Text = context["focusedResearchTitle"].Text();
-			this.listTitle.Text = context["otherResearchHeader"].Text();
 		}
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -43,73 +44,74 @@ namespace Stareater.GUI
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
 
-		private void updateList()
+		private void updateReserchList()
 		{
 			this.topics = controller.ResearchTopics().ToList();
 			topicList.SuspendLayout();
 
-			while (topicList.Controls.Count < topics.Count - 1)
+			while (topicList.Controls.Count < topics.Count)
 			{
 				var topicControl = new ResearchItem();
-				topicControl.MouseEnter += topic_OnMouseEnter;
 				topicControl.Click += topicList_SelectedIndexChanged;
 				topicList.Controls.Add(topicControl);
 			}
 
 			for (int i = 0; i < topics.Count; i++)
-				if (controller.ResearchFocus != i)
 				{
-					int controlIndex = i + (controller.ResearchFocus < i ? -1 : 0);
-					(topicList.Controls[controlIndex] as ResearchItem).SetData(topics[i], true);
-					topicList.Controls[controlIndex].Tag = i;
+					(topicList.Controls[i] as ResearchItem).SetData(topics[i], controller.ResearchFocus == i);
+					topicList.Controls[i].Tag = i;
 				}
 
-			focusedItem.SetData(topics[controller.ResearchFocus], false);
 			topicList.ResumeLayout();
 		}
 
-		private void updateDescription(Control topic)
+		private void updateFieldDescription(Control topic)
 		{
-			if (topic == null)
-			{
-				techImage.Image = null;
-				techName.Text = "";
-				techDescription.Text = "";
-				techLevel.Text = "";
-			}
-			else if (lastTopic != topic)
-			{
-				var selection = topic as ResearchItem;
-				lastTopic = topic;
+			var selection = topic as ResearchItem;
+			this.selectedField = (int)topic.Tag;
 
-				techImage.Image = ImageCache.Get[selection.Data.ImagePath];
-				techName.Text = selection.Data.Name;
-				techLevel.Text = selection.TopicLevelText;
-				techDescription.Text = 
-					selection.Data.Description + 
-					Environment.NewLine +
-					Environment.NewLine +
-					LocalizationManifest.Get.CurrentLanguage["FormTech"]["researchUnlock"].Text() +
-					Environment.NewLine +
-					string.Join(Environment.NewLine, selection.Data.Unlocks.Select(x => x.Name));
-			}
-		}
+			techImage.Image = ImageCache.Get[selection.Data.ImagePath];
+			fieldDescription.Text = selection.Data.Description;
 
-		private void topic_OnMouseEnter(object sender, EventArgs e)
-		{
-			updateDescription(sender as Control);
-		}
+			//TODO(v0.9) change controller.ResearchTopics to a list
+			var field = this.controller.ResearchTopics().ToList()[this.selectedField];
+			var unlocks = field.Unlocks.ToList();
+			this.unlocksList.SuspendLayout();
 
-		private void topicList_MouseLeave(object sender, EventArgs e)
-		{
-			updateDescription(this.focusedItem);
+			while (this.unlocksList.Controls.Count > unlocks.Count)
+				this.unlocksList.Controls.RemoveAt(0);
+			while (this.unlocksList.Controls.Count < unlocks.Count)
+				this.unlocksList.Controls.Add(new DevelopmentItem());
+
+			for (int i = 0; i < unlocks.Count; i++)
+				(this.unlocksList.Controls[i] as DevelopmentItem).SetData(unlocks[i]);
+
+			this.unlocksList.ResumeLayout();
+
+			if (unlocks.Any())
+				this.unlocksList.SelectedIndex = 0;
+			else
+				this.techDescription.Text = "";
 		}
 
 		private void topicList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			this.controller.ResearchFocus = (int)(sender as ResearchItem).Tag;
+			updateFieldDescription(sender as Control);
+		}
 
-			updateList();
+		private void focusAction_Click(object sender, EventArgs e)
+		{
+			this.controller.ResearchFocus = this.selectedField;
+
+			updateReserchList();
+		}
+
+		private void unlocksList_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (this.unlocksList.SelectedItem == null)
+				return;
+
+			this.techDescription.Text = (this.unlocksList.SelectedItem as DevelopmentItem).Data.Description;
 		}
 	}
 }

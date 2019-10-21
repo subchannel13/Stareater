@@ -8,8 +8,8 @@ Level §
 	\
 
 developmentPoints = Development points
-focusedResearchTitle = Research focus
-otherResearchHeader = Other fields
+focusButton = Focus
 researchUnlock = Unlocks:
 unlockPriorities = Unlock priorities
+priorityTitle = Choose advancement priority:
 -

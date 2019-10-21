@@ -702,6 +702,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App icon.ico" />
+    <None Include="Resources\center.png" />
     <None Include="maps\Stareater.Maps.DefaultMap.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

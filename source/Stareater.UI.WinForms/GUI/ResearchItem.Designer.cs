@@ -29,25 +29,16 @@ namespace Stareater.GUI
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.thumbnailImage = new System.Windows.Forms.PictureBox();
 			this.levelLabel = new System.Windows.Forms.Label();
 			this.investmentLabel = new System.Windows.Forms.Label();
 			this.costLabel = new System.Windows.Forms.Label();
 			this.nameLabel = new System.Windows.Forms.Label();
 			this.unlocksLabel = new System.Windows.Forms.Label();
+			this.thumbnailImage = new System.Windows.Forms.PictureBox();
+			this.focusImage = new System.Windows.Forms.PictureBox();
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.focusImage)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// thumbnailImage
-			// 
-			this.thumbnailImage.Location = new System.Drawing.Point(3, 3);
-			this.thumbnailImage.Name = "thumbnailImage";
-			this.thumbnailImage.Size = new System.Drawing.Size(44, 44);
-			this.thumbnailImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this.thumbnailImage.TabIndex = 0;
-			this.thumbnailImage.TabStop = false;
-			this.thumbnailImage.Click += new System.EventHandler(this.thumbnailImage_Click);
-			this.thumbnailImage.MouseEnter += new System.EventHandler(this.thumbnailImage_MouseEnter);
 			// 
 			// levelLabel
 			// 
@@ -107,12 +98,34 @@ namespace Stareater.GUI
 			this.unlocksLabel.Click += new System.EventHandler(this.unlocksLabel_Click);
 			this.unlocksLabel.Enter += new System.EventHandler(this.unlocksLabel_Enter);
 			// 
+			// thumbnailImage
+			// 
+			this.thumbnailImage.Location = new System.Drawing.Point(3, 3);
+			this.thumbnailImage.Name = "thumbnailImage";
+			this.thumbnailImage.Size = new System.Drawing.Size(44, 44);
+			this.thumbnailImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.thumbnailImage.TabIndex = 0;
+			this.thumbnailImage.TabStop = false;
+			this.thumbnailImage.Click += new System.EventHandler(this.thumbnailImage_Click);
+			this.thumbnailImage.MouseEnter += new System.EventHandler(this.thumbnailImage_MouseEnter);
+			// 
+			// focusImage
+			// 
+			this.focusImage.Image = global::Stareater.Properties.Resources.center;
+			this.focusImage.Location = new System.Drawing.Point(231, 3);
+			this.focusImage.Name = "focusImage";
+			this.focusImage.Size = new System.Drawing.Size(16, 16);
+			this.focusImage.TabIndex = 5;
+			this.focusImage.TabStop = false;
+			this.focusImage.Click += new System.EventHandler(this.focusImage_Click);
+			// 
 			// ResearchItem
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(196)))), ((int)(((byte)(255)))));
+			this.Controls.Add(this.focusImage);
 			this.Controls.Add(this.unlocksLabel);
 			this.Controls.Add(this.levelLabel);
 			this.Controls.Add(this.investmentLabel);
@@ -122,6 +135,7 @@ namespace Stareater.GUI
 			this.Name = "ResearchItem";
 			this.Size = new System.Drawing.Size(250, 67);
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.focusImage)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -132,5 +146,6 @@ namespace Stareater.GUI
 		private System.Windows.Forms.Label levelLabel;
 		private System.Windows.Forms.PictureBox thumbnailImage;
 		private System.Windows.Forms.Label unlocksLabel;
+		private System.Windows.Forms.PictureBox focusImage;
 	}
 }

@@ -30,46 +30,27 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.techDescription = new System.Windows.Forms.TextBox();
-			this.techLevel = new System.Windows.Forms.Label();
-			this.techName = new System.Windows.Forms.Label();
+			this.fieldDescription = new System.Windows.Forms.TextBox();
 			this.techImage = new System.Windows.Forms.PictureBox();
-			this.topicList = new System.Windows.Forms.FlowLayoutPanel();
-			this.focusedLabel = new System.Windows.Forms.Label();
-			this.listTitle = new System.Windows.Forms.Label();
-			this.focusedItem = new Stareater.GUI.ResearchItem();
+			this.topicList = new Stareater.GUI.ControlListView();
+			this.techDescription = new System.Windows.Forms.TextBox();
+			this.reorderDownAction = new System.Windows.Forms.Button();
+			this.reorderUpAction = new System.Windows.Forms.Button();
+			this.unlocksList = new Stareater.GUI.ControlListView();
+			this.priorityTitle = new System.Windows.Forms.Label();
+			this.focusAction = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.techImage)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// techDescription
+			// fieldDescription
 			// 
-			this.techDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-			this.techDescription.Location = new System.Drawing.Point(297, 98);
-			this.techDescription.Multiline = true;
-			this.techDescription.Name = "techDescription";
-			this.techDescription.ReadOnly = true;
-			this.techDescription.Size = new System.Drawing.Size(250, 361);
-			this.techDescription.TabIndex = 6;
-			this.techDescription.Text = "Description here";
-			// 
-			// techLevel
-			// 
-			this.techLevel.AutoSize = true;
-			this.techLevel.Location = new System.Drawing.Point(383, 26);
-			this.techLevel.Name = "techLevel";
-			this.techLevel.Size = new System.Drawing.Size(43, 13);
-			this.techLevel.TabIndex = 5;
-			this.techLevel.Text = "Level X";
-			// 
-			// techName
-			// 
-			this.techName.AutoSize = true;
-			this.techName.Location = new System.Drawing.Point(383, 12);
-			this.techName.Name = "techName";
-			this.techName.Size = new System.Drawing.Size(61, 13);
-			this.techName.TabIndex = 4;
-			this.techName.Text = "Tech name";
+			this.fieldDescription.Location = new System.Drawing.Point(383, 12);
+			this.fieldDescription.Multiline = true;
+			this.fieldDescription.Name = "fieldDescription";
+			this.fieldDescription.ReadOnly = true;
+			this.fieldDescription.Size = new System.Drawing.Size(191, 86);
+			this.fieldDescription.TabIndex = 6;
+			this.fieldDescription.Text = "Description here\r\nSpace\r\nLine 1\r\nLine 2\r\nLine 3\r\nLine 4\r\nLine 5";
 			// 
 			// techImage
 			// 
@@ -85,50 +66,82 @@
             | System.Windows.Forms.AnchorStyles.Left)));
 			this.topicList.AutoScroll = true;
 			this.topicList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-			this.topicList.Location = new System.Drawing.Point(12, 117);
+			this.topicList.Location = new System.Drawing.Point(12, 12);
 			this.topicList.Name = "topicList";
-			this.topicList.Size = new System.Drawing.Size(277, 342);
+			this.topicList.SelectedIndex = -1;
+			this.topicList.Size = new System.Drawing.Size(277, 477);
 			this.topicList.TabIndex = 3;
-			this.topicList.MouseLeave += new System.EventHandler(this.topicList_MouseLeave);
 			// 
-			// focusedLabel
+			// techDescription
 			// 
-			this.focusedLabel.AutoSize = true;
-			this.focusedLabel.Location = new System.Drawing.Point(12, 9);
-			this.focusedLabel.Name = "focusedLabel";
-			this.focusedLabel.Size = new System.Drawing.Size(48, 13);
-			this.focusedLabel.TabIndex = 0;
-			this.focusedLabel.Text = "focused:";
+			this.techDescription.Location = new System.Drawing.Point(297, 329);
+			this.techDescription.Multiline = true;
+			this.techDescription.Name = "techDescription";
+			this.techDescription.ReadOnly = true;
+			this.techDescription.Size = new System.Drawing.Size(277, 160);
+			this.techDescription.TabIndex = 28;
+			this.techDescription.Text = "Description here";
 			// 
-			// listTitle
+			// reorderDownAction
 			// 
-			this.listTitle.AutoSize = true;
-			this.listTitle.Location = new System.Drawing.Point(12, 101);
-			this.listTitle.Name = "listTitle";
-			this.listTitle.Size = new System.Drawing.Size(62, 13);
-			this.listTitle.TabIndex = 2;
-			this.listTitle.Text = "other topics";
+			this.reorderDownAction.Image = global::Stareater.Properties.Resources.arrowDown;
+			this.reorderDownAction.Location = new System.Drawing.Point(580, 236);
+			this.reorderDownAction.Name = "reorderDownAction";
+			this.reorderDownAction.Size = new System.Drawing.Size(50, 50);
+			this.reorderDownAction.TabIndex = 27;
+			this.reorderDownAction.UseVisualStyleBackColor = true;
 			// 
-			// focusedItem
+			// reorderUpAction
 			// 
-			this.focusedItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(196)))), ((int)(((byte)(255)))));
-			this.focusedItem.Location = new System.Drawing.Point(15, 25);
-			this.focusedItem.Name = "focusedItem";
-			this.focusedItem.Size = new System.Drawing.Size(250, 50);
-			this.focusedItem.TabIndex = 1;
+			this.reorderUpAction.Image = global::Stareater.Properties.Resources.arrowUp;
+			this.reorderUpAction.Location = new System.Drawing.Point(580, 180);
+			this.reorderUpAction.Name = "reorderUpAction";
+			this.reorderUpAction.Size = new System.Drawing.Size(50, 50);
+			this.reorderUpAction.TabIndex = 26;
+			this.reorderUpAction.UseVisualStyleBackColor = true;
+			// 
+			// unlocksList
+			// 
+			this.unlocksList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.unlocksList.Location = new System.Drawing.Point(297, 150);
+			this.unlocksList.Name = "unlocksList";
+			this.unlocksList.SelectedIndex = -1;
+			this.unlocksList.Size = new System.Drawing.Size(277, 173);
+			this.unlocksList.TabIndex = 25;
+			this.unlocksList.SelectedIndexChanged += new System.EventHandler(this.unlocksList_SelectedIndexChanged);
+			// 
+			// priorityTitle
+			// 
+			this.priorityTitle.AutoSize = true;
+			this.priorityTitle.Location = new System.Drawing.Point(295, 134);
+			this.priorityTitle.Name = "priorityTitle";
+			this.priorityTitle.Size = new System.Drawing.Size(75, 13);
+			this.priorityTitle.TabIndex = 29;
+			this.priorityTitle.Text = "choose priority";
+			// 
+			// focusAction
+			// 
+			this.focusAction.Location = new System.Drawing.Point(499, 104);
+			this.focusAction.Name = "focusAction";
+			this.focusAction.Size = new System.Drawing.Size(75, 23);
+			this.focusAction.TabIndex = 30;
+			this.focusAction.Text = "button1";
+			this.focusAction.UseVisualStyleBackColor = true;
+			this.focusAction.Click += new System.EventHandler(this.focusAction_Click);
 			// 
 			// FormResearch
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(559, 471);
-			this.Controls.Add(this.listTitle);
-			this.Controls.Add(this.focusedItem);
-			this.Controls.Add(this.focusedLabel);
-			this.Controls.Add(this.topicList);
+			this.ClientSize = new System.Drawing.Size(640, 501);
+			this.Controls.Add(this.focusAction);
+			this.Controls.Add(this.priorityTitle);
 			this.Controls.Add(this.techDescription);
-			this.Controls.Add(this.techLevel);
-			this.Controls.Add(this.techName);
+			this.Controls.Add(this.reorderDownAction);
+			this.Controls.Add(this.reorderUpAction);
+			this.Controls.Add(this.unlocksList);
+			this.Controls.Add(this.topicList);
+			this.Controls.Add(this.fieldDescription);
 			this.Controls.Add(this.techImage);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "FormResearch";
@@ -141,13 +154,14 @@
 			this.PerformLayout();
 
 		}
-		private System.Windows.Forms.FlowLayoutPanel topicList;
+		private ControlListView topicList;
 		private System.Windows.Forms.PictureBox techImage;
-		private System.Windows.Forms.Label techName;
-		private System.Windows.Forms.Label techLevel;
+		private System.Windows.Forms.TextBox fieldDescription;
 		private System.Windows.Forms.TextBox techDescription;
-		private System.Windows.Forms.Label focusedLabel;
-		private ResearchItem focusedItem;
-		private System.Windows.Forms.Label listTitle;
+		private System.Windows.Forms.Button reorderDownAction;
+		private System.Windows.Forms.Button reorderUpAction;
+		private ControlListView unlocksList;
+		private System.Windows.Forms.Label priorityTitle;
+		private System.Windows.Forms.Button focusAction;
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Stareater.AppData;
 using Stareater.Controllers.Views;
@@ -23,32 +22,26 @@ namespace Stareater.GUI
 			InitializeComponent();
 		}
 
-		public void SetData(ResearchTopicInfo topicInfo, bool showUnlocks)
+		public void SetData(ResearchTopicInfo topicInfo, bool focused)
 		{
 			this.Data = topicInfo;
 			
 			var thousandsFormat = new ThousandsFormatter(topicInfo.Cost);
-			
-			thumbnailImage.Image = ImageCache.Get[topicInfo.ImagePath];
-			nameLabel.Text = topicInfo.Name;
-			levelLabel.Text = TopicLevelText;
-			costLabel.Text = thousandsFormat.Format(topicInfo.InvestedPoints) + " / " +thousandsFormat.Format(topicInfo.Cost);
-			
-			if (topicInfo.Investment > 0)
-				investmentLabel.Text = "+" + thousandsFormat.Format(topicInfo.Investment);
-			else
-				investmentLabel.Text = "";
 
-			if (showUnlocks)
-				this.unlocksLabel.Text = LocalizationManifest.Get.CurrentLanguage[LanguageContext]["unlockPriorities"].Text() +
-						":" + Environment.NewLine +
-						string.Join(Environment.NewLine, topicInfo.Unlocks.Select((x, i) => (i + 1) + ") " + x.Name));
+			this.thumbnailImage.Image = ImageCache.Get[topicInfo.ImagePath];
+			this.nameLabel.Text = topicInfo.Name;
+			this.levelLabel.Text = this.TopicLevelText;
+			this.costLabel.Text = thousandsFormat.Format(topicInfo.InvestedPoints) + " / " +thousandsFormat.Format(topicInfo.Cost);
+			this.focusImage.Image = focused ? Stareater.Properties.Resources.center : null;
+
+			if (topicInfo.Investment > 0)
+				this.investmentLabel.Text = "+" + thousandsFormat.Format(topicInfo.Investment);
 			else
-			{
-				this.unlocksLabel.Text = "";
-				this.AutoSize = false;
-				this.Height = 50;
-			}
+				this.investmentLabel.Text = "";
+
+			this.unlocksLabel.Text = LocalizationManifest.Get.CurrentLanguage[LanguageContext]["unlockPriorities"].Text() +
+					":" + Environment.NewLine +
+					string.Join(Environment.NewLine, topicInfo.Unlocks.Select((x, i) => (i + 1) + ") " + x.Name));
 		}
 		
 		void thumbnailImage_Click(object sender, EventArgs e)
@@ -77,6 +70,10 @@ namespace Stareater.GUI
 		}
 
 		private void unlocksLabel_Click(object sender, EventArgs e)
+		{
+			this.InvokeOnClick(this, e);
+		}
+		private void focusImage_Click(object sender, EventArgs e)
 		{
 			this.InvokeOnClick(this, e);
 		}
