@@ -95,6 +95,9 @@ namespace Stareater.GameData
 		{
 			get
 			{
+				if (!this.CanProgress)
+					return 0;
+
 				var vars = new Var(DevelopmentTopic.LevelKey, this.Level + 1);
 				double sum = this.Topic.Cost.Evaluate(vars.Get) - this.InvestedPoints;
 
@@ -134,7 +137,7 @@ namespace Stareater.GameData
 		{
 			if (ReferenceEquals(lhs, rhs))
 				return true;
-			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+			if (lhs is null || rhs is null)
 				return false;
 			return lhs.Equals(rhs);
 		}

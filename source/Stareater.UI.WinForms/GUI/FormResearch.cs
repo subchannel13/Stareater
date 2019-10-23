@@ -12,9 +12,9 @@ namespace Stareater.GUI
 	public sealed partial class FormResearch : Form
 	{
 		private readonly PlayerController controller;
-		private IList<ResearchTopicInfo> topics;
+		private readonly ResearchTopicInfo[] topics;
 
-		private int selectedField;
+		private ResearchTopicInfo selectedField;
 
 		public FormResearch()
 		{
@@ -26,10 +26,11 @@ namespace Stareater.GUI
 			this.Font = SettingsWinforms.Get.FormFont;
 			this.controller = controller;
 			this.selectedField = controller.ResearchFocus;
+			this.topics = controller.ResearchTopics();
 
 			updateReserchList();
-			updateFieldDescription(this.topicList.Controls[this.selectedField]);
-			this.topicList.SelectedIndex = controller.ResearchFocus;
+			this.topicList.SelectedIndex = Array.IndexOf(this.topics, controller.ResearchFocus);
+			updateFieldDescription(this.topicList.SelectedItem);
 
 			var context = LocalizationManifest.Get.CurrentLanguage["FormTech"];
 			this.focusAction.Text = context["focusButton"].Text();
@@ -46,20 +47,19 @@ namespace Stareater.GUI
 
 		private void updateReserchList()
 		{
-			this.topics = controller.ResearchTopics().ToList();
 			topicList.SuspendLayout();
 
-			while (topicList.Controls.Count < topics.Count)
+			while (topicList.Controls.Count < topics.Length)
 			{
-				var topicControl = new ResearchItem();
+				var topicControl = new ResearchItem(this.controller);
 				topicControl.Click += topicList_SelectedIndexChanged;
 				topicList.Controls.Add(topicControl);
 			}
 
-			for (int i = 0; i < topics.Count; i++)
+			for (int i = 0; i < topics.Length; i++)
 				{
-					(topicList.Controls[i] as ResearchItem).SetData(topics[i], controller.ResearchFocus == i);
-					topicList.Controls[i].Tag = i;
+					(topicList.Controls[i] as ResearchItem).SetData(topics[i], controller.ResearchFocus == topics[i]);
+					topicList.Controls[i].Tag = topics[i];
 				}
 
 			topicList.ResumeLayout();
@@ -68,14 +68,18 @@ namespace Stareater.GUI
 		private void updateFieldDescription(Control topic)
 		{
 			var selection = topic as ResearchItem;
-			this.selectedField = (int)topic.Tag;
+			this.selectedField = (ResearchTopicInfo)topic.Tag;
 
 			techImage.Image = ImageCache.Get[selection.Data.ImagePath];
 			fieldDescription.Text = selection.Data.Description;
 
-			//TODO(v0.9) change controller.ResearchTopics to a list
-			var field = this.controller.ResearchTopics().ToList()[this.selectedField];
-			var unlocks = field.Unlocks.ToList();
+			this.updateUnlocks();
+		}
+
+		private void updateUnlocks()
+		{
+			var field = this.selectedField;
+			var unlocks = this.controller.ResearchUnlockPriorities(field).ToList();
 			this.unlocksList.SuspendLayout();
 
 			while (this.unlocksList.Controls.Count > unlocks.Count)
@@ -112,6 +116,27 @@ namespace Stareater.GUI
 				return;
 
 			this.techDescription.Text = (this.unlocksList.SelectedItem as DevelopmentItem).Data.Description;
+		}
+
+		private void reorderUpAction_Click(object sender, EventArgs e)
+		{
+			changeSelectionPriority(-1);
+		}
+
+		private void reorderDownAction_Click(object sender, EventArgs e)
+		{
+			changeSelectionPriority(1);
+		}
+
+		private void changeSelectionPriority(int direction)
+		{
+			if (!this.unlocksList.HasSelection)
+				return;
+
+			var unlock = (this.unlocksList.SelectedItem as DevelopmentItem).Data;
+			this.controller.ResearchReorderPriority(this.selectedField, unlock, this.unlocksList.SelectedIndex + direction);
+			this.updateUnlocks();
+			this.unlocksList.SelectedIndex = this.controller.ResearchUnlockPriorities(this.selectedField).ToList().IndexOf(unlock);
 		}
 	}
 }

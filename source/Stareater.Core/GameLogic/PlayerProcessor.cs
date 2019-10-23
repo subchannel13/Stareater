@@ -166,7 +166,7 @@ namespace Stareater.GameLogic
 			this.DevelopmentPlan = results;
 		}
 
-		public void CalculateResearch(MainGame game, IList<ColonyProcessor> colonyProcessors)
+		public void CalculateResearch(MainGame game)
 		{
 			var advanceOrder = this.ResearchOrder(game.States.ResearchAdvances).ToList();
 			string focused = game.Orders[Player].ResearchFocus;

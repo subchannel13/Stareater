@@ -36,9 +36,6 @@ namespace Stareater.GUI
 			
 			this.updateList();
 			
-			if (topic.Unlocks.Length > 0)
-				unlockedList.SelectedIndex = 0;
-			
 			updateDescription(unlockedList.SelectedItem);
 		}
 

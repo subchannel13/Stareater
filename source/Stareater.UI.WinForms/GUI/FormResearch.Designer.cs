@@ -90,6 +90,7 @@
 			this.reorderDownAction.Size = new System.Drawing.Size(50, 50);
 			this.reorderDownAction.TabIndex = 27;
 			this.reorderDownAction.UseVisualStyleBackColor = true;
+			this.reorderDownAction.Click += new System.EventHandler(this.reorderDownAction_Click);
 			// 
 			// reorderUpAction
 			// 
@@ -99,6 +100,7 @@
 			this.reorderUpAction.Size = new System.Drawing.Size(50, 50);
 			this.reorderUpAction.TabIndex = 26;
 			this.reorderUpAction.UseVisualStyleBackColor = true;
+			this.reorderUpAction.Click += new System.EventHandler(this.reorderUpAction_Click);
 			// 
 			// unlocksList
 			// 

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using Stareater.AppData;
+using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
@@ -12,14 +13,20 @@ namespace Stareater.GUI
 	public partial class ResearchItem : UserControl
 	{
 		public const string LanguageContext = "FormTech";
-		
 		private const string LocalizationLevel = "Level";
-		
+
+		private readonly PlayerController controller;
+
 		public ResearchTopicInfo Data { get; private set; }
 
 		public ResearchItem()
 		{
 			InitializeComponent();
+		}
+
+		public ResearchItem(PlayerController controller) : this()
+		{
+			this.controller = controller;
 		}
 
 		public void SetData(ResearchTopicInfo topicInfo, bool focused)
@@ -41,7 +48,7 @@ namespace Stareater.GUI
 
 			this.unlocksLabel.Text = LocalizationManifest.Get.CurrentLanguage[LanguageContext]["unlockPriorities"].Text() +
 					":" + Environment.NewLine +
-					string.Join(Environment.NewLine, topicInfo.Unlocks.Select((x, i) => (i + 1) + ") " + x.Name));
+					string.Join(Environment.NewLine, this.controller.ResearchUnlockPriorities(topicInfo).Select((x, i) => (i + 1) + ") " + x.Name));
 		}
 		
 		void thumbnailImage_Click(object sender, EventArgs e)

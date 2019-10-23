@@ -111,10 +111,7 @@ namespace Stareater.GameLogic
 					this.game,
 					this.game.Derivates.Colonies.OwnedBy[player.Player]
 				);
-				player.CalculateResearch(
-					this.game,
-					this.game.Derivates.Colonies.OwnedBy[player.Player]
-				);
+				player.CalculateResearch(this.game);
 			}
 		}
 

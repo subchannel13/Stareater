@@ -28,7 +28,7 @@ namespace Stareater.GUI
 			updateList();
 			
 			if (topics.Count > 0)
-				topicList.SelectedIndex = controller.ResearchFocus;
+				topicList.SelectedIndex = 0;
 			
 			updateDescription(topicList.SelectedItem);
 			

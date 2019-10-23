@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using Stareater.GameData;
+using Stareater.GameLogic.Planning;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
-using Stareater.GameLogic.Planning;
 
 namespace Stareater.Controllers.Views
 {
-	public class ResearchTopicInfo
+	public class ResearchTopicInfo : IEquatable<ResearchTopicInfo>
 	{
 		internal const string LangContext = "Technologies";
 		
-		private readonly ResearchTopic topic;
+		internal ResearchTopic Topic { get; private set; }
 		private readonly IDictionary<string, double> textVars;
 		
 		public double Cost { get; private set; }
@@ -19,11 +19,10 @@ namespace Stareater.Controllers.Views
 		public double Investment { get; private set; }
 		public int Level { get; private set; }
 		public int NextLevel { get; private set; }
-		public DevelopmentTopicInfo[] Unlocks { get; private set; }
 		
-		internal ResearchTopicInfo(ResearchProgress tech, IEnumerable<DevelopmentTopic> developmentTopics)
+		internal ResearchTopicInfo(ResearchProgress tech)
 		{
-			this.topic = tech.Topic;
+			this.Topic = tech.Topic;
 			this.textVars = new Var(DevelopmentTopic.LevelKey, tech.NextLevel).Get;
 				
 			this.Cost = tech.Topic.Cost.Evaluate(textVars);
@@ -31,14 +30,11 @@ namespace Stareater.Controllers.Views
 			this.Investment = 0;
 			this.Level = tech.Level;
 			this.NextLevel = tech.NextLevel;
-			this.Unlocks = tech.Topic.Unlocks[tech.NextLevel].Select(id => new DevelopmentTopicInfo(new DevelopmentProgress(
-				developmentTopics.First(x => x.IdCode == id), tech.Owner)
-			)).ToArray();
 		}
 
-		internal ResearchTopicInfo(ResearchProgress tech, ResearchResult investmentResult, IEnumerable<DevelopmentTopic> developmentTopics)
+		internal ResearchTopicInfo(ResearchProgress tech, ResearchResult investmentResult)
 		{
-			this.topic = tech.Topic;
+			this.Topic = tech.Topic;
 			this.textVars = new Var(DevelopmentTopic.LevelKey, tech.NextLevel).Get;
 				
 			this.Cost = tech.Topic.Cost.Evaluate(textVars);
@@ -46,16 +42,13 @@ namespace Stareater.Controllers.Views
 			this.Investment = investmentResult.InvestedPoints;
 			this.Level = tech.Level;
 			this.NextLevel = investmentResult.CompletedCount > 1 ? tech.Level + (int)investmentResult.CompletedCount : tech.NextLevel;
-			this.Unlocks = tech.Topic.Unlocks[tech.NextLevel].Select(id => new DevelopmentTopicInfo(new DevelopmentProgress(
-				developmentTopics.First(x => x.IdCode == id), tech.Owner)
-			)).ToArray();
 		}
 		
 		public string Name 
 		{
 			get 
 			{
-				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(topic.LanguageCode).Text(textVars);
+				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(Topic.LanguageCode).Text(textVars);
 			}
 		}
 		
@@ -63,7 +56,7 @@ namespace Stareater.Controllers.Views
 		{ 
 			get 
 			{
-				return LocalizationManifest.Get.CurrentLanguage[LangContext].Description(topic.LanguageCode).Text(textVars);
+				return LocalizationManifest.Get.CurrentLanguage[LangContext].Description(Topic.LanguageCode).Text(textVars);
 			}
 		}
 		
@@ -71,7 +64,7 @@ namespace Stareater.Controllers.Views
 		{
 			get
 			{
-				return topic.ImagePath;
+				return Topic.ImagePath;
 			}
 		}
 		
@@ -79,7 +72,7 @@ namespace Stareater.Controllers.Views
 		{ 
 			get 
 			{
-				return topic.MaxLevel;
+				return Topic.MaxLevel;
 			}
 		}
 		
@@ -87,8 +80,44 @@ namespace Stareater.Controllers.Views
 		{
 			get 
 			{
-				return topic.IdCode;
+				return Topic.IdCode;
 			}
+		}
+
+		public bool Equals(ResearchTopicInfo other)
+		{
+			if (other is null)
+				return false;
+
+			if (Object.ReferenceEquals(this, other))
+				return true;
+
+			if (this.GetType() != other.GetType())
+				return false;
+
+			return this.Topic.IdCode == other.Topic.IdCode;
+		}
+
+		public override bool Equals(object obj)
+		{
+			return this.Equals(obj as ResearchTopicInfo);
+		}
+
+		public override int GetHashCode()
+		{
+			return this.Topic.IdCode.GetHashCode();
+		}
+
+		public static bool operator ==(ResearchTopicInfo info1, ResearchTopicInfo info2)
+		{
+			if (info1 is null)
+				return info2 is null;
+			return info1.Equals(info2);
+		}
+
+		public static bool operator !=(ResearchTopicInfo info1, ResearchTopicInfo info2)
+		{
+			return !(info1 == info2);
 		}
 	}
 }

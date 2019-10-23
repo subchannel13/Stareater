@@ -33,7 +33,7 @@ namespace Stareater.Controllers.Views
 		{
 			get
 			{
-				return new ResearchTopicInfo(TopicProgress, this.game.Statics.DevelopmentTopics);
+				return new ResearchTopicInfo(TopicProgress);
 			}
 		}
 

@@ -543,58 +543,71 @@ namespace Stareater.Controllers
 		#endregion
 		
 		#region Research related
-		public IEnumerable<ResearchTopicInfo> ResearchTopics()
+		public ResearchTopicInfo[] ResearchTopics()
 		{
 			var game = this.gameInstance;
 			var player = this.PlayerInstance(game);
-			var playerTechs = game.Derivates[player].ResearchOrder(game.States.ResearchAdvances);
-
-			if (game.Derivates[player].ResearchPlan == null)
-				game.Derivates[player].CalculateResearch(
-					game,
-					game.Derivates.Colonies.OwnedBy[player]
-				);
-
-			var investments = game.Derivates[player].ResearchPlan.ToDictionary(x => x.Item);
 			
-			foreach(var techProgress in playerTechs)
-				if (investments.ContainsKey(techProgress))
-					yield return new ResearchTopicInfo(techProgress, investments[techProgress], game.Statics.DevelopmentTopics);
-				else
-					yield return new ResearchTopicInfo(techProgress, game.Statics.DevelopmentTopics);
+			if (game.Derivates[player].ResearchPlan == null)
+				game.Derivates[player].CalculateResearch(game);
+
+			var investments = game.Derivates[player].ResearchPlan.ToDictionary(x => x.Item.Topic);
+			var finishedFields = game.States.ResearchAdvances.
+				Of[player].
+				Where(x => !investments.ContainsKey(x.Topic)).
+				ToDictionary(x => x.Topic);
+   
+			var infos = new ResearchTopicInfo[game.Statics.ResearchTopics.Count];
+			for (int i = 0; i < infos.Length; i++)
+			{
+				var field = game.Statics.ResearchTopics[i];
+				infos[i] = investments.ContainsKey(field) ?
+					new ResearchTopicInfo(investments[field].Item, investments[field]) :
+					new ResearchTopicInfo(finishedFields[field]);
+			}
+
+			return infos;
 		}
 		
-		public int ResearchFocus
+		public ResearchTopicInfo ResearchFocus
 		{
 			get 
 			{
 				var game = this.gameInstance;
 				string focused = game.Orders[this.PlayerInstance(game)].ResearchFocus;
-				var playerTechs = game.Derivates[this.PlayerInstance(game)].ResearchOrder(game.States.ResearchAdvances).ToList();
-				
-				for (int i = 0; i < playerTechs.Count; i++)
-					if (playerTechs[i].Topic.IdCode == focused)
-						return i;
-				
-				return 0;
+				var fieldProgress = game.States.ResearchAdvances.
+					Of[this.PlayerInstance(game)].
+					FirstOrDefault(x => x.CanProgress && x.Topic.IdCode == focused);
+
+				return fieldProgress != null ? new ResearchTopicInfo(fieldProgress) : null;
 			}
-			
+
 			set
 			{
 				var game = this.gameInstance;
 				if (game.IsReadOnly)
 					return;
 
-				var playerTechs = game.Derivates[this.PlayerInstance(game)].ResearchOrder(game.States.ResearchAdvances).ToList();
-				if (value >= 0 && value < playerTechs.Count) 
-				{
-					game.Orders[this.PlayerInstance(game)].ResearchFocus = playerTechs[value].Topic.IdCode;
-					game.Derivates[this.PlayerInstance(game)].InvalidateResearch();
-				}
+				game.Orders[this.PlayerInstance(game)].ResearchFocus = value.Topic.IdCode;
+				game.Derivates[this.PlayerInstance(game)].InvalidateResearch();
 			}
 		}
+
+		public IEnumerable<DevelopmentTopicInfo> ResearchUnlockPriorities(ResearchTopicInfo field)
+		{
+			var game = this.gameInstance;
+			var developmentTopics = game.Statics.DevelopmentTopics;
+
+			return field.Topic.Unlocks[field.NextLevel].Select(id => new DevelopmentTopicInfo(new DevelopmentProgress(
+				developmentTopics.First(x => x.IdCode == id), this.PlayerInstance(game))
+			)).ToArray();
+		}
+		public void ResearchReorderPriority(ResearchTopicInfo field, DevelopmentTopicInfo unlock, int movement)
+		{
+			;
+		}
 		#endregion
-		
+
 		#region Report related
 		public IEnumerable<IReportInfo> Reports
 		{
@@ -788,11 +801,6 @@ namespace Stareater.Controllers
 					fleet.Send(new StarInfo(emmigrateFrom.Location.Star));
 				}
 			}
-		}
-
-		private bool isTransportFleet(FleetInfo fleet)
-		{
-			return fleet.PopulationCapacity > 0 && fleet.Missions.Waypoints.Length == 0;
 		}
 		#endregion
 	}
