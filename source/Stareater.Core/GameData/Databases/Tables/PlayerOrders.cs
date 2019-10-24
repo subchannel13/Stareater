@@ -21,6 +21,9 @@ namespace Stareater.GameData.Databases.Tables
 		public string ResearchFocus { get; set; }
 
 		[StateProperty]
+		public Dictionary<string, string[]> ResearchPriorities { get; set; }
+
+		[StateProperty]
 		public Dictionary<AConstructionSite, ConstructionOrders> ConstructionPlans { get; private set; }
 
 		[StateProperty]
@@ -61,6 +64,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.DevelopmentFocusIndex = 0;
 			this.DevelopmentQueue = new Dictionary<string, int>();
 			this.ResearchFocus = "";
+			this.ResearchPriorities = new Dictionary<string, string[]>();
 			this.ConstructionPlans = new Dictionary<AConstructionSite, ConstructionOrders>();
 			this.Policies = new Dictionary<StellarisAdmin, SystemPolicy>();
 			this.ShipOrders = new Dictionary<Vector2D, HashSet<Fleet>>();

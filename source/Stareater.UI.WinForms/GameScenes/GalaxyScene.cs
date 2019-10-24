@@ -161,7 +161,7 @@ namespace Stareater.GameScenes
 				PaddingX = 12,
 				PaddingY = 4,
 				ClickCallback = () => { using (var form = new FormRelations(this.currentPlayer)) form.ShowDialog(); },
-				Tooltip = new SimpleTooltip("GalaxyScene", "ResearchTooltip")
+				Tooltip = new SimpleTooltip("GalaxyScene", "DiplomacyTooltip")
 			};
 			diplomacyButton.Position.FixedSize(48, 32).RelativeTo(researchButton, 1, 0, -1, 0).WithMargins(5, 5);
 			this.AddElement(diplomacyButton);

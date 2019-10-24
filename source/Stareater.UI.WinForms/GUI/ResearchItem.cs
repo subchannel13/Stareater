@@ -29,28 +29,33 @@ namespace Stareater.GUI
 			this.controller = controller;
 		}
 
-		public void SetData(ResearchTopicInfo topicInfo, bool focused)
+		public void SetData(ResearchTopicInfo topicInfo)
 		{
 			this.Data = topicInfo;
-			
-			var thousandsFormat = new ThousandsFormatter(topicInfo.Cost);
+			this.RefreshData();
+		}
 
-			this.thumbnailImage.Image = ImageCache.Get[topicInfo.ImagePath];
-			this.nameLabel.Text = topicInfo.Name;
+		public void RefreshData()
+		{
+			var thousandsFormat = new ThousandsFormatter(this.Data.Cost);
+			var focused = this.controller.ResearchFocus == this.Data;
+
+			this.thumbnailImage.Image = ImageCache.Get[this.Data.ImagePath];
+			this.nameLabel.Text = this.Data.Name;
 			this.levelLabel.Text = this.TopicLevelText;
-			this.costLabel.Text = thousandsFormat.Format(topicInfo.InvestedPoints) + " / " +thousandsFormat.Format(topicInfo.Cost);
+			this.costLabel.Text = thousandsFormat.Format(this.Data.InvestedPoints) + " / " + thousandsFormat.Format(this.Data.Cost);
 			this.focusImage.Image = focused ? Stareater.Properties.Resources.center : null;
 
-			if (topicInfo.Investment > 0)
-				this.investmentLabel.Text = "+" + thousandsFormat.Format(topicInfo.Investment);
+			if (this.Data.Investment > 0)
+				this.investmentLabel.Text = "+" + thousandsFormat.Format(this.Data.Investment);
 			else
 				this.investmentLabel.Text = "";
 
 			this.unlocksLabel.Text = LocalizationManifest.Get.CurrentLanguage[LanguageContext]["unlockPriorities"].Text() +
 					":" + Environment.NewLine +
-					string.Join(Environment.NewLine, this.controller.ResearchUnlockPriorities(topicInfo).Select((x, i) => (i + 1) + ") " + x.Name));
+					string.Join(Environment.NewLine, this.controller.ResearchUnlockPriorities(this.Data).Select((x, i) => (i + 1) + ") " + x.Name));
 		}
-		
+
 		void thumbnailImage_Click(object sender, EventArgs e)
 		{
 			this.InvokeOnClick(this, e);

@@ -58,7 +58,7 @@ namespace Stareater.GUI
 
 			for (int i = 0; i < topics.Length; i++)
 				{
-					(topicList.Controls[i] as ResearchItem).SetData(topics[i], controller.ResearchFocus == topics[i]);
+					(topicList.Controls[i] as ResearchItem).SetData(topics[i]);
 					topicList.Controls[i].Tag = topics[i];
 				}
 
@@ -137,6 +137,7 @@ namespace Stareater.GUI
 			this.controller.ResearchReorderPriority(this.selectedField, unlock, this.unlocksList.SelectedIndex + direction);
 			this.updateUnlocks();
 			this.unlocksList.SelectedIndex = this.controller.ResearchUnlockPriorities(this.selectedField).ToList().IndexOf(unlock);
+			(this.topicList.SelectedItem as ResearchItem).RefreshData();
 		}
 	}
 }

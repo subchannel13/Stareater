@@ -596,15 +596,36 @@ namespace Stareater.Controllers
 		public IEnumerable<DevelopmentTopicInfo> ResearchUnlockPriorities(ResearchTopicInfo field)
 		{
 			var game = this.gameInstance;
+			var player = this.PlayerInstance(game);
+			var orderedPriorities = game.Orders[player].ResearchPriorities;
+
+			var unlockIds = orderedPriorities.ContainsKey(field.IdCode) ?
+				orderedPriorities[field.IdCode] :
+				field.Topic.Unlocks[field.NextLevel];
+
 			var developmentTopics = game.Statics.DevelopmentTopics;
 
-			return field.Topic.Unlocks[field.NextLevel].Select(id => new DevelopmentTopicInfo(new DevelopmentProgress(
-				developmentTopics.First(x => x.IdCode == id), this.PlayerInstance(game))
-			)).ToArray();
+			return unlockIds.Select(id => new DevelopmentTopicInfo(new DevelopmentProgress(
+				game.Statics.DevelopmentTopics.First(x => x.IdCode == id), 
+				player
+			))).ToArray();
 		}
-		public void ResearchReorderPriority(ResearchTopicInfo field, DevelopmentTopicInfo unlock, int movement)
+
+		public void ResearchReorderPriority(ResearchTopicInfo field, DevelopmentTopicInfo unlock, int index)
 		{
-			;
+			if (index < 0 || index >= field.Topic.Unlocks[field.NextLevel].Length)
+				return;
+
+			var game = this.gameInstance;
+			var orderedPriorities = game.Orders[this.PlayerInstance(game)].ResearchPriorities;
+
+			if (!orderedPriorities.ContainsKey(field.IdCode))
+				orderedPriorities[field.IdCode] = field.Topic.Unlocks[field.NextLevel];
+
+			var fieldPriorities = orderedPriorities[field.IdCode].Where(x => x != unlock.IdCode).ToList();
+
+			fieldPriorities.Insert(index, unlock.IdCode);
+			orderedPriorities[field.IdCode] = fieldPriorities.ToArray();
 		}
 		#endregion
 
