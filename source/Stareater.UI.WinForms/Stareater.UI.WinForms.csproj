@@ -235,12 +235,6 @@
     <Compile Include="GUI\FormRelations.Designer.cs">
       <DependentUpon>FormRelations.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FormResearchComplete.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\FormResearchComplete.Designer.cs">
-      <DependentUpon>FormResearchComplete.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\FormStareater.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -521,9 +515,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormRelations.resx">
       <DependentUpon>FormRelations.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\FormResearchComplete.resx">
-      <DependentUpon>FormResearchComplete.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormStareater.resx">
       <DependentUpon>FormStareater.cs</DependentUpon>

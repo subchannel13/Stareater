@@ -54,8 +54,6 @@ namespace Stareater.GameLogic
 		[StateProperty]
 		public Dictionary<Player, double> EjectVictoryPoints { get; private set; } 
 
-		private Queue<ResearchResult> breakthroughs = new Queue<ResearchResult>();
-
 		public PlayerProcessor(Player player, IEnumerable<DevelopmentTopic> technologies)
 		{
 			this.Player = player;
@@ -343,13 +341,6 @@ namespace Stareater.GameLogic
 
 			foreach (var stellarisProc in game.Derivates.Stellarises.OwnedBy[this.Player])
 				stellarisProc.ProcessPrecombat(game);
-			
-			this.breakthroughs = new Queue<ResearchResult>(this.ResearchPlan.Where(x => x.CompletedCount > 0));
-			
-			/*
-			 * TODO(later)
-			 * - Perform migration
-			 */
 		}
 		
 		public void SpawnShip(StarData star, Design design, long quantity, double population, IEnumerable<AMission> missions, StatesDB states)
@@ -387,28 +378,6 @@ namespace Stareater.GameLogic
 		#endregion
 		
 		#region Postcombat processing
-		public void BreakthroughReviewed(IList<string> selectedPriorities, StatesDB states)
-		{
-			for(int priority = 0; priority < selectedPriorities.Count; priority++)
-			{
-				var progress = states.DevelopmentAdvances.Of[this.Player].First(x => x.Topic.IdCode == selectedPriorities[priority]);
-				progress.Priority = priority;
-			}
-		}
-		
-		public bool HasBreakthrough
-		{
-			get
-			{
-				return this.breakthroughs.Any();
-			}
-		}
-
-		public ResearchResult NextBreakthrough()
-		{
-			return this.breakthroughs.Dequeue();
-		}
-		
 		public void ProcessPostcombat(MainGame game)
 		{
 			this.advanceTechnologies(game);
@@ -421,15 +390,31 @@ namespace Stareater.GameLogic
 
 		private void advanceTechnologies(MainGame game)
 		{
-			foreach(var techProgress in this.DevelopmentPlan) {
+			foreach (var techProgress in this.DevelopmentPlan)
+			{
 				techProgress.Item.Progress(techProgress);
 				if (techProgress.CompletedCount > 0)
 					game.States.Reports.Add(new DevelopmentReport(techProgress));
 			}
-			foreach(var techProgress in this.ResearchPlan) {
+			foreach (var techProgress in this.ResearchPlan)
+			{
+				//TODO(v0.9) limit to at most 1 level per turn
 				techProgress.Item.Progress(techProgress);
 				if (techProgress.CompletedCount > 0)
+				{
 					game.States.Reports.Add(new ResearchReport(techProgress));
+					var field = techProgress.Item.Topic;
+					var unlockIds = game.Orders[this.Player].ResearchPriorities.ContainsKey(field.IdCode) ?
+						game.Orders[this.Player].ResearchPriorities[field.IdCode] :
+						field.Unlocks[techProgress.Item.Level];
+					
+					for (int priority = 0; priority < unlockIds.Length; priority++)
+						game.States.DevelopmentAdvances.
+							Of[this.Player].
+							First(x => x.Topic.IdCode == unlockIds[priority]).Priority = priority;
+
+					game.Orders[this.Player].ResearchPriorities.Remove(field.IdCode);
+				}
 			}
 			this.initTechAdvances(game.States.DevelopmentAdvances.Of[Player]);
 

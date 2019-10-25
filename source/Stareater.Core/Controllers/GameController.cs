@@ -186,12 +186,6 @@ namespace Stareater.Controllers
 			this.gameObj.Processor.ConflictResolved(battleGame);
 			processingSync.Set();
 		}
-		
-		internal void BreakthroughReviewed(ResearchCompleteController controller)
-		{
-			this.gameObj.Derivates[controller.Owner].BreakthroughReviewed(controller.SelectedPriorities, this.gameObj.States);
-			processingSync.Set();
-		}
 		#endregion
 		
 		#region Background processing
@@ -230,13 +224,6 @@ namespace Stareater.Controllers
 			processingSync.WaitOne(); //TODO(v0.8) make more orderly synchronization mechanism
 			processingSync.Set();
 			
-			while (this.gameObj.Derivates.Players.Any(x => x.HasBreakthrough))
-			{
-				processingSync.WaitOne(); //TODO(v0.8) per player sync instead of global
-				this.presentBreakthrough();
-			}
-			
-			processingSync.WaitOne();
 			gameObj.Processor.ProcessPostcombat();
 			processingSync.Set();
 
@@ -305,22 +292,6 @@ namespace Stareater.Controllers
 			}
 
 			this.combatPhase = Task.Factory.StartNew(controller.Start).ContinueWith(checkTaskException);
-		}
-		
-		private void presentBreakthrough()
-		{
-			var playerProc = this.gameObj.Derivates.Players.First(x => x.HasBreakthrough);
-			var controller = new ResearchCompleteController(
-				playerProc.Player, 
-				playerProc.NextBreakthrough().Item.Topic,
-				this,
-				gameObj
-			);
-			
-			if (playerProc.Player.ControlType == PlayerControlType.LocalAI)
-				playerProc.Player.OffscreenControl.OnResearchComplete(controller); //TODO(v0.8) do in separate thread/task
-			else
-				this.stateListener.OnResearchComplete(controller);
 		}
 		#endregion
 	}

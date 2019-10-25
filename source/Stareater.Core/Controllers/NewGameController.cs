@@ -21,12 +21,11 @@ namespace Stareater.Controllers
 		private const int MaxPlayers = 4;
 
 		private readonly PickList<Color> colors = new PickList<Color>(PlayerAssets.Colors);
-		private readonly PickList<OrganizationInfo> organizations = new PickList<OrganizationInfo>(PlayerAssets.Organizations);
 		private readonly PickList<PlayerType> aiPlayers = new PickList<PlayerType>();
 
 		private readonly List<NewGamePlayerInfo> players = new List<NewGamePlayerInfo>();
 
-		private SystemEvaluator evaluator;
+		private readonly SystemEvaluator evaluator;
 		internal StaticsDB Statics { get; private set; }
 
 		public NewGameController(IEnumerable<TracableStream> staticDataSources)
@@ -70,8 +69,6 @@ namespace Stareater.Controllers
 		{
 			get
 			{
-				Context context = LocalizationManifest.Get.CurrentLanguage["PlayerTypes"];
-
 				yield return localHuman;
 
 				foreach (var aiType in aiPlayers.InnerList)
@@ -153,7 +150,7 @@ namespace Stareater.Controllers
 				this.players.Add(oldPlayers.Take());
 		}
 
-		private static PlayerType localHuman = new PlayerType(PlayerControlType.LocalHuman, LocalizationManifest.Get.CurrentLanguage["PlayerTypes"]["localHuman"].Text());
+		private static readonly PlayerType localHuman = new PlayerType(PlayerControlType.LocalHuman, LocalizationManifest.Get.CurrentLanguage["PlayerTypes"]["localHuman"].Text());
 		#endregion
 
 		#region Map

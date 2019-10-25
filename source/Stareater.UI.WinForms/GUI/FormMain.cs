@@ -449,18 +449,6 @@ namespace Stareater.GUI
 			if (systemRenderer != null) systemRenderer.OnNewTurn();
 		}
 
-		public void OnResearchComplete(ResearchCompleteController controller)
-		{
-			if (this.InvokeRequired)
-			{
-				this.BeginInvoke(new Action<ResearchCompleteController>(OnResearchComplete), controller);
-				return;
-			}
-			
-			using(var form = new FormResearchComplete(controller))
-				form.ShowDialog();
-		}
-
 		private void initCombatGui()
 		{
 			this.fleetController = null;

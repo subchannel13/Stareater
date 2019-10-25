@@ -41,11 +41,6 @@ namespace Stareater.Players.Natives
 			}
 		}
 
-		public void OnResearchComplete(ResearchCompleteController controller)
-		{
-			//no operation
-		}
-
 		public IBattleEventListener StartBattle(SpaceBattleController controller)
 		{
 			this.battleController = controller;

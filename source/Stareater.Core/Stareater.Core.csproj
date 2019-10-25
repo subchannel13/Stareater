@@ -113,7 +113,6 @@
     <Compile Include="Controllers\Views\PlayerInfo.cs" />
     <Compile Include="Controllers\Views\PlayerProgressInfo.cs" />
     <Compile Include="Controllers\Views\ReportWrapper.cs" />
-    <Compile Include="Controllers\Views\ResearchCompleteController.cs" />
     <Compile Include="Controllers\Views\ResearchReportInfo.cs" />
     <Compile Include="Controllers\Views\ResearchTopicInfo.cs" />
     <Compile Include="Controllers\Views\SavedGameInfo.cs" />
