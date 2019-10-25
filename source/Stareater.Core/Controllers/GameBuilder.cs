@@ -265,18 +265,18 @@ namespace Stareater.Controllers
 		{
 			foreach (var player in game.MainPlayers)
 			{
-				var development = game.States.DevelopmentAdvances.Of[player];
+				var developments = game.States.DevelopmentAdvances.Of;
                 foreach (var topic in player.Organization.ResearchAffinities)
 				{
-					var research = game.States.ResearchAdvances.Of[player].First(x => x.Topic.IdCode == topic);
+					var research = game.States.ResearchAdvances.Of[player, topic];
 					if (!research.CanProgress)
 						continue;
 
 					research.Progress(new ResearchResult(1, 0, research, 0));
 					foreach (var unlock in research.Topic.Unlocks[research.Level])
-						development.First(x => x.Topic.IdCode == unlock).Priority = 0;
+						developments[player, unlock].Priority = 0;
 				}
-				foreach (var topic in development.Where(x => !game.Statics.DevelopmentRequirements.ContainsKey(x.Topic.IdCode)))
+				foreach (var topic in developments[player].Where(x => !game.Statics.DevelopmentRequirements.ContainsKey(x.Topic.IdCode)))
 					topic.Progress(new DevelopmentResult(1, 0, topic, 0));
 
 				game.Derivates.Players.Of[player].Initialize(game);

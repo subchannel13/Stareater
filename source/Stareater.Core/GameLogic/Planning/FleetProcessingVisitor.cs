@@ -160,7 +160,7 @@ namespace Stareater.GameLogic.Planning
 			}
 
 			var star = this.game.States.Stars.At[this.fleet.Position];
-			var stellaris = this.game.Derivates[this.game.States.Stellarises.At[star, this.fleet.Owner].First()];
+			var stellaris = this.game.Derivates[this.game.States.Stellarises.At[star, this.fleet.Owner]];
 
 			var newFleet = this.localFleet();
 			var availableMigrants = stellaris.IsMigrants;

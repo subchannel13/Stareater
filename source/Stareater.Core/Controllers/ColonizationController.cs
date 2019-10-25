@@ -101,14 +101,5 @@ namespace Stareater.Controllers
 		{
 			this.playerController.RunAutomation();
 		}
-
-		private void updateStellarises(IEnumerable<StarData> sources)
-		{
-			foreach(var source in sources)
-			{
-				var stellaris = this.game.States.Stellarises.At[source, this.player].First();
-				this.game.Derivates.Stellarises.Of[stellaris].CalculateSpending(this.game);
-			}
-		}
 	}
 }

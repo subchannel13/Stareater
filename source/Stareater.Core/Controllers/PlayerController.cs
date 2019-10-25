@@ -576,10 +576,9 @@ namespace Stareater.Controllers
 				var game = this.gameInstance;
 				string focused = game.Orders[this.PlayerInstance(game)].ResearchFocus;
 				var fieldProgress = game.States.ResearchAdvances.
-					Of[this.PlayerInstance(game)].
-					FirstOrDefault(x => x.CanProgress && x.Topic.IdCode == focused);
+					Of[this.PlayerInstance(game), focused];
 
-				return fieldProgress != null ? new ResearchTopicInfo(fieldProgress) : null;
+				return fieldProgress.CanProgress ? new ResearchTopicInfo(fieldProgress) : null;
 			}
 
 			set

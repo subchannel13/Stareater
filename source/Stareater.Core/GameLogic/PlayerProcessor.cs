@@ -195,9 +195,9 @@ namespace Stareater.GameLogic
 		
 		public IEnumerable<DevelopmentProgress> DevelopmentOrder(DevelopmentProgressCollection developmentAdvances, ResearchProgressCollection researchAdvances, MainGame game)
 		{
-			var researchLevels = researchAdvances.Of[Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
+			var researchLevels = researchAdvances.Of[this.Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var playerTechs = developmentAdvances
-				.Of[Player]
+				.Of[this.Player]
 				.Where(x => (x.CanProgress(researchLevels, game.Statics)))
 				.ToList();
 			var orders = game.Orders[this.Player].DevelopmentQueue;
@@ -410,15 +410,14 @@ namespace Stareater.GameLogic
 					
 					for (int priority = 0; priority < unlockIds.Length; priority++)
 						game.States.DevelopmentAdvances.
-							Of[this.Player].
-							First(x => x.Topic.IdCode == unlockIds[priority]).Priority = priority;
+							Of[this.Player, unlockIds[priority]].Priority = priority;
 
 					game.Orders[this.Player].ResearchPriorities.Remove(field.IdCode);
 				}
 			}
-			this.initTechAdvances(game.States.DevelopmentAdvances.Of[Player]);
+			this.initTechAdvances(game.States.DevelopmentAdvances.Of[this.Player]);
 
-			var researchLevels = game.States.ResearchAdvances.Of[Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
+			var researchLevels = game.States.ResearchAdvances.Of[this.Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			var validTechs = new HashSet<string>(
 					game.States.DevelopmentAdvances
 					.Where(x => x.CanProgress(researchLevels, game.Statics))
@@ -581,7 +580,7 @@ namespace Stareater.GameLogic
 
 		public Design DesignUpgrade(Design oldDesign, StaticsDB statics, StatesDB states)
 		{
-			var techLevels = states.DevelopmentAdvances.Of[Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
+			var techLevels = states.DevelopmentAdvances.Of[this.Player].ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 			
 			var hull = statics.Hulls[oldDesign.Hull.TypeInfo.IdCode].MakeHull(techLevels);
 			var specials = oldDesign.SpecialEquipment.Select(
@@ -600,7 +599,7 @@ namespace Stareater.GameLogic
 			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
 
 			var design = new Design(
-				states.MakeDesignId(), Player, false, oldDesign.Name, oldDesign.ImageIndex, oldDesign.UsesFuel,
+				states.MakeDesignId(), this.Player, false, oldDesign.Name, oldDesign.ImageIndex, oldDesign.UsesFuel,
 			    armor, hull, isDrive, reactor, sensor, thruster, shield, equipment, specials
 			);
 			design.CalcHash(statics);
@@ -822,8 +821,9 @@ namespace Stareater.GameLogic
 		
 		private void unlockPredefinedDesigns(MainGame game)
 		{
-			var playerTechs = game.States.DevelopmentAdvances.Of[this.Player];
-			var techLevels = playerTechs.ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
+			var techLevels = game.States.DevelopmentAdvances.
+				Of[this.Player].
+				ToDictionary(x => x.Topic.IdCode, x => (double)x.Level);
 				
 			foreach(var predefDesign in game.Statics.PredeginedDesigns)
 				if (!this.Player.UnlockedDesigns.Contains(predefDesign) && Prerequisite.AreSatisfied(predefDesign.Prerequisites(game.Statics), 0, techLevels))

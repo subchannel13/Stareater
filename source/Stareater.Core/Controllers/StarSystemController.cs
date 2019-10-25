@@ -55,15 +55,15 @@ namespace Stareater.Controllers
 			
 			return null;
 		}
-		
+
 		public StellarisInfo StarsAdministration()
 		{
-			var stellaris = game.States.Stellarises.At[this.star, this.player].FirstOrDefault();
-			if (this.player.Intelligence.About(this.star).LastVisited != StarIntelligence.NeverVisited && stellaris != null)
-				//TODO(later) show last known star system information
-				return new StellarisInfo(stellaris, this.game);
-			
-			return null;
+			var stellarises = game.States.Stellarises.At;
+			if (this.player.Intelligence.About(this.star).LastVisited == StarIntelligence.NeverVisited || !stellarises.Contains(this.star, this.player))
+				return null;
+
+			//TODO(later) show last known star system information
+			return new StellarisInfo(stellarises[this.star, this.player], this.game);
 		}
 		
 		public BodyType BodyType(int bodyIndex)
@@ -72,9 +72,7 @@ namespace Stareater.Controllers
 				if (game.States.Stellarises.At[this.star].Count == 0)
 					return Views.BodyType.NoStellarises;
 					
-				var stellarises = game.States.Stellarises.At[this.star, this.player];
-				
-				return stellarises.Any() ?
+				return game.States.Stellarises.At.Contains(this.star, this.player) ?
 					Views.BodyType.OwnStellaris : 
 					Views.BodyType.ForeignStellaris;
 			} 
@@ -121,8 +119,7 @@ namespace Stareater.Controllers
 		
 		public StellarisAdminController StellarisController()
 		{
-			var stellaris = game.States.Stellarises.At[this.star, this.player].FirstOrDefault();
-			return new StellarisAdminController(game, stellaris, IsReadOnly, this.player);
+			return new StellarisAdminController(game, game.States.Stellarises.At[this.star, this.player], IsReadOnly, this.player);
 		}
 	}
 }

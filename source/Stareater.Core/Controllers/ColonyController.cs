@@ -188,7 +188,7 @@ namespace Stareater.Controllers
 			{
 				return new PolicyInfo(
 					this.Game.Orders[this.Site.Owner].
-					Policies[this.Game.States.Stellarises.At[this.Site.Location.Star, this.Site.Owner].First()]
+					Policies[this.Game.States.Stellarises.At[this.Site.Location.Star, this.Site.Owner]]
 				);
 			}
 
@@ -197,7 +197,7 @@ namespace Stareater.Controllers
 				if (this.IsReadOnly)
 					return;
 
-				var stellaris = this.Game.States.Stellarises.At[this.Site.Location.Star, this.Site.Owner].First();
+				var stellaris = this.Game.States.Stellarises.At[this.Site.Location.Star, this.Site.Owner];
 
 				this.Game.Derivates[stellaris].UndoPolicy(this.Game);
 				this.Game.Orders[this.Site.Owner].Policies[stellaris] = value.Data;
