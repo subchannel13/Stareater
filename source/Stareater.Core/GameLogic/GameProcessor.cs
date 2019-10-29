@@ -346,6 +346,9 @@ namespace Stareater.GameLogic
 						foreach(var shipGroup in fleet.Ships)
 						{
 							var shipStats = playerProc.DesignStats[shipGroup.Design];
+							if (shipStats.ColonizerPopulation <= 0)
+								continue;
+
 							var landingLimit = (long)Math.Ceiling((colonizationTreshold - colony.Population) / shipStats.ColonizerPopulation);
 							var shipsLanded = Math.Min(shipGroup.Quantity, landingLimit);
 							
