@@ -20,6 +20,7 @@ namespace Stareater.GuiUtils
 				var overflow = construction.Overflow / construction.Cost;
 				
 				if (construction.CompletedCount < 10)
+					//TODO(v0.9) overflow gives too big estimation
 					textVars.And("count", new DecimalsFormatter(0, 1).Format(construction.CompletedCount + overflow, RoundingMethod.Floor, 1));
 				else
 					textVars.And("count", new ThousandsFormatter().Format(construction.CompletedCount));

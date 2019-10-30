@@ -325,7 +325,7 @@ namespace Stareater.Controllers
 			var fleet = new Fleet(this.player, this.Fleet.FleetData.Position, new LinkedList<AMission>(newMissions));
 			fleet.Ships.Add(
 				this.Fleet.FleetData.Ships.
-				Where(x => this.selection.ContainsKey(x.Design) && this.selection[x.Design].Quantity > 0).
+				Where(x => selectedCount(x.Design) > 0).
 				Select(x => new ShipGroup(
 					x.Design, 
 					this.selection[x.Design].Quantity, 
@@ -342,12 +342,12 @@ namespace Stareater.Controllers
 			var fleet = new Fleet(this.player, this.Fleet.FleetData.Position, this.Fleet.FleetData.Missions);
 			fleet.Ships.Add(
 				this.Fleet.FleetData.Ships.
-				Where(x => this.selection.ContainsKey(x.Design) && (x.Quantity - this.selection[x.Design].Quantity > 0)).
+				Where(x => x.Quantity - selectedCount(x.Design) > 0).
 				Select(x => new ShipGroup(
 					x.Design,
-					x.Quantity - this.selection[x.Design].Quantity,
+					x.Quantity - selectedCount(x.Design),
 					x.Damage * (1 - selectedPart(x.Design)), x.UpgradePoints * (1 - selectedPart(x.Design)),
-					x.PopulationTransport - this.selection[x.Design].Population)
+					x.PopulationTransport - (this.selection.ContainsKey(x.Design) ? this.selection[x.Design].Population : 0))
 				)
 			);
 
@@ -356,7 +356,18 @@ namespace Stareater.Controllers
 
 		private double selectedPart(Design design)
 		{
+			if (!this.selection.ContainsKey(design))
+				return 0;
+
 			return this.selection[design].Quantity / this.selection[design].Ships.Quantity;
+		}
+
+		private long selectedCount(Design design)
+		{
+			if (!this.selection.ContainsKey(design))
+				return 0;
+
+			return this.selection[design].Quantity;
 		}
 
 		public override string ToString()
