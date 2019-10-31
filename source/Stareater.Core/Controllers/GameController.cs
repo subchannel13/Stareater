@@ -203,28 +203,41 @@ namespace Stareater.Controllers
 				ErrorReporter.Get.Report(lastTask.Exception);
 		}
 
+#if DEBUG
+		internal static ShipDebugger ShipCounter;
+#endif
+
 		private void turnProcessing()
 		{
+#if DEBUG
+			ShipCounter = new ShipDebugger(this.gameObj.States.Fleets);
+#endif
 			gameObj.Processor.ProcessPrecombat();
+#if DEBUG
+			ShipCounter.Check("Precombat", this.gameObj.States.Fleets);
+#endif
 
 			while (gameObj.Processor.HasAudience)
 			{
-				processingSync.WaitOne(); //TODO(v0.8) try blocking only participants
+				processingSync.WaitOne(); //TODO(v0.9) try blocking only participants
 				this.holdAudience();
 			}
-			//TODO(v0.8) diplomatic actions don't take place this turn
-			processingSync.WaitOne(); //TODO(v0.8) make more orderly synchronization mechanism
+			//TODO(v0.9) diplomatic actions don't take place this turn
+			processingSync.WaitOne(); //TODO(v0.9) make more orderly synchronization mechanism
 			processingSync.Set();
 
 			while (gameObj.Processor.HasConflict)
 			{
-				processingSync.WaitOne(); //TODO(v0.8) try blocking only participants
+				processingSync.WaitOne(); //TODO(v0.9) try blocking only participants
 				this.initaiteCombat();
 			}
-			processingSync.WaitOne(); //TODO(v0.8) make more orderly synchronization mechanism
+			processingSync.WaitOne(); //TODO(v0.9) make more orderly synchronization mechanism
 			processingSync.Set();
 			
 			gameObj.Processor.ProcessPostcombat();
+#if DEBUG
+			ShipCounter.Check("Postcombat", this.gameObj.States.Fleets);
+#endif
 			processingSync.Set();
 
 			lock (threadLocker)

@@ -361,6 +361,9 @@ namespace Stareater.GameLogic
 			}
 			else
 				fleet.Ships.Add(new ShipGroup(design, quantity, 0, 0, population));
+#if DEBUG
+			Stareater.Controllers.GameController.ShipCounter.Add(design, quantity);
+#endif
 		}
 
 		private void updateColonizationOrders(MainGame game)
