@@ -707,12 +707,13 @@ namespace Stareater.Controllers
 			foreach (var fleet in transportFleets.Select(x => x.Fleet.FleetData))
 			{
 				var destination = new TransportDestinationVisitior().Trace(fleet);
-				var star = game.States.Stars.At[destination.Value];
 
-				if (!destination.HasValue || game.States.Stars.At.Contains(destination.Value) || colonistDemand.ContainsKey(star))
+				if (!destination.HasValue || !game.States.Stars.At.Contains(destination.Value))
 					continue;
 
-				colonistDemand[star] -= fleet.Ships.Sum(x => x.PopulationTransport);
+				var star = game.States.Stars.At[destination.Value];
+				if (colonistDemand.ContainsKey(star))
+					colonistDemand[star] -= fleet.Ships.Sum(x => x.PopulationTransport);
 			}
 
 			var missingCapacity = this.TargetTransportCapacity +

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Stareater.Galaxy;
@@ -16,17 +17,10 @@ namespace Stareater.Utils
 
 		public ShipDebugger(IEnumerable<Fleet> fleets)
 		{
-			foreach(var fleet in fleets)
-				foreach(var group in fleet.Ships)
-				{
-					if (!this.designs.ContainsKey(group.Design))
-						this.designs[group.Design] = 0;
-
-					this.designs[group.Design] += group.Quantity;
-				}
+			this.Add(fleets);
 		}
 
-		internal void Check(string title, IEnumerable<Fleet> fleets)
+		public void Check(string title, IEnumerable<Fleet> fleets)
 		{
 			var state = new Dictionary<Design, long>();
 
@@ -59,12 +53,26 @@ namespace Stareater.Utils
 			}
 		}
 
-		internal void Add(Design design, long quantity)
+		public void Add(Design design, long quantity)
 		{
 			if (!this.designs.ContainsKey(design))
 				this.designs[design] = 0;
 
 			this.designs[design] += quantity;
+		}
+
+		internal void Add(IEnumerable<Fleet> fleets)
+		{
+			foreach (var fleet in fleets)
+				foreach (var group in fleet.Ships)
+					this.Add(group.Design, group.Quantity);
+		}
+
+		internal void Remove(IEnumerable<Fleet> fleets)
+		{
+			foreach (var fleet in fleets)
+				foreach (var group in fleet.Ships)
+					this.designs[group.Design] -= group.Quantity;
 		}
 	}
 #endif

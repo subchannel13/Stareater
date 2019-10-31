@@ -43,6 +43,9 @@ namespace Stareater.GameLogic
 			this.CalculateSpendings();
 			this.CalculateDerivedEffects();
 			this.commitFleetOrders();
+#if DEBUG
+			Stareater.Controllers.GameController.ShipCounter.Check("commitFleetOrders", this.game.States.Fleets);
+#endif
 
 			this.game.States.Reports.Clear();
 			foreach (var playerProc in processors)
@@ -151,6 +154,9 @@ namespace Stareater.GameLogic
 				fleet.Ships.Add(unit.Ships);
 				
 				this.game.States.Fleets.Add(fleet);
+#if DEBUG
+				Stareater.Controllers.GameController.ShipCounter.Add(new[] { fleet });
+#endif
 			}
 		}
 		#endregion
@@ -232,22 +238,22 @@ namespace Stareater.GameLogic
 			var visits = new Dictionary<Vector2D, ICollection<FleetMovement>>();
 			var conflictPositions = new Dictionary<Vector2D, double>();
 			var decidedFleet = new HashSet<Fleet>();
-			
-			foreach(var step in this.fleetMovement.OrderBy(x => x.ArrivalTime))
-	        {
+
+			foreach (var step in this.fleetMovement.OrderBy(x => x.ArrivalTime))
+			{
 				if (!visits.ContainsKey(step.LocalFleet.Position))
 					visits.Add(step.LocalFleet.Position, new List<FleetMovement>());
-				
+
 				if (decidedFleet.Contains(step.OriginalFleet) || visits[step.LocalFleet.Position].Any(x => x.OriginalFleet == step.OriginalFleet))
 					continue;
-				
+
 				var fleets = visits[step.LocalFleet.Position];
 				fleets.Add(step);
-				
+
 				if (!game.States.Stars.At.Contains(step.LocalFleet.Position))
 					continue; //TODO(later) no deepspace interception for now
 				var star = game.States.Stars.At[step.LocalFleet.Position];
-				
+
 				var players = new HashSet<Player>(fleets.Where(x => x.ArrivalTime < step.ArrivalTime).Select(x => x.OriginalFleet.Owner));
 				players.UnionWith(game.States.Colonies.AtStar[star].Select(x => x.Owner));
 				players.Remove(step.LocalFleet.Owner);
@@ -262,14 +268,19 @@ namespace Stareater.GameLogic
 						conflictPositions.Add(step.LocalFleet.Position, step.ArrivalTime);
 					decidedFleet.UnionWith(fleets.Where(x => x.ArrivalTime < step.ArrivalTime).Select(x => x.OriginalFleet));
 				}
-	        }
-			
+			}
+
 			this.conflicts.Clear();
-			foreach(var position in conflictPositions.OrderBy(x => x.Value))
+			foreach (var position in conflictPositions.OrderBy(x => x.Value))
 				if (this.game.States.Stars.At.Contains(position.Key))
+				{
 					conflicts.Enqueue(new Conflict(position.Key, visits[position.Key], position.Value));
+#if DEBUG
+					Stareater.Controllers.GameController.ShipCounter.Remove(visits[position.Key].Select(x => x.LocalFleet));
+#endif
+				}
 			//TODO(later) deep space interception
-			
+
 			this.game.States.Fleets.Clear();
 			var finalFleetState = new Dictionary<Fleet, Fleet>();
 			foreach (var fleet in visits.Where(x => !conflictPositions.ContainsKey(x.Key)).SelectMany(x => x.Value))
