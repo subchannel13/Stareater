@@ -59,9 +59,9 @@ namespace Stareater.AppData
 			this.LastGame = new LastGameInfo();
 		}
 	
-		protected abstract TaggableQueue<object, IkadnBaseObject> loadData();
+		protected abstract LabeledQueue<object, IkadnBaseObject> loadData();
 		
-		protected virtual void load(TaggableQueue<object, IkadnBaseObject> data)
+		protected virtual void load(LabeledQueue<object, IkadnBaseObject> data)
 		{
 			IkonComposite baseData = data.Dequeue(BaseSettingsTag).To<IkonComposite>();
 			
@@ -72,9 +72,11 @@ namespace Stareater.AppData
 		
 		protected virtual void buildSaveData(IkadnWriter writer)
 		{
-			var baseSettings = new IkonComposite(BaseSettingsTag);
-			baseSettings.Add(LanguageKey, new IkonText(this.LanguageId));
-			baseSettings.Add(LastGameKey, this.LastGame.BuildSaveData());
+			var baseSettings = new IkonComposite(BaseSettingsTag)
+			{
+				{ LanguageKey, new IkonText(this.LanguageId) },
+				{ LastGameKey, this.LastGame.BuildSaveData() }
+			};
 			baseSettings.Compose(writer);
 		}
 		

@@ -35,7 +35,7 @@ namespace Stareater.Maps.DefaultMap.SquareShape
 
 		public void Initialize(string dataPath)
 		{
-			TaggableQueue<object, IkadnBaseObject> data;
+			LabeledQueue<object, IkadnBaseObject> data;
 			using (var parser = new IkonParser(new StreamReader(dataPath + ParametersFile)))
 				data = parser.ParseAll();
 
@@ -48,7 +48,7 @@ namespace Stareater.Maps.DefaultMap.SquareShape
 			this.displacementParameter = new ContinuousRangeParameter(LanguageContext, "displacement", 0, 0.5, constants[DefaultDisplacementKey].To<double>(), displacementPercentage);
 		}
 
-		private SelectorParameter loadSizes(TaggableQueue<object, IkadnBaseObject> data)
+		private SelectorParameter loadSizes(LabeledQueue<object, IkadnBaseObject> data)
 		{
 			this.sizeOptions = new SizeOption[data.CountOf(SizeKey)];
 			var parameterOptions = new Dictionary<int, string>();

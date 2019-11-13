@@ -75,9 +75,9 @@ namespace Stareater.AppData
 			this.DataRootPath = null;
 		}
 	
-		protected override TaggableQueue<object, IkadnBaseObject> loadData()
+		protected override LabeledQueue<object, IkadnBaseObject> loadData()
 		{
-			TaggableQueue<object, IkadnBaseObject> data;
+			LabeledQueue<object, IkadnBaseObject> data;
 
 			if (File.Exists(SettingsFilePath))
 				using (var parser = new IkonParser(new StreamReader(SettingsFilePath)))
@@ -88,7 +88,7 @@ namespace Stareater.AppData
 			return data;
 		}
 		
-		protected override void load(TaggableQueue<object, IkadnBaseObject> data)
+		protected override void load(LabeledQueue<object, IkadnBaseObject> data)
 		{
 			base.load(data);
 			          
@@ -134,16 +134,18 @@ namespace Stareater.AppData
 		{
 			base.buildSaveData(writer);
 
-			var settings = new IkonComposite(WinformsSettingsTag);
-			settings.Add(GuiScaleKey, new IkonFloat(this.GuiScale));
-			
-			settings.Add(FpsBusyWaitKey, new IkonInteger((int)this.FramerateBusySpinUsage));
-			settings.Add(FpsKey, new IkonInteger(this.Framerate));
-			settings.Add(FpsUnlimitedKey, new IkonInteger(this.UnlimitedFramerate ? 1 : -1));
-			settings.Add(VSyncKey, new IkonInteger(this.VSync ? 1 : -1));
-			
-			settings.Add(ReportTechnologyKey, new IkonInteger(this.ReportTechnology ? 1 : -1));
-			settings.Add(ShowScanRangeKey, new IkonInteger(this.ShowScanRange ? 1 : -1));
+			var settings = new IkonComposite(WinformsSettingsTag)
+			{
+				{ GuiScaleKey, new IkonFloat(this.GuiScale) },
+
+				{ FpsBusyWaitKey, new IkonInteger((int)this.FramerateBusySpinUsage) },
+				{ FpsKey, new IkonInteger(this.Framerate) },
+				{ FpsUnlimitedKey, new IkonInteger(this.UnlimitedFramerate ? 1 : -1) },
+				{ VSyncKey, new IkonInteger(this.VSync ? 1 : -1) },
+
+				{ ReportTechnologyKey, new IkonInteger(this.ReportTechnology ? 1 : -1) },
+				{ ShowScanRangeKey, new IkonInteger(this.ShowScanRange ? 1 : -1) }
+			};
 			settings.Compose(writer);
 		}
 		

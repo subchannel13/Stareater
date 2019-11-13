@@ -9,22 +9,22 @@ namespace Stareater.Localization.Reading
 	{
 		public const char ClosingChar = '-';
 
-		public IkadnBaseObject Parse(IkadnParser parser)
+		public IkadnBaseObject Parse(IkadnReader reader)
 		{
-			string contextName = IkonParser.ReadIdentifier(parser.Reader);
+			string contextName = IkonParser.ReadIdentifier(reader);
 			var entries = new Dictionary<string, IText>();
 
-			while (parser.Reader.PeekNextNonwhite() != ClosingChar)
+			while (reader.PeekNextNonwhite() != ClosingChar)
 			{
-				var id = IkonParser.ReadIdentifier(parser.Reader).ToLower();
+				var id = IkonParser.ReadIdentifier(reader).ToLower();
 
 				if (!entries.ContainsKey(id))
-					entries.Add(id, parser.ParseNext().To<IText>());
+					entries.Add(id, reader.ReadObject().To<IText>());
 				else
 					AppData.ErrorReporter.Get.Report(new ArgumentException("Duplicate localization entry, id: " + id + " in context: " + contextName));
 			}
 
-			parser.Reader.Read();
+			reader.Read();
 
 			return new Context(contextName, entries);
 		}

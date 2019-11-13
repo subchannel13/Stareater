@@ -1,13 +1,12 @@
-﻿using System.Text;
-using Ikadn;
+﻿using Ikadn;
 
 namespace Stareater.Localization.Reading
 {
 	class SingleLineFactory : IIkadnObjectFactory
 	{
-		public IkadnBaseObject Parse(IkadnParser parser)
+		public IkadnBaseObject Parse(IkadnReader reader)
 		{
-			return new SingleLineText(parser.Reader.ReadUntil('\n', '\r', IkadnReader.EndOfStreamResult).Trim());
+			return new SingleLineText(reader.ReadUntil('\n', '\r', IkadnReader.EndOfStreamResult).Trim());
 		}
 
 		public char Sign

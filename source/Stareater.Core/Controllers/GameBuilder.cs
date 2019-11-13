@@ -15,6 +15,7 @@ using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
 using Stareater.GameLogic.Planning;
+using Ikadn.Utilities;
 
 namespace Stareater.Controllers
 {
@@ -35,7 +36,7 @@ namespace Stareater.Controllers
 			return game;
 		}
 		
-		public static MainGame LoadGame(IkonComposite saveData, IEnumerable<TracableStream> staticDataSources, StateManager stateManager)
+		public static MainGame LoadGame(IkonComposite saveData, IEnumerable<NamedStream> staticDataSources, StateManager stateManager)
 		{
 			var statics = StaticsDB.Load(staticDataSources);
 			

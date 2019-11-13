@@ -13,11 +13,11 @@ namespace Stareater.Localization.Reading
 		const char EndingChar = ';';
 		const string AutomaticThousands = "_";
 
-		public IkadnBaseObject Parse(IkadnParser parser)
+		public IkadnBaseObject Parse(IkadnReader reader)
 		{
-			parser.Reader.SkipWhiteSpaces();
-			char formatterType = parser.Reader.Read();
-			string formatterParameter = parser.Reader.ReadWhile(c => !char.IsWhiteSpace(c));
+			reader.SkipWhiteSpaces();
+			char formatterType = reader.Read();
+			string formatterParameter = reader.ReadWhile(c => !char.IsWhiteSpace(c));
 
 			Func<double, string> formatter;
 			switch (formatterType) {
@@ -39,18 +39,18 @@ namespace Stareater.Localization.Reading
 					throw new FormatException("Unexpected expression formatter: " + formatterType);
 			}
 
-			parser.Reader.SkipWhiteSpaces();
-			string expressionText = parser.Reader.ReadUntil(EndingChar);
-			parser.Reader.Read();
+			reader.SkipWhiteSpaces();
+			string expressionText = reader.ReadUntil(EndingChar);
+			reader.Read();
 			
 			if (expressionText.Length == 0)
-				throw new FormatException("Expression at " + parser.Reader + " is empty (zero length)");
+				throw new FormatException("Expression at " + reader.PositionDescription + " is empty (zero length)");
 
-			ExpressionParser expParser = new ExpressionParser(expressionText);
+			var expParser = new ExpressionParser(expressionText);
 			expParser.Parse();
 			
 			if (expParser.errors.count > 0)
-				throw new FormatException("Expression at " + parser.Reader + " is invalid: " + expParser.errors.errorMessages);
+				throw new FormatException("Expression at " + reader.PositionDescription + " is invalid: " + expParser.errors.errorMessages);
 			
 			//TODO(later) substitute subformulas
 			return new ExpressionText(expParser.ParsedFormula, formatter);

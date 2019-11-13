@@ -1,54 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
+using Ikadn.Utilities;
 using Stareater.Galaxy.Builders;
-using Stareater.Utils;
 
 namespace Stareater.Galaxy
 {
 	public static class MapAssets
 	{
-		
-
-		#region Attribute keys
-		const string StartingConditionsKey = "StartinConditions";
-		#endregion
-
 		public static StartingConditions[] Starts { get; private set; }
 		public static IStarPositioner[] StarPositioners { get; private set; }
 		public static IStarConnector[] StarConnectors { get; private set; }
 		public static IStarPopulator[] StarPopulators { get; private set; }
 
-		public static void StartConditionsLoader(IEnumerable<TracableStream> dataSources)
+		public static void StartConditionsLoader(IEnumerable<NamedStream> dataSources)
 		{
 			var conditionList = new List<StartingConditions>();
-			foreach(var source in dataSources)
-			{
-				var parser = new IkonParser(source.Stream);
-				try
+			using (var parser = new IkonParser(dataSources))
+				foreach (var item in parser.ParseAll())
 				{
-					foreach (var item in parser.ParseAll())
-					{
-						var start = StartingConditions.Load(item.Value.To<IkonComposite>());
-						if (start != null)
-							conditionList.Add(start);
-						else
-							throw new FormatException();
-					}
-				} 
-				catch (IOException e)
-				{
-					throw new IOException(source.SourceInfo, e);
+					var start = StartingConditions.Load(item.Value.To<IkonComposite>());
+					if (start != null)
+						conditionList.Add(start);
+					else
+						throw new FormatException();
 				}
-				catch(FormatException e)
-				{
-					throw new FormatException(source.SourceInfo, e);
-				}
-			}
 
 			Starts = conditionList.ToArray();
 		}

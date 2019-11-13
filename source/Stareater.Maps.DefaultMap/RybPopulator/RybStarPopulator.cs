@@ -49,7 +49,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 
 		public void Initialize(string dataPath)
 		{
-			TaggableQueue<object, IkadnBaseObject> queue;
+			LabeledQueue<object, IkadnBaseObject> queue;
 			IkadnBaseObject homeStarData;
 			using (var parser = new IkonParser(new StreamReader(dataPath + ParametersFile)))
 			{

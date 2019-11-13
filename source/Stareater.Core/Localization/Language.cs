@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Ikadn;
+using Ikadn.Utilities;
 using Stareater.Localization.Reading;
-using Stareater.Utils;
 
 namespace Stareater.Localization
 {
@@ -13,36 +12,20 @@ namespace Stareater.Localization
 
 		public string Code { get; private set; }
 
-		public Language(string code, IEnumerable<TracableStream> dataSources)
+		public Language(string code, IEnumerable<NamedStream> dataSources)
 		{
 			this.Code = code;
+			var factories = new IIkadnObjectFactory[] {
+				new ContextFactory(),
+				new SingleLineFactory(),
+				new TextBlockFactory(),
+				new ExpressionTextFactory(),
+				new ConditionalTextFactory()
+			};
 
-			foreach (var source in dataSources)
-			{
-				var parser = new IkadnParser(source.Stream);
-				parser.RegisterFactory(new ContextFactory());
-				parser.RegisterFactory(new SingleLineFactory());
-				parser.RegisterFactory(new TextBlockFactory());
-				parser.RegisterFactory(new ExpressionTextFactory());
-				parser.RegisterFactory(new ConditionalTextFactory());
-				
-				try
-				{
-					while (parser.HasNext())
-					{
-						var conext = parser.ParseNext().To<Context>();
-						contexts.Add((string)conext.Tag, conext);
-					}
-				}
-				catch (IOException e)
-				{
-					throw new IOException(source.SourceInfo, e);
-				}
-				catch(FormatException e)
-				{
-					throw new FormatException(source.SourceInfo, e);
-				}
-			}
+			using (var parser = new IkadnParser(dataSources, factories))
+				foreach (var context in parser.ParseAll().Select(x => x.Value.To<Context>()))
+					contexts.Add((string)context.Tag, context);
 		}
 
 		public Context this[string contextName]

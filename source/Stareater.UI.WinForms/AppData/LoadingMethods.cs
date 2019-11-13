@@ -7,7 +7,7 @@ using Stareater.Galaxy.Builders;
 using Stareater.Localization;
 using System.IO;
 using Stareater.Players;
-using Stareater.Utils;
+using Ikadn.Utilities;
 
 namespace Stareater.AppData
 {
@@ -124,18 +124,18 @@ namespace Stareater.AppData
 		#region Game data
 		private const string StaticDataFolder = "./data/statics/";
 		
-		public static IEnumerable<TracableStream> GameDataSources()
+		public static IEnumerable<NamedStream> GameDataSources()
 		{
 			return dataStreams(new DirectoryInfo(dataFolder + StaticDataFolder).EnumerateFiles());
 		}
 		#endregion
 		
-		private static IEnumerable<TracableStream> dataStreams(IEnumerable<FileInfo> files)
+		private static IEnumerable<NamedStream> dataStreams(IEnumerable<FileInfo> files)
 		{
 			foreach (var file in files)
 			{
 				var stream = new StreamReader(file.FullName);
-				yield return new TracableStream(stream, file.FullName);
+				yield return new NamedStream(stream, file.FullName);
 				stream.Close();
 			}
 		}
@@ -162,8 +162,7 @@ namespace Stareater.AppData
 				Select(type =>
 				{
 					var instance = (T)Activator.CreateInstance(type);
-					if (initFunction != null)
-						initFunction(instance);
+					initFunction?.Invoke(instance);
 
 					return instance;
 				});

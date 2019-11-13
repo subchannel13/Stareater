@@ -28,14 +28,14 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 
 		public void Initialize(string dataPath)
 		{
-			TaggableQueue<object, IkadnBaseObject> data;
+			LabeledQueue<object, IkadnBaseObject> data;
 			using (var parser = new IkonParser(new StreamReader(dataPath + ParametersFile)))
 				data = parser.ParseAll();
 
 			degreesParameter = loadDegrees(data);
 		}
 
-		private SelectorParameter loadDegrees(TaggableQueue<object, IkadnBaseObject> data)
+		private SelectorParameter loadDegrees(LabeledQueue<object, IkadnBaseObject> data)
 		{
 			this.degreeOptions = new DegreeOption[data.CountOf(DegreeKey)];
 			var parameterOptions = new Dictionary<int, string>();

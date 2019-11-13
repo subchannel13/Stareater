@@ -12,6 +12,7 @@ using Stareater.Utils;
 using Stareater.Galaxy.BodyTraits;
 using Stareater.GameData.Construction;
 using Stareater.Galaxy;
+using Ikadn.Utilities;
 
 namespace Stareater.GameData.Databases
 {
@@ -72,134 +73,96 @@ namespace Stareater.GameData.Databases
 			this.StarTraits = new Dictionary<string, StarTraitType>();
 		}
 		
-		public static StaticsDB Load(IEnumerable<TracableStream> dataSources)
+		public static StaticsDB Load(IEnumerable<NamedStream> dataSources)
 		{
-			//TODO(v0.8) update IKON with HasNext with tag
-			//TODO(v0.8) support nested subformulas
-			var subformulas = new Dictionary<string, Formula>();
-			foreach (var source in dataSources)
-			{
-				try
-				{
-					var queue = new Parser(source.Stream).ParseAll();
-
-					while (queue.CountOf("Subformulas") > 0)
-					{
-						var data = queue.Dequeue("Subformulas").To<IkonComposite>();
-						foreach (var key in data.Keys)
-							subformulas[key] = data[key].To<Formula>();
-					}
-				}
-				catch (IOException e)
-				{
-					throw new IOException(source.SourceInfo, e);
-				}
-				catch (FormatException e)
-				{
-					throw new FormatException(source.SourceInfo, e);
-				}
-			}
-			subformulas = ExpressionParser.ResloveSubformulaNesting(subformulas);
-
 			var db = new StaticsDB();
-			
-			foreach(var source in dataSources) 
-			{
-				var parser = new Parser(source.Stream, subformulas);
-				try
-				{
-					foreach (var data in parser.ParseAll().Select(x => x.Value.To<IkonComposite>())) 
-					{
-						switch((string)data.Tag) {
-							case "Building":
-								db.Buildings.Add(data[GeneralCodeKey].To<string>(), loadBuilding(data));
-								break;
-							case "ColonyFormulas":
-								db.ColonyFormulas = loadColonyFormulas(data);
-								break;
-							case "Constructable":
-								db.Constructables.Add(loadConstructable(data));
-								break;
-							case "DevelopmentFocusOptions":
-								db.DevelopmentFocusOptions.AddRange(loadFocusOptions(data));
-								break;
-							case "DevelopmentTopic":
-								db.DevelopmentTopics.Add(loadDevelopmentTopic(data));
-								break;
-							case "Subformulas":
-								//TODO(v0.8) remove after IKON update
-								break;
-							case "Natives":
-								db.loadNatives(data.To<IkonComposite>());
-								break;
-							case "PlanetFormulas":
-								var formulaSet = loadPlanetFormulas(data);
-                                db.PlanetForumlas[formulaSet.Key] = formulaSet.Value;
-								break;
-							case "PlayerFormulas":
-								db.PlayerFormulas = loadPlayerFormulas(data);
-								break;
-							case "SystemPolicy":
-								db.Policies.Add(loadPolicy(data));
-								break;
-							case "PredefinedDesign":
-								db.PredeginedDesigns.Add(loadDesignTemplate(data));
-								break;
-							case "ResearchTopic":
-								db.ResearchTopics.Add(loadResearchTopic(data));
-								break;
-							case "ShipFormulas":
-								db.ShipFormulas = loadShipFormulas(data);
-								break;
-							case "StarFormulas":
-								db.StellarisFormulas = loadStarFormulas(data);
-								break;
-							case "PlanetTrait":
-								db.PlanetTraits.Add(data[GeneralCodeKey].To<string>(), loadPlanetTrait(data));
-								break;
-							case "StarTrait":
-								db.StarTraits.Add(data[GeneralCodeKey].To<string>(), loadStarTrait(data));
-								break;
+			LabeledQueue<object, Ikadn.IkadnBaseObject> allData;
 
-							case ArmorTag:
-								db.Armors.Add(data[GeneralCodeKey].To<string>(), loadArmor(data));
-								break;
-							case HullTag:
-								db.Hulls.Add(data[GeneralCodeKey].To<string>(), loadHull(data));
-								break;
-							case IsDriveTag:
-								db.IsDrives.Add(data[GeneralCodeKey].To<string>(), loadIsDrive(data));
-								break;
-							case MissionEquipmentTag:
-								db.MissionEquipment.Add(data[GeneralCodeKey].To<string>(), loadMissionEquiptment(data));
-								break;
-							case ReactorTag:
-								db.Reactors.Add(data[GeneralCodeKey].To<string>(), loadReactor(data));
-								break;
-							case SensorTag:
-								db.Sensors.Add(data[GeneralCodeKey].To<string>(), loadSensor(data));
-								break;
-							case ShieldTag:
-								db.Shields.Add(data[GeneralCodeKey].To<string>(), loadShield(data));
-								break;
-							case SpecialEquipmentTag:
-								db.SpecialEquipment.Add(data[GeneralCodeKey].To<string>(), loadSpecialEquiptment(data));
-								break;
-							case ThrusterTag:
-								db.Thrusters.Add(data[GeneralCodeKey].To<string>(), loadThruster(data));
-								break;
-							default:
-								throw new FormatException("Invalid game data object with tag " + data.Tag);
-						}
-					}
-				}
-				catch (IOException e)
+			using (var parser = new Parser(dataSources))
+				allData = parser.ParseAll();
+
+			var subformulas = loadSubformulas(allData.DequeueAll("Subformulas").Select(x => x.To<IkonComposite>()));
+
+			foreach (var data in allData.Select(x => x.Value.To<IkonComposite>()))
+			{
+				switch ((string)data.Tag)
 				{
-					throw new IOException(source.SourceInfo, e);
-				}
-				catch(FormatException e)
-				{
-					throw new FormatException(source.SourceInfo, e);
+					case "Building":
+						db.Buildings.Add(data[GeneralCodeKey].To<string>(), loadBuilding(data));
+						break;
+					case "ColonyFormulas":
+						db.ColonyFormulas = loadColonyFormulas(data, subformulas);
+						break;
+					case "Constructable":
+						db.Constructables.Add(loadConstructable(data));
+						break;
+					case "DevelopmentFocusOptions":
+						db.DevelopmentFocusOptions.AddRange(loadFocusOptions(data));
+						break;
+					case "DevelopmentTopic":
+						db.DevelopmentTopics.Add(loadDevelopmentTopic(data));
+						break;
+					case "Natives":
+						db.loadNatives(data.To<IkonComposite>());
+						break;
+					case "PlanetFormulas":
+						var formulaSet = loadPlanetFormulas(data, subformulas);
+						db.PlanetForumlas[formulaSet.Key] = formulaSet.Value;
+						break;
+					case "PlayerFormulas":
+						db.PlayerFormulas = loadPlayerFormulas(data, subformulas);
+						break;
+					case "SystemPolicy":
+						db.Policies.Add(loadPolicy(data));
+						break;
+					case "PredefinedDesign":
+						db.PredeginedDesigns.Add(loadDesignTemplate(data));
+						break;
+					case "ResearchTopic":
+						db.ResearchTopics.Add(loadResearchTopic(data));
+						break;
+					case "ShipFormulas":
+						db.ShipFormulas = loadShipFormulas(data, subformulas);
+						break;
+					case "StarFormulas":
+						db.StellarisFormulas = loadStarFormulas(data, subformulas);
+						break;
+					case "PlanetTrait":
+						db.PlanetTraits.Add(data[GeneralCodeKey].To<string>(), loadPlanetTrait(data));
+						break;
+					case "StarTrait":
+						db.StarTraits.Add(data[GeneralCodeKey].To<string>(), loadStarTrait(data));
+						break;
+
+					case ArmorTag:
+						db.Armors.Add(data[GeneralCodeKey].To<string>(), loadArmor(data));
+						break;
+					case HullTag:
+						db.Hulls.Add(data[GeneralCodeKey].To<string>(), loadHull(data));
+						break;
+					case IsDriveTag:
+						db.IsDrives.Add(data[GeneralCodeKey].To<string>(), loadIsDrive(data));
+						break;
+					case MissionEquipmentTag:
+						db.MissionEquipment.Add(data[GeneralCodeKey].To<string>(), loadMissionEquiptment(data));
+						break;
+					case ReactorTag:
+						db.Reactors.Add(data[GeneralCodeKey].To<string>(), loadReactor(data));
+						break;
+					case SensorTag:
+						db.Sensors.Add(data[GeneralCodeKey].To<string>(), loadSensor(data));
+						break;
+					case ShieldTag:
+						db.Shields.Add(data[GeneralCodeKey].To<string>(), loadShield(data));
+						break;
+					case SpecialEquipmentTag:
+						db.SpecialEquipment.Add(data[GeneralCodeKey].To<string>(), loadSpecialEquiptment(data));
+						break;
+					case ThrusterTag:
+						db.Thrusters.Add(data[GeneralCodeKey].To<string>(), loadThruster(data));
+						break;
+					default:
+						throw new FormatException("Invalid game data object with tag " + data.Tag);
 				}
 			}
 			
@@ -211,53 +174,87 @@ namespace Stareater.GameData.Databases
 			return db;
 		}
 
+		private static Dictionary<string, Formula> loadSubformulas(IEnumerable<IkonComposite> subformulaGroups)
+		{
+			var subformulas = new Dictionary<string, Formula>();
+
+			foreach(var group in subformulaGroups)
+			{
+				foreach (var key in group.Keys)
+					subformulas[key] = group[key].To<Formula>();
+			}
+
+			var dependencies = subformulas.ToDictionary(
+				x => x.Key,
+				x => x.Value.Variables.Where(name => subformulas.ContainsKey(name)).ToList()
+			);
+
+			while (dependencies.Keys.Any())
+			{
+				var oldCount = dependencies.Count;
+				foreach (var name in dependencies.Keys.ToList())
+					if (dependencies[name].All(x => !dependencies.ContainsKey(x)))
+					{
+						if (dependencies[name].Any())
+							subformulas[name] = subformulas[name].Substitute(subformulas);
+
+						dependencies.Remove(name);
+					}
+
+				if (oldCount == dependencies.Count)
+					throw new FormatException("Subformulas have cyclic dependency");
+			}
+
+			return subformulas;
+		}
+
 		#region Colony Formulas
-		private static ColonyFormulaSet loadColonyFormulas(IkonComposite data)
+		private static ColonyFormulaSet loadColonyFormulas(IkonComposite data, Dictionary<string, Formula> subformulas)
 		{
 			return new ColonyFormulaSet(
-				data[ColonizationPopulationThreshold].To<Formula>(),
-				data[UncolonizedMaxPopulation].To<Formula>(),
-				data[ColonyVictoryWorth].To<Formula>(),
-                data[ColonyFarmFields].To<Formula>(),
-				data[ColonyEnvironment].To<Formula>(),
-				data[ColonyMaxPopulation].To<Formula>(),
-				loadDerivedStat(data[ColonyPopulationGrowth].To<IkonComposite>()),
-				data[ColonyEmigrants].To<Formula>(),
-				data[ColonyOrganization].To<Formula>(),
-				data[ColonySpaceliftFactor].To<Formula>(),
-				data[ColonyDesirability].To<Formula>(),
-				loadPopulationActivity(data, ColonyFarming),
-				loadPopulationActivity(data, ColonyGardening),
-				loadPopulationActivity(data, ColonyMining),
-				loadPopulationActivity(data, ColonyDevelopment),
-				loadPopulationActivity(data, ColonyIndustry),
-				data[ColonyFuelProduction].To<Formula>(),
-				data[ColonyFuelCost].To<Formula>(),
-				data[ColonyRepairPoints].To<Formula>(),
-				data[ColonyPopulationHitPoints].To<Formula>(),
-				data[ColonyMaintenanceLimit].To<Formula>()
+				data[ColonizationPopulationThreshold].To<Formula>().Substitute(subformulas),
+				data[UncolonizedMaxPopulation].To<Formula>().Substitute(subformulas),
+				data[ColonyVictoryWorth].To<Formula>().Substitute(subformulas),
+                data[ColonyFarmFields].To<Formula>().Substitute(subformulas),
+				data[ColonyEnvironment].To<Formula>().Substitute(subformulas),
+				data[ColonyMaxPopulation].To<Formula>().Substitute(subformulas),
+				loadDerivedStat(data[ColonyPopulationGrowth].To<IkonComposite>(), subformulas),
+				data[ColonyEmigrants].To<Formula>().Substitute(subformulas),
+				data[ColonyOrganization].To<Formula>().Substitute(subformulas),
+				data[ColonySpaceliftFactor].To<Formula>().Substitute(subformulas),
+				data[ColonyDesirability].To<Formula>().Substitute(subformulas),
+				loadPopulationActivity(data, ColonyFarming, subformulas),
+				loadPopulationActivity(data, ColonyGardening, subformulas),
+				loadPopulationActivity(data, ColonyMining, subformulas),
+				loadPopulationActivity(data, ColonyDevelopment, subformulas),
+				loadPopulationActivity(data, ColonyIndustry, subformulas),
+				data[ColonyFuelProduction].To<Formula>().Substitute(subformulas),
+				data[ColonyFuelCost].To<Formula>().Substitute(subformulas),
+				data[ColonyRepairPoints].To<Formula>().Substitute(subformulas),
+				data[ColonyPopulationHitPoints].To<Formula>().Substitute(subformulas),
+				data[ColonyMaintenanceLimit].To<Formula>().Substitute(subformulas)
 			);
 		}
 		
-		private static DerivedStatistic loadDerivedStat(IkonComposite data)
+		private static DerivedStatistic loadDerivedStat(IkonComposite data, Dictionary<string, Formula> subformulas)
 		{
 			return new DerivedStatistic(
-				data[DerivedStatBase].To<Formula>(),
-				data[DerivedStatTotal].To<Formula>()
+				data[DerivedStatBase].To<Formula>().Substitute(subformulas),
+				data[DerivedStatTotal].To<Formula>().Substitute(subformulas)
 			);
 		}
 		
-		private static PopulationActivityFormulas loadPopulationActivity(IkonComposite data, string key)
+		private static PopulationActivityFormulas loadPopulationActivity(IkonComposite data, string key, Dictionary<string, Formula> subformulas)
 		{
 			return new PopulationActivityFormulas(
-				data[key].To<IkonComposite>()[PopulationActivityImprovised].To<Formula>(),
-				data[key].To<IkonComposite>()[PopulationActivityOrganized].To<Formula>(),
-                data[key].To<IkonComposite>()[PopulationActivityOrganizationFactor].To<Formula>()
+				data[key].To<IkonComposite>()[PopulationActivityImprovised].To<Formula>().Substitute(subformulas),
+				data[key].To<IkonComposite>()[PopulationActivityOrganized].To<Formula>().Substitute(subformulas),
+                data[key].To<IkonComposite>()[PopulationActivityOrganizationFactor].To<Formula>().Substitute(subformulas)
 			);
 		}
 		#endregion
 
-		private static KeyValuePair<PlanetType, PlanetForumlaSet> loadPlanetFormulas(IkonComposite data)
+		private static KeyValuePair<PlanetType, PlanetForumlaSet> loadPlanetFormulas(IkonComposite data, Dictionary<string, Formula> subformulas)
 		{
 			PlanetType key;
 			switch(data[PlanetTypeKey].To<string>())
@@ -282,53 +279,53 @@ namespace Stareater.GameData.Databases
 					data[PlanetBestTraits].To<string[]>(),
 					data[PlanetWorstTraits].To<string[]>(),
 					data[PlanetUnchangeableTraits].To<string[]>(),
-					data[PlanetStartingScore].To<Formula>(),
-					data[PlanetPotentialScore].To<Formula>()
+					data[PlanetStartingScore].To<Formula>().Substitute(subformulas),
+					data[PlanetPotentialScore].To<Formula>().Substitute(subformulas)
 			));
 		}
 
-        private static PlayerFormulaSet loadPlayerFormulas(IkonComposite data)
+        private static PlayerFormulaSet loadPlayerFormulas(IkonComposite data, Dictionary<string, Formula> subformulas)
 		{
 			return new PlayerFormulaSet(
-				data[PlayerResearchFocusWeight].To<Formula>()
+				data[PlayerResearchFocusWeight].To<Formula>().Substitute(subformulas)
 			);
 		}
 
-		private static ShipFormulaSet loadShipFormulas(IkonComposite data)
+		private static ShipFormulaSet loadShipFormulas(IkonComposite data, Dictionary<string, Formula> subformulas)
 		{
 			var colonizerBuildings = new Dictionary<string, Formula>();
 			var buildingData = data[ShipColonyBuildings].To<IkonComposite>();
 			foreach(var buildingId in buildingData.Keys)
-				colonizerBuildings.Add(buildingId, buildingData[buildingId].To<Formula>());
+				colonizerBuildings.Add(buildingId, buildingData[buildingId].To<Formula>().Substitute(subformulas));
 					
 			return new ShipFormulaSet(
-				data[ShipCloaking].To<Formula>(),
-				data[ShipCombatSpeed].To<Formula>(),
-				data[ShipDetection].To<Formula>(),
-				data[ShipEvasion].To<Formula>(),
-				data[ShipHitPoints].To<Formula>(),
-				data[ShipJamming].To<Formula>(),
-				data[ShipScaneRange].To<Formula>(),
-				data[ShipColonyPopulation].To<Formula>(),
+				data[ShipCloaking].To<Formula>().Substitute(subformulas),
+				data[ShipCombatSpeed].To<Formula>().Substitute(subformulas),
+				data[ShipDetection].To<Formula>().Substitute(subformulas),
+				data[ShipEvasion].To<Formula>().Substitute(subformulas),
+				data[ShipHitPoints].To<Formula>().Substitute(subformulas),
+				data[ShipJamming].To<Formula>().Substitute(subformulas),
+				data[ShipScaneRange].To<Formula>().Substitute(subformulas),
+				data[ShipColonyPopulation].To<Formula>().Substitute(subformulas),
 				colonizerBuildings,
-				data[ShipReactorSize].To<Formula>(),
-				data[ShipShieldSize].To<Formula>(),
-				data[ShipNaturalCloakBonus].To<Formula>().Evaluate(null),
-				data[ShipSensorRangePenalty].To<Formula>().Evaluate(null),
-				data[ShipRepairCostFactor].To<Formula>().Evaluate(null),
-				data[ShipLevelRefitCost].To<Formula>(),
-				data[ShipArmorCostPortion].To<Formula>().Evaluate(null),
-				data[ShipReactorCostPortion].To<Formula>().Evaluate(null),
-				data[ShipSensorCostPortion].To<Formula>().Evaluate(null),
-				data[ShipThrustersCostPortion].To<Formula>().Evaluate(null),
-				data[ShipFuelUsage].To<Formula>(),
-				data[ShipWormholeSpeed].To<Formula>()
+				data[ShipReactorSize].To<Formula>().Substitute(subformulas),
+				data[ShipShieldSize].To<Formula>().Substitute(subformulas),
+				data[ShipNaturalCloakBonus].To<Formula>().Substitute(subformulas).Evaluate(null),
+				data[ShipSensorRangePenalty].To<Formula>().Substitute(subformulas).Evaluate(null),
+				data[ShipRepairCostFactor].To<Formula>().Substitute(subformulas).Evaluate(null),
+				data[ShipLevelRefitCost].To<Formula>().Substitute(subformulas),
+				data[ShipArmorCostPortion].To<Formula>().Substitute(subformulas).Evaluate(null),
+				data[ShipReactorCostPortion].To<Formula>().Substitute(subformulas).Evaluate(null),
+				data[ShipSensorCostPortion].To<Formula>().Substitute(subformulas).Evaluate(null),
+				data[ShipThrustersCostPortion].To<Formula>().Substitute(subformulas).Evaluate(null),
+				data[ShipFuelUsage].To<Formula>().Substitute(subformulas),
+				data[ShipWormholeSpeed].To<Formula>().Substitute(subformulas)
 			);
 		}
-		private static StellarisFormulaSet loadStarFormulas(IkonComposite data)
+		private static StellarisFormulaSet loadStarFormulas(IkonComposite data, Dictionary<string, Formula> subformulas)
 		{
 			return new StellarisFormulaSet(
-				data["scanRange"].To<Formula>()
+				data["scanRange"].To<Formula>().Substitute(subformulas)
 			);
 		}
 		

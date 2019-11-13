@@ -6,7 +6,7 @@ using System.IO;
 using Ikadn;
 using Ikadn.Ikon.Types;
 using Ikadn.Ikon;
-using Stareater.Utils;
+using Ikadn.Utilities;
 
 namespace Stareater.Controllers
 {
@@ -16,12 +16,10 @@ namespace Stareater.Controllers
 		private const string SaveNamePrefix = "game";
 		private const string SaveNameExtension = "save";
 
-		private const string SaveGameTitleKey = "title";
-
-		private GameController gameController;
+		private readonly GameController gameController;
 		private int nextSaveNumber;
 		private LinkedList<SavedGameInfo> games;
-		private string saveFolderPath; //TODO(later) remove file dependency
+		private readonly string saveFolderPath; //TODO(later) remove file dependency
 		
 		public SavesController(GameController gameController, string saveFolderRoot)
 		{
@@ -91,7 +89,7 @@ namespace Stareater.Controllers
 		}
 #endregion
 
-#region Indicators
+		#region Indicators
 		public bool CanSave
 		{
 			get { return gameController.State == GameState.Running; }
@@ -104,9 +102,9 @@ namespace Stareater.Controllers
 				return this.games;
 			}
 		}
-#endregion
+		#endregion
 
-#region Saving / Loading
+		#region Saving / Loading
 		public void NewSave(string title, IkonBaseObject previewData)
 		{
 			string fileName = SaveNamePrefix + this.nextSaveNumber + "." + SaveNameExtension;
@@ -129,11 +127,13 @@ namespace Stareater.Controllers
 			using (var output = new StreamWriter(saveFile.Create()))
 			{
 				var version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version;
-				var versionData = new IkonArray();
-				versionData.Add(new IkonInteger(version.Major));
-				versionData.Add(new IkonInteger(version.Minor));
-				versionData.Add(new IkonInteger(version.Revision));
-				versionData.Add(new IkonInteger(version.Build));
+				var versionData = new IkonArray
+				{
+					new IkonInteger(version.Major),
+					new IkonInteger(version.Minor),
+					new IkonInteger(version.Revision),
+					new IkonInteger(version.Build)
+				};
 
 				var writer = new IkadnWriter(output);
 				versionData.Compose(writer);
@@ -143,7 +143,7 @@ namespace Stareater.Controllers
 			}
 		}
 		
-		public void Load(SavedGameInfo savedGameData, IEnumerable<TracableStream> staticDataSources)
+		public void Load(SavedGameInfo savedGameData, IEnumerable<NamedStream> staticDataSources)
 		{
 			IkonComposite saveRawData;
 			using (var parser = new IkonParser(savedGameData.FileInfo.OpenText()))
@@ -151,6 +151,6 @@ namespace Stareater.Controllers
 
 			this.gameController.LoadGame(GameBuilder.LoadGame(saveRawData, staticDataSources, GameController.GetStateManager()));
 		}
-#endregion
+		#endregion
 	}
 }

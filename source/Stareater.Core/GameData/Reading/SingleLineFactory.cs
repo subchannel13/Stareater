@@ -1,20 +1,18 @@
-﻿using System;
-using Ikadn;
+﻿using Ikadn;
+using Ikadn.Ikon.Factories;
 using Ikadn.Ikon.Types;
+using System;
 
 namespace Stareater.GameData.Reading
 {
-	class SingleLineFactory : IIkadnObjectFactory
+	class SingleLineFactory : AIkonFactory
 	{
-		public IkadnBaseObject Parse(IkadnParser parser)
+		protected override IkadnBaseObject ParseObject(IkadnReader reader)
 		{
-			parser.Reader.SkipWhiteSpaces();
-			return new IkonText(parser.Reader.ReadWhile(x => !char.IsWhiteSpace(x)).Trim());
+			reader.SkipWhiteSpaces();
+			return new IkonText(reader.ReadWhile(x => !char.IsWhiteSpace(x)).Trim());
 		}
 
-		public char Sign
-		{
-			get { return ':'; }
-		}
+		public override char Sign => ':';
 	}
 }

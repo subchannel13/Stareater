@@ -17,28 +17,28 @@ namespace Stareater.Localization.Reading
 		
 		const char EscapeChar = '\\';
 
-		public IkadnBaseObject Parse(IkadnParser parser)
+		public IkadnBaseObject Parse(IkadnReader reader)
 		{
 			string textIndent =
-				parser.Reader.LineIndentation +
-				readIndentSpec(parser.Reader.ReadUntil('\n','\r').Trim());
+				reader.LineIndentation +
+				readIndentSpec(reader.ReadUntil('\n','\r').Trim());
 			
-			skipEndOfLine(parser.Reader);
+			skipEndOfLine(reader);
 			
 			var textRuns = new Queue<string>();
 			var substitutions = new Dictionary<string, IText>();
 			var textRunBuilder = new StringBuilder();
 			
-			if (!checkIndentation(parser.Reader, textIndent))
+			if (!checkIndentation(reader, textIndent))
 				return new SingleLineText("");
 			
 			while(true) {
-				if (parser.Reader.Peek() == SubstitutionOpenChar) {
-					parser.Reader.Read();
-					string substitutionName = parser.Reader.ReadUntil(SubstitutionCloseChar);
-					parser.Reader.Read();
+				if (reader.Peek() == SubstitutionOpenChar) {
+					reader.Read();
+					string substitutionName = reader.ReadUntil(SubstitutionCloseChar);
+					reader.Read();
 					if (substitutionName.Length == 0)
-						throw new FormatException("Substitution name at " + parser.Reader + " is empty (zero length)");
+						throw new FormatException("Substitution name at " + reader + " is empty (zero length)");
 					
 					if (textRunBuilder.Length > 0) {
 						textRuns.Enqueue(textRunBuilder.ToString());
@@ -53,7 +53,7 @@ namespace Stareater.Localization.Reading
 				else {
 					var terminatingCharsSet = new int[] { SubstitutionOpenChar, '\n','\r' };
 					var escaping = false;
-					var textPart = parser.Reader.ReadConditionally(c =>
+					var textPart = reader.ReadConditionally(c =>
 					{
 						if (c == EscapeChar && !escaping) {
 							escaping = true;
@@ -65,10 +65,10 @@ namespace Stareater.Localization.Reading
 							CharacterAction.AcceptAsIs);
 					});
 
-					if (parser.Reader.Peek() != SubstitutionOpenChar) {
+					if (reader.Peek() != SubstitutionOpenChar) {
 						textRunBuilder.AppendLine(textPart);
-						skipEndOfLine(parser.Reader);
-						if (!checkIndentation(parser.Reader, textIndent))
+						skipEndOfLine(reader);
+						if (!checkIndentation(reader, textIndent))
 							break;
 					}
 					else {
@@ -83,14 +83,14 @@ namespace Stareater.Localization.Reading
 			}
 
 			for(int i = 0; i < substitutions.Count;i++) {
-				if (parser.Reader.SkipWhiteSpaces().EndOfStream)
-					throw new EndOfStreamException("Unexpectedend of stream at " + parser.Reader.PositionDescription);
+				if (reader.SkipWhiteSpaces().EndOfStream)
+					throw new EndOfStreamException("Unexpectedend of stream at " + reader.PositionDescription);
 
-				string substitutionName = parser.Reader.ReadUntil(c => 
+				string substitutionName = reader.ReadUntil(c => 
 					c != IkadnReader.EndOfStreamResult && char.IsWhiteSpace((char)c) 
 				);
 
-				substitutions[substitutionName] = parser.ParseNext().To<IText>();
+				substitutions[substitutionName] = reader.ReadObject().To<IText>();
 			}
 
 			var texts = new List<IText>();

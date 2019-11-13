@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
-using Stareater.Utils;
 using Stareater.GameData.Reading;
 using Stareater.Controllers.Views;
+using Ikadn.Utilities;
 
 namespace Stareater.Players
 {
@@ -23,36 +21,18 @@ namespace Stareater.Players
 			get { return OrganizationsRaw.Select(x => new OrganizationInfo(x)).ToList(); }
 		}
 
-		public static void ColorLoader(IEnumerable<TracableStream> dataSources)
+		public static void ColorLoader(IEnumerable<NamedStream> dataSources)
 		{
 			var colorList = new List<Color>();
-			foreach(var source in dataSources)
-				using (var parser = new IkonParser(source.Stream))
+			using (var parser = new IkonParser(dataSources))
+				foreach (var item in parser.ParseNext().To<IkonComposite>()[ColorsKey].To<IkonArray>())
 				{
-					IkonArray colorsData;
-
-					try
-					{
-						colorsData = parser.ParseNext().To<IkonComposite>()[ColorsKey].To<IkonArray>();
-					}
-					catch (IOException e)
-					{
-						throw new IOException(source.SourceInfo, e);
-					}
-					catch (FormatException e)
-					{
-						throw new FormatException(source.SourceInfo, e);
-					}
-
-					foreach (var item in colorsData)
-					{
-						var colorData = item.To<IkonArray>();
-						colorList.Add(Color.FromArgb(
-							colorData[0].To<int>(),
-							colorData[1].To<int>(),
-							colorData[2].To<int>()
-							));
-					}
+					var colorData = item.To<IkonArray>();
+					colorList.Add(Color.FromArgb(
+						colorData[0].To<int>(),
+						colorData[1].To<int>(),
+						colorData[2].To<int>()
+						));
 				}
 
 			Colors = colorList.ToArray();
@@ -63,32 +43,18 @@ namespace Stareater.Players
 			AIDefinitions = aiFactories.ToDictionary(x => x.Id);
         }
 
-		public static void OrganizationsLoader(IEnumerable<TracableStream> dataSources)
+		public static void OrganizationsLoader(IEnumerable<NamedStream> dataSources)
 		{
 			var list = new List<Organization>();
-			foreach (var source in dataSources)
-				using (var parser = new Parser(source.Stream))
+			using (var parser = new Parser(dataSources))
+				foreach (var item in parser.ParseAll())
 				{
-					try
-					{
-						foreach (var item in parser.ParseAll())
-						{
-							var data = item.Value.To<IkonComposite>();
-							list.Add(new Organization(
-								data[Stareater.GameData.Databases.StaticsDB.GeneralCodeKey].To<string>(),
-								data[OrganizationLangCodeKey].To<string>(),
-								data[OrganizationAffinitiesKey].To<string[]>()
-							));
-						}
-					}
-					catch (IOException e)
-					{
-						throw new IOException(source.SourceInfo, e);
-					}
-					catch (FormatException e)
-					{
-						throw new FormatException(source.SourceInfo, e);
-					}
+					var data = item.Value.To<IkonComposite>();
+					list.Add(new Organization(
+						data[Stareater.GameData.Databases.StaticsDB.GeneralCodeKey].To<string>(),
+						data[OrganizationLangCodeKey].To<string>(),
+						data[OrganizationAffinitiesKey].To<string[]>()
+					));
 				}
 
 			OrganizationsRaw = list.ToArray();

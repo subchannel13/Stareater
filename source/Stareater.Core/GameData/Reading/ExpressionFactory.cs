@@ -1,43 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ikadn;
+using Ikadn.Ikon.Factories;
 using Stareater.AppData.Expressions;
 
 namespace Stareater.GameData.Reading
 {
-	class ExpressionFactory : IIkadnObjectFactory
+	class ExpressionFactory : AIkonFactory
 	{
 		const char EndingChar = ';';
 
-		private readonly Dictionary<string, Formula> subformulas;
+		private readonly Dictionary<string, Formula> subformulas = new Dictionary<string, Formula>();
 
-		public ExpressionFactory(Dictionary<string, Formula> subformulas)
+		protected override IkadnBaseObject ParseObject(IkadnReader reader)
 		{
-			this.subformulas = subformulas;
-		}
-
-		public IkadnBaseObject Parse(IkadnParser parser)
-		{
-			parser.Reader.SkipWhiteSpaces();
-			string expressionText = parser.Reader.ReadUntil(EndingChar);
-			parser.Reader.Read();
+			reader.SkipWhiteSpaces();
+			string expressionText = reader.ReadUntil(EndingChar);
+			reader.Read();
 			
 			if (expressionText.Length == 0)
-				throw new FormatException("Expression at " + parser.Reader + " is empty (zero length)");
+				throw new FormatException("Expression at " + reader.PositionDescription + " is empty (zero length)");
 
-			//TODO(v0.8) remove subformula parameter
 			var expParser = new ExpressionParser(expressionText);
 			expParser.Parse();
 			
 			if (expParser.errors.count > 0)
-				throw new FormatException("Expression at " + parser.Reader.PositionDescription + " is invalid: " + expParser.errors.errorMessages);
+				throw new FormatException("Expression at " + reader.PositionDescription + " is invalid: " + expParser.errors.errorMessages);
 			
 			return new Expression(expParser.ParsedFormula.Substitute(this.subformulas));
 		}
 
-		public char Sign
-		{
-			get { return '#'; }
-		}
+		public override char Sign => '#';
 	}
 }

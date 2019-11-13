@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
+using Ikadn.Utilities;
 using Stareater.AppData;
 using Stareater.Controllers.NewGameHelpers;
 using Stareater.Controllers.Views;
@@ -28,7 +29,7 @@ namespace Stareater.Controllers
 		private readonly SystemEvaluator evaluator;
 		internal StaticsDB Statics { get; private set; }
 
-		public NewGameController(IEnumerable<TracableStream> staticDataSources)
+		public NewGameController(IEnumerable<NamedStream> staticDataSources)
 		{
 			foreach (var aiFactory in PlayerAssets.AIDefinitions.Values)
 				aiPlayers.Add(new PlayerType(PlayerControlType.LocalAI, aiFactory));
