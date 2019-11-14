@@ -93,11 +93,11 @@
     <Reference Include="Ikadn.Ikon, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\IKADN.IKON.1.5.0\lib\net35-client\Ikadn.Ikon.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTK, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenTK.3.0.0\lib\net20\OpenTK.dll</HintPath>
+    <Reference Include="OpenTK, Version=3.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.3.1.0\lib\net20\OpenTK.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTK.GLControl, Version=3.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenTK.GLControl.3.0.0\lib\net20\OpenTK.GLControl.dll</HintPath>
+    <Reference Include="OpenTK.GLControl, Version=3.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.GLControl.3.1.0\lib\net20\OpenTK.GLControl.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
