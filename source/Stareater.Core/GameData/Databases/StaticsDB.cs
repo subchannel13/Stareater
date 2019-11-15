@@ -219,13 +219,13 @@ namespace Stareater.GameData.Databases
 				data[ColonyEnvironment].To<Formula>().Substitute(subformulas),
 				data[ColonyMaxPopulation].To<Formula>().Substitute(subformulas),
 				loadDerivedStat(data[ColonyPopulationGrowth].To<IkonComposite>(), subformulas),
+				data[ColonyMinerals].To<Formula>().Substitute(subformulas),
 				data[ColonyEmigrants].To<Formula>().Substitute(subformulas),
 				data[ColonyOrganization].To<Formula>().Substitute(subformulas),
 				data[ColonySpaceliftFactor].To<Formula>().Substitute(subformulas),
 				data[ColonyDesirability].To<Formula>().Substitute(subformulas),
 				loadPopulationActivity(data, ColonyFarming, subformulas),
 				loadPopulationActivity(data, ColonyGardening, subformulas),
-				loadPopulationActivity(data, ColonyMining, subformulas),
 				loadPopulationActivity(data, ColonyDevelopment, subformulas),
 				loadPopulationActivity(data, ColonyIndustry, subformulas),
 				data[ColonyFuelProduction].To<Formula>().Substitute(subformulas),
@@ -789,7 +789,7 @@ namespace Stareater.GameData.Databases
 		private const string ColonyIndustry = "industry";
 		private const string ColonyMaintenanceLimit = "maintenanceLimit";
 		private const string ColonyMaxPopulation = "maxPopulation";
-		private const string ColonyMining = "mining";
+		private const string ColonyMinerals = "minerals";
 		private const string ColonyOrganization = "organization";
 		private const string ColonyPopulationGrowth = "populationGrowth";
 		private const string ColonyPopulationHitPoints = "popHp";

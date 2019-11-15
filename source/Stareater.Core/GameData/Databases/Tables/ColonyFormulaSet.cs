@@ -12,6 +12,7 @@ namespace Stareater.GameData.Databases.Tables
 		public Formula FarmFields { get; private set; }
 		public Formula EnvironmentFactor { get; private set; }
 		public DerivedStatistic PopulationGrowth { get; private set; }
+		public Formula Minerals { get; private set; }
 		public Formula Emigrants { get; private set; }
 		public Formula Organization { get; private set; }
 		public Formula SpaceliftFactor { get; private set; }
@@ -19,7 +20,6 @@ namespace Stareater.GameData.Databases.Tables
 
 		public PopulationActivityFormulas Farming { get; private set; }
 		public PopulationActivityFormulas Gardening { get; private set; }
-		public PopulationActivityFormulas Mining { get; private set; }
 		
 		public PopulationActivityFormulas Development { get; private set; }
 		public PopulationActivityFormulas Industry { get; private set; }
@@ -33,11 +33,10 @@ namespace Stareater.GameData.Databases.Tables
 		public ColonyFormulaSet(
 			Formula colonizationPopThreshold, Formula uncolonizedMaxPopulation, Formula victoryPointWorth, 
 			Formula farmFields, Formula environmentFactor, 
-			Formula maxPopulation, DerivedStatistic populationGrowth, Formula emigrants,
+			Formula maxPopulation, DerivedStatistic populationGrowth, Formula minerals, Formula emigrants,
 			Formula organization, Formula spaceliftFactor, Formula desirability,
 			PopulationActivityFormulas farming, PopulationActivityFormulas gardening,
-			PopulationActivityFormulas mining, PopulationActivityFormulas development, 
-			PopulationActivityFormulas industry,
+			PopulationActivityFormulas development, PopulationActivityFormulas industry,
             Formula fuelProduction, Formula fuelCost, Formula repairPoints, 
 			Formula populationHitPoints, Formula MaintenanceTotalLimit)
 		{
@@ -49,6 +48,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.EnvironmentFactor = environmentFactor;
 			this.MaxPopulation = maxPopulation;
 			this.PopulationGrowth = populationGrowth;
+			this.Minerals = minerals;
 			this.Emigrants = emigrants;
 			this.Organization = organization;
 			this.SpaceliftFactor = spaceliftFactor;
@@ -56,7 +56,7 @@ namespace Stareater.GameData.Databases.Tables
 			
 			this.Farming = farming;
 			this.Gardening = gardening;
-			this.Mining = mining;
+			
 			this.Development = development;
 			this.Industry = industry;
 

@@ -13,7 +13,7 @@ environmentInfo = Environment
 
 perPop = pop
 foodInfo = Food
-miningInfo = Mining
+miningInfo = Minerals
 industryInfo = Industry
 developmentInfo = Development
 industryTotalInfo = Industry

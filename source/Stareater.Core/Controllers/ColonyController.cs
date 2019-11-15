@@ -126,6 +126,14 @@ namespace Stareater.Controllers
 				return (this.Site as Colony).Location.Planet.Size;
 			}
 		}
+
+		public double Minerals
+		{
+			get
+			{
+				return Game.Derivates[this.Site as Colony].MiningEfficiency;
+			}
+		}
 		#endregion
 
 		#region Productivity
@@ -170,14 +178,6 @@ namespace Stareater.Controllers
 			get
 			{
 				return Game.Derivates[this.Site as Colony].SpendingPlan.Sum(x => x.InvestedPoints);
-			}
-		}
-
-		public double OrePerPop
-		{
-			get
-			{
-				return Game.Derivates[this.Site as Colony].MinerEfficiency;
 			}
 		}
 		#endregion

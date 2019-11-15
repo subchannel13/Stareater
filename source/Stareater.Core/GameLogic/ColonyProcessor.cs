@@ -46,7 +46,7 @@ namespace Stareater.GameLogic
 		[StateProperty]
 		public double GardenerEfficiency { get; private set; }
 		[StateProperty]
-		public double MinerEfficiency { get; private set; }
+		public double MiningEfficiency { get; private set; }
 		[StateProperty]
 		public double BuilderEfficiency { get; private set; }
 		[StateProperty]
@@ -117,10 +117,9 @@ namespace Stareater.GameLogic
 
 			this.FarmerEfficiency = formulas.Farming.Evaluate(this.Organization, vars);
 			this.GardenerEfficiency = formulas.Gardening.Evaluate(this.Organization, vars);
-			this.MinerEfficiency = formulas.Mining.Evaluate(this.Organization, vars);
+			this.MiningEfficiency = formulas.Minerals.Evaluate(vars);
 			
-			var minersPerIndustry = 1 / this.MinerEfficiency;
-			this.BuilderEfficiency = formulas.Industry.Evaluate(this.Organization, vars) / (1 + minersPerIndustry);
+			this.BuilderEfficiency = formulas.Industry.Evaluate(this.Organization, vars) * MiningEfficiency;
 			this.ScientistEfficiency = formulas.Development.Evaluate(this.Organization, vars);
 
 			this.Farmers = this.Colony.Population / this.FarmerEfficiency;

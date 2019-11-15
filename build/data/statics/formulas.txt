@@ -1,10 +1,10 @@
 { Subformulas
-	scoreMiners # ratio(5, 10 * case(poor, rich ∨ richCore) [0.5, 2, 1]);
+	scoreMiners # case(poor, rich ∨ richCore) [0.2, 0.8, 0.4];
 	scoreFoodPop # 0.1 + (1 - 0.1 * (3 + if(fertile, 4, 0)) * if(toxic, 0.5, 1)) / 1.5 / if(toxic, 0.75, 1);
 	
-	bestScore # size * 5 * (1 - scoreFoodPop) * (1 - scoreMiners);
+	bestScore # size * 5 * (1 - scoreFoodPop) * scoreMiners;
 	startScore # size * (
-		5 * (1 - scoreFoodPop) * (1 - scoreMiners)
+		5 * (1 - scoreFoodPop) * scoreMiners
 		- max(0, case(irradiated1, irradiated2, irradiated3) [1, 2, 4, 0] - case(magnetosphere1, magnetosphere2) [1, 2, 0])
 		- case(noAtmo, denseAtmo) [0.5, 2, 0] - case(noGrav, lowGrav, highGrav) [0.5, 0.25, 1, 0]
 		- if(toxic, 1, 0) - if(radioactive, 2, 0) - case(cold, hot) [1, 2, 0]
@@ -34,6 +34,7 @@
 		total # base;
 	}
 	
+	minerals # case(poor, rich) [0.2, 0.8, 0.4];
 	emigrants # pop * 0.001;
 	environment # if(noGrav, 0.8 ^ (1 - microgravTolLvl / 5), 1);
 	desirability # 1 - pop / maxPop;
@@ -50,12 +51,6 @@
 		improvised	# 1.5 * if(toxic, 0.75, 1);
 		organized	# (1.5 + 1 * (hydroFarmLvl / 5) +  0.5 * (gmoFoodLvl / 5)) * if(toxic, 0.75, 1);
 		orgFactor # 0.5 + 0.5 * farmLawsLvl / 5;
-	}
-	mining
-	{ Work
-		improvised	# (5 + 2 * mineToolsLvl / 5) * case(poor, rich) [0.5, 2, 1];
-		organized	# (10 + 5 * mineToolsLvl / 5 + 5 * recycleLvl / 5) * case(poor, rich) [0.5, 2, 1];
-		orgFactor # 0.5 + 0.5 * mineLawsLvl / 5;
 	}
 	industry
 	{ Work

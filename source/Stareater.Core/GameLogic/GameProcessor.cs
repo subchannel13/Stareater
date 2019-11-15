@@ -50,9 +50,9 @@ namespace Stareater.GameLogic
 			this.game.States.Reports.Clear();
 			foreach (var playerProc in processors)
 				playerProc.ProcessPrecombat(this.game);
-			this.game.Derivates.Natives.ProcessPrecombat(this.game.Statics, this.game.States, this.game.Derivates); 
+			this.game.Derivates.Natives.ProcessPrecombat(this.game.Statics, this.game.States, this.game.Derivates);
 			//TODO(later) process natives postcombat
-			
+
 			this.moveShips();
 			this.detectConflicts();
 			this.enqueueAudiences();
