@@ -237,22 +237,24 @@ namespace Stareater.GameLogic
 		{
 			var visits = new Dictionary<Vector2D, ICollection<FleetMovement>>();
 			var conflictPositions = new Dictionary<Vector2D, double>();
-			var decidedFleet = new HashSet<Fleet>();
+			var stoppedFleets = new HashSet<Fleet>();
 
 			foreach (var step in this.fleetMovement.OrderBy(x => x.ArrivalTime))
 			{
-				if (!visits.ContainsKey(step.LocalFleet.Position))
-					visits.Add(step.LocalFleet.Position, new List<FleetMovement>());
+				var position = step.LocalFleet.Position;
+				if (!visits.ContainsKey(position))
+					visits.Add(position, new List<FleetMovement>());
 
-				if (decidedFleet.Contains(step.OriginalFleet) || visits[step.LocalFleet.Position].Any(x => x.OriginalFleet == step.OriginalFleet))
+				var fleets = visits[position];
+
+				if (stoppedFleets.Contains(step.OriginalFleet) || fleets.Any(x => x.OriginalFleet == step.OriginalFleet))
 					continue;
 
-				var fleets = visits[step.LocalFleet.Position];
 				fleets.Add(step);
 
-				if (!game.States.Stars.At.Contains(step.LocalFleet.Position))
+				if (!game.States.Stars.At.Contains(position))
 					continue; //TODO(later) no deepspace interception for now
-				var star = game.States.Stars.At[step.LocalFleet.Position];
+				var star = game.States.Stars.At[position];
 
 				var players = new HashSet<Player>(fleets.Where(x => x.ArrivalTime < step.ArrivalTime).Select(x => x.OriginalFleet.Owner));
 				players.UnionWith(game.States.Colonies.AtStar[star].Select(x => x.Owner));
@@ -264,9 +266,9 @@ namespace Stareater.GameLogic
 
 				if (inConflict)
 				{
-					if (!conflictPositions.ContainsKey(step.LocalFleet.Position))
-						conflictPositions.Add(step.LocalFleet.Position, step.ArrivalTime);
-					decidedFleet.UnionWith(fleets.Where(x => x.ArrivalTime < step.ArrivalTime).Select(x => x.OriginalFleet));
+					if (!conflictPositions.ContainsKey(position))
+						conflictPositions.Add(position, step.ArrivalTime);
+					stoppedFleets.UnionWith(fleets.Where(x => x.ArrivalTime <= step.ArrivalTime).Select(x => x.OriginalFleet));
 				}
 			}
 
