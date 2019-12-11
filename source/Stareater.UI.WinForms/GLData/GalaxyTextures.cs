@@ -63,6 +63,7 @@ namespace Stareater.GLData
 		public Vector2 Size { get; private set; }
 
 		public TextureInfo Asteroids { get; private set;}
+		public TextureInfo Blank { get; private set; }
 		public TextureInfo BombButton { get; private set;}
 		public TextureInfo ButtonBackground { get; private set; }
 		public TextureInfo ButtonHover { get; private set; }
@@ -111,6 +112,7 @@ namespace Stareater.GLData
 			 * If any sprite is missing, try running {repo root}/scripts/gen_textures.bat script.
 			 */
 			this.Asteroids = this.spriteNames[AsteroidsTag];
+			this.Blank = this.spriteNames["blank"];
 			this.BombButton = this.spriteNames[BombButtonTag];
 			this.ButtonBackground = this.spriteNames[ButtonBackgroundTag];
 			this.ButtonHover = this.spriteNames["buttonHover"];

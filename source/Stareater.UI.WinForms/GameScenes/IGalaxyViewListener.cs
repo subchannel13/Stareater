@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Stareater.Controllers;
-using Stareater.Controllers.Views.Ships;
+﻿using Stareater.Controllers;
 
 namespace Stareater.GameScenes
 {
@@ -8,9 +6,7 @@ namespace Stareater.GameScenes
 	{
 		void TurnEnded();
 
-		void FleetDeselected();
-		void FleetClicked(IEnumerable<FleetInfo> fleets);
-		
+		//TODO(v0.9) see if need
 		void SystemOpened(StarSystemController systemController);
 		void SystemSelected(StarSystemController systemController);
 	}

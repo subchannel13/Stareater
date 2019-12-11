@@ -112,6 +112,7 @@
     <Compile Include="GameScenes\Widgets\ConstructionSiteView.cs" />
     <Compile Include="GameScenes\IntroScene.cs" />
     <Compile Include="GameScenes\Widgets\EmptyPlanetView.cs" />
+    <Compile Include="GameScenes\Widgets\MapSelectableItem.cs" />
     <Compile Include="GLData\ColorMap.cs" />
     <Compile Include="GLData\GlyphContour.cs" />
     <Compile Include="GLData\OrbitShader\ArcBorderBuilder.cs" />

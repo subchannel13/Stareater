@@ -1,5 +1,4 @@
-﻿using System;
-using Stareater.GraphicsEngine.GuiPositioners;
+﻿using Stareater.GraphicsEngine.GuiPositioners;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
@@ -32,6 +31,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 				this.column = 0;
 				this.row++;
 			}
+		}
+
+		internal void Restart()
+		{
+			this.column = 0;
+			this.row = 0;
 		}
 	}
 }

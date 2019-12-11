@@ -62,6 +62,7 @@ namespace Stareater.GameScenes
 		private readonly GuiText turnCounter;
 		private readonly GuiText fuelInfo;
 		private readonly ConstructionSiteView starInfo;
+		private readonly ListPanel fleetsPanel;
 
 		private IEnumerable<SceneObject> fleetMovementPaths = null;
 		private IEnumerable<SceneObject> fleetMarkers = null;
@@ -89,7 +90,7 @@ namespace Stareater.GameScenes
 		private PlayerController currentPlayer = null;
 
 		public GalaxyScene(IGalaxyViewListener galaxyViewListener, Action mainMenuCallback)
-		{ 
+		{
 			this.galaxyViewListener = galaxyViewListener;
 			this.reportOpener = new OpenReportVisitor(showDevelopment, showResearch);
 
@@ -247,6 +248,13 @@ namespace Stareater.GameScenes
 			this.starInfo = new ConstructionSiteView();
 			this.starInfo.Position.ParentRelative(0, -1).WithMargins(0, 0);
 			this.AddElement(this.starInfo);
+
+			this.fleetsPanel = new ListPanel(2, MapSelectableItem<ShipGroupInfo>.Width, MapSelectableItem<ShipGroupInfo>.Height, 5)
+			{
+				Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 6),
+				Padding = 5
+			};
+			this.fleetsPanel.Position.FixedSize(215, 100).ParentRelative(0, -1).WithMargins(0, 0);
 		}
 
 		public void OnNewTurn()
@@ -282,7 +290,7 @@ namespace Stareater.GameScenes
 			
 			this.originOffset = this.lastOffset[this.currentPlayer.PlayerIndex];
 			this.currentSelection = GalaxySelectionType.Star;
-			this.updateStarInfo(this.lastSelectedStar);
+			this.showStarInfo(this.lastSelectedStar);
 			this.setupPerspective();
 			this.setupFuelInfo();
 		}
@@ -303,7 +311,39 @@ namespace Stareater.GameScenes
 				form.ShowDialog();
 		}
 
-		private void updateStarInfo(StarInfo star)
+		private void showFleetInfo(List<FleetInfo> fleets)
+		{
+			this.showBottomView(this.fleetsPanel);
+			
+			if (fleets.Count == 1 && fleets[0].Owner == this.currentPlayer.Info)
+			{
+				if (this.SelectedFleet == null)
+					this.SelectedFleet = this.currentPlayer.SelectFleet(fleets[0]);
+
+				this.selectFleet();
+				return;
+			}
+
+			/*
+			var stationaryFleet = fleets.FirstOrDefault(x => x.Owner == this.currentPlayer.Info && x.Missions.Waypoints.Length == 0);
+			var otherOwnedFleets = fleets.Where(x => x.Owner == this.currentPlayer.Info && x != stationaryFleet);
+			var othersFleets = fleets.Where(x => x.Owner != this.currentPlayer.Info);
+
+			this.shipList.SuspendLayout();
+			this.clearShipList();
+
+			if (stationaryFleet != null)
+				addFleetSelection(stationaryFleet);
+
+			foreach (var fleet in otherOwnedFleets.Concat(othersFleets))
+				addFleetSelection(fleet);
+
+			this.shipList.ResumeLayout();
+			*/
+			this.showBottomView(this.fleetsPanel);
+		}
+
+		private void showStarInfo(StarInfo star)
 		{
 			var starSystem = this.currentPlayer.OpenStarSystem(star);
 			this.galaxyViewListener.SystemSelected(starSystem);
@@ -312,10 +352,44 @@ namespace Stareater.GameScenes
 			if (starSystem.StarsAdministration() != null && starSystem.StarsAdministration().Owner == this.currentPlayer.Info)
 			{
 				this.starInfo.SetView(this.currentPlayer.OpenStarSystem(this.lastSelectedStar).StellarisController());
-				this.ShowElement(this.starInfo);
+				this.showBottomView(this.starInfo);
 			}
 			else
-				this.HideElement(this.starInfo);
+				this.hideBottomView();
+		}
+
+		private void selectFleet()
+		{
+			var thousandsFormat = new ThousandsFormatter();
+
+			this.fleetsPanel.Children = this.SelectedFleet.ShipGroups.
+				Select(x => new MapSelectableItem<ShipGroupInfo>(x)
+				{
+					ImageBackground = this.currentPlayer.Info.Color,
+					Image = GalaxyTextures.Get.Sprite(x.Design.ImagePath),
+					Text = x.Design.Name + Environment.NewLine + thousandsFormat.Format(x.Quantity),
+					IsSelected = true,
+					OnSelect = group => this.SelectedFleet.SelectGroup(group, group.Quantity),
+					OnDeselect = group => this.SelectedFleet.DeselectGroup(group),
+					OnSplit = shipGroupSplit
+				});
+
+			this.showBottomView(this.fleetsPanel);
+		}
+
+		private void shipGroupSplit(MapSelectableItem<ShipGroupInfo> shipItem)
+		{
+			using (var form = new FormSelectQuantity(shipItem.Data.Quantity, 1))
+			{
+				form.ShowDialog();
+				
+				var thousandsFormat = new ThousandsFormatter(shipItem.Data.Quantity);
+				shipItem.IsSelected = form.SelectedValue > 0;
+				shipItem.Text = shipItem.Data.Design.Name + Environment.NewLine +
+					thousandsFormat.Format(form.SelectedValue) + " / " + thousandsFormat.Format(shipItem.Data.Quantity);
+
+				this.SelectedFleet.SelectGroup(shipItem.Data, form.SelectedValue);
+			}
 		}
 
 		private void toggleRadar(bool state)
@@ -332,7 +406,7 @@ namespace Stareater.GameScenes
 			this.setupVaos();
 
 			if (this.currentSelection == GalaxySelectionType.Star)
-				this.updateStarInfo(this.lastSelectedStar);
+				this.showStarInfo(this.lastSelectedStar);
 		}
 		
 		protected override void frameUpdate(double deltaTime)
@@ -691,7 +765,7 @@ namespace Stareater.GameScenes
 					var destination = this.SelectedFleet.SimulationWaypoints().Any() ? this.SelectedFleet.SimulationWaypoints().Last() : starsFound[0];
 					this.SelectedFleet = modiferKeys.HasFlag(Keys.Control) ? this.SelectedFleet.SendDirectly(destination) : this.SelectedFleet.Send(destination);
 					this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = this.SelectedFleet.Fleet;
-					this.galaxyViewListener.FleetClicked(new FleetInfo[] { this.SelectedFleet.Fleet });
+					this.showFleetInfo(new List<FleetInfo> { this.SelectedFleet.Fleet });
 					this.setupFleetMarkers();
 					this.setupFleetMovement();
 					this.setupSelectionMarkers();
@@ -700,7 +774,7 @@ namespace Stareater.GameScenes
 				}
 				else
 				{
-					this.galaxyViewListener.FleetDeselected();
+					this.hideBottomView();
 					this.SelectedFleet = null;
 					this.setupMovementEta();
 					this.setupMovementSimulation();
@@ -715,14 +789,14 @@ namespace Stareater.GameScenes
 			{
 				this.currentSelection = GalaxySelectionType.Star;
 				this.lastSelectedStars[this.currentPlayer.PlayerIndex] = starsFound[0].Position;
-				this.updateStarInfo(this.lastSelectedStar);
+				this.showStarInfo(this.lastSelectedStar);
 				this.setupSelectionMarkers();
 			}
 			else
 			{
 				this.currentSelection = GalaxySelectionType.Fleet;
 				this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = fleetFound[0]; //TODO(v0.8) marks wrong fleet when there are multiple players 
-				this.galaxyViewListener.FleetClicked(fleetFound);
+				this.showFleetInfo(fleetFound);
 				this.setupSelectionMarkers();
 			}
 			
@@ -835,6 +909,21 @@ namespace Stareater.GameScenes
 
 			this.lastSelectedStars[this.currentPlayer.PlayerIndex] = bestStar.HostStar.Position;
 			this.lastOffset[this.currentPlayer.PlayerIndex] = convert(bestStar.HostStar.Position);
+		}
+
+		private void showBottomView(AGuiElement view)
+		{
+			foreach (var selectionView in new AGuiElement[] { this.starInfo, this.fleetsPanel })
+				if (selectionView.Equals(view))
+					this.ShowElement(selectionView);
+				else
+					this.HideElement(selectionView);
+		}
+
+		private void hideBottomView()
+		{
+			foreach (var selectionView in new AGuiElement[] { this.starInfo, this.fleetsPanel })
+				this.HideElement(selectionView);
 		}
 		#endregion
 	}
