@@ -249,12 +249,12 @@ namespace Stareater.GameScenes
 			this.starInfo.Position.ParentRelative(0, -1).WithMargins(0, 0);
 			this.AddElement(this.starInfo);
 
-			this.fleetsPanel = new ListPanel(2, MapSelectableItem<ShipGroupInfo>.Width, MapSelectableItem<ShipGroupInfo>.Height, 5)
+			this.fleetsPanel = new ListPanel(3, MapSelectableItem<ShipGroupInfo>.Width, MapSelectableItem<ShipGroupInfo>.Height, 5)
 			{
 				Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 6),
 				Padding = 5
 			};
-			this.fleetsPanel.Position.FixedSize(215, 100).ParentRelative(0, -1).WithMargins(0, 0);
+			this.fleetsPanel.Position.FixedSize(470, 100).ParentRelative(0, -1).WithMargins(0, 0);
 		}
 
 		public void OnNewTurn()
@@ -360,21 +360,37 @@ namespace Stareater.GameScenes
 
 		private void selectFleet()
 		{
-			var thousandsFormat = new ThousandsFormatter();
-
 			this.fleetsPanel.Children = this.SelectedFleet.ShipGroups.
 				Select(x => new MapSelectableItem<ShipGroupInfo>(x)
 				{
 					ImageBackground = this.currentPlayer.Info.Color,
 					Image = GalaxyTextures.Get.Sprite(x.Design.ImagePath),
-					Text = x.Design.Name + Environment.NewLine + thousandsFormat.Format(x.Quantity),
+					Text = shipGroupText(x),
 					IsSelected = true,
-					OnSelect = group => this.SelectedFleet.SelectGroup(group, group.Quantity),
-					OnDeselect = group => this.SelectedFleet.DeselectGroup(group),
+					OnSelect = item => shipGroupSelect(item, item.Data.Quantity),
+					OnDeselect = item => shipGroupSelect(item, 0),
 					OnSplit = shipGroupSplit
 				});
 
 			this.showBottomView(this.fleetsPanel);
+		}
+
+		private void shipGroupSelect(MapSelectableItem<ShipGroupInfo> item, long quantity)
+		{
+			this.SelectedFleet.SelectGroup(item.Data, quantity);
+			item.Text = shipGroupText(item.Data);
+		}
+
+		private string shipGroupText(ShipGroupInfo group)
+		{
+			var selected = this.SelectedFleet.SelectionCount(group);
+
+			if (selected == 0 || selected == group.Quantity)
+				return group.Design.Name + Environment.NewLine + new ThousandsFormatter().Format(group.Quantity);
+
+			var thousandsFormat = new ThousandsFormatter(group.Quantity);
+			return group.Design.Name + Environment.NewLine +
+					thousandsFormat.Format(selected) + " / " + thousandsFormat.Format(group.Quantity);
 		}
 
 		private void shipGroupSplit(MapSelectableItem<ShipGroupInfo> shipItem)

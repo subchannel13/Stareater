@@ -12,7 +12,7 @@ namespace Stareater.GameScenes.Widgets
 {
 	class MapSelectableItem<T> : AGuiElement
 	{
-		public const float Width = 100;
+		public const float Width = 150;
 		public const float Height = 40;
 		const float TextHeight = 12;
 		const float Padding = 5;
@@ -32,8 +32,8 @@ namespace Stareater.GameScenes.Widgets
 			this.Position.FixedSize(Width, Height);
 		}
 
-		public Action<T> OnSelect { get; set; }
-		public Action<T> OnDeselect { get; set; }
+		public Action<MapSelectableItem<T>> OnSelect { get; set; }
+		public Action<MapSelectableItem<T>> OnDeselect { get; set; }
 		public Action<MapSelectableItem<T>> OnSplit { get; set; }
 
 		public bool IsSelected
@@ -85,9 +85,9 @@ namespace Stareater.GameScenes.Widgets
 			if (modiferKeys == Keys.Shift)
 				this.OnSplit?.Invoke(this);
 			else if (this.mIsSelected)
-				this.OnSelect?.Invoke(this.Data);
+				this.OnSelect?.Invoke(this);
 			else
-				this.OnDeselect?.Invoke(this.Data);
+				this.OnDeselect?.Invoke(this);
 		}
 
 		public override void OnMouseDownCanceled()
@@ -138,7 +138,7 @@ namespace Stareater.GameScenes.Widgets
 			if (!string.IsNullOrWhiteSpace(this.Text))
 				soBuilder.StartText(this.Text, 0, 0, this.Z0 - this.ZRange / 3, this.ZRange / 2, Color.White).
 					Scale(TextHeight).
-					Translate(imageX + Padding + imageSize, this.Position.Center.Y + this.textSize.Y / 2f * TextHeight);
+					Translate(imageX + Padding + imageSize / 2, this.Position.Center.Y + this.textSize.Y / 2f * TextHeight);
 
 			return soBuilder.Build();
 		}
