@@ -14,7 +14,7 @@ namespace Stareater.GameScenes.Widgets
 	{
 		public const float Width = 150;
 		public const float Height = 40;
-		const float TextHeight = 12;
+		const float TextHeight = 10;
 		const float Padding = 5;
 
 		private readonly BackgroundTexture backgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 7);

@@ -18,4 +18,9 @@ StareaterTooltip = Stareater control
 LibraryTooltip = Library
 FuelTooltip = Fuel usage and supply
 RadarSwitchToolip = Show scan range
+
+StationaryFleet = Stationary
+MovingFleet §
+		Moving to {=destination}
+	\
 -

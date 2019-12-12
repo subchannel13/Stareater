@@ -30,18 +30,14 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
 			this.glCanvas = new OpenTK.GLControl(OpenTK.Graphics.GraphicsMode.Default, 3, 2, OpenTK.Graphics.GraphicsContextFlags.Default);
 			this.returnButton = new System.Windows.Forms.Button();
-			this.fleetPanel = new System.Windows.Forms.Panel();
-			this.shipList = new System.Windows.Forms.FlowLayoutPanel();
-			this.fleetMissionButton = new System.Windows.Forms.Button();
 			this.unitInfoPanel = new System.Windows.Forms.Panel();
 			this.movementInfo = new System.Windows.Forms.Label();
 			this.shieldInfo = new System.Windows.Forms.Label();
 			this.armorInfo = new System.Windows.Forms.Label();
 			this.shipCount = new System.Windows.Forms.Label();
 			this.unitDoneAction = new System.Windows.Forms.Button();
-			this.abilityList = new System.Windows.Forms.FlowLayoutPanel();
 			this.workaroundForWinformsAnchorBug = new System.Windows.Forms.Panel();
-			this.fleetPanel.SuspendLayout();
+			this.abilityList = new System.Windows.Forms.FlowLayoutPanel();
 			this.unitInfoPanel.SuspendLayout();
 			this.workaroundForWinformsAnchorBug.SuspendLayout();
 			this.SuspendLayout();
@@ -76,35 +72,6 @@
 			this.returnButton.UseVisualStyleBackColor = true;
 			this.returnButton.Visible = false;
 			this.returnButton.Click += new System.EventHandler(this.returnButton_Click);
-			// 
-			// fleetPanel
-			// 
-			this.fleetPanel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-			this.fleetPanel.Controls.Add(this.shipList);
-			this.fleetPanel.Controls.Add(this.fleetMissionButton);
-			this.fleetPanel.Location = new System.Drawing.Point(234, 446);
-			this.fleetPanel.Name = "fleetPanel";
-			this.fleetPanel.Size = new System.Drawing.Size(417, 116);
-			this.fleetPanel.TabIndex = 5;
-			this.fleetPanel.Visible = false;
-			// 
-			// shipList
-			// 
-			this.shipList.AutoScroll = true;
-			this.shipList.Location = new System.Drawing.Point(3, 3);
-			this.shipList.Name = "shipList";
-			this.shipList.Size = new System.Drawing.Size(332, 109);
-			this.shipList.TabIndex = 1;
-			// 
-			// fleetMissionButton
-			// 
-			this.fleetMissionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.fleetMissionButton.Location = new System.Drawing.Point(339, 3);
-			this.fleetMissionButton.Name = "fleetMissionButton";
-			this.fleetMissionButton.Size = new System.Drawing.Size(75, 23);
-			this.fleetMissionButton.TabIndex = 0;
-			this.fleetMissionButton.Text = "Missions";
-			this.fleetMissionButton.UseVisualStyleBackColor = true;
 			// 
 			// unitInfoPanel
 			// 
@@ -166,6 +133,18 @@
 			this.unitDoneAction.UseVisualStyleBackColor = true;
 			this.unitDoneAction.Click += new System.EventHandler(this.unitDoneAction_Click);
 			// 
+			// workaroundForWinformsAnchorBug
+			// 
+			this.workaroundForWinformsAnchorBug.Controls.Add(this.abilityList);
+			this.workaroundForWinformsAnchorBug.Controls.Add(this.unitInfoPanel);
+			this.workaroundForWinformsAnchorBug.Controls.Add(this.returnButton);
+			this.workaroundForWinformsAnchorBug.Controls.Add(this.glCanvas);
+			this.workaroundForWinformsAnchorBug.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.workaroundForWinformsAnchorBug.Location = new System.Drawing.Point(0, 0);
+			this.workaroundForWinformsAnchorBug.Name = "workaroundForWinformsAnchorBug";
+			this.workaroundForWinformsAnchorBug.Size = new System.Drawing.Size(884, 562);
+			this.workaroundForWinformsAnchorBug.TabIndex = 9;
+			// 
 			// abilityList
 			// 
 			this.abilityList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -177,19 +156,6 @@
 			this.abilityList.Size = new System.Drawing.Size(110, 475);
 			this.abilityList.TabIndex = 8;
 			this.abilityList.Visible = false;
-			// 
-			// workaroundForWinformsAnchorBug
-			// 
-			this.workaroundForWinformsAnchorBug.Controls.Add(this.abilityList);
-			this.workaroundForWinformsAnchorBug.Controls.Add(this.unitInfoPanel);
-			this.workaroundForWinformsAnchorBug.Controls.Add(this.fleetPanel);
-			this.workaroundForWinformsAnchorBug.Controls.Add(this.returnButton);
-			this.workaroundForWinformsAnchorBug.Controls.Add(this.glCanvas);
-			this.workaroundForWinformsAnchorBug.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.workaroundForWinformsAnchorBug.Location = new System.Drawing.Point(0, 0);
-			this.workaroundForWinformsAnchorBug.Name = "workaroundForWinformsAnchorBug";
-			this.workaroundForWinformsAnchorBug.Size = new System.Drawing.Size(884, 562);
-			this.workaroundForWinformsAnchorBug.TabIndex = 9;
 			// 
 			// FormMain
 			// 
@@ -203,16 +169,12 @@
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
 			this.Load += new System.EventHandler(this.FormMain_Load);
-			this.fleetPanel.ResumeLayout(false);
 			this.unitInfoPanel.ResumeLayout(false);
 			this.unitInfoPanel.PerformLayout();
 			this.workaroundForWinformsAnchorBug.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
-		private System.Windows.Forms.Button fleetMissionButton;
-		private System.Windows.Forms.FlowLayoutPanel shipList;
-		private System.Windows.Forms.Panel fleetPanel;
 		private System.Windows.Forms.Button returnButton;
 
 		#endregion
@@ -223,7 +185,7 @@
 		private System.Windows.Forms.Label armorInfo;
 		private System.Windows.Forms.Label shipCount;
 		private System.Windows.Forms.Button unitDoneAction;
-		private System.Windows.Forms.FlowLayoutPanel abilityList;
 		private System.Windows.Forms.Panel workaroundForWinformsAnchorBug;
+		private System.Windows.Forms.FlowLayoutPanel abilityList;
 	}
 }

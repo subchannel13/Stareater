@@ -273,12 +273,6 @@
     <Compile Include="GUI\DesignSpaceInfo.Designer.cs">
       <DependentUpon>DesignSpaceInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\FleetInfoView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\FleetInfoView.Designer.cs">
-      <DependentUpon>FleetInfoView.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\FormBuildingQueue.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -474,12 +468,6 @@
     <Compile Include="GUI\ShipEquipmentItem.Designer.cs">
       <DependentUpon>ShipEquipmentItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\ShipGroupItem.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\ShipGroupItem.Designer.cs">
-      <DependentUpon>ShipGroupItem.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\DevelopmentItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -534,9 +522,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\DesignSpaceInfo.resx">
       <DependentUpon>DesignSpaceInfo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\FleetInfoView.resx">
-      <DependentUpon>FleetInfoView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\FormBuildingQueue.resx">
       <DependentUpon>FormBuildingQueue.cs</DependentUpon>
@@ -632,9 +617,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ShipEquipmentItem.resx">
       <DependentUpon>ShipEquipmentItem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\ShipGroupItem.resx">
-      <DependentUpon>ShipGroupItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\DevelopmentItem.resx">
       <DependentUpon>DevelopmentItem.cs</DependentUpon>

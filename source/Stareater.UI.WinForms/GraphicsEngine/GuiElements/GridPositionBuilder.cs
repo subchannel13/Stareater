@@ -23,7 +23,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		public void Add(ElementPosition position)
 		{
 			if (this.row != 0 || this.column != 0)
-				position.Offset((this.elementHeight + this.elementSpacing) * this.column, -(this.elementWidth + this.elementSpacing) * this.row);
+				position.Offset((this.elementWidth + this.elementSpacing) * this.column, -(this.elementHeight + this.elementSpacing) * this.row);
 
 			this.column++;
 			if (column >= this.columns)

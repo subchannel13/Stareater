@@ -201,20 +201,6 @@ namespace Stareater.GUI
 			switchToGalaxyView();
 		}
 
-		private void addFleetSelection(FleetInfo fleet)
-		{
-			var fleetView = new FleetInfoView();
-			fleetView.SetData(fleet, this.currentPlayer);
-			fleetView.OnSelect += fleetInfoView_OnSelect;
-
-			this.shipList.Controls.Add(fleetView);
-		}
-		
-		private void fleetInfoView_OnSelect(object sender, EventArgs e)
-		{
-			//this.selectFleet(this.currentPlayer.SelectFleet((sender as FleetInfoView).Data));
-		}
-		
 		private void unitDoneAction_Click(object sender, EventArgs e)
 		{
 			this.combatRenderer.OnUnitDone();
@@ -398,7 +384,6 @@ namespace Stareater.GUI
 			this.nextRenderer = this.combatRenderer;
 
 			abilityList.Visible = true;
-			fleetPanel.Visible = false;
 			returnButton.Visible = false;
 			unitInfoPanel.Visible = true;
 		}
@@ -411,7 +396,6 @@ namespace Stareater.GUI
 			this.nextRenderer = this.bombardRenderer;
 			
 			abilityList.Visible = false;
-			fleetPanel.Visible = false;
 			returnButton.Visible = true;
 			unitInfoPanel.Visible = false;
 		}
@@ -530,8 +514,6 @@ namespace Stareater.GUI
 				return;
 			}
 			
-			this.fleetPanel.Visible = false;
-			
 			this.systemRenderer.SetStarSystem(systemController, this.currentPlayer);
 			this.nextRenderer = systemRenderer;
 		}
@@ -543,8 +525,6 @@ namespace Stareater.GUI
 				this.BeginInvoke(new Action<StarSystemController>(((IGalaxyViewListener)this).SystemSelected), systemController);
 				return;
 			}
-			
-			this.fleetPanel.Visible = false;
 		}
 		#endregion
 	}

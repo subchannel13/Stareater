@@ -320,27 +320,54 @@ namespace Stareater.GameScenes
 				if (this.SelectedFleet == null)
 					this.SelectedFleet = this.currentPlayer.SelectFleet(fleets[0]);
 
-				this.selectFleet();
+				this.fleetsPanel.Children = this.SelectedFleet.ShipGroups.
+					Select(x => new MapSelectableItem<ShipGroupInfo>(x)
+					{
+						ImageBackground = this.currentPlayer.Info.Color,
+						Image = GalaxyTextures.Get.Sprite(x.Design.ImagePath),
+						Text = shipGroupText(x),
+						IsSelected = true,
+						OnSelect = item => shipGroupSelect(item, item.Data.Quantity),
+						OnDeselect = item => shipGroupSelect(item, 0),
+						OnSplit = shipGroupSplit
+					});
 				return;
 			}
 
-			/*
+
 			var stationaryFleet = fleets.FirstOrDefault(x => x.Owner == this.currentPlayer.Info && x.Missions.Waypoints.Length == 0);
 			var otherOwnedFleets = fleets.Where(x => x.Owner == this.currentPlayer.Info && x != stationaryFleet);
 			var othersFleets = fleets.Where(x => x.Owner != this.currentPlayer.Info);
 
-			this.shipList.SuspendLayout();
-			this.clearShipList();
+			this.fleetsPanel.Children = new[] { stationaryFleet }.
+				Concat(otherOwnedFleets).
+				Concat(othersFleets).
+				Where(x => x != null).
+				Select(x => addFleetSelection(x));
+		}
 
-			if (stationaryFleet != null)
-				addFleetSelection(stationaryFleet);
+		private MapSelectableItem<FleetInfo> addFleetSelection(FleetInfo fleet)
+		{
+			var lang = LocalizationManifest.Get.CurrentLanguage;
+			var context = lang["GalaxyScene"];
+			var biggestGroup = fleet.Ships.Aggregate((a, b) => (a.Quantity * a.Design.Size > b.Quantity * b.Design.Size) ? a : b);
 
-			foreach (var fleet in otherOwnedFleets.Concat(othersFleets))
-				addFleetSelection(fleet);
+			//TODO(v0.9) text might be long, do word wrap
+			var text = fleet.Missions.Waypoints.Length == 0 ?
+				context["StationaryFleet"].Text() :
+				context["MovingFleet"].Text(new TextVar(
+					"destination", 
+					this.currentPlayer.Star(fleet.Missions.Waypoints[0].Destionation).Name.ToText(lang)
+				).Get);
 
-			this.shipList.ResumeLayout();
-			*/
-			this.showBottomView(this.fleetsPanel);
+			return new MapSelectableItem<FleetInfo>(fleet)
+			{
+				ImageBackground = fleet.Owner.Color,
+				Image = GalaxyTextures.Get.Sprite(biggestGroup.Design.ImagePath),
+				Text = text,
+				IsSelected = false,
+				OnSelect = item => showFleetInfo(new List<FleetInfo> { item.Data })
+			};
 		}
 
 		private void showStarInfo(StarInfo star)
@@ -356,23 +383,6 @@ namespace Stareater.GameScenes
 			}
 			else
 				this.hideBottomView();
-		}
-
-		private void selectFleet()
-		{
-			this.fleetsPanel.Children = this.SelectedFleet.ShipGroups.
-				Select(x => new MapSelectableItem<ShipGroupInfo>(x)
-				{
-					ImageBackground = this.currentPlayer.Info.Color,
-					Image = GalaxyTextures.Get.Sprite(x.Design.ImagePath),
-					Text = shipGroupText(x),
-					IsSelected = true,
-					OnSelect = item => shipGroupSelect(item, item.Data.Quantity),
-					OnDeselect = item => shipGroupSelect(item, 0),
-					OnSplit = shipGroupSplit
-				});
-
-			this.showBottomView(this.fleetsPanel);
 		}
 
 		private void shipGroupSelect(MapSelectableItem<ShipGroupInfo> item, long quantity)
