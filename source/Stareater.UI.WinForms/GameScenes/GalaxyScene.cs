@@ -249,7 +249,7 @@ namespace Stareater.GameScenes
 			this.starInfo.Position.ParentRelative(0, -1).WithMargins(0, 0);
 			this.AddElement(this.starInfo);
 
-			this.fleetsPanel = new ListPanel(3, MapSelectableItem<ShipGroupInfo>.Width, MapSelectableItem<ShipGroupInfo>.Height, 5)
+			this.fleetsPanel = new ListPanel(3, AMapSelectableItem<ShipGroupInfo>.Width, AMapSelectableItem<ShipGroupInfo>.Height, 5)
 			{
 				Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 6),
 				Padding = 5
@@ -321,7 +321,7 @@ namespace Stareater.GameScenes
 					this.SelectedFleet = this.currentPlayer.SelectFleet(fleets[0]);
 
 				this.fleetsPanel.Children = this.SelectedFleet.ShipGroups.
-					Select(x => new MapSelectableItem<ShipGroupInfo>(x)
+					Select(x => new ShipSelectableItem(x)
 					{
 						ImageBackground = this.currentPlayer.Info.Color,
 						Image = GalaxyTextures.Get.Sprite(x.Design.ImagePath),
@@ -365,7 +365,6 @@ namespace Stareater.GameScenes
 				ImageBackground = fleet.Owner.Color,
 				Image = GalaxyTextures.Get.Sprite(biggestGroup.Design.ImagePath),
 				Text = text,
-				IsSelected = false,
 				OnSelect = item => showFleetInfo(new List<FleetInfo> { item.Data })
 			};
 		}
@@ -385,7 +384,7 @@ namespace Stareater.GameScenes
 				this.hideBottomView();
 		}
 
-		private void shipGroupSelect(MapSelectableItem<ShipGroupInfo> item, long quantity)
+		private void shipGroupSelect(ShipSelectableItem item, long quantity)
 		{
 			this.SelectedFleet.SelectGroup(item.Data, quantity);
 			item.Text = shipGroupText(item.Data);
@@ -403,7 +402,7 @@ namespace Stareater.GameScenes
 					thousandsFormat.Format(selected) + " / " + thousandsFormat.Format(group.Quantity);
 		}
 
-		private void shipGroupSplit(MapSelectableItem<ShipGroupInfo> shipItem)
+		private void shipGroupSplit(ShipSelectableItem shipItem)
 		{
 			using (var form = new FormSelectQuantity(shipItem.Data.Quantity, 1))
 			{

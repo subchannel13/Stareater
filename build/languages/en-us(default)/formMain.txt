@@ -64,7 +64,6 @@ DevelopmentMenu = Development
 
 SelectQuantityTitle = Select quantity
 
-
 MoveAction = Move
 ShipCount = Ships
 MovementPoints = Move ready
