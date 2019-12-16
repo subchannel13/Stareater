@@ -40,13 +40,21 @@ namespace Stareater.GameScenes.Widgets
 			}
 		}
 
-		private TextureInfo? mImage = null;
-		public TextureInfo? Image
+		private Sprite[] mImages = null;
+		public Sprite[] Images
 		{
-			get => this.mImage;
+			get { return this.mImages; }
 			set
 			{
-				this.apply(ref this.mImage, value);
+				this.apply(ref this.mImages, value);
+			}
+		}
+
+		public TextureInfo Image
+		{
+			set
+			{
+				this.apply(ref this.mImages, new[] { new Sprite(value, Color.White) });
 			}
 		}
 
@@ -84,21 +92,22 @@ namespace Stareater.GameScenes.Widgets
 
 			var imageSize = Height - 2 * Padding;
 			var imageX = this.Position.Center.X - this.Position.Size.X / 2 + Padding + imageSize / 2;
+			var totalLayers = (this.mImages != null ? this.mImages.Length : 0) + 2;
 
 			if (this.mImageBackground.HasValue)
 				soBuilder.
-					StartSimpleSprite(this.Z0 - this.ZRange / 3, GalaxyTextures.Get.Blank, this.mImageBackground.Value).
+					StartSimpleSprite(this.Z0 - this.ZRange / totalLayers, GalaxyTextures.Get.Blank, this.mImageBackground.Value).
 					Scale(imageSize).
 					Translate(imageX, this.Position.Center.Y);
 
-			if (this.mImage.HasValue)
-				soBuilder.
-					StartSimpleSprite(this.Z0 - 2 * this.ZRange / 3, this.mImage.Value, Color.White).
-					Scale(imageSize).
-					Translate(imageX, this.Position.Center.Y);
+			if (this.mImages != null && this.mImages.Length > 0)
+				for (int i = 0; i < this.mImages.Length; i++)
+					soBuilder.StartSimpleSprite(this.Z0 - (2 + i) * this.ZRange / totalLayers, this.mImages[i].Texture, this.mImages[i].ModulationColor).
+						Scale(imageSize).
+						Translate(imageX, this.Position.Center.Y);
 
 			if (!string.IsNullOrWhiteSpace(this.Text))
-				soBuilder.StartText(this.Text, 0, 0, this.Z0 - this.ZRange / 3, this.ZRange / 2, Color.White).
+				soBuilder.StartText(this.Text, 0, 0, this.Z0 - this.ZRange / totalLayers, this.ZRange / 2, Color.White).
 					Scale(TextHeight).
 					Translate(imageX + Padding + imageSize / 2, this.Position.Center.Y + this.textSize.Y / 2f * TextHeight);
 
