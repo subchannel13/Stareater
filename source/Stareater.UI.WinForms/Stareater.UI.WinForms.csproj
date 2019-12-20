@@ -165,6 +165,7 @@
     <Compile Include="GraphicsEngine\GuiElements\CycleButton.cs" />
     <Compile Include="GraphicsEngine\GuiElements\DynamicTooltip.cs" />
     <Compile Include="GraphicsEngine\GuiElements\ListPanel.cs" />
+    <Compile Include="GraphicsEngine\GuiElements\Orientation.cs" />
     <Compile Include="GraphicsEngine\GuiElements\SelectableImage.cs" />
     <Compile Include="GraphicsEngine\GuiPositioners\ElementPosition.cs" />
     <Compile Include="GraphicsEngine\GuiElements\GuiButton.cs" />
