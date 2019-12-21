@@ -131,6 +131,14 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			return new OutsidePosition(this, positioner);
 		}
 
+		public ElementPosition StretchBottomTo(IGuispaceElement anchor, float yPortionAnchor, float marginY)
+		{
+			this.positioners.Add(new StretchBottomToPositioner(anchor.Position, yPortionAnchor, marginY));
+			this.dependsOn(anchor.Position);
+
+			return this;
+		}
+
 		public ElementPosition StretchRightTo(IGuispaceElement anchor, float xPortionAnchor, float marginX)
 		{
 			this.positioners.Add(new StretchRightToPositioner(anchor.Position, xPortionAnchor, marginX));
@@ -224,6 +232,30 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 					this.anchor.Center.X + (this.anchor.Size.X + this.marginX) * this.xPortionAnchor / 2 - element.Size.X * this.xPortionThis / 2,
 					this.anchor.Center.Y + (this.anchor.Size.Y + this.marginY) * this.yPortionAnchor / 2 - element.Size.Y * this.yPortionThis / 2
 				);
+			}
+		}
+
+		//Todo(v0.9) try to unify stretch positioners
+		private class StretchBottomToPositioner : IPositioner
+		{
+			private readonly ElementPosition anchor;
+			private readonly float yPortionAnchor;
+			private readonly float marginY;
+
+			public StretchBottomToPositioner(ElementPosition anchor, float yPortionAnchor, float marginY)
+			{
+				this.anchor = anchor;
+				this.yPortionAnchor = yPortionAnchor;
+				this.marginY = marginY;
+			}
+
+			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
+			{
+				var top = element.Center.Y + element.Size.Y / 2;
+				var bottom = this.anchor.Center.Y + yPortionAnchor * (this.anchor.Size.Y / 2 - this.marginY);
+
+				element.Center = new Vector2(element.Center.X, (top + bottom) / 2);
+				element.Size = new Vector2(element.Size.X, top - bottom);
 			}
 		}
 
