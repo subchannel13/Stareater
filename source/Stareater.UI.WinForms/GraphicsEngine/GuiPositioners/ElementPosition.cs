@@ -133,7 +133,11 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 
 		public ElementPosition StretchBottomTo(IGuispaceElement anchor, float yPortionAnchor, float marginY)
 		{
-			this.positioners.Add(new StretchBottomToPositioner(anchor.Position, yPortionAnchor, marginY));
+			this.positioners.Add(new StretchToPositioner(
+				anchor.Position,
+				new Vector2(0, yPortionAnchor), new Vector2(0, 1),
+				new Vector2(0, marginY)
+			));
 			this.dependsOn(anchor.Position);
 
 			return this;
@@ -141,7 +145,11 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 
 		public ElementPosition StretchRightTo(IGuispaceElement anchor, float xPortionAnchor, float marginX)
 		{
-			this.positioners.Add(new StretchRightToPositioner(anchor.Position, xPortionAnchor, marginX));
+			this.positioners.Add(new StretchToPositioner(
+				anchor.Position,
+				new Vector2(xPortionAnchor, 0), new Vector2(-1, 0),
+				new Vector2(marginX, 0)
+			));
 			this.dependsOn(anchor.Position);
 
 			return this;
@@ -235,51 +243,36 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			}
 		}
 
-		//Todo(v0.9) try to unify stretch positioners
-		private class StretchBottomToPositioner : IPositioner
+		private class StretchToPositioner : IPositioner
 		{
 			private readonly ElementPosition anchor;
-			private readonly float yPortionAnchor;
-			private readonly float marginY;
+			private readonly Vector2 anchorPortion;
+			private readonly Vector2 oppositePortion;
+			private readonly Vector2 margin;
+			private readonly Vector2 strechAxis;
+			private readonly Vector2 preservedAxis;
 
-			public StretchBottomToPositioner(ElementPosition anchor, float yPortionAnchor, float marginY)
+			public StretchToPositioner(ElementPosition anchor, Vector2 anchorPortion, Vector2 oppositePortion, Vector2 margin)
 			{
 				this.anchor = anchor;
-				this.yPortionAnchor = yPortionAnchor;
-				this.marginY = marginY;
+				this.anchorPortion = anchorPortion;
+				this.oppositePortion = oppositePortion;
+				this.margin = margin;
+
+				this.strechAxis = abs(oppositePortion);
+				this.preservedAxis = abs(this.strechAxis.PerpendicularLeft);
 			}
 
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
-				var top = element.Center.Y + element.Size.Y / 2;
-				var bottom = this.anchor.Center.Y + yPortionAnchor * (this.anchor.Size.Y / 2 - this.marginY);
+				var oppositeEnd = element.Center + element.Size * this.oppositePortion / 2;
+				var anchorEnd = this.anchor.Center + this.anchorPortion * (this.anchor.Size / 2 - this.margin);
 
-				element.Center = new Vector2(element.Center.X, (top + bottom) / 2);
-				element.Size = new Vector2(element.Size.X, top - bottom);
-			}
-		}
-
-		private class StretchRightToPositioner : IPositioner
-		{
-			private readonly ElementPosition anchor;
-			private readonly float xPortionAnchor;
-			private readonly float marginX;
-
-			public StretchRightToPositioner(ElementPosition anchor, float xPortionAnchor, float marginX)
-			{
-				this.anchor = anchor;
-				this.xPortionAnchor = xPortionAnchor;
-				this.marginX = marginX;
+				element.Center = element.Center * this.preservedAxis + (oppositeEnd + anchorEnd) * this.strechAxis / 2;
+				element.Size = element.Size * this.preservedAxis + abs(oppositeEnd - anchorEnd) * this.strechAxis;
 			}
 
-			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
-			{
-				var widthDelta = this.anchor.Center.X + xPortionAnchor * (this.anchor.Size.X / 2 - this.marginX) -
-					(element.Center.X + element.Size.X / 2);
-
-				element.Center = new Vector2(element.Center.X + widthDelta / 2, element.Center.Y);
-				element.Size = new Vector2(element.Size.X + widthDelta, element.Size.Y);
-			}
+			private static Vector2 abs(Vector2 v) => new Vector2(Math.Abs(v.X), Math.Abs(v.Y));
 		}
 
 		private class TooltipPositioner : IPositioner
