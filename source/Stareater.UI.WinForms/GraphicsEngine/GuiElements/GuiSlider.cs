@@ -83,10 +83,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 			return new SceneObjectBuilder().
 				Clip(this.Position.ClipArea).
-				StartSimpleSprite(this.Z0, GalaxyTextures.Get.PanelBackground, Color.White).
+				StartSprite(this.Z0, GalaxyTextures.Get.PanelBackground.Id, Color.White).
 				Translate(this.Position.Center).
 				AddVertices(SpriteHelpers.GuiBackground(panelSprite, railSize.X, railSize.Y)).
-
+				
 				StartSprite(this.Z0 - this.ZRange / 2, GalaxyTextures.Get.PanelBackground.Id, knobColor).
 				Translate(this.Position.Center + railX * railLength * (this.mValue - 0.5f)).
 				AddVertices(SpriteHelpers.GuiBackground(panelSprite, this.knobSize, this.knobSize)).

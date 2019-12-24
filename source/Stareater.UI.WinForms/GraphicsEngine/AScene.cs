@@ -108,6 +108,9 @@ namespace Stareater.GraphicsEngine
 
 		public void HandleMouseDoubleClick(MouseEventArgs e)
 		{
+			if (this.mousePressed.ContainsKey(e.Button) && this.mousePressed[e.Button] != this.normalGuiLayer.Root)
+				return;
+
 			//TODO(v0.8) differentiate between left and right click
 			this.onMouseDoubleClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy);
 		}
