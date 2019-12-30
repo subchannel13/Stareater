@@ -61,12 +61,20 @@ namespace Stareater.GraphicsEngine.GuiElements
 				0, 1
 			);
 
-			if (newValue != this.mValue)
-			{
-				this.mValue = newValue;
+			if (this.apply(ref this.mValue, newValue))
 				this.SlideCallback(newValue);
-				this.updateScene();
-			}
+		}
+
+		public override void OnMouseScroll(Vector2 mousePosition, int delta)
+		{
+			//TODO(v0.9) add scroll step value
+			var newValue = Methods.Clamp(
+				this.mValue + (delta < 0 ? 0.1f : -0.1f),
+				0, 1
+			);
+
+			if (this.apply(ref this.mValue, newValue))
+				this.SlideCallback(newValue);
 		}
 
 		protected override SceneObject makeSceneObject()

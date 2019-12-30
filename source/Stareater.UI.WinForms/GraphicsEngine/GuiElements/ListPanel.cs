@@ -84,6 +84,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return true;
 		}
 
+		public override void OnMouseScroll(Vector2 mousePosition, int delta)
+		{
+			this.slider.OnMouseScroll(mousePosition, delta);
+		}
+
 		protected override SceneObject makeSceneObject()
 		{
 			if (this.mBackground != null)

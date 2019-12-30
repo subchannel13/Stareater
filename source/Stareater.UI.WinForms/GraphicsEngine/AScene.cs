@@ -197,7 +197,13 @@ namespace Stareater.GraphicsEngine
 
 		public void HandleMouseScroll(MouseEventArgs e)
 		{
-			this.onMouseScroll(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy, e.Delta);
+			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
+			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault();
+
+			if (handler != null && handler != this.normalGuiLayer.Root)
+				handler.OnMouseScroll(mouseGuiPoint, e.Delta);
+			else
+				this.onMouseScroll(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy, e.Delta);
 		}
 
 		protected virtual void onKeyPress(char c)

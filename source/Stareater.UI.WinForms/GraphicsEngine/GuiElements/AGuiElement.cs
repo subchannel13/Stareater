@@ -83,7 +83,14 @@ namespace Stareater.GraphicsEngine.GuiElements
 		}
 
 		public virtual void OnMouseLeave()
-		{ }
+		{
+			//No operation
+		}
+
+		public virtual void OnMouseScroll(Vector2 mousePosition, int delta)
+		{
+			//No operation
+		}
 
 		protected void updateScene()
 		{
@@ -106,13 +113,18 @@ namespace Stareater.GraphicsEngine.GuiElements
 				this.scene.UpdateScene(ref this.graphicObject, sceneObject);
 		}
 
-		protected void apply<T>(ref T state, T newValue)
+		protected bool apply<T>(ref T state, T newValue)
 		{
 			var oldValue = state;
 			state = newValue;
 
 			if (!object.Equals(oldValue, newValue))
+			{
 				this.updateScene();
+				return true;
+			}
+
+			return false;
 		}
 
 		protected void reposition()
