@@ -67,6 +67,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override void OnMouseScroll(Vector2 mousePosition, int delta)
 		{
+			if (this.direction.X != 0)
+				delta *= -1;
+
 			//TODO(v0.9) add scroll step value
 			var newValue = Methods.Clamp(
 				this.mValue + (delta < 0 ? 0.1f : -0.1f),

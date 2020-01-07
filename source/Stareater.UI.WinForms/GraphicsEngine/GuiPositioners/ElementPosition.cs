@@ -96,7 +96,14 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 
 		public ElementPosition Offset(float x, float y)
 		{
-			this.positioners.Add(new OffsetPositiner(x, y));
+			this.positioners.Add(new ConstantOffsetPositiner(x, y));
+
+			return this;
+		}
+
+		public ElementPosition Offset(ValueReference<Vector2> offset)
+		{
+			this.positioners.Add(new OffsetPositiner(offset));
 
 			return this;
 		}
@@ -163,11 +170,11 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 		}
 		#endregion
 
-		private class OffsetPositiner : IPositioner
+		private class ConstantOffsetPositiner : IPositioner
 		{
 			private Vector2 offset;
 
-			public OffsetPositiner(float x, float y)
+			public ConstantOffsetPositiner(float x, float y)
 			{
 				this.offset = new Vector2(x, y);
 			}
@@ -175,6 +182,21 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
 				element.Center += this.offset;
+			}
+		}
+
+		private class OffsetPositiner : IPositioner
+		{
+			private readonly ValueReference<Vector2> offset;
+
+			public OffsetPositiner(ValueReference<Vector2> offset)
+			{
+				this.offset = offset;
+			}
+
+			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
+			{
+				element.Center += this.offset.Value;
 			}
 		}
 

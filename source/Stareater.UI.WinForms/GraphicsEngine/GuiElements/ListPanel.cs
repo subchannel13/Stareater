@@ -12,6 +12,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 	{
 		private readonly GridPositionBuilder positionBuilder;
 		private readonly GuiSlider slider;
+		private readonly ValueReference<Vector2> scrollOffset = new ValueReference<Vector2>(new Vector2(0, 0));
 
 		public ListPanel(int columns, float elementWidth, float elementHeight, float elementSpacing) : base()
 		{
@@ -37,11 +38,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 				this.mChildren.Clear();
 				this.positionBuilder.Restart();
-
+				
 				foreach (var child in value)
 				{
 					this.mChildren.Add(child);
-					child.Position.ParentRelative(-1, 1).WithMargins(this.mPadding, this.mPadding);
+					child.Position.ParentRelative(-1, 1).WithMargins(this.mPadding, this.mPadding).Offset(this.scrollOffset);
 					this.positionBuilder.Add(child.Position);
 				}
 
@@ -115,7 +116,13 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		private void onSlide(float state)
 		{
-			//throw new NotImplementedException();
+			//TODO(v0.9) calculate real stride value
+			var scrollStride = 20;
+			this.scrollOffset.Value = new Vector2(0, state * scrollStride);
+
+			foreach (var child in this.Children)
+				child.Position.Recalculate();
+			this.updateScene();
 		}
 	}
 }
