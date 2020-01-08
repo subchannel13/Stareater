@@ -120,7 +120,7 @@ namespace Stareater.GraphicsEngine
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 			this.mousePressed[e.Button] = this.normalGuiLayer.Root;
 
-			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault(x => x.MasksMouseClick);
+			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault(x => x.HandlesMouse);
 			//TODO(v0.8) differentiate between left and right click
 			if (handler != null && handler.OnMouseDown(mouseGuiPoint))
 				this.mousePressed[e.Button] = handler;
@@ -132,7 +132,7 @@ namespace Stareater.GraphicsEngine
 				this.mousePressed[e.Button] = this.normalGuiLayer.Root;
 
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
-			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault(x => x.MasksMouseClick);
+			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault(x => x.HandlesMouse);
 
 			if (handler != null)
 				if (this.mousePressed[e.Button] == handler)
@@ -198,7 +198,7 @@ namespace Stareater.GraphicsEngine
 		public void HandleMouseScroll(MouseEventArgs e)
 		{
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
-			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault();
+			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault(x => x.HandlesMouse);
 
 			if (handler != null && handler != this.normalGuiLayer.Root)
 				handler.OnMouseScroll(mouseGuiPoint, e.Delta);

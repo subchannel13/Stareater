@@ -53,6 +53,9 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 
 		public void Recalculate()
 		{
+			if (this.parentPosition == null && this.positioners.Count > 0)
+				return;
+
 			while (this.calculationGate.TryEnter())
 			{
 				var oldCenter = this.Center;

@@ -16,6 +16,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.children.Add(child);
 		}
 
+		public void Clear()
+		{
+			this.children.Clear();
+		}
+
 		private BackgroundTexture mBackground = null;
 		public BackgroundTexture Background
 		{

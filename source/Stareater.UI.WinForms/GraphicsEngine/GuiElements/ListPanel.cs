@@ -11,19 +11,28 @@ namespace Stareater.GraphicsEngine.GuiElements
 	class ListPanel : AGuiElement
 	{
 		private readonly GridPositionBuilder positionBuilder;
+		private readonly GuiPanel container;
 		private readonly GuiSlider slider;
 		private readonly ValueReference<Vector2> scrollOffset = new ValueReference<Vector2>(new Vector2(0, 0));
 
 		public ListPanel(int columns, float elementWidth, float elementHeight, float elementSpacing) : base()
 		{
 			this.positionBuilder = new GridPositionBuilder(columns, elementWidth, elementHeight, elementSpacing);
-			
+
 			this.slider = new GuiSlider
 			{ 
 				Orientation = Orientation.Vertical,
 				SlideCallback = onSlide
 			};
+			//TODO(v0.9) read margines from parent background texture
 			this.slider.Position.FixedSize(15, 45).ParentRelative(1, 1).WithMargins(5, 5).StretchBottomTo(this, -1, 5);
+
+			this.container = new GuiPanel
+			{
+				HandlesMouse = false
+			};
+			//TODO(v0.9) read margines from parent background texture
+			this.container.Position.ParentRelative(-1, 1).WithMargins(5, 5).StretchRightTo(this.slider, -1, 5).StretchBottomTo(this, -1, 5);
 		}
 
 		private readonly List<AGuiElement> mChildren = new List<AGuiElement>();
@@ -38,17 +47,19 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 				this.mChildren.Clear();
 				this.positionBuilder.Restart();
+				this.container.Clear();
 				
 				foreach (var child in value)
 				{
 					this.mChildren.Add(child);
 					child.Position.ParentRelative(-1, 1).WithMargins(this.mPadding, this.mPadding).Offset(this.scrollOffset);
 					this.positionBuilder.Add(child.Position);
+					this.container.AddChild(child);
 				}
 
 				if (scene != null)
 					foreach (var child in mChildren)
-						scene.AddElement(child, this);
+						scene.AddElement(child, this.container);
 			}
 		}
 
@@ -75,9 +86,10 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			base.Attach(scene, parent);
 			scene.AddElement(this.slider, this);
+			scene.AddElement(this.container, this);
 
 			foreach (var child in mChildren)
-				scene.AddElement(child, this);
+				scene.AddElement(child, this.container);
 		}
 
 		public override bool OnMouseDown(Vector2 mousePosition)
