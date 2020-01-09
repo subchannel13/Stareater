@@ -61,7 +61,8 @@ namespace Stareater.GameScenes.Widgets
 
 			this.investmentSlider = new GuiSlider
 			{
-				SlideCallback = investmentSlider_Change 
+				ScrollStep = 0.05f,
+				SlideCallback = investmentSlider_Change
 			};
 			this.investmentSlider.Position.FixedSize(150, 15).RelativeTo(this.projectButton, 1, 1, -1, 1).WithMargins(8, 0).StretchRightTo(this, 1, 8);
 			this.AddChild(this.investmentSlider);

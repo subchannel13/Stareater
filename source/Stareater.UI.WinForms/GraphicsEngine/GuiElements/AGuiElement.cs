@@ -50,12 +50,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.updateScene();
 		}
 
-		public bool IsInside(Vector2 point)
-		{
-			var innerPoint = point - this.Position.Center;
-			return Math.Abs(innerPoint.X) <= this.Position.Size.X / 2 &&
-				Math.Abs(innerPoint.Y) <= this.Position.Size.Y / 2;
-		}
+		public bool IsShown => this.scene != null;
 
 		public virtual bool OnMouseDown(Vector2 mousePosition)
 		{

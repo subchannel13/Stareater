@@ -14,6 +14,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		private readonly GuiPanel container;
 		private readonly GuiSlider slider;
 		private readonly ValueReference<Vector2> scrollOffset = new ValueReference<Vector2>(new Vector2(0, 0));
+		private float scrollableHeight = 0;
 
 		public ListPanel(int columns, float elementWidth, float elementHeight, float elementSpacing) : base()
 		{
@@ -60,6 +61,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 				if (scene != null)
 					foreach (var child in mChildren)
 						scene.AddElement(child, this.container);
+
+				this.updateSlider();
 			}
 		}
 
@@ -104,6 +107,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		protected override SceneObject makeSceneObject()
 		{
+			this.updateSlider();
+
 			if (this.mBackground != null)
 				return new SceneObjectBuilder().
 					Clip(this.Position.ClipArea).
@@ -115,6 +120,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				return null;
 		}
 
+		//TODO(v0.9) check if this override is needed
 		protected override Vector2 measureContent()
 		{
 			foreach (var child in this.mChildren)
@@ -128,13 +134,33 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		private void onSlide(float state)
 		{
-			//TODO(v0.9) calculate real stride value
-			var scrollStride = 20;
-			this.scrollOffset.Value = new Vector2(0, state * scrollStride);
+			if (!this.slider.IsShown)
+				return;
+			
+			this.scrollOffset.Value = new Vector2(0, state * this.scrollableHeight);
 
 			foreach (var child in this.Children)
 				child.Position.Recalculate();
 			this.updateScene();
+		}
+
+		private void updateSlider()
+		{
+			var rows = (this.mChildren.Count + this.positionBuilder.Columns - 1) / this.positionBuilder.Columns;
+			this.scrollableHeight =
+				rows * this.positionBuilder.ElementHeight
+				+ (rows - 1) * this.positionBuilder.ElementSpacing
+				- this.container.Position.Size.Y;
+
+			var showSlider = this.scrollableHeight > 0;
+			if (this.IsShown && showSlider != this.slider.IsShown)
+				if (!this.slider.IsShown)
+					this.scene.ShowElement(this.slider);
+				else
+					this.scene.HideElement(this.slider);
+
+			if (showSlider)
+				this.slider.ScrollStep = (this.positionBuilder.ElementHeight + this.positionBuilder.ElementSpacing) / this.scrollableHeight;
 		}
 	}
 }

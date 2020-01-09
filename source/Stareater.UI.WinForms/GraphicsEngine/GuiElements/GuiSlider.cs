@@ -43,6 +43,16 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
+		private float mScrollStep = 0;
+		public float ScrollStep
+		{
+			get { return this.mScrollStep; }
+			set
+			{
+				this.apply(ref this.mScrollStep, Methods.Clamp(value, 0, 1));
+			}
+		}
+
 		public override bool OnMouseDown(Vector2 mousePosition)
 		{
 			this.OnMouseDrag(mousePosition);
@@ -67,12 +77,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override void OnMouseScroll(Vector2 mousePosition, int delta)
 		{
-			if (this.direction.X != 0)
+			if (this.direction.Y != 0)
 				delta *= -1;
 
-			//TODO(v0.9) add scroll step value
 			var newValue = Methods.Clamp(
-				this.mValue + (delta < 0 ? 0.1f : -0.1f),
+				this.mValue + Math.Sign(delta) * this.mScrollStep,
 				0, 1
 			);
 
