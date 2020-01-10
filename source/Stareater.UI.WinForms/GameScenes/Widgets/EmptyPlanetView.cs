@@ -1,4 +1,5 @@
-﻿using Stareater.Controllers;
+﻿using OpenTK;
+using Stareater.Controllers;
 using Stareater.GLData;
 using Stareater.GraphicsEngine.GuiElements;
 using Stareater.GuiUtils;
@@ -24,8 +25,13 @@ namespace Stareater.GameScenes.Widgets
 			this.Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 6);
 			this.Position.FixedSize(360, 116);
 
-			this.title = new GuiText { TextColor = Color.Black, TextHeight = 12 };
-			this.title.Position.WrapContent().Then.ParentRelative(-1, 1).WithMargins(8, 4);
+			this.title = new GuiText 
+			{
+				Margins = new Vector2(8, 4),
+				TextColor = Color.Black, 
+				TextHeight = 12 
+			};
+			this.title.Position.WrapContent().Then.ParentRelative(-1, 1).UseMargins();
 			this.AddChild(this.title);
 
 			this.colonizeButton = new GuiButton
@@ -33,11 +39,12 @@ namespace Stareater.GameScenes.Widgets
 				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
 				Padding = 10,
+				Margins = new Vector2(8, 8),
 				TextColor = Color.Black,
 				TextHeight = 12,
 				ClickCallback = colonizeButton_Click
 			};
-			this.colonizeButton.Position.FixedSize(88, 88).ParentRelative(-1, -1).WithMargins(8, 8);
+			this.colonizeButton.Position.FixedSize(88, 88).ParentRelative(-1, -1).UseMargins();
 			this.AddChild(this.colonizeButton);
 		}
 

@@ -12,9 +12,9 @@
 			this.positioner = positioner;
 		}
 
-		public ElementPosition WithMargins(float marginX, float marginY)
+		public ElementPosition UseMargins()
 		{
-			this.positioner.Margins(marginX, marginY);
+			this.positioner.UseMargins();
 
 			return this.Then;
 		}

@@ -100,19 +100,21 @@ namespace Stareater.GameScenes
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 7),
 				ForgroundImage = GalaxyTextures.Get.MainMenu,
 				Padding = 4,
+				Margins = new Vector2(5, 5),
 				ClickCallback = mainMenuCallback,
 				Tooltip = new SimpleTooltip("GalaxyScene", "MainMenuTooltip")
 			};
-			mainMenuButton.Position.FixedSize(36, 32).ParentRelative(-1, 1).WithMargins(5, 5);
+			mainMenuButton.Position.FixedSize(36, 32).ParentRelative(-1, 1).UseMargins();
 			this.AddElement(mainMenuButton);
 
 			this.fuelInfo = new GuiText
 			{
+				Margins = new Vector2(20, 5),
 				TextColor = Color.Yellow,
 				TextHeight = 24,
 				Tooltip = new SimpleTooltip("GalaxyScene", "FuelTooltip")
 			};
-			this.fuelInfo.Position.WrapContent().Then.RelativeTo(mainMenuButton, 1, 0, -1, 0).WithMargins(20, 5);
+			this.fuelInfo.Position.WrapContent().Then.RelativeTo(mainMenuButton, 1, 0, -1, 0).UseMargins();
 			this.AddElement(this.fuelInfo);
 
 			var designButton = new GuiButton
@@ -122,10 +124,11 @@ namespace Stareater.GameScenes
 				ForgroundImage = GalaxyTextures.Get.Design,
 				PaddingX = 12,
 				PaddingY = 4,
+				Margins = new Vector2(20, 5),
 				ClickCallback = () => { using (var form = new FormShipDesignList(this.currentPlayer)) form.ShowDialog(); },
 				Tooltip = new SimpleTooltip("GalaxyScene", "DesignTooltip")
 			};
-			designButton.Position.FixedSize(48, 32).RelativeTo(fuelInfo, 1, 0, -1, 0).WithMargins(20, 5);
+			designButton.Position.FixedSize(48, 32).RelativeTo(fuelInfo, 1, 0, -1, 0).UseMargins();
 			this.AddElement(designButton);
 
 			var developmentButton = new GuiButton
@@ -135,10 +138,11 @@ namespace Stareater.GameScenes
 				ForgroundImage = GalaxyTextures.Get.Development,
 				PaddingX = 12,
 				PaddingY = 4,
+				Margins = new Vector2(5, 5),
 				ClickCallback = this.showDevelopment,
 				Tooltip = new SimpleTooltip("GalaxyScene", "DevelopmentTooltip")
 			};
-			developmentButton.Position.FixedSize(48, 32).RelativeTo(designButton, 1, 0, -1, 0).WithMargins(5, 5);
+			developmentButton.Position.FixedSize(48, 32).RelativeTo(designButton, 1, 0, -1, 0).UseMargins();
 			this.AddElement(developmentButton);
 
 			var researchButton = new GuiButton
@@ -148,10 +152,11 @@ namespace Stareater.GameScenes
 				ForgroundImage = GalaxyTextures.Get.Research,
 				PaddingX = 12,
 				PaddingY = 4,
+				Margins = new Vector2(5, 5),
 				ClickCallback = this.showResearch,
 				Tooltip = new SimpleTooltip("GalaxyScene", "ResearchTooltip")
 			};
-			researchButton.Position.FixedSize(48, 32).RelativeTo(developmentButton, 1, 0, -1, 0).WithMargins(5, 5);
+			researchButton.Position.FixedSize(48, 32).RelativeTo(developmentButton, 1, 0, -1, 0).UseMargins();
 			this.AddElement(researchButton);
 
 			var diplomacyButton = new GuiButton
@@ -161,10 +166,11 @@ namespace Stareater.GameScenes
 				ForgroundImage = GalaxyTextures.Get.Diplomacy,
 				PaddingX = 12,
 				PaddingY = 4,
+				Margins = new Vector2(5, 5),
 				ClickCallback = () => { using (var form = new FormRelations(this.currentPlayer)) form.ShowDialog(); },
 				Tooltip = new SimpleTooltip("GalaxyScene", "DiplomacyTooltip")
 			};
-			diplomacyButton.Position.FixedSize(48, 32).RelativeTo(researchButton, 1, 0, -1, 0).WithMargins(5, 5);
+			diplomacyButton.Position.FixedSize(48, 32).RelativeTo(researchButton, 1, 0, -1, 0).UseMargins();
 			this.AddElement(diplomacyButton);
 
 			var colonizationButton = new GuiButton
@@ -174,10 +180,11 @@ namespace Stareater.GameScenes
 				ForgroundImage = GalaxyTextures.Get.Colonization,
 				PaddingX = 12,
 				PaddingY = 4,
+				Margins = new Vector2(5, 5),
 				ClickCallback = () => { using (var form = new FormColonization(this.currentPlayer)) form.ShowDialog(); },
 				Tooltip = new SimpleTooltip("GalaxyScene", "ColonizationTooltip")
 			};
-			colonizationButton.Position.FixedSize(48, 32).RelativeTo(diplomacyButton, 1, 0, -1, 0).WithMargins(5, 5);
+			colonizationButton.Position.FixedSize(48, 32).RelativeTo(diplomacyButton, 1, 0, -1, 0).UseMargins();
 			this.AddElement(colonizationButton);
 
 			var reportsButton = new GuiButton
@@ -187,10 +194,11 @@ namespace Stareater.GameScenes
 				ForgroundImage = GalaxyTextures.Get.Reports,
 				PaddingX = 12,
 				PaddingY = 4,
+				Margins = new Vector2(5, 5),
 				ClickCallback = () => { using (var form = new FormReports(this.currentPlayer.Reports)) if (form.ShowDialog() == DialogResult.OK) form.Result.Accept(this.reportOpener); },
 				Tooltip = new SimpleTooltip("GalaxyScene", "ReportsTooltip")
 			};
-			reportsButton.Position.FixedSize(48, 32).RelativeTo(colonizationButton, 1, 0, -1, 0).WithMargins(5, 5);
+			reportsButton.Position.FixedSize(48, 32).RelativeTo(colonizationButton, 1, 0, -1, 0).UseMargins();
 			this.AddElement(reportsButton);
 
 			var stareaterButton = new GuiButton
@@ -200,10 +208,11 @@ namespace Stareater.GameScenes
 				ForgroundImage = GalaxyTextures.Get.Stareater,
 				PaddingX = 12,
 				PaddingY = 4,
+				Margins = new Vector2(5, 5),
 				ClickCallback = () => { using (var form = new FormStareater(this.currentPlayer.Stareater)) form.ShowDialog(); },
 				Tooltip = new SimpleTooltip("GalaxyScene", "StareaterTooltip")
 			};
-			stareaterButton.Position.FixedSize(48, 32).RelativeTo(reportsButton, 1, 0, -1, 0).WithMargins(5, 5);
+			stareaterButton.Position.FixedSize(48, 32).RelativeTo(reportsButton, 1, 0, -1, 0).UseMargins();
 			this.AddElement(stareaterButton);
 
 			var libraryButton = new GuiButton
@@ -213,24 +222,31 @@ namespace Stareater.GameScenes
 				ForgroundImage = GalaxyTextures.Get.Library,
 				PaddingX = 12,
 				PaddingY = 4,
+				Margins = new Vector2(5, 5),
 				ClickCallback = () => { using (var form = new FormLibrary(this.currentPlayer.Library)) form.ShowDialog(); },
 				Tooltip = new SimpleTooltip("GalaxyScene", "LibraryTooltip")
 			};
-			libraryButton.Position.FixedSize(48, 32).RelativeTo(stareaterButton, 1, 0, -1, 0).WithMargins(5, 5);
+			libraryButton.Position.FixedSize(48, 32).RelativeTo(stareaterButton, 1, 0, -1, 0).UseMargins();
 			this.AddElement(libraryButton);
 
-			this.turnCounter = new GuiText { TextColor = Color.LightGray, TextHeight = 24 };
-			this.turnCounter.Position.WrapContent().Then.ParentRelative(1, 1).WithMargins(10, 5);
+			this.turnCounter = new GuiText 
+			{
+				Margins = new Vector2(10, 5),
+				TextColor = Color.LightGray, 
+				TextHeight = 24 
+			};
+			this.turnCounter.Position.WrapContent().Then.ParentRelative(1, 1).UseMargins();
 			this.AddElement(this.turnCounter);
 
 			var turnButton = new GuiButton
 			{
 				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.EndTurnHover, 0),
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.EndTurnNormal, 0),
+				Margins = new Vector2(10, 10),
 				ClickCallback = this.galaxyViewListener.TurnEnded,
 				Tooltip = new SimpleTooltip("GalaxyScene", "EndTurn")
 			};
-			turnButton.Position.FixedSize(80, 80).ParentRelative(1, -1).WithMargins(10, 10);
+			turnButton.Position.FixedSize(80, 80).ParentRelative(1, -1).UseMargins();
 			this.AddElement(turnButton);
 
 			var radarToggle = new ToggleButton(SettingsWinforms.Get.ShowScanRange)
@@ -239,14 +255,15 @@ namespace Stareater.GameScenes
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 7),
 				BackgroundToggled = new BackgroundTexture(GalaxyTextures.Get.ToggleToggled, 7),
 				ForgroundImage = new BackgroundTexture(GalaxyTextures.Get.Radar, 0),
+				Margins = new Vector2(15, 0),
 				ToggleCallback = this.toggleRadar,
 				Tooltip = new SimpleTooltip("GalaxyScene", "RadarSwitchToolip")
 			};
-			radarToggle.Position.FixedSize(24, 24).RelativeTo(turnButton, -1, 1, 1, 1).WithMargins(15, 0);
+			radarToggle.Position.FixedSize(24, 24).RelativeTo(turnButton, -1, 1, 1, 1).UseMargins();
 			this.AddElement(radarToggle);
 
 			this.starInfo = new ConstructionSiteView();
-			this.starInfo.Position.ParentRelative(0, -1).WithMargins(0, 0);
+			this.starInfo.Position.ParentRelative(0, -1);
 			this.AddElement(this.starInfo);
 
 			this.fleetsPanel = new ListPanel(3, AMapSelectableItem<ShipGroupInfo>.Width, AMapSelectableItem<ShipGroupInfo>.Height, 5)
@@ -254,7 +271,7 @@ namespace Stareater.GameScenes
 				Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 6),
 				Padding = 5
 			};
-			this.fleetsPanel.Position.FixedSize(470, 100).ParentRelative(0, -1).WithMargins(0, 0);
+			this.fleetsPanel.Position.FixedSize(470, 100).ParentRelative(0, -1);
 		}
 
 		public void OnNewTurn()

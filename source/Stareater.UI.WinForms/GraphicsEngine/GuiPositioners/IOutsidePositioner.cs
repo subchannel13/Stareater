@@ -2,6 +2,6 @@
 {
 	interface IOutsidePositioner : IPositioner
 	{
-		void Margins(float marginX, float marginY);
+		void UseMargins();
 	}
 }

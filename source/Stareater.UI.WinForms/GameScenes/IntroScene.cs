@@ -58,6 +58,7 @@ namespace Stareater.GameScenes
 		{
 			this.cancelText = new GuiText()
 			{
+				Margins = new Vector2(5, 5),
 				Text = LocalizationManifest.Get.CurrentLanguage["Intro"]["cancelTip"].Text(),
 				TextColor = Color.FromArgb(0, Color.Gray),
 				TextHeight = 16,
@@ -66,7 +67,7 @@ namespace Stareater.GameScenes
 					new TweenAlpha(textPolygons, 0, 1, 0.5)
 				)
 			};
-			this.cancelText.Position.WrapContent().Then.ParentRelative(-1, -1).WithMargins(5, 5);
+			this.cancelText.Position.WrapContent().Then.ParentRelative(-1, -1).UseMargins();
 
 			this.AddElement(this.cancelText);
 
@@ -93,11 +94,12 @@ namespace Stareater.GameScenes
 				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
 				Padding = 12,
+				Margins = new Vector2(0, 25),
 				Text = context["Save"].Text(),
 				TextColor = Color.Black,
 				TextHeight = 20
 			};
-			loadButton.Position.WrapContent().Then.RelativeTo(newGameButton, 0, -1, 0, 1).WithMargins(0, 25);
+			loadButton.Position.WrapContent().Then.RelativeTo(newGameButton, 0, -1, 0, 1).UseMargins();
 			this.menuPanel.AddChild(loadButton);
 
 			var settingsButton = new GuiButton
@@ -106,11 +108,12 @@ namespace Stareater.GameScenes
 				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
 				Padding = 12,
+				Margins = new Vector2(0, 25),
 				Text = context["Settings"].Text(),
 				TextColor = Color.Black,
 				TextHeight = 20
 			};
-			settingsButton.Position.WrapContent().Then.RelativeTo(loadButton, 0, -1, 0, 1).WithMargins(0, 25);
+			settingsButton.Position.WrapContent().Then.RelativeTo(loadButton, 0, -1, 0, 1).UseMargins();
 			this.menuPanel.AddChild(settingsButton);
 
 			var quitButton = new GuiButton
@@ -119,11 +122,12 @@ namespace Stareater.GameScenes
 				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
 				Padding = 12,
+				Margins = new Vector2(0, 25),
 				Text = context["Quit"].Text(),
 				TextColor = Color.Black,
 				TextHeight = 20
 			};
-			quitButton.Position.WrapContent().Then.RelativeTo(settingsButton, 0, -1, 0, 1).WithMargins(0, 25);
+			quitButton.Position.WrapContent().Then.RelativeTo(settingsButton, 0, -1, 0, 1).UseMargins();
 			this.menuPanel.AddChild(quitButton);
 		}
 

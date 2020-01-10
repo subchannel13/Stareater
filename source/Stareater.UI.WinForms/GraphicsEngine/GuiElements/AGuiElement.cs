@@ -50,6 +50,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.updateScene();
 		}
 
+		public Vector2 Margins 
+		{
+			get => this.Position.Margins;
+			set => this.Position.Margins = value;
+		}
+
 		public bool IsShown => this.scene != null;
 
 		public virtual bool OnMouseDown(Vector2 mousePosition)

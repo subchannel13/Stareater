@@ -21,19 +21,17 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.positionBuilder = new GridPositionBuilder(columns, elementWidth, elementHeight, elementSpacing);
 
 			this.slider = new GuiSlider
-			{ 
+			{
 				Orientation = Orientation.Vertical,
 				SlideCallback = onSlide
 			};
-			//TODO(v0.9) read margines from parent background texture
-			this.slider.Position.FixedSize(15, 45).ParentRelative(1, 1).WithMargins(5, 5).StretchBottomTo(this, -1, 5);
+			this.slider.Position.FixedSize(15, 45).ParentRelative(1, 1).UseMargins().StretchBottomTo(this, -1);
 
 			this.container = new GuiPanel
 			{
 				HandlesMouse = false
 			};
-			//TODO(v0.9) read margines from parent background texture
-			this.container.Position.ParentRelative(-1, 1).WithMargins(5, 5).StretchRightTo(this.slider, -1, 5).StretchBottomTo(this, -1, 5);
+			this.container.Position.ParentRelative(-1, 1).UseMargins().StretchRightTo(this.slider, -1).StretchBottomTo(this, -1);
 		}
 
 		private readonly List<AGuiElement> mChildren = new List<AGuiElement>();
@@ -53,7 +51,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				foreach (var child in value)
 				{
 					this.mChildren.Add(child);
-					child.Position.ParentRelative(-1, 1).WithMargins(this.mPadding, this.mPadding).Offset(this.scrollOffset);
+					child.Position.ParentRelative(-1, 1).Then.Offset(this.scrollOffset);
 					this.positionBuilder.Add(child.Position);
 					this.container.AddChild(child);
 				}
@@ -76,12 +74,12 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
-		private float mPadding = 0;
 		public float Padding
 		{
 			set
 			{
-				this.apply(ref this.mPadding, value);
+				this.slider.Margins = new Vector2(value, value);
+				this.container.Margins = new Vector2(value, value);
 			}
 		}
 

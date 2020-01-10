@@ -24,6 +24,8 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 
 		private readonly List<IPositioner> positioners = new List<IPositioner>();
 		private readonly Func<Vector2> contentSize;
+		private float marginX;
+		private float marginY;
 		private ElementPosition parentPosition = null;
 		private readonly RepeatGate calculationGate = new RepeatGate();
 
@@ -97,6 +99,17 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			return this;
 		}
 
+		public Vector2 Margins 
+		{
+			get => new Vector2(this.marginX, this.marginY);
+			set
+			{
+				this.marginX = value.X;
+				this.marginY = value.Y;
+				this.Recalculate();
+			}
+		}
+
 		public ElementPosition Offset(float x, float y)
 		{
 			this.positioners.Add(new ConstantOffsetPositiner(x, y));
@@ -141,24 +154,24 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			return new OutsidePosition(this, positioner);
 		}
 
-		public ElementPosition StretchBottomTo(IGuispaceElement anchor, float yPortionAnchor, float marginY)
+		public ElementPosition StretchBottomTo(IGuispaceElement anchor, float yPortionAnchor)
 		{
 			this.positioners.Add(new StretchToPositioner(
 				anchor.Position,
 				new Vector2(0, yPortionAnchor), new Vector2(0, 1),
-				new Vector2(0, marginY)
+				new Vector2(0, 1)
 			));
 			this.dependsOn(anchor.Position);
 
 			return this;
 		}
 
-		public ElementPosition StretchRightTo(IGuispaceElement anchor, float xPortionAnchor, float marginX)
+		public ElementPosition StretchRightTo(IGuispaceElement anchor, float xPortionAnchor)
 		{
 			this.positioners.Add(new StretchToPositioner(
 				anchor.Position,
 				new Vector2(xPortionAnchor, 0), new Vector2(-1, 0),
-				new Vector2(marginX, 0)
+				new Vector2(1, 0)
 			));
 			this.dependsOn(anchor.Position);
 
@@ -207,8 +220,7 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 		{
 			private readonly float xPortion;
 			private readonly float yPortion;
-			private float marginX;
-			private float marginY;
+			private bool hasMargins = false;
 
 			public ParentRelativePositioner(float x, float y)
 			{
@@ -216,14 +228,15 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 				this.yPortion = y;
 			}
 
-			public void Margins(float marginX, float marginY)
+			public void UseMargins()
 			{
-				this.marginX = marginX;
-				this.marginY = marginY;
+				this.hasMargins = true;
 			}
 
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
+				float marginX = hasMargins ? element.marginX : 0;
+				float marginY = hasMargins ? element.marginY : 0;
 				float windowX = parentPosition.Size.X / 2 - marginX - element.Size.X / 2;
 				float windowY = parentPosition.Size.Y / 2 - marginY - element.Size.Y / 2;
 
@@ -241,8 +254,7 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			private readonly float yPortionAnchor;
 			private readonly float xPortionThis;
 			private readonly float yPortionThis;
-			private float marginX;
-			private float marginY;
+			private bool hasMargins = false;
 
 			public RelativeToPositioner(ElementPosition anchor, float xPortionAnchor, float yPortionAnchor, float xPortionThis, float yPortionThis)
 			{
@@ -253,17 +265,19 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 				this.yPortionThis = yPortionThis;
 			}
 
-			public void Margins(float marginX, float marginY)
+			public void UseMargins()
 			{
-				this.marginX = marginX;
-				this.marginY = marginY;
+				this.hasMargins = true;
 			}
 
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
+				float marginX = hasMargins ? element.marginX : 0;
+				float marginY = hasMargins ? element.marginY : 0;
+
 				element.Center = new Vector2(
-					this.anchor.Center.X + (this.anchor.Size.X + this.marginX) * this.xPortionAnchor / 2 - element.Size.X * this.xPortionThis / 2,
-					this.anchor.Center.Y + (this.anchor.Size.Y + this.marginY) * this.yPortionAnchor / 2 - element.Size.Y * this.yPortionThis / 2
+					this.anchor.Center.X + (this.anchor.Size.X + marginX) * this.xPortionAnchor / 2 - element.Size.X * this.xPortionThis / 2,
+					this.anchor.Center.Y + (this.anchor.Size.Y + marginY) * this.yPortionAnchor / 2 - element.Size.Y * this.yPortionThis / 2
 				);
 			}
 		}
@@ -273,16 +287,16 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			private readonly ElementPosition anchor;
 			private readonly Vector2 anchorPortion;
 			private readonly Vector2 oppositePortion;
-			private readonly Vector2 margin;
+			private readonly Vector2 marginFilter;
 			private readonly Vector2 strechAxis;
 			private readonly Vector2 preservedAxis;
 
-			public StretchToPositioner(ElementPosition anchor, Vector2 anchorPortion, Vector2 oppositePortion, Vector2 margin)
+			public StretchToPositioner(ElementPosition anchor, Vector2 anchorPortion, Vector2 oppositePortion, Vector2 marginFilter)
 			{
 				this.anchor = anchor;
 				this.anchorPortion = anchorPortion;
 				this.oppositePortion = oppositePortion;
-				this.margin = margin;
+				this.marginFilter = marginFilter;
 
 				this.strechAxis = abs(oppositePortion);
 				this.preservedAxis = abs(this.strechAxis.PerpendicularLeft);
@@ -290,8 +304,9 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
+				var margin = this.marginFilter * new Vector2(element.marginX, element.marginY);
 				var oppositeEnd = element.Center + element.Size * this.oppositePortion / 2;
-				var anchorEnd = this.anchor.Center + this.anchorPortion * (this.anchor.Size / 2 - this.margin);
+				var anchorEnd = this.anchor.Center + this.anchorPortion * (this.anchor.Size / 2 - margin);
 
 				element.Center = element.Center * this.preservedAxis + (oppositeEnd + anchorEnd) * this.strechAxis / 2;
 				element.Size = element.Size * this.preservedAxis + abs(oppositeEnd - anchorEnd) * this.strechAxis;

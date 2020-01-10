@@ -1,4 +1,5 @@
-﻿using Stareater.Controllers;
+﻿using OpenTK;
+using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.GameData;
 using Stareater.GLData;
@@ -30,8 +31,13 @@ namespace Stareater.GameScenes.Widgets
 			this.Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 6);
 			this.Position.FixedSize(360, 116);
 
-			this.title = new GuiText { TextColor = Color.Black, TextHeight = 12 };
-			this.title.Position.WrapContent().Then.ParentRelative(-1, 1).WithMargins(8, 4);
+			this.title = new GuiText 
+			{
+				Margins = new Vector2(8, 4),
+				TextColor = Color.Black, 
+				TextHeight = 12 
+			};
+			this.title.Position.WrapContent().Then.ParentRelative(-1, 1).UseMargins();
 			this.AddChild(this.title);
 
 			this.projectButton = new GuiButton
@@ -39,11 +45,12 @@ namespace Stareater.GameScenes.Widgets
 				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
 				Padding = 10,
+				Margins = new Vector2(8, 8),
 				TextColor = Color.Black,
 				TextHeight = 12,
 				ClickCallback = projectButton_Click
 			};
-			this.projectButton.Position.FixedSize(88, 88).ParentRelative(-1, -1).WithMargins(8, 8);
+			this.projectButton.Position.FixedSize(88, 88).ParentRelative(-1, -1).UseMargins();
 			this.AddChild(this.projectButton);
 
 			this.detailsButton = new GuiButton
@@ -51,24 +58,31 @@ namespace Stareater.GameScenes.Widgets
 				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
 				Padding = 10,
+				Margins = new Vector2(8, 8),
 				TextColor = Color.Black,
 				TextHeight = 12,
 				Text = context["SiteDetails"].Text(),
 				ClickCallback = detailsButton_Click
 			};
-			this.detailsButton.Position.WrapContent().Then.ParentRelative(1, -1).WithMargins(8, 8);
+			this.detailsButton.Position.WrapContent().Then.ParentRelative(1, -1).UseMargins();
 			this.AddChild(this.detailsButton);
 
 			this.investmentSlider = new GuiSlider
 			{
+				Margins = new Vector2(8, 0),
 				ScrollStep = 0.05f,
 				SlideCallback = investmentSlider_Change
 			};
-			this.investmentSlider.Position.FixedSize(150, 15).RelativeTo(this.projectButton, 1, 1, -1, 1).WithMargins(8, 0).StretchRightTo(this, 1, 8);
+			this.investmentSlider.Position.FixedSize(150, 15).RelativeTo(this.projectButton, 1, 1, -1, 1).UseMargins().StretchRightTo(this, 1);
 			this.AddChild(this.investmentSlider);
 
-			this.estimationLabel = new GuiText { TextColor = Color.Black, TextHeight = 12 };
-			this.estimationLabel.Position.WrapContent().Then.RelativeTo(this.investmentSlider, -1, -1, -1, 1).WithMargins(0, 8);
+			this.estimationLabel = new GuiText 
+			{
+				Margins = new Vector2(0, 8),
+				TextColor = Color.Black, 
+				TextHeight = 12 
+			};
+			this.estimationLabel.Position.WrapContent().Then.RelativeTo(this.investmentSlider, -1, -1, -1, 1).UseMargins();
 			this.AddChild(this.estimationLabel);
 
 			this.policyToggle = new CycleButton<PolicyInfo>
@@ -76,6 +90,7 @@ namespace Stareater.GameScenes.Widgets
 				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 8),
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 8),
 				Padding = 4,
+				Margins = new Vector2(8, 0),
 				CycleCallback = x => 
 				{
 					this.controller.Policy = x;
@@ -86,11 +101,16 @@ namespace Stareater.GameScenes.Widgets
 				ItemImage = x => GalaxyTextures.Get.Sprite(x.Id + "Policy"),
 				Tooltip = new DynamicTooltip("FormMain", () => this.controller.Policy.Id + "PolicyTooltip")
 			};
-			this.policyToggle.Position.FixedSize(32, 32).RelativeTo(this.projectButton, 1, -1, -1, -1).WithMargins(8, 0);
+			this.policyToggle.Position.FixedSize(32, 32).RelativeTo(this.projectButton, 1, -1, -1, -1).UseMargins();
 			this.AddChild(this.policyToggle);
 
-			this.policyName = new GuiText { TextColor = Color.Black, TextHeight = 12 };
-			this.policyName.Position.WrapContent().Then.RelativeTo(this.policyToggle, 1, 0, -1, 0).WithMargins(8, 0);
+			this.policyName = new GuiText 
+			{
+				Margins = new Vector2(8, 0),
+				TextColor = Color.Black, 
+				TextHeight = 12 
+			};
+			this.policyName.Position.WrapContent().Then.RelativeTo(this.policyToggle, 1, 0, -1, 0).UseMargins();
 			this.AddChild(this.policyName);
 		}
 

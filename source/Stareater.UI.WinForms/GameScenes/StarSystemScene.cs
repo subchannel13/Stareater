@@ -72,11 +72,12 @@ namespace Stareater.GameScenes
 				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
 				Padding = 12,
+				Margins = new Vector2(10, 5),
 				Text = context["Return"].Text(),
 				TextColor = Color.Black,
 				TextHeight = 20
 			};
-			returnButton.Position.WrapContent().Then.ParentRelative(1, 1).WithMargins(10, 5);
+			returnButton.Position.WrapContent().Then.ParentRelative(1, 1).UseMargins();
 			this.AddElement(returnButton);
 
 			var starAnchor = new GuiAnchor(0, 0);
@@ -138,10 +139,11 @@ namespace Stareater.GameScenes
 				var traitImage = new GuiImage
 				{
 					Below = this.starSelector,
+					Margins = new Vector2(3, 0),
 					Image = GalaxyTextures.Get.Sprite(trait.ImagePath),
 					Tooltip = new SimpleTooltip("Traits", trait.LangCode)
 				};
-				traitImage.Position.FixedSize(20, 20).RelativeTo(this.starSelector, 0.8f, -0.8f, -1, 1).WithMargins(3, 0);
+				traitImage.Position.FixedSize(20, 20).RelativeTo(this.starSelector, 0.8f, -0.8f, -1, 1).UseMargins();
 				traitGridBuilder.Add(traitImage.Position);
 				this.addPlanetElement(traitImage);
 			}
@@ -164,8 +166,12 @@ namespace Stareater.GameScenes
 				this.planetSelectors[planet.Position] = planetSelector;
 				this.AddElement(planetSelector);
 
-				var popInfo = new GuiText { TextHeight = 20 };
-				popInfo.Position.WrapContent().Then.RelativeTo(planetSelector, 0, -1, 0, 1).WithMargins(0, 20);
+				var popInfo = new GuiText 
+				{
+					Margins = new Vector2(0, 20),
+					TextHeight = 20 
+				};
+				popInfo.Position.WrapContent().Then.RelativeTo(planetSelector, 0, -1, 0, 1).UseMargins();
 
 				var formatter = new ThousandsFormatter();
 				var colony = this.controller.PlanetsColony(planet);
@@ -186,10 +192,11 @@ namespace Stareater.GameScenes
 				{
 					var traitImage = new GuiImage
 					{
+						Margins = new Vector2(0, 10),
 						Image = GalaxyTextures.Get.Sprite(trait.ImagePath),
 						Tooltip = new SimpleTooltip("Traits", trait.LangCode)
 					};
-					traitImage.Position.FixedSize(20, 20).RelativeTo(popInfo, 0, -1, 0, 1).WithMargins(0, 10).Offset(-40, 0);
+					traitImage.Position.FixedSize(20, 20).RelativeTo(popInfo, 0, -1, 0, 1).UseMargins().Offset(-40, 0);
 					traitGridBuilder.Add(traitImage.Position);
 					this.addPlanetElement(traitImage);
 				}

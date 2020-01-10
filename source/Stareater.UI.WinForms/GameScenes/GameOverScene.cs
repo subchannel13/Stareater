@@ -24,11 +24,12 @@ namespace Stareater.GameScenes
 		{
 			this.title = new GuiText
 			{
+				Margins = new Vector2(0, 20),
 				TextColor = Color.Red,
 				TextHeight = 64,
 				Text = LocalizationManifest.Get.CurrentLanguage["FormMain"]["GameOver"].Text()
 			};
-			this.title.Position.WrapContent().Then.ParentRelative(0, 1).WithMargins(0, 20);
+			this.title.Position.WrapContent().Then.ParentRelative(0, 1).UseMargins();
 			this.AddElement(this.title);
 		}
 
