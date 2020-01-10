@@ -345,18 +345,16 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 
 		private class WrapContentPositioner : IWrapPositioner
 		{
-			private float paddingX;
-			private float paddingY;
+			private ValueReference<Vector2> padding = new ValueReference<Vector2>();
 
-			public void Padding(float paddingX, float paddingY)
+			public void Padding(ValueReference<Vector2> padding)
 			{
-				this.paddingX = paddingX;
-				this.paddingY = paddingY;
+				this.padding = padding;
 			}
 
 			public void Recalculate(ElementPosition element, ElementPosition parentPosition)
 			{
-				element.Size = element.contentSize() + new Vector2(this.paddingX * 2, this.paddingY * 2);
+				element.Size = element.contentSize() + 2 * this.padding.Value;
 			}
 		}
 	}

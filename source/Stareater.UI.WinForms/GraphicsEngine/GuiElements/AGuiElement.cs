@@ -1,6 +1,7 @@
 ﻿using OpenTK;
 using Stareater.GraphicsEngine.GuiPositioners;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Stareater.GraphicsEngine.GuiElements
@@ -140,7 +141,18 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		protected virtual Vector2 measureContent()
 		{
-			return new Vector2();
+			var children = this.scene.ElementChildren(this);
+
+			if (!children.Any())
+				return new Vector2();
+
+			foreach (var child in children)
+				child.Position.Recalculate();
+
+			return new Vector2(
+				children.Max(x => x.Position.Center.X + x.Position.Size.X / 2) - children.Min(x => x.Position.Center.X - x.Position.Size.X / 2),
+				children.Max(x => x.Position.Center.Y + x.Position.Size.Y / 2) - children.Min(x => x.Position.Center.Y - x.Position.Size.Y / 2)
+			);
 		}
 	}
 }

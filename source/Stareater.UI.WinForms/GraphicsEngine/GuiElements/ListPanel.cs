@@ -13,25 +13,32 @@ namespace Stareater.GraphicsEngine.GuiElements
 		private readonly GridPositionBuilder positionBuilder;
 		private readonly GuiPanel container;
 		private readonly GuiSlider slider;
-		private readonly ValueReference<Vector2> scrollOffset = new ValueReference<Vector2>(new Vector2(0, 0));
+		private readonly ValueReference<Vector2> scrollOffset = new ValueReference<Vector2>();
 		private float scrollableHeight = 0;
 
-		public ListPanel(int columns, float elementWidth, float elementHeight, float elementSpacing) : base()
+		public ListPanel(int columns, int rows, float elementWidth, float elementHeight, float elementSpacing) : base()
 		{
+			this.Position.WrapContent().WithPadding(this.mPadding);
 			this.positionBuilder = new GridPositionBuilder(columns, elementWidth, elementHeight, elementSpacing);
-
-			this.slider = new GuiSlider
-			{
-				Orientation = Orientation.Vertical,
-				SlideCallback = onSlide
-			};
-			this.slider.Position.FixedSize(15, 45).ParentRelative(1, 1).UseMargins().StretchBottomTo(this, -1);
 
 			this.container = new GuiPanel
 			{
 				HandlesMouse = false
 			};
-			this.container.Position.ParentRelative(-1, 1).UseMargins().StretchRightTo(this.slider, -1).StretchBottomTo(this, -1);
+			this.container.Position.
+				ParentRelative(-1, 1).UseMargins().
+				FixedSize(
+					columns * elementWidth + (columns - 1) * elementSpacing, 
+					rows * elementHeight + (rows - 1) * elementSpacing
+				);
+
+			this.slider = new GuiSlider
+			{
+				Margins = new Vector2(5, 0),
+				Orientation = Orientation.Vertical,
+				SlideCallback = onSlide
+			};
+			this.slider.Position.FixedSize(15, 45).RelativeTo(this.container, 1, 1, -1, 1).UseMargins().StretchBottomTo(this.container, -1);
 		}
 
 		private readonly List<AGuiElement> mChildren = new List<AGuiElement>();
@@ -74,12 +81,14 @@ namespace Stareater.GraphicsEngine.GuiElements
 			}
 		}
 
+		private readonly ValueReference<Vector2> mPadding = new ValueReference<Vector2>();
 		public float Padding
 		{
 			set
 			{
-				this.slider.Margins = new Vector2(value, value);
+				this.mPadding.Value = new Vector2(value, value);
 				this.container.Margins = new Vector2(value, value);
+				this.reposition();
 			}
 		}
 
@@ -116,18 +125,6 @@ namespace Stareater.GraphicsEngine.GuiElements
 					Build();
 			else
 				return null;
-		}
-
-		//TODO(v0.9) check if this override is needed
-		protected override Vector2 measureContent()
-		{
-			foreach (var child in this.mChildren)
-				child.Position.Recalculate();
-
-			return new Vector2(
-				this.mChildren.Max(x => x.Position.Center.X + x.Position.Size.X / 2) - this.mChildren.Min(x => x.Position.Center.X - x.Position.Size.X / 2),
-				this.mChildren.Max(x => x.Position.Center.Y + x.Position.Size.Y / 2) - this.mChildren.Min(x => x.Position.Center.Y - x.Position.Size.Y / 2)
-			);
 		}
 
 		private void onSlide(float state)

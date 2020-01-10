@@ -1,4 +1,6 @@
-﻿namespace Stareater.GraphicsEngine.GuiPositioners
+﻿using OpenTK;
+
+namespace Stareater.GraphicsEngine.GuiPositioners
 {
 	class WrapPosition
 	{
@@ -12,9 +14,14 @@
 			this.positioner = positioner;
 		}
 
-		public ElementPosition WithPadding(float marginX, float marginY)
+		public ElementPosition WithPadding(float paddingX, float paddingY)
 		{
-			this.positioner.Padding(marginX, marginY);
+			return this.WithPadding(new ValueReference<Vector2>(new Vector2(paddingX, paddingY)));
+		}
+
+		public ElementPosition WithPadding(ValueReference<Vector2> padding)
+		{
+			this.positioner.Padding(padding);
 
 			return this.Then;
 		}

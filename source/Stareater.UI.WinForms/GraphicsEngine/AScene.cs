@@ -399,6 +399,15 @@ namespace Stareater.GraphicsEngine
 			this.AddElement(element, element.Parent ?? this.normalGuiLayer.Root);
 		}
 
+		public IEnumerable<AGuiElement>	ElementChildren(AGuiElement element)
+		{
+			var layer = this.guiLayers().FirstOrDefault(x => x.Contains(element));
+			if (layer == null)
+				return new AGuiElement[0];
+
+			return layer.ElementChildren(element);
+		}
+
 		public void AddAnchor(GuiAnchor anchor)
 		{
 			this.anchors.Add(anchor);

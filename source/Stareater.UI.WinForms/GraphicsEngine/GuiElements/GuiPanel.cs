@@ -56,16 +56,5 @@ namespace Stareater.GraphicsEngine.GuiElements
 			else
 				return null;
 		}
-
-		protected override Vector2 measureContent()
-		{
-			foreach (var child in this.children)
-				child.Position.Recalculate();
-
-			return new Vector2(
-				this.children.Max(x => x.Position.Center.X + x.Position.Size.X / 2) - this.children.Min(x => x.Position.Center.X - x.Position.Size.X / 2),
-				this.children.Max(x => x.Position.Center.Y + x.Position.Size.Y / 2) - this.children.Min(x => x.Position.Center.Y - x.Position.Size.Y / 2)
-			);
-		}
 	}
 }

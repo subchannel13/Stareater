@@ -64,6 +64,11 @@ namespace Stareater.GraphicsEngine
 					yield return element;
 		}
 
+		public IEnumerable<AGuiElement> ElementChildren(AGuiElement element)
+		{
+			return this.guiHierarchy[element];
+		}
+
 		private IEnumerable<AGuiElement> enumeratePostfix(AGuiElement parent)
 		{
 			if (this.guiHierarchy.ContainsKey(parent))
