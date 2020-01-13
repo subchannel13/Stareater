@@ -111,7 +111,7 @@ namespace Stareater.GraphicsEngine
 			if (this.mousePressed.ContainsKey(e.Button) && this.mousePressed[e.Button] != this.normalGuiLayer.Root)
 				return;
 
-			//TODO(v0.8) differentiate between left and right click
+			//TODO(v0.9) differentiate between left and right click
 			this.onMouseDoubleClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy);
 		}
 
@@ -121,7 +121,7 @@ namespace Stareater.GraphicsEngine
 			this.mousePressed[e.Button] = this.normalGuiLayer.Root;
 
 			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault(x => x.HandlesMouse);
-			//TODO(v0.8) differentiate between left and right click
+			//TODO(v0.9) differentiate between left and right click
 			if (handler != null && handler.OnMouseDown(mouseGuiPoint))
 				this.mousePressed[e.Button] = handler;
 		}
@@ -134,15 +134,12 @@ namespace Stareater.GraphicsEngine
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault(x => x.HandlesMouse);
 
-			if (handler != null)
-				if (this.mousePressed[e.Button] == handler)
-					handler.OnMouseUp(modiferKeys); //TODO(v0.8) differentiate between left and right click
-				else
-					handler.OnMouseDownCanceled(); //TODO(v0.8) differentiate between left and right click
+			if (this.mousePressed[e.Button] == handler)
+				handler.OnMouseUp(modiferKeys); //TODO(v0.9) differentiate between left and right click
+			else if (this.mousePressed[e.Button] != this.normalGuiLayer.Root)
+				this.mousePressed[e.Button].OnMouseDownCanceled(); //TODO(v0.9) differentiate between left and right click
 			else
-			{
 				this.onMouseClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy, modiferKeys);
-			}
 
 			this.mousePressed[e.Button] = null;
 		}
@@ -183,7 +180,7 @@ namespace Stareater.GraphicsEngine
 			);
 		}
 
-		//TODO(v0.8) pass last mouse position to handlers
+		//TODO(v0.9) pass last mouse position to handlers
 		private void handleMouseDrag(MouseEventArgs e)
 		{
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
