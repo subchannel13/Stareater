@@ -121,6 +121,11 @@ namespace Stareater.GameScenes.Widgets
 			this.updateSliderVisibility();
 		}
 
+		public override bool OnMouseScroll(Vector2 mousePosition, int delta)
+		{
+			return true;
+		}
+
 		public void SetView(AConstructionSiteController siteController)
 		{
 			this.controller = siteController;

@@ -120,10 +120,13 @@ namespace Stareater.GraphicsEngine
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
 			this.mousePressed[e.Button] = this.normalGuiLayer.Root;
 
-			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault(x => x.HandlesMouse);
 			//TODO(v0.9) differentiate between left and right click
-			if (handler != null && handler.OnMouseDown(mouseGuiPoint))
-				this.mousePressed[e.Button] = handler;
+			foreach (var element in this.eventHandlerSearch(mouseGuiPoint))
+				if (element.OnMouseDown(mouseGuiPoint))
+				{
+					this.mousePressed[e.Button] = element;
+					break;
+				}
 		}
 
 		public void HandleMouseUp(MouseEventArgs e, Keys modiferKeys)
@@ -132,12 +135,13 @@ namespace Stareater.GraphicsEngine
 				this.mousePressed[e.Button] = this.normalGuiLayer.Root;
 
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
-			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault(x => x.HandlesMouse);
+			var pressedAt = this.mousePressed[e.Button];
 
-			if (this.mousePressed[e.Button] == handler)
-				handler.OnMouseUp(modiferKeys); //TODO(v0.9) differentiate between left and right click
-			else if (this.mousePressed[e.Button] != this.normalGuiLayer.Root)
-				this.mousePressed[e.Button].OnMouseDownCanceled(); //TODO(v0.9) differentiate between left and right click
+			if (pressedAt != this.normalGuiLayer.Root)
+				if (pressedAt.Position.ClipArea.Contains(mouseGuiPoint))
+					pressedAt.OnMouseUp(modiferKeys); //TODO(v0.9) differentiate between left and right click
+				else
+					pressedAt.OnMouseDownCanceled(); //TODO(v0.9) differentiate between left and right click
 			else
 				this.onMouseClick(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy, modiferKeys);
 
@@ -153,11 +157,15 @@ namespace Stareater.GraphicsEngine
 			}
 
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
-			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault();
+			AGuiElement handler = null;
+			foreach (var element in this.eventHandlerSearch(mouseGuiPoint))
+				if (element.OnMouseMove(mouseGuiPoint, modiferKeys))
+				{
+					handler = element;
+					break;
+				}
 
-			if (handler != null && handler != this.normalGuiLayer.Root)
-				handler.OnMouseMove(mouseGuiPoint, modiferKeys);
-			else
+			if (handler == null)
 			{
 				this.onMouseMove(this.mouseToView(e.X, e.Y), modiferKeys);
 				handler = this.normalGuiLayer.Root;
@@ -195,11 +203,16 @@ namespace Stareater.GraphicsEngine
 		public void HandleMouseScroll(MouseEventArgs e)
 		{
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
-			var handler = this.eventHandlerSearch(mouseGuiPoint).FirstOrDefault(x => x.HandlesMouse);
+			AGuiElement handler = null;
 
-			if (handler != null && handler != this.normalGuiLayer.Root)
-				handler.OnMouseScroll(mouseGuiPoint, e.Delta);
-			else
+			foreach (var element in this.eventHandlerSearch(mouseGuiPoint))
+				if (element.OnMouseScroll(mouseGuiPoint, e.Delta))
+				{
+					handler = element;
+					break;
+				}
+
+			if (handler == null)
 				this.onMouseScroll(Vector4.Transform(this.mouseToView(e.X, e.Y), this.invProjection).Xy, e.Delta);
 		}
 

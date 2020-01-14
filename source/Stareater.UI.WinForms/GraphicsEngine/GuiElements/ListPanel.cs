@@ -21,10 +21,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.Position.WrapContent().WithPadding(this.mPadding);
 			this.positionBuilder = new GridPositionBuilder(columns, elementWidth, elementHeight, elementSpacing);
 
-			this.container = new GuiPanel
-			{
-				HandlesMouse = false
-			};
+			this.container = new GuiPanel();
 			this.container.Position.
 				ParentRelative(-1, 1).UseMargins().
 				FixedSize(
@@ -107,9 +104,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 			return true;
 		}
 
-		public override void OnMouseScroll(Vector2 mousePosition, int delta)
+		public override bool OnMouseScroll(Vector2 mousePosition, int delta)
 		{
 			this.slider.OnMouseScroll(mousePosition, delta);
+
+			return true;
 		}
 
 		protected override SceneObject makeSceneObject()

@@ -75,7 +75,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 				this.SlideCallback(newValue);
 		}
 
-		public override void OnMouseScroll(Vector2 mousePosition, int delta)
+		public override bool OnMouseScroll(Vector2 mousePosition, int delta)
 		{
 			if (this.direction.Y != 0)
 				delta *= -1;
@@ -87,6 +87,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 			if (this.apply(ref this.mValue, newValue))
 				this.SlideCallback(newValue);
+
+			return true;
 		}
 
 		protected override SceneObject makeSceneObject()

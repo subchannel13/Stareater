@@ -3,13 +3,17 @@ using Stareater.GLData;
 using Stareater.GLData.SpriteShader;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
 	class GuiPanel : AGuiElement
 	{
 		private readonly List<AGuiElement> children = new List<AGuiElement>();
+
+		public GuiPanel()
+		{
+			this.MaskMouseClick = true;
+		}
 
 		public void AddChild(AGuiElement child)
 		{
@@ -22,6 +26,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		}
 
 		private BackgroundTexture mBackground = null;
+
 		public BackgroundTexture Background
 		{
 			get { return this.mBackground; }
@@ -30,6 +35,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 				this.apply(ref this.mBackground, value);
 			}
 		}
+
+		public bool MaskMouseClick { get; set; }
 
 		public override void Attach(AScene scene, AGuiElement parent)
 		{
@@ -41,7 +48,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 
 		public override bool OnMouseDown(Vector2 mousePosition)
 		{
-			return true;
+			return this.MaskMouseClick;
 		}
 
 		protected override SceneObject makeSceneObject()

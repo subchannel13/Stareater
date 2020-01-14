@@ -21,15 +21,14 @@ namespace Stareater.GraphicsEngine.GuiElements
 			{
 				Text = LocalizationManifest.Get.CurrentLanguage[this.context][this.textKey].Text(),
 				TextColor = Color.White,
-				TextHeight = 12,
-				HandlesMouse = false
+				TextHeight = 12
 			};
 			text.Position.WrapContent().Then.ParentRelative(0, 0);
 
 			var panel = new GuiPanel()
 			{
 				Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 3),
-				HandlesMouse = false
+				MaskMouseClick = false
 			};
 			panel.AddChild(text);
 			panel.Position.WrapContent().WithPadding(10, 5);

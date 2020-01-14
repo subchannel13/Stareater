@@ -128,9 +128,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.apply(ref this.isPressed, false);
 		}
 
-		public override void OnMouseMove(Vector2 mousePosition, Keys modiferKeys)
+		public override bool OnMouseMove(Vector2 mousePosition, Keys modiferKeys)
 		{
 			this.apply(ref this.isHovered, true);
+
+			return true;
 		}
 
 		public override void OnMouseLeave()

@@ -17,13 +17,11 @@ namespace Stareater.GraphicsEngine.GuiElements
 		public AGuiElement Parent { get; private set; }
 		public AGuiElement Below { get; set; }
 		public ElementPosition Position { get; private set; }
-		public bool HandlesMouse { get; set; }
 		public ITooltip Tooltip { get; set; }
 
 		protected AGuiElement()
 		{
 			this.Position = new ElementPosition(this.measureContent);
-			this.HandlesMouse = true;
 			this.Position.OnReposition += this.updateScene;
 		}
 
@@ -74,9 +72,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 			//No operation
 		}
 
-		public virtual void OnMouseMove(Vector2 mousePosition, Keys modiferKeys)
+		public virtual bool OnMouseMove(Vector2 mousePosition, Keys modiferKeys)
 		{
-			//No operation
+			return false;
 		}
 
 		public virtual void OnMouseDrag(Vector2 mousePosition)
@@ -89,9 +87,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 			//No operation
 		}
 
-		public virtual void OnMouseScroll(Vector2 mousePosition, int delta)
+		public virtual bool OnMouseScroll(Vector2 mousePosition, int delta)
 		{
-			//No operation
+			return false;
 		}
 
 		protected void updateScene()
