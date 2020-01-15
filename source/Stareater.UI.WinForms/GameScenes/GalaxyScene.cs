@@ -30,6 +30,7 @@ namespace Stareater.GameScenes
 		private const double ZoomBase = 1.2f;
 		private const int MaxZoom = 10;
 		private const int MinZoom = -10;
+		private const int NameZoomLimit = -2;
 
 		private const float FarZ = 1;
 		private const float Layers = 16.0f;
@@ -86,7 +87,7 @@ namespace Stareater.GameScenes
 		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
 		private readonly Dictionary<int, Vector2D> lastSelectedStars = new Dictionary<int, Vector2D>();
 		private readonly Dictionary<int, FleetInfo> lastSelectedIdleFleets = new Dictionary<int, FleetInfo>();
-		private readonly Dictionary<int, Vector2> lastOffset = new Dictionary<int, Vector2>(); //TODO(v0.8) remember player's zoom level too, unify with last selected object
+		private readonly Dictionary<int, Vector2> lastOffset = new Dictionary<int, Vector2>(); //TODO(v0.9) remember player's zoom level too, unify with last selected object
 		private PlayerController currentPlayer = null;
 
 		public GalaxyScene(IGalaxyViewListener galaxyViewListener, Action mainMenuCallback)
@@ -348,7 +349,7 @@ namespace Stareater.GameScenes
 					this.currentSelection = GalaxySelectionType.Fleet;
 					this.SelectedFleet = this.currentPlayer.SelectFleet(fleets[0]);
 					if (fleets[0].Missions.Waypoints.Length == 0)
-						this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = fleets[0]; //TODO(v0.8) marks wrong fleet when there are multiple players 
+						this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = fleets[0]; //TODO(v0.9) marks wrong fleet when there are multiple players 
 				}
 
 				this.fleetsPanel.Children = this.SelectedFleet.ShipGroups.
@@ -494,7 +495,7 @@ namespace Stareater.GameScenes
 			}
 		}
 
-		//TODO(v0.8) refactor and remove
+		//TODO(v0.9) refactor and remove
 		public void ResetLists()
 		{
 			this.setupVaos();
@@ -538,7 +539,7 @@ namespace Stareater.GameScenes
 				var players = this.currentPlayer.FleetsAt(fleet.Position).
 					Select(x => x.Owner).
 					Where(x => x != this.currentPlayer.Info).
-					Distinct().ToList(); //TODO(v0.8) sort players by some key
+					Distinct().ToList(); //TODO(v0.9) sort players by some key
 
 				int index = (fleet.Owner == this.currentPlayer.Info) ? 0 : (1 + players.IndexOf(fleet.Owner));
 				displayPosition += new Vector2(0.5f, 0.5f - 0.2f * index);
@@ -623,7 +624,7 @@ namespace Stareater.GameScenes
 			);
 		}
 
-		//TODO(v0.8) bundle with movement simulation
+		//TODO(v0.9) bundle with movement simulation
 		private void setupMovementEta()
 		{
 			if (this.SelectedFleet == null || !this.SelectedFleet.SimulationWaypoints().Any())
@@ -720,25 +721,7 @@ namespace Stareater.GameScenes
 
 			this.UpdateScene(
 				ref this.starSprites,
-				stars.Select((star, i) => new SceneObjectBuilder(star, convert(star.Position), 0).
-					StartSimpleSprite(StarColorZ, GalaxyTextures.Get.StarColor, star.Color).
-					Scale(star.Size).
-					Translate(convert(star.Position)).
-
-					StartSimpleSprite(StarSaturationZ, GalaxyTextures.Get.StarGlow, Color.White).
-					Scale(star.Size).
-					Translate(convert(star.Position)).
-
-					//TODO(v0.8) don't show names when zoomed out too much
-					PixelSize(this.pixelSize).
-					StartText(
-						star.Name.ToText(LocalizationManifest.Get.CurrentLanguage),
-						-0.5f, 0, StarNameZ + i * textZRange, textZRange, starNameColor(star)
-					).
-					Scale(StarNameScale / (float)Math.Pow(ZoomBase, zoomLevel)).
-					Translate(star.Position.X, star.Position.Y - 0.5).
-					Build()
-				).ToList()
+				stars.Select((star, i) => starObject(star, i, textZRange)).ToList()
 			);
 		}
 
@@ -757,6 +740,29 @@ namespace Stareater.GameScenes
 					))).
 					Build()
 			);
+		}
+
+		private SceneObject starObject(StarInfo star, int index, float textZRange)
+		{
+			var soBuilder = new SceneObjectBuilder(star, convert(star.Position), 0).
+				StartSimpleSprite(StarColorZ, GalaxyTextures.Get.StarColor, star.Color).
+				Scale(star.Size).
+				Translate(convert(star.Position)).
+
+				StartSimpleSprite(StarSaturationZ, GalaxyTextures.Get.StarGlow, Color.White).
+				Scale(star.Size).
+				Translate(convert(star.Position));
+
+			if (this.zoomLevel > NameZoomLimit)
+				soBuilder.PixelSize(this.pixelSize).
+					StartText(
+						star.Name.ToText(LocalizationManifest.Get.CurrentLanguage),
+						-0.5f, 0, StarNameZ + index * textZRange, textZRange, starNameColor(star)
+					).
+					Scale(StarNameScale / (float)Math.Pow(ZoomBase, this.zoomLevel)).
+					Translate(star.Position.X, star.Position.Y - 0.5);
+			
+			return soBuilder.Build();
 		}
 		#endregion
 
@@ -810,7 +816,7 @@ namespace Stareater.GameScenes
 
 		protected override void onMouseClick(Vector2 mousePoint, Keys modiferKeys)
 		{
-			if (panAbsPath > PanClickTolerance) //TODO(v0.8) maybe make AScene differentiate between click and drag
+			if (panAbsPath > PanClickTolerance) //TODO(v0.9) maybe make AScene differentiate between click and drag
 				return;
 
 			var searchRadius = Math.Max(this.screenUnitScale * ClickRadius, StarMinClickRadius);
@@ -928,7 +934,7 @@ namespace Stareater.GameScenes
 			}
 		}
 
-		//TODO(v0.8) remove one of lastSelectedStar methods
+		//TODO(v0.9) remove one of lastSelectedStar methods
 		private Vector2D lastSelectedStarPosition
 		{
 			get
@@ -957,7 +963,7 @@ namespace Stareater.GameScenes
 
 		private void selectDefaultStar()
 		{
-			//TODO(v0.8) what if there are no stellarises?
+			//TODO(v0.9) what if there are no stellarises?
 			var bestStar = this.currentPlayer.Stellarises().
 				Aggregate((a, b) => a.Population > b.Population ? a : b);
 
