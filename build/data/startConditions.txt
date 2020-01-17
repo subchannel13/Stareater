@@ -2,19 +2,25 @@
 	nameKey "small"
 	colonies 		=1
 	population 		=2e9
-	infrastructure	=1e9
+	buildings [
+		["Infra" =1e9]
+	]
 }
 
 { StartingConditions
 	nameKey "normal"
 	colonies 		=2
 	population 		=10e9
-	infrastructure	=10e9
+	buildings [
+		["Infra" =10e9]
+	]
 }
 
 { StartingConditions
 	nameKey "advanced"
 	colonies 		=4
 	population 		=30e9
-	infrastructure	=30e9
+	buildings [
+		["Infra" =30e9]
+	]
 }

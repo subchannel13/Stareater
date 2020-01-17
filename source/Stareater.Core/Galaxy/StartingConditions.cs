@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Ikadn.Ikon.Types;
 using Stareater.Localization;
 
@@ -10,15 +11,15 @@ namespace Stareater.Galaxy
 
 		public int Colonies { get; private set; }
 		public long Population { get; private set; }
-		public long Infrastructure { get; private set; }
+		public StartingBuilding[] Buildings { get; private set; }
 
 		private readonly string nameKey;
 
-		public StartingConditions(long population, int colonies, long infrastructure, string nameKey)
+		public StartingConditions(long population, int colonies, IEnumerable<StartingBuilding> buildings, string nameKey)
 		{
 			this.Colonies = colonies;
 			this.Population = population;
-			this.Infrastructure = infrastructure;
+			this.Buildings = buildings.OrderBy(x => x.Id).ToArray();
 			this.nameKey = nameKey;
 		}
 
@@ -34,10 +35,13 @@ namespace Stareater.Galaxy
 		{
 			var lastGameData = new IkonComposite("StartinConditions")
 			{
-				{ ColoniesKey, new IkonInteger(Colonies) },
-				{ PopulationKey, new IkonInteger(Population) },
-				{ InfrastructureKey, new IkonInteger(Infrastructure) },
-				{ NameKey, new IkonText(nameKey) }
+				{ ColoniesKey, new IkonInteger(this.Colonies) },
+				{ PopulationKey, new IkonInteger(this.Population) },
+				{ InfrastructureKey, new IkonArray(this.Buildings.SelectMany(x => new IkonBaseObject[]{
+					new IkonText(x.Id),
+					new IkonInteger(x.Amount)
+				})) },
+				{ NameKey, new IkonText(this.nameKey) }
 			};
 
 			return lastGameData;
@@ -53,11 +57,21 @@ namespace Stareater.Galaxy
 			{
 				var population = ikstonData[PopulationKey].To<long>();
 				var colonies = ikstonData[ColoniesKey].To<int>();
-				var infrastructure = ikstonData[InfrastructureKey].To<long>();
+				var infrastructureData = ikstonData[InfrastructureKey].To<IkonArray[]>();
 				var nameKey = ikstonData[NameKey].To<string>();
 
-				if (population < 0 || colonies < 0 || infrastructure < 0)
+				if (population < 0 || colonies < 0)
 					return null;
+
+				var infrastructure = new List<StartingBuilding>();
+				foreach(var item in infrastructureData)
+				{
+					var amount = item[1].To<long>();
+					if (amount < 0)
+						return null;
+
+					infrastructure.Add(new StartingBuilding(item[0].To<string>(), amount));
+				}
 
 				return new StartingConditions(population, colonies, infrastructure, nameKey);
 			}
@@ -75,13 +89,14 @@ namespace Stareater.Galaxy
 				return false;
 
 			return this.Colonies == other.Colonies &&
-				this.Infrastructure == other.Infrastructure &&
-				this.Population == other.Population;
+				this.Population == other.Population &&
+				this.Buildings.Select(x => x.Id).SequenceEqual(other.Buildings.Select(x => x.Id)) &&
+				this.Buildings.Select(x => x.Amount).SequenceEqual(other.Buildings.Select(x => x.Amount));
 		}
 
 		public override int GetHashCode()
 		{
-			return Colonies.GetHashCode() + Population.GetHashCode() * 31 + Infrastructure.GetHashCode() * 967;
+			return Colonies.GetHashCode() + this.Population.GetHashCode() * 31;
 		}
 		
 		public static bool operator ==(StartingConditions lhs, StartingConditions rhs) {
@@ -100,7 +115,7 @@ namespace Stareater.Galaxy
 		#region Attribute keys
 		const string ColoniesKey = "colonies";
 		const string PopulationKey = "population";
-		const string InfrastructureKey = "infrastructure";
+		const string InfrastructureKey = "buildings";
 		const string NameKey = "nameKey";
 		#endregion
 	}

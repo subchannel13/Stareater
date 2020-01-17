@@ -27,9 +27,10 @@ namespace Stareater.GUI
 			coloniesSelector.Maximum = StartingConditions.MaxColonies;
 			coloniesSelector.Value = condition.Colonies;
 
-			var numberFormat = new ThousandsFormatter(condition.Population, condition.Infrastructure);
+			//TODO(v0.9) do something about buildings
+			var numberFormat = new ThousandsFormatter(condition.Population/*, condition.Infrastructure*/);
 			populationInput.Text = numberFormat.Format(condition.Population);
-			infrastructureInput.Text = numberFormat.Format(condition.Infrastructure);
+			//infrastructureInput.Text = numberFormat.Format(condition.Infrastructure);
 		}
 
 		private void setLanguage()
@@ -63,10 +64,12 @@ namespace Stareater.GUI
 
 		public StartingConditions GetResult()
 		{
+			//TODO(v0.9) do something about buildings
 			return new StartingConditions(
 				NumberInput.DecodeQuantity(populationInput.Text).Value,
 				(int)coloniesSelector.Value,
-				NumberInput.DecodeQuantity(infrastructureInput.Text).Value,
+				new StartingBuilding[0],
+				//NumberInput.DecodeQuantity(infrastructureInput.Text).Value,
 				NewGameController.CustomStartNameKey);
 		}
 

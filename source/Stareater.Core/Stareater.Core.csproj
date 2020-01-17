@@ -166,6 +166,7 @@
     <Compile Include="Galaxy\PlanetType.cs" />
     <Compile Include="Galaxy\ShipGroup.cs" />
     <Compile Include="Galaxy\StarData.cs" />
+    <Compile Include="Galaxy\StartingBuilding.cs" />
     <Compile Include="Galaxy\StellarisAdmin.cs" />
     <Compile Include="Galaxy\StarNamer.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectTypeAfflictPlanets.cs" />

@@ -221,6 +221,8 @@ namespace Stareater.Controllers
 			}
 		}
 
+		public BuildingInfo StartBuildingInfo(StartingBuilding building) => new BuildingInfo(this.Statics.Buildings[building.Id], building.Amount);
+
 		internal static Organization Resolve(OrganizationInfo selection, Random rng)
 		{
 			if (selection == null)

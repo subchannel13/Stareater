@@ -218,6 +218,7 @@ namespace Stareater.Controllers
 				derivates.Colonies.Add(colonyProc);
 			}
 			
+			//TODO(v0.9) distribute population and buildings by respecting their limits
 			foreach(var player in players) {
 				var weights = new ChoiceWeights<Colony>();
 				
@@ -226,11 +227,13 @@ namespace Stareater.Controllers
 
 				var maxPopulation = colonies.OwnedBy[player].Sum(x => derivates.Colonies.Of[x].MaxPopulation);
 				double totalPopulation = Math.Min(startingConditions.Population, maxPopulation);
-				double totalInfrastructure = Math.Min(startingConditions.Infrastructure, maxPopulation);
 				
 				foreach(var colony in colonies.OwnedBy[player]) {
 					colony.Population = weights.Relative(colony) * totalPopulation;
 					derivates.Colonies.Of[colony].CalculateBaseEffects(statics, derivates.Players.Of[player]);
+					
+					foreach (var building in startingConditions.Buildings)
+						colony.Buildings[building.Id] = weights.Relative(colony) * building.Amount;
 				}
 			}
 		}
