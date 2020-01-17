@@ -32,12 +32,14 @@ namespace Stareater.Galaxy
 
 		public IkonComposite BuildSaveData()
 		{
-			var lastGameData = new IkonComposite(ClassName);
-			lastGameData.Add(ColoniesKey, new IkonInteger(Colonies));
-			lastGameData.Add(PopulationKey, new IkonInteger(Population));
-			lastGameData.Add(InfrastructureKey, new IkonInteger(Infrastructure));
-			lastGameData.Add(NameKey, new IkonText(nameKey));
-			
+			var lastGameData = new IkonComposite("StartinConditions")
+			{
+				{ ColoniesKey, new IkonInteger(Colonies) },
+				{ PopulationKey, new IkonInteger(Population) },
+				{ InfrastructureKey, new IkonInteger(Infrastructure) },
+				{ NameKey, new IkonText(nameKey) }
+			};
+
 			return lastGameData;
 		}
 
@@ -96,7 +98,6 @@ namespace Stareater.Galaxy
 		#endregion
 
 		#region Attribute keys
-		const string ClassName = "StartinConditions";
 		const string ColoniesKey = "colonies";
 		const string PopulationKey = "population";
 		const string InfrastructureKey = "infrastructure";

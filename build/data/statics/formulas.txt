@@ -9,6 +9,12 @@
 		- case(noAtmo, denseAtmo) [0.5, 2, 0] - case(noGrav, lowGrav, highGrav) [0.5, 0.25, 1, 0]
 		- if(toxic, 1, 0) - if(radioactive, 2, 0) - case(cold, hot) [1, 2, 0]
 	);
+	
+	traitUndesirability # 
+		max(0, case(irradiated1, irradiated2, irradiated3) [1, 2, 4, 0] - case(magnetosphere1, magnetosphere2) [1, 2, 0]) +
+		case(noAtmo, denseAtmo) [0.5, 2, 0] +
+		case(noGrav, lowGrav, highGrav) [0.5, 0.25, 1, 0] +
+		if(toxic, 1, 0) + if(radioactive, 2, 0) + case(cold, hot) [1, 2, 0];
 }
 
 { ColonyFormulas
@@ -28,8 +34,7 @@
 	{ Stat
 		base # pop * 0.04 * (
 				(1 + 0.5 * childCareLvl / 5) * 
-				if(noGrav, 0.8 ^ (1 - microgravTolLvl / 5), 1) -
-				maintenancePenalty
+				if(noGrav, 0.8 ^ (1 - microgravTolLvl / 5), 1)
 			);
 		total # base;
 	}
@@ -37,7 +42,7 @@
 	minerals # case(poor, rich) [0.2, 0.8, 0.4];
 	emigrants # pop * 0.001;
 	environment # if(noGrav, 0.8 ^ (1 - microgravTolLvl / 5), 1);
-	desirability # 1 - pop / maxPop;
+	desirability # (1 - pop / maxPop) / (1 + traitUndesirability / 5);
 	organization # limit(infra_count / pop, 0, 1);
 	
 	farming

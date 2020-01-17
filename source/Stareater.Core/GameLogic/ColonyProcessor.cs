@@ -142,10 +142,8 @@ namespace Stareater.GameLogic
             this.MaintenanceLimit = this.WorkingPopulation * this.BuilderEfficiency * this.SpaceliftFactor;
 			this.MaintenancePenalty = 0;
 
-			vars[MaintenancePenaltyKey] = this.MaintenancePenalty;
-			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
-
 			vars[MaxPopulationKey] = this.MaxPopulation;
+			this.PopulationGrowth = formulas.PopulationGrowth.Evaluate(vars);
 			this.Desirability = formulas.Desirability.Evaluate(vars);
 			this.Emigrants = formulas.Emigrants.Evaluate(vars);
 			this.FuelProduction = formulas.FuelProduction.Evaluate(vars);

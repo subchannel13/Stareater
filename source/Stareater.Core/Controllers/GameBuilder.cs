@@ -124,21 +124,19 @@ namespace Stareater.Controllers
 			var colonies = new ColonyCollection();
 			for(int playerI = 0; playerI < players.Length; playerI++)
 			{
-				var planets = starSystems[homeSystemIndices[playerI]].Planets;
+				var planets = new HashSet<Planet>(starSystems[homeSystemIndices[playerI]].Planets);
 				var fitness = planets.
 					ToDictionary(x => x, x => ColonyProcessor.DesirabilityOf(x, statics));
 
-				for (int i = 0; i < Math.Min(startingConditions.Colonies, planets.Count); i++)
-				{
-					var planet = Methods.FindBest(planets, x => fitness[x]);
+				while (planets.Count > startingConditions.Colonies)
+					planets.Remove(Methods.FindWorst(planets, x => fitness[x]));
+
+				foreach(var planet in planets)
 					colonies.Add(new Colony(
 						0,
 						planet,
 						players[playerI]
 					));
-
-					fitness[planet] = double.NegativeInfinity;
-				}
 			}
 			
 			return colonies;
@@ -220,10 +218,10 @@ namespace Stareater.Controllers
 				derivates.Colonies.Add(colonyProc);
 			}
 			
-			foreach(Player player in players) {
+			foreach(var player in players) {
 				var weights = new ChoiceWeights<Colony>();
 				
-				foreach(Colony colony in colonies.OwnedBy[player])
+				foreach(var colony in colonies.OwnedBy[player])
 					weights.Add(colony, derivates.Colonies.Of[colony].Desirability);
 
 				var maxPopulation = colonies.OwnedBy[player].Sum(x => derivates.Colonies.Of[x].MaxPopulation);
