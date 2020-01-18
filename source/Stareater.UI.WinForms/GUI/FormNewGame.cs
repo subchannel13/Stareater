@@ -116,7 +116,7 @@ namespace Stareater.GUI
 			var start = (setupStartSelector.SelectedItem as Tag<StartingConditions>).Value;
 			if (start != null) {
 				var sb = new StringBuilder();
-				var formatter = new ThousandsFormatter(start.Population, start.Buildings.Max(x => x.Amount));
+				var formatter = new ThousandsFormatter(start.Population);
 
 				sb.AppendLine("Colonies: " + start.Colonies);
 				sb.AppendLine("Population: " + formatter.Format(start.Population));

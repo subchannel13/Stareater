@@ -7,9 +7,11 @@ using Stareater.Controllers;
 using Stareater.Utils.NumberFormatters;
 using Stareater.GuiUtils;
 using Stareater.Galaxy;
+using System.Linq;
 
 namespace Stareater.GUI
 {
+	//TODO(later) add support for multiple buildings
 	public partial class FormStartingConditions : Form
 	{
 		private static readonly Color validColor = SystemColors.Window;
@@ -27,10 +29,11 @@ namespace Stareater.GUI
 			coloniesSelector.Maximum = StartingConditions.MaxColonies;
 			coloniesSelector.Value = condition.Colonies;
 
-			//TODO(v0.9) do something about buildings
-			var numberFormat = new ThousandsFormatter(condition.Population/*, condition.Infrastructure*/);
+
+			var numberFormat = new ThousandsFormatter(condition.Population);
 			populationInput.Text = numberFormat.Format(condition.Population);
-			//infrastructureInput.Text = numberFormat.Format(condition.Infrastructure);
+			//TODO(v0.9) faked number of total infrastructure
+			infrastructureInput.Text = condition.Buildings.Any() ? numberFormat.Format(condition.Buildings.Max(x => x.Amount)) : "0";
 		}
 
 		private void setLanguage()
@@ -64,12 +67,11 @@ namespace Stareater.GUI
 
 		public StartingConditions GetResult()
 		{
-			//TODO(v0.9) do something about buildings
+			//TODO(v0.9) ignored number of buildings
 			return new StartingConditions(
 				NumberInput.DecodeQuantity(populationInput.Text).Value,
 				(int)coloniesSelector.Value,
 				new StartingBuilding[0],
-				//NumberInput.DecodeQuantity(infrastructureInput.Text).Value,
 				NewGameController.CustomStartNameKey);
 		}
 
