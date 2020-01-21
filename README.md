@@ -64,9 +64,7 @@ Stareater executable and it's source in `{Stareater}/source/Stareater.UI.WinForm
 
 Following code is licenced under LGPL:
 * `{Stareater}/source/Stareater.Core/` (Stareater core logic)
-* `{Stareater}/source/Stareater.Maps.ProximityLanes/` (2nd stage of default map generator)
-* `{Stareater}/source/Stareater.Maps.RybPopulator/` (3rd stage of default map generator)
-* `{Stareater}/source/Stareater.Maps.Square/` (1st stage of default map generator)
+* `{Stareater}/source/Stareater.Maps.DefaultMap/` (default map generator)
 * `{Stareater}/source/Stareater.Players.DefaultAI/` (default AI player)
 * `{Stareater}/source/Zvjezdojedac editori/` (modding tools for v0.4)
 * `{Stareater}/source/Zvjezdojedac/` (v0.4 game code)
