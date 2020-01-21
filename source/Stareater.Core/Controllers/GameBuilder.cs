@@ -28,6 +28,8 @@ namespace Stareater.Controllers
 			var derivates = createDerivates(players, organellePlayer, controller.SelectedStart, statics, states);
 			
 			var game = new MainGame(players, organellePlayer, statics, states, derivates);
+			initColonies(game, controller.SelectedStart);
+			initStellarises(game);
 			initOrders(game);
 			initPlayers(game);
 			game.CalculateDerivedEffects();
@@ -85,9 +87,6 @@ namespace Stareater.Controllers
 		{
 			var derivates = new TemporaryDB(players, organellePlayer, statics.DevelopmentTopics);
 			
-			initColonies(players, states.Colonies, startingConditions, derivates, statics);
-			initStellarises(derivates, states.Stellarises);
-			
 			derivates.Natives.Initialize(states, statics, derivates);
 			
 			return derivates;
@@ -131,12 +130,8 @@ namespace Stareater.Controllers
 				while (planets.Count > startingConditions.Colonies)
 					planets.Remove(Methods.FindWorst(planets, x => fitness[x]));
 
-				foreach(var planet in planets)
-					colonies.Add(new Colony(
-						0,
-						planet,
-						players[playerI]
-					));
+				foreach (var planet in planets)
+					colonies.Add(new Colony(0, planet, players[playerI]));
 			}
 			
 			return colonies;
@@ -208,32 +203,54 @@ namespace Stareater.Controllers
 			return techProgress;
 		}
 
-		private static void initColonies(Player[] players, ColonyCollection colonies, StartingConditions startingConditions, 
-		                                 TemporaryDB derivates, StaticsDB statics)
+		private static void initColonies(MainGame game, StartingConditions startingConditions)
 		{
-			foreach(Colony colony in colonies) {
+			var colonies = game.States.Colonies;
+			foreach (var colony in colonies) {
 				var colonyProc = new ColonyProcessor(colony);
 				
-				colonyProc.CalculateBaseEffects(statics, derivates.Players.Of[colony.Owner]);
-				derivates.Colonies.Add(colonyProc);
+				colonyProc.CalculateBaseEffects(game.Statics, game.Derivates.Players.Of[colony.Owner]);
+				game.Derivates.Colonies.Add(colonyProc);
 			}
 			
-			//TODO(v0.9) distribute population and buildings by respecting their limits
-			foreach(var player in players) {
+			foreach(var player in game.MainPlayers) {
 				var weights = new ChoiceWeights<Colony>();
-				
-				foreach(var colony in colonies.OwnedBy[player])
-					weights.Add(colony, derivates.Colonies.Of[colony].Desirability);
 
-				var maxPopulation = colonies.OwnedBy[player].Sum(x => derivates.Colonies.Of[x].MaxPopulation);
-				double totalPopulation = Math.Min(startingConditions.Population, maxPopulation);
-				
-				foreach(var colony in colonies.OwnedBy[player]) {
-					colony.Population = weights.Relative(colony) * totalPopulation;
-					derivates.Colonies.Of[colony].CalculateBaseEffects(statics, derivates.Players.Of[player]);
-					
-					foreach (var building in startingConditions.Buildings)
-						colony.Buildings[building.Id] = weights.Relative(colony) * building.Amount;
+				foreach (var colony in colonies.OwnedBy[player])
+					weights.Add(colony, game.Derivates.Colonies.Of[colony].Desirability);
+
+				Methods.WeightedPointDealing(
+					startingConditions.Population, 
+					colonies.OwnedBy[player].Select(colony => new PointReceiver<Colony>(
+						colony,
+						game.Derivates.Colonies.Of[colony].Desirability,
+						() => game.Derivates.Colonies.Of[colony].MaxPopulation,
+						x => { colony.Population = x; }
+					))
+				);
+
+				var playerProcessor = game.Derivates[player];
+				foreach (var building in startingConditions.Buildings)
+				{
+					var project = game.Statics.Constructables.First(x => x.IdCode == building.Id);
+
+					Methods.WeightedPointDealing(
+						startingConditions.Population,
+						colonies.OwnedBy[player].Select(colony => new PointReceiver<Colony>(
+							colony,
+							game.Derivates.Colonies.Of[colony].Desirability,
+							() => project.TurnLimit.Evaluate(
+								game.Derivates[colony].
+								LocalEffects(game.Statics).
+								UnionWith(playerProcessor.TechLevels).Get
+							),
+							x => 
+							{
+								foreach (var effect in project.Effects)
+									effect.Apply(game, colony, (long)x);
+							}
+						))
+					);
 				}
 			}
 		}
@@ -290,10 +307,10 @@ namespace Stareater.Controllers
 			}
 		}
 		
-		private static void initStellarises(TemporaryDB derivates, IEnumerable<StellarisAdmin> stellarises)
+		private static void initStellarises(MainGame game)
 		{
-			foreach(var stellaris in stellarises)
-				derivates.Stellarises.Add(new StellarisProcessor(stellaris));
+			foreach(var stellaris in game.States.Stellarises)
+				game.Derivates.Stellarises.Add(new StellarisProcessor(stellaris));
 		}
 		#endregion
 		
