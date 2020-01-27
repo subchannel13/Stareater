@@ -646,10 +646,11 @@ namespace Stareater.Controllers
 		public IEnumerable<ContactInfo> DiplomaticContacts()
 		{
 			var game = this.gameInstance;
+			var player = this.PlayerInstance(game);
 
-			foreach (var player in game.MainPlayers)
-				if (player != this.PlayerInstance(game))
-					yield return new ContactInfo(player, game.States.Treaties.Of[this.PlayerInstance(game), player]);
+			foreach (var otherPlayer in game.MainPlayers)
+				if (otherPlayer != player && game.States.Contacts.Contains(new Pair<Player>(otherPlayer, player)))
+					yield return new ContactInfo(otherPlayer, game.States.Treaties.Of[player, otherPlayer]);
 		}
 
 		public bool IsAudienceRequested(ContactInfo contact)

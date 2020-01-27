@@ -1,6 +1,9 @@
 ﻿using Stareater.Galaxy;
 using Stareater.GameData.Databases.Tables;
+using Stareater.Players;
+using Stareater.Utils;
 using Stareater.Utils.StateEngine;
+using System.Collections.Generic;
 
 namespace Stareater.GameData.Databases
 {
@@ -38,17 +41,20 @@ namespace Stareater.GameData.Databases
 		[StateProperty]
 		public ResearchProgressCollection ResearchAdvances { get; private set; }
 		[StateProperty]
+		public HashSet<Pair<Player>> Contacts { get; internal set; }
+		[StateProperty]
 		public TreatyCollection Treaties { get; private set; }
-		
+
 		private int nextDesignId = 0; //TODO(v0.8) may not work correctly after loading
 		
 		public StatesDB(StarCollection stars, StarData stareaterBrain, WormholeCollection wormholes, PlanetCollection planets, 
 		                ColonyCollection Colonies, StellarisCollection stellarises,
 		                DevelopmentProgressCollection developmentAdvances, ResearchProgressCollection researchAdvances,
-						TreatyCollection treaties,ReportCollection reports, DesignCollection designs,
+						HashSet<Pair<Player>> contacts, TreatyCollection treaties,ReportCollection reports, DesignCollection designs,
 						FleetCollection fleets, ColonizationCollection colonizations)
 		{
 			this.Colonies = Colonies;
+			this.Contacts = contacts;
 			this.Planets = planets;
 			this.Stars = stars;
 			this.StareaterBrain = stareaterBrain;

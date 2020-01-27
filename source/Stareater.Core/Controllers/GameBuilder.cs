@@ -25,7 +25,7 @@ namespace Stareater.Controllers
 		{
 			var statics = controller.Statics;
 			var states = createStates(rng, controller, players, statics);
-			var derivates = createDerivates(players, organellePlayer, controller.SelectedStart, statics, states);
+			var derivates = createDerivates(players, organellePlayer, statics, states);
 			
 			var game = new MainGame(players, organellePlayer, statics, states, derivates);
 			initColonies(game, controller.SelectedStart);
@@ -83,7 +83,7 @@ namespace Stareater.Controllers
 		}
 		
 		#region Creation helper methods
-		private static TemporaryDB createDerivates(Player[] players, Player organellePlayer, StartingConditions startingConditions, StaticsDB statics, StatesDB states)
+		private static TemporaryDB createDerivates(Player[] players, Player organellePlayer, StaticsDB statics, StatesDB states)
 		{
 			var derivates = new TemporaryDB(players, organellePlayer, statics.DevelopmentTopics);
 			
@@ -111,10 +111,10 @@ namespace Stareater.Controllers
 					trait.InitialApply(statics, star, planets.At[star]);
 			}
 
-			return new StatesDB(stars, starSystems[starPositions.StareaterMain].Star, wormholes, planets, 
+			return new StatesDB(stars, starSystems[starPositions.StareaterMain].Star, wormholes, planets,
 				colonies, stellarises, developmentAdvances, researchAdvances,
-				new TreatyCollection(), new ReportCollection(), new DesignCollection(), new FleetCollection(),
-				new ColonizationCollection());
+				new HashSet<Pair<Player>>(), new TreatyCollection(), new ReportCollection(), new DesignCollection(), new FleetCollection(),
+				new ColonizationCollection()); ;
 		}
 		
 		private static ColonyCollection createColonies(Player[] players, IList<StarSystemBuilder> starSystems, 

@@ -1,10 +1,10 @@
-﻿using Stareater.Utils.StateEngine;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using Ikadn.Ikon.Types;
 using Stareater.GameData;
 using Stareater.GameData.Ships;
-using Ikadn.Ikon.Types;
 using Stareater.Players.Natives;
+using Stareater.Utils.StateEngine;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace Stareater.Players
 {
@@ -27,7 +27,7 @@ namespace Stareater.Players
 
 		[StateProperty]
 		public HashSet<DesignTemplate> UnlockedDesigns { get; private set; }
-
+		
 		[StateProperty]
 		public Intelligence Intelligence { get; private set; }
 
@@ -41,7 +41,7 @@ namespace Stareater.Players
 			this.Organization = Organization;
 
 			this.ControlType = type.ControlType;
-			this.OffscreenControl = type.OffscreenPlayerFactory != null ? type.OffscreenPlayerFactory.Create() : null;
+			this.OffscreenControl = type.OffscreenPlayerFactory?.Create();
 
 			this.UnlockedDesigns = new HashSet<DesignTemplate>();
 			this.Intelligence = new Intelligence();

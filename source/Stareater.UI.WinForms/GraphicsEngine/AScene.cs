@@ -132,10 +132,10 @@ namespace Stareater.GraphicsEngine
 		public void HandleMouseUp(MouseEventArgs e, Keys modiferKeys)
 		{
 			if (!this.mousePressed.ContainsKey(e.Button))
-				this.mousePressed[e.Button] = this.normalGuiLayer.Root;
+				this.mousePressed[e.Button] = null;
 
 			var mouseGuiPoint = Vector4.Transform(this.mouseToView(e.X, e.Y), this.guiInvProjection).Xy;
-			var pressedAt = this.mousePressed[e.Button];
+			var pressedAt = this.mousePressed[e.Button] ?? this.normalGuiLayer.Root;
 
 			if (pressedAt != this.normalGuiLayer.Root)
 				if (pressedAt.Position.ClipArea.Contains(mouseGuiPoint))

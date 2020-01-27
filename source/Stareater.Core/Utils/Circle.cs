@@ -10,5 +10,10 @@
 			this.Center = center;
 			this.Radius = radius;
 		}
+
+		public bool Contains(Vector2D point)
+		{
+			return (this.Center - point).LengthSquared <= this.Radius * this.Radius;
+		}
 	}
 }

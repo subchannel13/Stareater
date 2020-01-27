@@ -389,6 +389,7 @@ namespace Stareater.GameLogic
 			this.unlockPredefinedDesigns(game);
 			this.updateDesigns(game);
 			this.CalculateStareater(game);
+			this.checkNewContacts(game);
 		}
 
 		private void advanceTechnologies(MainGame game)
@@ -544,8 +545,34 @@ namespace Stareater.GameLogic
 			if (!this.ColonizerDesignOptions.Contains(game.Orders[this.Player].ColonizerDesign))
 				game.Orders[this.Player].ColonizerDesign = this.ColonizerDesignOptions.First();
 		}
+
+		private void checkNewContacts(MainGame game)
+		{
+			var uncontacted = game.MainPlayers.
+				Where(x => x != this.Player && !game.States.Contacts.Contains(new Pair<Player>(x, this.Player))).
+				ToList();
+
+			foreach(var otherPlayer in uncontacted)
+			{
+				var seeFleet = game.States.Fleets.OwnedBy[otherPlayer].
+					Any(fleet => this.ScanRanges.
+						Query(fleet.Position).
+						Any(circle => circle.Contains(fleet.Position))
+					);
+				//TODO(v0.9) query stellarises instead, ensure there are no stellarises without colonies
+				var seeColony = game.States.Colonies.OwnedBy[otherPlayer].
+					Any(colony => this.ScanRanges.
+						Query(colony.Star.Position).
+						Any(circle => circle.Contains(colony.Star.Position))
+					);
+
+				//TODO(later) produce a report message
+				if (seeColony || seeFleet)
+					game.States.Contacts.Add(new Pair<Player>(otherPlayer, this.Player));
+			}
+		}
 		#endregion
-		
+
 		#region Design stats
 		public static Var DesignBaseVars(Component<HullType> hull, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics)
 		{

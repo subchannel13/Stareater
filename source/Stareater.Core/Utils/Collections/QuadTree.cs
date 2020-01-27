@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Stareater.Utils.Collections
@@ -29,6 +30,11 @@ namespace Stareater.Utils.Collections
 			this.bottomLeft = center - size / 2;
 			this.minNodeSize = minSize;
 			this.root = new QuadTreeNode<T>(topRight, bottomLeft);
+		}
+
+		public IEnumerable<T> Query(Vector2D center)
+		{
+			return this.Query(center, new Vector2D());
 		}
 
 		public IEnumerable<T> Query(Vector2D center, Vector2D size)
