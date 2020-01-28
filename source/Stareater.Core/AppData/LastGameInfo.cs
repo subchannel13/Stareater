@@ -1,13 +1,13 @@
-﻿using Stareater.Galaxy;
-using Ikadn.Ikon.Types;
+﻿using Ikadn.Ikon.Types;
+using Stareater.Galaxy;
 using Stareater.Utils;
-using System;
 
 namespace Stareater.AppData
 {
 	public class LastGameInfo
 	{
 		public StartingConditions StartConditions { get; set; }
+		public IkonComposite[] PlayersConfig { get; set; }
 		public IkonArray StarPositionerConfig { get; set; }
 		public IkonArray StarConnectorConfig { get; set; }
 		public IkonArray StarPopulatorConfig { get; set; }
@@ -24,6 +24,9 @@ namespace Stareater.AppData
 
 			if (this.StartConditions != null)
 				lastGameData.Add(StartingConditionsKey, this.StartConditions.BuildSaveData());
+
+			if (this.PlayersConfig != null)
+				lastGameData.Add(PlayersKey, new IkonArray(this.PlayersConfig));
 			
 			if (this.StarPositionerConfig != null)
 				lastGameData.Add(StarPositionerKey, this.StarPositionerConfig);
@@ -39,23 +42,19 @@ namespace Stareater.AppData
 
 		internal static LastGameInfo Load(IkonComposite ikstonData)
 		{
-			var conditions = ikstonData.ToOrDefault(StartingConditionsKey, x => StartingConditions.Load(x.To<IkonComposite>()), null);
-			if (conditions == null)
-				return new LastGameInfo();
-
-			var info = new LastGameInfo
+			return new LastGameInfo
 			{
-				StartConditions = conditions,
+				StartConditions = ikstonData.ToOrDefault(StartingConditionsKey, x => StartingConditions.Load(x.To<IkonComposite>()), null),
+				PlayersConfig = ikstonData.ToOrDefault(PlayersKey, x => x.To<IkonComposite[]>(), null),
 				StarPositionerConfig = ikstonData.ToOrDefault(StarPositionerKey, x => x.To<IkonArray>(), null),
 				StarConnectorConfig = ikstonData.ToOrDefault(StarConnectorKey, x => x.To<IkonArray>(), null),
 				StarPopulatorConfig = ikstonData.ToOrDefault(StarPopulatorKey, x => x.To<IkonArray>(), null)
 			};
-
-			return info;
 		}
 
 		#region Attribute keys
 		const string ClassName = "LastGame";
+		const string PlayersKey = "players";
 		const string StartingConditionsKey = "startingConditions";
 		const string StarConnectorKey = "starConnector";
 		const string StarPopulatorKey = "starPopulator";

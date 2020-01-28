@@ -1,8 +1,8 @@
-﻿using System;
-using Ikadn;
+﻿using Ikadn;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
 using Stareater.Localization;
+using System;
 
 namespace Stareater.AppData
 {
@@ -63,7 +63,7 @@ namespace Stareater.AppData
 		
 		protected virtual void load(LabeledQueue<object, IkadnBaseObject> data)
 		{
-			IkonComposite baseData = data.Dequeue(BaseSettingsTag).To<IkonComposite>();
+			var baseData = data.Dequeue(BaseSettingsTag).To<IkonComposite>();
 			
 			this.LanguageId = baseData[LanguageKey].To<string>();
 			this.LastGame = LastGameInfo.Load(baseData[LastGameKey].To<IkonComposite>());

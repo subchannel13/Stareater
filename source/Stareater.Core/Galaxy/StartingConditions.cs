@@ -37,7 +37,7 @@ namespace Stareater.Galaxy
 			{
 				{ ColoniesKey, new IkonInteger(this.Colonies) },
 				{ PopulationKey, new IkonInteger(this.Population) },
-				{ InfrastructureKey, new IkonArray(this.Buildings.SelectMany(x => new IkonBaseObject[]{
+				{ InfrastructureKey, new IkonArray(this.Buildings.Select(x => new IkonArray {
 					new IkonText(x.Id),
 					new IkonInteger(x.Amount)
 				})) },

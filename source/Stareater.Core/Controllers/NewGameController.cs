@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Linq;
+﻿using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
 using Stareater.AppData;
 using Stareater.Controllers.NewGameHelpers;
@@ -14,6 +10,11 @@ using Stareater.Localization;
 using Stareater.Players;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Linq;
 
 namespace Stareater.Controllers
 {
@@ -34,17 +35,12 @@ namespace Stareater.Controllers
 			foreach (var aiFactory in PlayerAssets.AIDefinitions.Values)
 				aiPlayers.Add(new PlayerType(PlayerControlType.LocalAI, aiFactory));
 
-			//TODO(v0.8) move to controller user
-			players.Add(new NewGamePlayerInfo("Marko Kovač",
-				colors.Take(),
-				null,
-				localHuman));
-
-			players.Add(new NewGamePlayerInfo(generateAiName(),
-				colors.Take(),
-				null,
-				aiPlayers.Pick()));
-
+			//TODO(v0.9) move to controller user
+			this.players.AddRange(
+				Settings.Get.LastGame.PlayersConfig != null && Settings.Get.LastGame.PlayersConfig.Length > 1 ?
+				loadPlayerSetup(Settings.Get.LastGame.PlayersConfig) :
+				this.defaultPlayerSetup()
+			);
 			this.Statics = StaticsDB.Load(staticDataSources);
 			this.evaluator = new SystemEvaluator(this.Statics);
 			foreach (var populator in MapAssets.StarPopulators)
@@ -60,12 +56,55 @@ namespace Stareater.Controllers
 			this.StarPopulator = ParameterLoadingVisitor.Load(Settings.Get.LastGame.StarPopulatorConfig, MapAssets.StarPopulators);
 		}
 
+		private IEnumerable<NewGamePlayerInfo> defaultPlayerSetup()
+		{
+			yield return new NewGamePlayerInfo("Marko Kovač",
+				colors.Take(),
+				null,
+				localHuman
+			);
+
+			yield return new NewGamePlayerInfo(generateAiName(),
+				colors.Take(),
+				null,
+				aiPlayers.Pick()
+			);
+		}
+
+		private IEnumerable<NewGamePlayerInfo> loadPlayerSetup(IkonComposite[] playersConfig)
+		{
+			var loadedPlayers = new List<NewGamePlayerInfo>();
+			foreach(var data in playersConfig)
+			{
+#if !DEBUG
+				try
+				{
+#endif
+					loadedPlayers.Add(NewGamePlayerInfo.Load(
+						data, colors,
+						PlayerAssets.Organizations.ToDictionary(x => x.Data.IdCode),
+						PlayerAssets.AIDefinitions
+					));
+#if !DEBUG
+				} catch
+				{
+					//no operation
+				}
+#endif
+			}
+
+			if (loadedPlayers.Count < 2)
+				return defaultPlayerSetup();
+			
+			return loadedPlayers;
+		}
+
 		private string generateAiName()
 		{
 			return "HAL Bot";
 		}
 
-		#region Players
+#region Players
 		public IEnumerable<PlayerType> PlayerTypes
 		{
 			get
@@ -152,9 +191,9 @@ namespace Stareater.Controllers
 		}
 
 		private static readonly PlayerType localHuman = new PlayerType(PlayerControlType.LocalHuman, LocalizationManifest.Get.CurrentLanguage["PlayerTypes"]["localHuman"].Text());
-		#endregion
+#endregion
 
-		#region Map
+#region Map
 		public StartingConditions CustomStart { get; set; }
 		public StartingConditions SelectedStart { get; set; }
 
@@ -211,7 +250,7 @@ namespace Stareater.Controllers
 		}
 
 		public static readonly string CustomStartNameKey = "custom";
-		#endregion
+#endregion
 
 		public static bool CanCreateGame
 		{
@@ -234,6 +273,7 @@ namespace Stareater.Controllers
 		internal void SaveLastGame()
 		{
 			Settings.Get.LastGame.StartConditions = this.SelectedStart;
+			Settings.Get.LastGame.PlayersConfig = this.players.Select(x => x.BuildSaveData()).ToArray();
 			var saver = new ParameterSavingVisitor();
 			Settings.Get.LastGame.StarPositionerConfig = saver.Save(this.StarPositioner);
 			Settings.Get.LastGame.StarConnectorConfig = saver.Save(this.StarConnector);

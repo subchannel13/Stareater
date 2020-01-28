@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Stareater.Players
+﻿namespace Stareater.Players
 {
 	public class PlayerType
 	{
@@ -25,10 +20,15 @@ namespace Stareater.Players
 			this.OffscreenPlayerFactory = null;
 		}
 
+		public PlayerType(PlayerControlType controlType, IOffscreenPlayerFactory offscreenPlayerFactory, string name) : 
+			this(controlType, offscreenPlayerFactory)
+		{
+			this.Name = name;
+		}
+
 		public override bool Equals(object obj)
 		{
-			var other = obj as PlayerType;
-			return other != null && ControlType.Equals(other.ControlType) && OffscreenPlayerFactory == other.OffscreenPlayerFactory;
+			return obj is PlayerType other && ControlType.Equals(other.ControlType) && OffscreenPlayerFactory == other.OffscreenPlayerFactory;
 		}
 
 		public override int GetHashCode()
