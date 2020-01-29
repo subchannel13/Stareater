@@ -8,6 +8,5 @@ namespace Stareater.GameScenes
 
 		//TODO(v0.9) see if need
 		void SystemOpened(StarSystemController systemController);
-		void SystemSelected(StarSystemController systemController);
 	}
 }

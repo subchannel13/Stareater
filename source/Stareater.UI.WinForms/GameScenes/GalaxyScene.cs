@@ -196,7 +196,7 @@ namespace Stareater.GameScenes
 				PaddingX = 12,
 				PaddingY = 4,
 				Margins = new Vector2(5, 5),
-				ClickCallback = () => { using (var form = new FormReports(this.currentPlayer.Reports)) if (form.ShowDialog() == DialogResult.OK) form.Result.Accept(this.reportOpener); },
+				ClickCallback = showReports,
 				Tooltip = new SimpleTooltip("GalaxyScene", "ReportsTooltip")
 			};
 			reportsButton.Position.FixedSize(48, 32).RelativeTo(colonizationButton, 1, 0, -1, 0).UseMargins();
@@ -419,7 +419,6 @@ namespace Stareater.GameScenes
 		private void showStarInfo(StarInfo star)
 		{
 			var starSystem = this.currentPlayer.OpenStarSystem(star);
-			this.galaxyViewListener.SystemSelected(starSystem);
 
 			//TODO(later) update owner check when multiple stellarises can exist at the same star
 			if (starSystem.StarsAdministration() != null && starSystem.StarsAdministration().Owner == this.currentPlayer.Info)
@@ -766,7 +765,7 @@ namespace Stareater.GameScenes
 		}
 		#endregion
 
-		#region Mouse events
+		#region Input events
 		protected override void onMouseMove(Vector4 mouseViewPosition, Keys modiferKeys)
 		{
 			this.lastMousePosition = mouseViewPosition;
@@ -877,6 +876,13 @@ namespace Stareater.GameScenes
 			if (starsFound.Any())
 				this.galaxyViewListener.SystemOpened(this.currentPlayer.OpenStarSystem(starsFound[0]));
 		}
+
+		protected override void onKeyPress(char c)
+		{
+			//TODO(later) make rebindable
+			if (c == ' ')
+				this.showReports();
+		}
 		#endregion
 
 		#region Helper methods
@@ -984,6 +990,13 @@ namespace Stareater.GameScenes
 		{
 			foreach (var selectionView in new AGuiElement[] { this.starInfo, this.fleetsPanel })
 				this.HideElement(selectionView);
+		}
+
+		private void showReports()
+		{
+			using (var form = new FormReports(this.currentPlayer.Reports))
+				if (form.ShowDialog() == DialogResult.OK)
+					form.Result.Accept(this.reportOpener);
 		}
 		#endregion
 	}

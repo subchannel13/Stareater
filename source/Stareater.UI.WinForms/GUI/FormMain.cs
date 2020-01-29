@@ -517,15 +517,6 @@ namespace Stareater.GUI
 			this.systemRenderer.SetStarSystem(systemController, this.currentPlayer);
 			this.nextRenderer = systemRenderer;
 		}
-		
-		void IGalaxyViewListener.SystemSelected(StarSystemController systemController)
-		{
-			if (this.InvokeRequired)
-			{
-				this.BeginInvoke(new Action<StarSystemController>(((IGalaxyViewListener)this).SystemSelected), systemController);
-				return;
-			}
-		}
 		#endregion
 	}
 }
