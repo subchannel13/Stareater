@@ -1,26 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-
-using OpenTK;
+﻿using OpenTK;
+using Stareater.AppData;
 using Stareater.Controllers;
+using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
+using Stareater.GameScenes.Widgets;
+using Stareater.GLData;
+using Stareater.GLData.OrbitShader;
+using Stareater.GLData.SpriteShader;
+using Stareater.GraphicsEngine;
+using Stareater.GraphicsEngine.GuiElements;
+using Stareater.GUI;
+using Stareater.GUI.Reports;
 using Stareater.Localization;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
-using Stareater.GraphicsEngine;
-using Stareater.GLData.SpriteShader;
-using Stareater.GLData;
-using Stareater.GraphicsEngine.GuiElements;
-using Stareater.Controllers.Views;
-using Stareater.GLData.OrbitShader;
-using Stareater.AppData;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
-using Stareater.GUI;
-using Stareater.GUI.Reports;
-using Stareater.GameScenes.Widgets;
 
 namespace Stareater.GameScenes
 {
@@ -62,6 +61,7 @@ namespace Stareater.GameScenes
 
 		private readonly GuiText turnCounter;
 		private readonly GuiText fuelInfo;
+		private readonly GuiButton reportsButton;
 		private readonly ConstructionSiteView starInfo;
 		private readonly ListPanel fleetsPanel;
 
@@ -188,7 +188,7 @@ namespace Stareater.GameScenes
 			colonizationButton.Position.FixedSize(48, 32).RelativeTo(diplomacyButton, 1, 0, -1, 0).UseMargins();
 			this.AddElement(colonizationButton);
 
-			var reportsButton = new GuiButton
+			this.reportsButton = new GuiButton
 			{
 				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ToggleHover, 7),
 				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ToggleNormal, 7),
@@ -199,8 +199,8 @@ namespace Stareater.GameScenes
 				ClickCallback = showReports,
 				Tooltip = new SimpleTooltip("GalaxyScene", "ReportsTooltip")
 			};
-			reportsButton.Position.FixedSize(48, 32).RelativeTo(colonizationButton, 1, 0, -1, 0).UseMargins();
-			this.AddElement(reportsButton);
+			this.reportsButton.Position.FixedSize(48, 32).RelativeTo(colonizationButton, 1, 0, -1, 0).UseMargins();
+			this.AddElement(this.reportsButton);
 
 			var stareaterButton = new GuiButton
 			{
@@ -278,10 +278,6 @@ namespace Stareater.GameScenes
 		public void OnNewTurn()
 		{
 			this.refreshData.Set();
-
-			var filter = new FilterRepotVisitor();
-			if (this.currentPlayer.Reports.Any(filter.ShowItem))
-				this.showReports();
 		}
 
 		public void SwitchPlayer(PlayerController player)
@@ -315,6 +311,15 @@ namespace Stareater.GameScenes
 			this.showStarInfo(this.lastSelectedStar);
 			this.setupPerspective();
 			this.setupFuelInfo();
+
+			var filter = new FilterRepotVisitor();
+			if (this.currentPlayer.Reports.Any(filter.ShowItem))
+			{
+				this.reportsButton.ForgroundImage = GalaxyTextures.Get.NewReports;
+				this.showReports();
+			}
+			else
+				this.reportsButton.ForgroundImage = GalaxyTextures.Get.Reports;
 		}
 
 		private void showDevelopment()
