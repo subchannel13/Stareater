@@ -11,13 +11,13 @@ namespace Stareater.GUI
 {
 	public sealed partial class FormReports : Form
 	{
-		private IEnumerable<IReportInfo> reports;
+		private readonly IEnumerable<IReportInfo> reports;
 		
 		public IReportInfo Result { get; private set; }
 		
 		public FormReports()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 		}
 		
 		public FormReports(IEnumerable<IReportInfo> reports) : this()
@@ -35,31 +35,37 @@ namespace Stareater.GUI
 				this.Close();
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
-		
+
 		private void fillList()
 		{
-			reportList.Controls.Clear();
-			
+			this.reportList.Controls.Clear();
+
 			var filter = new FilterRepotVisitor();
-			foreach (var report in reports) {
+			foreach (var report in this.reports)
+			{
 				report.Accept(filter);
 				if (!filter.ShowItem)
 					continue;
-				
-				var reportItem = new ReportItem();
-				reportItem.Data = report;
-				
-				reportList.Controls.Add(reportItem);
+
+				this.reportList.Controls.Add(new ReportItem { Data = report });
+			}
+
+			if (!this.reports.Any())
+			{
+				this.reportList.Controls.Add(new Label {
+					AutoSize = true,
+					Text = LocalizationManifest.Get.CurrentLanguage["FormReports"]["noReports"].Text()
+				});
+				this.openButton.Enabled = false;
+				this.filterButton.Enabled = false;
 			}
 		}
 		
 		private void openButton_Click(object sender, EventArgs e)
 		{
-			var reportItem = reportList.SelectedItem as ReportItem;
-			
-			if (reportItem == null)
+			if (!(this.reportList.SelectedItem is ReportItem reportItem))
 				return;
-			
+
 			this.Result = reportItem.Data;
 			this.DialogResult = DialogResult.OK;
 			this.Close();

@@ -278,6 +278,9 @@ namespace Stareater.GameScenes
 		public void OnNewTurn()
 		{
 			this.refreshData.Set();
+			
+			if (this.currentPlayer.Reports.Any())
+				this.showReports();
 		}
 
 		public void SwitchPlayer(PlayerController player)

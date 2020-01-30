@@ -4,4 +4,5 @@ FilterTitle = Show report types
 
 showTechs = Technologies
 applyFilter = Apply
+noReports = No significant turn events
 -
