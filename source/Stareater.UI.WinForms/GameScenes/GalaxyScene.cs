@@ -93,7 +93,7 @@ namespace Stareater.GameScenes
 		public GalaxyScene(IGalaxyViewListener galaxyViewListener, Action mainMenuCallback)
 		{
 			this.galaxyViewListener = galaxyViewListener;
-			this.reportOpener = new OpenReportVisitor(showDevelopment, showResearch);
+			this.reportOpener = new OpenReportVisitor(showDevelopment, showRelations, showResearch);
 
 			var mainMenuButton = new GuiButton
 			{
@@ -168,7 +168,7 @@ namespace Stareater.GameScenes
 				PaddingX = 12,
 				PaddingY = 4,
 				Margins = new Vector2(5, 5),
-				ClickCallback = () => { using (var form = new FormRelations(this.currentPlayer)) form.ShowDialog(); },
+				ClickCallback = showRelations,
 				Tooltip = new SimpleTooltip("GalaxyScene", "DiplomacyTooltip")
 			};
 			diplomacyButton.Position.FixedSize(48, 32).RelativeTo(researchButton, 1, 0, -1, 0).UseMargins();
@@ -278,8 +278,9 @@ namespace Stareater.GameScenes
 		public void OnNewTurn()
 		{
 			this.refreshData.Set();
-			
-			if (this.currentPlayer.Reports.Any())
+
+			var filter = new FilterRepotVisitor();
+			if (this.currentPlayer.Reports.Any(filter.ShowItem))
 				this.showReports();
 		}
 
@@ -319,6 +320,12 @@ namespace Stareater.GameScenes
 		private void showDevelopment()
 		{
 			using (var form = new FormDevelopment(this.currentPlayer))
+				form.ShowDialog();
+		}
+
+		private void showRelations()
+		{
+			using (var form = new FormRelations(this.currentPlayer)) 
 				form.ShowDialog();
 		}
 

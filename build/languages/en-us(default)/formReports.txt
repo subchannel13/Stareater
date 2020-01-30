@@ -2,6 +2,7 @@
 FormTitle = Situation report
 FilterTitle = Show report types
 
+showContacts = Contacts
 showTechs = Technologies
 applyFilter = Apply
 noReports = No significant turn events

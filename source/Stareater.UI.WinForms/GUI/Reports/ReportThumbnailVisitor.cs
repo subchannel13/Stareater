@@ -1,7 +1,6 @@
-﻿using System;
-using System.Drawing;
-using Stareater.AppData;
+﻿using Stareater.AppData;
 using Stareater.Controllers.Views;
+using System.Drawing;
 
 namespace Stareater.GUI.Reports
 {
@@ -15,7 +14,12 @@ namespace Stareater.GUI.Reports
 			
 			report.Accept(this);
 		}
-		
+
+		public void Visit(ContactReportInfo reportInfo)
+		{
+			this.Result = ImageCache.Get["./images/other/diplomacy"];
+		}
+
 		public void Visit(DevelopmentReportInfo reportInfo)
 		{
 			this.Result = ImageCache.Get[reportInfo.ImagePath];

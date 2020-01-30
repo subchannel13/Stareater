@@ -41,14 +41,8 @@ namespace Stareater.GUI
 			this.reportList.Controls.Clear();
 
 			var filter = new FilterRepotVisitor();
-			foreach (var report in this.reports)
-			{
-				report.Accept(filter);
-				if (!filter.ShowItem)
-					continue;
-
+			foreach (var report in this.reports.Where(filter.ShowItem))
 				this.reportList.Controls.Add(new ReportItem { Data = report });
-			}
 
 			if (!this.reports.Any())
 			{

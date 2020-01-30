@@ -40,15 +40,16 @@ namespace Stareater.GUI
 		{
 			this.checkTechs = new System.Windows.Forms.CheckBox();
 			this.applyAction = new System.Windows.Forms.Button();
+			this.checkContacts = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// checkTechs
 			// 
 			this.checkTechs.AutoSize = true;
-			this.checkTechs.Location = new System.Drawing.Point(12, 12);
+			this.checkTechs.Location = new System.Drawing.Point(12, 35);
 			this.checkTechs.Name = "checkTechs";
 			this.checkTechs.Size = new System.Drawing.Size(52, 17);
-			this.checkTechs.TabIndex = 0;
+			this.checkTechs.TabIndex = 1;
 			this.checkTechs.Text = "techs";
 			this.checkTechs.UseVisualStyleBackColor = true;
 			this.checkTechs.CheckedChanged += new System.EventHandler(this.checkTechs_CheckedChanged);
@@ -59,16 +60,28 @@ namespace Stareater.GUI
 			this.applyAction.Location = new System.Drawing.Point(142, 75);
 			this.applyAction.Name = "applyAction";
 			this.applyAction.Size = new System.Drawing.Size(75, 23);
-			this.applyAction.TabIndex = 1;
+			this.applyAction.TabIndex = 2;
 			this.applyAction.Text = "apply";
 			this.applyAction.UseVisualStyleBackColor = true;
-			this.applyAction.Click += new System.EventHandler(this.ApplyActionClick);
+			this.applyAction.Click += new System.EventHandler(this.applyAction_Click);
+			// 
+			// checkContacts
+			// 
+			this.checkContacts.AutoSize = true;
+			this.checkContacts.Location = new System.Drawing.Point(12, 12);
+			this.checkContacts.Name = "checkContacts";
+			this.checkContacts.Size = new System.Drawing.Size(67, 17);
+			this.checkContacts.TabIndex = 0;
+			this.checkContacts.Text = "contacts";
+			this.checkContacts.UseVisualStyleBackColor = true;
+			this.checkContacts.CheckedChanged += new System.EventHandler(this.checkContacts_CheckedChanged);
 			// 
 			// FormReportFilter
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(229, 110);
+			this.Controls.Add(this.checkContacts);
 			this.Controls.Add(this.applyAction);
 			this.Controls.Add(this.checkTechs);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -79,5 +92,7 @@ namespace Stareater.GUI
 			this.PerformLayout();
 
 		}
+
+		private System.Windows.Forms.CheckBox checkContacts;
 	}
 }

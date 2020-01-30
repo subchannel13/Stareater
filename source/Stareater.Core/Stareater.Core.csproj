@@ -76,6 +76,7 @@
     <Compile Include="Controllers\LibraryController.cs" />
     <Compile Include="Controllers\NewGameHelpers\ParameterLoadingVisitor.cs" />
     <Compile Include="Controllers\NewGameHelpers\ParameterSavingVisitor.cs" />
+    <Compile Include="Controllers\Views\ContactReportInfo.cs" />
     <Compile Include="Galaxy\BodyTraits\Affliction.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectTemporary.cs" />
     <Compile Include="Galaxy\BodyTraits\EffectTypeTemporary.cs" />
@@ -300,6 +301,7 @@
     <Compile Include="Players\IOffscreenPlayer.cs" />
     <Compile Include="Players\Organization.cs" />
     <Compile Include="Players\PlayerType.cs" />
+    <Compile Include="Players\Reports\ContactReport.cs" />
     <Compile Include="Players\Reports\IReport.cs" />
     <Compile Include="Players\Reports\IReportVisitor.cs" />
     <Compile Include="Players\Reports\ReportFactory.cs" />

@@ -568,7 +568,11 @@ namespace Stareater.GameLogic
 
 				//TODO(later) produce a report message
 				if (seeColony || seeFleet)
+				{
 					game.States.Contacts.Add(new Pair<Player>(otherPlayer, this.Player));
+					game.States.Reports.Add(new ContactReport(this.Player, otherPlayer));
+					game.States.Reports.Add(new ContactReport(otherPlayer, this.Player));
+				}
 			}
 		}
 		#endregion

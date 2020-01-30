@@ -1,5 +1,4 @@
-﻿using System;
-using Stareater.Players.Reports;
+﻿using Stareater.Players.Reports;
 
 namespace Stareater.Controllers.Views
 {
@@ -13,7 +12,12 @@ namespace Stareater.Controllers.Views
 			
 			return wrapped;
 		}
-		
+
+		public void Visit(ContactReport report)
+		{
+			wrapped = new ContactReportInfo(report);
+		}
+
 		public void Visit(DevelopmentReport report)
 		{
 			wrapped = new DevelopmentReportInfo(report);

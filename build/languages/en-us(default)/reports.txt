@@ -1,4 +1,7 @@
 ﻿:Reports
+contact §
+		We have established a contact with {=contact}
+	\
 tech §
 		{=tech} level {=level} researched
 	\

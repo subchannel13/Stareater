@@ -1,10 +1,10 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using Ikadn;
+﻿using Ikadn;
 using Ikadn.Ikon;
 using Ikadn.Ikon.Types;
 using Ikadn.Utilities;
+using System;
+using System.Drawing;
+using System.IO;
 
 namespace Stareater.AppData
 {
@@ -53,7 +53,8 @@ namespace Stareater.AppData
 				return new Font(SystemFonts.DefaultFont.FontFamily, SystemFonts.DefaultFont.Size * GuiScale);
 			}
 		}
-		
+
+		public bool ReportContact { get; set; }
 		public bool ReportTechnology { get; set; }
 		public bool ShowScanRange { get; set; }
 
@@ -68,7 +69,8 @@ namespace Stareater.AppData
 			this.FramerateBusySpinUsage = BusySpinMode.NotOnBattery;
 			this.UnlimitedFramerate = false;
 			this.VSync = true;
-			
+
+			this.ReportContact = true;
 			this.ReportTechnology = true;
 			this.ShowScanRange = false;
 
@@ -100,7 +102,8 @@ namespace Stareater.AppData
 			this.FramerateBusySpinUsage = (BusySpinMode)wfSettignsData[FpsBusyWaitKey].To<int>();
 			this.UnlimitedFramerate = wfSettignsData[FpsUnlimitedKey].To<int>() >= 0;
 			this.VSync = wfSettignsData[VSyncKey].To<int>() >= 0;
-			
+
+			this.ReportContact = wfSettignsData[ReportContactKey].To<int>() >= 0;
 			this.ReportTechnology = wfSettignsData[ReportTechnologyKey].To<int>() >= 0;
 			this.ShowScanRange = wfSettignsData[ShowScanRangeKey].To<int>() >= 0;
 		}
@@ -112,6 +115,7 @@ namespace Stareater.AppData
 		const string FpsKey = "fps";
 		const string FpsUnlimitedKey = "noFps";
 		const string GuiScaleKey = "guiscale";
+		const string ReportContactKey = "reportContact";
 		const string ReportTechnologyKey = "reportTech";
 		const string ShowScanRangeKey = "showRadar";
 		const string VSyncKey = "vsync";
@@ -143,6 +147,7 @@ namespace Stareater.AppData
 				{ FpsUnlimitedKey, new IkonInteger(this.UnlimitedFramerate ? 1 : -1) },
 				{ VSyncKey, new IkonInteger(this.VSync ? 1 : -1) },
 
+				{ ReportContactKey, new IkonInteger(this.ReportContact ? 1 : -1) },
 				{ ReportTechnologyKey, new IkonInteger(this.ReportTechnology ? 1 : -1) },
 				{ ShowScanRangeKey, new IkonInteger(this.ShowScanRange ? 1 : -1) }
 			};

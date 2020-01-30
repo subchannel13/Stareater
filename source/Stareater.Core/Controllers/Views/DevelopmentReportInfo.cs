@@ -1,5 +1,4 @@
-﻿using System;
-using Stareater.GameData;
+﻿using Stareater.GameData;
 using Stareater.Localization;
 using Stareater.Players.Reports;
 using Stareater.Utils.Collections;

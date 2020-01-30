@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
-using Stareater.AppData;
+﻿using Stareater.AppData;
 using Stareater.Localization;
+using System;
+using System.Windows.Forms;
 
 namespace Stareater.GUI
 {
@@ -12,10 +12,12 @@ namespace Stareater.GUI
 			InitializeComponent();
 			
 			this.Font = SettingsWinforms.Get.FormFont;
+			this.checkContacts.Checked = SettingsWinforms.Get.ReportContact;
 			this.checkTechs.Checked = SettingsWinforms.Get.ReportTechnology;
 			
 			var context = LocalizationManifest.Get.CurrentLanguage["FormReports"];
 			this.Text = context["FilterTitle"].Text();
+			this.checkContacts.Text = context["showContacts"].Text();
 			this.checkTechs.Text = context["showTechs"].Text();
 			this.applyAction.Text = context["applyFilter"].Text();
 		}
@@ -27,7 +29,7 @@ namespace Stareater.GUI
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
 		
-		private void ApplyActionClick(object sender, EventArgs e)
+		private void applyAction_Click(object sender, EventArgs e)
 		{
 			this.Close();
 		}
@@ -35,6 +37,11 @@ namespace Stareater.GUI
 		private void checkTechs_CheckedChanged(object sender, EventArgs e)
 		{
 			SettingsWinforms.Get.ReportTechnology = checkTechs.Checked;
+		}
+
+		private void checkContacts_CheckedChanged(object sender, EventArgs e)
+		{
+			SettingsWinforms.Get.ReportContact = checkContacts.Checked;
 		}
 	}
 }

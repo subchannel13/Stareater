@@ -44,6 +44,7 @@ namespace Stareater.AppData
 			catch(Exception e)
 			{
 				System.Diagnostics.Trace.TraceError(e.ToString());
+				instance.initDefault();
 			}
 			#else
 			catch(Exception)

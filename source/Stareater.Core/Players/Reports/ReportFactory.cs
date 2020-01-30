@@ -1,5 +1,5 @@
-﻿using System;
-using Stareater.Utils.StateEngine;
+﻿using Stareater.Utils.StateEngine;
+using System;
 
 namespace Stareater.Players.Reports
 {
@@ -7,7 +7,9 @@ namespace Stareater.Players.Reports
 	{
 		public static IReport Load(Ikadn.IkadnBaseObject reportData, LoadSession session)
 		{
-			if (reportData.Tag.Equals(DevelopmentReport.SaveTag))
+			if (reportData.Tag.Equals(ContactReport.SaveTag))
+				return session.Load<ContactReport>(reportData);
+			else if (reportData.Tag.Equals(DevelopmentReport.SaveTag))
 				return session.Load<DevelopmentReport>(reportData);
 			else if (reportData.Tag.Equals(ResearchReport.SaveTag))
 				return session.Load<ResearchReport>(reportData);
