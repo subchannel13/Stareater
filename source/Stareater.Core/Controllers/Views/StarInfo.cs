@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Stareater.Galaxy;
@@ -7,7 +8,7 @@ using Stareater.Utils;
 
 namespace Stareater.Controllers.Views
 {
-	public class StarInfo
+	public class StarInfo : IEquatable<StarInfo>
 	{
 		internal StarData Data { get; private set; }
 
@@ -54,6 +55,11 @@ namespace Stareater.Controllers.Views
 		public override int GetHashCode()
 		{
 			return this.Data.GetHashCode();
+		}
+
+		public bool Equals(StarInfo other)
+		{
+			return other != null && EqualityComparer<StarData>.Default.Equals(this.Data, other.Data);
 		}
 
 		public static bool operator ==(StarInfo info1, StarInfo info2)

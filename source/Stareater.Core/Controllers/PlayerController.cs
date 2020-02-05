@@ -143,6 +143,17 @@ namespace Stareater.Controllers
 				return game.States.Wormholes.Where(intell.IsKnown).Select(x => new WormholeInfo(x));
 			}
 		}
+
+		public StarInfo StareaterSystem
+		{
+			get
+			{
+				var game = this.gameInstance;
+				var star = game.States.StareaterBrain;
+
+				return this.PlayerInstance(game).Intelligence.About(star).IsVisited ? new StarInfo(star) : null;
+			}
+		}
 		#endregion
 
 		#region Fleet related

@@ -35,11 +35,12 @@ namespace Stareater.GameScenes
 		private const float Layers = 16.0f;
 		private const float InterlayerZRange = 1 / Layers;
 
-		private const float ScanRangeZ = 10 / Layers;
-		private const float WormholeZ = 9 / Layers;
-		private const float PathZ = 8 / Layers;
-		private const float StarColorZ = 7 / Layers;
-		private const float StarSaturationZ = 6 / Layers;
+		private const float ScanRangeZ = 11 / Layers;
+		private const float WormholeZ = 10 / Layers;
+		private const float PathZ = 9 / Layers;
+		private const float StarColorZ = 8 / Layers;
+		private const float StarSaturationZ = 7 / Layers;
+		private const float StarSpecialZ = 5 / Layers;
 		private const float StarNameZ = 5 / Layers;
 		private const float FleetZ = 4 / Layers;
 		private const float SelectionIndicatorZ = 3 / Layers;
@@ -765,6 +766,12 @@ namespace Stareater.GameScenes
 
 				StartSimpleSprite(StarSaturationZ, GalaxyTextures.Get.StarGlow, Color.White).
 				Scale(star.Size).
+				Translate(convert(star.Position));
+			
+			if (this.currentPlayer.StareaterSystem == star)
+				soBuilder.StartSimpleSprite(StarSpecialZ, GalaxyTextures.Get.StareaterBrain, Color.DarkViolet).
+				Scale(0.15f).
+				Translate(0.25, -0.25).
 				Translate(convert(star.Position));
 
 			if (this.zoomLevel > NameZoomLimit)

@@ -94,6 +94,7 @@ namespace Stareater.GLData
 		public TextureInfo StarGlow { get; private set;}
 		public TextureInfo SelectedStar { get; private set;}
 		public TextureInfo Stareater { get; private set; }
+		public TextureInfo StareaterBrain { get; private set; }
 		public TextureInfo SystemStar { get; private set;}
 		public TextureInfo ToggleHover { get; private set; }
 		public TextureInfo ToggleNormal { get; private set; }
@@ -142,6 +143,7 @@ namespace Stareater.GLData
 			this.RockPlanet = this.spriteNames[RockPlanetTag];
 			this.SelectedStar = this.spriteNames[SelectedStarTag];
 			this.Stareater = this.spriteNames["stareater"];
+			this.StareaterBrain = this.spriteNames["stareaterBrain"];
 			this.StarColor = this.spriteNames[StarColorTag];
 			this.StarGlow = this.spriteNames[StarGlowTag];
 			this.SystemStar = this.spriteNames[SystemStarTag];
