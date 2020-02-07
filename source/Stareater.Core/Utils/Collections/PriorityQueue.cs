@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Stareater.Utils.Collections
 {
-	public class PriorityQueue<TKey>
+	public class PriorityQueue<TKey> : IEnumerable<TKey>
 	{
 		private readonly List<QueueItem> items = new List<QueueItem>();
 
@@ -97,6 +98,16 @@ namespace Stareater.Utils.Collections
 			var temp = this.items[index1];
 			this.items[index1] = this.items[index2];
 			this.items[index2] = temp;
+		}
+
+		public IEnumerator<TKey> GetEnumerator()
+		{
+			return this.items.Select(x => x.Item).GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return this.GetEnumerator();
 		}
 
 		struct QueueItem

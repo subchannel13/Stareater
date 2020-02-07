@@ -306,6 +306,7 @@ namespace Stareater.GameData.Databases
 				data[ShipHitPoints].To<Formula>().Substitute(subformulas),
 				data[ShipJamming].To<Formula>().Substitute(subformulas),
 				data[ShipScaneRange].To<Formula>().Substitute(subformulas),
+				data["carry"].To<Formula>().Substitute(subformulas),
 				data[ShipColonyPopulation].To<Formula>().Substitute(subformulas),
 				colonizerBuildings,
 				data[ShipReactorSize].To<Formula>().Substitute(subformulas),

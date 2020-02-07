@@ -709,15 +709,18 @@ namespace Stareater.GameLogic
 					x => AbilityStatsFactory.Create(x, equip.Level, equip.Quantity, statics)
 				)
 			));
+			var size = design.Hull.TypeInfo.Size.Evaluate(hullVars);
+			shipVars.And("size", size);
 
 			this.DesignStats[design] = new DesignStats(
-				design.Hull.TypeInfo.Size.Evaluate(hullVars),
+				size,
 				galaxySpeed,
 				shipVars[ReactorType.TotalPowerKey],
 				statics.ShipFormulas.ScanRange.Evaluate(shipVars.Get),
 				statics.ShipFormulas.CombatSpeed.Evaluate(shipVars.Get),
 				shipVars[ReactorType.TotalPowerKey] - shieldPower,
 				abilities,
+				statics.ShipFormulas.CarryCapacity.Evaluate(shipVars.Get),
 				statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
 				buildings,
 				statics.ShipFormulas.HitPoints.Evaluate(shipVars.Get),

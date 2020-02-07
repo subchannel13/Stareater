@@ -22,6 +22,7 @@ namespace Stareater.Controllers
 
 		private Dictionary<Design, ShipSelection> selection;
 		private readonly List<WaypointInfo> simulationWaypoints = new List<WaypointInfo>();
+		private Dictionary<Design, long> carriedSelection = new Dictionary<Design, long>();
 		public double SimulationEta { get; private set; }
 		public double SimulationFuel { get; private set; }
 
@@ -35,6 +36,7 @@ namespace Stareater.Controllers
 				x => x.Design, 
 				x => new ShipSelection(x.Quantity, x, x.PopulationTransport)
 			);
+			this.calcCarriers();
 			
 			if (this.Fleet.IsMoving) {
 				this.simulationWaypoints = new List<WaypointInfo>(this.Fleet.Missions.Waypoints);
@@ -66,7 +68,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				return this.selection.All(x => x.Key.IsDrive != null || x.Value.Quantity <= 0);
+				return this.carriedSelection.All(x => x.Key.IsDrive != null || x.Value <= 0);
 			}
 		}
 
@@ -88,6 +90,7 @@ namespace Stareater.Controllers
 		public void DeselectGroup(ShipGroupInfo group)
 		{
 			this.selection[group.Data.Design] = new ShipSelection(0, this.selection[group.Data.Design].Ships, 0);
+			this.calcCarriers();
 
 			if (!this.CanMove)
 				this.simulationWaypoints.Clear();
@@ -111,6 +114,7 @@ namespace Stareater.Controllers
 			population = Methods.Clamp(population, minPopulation, group.Population);
 
 			this.selection[group.Data.Design] = new ShipSelection(quantity, this.selection[group.Data.Design].Ships, population);
+			this.calcCarriers();
 
 			if (!this.CanMove)
 				this.simulationWaypoints.Clear();
@@ -122,6 +126,7 @@ namespace Stareater.Controllers
 		{
 			var controller = new FleetController(this.Fleet, this.game);
 			controller.selection.Clear();
+
 			foreach (var group in this.selection.Where(x => x.Value.Quantity > 0))
 				controller.selection[group.Key] = new ShipSelection(
 					group.Value.Quantity, 
@@ -134,6 +139,7 @@ namespace Stareater.Controllers
 					),
 					group.Value.Population
 				);
+			controller.calcCarriers();
 
 			//TODO(v0.8) remove split ships from current controller instance
 			return controller;
@@ -257,9 +263,9 @@ namespace Stareater.Controllers
 
 		private double baseTravelSpeed()
 		{
-			var playerProc = this.game.Derivates.Players.Of[this.Fleet.Owner.Data];
+			var designStats = this.game.Derivates.Players.Of[this.Fleet.Owner.Data].DesignStats;
 
-			return this.selection.Where(x => x.Value.Quantity > 0).Min(x => playerProc.DesignStats[x.Key].GalaxySpeed);
+			return this.carriedSelection.Where(x => x.Value > 0).Min(x => designStats[x.Key].GalaxySpeed);
 		}
 
 		private void calcSimulation()
@@ -289,7 +295,41 @@ namespace Stareater.Controllers
 				lastPosition = waypoint.Destionation;
 			}
 		}
-		
+
+		private void calcCarriers()
+		{
+			var designStats = this.game.Derivates[this.Fleet.Owner.Data].DesignStats;
+			var uncarried = new PriorityQueue<KeyValuePair<Design, long>>();
+			var carryOrder = this.selection.Select(x => x.Key).
+				OrderBy(x => designStats[x].GalaxySpeed).
+				ThenByDescending(x => designStats[x].Size);
+
+			foreach (var design in carryOrder)
+			{
+				var carryCapacity = designStats[design].CarryCapacity * this.selection[design].Quantity;
+				var tooBig = new List<KeyValuePair<Design, long>>();
+
+				while (carryCapacity > 0 && uncarried.Count > 0)
+				{
+					var group = uncarried.Dequeue();
+					var maxTransportable = (long)Math.Floor(carryCapacity / designStats[group.Key].Size);
+					var transported = Math.Min(maxTransportable, group.Value);
+					var untransported = group.Value - transported;
+					
+					carryCapacity -= transported * designStats[group.Key].Size;
+
+					if (untransported > 0)
+						tooBig.Add(new KeyValuePair<Design, long>(group.Key, untransported));
+				}
+
+				uncarried.Enqueue(new KeyValuePair<Design, long>(design, this.selection[design].Quantity), -designStats[design].Size);
+				foreach (var untransported in tooBig)
+					uncarried.Enqueue(untransported, -designStats[untransported.Key].Size);
+			}
+
+			this.carriedSelection = uncarried.ToDictionary(x => x.Key, x => x.Value);
+		}
+
 		private FleetController giveOrder(IEnumerable<AMission> newMissions)
 		{
 			var fleet = this.Fleet.FleetData;
@@ -313,6 +353,7 @@ namespace Stareater.Controllers
 				x => x.Design,
 				x => new ShipSelection(x.Quantity, x, x.PopulationTransport)
 			);
+			this.calcCarriers();
 
 			return new FleetController(
 				newFleetInfo, 
