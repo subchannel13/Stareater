@@ -28,21 +28,6 @@
 }
 
 { SpecialEquipment
-	langCode: COLONIZER
-	image :./images/technologies/hydroponicFarms.png
-	code: colony
-	
-	maxLvl= 5
-	prerequisites [
-		:colonizer #lvl - 1;
-	]
-	
-	cost # 25e6;
-	size # 50;
-	maxCount # inf;
-}
-
-{ SpecialEquipment
 	langCode: EXTRA_REACTOR
 	image :./images/technologies/hydroponicFarms.png
 	code: extraReactor
@@ -130,19 +115,4 @@
 	cost # 25e3 * size;
 	size # 0.025 * size;
 	maxCount # lvl;
-}
-
-{ SpecialEquipment
-	langCode: TOW_CABEL
-	image :./images/technologies/hydroponicFarms.png
-	code: towCabel
-	
-	maxLvl= 5
-	prerequisites [
-		:towCabel #lvl;
-	]
-	
-	cost # 200e3 * size;
-	size # 0.2 * size;
-	maxCount # 1;
 }

@@ -238,3 +238,35 @@
 		}
 	]
 }
+
+{ MissionEquipment
+	langCode: COLONIZER
+	image :./images/technologies/hydroponicFarms.png
+	code: colony
+	
+	maxLvl= 5
+	prerequisites [
+		:colonizer #lvl - 1;
+	]
+	
+	cost # 25e6;
+	size # 50;
+	
+	abilities []
+}
+
+{ MissionEquipment
+	langCode: TOW_CABEL
+	image :./images/technologies/hydroponicFarms.png
+	code: towCabel
+	
+	maxLvl= 5
+	prerequisites [
+		:towCabel #lvl;
+	]
+	
+	cost # 10e6;
+	size # 5;
+	
+	abilities []
+}

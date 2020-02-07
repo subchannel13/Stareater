@@ -578,7 +578,9 @@ namespace Stareater.GameLogic
 		#endregion
 
 		#region Design stats
-		public static Var DesignBaseVars(Component<HullType> hull, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics)
+		public static Var DesignBaseVars(
+			Component<HullType> hull, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, 
+			IEnumerable<Component<MissionEquipmentType>> missionEquipment, StaticsDB statics)
 		{
 			var hullVars = new Var(AComponentType.LevelKey, hull.Level).Get;
 			
@@ -594,7 +596,11 @@ namespace Stareater.GameLogic
 				Init(statics.SpecialEquipment.Keys, 0).
 				Init(statics.SpecialEquipment.Keys.Select(x => x + AComponentType.LevelSuffix), 0).
 				UnionWith(specialEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).
-				UnionWith(specialEquipment, x => x.TypeInfo.IdCode + AComponentType.LevelSuffix, x => x.Level);
+				UnionWith(specialEquipment, x => x.TypeInfo.IdCode + AComponentType.LevelSuffix, x => x.Level).
+				Init(statics.MissionEquipment.Keys, 0).
+				Init(statics.MissionEquipment.Keys.Select(x => x + AComponentType.LevelSuffix), 0).
+				UnionWith(missionEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).
+				UnionWith(missionEquipment, x => x.TypeInfo.IdCode + AComponentType.LevelSuffix, x => x.Level);
 
 			shipVars.And("reactorSize", statics.ShipFormulas.ReactorSize.Evaluate(shipVars.Get));
 			shipVars.And("shieldSize", statics.ShipFormulas.ShieldSize.Evaluate(shipVars.Get));
@@ -602,9 +608,12 @@ namespace Stareater.GameLogic
 			return shipVars;
 		}
 		
-		public static Var DesignPoweredVars(Component<HullType> hull, Component<ReactorType> reactor, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics)
+		public static Var DesignPoweredVars(
+			Component<HullType> hull, Component<ReactorType> reactor, 
+			IEnumerable<Component<SpecialEquipmentType>> specialEquipment, IEnumerable<Component<MissionEquipmentType>> missionEquipment, 
+			StaticsDB statics)
 		{
-			var shipVars = DesignBaseVars(hull, specialEquipment, statics);
+			var shipVars = DesignBaseVars(hull, specialEquipment, missionEquipment, statics);
 			
 			shipVars[AComponentType.LevelKey] = reactor.Level;
 			shipVars[ReactorType.TotalPowerKey] = reactor.TypeInfo.Power.Evaluate(shipVars.Get);
@@ -620,15 +629,16 @@ namespace Stareater.GameLogic
 			var specials = oldDesign.SpecialEquipment.Select(
 				x => statics.SpecialEquipment[x.TypeInfo.IdCode].MakeBest(techLevels, x.Quantity)
 			).ToList();
-			
-			var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels);
-			var reactor = ReactorType.MakeBest(techLevels, hull, specials, statics);
-			var isDrive = oldDesign.IsDrive != null ? IsDriveType.MakeBest(techLevels, hull, reactor, specials, statics) : null;
-			var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels);
-			var shield = oldDesign.Shield != null ? statics.Shields[oldDesign.Shield.TypeInfo.IdCode].MakeBest(techLevels) : null;
 			var equipment = oldDesign.MissionEquipment.Select(
 				x => statics.MissionEquipment[x.TypeInfo.IdCode].MakeBest(techLevels, x.Quantity)
 			).ToList();
+
+			var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels);
+			var reactor = ReactorType.MakeBest(techLevels, hull, specials, equipment, statics);
+			var isDrive = oldDesign.IsDrive != null ? IsDriveType.MakeBest(techLevels, hull, reactor, specials, equipment, statics) : null;
+			var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels);
+			var shield = oldDesign.Shield != null ? statics.Shields[oldDesign.Shield.TypeInfo.IdCode].MakeBest(techLevels) : null;
+			
 			
 			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
 
@@ -649,7 +659,7 @@ namespace Stareater.GameLogic
 		
 		private void calcDesignStats(Design design, StaticsDB statics)
 		{
-			var shipVars = DesignPoweredVars(design.Hull, design.Reactor, design.SpecialEquipment, statics);
+			var shipVars = DesignPoweredVars(design.Hull, design.Reactor, design.SpecialEquipment, design.MissionEquipment, statics);
 			var hullVars = new Var(AComponentType.LevelKey, design.Hull.Level).Get;
 			var armorVars = new Var(AComponentType.LevelKey, design.Armor.Level).Get;
 			var thrusterVars = new Var(AComponentType.LevelKey, design.Thrusters.Level).Get;
@@ -831,15 +841,15 @@ namespace Stareater.GameLogic
 			var specials = predefDesign.SpecialEquipment.OrderBy(x => x.Key).Select(
 				x => statics.SpecialEquipment[x.Key].MakeBest(techLevels, x.Value)
 			).ToList();
-			
-			var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels);
-			var reactor = ReactorType.MakeBest(techLevels, hull, specials, statics);
-			var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(techLevels, hull, reactor, specials, statics) : null;
-			var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels);
-			var shield = predefDesign.ShieldCode != null ? statics.Shields[predefDesign.ShieldCode].MakeBest(techLevels) : null;
 			var equipment = predefDesign.MissionEquipment.Select(
 				x => statics.MissionEquipment[x.Key].MakeBest(techLevels, x.Value)
 			).ToList();
+
+			var armor = AComponentType.MakeBest(statics.Armors.Values, techLevels);
+			var reactor = ReactorType.MakeBest(techLevels, hull, specials, equipment, statics);
+			var isDrive = predefDesign.HasIsDrive ? IsDriveType.MakeBest(techLevels, hull, reactor, specials, equipment, statics) : null;
+			var sensor = AComponentType.MakeBest(statics.Sensors.Values, techLevels);
+			var shield = predefDesign.ShieldCode != null ? statics.Shields[predefDesign.ShieldCode].MakeBest(techLevels) : null;
 			
 			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
 

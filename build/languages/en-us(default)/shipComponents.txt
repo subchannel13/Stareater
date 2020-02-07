@@ -53,6 +53,11 @@ GAUSS_DESC = No description.
 TACHYON_NAME = Tachyon beam
 TACHYON_DESC = No description.
 
+COLONIZER_NAME = Colonizer
+COLONIZER_DESC = No description.
+TOW_CABEL_NAME = Tow cable
+TOW_CABEL_DESC = No description.
+
 CATALYZER_NAME = Catalisys capsule
 CATALYZER_DESC = No description.
 -
@@ -103,8 +108,6 @@ EXTRA_REACTOR_NAME = Large reactor
 EXTRA_REACTOR_DESC = No description.
 HEAVY_ARMOR_NAME = Heavy armor
 HEAVY_ARMOR_DESC = No description.
-COLONIZER_NAME = Colonizer
-COLONIZER_DESC = No description.
 COMP_NAME = Electronic computer
 COMP_DESC = No description.
 CARGO_NAME = Cargo bay
@@ -115,8 +118,6 @@ SHIELD_SHARE_NAME = Area shield
 SHIELD_SHARE_DESC = No description.
 ANTI_INERTIA_NAME = Inertia stabilizer
 ANTI_INERTIA_DESC = No description.
-TOW_CABEL_NAME = Tow cable
-TOW_CABEL_DESC = No description.
 -
 
 :Thrusters

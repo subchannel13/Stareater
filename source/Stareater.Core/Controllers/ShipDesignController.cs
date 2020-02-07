@@ -50,11 +50,12 @@ namespace Stareater.Controllers
 				hull,
 				reactor,
 				this.selectedSpecialEquipment,
+				this.selectedMissionEquipment,
 				game.Statics
 			);
 
 			return drive != null ? 
-				new IsDriveInfo(drive.TypeInfo, drive.Level, PlayerProcessor.DesignPoweredVars(hull,reactor, this.selectedSpecialEquipment, game.Statics).Get) : 
+				new IsDriveInfo(drive.TypeInfo, drive.Level, PlayerProcessor.DesignPoweredVars(hull,reactor, this.selectedSpecialEquipment, this.selectedMissionEquipment, game.Statics).Get) : 
 				null;
 		}
 
@@ -65,11 +66,12 @@ namespace Stareater.Controllers
 				playersTechLevels,
 				hull,
 				this.selectedSpecialEquipment,
+				this.selectedMissionEquipment,
 				game.Statics
 			);
 
 			return reactor != null ? 
-				new ReactorInfo(reactor.TypeInfo, reactor.Level, PlayerProcessor.DesignBaseVars(hull, this.selectedSpecialEquipment, game.Statics).Get) : 
+				new ReactorInfo(reactor.TypeInfo, reactor.Level, PlayerProcessor.DesignBaseVars(hull, this.selectedSpecialEquipment, this.selectedMissionEquipment, game.Statics).Get) : 
 				null;
 		}
 
@@ -98,6 +100,7 @@ namespace Stareater.Controllers
 			return PlayerProcessor.DesignBaseVars(
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level), 
 				this.selectedSpecialEquipment, 
+				this.selectedMissionEquipment, 
 				this.game.Statics);
 		}
 		
@@ -106,7 +109,8 @@ namespace Stareater.Controllers
 			return PlayerProcessor.DesignPoweredVars(
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level), 
 				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level),
-				this.selectedSpecialEquipment,
+				this.selectedSpecialEquipment, 
+				this.selectedMissionEquipment,
 				this.game.Statics);
 		}
 		
@@ -283,15 +287,13 @@ namespace Stareater.Controllers
 		public double SpaceUsed
 		{
 			get 
-			{ 
-				Func<Component<SpecialEquipmentType>, IDictionary<string, double>> specEquipVars = x => 
-					new Var(AComponentType.LevelKey, x.Level).
-						And(AComponentType.SizeKey, this.selectedHull.Size).Get;
-				
+			{
+				var specEquipVars = new Var(AComponentType.SizeKey, this.selectedHull.Size);
+
 				return (this.HasIsDrive ? this.selectedHull.IsDriveSize : 0) + 
 					(this.Shield != null ? this.selectedHull.ShieldSize : 0) +
 					this.selectedMissionEquipment.Sum(x => x.TypeInfo.Size.Evaluate(new Var(AComponentType.LevelKey, x.Level).Get) * x.Quantity) + 
-					this.selectedSpecialEquipment.Sum(x => x.TypeInfo.Size.Evaluate(specEquipVars(x)) * x.Quantity);
+					this.selectedSpecialEquipment.Sum(x => x.TypeInfo.Size.Evaluate(specEquipVars.Set(AComponentType.LevelKey, x.Level).Get) * x.Quantity);
 			} 
 		}
 		#endregion

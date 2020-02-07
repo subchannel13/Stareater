@@ -123,7 +123,7 @@
 	
 	scanRange # 0.5;
 	
-	carry # towCabel * 0.2 * size * 10;
+	carry # towCabel * 10;
 	colonyPop # 500 * colony * (1 + 0.1 * colony_lvl ^ 2);
 	colonyBuildings { Buildings
 		Infra # 500 * colony * (1 + 0.1 * colony_lvl ^ 2);
