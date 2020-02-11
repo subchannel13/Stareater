@@ -202,7 +202,9 @@ namespace Stareater.GameData.Databases
 					}
 
 				if (oldCount == dependencies.Count)
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
 					throw new FormatException("Subformulas have cyclic dependency");
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
 			}
 
 			return subformulas;
@@ -215,7 +217,7 @@ namespace Stareater.GameData.Databases
 				data[ColonizationPopulationThreshold].To<Formula>().Substitute(subformulas),
 				data[UncolonizedMaxPopulation].To<Formula>().Substitute(subformulas),
 				data[ColonyVictoryWorth].To<Formula>().Substitute(subformulas),
-                data[ColonyFarmFields].To<Formula>().Substitute(subformulas),
+				data[ColonyFarmFields].To<Formula>().Substitute(subformulas),
 				data[ColonyEnvironment].To<Formula>().Substitute(subformulas),
 				data[ColonyMaxPopulation].To<Formula>().Substitute(subformulas),
 				loadDerivedStat(data[ColonyPopulationGrowth].To<IkonComposite>(), subformulas),
@@ -249,7 +251,7 @@ namespace Stareater.GameData.Databases
 			return new PopulationActivityFormulas(
 				data[key].To<IkonComposite>()[PopulationActivityImprovised].To<Formula>().Substitute(subformulas),
 				data[key].To<IkonComposite>()[PopulationActivityOrganized].To<Formula>().Substitute(subformulas),
-                data[key].To<IkonComposite>()[PopulationActivityOrganizationFactor].To<Formula>().Substitute(subformulas)
+				data[key].To<IkonComposite>()[PopulationActivityOrganizationFactor].To<Formula>().Substitute(subformulas)
 			);
 		}
 		#endregion
@@ -284,7 +286,7 @@ namespace Stareater.GameData.Databases
 			));
 		}
 
-        private static PlayerFormulaSet loadPlayerFormulas(IkonComposite data, Dictionary<string, Formula> subformulas)
+		private static PlayerFormulaSet loadPlayerFormulas(IkonComposite data, Dictionary<string, Formula> subformulas)
 		{
 			return new PlayerFormulaSet(
 				data[PlayerResearchFocusWeight].To<Formula>().Substitute(subformulas)
@@ -306,7 +308,8 @@ namespace Stareater.GameData.Databases
 				data[ShipHitPoints].To<Formula>().Substitute(subformulas),
 				data[ShipJamming].To<Formula>().Substitute(subformulas),
 				data[ShipScaneRange].To<Formula>().Substitute(subformulas),
-				data["carry"].To<Formula>().Substitute(subformulas),
+				data["carryCapacity"].To<Formula>().Substitute(subformulas),
+				data["towCapacity"].To<Formula>().Substitute(subformulas),
 				data[ShipColonyPopulation].To<Formula>().Substitute(subformulas),
 				colonizerBuildings,
 				data[ShipReactorSize].To<Formula>().Substitute(subformulas),
@@ -320,7 +323,7 @@ namespace Stareater.GameData.Databases
 				data[ShipSensorCostPortion].To<Formula>().Substitute(subformulas).Evaluate(null),
 				data[ShipThrustersCostPortion].To<Formula>().Substitute(subformulas).Evaluate(null),
 				data[ShipFuelUsage].To<Formula>().Substitute(subformulas),
-				data[ShipWormholeSpeed].To<Formula>().Substitute(subformulas)
+				data["galaxySpeed"].To<Formula>().Substitute(subformulas)
 			);
 		}
 		private static StellarisFormulaSet loadStarFormulas(IkonComposite data, Dictionary<string, Formula> subformulas)
@@ -404,7 +407,7 @@ namespace Stareater.GameData.Databases
 		
 		private static SiteType siteType(string rawData)
 		{
-			switch(rawData.ToLower(System.Globalization.CultureInfo.InvariantCulture))
+			switch(rawData.ToUpperInvariant())
 			{
 				case SiteColony:
 					return SiteType.Colony;
@@ -418,7 +421,7 @@ namespace Stareater.GameData.Databases
 		private static IEnumerable<IConstructionEffect> loadConstructionEffects(IEnumerable<IkonComposite> data)
 		{
 			foreach (var effectData in data) 
-				switch (effectData.Tag.ToString().ToLower()) 
+				switch (effectData.Tag.ToString().ToUpperInvariant()) 
 				{
 					case ConstructionAddBuildingTag:
 						yield return new ConstructionAddBuilding(
@@ -570,7 +573,7 @@ namespace Stareater.GameData.Databases
 							abilityData.ToOrDefault(SplashShieldEfficiency, new Formula(1)),
 							abilityData[ProjectileShootImage].To<string>()
 						);
-                        break;
+						break;
 					case StarShotTag:
 						yield return new StarShootAbility(
 							abilityData[GeneralImageKey].To<string>(),
@@ -833,7 +836,6 @@ namespace Stareater.GameData.Databases
 		private const string ShipReactorCostPortion = "reactorCostPortion";
 		private const string ShipSensorCostPortion = "sensorCostPortion";
 		private const string ShipThrustersCostPortion = "thrustersCostPortion";
-		private const string ShipWormholeSpeed = "wormholeSpeed";
 
 		private const string BuildingHitPointsKey = "hitPoints";
 		
@@ -842,13 +844,13 @@ namespace Stareater.GameData.Databases
 		private const string ConstructableLimitKey = "turnLimit";
 		private const string ConstructableEffectsKey = "effects";
 		private const string ConstructableStockpileKey = "stockpile";
-		private const string SiteColony = "colony";
-		private const string SiteSystem = "system";
+		private const string SiteColony = "COLONY";
+		private const string SiteSystem = "SYSTEM";
 		
-		private const string ConstructionAddBuildingTag = "addbuilding";
+		private const string ConstructionAddBuildingTag = "ADDBUILDING";
 		private const string AddBuildingBuildingId = "buildingId";
 		private const string AddBuildingQuantity = "quantity";
-		private const string ConstructionAddTraitTag = "addtrait";
+		private const string ConstructionAddTraitTag = "ADDTRAIT";
 		private const string AddTraitId = "traitId";
 
 		private const string DerivedStatBase = "base";

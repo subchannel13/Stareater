@@ -123,7 +123,8 @@
 	
 	scanRange # 0.5;
 	
-	carry # towCabel * 10;
+	carryCapacity # hangar * 10;
+	towCapacity # towCabel * 10;
 	colonyPop # 500 * colony * (1 + 0.1 * colony_lvl ^ 2);
 	colonyBuildings { Buildings
 		Infra # 500 * colony * (1 + 0.1 * colony_lvl ^ 2);
@@ -143,7 +144,7 @@
 	thrustersCostPortion # 0.2;
 
 	fuelUsage # 2 ^ (max(dist, 1) - 1);	
-	wormholeSpeed # speed + 0.5;
+	galaxySpeed # baseSpeed * size / (size + towSize) + if(lane, 0.5, 0);
 }
 
 { StarFormulas

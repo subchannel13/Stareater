@@ -14,6 +14,7 @@ namespace Stareater.GameLogic.Combat
 		public double CombatPower { get; private set; }
 		public List<AbilityStats> Abilities { get; private set; }
 		public double CarryCapacity { get; internal set; }
+		public double TowCapacity { get; internal set; }
 		public double ColonizerPopulation { get; private set; }
 		public Dictionary<string, double> ColonizerBuildings { get; private set; }
 		public double HitPoints { get; private set; }
@@ -29,30 +30,32 @@ namespace Stareater.GameLogic.Combat
 
 		public DesignStats(double size, double galaxySpeed, double galaxyPower, double scanRange,
 						   double combatSpeed, double combatPower, List<AbilityStats> abilities,
-						   double carryCapacity, double colonizerPopulation, Dictionary<string, double> colonizerBuildings, 
+						   double carryCapacity, double towCapacity,
+						   double colonizerPopulation, Dictionary<string, double> colonizerBuildings, 
 		                   double hitPoints, double shieldPoints, double evasion, double armorReduction, 
 		                   double shieldReduction, double shieldRegeneration, double shieldThickness, double detection, double cloaking, double jamming)
 		{
-			this.Size = size;
-			this.GalaxySpeed = galaxySpeed;
-			this.GalaxyPower = galaxyPower;
-			this.ScanRange = scanRange;
-			this.CombatSpeed = combatSpeed;
-			this.CombatPower = combatPower;
 			this.Abilities = abilities;
+			this.ArmorReduction = armorReduction;
 			this.CarryCapacity = carryCapacity;
+			this.Cloaking = cloaking;
 			this.ColonizerPopulation = colonizerPopulation;
 			this.ColonizerBuildings = colonizerBuildings;
-			this.HitPoints = hitPoints;
-			this.ShieldPoints = shieldPoints;
+			this.CombatPower = combatPower;
+			this.CombatSpeed = combatSpeed;
+			this.Detection = detection;
 			this.Evasion = evasion;
-			this.ArmorReduction = armorReduction;
+			this.GalaxyPower = galaxyPower;
+			this.GalaxySpeed = galaxySpeed;
+			this.HitPoints = hitPoints;
+			this.Jamming = jamming;
+			this.ScanRange = scanRange;
+			this.ShieldPoints = shieldPoints;
 			this.ShieldReduction = shieldReduction;
 			this.ShieldRegeneration = shieldRegeneration;
 			this.ShieldThickness = shieldThickness;
-			this.Detection = detection;
-			this.Cloaking = cloaking;
-			this.Jamming = jamming;
+			this.Size = size;
+			this.TowCapacity = towCapacity;
 		}
 	}
 }

@@ -68,12 +68,13 @@ namespace Stareater.GameLogic.Planning
 		void IMissionVisitor.Visit(MoveMission mission)
 		{
 			var playerProc = game.Derivates.Players.Of[fleet.Owner];
-			double baseSpeed = fleet.Ships.Select(x => x.Design).
-				Aggregate(double.MaxValue, (s, x) => Math.Min(playerProc.DesignStats[x].GalaxySpeed, s));
-				
-			var speed = mission.UsedWormhole != null ? 
-				game.Statics.ShipFormulas.WormholeSpeed.Evaluate(new Var("speed", baseSpeed).Get) : 
-				baseSpeed;
+
+			var speed = fleet.Ships.Select(x => x.Design).Min(x => game.Statics.ShipFormulas.GalaxySpeed.Evaluate(
+				new Var("baseSpeed", playerProc.DesignStats[x].GalaxySpeed).
+				And("size", 1). //TODO(v0.9) use actual ship size
+				And("towSize", 0). //TODO(v0.9) use actual ship tow
+				And("lane", mission.UsedWormhole != null).Get
+			));
 			
 			this.movementDirection = mission.Destination.Position - fleet.Position;
 			var distance = this.movementDirection.Length;

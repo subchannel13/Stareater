@@ -270,3 +270,19 @@
 	
 	abilities []
 }
+
+{ MissionEquipment
+	langCode: HANGAR
+	image :./images/technologies/hydroponicFarms.png
+	code: hangar
+	
+	maxLvl= 5
+	prerequisites [
+		:towCabel #lvl;
+	]
+	
+	cost # 40e6;
+	size # 20;
+	
+	abilities []
+}

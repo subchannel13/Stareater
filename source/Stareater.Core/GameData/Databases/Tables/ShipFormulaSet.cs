@@ -15,7 +15,8 @@ namespace Stareater.GameData.Databases.Tables
 		public Formula Jamming { get; private set; }
 		public Formula ScanRange { get; private set; }
 
-		public Formula CarryCapacity { get; internal set; }
+		public Formula CarryCapacity { get; private set; }
+		public Formula TowCapacity { get; private set; }
 		public Formula ColonizerPopulation { get; private set; }
 		public Dictionary<string, Formula> ColonizerBuildings { get; private set; }
 
@@ -33,16 +34,16 @@ namespace Stareater.GameData.Databases.Tables
 		public double ThrustersCostPortion { get; private set; }
 
 		public Formula FuelUsage { get; private set; }
-		public Formula WormholeSpeed { get; private set; }
+		public Formula GalaxySpeed { get; private set; }
 
 		public ShipFormulaSet(Formula cloaking, Formula combatSpeed, Formula detection, Formula evasion, 
 		                      Formula hitPoints, Formula jamming, Formula scanRange,
-							  Formula carryCapacity,
+							  Formula carryCapacity, Formula towCapacity,
 							  Formula colonizerPopulation, Dictionary<string, Formula> colonizerBuildings,
 							  Formula reactorSize, Formula shieldSize,
                               double naturalCloakBonus, double sensorRangePenalty, double repairCostFactor, Formula levelRefitCost,
 		                      double armorCostPortion, double reactorCostPortion, double sensorCostPortion, double thrustersCostPortion,
-							  Formula fuelUsage, Formula wormholeSpeed)
+							  Formula fuelUsage, Formula galaxySpeed)
 		{
 			this.ArmorCostPortion = armorCostPortion;
 			this.CarryCapacity = carryCapacity;
@@ -53,6 +54,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.Detection = detection;
 			this.Evasion = evasion;
 			this.FuelUsage = fuelUsage;
+			this.GalaxySpeed = galaxySpeed;
 			this.HitPoints = hitPoints;
 			this.Jamming = jamming;
 			this.LevelRefitCost = levelRefitCost;
@@ -65,7 +67,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.SensorRangePenalty = sensorRangePenalty;
 			this.ShieldSize = shieldSize;
 			this.ThrustersCostPortion = thrustersCostPortion;
-			this.WormholeSpeed = wormholeSpeed;
+			this.TowCapacity = towCapacity;
 		}
 	}
 }

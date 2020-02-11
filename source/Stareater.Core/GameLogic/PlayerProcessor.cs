@@ -312,13 +312,19 @@ namespace Stareater.GameLogic
 
 		public IEnumerable<Move<StarData>> ShortestPathTo(StarData fromStar, StarData toStar, double baseSpeed, MainGame game)
 		{
-			var wormholeSpeed = game.Statics.ShipFormulas.WormholeSpeed.Evaluate(new Var("speed", baseSpeed).Get);
-			
+			var vars = new Var("baseSpeed", baseSpeed).
+				And("size", 1). //TODO(v0.9) use actual ship size
+				And("towSize", 0). //TODO(v0.9) use actual ship tow
+				And("lane", false);
+
+			var voidSpeed = game.Statics.ShipFormulas.GalaxySpeed.Evaluate(vars.Get);
+			var laneSpeed = game.Statics.ShipFormulas.GalaxySpeed.Evaluate(vars.Set("lane", true).Get);
+
 			//TODO(later) cache result
 			return Methods.AStar(
 				fromStar, toStar,
-				x => (x.Position - toStar.Position).Length / wormholeSpeed,
-				(a, b) => (a.Position - b.Position).Length / (this.VisibleWormholeAt(a, b, game) != null ? wormholeSpeed : baseSpeed),
+				x => (x.Position - toStar.Position).Length / laneSpeed,
+				(a, b) => (a.Position - b.Position).Length / (this.VisibleWormholeAt(a, b, game) != null ? laneSpeed : voidSpeed),
 				x => game.States.Stars
 			);
 		}
@@ -731,6 +737,7 @@ namespace Stareater.GameLogic
 				shipVars[ReactorType.TotalPowerKey] - shieldPower,
 				abilities,
 				statics.ShipFormulas.CarryCapacity.Evaluate(shipVars.Get),
+				statics.ShipFormulas.TowCapacity.Evaluate(shipVars.Get),
 				statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
 				buildings,
 				statics.ShipFormulas.HitPoints.Evaluate(shipVars.Get),

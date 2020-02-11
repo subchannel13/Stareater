@@ -16,7 +16,7 @@ namespace Stareater.Localization.Reading
 
 			while (reader.PeekNextNonwhite() != ClosingChar)
 			{
-				var id = IkonParser.ReadIdentifier(reader).ToLower();
+				var id = IkonParser.ReadIdentifier(reader).ToUpperInvariant();
 
 				if (!entries.ContainsKey(id))
 					entries.Add(id, reader.ReadObject().To<IText>());

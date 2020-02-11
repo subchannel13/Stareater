@@ -79,16 +79,25 @@ namespace Stareater.Controllers
 
 		public long SelectionCount(ShipGroupInfo group)
 		{
+			if (group == null)
+				throw new ArgumentNullException(nameof(group));
+
 			return this.selection[group.Data.Design].Quantity;
 		}
 
 		public double SelectionPopulation(ShipGroupInfo group)
 		{
+			if (group == null)
+				throw new ArgumentNullException(nameof(group));
+
 			return this.selection[group.Data.Design].Population;
 		}
 
 		public void DeselectGroup(ShipGroupInfo group)
 		{
+			if (group == null)
+				throw new ArgumentNullException(nameof(group));
+
 			this.selection[group.Data.Design] = new ShipSelection(0, this.selection[group.Data.Design].Ships, 0);
 			this.calcCarriers();
 
@@ -98,11 +107,17 @@ namespace Stareater.Controllers
 		
 		public void SelectGroup(ShipGroupInfo group, long quantity)
 		{
+			if (group == null)
+				throw new ArgumentNullException(nameof(group));
+
 			this.SelectGroup(group, quantity, group.Population * quantity / (double)group.Quantity);
 		}
 
 		public void SelectGroup(ShipGroupInfo group, long quantity, double population)
 		{
+			if (group == null)
+				throw new ArgumentNullException(nameof(group));
+
 			quantity = Methods.Clamp(quantity, 0, group.Quantity);
 			if (quantity <= 0)
 			{
@@ -147,6 +162,9 @@ namespace Stareater.Controllers
 
 		public FleetController Send(StarInfo destination)
 		{
+			if (destination == null)
+				throw new ArgumentNullException(nameof(destination));
+
 			//TODO(later) prevent changing immediate destination midfilght but allow to change final destination
 			if (!this.game.States.Stars.At.Contains(this.Fleet.Position) || !this.selection.Any(x => x.Value.Quantity > 0))
 				return this;
@@ -166,6 +184,9 @@ namespace Stareater.Controllers
 
 		public FleetController SendDirectly(StarInfo destination)
 		{
+			if (destination == null)
+				throw new ArgumentNullException(nameof(destination));
+
 			if (!this.game.States.Stars.At.Contains(this.Fleet.Position) || !this.selection.Any(x => x.Value.Quantity > 0))
 				return this;
 
@@ -193,6 +214,9 @@ namespace Stareater.Controllers
 
 		public void SimulateTravel(StarInfo destination)
 		{
+			if (destination == null)
+				throw new ArgumentNullException(nameof(destination));
+
 			if (!this.game.States.Stars.At.Contains(this.Fleet.Position))
 				return;
 
@@ -218,6 +242,9 @@ namespace Stareater.Controllers
 
 		public void SimulateDirectTravel(StarInfo destination)
 		{
+			if (destination == null)
+				throw new ArgumentNullException(nameof(destination));
+
 			if (!this.game.States.Stars.At.Contains(this.Fleet.Position))
 				return;
 
@@ -281,13 +308,16 @@ namespace Stareater.Controllers
 			var baseSpeed = this.baseTravelSpeed();
 			
 			var lastPosition = this.Fleet.FleetData.Position;
-			var wormholeSpeed = this.game.Statics.ShipFormulas.WormholeSpeed;
+			var vars = new Var("baseSpeed", baseSpeed).
+				And("size", 1). //TODO(v0.9) use actual ship size
+				And("towSize", 0). //TODO(v0.9) use actual ship tow
+				And("lane", false);
+			var voidSpeed = game.Statics.ShipFormulas.GalaxySpeed.Evaluate(vars.Get);
+			var laneSpeed = game.Statics.ShipFormulas.GalaxySpeed.Evaluate(vars.Set("lane", true).Get);
 
 			foreach (var waypoint in simulationWaypoints)
 			{
-				var speed = waypoint.UsingWormhole ? 
-					wormholeSpeed.Evaluate(new Var("speed", baseSpeed).Get) : 
-					baseSpeed;
+				var speed = waypoint.UsingWormhole ? laneSpeed : voidSpeed;
 				
 				var distance = (waypoint.Destionation - lastPosition).Length;
 				this.SimulationEta += distance / speed;

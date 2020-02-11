@@ -55,6 +55,8 @@ TACHYON_DESC = No description.
 
 COLONIZER_NAME = Colonizer
 COLONIZER_DESC = No description.
+HANGAR_NAME = Hangar
+HANGAR_DESC = No description.
 TOW_CABEL_NAME = Tow cable
 TOW_CABEL_DESC = No description.
 

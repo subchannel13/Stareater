@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Ikadn;
+﻿using Ikadn;
 using Ikadn.Utilities;
 using Stareater.Localization.Reading;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Stareater.Localization
 {
@@ -32,10 +33,13 @@ namespace Stareater.Localization
 		{
 			get
 			{
-				contextName = contextName.ToLower();
+				if (contextName == null)
+					throw new ArgumentNullException(nameof(contextName));
+
+				contextName = contextName.ToUpperInvariant();
 
 				if (contexts.ContainsKey(contextName))
-					return contexts[contextName.ToLower()];
+					return contexts[contextName.ToUpperInvariant()];
 				else if (this != LocalizationManifest.Get.DefaultLanguage)
 					return LocalizationManifest.Get.DefaultLanguage[contextName];
 				else

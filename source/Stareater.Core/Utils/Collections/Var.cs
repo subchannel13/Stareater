@@ -23,13 +23,19 @@ namespace Stareater.Utils.Collections
 
 		public Var And(string name, bool value)
 		{
-			variables.Add(name, value ? 1 : -1);
+			variables.Add(name, convert(value));
 			return this;
 		}
 
 		public Var Set(string name, double value)
 		{
 			variables[name] = value;
+			return this;
+		}
+
+		public Var Set(string name, bool value)
+		{
+			variables[name] = convert(value);
 			return this;
 		}
 
@@ -42,15 +48,21 @@ namespace Stareater.Utils.Collections
 		
 		public Var Init(IEnumerable<string> variableNames, bool initValue)
 		{
+			if (variableNames == null)
+				throw new ArgumentNullException(nameof(variableNames));
+
 			foreach(var name in variableNames)
-				this.variables.Add(name, initValue ? 1 : -1);
+				this.variables.Add(name, convert(initValue));
 			
 			return this;
 		}
 		
 		public Var Init(IEnumerable<string> variableNames, double initValue)
 		{
-			foreach(var name in variableNames)
+			if (variableNames == null)
+				throw new ArgumentNullException(nameof(variableNames));
+
+			foreach (var name in variableNames)
 				this.variables.Add(name, initValue);
 			
 			return this;
@@ -58,6 +70,9 @@ namespace Stareater.Utils.Collections
 		
 		public Var UnionWith(IEnumerable<KeyValuePair<string, double>> variables)
 		{
+			if (variables == null)
+				throw new ArgumentNullException(nameof(variables));
+
 			foreach (var pair in variables)
 				this.variables[pair.Key] = pair.Value;
 			
@@ -66,6 +81,9 @@ namespace Stareater.Utils.Collections
 
 		public Var UnionWith(IEnumerable<string> variables)
 		{
+			if (variables == null)
+				throw new ArgumentNullException(nameof(variables));
+
 			foreach (var name in variables)
 				this.variables[name] = 1;
 
@@ -74,6 +92,9 @@ namespace Stareater.Utils.Collections
 
 		public Var UnionWith<T>(IEnumerable<T> collection, Func<T, string> keySelector, Func<T, double> valueSelector)
 		{
+			if (collection == null)
+				throw new ArgumentNullException(nameof(collection));
+
 			foreach (var element in collection)
 				this.variables[keySelector(element)] = valueSelector(element);
 			
@@ -84,6 +105,11 @@ namespace Stareater.Utils.Collections
 		{
 			get { return this.variables[key]; }
 			set { this.variables[key] = value; }
+		}
+
+		private static double convert(bool value)
+		{
+			return value ? 1 : -1;
 		}
 	}
 }
