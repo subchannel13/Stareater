@@ -1,14 +1,15 @@
-﻿using Stareater.Utils.StateEngine;
+﻿using Stareater.Utils;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Localization.StarNames
 {
-	[StateType(saveTag: SaveTag)]
+	[StateTypeAttribute(saveTag: SaveTag)]
 	class ProperStarName : IStarName
 	{
 		internal const string ContextName = "ProperStarNames";
 		private const string KeyPrefix = "proper";
 
-		[StateProperty(saveKey: "index")]
+		[StatePropertyAttribute(saveKey: "index")]
 		private int nameIndex { get; set; }
 
 		public ProperStarName(int properNameIndex)
@@ -21,7 +22,7 @@ namespace Stareater.Localization.StarNames
 
 		public string ToText(Language language)
 		{
-			return language[ContextName][KeyPrefix + nameIndex.ToString()].Text();
+			return language[ContextName][KeyPrefix + nameIndex.ToStringInvariant()].Text();
 		}
 
 		public const string SaveTag = "Proper";

@@ -23,55 +23,55 @@ namespace Stareater.GameLogic
 		private const string PopulationKey = "pop";
 		private const string MaintenancePenaltyKey = "maintenancePenalty";
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Colony Colony { get; set; }
 		
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double Environment { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double MaxPopulation { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double PopulationGrowth { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double Emigrants { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double Organization { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double SpaceliftFactor { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double Desirability { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double FarmerEfficiency { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double GardenerEfficiency { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double MiningEfficiency { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double BuilderEfficiency { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double ScientistEfficiency { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double Farmers { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double Gardeners { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double WorkingPopulation { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double Development { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double RepairPoints { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double MaintenanceCost { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double MaintenancePerPop { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double MaintenanceLimit { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double MaintenancePenalty { get; set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double FuelProduction { get; internal set; }
 
 		public ColonyProcessor(Colony colony) : base()
@@ -88,7 +88,8 @@ namespace Stareater.GameLogic
 				return Colony.Owner;
 			}
 		}
-		
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "ToLower is required")]
 		private IDictionary<string, double> calcVars(StaticsDB statics, PlayerProcessor playerProcessor)
 		{
 			var vars = base.LocalEffects(statics).
@@ -99,7 +100,12 @@ namespace Stareater.GameLogic
 				UnionWith(Colony.Location.Planet.Traits.Select(x => x.IdCode)).
 				UnionWith(statics.PlanetForumlas[this.Colony.Location.Planet.Type].ImplicitTraits);
 				
-			vars.Init(statics.Constructables.Where(x => x.ConstructableAt == SiteType.Colony).Select(x => x.IdCode.ToLower() + NewBuidingPrefix), false);
+			vars.Init(
+				statics.Constructables.
+					Where(x => x.ConstructableAt == SiteType.Colony).
+					Select(x => x.IdCode.ToLowerInvariant() + NewBuidingPrefix), 
+				false
+			);
 
 			return vars.Get;
 		}
@@ -228,12 +234,13 @@ namespace Stareater.GameLogic
 			Colony.Population = Methods.Clamp(this.Colony.Population + this.PopulationGrowth, 0, this.MaxPopulation);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "ToLower is required")]
 		public static double DesirabilityOf(Planet planet, StaticsDB statics)
 		{
 			var formulas = statics.ColonyFormulas;
 			var vars = new Var(PopulationKey, 0).
 				And(PlanetSizeKey, planet.Size).
-				Init(statics.Buildings.Keys.Select(x => x.ToLower() + BuidingCountPrefix), 0).
+				Init(statics.Buildings.Keys.Select(x => x.ToLowerInvariant() + BuidingCountPrefix), 0).
 				Init(statics.DevelopmentTopics.Select(x => x.IdCode + PlayerProcessor.LevelSufix), 0).
 				Init(statics.DevelopmentTopics.Select(x => x.IdCode + PlayerProcessor.UpgradeSufix), DevelopmentProgress.NotStarted).
 				Init(statics.PlanetTraits.Keys, false).

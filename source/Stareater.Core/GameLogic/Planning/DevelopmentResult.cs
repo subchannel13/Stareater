@@ -5,13 +5,13 @@ namespace Stareater.GameLogic.Planning
 {
 	class DevelopmentResult 
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public long CompletedCount { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double InvestedPoints { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public DevelopmentProgress Item { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double LeftoverPoints { get; private set; }
 
 		public DevelopmentResult(long completedCount, double investedPoints, DevelopmentProgress item, double leftoverPoints) 

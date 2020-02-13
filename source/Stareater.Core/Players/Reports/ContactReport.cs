@@ -2,12 +2,12 @@
 
 namespace Stareater.Players.Reports
 {
-	[StateType(saveTag: SaveTag)]
+	[StateTypeAttribute(saveTag: SaveTag)]
 	class ContactReport : IReport
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Player Owner { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Player Contact { get; private set; }
 
 		public ContactReport(Player owner, Player contact)

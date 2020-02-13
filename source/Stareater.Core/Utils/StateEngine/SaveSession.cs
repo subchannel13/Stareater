@@ -23,7 +23,9 @@ namespace Stareater.Utils.StateEngine
 		public IkonBaseObject Serialize(object originalValue)
 		{
 			if (originalValue == null)
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
 				throw new ArgumentNullException("Null can't be serialized");
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
 
 			if (this.referencedData.ContainsKey(originalValue))
 				return new IkonReference(this.referencedData[originalValue].ReferenceNames.First());
@@ -60,7 +62,9 @@ namespace Stareater.Utils.StateEngine
 					}
 
 				if (lastCount == dependencyNodes.Count)
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
 					throw new Exception("Infinite loop");
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
 				lastCount = dependencyNodes.Count;
             }
 		}
@@ -70,7 +74,7 @@ namespace Stareater.Utils.StateEngine
 			if (!this.nextReference.ContainsKey(namePrefix))
 				this.nextReference[namePrefix] = 0;
 
-			var referenceName = namePrefix + this.nextReference[namePrefix].ToString();
+			var referenceName = namePrefix + this.nextReference[namePrefix].ToStringInvariant();
 			this.referencedData[originalValue] = serializedValue;
 			this.nextReference[namePrefix]++;
             serializedValue.ReferenceNames.Add(referenceName);

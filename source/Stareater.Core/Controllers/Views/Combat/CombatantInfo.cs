@@ -62,6 +62,9 @@ namespace Stareater.Controllers.Views.Combat
 		
 		public bool CloakedFor(PlayerInfo player)
 		{
+			if (player == null)
+				throw new ArgumentNullException(nameof(player));
+
 			return this.Data.CloakedFor.Contains(player.Data);
 		}
 		

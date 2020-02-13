@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Stareater.Galaxy.BodyTraits;
 using Stareater.Localization.StarNames;
@@ -19,6 +20,9 @@ namespace Stareater.Galaxy.Builders
 
 		public StarSystemBuilder(StarSystemBuilder baseSystem)
 		{
+			if (baseSystem == null)
+				throw new ArgumentNullException(nameof(baseSystem));
+
 			this.Star = baseSystem.Star; //TODO(v0.8) deep copy if not null
 			this.Planets = new List<Planet>(baseSystem.Planets);
 		}

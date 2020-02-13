@@ -5,6 +5,7 @@ using Stareater.Galaxy;
 using Stareater.GameLogic;
 using Stareater.Players;
 using Stareater.GameData.Construction;
+using System;
 
 namespace Stareater.Controllers
 {
@@ -110,6 +111,9 @@ namespace Stareater.Controllers
 
 			set
 			{
+				if (value == null)
+					throw new ArgumentNullException(nameof(value));
+
 				if (this.IsReadOnly)
 					return;
 

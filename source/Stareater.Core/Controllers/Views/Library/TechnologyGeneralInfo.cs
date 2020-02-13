@@ -30,7 +30,7 @@ namespace Stareater.Controllers.Views.Library
 		public string Name(int level)
 		{
 			if (level < 0 || level > this.maxLevel)
-				throw new ArgumentOutOfRangeException("level");
+				throw new ArgumentOutOfRangeException(nameof(level));
 					
 			return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(this.languageCode).Text(new Var(DevelopmentTopic.LevelKey, level).Get);
 		}
@@ -38,7 +38,7 @@ namespace Stareater.Controllers.Views.Library
 		public string Description(int level)
 		{
 			if (level < 0 || level > this.maxLevel)
-				throw new ArgumentOutOfRangeException("level");
+				throw new ArgumentOutOfRangeException(nameof(level));
 			
 			return LocalizationManifest.Get.CurrentLanguage[LangContext].Description(this.languageCode).Text(new Var(DevelopmentTopic.LevelKey, level).Get);
 		}

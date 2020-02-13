@@ -3,7 +3,7 @@
 namespace Stareater.Ships.Missions
 {
 	//TODO(v0.8) unused
-	[StateType(saveTag: MissionTag)]
+	[StateTypeAttribute(saveTag: MissionTag)]
 	class SkipTurnMission : AMission
 	{
 		#region implemented abstract members of AMission

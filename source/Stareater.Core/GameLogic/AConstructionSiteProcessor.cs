@@ -14,27 +14,28 @@ namespace Stareater.GameLogic
 	{
 		protected const string BuidingCountPrefix = "_count";
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double Production { get; protected set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double SpendingRatioEffective { get; protected set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public IEnumerable<ConstructionResult> SpendingPlan { get; protected set; }
 
 		protected AConstructionSiteProcessor()
 		{
 			this.SpendingPlan = new ConstructionResult[0];
 		}
-		
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "ToLower is required")]
 		public virtual Var LocalEffects(StaticsDB statics)
 		{
 			var vars = new Var();
 			
 			foreach(var building in statics.Buildings)
 				if (Site.Buildings.ContainsKey(building.Key))
-					vars.And(building.Key.ToLower() + BuidingCountPrefix, Site.Buildings[building.Key]);
+					vars.And(building.Key.ToLowerInvariant() + BuidingCountPrefix, Site.Buildings[building.Key]);
 				else
-					vars.And(building.Key.ToLower() + BuidingCountPrefix, 0);
+					vars.And(building.Key.ToLowerInvariant() + BuidingCountPrefix, 0);
 			
 			return vars;
 		}

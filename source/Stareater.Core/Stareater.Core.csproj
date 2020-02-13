@@ -354,10 +354,10 @@
     <Compile Include="Utils\StateEngine\CopySession.cs" />
     <Compile Include="Utils\StateEngine\DictionaryStrategy.cs" />
     <Compile Include="Utils\StateEngine\ITypeStrategy.cs" />
-    <Compile Include="Utils\StateEngine\StateBaseType.cs" />
+    <Compile Include="Utils\StateEngine\StateBaseTypeAttribute.cs" />
     <Compile Include="Utils\StateEngine\StateManager.cs" />
-    <Compile Include="Utils\StateEngine\StateProperty.cs" />
-    <Compile Include="Utils\StateEngine\StateType.cs" />
+    <Compile Include="Utils\StateEngine\StatePropertyAttribute.cs" />
+    <Compile Include="Utils\StateEngine\StateTypeAttribute.cs" />
     <Compile Include="Utils\StateEngine\TerminalStrategy.cs" />
     <Compile Include="Utils\ChoiceWeights.cs" />
     <Compile Include="Utils\Collections\AIndexedCollection.cs" />

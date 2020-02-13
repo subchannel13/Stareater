@@ -25,11 +25,17 @@ namespace Stareater.Utils.StateEngine
 
 		public T Load<T>(Ikadn.IkadnBaseObject data)
 		{
+			if (data == null)
+				throw new ArgumentNullException(nameof(data));
+
 			return Load<T>(data.To<IkonBaseObject>());
 		}
 
         public T Load<T>(IkonBaseObject data)
 		{
+			if (data == null)
+				throw new ArgumentNullException(nameof(data));
+
 			if (deserialized.ContainsKey(data))
 				return (T)deserialized[data];
 

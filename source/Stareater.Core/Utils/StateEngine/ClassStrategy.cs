@@ -14,7 +14,7 @@ namespace Stareater.Utils.StateEngine
 		private List<PropertyStrategy> properties;
 		private string saveTag;
 		
-		public ClassStrategy(Type type, StateType attributes)
+		public ClassStrategy(Type type, StateTypeAttribute attributes)
 		{
 			this.type = type;
 			this.constructor = buildConstructor(type);

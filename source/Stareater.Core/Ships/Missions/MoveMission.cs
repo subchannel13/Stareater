@@ -3,13 +3,13 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Ships.Missions
 {
-	[StateType(saveTag: MissionTag)]
+	[StateTypeAttribute(saveTag: MissionTag)]
 	class MoveMission : AMission
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public StarData Destination { get; private set; }
 
-		[StateProperty(saveKey: "via")]
+		[StatePropertyAttribute(saveKey: "via")]
 		public Wormhole UsedWormhole { get; private set; }
 		
 		public MoveMission(StarData destination, Wormhole usedWormhole)

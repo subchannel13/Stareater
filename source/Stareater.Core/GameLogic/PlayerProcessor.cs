@@ -25,33 +25,33 @@ namespace Stareater.GameLogic
 		public const string LevelSufix = "Lvl";
 		public const string UpgradeSufix = "Upg";
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Player Player { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public IEnumerable<DevelopmentResult> DevelopmentPlan { get; protected set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public IEnumerable<ResearchResult> ResearchPlan { get; protected set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public IDictionary<string, double> TechLevels { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double MaintenanceRatio { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<Design, DesignStats> DesignStats { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<Design, Dictionary<Design, double>> RefitCosts { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public List<Design> ColonizerDesignOptions { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public QuadTree<Circle> ScanRanges { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public bool ControlsStareater { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double EjectEta { get; private set; }
 		//TODO(v0.8) make a class which unifies ejection data
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<Player, double> EjectVictoryPoints { get; private set; } 
 
 		public PlayerProcessor(Player player, IEnumerable<DevelopmentTopic> technologies)

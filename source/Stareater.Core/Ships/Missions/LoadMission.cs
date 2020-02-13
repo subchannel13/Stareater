@@ -2,7 +2,7 @@
 
 namespace Stareater.Ships.Missions
 {
-	[StateType(saveTag: MissionTag)]
+	[StateTypeAttribute(saveTag: MissionTag)]
 	class LoadMission : AMission
 	{
 		public override bool FullTurnAction

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Ikadn;
 using Ikadn.Ikon.Types;
@@ -10,7 +9,7 @@ namespace Stareater.Controllers.NewGameHelpers
 {
 	internal class ParameterLoadingVisitor : IParameterVisitor
 	{
-		Queue<IkadnBaseObject> data = null;
+		private readonly Queue<IkadnBaseObject> data;
 		
 		public ParameterLoadingVisitor(Queue<IkadnBaseObject> data)
 		{

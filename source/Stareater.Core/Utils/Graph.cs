@@ -41,6 +41,9 @@ namespace Stareater.Utils
 
 		public void AddEdge(Edge<T> edge)
 		{
+			if (edge == null)
+				throw new ArgumentNullException(nameof(edge));
+
 			this.weights.Add(new Pair<Vertex<T>>(edge.FirstEnd, edge.SecondEnd), edge.Weight);
 			this.adjacency[edge.FirstEnd].Add(edge.SecondEnd);
 			this.adjacency[edge.SecondEnd].Add(edge.FirstEnd);
@@ -48,6 +51,9 @@ namespace Stareater.Utils
 
 		public void RemoveEdge(Edge<T> edge)
 		{
+			if (edge == null)
+				throw new ArgumentNullException(nameof(edge));
+
 			this.weights.Remove(new Pair<Vertex<T>>(edge.FirstEnd, edge.SecondEnd));
 			this.adjacency[edge.FirstEnd].Remove(edge.SecondEnd);
 			this.adjacency[edge.SecondEnd].Remove(edge.FirstEnd);
@@ -58,7 +64,7 @@ namespace Stareater.Utils
 			return new Edge<T>(fromNode, toNode, this.weights[new Pair<Vertex<T>>(fromNode, toNode)]);
 		}
 
-		public IEnumerable<Edge<T>> GetEdges(Vertex<T> fromNode)
+		public IEnumerable<Edge<T>> EdgesAt(Vertex<T> fromNode)
 		{
 			return this.adjacency[fromNode].Select(toNode => this.GetEdge(fromNode, toNode));
 		}

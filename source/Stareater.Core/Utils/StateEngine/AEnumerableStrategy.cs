@@ -8,10 +8,10 @@ namespace Stareater.Utils.StateEngine
 {
 	abstract class AEnumerableStrategy : ITypeStrategy
 	{
-		private Action<object, object, object, CopySession> copyChildrenInvoker;
-		private Func<object, object, IEnumerable<object>> childDependencyInvoker;
-		private Func<object, object, SaveSession, IkonBaseObject> serializeChildrenInvoker;
-		private Func<object, IkonBaseObject, LoadSession, object> deserializeChildrenInvoker;
+		private readonly Action<object, object, object, CopySession> copyChildrenInvoker;
+		private readonly Func<object, object, IEnumerable<object>> childDependencyInvoker;
+		private readonly Func<object, object, SaveSession, IkonBaseObject> serializeChildrenInvoker;
+		private readonly Func<object, IkonBaseObject, LoadSession, object> deserializeChildrenInvoker;
 		protected Type type;
 
 		protected AEnumerableStrategy(Type type)

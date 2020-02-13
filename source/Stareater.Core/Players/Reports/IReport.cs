@@ -2,7 +2,7 @@
 
 namespace Stareater.Players.Reports
 {
-	[StateBaseType("Load", typeof(ReportFactory))]
+	[StateBaseTypeAttribute("Load", typeof(ReportFactory))]
 	interface IReport
 	{
 		Player Owner { get; }

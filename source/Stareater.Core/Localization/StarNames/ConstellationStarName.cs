@@ -1,8 +1,9 @@
-﻿using Stareater.Utils.StateEngine;
+﻿using Stareater.Utils;
+using Stareater.Utils.StateEngine;
 
 namespace Stareater.Localization.StarNames
 {
-	[StateType(saveTag: SaveTag)]
+	[StateTypeAttribute(saveTag: SaveTag)]
 	class ConstellationStarName : IStarName
 	{
 		internal const string ConstellationsContext = "ConstellationNames";
@@ -14,9 +15,9 @@ namespace Stareater.Localization.StarNames
 		
 		const int NoDesignation = -1;
 		
-		[StateProperty]
+		[StatePropertyAttribute]
 		private int constellation { get; set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		private int designation { get; set; }
 
 		public ConstellationStarName(int constellationNameIndex, int designationIndex)
@@ -37,11 +38,11 @@ namespace Stareater.Localization.StarNames
 		public string ToText(Language language)
 		{
 			if (designation == NoDesignation)
-				return language[ConstellationsContext][ConstellationKeyPrefix + constellation.ToString() + NominativeSufix].Text();
+				return language[ConstellationsContext][ConstellationKeyPrefix + constellation.ToStringInvariant() + NominativeSufix].Text();
 			else
-				return language[DesignationContext][DesignationKeyPrefix + designation.ToString()].Text() +
+				return language[DesignationContext][DesignationKeyPrefix + designation.ToStringInvariant()].Text() +
 					" " +
-					language[ConstellationsContext][ConstellationKeyPrefix + constellation.ToString() + GenitiveSufix].Text();
+					language[ConstellationsContext][ConstellationKeyPrefix + constellation.ToStringInvariant() + GenitiveSufix].Text();
 		}
 
 		public const string SaveTag = "Constell";

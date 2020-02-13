@@ -6,19 +6,19 @@ using Stareater.GameData;
 
 namespace Stareater.Galaxy
 {
-	[StateBaseType("Load", typeof(AConstructionSite))]
+	[StateBaseTypeAttribute("Load", typeof(AConstructionSite))]
 	abstract class AConstructionSite 
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public LocationBody Location { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Player Owner { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<string, double> Buildings { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<string, double> Stockpile { get; private set; }
 
 		protected AConstructionSite(LocationBody location, Player owner) 
@@ -29,7 +29,7 @@ namespace Stareater.Galaxy
 			this.Stockpile = new Dictionary<string, double>();
  
 			#if DEBUG
-			this.id = NextId();
+			this.id = nextId();
 			#endif
 		} 
 		
@@ -92,10 +92,11 @@ namespace Stareater.Galaxy
 		}
 
 		private static long LastId = 0;
+		private static readonly object LockObj = new object();
 
-		private static long NextId()
+		private static long nextId()
 		{
-			lock (typeof(AConstructionSite)) {
+			lock (LockObj) {
 				LastId++;
 				return LastId;
 			}

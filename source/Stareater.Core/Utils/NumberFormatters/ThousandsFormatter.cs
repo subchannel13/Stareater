@@ -17,7 +17,9 @@ namespace Stareater.Utils.NumberFormatters
 		{
 			int index = Array.FindIndex(MagnitudePrefixes, x => x == magnitudePrefix);
 			if (index < 0)
-				throw new ArgumentException("Invalid magnitude prefix", "magnitudePrefix");
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+				throw new ArgumentException("Invalid magnitude prefix", nameof(magnitudePrefix));
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
 
 			double factor = 1;
 			for (int i = 0; i < index; i++)
@@ -48,7 +50,7 @@ namespace Stareater.Utils.NumberFormatters
 			else if (mantissa < 100)
 				format = "0.#";
 			
-			return (mantissa.ToString(format) + " " + MagnitudePrefixes[prefixInfo.Key]).TrimEnd();
+			return (mantissa.ToStringInvariant(format) + " " + MagnitudePrefixes[prefixInfo.Key]).TrimEnd();
 		}
 
 		private static KeyValuePair<int, double> greatestLowerPrefix(double number)

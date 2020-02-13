@@ -4,13 +4,13 @@ using System.Collections.Generic;
 namespace Stareater.Utils
 {
 	//TODO(v0.8) add info class for Wormhole and make this private
-	[StateType(saveTag:"Pair")]
+	[StateTypeAttribute(saveTag:"Pair")]
 	public class Pair<T>
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public T First { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public T Second { get; private set; }
 
 		public Pair(T first, T second)

@@ -20,6 +20,9 @@ namespace Stareater.Utils.Collections
 
 		public void AddAll<T>(IEnumerable<T> items) where T: IIdentifiable
 		{
+			if (items == null)
+				throw new ArgumentNullException(nameof(items));
+
 			foreach(var item in items)
 				this.Add(item, item.IdCode);
 		}

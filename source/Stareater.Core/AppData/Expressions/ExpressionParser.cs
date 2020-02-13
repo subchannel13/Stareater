@@ -141,61 +141,61 @@ namespace Stareater.AppData.Expressions
 
 		private IExpressionNode makeFunction(string identifierName, IList<IExpressionNode> segmentPoints, int listStart)
 		{
-			switch (identifierName.ToLower(CultureInfo.InvariantCulture)) {
-				case "min":
+			switch (identifierName.ToUpperInvariant()) {
+				case "MIN":
 					return paramCountAtLeast(segmentPoints.Count, 2, identifierName, listStart) ? 
 						new MinFunction(segmentPoints.ToArray()).Simplified() :
 						new Constant(double.NaN);
 
-				case "max":
+				case "MAX":
 					return paramCountAtLeast(segmentPoints.Count, 2, identifierName, listStart) ?
 						new MaxFunction(segmentPoints.ToArray()).Simplified() :
 						new Constant(double.NaN);
 
-				case "floor":
+				case "FLOOR":
 					return paramCountExact(segmentPoints.Count, 1, identifierName, listStart) ?
 						new FloorFunction(segmentPoints[0]).Simplified() :
 						new Constant(double.NaN);
 
-				case "ceil":
+				case "CEIL":
 					return paramCountExact(segmentPoints.Count, 1, identifierName, listStart) ?
 						new CeilFunction(segmentPoints[0]).Simplified() :
 						new Constant(double.NaN);
 
-				case "round":
+				case "ROUND":
 					return paramCountExact(segmentPoints.Count, 1, identifierName, listStart) ?
 						new RoundFunction(segmentPoints[0]).Simplified() :
 						new Constant(double.NaN);
 
-				case "trunc":
+				case "TRUNC":
 					return paramCountExact(segmentPoints.Count, 1, identifierName, listStart) ?
 						new TruncFunction(segmentPoints[0]).Simplified() :
 						new Constant(double.NaN);
 
-				case "abs":
+				case "ABS":
 					return paramCountExact(segmentPoints.Count, 1, identifierName, listStart) ?
 						new AbsFunction(segmentPoints[0]).Simplified() :
 						new Constant(double.NaN);
 
-				case "sgn":
+				case "SGN":
 					return paramCountExact(segmentPoints.Count, 1, identifierName, listStart) ?
 						new SgnFunction(segmentPoints[0]).Simplified() :
 						new Constant(double.NaN);
 
-				case "limit":
+				case "LIMIT":
 					return paramCountExact(segmentPoints.Count, 3, identifierName, listStart) ?
 						new LimitFunction(segmentPoints[0], segmentPoints[1], segmentPoints[2]).Simplified() :
 						new Constant(double.NaN);
 
-				case "if":
+				case "IF":
 					return paramCountExact(segmentPoints.Count, 3, identifierName, listStart) ?
 						new IfThenElseFunction(segmentPoints[0], segmentPoints[1], segmentPoints[2]).Simplified() :
 						new Constant(double.NaN);
-				case "case":
+				case "CASE":
 					return paramCountAtLeast(segmentPoints.Count, 1, identifierName, listStart) ?
 						new CaseFunction(segmentPoints.ToArray()).Simplified() :
 						new Constant(double.NaN);
-				case "ratio":
+				case "RATIO":
 					return paramCountExact(segmentPoints.Count, 2, identifierName, listStart) ?
 						new RatioFunction(segmentPoints[0], segmentPoints[1]).Simplified() :
 						new Constant(double.NaN);

@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Stareater.Controllers.Views;
+﻿using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
 using Stareater.GameLogic;
 using Stareater.Players;
+using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Stareater.Controllers
 {
-	public class BombardmentController
+	public sealed class BombardmentController : IDisposable
 	{
 		private readonly BombardBattleGame battleGame;
 		private readonly MainGame mainGame;
 		private readonly GameController gameController;
 		private readonly Dictionary<Player, IBombardEventListener> playerListeners;
 
-		private BlockingCollection<Action> messageQueue = new BlockingCollection<Action>(1);
-		private BombardmentProcessor processor = null;
-		
+		private readonly BlockingCollection<Action> messageQueue = new BlockingCollection<Action>(1);
+		private readonly BombardmentProcessor processor = null;
+		private bool disposed = false;
+
 		internal BombardmentController(BombardBattleGame battleGame, MainGame mainGame, GameController gameController)
 		{
 			this.playerListeners = new Dictionary<Player, IBombardEventListener>();
@@ -73,6 +74,22 @@ namespace Stareater.Controllers
 		{
 			//TODO(later) remove current player instead of ending whole phase
 			gameController.BombardmentResolved(this.battleGame);
+		}
+
+		public void Dispose()
+		{
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		private void Dispose(bool disposing)
+		{
+			if (!this.disposed)
+			{
+				if (disposing)
+					this.messageQueue.Dispose();
+				disposed = true;
+			}
 		}
 
 		public StarInfo Star { get; private set; }

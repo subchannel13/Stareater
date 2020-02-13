@@ -3,7 +3,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameLogic .Planning
 {
-	[StateType(true)]
+	[StateTypeAttribute(true)]
 	class ConstructionResult 
 	{
 		public long CompletedCount;

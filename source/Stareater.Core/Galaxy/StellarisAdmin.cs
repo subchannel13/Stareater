@@ -4,7 +4,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy
 {
-	[StateType(saveTag: Tag)]
+	[StateTypeAttribute(saveTag: Tag)]
 	class StellarisAdmin : AConstructionSite 
 	{
 		public StellarisAdmin(StarData star, Player owner) : base(new LocationBody(star), owner) 

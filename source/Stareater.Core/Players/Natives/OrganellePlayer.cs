@@ -9,7 +9,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players.Natives
 {
-	[StateType(saveTag: PlayerType.OrganelleControllerTag)]
+	[StateTypeAttribute(saveTag: PlayerType.OrganelleControllerTag)]
 	class OrganellePlayer : IOffscreenPlayer, IBattleEventListener, IBombardEventListener
 	{
 		private PlayerController playerController;

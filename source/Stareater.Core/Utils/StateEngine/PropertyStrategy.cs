@@ -14,14 +14,14 @@ namespace Stareater.Utils.StateEngine
 		private Type type;
 
 		public string Name { get; private set; }
-		public StateProperty Attribute { get; private set; }
+		public StatePropertyAttribute Attribute { get; private set; }
 
 		public PropertyStrategy(PropertyInfo property)
 		{
 			if (property.DeclaringType != property.ReflectedType)
 				property = property.DeclaringType.GetProperty(property.Name);
 
-			this.Attribute = (StateProperty)property.GetCustomAttributes(true).First(a => a is StateProperty);
+			this.Attribute = (StatePropertyAttribute)property.GetCustomAttributes(true).First(a => a is StatePropertyAttribute);
 			this.getter = BuildGetAccessor(property);
 			this.setter = BuildSetAccessor(property);
 			this.deserializer = BuildDeserializer(property);

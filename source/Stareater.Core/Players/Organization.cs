@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Stareater.Players
 {
-	[StateType(true)]
+	[StateTypeAttribute(true)]
 	class Organization : IIdentifiable
 	{
 		public string IdCode { get; internal set; }

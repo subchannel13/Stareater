@@ -5,7 +5,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Ships
 {
-	[StateType(true)]
+	[StateTypeAttribute(true)]
 	class SpecialEquipmentType : AComponentType
 	{
 		public string ImagePath { get; private set; }

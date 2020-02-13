@@ -26,14 +26,14 @@ namespace Stareater.Utils.Collections
 
         public TElement GetOrDefault(Pair<TKey> key)
         {
-            return this.Contains(key) ? this[key] : default(TElement);
+            return this.Contains(key) ? this[key] : default;
         }
 
         public TElement GetOrDefault(TKey keyFirst, TKey keySecond)
         {
             var key = new Pair<TKey>(keyFirst, keySecond);
 
-            return this.Contains(key) ? this[key] : default(TElement);
+            return this.Contains(key) ? this[key] : default;
         }
 
         public IList<TElement> this[TKey key]
@@ -44,6 +44,7 @@ namespace Stareater.Utils.Collections
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1043:Use Integral Or String Argument For Indexers", Justification = "Class represents data store")]
         public TElement this[Pair<TKey> key]
         {
             get

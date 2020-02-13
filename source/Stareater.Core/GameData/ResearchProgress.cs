@@ -10,16 +10,16 @@ namespace Stareater.GameData
 		public const int NotStarted = -1;
 		public const int Unordered = -1;
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Player Owner { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public ResearchTopic Topic { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public int Level { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double InvestedPoints { get; private set; }
 
 		public ResearchProgress(Player owner, ResearchTopic topic, int level, double investedPoints) 

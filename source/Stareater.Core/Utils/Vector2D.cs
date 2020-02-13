@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Stareater.Utils
 {
 	public struct Vector2D : IEquatable<Vector2D>
 	{
-		public readonly double X;
-		public readonly double Y;
+		public double X { get; private set; }
+		public double Y { get; private set; }
 
 		public Vector2D(double x, double y)
 		{
@@ -58,7 +59,9 @@ namespace Stareater.Utils
 			get
 			{
 				if (this.X == 0 && this.Y == 0)
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
 					throw new InvalidOperationException("Can't normalize zero vector");
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
 
 				var length = this.Length;
 				
@@ -96,7 +99,32 @@ namespace Stareater.Utils
 
 		public override string ToString()
 		{
-			return String.Format("({0}, {1})", this.X, this.Y);
+			return String.Format(CultureInfo.InvariantCulture, "({0}, {1})", this.X, this.Y);
+		}
+
+		public static Vector2D Add(Vector2D left, Vector2D right)
+		{
+			return new Vector2D(left.X + right.X, left.Y + right.Y);
+		}
+
+		public static Vector2D Subtract(Vector2D left, Vector2D right)
+		{
+			return new Vector2D(left.X - right.X, left.Y - right.Y);
+		}
+
+		public static Vector2D Negate(Vector2D vector)
+		{
+			return new Vector2D(-vector.X, -vector.Y);
+		}
+
+		public static Vector2D Multiply(Vector2D vector, double scale)
+		{
+			return new Vector2D(vector.X * scale, vector.Y * scale);
+		}
+
+		public static Vector2D Divide(Vector2D vector, double scale)
+		{
+			return new Vector2D(vector.X / scale, vector.Y / scale);
 		}
 
 		public static Vector2D operator +(Vector2D left, Vector2D right)

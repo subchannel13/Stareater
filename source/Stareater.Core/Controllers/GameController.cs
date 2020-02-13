@@ -13,7 +13,7 @@ using Stareater.AppData;
 
 namespace Stareater.Controllers
 {
-	public class GameController
+	public sealed class GameController
 	{
 		internal const string ReportContext = "Reports";
 		private static StateManager stateManager = null;
@@ -46,8 +46,13 @@ namespace Stareater.Controllers
 	
 		public void CreateGame(NewGameController controller)
 		{
+			if (controller == null)
+				throw new ArgumentNullException(nameof(controller));
+
 			if (State != GameState.NoGame)
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
 				throw new InvalidOperationException("Game is already created.");
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
 
 			var rng = new Random();
 			var players = controller.PlayerList.Select(info =>
@@ -108,7 +113,9 @@ namespace Stareater.Controllers
 			get
 			{
 				if (!gameObj.Processor.IsOver)
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
 					throw new InvalidOperationException("Game is not over yet");
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
 
 				return new ResultsController(this.gameObj);
 			}
@@ -160,12 +167,17 @@ namespace Stareater.Controllers
 				this.endTurnCopy.gameObj = gameCopy;
 				this.endTurnCopy.State = this.State;
 			}
-			
-			this.processingPhase = Task.Factory.StartNew(turnProcessing).ContinueWith(checkTaskException);
+
+			this.processingPhase = Task.Factory.
+				StartNew(this.turnProcessing, Task.Factory.CancellationToken, TaskCreationOptions.None, TaskScheduler.Default).
+				ContinueWith(checkTaskException, TaskScheduler.Default);
 		}
 
 		public void AudienceConcluded(AudienceController audienceController)
 		{
+			if (audienceController == null)
+				throw new ArgumentNullException(nameof(audienceController));
+
 			this.gameObj.Processor.AudienceConcluded(audienceController.Participants, audienceController.TreatyData);
 			processingSync.Set();
 		}
@@ -257,7 +269,9 @@ namespace Stareater.Controllers
 
 		private void restartAiGalaxyPhase()
 		{
-			this.aiGalaxyPhase = Task.Factory.StartNew(aiDoGalaxyPhase).ContinueWith(checkTaskException);
+			this.aiGalaxyPhase = Task.Factory.
+				StartNew(aiDoGalaxyPhase, Task.Factory.CancellationToken, TaskCreationOptions.None, TaskScheduler.Default).
+				ContinueWith(checkTaskException, TaskScheduler.Default);
 		}
 
 		private void holdAudience()
@@ -286,7 +300,9 @@ namespace Stareater.Controllers
 					controller.Register(playerController, this.stateListener.OnDoCombat(controller));
 			}
 
-			this.combatPhase = Task.Factory.StartNew(controller.Start).ContinueWith(checkTaskException);
+			this.combatPhase = Task.Factory.
+				StartNew(controller.Start, Task.Factory.CancellationToken, TaskCreationOptions.None, TaskScheduler.Default).
+				ContinueWith(checkTaskException, TaskScheduler.Default);
 		}
 
 		void initiateBombardment(SpaceBattleGame battleGame)
@@ -304,7 +320,9 @@ namespace Stareater.Controllers
 					controller.Register(playerController, this.stateListener.OnDoBombardment(controller));
 			}
 
-			this.combatPhase = Task.Factory.StartNew(controller.Start).ContinueWith(checkTaskException);
+			this.combatPhase = Task.Factory.
+				StartNew(controller.Start, Task.Factory.CancellationToken, TaskCreationOptions.None, TaskScheduler.Default).
+				ContinueWith(checkTaskException, TaskScheduler.Default);
 		}
 		#endregion
 	}

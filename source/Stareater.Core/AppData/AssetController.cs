@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Linq;
-
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Stareater.AppData
@@ -22,7 +21,7 @@ namespace Stareater.AppData
 		#endregion
 
 		private Task lastTask = null;
-		
+
 		public void AddLoader(Action loaderMethod)
 		{
 			this.appendTask(loaderMethod);
@@ -37,11 +36,11 @@ namespace Stareater.AppData
 		private void appendTask(Action task)
 		{
 			this.lastTask = lastTask == null ? 
-				Task.Factory.StartNew(task) : 
-				this.lastTask.ContinueWith(t => checkCompletion(t, task));
+				Task.Factory.StartNew(task, Task.Factory.CancellationToken, TaskCreationOptions.None, TaskScheduler.Default) : 
+				this.lastTask.ContinueWith(t => checkCompletion(t, task), TaskScheduler.Default);
 		}
 		
-		private void checkCompletion(Task previousTask, Action nextTask)
+		private static void checkCompletion(Task previousTask, Action nextTask)
 		{
 			if (previousTask.IsFaulted)
 				ErrorReporter.Get.Report(previousTask.Exception);

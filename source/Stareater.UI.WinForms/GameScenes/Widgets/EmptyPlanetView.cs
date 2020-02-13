@@ -68,7 +68,7 @@ namespace Stareater.GameScenes.Widgets
 			else
 			{
 				//TODO(v0.9) smarter default colonization source selection
-				this.controller.StartColonization(this.gameController.Stellarises().ToArray());
+				this.controller.StartColonization();
 			}
 			this.controller.RunAutomation();
 

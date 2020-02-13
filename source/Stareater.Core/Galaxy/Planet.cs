@@ -8,19 +8,19 @@ namespace Stareater.Galaxy
 {
 	class Planet 
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public StarData Star { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public int Position { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public PlanetType Type { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double Size { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public PendableSet<PlanetTraitType> Traits { get; private set; }
 
 		public Planet(StarData star, int position, PlanetType type, double size, IEnumerable<PlanetTraitType> traits) 

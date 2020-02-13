@@ -9,10 +9,10 @@ namespace Stareater.GameData
 	{
 		public const int NeverVisited = -1;
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public int LastVisited { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<Planet, PlanetIntelligence> Planets { get; private set; }
 
 		public StarIntelligence(IEnumerable<Planet> planets) 

@@ -5,7 +5,7 @@ namespace Stareater.AppData
 	public class ErrorReporter
 	{
 		#region Singleton
-		protected static ErrorReporter instance = null;
+		private static ErrorReporter instance = null;
 
 		public static ErrorReporter Get
 		{
@@ -19,9 +19,10 @@ namespace Stareater.AppData
 		}
 		#endregion
 
-		private object lockObj = new object();
+		private readonly object lockObj = new object();
 		private Action<Exception> OnExceptionHandler;
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1030:Use events where appropriate", Justification = "Already is an event")]
 		public event Action<Exception> OnException
 		{
 			add
@@ -44,8 +45,7 @@ namespace Stareater.AppData
 		{
 			lock (lockObj)
 			{
-				if (this.OnExceptionHandler != null)
-					this.OnExceptionHandler(e);
+				this.OnExceptionHandler?.Invoke(e);
 			}
 		}
 	}

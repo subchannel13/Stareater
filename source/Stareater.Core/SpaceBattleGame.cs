@@ -8,6 +8,7 @@ namespace Stareater
 {
 	class SpaceBattleGame : ABattleGame
 	{
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1802:Use literals where appropriate", Justification = "May be changed without rebuilding references.")]
 		public static readonly int BattlefieldRadius = 4;
 
 		public Queue<Combatant> PlayOrder { get; private set; }

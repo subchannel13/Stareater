@@ -36,7 +36,7 @@ namespace Stareater.GameLogic
 
 		/*TODO(later) add methods for attacking other kind of targets, 
 		 * extrude functionality form UseAbiliy methods in SpaceBattleProcessor */
-		protected double attackPlanet(AbilityStats abilityStats, double quantity, CombatPlanet planet)
+		protected static double attackPlanet(AbilityStats abilityStats, double quantity, CombatPlanet planet)
 		{
 			var spent = 0.0;
 

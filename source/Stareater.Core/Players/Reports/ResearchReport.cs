@@ -3,10 +3,10 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Players.Reports
 {
-	[StateType(saveTag: SaveTag)]
+	[StateTypeAttribute(saveTag: SaveTag)]
 	class ResearchReport : IReport
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public ResearchResult TechProgress { get; private set; }
 		
 		internal ResearchReport(ResearchResult techProgress)

@@ -99,12 +99,9 @@ namespace Stareater.Controllers
 			return loadedPlayers;
 		}
 
-		private string generateAiName()
-		{
-			return "HAL Bot";
-		}
+		private static string generateAiName() => "HAL Bot";
 
-#region Players
+		#region Players
 		public IEnumerable<PlayerType> PlayerTypes
 		{
 			get
@@ -206,7 +203,7 @@ namespace Stareater.Controllers
 			get { return this.mStarPopulator; }
 			set
 			{
-				this.mStarPopulator = value;
+				this.mStarPopulator = value ?? throw new ArgumentNullException(nameof(value));
 
 				this.BestSystemScore = this.mStarPopulator.MaxScore;
 				this.WorstSystemScore = this.mStarPopulator.MinScore;
@@ -260,7 +257,13 @@ namespace Stareater.Controllers
 			}
 		}
 
-		public BuildingInfo StartBuildingInfo(StartingBuilding building) => new BuildingInfo(this.Statics.Buildings[building.Id], building.Amount);
+		public BuildingInfo StartBuildingInfo(StartingBuilding building)
+		{
+			if (building == null)
+				throw new ArgumentNullException(nameof(building));
+
+			return new BuildingInfo(this.Statics.Buildings[building.Id], building.Amount);
+		}
 
 		internal static Organization Resolve(OrganizationInfo selection, Random rng)
 		{

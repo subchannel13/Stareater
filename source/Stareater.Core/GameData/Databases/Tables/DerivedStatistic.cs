@@ -17,6 +17,9 @@ namespace Stareater.GameData.Databases.Tables
 		
 		public double Evaluate(IDictionary<string, double> variables)
 		{
+			if (variables == null)
+				throw new ArgumentNullException(nameof(variables));
+
 			variables[BaseKey] = Base.Evaluate(variables);
 			
 			return Total.Evaluate(variables);

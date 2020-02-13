@@ -9,16 +9,16 @@ namespace Stareater.Galaxy
 {
 	class Fleet 
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Player Owner { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Vector2D Position { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public LinkedList<AMission> Missions { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public ShipGroupCollection Ships { get; private set; }
 
 		public Fleet(Player owner, Vector2D position, LinkedList<AMission> missions) 

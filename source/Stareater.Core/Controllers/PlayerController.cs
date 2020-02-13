@@ -77,11 +77,17 @@ namespace Stareater.Controllers
 		#region Map related
 		public bool IsStarVisited(StarInfo star)
 		{
+			if (star == null)
+				throw new ArgumentNullException(nameof(star));
+
 			return this.PlayerInstance(this.gameInstance).Intelligence.About(star.Data).IsVisited;
 		}
 		
 		public IEnumerable<ColonyInfo> KnownColonies(StarInfo star)
 		{
+			if (star == null)
+				throw new ArgumentNullException(nameof(star));
+
 			var game = this.gameInstance;
 			var starKnowledge = this.PlayerInstance(game).Intelligence.About(star.Data);
 			
@@ -92,10 +98,15 @@ namespace Stareater.Controllers
 		
 		public StarSystemController OpenStarSystem(StarInfo star)
 		{
+			if (star == null)
+				throw new ArgumentNullException(nameof(star));
+
 			var game = this.gameInstance;
 
 			if (!game.States.Stars.Contains(star.Data))
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
 				throw new ArgumentException("Star doesn't exist");
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
 
 			return new StarSystemController(game, star.Data, game.IsReadOnly, this);
 		}
@@ -159,6 +170,9 @@ namespace Stareater.Controllers
 		#region Fleet related
 		public FleetController SelectFleet(FleetInfo fleet)
 		{
+			if (fleet == null)
+				throw new ArgumentNullException(nameof(fleet));
+
 			var game = this.gameInstance;
 			return new FleetController(fleet, game);
 		}
@@ -256,6 +270,9 @@ namespace Stareater.Controllers
 		
 		public void DisbandDesign(DesignInfo design)
 		{
+			if (design == null)
+				throw new ArgumentNullException(nameof(design));
+
 			var game = this.gameInstance;
 			if (game.IsReadOnly)
 				return;
@@ -265,6 +282,9 @@ namespace Stareater.Controllers
 
 		public bool IsMarkedForRemoval(DesignInfo design)
 		{
+			if (design == null)
+				throw new ArgumentNullException(nameof(design));
+
 			var game = this.gameInstance;
 			var orders = game.Orders[this.PlayerInstance(game)];
 
@@ -273,6 +293,9 @@ namespace Stareater.Controllers
 		
 		public void KeepDesign(DesignInfo design)
 		{
+			if (design == null)
+				throw new ArgumentNullException(nameof(design));
+
 			var game = this.gameInstance;
 			if (game.IsReadOnly)
 				return;
@@ -283,6 +306,9 @@ namespace Stareater.Controllers
 		
 		public IEnumerable<DesignInfo> RefitCandidates(DesignInfo design)
 		{
+			if (design == null)
+				throw new ArgumentNullException(nameof(design));
+
 			var game = this.gameInstance;
 			var playerProc = game.Derivates[this.PlayerInstance(game)];
 			
@@ -293,12 +319,22 @@ namespace Stareater.Controllers
 		
 		public double RefitCost(DesignInfo design, DesignInfo refitWith)
 		{
+			if (design == null)
+				throw new ArgumentNullException(nameof(design));
+			if (refitWith == null)
+				throw new ArgumentNullException(nameof(refitWith));
+
 			var game = this.gameInstance;
 			return game.Derivates[this.PlayerInstance(game)].RefitCosts[design.Data][refitWith.Data];
 		}
 		
 		public void RefitDesign(DesignInfo design, DesignInfo refitWith)
 		{
+			if (design == null)
+				throw new ArgumentNullException(nameof(design));
+			if (refitWith == null)
+				throw new ArgumentNullException(nameof(refitWith));
+
 			var game = this.gameInstance;
 			if (game.IsReadOnly)
 				return;
@@ -317,6 +353,9 @@ namespace Stareater.Controllers
 		
 		public DesignInfo RefittingWith(DesignInfo design)
 		{
+			if (design == null)
+				throw new ArgumentNullException(nameof(design));
+
 			var game = this.gameInstance;
 			var player = this.PlayerInstance(game);
 			var orders = game.Orders[player];
@@ -359,6 +398,9 @@ namespace Stareater.Controllers
 
 		public void AddColonizationSource(StellarisInfo source)
 		{
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+
 			var game = this.gameInstance;
 			if (game.IsReadOnly)
 				return;
@@ -370,6 +412,9 @@ namespace Stareater.Controllers
 
 		public void RemoveColonizationSource(StellarisInfo source)
 		{
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+
 			var game = this.gameInstance;
 			if (game.IsReadOnly)
 				return;
@@ -406,6 +451,9 @@ namespace Stareater.Controllers
 
 		public IEnumerable<FleetInfo> EnrouteColonizers(PlanetInfo destination)
 		{
+			if (destination == null)
+				throw new ArgumentNullException(nameof(destination));
+
 			var game = this.gameInstance;
 			var player = this.PlayerInstance(game);
 
@@ -433,6 +481,9 @@ namespace Stareater.Controllers
 			}
 			set
 			{
+				if (value == null)
+					throw new ArgumentNullException(nameof(value));
+
 				var game = this.gameInstance;
 				if (game.IsReadOnly)
 					return;
@@ -497,6 +548,9 @@ namespace Stareater.Controllers
 		
 		public IEnumerable<DevelopmentTopicInfo> ReorderDevelopmentTopics(IEnumerable<string> idCodeOrder)
 		{
+			if (idCodeOrder == null)
+				throw new ArgumentNullException(nameof(idCodeOrder));
+
 			var game = this.gameInstance;
 			if (game.IsReadOnly)
 				return DevelopmentTopics();
@@ -594,6 +648,9 @@ namespace Stareater.Controllers
 
 			set
 			{
+				if (value == null)
+					throw new ArgumentNullException(nameof(value));
+
 				var game = this.gameInstance;
 				if (game.IsReadOnly)
 					return;
@@ -605,6 +662,9 @@ namespace Stareater.Controllers
 
 		public IEnumerable<DevelopmentTopicInfo> ResearchUnlockPriorities(ResearchTopicInfo field)
 		{
+			if (field == null)
+				throw new ArgumentNullException(nameof(field));
+
 			var game = this.gameInstance;
 			var player = this.PlayerInstance(game);
 			var orderedPriorities = game.Orders[player].ResearchPriorities;
@@ -623,6 +683,11 @@ namespace Stareater.Controllers
 
 		public void ResearchReorderPriority(ResearchTopicInfo field, DevelopmentTopicInfo unlock, int index)
 		{
+			if (field == null)
+				throw new ArgumentNullException(nameof(field));
+			if (unlock == null)
+				throw new ArgumentNullException(nameof(unlock));
+
 			if (index < 0 || index >= field.Topic.Unlocks[field.NextLevel].Length)
 				return;
 
@@ -666,6 +731,9 @@ namespace Stareater.Controllers
 
 		public bool IsAudienceRequested(ContactInfo contact)
 		{
+			if (contact == null)
+				throw new ArgumentNullException(nameof(contact));
+
 			var game = this.gameInstance;
 			var contactIndex = Array.IndexOf(game.MainPlayers, contact.PlayerData);
 			
@@ -674,6 +742,9 @@ namespace Stareater.Controllers
 		
 		public void RequestAudience(ContactInfo contact)
 		{
+			if (contact == null)
+				throw new ArgumentNullException(nameof(contact));
+
 			var game = this.gameInstance;
 			if (game.IsReadOnly)
 				return;
@@ -684,6 +755,9 @@ namespace Stareater.Controllers
 		
 		public void CancelAudience(ContactInfo contact)
 		{
+			if (contact == null)
+				throw new ArgumentNullException(nameof(contact));
+
 			var game = this.gameInstance;
 			if (game.IsReadOnly)
 				return;

@@ -10,28 +10,28 @@ namespace Stareater.Players
 {
 	class Player 
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public string Name { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Color Color { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Organization Organization { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public PlayerControlType ControlType { get; private set; }
 
-		[StateProperty(false)]
+		[StatePropertyAttribute(false)]
 		public IOffscreenPlayer OffscreenControl { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public HashSet<DesignTemplate> UnlockedDesigns { get; private set; }
 		
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Intelligence Intelligence { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double VictoryPoints { get; set; }
 
 		public Player(string name, Color color, Organization Organization, PlayerType type) 
@@ -60,14 +60,18 @@ namespace Stareater.Players
 		{
 			var tag = rawData.Tag as string;
 
-			if (tag.Equals(PlayerType.NoControllerTag))
-				return null;
-			else if (tag.Equals(PlayerType.OrganelleControllerTag))
-				return new OrganellePlayerFactory().Load(rawData.To<IkonComposite>(), session);
-			else if (PlayerAssets.AIDefinitions.ContainsKey(tag))
-				return PlayerAssets.AIDefinitions[tag].Load(rawData.To<IkonComposite>(), session);
-
-			throw new KeyNotFoundException("Can't load player controller for " + tag);
+			switch (tag)
+			{
+				case PlayerType.NoControllerTag:
+					return null;
+				case PlayerType.OrganelleControllerTag:
+					return new OrganellePlayerFactory().Load(rawData.To<IkonComposite>(), session);
+				default:
+					if (PlayerAssets.AIDefinitions.TryGetValue(tag, out var factory))
+						return factory.Load(rawData.To<IkonComposite>(), session);
+					else
+						throw new KeyNotFoundException("Can't load player controller for " + tag);
+			}
 		}
 
 		#region object ID
@@ -80,10 +84,11 @@ namespace Stareater.Players
 		}
 
 		private static long LastId = 0;
+		private static readonly object LockObj = new object();
 
 		private static long NextId()
 		{
-			lock (typeof(Player)) {
+			lock (LockObj) {
 				LastId++;
 				return LastId;
 			}

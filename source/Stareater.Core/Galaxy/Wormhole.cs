@@ -5,7 +5,7 @@ namespace Stareater.Galaxy
 {
 	class Wormhole
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Pair<StarData> Endpoints { get; private set; }
 
 		public Wormhole(StarData fromStar, StarData toStar) 

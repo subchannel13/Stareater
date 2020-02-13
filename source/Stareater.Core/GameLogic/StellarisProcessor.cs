@@ -13,17 +13,17 @@ namespace Stareater.GameLogic
 {
 	class StellarisProcessor : AConstructionSiteProcessor
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public StellarisAdmin Stellaris { get; set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<Colony, double> EmigrantionPlan = new Dictionary<Colony, double>();
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<Colony, double> ImmigrantionPlan = new Dictionary<Colony, double>();
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double IsMigrants;
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double ScanRange { get; private set; }
 
 		public StellarisProcessor(StellarisAdmin stellaris) : base()

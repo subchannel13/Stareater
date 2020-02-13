@@ -88,7 +88,7 @@ namespace Stareater.GameLogic
 
 				for (int i = 0; i < unit.AbilityCharges.Length; i++)
 				{
-					var spent = this.attackPlanet(unitStats.Abilities[i], unit.AbilityCharges[i], planet);
+					var spent = attackPlanet(unitStats.Abilities[i], unit.AbilityCharges[i], planet);
 
 					unit.AbilityCharges[i] -= spent;
 					if (!double.IsInfinity(unit.AbilityAmmo[i]))

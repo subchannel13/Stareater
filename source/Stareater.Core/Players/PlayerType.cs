@@ -1,4 +1,6 @@
-﻿namespace Stareater.Players
+﻿using System;
+
+namespace Stareater.Players
 {
 	public class PlayerType
 	{
@@ -8,6 +10,9 @@
 
 		public PlayerType(PlayerControlType controlType, IOffscreenPlayerFactory offscreenPlayerFactory)
 		{
+			if (offscreenPlayerFactory == null)
+				throw new ArgumentNullException(nameof(offscreenPlayerFactory));
+
 			this.ControlType = controlType;
 			this.Name = offscreenPlayerFactory.Name;
 			this.OffscreenPlayerFactory = offscreenPlayerFactory;

@@ -5,6 +5,7 @@ using System.Text;
 using Stareater.AppData.Expressions;
 using Stareater.Utils.NumberFormatters;
 using Ikadn;
+using System.Globalization;
 
 namespace Stareater.Localization.Reading
 {
@@ -24,7 +25,7 @@ namespace Stareater.Localization.Reading
 				case 'd':
 				case 'D':
 					formatter = new DecimalsFormatter(0,
-						formatterParameter.Length > 0 ? int.Parse(formatterParameter) : 0
+						formatterParameter.Length > 0 ? int.Parse(formatterParameter, CultureInfo.InvariantCulture) : 0
 						).Format;
 					break;
 				case 't':

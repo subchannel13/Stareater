@@ -73,7 +73,7 @@ namespace Stareater.Controllers
 			}
 		}
 
-		public void StartColonization(params StellarisInfo[] colonizationSources)
+		public void StartColonization()
 		{
 			if (this.IsReadOnly)
 				return;
@@ -86,7 +86,7 @@ namespace Stareater.Controllers
 			//TODO(v0.8) update colony ship yards updateStellarises(...);
 		}
 		
-		public void StopColonization(params StellarisInfo[] colonizationSources)
+		public void StopColonization()
 		{
 			if (!this.IsColonizing || this.IsReadOnly)
 				return;

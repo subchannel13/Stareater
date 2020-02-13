@@ -6,7 +6,7 @@ namespace Stareater.GameData
 	{
 		public const int NeverVisited = -1;
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public int LastVisited { get; private set; }
 
 		public PlanetIntelligence() 

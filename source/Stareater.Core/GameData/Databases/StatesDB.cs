@@ -11,38 +11,38 @@ namespace Stareater.GameData.Databases
 	{
 		private const string DesignIdPrefix = "ShipDesign";
 		
-		[StateProperty]
+		[StatePropertyAttribute]
 		public StarCollection Stars { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public WormholeCollection Wormholes { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		//TODO(v0.8) maybe give natives stellarises with special buildings and use it in
 		//derivates to deduce which star is the brain
 		public StarData StareaterBrain { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public PlanetCollection Planets { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public ColonyCollection Colonies { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public StellarisCollection Stellarises { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public ColonizationCollection ColonizationProjects { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public FleetCollection Fleets { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public DesignCollection Designs { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public ReportCollection Reports { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public DevelopmentProgressCollection DevelopmentAdvances { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public ResearchProgressCollection ResearchAdvances { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public HashSet<Pair<Player>> Contacts { get; internal set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public TreatyCollection Treaties { get; private set; }
 
 		private int nextDesignId = 0; //TODO(v0.8) may not work correctly after loading

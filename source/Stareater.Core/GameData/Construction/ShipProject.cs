@@ -6,13 +6,13 @@ using System;
 
 namespace Stareater.GameData.Construction
 {
-	[StateType(saveTag: Tag)]
+	[StateTypeAttribute(saveTag: Tag)]
 	class ShipProject : IConstructionProject
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Design Type { get; set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public bool IsVirtual { get; private set; }
 
 		public ShipProject(Design design, bool isVirtual)

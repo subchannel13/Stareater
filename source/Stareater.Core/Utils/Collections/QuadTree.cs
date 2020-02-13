@@ -58,6 +58,9 @@ namespace Stareater.Utils.Collections
 
 		public void Add(QuadTreeElement<T> item)
 		{
+			if (item == null)
+				throw new ArgumentNullException(nameof(item));
+
 			boundedElements.Add(item.Data, item);
 
 			if (!root.Insert(item, this.minNodeSize))
@@ -88,6 +91,9 @@ namespace Stareater.Utils.Collections
 
 		public bool Contains(QuadTreeElement<T> item)
 		{
+			if (item == null)
+				throw new ArgumentNullException(nameof(item));
+
 			return this.boundedElements.ContainsKey(item.Data) &&
 				item.Equals(this.boundedElements[item.Data]);
 		}
@@ -114,6 +120,9 @@ namespace Stareater.Utils.Collections
 
 		public bool Remove(QuadTreeElement<T> item)
 		{
+			if (item == null)
+				throw new ArgumentNullException(nameof(item));
+
 			if (!boundedElements.ContainsKey(item.Data))
 				return false;
 

@@ -11,13 +11,13 @@ namespace Stareater.GameData.Databases
 {
 	class TemporaryDB
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public ColonyProcessorCollection Colonies { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public StellarisProcessorCollection Stellarises { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public PlayerProcessorCollection Players { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public NativesProcessor Natives { get; private set; }
 		
 		public TemporaryDB(Player[] players, Player organellePlayer, IEnumerable<DevelopmentTopic> technologies)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Stareater.GameData.Construction
 {
-	[StateBaseType("Load", typeof(ProjectFactory))]
+	[StateBaseTypeAttribute("Load", typeof(ProjectFactory))]
     interface IConstructionProject
 	{
 		string StockpileGroup { get; }

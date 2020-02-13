@@ -163,7 +163,7 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 				potentialEdges.Clear();
 				foreach (var node in treeNodes)
 				{
-					var edges = graph.GetEdges(node).
+					var edges = graph.EdgesAt(node).
 						Where(e => !treeNodes.Contains(e.FirstEnd) || !treeNodes.Contains(e.SecondEnd));
 
 					foreach (var edge in edges)

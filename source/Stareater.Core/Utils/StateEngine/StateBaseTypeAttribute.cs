@@ -2,12 +2,13 @@
 
 namespace Stareater.Utils.StateEngine
 {
-	class StateBaseType : Attribute
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
+	public class StateBaseTypeAttribute : Attribute
 	{
 		public string LoadMethod { get; private set; }
 		public Type LoaderClass { get; private set; }
 
-		public StateBaseType(string loadMethod, Type loaderClass)
+		public StateBaseTypeAttribute(string loadMethod, Type loaderClass)
 		{
 			this.LoaderClass = loaderClass;
 			this.LoadMethod = loadMethod;

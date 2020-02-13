@@ -45,7 +45,7 @@ namespace Stareater.Controllers.Views
 			return new NewGamePlayerInfo(
 				name,
 				colors.Take(),
-				organizationId != "" ? organizations[organizationId] : null,
+				!string.IsNullOrEmpty(organizationId) ? organizations[organizationId] : null,
 				playerType == PlayerControlType.LocalHuman ?
 					new PlayerType(playerType, name) :
 					new PlayerType(playerType, aiFactories[playerData[1].To<string>()], name)

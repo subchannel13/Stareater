@@ -9,15 +9,7 @@ namespace Stareater.AppData
 	public abstract class Settings
 	{
 		#region Singleton
-		protected static Settings instance = null;
-
-		public static Settings Get
-		{
-			get
-			{
-				return instance;
-			}
-		}
+		public static Settings Get { get; protected set; } = null;
 		#endregion
 
 		public string LanguageId { get; private set; }
@@ -34,26 +26,30 @@ namespace Stareater.AppData
 		{
 			try
 			{
-				var data = instance.loadData();
+				var data = Get.loadData();
 				if (data != null)
-					instance.load(data);
+					Get.load(data);
 				else
-					instance.initDefault();
+					Get.initDefault();
 			}
-			#if DEBUG
-			catch(Exception e)
+#if DEBUG
+#pragma warning disable CA1031 // Do not catch general exception types
+			catch (Exception e)
+#pragma warning restore CA1031 // Do not catch general exception types
 			{
 				System.Diagnostics.Trace.TraceError(e.ToString());
-				instance.initDefault();
+				Get.initDefault();
 			}
-			#else
+#else
+#pragma warning disable CA1031 // Do not catch general exception types
 			catch(Exception)
+#pragma warning restore CA1031 // Do not catch general exception types
 			{
 				instance.initDefault();
 			}
-			#endif
+#endif
 		}
-		
+
 		protected virtual void initDefault()
 		{
 			this.LanguageId = null;
@@ -64,6 +60,9 @@ namespace Stareater.AppData
 		
 		protected virtual void load(LabeledQueue<object, IkadnBaseObject> data)
 		{
+			if (data == null)
+				throw new ArgumentNullException(nameof(data));
+
 			var baseData = data.Dequeue(BaseSettingsTag).To<IkonComposite>();
 			
 			this.LanguageId = baseData[LanguageKey].To<string>();

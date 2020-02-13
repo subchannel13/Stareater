@@ -5,8 +5,8 @@ namespace Stareater.Utils.Collections
 {
 	public class PendableSet<T> : HashSet<T>, IDelayedCollection<T>
 	{
-		List<T> toAdd = null;
-		List<T> toRemove = null;
+		private List<T> toAdd = null;
+		private List<T> toRemove = null;
 		
 		public PendableSet()
 		{ }

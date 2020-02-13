@@ -2,7 +2,7 @@
 
 namespace Stareater.Ships.Missions
 {
-	[StateBaseType("Load", typeof(MissionFactory))]
+	[StateBaseTypeAttribute("Load", typeof(MissionFactory))]
 	abstract class AMission
 	{
 		public abstract bool FullTurnAction { get; }

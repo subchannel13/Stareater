@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Stareater.Galaxy.BodyTraits;
 using Stareater.GameData.Databases;
@@ -17,6 +18,9 @@ namespace Stareater.Galaxy.Builders
 
 		public double StartingScore(StarSystemBuilder system)
 		{
+			if (system == null)
+				throw new ArgumentNullException(nameof(system));
+
 			return this.StartingScore(system.Star, system.Planets);
 		}
 
@@ -30,6 +34,9 @@ namespace Stareater.Galaxy.Builders
 
 		public double PotentialScore(StarSystemBuilder system)
 		{
+			if (system == null)
+				throw new ArgumentNullException(nameof(system));
+
 			return this.PotentialScore(system.Star, system.Planets);
 		}
 

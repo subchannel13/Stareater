@@ -107,6 +107,9 @@ namespace Stareater.Controllers
 		#region Saving / Loading
 		public void NewSave(string title, IkonBaseObject previewData)
 		{
+			if (previewData == null)
+				throw new ArgumentNullException(nameof(previewData));
+
 			string fileName = SaveNamePrefix + this.nextSaveNumber + "." + SaveNameExtension;
 
 			var saveFile = new FileInfo(this.saveFolderPath + fileName);
@@ -119,6 +122,13 @@ namespace Stareater.Controllers
 
 		public void OverwriteSave(SavedGameInfo savedGameData, string title, IkonBaseObject previewData)
 		{
+			if (savedGameData == null)
+				throw new ArgumentNullException(nameof(savedGameData));
+			if (title == null)
+				throw new ArgumentNullException(nameof(title));
+			if (previewData == null)
+				throw new ArgumentNullException(nameof(previewData));
+
 			save(savedGameData.FileInfo, title, previewData);
 		}
 
@@ -145,6 +155,9 @@ namespace Stareater.Controllers
 		
 		public void Load(SavedGameInfo savedGameData, IEnumerable<NamedStream> staticDataSources)
 		{
+			if (savedGameData == null)
+				throw new ArgumentNullException(nameof(savedGameData));
+
 			IkonComposite saveRawData;
 			using (var parser = new IkonParser(savedGameData.FileInfo.OpenText()))
 				saveRawData = parser.ParseAll().Dequeue(MainGame.SaveGameTag).To<IkonComposite>();

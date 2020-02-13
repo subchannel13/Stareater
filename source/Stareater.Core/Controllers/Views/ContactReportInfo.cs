@@ -1,6 +1,7 @@
 ﻿using Stareater.Localization;
 using Stareater.Players.Reports;
 using Stareater.Utils.Collections;
+using System;
 
 namespace Stareater.Controllers.Views
 {
@@ -19,6 +20,9 @@ namespace Stareater.Controllers.Views
 
 		public void Accept(IReportInfoVisitor visitor)
 		{
+			if (visitor == null)
+				throw new ArgumentNullException(nameof(visitor));
+
 			visitor.Visit(this);
 		}
 	}

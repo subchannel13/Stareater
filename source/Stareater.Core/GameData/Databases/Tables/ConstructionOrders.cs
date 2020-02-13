@@ -6,10 +6,10 @@ namespace Stareater.GameData.Databases.Tables
 {
 	class ConstructionOrders
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double SpendingRatio { get; set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public List<IConstructionProject> Queue { get; private set; }
 
 		public ConstructionOrders(double spendingRatio)

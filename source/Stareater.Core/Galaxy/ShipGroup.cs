@@ -5,19 +5,19 @@ namespace Stareater.Galaxy
 {
 	class ShipGroup 
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Design Design { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public long Quantity { get; set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double Damage { get; set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double UpgradePoints { get; set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double PopulationTransport { get; set; }
 
 		public ShipGroup(Design design, long quantity, double damage, double upgradePoints, double population) 

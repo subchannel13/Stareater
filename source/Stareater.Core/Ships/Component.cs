@@ -3,14 +3,14 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Ships
 {
-	[StateType(saveTag: "Component")]
+	[StateTypeAttribute(saveTag: "Component")]
     class Component<T> where T : AComponentType
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public T TypeInfo { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public int Level { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public int Quantity { get; private set; }
 		
 		public Component(T typeInfo, int level, int quantity = 1)

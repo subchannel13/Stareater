@@ -5,7 +5,7 @@ namespace Stareater.Utils.Collections
 {
 	public class TextVar
 	{
-		Dictionary<string, string> variables = new Dictionary<string, string>();
+		private readonly Dictionary<string, string> variables = new Dictionary<string, string>();
 
 		public TextVar()
 		{ }
@@ -30,6 +30,9 @@ namespace Stareater.Utils.Collections
 		
 		public TextVar UnionWith(IEnumerable<KeyValuePair<string, string>> variables)
 		{
+			if (variables == null)
+				throw new ArgumentNullException(nameof(variables));
+
 			foreach (var pair in variables)
 				this.variables.Add(pair.Key, pair.Value);
 			

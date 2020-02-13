@@ -4,10 +4,10 @@ using Stareater.Players;
 
 namespace Stareater.Galaxy
 {
-	[StateType(saveTag: Tag)]
+	[StateTypeAttribute(saveTag: Tag)]
 	class Colony : AConstructionSite 
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double Population { get; set; }
 
 		public Colony(double population, Planet planet, Player owner) : base(new LocationBody(planet.Star, planet), owner) 

@@ -1,8 +1,9 @@
 ﻿using Stareater.Utils.StateEngine;
+using System;
 
 namespace Stareater.Utils
 {
-	[StateType(true)]
+	[StateTypeAttribute(true)]
 	public class BitHash
 	{
 		private readonly uint[] contents;
@@ -10,6 +11,9 @@ namespace Stareater.Utils
 
 		public BitHash(uint[] contents)
 		{
+			if (contents == null)
+				throw new ArgumentNullException(nameof(contents));
+
 			this.contents = contents;
 			
 			int hash = 0;

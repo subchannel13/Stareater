@@ -4,11 +4,11 @@ namespace Stareater.Utils.Collections
 {
 	public class QuadTreeElement<T>
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public T Data { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Vector2D TopRight { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Vector2D BottomLeft { get; private set; }
 	
 		public QuadTreeElement(T data, Vector2D topRight, Vector2D bottomLeft)
@@ -37,7 +37,7 @@ namespace Stareater.Utils.Collections
 		{
 			if (ReferenceEquals(lhs, rhs))
 				return true;
-			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+			if (lhs is null || rhs is null)
 				return false;
 			return lhs.Equals(rhs);
 		}

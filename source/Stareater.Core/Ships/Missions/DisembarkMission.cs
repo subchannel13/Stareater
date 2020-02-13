@@ -3,7 +3,7 @@ using System;
 
 namespace Stareater.Ships.Missions
 {
-	[StateType(saveTag: MissionTag)]
+	[StateTypeAttribute(saveTag: MissionTag)]
 	class DisembarkMission : AMission
 	{
 		public override bool FullTurnAction

@@ -7,7 +7,7 @@ namespace Stareater.GameData
 {
 	class Intelligence 
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		private Dictionary<StarData, StarIntelligence> starKnowledge { get; set; }
 
 		public Intelligence() 

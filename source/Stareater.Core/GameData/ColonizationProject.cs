@@ -6,10 +6,10 @@ namespace Stareater.GameData
 {
 	class ColonizationProject 
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Player Owner { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Planet Destination { get; private set; }
 
 		public ColonizationProject(Player owner, Planet destination) 

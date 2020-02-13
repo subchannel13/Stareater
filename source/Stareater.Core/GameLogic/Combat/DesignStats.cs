@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Stareater.GameLogic.Combat
 {
-	[StateType(true)]
+	[StateTypeAttribute(true)]
 	class DesignStats 
 	{
 		public double Size { get; private set; }

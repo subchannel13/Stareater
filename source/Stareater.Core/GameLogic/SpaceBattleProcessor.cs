@@ -119,7 +119,7 @@ namespace Stareater.GameLogic
 				this.rollCloaking(unit, this.mainGame.Derivates[unit.Owner].DesignStats[unit.Ships.Design], players);
 		}
 		
-		private Vector2D correctPosition(Vector2D position)
+		private static Vector2D correctPosition(Vector2D position)
 		{
 			var snapped = snapPosition(position);
 			
@@ -139,7 +139,7 @@ namespace Stareater.GameLogic
 			return corrected;
 		}
 		
-		private Vector2D snapPosition(Vector2D position)
+		private static Vector2D snapPosition(Vector2D position)
 		{
 			var x = Math.Round(position.X, MidpointRounding.AwayFromZero);
 			var yOffset = Math.Abs((int)x) % 2 == 0 ? 0 : -0.5;
@@ -238,7 +238,7 @@ namespace Stareater.GameLogic
 		#region Unit actions
 		public void MoveTo(Vector2D destination)
 		{
-			if (!this.ValidMoves(this.game.PlayOrder.Peek()).Contains(destination))
+			if (!ValidMoves(this.game.PlayOrder.Peek()).Contains(destination))
 				return;
 			
 			var unit = this.game.PlayOrder.Peek();
@@ -303,7 +303,7 @@ namespace Stareater.GameLogic
 				return;
 			}
 
-			var spent = this.attackPlanet(abilityStats, quantity, planet);
+			var spent = attackPlanet(abilityStats, quantity, planet);
 
 			unit.AbilityCharges[index] -= spent;
 			if (!double.IsInfinity(unit.AbilityAmmo[index]))
@@ -333,7 +333,7 @@ namespace Stareater.GameLogic
 		}
 		#endregion
 
-		public IEnumerable<Vector2D> ValidMoves(Combatant unit)
+		public static IEnumerable<Vector2D> ValidMoves(Combatant unit)
 		{
 			return unit.MovementPoints <= 0 ? 
 				new Vector2D[0] : 

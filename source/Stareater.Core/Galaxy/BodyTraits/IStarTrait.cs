@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Stareater.Galaxy.BodyTraits
 {
-	[StateBaseType("LoadTrait", typeof(StarTraitType))]
+	[StateBaseTypeAttribute("LoadTrait", typeof(StarTraitType))]
 	interface IStarTrait
 	{
 		StarTraitType Type { get; }

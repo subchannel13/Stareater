@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace Stareater.GameData.Construction
 {
-	[StateType(saveTag: Tag)]
+	[StateTypeAttribute(saveTag: Tag)]
 	class StaticProject : IConstructionProject
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public ConstructableType Type { get; private set; }
 
 		public StaticProject(ConstructableType type)

@@ -2,8 +2,8 @@
 {
 	public class WormholeEndpoints 
 	{
-		public int FromIndex;
-		public int ToIndex;
+		public int FromIndex { get; private set; }
+		public int ToIndex { get; private set; }
 
 		public WormholeEndpoints(int fromIndex, int toIndex) 
 		{

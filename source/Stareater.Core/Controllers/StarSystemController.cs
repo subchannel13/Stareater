@@ -45,6 +45,9 @@ namespace Stareater.Controllers
 		
 		public ColonyInfo PlanetsColony(PlanetInfo planet)
 		{
+			if (planet == null)
+				throw new ArgumentNullException(nameof(planet));
+
 			if (this.player.Intelligence.About(this.star).Planets[planet.Data].LastVisited != PlanetIntelligence.NeverVisited)
 				//TODO(later) show last known colony information
 				if (game.States.Colonies.AtPlanet.Contains(planet.Data))
@@ -102,7 +105,7 @@ namespace Stareater.Controllers
 			var planet = game.States.Planets.At[this.star].FirstOrDefault(x => x.Position == bodyPosition);
 			
 			if (planet == null)
-				throw new ArgumentOutOfRangeException("bodyPosition");
+				throw new ArgumentOutOfRangeException(nameof(bodyPosition));
 
 			return new ColonyController(game, game.States.Colonies.AtPlanet[planet], IsReadOnly, this.player);
 		}
@@ -112,7 +115,7 @@ namespace Stareater.Controllers
 			var planet = game.States.Planets.At[this.star].FirstOrDefault(x => x.Position == bodyPosition);
 			
 			if (planet == null)
-				throw new ArgumentOutOfRangeException("bodyPosition");
+				throw new ArgumentOutOfRangeException(nameof(bodyPosition));
 			
 			return new ColonizationController(this.game, planet, IsReadOnly, this.playerController);
 		}

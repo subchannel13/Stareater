@@ -9,7 +9,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Ships
 {
-	[StateType(true)]
+	[StateTypeAttribute(true)]
 	class IsDriveType : AComponentType
 	{
 		public Formula Cost { get; private set; }

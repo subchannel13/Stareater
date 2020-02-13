@@ -12,6 +12,9 @@ namespace Stareater.Utils.PluginParameters
 
 		public override void Accept(IParameterVisitor visitor)
 		{
+			if (visitor == null)
+				throw new ArgumentNullException(nameof(visitor));
+
 			visitor.Visit(this);
 		}
 

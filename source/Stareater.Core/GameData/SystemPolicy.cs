@@ -5,16 +5,16 @@ namespace Stareater.GameData
 {
 	class SystemPolicy
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public string Id { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public string LangCode { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double SpendingRatio { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public string[] Queue { get; private set; }
 
 		public SystemPolicy(string id, string langCode, double spendingRatio, string[] queue)

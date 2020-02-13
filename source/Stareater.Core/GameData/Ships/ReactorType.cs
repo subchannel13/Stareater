@@ -9,7 +9,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Ships
 {
-	[StateType(true)]
+	[StateTypeAttribute(true)]
 	class ReactorType : AComponentType
 	{
 		public const string TotalPowerKey = "totalPower";

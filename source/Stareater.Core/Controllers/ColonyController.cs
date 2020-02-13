@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Stareater.Controllers.Views;
 using Stareater.Galaxy;
@@ -194,6 +195,9 @@ namespace Stareater.Controllers
 
 			set
 			{
+				if (value == null)
+					throw new ArgumentNullException(nameof(value));
+
 				if (this.IsReadOnly)
 					return;
 

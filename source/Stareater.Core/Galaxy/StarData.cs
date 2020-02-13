@@ -12,19 +12,19 @@ namespace Stareater.Galaxy
 {
 	class StarData 
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Color Color { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public float ImageSizeScale { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public IStarName Name { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Vector2D Position { get; private set; } //TODO(v0.8) restrict to stars only
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public PendableSet<IStarTrait> Traits { get; private set; }
 
 		public StarData(Color color, float imageSizeScale, IStarName name, Vector2D position, List<StarTraitType> traits)
@@ -73,6 +73,7 @@ namespace Stareater.Galaxy
 				(IStarName)session.Load<ProperStarName>(rawData);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1305:Specify IFormatProvider", Justification = "For debug only")]
 		public override string ToString()
 		{
 			return this.Position.X.ToString("0.0") + "; " + this.Position.Y.ToString("0.0");

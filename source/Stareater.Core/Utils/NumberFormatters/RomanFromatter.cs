@@ -6,7 +6,7 @@ namespace Stareater.Utils.NumberFormatters
 	{
 		public static string Fromat(int number)
 		{
-			if ((number < 0) || (number > 3999)) return number.ToString();
+			if ((number < 0) || (number > 3999)) return number.ToStringInvariant();
 
 	        if (number >= 1000) return new string('M', number / 1000) + Fromat(number % 1000);
 	

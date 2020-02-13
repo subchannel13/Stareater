@@ -11,18 +11,18 @@ namespace Stareater
 	{
 		public const string SaveGameTag = "Game";
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Player[] MainPlayers { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Player StareaterOrganelles { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public int Turn { get; set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public StatesDB States { get; private set; }
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<Player, PlayerOrders> Orders { get; private set; }
-		[StateProperty(doSave: false)]
+		[StatePropertyAttribute(doSave: false)]
 		public TemporaryDB Derivates { get; private set; }
 		
 		public StaticsDB Statics { get; private set; }

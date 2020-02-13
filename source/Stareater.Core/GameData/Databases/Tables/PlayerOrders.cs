@@ -11,52 +11,52 @@ namespace Stareater.GameData.Databases.Tables
 		//TODO(v0.8): move or remove
 		public const double DefaultSiteSpendingRatio = 1;
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public int DevelopmentFocusIndex { get; set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<string, int> DevelopmentQueue { get; set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public string ResearchFocus { get; set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<string, string[]> ResearchPriorities { get; set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<AConstructionSite, ConstructionOrders> ConstructionPlans { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<AConstructionSite, ConstructionOrders> AutomatedConstruction { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<StellarisAdmin, SystemPolicy> Policies { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<Vector2D, HashSet<Fleet>> ShipOrders { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public HashSet<Planet> ColonizationTargets { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public HashSet<StellarisAdmin> ColonizationSources { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public long TargetTransportCapacity { get; set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Design ColonizerDesign { get; set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Dictionary<Design, Design> RefitOrders { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public HashSet<Design> DiscardOrders { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public HashSet<int> AudienceRequests { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public StarData EjectingStar { get; set; }
 
 		public PlayerOrders()

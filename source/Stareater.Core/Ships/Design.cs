@@ -11,55 +11,55 @@ namespace Stareater.Ships
 {
 	class Design 
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public string IdCode { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Player Owner { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public bool IsObsolete { get; set; } //TODO(v0.8) move to stats
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public string Name { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public int ImageIndex { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public bool UsesFuel { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Component<ArmorType> Armor { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Component<HullType> Hull { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Component<IsDriveType> IsDrive { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Component<ReactorType> Reactor { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Component<SensorType> Sensors { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Component<ShieldType> Shield { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public List<Component<MissionEquipmentType>> MissionEquipment { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public List<Component<SpecialEquipmentType>> SpecialEquipment { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Component<ThrusterType> Thrusters { get; private set; }
 
-		[StateProperty(doSave: false)]
+		[StatePropertyAttribute(doSave: false)]
 		private BitHash hash { get; set; } //TODO(v0.9) try to move design stats
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public double Cost { get; private set; } //TODO(v0.9) try to move design stats
 
 		public Design(string idCode, Player owner, bool isObsolete, string name, int imageIndex, bool usesFuel, 

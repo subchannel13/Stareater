@@ -6,10 +6,10 @@ using System.Linq;
 
 namespace Stareater.Galaxy.BodyTraits
 {
-	[StateType(saveTag: SaveTag)]
+	[StateTypeAttribute(saveTag: SaveTag)]
 	class EffectAfflictPlanets : IStarTrait
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public StarTraitType Type { get; private set; }
 
 		private Affliction[] afflictions = null;

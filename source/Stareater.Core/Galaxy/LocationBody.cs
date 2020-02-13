@@ -5,10 +5,10 @@ namespace Stareater.Galaxy
 	//TODO(v0.8) try to remove the need for this class
 	class LocationBody
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public StarData Star { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Planet Planet { get; private set; }
 
 		public LocationBody(StarData star, Planet planet)

@@ -6,7 +6,7 @@ namespace Stareater.GameData
 {
 	class Treaty 
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Pair<Player> Parties { get; private set; }
 
 		public Treaty(Pair<Player> parties) 

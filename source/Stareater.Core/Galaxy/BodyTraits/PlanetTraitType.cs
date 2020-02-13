@@ -3,7 +3,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.Galaxy.BodyTraits
 {
-	[StateType(true)]
+	[StateTypeAttribute(true)]
 	public class PlanetTraitType : IIdentifiable
 	{
 		public string LanguageCode { get; private set; }

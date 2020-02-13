@@ -7,6 +7,7 @@ using Stareater.GameData;
 using Stareater.Players;
 using Stareater.Utils;
 using Stareater.GameData.Construction;
+using System;
 
 namespace Stareater.Controllers
 {
@@ -124,6 +125,9 @@ namespace Stareater.Controllers
 		
 		public bool CanPick(ConstructableInfo data)
 		{
+			if (data == null)
+				throw new ArgumentNullException(nameof(data));
+
 			var vars = this.Processor.LocalEffects(this.Game.Statics).
 				UnionWith(this.Game.Derivates[this.Player].TechLevels).Get;
 

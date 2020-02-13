@@ -14,7 +14,7 @@ using Stareater.Utils;
 
 namespace Stareater.Controllers
 {
-	public class SpaceBattleController
+	public sealed class SpaceBattleController : IDisposable
 	{
 		private readonly SpaceBattleGame battleGame;
 		private readonly MainGame mainGame;
@@ -24,7 +24,8 @@ namespace Stareater.Controllers
 
 		private readonly BlockingCollection<Action> messageQueue = new BlockingCollection<Action>(1);
 		private readonly SpaceBattleProcessor processor = null;
-		
+		private bool disposed = false;
+
 		internal SpaceBattleController(Conflict conflict, GameController gameController, MainGame mainGame)
 		{
 			this.playerListeners = new Dictionary<Player, IBattleEventListener>();
@@ -67,7 +68,7 @@ namespace Stareater.Controllers
 		{
 			get 
 			{ 
-				return this.battleGame.Combatants.Select(x => new CombatantInfo(x, mainGame, this.processor.ValidMoves(x)));
+				return this.battleGame.Combatants.Select(x => new CombatantInfo(x, mainGame, SpaceBattleProcessor.ValidMoves(x)));
 			}
 		}
 		#endregion
@@ -147,12 +148,29 @@ namespace Stareater.Controllers
 			Task.Factory.StartNew(() =>
 				playerListeners[currentUnit.Owner].PlayUnit(new CombatantInfo(
 					currentUnit, 
-					mainGame, 
-					this.processor.ValidMoves(currentUnit)
-				))
+					mainGame,
+					SpaceBattleProcessor.ValidMoves(currentUnit)
+				)), 
+				Task.Factory.CancellationToken, TaskCreationOptions.None, TaskScheduler.Default
 			);
 			//TODO(later) check for exception
 		}
 		#endregion
+
+		public void Dispose()
+		{
+			this.dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		private void dispose(bool disposing)
+		{
+			if (!this.disposed)
+			{
+				if (disposing)
+					this.messageQueue.Dispose();
+				disposed = true;
+			}
+		}
 	}
 }

@@ -7,8 +7,8 @@ namespace Stareater.Utils.Collections
 {
 	public class PickList<T>
 	{
-		private static Random staticRng = new Random();
-		private Random rng = null;
+		private static readonly Random staticRng = new Random();
+		private readonly Random rng;
 
 		public PickList()
 		{
@@ -37,9 +37,12 @@ namespace Stareater.Utils.Collections
 			return this.getRandom((x) => false);
 		}
 		
-		public T PickOrTake(Predicate<T> shouldRemove)
+		public T PickOrTake(Predicate<T> removeCondition)
 		{
-			return this.getRandom(shouldRemove);
+			if (removeCondition == null)
+				throw new ArgumentNullException(nameof(removeCondition));
+
+			return this.getRandom(removeCondition);
 		}
 		
 		//TODO(v0.8) map populator may use a method that return certain number of elements
@@ -51,7 +54,7 @@ namespace Stareater.Utils.Collections
 		private T getRandom(Predicate<T> removeAfter)
 		{
 			if (this.InnerList.Count < 1)
-				return default(T);
+				return default;
 
 			int which = (this.rng ?? staticRng).Next(this.InnerList.Count);
 			T ret = this.InnerList[which];

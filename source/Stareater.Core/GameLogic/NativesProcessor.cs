@@ -13,7 +13,7 @@ namespace Stareater.GameLogic
 		private const string CatalyzerId = "catalyzer";
 		private const long MaxCatalyzers = 5;
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public Player OrganellePlayer { get; private set; }
 		
 		public NativesProcessor(Player organellePlayer)
@@ -34,9 +34,13 @@ namespace Stareater.GameLogic
 				makeDesign(statics, states, designData.Key, designData.Value, derivates[this.OrganellePlayer]);
 		}
 
-		public void ProcessPrecombat(StaticsDB statics, StatesDB states, TemporaryDB derivates)
+		public void ProcessPrecombat(StatesDB states, TemporaryDB derivates)
 		{
-			var catalizers = states.Fleets.OwnedBy[this.OrganellePlayer].SelectMany(x => x.Ships).Where(x => x.Design.IdCode == CatalyzerId).Sum(x => x.Quantity);
+			var catalizers = states.Fleets.OwnedBy[this.OrganellePlayer].
+				SelectMany(x => x.Ships).
+				Where(x => x.Design.IdCode == CatalyzerId).
+				Sum(x => x.Quantity);
+
 			if (catalizers < MaxCatalyzers)
 			{
 				var nativeDesign = states.Designs.OwnedBy[this.OrganellePlayer].First(x => x.IdCode == CatalyzerId);
@@ -44,7 +48,7 @@ namespace Stareater.GameLogic
 			}
 		}
 		
-		private void makeDesign(StaticsDB statics, StatesDB states, string id, PredefinedDesign designData, PlayerProcessor playerProc)
+		private static void makeDesign(StaticsDB statics, StatesDB states, string id, PredefinedDesign designData, PlayerProcessor playerProc)
 		{
 			var design = states.Designs.FirstOrDefault(x => x.IdCode == id);
 			if (design == null)

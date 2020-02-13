@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace Stareater.Galaxy.BodyTraits
 {
-	[StateType(saveTag: SaveTag)]
+	[StateTypeAttribute(saveTag: SaveTag)]
 	class EffectTemporary : IStarTrait
 	{
-		[StateProperty]
+		[StatePropertyAttribute]
 		public StarTraitType Type { get; private set; }
 
-		[StateProperty]
+		[StatePropertyAttribute]
 		public int Duration { get; set; }
 
 		public EffectTemporary(StarTraitType traitType, int duration)

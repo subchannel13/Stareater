@@ -1,7 +1,9 @@
 ﻿using Stareater.GameData;
 using Stareater.Localization;
 using Stareater.Players.Reports;
+using Stareater.Utils;
 using Stareater.Utils.Collections;
+using System;
 
 namespace Stareater.Controllers.Views
 {
@@ -23,7 +25,7 @@ namespace Stareater.Controllers.Views
 				var topicVars = new Var(DevelopmentTopic.LevelKey, report.TechProgress.Item.NextLevel).Get;
 				
 				var vars = new TextVar(topicVar, LocalizationManifest.Get.CurrentLanguage[DevelopmentTopicInfo.LangContext].Name(report.TechProgress.Item.Topic.LanguageCode).Text(topicVars)).
-					And(levelVar, report.TechProgress.Item.Level.ToString()).Get;
+					And(levelVar, report.TechProgress.Item.Level.ToStringInvariant()).Get;
 				
 				return LocalizationManifest.Get.CurrentLanguage[GameController.ReportContext][TechnologyReportKey].Text(null, vars);
 			}
@@ -36,6 +38,9 @@ namespace Stareater.Controllers.Views
 		
 		public void Accept(IReportInfoVisitor visitor)
 		{
+			if (visitor == null)
+				throw new ArgumentNullException(nameof(visitor));
+
 			visitor.Visit(this);
 		}
 	}

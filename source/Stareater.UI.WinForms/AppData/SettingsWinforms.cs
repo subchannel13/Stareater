@@ -20,7 +20,7 @@ namespace Stareater.AppData
 				if (winformsInstance == null)
 				{
 					winformsInstance = new SettingsWinforms();
-					Settings.instance = winformsInstance;
+					Settings.Get = winformsInstance;
 					Settings.initialize();
 				}
 				

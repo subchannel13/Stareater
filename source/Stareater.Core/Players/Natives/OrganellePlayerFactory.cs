@@ -1,6 +1,7 @@
 ﻿using Ikadn.Ikon.Types;
 using Stareater.Localization;
 using Stareater.Utils.StateEngine;
+using System;
 
 namespace Stareater.Players.Natives
 {
@@ -14,6 +15,9 @@ namespace Stareater.Players.Natives
 		
 		public IOffscreenPlayer Load(IkonComposite rawData, LoadSession session)
 		{
+			if (session == null)
+				throw new ArgumentNullException(nameof(session));
+
 			return session.Load<OrganellePlayer>(rawData);
 		}
 		

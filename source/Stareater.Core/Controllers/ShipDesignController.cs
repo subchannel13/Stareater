@@ -304,6 +304,9 @@ namespace Stareater.Controllers
 
 		public void AddMissionEquip(MissionEquipInfo equipInfo)
 		{
+			if (equipInfo == null)
+				throw new ArgumentNullException(nameof(equipInfo));
+
 			this.selectedMissionEquipment.Add(new Component<MissionEquipmentType>(equipInfo.Type, equipInfo.Level, 1));
 		}
 
@@ -354,6 +357,9 @@ namespace Stareater.Controllers
 				
 		public void SpecialEquipSetAmount(SpecialEquipInfo equipInfo, int amount)
 		{
+			if (equipInfo == null)
+				throw new ArgumentNullException(nameof(equipInfo));
+
 			int i = this.selectedSpecialEquipment.FindIndex(x => x.TypeInfo == equipInfo.Type);
 
 			if (i < 0)

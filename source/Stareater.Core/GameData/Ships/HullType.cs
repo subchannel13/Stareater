@@ -5,7 +5,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Ships
 {
-	[StateType(true)]
+	[StateTypeAttribute(true)]
 	class HullType : AComponentType
 	{
 		public const string IsDriveSizeKey = "hullIsSize"; //base hull's IS drive size

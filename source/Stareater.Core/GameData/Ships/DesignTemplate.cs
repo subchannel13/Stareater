@@ -4,7 +4,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Ships
 {
-	[StateType(true)]
+	[StateTypeAttribute(true)]
 	class DesignTemplate : IIdentifiable
 	{
 		public string Name { get; private set; }

@@ -136,12 +136,12 @@ namespace Stareater.Utils.StateEngine
 
         public static bool IsStateData(ICustomAttributeProvider info)
         {
-            return info.GetCustomAttributes(true).Any(a => a is StateProperty);
+            return info.GetCustomAttributes(true).Any(a => a is StatePropertyAttribute);
         }
 
         public static ITypeStrategy MakeExpert(Type type)
         {
-			var typeAttributes = getAttribute<StateType>(type) ?? new StateType();
+			var typeAttributes = getAttribute<StateTypeAttribute>(type) ?? new StateTypeAttribute();
 
 			if (type.IsArray)
                 return new ArrayStrategy(type);
@@ -167,7 +167,7 @@ namespace Stareater.Utils.StateEngine
 			if (typeAttributes.NotStateData)
 				return new TerminalStrategy(null, null);
 
-			var baseAttributes = getAttribute<StateBaseType>(type);
+			var baseAttributes = getAttribute<StateBaseTypeAttribute>(type);
 
 			if ((type.IsInterface || type.IsAbstract) && baseAttributes != null)
 				return new TerminalStrategy(

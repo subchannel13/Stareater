@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 using Ikadn.Ikon.Types;
@@ -24,6 +25,13 @@ namespace Stareater.Utils
 		/// <returns>Nodes in the path</returns>
 		public static IEnumerable<Move<T>> AStar<T>(T fromNode, T toNode, Func<T, double> heuristicFunc, Func<T, T, double> costFunc, Func<T, IEnumerable<T>> neighboursFunc)
 		{
+			if (heuristicFunc == null)
+				throw new ArgumentNullException(nameof(heuristicFunc));
+			if (costFunc == null)
+				throw new ArgumentNullException(nameof(costFunc));
+			if (neighboursFunc == null)
+				throw new ArgumentNullException(nameof(neighboursFunc));
+
 			if (fromNode.Equals(toNode))
 				return new Move<T>[0];
 
@@ -98,6 +106,11 @@ namespace Stareater.Utils
 		/// <returns>Element with highest fitenss or null if collection is empty</returns>
 		public static T FindBestOrDefault<T>(IEnumerable<T> source, Func<T, IComparable> fitnessFunc) where T : class
 		{
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+			if (fitnessFunc == null)
+				throw new ArgumentNullException(nameof(fitnessFunc));
+
 			T best = null;
 			IComparable bestValue = null;
 				
@@ -122,8 +135,13 @@ namespace Stareater.Utils
 		/// <returns>Element with highest fitenss</returns>
 		public static T FindBest<T>(IEnumerable<T> source, Func<T, IComparable> fitnessFunc)
 		{
-			T best = source.First();
-			IComparable bestValue = fitnessFunc(best);
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+			if (fitnessFunc == null)
+				throw new ArgumentNullException(nameof(fitnessFunc));
+
+			var best = source.First();
+			var bestValue = fitnessFunc(best);
 
 			foreach (var item in source.Skip(1))
 			{
@@ -146,8 +164,13 @@ namespace Stareater.Utils
 		/// <returns>Element with lowest fitenss</returns>
 		public static T FindWorst<T>(IEnumerable<T> source, Func<T, IComparable> fitnessFunc)
 		{
-			T worst = source.First();
-			IComparable worstValue = fitnessFunc(worst);
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+			if (fitnessFunc == null)
+				throw new ArgumentNullException(nameof(fitnessFunc));
+
+			var worst = source.First();
+			var worstValue = fitnessFunc(worst);
 
 			foreach (var item in source.Skip(1))
 			{
@@ -293,8 +316,13 @@ namespace Stareater.Utils
 		/// <returns>Sequence of indices</returns>
 		public static IEnumerable<int> SelectIndices<T>(IEnumerable<T> source, Predicate<T> condition)
 		{
+			if (source == null)
+				throw new ArgumentNullException(nameof(source));
+			if (condition == null)
+				throw new ArgumentNullException(nameof(condition));
+
 			int i = 0;
-			foreach (T item in source) {
+			foreach (var item in source) {
 				if (condition(item))
 					yield return i;
 				i++;
@@ -310,6 +338,9 @@ namespace Stareater.Utils
 		/// <returns>The requested value or default value.</returns>
 		public static T ToOrDefault<T>(this IkonComposite composite, string key, T defaultValue)
 		{
+			if (composite == null)
+				throw new ArgumentNullException(nameof(composite));
+
 			return composite.Keys.Contains(key) ? 
 				composite[key].To<T>() :
 				defaultValue;
@@ -325,13 +356,42 @@ namespace Stareater.Utils
 		/// <returns>The requested value or default value.</returns>
 		public static T ToOrDefault<T>(this IkonComposite composite, string key, Func<Ikadn.IkadnBaseObject, T> valueTransform, T defaultValue)
 		{
+			if (composite == null)
+				throw new ArgumentNullException(nameof(composite));
+			if (valueTransform == null)
+				throw new ArgumentNullException(nameof(valueTransform));
+
 			return composite.Keys.Contains(key) ? 
 				valueTransform(composite[key]) :
 				defaultValue;
 		}
 
+		/// <summary>
+		/// Converts a number to culturally invariant string.
+		/// </summary>
+		/// <param name="value">A number to convert</param>
+		/// <param name="format">String representation format</param>
+		/// <returns>Conversion result</returns>
+		public static string ToStringInvariant(this double value, string format)
+		{
+			return value.ToString(format, CultureInfo.InvariantCulture);
+		}
+
+		/// <summary>
+		/// Converts a number to culturally invariant string.
+		/// </summary>
+		/// <param name="value">A number to convert</param>
+		/// <returns>Conversion result</returns>
+		public static string ToStringInvariant(this int value)
+		{
+			return value.ToString(CultureInfo.InvariantCulture);
+		}
+
 		public static double WeightedPointDealing<T>(double points, IEnumerable<PointReceiver<T>> pointReceiver)
 		{
+			if (pointReceiver == null)
+				throw new ArgumentNullException(nameof(pointReceiver));
+
 			if (!pointReceiver.Any())
 				return points;
 

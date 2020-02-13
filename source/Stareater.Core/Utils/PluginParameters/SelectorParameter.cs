@@ -10,7 +10,7 @@ namespace Stareater.Utils.PluginParameters
 	public class SelectorParameter : AParameterBase, IEnumerable<KeyValuePair<int, string>>
 	{
 		private int selectedIndex;
-		private IList<KeyValuePair<int, string>> values;
+		private readonly IList<KeyValuePair<int, string>> values;
 
 		public SelectorParameter(string contextKey, string nameKey, IEnumerable<KeyValuePair<int, string>> values, int current) :
 			base(contextKey, nameKey)
@@ -52,13 +52,16 @@ namespace Stareater.Utils.PluginParameters
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			throw new NotSupportedException("Use generic method instead");
+			return this.GetEnumerator();
 		}
 		
 		#region implemented abstract members of ParameterBase
 
 		public override void Accept(IParameterVisitor visitor)
 		{
+			if (visitor == null)
+				throw new ArgumentNullException(nameof(visitor));
+
 			visitor.Visit(this);
 		}
 

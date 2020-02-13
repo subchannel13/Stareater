@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using Stareater.Controllers.Views;
+using System;
 
 namespace Stareater.Controllers
 {
@@ -42,6 +43,9 @@ namespace Stareater.Controllers
 			}
 			set
 			{
+				if (value == null)
+					throw new ArgumentNullException(nameof(value));
+
 				if (this.game.IsReadOnly || !this.EjectableStars.Contains(value))
 					return;
 

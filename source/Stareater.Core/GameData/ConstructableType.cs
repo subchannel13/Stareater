@@ -5,7 +5,7 @@ using Stareater.GameData.Construction;
 
 namespace Stareater.GameData
 {
-	[StateType(true)]
+	[StateTypeAttribute(true)]
 	class ConstructableType : IIdentifiable
 	{
 		public string LanguageCode { get; private set; }
