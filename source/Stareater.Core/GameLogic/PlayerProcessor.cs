@@ -310,15 +310,11 @@ namespace Stareater.GameLogic
 				return double.PositiveInfinity;
 		}
 
-		public IEnumerable<Move<StarData>> ShortestPathTo(StarData fromStar, StarData toStar, double baseSpeed, MainGame game)
+		public IEnumerable<Move<StarData>> ShortestPathTo(StarData fromStar, StarData toStar, Dictionary<Design, long> shipGroups, MainGame game)
 		{
-			var vars = new Var("baseSpeed", baseSpeed).
-				And("size", 1). //TODO(v0.9) use actual ship size
-				And("towSize", 0). //TODO(v0.9) use actual ship tow
-				And("lane", false);
-
-			var voidSpeed = game.Statics.ShipFormulas.GalaxySpeed.Evaluate(vars.Get);
-			var laneSpeed = game.Statics.ShipFormulas.GalaxySpeed.Evaluate(vars.Set("lane", true).Get);
+			var speedFormula = game.Statics.ShipFormulas.GalaxySpeed;
+			var voidSpeed = speedFormula.Evaluate(FleetProcessor.SpeedVars(game.Statics, this, shipGroups, false).Get);
+			var laneSpeed = speedFormula.Evaluate(FleetProcessor.SpeedVars(game.Statics, this, shipGroups, true).Get);
 
 			//TODO(later) cache result
 			return Methods.AStar(

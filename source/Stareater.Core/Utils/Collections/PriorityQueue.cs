@@ -35,6 +35,8 @@ namespace Stareater.Utils.Collections
 			return result;
 		}
 
+		public double PeekPriority() => this.items[0].Priority;
+
 		public void EnqueueOrUpdate(TKey item, double priority)
 		{
 			//TODO(later) track item indices in a dictionary

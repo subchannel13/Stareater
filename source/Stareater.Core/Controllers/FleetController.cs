@@ -6,6 +6,7 @@ using Stareater.Controllers.Data;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
+using Stareater.GameLogic;
 using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
@@ -37,7 +38,7 @@ namespace Stareater.Controllers
 				x => new ShipSelection(x.Quantity, x, x.PopulationTransport)
 			);
 			this.calcCarriers();
-			
+
 			if (this.Fleet.IsMoving) {
 				this.simulationWaypoints = new List<WaypointInfo>(this.Fleet.Missions.Waypoints);
 				this.calcSimulation();
@@ -68,7 +69,15 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
-				return this.carriedSelection.All(x => x.Key.IsDrive != null || x.Value <= 0);
+				var designStats = this.game.Derivates.Players.Of[this.Fleet.Owner.Data].DesignStats;
+				var totalTows = this.carriedSelection.
+					Where(x => x.Key.IsDrive != null && designStats[x.Key].TowCapacity > 0).
+					Sum(x => x.Value * designStats[x.Key].TowCapacity);
+				var towedSize = this.carriedSelection.
+					Where(x => x.Key.IsDrive == null).
+					Sum(x => x.Value * designStats[x.Key].Size);
+
+				return this.carriedSelection.Any(x => x.Key.IsDrive != null || x.Value <= 0) && towedSize <= totalTows;
 			}
 		}
 
@@ -104,7 +113,7 @@ namespace Stareater.Controllers
 			if (!this.CanMove)
 				this.simulationWaypoints.Clear();
 		}
-		
+
 		public void SelectGroup(ShipGroupInfo group, long quantity)
 		{
 			if (group == null)
@@ -172,7 +181,7 @@ namespace Stareater.Controllers
 			if (this.CanMove && destination.Position != this.Fleet.FleetData.Position)
 				return this.giveOrder(
 					this.game.Derivates[this.player].
-					ShortestPathTo(this.game.States.Stars.At[this.Fleet.Position], destination.Data, this.baseTravelSpeed(), this.game).
+					ShortestPathTo(this.game.States.Stars.At[this.Fleet.Position], destination.Data, this.carriedSelection, this.game).
 					Select(x => new MoveMission(x.ToNode, this.game.States.Wormholes.At.GetOrDefault(x.FromNode, x.ToNode))).
 					ToList()
 				);
@@ -230,7 +239,7 @@ namespace Stareater.Controllers
 			var playerProc = this.game.Derivates[this.player];
 			//TODO(later) prevent changing destination midfilght
 			this.simulationWaypoints.AddRange(
-				playerProc.ShortestPathTo(this.game.States.Stars.At[this.Fleet.Position], destination.Data, this.baseTravelSpeed(), this.game).
+				playerProc.ShortestPathTo(this.game.States.Stars.At[this.Fleet.Position], destination.Data, this.carriedSelection, this.game).
 				Select(x => new WaypointInfo(
 					x.ToNode,
 					playerProc.VisibleWormholeAt(x.FromNode, x.ToNode, this.game)
@@ -288,11 +297,12 @@ namespace Stareater.Controllers
 			}
 		}
 
-		private double baseTravelSpeed()
+		private void calcCarriers()
 		{
-			var designStats = this.game.Derivates.Players.Of[this.Fleet.Owner.Data].DesignStats;
-
-			return this.carriedSelection.Where(x => x.Value > 0).Min(x => designStats[x.Key].GalaxySpeed);
+			this.carriedSelection = FleetProcessor.FillCarriers(
+				this.game.Derivates[this.Fleet.Owner.Data],
+				this.selection.ToDictionary(x => x.Key, x => x.Value.Quantity)
+			);
 		}
 
 		private void calcSimulation()
@@ -305,15 +315,11 @@ namespace Stareater.Controllers
 
             var playerProc = this.game.Derivates.Players.Of[this.Fleet.Owner.Data];
 			var fleet = this.selectedFleet(simulationWaypoints.Select(x => new MoveMission(x.DestionationStar, x.UsedWormhole)));
-			var baseSpeed = this.baseTravelSpeed();
 			
 			var lastPosition = this.Fleet.FleetData.Position;
-			var vars = new Var("baseSpeed", baseSpeed).
-				And("size", 1). //TODO(v0.9) use actual ship size
-				And("towSize", 0). //TODO(v0.9) use actual ship tow
-				And("lane", false);
-			var voidSpeed = game.Statics.ShipFormulas.GalaxySpeed.Evaluate(vars.Get);
-			var laneSpeed = game.Statics.ShipFormulas.GalaxySpeed.Evaluate(vars.Set("lane", true).Get);
+			var speedFormula = game.Statics.ShipFormulas.GalaxySpeed;
+			var voidSpeed = speedFormula.Evaluate(FleetProcessor.SpeedVars(this.game.Statics, playerProc, this.carriedSelection, false).Get);
+			var laneSpeed = speedFormula.Evaluate(FleetProcessor.SpeedVars(this.game.Statics, playerProc, this.carriedSelection, true).Get);
 
 			foreach (var waypoint in simulationWaypoints)
 			{
@@ -324,40 +330,6 @@ namespace Stareater.Controllers
 				this.SimulationFuel = Math.Max(playerProc.FuelUsage(fleet, waypoint.Destionation, game), this.SimulationFuel);
 				lastPosition = waypoint.Destionation;
 			}
-		}
-
-		private void calcCarriers()
-		{
-			var designStats = this.game.Derivates[this.Fleet.Owner.Data].DesignStats;
-			var uncarried = new PriorityQueue<KeyValuePair<Design, long>>();
-			var carryOrder = this.selection.Select(x => x.Key).
-				OrderBy(x => designStats[x].GalaxySpeed).
-				ThenByDescending(x => designStats[x].Size);
-
-			foreach (var design in carryOrder)
-			{
-				var carryCapacity = designStats[design].CarryCapacity * this.selection[design].Quantity;
-				var tooBig = new List<KeyValuePair<Design, long>>();
-
-				while (carryCapacity > 0 && uncarried.Count > 0)
-				{
-					var group = uncarried.Dequeue();
-					var maxTransportable = (long)Math.Floor(carryCapacity / designStats[group.Key].Size);
-					var transported = Math.Min(maxTransportable, group.Value);
-					var untransported = group.Value - transported;
-					
-					carryCapacity -= transported * designStats[group.Key].Size;
-
-					if (untransported > 0)
-						tooBig.Add(new KeyValuePair<Design, long>(group.Key, untransported));
-				}
-
-				uncarried.Enqueue(new KeyValuePair<Design, long>(design, this.selection[design].Quantity), -designStats[design].Size);
-				foreach (var untransported in tooBig)
-					uncarried.Enqueue(untransported, -designStats[untransported.Key].Size);
-			}
-
-			this.carriedSelection = uncarried.ToDictionary(x => x.Key, x => x.Value);
 		}
 
 		private FleetController giveOrder(IEnumerable<AMission> newMissions)

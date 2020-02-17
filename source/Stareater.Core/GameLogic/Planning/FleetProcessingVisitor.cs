@@ -19,13 +19,32 @@ namespace Stareater.GameLogic.Planning
 		private Vector2D newPosition;
 		private Vector2D movementDirection = new Vector2D();
 		private readonly List<FleetMovement> movementSteps = new List<FleetMovement>();
-		
+		private readonly double voidSpeed;
+		private readonly double laneSpeed;
+
 		public FleetProcessingVisitor(Fleet fleet, MainGame game)
 		{
 			this.fleet = fleet;
 			this.game = game;
 			this.newPosition = fleet.Position;
 			this.missions = new LinkedList<AMission>(fleet.Missions);
+
+			this.voidSpeed = game.Statics.ShipFormulas.GalaxySpeed.Evaluate(
+				FleetProcessor.SpeedVars(
+					this.game.Statics,
+					game.Derivates[fleet.Owner],
+					fleet.Ships.ToDictionary(x => x.Design, x => x.Quantity),
+					false
+				).Get
+			);
+			this.laneSpeed = game.Statics.ShipFormulas.GalaxySpeed.Evaluate(
+				FleetProcessor.SpeedVars(
+					this.game.Statics,
+					game.Derivates[fleet.Owner],
+					fleet.Ships.ToDictionary(x => x.Design, x => x.Quantity),
+					false
+				).Get
+			);
 		}
 
 		public IEnumerable<FleetMovement> Run()
@@ -67,15 +86,8 @@ namespace Stareater.GameLogic.Planning
 
 		void IMissionVisitor.Visit(MoveMission mission)
 		{
-			var playerProc = game.Derivates.Players.Of[fleet.Owner];
+			var speed = mission.UsedWormhole != null ? this.laneSpeed : this.voidSpeed;
 
-			var speed = fleet.Ships.Select(x => x.Design).Min(x => game.Statics.ShipFormulas.GalaxySpeed.Evaluate(
-				new Var("baseSpeed", playerProc.DesignStats[x].GalaxySpeed).
-				And("size", 1). //TODO(v0.9) use actual ship size
-				And("towSize", 0). //TODO(v0.9) use actual ship tow
-				And("lane", mission.UsedWormhole != null).Get
-			));
-			
 			this.movementDirection = mission.Destination.Position - fleet.Position;
 			var distance = this.movementDirection.Length;
 

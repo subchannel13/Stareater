@@ -220,6 +220,7 @@
     <Compile Include="GameLogic\BombardmentProcessor.cs" />
     <Compile Include="GameLogic\Combat\Conflict.cs" />
     <Compile Include="GameLogic\Combat\DesignStats.cs" />
+    <Compile Include="GameLogic\FleetProcessor.cs" />
     <Compile Include="GameLogic\Planning\ConstructionComparer.cs" />
     <Compile Include="GameLogic\Planning\InvalidMissionVisitor.cs" />
     <Compile Include="GameLogic\NativesProcessor.cs" />
