@@ -300,6 +300,7 @@ namespace Stareater.Controllers
 		private void calcCarriers()
 		{
 			this.carriedSelection = FleetProcessor.FillCarriers(
+				this.game.Statics,
 				this.game.Derivates[this.Fleet.Owner.Data],
 				this.selection.ToDictionary(x => x.Key, x => x.Value.Quantity)
 			);

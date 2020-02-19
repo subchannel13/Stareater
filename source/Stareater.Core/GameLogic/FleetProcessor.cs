@@ -10,14 +10,18 @@ namespace Stareater.GameLogic
 {
 	class FleetProcessor
 	{
-		public const string LaneKey = "lane";
-
-		public static Dictionary<Design, long> FillCarriers(PlayerProcessor playerProc, Dictionary<Design, long> shipGroups)
+		public static Dictionary<Design, long> FillCarriers(StaticsDB statics, PlayerProcessor playerProc, Dictionary<Design, long> shipGroups)
 		{
 			var designStats = playerProc.DesignStats;
 			var uncarried = new PriorityQueue<KeyValuePair<Design, long>>();
+			var carriedTows = new Stack<KeyValuePair<Design, long>>();
 			var carryOrder = shipGroups.Keys.
-				OrderBy(x => designStats[x].GalaxySpeed).
+				OrderBy(x => statics.ShipFormulas.GalaxySpeed.Evaluate(
+					new Var(SpeedKey, designStats[x].GalaxySpeed).
+					And(SizeKey, designStats[x].Size).
+					And(TowKey, designStats[x].TowCapacity).
+					And(LaneKey, false).Get
+				)).
 				ThenByDescending(x => designStats[x].Size);
 
 			foreach (var design in carryOrder)
@@ -46,6 +50,8 @@ namespace Stareater.GameLogic
 
 						if (untransported > 0)
 							tooBig.Add(new KeyValuePair<Design, long>(group.Key, untransported));
+						if (designStats[group.Key].TowCapacity > 0 && transported > 0)
+							carriedTows.Push(new KeyValuePair<Design, long>(group.Key, transported));
 					}
 
 					tooBig.AddRange(sameSpeed);
@@ -56,7 +62,25 @@ namespace Stareater.GameLogic
 					uncarried.Enqueue(untransported, designStats[untransported.Key].GalaxySpeed);
 			}
 
-			return uncarried.ToDictionary(x => x.Key, x => x.Value);
+			var result = uncarried.ToDictionary(x => x.Key, x => x.Value);
+			var nonIsSize = uncarried.Where(x => x.Key.IsDrive == null).Sum(x => designStats[x.Key].Size * x.Value);
+			nonIsSize -= uncarried.Where(x => x.Key.IsDrive != null).Sum(x => designStats[x.Key].TowCapacity * x.Value);
+
+			while (nonIsSize > 0 && carriedTows.Count > 0)
+			{
+				var towGroup = carriedTows.Pop();
+				var usedTows = (long)Math.Min(Math.Floor(nonIsSize / designStats[towGroup.Key].TowCapacity), towGroup.Value);
+
+				if (usedTows <= 0)
+					continue;
+				if (!result.ContainsKey(towGroup.Key))
+					result.Add(towGroup.Key, 0);
+
+				result[towGroup.Key] += usedTows;
+				nonIsSize -= usedTows * designStats[towGroup.Key].TowCapacity;
+			}
+
+			return result;
 		}
 
 		public static Var SpeedVars(StaticsDB statics, PlayerProcessor playerProc, Dictionary<Design, long> shipGroups, bool onLane)
@@ -69,9 +93,9 @@ namespace Stareater.GameLogic
 			if (totalTows <= 0)
 				return Methods.FindWorst(
 					shipGroups.Select(x =>
-						new Var("baseSpeed", designStats[x.Key].GalaxySpeed).
-						And("size", designStats[x.Key].Size).
-						And("towSize", 0).
+						new Var(SpeedKey, designStats[x.Key].GalaxySpeed).
+						And(SizeKey, designStats[x.Key].Size).
+						And(TowKey, 0).
 						And(LaneKey, onLane)
 					),
 					x => statics.ShipFormulas.GalaxySpeed.Evaluate(x.Get)
@@ -96,5 +120,10 @@ namespace Stareater.GameLogic
 				x => statics.ShipFormulas.GalaxySpeed.Evaluate(x.Get)
 			);
 		}
+
+		private const string SpeedKey = "baseSpeed";
+		private const string SizeKey = "size";
+		private const string TowKey = "towSize";
+		private const string LaneKey = "lane";
 	}
 }
