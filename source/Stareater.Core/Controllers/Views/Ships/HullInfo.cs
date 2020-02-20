@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Stareater.GameData.Ships;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
@@ -47,7 +48,7 @@ namespace Stareater.Controllers.Views.Ships
 			}
 		}
 		
-		public string[] ImagePaths
+		public ReadOnlyCollection<string> ImagePaths
 		{
 			get
 			{

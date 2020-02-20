@@ -7,7 +7,7 @@ using Stareater.Localization;
 
 namespace Stareater.Utils.PluginParameters
 {
-	public class SelectorParameter : AParameterBase, IEnumerable<KeyValuePair<int, string>>
+	public class SelectorParameter : AParameterBase
 	{
 		private int selectedIndex;
 		private readonly IList<KeyValuePair<int, string>> values;
@@ -42,19 +42,14 @@ namespace Stareater.Utils.PluginParameters
 			get { return values[optionIndex]; }
 		}
 
-		public IEnumerator<KeyValuePair<int, string>> GetEnumerator()
+		public IEnumerable<KeyValuePair<int, string>> Enumerate()
 		{
 			foreach (var unlocalizedValue in values)
 				yield return new KeyValuePair<int, string>(
 					unlocalizedValue.Key,
 					LocalizationManifest.Get.CurrentLanguage[contextKey][unlocalizedValue.Value].Text());
 		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return this.GetEnumerator();
-		}
-		
+	
 		#region implemented abstract members of ParameterBase
 
 		public override void Accept(IParameterVisitor visitor)

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System;
+using System.Runtime.Serialization;
 
 namespace Stareater.Utils.Collections
 {
+	[Serializable]
 	public class PendableSet<T> : HashSet<T>, IDelayedCollection<T>
 	{
 		private List<T> toAdd = null;
@@ -13,7 +15,16 @@ namespace Stareater.Utils.Collections
 			
 		public PendableSet(IEnumerable<T> elements) : base(elements)
 		{ }
-		
+
+		protected PendableSet(SerializationInfo info, StreamingContext context) : base(info, context)
+		{
+			if (info == null)
+				throw new ArgumentNullException(nameof(info));
+
+			this.toAdd = (List<T>)info.GetValue("toAdd", typeof(List<T>));
+			this.toRemove = (List<T>)info.GetValue("toRemove", typeof(List<T>));
+		}
+
 		public void PendAdd(T element)
 		{
 			if (toAdd == null) toAdd = new List<T>();
@@ -39,6 +50,17 @@ namespace Stareater.Utils.Collections
 					this.Remove(element);
 				toAdd.Clear();
 			}
+		}
+
+		public override void GetObjectData(SerializationInfo info, StreamingContext context)
+		{
+			if (info == null)
+				throw new ArgumentNullException(nameof(info));
+
+			base.GetObjectData(info, context);
+
+			info.AddValue("toAdd", this.toAdd);
+			info.AddValue("toRemove", this.toRemove);
 		}
 	}
 }

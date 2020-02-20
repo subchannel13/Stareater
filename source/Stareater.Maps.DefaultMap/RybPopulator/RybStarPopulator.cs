@@ -191,7 +191,7 @@ namespace Stareater.Maps.DefaultMap.RybPopulator
 
 		public IEnumerable<StarSystemBuilder> Generate(Random rng, SystemEvaluator evaluator, StarPositions starPositions)
 		{
-			var namer = new StarNamer(starPositions.Stars.Length, new Random());
+			var namer = new StarNamer(starPositions.Stars.Count, new Random());
 			var uninhabitedStars = starPositions.Stars.Where((x, i) => !starPositions.HomeSystems.Contains(i));
 			var homeStars = new HashSet<Vector2D>(starPositions.HomeSystems.Select(i => starPositions.Stars[i]));
 

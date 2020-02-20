@@ -21,9 +21,9 @@ namespace Stareater.GUI
 		private readonly ShipDesignController controller;
 
 		private bool automaticName = true;
-		private IList<HullInfo> hulls;
-		private Dictionary<HullInfo, int> imageIndices = new Dictionary<HullInfo, int>();
-		private EquipmentActionDispatcher equipmentAction = new EquipmentActionDispatcher();
+		private readonly IList<HullInfo> hulls;
+		private readonly Dictionary<HullInfo, int> imageIndices = new Dictionary<HullInfo, int>();
+		private readonly EquipmentActionDispatcher equipmentAction = new EquipmentActionDispatcher();
 		private Label equipmentSeparator = null;
 		
 		public FormShipDesigner()
@@ -44,7 +44,7 @@ namespace Stareater.GUI
 			
 			foreach(var hull in hulls) {
 				this.hullPicker.Items.Add(new Tag<HullInfo>(hull, hull.Name));
-				this.imageIndices.Add(hull, rand.Next(hull.ImagePaths.Length));
+				this.imageIndices.Add(hull, rand.Next(hull.ImagePaths.Count));
 			}
 			
 			this.hullPicker.SelectedIndex = 0;
@@ -127,8 +127,8 @@ namespace Stareater.GUI
 			var hull = (this.hullPicker.SelectedItem as Tag<HullInfo>).Value;
 			
 			this.imageIndices[hull] = 
-				(this.imageIndices[hull] + hull.ImagePaths.Length + direction) % 
-				hull.ImagePaths.Length;
+				(this.imageIndices[hull] + hull.ImagePaths.Count + direction) % 
+				hull.ImagePaths.Count;
 			this.hullImage.Image = ImageCache.Get[ hull.ImagePaths[imageIndices[hull]]];
 			
 			this.controller.ImageIndex = imageIndices[hull];

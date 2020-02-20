@@ -364,7 +364,7 @@ namespace Stareater.GameScenes
 				{
 					this.currentSelection = GalaxySelectionType.Fleet;
 					this.SelectedFleet = this.currentPlayer.SelectFleet(fleets[0]);
-					if (fleets[0].Missions.Waypoints.Length == 0)
+					if (fleets[0].Missions.Waypoints.Count == 0)
 						this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = fleets[0]; //TODO(v0.9) marks wrong fleet when there are multiple players 
 				}
 
@@ -383,7 +383,7 @@ namespace Stareater.GameScenes
 			}
 
 
-			var stationaryFleet = fleets.FirstOrDefault(x => x.Owner == this.currentPlayer.Info && x.Missions.Waypoints.Length == 0);
+			var stationaryFleet = fleets.FirstOrDefault(x => x.Owner == this.currentPlayer.Info && x.Missions.Waypoints.Count == 0);
 			var otherOwnedFleets = fleets.Where(x => x.Owner == this.currentPlayer.Info && x != stationaryFleet);
 			var othersFleets = fleets.Where(x => x.Owner != this.currentPlayer.Info);
 			var fleetItems = new[] { stationaryFleet }.
@@ -416,7 +416,7 @@ namespace Stareater.GameScenes
 			var biggestGroup = fleet.Ships.Aggregate((a, b) => (a.Quantity * a.Design.Size > b.Quantity * b.Design.Size) ? a : b);
 
 			//TODO(v0.9) text might be long, do word wrap
-			var text = fleet.Missions.Waypoints.Length == 0 ?
+			var text = fleet.Missions.Waypoints.Count == 0 ?
 				context["StationaryFleet"].Text() :
 				context["MovingFleet"].Text(new TextVar(
 					"destination",

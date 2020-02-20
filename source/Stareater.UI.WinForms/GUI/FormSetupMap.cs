@@ -41,7 +41,7 @@ namespace Stareater.GUI
 				shapeSelector.Items.Add(new Tag<IStarPositioner>(mapFactory, mapFactory.Name));
 			}
 			shapeSelector.SelectedIndex = selectedIndex;
-			shapeSelector.Visible = MapAssets.StarPositioners.Length > 1;
+			shapeSelector.Visible = MapAssets.StarPositioners.Count > 1;
 
 			selectedIndex = 0;
 			foreach (var wormholeFactory in MapAssets.StarConnectors) {
@@ -50,7 +50,7 @@ namespace Stareater.GUI
 				wormholeSelector.Items.Add(new Tag<IStarConnector>(wormholeFactory, wormholeFactory.Name));
 			}
 			wormholeSelector.SelectedIndex = selectedIndex;
-			wormholeSelector.Visible = MapAssets.StarConnectors.Length > 1;
+			wormholeSelector.Visible = MapAssets.StarConnectors.Count > 1;
 
 			selectedIndex = 0;
 			foreach (var populatorFactory in MapAssets.StarPopulators) {
@@ -59,7 +59,7 @@ namespace Stareater.GUI
 				populatorSelector.Items.Add(new Tag<IStarPopulator>(populatorFactory, populatorFactory.Name));
 			}
 			populatorSelector.SelectedIndex = selectedIndex;
-			populatorSelector.Visible = MapAssets.StarPopulators.Length > 1;
+			populatorSelector.Visible = MapAssets.StarPopulators.Count > 1;
 		}
 
 		private void setLanguage()

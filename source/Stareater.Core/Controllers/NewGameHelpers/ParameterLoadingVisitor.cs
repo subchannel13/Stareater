@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ikadn;
 using Ikadn.Ikon.Types;
@@ -16,10 +17,10 @@ namespace Stareater.Controllers.NewGameHelpers
 			this.data = data;
 		}
 		
-		public static T Load<T>(IkonArray data, T[] generators) where T : IMapBuilderPiece
+		public static T Load<T>(IkonArray data, IEnumerable<T> generators) where T : IMapBuilderPiece
 		{
 			if (data == null)
-				return generators[0];
+				return generators.First();
 			
 			try
 			{
@@ -33,9 +34,9 @@ namespace Stareater.Controllers.NewGameHelpers
 				
 				return generator;
 			}
-			catch
+			catch(ArgumentNullException)
 			{
-				return generators[0];
+				return generators.First();
 			}
 		}
 		

@@ -8,6 +8,7 @@ using Stareater.Players;
 using Stareater.Utils;
 using Stareater.GameData.Construction;
 using System;
+using System.Collections.ObjectModel;
 
 namespace Stareater.Controllers
 {
@@ -171,11 +172,11 @@ namespace Stareater.Controllers
 		#region Policies
 		public abstract PolicyInfo Policy { get; set; }
 
-		public PolicyInfo[] Policies
+		public ReadOnlyCollection<PolicyInfo> Policies
 		{
 			get
 			{
-				return this.Game.Statics.Policies.Select(x => new PolicyInfo(x)).ToArray();
+				return Array.AsReadOnly(this.Game.Statics.Policies.Select(x => new PolicyInfo(x)).ToArray());
 			}
 		}
 		#endregion

@@ -32,7 +32,7 @@ namespace Stareater.Controllers.Views.Ships
 		
 		public bool IsMoving 
 		{ 
-			get { return this.Missions.Waypoints.Length > 0; }
+			get { return this.Missions.Waypoints.Count > 0; }
 		}
 		
 		public IEnumerable<ShipGroupInfo> Ships
@@ -69,7 +69,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			if (ReferenceEquals(lhs, rhs))
 				return true;
-			if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+			if (lhs is null || rhs is null)
 				return false;
 			return lhs.Equals(rhs);
 		}

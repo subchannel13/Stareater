@@ -23,7 +23,7 @@ namespace Stareater.GUI
 			this.changeListener = changeListener;
 			this.nameLabel.Text = parameterInfo.Name;
 
-			foreach (var valueInfo in parameterInfo)
+			foreach (var valueInfo in parameterInfo.Enumerate())
 				valueSelector.Items.Add(new Tag<int>(valueInfo.Key, valueInfo.Value));
 
 			valueSelector.SelectedIndex = parameterInfo.Value;

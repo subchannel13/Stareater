@@ -181,7 +181,7 @@ namespace Stareater.Controllers
 
 		private void onHullChange()
 		{
-			if (this.ImageIndex < 0 || this.ImageIndex >= this.selectedHull.ImagePaths.Length)
+			if (this.ImageIndex < 0 || this.ImageIndex >= this.selectedHull.ImagePaths.Count)
 				this.ImageIndex = 0;
 
 			this.reactorInfo = bestReactor();
@@ -382,7 +382,7 @@ namespace Stareater.Controllers
 			get
 			{
 
-				return this.selectedHull != null && this.ImageIndex >= 0 && this.ImageIndex < this.selectedHull.ImagePaths.Length &&
+				return this.selectedHull != null && this.ImageIndex >= 0 && this.ImageIndex < this.selectedHull.ImagePaths.Count &&
 					!string.IsNullOrWhiteSpace(this.Name) && game.States.Designs.All(x => x.Name != this.Name.Trim()) &&
 					(this.availableIsDrive != null || !this.HasIsDrive) &&
 					this.SpaceUsed <= this.SpaceTotal;

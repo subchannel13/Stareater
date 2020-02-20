@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Stareater.AppData.Expressions;
 using Stareater.Ships;
 using Stareater.Utils.StateEngine;
@@ -11,7 +13,7 @@ namespace Stareater.GameData.Ships
 		public const string IsDriveSizeKey = "hullIsSize"; //base hull's IS drive size
 		public const string ReactorSizeKey = "hullReactorSize"; //base hull's reactor size
 
-		public string[] ImagePaths { get; private set; }
+		public ReadOnlyCollection<string> ImagePaths { get; private set; }
 		public Formula Cost { get; private set; }
 	
 		public Formula Size { get; private set; }
@@ -38,7 +40,7 @@ namespace Stareater.GameData.Ships
 		                Formula inertiaBase, Formula jammingBase, Formula cloakingBase, Formula sensorsBase)
 			: base(code, languageCode, prerequisites, maxLevel, canPick)
 		{
-			this.ImagePaths = imagePaths;
+			this.ImagePaths = Array.AsReadOnly(imagePaths);
 			this.Cost = cost;
 			this.Size = size;
 			this.SpaceFree = spaceFree;

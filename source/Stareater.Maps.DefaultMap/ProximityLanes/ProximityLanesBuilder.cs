@@ -79,7 +79,7 @@ namespace Stareater.Maps.DefaultMap.ProximityLanes
 			var homeNodes = new List<Vertex<Vector2D>>();
 			Vertex<Vector2D> stareaterMain = null;
 
-			for (int i = 0; i < starPositions.Stars.Length; i++)
+			for (int i = 0; i < starPositions.Stars.Count; i++)
 			{
 				var vertex = maxGraph.MakeVertex(new Vector2D(starPositions.Stars[i].X, starPositions.Stars[i].Y));
 				starIndex[vertex] = i;

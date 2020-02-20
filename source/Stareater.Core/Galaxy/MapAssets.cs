@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 using Ikadn.Ikon;
@@ -11,10 +12,10 @@ namespace Stareater.Galaxy
 {
 	public static class MapAssets
 	{
-		public static StartingConditions[] Starts { get; private set; }
-		public static IStarPositioner[] StarPositioners { get; private set; }
-		public static IStarConnector[] StarConnectors { get; private set; }
-		public static IStarPopulator[] StarPopulators { get; private set; }
+		public static ReadOnlyCollection<StartingConditions> Starts { get; private set; }
+		public static ReadOnlyCollection<IStarPositioner> StarPositioners { get; private set; }
+		public static ReadOnlyCollection<IStarConnector> StarConnectors { get; private set; }
+		public static ReadOnlyCollection<IStarPopulator> StarPopulators { get; private set; }
 
 		public static void StartConditionsLoader(IEnumerable<NamedStream> dataSources)
 		{
@@ -29,22 +30,22 @@ namespace Stareater.Galaxy
 						throw new FormatException();
 				}
 
-			Starts = conditionList.ToArray();
+			Starts = Array.AsReadOnly(conditionList.ToArray());
 		}
 
 		public static void PositionersLoader(IEnumerable<IStarPositioner> factoryList)
 		{
-			StarPositioners = factoryList.ToArray();
+			StarPositioners = Array.AsReadOnly(factoryList.ToArray());
 		}
 
 		public static void ConnectorsLoader(IEnumerable<IStarConnector> factoryList)
 		{
-			StarConnectors = factoryList.ToArray();
+			StarConnectors = Array.AsReadOnly(factoryList.ToArray());
 		}
 
 		public static void PopulatorsLoader(IEnumerable<IStarPopulator> factoryList)
 		{
-			StarPopulators = factoryList.ToArray();
+			StarPopulators = Array.AsReadOnly(factoryList.ToArray());
 		}
 
 		public static bool IsLoaded

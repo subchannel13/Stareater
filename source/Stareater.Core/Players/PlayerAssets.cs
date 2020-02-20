@@ -6,6 +6,8 @@ using Ikadn.Ikon.Types;
 using Stareater.GameData.Reading;
 using Stareater.Controllers.Views;
 using Ikadn.Utilities;
+using System.Collections.ObjectModel;
+using System;
 
 namespace Stareater.Players
 {
@@ -13,7 +15,7 @@ namespace Stareater.Players
 	{
 		internal static Organization[] OrganizationsRaw { get; private set; }
 
-		public static Color[] Colors { get; private set; }
+		public static ReadOnlyCollection<Color> Colors { get; private set; }
 		public static Dictionary<string, IOffscreenPlayerFactory> AIDefinitions { get; private set; }
 
 		public static IEnumerable<OrganizationInfo> Organizations
@@ -35,7 +37,7 @@ namespace Stareater.Players
 						));
 				}
 
-			Colors = colorList.ToArray();
+			Colors = Array.AsReadOnly(colorList.ToArray());
 		}
 
 		public static void AILoader(IEnumerable<IOffscreenPlayerFactory> aiFactories)

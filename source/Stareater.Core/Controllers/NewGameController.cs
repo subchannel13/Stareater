@@ -220,7 +220,7 @@ namespace Stareater.Controllers
 			var systems = this.StarPopulator.Generate(random, this.evaluator, stars).ToList();
 
 			var starIndices = new Dictionary<Vector2D, int>();
-			for (int i = 0; i < stars.Stars.Length; i++)
+			for (int i = 0; i < stars.Stars.Count; i++)
 				starIndices[stars.Stars[i]] = i;
 			var starFromIndex = systems.ToDictionary(x => starIndices[x.Star.Position], x => x.Star);
 
@@ -234,7 +234,7 @@ namespace Stareater.Controllers
 
 		public static StartingConditions DefaultStartingCondition
 		{
-			get { return MapAssets.Starts[MapAssets.Starts.Length / 2]; }
+			get { return MapAssets.Starts[MapAssets.Starts.Count / 2]; }
 		}
 
 		public static StartingConditions LastStartingCondition

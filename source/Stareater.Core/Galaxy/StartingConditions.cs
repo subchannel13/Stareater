@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Ikadn.Ikon.Types;
 using Stareater.Localization;
@@ -11,7 +13,7 @@ namespace Stareater.Galaxy
 
 		public int Colonies { get; private set; }
 		public long Population { get; private set; }
-		public StartingBuilding[] Buildings { get; private set; }
+		public ReadOnlyCollection<StartingBuilding> Buildings { get; private set; }
 
 		private readonly string nameKey;
 
@@ -19,7 +21,7 @@ namespace Stareater.Galaxy
 		{
 			this.Colonies = colonies;
 			this.Population = population;
-			this.Buildings = buildings.OrderBy(x => x.Id).ToArray();
+			this.Buildings = Array.AsReadOnly(buildings.OrderBy(x => x.Id).ToArray());
 			this.nameKey = nameKey;
 		}
 
@@ -47,6 +49,7 @@ namespace Stareater.Galaxy
 			return lastGameData;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Any exception is considered format fault and falls back to default value")]
 		internal static StartingConditions Load(IkonComposite ikstonData)
 		{
 			var requiredKeys = new[] { PopulationKey, ColoniesKey, InfrastructureKey, NameKey };
