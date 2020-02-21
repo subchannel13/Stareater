@@ -78,6 +78,7 @@ namespace Stareater.GLData
 		public TextureInfo EndTurnNormal { get; private set; }
 		public TextureInfo FleetIndicator { get; private set;}
 		public TextureInfo GasGiant { get; private set;}
+		public TextureInfo Hangar { get; private set; }
 		public TextureInfo IntroStareaterOutline { get; private set; }
 		public TextureInfo IntroStareaterUnderline { get; private set; }
 		public TextureInfo Library { get; private set; }
@@ -99,6 +100,7 @@ namespace Stareater.GLData
 		public TextureInfo ToggleHover { get; private set; }
 		public TextureInfo ToggleNormal { get; private set; }
 		public TextureInfo ToggleToggled { get; private set; }
+		public TextureInfo Tow { get; private set; }
 
 		public void Load()
 		{
@@ -129,6 +131,7 @@ namespace Stareater.GLData
 			this.EndTurnNormal = this.spriteNames["endTurnNormal"];
 			this.FleetIndicator = this.spriteNames[FleetIndicatorTag];
 			this.GasGiant = this.spriteNames[GasGiantTag];
+			this.Hangar = this.spriteNames["hangar"];
 			this.IntroStareaterOutline = this.spriteNames[IntroStareaterOutlineTag];
 			this.IntroStareaterUnderline = this.spriteNames[IntroStareaterUnderlineTag];
 			this.Library = this.spriteNames["library"];
@@ -150,6 +153,7 @@ namespace Stareater.GLData
 			this.ToggleHover = this.spriteNames["toggleHover"];
 			this.ToggleNormal = this.spriteNames["toggleUntoggled"];
 			this.ToggleToggled = this.spriteNames["toggleToggled"];
+			this.Tow = this.spriteNames["tow"];
 
 			this.loaded = true;
 		}

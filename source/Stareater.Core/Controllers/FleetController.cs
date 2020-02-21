@@ -169,6 +169,30 @@ namespace Stareater.Controllers
 			return controller;
 		}
 
+		public bool IsCarried(ShipGroupInfo group)
+		{
+			if (group == null)
+				throw new ArgumentNullException(nameof(group));
+
+			var selected = this.selectedCount(group.Design.Data);
+			if (selected == 0)
+				return false;
+
+			return !this.carriedSelection.TryGetValue(group.Design.Data, out var uncarried) || uncarried < selected;
+		}
+
+		public bool IsTowed(ShipGroupInfo group)
+		{
+			if (group == null)
+				throw new ArgumentNullException(nameof(group));
+
+			var selected = this.selectedCount(group.Design.Data);
+			if (selected == 0 || group.Design.Data.IsDrive != null)
+				return false;
+
+			return this.carriedSelection.ContainsKey(group.Design.Data);
+		}
+
 		public FleetController Send(StarInfo destination)
 		{
 			if (destination == null)

@@ -359,7 +359,7 @@ namespace Stareater.GameScenes
 				var marker = new GuiImage
 				{
 					Images = new[] {
-						new Sprite(GalaxyTextures.Get.ColonizationMark, Color.White),
+						new Sprite(GalaxyTextures.Get.ColonizationMark),
 						new Sprite(GalaxyTextures.Get.ColonizationMarkColor, this.currentPlayer.Info.Color)
 					}
 				};

@@ -43,6 +43,9 @@ namespace Stareater.GameLogic
 					{
 						var group = sameSpeed.Dequeue();
 						var maxTransportable = (long)Math.Floor(carryCapacity / designStats[group.Key].Size);
+						if (designStats[group.Key].Size > designStats[design].CarryCapacity)
+							maxTransportable = 0;
+
 						var transported = Math.Min(maxTransportable, group.Value);
 						var untransported = group.Value - transported;
 

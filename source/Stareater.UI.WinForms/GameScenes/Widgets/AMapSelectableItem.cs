@@ -54,7 +54,7 @@ namespace Stareater.GameScenes.Widgets
 		{
 			set
 			{
-				this.apply(ref this.mImages, new[] { new Sprite(value, Color.White) });
+				this.apply(ref this.mImages, new[] { new Sprite(value) });
 			}
 		}
 
@@ -105,6 +105,7 @@ namespace Stareater.GameScenes.Widgets
 			if (this.mImages != null && this.mImages.Length > 0)
 				for (int i = 0; i < this.mImages.Length; i++)
 					soBuilder.StartSimpleSprite(this.Z0 - (2 + i) * this.ZRange / totalLayers, this.mImages[i].Texture, this.mImages[i].ModulationColor).
+						Transform(this.mImages[i].Transform).
 						Scale(imageSize).
 						Translate(imageX, this.Position.Center.Y);
 

@@ -1,5 +1,4 @@
 ﻿using Stareater.GLData;
-using System.Drawing;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
@@ -20,7 +19,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		{
 			set
 			{
-				this.apply(ref this.mImages, new[] { new Sprite(value, Color.White) });
+				this.apply(ref this.mImages, new[] { new Sprite(value) });
 			}
 		}
 

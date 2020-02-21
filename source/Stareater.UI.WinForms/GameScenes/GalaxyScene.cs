@@ -372,7 +372,7 @@ namespace Stareater.GameScenes
 					Select(x => new ShipSelectableItem(x)
 					{
 						ImageBackground = this.currentPlayer.Info.Color,
-						Image = GalaxyTextures.Get.Sprite(x.Design.ImagePath),
+						Images = shipImages(x).ToArray(),
 						Text = shipGroupText(x),
 						IsSelected = true,
 						OnSelect = item => shipGroupSelect(item, item.Data.Quantity),
@@ -396,7 +396,7 @@ namespace Stareater.GameScenes
 				ImageBackground = Color.Black,
 				Images = new[] {
 					new Sprite(GalaxyTextures.Get.StarColor, star.Color),
-					new Sprite(GalaxyTextures.Get.StarGlow, Color.White),
+					new Sprite(GalaxyTextures.Get.StarGlow),
 				},
 				Text = star.Name.ToText(LocalizationManifest.Get.CurrentLanguage),
 				OnSelect = item => showSelectionPanel(item.Data, new List<FleetInfo>())
@@ -404,6 +404,23 @@ namespace Stareater.GameScenes
 			null;
 
 			this.fleetsPanel.Children = new AGuiElement[] { starItem }.Concat(fleetItems).Where(x => x != null);
+		}
+
+		private IEnumerable<Sprite> shipImages(ShipGroupInfo x)
+		{
+			yield return new Sprite(GalaxyTextures.Get.Sprite(x.Design.ImagePath));
+
+			var traits = new List<TextureInfo>();
+			if (this.SelectedFleet.IsCarried(x))
+				traits.Add(GalaxyTextures.Get.Hangar);
+			if (this.SelectedFleet.IsTowed(x))
+				traits.Add(GalaxyTextures.Get.Tow);
+
+			for (int i = 0; i < traits.Count; i++)
+				yield return new Sprite(
+					traits[i],
+					Color.White,
+					Matrix4.CreateScale(0.3f, 0.3f, 1) * Matrix4.CreateTranslation(0.3f, -0.3f + i * 0.35f, 0));
 		}
 
 		private MapSelectableItem<FleetInfo> addFleetSelection(FleetInfo fleet)
@@ -769,7 +786,7 @@ namespace Stareater.GameScenes
 				Translate(convert(star.Position));
 			
 			if (this.currentPlayer.StareaterSystem == star)
-				soBuilder.StartSimpleSprite(StarSpecialZ, GalaxyTextures.Get.StareaterBrain, Color.DarkViolet).
+				soBuilder.StartSimpleSprite(StarSpecialZ, GalaxyTextures.Get.Tow, Color.DarkViolet).
 				Scale(0.15f).
 				Translate(0.25, -0.25).
 				Translate(convert(star.Position));
