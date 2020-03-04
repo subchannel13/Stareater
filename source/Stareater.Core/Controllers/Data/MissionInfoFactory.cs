@@ -8,20 +8,17 @@ namespace Stareater.Controllers.Data
 {
 	class MissionInfoFactory : IMissionVisitor
 	{
-		private readonly Fleet fleet; 
 		private readonly List<WaypointInfo> waypoints = new List<WaypointInfo>();
 		
-		private MissionInfoFactory(Fleet fleet)
-		{
-			this.fleet = fleet;
-		}
+		private MissionInfoFactory()
+		{ }
 		
 		public static MissionsInfo Create(Fleet fleet)
 		{
 			if (fleet.Missions.Count == 0)
 				return new MissionsInfo(new WaypointInfo[0]);
 			
-			var factory = new MissionInfoFactory(fleet);
+			var factory = new MissionInfoFactory();
 			foreach(var mission in fleet.Missions)
 				mission.Accept(factory);
 			
@@ -33,7 +30,7 @@ namespace Stareater.Controllers.Data
 		public void Visit(MoveMission mission)
 		{
 			//TODO(v0.8) hide waypoints for foreing fleets
-			waypoints.Add(new WaypointInfo(mission.Destination, mission.UsedWormhole));
+			waypoints.Add(new WaypointInfo(mission.Start, mission.Destination, mission.UsedWormhole));
 		}
 
 		public void Visit(DisembarkMission mission)

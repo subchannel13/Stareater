@@ -42,7 +42,7 @@ namespace Stareater.GameLogic.Planning
 					this.game.Statics,
 					game.Derivates[fleet.Owner],
 					fleet.Ships.ToDictionary(x => x.Design, x => x.Quantity),
-					false
+					true
 				).Get
 			);
 		}

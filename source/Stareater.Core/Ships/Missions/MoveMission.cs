@@ -7,13 +7,16 @@ namespace Stareater.Ships.Missions
 	class MoveMission : AMission
 	{
 		[StatePropertyAttribute]
+		public StarData Start { get; private set; }
+		[StatePropertyAttribute]
 		public StarData Destination { get; private set; }
 
 		[StatePropertyAttribute(saveKey: "via")]
 		public Wormhole UsedWormhole { get; private set; }
 		
-		public MoveMission(StarData destination, Wormhole usedWormhole)
+		public MoveMission(StarData start, StarData destination, Wormhole usedWormhole)
 		{
+			this.Start = start;
 			this.Destination = destination;
 			this.UsedWormhole = usedWormhole;
 		}

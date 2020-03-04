@@ -285,27 +285,55 @@ namespace Stareater.GameLogic
 
 		public double FuelUsage(Fleet fleet, MainGame game)
 		{
-			var moveOrder = fleet.Missions.SkipWhile(x => !(x is MoveMission) && !x.FullTurnAction).FirstOrDefault();
+			var order = fleet.Missions.SkipWhile(x => !(x is MoveMission) && !x.FullTurnAction).FirstOrDefault();
 
-			if (moveOrder is MoveMission)
-				return this.FuelUsage(fleet, (moveOrder as MoveMission).Destination.Position, game);
+			if (order is MoveMission moveOrder)
+				return this.FuelUsage(fleet, moveOrder.Start.Position, moveOrder.Destination.Position, game);
 			else
-				return this.FuelUsage(fleet, fleet.Position, game);
+				return this.FuelUsage(fleet, fleet.Position, fleet.Position, game);
 		}
 
-		public double FuelUsage(Fleet fleet, Vector2D position, MainGame game)
+		public double FuelUsage(Fleet fleet, Vector2D fromPosition, Vector2D toPosition, MainGame game)
 		{
 			//TODO(v0.8) make temporary stat for fleets
 			var fleetSize = fleet.Ships.Sum(x => x.Design.UsesFuel ? this.DesignStats[x.Design].Size * x.Quantity : 0);
 			var stellarises = game.States.Stellarises.OwnedBy[this.Player];
 
-			if (stellarises.Any())
+			if (fleetSize <= 0)
+				return 0;
+			else if (fromPosition == toPosition)
+				return fleetSize * game.Statics.ShipFormulas.FuelUsage.Evaluate(new Var("dist", 0).Get);
+			else if (stellarises.Any())
 			{
-				var supplyDistance = stellarises.Min(x => (position - x.Location.Star.Position).Length);
+				var seed = stellarises.First().Location.Star.Position;
+				var intervals = new LinkedList<FuelSupply>();
+				intervals.AddLast(new FuelSupply(fromPosition, seed, fromPosition, toPosition));
+				intervals.AddLast(new FuelSupply(toPosition, seed, fromPosition, toPosition));
+
+				foreach (var center in stellarises.Select(x => x.Location.Star.Position))
+				{
+					var node = intervals.First;
+					while(node.Next != null)
+					{
+						var intersection = FuelSupply.Intersection(node.Value, node.Next.Value, center);
+
+						node.Value = node.Value.Improve(center);
+
+						if (intersection != null)
+						{
+							intervals.AddAfter(node, intersection);
+							node = node.Next;
+						}
+
+						node = node.Next;
+					}
+
+					intervals.Last.Value = intervals.Last.Value.Improve(center);
+				}
+
+				var supplyDistance = intervals.Max(x => x.Distance);
 				return fleetSize * game.Statics.ShipFormulas.FuelUsage.Evaluate(new Var("dist", supplyDistance).Get);
 			}
-			else if (fleetSize <= 0)
-				return 0;
 			else
 				return double.PositiveInfinity;
 		}

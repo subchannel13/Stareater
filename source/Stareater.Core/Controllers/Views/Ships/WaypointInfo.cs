@@ -5,11 +5,13 @@ namespace Stareater.Controllers.Views.Ships
 {
 	public class WaypointInfo
 	{
+		internal StarData StartStar { get; private set; }
 		internal StarData DestionationStar { get; private set; }
 		internal Wormhole UsedWormhole { get; private set; }
 		
-		internal WaypointInfo(StarData destionation, Wormhole usedWormhole)
+		internal WaypointInfo(StarData startStar, StarData destionation, Wormhole usedWormhole)
 		{
+			this.StartStar = startStar;
 			this.DestionationStar = destionation;
 			this.UsedWormhole = usedWormhole;
 		}
