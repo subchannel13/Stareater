@@ -865,7 +865,6 @@ namespace Stareater.Controllers
 			foreach (var fleet in nonColonizers)
 				idleTransports.Enqueue(fleet);
 			
-			var immigrateTo = game.States.Colonies.OwnedBy[player].OrderByDescending(x => game.Derivates[x].Desirability).First();
 			var emmigrateFrom = game.States.Stellarises.OwnedBy[player].FirstOrDefault(x => game.Derivates.Stellarises.At[x.Location.Star].IsMigrants > 0);
 
 			while (idleTransports.Any() && emmigrateFrom != null)
@@ -879,24 +878,6 @@ namespace Stareater.Controllers
 						fleet.SelectGroup(group, Math.Max(group.Quantity - group.FullTransporters, 0), 0);
 
 					fleet.LoadPopulation();
-				}
-
-				// Send emigrants to destination
-				if (fleet.Fleet.Position != immigrateTo.Star.Position)
-				{
-					foreach (var group in fleet.ShipGroups)
-						fleet.SelectGroup(group, group.FullTransporters, group.Population);
-
-					fleet.Send(new StarInfo(immigrateTo.Star));
-				}
-
-				// Disembark immigrants
-				if (fleet.Fleet.Position == immigrateTo.Star.Position && immigrateTo.Star != emmigrateFrom.Location.Star)
-				{
-					foreach (var group in fleet.ShipGroups)
-						fleet.SelectGroup(group, group.FullTransporters, group.Population);
-
-					fleet.Disembark();
 				}
 
 				// Send empty (non-full) transporters to emigration point

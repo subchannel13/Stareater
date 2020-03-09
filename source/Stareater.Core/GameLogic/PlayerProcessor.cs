@@ -310,7 +310,7 @@ namespace Stareater.GameLogic
 				intervals.AddLast(new FuelSupply(fromPosition, seed, fromPosition, toPosition));
 				intervals.AddLast(new FuelSupply(toPosition, seed, fromPosition, toPosition));
 
-				foreach (var center in stellarises.Select(x => x.Location.Star.Position))
+				foreach (var center in stellarises.Skip(1).Select(x => x.Location.Star.Position))
 				{
 					var node = intervals.First;
 					while(node.Next != null)
