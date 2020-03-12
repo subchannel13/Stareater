@@ -219,12 +219,11 @@ namespace Stareater.Controllers
 				foreach (var colony in colonies.OwnedBy[player])
 					weights.Add(colony, game.Derivates.Colonies.Of[colony].Desirability);
 
-				Methods.WeightedPointDealing(
+				Methods.DistributePoints(
 					startingConditions.Population, 
-					colonies.OwnedBy[player].Select(colony => new PointReceiver<Colony>(
-						colony,
+					colonies.OwnedBy[player].Select(colony => new PointReceiver(
 						game.Derivates.Colonies.Of[colony].Desirability,
-						() => game.Derivates.Colonies.Of[colony].MaxPopulation,
+						game.Derivates.Colonies.Of[colony].MaxPopulation,
 						x => { colony.Population = x; }
 					))
 				);
@@ -234,12 +233,11 @@ namespace Stareater.Controllers
 				{
 					var project = game.Statics.Constructables.First(x => x.IdCode == building.Id);
 
-					Methods.WeightedPointDealing(
+					Methods.DistributePoints(
 						startingConditions.Population,
-						colonies.OwnedBy[player].Select(colony => new PointReceiver<Colony>(
-							colony,
+						colonies.OwnedBy[player].Select(colony => new PointReceiver(
 							game.Derivates.Colonies.Of[colony].Desirability,
-							() => project.TurnLimit.Evaluate(
+							project.TurnLimit.Evaluate(
 								game.Derivates[colony].
 								LocalEffects(game.Statics).
 								UnionWith(playerProcessor.TechLevels).Get

@@ -137,6 +137,32 @@ namespace Stareater.GameLogic
 			}
 		}
 
+		public void CalculateIsMigration(MainGame game)
+		{
+			var stellarises = game.Derivates.Stellarises.OwnedBy[this.Player];
+			var demand = stellarises.ToDictionary(
+				x => x, 
+				x => x.MissingPopulation - x.Stellaris.IncomingMigrants.Sum(pop => pop.Value)
+			);
+
+			foreach (var stellaris in stellarises)
+				stellaris.IsMigrationPlan = new Dictionary<StarData, double>();
+
+			foreach (var stellaris in stellarises.Where(x => x.IsMigrants > 0).OrderBy(x => x.IsMigrants))
+			{
+				Methods.DistributePoints(
+					stellaris.IsMigrants,
+					demand.
+						Where(x => x.Key != stellaris).
+						Select(x => new PointReceiver(
+						   x.Value,
+						   x.Value,
+						   pop => { stellaris.IsMigrationPlan[x.Key.Location] = pop; }
+					   )
+				));
+			}
+		}
+
 		#region Technology related
 		public void CalculateDevelopment(MainGame game, IList<ColonyProcessor> colonyProcessors)
 		{
@@ -149,12 +175,11 @@ namespace Stareater.GameLogic
 			var advanceOrder = this.DevelopmentOrder(game.States.DevelopmentAdvances, game.States.ResearchAdvances, game).ToList();
 			
 			var results = new List<DevelopmentResult>();
-			Methods.WeightedPointDealing(
+			Methods.DistributePoints(
 				developmentPoints, 
-				advanceOrder.Take(focus.Weights.Length).Select((techProgress, i) => new PointReceiver<DevelopmentProgress>(
-					techProgress,
+				advanceOrder.Take(focus.Weights.Length).Select((techProgress, i) => new PointReceiver(
 					focus.Weights[i],
-					() => techProgress.InvestmentLimit,
+					techProgress.InvestmentLimit,
 					p => results.Add(techProgress.SimulateInvestment(p))
 				))
 			);
@@ -173,10 +198,9 @@ namespace Stareater.GameLogic
 				focused = advanceOrder[0].Topic.IdCode;
 			
 			var results = new List<ResearchResult>();
-			Methods.WeightedPointDealing(1, advanceOrder.Select(techProgress => new PointReceiver<ResearchProgress>(
-				techProgress,
+			Methods.DistributePoints(1, advanceOrder.Select(techProgress => new PointReceiver(
 				techProgress.Topic.IdCode == focused ? game.Statics.PlayerFormulas.FocusedResearchWeight : 1,
-				() => techProgress.InvestmentLimit,
+				techProgress.InvestmentLimit,
 				p => results.Add(techProgress.SimulateInvestment(p))
 			)));
 

@@ -138,12 +138,11 @@ namespace Stareater.GameLogic.Planning
 				ToList();
 
 			foreach (var group in newFleet.Ships.Where(x => x.PopulationTransport > 0))
-				group.PopulationTransport = Methods.WeightedPointDealing(
+				group.PopulationTransport = Methods.DistributePoints(
 					group.PopulationTransport, 
-					destinations.Select(site => new PointReceiver<ColonyProcessor>(
-						site,
+					destinations.Select(site => new PointReceiver(
 						site.Desirability,
-						() => site.MaxPopulation - site.Colony.Population,
+						site.MaxPopulation - site.Colony.Population,
 						x => site.Colony.Population += x
 					))
 				);
@@ -186,12 +185,11 @@ namespace Stareater.GameLogic.Planning
 			}
 
 			var totalEmbarked = stellaris.IsMigrants - availableMigrants;
-			Methods.WeightedPointDealing(totalEmbarked,
+			Methods.DistributePoints(totalEmbarked,
 				this.game.Derivates.Colonies.At[stellaris.Location, stellaris.Owner].
-				Select(colonyProc => new PointReceiver<ColonyProcessor>(
-					colonyProc,
+				Select(colonyProc => new PointReceiver(
 					1 - colonyProc.Desirability,
-					() => colonyProc.Colony.Population,
+					colonyProc.Colony.Population,
 					x => colonyProc.Colony.Population -= x
 				)));
 			stellaris.IsMigrants = availableMigrants;

@@ -74,7 +74,7 @@ namespace Stareater.Utils
 			while (!current.Equals(fromNode))
 			{
 				var previous = cameFrom[current];
-				path.Add(new Move<T>(previous, current));
+				path.Add(new Move<T>(previous, current, costFunc(previous, current)));
 				current = previous;
 			}
 
@@ -97,7 +97,41 @@ namespace Stareater.Utils
 			return (Comparer<T>.Default.Compare(x, max) > 0) ? max : x;
 
 		}
-		
+
+		/// <summary>
+		/// Distribute some kind of points to point receivers according to
+		/// receiver's weight in distribution and respecting a receiver's point
+		/// limit.
+		/// </summary>
+		/// <param name="points">Amount of points to distribute</param>
+		/// <param name="pointReceiver">Description of each point receiver</param>
+		/// <returns>Amount of leftover points</returns>
+		public static double DistributePoints(double points, IEnumerable<PointReceiver> pointReceiver)
+		{
+			if (pointReceiver == null)
+				throw new ArgumentNullException(nameof(pointReceiver));
+
+			var receiverList = pointReceiver.ToList();
+			if (!receiverList.Any())
+				return points;
+
+			var weightSum = receiverList.Sum(x => x.Weight);
+			if (weightSum == 0)
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+				throw new ArgumentException("All weights are zero");
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
+
+			var startingPoints = points;
+			foreach (var receiver in receiverList)
+			{
+				var investment = Math.Min(startingPoints * receiver.Weight / weightSum, receiver.Limit);
+				receiver.ReceiveAction(investment);
+				points -= investment;
+			}
+
+			return points;
+		}
+
 		/// <summary>
 		/// Finds an element with highest fitness function value.
 		/// </summary>
@@ -385,26 +419,6 @@ namespace Stareater.Utils
 		public static string ToStringInvariant(this int value)
 		{
 			return value.ToString(CultureInfo.InvariantCulture);
-		}
-
-		public static double WeightedPointDealing<T>(double points, IEnumerable<PointReceiver<T>> pointReceiver)
-		{
-			if (pointReceiver == null)
-				throw new ArgumentNullException(nameof(pointReceiver));
-
-			if (!pointReceiver.Any())
-				return points;
-
-			var weightSum = pointReceiver.Sum(x => x.Weight);
-			var startingPoints = points;
-			foreach(var receiver in pointReceiver)
-			{
-				var investment = Math.Min(startingPoints * receiver.Weight / weightSum, receiver.Limit());
-				receiver.ReceiveAction(investment);
-				points -= investment;
-			}
-
-			return points;
 		}
 	}
 }

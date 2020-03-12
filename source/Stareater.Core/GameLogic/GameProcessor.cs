@@ -73,6 +73,8 @@ namespace Stareater.GameLogic
 			
 			foreach (var playerProc in this.game.MainPlayers.Select(x => this.game.Derivates[x]))
 				playerProc.ProcessPostcombat(this.game);
+			foreach (var stellarisProc in this.game.Derivates.Stellarises)
+				stellarisProc.ProcessPostCombat(this.game);
 
 			this.doRepairs();
 
@@ -124,6 +126,8 @@ namespace Stareater.GameLogic
 				colonyProc.CalculateDerivedEffects(this.game.Statics, this.game.Derivates[colonyProc.Owner]);
 			foreach (var stellaris in this.game.Derivates.Stellarises)
 				stellaris.CalculateDerivedEffects(this.game);
+			foreach (var playerProc in this.game.Derivates.Players)
+				playerProc.CalculateIsMigration(this.game);
 		}
 		#endregion
 		

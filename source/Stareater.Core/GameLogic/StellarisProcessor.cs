@@ -8,6 +8,8 @@ using Stareater.GameData.Construction;
 using Stareater.GameData;
 using Stareater.GameLogic.Planning;
 using System;
+using Stareater.Ships;
+using Stareater.Utils;
 
 namespace Stareater.GameLogic
 {
@@ -22,6 +24,10 @@ namespace Stareater.GameLogic
 		public Dictionary<Colony, double> ImmigrantionPlan = new Dictionary<Colony, double>();
 		[StatePropertyAttribute]
 		public double IsMigrants;
+		[StatePropertyAttribute]
+		public Dictionary<StarData, double> IsMigrationPlan = new Dictionary<StarData, double>();
+		[StatePropertyAttribute]
+		public double MissingPopulation;
 
 		[StatePropertyAttribute]
 		public double ScanRange { get; private set; }
@@ -138,7 +144,11 @@ namespace Stareater.GameLogic
 				}
 			}
 
-			this.IsMigrants += systemColonies.Sum(x => x.Emigrants - this.EmigrantionPlan[x.Colony]);
+			this.MissingPopulation = systemColonies.Sum(x => x.MaxPopulation - x.Colony.Population - this.ImmigrantionPlan[x.Colony]);
+			this.IsMigrants = Math.Max(
+				systemColonies.Sum(x => x.Emigrants - this.EmigrantionPlan[x.Colony]) - this.MissingPopulation,
+				0
+			);
 		}
 
 		public void CalculateSpending(MainGame game)
@@ -193,6 +203,46 @@ namespace Stareater.GameLogic
 				plan.Key.Population -= plan.Value;
 			foreach (var plan in this.ImmigrantionPlan)
 				plan.Key.Population += plan.Value;
+
+			var playerProc = game.Derivates[this.Owner];
+			var mockTransports = new Dictionary<Design, long>
+			{
+				{game.Orders[this.Owner].ColonizerDesign, 1 }
+			};
+			foreach (var plan in this.IsMigrationPlan)
+			{
+				var turn = game.Turn + playerProc.
+					ShortestPathTo(this.Location, plan.Key, mockTransports, game).
+					Max(m => (int)Math.Ceiling(m.Cost));
+
+				var destination = game.States.Stellarises.At[plan.Key, this.Owner];
+
+				if (destination.IncomingMigrants.ContainsKey(turn))
+					destination.IncomingMigrants[turn] += plan.Value;
+				else
+					destination.IncomingMigrants.Add(turn, plan.Value);
+			}
+		}
+
+		public void ProcessPostCombat(MainGame game)
+		{
+			var arrivedGroups = this.Stellaris.IncomingMigrants.
+				Where(x => x.Key <= game.Turn + 1).
+				ToList();
+			var arrivedPop = arrivedGroups.Sum(x => x.Value);
+
+			if (arrivedPop > 0)
+				Methods.DistributePoints(
+					arrivedPop,
+					this.systemColonies(game).Select(colony => new PointReceiver(
+						colony.Desirability,
+						colony.MaxPopulation - colony.Colony.Population,
+						x => { colony.Colony.Population += x; }
+					))
+				);
+
+			foreach (var group in arrivedGroups)
+				this.Stellaris.IncomingMigrants.Remove(group.Key);
 		}
 
 		private IEnumerable<ColonyProcessor> systemColonies(MainGame game)
