@@ -12,6 +12,8 @@ using Stareater.GLData;
 using Stareater.GLData.OrbitShader;
 using Stareater.GLData.SpriteShader;
 using Stareater.GraphicsEngine;
+using Stareater.GraphicsEngine.GuiElements;
+using System;
 
 namespace Stareater.GameScenes
 {
@@ -60,6 +62,24 @@ namespace Stareater.GameScenes
 		private float minOffset;
 		private float maxOffset;
 		private float pixelSize = 1;
+
+		public BombardmentScene()
+		{
+			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
+			var returnButton = new GuiButton
+			{
+				ClickCallback = () => { this.controller.Leave(); },
+				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
+				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
+				Padding = 12,
+				Margins = new Vector2(10, 5),
+				Text = context["Return"].Text(),
+				TextColor = Color.Black,
+				TextHeight = 20
+			};
+			returnButton.Position.WrapContent().Then.ParentRelative(1, 1).UseMargins();
+			this.AddElement(returnButton);
+		}
 
 		public void StartBombardment(BombardmentController controller)
 		{

@@ -86,9 +86,6 @@ namespace Stareater.GUI
 		{
 			this.Font = SettingsWinforms.Get.FormFont;
 
-			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
-			this.returnButton.Text = context["Return"].Text();
-			
 			this.glCanvas.VSync = SettingsWinforms.Get.VSync;
 			this.timingLoop.OnSettingsChange();
 		}
@@ -102,14 +99,6 @@ namespace Stareater.GUI
 		private PlayerController currentPlayer
 		{
 			get { return this.playerControllers[currentPlayerIndex]; }
-		}
-
-		private void returnButton_Click(object sender, EventArgs e)
-		{
-			if (this.currentRenderer == systemRenderer)
-				switchToGalaxyView();
-			else if (this.currentRenderer == bombardRenderer)
-				this.bombardmentController.Leave();
 		}
 
 		#region Delayed Events
@@ -192,7 +181,7 @@ namespace Stareater.GUI
 
 			this.galaxyRenderer = new GalaxyScene(this, () => postDelayedEvent(showMainMenu));
 			this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
-			
+
 			this.bombardRenderer = new BombardmentScene();
 			this.systemRenderer = new StarSystemScene(switchToGalaxyView);
 			this.combatRenderer = new SpaceCombatScene();
@@ -351,7 +340,6 @@ namespace Stareater.GUI
 			this.nextRenderer = this.gameOverRenderer;
 			
 			this.abilityList.Visible = false;
-			this.returnButton.Visible = false;
 			this.unitInfoPanel.Visible = false;
 		}
 
@@ -370,7 +358,6 @@ namespace Stareater.GUI
 				this.nextRenderer = this.galaxyRenderer;
 				
 				abilityList.Visible = false;
-				returnButton.Visible = false;
 				unitInfoPanel.Visible = false;
 			}
 			
@@ -384,7 +371,6 @@ namespace Stareater.GUI
 			this.nextRenderer = this.combatRenderer;
 
 			abilityList.Visible = true;
-			returnButton.Visible = false;
 			unitInfoPanel.Visible = true;
 		}
 		
@@ -396,7 +382,6 @@ namespace Stareater.GUI
 			this.nextRenderer = this.bombardRenderer;
 			
 			abilityList.Visible = false;
-			returnButton.Visible = true;
 			unitInfoPanel.Visible = false;
 		}
 		#endregion

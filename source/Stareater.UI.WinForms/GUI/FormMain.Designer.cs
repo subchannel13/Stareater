@@ -28,8 +28,7 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-			this.glCanvas = new OpenTK.GLControl(OpenTK.Graphics.GraphicsMode.Default, 3, 2, OpenTK.Graphics.GraphicsContextFlags.Default);
-			this.returnButton = new System.Windows.Forms.Button();
+			this.glCanvas = new OpenTK.GLControl();
 			this.unitInfoPanel = new System.Windows.Forms.Panel();
 			this.movementInfo = new System.Windows.Forms.Label();
 			this.shieldInfo = new System.Windows.Forms.Label();
@@ -59,19 +58,6 @@
 			this.glCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.glCanvas_MouseMove);
 			this.glCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.glCanvas_MouseUp);
 			this.glCanvas.Resize += new System.EventHandler(this.glCanvas_Resize);
-			// 
-			// returnButton
-			// 
-			this.returnButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.returnButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.returnButton.Location = new System.Drawing.Point(792, 10);
-			this.returnButton.Name = "returnButton";
-			this.returnButton.Size = new System.Drawing.Size(80, 80);
-			this.returnButton.TabIndex = 4;
-			this.returnButton.Text = "button2";
-			this.returnButton.UseVisualStyleBackColor = true;
-			this.returnButton.Visible = false;
-			this.returnButton.Click += new System.EventHandler(this.returnButton_Click);
 			// 
 			// unitInfoPanel
 			// 
@@ -137,7 +123,6 @@
 			// 
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.abilityList);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.unitInfoPanel);
-			this.workaroundForWinformsAnchorBug.Controls.Add(this.returnButton);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.glCanvas);
 			this.workaroundForWinformsAnchorBug.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.workaroundForWinformsAnchorBug.Location = new System.Drawing.Point(0, 0);
@@ -175,7 +160,6 @@
 			this.ResumeLayout(false);
 
 		}
-		private System.Windows.Forms.Button returnButton;
 
 		#endregion
 		private OpenTK.GLControl glCanvas;
