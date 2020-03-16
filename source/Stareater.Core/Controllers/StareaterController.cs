@@ -43,13 +43,12 @@ namespace Stareater.Controllers
 			}
 			set
 			{
-				if (value == null)
-					throw new ArgumentNullException(nameof(value));
-
 				if (this.game.IsReadOnly || !this.EjectableStars.Contains(value))
 					return;
 
+#pragma warning disable CA1062 // Validate arguments of public methods, validated with this.EjectableStars.Contains
 				this.game.Orders[this.player].EjectingStar = value.Data;
+#pragma warning restore CA1062 // Validate arguments of public methods
 				this.game.Derivates[this.player].CalculateStareater(this.game);
             }
 		}

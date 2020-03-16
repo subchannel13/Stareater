@@ -400,7 +400,7 @@ namespace Stareater.Controllers
 				false,
 				this.Name.Trim(),
 				this.ImageIndex,
-				false,
+				true,
 				new Component<ArmorType>(this.armorInfo.Type, this.armorInfo.Level),
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
 				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,

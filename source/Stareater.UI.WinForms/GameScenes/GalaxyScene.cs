@@ -786,7 +786,7 @@ namespace Stareater.GameScenes
 				Translate(convert(star.Position));
 			
 			if (this.currentPlayer.StareaterSystem == star)
-				soBuilder.StartSimpleSprite(StarSpecialZ, GalaxyTextures.Get.Tow, Color.DarkViolet).
+				soBuilder.StartSimpleSprite(StarSpecialZ, GalaxyTextures.Get.StareaterBrain, Color.DarkViolet).
 				Scale(0.15f).
 				Translate(0.25, -0.25).
 				Translate(convert(star.Position));
