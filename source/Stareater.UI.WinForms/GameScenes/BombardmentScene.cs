@@ -1,293 +1,115 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using OpenTK;
+﻿using OpenTK;
 using Stareater.Controllers;
-using Stareater.Controllers.Views.Combat;
-using Stareater.Galaxy;
-using Stareater.Localization;
-using Stareater.Utils.NumberFormatters;
 using Stareater.GLData;
-using Stareater.GLData.OrbitShader;
-using Stareater.GLData.SpriteShader;
 using Stareater.GraphicsEngine;
 using Stareater.GraphicsEngine.GuiElements;
+using Stareater.Localization;
+using Stareater.Utils.NumberFormatters;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 
 namespace Stareater.GameScenes
 {
-	class BombardmentScene : AScene
+	class BombardmentScene : AStarSystemScene
 	{
-		private const float DefaultViewSize = 1;
-		private const float PanClickTolerance = 0.01f;
-		
-		private const float FarZ = 1;
-		private const float Layers = 8.0f;
-		
-		private const float PopCountZ = 2 / Layers;
-		private const float StarColorZ = 3 / Layers;
-		private const float PlanetZ = 3 / Layers;
-		private const float OrbitZ = 4 / Layers;
-		
-		private const float BodiesY = 0.01f;
-		private const float OrbitStep = 0.3f;
-		private const float OrbitOffset = 0.5f;
-		private const float OrbitWidth = 0.01f;
-		
-		private const float TitleTopMargin = 0.05f;
-		private const float TitleScale = 0.06f;
-		private const float StarScale = 0.5f;
-		private const float PlanetScale = 0.15f;
-		private const float OrbitPieces = 32;
-		private const float PopCountTopMargin = 0.03f;
-		private const float TextScale = 0.03f;
-		private const float ButtonSize = 0.1f;
-		private const float ButtonTopMargin = 0.03f;
-
-		private const float ButtonY = -PlanetScale / 2 - PopCountTopMargin - TextScale - ButtonTopMargin - ButtonSize / 2;
-
-		private IEnumerable<SceneObject> colonyInfos = null;
-		private IEnumerable<SceneObject> planetOrbits = null;
-		private IEnumerable<SceneObject> planetSprites = null;
-		private IEnumerable<SceneObject> bombButtons = null;
-		private SceneObject titleText = null;
-		private SceneObject starSprite = null;
-		
 		private BombardmentController controller;
-		
-		private Vector4? lastMousePosition = null;
-		private float panAbsPath = 0;
-		private float originOffset = 0;
-		private float minOffset;
-		private float maxOffset;
-		private float pixelSize = 1;
+
+		private readonly GuiImage starImage = null;
+		private List<AGuiElement> planetElements = new List<AGuiElement>();
 
 		public BombardmentScene()
 		{
-			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
-			var returnButton = new GuiButton
+			var titleText = new GuiText
 			{
-				ClickCallback = () => { this.controller.Leave(); },
-				BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.ButtonHover, 9),
-				BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.ButtonNormal, 9),
-				Padding = 12,
-				Margins = new Vector2(10, 5),
-				Text = context["Return"].Text(),
-				TextColor = Color.Black,
-				TextHeight = 20
+				Margins = new Vector2(0, 10),
+				Text = LocalizationManifest.Get.CurrentLanguage["FormMain"]["BombardTitle"].Text(),
+				TextColor = Color.White,
+				TextHeight = 32
 			};
-			returnButton.Position.WrapContent().Then.ParentRelative(1, 1).UseMargins();
-			this.AddElement(returnButton);
+			titleText.Position.WrapContent().Then.ParentRelative(0, 1).UseMargins();
+			this.AddElement(titleText);
+
+			this.starImage = new GuiImage();
+			this.starImage.Position.FixedSize(400, 400).RelativeTo(this.StarAnchor);
+			this.AddElement(this.starImage);
+		}
+
+		protected override void onReturn()
+		{
+			this.controller.Leave();
 		}
 
 		public void StartBombardment(BombardmentController controller)
 		{
 			this.controller = controller;
-			
-			this.maxOffset = controller.Planets.Count() * OrbitStep + OrbitOffset + PlanetScale / 2;
-			this.lastMousePosition = null;
-			
-			this.ResetLists();
-		}
-		
-		public void NewTurn()
-		{
-			this.setupVaos();
-		}
 
-		#region AScene implementation
-		protected override float guiLayerThickness => 1 / Layers;
-
-		protected override Matrix4 calculatePerspective()
-		{
-			var aspect = canvasSize.X / canvasSize.Y;
-			this.minOffset = aspect * DefaultViewSize / 2 - StarScale / 2;
-			this.pixelSize = DefaultViewSize / canvasSize.Y;
-			this.limitPan();
-			this.setupTitle();
-			
-			return calcOrthogonalPerspective(aspect * DefaultViewSize, DefaultViewSize, FarZ, new Vector2(originOffset, -BodiesY));
-		}
-		
-		#endregion
-		
-		//TODO(v0.8) refactor and remove
-		public void ResetLists()
-		{
-			this.setupVaos();
-		}
-		
-		#region Input events
-		protected override void onMouseClick(Vector2 mousePoint, Keys modiferKeys)
-		{
-			if (this.panAbsPath > PanClickTolerance)
-				return;
-			
-			var buttons = this.queryScene(convert(mousePoint)).ToList();
-			
-			if (buttons.Any())
-				this.controller.Bombard((int)buttons.First().Data);
-		}
-
-		protected override void onMouseMove(Vector4 mouseViewPosition, Keys modiferKeys)
-		{
-			this.lastMousePosition = mouseViewPosition;
-			this.panAbsPath = 0;
-		}
-
-		protected override void onMouseDrag(Vector4 mouseViewPosition)
-		{
-			if (!this.lastMousePosition.HasValue)
-				this.lastMousePosition = mouseViewPosition;
-
-			this.panAbsPath += (mouseViewPosition - this.lastMousePosition.Value).Length;
-
-			this.originOffset -= (Vector4.Transform(mouseViewPosition, this.invProjection) -
-				Vector4.Transform(this.lastMousePosition.Value, this.invProjection)
-				).X;
-
-			this.limitPan();
-
-			this.lastMousePosition = mouseViewPosition;
-			this.setupPerspective();
-			this.setupTitle();
-		}
-		#endregion
-
-		private void limitPan()
-		{
-			if (originOffset > maxOffset) 
-				originOffset = maxOffset;
-			if (originOffset < minOffset) 
-				originOffset = minOffset;
-		}
-		
-		private PolygonData planetSpriteData(CombatPlanetInfo planet)
-		{
-			var sprite = new TextureInfo();
-
-			switch(planet.Type)
+			this.starImage.Images = new[]
 			{
-				case PlanetType.Asteriod:
-					sprite = GalaxyTextures.Get.Asteroids;
-					break;
-				case PlanetType.GasGiant:
-					sprite = GalaxyTextures.Get.GasGiant;
-					break;
-				case PlanetType.Rock:
-					sprite = GalaxyTextures.Get.RockPlanet;
-					break;
-			}
+				new Sprite(GalaxyTextures.Get.SystemStar, controller.Star.Color)
+			};
+			var planets = controller.Planets.ToDictionary(x => x.Planet, x => x.Colony);
+			this.setupSystem(planets.Keys, x => planets[x]);
 
-			return new PolygonData(
-				PlanetZ,
-				new SpriteData(planetTransform(planet.OrdinalPosition), sprite.Id, Color.White, null),
-				SpriteHelpers.UnitRect(sprite).ToList()
-			);
-		}
-		
-		private Matrix4 planetTransform(int position)
-		{
-			return Matrix4.CreateScale(PlanetScale) * Matrix4.CreateTranslation(position * OrbitStep + OrbitOffset, 0, 0);
-		}
-		
-		private void setupVaos()
-		{
-			if (this.controller == null)
-				return; //TODO(v0.7) move check to better place
-			
-			this.setupBodies();
+			this.panTo(controller.Targets.First().Planet);
 			this.setupUi();
 		}
-		
-		private void setupBodies()
+
+		public void NewTurn()
 		{
-			var starTransform = Matrix4.CreateScale(StarScale);
-			
-			this.UpdateScene(
-				ref this.starSprite,
-				new SceneObject(new PolygonData(
-					StarColorZ,
-					new SpriteData(starTransform, GalaxyTextures.Get.SystemStar.Id, controller.Star.Color, null),
-					SpriteHelpers.UnitRect(GalaxyTextures.Get.SystemStar).ToList()
-				))
-			);
-			
-			this.UpdateScene(
-				ref this.planetSprites,
-				this.controller.Planets.Select(planet => new SceneObject(planetSpriteData(planet))).ToList()
-			);
-			
-			this.UpdateScene(
-				ref this.planetOrbits,
-				this.controller.Planets.Select(
-					planet => 
-					{
-						var orbitR = planet.OrdinalPosition * OrbitStep + OrbitOffset;
-						var color = planet.Owner != null ? planet.Owner.Color : Color.FromArgb(64, 64, 64);
-						
-						return new SceneObject(new PolygonData(
-							OrbitZ,
-							new OrbitData(orbitR - OrbitWidth / 2, orbitR + OrbitWidth / 2, color, Matrix4.Identity, GalaxyTextures.Get.PathLine),
-							OrbitHelpers.PlanetOrbit(orbitR, OrbitWidth, OrbitPieces).ToList()
-						));
-					}
-				).ToList()
-			);
+			this.setupUi();
+		}
+
+		private void addPlanetElement(AGuiElement element)
+		{
+			this.AddElement(element);
+			this.planetElements.Add(element);
 		}
 
 		private void setupUi()
 		{
-			var formatter = new ThousandsFormatter();
+			foreach (var element in planetElements)
+				this.RemoveElement(element);
+			this.planetElements = new List<AGuiElement>();
 
-			this.UpdateScene(
-				ref this.colonyInfos,
-				this.controller.Planets.Where(x => x.Owner != null).Select(
-					planet => new SceneObjectBuilder().
-						PixelSize(this.pixelSize).
-						StartText(
-							LocalizationManifest.Get.CurrentLanguage["FormMain"]["Population"].Text() + ": " + formatter.Format(planet.Population),
-							-0.5f, 0, PopCountZ, 1 / Layers, Color.White
-						).
-						Scale(TextScale).
-						Translate(planet.OrdinalPosition * OrbitStep + OrbitOffset, -PlanetScale / 2 - PopCountTopMargin).
-						Build()
-				).ToList()
-			);
+			foreach (var planet in this.controller.Planets)
+			{
+				var planetImage = new GuiImage
+				{
+					Image = GalaxyTextures.Get.PlanetSprite(planet.Type),
+				};
+				planetImage.Position.FixedSize(100, 100).RelativeTo(this.planetAnchor(planet.Planet));
+				this.addPlanetElement(planetImage);
 
-			this.UpdateScene(
-				ref this.bombButtons,
-				this.controller.Targets.Select(
-					colony => 
-					{ 
-						var xOffset = colony.OrdinalPosition * OrbitStep + OrbitOffset;
-						
-						return new SceneObject(
-							new PolygonData(
-								PopCountZ,
-								new SpriteData(Matrix4.CreateScale(ButtonSize) * Matrix4.CreateTranslation(xOffset, ButtonY, 0), GalaxyTextures.Get.BombButton.Id, Color.White, null),
-								SpriteHelpers.UnitRect(GalaxyTextures.Get.BombButton).ToList()
-							),
-							new PhysicalData(new Vector2(xOffset, ButtonY), new Vector2(ButtonSize, ButtonSize)),
-							colony.OrdinalPosition
-						);
-					}).ToList()
-			);
-		}
+				if (planet.Owner == null)
+					continue;
 
-		private void setupTitle()
-		{
-			this.UpdateScene(
-				ref this.titleText,
-				new SceneObjectBuilder().PixelSize(this.pixelSize).StartText(
-					LocalizationManifest.Get.CurrentLanguage["FormMain"]["BombardTitle"].Text(),
-					-0.5f, 0, PopCountZ, 1 / Layers, Color.White
-				).
-				Scale(TitleScale).
-				Translate(originOffset, DefaultViewSize / 2 - BodiesY - TitleTopMargin).
-				Build()
-			);
+				var colony = planet.Colony;
+				var formatter = new ThousandsFormatter();
+				var popInfo = new GuiText
+				{
+					Margins = new Vector2(0, 20),
+					TextHeight = 20,
+					Text = formatter.Format(colony.Population) + " / " + formatter.Format(colony.PopulationMax),
+					TextColor = colony.Owner.Color
+				};
+				popInfo.Position.WrapContent().Then.RelativeTo(planetImage, 0, -1, 0, 1).UseMargins();
+				this.addPlanetElement(popInfo);
+
+				if (this.controller.Targets.Contains(planet))
+				{
+					var bombButton = new GuiButton
+					{
+						BackgroundHover = new BackgroundTexture(GalaxyTextures.Get.BombButton, 6),
+						BackgroundNormal = new BackgroundTexture(GalaxyTextures.Get.BombButton, 6),
+						ClickCallback = () => this.controller.Bombard(planet.OrdinalPosition),
+						Margins = new Vector2(0, 20)
+					};
+					bombButton.Position.FixedSize(80, 80).RelativeTo(popInfo, 0, -1, 0, 1).UseMargins();
+					this.addPlanetElement(bombButton);
+				}
+			}
 		}
 	}
 }

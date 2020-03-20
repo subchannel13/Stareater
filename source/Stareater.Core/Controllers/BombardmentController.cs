@@ -100,7 +100,7 @@ namespace Stareater.Controllers
 			{
 				return this.battleGame.Planets.
 					Where(x => x.Colony != null).
-					Select(x => new CombatPlanetInfo(x));
+					Select(x => new CombatPlanetInfo(x, this.mainGame));
 			}
 		}
 
@@ -112,7 +112,7 @@ namespace Stareater.Controllers
 
 				return this.battleGame.Planets.
 					Where(x => x.Colony != null && this.mainGame.Processor.IsAtWar(player, x.Colony.Owner)).
-					Select(x => new CombatPlanetInfo(x));
+					Select(x => new CombatPlanetInfo(x, this.mainGame));
 			}
 		}
 	}

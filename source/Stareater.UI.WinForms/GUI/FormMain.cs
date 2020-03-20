@@ -488,7 +488,6 @@ namespace Stareater.GUI
 			}
 
 			if (galaxyRenderer != null) galaxyRenderer.ResetLists();
-			if (systemRenderer != null) systemRenderer.ResetLists();
 		}
 
 		void IGalaxyViewListener.SystemOpened(StarSystemController systemController)

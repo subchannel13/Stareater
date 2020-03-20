@@ -109,6 +109,7 @@
     <Compile Include="AppData\ImageCache.cs" />
     <Compile Include="AppData\LoadingMethods.cs" />
     <Compile Include="AppData\SettingsWinforms.cs" />
+    <Compile Include="GameScenes\AStarSystemScene.cs" />
     <Compile Include="GameScenes\Widgets\ConstructionSiteView.cs" />
     <Compile Include="GameScenes\IntroScene.cs" />
     <Compile Include="GameScenes\Widgets\EmptyPlanetView.cs" />
