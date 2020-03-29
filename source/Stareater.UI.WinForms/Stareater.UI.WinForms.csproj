@@ -116,6 +116,7 @@
     <Compile Include="GameScenes\Widgets\AMapSelectableItem.cs" />
     <Compile Include="GameScenes\Widgets\MapSelectableItem.cs" />
     <Compile Include="GameScenes\Widgets\ShipSelectableItem.cs" />
+    <Compile Include="GameScenes\Widgets\UnitStatus.cs" />
     <Compile Include="GLData\ColorMap.cs" />
     <Compile Include="GLData\GlyphContour.cs" />
     <Compile Include="GLData\OrbitShader\ArcBorderBuilder.cs" />

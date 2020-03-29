@@ -69,6 +69,7 @@ ShipCount = Ships
 MovementPoints = Move ready
 ArmorLabel = Armor
 ShieldLabel = Shield
+UnitDone = Done
 MovementEta §
 		Move in {=eta} turn{pluralDec}{pluralPrefix}
 	\

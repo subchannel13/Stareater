@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using OpenTK;
+﻿using OpenTK;
 using Stareater.Controllers;
 using Stareater.Controllers.Views;
 using Stareater.Controllers.Views.Combat;
 using Stareater.Controllers.Views.Ships;
 using Stareater.Galaxy;
-using Stareater.Utils;
-using Stareater.Utils.NumberFormatters;
+using Stareater.GameScenes.Widgets;
 using Stareater.GLData;
 using Stareater.GLData.OrbitShader;
-using Stareater.GraphicsEngine;
 using Stareater.GLData.SpriteShader;
-using Stareater.Utils.Collections;
-using System.Windows.Forms;
+using Stareater.GraphicsEngine;
 using Stareater.GraphicsEngine.Animators;
+using Stareater.Utils;
+using Stareater.Utils.Collections;
+using Stareater.Utils.NumberFormatters;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Stareater.GameScenes
 {
@@ -58,6 +59,7 @@ namespace Stareater.GameScenes
 		private IEnumerable<SceneObject> projectileSprites = null;
 		private IEnumerable<SceneObject> unitSprites = null;
 		private SceneObject starSprite = null;
+		private readonly UnitStatus unitControls;
 		
 		private CombatantInfo currentUnit = null;
 		
@@ -69,6 +71,13 @@ namespace Stareater.GameScenes
 		{
 			this.Controller = controller;
 			this.ResetLists();
+		}
+
+		public SpaceCombatScene()
+		{
+			this.unitControls = new UnitStatus();
+			this.unitControls.Position.ParentRelative(0, -1);
+			this.AddElement(this.unitControls);
 		}
 
 		#region AScene implementation
@@ -160,6 +169,7 @@ namespace Stareater.GameScenes
 		public void OnUnitTurn(CombatantInfo unitInfo)
 		{
 			this.currentUnit = unitInfo;
+			this.unitControls.SetView(unitInfo, this.Controller);
 			this.SelectedAbility = unitInfo.Abilities.FirstOrDefault(x => x.Quantity > 0);
 
 			var unitCenter = new Vector2(hexX(unitInfo.Position), hexY(unitInfo.Position));

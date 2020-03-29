@@ -340,7 +340,6 @@ namespace Stareater.GUI
 			this.nextRenderer = this.gameOverRenderer;
 			
 			this.abilityList.Visible = false;
-			this.unitInfoPanel.Visible = false;
 		}
 
 		public void OnNewTurn()
@@ -358,7 +357,6 @@ namespace Stareater.GUI
 				this.nextRenderer = this.galaxyRenderer;
 				
 				abilityList.Visible = false;
-				unitInfoPanel.Visible = false;
 			}
 			
 			if (galaxyRenderer != null) galaxyRenderer.OnNewTurn();
@@ -371,7 +369,6 @@ namespace Stareater.GUI
 			this.nextRenderer = this.combatRenderer;
 
 			abilityList.Visible = true;
-			unitInfoPanel.Visible = true;
 		}
 		
 		private void initBombardGui(BombardmentController bombardController)
@@ -382,7 +379,6 @@ namespace Stareater.GUI
 			this.nextRenderer = this.bombardRenderer;
 			
 			abilityList.Visible = false;
-			unitInfoPanel.Visible = false;
 		}
 		#endregion
 		
@@ -407,24 +403,6 @@ namespace Stareater.GUI
 			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 			var formatter = new ThousandsFormatter();
 			var decimalFormat = new DecimalsFormatter(0, 0);
-			
-			Func<string, double, double, string> hpText = (label, x, max) => 
-			{
-				var hpFormat = ThousandsFormatter.MaxMagnitudeFormat(x, max);
-				return context[label].Text() + ": " + hpFormat.Format(x) + " / " + hpFormat.Format(max);
-			};
-				
-			shipCount.Text = context["ShipCount"].Text() + ": " + formatter.Format(unitInfo.Count);
-			armorInfo.Text = hpText("ArmorLabel", unitInfo.ArmorHp, unitInfo.ArmorHpMax);
-			shieldInfo.Text = hpText("ShieldLabel", unitInfo.ShieldHp, unitInfo.ShieldHpMax);
-			
-			if (unitInfo.MovementEta > 0)
-				movementInfo.Text = context["MovementEta"].Text(
-					new Var("eta", unitInfo.MovementEta).Get, 
-					new TextVar("eta", unitInfo.MovementEta.ToString()).Get
-				);
-			else
-				movementInfo.Text = context["MovementPoints"].Text() + " (" + decimalFormat.Format(unitInfo.MovementPoints * 100) + " %)"; 
 			
 			this.abilityList.Controls.Clear();
 			Func<Image, string, object, Button> buttonMaker = (image, text, tag) =>
