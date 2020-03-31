@@ -85,6 +85,11 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 		}
 
 		#region Position builders
+		public void Clear()
+		{
+			this.positioners.Clear();
+		}
+
 		public ElementPosition FixedSize(float width, float height)
 		{
 			this.Size = new Vector2(width, height);

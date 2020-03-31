@@ -268,12 +268,13 @@ namespace Stareater.GameScenes
 			this.starInfo.Position.ParentRelative(0, -1);
 			this.AddElement(this.starInfo);
 
-			this.fleetsPanel = new ListPanel(3, 2, AMapSelectableItem<ShipGroupInfo>.Width, AMapSelectableItem<ShipGroupInfo>.Height, 5)
+			this.fleetsPanel = new ListPanel(3, AMapSelectableItem<ShipGroupInfo>.Width, AMapSelectableItem<ShipGroupInfo>.Height, 5)
 			{
 				Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 6),
 				Padding = 5
 			};
 			this.fleetsPanel.Position.ParentRelative(0, -1);
+			this.fleetsPanel.FixedRows(2);
 		}
 
 		public void OnNewTurn()

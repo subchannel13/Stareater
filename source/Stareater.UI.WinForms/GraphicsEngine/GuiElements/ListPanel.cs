@@ -1,10 +1,8 @@
 ﻿using OpenTK;
 using Stareater.GLData;
 using Stareater.GLData.SpriteShader;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 
 namespace Stareater.GraphicsEngine.GuiElements
 {
@@ -16,7 +14,7 @@ namespace Stareater.GraphicsEngine.GuiElements
 		private readonly ValueReference<Vector2> scrollOffset = new ValueReference<Vector2>();
 		private float scrollableHeight = 0;
 
-		public ListPanel(int columns, int rows, float elementWidth, float elementHeight, float elementSpacing) : base()
+		public ListPanel(int columns, float elementWidth, float elementHeight, float elementSpacing) : base()
 		{
 			this.Position.WrapContent().WithPadding(this.mPadding);
 			this.positionBuilder = new GridPositionBuilder(columns, elementWidth, elementHeight, elementSpacing);
@@ -26,8 +24,9 @@ namespace Stareater.GraphicsEngine.GuiElements
 				ParentRelative(-1, 1).UseMargins().
 				FixedSize(
 					columns * elementWidth + (columns - 1) * elementSpacing, 
-					rows * elementHeight + (rows - 1) * elementSpacing
-				);
+					elementHeight
+				).
+				StretchBottomTo(this, -1);
 
 			this.slider = new GuiSlider
 			{
@@ -36,6 +35,19 @@ namespace Stareater.GraphicsEngine.GuiElements
 				SlideCallback = onSlide
 			};
 			this.slider.Position.FixedSize(15, 45).RelativeTo(this.container, 1, 1, -1, 1).UseMargins().StretchBottomTo(this.container, -1);
+		}
+
+		public void FixedRows(int rows)
+		{
+			int columns = this.positionBuilder.Columns;
+
+			this.container.Position.Clear();
+			this.container.Position.
+				ParentRelative(-1, 1).UseMargins().
+				FixedSize(
+					columns * this.positionBuilder.ElementWidth + (columns - 1) * this.positionBuilder.ElementSpacing,
+					rows * this.positionBuilder.ElementHeight + (rows - 1) * this.positionBuilder.ElementSpacing
+				);
 		}
 
 		private readonly List<AGuiElement> mChildren = new List<AGuiElement>();
