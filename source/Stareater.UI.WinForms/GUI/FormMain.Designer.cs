@@ -30,7 +30,6 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
 			this.glCanvas = new OpenTK.GLControl(OpenTK.Graphics.GraphicsMode.Default, 3, 2, OpenTK.Graphics.GraphicsContextFlags.Default);
 			this.workaroundForWinformsAnchorBug = new System.Windows.Forms.Panel();
-			this.abilityList = new System.Windows.Forms.FlowLayoutPanel();
 			this.workaroundForWinformsAnchorBug.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -54,25 +53,12 @@
 			// 
 			// workaroundForWinformsAnchorBug
 			// 
-			this.workaroundForWinformsAnchorBug.Controls.Add(this.abilityList);
 			this.workaroundForWinformsAnchorBug.Controls.Add(this.glCanvas);
 			this.workaroundForWinformsAnchorBug.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.workaroundForWinformsAnchorBug.Location = new System.Drawing.Point(0, 0);
 			this.workaroundForWinformsAnchorBug.Name = "workaroundForWinformsAnchorBug";
 			this.workaroundForWinformsAnchorBug.Size = new System.Drawing.Size(884, 562);
 			this.workaroundForWinformsAnchorBug.TabIndex = 9;
-			// 
-			// abilityList
-			// 
-			this.abilityList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-			this.abilityList.AutoScroll = true;
-			this.abilityList.BackColor = System.Drawing.Color.Black;
-			this.abilityList.Location = new System.Drawing.Point(12, 50);
-			this.abilityList.Name = "abilityList";
-			this.abilityList.Size = new System.Drawing.Size(110, 475);
-			this.abilityList.TabIndex = 8;
-			this.abilityList.Visible = false;
 			// 
 			// FormMain
 			// 
@@ -94,6 +80,5 @@
 		#endregion
 		private OpenTK.GLControl glCanvas;
 		private System.Windows.Forms.Panel workaroundForWinformsAnchorBug;
-		private System.Windows.Forms.FlowLayoutPanel abilityList;
 	}
 }

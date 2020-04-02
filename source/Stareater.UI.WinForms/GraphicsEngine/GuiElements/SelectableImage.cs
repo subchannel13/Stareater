@@ -17,7 +17,6 @@ namespace Stareater.GraphicsEngine.GuiElements
 		private bool isPressed = false;
 		private bool isHovered = false;
 		private HashSet<SelectableImage<T>> group = new HashSet<SelectableImage<T>>();
-		//TODO(v0.9) remove from the group on detach
 
 		public Action<T> SelectCallback { get; set; }
 

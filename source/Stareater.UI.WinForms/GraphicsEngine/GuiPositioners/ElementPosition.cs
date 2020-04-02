@@ -311,7 +311,10 @@ namespace Stareater.GraphicsEngine.GuiPositioners
 			{
 				var margin = this.marginFilter * new Vector2(element.marginX, element.marginY);
 				var oppositeEnd = element.Center + element.Size * this.oppositePortion / 2;
-				var anchorEnd = this.anchor.Center + this.anchorPortion * (this.anchor.Size / 2 - margin);
+				var anchorEnd = this.anchor.Center + this.anchorPortion * this.anchor.Size / 2;
+
+				var marginSign = Vector2.Dot(anchorEnd - element.Center, this.strechAxis) > 0 ? -1 : 1;
+				anchorEnd += margin * marginSign;
 
 				element.Center = element.Center * this.preservedAxis + (oppositeEnd + anchorEnd) * this.strechAxis / 2;
 				element.Size = element.Size * this.preservedAxis + abs(oppositeEnd - anchorEnd) * this.strechAxis;

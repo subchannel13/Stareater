@@ -189,17 +189,6 @@ namespace Stareater.GUI
 			
 			switchToGalaxyView();
 		}
-
-		private void unitDoneAction_Click(object sender, EventArgs e)
-		{
-			this.combatRenderer.OnUnitDone();
-		}
-		
-		private void selectAbility_Click(object sender, EventArgs e)
-		{
-			this.combatRenderer.SelectedAbility = (sender as Control).Tag as AbilityInfo;
-		}
-
 		#region Canvas events
 
 		private void glCanvas_Load(object sender, EventArgs e)
@@ -338,8 +327,6 @@ namespace Stareater.GUI
 
 			this.gameOverRenderer.SetResults(this.gameController.Results);
 			this.nextRenderer = this.gameOverRenderer;
-			
-			this.abilityList.Visible = false;
 		}
 
 		public void OnNewTurn()
@@ -353,11 +340,7 @@ namespace Stareater.GUI
 			this.galaxyRenderer.SwitchPlayer(this.currentPlayer);
 			
 			if (this.currentRenderer == this.combatRenderer || this.currentRenderer == this.bombardRenderer)
-			{
 				this.nextRenderer = this.galaxyRenderer;
-				
-				abilityList.Visible = false;
-			}
 			
 			if (galaxyRenderer != null) galaxyRenderer.OnNewTurn();
 			if (systemRenderer != null) systemRenderer.OnNewTurn();
@@ -367,8 +350,6 @@ namespace Stareater.GUI
 		{
 			this.combatRenderer.StartCombat(this.conflictController);
 			this.nextRenderer = this.combatRenderer;
-
-			abilityList.Visible = true;
 		}
 		
 		private void initBombardGui(BombardmentController bombardController)
@@ -377,11 +358,9 @@ namespace Stareater.GUI
 			
 			this.bombardRenderer.StartBombardment(bombardmentController);
 			this.nextRenderer = this.bombardRenderer;
-			
-			abilityList.Visible = false;
 		}
 		#endregion
-		
+
 		#region IBattleEventListener implementation
 		void IBattleEventListener.OnStart()
 		{
@@ -389,7 +368,8 @@ namespace Stareater.GUI
 				this.Invoke(new Action(initCombatGui));
 			else
 				initCombatGui();
-	}
+		}
+
 		public void PlayUnit(CombatantInfo unitInfo)
 		{
 			if (this.InvokeRequired)
@@ -399,42 +379,6 @@ namespace Stareater.GUI
 			}
 			
 			this.combatRenderer.OnUnitTurn(unitInfo);
-			
-			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
-			var formatter = new ThousandsFormatter();
-			var decimalFormat = new DecimalsFormatter(0, 0);
-			
-			this.abilityList.Controls.Clear();
-			Func<Image, string, object, Button> buttonMaker = (image, text, tag) =>
-			{
-				var button = new Button
-				{
-					Image = image,
-					ImageAlign = ContentAlignment.MiddleLeft,
-					Margin = new Padding(3, 3, 3, 0),
-					Size = new Size(80, 32),
-					Text = text,
-					TextImageRelation = TextImageRelation.ImageBeforeText,
-					UseVisualStyleBackColor = true,
-					Tag = tag
-				};
-				button.Click += selectAbility_Click;
-				
-				return button;
-			};
-			
-			this.abilityList.Controls.Add(buttonMaker(
-					null,
-					context["MoveAction"].Text(),
-					null
-				));
-			
-			foreach(var ability in unitInfo.Abilities)
-				this.abilityList.Controls.Add(buttonMaker(
-					ImageCache.Get.Resized(ability.ImagePath, new Size(24, 24)),
-					"x " + formatter.Format(ability.Quantity),
-					ability
-				));
 		}
 		#endregion
 		

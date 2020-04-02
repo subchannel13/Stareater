@@ -770,7 +770,7 @@ namespace Stareater.GameLogic
 			
 			var abilities = new List<AbilityStats>(design.MissionEquipment.SelectMany(
 				equip => equip.TypeInfo.Abilities.Select(
-					x => AbilityStatsFactory.Create(x, equip.Level, equip.Quantity, statics)
+					x => AbilityStatsFactory.Create(x, equip.TypeInfo, equip.Level, equip.Quantity, statics)
 				)
 			));
 			var size = design.Hull.TypeInfo.Size.Evaluate(hullVars);

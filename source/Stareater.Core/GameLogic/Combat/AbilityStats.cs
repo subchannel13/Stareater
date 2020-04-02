@@ -6,6 +6,7 @@ namespace Stareater.GameLogic.Combat
 	class AbilityStats
 	{
 		public AAbilityType Type { get; private set; }
+		public AComponentType Provider { get; private set; }
 		public int Level { get; private set; }
 		public int Quantity { get; private set; }
 		
@@ -35,7 +36,7 @@ namespace Stareater.GameLogic.Combat
 		public double SplashShieldEfficiency { get; private set; }
 		public double SplashArmorEfficiency { get; private set; }
 
-		public AbilityStats(AAbilityType type, int level, int quantity,
+		public AbilityStats(AAbilityType type, AComponentType provider, int level, int quantity,
 							int range, bool isInstantDamage, bool isProjectile,
 							bool targetColony, bool targetShips, bool targetStar,
 							double firePower, double accuracy, double energyCost, double ammo,
@@ -44,6 +45,7 @@ namespace Stareater.GameLogic.Combat
                             double splashFirePower, double splashShieldEfficiency, double splashArmorEfficiency)
 		{
 			this.Type = type;
+			this.Provider = provider;
 			this.Level = level;
 			this.Quantity = quantity;
 

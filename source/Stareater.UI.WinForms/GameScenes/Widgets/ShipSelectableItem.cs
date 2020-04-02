@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace Stareater.GameScenes.Widgets
 {
-	class ShipSelectableItem : AMapSelectableItem<ShipGroupInfo>
+	class ShipSelectableItem : AListItem<ShipGroupInfo>
 	{
 		private bool mIsSelected = false;
 

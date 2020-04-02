@@ -7,7 +7,7 @@ namespace Stareater.GameLogic.Combat
 {
 	class AbilityStatsFactory : IAbilityVisitor
 	{
-		private int level;
+		private readonly int level;
 		private readonly StaticsDB statics;
 		
 		private int range = 0;
@@ -41,12 +41,12 @@ namespace Stareater.GameLogic.Combat
 			this.statics = statics;
 		}
 		
-		public static AbilityStats Create(AAbilityType type, int level, int quantity, StaticsDB statics)
+		public static AbilityStats Create(AAbilityType type, AComponentType provider, int level, int quantity, StaticsDB statics)
 		{
 			var factory = new AbilityStatsFactory(level, statics);
 			type.Accept(factory);
 			
-			return new AbilityStats(type, level, quantity, factory.range, factory.isInstantDamage, factory.isProjectile,
+			return new AbilityStats(type, provider, level, quantity, factory.range, factory.isInstantDamage, factory.isProjectile,
 								   factory.targetColony, factory.targetShips, factory.targetStar,
 			                       factory.firePower, factory.accuracy, factory.energyCost, factory.ammo,
 			                       factory.accuracyRangePenalty, factory.armorEfficiency, factory.shieldEfficiency, factory.planetEfficiency,

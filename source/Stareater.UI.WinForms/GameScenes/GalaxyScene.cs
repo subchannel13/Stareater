@@ -268,7 +268,7 @@ namespace Stareater.GameScenes
 			this.starInfo.Position.ParentRelative(0, -1);
 			this.AddElement(this.starInfo);
 
-			this.fleetsPanel = new ListPanel(3, AMapSelectableItem<ShipGroupInfo>.Width, AMapSelectableItem<ShipGroupInfo>.Height, 5)
+			this.fleetsPanel = new ListPanel(3, AListItem<ShipGroupInfo>.Width, AListItem<ShipGroupInfo>.Height, 5)
 			{
 				Background = new BackgroundTexture(GalaxyTextures.Get.PanelBackground, 6),
 				Padding = 5
@@ -392,7 +392,7 @@ namespace Stareater.GameScenes
 				Concat(othersFleets).
 				Select(x => addFleetSelection(x));
 
-			var starItem = star != null ? new MapSelectableItem<StarInfo>(star)
+			var starItem = star != null ? new ButtonItem<StarInfo>(star)
 			{
 				ImageBackground = Color.Black,
 				Images = new[] {
@@ -400,7 +400,7 @@ namespace Stareater.GameScenes
 					new Sprite(GalaxyTextures.Get.StarGlow),
 				},
 				Text = star.Name.ToText(LocalizationManifest.Get.CurrentLanguage),
-				OnSelect = item => showSelectionPanel(item.Data, new List<FleetInfo>())
+				OnSelect = item => showSelectionPanel(item, new List<FleetInfo>())
 			} :
 			null;
 
@@ -424,7 +424,7 @@ namespace Stareater.GameScenes
 					Matrix4.CreateScale(0.3f, 0.3f, 1) * Matrix4.CreateTranslation(0.3f, -0.3f + i * 0.35f, 0));
 		}
 
-		private MapSelectableItem<FleetInfo> addFleetSelection(FleetInfo fleet)
+		private ButtonItem<FleetInfo> addFleetSelection(FleetInfo fleet)
 		{
 			if (fleet == null)
 				return null;
@@ -441,12 +441,12 @@ namespace Stareater.GameScenes
 					this.currentPlayer.Star(fleet.Missions.Waypoints[0].Destionation).Name.ToText(lang)
 				).Get);
 
-			return new MapSelectableItem<FleetInfo>(fleet)
+			return new ButtonItem<FleetInfo>(fleet)
 			{
 				ImageBackground = fleet.Owner.Color,
 				Image = GalaxyTextures.Get.Sprite(biggestGroup.Design.ImagePath),
 				Text = text,
-				OnSelect = item => showSelectionPanel(null, new List<FleetInfo> { item.Data })
+				OnSelect = item => showSelectionPanel(null, new List<FleetInfo> { item })
 			};
 		}
 

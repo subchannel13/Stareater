@@ -10,6 +10,8 @@ using Stareater.GLData.OrbitShader;
 using Stareater.GLData.SpriteShader;
 using Stareater.GraphicsEngine;
 using Stareater.GraphicsEngine.Animators;
+using Stareater.GraphicsEngine.GuiElements;
+using Stareater.Localization;
 using Stareater.Utils;
 using Stareater.Utils.Collections;
 using Stareater.Utils.NumberFormatters;
@@ -60,9 +62,10 @@ namespace Stareater.GameScenes
 		private IEnumerable<SceneObject> unitSprites = null;
 		private SceneObject starSprite = null;
 		private readonly UnitStatus unitControls;
-		
+		private readonly ListPanel abilityList;
+
 		private CombatantInfo currentUnit = null;
-		
+
 		public SpaceBattleController Controller { get; private set; }
 
 		public AbilityInfo SelectedAbility { private get; set; }
@@ -78,6 +81,13 @@ namespace Stareater.GameScenes
 			this.unitControls = new UnitStatus();
 			this.unitControls.Position.ParentRelative(0, -1);
 			this.AddElement(this.unitControls);
+
+			this.abilityList = new ListPanel(1, AListItem<object>.Width, AListItem<object>.Height, 5)
+			{
+				Margins = new Vector2(5, 5)
+			};
+			this.abilityList.Position.ParentRelative(1, 1).UseMargins().Offset(0, -50).StretchBottomTo(this.unitControls, 1);
+			this.AddElement(this.abilityList);
 		}
 
 		#region AScene implementation
@@ -170,7 +180,28 @@ namespace Stareater.GameScenes
 		{
 			this.currentUnit = unitInfo;
 			this.unitControls.SetView(unitInfo, this.Controller);
-			this.SelectedAbility = unitInfo.Abilities.FirstOrDefault(x => x.Quantity > 0);
+
+			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
+			var moveButton = new OptionItem<AbilityInfo>(null)
+			{
+				Text = context["MoveAction"].Text(),
+				OnSelect = x => { this.SelectedAbility = null; }
+			};
+
+			var formatter = new ThousandsFormatter();
+			var buttons = new[] { moveButton }.
+				Concat(unitInfo.Abilities.Select(
+					ability => new OptionItem<AbilityInfo>(ability)
+					{
+						Image = GalaxyTextures.Get.Sprite(ability.ImagePath),
+						Text = ability.Name +  " x" + formatter.Format(ability.Quantity),
+						OnSelect = x => { this.SelectedAbility = x; }
+					}
+				)).ToList();
+			foreach (var button in buttons)
+				button.GroupWith(moveButton);
+			this.abilityList.Children = buttons;
+			buttons[buttons.Count > 1 ? 1 : 0].Select();
 
 			var unitCenter = new Vector2(hexX(unitInfo.Position), hexY(unitInfo.Position));
 			if (!this.isVisible(unitCenter))

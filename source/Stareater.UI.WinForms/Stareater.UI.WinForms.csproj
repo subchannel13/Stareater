@@ -113,8 +113,9 @@
     <Compile Include="GameScenes\Widgets\ConstructionSiteView.cs" />
     <Compile Include="GameScenes\IntroScene.cs" />
     <Compile Include="GameScenes\Widgets\EmptyPlanetView.cs" />
-    <Compile Include="GameScenes\Widgets\AMapSelectableItem.cs" />
-    <Compile Include="GameScenes\Widgets\MapSelectableItem.cs" />
+    <Compile Include="GameScenes\Widgets\AListItem.cs" />
+    <Compile Include="GameScenes\Widgets\ButtonItem.cs" />
+    <Compile Include="GameScenes\Widgets\OptionItem.cs" />
     <Compile Include="GameScenes\Widgets\ShipSelectableItem.cs" />
     <Compile Include="GameScenes\Widgets\UnitStatus.cs" />
     <Compile Include="GLData\ColorMap.cs" />

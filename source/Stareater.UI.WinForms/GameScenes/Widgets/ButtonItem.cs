@@ -5,14 +5,14 @@ using System.Windows.Forms;
 
 namespace Stareater.GameScenes.Widgets
 {
-	class MapSelectableItem<T> : AMapSelectableItem<T>
+	class ButtonItem<T> : AListItem<T>
 	{
 		private bool mIsPressed = false;
 
-		public MapSelectableItem(T data) : base(data)
+		public ButtonItem(T data) : base(data)
 		{ }
 
-		public Action<MapSelectableItem<T>> OnSelect { get; set; }
+		public Action<T> OnSelect { get; set; }
 
 		public override bool OnMouseDown(Vector2 mousePosition)
 		{
@@ -28,7 +28,7 @@ namespace Stareater.GameScenes.Widgets
 
 		public override void OnMouseUp(Keys modiferKeys)
 		{
-			this.OnSelect?.Invoke(this);
+			this.OnSelect?.Invoke(this.Data);
 		}
 
 		protected override BackgroundTexture backgroundTexture()

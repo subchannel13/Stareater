@@ -1,4 +1,5 @@
 ﻿using Stareater.GameLogic.Combat;
+using Stareater.Localization;
 
 namespace Stareater.Controllers.Views.Ships
 {
@@ -15,17 +16,10 @@ namespace Stareater.Controllers.Views.Ships
 			this.Quantity = quantity;
 		}
 		
-		public string ImagePath 
-		{
-			get
-			{
-				return this.Data.Type.ImagePath;
-			}
-		}
+		public string ImagePath => this.Data.Type.ImagePath;
 		
-		public int Range 
-		{ 
-			get { return this.Data.Range; }
-		}
+		public int Range => this.Data.Range;
+
+		public string Name => LocalizationManifest.Get.CurrentLanguage["MissionEquipment"].Name(this.Data.Provider.LanguageCode).Text();
 	}
 }

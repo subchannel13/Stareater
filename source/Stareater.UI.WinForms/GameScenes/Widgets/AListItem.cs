@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Stareater.GameScenes.Widgets
 {
-	abstract class AMapSelectableItem<T> : AGuiElement
+	abstract class AListItem<T> : AGuiElement
 	{
 		public const float Width = 150;
 		public const float Height = 40;
@@ -24,7 +24,7 @@ namespace Stareater.GameScenes.Widgets
 		protected bool isHovered = false;
 		private Vector2 textSize;
 		
-		protected AMapSelectableItem(T data)
+		protected AListItem(T data)
 		{
 			this.Data = data;
 			this.Position.FixedSize(Width, Height);
