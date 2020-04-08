@@ -69,6 +69,7 @@
 	code: cruiser
 	images [ 
 		:./images/ships/cruiser1
+		:./images/ships/cruiser2
 	]
 	
 	maxLvl= 0
@@ -91,4 +92,62 @@
 	jamming # 3;
 	cloaking # 3;
 	sensors # 0;
+}
+
+{ Hull
+	langCode: LINER_HULL
+	code: liner
+	images [ 
+		:./images/ships/liner1
+	]
+	
+	maxLvl= 0
+	prerequisites [
+	]
+	cost # 1.25e9;
+	
+	size # 1000;
+	space # 1000;
+	
+	sizeIS # 200;
+	sizeReactor # 200;
+	sizeShield # 200;
+	
+	armorBase # 1800;
+	armorAbsorb # 0.7;
+	shieldBase # 1800;
+	
+	inertia # 19;
+	jamming # 0;
+	cloaking # 0;
+	sensors # 2;
+}
+
+{ Hull
+	langCode: ASTEROID_HULL
+	code: asteroid
+	images [ 
+		:./images/ships/asteroid1
+	]
+	
+	maxLvl= 0
+	prerequisites [
+	]
+	cost # 6.25e9;
+	
+	size # 5000;
+	space # 5000;
+	
+	sizeIS # 1000;
+	sizeReactor # 1000;
+	sizeShield # 1000;
+	
+	armorBase # 1000;
+	armorAbsorb # 1;
+	shieldBase # 1000;
+	
+	inertia # 21;
+	jamming # 0;
+	cloaking # 0;
+	sensors # 5;
 }

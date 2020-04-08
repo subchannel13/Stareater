@@ -282,7 +282,7 @@ namespace Stareater.GameScenes
 				);
 		}
 
-        private SceneObject unitSprite(IGrouping<Vector2D, CombatantInfo> hex, IEnumerable<PlayerInfo> players)
+		private SceneObject unitSprite(IGrouping<Vector2D, CombatantInfo> hex, IEnumerable<PlayerInfo> players)
 		{
 			var polygons = new List<PolygonData>();
 			IAnimator animator = null;

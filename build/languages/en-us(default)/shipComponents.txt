@@ -17,6 +17,10 @@ SHUTTLE_HULL_NAME = Shuttle
 SHUTTLE_HULL_DESC = No description.
 CRUISER_HULL_NAME = Cruiser
 CRUISER_HULL_DESC = No description.
+LINER_HULL_NAME = Liner
+LINER_HULL_DESC = No description.
+ASTEROID_HULL_NAME = Asteroid
+ASTEROID_HULL_DESC = No description.
 
 CATALYZER_HULL_NAME = Catalyzer
 CATALYZER_HULL_DESC = No description.
