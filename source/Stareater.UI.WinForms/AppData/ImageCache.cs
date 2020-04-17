@@ -65,10 +65,9 @@ namespace Stareater.AppData
 			var enabledImage = this[path];
 			var disabledImage = new Bitmap(enabledImage.Width, enabledImage.Height);
 
-        	var matrix = new ColorMatrix();
-        	matrix.Matrix33 = 0.4f;
+			var matrix = new ColorMatrix { Matrix33 = 0.4f };
 
-        	var attributes = new ImageAttributes();
+			var attributes = new ImageAttributes();
         	attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
         	using(var g = Graphics.FromImage(disabledImage))

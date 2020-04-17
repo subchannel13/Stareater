@@ -395,6 +395,17 @@ namespace Stareater.GraphicsEngine
 			this.guiLayers().First(x => x.Contains(element)).RemoveElement(element);
 		}
 
+		public void UpdateElements(ref IEnumerable<AGuiElement> oldElement, ICollection<AGuiElement> newElement)
+		{
+			if (oldElement != null)
+				foreach (var element in oldElement)
+					this.RemoveElement(element);
+
+			foreach (var element in newElement)
+				this.AddElement(element);
+			oldElement = newElement;
+		}
+
 		public void HideElement(AGuiElement element)
 		{
 			if (this.normalGuiLayer.Contains(element))
@@ -421,11 +432,23 @@ namespace Stareater.GraphicsEngine
 		public void AddAnchor(GuiAnchor anchor)
 		{
 			this.anchors.Add(anchor);
+			anchor.Setup(this.projection, this.guiInvProjection);
 		}
 
 		public void RemoveAnchor(GuiAnchor anchor)
 		{
 			this.anchors.Remove(anchor);
+		}
+
+		public void UpdateAnchors(ref IEnumerable<GuiAnchor> oldAnchors, ICollection<GuiAnchor> newAnchors)
+		{
+			if (oldAnchors != null)
+				foreach (var anchor in oldAnchors)
+					this.RemoveAnchor(anchor);
+
+			foreach (var anchor in newAnchors)
+				this.AddAnchor(anchor);
+			oldAnchors = newAnchors;
 		}
 
 		public void ResetTooltipContents()

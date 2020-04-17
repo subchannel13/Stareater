@@ -41,7 +41,6 @@ namespace Stareater.GameScenes
 		private const float StarColorZ = 8 / Layers;
 		private const float StarSaturationZ = 7 / Layers;
 		private const float StarSpecialZ = 5 / Layers;
-		private const float StarNameZ = 5 / Layers;
 		private const float FleetZ = 4 / Layers;
 		private const float SelectionIndicatorZ = 3 / Layers;
 		private const float EtaZ = 2 / Layers;
@@ -54,7 +53,6 @@ namespace Stareater.GameScenes
 		private const float FleetIndicatorScale = 0.25f;
 		private const float FleetSelectorScale = 0.3f;
 		private const float PathWidth = 0.1f;
-		private const float StarNameScale = 0.35f;
 
 		public FleetController SelectedFleet { private get; set; }
 		private readonly IGalaxyViewListener galaxyViewListener;
@@ -74,6 +72,9 @@ namespace Stareater.GameScenes
 		private SceneObject selectionMarkers = null;
 		private SceneObject wormholeSprites = null;
 		private IEnumerable<SceneObject> starSprites = null;
+
+		private IEnumerable<GuiAnchor> starAnchors = null;
+		private IEnumerable<AGuiElement> starElements = null;
 
 		private int zoomLevel = 2;
 		private Vector4? lastMousePosition = null;
@@ -586,7 +587,7 @@ namespace Stareater.GameScenes
 		private void setupVaos()
 		{
 			//setup stars first so fleets can query them 
-			this.setupStarSprites();
+			this.setupStars();
 
 			this.setupScanRanges();
 			this.setupFleetMarkers();
@@ -747,15 +748,22 @@ namespace Stareater.GameScenes
 			);
 		}
 
-		private void setupStarSprites()
+		private void setupStars()
 		{
 			var stars = this.currentPlayer.Stars.OrderBy(x => x.Position.Y).ToList();
 			var textZRange = InterlayerZRange / stars.Count;
 
 			this.UpdateScene(
 				ref this.starSprites,
-				stars.Select((star, i) => starObject(star, i, textZRange)).ToList()
+				stars.Select(star => starObject(star)).ToList()
 			);
+
+			var anchorMapping = stars.ToDictionary(
+				x => x,
+				star => new GuiAnchor(star.Position.X, star.Position.Y - 0.5)
+			);
+			this.UpdateAnchors(ref this.starAnchors, anchorMapping.Values);
+			this.UpdateElements(ref this.starElements, anchorMapping.SelectMany(x => makeStarElements(x.Key, x.Value)).ToList());
 		}
 
 		private void setupWormholeSprites()
@@ -775,7 +783,7 @@ namespace Stareater.GameScenes
 			);
 		}
 
-		private SceneObject starObject(StarInfo star, int index, float textZRange)
+		private SceneObject starObject(StarInfo star)
 		{
 			var soBuilder = new SceneObjectBuilder(star, convert(star.Position), 0).
 				StartSimpleSprite(StarColorZ, GalaxyTextures.Get.StarColor, star.Color).
@@ -792,16 +800,32 @@ namespace Stareater.GameScenes
 				Translate(0.25, -0.25).
 				Translate(convert(star.Position));
 
-			if (this.zoomLevel > NameZoomLimit)
-				soBuilder.PixelSize(this.pixelSize).
-					StartText(
-						star.Name.ToText(LocalizationManifest.Get.CurrentLanguage),
-						-0.5f, 0, StarNameZ + index * textZRange, textZRange, starNameColor(star)
-					).
-					Scale(StarNameScale / (float)Math.Pow(ZoomBase, this.zoomLevel)).
-					Translate(star.Position.X, star.Position.Y - 0.5);
-			
 			return soBuilder.Build();
+		}
+
+		private IEnumerable<AGuiElement> makeStarElements(StarInfo star, GuiAnchor anchor)
+		{
+			if (this.zoomLevel > NameZoomLimit)
+			{
+				var nameColor = Color.FromArgb(64, 64, 64);
+				if (this.currentPlayer.IsStarVisited(star))
+				{
+					var colonies = this.currentPlayer.KnownColonies(star);
+					nameColor = colonies.Any() ? 
+						colonies.GroupBy(x => x.Owner).OrderByDescending(x => x.Count()).First().Key.Color : 
+						Color.LightGray;
+				}
+
+				var name = new GuiText
+				{
+					Text = star.Name.ToText(LocalizationManifest.Get.CurrentLanguage),
+					TextColor = nameColor,
+					TextHeight = 20
+				};
+				name.Position.WrapContent().Then.RelativeTo(anchor, 0, 0, 0, 1);
+
+				yield return name;
+			}
 		}
 		#endregion
 
@@ -849,7 +873,7 @@ namespace Stareater.GameScenes
 			this.limitPan();
 			this.setupPerspective();
 			this.setupScanRanges();
-			this.setupStarSprites();
+			this.setupStars();
 			this.setupMovementEta();
 		}
 
@@ -987,24 +1011,6 @@ namespace Stareater.GameScenes
 			{
 				return this.lastSelectedStars[this.currentPlayer.PlayerIndex];
 			}
-		}
-
-		private Color starNameColor(StarInfo star)
-		{
-			if (this.currentPlayer.IsStarVisited(star))
-			{
-				var colonies = this.currentPlayer.KnownColonies(star);
-
-				if (colonies.Any())
-				{
-					var dominantPlayer = colonies.GroupBy(x => x.Owner).OrderByDescending(x => x.Count()).First().Key;
-					return dominantPlayer.Color;
-				}
-
-				return Color.LightGray;
-			}
-
-			return Color.FromArgb(64, 64, 64);
 		}
 
 		private void selectDefaultStar()
