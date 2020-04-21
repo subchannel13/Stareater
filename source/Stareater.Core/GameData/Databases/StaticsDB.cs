@@ -21,6 +21,7 @@ namespace Stareater.GameData.Databases
 	{
 		public Dictionary<string, BuildingType> Buildings { get; private set; }
 		public ColonyFormulaSet ColonyFormulas { get; private set; }
+		public Dictionary<string, Formula> ExtraColonyFormulas { get; private set; }
 		public List<ConstructableType> Constructables { get; private set; }
 		public List<DevelopmentFocus> DevelopmentFocusOptions { get; private set; }
 		public Dictionary<string, DevelopmentRequirement> DevelopmentRequirements { get; private set; }
@@ -66,6 +67,7 @@ namespace Stareater.GameData.Databases
 			this.DevelopmentFocusOptions = new List<DevelopmentFocus>();
 			this.DevelopmentRequirements = new Dictionary<string, DevelopmentRequirement>();
 			this.DevelopmentTopics = new List<DevelopmentTopic>();
+			this.ExtraColonyFormulas = new Dictionary<string, Formula>();
 			this.PlanetForumlas = new Dictionary<PlanetType, PlanetForumlaSet>();
 			this.ResearchTopics = new List<ResearchTopic>();
 			this.Policies = new List<SystemPolicy>();
@@ -101,6 +103,9 @@ namespace Stareater.GameData.Databases
 						break;
 					case "DevelopmentTopic":
 						db.DevelopmentTopics.Add(loadDevelopmentTopic(data));
+						break;
+					case "ExtraColonyFormulas":
+						loadExtraFormulas(db.ExtraColonyFormulas, data, subformulas);
 						break;
 					case "Natives":
 						db.loadNatives(data.To<IkonComposite>());
@@ -208,6 +213,12 @@ namespace Stareater.GameData.Databases
 			}
 
 			return subformulas;
+		}
+
+		private static void loadExtraFormulas(Dictionary<string, Formula> destination, IkonComposite data, Dictionary<string, Formula> subformulas)
+		{
+			foreach (var key in data.Keys)
+				destination[key.ToUpperInvariant()] = data[key].To<Formula>().Substitute(subformulas);
 		}
 
 		#region Colony Formulas

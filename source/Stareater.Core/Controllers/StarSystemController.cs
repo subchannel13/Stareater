@@ -36,10 +36,24 @@ namespace Stareater.Controllers
 		public IEnumerable<PlanetInfo> Planets
 		{
 			get {
-				var planetInfos = this.player.Intelligence.About(this.star).Planets;
-				var knownPlanets = planetInfos.Where(x => x.Value.Explored).Select(x => x.Key);
-				
-				return knownPlanets.OrderBy(x => x.Position).Select(x => new PlanetInfo(x, this.game));
+				return this.player.Intelligence.About(this.star).Planets.
+					Where(x => x.Value.Explored).
+					OrderBy(x => x.Key.Position).
+					Select(x => new PlanetInfo(x.Key, this.game));
+			}
+		}
+
+		public IEnumerable<ColonyInfo> Colonies
+		{
+			get
+			{
+				var systemIntell = this.player.Intelligence.About(this.star).Planets;
+
+				//TODO(later) show last known colony information
+				return game.States.Colonies.
+					AtStar[this.star].
+					Where(x => systemIntell[x.Location.Planet].Explored).
+					Select(x => new ColonyInfo(x, game.Derivates[x]));
 			}
 		}
 		
@@ -48,11 +62,11 @@ namespace Stareater.Controllers
 			if (planet == null)
 				throw new ArgumentNullException(nameof(planet));
 
-			if (this.player.Intelligence.About(this.star).Planets[planet.Data].LastVisited != PlanetIntelligence.NeverVisited)
-				//TODO(later) show last known colony information
+			if (this.player.Intelligence.About(this.star).Planets[planet.Data].Explored)
 				if (game.States.Colonies.AtPlanet.Contains(planet.Data))
 				{
 					var colony = game.States.Colonies.AtPlanet[planet.Data];
+					//TODO(later) show last known colony information
 					return new ColonyInfo(colony, game.Derivates[colony]);
 				}
 			

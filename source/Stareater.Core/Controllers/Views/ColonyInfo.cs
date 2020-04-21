@@ -1,5 +1,6 @@
 ﻿using Stareater.Galaxy;
 using Stareater.GameLogic;
+using System;
 
 namespace Stareater.Controllers.Views
 {
@@ -24,5 +25,17 @@ namespace Stareater.Controllers.Views
 
 		public double Population => this.Data.Population;
 		public double PopulationMax => this.processor.MaxPopulation;
+
+		public double ExtraStats(string statName)
+		{
+			if (statName == null)
+				throw new ArgumentNullException(nameof(statName));
+			
+			var key = statName.ToUpperInvariant();
+			if (!this.processor.ExtraStats.ContainsKey(key))
+				throw new ArgumentOutOfRangeException(nameof(statName));
+
+			return this.processor.ExtraStats[key];
+		}
 	}
 }

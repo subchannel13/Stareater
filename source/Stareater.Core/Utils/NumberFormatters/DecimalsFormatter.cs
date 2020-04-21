@@ -6,7 +6,7 @@ namespace Stareater.Utils.NumberFormatters
 {
 	public class DecimalsFormatter
 	{
-		private string formatString;
+		private readonly string formatString;
 
 		public DecimalsFormatter(int obligatoryDecimals, int optionalDecimals)
 		{

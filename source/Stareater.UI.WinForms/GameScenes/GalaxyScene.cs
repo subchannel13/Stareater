@@ -803,29 +803,57 @@ namespace Stareater.GameScenes
 			return soBuilder.Build();
 		}
 
+		private Color starNameColor(StarInfo star)
+		{
+			if (!this.currentPlayer.IsStarVisited(star))
+				return Color.FromArgb(64, 64, 64);
+
+			var colonies = this.currentPlayer.KnownColonies(star);
+			return colonies.Any() ?
+				colonies.GroupBy(x => x.Owner).OrderByDescending(x => x.Count()).First().Key.Color :
+				Color.LightGray;
+		}
+
 		private IEnumerable<AGuiElement> makeStarElements(StarInfo star, GuiAnchor anchor)
 		{
-			if (this.zoomLevel > NameZoomLimit)
+			if (this.zoomLevel <= NameZoomLimit)
+				yield break;
+
+			IGuispaceElement lastLine = anchor;
+			var systemControl = this.currentPlayer.OpenStarSystem(star);
+			var player = this.currentPlayer.Info;
+			var ownColonies = systemControl.Colonies.Where(x => x.Owner == player).ToList();
+
+			if (ownColonies.Count > 0)
 			{
-				var nameColor = Color.FromArgb(64, 64, 64);
-				if (this.currentPlayer.IsStarVisited(star))
-				{
-					var colonies = this.currentPlayer.KnownColonies(star);
-					nameColor = colonies.Any() ? 
-						colonies.GroupBy(x => x.Owner).OrderByDescending(x => x.Count()).First().Key.Color : 
-						Color.LightGray;
-				}
+				//TODO log seems to grow too fast when migration kicks in and then slows down too much
+				var developmentIndex = Methods.InvLerp(
+					Math.Log(ownColonies.Sum(x => x.ExtraStats("devIndex"))),
+					Math.Log(ownColonies.Sum(x => x.ExtraStats("minDevIndex"))),
+					Math.Log(ownColonies.Sum(x => x.ExtraStats("maxDevIndex"))));
+				var formatter = new DecimalsFormatter(0, 0);
 
-				var name = new GuiText
+				var developmentInfo = new GuiText
 				{
-					Text = star.Name.ToText(LocalizationManifest.Get.CurrentLanguage),
-					TextColor = nameColor,
-					TextHeight = 20
+					Text = formatter.Format(developmentIndex * 100) + " %",
+					TextColor = starNameColor(star),
+					TextHeight = 12
 				};
-				name.Position.WrapContent().Then.RelativeTo(anchor, 0, 0, 0, 1);
+				developmentInfo.Position.WrapContent().Then.RelativeTo(lastLine, 0, -1, 0, 1);
+				lastLine = developmentInfo;
 
-				yield return name;
+				yield return developmentInfo;
 			}
+
+			var name = new GuiText
+			{
+				Text = star.Name.ToText(LocalizationManifest.Get.CurrentLanguage),
+				TextColor = starNameColor(star),
+				TextHeight = 20
+			};
+			name.Position.WrapContent().Then.RelativeTo(lastLine, 0, -1, 0, 1);
+
+			yield return name;
 		}
 		#endregion
 

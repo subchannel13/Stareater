@@ -73,6 +73,8 @@ namespace Stareater.GameLogic
 		public double MaintenancePenalty { get; set; }
 		[StatePropertyAttribute]
 		public double FuelProduction { get; internal set; }
+		[StatePropertyAttribute]
+		public Dictionary<string, double> ExtraStats { get; internal set; }
 
 		public ColonyProcessor(Colony colony) : base()
 		{
@@ -164,6 +166,12 @@ namespace Stareater.GameLogic
 			foreach (var construction in SpendingPlan)
 				if (construction.CompletedCount > 0)
 					counter.Count(construction.Project, construction.CompletedCount);
+
+			vars[MaxPopulationKey] = this.MaxPopulation;
+			this.ExtraStats = statics.ExtraColonyFormulas.ToDictionary(
+				x => x.Key,
+				x => x.Value.Evaluate(vars)
+			);
 		}
 		
 		public void CalculateSpending(MainGame game, PlayerProcessor playerProcessor)

@@ -272,7 +272,19 @@ namespace Stareater.Utils
 			yield return position + new Vector2D(-1, -1 + yOffset);
 			yield return position + new Vector2D(-1, 0 + yOffset);
 		}
-		
+
+		/// <summary>
+		/// Inverse of linear interpolation, calculates the weight of <paramref name="x"/> interpolation.
+		/// </summary>
+		/// <param name="x">A value inside the interval</param>
+		/// <param name="left">Interval lower bound</param>
+		/// <param name="right">Interval upper bound</param>
+		/// <returns>The weight</returns>
+		public static double InvLerp(double x, double min, double max)
+		{
+			return (x - min) / (max - min);
+		}
+
 		/// <summary>
 		/// Tests whether one rectangle ("outer") is completely contains other rectrangle ("inner").
 		/// </summary>
