@@ -824,25 +824,49 @@ namespace Stareater.GameScenes
 			var player = this.currentPlayer.Info;
 			var ownColonies = systemControl.Colonies.Where(x => x.Owner == player).ToList();
 
-			if (ownColonies.Count > 0)
+			if (this.currentPlayer.IsStarVisited(star) && systemControl.Planets.Any())
 			{
-				//TODO log seems to grow too fast when migration kicks in and then slows down too much
-				var developmentIndex = Methods.InvLerp(
-					Math.Log(ownColonies.Sum(x => x.ExtraStats("devIndex"))),
-					Math.Log(ownColonies.Sum(x => x.ExtraStats("minDevIndex"))),
-					Math.Log(ownColonies.Sum(x => x.ExtraStats("maxDevIndex"))));
-				var formatter = new DecimalsFormatter(0, 0);
+				var infoPanel = new GuiPanel();
+				infoPanel.Position.WrapContent().Then.RelativeTo(lastLine, 0, -1, 0, 1);
+				lastLine = infoPanel;
+				yield return infoPanel;
 
-				var developmentInfo = new GuiText
+				IGuispaceElement lastColumn = null;
+				if (ownColonies.Count > 0)
 				{
-					Text = formatter.Format(developmentIndex * 100) + " %",
-					TextColor = starNameColor(star),
-					TextHeight = 12
-				};
-				developmentInfo.Position.WrapContent().Then.RelativeTo(lastLine, 0, -1, 0, 1);
-				lastLine = developmentInfo;
+					//TODO log seems to grow too fast when migration kicks in and then slows down too much
+					var developmentIndex = Methods.InvLerp(
+						Math.Log(ownColonies.Sum(x => x.ExtraStats("devIndex"))),
+						Math.Log(ownColonies.Sum(x => x.ExtraStats("minDevIndex"))),
+						Math.Log(ownColonies.Sum(x => x.ExtraStats("maxDevIndex"))));
+					var formatter = new DecimalsFormatter(0, 0);
 
-				yield return developmentInfo;
+					var developmentInfo = new GuiText
+					{
+						Text = formatter.Format(developmentIndex * 100) + " %",
+						TextColor = Color.White,
+						TextHeight = 12,
+						Tooltip = new SimpleTooltip("FormMain", "SystemDevelopmentTooltip")
+					};
+					developmentInfo.Position.WrapContent().Then.ParentRelative(-1, 0);
+					lastColumn = developmentInfo;
+					infoPanel.AddChild(developmentInfo);
+				}
+
+				var planetsInfo = new GuiText
+				{
+					Text = new string('o', Math.Min(systemControl.Planets.Count(x => systemControl.PlanetsColony(x) == null), 3)),
+					TextColor = Color.White,
+					TextHeight = 12,
+					Margins = new Vector2(8, 0),
+					Tooltip = new SimpleTooltip("FormMain", "EmptyPlanetIndicatorTooltip")
+				};
+				planetsInfo.Position.WrapContent();
+				if (lastColumn != null)
+					planetsInfo.Position.RelativeTo(lastColumn, 1, 0, -1, 0).UseMargins();
+				else
+					planetsInfo.Position.ParentRelative(-1, 0);
+				infoPanel.AddChild(planetsInfo);
 			}
 
 			var name = new GuiText

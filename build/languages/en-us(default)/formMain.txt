@@ -64,6 +64,9 @@ DevelopmentMenu = Development
 
 SelectQuantityTitle = Select quantity
 
+SystemDevelopmentTooltip = General star system development level
+EmptyPlanetIndicatorTooltip = There are uncolonized planets in the system
+
 MoveAction = Move
 ShipCount = Ships
 MovementPoints = Move ready
