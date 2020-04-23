@@ -834,21 +834,15 @@ namespace Stareater.GameScenes
 				IGuispaceElement lastColumn = null;
 				if (ownColonies.Count > 0)
 				{
-					//TODO log seems to grow too fast when migration kicks in and then slows down too much
-					var developmentIndex = Methods.InvLerp(
-						Math.Log(ownColonies.Sum(x => x.ExtraStats("devIndex"))),
-						Math.Log(ownColonies.Sum(x => x.ExtraStats("minDevIndex"))),
-						Math.Log(ownColonies.Sum(x => x.ExtraStats("maxDevIndex"))));
-					var formatter = new DecimalsFormatter(0, 0);
-
-					var developmentInfo = new GuiText
+					var developmentInfo = new DevelopmentIndicator
 					{
-						Text = formatter.Format(developmentIndex * 100) + " %",
-						TextColor = Color.White,
-						TextHeight = 12,
+						Value = Methods.InvLerp(
+							Math.Log(ownColonies.Sum(x => x.ExtraStats("devIndex"))),
+							Math.Log(ownColonies.Sum(x => x.ExtraStats("minDevIndex"))),
+							Math.Log(ownColonies.Sum(x => x.ExtraStats("maxDevIndex")))),
 						Tooltip = new SimpleTooltip("FormMain", "SystemDevelopmentTooltip")
 					};
-					developmentInfo.Position.WrapContent().Then.ParentRelative(-1, 0);
+					developmentInfo.Position.FixedSize(80, 12).ParentRelative(-1, 0);
 					lastColumn = developmentInfo;
 					infoPanel.AddChild(developmentInfo);
 				}

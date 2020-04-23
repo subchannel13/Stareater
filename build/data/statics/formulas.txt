@@ -76,7 +76,7 @@
 
 { ExtraColonyFormulas
 	devIndex # pop + 3 * infra_count;
-	minDevIndex # 10e3;
+	minDevIndex # 40e3;
 	maxDevIndex # maxPop * (1 + 3 * 0.5 ^ (1 - heavyIndLvl / 5));
 }
 

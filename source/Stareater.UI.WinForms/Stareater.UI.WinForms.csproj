@@ -112,6 +112,7 @@
     <Compile Include="GameScenes\AStarSystemScene.cs" />
     <Compile Include="GameScenes\Widgets\ConstructionSiteView.cs" />
     <Compile Include="GameScenes\IntroScene.cs" />
+    <Compile Include="GameScenes\Widgets\DevelopmentIndicator.cs" />
     <Compile Include="GameScenes\Widgets\EmptyPlanetView.cs" />
     <Compile Include="GameScenes\Widgets\AListItem.cs" />
     <Compile Include="GameScenes\Widgets\ButtonItem.cs" />
