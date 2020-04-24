@@ -819,7 +819,7 @@ namespace Stareater.GameScenes
 			if (this.zoomLevel <= NameZoomLimit)
 				yield break;
 
-			IGuispaceElement lastLine = anchor;
+			var rowsPositioner = new LinearPositioner(false, anchor);
 			var systemControl = this.currentPlayer.OpenStarSystem(star);
 			var player = this.currentPlayer.Info;
 			var ownColonies = systemControl.Colonies.Where(x => x.Owner == player).ToList();
@@ -827,11 +827,11 @@ namespace Stareater.GameScenes
 			if (this.currentPlayer.IsStarVisited(star) && systemControl.Planets.Any())
 			{
 				var infoPanel = new GuiPanel();
-				infoPanel.Position.WrapContent().Then.RelativeTo(lastLine, 0, -1, 0, 1);
-				lastLine = infoPanel;
+				infoPanel.Position.WrapContent();
+				rowsPositioner.Add(infoPanel);
 				yield return infoPanel;
 
-				IGuispaceElement lastColumn = null;
+				var columnsPositioner = new LinearPositioner(true);
 				if (ownColonies.Count > 0)
 				{
 					var developmentInfo = new DevelopmentIndicator
@@ -842,24 +842,19 @@ namespace Stareater.GameScenes
 							Math.Log(ownColonies.Sum(x => x.ExtraStats("maxDevIndex")))),
 						Tooltip = new SimpleTooltip("FormMain", "SystemDevelopmentTooltip")
 					};
-					developmentInfo.Position.FixedSize(80, 12).ParentRelative(-1, 0);
-					lastColumn = developmentInfo;
+					developmentInfo.Position.FixedSize(80, 12);
+					columnsPositioner.Add(developmentInfo);
+					columnsPositioner.AddSpace(8);
 					infoPanel.AddChild(developmentInfo);
 				}
 
-				var planetsInfo = new GuiText
+				var planetsInfo = new GuiImage
 				{
-					Text = new string('o', Math.Min(systemControl.Planets.Count(x => systemControl.PlanetsColony(x) == null), 3)),
-					TextColor = Color.White,
-					TextHeight = 12,
-					Margins = new Vector2(8, 0),
+					Image = GalaxyTextures.Get.EmptyPlanetIndicator,
 					Tooltip = new SimpleTooltip("FormMain", "EmptyPlanetIndicatorTooltip")
 				};
-				planetsInfo.Position.WrapContent();
-				if (lastColumn != null)
-					planetsInfo.Position.RelativeTo(lastColumn, 1, 0, -1, 0).UseMargins();
-				else
-					planetsInfo.Position.ParentRelative(-1, 0);
+				planetsInfo.Position.FixedSize(10, 10);
+				columnsPositioner.Add(planetsInfo);
 				infoPanel.AddChild(planetsInfo);
 			}
 
@@ -869,7 +864,8 @@ namespace Stareater.GameScenes
 				TextColor = starNameColor(star),
 				TextHeight = 20
 			};
-			name.Position.WrapContent().Then.RelativeTo(lastLine, 0, -1, 0, 1);
+			name.Position.WrapContent();
+			rowsPositioner.Add(name);
 
 			yield return name;
 		}

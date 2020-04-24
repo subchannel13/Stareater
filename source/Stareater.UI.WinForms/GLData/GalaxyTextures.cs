@@ -74,6 +74,7 @@ namespace Stareater.GLData
 		public TextureInfo Design { get; private set; }
 		public TextureInfo Development { get; private set; }
 		public TextureInfo Diplomacy { get; private set; }
+		public TextureInfo EmptyPlanetIndicator { get; private set; }
 		public TextureInfo EndTurnHover { get; private set; }
 		public TextureInfo EndTurnNormal { get; private set; }
 		public TextureInfo FleetIndicator { get; private set;}
@@ -127,6 +128,7 @@ namespace Stareater.GLData
 			this.Design = this.spriteNames["design"];
 			this.Diplomacy = this.spriteNames["diplomacy"];
 			this.Development = this.spriteNames["development"];
+			this.EmptyPlanetIndicator = this.spriteNames["emptyPlanetIndicator"];
 			this.EndTurnHover = this.spriteNames["endTurnHover"];
 			this.EndTurnNormal = this.spriteNames["endTurnNormal"];
 			this.FleetIndicator = this.spriteNames[FleetIndicatorTag];
