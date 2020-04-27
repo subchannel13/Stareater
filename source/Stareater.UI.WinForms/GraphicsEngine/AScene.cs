@@ -30,6 +30,7 @@ namespace Stareater.GraphicsEngine
 		private Matrix4 guiProjection;
 		private Matrix4 guiInvProjection;
 
+		private readonly GuiLayer insceneGuiLayer;
 		private readonly GuiLayer normalGuiLayer;
 		private readonly GuiLayer tooltipGuiLayer;
 		private AGuiElement mouseHovered;
@@ -42,8 +43,9 @@ namespace Stareater.GraphicsEngine
 
 		protected AScene()
 		{
-			this.normalGuiLayer = new GuiLayer(this.guiLayerThickness, this.guiLayerThickness / 2);
-			this.tooltipGuiLayer = new GuiLayer(this.guiLayerThickness / 2, this.guiLayerThickness / 2);
+			this.insceneGuiLayer = new GuiLayer(this.guiLayerThickness, this.guiLayerThickness / 3);
+			this.normalGuiLayer = new GuiLayer(2 * this.guiLayerThickness / 3, this.guiLayerThickness / 3);
+			this.tooltipGuiLayer = new GuiLayer(this.guiLayerThickness / 3, this.guiLayerThickness / 3);
 
 			this.mouseHovered = this.normalGuiLayer.Root;
 		}
@@ -385,6 +387,11 @@ namespace Stareater.GraphicsEngine
 			this.normalGuiLayer.AddElement(element, this);
 		}
 
+		public void AddInsceneElement(AGuiElement element)
+		{
+			this.insceneGuiLayer.AddElement(element, this);
+		}
+
 		public void AddElement(AGuiElement element, AGuiElement parent)
 		{
 			this.guiLayers().First(x => x.Contains(parent)).AddElement(element, parent, this);
@@ -395,14 +402,14 @@ namespace Stareater.GraphicsEngine
 			this.guiLayers().First(x => x.Contains(element)).RemoveElement(element);
 		}
 
-		public void UpdateElements(ref IEnumerable<AGuiElement> oldElement, ICollection<AGuiElement> newElement)
+		public void UpdateInsceneElements(ref IEnumerable<AGuiElement> oldElement, ICollection<AGuiElement> newElement)
 		{
 			if (oldElement != null)
 				foreach (var element in oldElement)
 					this.RemoveElement(element);
 
 			foreach (var element in newElement)
-				this.AddElement(element);
+				this.AddInsceneElement(element);
 			oldElement = newElement;
 		}
 
@@ -467,6 +474,7 @@ namespace Stareater.GraphicsEngine
 		{
 			yield return this.tooltipGuiLayer;
 			yield return this.normalGuiLayer;
+			yield return this.insceneGuiLayer;
 		}
 
 		private IEnumerable<AGuiElement> eventHandlerSearch(Vector2 point)

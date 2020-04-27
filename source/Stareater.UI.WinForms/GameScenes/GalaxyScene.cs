@@ -763,7 +763,7 @@ namespace Stareater.GameScenes
 				star => new GuiAnchor(star.Position.X, star.Position.Y - 0.5)
 			);
 			this.UpdateAnchors(ref this.starAnchors, anchorMapping.Values);
-			this.UpdateElements(ref this.starElements, anchorMapping.SelectMany(x => makeStarElements(x.Key, x.Value)).ToList());
+			this.UpdateInsceneElements(ref this.starElements, anchorMapping.SelectMany(x => makeStarElements(x.Key, x.Value)).ToList());
 		}
 
 		private void setupWormholeSprites()
@@ -915,7 +915,6 @@ namespace Stareater.GameScenes
 			this.limitPan();
 			this.setupPerspective();
 			this.setupScanRanges();
-			this.setupStars();
 			this.setupMovementEta();
 		}
 
