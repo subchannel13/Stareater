@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Stareater.Controllers.Views.Ships;
+using Stareater.GameData.Databases.Tables;
 using Stareater.GameData.Ships;
 using Stareater.GameLogic;
 using Stareater.Players;
@@ -54,8 +55,8 @@ namespace Stareater.Controllers
 				game.Statics
 			);
 
-			return drive != null ? 
-				new IsDriveInfo(drive.TypeInfo, drive.Level, PlayerProcessor.DesignPoweredVars(hull,reactor, this.selectedSpecialEquipment, this.selectedMissionEquipment, game.Statics).Get) : 
+			return drive != null ?
+				new IsDriveInfo(drive.TypeInfo, drive.Level, PlayerProcessor.DesignPoweredVars(hull, reactor, this.selectedMissionEquipment, this.selectedSpecialEquipment, game.Statics).Get) :
 				null;
 		}
 
@@ -71,7 +72,7 @@ namespace Stareater.Controllers
 			);
 
 			return reactor != null ? 
-				new ReactorInfo(reactor.TypeInfo, reactor.Level, PlayerProcessor.DesignBaseVars(hull, this.selectedSpecialEquipment, this.selectedMissionEquipment, game.Statics).Get) : 
+				new ReactorInfo(reactor.TypeInfo, reactor.Level, PlayerProcessor.DesignBaseVars(hull, this.selectedMissionEquipment, this.selectedSpecialEquipment, game.Statics).Get) : 
 				null;
 		}
 
@@ -98,9 +99,9 @@ namespace Stareater.Controllers
 		private Var shipBaseVars()
 		{
 			return PlayerProcessor.DesignBaseVars(
-				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level), 
+				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
+				this.selectedMissionEquipment,
 				this.selectedSpecialEquipment, 
-				this.selectedMissionEquipment, 
 				this.game.Statics);
 		}
 		
@@ -109,8 +110,8 @@ namespace Stareater.Controllers
 			return PlayerProcessor.DesignPoweredVars(
 				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level), 
 				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level),
-				this.selectedSpecialEquipment, 
 				this.selectedMissionEquipment,
+				this.selectedSpecialEquipment, 
 				this.game.Statics);
 		}
 		
@@ -269,7 +270,8 @@ namespace Stareater.Controllers
 					this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
 					this.Shield != null ? new Component<ShieldType>(this.Shield.Type, this.Shield.Level) : null,
 					selectedMissionEquipment,
-					selectedSpecialEquipment
+					selectedSpecialEquipment,
+					this.game.Statics
 				);
 			}
 		}
@@ -288,10 +290,13 @@ namespace Stareater.Controllers
 		{
 			get 
 			{
+				var shipVars = PlayerProcessor.DesignBaseVars(
+					new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level), 
+					this.selectedMissionEquipment, this.selectedSpecialEquipment, game.Statics);
 				var specEquipVars = new Var(AComponentType.SizeKey, this.selectedHull.Size);
 
 				return (this.HasIsDrive ? this.selectedHull.IsDriveSize : 0) + 
-					(this.Shield != null ? this.selectedHull.ShieldSize : 0) +
+					(this.Shield != null ? shipVars[ShipFormulaSet.ShieldSizeKey] : 0) +
 					this.selectedMissionEquipment.Sum(x => x.TypeInfo.Size.Evaluate(new Var(AComponentType.LevelKey, x.Level).Get) * x.Quantity) + 
 					this.selectedSpecialEquipment.Sum(x => x.TypeInfo.Size.Evaluate(specEquipVars.Set(AComponentType.LevelKey, x.Level).Get) * x.Quantity);
 			} 
@@ -409,7 +414,8 @@ namespace Stareater.Controllers
 				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level),
 				this.Shield != null ? new Component<ShieldType>(this.Shield.Type, this.Shield.Level) : null,
 				selectedMissionEquipment,
-				selectedSpecialEquipment
+				selectedSpecialEquipment,
+				this.game.Statics
 			);
 			design.CalcHash(this.game.Statics);
 			

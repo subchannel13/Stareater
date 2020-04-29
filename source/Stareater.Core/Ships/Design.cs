@@ -6,6 +6,8 @@ using Stareater.Players;
 using Stareater.Utils;
 using Stareater.GameData.Databases;
 using System.Linq;
+using Stareater.GameLogic;
+using Stareater.GameData.Databases.Tables;
 
 namespace Stareater.Ships
 {
@@ -64,7 +66,7 @@ namespace Stareater.Ships
 
 		public Design(string idCode, Player owner, bool isObsolete, string name, int imageIndex, bool usesFuel, 
 			Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ThrusterType> thrusters, 
-			Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment) 
+			Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics) 
 		{
 			this.IdCode = idCode;
 			this.Owner = owner;
@@ -82,7 +84,7 @@ namespace Stareater.Ships
 			this.SpecialEquipment = specialEquipment;
 			this.Thrusters = thrusters;
 			
-			this.Cost = initCost();
+			this.Cost = initCost(statics);
  		}
 
 		private Design() 
@@ -135,9 +137,9 @@ namespace Stareater.Ships
 			}
 		}
 
-		private double initCost()
+		private double initCost(StaticsDB statics)
 		{
-			return CalculateCost(this.Hull, this.IsDrive, this.Shield, this.MissionEquipment, this.SpecialEquipment);
+			return CalculateCost(this.Hull, this.IsDrive, this.Shield, this.MissionEquipment, this.SpecialEquipment, statics);
 		}
 
 		private static void HashComponent<T>(BitHashBuilder hashBuilder, Component<T> component, IDictionary<string, T> componentAssortiment) where T : AComponentType
@@ -180,9 +182,11 @@ namespace Stareater.Ships
 		#endregion
 
 		public static double CalculateCost(Component<HullType> hull, Component<IsDriveType> isDrive, Component<ShieldType> shield,
-										   List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment)
+										   List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment,
+										   StaticsDB statics)
 		{
 			var hullVars = new Var(AComponentType.LevelKey, hull.Level).Get;
+			var shipVars = PlayerProcessor.DesignBaseVars(hull, missionEquipment, specialEquipment, statics);
 			double hullCost = hull.TypeInfo.Cost.Evaluate(hullVars);
 
 			double isDriveCost = 0;
@@ -197,7 +201,7 @@ namespace Stareater.Ships
 			if (shield != null)
 			{
 				var shieldVars = new Var(AComponentType.LevelKey, shield.Level).
-					And(AComponentType.SizeKey, hull.TypeInfo.SizeShield.Evaluate(hullVars)).Get;
+					And(AComponentType.SizeKey, shipVars[ShipFormulaSet.ShieldSizeKey]).Get;
 				shieldCost = shield.TypeInfo.Cost.Evaluate(shieldVars);
 			}
 

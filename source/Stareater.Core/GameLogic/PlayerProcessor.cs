@@ -633,8 +633,8 @@ namespace Stareater.GameLogic
 
 		#region Design stats
 		public static Var DesignBaseVars(
-			Component<HullType> hull, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, 
-			IEnumerable<Component<MissionEquipmentType>> missionEquipment, StaticsDB statics)
+			Component<HullType> hull, IEnumerable<Component<MissionEquipmentType>> missionEquipment, 
+			IEnumerable<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics)
 		{
 			var hullVars = new Var(AComponentType.LevelKey, hull.Level).Get;
 			
@@ -644,7 +644,6 @@ namespace Stareater.GameLogic
 				And("hullJamming", hull.TypeInfo.JammingBase.Evaluate(hullVars)).
 				And("hullInertia", hull.TypeInfo.InertiaBase.Evaluate(hullVars)).
 				And("hullSize", hull.TypeInfo.Size.Evaluate(hullVars)).
-				And("hullShield", hull.TypeInfo.SizeShield.Evaluate(hullVars)).
 				And(HullType.IsDriveSizeKey, hull.TypeInfo.SizeIS.Evaluate(hullVars)).
 				Init(statics.SpecialEquipment.Keys, 0).
 				Init(statics.SpecialEquipment.Keys.Select(x => x + AComponentType.LevelSuffix), 0).
@@ -655,18 +654,18 @@ namespace Stareater.GameLogic
 				UnionWith(missionEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).
 				UnionWith(missionEquipment, x => x.TypeInfo.IdCode + AComponentType.LevelSuffix, x => x.Level);
 
-			shipVars.And("reactorSize", statics.ShipFormulas.ReactorSize.Evaluate(shipVars.Get));
-			shipVars.And("shieldSize", statics.ShipFormulas.ShieldSize.Evaluate(shipVars.Get));
+			shipVars.And(ShipFormulaSet.ReactorSizeKey, statics.ShipFormulas.ReactorSize.Evaluate(shipVars.Get));
+			shipVars.And(ShipFormulaSet.ShieldSizeKey, statics.ShipFormulas.ShieldSize.Evaluate(shipVars.Get));
 
 			return shipVars;
 		}
 		
 		public static Var DesignPoweredVars(
-			Component<HullType> hull, Component<ReactorType> reactor, 
-			IEnumerable<Component<SpecialEquipmentType>> specialEquipment, IEnumerable<Component<MissionEquipmentType>> missionEquipment, 
+			Component<HullType> hull, Component<ReactorType> reactor,
+			IEnumerable<Component<MissionEquipmentType>> missionEquipment, IEnumerable<Component<SpecialEquipmentType>> specialEquipment,
 			StaticsDB statics)
 		{
-			var shipVars = DesignBaseVars(hull, specialEquipment, missionEquipment, statics);
+			var shipVars = DesignBaseVars(hull, missionEquipment, specialEquipment, statics);
 			
 			shipVars[AComponentType.LevelKey] = reactor.Level;
 			shipVars[ReactorType.TotalPowerKey] = reactor.TypeInfo.Power.Evaluate(shipVars.Get);
@@ -697,7 +696,7 @@ namespace Stareater.GameLogic
 
 			var design = new Design(
 				states.MakeDesignId(), this.Player, false, oldDesign.Name, oldDesign.ImageIndex, oldDesign.UsesFuel,
-			    armor, hull, isDrive, reactor, sensor, thruster, shield, equipment, specials
+			    armor, hull, isDrive, reactor, sensor, thruster, shield, equipment, specials, statics
 			);
 			design.CalcHash(statics);
 			
@@ -707,12 +706,12 @@ namespace Stareater.GameLogic
 		public void Analyze(Design design, StaticsDB statics)
 		{
 			this.calcDesignStats(design, statics);
-			this.calcRefitCosts(design, statics.ShipFormulas);
+			this.calcRefitCosts(design, statics);
 		}
 		
 		private void calcDesignStats(Design design, StaticsDB statics)
 		{
-			var shipVars = DesignPoweredVars(design.Hull, design.Reactor, design.SpecialEquipment, design.MissionEquipment, statics);
+			var shipVars = DesignPoweredVars(design.Hull, design.Reactor, design.MissionEquipment, design.SpecialEquipment, statics);
 			var hullVars = new Var(AComponentType.LevelKey, design.Hull.Level).Get;
 			var armorVars = new Var(AComponentType.LevelKey, design.Armor.Level).Get;
 			var thrusterVars = new Var(AComponentType.LevelKey, design.Thrusters.Level).Get;
@@ -753,7 +752,7 @@ namespace Stareater.GameLogic
 			if (design.Shield != null)
 			{
 				shipVars[AComponentType.LevelKey] = design.Shield.Level;
-				shipVars[AComponentType.SizeKey] = design.Hull.TypeInfo.Size.Evaluate(hullVars); //TODO(v0.8) use shieldSize instead
+				shipVars[ShipFormulaSet.ShieldSizeKey] = design.Hull.TypeInfo.Size.Evaluate(hullVars);
 				var hullShieldHp = design.Hull.TypeInfo.ShieldBase.Evaluate(hullVars);
 				
 				shieldCloaking = design.Shield.TypeInfo.Cloaking.Evaluate(shipVars.Get) * hullShieldHp;
@@ -800,44 +799,46 @@ namespace Stareater.GameLogic
 			);
 		}
 		
-		private void calcRefitCosts(Design design, ShipFormulaSet shipFormulas)
+		private void calcRefitCosts(Design design, StaticsDB statics)
 		{
 			this.RefitCosts[design] = new Dictionary<Design, double>();
 			
 			var otherDesigns = this.DesignStats.Keys.Where(x => x.Hull.TypeInfo == design.Hull.TypeInfo && x != design).ToList();
 			foreach(var otherDesign in otherDesigns)
 			{
-				this.RefitCosts[design][otherDesign] = refitCost(design, otherDesign, shipFormulas);
-				this.RefitCosts[otherDesign][design] = refitCost(otherDesign, design, shipFormulas);
+				this.RefitCosts[design][otherDesign] = refitCost(design, otherDesign, statics);
+				this.RefitCosts[otherDesign][design] = refitCost(otherDesign, design, statics);
 			}
 		}
 		
-		private double refitCost(Design fromDesign, Design toDesign, ShipFormulaSet shipFormulas)
+		private double refitCost(Design fromDesign, Design toDesign, StaticsDB statics)
 		{
 			double cost = 0;
 			var hullVars = new Var(AComponentType.LevelKey, toDesign.Hull.Level).Get;
-			
-			var hullCost = refitComponentCost(fromDesign.Hull, toDesign.Hull, x => x.Cost, null, shipFormulas);
+			var levelRefitCost = statics.ShipFormulas.LevelRefitCost;
+
+			var hullCost = refitComponentCost(fromDesign.Hull, toDesign.Hull, x => x.Cost, null, levelRefitCost);
 			if (hullCost > 0)
 				cost += hullCost;
 			else
 			{
 				hullCost = toDesign.Hull.TypeInfo.Cost.Evaluate(new Var(AComponentType.LevelKey, toDesign.Hull.Level).Get);
-				cost += hullCost * shipFormulas.ArmorCostPortion *  refitComponentCost(fromDesign.Armor, toDesign.Armor, x => new Formula(1), null, shipFormulas);
-				cost += hullCost * shipFormulas.ReactorCostPortion *  refitComponentCost(fromDesign.Reactor, toDesign.Reactor, x => new Formula(1), null, shipFormulas);
-				cost += hullCost * shipFormulas.SensorCostPortion *  refitComponentCost(fromDesign.Sensors, toDesign.Sensors, x => new Formula(1), null, shipFormulas);
-				cost += hullCost * shipFormulas.ThrustersCostPortion *  refitComponentCost(fromDesign.Thrusters, toDesign.Thrusters, x => new Formula(1), null, shipFormulas);
+				cost += hullCost * statics.ShipFormulas.ArmorCostPortion * refitComponentCost(fromDesign.Armor, toDesign.Armor, x => new Formula(1), null, levelRefitCost);
+				cost += hullCost * statics.ShipFormulas.ReactorCostPortion * refitComponentCost(fromDesign.Reactor, toDesign.Reactor, x => new Formula(1), null, levelRefitCost);
+				cost += hullCost * statics.ShipFormulas.SensorCostPortion * refitComponentCost(fromDesign.Sensors, toDesign.Sensors, x => new Formula(1), null, levelRefitCost);
+				cost += hullCost * statics.ShipFormulas.ThrustersCostPortion * refitComponentCost(fromDesign.Thrusters, toDesign.Thrusters, x => new Formula(1), null, levelRefitCost);
 			}
-			
-			cost += refitComponentCost(fromDesign.IsDrive, toDesign.IsDrive, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.SizeIS.Evaluate(hullVars)), shipFormulas);
-			cost += refitComponentCost(fromDesign.Shield, toDesign.Shield, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.SizeShield.Evaluate(hullVars)), shipFormulas);
-			cost += refitComponentCost(fromDesign.MissionEquipment, toDesign.MissionEquipment, x => x.Cost, null, shipFormulas);
-			cost += refitComponentCost(fromDesign.SpecialEquipment, toDesign.SpecialEquipment, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.Size.Evaluate(hullVars)), shipFormulas);
+
+			var toDesignVars = DesignBaseVars(toDesign.Hull, toDesign.MissionEquipment, toDesign.SpecialEquipment, statics);
+			cost += refitComponentCost(fromDesign.IsDrive, toDesign.IsDrive, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.SizeIS.Evaluate(hullVars)), levelRefitCost);
+			cost += refitComponentCost(fromDesign.Shield, toDesign.Shield, x => x.Cost, new Var(AComponentType.SizeKey, toDesignVars[ShipFormulaSet.ShieldSizeKey]), levelRefitCost);
+			cost += refitComponentCost(fromDesign.MissionEquipment, toDesign.MissionEquipment, x => x.Cost, null, levelRefitCost);
+			cost += refitComponentCost(fromDesign.SpecialEquipment, toDesign.SpecialEquipment, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.Size.Evaluate(hullVars)), levelRefitCost);
 			
 			return cost;
 		}
 		
-		private double refitComponentCost<T>(Component<T> fromComponent, Component<T> toComponent, Func<T, Formula> costFormula, Var extraVars, ShipFormulaSet shipFormulas) where T : AComponentType
+		private double refitComponentCost<T>(Component<T> fromComponent, Component<T> toComponent, Func<T, Formula> costFormula, Var extraVars, Formula levelRefitCost) where T : AComponentType
 		{
 			if (toComponent == null)
 				return 0;
@@ -850,13 +851,13 @@ namespace Stareater.GameLogic
 				return fullCost;
 			
 			if (fromComponent.Level < toComponent.Level)
-				return fullCost * shipFormulas.LevelRefitCost.Evaluate(new Var(AComponentType.LevelKey, toComponent.Level - fromComponent.Level).Get);
+				return fullCost * levelRefitCost.Evaluate(new Var(AComponentType.LevelKey, toComponent.Level - fromComponent.Level).Get);
 
 			//refit from higher to lower or the same level is free
 			return 0;
 		}
 
-		private double refitComponentCost<T>(List<Component<T>> fromComponents, List<Component<T>> toComponents, Func<T, Formula> costFormula, Var extraVars, ShipFormulaSet shipFormulas) where T : AComponentType
+		private double refitComponentCost<T>(List<Component<T>> fromComponents, List<Component<T>> toComponents, Func<T, Formula> costFormula, Var extraVars, Formula levelRefitCost) where T : AComponentType
 		{
 			double cost = 0;
 
@@ -881,8 +882,8 @@ namespace Stareater.GameLogic
 						oldEquipment.Remove(equip.TypeInfo);
 				}
 
-				cost += similarQuantity * refitComponentCost(oldEquip, equip, costFormula, extraVars, shipFormulas);
-				cost += (equip.Quantity - similarQuantity) * refitComponentCost(null, equip, costFormula, extraVars, shipFormulas);
+				cost += similarQuantity * refitComponentCost(oldEquip, equip, costFormula, extraVars, levelRefitCost);
+				cost += (equip.Quantity - similarQuantity) * refitComponentCost(null, equip, costFormula, extraVars, levelRefitCost);
 			}
 
 			return cost;
@@ -909,7 +910,7 @@ namespace Stareater.GameLogic
 
 			var design = new Design(
 				states.MakeDesignId(), Player, false, predefDesign.Name, predefDesign.HullImageIndex, true,
-			    armor, hull, isDrive, reactor, sensor, thruster, shield, equipment, specials
+			    armor, hull, isDrive, reactor, sensor, thruster, shield, equipment, specials, statics
 			);
 			design.CalcHash(statics);
 			

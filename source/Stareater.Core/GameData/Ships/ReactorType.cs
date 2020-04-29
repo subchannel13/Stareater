@@ -2,6 +2,7 @@
 using System.Linq;
 using Stareater.AppData.Expressions;
 using Stareater.GameData.Databases;
+using Stareater.GameData.Databases.Tables;
 using Stareater.GameLogic;
 using Stareater.Ships;
 using Stareater.Utils;
@@ -32,7 +33,7 @@ namespace Stareater.GameData.Ships
 
 		public static Component<ReactorType> MakeBest(IDictionary<string, double> playersTechLevels, Component<HullType> hull, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, IEnumerable<Component<MissionEquipmentType>> missionEquipment, StaticsDB statics)
 		{
-			var shipVars = PlayerProcessor.DesignBaseVars(hull, specialEquipment, missionEquipment, statics).Get;
+			var shipVars = PlayerProcessor.DesignBaseVars(hull, missionEquipment, specialEquipment, statics).Get;
 
 			return Methods.FindBestOrDefault(
 				statics.Reactors.Values.Where(x => x.IsAvailable(playersTechLevels)).
@@ -40,7 +41,7 @@ namespace Stareater.GameData.Ships
 				Where(x =>
 				      {
 						  shipVars[AComponentType.LevelKey] = x.Level;
-						  return x.TypeInfo.MinSize.Evaluate(shipVars) <= shipVars["reactorSize"] && x.TypeInfo.CanPick; 
+						  return x.TypeInfo.MinSize.Evaluate(shipVars) <= shipVars[ShipFormulaSet.ReactorSizeKey] && x.TypeInfo.CanPick; 
 				      }),
 				x =>
 				{
@@ -52,7 +53,7 @@ namespace Stareater.GameData.Ships
 
 		public static double PowerOf(Component<ReactorType> reactor, Component<HullType> hull, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, IEnumerable<Component<MissionEquipmentType>> missionEquipment, StaticsDB statics)
 		{
-			var shipVars = PlayerProcessor.DesignBaseVars(hull, specialEquipment, missionEquipment, statics).Get;
+			var shipVars = PlayerProcessor.DesignBaseVars(hull, missionEquipment, specialEquipment, statics).Get;
 			shipVars[AComponentType.LevelKey] = reactor.Level;
 
 			return reactor.TypeInfo.Power.Evaluate(shipVars);

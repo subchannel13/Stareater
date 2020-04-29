@@ -5,6 +5,9 @@ namespace Stareater.GameData.Databases.Tables
 {
 	public class ShipFormulaSet
 	{
+		public const string ReactorSizeKey = "reactorSize";
+		public const string ShieldSizeKey = "shieldSize";
+
 		//TODO(v0.8) add computer accuracy bonus
 		//TODO(v0.8) add free space forumla
 		public Formula Cloaking { get; private set; }

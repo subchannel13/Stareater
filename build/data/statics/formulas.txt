@@ -139,8 +139,8 @@
 	naturalCloakBonus # 5;
 	sensorRangePenalty # -2;
 	
-	reactorSize # hullSize / 5 * (1 + 0.5 * extraReactor);
-	shieldSize # hullShield;
+	reactorSize # hullSize * 0.2 * (1 + 0.5 * extraReactor);
+	shieldSize # hullSize * 0.2;
 	
 	repairCostFactor # 0.2;
 	levelRefitCost # 0.2 ^ (1 - limit(lvl, 0, 5) / 5);

@@ -31,7 +31,7 @@ namespace Stareater.GameData.Ships
 		
 		public static Component<IsDriveType> MakeBest(IDictionary<string, double> playersTechLevels, Component<HullType> hull, Component<ReactorType> reactor, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, IEnumerable<Component<MissionEquipmentType>> missionEquipment, StaticsDB statics)
 		{
-			var shipVars = PlayerProcessor.DesignPoweredVars(hull, reactor, specialEquipment, missionEquipment, statics).Get;
+			var shipVars = PlayerProcessor.DesignPoweredVars(hull, reactor, missionEquipment, specialEquipment, statics).Get;
 			
 			return Methods.FindBestOrDefault(
 				statics.IsDrives.Values.Where(x => x.IsAvailable(playersTechLevels)).
