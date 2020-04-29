@@ -18,7 +18,6 @@
 	space # 10;
 	
 	sizeIS # 2;
-	sizeReactor # 2;
 	sizeShield # 2;
 	
 	armorBase # 10;
@@ -51,7 +50,6 @@
 	space # 50;
 	
 	sizeIS # 10;
-	sizeReactor # 10;
 	sizeShield # 10;
 	
 	armorBase # 60;
@@ -81,7 +79,6 @@
 	space # 200;
 	
 	sizeIS # 40;
-	sizeReactor # 40;
 	sizeShield # 40;
 	
 	armorBase # 300;
@@ -110,7 +107,6 @@
 	space # 1000;
 	
 	sizeIS # 200;
-	sizeReactor # 200;
 	sizeShield # 200;
 	
 	armorBase # 1800;
@@ -139,7 +135,6 @@
 	space # 5000;
 	
 	sizeIS # 1000;
-	sizeReactor # 1000;
 	sizeShield # 1000;
 	
 	armorBase # 1000;

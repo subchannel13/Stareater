@@ -613,7 +613,6 @@ namespace Stareater.GameData.Databases
 				data[HullSize].To<Formula>(),
 				data[HullSpace].To<Formula>(),
 				data[HullSizeIS].To<Formula>(),
-				data[HullSizeReactor].To<Formula>(),
 				data[HullSizeShield].To<Formula>(),
 				data[HullArmorBase].To<Formula>(),
 				data[HullArmorAbsorb].To<Formula>(),
@@ -914,7 +913,6 @@ namespace Stareater.GameData.Databases
 		private const string HullSpace = "space";
 		
 		private const string HullSizeIS = "sizeIS";
-		private const string HullSizeReactor = "sizeReactor";
 		private const string HullSizeShield = "sizeShield";
 		
 		private const string HullArmorBase = "armorBase";

@@ -139,7 +139,7 @@
 	naturalCloakBonus # 5;
 	sensorRangePenalty # -2;
 	
-	reactorSize # hullReactor * (1 + 0.5 * extraReactor);
+	reactorSize # hullSize / 5 * (1 + 0.5 * extraReactor);
 	shieldSize # hullShield;
 	
 	repairCostFactor # 0.2;

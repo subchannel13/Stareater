@@ -643,10 +643,9 @@ namespace Stareater.GameLogic
 				And("hullCloak", hull.TypeInfo.CloakingBase.Evaluate(hullVars)).
 				And("hullJamming", hull.TypeInfo.JammingBase.Evaluate(hullVars)).
 				And("hullInertia", hull.TypeInfo.InertiaBase.Evaluate(hullVars)).
-				And("hullReactor", hull.TypeInfo.SizeReactor.Evaluate(hullVars)).
+				And("hullSize", hull.TypeInfo.Size.Evaluate(hullVars)).
 				And("hullShield", hull.TypeInfo.SizeShield.Evaluate(hullVars)).
 				And(HullType.IsDriveSizeKey, hull.TypeInfo.SizeIS.Evaluate(hullVars)).
-				And(HullType.ReactorSizeKey, hull.TypeInfo.SizeReactor.Evaluate(hullVars)).
 				Init(statics.SpecialEquipment.Keys, 0).
 				Init(statics.SpecialEquipment.Keys.Select(x => x + AComponentType.LevelSuffix), 0).
 				UnionWith(specialEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).
@@ -754,7 +753,7 @@ namespace Stareater.GameLogic
 			if (design.Shield != null)
 			{
 				shipVars[AComponentType.LevelKey] = design.Shield.Level;
-				shipVars[AComponentType.SizeKey] = design.Hull.TypeInfo.Size.Evaluate(hullVars);
+				shipVars[AComponentType.SizeKey] = design.Hull.TypeInfo.Size.Evaluate(hullVars); //TODO(v0.8) use shieldSize instead
 				var hullShieldHp = design.Hull.TypeInfo.ShieldBase.Evaluate(hullVars);
 				
 				shieldCloaking = design.Shield.TypeInfo.Cloaking.Evaluate(shipVars.Get) * hullShieldHp;

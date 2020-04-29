@@ -87,14 +87,6 @@ namespace Stareater.Controllers.Views.Ships
 				return this.Type.SizeIS.Evaluate(levelVar);
 			}
 		}
-
-		public double ReactorSize
-		{
-			get
-			{
-				return this.Type.SizeReactor.Evaluate(levelVar);
-			}
-		}
 		
 		public double ShieldSize
 		{

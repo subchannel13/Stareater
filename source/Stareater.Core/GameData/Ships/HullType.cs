@@ -11,7 +11,6 @@ namespace Stareater.GameData.Ships
 	class HullType : AComponentType
 	{
 		public const string IsDriveSizeKey = "hullIsSize"; //base hull's IS drive size
-		public const string ReactorSizeKey = "hullReactorSize"; //base hull's reactor size
 
 		public ReadOnlyCollection<string> ImagePaths { get; private set; }
 		public Formula Cost { get; private set; }
@@ -20,7 +19,6 @@ namespace Stareater.GameData.Ships
 		public Formula SpaceFree { get; private set; }
 		
 		public Formula SizeIS { get; private set; }
-		public Formula SizeReactor { get; private set; }
 		public Formula SizeShield { get; private set; }
 		
 		public Formula ArmorBase { get; private set; }
@@ -35,7 +33,7 @@ namespace Stareater.GameData.Ships
 		public HullType(string code, string languageCode, string[] imagePaths,
 		                IEnumerable<Prerequisite> prerequisites, int maxLevel, bool canPick, Formula cost, 
 		                Formula size, Formula spaceFree, 
-		                Formula sizeIS, Formula sizeReactor, Formula sizeShield,
+		                Formula sizeIS, Formula sizeShield,
 		                Formula armorBase, Formula armorAbsorption, Formula shieldBase, 
 		                Formula inertiaBase, Formula jammingBase, Formula cloakingBase, Formula sensorsBase)
 			: base(code, languageCode, prerequisites, maxLevel, canPick)
@@ -45,7 +43,6 @@ namespace Stareater.GameData.Ships
 			this.Size = size;
 			this.SpaceFree = spaceFree;
 			this.SizeIS = sizeIS;
-			this.SizeReactor = sizeReactor;
 			this.SizeShield = sizeShield;
 			this.ArmorBase = armorBase;
 			this.ArmorAbsorption = armorAbsorption;
