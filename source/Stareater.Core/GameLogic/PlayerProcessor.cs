@@ -644,7 +644,6 @@ namespace Stareater.GameLogic
 				And("hullJamming", hull.TypeInfo.JammingBase.Evaluate(hullVars)).
 				And("hullInertia", hull.TypeInfo.InertiaBase.Evaluate(hullVars)).
 				And("hullSize", hull.TypeInfo.Size.Evaluate(hullVars)).
-				And(HullType.IsDriveSizeKey, hull.TypeInfo.SizeIS.Evaluate(hullVars)).
 				Init(statics.SpecialEquipment.Keys, 0).
 				Init(statics.SpecialEquipment.Keys.Select(x => x + AComponentType.LevelSuffix), 0).
 				UnionWith(specialEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).
@@ -654,6 +653,8 @@ namespace Stareater.GameLogic
 				UnionWith(missionEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).
 				UnionWith(missionEquipment, x => x.TypeInfo.IdCode + AComponentType.LevelSuffix, x => x.Level);
 
+			//TODO(v0.8) move to DesignStats
+			shipVars.And(ShipFormulaSet.IsDriveSizeKey, statics.ShipFormulas.IsDriveSize.Evaluate(shipVars.Get));
 			shipVars.And(ShipFormulaSet.ReactorSizeKey, statics.ShipFormulas.ReactorSize.Evaluate(shipVars.Get));
 			shipVars.And(ShipFormulaSet.ShieldSizeKey, statics.ShipFormulas.ShieldSize.Evaluate(shipVars.Get));
 
@@ -752,7 +753,6 @@ namespace Stareater.GameLogic
 			if (design.Shield != null)
 			{
 				shipVars[AComponentType.LevelKey] = design.Shield.Level;
-				shipVars[ShipFormulaSet.ShieldSizeKey] = design.Hull.TypeInfo.Size.Evaluate(hullVars);
 				var hullShieldHp = design.Hull.TypeInfo.ShieldBase.Evaluate(hullVars);
 				
 				shieldCloaking = design.Shield.TypeInfo.Cloaking.Evaluate(shipVars.Get) * hullShieldHp;
@@ -772,10 +772,11 @@ namespace Stareater.GameLogic
 				)
 			));
 			var size = design.Hull.TypeInfo.Size.Evaluate(hullVars);
-			shipVars.And("size", size);
+			shipVars[AComponentType.SizeKey] = size;
 
 			this.DesignStats[design] = new DesignStats(
 				size,
+				shipVars[ShipFormulaSet.ShieldSizeKey],
 				galaxySpeed,
 				shipVars[ReactorType.TotalPowerKey],
 				statics.ShipFormulas.ScanRange.Evaluate(shipVars.Get),
@@ -830,8 +831,8 @@ namespace Stareater.GameLogic
 			}
 
 			var toDesignVars = DesignBaseVars(toDesign.Hull, toDesign.MissionEquipment, toDesign.SpecialEquipment, statics);
-			cost += refitComponentCost(fromDesign.IsDrive, toDesign.IsDrive, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.SizeIS.Evaluate(hullVars)), levelRefitCost);
-			cost += refitComponentCost(fromDesign.Shield, toDesign.Shield, x => x.Cost, new Var(AComponentType.SizeKey, toDesignVars[ShipFormulaSet.ShieldSizeKey]), levelRefitCost);
+			cost += refitComponentCost(fromDesign.IsDrive, toDesign.IsDrive, x => x.Cost, new Var(ShipFormulaSet.IsDriveSizeKey, toDesignVars[ShipFormulaSet.IsDriveSizeKey]), levelRefitCost);
+			cost += refitComponentCost(fromDesign.Shield, toDesign.Shield, x => x.Cost, new Var(ShipFormulaSet.ShieldSizeKey, toDesignVars[ShipFormulaSet.ShieldSizeKey]), levelRefitCost);
 			cost += refitComponentCost(fromDesign.MissionEquipment, toDesign.MissionEquipment, x => x.Cost, null, levelRefitCost);
 			cost += refitComponentCost(fromDesign.SpecialEquipment, toDesign.SpecialEquipment, x => x.Cost, new Var(AComponentType.SizeKey, toDesign.Hull.TypeInfo.Size.Evaluate(hullVars)), levelRefitCost);
 			

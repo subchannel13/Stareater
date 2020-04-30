@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Stareater.GameData.Databases.Tables;
 using Stareater.GameData.Ships;
 using Stareater.Localization;
 using Stareater.Utils.Collections;
@@ -15,13 +16,13 @@ namespace Stareater.Controllers.Views.Ships
 		
 		private readonly IDictionary<string, double> vars;
 		
-		internal ShieldInfo(ShieldType type, int level, HullInfo shipHull)
+		internal ShieldInfo(ShieldType type, int level, double shieldSize)
 		{
 			this.Type = type;
 			this.Level = level;
 			
 			this.vars = new Var(AComponentType.LevelKey, level).
-				And(AComponentType.SizeKey, shipHull.Size).Get;
+				And(ShipFormulaSet.ShieldSizeKey, shieldSize).Get;
 		}
 		
 		public string Name

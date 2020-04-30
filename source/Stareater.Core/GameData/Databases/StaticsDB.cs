@@ -323,6 +323,7 @@ namespace Stareater.GameData.Databases
 				data["towCapacity"].To<Formula>().Substitute(subformulas),
 				data[ShipColonyPopulation].To<Formula>().Substitute(subformulas),
 				colonizerBuildings,
+				data["driveSize"].To<Formula>().Substitute(subformulas),
 				data[ShipReactorSize].To<Formula>().Substitute(subformulas),
 				data[ShipShieldSize].To<Formula>().Substitute(subformulas),
 				data[ShipNaturalCloakBonus].To<Formula>().Substitute(subformulas).Evaluate(null),
@@ -612,7 +613,6 @@ namespace Stareater.GameData.Databases
 				data[GeneralCostKey].To<Formula>(),
 				data[HullSize].To<Formula>(),
 				data[HullSpace].To<Formula>(),
-				data[HullSizeIS].To<Formula>(),
 				data[HullArmorBase].To<Formula>(),
 				data[HullArmorAbsorb].To<Formula>(),
 				data[HullShieldBase].To<Formula>(),
@@ -910,8 +910,6 @@ namespace Stareater.GameData.Databases
 		private const string HullImages = "images";
 		private const string HullSize = "size";
 		private const string HullSpace = "space";
-		
-		private const string HullSizeIS = "sizeIS";
 		
 		private const string HullArmorBase = "armorBase";
 		private const string HullArmorAbsorb = "armorAbsorb";

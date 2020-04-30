@@ -6,6 +6,7 @@ using Stareater.GameLogic;
 using Stareater.Ships;
 using Stareater.Utils;
 using Stareater.Utils.StateEngine;
+using Stareater.GameData.Databases.Tables;
 
 namespace Stareater.GameData.Ships
 {
@@ -39,7 +40,7 @@ namespace Stareater.GameData.Ships
 				Where(x =>
 				      {
 				      	shipVars[AComponentType.LevelKey] = x.Level;
-				      	return x.TypeInfo.MinSize.Evaluate(shipVars) <= shipVars[HullType.IsDriveSizeKey] && x.TypeInfo.CanPick;
+				      	return x.TypeInfo.MinSize.Evaluate(shipVars) <= shipVars[ShipFormulaSet.IsDriveSizeKey] && x.TypeInfo.CanPick;
 				      }),
 				x =>
 				{

@@ -193,7 +193,7 @@ namespace Stareater.Ships
 			if (isDrive != null)
 			{
 				var driveVars = new Var(AComponentType.LevelKey, isDrive.Level).
-					And(AComponentType.SizeKey, hull.TypeInfo.SizeIS.Evaluate(hullVars)).Get;
+					And(ShipFormulaSet.IsDriveSizeKey, shipVars[ShipFormulaSet.IsDriveSizeKey]).Get;
 				isDriveCost = isDrive.TypeInfo.Cost.Evaluate(driveVars);
 			}
 
@@ -201,7 +201,7 @@ namespace Stareater.Ships
 			if (shield != null)
 			{
 				var shieldVars = new Var(AComponentType.LevelKey, shield.Level).
-					And(AComponentType.SizeKey, shipVars[ShipFormulaSet.ShieldSizeKey]).Get;
+					And(ShipFormulaSet.ShieldSizeKey, shipVars[ShipFormulaSet.ShieldSizeKey]).Get;
 				shieldCost = shield.TypeInfo.Cost.Evaluate(shieldVars);
 			}
 

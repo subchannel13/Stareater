@@ -80,14 +80,6 @@ namespace Stareater.Controllers.Views.Ships
 			}
 		}
 
-		public double IsDriveSize
-		{
-			get
-			{
-				return this.Type.SizeIS.Evaluate(levelVar);
-			}
-		}
-
 		public double Space
 		{
 			get

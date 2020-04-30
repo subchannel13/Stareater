@@ -12,7 +12,7 @@ namespace Stareater.Controllers.Views.Ships
 	{
 		private readonly DesignStats stats;
 		private readonly StaticsDB statics;
-		
+
 		internal Design Data { get; private set; }
 		
 		internal DesignInfo(Design design, DesignStats stats, StaticsDB statics)
@@ -67,7 +67,7 @@ namespace Stareater.Controllers.Views.Ships
 			get 
 			{
 				return this.Data.Shield != null ? 
-					new ShieldInfo(Data.Shield.TypeInfo, Data.Shield.Level, this.Hull) : 
+					new ShieldInfo(Data.Shield.TypeInfo, Data.Shield.Level, this.stats.ShieldSize) : 
 					null;
 
 			}

@@ -5,6 +5,7 @@ namespace Stareater.GameData.Databases.Tables
 {
 	public class ShipFormulaSet
 	{
+		public const string IsDriveSizeKey = "driveSize";
 		public const string ReactorSizeKey = "reactorSize";
 		public const string ShieldSizeKey = "shieldSize";
 
@@ -26,6 +27,7 @@ namespace Stareater.GameData.Databases.Tables
 		public double NaturalCloakBonus { get; private set; }
 		public double SensorRangePenalty { get; private set; }
 
+		public Formula IsDriveSize { get; private set; }
 		public Formula ReactorSize { get; private set; }
 		public Formula ShieldSize { get; private set; }
 
@@ -43,7 +45,7 @@ namespace Stareater.GameData.Databases.Tables
 		                      Formula hitPoints, Formula jamming, Formula scanRange,
 							  Formula carryCapacity, Formula towCapacity,
 							  Formula colonizerPopulation, Dictionary<string, Formula> colonizerBuildings,
-							  Formula reactorSize, Formula shieldSize,
+							  Formula isDriveSize, Formula reactorSize, Formula shieldSize,
                               double naturalCloakBonus, double sensorRangePenalty, double repairCostFactor, Formula levelRefitCost,
 		                      double armorCostPortion, double reactorCostPortion, double sensorCostPortion, double thrustersCostPortion,
 							  Formula fuelUsage, Formula galaxySpeed)
@@ -59,6 +61,7 @@ namespace Stareater.GameData.Databases.Tables
 			this.FuelUsage = fuelUsage;
 			this.GalaxySpeed = galaxySpeed;
 			this.HitPoints = hitPoints;
+			this.IsDriveSize = isDriveSize;
 			this.Jamming = jamming;
 			this.LevelRefitCost = levelRefitCost;
 			this.NaturalCloakBonus = naturalCloakBonus;

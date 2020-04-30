@@ -7,10 +7,10 @@
 	prerequisites [
 		:nuclearDrive #lvl;
 	]
-	cost # 2e6 * size;
+	cost # 2e6 * driveSize;
 	
 	minSize # 5;
-	speed # 0.8 * limit(totalPower / (200 * hullIsSize * 0.5 ^ (lvl / 5)), 0, 1);
+	speed # 0.8 * limit(totalPower / (200 * driveSize * 0.5 ^ (lvl / 5)), 0, 1);
 }
 
 { IsDrive
@@ -22,10 +22,10 @@
 	prerequisites [
 		:higgs #lvl;
 	]
-	cost # 2e6 * size;
+	cost # 2e6 * driveSize;
 	
 	minSize # 5;
-	speed # 1 * limit(totalPower / (1e3 * hullIsSize * 0.5 ^ (lvl / 5)), 0.2, 1);
+	speed # 1 * limit(totalPower / (1e3 * driveSize * 0.5 ^ (lvl / 5)), 0.2, 1);
 }
 
 { IsDrive
@@ -37,10 +37,10 @@
 	prerequisites [
 		:skimmer #1;
 	]
-	cost # 2e6 * size;
+	cost # 2e6 * driveSize;
 	
 	minSize # 5;
-	speed # 3 * limit(totalPower / (3e3 * hullIsSize * 0.5 ^ (lvl / 5)), 0.2, 1);
+	speed # 3 * limit(totalPower / (3e3 * driveSize * 0.5 ^ (lvl / 5)), 0.2, 1);
 }
 
 { IsDrive
@@ -52,7 +52,7 @@
 	prerequisites [
 		:nuclearDrive #100;
 	]
-	cost # 2e6 * size;
+	cost # 2e6 * driveSize;
 	
 	minSize # 5;
 	speed # 5;

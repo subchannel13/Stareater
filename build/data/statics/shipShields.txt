@@ -16,8 +16,8 @@
 	cloaking # 1 + 0.5 * lvl;
 	jamming # 1 + lvl;
 	
-	cost # 1e6 * size;
-	power # 0.5 * size;
+	cost # 1e6 * shieldSize;
+	power # 0.5 * shieldSize;
 }
 
 { Shield
@@ -38,8 +38,8 @@
 	cloaking # 5 + 0.5 * lvl;
 	jamming # 5 + 0.15 * lvl;
 	
-	cost # 2e6 * size;
-	power # size * (1 + 0.05 * lvl);
+	cost # 2e6 * shieldSize;
+	power # shieldSize * (1 + 0.05 * lvl);
 }
 
 { Shield
@@ -60,8 +60,8 @@
 	cloaking # 5 + 0.5 * lvl;
 	jamming # 5 + 0.15 * lvl;
 	
-	cost # 2e6 * size;
-	power # size * (1 + 0.05 * lvl);
+	cost # 2e6 * shieldSize;
+	power # shieldSize * (1 + 0.05 * lvl);
 }
 
 { Shield
@@ -82,8 +82,8 @@
 	cloaking # -2 + 0.2 * lvl;
 	jamming # -2 + 0.2 * lvl;
 	
-	cost # 2e6 * size;
-	power # size * (2 + 0.1 * lvl);
+	cost # 2e6 * shieldSize;
+	power # shieldSize * (2 + 0.1 * lvl);
 }
 
 { Shield
@@ -104,8 +104,8 @@
 	cloaking # -2 + 0.2 * lvl;
 	jamming # -2 + 0.2 * lvl;
 	
-	cost # 2e6 * size;
-	power # size * (4 + 0.2 * lvl);
+	cost # 2e6 * shieldSize;
+	power # shieldSize * (4 + 0.2 * lvl);
 }
 
 { Shield
@@ -126,8 +126,8 @@
 	cloaking # -2 + 0.2 * lvl;
 	jamming # -2 + 0.2 * lvl;
 	
-	cost # 2e6 * size;
-	power # size * (4 + 0.2 * lvl);
+	cost # 2e6 * shieldSize;
+	power # shieldSize * (4 + 0.2 * lvl);
 }
 
 { Shield
@@ -148,6 +148,6 @@
 	cloaking # -2 + 0.2 * lvl;
 	jamming # -2 + 0.2 * lvl;
 	
-	cost # 2e6 * size;
-	power # size * (4 + 0.2 * lvl);
+	cost # 2e6 * shieldSize;
+	power # shieldSize * (4 + 0.2 * lvl);
 }

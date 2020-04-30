@@ -143,9 +143,13 @@ namespace Stareater.Controllers
 		
 		public IEnumerable<ShieldInfo> Shields()
 		{
+			var shipVars = PlayerProcessor.DesignBaseVars(
+					new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
+					this.selectedMissionEquipment, this.selectedSpecialEquipment, game.Statics);
+
 			return this.game.Statics.Shields.Values.
 				Where(x => x.IsAvailable(playersTechLevels) && x.CanPick).
-				Select(x => new ShieldInfo(x, x.HighestLevel(playersTechLevels), this.selectedHull));
+				Select(x => new ShieldInfo(x, x.HighestLevel(playersTechLevels), shipVars[ShipFormulaSet.ShieldSizeKey]));
 		}
 
 		public IEnumerable<MissionEquipInfo> MissionEquipment()
@@ -295,7 +299,7 @@ namespace Stareater.Controllers
 					this.selectedMissionEquipment, this.selectedSpecialEquipment, game.Statics);
 				var specEquipVars = new Var(AComponentType.SizeKey, this.selectedHull.Size);
 
-				return (this.HasIsDrive ? this.selectedHull.IsDriveSize : 0) + 
+				return (this.HasIsDrive ? shipVars[ShipFormulaSet.IsDriveSizeKey] : 0) + 
 					(this.Shield != null ? shipVars[ShipFormulaSet.ShieldSizeKey] : 0) +
 					this.selectedMissionEquipment.Sum(x => x.TypeInfo.Size.Evaluate(new Var(AComponentType.LevelKey, x.Level).Get) * x.Quantity) + 
 					this.selectedSpecialEquipment.Sum(x => x.TypeInfo.Size.Evaluate(specEquipVars.Set(AComponentType.LevelKey, x.Level).Get) * x.Quantity);
