@@ -106,9 +106,9 @@ namespace Stareater.Utils.StateEngine
             return (T)new CopySession(getTypeStrategy).CopyOf(obj);
         }
 
-		public T Load<T>(IkonComposite saveData, ObjectDeindexer deindexer, Dictionary<Type, Action<object>> postLoadActions)
+		public T Load<T>(IkonComposite saveData, ObjectDeindexer deindexer)
 		{
-			return new LoadSession(getTypeStrategy, deindexer, postLoadActions).
+			return new LoadSession(getTypeStrategy, deindexer).
 				Load<T>(saveData[EntryPointKey]);
 		}
 
@@ -119,9 +119,11 @@ namespace Stareater.Utils.StateEngine
 			var mainData = session.Serialize(obj);
 			var referencedData = session.GetSerialzedData();
 
-			var result = new IkonComposite(MainGame.SaveGameTag);
-			result.Add("references", new IkonArray(referencedData));
-			result.Add(EntryPointKey, mainData);
+			var result = new IkonComposite(MainGame.SaveGameTag)
+			{
+				{ "references", new IkonArray(referencedData) },
+				{ EntryPointKey, mainData }
+			};
 
 			return result;
         }

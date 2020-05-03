@@ -7,8 +7,8 @@
 	prerequisites [
 	]
 	
-	cost # 40e3 * size;
-	size # 0.05 * size;
+	cost # 40e3 * hullSize;
+	size # 0.05 * hullSize;
 	maxCount # 2;
 }
 
@@ -22,8 +22,8 @@
 		:extraArmor #lvl;
 	]
 	
-	cost # 20e3 * size;
-	size # 0.05 * size;
+	cost # 20e3 * hullSize;
+	size # 0.05 * hullSize;
 	maxCount # 2;
 }
 
@@ -37,8 +37,8 @@
 		:extraReactor #lvl;
 	]
 	
-	cost # 20e3 * size;
-	size # 0.1 * size;
+	cost # 20e3 * hullSize;
+	size # 0.1 * hullSize;
 	maxCount # 2;
 }
 
@@ -52,8 +52,8 @@
 		:computer #lvl - 1;
 	]
 	
-	cost # 0.2e6 * size * 0.1 ^ lvl / 4;
-	size # 0.2 * size * 0.1 ^ lvl / 4;
+	cost # 0.2e6 * hullSize * 0.1 ^ lvl / 4;
+	size # 0.2 * hullSize * 0.1 ^ lvl / 4;
 	maxCount # 1;
 }
 
@@ -67,7 +67,7 @@
 		:cargo #lvl;
 	]
 	
-	cost # 1e6 * size;
+	cost # 1e6 * hullSize;
 	size # 0;
 	maxCount # 2;
 }
@@ -82,8 +82,8 @@
 		:surveyor #lvl;
 	]
 	
-	cost # 10e3 * size;
-	size # 0.01 * size;
+	cost # 10e3 * hullSize;
+	size # 0.01 * hullSize;
 	maxCount # 1;
 }
 
@@ -97,8 +97,8 @@
 		:shieldShare #lvl;
 	]
 	
-	cost # 10e3 * size;
-	size # 0.01 * size;
+	cost # 10e3 * hullSize;
+	size # 0.01 * hullSize;
 	maxCount # 1;
 }
 
@@ -112,7 +112,7 @@
 		:antiInertia #lvl;
 	]
 	
-	cost # 25e3 * size;
-	size # 0.025 * size;
-	maxCount # lvl;
+	cost # 25e3 * hullSize;
+	size # 0.025 * hullSize;
+	maxCount # lvl + 1;
 }

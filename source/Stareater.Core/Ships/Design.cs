@@ -14,13 +14,13 @@ namespace Stareater.Ships
 	class Design 
 	{
 		[StatePropertyAttribute]
-		public string IdCode { get; private set; }
+		public string IdCode { get; private set; } //TODO(v0.9) remove, use equals instead
 
 		[StatePropertyAttribute]
 		public Player Owner { get; private set; }
 
 		[StatePropertyAttribute]
-		public bool IsObsolete { get; set; } //TODO(v0.8) move to stats
+		public bool IsObsolete { get; set; } //TODO(v0.9) move to stats
 
 		[StatePropertyAttribute]
 		public string Name { get; private set; }
@@ -61,9 +61,6 @@ namespace Stareater.Ships
 		[StatePropertyAttribute(doSave: false)]
 		private BitHash hash { get; set; } //TODO(v0.9) try to move design stats
 
-		[StatePropertyAttribute]
-		public double Cost { get; private set; } //TODO(v0.9) try to move design stats
-
 		public Design(string idCode, Player owner, bool isObsolete, string name, int imageIndex, bool usesFuel, 
 			Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ThrusterType> thrusters, 
 			Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics) 
@@ -83,51 +80,12 @@ namespace Stareater.Ships
 			this.MissionEquipment = missionEquipment;
 			this.SpecialEquipment = specialEquipment;
 			this.Thrusters = thrusters;
-			
-			this.Cost = initCost(statics);
+
+			this.hash = this.calcHash(statics);
  		}
 
 		private Design() 
 		{ }
-
-		public void CalcHash(StaticsDB statics)
-		{
-			var hashBuilder = new BitHashBuilder();
-
-			HashComponent(hashBuilder, this.Armor, statics.Armors);
-			HashComponent(hashBuilder, this.Reactor, statics.Reactors);
-			HashComponent(hashBuilder, this.Sensors, statics.Sensors);
-			HashComponent(hashBuilder, this.Thrusters, statics.Thrusters);
-
-			HashComponent(hashBuilder, this.Hull, statics.Hulls);
-			hashBuilder.Add(this.SpecialEquipment.Count, statics.SpecialEquipment.Count);
-
-			if (this.IsDrive != null)
-			{
-				hashBuilder.Add(1, 2);
-				HashComponent(hashBuilder, this.IsDrive, statics.IsDrives);
-			}
-			else
-				hashBuilder.Add(0, 2);
-
-			HashComponent(hashBuilder, this.Shield, statics.Shields);
-
-			int maxEquips = this.SpecialEquipment.Count > 0 ? (this.SpecialEquipment.Max(x => x.Quantity) + 1) : 0;
-			foreach (var equip in this.SpecialEquipment.OrderBy(x => x.TypeInfo.IdCode))
-			{
-				HashComponent(hashBuilder, equip, statics.SpecialEquipment);
-				hashBuilder.Add(equip.Quantity, maxEquips);
-			}
-
-			maxEquips = this.MissionEquipment.Count > 0 ? (this.MissionEquipment.Max(x => x.Quantity) + 1) : 0;
-			foreach (var equip in this.MissionEquipment.OrderBy(x => x.TypeInfo.IdCode))
-			{
-				HashComponent(hashBuilder, equip, statics.MissionEquipment);
-				hashBuilder.Add(equip.Quantity, maxEquips);
-			}
-
-			this.hash = hashBuilder.Create();
-		}
 
 		public string ImagePath
 		{
@@ -137,12 +95,46 @@ namespace Stareater.Ships
 			}
 		}
 
-		private double initCost(StaticsDB statics)
+		private BitHash calcHash(StaticsDB statics)
 		{
-			return CalculateCost(this.Hull, this.IsDrive, this.Shield, this.MissionEquipment, this.SpecialEquipment, statics);
+			var hashBuilder = new BitHashBuilder();
+
+			hashComponent(hashBuilder, this.Armor, statics.Armors);
+			hashComponent(hashBuilder, this.Reactor, statics.Reactors);
+			hashComponent(hashBuilder, this.Sensors, statics.Sensors);
+			hashComponent(hashBuilder, this.Thrusters, statics.Thrusters);
+
+			hashComponent(hashBuilder, this.Hull, statics.Hulls);
+			hashBuilder.Add(this.SpecialEquipment.Count, statics.SpecialEquipment.Count);
+
+			if (this.IsDrive != null)
+			{
+				hashBuilder.Add(1, 2);
+				hashComponent(hashBuilder, this.IsDrive, statics.IsDrives);
+			}
+			else
+				hashBuilder.Add(0, 2);
+
+			hashComponent(hashBuilder, this.Shield, statics.Shields);
+
+			int maxEquips = this.SpecialEquipment.Count > 0 ? (this.SpecialEquipment.Max(x => x.Quantity) + 1) : 0;
+			foreach (var equip in this.SpecialEquipment.OrderBy(x => x.TypeInfo.IdCode))
+			{
+				hashComponent(hashBuilder, equip, statics.SpecialEquipment);
+				hashBuilder.Add(equip.Quantity, maxEquips);
+			}
+
+			maxEquips = this.MissionEquipment.Count > 0 ? (this.MissionEquipment.Max(x => x.Quantity) + 1) : 0;
+			foreach (var equip in this.MissionEquipment.OrderBy(x => x.TypeInfo.IdCode))
+			{
+				hashComponent(hashBuilder, equip, statics.MissionEquipment);
+				hashBuilder.Add(equip.Quantity, maxEquips);
+			}
+
+			return hashBuilder.Create();
 		}
 
-		private static void HashComponent<T>(BitHashBuilder hashBuilder, Component<T> component, IDictionary<string, T> componentAssortiment) where T : AComponentType
+		private static void hashComponent<T>(BitHashBuilder hashBuilder, Component<T> component, IDictionary<string, T> componentAssortiment) where T : AComponentType
 		{
 			var indices = componentAssortiment.Keys.OrderBy(x => x).ToList();
 			var index = component != null ? indices.IndexOf(component.TypeInfo.IdCode) : componentAssortiment.Count;
@@ -180,46 +172,5 @@ namespace Stareater.Ships
 			return !(lhs == rhs);
 		}
 		#endregion
-
-		public static double CalculateCost(Component<HullType> hull, Component<IsDriveType> isDrive, Component<ShieldType> shield,
-										   List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment,
-										   StaticsDB statics)
-		{
-			var hullVars = new Var(AComponentType.LevelKey, hull.Level).Get;
-			var shipVars = PlayerProcessor.DesignBaseVars(hull, missionEquipment, specialEquipment, statics);
-			double hullCost = hull.TypeInfo.Cost.Evaluate(hullVars);
-
-			double isDriveCost = 0;
-			if (isDrive != null)
-			{
-				var driveVars = new Var(AComponentType.LevelKey, isDrive.Level).
-					And(ShipFormulaSet.IsDriveSizeKey, shipVars[ShipFormulaSet.IsDriveSizeKey]).Get;
-				isDriveCost = isDrive.TypeInfo.Cost.Evaluate(driveVars);
-			}
-
-			double shieldCost = 0;
-			if (shield != null)
-			{
-				var shieldVars = new Var(AComponentType.LevelKey, shield.Level).
-					And(ShipFormulaSet.ShieldSizeKey, shipVars[ShipFormulaSet.ShieldSizeKey]).Get;
-				shieldCost = shield.TypeInfo.Cost.Evaluate(shieldVars);
-			}
-
-			double weaponsCost = missionEquipment.Sum(
-				x => x.Quantity * x.TypeInfo.Cost.Evaluate(
-					new Var(AComponentType.LevelKey, x.Level).Get
-				)
-			);
-
-			double hullSize = hull.TypeInfo.Size.Evaluate(hullVars);
-			double specialsCost = specialEquipment.Sum(
-				x => x.Quantity * x.TypeInfo.Cost.Evaluate(
-					new Var(AComponentType.LevelKey, x.Level).
-					And(AComponentType.SizeKey, hullSize).Get
-				)
-			);
-
-			return hullCost + isDriveCost + shieldCost + weaponsCost + specialsCost;
-		}
 	}
 }

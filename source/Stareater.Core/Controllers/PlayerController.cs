@@ -807,6 +807,8 @@ namespace Stareater.Controllers
 				transportFleets.Sum(x => x.Fleet.PopulationCapacity);
 
 			// Build missing transports
+			var colonizerDesign = game.Orders[player].ColonizerDesign;
+			var colonizerCost = game.Derivates[player].DesignStats[colonizerDesign].Cost;
 			foreach (var source in this.ColonizationSources.Select(x => x.Stellaris))
 			{
 				if (missingCapacity <= 0)
@@ -814,7 +816,7 @@ namespace Stareater.Controllers
 
 				var plan = orders.AutomatedConstruction[source];
 				plan.SpendingRatio = 1;
-				plan.Queue.Add(new ShipProject(game.Orders[player].ColonizerDesign, true));
+				plan.Queue.Add(new ShipProject(colonizerDesign, colonizerCost, true));
 				//TODO(v0.8) calculate number of ships per turn
 			}
 

@@ -63,11 +63,7 @@ namespace Stareater.Controllers
 
 			var game = stateManager.Load<MainGame>(
 				saveData.To<IkonComposite>(), 
-				deindexer,
-				new Dictionary<Type, Action<object>>()
-				{
-					{ typeof(Design), x => ((Design)x).CalcHash(statics) }
-				}
+				deindexer
 			);
 
 			var derivates = initDerivates(statics, game.MainPlayers, game.StareaterOrganelles, game.States);

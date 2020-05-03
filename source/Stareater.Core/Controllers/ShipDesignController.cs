@@ -6,6 +6,7 @@ using Stareater.Controllers.Views.Ships;
 using Stareater.GameData.Databases.Tables;
 using Stareater.GameData.Ships;
 using Stareater.GameLogic;
+using Stareater.GameLogic.Combat;
 using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Utils.Collections;
@@ -29,6 +30,11 @@ namespace Stareater.Controllers
 			this.armorInfo = bestArmor();
 			this.sensorInfo = bestSensor();
 			this.thrusterInfo = bestThruster();
+			
+			var hullType = game.Statics.Hulls.Values.First(x => x.CanPick);
+			this.selectedHull = new HullInfo(hullType, hullType.HighestLevel(playersTechLevels));
+			this.reactorInfo = bestReactor();
+			this.makeDesign();
 		}
 
 		private ArmorInfo bestArmor()
@@ -56,7 +62,7 @@ namespace Stareater.Controllers
 			);
 
 			return drive != null ?
-				new IsDriveInfo(drive.TypeInfo, drive.Level, PlayerProcessor.DesignPoweredVars(hull, reactor, this.selectedMissionEquipment, this.selectedSpecialEquipment, game.Statics).Get) :
+				new IsDriveInfo(drive.TypeInfo, drive.Level, this.stats) :
 				null;
 		}
 
@@ -72,7 +78,7 @@ namespace Stareater.Controllers
 			);
 
 			return reactor != null ? 
-				new ReactorInfo(reactor.TypeInfo, reactor.Level, PlayerProcessor.DesignBaseVars(hull, this.selectedMissionEquipment, this.selectedSpecialEquipment, game.Statics).Get) : 
+				new ReactorInfo(reactor.TypeInfo, reactor.Level, this.stats) : 
 				null;
 		}
 
@@ -114,7 +120,31 @@ namespace Stareater.Controllers
 				this.selectedSpecialEquipment, 
 				this.game.Statics);
 		}
-		
+
+		private void makeDesign()
+		{
+			this.design = new Design(
+				this.game.States.MakeDesignId(),
+				this.player,
+				false,
+				this.Name?.Trim() ?? "",
+				this.ImageIndex,
+				true,
+				new Component<ArmorType>(this.armorInfo.Type, this.armorInfo.Level),
+				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
+				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
+				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level),
+				new Component<SensorType>(this.sensorInfo.Type, this.sensorInfo.Level),
+				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level),
+				this.Shield != null ? new Component<ShieldType>(this.Shield.Type, this.Shield.Level) : null,
+				selectedMissionEquipment,
+				selectedSpecialEquipment,
+				this.game.Statics
+			);
+
+			this.stats = PlayerProcessor.StatsOf(this.design, this.game.Statics);
+		}
+
 		#region Component lists
 		public IEnumerable<HullInfo> Hulls()
 		{
@@ -143,13 +173,9 @@ namespace Stareater.Controllers
 		
 		public IEnumerable<ShieldInfo> Shields()
 		{
-			var shipVars = PlayerProcessor.DesignBaseVars(
-					new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
-					this.selectedMissionEquipment, this.selectedSpecialEquipment, game.Statics);
-
 			return this.game.Statics.Shields.Values.
 				Where(x => x.IsAvailable(playersTechLevels) && x.CanPick).
-				Select(x => new ShieldInfo(x, x.HighestLevel(playersTechLevels), shipVars[ShipFormulaSet.ShieldSizeKey]));
+				Select(x => new ShieldInfo(x, x.HighestLevel(playersTechLevels), this.stats.ShieldSize));
 		}
 
 		public IEnumerable<MissionEquipInfo> MissionEquipment()
@@ -175,14 +201,20 @@ namespace Stareater.Controllers
 		#region Selected components
 		private HullInfo selectedHull = null;
 
+		//TODO(v0.9) use types/components instead of infos
 		private readonly ArmorInfo armorInfo = null;
 		private IsDriveInfo availableIsDrive = null;
 		private ReactorInfo reactorInfo = null;
 		private readonly SensorInfo sensorInfo = null;
 		private readonly ThrusterInfo thrusterInfo = null;
 
+		private bool hasIsDrive;
+		private ShieldInfo shield;
 		private readonly List<Component<MissionEquipmentType>> selectedMissionEquipment = new List<Component<MissionEquipmentType>>();
 		private readonly List<Component<SpecialEquipmentType>> selectedSpecialEquipment = new List<Component<SpecialEquipmentType>>();
+
+		private Design design;
+		private DesignStats stats;
 
 		private void onHullChange()
 		{
@@ -192,6 +224,7 @@ namespace Stareater.Controllers
 			this.reactorInfo = bestReactor();
 			this.availableIsDrive = bestIsDrive();
 			this.HasIsDrive &= availableIsDrive != null;
+			this.makeDesign();
 		}
 
 		#endregion
@@ -265,20 +298,7 @@ namespace Stareater.Controllers
 		#endregion
 
 		#region Design info
-		public double Cost
-		{
-			get
-			{
-				return Design.CalculateCost(
-					new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
-					this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
-					this.Shield != null ? new Component<ShieldType>(this.Shield.Type, this.Shield.Level) : null,
-					selectedMissionEquipment,
-					selectedSpecialEquipment,
-					this.game.Statics
-				);
-			}
-		}
+		public double Cost => this.stats.Cost;
 		
 		public double PowerUsed
 		{
@@ -297,10 +317,10 @@ namespace Stareater.Controllers
 				var shipVars = PlayerProcessor.DesignBaseVars(
 					new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level), 
 					this.selectedMissionEquipment, this.selectedSpecialEquipment, game.Statics);
-				var specEquipVars = new Var(AComponentType.SizeKey, this.selectedHull.Size);
+				var specEquipVars = new Var(HullType.SizeKey, this.selectedHull.Size);
 
-				return (this.HasIsDrive ? shipVars[ShipFormulaSet.IsDriveSizeKey] : 0) + 
-					(this.Shield != null ? shipVars[ShipFormulaSet.ShieldSizeKey] : 0) +
+				return (this.HasIsDrive ? this.stats.IsDriveSize : 0) + 
+					(this.Shield != null ? this.stats.ShieldSize : 0) +
 					this.selectedMissionEquipment.Sum(x => x.TypeInfo.Size.Evaluate(new Var(AComponentType.LevelKey, x.Level).Get) * x.Quantity) + 
 					this.selectedSpecialEquipment.Sum(x => x.TypeInfo.Size.Evaluate(specEquipVars.Set(AComponentType.LevelKey, x.Level).Get) * x.Quantity);
 			} 
@@ -317,6 +337,7 @@ namespace Stareater.Controllers
 				throw new ArgumentNullException(nameof(equipInfo));
 
 			this.selectedMissionEquipment.Add(new Component<MissionEquipmentType>(equipInfo.Type, equipInfo.Level, 1));
+			this.makeDesign();
 		}
 
 		public HullInfo Hull 
@@ -328,8 +349,16 @@ namespace Stareater.Controllers
 				this.onHullChange();
 			}
 		}
-		
-		public bool HasIsDrive { get; set; }
+
+		public bool HasIsDrive 
+		{
+			get => this.hasIsDrive;
+			set
+			{
+				this.hasIsDrive = value;
+				this.makeDesign();
+			}
+		}
 
 		public bool HasSpecialEquip(SpecialEquipInfo equipInfo)
 		{
@@ -353,9 +382,18 @@ namespace Stareater.Controllers
 				var oldEquip = this.selectedMissionEquipment[index];
 				this.selectedMissionEquipment[index] = new Component<MissionEquipmentType>(oldEquip.TypeInfo, oldEquip.Level, amount);
 			}
+			this.makeDesign();
 		}
 		
-		public ShieldInfo Shield { get; set; }
+		public ShieldInfo Shield 
+		{
+			get => this.shield;
+			set
+			{
+				this.shield = value;
+				this.makeDesign();
+			}
+		}
 
 		public int SpecialEquipCount(SpecialEquipInfo equipInfo)
 		{
@@ -403,27 +441,9 @@ namespace Stareater.Controllers
 			if (!IsDesignValid)
 				return;
 
-			var design = new Design(
-				this.game.States.MakeDesignId(),
-				this.player,
-				false,
-				this.Name.Trim(),
-				this.ImageIndex,
-				true,
-				new Component<ArmorType>(this.armorInfo.Type, this.armorInfo.Level),
-				new Component<HullType>(this.selectedHull.Type, this.selectedHull.Level),
-				this.HasIsDrive ? new Component<IsDriveType>(this.availableIsDrive.Type, this.availableIsDrive.Level) : null,
-				new Component<ReactorType>(this.reactorInfo.Type, this.reactorInfo.Level),
-				new Component<SensorType>(this.sensorInfo.Type, this.sensorInfo.Level),
-				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level),
-				this.Shield != null ? new Component<ShieldType>(this.Shield.Type, this.Shield.Level) : null,
-				selectedMissionEquipment,
-				selectedSpecialEquipment,
-				this.game.Statics
-			);
-			design.CalcHash(this.game.Statics);
+			this.makeDesign();
 			
-			if (this.game.States.Designs.Contains(design))
+			if (this.game.States.Designs.Contains(this.design))
 				return; //TODO(v0.8) move the check to IsDesignValid
 			
 			game.States.Designs.Add(design); //TODO(v0.8) add to changes DB and propagate to states during turn processing

@@ -56,7 +56,7 @@ namespace Stareater.Controllers.Views.Ships
 			get 
 			{
 				return this.Data.IsDrive != null ? 
-					new IsDriveInfo(Data.IsDrive.TypeInfo, Data.IsDrive.Level, PlayerProcessor.DesignPoweredVars(Data.Hull, Data.Reactor, Data.MissionEquipment, Data.SpecialEquipment, statics).Get) : 
+					new IsDriveInfo(Data.IsDrive.TypeInfo, Data.IsDrive.Level, this.stats) : 
 					null;
 
 			}

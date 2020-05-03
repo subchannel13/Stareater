@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Stareater.Ships;
 using Stareater.GameData.Construction;
+using Stareater.GameLogic.Combat;
 
 namespace Stareater.GameLogic.Planning
 {
@@ -9,14 +10,16 @@ namespace Stareater.GameLogic.Planning
 		private readonly List<IConstructionProject> oldQueue;
 		private readonly Dictionary<Design, Design> refitOrders;
 		private readonly List<IConstructionProject> newQueue = new List<IConstructionProject>();
+		private readonly Dictionary<Design, DesignStats> designStats;
 		private bool changeItem;
 		private bool deleteItem;
 		private IConstructionProject newProject;
 		
-		public ShipConstructionUpdater(List<IConstructionProject> oldQueue, Dictionary<Design, Design> refitOrders)
+		public ShipConstructionUpdater(List<IConstructionProject> oldQueue, Dictionary<Design, Design> refitOrders, Dictionary<Design, DesignStats> designStats)
 		{
 			this.oldQueue = new List<IConstructionProject>(oldQueue);
 			this.refitOrders = refitOrders;
+			this.designStats = designStats;
 		}
 		
 		public IEnumerable<IConstructionProject> Run()
@@ -52,7 +55,8 @@ namespace Stareater.GameLogic.Planning
 		#region IConstructionProjectVisitor implementation
 		public void Visit(ShipProject project)
 		{
-			newProject = new ShipProject(checkDesign(project.Type), false);
+			var design = checkDesign(project.Type);
+			newProject = new ShipProject(design, this.designStats[design].Cost, false);
         }
 
 		public void Visit(StaticProject project)

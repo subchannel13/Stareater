@@ -15,9 +15,13 @@ namespace Stareater.GameData.Construction
 		[StatePropertyAttribute]
 		public bool IsVirtual { get; private set; }
 
-		public ShipProject(Design design, bool isVirtual)
+		[StatePropertyAttribute]
+		public Formula Cost { get; private set; }
+
+		public ShipProject(Design design, double cost, bool isVirtual)
 		{
 			this.Type = design;
+			this.Cost = new Formula(cost);
 			this.IsVirtual = isVirtual;
 		}
 
@@ -32,11 +36,6 @@ namespace Stareater.GameData.Construction
 		public Formula Condition
 		{
 			get { return new Formula(true); }
-		}
-
-		public Formula Cost
-		{
-			get { return new Formula(this.Type.Cost); }
 		}
 
 		public Formula TurnLimit
@@ -56,14 +55,9 @@ namespace Stareater.GameData.Construction
 
 		public bool Equals(IConstructionProject project)
 		{
-			var other = project as ShipProject;
-
-			if (other == null)
-				return false;
-
-			return this.Type.Equals(other.Type);
+			return !(project is ShipProject other) ? false : this.Type.Equals(other.Type);
 		}
-		
+
 		public const string Tag = "Ship";
 	}
 }

@@ -427,11 +427,11 @@ namespace Stareater.GameLogic
 				var designStats = this.game.Derivates[player].DesignStats;
 				var repairCostFactor = this.game.Statics.ShipFormulas.RepairCostFactor;
 				var damagedShips = localFleet.SelectMany(x => x.Ships).Where(x => x.Damage > 0);
-				var totalNeededRepairPoints = damagedShips.Sum(x => repairCostFactor * x.Damage * x.Design.Cost / designStats[x.Design].HitPoints);
+				var totalNeededRepairPoints = damagedShips.Sum(x => repairCostFactor * x.Damage * designStats[x.Design].Cost / designStats[x.Design].HitPoints);
 				
 				foreach(var shipGroup in damagedShips)
 				{
-					var repirPerHp = repairCostFactor * shipGroup.Design.Cost / designStats[shipGroup.Design].HitPoints;
+					var repirPerHp = repairCostFactor * designStats[shipGroup.Design].Cost / designStats[shipGroup.Design].HitPoints;
 					var fullRepairCost = shipGroup.Damage * repirPerHp;
 					var investment = repairPoints * fullRepairCost / totalNeededRepairPoints;
 					

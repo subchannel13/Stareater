@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Stareater.GameData.Ships;
+using Stareater.GameLogic.Combat;
 using Stareater.Localization;
 
 namespace Stareater.Controllers.Views.Ships
@@ -11,16 +11,14 @@ namespace Stareater.Controllers.Views.Ships
 		
 		internal ReactorType Type { get; private set; }
 		internal int Level { get; private set; }
-		
-		private readonly IDictionary<string, double> vars;
-		
-		internal ReactorInfo(ReactorType type, int level, IDictionary<string, double> shipVars)
+
+		private readonly DesignStats designStats;
+
+		internal ReactorInfo(ReactorType type, int level, DesignStats designStats)
 		{
 			this.Type = type;
 			this.Level = level;
-			
-			this.vars = new Dictionary<string, double>(shipVars);
-			this.vars[AComponentType.LevelKey] = level;
+			this.designStats = designStats;
 		}
 		
 		public string Name
@@ -38,12 +36,17 @@ namespace Stareater.Controllers.Views.Ships
 				return this.Type.ImagePath;
 			}
 		}
-		
+
 		public double Power
 		{
 			get
 			{
-				return this.Type.Power.Evaluate(vars);
+				//TODO(v0.9) make variables a member instead of designStats
+				return this.Type.Power.Evaluate(new Dictionary<string, double>
+				{
+					[AComponentType.LevelKey] = this.Level,
+					[ReactorType.SizeKey] = designStats.ReactorSize
+				});
 			}
 		}
 	}

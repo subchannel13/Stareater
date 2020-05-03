@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Stareater.GameData.Ships;
+﻿using Stareater.GameData.Ships;
+using Stareater.GameLogic.Combat;
 using Stareater.Localization;
+using System.Collections.Generic;
 
 namespace Stareater.Controllers.Views.Ships
 {
@@ -11,16 +11,14 @@ namespace Stareater.Controllers.Views.Ships
 		
 		internal IsDriveType Type { get; private set; }
 		internal int Level { get; private set; }
-		
-		private readonly IDictionary<string, double> vars;
-		
-		internal IsDriveInfo(IsDriveType isDriveType, int level, IDictionary<string, double> shipVars)
+
+		private readonly DesignStats designStats;
+
+		internal IsDriveInfo(IsDriveType isDriveType, int level, DesignStats designStats)
 		{
 			this.Type = isDriveType;
 			this.Level = level;
-			
-			this.vars = new Dictionary<string, double>(shipVars);
-			this.vars[AComponentType.LevelKey] = level;
+			this.designStats = designStats;
 		}
 		
 		public string Name
@@ -43,7 +41,13 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.Speed.Evaluate(vars);
+				//TODO(v0.9) make variables a member instead of designStats
+				return this.Type.Speed.Evaluate(new Dictionary<string, double>
+				{
+					[AComponentType.LevelKey] = this.Level,
+					[IsDriveType.SizeKey] = designStats.IsDriveSize,
+					["totalPower"] = designStats.GalaxyPower,
+				});
 			}
 		}
 	}

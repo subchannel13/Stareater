@@ -8,6 +8,8 @@ namespace Stareater.GameData.Ships
 	[StateTypeAttribute(true)]
 	class ShieldType : AComponentType
 	{
+		public const string SizeKey = "shieldSize";
+
 		public string ImagePath { get; private set; }
 		public Formula Cost { get; private set; }
 		

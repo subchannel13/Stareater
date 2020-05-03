@@ -22,7 +22,7 @@ namespace Stareater.Controllers.Views.Ships
 			this.Level = level;
 			
 			this.vars = new Var(AComponentType.LevelKey, level).
-				And(ShipFormulaSet.ShieldSizeKey, shieldSize).Get;
+				And(ShieldType.SizeKey, shieldSize).Get;
 		}
 		
 		public string Name

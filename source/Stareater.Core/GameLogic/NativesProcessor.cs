@@ -72,8 +72,7 @@ namespace Stareater.GameLogic
 					id, playerProc.Player, false, designData.Name, designData.HullImageIndex, designData.UsesFuel,
 					armor, hull, isDrive, reactor, sensor, thruster, shield, equipment, specials, statics
 				);
-				
-				design.CalcHash(statics);
+
 				states.Designs.Add(design);
 			}
 			

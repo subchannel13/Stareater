@@ -11,7 +11,6 @@ namespace Stareater.GameData.Ships
 	{
 		public const string LevelKey = "lvl";
 		public const string LevelSuffix = "_lvl";
-		public const string SizeKey = "size";
 		
 		public string IdCode { get; private set; }
 		public string LanguageCode { get; private set; }

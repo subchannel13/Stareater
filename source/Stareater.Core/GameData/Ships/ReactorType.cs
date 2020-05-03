@@ -13,6 +13,7 @@ namespace Stareater.GameData.Ships
 	[StateTypeAttribute(true)]
 	class ReactorType : AComponentType
 	{
+		public const string SizeKey = "reactorSize";
 		public const string TotalPowerKey = "totalPower";
 		
 		public string ImagePath { get; private set; }
@@ -34,18 +35,20 @@ namespace Stareater.GameData.Ships
 		public static Component<ReactorType> MakeBest(IDictionary<string, double> playersTechLevels, Component<HullType> hull, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, IEnumerable<Component<MissionEquipmentType>> missionEquipment, StaticsDB statics)
 		{
 			var shipVars = PlayerProcessor.DesignBaseVars(hull, missionEquipment, specialEquipment, statics).Get;
+			var reactorSize = statics.ShipFormulas.ReactorSize.Evaluate(shipVars);
+			shipVars[SizeKey] = reactorSize;
 
 			return Methods.FindBestOrDefault(
 				statics.Reactors.Values.Where(x => x.IsAvailable(playersTechLevels)).
 				Select(x => new Component<ReactorType>(x, x.HighestLevel(playersTechLevels))).
 				Where(x =>
 				      {
-						  shipVars[AComponentType.LevelKey] = x.Level;
-						  return x.TypeInfo.MinSize.Evaluate(shipVars) <= shipVars[ShipFormulaSet.ReactorSizeKey] && x.TypeInfo.CanPick; 
+						  shipVars[LevelKey] = x.Level;
+						  return x.TypeInfo.MinSize.Evaluate(shipVars) <= reactorSize && x.TypeInfo.CanPick; 
 				      }),
 				x =>
 				{
-					shipVars[AComponentType.LevelKey] = x.Level;
+					shipVars[LevelKey] = x.Level;
 					return x.TypeInfo.Power.Evaluate(shipVars);
 				}
 			);
@@ -54,7 +57,7 @@ namespace Stareater.GameData.Ships
 		public static double PowerOf(Component<ReactorType> reactor, Component<HullType> hull, IEnumerable<Component<SpecialEquipmentType>> specialEquipment, IEnumerable<Component<MissionEquipmentType>> missionEquipment, StaticsDB statics)
 		{
 			var shipVars = PlayerProcessor.DesignBaseVars(hull, missionEquipment, specialEquipment, statics).Get;
-			shipVars[AComponentType.LevelKey] = reactor.Level;
+			shipVars[LevelKey] = reactor.Level;
 
 			return reactor.TypeInfo.Power.Evaluate(shipVars);
 		}

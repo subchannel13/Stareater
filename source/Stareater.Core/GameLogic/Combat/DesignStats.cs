@@ -6,7 +6,10 @@ namespace Stareater.GameLogic.Combat
 	[StateTypeAttribute(true)]
 	class DesignStats 
 	{
+		public double Cost { get; private set; }
 		public double Size { get; private set; }
+		public double IsDriveSize { get; private set; }
+		public double ReactorSize { get; private set; }
 		public double ShieldSize { get; private set; }
 
 		public double GalaxySpeed { get; private set; }
@@ -30,7 +33,7 @@ namespace Stareater.GameLogic.Combat
 		public double Cloaking { get; private set; }
 		public double Jamming { get; private set; }
 
-		public DesignStats(double size, double shieldSize,
+		public DesignStats(double cost, double size, double isDriveSize, double reactorSize, double shieldSize,
 						   double galaxySpeed, double galaxyPower, double scanRange,
 						   double combatSpeed, double combatPower, List<AbilityStats> abilities,
 						   double carryCapacity, double towCapacity,
@@ -46,12 +49,15 @@ namespace Stareater.GameLogic.Combat
 			this.ColonizerBuildings = colonizerBuildings;
 			this.CombatPower = combatPower;
 			this.CombatSpeed = combatSpeed;
+			this.Cost = cost;
 			this.Detection = detection;
 			this.Evasion = evasion;
 			this.GalaxyPower = galaxyPower;
 			this.GalaxySpeed = galaxySpeed;
 			this.HitPoints = hitPoints;
+			this.IsDriveSize = isDriveSize;
 			this.Jamming = jamming;
+			this.ReactorSize = reactorSize;
 			this.ScanRange = scanRange;
 			this.ShieldPoints = shieldPoints;
 			this.ShieldReduction = shieldReduction;
