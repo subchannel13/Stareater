@@ -16,12 +16,12 @@ namespace Stareater.GameData.Construction
 		public bool IsVirtual { get; private set; }
 
 		[StatePropertyAttribute]
-		public Formula Cost { get; private set; }
+		private double cost { get; set; }
 
 		public ShipProject(Design design, double cost, bool isVirtual)
 		{
 			this.Type = design;
-			this.Cost = new Formula(cost);
+			this.cost = cost;
 			this.IsVirtual = isVirtual;
 		}
 
@@ -47,6 +47,8 @@ namespace Stareater.GameData.Construction
 		{
 			get { yield return new ConstructionAddShip(this.Type); }
 		}
+
+		public Formula Cost => new Formula(this.cost);
 
 		public void Accept(IConstructionProjectVisitor visitor)
 		{

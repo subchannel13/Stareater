@@ -190,7 +190,7 @@ namespace Stareater.Controllers
 					Where(x => playerProc.CanSee(x, game)).
 					Concat(orders.ShipOrders.SelectMany(x => x.Value)).
 					Select(
-						x => new FleetInfo(x, game.Derivates[x.Owner], game.Statics)
+						x => new FleetInfo(x, game.Derivates[x.Owner])
 					);
 			}
 		}
@@ -204,7 +204,7 @@ namespace Stareater.Controllers
 				return game.Derivates[this.PlayerInstance(game)].
 					MyFleets(game).
 					Select(
-						x => new FleetInfo(x, game.Derivates[x.Owner], game.Statics)
+						x => new FleetInfo(x, game.Derivates[x.Owner])
 					);
 			}
 		}
@@ -219,7 +219,7 @@ namespace Stareater.Controllers
 			if (orders.ShipOrders.ContainsKey(position))
 				fleets = fleets.Concat(orders.ShipOrders[position]);
 
-			return fleets.Select(x => new FleetInfo(x, game.Derivates[x.Owner], game.Statics));
+			return fleets.Select(x => new FleetInfo(x, game.Derivates[x.Owner]));
 		}
 
 		public double FuelAvailable
@@ -265,7 +265,7 @@ namespace Stareater.Controllers
 			var game = this.gameInstance;
 			return game.States.Designs.
 				OwnedBy[this.PlayerInstance(game)].
-				Select(x => new DesignInfo(x, game.Derivates[this.PlayerInstance(game)].DesignStats[x], game.Statics));
+				Select(x => new DesignInfo(x, game.Derivates[this.PlayerInstance(game)].DesignStats[x]));
 		}
 		
 		public void DisbandDesign(DesignInfo design)
@@ -314,7 +314,7 @@ namespace Stareater.Controllers
 			
 			return playerProc.RefitCosts[design.Data].
 				Where(x => !x.Key.IsObsolete).
-				Select(x => new DesignInfo(x.Key, playerProc.DesignStats[x.Key], game.Statics));
+				Select(x => new DesignInfo(x.Key, playerProc.DesignStats[x.Key]));
 		}
 		
 		public double RefitCost(DesignInfo design, DesignInfo refitWith)
@@ -365,7 +365,7 @@ namespace Stareater.Controllers
 			
 			var targetDesign = orders.RefitOrders[design.Data];
 
-			return new DesignInfo(targetDesign, game.Derivates[targetDesign.Owner].DesignStats[targetDesign], game.Statics);
+			return new DesignInfo(targetDesign, game.Derivates[targetDesign.Owner].DesignStats[targetDesign]);
 		}
 		
 		public long ShipCount(DesignInfo design)
@@ -465,7 +465,7 @@ namespace Stareater.Controllers
 					LastOrDefault();
 
 				if (fleet.Position == destination.HostStar.Position || lastMove != null && lastMove == destination.HostStar.Data)
-					yield return new FleetInfo(fleet, game.Derivates[fleet.Owner], game.Statics);
+					yield return new FleetInfo(fleet, game.Derivates[fleet.Owner]);
 			}
 		}
 
@@ -477,7 +477,7 @@ namespace Stareater.Controllers
 				var player = this.PlayerInstance(game);
 				var design = game.Orders[player].ColonizerDesign;
 
-				return new DesignInfo(design, game.Derivates[player].DesignStats[design], game.Statics);
+				return new DesignInfo(design, game.Derivates[player].DesignStats[design]);
 			}
 			set
 			{
@@ -500,7 +500,7 @@ namespace Stareater.Controllers
 				var playerProc = game.Derivates[this.PlayerInstance(game)];
 
 				return playerProc.ColonizerDesignOptions.
-					Select(x => new DesignInfo(x, playerProc.DesignStats[x], game.Statics));
+					Select(x => new DesignInfo(x, playerProc.DesignStats[x]));
 			}
 		}
 

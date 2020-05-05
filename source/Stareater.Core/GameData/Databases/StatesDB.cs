@@ -9,8 +9,6 @@ namespace Stareater.GameData.Databases
 {
 	class StatesDB
 	{
-		private const string DesignIdPrefix = "ShipDesign";
-		
 		[StatePropertyAttribute]
 		public StarCollection Stars { get; private set; }
 		[StatePropertyAttribute]
@@ -44,8 +42,6 @@ namespace Stareater.GameData.Databases
 		public HashSet<Pair<Player>> Contacts { get; internal set; }
 		[StatePropertyAttribute]
 		public TreatyCollection Treaties { get; private set; }
-
-		private int nextDesignId = 0; //TODO(v0.8) may not work correctly after loading
 		
 		public StatesDB(StarCollection stars, StarData stareaterBrain, WormholeCollection wormholes, PlanetCollection planets, 
 		                ColonyCollection Colonies, StellarisCollection stellarises,
@@ -71,12 +67,5 @@ namespace Stareater.GameData.Databases
 
 		private StatesDB()
 		{ }
-
-		public string MakeDesignId()
-		{
-			this.nextDesignId++;
-			
-			return DesignIdPrefix + nextDesignId;
-		}
 	}
 }

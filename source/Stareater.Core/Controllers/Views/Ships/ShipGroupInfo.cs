@@ -1,5 +1,4 @@
 ﻿using Stareater.Galaxy;
-using Stareater.GameData.Databases;
 using Stareater.GameLogic.Combat;
 using System;
 
@@ -9,20 +8,18 @@ namespace Stareater.Controllers.Views.Ships
 	{
 		internal ShipGroup Data { get; private set; }
 		private readonly DesignStats stats;
-		private readonly StaticsDB statics;
 		
-		internal ShipGroupInfo(ShipGroup shipGroup, DesignStats stats, StaticsDB statics)
+		internal ShipGroupInfo(ShipGroup shipGroup, DesignStats stats)
 		{
 			this.Data = shipGroup;
 			this.stats = stats;
-			this.statics = statics;
 		}
 		
 		public DesignInfo Design 
 		{
 			get 
 			{
-				return new DesignInfo(this.Data.Design, this.stats, this.statics);
+				return new DesignInfo(this.Data.Design, this.stats);
 			}
 		}
 		

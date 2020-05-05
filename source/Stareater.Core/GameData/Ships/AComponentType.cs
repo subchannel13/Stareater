@@ -7,7 +7,7 @@ using Stareater.Utils.StateEngine;
 
 namespace Stareater.GameData.Ships
 {
-	abstract class AComponentType : IIdentifiable
+	abstract class AComponentType : IIdentifiable, IEquatable<AComponentType>
 	{
 		public const string LevelKey = "lvl";
 		public const string LevelSuffix = "_lvl";
@@ -58,5 +58,36 @@ namespace Stareater.GameData.Ships
 				x => x.TypeInfo.ComparisonValue(x.Level)
 			);
 		}
+
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+		{
+			return obj is AComponentType other ? this.Equals(other) : false;
+		}
+
+		public bool Equals(AComponentType other)
+		{
+			return string.Equals(this.IdCode, other.IdCode, StringComparison.InvariantCulture);
+		}
+
+		public override int GetHashCode()
+		{
+			return this.IdCode.GetHashCode();
+		}
+
+		public static bool operator ==(AComponentType lhs, AComponentType rhs)
+		{
+			if (ReferenceEquals(lhs, rhs))
+				return true;
+			if (lhs is null || rhs is null)
+				return false;
+			return lhs.Equals(rhs);
+		}
+
+		public static bool operator !=(AComponentType lhs, AComponentType rhs)
+		{
+			return !(lhs == rhs);
+		}
+		#endregion
 	}
 }

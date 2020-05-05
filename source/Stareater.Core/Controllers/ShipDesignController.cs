@@ -124,9 +124,7 @@ namespace Stareater.Controllers
 		private void makeDesign()
 		{
 			this.design = new Design(
-				this.game.States.MakeDesignId(),
 				this.player,
-				false,
 				this.Name?.Trim() ?? "",
 				this.ImageIndex,
 				true,
@@ -138,8 +136,7 @@ namespace Stareater.Controllers
 				new Component<ThrusterType>(this.thrusterInfo.Type, this.thrusterInfo.Level),
 				this.Shield != null ? new Component<ShieldType>(this.Shield.Type, this.Shield.Level) : null,
 				selectedMissionEquipment,
-				selectedSpecialEquipment,
-				this.game.Statics
+				selectedSpecialEquipment
 			);
 
 			this.stats = PlayerProcessor.StatsOf(this.design, this.game.Statics);

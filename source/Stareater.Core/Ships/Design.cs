@@ -8,19 +8,14 @@ using Stareater.GameData.Databases;
 using System.Linq;
 using Stareater.GameLogic;
 using Stareater.GameData.Databases.Tables;
+using System;
 
 namespace Stareater.Ships
 {
-	class Design 
+	class Design : IEquatable<Design>
 	{
 		[StatePropertyAttribute]
-		public string IdCode { get; private set; } //TODO(v0.9) remove, use equals instead
-
-		[StatePropertyAttribute]
 		public Player Owner { get; private set; }
-
-		[StatePropertyAttribute]
-		public bool IsObsolete { get; set; } //TODO(v0.9) move to stats
 
 		[StatePropertyAttribute]
 		public string Name { get; private set; }
@@ -58,16 +53,15 @@ namespace Stareater.Ships
 		[StatePropertyAttribute]
 		public Component<ThrusterType> Thrusters { get; private set; }
 
-		[StatePropertyAttribute(doSave: false)]
-		private BitHash hash { get; set; } //TODO(v0.9) try to move design stats
+		[StatePropertyAttribute]
+		public bool IsObsolete { get; set; }
 
-		public Design(string idCode, Player owner, bool isObsolete, string name, int imageIndex, bool usesFuel, 
+
+		public Design(Player owner, string name, int imageIndex, bool usesFuel, 
 			Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ThrusterType> thrusters, 
-			Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment, StaticsDB statics) 
+			Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment)
 		{
-			this.IdCode = idCode;
 			this.Owner = owner;
-			this.IsObsolete = isObsolete;
 			this.Name = name;
 			this.ImageIndex = imageIndex;
 			this.UsesFuel = usesFuel;
@@ -81,8 +75,8 @@ namespace Stareater.Ships
 			this.SpecialEquipment = specialEquipment;
 			this.Thrusters = thrusters;
 
-			this.hash = this.calcHash(statics);
- 		}
+			this.IsObsolete = false;
+		}
 
 		private Design() 
 		{ }
@@ -95,67 +89,29 @@ namespace Stareater.Ships
 			}
 		}
 
-		private BitHash calcHash(StaticsDB statics)
-		{
-			var hashBuilder = new BitHashBuilder();
-
-			hashComponent(hashBuilder, this.Armor, statics.Armors);
-			hashComponent(hashBuilder, this.Reactor, statics.Reactors);
-			hashComponent(hashBuilder, this.Sensors, statics.Sensors);
-			hashComponent(hashBuilder, this.Thrusters, statics.Thrusters);
-
-			hashComponent(hashBuilder, this.Hull, statics.Hulls);
-			hashBuilder.Add(this.SpecialEquipment.Count, statics.SpecialEquipment.Count);
-
-			if (this.IsDrive != null)
-			{
-				hashBuilder.Add(1, 2);
-				hashComponent(hashBuilder, this.IsDrive, statics.IsDrives);
-			}
-			else
-				hashBuilder.Add(0, 2);
-
-			hashComponent(hashBuilder, this.Shield, statics.Shields);
-
-			int maxEquips = this.SpecialEquipment.Count > 0 ? (this.SpecialEquipment.Max(x => x.Quantity) + 1) : 0;
-			foreach (var equip in this.SpecialEquipment.OrderBy(x => x.TypeInfo.IdCode))
-			{
-				hashComponent(hashBuilder, equip, statics.SpecialEquipment);
-				hashBuilder.Add(equip.Quantity, maxEquips);
-			}
-
-			maxEquips = this.MissionEquipment.Count > 0 ? (this.MissionEquipment.Max(x => x.Quantity) + 1) : 0;
-			foreach (var equip in this.MissionEquipment.OrderBy(x => x.TypeInfo.IdCode))
-			{
-				hashComponent(hashBuilder, equip, statics.MissionEquipment);
-				hashBuilder.Add(equip.Quantity, maxEquips);
-			}
-
-			return hashBuilder.Create();
-		}
-
-		private static void hashComponent<T>(BitHashBuilder hashBuilder, Component<T> component, IDictionary<string, T> componentAssortiment) where T : AComponentType
-		{
-			var indices = componentAssortiment.Keys.OrderBy(x => x).ToList();
-			var index = component != null ? indices.IndexOf(component.TypeInfo.IdCode) : componentAssortiment.Count;
-
-			hashBuilder.Add(index, componentAssortiment.Count + 1);
-			if (component != null)
-				hashBuilder.Add(component.Level, component.TypeInfo.MaxLevel + 1);
-		}
-
 		#region Equals and GetHashCode implementation
 		public override bool Equals(object obj)
 		{
-			var other = obj as Design;
-			if (other == null)
-				return false;
-			return this.hash == other.hash && this.Owner == other.Owner;
+			return obj is Design other ? this.Equals(other) : false;
+		}
+
+		public bool Equals(Design other)
+		{
+			return this.Owner == other.Owner &&
+				this.Hull == other.Hull &&
+				this.IsDrive == other.IsDrive &&
+				this.Shield == other.Shield &&
+				this.Armor == other.Armor &&
+				this.Reactor == other.Reactor &&
+				this.Sensors == other.Sensors &&
+				this.Thrusters == other.Thrusters &&
+				this.MissionEquipment.OrderBy(x => x.TypeInfo.IdCode).SequenceEqual(other.MissionEquipment.OrderBy(x => x.TypeInfo.IdCode)) &&
+				this.SpecialEquipment.OrderBy(x => x.TypeInfo.IdCode).SequenceEqual(other.SpecialEquipment.OrderBy(x => x.TypeInfo.IdCode));
 		}
 
 		public override int GetHashCode()
 		{
-			return this.hash.GetHashCode();
+			return this.Name.GetHashCode() * 31 + this.Hull.GetHashCode();
 		}
 
 		public static bool operator ==(Design lhs, Design rhs)

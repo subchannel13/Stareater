@@ -332,8 +332,6 @@
     <Compile Include="SpaceCombat\Combatant.cs" />
     <Compile Include="SpaceCombat\CombatPlanet.cs" />
     <Compile Include="SpaceCombat\Projectile.cs" />
-    <Compile Include="Utils\BitHash.cs" />
-    <Compile Include="Utils\BitHashBuilder.cs" />
     <Compile Include="Utils\Circle.cs" />
     <Compile Include="Utils\Collections\Collection2Index.cs" />
     <Compile Include="Utils\Collections\PairCollectionIndex.cs" />

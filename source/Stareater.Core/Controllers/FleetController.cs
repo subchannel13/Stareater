@@ -11,7 +11,6 @@ using Stareater.Players;
 using Stareater.Ships;
 using Stareater.Ships.Missions;
 using Stareater.Utils;
-using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers
 {
@@ -61,7 +60,7 @@ namespace Stareater.Controllers
 			{
 				var playerProc = this.game.Derivates[this.Fleet.Owner.Data];
 
-				return this.selection.Select(x => new ShipGroupInfo(x.Value.Ships, playerProc.DesignStats[x.Key], this.game.Statics)).ToList();
+				return this.selection.Select(x => new ShipGroupInfo(x.Value.Ships, playerProc.DesignStats[x.Key])).ToList();
 			}
 		}
 
@@ -314,12 +313,12 @@ namespace Stareater.Controllers
 					else
 						similarFleet.Ships.Add(shipGroup);
 				
-				return new FleetInfo(similarFleet, playerProc, this.game.Statics);
+				return new FleetInfo(similarFleet, playerProc);
 			}
 			else {
 				if (newFleet.Ships.Count > 0)
 					shipOrders.Add(newFleet);
-				var fleetInfo = new FleetInfo(newFleet, playerProc, this.game.Statics);
+				var fleetInfo = new FleetInfo(newFleet, playerProc);
 
 				return fleetInfo;
 			}

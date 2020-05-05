@@ -11,15 +11,13 @@ namespace Stareater.Controllers.Views.Ships
 	public class DesignInfo
 	{
 		private readonly DesignStats stats;
-		private readonly StaticsDB statics;
 
 		internal Design Data { get; private set; }
 		
-		internal DesignInfo(Design design, DesignStats stats, StaticsDB statics)
+		internal DesignInfo(Design design, DesignStats stats)
 		{
 			this.Data = design;
 			this.stats = stats;
-			this.statics = statics;
 		}
 		
 		public string Name 
