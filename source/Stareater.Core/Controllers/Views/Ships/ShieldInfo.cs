@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Stareater.GameData.Databases.Tables;
+﻿using System.Collections.Generic;
 using Stareater.GameData.Ships;
 using Stareater.Localization;
+using Stareater.Ships;
 using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views.Ships
@@ -11,25 +10,23 @@ namespace Stareater.Controllers.Views.Ships
 	{
 		internal const string LangContext = "Shields";
 		
-		internal ShieldType Type { get; private set; }
-		internal int Level { get; private set; }
+		internal Component<ShieldType> Component { get; private set; }
 		
 		private readonly IDictionary<string, double> vars;
 		
-		internal ShieldInfo(ShieldType type, int level, double shieldSize)
+		internal ShieldInfo(Component<ShieldType> component, double shieldSize)
 		{
-			this.Type = type;
-			this.Level = level;
+			this.Component = component;
 			
-			this.vars = new Var(AComponentType.LevelKey, level).
+			this.vars = new Var(AComponentType.LevelKey, component.Level).
 				And(ShieldType.SizeKey, shieldSize).Get;
 		}
-		
+
 		public string Name
 		{ 
 			get
 			{
-				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(this.Type.LanguageCode).Text(this.Level);
+				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(this.Component.TypeInfo.LanguageCode).Text(this.Component.Level);
 			}
 		}
 		
@@ -37,7 +34,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.ImagePath;
+				return this.Component.TypeInfo.ImagePath;
 			}
 		}
 		
@@ -45,7 +42,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.HpFactor.Evaluate(vars);
+				return this.Component.TypeInfo.HpFactor.Evaluate(vars);
 			}
 		}
 		
@@ -53,7 +50,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.RegenerationFactor.Evaluate(vars);
+				return this.Component.TypeInfo.RegenerationFactor.Evaluate(vars);
 			}
 		}
 		
@@ -61,7 +58,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.Thickness.Evaluate(vars);
+				return this.Component.TypeInfo.Thickness.Evaluate(vars);
 			}
 		}
 		
@@ -69,7 +66,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.Reduction.Evaluate(vars);
+				return this.Component.TypeInfo.Reduction.Evaluate(vars);
 			}
 		}
 		
@@ -78,7 +75,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.Cloaking.Evaluate(vars);
+				return this.Component.TypeInfo.Cloaking.Evaluate(vars);
 			}
 		}
 		
@@ -86,7 +83,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.Jamming.Evaluate(vars);
+				return this.Component.TypeInfo.Jamming.Evaluate(vars);
 			}
 		}
 		
@@ -95,7 +92,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.PowerUsage.Evaluate(vars);
+				return this.Component.TypeInfo.PowerUsage.Evaluate(vars);
 			}
 		}
 	}

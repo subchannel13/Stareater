@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Stareater.GameData.Ships;
-using Stareater.GameLogic.Combat;
+﻿using Stareater.GameData.Ships;
 using Stareater.Localization;
+using Stareater.Ships;
 
 namespace Stareater.Controllers.Views.Ships
 {
@@ -9,23 +8,21 @@ namespace Stareater.Controllers.Views.Ships
 	{
 		internal const string LangContext = "Reactors";
 		
-		internal ReactorType Type { get; private set; }
-		internal int Level { get; private set; }
+		internal Component<ReactorType> Component { get; private set; }
 
-		private readonly DesignStats designStats;
+		public double Power { get; private set; }
 
-		internal ReactorInfo(ReactorType type, int level, DesignStats designStats)
+		internal ReactorInfo(Component<ReactorType> component, double power)
 		{
-			this.Type = type;
-			this.Level = level;
-			this.designStats = designStats;
+			this.Component = component;
+			this.Power = power;
 		}
-		
+
 		public string Name
 		{ 
 			get
 			{
-				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(this.Type.LanguageCode).Text(this.Level);
+				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(this.Component.TypeInfo.LanguageCode).Text(this.Component.Level);
 			}
 		}
 		
@@ -33,20 +30,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.ImagePath;
-			}
-		}
-
-		public double Power
-		{
-			get
-			{
-				//TODO(v0.9) make variables a member instead of designStats
-				return this.Type.Power.Evaluate(new Dictionary<string, double>
-				{
-					[AComponentType.LevelKey] = this.Level,
-					[ReactorType.SizeKey] = designStats.ReactorSize
-				});
+				return this.Component.TypeInfo.ImagePath;
 			}
 		}
 	}

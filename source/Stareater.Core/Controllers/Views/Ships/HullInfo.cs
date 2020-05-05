@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Stareater.GameData.Ships;
 using Stareater.Localization;
+using Stareater.Ships;
 using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views.Ships
@@ -11,24 +11,22 @@ namespace Stareater.Controllers.Views.Ships
 	{
 		internal const string LangContext = "Hulls";
 
-		internal HullType Type { get; private set; }
-		internal int Level { get; private set; }
+		internal Component<HullType> Component { get; private set; }
 
 		private readonly IDictionary<string, double> levelVar;
 
-		internal HullInfo(HullType hullType, int level)
+		internal HullInfo(Component<HullType> component)
 		{
-			this.Type = hullType;
-			this.Level = level;
+			this.Component = component;
 
-			this.levelVar = new Var(AComponentType.LevelKey, level).Get;
+			this.levelVar = new Var(AComponentType.LevelKey, component.Level).Get;
 		}
 
 		public string Name
 		{
 			get
 			{
-				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(this.Type.LanguageCode).Text();
+				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(this.Component.TypeInfo.LanguageCode).Text();
 			}
 		}
 
@@ -36,7 +34,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.Size.Evaluate(levelVar);
+				return this.Component.TypeInfo.Size;
 			}
 		}
 
@@ -44,7 +42,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.Cost.Evaluate(levelVar);
+				return this.Component.TypeInfo.Cost.Evaluate(levelVar);
 			}
 		}
 
@@ -52,7 +50,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.ImagePaths;
+				return this.Component.TypeInfo.ImagePaths;
 			}
 		}
 
@@ -60,7 +58,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.ArmorBase.Evaluate(levelVar);
+				return this.Component.TypeInfo.ArmorBase.Evaluate(levelVar);
 			}
 		}
 
@@ -68,7 +66,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.ArmorAbsorption.Evaluate(levelVar);
+				return this.Component.TypeInfo.ArmorAbsorption.Evaluate(levelVar);
 			}
 		}
 
@@ -76,7 +74,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.ShieldBase.Evaluate(levelVar);
+				return this.Component.TypeInfo.ShieldBase.Evaluate(levelVar);
 			}
 		}
 
@@ -84,7 +82,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.SpaceFree.Evaluate(levelVar);
+				return this.Component.TypeInfo.SpaceFree.Evaluate(levelVar);
 			}
 		}
 
@@ -92,7 +90,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.CloakingBase.Evaluate(levelVar);
+				return this.Component.TypeInfo.CloakingBase.Evaluate(levelVar);
 			}
 		}
 
@@ -100,7 +98,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.JammingBase.Evaluate(levelVar);
+				return this.Component.TypeInfo.JammingBase.Evaluate(levelVar);
 			}
 		}
 
@@ -108,7 +106,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.SensorsBase.Evaluate(levelVar);
+				return this.Component.TypeInfo.SensorsBase.Evaluate(levelVar);
 			}
 		}
 
@@ -116,7 +114,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.InertiaBase.Evaluate(levelVar);
+				return this.Component.TypeInfo.InertiaBase.Evaluate(levelVar);
 			}
 		}
 	}

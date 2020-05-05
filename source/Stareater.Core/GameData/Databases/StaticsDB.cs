@@ -611,7 +611,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralMaxLevelKey].To<int>(),
 				!data.Keys.Contains(GeneralCannotPickKey),
 				data[GeneralCostKey].To<Formula>(),
-				data[HullSize].To<Formula>(),
+				data[HullSize].To<Formula>().Evaluate(null),
 				data[HullSpace].To<Formula>(),
 				data[HullArmorBase].To<Formula>(),
 				data[HullArmorAbsorb].To<Formula>(),

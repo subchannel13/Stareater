@@ -644,7 +644,7 @@ namespace Stareater.GameLogic
 				And("hullCloak", hull.TypeInfo.CloakingBase.Evaluate(hullVars)).
 				And("hullJamming", hull.TypeInfo.JammingBase.Evaluate(hullVars)).
 				And("hullInertia", hull.TypeInfo.InertiaBase.Evaluate(hullVars)).
-				And("hullSize", hull.TypeInfo.Size.Evaluate(hullVars)).
+				And("hullSize", hull.TypeInfo.SpaceFree.Evaluate(hullVars)).
 				Init(statics.SpecialEquipment.Keys, 0).
 				Init(statics.SpecialEquipment.Keys.Select(x => x + AComponentType.LevelSuffix), 0).
 				UnionWith(specialEquipment, x => x.TypeInfo.IdCode, x => x.Quantity).
@@ -771,12 +771,11 @@ namespace Stareater.GameLogic
 					x => AbilityStatsFactory.Create(x, equip.TypeInfo, equip.Level, equip.Quantity, statics)
 				)
 			));
-			var size = design.Hull.TypeInfo.Size.Evaluate(hullVars);
-			shipVars[HullType.SizeKey] = size;
+			shipVars[HullType.SizeKey] = design.Hull.TypeInfo.SpaceFree.Evaluate(hullVars);
 
 			return new DesignStats(
 				calculateCost(design, shipVars.Get, statics.ShipFormulas),
-				size,
+				design.Hull.TypeInfo.Size,
 				driveSize,
 				statics.ShipFormulas.ReactorSize.Evaluate(shipVars.Get),
 				shieldSize,
@@ -807,7 +806,7 @@ namespace Stareater.GameLogic
 		{
 			var hullVars = new Var(AComponentType.LevelKey, design.Hull.Level).Get;
 			double hullCost = design.Hull.TypeInfo.Cost.Evaluate(hullVars);
-			double hullSize = design.Hull.TypeInfo.Size.Evaluate(hullVars);
+			double hullSize = design.Hull.TypeInfo.SpaceFree.Evaluate(hullVars);
 
 			double isDriveCost = design.IsDrive == null ? 0 :
 				design.IsDrive.TypeInfo.Cost.Evaluate(
@@ -872,7 +871,7 @@ namespace Stareater.GameLogic
 			cost += refitComponentCost(fromDesign.IsDrive, toDesign.IsDrive, x => x.Cost, new Var(IsDriveType.SizeKey, toDesignStats.IsDriveSize), levelRefitCost);
 			cost += refitComponentCost(fromDesign.Shield, toDesign.Shield, x => x.Cost, new Var(ShieldType.SizeKey, toDesignStats.ShieldSize), levelRefitCost);
 			cost += refitComponentCost(fromDesign.MissionEquipment, toDesign.MissionEquipment, x => x.Cost, null, levelRefitCost);
-			cost += refitComponentCost(fromDesign.SpecialEquipment, toDesign.SpecialEquipment, x => x.Cost, new Var(HullType.SizeKey, toDesign.Hull.TypeInfo.Size.Evaluate(hullVars)), levelRefitCost);
+			cost += refitComponentCost(fromDesign.SpecialEquipment, toDesign.SpecialEquipment, x => x.Cost, new Var(HullType.SizeKey, toDesign.Hull.TypeInfo.SpaceFree.Evaluate(hullVars)), levelRefitCost);
 			
 			return cost;
 		}

@@ -9,14 +9,12 @@ namespace Stareater.Utils.StateEngine
 {
 	class ClassStrategy : ITypeStrategy
 	{
-		private Type type;
-		private Func<object> constructor;
-		private List<PropertyStrategy> properties;
-		private string saveTag;
+		private readonly Func<object> constructor;
+		private readonly List<PropertyStrategy> properties;
+		private readonly string saveTag;
 		
 		public ClassStrategy(Type type, StateTypeAttribute attributes)
 		{
-			this.type = type;
 			this.constructor = buildConstructor(type);
 			this.properties = getProperties(type).
 				Select(x => new PropertyStrategy(x)).

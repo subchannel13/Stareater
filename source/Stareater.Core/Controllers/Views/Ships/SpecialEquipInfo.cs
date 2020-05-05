@@ -15,7 +15,7 @@ namespace Stareater.Controllers.Views.Ships
 		
 		private readonly IDictionary<string, double> vars;
 
-		internal SpecialEquipInfo(SpecialEquipmentType type, int level, HullInfo shipHull)
+		internal SpecialEquipInfo(SpecialEquipmentType type, int level, HullType shipHull)
 		{
 			this.Type = type;
 			this.Level = level;

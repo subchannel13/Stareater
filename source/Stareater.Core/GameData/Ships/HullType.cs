@@ -15,7 +15,7 @@ namespace Stareater.GameData.Ships
 		public ReadOnlyCollection<string> ImagePaths { get; private set; }
 		public Formula Cost { get; private set; }
 	
-		public Formula Size { get; private set; }
+		public double Size { get; private set; }
 		public Formula SpaceFree { get; private set; }
 		
 		public Formula ArmorBase { get; private set; }
@@ -29,7 +29,7 @@ namespace Stareater.GameData.Ships
 		
 		public HullType(string code, string languageCode, string[] imagePaths,
 		                IEnumerable<Prerequisite> prerequisites, int maxLevel, bool canPick, Formula cost, 
-		                Formula size, Formula spaceFree, 
+		                double size, Formula spaceFree, 
 		                Formula armorBase, Formula armorAbsorption, Formula shieldBase, 
 		                Formula inertiaBase, Formula jammingBase, Formula cloakingBase, Formula sensorsBase)
 			: base(code, languageCode, prerequisites, maxLevel, canPick)

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Stareater.GameData.Ships;
 using Stareater.Localization;
+using Stareater.Ships;
 using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views.Ships
@@ -10,24 +10,21 @@ namespace Stareater.Controllers.Views.Ships
 	{
 		internal const string LangContext = "Sensors";
 
-		internal SensorType Type { get; private set; }
-		internal int Level { get; private set; }
+		internal Component<SensorType> Component { get; private set; }
 		
 		private readonly IDictionary<string, double> vars;
-		
-		internal SensorInfo(SensorType type, int level)
+
+		internal SensorInfo(Component<SensorType> component)
 		{
-			this.Type = type;
-			this.Level = level;
-			
-			this.vars = new Var(AComponentType.LevelKey, level).Get;
+			this.Component = component;
+			this.vars = new Var(AComponentType.LevelKey, component.Level).Get;
 		}
-		
+
 		public string Name
 		{ 
 			get
 			{
-				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(this.Type.LanguageCode).Text(this.Level);
+				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(this.Component.TypeInfo.LanguageCode).Text(this.Component.Level);
 			}
 		}
 		
@@ -35,7 +32,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.ImagePath;
+				return this.Component.TypeInfo.ImagePath;
 			}
 		}
 		
@@ -43,7 +40,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.Detection.Evaluate(vars);
+				return this.Component.TypeInfo.Detection.Evaluate(vars);
 			}
 		}
 	}

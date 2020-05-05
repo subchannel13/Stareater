@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Stareater.GameData.Ships;
 using Stareater.Localization;
+using Stareater.Ships;
 using Stareater.Utils.Collections;
 
 namespace Stareater.Controllers.Views.Ships
@@ -10,24 +10,22 @@ namespace Stareater.Controllers.Views.Ships
 	{
 		internal const string LangContext = "Thrusters";
 
-		internal ThrusterType Type { get; private set; }
-		internal int Level { get; private set; }
+		internal Component<ThrusterType> Component { get; private set; }
 		
 		private readonly IDictionary<string, double> vars;
 
-		internal ThrusterInfo(ThrusterType type, int level)
+		internal ThrusterInfo(Component<ThrusterType> component)
 		{
-			this.Type = type;
-			this.Level = level;
+			this.Component = component;
 			
-			this.vars = new Var(AComponentType.LevelKey, level).Get;
+			this.vars = new Var(AComponentType.LevelKey, component.Level).Get;
 		}
-		
+
 		public string Name
 		{ 
 			get
 			{
-				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(this.Type.LanguageCode).Text(this.Level);
+				return LocalizationManifest.Get.CurrentLanguage[LangContext].Name(this.Component.TypeInfo.LanguageCode).Text(this.Component.Level);
 			}
 		}
 		
@@ -35,7 +33,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.ImagePath;
+				return this.Component.TypeInfo.ImagePath;
 			}
 		}
 		
@@ -43,7 +41,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.Evasion.Evaluate(vars);
+				return this.Component.TypeInfo.Evasion.Evaluate(vars);
 			}
 		}
 		
@@ -51,7 +49,7 @@ namespace Stareater.Controllers.Views.Ships
 		{
 			get
 			{
-				return this.Type.Speed.Evaluate(vars);
+				return this.Component.TypeInfo.Speed.Evaluate(vars);
 			}
 		}
 	}
