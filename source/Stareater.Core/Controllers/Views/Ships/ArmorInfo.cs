@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Stareater.GameData.Ships;
+﻿using Stareater.GameData.Ships;
 using Stareater.Localization;
 using Stareater.Ships;
 using Stareater.Utils.Collections;
+using System.Collections.Generic;
 
 namespace Stareater.Controllers.Views.Ships
 {
@@ -44,15 +44,7 @@ namespace Stareater.Controllers.Views.Ships
 				return this.Component.TypeInfo.Absorption.Evaluate(vars);
 			}
 		}
-		
-		public double AbsorptionMax
-		{
-			get
-			{
-				return this.Component.TypeInfo.AbsorptionMax.Evaluate(vars);
-			}
-		}
-		
+				
 		public double ArmorFactor
 		{
 			get

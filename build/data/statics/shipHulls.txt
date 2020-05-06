@@ -18,7 +18,7 @@
 	space # 10;
 	
 	armorBase # 10;
-	armorAbsorb # 0.1;
+	armorAbsorb # 0.65;
 	shieldBase # 10;
 	
 	inertia # 10;
@@ -47,7 +47,7 @@
 	space # 50;
 	
 	armorBase # 60;
-	armorAbsorb # 0.2;
+	armorAbsorb # 1;
 	shieldBase # 60;
 	
 	inertia # 13;
@@ -73,7 +73,7 @@
 	space # 200;
 	
 	armorBase # 300;
-	armorAbsorb # 0.5;
+	armorAbsorb # 1.5;
 	shieldBase # 300;
 	
 	inertia # 16;
@@ -98,7 +98,7 @@
 	space # 1000;
 	
 	armorBase # 1800;
-	armorAbsorb # 0.7;
+	armorAbsorb # 2.25;
 	shieldBase # 1800;
 	
 	inertia # 19;
@@ -123,7 +123,7 @@
 	space # 5000;
 	
 	armorBase # 1000;
-	armorAbsorb # 1;
+	armorAbsorb # 4;
 	shieldBase # 1000;
 	
 	inertia # 21;

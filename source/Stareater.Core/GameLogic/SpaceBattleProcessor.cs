@@ -345,7 +345,7 @@ namespace Stareater.GameLogic
 		{
 			var targetStealth = targetStats.Jamming + (targetCloaked ? this.mainGame.Statics.ShipFormulas.NaturalCloakBonus : 0);
 
-			return (targetStealth > attackerDetection ? Math.Pow(sigmoidBase, targetStealth - attackerDetection) : 1) *
+			return (targetStealth > attackerDetection ? Math.Pow(SigmoidBase, targetStealth - attackerDetection) : 1) *
 				 Probability(attackAccuracy - targetStats.Evasion);
 		}
 

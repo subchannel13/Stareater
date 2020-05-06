@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Stareater.AppData.Expressions;
+﻿using Stareater.AppData.Expressions;
 using Stareater.Utils.Collections;
 using Stareater.Utils.StateEngine;
+using System.Collections.Generic;
 
 namespace Stareater.GameData.Ships
 {
@@ -12,16 +12,14 @@ namespace Stareater.GameData.Ships
 		
 		public Formula ArmorFactor;
 		public Formula Absorption;
-		public Formula AbsorptionMax;
 		
 		public ArmorType(string code, string languageCode, string imagePath,
 		                 IEnumerable<Prerequisite> prerequisites, int maxLevel, 
-		                 bool canPick, Formula armorFactor, Formula absorption, Formula absorptionMax)
+		                 bool canPick, Formula armorFactor, Formula absorption)
 			: base(code, languageCode, prerequisites, maxLevel, canPick)
 		{
 			this.ArmorFactor = armorFactor;
 			this.Absorption = absorption;
-			this.AbsorptionMax = absorptionMax;
 			this.ImagePath = imagePath;
 		}
 

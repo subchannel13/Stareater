@@ -10,7 +10,6 @@
 	
 	armorFactor # 1 + 0.1 * lvl;
 	reduction # 1;
-	reductionMax # 5;
 }
 
 { Armor
@@ -20,12 +19,11 @@
 	
 	maxLvl= 10
 	prerequisites [
-		:metalworking #lvl [-100, 1, 2];
+		:metalworking #lvl [0, 1, 2];
 	]
 	
 	armorFactor # 2 + 0.2 * lvl;
 	reduction # 2;
-	reductionMax # 10;
 }
 
 { Armor
@@ -35,10 +33,9 @@
 	
 	maxLvl= 10
 	prerequisites [
-		:metalworking #lvl [-100, 2, 3];
+		:metalworking #lvl [1, 2, 3];
 	]
 	
 	armorFactor # 3 + 0.3 * lvl;
 	reduction # 3;
-	reductionMax # 10;
 }

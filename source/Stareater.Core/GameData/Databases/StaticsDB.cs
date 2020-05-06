@@ -544,8 +544,7 @@ namespace Stareater.GameData.Databases
 				data[GeneralMaxLevelKey].To<int>(),
 				!data.Keys.Contains(GeneralCannotPickKey),
 				data[ArmorFactor].To<Formula>(),
-				data[ArmorAbsorb].To<Formula>(),
-				data[ArmorAbsorbMax].To<Formula>()
+				data[ArmorAbsorb].To<Formula>()
 			);
 		}
 
@@ -902,7 +901,6 @@ namespace Stareater.GameData.Databases
 
 		
 		private const string ArmorAbsorb = "reduction";
-		private const string ArmorAbsorbMax = "reductionMax";
 		private const string ArmorFactor = "armorFactor";
 		
 		private const string EquipmentPowerKey = "power";

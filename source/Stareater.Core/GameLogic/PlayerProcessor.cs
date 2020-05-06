@@ -738,8 +738,8 @@ namespace Stareater.GameLogic
 			
 			shipVars[AComponentType.LevelKey] = design.Armor.Level;
 			double baseArmorReduction = design.Armor.TypeInfo.Absorption.Evaluate(shipVars.Get);
+			shipVars[AComponentType.LevelKey] = design.Hull.Level;
 			double hullArFactor = design.Hull.TypeInfo.ArmorAbsorption.Evaluate(shipVars.Get);
-			double maxArmorReduction = design.Armor.TypeInfo.AbsorptionMax.Evaluate(shipVars.Get);
 				
 			double shieldCloaking = 0;
 			double shieldJamming = 0;
@@ -792,7 +792,7 @@ namespace Stareater.GameLogic
 				statics.ShipFormulas.HitPoints.Evaluate(shipVars.Get),
 				shieldHp,
 				statics.ShipFormulas.Evasion.Evaluate(shipVars.Get),
-				Methods.Clamp(baseArmorReduction * hullArFactor, 0, maxArmorReduction),
+				baseArmorReduction * hullArFactor,
 				shieldReduction,
 				shieldRegeneration,
 				shieldThickness,

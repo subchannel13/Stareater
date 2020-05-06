@@ -134,14 +134,14 @@ namespace Stareater.GameLogic
 		}
 
 		#region Math helpers
-		protected const double sigmoidBase = 0.90483741803595957316424905944644; //e^-0.1
+		protected const double SigmoidBase = 0.90483741803595957316424905944644; //e^-0.1
 		
 		protected static double Probability(double modifer)
 		{
 			if (modifer < 0)
-				return 0.5 * Math.Pow(sigmoidBase, -modifer);
+				return 0.5 * Math.Pow(SigmoidBase, -modifer);
 			else
-				return 1 - 0.5 * Math.Pow(sigmoidBase, modifer);
+				return 1 - 0.5 * Math.Pow(SigmoidBase, modifer);
 		}
 		
 		protected static double Reduce(double attack, double defense, double defenseEffect)
@@ -149,7 +149,11 @@ namespace Stareater.GameLogic
 			if (attack <= 0 || double.IsPositiveInfinity(defense))
 				return 0;
 
-			return attack * Math.Pow(2, -defenseEffect * defense / attack);
+			defense *= defenseEffect;
+			var halfAttack = attack / 2;
+			var halvings = Math.Floor(defense / halfAttack);
+
+			return (attack - (defense - halvings * halfAttack)) / Math.Pow(2, -halvings);
 		}
 		#endregion
 	}
