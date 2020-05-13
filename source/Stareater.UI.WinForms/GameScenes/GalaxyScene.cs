@@ -26,9 +26,6 @@ namespace Stareater.GameScenes
 	class GalaxyScene : AScene
 	{
 		private const float DefaultViewSize = 15;
-		private const double ZoomBase = 1.2f;
-		private const int MaxZoom = 10;
-		private const int MinZoom = -10;
 		private const int NameZoomLimit = -2;
 
 		private const float FarZ = 1;
@@ -54,9 +51,7 @@ namespace Stareater.GameScenes
 		private const float FleetSelectorScale = 0.3f;
 		private const float PathWidth = 0.1f;
 
-		public FleetController SelectedFleet { private get; set; }
 		private readonly IGalaxyViewListener galaxyViewListener;
-		private readonly SignalFlag refreshData = new SignalFlag();
 
 		private readonly GuiText turnCounter;
 		private readonly GuiText fuelInfo;
@@ -76,10 +71,8 @@ namespace Stareater.GameScenes
 		private IEnumerable<GuiAnchor> starAnchors = null;
 		private IEnumerable<AGuiElement> starElements = null;
 
-		private int zoomLevel = 2;
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
-		private Vector2 originOffset = Vector2.Zero;
 		private float screenUnitScale;
 		private Vector2 mapBoundsMin;
 		private Vector2 mapBoundsMax;
@@ -87,10 +80,12 @@ namespace Stareater.GameScenes
 
 		private readonly OpenReportVisitor reportOpener;
 		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
+		public FleetController SelectedFleet { private get; set; }
+		private readonly SignalFlag refreshData = new SignalFlag(); //TODO(v0.9) try to remove
 		private readonly Dictionary<int, Vector2D> lastSelectedStars = new Dictionary<int, Vector2D>();
 		private readonly Dictionary<int, FleetInfo> lastSelectedIdleFleets = new Dictionary<int, FleetInfo>();
-		private readonly Dictionary<int, Vector2> lastOffset = new Dictionary<int, Vector2>(); //TODO(v0.9) remember player's zoom level too, unify with last selected object
 		private PlayerController currentPlayer = null;
+		private readonly Dictionary<int, PlayerViewpoint> viewpoint = new Dictionary<int, PlayerViewpoint>();
 
 		public GalaxyScene(IGalaxyViewListener galaxyViewListener, Action mainMenuCallback)
 		{
@@ -286,14 +281,11 @@ namespace Stareater.GameScenes
 		public void SwitchPlayer(PlayerController player)
 		{
 			player.RunAutomation();
-
-			if (this.currentPlayer != null)
-				this.lastOffset[this.currentPlayer.PlayerIndex] = originOffset;
-
+			
 			this.currentPlayer = player;
 
 			//Assumes all players can see the same map size
-			if (this.lastSelectedStars.Count == 0)
+			if (this.viewpoint.Count == 0)
 			{
 				this.mapBoundsMin = new Vector2(
 					(float)this.currentPlayer.Stars.Min(star => star.Position.X) - StarMinClickRadius,
@@ -305,11 +297,13 @@ namespace Stareater.GameScenes
 				);
 			}
 
+			if (!this.viewpoint.ContainsKey(player.PlayerIndex))
+				viewpoint[player.PlayerIndex] = new PlayerViewpoint(this.mapBoundsMin, this.mapBoundsMax);
+
 			if (!this.lastSelectedStars.ContainsKey(this.currentPlayer.PlayerIndex) ||
 				!this.currentPlayer.Stars.Any(x => x.Position == this.lastSelectedStars[this.currentPlayer.PlayerIndex]))
 				this.selectDefaultStar();
 
-			this.originOffset = this.lastOffset[this.currentPlayer.PlayerIndex];
 			this.currentSelection = GalaxySelectionType.Star;
 			this.showStarInfo(this.lastSelectedStar);
 			this.setupPerspective();
@@ -383,7 +377,6 @@ namespace Stareater.GameScenes
 					});
 				return;
 			}
-
 
 			var stationaryFleet = fleets.FirstOrDefault(x => x.Owner == this.currentPlayer.Info && x.Missions.Waypoints.Count == 0);
 			var otherOwnedFleets = fleets.Where(x => x.Owner == this.currentPlayer.Info && x != stationaryFleet);
@@ -504,6 +497,10 @@ namespace Stareater.GameScenes
 			this.setupScanRanges();
 		}
 
+		private PlayerViewpoint currentViewpoint
+		{
+			get => this.viewpoint[this.currentPlayer.PlayerIndex];
+		}
 		#region AScene implementation
 		protected override float guiLayerThickness => 1 / Layers;
 
@@ -540,15 +537,15 @@ namespace Stareater.GameScenes
 		protected override Matrix4 calculatePerspective()
 		{
 			var aspect = this.canvasSize.X / this.canvasSize.Y;
-			var radius = DefaultViewSize * (float)Math.Pow(ZoomBase, -this.zoomLevel);
+			var radius = DefaultViewSize * this.currentViewpoint.ZoomFactor;
 
 			this.pixelSize = radius / canvasSize.Y;
-			this.screenUnitScale = (float)Math.Pow(ZoomBase, -this.zoomLevel) * this.screenSize.Y / this.canvasSize.Y;
+			this.screenUnitScale = this.currentViewpoint.ZoomFactor * this.screenSize.Y / this.canvasSize.Y;
 
 			// Update screen space elements
 			this.setupScanRanges();
-
-			return calcOrthogonalPerspective(aspect * radius, radius, FarZ, originOffset);
+			
+			return calcOrthogonalPerspective(aspect * radius, radius, FarZ, this.currentViewpoint.Offset);
 		}
 
 		private IEnumerable<Vector2> fleetMovementPathVertices(FleetInfo fleet, IEnumerable<Vector2> waypoints)
@@ -684,7 +681,7 @@ namespace Stareater.GameScenes
 						LocalizationManifest.Get.CurrentLanguage["FormMain"]["FleetEta"].Text(numVars, textVars),
 						-0.5f, 0, EtaZ, InterlayerZRange, Color.White
 					).
-					Scale(EtaTextScale / (float)Math.Pow(ZoomBase, zoomLevel)).
+					Scale(EtaTextScale * this.currentViewpoint.ZoomFactor).
 					Translate(destination.Position.X, destination.Position.Y + 0.5).
 					Build()
 			);
@@ -816,7 +813,7 @@ namespace Stareater.GameScenes
 
 		private IEnumerable<AGuiElement> makeStarElements(StarInfo star, GuiAnchor anchor)
 		{
-			if (this.zoomLevel <= NameZoomLimit)
+			if (this.currentViewpoint.ZoomLevel <= NameZoomLimit)
 				yield break;
 
 			var rowsPositioner = new LinearPositioner(false, anchor);
@@ -888,11 +885,10 @@ namespace Stareater.GameScenes
 
 			this.panAbsPath += (currentPosition - this.lastMousePosition.Value).Length;
 
-			this.originOffset -= (Vector4.Transform(currentPosition, this.invProjection) -
+			this.currentViewpoint.Offset -= 
+				(Vector4.Transform(currentPosition, this.invProjection) -
 				Vector4.Transform(this.lastMousePosition.Value, this.invProjection)
 				).Xy;
-
-			this.limitPan();
 
 			this.lastMousePosition = currentPosition;
 			this.setupPerspective();
@@ -900,22 +896,20 @@ namespace Stareater.GameScenes
 
 		protected override void onMouseScroll(Vector2 mousePoint, int delta)
 		{
-			float oldZoom = 1 / (float)(0.5 * DefaultViewSize / Math.Pow(ZoomBase, zoomLevel));
+			float oldZoom = 1 / (float)(0.5 * DefaultViewSize * this.currentViewpoint.ZoomFactor);
 
 			if (delta > 0)
-				this.zoomLevel++;
+				this.currentViewpoint.ZoomLevel++;
 			else
-				this.zoomLevel--;
+				this.currentViewpoint.ZoomLevel--;
 
-			this.zoomLevel = Methods.Clamp(zoomLevel, MinZoom, MaxZoom);
+			float newZoom = 1 / (float)(0.5 * DefaultViewSize * this.currentViewpoint.ZoomFactor);
 
-			float newZoom = 1 / (float)(0.5 * DefaultViewSize / Math.Pow(ZoomBase, this.zoomLevel));
-
-			this.originOffset = (this.originOffset * oldZoom + mousePoint * (newZoom - oldZoom)) / newZoom;
-			this.limitPan();
+			this.currentViewpoint.Offset = (this.currentViewpoint.Offset * oldZoom + mousePoint * (newZoom - oldZoom)) / newZoom;
 			this.setupPerspective();
 			this.setupScanRanges();
 			this.setupMovementEta();
+			this.setupStars();
 		}
 
 		protected override void onMouseClick(Vector2 mousePoint, Keys modiferKeys)
@@ -1016,19 +1010,6 @@ namespace Stareater.GameScenes
 			this.setupMovementSimulation();
 		}
 
-		private void limitPan()
-		{
-			if (this.originOffset.X < mapBoundsMin.X)
-				this.originOffset.X = mapBoundsMin.X;
-			if (this.originOffset.X > mapBoundsMax.X)
-				this.originOffset.X = mapBoundsMax.X;
-
-			if (this.originOffset.Y < mapBoundsMin.Y)
-				this.originOffset.Y = mapBoundsMin.Y;
-			if (this.originOffset.Y > mapBoundsMax.Y)
-				this.originOffset.Y = mapBoundsMax.Y;
-		}
-
 		private FleetInfo lastSelectedIdleFleet
 		{
 			get
@@ -1061,7 +1042,7 @@ namespace Stareater.GameScenes
 				Aggregate((a, b) => a.Population > b.Population ? a : b);
 
 			this.lastSelectedStars[this.currentPlayer.PlayerIndex] = bestStar.HostStar.Position;
-			this.lastOffset[this.currentPlayer.PlayerIndex] = convert(bestStar.HostStar.Position);
+			this.currentViewpoint.Offset = convert(bestStar.HostStar.Position);
 		}
 
 		private void showBottomView(AGuiElement view)
