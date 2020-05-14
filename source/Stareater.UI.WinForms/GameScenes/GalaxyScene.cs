@@ -79,13 +79,10 @@ namespace Stareater.GameScenes
 		private float pixelSize = 1;
 
 		private readonly OpenReportVisitor reportOpener;
-		private GalaxySelectionType currentSelection = GalaxySelectionType.None;
-		public FleetController SelectedFleet { private get; set; }
+		public FleetController SelectedFleetControl { private get; set; }
 		private readonly SignalFlag refreshData = new SignalFlag(); //TODO(v0.9) try to remove
-		private readonly Dictionary<int, Vector2D> lastSelectedStars = new Dictionary<int, Vector2D>();
-		private readonly Dictionary<int, FleetInfo> lastSelectedIdleFleets = new Dictionary<int, FleetInfo>();
 		private PlayerController currentPlayer = null;
-		private readonly Dictionary<int, PlayerViewpoint> viewpoint = new Dictionary<int, PlayerViewpoint>();
+		private readonly Dictionary<int, PlayerViewpoint> viewpoints = new Dictionary<int, PlayerViewpoint>();
 
 		public GalaxyScene(IGalaxyViewListener galaxyViewListener, Action mainMenuCallback)
 		{
@@ -285,7 +282,7 @@ namespace Stareater.GameScenes
 			this.currentPlayer = player;
 
 			//Assumes all players can see the same map size
-			if (this.viewpoint.Count == 0)
+			if (this.viewpoints.Count == 0)
 			{
 				this.mapBoundsMin = new Vector2(
 					(float)this.currentPlayer.Stars.Min(star => star.Position.X) - StarMinClickRadius,
@@ -297,15 +294,14 @@ namespace Stareater.GameScenes
 				);
 			}
 
-			if (!this.viewpoint.ContainsKey(player.PlayerIndex))
-				viewpoint[player.PlayerIndex] = new PlayerViewpoint(this.mapBoundsMin, this.mapBoundsMax);
+			if (!this.viewpoints.ContainsKey(player.PlayerIndex))
+				viewpoints[player.PlayerIndex] = new PlayerViewpoint(this.mapBoundsMin, this.mapBoundsMax);
 
-			if (!this.lastSelectedStars.ContainsKey(this.currentPlayer.PlayerIndex) ||
-				!this.currentPlayer.Stars.Any(x => x.Position == this.lastSelectedStars[this.currentPlayer.PlayerIndex]))
+			this.currentViewpoint.Selection = this.currentViewpoint.Selection?.Update(this.currentPlayer);
+			if (this.currentViewpoint.Selection is null)
 				this.selectDefaultStar();
 
-			this.currentSelection = GalaxySelectionType.Star;
-			this.showStarInfo(this.lastSelectedStar);
+			this.showStarInfo(this.selectedStar);
 			this.setupPerspective();
 			this.setupFuelInfo();
 
@@ -345,9 +341,8 @@ namespace Stareater.GameScenes
 		{
 			if (star != null && fleets.Count == 0)
 			{
-				this.currentSelection = GalaxySelectionType.Star;
-				this.lastSelectedStars[this.currentPlayer.PlayerIndex] = star.Position;
-				this.showStarInfo(this.lastSelectedStar);
+				this.currentViewpoint.Selection = new SelectedStar(star);
+				this.showStarInfo(this.selectedStar);
 				this.setupSelectionMarkers();
 				return;
 			}
@@ -356,15 +351,14 @@ namespace Stareater.GameScenes
 
 			if (fleets.Count == 1 && fleets[0].Owner == this.currentPlayer.Info)
 			{
-				if (this.SelectedFleet == null)
+				if (this.SelectedFleetControl == null)
 				{
-					this.currentSelection = GalaxySelectionType.Fleet;
-					this.SelectedFleet = this.currentPlayer.SelectFleet(fleets[0]);
+					this.SelectedFleetControl = this.currentPlayer.SelectFleet(fleets[0]);
 					if (fleets[0].Missions.Waypoints.Count == 0)
-						this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = fleets[0]; //TODO(v0.9) marks wrong fleet when there are multiple players 
+						this.currentViewpoint.Selection = new SelectedFleet(fleets[0]); //TODO(v0.9) marks wrong fleet when there are multiple players 
 				}
 
-				this.fleetsPanel.Children = this.SelectedFleet.ShipGroups.
+				this.fleetsPanel.Children = this.SelectedFleetControl.ShipGroups.
 					Select(x => new ShipSelectableItem(x)
 					{
 						ImageBackground = this.currentPlayer.Info.Color,
@@ -406,9 +400,9 @@ namespace Stareater.GameScenes
 			yield return new Sprite(GalaxyTextures.Get.Sprite(x.Design.ImagePath));
 
 			var traits = new List<TextureInfo>();
-			if (this.SelectedFleet.IsCarried(x))
+			if (this.SelectedFleetControl.IsCarried(x))
 				traits.Add(GalaxyTextures.Get.Hangar);
-			if (this.SelectedFleet.IsTowed(x))
+			if (this.SelectedFleetControl.IsTowed(x))
 				traits.Add(GalaxyTextures.Get.Tow);
 
 			for (int i = 0; i < traits.Count; i++)
@@ -451,7 +445,7 @@ namespace Stareater.GameScenes
 			//TODO(later) update owner check when multiple stellarises can exist at the same star
 			if (starSystem.StarsAdministration() != null && starSystem.StarsAdministration().Owner == this.currentPlayer.Info)
 			{
-				this.starInfo.SetView(this.currentPlayer.OpenStarSystem(this.lastSelectedStar).StellarisController());
+				this.starInfo.SetView(this.currentPlayer.OpenStarSystem(this.selectedStar).StellarisController());
 				this.showBottomView(this.starInfo);
 			}
 			else
@@ -460,13 +454,13 @@ namespace Stareater.GameScenes
 
 		private void shipGroupSelect(ShipSelectableItem item, long quantity)
 		{
-			this.SelectedFleet.SelectGroup(item.Data, quantity);
+			this.SelectedFleetControl.SelectGroup(item.Data, quantity);
 			item.Text = shipGroupText(item.Data);
 		}
 
 		private string shipGroupText(ShipGroupInfo group)
 		{
-			var selected = this.SelectedFleet.SelectionCount(group);
+			var selected = this.SelectedFleetControl.SelectionCount(group);
 
 			if (selected == 0 || selected == group.Quantity)
 				return group.Design.Name + Environment.NewLine + new ThousandsFormatter().Format(group.Quantity);
@@ -487,7 +481,7 @@ namespace Stareater.GameScenes
 				shipItem.Text = shipItem.Data.Design.Name + Environment.NewLine +
 					thousandsFormat.Format(form.SelectedValue) + " / " + thousandsFormat.Format(shipItem.Data.Quantity);
 
-				this.SelectedFleet.SelectGroup(shipItem.Data, form.SelectedValue);
+				this.SelectedFleetControl.SelectGroup(shipItem.Data, form.SelectedValue);
 			}
 		}
 
@@ -499,7 +493,7 @@ namespace Stareater.GameScenes
 
 		private PlayerViewpoint currentViewpoint
 		{
-			get => this.viewpoint[this.currentPlayer.PlayerIndex];
+			get => this.viewpoints[this.currentPlayer.PlayerIndex];
 		}
 		#region AScene implementation
 		protected override float guiLayerThickness => 1 / Layers;
@@ -508,19 +502,16 @@ namespace Stareater.GameScenes
 		{
 			this.setupVaos();
 
-			if (this.currentSelection == GalaxySelectionType.Star)
-				this.showStarInfo(this.lastSelectedStar);
+			if (this.currentViewpoint.Selection is SelectedStar)
+				this.showStarInfo(this.selectedStar);
 		}
 
 		protected override void frameUpdate(double deltaTime)
 		{
 			if (this.refreshData.Check())
 			{
-				if (this.SelectedFleet != null && !this.SelectedFleet.Valid)
-					this.SelectedFleet = null;
-
-				if (this.currentSelection == GalaxySelectionType.Fleet)
-					this.currentSelection = GalaxySelectionType.None;
+				if (this.SelectedFleetControl != null && !this.SelectedFleetControl.Valid)
+					this.SelectedFleetControl = null;
 
 				this.ResetLists();
 			}
@@ -658,7 +649,7 @@ namespace Stareater.GameScenes
 		//TODO(v0.9) bundle with movement simulation
 		private void setupMovementEta()
 		{
-			if (this.SelectedFleet == null || !this.SelectedFleet.SimulationWaypoints().Any())
+			if (this.SelectedFleetControl == null || !this.SelectedFleetControl.SimulationWaypoints().Any())
 			{
 				if (this.movementEtaText != null)
 					this.RemoveFromScene(ref this.movementEtaText);
@@ -666,12 +657,12 @@ namespace Stareater.GameScenes
 				return;
 			}
 
-			var waypoints = this.SelectedFleet.SimulationWaypoints();
+			var waypoints = this.SelectedFleetControl.SimulationWaypoints();
 
 			var destination = waypoints[waypoints.Count - 1];
-			var numVars = new Var("eta", Math.Ceiling(this.SelectedFleet.SimulationEta)).Get;
-			var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.SelectedFleet.SimulationEta, RoundingMethod.Ceil, 0)).
-				And("fuel", new ThousandsFormatter().Format(this.SelectedFleet.SimulationFuel)).Get;
+			var numVars = new Var("eta", Math.Ceiling(this.SelectedFleetControl.SimulationEta)).Get;
+			var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.SelectedFleetControl.SimulationEta, RoundingMethod.Ceil, 0)).
+				And("fuel", new ThousandsFormatter().Format(this.SelectedFleetControl.SimulationFuel)).Get;
 
 			this.UpdateScene(
 				ref this.movementEtaText,
@@ -689,7 +680,7 @@ namespace Stareater.GameScenes
 
 		private void setupMovementSimulation()
 		{
-			if (this.SelectedFleet == null)
+			if (this.SelectedFleetControl == null)
 			{
 				if (this.movementSimulationPath != null)
 					this.RemoveFromScene(ref this.movementSimulationPath);
@@ -697,14 +688,14 @@ namespace Stareater.GameScenes
 				return;
 			}
 
-			var waypoints = this.SelectedFleet.SimulationWaypoints();
+			var waypoints = this.SelectedFleetControl.SimulationWaypoints();
 
-			if (this.SelectedFleet != null && waypoints.Count > 0)
+			if (this.SelectedFleetControl != null && waypoints.Count > 0)
 				this.UpdateScene(
 					ref this.movementSimulationPath,
 					new SceneObjectBuilder().
 						StartSprite(PathZ, GalaxyTextures.Get.PathLine.Id, Color.LimeGreen).
-						AddVertices(fleetMovementPathVertices(this.SelectedFleet.Fleet, waypoints.Select(x => convert(x.Position)))).
+						AddVertices(fleetMovementPathVertices(this.SelectedFleetControl.Fleet, waypoints.Select(x => convert(x.Position)))).
 						Build()
 				);
 		}
@@ -728,11 +719,14 @@ namespace Stareater.GameScenes
 		{
 			var transform = new Matrix4();
 
-			if (this.currentSelection == GalaxySelectionType.Star)
-				transform = Matrix4.CreateTranslation((float)this.lastSelectedStarPosition.X, (float)this.lastSelectedStarPosition.Y, 0);
-			else if (this.currentSelection == GalaxySelectionType.Fleet)
+			if (this.currentViewpoint.Selection is SelectedStar)
 			{
-				var position = this.fleetDisplayPosition(this.lastSelectedIdleFleet);
+				var starPosition = this.selectedStar.Position;
+				transform = Matrix4.CreateTranslation((float)starPosition.X, (float)starPosition.Y, 0);
+			}
+			else if (this.currentViewpoint.Selection is SelectedFleet)
+			{
+				var position = this.fleetDisplayPosition(this.selectedFleet);
 				transform = Matrix4.CreateScale(FleetSelectorScale) * Matrix4.CreateTranslation(position.X, position.Y, 0);
 			}
 
@@ -874,7 +868,7 @@ namespace Stareater.GameScenes
 			this.lastMousePosition = mouseViewPosition;
 			this.panAbsPath = 0;
 
-			if (this.SelectedFleet != null)
+			if (this.SelectedFleetControl != null)
 				this.simulateFleetMovement(mouseViewPosition, modiferKeys);
 		}
 
@@ -907,9 +901,8 @@ namespace Stareater.GameScenes
 
 			this.currentViewpoint.Offset = (this.currentViewpoint.Offset * oldZoom + mousePoint * (newZoom - oldZoom)) / newZoom;
 			this.setupPerspective();
-			this.setupScanRanges();
-			this.setupMovementEta();
-			this.setupStars();
+			this.setupMovementEta(); //TODO(v0.9) hack for updating text size
+			this.setupStars(); //TODO(v0.9) hack for updating star info visibility
 		}
 
 		protected override void onMouseClick(Vector2 mousePoint, Keys modiferKeys)
@@ -927,13 +920,13 @@ namespace Stareater.GameScenes
 			var fleetFound = allObjects.Where(x => x.Data is FleetInfo).Select(x => x.Data as FleetInfo).ToList();
 			var foundAny = allObjects.Any();
 
-			if (this.SelectedFleet != null)
+			if (this.SelectedFleetControl != null)
 				if (starFound != null)
 				{
-					var destination = this.SelectedFleet.SimulationWaypoints().Any() ? this.SelectedFleet.SimulationWaypoints().Last() : starFound;
-					this.SelectedFleet = modiferKeys.HasFlag(Keys.Control) ? this.SelectedFleet.SendDirectly(destination) : this.SelectedFleet.Send(destination);
-					this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex] = this.SelectedFleet.Fleet;
-					this.showSelectionPanel(null, new List<FleetInfo> { this.SelectedFleet.Fleet });
+					var destination = this.SelectedFleetControl.SimulationWaypoints().Any() ? this.SelectedFleetControl.SimulationWaypoints().Last() : starFound;
+					this.SelectedFleetControl = modiferKeys.HasFlag(Keys.Control) ? this.SelectedFleetControl.SendDirectly(destination) : this.SelectedFleetControl.Send(destination);
+					this.currentViewpoint.Selection = new SelectedFleet(this.SelectedFleetControl.Fleet);
+					this.showSelectionPanel(null, new List<FleetInfo> { this.SelectedFleetControl.Fleet });
 					this.setupFleetMarkers();
 					this.setupFleetMovement();
 					this.setupSelectionMarkers();
@@ -943,7 +936,7 @@ namespace Stareater.GameScenes
 				else
 				{
 					this.hideBottomView();
-					this.SelectedFleet = null;
+					this.SelectedFleetControl = null;
 					this.setupMovementEta();
 					this.setupMovementSimulation();
 					this.setupSelectionMarkers();
@@ -987,7 +980,7 @@ namespace Stareater.GameScenes
 		#region Helper methods
 		private void simulateFleetMovement(Vector4 currentPosition, Keys modiferKeys)
 		{
-			if (!this.SelectedFleet.CanMove)
+			if (!this.SelectedFleetControl.CanMove)
 				return;
 
 			Vector4 mousePoint = Vector4.Transform(currentPosition, invProjection);
@@ -1003,37 +996,16 @@ namespace Stareater.GameScenes
 				return;
 
 			if (!modiferKeys.HasFlag(Keys.Control))
-				this.SelectedFleet.SimulateTravel(starsFound[0].Data as StarInfo);
+				this.SelectedFleetControl.SimulateTravel(starsFound[0].Data as StarInfo);
 			else
-				this.SelectedFleet.SimulateDirectTravel(starsFound[0].Data as StarInfo);
+				this.SelectedFleetControl.SimulateDirectTravel(starsFound[0].Data as StarInfo);
 			this.setupMovementEta();
 			this.setupMovementSimulation();
 		}
 
-		private FleetInfo lastSelectedIdleFleet
-		{
-			get
-			{
-				return this.lastSelectedIdleFleets[this.currentPlayer.PlayerIndex];
-			}
-		}
+		private FleetInfo selectedFleet => (this.currentViewpoint.Selection as SelectedFleet).Fleet;
 
-		private StarInfo lastSelectedStar
-		{
-			get
-			{
-				return this.currentPlayer.Star(this.lastSelectedStars[this.currentPlayer.PlayerIndex]);
-			}
-		}
-
-		//TODO(v0.9) remove one of lastSelectedStar methods
-		private Vector2D lastSelectedStarPosition
-		{
-			get
-			{
-				return this.lastSelectedStars[this.currentPlayer.PlayerIndex];
-			}
-		}
+		private StarInfo selectedStar => (this.currentViewpoint.Selection as SelectedStar).Star;
 
 		private void selectDefaultStar()
 		{
@@ -1041,7 +1013,7 @@ namespace Stareater.GameScenes
 			var bestStar = this.currentPlayer.Stellarises().
 				Aggregate((a, b) => a.Population > b.Population ? a : b);
 
-			this.lastSelectedStars[this.currentPlayer.PlayerIndex] = bestStar.HostStar.Position;
+			this.currentViewpoint.Selection = new SelectedStar(bestStar.HostStar);
 			this.currentViewpoint.Offset = convert(bestStar.HostStar.Position);
 		}
 

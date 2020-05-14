@@ -16,6 +16,8 @@ namespace Stareater.GameScenes
 		private Vector2 perspectiveOffset;
 		private int perspectiveZoom = 0;
 
+		public IGalaxySelection Selection { get; set; }
+
 		public PlayerViewpoint(Vector2 boundsMin, Vector2 boundsMax)
 		{
 			this.boundsMax = boundsMax;

@@ -110,7 +110,10 @@
     <Compile Include="AppData\LoadingMethods.cs" />
     <Compile Include="AppData\SettingsWinforms.cs" />
     <Compile Include="GameScenes\AStarSystemScene.cs" />
+    <Compile Include="GameScenes\IGalaxySelection.cs" />
     <Compile Include="GameScenes\PlayerViewpoint.cs" />
+    <Compile Include="GameScenes\SelectedFleet.cs" />
+    <Compile Include="GameScenes\SelectedStar.cs" />
     <Compile Include="GameScenes\Widgets\ConstructionSiteView.cs" />
     <Compile Include="GameScenes\IntroScene.cs" />
     <Compile Include="GameScenes\Widgets\DevelopmentIndicator.cs" />
