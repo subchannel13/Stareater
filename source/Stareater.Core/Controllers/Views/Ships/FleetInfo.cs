@@ -51,7 +51,7 @@ namespace Stareater.Controllers.Views.Ships
 			if (newFleet is null)
 				throw new ArgumentNullException(nameof(newFleet));
 
-			return newFleet.FleetData.PreviousTurn.Contains(this.FleetData);
+			return newFleet.FleetData == this.FleetData || newFleet.FleetData.PreviousTurn.Contains(this.FleetData);
 		}
 
 		#region Equals and GetHashCode implementation

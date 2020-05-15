@@ -1,6 +1,8 @@
 ﻿using OpenTK;
 using Stareater.Utils;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Stareater.GameScenes
 {
@@ -18,10 +20,16 @@ namespace Stareater.GameScenes
 
 		public IGalaxySelection Selection { get; set; }
 
-		public PlayerViewpoint(Vector2 boundsMin, Vector2 boundsMax)
+		public PlayerViewpoint(IEnumerable<Vector2> mapPoints, float mapMargins)
 		{
-			this.boundsMax = boundsMax;
-			this.boundsMin = boundsMin;
+			this.boundsMin = new Vector2(
+				mapPoints.Min(p => p.X) - mapMargins,
+				mapPoints.Min(p => p.Y) - mapMargins
+			);
+			this.boundsMax = new Vector2(
+				mapPoints.Max(p => p.X) + mapMargins,
+				mapPoints.Max(p => p.Y) + mapMargins
+			);
 			this.ZoomLevel = 2;
 		}
 

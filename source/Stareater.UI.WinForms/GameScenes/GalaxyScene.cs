@@ -74,12 +74,9 @@ namespace Stareater.GameScenes
 		private Vector4? lastMousePosition = null;
 		private float panAbsPath = 0;
 		private float screenUnitScale;
-		private Vector2 mapBoundsMin;
-		private Vector2 mapBoundsMax;
 		private float pixelSize = 1;
 
 		private readonly OpenReportVisitor reportOpener;
-		private readonly SignalFlag refreshData = new SignalFlag(); //TODO(v0.9) try to remove
 		private PlayerController currentPlayer = null;
 		private readonly Dictionary<int, PlayerViewpoint> viewpoints = new Dictionary<int, PlayerViewpoint>();
 
@@ -271,7 +268,7 @@ namespace Stareater.GameScenes
 
 		public void OnNewTurn()
 		{
-			this.refreshData.Set();
+			this.setupVaos();
 		}
 
 		public void SwitchPlayer(PlayerController player)
@@ -280,30 +277,10 @@ namespace Stareater.GameScenes
 			
 			this.currentPlayer = player;
 
-			//Assumes all players can see the same map size
-			if (this.viewpoints.Count == 0)
-			{
-				this.mapBoundsMin = new Vector2(
-					(float)this.currentPlayer.Stars.Min(star => star.Position.X) - StarMinClickRadius,
-					(float)this.currentPlayer.Stars.Min(star => star.Position.Y) - StarMinClickRadius
-				);
-				this.mapBoundsMax = new Vector2(
-					(float)this.currentPlayer.Stars.Max(star => star.Position.X) + StarMinClickRadius,
-					(float)this.currentPlayer.Stars.Max(star => star.Position.Y) + StarMinClickRadius
-				);
-			}
-
 			if (!this.viewpoints.ContainsKey(player.PlayerIndex))
-				viewpoints[player.PlayerIndex] = new PlayerViewpoint(this.mapBoundsMin, this.mapBoundsMax);
+				viewpoints[player.PlayerIndex] = new PlayerViewpoint(this.currentPlayer.Stars.Select(star => convert(star.Position)), StarMinClickRadius);
 
-			this.currentViewpoint.Selection = this.currentViewpoint.Selection?.Update(this.currentPlayer);
-			if (this.currentViewpoint.Selection is SelectedStar)
-				this.showStarInfo(this.selectedStar);
-			else if (this.currentViewpoint.Selection is SelectedFleet)
-				this.showSelectionPanel(null, new List<FleetInfo> { this.selectedFleet });
-			else
-				this.selectDefaultStar();
-
+			this.updateSelection();
 			this.setupPerspective();
 			this.setupFuelInfo();
 
@@ -507,12 +484,6 @@ namespace Stareater.GameScenes
 				this.showStarInfo(this.selectedStar);
 		}
 
-		protected override void frameUpdate(double deltaTime)
-		{
-			if (this.refreshData.Check())
-				this.ResetLists();
-		}
-
 		//TODO(v0.9) refactor and remove
 		public void ResetLists()
 		{
@@ -566,6 +537,18 @@ namespace Stareater.GameScenes
 				displayPosition += new Vector2(-0.5f, 0.5f);
 
 			return displayPosition;
+		}
+
+		private void updateSelection()
+		{
+			this.currentViewpoint.Selection = this.currentViewpoint.Selection?.Update(this.currentPlayer);
+
+			if (this.currentViewpoint.Selection is SelectedStar)
+				this.showStarInfo(this.selectedStar);
+			else if (this.currentViewpoint.Selection is SelectedFleet)
+				this.showSelectionPanel(null, new List<FleetInfo> { this.selectedFleet });
+			else
+				this.selectDefaultStar();
 		}
 
 		private void setupVaos()
