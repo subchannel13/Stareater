@@ -79,7 +79,6 @@ namespace Stareater.GameScenes
 		private float pixelSize = 1;
 
 		private readonly OpenReportVisitor reportOpener;
-		public FleetController SelectedFleetControl { private get; set; }
 		private readonly SignalFlag refreshData = new SignalFlag(); //TODO(v0.9) try to remove
 		private PlayerController currentPlayer = null;
 		private readonly Dictionary<int, PlayerViewpoint> viewpoints = new Dictionary<int, PlayerViewpoint>();
@@ -354,14 +353,13 @@ namespace Stareater.GameScenes
 
 			if (fleets.Count == 1 && fleets[0].Owner == this.currentPlayer.Info)
 			{
-				if (this.SelectedFleetControl == null)
+				if (!(this.currentViewpoint.Selection is SelectedFleet))
 				{
-					this.SelectedFleetControl = this.currentPlayer.SelectFleet(fleets[0]);
 					if (fleets[0].Missions.Waypoints.Count == 0)
-						this.currentViewpoint.Selection = new SelectedFleet(fleets[0]); //TODO(v0.9) marks wrong fleet when there are multiple players 
+						this.currentViewpoint.Selection = new SelectedFleet(fleets[0], this.currentPlayer); //TODO(v0.9) marks wrong fleet when there are multiple players 
 				}
 
-				this.fleetsPanel.Children = this.SelectedFleetControl.ShipGroups.
+				this.fleetsPanel.Children = this.selectedFleetControl.ShipGroups.
 					Select(x => new ShipSelectableItem(x)
 					{
 						ImageBackground = this.currentPlayer.Info.Color,
@@ -403,9 +401,9 @@ namespace Stareater.GameScenes
 			yield return new Sprite(GalaxyTextures.Get.Sprite(x.Design.ImagePath));
 
 			var traits = new List<TextureInfo>();
-			if (this.SelectedFleetControl.IsCarried(x))
+			if (this.selectedFleetControl.IsCarried(x))
 				traits.Add(GalaxyTextures.Get.Hangar);
-			if (this.SelectedFleetControl.IsTowed(x))
+			if (this.selectedFleetControl.IsTowed(x))
 				traits.Add(GalaxyTextures.Get.Tow);
 
 			for (int i = 0; i < traits.Count; i++)
@@ -457,13 +455,13 @@ namespace Stareater.GameScenes
 
 		private void shipGroupSelect(ShipSelectableItem item, long quantity)
 		{
-			this.SelectedFleetControl.SelectGroup(item.Data, quantity);
+			this.selectedFleetControl.SelectGroup(item.Data, quantity);
 			item.Text = shipGroupText(item.Data);
 		}
 
 		private string shipGroupText(ShipGroupInfo group)
 		{
-			var selected = this.SelectedFleetControl.SelectionCount(group);
+			var selected = this.selectedFleetControl.SelectionCount(group);
 
 			if (selected == 0 || selected == group.Quantity)
 				return group.Design.Name + Environment.NewLine + new ThousandsFormatter().Format(group.Quantity);
@@ -484,7 +482,7 @@ namespace Stareater.GameScenes
 				shipItem.Text = shipItem.Data.Design.Name + Environment.NewLine +
 					thousandsFormat.Format(form.SelectedValue) + " / " + thousandsFormat.Format(shipItem.Data.Quantity);
 
-				this.SelectedFleetControl.SelectGroup(shipItem.Data, form.SelectedValue);
+				this.selectedFleetControl.SelectGroup(shipItem.Data, form.SelectedValue);
 			}
 		}
 
@@ -512,12 +510,7 @@ namespace Stareater.GameScenes
 		protected override void frameUpdate(double deltaTime)
 		{
 			if (this.refreshData.Check())
-			{
-				if (this.SelectedFleetControl != null && !this.SelectedFleetControl.Valid)
-					this.SelectedFleetControl = null;
-
 				this.ResetLists();
-			}
 		}
 
 		//TODO(v0.9) refactor and remove
@@ -652,7 +645,9 @@ namespace Stareater.GameScenes
 		//TODO(v0.9) bundle with movement simulation
 		private void setupMovementEta()
 		{
-			if (this.SelectedFleetControl == null || !this.SelectedFleetControl.SimulationWaypoints().Any())
+			var fleetController = this.selectedFleetControl;
+
+			if (fleetController is null || !fleetController.SimulationWaypoints().Any())
 			{
 				if (this.movementEtaText != null)
 					this.RemoveFromScene(ref this.movementEtaText);
@@ -660,12 +655,12 @@ namespace Stareater.GameScenes
 				return;
 			}
 
-			var waypoints = this.SelectedFleetControl.SimulationWaypoints();
+			var waypoints = fleetController.SimulationWaypoints();
 
 			var destination = waypoints[waypoints.Count - 1];
-			var numVars = new Var("eta", Math.Ceiling(this.SelectedFleetControl.SimulationEta)).Get;
-			var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(this.SelectedFleetControl.SimulationEta, RoundingMethod.Ceil, 0)).
-				And("fuel", new ThousandsFormatter().Format(this.SelectedFleetControl.SimulationFuel)).Get;
+			var numVars = new Var("eta", Math.Ceiling(fleetController.SimulationEta)).Get;
+			var textVars = new TextVar("eta", new DecimalsFormatter(0, 1).Format(fleetController.SimulationEta, RoundingMethod.Ceil, 0)).
+				And("fuel", new ThousandsFormatter().Format(fleetController.SimulationFuel)).Get;
 
 			this.UpdateScene(
 				ref this.movementEtaText,
@@ -683,7 +678,7 @@ namespace Stareater.GameScenes
 
 		private void setupMovementSimulation()
 		{
-			if (this.SelectedFleetControl == null)
+			if (this.selectedFleetControl == null)
 			{
 				if (this.movementSimulationPath != null)
 					this.RemoveFromScene(ref this.movementSimulationPath);
@@ -691,14 +686,14 @@ namespace Stareater.GameScenes
 				return;
 			}
 
-			var waypoints = this.SelectedFleetControl.SimulationWaypoints();
+			var waypoints = this.selectedFleetControl.SimulationWaypoints();
 
-			if (this.SelectedFleetControl != null && waypoints.Count > 0)
+			if (waypoints.Count > 0)
 				this.UpdateScene(
 					ref this.movementSimulationPath,
 					new SceneObjectBuilder().
 						StartSprite(PathZ, GalaxyTextures.Get.PathLine.Id, Color.LimeGreen).
-						AddVertices(fleetMovementPathVertices(this.SelectedFleetControl.Fleet, waypoints.Select(x => convert(x.Position)))).
+						AddVertices(fleetMovementPathVertices(this.selectedFleet, waypoints.Select(x => convert(x.Position)))).
 						Build()
 				);
 		}
@@ -871,7 +866,7 @@ namespace Stareater.GameScenes
 			this.lastMousePosition = mouseViewPosition;
 			this.panAbsPath = 0;
 
-			if (this.SelectedFleetControl != null)
+			if (this.currentViewpoint.Selection is SelectedFleet)
 				this.simulateFleetMovement(mouseViewPosition, modiferKeys);
 		}
 
@@ -923,13 +918,15 @@ namespace Stareater.GameScenes
 			var fleetFound = allObjects.Where(x => x.Data is FleetInfo).Select(x => x.Data as FleetInfo).ToList();
 			var foundAny = allObjects.Any();
 
-			if (this.SelectedFleetControl != null)
+			if (this.currentViewpoint.Selection is SelectedFleet)
 				if (starFound != null)
 				{
-					var destination = this.SelectedFleetControl.SimulationWaypoints().Any() ? this.SelectedFleetControl.SimulationWaypoints().Last() : starFound;
-					this.SelectedFleetControl = modiferKeys.HasFlag(Keys.Control) ? this.SelectedFleetControl.SendDirectly(destination) : this.SelectedFleetControl.Send(destination);
-					this.currentViewpoint.Selection = new SelectedFleet(this.SelectedFleetControl.Fleet);
-					this.showSelectionPanel(null, new List<FleetInfo> { this.SelectedFleetControl.Fleet });
+					var destination = this.selectedFleetControl.SimulationWaypoints().Any() ? this.selectedFleetControl.SimulationWaypoints().Last() : starFound;
+					this.currentViewpoint.Selection = new SelectedFleet(modiferKeys.HasFlag(Keys.Control) ? 
+						this.selectedFleetControl.SendDirectly(destination) : 
+						this.selectedFleetControl.Send(destination)
+					);
+					this.showSelectionPanel(null, new List<FleetInfo> { this.selectedFleet });
 					this.setupFleetMarkers();
 					this.setupFleetMovement();
 					this.setupSelectionMarkers();
@@ -939,7 +936,7 @@ namespace Stareater.GameScenes
 				else
 				{
 					this.hideBottomView();
-					this.SelectedFleetControl = null;
+					this.currentViewpoint.Selection = null;
 					this.setupMovementEta();
 					this.setupMovementSimulation();
 					this.setupSelectionMarkers();
@@ -983,7 +980,7 @@ namespace Stareater.GameScenes
 		#region Helper methods
 		private void simulateFleetMovement(Vector4 currentPosition, Keys modiferKeys)
 		{
-			if (!this.SelectedFleetControl.CanMove)
+			if (!this.selectedFleetControl.CanMove)
 				return;
 
 			Vector4 mousePoint = Vector4.Transform(currentPosition, invProjection);
@@ -999,14 +996,15 @@ namespace Stareater.GameScenes
 				return;
 
 			if (!modiferKeys.HasFlag(Keys.Control))
-				this.SelectedFleetControl.SimulateTravel(starsFound[0].Data as StarInfo);
+				this.selectedFleetControl.SimulateTravel(starsFound[0].Data as StarInfo);
 			else
-				this.SelectedFleetControl.SimulateDirectTravel(starsFound[0].Data as StarInfo);
+				this.selectedFleetControl.SimulateDirectTravel(starsFound[0].Data as StarInfo);
 			this.setupMovementEta();
 			this.setupMovementSimulation();
 		}
 
 		private FleetInfo selectedFleet => (this.currentViewpoint.Selection as SelectedFleet).Fleet;
+		private FleetController selectedFleetControl => (this.currentViewpoint.Selection as SelectedFleet)?.Controller;
 
 		private StarInfo selectedStar => (this.currentViewpoint.Selection as SelectedStar).Star;
 
