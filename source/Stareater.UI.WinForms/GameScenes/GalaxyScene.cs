@@ -298,10 +298,13 @@ namespace Stareater.GameScenes
 				viewpoints[player.PlayerIndex] = new PlayerViewpoint(this.mapBoundsMin, this.mapBoundsMax);
 
 			this.currentViewpoint.Selection = this.currentViewpoint.Selection?.Update(this.currentPlayer);
-			if (this.currentViewpoint.Selection is null)
+			if (this.currentViewpoint.Selection is SelectedStar)
+				this.showStarInfo(this.selectedStar);
+			else if (this.currentViewpoint.Selection is SelectedFleet)
+				this.showSelectionPanel(null, new List<FleetInfo> { this.selectedFleet });
+			else
 				this.selectDefaultStar();
 
-			this.showStarInfo(this.selectedStar);
 			this.setupPerspective();
 			this.setupFuelInfo();
 

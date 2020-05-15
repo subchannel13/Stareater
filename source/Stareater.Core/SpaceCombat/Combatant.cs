@@ -8,7 +8,7 @@ namespace Stareater.SpaceCombat
 {
 	class Combatant
 	{
-		public Player Owner { get; private set; }
+		public Fleet OriginalFleet { get; private set; }
 		public ShipGroup Ships { get; private set; }
 		
 		public Vector2D Position;
@@ -23,10 +23,10 @@ namespace Stareater.SpaceCombat
 		public double RestShields;
 		public HashSet<Player> CloakedFor = new HashSet<Player>();
 		
-		public Combatant(Vector2D position, Player owner, ShipGroup ships, DesignStats stats, double[] abilityAmmo, double[] abilityCharges)
+		public Combatant(Vector2D position, Fleet originalFleet, ShipGroup ships, DesignStats stats, double[] abilityAmmo, double[] abilityCharges)
 		{
 			this.Position = position;
-			this.Owner = owner;
+			this.OriginalFleet = originalFleet;
 			this.Ships = ships;
 			this.AbilityAmmo = abilityAmmo;
 			this.AbilityCharges = abilityCharges;
@@ -36,5 +36,7 @@ namespace Stareater.SpaceCombat
 			this.RestArmor = stats.HitPoints * ships.Quantity - ships.Damage - this.TopArmor;
 			this.RestShields = stats.ShieldPoints * (ships.Quantity - 1);
 		}
+
+		public Player Owner => this.OriginalFleet.Owner;
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Stareater.Controllers.Data;
 using Stareater.Galaxy;
@@ -43,6 +44,14 @@ namespace Stareater.Controllers.Views.Ships
 		public double PopulationCapacity
 		{
 			get { return this.FleetData.Ships.Sum(x => this.playerProc.DesignStats[x.Design].ColonizerPopulation * x.Quantity); }
+		}
+
+		public bool IsPreviousStateOf(FleetInfo newFleet)
+		{
+			if (newFleet is null)
+				throw new ArgumentNullException(nameof(newFleet));
+
+			return newFleet.FleetData.PreviousTurn.Contains(this.FleetData);
 		}
 
 		#region Equals and GetHashCode implementation

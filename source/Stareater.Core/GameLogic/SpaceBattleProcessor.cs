@@ -104,7 +104,7 @@ namespace Stareater.GameLogic
 					var simiralCombatant = this.game.Combatants.FirstOrDefault(x => x.Position == position && x.Ships.Design == shipGroup.Design);
 					
 					if (simiralCombatant == null)
-						this.game.Combatants.Add(new Combatant(position, fleet.OriginalFleet.Owner, shipGroup, designStats, ammo, abilities));
+						this.game.Combatants.Add(new Combatant(position, fleet.OriginalFleet, shipGroup, designStats, ammo, abilities));
 					else
 					{
 						simiralCombatant.Ships.Quantity += shipGroup.Quantity;

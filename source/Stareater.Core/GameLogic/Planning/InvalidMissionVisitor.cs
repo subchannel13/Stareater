@@ -28,7 +28,7 @@ namespace Stareater.GameLogic.Planning
 			if (fleet.Missions.SequenceEqual(remainingMissions))
 				return null;
 					
-			var newFleet = new Fleet(fleet.Owner, fleet.Position, this.remainingMissions);
+			var newFleet = new Fleet(fleet.Owner, fleet.Position, this.remainingMissions, fleet.PreviousTurn);
 			foreach(var ship in fleet.Ships)
 				newFleet.Ships.Add(new ShipGroup(ship.Design, ship.Quantity, ship.Damage, ship.UpgradePoints, ship.PopulationTransport));
 			

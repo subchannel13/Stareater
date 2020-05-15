@@ -11,7 +11,7 @@ GRAPHENE_ARMOR_DESC = No description.
 -
 
 :Hulls
-FIGHTER_HULL_NAME = Meteor
+FIGHTER_HULL_NAME = Meteoroid
 FIGHTER_HULL_DESC = Small one or two-seater vessel, used for either servicing larger vessels or as a space version of air superiority fighter.
 SHUTTLE_HULL_NAME = Shuttle
 SHUTTLE_HULL_DESC = No description.

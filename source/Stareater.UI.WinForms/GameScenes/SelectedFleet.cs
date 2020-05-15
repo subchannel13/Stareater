@@ -15,8 +15,8 @@ namespace Stareater.GameScenes
 
 		public IGalaxySelection Update(PlayerController currentPlayer)
 		{
-			//TODO(v0.9) make smarter check for changing fleets (moving, colonizing, etc.)
-			if (currentPlayer.FleetsAll.Any(this.Fleet.Equals))
+			this.Fleet = currentPlayer.FleetsAll.FirstOrDefault(this.Fleet.IsPreviousStateOf);
+			if (this.Fleet != null)
 				return this;
 
 			return null;

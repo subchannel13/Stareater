@@ -154,7 +154,7 @@ namespace Stareater.GameLogic
 					unit.TopArmor - 
 					unit.RestArmor;
 
-				var fleet = new Fleet(unit.Owner, battleGame.Location, new LinkedList<AMission>());
+				var fleet = new Fleet(unit.Owner, battleGame.Location, new LinkedList<AMission>(), unit.OriginalFleet.PreviousTurn);
 				fleet.Ships.Add(unit.Ships);
 				
 				this.game.States.Fleets.Add(fleet);
@@ -557,7 +557,7 @@ namespace Stareater.GameLogic
 
 					foreach (var grouping in missionGroups.Where(x => x.Value.Count > 1))
 					{
-						var newFleet = new Fleet(grouping.Value[0].Owner, grouping.Value[0].Position, grouping.Key);
+						var newFleet = new Fleet(grouping.Value[0].Owner, grouping.Value[0].Position, grouping.Key, grouping.Value.SelectMany(x => x.PreviousTurn));
 						foreach (var fleet in grouping.Value)
 						{
 							this.game.States.Fleets.PendRemove(fleet);
@@ -575,6 +575,11 @@ namespace Stareater.GameLogic
 				}
 			}
 			this.game.States.Fleets.ApplyPending();
+
+			//Prune previous turn data to minimize save size
+			foreach (var fleet in this.game.States.Fleets)
+				foreach (var prevFleet in fleet.PreviousTurn)
+					prevFleet.PreviousTurn.Clear();
 		}
 		
 		private void moveShips()

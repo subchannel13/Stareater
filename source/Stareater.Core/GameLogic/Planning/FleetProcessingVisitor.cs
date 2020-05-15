@@ -73,7 +73,8 @@ namespace Stareater.GameLogic.Planning
 			var resultFleet = new Fleet(
 				fleet.Owner, 
 				this.newPosition, 
-				new LinkedList<AMission>(this.unfinishedMissions.Concat(this.missions))
+				new LinkedList<AMission>(this.unfinishedMissions.Concat(this.missions)),
+				fleet
 			);
 
 			foreach(var group in this.fleet.Ships)

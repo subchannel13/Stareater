@@ -393,7 +393,7 @@ namespace Stareater.Controllers
 
 		private Fleet selectedFleet(IEnumerable<AMission> newMissions)
 		{
-			var fleet = new Fleet(this.player, this.Fleet.FleetData.Position, new LinkedList<AMission>(newMissions));
+			var fleet = new Fleet(this.player, this.Fleet.FleetData.Position, new LinkedList<AMission>(newMissions), this.Fleet.FleetData.PreviousTurn);
 			fleet.Ships.Add(
 				this.Fleet.FleetData.Ships.
 				Where(x => selectedCount(x.Design) > 0).
@@ -410,7 +410,7 @@ namespace Stareater.Controllers
 
 		private Fleet unselectedFleet()
 		{
-			var fleet = new Fleet(this.player, this.Fleet.FleetData.Position, this.Fleet.FleetData.Missions);
+			var fleet = new Fleet(this.player, this.Fleet.FleetData.Position, this.Fleet.FleetData.Missions, this.Fleet.FleetData.PreviousTurn);
 			fleet.Ships.Add(
 				this.Fleet.FleetData.Ships.
 				Where(x => x.Quantity - selectedCount(x.Design) > 0).
