@@ -37,8 +37,10 @@ namespace Stareater.GUI
 					costLabel.Text = LocalizationMethods.ConstructionEstimation(
 						this.data, 
 						null, 
-						context["BuildingsPerTurn"], 
-						null
+						context["BuildingsPerTurn"],
+						context["BuildingsPerTurnPlus"],
+						null,
+						context["BuildingsCompleted"]
 					);
 				}
 				else

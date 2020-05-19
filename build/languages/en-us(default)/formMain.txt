@@ -42,7 +42,15 @@ RockName §
 	\
 
 BuildingsPerTurn §
-		{=count} per turn
+		{=count} / turn
+	\
+
+BuildingsPerTurnPlus §
+		{=count} / turn + {=extra}
+	\
+	
+BuildingsCompleted §
+		{=count} next turn
 	\
 
 Eta §

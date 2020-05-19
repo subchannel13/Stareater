@@ -175,7 +175,9 @@ namespace Stareater.GameScenes.Widgets
 					this.controller.ConstructionQueue.First(),
 					context["EtaNever"],
 					context["BuildingsPerTurn"],
-					context["Eta"]
+					context["BuildingsPerTurnPlus"],
+					context["Eta"],
+					context["BuildingsCompleted"]
 				);
 			else
 				this.estimationLabel.Text = "No construction plans";

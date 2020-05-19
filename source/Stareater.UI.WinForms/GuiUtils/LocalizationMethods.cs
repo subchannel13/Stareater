@@ -11,35 +11,36 @@ namespace Stareater.GuiUtils
 	{
 		private const double MinimumPerTurnDone = 1e-3;
 		
-		public static string ConstructionEstimation(ConstructableInfo construction, IText neverText, IText perTurnText, IText etaText)
+		public static string ConstructionEstimation(ConstructableInfo construction, IText neverText, IText perTurnText, IText perTurnPlusText, IText etaText, IText burstText)
 		{
-			var textVars = new TextVar();
-			
-			if (construction.CompletedCount >= 1) 
+			if (construction.CompletedCount > 1)
 			{
-				var overflow = construction.Overflow / construction.Cost;
-				
-				if (construction.CompletedCount < 10)
-					//TODO(v0.9) overflow gives too big estimation
-					textVars.And("count", new DecimalsFormatter(0, 1).Format(construction.CompletedCount + overflow, RoundingMethod.Floor, 1));
-				else
-					textVars.And("count", new ThousandsFormatter().Format(construction.CompletedCount));
+				if (construction.Investment < construction.Cost)
+					return burstText.Text(null, new TextVar("count", new ThousandsFormatter().Format(construction.CompletedCount)).Get);
 
-				return perTurnText.Text(null, textVars.Get);
+				var rate = (long)Math.Floor(construction.Investment / construction.Cost);
+				if (rate < construction.CompletedCount)
+					return perTurnPlusText.Text(
+						null,
+						new TextVar("count", new ThousandsFormatter().Format(construction.CompletedCount)).
+						And("extra", new ThousandsFormatter().Format(construction.CompletedCount - rate)).Get
+					);
+
+				return perTurnText.Text(null, new TextVar("count", new ThousandsFormatter().Format(construction.CompletedCount)).Get);
 			}
-			
+
 			if (construction.Investment <= 0 || (construction.Investment / construction.Cost) < MinimumPerTurnDone)
 				return neverText.Text();
-			
+
 			var eta = (construction.Cost - construction.FromStockpile) / construction.Investment;
-			var numVars = new Var("eta", eta).Get;
-			
-			if (eta < 10)
-				textVars.And("eta", new DecimalsFormatter(0, 1).Format(eta, RoundingMethod.Ceil, 1));
-			else
-				textVars.And("eta", new ThousandsFormatter().Format(Math.Ceiling(eta)));
-			
-			return etaText.Text(numVars, textVars.Get);
+
+			return etaText.Text(
+				new Var("eta", eta).Get, 
+				new TextVar("eta", (eta < 10) ?
+					new DecimalsFormatter(0, 1).Format(eta, RoundingMethod.Ceil, 1) :
+					new ThousandsFormatter().Format(Math.Ceiling(eta))
+				).Get
+			);
 		}
 		
 		public static string PlanetName(PlanetInfo planet)
