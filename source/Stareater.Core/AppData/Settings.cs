@@ -45,7 +45,7 @@ namespace Stareater.AppData
 			catch(Exception)
 #pragma warning restore CA1031 // Do not catch general exception types
 			{
-				instance.initDefault();
+				Get.initDefault();
 			}
 #endif
 		}

@@ -189,7 +189,7 @@ namespace Stareater.Controllers
 			if (selected == 0 || group.Design.Data.IsDrive != null)
 				return false;
 
-			return this.carriedSelection.ContainsKey(group.Design.Data);
+			return this.carriedSelection.ContainsKey(group.Design.Data) && this.CanMove;
 		}
 
 		public FleetController Send(StarInfo destination)
