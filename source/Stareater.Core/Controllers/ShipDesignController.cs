@@ -59,6 +59,7 @@ namespace Stareater.Controllers
 			this.design = new Design(
 				this.player,
 				this.Name?.Trim() ?? "",
+				0,
 				this.ImageIndex,
 				true,
 				this.bestArmor(),

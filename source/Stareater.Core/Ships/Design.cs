@@ -1,14 +1,9 @@
-﻿using Stareater.Utils.Collections;
-using Stareater.Utils.StateEngine;
-using System.Collections.Generic;
-using Stareater.GameData.Ships;
+﻿using Stareater.GameData.Ships;
 using Stareater.Players;
-using Stareater.Utils;
-using Stareater.GameData.Databases;
-using System.Linq;
-using Stareater.GameLogic;
-using Stareater.GameData.Databases.Tables;
+using Stareater.Utils.StateEngine;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Stareater.Ships
 {
@@ -19,6 +14,9 @@ namespace Stareater.Ships
 
 		[StatePropertyAttribute]
 		public string Name { get; private set; }
+
+		[StatePropertyAttribute]
+		public int Version { get; private set; }
 
 		[StatePropertyAttribute]
 		public int ImageIndex { get; private set; }
@@ -57,12 +55,13 @@ namespace Stareater.Ships
 		public bool IsObsolete { get; set; }
 
 
-		public Design(Player owner, string name, int imageIndex, bool usesFuel, 
-			Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ThrusterType> thrusters, 
+		public Design(Player owner, string name, int version, int imageIndex, bool usesFuel,
+			Component<ArmorType> armor, Component<HullType> hull, Component<IsDriveType> isDrive, Component<ReactorType> reactor, Component<SensorType> sensors, Component<ThrusterType> thrusters,
 			Component<ShieldType> shield, List<Component<MissionEquipmentType>> missionEquipment, List<Component<SpecialEquipmentType>> specialEquipment)
 		{
 			this.Owner = owner;
 			this.Name = name;
+			this.Version = version;
 			this.ImageIndex = imageIndex;
 			this.UsesFuel = usesFuel;
 			this.Armor = armor;
@@ -78,7 +77,7 @@ namespace Stareater.Ships
 			this.IsObsolete = false;
 		}
 
-		private Design() 
+		private Design()
 		{ }
 
 		public string ImagePath

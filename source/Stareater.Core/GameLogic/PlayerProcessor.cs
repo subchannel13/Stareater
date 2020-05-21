@@ -693,8 +693,8 @@ namespace Stareater.GameLogic
 			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
 
 			var design = new Design(
-				this.Player, oldDesign.Name, oldDesign.ImageIndex, oldDesign.UsesFuel,
-			    armor, hull, isDrive, reactor, sensor, thruster, shield, equipment, specials
+				this.Player, oldDesign.Name, oldDesign.Version + 1, oldDesign.ImageIndex, oldDesign.UsesFuel,
+				armor, hull, isDrive, reactor, sensor, thruster, shield, equipment, specials
 			);
 			
 			return design;
@@ -947,7 +947,7 @@ namespace Stareater.GameLogic
 			var thruster = AComponentType.MakeBest(statics.Thrusters.Values, techLevels);
 
 			var design = new Design(
-				this.Player, predefDesign.Name, predefDesign.HullImageIndex, true,
+				this.Player, predefDesign.Name, 0, predefDesign.HullImageIndex, true,
 			    armor, hull, isDrive, reactor, sensor, thruster, shield, equipment, specials
 			);
 			

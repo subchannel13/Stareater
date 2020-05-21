@@ -107,7 +107,6 @@ namespace Stareater.Localization.Reading
 					else
 						texts.Add(substitutions[textKey]);
 				}
-				
 			}
 			
 			return new ChainText(texts.ToArray());

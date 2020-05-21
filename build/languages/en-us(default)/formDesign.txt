@@ -8,6 +8,8 @@ markedForRemoval = (to be removed)
 refittingWith = Refitting to
 refitCost = Cost
 refitTitle = Refit to
+upgradeTo = Upgrade to mark
+version = Mark
 
 armor §
 		Armor: {=totalHp}

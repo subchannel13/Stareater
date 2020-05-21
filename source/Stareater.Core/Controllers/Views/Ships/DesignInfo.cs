@@ -106,5 +106,7 @@ namespace Stareater.Controllers.Views.Ships
 				return this.Data.Hull.TypeInfo.Size;
 			}
 		}
+
+		public int Version => this.Data.Version;
 	}
 }

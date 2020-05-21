@@ -247,8 +247,6 @@
     <Compile Include="GameData\Databases\Tables\ShipGroupCollection.cs" />
     <Compile Include="GameData\Databases\Tables\StellarisProcessorCollection.cs" />
     <Compile Include="GameData\Databases\Tables\StellarisCollection.cs" />
-    <Compile Include="GameData\GalaxyRemap.cs" />
-    <Compile Include="GameData\PlayersRemap.cs" />
     <Compile Include="GameData\Ships\AComponentType.cs" />
     <Compile Include="GameData\Ships\ArmorType.cs" />
     <Compile Include="GameData\Ships\HullType.cs" />

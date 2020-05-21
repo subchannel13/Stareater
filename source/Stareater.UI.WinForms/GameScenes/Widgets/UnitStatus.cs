@@ -18,7 +18,6 @@ namespace Stareater.GameScenes.Widgets
 		private readonly GuiText armorInfo;
 		private readonly GuiText shieldsInfo;
 
-		private CombatantInfo unit;
 		private SpaceBattleController controller;
 
 		public UnitStatus()
@@ -79,7 +78,6 @@ namespace Stareater.GameScenes.Widgets
 
 		public void SetView(CombatantInfo unit, SpaceBattleController controller)
 		{
-			this.unit = unit;
 			this.controller = controller;
 
 			var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
