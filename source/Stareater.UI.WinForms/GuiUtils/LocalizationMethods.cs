@@ -22,7 +22,7 @@ namespace Stareater.GuiUtils
 				if (rate < construction.CompletedCount)
 					return perTurnPlusText.Text(
 						null,
-						new TextVar("count", new ThousandsFormatter().Format(construction.CompletedCount)).
+						new TextVar("count", new ThousandsFormatter().Format(rate)).
 						And("extra", new ThousandsFormatter().Format(construction.CompletedCount - rate)).Get
 					);
 

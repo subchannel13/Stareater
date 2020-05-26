@@ -798,30 +798,27 @@ namespace Stareater.GameScenes
 			var player = this.currentPlayer.Info;
 			var ownColonies = systemControl.Colonies.Where(x => x.Owner == player).ToList();
 
-			if (this.currentPlayer.IsStarVisited(star) && systemControl.Planets.Any())
+			var infoPanel = new GuiPanel();
+			infoPanel.Position.WrapContent();
+			var columnsPositioner = new LinearPositioner(true);
+
+			if (ownColonies.Count > 0)
 			{
-				var infoPanel = new GuiPanel();
-				infoPanel.Position.WrapContent();
-				rowsPositioner.Add(infoPanel);
-				yield return infoPanel;
-
-				var columnsPositioner = new LinearPositioner(true);
-				if (ownColonies.Count > 0)
+				var developmentInfo = new DevelopmentIndicator
 				{
-					var developmentInfo = new DevelopmentIndicator
-					{
-						Value = Methods.InvLerp(
-							Math.Log(ownColonies.Sum(x => x.ExtraStats("devIndex"))),
-							Math.Log(ownColonies.Sum(x => x.ExtraStats("minDevIndex"))),
-							Math.Log(ownColonies.Sum(x => x.ExtraStats("maxDevIndex")))),
-						Tooltip = new SimpleTooltip("FormMain", "SystemDevelopmentTooltip")
-					};
-					developmentInfo.Position.FixedSize(80, 12);
-					columnsPositioner.Add(developmentInfo);
-					columnsPositioner.AddSpace(8);
-					infoPanel.AddChild(developmentInfo);
-				}
-
+					Value = Methods.InvLerp(
+						Math.Log(ownColonies.Sum(x => x.ExtraStats("devIndex"))),
+						Math.Log(ownColonies.Sum(x => x.ExtraStats("minDevIndex"))),
+						Math.Log(ownColonies.Sum(x => x.ExtraStats("maxDevIndex")))),
+					Tooltip = new SimpleTooltip("FormMain", "SystemDevelopmentTooltip")
+				};
+				developmentInfo.Position.FixedSize(80, 12);
+				columnsPositioner.Add(developmentInfo);
+				columnsPositioner.AddSpace(8);
+				infoPanel.AddChild(developmentInfo);
+			}
+			if (systemControl.Planets.Any(x => systemControl.PlanetsColony(x) == null))
+			{
 				var planetsInfo = new GuiImage
 				{
 					Image = GalaxyTextures.Get.EmptyPlanetIndicator,
@@ -830,6 +827,12 @@ namespace Stareater.GameScenes
 				planetsInfo.Position.FixedSize(10, 10);
 				columnsPositioner.Add(planetsInfo);
 				infoPanel.AddChild(planetsInfo);
+			}
+
+			if (!infoPanel.Empty)
+			{
+				rowsPositioner.Add(infoPanel);
+				yield return infoPanel;
 			}
 
 			var name = new GuiText

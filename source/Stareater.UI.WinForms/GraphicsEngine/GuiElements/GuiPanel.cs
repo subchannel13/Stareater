@@ -25,6 +25,8 @@ namespace Stareater.GraphicsEngine.GuiElements
 			this.children.Clear();
 		}
 
+		public bool Empty => this.children.Count == 0;
+
 		private BackgroundTexture mBackground = null;
 
 		public BackgroundTexture Background
