@@ -824,7 +824,19 @@ namespace Stareater.GameScenes
 					Image = GalaxyTextures.Get.EmptyPlanetIndicator,
 					Tooltip = new SimpleTooltip("FormMain", "EmptyPlanetIndicatorTooltip")
 				};
-				planetsInfo.Position.FixedSize(10, 10);
+				planetsInfo.Position.FixedSize(12, 12);
+				columnsPositioner.Add(planetsInfo);
+				columnsPositioner.AddSpace(4);
+				infoPanel.AddChild(planetsInfo);
+			}
+			if (systemControl.CanSurveyStar)
+			{
+				var planetsInfo = new GuiImage
+				{
+					Image = GalaxyTextures.Get.CanSurveyStarIndicator,
+					Tooltip = new SimpleTooltip("FormMain", "UnknownPlanetsTooltip")
+				};
+				planetsInfo.Position.FixedSize(12, 12);
 				columnsPositioner.Add(planetsInfo);
 				infoPanel.AddChild(planetsInfo);
 			}

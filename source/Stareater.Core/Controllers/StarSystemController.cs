@@ -56,7 +56,7 @@ namespace Stareater.Controllers
 					Select(x => new ColonyInfo(x, game.Derivates[x]));
 			}
 		}
-		
+
 		public ColonyInfo PlanetsColony(PlanetInfo planet)
 		{
 			if (planet == null)
@@ -138,5 +138,7 @@ namespace Stareater.Controllers
 		{
 			return new StellarisAdminController(game, game.States.Stellarises.At[this.star, this.player], IsReadOnly, this.player);
 		}
+
+		public bool CanSurveyStar => true;
 	}
 }

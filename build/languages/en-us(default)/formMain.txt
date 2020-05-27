@@ -74,6 +74,7 @@ SelectQuantityTitle = Select quantity
 
 SystemDevelopmentTooltip = General star system development level
 EmptyPlanetIndicatorTooltip = There are uncolonized planets in the system
+UnknownPlanetsTooltip = There are undiscovered planets orbiting the star
 
 MoveAction = Move
 ShipCount = Ships
