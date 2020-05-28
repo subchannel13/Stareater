@@ -35,11 +35,11 @@ namespace Stareater.GUI
 					var context = LocalizationManifest.Get.CurrentLanguage["FormMain"];
 				
 					costLabel.Text = LocalizationMethods.ConstructionEstimation(
-						this.data, 
-						null, 
+						this.data,
+						context["EtaNever"],
 						context["BuildingsPerTurn"],
 						context["BuildingsPerTurnPlus"],
-						null,
+						context["Eta"],
 						context["BuildingsCompleted"]
 					);
 				}

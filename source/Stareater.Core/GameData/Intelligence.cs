@@ -31,6 +31,18 @@ namespace Stareater.GameData
 			foreach (var planetInfo in starInfo.Planets.Values)
 			{
 				planetInfo.Visit(turn);
+				planetInfo.Discovered = true;
+			}
+		}
+
+		public void StarVisited(StarData star, int turn)
+		{
+			var starInfo = starKnowledge[star];
+
+			starInfo.Visit(turn);
+			foreach (var planetInfo in starInfo.Planets.Values)
+			{
+				planetInfo.Visit(turn);
 			}
 		}
 

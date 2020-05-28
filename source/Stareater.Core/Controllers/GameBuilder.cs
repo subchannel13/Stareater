@@ -296,8 +296,8 @@ namespace Stareater.Controllers
 				
 				player.Intelligence.Initialize(game.States);
 				
-				foreach(var colony in game.States.Colonies.OwnedBy[player])
-					player.Intelligence.StarFullyVisited(colony.Star, 0);
+				foreach(var stellaris in game.States.Stellarises.OwnedBy[player])
+					player.Intelligence.StarFullyVisited(stellaris.Location.Star, 0);
 			}
 		}
 		

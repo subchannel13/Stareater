@@ -95,7 +95,8 @@ namespace Stareater.GameLogic.Planning
 			if (distance <= speed * (1 - time)) {
 				this.newPosition = mission.Destination.Position;
 				
-				fleet.Owner.Intelligence.StarFullyVisited(game.States.Stars.At[mission.Destination.Position], game.Turn);
+				//TODO(v0.9) make it perform 1 round of survey
+				fleet.Owner.Intelligence.StarVisited(game.States.Stars.At[mission.Destination.Position], game.Turn);
 				this.time += distance / speed;
 				
 				this.movementSteps.Add(new FleetMovement(
