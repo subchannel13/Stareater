@@ -91,7 +91,7 @@ namespace StareaterUI
 					case "-wait":
 						if (args.Count == 0)
 							throw new ArgumentException("Missing path arguments for " + option);
-						int waitTime = 0;
+						int waitTime;
 						if (!int.TryParse(args.Dequeue(), out waitTime) || args.Count == 0)
 							throw new ArgumentException("Invalid arguments format for " + option);
 						waitTime = Math.Min(waitTime, 60);

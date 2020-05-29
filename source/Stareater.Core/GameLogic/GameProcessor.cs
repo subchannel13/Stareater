@@ -10,6 +10,7 @@ using Stareater.GameLogic.Combat;
 using Stareater.GameLogic.Planning;
 using Stareater.Utils;
 using Stareater.GameData.Databases.Tables;
+using Stareater.Utils.Collections;
 
 namespace Stareater.GameLogic
 {
@@ -243,6 +244,7 @@ namespace Stareater.GameLogic
 			var conflictPositions = new Dictionary<Vector2D, double>();
 			var stoppedFleets = new HashSet<Fleet>();
 
+			// Unroll fleet movements and find conflict positions
 			foreach (var step in this.fleetMovement.OrderBy(x => x.ArrivalTime))
 			{
 				var position = step.LocalFleet.Position;
@@ -250,7 +252,7 @@ namespace Stareater.GameLogic
 					visits.Add(position, new List<FleetMovement>());
 
 				var fleets = visits[position];
-
+				// Fleet already stopped or came to the position earlier
 				if (stoppedFleets.Contains(step.OriginalFleet) || fleets.Any(x => x.OriginalFleet == step.OriginalFleet))
 					continue;
 
@@ -260,6 +262,7 @@ namespace Stareater.GameLogic
 					continue; //TODO(later) no deepspace interception for now
 				var star = game.States.Stars.At[position];
 
+				// List players present at a star either with an earlier fleet visit or with a colony
 				var players = new HashSet<Player>(fleets.Where(x => x.ArrivalTime < step.ArrivalTime).Select(x => x.OriginalFleet.Owner));
 				players.UnionWith(game.States.Colonies.AtStar[star].Select(x => x.Owner));
 				players.Remove(step.LocalFleet.Owner);
@@ -287,15 +290,54 @@ namespace Stareater.GameLogic
 				}
 			//TODO(later) deep space interception
 
+			// Find final fleet positions and update fleet state data
 			this.game.States.Fleets.Clear();
-			var finalFleetState = new Dictionary<Fleet, Fleet>();
-			foreach (var fleet in visits.Where(x => !conflictPositions.ContainsKey(x.Key)).SelectMany(x => x.Value))
+			var finalFleetState = new Dictionary<Fleet, FleetMovement>();
+			foreach (var fleetMove in visits.Where(x => !conflictPositions.ContainsKey(x.Key)).SelectMany(x => x.Value))
 			{
-				if (finalFleetState.ContainsKey(fleet.OriginalFleet))
-					this.game.States.Fleets.Remove(finalFleetState[fleet.OriginalFleet]);
+				if (finalFleetState.ContainsKey(fleetMove.OriginalFleet))
+				{
+					var otherState = finalFleetState[fleetMove.OriginalFleet];
+					if (otherState.ArrivalTime > fleetMove.ArrivalTime)
+						continue;
 
-				this.game.States.Fleets.Add(fleet.LocalFleet);
-				finalFleetState[fleet.OriginalFleet] = fleet.LocalFleet;
+					this.game.States.Fleets.Remove(otherState.LocalFleet);
+				}
+
+				this.game.States.Fleets.Add(fleetMove.LocalFleet);
+				finalFleetState[fleetMove.OriginalFleet] = fleetMove;
+			}
+
+			foreach (var fleetState in finalFleetState.Where(x => this.game.States.Stars.At.Contains(x.Value.LocalFleet.Position)))
+				surveySystem(fleetState.Value);
+		}
+
+		private void surveySystem(FleetMovement fleetState)
+		{
+			var star = this.game.States.Stars.At[fleetState.LocalFleet.Position];
+			var intel = fleetState.LocalFleet.Owner.Intelligence.About(star);
+			var unknownPlanets = new PendableSet<Planet>(intel.Planets.Where(x => !x.Value.Discovered).Select(x => x.Key));
+			var rounds = SpaceBattleProcessor.ConflictDuration(fleetState.ArrivalTime);
+			var designStats = this.game.Derivates[fleetState.LocalFleet.Owner].DesignStats;
+			var rng = new Random(); //TODO find better place for RNG, say as Player or MainGame member
+
+			for (int i = 0; i < rounds; i++)
+			{
+				if (unknownPlanets.Count == 0)
+					return;
+
+				//TODO(v0.9) add discovering starlanes
+				var detection = fleetState.LocalFleet.Ships.Max(x => designStats[x.Design].Detection);
+				foreach(var planet in unknownPlanets)
+				{
+					intel.Planets[planet].Discovered |=
+						ACombatProcessor.Probability(detection - this.game.Statics.PlanetForumlas[planet.Type].DiscoveryDifficulty.Evaluate(null)) > rng.NextDouble();
+
+					//TODO(later) generate report
+					if (intel.Planets[planet].Discovered)
+						unknownPlanets.PendRemove(planet);
+				}
+				unknownPlanets.ApplyPending();
 			}
 		}
 

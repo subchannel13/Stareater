@@ -9,16 +9,18 @@ namespace Stareater.GameData.Databases.Tables
 		public IEnumerable<string> BestTraits { get; private set; }
 		public IEnumerable<string> WorstTraits { get; private set; }
 		public HashSet<string> UnchangeableTraits { get; private set; }
+		public Formula DiscoveryDifficulty { get; internal set; }
 
 		public Formula StartingScore { get; private set; }
 		public Formula PotentialScore { get; private set; }
 
 		public PlanetForumlaSet(IEnumerable<string> impliciteTraits, IEnumerable<string> bestTraits, IEnumerable<string> worstTraits,
-			IEnumerable<string> unchangeableTraits, Formula startingScore, Formula potentialScore)
+			Formula discoveryDifficulty, IEnumerable<string> unchangeableTraits, Formula startingScore, Formula potentialScore)
 		{
 			this.BestTraits = bestTraits;
 			this.UnchangeableTraits = new HashSet<string>(unchangeableTraits);
 			this.ImplicitTraits = impliciteTraits;
+			this.DiscoveryDifficulty = discoveryDifficulty;
 			this.StartingScore = startingScore;
 			this.PotentialScore = potentialScore;
 			this.WorstTraits = worstTraits;

@@ -87,6 +87,8 @@
 	worstTraits [ :toxic :poor :radioactive ]
 	unchangeableTraits [ :poor :rich :richCore ]
 	
+	discoveryDifficulty # 35;
+	
 	bestScore # bestScore;
 	startScore # startScore;
 }
@@ -98,6 +100,8 @@
 	worstTraits [ :denseAtmo :highGrav :toxic :poor :radioactive ]
 	unchangeableTraits [ :poor :rich :richCore ]
 	
+	discoveryDifficulty # 25;
+	
 	bestScore # bestScore;
 	startScore # startScore;
 }
@@ -108,6 +112,8 @@
 	bestTraits [ :fertile :rich :magnetosphere2 ]
 	worstTraits [ :denseAtmo :highGrav :toxic :poor :radioactive ]
 	unchangeableTraits [ :poor :rich :richCore ]
+	
+	discoveryDifficulty # 30;
 	
 	bestScore # bestScore;
 	startScore # startScore;

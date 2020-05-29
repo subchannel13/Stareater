@@ -37,7 +37,7 @@ namespace Stareater.Controllers
 		{
 			get {
 				return this.player.Intelligence.About(this.star).Planets.
-					Where(x => x.Value.Explored).
+					Where(x => x.Value.Discovered).
 					OrderBy(x => x.Key.Position).
 					Select(x => new PlanetInfo(x.Key, this.game));
 			}
@@ -52,7 +52,7 @@ namespace Stareater.Controllers
 				//TODO(later) show last known colony information
 				return game.States.Colonies.
 					AtStar[this.star].
-					Where(x => systemIntell[x.Location.Planet].Explored).
+					Where(x => systemIntell[x.Location.Planet].Discovered).
 					Select(x => new ColonyInfo(x, game.Derivates[x]));
 			}
 		}
@@ -62,7 +62,7 @@ namespace Stareater.Controllers
 			if (planet == null)
 				throw new ArgumentNullException(nameof(planet));
 
-			if (this.player.Intelligence.About(this.star).Planets[planet.Data].Explored)
+			if (this.player.Intelligence.About(this.star).Planets[planet.Data].Discovered)
 				if (game.States.Colonies.AtPlanet.Contains(planet.Data))
 				{
 					var colony = game.States.Colonies.AtPlanet[planet.Data];

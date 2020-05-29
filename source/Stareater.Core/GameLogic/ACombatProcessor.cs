@@ -136,7 +136,7 @@ namespace Stareater.GameLogic
 		#region Math helpers
 		protected const double SigmoidBase = 0.90483741803595957316424905944644; //e^-0.1
 		
-		protected static double Probability(double modifer)
+		public static double Probability(double modifer)
 		{
 			if (modifer < 0)
 				return 0.5 * Math.Pow(SigmoidBase, -modifer);

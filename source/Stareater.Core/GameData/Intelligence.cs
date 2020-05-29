@@ -30,7 +30,7 @@ namespace Stareater.GameData
 			starInfo.Visit(turn);
 			foreach (var planetInfo in starInfo.Planets.Values)
 			{
-				planetInfo.Visit(turn);
+				planetInfo.LastVisited = turn;
 				planetInfo.Discovered = true;
 			}
 		}
@@ -42,7 +42,7 @@ namespace Stareater.GameData
 			starInfo.Visit(turn);
 			foreach (var planetInfo in starInfo.Planets.Values)
 			{
-				planetInfo.Visit(turn);
+				planetInfo.LastVisited = turn;
 			}
 		}
 

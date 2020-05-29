@@ -291,6 +291,7 @@ namespace Stareater.GameData.Databases
 					data[PlanetBaseTraits].To<string[]>(),
 					data[PlanetBestTraits].To<string[]>(),
 					data[PlanetWorstTraits].To<string[]>(),
+					data["discoveryDifficulty"].To<Formula>(),
 					data[PlanetUnchangeableTraits].To<string[]>(),
 					data[PlanetStartingScore].To<Formula>().Substitute(subformulas),
 					data[PlanetPotentialScore].To<Formula>().Substitute(subformulas)
