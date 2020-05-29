@@ -291,7 +291,7 @@ namespace Stareater.GameData.Databases
 					data[PlanetBaseTraits].To<string[]>(),
 					data[PlanetBestTraits].To<string[]>(),
 					data[PlanetWorstTraits].To<string[]>(),
-					data["discoveryDifficulty"].To<Formula>(),
+					data["discoveryDifficulty"].To<Formula>().Substitute(subformulas),
 					data[PlanetUnchangeableTraits].To<string[]>(),
 					data[PlanetStartingScore].To<Formula>().Substitute(subformulas),
 					data[PlanetPotentialScore].To<Formula>().Substitute(subformulas)
@@ -342,7 +342,8 @@ namespace Stareater.GameData.Databases
 		private static StellarisFormulaSet loadStarFormulas(IkonComposite data, Dictionary<string, Formula> subformulas)
 		{
 			return new StellarisFormulaSet(
-				data["scanRange"].To<Formula>().Substitute(subformulas)
+				data["scanRange"].To<Formula>().Substitute(subformulas),
+				data["starlaneStealth"].To<Formula>().Substitute(subformulas)
 			);
 		}
 		

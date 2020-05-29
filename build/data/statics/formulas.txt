@@ -162,4 +162,5 @@
 
 { StarFormulas
 	scanRange # 2;
+	starlaneStealth # 40;
 }

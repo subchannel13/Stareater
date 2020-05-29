@@ -33,7 +33,7 @@ namespace Stareater.GameLogic
 		{
 			this.OrganellePlayer.Intelligence.Initialize(states);
 			foreach(var star in states.Stars)
-				this.OrganellePlayer.Intelligence.StarFullyVisited(star, 0);
+				this.OrganellePlayer.Intelligence.StarFullyVisited(star, states);
 
 			foreach (var designData in statics.NativeDesigns)
 			{

@@ -2,37 +2,33 @@
 using System.Collections.Generic;
 using Stareater.Galaxy;
 using Stareater.GameData.Databases;
+using System.Linq;
 
 namespace Stareater.GameData
 {
 	class Intelligence 
 	{
 		[StatePropertyAttribute]
-		private Dictionary<StarData, StarIntelligence> starKnowledge { get; set; }
+		public Dictionary<Wormhole, bool> StarlaneKnowledge { get; set; }
 
-		public Intelligence() 
-		{
-			this.starKnowledge = new Dictionary<StarData, StarIntelligence>();
-			
-		}
+		[StatePropertyAttribute]
+		private Dictionary<StarData, StarIntelligence> starKnowledge { get; set; }
 
 		public void Initialize(StatesDB states)
 		{
-			this.starKnowledge.Clear();
-			foreach (var star in states.Stars)
-				starKnowledge.Add(star, new StarIntelligence(states.Planets.At[star]));
+			this.starKnowledge = states.Stars.ToDictionary(x => x, x => new StarIntelligence(states.Planets.At[x]));
+			this.StarlaneKnowledge = states.Wormholes.ToDictionary(x => x, x => false);
 		}
 
-		public void StarFullyVisited(StarData star, int turn)
+		public void StarFullyVisited(StarData star, StatesDB states)
 		{
 			var starInfo = starKnowledge[star];
 
-			starInfo.Visit(turn);
+			starInfo.Visit(0);
 			foreach (var planetInfo in starInfo.Planets.Values)
-			{
-				planetInfo.LastVisited = turn;
 				planetInfo.Discovered = true;
-			}
+			foreach (var lane in states.Wormholes.At[star])
+				this.StarlaneKnowledge[lane] = true;
 		}
 
 		public void StarVisited(StarData star, int turn)
@@ -40,21 +36,11 @@ namespace Stareater.GameData
 			var starInfo = starKnowledge[star];
 
 			starInfo.Visit(turn);
-			foreach (var planetInfo in starInfo.Planets.Values)
-			{
-				planetInfo.LastVisited = turn;
-			}
 		}
 
 		public StarIntelligence About(StarData star)
 		{
 			return starKnowledge[star];
-		}
-
-		public bool IsKnown(Wormhole wormhole)
-		{
-			return this.starKnowledge[wormhole.Endpoints.First].IsVisited || 
-				this.starKnowledge[wormhole.Endpoints.Second].IsVisited;
 		}
 	}
 }

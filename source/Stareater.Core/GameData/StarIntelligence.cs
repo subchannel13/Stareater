@@ -15,10 +15,10 @@ namespace Stareater.GameData
 		[StatePropertyAttribute]
 		public Dictionary<Planet, PlanetIntelligence> Planets { get; private set; }
 
-		public StarIntelligence(IEnumerable<Planet> planets) 
+		public StarIntelligence(IEnumerable<Planet> planets)
 		{
 			this.LastVisited = NeverVisited;
-			this.Planets = planets.ToDictionary(x => x, x => new PlanetIntelligence());
+			this.Planets = planets.ToDictionary(x => x, x => new PlanetIntelligence());	
 		}
 
 		private StarIntelligence()

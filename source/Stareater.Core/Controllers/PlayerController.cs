@@ -92,7 +92,7 @@ namespace Stareater.Controllers
 			var starKnowledge = this.PlayerInstance(game).Intelligence.About(star.Data);
 			
 			foreach(var colony in game.States.Colonies.AtStar[star.Data])
-				if (starKnowledge.Planets[colony.Location.Planet].LastVisited != PlanetIntelligence.NeverVisited)
+				if (starKnowledge.Planets[colony.Location.Planet].Discovered)
 					yield return new ColonyInfo(colony, game.Derivates[colony]);
 		}
 		
@@ -149,9 +149,11 @@ namespace Stareater.Controllers
 			get
 			{
 				var game = this.gameInstance;
-				var intell = this.PlayerInstance(game).Intelligence;
+				var intel = this.PlayerInstance(game).Intelligence;
 
-				return game.States.Wormholes.Where(intell.IsKnown).Select(x => new WormholeInfo(x));
+				return game.States.Wormholes.
+					Where(x => intel.StarlaneKnowledge[x]).
+					Select(x => new WormholeInfo(x));
 			}
 		}
 

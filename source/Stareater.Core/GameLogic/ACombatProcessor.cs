@@ -118,7 +118,7 @@ namespace Stareater.GameLogic
 		{
 			unit.CloakedFor.Clear();
 			foreach(var player in players.Where(x => x != unit.Owner))
-		        if (Probability(stats.Cloaking - sensorStrength(unit.Position, player)) > this.battleGame.Rng.NextDouble())
+		        if (Roll(stats.Cloaking, sensorStrength(unit.Position, player), this.battleGame.Rng))
 					unit.CloakedFor.Add(player);
 		}
 		
@@ -135,8 +135,11 @@ namespace Stareater.GameLogic
 
 		#region Math helpers
 		protected const double SigmoidBase = 0.90483741803595957316424905944644; //e^-0.1
-		
-		public static double Probability(double modifer)
+
+		public static bool Roll(double strength, double difficulty, Random rng)
+			=> Probability(strength - difficulty) > rng.NextDouble();
+
+		protected static double Probability(double modifer)
 		{
 			if (modifer < 0)
 				return 0.5 * Math.Pow(SigmoidBase, -modifer);

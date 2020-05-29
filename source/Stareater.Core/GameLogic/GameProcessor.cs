@@ -308,6 +308,7 @@ namespace Stareater.GameLogic
 				finalFleetState[fleetMove.OriginalFleet] = fleetMove;
 			}
 
+			//TODO(v0.9) let colonies perform scan too
 			foreach (var fleetState in finalFleetState.Where(x => this.game.States.Stars.At.Contains(x.Value.LocalFleet.Position)))
 				surveySystem(fleetState.Value);
 		}
@@ -315,26 +316,44 @@ namespace Stareater.GameLogic
 		private void surveySystem(FleetMovement fleetState)
 		{
 			var star = this.game.States.Stars.At[fleetState.LocalFleet.Position];
-			var intel = fleetState.LocalFleet.Owner.Intelligence.About(star);
-			var unknownPlanets = new PendableSet<Planet>(intel.Planets.Where(x => !x.Value.Discovered).Select(x => x.Key));
+			var intel = fleetState.LocalFleet.Owner.Intelligence;
+			var starIntel = intel.About(star);
+			var unknownPlanets = new PendableSet<Planet>(starIntel.Planets.Where(x => !x.Value.Discovered).Select(x => x.Key));
+			var unknownStarlanes = new PendableSet<Wormhole>(this.game.States.Wormholes.At[star].Where(x => !intel.StarlaneKnowledge[x]));
 			var rounds = SpaceBattleProcessor.ConflictDuration(fleetState.ArrivalTime);
 			var designStats = this.game.Derivates[fleetState.LocalFleet.Owner].DesignStats;
 			var rng = new Random(); //TODO find better place for RNG, say as Player or MainGame member
+			var detection = fleetState.LocalFleet.Ships.Max(x => designStats[x.Design].Detection);
 
 			for (int i = 0; i < rounds; i++)
 			{
-				if (unknownPlanets.Count == 0)
+				if (unknownPlanets.Count == 0 && unknownStarlanes.Count == 0)
 					return;
 
-				//TODO(v0.9) add discovering starlanes
-				var detection = fleetState.LocalFleet.Ships.Max(x => designStats[x.Design].Detection);
-				foreach(var planet in unknownPlanets)
+				foreach (var lane in unknownStarlanes)
 				{
-					intel.Planets[planet].Discovered |=
-						ACombatProcessor.Probability(detection - this.game.Statics.PlanetForumlas[planet.Type].DiscoveryDifficulty.Evaluate(null)) > rng.NextDouble();
+					intel.StarlaneKnowledge[lane] = ACombatProcessor.Roll(
+						detection,
+						this.game.Statics.StellarisFormulas.StarlaneDiscoveryDifficulty.Evaluate(null),
+						rng
+					);
 
 					//TODO(later) generate report
-					if (intel.Planets[planet].Discovered)
+					if (intel.StarlaneKnowledge[lane])
+						unknownStarlanes.PendRemove(lane);
+				}
+				unknownStarlanes.ApplyPending();
+
+				foreach (var planet in unknownPlanets)
+				{
+					starIntel.Planets[planet].Discovered = ACombatProcessor.Roll(
+						detection, 
+						this.game.Statics.PlanetForumlas[planet.Type].DiscoveryDifficulty.Evaluate(null), 
+						rng
+					);
+
+					//TODO(later) generate report
+					if (starIntel.Planets[planet].Discovered)
 						unknownPlanets.PendRemove(planet);
 				}
 				unknownPlanets.ApplyPending();

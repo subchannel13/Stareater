@@ -139,13 +139,23 @@ namespace Stareater.Controllers
 			return new StellarisAdminController(game, game.States.Stellarises.At[this.star, this.player], IsReadOnly, this.player);
 		}
 
-		public bool CanSurveyStar
+		public bool CanFindPlanets
 		{
 			get
 			{
 				var starIntel = this.player.Intelligence.About(this.star);
 				
 				return starIntel.IsVisited && starIntel.Planets.Values.Any(x => !x.Discovered);
+			}
+		}
+
+		public bool CanFindStarlanes
+		{
+			get
+			{
+				var intel = this.player.Intelligence;
+
+				return intel.About(this.star).IsVisited && this.game.States.Wormholes.At[this.star].Any(x => !intel.StarlaneKnowledge[x]);
 			}
 		}
 	}

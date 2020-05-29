@@ -381,7 +381,7 @@ namespace Stareater.GameLogic
 		{
 			var wormhole = game.States.Wormholes.At.GetOrDefault(starA, starB);
 
-			return wormhole != null && this.Player.Intelligence.IsKnown(wormhole) ? wormhole : null;
+			return wormhole != null && this.Player.Intelligence.StarlaneKnowledge[wormhole] ? wormhole : null;
 		}
 		#endregion
 
