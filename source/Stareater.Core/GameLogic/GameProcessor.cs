@@ -318,7 +318,7 @@ namespace Stareater.GameLogic
 			var star = this.game.States.Stars.At[fleetState.LocalFleet.Position];
 			var intel = fleetState.LocalFleet.Owner.Intelligence;
 			var starIntel = intel.About(star);
-			var unknownPlanets = new PendableSet<Planet>(starIntel.Planets.Where(x => !x.Value.Discovered).Select(x => x.Key));
+			var unfinishedPlanets = new PendableSet<KeyValuePair<Planet, PlanetIntelligence>>(starIntel.Planets.Where(x => x.Value.SurveyLevel < 1));
 			var unknownStarlanes = new PendableSet<Wormhole>(this.game.States.Wormholes.At[star].Where(x => !intel.StarlaneKnowledge[x]));
 			var rounds = SpaceBattleProcessor.ConflictDuration(fleetState.ArrivalTime);
 			var designStats = this.game.Derivates[fleetState.LocalFleet.Owner].DesignStats;
@@ -327,7 +327,7 @@ namespace Stareater.GameLogic
 
 			for (int i = 0; i < rounds; i++)
 			{
-				if (unknownPlanets.Count == 0 && unknownStarlanes.Count == 0)
+				if (unfinishedPlanets.Count == 0 && unknownStarlanes.Count == 0)
 					return;
 
 				foreach (var lane in unknownStarlanes)
@@ -344,19 +344,36 @@ namespace Stareater.GameLogic
 				}
 				unknownStarlanes.ApplyPending();
 
-				foreach (var planet in unknownPlanets)
+				foreach (var planet in unfinishedPlanets.Where(x => !x.Value.Discovered))
 				{
-					starIntel.Planets[planet].Discovered = ACombatProcessor.Roll(
+					planet.Value.Discovered = ACombatProcessor.Roll(
 						detection, 
-						this.game.Statics.PlanetForumlas[planet.Type].DiscoveryDifficulty.Evaluate(null), 
+						this.game.Statics.PlanetForumlas[planet.Key.Type].DiscoveryDifficulty.Evaluate(null), 
 						rng
 					);
 
 					//TODO(later) generate report
-					if (starIntel.Planets[planet].Discovered)
-						unknownPlanets.PendRemove(planet);
 				}
-				unknownPlanets.ApplyPending();
+
+				var surveys = fleetState.LocalFleet.Ships.Sum(x => designStats[x.Design].Surveys);
+				foreach (var planet in unfinishedPlanets.Where(x => x.Value.Discovered))
+				{
+					var difficulty = this.game.Statics.PlanetForumlas[planet.Key.Type].SurveyDifficulty.Evaluate(null);
+					if (planet.Value.SurveyLevel + surveys / difficulty > 1)
+					{
+						surveys -= (1 - planet.Value.SurveyLevel) * difficulty;
+						planet.Value.SurveyLevel = 1;
+					}
+					else
+					{
+						planet.Value.SurveyLevel += surveys / difficulty;
+						break;
+					}
+				}
+
+				foreach (var planet in unfinishedPlanets.Where(x => x.Value.SurveyLevel >= 1))
+					unfinishedPlanets.PendRemove(planet);
+				unfinishedPlanets.ApplyPending();
 			}
 		}
 

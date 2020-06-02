@@ -840,6 +840,17 @@ namespace Stareater.GameScenes
 				columnsPositioner.Add(planetsInfo);
 				infoPanel.AddChild(planetsInfo);
 			}
+			if (systemControl.CanSurveyPlanets)
+			{
+				var planetsInfo = new GuiImage
+				{
+					Images = new[] { new Sprite(GalaxyTextures.Get.CanSurveyStarIndicator, Color.Brown) },
+					Tooltip = new SimpleTooltip("FormMain", "UnsurveyedPlanetsTooltip")
+				};
+				planetsInfo.Position.FixedSize(12, 12);
+				columnsPositioner.Add(planetsInfo);
+				infoPanel.AddChild(planetsInfo);
+			}
 			if (systemControl.CanFindStarlanes)
 			{
 				var planetsInfo = new GuiImage

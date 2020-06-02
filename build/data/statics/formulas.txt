@@ -88,6 +88,7 @@
 	unchangeableTraits [ :poor :rich :richCore ]
 	
 	discoveryDifficulty # 35;
+	surveyDifficulty # 100;
 	
 	bestScore # bestScore;
 	startScore # startScore;
@@ -101,6 +102,7 @@
 	unchangeableTraits [ :poor :rich :richCore ]
 	
 	discoveryDifficulty # 25;
+	surveyDifficulty # 100;
 	
 	bestScore # bestScore;
 	startScore # startScore;
@@ -114,6 +116,7 @@
 	unchangeableTraits [ :poor :rich :richCore ]
 	
 	discoveryDifficulty # 30;
+	surveyDifficulty # 500;
 	
 	bestScore # bestScore;
 	startScore # startScore;
@@ -137,6 +140,7 @@
 	
 	carryCapacity # hangar * 10;
 	towCapacity # towCabel * 10;
+	surveyStrength # 1.1 ^ detection;
 	colonyPop # 500 * colony * (1 + 0.1 * colony_lvl ^ 2);
 	colonyBuildings { Buildings
 		Infra # 500 * colony * (1 + 0.1 * colony_lvl ^ 2);

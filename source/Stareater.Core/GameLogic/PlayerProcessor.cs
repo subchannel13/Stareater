@@ -773,6 +773,9 @@ namespace Stareater.GameLogic
 			));
 			shipVars[HullType.SizeKey] = design.Hull.TypeInfo.SpaceFree.Evaluate(hullVars);
 
+			var detection = statics.ShipFormulas.Detection.Evaluate(shipVars.Get);
+			shipVars["detection"] = detection;
+
 			return new DesignStats(
 				calculateCost(design, shipVars.Get, statics.ShipFormulas),
 				design.Hull.TypeInfo.Size,
@@ -787,6 +790,7 @@ namespace Stareater.GameLogic
 				abilities,
 				statics.ShipFormulas.CarryCapacity.Evaluate(shipVars.Get),
 				statics.ShipFormulas.TowCapacity.Evaluate(shipVars.Get),
+				statics.ShipFormulas.Survery.Evaluate(shipVars.Get),
 				statics.ShipFormulas.ColonizerPopulation.Evaluate(shipVars.Get),
 				buildings,
 				statics.ShipFormulas.HitPoints.Evaluate(shipVars.Get),
@@ -796,7 +800,7 @@ namespace Stareater.GameLogic
 				shieldReduction,
 				shieldRegeneration,
 				shieldThickness,
-				statics.ShipFormulas.Detection.Evaluate(shipVars.Get),
+				detection,
 				statics.ShipFormulas.Cloaking.Evaluate(shipVars.Get),
 				statics.ShipFormulas.Jamming.Evaluate(shipVars.Get)
 			);

@@ -292,6 +292,7 @@ namespace Stareater.GameData.Databases
 					data[PlanetBestTraits].To<string[]>(),
 					data[PlanetWorstTraits].To<string[]>(),
 					data["discoveryDifficulty"].To<Formula>().Substitute(subformulas),
+					data["surveyDifficulty"].To<Formula>().Substitute(subformulas),
 					data[PlanetUnchangeableTraits].To<string[]>(),
 					data[PlanetStartingScore].To<Formula>().Substitute(subformulas),
 					data[PlanetPotentialScore].To<Formula>().Substitute(subformulas)
@@ -322,6 +323,7 @@ namespace Stareater.GameData.Databases
 				data[ShipScaneRange].To<Formula>().Substitute(subformulas),
 				data["carryCapacity"].To<Formula>().Substitute(subformulas),
 				data["towCapacity"].To<Formula>().Substitute(subformulas),
+				data["surveyStrength"].To<Formula>().Substitute(subformulas),
 				data[ShipColonyPopulation].To<Formula>().Substitute(subformulas),
 				colonizerBuildings,
 				data["driveSize"].To<Formula>().Substitute(subformulas),

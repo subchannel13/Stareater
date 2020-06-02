@@ -26,7 +26,10 @@ namespace Stareater.GameData
 
 			starInfo.Visit(0);
 			foreach (var planetInfo in starInfo.Planets.Values)
+			{
 				planetInfo.Discovered = true;
+				planetInfo.SurveyLevel = 1;
+			}
 			foreach (var lane in states.Wormholes.At[star])
 				this.StarlaneKnowledge[lane] = true;
 		}

@@ -6,5 +6,7 @@ namespace Stareater.GameData
 	{
 		[StatePropertyAttribute]
 		public bool Discovered { get; set; }
+		[StatePropertyAttribute]
+		public double SurveyLevel { get; set; }
 	}
 }

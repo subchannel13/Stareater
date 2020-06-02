@@ -149,6 +149,16 @@ namespace Stareater.Controllers
 			}
 		}
 
+		public bool CanSurveyPlanets
+		{
+			get
+			{
+				var starIntel = this.player.Intelligence.About(this.star);
+
+				return starIntel.IsVisited && starIntel.Planets.Values.Any(x => x.SurveyLevel < 1);
+			}
+		}
+
 		public bool CanFindStarlanes
 		{
 			get

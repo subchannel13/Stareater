@@ -20,6 +20,7 @@ namespace Stareater.GameLogic.Combat
 		public List<AbilityStats> Abilities { get; private set; }
 		public double CarryCapacity { get; internal set; }
 		public double TowCapacity { get; internal set; }
+		public double Surveys { get; internal set; }
 		public double ColonizerPopulation { get; private set; }
 		public Dictionary<string, double> ColonizerBuildings { get; private set; }
 		public double HitPoints { get; private set; }
@@ -36,7 +37,7 @@ namespace Stareater.GameLogic.Combat
 		public DesignStats(double cost, double size, double isDriveSize, double reactorSize, double shieldSize,
 						   double galaxySpeed, double galaxyPower, double scanRange,
 						   double combatSpeed, double combatPower, List<AbilityStats> abilities,
-						   double carryCapacity, double towCapacity,
+						   double carryCapacity, double towCapacity, double surveys,
 						   double colonizerPopulation, Dictionary<string, double> colonizerBuildings, 
 		                   double hitPoints, double shieldPoints, double evasion, double armorReduction, 
 		                   double shieldReduction, double shieldRegeneration, double shieldThickness, double detection, double cloaking, double jamming)
@@ -65,6 +66,7 @@ namespace Stareater.GameLogic.Combat
 			this.ShieldSize = shieldSize;
 			this.ShieldThickness = shieldThickness;
 			this.Size = size;
+			this.Surveys = surveys;
 			this.TowCapacity = towCapacity;
 		}
 	}
