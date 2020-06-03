@@ -93,7 +93,7 @@ namespace Stareater.Controllers
 			
 			foreach(var colony in game.States.Colonies.AtStar[star.Data])
 				if (starKnowledge.Planets[colony.Location.Planet].Discovered)
-					yield return new ColonyInfo(colony, game.Derivates[colony]);
+					yield return new ColonyInfo(colony, game.Derivates[colony], starKnowledge.Planets[colony.Location.Planet]);
 		}
 		
 		public StarSystemController OpenStarSystem(StarInfo star)

@@ -133,7 +133,7 @@ namespace Stareater.GameData.Databases
 						db.StellarisFormulas = loadStarFormulas(data, subformulas);
 						break;
 					case "PlanetTrait":
-						db.PlanetTraits.Add(data[GeneralCodeKey].To<string>(), loadPlanetTrait(data));
+						db.PlanetTraits.Add(data[GeneralCodeKey].To<string>(), loadPlanetTrait(data, subformulas));
 						break;
 					case "StarTrait":
 						db.StarTraits.Add(data[GeneralCodeKey].To<string>(), loadStarTrait(data));
@@ -359,13 +359,14 @@ namespace Stareater.GameData.Databases
 			);
 		}
 
-		private static PlanetTraitType loadPlanetTrait(IkonComposite data)
+		private static PlanetTraitType loadPlanetTrait(IkonComposite data, Dictionary<string, Formula> subformulas)
 		{
 			return new PlanetTraitType(
 				data[GeneralLangKey].To<string>(),
 				data[GeneralImageKey].To<string>(),
 				data[GeneralCodeKey].To<string>(),
-				data[TraitMaintenanceKey].To<Formula>()
+				data[TraitMaintenanceKey].To<Formula>().Substitute(subformulas),
+				data["surveyLevel"].To<Formula>().Substitute(subformulas).Evaluate(null)
 			);
 		}
 		private static StarTraitType loadStarTrait(IkonComposite data)

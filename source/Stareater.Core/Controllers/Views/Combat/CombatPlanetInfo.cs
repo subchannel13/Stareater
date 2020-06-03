@@ -1,4 +1,5 @@
 ﻿using Stareater.Galaxy;
+using Stareater.GameData;
 using Stareater.SpaceCombat;
 using Stareater.Utils;
 using System;
@@ -9,17 +10,20 @@ namespace Stareater.Controllers.Views.Combat
 	public class CombatPlanetInfo :IEquatable<CombatPlanetInfo>
 	{
 		internal readonly CombatPlanet Data;
+
 		private readonly MainGame mainGame;
+		private readonly PlanetIntelligence intel;
 		
-		internal CombatPlanetInfo(CombatPlanet data, MainGame mainGame)
+		internal CombatPlanetInfo(CombatPlanet data, MainGame mainGame, PlanetIntelligence intel)
 		{
 			this.Data = data;
 			this.mainGame = mainGame;
+			this.intel = intel;
 		}
 
-		public PlanetInfo Planet => new PlanetInfo(this.Data.PlanetData, this.mainGame);
+		public PlanetInfo Planet => new PlanetInfo(this.Data.PlanetData, this.mainGame, this.intel);
 
-		public ColonyInfo Colony => new ColonyInfo(this.Data.Colony, this.mainGame.Derivates[this.Data.Colony]);
+		public ColonyInfo Colony => new ColonyInfo(this.Data.Colony, this.mainGame.Derivates[this.Data.Colony], this.intel);
 
 		public int OrdinalPosition 
 		{

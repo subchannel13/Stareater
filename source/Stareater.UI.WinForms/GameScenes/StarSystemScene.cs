@@ -146,6 +146,18 @@ namespace Stareater.GameScenes
 					traitGridBuilder.Add(traitImage.Position);
 					this.addPlanetElement(traitImage);
 				}
+				if (this.controller.CanSurvey(planet))
+				{
+					var traitImage = new GuiImage
+					{
+						Margins = new Vector2(0, 10),
+						Images = new[] { new Sprite(GalaxyTextures.Get.CanSurveyStarIndicator, Color.Brown) },
+						Tooltip = new SimpleTooltip("FormMain", "UnsurveyedPlanetTooltip")
+					};
+					traitImage.Position.FixedSize(20, 20).RelativeTo(popInfo, 0, -1, 0, 1).UseMargins().Offset(-40, 0);
+					traitGridBuilder.Add(traitImage.Position);
+					this.addPlanetElement(traitImage);
+				}
 			}
 
 			this.setupColonizationMarkers();

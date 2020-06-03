@@ -8,10 +8,9 @@ namespace Stareater.Utils.StateEngine
 {
 	class PropertyStrategy
 	{
-		private Func<object, object> getter;
-		private Action<object, object> setter;
-		private Action<object, IkonBaseObject, LoadSession> deserializer;
-		private Type type;
+		private readonly Func<object, object> getter;
+		private readonly Action<object, object> setter;
+		private readonly Action<object, IkonBaseObject, LoadSession> deserializer;
 
 		public string Name { get; private set; }
 		public StatePropertyAttribute Attribute { get; private set; }
@@ -25,7 +24,6 @@ namespace Stareater.Utils.StateEngine
 			this.getter = BuildGetAccessor(property);
 			this.setter = BuildSetAccessor(property);
 			this.deserializer = BuildDeserializer(property);
-			this.type = property.PropertyType;
 			this.Name = this.Attribute.SaveKey ?? property.Name;
 		}
 

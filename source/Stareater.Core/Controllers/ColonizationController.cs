@@ -34,10 +34,7 @@ namespace Stareater.Controllers
 			get { return new StarInfo(this.planet.Star); }
 		}
 
-		public PlanetInfo PlanetBody
-		{
-			get { return new PlanetInfo(this.planet, this.game); }
-		}
+		public PlanetInfo PlanetBody => new PlanetInfo(this.planet, this.game, this.player.Intelligence.About(this.planet));
 		#endregion
 
 		#region Colony

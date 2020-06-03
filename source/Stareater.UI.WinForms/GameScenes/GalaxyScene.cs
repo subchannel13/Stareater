@@ -840,7 +840,7 @@ namespace Stareater.GameScenes
 				columnsPositioner.Add(planetsInfo);
 				infoPanel.AddChild(planetsInfo);
 			}
-			if (systemControl.CanSurveyPlanets)
+			if (systemControl.Planets.Any(x => systemControl.CanSurvey(x)))
 			{
 				var planetsInfo = new GuiImage
 				{

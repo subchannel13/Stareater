@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Stareater.Galaxy;
+using Stareater.GameData;
 using Stareater.GameLogic;
 using Stareater.Utils.Collections;
 
@@ -11,16 +12,20 @@ namespace Stareater.Controllers.Views
 	{
 		internal Planet Data { get; private set; }
 		
-		internal PlanetInfo(Planet data, MainGame game) : this(
+		private readonly PlanetIntelligence intel;
+
+		internal PlanetInfo(Planet data, MainGame game, PlanetIntelligence intel) : this(
 			data, 
-			game.Statics.ColonyFormulas.UncolonizedMaxPopulation.Evaluate(new Var(ColonyProcessor.PlanetSizeKey, data.Size).Get)
+			game.Statics.ColonyFormulas.UncolonizedMaxPopulation.Evaluate(new Var(ColonyProcessor.PlanetSizeKey, data.Size).Get),
+			intel
 		)
 		{ }
 
-		internal PlanetInfo(Planet data, double populationMax)
+		internal PlanetInfo(Planet data, double populationMax, PlanetIntelligence intel)
 		{
 			this.Data = data;
 			this.PopulationMax = populationMax;
+			this.intel = intel;
 		}
 
 		public PlanetType Type
@@ -37,7 +42,9 @@ namespace Stareater.Controllers.Views
 		{
 			get
 			{
-				return this.Data.Traits.Select(x => new TraitInfo(x));
+				return this.Data.Traits.
+					Where(x => this.intel.SurveyLevel >= x.SurveyDifficulty).
+					Select(x => new TraitInfo(x));
 			}
 		}
 

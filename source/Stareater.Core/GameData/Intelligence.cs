@@ -22,7 +22,7 @@ namespace Stareater.GameData
 
 		public void StarFullyVisited(StarData star, StatesDB states)
 		{
-			var starInfo = starKnowledge[star];
+			var starInfo = this.starKnowledge[star];
 
 			starInfo.Visit(0);
 			foreach (var planetInfo in starInfo.Planets.Values)
@@ -36,14 +36,11 @@ namespace Stareater.GameData
 
 		public void StarVisited(StarData star, int turn)
 		{
-			var starInfo = starKnowledge[star];
-
-			starInfo.Visit(turn);
+			this.starKnowledge[star].Visit(turn);
 		}
 
-		public StarIntelligence About(StarData star)
-		{
-			return starKnowledge[star];
-		}
+		public StarIntelligence About(StarData star) => this.starKnowledge[star];
+
+		public PlanetIntelligence About(Planet planet) => this.starKnowledge[planet.Star].Planets[planet];
 	}
 }

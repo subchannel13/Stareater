@@ -107,10 +107,7 @@ namespace Stareater.Controllers
 		#endregion
 
 		#region Planet
-		public PlanetInfo PlanetBody
-		{
-			get { return new PlanetInfo(this.Site.Location.Planet, this.Game); }
-		}
+		public PlanetInfo PlanetBody => new PlanetInfo(this.Site.Location.Planet, this.Game, this.Player.Intelligence.About(this.Site.Location.Planet));
 
 		public double PlanetEnvironment
 		{

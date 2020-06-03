@@ -52,7 +52,7 @@ namespace Stareater.Controllers
 			get 
 			{
 				for(int i = 0; i < this.battleGame.Planets.Length; i++)
-					yield return new CombatPlanetInfo(this.battleGame.Planets[i], this.mainGame);
+					yield return new CombatPlanetInfo(this.battleGame.Planets[i], this.mainGame, this.battleGame.PlayOrder.Peek().Owner.Intelligence.About(this.battleGame.Planets[i].PlanetData));
 			}
 		}
 

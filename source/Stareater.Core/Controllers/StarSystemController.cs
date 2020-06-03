@@ -39,7 +39,7 @@ namespace Stareater.Controllers
 				return this.player.Intelligence.About(this.star).Planets.
 					Where(x => x.Value.Discovered).
 					OrderBy(x => x.Key.Position).
-					Select(x => new PlanetInfo(x.Key, this.game));
+					Select(x => new PlanetInfo(x.Key, this.game, this.player.Intelligence.About(x.Key)));
 			}
 		}
 
@@ -53,7 +53,7 @@ namespace Stareater.Controllers
 				return game.States.Colonies.
 					AtStar[this.star].
 					Where(x => systemIntell[x.Location.Planet].Discovered).
-					Select(x => new ColonyInfo(x, game.Derivates[x]));
+					Select(x => new ColonyInfo(x, game.Derivates[x], systemIntell[x.Location.Planet]));
 			}
 		}
 
@@ -62,12 +62,13 @@ namespace Stareater.Controllers
 			if (planet == null)
 				throw new ArgumentNullException(nameof(planet));
 
-			if (this.player.Intelligence.About(this.star).Planets[planet.Data].Discovered)
+			var intel = this.player.Intelligence.About(this.star).Planets[planet.Data];
+			if (intel.Discovered)
 				if (game.States.Colonies.AtPlanet.Contains(planet.Data))
 				{
 					var colony = game.States.Colonies.AtPlanet[planet.Data];
 					//TODO(later) show last known colony information
-					return new ColonyInfo(colony, game.Derivates[colony]);
+					return new ColonyInfo(colony, game.Derivates[colony], intel);
 				}
 			
 			return null;
@@ -149,14 +150,14 @@ namespace Stareater.Controllers
 			}
 		}
 
-		public bool CanSurveyPlanets
+		public bool CanSurvey(PlanetInfo planet)
 		{
-			get
-			{
-				var starIntel = this.player.Intelligence.About(this.star);
+			if (planet is null)
+				throw new ArgumentNullException(nameof(planet));
 
-				return starIntel.IsVisited && starIntel.Planets.Values.Any(x => x.SurveyLevel < 1);
-			}
+			var starIntel = this.player.Intelligence.About(this.star);
+
+			return starIntel.IsVisited && starIntel.Planets[planet.Data].SurveyLevel < 1;
 		}
 
 		public bool CanFindStarlanes
