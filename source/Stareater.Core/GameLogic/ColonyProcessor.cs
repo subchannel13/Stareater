@@ -74,6 +74,10 @@ namespace Stareater.GameLogic
 		[StatePropertyAttribute]
 		public double FuelProduction { get; internal set; }
 		[StatePropertyAttribute]
+		public double Detection { get; internal set; }
+		[StatePropertyAttribute]
+		public double Surveys { get; internal set; }
+		[StatePropertyAttribute]
 		public Dictionary<string, double> ExtraStats { get; internal set; }
 
 		public ColonyProcessor(Colony colony) : base()
@@ -155,6 +159,8 @@ namespace Stareater.GameLogic
 			this.Desirability = formulas.Desirability.Evaluate(vars);
 			this.Emigrants = formulas.Emigrants.Evaluate(vars);
 			this.FuelProduction = formulas.FuelProduction.Evaluate(vars);
+			this.Detection = formulas.Detection.Evaluate(vars);
+			this.Surveys = formulas.Surveys.Evaluate(vars);
 		}
 		
 		public void CalculateDerivedEffects(StaticsDB statics, PlayerProcessor playerProcessor)

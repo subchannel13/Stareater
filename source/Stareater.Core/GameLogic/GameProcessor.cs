@@ -55,7 +55,8 @@ namespace Stareater.GameLogic
 			//TODO(later) process natives postcombat
 
 			this.moveShips();
-			this.detectConflicts();
+			var finalFleetMoves = this.detectConflicts();
+			this.doSurveys(finalFleetMoves);
 			this.enqueueAudiences();
 		}
 
@@ -238,7 +239,7 @@ namespace Stareater.GameLogic
 			}
 		}
 
-		private void detectConflicts()
+		private IEnumerable<FleetMovement> detectConflicts()
 		{
 			var visits = new Dictionary<Vector2D, ICollection<FleetMovement>>();
 			var conflictPositions = new Dictionary<Vector2D, double>();
@@ -308,25 +309,73 @@ namespace Stareater.GameLogic
 				finalFleetState[fleetMove.OriginalFleet] = fleetMove;
 			}
 
-			//TODO(v0.9) let colonies perform scan too
-			foreach (var fleetState in finalFleetState.Where(x => this.game.States.Stars.At.Contains(x.Value.LocalFleet.Position)))
-				surveySystem(fleetState.Value);
+			return finalFleetState.Values;
 		}
 
-		private void surveySystem(FleetMovement fleetState)
+		private void doSurveys(IEnumerable<FleetMovement> fleetMoves)
 		{
-			var star = this.game.States.Stars.At[fleetState.LocalFleet.Position];
-			var intel = fleetState.LocalFleet.Owner.Intelligence;
+			var perPlayerFleetMoves = fleetMoves.
+				Where(x => this.game.States.Stars.At.Contains(x.LocalFleet.Position)).
+				ToLookup(x => x.LocalFleet.Owner);
+			var rng = new Random(); //TODO find better place for RNG, say as Player or MainGame member
+
+			foreach (var player in this.game.MainPlayers)
+			{
+				var surveyors = new Dictionary<StarData, List<SurveyorGroup>>();
+
+				foreach(var colony in this.game.States.Colonies.OwnedBy[player])
+				{
+					if (!surveyors.ContainsKey(colony.Star))
+						surveyors[colony.Star] = new List<SurveyorGroup>();
+
+					surveyors[colony.Star].Add(new SurveyorGroup(
+						SpaceBattleProcessor.ConflictDuration(0),
+						this.game.Derivates[colony].Detection,
+						this.game.Derivates[colony].Surveys
+					));
+				}
+
+				var designStats = this.game.Derivates[player].DesignStats;
+				if (perPlayerFleetMoves.Contains(player))
+					foreach(var move in perPlayerFleetMoves[player])
+					{
+						var star = this.game.States.Stars.At[move.LocalFleet.Position];
+						if (!surveyors.ContainsKey(star))
+							surveyors[star] = new List<SurveyorGroup>();
+
+						surveyors[star].Add(new SurveyorGroup(
+							SpaceBattleProcessor.ConflictDuration(move.ArrivalTime),
+							move.LocalFleet.Ships.Max(x => designStats[x.Design].Detection),
+							move.LocalFleet.Ships.Sum(x => designStats[x.Design].Surveys)
+						));
+					}
+
+				foreach (var perStar in surveyors)
+					surveySystem(player, perStar.Key, perStar.Value, rng);
+			}
+		}
+
+		private void surveySystem(Player player, StarData star, List<SurveyorGroup> surveyors, Random rng)
+		{
+			var intel = player.Intelligence;
 			var starIntel = intel.About(star);
 			var unfinishedPlanets = new PendableSet<KeyValuePair<Planet, PlanetIntelligence>>(starIntel.Planets.Where(x => x.Value.SurveyLevel < 1));
 			var unknownStarlanes = new PendableSet<Wormhole>(this.game.States.Wormholes.At[star].Where(x => !intel.StarlaneKnowledge[x]));
-			var rounds = SpaceBattleProcessor.ConflictDuration(fleetState.ArrivalTime);
-			var designStats = this.game.Derivates[fleetState.LocalFleet.Owner].DesignStats;
-			var rng = new Random(); //TODO find better place for RNG, say as Player or MainGame member
-			var detection = fleetState.LocalFleet.Ships.Max(x => designStats[x.Design].Detection);
+			var surveyorOrder = new Queue<SurveyorGroup>(surveyors.OrderByDescending(x => x.Rounds));
+			var rounds = surveyorOrder.Peek().Rounds;
+			var detection = surveyorOrder.Peek().Detection;
+			var surveys = 0.0;
 
-			for (int i = 0; i < rounds; i++)
+			for (; rounds > 0 ; rounds--)
 			{
+				while(surveyorOrder.Count > 0 && surveyorOrder.Peek().Rounds == rounds)
+				{
+					var group = surveyorOrder.Dequeue();
+
+					detection = Math.Max(detection, group.Detection);
+					surveys += group.Surveys;
+				}
+
 				if (unfinishedPlanets.Count == 0 && unknownStarlanes.Count == 0)
 					return;
 
@@ -355,18 +404,18 @@ namespace Stareater.GameLogic
 					//TODO(later) generate report
 				}
 
-				var surveys = fleetState.LocalFleet.Ships.Sum(x => designStats[x.Design].Surveys);
+				var unspentSurveys = surveys;
 				foreach (var planet in unfinishedPlanets.Where(x => x.Value.Discovered))
 				{
 					var difficulty = this.game.Statics.PlanetForumlas[planet.Key.Type].SurveyDifficulty.Evaluate(null);
-					if (planet.Value.SurveyLevel + surveys / difficulty > 1)
+					if (planet.Value.SurveyLevel + unspentSurveys / difficulty > 1)
 					{
-						surveys -= (1 - planet.Value.SurveyLevel) * difficulty;
+						unspentSurveys -= (1 - planet.Value.SurveyLevel) * difficulty;
 						planet.Value.SurveyLevel = 1;
 					}
 					else
 					{
-						planet.Value.SurveyLevel += surveys / difficulty;
+						planet.Value.SurveyLevel += unspentSurveys / difficulty;
 						break;
 					}
 				}

@@ -72,6 +72,8 @@
 	
 	repair # (0.2 + 0.3 * serviceToolsLvl / 5) * min(infra_count, pop);
 	popHp # 1e-5;
+	detection # 10;
+	surveyStrength # 1.1 ^ 10;
 }
 
 { ExtraColonyFormulas

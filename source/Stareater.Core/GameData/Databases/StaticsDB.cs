@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 using Ikadn.Ikon.Types;
@@ -245,7 +244,9 @@ namespace Stareater.GameData.Databases
 				data[ColonyFuelCost].To<Formula>().Substitute(subformulas),
 				data[ColonyRepairPoints].To<Formula>().Substitute(subformulas),
 				data[ColonyPopulationHitPoints].To<Formula>().Substitute(subformulas),
-				data[ColonyMaintenanceLimit].To<Formula>().Substitute(subformulas)
+				data[ColonyMaintenanceLimit].To<Formula>().Substitute(subformulas),
+				data["detection"].To<Formula>().Substitute(subformulas),
+				data["surveyStrength"].To<Formula>().Substitute(subformulas)
 			);
 		}
 		

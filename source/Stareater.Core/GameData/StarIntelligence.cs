@@ -1,6 +1,6 @@
-﻿using Stareater.Utils.StateEngine;
+﻿using Stareater.Galaxy;
+using Stareater.Utils.StateEngine;
 using System.Collections.Generic;
-using Stareater.Galaxy;
 using System.Linq;
 
 namespace Stareater.GameData
