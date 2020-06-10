@@ -807,9 +807,9 @@ namespace Stareater.GameScenes
 				var developmentInfo = new DevelopmentIndicator
 				{
 					Value = Methods.InvLerp(
-						Math.Log(ownColonies.Sum(x => x.ExtraStats("devIndex"))),
-						Math.Log(ownColonies.Sum(x => x.ExtraStats("minDevIndex"))),
-						Math.Log(ownColonies.Sum(x => x.ExtraStats("maxDevIndex")))),
+						/*Math.Log(*/ownColonies.Sum(x => x.ExtraStats("devIndex")),
+						/*Math.Log(*/ownColonies.Sum(x => x.ExtraStats("minDevIndex")),
+						/*Math.Log(*/ownColonies.Sum(x => x.ExtraStats("maxDevIndex"))),
 					Tooltip = new SimpleTooltip("FormMain", "SystemDevelopmentTooltip")
 				};
 				developmentInfo.Position.FixedSize(80, 12);
