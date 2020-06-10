@@ -43,31 +43,31 @@
 	emigrants # pop * 0.001;
 	environment # if(noGrav, 0.8 ^ (1 - microgravTolLvl / 5), 1);
 	desirability # (1 - pop / maxPop) / (1 + traitUndesirability / 5);
-	organization # limit(infra_count / pop, 0, 1);
+	organization # 0.5 * limit(infra_count / pop, 0, 1) * 1.2 ^ -max(log(pop/10e3) / log(10), 0);
 	
 	farming
 	{ Work
 		improvised	# (3 + if(fertile, 4, 0)) * if(toxic, 0.5, 1);
 		organized	# (4 + if(fertile, 4, 0) +  2 * gmoFoodLvl / 5) * if(toxic, 0.5, 1);
-		orgFactor # 0.5 + 0.5 * farmLawsLvl / 5;
+		orgFactor # 1;
 	}
 	gardening
 	{ Work
 		improvised	# 1.5 * if(toxic, 0.75, 1);
 		organized	# (1.5 + 1 * (hydroFarmLvl / 5) +  0.5 * (gmoFoodLvl / 5)) * if(toxic, 0.75, 1);
-		orgFactor # 0.5 + 0.5 * farmLawsLvl / 5;
+		orgFactor # 1;
 	}
 	industry
 	{ Work
 		improvised	# 2;
-		organized	# 5 + 2 * recycleLvl / 5 + 3 * roboLvl / 5;
-		orgFactor # 0.5 + 0.5 * indLawsLvl / 5;
+		organized	# 10 + 2 * recycleLvl / 5 + 5 * roboLvl / 5;
+		orgFactor # 1;
 	}
 	development 
 	{ Work
 		improvised	# 2 + 0.5 * compSciLvl / 5 + 0.5 * qCompLvl / 5;
-		organized	# 5 + 1 * recycleLvl / 5 + 2.5 * compSciLvl / 5 + 2.5 * qCompLvl / 5;
-		orgFactor # 0.5 + 0.5 * schoolLawsLvl / 5;
+		organized	# 10 + 2 * recycleLvl / 5 + 5 * compSciLvl / 5 + 5 * qCompLvl / 5;
+		orgFactor # 1;
 	}
 	
 	repair # (0.2 + 0.3 * serviceToolsLvl / 5) * min(infra_count, pop);

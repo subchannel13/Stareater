@@ -602,4 +602,46 @@ namespace Stareater.AppData.Expressions
 			}
 		}
 	}
+
+	class LogFunction :IExpressionNode
+	{
+		private readonly IExpressionNode argument;
+
+		public LogFunction(IExpressionNode argument)
+		{
+			this.argument = argument;
+		}
+
+		public IExpressionNode Simplified()
+		{
+			if (argument.IsConstant)
+				return new Constant(this.Evaluate(null));
+
+			return this;
+		}
+
+		public IExpressionNode Substitute(Dictionary<string, Formula> mapping)
+		{
+			return new LogFunction(this.argument.Substitute(mapping)).Simplified();
+		}
+
+		public bool IsConstant
+		{
+			get { return argument.IsConstant; }
+		}
+
+		public double Evaluate(IDictionary<string, double> variables)
+		{
+			return Math.Log(argument.Evaluate(variables));
+		}
+
+		public IEnumerable<string> Variables
+		{
+			get
+			{
+				foreach (var variable in argument.Variables)
+					yield return variable;
+			}
+		}
+	}
 }

@@ -199,6 +199,10 @@ namespace Stareater.AppData.Expressions
 					return paramCountExact(segmentPoints.Count, 2, identifierName, listStart) ?
 						new RatioFunction(segmentPoints[0], segmentPoints[1]).Simplified() :
 						new Constant(double.NaN);
+				case "LOG":
+					return paramCountExact(segmentPoints.Count, 1, identifierName, listStart) ?
+						new LogFunction(segmentPoints[0]).Simplified() :
+						new Constant(double.NaN);
 				default:
 					if (segmentPoints.Count != 0) {
 						SemErr("Invalid function name \"" + identifierName + "\" at " + listStart + "th character.");
