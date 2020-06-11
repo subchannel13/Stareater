@@ -329,12 +329,7 @@ namespace Stareater.GameScenes
 			if (fleets.Count == 1 && fleets[0].Owner == this.currentPlayer.Info)
 			{
 				if (!(this.currentViewpoint.Selection is SelectedFleet))
-				{
-					if (fleets[0].Missions.Waypoints.Count == 0)
-						this.currentViewpoint.Selection = new SelectedFleet(fleets[0], this.currentPlayer); //TODO(v0.9) marks wrong fleet when there are multiple players 
-					else
-						return;
-				}
+					this.currentViewpoint.Selection = new SelectedFleet(fleets[0], this.currentPlayer); //TODO(v0.9) marks wrong fleet when there are multiple players 
 
 				this.showBottomView(this.fleetsPanel);
 				this.fleetsPanel.Children = this.selectedFleetControl.ShipGroups.
