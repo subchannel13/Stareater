@@ -77,7 +77,6 @@ namespace Stareater.GLData
 			}
 
 			textureSizes[textureId] = new Vector2(image.Width, image.Height);
-			GL.GenerateMipmap(GenerateMipmapTarget.Texture2D); //TODO(v0.9) make custom mipmap algorithm
 			ShaderLibrary.PrintGlErrors("UpdateTexture generate mipmaps");
 		}
 

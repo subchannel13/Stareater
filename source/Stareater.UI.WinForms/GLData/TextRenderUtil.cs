@@ -24,7 +24,7 @@ namespace Stareater.GLData
 		}
 		#endregion
 
-		const float SdfFontSize = 24;
+		const float SdfFontSize = 35;
 		const int SdfPadding = 4;
 
 		public const float AntialiasPixelSize = SdfFontSize / SdfPadding / 2;
